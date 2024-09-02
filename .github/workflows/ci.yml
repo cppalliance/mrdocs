@@ -29,13 +29,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Generate Test Matrix
-        uses: alandefreitas/cpp-actions/cpp-matrix@v1.8.5
+        uses: alandefreitas/cpp-actions/cpp-matrix@v1.8.6
         id: cpp-matrix
         with:
           compilers: |
-            gcc 13.1
-            clang 17
-            msvc 14.40
+            gcc 14
+            clang 18
+            msvc >=14.40
           standards: '20'
           latest-factors: ''
           factors: |
@@ -49,6 +49,10 @@ jobs:
             msvc Optimized-Debug: /Ob1 /O2 /Zi
           cxxflags: |
             msvc Optimized-Debug: /Ob1 /O2 /Zi
+          install: |
+            gcc: git build-essential pkg-config python3 curl openjdk-11-jdk ninja-build pkg-config libncurses-dev libxml2-utils libxml2-dev
+            clang: git build-essential pkg-config python3 curl openjdk-11-jdk ninja-build pkg-config libncurses-dev libxml2-utils libxml2-dev
+            msvc: ''
           extra-values: |
             llvm-hash: e1065370aaacb1b1cb48e77d37d376bf024f4a39
             llvm-id: {{ substr llvm-hash 0 7 }}
@@ -61,6 +65,11 @@ jobs:
             llvm-archive-basename: llvm-{{ os }}-{{ llvm-build-preset-prefix }}-{{ llvm-id }}
             llvm-archive-extension: {{#if (ieq os 'windows') }}7z{{else}}tar.bz2{{/if}}
             llvm-archive-filename: {{ llvm-archive-basename }}.{{ llvm-archive-extension }}
+            libcxx-runtimes: libcxx;libcxxabi{{#if (ine os 'windows') }};libunwind{{/if}}
+            libcxx-targets: cxx {{#if (ine os 'windows') }}cxxabi unwind{{/if}} install-cxx {{#if (ine os 'windows') }}install-cxxabi install-unwind{{/if}}
+            mrdocs-ccflags: {{ ccflags }} {{#if (eq compiler 'gcc') }}-static{{/if}} {{#if asan }}-static-libasan{{/if}} {{#if tsan }}-static-libtsan{{/if}}
+            mrdocs-cxxflags: {{ cxxflags }} {{#if (eq compiler 'gcc') }}-static{{/if}} {{#if asan }}-static-libasan{{/if}} {{#if tsan }}-static-libtsan{{/if}}
+            mrdocs-package-generators: {{#if (ieq os 'windows') }}7Z ZIP WIX{{else}}TGZ TXZ{{/if}}
           output-file: matrix.json
 
       - name: Generate LLVM Test Matrix
@@ -94,274 +103,225 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup CMake
-        uses: alandefreitas/cpp-actions/setup-cmake@v1.8.5
+        uses: alandefreitas/cpp-actions/setup-cmake@v1.8.6
         id: setup-cmake
         with:
-          version: ${{ matrix.compiler == 'clang' && '3.26' || '>=3.26' }}
+          version: '>=3.26'
           check-latest: 'true'
           update-environment: 'true'
+          trace-commands: 'true'
 
       - name: Setup Ninja
         uses: seanmiddleditch/gha-setup-ninja@v4
         if: ${{ runner.os == 'Windows' }}
 
       - name: Setup C++
-        uses: alandefreitas/cpp-actions/setup-cpp@v1.8.5
+        uses: alandefreitas/cpp-actions/setup-cpp@v1.8.6
         id: setup-cpp
         with:
           compiler: ${{ matrix.compiler }}
           version: ${{ matrix.version }}
-          check-latest: ${{ matrix.compiler == 'clang' }}
 
       - name: Install System Packages
-        uses: alandefreitas/cpp-actions/package-install@v1.8.5
+        uses: alandefreitas/cpp-actions/package-install@v1.8.6
+        if: matrix.compiler != 'msvc'
         id: package-install
         env:
           DEBIAN_FRONTEND: 'noninteractive'
           TZ: 'Etc/UTC'
         with:
-          apt-get: ${{ matrix.install }} git build-essential python3 curl openjdk-11-jdk ninja-build pkg-config libncurses-dev libxml2-utils libxml2-dev
-          cc: ${{ steps.setup-cpp.outputs.cc || matrix.cc }}
-          ccflags: ${{ matrix.ccflags }}
-          cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
-          cxxflags: ${{ matrix.cxxflags }}
+          apt-get: ${{ matrix.install }}
 
       - name: Install Duktape
-        id: duktape-install
-        shell: bash
-        run: |
-          set -x
-          cd ..
-          mkdir -p third-party
-          cd third-party
-          curl -LJO https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz
-          tar -xf duktape-2.7.0.tar.xz
-          cp ../mrdocs/third-party/duktape/CMakeLists.txt ./duktape-2.7.0/CMakeLists.txt
-          cp ../mrdocs/third-party/duktape/duktapeConfig.cmake.in ./duktape-2.7.0/duktapeConfig.cmake.in
-          cd duktape-2.7.0
-          cmake -S . -B ./build  \
-              -D FMT_DOC=OFF  \
-              -D FMT_TEST=OFF  \
-              -D CMAKE_BUILD_TYPE="${{ matrix.build-type }}"  \
-              -D CMAKE_CONFIGURATION_TYPES="${{ matrix.build-type }}"  \
-              -D CMAKE_CXX_COMPILER="${{ steps.setup-cpp.outputs.cxx }}"  \
-              -D CMAKE_C_COMPILER="${{ steps.setup-cpp.outputs.cc }}"
-          N_CORES=$(nproc 2>/dev/null || echo 1)
-          cmake --build ./build --config ${{ matrix.build-type }} --parallel $N_CORES
-          cmake --install ./build --prefix ./install --config ${{ matrix.build-type }}
-
-          duktape_root=$(pwd)/install
-          if [[ ${{ runner.os }} == 'Windows' ]]; then
-              duktape_root=$(echo "$duktape_root" | sed 's/\\/\//g')
-              duktape_root=$(echo $duktape_root | sed 's|^/d/|D:/|')
-              echo "$duktape_root"
-          fi
-          echo -E "duktape-root=$duktape_root" >> $GITHUB_OUTPUT
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.6
+        with:
+          source-dir: ../third-party/duktape
+          url: https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz
+          patches: |
+            ./third-party/duktape/CMakeLists.txt
+            ./third-party/duktape/duktapeConfig.cmake.in
+          build-dir: ${sourceDir}/build
+          cc: ${{ steps.setup-cpp.outputs.cc }}
+          cxx: ${{ steps.setup-cpp.outputs.cxx }}
+          ccflags: ${{ matrix.ccflags }}
+          cxxflags: ${{ matrix.cxxflags }}
+          build-type: ${{ matrix.build-type }}
+          shared: false
+          install: true
+          install-prefix: ${sourceDir}/install
+          run-tests: false
+          trace-commands: true
 
       - name: Install Fmt
-        id: fmt-install
-        shell: bash
-        run: |
-          set -x
-          cd ..
-          mkdir -p third-party
-          cd third-party
-          git clone https://github.com/fmtlib/fmt --branch 10.2.1 --depth 1
-          cd fmt
-          cmake -S . -B ./build  \
-              -D FMT_DOC=OFF  \
-              -D FMT_TEST=OFF  \
-              -D CMAKE_BUILD_TYPE="${{ matrix.build-type }}"  \
-              -D CMAKE_CONFIGURATION_TYPES="${{ matrix.build-type }}"  \
-              -D CMAKE_CXX_COMPILER="${{ steps.setup-cpp.outputs.cxx }}"  \
-              -D CMAKE_C_COMPILER="${{ steps.setup-cpp.outputs.cc }}"
-          N_CORES=$(nproc 2>/dev/null || echo 1)
-          cmake --build ./build --config ${{ matrix.build-type }} --parallel $N_CORES
-          cmake --install ./build --prefix ./install --config ${{ matrix.build-type }}
-
-          fmt_root=$(pwd)/install
-          if [[ ${{ runner.os }} == 'Windows' ]]; then
-              fmt_root=$(echo "$fmt_root" | sed 's/\\/\//g')
-              fmt_root=$(echo $fmt_root | sed 's|^/d/|D:/|')
-              echo "$fmt_root"
-          fi
-          echo -E "fmt-root=$fmt_root" >> $GITHUB_OUTPUT
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.6
+        with:
+          source-dir: ../third-party/fmt
+          git-repository: https://github.com/fmtlib/fmt
+          git-tag: 10.2.1
+          build-dir: ${sourceDir}/build
+          cc: ${{ steps.setup-cpp.outputs.cc }}
+          cxx: ${{ steps.setup-cpp.outputs.cxx }}
+          ccflags: ${{ matrix.ccflags }}
+          cxxflags: ${{ matrix.cxxflags }}
+          build-type: ${{ matrix.build-type }}
+          extra-args: |
+            -D FMT_DOC=OFF
+            -D FMT_TEST=OFF
+          install: true
+          install-prefix: ${sourceDir}/install
+          run-tests: false
+          trace-commands: true
 
       - name: Install Libxml2
-        id: libxml2-install
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.6
         if: matrix.compiler == 'msvc'
-        shell: bash
-        run: |
-          set -x
-          cd ..
-          mkdir -p third-party
-          cd third-party
-          git config --global init.defaultBranch master
-          git config --global advice.detachedHead false
-          git clone https://github.com/GNOME/libxml2 --branch v2.12.6 --depth 1
-          cd libxml2
-          cmake -S . -B ./build  \
-                -D CMAKE_BUILD_TYPE=Release   \
-                -D LIBXML2_WITH_PROGRAMS=ON  \
-                -D LIBXML2_WITH_FTP=OFF   \
-                -D LIBXML2_WITH_HTTP=OFF  \
-                -D LIBXML2_WITH_ICONV=OFF   \
-                -D LIBXML2_WITH_LEGACY=OFF  \
-                -D LIBXML2_WITH_LZMA=OFF   \
-                -D LIBXML2_WITH_ZLIB=OFF   \
-                -D LIBXML2_WITH_ICU=OFF  \
-                -D LIBXML2_WITH_TESTS=OFF   \
-                -D LIBXML2_WITH_HTML=ON   \
-                -D LIBXML2_WITH_C14N=ON  \
-                -D LIBXML2_WITH_CATALOG=ON   \
-                -D LIBXML2_WITH_DEBUG=ON   \
-                -D LIBXML2_WITH_ISO8859X=ON   \
-                -D LIBXML2_WITH_MEM_DEBUG=OFF  \
-                -D LIBXML2_WITH_MODULES=ON  \
-                -D LIBXML2_WITH_OUTPUT=ON  \
-                -D LIBXML2_WITH_PATTERN=ON  \
-                -D LIBXML2_WITH_PUSH=ON  \
-                -D LIBXML2_WITH_PYTHON=OFF  \
-                -D LIBXML2_WITH_READER=ON  \
-                -D LIBXML2_WITH_REGEXPS=ON  \
-                -D LIBXML2_WITH_SAX1=ON  \
-                -D LIBXML2_WITH_SCHEMAS=ON  \
-                -D LIBXML2_WITH_SCHEMATRON=ON  \
-                -D LIBXML2_WITH_THREADS=ON  \
-                -D LIBXML2_WITH_THREAD_ALLOC=OFF  \
-                -D LIBXML2_WITH_TREE=ON  \
-                -D LIBXML2_WITH_VALID=ON  \
-                -D LIBXML2_WITH_WRITER=ON  \
-                -D LIBXML2_WITH_XINCLUDE=ON  \
-                -D LIBXML2_WITH_XPATH=ON  \
-                -D LIBXML2_WITH_XPTR=ON  \
-                -D CMAKE_CXX_COMPILER="${{ steps.setup-cpp.outputs.cxx || steps.parameters.outputs.clang-bin }}" \
-                -D CMAKE_C_COMPILER="${{ steps.setup-cpp.outputs.cc || steps.parameters.outputs.clang-bin }}"
-          N_CORES=$(nproc 2>/dev/null || echo 1)
-          cmake --build ./build --config Release --parallel $N_CORES
-          cmake --install ./build --prefix ./install --config Release
+        with:
+          source-dir: ../third-party/libxml2
+          git-repository: https://github.com/GNOME/libxml2
+          git-tag: v2.12.6
+          build-dir: ${sourceDir}/build
+          cc: ${{ steps.setup-cpp.outputs.cc }}
+          cxx: ${{ steps.setup-cpp.outputs.cxx }}
+          ccflags: ${{ matrix.ccflags }}
+          cxxflags: ${{ matrix.cxxflags }}
+          build-type: Release
+          extra-args: |
+            -D LIBXML2_WITH_PROGRAMS=ON
+            -D LIBXML2_WITH_FTP=OFF 
+            -D LIBXML2_WITH_HTTP=OFF
+            -D LIBXML2_WITH_ICONV=OFF 
+            -D LIBXML2_WITH_LEGACY=OFF
+            -D LIBXML2_WITH_LZMA=OFF 
+            -D LIBXML2_WITH_ZLIB=OFF 
+            -D LIBXML2_WITH_ICU=OFF
+            -D LIBXML2_WITH_TESTS=OFF 
+            -D LIBXML2_WITH_HTML=ON 
+            -D LIBXML2_WITH_C14N=ON
+            -D LIBXML2_WITH_CATALOG=ON 
+            -D LIBXML2_WITH_DEBUG=ON 
+            -D LIBXML2_WITH_ISO8859X=ON 
+            -D LIBXML2_WITH_MEM_DEBUG=OFF
+            -D LIBXML2_WITH_MODULES=ON
+            -D LIBXML2_WITH_OUTPUT=ON
+            -D LIBXML2_WITH_PATTERN=ON
+            -D LIBXML2_WITH_PUSH=ON
+            -D LIBXML2_WITH_PYTHON=OFF
+            -D LIBXML2_WITH_READER=ON
+            -D LIBXML2_WITH_REGEXPS=ON
+            -D LIBXML2_WITH_SAX1=ON
+            -D LIBXML2_WITH_SCHEMAS=ON
+            -D LIBXML2_WITH_SCHEMATRON=ON
+            -D LIBXML2_WITH_THREADS=ON
+            -D LIBXML2_WITH_THREAD_ALLOC=OFF
+            -D LIBXML2_WITH_TREE=ON
+            -D LIBXML2_WITH_VALID=ON
+            -D LIBXML2_WITH_WRITER=ON
+            -D LIBXML2_WITH_XINCLUDE=ON
+            -D LIBXML2_WITH_XPATH=ON
+            -D LIBXML2_WITH_XPTR=ON
+          install: true
+          install-prefix: ${sourceDir}/install
+          run-tests: false
+          trace-commands: true
 
-          libxml2_root=$(pwd)/install
-          if [[ ${{ runner.os }} == 'Windows' ]]; then
-              libxml2_root=$(echo "$libxml2_root" | sed 's/\\/\//g')
-              libxml2_root=$(echo $libxml2_root | sed 's|^/d/|D:/|')
-              echo "$libxml2_root"
-          fi
-          echo -E "libxml2-root=$libxml2_root" >> $GITHUB_OUTPUT
-
-      - name: LLVM Binaries
+      - name: Cached LLVM Binaries
         id: llvm-cache
         uses: actions/cache@v4
         with:
-          path: ${{ matrix.llvm-root }}
+          path: ${{ github.workspace }}/${{ matrix.llvm-root }}
           key: ${{ matrix.llvm-cache-key }}
 
-      - name: Install LLVM
-        id: llvm-install
+      - name: Download LLVM Binaries
+        id: llvm-download
         if: steps.llvm-cache.outputs.cache-hit != 'true'
-        shell: bash
-        run: |
-          # LLVM is be installed with the default compiler
-          set -x
+        uses: alandefreitas/cpp-actions/setup-program@v1.8.6
+        with:
+          name: mrdocs-llvm
+          url: https://mrdocs.com/llvm+clang/${{ matrix.llvm-archive-filename }}
+          install-prefix: ../third-party/llvm-project
+          update-environment: false
+          trace-commands: true
+          fail-on-error: false
 
-          # Shallow clone LLVM_HASH in ../third-party/llvm
-          cd ..
-          mkdir -p third-party/llvm-project
-          cd third-party/llvm-project
-          llvm_project_root=$(pwd)
-          git config --global init.defaultBranch master
-          git config --global advice.detachedHead false
-          git init
-          git remote add origin https://github.com/llvm/llvm-project.git
-          git fetch --depth 1 origin ${{ matrix.llvm-hash }}
-          git checkout FETCH_HEAD
-          
-          # Copy presets
-          cp ../../mrdocs/third-party/llvm/CMakePresets.json ./llvm
-          cp ../../mrdocs/third-party/llvm/CMakeUserPresets.json.example ./llvm/CMakeUserPresets.json
-
-          # Build
-          cd llvm
-          llvm_root=$(pwd)
-          cmake --version
-          cmake -S . -B ./build --preset=${{ matrix.llvm-build-preset }} -DCMAKE_CXX_COMPILER=${{ steps.setup-cpp.outputs.cxx }} -DCMAKE_C_COMPILER=${{ steps.setup-cpp.outputs.cc }}
-          if [[ ${{ runner.os }} == 'Linux' ]]; then
-              cmake --build ./build --target help
-          fi
-          N_CORES=$(nproc 2>/dev/null || echo 1)
-          cmake --build ./build --config ${{ matrix.build-type }} --parallel $N_CORES
-          cmake --install ./build --prefix "$llvm_project_root"/install --config ${{ matrix.build-type }}
+      - name: Install LLVM
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.6
+        if: steps.llvm-cache.outputs.cache-hit != 'true' && steps.llvm-download.outputs.found != 'true'
+        with:
+          cmake-version: '>=3.26'
+          source-dir: ../third-party/llvm-project/llvm
+          git-repository: https://github.com/llvm/llvm-project.git
+          git-tag: ${{ matrix.llvm-hash }}
+          download-dir: ../third-party/llvm-project
+          patches: |
+            ./third-party/llvm/CMakePresets.json
+            ./third-party/llvm/CMakeUserPresets.json
+          build-dir: ${sourceDir}/llvm/build
+          preset: ${{ matrix.llvm-build-preset }}
+          build-type: ${{ matrix.build-type }}
+          cc: ${{ steps.setup-cpp.outputs.cc }}
+          cxx: ${{ steps.setup-cpp.outputs.cxx }}
+          install: true
+          install-prefix: ${sourceDir}/../install
+          run-tests: false
+          trace-commands: true
 
       - name: Install LibC++
-        id: libcxx-install
-        if: steps.llvm-cache.outputs.cache-hit != 'true'
-        shell: bash
-        run: |
-          set -x
-          cd ../third-party/llvm-project
-          llvm_project_root=$(pwd)
-
-          export CXX="$llvm_project_root/install/bin/clang++"
-          export CC="$llvm_project_root/install/bin/clang"
-
-          if [[ ${{ runner.os }} != 'Windows' ]]; then
-            cmake -G Ninja  \
-                  -S runtimes  \
-                  -B build-libcxx  \
-                  -D LLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind"  \
-                  -D CMAKE_INSTALL_PREFIX="$llvm_project_root/install"
-
-            ninja -C build-libcxx cxx cxxabi unwind
-            ninja -C build-libcxx install-cxx install-cxxabi install-unwind
-          else
-            cmake -G Ninja \
-                  -S runtimes \
-                  -B build-libcxx \
-                  -D LLVM_ENABLE_RUNTIMES="libcxx;libcxxabi" \
-                  -D CMAKE_INSTALL_PREFIX="$llvm_project_root/install" \
-                  -D LIBCXXABI_USE_LLVM_UNWINDER=OFF \
-                  -D LIBCXXABI_ENABLE_SHARED=OFF \
-                  -D LIBCXXABI_ENABLE_STATIC=ON \
-                  -D LIBCXX_ENABLE_SHARED=OFF \
-                  -D LIBCXX_NO_VCRUNTIME=ON \
-                  -D CMAKE_CXX_FLAGS="-D__ORDER_LITTLE_ENDIAN__=1234 -D__ORDER_BIG_ENDIAN__=4321 -D__BYTE_ORDER__=__ORDER_LITTLE_ENDIAN__"
-            ninja -C build-libcxx cxx
-            ninja -C build-libcxx install-cxx
-          fi
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.6
+        if: steps.llvm-cache.outputs.cache-hit != 'true' && steps.llvm-download.outputs.found != 'true'
+        with:
+          cmake-version: '>=3.26'
+          source-dir: ../third-party/llvm-project/runtimes
+          build-dir: ${sourceDir}/build-libcxx
+          build-target: ${{ matrix.libcxx-targets }}
+          cc: ../third-party/llvm-project/install/bin/clang
+          cxx: ../third-party/llvm-project/install/bin/clang++
+          cxxflags: ${{ runner.os == 'Windows' && '-D__ORDER_LITTLE_ENDIAN__=1234 -D__ORDER_BIG_ENDIAN__=4321 -D__BYTE_ORDER__=__ORDER_LITTLE_ENDIAN__' || '' }}
+          generator: Ninja
+          extra-args: |
+            -D LLVM_ENABLE_RUNTIMES="${{ matrix.libcxx-runtimes }}"
+            ${{ runner.os == 'Windows' && '-D LIBCXXABI_USE_LLVM_UNWINDER=OFF' || '' }}
+            ${{ runner.os == 'Windows' && '-D LIBCXXABI_ENABLE_SHARED=OFF' || '' }} 
+            ${{ runner.os == 'Windows' && '-D LIBCXXABI_ENABLE_STATIC=ON' || '' }}
+            ${{ runner.os == 'Windows' && '-D LIBCXX_ENABLE_SHARED=OFF' || '' }}
+            ${{ runner.os == 'Windows' && '-D LIBCXX_NO_VCRUNTIME=ON' || '' }}
+          install: true
+          install-prefix: ${sourceDir}/../install
+          run-tests: false
+          trace-commands: true
 
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: CMake Workflow
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.5
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.6
         with:
-          cmake-version: ${{ matrix.compiler == 'clang' && '3.26' || '>=3.26' }}
+          cmake-version: '>=3.26'
           cxxstd: ${{ matrix.cxxstd }}
           cc: ${{ steps.setup-cpp.outputs.cc || matrix.cc }}
-          ccflags: ${{ matrix.ccflags }}${{ ( matrix.compiler == 'gcc' && ' -static') || '' }}${{ ( matrix.asan && ' -static-libasan') || '' }}${{ ( matrix.tsan && ' -static-libtsan') || '' }}
+          ccflags: ${{ matrix.mrdocs-ccflags }}
           cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
-          cxxflags: ${{ matrix.cxxflags }}${{ ( matrix.compiler == 'gcc' && ' -static') || '' }}${{ ( matrix.asan && ' -static-libasan') || '' }}${{ ( matrix.tsan && ' -static-libtsan') || '' }}
+          cxxflags: ${{ matrix.mrdocs-cxxflags }}
           generator: Ninja
           toolchain: ${{ steps.package-install.outputs.vcpkg_toolchain || steps.package-install.outputs.vcpkg-toolchain }}
           build-type: ${{ matrix.build-type }}
           install-prefix: .local
           extra-args: |
             -D MRDOCS_BUILD_DOCS=OFF
-            -D LLVM_ROOT=${{ matrix.llvm-root }}
-            -D Clang_ROOT=${{ matrix.llvm-root }}
-            -D duktape_ROOT=${{ steps.duktape-install.outputs.duktape-root }}
-            -D Duktape_ROOT=${{ steps.duktape-install.outputs.duktape-root }}
-            -D fmt_ROOT=${{ steps.fmt-install.outputs.fmt-root }}
-            ${{ (steps.libxml2-install.outputs.libxml2-root && format('-D libxml2_ROOT={0}', steps.libxml2-install.outputs.libxml2-root)) || '' }}
-            ${{ (steps.libxml2-install.outputs.libxml2-root && format('-D LibXml2_ROOT={0}', steps.libxml2-install.outputs.libxml2-root)) || '' }}
+            -D LLVM_ROOT=../third-party/llvm-project/install
+            -D Clang_ROOT=../third-party/llvm-project/install
+            -D duktape_ROOT=../third-party/duktape/install
+            -D Duktape_ROOT=../third-party/duktape/install
+            -D fmt_ROOT=../third-party/fmt/install
+            ${{ runner.os == 'Windows' && '-D libxml2_ROOT=../third-party/libxml2/install' || '' }}
+            ${{ runner.os == 'Windows' && '-D LibXml2_ROOT=../third-party/libxml2/install' || '' }}
           export-compile-commands: true
           run-tests: true
           install: true
           package: ${{ matrix.is-main }}
           package-dir: packages
-          package-generators: ${{ (runner.os == 'Windows' && '7Z ZIP WIX') || 'TGZ TXZ' }}
+          package-generators: ${{ matrix.mrdocs-package-generators }}
           package-artifact: false
 
       - name: Upload GitHub Release Artifacts
@@ -373,14 +333,14 @@ jobs:
           retention-days: 1
 
       - name: FlameGraph
-        uses: alandefreitas/cpp-actions/flamegraph@v1.8.5
+        uses: alandefreitas/cpp-actions/flamegraph@v1.8.6
         if: matrix.time-trace
         with:
           build-dir: build
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Codecov
-        if: ${{ matrix.coverage}}
+        if: ${{ matrix.coverage }}
         uses: codecov/codecov-action@v3.1.4
         with:
           directory: './build'
@@ -401,7 +361,7 @@ jobs:
       contents: write
     steps:
       - name: Install packages
-        uses: alandefreitas/cpp-actions/package-install@v1.8.5
+        uses: alandefreitas/cpp-actions/package-install@v1.8.6
         id: package-install
         with:
           apt-get: build-essential asciidoctor cmake bzip2 git
@@ -425,7 +385,7 @@ jobs:
           name: release-packages-Windows
           path: packages
 
-      - name: Install MrDocs
+      - name: Install MrDocs from Linux Package
         run: |
           set -x
           find packages -name 'MrDocs-*-Linux.tar.gz' -exec tar -vxzf {} -C /usr/local --strip-components=1 \;
@@ -434,7 +394,7 @@ jobs:
           echo -e "MRDOCS_ROOT=$MRDOCS_ROOT" >> $GITHUB_ENV
 
       - name: Clone Boost.URL
-        uses: alandefreitas/cpp-actions/boost-clone@v1.8.5
+        uses: alandefreitas/cpp-actions/boost-clone@v1.8.6
         id: boost-url-clone
         with:
           branch: develop
@@ -453,7 +413,7 @@ jobs:
           cp index.html ../../build/website/index.html
           cp styles.css ../../build/website/styles.css
 
-      - name: Generate Website Documentation
+      - name: Generate Remote Documentation
         working-directory: docs
         run: |
           # This playbook renders the documentation 
@@ -624,7 +584,7 @@ jobs:
           git config --global --add safe.directory "$(pwd)"
 
       - name: Create changelog
-        uses: alandefreitas/cpp-actions/create-changelog@v1.8.5
+        uses: alandefreitas/cpp-actions/create-changelog@v1.8.6
         with:
           output-path: CHANGELOG.md
           thank-non-regular: ${{ startsWith(github.ref, 'refs/tags/') }}
@@ -679,7 +639,7 @@ jobs:
 
     steps:
       - name: Install packages
-        uses: alandefreitas/cpp-actions/package-install@v1.8.5
+        uses: alandefreitas/cpp-actions/package-install@v1.8.6
         id: package-install
         with:
           apt-get: build-essential asciidoctor cmake bzip2 git curl
@@ -702,7 +662,7 @@ jobs:
         if: steps.website-releases.outputs.exists != 'true'
         uses: actions/cache@v4
         with:
-          path: ${{ matrix.llvm-root }}
+          path: ${{ github.workspace }}/${{ matrix.llvm-root }}
           key: ${{ matrix.llvm-cache-key }}
 
       - name: Compress LLVM
@@ -723,7 +683,7 @@ jobs:
               tar -cjf ${{ matrix.llvm-archive-filename }} -C install .
           fi
 
-      - name: Publish LLVM on website
+      - name: Website LLVM Releases
         if: steps.llvm-cache.outputs.cache-hit == 'true' && github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/'))
         working-directory: ../third-party/llvm-project
         env:
