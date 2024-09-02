@@ -329,7 +329,7 @@ From `third-party/llvm-project`, you can copy the `CMakePresets.json` and `CMake
 [source,bash]
 ----
 cp ../../mrdocs/third-party/llvm/CMakePresets.json ./llvm
-cp ../../mrdocs/third-party/llvm/CMakeUserPresets.json.example ./llvm/CMakeUserPresets.json
+cp ../../mrdocs/third-party/llvm/CMakeUserPresets.json ./llvm/CMakeUserPresets.json
 ----
 
 Run a command such as the following to configure LLVM:
