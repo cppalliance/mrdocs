@@ -224,11 +224,24 @@ jobs:
           run-tests: false
           trace-commands: true
 
+      - name: Resolve LLVM Root
+        id: resolve-llvm-root
+        run: |
+          set -x
+          cd ..
+          llvm_root=$(pwd)/third-party/llvm-project/install
+          if [[ ${{ runner.os }} == 'Windows' ]]; then
+              llvm_root=$(echo "$llvm_root" | sed 's/\\/\//g')
+              llvm_root=$(echo $llvm_root | sed 's|^/d/|D:/|')
+              echo "$llvm_root"
+          fi
+          echo -E "llvm-root=$llvm_root" >> $GITHUB_OUTPUT
+
       - name: Cached LLVM Binaries
         id: llvm-cache
         uses: actions/cache@v4
         with:
-          path: ${{ github.workspace }}/${{ matrix.llvm-root }}
+          path: ${{ steps.resolve-llvm-root.outputs.llvm-root }}
           key: ${{ matrix.llvm-cache-key }}
 
       - name: Download LLVM Binaries
@@ -657,12 +670,25 @@ jobs:
           fi
           echo "exists=$exists" >> $GITHUB_OUTPUT
 
+      - name: Resolve LLVM Root
+        id: resolve-llvm-root
+        run: |
+          set -x
+          cd ..
+          llvm_root=$(pwd)/third-party/llvm-project/install
+          if [[ ${{ runner.os }} == 'Windows' ]]; then
+              llvm_root=$(echo "$llvm_root" | sed 's/\\/\//g')
+              llvm_root=$(echo $llvm_root | sed 's|^/d/|D:/|')
+              echo "$llvm_root"
+          fi
+          echo -E "llvm-root=$llvm_root" >> $GITHUB_OUTPUT
+
       - name: LLVM Binaries
         id: llvm-cache
         if: steps.website-releases.outputs.exists != 'true'
         uses: actions/cache@v4
         with:
-          path: ${{ github.workspace }}/${{ matrix.llvm-root }}
+          path: ${{ steps.resolve-llvm-root.outputs.llvm-root }}
           key: ${{ matrix.llvm-cache-key }}
 
       - name: Compress LLVM
