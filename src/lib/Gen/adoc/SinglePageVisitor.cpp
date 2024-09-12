@@ -22,8 +22,11 @@ operator()(T const& I)
 {
     ex_.async([this, &I, page = numPages_++](Builder& builder)
     {
-        if(auto r = builder(I))
+        if(auto r = builder(I)) 
+        {
             writePage(*r, page);
+            tagfileWriter_(I, fileName_, page);
+        }
         else
             r.error().Throw();
     });

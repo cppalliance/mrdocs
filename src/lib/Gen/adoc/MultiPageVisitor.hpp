@@ -12,6 +12,7 @@
 #define MRDOCS_LIB_GEN_ADOC_MULTIPAGEVISITOR_HPP
 
 #include "Builder.hpp"
+#include <lib/Lib/TagfileWriter.hpp>
 #include <mrdocs/Support/ExecutorGroup.hpp>
 #include <mutex>
 #include <ostream>
@@ -29,6 +30,7 @@ class MultiPageVisitor
     ExecutorGroup<Builder>& ex_;
     std::string_view outputPath_;
     Corpus const& corpus_;
+    TagfileWriter& tagfileWriter_;
 
     void
     writePage(
@@ -39,10 +41,12 @@ public:
     MultiPageVisitor(
         ExecutorGroup<Builder>& ex,
         std::string_view outputPath,
-        Corpus const& corpus) noexcept
+        Corpus const& corpus,
+        TagfileWriter& tagfileWriter) noexcept
         : ex_(ex)
         , outputPath_(outputPath)
         , corpus_(corpus)
+        , tagfileWriter_(tagfileWriter)
     {
     }
 

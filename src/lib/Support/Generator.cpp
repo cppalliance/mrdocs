@@ -80,7 +80,7 @@ buildOne(
 
     try
     {
-        return buildOne(os, corpus);
+        return buildOne(os, corpus, fileName);
     }
     catch(std::exception const& ex)
     {
@@ -98,7 +98,7 @@ buildOneString(
     std::stringstream ss;
     try
     {
-        auto err = buildOne(ss, corpus);
+        auto err = buildOne(ss, corpus, "");
         if(err)
             return err;
         dest = ss.str();

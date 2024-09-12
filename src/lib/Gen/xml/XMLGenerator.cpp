@@ -24,7 +24,8 @@ Error
 XMLGenerator::
 buildOne(
     std::ostream& os,
-    Corpus const& corpus) const
+    Corpus const& corpus,
+    std::string_view fileName) const
 {
     namespace fs = llvm::sys::fs;
     RawOstream raw_os(os);
