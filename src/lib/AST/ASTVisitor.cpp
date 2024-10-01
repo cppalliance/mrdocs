@@ -1716,6 +1716,11 @@ public:
                             return true;
                         continue;
                     }
+                    // if the class inherits from itself, we can't determine whether
+                    // it's a SFINAE type
+                    if(declaresSameEntity(TD, sfinae_info->Template))
+                        return true;
+
                     auto sfinae_result = isSFINAETemplate(
                         sfinae_info->Template, Member);
                     if(! sfinae_result)
