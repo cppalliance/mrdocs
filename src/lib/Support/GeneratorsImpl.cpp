@@ -20,10 +20,6 @@ makeAdocGenerator();
 
 extern
 std::unique_ptr<Generator>
-makeBitcodeGenerator();
-
-extern
-std::unique_ptr<Generator>
 makeXMLGenerator();
 
 extern
@@ -48,7 +44,6 @@ GeneratorsImpl()
 {
     Error err;
     err = insert(makeAdocGenerator());
-    err = insert(makeBitcodeGenerator());
     err = insert(makeXMLGenerator());
     err = insert(makeHTMLGenerator());
 }

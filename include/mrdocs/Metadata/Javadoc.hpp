@@ -90,11 +90,7 @@ using List = std::vector<std::unique_ptr<T>>;
     of the the doc comment specification.
 
     @note When a new tag is added, the `visit` function overloads
-    must be updated to handle the new tag. If the new object
-    contains new fields, `BitcodeWriter::emitBlock(doc::Node const& I)`
-    must include logic to serialize the new fields, and
-    `BitcodeReader::readBlock` must include logic to deserialize
-    the new fields.
+    must be updated to handle the new tag.
 
     @see https://en.wikipedia.org/wiki/Javadoc[Javadoc - Wikipedia]
     @see https://docs.oracle.com/javase/1.5.0/docs/tooldocs/solaris/javadoc.html[Javadoc Documentation]

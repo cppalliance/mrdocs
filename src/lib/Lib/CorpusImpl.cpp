@@ -121,12 +121,8 @@ build(
     // results of the AST traversal.
     // Any new Info objects will be added to the
     // InfoSet in the execution context.
-    #define USE_BITCODE
-    #ifdef USE_BITCODE
-        BitcodeExecutionContext context(*config);
-    #else
-        InfoExecutionContext context(*config);
-    #endif
+    InfoExecutionContext context(*config);
+
     // Create an `ASTActionFactory` to create multiple
     // `ASTAction`s that extract the AST for each translation unit.
     std::unique_ptr<tooling::FrontendActionFactory> action =
@@ -161,8 +157,7 @@ build(
     // ------------------------------------------
     // Run the process file task on all files
     // ------------------------------------------
-    // Traverse the AST for all translation units
-    // and emit serializd bitcode into tool results.
+    // Traverse the AST for all translation units.
     // This operation happens on a thread pool.
     report::print(reportLevel, "Extracting declarations");
 
@@ -217,34 +212,15 @@ build(
             "Warning: mapping failed because ", err);
     }
 
-    #ifdef USE_BITCODE
-        report::format(reportLevel,
-            "Extracted {} declarations in {}",
-            context.getBitcode().size(),
-            format_duration(clock_type::now() - start_time));
-        start_time = clock_type::now();
+    auto results = context.results();
+    if(! results)
+        return Unexpected(results.error());
+    corpus->info_ = std::move(results.value());
 
-        // First reducing phase (reduce all decls into one info per decl).
-        report::format(reportLevel,
-            "Reducing declarations");
-
-        MRDOCS_TRY(corpus->info_, context.results());
-        report::format(reportLevel,
-            "Reduced {} symbols in {}",
-                corpus->info_.size(),
-                format_duration(clock_type::now() - start_time));
-        #undef USE_BITCODE
-    #else
-        auto results = context.results();
-        if(! results)
-            return Unexpected(results.error());
-        corpus->info_ = std::move(results.value());
-
-        report::format(reportLevel,
-            "Extracted {} declarations in {}",
-            corpus->info_.size(),
-            format_duration(clock_type::now() - start_time));
-    #endif
+    report::format(reportLevel,
+        "Extracted {} declarations in {}",
+        corpus->info_.size(),
+        format_duration(clock_type::now() - start_time));
 
     // ------------------------------------------
     // Finalize corpus
