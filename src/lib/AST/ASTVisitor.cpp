@@ -12,7 +12,6 @@
 
 #include "ASTVisitor.hpp"
 #include "ASTVisitorHelpers.hpp"
-#include "Bitcode.hpp"
 #include "ParseJavadoc.hpp"
 #include "lib/Support/Path.hpp"
 #include "lib/Support/Debug.hpp"
@@ -163,17 +162,11 @@ static const Expr *SubstituteConstraintExpressionWithoutSatisfaction(
 //
 //------------------------------------------------
 
-/** Convert AST to our metadata and serialize to bitcode.
+/** Convert AST to metadata representation.
 
-    An instance of this object visits the AST
-    for exactly one translation unit. The AST is
-    extracted and converted into our metadata, and
-    this metadata is then serialized into bitcode.
-    The resulting bitcode is inserted into the tool
-    results, keyed by ID. Each ID can have multiple
-    serialized bitcodes, as the same declaration
-    in a particular include file can be seen by
-    more than one translation unit.
+    An instance of this object traverses the AST
+    for a translation unit and translate AST nodes
+    into our metadata.
 */
 class ASTVisitor
 {

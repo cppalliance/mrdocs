@@ -105,7 +105,7 @@ include::partial$InfoNodes.inc[]
 `Info` can not only represent direct AST symbols but also {cpp} constructs that need to be inferred from these symbols.
 Nodes in the first category will typically be created in the initial extraction step, and nodes in the second category will be created in the finalization step.
 
-When defining a new `Info` type, it is important to consider how this type will be supported in all other modules of the codebase, including the AST visitor, the bitcode writer, generators, tests, and the documentation.
+When defining a new `Info` type, it is important to consider how this type will be supported in all other modules of the codebase, including the AST visitor, generators, tests, and the documentation.
 The script `.github/check_info_nodes_support.sh` will attempt to infer whether most of these features have been implemented for each node type.
 
 ==== Clang LibTooling
@@ -145,19 +145,13 @@ It is during this stage that USRs (universal symbol references) are generated an
 Except for built-in types, *all* entities referenced in the corpus will be traversed and be assigned a `SymbolID`; including those from the standard library.
 This is necessary to generate the full interface for user-defined types.
 
-==== Bitcode
-
-To maximize the size of the code base MrDocs is capable of processing, `Info`
-types generated during traversal are serialized to a compressed bitcode representation.
-
-The `ASTVisitor` reports each new `Info` object to the `BitcodeExecutionContext` (`src/lib/Lib/ExecutionContext.cpp`) which serializes it to the bitcode file.
-
 ==== Finalizing the Corpus
 
 After running the AST traversal on all translation units, `CorpusImpl::build` contains finalization steps for the `Corpus` object.
 At this point, we process C++ constructs that are not directly represented in the AST.
 
-The first finalization step happens in `BitcodeExecutionContext::reportEnd` (`src/lib/Lib/ExecutionContext.cpp`), where the `Info` objects with the same `SymbolID` are merged.
+The first finalization step happens in `CorpusImpl::build` (`src/lib/Lib/CorpusImpl.cpp`), where the `Info` objects from a single translation unit
+are merged into a map containing the merged results from all other TUs.
 The merging step is necessary as there may be multiple identical definitions of the same entity.
 For instance, this represents the case where a function is declared at different points in the code base and might have different attributes or comments.
 At this step, the doc comments are also finalized.

@@ -109,29 +109,6 @@ while IFS= read -r line; do
     print_message "* \`build$name()\` not found in \`src/lib/AST/ASTVisitor.cpp\`"
   fi
 
-  # `src/lib/AST/AnyBlock.hpp` should define the `${name}Block` type
-  # Look for the string `${name}Block` in the file
-  if ! grep -q "${name}Block" "$MRDOCS_ROOT/src/lib/AST/AnyBlock.hpp"; then
-    print_message_once "## ${name}Info"
-    print_message "* \`${name}Block\` not found in \`src/lib/AST/AnyBlock.hpp\`"
-  fi
-
-  # `src/lib/AST/BitcodeWriter.hpp` should define `void emitBlock(X const& I);`
-  # Look for the string `void emitBlock(${name}Info const& I);` in the file
-  # When looking for the string `void emitBlock(${name}Info const& I);` in the file,
-  # we need to use regex to account for the following:
-  # 1) Remove the leading and trailing spaces
-  # 2) Consecutive spaces should be replaced with a single space
-  # 3) Newlines should be removed
-  # 4) The variable name `I` can be anything
-  BITCODE_WRITE_REL_PATH="src/lib/AST/BitcodeWriter.hpp"
-  BITCODE_WRITE_PATH="$MRDOCS_ROOT/$BITCODE_WRITE_REL_PATH"
-  regex="void[[:space:]]+emitBlock[[:space:]]*\(${name}Info[[:space:]]*const[[:space:]]*&[[:space:]]*[a-zA-Z_][a-zA-Z0-9_]*[[:space:]]*\);"
-  if ! grep -Pzo "$regex" "$BITCODE_WRITE_PATH" > /dev/null; then
-    print_message_once "## ${name}Info"
-    print_message "The function \`void emitBlock(${name}Info const& I);\` is not defined in \`$BITCODE_WRITE_REL_PATH\`."
-  fi
-
   # `src/lib/Gen/xml/XMLWriter.cpp` should define `XMLWriter::writeX()`
   # Just look for the string `write$name` in this file
   if ! grep -q "write$name" "$MRDOCS_ROOT/src/lib/Gen/xml/XMLWriter.cpp"; then
