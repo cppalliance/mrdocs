@@ -13,7 +13,6 @@
 #define MRDOCS_API_METADATA_VARIABLE_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/ADT/BitField.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
 #include <mrdocs/Metadata/Source.hpp>
 #include <mrdocs/Metadata/Template.hpp>
@@ -22,16 +21,6 @@
 
 namespace clang {
 namespace mrdocs {
-
-union VariableFlags0
-{
-    BitFieldFullValue raw;
-
-    BitField<0, 3, StorageClassKind> storageClass;
-    BitField<3, 2, ConstexprKind> constexprKind;
-    BitFlag<5> isConstinit;
-    BitFlag<6> isThreadLocal;
-};
 
 /** A variable.
 
@@ -47,9 +36,15 @@ struct VariableInfo
 
     std::unique_ptr<TemplateInfo> Template;
 
-    VariableFlags0 specs{.raw={0}};
-
     ExprInfo Initializer;
+
+    StorageClassKind StorageClass = StorageClassKind::None;
+
+    ConstexprKind Constexpr = ConstexprKind::None;
+
+    bool IsConstinit = false;
+
+    bool IsThreadLocal = false;
 
     //--------------------------------------------
 

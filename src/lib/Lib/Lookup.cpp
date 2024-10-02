@@ -32,7 +32,7 @@ bool isTransparent(const Info* info)
         const InfoTy& I) -> bool
     {
         if constexpr(InfoTy::isNamespace())
-            return I.specs.isInline;
+            return I.IsInline;
         if constexpr(InfoTy::isEnum())
             return ! I.Scoped;
         return false;

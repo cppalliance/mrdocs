@@ -773,22 +773,22 @@ DomInfo<T>::construct() const
                 if(set)
                     entries.emplace_back(std::move(key), true);
             };
-        set_flag("isVariadic",         I_.specs0.isVariadic.get());
-        set_flag("isVirtual",          I_.specs0.isVirtual.get());
-        set_flag("isVirtualAsWritten", I_.specs0.isVirtualAsWritten.get());
-        set_flag("isPure",             I_.specs0.isPure.get());
-        set_flag("isDefaulted",        I_.specs0.isDefaulted.get());
-        set_flag("isExplicitlyDefaulted",I_.specs0.isExplicitlyDefaulted.get());
-        set_flag("isDeleted",          I_.specs0.isDeleted.get());
-        set_flag("isDeletedAsWritten", I_.specs0.isDeletedAsWritten.get());
-        set_flag("isNoReturn",         I_.specs0.isNoReturn.get());
-        set_flag("hasOverrideAttr",    I_.specs0.hasOverrideAttr.get());
-        set_flag("hasTrailingReturn",  I_.specs0.hasTrailingReturn.get());
-        set_flag("isConst",            I_.specs0.isConst.get());
-        set_flag("isVolatile",         I_.specs0.isVolatile.get());
-        set_flag("isFinal",            I_.specs0.isFinal.get());
-        set_flag("isNodiscard",        I_.specs1.isNodiscard.get());
-        set_flag("isExplicitObjectMemberFunction", I_.specs1.isExplicitObjectMemberFunction.get());
+        set_flag("isVariadic",         I_.IsVariadic);
+        set_flag("isVirtual",          I_.IsVirtual);
+        set_flag("isVirtualAsWritten", I_.IsVirtualAsWritten);
+        set_flag("isPure",             I_.IsPure);
+        set_flag("isDefaulted",        I_.IsDefaulted);
+        set_flag("isExplicitlyDefaulted",I_.IsExplicitlyDefaulted);
+        set_flag("isDeleted",          I_.IsDeleted);
+        set_flag("isDeletedAsWritten", I_.IsDeletedAsWritten);
+        set_flag("isNoReturn",         I_.IsNoReturn);
+        set_flag("hasOverrideAttr",    I_.HasOverrideAttr);
+        set_flag("hasTrailingReturn",  I_.HasTrailingReturn);
+        set_flag("isConst",            I_.IsConst);
+        set_flag("isVolatile",         I_.IsVolatile);
+        set_flag("isFinal",            I_.IsFinal);
+        set_flag("isNodiscard",        I_.IsNodiscard);
+        set_flag("isExplicitObjectMemberFunction", I_.IsExplicitObjectMemberFunction);
 
         auto const set_string =
             [&](dom::String key, dom::String value)
@@ -796,17 +796,16 @@ DomInfo<T>::construct() const
                 if(! value.empty())
                     entries.emplace_back(std::move(key), std::move(value));
             };
-        set_string("constexprKind", toString(I_.specs0.constexprKind.get()));
-        set_string("exceptionSpec", toString(I_.specs0.exceptionSpec.get()));
-        set_string("storageClass",  toString(I_.specs0.storageClass.get()));
-        set_string("refQualifier",  toString(I_.specs0.refQualifier.get()));
+        set_string("constexprKind", toString(I_.Constexpr));
+        set_string("storageClass",  toString(I_.StorageClass));
+        set_string("refQualifier",  toString(I_.RefQualifier));
 
         entries.insert(entries.end(), {
             { "class",      toString(I_.Class) },
             { "params",     dom::newArray<DomParamArray>(I_.Params, domCorpus_) },
             { "return",     domCreate(I_.ReturnType, domCorpus_) },
             { "template",   domCreate(I_.Template, domCorpus_) },
-            { "overloadedOperator", I_.specs0.overloadedOperator.get() },
+            { "overloadedOperator", I_.OverloadedOperator },
             });
 
         entries.emplace_back("exceptionSpec", toString(I_.Noexcept));
@@ -838,10 +837,10 @@ DomInfo<T>::construct() const
         entries.insert(entries.end(), {
             { "type",           domCreate(I_.Type, domCorpus_) },
             { "template",       domCreate(I_.Template, domCorpus_) },
-            { "constexprKind",  toString(I_.specs.constexprKind.get()) },
-            { "storageClass",   toString(I_.specs.storageClass.get()) },
-            { "isConstinit",    I_.specs.isConstinit.get() },
-            { "isThreadLocal",  I_.specs.isThreadLocal.get() },
+            { "constexprKind",  toString(I_.Constexpr) },
+            { "storageClass",   toString(I_.StorageClass) },
+            { "isConstinit",    I_.IsConstinit },
+            { "isThreadLocal",  I_.IsThreadLocal },
             { "initializer",    dom::stringOrNull(I_.Initializer.Written) },
             });
     }
@@ -850,11 +849,11 @@ DomInfo<T>::construct() const
         entries.insert(entries.end(), {
             { "type",               domCreate(I_.Type, domCorpus_) },
             { "default",            dom::stringOrNull(I_.Default.Written) },
-            { "isMaybeUnused",      I_.specs.isMaybeUnused.get() },
-            { "isDeprecated",       I_.specs.isDeprecated.get() },
+            { "isMaybeUnused",      I_.IsMaybeUnused },
+            { "isDeprecated",       I_.IsDeprecated },
             { "isMutable",          I_.IsMutable },
             { "isBitfield",         I_.IsBitfield },
-            { "hasNoUniqueAddress", I_.specs.hasNoUniqueAddress.get() }
+            { "hasNoUniqueAddress", I_.HasNoUniqueAddress }
             });
         if(I_.IsBitfield)
             entries.emplace_back("bitfieldWidth",

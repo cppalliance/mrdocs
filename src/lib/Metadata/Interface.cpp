@@ -216,7 +216,7 @@ public:
             I.Class == FunctionClass::Destructor))
             return;
 
-        bool isStatic = I.specs0.storageClass == StorageClassKind::Static;
+        bool isStatic = I.StorageClass == StorageClassKind::Static;
         if(! parent_.isRecord() || ! isStatic)
         {
             push(&Tranche::Functions, access, I);

@@ -90,11 +90,10 @@ class LegibleNames::Impl
                 const FunctionInfo&>(I);
             // don't use the reserved prefix for overloaded operators
             if(FI.Class == FunctionClass::Normal &&
-                FI.specs0.overloadedOperator.get() !=
-                    OperatorKind::None)
+                FI.OverloadedOperator != OperatorKind::None)
             {
                 return getSafeOperatorName(
-                    FI.specs0.overloadedOperator.get(), true);
+                    FI.OverloadedOperator, true);
             }
             std::size_t func_idx = to_underlying(FI.Class);
             MRDOCS_ASSERT(func_idx < std::size(func_reserved));
@@ -127,7 +126,7 @@ public:
                 // namespaces can be unnamed (i.e. anonymous)
                 if constexpr(T::isNamespace())
                 {
-                    if(t.specs.isAnonymous.get())
+                    if(t.IsAnonymous)
                         return getReserved(t);
                     MRDOCS_ASSERT(! t.Name.empty());
                     return t.Name;
@@ -186,7 +185,7 @@ public:
                 if constexpr(T::isFunction())
                 {
                     if(t.Class != FunctionClass::Normal ||
-                        t.specs0.overloadedOperator.get() != OperatorKind::None ||
+                        t.OverloadedOperator != OperatorKind::None ||
                         t.Name.empty())
                         return getReserved(t);
                     MRDOCS_ASSERT(!t.Name.empty());

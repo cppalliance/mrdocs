@@ -73,12 +73,6 @@ struct StaticDataMember;
 
 struct OverloadSet;
 
-template<unsigned char Offset,
-         unsigned char Size,
-         typename T>
-struct BitField;
-using BitFieldFullValue = BitField<0, 32, std::uint32_t>;
-
 } // mrdocs
 } // clang
 

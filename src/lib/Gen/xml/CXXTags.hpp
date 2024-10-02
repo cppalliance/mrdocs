@@ -89,102 +89,36 @@ inline dom::String getNameForValue(OperatorKind kind)
 
 //------------------------------------------------
 
-template<class BitFieldUnion>
-struct BitFieldWriter
+template<typename T>
+void
+writeAttr(
+    T value,
+    std::string_view name,
+    XMLTags& tags)
 {
-    BitFieldUnion field;
-    XMLTags& tags;
+    using ValueType = std::remove_cvref_t<T>;
 
-    BitFieldWriter(BitFieldUnion field, XMLTags& tags)
-        : field(field), tags(tags)
+    if constexpr(std::is_enum_v<ValueType>)
     {
+        if(auto converted = to_underlying(value))
+        {
+            tags.write(attributeTagName, {}, {
+                { "id", name },
+                { "name", getNameForValue(value) },
+                { "value", std::to_string(converted) } });
+        }
     }
-
-    template<unsigned char Offset,
-             unsigned char Size,
-             typename T>
-    void write(BitField<Offset, Size, T> BitFieldUnion :: * member,
-                          const char * idName)
+    else if constexpr(std::same_as<ValueType, bool>)
     {
-        const auto v = (field.*member).get();
-
-        if constexpr (std::is_enum_v<T>)
-        {
-            if(static_cast<std::uint32_t>(v) == 0)
-                return;
-            tags.write(attributeTagName, {}, {
-                    { "id", idName },
-                    { "name", getNameForValue(v) },
-                    { "value", std::to_string(static_cast<
-                                      std::underlying_type_t<T>>(v)) } });
-        }
-        else if constexpr (BitField<Offset, Size, T>::size == 1u)
-        {
-            if (v)
-                tags.write(attributeTagName, {}, { { "id", idName } });
-        }
-        else
-            tags.write(attributeTagName, {}, {
-                    { "id", idName },
-                    { "value", std::to_string(v) } });
+        if(value)
+            tags.write(attributeTagName, {}, { { "id", name } });
     }
-};
-
-inline void write(RecFlags0 const& bits, XMLTags& tags)
-{
-    BitFieldWriter<RecFlags0> fw(bits, tags);
-    fw.write(&RecFlags0::isFinal, "is-final");
-    fw.write(&RecFlags0::isFinalDestructor, "is-final-dtor");
-}
-
-inline void write(FnFlags0 const& bits, XMLTags& tags)
-{
-    BitFieldWriter<FnFlags0> fw(bits, tags);
-    fw.write(&FnFlags0::isVariadic,            "is-variadic");
-    fw.write(&FnFlags0::isVirtualAsWritten,    "is-virtual-as-written");
-    fw.write(&FnFlags0::isPure,                "is-pure");
-    fw.write(&FnFlags0::isDefaulted,           "is-defaulted");
-    fw.write(&FnFlags0::isExplicitlyDefaulted, "is-explicitly-defaulted");
-    fw.write(&FnFlags0::isDeleted,             "is-deleted");
-    fw.write(&FnFlags0::isDeletedAsWritten,    "is-deleted-as-written");
-    fw.write(&FnFlags0::isNoReturn,            "is-no-return");
-    fw.write(&FnFlags0::hasOverrideAttr,       "has-override");
-    fw.write(&FnFlags0::hasTrailingReturn,     "has-trailing-return");
-    fw.write(&FnFlags0::constexprKind,         "constexpr-kind");
-    fw.write(&FnFlags0::exceptionSpec    ,     "exception-spec");
-    fw.write(&FnFlags0::overloadedOperator,    "operator");
-    fw.write(&FnFlags0::storageClass,          "storage-class");
-    fw.write(&FnFlags0::isConst,               "is-const");
-    fw.write(&FnFlags0::isVolatile,            "is-volatile");
-    fw.write(&FnFlags0::refQualifier,          "ref-qualifier");
-}
-
-inline void write(FnFlags1 const& bits, XMLTags& tags)
-{
-    BitFieldWriter<FnFlags1> fw(bits, tags);
-
-    fw.write(&FnFlags1::isNodiscard,       "nodiscard");
-    fw.write(&FnFlags1::isExplicitObjectMemberFunction, "is-explicit-object-member-function");
-}
-
-
-inline void write(FieldFlags const& bits, XMLTags& tags)
-{
-    BitFieldWriter<FieldFlags> fw(bits, tags);
-
-    fw.write(&FieldFlags::isMaybeUnused, "maybe-unused");
-    fw.write(&FieldFlags::isDeprecated, "deprecated");
-    fw.write(&FieldFlags::hasNoUniqueAddress, "no-unique-address");
-}
-
-
-inline void write(VariableFlags0 const& bits, XMLTags& tags)
-{
-    BitFieldWriter<VariableFlags0> fw(bits, tags);
-    fw.write(&VariableFlags0::storageClass, "storage-class");
-    fw.write(&VariableFlags0::constexprKind, "constexpr-kind");
-    fw.write(&VariableFlags0::isConstinit, "is-constinit");
-    fw.write(&VariableFlags0::isThreadLocal, "is-thread-local");
+    else
+    {
+        tags.write(attributeTagName, {}, {
+                { "id", name },
+                { "value", std::to_string(value) } });
+    }
 }
 
 inline

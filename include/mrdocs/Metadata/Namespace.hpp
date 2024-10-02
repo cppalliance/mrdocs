@@ -13,7 +13,6 @@
 #define MRDOCS_API_METADATA_NAMESPACE_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/ADT/BitField.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Scope.hpp>
 #include <vector>
@@ -21,21 +20,14 @@
 namespace clang {
 namespace mrdocs {
 
-union NamespaceFlags
-{
-    BitFieldFullValue raw{.value=0u};
-
-    BitFlag<0> isInline;
-    BitFlag<1> isAnonymous;
-};
-
 /** Describes a namespace.
 */
 struct NamespaceInfo
     : InfoCommonBase<InfoKind::Namespace>
     , ScopeInfo
 {
-    NamespaceFlags specs;
+    bool IsInline = false;
+    bool IsAnonymous = false;
 
     /** Namespaces nominated by using-directives.
     */

@@ -2140,10 +2140,10 @@ public:
         // KRYSTIAN NOTE: we do not extract
         // javadocs for namespaces
         if(D->isAnonymousNamespace())
-            I.specs.isAnonymous = true;
+            I.IsAnonymous = true;
         else
             I.Name = extractName(D);
-        I.specs.isInline = D->isInline();
+        I.IsInline = D->isInline();
 
         getParentNamespaces(I, D);
     }
@@ -2175,9 +2175,9 @@ public:
         I.KeyKind = convertToRecordKeyKind(D->getTagKind());
 
         // These are from CXXRecordDecl::isEffectivelyFinal()
-        I.specs.isFinal = D->template hasAttr<FinalAttr>();
+        I.IsFinal = D->template hasAttr<FinalAttr>();
         if(const auto* DT = D->getDestructor())
-            I.specs.isFinalDestructor = DT->template hasAttr<FinalAttr>();
+            I.IsFinalDestructor = DT->template hasAttr<FinalAttr>();
 
         // extract direct bases. D->bases() will get the bases
         // from whichever declaration is the definition (if any)
@@ -2322,13 +2322,12 @@ public:
             D->isThisDeclarationADefinition(), documented);
 
         // KRYSTIAN FIXME: we need to properly merge storage class
-        I.specs.storageClass |=
-            convertToStorageClassKind(
-                D->getStorageClass());
+        if(StorageClass SC = D->getStorageClass())
+            I.StorageClass = convertToStorageClassKind(SC);
 
         // this handles thread_local, as well as the C
         // __thread and __Thread_local specifiers
-        I.specs.isThreadLocal |= D->getTSCSpec() !=
+        I.IsThreadLocal |= D->getTSCSpec() !=
             ThreadStorageClassSpecifier::TSCS_unspecified;
 
         // KRYSTIAN NOTE: VarDecl does not provide getConstexprKind,
@@ -2337,9 +2336,9 @@ public:
         // only one is permitted in a variable declaration,
         // it is possible to declare a static data member
         // as both constexpr and constinit in separate declarations..
-        I.specs.isConstinit |= D->hasAttr<ConstInitAttr>();
+        I.IsConstinit |= D->hasAttr<ConstInitAttr>();
         if(D->isConstexpr())
-            I.specs.constexprKind = ConstexprKind::Constexpr;
+            I.Constexpr = ConstexprKind::Constexpr;
 
         if(const Expr* E = D->getInit())
             buildExprInfo(I.Initializer, E);
@@ -2387,9 +2386,9 @@ public:
                 D->getBitWidth());
         }
 
-        I.specs.hasNoUniqueAddress = D->hasAttr<NoUniqueAddressAttr>();
-        I.specs.isDeprecated = D->hasAttr<DeprecatedAttr>();
-        I.specs.isMaybeUnused = D->hasAttr<UnusedAttr>();
+        I.HasNoUniqueAddress = D->hasAttr<NoUniqueAddressAttr>();
+        I.IsDeprecated = D->hasAttr<DeprecatedAttr>();
+        I.IsMaybeUnused = D->hasAttr<UnusedAttr>();
 
         getParentNamespaces(I, D);
     }
@@ -2415,50 +2414,47 @@ public:
 
             buildNoexceptInfo(I.Noexcept, FPT);
 
-            I.specs0.hasTrailingReturn |= FPT->hasTrailingReturn();
+            I.HasTrailingReturn |= FPT->hasTrailingReturn();
         }
 
         //
         // FunctionDecl
         //
-        I.specs0.isVariadic |= D->isVariadic();
-        I.specs0.isDefaulted |= D->isDefaulted();
-        I.specs0.isExplicitlyDefaulted |= D->isExplicitlyDefaulted();
-        I.specs0.isDeleted |= D->isDeleted();
-        I.specs0.isDeletedAsWritten |= D->isDeletedAsWritten();
-        I.specs0.isNoReturn |= D->isNoReturn();
+        I.OverloadedOperator = convertToOperatorKind(
+            D->getOverloadedOperator());
+        I.IsVariadic |= D->isVariadic();
+        I.IsDefaulted |= D->isDefaulted();
+        I.IsExplicitlyDefaulted |= D->isExplicitlyDefaulted();
+        I.IsDeleted |= D->isDeleted();
+        I.IsDeletedAsWritten |= D->isDeletedAsWritten();
+        I.IsNoReturn |= D->isNoReturn();
             // subsumes D->hasAttr<NoReturnAttr>()
             // subsumes D->hasAttr<CXX11NoReturnAttr>()
             // subsumes D->hasAttr<C11NoReturnAttr>()
             // subsumes D->getType()->getAs<FunctionType>()->getNoReturnAttr()
-        I.specs0.hasOverrideAttr |= D->template hasAttr<OverrideAttr>();
-        I.specs0.constexprKind |=
-            convertToConstexprKind(
-                D->getConstexprKind());
+        I.HasOverrideAttr |= D->template hasAttr<OverrideAttr>();
 
-        I.specs0.overloadedOperator |=
-            convertToOperatorKind(
-                D->getOverloadedOperator());
-        I.specs0.storageClass |=
-            convertToStorageClassKind(
-                D->getStorageClass());
+        if(ConstexprSpecKind CSK = D->getConstexprKind();
+            CSK != ConstexprSpecKind::Unspecified)
+            I.Constexpr = convertToConstexprKind(CSK);
 
-        I.specs1.isNodiscard |= D->template hasAttr<WarnUnusedResultAttr>();
-        I.specs1.isExplicitObjectMemberFunction |= D->hasCXXExplicitFunctionObjectParameter();
+        if(StorageClass SC = D->getStorageClass())
+            I.StorageClass = convertToStorageClassKind(SC);
+
+        I.IsNodiscard |= D->template hasAttr<WarnUnusedResultAttr>();
+        I.IsExplicitObjectMemberFunction |= D->hasCXXExplicitFunctionObjectParameter();
         //
         // CXXMethodDecl
         //
         if constexpr(std::derived_from<DeclTy, CXXMethodDecl>)
         {
-            I.specs0.isVirtual |= D->isVirtual();
-            I.specs0.isVirtualAsWritten |= D->isVirtualAsWritten();
-            I.specs0.isPure |= D->isPureVirtual();
-            I.specs0.isConst |= D->isConst();
-            I.specs0.isVolatile |= D->isVolatile();
-            I.specs0.refQualifier |=
-                convertToReferenceKind(
-                    D->getRefQualifier());
-            I.specs0.isFinal |= D->template hasAttr<FinalAttr>();
+            I.IsVirtual |= D->isVirtual();
+            I.IsVirtualAsWritten |= D->isVirtualAsWritten();
+            I.IsPure |= D->isPureVirtual();
+            I.IsConst |= D->isConst();
+            I.IsVolatile |= D->isVolatile();
+            I.RefQualifier = convertToReferenceKind(D->getRefQualifier());
+            I.IsFinal |= D->template hasAttr<FinalAttr>();
             //D->isCopyAssignmentOperator()
             //D->isMoveAssignmentOperator()
             //D->isOverloadedOperator();

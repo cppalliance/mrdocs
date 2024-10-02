@@ -14,7 +14,6 @@
 #define MRDOCS_API_METADATA_FUNCTION_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/ADT/BitField.hpp>
 #include <mrdocs/Metadata/Field.hpp>
 #include <mrdocs/Metadata/Source.hpp>
 #include <mrdocs/Metadata/Symbols.hpp>
@@ -68,45 +67,6 @@ enum class FunctionClass
 
 MRDOCS_DECL dom::String toString(FunctionClass kind) noexcept;
 
-/** Bit constants used with function specifiers.
-*/
-union FnFlags0
-{
-    BitFieldFullValue raw;
-
-    BitFlag < 0> isVariadic;
-    BitFlag < 1> isVirtual;
-    BitFlag < 2> isVirtualAsWritten;
-    BitFlag < 3> isPure;
-    BitFlag < 4> isDefaulted;
-    BitFlag < 5> isExplicitlyDefaulted;
-    BitFlag < 6> isDeleted;
-    BitFlag < 7> isDeletedAsWritten;
-    BitFlag < 8> isNoReturn;
-    BitFlag < 9> hasOverrideAttr;
-    BitFlag <10> hasTrailingReturn;
-    BitFlag <11> isConst;
-    BitFlag <12> isVolatile;
-    BitField<13> isFinal;
-
-    BitField<14, 2, ConstexprKind> constexprKind;
-    BitField<16, 4, NoexceptKind> exceptionSpec;
-    BitField<20, 6, OperatorKind> overloadedOperator;
-    BitField<26, 3, StorageClassKind> storageClass;
-    BitField<29, 2, ReferenceKind> refQualifier;
-};
-
-/** Bit field used with function specifiers.
-*/
-union FnFlags1
-{
-    BitFieldFullValue raw;
-
-    BitFlag<0> isNodiscard;
-
-    BitFlag<4> isExplicitObjectMemberFunction;
-};
-
 // KRYSTIAN TODO: attributes (nodiscard, deprecated, and carries_dependency)
 // KRYSTIAN TODO: flag to indicate whether this is a function parameter pack
 /** Represents a single function parameter */
@@ -152,14 +112,33 @@ struct FunctionInfo
     // the class of function this is
     FunctionClass Class = FunctionClass::Normal;
 
-    FnFlags0 specs0{.raw{0}};
-    FnFlags1 specs1{.raw{0}};
-
     NoexceptInfo Noexcept;
 
     ExplicitInfo Explicit;
 
     ExprInfo Requires;
+
+    bool IsVariadic = false;
+    bool IsVirtual = false;
+    bool IsVirtualAsWritten = false;
+    bool IsPure = false;
+    bool IsDefaulted = false;
+    bool IsExplicitlyDefaulted = false;
+    bool IsDeleted = false;
+    bool IsDeletedAsWritten = false;
+    bool IsNoReturn = false;
+    bool HasOverrideAttr = false;
+    bool HasTrailingReturn = false;
+    bool IsConst = false;
+    bool IsVolatile = false;
+    bool IsFinal = false;
+    bool IsNodiscard = false;
+    bool IsExplicitObjectMemberFunction = false;
+
+    ConstexprKind Constexpr = ConstexprKind::None;
+    OperatorKind OverloadedOperator = OperatorKind::None;
+    StorageClassKind StorageClass = StorageClassKind::None;
+    ReferenceKind RefQualifier = ReferenceKind::None;
 
     //--------------------------------------------
 

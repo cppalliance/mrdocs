@@ -205,8 +205,8 @@ writeNamespace(
     tags_.open(namespaceTagName, {
         { "name", I.Name, ! I.Name.empty() },
         { I.id },
-        { "is-anonymous", "1", I.specs.isAnonymous},
-        { "is-inline", "1", I.specs.isInline}
+        { "is-anonymous", "1", I.IsAnonymous},
+        { "is-inline", "1", I.IsInline}
     });
     writeJavadoc(I.javadoc);
     for(const SymbolID& id : I.UsingDirectives)
@@ -316,8 +316,24 @@ writeFunction(
 
     writeSourceInfo(I);
 
-    write(I.specs0, tags_);
-    write(I.specs1, tags_);
+    writeAttr(I.IsVariadic,            "is-variadic", tags_);
+    writeAttr(I.IsVirtualAsWritten,    "is-virtual-as-written", tags_);
+    writeAttr(I.IsPure,                "is-pure", tags_);
+    writeAttr(I.IsDefaulted,           "is-defaulted", tags_);
+    writeAttr(I.IsExplicitlyDefaulted, "is-explicitly-defaulted", tags_);
+    writeAttr(I.IsDeleted,             "is-deleted", tags_);
+    writeAttr(I.IsDeletedAsWritten,    "is-deleted-as-written", tags_);
+    writeAttr(I.IsNoReturn,            "is-no-return", tags_);
+    writeAttr(I.HasOverrideAttr,       "has-override", tags_);
+    writeAttr(I.HasTrailingReturn,     "has-trailing-return", tags_);
+    writeAttr(I.Constexpr,             "constexpr-kind", tags_);
+    writeAttr(I.OverloadedOperator,    "operator", tags_);
+    writeAttr(I.StorageClass,          "storage-class", tags_);
+    writeAttr(I.IsConst,               "is-const", tags_);
+    writeAttr(I.IsVolatile,            "is-volatile", tags_);
+    writeAttr(I.RefQualifier,          "ref-qualifier", tags_);
+    writeAttr(I.IsNodiscard,           "nodiscard", tags_);
+    writeAttr(I.IsExplicitObjectMemberFunction, "is-explicit-object-member-function", tags_);
 
     writeReturnType(*I.ReturnType, tags_);
 
@@ -469,7 +485,8 @@ writeRecord(
 
     writeSourceInfo(I);
 
-    write(I.specs, tags_);
+    writeAttr(I.IsFinal, "is-final", tags_);
+    writeAttr(I.IsFinalDestructor, "is-final-dtor", tags_);
 
     for(auto const& B : I.Bases)
     {
@@ -549,7 +566,9 @@ writeField(
             {"id", "is-mutable"}
         });
 
-    write(I.specs, tags_);
+    writeAttr(I.IsMaybeUnused, "maybe-unused", tags_);
+    writeAttr(I.IsDeprecated, "deprecated", tags_);
+    writeAttr(I.HasNoUniqueAddress, "no-unique-address", tags_);
 
     writeType(I.Type, tags_);
 
@@ -573,7 +592,10 @@ writeVariable(
 
     writeSourceInfo(I);
 
-    write(I.specs, tags_);
+    writeAttr(I.StorageClass, "storage-class", tags_);
+    writeAttr(I.Constexpr, "constexpr-kind", tags_);
+    writeAttr(I.IsConstinit, "is-constinit", tags_);
+    writeAttr(I.IsThreadLocal, "is-thread-local", tags_);
 
     writeType(I.Type, tags_);
 
