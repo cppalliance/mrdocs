@@ -129,9 +129,9 @@ if (MY_PROJECT_MRDOCS_BUILD)
 
     # Create a temporary source file that includes all header files
     set(TEMP_CPP_FILE "${CMAKE_CURRENT_BINARY_DIR}/all_headers.cpp")
-    file(WRITE ${OUTPUT_FILE} "// This file is generated automatically by CMake\n\n")
+    file(WRITE ${TEMP_CPP_FILE} "// This file is generated automatically by CMake\n\n")
     foreach(HEADER_FILE ${HEADER_FILES_LIST})
-        file(APPEND ${OUTPUT_FILE} "#include \"${HEADER_FILE}\"\n")
+        file(APPEND ${TEMP_CPP_FILE} "#include \"${HEADER_FILE}\"\n")
     endforeach()
 
     # Create a custom target for MrDocs
