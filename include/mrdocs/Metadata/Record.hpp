@@ -13,7 +13,6 @@
 #define MRDOCS_API_METADATA_RECORD_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/ADT/BitField.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Scope.hpp>
 #include <mrdocs/Metadata/Source.hpp>
@@ -26,16 +25,6 @@
 
 namespace clang {
 namespace mrdocs {
-
-/** Bit constants used with Record metadata
-*/
-union RecFlags0
-{
-    BitFieldFullValue raw{.value=0u};
-
-    BitFlag<0> isFinal;
-    BitFlag<1> isFinalDestructor;
-};
 
 /** Metadata for a direct base.
 */
@@ -88,7 +77,8 @@ struct RecordInfo
     // KRYSTIAN FIXME: this does not account for alias-declarations
     bool IsTypeDef = false;
 
-    RecFlags0 specs;
+    bool IsFinal = false;
+    bool IsFinalDestructor = false;
 
     /** List of immediate bases.
     */

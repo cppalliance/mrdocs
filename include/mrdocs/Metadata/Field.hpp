@@ -18,22 +18,10 @@
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Source.hpp>
 #include <mrdocs/Metadata/Type.hpp>
-#include <mrdocs/ADT/BitField.hpp>
 #include <utility>
 
 namespace clang {
 namespace mrdocs {
-
-union FieldFlags
-{
-    BitFieldFullValue raw{.value=0u};
-
-    // KRYSTIAN FIXME: nodiscard cannot be applied to fields; this should
-    // instead be isMaybeUnused. we should also store the spelling
-    BitFlag<0> isMaybeUnused;
-    BitFlag<1> isDeprecated;
-    BitFlag<2> hasNoUniqueAddress;
-};
 
 /** Info for fields (i.e. non-static data members)
 
@@ -50,9 +38,6 @@ struct FieldInfo
     */
     ExprInfo Default;
 
-    // attributes (maybe_unused, no_unique_address, deprecated)
-    FieldFlags specs;
-
     /** Whether the field is declared mutable */
     bool IsMutable = false;
 
@@ -61,6 +46,14 @@ struct FieldInfo
 
     /** The width of the bitfield */
     ConstantExprInfo<std::uint64_t> BitfieldWidth;
+
+    // KRYSTIAN FIXME: nodiscard cannot be applied to fields; this should
+    // instead be IsMaybeUnused. we should also store the spelling
+    bool IsMaybeUnused = false;
+
+    bool IsDeprecated = false;
+
+    bool HasNoUniqueAddress = false;
 
     //--------------------------------------------
 

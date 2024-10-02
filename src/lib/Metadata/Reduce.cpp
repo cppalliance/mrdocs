@@ -160,7 +160,7 @@ static void mergeExprInfo(
 void merge(NamespaceInfo& I, NamespaceInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
-    I.specs.raw.value |= Other.specs.raw.value;
+    // I.specs.raw.value |= Other.specs.raw.value;
     mergeScopeInfo(I, std::move(Other));
     mergeInfo(I, std::move(Other));
     reduceSymbolIDs(I.UsingDirectives,
@@ -174,7 +174,7 @@ void merge(RecordInfo& I, RecordInfo&& Other)
         I.KeyKind != Other.KeyKind)
         I.KeyKind = Other.KeyKind;
     I.IsTypeDef = I.IsTypeDef || Other.IsTypeDef;
-    I.specs.raw.value |= Other.specs.raw.value;
+    // I.specs.raw.value |= Other.specs.raw.value;
     if (I.Bases.empty())
         I.Bases = std::move(Other.Bases);
     // KRYSTIAN FIXME: really should use explicit cases here.
@@ -200,8 +200,8 @@ void merge(FunctionInfo& I, FunctionInfo&& Other)
     mergeInfo(I, std::move(Other));
     if (!I.Template)
         I.Template = std::move(Other.Template);
-    I.specs0.raw.value |= Other.specs0.raw.value;
-    I.specs1.raw.value |= Other.specs1.raw.value;
+    // I.specs0.raw.value |= Other.specs0.raw.value;
+    // I.specs1.raw.value |= Other.specs1.raw.value;
     if(I.Noexcept.Implicit)
         I.Noexcept = std::move(Other.Noexcept);
     if(I.Explicit.Implicit)
@@ -257,7 +257,7 @@ void merge(FieldInfo& I, FieldInfo&& Other)
         I.Type = std::move(Other.Type);
     mergeSourceInfo(I, std::move(Other));
     mergeInfo(I, std::move(Other));
-    I.specs.raw.value |= Other.specs.raw.value;
+    // I.specs.raw.value |= Other.specs.raw.value;
     I.IsMutable |= Other.IsMutable;
     if(I.Default.Written.empty())
         I.Default = std::move(Other.Default);
@@ -278,7 +278,7 @@ void merge(VariableInfo& I, VariableInfo&& Other)
         I.Initializer = std::move(Other.Initializer);
     mergeSourceInfo(I, std::move(Other));
     mergeInfo(I, std::move(Other));
-    I.specs.raw.value |= Other.specs.raw.value;
+    // I.specs.raw.value |= Other.specs.raw.value;
 }
 
 void merge(SpecializationInfo& I, SpecializationInfo&& Other)
