@@ -25,6 +25,20 @@
 
 {{/if}}
 
+{{#if symbol.doc.tparams}}
+=={{#unless is_multipage}}={{/unless}} Template Parameters
+
+|===
+| Name | Description
+
+{{#each symbol.doc.tparams}}
+| *{{name}}*
+| {{description}}
+{{/each}}
+|===
+
+{{/if}}
+
 {{#if symbol.doc.see}}
 =={{#unless is_multipage}}={{/unless}} See Also
 
