@@ -641,7 +641,7 @@ jobs:
 
   llvm-releases:
     needs: [ build, cpp-matrix ]
-
+    if: ${{ needs.cpp-matrix.outputs.llvm-matrix != '[]' && needs.cpp-matrix.outputs.llvm-matrix != '' }}
     strategy:
       fail-fast: false
       matrix:
