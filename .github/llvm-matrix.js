@@ -1,3 +1,8 @@
+// Description: This script reads the matrix.json file and filters
+// out entries that already have an existing llvm-archive-filename on the server.
+// This creates a filtered matrix used to upload new archives to the server, but
+// only the ones that don't already exist.
+
 const fs = require('fs');
 const core = require('@actions/core');
 const { exec } = require('child_process');

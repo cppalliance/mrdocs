@@ -72,11 +72,19 @@ jobs:
             mrdocs-package-generators: {{#if (ieq os 'windows') }}7Z ZIP WIX{{else}}TGZ TXZ{{/if}}
           output-file: matrix.json
 
+      # Set up the version as expected by the LLVM matrix script and @actions/core
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
       - name: Generate LLVM Test Matrix
         id: llvm-matrix
         run: |
           set -x
-          npm install @actions/core
+          cd .github
+          npm ci
+          cd ..
           node .github/llvm-matrix.js
 
   build:
