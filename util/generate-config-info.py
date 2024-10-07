@@ -105,14 +105,14 @@ def validate_and_normalize_option(option):
     if 'command-line-only' not in option:
         option['command-line-only'] = False
     if 'brief' not in option:
-        raise ValueError(f'Option {option["name"]} must have a "brief" description')
+        raise ValueError(f'Option "{option["name"]}" must have a "brief" description')
     if 'details' not in option:
         option['details'] = ''
     if 'type' not in option:
         option['type'] = 'string'
     if not is_valid_option_type(option['type']):
         raise ValueError(
-            f'Option {option["name"]} has an invalid type {option["type"]}: It should be one of {get_valid_option_values()}')
+            f'Option "{option["name"]}" has an invalid type {option["type"]}: It should be one of {get_valid_option_values()}')
     if option['type'] == 'enum':
         if 'values' not in option:
             raise ValueError(f'Option "{option["name"]}" is of type enum and must have "values"')
@@ -541,7 +541,7 @@ def option_validation_snippet(option):
                 validation_contents += f'// s.{camel_name} is required and has no default value\n'
                 validation_contents += f'if (s.{camel_name}.empty())\n'
                 validation_contents += f'{{\n'
-                validation_contents += f'    return Unexpected(formatError("{option["name"]} option is required"));'
+                validation_contents += f'    return Unexpected(formatError("`{option["name"]}` option is required"));'
                 validation_contents += f'}}\n'
                 validation_contents += f'else\n'
                 validation_contents += f'{{\n'
@@ -592,17 +592,17 @@ def option_validation_snippet(option):
         if option['must-exist']:
             validation_contents += f'if (!s.{camel_name}.empty() && !files::exists(s.{camel_name}))\n'
             validation_contents += f'{{\n'
-            validation_contents += f'    return Unexpected(formatError("{option["name"]} option: path does not exist: {{}}", s.{camel_name}));\n'
+            validation_contents += f'    return Unexpected(formatError("`{option["name"]}` option: path does not exist: {{}}", s.{camel_name}));\n'
             validation_contents += f'}}\n'
             if option['type'] == 'file-path':
                 validation_contents += f'if (files::isDirectory(s.{camel_name}))\n'
                 validation_contents += f'{{\n'
-                validation_contents += f'    return Unexpected(formatError("{option["name"]} option: path should be a regular file: {{}}", s.{camel_name}));\n'
+                validation_contents += f'    return Unexpected(formatError("`{option["name"]}` option: path should be a regular file: {{}}", s.{camel_name}));\n'
                 validation_contents += f'}}\n'
             if option['type'] == 'dir-path':
                 validation_contents += f'if (!files::isDirectory(s.{camel_name}))\n'
                 validation_contents += f'{{\n'
-                validation_contents += f'    return Unexpected(formatError("{option["name"]} option: path should be a directory: {{}}", s.{camel_name}));\n'
+                validation_contents += f'    return Unexpected(formatError("`{option["name"]}` option: path should be a directory: {{}}", s.{camel_name}));\n'
                 validation_contents += f'}}\n'
         elif option['type'] in ['file-path', 'dir-path']:
             validation_contents += f'if (files::exists(s.{camel_name}))\n'
@@ -610,12 +610,12 @@ def option_validation_snippet(option):
             if option['type'] == 'file-path':
                 validation_contents += f'if (files::isDirectory(s.{camel_name}))\n'
                 validation_contents += f'{{\n'
-                validation_contents += f'    return Unexpected(formatError("{option["name"]} option: path should be a regular file: {{}}", s.{camel_name}));\n'
+                validation_contents += f'    return Unexpected(formatError("`{option["name"]}` option: path should be a regular file: {{}}", s.{camel_name}));\n'
                 validation_contents += f'}}\n'
             if option['type'] == 'dir-path':
                 validation_contents += f'if (!files::isDirectory(s.{camel_name}))\n'
                 validation_contents += f'{{\n'
-                validation_contents += f'    return Unexpected(formatError("{option["name"]} option: path should be a directory: {{}}", s.{camel_name}));\n'
+                validation_contents += f'    return Unexpected(formatError("`{option["name"]}` option: path should be a directory: {{}}", s.{camel_name}));\n'
                 validation_contents += f'}}\n'
             validation_contents += f'}}\n'
 
@@ -625,7 +625,7 @@ def option_validation_snippet(option):
                 validation_contents += f'// s.{camel_name} paths are required and have no default value\n'
                 validation_contents += f'if (s.{camel_name}.empty())\n'
                 validation_contents += f'{{\n'
-                validation_contents += f'    return Unexpected(formatError("{option["name"]} option is required"));'
+                validation_contents += f'    return Unexpected(formatError("`{option["name"]}` option is required"));'
                 validation_contents += f'}}\n'
                 validation_contents += f'else\n'
                 validation_contents += f'{{\n'
@@ -694,7 +694,7 @@ def option_validation_snippet(option):
             if option['must-exist']:
                 validation_contents += f'    if (!files::exists(p))\n'
                 validation_contents += f'    {{\n'
-                validation_contents += f'        return Unexpected(formatError("{option["name"]} option: path does not exist: {{}}", p));\n'
+                validation_contents += f'        return Unexpected(formatError("`{option["name"]}` option: path does not exist: {{}}", p));\n'
                 validation_contents += f'    }}\n'
             if option['command-line-sink'] and 'filename-mapping' in option:
                 validation_contents += f'    auto f = files::getFileName(p);\n'
@@ -724,7 +724,7 @@ def option_validation_snippet(option):
             validation_contents += f'// s.{camel_name} is required with no default value.'
             validation_contents += f'if (s.{camel_name}.empty())\n'
             validation_contents += f'{{\n'
-            validation_contents += f'    return Unexpected(formatError("{option["name"]} option is required"));'
+            validation_contents += f'    return Unexpected(formatError("`{option["name"]}` option is required"));'
             validation_contents += f'}}\n'
         else:
             validation_contents += f'// s.{camel_name} is not required and has no default value\n'
@@ -745,7 +745,7 @@ def option_validation_snippet(option):
             validation_contents += f'// s.{camel_name} is required with no default value.'
             validation_contents += f'if (s.{camel_name}.empty())\n'
             validation_contents += f'{{\n'
-            validation_contents += f'    return Unexpected(formatError("{option["name"]} option is required"));'
+            validation_contents += f'    return Unexpected(formatError("`{option["name"]}` option is required"));'
             validation_contents += f'}}\n'
         else:
             validation_contents += f'// s.{camel_name} is not required and has no default value\n'
@@ -766,12 +766,12 @@ def option_validation_snippet(option):
         if 'min-value' in option:
             validation_contents += f'if (std::cmp_less(s.{camel_name}, {option["min-value"]}))\n'
             validation_contents += f'{{\n'
-            validation_contents += f'    return Unexpected(formatError("{option["name"]} option: value is less than {option["min-value"]}: {{}}", s.{camel_name}));\n'
+            validation_contents += f'    return Unexpected(formatError("`{option["name"]}` option: value is less than {option["min-value"]}: {{}}", s.{camel_name}));\n'
             validation_contents += f'}}\n'
         if 'max-value' in option:
             validation_contents += f'if (std::cmp_greater(s.{camel_name}, {option["max-value"]}))\n'
             validation_contents += f'{{\n'
-            validation_contents += f'    return Unexpected(formatError("{option["name"]} option: value is greater than {option["max-value"]}: {{}}", s.{camel_name}));\n'
+            validation_contents += f'    return Unexpected(formatError("`{option["name"]}` option: value is greater than {option["max-value"]}: {{}}", s.{camel_name}));\n'
             validation_contents += f'}}\n'
 
     contents += validation_contents
@@ -1060,7 +1060,7 @@ def generate_public_toolargs_cpp(config):
                 option_contents += f'    }}\n'
             option_contents += f'    else\n'
             option_contents += f'    {{\n'
-            option_contents += f'        return Unexpected(formatError("{option["name"]} option: invalid value: {{}}", this->{camel_name}));\n'
+            option_contents += f'        return Unexpected(formatError("`{option["name"]}` option: invalid value: {{}}", this->{camel_name}));\n'
             option_contents += f'    }}\n'
         else:
             option_contents += f'    s.{camel_name} = this->{camel_name};\n'
@@ -1149,7 +1149,7 @@ def to_cpp_default_value(option):
         if option_default.startswith('<'):
             closing_bracket = option_default.find('>')
             if closing_bracket == -1:
-                raise ValueError(f'Invalid default value {option_default} for option {option["name"]}')
+                raise ValueError(f'Invalid default value {option_default} for option `{option["name"]}`')
             reference_path = option_default[1:closing_bracket]
             if reference_path == 'config-dir':
                 option_default = '.' + option_default[closing_bracket + 1:]
