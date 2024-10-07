@@ -42,6 +42,7 @@ print_version(llvm::raw_ostream& os)
     os << project_name
        << "\n    " << project_description
        << "\n    version: " << project_version
+       << "\n    build: " << project_version_build
        << "\n    built with LLVM " << LLVM_VERSION_STRING
        << "\n";
 }
