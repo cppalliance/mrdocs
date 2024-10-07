@@ -2775,7 +2775,62 @@ void
 print(
     Level level,
     std::string const& text,
-    source_location const* loc = nullptr);
+    source_location const* loc = nullptr,
+    Error const* e = nullptr);
+
+namespace detail {
+template<class Arg0, class... Args>
+requires (!std::same_as<std::decay_t<Arg0>, Error>)
+void
+log_impl(
+    Level level,
+    Located<std::string_view> fs,
+    Arg0&& arg0,
+    Args&&... args)
+{
+    std::string str = fmt::vformat(
+        fs.value,
+        fmt::make_format_args(arg0, args...));
+    return print(
+        level,
+        str,
+        &fs.where);
+}
+
+template<class... Args>
+void
+log_impl(
+    Level level,
+    Located<std::string_view> fs,
+    Error const& e,
+    Args&&... args)
+{
+    // When the message is an error, we send split
+    // the information relevant to the user from
+    // the information relevant for bug tracking
+    // so that users can understand the message.
+    std::string str = fmt::vformat(
+        fs.value,
+        fmt::make_format_args(e.reason(), args...));
+    return print(
+        level,
+        str,
+        &fs.where,
+        &e);
+}
+
+inline
+void
+log_impl(
+    Level level,
+    Located<std::string_view> fs)
+{
+    return print(
+        level,
+        {},
+        &fs.where);
+}
+}
 
 /** Format a message to the console.
 
@@ -2791,17 +2846,15 @@ print(
 */
 template<class... Args>
 void
-format(
+log(
     Level level,
     Located<std::string_view> fs,
     Args&&... args)
 {
-    return print(
+    return detail::log_impl(
         level,
-        fmt::vformat(
-            fs.value,
-            fmt::make_format_args(args...)),
-        &fs.where);
+        fs,
+        std::forward<Args>(args)...);
 }
 
 /** Report a message to the console.
@@ -2812,12 +2865,7 @@ debug(
     Located<std::string_view> format,
     Args&&... args)
 {
-    return print(
-        Level::debug,
-        fmt::vformat(
-            format.value,
-            fmt::make_format_args(args...)),
-        &format.where);
+    return log(Level::debug, format, std::forward<Args>(args)...);
 }
 
 /** Report a message to the console.
@@ -2828,12 +2876,7 @@ info(
     Located<std::string_view> format,
     Args&&... args)
 {
-    return print(
-        Level::info,
-        fmt::vformat(
-            format.value,
-            fmt::make_format_args(args...)),
-        &format.where);
+    return log(Level::info, format, std::forward<Args>(args)...);
 }
 
 /** Report a message to the console.
@@ -2844,12 +2887,7 @@ warn(
     Located<std::string_view> format,
     Args&&... args)
 {
-    return print(
-        Level::warn,
-        fmt::vformat(
-            format.value,
-            fmt::make_format_args(args...)),
-        &format.where);
+    return log(Level::warn, format, std::forward<Args>(args)...);
 }
 
 /** Report a message to the console.
@@ -2860,12 +2898,7 @@ error(
     Located<std::string_view> format,
     Args&&... args)
 {
-    return print(
-        Level::error,
-        fmt::vformat(
-            format.value,
-            fmt::make_format_args(args...)),
-        &format.where);
+    return log(Level::error, format, std::forward<Args>(args)...);
 }
 
 /** Report a message to the console.
@@ -2876,12 +2909,7 @@ fatal(
     Located<std::string_view> format,
     Args&&... args)
 {
-    return print(
-        Level::fatal,
-        fmt::vformat(
-            format.value,
-            fmt::make_format_args(args...)),
-        &format.where);
+    return log(Level::fatal, format, std::forward<Args>(args)...);
 }
 
 } // report

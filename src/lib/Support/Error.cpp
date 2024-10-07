@@ -10,6 +10,7 @@
 
 #include "lib/Support/Error.hpp"
 #include <mrdocs/Support/Path.hpp>
+#include <mrdocs/Version.hpp>
 #include <llvm/Support/Mutex.h>
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/Support/Signals.h>
@@ -201,13 +202,14 @@ void
 print(
     Level level,
     std::string const& text,
-    source_location const* loc)
+    source_location const* loc,
+    Error const* e)
 {
     call_impl(level,
         [&](llvm::raw_ostream& os)
         {
             os << text;
-        }, loc);
+        }, loc, e);
 }
 
 //------------------------------------------------
@@ -230,7 +232,8 @@ void
 call_impl(
     Level level,
     std::function<void(llvm::raw_ostream&)> f,
-    source_location const* loc)
+    source_location const* loc,
+    Error const* e)
 {
     std::string s;
     if(level >= level_)
@@ -242,11 +245,22 @@ call_impl(
             level == Level::error ||
             level == Level::fatal))
         {
-            os << "\n" <<
-                fmt::format(
-                    "    Reported at {}({})",
-                    ::SourceFileNames::getFileName(loc->file_name()),
-                    loc->line());
+            os << "\n\n";
+            os << "An issue occurred during execution.\n";
+            os << "If you believe this is a bug, please report it at https://github.com/cppalliance/mrdocs/issues\n"
+                  "with the following details:\n";
+            os << fmt::format("    MrDocs Version: {} (Build: {})\n", project_version, project_version_build);
+            if (e)
+            {
+                os << fmt::format(
+                    "    Error Location: `{}` at line {}\n",
+                    ::SourceFileNames::getFileName(e->location().file_name()),
+                    e->location().line());
+            }
+            os << fmt::format(
+                "    Reported From: `{}` at line {}",
+                ::SourceFileNames::getFileName(loc->file_name()),
+                loc->line());
             // VFALCO attach a stack trace for Level::fatal
         }
         os << '\n';

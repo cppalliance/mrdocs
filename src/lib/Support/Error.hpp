@@ -119,7 +119,8 @@ void
 call_impl(
     Level level,
     std::function<void(llvm::raw_ostream&)> f,
-    source_location const* loc);
+    source_location const* loc,
+    Error const* e = nullptr);
 
 /** Formatted reporting to a live stream.
 
