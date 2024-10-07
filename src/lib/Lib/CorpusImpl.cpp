@@ -187,9 +187,8 @@ build(
             taskGroup.async(
             [&, idx = ++index, path = std::move(file)]()
             {
-                report::format(reportLevel,
+                report::log(reportLevel,
                     "[{}/{}] \"{}\"", idx, files.size(), path);
-
                 processFile(path);
             });
         }
@@ -217,7 +216,7 @@ build(
         return Unexpected(results.error());
     corpus->info_ = std::move(results.value());
 
-    report::format(reportLevel,
+    report::log(reportLevel,
         "Extracted {} declarations in {}",
         corpus->info_.size(),
         format_duration(clock_type::now() - start_time));

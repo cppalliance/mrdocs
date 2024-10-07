@@ -135,7 +135,7 @@ mrdocs_main(int argc, char const** argv)
     auto exp = DoGenerateAction(configPath, dirs, argv);
     if (!exp)
     {
-        report::error("Generating reference failed: {}", exp.error().message());
+        report::error("Generating reference failed: {}", exp.error());
     }
     if (report::results.errorCount > 0 ||
         report::results.fatalCount > 0)
