@@ -57,7 +57,7 @@ for (let panel of data.panels) {
 
     // Create a CMakeLists.txt file for the snippet
     const cmakeListsPath = path.join(absSnippetsDir, 'CMakeLists.txt')
-    const cmakeListsContent = `cmake_minimum_required(VERSION 3.13)\nproject(${sourceBasename})\nadd_executable(${sourceBasename} ${panel.source})\n`
+    const cmakeListsContent = `cmake_minimum_required(VERSION 3.13)\nproject(${sourceBasename})\nadd_executable(${sourceBasename} ${panel.source})\ntarget_compile_features(${sourceBasename} PRIVATE cxx_std_23)\n`
     fs.writeFileSync(cmakeListsPath, cmakeListsContent)
 
     // Run mrdocs to generate documentation
