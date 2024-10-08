@@ -24,12 +24,13 @@ jobs:
     outputs:
       matrix: ${{ steps.cpp-matrix.outputs.matrix }}
       llvm-matrix: ${{ steps.llvm-matrix.outputs.llvm-matrix }}
+      releases-matrix: ${{ steps.releases-matrix.outputs.releases-matrix }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Generate Test Matrix
-        uses: alandefreitas/cpp-actions/cpp-matrix@v1.8.6
+        uses: alandefreitas/cpp-actions/cpp-matrix@v1.8.7
         id: cpp-matrix
         with:
           compilers: |
@@ -70,6 +71,7 @@ jobs:
             mrdocs-ccflags: {{ ccflags }} {{#if (eq compiler 'gcc') }}-static{{/if}} {{#if asan }}-static-libasan{{/if}} {{#if tsan }}-static-libtsan{{/if}}
             mrdocs-cxxflags: {{ cxxflags }} {{#if (eq compiler 'gcc') }}-static{{/if}} {{#if asan }}-static-libasan{{/if}} {{#if tsan }}-static-libtsan{{/if}}
             mrdocs-package-generators: {{#if (ieq os 'windows') }}7Z ZIP WIX{{else}}TGZ TXZ{{/if}}
+            mrdocs-release-package-artifact: release-packages-{{ lowercase os }}
           output-file: matrix.json
 
       # Set up the version as expected by the LLVM matrix script and @actions/core
@@ -86,6 +88,15 @@ jobs:
           npm ci
           cd ..
           node .github/llvm-matrix.js
+
+      - name: Generate Releases Test Matrix
+        id: releases-matrix
+        run: |
+          set -x
+          cd .github
+          npm ci
+          cd ..
+          node .github/releases-matrix.js
 
   build:
     needs: cpp-matrix
@@ -111,7 +122,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup CMake
-        uses: alandefreitas/cpp-actions/setup-cmake@v1.8.6
+        uses: alandefreitas/cpp-actions/setup-cmake@v1.8.7
         id: setup-cmake
         with:
           version: '>=3.26'
@@ -124,14 +135,14 @@ jobs:
         if: ${{ runner.os == 'Windows' }}
 
       - name: Setup C++
-        uses: alandefreitas/cpp-actions/setup-cpp@v1.8.6
+        uses: alandefreitas/cpp-actions/setup-cpp@v1.8.7
         id: setup-cpp
         with:
           compiler: ${{ matrix.compiler }}
           version: ${{ matrix.version }}
 
       - name: Install System Packages
-        uses: alandefreitas/cpp-actions/package-install@v1.8.6
+        uses: alandefreitas/cpp-actions/package-install@v1.8.7
         if: matrix.compiler != 'msvc'
         id: package-install
         env:
@@ -141,7 +152,7 @@ jobs:
           apt-get: ${{ matrix.install }}
 
       - name: Install Duktape
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.6
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.7
         with:
           source-dir: ../third-party/duktape
           url: https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz
@@ -161,7 +172,7 @@ jobs:
           trace-commands: true
 
       - name: Install Fmt
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.6
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.7
         with:
           source-dir: ../third-party/fmt
           git-repository: https://github.com/fmtlib/fmt
@@ -181,7 +192,7 @@ jobs:
           trace-commands: true
 
       - name: Install Libxml2
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.6
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.7
         if: matrix.compiler == 'msvc'
         with:
           source-dir: ../third-party/libxml2
@@ -255,17 +266,35 @@ jobs:
       - name: Download LLVM Binaries
         id: llvm-download
         if: steps.llvm-cache.outputs.cache-hit != 'true'
-        uses: alandefreitas/cpp-actions/setup-program@v1.8.6
-        with:
-          name: mrdocs-llvm
-          url: https://mrdocs.com/llvm+clang/${{ matrix.llvm-archive-filename }}
-          install-prefix: ../third-party/llvm-project
-          update-environment: false
-          trace-commands: true
-          fail-on-error: false
+        run: |
+          set -x
+          url=https://mrdocs.com/llvm+clang/${{ matrix.llvm-archive-filename }}
+          http_status=$(curl -s -o /dev/null -w "%{http_code}" -I "$url")
+          if [ "$http_status" -eq 200 ]; then
+              found="true"
+              echo "found=$found" >> $GITHUB_OUTPUT
+              curl -L -o ${{ matrix.llvm-archive-filename }} "$url"
+              install_prefix=$(pwd)/../third-party/llvm-project/install
+              mkdir -p $install_prefix
+              if [[ ${{ matrix.llvm-archive-extension }} == '7z' ]]; then
+                  7z x ${{ matrix.llvm-archive-filename }} -o$install_prefix
+              else
+                  tar -xjf ${{ matrix.llvm-archive-filename }} -C $install_prefix
+              fi
+              if [[ $(ls -1 $install_prefix | wc -l) -eq 1 ]]; then
+                  single_dir=$(ls -1 $install_prefix)
+                  if [[ -d $install_prefix/$single_dir ]]; then
+                      mv $install_prefix/$single_dir/* $install_prefix/
+                      rmdir $install_prefix/$single_dir
+                  fi
+              fi
+          else
+              found="false"
+              echo "found=$found" >> $GITHUB_OUTPUT
+          fi
 
       - name: Install LLVM
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.6
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.7
         if: steps.llvm-cache.outputs.cache-hit != 'true' && steps.llvm-download.outputs.found != 'true'
         with:
           cmake-version: '>=3.26'
@@ -287,7 +316,7 @@ jobs:
           trace-commands: true
 
       - name: Install LibC++
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.6
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.7
         if: steps.llvm-cache.outputs.cache-hit != 'true' && steps.llvm-download.outputs.found != 'true'
         with:
           cmake-version: '>=3.26'
@@ -316,7 +345,7 @@ jobs:
           node-version: '20'
 
       - name: CMake Workflow
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.6
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.7
         with:
           cmake-version: '>=3.26'
           cxxstd: ${{ matrix.cxxstd }}
@@ -349,12 +378,12 @@ jobs:
         if: ${{ matrix.is-main && matrix.compiler != 'clang' }}
         uses: actions/upload-artifact@v4
         with:
-          name: release-packages-${{ runner.os }}
+          name: ${{ matrix.mrdocs-release-package-artifact }}
           path: build/packages
           retention-days: 1
 
       - name: FlameGraph
-        uses: alandefreitas/cpp-actions/flamegraph@v1.8.6
+        uses: alandefreitas/cpp-actions/flamegraph@v1.8.7
         if: matrix.time-trace
         with:
           build-dir: build
@@ -370,19 +399,26 @@ jobs:
           verbose: true
 
   releases:
-    needs: build
+    needs: [ cpp-matrix, build ]
+    if: ${{ needs.cpp-matrix.outputs.releases-matrix != '[]' && needs.cpp-matrix.outputs.releases-matrix != '' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.cpp-matrix.outputs.releases-matrix) }}
+
     defaults:
       run:
         shell: bash
-    name: MrDocs Releases
-    timeout-minutes: 30
-    runs-on: ubuntu-latest
-    container: ubuntu:20.04
+
+    name: ${{ matrix.os }} MrDocs Releases
+    runs-on: ${{ matrix.runs-on }}
+    container: ${{ matrix.container }}
     permissions:
       contents: write
+
     steps:
       - name: Install packages
-        uses: alandefreitas/cpp-actions/package-install@v1.8.6
+        uses: alandefreitas/cpp-actions/package-install@v1.8.7
         id: package-install
         with:
           apt-get: build-essential asciidoctor cmake bzip2 git
@@ -395,27 +431,41 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Setup Ninja
+        uses: seanmiddleditch/gha-setup-ninja@v4
+        if: ${{ runner.os == 'Windows' }}
+
       - name: Download MrDocs package
         uses: actions/download-artifact@v4
         with:
-          name: release-packages-Linux
+          name: ${{ matrix.mrdocs-release-package-artifact }}
           path: packages
 
-      - uses: actions/download-artifact@v4
-        with:
-          name: release-packages-Windows
-          path: packages
-
-      - name: Install MrDocs from Linux Package
+      - name: Install MrDocs from Package
         run: |
           set -x
-          find packages -name 'MrDocs-*-Linux.tar.gz' -exec tar -vxzf {} -C /usr/local --strip-components=1 \;
-          mrdocs --version
-          MRDOCS_ROOT=/usr/local
+          if [[ ${{ runner.os }} != 'Windows' ]]; then
+              dest_dir="/usr/local"
+              find packages -maxdepth 1 -name 'MrDocs-*.tar.gz' -exec tar -vxzf {} -C $dest_dir --strip-components=1 \;              
+          else
+              dest_dir="$GITHUB_WORKSPACE/usr/local"
+              dest_dir=$(echo "$dest_dir" | sed 's/\\/\//g')
+              find packages -maxdepth 1 -name "MrDocs-*.7z" -exec 7z x {} -o$dest_dir \;
+              if [[ $(ls -1 $dest_dir | wc -l) -eq 1 ]]; then
+                  single_dir=$(ls -1 $dest_dir)
+                  if [[ -d $dest_dir/$single_dir ]]; then
+                      mv $dest_dir/$single_dir/* $dest_dir/
+                      rmdir $dest_dir/$single_dir
+                  fi
+              fi
+          fi
+          MRDOCS_ROOT="$dest_dir"
           echo -e "MRDOCS_ROOT=$MRDOCS_ROOT" >> $GITHUB_ENV
+          echo -e "$MRDOCS_ROOT/bin" >> $GITHUB_PATH 
+          $MRDOCS_ROOT/bin/mrdocs --version
 
       - name: Clone Boost.URL
-        uses: alandefreitas/cpp-actions/boost-clone@v1.8.6
+        uses: alandefreitas/cpp-actions/boost-clone@v1.8.7
         id: boost-url-clone
         with:
           branch: develop
@@ -448,7 +498,7 @@ jobs:
       - name: Upload Website as Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: website
+          name: Website ${{ runner.os }}
           path: build/website
           retention-days: 30
 
@@ -487,21 +537,21 @@ jobs:
       - name: Upload Demos as Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: demos${{ (contains(fromJSON('["master", "develop"]'), github.ref_name ) && format('-{0}', github.ref_name)) || '' }}
+          name: demos${{ (contains(fromJSON('["master", "develop"]'), github.ref_name ) && format('-{0}', github.ref_name)) || '' }}-${{ runner.os }}
           path: ${{ env.demos_path }}
           # develop and master are retained for longer so that they can be compared
           retention-days: ${{ contains(fromJSON('["master", "develop"]'), github.ref_name) && '30' || '1' }}
 
       - name: Download Previous Demos
-        if: startsWith(github.ref, 'refs/tags/')
+        if: startsWith(github.ref, 'refs/tags/') && runner.os == 'Linux'
         id: download-prev-demos
         uses: actions/download-artifact@v4
         with:
-          name: demos-develop
+          name: demos-develop-${{ runner.os }}
           path: demos-previous
 
       - name: Compare demos
-        if: startsWith(github.ref, 'refs/tags/') && steps.download-prev-demos.outputs.cache-hit == 'true'
+        if: startsWith(github.ref, 'refs/tags/') && steps.download-prev-demos.outputs.cache-hit == 'true' && runner.os == 'Linux'
         id: compare-demos
         run: |
           set -x
@@ -556,7 +606,7 @@ jobs:
           fi
 
       - name: Upload Demo Diff as Artifacts
-        if: startsWith(github.ref, 'refs/tags/') && steps.download-prev-demos.outputs.cache-hit == 'true' && steps.compare-demos.outputs.diff == 'true'
+        if: startsWith(github.ref, 'refs/tags/') && steps.download-prev-demos.outputs.cache-hit == 'true' && steps.compare-demos.outputs.diff == 'true' && runner.os == 'Linux'
         uses: actions/upload-artifact@v4
         with:
           name: demos-diff
@@ -564,7 +614,7 @@ jobs:
           retention-days: 30
 
       - name: Publish Website to GitHub Pages
-        if: ${{ github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) }}
+        if: github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) && runner.os == 'Linux'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -572,7 +622,7 @@ jobs:
           force_orphan: true
 
       - name: Publish website
-        if: ${{ github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) }}
+        if: github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) && runner.os == 'Linux'
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
@@ -597,7 +647,7 @@ jobs:
           chmod 755 -R $(pwd)/demos
           scp -o StrictHostKeyChecking=no -r $(pwd)/demos/* ubuntu@dev-websites.cpp.al:$demo_dir/
 
-      - name: Clone mrdocs
+      - name: Clone MrDocs
         uses: actions/checkout@v4
 
       - name: Set Repository Ownership
@@ -605,14 +655,16 @@ jobs:
           git config --global --add safe.directory "$(pwd)"
 
       - name: Create changelog
-        uses: alandefreitas/cpp-actions/create-changelog@v1.8.6
+        uses: alandefreitas/cpp-actions/create-changelog@v1.8.7
         with:
           output-path: CHANGELOG.md
           thank-non-regular: ${{ startsWith(github.ref, 'refs/tags/') }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           limit: 150
+          update-summary: ${{ runner.os == 'Linux' && 'true' || 'false' }}
 
       - name: Check Info Nodes
+        if: runner.os == 'Linux'
         run: |
           set -x
           chmod +x .github/check_info_nodes_support.sh
@@ -630,17 +682,8 @@ jobs:
           draft: false
           token: ${{ github.token }}
 
-      - name: Delete Older Releases
-        uses: dev-drprasad/delete-older-releases@v0.2.1
-        if: ${{ github.event_name == 'push' && contains(fromJSON('["master", "develop"]'), github.ref_name) }}
-        with:
-          keep_latest: 1
-          delete_tag_pattern: ${{ github.ref_name || github.ref }}${{ ((!startsWith(github.ref, 'refs/tags/')) && '-release') || '' }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   llvm-releases:
-    needs: [ build, cpp-matrix ]
+    needs: [ cpp-matrix, build ]
     if: ${{ needs.cpp-matrix.outputs.llvm-matrix != '[]' && needs.cpp-matrix.outputs.llvm-matrix != '' }}
     strategy:
       fail-fast: false
@@ -660,7 +703,7 @@ jobs:
 
     steps:
       - name: Install packages
-        uses: alandefreitas/cpp-actions/package-install@v1.8.6
+        uses: alandefreitas/cpp-actions/package-install@v1.8.7
         id: package-install
         with:
           apt-get: build-essential asciidoctor cmake bzip2 git curl
