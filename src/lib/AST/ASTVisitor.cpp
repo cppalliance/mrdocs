@@ -2009,6 +2009,8 @@ public:
                 NamespaceInfo>(ParentID);
             buildNamespace(P, created, cast<NamespaceDecl>(PD));
             emplaceChild(P, I);
+            I.ImplementationDefined |= P.ImplementationDefined;
+            I.SeeBelow |= P.SeeBelow;
             break;
         }
         // special case for an explicit specializations of
@@ -2144,6 +2146,11 @@ public:
         else
             I.Name = extractName(D);
         I.specs.isInline = D->isInline();
+
+        I.ImplementationDefined =
+            isInSpecialNamespace(D, config_->implementationDefinedFilter);
+        I.SeeBelow =
+            isInSpecialNamespace(D, config_->seeBelowFilter);
 
         getParentNamespaces(I, D);
     }
@@ -2704,6 +2711,7 @@ public:
 
         auto [I, created] = getOrCreateInfo<MrDocsType_t<DeclType>>(id);
         I.Access = convertToAccessKind(access);
+
         return std::make_pair(std::ref(I), created);
     }
 
@@ -2930,6 +2938,12 @@ public:
     {
         if(! D || Patterns.empty())
             return false;
+        if(const auto* ND = dyn_cast<NamespaceDecl>(D))
+        {
+            for(const auto& Pattern : Patterns)
+                if(Pattern.matches(ND->getQualifiedNameAsString()))
+                    return true;
+        }
         const DeclContext* DC = isa<DeclContext>(D) ?
             dyn_cast<DeclContext>(D) : D->getDeclContext();
         for(; DC; DC = DC->getParent())
@@ -2967,6 +2981,7 @@ public:
         const NestedNameSpecifier* NNS,
         const Decl* D)
     {
+        #if 0
         if(isInSpecialNamespace(NNS, config_->seeBelowFilter) ||
             isInSpecialNamespace(D, config_->seeBelowFilter))
         {
@@ -2982,6 +2997,7 @@ public:
             I->Name = "implementation-defined";
             return true;
         }
+        #endif
         return false;
     }
 

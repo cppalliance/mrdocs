@@ -717,6 +717,8 @@ DomInfo<T>::construct() const
         { "kind",       toString(I_.Kind) },
         { "access",     toString(I_.Access) },
         { "implicit",   I_.Implicit },
+        { "implementationDefined", I_.ImplementationDefined },
+        { "seeBelow", I_.SeeBelow },
         { "namespace",  dom::newArray<DomSymbolArray>(
                             I_.Namespace, domCorpus_) },
         { "doc",        domCreate(I_.javadoc, domCorpus_) }

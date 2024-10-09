@@ -110,6 +110,8 @@ void mergeInfo(Info& I, Info&& Other)
     if(I.Access == AccessKind::None)
         I.Access = Other.Access;
     I.Implicit &= Other.Implicit;
+    I.ImplementationDefined |= Other.ImplementationDefined;
+    I.SeeBelow |= Other.SeeBelow;
     // append javadocs
     if(! I.javadoc)
         I.javadoc = std::move(Other.javadoc);
