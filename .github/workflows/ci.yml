@@ -37,13 +37,17 @@ jobs:
             gcc 14
             clang 18
             msvc >=14.40
+            apple-clang *
           standards: '20'
-          latest-factors: ''
-          factors: |
+          latest-factors: |
             msvc Optimized-Debug
+          factors: ''
+          runs-on: |
+            apple-clang: macos-15
           build-types: |
             gcc: Release
             clang: Release
+            apple-clang: Release
             msvc: RelWithDebInfo
             msvc Optimized-Debug: Debug
           ccflags: |
@@ -51,8 +55,8 @@ jobs:
           cxxflags: |
             msvc Optimized-Debug: /Ob1 /O2 /Zi
           install: |
-            gcc: git build-essential pkg-config python3 curl openjdk-11-jdk ninja-build pkg-config libncurses-dev libxml2-utils libxml2-dev
-            clang: git build-essential pkg-config python3 curl openjdk-11-jdk ninja-build pkg-config libncurses-dev libxml2-utils libxml2-dev
+            gcc: git build-essential pkg-config python3 curl openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev
+            clang: git build-essential pkg-config python3 curl openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev
             msvc: ''
           extra-values: |
             llvm-hash: e1065370aaacb1b1cb48e77d37d376bf024f4a39
@@ -68,6 +72,8 @@ jobs:
             llvm-archive-filename: {{ llvm-archive-basename }}.{{ llvm-archive-extension }}
             libcxx-runtimes: libcxx;libcxxabi{{#if (ine os 'windows') }};libunwind{{/if}}
             libcxx-targets: cxx {{#if (ine os 'windows') }}cxxabi unwind{{/if}} install-cxx {{#if (ine os 'windows') }}install-cxxabi install-unwind{{/if}}
+            libcxx-cxxflags: {{#if (ieq os 'windows') }}-D__ORDER_LITTLE_ENDIAN__=1234 -D__ORDER_BIG_ENDIAN__=4321 -D__BYTE_ORDER__=__ORDER_LITTLE_ENDIAN__{{/if}}
+            libcxx-cmake-args: -D LLVM_ENABLE_RUNTIMES="{{ libcxx-runtimes }}" {{#if (ieq os 'windows') }}-D LIBCXXABI_USE_LLVM_UNWINDER=OFF -D LIBCXXABI_ENABLE_SHARED=OFF -D LIBCXXABI_ENABLE_STATIC=ON -D LIBCXX_ENABLE_SHARED=OFF -D LIBCXX_NO_VCRUNTIME=ON{{/if}} {{#if (ieq os 'macos') }}-D CMAKE_OSX_ARCHITECTURES=""{{/if}} 
             mrdocs-ccflags: {{ ccflags }} {{#if (eq compiler 'gcc') }}-static{{/if}} {{#if asan }}-static-libasan{{/if}} {{#if tsan }}-static-libtsan{{/if}}
             mrdocs-cxxflags: {{ cxxflags }} {{#if (eq compiler 'gcc') }}-static{{/if}} {{#if asan }}-static-libasan{{/if}} {{#if tsan }}-static-libtsan{{/if}}
             mrdocs-package-generators: {{#if (ieq os 'windows') }}7Z ZIP WIX{{else}}TGZ TXZ{{/if}}
@@ -131,8 +137,7 @@ jobs:
           trace-commands: 'true'
 
       - name: Setup Ninja
-        uses: seanmiddleditch/gha-setup-ninja@v4
-        if: ${{ runner.os == 'Windows' }}
+        uses: seanmiddleditch/gha-setup-ninja@v5
 
       - name: Setup C++
         uses: alandefreitas/cpp-actions/setup-cpp@v1.8.7
@@ -140,6 +145,15 @@ jobs:
         with:
           compiler: ${{ matrix.compiler }}
           version: ${{ matrix.version }}
+
+      # If apple-clang on macos, we run `clang -print-targets` to
+      # get the list of targets supported by the compiler.
+      - name: Print Clang Targets
+        if: matrix.compiler == 'apple-clang'
+        run: |
+          set -x
+          ${{ steps.setup-cpp.outputs.cxx }} --print-targets
+          ${{ steps.setup-cpp.outputs.cxx }} --print-target-triple
 
       - name: Install System Packages
         uses: alandefreitas/cpp-actions/package-install@v1.8.7
@@ -323,24 +337,19 @@ jobs:
           source-dir: ../third-party/llvm-project/runtimes
           build-dir: ${sourceDir}/build-libcxx
           build-target: ${{ matrix.libcxx-targets }}
-          cc: ../third-party/llvm-project/install/bin/clang
-          cxx: ../third-party/llvm-project/install/bin/clang++
-          cxxflags: ${{ runner.os == 'Windows' && '-D__ORDER_LITTLE_ENDIAN__=1234 -D__ORDER_BIG_ENDIAN__=4321 -D__BYTE_ORDER__=__ORDER_LITTLE_ENDIAN__' || '' }}
+          # MrDocs will only use the LibC++ headers: any compiler that works in this workflow will do
+          cc: ${{ runner.os == 'macOS' && steps.setup-cpp.outputs.cc || '../third-party/llvm-project/install/bin/clang' }}
+          cxx: ${{ runner.os == 'macOS' && steps.setup-cpp.outputs.cxx || '../third-party/llvm-project/install/bin/clang++' }}
+          cxxflags: ${{ matrix.libcxx-cxxflags }}
           generator: Ninja
-          extra-args: |
-            -D LLVM_ENABLE_RUNTIMES="${{ matrix.libcxx-runtimes }}"
-            ${{ runner.os == 'Windows' && '-D LIBCXXABI_USE_LLVM_UNWINDER=OFF' || '' }}
-            ${{ runner.os == 'Windows' && '-D LIBCXXABI_ENABLE_SHARED=OFF' || '' }} 
-            ${{ runner.os == 'Windows' && '-D LIBCXXABI_ENABLE_STATIC=ON' || '' }}
-            ${{ runner.os == 'Windows' && '-D LIBCXX_ENABLE_SHARED=OFF' || '' }}
-            ${{ runner.os == 'Windows' && '-D LIBCXX_NO_VCRUNTIME=ON' || '' }}
+          extra-args: ${{ matrix.libcxx-cmake-args }}
           install: true
           install-prefix: ${sourceDir}/../install
           run-tests: false
           trace-commands: true
 
       - name: Install Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
 
@@ -427,12 +436,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
 
       - name: Setup Ninja
-        uses: seanmiddleditch/gha-setup-ninja@v4
+        uses: seanmiddleditch/gha-setup-ninja@v5
         if: ${{ runner.os == 'Windows' }}
 
       - name: Download MrDocs package
@@ -445,7 +454,8 @@ jobs:
         run: |
           set -x
           if [[ ${{ runner.os }} != 'Windows' ]]; then
-              dest_dir="/usr/local"
+              dest_dir="$HOME/local"
+              mkdir -p "$dest_dir" 
               find packages -maxdepth 1 -name 'MrDocs-*.tar.gz' -exec tar -vxzf {} -C $dest_dir --strip-components=1 \;              
           else
               dest_dir="$GITHUB_WORKSPACE/usr/local"
@@ -475,6 +485,39 @@ jobs:
           modules-exclude-paths: ''
           trace-commands: true
 
+      - name: Set up llvm-symbolizer
+        if: ${{ runner.os == 'macOS' }}
+        run: |
+          set -x
+
+          # Step 1: Check if llvm-symbolizer is installed
+          if ! command -v llvm-symbolizer &> /dev/null; then
+              echo "llvm-symbolizer is not installed. Installing via Homebrew..."
+              # Step 2: Install llvm if not installed
+              if command -v brew &> /dev/null; then
+                  brew install llvm
+              else
+                  echo "Homebrew is not installed. Please install Homebrew first: https://brew.sh/"
+                  exit 1
+              fi
+          fi
+          
+          # Step 3: Ensure llvm-symbolizer is in your PATH
+          llvm_bin_path=$(brew --prefix)/opt/llvm/bin
+          PATH="$PATH:$llvm_bin_path"
+          LLVM_SYMBOLIZER_PATH=$(which llvm-symbolizer)
+          if [ -z "$LLVM_SYMBOLIZER_PATH" ]; then
+              echo "llvm-symbolizer installation failed or it's not in the PATH."
+              exit 1
+          else
+              echo "llvm-symbolizer found at: $LLVM_SYMBOLIZER_PATH"
+          fi
+          
+          # Step 4: Export LLVM_SYMBOLIZER_PATH environment variable
+          export LLVM_SYMBOLIZER_PATH="$LLVM_SYMBOLIZER_PATH"
+          echo -e "LLVM_SYMBOLIZER_PATH=$LLVM_SYMBOLIZER_PATH" >> $GITHUB_ENV
+          echo "Environment variable LLVM_SYMBOLIZER_PATH set to: $LLVM_SYMBOLIZER_PATH"
+          
       - name: Generate Landing Page
         working-directory: docs/website
         run: |
