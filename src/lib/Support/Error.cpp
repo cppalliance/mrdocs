@@ -258,7 +258,7 @@ call_impl(
                     e->location().line());
             }
             os << fmt::format(
-                "    Reported From: `{}` at line {}",
+                "    Reported From: `{}` at line {}\n",
                 ::SourceFileNames::getFileName(loc->file_name()),
                 loc->line());
             // VFALCO attach a stack trace for Level::fatal

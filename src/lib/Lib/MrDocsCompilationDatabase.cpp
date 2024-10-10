@@ -21,6 +21,8 @@
 #include <llvm/Option/ArgList.h>
 #include <llvm/Option/OptTable.h>
 #include <llvm/Support/FileSystem.h>
+#include <llvm/Support/Program.h>
+#include <llvm/TargetParser/Host.h>
 #include <ranges>
 
 namespace clang {
@@ -243,8 +245,8 @@ static
 std::vector<std::string>
 adjustCommandLine(
     llvm::StringRef workingDir,
-    const std::vector<std::string>& cmdline,
-    const std::vector<std::string>& additional_defines,
+    std::vector<std::string> const& cmdline,
+    std::vector<std::string> const& additional_defines,
     std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories,
     std::vector<std::string> const& stdlibIncludes,
     std::vector<std::string> const& systemIncludes,
@@ -292,6 +294,72 @@ adjustCommandLine(
     new_cmdline.emplace_back(is_clang_cl ? "/w" : "-w");
     new_cmdline.emplace_back("-fsyntax-only");
 
+    // ------------------------------------------------------
+    // Target architecture
+    // ------------------------------------------------------
+    constexpr auto is_target_option = [](std::string_view opt) {
+        return opt == "-target" || opt == "--target";
+    };
+    if (std::ranges::find_if(cmdline, is_target_option) == cmdline.end())
+    {
+        auto getCommandCompilerTarget = [&]() -> std::string {
+            ScopedTempFile const outputPath("compiler-triple", "txt");
+            if (!outputPath) {
+                return {};
+            }
+            std::vector<llvm::StringRef> args = {
+                progName, "--print-target-triple"
+            };
+            std::optional<llvm::StringRef> const redirects[] = {
+                llvm::StringRef(),
+                outputPath.path(),
+                llvm::StringRef()
+            };
+            int const result = llvm::sys::ExecuteAndWait(
+                progName, args, std::nullopt, redirects);
+            if (result != 0)
+            {
+                return {};
+            }
+
+            auto const bufferOrError = llvm::MemoryBuffer::getFile(
+                outputPath.path());
+            if (!bufferOrError) {
+                return {};
+            }
+            return bufferOrError.get()->getBuffer().trim().str();
+        };
+
+        [&]() {
+            std::string target = llvm::sys::getDefaultTargetTriple();
+
+            if (target.empty())
+            {
+                target = llvm::sys::getProcessTriple();
+            }
+
+            if (target.empty())
+            {
+                target = getCommandCompilerTarget();
+            }
+
+#if defined(__APPLE__)
+            if (target.empty())
+            {
+                target = "arm64-apple-darwin24.0.0";
+            }
+#else
+            if (target.empty())
+            {
+                return;
+            }
+#endif
+
+            new_cmdline.emplace_back("-target");
+            new_cmdline.emplace_back(target);
+        }();
+    }
+    
     // ------------------------------------------------------
     // Add additional defines
     // ------------------------------------------------------
