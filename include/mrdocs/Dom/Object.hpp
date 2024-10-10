@@ -420,14 +420,29 @@ private:
 //
 //------------------------------------------------
 
-/** A lazy Object implementation.
+/** Abstract lazy object interface.
 
-    This implementation is used to construct an
-    Object on demand.
+    This interface is used to define objects
+    that are constructed on demand.
+
+    The subclass must override the `construct`
+    function to return the constructed object.
+    It will typically also store whatever
+    data is necessary to construct this object.
+
+    When any of the object properties are accessed
+    for the first time, the object is constructed.
+    This can happen via any of the public functions,
+    such as `get`, `set`, `size`, `exists`, or `visit`.
 
     The underlying object storage is only
     initialized when the first property is
-    set or accessed.
+    set or accessed. In practice, it means
+    the object is never initialized if it's
+    not used in a template.
+
+    When the object is initialized, the
+
 */
 class MRDOCS_DECL
     LazyObjectImpl : public ObjectImpl
@@ -440,6 +455,18 @@ class MRDOCS_DECL
 
     using impl_type = Object::impl_type;
 
+    /* Return the constructed object.
+
+       This function is invoked by all public
+       functions that access the object properties.
+
+       When invoked for the first time, the object
+       is constructed and stored in the shared
+       pointer.
+
+       Further invocations return a reference
+       to the existing value in the shared pointer.
+    */
     ObjectImpl& obj() const;
 
 protected:
