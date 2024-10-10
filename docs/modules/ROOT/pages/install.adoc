@@ -407,6 +407,9 @@ export CXX="./install/bin/clang++"
 export CC="./install/bin/clang"
 ----
 
+These options set the C and pass:[C++] compilers to the ones previously installed by LLVM.
+MrDocs only depends on the pass:[LibC++] headers, so any compiler that works for this step should be fine.
+
 Run a command such as the following to configure LLVM:
 
 [tabs]
