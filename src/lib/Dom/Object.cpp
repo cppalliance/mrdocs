@@ -218,15 +218,29 @@ LazyObjectImpl::
 obj() const
 {
 #ifdef __cpp_lib_atomic_shared_ptr
-    auto impl = sp_.load();
-    if(impl)
+    std::shared_ptr<ObjectImpl> impl = sp_.load();
+    if (impl)
+    {
+        // Already initialized
         return *impl;
-    impl_type expected = nullptr;
-    if(sp_.compare_exchange_strong(
-            expected, construct().impl()))
+    }
+
+    // Fetch the shared pointer from the factory
+    std::shared_ptr<ObjectImpl> expected = nullptr;
+    std::shared_ptr<ObjectImpl> desired = construct().impl();
+    MRDOCS_ASSERT(desired);
+    if (sp_.compare_exchange_strong(expected, std::move(desired)))
+    {
         return *sp_.load();
+    }
     return *expected;
 #else
+    if (sp_)
+    {
+        return *sp_;
+    }
+    sp_ = construct().impl();
+    MRDOCS_ASSERT(sp_);
     return *sp_;
 #endif
 }
