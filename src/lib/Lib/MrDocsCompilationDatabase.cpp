@@ -359,7 +359,18 @@ adjustCommandLine(
             new_cmdline.emplace_back(target);
         }();
     }
-    
+
+    // ------------------------------------------------------
+    // Language standard
+    // ------------------------------------------------------
+    constexpr auto is_std_option = [](std::string_view opt) {
+        return opt.starts_with("-std=") || opt.starts_with("--std=") || opt.starts_with("/std:");
+    };
+    if (std::ranges::find_if(cmdline, is_std_option) == cmdline.end())
+    {
+        new_cmdline.emplace_back("-std=c++23");
+    }
+
     // ------------------------------------------------------
     // Add additional defines
     // ------------------------------------------------------
