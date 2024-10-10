@@ -72,8 +72,8 @@ namespace mrdocs {
 # endif
 #endif
 
-#if ! defined(__x86_64__) &&  ! defined(_WIN64)
-# error mrdox requires a 64-bit archtecture
+#if ! defined(__x86_64__) && ! defined(_WIN64) && ! defined(__aarch64__)
+# error mrdocs requires a 64-bit architecture
 #endif
 
 } // mrdocs
