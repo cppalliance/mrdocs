@@ -383,6 +383,9 @@ parseBashArgs(std::string_view str)
     return args;
 }
 
+/* Pushes the CMake arguments to the `args` vector, replacing the
+ * default generator with Ninja if Visual Studio is the default generator.
+ */
 Expected<void>
 pushCMakeArgs(
     std::string const& cmakePath,
