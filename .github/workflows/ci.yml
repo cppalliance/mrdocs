@@ -552,7 +552,8 @@ jobs:
           # documentation content and visualize it
           # before a workflow that pushes to the
           # website is triggered.
-          npx antora antora-playbook.yml --attribute branchesarray=HEAD
+          set -x
+          npx antora antora-playbook.yml --attribute branchesarray=HEAD --stacktrace
           mkdir -p ../build/docs-local
           cp -r build/site/* ../build/docs-local
 
