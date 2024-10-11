@@ -211,6 +211,7 @@ operator==(Javadoc const& other) const noexcept
         tparams == other.tparams &&
         exceptions == other.exceptions &&
         sees == other.sees &&
+        related == other.related &&
         preconditions == other.preconditions &&
         postconditions == other.postconditions;
 }

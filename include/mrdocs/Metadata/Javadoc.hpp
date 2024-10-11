@@ -120,6 +120,7 @@ enum class NodeKind
     throws,
     details,
     see,
+    related,
     precondition,
     postcondition
 };
@@ -371,6 +372,26 @@ struct Copied final : Reference
     {
         return Kind == other.Kind &&
             *this == dynamic_cast<Copied const&>(other);
+    }
+};
+
+/** A reference to a related symbol.
+*/
+struct Related final : Reference
+{
+    static constexpr auto static_kind = NodeKind::related;
+
+    Related(std::string string_ = std::string()) noexcept
+        : Reference(std::move(string_), NodeKind::related)
+    {
+    }
+
+    auto operator<=>(Related const&) const = default;
+    bool operator==(Related const&) const noexcept = default;
+    bool equals(Node const& other) const noexcept override
+    {
+        return Kind == other.Kind &&
+            *this == dynamic_cast<Related const&>(other);
     }
 };
 
@@ -928,6 +949,8 @@ visit(
         return f.template operator()<Precondition>(std::forward<Args>(args)...);
     case NodeKind::postcondition:
         return f.template operator()<Postcondition>(std::forward<Args>(args)...);
+    case NodeKind::related:
+        return f.template operator()<Related>(std::forward<Args>(args)...);
     default:
         return f.template operator()<void>(std::forward<Args>(args)...);
     }
@@ -995,6 +1018,8 @@ visit(
         return visitor.template visit<Precondition>();
     case NodeKind::postcondition:
         return visitor.template visit<Postcondition>();
+    case NodeKind::related:
+        return visitor.template visit<Related>();
     default:
         MRDOCS_UNREACHABLE();
     }
@@ -1063,11 +1088,15 @@ struct MRDOCS_DECL
     /// The list of "see also" references.
     std::vector<doc::See> sees;
 
+    /// The list of "related" references.
+    std::vector<doc::Related> related;
+
     /// The list of preconditions.
     std::vector<doc::Precondition> preconditions;
 
     /// The list of postconditions.
     std::vector<doc::Postcondition> postconditions;
+
 
     /** Constructor.
     */
@@ -1093,6 +1122,7 @@ struct MRDOCS_DECL
             tparams.empty() &&
             exceptions.empty() &&
             sees.empty() &&
+            related.empty() &&
             preconditions.empty() &&
             postconditions.empty();
     }

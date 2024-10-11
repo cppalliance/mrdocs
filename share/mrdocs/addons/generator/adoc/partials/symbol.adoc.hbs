@@ -174,3 +174,13 @@
 {{/each}}
 
 {{/if}}
+{{! Related }}
+{{#if symbol.doc.related}}
+{{#> markup/dynamic-level-h }}Related{{/markup/dynamic-level-h}}
+
+{{#each symbol.doc.related}}
+{{{.}}}
+
+{{/each}}
+
+{{/if}}
