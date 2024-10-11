@@ -1,0 +1,6 @@
+# $schema: https://mrdocs.com/docs/mrdocs/develop/_attachments/mrdocs.schema.json
+# yaml-language-server: $schema=https://mrdocs.com/docs/mrdocs/develop/_attachments/mrdocs.schema.json
+
+source-root: ../include
+multipage: false
+generate: adoc
