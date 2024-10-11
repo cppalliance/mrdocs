@@ -806,20 +806,31 @@ jobs:
       - name: Website LLVM Releases
         if: steps.llvm-cache.outputs.cache-hit == 'true' && github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/'))
         working-directory: ../third-party/llvm-project
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
+          set -x
+          
+          # Ensure required commands exist
+          for cmd in ssh-keyscan ssh-agent ssh-add scp; do
+            if ! command -v $cmd >/dev/null; then
+              echo "$cmd not found"
+              exit 1
+            fi
+          done
+          
           # Add SSH key
-          mkdir -p /home/runner/.ssh
-          ssh-keyscan dev-websites.cpp.al >> /home/runner/.ssh/known_hosts
-          chmod 600 /home/runner/.ssh/known_hosts
-          echo "${{ secrets.DEV_WEBSITES_SSH_KEY }}" > /home/runner/.ssh/github_actions
-          chmod 600 /home/runner/.ssh/github_actions
-          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-          ssh-add /home/runner/.ssh/github_actions
+          mkdir -p ~/.ssh
+          ssh-keyscan dev-websites.cpp.al >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+          echo "${{ secrets.DEV_WEBSITES_SSH_KEY }}" > ~/.ssh/github_actions
+          chmod 600 ~/.ssh/github_actions
 
-          # Remove previous demos associated with this tag
+          # Start ssh-agent and add the key
+          SSH_AUTH_SOCK="$RUNNER_TEMP/ssh_agent.sock"
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add ~/.ssh/github_actions
+
+          # Copy llvm archive: This step will copy the archive to www.mrdocs.com/llvm+clang
           llvm_dir="/var/www/mrdox.com/llvm+clang"
-          chmod 755 -R ${{ matrix.llvm-archive-filename }}
+          chmod 755 ${{ matrix.llvm-archive-filename }}
           scp -o StrictHostKeyChecking=no $(pwd)/${{ matrix.llvm-archive-filename }} ubuntu@dev-websites.cpp.al:$llvm_dir/
 
