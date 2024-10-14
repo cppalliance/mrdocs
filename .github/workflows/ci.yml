@@ -533,6 +533,8 @@ jobs:
           # This playbook renders the documentation 
           # content for the website. It includes
           # master, develop, and tags.
+          GH_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+          export GH_TOKEN
           npm ci
           npx antora antora-playbook.yml
           mkdir -p ../build/website/docs
@@ -553,6 +555,8 @@ jobs:
           # before a workflow that pushes to the
           # website is triggered.
           set -x
+          GH_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+          export GH_TOKEN
           npx antora antora-playbook.yml --attribute branchesarray=HEAD --stacktrace
           mkdir -p ../build/docs-local
           cp -r build/site/* ../build/docs-local
