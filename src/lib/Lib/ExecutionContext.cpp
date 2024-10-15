@@ -21,6 +21,7 @@ namespace mrdocs {
 
 namespace {
 
+#if 0
 /** Merges a vector of Info objects.
 
     This function is used to merge a vector of Info objects with the same
@@ -42,6 +43,7 @@ mergeInfos(std::vector<std::unique_ptr<Info>>& Values)
             return reduce<T>(Values);
         });
 }
+#endif
 
 /** Merges two Info objects.
 
