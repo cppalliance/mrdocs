@@ -388,7 +388,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.mrdocs-release-package-artifact }}
-          path: build/packages
+          path: |
+            build/packages
+            !build/packages/_CPack_Packages
           retention-days: 1
 
       - name: FlameGraph
@@ -432,8 +434,12 @@ jobs:
         with:
           apt-get: build-essential asciidoctor cmake bzip2 git
 
-      - name: Clone mrdocs
+      - name: Clone MrDocs
         uses: actions/checkout@v4
+
+      - name: Set Repository Ownership
+        run: |
+          git config --global --add safe.directory "$(pwd)"
 
       - name: Install Node.js
         uses: actions/setup-node@v4
@@ -453,6 +459,13 @@ jobs:
       - name: Install MrDocs from Package
         run: |
           set -x
+          
+          # Delete packages/_CPack_Packages files from previous runs
+          rm -rf packages/_CPack_Packages
+          
+          # Print tree structure
+          find packages -print | sed 's;[^/]*/;|____;g;s;____|; |;g'
+          
           if [[ ${{ runner.os }} != 'Windows' ]]; then
               dest_dir="$HOME/local"
               mkdir -p "$dest_dir" 
@@ -695,13 +708,6 @@ jobs:
           chmod 755 -R $(pwd)/demos
           scp -o StrictHostKeyChecking=no -r $(pwd)/demos/* ubuntu@dev-websites.cpp.al:$demo_dir/
 
-      - name: Clone MrDocs
-        uses: actions/checkout@v4
-
-      - name: Set Repository Ownership
-        run: |
-          git config --global --add safe.directory "$(pwd)"
-
       - name: Create changelog
         uses: alandefreitas/cpp-actions/create-changelog@v1.8.7
         with:
@@ -720,9 +726,10 @@ jobs:
 
       - name: Create GitHub Package Release
         if: ${{ github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) }}
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
-          files: packages/MrDocs-?.?.?-*.*
+          files: packages/MrDocs-*.*.*-*.*
+          fail_on_unmatched_files: true
           name: ${{ github.ref_name || github.ref }}
           tag_name: ${{ github.ref_name || github.ref }}${{ ((!startsWith(github.ref, 'refs/tags/')) && '-release') || '' }}
           body_path: CHANGELOG.md
