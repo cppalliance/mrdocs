@@ -599,7 +599,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: demos${{ (contains(fromJSON('["master", "develop"]'), github.ref_name ) && format('-{0}', github.ref_name)) || '' }}-${{ runner.os }}
-          path: ${{ env.demos_path }}
+          path: demos.tar.gz
           # develop and master are retained for longer so that they can be compared
           retention-days: ${{ contains(fromJSON('["master", "develop"]'), github.ref_name) && '30' || '1' }}
 
