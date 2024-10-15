@@ -308,13 +308,22 @@ struct Link : Text
 struct Reference : Text
 {
     SymbolID id = SymbolID::invalid;
+    std::string fileName;
+    int line;
+    int column;
 
     static constexpr Kind static_kind = Kind::reference;
 
     explicit
     Reference(
-        String string_ = String()) noexcept
+        String string_ = String(),
+        String fileName_ = String(),
+        uint32_t line_ = 0,
+        uint32_t column_ = 0) noexcept
         : Text(std::move(string_), Kind::reference)
+        , fileName(std::move(fileName_))
+        , line(line_)
+        , column(column_)
     {
     }
 
@@ -328,8 +337,14 @@ struct Reference : Text
 protected:
     Reference(
         String string_,
-        Kind kind_) noexcept
+        Kind kind_,
+        String fileName_,
+        uint32_t line_,
+        uint32_t column_) noexcept
         : Text(std::move(string_), kind_)
+        , fileName(std::move(fileName_))
+        , line(line_)
+        , column(column_)
     {
     }
 };
@@ -344,8 +359,11 @@ struct Copied : Reference
 
     Copied(
         String string_ = String(),
+        String fileName_ = String(),
+        uint32_t line_ = 0,
+        uint32_t column_ = 0,
         Parts parts_ = Parts::all) noexcept
-        : Reference(std::move(string_), Kind::copied)
+        : Reference(std::move(string_), Kind::copied, std::move(fileName_), line_, column_)
         , parts(parts_)
     {
     }
