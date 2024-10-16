@@ -190,17 +190,13 @@ class Finalizer
 
             if constexpr(std::derived_from<NodeTy, doc::Reference>)
             {
-#if 0
                 // This warning shouldn't be triggered if the symbol has
                 // been explicitly marked excluded in mrdocs.yml
                 if(! resolveReference(N))
                 {
-                    report::warn("Failed to resolve reference to '{}' from '{}'",
-                        N.string, current_->Name);
+                    report::warn("Failed to resolve reference to '{}' from '{}' at file '{}' line {} column {}",
+                        N.string, current_->Name, N.fileName, N.line, N.column);
                 }
-#else
-                resolveReference(N);
-#endif
             }
         });
     }

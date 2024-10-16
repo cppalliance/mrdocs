@@ -834,9 +834,16 @@ visitInlineCommandComment(
                 close = std::ranges::count(ref, ')');
             }
         }
+        PresumedLoc const loc = sm_.getPresumedLoc(C->getBeginLoc());
+        auto filename = loc.getFilename();
+        auto line = loc.getLine();
+        auto column = loc.getColumn(); 
         emplaceText<doc::Copied>(
             C->hasTrailingNewline(),
             ref,
+            filename,
+            line,
+            column,
             convertCopydoc(ID));
         return;
     }
@@ -855,11 +862,18 @@ visitInlineCommandComment(
         bool const hasExtraText = ref.size() != s.size();
         if (!ref.empty())
         {
+            PresumedLoc const loc = sm_.getPresumedLoc(C->getBeginLoc());
+            auto filename = loc.getFilename();
+            auto line = loc.getLine();
+            auto column = loc.getColumn();
             // the referenced symbol will be resolved during
             // the finalization step once all symbols are extracted
             emplaceText<doc::Reference>(
                 C->hasTrailingNewline() && !hasExtraText,
-                std::string(ref));
+                std::string(ref),
+                std::string(filename),
+                line,
+                column);
         }
         // Emplace the rest of the string as doc::Text
         if(hasExtraText)
