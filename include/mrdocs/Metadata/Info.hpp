@@ -88,6 +88,10 @@ struct MRDOCS_VISIBLE
     */
     bool Implicit = false;
 
+    bool ImplementationDefined = false;
+
+    bool SeeBelow = false;
+
     /** Ordered list of parent namespaces.
      */
     std::vector<SymbolID> Namespace;
