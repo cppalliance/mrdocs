@@ -160,11 +160,13 @@ static void mergeExprInfo(
 void merge(NamespaceInfo& I, NamespaceInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
-    // I.specs.raw.value |= Other.specs.raw.value;
     mergeScopeInfo(I, std::move(Other));
     mergeInfo(I, std::move(Other));
     reduceSymbolIDs(I.UsingDirectives,
         std::move(Other.UsingDirectives));
+
+    I.IsInline |= Other.IsInline;
+    I.IsAnonymous |= Other.IsAnonymous;
 }
 
 void merge(RecordInfo& I, RecordInfo&& Other)
@@ -173,8 +175,10 @@ void merge(RecordInfo& I, RecordInfo&& Other)
     if(Other.KeyKind != RecordKeyKind::Struct &&
         I.KeyKind != Other.KeyKind)
         I.KeyKind = Other.KeyKind;
-    I.IsTypeDef = I.IsTypeDef || Other.IsTypeDef;
-    // I.specs.raw.value |= Other.specs.raw.value;
+    I.IsTypeDef |= Other.IsTypeDef;
+    I.IsFinal |= Other.IsFinal;
+    I.IsFinalDestructor |= Other.IsFinalDestructor;
+
     if (I.Bases.empty())
         I.Bases = std::move(Other.Bases);
     // KRYSTIAN FIXME: really should use explicit cases here.
@@ -200,13 +204,37 @@ void merge(FunctionInfo& I, FunctionInfo&& Other)
     mergeInfo(I, std::move(Other));
     if (!I.Template)
         I.Template = std::move(Other.Template);
-    // I.specs0.raw.value |= Other.specs0.raw.value;
-    // I.specs1.raw.value |= Other.specs1.raw.value;
     if(I.Noexcept.Implicit)
         I.Noexcept = std::move(Other.Noexcept);
     if(I.Explicit.Implicit)
         I.Explicit = std::move(Other.Explicit);
     mergeExprInfo(I.Requires, std::move(Other.Requires));
+
+    I.IsVariadic |= Other.IsVariadic;
+    I.IsVirtual |= Other.IsVirtual;
+    I.IsVirtualAsWritten |= Other.IsVirtualAsWritten;
+    I.IsPure |= Other.IsPure;
+    I.IsDefaulted |= Other.IsDefaulted;
+    I.IsExplicitlyDefaulted |= Other.IsExplicitlyDefaulted;
+    I.IsDeleted |= Other.IsDeleted;
+    I.IsDeletedAsWritten |= Other.IsDeletedAsWritten;
+    I.IsNoReturn |= Other.IsNoReturn;
+    I.HasOverrideAttr |= Other.HasOverrideAttr;
+    I.HasTrailingReturn |= Other.HasTrailingReturn;
+    I.IsConst |= Other.IsConst;
+    I.IsVolatile |= Other.IsVolatile;
+    I.IsFinal |= Other.IsFinal;
+    I.IsNodiscard |= Other.IsNodiscard;
+    I.IsExplicitObjectMemberFunction |= Other.IsExplicitObjectMemberFunction;
+
+    if(I.Constexpr == ConstexprKind::None)
+        I.Constexpr = Other.Constexpr;
+    if(I.StorageClass == StorageClassKind::None)
+        I.StorageClass = Other.StorageClass;
+    if(I.RefQualifier == ReferenceKind::None)
+        I.RefQualifier = Other.RefQualifier;
+    if(I.OverloadedOperator == OperatorKind::None)
+        I.OverloadedOperator = Other.OverloadedOperator;
 }
 
 void merge(GuideInfo& I, GuideInfo&& Other)
@@ -257,14 +285,17 @@ void merge(FieldInfo& I, FieldInfo&& Other)
         I.Type = std::move(Other.Type);
     mergeSourceInfo(I, std::move(Other));
     mergeInfo(I, std::move(Other));
-    // I.specs.raw.value |= Other.specs.raw.value;
-    I.IsMutable |= Other.IsMutable;
     if(I.Default.Written.empty())
         I.Default = std::move(Other.Default);
 
     I.IsBitfield |= Other.IsBitfield;
     mergeExprInfo(I.BitfieldWidth,
         std::move(Other.BitfieldWidth));
+
+    I.IsMutable |= Other.IsMutable;
+    I.IsMaybeUnused |= Other.IsMaybeUnused;
+    I.IsDeprecated |= Other.IsDeprecated;
+    I.HasNoUniqueAddress |= Other.HasNoUniqueAddress;
 }
 
 void merge(VariableInfo& I, VariableInfo&& Other)
@@ -278,7 +309,14 @@ void merge(VariableInfo& I, VariableInfo&& Other)
         I.Initializer = std::move(Other.Initializer);
     mergeSourceInfo(I, std::move(Other));
     mergeInfo(I, std::move(Other));
-    // I.specs.raw.value |= Other.specs.raw.value;
+
+    I.IsConstinit |= Other.IsConstinit;
+    I.IsThreadLocal |= Other.IsThreadLocal;
+
+    if(I.Constexpr == ConstexprKind::None)
+        I.Constexpr = Other.Constexpr;
+    if(I.StorageClass == StorageClassKind::None)
+        I.StorageClass = Other.StorageClass;
 }
 
 void merge(SpecializationInfo& I, SpecializationInfo&& Other)

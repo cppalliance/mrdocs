@@ -326,7 +326,7 @@ writeFunction(
     writeAttr(I.IsNoReturn,            "is-no-return", tags_);
     writeAttr(I.HasOverrideAttr,       "has-override", tags_);
     writeAttr(I.HasTrailingReturn,     "has-trailing-return", tags_);
-    writeAttr(I.ConstexprKind,         "constexpr-kind", tags_);
+    writeAttr(I.Constexpr,             "constexpr-kind", tags_);
     writeAttr(I.OverloadedOperator,    "operator", tags_);
     writeAttr(I.StorageClass,          "storage-class", tags_);
     writeAttr(I.IsConst,               "is-const", tags_);
@@ -593,7 +593,7 @@ writeVariable(
     writeSourceInfo(I);
 
     writeAttr(I.StorageClass, "storage-class", tags_);
-    writeAttr(I.ConstexprKind, "constexpr-kind", tags_);
+    writeAttr(I.Constexpr, "constexpr-kind", tags_);
     writeAttr(I.IsConstinit, "is-constinit", tags_);
     writeAttr(I.IsThreadLocal, "is-thread-local", tags_);
 

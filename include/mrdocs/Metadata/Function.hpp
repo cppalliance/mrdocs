@@ -135,7 +135,7 @@ struct FunctionInfo
     bool IsNodiscard = false;
     bool IsExplicitObjectMemberFunction = false;
 
-    ConstexprKind ConstexprKind = ConstexprKind::None;
+    ConstexprKind Constexpr = ConstexprKind::None;
     OperatorKind OverloadedOperator = OperatorKind::None;
     StorageClassKind StorageClass = StorageClassKind::None;
     ReferenceKind RefQualifier = ReferenceKind::None;

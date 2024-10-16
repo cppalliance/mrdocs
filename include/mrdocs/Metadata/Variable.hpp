@@ -40,7 +40,7 @@ struct VariableInfo
 
     StorageClassKind StorageClass = StorageClassKind::None;
 
-    ConstexprKind ConstexprKind = ConstexprKind::None;
+    ConstexprKind Constexpr = ConstexprKind::None;
 
     bool IsConstinit = false;
 

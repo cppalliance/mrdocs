@@ -796,7 +796,7 @@ DomInfo<T>::construct() const
                 if(! value.empty())
                     entries.emplace_back(std::move(key), std::move(value));
             };
-        set_string("constexprKind", toString(I_.ConstexprKind));
+        set_string("constexprKind", toString(I_.Constexpr));
         set_string("storageClass",  toString(I_.StorageClass));
         set_string("refQualifier",  toString(I_.RefQualifier));
 
@@ -837,7 +837,7 @@ DomInfo<T>::construct() const
         entries.insert(entries.end(), {
             { "type",           domCreate(I_.Type, domCorpus_) },
             { "template",       domCreate(I_.Template, domCorpus_) },
-            { "constexprKind",  toString(I_.ConstexprKind) },
+            { "constexprKind",  toString(I_.Constexpr) },
             { "storageClass",   toString(I_.StorageClass) },
             { "isConstinit",    I_.IsConstinit },
             { "isThreadLocal",  I_.IsThreadLocal },

@@ -2338,7 +2338,7 @@ public:
         // as both constexpr and constinit in separate declarations..
         I.IsConstinit |= D->hasAttr<ConstInitAttr>();
         if(D->isConstexpr())
-            I.ConstexprKind = ConstexprKind::Constexpr;
+            I.Constexpr = ConstexprKind::Constexpr;
 
         if(const Expr* E = D->getInit())
             buildExprInfo(I.Initializer, E);
@@ -2436,7 +2436,7 @@ public:
 
         if(ConstexprSpecKind CSK = D->getConstexprKind();
             CSK != ConstexprSpecKind::Unspecified)
-            I.ConstexprKind = convertToConstexprKind(CSK);
+            I.Constexpr = convertToConstexprKind(CSK);
 
         if(StorageClass SC = D->getStorageClass())
             I.StorageClass = convertToStorageClassKind(SC);
