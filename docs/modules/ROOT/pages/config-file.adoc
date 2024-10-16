@@ -13,6 +13,19 @@ include::partial$mrdocs-example.yml[]
 The xref:usage.adoc[Usage] page provides a detailed explanation of what to combine options from the configuration file and the command line.
 The <<config-options-reference>> section provides a detailed explanation of the options available.
 
+== YAML Schema
+
+To get linting and autocompletion in the config file, a schema for the config can be specified.
+In JetBrains IDEs, `# $schema: <url>` can be used to bind a schema to a file.
+In editors with plugins based on the https://github.com/redhat-developer/yaml-language-server[YAML language server], `# yaml-language-server: $schema=<url>` can be used.
+The schema for `mrdocs.yml` is provided xref:attachment$mrdocs.schema.json[here].
+The following shows an example of a file specifying an inline-schema that's compatible with JetBrains IDEs and editors using the YAML language server.
+
+[source,yaml]
+--------
+include::partial$mrdocs-schema-example.yml[]
+--------
+
 == Build Options
 
 A number of options can be used to specify with which compile options MrDocs should be run.

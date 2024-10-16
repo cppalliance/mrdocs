@@ -1,3 +1,6 @@
+# $schema: ./mrdocs.schema.json
+# yaml-language-server: $schema=./mrdocs.schema.json
+
 verbose: true
 source-root: ..
 multipage: false

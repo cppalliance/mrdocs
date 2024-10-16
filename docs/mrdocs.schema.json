@@ -1,0 +1,252 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "properties": {
+    "addons": {
+      "default": "<mrdocs-root>/share/mrdocs/addons",
+      "description": "Path to the Addons directory. The Addons directory contains the template files used by generators to create the documentation. When a custom Addons directory is not specified, the default templates are used. The default templates are located at the `share/mrdocs/addons` directory of the MrDocs installation. Users can create custom templates by copying the default templates to a custom directory and specifying the custom directory using this option.",
+      "title": "Path to the Addons directory",
+      "type": "string"
+    },
+    "anonymous-namespaces": {
+      "default": "always",
+      "description": "Determine whether symbols in anonymous namespaces should be extracted. When set to `always`, symbols in anonymous namespaces are always extracted. When set to `dependency`, symbols in anonymous namespaces are extracted only if they are referenced by the source code. When set to `never`, symbols in anonymous namespaces are never extracted.",
+      "enum": [
+        "always",
+        "dependency",
+        "never"
+      ],
+      "title": "Extraction policy for anonymous namespaces"
+    },
+    "base-url": {
+      "default": "",
+      "description": "Base URL for links to source code. The base URL is used to create links to the source code in the documentation. The base URL is combined with the path to the source file to create the link.",
+      "title": "Base URL for links to source code",
+      "type": "string"
+    },
+    "cmake": {
+      "default": "",
+      "description": "When the compilation-database option is a CMakeLists.txt file, these arguments are passed to the cmake command to generate the compilation_database.json.",
+      "title": "CMake arguments when generating the compilation database from CMakeLists.txt",
+      "type": "string"
+    },
+    "compilation-database": {
+      "default": "",
+      "description": "Path to the compilation database or a build script to generate it. The compilation database is a JSON file that contains the compiler commands used to build the source code. The compilation database is used to extract the compiler flags and the source files used to build the source code and extract symbols. This option also accepts the path to a build script such as CMakeLists.txt to be used to generate the compilation database. In this case, MrDocs will look for CMake in `PATH` or in `CMAKE_ROOT` and run the script to generate the compilation database file.",
+      "title": "Path to the compilation database",
+      "type": "string"
+    },
+    "defines": {
+      "default": [],
+      "description": "Additional defines passed to the compiler when building the source code. These defines are added to the compilation database regardless of the strategy to generate it.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Additional defines passed to the compiler",
+      "type": "array"
+    },
+    "detect-sfinae": {
+      "default": true,
+      "description": "When set to true, MrDocs detects SFINAE expressions in the source code and extracts them as part of the documentation. Expressions such as `std::enable_if<...>` are detected, removed, and documented as a requirement.",
+      "title": "Detect SFINAE expressions",
+      "type": "boolean"
+    },
+    "filters": {
+      "properties": {
+        "symbols": {
+          "description": "Symbol filters. Symbols that match these filters are extracted. The filters are applied to the fully qualified name of the symbol.",
+          "properties": {
+            "exclude": {
+              "default": [],
+              "description": "Specifies symbol exclusion patterns. Symbols that match these patterns are not extracted. The patterns are applied to the fully qualified name of the symbol.",
+              "items": {
+                "type": "string"
+              },
+              "title": "Specifies symbol exclusion patterns",
+              "type": "array"
+            },
+            "include": {
+              "default": [],
+              "description": "Specifies symbol inclusion patterns. Symbols that match these patterns are extracted. The patterns are applied to the fully qualified name of the symbol.",
+              "items": {
+                "type": "string"
+              },
+              "title": "Specifies symbol inclusion patterns",
+              "type": "array"
+            }
+          },
+          "required": [],
+          "title": "Symbol filters",
+          "type": "object"
+        }
+      },
+      "required": [],
+      "title": "Filters",
+      "type": "object"
+    },
+    "generate": {
+      "default": "adoc",
+      "enum": [
+        "adoc",
+        "html",
+        "xml"
+      ],
+      "title": "Generator used to create the documentation"
+    },
+    "ignore-failures": {
+      "default": false,
+      "description": "When set to true, MrDocs continues to generate the documentation even if there are AST visitation failures. AST visitation failures occur when the source code contains constructs that are not supported by MrDocs.",
+      "title": "Whether AST visitation failures should not stop the program",
+      "type": "boolean"
+    },
+    "ignore-map-errors": {
+      "default": false,
+      "description": "When set to true, MrDocs continues to generate the documentation even if some files are not mapped correctly. Files are not mapped correctly when the source file is not found or the compilation database does not contain the compiler flags for the source file.",
+      "title": "Continue if files are not mapped correctly",
+      "type": "boolean"
+    },
+    "implementation-defined": {
+      "default": [],
+      "description": "Namespaces for symbols rendered as \"implementation-defined\". Symbols in these namespaces are not extracted and are rendered as \"implementation-defined\" in the documentation. This option is used to exclude symbols from the documentation that are considered part of the private API of the project.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Namespaces for symbols rendered as \"implementation-defined\"",
+      "type": "array"
+    },
+    "inaccessible-bases": {
+      "default": "always",
+      "description": "Determine whether inaccessible base classes should be extracted. When set to `always`, inaccessible base classes are always extracted. When set to `dependency`, inaccessible base classes are extracted only if they are referenced by the source code. When set to `never`, inaccessible base classes are never extracted.",
+      "enum": [
+        "always",
+        "dependency",
+        "never"
+      ],
+      "title": "Extraction policy for inaccessible base classes"
+    },
+    "inaccessible-members": {
+      "default": "always",
+      "description": "Determine whether inaccessible members should be extracted. When set to `always`, inaccessible members are always extracted. When set to `dependency`, inaccessible members are extracted only if they are referenced by the source code. When set to `never`, inaccessible members are never extracted.",
+      "enum": [
+        "always",
+        "dependency",
+        "never"
+      ],
+      "title": "Extraction policy for inaccessible members"
+    },
+    "includes": {
+      "default": [],
+      "description": "Include paths. These paths are used to add directories to the include search path. The include search path is used to search for headers. The headers are used to provide declarations and definitions of symbols. The headers are part of the project and are checked for warnings and errors.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Include paths",
+      "type": "array"
+    },
+    "input": {
+      "description": "Include files to extract. Only the files listed in this option are extracted. The paths are relative to the mrdocs configuration file.",
+      "properties": {
+        "file-patterns": {
+          "default": [],
+          "description": "File patterns to include. Only the files that match these patterns are extracted. The patterns are relative to the input directories.",
+          "items": {
+            "type": "string"
+          },
+          "title": "File patterns to include",
+          "type": "array"
+        },
+        "include": {
+          "default": [],
+          "description": "Input directories to include. Only the files in these directories are extracted. The paths are relative to the mrdocs configuration file.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Input directories to include",
+          "type": "array"
+        }
+      },
+      "required": [],
+      "title": "Include files to extract",
+      "type": "object"
+    },
+    "multipage": {
+      "default": true,
+      "description": "Generates a multipage documentation. The output directory must be a directory. This option acts as a hint to the generator to create a multipage documentation. Whether the hint is followed or not depends on the generator.",
+      "title": "Generate a multipage documentation",
+      "type": "boolean"
+    },
+    "output": {
+      "default": "<config-dir>/reference-output",
+      "description": "Multipage generators expect a directory. Single page generators expect a file or a directory where the file will be created. If the directory does not exist, it will be created.",
+      "title": "Directory or file for generating output",
+      "type": "string"
+    },
+    "referenced-declarations": {
+      "default": "dependency",
+      "description": "Determine whether external declarations should be extracted when they are referenced in the source code. When set to `always`, external declarations are always extracted. When set to `dependency`, external declarations are extracted only if they are referenced by the source code. When set to `never`, external declarations are never extracted.",
+      "enum": [
+        "always",
+        "dependency",
+        "never"
+      ],
+      "title": "Extraction policy for references to external declarations"
+    },
+    "report": {
+      "default": 1,
+      "description": "The reporting level determines the amount of information displayed during the generation of the documentation. The levels are: 0 - no output, 1 - errors only, 2 - errors and warnings, 3 - errors, warnings, and information, 4 - errors, warnings, information, and debug information.",
+      "maximum": 4,
+      "minimum": 0,
+      "title": "The minimum reporting level: 0 to 4",
+      "type": "integer"
+    },
+    "see-below": {
+      "default": [],
+      "description": "Namespaces for symbols rendered as \"see-below\". Symbols in these namespaces are not extracted and are rendered as \"see-below\" in the documentation. This option is used to exclude symbols from the documentation that are considered part of the private API of the project.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Namespaces for symbols rendered as \"see-below\"",
+      "type": "array"
+    },
+    "source-root": {
+      "default": "<config-dir>",
+      "title": "Path to the root directory of the source code",
+      "type": "string"
+    },
+    "stdlib-includes": {
+      "default": [
+        "<mrdocs-root>/share/mrdocs/libcxx",
+        "<mrdocs-root>/share/mrdocs/clang"
+      ],
+      "description": "Standard Library include paths. These paths are used to replace the standard library paths provided by the compiler.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Standard Library include paths",
+      "type": "array"
+    },
+    "system-includes": {
+      "default": [],
+      "description": "System include paths. These paths are used to add directories to the system include search path. The system include search path is used to search for system headers. The system headers are headers that are provided by the system and are not part of the project. The system headers are used to provide the standard library headers and other system headers. The system headers are not part of the project and are not checked for warnings and errors.",
+      "items": {
+        "type": "string"
+      },
+      "title": "System include paths",
+      "type": "array"
+    },
+    "use-system-stdlib": {
+      "default": false,
+      "description": "True if the compiler has to use just the system standard library. When set to true, the compiler uses the system standard library instead of the standard library provided by the compiler.",
+      "title": "Use the system standard library",
+      "type": "boolean"
+    },
+    "verbose": {
+      "default": false,
+      "description": "Verbose output. When set to true, MrDocs outputs additional information during the generation of the documentation.",
+      "title": "Verbose output",
+      "type": "boolean"
+    }
+  },
+  "required": [],
+  "title": "MrDocs Configuration",
+  "type": "object"
+}

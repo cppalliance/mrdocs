@@ -383,6 +383,9 @@ jobs:
           package-generators: ${{ matrix.mrdocs-package-generators }}
           package-artifact: false
 
+      - name: Check YAML schema
+        run: npx -y -p ajv-cli -- ajv compile -s docs/mrdocs.schema.json
+
       - name: Upload GitHub Release Artifacts
         if: ${{ matrix.is-main && matrix.compiler != 'clang' }}
         uses: actions/upload-artifact@v4
@@ -845,4 +848,3 @@ jobs:
           llvm_dir="/var/www/mrdox.com/llvm+clang"
           chmod 755 ${{ matrix.llvm-archive-filename }}
           scp -o StrictHostKeyChecking=no $(pwd)/${{ matrix.llvm-archive-filename }} ubuntu@dev-websites.cpp.al:$llvm_dir/
-
