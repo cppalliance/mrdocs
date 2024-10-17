@@ -38,6 +38,9 @@ struct FieldInfo
     */
     ExprInfo Default;
 
+    /** Whether the field is a variant member */
+    bool IsVariant = false;
+
     /** Whether the field is declared mutable */
     bool IsMutable = false;
 

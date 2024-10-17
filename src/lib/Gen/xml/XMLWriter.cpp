@@ -566,6 +566,7 @@ writeField(
             {"id", "is-mutable"}
         });
 
+    writeAttr(I.IsVariant, "is-variant", tags_);
     writeAttr(I.IsMaybeUnused, "maybe-unused", tags_);
     writeAttr(I.IsDeprecated, "deprecated", tags_);
     writeAttr(I.HasNoUniqueAddress, "no-unique-address", tags_);

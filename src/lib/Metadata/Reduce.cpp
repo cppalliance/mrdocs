@@ -292,6 +292,7 @@ void merge(FieldInfo& I, FieldInfo&& Other)
     mergeExprInfo(I.BitfieldWidth,
         std::move(Other.BitfieldWidth));
 
+    I.IsVariant |= Other.IsVariant;
     I.IsMutable |= Other.IsMutable;
     I.IsMaybeUnused |= Other.IsMaybeUnused;
     I.IsDeprecated |= Other.IsDeprecated;

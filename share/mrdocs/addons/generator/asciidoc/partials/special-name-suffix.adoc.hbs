@@ -1,6 +1,8 @@
 {{#if (eq kind "overload")}}{{>special-name-suffix (front members)~}}
 {{else if (eq kind "function")~}}
 {{#if (eq class "constructor")}}[.small]#[constructor]#
-{{~else if (eq class "destructor")~}}[.small]#[destructor]#
+{{~else if (eq class "destructor")}}[.small]#[destructor]#
 {{~/if~}}
+{{else if (eq kind "field")~}}
+{{#if isVariant}}[.small]#[variant member]#{{/if~}}
 {{/if}}

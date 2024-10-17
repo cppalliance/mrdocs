@@ -851,6 +851,7 @@ DomInfo<T>::construct() const
             { "default",            dom::stringOrNull(I_.Default.Written) },
             { "isMaybeUnused",      I_.IsMaybeUnused },
             { "isDeprecated",       I_.IsDeprecated },
+            { "isVariant",          I_.IsVariant },
             { "isMutable",          I_.IsMutable },
             { "isBitfield",         I_.IsBitfield },
             { "hasNoUniqueAddress", I_.HasNoUniqueAddress }
