@@ -488,7 +488,7 @@ ScopedTempDirectory::
 ~ScopedTempDirectory() {
     if (ok_)
     {
-        llvm::sys::fs::remove(path_);
+        llvm::sys::fs::remove_directories(path_);
     }
 }
 
