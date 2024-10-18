@@ -107,9 +107,25 @@ public:
         <tempdir>/<prefix><random>
         @endcode
 
+        For instance, if the prefix is "mrdocs" and the operating system
+        is Unix, the directory might be created as: "/tmp/mrdocs-1234".
+
+        On Windows, the directory might be created as:
+        "C:\Users\user\AppData\Local\Temp\mrdocs-1234".
+
         @param prefix The prefix for the temporary directory name.
     */
     ScopedTempDirectory(llvm::StringRef prefix);
+
+    /** Constructor with a specific path
+
+        Creates a temporary directory with the given path.
+        The directory is deleted when this object goes out of scope.
+
+        @param root The root directory for the temporary directory.
+        @param dir The name of the temporary directory.
+    */
+    ScopedTempDirectory(llvm::StringRef root, llvm::StringRef dir);
 
     /** Returns `true` if the directory was created successfully.
     */
@@ -117,7 +133,11 @@ public:
 
     /** Returns the path to the temporary directory.
      */
-    llvm::StringRef path() const { return path_; }
+    std::string_view path() const { return static_cast<llvm::StringRef>(path_); }
+
+    /** Convert temp directory to a std::string_view
+     */
+    operator std::string_view() const { return path(); }
 };
 
 } // mrdocs
