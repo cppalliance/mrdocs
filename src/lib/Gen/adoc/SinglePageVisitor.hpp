@@ -13,6 +13,7 @@
 
 #include "Builder.hpp"
 #include <mrdocs/MetadataFwd.hpp>
+#include <lib/Lib/TagfileWriter.hpp>
 #include <mrdocs/Support/ExecutorGroup.hpp>
 #include <mutex>
 #include <ostream>
@@ -35,16 +36,22 @@ class SinglePageVisitor
     std::size_t topPage_ = 0;
     std::vector<std::optional<
         std::string>> pages_;
+    std::string fileName_;
+    TagfileWriter& tagfileWriter_;
 
     void writePage(std::string pageText, std::size_t pageNumber);
 public:
     SinglePageVisitor(
         ExecutorGroup<Builder>& ex,
         Corpus const& corpus,
-        std::ostream& os) noexcept
+        std::ostream& os,
+        std::string_view fileName,
+        TagfileWriter& tagfileWriter) noexcept
         : ex_(ex)
         , corpus_(corpus)
         , os_(os)
+        , fileName_(fileName)
+        , tagfileWriter_(tagfileWriter)
     {
     }
 

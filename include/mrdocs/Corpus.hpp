@@ -160,6 +160,39 @@ public:
         }
     }
 
+    /** Visit the members of specified Info.
+
+        This function iterates the members of the specified
+        Info `I`. For each member associated with a
+        function with the same name as the member, the
+        function object `f` is invoked with the member
+        as the first argument, followed by `args...`.
+
+        When there are more than one member function
+        with the same name, the function object `f` is
+        invoked with an @ref OverloadSet as the first
+        argument, followed by `args...`.    
+
+        @param I The Info to traverse.
+        @param pred The predicate to use to determine if the member should be visited.
+        @param f The function to invoke with the member as the first argument, followed by `args...`.
+        @param args The arguments to pass to the function.
+    */
+    template <InfoParent T, class Pred, class F, class... Args>
+    void
+    traverseIf(
+        T const& I, Pred&& pred, F&& f, Args&&... args) const
+    {
+        for (auto const& id : I.Members)
+        {
+            if (std::forward<Pred>(pred)(get(id)))
+            {
+                visit(get(id), std::forward<F>(f),
+                      std::forward<Args>(args)...);
+            }
+        }
+    }
+
     /** Visit the function members of specified Info.
 
         This function iterates the members of the specified
