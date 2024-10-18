@@ -104,8 +104,9 @@ public:
     void operator()(doc::Text const& I);
     void operator()(doc::Styled const& I);
     void operator()(doc::TParam const& I);
-    void operator()(doc::Reference const& I);
     void operator()(doc::Throws const& I);
+    void operator()(doc::Reference const& I);
+    void operator()(doc::Related const& I);
 
     std::size_t measureLeftMargin(
         doc::List<doc::Text> const& list);
@@ -307,6 +308,12 @@ operator()(doc::Reference const& I)
         corpus_.getXref(corpus_->get(I.id)), escapeAdoc(I.string));
 }
 
+void
+DocVisitor::
+operator()(doc::Related const& I)
+{
+}
+
 std::size_t
 DocVisitor::
 measureLeftMargin(
@@ -417,6 +424,18 @@ domCreate(
     return s;
 }
 
+static
+dom::Value
+domCreate(
+    const doc::Related& I,
+    const AdocCorpus& corpus)
+{
+    std::string s;
+    DocVisitor visitor(corpus, s);
+    visitor(static_cast<const doc::Related&>(I));
+    return s;
+}
+
 //------------------------------------------------
 
 class DomJavadoc : public dom::LazyObjectImpl
@@ -506,6 +525,7 @@ public:
         maybeEmplaceArray(list, "see", ov.sees);
         maybeEmplaceArray(list, "preconditions", ov.preconditions);
         maybeEmplaceArray(list, "postconditions", ov.postconditions);
+        maybeEmplaceArray(list, "related", ov.related);
 
         return dom::Object(std::move(list));
     }

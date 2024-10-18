@@ -291,6 +291,19 @@ makeOverview(
                 break;
             ov.blocks.push_back(it->get());
         }
+
+        for(const auto& child : it->get()->children)
+        {
+            switch(child->kind)
+            {
+            case doc::Kind::related:
+                ov.related.push_back(static_cast<
+                    doc::Related const*>(child.get()));
+                break;
+            default:
+                break;
+            }
+        }
     }
 
     return ov;

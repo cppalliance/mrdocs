@@ -95,3 +95,13 @@
 {{/each}}
 
 {{/if}}
+
+{{#if symbol.doc.related}}
+=={{#unless is_multipage}}={{/unless}} Related
+
+{{#each symbol.doc.related}}
+{{.}}
+
+{{/each}}
+
+{{/if}}
