@@ -127,15 +127,16 @@ DoGenerateAction(
     if (compilationDatabasePath.empty())
     {
         std::string c = files::appendPath(settings.sourceRoot, "CMakeLists.txt");
-        if (files::exists(c)) {
+        if (files::exists(c))
+        {
             compilationDatabasePath = c;
         }
     }
     MRDOCS_CHECK(
         compilationDatabasePath,
         "The compilation database path argument is missing");
-    ScopedTempDirectory tempDir("mrdocs");
-    std::string buildPath = files::appendPath(tempDir.path(), "build");
+    ScopedTempDirectory tempDir(config->settings().output, ".temp");
+    std::string buildPath = files::appendPath(tempDir, "build");
     Expected<std::string> const compileCommandsPathExp =
         generateCompileCommandsFile(
             compilationDatabasePath, settings.cmake, buildPath);

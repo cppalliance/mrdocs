@@ -504,6 +504,28 @@ ScopedTempDirectory(
     }
 }
 
+ScopedTempDirectory::
+ScopedTempDirectory(
+    llvm::StringRef root,
+    llvm::StringRef dir)
+{
+    llvm::SmallString<128> tempPath(root);
+    llvm::sys::path::append(tempPath, dir);
+    bool const exists = llvm::sys::fs::exists(tempPath);
+    if (exists)
+    {
+        ok_ = !llvm::sys::fs::remove_directories(tempPath);
+        if (!ok_)
+        {
+            return;
+        }
+    }
+    ok_ = !llvm::sys::fs::create_directory(tempPath);
+    if (ok_)
+    {
+        path_ = tempPath;
+    }
+}
 
 } // mrdocs
 } // clang
