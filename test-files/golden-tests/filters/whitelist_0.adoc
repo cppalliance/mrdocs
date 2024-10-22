@@ -1,0 +1,280 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+=== Namespaces
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:N0.adoc[`N0`]  ¦
+
+¦xref:N1.adoc[`N1`]  ¦
+
+¦xref:N5.adoc[`N5`]  ¦
+
+|===
+
+
+[#N0]
+
+== N0
+
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:N0/f0_WL.adoc[`f0_WL`]  ¦
+
+|===
+
+:relfileprefix: ../
+[#N0-f0_WL]
+
+== xref:N0.adoc[pass:[N0]]::f0_WL
+
+
+
+=== Synopsis
+
+Declared in header `<filters/whitelist_0.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f0_WL();
+----
+
+
+
+
+
+
+
+
+
+[#N1]
+
+== N1
+
+=== Namespaces
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:N1/N3_WL.adoc[`N3_WL`]  ¦
+
+¦xref:N1/N4.adoc[`N4`]  ¦
+
+|===
+
+:relfileprefix: ../
+[#N1-N3_WL]
+
+== xref:N1.adoc[pass:[N1]]::N3_WL
+
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:N1/N3_WL/f1_WL.adoc[`f1_WL`]  ¦
+
+|===
+
+:relfileprefix: ../../
+[#N1-N3_WL-f1_WL]
+
+== xref:N1.adoc[pass:[N1]]::xref:N1/N3_WL.adoc[pass:[N3_WL]]::f1_WL
+
+
+
+=== Synopsis
+
+Declared in header `<filters/whitelist_0.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f1_WL();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#N1-N4]
+
+== xref:N1.adoc[pass:[N1]]::N4
+
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:N1/N4/f1_WL.adoc[`f1_WL`]  ¦
+
+|===
+
+:relfileprefix: ../../
+[#N1-N4-f1_WL]
+
+== xref:N1.adoc[pass:[N1]]::xref:N1/N4.adoc[pass:[N4]]::f1_WL
+
+
+
+=== Synopsis
+
+Declared in header `<filters/whitelist_0.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f1_WL();
+----
+
+
+
+
+
+
+
+
+
+[#N5]
+
+== N5
+
+=== Namespaces
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:N5/N6_BL.adoc[`N6_BL`]  ¦
+
+|===
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:N5/f0.adoc[`f0`]  ¦
+
+|===
+
+:relfileprefix: ../
+[#N5-f0]
+
+== xref:N5.adoc[pass:[N5]]::f0
+
+
+
+=== Synopsis
+
+Declared in header `<filters/whitelist_0.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f0();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#N5-N6_BL]
+
+== xref:N5.adoc[pass:[N5]]::N6_BL
+
+=== Namespaces
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:N5/N6_BL/M7.adoc[`M7`]  ¦
+
+¦xref:N5/N6_BL/N7.adoc[`N7`]  ¦
+
+|===
+
+:relfileprefix: ../../
+[#N5-N6_BL-N7]
+
+== xref:N5.adoc[pass:[N5]]::xref:N5/N6_BL.adoc[pass:[N6_BL]]::N7
+
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:N5/N6_BL/N7/f2_WL.adoc[`f2_WL`]  ¦
+
+|===
+
+:relfileprefix: ../../../
+[#N5-N6_BL-N7-f2_WL]
+
+== xref:N5.adoc[pass:[N5]]::xref:N5/N6_BL.adoc[pass:[N6_BL]]::xref:N5/N6_BL/N7.adoc[pass:[N7]]::f2_WL
+
+
+
+=== Synopsis
+
+Declared in header `<filters/whitelist_0.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f2_WL();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../../
+[#N5-N6_BL-M7]
+
+== xref:N5.adoc[pass:[N5]]::xref:N5/N6_BL.adoc[pass:[N6_BL]]::M7
+
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:N5/N6_BL/M7/f2_WL.adoc[`f2_WL`]  ¦
+
+|===
+
+:relfileprefix: ../../../
+[#N5-N6_BL-M7-f2_WL]
+
+== xref:N5.adoc[pass:[N5]]::xref:N5/N6_BL.adoc[pass:[N6_BL]]::xref:N5/N6_BL/M7.adoc[pass:[M7]]::f2_WL
+
+
+
+=== Synopsis
+
+Declared in header `<filters/whitelist_0.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f2_WL();
+----
+
+
+
+
+
+
+
+
+
+Created with MrDocs

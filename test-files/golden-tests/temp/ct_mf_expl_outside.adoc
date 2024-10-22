@@ -1,0 +1,71 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A-0e.adoc[`A`]  ¦
+
+|===
+
+
+[#A-0e]
+
+== A
+
+
+
+=== Synopsis
+
+Declared in header `<temp/ct_mf_expl_outside.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+struct A;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A-0e/f.adoc[`f`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#A-0e-f]
+
+== xref:A-0e.adoc[pass:[A]]::f
+
+
+
+=== Synopsis
+
+Declared in header `<temp/ct_mf_expl_outside.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f();
+----
+
+
+
+
+
+
+
+
+
+[#A-00]
+
+
+Created with MrDocs

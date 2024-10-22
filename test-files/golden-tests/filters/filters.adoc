@@ -1,0 +1,705 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+=== Namespaces
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A.adoc[`A`]  ¦
+
+¦xref:B.adoc[`B`]  ¦
+
+¦xref:C.adoc[`C`]  ¦
+
+¦xref:D.adoc[`D`]  ¦
+
+¦xref:F.adoc[`F`]  ¦
+
+|===
+
+
+[#A]
+
+== A
+
+=== Namespaces
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A/detail.adoc[`detail`]  ¦
+
+¦xref:A/detair.adoc[`detair`]  ¦
+
+|===
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A/f0.adoc[`f0`]  ¦
+
+|===
+
+:relfileprefix: ../
+[#A-f0]
+
+== xref:A.adoc[pass:[A]]::f0
+
+
+
+=== Synopsis
+
+Declared in header `<filters/filters.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f0();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#A-detail]
+
+== xref:A.adoc[pass:[A]]::detail
+
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A/detail/g0.adoc[`g0`]  ¦
+
+|===
+
+:relfileprefix: ../../
+[#A-detail-g0]
+
+== xref:A.adoc[pass:[A]]::xref:A/detail.adoc[pass:[detail]]::g0
+
+
+
+=== Synopsis
+
+Declared in header `<filters/filters.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+g0();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#A-detair]
+
+== xref:A.adoc[pass:[A]]::detair
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A/detair/Y.adoc[`Y`]  ¦
+
+|===
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A/detair/f4.adoc[`f4`]  ¦
+
+|===
+
+:relfileprefix: ../../
+[#A-detair-f4]
+
+== xref:A.adoc[pass:[A]]::xref:A/detair.adoc[pass:[detair]]::f4
+
+
+
+=== Synopsis
+
+Declared in header `<filters/filters.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f4();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../../
+[#A-detair-Y]
+
+== xref:A.adoc[pass:[A]]::xref:A/detair.adoc[pass:[detair]]::Y
+
+
+
+=== Synopsis
+
+Declared in header `<filters/filters.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct Y;
+----
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A/detair/Y/Z.adoc[`Z`]  ¦
+
+|===
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A/detair/Y/f6.adoc[`f6`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../../../
+[#A-detair-Y-f6]
+
+== xref:A.adoc[pass:[A]]::xref:A/detair.adoc[pass:[detair]]::xref:A/detair/Y.adoc[pass:[Y]]::f6
+
+
+
+=== Synopsis
+
+Declared in header `<filters/filters.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f6();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../../../
+[#A-detair-Y-Z]
+
+== xref:A.adoc[pass:[A]]::xref:A/detair.adoc[pass:[detair]]::xref:A/detair/Y.adoc[pass:[Y]]::Z
+
+
+
+=== Synopsis
+
+Declared in header `<filters/filters.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct Z;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A/detair/Y/Z/f7.adoc[`f7`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../../../../
+[#A-detair-Y-Z-f7]
+
+== xref:A.adoc[pass:[A]]::xref:A/detair.adoc[pass:[detair]]::xref:A/detair/Y.adoc[pass:[Y]]::xref:A/detair/Y/Z.adoc[pass:[Z]]::f7
+
+
+
+=== Synopsis
+
+Declared in header `<filters/filters.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f7();
+----
+
+
+
+
+
+
+
+
+
+[#B]
+
+== B
+
+=== Namespaces
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:B/detair.adoc[`detair`]  ¦
+
+|===
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:B/f0.adoc[`f0`]  ¦
+
+|===
+
+:relfileprefix: ../
+[#B-f0]
+
+== xref:B.adoc[pass:[B]]::f0
+
+
+
+=== Synopsis
+
+Declared in header `<filters/filters.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f0();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#B-detair]
+
+== xref:B.adoc[pass:[B]]::detair
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:B/detair/Y.adoc[`Y`]  ¦
+
+|===
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:B/detair/f4.adoc[`f4`]  ¦
+
+|===
+
+:relfileprefix: ../../
+[#B-detair-f4]
+
+== xref:B.adoc[pass:[B]]::xref:B/detair.adoc[pass:[detair]]::f4
+
+
+
+=== Synopsis
+
+Declared in header `<filters/filters.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f4();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../../
+[#B-detair-Y]
+
+== xref:B.adoc[pass:[B]]::xref:B/detair.adoc[pass:[detair]]::Y
+
+
+
+=== Synopsis
+
+Declared in header `<filters/filters.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct Y;
+----
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:B/detair/Y/Z.adoc[`Z`]  ¦
+
+|===
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:B/detair/Y/f6.adoc[`f6`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../../../
+[#B-detair-Y-f6]
+
+== xref:B.adoc[pass:[B]]::xref:B/detair.adoc[pass:[detair]]::xref:B/detair/Y.adoc[pass:[Y]]::f6
+
+
+
+=== Synopsis
+
+Declared in header `<filters/filters.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f6();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../../../
+[#B-detair-Y-Z]
+
+== xref:B.adoc[pass:[B]]::xref:B/detair.adoc[pass:[detair]]::xref:B/detair/Y.adoc[pass:[Y]]::Z
+
+
+
+=== Synopsis
+
+Declared in header `<filters/filters.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct Z;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:B/detair/Y/Z/f7.adoc[`f7`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../../../../
+[#B-detair-Y-Z-f7]
+
+== xref:B.adoc[pass:[B]]::xref:B/detair.adoc[pass:[detair]]::xref:B/detair/Y.adoc[pass:[Y]]::xref:B/detair/Y/Z.adoc[pass:[Z]]::f7
+
+
+
+=== Synopsis
+
+Declared in header `<filters/filters.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f7();
+----
+
+
+
+
+
+
+
+
+
+[#C]
+
+== C
+
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:C/g0.adoc[`g0`]  ¦
+
+|===
+
+:relfileprefix: ../
+[#C-g0]
+
+== xref:C.adoc[pass:[C]]::g0
+
+
+
+=== Synopsis
+
+Declared in header `<filters/filters.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+g0();
+----
+
+
+
+
+
+
+
+
+
+[#D]
+
+== D
+
+=== Namespaces
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:D/E.adoc[`E`]  ¦
+
+|===
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:D/f1.adoc[`f1`]  ¦
+
+¦xref:D/g1.adoc[`g1`]  ¦
+
+|===
+
+:relfileprefix: ../
+[#D-E]
+
+== xref:D.adoc[pass:[D]]::E
+
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:D/E/g0.adoc[`g0`]  ¦
+
+|===
+
+:relfileprefix: ../../
+[#D-E-g0]
+
+== xref:D.adoc[pass:[D]]::xref:D/E.adoc[pass:[E]]::g0
+
+
+
+=== Synopsis
+
+Declared in header `<filters/filters.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+g0();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#D-f1]
+
+== xref:D.adoc[pass:[D]]::f1
+
+
+
+=== Synopsis
+
+Declared in header `<filters/filters.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f1();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#D-g1]
+
+== xref:D.adoc[pass:[D]]::g1
+
+
+
+=== Synopsis
+
+Declared in header `<filters/filters.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+g1();
+----
+
+
+
+
+
+
+
+
+
+[#F]
+
+== F
+
+=== Namespaces
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:F/G.adoc[`G`]  ¦
+
+|===
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:F/g0.adoc[`g0`]  ¦
+
+|===
+
+:relfileprefix: ../
+[#F-g0]
+
+== xref:F.adoc[pass:[F]]::g0
+
+
+
+=== Synopsis
+
+Declared in header `<filters/filters.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+g0();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#F-G]
+
+== xref:F.adoc[pass:[F]]::G
+
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:F/G/f1.adoc[`f1`]  ¦
+
+¦xref:F/G/g1.adoc[`g1`]  ¦
+
+|===
+
+:relfileprefix: ../../
+[#F-G-f1]
+
+== xref:F.adoc[pass:[F]]::xref:F/G.adoc[pass:[G]]::f1
+
+
+
+=== Synopsis
+
+Declared in header `<filters/filters.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f1();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../../
+[#F-G-g1]
+
+== xref:F.adoc[pass:[F]]::xref:F/G.adoc[pass:[G]]::g1
+
+
+
+=== Synopsis
+
+Declared in header `<filters/filters.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+g1();
+----
+
+
+
+
+
+
+
+
+
+Created with MrDocs

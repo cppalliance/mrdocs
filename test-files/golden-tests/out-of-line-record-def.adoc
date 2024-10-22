@@ -1,0 +1,49 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+=== Namespaces
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:N.adoc[`N`]  ¦
+
+|===
+
+
+[#N]
+
+== N
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:N/S.adoc[`S`]  ¦
+
+|===
+
+:relfileprefix: ../
+[#N-S]
+
+== xref:N.adoc[pass:[N]]::S
+
+
+
+=== Synopsis
+
+Declared in header `<out-of-line-record-def.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct S;
+----
+
+
+
+
+
+Created with MrDocs

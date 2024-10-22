@@ -1,0 +1,269 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:f0.adoc[`f0`]  ¦
+
+f0 brief
+
+¦xref:f1.adoc[`f1`]  ¦
+
+f1 brief
+
+¦xref:g0.adoc[`g0`]  ¦
+
+g0 brief
+
+¦xref:g1.adoc[`g1`]  ¦
+
+g1 brief
+
+¦xref:h0.adoc[`h0`]  ¦
+
+h0 brief
+
+¦xref:h1.adoc[`h1`]  ¦
+
+h1 brief
+
+|===
+
+
+[#f0]
+
+== f0
+
+
+f0 brief
+
+
+=== Synopsis
+
+Declared in header `<duplicate-jdoc.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+int
+f0();
+----
+
+
+
+=== Return Value
+
+
+int
+
+
+
+
+
+
+
+
+[#f1]
+
+== f1
+
+
+f1 brief
+
+
+=== Synopsis
+
+Declared in header `<duplicate-jdoc.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+int
+f1();
+----
+
+
+
+=== Return Value
+
+
+bool
+
+
+
+
+
+
+
+
+[#g0]
+
+== g0
+
+
+g0 brief
+
+
+=== Synopsis
+
+Declared in header `<duplicate-jdoc.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+g0(int a);
+----
+
+
+
+
+
+=== Parameters
+
+|===
+| Name | Description 
+
+| *a*
+| 
+one
+
+| *a*
+| 
+one
+
+|===
+
+
+
+
+
+[#g1]
+
+== g1
+
+
+g1 brief
+
+
+=== Synopsis
+
+Declared in header `<duplicate-jdoc.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+g1(int a);
+----
+
+
+
+
+
+=== Parameters
+
+|===
+| Name | Description 
+
+| *a*
+| 
+one
+
+| *b*
+| 
+two
+
+|===
+
+
+
+
+
+[#h0]
+
+== h0
+
+
+h0 brief
+
+
+=== Synopsis
+
+Declared in header `<duplicate-jdoc.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+void
+h0();
+----
+
+
+
+
+=== Template Parameters
+
+|===
+| Name | Description
+
+| *T*
+| 
+one
+
+| *T*
+| 
+one
+
+|===
+
+
+
+
+
+
+[#h1]
+
+== h1
+
+
+h1 brief
+
+
+=== Synopsis
+
+Declared in header `<duplicate-jdoc.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+void
+h1();
+----
+
+
+
+
+=== Template Parameters
+
+|===
+| Name | Description
+
+| *T*
+| 
+one
+
+| *U*
+| 
+two
+
+|===
+
+
+
+
+
+
+Created with MrDocs

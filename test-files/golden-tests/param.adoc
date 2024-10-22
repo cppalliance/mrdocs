@@ -1,0 +1,176 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:f.adoc[`f`]  ¦
+
+¦xref:g.adoc[`g`]  ¦
+
+¦xref:h.adoc[`h`]  ¦
+
+¦xref:i.adoc[`i`]  ¦
+
+|===
+
+
+[#f]
+
+== f
+
+
+
+=== Synopsis
+
+Declared in header `<param.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f(int x);
+----
+
+
+
+
+
+=== Parameters
+
+|===
+| Name | Description 
+
+| *x*
+| 
+|===
+
+
+
+
+
+[#g]
+
+== g
+
+
+
+=== Synopsis
+
+Declared in header `<param.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+g(
+    int x,
+    int y);
+----
+
+
+
+
+
+=== Parameters
+
+|===
+| Name | Description 
+
+| *x*
+| 
+| *y*
+| 
+|===
+
+
+
+
+
+[#h]
+
+== h
+
+
+
+=== Synopsis
+
+Declared in header `<param.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+h(
+    int x,
+    int y,
+    int z);
+----
+
+
+
+
+
+=== Parameters
+
+|===
+| Name | Description 
+
+| *x*
+| 
+| *y*
+| 
+| *z*
+| 
+|===
+
+
+
+
+
+[#i]
+
+== i
+
+
+
+=== Synopsis
+
+Declared in header `<param.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+i(
+    int w,
+    int x,
+    int y,
+    int z);
+----
+
+
+
+
+
+=== Parameters
+
+|===
+| Name | Description 
+
+| *w*
+| 
+| *x*
+| 
+| *y*
+| 
+| *z*
+| 
+|===
+
+
+
+
+
+Created with MrDocs

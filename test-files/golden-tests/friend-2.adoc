@@ -1,0 +1,101 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T.adoc[`T`]  ¦
+
+|===
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:f.adoc[`f`]  ¦
+
+f
+
+|===
+
+
+[#T]
+
+== T
+
+
+
+=== Synopsis
+
+Declared in header `<friend-2.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct T;
+----
+
+===  Friends
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T/08friend.adoc[`f`]  ¦
+
+f
+
+|===
+
+
+
+:relfileprefix: ../
+[#T-08friend]
+
+== f
+
+
+f
+
+
+=== Synopsis
+
+Declared in header `<friend-2.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+friend
+void
+f();
+----
+
+
+
+[#f]
+
+== f
+
+
+f
+
+
+=== Synopsis
+
+Declared in header `<friend-2.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f();
+----
+
+
+
+
+
+
+
+
+
+Created with MrDocs

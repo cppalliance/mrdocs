@@ -1,0 +1,688 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:Explicit.adoc[`Explicit`]  ¦
+
+¦xref:ExplicitExpression.adoc[`ExplicitExpression`]  ¦
+
+¦xref:ExplicitFalse.adoc[`ExplicitFalse`]  ¦
+
+¦xref:ExplicitTrue.adoc[`ExplicitTrue`]  ¦
+
+|===
+
+
+[#Explicit]
+
+== Explicit
+
+
+
+=== Synopsis
+
+Declared in header `<explicit-ctor.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct Explicit;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:Explicit/2constructor.adoc[`Explicit`] [.small]#[constructor]# ¦
+|===
+
+
+
+:relfileprefix: ../
+[#Explicit-2constructor]
+
+== xref:Explicit.adoc[pass:[Explicit]]::Explicit
+
+  
+
+=== Synopsis
+  
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit
+xref:Explicit/2constructor-02.adoc[pass:[Explicit]]();
+----
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit
+xref:Explicit/2constructor-00.adoc[pass:[Explicit]](xref:Explicit.adoc[Explicit] const&);
+----
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit
+xref:Explicit/2constructor-0b.adoc[pass:[Explicit]](xref:Explicit.adoc[Explicit]&&) noexcept;
+----
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit
+xref:Explicit/2constructor-03.adoc[pass:[Explicit]](
+    int,
+    int);
+----
+  
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#Explicit-2constructor-02]
+
+== xref:Explicit.adoc[pass:[Explicit]]::Explicit
+
+
+
+=== Synopsis
+
+Declared in header `<explicit-ctor.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit
+Explicit();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#Explicit-2constructor-00]
+
+== xref:Explicit.adoc[pass:[Explicit]]::Explicit
+
+
+
+=== Synopsis
+
+Declared in header `<explicit-ctor.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit
+Explicit(xref:Explicit.adoc[Explicit] const&);
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#Explicit-2constructor-0b]
+
+== xref:Explicit.adoc[pass:[Explicit]]::Explicit
+
+
+
+=== Synopsis
+
+Declared in header `<explicit-ctor.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit
+Explicit(xref:Explicit.adoc[Explicit]&&) noexcept;
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#Explicit-2constructor-03]
+
+== xref:Explicit.adoc[pass:[Explicit]]::Explicit
+
+
+
+=== Synopsis
+
+Declared in header `<explicit-ctor.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit
+Explicit(
+    int,
+    int);
+----
+
+
+
+
+
+
+
+
+
+[#ExplicitTrue]
+
+== ExplicitTrue
+
+
+
+=== Synopsis
+
+Declared in header `<explicit-ctor.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct ExplicitTrue;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:ExplicitTrue/2constructor.adoc[`ExplicitTrue`] [.small]#[constructor]# ¦
+|===
+
+
+
+:relfileprefix: ../
+[#ExplicitTrue-2constructor]
+
+== xref:ExplicitTrue.adoc[pass:[ExplicitTrue]]::ExplicitTrue
+
+  
+
+=== Synopsis
+  
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit(true)
+xref:ExplicitTrue/2constructor-0d.adoc[pass:[ExplicitTrue]]();
+----
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit(true)
+xref:ExplicitTrue/2constructor-04.adoc[pass:[ExplicitTrue]](xref:ExplicitTrue.adoc[ExplicitTrue] const&);
+----
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit(true)
+xref:ExplicitTrue/2constructor-08.adoc[pass:[ExplicitTrue]](xref:ExplicitTrue.adoc[ExplicitTrue]&&) noexcept;
+----
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit(true)
+xref:ExplicitTrue/2constructor-05.adoc[pass:[ExplicitTrue]](
+    int,
+    int);
+----
+  
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#ExplicitTrue-2constructor-0d]
+
+== xref:ExplicitTrue.adoc[pass:[ExplicitTrue]]::ExplicitTrue
+
+
+
+=== Synopsis
+
+Declared in header `<explicit-ctor.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit(true)
+ExplicitTrue();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#ExplicitTrue-2constructor-04]
+
+== xref:ExplicitTrue.adoc[pass:[ExplicitTrue]]::ExplicitTrue
+
+
+
+=== Synopsis
+
+Declared in header `<explicit-ctor.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit(true)
+ExplicitTrue(xref:ExplicitTrue.adoc[ExplicitTrue] const&);
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#ExplicitTrue-2constructor-08]
+
+== xref:ExplicitTrue.adoc[pass:[ExplicitTrue]]::ExplicitTrue
+
+
+
+=== Synopsis
+
+Declared in header `<explicit-ctor.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit(true)
+ExplicitTrue(xref:ExplicitTrue.adoc[ExplicitTrue]&&) noexcept;
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#ExplicitTrue-2constructor-05]
+
+== xref:ExplicitTrue.adoc[pass:[ExplicitTrue]]::ExplicitTrue
+
+
+
+=== Synopsis
+
+Declared in header `<explicit-ctor.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit(true)
+ExplicitTrue(
+    int,
+    int);
+----
+
+
+
+
+
+
+
+
+
+[#ExplicitFalse]
+
+== ExplicitFalse
+
+
+
+=== Synopsis
+
+Declared in header `<explicit-ctor.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct ExplicitFalse;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:ExplicitFalse/2constructor.adoc[`ExplicitFalse`] [.small]#[constructor]# ¦
+|===
+
+
+
+:relfileprefix: ../
+[#ExplicitFalse-2constructor]
+
+== xref:ExplicitFalse.adoc[pass:[ExplicitFalse]]::ExplicitFalse
+
+  
+
+=== Synopsis
+  
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit(false)
+xref:ExplicitFalse/2constructor-01.adoc[pass:[ExplicitFalse]]();
+----
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit(false)
+xref:ExplicitFalse/2constructor-08.adoc[pass:[ExplicitFalse]](xref:ExplicitFalse.adoc[ExplicitFalse] const&);
+----
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit(false)
+xref:ExplicitFalse/2constructor-0a.adoc[pass:[ExplicitFalse]](xref:ExplicitFalse.adoc[ExplicitFalse]&&) noexcept;
+----
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit(false)
+xref:ExplicitFalse/2constructor-04.adoc[pass:[ExplicitFalse]](
+    int,
+    int);
+----
+  
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#ExplicitFalse-2constructor-01]
+
+== xref:ExplicitFalse.adoc[pass:[ExplicitFalse]]::ExplicitFalse
+
+
+
+=== Synopsis
+
+Declared in header `<explicit-ctor.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit(false)
+ExplicitFalse();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#ExplicitFalse-2constructor-08]
+
+== xref:ExplicitFalse.adoc[pass:[ExplicitFalse]]::ExplicitFalse
+
+
+
+=== Synopsis
+
+Declared in header `<explicit-ctor.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit(false)
+ExplicitFalse(xref:ExplicitFalse.adoc[ExplicitFalse] const&);
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#ExplicitFalse-2constructor-0a]
+
+== xref:ExplicitFalse.adoc[pass:[ExplicitFalse]]::ExplicitFalse
+
+
+
+=== Synopsis
+
+Declared in header `<explicit-ctor.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit(false)
+ExplicitFalse(xref:ExplicitFalse.adoc[ExplicitFalse]&&) noexcept;
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#ExplicitFalse-2constructor-04]
+
+== xref:ExplicitFalse.adoc[pass:[ExplicitFalse]]::ExplicitFalse
+
+
+
+=== Synopsis
+
+Declared in header `<explicit-ctor.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit(false)
+ExplicitFalse(
+    int,
+    int);
+----
+
+
+
+
+
+
+
+
+
+[#ExplicitExpression]
+
+== ExplicitExpression
+
+
+
+=== Synopsis
+
+Declared in header `<explicit-ctor.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<bool B>
+struct ExplicitExpression;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:ExplicitExpression/2constructor.adoc[`ExplicitExpression`] [.small]#[constructor]# ¦
+|===
+
+
+
+:relfileprefix: ../
+[#ExplicitExpression-2constructor]
+
+== xref:ExplicitExpression.adoc[pass:[ExplicitExpression]]::ExplicitExpression
+
+  
+
+=== Synopsis
+  
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit(B)
+xref:ExplicitExpression/2constructor-0b.adoc[pass:[ExplicitExpression]]();
+----
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit(B)
+xref:ExplicitExpression/2constructor-04.adoc[pass:[ExplicitExpression]](xref:ExplicitExpression.adoc[ExplicitExpression] const&);
+----
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit(B)
+xref:ExplicitExpression/2constructor-08.adoc[pass:[ExplicitExpression]](xref:ExplicitExpression.adoc[ExplicitExpression]&&) noexcept;
+----
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit(B)
+xref:ExplicitExpression/2constructor-02.adoc[pass:[ExplicitExpression]](
+    int,
+    int);
+----
+  
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#ExplicitExpression-2constructor-0b]
+
+== xref:ExplicitExpression.adoc[pass:[ExplicitExpression]]::ExplicitExpression
+
+
+
+=== Synopsis
+
+Declared in header `<explicit-ctor.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit(B)
+ExplicitExpression();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#ExplicitExpression-2constructor-04]
+
+== xref:ExplicitExpression.adoc[pass:[ExplicitExpression]]::ExplicitExpression
+
+
+
+=== Synopsis
+
+Declared in header `<explicit-ctor.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit(B)
+ExplicitExpression(xref:ExplicitExpression.adoc[ExplicitExpression] const&);
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#ExplicitExpression-2constructor-08]
+
+== xref:ExplicitExpression.adoc[pass:[ExplicitExpression]]::ExplicitExpression
+
+
+
+=== Synopsis
+
+Declared in header `<explicit-ctor.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit(B)
+ExplicitExpression(xref:ExplicitExpression.adoc[ExplicitExpression]&&) noexcept;
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#ExplicitExpression-2constructor-02]
+
+== xref:ExplicitExpression.adoc[pass:[ExplicitExpression]]::ExplicitExpression
+
+
+
+=== Synopsis
+
+Declared in header `<explicit-ctor.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+explicit(B)
+ExplicitExpression(
+    int,
+    int);
+----
+
+
+
+
+
+
+
+
+
+Created with MrDocs

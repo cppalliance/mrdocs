@@ -1,0 +1,511 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+=== Namespaces
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:00namespace.adoc[``]  ¦
+
+¦xref:A.adoc[`A`]  ¦
+
+¦xref:D.adoc[`D`]  ¦
+
+¦xref:I.adoc[`I`]  ¦
+
+|===
+
+
+[#A]
+
+== A
+
+=== Namespaces
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A/00namespace.adoc[``]  ¦
+
+¦xref:A/B.adoc[`B`]  ¦
+
+¦xref:A/C.adoc[`C`]  ¦
+
+|===
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A/f0.adoc[`f0`]  ¦
+
+|===
+
+:relfileprefix: ../
+[#A-f0]
+
+== xref:A.adoc[pass:[A]]::f0
+
+
+
+=== Synopsis
+
+Declared in header `<namespace.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f0();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#A-B]
+
+== xref:A.adoc[pass:[A]]::B
+
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A/B/f1.adoc[`f1`]  ¦
+
+|===
+
+:relfileprefix: ../../
+[#A-B-f1]
+
+== xref:A.adoc[pass:[A]]::xref:A/B.adoc[pass:[B]]::f1
+
+
+
+=== Synopsis
+
+Declared in header `<namespace.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f1();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#A-C]
+
+== xref:A.adoc[pass:[A]]::C
+
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A/C/f2.adoc[`f2`]  ¦
+
+|===
+
+:relfileprefix: ../../
+[#A-C-f2]
+
+== xref:A.adoc[pass:[A]]::xref:A/C.adoc[pass:[C]]::f2
+
+
+
+=== Synopsis
+
+Declared in header `<namespace.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f2();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#A-00namespace]
+
+== Unnamed namespace
+
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A/00namespace/f3.adoc[`f3`]  ¦
+
+|===
+
+:relfileprefix: ../../
+[#A-00namespace-f3]
+
+== xref:A.adoc[pass:[A]]::f3
+
+
+
+=== Synopsis
+
+Declared in header `<namespace.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f3();
+----
+
+
+
+
+
+
+
+
+
+[#D]
+
+== D
+
+=== Namespaces
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:D/00namespace.adoc[``]  ¦
+
+¦xref:D/E.adoc[`E`]  ¦
+
+¦xref:D/F.adoc[`F`]  ¦
+
+|===
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:D/f5.adoc[`f5`]  ¦
+
+|===
+
+:relfileprefix: ../
+[#D-f5]
+
+== xref:D.adoc[pass:[D]]::f5
+
+
+
+=== Synopsis
+
+Declared in header `<namespace.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f5();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#D-E]
+
+== xref:D.adoc[pass:[D]]::E
+
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:D/E/f6.adoc[`f6`]  ¦
+
+|===
+
+:relfileprefix: ../../
+[#D-E-f6]
+
+== xref:D.adoc[pass:[D]]::xref:D/E.adoc[pass:[E]]::f6
+
+
+
+=== Synopsis
+
+Declared in header `<namespace.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f6();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#D-F]
+
+== xref:D.adoc[pass:[D]]::F
+
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:D/F/f7.adoc[`f7`]  ¦
+
+|===
+
+:relfileprefix: ../../
+[#D-F-f7]
+
+== xref:D.adoc[pass:[D]]::xref:D/F.adoc[pass:[F]]::f7
+
+
+
+=== Synopsis
+
+Declared in header `<namespace.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f7();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#D-00namespace]
+
+== Unnamed namespace
+
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:D/00namespace/f8.adoc[`f8`]  ¦
+
+|===
+
+:relfileprefix: ../../
+[#D-00namespace-f8]
+
+== xref:D.adoc[pass:[D]]::f8
+
+
+
+=== Synopsis
+
+Declared in header `<namespace.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f8();
+----
+
+
+
+
+
+
+
+
+
+[#00namespace]
+
+== Unnamed namespace
+
+=== Namespaces
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:00namespace/G.adoc[`G`]  ¦
+
+¦xref:00namespace/H.adoc[`H`]  ¦
+
+|===
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:00namespace/f10.adoc[`f10`]  ¦
+
+|===
+
+:relfileprefix: ../
+[#00namespace-f10]
+
+== f10
+
+
+
+=== Synopsis
+
+Declared in header `<namespace.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f10();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#00namespace-G]
+
+== G
+
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:00namespace/G/f11.adoc[`f11`]  ¦
+
+|===
+
+:relfileprefix: ../../
+[#00namespace-G-f11]
+
+== xref:00namespace/G.adoc[pass:[G]]::f11
+
+
+
+=== Synopsis
+
+Declared in header `<namespace.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f11();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#00namespace-H]
+
+== H
+
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:00namespace/H/f12.adoc[`f12`]  ¦
+
+|===
+
+:relfileprefix: ../../
+[#00namespace-H-f12]
+
+== xref:00namespace/H.adoc[pass:[H]]::f12
+
+
+
+=== Synopsis
+
+Declared in header `<namespace.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f12();
+----
+
+
+
+
+
+
+
+
+
+[#I]
+
+== I
+
+=== Namespaces
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:I/00namespace.adoc[``]  ¦
+
+|===
+
+:relfileprefix: ../
+[#I-00namespace]
+
+== Unnamed namespace
+
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:I/00namespace/f14.adoc[`f14`]  ¦
+
+|===
+
+:relfileprefix: ../../
+[#I-00namespace-f14]
+
+== xref:I.adoc[pass:[I]]::f14
+
+
+
+=== Synopsis
+
+Declared in header `<namespace.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f14();
+----
+
+
+
+
+
+
+
+
+
+Created with MrDocs

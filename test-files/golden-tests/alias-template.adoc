@@ -1,0 +1,128 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A.adoc[`A`]  ¦
+
+¦xref:B.adoc[`B`]  ¦
+
+¦xref:C.adoc[`C`]  ¦
+
+¦xref:D.adoc[`D`]  ¦
+
+|===
+
+
+[#A]
+
+== A
+
+
+
+=== Synopsis
+
+Declared in header `<alias-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+struct A;
+----
+
+
+
+
+
+[#B]
+
+== B
+
+
+
+=== Synopsis
+
+Declared in header `<alias-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<
+    typename T,
+    typename U>
+struct B;
+----
+
+
+
+
+
+[#C]
+
+== C
+
+
+
+=== Synopsis
+
+Declared in header `<alias-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+using C = xref:A.adoc[A]<T>;
+----
+
+
+
+[#D]
+
+== D
+
+
+
+=== Synopsis
+
+Declared in header `<alias-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+struct D;
+----
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:D/E.adoc[`E`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#D-E]
+
+== xref:D.adoc[pass:[D]]::E
+
+
+
+=== Synopsis
+
+Declared in header `<alias-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename U>
+using E = xref:B.adoc[B]<T, U>;
+----
+
+
+
+Created with MrDocs

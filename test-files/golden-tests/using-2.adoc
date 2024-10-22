@@ -1,0 +1,120 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+=== Namespaces
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:LongName.adoc[`LongName`]  ¦
+
+|===
+
+
+[#LongName]
+
+== LongName
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:LongName/S1.adoc[`S1`]  ¦
+
+¦xref:LongName/S2.adoc[`S2`]  ¦
+
+|===
+
+:relfileprefix: ../
+[#LongName-S1]
+
+== xref:LongName.adoc[pass:[LongName]]::S1
+
+
+
+=== Synopsis
+
+Declared in header `<using-2.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct S1;
+----
+
+
+
+
+:relfileprefix: ../
+[#LongName-S2]
+
+== xref:LongName.adoc[pass:[LongName]]::S2
+
+
+
+=== Synopsis
+
+Declared in header `<using-2.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct S2;
+----
+
+
+
+
+
+[#S1]
+
+== S1
+
+
+
+=== Synopsis
+
+Declared in header `<using-2.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+using xref:LongName.adoc[LongName]::S1;
+----
+
+
+=== Introduced Symbols
+
+|===
+| Name
+| S1
+|===
+
+
+
+[#S2]
+
+== S2
+
+
+
+=== Synopsis
+
+Declared in header `<using-2.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+using xref:LongName.adoc[LongName]::S2;
+----
+
+
+=== Introduced Symbols
+
+|===
+| Name
+| S2
+|===
+
+
+
+Created with MrDocs

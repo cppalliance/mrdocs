@@ -1,0 +1,223 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T.adoc[`T`]  ¦
+
+|===
+=== Variables
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:i.adoc[`i`]  ¦
+
+¦xref:j.adoc[`j`]  ¦
+
+¦xref:k.adoc[`k`]  ¦
+
+¦xref:l.adoc[`l`]  ¦
+
+¦xref:pi.adoc[`pi`]  ¦
+
+¦xref:t.adoc[`t`]  ¦
+
+¦xref:x0.adoc[`x0`]  ¦
+
+¦xref:x1.adoc[`x1`]  ¦
+
+¦xref:x2.adoc[`x2`]  ¦
+
+|===
+
+
+[#i]
+
+== i
+
+
+
+=== Synopsis
+
+Declared in header `<ns-variables.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+constexpr
+int const i = 0;
+----
+
+
+
+[#j]
+
+== j
+
+
+
+=== Synopsis
+
+Declared in header `<ns-variables.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+int j = 0;
+----
+
+
+
+[#k]
+
+== k
+
+
+
+=== Synopsis
+
+Declared in header `<ns-variables.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+constexpr
+extern
+int const k = 1;
+----
+
+
+
+[#l]
+
+== l
+
+
+
+=== Synopsis
+
+Declared in header `<ns-variables.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+extern
+int l = 1;
+----
+
+
+
+[#pi]
+
+== pi
+
+
+
+=== Synopsis
+
+Declared in header `<ns-variables.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+double pi = 3.14;
+----
+
+
+
+[#T]
+
+== T
+
+
+
+=== Synopsis
+
+Declared in header `<ns-variables.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct T;
+----
+
+
+
+
+
+[#t]
+
+== t
+
+
+
+=== Synopsis
+
+Declared in header `<ns-variables.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+extern
+xref:T.adoc[T] t;
+----
+
+
+
+[#x0]
+
+== x0
+
+
+
+=== Synopsis
+
+Declared in header `<ns-variables.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+thread_local
+int x0 = 0;
+----
+
+
+
+[#x1]
+
+== x1
+
+
+
+=== Synopsis
+
+Declared in header `<ns-variables.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+static
+thread_local
+int x1 = 0;
+----
+
+
+
+[#x2]
+
+== x2
+
+
+
+=== Synopsis
+
+Declared in header `<ns-variables.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+constexpr
+static
+thread_local
+int const x2 = 0;
+----
+
+
+
+Created with MrDocs

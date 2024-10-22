@@ -1,0 +1,156 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T.adoc[`T`]  ¦
+
+|===
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:f1.adoc[`f1`]  ¦
+
+|===
+
+
+[#f1]
+
+== f1
+
+
+
+=== Synopsis
+
+Declared in header `<noreturn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f1();
+----
+
+
+
+
+
+
+
+
+
+[#T]
+
+== T
+
+
+
+=== Synopsis
+
+Declared in header `<noreturn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct T;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T/f3.adoc[`f3`]  ¦
+
+|===
+===  Static Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T/f2.adoc[`f2`]  ¦
+
+|===
+===  Friends
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T/08friend.adoc[`f1`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#T-f2]
+
+== xref:T.adoc[pass:[T]]::f2
+
+
+
+=== Synopsis
+
+Declared in header `<noreturn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+static
+void
+f2();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#T-f3]
+
+== xref:T.adoc[pass:[T]]::f3
+
+
+
+=== Synopsis
+
+Declared in header `<noreturn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f3();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#T-08friend]
+
+== f1
+
+
+
+=== Synopsis
+
+Declared in header `<noreturn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+friend
+void
+f1();
+----
+
+
+
+Created with MrDocs

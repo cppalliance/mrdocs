@@ -32,7 +32,7 @@ void DoTestAction()
 {
     using namespace clang::mrdocs;
 
-    TestRunner runner;
+    TestRunner runner(testArgs.generator);
     for(auto const& inputPath : testArgs.inputPaths)
         runner.checkPath(inputPath);
     auto const& results = runner.results;
@@ -55,9 +55,9 @@ void DoTestAction()
     os <<
         report::numberOf(results.numberOfDirs.load(),
         "directory", "directories") << " visited";
-    if(auto n = results.expectedXmlMatching.load())
+    if(auto n = results.expectedDocsMatching.load())
         os << ", " << report::numberOf(n, "file", "files") << " matched";
-    if(auto n = results.expectedXmlWritten.load())
+    if(auto n = results.expectedDocsWritten.load())
         os << ", " << report::numberOf(n, "file", "files") << " written";
     os << ".\n";
     report::print(os.str());

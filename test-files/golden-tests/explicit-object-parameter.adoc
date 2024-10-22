@@ -1,0 +1,131 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:Optional.adoc[`Optional`]  ¦
+
+|===
+
+
+[#Optional]
+
+== Optional
+
+
+
+=== Synopsis
+
+Declared in header `<explicit-object-parameter.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct Optional;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:Optional/value.adoc[`value`]  ¦
+|===
+
+
+
+:relfileprefix: ../
+[#Optional-value]
+
+== xref:Optional.adoc[pass:[Optional]]::value
+
+  
+
+=== Synopsis
+  
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename Self>
+constexpr
+auto&&
+xref:Optional/value-05.adoc[pass:[value]](this Self&& self);
+----
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename Self>
+constexpr
+auto&&
+xref:Optional/value-06.adoc[pass:[value]](this 
+    Self&& self,
+    int x);
+----
+  
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#Optional-value-05]
+
+== xref:Optional.adoc[pass:[Optional]]::value
+
+
+
+=== Synopsis
+
+Declared in header `<explicit-object-parameter.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename Self>
+constexpr
+auto&&
+value(this Self&& self);
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#Optional-value-06]
+
+== xref:Optional.adoc[pass:[Optional]]::value
+
+
+
+=== Synopsis
+
+Declared in header `<explicit-object-parameter.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename Self>
+constexpr
+auto&&
+value(this 
+    Self&& self,
+    int x);
+----
+
+
+
+
+
+
+
+
+
+Created with MrDocs

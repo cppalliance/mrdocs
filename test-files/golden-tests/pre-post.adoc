@@ -1,0 +1,56 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:f.adoc[`f`]  ¦
+
+|===
+
+
+[#f]
+
+== f
+
+
+
+=== Synopsis
+
+Declared in header `<pre-post.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f();
+----
+
+
+
+
+
+
+=== Preconditions
+
+
+first precondition
+
+
+second precondition
+
+
+
+=== Postconditions
+
+
+first postcondition
+
+
+
+
+Created with MrDocs

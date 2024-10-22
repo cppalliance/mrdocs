@@ -1,0 +1,109 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:S.adoc[`S`]  ¦
+
+¦xref:T.adoc[`T`]  ¦
+
+|===
+
+
+[#S]
+
+== S
+
+
+
+=== Synopsis
+
+Declared in header `<static-data-def-constexpr.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct S;
+----
+
+===  Static Data Members
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:S/s.adoc[`s`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#S-s]
+
+== xref:S.adoc[pass:[S]]::s
+
+
+
+=== Synopsis
+
+Declared in header `<static-data-def-constexpr.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+constexpr
+static
+xref:S.adoc[S] const s = S{};
+----
+
+
+
+[#T]
+
+== T
+
+
+
+=== Synopsis
+
+Declared in header `<static-data-def-constexpr.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct T;
+----
+
+===  Static Data Members
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T/t.adoc[`t`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#T-t]
+
+== xref:T.adoc[pass:[T]]::t
+
+
+
+=== Synopsis
+
+Declared in header `<static-data-def-constexpr.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+constexpr
+static
+int const t = 0;
+----
+
+
+
+Created with MrDocs

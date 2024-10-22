@@ -1,0 +1,119 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:X-0e.adoc[`X`]  ¦
+
+|===
+===  Deduction Guides
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:X-0d.adoc[`X<0>`]  ¦
+
+¦xref:X-00.adoc[`X<0>`]  ¦
+
+¦xref:X-0b.adoc[`X<0>`]  ¦
+
+¦xref:X-06.adoc[`X<0>`]  ¦
+
+|===
+
+
+[#X-0e]
+
+== X
+
+
+
+=== Synopsis
+
+Declared in header `<explicit-deduct-guide.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<int>
+struct X;
+----
+
+
+
+
+
+[#X-0d]
+
+== X
+
+
+
+=== Synopsis
+
+Declared in header `<explicit-deduct-guide.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+xref:X-0e.adoc[X]<0>(bool) -> xref:X-0e.adoc[X]<0>;
+----
+
+
+
+[#X-00]
+
+== X
+
+
+
+=== Synopsis
+
+Declared in header `<explicit-deduct-guide.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+xref:X-0e.adoc[X]<0>(char) -> xref:X-0e.adoc[X]<0>;
+----
+
+
+
+[#X-0b]
+
+== X
+
+
+
+=== Synopsis
+
+Declared in header `<explicit-deduct-guide.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+xref:X-0e.adoc[X]<0>(int) -> xref:X-0e.adoc[X]<0>;
+----
+
+
+
+[#X-06]
+
+== X
+
+
+
+=== Synopsis
+
+Declared in header `<explicit-deduct-guide.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<bool B = true>
+xref:X-0e.adoc[X]<0>(long) -> xref:X-0e.adoc[X]<0>;
+----
+
+
+
+Created with MrDocs

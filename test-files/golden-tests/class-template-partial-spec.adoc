@@ -1,0 +1,110 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A.adoc[`A`]  ¦
+
+|===
+
+
+[#A]
+
+== A
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-partial-spec.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+struct A;
+----
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A/B-0a.adoc[`B`]  ¦
+
+¦xref:A/B-06.adoc[`B<U*, T>`]  ¦
+
+¦xref:A/B-04.adoc[`B<T, long>`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#A-B-0a]
+
+== xref:A.adoc[pass:[A]]::B
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-partial-spec.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<
+    typename U,
+    typename V>
+struct B;
+----
+
+
+
+
+:relfileprefix: ../
+[#A-B-06]
+
+== xref:A.adoc[pass:[A]]::B
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-partial-spec.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename U>
+struct xref:A/B-0a.adoc[pass:[B]]<U*, T>;
+----
+
+
+
+
+:relfileprefix: ../
+[#A-B-04]
+
+== xref:A.adoc[pass:[A]]::B
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-partial-spec.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<>
+struct xref:A/B-0a.adoc[pass:[B]]<T, long>;
+----
+
+
+
+
+
+Created with MrDocs

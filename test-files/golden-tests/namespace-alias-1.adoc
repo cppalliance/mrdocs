@@ -1,0 +1,40 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+=== Namespaces
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:LongName.adoc[`LongName`]  ¦
+
+|===
+
+
+[#LongName]
+
+== LongName
+
+
+
+[#A]
+
+== A
+
+
+
+=== Synopsis
+
+Declared in header `<namespace-alias-1.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+namespace A = xref:LongName.adoc[LongName];
+----
+
+
+
+Created with MrDocs

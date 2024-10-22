@@ -7,7 +7,6 @@
 /local
 /temp
 /test-files/py
-/test-files/**/*.adoc
 /test-files/**/*.bad.xml
 docs/node_modules
 docs/build

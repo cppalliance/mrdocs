@@ -1,0 +1,304 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A.adoc[`A`]  ¦
+
+¦xref:B.adoc[`B`]  ¦
+
+|===
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:f.adoc[`f`]  ¦
+
+|===
+
+
+[#A]
+
+== A
+
+
+
+=== Synopsis
+
+Declared in header `<static-data-def.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+struct A;
+----
+
+===  Static Data Members
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A/v0.adoc[`v0`]  ¦
+
+¦xref:A/v1.adoc[`v1`]  ¦
+
+¦xref:A/v2.adoc[`v2`]  ¦
+
+¦xref:A/v3.adoc[`v3`]  ¦
+
+¦xref:A/v4.adoc[`v4`]  ¦
+
+¦xref:A/v5.adoc[`v5`]  ¦
+
+¦xref:A/v6.adoc[`v6`]  ¦
+
+¦xref:A/v7.adoc[`v7`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#A-v0]
+
+== xref:A.adoc[pass:[A]]::v0
+
+
+
+=== Synopsis
+
+Declared in header `<static-data-def.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+static
+int v0 = 0;
+----
+
+
+:relfileprefix: ../
+[#A-v1]
+
+== xref:A.adoc[pass:[A]]::v1
+
+
+
+=== Synopsis
+
+Declared in header `<static-data-def.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+static
+int v1 = 1;
+----
+
+
+:relfileprefix: ../
+[#A-v2]
+
+== xref:A.adoc[pass:[A]]::v2
+
+
+
+=== Synopsis
+
+Declared in header `<static-data-def.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+constexpr
+static
+int const v2 = 2;
+----
+
+
+:relfileprefix: ../
+[#A-v3]
+
+== xref:A.adoc[pass:[A]]::v3
+
+
+
+=== Synopsis
+
+Declared in header `<static-data-def.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+static
+int const v3 = 3;
+----
+
+
+:relfileprefix: ../
+[#A-v4]
+
+== xref:A.adoc[pass:[A]]::v4
+
+
+
+=== Synopsis
+
+Declared in header `<static-data-def.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+static
+int const v4 = 4;
+----
+
+
+:relfileprefix: ../
+[#A-v5]
+
+== xref:A.adoc[pass:[A]]::v5
+
+
+
+=== Synopsis
+
+Declared in header `<static-data-def.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+static
+int v5 = 5;
+----
+
+
+:relfileprefix: ../
+[#A-v6]
+
+== xref:A.adoc[pass:[A]]::v6
+
+
+
+=== Synopsis
+
+Declared in header `<static-data-def.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+static
+int const v6 = 6;
+----
+
+
+:relfileprefix: ../
+[#A-v7]
+
+== xref:A.adoc[pass:[A]]::v7
+
+
+
+=== Synopsis
+
+Declared in header `<static-data-def.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+constexpr
+static
+int const v7 = 7;
+----
+
+
+
+[#B]
+
+== B
+
+
+
+=== Synopsis
+
+Declared in header `<static-data-def.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct B;
+----
+
+===  Static Data Members
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:B/x0.adoc[`x0`]  ¦
+
+¦xref:B/x1.adoc[`x1`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#B-x0]
+
+== xref:B.adoc[pass:[B]]::x0
+
+
+
+=== Synopsis
+
+Declared in header `<static-data-def.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+static
+thread_local
+int const x0 = 0;
+----
+
+
+:relfileprefix: ../
+[#B-x1]
+
+== xref:B.adoc[pass:[B]]::x1
+
+
+
+=== Synopsis
+
+Declared in header `<static-data-def.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+constexpr
+static
+thread_local
+int const x1 = 0;
+----
+
+
+
+[#f]
+
+== f
+
+
+
+=== Synopsis
+
+Declared in header `<static-data-def.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+auto
+f();
+----
+
+
+
+
+
+
+
+
+
+Created with MrDocs

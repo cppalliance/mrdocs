@@ -1,0 +1,543 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A-0e.adoc[`A`]  ¦
+
+¦xref:E.adoc[`E`]  ¦
+
+|===
+
+
+[#A-0e]
+
+== A
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-specializations-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+struct A;
+----
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A-0e/B-07.adoc[`B`]  ¦
+
+¦xref:A-0e/B-00.adoc[`B<double>`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#A-0e-B-07]
+
+== xref:A-0e.adoc[pass:[A]]::B
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-specializations-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename U>
+struct B;
+----
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A-0e/B-07/C.adoc[`C`]  ¦
+
+¦xref:A-0e/B-07/D-09.adoc[`D`]  ¦
+
+¦xref:A-0e/B-07/D-0f.adoc[`D<bool>`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../../
+[#A-0e-B-07-C]
+
+== xref:A-0e.adoc[pass:[A]]::xref:A-0e/B-07.adoc[pass:[B]]::C
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-specializations-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct C;
+----
+
+
+
+
+:relfileprefix: ../../
+[#A-0e-B-07-D-09]
+
+== xref:A-0e.adoc[pass:[A]]::xref:A-0e/B-07.adoc[pass:[B]]::D
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-specializations-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename V>
+struct D;
+----
+
+
+
+
+:relfileprefix: ../../
+[#A-0e-B-07-D-0f]
+
+== xref:A-0e.adoc[pass:[A]]::xref:A-0e/B-07.adoc[pass:[B]]::D
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-specializations-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<>
+struct xref:A-0e/B-07/D-09.adoc[pass:[D]]<bool>;
+----
+
+
+
+
+:relfileprefix: ../
+[#A-0e-B-00]
+
+== xref:A-0e.adoc[pass:[A]]::B
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-specializations-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<>
+struct xref:A-0e/B-07.adoc[pass:[B]]<double>;
+----
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A-0e/B-00/C.adoc[`C`]  ¦
+
+¦xref:A-0e/B-00/D-09.adoc[`D`]  ¦
+
+¦xref:A-0e/B-00/D-0d.adoc[`D<bool>`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../../
+[#A-0e-B-00-C]
+
+== xref:A-0e.adoc[pass:[A]]::xref:A-0e/B-00.adoc[pass:[B]]<double>::C
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-specializations-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct C;
+----
+
+
+
+
+:relfileprefix: ../../
+[#A-0e-B-00-D-09]
+
+== xref:A-0e.adoc[pass:[A]]::xref:A-0e/B-00.adoc[pass:[B]]<double>::D
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-specializations-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename V>
+struct D;
+----
+
+
+
+
+:relfileprefix: ../../
+[#A-0e-B-00-D-0d]
+
+== xref:A-0e.adoc[pass:[A]]::xref:A-0e/B-00.adoc[pass:[B]]<double>::D
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-specializations-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<>
+struct xref:A-0e/B-00/D-09.adoc[pass:[D]]<bool>;
+----
+
+
+
+
+
+[#A-0c]
+
+
+[#A-00]
+
+
+[#E]
+
+== E
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-specializations-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct E;
+----
+
+===  Data Members
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:E/m0.adoc[`m0`]  ¦
+
+¦xref:E/m1.adoc[`m1`]  ¦
+
+¦xref:E/m10.adoc[`m10`]  ¦
+
+¦xref:E/m11.adoc[`m11`]  ¦
+
+¦xref:E/m12.adoc[`m12`]  ¦
+
+¦xref:E/m13.adoc[`m13`]  ¦
+
+¦xref:E/m14.adoc[`m14`]  ¦
+
+¦xref:E/m2.adoc[`m2`]  ¦
+
+¦xref:E/m3.adoc[`m3`]  ¦
+
+¦xref:E/m4.adoc[`m4`]  ¦
+
+¦xref:E/m5.adoc[`m5`]  ¦
+
+¦xref:E/m6.adoc[`m6`]  ¦
+
+¦xref:E/m7.adoc[`m7`]  ¦
+
+¦xref:E/m8.adoc[`m8`]  ¦
+
+¦xref:E/m9.adoc[`m9`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#E-m0]
+
+== xref:E.adoc[pass:[E]]::m0
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-specializations-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+xref:A-0e.adoc[A]<float>::xref:A-0e/B-00.adoc[B]<double> m0;
+----
+
+
+:relfileprefix: ../
+[#E-m1]
+
+== xref:E.adoc[pass:[E]]::m1
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-specializations-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+xref:A-0e.adoc[A]<long>::xref:A-0e/B-00.adoc[B]<double> m1;
+----
+
+
+:relfileprefix: ../
+[#E-m2]
+
+== xref:E.adoc[pass:[E]]::m2
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-specializations-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+xref:A-0e.adoc[A]<long>::xref:A-0c/B.adoc[B]<float> m2;
+----
+
+
+:relfileprefix: ../
+[#E-m3]
+
+== xref:E.adoc[pass:[E]]::m3
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-specializations-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+xref:A-0e.adoc[A]<unsigned int>::xref:A-0e/B-07.adoc[B]<float> m3;
+----
+
+
+:relfileprefix: ../
+[#E-m4]
+
+== xref:E.adoc[pass:[E]]::m4
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-specializations-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+xref:A-0e.adoc[A]<short>::xref:A-00/B.adoc[B]<void> m4;
+----
+
+
+:relfileprefix: ../
+[#E-m5]
+
+== xref:E.adoc[pass:[E]]::m5
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-specializations-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+xref:A-0e.adoc[A]<float>::xref:A-0e/B-00.adoc[B]<double>::xref:A-0e/B-00/C.adoc[C] m5;
+----
+
+
+:relfileprefix: ../
+[#E-m6]
+
+== xref:E.adoc[pass:[E]]::m6
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-specializations-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+xref:A-0e.adoc[A]<long>::xref:A-0e/B-00.adoc[B]<double>::xref:A-0e/B-00/C.adoc[C] m6;
+----
+
+
+:relfileprefix: ../
+[#E-m7]
+
+== xref:E.adoc[pass:[E]]::m7
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-specializations-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+xref:A-0e.adoc[A]<long>::xref:A-0c/B.adoc[B]<float>::xref:A-0c/B/C.adoc[C] m7;
+----
+
+
+:relfileprefix: ../
+[#E-m8]
+
+== xref:E.adoc[pass:[E]]::m8
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-specializations-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+xref:A-0e.adoc[A]<unsigned int>::xref:A-0e/B-07.adoc[B]<float>::xref:A-0e/B-07/C.adoc[C] m8;
+----
+
+
+:relfileprefix: ../
+[#E-m9]
+
+== xref:E.adoc[pass:[E]]::m9
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-specializations-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+xref:A-0e.adoc[A]<short>::xref:A-00/B.adoc[B]<void>::xref:A-00/B/C.adoc[C] m9;
+----
+
+
+:relfileprefix: ../
+[#E-m10]
+
+== xref:E.adoc[pass:[E]]::m10
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-specializations-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+xref:A-0e.adoc[A]<float>::xref:A-0e/B-00.adoc[B]<double>::xref:A-0e/B-00/D-0d.adoc[D]<bool> m10;
+----
+
+
+:relfileprefix: ../
+[#E-m11]
+
+== xref:E.adoc[pass:[E]]::m11
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-specializations-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+xref:A-0e.adoc[A]<long>::xref:A-0e/B-00.adoc[B]<double>::xref:A-0e/B-00/D-0d.adoc[D]<bool> m11;
+----
+
+
+:relfileprefix: ../
+[#E-m12]
+
+== xref:E.adoc[pass:[E]]::m12
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-specializations-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+xref:A-0e.adoc[A]<long>::xref:A-0c/B.adoc[B]<float>::xref:A-0c/B/D-0b.adoc[D]<bool> m12;
+----
+
+
+:relfileprefix: ../
+[#E-m13]
+
+== xref:E.adoc[pass:[E]]::m13
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-specializations-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+xref:A-0e.adoc[A]<unsigned int>::xref:A-0e/B-07.adoc[B]<float>::xref:A-0e/B-07/D-0f.adoc[D]<bool> m13;
+----
+
+
+:relfileprefix: ../
+[#E-m14]
+
+== xref:E.adoc[pass:[E]]::m14
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-specializations-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+xref:A-0e.adoc[A]<short>::xref:A-00/B.adoc[B]<void>::xref:A-00/B/D-07.adoc[D]<bool> m14;
+----
+
+
+
+Created with MrDocs

@@ -1,0 +1,207 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A.adoc[`A`]  ¦
+
+¦xref:B.adoc[`B`]  ¦
+
+¦xref:C.adoc[`C`]  ¦
+
+|===
+
+
+[#A]
+
+== A
+
+
+
+=== Synopsis
+
+Declared in header `<using-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct A;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A/f.adoc[`f`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#A-f]
+
+== xref:A.adoc[pass:[A]]::f
+
+
+
+=== Synopsis
+
+Declared in header `<using-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f(int);
+----
+
+
+
+
+
+
+
+
+
+[#B]
+
+== B
+
+
+
+=== Synopsis
+
+Declared in header `<using-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct B;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:B/f.adoc[`f`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#B-f]
+
+== xref:B.adoc[pass:[B]]::f
+
+
+
+=== Synopsis
+
+Declared in header `<using-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f(bool);
+----
+
+
+
+
+
+
+
+
+
+[#C]
+
+== C
+
+
+
+=== Synopsis
+
+Declared in header `<using-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct C
+    : xref:A.adoc[A]
+    , xref:B.adoc[B];
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A/f.adoc[`f`]  ¦
+|===
+===  Using Declarations
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:C/f-08.adoc[`f`]  ¦
+
+¦xref:C/f-03.adoc[`f`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#C-f-08]
+
+== xref:C.adoc[pass:[C]]::f
+
+
+
+=== Synopsis
+
+Declared in header `<using-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+using xref:A.adoc[A]::f;
+----
+
+
+=== Introduced Symbols
+
+|===
+| Name
+| f
+|===
+
+
+:relfileprefix: ../
+[#C-f-03]
+
+== xref:C.adoc[pass:[C]]::f
+
+
+
+=== Synopsis
+
+Declared in header `<using-3.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+using xref:B.adoc[B]::f;
+----
+
+
+=== Introduced Symbols
+
+|===
+| Name
+| f
+|===
+
+
+
+Created with MrDocs

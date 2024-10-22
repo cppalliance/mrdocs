@@ -1,0 +1,317 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Enums
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:E0.adoc[`E0`]  ¦
+
+E0 brief.
+
+¦xref:E1.adoc[`E1`]  ¦
+
+¦xref:E2.adoc[`E2`]  ¦
+
+E2 brief.
+
+¦xref:E3.adoc[`E3`]  ¦
+
+|===
+
+
+[#E0]
+
+== E0
+
+
+E0 brief.
+
+
+=== Synopsis
+
+Declared in header `<enum.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+enum E0;
+----
+
+=== Members
+[,cols=2]
+|===
+|Name |Description
+|xref:E0/e0.adoc[`pass:v[e0]`] |
+e0 brief.
+
+|xref:E0/e1.adoc[`pass:v[e1]`] |
+e1 brief.
+
+|===
+
+=== Description
+
+
+E0 description.
+
+
+:relfileprefix: ../
+[#E0-e0]
+
+== xref:E0.adoc[pass:[E0]]::e0
+
+
+e0 brief.
+
+
+=== Synopsis
+
+Declared in header `<enum.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+e0 = 1
+----
+
+=== Description
+
+
+e0 description.
+
+
+
+:relfileprefix: ../
+[#E0-e1]
+
+== xref:E0.adoc[pass:[E0]]::e1
+
+
+e1 brief.
+
+
+=== Synopsis
+
+Declared in header `<enum.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+e1
+----
+
+=== Description
+
+
+e1 description.
+
+
+
+
+[#E1]
+
+== E1
+
+
+
+=== Synopsis
+
+Declared in header `<enum.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+enum E1 : char;
+----
+
+=== Members
+[,cols=2]
+|===
+|Name |Description
+|xref:E1/e2.adoc[`pass:v[e2]`] |
+|xref:E1/e3.adoc[`pass:v[e3]`] |
+|===
+
+
+:relfileprefix: ../
+[#E1-e2]
+
+== xref:E1.adoc[pass:[E1]]::e2
+
+
+
+=== Synopsis
+
+Declared in header `<enum.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+e2
+----
+
+
+:relfileprefix: ../
+[#E1-e3]
+
+== xref:E1.adoc[pass:[E1]]::e3
+
+
+
+=== Synopsis
+
+Declared in header `<enum.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+e3
+----
+
+
+
+[#E2]
+
+== E2
+
+
+E2 brief.
+
+
+=== Synopsis
+
+Declared in header `<enum.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+enum E2 : int;
+----
+
+=== Members
+[,cols=2]
+|===
+|Name |Description
+|xref:E2/e4.adoc[`pass:v[e4]`] |
+e4 brief.
+
+|xref:E2/e5.adoc[`pass:v[e5]`] |
+e5 brief.
+
+|===
+
+=== Description
+
+
+E2 description.
+
+
+:relfileprefix: ../
+[#E2-e4]
+
+== xref:E2.adoc[pass:[E2]]::e4
+
+
+e4 brief.
+
+
+=== Synopsis
+
+Declared in header `<enum.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+e4
+----
+
+=== Description
+
+
+e4 description.
+
+
+
+:relfileprefix: ../
+[#E2-e5]
+
+== xref:E2.adoc[pass:[E2]]::e5
+
+
+e5 brief.
+
+
+=== Synopsis
+
+Declared in header `<enum.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+e5
+----
+
+=== Description
+
+
+e5 description.
+
+
+
+
+[#E3]
+
+== E3
+
+
+
+=== Synopsis
+
+Declared in header `<enum.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+enum E3 : char;
+----
+
+=== Members
+[,cols=2]
+|===
+|Name |Description
+|xref:E3/e6.adoc[`pass:v[e6]`] |
+|xref:E3/e7.adoc[`pass:v[e7]`] |
+|===
+
+
+:relfileprefix: ../
+[#E3-e6]
+
+== xref:E3.adoc[pass:[E3]]::e6
+
+
+
+=== Synopsis
+
+Declared in header `<enum.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+e6
+----
+
+
+:relfileprefix: ../
+[#E3-e7]
+
+== xref:E3.adoc[pass:[E3]]::e7
+
+
+
+=== Synopsis
+
+Declared in header `<enum.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+e7
+----
+
+
+
+Created with MrDocs

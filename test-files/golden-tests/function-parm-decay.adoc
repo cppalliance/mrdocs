@@ -1,0 +1,162 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T.adoc[`T`]  ¦
+
+¦xref:U.adoc[`U`]  ¦
+
+|===
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:f.adoc[`f`]  ¦
+
+¦xref:g.adoc[`g`]  ¦
+
+¦xref:h.adoc[`h`]  ¦
+
+¦xref:i.adoc[`i`]  ¦
+
+|===
+
+
+[#f]
+
+== f
+
+
+
+=== Synopsis
+
+Declared in header `<function-parm-decay.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f(int const x);
+----
+
+
+
+
+
+
+
+
+
+[#g]
+
+== g
+
+
+
+=== Synopsis
+
+Declared in header `<function-parm-decay.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+g(int* x);
+----
+
+
+
+
+
+
+
+
+
+[#h]
+
+== h
+
+
+
+=== Synopsis
+
+Declared in header `<function-parm-decay.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+h(int x(bool));
+----
+
+
+
+
+
+
+
+
+
+[#T]
+
+== T
+
+
+
+=== Synopsis
+
+Declared in header `<function-parm-decay.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+using T = int;
+----
+
+
+
+[#U]
+
+== U
+
+
+
+=== Synopsis
+
+Declared in header `<function-parm-decay.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+using U = int const;
+----
+
+
+
+[#i]
+
+== i
+
+
+
+=== Synopsis
+
+Declared in header `<function-parm-decay.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+i(xref:T.adoc[T]);
+----
+
+
+
+
+
+
+
+
+
+Created with MrDocs

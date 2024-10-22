@@ -1,0 +1,117 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+=== Namespaces
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:N.adoc[`N`]  ¦
+
+|===
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:E.adoc[`E`]  ¦
+
+|===
+
+
+[#E]
+
+== E
+
+
+
+=== Synopsis
+
+Declared in header `<dependency-propagation.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct E
+    : xref:N.adoc[N]::xref:N/C.adoc[C]<int>;
+----
+
+
+
+
+
+[#N]
+
+== N
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:N/A.adoc[`A`]  ¦
+
+¦xref:N/B.adoc[`B`]  ¦
+
+¦xref:N/C.adoc[`C`]  ¦
+
+|===
+
+:relfileprefix: ../
+[#N-C]
+
+== xref:N.adoc[pass:[N]]::C
+
+
+
+=== Synopsis
+
+Declared in header `<dependency-propagation.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+using C = xref:N/B.adoc[B]<T>;
+----
+
+
+:relfileprefix: ../
+[#N-B]
+
+== xref:N.adoc[pass:[N]]::B
+
+
+
+=== Synopsis
+
+Declared in header `<dependency-propagation.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+using B = xref:N/A.adoc[A]<T>;
+----
+
+
+:relfileprefix: ../
+[#N-A]
+
+== xref:N.adoc[pass:[N]]::A
+
+
+
+=== Synopsis
+
+Declared in header `<dependency-propagation.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+struct A;
+----
+
+
+
+
+
+Created with MrDocs

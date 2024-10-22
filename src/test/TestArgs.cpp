@@ -56,8 +56,8 @@ EXAMPLES:
     llvm::cl::init(test),
     llvm::cl::values(
         clEnumVal(test, "Compare output against expected."),
-        clEnumVal(create, "Create missing expected xml files."),
-        clEnumVal(update, "Update all expected xml files.")),
+        clEnumVal(create, "Create missing expected documentation files."),
+        clEnumVal(update, "Update all expected documentation files.")),
     llvm::cl::cat(commonCat))
 
 , badOption(
@@ -76,20 +76,21 @@ EXAMPLES:
     llvm::cl::desc("A list of directories and/or .cpp files to test."),
     llvm::cl::cat(commonCat))
 
+, generator(
+    "generator",
+    llvm::cl::desc("The generator to use for tests."),
+    llvm::cl::init("xml"))
+
 , addons(
     "addons",
     llvm::cl::desc("The directory with the addons."),
     llvm::cl::cat(commonCat))
 
-, systemIncludes(
-    "system-includes",
-    llvm::cl::desc("A list of paths to the system headers."),
+, stdlibIncludes(
+    "stdlib-includes",
+    llvm::cl::desc("A list of paths to std library headers."),
     llvm::cl::cat(commonCat))
 
-, includes(
-    "includes",
-    llvm::cl::desc("A list of paths to additional include directories."),
-    llvm::cl::cat(commonCat))    
 {
 }
 

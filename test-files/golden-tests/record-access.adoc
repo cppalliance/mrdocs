@@ -1,0 +1,357 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:C0.adoc[`C0`]  ¦
+
+¦xref:S0.adoc[`S0`]  ¦
+
+¦xref:U0.adoc[`U0`]  ¦
+
+|===
+
+
+[#S0]
+
+== S0
+
+
+
+=== Synopsis
+
+Declared in header `<record-access.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct S0;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:S0/f0.adoc[`f0`]  ¦
+
+|===
+=== Protected Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:S0/f1.adoc[`f1`]  ¦
+
+|===
+=== Private Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:S0/f2.adoc[`f2`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#S0-f0]
+
+== xref:S0.adoc[pass:[S0]]::f0
+
+
+
+=== Synopsis
+
+Declared in header `<record-access.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f0();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#S0-f1]
+
+== xref:S0.adoc[pass:[S0]]::f1
+
+
+
+=== Synopsis
+
+Declared in header `<record-access.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f1();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#S0-f2]
+
+== xref:S0.adoc[pass:[S0]]::f2
+
+
+
+=== Synopsis
+
+Declared in header `<record-access.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f2();
+----
+
+
+
+
+
+
+
+
+
+[#C0]
+
+== C0
+
+
+
+=== Synopsis
+
+Declared in header `<record-access.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+class C0;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:C0/f2.adoc[`f2`]  ¦
+
+|===
+=== Protected Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:C0/f1.adoc[`f1`]  ¦
+
+|===
+=== Private Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:C0/f0.adoc[`f0`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#C0-f0]
+
+== xref:C0.adoc[pass:[C0]]::f0
+
+
+
+=== Synopsis
+
+Declared in header `<record-access.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f0();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#C0-f1]
+
+== xref:C0.adoc[pass:[C0]]::f1
+
+
+
+=== Synopsis
+
+Declared in header `<record-access.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f1();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#C0-f2]
+
+== xref:C0.adoc[pass:[C0]]::f2
+
+
+
+=== Synopsis
+
+Declared in header `<record-access.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f2();
+----
+
+
+
+
+
+
+
+
+
+[#U0]
+
+== U0
+
+
+
+=== Synopsis
+
+Declared in header `<record-access.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+union U0;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:U0/f0.adoc[`f0`]  ¦
+
+|===
+=== Protected Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:U0/f1.adoc[`f1`]  ¦
+
+|===
+=== Private Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:U0/f2.adoc[`f2`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#U0-f0]
+
+== xref:U0.adoc[pass:[U0]]::f0
+
+
+
+=== Synopsis
+
+Declared in header `<record-access.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f0();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#U0-f1]
+
+== xref:U0.adoc[pass:[U0]]::f1
+
+
+
+=== Synopsis
+
+Declared in header `<record-access.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f1();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#U0-f2]
+
+== xref:U0.adoc[pass:[U0]]::f2
+
+
+
+=== Synopsis
+
+Declared in header `<record-access.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f2();
+----
+
+
+
+
+
+
+
+
+
+Created with MrDocs

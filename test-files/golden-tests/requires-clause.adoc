@@ -1,0 +1,206 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A.adoc[`A`]  ¦
+
+|===
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:f.adoc[`f`]  ¦
+¦xref:g.adoc[`g`]  ¦
+|===
+
+
+[#f]
+
+== f
+
+  
+
+=== Synopsis
+  
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+void
+xref:f-05.adoc[pass:[f]]() requires (sizeof(T) == 4);
+----
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+void
+xref:f-08.adoc[pass:[f]]() requires (sizeof(T) == 2);
+----
+  
+
+
+
+
+
+
+
+
+[#f-05]
+
+== f
+
+
+
+=== Synopsis
+
+Declared in header `<requires-clause.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+void
+f() requires (sizeof(T) == 4);
+----
+
+
+
+
+
+
+
+
+
+[#f-08]
+
+== f
+
+
+
+=== Synopsis
+
+Declared in header `<requires-clause.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+void
+f() requires (sizeof(T) == 2);
+----
+
+
+
+
+
+
+
+
+
+[#g]
+
+== g
+
+  
+
+=== Synopsis
+  
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T> requires (sizeof(T) == 4)
+void
+xref:g-0a.adoc[pass:[g]]();
+----
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T> requires (sizeof(U) == 2)
+void
+xref:g-0c.adoc[pass:[g]]();
+----
+  
+
+
+
+
+
+
+
+
+[#g-0a]
+
+== g
+
+
+
+=== Synopsis
+
+Declared in header `<requires-clause.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T> requires (sizeof(T) == 4)
+void
+g();
+----
+
+
+
+
+
+
+
+
+
+[#g-0c]
+
+== g
+
+
+
+=== Synopsis
+
+Declared in header `<requires-clause.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T> requires (sizeof(U) == 2)
+void
+g();
+----
+
+
+
+
+
+
+
+
+
+[#A]
+
+== A
+
+
+
+=== Synopsis
+
+Declared in header `<requires-clause.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T> requires (sizeof(U) == 2)
+struct A;
+----
+
+
+
+
+
+Created with MrDocs

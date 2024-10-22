@@ -1,0 +1,30 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+=== Namespaces
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:LongName.adoc[`LongName`]  ¦
+
+|===
+
+=== Using Directives
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:LongName.adoc[`LongName`]  ¦
+
+|===
+
+[#LongName]
+
+== LongName
+
+
+
+Created with MrDocs
