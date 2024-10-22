@@ -1,0 +1,94 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A.adoc[`A`]  ¦
+
+|===
+
+
+[#A]
+
+== A
+
+
+
+=== Synopsis
+
+Declared in header `<temp/ct_mc.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+struct A;
+----
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A/B.adoc[`B`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#A-B]
+
+== xref:A.adoc[pass:[A]]::B
+
+
+
+=== Synopsis
+
+Declared in header `<temp/ct_mc.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct B;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A/B/f.adoc[`f`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../../
+[#A-B-f]
+
+== xref:A.adoc[pass:[A]]::xref:A/B.adoc[pass:[B]]::f
+
+
+
+=== Synopsis
+
+Declared in header `<temp/ct_mc.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f();
+----
+
+
+
+
+
+
+
+
+
+Created with MrDocs

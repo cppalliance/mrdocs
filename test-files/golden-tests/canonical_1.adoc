@@ -1,0 +1,183 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A.adoc[`A`]  ¦
+
+¦xref:B.adoc[`B`]  ¦
+
+¦xref:Ba.adoc[`Ba`]  ¦
+
+¦xref:Bx.adoc[`Bx`]  ¦
+
+¦xref:a.adoc[`a`]  ¦
+
+¦xref:b.adoc[`b`]  ¦
+
+¦xref:bA.adoc[`bA`]  ¦
+
+¦xref:ba.adoc[`ba`]  ¦
+
+|===
+
+
+[#B]
+
+== B
+
+
+
+=== Synopsis
+
+Declared in header `<canonical_1.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct B;
+----
+
+
+
+
+
+[#b]
+
+== b
+
+
+
+=== Synopsis
+
+Declared in header `<canonical_1.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct b;
+----
+
+
+
+
+
+[#A]
+
+== A
+
+
+
+=== Synopsis
+
+Declared in header `<canonical_1.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct A;
+----
+
+
+
+
+
+[#a]
+
+== a
+
+
+
+=== Synopsis
+
+Declared in header `<canonical_1.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct a;
+----
+
+
+
+
+
+[#Ba]
+
+== Ba
+
+
+
+=== Synopsis
+
+Declared in header `<canonical_1.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct Ba;
+----
+
+
+
+
+
+[#bA]
+
+== bA
+
+
+
+=== Synopsis
+
+Declared in header `<canonical_1.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct bA;
+----
+
+
+
+
+
+[#Bx]
+
+== Bx
+
+
+
+=== Synopsis
+
+Declared in header `<canonical_1.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct Bx;
+----
+
+
+
+
+
+[#ba]
+
+== ba
+
+
+
+=== Synopsis
+
+Declared in header `<canonical_1.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct ba;
+----
+
+
+
+
+
+Created with MrDocs

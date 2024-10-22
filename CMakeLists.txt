@@ -81,6 +81,7 @@ if (LLVM_ROOT)
                 "No <LLVM_ROOT>/lib/cmake/llvm found.\n"
                 "Please set LLVM_ROOT to the root of LLVM install.\n")
     endif()
+    message(STATUS "LLVM_ROOT: ${LLVM_ROOT}")
 endif()
 if (Clang_ROOT)
     # Clang_ROOT is absolute
@@ -95,7 +96,19 @@ find_package(Clang REQUIRED CONFIG)
 
 if (LLVM_ROOT)
     set(LIBCXX_DIR "${LLVM_ROOT}/include/c++/v1/")
+    message(STATUS "LIBCXX_DIR: ${LIBCXX_DIR}")
+    if (NOT EXISTS "${LIBCXX_DIR}")
+        message(FATAL_ERROR
+                "LIBCXX_DIR (${LIBCXX_DIR}) does not exist.\n"
+                "LLVM_ROOT is set, but LIBCXX_DIR (/include/c++/v1) does not exist.\n")
+    endif()
     set(STDLIB_INCLUDE_DIR "${LLVM_ROOT}/lib/clang/${Clang_VERSION_MAJOR}/include/")
+    message(STATUS "STDLIB_INCLUDE_DIR: ${STDLIB_INCLUDE_DIR}")
+    if (NOT EXISTS "${STDLIB_INCLUDE_DIR}")
+        message(FATAL_ERROR
+                "STDLIB_INCLUDE_DIR (${STDLIB_INCLUDE_DIR}) does not exist.\n"
+                "LLVM_ROOT is set, but STDLIB_INCLUDE_DIR (/lib/clang/${Clang_VERSION_MAJOR}/include) does not exist.\n")
+    endif()
 endif()
 
 list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
@@ -337,29 +350,34 @@ if (MRDOCS_BUILD_TESTS)
     endif ()
     target_compile_definitions(mrdocs-test PRIVATE -DMRDOCS_TEST_FILES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/test-files")
     add_test(NAME mrdocs-unit-tests COMMAND mrdocs-test --unit=true)
-    add_test(NAME mrdocs-golden-tests
-        COMMAND
-            mrdocs-test
-            --unit=false
-            --action=test
-            "${PROJECT_SOURCE_DIR}/test-files/golden-tests"
-            --addons="${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
-            --system-includes="${LIBCXX_DIR}" 
-            --system-includes="${STDLIB_INCLUDE_DIR}")
-    foreach (action IN ITEMS create update)
-        add_custom_target(
-            mrdocs-${action}-test-fixtures
+    foreach (testgenerator IN ITEMS xml adoc)
+        add_test(NAME mrdocs-golden-tests-${testgenerator}
             COMMAND
                 mrdocs-test
                 --unit=false
-                --action=${action}
+                --action=test
                 "${PROJECT_SOURCE_DIR}/test-files/golden-tests"
-                --addons="${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
-                --system-includes="${LIBCXX_DIR}"
-                --system-includes="${STDLIB_INCLUDE_DIR}"
-            DEPENDS mrdocs-test
+                "--addons=${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
+                --generator=${testgenerator}
+                "--stdlib-includes=${LIBCXX_DIR}"
+                "--stdlib-includes=${STDLIB_INCLUDE_DIR}"
         )
-    endforeach ()
+        foreach (action IN ITEMS test create update)
+            add_custom_target(
+                mrdocs-${action}-test-fixtures-${testgenerator}
+                COMMAND
+                    mrdocs-test
+                    --unit=false
+                    --action=${action}
+                    "${PROJECT_SOURCE_DIR}/test-files/golden-tests"
+                    "--addons=${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
+                    --generator=${testgenerator}
+                    "--stdlib-includes=${LIBCXX_DIR}"
+                    "--stdlib-includes=${STDLIB_INCLUDE_DIR}"
+                DEPENDS mrdocs-test
+            )
+        endforeach ()
+    endforeach()
 
     #-------------------------------------------------
     # XML lint
@@ -436,7 +454,7 @@ if (MRDOCS_BUILD_DOCS)
                 COMMAND ${CMAKE_COMMAND} -E echo "Install npm dependencies"
                 COMMAND ${NPM_EXECUTABLE} install
                 COMMAND ${CMAKE_COMMAND} -E echo "Run Antora"
-                COMMAND ${NPX_EXECUTABLE} antora local-antora-playbook.yml
+                COMMAND ${NPX_EXECUTABLE} antora antora-playbook.yml
                 WORKING_DIRECTORY ${DOCS_SOURCE_DIR}
                 COMMENT "Generating MrDocs documentation"
                 USES_TERMINAL

@@ -9,7 +9,7 @@
         "name": "inputs",
         "command-line-only": true,
         "brief": "Configuration or compilation database files",
-        "details": "The inputs are configuration files or compilation database files that are used to generate the documentation. These inputs can be configuration files or compilation database files. When the input ends with `mrdocs.yml`, it is interpreted as a configuration file, the file is read and the options are used to generate the documentation as if it was provided to the `config` option. When the input ends with `compilation_database.json` or `CMakeLists.txt`, it is interpreted as a compilation database file, the file is read and the compiler flags are used to generate the documentation as if it was provided to the `compilation-database` option.",
+        "details": "The inputs are configuration files or compilation database files that used to generate the documentation. When the input ends with `mrdocs.yml`, it is interpreted as a configuration file, the file is read and the options are used to generate the documentation as if it was provided to the `config` option. When the input ends with `compilation_database.json` or `CMakeLists.txt`, it is interpreted as a compilation database file, the file is read and the compiler flags are used to generate the documentation as if it was provided to the `compilation-database` option.",
         "type": "list<path>",
         "default": [],
         "command-line-sink": true,

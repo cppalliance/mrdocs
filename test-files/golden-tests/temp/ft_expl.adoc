@@ -1,0 +1,97 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:f.adoc[`f`]  ¦
+|===
+
+
+[#f]
+
+== f
+
+  
+
+=== Synopsis
+  
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+void
+xref:f-03.adoc[pass:[f]]();
+----
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<>
+void
+xref:f-0c.adoc[pass:[f]]<int>();
+----
+  
+
+
+
+
+
+
+
+
+[#f-03]
+
+== f
+
+
+
+=== Synopsis
+
+Declared in header `<temp/ft_expl.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+void
+f();
+----
+
+
+
+
+
+
+
+
+
+[#f-0c]
+
+== f
+
+
+
+=== Synopsis
+
+Declared in header `<temp/ft_expl.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<>
+void
+xref:f-03.adoc[pass:[f]]<int>();
+----
+
+
+
+
+
+
+
+
+
+Created with MrDocs

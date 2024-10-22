@@ -1,0 +1,88 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:range.adoc[`range`]  ¦
+
+|===
+
+
+[#range]
+
+== range
+
+
+
+=== Synopsis
+
+Declared in header `<nested-private-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<class T>
+class range;
+----
+
+=== Private Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:range/impl-0e.adoc[`impl`]  ¦
+
+¦xref:range/impl-00.adoc[`impl<R, false>`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#range-impl-0e]
+
+== xref:range.adoc[pass:[range]]::impl
+
+
+
+=== Synopsis
+
+Declared in header `<nested-private-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<
+    class R,
+    bool>
+struct impl;
+----
+
+
+
+
+:relfileprefix: ../
+[#range-impl-00]
+
+== xref:range.adoc[pass:[range]]::impl
+
+
+
+=== Synopsis
+
+Declared in header `<nested-private-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<class R>
+struct xref:range/impl-0e.adoc[pass:[impl]]<R, false>;
+----
+
+
+
+
+
+Created with MrDocs

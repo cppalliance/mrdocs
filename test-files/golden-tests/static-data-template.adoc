@@ -1,0 +1,110 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A.adoc[`A`]  ¦
+
+|===
+
+
+[#A]
+
+== A
+
+
+
+=== Synopsis
+
+Declared in header `<static-data-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+struct A;
+----
+
+===  Static Data Members
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A/x-0e.adoc[`x`]  ¦
+
+¦xref:A/x-0a.adoc[`x<U*, T>`]  ¦
+
+¦xref:A/x-07.adoc[`x<T, long>`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#A-x-0e]
+
+== xref:A.adoc[pass:[A]]::x
+
+
+
+=== Synopsis
+
+Declared in header `<static-data-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<
+    typename U,
+    typename V>
+constexpr
+static
+T const x = 0;
+----
+
+
+:relfileprefix: ../
+[#A-x-0a]
+
+== xref:A.adoc[pass:[A]]::x
+
+
+
+=== Synopsis
+
+Declared in header `<static-data-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename U>
+constexpr
+static
+T const xref:A/x-0e.adoc[pass:[x]]<U*, T> = 1;
+----
+
+
+:relfileprefix: ../
+[#A-x-07]
+
+== xref:A.adoc[pass:[A]]::x
+
+
+
+=== Synopsis
+
+Declared in header `<static-data-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<>
+constexpr
+static
+bool const xref:A/x-0e.adoc[pass:[x]]<T, long> = 2;
+----
+
+
+
+Created with MrDocs

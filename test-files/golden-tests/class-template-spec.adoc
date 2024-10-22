@@ -1,0 +1,494 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A-0e.adoc[`A`]  ¦
+
+¦xref:A-00.adoc[`A<int>`]  ¦
+
+¦xref:A-0c.adoc[`A<long>`]  ¦
+
+¦xref:B-00.adoc[`B`]  ¦
+
+¦xref:B-07.adoc[`B<T*>`]  ¦
+
+¦xref:B-06.adoc[`B<T&>`]  ¦
+
+¦xref:C-0f.adoc[`C`]  ¦
+
+¦xref:C-0a.adoc[`C<int, int>`]  ¦
+
+¦xref:C-0e.adoc[`C<T*, int>`]  ¦
+
+|===
+
+
+[#A-0e]
+
+== A
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-spec.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+struct A;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A-0e/f.adoc[`f`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#A-0e-f]
+
+== xref:A-0e.adoc[pass:[A]]::f
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-spec.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f();
+----
+
+
+
+
+
+
+
+
+
+[#A-00]
+
+== A
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-spec.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<>
+struct xref:A-0e.adoc[pass:[A]]<int>;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A-00/g.adoc[`g`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#A-00-g]
+
+== xref:A-00.adoc[pass:[A]]<int>::g
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-spec.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+g();
+----
+
+
+
+
+
+
+
+
+
+[#A-0c]
+
+== A
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-spec.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<>
+struct xref:A-0e.adoc[pass:[A]]<long>;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A-0c/h.adoc[`h`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#A-0c-h]
+
+== xref:A-0c.adoc[pass:[A]]<long>::h
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-spec.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+h();
+----
+
+
+
+
+
+
+
+
+
+[#B-00]
+
+== B
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-spec.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+struct B;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:B-00/f.adoc[`f`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#B-00-f]
+
+== xref:B-00.adoc[pass:[B]]::f
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-spec.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f();
+----
+
+
+
+
+
+
+
+
+
+[#B-07]
+
+== B
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-spec.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+struct xref:B-00.adoc[pass:[B]]<T*>;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:B-07/g.adoc[`g`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#B-07-g]
+
+== xref:B-07.adoc[pass:[B]]<T*>::g
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-spec.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+g();
+----
+
+
+
+
+
+
+
+
+
+[#B-06]
+
+== B
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-spec.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+struct xref:B-00.adoc[pass:[B]]<T&>;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:B-06/h.adoc[`h`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#B-06-h]
+
+== xref:B-06.adoc[pass:[B]]<T&>::h
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-spec.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+h();
+----
+
+
+
+
+
+
+
+
+
+[#C-0f]
+
+== C
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-spec.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<
+    typename T,
+    typename U>
+struct C;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:C-0f/f.adoc[`f`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#C-0f-f]
+
+== xref:C-0f.adoc[pass:[C]]::f
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-spec.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f();
+----
+
+
+
+
+
+
+
+
+
+[#C-0a]
+
+== C
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-spec.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<>
+struct xref:C-0f.adoc[pass:[C]]<int, int>;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:C-0a/g.adoc[`g`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#C-0a-g]
+
+== xref:C-0a.adoc[pass:[C]]<int, int>::g
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-spec.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+g();
+----
+
+
+
+
+
+
+
+
+
+[#C-0e]
+
+== C
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-spec.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+struct xref:C-0f.adoc[pass:[C]]<T*, int>;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:C-0e/h.adoc[`h`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#C-0e-h]
+
+== xref:C-0e.adoc[pass:[C]]<T*, int>::h
+
+
+
+=== Synopsis
+
+Declared in header `<class-template-spec.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+h();
+----
+
+
+
+
+
+
+
+
+
+Created with MrDocs

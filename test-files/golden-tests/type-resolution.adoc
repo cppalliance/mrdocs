@@ -1,0 +1,1293 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A.adoc[`A`]  ¦
+
+¦xref:B.adoc[`B`]  ¦
+
+¦xref:C.adoc[`C`]  ¦
+
+¦xref:D.adoc[`D`]  ¦
+
+¦xref:E.adoc[`E`]  ¦
+
+|===
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:f0.adoc[`f0`]  ¦
+
+¦xref:f1.adoc[`f1`]  ¦
+
+¦xref:f2.adoc[`f2`]  ¦
+
+¦xref:f3.adoc[`f3`]  ¦
+
+¦xref:f4.adoc[`f4`]  ¦
+
+¦xref:f5.adoc[`f5`]  ¦
+
+¦xref:f6.adoc[`f6`]  ¦
+
+¦xref:f7.adoc[`f7`]  ¦
+
+¦xref:f8.adoc[`f8`]  ¦
+
+¦xref:g0.adoc[`g0`]  ¦
+
+¦xref:g1.adoc[`g1`]  ¦
+
+¦xref:g2.adoc[`g2`]  ¦
+
+¦xref:g3.adoc[`g3`]  ¦
+
+¦xref:g4.adoc[`g4`]  ¦
+
+¦xref:g5.adoc[`g5`]  ¦
+
+¦xref:g6.adoc[`g6`]  ¦
+
+¦xref:g7.adoc[`g7`]  ¦
+
+¦xref:g8.adoc[`g8`]  ¦
+
+¦xref:h0.adoc[`h0`]  ¦
+
+¦xref:h1.adoc[`h1`]  ¦
+
+¦xref:h2.adoc[`h2`]  ¦
+
+¦xref:h3.adoc[`h3`]  ¦
+
+¦xref:h4.adoc[`h4`]  ¦
+
+¦xref:h5.adoc[`h5`]  ¦
+
+¦xref:h6.adoc[`h6`]  ¦
+
+¦xref:h7.adoc[`h7`]  ¦
+
+¦xref:h8.adoc[`h8`]  ¦
+
+¦xref:i0.adoc[`i0`]  ¦
+
+¦xref:i1.adoc[`i1`]  ¦
+
+¦xref:i2.adoc[`i2`]  ¦
+
+¦xref:i3.adoc[`i3`]  ¦
+
+¦xref:i4.adoc[`i4`]  ¦
+
+¦xref:i5.adoc[`i5`]  ¦
+
+¦xref:i6.adoc[`i6`]  ¦
+
+¦xref:i7.adoc[`i7`]  ¦
+
+¦xref:i8.adoc[`i8`]  ¦
+
+¦xref:j0.adoc[`j0`]  ¦
+
+¦xref:j1.adoc[`j1`]  ¦
+
+¦xref:j2.adoc[`j2`]  ¦
+
+¦xref:j3.adoc[`j3`]  ¦
+
+¦xref:j4.adoc[`j4`]  ¦
+
+¦xref:j5.adoc[`j5`]  ¦
+
+¦xref:j6.adoc[`j6`]  ¦
+
+¦xref:j7.adoc[`j7`]  ¦
+
+¦xref:j8.adoc[`j8`]  ¦
+
+|===
+
+
+[#A]
+
+== A
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct A;
+----
+
+
+
+
+
+[#B]
+
+== B
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<
+    typename T,
+    typename U>
+struct B;
+----
+
+
+
+
+
+[#C]
+
+== C
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+using C = xref:A.adoc[A];
+----
+
+
+
+[#D]
+
+== D
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+using D = xref:B.adoc[B]<short, long>;
+----
+
+
+
+[#E]
+
+== E
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+using E = xref:B.adoc[B]<T, long>;
+----
+
+
+
+[#f0]
+
+== f0
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f0(xref:A.adoc[A]);
+----
+
+
+
+
+
+
+
+
+
+[#f1]
+
+== f1
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f1(xref:A.adoc[A] const);
+----
+
+
+
+
+
+
+
+
+
+[#f2]
+
+== f2
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f2(xref:A.adoc[A]&);
+----
+
+
+
+
+
+
+
+
+
+[#f3]
+
+== f3
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f3(xref:A.adoc[A] const&);
+----
+
+
+
+
+
+
+
+
+
+[#f4]
+
+== f4
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f4(xref:A.adoc[A]*);
+----
+
+
+
+
+
+
+
+
+
+[#f5]
+
+== f5
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f5(xref:A.adoc[A] const*);
+----
+
+
+
+
+
+
+
+
+
+[#f6]
+
+== f6
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f6(xref:A.adoc[A]**);
+----
+
+
+
+
+
+
+
+
+
+[#f7]
+
+== f7
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f7(xref:A.adoc[A] const**);
+----
+
+
+
+
+
+
+
+
+
+[#f8]
+
+== f8
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f8(xref:A.adoc[A] const const**);
+----
+
+
+
+
+
+
+
+
+
+[#g0]
+
+== g0
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+g0(xref:C.adoc[C]);
+----
+
+
+
+
+
+
+
+
+
+[#g1]
+
+== g1
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+g1(xref:C.adoc[C] const);
+----
+
+
+
+
+
+
+
+
+
+[#g2]
+
+== g2
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+g2(xref:C.adoc[C]&);
+----
+
+
+
+
+
+
+
+
+
+[#g3]
+
+== g3
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+g3(xref:C.adoc[C] const&);
+----
+
+
+
+
+
+
+
+
+
+[#g4]
+
+== g4
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+g4(xref:C.adoc[C]*);
+----
+
+
+
+
+
+
+
+
+
+[#g5]
+
+== g5
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+g5(xref:C.adoc[C] const*);
+----
+
+
+
+
+
+
+
+
+
+[#g6]
+
+== g6
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+g6(xref:C.adoc[C]**);
+----
+
+
+
+
+
+
+
+
+
+[#g7]
+
+== g7
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+g7(xref:C.adoc[C] const**);
+----
+
+
+
+
+
+
+
+
+
+[#g8]
+
+== g8
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+g8(xref:C.adoc[C] const const**);
+----
+
+
+
+
+
+
+
+
+
+[#h0]
+
+== h0
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+h0(xref:B.adoc[B]<short, long>);
+----
+
+
+
+
+
+
+
+
+
+[#h1]
+
+== h1
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+h1(xref:B.adoc[B]<short, long> const);
+----
+
+
+
+
+
+
+
+
+
+[#h2]
+
+== h2
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+h2(xref:B.adoc[B]<short, long>&);
+----
+
+
+
+
+
+
+
+
+
+[#h3]
+
+== h3
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+h3(xref:B.adoc[B]<short, long> const&);
+----
+
+
+
+
+
+
+
+
+
+[#h4]
+
+== h4
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+h4(xref:B.adoc[B]<short, long>*);
+----
+
+
+
+
+
+
+
+
+
+[#h5]
+
+== h5
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+h5(xref:B.adoc[B]<short, long> const*);
+----
+
+
+
+
+
+
+
+
+
+[#h6]
+
+== h6
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+h6(xref:B.adoc[B]<short, long>**);
+----
+
+
+
+
+
+
+
+
+
+[#h7]
+
+== h7
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+h7(xref:B.adoc[B]<short, long> const**);
+----
+
+
+
+
+
+
+
+
+
+[#h8]
+
+== h8
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+h8(xref:B.adoc[B]<short, long> const const**);
+----
+
+
+
+
+
+
+
+
+
+[#i0]
+
+== i0
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+i0(xref:D.adoc[D]);
+----
+
+
+
+
+
+
+
+
+
+[#i1]
+
+== i1
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+i1(xref:D.adoc[D] const);
+----
+
+
+
+
+
+
+
+
+
+[#i2]
+
+== i2
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+i2(xref:D.adoc[D]&);
+----
+
+
+
+
+
+
+
+
+
+[#i3]
+
+== i3
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+i3(xref:D.adoc[D] const&);
+----
+
+
+
+
+
+
+
+
+
+[#i4]
+
+== i4
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+i4(xref:D.adoc[D]*);
+----
+
+
+
+
+
+
+
+
+
+[#i5]
+
+== i5
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+i5(xref:D.adoc[D] const*);
+----
+
+
+
+
+
+
+
+
+
+[#i6]
+
+== i6
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+i6(xref:D.adoc[D]**);
+----
+
+
+
+
+
+
+
+
+
+[#i7]
+
+== i7
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+i7(xref:D.adoc[D] const**);
+----
+
+
+
+
+
+
+
+
+
+[#i8]
+
+== i8
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+i8(xref:D.adoc[D] const const**);
+----
+
+
+
+
+
+
+
+
+
+[#j0]
+
+== j0
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+j0(xref:E.adoc[E]<short>);
+----
+
+
+
+
+
+
+
+
+
+[#j1]
+
+== j1
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+j1(xref:E.adoc[E]<short> const);
+----
+
+
+
+
+
+
+
+
+
+[#j2]
+
+== j2
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+j2(xref:E.adoc[E]<short>&);
+----
+
+
+
+
+
+
+
+
+
+[#j3]
+
+== j3
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+j3(xref:E.adoc[E]<short> const&);
+----
+
+
+
+
+
+
+
+
+
+[#j4]
+
+== j4
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+j4(xref:E.adoc[E]<short>*);
+----
+
+
+
+
+
+
+
+
+
+[#j5]
+
+== j5
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+j5(xref:E.adoc[E]<short> const*);
+----
+
+
+
+
+
+
+
+
+
+[#j6]
+
+== j6
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+j6(xref:E.adoc[E]<short>**);
+----
+
+
+
+
+
+
+
+
+
+[#j7]
+
+== j7
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+j7(xref:E.adoc[E]<short> const**);
+----
+
+
+
+
+
+
+
+
+
+[#j8]
+
+== j8
+
+
+
+=== Synopsis
+
+Declared in header `<type-resolution.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+j8(xref:E.adoc[E]<short> const const**);
+----
+
+
+
+
+
+
+
+
+
+Created with MrDocs

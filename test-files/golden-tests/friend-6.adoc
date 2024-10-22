@@ -1,0 +1,197 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T.adoc[`T`]  ¦
+
+Struct T brief
+
+¦xref:U.adoc[`U`]  ¦
+
+Struct U brief
+
+¦xref:V.adoc[`V`]  ¦
+
+Struct V brief
+
+|===
+
+
+[#T]
+
+== T
+
+
+Struct T brief
+
+
+=== Synopsis
+
+Declared in header `<friend-6.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct T;
+----
+
+===  Friends
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T/08friend-04ce.adoc[`[object Object]`]  ¦
+
+Friend int brief
+
+¦xref:T/08friend-04cb.adoc[`[object Object]`]  ¦
+
+Friend class Z brief
+
+|===
+
+
+
+:relfileprefix: ../
+[#T-08friend-04ce]
+
+== [object Object]
+
+
+Friend int brief
+
+
+=== Synopsis
+
+Declared in header `<friend-6.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+friend int;
+----
+
+
+:relfileprefix: ../
+[#T-08friend-04cb]
+
+== [object Object]
+
+
+Friend class Z brief
+
+
+=== Synopsis
+
+Declared in header `<friend-6.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+friend Z;
+----
+
+
+
+[#U]
+
+== U
+
+
+Struct U brief
+
+
+=== Synopsis
+
+Declared in header `<friend-6.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct U;
+----
+
+===  Friends
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:U/08friend.adoc[`[object Object]`]  ¦
+
+Friend T brief
+
+|===
+
+
+
+:relfileprefix: ../
+[#U-08friend]
+
+== [object Object]
+
+
+Friend T brief
+
+
+=== Synopsis
+
+Declared in header `<friend-6.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+friend xref:T.adoc[T];
+----
+
+
+
+[#V]
+
+== V
+
+
+Struct V brief
+
+
+=== Synopsis
+
+Declared in header `<friend-6.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct V;
+----
+
+===  Friends
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:V/08friend.adoc[`[object Object]`]  ¦
+
+Friend struct U brief
+
+|===
+
+
+
+:relfileprefix: ../
+[#V-08friend]
+
+== [object Object]
+
+
+Friend struct U brief
+
+
+=== Synopsis
+
+Declared in header `<friend-6.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+friend xref:U.adoc[U];
+----
+
+
+
+Created with MrDocs

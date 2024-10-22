@@ -1,0 +1,98 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A-0e.adoc[`A`]  ¦
+
+|===
+
+
+[#A-0e]
+
+== A
+
+
+
+=== Synopsis
+
+Declared in header `<temp/ct_mct_expl_outside.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+struct A;
+----
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A-0e/B.adoc[`B`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#A-0e-B]
+
+== xref:A-0e.adoc[pass:[A]]::B
+
+
+
+=== Synopsis
+
+Declared in header `<temp/ct_mct_expl_outside.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename U>
+struct B;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A-0e/B/f.adoc[`f`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../../
+[#A-0e-B-f]
+
+== xref:A-0e.adoc[pass:[A]]::xref:A-0e/B.adoc[pass:[B]]::f
+
+
+
+=== Synopsis
+
+Declared in header `<temp/ct_mct_expl_outside.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f();
+----
+
+
+
+
+
+
+
+
+
+[#A-00]
+
+
+Created with MrDocs

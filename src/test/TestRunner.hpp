@@ -26,11 +26,11 @@ namespace mrdocs {
 
 struct TestResults
 {
-    // Number of expected XML files written
-    std::atomic<std::size_t> expectedXmlWritten = 0;
+    // Number of expected doc files written
+    std::atomic<std::size_t> expectedDocsWritten = 0;
 
-    // Number of matching expected XML files
-    std::atomic<std::size_t> expectedXmlMatching= 0;
+    // Number of matching expected doc files
+    std::atomic<std::size_t> expectedDocsMatching = 0;
 
     // Number of directories visited
     std::atomic<std::size_t> numberOfDirs = 0;
@@ -52,7 +52,7 @@ class TestRunner
 {
     ThreadPool threadPool_;
     llvm::ErrorOr<std::string> diffCmdPath_;
-    Generator const* xmlGen_;
+    Generator const* gen_;
     Config::Settings::ReferenceDirectories dirs_;
 
     Error writeFile(
@@ -72,7 +72,7 @@ class TestRunner
 public:
     TestResults results;
 
-    TestRunner();
+    TestRunner(std::string_view generator);
 
     /** Check a single file, or a directory recursively.
 

@@ -1,0 +1,1028 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T01.adoc[`T01`]  ¦
+
+¦xref:T02.adoc[`T02`]  ¦
+
+¦xref:T03.adoc[`T03`]  ¦
+
+¦xref:T04.adoc[`T04`]  ¦
+
+¦xref:T05.adoc[`T05`]  ¦
+
+¦xref:T06.adoc[`T06`]  ¦
+
+¦xref:T08.adoc[`T08`]  ¦
+
+¦xref:T09.adoc[`T09`]  ¦
+
+¦xref:T10.adoc[`T10`]  ¦
+
+¦xref:T11.adoc[`T11`]  ¦
+
+¦xref:T12.adoc[`T12`]  ¦
+
+¦xref:T13.adoc[`T13`]  ¦
+
+¦xref:T14.adoc[`T14`]  ¦
+
+¦xref:T15.adoc[`T15`]  ¦
+
+¦xref:T16.adoc[`T16`]  ¦
+
+¦xref:T17.adoc[`T17`]  ¦
+
+¦xref:U.adoc[`U`]  ¦
+
+¦xref:V.adoc[`V`]  ¦
+
+|===
+
+
+[#T01]
+
+== T01
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct T01;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T01/f.adoc[`f`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#T01-f]
+
+== xref:T01.adoc[pass:[T01]]::f
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f();
+----
+
+
+
+
+
+
+
+
+
+[#T02]
+
+== T02
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct T02;
+----
+
+===  Static Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T02/f.adoc[`f`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#T02-f]
+
+== xref:T02.adoc[pass:[T02]]::f
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+static
+void
+f();
+----
+
+
+
+
+
+
+
+
+
+[#T03]
+
+== T03
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct T03;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T03/f.adoc[`f`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#T03-f]
+
+== xref:T03.adoc[pass:[T03]]::f
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f() &;
+----
+
+
+
+
+
+
+
+
+
+[#T04]
+
+== T04
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct T04;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T04/f.adoc[`f`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#T04-f]
+
+== xref:T04.adoc[pass:[T04]]::f
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f() &&;
+----
+
+
+
+
+
+
+
+
+
+[#T05]
+
+== T05
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct T05;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T05/f.adoc[`f`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#T05-f]
+
+== xref:T05.adoc[pass:[T05]]::f
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f() const;
+----
+
+
+
+
+
+
+
+
+
+[#T06]
+
+== T06
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct T06;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T06/f.adoc[`f`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#T06-f]
+
+== xref:T06.adoc[pass:[T06]]::f
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+constexpr
+void
+f();
+----
+
+
+
+
+
+
+
+
+
+[#T08]
+
+== T08
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct T08;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T08/f.adoc[`f`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#T08-f]
+
+== xref:T08.adoc[pass:[T08]]::f
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f();
+----
+
+
+
+
+
+
+
+
+
+[#T09]
+
+== T09
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct T09;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T09/f.adoc[`f`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#T09-f]
+
+== xref:T09.adoc[pass:[T09]]::f
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f() noexcept;
+----
+
+
+
+
+
+
+
+
+
+[#T10]
+
+== T10
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct T10;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T10/f.adoc[`f`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#T10-f]
+
+== xref:T10.adoc[pass:[T10]]::f
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f();
+----
+
+
+
+
+
+
+
+
+
+[#T11]
+
+== T11
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct T11;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T11/f.adoc[`f`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#T11-f]
+
+== xref:T11.adoc[pass:[T11]]::f
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+int
+f();
+----
+
+
+
+
+
+
+
+
+
+[#T12]
+
+== T12
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct T12;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T12/f.adoc[`f`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#T12-f]
+
+== xref:T12.adoc[pass:[T12]]::f
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f(...);
+----
+
+
+
+
+
+
+
+
+
+[#T13]
+
+== T13
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct T13;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T13/f.adoc[`f`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#T13-f]
+
+== xref:T13.adoc[pass:[T13]]::f
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+virtual
+void
+f();
+----
+
+
+
+
+
+
+
+
+
+[#T14]
+
+== T14
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct T14;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T14/f.adoc[`f`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#T14-f]
+
+== xref:T14.adoc[pass:[T14]]::f
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+virtual
+void
+f() = 0;
+----
+
+
+
+
+
+
+
+
+
+[#T15]
+
+== T15
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct T15;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T15/f.adoc[`f`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#T15-f]
+
+== xref:T15.adoc[pass:[T15]]::f
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f() volatile;
+----
+
+
+
+
+
+
+
+
+
+[#T16]
+
+== T16
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct T16;
+----
+
+===  Static Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T16/f.adoc[`f`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#T16-f]
+
+== xref:T16.adoc[pass:[T16]]::f
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+static
+void
+f();
+----
+
+
+
+
+
+
+
+
+
+[#T17]
+
+== T17
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct T17
+    : xref:T14.adoc[T14];
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T14/f.adoc[`f`]  ¦
+|===
+
+
+
+:relfileprefix: ../
+[#T17-f]
+
+== xref:T17.adoc[pass:[T17]]::f
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+virtual
+void
+f() override;
+----
+
+
+
+
+
+
+
+
+
+[#U]
+
+== U
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct U;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:U/f1.adoc[`f1`]  ¦
+
+¦xref:U/f3.adoc[`f3`]  ¦
+
+|===
+===  Static Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:U/f2.adoc[`f2`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#U-f1]
+
+== xref:U.adoc[pass:[U]]::f1
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+constexpr
+void
+f1(...) const volatile noexcept;
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#U-f2]
+
+== xref:U.adoc[pass:[U]]::f2
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+constexpr
+static
+char
+f2() noexcept;
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#U-f3]
+
+== xref:U.adoc[pass:[U]]::f3
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+virtual
+int
+f3() const volatile noexcept = 0;
+----
+
+
+
+
+
+
+
+
+
+[#V]
+
+== V
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct V
+    : xref:U.adoc[U];
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:U/f1.adoc[`f1`]  ¦
+
+¦xref:U/f3.adoc[`f3`]  ¦
+|===
+===  Static Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:U/f2.adoc[`f2`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#V-f3]
+
+== xref:V.adoc[pass:[V]]::f3
+
+
+
+=== Synopsis
+
+Declared in header `<mem-fn.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+virtual
+int
+f3() const volatile noexcept override;
+----
+
+
+
+
+
+
+
+
+
+Created with MrDocs

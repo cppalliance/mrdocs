@@ -1,0 +1,51 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:f1.adoc[`f1`]  ¦
+
+brief
+
+|===
+
+
+[#f1]
+
+== f1
+
+
+brief
+
+
+=== Synopsis
+
+Declared in header `<commands.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f1();
+----
+
+=== Description
+
+
+mrdocs hello
+
+
+
+
+
+
+
+
+
+
+Created with MrDocs

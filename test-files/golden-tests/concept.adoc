@@ -1,0 +1,91 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:f.adoc[`f`]  ¦
+
+|===
+=== Variables
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:x.adoc[`x`]  ¦
+
+|===
+=== Concepts
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:C.adoc[`C`]  ¦
+
+|===
+
+
+[#C]
+
+= C
+
+
+
+== Synopsis
+
+Declared in header `<concept.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+concept C = sizeof(T) == sizeof(int);
+----
+
+
+
+[#f]
+
+== f
+
+
+
+=== Synopsis
+
+Declared in header `<concept.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<xref:C.adoc[C] T>
+void
+f();
+----
+
+
+
+
+
+
+
+
+
+[#x]
+
+== x
+
+
+
+=== Synopsis
+
+Declared in header `<concept.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+xref:C.adoc[C] auto x = 0;
+----
+
+
+
+Created with MrDocs

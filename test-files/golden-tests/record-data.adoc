@@ -1,0 +1,463 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T.adoc[`T`]  ¦
+
+¦xref:U.adoc[`U`]  ¦
+
+¦xref:V.adoc[`V`]  ¦
+
+¦xref:W.adoc[`W`]  ¦
+
+¦xref:X.adoc[`X`]  ¦
+
+|===
+
+
+[#T]
+
+== T
+
+
+
+=== Synopsis
+
+Declared in header `<record-data.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct T;
+----
+
+===  Data Members
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T/i.adoc[`i`]  ¦
+
+¦xref:T/j.adoc[`j`]  ¦
+
+¦xref:T/k.adoc[`k`]  ¦
+
+¦xref:T/l.adoc[`l`]  ¦
+
+¦xref:T/m.adoc[`m`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#T-i]
+
+== xref:T.adoc[pass:[T]]::i
+
+
+
+=== Synopsis
+
+Declared in header `<record-data.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+int i;
+----
+
+
+:relfileprefix: ../
+[#T-j]
+
+== xref:T.adoc[pass:[T]]::j
+
+
+
+=== Synopsis
+
+Declared in header `<record-data.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+double j;
+----
+
+
+:relfileprefix: ../
+[#T-k]
+
+== xref:T.adoc[pass:[T]]::k
+
+
+
+=== Synopsis
+
+Declared in header `<record-data.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+mutable
+int k;
+----
+
+
+:relfileprefix: ../
+[#T-l]
+
+== xref:T.adoc[pass:[T]]::l
+
+
+
+=== Synopsis
+
+Declared in header `<record-data.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+int l : 8;
+----
+
+
+:relfileprefix: ../
+[#T-m]
+
+== xref:T.adoc[pass:[T]]::m
+
+
+
+=== Synopsis
+
+Declared in header `<record-data.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+int m : 4 + 4;
+----
+
+
+
+[#U]
+
+== U
+
+
+
+=== Synopsis
+
+Declared in header `<record-data.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct U;
+----
+
+===  Data Members
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:U/t.adoc[`t`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#U-t]
+
+== xref:U.adoc[pass:[U]]::t
+
+
+
+=== Synopsis
+
+Declared in header `<record-data.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+xref:T.adoc[T] t;
+----
+
+
+
+[#V]
+
+== V
+
+
+
+=== Synopsis
+
+Declared in header `<record-data.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+class V;
+----
+
+=== Protected Data Members
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:V/j.adoc[`j`]  ¦
+
+|===
+=== Private Data Members
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:V/i.adoc[`i`]  ¦
+
+¦xref:V/k.adoc[`k`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#V-i]
+
+== xref:V.adoc[pass:[V]]::i
+
+
+
+=== Synopsis
+
+Declared in header `<record-data.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+int i;
+----
+
+
+:relfileprefix: ../
+[#V-j]
+
+== xref:V.adoc[pass:[V]]::j
+
+
+
+=== Synopsis
+
+Declared in header `<record-data.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+unsigned long j;
+----
+
+
+:relfileprefix: ../
+[#V-k]
+
+== xref:V.adoc[pass:[V]]::k
+
+
+
+=== Synopsis
+
+Declared in header `<record-data.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+double k;
+----
+
+
+
+[#W]
+
+== W
+
+
+
+=== Synopsis
+
+Declared in header `<record-data.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct W;
+----
+
+===  Data Members
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:W/buf.adoc[`buf`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#W-buf]
+
+== xref:W.adoc[pass:[W]]::buf
+
+
+
+=== Synopsis
+
+Declared in header `<record-data.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+char buf[64];
+----
+
+
+
+[#X]
+
+== X
+
+
+
+=== Synopsis
+
+Declared in header `<record-data.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<
+    typename P,
+    int I>
+struct X;
+----
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:X/Q.adoc[`Q`]  ¦
+
+|===
+===  Data Members
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:X/x0.adoc[`x0`]  ¦
+
+¦xref:X/x1.adoc[`x1`]  ¦
+
+¦xref:X/x2.adoc[`x2`]  ¦
+
+¦xref:X/x3.adoc[`x3`]  ¦
+
+¦xref:X/x4.adoc[`x4`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#X-Q]
+
+== xref:X.adoc[pass:[X]]::Q
+
+
+
+=== Synopsis
+
+Declared in header `<record-data.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+using Q = P;
+----
+
+
+:relfileprefix: ../
+[#X-x0]
+
+== xref:X.adoc[pass:[X]]::x0
+
+
+
+=== Synopsis
+
+Declared in header `<record-data.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+int x0 = 0;
+----
+
+
+:relfileprefix: ../
+[#X-x1]
+
+== xref:X.adoc[pass:[X]]::x1
+
+
+
+=== Synopsis
+
+Declared in header `<record-data.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+P x1;
+----
+
+
+:relfileprefix: ../
+[#X-x2]
+
+== xref:X.adoc[pass:[X]]::x2
+
+
+
+=== Synopsis
+
+Declared in header `<record-data.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+P const x2[32];
+----
+
+
+:relfileprefix: ../
+[#X-x3]
+
+== xref:X.adoc[pass:[X]]::x3
+
+
+
+=== Synopsis
+
+Declared in header `<record-data.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+xref:X/Q.adoc[Q] x3;
+----
+
+
+:relfileprefix: ../
+[#X-x4]
+
+== xref:X.adoc[pass:[X]]::x4
+
+
+
+=== Synopsis
+
+Declared in header `<record-data.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+int x4 : I + 4;
+----
+
+
+
+Created with MrDocs

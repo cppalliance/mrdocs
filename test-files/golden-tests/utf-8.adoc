@@ -1,0 +1,41 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:Христос_воскрес.adoc[`Христос_воскрес`]  ¦
+
+|===
+
+
+[#Христос_воскрес]
+
+== Христос_воскрес
+
+
+
+=== Synopsis
+
+Declared in header `<utf-8.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+bool
+Христос_воскрес();
+----
+
+
+
+
+
+
+
+
+
+Created with MrDocs

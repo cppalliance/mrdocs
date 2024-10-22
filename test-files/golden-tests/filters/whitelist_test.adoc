@@ -1,0 +1,93 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+=== Namespaces
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:blacklisted.adoc[`blacklisted`]  ¦
+
+¦xref:to_be_documented.adoc[`to_be_documented`]  ¦
+
+|===
+
+
+[#to_be_documented]
+
+== to_be_documented
+
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:to_be_documented/documented_function.adoc[`documented_function`]  ¦
+
+|===
+
+:relfileprefix: ../
+[#to_be_documented-documented_function]
+
+== xref:to_be_documented.adoc[pass:[to_be_documented]]::documented_function
+
+
+
+=== Synopsis
+
+Declared in header `<filters/whitelist_test.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+documented_function();
+----
+
+
+
+
+
+
+
+
+
+[#blacklisted]
+
+== blacklisted
+
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:blacklisted/whitelisted_function.adoc[`whitelisted_function`]  ¦
+
+|===
+
+:relfileprefix: ../
+[#blacklisted-whitelisted_function]
+
+== xref:blacklisted.adoc[pass:[blacklisted]]::whitelisted_function
+
+
+
+=== Synopsis
+
+Declared in header `<filters/whitelist_test.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+whitelisted_function();
+----
+
+
+
+
+
+
+
+
+
+Created with MrDocs

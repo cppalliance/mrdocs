@@ -1,0 +1,504 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:C0.adoc[`C0`]  ¦
+
+¦xref:C1.adoc[`C1`]  ¦
+
+¦xref:C2.adoc[`C2`]  ¦
+
+¦xref:C3.adoc[`C3`]  ¦
+
+¦xref:S.adoc[`S`]  ¦
+
+|===
+
+
+[#S]
+
+== S
+
+
+
+=== Synopsis
+
+Declared in header `<class-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct S;
+----
+
+
+
+
+
+[#C0]
+
+== C0
+
+
+
+=== Synopsis
+
+Declared in header `<class-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+struct C0;
+----
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:C0/N0.adoc[`N0`]  ¦
+
+|===
+===  Data Members
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:C0/w.adoc[`w`]  ¦
+
+¦xref:C0/x.adoc[`x`]  ¦
+
+¦xref:C0/y.adoc[`y`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#C0-w]
+
+== xref:C0.adoc[pass:[C0]]::w
+
+
+
+=== Synopsis
+
+Declared in header `<class-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+int w;
+----
+
+
+:relfileprefix: ../
+[#C0-x]
+
+== xref:C0.adoc[pass:[C0]]::x
+
+
+
+=== Synopsis
+
+Declared in header `<class-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+xref:S.adoc[S] x;
+----
+
+
+:relfileprefix: ../
+[#C0-y]
+
+== xref:C0.adoc[pass:[C0]]::y
+
+
+
+=== Synopsis
+
+Declared in header `<class-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+T y;
+----
+
+
+:relfileprefix: ../
+[#C0-N0]
+
+== xref:C0.adoc[pass:[C0]]::N0
+
+
+
+=== Synopsis
+
+Declared in header `<class-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct N0;
+----
+
+===  Data Members
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:C0/N0/z.adoc[`z`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../../
+[#C0-N0-z]
+
+== xref:C0.adoc[pass:[C0]]::xref:C0/N0.adoc[pass:[N0]]::z
+
+
+
+=== Synopsis
+
+Declared in header `<class-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+int z;
+----
+
+
+
+[#C1]
+
+== C1
+
+
+
+=== Synopsis
+
+Declared in header `<class-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct C1;
+----
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:C1/N1.adoc[`N1`]  ¦
+
+|===
+===  Data Members
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:C1/w.adoc[`w`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#C1-w]
+
+== xref:C1.adoc[pass:[C1]]::w
+
+
+
+=== Synopsis
+
+Declared in header `<class-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+int w;
+----
+
+
+:relfileprefix: ../
+[#C1-N1]
+
+== xref:C1.adoc[pass:[C1]]::N1
+
+
+
+=== Synopsis
+
+Declared in header `<class-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+struct N1;
+----
+
+===  Data Members
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:C1/N1/x.adoc[`x`]  ¦
+
+¦xref:C1/N1/y.adoc[`y`]  ¦
+
+¦xref:C1/N1/z.adoc[`z`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../../
+[#C1-N1-x]
+
+== xref:C1.adoc[pass:[C1]]::xref:C1/N1.adoc[pass:[N1]]::x
+
+
+
+=== Synopsis
+
+Declared in header `<class-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+xref:S.adoc[S] x;
+----
+
+
+:relfileprefix: ../../
+[#C1-N1-y]
+
+== xref:C1.adoc[pass:[C1]]::xref:C1/N1.adoc[pass:[N1]]::y
+
+
+
+=== Synopsis
+
+Declared in header `<class-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+T y;
+----
+
+
+:relfileprefix: ../../
+[#C1-N1-z]
+
+== xref:C1.adoc[pass:[C1]]::xref:C1/N1.adoc[pass:[N1]]::z
+
+
+
+=== Synopsis
+
+Declared in header `<class-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+int z;
+----
+
+
+
+[#C2]
+
+== C2
+
+
+
+=== Synopsis
+
+Declared in header `<class-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+struct C2;
+----
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:C2/N2.adoc[`N2`]  ¦
+
+|===
+===  Data Members
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:C2/v.adoc[`v`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#C2-v]
+
+== xref:C2.adoc[pass:[C2]]::v
+
+
+
+=== Synopsis
+
+Declared in header `<class-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+int v;
+----
+
+
+:relfileprefix: ../
+[#C2-N2]
+
+== xref:C2.adoc[pass:[C2]]::N2
+
+
+
+=== Synopsis
+
+Declared in header `<class-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename U>
+struct N2;
+----
+
+===  Data Members
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:C2/N2/w.adoc[`w`]  ¦
+
+¦xref:C2/N2/x.adoc[`x`]  ¦
+
+¦xref:C2/N2/y.adoc[`y`]  ¦
+
+¦xref:C2/N2/z.adoc[`z`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../../
+[#C2-N2-w]
+
+== xref:C2.adoc[pass:[C2]]::xref:C2/N2.adoc[pass:[N2]]::w
+
+
+
+=== Synopsis
+
+Declared in header `<class-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+xref:S.adoc[S] w;
+----
+
+
+:relfileprefix: ../../
+[#C2-N2-x]
+
+== xref:C2.adoc[pass:[C2]]::xref:C2/N2.adoc[pass:[N2]]::x
+
+
+
+=== Synopsis
+
+Declared in header `<class-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+T x;
+----
+
+
+:relfileprefix: ../../
+[#C2-N2-y]
+
+== xref:C2.adoc[pass:[C2]]::xref:C2/N2.adoc[pass:[N2]]::y
+
+
+
+=== Synopsis
+
+Declared in header `<class-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+U y;
+----
+
+
+:relfileprefix: ../../
+[#C2-N2-z]
+
+== xref:C2.adoc[pass:[C2]]::xref:C2/N2.adoc[pass:[N2]]::z
+
+
+
+=== Synopsis
+
+Declared in header `<class-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+int z;
+----
+
+
+
+[#C3]
+
+== C3
+
+
+
+=== Synopsis
+
+Declared in header `<class-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+struct C3;
+----
+
+===  Data Members
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:C3/v.adoc[`v`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#C3-v]
+
+== xref:C3.adoc[pass:[C3]]::v
+
+
+
+=== Synopsis
+
+Declared in header `<class-template.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+int v;
+----
+
+
+
+Created with MrDocs

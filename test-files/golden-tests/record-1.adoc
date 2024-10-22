@@ -1,0 +1,286 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T.adoc[`T`]  ¦
+
+|===
+
+
+[#T]
+
+== T
+
+
+
+=== Synopsis
+
+Declared in header `<record-1.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct T;
+----
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T/U1.adoc[`U1`]  ¦
+
+¦xref:T/U2.adoc[`U2`]  ¦
+
+|===
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T/f1.adoc[`f1`]  ¦
+
+¦xref:T/f2.adoc[`f2`]  ¦
+
+¦xref:T/f3.adoc[`f3`]  ¦
+
+|===
+=== Protected Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:T/g1.adoc[`g1`]  ¦
+
+brief-g1
+
+¦xref:T/g2.adoc[`g2`]  ¦
+
+brief-g2
+
+¦xref:T/g3.adoc[`g3`]  ¦
+
+brief-g3
+
+|===
+
+
+
+:relfileprefix: ../
+[#T-U1]
+
+== xref:T.adoc[pass:[T]]::U1
+
+
+
+=== Synopsis
+
+Declared in header `<record-1.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+using U1 = int;
+----
+
+
+:relfileprefix: ../
+[#T-U2]
+
+== xref:T.adoc[pass:[T]]::U2
+
+
+
+=== Synopsis
+
+Declared in header `<record-1.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+typedef char U2;
+----
+
+
+:relfileprefix: ../
+[#T-f1]
+
+== xref:T.adoc[pass:[T]]::f1
+
+
+
+=== Synopsis
+
+Declared in header `<record-1.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f1();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#T-f2]
+
+== xref:T.adoc[pass:[T]]::f2
+
+
+
+=== Synopsis
+
+Declared in header `<record-1.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+int
+f2();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#T-f3]
+
+== xref:T.adoc[pass:[T]]::f3
+
+
+
+=== Synopsis
+
+Declared in header `<record-1.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+char
+f3();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#T-g1]
+
+== xref:T.adoc[pass:[T]]::g1
+
+
+brief-g1
+
+
+=== Synopsis
+
+Declared in header `<record-1.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+g1();
+----
+
+=== Description
+
+
+desc
+
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#T-g2]
+
+== xref:T.adoc[pass:[T]]::g2
+
+
+brief-g2
+
+
+=== Synopsis
+
+Declared in header `<record-1.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+int
+g2();
+----
+
+
+
+=== Return Value
+
+
+the number 2
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#T-g3]
+
+== xref:T.adoc[pass:[T]]::g3
+
+
+brief-g3
+
+
+=== Synopsis
+
+Declared in header `<record-1.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+char
+g3(int x);
+----
+
+
+
+=== Return Value
+
+
+the separator
+
+
+
+
+=== Parameters
+
+|===
+| Name | Description 
+
+| *x*
+| 
+any old number
+
+|===
+
+
+
+
+
+Created with MrDocs

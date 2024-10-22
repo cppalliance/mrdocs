@@ -1,0 +1,121 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A-0e.adoc[`A`]  ¦
+
+¦xref:A-00.adoc[`A<int>`]  ¦
+
+|===
+
+
+[#A-0e]
+
+== A
+
+
+
+=== Synopsis
+
+Declared in header `<temp/ct_expl.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+struct A;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A-0e/f.adoc[`f`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#A-0e-f]
+
+== xref:A-0e.adoc[pass:[A]]::f
+
+
+
+=== Synopsis
+
+Declared in header `<temp/ct_expl.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f();
+----
+
+
+
+
+
+
+
+
+
+[#A-00]
+
+== A
+
+
+
+=== Synopsis
+
+Declared in header `<temp/ct_expl.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<>
+struct xref:A-0e.adoc[pass:[A]]<int>;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A-00/g.adoc[`g`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#A-00-g]
+
+== xref:A-00.adoc[pass:[A]]<int>::g
+
+
+
+=== Synopsis
+
+Declared in header `<temp/ct_expl.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+g();
+----
+
+
+
+
+
+
+
+
+
+Created with MrDocs

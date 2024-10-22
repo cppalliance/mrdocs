@@ -33,11 +33,11 @@ namespace clang {
 namespace mrdocs {
 
 TestRunner::
-TestRunner()
+TestRunner(std::string_view generator)
     : diffCmdPath_(llvm::sys::findProgramByName("diff"))
-    , xmlGen_(getGenerators().find("xml"))
+    , gen_(getGenerators().find(generator))
 {
-    MRDOCS_ASSERT(xmlGen_ != nullptr);
+    MRDOCS_ASSERT(gen_ != nullptr);
 }
 
 Error
@@ -58,6 +58,16 @@ writeFile(
 }
 
 void
+replaceCRLFWithLF(std::string &str)
+{
+    std::string::size_type pos = 0;
+    while ((pos = str.find("\r\n", pos)) != std::string::npos) {
+        str.replace(pos, 2, "\n");
+        pos += 1; // Move past the '\n' character
+    }
+}
+
+void
 TestRunner::
 handleFile(
     llvm::StringRef filePath,
@@ -68,7 +78,7 @@ handleFile(
 
     MRDOCS_ASSERT(path::extension(filePath).compare_insensitive(".cpp") == 0);
 
-    // Check the fource file
+    // Check the source file
     auto ft = files::getFileType(filePath);
     if (ft.value() == files::FileType::not_found) {
         return report::error("{}: \"{}\"",
@@ -92,9 +102,9 @@ handleFile(
     std::shared_ptr<ConfigImpl const> config =
         ConfigImpl::load(fileSettings, dirs_, threadPool_).value();
 
-    // Path with the expected XML results
+    // Path with the expected results
     SmallPathString expectedPath = filePath;
-    path::replace_extension(expectedPath, xmlGen_->fileExtension());
+    path::replace_extension(expectedPath, gen_->fileExtension());
 
     // Create an adjusted MrDocsDatabase
     auto parentDir = files::getParentDir(filePath);
@@ -108,99 +118,94 @@ handleFile(
     if(! corpus)
         return report::error("{}: \"{}\"", corpus.error(), filePath);
 
-    // Generate XML
-    std::string generatedXml;
-    if(auto err = xmlGen_->buildOneString(generatedXml, **corpus))
+    // Generate
+    std::string generatedDocs;
+    if(auto err = gen_->buildOneString(generatedDocs, **corpus))
         return report::error("{}: \"{}\"", err, filePath);
+    replaceCRLFWithLF(generatedDocs);
 
-    // Get expected XML if it exists
-    std::unique_ptr<llvm::MemoryBuffer> expectedXml;
+    // Get expected documentation if it exists
+    std::unique_ptr<llvm::MemoryBuffer> expectedDocsBuf;
     {
         auto fileResult = llvm::MemoryBuffer::getFile(expectedPath, false, true, true);
         if(fileResult)
-            expectedXml = std::move(fileResult.get());
+            expectedDocsBuf = std::move(fileResult.get());
         else if(fileResult.getError() != std::errc::no_such_file_or_directory)
             return report::error("{}: \"{}\"", fileResult.getError(), expectedPath);
     }
 
-    // Analyse results
-    if(! expectedXml)
+    // If no expected documentation file
+    if(!expectedDocsBuf)
     {
         if(testArgs.action == Action::test)
         {
-            // Can't test without expected XML file
+            // Can't test without expected documentation file
             return report::error("{}: \"{}\"",
-                Error("missing xml file"), expectedPath);
+                Error("missing test file"), expectedPath);
         }
 
-        if(testArgs.action == Action::create)
+        if(testArgs.action == Action::create ||
+           testArgs.action == Action::update)
         {
-            // Create expected XML file
-            if(auto err = writeFile(expectedPath, generatedXml))
+            // Create expected documentation file
+            if(auto err = writeFile(expectedPath, generatedDocs))
                 return report::error("{}: \"{}\"", err, expectedPath);
             report::info("\"{}\" created", expectedPath);
-            ++results.expectedXmlWritten;
+            ++results.expectedDocsWritten;
             return;
         }
     }
-    else if(
-        testArgs.action == Action::test ||
-        testArgs.action == Action::create)
+
+    // Analyse results
+    std::string expectedDocs = expectedDocsBuf->getBuffer().str();
+    replaceCRLFWithLF(expectedDocs);
+    if (generatedDocs == expectedDocs)
     {
-        // Compare the generated output with the expected output
-        if(generatedXml != expectedXml->getBuffer())
-        {
-            // mismatch
-            report::error("{}: \"{}\"",
-                Error("incorrect results"), filePath);
-            auto res = test_suite::diffStrings(
-                expectedXml->getBuffer(), generatedXml);
-            report::error("{} lines added", res.added);
-            report::error("{} lines removed", res.removed);
-            report::error("Diff:\n{}", res.diff);
-
-            if(testArgs.badOption.getValue())
-            {
-                // Write the .bad.xml file
-                auto badPath = expectedPath;
-                path::replace_extension(badPath, "bad.xml");
-                if(auto err = writeFile(badPath, generatedXml))
-                    return report::error("{}: \"{}\"", err, badPath);
-                report::info("\"{}\" written", badPath);
-
-                // VFALCO We are calling this over and over again instead of once?
-                if(! diffCmdPath_.getError())
-                {
-                    path::replace_extension(badPath, "xml");
-                    std::array<llvm::StringRef, 5u> args {
-                        diffCmdPath_.get(), "-u", "--color", expectedPath, badPath };
-                    llvm::sys::ExecuteAndWait(diffCmdPath_.get(), args);
-                }
-            }
-        }
-        else
-        {
-            report::info("\"{}\" passed", filePath);
-            ++results.expectedXmlMatching;
-        }
+        report::info("\"{}\" passed", filePath);
+        ++results.expectedDocsMatching;
         return;
     }
 
-    // update action
-    if(testArgs.action == Action::update)
+    // Mismatch
+    if(
+        testArgs.action == Action::test ||
+        testArgs.action == Action::create)
     {
-        if(! expectedXml || generatedXml != expectedXml->getBuffer())
+        report::error("{}: \"{}\"",
+            Error("Incorrect results"), filePath);
+        auto res = test_suite::diffStrings(expectedDocs, generatedDocs);
+        report::error("{} lines added", res.added);
+        report::error("{} lines removed", res.removed);
+
+        report::error("Diff:\n{}", res.diff);
+
+        if(testArgs.badOption.getValue())
         {
-            // Update the expected XML
-            if(auto err = writeFile(expectedPath, generatedXml))
-                return report::error("{}: \"{}\"", err, expectedPath);
-            report::info("\"{}\" updated", expectedPath);
-            ++results.expectedXmlWritten;
+            // Write the .bad.<generator> file
+            auto badPath = expectedPath;
+            path::replace_extension(badPath, llvm::Twine("bad.").concat(gen_->fileExtension()));
+            if(auto err = writeFile(badPath, generatedDocs))
+                return report::error("{}: \"{}\"", err, badPath);
+            report::info("\"{}\" written", badPath);
+
+            // VFALCO We are calling this over and over again instead of once?
+            if(! diffCmdPath_.getError())
+            {
+                path::replace_extension(badPath, gen_->fileExtension());
+                std::array<llvm::StringRef, 5u> args {
+                    diffCmdPath_.get(), "-u", "--color", expectedPath, badPath };
+                llvm::sys::ExecuteAndWait(diffCmdPath_.get(), args);
+            }
         }
-        else
-        {
-            ++results.expectedXmlMatching;
-        }
+    }
+    // update action
+    else if(testArgs.action == Action::update)
+    {
+        // Update the expected documentation
+        if(auto err = writeFile(expectedPath, generatedDocs))
+            return report::error("{}: \"{}\"", err, expectedPath);
+        report::info("\"{}\" updated", expectedPath);
+        ++results.expectedDocsWritten;
         return;
     }
 }
@@ -287,10 +292,18 @@ checkPath(
     // Check for a directory-wide config
     Config::Settings dirSettings;
     dirSettings.sourceRoot = files::appendPath(inputPath, ".");
+    dirSettings.stdlibIncludes.insert(
+        dirSettings.stdlibIncludes.end(),
+        testArgs.stdlibIncludes.begin(),
+        testArgs.stdlibIncludes.end());
     std::string const& configPath = files::appendPath(inputPath, "mrdocs.yml");
     if (files::exists(configPath)) {
         Config::Settings::load_file(dirSettings, configPath, dirs_).value();
-        dirSettings.normalize(dirs_);
+        auto exp = dirSettings.normalize(dirs_);
+        if (!exp) {
+            report::error("{}: \"{}\"", exp.error(), configPath);
+            return;
+        }
     }
 
     switch(fileType.value())

@@ -1,0 +1,162 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A.adoc[`A`]  ¦
+
+¦xref:B.adoc[`B`]  ¦
+
+|===
+
+
+[#A]
+
+== A
+
+
+
+=== Synopsis
+
+Declared in header `<union.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+union A;
+----
+
+===  Data Members
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A/x.adoc[`x`] [.small]#[variant member]# ¦
+
+¦xref:A/y.adoc[`y`] [.small]#[variant member]# ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#A-x]
+
+== xref:A.adoc[pass:[A]]::x
+
+
+
+=== Synopsis
+
+Declared in header `<union.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+int x;
+----
+
+
+:relfileprefix: ../
+[#A-y]
+
+== xref:A.adoc[pass:[A]]::y
+
+
+
+=== Synopsis
+
+Declared in header `<union.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+bool y;
+----
+
+
+
+[#B]
+
+== B
+
+
+
+=== Synopsis
+
+Declared in header `<union.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct B;
+----
+
+===  Data Members
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:B/x.adoc[`x`] [.small]#[variant member]# ¦
+
+¦xref:B/y.adoc[`y`] [.small]#[variant member]# ¦
+
+¦xref:B/z.adoc[`z`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#B-x]
+
+== xref:B.adoc[pass:[B]]::x
+
+
+
+=== Synopsis
+
+Declared in header `<union.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+int x;
+----
+
+
+:relfileprefix: ../
+[#B-y]
+
+== xref:B.adoc[pass:[B]]::y
+
+
+
+=== Synopsis
+
+Declared in header `<union.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+bool y;
+----
+
+
+:relfileprefix: ../
+[#B-z]
+
+== xref:B.adoc[pass:[B]]::z
+
+
+
+=== Synopsis
+
+Declared in header `<union.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+int z;
+----
+
+
+
+Created with MrDocs

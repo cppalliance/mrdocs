@@ -46,9 +46,11 @@ public:
     llvm::cl::opt<bool>         badOption;
     llvm::cl::opt<bool>         unitOption;
     llvm::cl::list<std::string> inputPaths;
+
+    // Options replication public settings
+    llvm::cl::opt<std::string>  generator;
     llvm::cl::opt<std::string>  addons;
-    llvm::cl::list<std::string> systemIncludes;
-    llvm::cl::list<std::string> includes;
+    llvm::cl::list<std::string> stdlibIncludes;
 
     // Hide all options that don't belong to us
     void hideForeignOptions();

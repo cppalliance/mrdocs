@@ -1,0 +1,270 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A-0e.adoc[`A`]  ¦
+
+¦xref:D.adoc[`D`]  ¦
+
+|===
+
+
+[#A-0e]
+
+== A
+
+
+
+=== Synopsis
+
+Declared in header `<spec-mem-implicit-instantiation.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+struct A;
+----
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A-0e/B.adoc[`B`]  ¦
+
+¦xref:A-0e/C.adoc[`C`]  ¦
+
+|===
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A-0e/f.adoc[`f`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#A-0e-f]
+
+== xref:A-0e.adoc[pass:[A]]::f
+
+
+
+=== Synopsis
+
+Declared in header `<spec-mem-implicit-instantiation.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#A-0e-B]
+
+== xref:A-0e.adoc[pass:[A]]::B
+
+
+
+=== Synopsis
+
+Declared in header `<spec-mem-implicit-instantiation.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename U>
+struct B;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A-0e/B/g.adoc[`g`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../../
+[#A-0e-B-g]
+
+== xref:A-0e.adoc[pass:[A]]::xref:A-0e/B.adoc[pass:[B]]::g
+
+
+
+=== Synopsis
+
+Declared in header `<spec-mem-implicit-instantiation.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+g();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#A-0e-C]
+
+== xref:A-0e.adoc[pass:[A]]::C
+
+
+
+=== Synopsis
+
+Declared in header `<spec-mem-implicit-instantiation.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename U>
+struct C;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:A-0e/C/h.adoc[`h`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../../
+[#A-0e-C-h]
+
+== xref:A-0e.adoc[pass:[A]]::xref:A-0e/C.adoc[pass:[C]]::h
+
+
+
+=== Synopsis
+
+Declared in header `<spec-mem-implicit-instantiation.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+h();
+----
+
+
+
+
+
+
+
+
+
+[#A-000]
+
+
+[#A-00b]
+
+
+[#A-0f]
+
+
+[#D]
+
+== D
+
+
+
+=== Synopsis
+
+Declared in header `<spec-mem-implicit-instantiation.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+struct D;
+----
+
+===  Types
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:D/E-0e.adoc[`E`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../
+[#D-E-0e]
+
+== xref:D.adoc[pass:[D]]::E
+
+
+
+=== Synopsis
+
+Declared in header `<spec-mem-implicit-instantiation.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+struct E;
+----
+
+===  Member Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:D/E-0e/k.adoc[`k`]  ¦
+
+|===
+
+
+
+:relfileprefix: ../../
+[#D-E-0e-k]
+
+== xref:D.adoc[pass:[D]]::xref:D/E-0e.adoc[pass:[E]]::k
+
+
+
+=== Synopsis
+
+Declared in header `<spec-mem-implicit-instantiation.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+k();
+----
+
+
+
+
+
+
+
+
+:relfileprefix: ../
+[#D-E-0d]
+
+
+Created with MrDocs

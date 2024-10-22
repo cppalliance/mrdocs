@@ -1,0 +1,90 @@
+= Reference
+:mrdocs:
+
+[#index]
+
+== Global namespace
+
+=== Functions
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+¦xref:f5.adoc[`f5`]  ¦
+
+brief
+*bold*
+it
+continues to the line.
+
+¦xref:f6.adoc[`f6`]  ¦
+
+brief
+
+|===
+
+
+[#f5]
+
+== f5
+
+
+brief
+*bold*
+it
+continues to the line.
+
+
+=== Synopsis
+
+Declared in header `<brief-1.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f5();
+----
+
+
+
+
+
+
+
+
+
+[#f6]
+
+== f6
+
+
+brief
+
+
+=== Synopsis
+
+Declared in header `<brief-1.cpp>`
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+f6();
+----
+
+=== Description
+
+
+many lined
+*bold*
+what will
+happen?
+
+
+
+
+
+
+
+
+
+
+Created with MrDocs
