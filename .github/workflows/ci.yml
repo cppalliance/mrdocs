@@ -386,7 +386,13 @@ jobs:
           package-artifact: false
 
       - name: Check YAML schema
-        run: npx -y -p ajv-cli -- ajv compile -s docs/mrdocs.schema.json
+        run: |
+          # Find python
+          python=$(command -v python3 || command -v python)
+          # The schema in this branch is up to date 
+          "$python" ./util/generate-yaml-schema.py --check
+          # The schema in the docs folder is valid
+          npx -y -p ajv-cli -- ajv compile -s docs/mrdocs.schema.json
 
       - name: Upload GitHub Release Artifacts
         if: ${{ matrix.is-main && matrix.compiler != 'clang' }}
