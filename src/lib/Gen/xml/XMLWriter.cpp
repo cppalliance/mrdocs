@@ -191,8 +191,8 @@ XMLWriter::
 operator()(
     T const& I)
 {
-    #define INFO_PASCAL(Type) if constexpr(T::is##Type()) write##Type(I);
-    #include <mrdocs/Metadata/InfoNodes.inc>
+    #define INFO(Type) if constexpr(T::is##Type()) write##Type(I);
+    #include <mrdocs/Metadata/InfoNodesPascal.inc>
 }
 
 //------------------------------------------------

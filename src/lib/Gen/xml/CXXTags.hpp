@@ -31,9 +31,9 @@ namespace clang {
 namespace mrdocs {
 namespace xml {
 
-#define INFO_PASCAL_AND_LC(Type, LCType) \
-constexpr auto LCType##TagName = #LCType;
-#include <mrdocs/Metadata/InfoNodes.inc>
+#define INFO(LowerName) \
+constexpr auto LowerName##TagName = #LowerName;
+#include <mrdocs/Metadata/InfoNodesLower.inc>
 
 constexpr auto accessTagName         = "access";
 constexpr auto attributeTagName      = "attr";

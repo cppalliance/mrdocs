@@ -82,8 +82,8 @@ operator()(OverloadSet const& OS)
 #define DEFINE(T) template void \
     MultiPageVisitor::operator()<T>(T const&)
 
-#define INFO_PASCAL(Type) DEFINE(Type##Info);
-#include <mrdocs/Metadata/InfoNodes.inc>
+#define INFO(Type) DEFINE(Type##Info);
+#include <mrdocs/Metadata/InfoNodesPascal.inc>
 
 } // adoc
 } // mrdocs

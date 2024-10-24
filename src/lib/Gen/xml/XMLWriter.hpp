@@ -59,8 +59,8 @@ public:
     template<class T>
     void operator()(T const&);
 
-#define INFO_PASCAL(Type) void write##Type(Type##Info const&);
-#include <mrdocs/Metadata/InfoNodes.inc>
+#define INFO(Type) void write##Type(Type##Info const&);
+#include <mrdocs/Metadata/InfoNodesPascal.inc>
 
     void writeSourceInfo(SourceInfo const& I);
     void writeLocation(Location const& loc, bool def = false);

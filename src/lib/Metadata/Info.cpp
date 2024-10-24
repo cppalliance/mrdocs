@@ -25,9 +25,9 @@ toString(InfoKind kind) noexcept
 {
     switch(kind)
     {
-#define INFO_PASCAL_AND_LC(Type, LCType) \
-    case InfoKind::Type: return #LCType;
-#include <mrdocs/Metadata/InfoNodes.inc>
+#define INFO(PascalName, LowerName) \
+    case InfoKind::PascalName: return #LowerName;
+#include <mrdocs/Metadata/InfoNodesPascalAndLower.inc>
     default:
         MRDOCS_UNREACHABLE();
     }
