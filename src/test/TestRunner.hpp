@@ -79,7 +79,7 @@ public:
         This function checks the specified path
         and blocks until completed.
     */
-    void checkPath(std::string inputPath);
+    void checkPath(std::string inputPath, char const** argv);
 };
 
 } // mrdocs

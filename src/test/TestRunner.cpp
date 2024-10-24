@@ -264,7 +264,8 @@ handleDir(
 void
 TestRunner::
 checkPath(
-    std::string inputPath)
+    std::string inputPath,
+    char const** argv)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
@@ -274,14 +275,6 @@ checkPath(
     // Set the reference directories for the test
     dirs_.configDir = inputPath;
     dirs_.cwd = dirs_.configDir;
-    if (testArgs.addons.getValue() != "")
-    {
-        dirs_.mrdocsRoot = files::getParentDir(files::normalizePath(testArgs.addons.getValue()), 3);
-    }
-    else
-    {
-        report::warn("No addons directory specified to mrdocs tests");
-    }
 
     // See if inputPath references a file or directory
     auto fileType = files::getFileType(inputPath);
@@ -291,6 +284,7 @@ checkPath(
 
     // Check for a directory-wide config
     Config::Settings dirSettings;
+    testArgs.apply(dirSettings, dirs_, argv);
     dirSettings.sourceRoot = files::appendPath(inputPath, ".");
     dirSettings.stdlibIncludes.insert(
         dirSettings.stdlibIncludes.end(),

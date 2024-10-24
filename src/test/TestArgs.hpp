@@ -12,6 +12,7 @@
 #define MRDOCS_TEST_TESTARGS_HPP
 
 #include <llvm/Support/CommandLine.h>
+#include <tool/PublicToolArgs.hpp>
 #include <string>
 
 namespace clang {
@@ -26,11 +27,9 @@ enum Action : int
 
 /** Command line options and test settings.
 */
-class TestArgs
+class TestArgs : public PublicToolArgs
 {
     TestArgs();
-
-    llvm::cl::OptionCategory    commonCat;
 
 public:
     static TestArgs instance_;
@@ -38,19 +37,10 @@ public:
     char const*                 usageText;
     llvm::cl::extrahelp         extraHelp;
 
-    // Common options
-    llvm::cl::opt<unsigned>     reportLevel;
-
     // Test options
     llvm::cl::opt<Action>       action;
     llvm::cl::opt<bool>         badOption;
     llvm::cl::opt<bool>         unitOption;
-    llvm::cl::list<std::string> inputPaths;
-
-    // Options replication public settings
-    llvm::cl::opt<std::string>  generator;
-    llvm::cl::opt<std::string>  addons;
-    llvm::cl::list<std::string> stdlibIncludes;
 
     // Hide all options that don't belong to us
     void hideForeignOptions();

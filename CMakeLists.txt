@@ -338,11 +338,15 @@ if (MRDOCS_BUILD_TESTS)
     include(CTest)
     file(GLOB_RECURSE TEST_SUITE_FILES CONFIGURE_DEPENDS src/test_suite/*.cpp src/test_suite/*.hpp)
     file(GLOB_RECURSE UNIT_TEST_SOURCES CONFIGURE_DEPENDS src/test/*.cpp src/test/*.hpp)
-    add_executable(mrdocs-test ${TEST_SUITE_FILES} ${UNIT_TEST_SOURCES})
+    add_executable(mrdocs-test ${TEST_SUITE_FILES} ${UNIT_TEST_SOURCES} ${CMAKE_CURRENT_BINARY_DIR}/src/tool/PublicToolArgs.cpp)
     target_include_directories(mrdocs-test
+            PUBLIC
+            "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>"
+            "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include/>"
+            "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
             PRIVATE
-            "${PROJECT_SOURCE_DIR}/include"
             "${PROJECT_SOURCE_DIR}/src"
+            "${PROJECT_BINARY_DIR}/src"
             )
     target_link_libraries(mrdocs-test PUBLIC mrdocs-core)
     if (MRDOCS_CLANG)
@@ -358,9 +362,10 @@ if (MRDOCS_BUILD_TESTS)
                 --action=test
                 "${PROJECT_SOURCE_DIR}/test-files/golden-tests"
                 "--addons=${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
-                --generator=${testgenerator}
+                --generate=${testgenerator}
                 "--stdlib-includes=${LIBCXX_DIR}"
                 "--stdlib-includes=${STDLIB_INCLUDE_DIR}"
+                --report=2
         )
         foreach (action IN ITEMS test create update)
             add_custom_target(
@@ -371,9 +376,10 @@ if (MRDOCS_BUILD_TESTS)
                     --action=${action}
                     "${PROJECT_SOURCE_DIR}/test-files/golden-tests"
                     "--addons=${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
-                    --generator=${testgenerator}
+                    --generate=${testgenerator}
                     "--stdlib-includes=${LIBCXX_DIR}"
                     "--stdlib-includes=${STDLIB_INCLUDE_DIR}"
+                    --report=2
                 DEPENDS mrdocs-test
             )
         endforeach ()
