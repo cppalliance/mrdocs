@@ -50,6 +50,7 @@ renderPage(
                         std::ios_base::trunc // | std::ios_base::noreplace
                     );
                 os.write(pageText.data(), pageText.size());
+                tagfileWriter_(I, fileName, 0);
             }
             catch(std::exception const& ex)
             {

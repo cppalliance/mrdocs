@@ -50,8 +50,12 @@ operator()(T const& I)
 {
     ex_.async([this, &I](Builder& builder)
     {
-        if(const auto r = builder(I))
-            writePage(*r, builder.domCorpus.getXref(I));
+        if(const auto r = builder(I)) 
+        {
+            auto const xref = builder.domCorpus.getXref(I);
+            writePage(*r, xref);
+            tagfileWriter_(I, xref, 0);
+        }
         else
             r.error().Throw();
         if constexpr(

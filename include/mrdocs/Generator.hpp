@@ -115,13 +115,16 @@ public:
         @param os The stream to write to.
 
         @param corpus The metadata to emit.
+
+        @param fileName The file name to use for the output.
     */
     MRDOCS_DECL
     virtual
     Error
     buildOne(
         std::ostream& os,
-        Corpus const& corpus) const = 0;
+        Corpus const& corpus,
+        std::string_view fileName) const = 0;
 
     /** Build the reference as a single page to a file.
 

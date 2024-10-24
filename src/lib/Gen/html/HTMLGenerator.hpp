@@ -49,7 +49,8 @@ public:
     Error
     buildOne(
         std::ostream& os,
-        Corpus const& corpus) const override;
+        Corpus const& corpus,
+        std::string_view fileName) const override;
 };
 
 } // html

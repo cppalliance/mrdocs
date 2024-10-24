@@ -15,9 +15,13 @@
 #include "MultiPageVisitor.hpp"
 #include "SinglePageVisitor.hpp"
 #include "lib/Support/LegibleNames.hpp"
+#include "lib/Support/RawOstream.hpp"
+#include <llvm/Support/FileSystem.h>
+#include <llvm/Support/Path.h>
 #include <mrdocs/Metadata/DomMetadata.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/Path.hpp>
+#include <fstream>
 #include <optional>
 #include <vector>
 
@@ -70,10 +74,35 @@ build(
     if(! ex)
         return ex.error();
 
-    MultiPageVisitor visitor(*ex, outputPath, corpus);
+    std::string path = files::appendPath(outputPath, "reference.tag.xml");
+    if(auto err = files::createDirectory(outputPath)) 
+    {
+        return err;
+    }
+
+    std::ofstream os;
+    try
+    {
+        os.open(path,
+            std::ios_base::binary |
+                std::ios_base::out |
+                std::ios_base::trunc // | std::ios_base::noreplace
+            );
+    }
+    catch(std::exception const& ex)
+    {
+        return formatError("std::ofstream(\"{}\") threw \"{}\"", path, ex.what());
+    }    
+
+    RawOstream raw_os(os);
+    auto tagfileWriter = TagfileWriter(raw_os, corpus);
+    tagfileWriter.initialize();
+
+    MultiPageVisitor visitor(*ex, outputPath, corpus, tagfileWriter);
     visitor(corpus.globalNamespace());
 
     auto errors = ex->wait();
+    tagfileWriter.finalize();
     if(! errors.empty())
         return Error(errors);
     return Error::success();
@@ -83,8 +112,12 @@ Error
 AdocGenerator::
 buildOne(
     std::ostream& os,
-    Corpus const& corpus) const
+    Corpus const& corpus,
+    std::string_view outputPath) const
 {
+    namespace path = llvm::sys::path;
+    using SmallString = llvm::SmallString<0>;
+
     auto options = loadOptions(corpus);
     if(! options)
         return options.error();
@@ -106,9 +139,38 @@ buildOne(
     if(! errors.empty())
         return {errors};
 
-    SinglePageVisitor visitor(*ex, corpus, os);
+    SmallString fileName(outputPath);
+    path::replace_extension(fileName, "tag.xml");
+    auto parentDir = files::getParentDir(fileName.str());
+    if(auto err = files::createDirectory(parentDir)) 
+    {
+        return err;
+    }
+
+    std::ofstream osTagfile;
+    try
+    {
+        osTagfile.open(fileName.str().str(),
+            std::ios_base::binary |
+                std::ios_base::out |
+                std::ios_base::trunc // | std::ios_base::noreplace
+            );
+    }
+    catch(std::exception const& ex)
+    {
+        return formatError("std::ofstream(\"{}\") threw \"{}\"", fileName.str().str(), ex.what());
+    }    
+
+    RawOstream raw_os(osTagfile);
+    auto tagfileWriter = TagfileWriter(raw_os, corpus);
+    tagfileWriter.initialize();
+
+
+    auto const justFileName = path::filename(fileName);
+    SinglePageVisitor visitor(*ex, corpus, os, justFileName, tagfileWriter);
     visitor(corpus.globalNamespace());
     errors = ex->wait();
+    tagfileWriter.finalize();
     if(! errors.empty())
         return {errors};
 
