@@ -27,13 +27,13 @@ namespace mrdocs {
 
 extern
 int
-DoTestAction();
+DoTestAction(char const** argv);
 
 extern
 Expected<void>
 DoGenerateAction(
     std::string const& configPath,
-    Config::Settings::ReferenceDirectories const& dirs,
+    ReferenceDirectories const& dirs,
     char const** argv);
 
 void
@@ -47,10 +47,10 @@ print_version(llvm::raw_ostream& os)
        << "\n";
 }
 
-Expected<std::pair<std::string, Config::Settings::ReferenceDirectories>>
+Expected<std::pair<std::string, ReferenceDirectories>>
 getReferenceDirectories(std::string const& execPath)
 {
-    Config::Settings::ReferenceDirectories dirs;
+    ReferenceDirectories dirs;
     dirs.mrdocsRoot = files::getParentDir(execPath, 2);
     llvm::SmallVector<char, 256> cwd;
     if (auto ec = llvm::sys::fs::current_path(cwd); ec)

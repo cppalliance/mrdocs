@@ -28,9 +28,11 @@ def to_camel_case(kebab_str):
 
 
 def to_pascal_case(kebab_str):
-    if ' ' in kebab_str:
-        parts = kebab_str.split(' ')
-        return to_pascal_case('-'.join(parts))
+    separator_chars = [' ', '<', '>']
+    for separator_char in separator_chars:
+        if separator_char in kebab_str:
+            parts = kebab_str.split(separator_char)
+            return to_pascal_case('-'.join(parts))
 
     if '.' in kebab_str:
         parts = kebab_str.split('.')
@@ -156,7 +158,7 @@ def validate_and_normalize_option(option):
         option['command-line-sink'] = False
     if 'options' in option:
         for suboption in option['options']:
-            suboption = validate_and_normalize_option(suboption)
+            validate_and_normalize_option(suboption)
     return option
 
 
@@ -174,40 +176,8 @@ def validate_and_normalize_config(config):
         if 'options' not in category:
             raise ValueError(f'Category {category["category"]} must have "options"')
         for option in category['options']:
-            option = validate_and_normalize_option(option)
+            validate_and_normalize_option(option)
     return config
-
-
-def main(config, output_dir):
-    print('Generating Configuration Information...')
-
-    config = validate_and_normalize_config(config)
-
-    mrdocs_build_include_dir = os.path.join(output_dir, 'include', 'mrdocs')
-    if not os.path.exists(mrdocs_build_include_dir):
-        os.makedirs(mrdocs_build_include_dir)
-    mrdocs_build_lib_dir = os.path.join(output_dir, 'src', 'lib', 'Lib')
-    if not os.path.exists(mrdocs_build_lib_dir):
-        os.makedirs(mrdocs_build_lib_dir)
-    mrdocs_build_tool_dir = os.path.join(output_dir, 'src', 'tool')
-    if not os.path.exists(mrdocs_build_tool_dir):
-        os.makedirs(mrdocs_build_tool_dir)
-
-    public_settings_hpp = generate_public_settings_hpp(config)
-    with open(os.path.join(mrdocs_build_include_dir, 'PublicSettings.hpp'), 'w') as f:
-        f.write(public_settings_hpp)
-
-    public_settings_cpp = generate_public_settings_cpp(config)
-    with open(os.path.join(mrdocs_build_lib_dir, 'PublicSettings.cpp'), 'w') as f:
-        f.write(public_settings_cpp)
-
-    public_toolargs_hpp = generate_public_toolargs_hpp(config)
-    with open(os.path.join(mrdocs_build_tool_dir, 'PublicToolArgs.hpp'), 'w') as f:
-        f.write(public_toolargs_hpp)
-
-    public_toolargs_cpp = generate_public_toolargs_cpp(config)
-    with open(os.path.join(mrdocs_build_tool_dir, 'PublicToolArgs.cpp'), 'w') as f:
-        f.write(public_toolargs_cpp)
 
 
 def find_options_for_enum(options, enum_values):
@@ -233,8 +203,12 @@ def generate_public_settings_hpp(config):
 
     headers = [
         '<mrdocs/Support/Error.hpp>',
+        '<mrdocs/Config/ReferenceDirectories.hpp>',
         '<string>',
         '<vector>',
+        '<optional>',
+        '<variant>',
+        '<map>',
     ]
     for header in headers:
         contents += f'#include {header}\n'
@@ -243,46 +217,6 @@ def generate_public_settings_hpp(config):
     contents += 'namespace clang {\n'
     contents += 'namespace mrdocs {\n\n'
     contents += 'struct PublicSettings {\n'
-
-    contents += '    /** Reference directories used to resolve paths\n'
-    contents += '     */\n'
-    contents += '    struct ReferenceDirectories {\n'
-    contents += '        std::string configDir;\n'
-    contents += '        std::string cwd;\n'
-    contents += '        std::string mrdocsRoot;\n'
-    contents += '    };\n\n'
-
-    contents += '    /** Load the configuration from a YAML string\n'
-    contents += '        \n'
-    contents += '        This function loads the values from the YAML string without\n'
-    contents += '        normalizing or validating them.\n'
-    contents += '        \n'
-    contents += '        After calling this function, call `normalize` to normalize\n'
-    contents += '        and validate the options.\n'
-    contents += '        \n'
-    contents += '        @param s The PublicSettings object to load the configuration into\n'
-    contents += '        @param configYaml The YAML string with the configuration\n'
-    contents += '        @return Expected<void> with the error if any\n'
-    contents += '     */\n'
-    contents += '    static\n'
-    contents += '    Expected<void>\n'
-    contents += '    load(\n'
-    contents += '        PublicSettings &s,\n'
-    contents += '        std::string_view configYaml);\n\n'
-
-    contents += '    /** Normalize the configuration values\n'
-    contents += '        \n'
-    contents += '        This function normalizes and validates the configuration values.\n'
-    contents += '        \n'
-    contents += '        @param s The PublicSettings object to load the configuration into\n'
-    contents += '        @param dirs The reference directories to resolve paths\n'
-    contents += '        @return Expected<void> with the error if any\n'
-    contents += '      */\n'
-    contents += '    static\n'
-    contents += '    Expected<void>\n'
-    contents += '    normalize(\n'
-    contents += '        PublicSettings &s,\n'
-    contents += '        ReferenceDirectories const& dirs);\n\n'
 
     contents += '    //--------------------------------------------\n'
     contents += '    // Enums\n'
@@ -323,6 +257,99 @@ def generate_public_settings_hpp(config):
             contents += indent(generate_option_declaration(option), 4)
             contents += '\n\n'
 
+    contents += '    /** Load the configuration from a YAML string\n'
+    contents += '        \n'
+    contents += '        This function loads the values from the YAML string without\n'
+    contents += '        normalizing or validating them.\n'
+    contents += '        \n'
+    contents += '        After calling this function, call `normalize` to normalize\n'
+    contents += '        and validate the options.\n'
+    contents += '        \n'
+    contents += '        @param s The PublicSettings object to load the configuration into\n'
+    contents += '        @param configYaml The YAML string with the configuration\n'
+    contents += '        @return Expected<void> with the error if any\n'
+    contents += '     */\n'
+    contents += '    static\n'
+    contents += '    Expected<void>\n'
+    contents += '    load(\n'
+    contents += '        PublicSettings &s,\n'
+    contents += '        std::string_view configYaml);\n\n'
+
+    flat_options = flat_config_options(config)
+    flat_option_types = set([option['type'] for option in flat_options])
+    contents += '    /** Option Type\n'
+    contents += '      */\n'
+    contents += '    enum class OptionType {\n'
+    for option_type in flat_option_types:
+        contents += f'        {to_pascal_case(option_type)},\n'
+    contents += '    };\n\n'
+    flat_cpp_option_types = set([to_cpp_type(option) for option in flat_options])
+
+    contents += '    /** Option validation traits\n'
+    contents += '     */\n'
+    contents += '    struct OptionProperties {\n'
+    contents += f'        OptionType {to_camel_case("type")} = OptionType::String;\n'
+    contents += f'        bool {to_camel_case("required")} = false;\n'
+    contents += f'        bool {to_camel_case("command-line-sink")} = false;\n'
+    contents += f'        bool {to_camel_case("command-line-only")} = false;\n'
+    contents += f'        bool {to_camel_case("must-exist")} = true;\n'
+    contents += f'        std::optional<int> {to_camel_case("min-value")} = std::nullopt;\n'
+    contents += f'        std::optional<int> {to_camel_case("max-value")} = std::nullopt;\n'
+    contents += f'        std::optional<std::map<std::string, std::string>> {to_camel_case("filename-mapping")} = std::nullopt;\n'
+    contents += f'        std::variant<\n'
+    contents += f'            std::monostate'
+    for cpp_type in flat_cpp_option_types:
+        contents += ',\n'
+        contents += f'            {cpp_type}'
+    contents += f'> {to_camel_case("default")}Value = std::monostate();\n'
+    contents += f'        std::string {to_camel_case("relativeto")};\n'
+    contents += '    };\n\n'
+
+    contents += '    /** Normalize the configuration values with a visitor\n'
+    contents += '        \n'
+    contents += '        This function normalizes and validates the configuration values.\n'
+    contents += '        \n'
+    contents += '        @param dirs The reference directories to resolve paths\n'
+    contents += '        @param f The visitor\n'
+    contents += '        @return Expected<void> with the error if any\n'
+    contents += '      */\n'
+    contents += '    template <class F>\n'
+    contents += '    Expected<void>\n'
+    contents += '    normalize(\n'
+    contents += '        ReferenceDirectories const& dirs,\n'
+    contents += '        F&& f)\n'
+    contents += '    {\n'
+    for option in flat_options:
+        contents += f'        // {option["brief"]}\n'
+        contents += f'        MRDOCS_TRY(std::forward<F>(f)(*this, {escape_as_cpp_string(option["name"])}, {to_camel_case(option["name"])}, dirs, OptionProperties{{\n'
+        pad = ' ' * 12
+        if 'type' in option:
+            contents += f'{pad}.{to_camel_case("type")} = OptionType::{to_pascal_case(option["type"])},\n'
+        if 'required' in option:
+            contents += f'{pad}.{to_camel_case("required")} = {"true" if option["required"] else "false"},\n'
+        if 'command-line-sink' in option and option['command-line-sink']:
+            contents += f'{pad}.{to_camel_case("command-line-sink")} = {"true" if option["command-line-sink"] else "false"},\n'
+        if 'command-line-only' in option and option['command-line-only']:
+            contents += f'{pad}.{to_camel_case("command-line-only")} = {"true" if option["command-line-only"] else "false"},\n'
+        if 'must-exist' in option:
+            contents += f'{pad}.{to_camel_case("must-exist")} = {"true" if option["must-exist"] else "false"},\n'
+        if 'filename-mapping' in option:
+            contents += f'{pad}.{to_camel_case("filename-mapping")} = std::map<std::string, std::string>{{\n'
+            for [key, value] in option['filename-mapping'].items():
+                contents += f'{pad}    {{ {escape_as_cpp_string(key)}, {escape_as_cpp_string(value)} }},\n'
+            contents += f'{pad}}},\n'
+        if 'default' in option:
+            # Print option and its default
+            cpp_default_value = to_cpp_default_value(option, False)
+            # print the default in cpp
+            if cpp_default_value is not None:
+                contents += f'{pad}.{to_camel_case("default")}Value = {to_cpp_type(option)}({cpp_default_value}),\n'
+        if 'relativeto' in option:
+            contents += f'{pad}.{to_camel_case("relativeto")} = {escape_as_cpp_string(option["relativeto"])},\n'
+        contents += f'        }}));\n'
+    contents += '        return {};\n'
+    contents += '    }\n\n'
+
     # Function to visit all the options
     contents += '    /** Visit all options\n'
     contents += '     */\n'
@@ -330,7 +357,6 @@ def generate_public_settings_hpp(config):
     contents += '    void\n'
     contents += '    visit(F&& f)\n'
     contents += '    {\n'
-    flat_options = flat_config_options(config)
     for option in flat_options:
         contents += f'        std::forward<F>(f)({escape_as_cpp_string(option["name"])}, {to_camel_case(option["name"])});\n'
     contents += '    }\n\n'
@@ -372,6 +398,7 @@ def generate_public_toolargs_hpp(config):
 
     headers = [
         '<mrdocs/Config.hpp>',
+        '<mrdocs/Config/ReferenceDirectories.hpp>',
         '<llvm/Support/CommandLine.h>',
         '<string>',
     ]
@@ -390,7 +417,7 @@ def generate_public_toolargs_hpp(config):
     contents += '    Expected<void>\n'
     contents += '    apply(\n'
     contents += '        PublicSettings& s,\n'
-    contents += '        PublicSettings::ReferenceDirectories const& dirs,\n'
+    contents += '        ReferenceDirectories const& dirs,\n'
     contents += '        char const** argv);\n\n'
 
     contents += '    //--------------------------------------------\n'
@@ -508,277 +535,6 @@ def get_reference_dir_from_path(path):
     return None
 
 
-def option_validation_snippet(option):
-    camel_name = to_camel_case(option['name'])
-    contents = ''
-    contents += f'// {option["name"]}: {option["brief"]}\n'
-
-    path_is_relativeto_dir = None
-    default_is_relativeto_dir = None
-    if option['type'] in ['path', 'file-path', 'dir-path', 'list<path>']:
-        path_is_relativeto_dir = option['relativeto']
-        if path_is_relativeto_dir.startswith('<') and path_is_relativeto_dir.endswith('>'):
-            path_is_relativeto_dir = path_is_relativeto_dir[1:-1]
-
-        default_is_relativeto_dir = path_is_relativeto_dir
-        if 'default' in option and isinstance(option['default'], str):
-            first_path_seg_is_reference = option['default'].startswith('<')
-            if first_path_seg_is_reference:
-                closing_bracket = option['default'].find('>')
-                if closing_bracket == -1:
-                    raise ValueError(f'Invalid default value {option["default"]} for option {option["name"]}')
-                default_is_relativeto_dir = option['default'][1:closing_bracket]
-        else:
-            default_is_relativeto_dir = 'cwd'
-
-    same_base_paths = default_is_relativeto_dir == path_is_relativeto_dir
-
-    validation_contents = ''
-    if option['type'] in ['path', 'file-path', 'dir-path']:
-        # validate required value and make absolute
-        if option['required']:
-            if not option['default']:
-                validation_contents += f'// s.{camel_name} is required and has no default value\n'
-                validation_contents += f'if (s.{camel_name}.empty())\n'
-                validation_contents += f'{{\n'
-                validation_contents += f'    return Unexpected(formatError("`{option["name"]}` option is required"));'
-                validation_contents += f'}}\n'
-                validation_contents += f'else\n'
-                validation_contents += f'{{\n'
-                validation_contents += f'    s.{camel_name} = files::makeAbsolute(s.{camel_name}, dirs.{to_camel_case(path_is_relativeto_dir)});\n'
-                validation_contents += f'}}\n'
-            else:
-                validation_contents += f'// s.{camel_name} is required with a default value {option["default"]}\n'
-                same_base_paths = default_is_relativeto_dir == path_is_relativeto_dir
-                validation_contents += f'if (s.{camel_name}.empty())\n'
-                validation_contents += f'{{\n'
-                validation_contents += f'    s.{camel_name} = "{remove_reference_dir_from_path(option["default"])}";\n'
-                if same_base_paths:
-                    validation_contents += f'}}\n'
-                    validation_contents += f's.{camel_name} = files::makeAbsolute(s.{camel_name}, dirs.{to_camel_case(default_is_relativeto_dir)});\n'
-                else:
-                    validation_contents += f'    s.{camel_name} = files::makeAbsolute(s.{camel_name}, dirs.{to_camel_case(default_is_relativeto_dir)});\n'
-                    validation_contents += f'}}\n'
-                    validation_contents += f'else\n'
-                    validation_contents += f'{{\n'
-                    validation_contents += f'    s.{camel_name} = files::makeAbsolute(s.{camel_name}, dirs.{to_camel_case(path_is_relativeto_dir)});\n'
-                    validation_contents += f'}}\n'
-        else:
-            if option['default']:
-                validation_contents += f'// s.{camel_name} not required. The default value is "{option["default"]}"\n'
-                same_base_paths = default_is_relativeto_dir == path_is_relativeto_dir
-                validation_contents += f'if (s.{camel_name}.empty())\n'
-                validation_contents += f'{{\n'
-                validation_contents += f'    s.{camel_name} = "{remove_reference_dir_from_path(option["default"])}";\n'
-                if same_base_paths:
-                    validation_contents += f'}}\n'
-                    validation_contents += f's.{camel_name} = files::makeAbsolute(s.{camel_name}, dirs.{to_camel_case(default_is_relativeto_dir)});\n'
-                else:
-                    validation_contents += f'    s.{camel_name} = files::makeAbsolute(s.{camel_name}, dirs.{to_camel_case(default_is_relativeto_dir)});\n'
-                    validation_contents += f'}}\n'
-                    validation_contents += f'else\n'
-                    validation_contents += f'{{\n'
-                    validation_contents += f'    s.{camel_name} = files::makeAbsolute(s.{camel_name}, dirs.{to_camel_case(path_is_relativeto_dir)});\n'
-                    validation_contents += f'}}\n'
-            else:
-                validation_contents += f'// s.{camel_name} not required and has no default value\n'
-                same_base_paths = default_is_relativeto_dir == path_is_relativeto_dir
-                validation_contents += f'if (!s.{camel_name}.empty())\n'
-                validation_contents += f'{{\n'
-                validation_contents += f'    s.{camel_name} = files::makeAbsolute(s.{camel_name}, dirs.{to_camel_case(path_is_relativeto_dir)});\n'
-                validation_contents += f'}}\n'
-
-        # Validate the final path
-        if option['must-exist']:
-            validation_contents += f'if (!s.{camel_name}.empty() && !files::exists(s.{camel_name}))\n'
-            validation_contents += f'{{\n'
-            validation_contents += f'    return Unexpected(formatError("`{option["name"]}` option: path does not exist: {{}}", s.{camel_name}));\n'
-            validation_contents += f'}}\n'
-            if option['type'] == 'file-path':
-                validation_contents += f'if (files::isDirectory(s.{camel_name}))\n'
-                validation_contents += f'{{\n'
-                validation_contents += f'    return Unexpected(formatError("`{option["name"]}` option: path should be a regular file: {{}}", s.{camel_name}));\n'
-                validation_contents += f'}}\n'
-            if option['type'] == 'dir-path':
-                validation_contents += f'if (!files::isDirectory(s.{camel_name}))\n'
-                validation_contents += f'{{\n'
-                validation_contents += f'    return Unexpected(formatError("`{option["name"]}` option: path should be a directory: {{}}", s.{camel_name}));\n'
-                validation_contents += f'}}\n'
-        elif option['type'] in ['file-path', 'dir-path']:
-            validation_contents += f'if (files::exists(s.{camel_name}))\n'
-            validation_contents += f'{{\n'
-            if option['type'] == 'file-path':
-                validation_contents += f'if (files::isDirectory(s.{camel_name}))\n'
-                validation_contents += f'{{\n'
-                validation_contents += f'    return Unexpected(formatError("`{option["name"]}` option: path should be a regular file: {{}}", s.{camel_name}));\n'
-                validation_contents += f'}}\n'
-            if option['type'] == 'dir-path':
-                validation_contents += f'if (!files::isDirectory(s.{camel_name}))\n'
-                validation_contents += f'{{\n'
-                validation_contents += f'    return Unexpected(formatError("`{option["name"]}` option: path should be a directory: {{}}", s.{camel_name}));\n'
-                validation_contents += f'}}\n'
-            validation_contents += f'}}\n'
-
-    if option['type'] == 'list<path>':
-        if option['required']:
-            if not option['default']:
-                validation_contents += f'// s.{camel_name} paths are required and have no default value\n'
-                validation_contents += f'if (s.{camel_name}.empty())\n'
-                validation_contents += f'{{\n'
-                validation_contents += f'    return Unexpected(formatError("`{option["name"]}` option is required"));'
-                validation_contents += f'}}\n'
-                validation_contents += f'else\n'
-                validation_contents += f'{{\n'
-                validation_contents += f'    for (auto& p : s.{camel_name})\n'
-                validation_contents += f'    {{\n'
-                validation_contents += f'        p = files::makeAbsolute(p, dirs.{to_camel_case(path_is_relativeto_dir)});\n'
-                validation_contents += f'    }}\n'
-                validation_contents += f'}}\n'
-            else:
-                validation_contents += f'// s.{camel_name} paths are required and have default values\n'
-                validation_contents += f'if (s.{camel_name}.empty())\n'
-                validation_contents += f'    s.{camel_name} = {{'
-                is_first = True
-                for default_path in option['default']:
-                    if not is_first:
-                        validation_contents += ', '
-                    validation_contents += f'"        files::makeAbsolute("{remove_reference_dir_from_path(default_path)}", dirs.{to_camel_case(default_is_relativeto_dir)}"'
-                    is_first = False
-                validation_contents += '    };\n'
-                validation_contents += f'}}\n'
-                validation_contents += f'else\n'
-                validation_contents += f'{{\n'
-                validation_contents += f'    for (auto& p : s.{camel_name})\n'
-                validation_contents += f'    {{\n'
-                validation_contents += f'        p = files::makeAbsolute(p, dirs.{to_camel_case(path_is_relativeto_dir)});\n'
-                validation_contents += f'    }}\n'
-                validation_contents += f'}}\n'
-        else:
-            if option['default']:
-                validation_contents += f'// s.{camel_name} paths are not required.\n'
-                validation_contents += f'// The default value is "{option["default"]}"\n'
-                validation_contents += f'if (s.{camel_name}.empty())\n'
-                validation_contents += f'{{\n'
-                validation_contents += f'    s.{camel_name} = {{\n'
-                is_first = True
-                for default_path in option['default']:
-                    if not is_first:
-                        validation_contents += ',\n'
-                    validation_contents += f'        files::makeAbsolute("{remove_reference_dir_from_path(default_path)}", dirs.{to_camel_case(get_reference_dir_from_path(default_path))})'
-                    is_first = False
-                validation_contents += '\n'
-                validation_contents += '    };\n'
-                validation_contents += f'}}\n'
-                validation_contents += f'else\n'
-                validation_contents += f'{{\n'
-                validation_contents += f'    for (auto& p : s.{camel_name})\n'
-                validation_contents += f'    {{\n'
-                validation_contents += f'        p = files::makeAbsolute(p, dirs.{to_camel_case(path_is_relativeto_dir)});\n'
-                validation_contents += f'    }}\n'
-                validation_contents += f'}}\n'
-            else:
-                validation_contents += f'// s.{camel_name} not required and has no default value\n'
-                validation_contents += f'if (!s.{camel_name}.empty())\n'
-                validation_contents += f'{{\n'
-                validation_contents += f'    for (auto& p : s.{camel_name})\n'
-                validation_contents += f'    {{\n'
-                validation_contents += f'        p = files::makeAbsolute(p, dirs.{to_camel_case(path_is_relativeto_dir)});\n'
-                validation_contents += f'    }}\n'
-                validation_contents += f'}}\n'
-
-        # Validate the final paths
-        if option['must-exist'] or (option['command-line-sink'] and 'filename-mapping' in option):
-            validation_contents += f'for (auto const& p : s.{camel_name})\n'
-            validation_contents += f'{{\n'
-
-            if option['must-exist']:
-                validation_contents += f'    if (!files::exists(p))\n'
-                validation_contents += f'    {{\n'
-                validation_contents += f'        return Unexpected(formatError("`{option["name"]}` option: path does not exist: {{}}", p));\n'
-                validation_contents += f'    }}\n'
-            if option['command-line-sink'] and 'filename-mapping' in option:
-                validation_contents += f'    auto f = files::getFileName(p);\n'
-                first = True
-                for [f, p] in option['filename-mapping'].items():
-                    if first:
-                        validation_contents += f'    if (f == "{f}" && s.{p}.empty())\n'
-                        first = False
-                    else:
-                        validation_contents += f'    else if (f == "{f}" && s.{p}.empty())\n'
-                    validation_contents += f'    {{\n'
-                    validation_contents += f'        s.{p} = p;\n'
-                    validation_contents += f'    }}\n'
-            validation_contents += f'}}\n'
-
-    if option['type'] == 'string':
-        if option['default']:
-            if option['required']:
-                validation_contents += f'// s.{camel_name} is required. Default value is "{option["default"]}"\n'
-            else:
-                validation_contents += f'// s.{camel_name} is not required. Default value is "{option["default"]}"\n'
-            validation_contents += f'if (s.{camel_name}.empty())\n'
-            validation_contents += f'{{\n'
-            validation_contents += f'    s.{camel_name} = "{option["default"]}";\n'
-            validation_contents += f'}}\n'
-        elif option['required']:
-            validation_contents += f'// s.{camel_name} is required with no default value.'
-            validation_contents += f'if (s.{camel_name}.empty())\n'
-            validation_contents += f'{{\n'
-            validation_contents += f'    return Unexpected(formatError("`{option["name"]}` option is required"));'
-            validation_contents += f'}}\n'
-        else:
-            validation_contents += f'// s.{camel_name} is not required and has no default value\n'
-
-    if option['type'] == 'list<string>':
-        if option['default']:
-            if option['required']:
-                validation_contents += f'// s.{camel_name} is required. Default value is "{option["default"]}"\n'
-            else:
-                validation_contents += f'// s.{camel_name} is not required. Default value is "{option["default"]}"\n'
-            validation_contents += f'if (s.{camel_name}.empty())\n'
-            validation_contents += f'{{\n'
-            validation_contents += f'    s.{camel_name} = {{'
-            validation_contents += [f'"{x}"' for x in ', '.join(option["default"])]
-            validation_contents += f'}};\n'
-            validation_contents += f'}}\n'
-        elif option['required']:
-            validation_contents += f'// s.{camel_name} is required with no default value.'
-            validation_contents += f'if (s.{camel_name}.empty())\n'
-            validation_contents += f'{{\n'
-            validation_contents += f'    return Unexpected(formatError("`{option["name"]}` option is required"));'
-            validation_contents += f'}}\n'
-        else:
-            validation_contents += f'// s.{camel_name} is not required and has no default value\n'
-
-    if option['type'] in ['enum', 'bool']:
-        validation_contents += f'// s.{camel_name} is {option["type"]}.\n'
-        validation_contents += f'// No validation needed. The default value comes from the header file.\n'
-
-    if option['type'] in ['unsigned', 'int']:
-        validation_contents += f'// s.{camel_name} is an {option["type"]}.\n'
-        validation_contents += f'// No validation needed. The default value comes from the header file.\n'
-        if 'value-mapping' in option:
-            for [value, expression] in option['value-mapping'].items():
-                validation_contents += f'if (s.{camel_name} == {value})\n'
-                validation_contents += f'{{\n'
-                validation_contents += f'    s.{camel_name} = {expression};\n'
-                validation_contents += f'}}\n'
-        if 'min-value' in option:
-            validation_contents += f'if (std::cmp_less(s.{camel_name}, {option["min-value"]}))\n'
-            validation_contents += f'{{\n'
-            validation_contents += f'    return Unexpected(formatError("`{option["name"]}` option: value is less than {option["min-value"]}: {{}}", s.{camel_name}));\n'
-            validation_contents += f'}}\n'
-        if 'max-value' in option:
-            validation_contents += f'if (std::cmp_greater(s.{camel_name}, {option["max-value"]}))\n'
-            validation_contents += f'{{\n'
-            validation_contents += f'    return Unexpected(formatError("`{option["name"]}` option: value is greater than {option["max-value"]}: {{}}", s.{camel_name}));\n'
-            validation_contents += f'}}\n'
-
-    contents += validation_contents
-    contents += '\n'
-    return contents
-
-
 def generate_public_settings_cpp(config):
     # Generate a header file with the configuration information
     contents = generate_header_comment()
@@ -859,21 +615,6 @@ def generate_public_settings_cpp(config):
     contents += '    return {};\n'
     contents += '}\n\n'
 
-    contents += 'Expected<void>\n'
-    contents += 'PublicSettings::\n'
-    contents += 'normalize(\n'
-    contents += '    PublicSettings &s,\n'
-    contents += '    ReferenceDirectories const& dirs)\n'
-    contents += '{\n'
-
-    flat_options = flat_config_options(config)
-    for option in flat_options:
-        contents += indent(option_validation_snippet(option), 4)
-        contents += '\n'
-
-    contents += '    return {};\n'
-    contents += '}\n\n'
-
     contents += '} // namespace mrdocs\n'
     contents += '} // namespace clang\n\n'
     return contents
@@ -893,6 +634,25 @@ def escape_as_cpp_string(s):
     # Replace tabs
     s = s.replace("\t", "\\t")
     return '"' + s + '"'
+
+
+def to_cpp_value(option, v):
+    t = option['type']
+    n = option['name']
+    if t == 'string':
+        return f'std::string({escape_as_cpp_string(v)})'
+    if t == 'enum':
+        return f'{to_pascal_case(n)}::{to_pascal_case(v)}'
+
+    if isinstance(v, str):
+        return escape_as_cpp_string(v)
+    if isinstance(v, bool):
+        return 'true' if v else 'false'
+    if isinstance(v, int):
+        return str(v)
+    if isinstance(v, list):
+        return '{' + ', '.join([to_cpp_value(option, x) for x in v]) + '}'
+    raise ValueError(f'Unsupported value type {type(v)}')
 
 
 def generate_toolargs_final_option_initializer(option, category_str, parents=None):
@@ -962,6 +722,7 @@ def generate_public_toolargs_cpp(config):
     headers = [
         '"PublicToolArgs.hpp"',
         # '"Addons.hpp"',
+        '<mrdocs/Config/ReferenceDirectories.hpp>',
         '<lib/Support/Path.hpp>',
         '<cstddef>',
         '<vector>',
@@ -1014,7 +775,7 @@ def generate_public_toolargs_cpp(config):
     contents += 'PublicToolArgs::\n'
     contents += 'apply(\n'
     contents += '    PublicSettings& s,\n'
-    contents += '    PublicSettings::ReferenceDirectories const& dirs,\n'
+    contents += '    ReferenceDirectories const& dirs,\n'
     contents += '    char const** argv)\n'
     contents += '{\n'
 
@@ -1048,7 +809,7 @@ def generate_public_toolargs_cpp(config):
         if option["type"] == "enum":
             is_first = True
             for enum_value in option["values"]:
-                conditional_keyword = ''
+                # conditional_keyword = None
                 if is_first:
                     conditional_keyword = 'if'
                     is_first = False
@@ -1127,10 +888,13 @@ def to_toolargs_type(option):
     raise ValueError(f'to_cpp_type: Cannot convert option type {option_type} to C++ type')
 
 
-def to_cpp_default_value(option):
+def to_cpp_default_value(option, replace_reference_dir=None):
     has_suboptions = 'options' in option
     if has_suboptions:
         return None
+
+    if replace_reference_dir is None:
+        replace_reference_dir = True
 
     option_type = option['type']
     option_default = option['default']
@@ -1146,7 +910,7 @@ def to_cpp_default_value(option):
         if not option_default:
             return None
         # Replace initial <xxx> from <xxx>/path/to/file path with "." if any
-        if option_default.startswith('<'):
+        if replace_reference_dir and option_default.startswith('<'):
             closing_bracket = option_default.find('>')
             if closing_bracket == -1:
                 raise ValueError(f'Invalid default value {option_default} for option `{option["name"]}`')
@@ -1210,7 +974,7 @@ def generate_option_declaration(option, style=None):
     contents += f'{code_type} {to_camel_case(option_name)}'
     if style == 'cpp' and option["type"] in ['enum', 'bool', 'unsigned', 'int']:
         # Enums should be initialized in the hpp file
-        cpp_default_value = to_cpp_default_value(option)
+        cpp_default_value = to_cpp_default_value(option, True)
         if cpp_default_value:
             contents += f' = {cpp_default_value}'
     contents += ';'
@@ -1254,7 +1018,7 @@ def generate_config_info_inc(config):
     # Iterate configuration categories
     for category in config:
         category_name = category['category']
-        category_brief = category['brief']
+        # category_brief = category['brief']
         # category_details = category['details']
 
         # Define category
@@ -1302,24 +1066,57 @@ def generate_header_comment():
     return header_comment
 
 
-def main_args():
+def generate(config, output_dir):
+    print('Generating Configuration Information...')
+
+    config = validate_and_normalize_config(config)
+
+    mrdocs_build_include_dir = os.path.join(output_dir, 'include', 'mrdocs')
+    if not os.path.exists(mrdocs_build_include_dir):
+        os.makedirs(mrdocs_build_include_dir)
+    mrdocs_build_lib_dir = os.path.join(output_dir, 'src', 'lib', 'Lib')
+    if not os.path.exists(mrdocs_build_lib_dir):
+        os.makedirs(mrdocs_build_lib_dir)
+    mrdocs_build_tool_dir = os.path.join(output_dir, 'src', 'tool')
+    if not os.path.exists(mrdocs_build_tool_dir):
+        os.makedirs(mrdocs_build_tool_dir)
+
+    public_settings_hpp = generate_public_settings_hpp(config)
+    with open(os.path.join(mrdocs_build_include_dir, 'PublicSettings.hpp'), 'w') as f:
+        f.write(public_settings_hpp)
+
+    public_settings_cpp = generate_public_settings_cpp(config)
+    with open(os.path.join(mrdocs_build_lib_dir, 'PublicSettings.cpp'), 'w') as f:
+        f.write(public_settings_cpp)
+
+    public_toolargs_hpp = generate_public_toolargs_hpp(config)
+    with open(os.path.join(mrdocs_build_tool_dir, 'PublicToolArgs.hpp'), 'w') as f:
+        f.write(public_toolargs_hpp)
+
+    public_toolargs_cpp = generate_public_toolargs_cpp(config)
+    with open(os.path.join(mrdocs_build_tool_dir, 'PublicToolArgs.cpp'), 'w') as f:
+        f.write(public_toolargs_cpp)
+
+
+def main():
     # Read command line arguments
     input_file = sys.argv[1]
+    output_dir = sys.argv[2]
+
     # ensure input is a json file
     if not input_file.endswith('.json'):
         print('Error: input file must be a json file')
         sys.exit(1)
+    if os.path.exists(output_dir) and not os.path.isdir(output_dir):
+        print('Error: output directory already exists')
+        sys.exit(1)
+
     # parse input file
     with open(input_file, 'r') as f:
         config = json.load(f)
 
-    output = sys.argv[2]
-    if os.path.exists(output) and not os.path.isdir(output):
-        print('Error: output file already exists')
-        sys.exit(1)
-
-    main(config, output)
+    generate(config, output_dir)
 
 
 if __name__ == "__main__":
-    main_args()
+    main()

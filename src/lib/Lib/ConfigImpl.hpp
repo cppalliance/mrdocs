@@ -119,7 +119,7 @@ public:
     Expected<std::shared_ptr<ConfigImpl const>>
     load(
         Config::Settings const& publicSettings,
-        Config::Settings::ReferenceDirectories const& dirs,
+        ReferenceDirectories const& dirs,
         ThreadPool& threadPool);
 
     ThreadPool&

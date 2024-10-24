@@ -88,7 +88,7 @@ generateCompileCommandsFile(llvm::StringRef inputPath, llvm::StringRef cmakeArgs
 Expected<void>
 DoGenerateAction(
     std::string const& configPath,
-    Config::Settings::ReferenceDirectories const& dirs,
+    ReferenceDirectories const& dirs,
     char const** argv)
 {
     // --------------------------------------------------------------

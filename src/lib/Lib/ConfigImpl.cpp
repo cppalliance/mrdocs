@@ -133,7 +133,7 @@ Expected<std::shared_ptr<ConfigImpl const>>
 ConfigImpl::
 load(
     Config::Settings const& publicSettings,
-    Config::Settings::ReferenceDirectories const& dirs,
+    ReferenceDirectories const& dirs,
     ThreadPool& threadPool)
 {
     std::shared_ptr<ConfigImpl> c =
