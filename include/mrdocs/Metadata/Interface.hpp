@@ -27,8 +27,8 @@ namespace mrdocs {
 */
 struct Tranche
 {
-    #define INFO_PLURAL(Type) std::vector<SymbolID> Type;
-    #include <mrdocs/Metadata/InfoNodes.inc>
+    #define INFO(Type) std::vector<SymbolID> Type;
+    #include <mrdocs/Metadata/InfoNodesPascalPlural.inc>
 
     std::vector<SymbolID> Types;
     std::vector<SymbolID> StaticFunctions;

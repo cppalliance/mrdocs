@@ -35,9 +35,9 @@ enum class OperatorKind;
 enum class ReferenceKind;
 enum class StorageClassKind;
 
-#define INFO_PASCAL(Type) \
+#define INFO(Type) \
 struct Type##Info;
-#include <mrdocs/Metadata/InfoNodes.inc>
+#include <mrdocs/Metadata/InfoNodesPascal.inc>
 
 struct BaseInfo;
 struct Info;

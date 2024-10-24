@@ -93,8 +93,8 @@ writePage(
 #define DEFINE(T) template void \
     SinglePageVisitor::operator()<T>(T const&)
 
-#define INFO_PASCAL(Type) DEFINE(Type##Info);
-#include <mrdocs/Metadata/InfoNodes.inc>
+#define INFO(Type) DEFINE(Type##Info);
+#include <mrdocs/Metadata/InfoNodesPascal.inc>
 
 } // adoc
 } // mrdocs

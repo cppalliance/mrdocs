@@ -621,9 +621,9 @@ public:
         std::shared_ptr<Tranche> const& tranche,
         DomCorpus const& domCorpus) noexcept
         : dom::DefaultObjectImpl({
-            #define INFO_PLURAL_AND_LC_PLURAL(Plural, LC_Plural) \
+            #define INFO(Plural, LC_Plural) \
             { #LC_Plural, init(tranche->Plural, domCorpus) },
-            #include <mrdocs/Metadata/InfoNodes.inc>
+            #include <mrdocs/Metadata/InfoNodesPascalPluralAndLowerPlural.inc>
             { "types",            init(tranche->Types, domCorpus) },
             { "staticfuncs",      init(tranche->StaticFunctions, domCorpus) },
             { "overloads",        init(tranche->Overloads, domCorpus) },

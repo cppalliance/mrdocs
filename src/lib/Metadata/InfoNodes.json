@@ -1,0 +1,58 @@
+[
+  {
+    "name": "namespace",
+    "brief": "The symbol is a namespace"
+  },
+  {
+    "name": "record",
+    "brief": "The symbol is a record (class or struct)"
+  },
+  {
+    "name": "function",
+    "brief": "The symbol is a function"
+  },
+  {
+    "name": "enum",
+    "brief": "The symbol is an enum"
+  },
+  {
+    "name": "typedef",
+    "brief": "The symbol is a typedef"
+  },
+  {
+    "name": "variable",
+    "brief": "The symbol is a variable"
+  },
+  {
+    "name": "field",
+    "brief": "The symbol is a field"
+  },
+  {
+    "name": "specialization",
+    "brief": "The symbol is a template specialization"
+  },
+  {
+    "name": "friend",
+    "brief": "The symbol is a friend declaration"
+  },
+  {
+    "name": "enumerator",
+    "brief": "The symbol is an enumerator"
+  },
+  {
+    "name": "guide",
+    "brief": "The symbol is a deduction guide"
+  },
+  {
+    "name": "alias",
+    "brief": "The symbol is a namespace alias"
+  },
+  {
+    "name": "using",
+    "brief": "The symbol is a using declaration"
+  },
+  {
+    "name": "concept",
+    "brief": "The symbol is a concept"
+  }
+]

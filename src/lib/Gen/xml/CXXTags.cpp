@@ -21,10 +21,10 @@ getDefaultTagName(Info const& I) noexcept
 {
     switch(I.Kind)
     {
-#define INFO_PASCAL_AND_LC(Type, LCType) \
-    case InfoKind::Type: \
-        return LCType##TagName;
-#include <mrdocs/Metadata/InfoNodes.inc>
+#define INFO(PascalName, LowerName) \
+    case InfoKind::PascalName: \
+        return LowerName##TagName;
+#include <mrdocs/Metadata/InfoNodesPascalAndLower.inc>
     default:
         break;
     }

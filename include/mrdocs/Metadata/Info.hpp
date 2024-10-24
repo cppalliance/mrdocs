@@ -29,16 +29,16 @@ namespace mrdocs {
 
 /* Forward declarations
  */
-#define INFO_PASCAL(Type) struct Type##Info;
-#include <mrdocs/Metadata/InfoNodes.inc>
+#define INFO(Type) struct Type##Info;
+#include <mrdocs/Metadata/InfoNodesPascal.inc>
 
 /** Info variant discriminator
 */
 enum class InfoKind
 {
     None = 0,
-    #define INFO_PASCAL(Type) Type,
-    #include <mrdocs/Metadata/InfoNodes.inc>
+    #define INFO(Type) Type,
+    #include <mrdocs/Metadata/InfoNodesPascal.inc>
 };
 
 /** Return the name of the InfoKind as a string.
@@ -119,8 +119,8 @@ struct MRDOCS_VISIBLE
     {
     }
 
-    #define INFO_PASCAL(Type) constexpr bool is##Type() const noexcept { return Kind == InfoKind::Type; }
-    #include <mrdocs/Metadata/InfoNodes.inc>
+    #define INFO(Type) constexpr bool is##Type() const noexcept { return Kind == InfoKind::Type; }
+    #include <mrdocs/Metadata/InfoNodesPascal.inc>
 };
 
 //------------------------------------------------
@@ -141,9 +141,9 @@ struct InfoCommonBase : Info
      */
     static constexpr InfoKind kind_id = K;
 
-    #define INFO_PASCAL(Kind) \
+    #define INFO(Kind) \
     static constexpr bool is##Kind() noexcept { return K == InfoKind::Kind; }
-    #include <mrdocs/Metadata/InfoNodes.inc>
+    #include <mrdocs/Metadata/InfoNodesPascal.inc>
 
 protected:
     constexpr explicit InfoCommonBase(SymbolID ID)
@@ -179,10 +179,10 @@ visit(
         std::forward<Args>(args)...);
     switch(info.Kind)
     {
-    #define INFO_PASCAL(Type) \
+    #define INFO(Type) \
     case InfoKind::Type: \
         return visitor.template visit<Type##Info>();
-    #include <mrdocs/Metadata/InfoNodes.inc>
+    #include <mrdocs/Metadata/InfoNodesPascal.inc>
     default:
         MRDOCS_UNREACHABLE();
     }
