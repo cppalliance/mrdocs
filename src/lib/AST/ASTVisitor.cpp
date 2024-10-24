@@ -1876,6 +1876,9 @@ public:
     std::optional<std::pair<QualType, std::vector<TemplateArgument>>>
     isSFINAEType(QualType T)
     {
+        if(! config_->detectSfinae)
+            return std::nullopt;
+
         auto sfinae_info = getSFINAETemplate(T, true);
         if(! sfinae_info)
             return std::nullopt;
@@ -1902,6 +1905,12 @@ public:
         }
 
         return std::make_pair(param_arg->getAsType(), std::move(ControllingArgs));
+    }
+
+    std::optional<std::pair<QualType, std::vector<TemplateArgument>>>
+    isSFINAEType(const Type* T)
+    {
+        return isSFINAEType(QualType(T, 0));
     }
 
     std::string extractName(DeclarationName N)
@@ -3849,6 +3858,9 @@ class TerminalTypeVisitor
     VisitDependentNameType(
         const DependentNameType* T)
     {
+        if(auto SFINAE = getASTVisitor().isSFINAEType(T); SFINAE.has_value())
+            return getDerived().Visit(SFINAE->first);
+
         if(auto* NNS = T->getQualifier())
             NNS_ = NNS;
         getDerived().buildTerminal(NNS_, T->getIdentifier(),
@@ -3871,6 +3883,9 @@ class TerminalTypeVisitor
     VisitTemplateSpecializationType(
         const TemplateSpecializationType* T)
     {
+        if(auto SFINAE = getASTVisitor().isSFINAEType(T); SFINAE.has_value())
+            return getDerived().Visit(SFINAE->first);
+
         TemplateName TN = T->getTemplateName();
         MRDOCS_ASSERT(! TN.isNull());
         NamedDecl* ND = TN.getAsTemplateDecl();
@@ -4296,13 +4311,6 @@ buildTypeInfo(
     ExtractionScope scope = enterMode(extract_mode);
     // build the TypeInfo representation for the type
     TypeInfoBuilder Builder(*this);
-
-    if(config_->detectSfinae)
-    {
-      if(auto SFINAE = isSFINAEType(qt); SFINAE.has_value())
-          qt = SFINAE->first.withFastQualifiers(qt.getLocalFastQualifiers());
-    }
-
     Builder.Visit(qt);
     return Builder.result();
 }
