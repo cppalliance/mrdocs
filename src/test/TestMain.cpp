@@ -23,18 +23,18 @@
 #include <llvm/Support/Signals.h>
 #include <stdlib.h>
 
-int main(int argc, char** argv);
+int main(int argc, char const** argv);
 
 namespace clang {
 namespace mrdocs {
 
-void DoTestAction()
+void DoTestAction(char const** argv)
 {
     using namespace clang::mrdocs;
 
-    TestRunner runner(testArgs.generator);
-    for(auto const& inputPath : testArgs.inputPaths)
-        runner.checkPath(inputPath);
+    TestRunner runner(testArgs.generate);
+    for(auto const& inputPath : testArgs.inputs)
+        runner.checkPath(inputPath, argv);
     auto const& results = runner.results;
 
     std::stringstream os;
@@ -63,7 +63,7 @@ void DoTestAction()
     report::print(os.str());
 }
 
-int test_main(int argc, char const* const* argv)
+int test_main(int argc, char const** argv)
 {
     // VFALCO this heap checking is too strong for
     // a clang tool's model of what is actually a leak.
@@ -80,10 +80,10 @@ int test_main(int argc, char const* const* argv)
 
     // Apply reportLevel
     report::setMinimumLevel(report::getLevel(
-        testArgs.reportLevel.getValue()));
+        testArgs.report.getValue()));
 
-    if(! testArgs.inputPaths.empty())
-        DoTestAction();
+    if(!testArgs.inputs.empty())
+        DoTestAction(argv);
 
     if(testArgs.unitOption.getValue())
         test_suite::unit_test_main(argc, argv);
@@ -106,7 +106,7 @@ static void reportUnhandledException(
 } // mrdocs
 } // clang
 
-int main(int argc, char** argv)
+int main(int argc, char const** argv)
 {
     try
     {

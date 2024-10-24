@@ -9,8 +9,6 @@
 //
 
 #include "TestArgs.hpp"
-#include <fmt/format.h>
-#include <cstddef>
 #include <vector>
 
 namespace clang {
@@ -22,12 +20,9 @@ TestArgs TestArgs::instance_;
 
 TestArgs::
 TestArgs()
-    : commonCat("COMMON")
+    : PublicToolArgs()
 
-    , usageText(
-R"(MrDocs Test Program
-)")
-
+    , usageText("MrDocs Test Program")
     , extraHelp(
 R"(
 EXAMPLES:
@@ -37,19 +32,8 @@ EXAMPLES:
 )")
 
 //
-// Common options
-//
-
-, reportLevel(
-    "report",
-    llvm::cl::desc("The minimum reporting level (0 to 4)."),
-    llvm::cl::init(2),
-    llvm::cl::cat(commonCat))
-
-//
 // Test options
 //
-
 , action(
     "action",
     llvm::cl::desc(R"(Which action should be performed:)"),
@@ -57,8 +41,7 @@ EXAMPLES:
     llvm::cl::values(
         clEnumVal(test, "Compare output against expected."),
         clEnumVal(create, "Create missing expected documentation files."),
-        clEnumVal(update, "Update all expected documentation files.")),
-    llvm::cl::cat(commonCat))
+        clEnumVal(update, "Update all expected documentation files.")))
 
 , badOption(
     "bad",
@@ -69,28 +52,6 @@ EXAMPLES:
     "unit",
     llvm::cl::desc("Run all or selected unit test suites."),
     llvm::cl::init(true))
-
-, inputPaths(
-    "inputs",
-    llvm::cl::Sink,
-    llvm::cl::desc("A list of directories and/or .cpp files to test."),
-    llvm::cl::cat(commonCat))
-
-, generator(
-    "generator",
-    llvm::cl::desc("The generator to use for tests."),
-    llvm::cl::init("xml"))
-
-, addons(
-    "addons",
-    llvm::cl::desc("The directory with the addons."),
-    llvm::cl::cat(commonCat))
-
-, stdlibIncludes(
-    "stdlib-includes",
-    llvm::cl::desc("A list of paths to std library headers."),
-    llvm::cl::cat(commonCat))
-
 {
 }
 
@@ -104,7 +65,6 @@ hideForeignOptions()
 
     std::vector<llvm::cl::Option const*> ours({
         &action,
-        std::addressof(inputPaths),
         &badOption,
         &unitOption
     });
