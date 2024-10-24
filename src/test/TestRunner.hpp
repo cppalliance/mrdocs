@@ -53,7 +53,7 @@ class TestRunner
     ThreadPool threadPool_;
     llvm::ErrorOr<std::string> diffCmdPath_;
     Generator const* gen_;
-    Config::Settings::ReferenceDirectories dirs_;
+    ReferenceDirectories dirs_;
 
     Error writeFile(
         llvm::StringRef filePath,

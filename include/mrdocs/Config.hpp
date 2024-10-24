@@ -62,8 +62,6 @@ public:
      */
     struct Settings : public PublicSettings
     {
-        using ReferenceDirectories = PublicSettings::ReferenceDirectories;
-
         /**
          * @brief Loads the public configuration settings from the specified YAML file.
          *
