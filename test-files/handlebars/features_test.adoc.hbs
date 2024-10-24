@@ -1,10 +1,10 @@
-=={{#unless is_multipage}}={{/unless}} {{ page.name }}
+== {{ page.name }}
 
 {{#if page.doc}}
 {{page.doc.brief}}
 {{/if}}
 
-==={{#unless is_multipage}}={{/unless}} Synopsis
+=== Synopsis
 
 {{#if page.decl }}
 [,cpp]
@@ -20,11 +20,11 @@ Declared in file <{{page.loc}}>
 {{page.synopsis}}
 
 {{#if page.doc.description}}
-==={{#unless is_multipage}}={{/unless}} Description
+=== Description
 
 {{page.doc.description}}
 
-=={{#unless is_multipage}}={{/unless}} Basic
+== Basic
 
 {{/if}}
 
@@ -53,7 +53,7 @@ People:
 {{#each page.people}}* Person: {{firstname}} {{lastname}} in page about `{{../page/name}}`
 {{/each}}
 
-=={{#unless is_multipage}}={{/unless}} Expressions
+== Expressions
 
 // Render complete context with "." as key
 {{.}}
@@ -120,7 +120,7 @@ html-escaped: {{page.specialChars}}
 
 {{>escaped}}
 
-=={{#unless is_multipage}}={{/unless}} Partials
+== Partials
 
 // Basic partials
 {{>record-detail}}
@@ -169,7 +169,7 @@ My Content
 {{/pageLayout}}
 
 
-=={{#unless is_multipage}}={{/unless}} Blocks
+== Blocks
 
 // Block noop
 <div class="entry">
@@ -290,7 +290,7 @@ My Content
     {{/each}}
 {{/each}}
 
-=={{#unless is_multipage}}={{/unless}} Built-in Helpers
+== Built-in Helpers
 
 // Author
 {{#if author}}
@@ -389,7 +389,7 @@ No city found
 {{log "logging a warning" level="warn"}}
 {{log "logging an error" level="error"}}
 
-=={{#unless is_multipage}}={{/unless}} Hooks
+== Hooks
 
 // Helper missing
 {{foo}}
@@ -403,7 +403,7 @@ No city found
     {{firstname}} {{lastname}}
 {{/person}}
 
-=={{#unless is_multipage}}={{/unless}} String helpers
+== String helpers
 
 // capitalize
 {{ capitalize 'Hello world!' }}
@@ -682,7 +682,7 @@ No city found
 {{ strip_namespace 'std::basic_string<char, typename B::value_type>' }}
 {{#strip_namespace }}std::basic_string<char, typename B::value_type>{{/strip_namespace}}
 
-=={{#unless is_multipage}}={{/unless}} Containers
+== Containers
 
 // size
 {{ size containers.array }}
