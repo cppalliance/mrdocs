@@ -31,6 +31,8 @@ namespace mrdocs {
 */
 class SymbolID
 {
+    std::uint8_t data_[20]{};
+
 public:
     static const SymbolID invalid;
     static const SymbolID global;
@@ -120,9 +122,6 @@ public:
      */
     bool operator==(
         const SymbolID& other) const noexcept = default;
-
-private:
-    value_type data_[20]{};
 };
 
 /** The invalid Symbol ID.

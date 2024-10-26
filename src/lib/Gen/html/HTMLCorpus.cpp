@@ -258,74 +258,6 @@ measureLeftMargin(
     return n;
 }
 
-//------------------------------------------------
-
-class DomJavadoc : public dom::LazyObjectImpl
-{
-    const HTMLCorpus& corpus_;
-    Javadoc const& jd_;
-
-public:
-    DomJavadoc(
-        const HTMLCorpus& corpus,
-        Javadoc const& jd) noexcept
-        : corpus_(corpus)
-        , jd_(jd)
-    {
-    }
-
-    template<std::derived_from<doc::Node> T>
-    void
-    maybeEmplace(
-        storage_type& list,
-        std::string_view key,
-        T const& I) const
-    {
-        std::string s;
-        DocVisitor visitor(s);
-        doc::visit(I, visitor);
-        if(! s.empty())
-            list.emplace_back(key, std::move(s));
-    }
-
-    template<class T>
-    void
-    maybeEmplace(
-        storage_type& list,
-        std::string_view key,
-        std::vector<T const*> const& nodes) const
-    {
-        std::string s;
-        DocVisitor visitor(s);
-        for(auto const& t : nodes)
-            doc::visit(*t, visitor);
-        if(! s.empty())
-        {
-            list.emplace_back(key, std::move(s));
-        }
-    }
-
-    dom::Object
-    construct() const override
-    {
-        storage_type list;
-        list.reserve(2);
-
-        auto ov = jd_.makeOverview(*corpus_);
-
-        // brief
-        if(ov.brief)
-            maybeEmplace(list, "brief", *ov.brief);
-        maybeEmplace(list, "description", ov.blocks);
-        if(ov.returns)
-            maybeEmplace(list, "returns", *ov.returns);
-        maybeEmplace(list, "params", ov.params);
-        maybeEmplace(list, "tparams", ov.tparams);
-
-        return dom::Object(std::move(list));
-    }
-};
-
 } // (anon)
 
 dom::Value
@@ -333,7 +265,41 @@ HTMLCorpus::
 getJavadoc(
     Javadoc const& jd) const
 {
-    return dom::newObject<DomJavadoc>(*this, jd);
+    dom::Object::storage_type list;
+
+    auto maybeEmplace = [&](
+        std::string_view key,
+        auto const& I)
+    {
+        std::string s;
+        DocVisitor visitor(s);
+        using T = std::decay_t<decltype(I)>;
+        if constexpr (std::derived_from<T, doc::Node>)
+        {
+            doc::visit(I, visitor);
+        }
+        else if constexpr (std::ranges::range<T>)
+        {
+            for(auto const& node : I)
+                doc::visit(*node, visitor);
+        }
+        if(!s.empty())
+        {
+            list.emplace_back(key, std::move(s));
+        }
+    };
+
+    list.reserve(2);
+    auto ov = jd.makeOverview(this->getCorpus());
+    // brief
+    if(ov.brief)
+        maybeEmplace("brief", *ov.brief);
+    maybeEmplace("description", ov.blocks);
+    if(ov.returns)
+        maybeEmplace("returns", *ov.returns);
+    maybeEmplace("params", ov.params);
+    maybeEmplace("tparams", ov.tparams);
+    return dom::Object(std::move(list));
 }
 
 } // html

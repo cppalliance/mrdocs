@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -268,7 +269,7 @@ public:
     template <class F>
     requires
         std::invocable<F, String, Value> &&
-        detail::isExpected<std::invoke_result_t<F, String, Value>>
+        mrdocs::detail::isExpected<std::invoke_result_t<F, String, Value>>
     Expected<void, typename std::invoke_result_t<F, String, Value>::error_type>
     visit(F&& fn) const;
 
@@ -412,77 +413,6 @@ public:
 
 private:
     storage_type entries_;
-};
-
-//------------------------------------------------
-//
-// LazyObjectImpl
-//
-//------------------------------------------------
-
-/** Abstract lazy object interface.
-
-    This interface is used to define objects
-    that are constructed on demand.
-
-    The subclass must override the `construct`
-    function to return the constructed object.
-    It will typically also store whatever
-    data is necessary to construct this object.
-
-    When any of the object properties are accessed
-    for the first time, the object is constructed.
-    This can happen via any of the public functions,
-    such as `get`, `set`, `size`, `exists`, or `visit`.
-
-    The underlying object storage is only
-    initialized when the first property is
-    set or accessed. In practice, it means
-    the object is never initialized if it's
-    not used in a template.
-
-    When the object is initialized, the
-
-*/
-class MRDOCS_DECL
-    LazyObjectImpl : public ObjectImpl
-{
-#ifdef __cpp_lib_atomic_shared_ptr
-    std::atomic<std::shared_ptr<ObjectImpl>> mutable sp_;
-#else
-    std::shared_ptr<ObjectImpl> mutable sp_;
-#endif
-
-    using impl_type = Object::impl_type;
-
-    /* Return the constructed object.
-
-       This function is invoked by all public
-       functions that access the object properties.
-
-       When invoked for the first time, the object
-       is constructed and stored in the shared
-       pointer.
-
-       Further invocations return a reference
-       to the existing value in the shared pointer.
-    */
-    ObjectImpl& obj() const;
-
-protected:
-    /** Return the constructed object.
-
-        Subclasses override this.
-        The function is invoked just in time.
-    */
-    virtual Object construct() const = 0;
-
-public:
-    std::size_t size() const override;
-    Value get(std::string_view key) const override;
-    void set(String key, Value value) override;
-    bool visit(std::function<bool(String, Value)>) const override;
-    bool exists(std::string_view key) const override;
 };
 
 } // dom

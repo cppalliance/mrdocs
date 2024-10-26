@@ -5,12 +5,13 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_DOM_DOMMETADATA_HPP
-#define MRDOCS_API_DOM_DOMMETADATA_HPP
+#ifndef MRDOCS_API_DOM_DOMCORPUS_HPP
+#define MRDOCS_API_DOM_DOMCORPUS_HPP
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Corpus.hpp>
@@ -24,9 +25,14 @@ namespace mrdocs {
 
 /** Front-end factory for producing Dom nodes.
 
-    A @ref Generator subclasses this object and
-    then uses it to create the Dom nodes used for
-    rendering in template engines.
+    This class keeps a reference to the @ref Corpus
+    of extracted metadata, and provides a mechanism
+    for constructing DOM nodes representing the metadata.
+
+    A @ref Generator subclasses this object
+    (e.g. @ref AdocCorpus and @ref HTMLCorpus),
+    then uses it to create the Dom nodes used
+    as input for rendering template engines.
 */
 class MRDOCS_DECL
     DomCorpus
@@ -62,7 +68,7 @@ public:
     */
     Corpus const* operator->() const;
 
-    /** Construct a Dom object representing the given symbol.
+    /** Construct a lazy Dom object representing the specified symbol.
 
         This function is called internally when a `dom::Object`
         representing a symbol needs to be constructed because

@@ -13,7 +13,7 @@
 
 #include "Options.hpp"
 #include "lib/Support/Radix.hpp"
-#include <mrdocs/Metadata/DomMetadata.hpp>
+#include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/Handlebars.hpp>
 #include <mrdocs/Support/JavaScript.hpp>

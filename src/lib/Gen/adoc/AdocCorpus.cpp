@@ -85,7 +85,7 @@ class DocVisitor
 
 public:
     DocVisitor(
-        const AdocCorpus& corpus,
+        AdocCorpus const& corpus,
         std::string& dest) noexcept
         : corpus_(corpus)
         , dest_(dest)
@@ -314,7 +314,7 @@ measureLeftMargin(
 {
     if(list.empty())
         return 0;
-    std::size_t n = std::size_t(-1);
+    auto n = std::size_t(-1);
     for(auto& text : list)
     {
         if(trim(text->string).empty())
@@ -327,7 +327,6 @@ measureLeftMargin(
     return n;
 }
 
-static
 dom::Value
 domCreate(
     const doc::Param& I,
@@ -345,7 +344,6 @@ domCreate(
     return dom::Object(std::move(entries));
 }
 
-static
 dom::Value
 domCreate(
     const doc::TParam& I,
@@ -363,7 +361,6 @@ domCreate(
     return dom::Object(std::move(entries));
 }
 
-static
 dom::Value
 domCreate(
     const doc::Throws& I,
@@ -381,7 +378,6 @@ domCreate(
     return dom::Object(std::move(entries));
 }
 
-static
 dom::Value
 domCreate(
     const doc::See& I,
@@ -393,7 +389,6 @@ domCreate(
     return s;
 }
 
-static
 dom::Value
 domCreate(
     const doc::Precondition& I,
@@ -405,7 +400,6 @@ domCreate(
     return s;
 }
 
-static
 dom::Value
 domCreate(
     const doc::Postcondition& I,
@@ -417,132 +411,15 @@ domCreate(
     return s;
 }
 
-//------------------------------------------------
-
-class DomJavadoc : public dom::LazyObjectImpl
-{
-    const AdocCorpus& corpus_;
-    Javadoc const& jd_;
-
-public:
-    DomJavadoc(
-        const AdocCorpus& corpus,
-        Javadoc const& jd) noexcept
-        : corpus_(corpus)
-        , jd_(jd)
-    {
-    }
-
-    template<std::derived_from<doc::Node> T>
-    void
-    maybeEmplace(
-        storage_type& list,
-        std::string_view key,
-        T const& I) const
-    {
-        std::string s;
-        DocVisitor visitor(corpus_, s);
-        doc::visit(I, visitor);
-        if(! s.empty())
-            list.emplace_back(key, std::move(s));
-    }
-
-    template<class T>
-    void
-    maybeEmplace(
-        storage_type& list,
-        std::string_view key,
-        std::vector<T const*> const& nodes) const
-    {
-        std::string s;
-        DocVisitor visitor(corpus_, s);
-        for(auto const& t : nodes)
-            doc::visit(*t, visitor);
-        if(! s.empty())
-        {
-            list.emplace_back(key, std::move(s));
-        }
-    }
-
-    template<class T>
-    void
-    maybeEmplaceArray(
-        storage_type& list,
-        std::string_view key,
-        std::vector<T const*> const& nodes) const
-    {
-        dom::Array::storage_type elements;
-        elements.reserve(nodes.size());
-        for(auto const& elem : nodes)
-        {
-            if(! elem)
-                continue;
-            elements.emplace_back(
-                domCreate(*elem, corpus_));
-        }
-        if(elements.empty())
-            return;
-        list.emplace_back(key, dom::newArray<
-            dom::DefaultArrayImpl>(std::move(elements)));
-    }
-
-    dom::Object
-    construct() const override
-    {
-        storage_type list;
-        list.reserve(2);
-
-        auto ov = jd_.makeOverview(*corpus_);
-
-        // brief
-        if(ov.brief)
-            maybeEmplace(list, "brief", *ov.brief);
-        maybeEmplace(list, "description", ov.blocks);
-        if(ov.returns)
-            maybeEmplace(list, "returns", *ov.returns);
-        maybeEmplaceArray(list, "params", ov.params);
-        maybeEmplaceArray(list, "tparams", ov.tparams);
-        maybeEmplaceArray(list, "exceptions", ov.exceptions);
-        maybeEmplaceArray(list, "see", ov.sees);
-        maybeEmplaceArray(list, "preconditions", ov.preconditions);
-        maybeEmplaceArray(list, "postconditions", ov.postconditions);
-
-        return dom::Object(std::move(list));
-    }
-};
-
 } // (anon)
 
 dom::Object
 AdocCorpus::
 construct(Info const& I) const
 {
-    // wraps a DomInfo with a lazy object which
-    // adds additional properties to the wrapped
-    // object once constructed.
-    struct AdocInfo :
-        public dom::LazyObjectImpl
-    {
-        Info const& I_;
-        AdocCorpus const& adocCorpus_;
-
-    public:
-        AdocInfo(
-            Info const& I,
-            AdocCorpus const& adocCorpus) noexcept
-            : I_(I)
-            , adocCorpus_(adocCorpus)
-        {
-        }
-
-        dom::Object construct() const override
-        {
-            auto obj = adocCorpus_.DomCorpus::construct(I_);
-            obj.set("ref", adocCorpus_.getXref(I_));
-            return obj;
-        }
-    };
-    return dom::newObject<AdocInfo>(I, *this);
+    dom::Object obj = this->DomCorpus::construct(I);
+    obj.set("ref", getXref(I));
+    return obj;
 }
 
 std::string
@@ -578,7 +455,64 @@ AdocCorpus::
 getJavadoc(
     Javadoc const& jd) const
 {
-    return dom::newObject<DomJavadoc>(*this, jd);
+    dom::Object::storage_type list;
+    list.reserve(2);
+
+    auto maybeEmplace = [&](
+        std::string_view key,
+        auto const& I)
+    {
+        std::string s;
+        DocVisitor visitor(*this, s);
+        using T = std::decay_t<decltype(I)>;
+        if constexpr (std::derived_from<T, doc::Node>)
+        {
+            doc::visit(I, visitor);
+        }
+        else if constexpr (std::ranges::range<T>)
+        {
+            for(auto const& t : I)
+                doc::visit(*t, visitor);
+        }
+        if(! s.empty())
+        {
+            list.emplace_back(key, std::move(s));
+        }
+    };
+
+    auto maybeEmplaceArray = [&](
+        std::string_view key,
+        /* std::vector<T const*> */ auto const& nodes)
+    {
+        dom::Array::storage_type elements;
+        elements.reserve(nodes.size());
+        for(auto const& elem : nodes)
+        {
+            if(!elem)
+                continue;
+            elements.emplace_back(
+                domCreate(*elem, *this));
+        }
+        if(elements.empty())
+            return;
+        list.emplace_back(key, dom::newArray<
+            dom::DefaultArrayImpl>(std::move(elements)));
+    };
+
+    auto ov = jd.makeOverview(this->getCorpus());
+    // brief
+    if(ov.brief)
+        maybeEmplace("brief", *ov.brief);
+    maybeEmplace("description", ov.blocks);
+    if(ov.returns)
+        maybeEmplace("returns", *ov.returns);
+    maybeEmplaceArray("params", ov.params);
+    maybeEmplaceArray("tparams", ov.tparams);
+    maybeEmplaceArray("exceptions", ov.exceptions);
+    maybeEmplaceArray("see", ov.sees);
+    maybeEmplaceArray("preconditions", ov.preconditions);
+    maybeEmplaceArray("postconditions", ov.postconditions);
+    return dom::Object(std::move(list));
 }
 
 dom::Object

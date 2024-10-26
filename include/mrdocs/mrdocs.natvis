@@ -109,7 +109,6 @@
 
     <Type Name="clang::mrdocs::dom::Object">
         <Intrinsic Name="as_default" Expression="dynamic_cast&lt;DefaultObjectImpl*&gt;(impl_._Ptr)"/>
-        <Intrinsic Name="as_lazy" Expression="dynamic_cast&lt;LazyObjectImpl*&gt;(impl_._Ptr)"/>
         <Intrinsic Name="as_overlay" Expression="dynamic_cast&lt;OverlayObjectImpl*&gt;(impl_._Ptr)"/>
         <Intrinsic Name="as_hbs_helper" Expression="dynamic_cast&lt;HbsHelperObjectImpl*&gt;(impl_._Ptr)"/>
         <DisplayString>[ dom::Object ]</DisplayString>
