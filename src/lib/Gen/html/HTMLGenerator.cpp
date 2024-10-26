@@ -15,7 +15,7 @@
 #include "MultiPageVisitor.hpp"
 #include "SinglePageVisitor.hpp"
 #include "lib/Support/LegibleNames.hpp"
-#include <mrdocs/Metadata/DomMetadata.hpp>
+#include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <optional>

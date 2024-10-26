@@ -54,6 +54,36 @@ safeString(dom::Value const& str);
 
 namespace dom {
 
+/** Mapping traits to convert types into dom::Object.
+
+    This class should be specialized by any type that needs to be converted
+    to/from a @ref dom::Object.  For example:
+
+    @code
+    template<>
+    struct MappingTraits<MyStruct> {
+        template <class IO>
+        static void map(IO &io, MyStruct const& s)
+        {
+            io.map("name", s.name);
+            io.map("size", s.size);
+            io.map("age",  s.age);
+        }
+    };
+    @endcode
+ */
+template<class T>
+struct ToValue {
+    // Value operator()(T const& o) const;
+};
+
+/// Concept to determine if @ref ToValue is defined for a type T
+template <class T>
+concept HasToValue = requires(T const& o)
+{
+    { Value(std::declval<ToValue<T>>()(o)) } -> std::same_as<Value>;
+};
+
 /** A variant container for any kind of Dom value.
 */
 class MRDOCS_DECL
@@ -90,13 +120,14 @@ public:
 
     template<class F>
     requires
-        function_traits_convertible_to_value<F>
+        function_traits_convertible_to_value<F> &&
+        (!HasToValue<F>)
     Value(F const& f)
         : Value(Function(f))
     {}
 
-    template<class Boolean>
-    requires std::is_same_v<Boolean, bool>
+    template<std::same_as<bool> Boolean>
+    requires (!HasToValue<Boolean>)
     Value(Boolean const& b) noexcept
         : kind_(Kind::Boolean)
         , b_(b)
@@ -104,16 +135,23 @@ public:
     }
 
     template <std::integral T>
-    requires (!std::same_as<T, bool> && !std::same_as<T, char>)
+    requires
+        (!std::same_as<T, bool>) &&
+        (!std::same_as<T, char>) &&
+        (!HasToValue<T>)
     Value(T v) noexcept : Value(std::int64_t(v)) {}
 
     template <std::floating_point T>
+    requires (!HasToValue<T>)
     Value(T v) noexcept : Value(std::int64_t(v)) {}
 
     Value(char c) noexcept : Value(std::string_view(&c, 1)) {}
 
     template<class Enum>
-    requires std::is_enum_v<Enum> && (!std::same_as<Enum, dom::Kind>)
+    requires
+        std::is_enum_v<Enum> &&
+        (!std::same_as<Enum, dom::Kind>) &&
+        (!HasToValue<Enum>)
     Value(Enum v) noexcept
         : Value(static_cast<std::underlying_type_t<Enum>>(v))
     {}
@@ -131,6 +169,7 @@ public:
     }
 
     template <std::convertible_to<String> StringLike>
+    requires (!HasToValue<StringLike>)
     Value(StringLike const& s)
         : Value(String(s))
     {
@@ -152,6 +191,12 @@ public:
 
     Value(Array::storage_type elements)
         : Value(Array(std::move(elements)))
+    {
+    }
+
+    template <HasToValue T>
+    Value(T const& t)
+        : Value(ToValue<T>{}(t))
     {
     }
 
@@ -425,22 +470,6 @@ public:
         Value const& lhs,
         Value const& rhs) noexcept;
 
-    /// @overload
-    template <std::convertible_to<Value> S>
-    friend auto operator==(
-        S const& lhs, Value const& rhs) noexcept
-    {
-        return Value(lhs) == rhs;
-    }
-
-    /// @overload
-    template <std::convertible_to<Value> S>
-    friend auto operator==(
-        Value const& lhs, S const& rhs) noexcept
-    {
-        return lhs == Value(rhs);
-    }
-
     /** Compare two values for inequality.
      */
     friend
@@ -448,6 +477,28 @@ public:
     operator<=>(
         Value const& lhs,
         Value const& rhs) noexcept;
+
+    /// @overload
+    template <std::convertible_to<Value> S>
+    friend
+    auto
+    operator<=>(
+        S const& lhs,
+        Value const& rhs) noexcept
+    {
+        return Value(lhs) <=> rhs;
+    }
+
+    /// @overload
+    template <std::convertible_to<Value> S>
+    friend
+    auto
+    operator<=>(
+        Value const& lhs,
+        S const& rhs) noexcept
+    {
+        return lhs <=> Value(rhs);
+    }
 
     /** Add or concatenate two values.
      */

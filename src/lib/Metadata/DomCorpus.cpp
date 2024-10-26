@@ -11,9 +11,9 @@
 
 #include "lib/Support/Radix.hpp"
 #include "lib/Support/LegibleNames.hpp"
+#include "lib/Dom/LazyObject.hpp"
 #include <mrdocs/Metadata.hpp>
-#include <mrdocs/Metadata/DomMetadata.hpp>
-#include <llvm/ADT/StringMap.h>
+#include <mrdocs/Metadata/DomCorpus.hpp>
 #include <memory>
 #include <mutex>
 #include <variant>
@@ -29,22 +29,23 @@ namespace {
 //
 //------------------------------------------------
 
-static
 dom::Value
 domCreate(
     std::unique_ptr<Javadoc> const& jd,
     DomCorpus const& domCorpus)
 {
-    if(! jd)
+    if(!jd)
         return nullptr;
     return domCorpus.getJavadoc(*jd);
 }
 
+/* A Lazy DOM Array type that replaces symbol IDs with their
+   corresponding DOM objects.
+*/
 class DomSymbolArray : public dom::ArrayImpl
 {
     std::span<const SymbolID> list_;
     DomCorpus const& domCorpus_;
-    //SharedPtr<> ref_; // keep owner of list_ alive
 
 public:
     DomSymbolArray(
@@ -62,14 +63,16 @@ public:
 
     dom::Value get(std::size_t i) const override
     {
-        MRDOCS_ASSERT(i < list_.size());
-        return domCorpus_.get(list_[i]);
+        if (i < list_.size())
+        {
+            return domCorpus_.get(list_[i]);
+        }
+        return dom::Value{};
     }
 };
 
 //------------------------------------------------
 
-static
 dom::Object
 domCreate(
     OverloadSet const& overloads,
@@ -134,7 +137,6 @@ public:
 //
 //------------------------------------------------
 
-static
 dom::Object
 domCreate(Location const& loc)
 {
@@ -171,7 +173,6 @@ public:
     }
 };
 
-static
 dom::Object
 domCreate(SourceInfo const& I)
 {
@@ -563,36 +564,6 @@ public:
 //
 //------------------------------------------------
 
-template<class T>
-class DomTrancheArray : public dom::ArrayImpl
-{
-    std::span<T const* const> list_;
-    std::shared_ptr<Interface> sp_;
-    DomCorpus const& domCorpus_;
-
-public:
-    DomTrancheArray(
-        std::span<T const* const> list,
-        std::shared_ptr<Interface> const& sp,
-        DomCorpus const& domCorpus)
-        : list_(list)
-        , sp_(sp)
-        , domCorpus_(domCorpus)
-    {
-    }
-
-    std::size_t size() const noexcept override
-    {
-        return list_.size();
-    }
-
-    dom::Value get(std::size_t i) const override
-    {
-        MRDOCS_ASSERT(i < list_.size());
-        return domCorpus_.get(list_[i]->id);
-    }
-};
-
 class DomTranche : public dom::DefaultObjectImpl
 {
     std::shared_ptr<Tranche> tranche_;
@@ -635,42 +606,12 @@ public:
     }
 };
 
-class DomInterface : public dom::LazyObjectImpl
-{
-    RecordInfo const& I_;
-    DomCorpus const& domCorpus_;
-    std::shared_ptr<Interface> mutable sp_;
-
-public:
-    DomInterface(
-        RecordInfo const& I,
-        DomCorpus const& domCorpus)
-        : I_(I)
-        , domCorpus_(domCorpus)
-    {
-    }
-
-    dom::Object
-    construct() const override
-    {
-        sp_ = std::make_shared<Interface>(makeInterface(I_, *domCorpus_));
-        return dom::Object({
-            { "public", dom::newObject<DomTranche>(sp_->Public, domCorpus_) },
-            { "protected", dom::newObject<DomTranche>(sp_->Protected, domCorpus_) },
-            { "private", dom::newObject<DomTranche>(sp_->Private, domCorpus_) },
-            // { "overloads", dom::newArray<DomOverloadsArray>(sp_->Overloads, domCorpus_) },
-            // { "static-overloads", dom::newArray<DomOverloadsArray>(sp_->StaticOverloads, domCorpus_) }
-            });
-    }
-};
-
 //------------------------------------------------
 //
 // Info
 //
 //------------------------------------------------
 
-static
 std::string_view
 getDefaultAccess(
     RecordInfo const& I) noexcept
@@ -685,234 +626,6 @@ getDefaultAccess(
     default:
         MRDOCS_UNREACHABLE();
     }
-}
-
-template<class T>
-requires std::derived_from<T, Info>
-class DomInfo : public dom::LazyObjectImpl
-{
-    T const& I_;
-    DomCorpus const& domCorpus_;
-
-public:
-    DomInfo(
-        T const& I,
-        DomCorpus const& domCorpus) noexcept
-        : I_(I)
-        , domCorpus_(domCorpus)
-    {
-    }
-
-    dom::Object construct() const override;
-};
-
-template<class T>
-requires std::derived_from<T, Info>
-dom::Object
-DomInfo<T>::construct() const
-{
-    storage_type entries;
-    entries.insert(entries.end(), {
-        { "id",         toBase16(I_.id) },
-        { "kind",       toString(I_.Kind) },
-        { "access",     toString(I_.Access) },
-        { "implicit",   I_.Implicit },
-        { "namespace",  dom::newArray<DomSymbolArray>(
-                            I_.Namespace, domCorpus_) },
-        { "doc",        domCreate(I_.javadoc, domCorpus_) }
-        });
-    if(! I_.Name.empty())
-        entries.emplace_back("name", I_.Name);
-    if(! I_.Namespace.empty())
-        entries.emplace_back("parent",
-            domCorpus_.get(I_.Namespace.front()));
-
-    if constexpr(std::derived_from<T, ScopeInfo>)
-    {
-        entries.insert(entries.end(), {
-            { "members",   dom::newArray<DomSymbolArray>(I_.Members, domCorpus_) },
-            { "overloads", dom::newArray<DomOverloadsArray>(I_, domCorpus_)},
-            });
-    }
-    if constexpr(std::derived_from<T, SourceInfo>)
-    {
-        entries.emplace_back("loc", domCreate(I_));
-    }
-    if constexpr(T::isNamespace())
-    {
-        entries.emplace_back("interface", dom::newObject<DomTranche>(
-            std::make_shared<Tranche>(
-                makeTranche(I_, *domCorpus_)),
-            domCorpus_));
-        entries.emplace_back("usingDirectives", dom::newArray<DomSymbolArray>(
-            I_.UsingDirectives, domCorpus_));
-    }
-    if constexpr(T::isRecord())
-    {
-        entries.insert(entries.end(), {
-            { "tag",            toString(I_.KeyKind) },
-            { "defaultAccess",  getDefaultAccess(I_) },
-            { "isTypedef",      I_.IsTypeDef },
-            { "bases",          dom::newArray<DomBaseArray>(I_.Bases, domCorpus_) },
-            { "interface",      dom::newObject<DomInterface>(I_, domCorpus_) },
-            { "template",       domCreate(I_.Template, domCorpus_) }
-            });
-    }
-    if constexpr(T::isEnum())
-    {
-        entries.insert(entries.end(), {
-            { "type",       domCreate(I_.UnderlyingType, domCorpus_) },
-            { "isScoped",   I_.Scoped }
-            });
-    }
-    if constexpr(T::isFunction())
-    {
-        auto const set_flag =
-            [&](dom::String key, bool set)
-            {
-                if(set)
-                    entries.emplace_back(std::move(key), true);
-            };
-        set_flag("isVariadic",         I_.IsVariadic);
-        set_flag("isVirtual",          I_.IsVirtual);
-        set_flag("isVirtualAsWritten", I_.IsVirtualAsWritten);
-        set_flag("isPure",             I_.IsPure);
-        set_flag("isDefaulted",        I_.IsDefaulted);
-        set_flag("isExplicitlyDefaulted",I_.IsExplicitlyDefaulted);
-        set_flag("isDeleted",          I_.IsDeleted);
-        set_flag("isDeletedAsWritten", I_.IsDeletedAsWritten);
-        set_flag("isNoReturn",         I_.IsNoReturn);
-        set_flag("hasOverrideAttr",    I_.HasOverrideAttr);
-        set_flag("hasTrailingReturn",  I_.HasTrailingReturn);
-        set_flag("isConst",            I_.IsConst);
-        set_flag("isVolatile",         I_.IsVolatile);
-        set_flag("isFinal",            I_.IsFinal);
-        set_flag("isNodiscard",        I_.IsNodiscard);
-        set_flag("isExplicitObjectMemberFunction", I_.IsExplicitObjectMemberFunction);
-
-        auto const set_string =
-            [&](dom::String key, dom::String value)
-            {
-                if(! value.empty())
-                    entries.emplace_back(std::move(key), std::move(value));
-            };
-        set_string("constexprKind", toString(I_.Constexpr));
-        set_string("storageClass",  toString(I_.StorageClass));
-        set_string("refQualifier",  toString(I_.RefQualifier));
-
-        entries.insert(entries.end(), {
-            { "class",      toString(I_.Class) },
-            { "params",     dom::newArray<DomParamArray>(I_.Params, domCorpus_) },
-            { "return",     domCreate(I_.ReturnType, domCorpus_) },
-            { "template",   domCreate(I_.Template, domCorpus_) },
-            { "overloadedOperator", I_.OverloadedOperator },
-            });
-
-        entries.emplace_back("exceptionSpec", toString(I_.Noexcept));
-        entries.emplace_back("explicitSpec",  toString(I_.Explicit));
-        entries.emplace_back("requires",      dom::stringOrNull(I_.Requires.Written));
-
-        #if 0
-        if(I_.Noexcept.Kind != NoexceptKind::None)
-        {
-            dom::String exceptSpec = "noexcept";
-            if(! I_.Noexcept.Operand.empty())
-                exceptSpec = fmt::format(
-                    "noexcept({})",
-                    I_.Noexcept.Operand);
-            entries.emplace_back("exceptionSpec", std::move(exceptSpec));
-        }
-        #endif
-    }
-    if constexpr(T::isTypedef())
-    {
-        entries.insert(entries.end(), {
-            { "type",       domCreate(I_.Type, domCorpus_) },
-            { "template",   domCreate(I_.Template, domCorpus_) },
-            { "isUsing",    I_.IsUsing }
-            });
-    }
-    if constexpr(T::isVariable())
-    {
-        entries.insert(entries.end(), {
-            { "type",           domCreate(I_.Type, domCorpus_) },
-            { "template",       domCreate(I_.Template, domCorpus_) },
-            { "constexprKind",  toString(I_.Constexpr) },
-            { "storageClass",   toString(I_.StorageClass) },
-            { "isConstinit",    I_.IsConstinit },
-            { "isThreadLocal",  I_.IsThreadLocal },
-            { "initializer",    dom::stringOrNull(I_.Initializer.Written) },
-            });
-    }
-    if constexpr(T::isField())
-    {
-        entries.insert(entries.end(), {
-            { "type",               domCreate(I_.Type, domCorpus_) },
-            { "default",            dom::stringOrNull(I_.Default.Written) },
-            { "isMaybeUnused",      I_.IsMaybeUnused },
-            { "isDeprecated",       I_.IsDeprecated },
-            { "isVariant",          I_.IsVariant },
-            { "isMutable",          I_.IsMutable },
-            { "isBitfield",         I_.IsBitfield },
-            { "hasNoUniqueAddress", I_.HasNoUniqueAddress }
-            });
-        if(I_.IsBitfield)
-            entries.emplace_back("bitfieldWidth",
-                I_.BitfieldWidth.Written);
-    }
-    if constexpr(T::isSpecialization())
-    {
-    }
-    if constexpr(T::isFriend())
-    {
-        if(I_.FriendSymbol)
-        {
-            auto befriended = domCorpus_.get(I_.FriendSymbol);
-            entries.emplace_back("name", befriended.get("name"));
-            entries.emplace_back("symbol", befriended);
-        }
-        else if(I_.FriendType)
-        {
-            auto befriended = domCreate(I_.FriendType, domCorpus_);
-            entries.emplace_back("name", befriended.get("name"));
-            entries.emplace_back("type", befriended);
-        }
-    }
-    if constexpr(T::isAlias())
-    {
-        MRDOCS_ASSERT(I_.AliasedSymbol);
-        entries.emplace_back("aliasedSymbol", domCreate(I_.AliasedSymbol, domCorpus_));
-    }
-    if constexpr(T::isUsing())
-    {
-        entries.emplace_back("class", toString(I_.Class));
-        entries.emplace_back("shadows", dom::newArray<DomSymbolArray>(I_.UsingSymbols, domCorpus_));
-        entries.emplace_back("qualifier", domCreate(I_.Qualifier, domCorpus_));
-    }
-    if constexpr(T::isEnumerator())
-    {
-        entries.insert(entries.end(), {
-            { "initializer", dom::stringOrNull(I_.Initializer.Written) }
-            });
-    }
-    if constexpr(T::isGuide())
-    {
-        entries.insert(entries.end(), {
-            { "params",     dom::newArray<DomParamArray>(I_.Params, domCorpus_) },
-            { "deduced",     domCreate(I_.Deduced, domCorpus_) },
-            { "template",   domCreate(I_.Template, domCorpus_) }
-            });
-
-        entries.emplace_back("explicitSpec", toString(I_.Explicit));
-    }
-    if constexpr(T::isConcept())
-    {
-        entries.insert(entries.end(), {
-            { "template",       domCreate(I_.Template, domCorpus_) },
-            { "constraint",     dom::stringOrNull(I_.Constraint.Written) }
-            });
-    }
-    return dom::Object(std::move(entries));
 }
 
 //------------------------------------------------
@@ -1008,6 +721,269 @@ operator->() const
     return &getCorpus();
 }
 
+namespace dom {
+    /* Determine if a type has a mrdocs::toString overload
+     */
+    template <class U>
+    concept HasMrDocsToString = requires(U u)
+    {
+        { mrdocs::toString(u) } -> std::convertible_to<std::string_view>;
+    };
+
+    /* Convert enum Values to strings using mrdocs::toString
+     */
+    template <HasMrDocsToString U>
+    requires std::is_enum_v<U>
+    struct ToValue<U>
+    {
+        std::string_view
+        operator()(U const& v) const
+        {
+            return mrdocs::toString(v);
+        }
+    };
+
+    static_assert(HasToValue<InfoKind>);
+    static_assert(HasToValue<AccessKind>);
+
+    /* Convert SymbolID to strings using toBase16
+     */
+    template <>
+    struct ToValue<SymbolID>
+    {
+        std::string
+        operator()(SymbolID const& id) const
+        {
+            return toBase16(id);
+        }
+    };
+
+    static_assert(HasToValue<SymbolID>);
+
+    /* Mapping Traits for an Info type
+
+       These traits map an Info type to a DOM object.
+       It includes all members of the derived type.
+
+       The traits store a reference to the DomCorpus
+       so that it can resolve symbol IDs to the corresponding
+       Info objects. Whenever a member refers to symbol IDs,
+       the mapping trait will automatically resolve the
+       symbol ID to the corresponding Info object.
+
+       This allows all references to be resolved to the
+       corresponding Info object lazily from the templates
+       that use the DOM.
+     */
+    template<std::derived_from<Info> T>
+    struct MappingTraits<T>
+    {
+    private:
+        DomCorpus const* domCorpus_ = nullptr;
+
+    public:
+        MappingTraits(DomCorpus const& domCorpus)
+            : domCorpus_(&domCorpus)
+        {
+        }
+
+        template <class IO>
+        void
+        map(IO &io, T const& I) const
+        {
+            MRDOCS_ASSERT(domCorpus_);
+            io.map("id", I.id);
+            if (!I.Name.empty())
+            {
+                io.map("name", I.Name);
+            }
+            io.map("kind", I.Kind);
+            io.map("access", I.Access);
+            io.map("implicit", I.Implicit);
+            io.defer("namespace", [&]{ return dom::newArray<DomSymbolArray>(I.Namespace, *domCorpus_); });
+            io.defer("doc", [&]{ return domCreate(I.javadoc, *domCorpus_); });
+            if (!I.Namespace.empty())
+            {
+                io.defer("parent", [&]{ return domCorpus_->get(I.Namespace.front()); });
+            }
+            if constexpr(std::derived_from<T, ScopeInfo>)
+            {
+                io.defer("members", [&]{ return dom::newArray<DomSymbolArray>(I.Members, *domCorpus_); });
+                io.defer("overloads", [&]{ return dom::newArray<DomOverloadsArray>(I, *domCorpus_); });
+            }
+            if constexpr(std::derived_from<T, SourceInfo>)
+            {
+                io.defer("loc", [&]{ return domCreate(I); });
+            }
+            if constexpr(T::isNamespace())
+            {
+                io.defer("interface", [&]{ return dom::newObject<DomTranche>(
+                    std::make_shared<Tranche>(
+                        makeTranche(I, **domCorpus_)),
+                    *domCorpus_); });
+                io.defer("usingDirectives", [&]{ return dom::newArray<DomSymbolArray>(
+                    I.UsingDirectives, *domCorpus_); });
+            }
+            if constexpr (T::isRecord())
+            {
+                io.map("tag", I.KeyKind);
+                io.defer("defaultAccess", [&]{ return getDefaultAccess(I); });
+                io.map("isTypedef", I.IsTypeDef);
+                io.defer("bases", [&]{ return dom::newArray<DomBaseArray>(I.Bases, *domCorpus_); });
+                io.defer("interface", [&]{
+                    auto sp = std::make_shared<Interface>(makeInterface(I, domCorpus_->getCorpus()));
+                    return dom::Object({
+                        { "public", dom::newObject<DomTranche>(sp->Public, *domCorpus_) },
+                        { "protected", dom::newObject<DomTranche>(sp->Protected, *domCorpus_) },
+                        { "private", dom::newObject<DomTranche>(sp->Private, *domCorpus_) },
+                        // { "overloads", dom::newArray<DomOverloadsArray>(sp->Overloads, *domCorpus_) },
+                        // { "static-overloads", dom::newArray<DomOverloadsArray>(sp->StaticOverloads, *domCorpus_) }
+                    });
+                });
+                io.defer("template", [&]{ return domCreate(I.Template, *domCorpus_); });
+            }
+            if constexpr (T::isEnum())
+            {
+                io.defer("type", [&]{ return domCreate(I.UnderlyingType, *domCorpus_); });
+                io.map("isScoped", I.Scoped);
+            }
+            if constexpr (T::isFunction())
+            {
+                io.map("isVariadic", I.IsVariadic);
+                io.map("isVirtual", I.IsVirtual);
+                io.map("isVirtualAsWritten", I.IsVirtualAsWritten);
+                io.map("isPure", I.IsPure);
+                io.map("isDefaulted", I.IsDefaulted);
+                io.map("isExplicitlyDefaulted", I.IsExplicitlyDefaulted);
+                io.map("isDeleted", I.IsDeleted);
+                io.map("isDeletedAsWritten", I.IsDeletedAsWritten);
+                io.map("isNoReturn", I.IsNoReturn);
+                io.map("hasOverrideAttr", I.HasOverrideAttr);
+                io.map("hasTrailingReturn", I.HasTrailingReturn);
+                io.map("isConst", I.IsConst);
+                io.map("isVolatile", I.IsVolatile);
+                io.map("isFinal", I.IsFinal);
+                io.map("isNodiscard", I.IsNodiscard);
+                io.map("isExplicitObjectMemberFunction", I.IsExplicitObjectMemberFunction);
+                if (I.Constexpr != ConstexprKind::None)
+                {
+                    io.map("constexprKind", I.Constexpr);
+                }
+                if (I.StorageClass != StorageClassKind::None)
+                {
+                    io.map("storageClass", I.StorageClass);
+                }
+                if (I.RefQualifier != ReferenceKind::None)
+                {
+                    io.map("refQualifier", I.RefQualifier);
+                }
+                io.map("class", I.Class);
+                io.defer("params", [&]{ return dom::newArray<DomParamArray>(I.Params, *domCorpus_); });
+                io.defer("return", [&]{ return domCreate(I.ReturnType, *domCorpus_); });
+                io.defer("template", [&]{ return domCreate(I.Template, *domCorpus_); });
+                io.map("overloadedOperator", I.OverloadedOperator);
+                io.defer("exceptionSpec", [&]{ return toString(I.Noexcept); });
+                io.defer("explicitSpec", [&]{ return toString(I.Explicit); });
+                if (!I.Requires.Written.empty())
+                {
+                    io.map("requires", I.Requires.Written);
+                }
+            }
+            if constexpr (T::isTypedef())
+            {
+                io.defer("type", [&]{ return domCreate(I.Type, *domCorpus_); });
+                io.defer("template", [&]{ return domCreate(I.Template, *domCorpus_); });
+                io.map("isUsing", I.IsUsing);
+            }
+            if constexpr (T::isVariable())
+            {
+                io.defer("type", [&]{ return domCreate(I.Type, *domCorpus_); });
+                io.defer("template", [&]{ return domCreate(I.Template, *domCorpus_); });
+                if (I.Constexpr != ConstexprKind::None)
+                {
+                    io.map("constexprKind", I.Constexpr);
+                }
+                if (I.StorageClass != StorageClassKind::None)
+                {
+                    io.map("storageClass", I.StorageClass);
+                }
+                io.map("isConstinit", I.IsConstinit);
+                io.map("isThreadLocal", I.IsThreadLocal);
+                if (!I.Initializer.Written.empty())
+                {
+                    io.map("initializer", I.Initializer.Written);
+                }
+            }
+            if constexpr (T::isField())
+            {
+                io.defer("type", [&]{ return domCreate(I.Type, *domCorpus_); });
+                if (!I.Default.Written.empty())
+                {
+                    io.map("default", I.Default.Written);
+                }
+                io.map("isMaybeUnused", I.IsMaybeUnused);
+                io.map("isDeprecated", I.IsDeprecated);
+                io.map("isVariant", I.IsVariant);
+                io.map("isMutable", I.IsMutable);
+                io.map("isBitfield", I.IsBitfield);
+                io.map("hasNoUniqueAddress", I.HasNoUniqueAddress);
+                if (I.IsBitfield)
+                {
+                    io.map("bitfieldWidth", I.BitfieldWidth.Written);
+                }
+            }
+            if constexpr (T::isSpecialization())
+            {}
+            if constexpr (T::isFriend())
+            {
+                if (I.FriendSymbol)
+                {
+                    io.defer("name", [&]{ return domCorpus_->get(I.FriendSymbol).get("name"); });
+                    io.defer("symbol", [&]{ return domCorpus_->get(I.FriendSymbol); });
+                }
+                else if (I.FriendType)
+                {
+                    io.defer("name", [&]{ return domCreate(I.FriendType, *domCorpus_).get("name"); });
+                    io.defer("type", [&]{ return domCreate(I.FriendType, *domCorpus_); });
+                }
+            }
+            if constexpr (T::isAlias())
+            {
+                MRDOCS_ASSERT(I.AliasedSymbol);
+                io.defer("aliasedSymbol", [&]{ return domCreate(I.AliasedSymbol, *domCorpus_); });
+            }
+            if constexpr (T::isUsing())
+            {
+                io.map("class", I.Class);
+                io.defer("shadows", [&]{ return dom::newArray<DomSymbolArray>(I.UsingSymbols, *domCorpus_); });
+                io.defer("qualifier", [&]{ return domCreate(I.Qualifier, *domCorpus_); });
+            }
+            if constexpr (T::isEnumerator())
+            {
+                if (!I.Initializer.Written.empty())
+                {
+                    io.map("initializer", I.Initializer.Written);
+                }
+            }
+            if constexpr (T::isGuide())
+            {
+                io.defer("params", [&]{ return dom::newArray<DomParamArray>(I.Params, *domCorpus_); });
+                io.defer("deduced", [&]{ return domCreate(I.Deduced, *domCorpus_); });
+                io.defer("template", [&]{ return domCreate(I.Template, *domCorpus_); });
+                io.defer("explicitSpec", [&]{ return toString(I.Explicit); });
+            }
+            if constexpr (T::isConcept())
+            {
+                io.defer("template", [&]{ return domCreate(I.Template, *domCorpus_); });
+                if (!I.Constraint.Written.empty())
+                {
+                    io.map("constraint", I.Constraint.Written);
+                }
+            }
+        }
+    };
+}
+
 dom::Object
 DomCorpus::
 construct(Info const& I) const
@@ -1015,7 +991,7 @@ construct(Info const& I) const
     return visit(I,
         [&]<class T>(T const& I)
         {
-            return dom::newObject<DomInfo<T>>(I, *this);
+            return dom::newObject<dom::LazyObjectImpl<T>>(I, dom::MappingTraits<T>(*this));
         });
 }
 

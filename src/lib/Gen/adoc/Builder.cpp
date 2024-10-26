@@ -11,7 +11,7 @@
 #include "Builder.hpp"
 #include "lib/Support/Radix.hpp"
 #include <lib/Lib/ConfigImpl.hpp>
-#include <mrdocs/Metadata/DomMetadata.hpp>
+#include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>

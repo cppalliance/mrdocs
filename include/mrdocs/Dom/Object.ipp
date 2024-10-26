@@ -124,7 +124,7 @@ void Object::visit(F&& fn) const
 template <class F>
 requires
     std::invocable<F, String, Value> &&
-    detail::isExpected<std::invoke_result_t<F, String, Value>>
+    mrdocs::detail::isExpected<std::invoke_result_t<F, String, Value>>
 Expected<void, typename std::invoke_result_t<F, String, Value>::error_type>
 Object::visit(F&& fn) const
 {
