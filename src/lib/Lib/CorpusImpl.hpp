@@ -79,7 +79,6 @@ public:
         instance will be already populated. They will
         not need to call this function directly.
 
-        @param reportLevel Error reporting level.
         @param config A shared pointer to the configuration.
         @param compilations A compilations database for the input files.
     */
@@ -88,7 +87,6 @@ public:
     static
     mrdocs::Expected<std::unique_ptr<Corpus>>
     build(
-        report::Level reportLevel,
         std::shared_ptr<ConfigImpl const> const& config,
         tooling::CompilationDatabase const& compilations);
 
