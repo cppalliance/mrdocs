@@ -101,7 +101,6 @@ format_duration(
 mrdocs::Expected<std::unique_ptr<Corpus>>
 CorpusImpl::
 build(
-    report::Level reportLevel,
     std::shared_ptr<ConfigImpl const> const& config,
     tooling::CompilationDatabase const& compilations)
 {
@@ -159,7 +158,7 @@ build(
     // ------------------------------------------
     // Traverse the AST for all translation units.
     // This operation happens on a thread pool.
-    report::print(reportLevel, "Extracting declarations");
+    report::info("Extracting declarations");
 
     // Get a copy of the filename strings
     std::vector<std::string> files = compilations.getAllFiles();
@@ -187,15 +186,14 @@ build(
             taskGroup.async(
             [&, idx = ++index, path = std::move(file)]()
             {
-                report::log(reportLevel,
-                    "[{}/{}] \"{}\"", idx, files.size(), path);
+                report::debug("[{}/{}] \"{}\"", idx, files.size(), path);
                 processFile(path);
             });
         }
         errors = taskGroup.wait();
     }
     // Print diagnostics totals
-    context.reportEnd(reportLevel);
+    context.reportEnd(report::Level::info);
 
     // ------------------------------------------
     // Report warning and error totals
@@ -216,7 +214,7 @@ build(
         return Unexpected(results.error());
     corpus->info_ = std::move(results.value());
 
-    report::log(reportLevel,
+    report::info(
         "Extracted {} declarations in {}",
         corpus->info_.size(),
         format_duration(clock_type::now() - start_time));
