@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_DOM_MAPPING_TRAITS_HPP
-#define MRDOCS_API_DOM_MAPPING_TRAITS_HPP
+#ifndef MRDOCS_LIB_DOM_LAZY_OBJECT_HPP
+#define MRDOCS_LIB_DOM_LAZY_OBJECT_HPP
 
 #include "mrdocs/Dom.hpp"
 #include "mrdocs/Platform.hpp"
