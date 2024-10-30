@@ -302,7 +302,7 @@ def generate_public_settings_hpp(config):
         contents += ',\n'
         contents += f'            {cpp_type}'
     contents += f'> {to_camel_case("default")}Value = std::monostate();\n'
-    contents += f'        std::string {to_camel_case("relativeto")};\n'
+    contents += f'        std::string {to_camel_case("relativeto")} = {{}};\n'
     contents += '    };\n\n'
 
     contents += '    /** Normalize the configuration values with a visitor\n'
