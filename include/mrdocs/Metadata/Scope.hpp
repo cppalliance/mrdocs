@@ -32,13 +32,14 @@ namespace mrdocs {
 */
 struct ScopeInfo
 {
-	/** The members of this scope.
-	*/
-	std::vector<SymbolID> Members;
+    /** The members of this scope.
+    */
+    std::vector<SymbolID> Members;
 
-	/** The lookup table for this scope.
-	*/
-	std::unordered_map<std::string,
+    /** The lookup table for this scope.
+    */
+    std::unordered_map<
+        std::string,
         std::vector<SymbolID>> Lookups;
 };
 
