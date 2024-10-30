@@ -72,27 +72,19 @@ concept HasMappingTraits = requires(detail::ArchetypalIO& io, T const& o)
 //
 //------------------------------------------------
 
-/** Abstract lazy object interface.
+/** Lazy object implementation.
 
     This interface is used to define objects
     whose members are evaluated on demand
     as they are accessed.
 
-    The subclass must override the `construct`
-    function to return the constructed object.
-    It will typically also store whatever
-    data is necessary to construct this object.
+    When any of the object properties are accessed,
+    the object Value is constructed.
+    In practice, the object never takes any memory
+    besides the pointer to the underlying object.
 
-    When any of the object properties are accessed
-    for the first time, the object is constructed.
-    This can happen via any of the public functions,
-    such as `get`, `set`, `size`, `exists`, or `visit`.
-
-    The underlying object storage is only
-    initialized when the first property is
-    set or accessed. In practice, it means
-    the object is never initialized if it's
-    not used in a template.
+    The keys and values in the underlying object
+    should be mapped using the MappingTraits<T> class.
 
     This class is typically useful for
     implementing objects that are expensive
