@@ -194,8 +194,7 @@ struct LazyObject_test
             obj.set("x", 789);
             std::size_t count = 0;
             bool found = false;
-            bool match = true;
-            obj.visit([&count, &match, &found](String key, Value value) {
+            obj.visit([&count, &found](String key, Value value) {
                 if (key == "x" && value == 789)
                     found = true;
                 ++count;
