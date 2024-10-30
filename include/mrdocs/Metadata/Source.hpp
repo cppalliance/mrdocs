@@ -36,6 +36,15 @@ MRDOCS_DECL
 std::string_view
 toString(FileKind kind);
 
+namespace dom {
+    template <>
+    struct ToValue<FileKind>
+    {
+        std::string_view
+        operator()(FileKind id) const;
+    };
+}
+
 struct MRDOCS_DECL
     Location
 {
@@ -76,6 +85,15 @@ struct MRDOCS_DECL
     }
 };
 
+namespace dom {
+    template <>
+    struct ToValue<Location>
+    {
+        dom::Object
+        operator()(Location const& loc) const;
+    };
+}
+
 struct LocationEmptyPredicate
 {
     constexpr bool operator()(
@@ -112,6 +130,15 @@ struct MRDOCS_DECL
 protected:
     SourceInfo() = default;
 };
+
+namespace dom {
+    template <>
+    struct ToValue<SourceInfo>
+    {
+        dom::Object
+        operator()(SourceInfo const& info) const;
+    };
+}
 
 } // mrdocs
 } // clang

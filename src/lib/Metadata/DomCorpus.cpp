@@ -5,6 +5,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -12,6 +13,7 @@
 #include "lib/Support/Radix.hpp"
 #include "lib/Support/LegibleNames.hpp"
 #include "lib/Dom/LazyObject.hpp"
+#include "lib/Dom/LazyArray.hpp"
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <memory>
@@ -29,241 +31,55 @@ namespace {
 //
 //------------------------------------------------
 
-dom::Value
-domCreate(
-    std::unique_ptr<Javadoc> const& jd,
+/* Get overloads for a scope
+
+    This function takes a type derived from ScopeInfo,
+    such as Namespace or Record, and returns a vector
+    of overloads in this scope using the DomCorpus
+    to resolve the SymbolIDs in this scope.
+
+    If the symbol in the scope has an ID, the ID
+    is included in the result.
+    Otherwise, the symbol is an OverloadSet, and
+    the OverloadSet is included.
+
+    Unfortunately, this information is not readily
+    available in the Corpus, so we can't have lazy
+    references to them.
+    Instead, we need to traverse the overloads and
+    generate the data whenever the information
+    is requested.
+ */
+template <std::derived_from<ScopeInfo> ScopeInfoTy>
+dom::Array
+generateScopeOverloadsArray(
+    ScopeInfoTy const& I,
     DomCorpus const& domCorpus)
 {
-    if(!jd)
-        return nullptr;
-    return domCorpus.getJavadoc(*jd);
-}
-
-/* A Lazy DOM Array type that replaces symbol IDs with their
-   corresponding DOM objects.
-*/
-class DomSymbolArray : public dom::ArrayImpl
-{
-    std::span<const SymbolID> list_;
-    DomCorpus const& domCorpus_;
-
-public:
-    DomSymbolArray(
-        std::span<const SymbolID> list,
-        DomCorpus const& domCorpus) noexcept
-        : list_(list)
-        , domCorpus_(domCorpus)
+    dom::Array res;
+    domCorpus->traverseOverloads(I,
+        [&](const auto& C)
     {
-    }
-
-    std::size_t size() const noexcept override
-    {
-        return list_.size();
-    }
-
-    dom::Value get(std::size_t i) const override
-    {
-        if (i < list_.size())
+        if constexpr(requires { C.id; })
         {
-            return domCorpus_.get(list_[i]);
+            res.push_back(domCorpus.get(C.id));
         }
-        return dom::Value{};
-    }
-};
-
-//------------------------------------------------
-
-dom::Object
-domCreate(
-    OverloadSet const& overloads,
-    DomCorpus const& domCorpus)
-{
-    return dom::Object({
-        { "kind",       "overload"},
-        { "name",       overloads.Name },
-        { "members",    dom::newArray<DomSymbolArray>(
-            overloads.Members, domCorpus) },
-        { "namespace",  dom::newArray<DomSymbolArray>(
-            overloads.Namespace, domCorpus) },
-        { "parent",     domCorpus.get(overloads.Parent) }
-        });
-}
-
-class DomOverloadsArray : public dom::ArrayImpl
-{
-    std::vector<std::variant<
-        SymbolID, OverloadSet>> overloads_;
-
-    DomCorpus const& domCorpus_;
-
-public:
-    template<std::derived_from<ScopeInfo> ScopeInfoTy>
-    DomOverloadsArray(
-        const ScopeInfoTy& I,
-        DomCorpus const& domCorpus) noexcept
-        : domCorpus_(domCorpus)
-    {
-        overloads_.reserve(I.Lookups.size());
-        domCorpus_->traverseOverloads(I,
-            [&](const auto& C)
+        else
         {
-            if constexpr(requires { C.id; })
-                overloads_.emplace_back(C.id);
-            else
-                overloads_.emplace_back(C);
-        });
-    }
-
-    std::size_t size() const noexcept override
-    {
-        return overloads_.size();
-    }
-
-    dom::Value get(std::size_t index) const override
-    {
-        MRDOCS_ASSERT(index < size());
-        const auto& member = overloads_[index];
-        if(auto* id = std::get_if<SymbolID>(&member))
-            return domCorpus_.get(*id);
-        return domCorpus_.getOverloads(
-            std::get<OverloadSet>(member));
-    }
-};
-
-//------------------------------------------------
-//
-// Location
-// SourceInfo
-//
-//------------------------------------------------
-
-dom::Object
-domCreate(Location const& loc)
-{
-    return dom::Object({
-        { "path",       loc.Path },
-        { "file",       loc.Filename },
-        { "line",       loc.LineNumber },
-        { "kind",       toString(loc.Kind) },
-        { "documented", loc.Documented }
-        });
-}
-
-class DomLocationArray : public dom::ArrayImpl
-{
-    std::vector<Location> const& list_;
-
-public:
-    explicit
-    DomLocationArray(
-        std::vector<Location> const& list) noexcept
-        : list_(list)
-    {
-    }
-
-    std::size_t size() const noexcept override
-    {
-        return list_.size();
-    }
-
-    dom::Value get(std::size_t i) const override
-    {
-        MRDOCS_ASSERT(i < list_.size());
-        return domCreate(list_[i]);
-    }
-};
-
-dom::Object
-domCreate(SourceInfo const& I)
-{
-    dom::Object::storage_type entries;
-    if(I.DefLoc)
-        entries.emplace_back("def", domCreate(*I.DefLoc));
-    if(! I.Loc.empty())
-        entries.emplace_back("decl", dom::newArray<DomLocationArray>(I.Loc));
-    return dom::Object(std::move(entries));
+            res.push_back(domCorpus.getOverloads(C));
+        }
+    });
+    return res;
 }
 
 //------------------------------------------------
 //
-// TypeInfo
+// domCreate
 //
 //------------------------------------------------
 
 static dom::Value domCreate(
     std::unique_ptr<TypeInfo> const&, DomCorpus const&);
-
-class DomTypeInfoArray : public dom::ArrayImpl
-{
-    std::vector<std::unique_ptr<TypeInfo>> const& list_;
-    DomCorpus const& domCorpus_;
-
-public:
-    DomTypeInfoArray(
-        std::vector<std::unique_ptr<TypeInfo>> const& list,
-        DomCorpus const& domCorpus) noexcept
-        : list_(list)
-        , domCorpus_(domCorpus)
-    {
-    }
-
-    std::size_t size() const noexcept override
-    {
-        return list_.size();
-    }
-
-    dom::Value get(std::size_t i) const override
-    {
-        MRDOCS_ASSERT(i < list_.size());
-        return domCreate(list_[i], domCorpus_);
-    }
-};
-
-//------------------------------------------------
-//
-// Param
-//
-//------------------------------------------------
-
-/** An array of function parameters
-*/
-class DomParamArray : public dom::ArrayImpl
-{
-    std::vector<Param> const& list_;
-    DomCorpus const& domCorpus_;
-
-public:
-    DomParamArray(
-        std::vector<Param> const& list,
-        DomCorpus const& domCorpus) noexcept
-        : list_(list)
-        , domCorpus_(domCorpus)
-    {
-    }
-
-    std::size_t size() const noexcept override
-    {
-        return list_.size();
-    }
-
-    dom::Value get(std::size_t i) const override
-    {
-        MRDOCS_ASSERT(i < list_.size());
-        auto const& I = list_[i];
-        return dom::Object({
-            { "name", dom::stringOrNull(I.Name) },
-            { "type", domCreate(I.Type, domCorpus_) },
-            { "default", dom::stringOrNull(I.Default) }
-            });
-    }
-};
-
-//------------------------------------------------
-//
-// TemplateInfo
-//
-//------------------------------------------------
-
 static dom::Value domCreate(
     std::unique_ptr<TArg> const&, DomCorpus const&);
 static dom::Value domCreate(
@@ -272,65 +88,6 @@ static dom::Value domCreate(
     std::unique_ptr<TemplateInfo> const& I, DomCorpus const&);
 static dom::Value domCreate(
     std::unique_ptr<NameInfo> const& I, DomCorpus const&);
-
-//------------------------------------------------
-
-/** An array of template arguments
-*/
-class DomTArgArray : public dom::ArrayImpl
-{
-    std::vector<std::unique_ptr<TArg>> const& list_;
-    DomCorpus const& domCorpus_;
-
-public:
-    DomTArgArray(
-        std::vector<std::unique_ptr<TArg>> const& list,
-        DomCorpus const& domCorpus) noexcept
-        : list_(list)
-        , domCorpus_(domCorpus)
-    {
-    }
-
-    std::size_t size() const noexcept override
-    {
-        return list_.size();
-    }
-
-    dom::Value get(std::size_t i) const override
-    {
-        MRDOCS_ASSERT(i < list_.size());
-        return domCreate(list_[i], domCorpus_);
-    }
-};
-
-/** An array of template parameters
-*/
-class DomTParamArray : public dom::ArrayImpl
-{
-    std::vector<std::unique_ptr<TParam>> const& list_;
-    DomCorpus const& domCorpus_;
-
-public:
-    DomTParamArray(
-        std::vector<std::unique_ptr<TParam>> const& list,
-        DomCorpus const& domCorpus) noexcept
-        : list_(list)
-        , domCorpus_(domCorpus)
-    {
-    }
-
-    std::size_t size() const noexcept override
-    {
-        return list_.size();
-    }
-
-    dom::Value get(std::size_t i) const override
-    {
-        return domCreate(list_[i], domCorpus_);
-    }
-};
-
-//------------------------------------------------
 
 static
 dom::Value
@@ -402,8 +159,10 @@ domCreate(
             if constexpr(T::isTemplate())
             {
                 entries.emplace_back("params",
-                    dom::newArray<DomTParamArray>(
-                        t.Params, domCorpus));
+                    dom::LazyArray(t.Params, [&](std::unique_ptr<TParam> const& I)
+                    {
+                        return domCreate(I, domCorpus);
+                    }));
             }
         });
     return dom::Object(std::move(entries));
@@ -420,8 +179,14 @@ domCreate(
     return dom::Object({
         { "kind", toString(I->specializationKind()) },
         { "primary", domCorpus.get(I->Primary) },
-        { "params", dom::newArray<DomTParamArray>( I->Params, domCorpus) },
-        { "args", dom::newArray<DomTArgArray>(I->Args, domCorpus) },
+        { "params", dom::LazyArray(I->Params, [&](std::unique_ptr<TParam> const& I)
+            {
+                return domCreate(I, domCorpus);
+            }) },
+        { "args", dom::LazyArray(I->Args, [&](std::unique_ptr<TArg> const& I)
+            {
+                return domCreate(I, domCorpus);
+            }) },
         { "requires", dom::stringOrNull(I->Requires.Written) }
         });
 }
@@ -446,8 +211,10 @@ domCreate(
 
         if constexpr(requires { t.TemplateArgs; })
             entries.emplace_back("args",
-                dom::newArray<DomTArgArray>(t.TemplateArgs, domCorpus));
-
+                dom::LazyArray(t.TemplateArgs, [&](std::unique_ptr<TArg> const& I)
+                {
+                    return domCreate(I, domCorpus);
+                }));
         entries.emplace_back("prefix", domCreate(t.Prefix, domCorpus));
     });
     return dom::Object(std::move(entries));
@@ -505,13 +272,15 @@ domCreate(
             entries.emplace_back("bounds-expr",
                 t.Bounds.Written);
         }
-
         if constexpr(T::isFunction())
         {
             entries.emplace_back("return-type",
                 domCreate(t.ReturnType, domCorpus));
             entries.emplace_back("param-types",
-                dom::newArray<DomTypeInfoArray>(t.ParamTypes, domCorpus));
+                dom::LazyArray(t.ParamTypes, [&](std::unique_ptr<TypeInfo> const& I)
+                {
+                    return domCreate(I, domCorpus);
+                }));
             entries.emplace_back("exception-spec",
                 toString(t.ExceptionSpec));
             entries.emplace_back("ref-qualifier",
@@ -524,42 +293,6 @@ domCreate(
 
 //------------------------------------------------
 //
-// BaseInfo
-//
-//------------------------------------------------
-
-class DomBaseArray : public dom::ArrayImpl
-{
-    std::vector<BaseInfo> const& list_;
-    DomCorpus const& domCorpus_;
-
-public:
-    DomBaseArray(
-        std::vector<BaseInfo> const& list,
-        DomCorpus const& domCorpus) noexcept
-        : list_(list)
-        , domCorpus_(domCorpus)
-    {
-    }
-
-    std::size_t size() const noexcept override
-    {
-        return list_.size();
-    }
-
-    dom::Value get(std::size_t i) const override
-    {
-        auto const& I = list_[i];
-        return dom::Object({
-            { "access", toString(I.Access) },
-            { "isVirtual", I.IsVirtual },
-            { "type", domCreate(I.Type, domCorpus_) }
-            });
-    }
-};
-
-//------------------------------------------------
-//
 // Interface
 //
 //------------------------------------------------
@@ -567,7 +300,6 @@ public:
 class DomTranche : public dom::DefaultObjectImpl
 {
     std::shared_ptr<Tranche> tranche_;
-    DomCorpus const& domCorpus_;
 
     static
     dom::Value
@@ -575,7 +307,10 @@ class DomTranche : public dom::DefaultObjectImpl
         std::span<const SymbolID> list,
         DomCorpus const& domCorpus)
     {
-        return dom::newArray<DomSymbolArray>(list, domCorpus);
+        return dom::LazyArray(list, [&](SymbolID const& id)
+            {
+                return domCorpus.get(id);
+            });
     }
 
     static
@@ -584,7 +319,7 @@ class DomTranche : public dom::DefaultObjectImpl
         const ScopeInfo& scope,
         DomCorpus const& domCorpus)
     {
-        return dom::newArray<DomOverloadsArray>(scope, domCorpus);
+        return generateScopeOverloadsArray(scope, domCorpus);
     }
 
 public:
@@ -601,7 +336,6 @@ public:
             { "staticoverloads",  init(tranche->StaticOverloads, domCorpus) },
             })
         , tranche_(tranche)
-        , domCorpus_(domCorpus)
     {
     }
 };
@@ -773,6 +507,48 @@ namespace dom {
         {
         }
 
+        /* Resolve types that use SymbolIDs to the corresponding Info object
+         */
+        template <class U>
+        Value
+        resolve(U const& I) const
+        {
+            if constexpr (std::same_as<U, SymbolID>)
+            {
+                return domCorpus_->get(I);
+            }
+            else if constexpr (std::same_as<Javadoc, U>)
+            {
+                return domCorpus_->getJavadoc(I);
+            }
+            else if constexpr (
+                std::ranges::range<U> &&
+                std::same_as<std::ranges::range_value_t<U>, SymbolID>)
+            {
+                return dom::LazyArray(I, [this](SymbolID const& id)
+                    {
+                        return domCorpus_->get(id);
+                    });
+            }
+            else if constexpr (
+                std::ranges::range<U> &&
+                std::same_as<std::ranges::range_value_t<U>, Param>)
+            {
+                return dom::LazyArray(I, [&](Param const& p)
+                    {
+                        return dom::Object({
+                            { "name", dom::stringOrNull(p.Name) },
+                            { "type", domCreate(p.Type, *domCorpus_) },
+                            { "default", dom::stringOrNull(p.Default) }
+                        });
+                    });
+            }
+            else
+            {
+                MRDOCS_UNREACHABLE();
+            }
+        }
+
         template <class IO>
         void
         map(IO &io, T const& I) const
@@ -786,51 +562,78 @@ namespace dom {
             io.map("kind", I.Kind);
             io.map("access", I.Access);
             io.map("implicit", I.Implicit);
-            io.defer("namespace", [&]{ return dom::newArray<DomSymbolArray>(I.Namespace, *domCorpus_); });
-            io.defer("doc", [&]{ return domCreate(I.javadoc, *domCorpus_); });
+            io.defer("namespace", [&]{
+                return resolve(I.Namespace);
+            });
             if (!I.Namespace.empty())
             {
-                io.defer("parent", [&]{ return domCorpus_->get(I.Namespace.front()); });
+                io.defer("parent",[&]{
+                    return resolve(I.Namespace.front());
+                });
+            }
+            if (I.javadoc)
+            {
+                io.defer("doc",[&]{
+                    return resolve(*I.javadoc);
+                });
             }
             if constexpr(std::derived_from<T, ScopeInfo>)
             {
-                io.defer("members", [&]{ return dom::newArray<DomSymbolArray>(I.Members, *domCorpus_); });
-                io.defer("overloads", [&]{ return dom::newArray<DomOverloadsArray>(I, *domCorpus_); });
+                io.defer("members", [&]{
+                    return resolve(I.Members);
+                });
+                io.defer("overloads",[&]{
+                    return generateScopeOverloadsArray(I, *domCorpus_);
+                });
             }
             if constexpr(std::derived_from<T, SourceInfo>)
             {
-                io.defer("loc", [&]{ return domCreate(I); });
+                io.map("loc", static_cast<SourceInfo const&>(I));
             }
             if constexpr(T::isNamespace())
             {
-                io.defer("interface", [&]{ return dom::newObject<DomTranche>(
-                    std::make_shared<Tranche>(
-                        makeTranche(I, **domCorpus_)),
-                    *domCorpus_); });
-                io.defer("usingDirectives", [&]{ return dom::newArray<DomSymbolArray>(
-                    I.UsingDirectives, *domCorpus_); });
+                io.defer("interface", [&]{
+                    return dom::newObject<DomTranche>(
+                        std::make_shared<Tranche>(
+                            makeTranche(I, **domCorpus_)),
+                        *domCorpus_);
+                });
+                io.defer("usingDirectives", [&]{
+                    return resolve(I.UsingDirectives);
+                });
             }
             if constexpr (T::isRecord())
             {
                 io.map("tag", I.KeyKind);
-                io.defer("defaultAccess", [&]{ return getDefaultAccess(I); });
+                io.defer("defaultAccess", [&]{
+                    return getDefaultAccess(I);
+                });
                 io.map("isTypedef", I.IsTypeDef);
-                io.defer("bases", [&]{ return dom::newArray<DomBaseArray>(I.Bases, *domCorpus_); });
+                io.map("bases", dom::LazyArray(I.Bases, [&](BaseInfo const& I)
+                    {
+                        return dom::Object({
+                            { "access", toString(I.Access) },
+                            { "isVirtual", I.IsVirtual },
+                            { "type", domCreate(I.Type, *domCorpus_) }
+                        });
+                    }));
                 io.defer("interface", [&]{
                     auto sp = std::make_shared<Interface>(makeInterface(I, domCorpus_->getCorpus()));
                     return dom::Object({
                         { "public", dom::newObject<DomTranche>(sp->Public, *domCorpus_) },
                         { "protected", dom::newObject<DomTranche>(sp->Protected, *domCorpus_) },
-                        { "private", dom::newObject<DomTranche>(sp->Private, *domCorpus_) },
-                        // { "overloads", dom::newArray<DomOverloadsArray>(sp->Overloads, *domCorpus_) },
-                        // { "static-overloads", dom::newArray<DomOverloadsArray>(sp->StaticOverloads, *domCorpus_) }
+                        { "private", dom::newObject<DomTranche>(sp->Private, *domCorpus_) }
                     });
                 });
-                io.defer("template", [&]{ return domCreate(I.Template, *domCorpus_); });
+                io.defer("template", [&]{
+                    return domCreate(I.Template, *domCorpus_);
+                });
             }
             if constexpr (T::isEnum())
             {
-                io.defer("type", [&]{ return domCreate(I.UnderlyingType, *domCorpus_); });
+                io.defer("type", [&]{
+                    return domCreate(I.UnderlyingType, *domCorpus_);
+                });
                 io.map("isScoped", I.Scoped);
             }
             if constexpr (T::isFunction())
@@ -864,7 +667,7 @@ namespace dom {
                     io.map("refQualifier", I.RefQualifier);
                 }
                 io.map("class", I.Class);
-                io.defer("params", [&]{ return dom::newArray<DomParamArray>(I.Params, *domCorpus_); });
+                io.defer("params", [&]{ return resolve(I.Params); });
                 io.defer("return", [&]{ return domCreate(I.ReturnType, *domCorpus_); });
                 io.defer("template", [&]{ return domCreate(I.Template, *domCorpus_); });
                 io.map("overloadedOperator", I.OverloadedOperator);
@@ -877,14 +680,22 @@ namespace dom {
             }
             if constexpr (T::isTypedef())
             {
-                io.defer("type", [&]{ return domCreate(I.Type, *domCorpus_); });
-                io.defer("template", [&]{ return domCreate(I.Template, *domCorpus_); });
+                io.defer("type", [&]{
+                    return domCreate(I.Type, *domCorpus_);
+                });
+                io.defer("template", [&]{
+                    return domCreate(I.Template, *domCorpus_);
+                });
                 io.map("isUsing", I.IsUsing);
             }
             if constexpr (T::isVariable())
             {
-                io.defer("type", [&]{ return domCreate(I.Type, *domCorpus_); });
-                io.defer("template", [&]{ return domCreate(I.Template, *domCorpus_); });
+                io.defer("type", [&]{
+                    return domCreate(I.Type, *domCorpus_);
+                });
+                io.defer("template", [&]{
+                    return domCreate(I.Template, *domCorpus_);
+                });
                 if (I.Constexpr != ConstexprKind::None)
                 {
                     io.map("constexprKind", I.Constexpr);
@@ -902,7 +713,9 @@ namespace dom {
             }
             if constexpr (T::isField())
             {
-                io.defer("type", [&]{ return domCreate(I.Type, *domCorpus_); });
+                io.defer("type", [&]{
+                    return domCreate(I.Type, *domCorpus_);
+                });
                 if (!I.Default.Written.empty())
                 {
                     io.map("default", I.Default.Written);
@@ -924,25 +737,39 @@ namespace dom {
             {
                 if (I.FriendSymbol)
                 {
-                    io.defer("name", [&]{ return domCorpus_->get(I.FriendSymbol).get("name"); });
-                    io.defer("symbol", [&]{ return domCorpus_->get(I.FriendSymbol); });
+                    io.defer("name", [&]{
+                        return domCorpus_->get(I.FriendSymbol).get("name");
+                    });
+                    io.defer("symbol", [&]{
+                        return domCorpus_->get(I.FriendSymbol);
+                    });
                 }
                 else if (I.FriendType)
                 {
-                    io.defer("name", [&]{ return domCreate(I.FriendType, *domCorpus_).get("name"); });
-                    io.defer("type", [&]{ return domCreate(I.FriendType, *domCorpus_); });
+                    io.defer("name", [&]{
+                        return domCreate(I.FriendType, *domCorpus_).get("name");
+                    });
+                    io.defer("type", [&]{
+                        return domCreate(I.FriendType, *domCorpus_);
+                    });
                 }
             }
             if constexpr (T::isAlias())
             {
                 MRDOCS_ASSERT(I.AliasedSymbol);
-                io.defer("aliasedSymbol", [&]{ return domCreate(I.AliasedSymbol, *domCorpus_); });
+                io.defer("aliasedSymbol", [&]{
+                    return domCreate(I.AliasedSymbol, *domCorpus_);
+                });
             }
             if constexpr (T::isUsing())
             {
                 io.map("class", I.Class);
-                io.defer("shadows", [&]{ return dom::newArray<DomSymbolArray>(I.UsingSymbols, *domCorpus_); });
-                io.defer("qualifier", [&]{ return domCreate(I.Qualifier, *domCorpus_); });
+                io.defer("shadows", [&]{
+                    return resolve(I.UsingSymbols);
+                });
+                io.defer("qualifier", [&]{
+                    return domCreate(I.Qualifier, *domCorpus_);
+                });
             }
             if constexpr (T::isEnumerator())
             {
@@ -953,14 +780,24 @@ namespace dom {
             }
             if constexpr (T::isGuide())
             {
-                io.defer("params", [&]{ return dom::newArray<DomParamArray>(I.Params, *domCorpus_); });
-                io.defer("deduced", [&]{ return domCreate(I.Deduced, *domCorpus_); });
-                io.defer("template", [&]{ return domCreate(I.Template, *domCorpus_); });
-                io.defer("explicitSpec", [&]{ return toString(I.Explicit); });
+                io.defer("params", [&]{
+                    return resolve(I.Params);
+                });
+                io.defer("deduced", [&]{
+                    return domCreate(I.Deduced, *domCorpus_);
+                });
+                io.defer("template", [&]{
+                    return domCreate(I.Template, *domCorpus_);
+                });
+                io.defer("explicitSpec", [&]{
+                    return toString(I.Explicit);
+                });
             }
             if constexpr (T::isConcept())
             {
-                io.defer("template", [&]{ return domCreate(I.Template, *domCorpus_); });
+                io.defer("template", [&]{
+                    return domCreate(I.Template, *domCorpus_);
+                });
                 if (!I.Constraint.Written.empty())
                 {
                     io.map("constraint", I.Constraint.Written);
@@ -1002,9 +839,19 @@ getJavadoc(
 dom::Object
 DomCorpus::
 getOverloads(
-    OverloadSet const& os) const
+    OverloadSet const& overloads) const
 {
-    return domCreate(os, *this);
+    auto resolveFn = [this](SymbolID const& id)
+    {
+        return this->get(id);
+    };
+    return dom::Object({
+        { "kind",       "overload"},
+        { "name",       overloads.Name },
+        { "members",    dom::LazyArray(overloads.Members, resolveFn) },
+        { "namespace",  dom::LazyArray(overloads.Namespace, resolveFn) },
+        { "parent",     this->get(overloads.Parent) }
+    });
 }
 
 } // mrdocs
