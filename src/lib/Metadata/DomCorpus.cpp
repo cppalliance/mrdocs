@@ -707,20 +707,6 @@ getCorpus() const
     return impl_->getCorpus();
 }
 
-Corpus const&
-DomCorpus::
-operator*() const
-{
-    return getCorpus();
-}
-
-Corpus const*
-DomCorpus::
-operator->() const
-{
-    return &getCorpus();
-}
-
 namespace dom {
     /* Determine if a type has a mrdocs::toString overload
      */
