@@ -62,11 +62,17 @@ public:
 
     /** Returns the Corpus associated with the Dom.
     */
-    Corpus const& operator*() const;
+    Corpus const& operator*() const
+    {
+        return getCorpus();
+    }
 
     /** Returns the Corpus associated with the Dom.
     */
-    Corpus const* operator->() const;
+    Corpus const* operator->() const
+    {
+        return &getCorpus();
+    }
 
     /** Construct a lazy Dom object representing the specified symbol.
 
