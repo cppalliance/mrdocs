@@ -75,7 +75,8 @@ class TrancheBuilder
         std::vector<SymbolID>& M,
         const Info& I)
     {
-        M.emplace_back(I.id);
+        if(std::ranges::find(M, I.id) == M.end())
+            M.emplace_back(I.id);
     }
 
     template<typename ListTy>
