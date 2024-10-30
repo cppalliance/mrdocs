@@ -29,6 +29,18 @@ namespace mrdocs {
     class are the symbols and functions declared
     in the class.
 
+    The Lookups are the symbols that are accessible
+    from the scope of the Info. For instance, the
+    Lookups["foo"] of a namespace are the symbols
+    declared as "foo" in the namespace.
+
+    This Info class can be used as a base class
+    for other Info classes, such as NamespaceInfo,
+    ClassInfo, that represent scopes. This class
+    can also be used with composition, such as in
+    @ref Interface to represent different scopes of
+    the same class (such as member and static overloads).
+
 */
 struct ScopeInfo
 {
