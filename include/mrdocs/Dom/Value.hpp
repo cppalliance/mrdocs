@@ -580,7 +580,7 @@ stringOrNull(
 
     @note This type is empty; it has no members.
 
-    @see @ref dom::ValueFrom, @ref dom::ValueTo, @ref dom::ValueToTag,
+    @see @ref dom::ValueFrom
     <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p1895r0.pdf">
         tag_invoke: A general pattern for supporting customisable functions</a>
 */
@@ -693,7 +693,7 @@ concept HasStandaloneValueFrom =
 
     @param jv @ref dom::Value out parameter.
 
-    @see @ref dom::ValueFromTag, @ref dom::ValueTo,
+    @see @ref dom::ValueFromTag
     <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p1895r0.pdf">
         tag_invoke: A general pattern for supporting customisable functions</a>
 */
@@ -739,7 +739,7 @@ ValueFrom(
 
     @param jv @ref dom::Value out parameter.
 
-    @see @ref dom::ValueFromTag, @ref dom::ValueTo,
+    @see @ref dom::ValueFromTag
     <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p1895r0.pdf">
         tag_invoke: A general pattern for supporting customisable functions</a>
 */
@@ -786,7 +786,7 @@ ValueFrom(
 
     @return @ref dom::Value out parameter.
 
-    @see @ref dom::ValueFromTag, @ref dom::ValueTo,
+    @see @ref dom::ValueFromTag,
     <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p1895r0.pdf">
         tag_invoke: A general pattern for supporting customisable functions</a>
 */
