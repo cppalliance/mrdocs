@@ -441,45 +441,37 @@ getCorpus() const
     return impl_->getCorpus();
 }
 
+/* Determine if a type has a mrdocs::toString overload
+ */
+template <class T>
+concept HasMrDocsToString = requires(T u)
+{
+    { mrdocs::toString(u) } -> std::convertible_to<std::string_view>;
+};
+
+template <HasMrDocsToString T>
+requires std::is_enum_v<T>
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    T mrdocsEnum)
+{
+    v = toString(mrdocsEnum);
+}
+
+/* Convert SymbolID to strings in the DOM using toBase16
+ */
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    SymbolID const& id)
+{
+    v = toBase16(id);
+}
+
 namespace dom {
-    /* Determine if a type has a mrdocs::toString overload
-     */
-    template <class U>
-    concept HasMrDocsToString = requires(U u)
-    {
-        { mrdocs::toString(u) } -> std::convertible_to<std::string_view>;
-    };
-
-    /* Convert enum Values to strings using mrdocs::toString
-     */
-    template <HasMrDocsToString U>
-    requires std::is_enum_v<U>
-    struct ToValue<U>
-    {
-        std::string_view
-        operator()(U const& v) const
-        {
-            return mrdocs::toString(v);
-        }
-    };
-
-    static_assert(HasToValue<InfoKind>);
-    static_assert(HasToValue<AccessKind>);
-
-    /* Convert SymbolID to strings using toBase16
-     */
-    template <>
-    struct ToValue<SymbolID>
-    {
-        std::string
-        operator()(SymbolID const& id) const
-        {
-            return toBase16(id);
-        }
-    };
-
-    static_assert(HasToValue<SymbolID>);
-
     /* Mapping Traits for an Info type
 
        These traits map an Info type to a DOM object.

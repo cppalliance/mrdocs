@@ -33,12 +33,6 @@ toString(FileKind kind)
 }
 
 namespace dom {
-    std::string_view
-    ToValue<FileKind>::operator()(FileKind kind) const
-    {
-        return toString(kind);
-    }
-
     template<>
     struct MappingTraits<Location>
     {
@@ -53,11 +47,6 @@ namespace dom {
         }
     };
 
-    dom::Object
-    ToValue<Location>::operator()(Location const& loc) const
-    {
-        return dom::newObject<LazyObjectImpl<Location>>(loc);
-    }
 
     template<>
     struct MappingTraits<SourceInfo>
@@ -76,11 +65,24 @@ namespace dom {
         }
     };
 
-    dom::Object
-    ToValue<SourceInfo>::operator()(SourceInfo const& loc) const
-    {
-        return dom::newObject<LazyObjectImpl<SourceInfo>>(loc);
-    }
+}
+
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Location const& loc)
+{
+    v = dom::newObject<dom::LazyObjectImpl<Location>>(loc);
+}
+
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    SourceInfo const& I)
+{
+    v = dom::newObject<dom::LazyObjectImpl<SourceInfo>>(I);
 }
 
 } // mrdocs

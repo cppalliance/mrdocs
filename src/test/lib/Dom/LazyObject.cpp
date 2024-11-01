@@ -20,14 +20,14 @@ struct Y {
     std::string b = "world";
 };
 
-template <>
-struct ToValue<Y> {
-    Value
-    operator()(Y const& y) const
-    {
-        return y.a + " " + y.b;
-    }
-};
+void
+tag_invoke(
+    ValueFromTag,
+    Value& v,
+    Y const& y)
+{
+    v = y.a + " " + y.b;
+}
 
 struct X {
     int i = 123;

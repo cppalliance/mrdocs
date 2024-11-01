@@ -62,7 +62,7 @@ namespace detail {
 template <std::ranges::random_access_range R, class F = detail::noop>
 requires
     std::invocable<F, std::ranges::range_value_t<R>> &&
-    std::constructible_from<Value, std::invoke_result_t<F, std::ranges::range_value_t<R>>>
+    HasStandaloneValueFrom<std::invoke_result_t<F, std::ranges::range_value_t<R>>>
 class LazyArrayImpl : public ArrayImpl
 {
     using const_iterator_t = decltype(std::ranges::cbegin(std::declval<R&>()));
@@ -110,7 +110,8 @@ public:
         return "LazyArray";
     }
 
-    std::size_t size() const noexcept override
+    std::size_t
+    size() const noexcept override
     {
         if constexpr (std::ranges::sized_range<R>)
         {
@@ -122,7 +123,8 @@ public:
         }
     }
 
-    dom::Value get(std::size_t i) const override
+    dom::Value
+    get(std::size_t i) const override
     {
         if (i >= size())
         {
@@ -132,11 +134,11 @@ public:
         std::ranges::advance(it, i);
         if constexpr (std::is_same_v<F, detail::noop>)
         {
-            return Value(*it);
+            return ValueFrom(*it);
         }
         else
         {
-            return Value(transform_(*it));
+            return ValueFrom(transform_(*it));
         }
     }
 };
@@ -144,7 +146,8 @@ public:
 /** Return a new dom::Array based on a lazy array implementation.
 */
 template <std::ranges::random_access_range T>
-requires std::constructible_from<Value, std::ranges::range_value_t<T>>
+requires
+    HasStandaloneValueFrom<std::ranges::range_value_t<T>>
 Array
 LazyArray(T const& arr)
 {
@@ -156,7 +159,7 @@ LazyArray(T const& arr)
 template <std::ranges::random_access_range T, class F>
 requires
     std::invocable<F, std::ranges::range_value_t<T>> &&
-    std::constructible_from<Value, std::invoke_result_t<F, std::ranges::range_value_t<T>>>
+    HasStandaloneValueFrom<std::invoke_result_t<F, std::ranges::range_value_t<T>>>
 Array
 LazyArray(T const& arr, F transform)
 {
