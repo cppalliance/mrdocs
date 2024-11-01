@@ -20,32 +20,9 @@ namespace clang {
 namespace mrdocs {
 namespace dom {
 
-/** Mapping traits to convert types into dom::Object.
-
-    This class should be specialized by any type that needs to be converted
-    to/from a @ref dom::Object.  For example:
-
-    @code
-    template<>
-    struct MappingTraits<MyStruct> {
-        template <class IO>
-        static void map(IO &io, MyStruct const& s)
-        {
-            io.map("name", s.name);
-            io.map("size", s.size);
-            io.map("age",  s.age);
-        }
-    };
-    @endcode
- */
-template<class T>
-struct MappingTraits {
-  // void map(dom::IO &io, T &fields) const;
-};
-
 namespace detail
 {
-    /** A class representing an archetypal IO object.
+    /* A class representing an archetypal IO object.
      */
     struct MRDOCS_DECL ArchetypalIO
     {
@@ -57,14 +34,90 @@ namespace detail
         void
         defer(std::string_view, F const&) const {}
     };
+
+    /* A helper empty struct
+     */
+    struct NoLazyObjectContext { };
 }
 
-/// Concept to determine if @ref MappingTraits is defined for a type T
-template <class T>
-concept HasMappingTraits = requires(detail::ArchetypalIO& io, T const& o)
+/** Customization point tag.
+
+    This tag type is used by the class
+    @ref dom::LazyObjectImpl to select overloads
+    of `tag_invoke`.
+
+    @note This type is empty; it has no members.
+
+    @see @ref dom::LazyObjectImpl
+    <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p1895r0.pdf">
+        tag_invoke: A general pattern for supporting customisable functions</a>
+*/
+struct LazyObjectMapTag { };
+
+/** Concept to determine if a type can be mapped to a
+    @ref dom::LazyObjectImpl with a user-provided conversion.
+
+    This concept determines if the user-provided conversion is
+    defined as:
+
+    @code
+    template <class IO>
+    void tag_invoke( LazyObjectMapTag, IO&, T& );
+    @endcode
+
+    This customization can be defined by any type that needs to be converted
+    to/from a lazy @ref dom::Object. For example:
+
+    @code
+    template <class IO>
+    void tag_invoke( LazyObjectMapTag, IO& io, MyStruct const& s)
+    {
+        io.map("name", s.name);
+        io.map("size", s.size);
+        io.map("age",  s.age);
+    }
+    @endcode
+
+ */
+template<class T>
+concept HasLazyObjectMapWithoutContext = requires(
+    detail::ArchetypalIO& io,
+    T const& t)
 {
-    { std::declval<MappingTraits<T>>().map(io, o) } -> std::same_as<void>;
+    { tag_invoke(LazyObjectMapTag{}, io, t) } -> std::same_as<void>;
 };
+
+/** Concept to determine if a type can be mapped to a
+    @ref dom::LazyObjectImpl with a user-provided conversion.
+
+    This concept determines if the user-provided conversion is
+    defined as:
+
+    @code
+    template <class IO>
+    void tag_invoke( LazyObjectMapTag, IO&, T,  Context const& );
+    @endcode
+ */
+template<class T, class Context>
+concept HasLazyObjectMapWithContext = requires(
+    detail::ArchetypalIO& io,
+    T const& t,
+    Context const& ctx)
+{
+    { tag_invoke(LazyObjectMapTag{}, io, t, ctx) } -> std::same_as<void>;
+};
+
+/** Determine if `T` can be converted to @ref dom::Value.
+
+    If `T` can be converted to @ref dom::Value via a
+    call to @ref dom::ValueFrom, the static data member `value`
+    is defined as `true`. Otherwise, `value` is
+    defined as `false`.
+*/
+template <class T, class Context>
+concept HasLazyObjectMap =
+    HasLazyObjectMapWithContext<T, Context> ||
+    HasLazyObjectMapWithoutContext<T>;
 
 //------------------------------------------------
 //
@@ -79,37 +132,54 @@ concept HasMappingTraits = requires(detail::ArchetypalIO& io, T const& o)
     as they are accessed.
 
     When any of the object properties are accessed,
-    the object Value is constructed.
+    the object @ref dom::Value is constructed.
     In practice, the object never takes any memory
     besides the pointer to the underlying object.
 
     The keys and values in the underlying object
-    should be mapped using the MappingTraits<T> class.
+    should be mapped using `tag_invoke`.
 
     This class is typically useful for
     implementing objects that are expensive
     and have recursive dependencies, as these
     recursive dependencies can also be deferred.
 
+    A context can also be stored in the object
+    as a form to customize how the object is
+    mapped. This context should be copyable
+    and is propagated to other objects that
+    support an overload with the same context.
+
+    The context can be simply a tag
+    identifying how to map the object, or
+    a more complex object carrying data
+    to customize the mapping process.
+
+    In the latter case, because the context
+    should be a copyable, the user might want
+    to use a type with reference semantics.
+
 */
-template <HasMappingTraits T>
+template <class T, class Context = detail::NoLazyObjectContext>
+requires HasLazyObjectMap<T, Context>
 class LazyObjectImpl : public ObjectImpl
 {
     T const* underlying_;
     Object overlay_;
-    [[no_unique_address]] MappingTraits<T> traits_{};
+    [[no_unique_address]] Context context_{};
 
 public:
     explicit
     LazyObjectImpl(T const& obj)
-        requires std::constructible_from<MappingTraits<T>>
+        requires HasLazyObjectMapWithoutContext<T>
         : underlying_(&obj)
-        , traits_{} {}
+        , context_{} {}
 
     explicit
-    LazyObjectImpl(T const& obj, MappingTraits<T> traits)
+    LazyObjectImpl(T const& obj, Context const& context)
+        requires HasLazyObjectMapWithContext<T, Context>
         : underlying_(&obj)
-        , traits_(std::move(traits)) {}
+        , context_(context) {}
 
     ~LazyObjectImpl() override = default;
 
@@ -199,9 +269,10 @@ namespace detail
     };
 }
 
-template <HasMappingTraits T>
+template <class T, class Context>
+requires HasLazyObjectMap<T, Context>
 std::size_t
-LazyObjectImpl<T>::
+LazyObjectImpl<T, Context>::
 size() const
 {
     std::size_t result;
@@ -210,13 +281,21 @@ size() const
         {
             result += !overlay_.exists(name);
         });
-    traits_.map(io, *underlying_);
+    if constexpr (HasLazyObjectMapWithContext<T, Context>)
+    {
+        tag_invoke(LazyObjectMapTag{}, io, *underlying_, context_);
+    }
+    else
+    {
+        tag_invoke(LazyObjectMapTag{}, io, *underlying_);
+    }
     return result + overlay_.size();
 }
 
-template <HasMappingTraits T>
+template <class T, class Context>
+requires HasLazyObjectMap<T, Context>
 bool
-LazyObjectImpl<T>::
+LazyObjectImpl<T, Context>::
 exists(std::string_view key) const
 {
     if (overlay_.exists(key))
@@ -232,14 +311,22 @@ exists(std::string_view key) const
             result = true;
         }
     });
-    traits_.map(io, *underlying_);
+    if constexpr (HasLazyObjectMapWithContext<T, Context>)
+    {
+        tag_invoke(LazyObjectMapTag{}, io, *underlying_, context_);
+    }
+    else
+    {
+        tag_invoke(LazyObjectMapTag{}, io, *underlying_);
+    }
     return result;
 }
 
 
-template <HasMappingTraits T>
+template <class T, class Context>
+requires HasLazyObjectMap<T, Context>
 Value
-LazyObjectImpl<T>::
+LazyObjectImpl<T, Context>::
 get(std::string_view key) const
 {
     if (overlay_.exists(key))
@@ -261,21 +348,30 @@ get(std::string_view key) const
                 ValueFrom(deferred(), result);
             }
         });
-    traits_.map(io, *underlying_);
+    if constexpr (HasLazyObjectMapWithContext<T, Context>)
+    {
+        tag_invoke(LazyObjectMapTag{}, io, *underlying_, context_);
+    }
+    else
+    {
+        tag_invoke(LazyObjectMapTag{}, io, *underlying_);
+    }
     return result;
 }
 
-template <HasMappingTraits T>
+template <class T, class Context>
+requires HasLazyObjectMap<T, Context>
 void
-LazyObjectImpl<T>::
+LazyObjectImpl<T, Context>::
 set(String key, Value value)
 {
     overlay_.set(std::move(key), std::move(value));
 }
 
-template <HasMappingTraits T>
+template <class T, class Context>
+requires HasLazyObjectMap<T, Context>
 bool
-LazyObjectImpl<T>::
+LazyObjectImpl<T, Context>::
 visit(std::function<bool(String, Value)> fn) const
 {
     bool visitMore = true;
@@ -293,10 +389,36 @@ visit(std::function<bool(String, Value)> fn) const
                 visitMore = fn(name, dom::ValueFrom(deferred()));
             }
         });
-    traits_.map(io, *underlying_);
+    if constexpr (HasLazyObjectMapWithContext<T, Context>)
+    {
+        tag_invoke(LazyObjectMapTag{}, io, *underlying_, context_);
+    }
+    else
+    {
+        tag_invoke(LazyObjectMapTag{}, io, *underlying_);
+    }
     return visitMore && overlay_.visit(fn);
 }
 
+
+/** Return a new dom::Object based on a lazy object implementation.
+*/
+template <HasLazyObjectMapWithoutContext T>
+Object
+LazyObject(T const& obj)
+{
+    return newObject<LazyObjectImpl<T>>(obj);
+}
+
+/** Return a new dom::Object based on a transformed lazy array implementation.
+*/
+template <class T, class Context>
+requires HasLazyObjectMap<T, Context>
+Object
+LazyObject(T const& arr, Context const& context)
+{
+    return newObject<LazyObjectImpl<T, Context>>(arr, context);
+}
 
 } // dom
 } // mrdocs

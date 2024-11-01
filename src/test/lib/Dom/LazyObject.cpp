@@ -35,18 +35,18 @@ struct X {
     Y y;
 };
 
-template<>
-struct MappingTraits<X>
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    IO& io,
+    X const& x)
 {
-    template <class IO>
-    void map(IO &io, X const& x) const
-    {
-        io.map("i", x.i);
-        io.map("s", x.s);
-        io.defer("si", [&x]{ return x.s + std::to_string(x.i); });
-        io.map("y", x.y);
-    }
-};
+    io.map("i", x.i);
+    io.map("s", x.s);
+    io.defer("si", [&x]{ return x.s + std::to_string(x.i); });
+    io.map("y", x.y);
+}
 
 struct LazyObject_test
 {

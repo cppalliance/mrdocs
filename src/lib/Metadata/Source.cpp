@@ -32,39 +32,18 @@ toString(FileKind kind)
     };
 }
 
-namespace dom {
-    template<>
-    struct MappingTraits<Location>
-    {
-        template <class IO>
-        void map(IO &io, Location const& loc) const
-        {
-            io.map("path", loc.Path);
-            io.map("file", loc.Filename);
-            io.map("line", loc.LineNumber);
-            io.map("kind", loc.Kind);
-            io.map("documented", loc.Documented);
-        }
-    };
-
-
-    template<>
-    struct MappingTraits<SourceInfo>
-    {
-        template <class IO>
-        void map(IO &io, SourceInfo const& I) const
-        {
-            if (I.DefLoc)
-            {
-                io.map("def", *I.DefLoc);
-            }
-            if (!I.Loc.empty())
-            {
-                io.map("decl", dom::newArray<dom::LazyArrayImpl<std::vector<Location>>>(I.Loc));
-            }
-        }
-    };
-
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    IO& io,
+    Location const& loc)
+{
+    io.map("path", loc.Path);
+    io.map("file", loc.Filename);
+    io.map("line", loc.LineNumber);
+    io.map("kind", loc.Kind);
+    io.map("documented", loc.Documented);
 }
 
 void
@@ -73,7 +52,24 @@ tag_invoke(
     dom::Value& v,
     Location const& loc)
 {
-    v = dom::newObject<dom::LazyObjectImpl<Location>>(loc);
+    v = dom::LazyObject(loc);
+}
+
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    IO& io,
+    SourceInfo const& I)
+{
+    if (I.DefLoc)
+    {
+        io.map("def", *I.DefLoc);
+    }
+    if (!I.Loc.empty())
+    {
+        io.map("decl", dom::LazyArray(I.Loc));
+    }
 }
 
 void
@@ -82,7 +78,7 @@ tag_invoke(
     dom::Value& v,
     SourceInfo const& I)
 {
-    v = dom::newObject<dom::LazyObjectImpl<SourceInfo>>(I);
+    v = dom::LazyObject(I);
 }
 
 } // mrdocs
