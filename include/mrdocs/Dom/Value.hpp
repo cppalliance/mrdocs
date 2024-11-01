@@ -54,36 +54,6 @@ safeString(dom::Value const& str);
 
 namespace dom {
 
-/** Mapping traits to convert types into dom::Object.
-
-    This class should be specialized by any type that needs to be converted
-    to/from a @ref dom::Object.  For example:
-
-    @code
-    template<>
-    struct MappingTraits<MyStruct> {
-        template <class IO>
-        static void map(IO &io, MyStruct const& s)
-        {
-            io.map("name", s.name);
-            io.map("size", s.size);
-            io.map("age",  s.age);
-        }
-    };
-    @endcode
- */
-template<class T>
-struct ToValue {
-    // Value operator()(T const& o) const;
-};
-
-/// Concept to determine if @ref ToValue is defined for a type T
-template <class T>
-concept HasToValue = requires(T const& o)
-{
-    { Value(std::declval<ToValue<T>>()(o)) } -> std::same_as<Value>;
-};
-
 /** A variant container for any kind of Dom value.
 */
 class MRDOCS_DECL
@@ -120,14 +90,12 @@ public:
 
     template<class F>
     requires
-        function_traits_convertible_to_value<F> &&
-        (!HasToValue<F>)
+        function_traits_convertible_to_value<F>
     Value(F const& f)
         : Value(Function(f))
     {}
 
     template<std::same_as<bool> Boolean>
-    requires (!HasToValue<Boolean>)
     Value(Boolean const& b) noexcept
         : kind_(Kind::Boolean)
         , b_(b)
@@ -137,12 +105,10 @@ public:
     template <std::integral T>
     requires
         (!std::same_as<T, bool>) &&
-        (!std::same_as<T, char>) &&
-        (!HasToValue<T>)
+        (!std::same_as<T, char>)
     Value(T v) noexcept : Value(std::int64_t(v)) {}
 
     template <std::floating_point T>
-    requires (!HasToValue<T>)
     Value(T v) noexcept : Value(std::int64_t(v)) {}
 
     Value(char c) noexcept : Value(std::string_view(&c, 1)) {}
@@ -150,8 +116,7 @@ public:
     template<class Enum>
     requires
         std::is_enum_v<Enum> &&
-        (!std::same_as<Enum, dom::Kind>) &&
-        (!HasToValue<Enum>)
+        (!std::same_as<Enum, dom::Kind>)
     Value(Enum v) noexcept
         : Value(static_cast<std::underlying_type_t<Enum>>(v))
     {}
@@ -169,7 +134,6 @@ public:
     }
 
     template <std::convertible_to<String> StringLike>
-    requires (!HasToValue<StringLike>)
     Value(StringLike const& s)
         : Value(String(s))
     {
@@ -191,12 +155,6 @@ public:
 
     Value(Array::storage_type elements)
         : Value(Array(std::move(elements)))
-    {
-    }
-
-    template <HasToValue T>
-    Value(T const& t)
-        : Value(ToValue<T>{}(t))
     {
     }
 
@@ -607,12 +565,240 @@ stringOrNull(
 {
     if(!s.empty())
     {
-        return s;
+        return {s};
     }
     return nullptr;
 }
 
 //------------------------------------------------
+
+/** Customization point tag.
+
+    This tag type is used by the function
+    @ref dom::ValueFrom to select overloads
+    of `tag_invoke`.
+
+    @note This type is empty; it has no members.
+
+    @see @ref dom::ValueFrom, @ref dom::ValueTo, @ref dom::ValueToTag,
+    <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p1895r0.pdf">
+        tag_invoke: A general pattern for supporting customisable functions</a>
+*/
+struct ValueFromTag { };
+
+/** Concept to determine if a type can be converted to a @ref dom::Value
+    with a user-provided conversion.
+
+    This concept determines if the user-provided conversion is
+    defined as:
+
+    @code
+    void tag_invoke( ValueFromTag, dom::Value&, T );
+    @endcode
+ */
+template<class T>
+concept HasValueFromWithoutContext = requires(
+    Value& v,
+    T const& t)
+{
+    tag_invoke(ValueFromTag{}, v, t);
+};
+
+/** Concept to determine if a type can be converted to a @ref dom::Value
+    with a user-provided conversion.
+
+    This concept determines if the user-provided conversion is
+    defined as:
+
+    @code
+    void tag_invoke( ValueFromTag, dom::Value&, T,  Context const& );
+    @endcode
+ */
+template<class T, class Context>
+concept HasValueFromWithContext = requires(
+    Value& v,
+    T const& t,
+    Context const& ctx)
+{
+    tag_invoke(ValueFromTag{}, v, t, ctx);
+};
+
+/** Determine if `T` can be converted to @ref dom::Value.
+
+    If `T` can be converted to @ref dom::Value via a
+    call to @ref dom::ValueFrom, the static data member `value`
+    is defined as `true`. Otherwise, `value` is
+    defined as `false`.
+
+    @see @ref dom::ValueFrom
+*/
+template <class T, class Context>
+concept HasValueFrom =
+    HasValueFromWithContext<T, Context> ||
+    HasValueFromWithoutContext<T> ||
+    std::constructible_from<Value, T>;
+
+/** Determine if ` T`  can be converted to @ref dom::Value
+    without a context.
+
+    This concept determines if there is a user-provided
+    conversion to @ref dom::Value that does not require
+    a context or if @ref dom::Value has a constructor
+    that can be used to convert `T` to a @ref dom::Value.
+ */
+template <class T>
+concept HasStandaloneValueFrom =
+    HasValueFromWithoutContext<T> ||
+    std::constructible_from<Value, T>;
+
+/** Convert an object of type `T` to @ref dom::Value.
+
+    This function attempts to convert an object
+    of type `T` to @ref dom::Value using
+
+    @li a user-provided overload of `tag_invoke`.
+
+    @li one of @ref dom::Value's constructors,
+
+    Conversion of user-provided types is done by calling an overload of
+    `tag_invoke` found by argument-dependent lookup. Its signature should
+    be similar to:
+
+    @code
+    void tag_invoke( ValueFromTag, dom::Value&, T,  Context const& );
+    @endcode
+
+    or
+
+    @code
+    void tag_invoke( ValueFromTag, dom::Value&, T );
+    @endcode
+
+    The overloads are checked for existence in that order and the first that
+    matches will be selected.
+
+    The `ctx` argument can be used either as a tag type to provide conversions
+    for third-party types, or to pass extra data to the conversion function.
+
+    @par Exception Safety
+    Strong guarantee.
+
+    @tparam T The type of the object to convert.
+
+    @tparam Context The type of context passed to the conversion function.
+
+    @param t The object to convert.
+
+    @param ctx Context passed to the conversion function.
+
+    @param jv @ref dom::Value out parameter.
+
+    @see @ref dom::ValueFromTag, @ref dom::ValueTo,
+    <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p1895r0.pdf">
+        tag_invoke: A general pattern for supporting customisable functions</a>
+*/
+template <class Context, HasValueFrom<Context> T>
+void
+ValueFrom(
+    T&& t,
+    Context const& ctx,
+    Value& v)
+{
+    using BT = std::remove_cvref_t<T>;
+    if constexpr (HasValueFromWithContext<BT, Context>)
+    {
+        tag_invoke(ValueFromTag{}, v, static_cast<T&&>(t), ctx);
+    }
+    else {
+        ValueFrom(static_cast<T&&>(t), v);
+    }
+}
+
+/** Convert an object of type `T` to @ref dom::Value.
+
+    This function attempts to convert an object
+    of type `T` to @ref dom::Value using
+
+    @li a user-provided overload of `tag_invoke`.
+
+    @li one of @ref dom::Value's constructors,
+
+    Conversion of other types is done by calling an overload of `tag_invoke`
+    found by argument-dependent lookup. Its signature should be similar to:
+
+    @code
+    void tag_invoke( ValueFromTag, dom::Value&, T );
+    @endcode
+
+    @par Exception Safety
+    Strong guarantee.
+
+    @tparam T The type of the object to convert.
+
+    @param t The object to convert.
+
+    @param jv @ref dom::Value out parameter.
+
+    @see @ref dom::ValueFromTag, @ref dom::ValueTo,
+    <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p1895r0.pdf">
+        tag_invoke: A general pattern for supporting customisable functions</a>
+*/
+template<class T>
+requires HasStandaloneValueFrom<T>
+void
+ValueFrom(
+    T&& t,
+    Value& v)
+{
+    using BT = std::remove_cvref_t<T>;
+    if constexpr (HasValueFromWithoutContext<BT>)
+    {
+        tag_invoke(ValueFromTag{}, v, static_cast<T&&>(t));
+    }
+    else /* if constexpr (std::constructible_from<Value, T>) */
+    {
+        v = Value(static_cast<T&&>(t));
+    }
+}
+
+/** Convert an object of type `T` to @ref dom::Value.
+
+    This function attempts to convert an object
+    of type `T` to @ref dom::Value using
+
+    @li a user-provided overload of `tag_invoke`.
+
+    @li one of @ref dom::Value's constructors,
+
+    Conversion of other types is done by calling an overload of `tag_invoke`
+    found by argument-dependent lookup. Its signature should be similar to:
+
+    @code
+    void tag_invoke( ValueFromTag, dom::Value&, T );
+    @endcode
+
+    @par Exception Safety
+    Strong guarantee.
+
+    @tparam T The type of the object to convert.
+
+    @param t The object to convert.
+
+    @return @ref dom::Value out parameter.
+
+    @see @ref dom::ValueFromTag, @ref dom::ValueTo,
+    <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p1895r0.pdf">
+        tag_invoke: A general pattern for supporting customisable functions</a>
+*/
+template<class T>
+requires HasStandaloneValueFrom<T>
+Value
+ValueFrom(T&& t)
+{
+    dom::Value v;
+    ValueFrom(static_cast<T&&>(t), v);
+    return v;
+}
 
 } // dom
 

@@ -36,13 +36,14 @@ MRDOCS_DECL
 std::string_view
 toString(FileKind kind);
 
-namespace dom {
-    template <>
-    struct ToValue<FileKind>
-    {
-        std::string_view
-        operator()(FileKind id) const;
-    };
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    FileKind kind)
+{
+    v = toString(kind);
 }
 
 struct MRDOCS_DECL
@@ -85,14 +86,11 @@ struct MRDOCS_DECL
     }
 };
 
-namespace dom {
-    template <>
-    struct ToValue<Location>
-    {
-        dom::Object
-        operator()(Location const& loc) const;
-    };
-}
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Location const& loc);
 
 struct LocationEmptyPredicate
 {
@@ -131,14 +129,11 @@ protected:
     SourceInfo() = default;
 };
 
-namespace dom {
-    template <>
-    struct ToValue<SourceInfo>
-    {
-        dom::Object
-        operator()(SourceInfo const& info) const;
-    };
-}
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    SourceInfo const& I);
 
 } // mrdocs
 } // clang

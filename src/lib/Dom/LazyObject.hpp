@@ -143,150 +143,58 @@ public:
 
 namespace detail
 {
-    class GetterIO
+    /* The IO object for lazy objects.
+
+       Mapping traits use this object to call the
+       map and defer methods, which are used to
+       access properties of the lazy object.
+
+       Each function provides different behavior
+       to `map` and `defer` methods, allowing
+       to implement functionality such as
+       `get`, `set`, `visit`, and `size`.
+
+       In some cases, only a function for
+       `map` is provided, and the `defer` function
+       is not used. In this case, the `defer` function
+       also uses the `map` function, which is
+       the default behavior.
+
+       In other cases, the `defer` function is
+       used to defer the evaluation of a property
+       to a later time, which is useful for functionality
+       that requires accessing the value.
+     */
+    template <class MapFn, class DeferFn = void*>
+    class LazyObjectIO
     {
-        std::string_view key;
-        Value result;
+        MapFn mapFn;
+        DeferFn deferFn;
     public:
         explicit
-        GetterIO(std::string_view key)
-            : key(key) {}
+        LazyObjectIO(MapFn mapFn, DeferFn deferFn = {})
+            : mapFn(mapFn), deferFn(deferFn) {}
 
-        template <class T>
-        requires std::constructible_from<Value, T>
+        template <HasStandaloneValueFrom T>
         void
         map(std::string_view name, T const& value)
         {
-            if (result.isUndefined() && name == key)
+            mapFn(name, value);
+        }
+
+        template <class F>
+        requires HasStandaloneValueFrom<std::invoke_result_t<F>>
+        void
+        defer(std::string_view name, F&& deferred)
+        {
+            if constexpr (std::same_as<DeferFn, void*>)
             {
-                this->result = Value(value);
+                mapFn(name, deferred);
             }
-        }
-
-        template <class T>
-        void
-        defer(std::string_view name, T const& deferred)
-        {
-            using R = std::invoke_result_t<T>;
-            if constexpr (std::constructible_from<Value, R>)
+            else
             {
-                if (result.isUndefined() && name == key)
-                {
-                    this->result = deferred();
-                }
+                deferFn(name, deferred);
             }
-        }
-
-        Value
-        get()
-        {
-            return std::move(result);
-        }
-    };
-}
-
-template <HasMappingTraits T>
-Value
-LazyObjectImpl<T>::
-get(std::string_view key) const
-{
-    if (overlay_.exists(key))
-    {
-        return overlay_.get(key);
-    }
-    detail::GetterIO io{key};
-    traits_.map(io, *underlying_);
-    return io.get();
-}
-
-template <HasMappingTraits T>
-void
-LazyObjectImpl<T>::
-set(String key, Value value)
-{
-    overlay_.set(std::move(key), std::move(value));
-}
-
-namespace detail
-{
-    class VisitIO
-    {
-        std::function<bool(String, Value)> fn;
-        Object const& overlay;
-        bool continueVisiting = true;
-    public:
-        explicit
-            VisitIO(std::function<bool(String, Value)> fn, Object const& overlay)
-            : fn(fn)
-            , overlay(overlay) {}
-
-        template <class T>
-        void
-        map(std::string_view name, T const& value)
-        {
-            if (continueVisiting && !overlay.exists(name))
-            {
-                continueVisiting = fn(name, Value(value));
-            }
-        }
-
-        template <class T>
-        void
-        defer(std::string_view name, T const& deferred)
-        {
-            if (continueVisiting && !overlay.exists(name))
-            {
-                continueVisiting = fn(name, deferred());
-            }
-        }
-
-        bool
-        get()
-        {
-            return continueVisiting;
-        }
-    };
-}
-
-template <HasMappingTraits T>
-bool
-LazyObjectImpl<T>::
-visit(std::function<bool(String, Value)> fn) const
-{
-    detail::VisitIO io{fn, overlay_};
-    traits_.map(io, *underlying_);
-    return io.get() && overlay_.visit(fn);
-}
-
-namespace detail
-{
-    class SizeIO
-    {
-        Object const& overlay;
-        std::size_t result = 0;
-    public:
-        explicit
-        SizeIO(Object const& overlay)
-            : overlay(overlay) {}
-
-        template <class T>
-        void
-        map(std::string_view name, T const&)
-        {
-            this->result += !overlay.exists(name);
-        }
-
-        template <class T>
-        void
-        defer(std::string_view name, T const&)
-        {
-            this->result += !overlay.exists(name);
-        }
-
-        std::size_t
-        get()
-        {
-            return result + overlay.size();
         }
     };
 }
@@ -296,50 +204,15 @@ std::size_t
 LazyObjectImpl<T>::
 size() const
 {
-    detail::SizeIO io{overlay_};
+    std::size_t result;
+    detail::LazyObjectIO io(
+        [&result, this](std::string_view name, auto const& /* value or deferred */)
+        {
+            result += !overlay_.exists(name);
+        });
     traits_.map(io, *underlying_);
-    return io.get();
+    return result + overlay_.size();
 }
-
-namespace detail
-{
-    class ExistsIO
-    {
-        std::string_view key;
-        bool result = false;
-    public:
-        explicit
-        ExistsIO(std::string_view key)
-            : key(key) {}
-
-        template <class T>
-        void
-        map(std::string_view name, T const&)
-        {
-            if (!result && name == key)
-            {
-                this->result = true;
-            }
-        }
-
-        template <class T>
-        void
-        defer(std::string_view name, T const&)
-        {
-            if (!result && name == key)
-            {
-                this->result = true;
-            }
-        }
-
-        bool
-        get()
-        {
-            return result;
-        }
-    };
-}
-
 
 template <HasMappingTraits T>
 bool
@@ -350,10 +223,80 @@ exists(std::string_view key) const
     {
         return true;
     }
-    detail::ExistsIO io{key};
+    bool result = false;
+    detail::LazyObjectIO io(
+        [&result, key](std::string_view name, auto const& /* value or deferred */)
+    {
+        if (!result && name == key)
+        {
+            result = true;
+        }
+    });
     traits_.map(io, *underlying_);
-    return io.get();
+    return result;
 }
+
+
+template <HasMappingTraits T>
+Value
+LazyObjectImpl<T>::
+get(std::string_view key) const
+{
+    if (overlay_.exists(key))
+    {
+        return overlay_.get(key);
+    }
+    Value result;
+    detail::LazyObjectIO io(
+        [&result, key](std::string_view name, auto const& value)
+        {
+            if (result.isUndefined() && name == key)
+            {
+                ValueFrom(value, result);
+            }
+        }, [&result, key](std::string_view name, auto const& deferred)
+        {
+            if (result.isUndefined() && name == key)
+            {
+                ValueFrom(deferred(), result);
+            }
+        });
+    traits_.map(io, *underlying_);
+    return result;
+}
+
+template <HasMappingTraits T>
+void
+LazyObjectImpl<T>::
+set(String key, Value value)
+{
+    overlay_.set(std::move(key), std::move(value));
+}
+
+template <HasMappingTraits T>
+bool
+LazyObjectImpl<T>::
+visit(std::function<bool(String, Value)> fn) const
+{
+    bool visitMore = true;
+    detail::LazyObjectIO io(
+        [&visitMore, &fn, this](std::string_view name, auto const& value)
+        {
+            if (visitMore && !overlay_.exists(name))
+            {
+                visitMore = fn(name, dom::ValueFrom(value));
+            }
+        }, [&visitMore, &fn, this](std::string_view name, auto const& deferred)
+        {
+            if (visitMore && !overlay_.exists(name))
+            {
+                visitMore = fn(name, dom::ValueFrom(deferred()));
+            }
+        });
+    traits_.map(io, *underlying_);
+    return visitMore && overlay_.visit(fn);
+}
+
 
 } // dom
 } // mrdocs
