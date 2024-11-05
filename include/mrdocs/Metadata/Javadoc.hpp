@@ -1019,6 +1019,16 @@ private:
     doc::List<doc::Block> blocks_;
 };
 
+/** Return the Javadoc as a @ref dom::Value.
+ */
+MRDOCS_DECL
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Javadoc const& I,
+    DomCorpus const* domCorpus);
+
 } // mrdocs
 } // clang
 

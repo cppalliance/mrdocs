@@ -119,8 +119,7 @@ public:
     template<class T = Info>
     requires std::derived_from<T, Info>
     T const&
-    get(
-        SymbolID const& id) const noexcept;
+    get(SymbolID const& id) const noexcept;
 
     /** Return the metadata for the global namespace.
 
@@ -160,18 +159,23 @@ public:
         }
     }
 
-    /** Visit the function members of specified Info.
+    /** Visit the member overloads of specified ScopeInfo.
 
-        This function iterates the members of the specified
-        ScopeInfo `S`. For each member associated with a
-        function with the same name as the member, the
-        function object `f` is invoked with the member
+        This function iterates the members of the
+        specified ScopeInfo `S`.
+
+        For each member in the scope, we check
+        if the member is a function with overloads.
+
+        If the member is a function with overloads,
+        we create an @ref OverloadSet object and invoke
+        the function object `f` with the @ref OverloadSet
         as the first argument, followed by `args...`.
 
-        When there are more than one member function
-        with the same name, the function object `f` is
-        invoked with an @ref OverloadSet as the first
-        argument, followed by `args...`.
+        If the member is not a function with overloads,
+        we invoke the function object `f` with the @ref Info
+        member as the first argument, followed by `args...`.
+
     */
     template <class F, class... Args>
     void traverseOverloads(
@@ -230,6 +234,7 @@ traverseOverloads(
     ScopeInfo const& S,
     F&& f, Args&&... args) const
 {
+    MRDOCS_ASSERT(S.Members.empty() == S.Lookups.empty());
     for(const SymbolID& id : S.Members)
     {
         const Info& member = get(id);
@@ -244,8 +249,10 @@ traverseOverloads(
                 return get(elem).isFunction();
             #endif
             });
-        if(lookup.size() == 1 ||
-            first_func == lookup.end())
+        bool const nonOverloadedFunction = lookup.size() == 1;
+        bool const notFunction = first_func == lookup.end();
+        if(nonOverloadedFunction ||
+           notFunction)
         {
             visit(member, std::forward<F>(f),
                 std::forward<Args>(args)...);

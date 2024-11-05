@@ -113,14 +113,6 @@ public:
 
     Value(char c) noexcept : Value(std::string_view(&c, 1)) {}
 
-    template<class Enum>
-    requires
-        std::is_enum_v<Enum> &&
-        (!std::same_as<Enum, dom::Kind>)
-    Value(Enum v) noexcept
-        : Value(static_cast<std::underlying_type_t<Enum>>(v))
-    {}
-
     template<std::size_t N>
     Value(char const(&sz)[N])
         : Value(String(sz))
@@ -797,6 +789,45 @@ ValueFrom(T&& t)
 {
     dom::Value v;
     ValueFrom(static_cast<T&&>(t), v);
+    return v;
+}
+
+/** Convert an object of type `T` to @ref dom::Value with a context
+
+    This function attempts to convert an object
+    of type `T` to @ref dom::Value using
+
+    @li a user-provided overload of `tag_invoke`.
+
+    @li one of @ref dom::Value's constructors,
+
+    Conversion of other types is done by calling an overload of `tag_invoke`
+    found by argument-dependent lookup. Its signature should be similar to:
+
+    @code
+    void tag_invoke( ValueFromTag, dom::Value&, T );
+    @endcode
+
+    @par Exception Safety
+    Strong guarantee.
+
+    @tparam T The type of the object to convert.
+
+    @param t The object to convert.
+
+    @return @ref dom::Value out parameter.
+
+    @see @ref dom::ValueFromTag,
+    <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p1895r0.pdf">
+        tag_invoke: A general pattern for supporting customisable functions</a>
+*/
+template <class T, class Context>
+requires HasValueFrom<T, Context>
+Value
+ValueFrom(T&& t, Context const& ctx)
+{
+    dom::Value v;
+    ValueFrom(static_cast<T&&>(t), ctx, v);
     return v;
 }
 

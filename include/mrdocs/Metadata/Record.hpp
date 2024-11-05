@@ -47,6 +47,14 @@ struct BaseInfo
     }
 };
 
+MRDOCS_DECL
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    BaseInfo const& I,
+    DomCorpus const* domCorpus);
+
 enum class RecordKeyKind
 {
     Struct,
@@ -55,6 +63,16 @@ enum class RecordKeyKind
 };
 
 MRDOCS_DECL dom::String toString(RecordKeyKind kind) noexcept;
+
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    RecordKeyKind kind)
+{
+    v = toString(kind);
+}
 
 /** Metadata for struct, class, or union.
 */
@@ -91,6 +109,24 @@ struct RecordInfo
     {
     }
 };
+
+constexpr
+std::string_view
+getDefaultAccessString(
+    RecordKeyKind const& kind) noexcept
+{
+    switch(kind)
+    {
+    case RecordKeyKind::Class:
+        return "private";
+    case RecordKeyKind::Struct:
+    case RecordKeyKind::Union:
+        return "public";
+    default:
+        MRDOCS_UNREACHABLE();
+    }
+}
+
 
 } // mrdocs
 } // clang

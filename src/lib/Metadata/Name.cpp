@@ -9,6 +9,9 @@
 //
 
 #include <mrdocs/Metadata/Name.hpp>
+#include <mrdocs/Metadata/DomCorpus.hpp>
+#include <lib/Dom/LazyArray.hpp>
+#include <lib/Dom/LazyObject.hpp>
 #include <span>
 
 namespace clang {
@@ -92,6 +95,37 @@ toString(const NameInfo& N)
     std::string result;
     toStringImpl(result, N);
     return result;
+}
+
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    IO& io,
+    NameInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    io.map("kind", I.Kind);
+    visit(I, [domCorpus, &io]<typename T>(const T& t)
+    {
+        io.map("name", t.Name);
+        io.map("symbol", t.id);
+        if constexpr(requires { t.TemplateArgs; })
+        {
+            io.map("args", dom::LazyArray(t.TemplateArgs, domCorpus));
+        }
+        io.map("prefix", t.Prefix);
+    });
+}
+
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    NameInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
 }
 
 } // mrdocs

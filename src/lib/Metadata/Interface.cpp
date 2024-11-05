@@ -11,7 +11,9 @@
 
 #include "lib/Lib/ConfigImpl.hpp"
 #include "lib/Support/Debug.hpp"
+#include "lib/Dom/LazyArray.hpp"
 #include <mrdocs/Metadata/Interface.hpp>
+#include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Support/TypeTraits.hpp>
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Corpus.hpp>
@@ -361,6 +363,118 @@ makeTranche(
     buildTranches(corpus, Namespace, &T,
         nullptr, nullptr, nullptr);
     return T;
+}
+
+/*  A DOM object that represents a tranche
+
+    This function creates an Interface object for a given
+    record. The Interface object is used to generate the
+    "interface" value of the DOM for symbols that represent
+    records or namespaces.
+
+    The interface is not part of the Corpus. It is a temporary
+    structure generated to aggregate the symbols of a record.
+    This structure is provided to the user via the DOM.
+ */
+class DomTranche : public dom::DefaultObjectImpl
+{
+    std::shared_ptr<Tranche> tranche_;
+
+    static
+    dom::Value
+    init(
+        std::span<const SymbolID> list,
+        DomCorpus const& domCorpus)
+    {
+        return dom::LazyArray(list, [&](SymbolID const& id)
+            {
+                return domCorpus.get(id);
+            });
+    }
+
+    static
+    dom::Value
+    init(
+        const ScopeInfo& scope,
+        DomCorpus const& domCorpus)
+    {
+        return generateScopeOverloadsArray(scope, domCorpus);
+    }
+
+
+public:
+    DomTranche(
+        std::shared_ptr<Tranche> const& tranche,
+        DomCorpus const& domCorpus) noexcept
+        : dom::DefaultObjectImpl({
+            #define INFO(Plural, LC_Plural) \
+            { #LC_Plural, init(tranche->Plural, domCorpus) },
+            #include <mrdocs/Metadata/InfoNodesPascalPluralAndLowerPlural.inc>
+            { "types",            init(tranche->Types, domCorpus) },
+            { "staticfuncs",      init(tranche->StaticFunctions, domCorpus) },
+            { "overloads",        init(tranche->Overloads, domCorpus) },
+            { "staticoverloads",  init(tranche->StaticOverloads, domCorpus) },
+            })
+        , tranche_(tranche)
+    {
+    }
+};
+
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    std::shared_ptr<Tranche> const& sp,
+    DomCorpus const* domCorpus)
+{
+    /* Unfortunately, we cannot use LazyObject like we do
+       in DomCorpus because the Tranche object is not
+       part of the Corpus.
+
+       We must create a new object and eagerly populate it
+       with the values from the Tranche object.
+
+       Unfortunately, we cannot use the default
+       dom::Object type either.
+
+       We also need a custom object impl type because we
+       need to store a shared_ptr to the Tranche object
+       to keep it alive.
+     */
+    if (!sp)
+    {
+        v = nullptr;
+        return;
+    }
+    v = dom::newObject<DomTranche>(sp, *domCorpus);
+}
+
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    std::shared_ptr<Interface> const& sp,
+    DomCorpus const* domCorpus)
+{
+    /* Unfortunately, we cannot use LazyObject like we do
+       in DomCorpus because the Interface object is not
+       part of the Corpus.
+
+       We must create a new object and eagerly populate it
+       with the values from the individual Tranche objects.
+     */
+    if (!sp)
+    {
+        v = nullptr;
+        return;
+    }
+    // The dom::Value for each tranche will keep the
+    // respective shared_ptr alive.
+    v = dom::Object({
+        { "public", dom::ValueFrom(sp->Public, domCorpus) },
+        { "protected", dom::ValueFrom(sp->Protected, domCorpus) },
+        { "private", dom::ValueFrom(sp->Private, domCorpus) }
+    });
 }
 
 

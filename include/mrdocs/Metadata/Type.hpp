@@ -35,6 +35,16 @@ enum QualifierKind
 
 MRDOCS_DECL dom::String toString(QualifierKind kind) noexcept;
 
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    QualifierKind kind)
+{
+    v = toString(kind);
+}
+
 enum class TypeKind
 {
     Named = 1, // for bitstream
@@ -50,6 +60,16 @@ enum class TypeKind
 
 MRDOCS_DECL dom::String toString(TypeKind kind) noexcept;
 
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    TypeKind kind)
+{
+    v = toString(kind);
+}
+
 enum class AutoKind
 {
     Auto,
@@ -57,6 +77,16 @@ enum class AutoKind
 };
 
 MRDOCS_DECL dom::String toString(AutoKind kind) noexcept;
+
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    AutoKind kind)
+{
+    v = toString(kind);
+}
 
 struct TypeInfo
 {
@@ -102,6 +132,30 @@ protected:
     {
     }
 };
+
+MRDOCS_DECL
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    TypeInfo const& I,
+    DomCorpus const* domCorpus);
+
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    std::unique_ptr<TypeInfo> const& I,
+    DomCorpus const* domCorpus)
+{
+    if (!I)
+    {
+        v = nullptr;
+        return;
+    }
+    tag_invoke(dom::ValueFromTag{}, v, *I, domCorpus);
+}
 
 template<TypeKind K>
 struct IsType : TypeInfo
@@ -284,6 +338,7 @@ std::string
 toString(
     const TypeInfo& T,
     std::string_view Name = "");
+
 
 } // mrdocs
 } // clang

@@ -165,6 +165,16 @@ enum class OperatorKind
     Coawait,
 };
 
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    OperatorKind kind)
+{
+    v = static_cast<std::underlying_type_t<OperatorKind>>(kind);
+}
+
 /** Reference type kinds
 */
 enum class ReferenceKind
@@ -211,9 +221,19 @@ MRDOCS_DECL dom::String toString(StorageClassKind kind) noexcept;
 MRDOCS_DECL
 dom::String
 toString(
-    const NoexceptInfo& info,
+    NoexceptInfo const& info,
     bool resolved = false,
     bool implicit = false);
+
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    NoexceptInfo const& info)
+{
+    v = toString(info, false, false);
+}
 
 /** Convert ExplicitInfo to a string.
 
@@ -228,6 +248,66 @@ toString(
     const ExplicitInfo& info,
     bool resolved = false,
     bool implicit = false);
+
+/** Return the ExplicitInfo as a @ref dom::Value string.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    ExplicitInfo const& I)
+{
+    v = toString(I);
+}
+
+/** Return the AccessKind as a @ref dom::Value string.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    AccessKind kind)
+{
+    v = toString(kind);
+}
+
+/** Return the ConstexprKind as a @ref dom::Value string.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    ConstexprKind kind)
+{
+    v = toString(kind);
+}
+
+/** Return the StorageClassKind as a @ref dom::Value string.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    StorageClassKind kind)
+{
+    v = toString(kind);
+}
+
+/** Return the ReferenceKind as a @ref dom::Value string.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    ReferenceKind kind)
+{
+    v = toString(kind);
+}
 
 } // mrdocs
 } // clang

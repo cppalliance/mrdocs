@@ -113,6 +113,31 @@ MRDOCS_DECL
 std::string
 toString(const NameInfo& N);
 
+MRDOCS_DECL
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    NameInfo const& I,
+    DomCorpus const* domCorpus);
+
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    std::unique_ptr<NameInfo> const& I,
+    DomCorpus const* domCorpus)
+{
+    if(! I)
+    {
+        v = nullptr;
+        return;
+    }
+    tag_invoke(dom::ValueFromTag{}, v, *I, domCorpus);
+}
+
+
 } // mrdocs
 } // clang
 

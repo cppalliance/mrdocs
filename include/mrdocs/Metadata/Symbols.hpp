@@ -19,6 +19,15 @@
 #include <cstring>
 #include <compare>
 #include <string_view>
+#include <memory>
+
+namespace clang::mrdocs {
+    class DomCorpus;
+    namespace dom {
+        struct ValueFromTag;
+        class Value;
+    }
+}
 
 namespace clang {
 namespace mrdocs {
@@ -150,6 +159,35 @@ std::strong_ordering
 compareSymbolNames(
     std::string_view symbolName0,
     std::string_view symbolName1) noexcept;
+
+/** Convert SymbolID to dom::Value string in the DOM using toBase16
+ */
+MRDOCS_DECL
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    SymbolID const& id);
+
+/** Convert SymbolID to dom::Value object in the DOM using Corpus
+ */
+MRDOCS_DECL
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    SymbolID const& id,
+    DomCorpus const* domCorpus);
+
+/** Convert SymbolID pointers to dom::Value or null.
+ */
+MRDOCS_DECL
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    std::unique_ptr<SymbolID> const& t,
+    DomCorpus const* domCorpus);
 
 } // mrdocs
 } // clang
