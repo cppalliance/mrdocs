@@ -1109,14 +1109,6 @@ struct Dom_test
             }
         }
 
-        // Value(Enum v)
-        {
-            enum class E { A, B, C };
-            Value v(E::A);
-            BOOST_TEST(v.isInteger());
-            BOOST_TEST(v == 0);
-        }
-
         // Value(char const(&sz)[N])
         {
             Value v("hello");

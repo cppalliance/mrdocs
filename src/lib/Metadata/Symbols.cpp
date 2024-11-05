@@ -10,7 +10,11 @@
 //
 
 #include <mrdocs/Metadata/Symbols.hpp>
+#include <mrdocs/Dom.hpp>
+#include <mrdocs/Metadata/DomCorpus.hpp>
+#include <lib/Support/Radix.hpp>
 #include <climits>
+#include <ranges>
 
 namespace clang {
 namespace mrdocs {
@@ -85,6 +89,42 @@ do_tiebreak:
         return std::strong_ordering::greater;
     return std::strong_ordering::equivalent;
 }
+
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    SymbolID const& id)
+{
+    v = toBase16(id);
+}
+
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    SymbolID const& id,
+    DomCorpus const* domCorpus)
+{
+    v = domCorpus->get(id);
+}
+
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    std::unique_ptr<SymbolID> const& t,
+    DomCorpus const* domCorpus)
+{
+    if (!t)
+    {
+        v = nullptr;
+        return;
+    }
+    v = dom::ValueFrom(*t, domCorpus);
+}
+
 
 } // mrdocs
 } // clang

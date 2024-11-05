@@ -245,7 +245,7 @@ namespace detail
         LazyObjectIO(MapFn mapFn, DeferFn deferFn = {})
             : mapFn(mapFn), deferFn(deferFn) {}
 
-        template <HasStandaloneValueFrom T>
+        template <class T>
         void
         map(std::string_view name, T const& value)
         {
@@ -253,7 +253,6 @@ namespace detail
         }
 
         template <class F>
-        requires HasStandaloneValueFrom<std::invoke_result_t<F>>
         void
         defer(std::string_view name, F&& deferred)
         {
@@ -335,17 +334,31 @@ get(std::string_view key) const
     }
     Value result;
     detail::LazyObjectIO io(
-        [&result, key](std::string_view name, auto const& value)
+        [&result, key, this](std::string_view name, auto const& value)
         {
             if (result.isUndefined() && name == key)
             {
-                ValueFrom(value, result);
+                if constexpr (HasValueFromWithContext<std::remove_cvref_t<decltype(value)>, Context>)
+                {
+                    ValueFrom(value, context_, result);
+                }
+                else
+                {
+                    ValueFrom(value, result);
+                }
             }
-        }, [&result, key](std::string_view name, auto const& deferred)
+        }, [&result, key, this](std::string_view name, auto const& deferred)
         {
             if (result.isUndefined() && name == key)
             {
-                ValueFrom(deferred(), result);
+                if constexpr (HasValueFromWithContext<std::remove_cvref_t<decltype(deferred())>, Context>)
+                {
+                    ValueFrom(deferred(), context_, result);
+                }
+                else
+                {
+                    ValueFrom(deferred(), result);
+                }
             }
         });
     if constexpr (HasLazyObjectMapWithContext<T, Context>)
@@ -380,13 +393,27 @@ visit(std::function<bool(String, Value)> fn) const
         {
             if (visitMore && !overlay_.exists(name))
             {
-                visitMore = fn(name, dom::ValueFrom(value));
+                if constexpr (HasValueFromWithContext<std::remove_cvref_t<decltype(value)>, Context>)
+                {
+                    visitMore = fn(name, dom::ValueFrom(value, context_));
+                }
+                else
+                {
+                    visitMore = fn(name, dom::ValueFrom(value));
+                }
             }
         }, [&visitMore, &fn, this](std::string_view name, auto const& deferred)
         {
             if (visitMore && !overlay_.exists(name))
             {
-                visitMore = fn(name, dom::ValueFrom(deferred()));
+                if constexpr (HasValueFromWithContext<std::remove_cvref_t<decltype(deferred())>, Context>)
+                {
+                    visitMore = fn(name, dom::ValueFrom(deferred(), context_));
+                }
+                else
+                {
+                    visitMore = fn(name, dom::ValueFrom(deferred()));
+                }
             }
         });
     if constexpr (HasLazyObjectMapWithContext<T, Context>)

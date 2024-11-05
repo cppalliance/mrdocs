@@ -55,6 +55,33 @@ struct ScopeInfo
         std::vector<SymbolID>> Lookups;
 };
 
+/** Get a dom::Array of overloads for a scope
+
+    This function takes a ScopeInfo, such as
+    Namespace or Record, and returns a dom::Array
+    of overloads in this scope using the DomCorpus
+    to resolve the SymbolIDs in this scope.
+
+    If the symbol is not overloaded, the
+    symbol is included in the array.
+
+    When the symbol is overloaded, the OverloadSet
+    is included in the array.
+
+    This function makes no distinction between
+    overloads with different access specifiers.
+
+    Instead, we need to traverse the overloads and
+    generate the data whenever the information
+    is requested in the handlebars templates
+    via the LazyObject.
+ */
+MRDOCS_DECL
+dom::Array
+generateScopeOverloadsArray(
+    ScopeInfo const& I,
+    DomCorpus const& domCorpus);
+
 } // mrdocs
 } // clang
 

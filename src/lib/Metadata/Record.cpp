@@ -9,6 +9,7 @@
 //
 
 #include <mrdocs/Metadata/Record.hpp>
+#include <lib/Dom/LazyObject.hpp>
 
 namespace clang {
 namespace mrdocs {
@@ -28,6 +29,29 @@ toString(
     default:
         MRDOCS_UNREACHABLE();
     }
+}
+
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    IO& io,
+    BaseInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    io.map("access", I.Access);
+    io.map("isVirtual", I.IsVirtual);
+    io.map("type", dom::ValueFrom(I.Type, domCorpus));
+}
+
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    BaseInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
 }
 
 } // mrdocs

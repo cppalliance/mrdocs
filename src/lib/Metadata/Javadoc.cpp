@@ -13,6 +13,7 @@
 #include "lib/Support/Debug.hpp"
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Metadata/Javadoc.hpp>
+#include <mrdocs/Metadata/DomCorpus.hpp>
 #include <llvm/Support/Error.h>
 #include <llvm/Support/Path.h>
 #include <fmt/format.h>
@@ -378,6 +379,18 @@ append(doc::List<doc::Node>&& blocks)
             static_cast<doc::Block*>(block.release()));
     }
     #endif
+}
+
+/** Return the Javadoc as a @ref dom::Value.
+ */
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Javadoc const& doc,
+    DomCorpus const* domCorpus)
+{
+    v = domCorpus->getJavadoc(doc);
 }
 
 } // mrdocs

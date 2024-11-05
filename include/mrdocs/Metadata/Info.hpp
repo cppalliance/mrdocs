@@ -47,6 +47,18 @@ MRDOCS_DECL
 dom::String
 toString(InfoKind kind) noexcept;
 
+/** Return the InfoKind from a @ref dom::Value string.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    InfoKind kind)
+{
+    v = toString(kind);
+}
+
 /** Base class with common properties of all symbols
 */
 struct MRDOCS_VISIBLE
@@ -202,6 +214,17 @@ concept InfoParent = requires(T const& t) {
     { t.Members } -> std::ranges::range;
     requires std::convertible_to<std::ranges::range_value_t<decltype(t.Members)>, SymbolID const&>;
 };
+
+/** Return the Info to a @ref dom::Value object.
+ */
+MRDOCS_DECL
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Info const& I,
+    DomCorpus const* domCorpus);
+
 
 } // mrdocs
 } // clang

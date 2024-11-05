@@ -11,6 +11,10 @@
 //
 
 #include <mrdocs/Metadata/Template.hpp>
+#include <mrdocs/Metadata/Name.hpp>
+#include <mrdocs/Metadata/DomCorpus.hpp>
+#include <lib/Dom/LazyArray.hpp>
+#include <lib/Dom/LazyObject.hpp>
 
 namespace clang {
 namespace mrdocs {
@@ -107,6 +111,116 @@ toString(
             result += "...";
         return result;
     });
+}
+
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    IO& io,
+    TArg const& I,
+    DomCorpus const* domCorpus)
+{
+    io.map("kind", toString(I.Kind));
+    io.map("is-pack", I.IsPackExpansion);
+    visit(I, [domCorpus, &io]<typename T>(const T& t) {
+        if constexpr(T::isType())
+        {
+            io.map("type", t.Type);
+        }
+        if constexpr(T::isNonType())
+        {
+            io.map("value", t.Value.Written);
+        }
+        if constexpr(T::isTemplate())
+        {
+            io.map("name", t.Name);
+            io.map("template", t.Template);
+        }
+    });
+}
+
+
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    TArg const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
+
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    IO& io,
+    TParam const& I,
+    DomCorpus const* domCorpus)
+{
+    io.map("kind", toString(I.Kind));
+    io.map("name", dom::stringOrNull(I.Name));
+    io.map("is-pack", I.IsParameterPack);
+    visit(I, [domCorpus, &io]<typename T>(const T& t) {
+        if(t.Default)
+        {
+            io.map("default", t.Default);
+        }
+        if constexpr(T::isType())
+        {
+            io.map("key", t.KeyKind);
+            if (t.Constraint)
+            {
+                io.map("constraint", t.Constraint);
+            }
+        }
+        if constexpr(T::isNonType())
+        {
+            io.map("type", t.Type);
+        }
+        if constexpr(T::isTemplate())
+        {
+            io.map("params", dom::LazyArray(t.Params, domCorpus));
+        }
+    });
+}
+
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    TParam const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
+
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    IO& io,
+    TemplateInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    io.defer("kind", [&] {
+        return toString(I.specializationKind());
+    });
+    io.map("primary", I.Primary);
+    io.map("params", dom::LazyArray(I.Params, domCorpus));
+    io.map("args", dom::LazyArray(I.Args, domCorpus));
+    io.map("requires", dom::stringOrNull(I.Requires.Written));
+}
+
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    TemplateInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
 }
 
 } // mrdocs

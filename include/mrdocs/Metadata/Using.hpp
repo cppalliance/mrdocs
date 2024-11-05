@@ -41,6 +41,19 @@ toString(UsingClass const& value)
     return "unknown";
 }
 
+/** Return the UsingClass as a @ref dom::Value string.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    UsingClass kind)
+{
+    v = toString(kind);
+}
+
+
 /** Info for using declarations.
  */
 struct UsingInfo

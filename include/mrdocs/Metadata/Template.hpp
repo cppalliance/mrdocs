@@ -36,6 +36,16 @@ enum class TArgKind : int
 
 MRDOCS_DECL std::string_view toString(TArgKind kind) noexcept;
 
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    TArgKind kind)
+{
+    v = toString(kind);
+}
+
 struct TArg
 {
     /** The kind of template argument this is. */
@@ -133,6 +143,30 @@ visit(
 
 MRDOCS_DECL std::string toString(const TArg& arg) noexcept;
 
+MRDOCS_DECL
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    TArg const& I,
+    DomCorpus const* domCorpus);
+
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    std::unique_ptr<TArg> const& I,
+    DomCorpus const* domCorpus)
+{
+    if (!I)
+    {
+        v = nullptr;
+        return;
+    }
+    tag_invoke(dom::ValueFromTag{}, v, *I, domCorpus);
+}
+
 // ----------------------------------------------------------------
 
 enum class TParamKind : int
@@ -176,6 +210,30 @@ protected:
     }
 };
 
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    TParam const& I,
+    DomCorpus const* domCorpus);
+
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    std::unique_ptr<TParam> const& I,
+    DomCorpus const* domCorpus)
+{
+    if (!I)
+    {
+        v = nullptr;
+        return;
+    }
+    tag_invoke(dom::ValueFromTag{}, v, *I, domCorpus);
+}
+
+
 template<TParamKind K>
 struct IsTParam : TParam
 {
@@ -201,6 +259,16 @@ enum class TParamKeyKind : int
 };
 
 MRDOCS_DECL std::string_view toString(TParamKeyKind kind) noexcept;
+
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    TParamKeyKind kind)
+{
+    v = toString(kind);
+}
 
 struct TypeTParam
     : IsTParam<TParamKind::Type>
@@ -306,6 +374,30 @@ struct TemplateInfo
             TemplateSpecKind::Partial;
     }
 };
+
+MRDOCS_DECL
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    TemplateInfo const& I,
+    DomCorpus const* domCorpus);
+
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    std::unique_ptr<TemplateInfo> const& I,
+    DomCorpus const* domCorpus)
+{
+    if (!I)
+    {
+        v = nullptr;
+        return;
+    }
+    tag_invoke(dom::ValueFromTag{}, v, *I, domCorpus);
+}
 
 } // mrdocs
 } // clang

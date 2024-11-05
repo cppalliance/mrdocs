@@ -12,6 +12,7 @@
 
 #include <mrdocs/Metadata/Function.hpp>
 #include <mrdocs/Support/TypeTraits.hpp>
+#include <lib/Dom/LazyObject.hpp>
 #include <utility>
 
 namespace clang {
@@ -146,6 +147,29 @@ toString(
     default:
         MRDOCS_UNREACHABLE();
     }
+}
+
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    IO& io,
+    Param const& p,
+    DomCorpus const*)
+{
+    io.map("name", dom::stringOrNull(p.Name));
+    io.map("type", p.Type);
+    io.map("default", dom::stringOrNull(p.Default));
+}
+
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Param const& p,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(p, domCorpus);
 }
 
 } // mrdocs

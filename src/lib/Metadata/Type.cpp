@@ -10,6 +10,8 @@
 
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Type.hpp>
+#include <lib/Dom/LazyArray.hpp>
+#include <lib/Dom/LazyObject.hpp>
 
 namespace clang {
 namespace mrdocs {
@@ -304,6 +306,76 @@ toString(
         write(' ', Name);
     visit(T, writeTypeAfter, write, std::false_type{});
     return write();
+}
+
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    IO& io,
+    TypeInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    io.map("kind", I.Kind);
+    io.map("is-pack", I.IsPackExpansion);
+    visit(I, [&io, domCorpus]<typename T>(const T& t)
+    {
+        if constexpr(T::isNamed())
+        {
+            io.map("name", t.Name);
+        }
+        if constexpr(T::isDecltype())
+        {
+            io.map("operand", t.Operand.Written);
+        }
+        if constexpr(T::isAuto())
+        {
+            io.map("keyword", t.Keyword);
+            if (t.Constraint)
+            {
+                io.map("constraint", t.Constraint);
+            }
+        }
+        if constexpr(requires { t.CVQualifiers; })
+        {
+            io.map("cv-qualifiers", t.CVQualifiers);
+        }
+        if constexpr(requires { t.ParentType; })
+        {
+            io.map("parent-type", t.ParentType);
+        }
+        if constexpr(requires { t.PointeeType; })
+        {
+            io.map("pointee-type", t.PointeeType);
+        }
+        if constexpr(T::isArray())
+        {
+            io.map("element-type", t.ElementType);
+            if(t.Bounds.Value)
+            {
+                io.map("bounds-value", *t.Bounds.Value);
+            }
+            io.map("bounds-expr", t.Bounds.Written);
+        }
+        if constexpr(T::isFunction())
+        {
+            io.map("return-type", t.ReturnType);
+            io.map("param-types", dom::LazyArray(t.ParamTypes, domCorpus));
+            io.map("exception-spec", t.ExceptionSpec);
+            io.map("ref-qualifier", t.RefQualifier);
+            io.map("is-variadic", t.IsVariadic);
+        }
+    });
+}
+
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    TypeInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
 }
 
 } // mrdocs

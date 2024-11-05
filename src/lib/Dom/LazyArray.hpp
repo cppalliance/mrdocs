@@ -22,15 +22,13 @@ namespace mrdocs {
 namespace dom {
 
 namespace detail {
-    struct noop {
-        template <class T>
-        auto operator()(T&& t) const
-        {
-            return t;
-        }
-    };
-
+    struct no_context_tag {};
     struct no_size_tag {};
+
+    template <class R, class Context>
+    concept IsCallableContext =
+        std::invocable<Context, std::ranges::range_value_t<R>> &&
+        HasStandaloneValueFrom<std::invoke_result_t<Context, std::ranges::range_value_t<R>>>;
 }
 
 /** Lazy array implementation
@@ -59,10 +57,11 @@ namespace detail {
     methods are not implemented.
 
 */
-template <std::ranges::random_access_range R, class F = detail::noop>
+template <std::ranges::random_access_range R, class Context = detail::no_context_tag>
 requires
-    std::invocable<F, std::ranges::range_value_t<R>> &&
-    HasStandaloneValueFrom<std::invoke_result_t<F, std::ranges::range_value_t<R>>>
+    HasValueFrom<std::ranges::range_value_t<R>, Context> ||
+       (std::invocable<Context, std::ranges::range_value_t<R>> &&
+        HasStandaloneValueFrom<std::invoke_result_t<Context, std::ranges::range_value_t<R>>>)
 class LazyArrayImpl : public ArrayImpl
 {
     using const_iterator_t = decltype(std::ranges::cbegin(std::declval<R&>()));
@@ -72,10 +71,12 @@ class LazyArrayImpl : public ArrayImpl
         std::ranges::range_size_t<R>,
         detail::no_size_tag>;
 
+
+
     const_iterator_t begin_;
     const_sentinel_t end_;
     [[no_unique_address]] size_type size_;
-    [[no_unique_address]] F transform_;
+    [[no_unique_address]] Context context_;
 
 public:
     explicit
@@ -90,10 +91,10 @@ public:
     }
 
     explicit
-    LazyArrayImpl(R const& arr, F transform)
+    LazyArrayImpl(R const& arr, Context const& ctx)
         : begin_(std::ranges::begin(arr))
         , end_(std::ranges::end(arr))
-        , transform_(std::move(transform))
+        , context_(std::move(ctx))
     {
         if constexpr (std::ranges::sized_range<R>)
         {
@@ -132,26 +133,39 @@ public:
         }
         auto it = begin_;
         std::ranges::advance(it, i);
-        if constexpr (std::is_same_v<F, detail::noop>)
+        if constexpr (std::is_same_v<Context, detail::no_context_tag>)
         {
             return ValueFrom(*it);
         }
+        else if constexpr (detail::IsCallableContext<R, Context>)
+        {
+            return ValueFrom(context_(*it));
+        }
         else
         {
-            return ValueFrom(transform_(*it));
+            return ValueFrom(*it, context_);
         }
     }
 };
 
-/** Return a new dom::Array based on a lazy array implementation.
-*/
+/** Return a new @ref dom::Array based on a lazy array implementation.
+ */
 template <std::ranges::random_access_range T>
-requires
-    HasStandaloneValueFrom<std::ranges::range_value_t<T>>
+requires HasStandaloneValueFrom<std::ranges::range_value_t<T>>
 Array
 LazyArray(T const& arr)
 {
     return newArray<LazyArrayImpl<T>>(arr);
+}
+
+/** Return a new dom::Array based on a FromValue context
+*/
+template <std::ranges::random_access_range T, class Context>
+requires HasValueFrom<std::ranges::range_value_t<T>, Context>
+Array
+LazyArray(T const& arr, Context const& ctx)
+{
+    return newArray<LazyArrayImpl<T, Context>>(arr, ctx);
 }
 
 /** Return a new dom::Array based on a transformed lazy array implementation.
@@ -161,9 +175,9 @@ requires
     std::invocable<F, std::ranges::range_value_t<T>> &&
     HasStandaloneValueFrom<std::invoke_result_t<F, std::ranges::range_value_t<T>>>
 Array
-LazyArray(T const& arr, F transform)
+TransformArray(T const& arr, F const& f)
 {
-    return newArray<LazyArrayImpl<T, F>>(arr, std::move(transform));
+    return newArray<LazyArrayImpl<T, F>>(arr, f);
 }
 
 } // dom

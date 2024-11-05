@@ -67,6 +67,19 @@ enum class FunctionClass
 
 MRDOCS_DECL dom::String toString(FunctionClass kind) noexcept;
 
+/** Return the FunctionClass from a @ref dom::Value string.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    FunctionClass kind)
+{
+    v = toString(kind);
+}
+
+
 // KRYSTIAN TODO: attributes (nodiscard, deprecated, and carries_dependency)
 // KRYSTIAN TODO: flag to indicate whether this is a function parameter pack
 /** Represents a single function parameter */
@@ -96,6 +109,16 @@ struct Param
     {
     }
 };
+
+/** Return the Param as a @ref dom::Value object.
+ */
+MRDOCS_DECL
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Param const& p,
+    DomCorpus const* domCorpus);
 
 // TODO: Expand to allow for documenting templating and default args.
 // Info for functions.
