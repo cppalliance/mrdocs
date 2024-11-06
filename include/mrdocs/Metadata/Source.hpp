@@ -86,6 +86,7 @@ struct MRDOCS_DECL
     }
 };
 
+MRDOCS_DECL
 void
 tag_invoke(
     dom::ValueFromTag,

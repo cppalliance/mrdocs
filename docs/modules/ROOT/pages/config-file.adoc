@@ -11,7 +11,10 @@ include::partial$mrdocs-example.yml[]
 --------
 
 The xref:usage.adoc[Usage] page provides a detailed explanation of what to combine options from the configuration file and the command line.
+
 The <<config-options-reference>> section provides a detailed explanation of the options available.
+
+More information about the generators can be found in the xref:generators.adoc[Generators] page.
 
 == YAML Schema
 
@@ -43,60 +46,6 @@ When this file is generated from a `CMakeLists.txt` script, the `cmake` option c
 
 Additionally, the `defines` option can be used to specify preprocessor definitions that should be used when generating the documentation.
 These definitions are included in all targets of the compilation database.
-
-== Generators
-
-MrDocs supports multiple output formats that can be specified via the `generate` option:
-
-|===
-|Format |Description
-
-|`adoc`
-|AsciiDoc format.
-
-|`html`
-|HTML format.
-
-|`xml`
-|XML format.
-|===
-
-* Asciidoc is a text-based format that is easy to read and write.
-It can also be converted to other formats such as HTML and Markdown.
-
-* HTML can be generated directly with the `html` format.
-
-* XML is a structured format that can be used in tests or as an intermediary format for other tools.
-
-The `generate` option can be used to specify the output format:
-
-[source,yaml]
-----
-# ...
-generate: adoc
-# ...
-----
-
-=== Generator Templates
-
-MrDocs attempts to support various alternatives for customizing the output format and style without complex workflows to post-process XML output.
-For the Asciidoc and HTML generators, the desired customization can usually be achieved by modifying the templates used to generate the output.
-
-In the root of the installation directory, you will find the `share/mrdocs/addons/generator` directory.
-This directory contains the templates used to generate the documentation with the markup formats.
-Users can create a copy of these files and provide their own `addons` directory via the `addons` option.
-This allows users to customize the output format to their needs.
-
-[source,yaml]
-----
-addons: /path/to/custom/addons
-----
-
-One advantage of custom templates over post-processing XML files is the ability to access symbols as a graph.
-If symbol `A` refers to symbol `B`, some properties of symbol `B` are likely to be required in the documentation of `A`.
-All templates and generators can access a reference to `B` by searching the symbol tree or simply by accessing the elements `A` refers to.
-
-// === Generator Plugins
 
 == Filters
 
