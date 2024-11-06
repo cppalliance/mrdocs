@@ -1,0 +1,854 @@
+= Generators
+
+MrDocs uses a generator to convert the extracted symbols into documentation. MrDocs supports multiple output formats that can be specified via the `generate` option:
+
+The `generate` option can be used to specify the output format:
+
+[source,yaml]
+----
+# ...
+generate: adoc
+# ...
+----
+
+Three output formats are supported:
+
+|===
+|Format |Description
+
+|`adoc`
+|AsciiDoc format.
+
+|`html`
+|HTML format.
+
+|`xml`
+|XML format.
+|===
+
+The corpus of symbols is provided to the generator responsible for converting these symbols into the desired output format.
+
+The `xml` generator is used as an intermediary format for other tools or for testing purposes. Users can write their own tools to process the XML output and generate custom documentation.
+
+The `adoc` and `html` generators use templates to generate the documentation. These templates can be customized to change the output format and style.
+
+Asciidoc is a text-based format that is easy to read and write. It can also be converted to other formats such as HTML and Markdown.
+
+HTML can be generated directly with the `html` format.
+
+== Generator Templates
+
+MrDocs attempts to support various alternatives for customizing the output format and style without complex workflows to post-process XML output. The `adoc` and `html` generators use https://handlebarsjs.com/[Handlebars,window=_blank] templates. These templates can be customized to change the output format and style of the documentation.
+
+The templates used to generate the documentation are located in the `share/mrdocs/addons/generator` directory. Users can create a copy of these files and provide their own `addons` directory via the `addons` option in the configuration file or via the command line.
+
+[source,yaml]
+----
+addons: /path/to/custom/addons
+----
+
+Each symbol goes through a main layout template in the `share/mrdocs/addons/generator/<generator>/layouts` directory. The multipage generator renders the layout as separate pages for each symbol. The single-page generator renders and concatenates the layout.
+
+Each time the generator encounters a symbol, it renders the layout template with the symbol data as the Handlebars context. The layout template can include other partial templates to render the symbol data. These partials are available in the `share/mrdocs/addons/generator/<generator>/partials` directory.
+
+The Document Object Model (DOM) for each symbol includes all information about the symbol. One advantage of custom templates over post-processing XML files is the ability to access symbols as a graph. If symbol `A` refers to symbol `B`, some properties of symbol `B` are likely to be required in the documentation of `A`. All templates and generators can access a reference to `B` by searching the symbol tree or simply by accessing the elements `A` refers to. All references to other symbols are resolved in the templates.
+
+== Document Object Model Reference
+
+The Document Object Model (DOM) is a tree structure that represents the symbols extracted from the source code. The DOM is used by the generator to render the documentation.
+
+=== Top-Level Fields
+
+The top-level object in the DOM is the context for a template. The top-level object has the following properties:
+
+|===
+|Property |Type| Description
+
+|`symbol`
+|`<<symbol-fields,Symbol Object>>`
+|The symbol being rendered.
+
+|`relfileprefix`
+|`string`
+|The relative file prefix for the output file.
+
+|`config`
+|`<<config-fields,Config Object>>`
+|The configuration object.
+
+|`sectionref`
+|`string`
+|The section reference.
+|===
+
+[#symbol-fields]
+=== Symbol
+
+The `Symbol` object represents a symbol extracted from the source code.The symbol being rendered is available in the `symbol` object in the Handlebars context.The symbol object has the following properties:
+
+|===
+|Property |Type| Description
+
+| `id`
+| `string`
+| A unique identifier for the symbol.
+
+| `name`
+| `string`
+| The nonqualified name of the symbol.
+
+| `kind`
+| `string`
+| The kind of symbol. (e.g., `class`, `function`, `variable`)
+
+| `access`
+| `string`
+| The access level of the symbol. (e.g., `public`, `protected`, `private`)
+
+| `implicit`
+| `string`
+| Whether the symbol was implicitly extracted as a dependency.
+
+| `namespace`
+| `<<symbol-fields,Symbol Object[]>>`
+| The namespaces of the symbol.
+
+| `parent`
+| `<<symbol-fields,Symbol Object>>`
+| The parent namespace of the symbol.
+
+| `doc`
+| `Any`
+| The documentation for the symbol.
+
+|===
+
+The `Symbol` object has additional properties based on the kind of symbol. The following table lists the additional properties for symbols that contain information about their scope (such as Namespaces and Classes):
+
+|===
+|Property |Type| Description
+
+| `members`
+| `<<symbol-fields,Symbol Object[]>>`
+| The members of that scope (e.g., member functions, namespace symbols).
+
+| `overloads`
+| `<<symbol-fields,Symbol Object[]>>`
+| Same as `members`, but groups overloaded functions as unique symbols of kind `overload`.
+|===
+
+Symbol objects that contain information about the location include the following properties:
+
+|===
+|Property |Type| Description
+
+| `loc`
+| `<<source-info-fields,Source Info Object>>`
+| The location of the symbol in the source code.
+|===
+
+When the symbol kind is `namespace`, the symbol object has the following additional properties:
+
+|===
+|Property |Type| Description
+
+| `interface`
+| `<<tranche-fields,Tranche Object>>`
+| The interface of the namespace.
+
+| `usingDirectives`
+| `<<symbol-fields,Symbol Object[]>>`
+| The using directives of the namespace.
+|===
+
+When the symbol kind is `record` (e.g., `class`, `struct`, `union`), the symbol object has the following additional properties:
+
+|===
+|Property |Type| Description
+
+| `tag`
+| `string`
+| The type of record (e.g., `class`, `struct`, `union`).
+
+| `defaultAccess`
+| `string`
+| The default access level of the record members (e.g., `public`, `private`).
+
+| `isTypedef`
+| `bool`
+| Whether the record is a typedef.
+
+| `bases`
+| `<<base-info-fields,Base Info Object[]>>`
+| The base classes of the record.
+
+| `interface`
+| `<<interface-fields,Interface Object>>`
+| The interface of the record.
+
+| `template`
+| `<<template-info-fields,Template Info Object>>`
+| The template information of the record.
+|===
+
+When the symbol kind is `enum`, the symbol object has the following additional properties:
+
+|===
+|Property |Type| Description
+
+| `type`
+| `<<type-info-fields,Type Info Object>>`
+| The type information of the enum.
+
+| `isScoped`
+| `bool`
+| Whether the enum is scoped.
+|===
+
+When the symbol kind is `function`, the symbol object has the following additional properties:
+
+|===
+|Property |Type| Description
+
+| `isVariadic`
+| `bool`
+| Whether the function is variadic.
+
+| `isVirtual`
+| `bool`
+| Whether the function is virtual.
+
+| `isVirtualAsWritten`
+| `bool`
+| Whether the function is virtual as written.
+
+| `isPure`
+| `bool`
+| Whether the function is pure.
+
+| `isDefaulted`
+| `bool`
+| Whether the function is defaulted.
+
+| `isExplicitlyDefaulted`
+| `bool`
+| Whether the function is explicitly defaulted.
+
+| `isDeleted`
+| `bool`
+| Whether the function is deleted.
+
+| `isDeletedAsWritten`
+| `bool`
+| Whether the function is deleted as written.
+
+| `isNoReturn`
+| `bool`
+| Whether the function is noreturn.
+
+| `hasOverrideAttr`
+| `bool`
+| Whether the function has the override attribute.
+
+| `hasTrailingReturn`
+| `bool`
+| Whether the function has a trailing return type.
+
+| `isConst`
+| `bool`
+| Whether the function is const.
+
+| `isVolatile`
+| `bool`
+| Whether the function is volatile.
+
+| `isFinal`
+| `bool`
+| Whether the function is final.
+
+| `isNodiscard`
+| `bool`
+| Whether the function is nodiscard.
+
+| `isExplicitObjectMemberFunction`
+| `bool`
+| Whether the function is an explicit object member function.
+
+| `constexprKind`
+| `string`
+| The constexpr kind of the function (e.g., `consteval`, `constexpr`).
+
+| `storageClass`
+| `string`
+| The storage class of the function (e.g., `static`, `extern`).
+
+| `refQualifier`
+| `string`
+| The reference qualifier of the function (e.g., `&`, `&&`).
+
+| `class`
+| `string`
+| The function class (e.g., `constructor`, `conversion`, `destructor`).
+
+| `params`
+| `<<param-fields,Param Object[]>>`
+| The parameters of the function.
+
+| `return`
+| `<<type-info-fields,Type Info Object>>`
+| The return type of the function.
+
+| `template`
+| `<<template-info-fields,Template Info Object>>`
+| The template information of the function.
+
+| `overloadedOperator`
+| `string`
+| The overloaded operator of the function.
+
+| `exceptionSpec`
+| `string`
+| The exception specification of the function.
+
+| `explicitSpec`
+| `string`
+| The explicit specification of the function.
+
+| `requires`
+| `string`
+| The `requires` expression of the function.
+|===
+
+When the symbol kind is `typedef`, the symbol object has the following additional properties:
+
+|===
+| Property | Type | Description
+
+| `type`
+| `<<type-info-fields,Type Info Object>>`
+| The type information of the typedef.
+
+| `template`
+| `<<template-info-fields,Template Info Object>>`
+| The template information of the typedef.
+
+| `isUsing`
+| `bool`
+| Whether the typedef is a `using` declaration.
+|===
+
+When the symbol kind is `variable`, the symbol object has the following additional properties:
+
+|===
+| Property | Type | Description
+
+| `type`
+| `<<type-info-fields,Type Info Object>>`
+| The type information of the variable.
+
+| `template`
+| `<<template-info-fields,Template Info Object>>`
+| The template information of the variable.
+
+| `constexprKind`
+| `string`
+| The constexpr kind of the variable (e.g., `consteval`, `constexpr`).
+
+| `storageClass`
+| `string`
+| The storage class of the variable (e.g., `static`, `extern`).
+
+| `isConstinit`
+| `bool`
+| Whether the variable is `constinit`.
+
+| `isThreadLocal`
+| `bool`
+| Whether the variable is thread-local.
+
+| `initializer`
+| `string`
+| The initializer of the variable.
+|===
+
+When the symbol kind is `field` (i.e. non-static data members), the symbol object has the following additional properties:
+
+|===
+| Property | Type | Description
+
+| `type`
+| `<<type-info-fields,Type Info Object>>`
+| The type information of the field.
+
+| `default`
+| `string`
+| The default value of the field.
+
+| `isMaybeUnused`
+| `bool`
+| Whether the field is maybe unused.
+
+| `isDeprecated`
+| `bool`
+| Whether the field is deprecated.
+
+| `isVariant`
+| `bool`
+| Whether the field is a variant.
+
+| `isMutable`
+| `bool`
+| Whether the field is mutable.
+
+| `isBitfield`
+| `bool`
+| Whether the field is a bitfield.
+
+| `hasNoUniqueAddress`
+| `string`
+| Whether the field has the `[[no_unique_address]]` attribute.
+
+| `bitfieldWidth`
+| `string`
+| The width of the bitfield.
+|===
+
+When the symbol kind is `friend`, the symbol object has the following additional properties:
+
+|===
+| Property | Type | Description
+
+| `name`
+| `string`
+| The name of the friend symbol or type.
+
+| `symbol`
+| <<symbol-fields,Symbol Object>>
+| The friend symbol.
+
+| `type`
+| <<type-info-fields,Type Info Object>>
+| The friend type.
+|===
+
+When the symbol kind is `alias`, the symbol object has the following additional properties:
+
+|===
+| Property | Type | Description
+
+| `aliasedSymbol`
+| <<name-info-fields,Name Info Object>>
+| The aliased symbol.
+|===
+
+When the symbol kind is `using`, the symbol object has the following additional properties:
+
+|===
+| Property | Type | Description
+
+| `class`
+| `string`
+| The class of the using declaration (e.g., `normal`, `typename`, `enum`).
+
+| `shadows`
+| <<symbol-fields,Symbol Object[]>>
+| The symbols being used.
+
+| `qualifier`
+| `<<name-info-fields,Name Info Object>>`
+| The qualifier of the using declaration.
+|===
+
+When the symbol kind is `enumerator`, the symbol object has the following additional properties:
+
+|===
+| Property | Type | Description
+
+| `initializer`
+| `string`
+| The initializer of the enumerator.
+|===
+
+When the symbol kind is `guide`, the symbol object has the following additional properties:
+
+|===
+| Property | Type | Description
+
+| `params`
+| `<<param-fields,Param Object[]>>`
+| The parameters of the guide.
+
+| `deduced`
+| `<<type-info-fields,Type Info Object>>`
+| The deduced type of the guide.
+
+| `template`
+| `<<template-info-fields,Template Info Object>>`
+| The template information of the guide.
+
+| `explicitSpec`
+| `string`
+| The explicit specification of the guide.
+|===
+
+When the symbol kind is `concept`, the symbol object has the following additional properties:
+
+|===
+| Property | Type | Description
+
+| `template`
+| `<<template-info-fields,Template Info Object>>`
+| The template information of the concept.
+
+| `constraint`
+| `string`
+| The constraint of the concept.
+|===
+
+[#source-info-fields]
+=== Source Info Fields
+
+The `Source Info` object represents the location of the symbol in the source code. The source info object has the following properties:
+
+|===
+|Property |Type| Description
+
+| `def`
+| <<location-fields,Location Object>>
+| Location where the entity was defined.
+
+| `decl`
+| <<location-fields,Location Object[]>>
+| Locations where the entity was declared.
+|===
+
+[#tranche-fields]
+=== Tranche Object Fields
+
+The `Tranche` object represents the symbols in a scope (e.g., namespace). The tranche object has the following properties:
+
+|===
+|Property |Type| Description
+
+| (symbol kind in plural form: e.g., `classes`, `functions`, `variables`)
+| `<<symbol-fields,Symbol Object[]>>`
+| The symbols of that kind in the scope.
+
+| `types`
+| `<<symbol-fields,Symbol Object[]>>`
+| The types in the scope.
+
+| `staticfuncs`
+| `<<symbol-fields,Symbol Object[]>>`
+| The static functions in the scope.
+
+| `overloads`
+| `<<symbol-fields,Symbol Object[]>>`
+| The overloads in the scope.
+
+| `staticoverloads`
+| `<<symbol-fields,Symbol Object[]>>`
+| The static overloads in the scope.
+|===
+
+[#interface-fields]
+=== Interface Object Fields
+
+The `Interface` object represents the interface of a record (e.g., class, struct, union). The interface object has the following properties:
+
+|===
+|Property |Type| Description
+
+| `public`
+| `<<tranche-fields,Tranche Object>>`
+| The public interface of the record.
+
+| `protected`
+| `<<tranche-fields,Tranche Object>>`
+| The protected interface of the record.
+
+| `private`
+| `<<tranche-fields,Tranche Object>>`
+| The private interface of the record.
+|===
+
+[#base-info-fields]
+=== Base Info Fields
+
+The `Base Info` object represents a base class of a record. The base info object has the following properties:
+
+|===
+|Property |Type| Description
+
+| `access`
+| `string`
+| The access level of the base class.
+
+| `isVirtual`
+| `bool`
+| Whether the base class is virtual.
+
+| `type`
+| `<<type-info-fields,Type Info Object>>`
+| The type information of the base class.
+|===
+
+[#template-info-fields]
+=== Template Info Fields
+
+The `Template Info` object represents the template information of a record, function, or typedef. The template info object has the following properties:
+
+|===
+|Property |Type| Description
+
+| `kind`
+| `string`
+| The kind of template (e.g., `explicit`, `partial`).
+
+| `primary`
+| `<<symbol-fields,Symbol Object>>`
+| The primary template.
+
+| `params`
+| `<<tparam-fields,tParam Object[]>>`
+| The template parameters.
+
+| `args`
+| `<<targ-fields,Type Info Object[]>>`
+| The template arguments.
+
+| `requires`
+| `string`
+| The `requires` expression of the template.
+|===
+
+[#type-info-fields]
+=== Type Info Fields
+
+The `Type Info` object represents the type information of a symbol. The type info object has the following properties:
+
+|===
+|Property |Type| Description
+
+| `kind`
+| `string`
+| The kind of type (e.g., `named`, `decltype`, `auto`, `pointer`, `reference`, `array`, `function`).
+
+| `is-pack`
+| `bool`
+| Whether the type is a pack expansion.
+
+| `name`
+| `string`
+| The name of the type.
+
+| `operand`
+| `string`
+| The operand of the type.
+
+| `keyword`
+| `string`
+| The keyword of the type.
+
+| `constraint`
+| `string`
+| The constraint of the type.
+
+| `cv-qualifiers`
+| `string`
+| The cv qualifier of the type (e.g., `const`, `volatile`).
+
+| `parent-type`
+| `<<type-info-fields,Type Info Object>>`
+| The parent type of the type.
+
+| `pointee-type`
+| `<<type-info-fields,Type Info Object>>`
+| The pointee type of the type.
+
+| `element-type`
+| `<<type-info-fields,Type Info Object>>`
+| The element type of the type.
+
+| `bounds-value`
+| `string`
+| The bounds value of the type.
+
+| `bounds-expr`
+| `string`
+| The bounds expression of the type.
+
+| `return-type`
+| `<<type-info-fields,Type Info Object>>`
+| The return type of the type.
+
+| `param-types`
+| `<<type-info-fields,Type Info Object[]>>`
+| The parameter types of the type.
+
+| `exception-spec`
+| `string`
+| The exception specification of the type.
+
+| `ref-qualifier`
+| `string`
+| The reference qualifier of the type.
+
+| `is-variadic`
+| `bool`
+| Whether the type is variadic.
+|===
+
+[#param-fields]
+=== Param Fields
+
+The `Param` object represents the parameter of a function. The param object has the following properties:
+
+|===
+|Property |Type| Description
+
+| `name`
+| `string`
+| The name of the parameter.
+
+| `type`
+| `<<type-info-fields,Type Info Object>>`
+| The type information of the parameter.
+
+| `default`
+| `string`
+| The default value of the parameter.
+|===
+
+[#name-info-fields]
+=== Name Info Fields
+
+The `Name Info` object represents the name of a symbol. The name info object has the following properties:
+
+|===
+|Property |Type| Description
+
+| `name`
+| `string`
+| The name of the symbol.
+
+| `symbol`
+| `string`
+| The unique identifier of the symbol.
+
+| `args`
+| `<<targ-fields,Type Info Object[]>>`
+| The template arguments of the symbol.
+
+| `prefix`
+| `string`
+| The prefix of the symbol.
+|===
+
+[#location-fields]
+=== Location Fields
+
+The `Location` object represents the location of a symbol in the source code. The location object has the following properties:
+
+|===
+|Property |Type| Description
+
+| `path`
+| `string`
+| The path of the source file.
+
+| `file`
+| `string`
+| The filename of the source file.
+
+| `line`
+| `integer`
+| The line number of the symbol.
+
+| `kind`
+| `string`
+| The kind of file (e.g., `source`, `system`, `other`).
+
+| `documented`
+| `bool`
+| Whether the symbol is documented.
+|===
+
+[#tparam-fields]
+=== TParam Fields
+
+The `TParam` object represents a template parameter of a record, function, or typedef. The tparam object has the following properties:
+
+|===
+|Property |Type| Description
+
+| `kind`
+| `string`
+| The kind of template parameter (e.g., `type`, `non-type`, `template`).
+
+| `name`
+| `string`
+| The name of the template parameter.
+
+| `is-pack`
+| `bool`
+| Whether the template parameter is a pack expansion.
+
+| `default`
+| `string`
+| The default value of the template parameter.
+
+| `key`
+| `string`
+| The key kind of the template parameter.
+
+| `constraint`
+| `string`
+| The constraint of the template parameter.
+
+| `type`
+| `<<type-info-fields,Type Info Object>>`
+| The type information of the template parameter.
+
+| `params`
+| `<<tparam-fields,TParam Object[]>>`
+| The template parameters of the template parameter.
+|===
+
+[#targ-fields]
+=== Targ Fields
+
+The `Targ` object represents a template argument of a record, function, or typedef. The targ object has the following properties:
+
+|===
+|Property |Type| Description
+
+| `kind`
+| `string`
+| The kind of template argument (e.g., `type`, `non-type`, `template`).
+
+| `is-pack`
+| `bool`
+| Whether the template argument is a pack expansion.
+
+| `type`
+| `<<type-info-fields,Type Info Object>>`
+| The type information of the template argument.
+
+| `value`
+| `string`
+| The value of the template argument.
+
+| `name`
+| `string`
+| The name of the template argument.
+
+| `template`
+| `<<template-info-fields,Template Info Object>>`
+| The template information of the template argument.
+|===
+
+[#config-fields]
+=== Config Fields
+
+The `Config` object represents the configuration object. It includes all values provided to MrDocs in the configuration file or via the command line. Please refer to the xref:config-file.adoc[configuration file reference] for more information.
