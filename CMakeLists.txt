@@ -377,7 +377,7 @@ if (MRDOCS_BUILD_TESTS)
     endif ()
     target_compile_definitions(mrdocs-test PRIVATE -DMRDOCS_TEST_FILES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/test-files")
     add_test(NAME mrdocs-unit-tests COMMAND mrdocs-test --unit=true)
-    foreach (testgenerator IN ITEMS xml adoc)
+    foreach (testgenerator IN ITEMS xml adoc html)
         add_test(NAME mrdocs-golden-tests-${testgenerator}
             COMMAND
                 mrdocs-test
