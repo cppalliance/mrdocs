@@ -1,4 +1,4 @@
-</html>
+<html>
     <head></head>
     <body>
         <div>
@@ -11,16 +11,76 @@
         <h2>Global namespace</h2>
     </div>
     <div>
-            <div>
-                <h3> Types</h3>
-                    </div>
+        <div>
+            <h3> Types</h3>
+            <table>
+                <colgroup>
+                    <col style="width: 50%;">
+                    <col style="width: 50%;">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr>
+                            <td>
+                                <a href="">C</a> 
+                            </td>
+                            <td>
+
+                                    </td>
+                        </tr>                <tr>
+                            <td>
+                                <a href="">T</a> 
+                            </td>
+                            <td>
+
+                                    </td>
+                        </tr>                <tr>
+                            <td>
+                                <a href="">U</a> 
+                            </td>
+                            <td>
+
+                                    </td>
+                        </tr>        </tbody>
+            </table>
+        </div>
     <div>
-            <h3>Types</h3>
+                <h3>Functions</h3>
+                <table>
+                    <colgroup>
+                        <col style="width: 50%;">
+                        <col style="width: 50%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                <tr>
+                                <td>
+                                    <a href="">f</a> 
+                                </td>
+                                <td>
+
+                                        </td>
+                            </tr>                <tr>
+                                <td>
+                                    <a href="">g</a> 
+                                </td>
+                                <td>
+
+                                        </td>
+                            </tr>        </tbody>
+                </table>
             </div>
-    <div>
-                <h3> Member Functions</h3>
-                    </div>
-    </div>
+            </div>
 </div>
 
 [#[object Object]]
@@ -35,10 +95,16 @@
         <h3>Synopsis</h3>
         <div>
             <code>
-                            </code>
+                <p>
+                    <span>
+                        Declared in <code><variadic-function.cpp></code>
+                    </span>
+                </p>
+                
+            </code>
         </div>
         <pre class="source-code cpp">
-            using T = void();
+            using T = void(...);
         </pre>
     </div>
 
@@ -56,10 +122,16 @@
         <h3>Synopsis</h3>
         <div>
             <code>
-                            </code>
+                <p>
+                    <span>
+                        Declared in <code><variadic-function.cpp></code>
+                    </span>
+                </p>
+                
+            </code>
         </div>
         <pre class="source-code cpp">
-            using U = void(int);
+            using U = void(int, ...);
         </pre>
     </div>
 
@@ -77,7 +149,13 @@
         <h3>Synopsis</h3>
         <div>
             <code>
-                            </code>
+                <p>
+                    <span>
+                        Declared in <code><variadic-function.cpp></code>
+                    </span>
+                </p>
+                
+            </code>
         </div>
         <pre class="source-code cpp">
             void
@@ -102,7 +180,13 @@ f();
         <h3>Synopsis</h3>
         <div>
             <code>
-                            </code>
+                <p>
+                    <span>
+                        Declared in <code><variadic-function.cpp></code>
+                    </span>
+                </p>
+                
+            </code>
         </div>
         <pre class="source-code cpp">
             void
@@ -127,18 +211,24 @@ g(int);
         <h3>Synopsis</h3>
         <div>
             <code>
-                            </code>
+                <p>
+                    <span>
+                        Declared in <code><variadic-function.cpp></code>
+                    </span>
+                </p>
+                
+            </code>
         </div>
         <pre class="source-code cpp">
             template<
-    typename A = void(),
-    typename B = void(int)>
+    typename A = void(...),
+    typename B = void(int, ...)>
 struct C;
         </pre>
     </div>
 
     <div>
-                            </div>
+                                                                                                                </div>
 
 
 </div>

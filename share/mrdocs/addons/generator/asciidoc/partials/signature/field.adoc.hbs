@@ -1,6 +1,6 @@
 {{#if symbol.isMutable}}mutable
 {{/if~}}
-{{>declarator-before symbol.type}} {{>declarator-id symbol~}}
+{{>types/declarator-before symbol.type}} {{>types/declarator-id symbol~}}
 {{#if symbol.isBitfield}} : {{symbol.bitfieldWidth}}{{/if~}}
 {{#if symbol.default}} = {{symbol.default}}{{/if~}}
-{{>declarator-after symbol.type}}
+{{>types/declarator-after symbol.type}}

@@ -28,7 +28,7 @@
 
 === Synopsis
 
-Declared in header `<explicit-conv-operator.cpp>`
+Declared in `<explicit-conv-operator.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -54,7 +54,7 @@ struct Explicit;
 
 === Synopsis
 
-Declared in header `<explicit-conv-operator.cpp>`
+Declared in `<explicit-conv-operator.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -78,7 +78,7 @@ operator bool();
 
 === Synopsis
 
-Declared in header `<explicit-conv-operator.cpp>`
+Declared in `<explicit-conv-operator.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -104,7 +104,7 @@ struct ExplicitFalse;
 
 === Synopsis
 
-Declared in header `<explicit-conv-operator.cpp>`
+Declared in `<explicit-conv-operator.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -128,7 +128,7 @@ operator bool();
 
 === Synopsis
 
-Declared in header `<explicit-conv-operator.cpp>`
+Declared in `<explicit-conv-operator.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -154,7 +154,7 @@ struct ExplicitTrue;
 
 === Synopsis
 
-Declared in header `<explicit-conv-operator.cpp>`
+Declared in `<explicit-conv-operator.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -178,7 +178,7 @@ operator bool();
 
 === Synopsis
 
-Declared in header `<explicit-conv-operator.cpp>`
+Declared in `<explicit-conv-operator.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -205,7 +205,7 @@ struct ExplicitExpression;
 
 === Synopsis
 
-Declared in header `<explicit-conv-operator.cpp>`
+Declared in `<explicit-conv-operator.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

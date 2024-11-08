@@ -52,7 +52,7 @@
 
 === Synopsis
 
-Declared in header `<record-inheritance.cpp>`
+Declared in `<record-inheritance.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -71,7 +71,7 @@ struct S0;
 
 === Synopsis
 
-Declared in header `<record-inheritance.cpp>`
+Declared in `<record-inheritance.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -90,7 +90,7 @@ class C0;
 
 === Synopsis
 
-Declared in header `<record-inheritance.cpp>`
+Declared in `<record-inheritance.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -109,7 +109,7 @@ union U0;
 
 === Synopsis
 
-Declared in header `<record-inheritance.cpp>`
+Declared in `<record-inheritance.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -128,7 +128,7 @@ struct S1;
 
 === Synopsis
 
-Declared in header `<record-inheritance.cpp>`
+Declared in `<record-inheritance.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -148,7 +148,7 @@ struct S2
 
 === Synopsis
 
-Declared in header `<record-inheritance.cpp>`
+Declared in `<record-inheritance.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -168,7 +168,7 @@ struct S3
 
 === Synopsis
 
-Declared in header `<record-inheritance.cpp>`
+Declared in `<record-inheritance.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -189,7 +189,7 @@ struct S4
 
 === Synopsis
 
-Declared in header `<record-inheritance.cpp>`
+Declared in `<record-inheritance.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -209,7 +209,7 @@ class C1
 
 === Synopsis
 
-Declared in header `<record-inheritance.cpp>`
+Declared in `<record-inheritance.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -229,7 +229,7 @@ class C2
 
 === Synopsis
 
-Declared in header `<record-inheritance.cpp>`
+Declared in `<record-inheritance.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -249,7 +249,7 @@ class C3
 
 === Synopsis
 
-Declared in header `<record-inheritance.cpp>`
+Declared in `<record-inheritance.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -269,7 +269,7 @@ class C4
 
 === Synopsis
 
-Declared in header `<record-inheritance.cpp>`
+Declared in `<record-inheritance.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -289,7 +289,7 @@ class C5
 
 === Synopsis
 
-Declared in header `<record-inheritance.cpp>`
+Declared in `<record-inheritance.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -309,7 +309,7 @@ class C6
 
 === Synopsis
 
-Declared in header `<record-inheritance.cpp>`
+Declared in `<record-inheritance.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -330,7 +330,7 @@ class C7
 
 === Synopsis
 
-Declared in header `<record-inheritance.cpp>`
+Declared in `<record-inheritance.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -351,7 +351,7 @@ struct S5
 
 === Synopsis
 
-Declared in header `<record-inheritance.cpp>`
+Declared in `<record-inheritance.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

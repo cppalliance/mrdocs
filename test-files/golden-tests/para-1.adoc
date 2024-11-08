@@ -30,7 +30,7 @@ brief
 
 === Synopsis
 
-Declared in header `<para-1.cpp>`
+Declared in `<para-1.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -54,7 +54,7 @@ f1();
 
 === Synopsis
 
-Declared in header `<para-1.cpp>`
+Declared in `<para-1.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -78,7 +78,7 @@ f2();
 
 === Synopsis
 
-Declared in header `<para-1.cpp>`
+Declared in `<para-1.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -104,7 +104,7 @@ brief
 
 === Synopsis
 
-Declared in header `<para-1.cpp>`
+Declared in `<para-1.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

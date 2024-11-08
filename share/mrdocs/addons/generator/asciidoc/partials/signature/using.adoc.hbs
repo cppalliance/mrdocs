@@ -1,1 +1,1 @@
-using {{#if (eq symbol.class "typename")}}typename {{/if}}{{#if (eq symbol.class "enum")}}enum {{/if}}{{#if symbol.qualifier}}{{>name-info symbol.qualifier}}::{{/if}}{{symbol.name~}}
+using {{#if (eq symbol.class "typename")}}typename {{/if}}{{#if (eq symbol.class "enum")}}enum {{/if}}{{#if symbol.qualifier}}{{>types/name-info symbol.qualifier}}::{{/if}}{{symbol.name~}}

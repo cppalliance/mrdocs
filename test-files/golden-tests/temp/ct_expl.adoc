@@ -24,7 +24,7 @@
 
 === Synopsis
 
-Declared in header `<temp/ct_expl.cpp>`
+Declared in `<temp/ct_expl.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -51,7 +51,7 @@ struct A;
 
 === Synopsis
 
-Declared in header `<temp/ct_expl.cpp>`
+Declared in `<temp/ct_expl.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -75,7 +75,7 @@ f();
 
 === Synopsis
 
-Declared in header `<temp/ct_expl.cpp>`
+Declared in `<temp/ct_expl.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -102,7 +102,7 @@ struct xref:A-0e.adoc[pass:[A]]<int>;
 
 === Synopsis
 
-Declared in header `<temp/ct_expl.cpp>`
+Declared in `<temp/ct_expl.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

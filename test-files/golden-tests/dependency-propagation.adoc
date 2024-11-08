@@ -29,7 +29,7 @@
 
 === Synopsis
 
-Declared in header `<dependency-propagation.cpp>`
+Declared in `<dependency-propagation.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -66,7 +66,7 @@ struct E
 
 === Synopsis
 
-Declared in header `<dependency-propagation.cpp>`
+Declared in `<dependency-propagation.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -84,7 +84,7 @@ using C = xref:N/B.adoc[B]<T>;
 
 === Synopsis
 
-Declared in header `<dependency-propagation.cpp>`
+Declared in `<dependency-propagation.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -102,7 +102,7 @@ using B = xref:N/A.adoc[A]<T>;
 
 === Synopsis
 
-Declared in header `<dependency-propagation.cpp>`
+Declared in `<dependency-propagation.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

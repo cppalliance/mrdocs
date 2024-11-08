@@ -28,7 +28,7 @@
 
 === Synopsis
 
-Declared in header `<param.cpp>`
+Declared in `<param.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -61,7 +61,7 @@ f(int x);
 
 === Synopsis
 
-Declared in header `<param.cpp>`
+Declared in `<param.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -98,7 +98,7 @@ g(
 
 === Synopsis
 
-Declared in header `<param.cpp>`
+Declared in `<param.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -138,7 +138,7 @@ h(
 
 === Synopsis
 
-Declared in header `<param.cpp>`
+Declared in `<param.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

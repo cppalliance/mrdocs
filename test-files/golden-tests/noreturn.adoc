@@ -29,7 +29,7 @@
 
 === Synopsis
 
-Declared in header `<noreturn.cpp>`
+Declared in `<noreturn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -53,7 +53,7 @@ f1();
 
 === Synopsis
 
-Declared in header `<noreturn.cpp>`
+Declared in `<noreturn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -93,7 +93,7 @@ struct T;
 
 === Synopsis
 
-Declared in header `<noreturn.cpp>`
+Declared in `<noreturn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -118,7 +118,7 @@ f2();
 
 === Synopsis
 
-Declared in header `<noreturn.cpp>`
+Declared in `<noreturn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -142,7 +142,7 @@ f3();
 
 === Synopsis
 
-Declared in header `<noreturn.cpp>`
+Declared in `<noreturn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

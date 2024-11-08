@@ -28,7 +28,7 @@
 
 === Synopsis
 
-Declared in header `<namespace-alias-1.cpp>`
+Declared in `<namespace-alias-1.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

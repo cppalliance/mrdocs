@@ -37,7 +37,7 @@
 
 === Synopsis
 
-Declared in header `<filters/blacklist_test.cpp>`
+Declared in `<filters/blacklist_test.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

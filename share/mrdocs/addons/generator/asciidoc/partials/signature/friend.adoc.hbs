@@ -1,5 +1,5 @@
 {{#if symbol.type~}}
-friend {{>declarator symbol.type~}}
+friend {{>types/declarator symbol.type~}}
 {{else if symbol.symbol~}}
 {{> (concat 'signature' '/' (lookup . 'symbol.symbol.kind')) symbol=symbol.symbol isFriend=true~}}
 {{/if}}

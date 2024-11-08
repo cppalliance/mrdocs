@@ -34,7 +34,7 @@ Struct T brief
 
 === Synopsis
 
-Declared in header `<friend-6.cpp>`
+Declared in `<friend-6.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -68,7 +68,7 @@ Friend int brief
 
 === Synopsis
 
-Declared in header `<friend-6.cpp>`
+Declared in `<friend-6.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -87,7 +87,7 @@ Friend class Z brief
 
 === Synopsis
 
-Declared in header `<friend-6.cpp>`
+Declared in `<friend-6.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -106,7 +106,7 @@ Struct U brief
 
 === Synopsis
 
-Declared in header `<friend-6.cpp>`
+Declared in `<friend-6.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -136,7 +136,7 @@ Friend T brief
 
 === Synopsis
 
-Declared in header `<friend-6.cpp>`
+Declared in `<friend-6.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -155,7 +155,7 @@ Struct V brief
 
 === Synopsis
 
-Declared in header `<friend-6.cpp>`
+Declared in `<friend-6.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -185,7 +185,7 @@ Friend struct U brief
 
 === Synopsis
 
-Declared in header `<friend-6.cpp>`
+Declared in `<friend-6.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

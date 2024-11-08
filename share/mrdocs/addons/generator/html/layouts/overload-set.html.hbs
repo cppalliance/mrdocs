@@ -2,7 +2,7 @@
 {{#if relfileprefix}}<meta name="relfileprefix" content="{{relfileprefix}}">{{/if}}
 <div id="{{#if (is_multipage)}}{{symbol.id}}{{else}}{{symbol.ref}}{{/if}}">
 
-<h1>{{#if symbol.name}}Overload set {{>nested-name-specifier symbol=symbol.parent}}{{symbol.name}}{{else}}Unnamed overload set{{/if}}</h1>
+<h1>{{#if symbol.name}}Overload set {{>types/nested-name-specifier symbol=symbol.parent}}{{symbol.name}}{{else}}Unnamed overload set{{/if}}</h1>
 
 <h2>Members</h2>
 

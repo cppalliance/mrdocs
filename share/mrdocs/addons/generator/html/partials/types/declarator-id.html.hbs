@@ -1,0 +1,11 @@
+{{! The declarator for a symbol: typically the symbol name with a link }}
+{{#if (and (eq kind "function") (eq class "conversion"))~}}
+    operator {{>types/declarator return nolink=nolink~}}
+{{else if (eq kind "guide")~}}
+    {{>types/declarator deduced nolink=nolink~}}
+{{else~}}
+    {{#if (and link.ref (not nolink))}}<a href="{{link.ref}}">{{name}}</a>{{else}}{{name}}{{/if~}}
+    {{#if (or (eq template.kind "explicit") (eq template.kind "partial"))~}}
+        {{>types/template-args args=template.args nolink=nolink~}}
+    {{/if~}}
+{{/if}}

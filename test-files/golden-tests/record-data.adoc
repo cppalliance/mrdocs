@@ -30,7 +30,7 @@
 
 === Synopsis
 
-Declared in header `<record-data.cpp>`
+Declared in `<record-data.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -64,7 +64,7 @@ struct T;
 
 === Synopsis
 
-Declared in header `<record-data.cpp>`
+Declared in `<record-data.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -81,7 +81,7 @@ int i;
 
 === Synopsis
 
-Declared in header `<record-data.cpp>`
+Declared in `<record-data.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -98,7 +98,7 @@ double j;
 
 === Synopsis
 
-Declared in header `<record-data.cpp>`
+Declared in `<record-data.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -116,7 +116,7 @@ int k;
 
 === Synopsis
 
-Declared in header `<record-data.cpp>`
+Declared in `<record-data.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -133,7 +133,7 @@ int l : 8;
 
 === Synopsis
 
-Declared in header `<record-data.cpp>`
+Declared in `<record-data.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -150,7 +150,7 @@ int m : 4 + 4;
 
 === Synopsis
 
-Declared in header `<record-data.cpp>`
+Declared in `<record-data.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -176,7 +176,7 @@ struct U;
 
 === Synopsis
 
-Declared in header `<record-data.cpp>`
+Declared in `<record-data.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -193,7 +193,7 @@ xref:T.adoc[T] t;
 
 === Synopsis
 
-Declared in header `<record-data.cpp>`
+Declared in `<record-data.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -228,7 +228,7 @@ class V;
 
 === Synopsis
 
-Declared in header `<record-data.cpp>`
+Declared in `<record-data.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -245,7 +245,7 @@ int i;
 
 === Synopsis
 
-Declared in header `<record-data.cpp>`
+Declared in `<record-data.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -262,7 +262,7 @@ unsigned long j;
 
 === Synopsis
 
-Declared in header `<record-data.cpp>`
+Declared in `<record-data.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -279,7 +279,7 @@ double k;
 
 === Synopsis
 
-Declared in header `<record-data.cpp>`
+Declared in `<record-data.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -305,7 +305,7 @@ struct W;
 
 === Synopsis
 
-Declared in header `<record-data.cpp>`
+Declared in `<record-data.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -322,7 +322,7 @@ char buf[64];
 
 === Synopsis
 
-Declared in header `<record-data.cpp>`
+Declared in `<record-data.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -366,7 +366,7 @@ struct X;
 
 === Synopsis
 
-Declared in header `<record-data.cpp>`
+Declared in `<record-data.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -383,7 +383,7 @@ using Q = P;
 
 === Synopsis
 
-Declared in header `<record-data.cpp>`
+Declared in `<record-data.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -400,7 +400,7 @@ int x0 = 0;
 
 === Synopsis
 
-Declared in header `<record-data.cpp>`
+Declared in `<record-data.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -417,7 +417,7 @@ P x1;
 
 === Synopsis
 
-Declared in header `<record-data.cpp>`
+Declared in `<record-data.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -434,7 +434,7 @@ P const x2[32];
 
 === Synopsis
 
-Declared in header `<record-data.cpp>`
+Declared in `<record-data.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -451,7 +451,7 @@ xref:X/Q.adoc[Q] x3;
 
 === Synopsis
 
-Declared in header `<record-data.cpp>`
+Declared in `<record-data.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

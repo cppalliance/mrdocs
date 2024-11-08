@@ -22,7 +22,7 @@
 
 === Synopsis
 
-Declared in header `<attributes_1.cpp>`
+Declared in `<attributes_1.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

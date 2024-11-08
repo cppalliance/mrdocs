@@ -1,7 +1,7 @@
 {{!-- field --}}
 <div id="{{symbol.id}}">
     <div>
-        <h2>{{>nested-name-specifier symbol=symbol.parent}}{{symbol.name}}</h2>
+        <h2>{{>types/nested-name-specifier symbol=symbol.parent}}{{symbol.name}}</h2>
         {{{symbol.doc.brief}}}
     </div>
 
@@ -9,7 +9,7 @@
         <h3>Synopsis</h3>
         <div>
             <code>
-                {{>source dcl=(primary_location symbol)}}
+                {{>types/source dcl=(primary_location symbol)}}
             </code>
         </div>
         <pre class="source-code cpp">

@@ -24,7 +24,7 @@
 
 === Synopsis
 
-Declared in header `<static-data-def-constexpr.cpp>`
+Declared in `<static-data-def-constexpr.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -50,7 +50,7 @@ struct S;
 
 === Synopsis
 
-Declared in header `<static-data-def-constexpr.cpp>`
+Declared in `<static-data-def-constexpr.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -69,7 +69,7 @@ xref:S.adoc[S] const s = S{};
 
 === Synopsis
 
-Declared in header `<static-data-def-constexpr.cpp>`
+Declared in `<static-data-def-constexpr.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -95,7 +95,7 @@ struct T;
 
 === Synopsis
 
-Declared in header `<static-data-def-constexpr.cpp>`
+Declared in `<static-data-def-constexpr.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

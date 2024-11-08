@@ -56,7 +56,7 @@
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -82,7 +82,7 @@ struct T01;
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -106,7 +106,7 @@ f();
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -132,7 +132,7 @@ struct T02;
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -157,7 +157,7 @@ f();
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -183,7 +183,7 @@ struct T03;
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -207,7 +207,7 @@ f() &;
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -233,7 +233,7 @@ struct T04;
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -257,7 +257,7 @@ f() &&;
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -283,7 +283,7 @@ struct T05;
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -307,7 +307,7 @@ f() const;
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -333,7 +333,7 @@ struct T06;
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -358,7 +358,7 @@ f();
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -384,7 +384,7 @@ struct T08;
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -408,7 +408,7 @@ f();
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -434,7 +434,7 @@ struct T09;
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -458,7 +458,7 @@ f() noexcept;
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -484,7 +484,7 @@ struct T10;
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -508,7 +508,7 @@ f();
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -534,7 +534,7 @@ struct T11;
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -558,7 +558,7 @@ f();
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -584,7 +584,7 @@ struct T12;
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -608,7 +608,7 @@ f(...);
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -634,7 +634,7 @@ struct T13;
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -659,7 +659,7 @@ f();
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -685,7 +685,7 @@ struct T14;
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -710,7 +710,7 @@ f() = 0;
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -736,7 +736,7 @@ struct T15;
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -760,7 +760,7 @@ f() volatile;
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -786,7 +786,7 @@ struct T16;
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -811,7 +811,7 @@ f();
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -837,7 +837,7 @@ struct T17
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -862,7 +862,7 @@ f() override;
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -897,7 +897,7 @@ struct U;
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -922,7 +922,7 @@ f1(...) const volatile noexcept;
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -948,7 +948,7 @@ f2() noexcept;
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -973,7 +973,7 @@ f3() const volatile noexcept = 0;
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1008,7 +1008,7 @@ struct V
 
 === Synopsis
 
-Declared in header `<mem-fn.cpp>`
+Declared in `<mem-fn.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

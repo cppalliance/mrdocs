@@ -33,7 +33,7 @@ T::f
 
 === Synopsis
 
-Declared in header `<friend-3.cpp>`
+Declared in `<friend-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -63,7 +63,7 @@ T::f
 
 === Synopsis
 
-Declared in header `<friend-3.cpp>`
+Declared in `<friend-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -84,7 +84,7 @@ T::f
 
 === Synopsis
 
-Declared in header `<friend-3.cpp>`
+Declared in `<friend-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -108,7 +108,7 @@ f();
 
 === Synopsis
 
-Declared in header `<friend-3.cpp>`
+Declared in `<friend-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -134,7 +134,7 @@ struct U;
 
 === Synopsis
 
-Declared in header `<friend-3.cpp>`
+Declared in `<friend-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

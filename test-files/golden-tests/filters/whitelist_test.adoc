@@ -37,7 +37,7 @@
 
 === Synopsis
 
-Declared in header `<filters/whitelist_test.cpp>`
+Declared in `<filters/whitelist_test.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -74,7 +74,7 @@ documented_function();
 
 === Synopsis
 
-Declared in header `<filters/whitelist_test.cpp>`
+Declared in `<filters/whitelist_test.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

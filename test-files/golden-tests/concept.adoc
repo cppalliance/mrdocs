@@ -36,7 +36,7 @@
 
 == Synopsis
 
-Declared in header `<concept.cpp>`
+Declared in `<concept.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -54,7 +54,7 @@ concept C = sizeof(T) == sizeof(int);
 
 === Synopsis
 
-Declared in header `<concept.cpp>`
+Declared in `<concept.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -79,7 +79,7 @@ f();
 
 === Synopsis
 
-Declared in header `<concept.cpp>`
+Declared in `<concept.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

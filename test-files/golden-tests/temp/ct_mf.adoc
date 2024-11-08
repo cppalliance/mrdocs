@@ -22,7 +22,7 @@
 
 === Synopsis
 
-Declared in header `<temp/ct_mf.cpp>`
+Declared in `<temp/ct_mf.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -49,7 +49,7 @@ struct A;
 
 === Synopsis
 
-Declared in header `<temp/ct_mf.cpp>`
+Declared in `<temp/ct_mf.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

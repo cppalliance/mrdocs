@@ -60,7 +60,7 @@ xref:f-08.adoc[pass:[f]]() requires (sizeof(T) == 2);
 
 === Synopsis
 
-Declared in header `<requires-clause.cpp>`
+Declared in `<requires-clause.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -85,7 +85,7 @@ f() requires (sizeof(T) == 4);
 
 === Synopsis
 
-Declared in header `<requires-clause.cpp>`
+Declared in `<requires-clause.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -141,7 +141,7 @@ xref:g-0c.adoc[pass:[g]]();
 
 === Synopsis
 
-Declared in header `<requires-clause.cpp>`
+Declared in `<requires-clause.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -166,7 +166,7 @@ g();
 
 === Synopsis
 
-Declared in header `<requires-clause.cpp>`
+Declared in `<requires-clause.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -191,7 +191,7 @@ g();
 
 === Synopsis
 
-Declared in header `<requires-clause.cpp>`
+Declared in `<requires-clause.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

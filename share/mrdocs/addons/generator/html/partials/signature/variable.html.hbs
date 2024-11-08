@@ -1,4 +1,4 @@
-{{#if symbol.template}}{{>template-head symbol.template}}
+{{#if symbol.template}}{{>types/template-head symbol.template}}
 {{/if~}}
 {{#if symbol.constexprKind}}{{symbol.constexprKind}}
 {{/if~}}
@@ -6,6 +6,6 @@
 {{/if~}}
 {{#if symbol.isThreadLocal}}thread_local
 {{/if~}}
-{{>declarator-before symbol.type}} {{>declarator-id symbol link=symbol.template.primary~}}
-{{>declarator-after symbol.type~}}
+{{>types/declarator-before symbol.type}} {{>types/declarator-id symbol link=symbol.template.primary~}}
+{{>types/declarator-after symbol.type~}}
 {{#if symbol.initializer}} = {{symbol.initializer}}{{/if}}

@@ -38,7 +38,7 @@
 
 === Synopsis
 
-Declared in header `<class-template-spec.cpp>`
+Declared in `<class-template-spec.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -65,7 +65,7 @@ struct A;
 
 === Synopsis
 
-Declared in header `<class-template-spec.cpp>`
+Declared in `<class-template-spec.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -89,7 +89,7 @@ f();
 
 === Synopsis
 
-Declared in header `<class-template-spec.cpp>`
+Declared in `<class-template-spec.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -116,7 +116,7 @@ struct xref:A-0e.adoc[pass:[A]]<int>;
 
 === Synopsis
 
-Declared in header `<class-template-spec.cpp>`
+Declared in `<class-template-spec.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -140,7 +140,7 @@ g();
 
 === Synopsis
 
-Declared in header `<class-template-spec.cpp>`
+Declared in `<class-template-spec.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -167,7 +167,7 @@ struct xref:A-0e.adoc[pass:[A]]<long>;
 
 === Synopsis
 
-Declared in header `<class-template-spec.cpp>`
+Declared in `<class-template-spec.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -191,7 +191,7 @@ h();
 
 === Synopsis
 
-Declared in header `<class-template-spec.cpp>`
+Declared in `<class-template-spec.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -218,7 +218,7 @@ struct B;
 
 === Synopsis
 
-Declared in header `<class-template-spec.cpp>`
+Declared in `<class-template-spec.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -242,7 +242,7 @@ f();
 
 === Synopsis
 
-Declared in header `<class-template-spec.cpp>`
+Declared in `<class-template-spec.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -269,7 +269,7 @@ struct xref:B-00.adoc[pass:[B]]<T*>;
 
 === Synopsis
 
-Declared in header `<class-template-spec.cpp>`
+Declared in `<class-template-spec.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -293,7 +293,7 @@ g();
 
 === Synopsis
 
-Declared in header `<class-template-spec.cpp>`
+Declared in `<class-template-spec.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -320,7 +320,7 @@ struct xref:B-00.adoc[pass:[B]]<T&>;
 
 === Synopsis
 
-Declared in header `<class-template-spec.cpp>`
+Declared in `<class-template-spec.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -344,7 +344,7 @@ h();
 
 === Synopsis
 
-Declared in header `<class-template-spec.cpp>`
+Declared in `<class-template-spec.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -373,7 +373,7 @@ struct C;
 
 === Synopsis
 
-Declared in header `<class-template-spec.cpp>`
+Declared in `<class-template-spec.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -397,7 +397,7 @@ f();
 
 === Synopsis
 
-Declared in header `<class-template-spec.cpp>`
+Declared in `<class-template-spec.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -424,7 +424,7 @@ struct xref:C-0f.adoc[pass:[C]]<int, int>;
 
 === Synopsis
 
-Declared in header `<class-template-spec.cpp>`
+Declared in `<class-template-spec.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -448,7 +448,7 @@ g();
 
 === Synopsis
 
-Declared in header `<class-template-spec.cpp>`
+Declared in `<class-template-spec.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -475,7 +475,7 @@ struct xref:C-0f.adoc[pass:[C]]<T*, int>;
 
 === Synopsis
 
-Declared in header `<class-template-spec.cpp>`
+Declared in `<class-template-spec.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

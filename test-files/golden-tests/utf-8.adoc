@@ -22,7 +22,7 @@
 
 === Synopsis
 
-Declared in header `<utf-8.cpp>`
+Declared in `<utf-8.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

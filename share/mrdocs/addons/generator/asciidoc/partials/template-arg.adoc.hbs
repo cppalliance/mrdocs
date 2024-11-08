@@ -1,8 +1,0 @@
-{{#if (eq kind "type")~}}
-{{~>declarator type nolink=nolink~}}
-{{else if (eq kind "non-type")~}}
-{{~value~}}
-{{else if (eq kind "template")~}}
-{{#if (and template (not nolink))}}xref:{{template.ref}}[{{name~}}]{{else~}}{{name~}}{{/if~}}
-{{/if~}}
-{{~#if is-pack}}...{{/if~}}

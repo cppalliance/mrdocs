@@ -26,7 +26,7 @@ brief
 
 === Synopsis
 
-Declared in header `<commands.cpp>`
+Declared in `<commands.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

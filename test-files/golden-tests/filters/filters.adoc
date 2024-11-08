@@ -52,7 +52,7 @@
 
 === Synopsis
 
-Declared in header `<filters/filters.cpp>`
+Declared in `<filters/filters.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -89,7 +89,7 @@ f0();
 
 === Synopsis
 
-Declared in header `<filters/filters.cpp>`
+Declared in `<filters/filters.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -133,7 +133,7 @@ g0();
 
 === Synopsis
 
-Declared in header `<filters/filters.cpp>`
+Declared in `<filters/filters.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -157,7 +157,7 @@ f4();
 
 === Synopsis
 
-Declared in header `<filters/filters.cpp>`
+Declared in `<filters/filters.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -190,7 +190,7 @@ struct Y;
 
 === Synopsis
 
-Declared in header `<filters/filters.cpp>`
+Declared in `<filters/filters.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -214,7 +214,7 @@ f6();
 
 === Synopsis
 
-Declared in header `<filters/filters.cpp>`
+Declared in `<filters/filters.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -240,7 +240,7 @@ struct Z;
 
 === Synopsis
 
-Declared in header `<filters/filters.cpp>`
+Declared in `<filters/filters.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -284,7 +284,7 @@ f7();
 
 === Synopsis
 
-Declared in header `<filters/filters.cpp>`
+Declared in `<filters/filters.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -328,7 +328,7 @@ f0();
 
 === Synopsis
 
-Declared in header `<filters/filters.cpp>`
+Declared in `<filters/filters.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -352,7 +352,7 @@ f4();
 
 === Synopsis
 
-Declared in header `<filters/filters.cpp>`
+Declared in `<filters/filters.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -385,7 +385,7 @@ struct Y;
 
 === Synopsis
 
-Declared in header `<filters/filters.cpp>`
+Declared in `<filters/filters.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -409,7 +409,7 @@ f6();
 
 === Synopsis
 
-Declared in header `<filters/filters.cpp>`
+Declared in `<filters/filters.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -435,7 +435,7 @@ struct Z;
 
 === Synopsis
 
-Declared in header `<filters/filters.cpp>`
+Declared in `<filters/filters.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -472,7 +472,7 @@ f7();
 
 === Synopsis
 
-Declared in header `<filters/filters.cpp>`
+Declared in `<filters/filters.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -531,7 +531,7 @@ g0();
 
 === Synopsis
 
-Declared in header `<filters/filters.cpp>`
+Declared in `<filters/filters.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -555,7 +555,7 @@ g0();
 
 === Synopsis
 
-Declared in header `<filters/filters.cpp>`
+Declared in `<filters/filters.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -579,7 +579,7 @@ f1();
 
 === Synopsis
 
-Declared in header `<filters/filters.cpp>`
+Declared in `<filters/filters.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -623,7 +623,7 @@ g1();
 
 === Synopsis
 
-Declared in header `<filters/filters.cpp>`
+Declared in `<filters/filters.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -662,7 +662,7 @@ g0();
 
 === Synopsis
 
-Declared in header `<filters/filters.cpp>`
+Declared in `<filters/filters.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -686,7 +686,7 @@ f1();
 
 === Synopsis
 
-Declared in header `<filters/filters.cpp>`
+Declared in `<filters/filters.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

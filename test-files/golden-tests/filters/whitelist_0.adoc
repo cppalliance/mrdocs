@@ -39,7 +39,7 @@
 
 === Synopsis
 
-Declared in header `<filters/whitelist_0.cpp>`
+Declared in `<filters/whitelist_0.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -91,7 +91,7 @@ f0_WL();
 
 === Synopsis
 
-Declared in header `<filters/whitelist_0.cpp>`
+Declared in `<filters/whitelist_0.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -128,7 +128,7 @@ f1_WL();
 
 === Synopsis
 
-Declared in header `<filters/whitelist_0.cpp>`
+Declared in `<filters/whitelist_0.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -172,7 +172,7 @@ f1_WL();
 
 === Synopsis
 
-Declared in header `<filters/whitelist_0.cpp>`
+Declared in `<filters/whitelist_0.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -224,7 +224,7 @@ f0();
 
 === Synopsis
 
-Declared in header `<filters/whitelist_0.cpp>`
+Declared in `<filters/whitelist_0.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -261,7 +261,7 @@ f2_WL();
 
 === Synopsis
 
-Declared in header `<filters/whitelist_0.cpp>`
+Declared in `<filters/whitelist_0.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

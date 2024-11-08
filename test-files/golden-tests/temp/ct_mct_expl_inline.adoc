@@ -22,7 +22,7 @@
 
 === Synopsis
 
-Declared in header `<temp/ct_mct_expl_inline.cpp>`
+Declared in `<temp/ct_mct_expl_inline.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -51,7 +51,7 @@ struct A;
 
 === Synopsis
 
-Declared in header `<temp/ct_mct_expl_inline.cpp>`
+Declared in `<temp/ct_mct_expl_inline.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -78,7 +78,7 @@ struct B;
 
 === Synopsis
 
-Declared in header `<temp/ct_mct_expl_inline.cpp>`
+Declared in `<temp/ct_mct_expl_inline.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -102,7 +102,7 @@ f();
 
 === Synopsis
 
-Declared in header `<temp/ct_mct_expl_inline.cpp>`
+Declared in `<temp/ct_mct_expl_inline.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -129,7 +129,7 @@ struct xref:A/B-07.adoc[pass:[B]]<int>;
 
 === Synopsis
 
-Declared in header `<temp/ct_mct_expl_inline.cpp>`
+Declared in `<temp/ct_mct_expl_inline.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
