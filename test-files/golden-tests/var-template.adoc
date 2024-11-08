@@ -33,7 +33,7 @@
 
 === Synopsis
 
-Declared in header `<var-template.cpp>`
+Declared in `<var-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -51,7 +51,7 @@ unsigned int A = sizeof(T);
 
 === Synopsis
 
-Declared in header `<var-template.cpp>`
+Declared in `<var-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -69,7 +69,7 @@ unsigned int xref:A-084.adoc[pass:[A]]<void> = 0;
 
 === Synopsis
 
-Declared in header `<var-template.cpp>`
+Declared in `<var-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -87,7 +87,7 @@ unsigned int xref:A-084.adoc[pass:[A]]<T&> = sizeof(T);
 
 === Synopsis
 
-Declared in header `<var-template.cpp>`
+Declared in `<var-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -117,7 +117,7 @@ struct B;
 
 === Synopsis
 
-Declared in header `<var-template.cpp>`
+Declared in `<var-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -136,7 +136,7 @@ unsigned int C = 0;
 
 === Synopsis
 
-Declared in header `<var-template.cpp>`
+Declared in `<var-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -155,7 +155,7 @@ unsigned int xref:B/C-0e.adoc[pass:[C]]<int> = -1;
 
 === Synopsis
 
-Declared in header `<var-template.cpp>`
+Declared in `<var-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

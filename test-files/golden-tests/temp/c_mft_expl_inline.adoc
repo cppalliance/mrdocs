@@ -22,7 +22,7 @@
 
 === Synopsis
 
-Declared in header `<temp/c_mft_expl_inline.cpp>`
+Declared in `<temp/c_mft_expl_inline.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -78,7 +78,7 @@ xref:A/f-0b.adoc[pass:[f]]<int>();
 
 === Synopsis
 
-Declared in header `<temp/c_mft_expl_inline.cpp>`
+Declared in `<temp/c_mft_expl_inline.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -103,7 +103,7 @@ f();
 
 === Synopsis
 
-Declared in header `<temp/c_mft_expl_inline.cpp>`
+Declared in `<temp/c_mft_expl_inline.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

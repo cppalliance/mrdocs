@@ -34,7 +34,7 @@ E0 brief.
 
 === Synopsis
 
-Declared in header `<enum.cpp>`
+Declared in `<enum.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -70,7 +70,7 @@ e0 brief.
 
 === Synopsis
 
-Declared in header `<enum.cpp>`
+Declared in `<enum.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -95,7 +95,7 @@ e1 brief.
 
 === Synopsis
 
-Declared in header `<enum.cpp>`
+Declared in `<enum.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -118,7 +118,7 @@ e1 description.
 
 === Synopsis
 
-Declared in header `<enum.cpp>`
+Declared in `<enum.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -143,7 +143,7 @@ enum E1 : char;
 
 === Synopsis
 
-Declared in header `<enum.cpp>`
+Declared in `<enum.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -160,7 +160,7 @@ e2
 
 === Synopsis
 
-Declared in header `<enum.cpp>`
+Declared in `<enum.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -179,7 +179,7 @@ E2 brief.
 
 === Synopsis
 
-Declared in header `<enum.cpp>`
+Declared in `<enum.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -215,7 +215,7 @@ e4 brief.
 
 === Synopsis
 
-Declared in header `<enum.cpp>`
+Declared in `<enum.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -240,7 +240,7 @@ e5 brief.
 
 === Synopsis
 
-Declared in header `<enum.cpp>`
+Declared in `<enum.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -263,7 +263,7 @@ e5 description.
 
 === Synopsis
 
-Declared in header `<enum.cpp>`
+Declared in `<enum.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -288,7 +288,7 @@ enum E3 : char;
 
 === Synopsis
 
-Declared in header `<enum.cpp>`
+Declared in `<enum.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -305,7 +305,7 @@ e6
 
 === Synopsis
 
-Declared in header `<enum.cpp>`
+Declared in `<enum.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

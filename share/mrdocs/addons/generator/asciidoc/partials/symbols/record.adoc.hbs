@@ -1,11 +1,11 @@
 {{!-- record --}}
-={{#unless is_multipage}}={{/unless}} {{#if symbol.name}}{{>nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}Unnamed class{{/if}}
+={{#unless is_multipage}}={{/unless}} {{#if symbol.name}}{{>types/nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}Unnamed class{{/if}}
 
 {{symbol.doc.brief}}
 
 =={{#unless is_multipage}}={{/unless}} Synopsis
 
-{{>source dcl=(primary_location symbol)}}
+{{>types/source dcl=(primary_location symbol)}}
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -13,9 +13,9 @@
 ----
 
 {{#with symbol.interface}}
-{{> tranche tranche=public label="" is-namespace=false}}
-{{> tranche tranche=protected label="Protected" is-namespace=false}}
-{{> tranche tranche=private label="Private" is-namespace=false}}
+{{>types/tranche tranche=public label="" is-namespace=false}}
+{{>types/tranche tranche=protected label="Protected" is-namespace=false}}
+{{>types/tranche tranche=private label="Private" is-namespace=false}}
 {{/with}}
 
 {{#if symbol.doc.description}}

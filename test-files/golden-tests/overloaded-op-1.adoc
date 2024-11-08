@@ -22,7 +22,7 @@
 
 === Synopsis
 
-Declared in header `<overloaded-op-1.cpp>`
+Declared in `<overloaded-op-1.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -48,7 +48,7 @@ struct T;
 
 === Synopsis
 
-Declared in header `<overloaded-op-1.cpp>`
+Declared in `<overloaded-op-1.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

@@ -30,7 +30,7 @@
 
 === Synopsis
 
-Declared in header `<class-template.cpp>`
+Declared in `<class-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -49,7 +49,7 @@ struct S;
 
 === Synopsis
 
-Declared in header `<class-template.cpp>`
+Declared in `<class-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -87,7 +87,7 @@ struct C0;
 
 === Synopsis
 
-Declared in header `<class-template.cpp>`
+Declared in `<class-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -104,7 +104,7 @@ int w;
 
 === Synopsis
 
-Declared in header `<class-template.cpp>`
+Declared in `<class-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -121,7 +121,7 @@ xref:S.adoc[S] x;
 
 === Synopsis
 
-Declared in header `<class-template.cpp>`
+Declared in `<class-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -138,7 +138,7 @@ T y;
 
 === Synopsis
 
-Declared in header `<class-template.cpp>`
+Declared in `<class-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -164,7 +164,7 @@ struct N0;
 
 === Synopsis
 
-Declared in header `<class-template.cpp>`
+Declared in `<class-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -181,7 +181,7 @@ int z;
 
 === Synopsis
 
-Declared in header `<class-template.cpp>`
+Declared in `<class-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -214,7 +214,7 @@ struct C1;
 
 === Synopsis
 
-Declared in header `<class-template.cpp>`
+Declared in `<class-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -231,7 +231,7 @@ int w;
 
 === Synopsis
 
-Declared in header `<class-template.cpp>`
+Declared in `<class-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -262,7 +262,7 @@ struct N1;
 
 === Synopsis
 
-Declared in header `<class-template.cpp>`
+Declared in `<class-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -279,7 +279,7 @@ xref:S.adoc[S] x;
 
 === Synopsis
 
-Declared in header `<class-template.cpp>`
+Declared in `<class-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -296,7 +296,7 @@ T y;
 
 === Synopsis
 
-Declared in header `<class-template.cpp>`
+Declared in `<class-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -313,7 +313,7 @@ int z;
 
 === Synopsis
 
-Declared in header `<class-template.cpp>`
+Declared in `<class-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -347,7 +347,7 @@ struct C2;
 
 === Synopsis
 
-Declared in header `<class-template.cpp>`
+Declared in `<class-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -364,7 +364,7 @@ int v;
 
 === Synopsis
 
-Declared in header `<class-template.cpp>`
+Declared in `<class-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -397,7 +397,7 @@ struct N2;
 
 === Synopsis
 
-Declared in header `<class-template.cpp>`
+Declared in `<class-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -414,7 +414,7 @@ xref:S.adoc[S] w;
 
 === Synopsis
 
-Declared in header `<class-template.cpp>`
+Declared in `<class-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -431,7 +431,7 @@ T x;
 
 === Synopsis
 
-Declared in header `<class-template.cpp>`
+Declared in `<class-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -448,7 +448,7 @@ U y;
 
 === Synopsis
 
-Declared in header `<class-template.cpp>`
+Declared in `<class-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -465,7 +465,7 @@ int z;
 
 === Synopsis
 
-Declared in header `<class-template.cpp>`
+Declared in `<class-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -492,7 +492,7 @@ struct C3;
 
 === Synopsis
 
-Declared in header `<class-template.cpp>`
+Declared in `<class-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

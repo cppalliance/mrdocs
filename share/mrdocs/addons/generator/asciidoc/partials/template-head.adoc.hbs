@@ -1,4 +1,0 @@
-template<{{#each params}}{{#unless (and @first @last)}}
-    {{/unless}}{{>template-param~}}
-    {{#unless @last}},{{/unless~}}
-{{/each}}>{{#if requires}} requires {{requires}}{{/if}}

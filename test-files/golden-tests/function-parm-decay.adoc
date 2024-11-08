@@ -37,7 +37,7 @@
 
 === Synopsis
 
-Declared in header `<function-parm-decay.cpp>`
+Declared in `<function-parm-decay.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -61,7 +61,7 @@ f(int const x);
 
 === Synopsis
 
-Declared in header `<function-parm-decay.cpp>`
+Declared in `<function-parm-decay.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -85,7 +85,7 @@ g(int* x);
 
 === Synopsis
 
-Declared in header `<function-parm-decay.cpp>`
+Declared in `<function-parm-decay.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -109,7 +109,7 @@ h(int x(bool));
 
 === Synopsis
 
-Declared in header `<function-parm-decay.cpp>`
+Declared in `<function-parm-decay.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -126,7 +126,7 @@ using T = int;
 
 === Synopsis
 
-Declared in header `<function-parm-decay.cpp>`
+Declared in `<function-parm-decay.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -143,7 +143,7 @@ using U = int const;
 
 === Synopsis
 
-Declared in header `<function-parm-decay.cpp>`
+Declared in `<function-parm-decay.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

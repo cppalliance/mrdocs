@@ -28,7 +28,7 @@
 
 === Synopsis
 
-Declared in header `<alias-template.cpp>`
+Declared in `<alias-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -48,7 +48,7 @@ struct A;
 
 === Synopsis
 
-Declared in header `<alias-template.cpp>`
+Declared in `<alias-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -70,7 +70,7 @@ struct B;
 
 === Synopsis
 
-Declared in header `<alias-template.cpp>`
+Declared in `<alias-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -88,7 +88,7 @@ using C = xref:A.adoc[A]<T>;
 
 === Synopsis
 
-Declared in header `<alias-template.cpp>`
+Declared in `<alias-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -115,7 +115,7 @@ struct D;
 
 === Synopsis
 
-Declared in header `<alias-template.cpp>`
+Declared in `<alias-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

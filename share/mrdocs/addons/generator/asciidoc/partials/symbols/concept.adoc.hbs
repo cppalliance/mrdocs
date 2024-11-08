@@ -1,11 +1,11 @@
 {{!-- concept --}}
-= {{>nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}
+= {{>types/nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}
 
 {{symbol.doc.brief}}
 
 == Synopsis
 
-{{>source dcl=(primary_location symbol)}}
+{{>types/source dcl=(primary_location symbol)}}
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

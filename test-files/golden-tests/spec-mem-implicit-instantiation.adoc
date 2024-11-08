@@ -24,7 +24,7 @@
 
 === Synopsis
 
-Declared in header `<spec-mem-implicit-instantiation.cpp>`
+Declared in `<spec-mem-implicit-instantiation.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -60,7 +60,7 @@ struct A;
 
 === Synopsis
 
-Declared in header `<spec-mem-implicit-instantiation.cpp>`
+Declared in `<spec-mem-implicit-instantiation.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -84,7 +84,7 @@ f();
 
 === Synopsis
 
-Declared in header `<spec-mem-implicit-instantiation.cpp>`
+Declared in `<spec-mem-implicit-instantiation.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -111,7 +111,7 @@ struct B;
 
 === Synopsis
 
-Declared in header `<spec-mem-implicit-instantiation.cpp>`
+Declared in `<spec-mem-implicit-instantiation.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -135,7 +135,7 @@ g();
 
 === Synopsis
 
-Declared in header `<spec-mem-implicit-instantiation.cpp>`
+Declared in `<spec-mem-implicit-instantiation.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -162,7 +162,7 @@ struct C;
 
 === Synopsis
 
-Declared in header `<spec-mem-implicit-instantiation.cpp>`
+Declared in `<spec-mem-implicit-instantiation.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -195,7 +195,7 @@ h();
 
 === Synopsis
 
-Declared in header `<spec-mem-implicit-instantiation.cpp>`
+Declared in `<spec-mem-implicit-instantiation.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -221,7 +221,7 @@ struct D;
 
 === Synopsis
 
-Declared in header `<spec-mem-implicit-instantiation.cpp>`
+Declared in `<spec-mem-implicit-instantiation.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -248,7 +248,7 @@ struct E;
 
 === Synopsis
 
-Declared in header `<spec-mem-implicit-instantiation.cpp>`
+Declared in `<spec-mem-implicit-instantiation.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

@@ -28,7 +28,7 @@
 
 === Synopsis
 
-Declared in header `<explicit-ctor.cpp>`
+Declared in `<explicit-ctor.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -96,7 +96,7 @@ xref:Explicit/2constructor-03.adoc[pass:[Explicit]](
 
 === Synopsis
 
-Declared in header `<explicit-ctor.cpp>`
+Declared in `<explicit-ctor.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -120,7 +120,7 @@ Explicit();
 
 === Synopsis
 
-Declared in header `<explicit-ctor.cpp>`
+Declared in `<explicit-ctor.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -144,7 +144,7 @@ Explicit(xref:Explicit.adoc[Explicit] const&);
 
 === Synopsis
 
-Declared in header `<explicit-ctor.cpp>`
+Declared in `<explicit-ctor.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -168,7 +168,7 @@ Explicit(xref:Explicit.adoc[Explicit]&&) noexcept;
 
 === Synopsis
 
-Declared in header `<explicit-ctor.cpp>`
+Declared in `<explicit-ctor.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -194,7 +194,7 @@ Explicit(
 
 === Synopsis
 
-Declared in header `<explicit-ctor.cpp>`
+Declared in `<explicit-ctor.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -262,7 +262,7 @@ xref:ExplicitTrue/2constructor-05.adoc[pass:[ExplicitTrue]](
 
 === Synopsis
 
-Declared in header `<explicit-ctor.cpp>`
+Declared in `<explicit-ctor.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -286,7 +286,7 @@ ExplicitTrue();
 
 === Synopsis
 
-Declared in header `<explicit-ctor.cpp>`
+Declared in `<explicit-ctor.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -310,7 +310,7 @@ ExplicitTrue(xref:ExplicitTrue.adoc[ExplicitTrue] const&);
 
 === Synopsis
 
-Declared in header `<explicit-ctor.cpp>`
+Declared in `<explicit-ctor.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -334,7 +334,7 @@ ExplicitTrue(xref:ExplicitTrue.adoc[ExplicitTrue]&&) noexcept;
 
 === Synopsis
 
-Declared in header `<explicit-ctor.cpp>`
+Declared in `<explicit-ctor.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -360,7 +360,7 @@ ExplicitTrue(
 
 === Synopsis
 
-Declared in header `<explicit-ctor.cpp>`
+Declared in `<explicit-ctor.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -428,7 +428,7 @@ xref:ExplicitFalse/2constructor-04.adoc[pass:[ExplicitFalse]](
 
 === Synopsis
 
-Declared in header `<explicit-ctor.cpp>`
+Declared in `<explicit-ctor.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -452,7 +452,7 @@ ExplicitFalse();
 
 === Synopsis
 
-Declared in header `<explicit-ctor.cpp>`
+Declared in `<explicit-ctor.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -476,7 +476,7 @@ ExplicitFalse(xref:ExplicitFalse.adoc[ExplicitFalse] const&);
 
 === Synopsis
 
-Declared in header `<explicit-ctor.cpp>`
+Declared in `<explicit-ctor.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -500,7 +500,7 @@ ExplicitFalse(xref:ExplicitFalse.adoc[ExplicitFalse]&&) noexcept;
 
 === Synopsis
 
-Declared in header `<explicit-ctor.cpp>`
+Declared in `<explicit-ctor.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -526,7 +526,7 @@ ExplicitFalse(
 
 === Synopsis
 
-Declared in header `<explicit-ctor.cpp>`
+Declared in `<explicit-ctor.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -595,7 +595,7 @@ xref:ExplicitExpression/2constructor-02.adoc[pass:[ExplicitExpression]](
 
 === Synopsis
 
-Declared in header `<explicit-ctor.cpp>`
+Declared in `<explicit-ctor.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -619,7 +619,7 @@ ExplicitExpression();
 
 === Synopsis
 
-Declared in header `<explicit-ctor.cpp>`
+Declared in `<explicit-ctor.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -643,7 +643,7 @@ ExplicitExpression(xref:ExplicitExpression.adoc[ExplicitExpression] const&);
 
 === Synopsis
 
-Declared in header `<explicit-ctor.cpp>`
+Declared in `<explicit-ctor.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -667,7 +667,7 @@ ExplicitExpression(xref:ExplicitExpression.adoc[ExplicitExpression]&&) noexcept;
 
 === Synopsis
 
-Declared in header `<explicit-ctor.cpp>`
+Declared in `<explicit-ctor.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

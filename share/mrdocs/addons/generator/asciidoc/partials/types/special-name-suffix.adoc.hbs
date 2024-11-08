@@ -1,0 +1,9 @@
+{{! Renders the name of the symbol with a suffix when the symbol is a special member (e.g., constructor, destructor, overload, variant member) }}
+{{#if (eq kind "overload")}}{{>types/special-name-suffix (front members)~}}
+{{else if (eq kind "function")~}}
+{{#if (eq class "constructor")}}[.small]#[constructor]#
+{{~else if (eq class "destructor")}}[.small]#[destructor]#
+{{~/if~}}
+{{else if (eq kind "field")~}}
+{{#if isVariant}}[.small]#[variant member]#{{/if~}}
+{{/if}}

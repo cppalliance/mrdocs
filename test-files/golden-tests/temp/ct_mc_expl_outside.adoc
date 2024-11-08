@@ -22,7 +22,7 @@
 
 === Synopsis
 
-Declared in header `<temp/ct_mc_expl_outside.cpp>`
+Declared in `<temp/ct_mc_expl_outside.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -49,7 +49,7 @@ struct A;
 
 === Synopsis
 
-Declared in header `<temp/ct_mc_expl_outside.cpp>`
+Declared in `<temp/ct_mc_expl_outside.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -75,7 +75,7 @@ struct B;
 
 === Synopsis
 
-Declared in header `<temp/ct_mc_expl_outside.cpp>`
+Declared in `<temp/ct_mc_expl_outside.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

@@ -1,11 +1,11 @@
 {{!-- alias --}}
-={{#unless is_multipage}}={{/unless}} {{>nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}
+={{#unless is_multipage}}={{/unless}} {{>types/nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}
 
 {{symbol.doc.brief}}
 
 =={{#unless is_multipage}}={{/unless}} Synopsis
 
-{{>source dcl=(primary_location symbol)}}
+{{>types/source dcl=(primary_location symbol)}}
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

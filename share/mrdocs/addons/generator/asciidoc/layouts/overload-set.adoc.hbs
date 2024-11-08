@@ -2,7 +2,7 @@
 {{#if relfileprefix}}:relfileprefix: {{relfileprefix}}{{/if}}
 [#{{sectionref}}]
 
-={{#unless is_multipage}}={{/unless}} {{#if symbol.name}}{{>nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}Unnamed overload set{{/if}}
+={{#unless is_multipage}}={{/unless}} {{#if symbol.name}}{{>types/nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}Unnamed overload set{{/if}}
 
 {{#if symbol.members.[0]}}
   

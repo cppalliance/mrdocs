@@ -22,7 +22,7 @@
 
 === Synopsis
 
-Declared in header `<explicit-object-parameter.cpp>`
+Declared in `<explicit-object-parameter.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -82,7 +82,7 @@ xref:Optional/value-06.adoc[pass:[value]](this
 
 === Synopsis
 
-Declared in header `<explicit-object-parameter.cpp>`
+Declared in `<explicit-object-parameter.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -108,7 +108,7 @@ value(this Self&& self);
 
 === Synopsis
 
-Declared in header `<explicit-object-parameter.cpp>`
+Declared in `<explicit-object-parameter.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

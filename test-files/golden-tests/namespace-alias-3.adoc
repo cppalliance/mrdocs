@@ -28,7 +28,7 @@
 
 === Synopsis
 
-Declared in header `<namespace-alias-3.cpp>`
+Declared in `<namespace-alias-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -45,7 +45,7 @@ namespace A = xref:LongName.adoc[LongName];
 
 === Synopsis
 
-Declared in header `<namespace-alias-3.cpp>`
+Declared in `<namespace-alias-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

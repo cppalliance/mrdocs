@@ -1,11 +1,11 @@
 {{!-- enum --}}
-={{#unless is_multipage}}={{/unless}} {{#if symbol.name}}{{>nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}Unnamed enum{{/if}}
+={{#unless is_multipage}}={{/unless}} {{#if symbol.name}}{{>types/nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}Unnamed enum{{/if}}
 
 {{symbol.doc.brief}}
 
 =={{#unless is_multipage}}={{/unless}} Synopsis
 
-{{>source dcl=(primary_location symbol)}}
+{{>types/source dcl=(primary_location symbol)}}
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -18,7 +18,7 @@
 |===
 |Name |Description
 {{#each symbol.members}}
-|xref:{{ref}}[`pass:v[{{>declarator-id . nolink=true}}]`] | {{~doc.brief}}
+|xref:{{ref}}[`pass:v[{{>types/declarator-id . nolink=true}}]`] | {{~doc.brief}}
 {{/each}}
 |===
 {{/if}}

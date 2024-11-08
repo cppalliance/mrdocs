@@ -1,0 +1,18 @@
+{{! Renders an info-list table for each list in a Tranche }}
+{{>types/info-list members=tranche.namespaces title="Namespaces"}}
+{{>types/info-list members=(concat tranche.records tranche.types) title=(concat label " " "Types")}}
+{{>types/info-list members=tranche.enums title=(concat label " " "Enums")}}
+{{#if is-namespace}}
+    {{>types/info-list members=tranche.overloads title="Functions"}}
+    {{>types/info-list members=tranche.variables title="Variables"}}
+    {{>types/info-list members=tranche.concepts title="Concepts"}}
+{{else}}
+    {{>types/info-list members=tranche.overloads title=(concat label " " "Member Functions")}}
+    {{>types/info-list members=tranche.staticoverloads title=(concat label " " "Static Member Functions")}}
+    {{>types/info-list members=tranche.fields title=(concat label " " "Data Members")}}
+    {{>types/info-list members=tranche.variables title=(concat label " " "Static Data Members")}}
+    {{>types/info-list members=tranche.friends title=(concat label " " "Friends")}}
+    {{>types/info-list members=tranche.aliases title=(concat label " " "Aliases")}}
+    {{>types/info-list members=tranche.usings title=(concat label " " "Using Declarations")}}
+{{/if}}
+{{>types/info-list members=tranche.guides title=(concat label " " "Deduction Guides")}}

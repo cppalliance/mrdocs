@@ -31,7 +31,7 @@ f
 
 === Synopsis
 
-Declared in header `<friend-2.cpp>`
+Declared in `<friend-2.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -61,7 +61,7 @@ f
 
 === Synopsis
 
-Declared in header `<friend-2.cpp>`
+Declared in `<friend-2.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -82,7 +82,7 @@ f
 
 === Synopsis
 
-Declared in header `<friend-2.cpp>`
+Declared in `<friend-2.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

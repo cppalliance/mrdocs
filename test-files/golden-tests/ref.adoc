@@ -46,7 +46,7 @@ xref:F/operator_bitnot.adoc[F::operator~]
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -103,7 +103,7 @@ xref:f0.adoc[f0]
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -137,7 +137,7 @@ xref:A/f1.adoc[f1]
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -174,7 +174,7 @@ xref:A/f1.adoc[::A::f1]
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -198,7 +198,7 @@ f2();
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -226,7 +226,7 @@ struct C;
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -250,7 +250,7 @@ f3();
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -274,7 +274,7 @@ f4();
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -312,7 +312,7 @@ xref:A/C/f3.adoc[f3]
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -339,7 +339,7 @@ xref:A/C/f3.adoc[f3]
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -371,7 +371,7 @@ xref:A/f1.adoc[A::f1]
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -402,7 +402,7 @@ xref:A/f1.adoc[::A::f1]
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -504,7 +504,7 @@ struct F;
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -528,7 +528,7 @@ operator~();
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -552,7 +552,7 @@ operator,(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -576,7 +576,7 @@ operator()(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -600,7 +600,7 @@ operator[](xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -624,7 +624,7 @@ operator+(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -648,7 +648,7 @@ operator++();
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -672,7 +672,7 @@ operator+=(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -696,7 +696,7 @@ operator&(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -720,7 +720,7 @@ operator&&(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -744,7 +744,7 @@ operator&=(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -768,7 +768,7 @@ operator|(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -792,7 +792,7 @@ operator||(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -816,7 +816,7 @@ operator|=(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -840,7 +840,7 @@ operator-(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -864,7 +864,7 @@ operator--();
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -888,7 +888,7 @@ operator-=(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -912,7 +912,7 @@ operator->();
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -936,7 +936,7 @@ operator->*(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -960,7 +960,7 @@ operator<(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -984,7 +984,7 @@ operator<<(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1008,7 +1008,7 @@ operator<<=(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1032,7 +1032,7 @@ operator<=(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1056,7 +1056,7 @@ operator<=>(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1080,7 +1080,7 @@ operator>(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1104,7 +1104,7 @@ operator>>(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1128,7 +1128,7 @@ operator>>=(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1152,7 +1152,7 @@ operator>=(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1176,7 +1176,7 @@ operator*(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1200,7 +1200,7 @@ operator*=(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1224,7 +1224,7 @@ operator%(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1248,7 +1248,7 @@ operator%=(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1272,7 +1272,7 @@ operator/(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1296,7 +1296,7 @@ operator/=(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1320,7 +1320,7 @@ operator^(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1344,7 +1344,7 @@ operator^=(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1368,7 +1368,7 @@ operator=(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1392,7 +1392,7 @@ operator==(xref:F.adoc[F]&);
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1416,7 +1416,7 @@ operator!();
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1443,7 +1443,7 @@ xref:F/operator_bitnot.adoc[F::operator~]
 
 === Synopsis
 
-Declared in header `<ref.cpp>`
+Declared in `<ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

@@ -24,7 +24,7 @@
 
 === Synopsis
 
-Declared in header `<class-template-specializations-3.cpp>`
+Declared in `<class-template-specializations-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -53,7 +53,7 @@ struct A;
 
 === Synopsis
 
-Declared in header `<class-template-specializations-3.cpp>`
+Declared in `<class-template-specializations-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -84,7 +84,7 @@ struct B;
 
 === Synopsis
 
-Declared in header `<class-template-specializations-3.cpp>`
+Declared in `<class-template-specializations-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -103,7 +103,7 @@ struct C;
 
 === Synopsis
 
-Declared in header `<class-template-specializations-3.cpp>`
+Declared in `<class-template-specializations-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -123,7 +123,7 @@ struct D;
 
 === Synopsis
 
-Declared in header `<class-template-specializations-3.cpp>`
+Declared in `<class-template-specializations-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -143,7 +143,7 @@ struct xref:A-0e/B-07/D-09.adoc[pass:[D]]<bool>;
 
 === Synopsis
 
-Declared in header `<class-template-specializations-3.cpp>`
+Declared in `<class-template-specializations-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -174,7 +174,7 @@ struct xref:A-0e/B-07.adoc[pass:[B]]<double>;
 
 === Synopsis
 
-Declared in header `<class-template-specializations-3.cpp>`
+Declared in `<class-template-specializations-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -193,7 +193,7 @@ struct C;
 
 === Synopsis
 
-Declared in header `<class-template-specializations-3.cpp>`
+Declared in `<class-template-specializations-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -213,7 +213,7 @@ struct D;
 
 === Synopsis
 
-Declared in header `<class-template-specializations-3.cpp>`
+Declared in `<class-template-specializations-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -239,7 +239,7 @@ struct xref:A-0e/B-00/D-09.adoc[pass:[D]]<bool>;
 
 === Synopsis
 
-Declared in header `<class-template-specializations-3.cpp>`
+Declared in `<class-template-specializations-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -293,7 +293,7 @@ struct E;
 
 === Synopsis
 
-Declared in header `<class-template-specializations-3.cpp>`
+Declared in `<class-template-specializations-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -310,7 +310,7 @@ xref:A-0e.adoc[A]<float>::xref:A-0e/B-00.adoc[B]<double> m0;
 
 === Synopsis
 
-Declared in header `<class-template-specializations-3.cpp>`
+Declared in `<class-template-specializations-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -327,7 +327,7 @@ xref:A-0e.adoc[A]<long>::xref:A-0e/B-00.adoc[B]<double> m1;
 
 === Synopsis
 
-Declared in header `<class-template-specializations-3.cpp>`
+Declared in `<class-template-specializations-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -344,7 +344,7 @@ xref:A-0e.adoc[A]<long>::xref:A-0c/B.adoc[B]<float> m2;
 
 === Synopsis
 
-Declared in header `<class-template-specializations-3.cpp>`
+Declared in `<class-template-specializations-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -361,7 +361,7 @@ xref:A-0e.adoc[A]<unsigned int>::xref:A-0e/B-07.adoc[B]<float> m3;
 
 === Synopsis
 
-Declared in header `<class-template-specializations-3.cpp>`
+Declared in `<class-template-specializations-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -378,7 +378,7 @@ xref:A-0e.adoc[A]<short>::xref:A-00/B.adoc[B]<void> m4;
 
 === Synopsis
 
-Declared in header `<class-template-specializations-3.cpp>`
+Declared in `<class-template-specializations-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -395,7 +395,7 @@ xref:A-0e.adoc[A]<float>::xref:A-0e/B-00.adoc[B]<double>::xref:A-0e/B-00/C.adoc[
 
 === Synopsis
 
-Declared in header `<class-template-specializations-3.cpp>`
+Declared in `<class-template-specializations-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -412,7 +412,7 @@ xref:A-0e.adoc[A]<long>::xref:A-0e/B-00.adoc[B]<double>::xref:A-0e/B-00/C.adoc[C
 
 === Synopsis
 
-Declared in header `<class-template-specializations-3.cpp>`
+Declared in `<class-template-specializations-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -429,7 +429,7 @@ xref:A-0e.adoc[A]<long>::xref:A-0c/B.adoc[B]<float>::xref:A-0c/B/C.adoc[C] m7;
 
 === Synopsis
 
-Declared in header `<class-template-specializations-3.cpp>`
+Declared in `<class-template-specializations-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -446,7 +446,7 @@ xref:A-0e.adoc[A]<unsigned int>::xref:A-0e/B-07.adoc[B]<float>::xref:A-0e/B-07/C
 
 === Synopsis
 
-Declared in header `<class-template-specializations-3.cpp>`
+Declared in `<class-template-specializations-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -463,7 +463,7 @@ xref:A-0e.adoc[A]<short>::xref:A-00/B.adoc[B]<void>::xref:A-00/B/C.adoc[C] m9;
 
 === Synopsis
 
-Declared in header `<class-template-specializations-3.cpp>`
+Declared in `<class-template-specializations-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -480,7 +480,7 @@ xref:A-0e.adoc[A]<float>::xref:A-0e/B-00.adoc[B]<double>::xref:A-0e/B-00/D-0d.ad
 
 === Synopsis
 
-Declared in header `<class-template-specializations-3.cpp>`
+Declared in `<class-template-specializations-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -497,7 +497,7 @@ xref:A-0e.adoc[A]<long>::xref:A-0e/B-00.adoc[B]<double>::xref:A-0e/B-00/D-0d.ado
 
 === Synopsis
 
-Declared in header `<class-template-specializations-3.cpp>`
+Declared in `<class-template-specializations-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -514,7 +514,7 @@ xref:A-0e.adoc[A]<long>::xref:A-0c/B.adoc[B]<float>::xref:A-0c/B/D-0b.adoc[D]<bo
 
 === Synopsis
 
-Declared in header `<class-template-specializations-3.cpp>`
+Declared in `<class-template-specializations-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -531,7 +531,7 @@ xref:A-0e.adoc[A]<unsigned int>::xref:A-0e/B-07.adoc[B]<float>::xref:A-0e/B-07/D
 
 === Synopsis
 
-Declared in header `<class-template-specializations-3.cpp>`
+Declared in `<class-template-specializations-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

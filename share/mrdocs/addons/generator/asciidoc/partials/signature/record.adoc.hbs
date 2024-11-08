@@ -1,6 +1,6 @@
-{{#if symbol.template}}{{>template-head symbol.template}}
+{{#if symbol.template}}{{>types/template-head symbol.template}}
 {{/if~}}
-{{#if isFriend}}friend {{/if}}{{symbol.tag}} {{>declarator-id symbol link=(select link link symbol.template.primary)~}}
+{{#if isFriend}}friend {{/if}}{{symbol.tag}} {{>types/declarator-id symbol link=(select link link symbol.template.primary)~}}
 {{#unless symbol.bases~}}
 {{else if isFriend~}}
 {{else}}
@@ -10,6 +10,6 @@
     :{{else}}
     ,{{/if~}}
     {{#unless (eq access ../symbol.defaultAccess)}} {{access}}{{/unless~}}
-    {{#if isVirtual}} virtual{{/if}} {{>declarator type~}}
+    {{#if isVirtual}} virtual{{/if}} {{>types/declarator type~}}
 {{/each~}}
 {{/unless}}

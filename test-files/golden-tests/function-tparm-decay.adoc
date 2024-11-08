@@ -37,7 +37,7 @@
 
 === Synopsis
 
-Declared in header `<function-tparm-decay.cpp>`
+Declared in `<function-tparm-decay.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -62,7 +62,7 @@ f();
 
 === Synopsis
 
-Declared in header `<function-tparm-decay.cpp>`
+Declared in `<function-tparm-decay.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -87,7 +87,7 @@ g();
 
 === Synopsis
 
-Declared in header `<function-tparm-decay.cpp>`
+Declared in `<function-tparm-decay.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -112,7 +112,7 @@ h();
 
 === Synopsis
 
-Declared in header `<function-tparm-decay.cpp>`
+Declared in `<function-tparm-decay.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -129,7 +129,7 @@ using T = int;
 
 === Synopsis
 
-Declared in header `<function-tparm-decay.cpp>`
+Declared in `<function-tparm-decay.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -146,7 +146,7 @@ using U = int const;
 
 === Synopsis
 
-Declared in header `<function-tparm-decay.cpp>`
+Declared in `<function-tparm-decay.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

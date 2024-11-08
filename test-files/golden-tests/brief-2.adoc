@@ -48,7 +48,7 @@ brief
 
 === Synopsis
 
-Declared in header `<brief-2.cpp>`
+Declared in `<brief-2.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -74,7 +74,7 @@ brief
 
 === Synopsis
 
-Declared in header `<brief-2.cpp>`
+Declared in `<brief-2.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -100,7 +100,7 @@ brief
 
 === Synopsis
 
-Declared in header `<brief-2.cpp>`
+Declared in `<brief-2.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -126,7 +126,7 @@ brief                    x
 
 === Synopsis
 
-Declared in header `<brief-2.cpp>`
+Declared in `<brief-2.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -160,7 +160,7 @@ ief
 
 === Synopsis
 
-Declared in header `<brief-2.cpp>`
+Declared in `<brief-2.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -187,7 +187,7 @@ ief
 
 === Synopsis
 
-Declared in header `<brief-2.cpp>`
+Declared in `<brief-2.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

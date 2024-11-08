@@ -1,4 +1,4 @@
-</html>
+<html>
     <head></head>
     <body>
         <div>
@@ -11,13 +11,60 @@
         <h2>Global namespace</h2>
     </div>
     <div>
-            <div>
-                <h3> Types</h3>
-                    </div>
+        <div>
+            <h3> Types</h3>
+            <table>
+                <colgroup>
+                    <col style="width: 50%;">
+                    <col style="width: 50%;">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr>
+                            <td>
+                                <a href="">A</a> 
+                            </td>
+                            <td>
+
+                                    </td>
+                        </tr>        </tbody>
+            </table>
+        </div>
     <div>
-                <h3> Member Functions</h3>
-                    </div>
-    </div>
+                <h3>Functions</h3>
+                <table>
+                    <colgroup>
+                        <col style="width: 50%;">
+                        <col style="width: 50%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                <tr>
+                                <td>
+                                    <a href="">f</a> 
+                                </td>
+                                <td>
+    </td>
+                            </tr>                <tr>
+                                <td>
+                                    <a href="">g</a> 
+                                </td>
+                                <td>
+    </td>
+                            </tr>        </tbody>
+                </table>
+            </div>
+            </div>
 </div>
 
 <div id="">
@@ -57,7 +104,13 @@ f();</code></pre>
         <h3>Synopsis</h3>
         <div>
             <code>
-                            </code>
+                <p>
+                    <span>
+                        Declared in <code><requires-clause.cpp></code>
+                    </span>
+                </p>
+                
+            </code>
         </div>
         <pre class="source-code cpp">
             template<typename T>
@@ -83,7 +136,13 @@ f();
         <h3>Synopsis</h3>
         <div>
             <code>
-                            </code>
+                <p>
+                    <span>
+                        Declared in <code><requires-clause.cpp></code>
+                    </span>
+                </p>
+                
+            </code>
         </div>
         <pre class="source-code cpp">
             template<typename T>
@@ -106,7 +165,7 @@ f();
 
 <p></p>
 
-<pre><code class="language-cpp">template<typename T>
+<pre><code class="language-cpp">template<typename T> requires (sizeof(T) == 4)
 void
 g();</code></pre>
 <a href=""><em>» more...</em></a>
@@ -114,7 +173,7 @@ g();</code></pre>
 
 <p></p>
 
-<pre><code class="language-cpp">template<typename T>
+<pre><code class="language-cpp">template<typename T> requires (sizeof(U) == 2)
 void
 g();</code></pre>
 <a href=""><em>» more...</em></a>
@@ -134,10 +193,16 @@ g();</code></pre>
         <h3>Synopsis</h3>
         <div>
             <code>
-                            </code>
+                <p>
+                    <span>
+                        Declared in <code><requires-clause.cpp></code>
+                    </span>
+                </p>
+                
+            </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T>
+            template<typename T> requires (sizeof(T) == 4)
 void
 g();
         </pre>
@@ -160,10 +225,16 @@ g();
         <h3>Synopsis</h3>
         <div>
             <code>
-                            </code>
+                <p>
+                    <span>
+                        Declared in <code><requires-clause.cpp></code>
+                    </span>
+                </p>
+                
+            </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T>
+            template<typename T> requires (sizeof(U) == 2)
 void
 g();
         </pre>
@@ -186,16 +257,22 @@ g();
         <h3>Synopsis</h3>
         <div>
             <code>
-                            </code>
+                <p>
+                    <span>
+                        Declared in <code><requires-clause.cpp></code>
+                    </span>
+                </p>
+                
+            </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T>
+            template<typename T> requires (sizeof(U) == 2)
 struct A;
         </pre>
     </div>
 
     <div>
-                            </div>
+                                                                                                                </div>
 
 
 </div>

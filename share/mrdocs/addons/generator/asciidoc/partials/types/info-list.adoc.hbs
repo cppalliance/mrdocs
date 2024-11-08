@@ -1,0 +1,11 @@
+{{! List the "members" of a symbol as a table }}
+{{#if members}}
+=={{#unless is_multipage}}={{/unless}} {{title}}
+[cols=2,separator=¦]
+|===
+¦Name ¦Description
+{{#each (sort_by members "name")}}
+{{>types/info-member .}}
+{{/each}}
+|===
+{{/if}}

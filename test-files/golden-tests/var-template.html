@@ -1,4 +1,4 @@
-</html>
+<html>
     <head></head>
     <body>
         <div>
@@ -11,13 +11,69 @@
         <h2>Global namespace</h2>
     </div>
     <div>
-            <div>
-                <h3> Types</h3>
-                    </div>
-    <div>
-                <h3> Variables</h3>
-                    </div>
-    </div>
+        <div>
+            <h3> Types</h3>
+            <table>
+                <colgroup>
+                    <col style="width: 50%;">
+                    <col style="width: 50%;">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr>
+                            <td>
+                                <a href="">B</a> 
+                            </td>
+                            <td>
+
+                                    </td>
+                        </tr>        </tbody>
+            </table>
+        </div>
+        <div>
+                <h3>Variables</h3>
+                <table>
+                    <colgroup>
+                        <col style="width: 50%;">
+                        <col style="width: 50%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                <tr>
+                                <td>
+                                    <a href="">A</a> 
+                                </td>
+                                <td>
+
+                                        </td>
+                            </tr>                <tr>
+                                <td>
+                                    <a href="">A<void></a> 
+                                </td>
+                                <td>
+
+                                        </td>
+                            </tr>                <tr>
+                                <td>
+                                    <a href="">A<T&></a> 
+                                </td>
+                                <td>
+
+                                        </td>
+                            </tr>        </tbody>
+                </table>
+            </div>
+        </div>
 </div>
 
 [#[object Object]]
@@ -32,7 +88,13 @@
         <h3>Synopsis</h3>
         <div>
             <code>
-                            </code>
+                <p>
+                    <span>
+                        Declared in <code><var-template.cpp></code>
+                    </span>
+                </p>
+                
+            </code>
         </div>
         <pre class="source-code cpp">
             template<typename T>
@@ -54,7 +116,13 @@ unsigned int A = sizeof(T);
         <h3>Synopsis</h3>
         <div>
             <code>
-                            </code>
+                <p>
+                    <span>
+                        Declared in <code><var-template.cpp></code>
+                    </span>
+                </p>
+                
+            </code>
         </div>
         <pre class="source-code cpp">
             template<>
@@ -76,7 +144,13 @@ unsigned int A<void> = 0;
         <h3>Synopsis</h3>
         <div>
             <code>
-                            </code>
+                <p>
+                    <span>
+                        Declared in <code><var-template.cpp></code>
+                    </span>
+                </p>
+                
+            </code>
         </div>
         <pre class="source-code cpp">
             template<typename T>
@@ -98,7 +172,13 @@ unsigned int A<T&> = sizeof(T);
         <h3>Synopsis</h3>
         <div>
             <code>
-                            </code>
+                <p>
+                    <span>
+                        Declared in <code><var-template.cpp></code>
+                    </span>
+                </p>
+                
+            </code>
         </div>
         <pre class="source-code cpp">
             struct B;
@@ -106,10 +186,45 @@ unsigned int A<T&> = sizeof(T);
     </div>
 
     <div>
-            <div>
-                <h3> Variables</h3>
-                    </div>
-                    </div>
+                        <div>
+                <h3> Static Data Members</h3>
+                <table>
+                    <colgroup>
+                        <col style="width: 50%;">
+                        <col style="width: 50%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                <tr>
+                                <td>
+                                    <a href="">C</a> 
+                                </td>
+                                <td>
+
+                                        </td>
+                            </tr>                <tr>
+                                <td>
+                                    <a href="">C<int></a> 
+                                </td>
+                                <td>
+
+                                        </td>
+                            </tr>                <tr>
+                                <td>
+                                    <a href="">C<T*></a> 
+                                </td>
+                                <td>
+
+                                        </td>
+                            </tr>        </tbody>
+                </table>
+            </div>
+                                                                                        </div>
 
 
 </div>
@@ -118,8 +233,7 @@ unsigned int A<T&> = sizeof(T);
 
 <div id="[object Object]">
     <div>
-        <h2><a href="#">B</a>::
-C</h2>
+        <h2>B::C</h2>
         
     </div>
 
@@ -127,7 +241,13 @@ C</h2>
         <h3>Synopsis</h3>
         <div>
             <code>
-                            </code>
+                <p>
+                    <span>
+                        Declared in <code><var-template.cpp></code>
+                    </span>
+                </p>
+                
+            </code>
         </div>
         <pre class="source-code cpp">
             template<typename T>
@@ -142,8 +262,7 @@ unsigned int C = 0;
 
 <div id="[object Object]">
     <div>
-        <h2><a href="#">B</a>::
-C</h2>
+        <h2>B::C</h2>
         
     </div>
 
@@ -151,7 +270,13 @@ C</h2>
         <h3>Synopsis</h3>
         <div>
             <code>
-                            </code>
+                <p>
+                    <span>
+                        Declared in <code><var-template.cpp></code>
+                    </span>
+                </p>
+                
+            </code>
         </div>
         <pre class="source-code cpp">
             template<>
@@ -166,8 +291,7 @@ unsigned int C<int> = -1;
 
 <div id="[object Object]">
     <div>
-        <h2><a href="#">B</a>::
-C</h2>
+        <h2>B::C</h2>
         
     </div>
 
@@ -175,7 +299,13 @@ C</h2>
         <h3>Synopsis</h3>
         <div>
             <code>
-                            </code>
+                <p>
+                    <span>
+                        Declared in <code><var-template.cpp></code>
+                    </span>
+                </p>
+                
+            </code>
         </div>
         <pre class="source-code cpp">
             template<typename T>

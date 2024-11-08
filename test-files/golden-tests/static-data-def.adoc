@@ -31,7 +31,7 @@
 
 === Synopsis
 
-Declared in header `<static-data-def.cpp>`
+Declared in `<static-data-def.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -72,7 +72,7 @@ struct A;
 
 === Synopsis
 
-Declared in header `<static-data-def.cpp>`
+Declared in `<static-data-def.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -90,7 +90,7 @@ int v0 = 0;
 
 === Synopsis
 
-Declared in header `<static-data-def.cpp>`
+Declared in `<static-data-def.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -108,7 +108,7 @@ int v1 = 1;
 
 === Synopsis
 
-Declared in header `<static-data-def.cpp>`
+Declared in `<static-data-def.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -127,7 +127,7 @@ int const v2 = 2;
 
 === Synopsis
 
-Declared in header `<static-data-def.cpp>`
+Declared in `<static-data-def.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -145,7 +145,7 @@ int const v3 = 3;
 
 === Synopsis
 
-Declared in header `<static-data-def.cpp>`
+Declared in `<static-data-def.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -163,7 +163,7 @@ int const v4 = 4;
 
 === Synopsis
 
-Declared in header `<static-data-def.cpp>`
+Declared in `<static-data-def.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -181,7 +181,7 @@ int v5 = 5;
 
 === Synopsis
 
-Declared in header `<static-data-def.cpp>`
+Declared in `<static-data-def.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -199,7 +199,7 @@ int const v6 = 6;
 
 === Synopsis
 
-Declared in header `<static-data-def.cpp>`
+Declared in `<static-data-def.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -218,7 +218,7 @@ int const v7 = 7;
 
 === Synopsis
 
-Declared in header `<static-data-def.cpp>`
+Declared in `<static-data-def.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -246,7 +246,7 @@ struct B;
 
 === Synopsis
 
-Declared in header `<static-data-def.cpp>`
+Declared in `<static-data-def.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -265,7 +265,7 @@ int const x0 = 0;
 
 === Synopsis
 
-Declared in header `<static-data-def.cpp>`
+Declared in `<static-data-def.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -285,7 +285,7 @@ int const x1 = 0;
 
 === Synopsis
 
-Declared in header `<static-data-def.cpp>`
+Declared in `<static-data-def.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

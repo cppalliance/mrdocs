@@ -44,7 +44,7 @@
 
 === Synopsis
 
-Declared in header `<implicit-instantiation-member-ref.cpp>`
+Declared in `<implicit-instantiation-member-ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -77,7 +77,7 @@ struct S0;
 
 === Synopsis
 
-Declared in header `<implicit-instantiation-member-ref.cpp>`
+Declared in `<implicit-instantiation-member-ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -94,7 +94,7 @@ using M0 = T;
 
 === Synopsis
 
-Declared in header `<implicit-instantiation-member-ref.cpp>`
+Declared in `<implicit-instantiation-member-ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -113,7 +113,7 @@ struct S1;
 
 === Synopsis
 
-Declared in header `<implicit-instantiation-member-ref.cpp>`
+Declared in `<implicit-instantiation-member-ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -131,7 +131,7 @@ using M1 = xref:S0.adoc[S0]<U>;
 
 === Synopsis
 
-Declared in header `<implicit-instantiation-member-ref.cpp>`
+Declared in `<implicit-instantiation-member-ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -164,7 +164,7 @@ struct S2;
 
 === Synopsis
 
-Declared in header `<implicit-instantiation-member-ref.cpp>`
+Declared in `<implicit-instantiation-member-ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -181,7 +181,7 @@ using M2 = U;
 
 === Synopsis
 
-Declared in header `<implicit-instantiation-member-ref.cpp>`
+Declared in `<implicit-instantiation-member-ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -200,7 +200,7 @@ struct S3;
 
 === Synopsis
 
-Declared in header `<implicit-instantiation-member-ref.cpp>`
+Declared in `<implicit-instantiation-member-ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -218,7 +218,7 @@ using M3 = xref:S0/S2.adoc[S2]<U>;
 
 === Synopsis
 
-Declared in header `<implicit-instantiation-member-ref.cpp>`
+Declared in `<implicit-instantiation-member-ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -245,7 +245,7 @@ struct S4;
 
 === Synopsis
 
-Declared in header `<implicit-instantiation-member-ref.cpp>`
+Declared in `<implicit-instantiation-member-ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -262,7 +262,7 @@ using M4 = V;
 
 === Synopsis
 
-Declared in header `<implicit-instantiation-member-ref.cpp>`
+Declared in `<implicit-instantiation-member-ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -279,7 +279,7 @@ using A0 = xref:S0.adoc[S0]<int>;
 
 === Synopsis
 
-Declared in header `<implicit-instantiation-member-ref.cpp>`
+Declared in `<implicit-instantiation-member-ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -296,7 +296,7 @@ using A1 = xref:A0.adoc[A0]::xref:S0/M0.adoc[M0];
 
 === Synopsis
 
-Declared in header `<implicit-instantiation-member-ref.cpp>`
+Declared in `<implicit-instantiation-member-ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -313,7 +313,7 @@ using A2 = xref:A0.adoc[A0]::xref:S0/S1.adoc[S1];
 
 === Synopsis
 
-Declared in header `<implicit-instantiation-member-ref.cpp>`
+Declared in `<implicit-instantiation-member-ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -330,7 +330,7 @@ using A3 = xref:S0.adoc[S0]<long>::xref:S0/M0.adoc[M0];
 
 === Synopsis
 
-Declared in header `<implicit-instantiation-member-ref.cpp>`
+Declared in `<implicit-instantiation-member-ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -347,7 +347,7 @@ using A4 = xref:S0.adoc[S0]<long long>::xref:S0/S1.adoc[S1];
 
 === Synopsis
 
-Declared in header `<implicit-instantiation-member-ref.cpp>`
+Declared in `<implicit-instantiation-member-ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -364,7 +364,7 @@ using A5 = xref:S0.adoc[S0]<void>;
 
 === Synopsis
 
-Declared in header `<implicit-instantiation-member-ref.cpp>`
+Declared in `<implicit-instantiation-member-ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -381,7 +381,7 @@ using A6 = xref:A5.adoc[A5]::xref:S0/M1.adoc[M1]<short>::xref:S0/M0.adoc[M0];
 
 === Synopsis
 
-Declared in header `<implicit-instantiation-member-ref.cpp>`
+Declared in `<implicit-instantiation-member-ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -398,7 +398,7 @@ using A7 = xref:A5.adoc[A5]::xref:S0/S2.adoc[S2]<bool>::xref:S0/S2/M2.adoc[M2];
 
 === Synopsis
 
-Declared in header `<implicit-instantiation-member-ref.cpp>`
+Declared in `<implicit-instantiation-member-ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -415,7 +415,7 @@ using A8 = xref:A5.adoc[A5]::xref:S0/S2.adoc[S2]<int>::xref:S0/S2/S3.adoc[S3];
 
 === Synopsis
 
-Declared in header `<implicit-instantiation-member-ref.cpp>`
+Declared in `<implicit-instantiation-member-ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -432,7 +432,7 @@ using A9 = xref:A5.adoc[A5]::xref:S0/S2.adoc[S2]<char>::xref:S0/S2/M3.adoc[M3]<i
 
 === Synopsis
 
-Declared in header `<implicit-instantiation-member-ref.cpp>`
+Declared in `<implicit-instantiation-member-ref.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

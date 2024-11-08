@@ -1,11 +1,11 @@
 {{!-- friend --}}
-={{#unless is_multipage}}={{/unless}} {{#if symbol.symbol}}{{>nested-name-specifier symbol=symbol.symbol.parent includeNamespace=true}}{{symbol.symbol.name}}{{else}}{{symbol.type.name}}{{/if}}
+={{#unless is_multipage}}={{/unless}} {{#if symbol.symbol}}{{>types/nested-name-specifier symbol=symbol.symbol.parent includeNamespace=true}}{{symbol.symbol.name}}{{else}}{{symbol.type.name}}{{/if}}
 
 {{symbol.doc.brief}}
 
 =={{#unless is_multipage}}={{/unless}} Synopsis
 
-{{>source dcl=(primary_location symbol)}}
+{{>types/source dcl=(primary_location symbol)}}
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

@@ -22,7 +22,7 @@
 
 === Synopsis
 
-Declared in header `<nested-private-template.cpp>`
+Declared in `<nested-private-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -51,7 +51,7 @@ class range;
 
 === Synopsis
 
-Declared in header `<nested-private-template.cpp>`
+Declared in `<nested-private-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -73,7 +73,7 @@ struct impl;
 
 === Synopsis
 
-Declared in header `<nested-private-template.cpp>`
+Declared in `<nested-private-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

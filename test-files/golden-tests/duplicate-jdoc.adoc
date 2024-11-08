@@ -46,7 +46,7 @@ f0 brief
 
 === Synopsis
 
-Declared in header `<duplicate-jdoc.cpp>`
+Declared in `<duplicate-jdoc.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -78,7 +78,7 @@ f1 brief
 
 === Synopsis
 
-Declared in header `<duplicate-jdoc.cpp>`
+Declared in `<duplicate-jdoc.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -110,7 +110,7 @@ g0 brief
 
 === Synopsis
 
-Declared in header `<duplicate-jdoc.cpp>`
+Declared in `<duplicate-jdoc.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -151,7 +151,7 @@ g1 brief
 
 === Synopsis
 
-Declared in header `<duplicate-jdoc.cpp>`
+Declared in `<duplicate-jdoc.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -192,7 +192,7 @@ h0 brief
 
 === Synopsis
 
-Declared in header `<duplicate-jdoc.cpp>`
+Declared in `<duplicate-jdoc.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -234,7 +234,7 @@ h1 brief
 
 === Synopsis
 
-Declared in header `<duplicate-jdoc.cpp>`
+Declared in `<duplicate-jdoc.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

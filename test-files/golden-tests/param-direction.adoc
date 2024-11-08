@@ -40,7 +40,7 @@
 
 === Synopsis
 
-Declared in header `<param-direction.cpp>`
+Declared in `<param-direction.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -73,7 +73,7 @@ f(int x0);
 
 === Synopsis
 
-Declared in header `<param-direction.cpp>`
+Declared in `<param-direction.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -110,7 +110,7 @@ g(
 
 === Synopsis
 
-Declared in header `<param-direction.cpp>`
+Declared in `<param-direction.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -147,7 +147,7 @@ h(
 
 === Synopsis
 
-Declared in header `<param-direction.cpp>`
+Declared in `<param-direction.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -184,7 +184,7 @@ i(
 
 === Synopsis
 
-Declared in header `<param-direction.cpp>`
+Declared in `<param-direction.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -221,7 +221,7 @@ j(
 
 === Synopsis
 
-Declared in header `<param-direction.cpp>`
+Declared in `<param-direction.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -261,7 +261,7 @@ k(
 
 === Synopsis
 
-Declared in header `<param-direction.cpp>`
+Declared in `<param-direction.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -302,7 +302,7 @@ l(
 
 === Synopsis
 
-Declared in header `<param-direction.cpp>`
+Declared in `<param-direction.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -339,7 +339,7 @@ m(
 
 === Synopsis
 
-Declared in header `<param-direction.cpp>`
+Declared in `<param-direction.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -372,7 +372,7 @@ n(int x8);
 
 === Synopsis
 
-Declared in header `<param-direction.cpp>`
+Declared in `<param-direction.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

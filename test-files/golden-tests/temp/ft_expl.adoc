@@ -52,7 +52,7 @@ xref:f-0c.adoc[pass:[f]]<int>();
 
 === Synopsis
 
-Declared in header `<temp/ft_expl.cpp>`
+Declared in `<temp/ft_expl.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -77,7 +77,7 @@ f();
 
 === Synopsis
 
-Declared in header `<temp/ft_expl.cpp>`
+Declared in `<temp/ft_expl.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

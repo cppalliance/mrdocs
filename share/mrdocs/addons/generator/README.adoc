@@ -1,3 +1,0 @@
-= Addons/Generator
-
-Each installed generator has a corresponding directory here.

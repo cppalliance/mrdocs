@@ -1,0 +1,8 @@
+{{! Print the symbol name with its parent namespace(s) if any. }}
+{{#if (and symbol (or includeNamespace (ne symbol.kind "namespace")))~}}
+{{#if symbol.parent~}}
+{{>types/nested-name-specifier symbol=symbol.parent~}}
+{{else~}}
+{{/if~}}
+{{#if symbol.name}}{{>types/declarator-id symbol link=symbol}}::{{/if~}}
+{{/if}}

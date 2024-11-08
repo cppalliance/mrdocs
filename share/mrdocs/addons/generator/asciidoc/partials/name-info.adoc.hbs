@@ -1,6 +1,0 @@
-{{#if prefix~}}
-{{>name-info prefix nolink=nolink~}}::
-{{~/if~}}
-{{#if (or (eq name "see-below") (eq name "implementation-defined"))~}}pass:q[_{{name}}_]{{else~}}
-{{#if (and symbol.ref (not nolink))}}xref:{{symbol.ref}}[{{name}}]{{else~}}
-{{name}}{{/if}}{{#if args}}{{>template-args args=args nolink=nolink}}{{/if~}}{{/if~}}{{/if~}}

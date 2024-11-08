@@ -41,7 +41,7 @@
 
 === Synopsis
 
-Declared in header `<filters/blacklist_0.cpp>`
+Declared in `<filters/blacklist_0.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -99,7 +99,7 @@ f0();
 
 === Synopsis
 
-Declared in header `<filters/blacklist_0.cpp>`
+Declared in `<filters/blacklist_0.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -136,7 +136,7 @@ f1();
 
 === Synopsis
 
-Declared in header `<filters/blacklist_0.cpp>`
+Declared in `<filters/blacklist_0.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -194,7 +194,7 @@ f1();
 
 === Synopsis
 
-Declared in header `<filters/blacklist_0.cpp>`
+Declared in `<filters/blacklist_0.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
