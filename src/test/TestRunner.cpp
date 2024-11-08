@@ -112,7 +112,7 @@ handleFile(
     MrDocsCompilationDatabase compilations(
         llvm::StringRef(parentDir), SingleFileDB(filePath), config, defaultIncludePaths);
 
-    report::setMinimumLevel(report::Level::warn);
+    report::setMinimumLevel(report::Level::error);
     // Build Corpus
     auto corpus = CorpusImpl::build(config, compilations);
     if(! corpus)
