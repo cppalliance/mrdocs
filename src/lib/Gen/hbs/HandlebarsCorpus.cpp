@@ -172,7 +172,6 @@ getJavadoc(
         else if constexpr (std::ranges::range<T>)
         {
             // Range value type
-            using U = std::ranges::range_value_t<T>;
             for(doc::Node const* t : I)
                 s += toStringFn(*this, *t);
         }
