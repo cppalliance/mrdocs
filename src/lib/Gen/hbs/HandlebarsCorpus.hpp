@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_GEN_ADOC_ADOCCORPUS_HPP
-#define MRDOCS_LIB_GEN_ADOC_ADOCCORPUS_HPP
+#ifndef MRDOCS_LIB_GEN_HBS_HANDLEBARSCORPUS_HPP
+#define MRDOCS_LIB_GEN_HBS_HANDLEBARSCORPUS_HPP
 
 #include <mrdocs/Platform.hpp>
 #include "lib/Support/LegibleNames.hpp"
@@ -20,35 +20,47 @@
 
 namespace clang {
 namespace mrdocs {
-namespace adoc {
+namespace hbs {
 
-/** A specialized DomCorpus for generating Adoc nodes.
+/** A specialized DomCorpus for generating Handlebars values.
 
     This class extends @ref DomCorpus to provide
-    additional functionality specific to Adoc generation.
+    additional functionality specific to Handlebars
+    generation.
+
 */
-class AdocCorpus : public DomCorpus
+class HandlebarsCorpus : public DomCorpus
 {
 public:
-    /** Options for the Adoc corpus. */
+    /** Options for the Handlebars corpus. */
     Options options;
 
-    /** Legible names for the Adoc corpus. */
+    /** Legible names for the Handlebars corpus. */
     LegibleNames names_;
+
+    /** File extension for the markup files. */
+    std::string fileExtension;
+
+    /** Function to convert a Javadoc node to a string. */
+    std::function<std::string(HandlebarsCorpus const&, doc::Node const&)> toStringFn;
 
     /** Constructor.
 
-        Initializes the AdocCorpus with the given corpus and options.
+        Initializes the HandlebarsCorpus with the given corpus and options.
 
         @param corpus The base corpus.
-        @param opts Options for the Adoc corpus.
+        @param opts Options for the Handlebars corpus.
     */
-    AdocCorpus(
+    HandlebarsCorpus(
         Corpus const& corpus,
-        Options&& opts)
+        Options&& opts,
+        std::string_view fileExtension,
+        std::function<std::string(HandlebarsCorpus const&, doc::Node const&)> toStringFn)
         : DomCorpus(corpus)
         , options(std::move(opts))
         , names_(corpus, options.legible_names)
+        , fileExtension(fileExtension)
+        , toStringFn(std::move(toStringFn))
     {
     }
 
@@ -95,7 +107,7 @@ public:
         OverloadSet const& os) const override;
 };
 
-} // adoc
+} // hbs
 } // mrdocs
 } // clang
 

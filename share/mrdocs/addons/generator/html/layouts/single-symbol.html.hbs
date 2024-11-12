@@ -1,5 +1,2 @@
 {{! The section with a symbol in single page output or the symbol page in multi page output }}
-{{#if relfileprefix}}:relfileprefix: {{relfileprefix}}{{/if}}
-[#{{#if (is_multipage)}}{{symbol.id}}{{else}}{{symbol.ref}}{{/if}}]
-
 {{> (concat 'symbols' '/' (lookup symbol 'kind')) symbol=symbol}}

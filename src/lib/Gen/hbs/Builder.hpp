@@ -4,14 +4,16 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_GEN_HTML_BUILDER_HPP
-#define MRDOCS_LIB_GEN_HTML_BUILDER_HPP
+#ifndef MRDOCS_LIB_GEN_HBS_BUILDER_HPP
+#define MRDOCS_LIB_GEN_HBS_BUILDER_HPP
 
 #include "Options.hpp"
+#include "HandlebarsCorpus.hpp"
 #include "lib/Support/Radix.hpp"
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Support/Error.hpp>
@@ -21,7 +23,7 @@
 
 namespace clang {
 namespace mrdocs {
-namespace html {
+namespace hbs {
 
 /** Builds reference output.
 
@@ -30,20 +32,19 @@ namespace html {
 */
 class Builder
 {
-    DomCorpus const& domCorpus_;
-    Corpus const& corpus_;
-    Options options_;
     js::Context ctx_;
     Handlebars hbs_;
 
     std::string getRelPrefix(std::size_t depth);
 
 public:
-    Builder(
-        DomCorpus const& domCorpus,
-        Options const& options);
+    HandlebarsCorpus const& domCorpus;
 
-    dom::Value createContext(SymbolID const& id);
+    explicit
+    Builder(
+        HandlebarsCorpus const& corpus);
+
+    dom::Value createContext(Info const& I);
     dom::Value createContext(OverloadSet const& OS);
 
     Expected<std::string>
@@ -59,10 +60,10 @@ public:
     operator()(T const&);
 
     Expected<std::string>
-    operator()(OverloadSet const& OS);
+    operator()(OverloadSet const&);
 };
 
-} // html
+} // hbs
 } // mrdocs
 } // clang
 

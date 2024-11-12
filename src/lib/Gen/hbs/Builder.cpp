@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -25,11 +26,11 @@ namespace lua {
 extern void lua_dump(dom::Object const& obj);
 }
 
-namespace adoc {
+namespace hbs {
 
 Builder::
 Builder(
-    AdocCorpus const& corpus)
+    HandlebarsCorpus const& corpus)
     : domCorpus(corpus)
 {
     namespace fs = std::filesystem;
@@ -38,7 +39,7 @@ Builder(
 
     // load partials
     std::string partialsPath = files::appendPath(
-        config->addons, "generator", "asciidoc", "partials");
+        config->addons, "generator", domCorpus.fileExtension, "partials");
     forEachFile(partialsPath, true,
         [&](std::string_view pathName) -> Error
         {
@@ -60,7 +61,7 @@ Builder(
 
     // Load JavaScript helpers
     std::string helpersPath = files::appendPath(
-        config->addons, "generator", "asciidoc", "helpers");
+        config->addons, "generator", domCorpus.fileExtension, "helpers");
     forEachFile(helpersPath, true,
         [&](std::string_view pathName)-> Expected<void>
         {
@@ -134,7 +135,7 @@ callTemplate(
     Config const& config = domCorpus->config;
 
     auto layoutDir = files::appendPath(config->addons,
-            "generator", "asciidoc", "layouts");
+            "generator", domCorpus.fileExtension, "layouts");
     auto pathName = files::appendPath(layoutDir, name);
     MRDOCS_TRY(auto fileText, files::getFileText(pathName));
     HandlebarsOptions options;
@@ -152,14 +153,14 @@ Expected<std::string>
 Builder::
 renderSinglePageHeader()
 {
-    return callTemplate("single-header.adoc.hbs", {});
+    return callTemplate(fmt::format("single-header.{}.hbs", domCorpus.fileExtension), {});
 }
 
 Expected<std::string>
 Builder::
 renderSinglePageFooter()
 {
-    return callTemplate("single-footer.adoc.hbs", {});
+    return callTemplate(fmt::format("single-footer.{}.hbs", domCorpus.fileExtension), {});
 }
 
 //------------------------------------------------
@@ -218,7 +219,7 @@ Builder::
 operator()(T const& I)
 {
     return callTemplate(
-        "single-symbol.adoc.hbs",
+        fmt::format("single-symbol.{}.hbs", domCorpus.fileExtension),
         createContext(I));
 }
 
@@ -227,7 +228,7 @@ Builder::
 operator()(OverloadSet const& OS)
 {
     return callTemplate(
-        "overload-set.adoc.hbs",
+        fmt::format("overload-set.{}.hbs", domCorpus.fileExtension),
         createContext(OS));
 }
 
@@ -237,6 +238,6 @@ operator()(OverloadSet const& OS)
 #define INFO(Type) DEFINE(Type##Info);
 #include <mrdocs/Metadata/InfoNodesPascal.inc>
 
-} // adoc
+} // hbs
 } // mrdocs
 } // clang

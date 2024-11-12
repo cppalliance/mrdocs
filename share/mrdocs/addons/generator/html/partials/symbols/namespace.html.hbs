@@ -1,5 +1,5 @@
 {{!-- namespace --}}
-<div id="{{symbol.id}}">
+<div {{#if sectionref}}id="{{sectionref}}"{{/if}}>
     <div>
         <h2>{{#if symbol.name}}Namespace {{>types/nested-name-specifier symbol=symbol.parent}}{{symbol.name}}{{else if symbol.parent}}Unnamed namespace{{else}}Global namespace{{/if}}</h2>
     </div>

@@ -3,10 +3,7 @@
     <body>
         <div>
             <h1>Reference</h1>
-
-[#[object Object]]
-
-<div id="[object Object]">
+<div id="index">
     <div>
         <h2>Global namespace</h2>
     </div>
@@ -27,7 +24,7 @@
                 <tbody>
                 <tr>
                             <td>
-                                <a href="">N</a> 
+                                <a href="N.html">N</a> 
                             </td>
                             <td>
 
@@ -51,7 +48,7 @@
                 <tbody>
                 <tr>
                             <td>
-                                <a href="">E</a> 
+                                <a href="E.html">E</a> 
                             </td>
                             <td>
 
@@ -61,10 +58,7 @@
         </div>
                 </div>
 </div>
-
-[#[object Object]]
-
-<div id="[object Object]">
+<div id="E">
     <div>
         <h2>Class E</h2>
         
@@ -84,7 +78,7 @@
         </div>
         <pre class="source-code cpp">
             struct E
-    : N::C<int>;
+    : <a href="N.html">N</a>::<a href="N/C.html">C</a><int>;
         </pre>
     </div>
 
@@ -93,10 +87,7 @@
 
 
 </div>
-
-[#[object Object]]
-
-<div id="[object Object]">
+<div id="N">
     <div>
         <h2>Namespace N</h2>
     </div>
@@ -117,21 +108,21 @@
                 <tbody>
                 <tr>
                             <td>
-                                <a href="">A</a> 
+                                <a href="N/A.html">A</a> 
                             </td>
                             <td>
 
                                     </td>
                         </tr>                <tr>
                             <td>
-                                <a href="">B</a> 
+                                <a href="N/B.html">B</a> 
                             </td>
                             <td>
 
                                     </td>
                         </tr>                <tr>
                             <td>
-                                <a href="">C</a> 
+                                <a href="N/C.html">C</a> 
                             </td>
                             <td>
 
@@ -141,10 +132,7 @@
         </div>
                 </div>
 </div>
-
-[#[object Object]]
-
-<div id="[object Object]">
+<div id="N-C">
     <div>
         <h2>C</h2>
         
@@ -164,15 +152,12 @@
         </div>
         <pre class="source-code cpp">
             template<typename T>
-using C = B<T>;
+using C = <a href="N/B.html">B</a><T>;
         </pre>
     </div>
 
 </div>
-
-[#[object Object]]
-
-<div id="[object Object]">
+<div id="N-B">
     <div>
         <h2>B</h2>
         
@@ -192,15 +177,12 @@ using C = B<T>;
         </div>
         <pre class="source-code cpp">
             template<typename T>
-using B = A<T>;
+using B = <a href="N/A.html">A</a><T>;
         </pre>
     </div>
 
 </div>
-
-[#[object Object]]
-
-<div id="[object Object]">
+<div id="N-A">
     <div>
         <h2>Class A</h2>
         

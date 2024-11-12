@@ -1,5 +1,5 @@
 {{!-- enumerator --}}
-<div id="{{symbol.id}}">
+<div {{#if sectionref}}id="{{sectionref}}"{{/if}}>
     <div>
         <h2>Enumerator {{>types/nested-name-specifier symbol=symbol.parent}}{{symbol.name}}</h2>
         {{{symbol.doc.brief}}}

@@ -166,6 +166,7 @@ namespace report {
 
 static llvm::sys::Mutex mutex_;
 static Level level_ = Level::debug;
+static bool sourceLocationWarnings_ = true;
 
 constinit Results results{};
 
@@ -189,6 +190,12 @@ setMinimumLevel(
     Level level) noexcept
 {
     level_ = level;
+}
+
+void
+setSourceLocationWarnings(bool b) noexcept
+{
+    sourceLocationWarnings_ = b;
 }
 
 void
@@ -240,10 +247,11 @@ call_impl(
     {
         llvm::raw_string_ostream os(s);
         f(os);
-        if(loc && (
-            level == Level::warn ||
-            level == Level::error ||
-            level == Level::fatal))
+        if(sourceLocationWarnings_ &&
+           loc && (
+              level == Level::warn ||
+              level == Level::error ||
+              level == Level::fatal))
         {
             os << "\n\n";
             os << "An issue occurred during execution.\n";

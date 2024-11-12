@@ -4,15 +4,17 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_GEN_HTML_MULTIPAGEVISITOR_HPP
-#define MRDOCS_LIB_GEN_HTML_MULTIPAGEVISITOR_HPP
+#ifndef MRDOCS_LIB_GEN_HBS_MULTIPAGEVISITOR_HPP
+#define MRDOCS_LIB_GEN_HBS_MULTIPAGEVISITOR_HPP
 
 #include "Builder.hpp"
 #include <mrdocs/Support/ExecutorGroup.hpp>
+#include <mrdocs/Metadata/Info.hpp>
 #include <mutex>
 #include <ostream>
 #include <string>
@@ -20,7 +22,7 @@
 
 namespace clang {
 namespace mrdocs {
-namespace html {
+namespace hbs {
 
 /** Visitor which emites a multi-page reference.
 */
@@ -29,6 +31,11 @@ class MultiPageVisitor
     ExecutorGroup<Builder>& ex_;
     std::string_view outputPath_;
     Corpus const& corpus_;
+
+    void
+    writePage(
+        std::string_view text,
+        std::string_view filename);
 
 public:
     MultiPageVisitor(
@@ -41,12 +48,25 @@ public:
     {
     }
 
-    template<class T>
+    /** Push a task for the specified Info to the executor group.
+
+        If the Info object refers to other Info objects, their
+        respective tasks are also pushed to the executor group.
+
+    */
+    template <std::derived_from<Info> T>
     void operator()(T const& I);
-    void renderPage(auto const& I);
+
+    /** Push a task for the specified OverloadSet to the executor group.
+
+        If the OverloadSet object refers to other Info objects, their
+        respective tasks are also pushed to the executor group.
+
+    */
+    void operator()(OverloadSet const& OS);
 };
 
-} // html
+} // hbs
 } // mrdocs
 } // clang
 

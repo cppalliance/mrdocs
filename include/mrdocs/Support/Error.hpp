@@ -2747,6 +2747,13 @@ void
 setMinimumLevel(
     Level level) noexcept;
 
+/** If true, source location information will be
+    printed with warnings, errors, and fatal messages.
+*/
+MRDOCS_DECL
+void
+setSourceLocationWarnings(bool b) noexcept;
+
 /** Report a message to the console.
 
     @param text The message to print. A
