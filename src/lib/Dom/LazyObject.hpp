@@ -278,7 +278,7 @@ std::size_t
 LazyObjectImpl<T, Context>::
 size() const
 {
-    std::size_t result;
+    std::size_t result = 0;
     detail::LazyObjectIO io(
         [&result, this](std::string_view name, auto const& /* value or deferred */)
         {
