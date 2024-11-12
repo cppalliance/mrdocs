@@ -119,11 +119,11 @@ tag_invoke(
     dom::LazyObjectMapTag,
     IO& io,
     TArg const& I,
-    DomCorpus const* domCorpus)
+    DomCorpus const*)
 {
     io.map("kind", toString(I.Kind));
     io.map("is-pack", I.IsPackExpansion);
-    visit(I, [domCorpus, &io]<typename T>(const T& t) {
+    visit(I, [&io]<typename T>(const T& t) {
         if constexpr(T::isType())
         {
             io.map("type", t.Type);
