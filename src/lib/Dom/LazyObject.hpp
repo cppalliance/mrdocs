@@ -266,6 +266,10 @@ namespace detail
             }
         }
     };
+
+    // Deduction guide
+    template <class MapFn, class DeferFn = void*>
+    LazyObjectIO(MapFn, DeferFn = {}) -> LazyObjectIO<MapFn, DeferFn>;
 }
 
 template <class T, class Context>
