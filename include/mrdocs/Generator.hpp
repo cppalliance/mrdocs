@@ -82,10 +82,19 @@ public:
         depending on the generator and how it is
         configured.
 
+        The default implentation assumes the output
+        is single-page and emits the file `reference.ext`
+        using @ref buildOne to generate the content.
+
+        The typical implementation will have behavior
+        similar to the default implementation if the
+        output is single-page, or will iterate over
+        the symbols in the corpus to generate multiple
+        files if the output is multi-page.
+
         @return The error, if any occurred.
 
-        @param outputPath An existing directory or
-        a filename.
+        @param outputPath A directory or filename.
 
         @param corpus The symbols to emit. The
         generator may modify the contents of

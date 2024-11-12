@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -14,42 +15,17 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Generator.hpp>
+#include <lib/Gen/hbs/HandlebarsGenerator.hpp>
 
 namespace clang {
 namespace mrdocs {
 namespace adoc {
 
 class AdocGenerator
-    : public Generator
+    : public hbs::HandlebarsGenerator
 {
 public:
-    std::string_view
-    id() const noexcept override
-    {
-        return "adoc";
-    }
-
-    std::string_view
-    displayName() const noexcept override
-    {
-        return "Asciidoc";
-    }
-
-    std::string_view
-    fileExtension() const noexcept override
-    {
-        return "adoc";
-    }
-
-    Error
-    build(
-        std::string_view outputPath,
-        Corpus const& corpus) const override;
-
-    Error
-    buildOne(
-        std::ostream& os,
-        Corpus const& corpus) const override;
+    AdocGenerator();
 };
 
 } // adoc

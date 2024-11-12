@@ -26,7 +26,7 @@ namespace mrdocs {
 class MRDOCS_VISIBLE
     GeneratorsImpl : public Generators
 {
-    llvm::SmallVector<Generator const*, 8> plist_;
+    llvm::SmallVector<Generator const*, 3> plist_;
     llvm::SmallVector<
         std::unique_ptr<Generator>> list_;
 

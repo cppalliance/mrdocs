@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -13,7 +14,7 @@
 
 namespace clang {
 namespace mrdocs {
-namespace adoc {
+namespace hbs {
 
 template<class T>
 void
@@ -96,6 +97,6 @@ writePage(
 #define INFO(Type) DEFINE(Type##Info);
 #include <mrdocs/Metadata/InfoNodesPascal.inc>
 
-} // adoc
+} // hbs
 } // mrdocs
 } // clang

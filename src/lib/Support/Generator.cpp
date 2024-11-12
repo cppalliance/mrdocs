@@ -25,7 +25,7 @@ namespace mrdocs {
 Generator::
 ~Generator() noexcept = default;
 
-/*  default implementation of this function
+/*  Default implementation of this function
     assumes the output is single page, and emits
     the file reference.ext using the extension
     of the generator.

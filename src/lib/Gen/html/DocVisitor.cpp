@@ -5,55 +5,22 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "HTMLCorpus.hpp"
+#include "DocVisitor.hpp"
+#include "lib/Support/Radix.hpp"
+#include <iterator>
+#include <fmt/format.h>
+#include <llvm/Support/raw_ostream.h>
 #include <mrdocs/Support/RangeFor.hpp>
 #include <mrdocs/Support/String.hpp>
-#include <fmt/format.h>
-#include <iterator>
-
-#include <llvm/Support/raw_ostream.h>
 
 namespace clang {
 namespace mrdocs {
 namespace html {
-
-namespace {
-
-class DocVisitor
-{
-    std::string& dest_;
-    std::back_insert_iterator<std::string> ins_;
-
-public:
-    explicit DocVisitor(std::string& dest) noexcept;
-
-    void operator()(doc::Admonition const& I);
-    void operator()(doc::Code const& I);
-    void operator()(doc::Heading const& I);
-    void operator()(doc::Paragraph const& I);
-    void operator()(doc::Link const& I);
-    void operator()(doc::ListItem const& I);
-    void operator()(doc::Param const& I);
-    void operator()(doc::Returns const& I);
-    void operator()(doc::Text const& I);
-    void operator()(doc::Styled const& I);
-    void operator()(doc::TParam const& I);
-
-    std::size_t measureLeftMargin(
-        doc::List<doc::Text> const& list);
-};
-
-DocVisitor::
-DocVisitor(
-    std::string& dest) noexcept
-    : dest_(dest)
-    , ins_(std::back_inserter(dest_))
-{
-}
 
 void
 DocVisitor::
@@ -238,6 +205,22 @@ operator()(doc::TParam const& I)
     //dest_ += I.string;
 }
 
+void
+DocVisitor::
+operator()(doc::Reference const& I)
+{
+    if(I.id == SymbolID::invalid)
+        return (*this)(static_cast<const doc::Text&>(I));
+    fmt::format_to(std::back_inserter(dest_), "<a href=\"{}\">{}</a>",
+        corpus_.getXref(corpus_->get(I.id)), I.string);
+}
+
+void
+DocVisitor::
+operator()(doc::Throws const& I)
+{
+}
+
 std::size_t
 DocVisitor::
 measureLeftMargin(
@@ -256,50 +239,6 @@ measureLeftMargin(
             n = space;
     }
     return n;
-}
-
-} // (anon)
-
-dom::Value
-HTMLCorpus::
-getJavadoc(
-    Javadoc const& jd) const
-{
-    dom::Object::storage_type list;
-
-    auto maybeEmplace = [&](
-        std::string_view key,
-        auto const& I)
-    {
-        std::string s;
-        DocVisitor visitor(s);
-        using T = std::decay_t<decltype(I)>;
-        if constexpr (std::derived_from<T, doc::Node>)
-        {
-            doc::visit(I, visitor);
-        }
-        else if constexpr (std::ranges::range<T>)
-        {
-            for(auto const& node : I)
-                doc::visit(*node, visitor);
-        }
-        if(!s.empty())
-        {
-            list.emplace_back(key, std::move(s));
-        }
-    };
-
-    list.reserve(2);
-    auto ov = jd.makeOverview(this->getCorpus());
-    // brief
-    if(ov.brief)
-        maybeEmplace("brief", *ov.brief);
-    maybeEmplace("description", ov.blocks);
-    if(ov.returns)
-        maybeEmplace("returns", *ov.returns);
-    maybeEmplace("params", ov.params);
-    maybeEmplace("tparams", ov.tparams);
-    return dom::Object(std::move(list));
 }
 
 } // html

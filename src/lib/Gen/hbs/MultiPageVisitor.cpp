@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -14,7 +15,7 @@
 
 namespace clang {
 namespace mrdocs {
-namespace adoc {
+namespace hbs {
 
 void
 MultiPageVisitor::
@@ -43,7 +44,7 @@ writePage(
     }
 }
 
-template<class T>
+template<std::derived_from<Info> T>
 void
 MultiPageVisitor::
 operator()(T const& I)
@@ -85,6 +86,6 @@ operator()(OverloadSet const& OS)
 #define INFO(Type) DEFINE(Type##Info);
 #include <mrdocs/Metadata/InfoNodesPascal.inc>
 
-} // adoc
+} // hbs
 } // mrdocs
 } // clang

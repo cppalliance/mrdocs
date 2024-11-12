@@ -82,6 +82,8 @@ int test_main(int argc, char const** argv)
     report::setMinimumLevel(report::getLevel(
         testArgs.report.getValue()));
 
+    report::setSourceLocationWarnings(false);
+
     if(!testArgs.inputs.empty())
         DoTestAction(argv);
 

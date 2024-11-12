@@ -1,5 +1,5 @@
 {{!-- enum --}}
-<div id="{{symbol.id}}">
+<div {{#if sectionref}}id="{{sectionref}}"{{/if}}>
     <div>
         <h2>{{#if symbol.name}}Enum {{>types/nested-name-specifier symbol=symbol.parent}}{{symbol.name}}{{else}}Unnamed enum{{/if}}</h2>
         {{{symbol.doc.brief}}}
