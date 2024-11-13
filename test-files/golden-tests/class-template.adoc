@@ -1,29 +1,29 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:C0.adoc[`C0`]  ¦
+¦xref:#C0[`C0`]  ¦
 
-¦xref:C1.adoc[`C1`]  ¦
+¦xref:#C1[`C1`]  ¦
 
-¦xref:C2.adoc[`C2`]  ¦
+¦xref:#C2[`C2`]  ¦
 
-¦xref:C3.adoc[`C3`]  ¦
+¦xref:#C3[`C3`]  ¦
 
-¦xref:S.adoc[`S`]  ¦
+¦xref:#S[`S`]  ¦
 
 |===
 
 
-[#S]
 
+[#S]
 == S
 
 
@@ -41,8 +41,8 @@ struct S;
 
 
 
-[#C0]
 
+[#C0]
 == C0
 
 
@@ -61,27 +61,27 @@ struct C0;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:C0/N0.adoc[`N0`]  ¦
+¦xref:#C0-N0[`N0`]  ¦
 
 |===
 ===  Data Members
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:C0/w.adoc[`w`]  ¦
+¦xref:#C0-w[`w`]  ¦
 
-¦xref:C0/x.adoc[`x`]  ¦
+¦xref:#C0-x[`x`]  ¦
 
-¦xref:C0/y.adoc[`y`]  ¦
+¦xref:#C0-y[`y`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#C0-w]
 
-== xref:C0.adoc[pass:[C0]]::w
+
+[#C0-w]
+== xref:#C0[pass:[C0]]::w
 
 
 
@@ -95,10 +95,10 @@ int w;
 ----
 
 
-:relfileprefix: ../
-[#C0-x]
 
-== xref:C0.adoc[pass:[C0]]::x
+
+[#C0-x]
+== xref:#C0[pass:[C0]]::x
 
 
 
@@ -108,14 +108,14 @@ Declared in `<class-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:S.adoc[S] x;
+xref:#S[S] x;
 ----
 
 
-:relfileprefix: ../
-[#C0-y]
 
-== xref:C0.adoc[pass:[C0]]::y
+
+[#C0-y]
+== xref:#C0[pass:[C0]]::y
 
 
 
@@ -129,10 +129,10 @@ T y;
 ----
 
 
-:relfileprefix: ../
-[#C0-N0]
 
-== xref:C0.adoc[pass:[C0]]::N0
+
+[#C0-N0]
+== xref:#C0[pass:[C0]]::N0
 
 
 
@@ -149,16 +149,16 @@ struct N0;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:C0/N0/z.adoc[`z`]  ¦
+¦xref:#C0-N0-z[`z`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../../
-[#C0-N0-z]
 
-== xref:C0.adoc[pass:[C0]]::xref:C0/N0.adoc[pass:[N0]]::z
+
+[#C0-N0-z]
+== xref:#C0[pass:[C0]]::xref:#C0-N0[pass:[N0]]::z
 
 
 
@@ -173,8 +173,8 @@ int z;
 
 
 
-[#C1]
 
+[#C1]
 == C1
 
 
@@ -192,23 +192,23 @@ struct C1;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:C1/N1.adoc[`N1`]  ¦
+¦xref:#C1-N1[`N1`]  ¦
 
 |===
 ===  Data Members
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:C1/w.adoc[`w`]  ¦
+¦xref:#C1-w[`w`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#C1-w]
 
-== xref:C1.adoc[pass:[C1]]::w
+
+[#C1-w]
+== xref:#C1[pass:[C1]]::w
 
 
 
@@ -222,10 +222,10 @@ int w;
 ----
 
 
-:relfileprefix: ../
-[#C1-N1]
 
-== xref:C1.adoc[pass:[C1]]::N1
+
+[#C1-N1]
+== xref:#C1[pass:[C1]]::N1
 
 
 
@@ -243,20 +243,20 @@ struct N1;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:C1/N1/x.adoc[`x`]  ¦
+¦xref:#C1-N1-x[`x`]  ¦
 
-¦xref:C1/N1/y.adoc[`y`]  ¦
+¦xref:#C1-N1-y[`y`]  ¦
 
-¦xref:C1/N1/z.adoc[`z`]  ¦
+¦xref:#C1-N1-z[`z`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../../
-[#C1-N1-x]
 
-== xref:C1.adoc[pass:[C1]]::xref:C1/N1.adoc[pass:[N1]]::x
+
+[#C1-N1-x]
+== xref:#C1[pass:[C1]]::xref:#C1-N1[pass:[N1]]::x
 
 
 
@@ -266,14 +266,14 @@ Declared in `<class-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:S.adoc[S] x;
+xref:#S[S] x;
 ----
 
 
-:relfileprefix: ../../
-[#C1-N1-y]
 
-== xref:C1.adoc[pass:[C1]]::xref:C1/N1.adoc[pass:[N1]]::y
+
+[#C1-N1-y]
+== xref:#C1[pass:[C1]]::xref:#C1-N1[pass:[N1]]::y
 
 
 
@@ -287,10 +287,10 @@ T y;
 ----
 
 
-:relfileprefix: ../../
-[#C1-N1-z]
 
-== xref:C1.adoc[pass:[C1]]::xref:C1/N1.adoc[pass:[N1]]::z
+
+[#C1-N1-z]
+== xref:#C1[pass:[C1]]::xref:#C1-N1[pass:[N1]]::z
 
 
 
@@ -305,8 +305,8 @@ int z;
 
 
 
-[#C2]
 
+[#C2]
 == C2
 
 
@@ -325,23 +325,23 @@ struct C2;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:C2/N2.adoc[`N2`]  ¦
+¦xref:#C2-N2[`N2`]  ¦
 
 |===
 ===  Data Members
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:C2/v.adoc[`v`]  ¦
+¦xref:#C2-v[`v`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#C2-v]
 
-== xref:C2.adoc[pass:[C2]]::v
+
+[#C2-v]
+== xref:#C2[pass:[C2]]::v
 
 
 
@@ -355,10 +355,10 @@ int v;
 ----
 
 
-:relfileprefix: ../
-[#C2-N2]
 
-== xref:C2.adoc[pass:[C2]]::N2
+
+[#C2-N2]
+== xref:#C2[pass:[C2]]::N2
 
 
 
@@ -376,22 +376,22 @@ struct N2;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:C2/N2/w.adoc[`w`]  ¦
+¦xref:#C2-N2-w[`w`]  ¦
 
-¦xref:C2/N2/x.adoc[`x`]  ¦
+¦xref:#C2-N2-x[`x`]  ¦
 
-¦xref:C2/N2/y.adoc[`y`]  ¦
+¦xref:#C2-N2-y[`y`]  ¦
 
-¦xref:C2/N2/z.adoc[`z`]  ¦
+¦xref:#C2-N2-z[`z`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../../
-[#C2-N2-w]
 
-== xref:C2.adoc[pass:[C2]]::xref:C2/N2.adoc[pass:[N2]]::w
+
+[#C2-N2-w]
+== xref:#C2[pass:[C2]]::xref:#C2-N2[pass:[N2]]::w
 
 
 
@@ -401,14 +401,14 @@ Declared in `<class-template.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:S.adoc[S] w;
+xref:#S[S] w;
 ----
 
 
-:relfileprefix: ../../
-[#C2-N2-x]
 
-== xref:C2.adoc[pass:[C2]]::xref:C2/N2.adoc[pass:[N2]]::x
+
+[#C2-N2-x]
+== xref:#C2[pass:[C2]]::xref:#C2-N2[pass:[N2]]::x
 
 
 
@@ -422,10 +422,10 @@ T x;
 ----
 
 
-:relfileprefix: ../../
-[#C2-N2-y]
 
-== xref:C2.adoc[pass:[C2]]::xref:C2/N2.adoc[pass:[N2]]::y
+
+[#C2-N2-y]
+== xref:#C2[pass:[C2]]::xref:#C2-N2[pass:[N2]]::y
 
 
 
@@ -439,10 +439,10 @@ U y;
 ----
 
 
-:relfileprefix: ../../
-[#C2-N2-z]
 
-== xref:C2.adoc[pass:[C2]]::xref:C2/N2.adoc[pass:[N2]]::z
+
+[#C2-N2-z]
+== xref:#C2[pass:[C2]]::xref:#C2-N2[pass:[N2]]::z
 
 
 
@@ -457,8 +457,8 @@ int z;
 
 
 
-[#C3]
 
+[#C3]
 == C3
 
 
@@ -477,16 +477,16 @@ struct C3;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:C3/v.adoc[`v`]  ¦
+¦xref:#C3-v[`v`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#C3-v]
 
-== xref:C3.adoc[pass:[C3]]::v
+
+[#C3-v]
+== xref:#C3[pass:[C3]]::v
 
 
 
@@ -501,4 +501,5 @@ int v;
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

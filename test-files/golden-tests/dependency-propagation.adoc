@@ -1,28 +1,28 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 === Namespaces
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:N.adoc[`N`]  ¦
+¦xref:#N[`N`]  ¦
 
 |===
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:E.adoc[`E`]  ¦
+¦xref:#E[`E`]  ¦
 
 |===
 
 
-[#E]
 
+[#E]
 == E
 
 
@@ -34,33 +34,33 @@ Declared in `<dependency-propagation.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct E
-    : xref:N.adoc[N]::xref:N/C.adoc[C]<int>;
+    : xref:#N[N]::xref:#N-C[C]<int>;
 ----
+
 
 
 
 
 
 [#N]
-
 == N
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:N/A.adoc[`A`]  ¦
+¦xref:#N-A[`A`]  ¦
 
-¦xref:N/B.adoc[`B`]  ¦
+¦xref:#N-B[`B`]  ¦
 
-¦xref:N/C.adoc[`C`]  ¦
+¦xref:#N-C[`C`]  ¦
 
 |===
 
-:relfileprefix: ../
+
+
 [#N-C]
-
-== xref:N.adoc[pass:[N]]::C
+== xref:#N[pass:[N]]::C
 
 
 
@@ -71,14 +71,14 @@ Declared in `<dependency-propagation.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
-using C = xref:N/B.adoc[B]<T>;
+using C = xref:#N-B[B]<T>;
 ----
 
 
-:relfileprefix: ../
+
+
 [#N-B]
-
-== xref:N.adoc[pass:[N]]::B
+== xref:#N[pass:[N]]::B
 
 
 
@@ -89,14 +89,14 @@ Declared in `<dependency-propagation.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
-using B = xref:N/A.adoc[A]<T>;
+using B = xref:#N-A[A]<T>;
 ----
 
 
-:relfileprefix: ../
-[#N-A]
 
-== xref:N.adoc[pass:[N]]::A
+
+[#N-A]
+== xref:#N[pass:[N]]::A
 
 
 
@@ -114,4 +114,5 @@ struct A;
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

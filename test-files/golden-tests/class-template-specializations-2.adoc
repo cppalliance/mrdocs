@@ -1,25 +1,25 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A-0e.adoc[`A`]  ¦
+¦xref:#A-0e[`A`]  ¦
 
-¦xref:A-03.adoc[`A<T*>`]  ¦
+¦xref:#A-03[`A<T*>`]  ¦
 
-¦xref:A-06.adoc[`A<double>`]  ¦
+¦xref:#A-06[`A<double>`]  ¦
 
 |===
 
 
-[#A-0e]
 
+[#A-0e]
 == A
 
 
@@ -38,8 +38,8 @@ struct A;
 
 
 
-[#A-03]
 
+[#A-03]
 == A
 
 
@@ -51,27 +51,27 @@ Declared in `<class-template-specializations-2.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
-struct xref:A-0e.adoc[pass:[A]]<T*>;
+struct xref:#A-0e[pass:[A]]<T*>;
 ----
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A-03/B-05.adoc[`B`]  ¦
+¦xref:#A-03-B-05[`B`]  ¦
 
-¦xref:A-03/B-01.adoc[`B<U*>`]  ¦
+¦xref:#A-03-B-01[`B<U*>`]  ¦
 
-¦xref:A-03/B-0b.adoc[`B<int>`]  ¦
+¦xref:#A-03-B-0b[`B<int>`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#A-03-B-05]
 
-== xref:A-03.adoc[pass:[A]]<T*>::B
+
+[#A-03-B-05]
+== xref:#A-03[pass:[A]]<T*>::B
 
 
 
@@ -88,10 +88,10 @@ struct B;
 
 
 
-:relfileprefix: ../
-[#A-03-B-01]
 
-== xref:A-03.adoc[pass:[A]]<T*>::B
+
+[#A-03-B-01]
+== xref:#A-03[pass:[A]]<T*>::B
 
 
 
@@ -102,23 +102,23 @@ Declared in `<class-template-specializations-2.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename U>
-struct xref:A-03/B-05.adoc[pass:[B]]<U*>;
+struct xref:#A-03-B-05[pass:[B]]<U*>;
 ----
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A-03/B-01/C.adoc[`C`]  ¦
+¦xref:#A-03-B-01-C[`C`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../../
-[#A-03-B-01-C]
 
-== xref:A-03.adoc[pass:[A]]<T*>::xref:A-03/B-01.adoc[pass:[B]]<U*>::C
+
+[#A-03-B-01-C]
+== xref:#A-03[pass:[A]]<T*>::xref:#A-03-B-01[pass:[B]]<U*>::C
 
 
 
@@ -134,10 +134,10 @@ struct C;
 
 
 
-:relfileprefix: ../
-[#A-03-B-0b]
 
-== xref:A-03.adoc[pass:[A]]<T*>::B
+
+[#A-03-B-0b]
+== xref:#A-03[pass:[A]]<T*>::B
 
 
 
@@ -148,15 +148,15 @@ Declared in `<class-template-specializations-2.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-struct xref:A-03/B-05.adoc[pass:[B]]<int>;
+struct xref:#A-03-B-05[pass:[B]]<int>;
 ----
 
 
 
 
 
-[#A-06]
 
+[#A-06]
 == A
 
 
@@ -168,25 +168,25 @@ Declared in `<class-template-specializations-2.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-struct xref:A-0e.adoc[pass:[A]]<double>;
+struct xref:#A-0e[pass:[A]]<double>;
 ----
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A-06/D-0b.adoc[`D`]  ¦
+¦xref:#A-06-D-0b[`D`]  ¦
 
-¦xref:A-06/D-04.adoc[`D<float>`]  ¦
+¦xref:#A-06-D-04[`D<float>`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#A-06-D-0b]
 
-== xref:A-06.adoc[pass:[A]]<double>::D
+
+[#A-06-D-0b]
+== xref:#A-06[pass:[A]]<double>::D
 
 
 
@@ -204,18 +204,18 @@ struct D;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A-06/D-0b/E-01.adoc[`E`]  ¦
+¦xref:#A-06-D-0b-E-01[`E`]  ¦
 
-¦xref:A-06/D-0b/E-04.adoc[`E<T*>`]  ¦
+¦xref:#A-06-D-0b-E-04[`E<T*>`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../../
-[#A-06-D-0b-E-01]
 
-== xref:A-06.adoc[pass:[A]]<double>::xref:A-06/D-0b.adoc[pass:[D]]::E
+
+[#A-06-D-0b-E-01]
+== xref:#A-06[pass:[A]]<double>::xref:#A-06-D-0b[pass:[D]]::E
 
 
 
@@ -232,10 +232,10 @@ struct E;
 
 
 
-:relfileprefix: ../../
-[#A-06-D-0b-E-04]
 
-== xref:A-06.adoc[pass:[A]]<double>::xref:A-06/D-0b.adoc[pass:[D]]::E
+
+[#A-06-D-0b-E-04]
+== xref:#A-06[pass:[A]]<double>::xref:#A-06-D-0b[pass:[D]]::E
 
 
 
@@ -246,23 +246,23 @@ Declared in `<class-template-specializations-2.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
-struct xref:A-06/D-0b/E-01.adoc[pass:[E]]<T*>;
+struct xref:#A-06-D-0b-E-01[pass:[E]]<T*>;
 ----
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A-06/D-0b/E-04/F.adoc[`F`]  ¦
+¦xref:#A-06-D-0b-E-04-F[`F`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../../../
-[#A-06-D-0b-E-04-F]
 
-== xref:A-06.adoc[pass:[A]]<double>::xref:A-06/D-0b.adoc[pass:[D]]::xref:A-06/D-0b/E-04.adoc[pass:[E]]<T*>::F
+
+[#A-06-D-0b-E-04-F]
+== xref:#A-06[pass:[A]]<double>::xref:#A-06-D-0b[pass:[D]]::xref:#A-06-D-0b-E-04[pass:[E]]<T*>::F
 
 
 
@@ -278,10 +278,10 @@ struct F;
 
 
 
-:relfileprefix: ../
-[#A-06-D-04]
 
-== xref:A-06.adoc[pass:[A]]<double>::D
+
+[#A-06-D-04]
+== xref:#A-06[pass:[A]]<double>::D
 
 
 
@@ -292,25 +292,25 @@ Declared in `<class-template-specializations-2.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-struct xref:A-06/D-0b.adoc[pass:[D]]<float>;
+struct xref:#A-06-D-0b[pass:[D]]<float>;
 ----
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A-06/D-04/G-06.adoc[`G`]  ¦
+¦xref:#A-06-D-04-G-06[`G`]  ¦
 
-¦xref:A-06/D-04/G-0c.adoc[`G<T*>`]  ¦
+¦xref:#A-06-D-04-G-0c[`G<T*>`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../../
-[#A-06-D-04-G-06]
 
-== xref:A-06.adoc[pass:[A]]<double>::xref:A-06/D-04.adoc[pass:[D]]<float>::G
+
+[#A-06-D-04-G-06]
+== xref:#A-06[pass:[A]]<double>::xref:#A-06-D-04[pass:[D]]<float>::G
 
 
 
@@ -327,10 +327,10 @@ struct G;
 
 
 
-:relfileprefix: ../../
-[#A-06-D-04-G-0c]
 
-== xref:A-06.adoc[pass:[A]]<double>::xref:A-06/D-04.adoc[pass:[D]]<float>::G
+
+[#A-06-D-04-G-0c]
+== xref:#A-06[pass:[A]]<double>::xref:#A-06-D-04[pass:[D]]<float>::G
 
 
 
@@ -341,17 +341,18 @@ Declared in `<class-template-specializations-2.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
-struct xref:A-06/D-04/G-06.adoc[pass:[G]]<T*>;
+struct xref:#A-06-D-04-G-06[pass:[G]]<T*>;
 ----
 
 
 
 
-:relfileprefix: ../
+
+
 [#A-06-D-07]
 
 
 [#A-02]
 
 
-Created with MrDocs
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

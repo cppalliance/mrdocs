@@ -1,27 +1,27 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A.adoc[`A`]  ¦
+¦xref:#A[`A`]  ¦
 
-¦xref:B.adoc[`B`]  ¦
+¦xref:#B[`B`]  ¦
 
-¦xref:C.adoc[`C`]  ¦
+¦xref:#C[`C`]  ¦
 
-¦xref:D.adoc[`D`]  ¦
+¦xref:#D[`D`]  ¦
 
 |===
 
 
-[#A]
 
+[#A]
 == A
 
 
@@ -40,8 +40,8 @@ struct A;
 
 
 
-[#B]
 
+[#B]
 == B
 
 
@@ -62,8 +62,8 @@ struct B;
 
 
 
-[#C]
 
+[#C]
 == C
 
 
@@ -75,13 +75,13 @@ Declared in `<alias-template.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
-using C = xref:A.adoc[A]<T>;
+using C = xref:#A[A]<T>;
 ----
 
 
 
-[#D]
 
+[#D]
 == D
 
 
@@ -100,16 +100,16 @@ struct D;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:D/E.adoc[`E`]  ¦
+¦xref:#D-E[`E`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#D-E]
 
-== xref:D.adoc[pass:[D]]::E
+
+[#D-E]
+== xref:#D[pass:[D]]::E
 
 
 
@@ -120,9 +120,10 @@ Declared in `<alias-template.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename U>
-using E = xref:B.adoc[B]<T, U>;
+using E = xref:#B[B]<T, U>;
 ----
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

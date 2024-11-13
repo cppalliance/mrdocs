@@ -1,32 +1,32 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:B.adoc[`B`]  ¦
+¦xref:#B[`B`]  ¦
 
 |===
 === Variables
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A-084.adoc[`A`]  ¦
+¦xref:#A-084[`A`]  ¦
 
-¦xref:A-08e.adoc[`A<void>`]  ¦
+¦xref:#A-08e[`A<void>`]  ¦
 
-¦xref:A-01.adoc[`A<T&>`]  ¦
+¦xref:#A-01[`A<T&>`]  ¦
 
 |===
 
 
-[#A-084]
 
+[#A-084]
 == A
 
 
@@ -43,8 +43,8 @@ unsigned int A = sizeof(T);
 
 
 
-[#A-08e]
 
+[#A-08e]
 == A
 
 
@@ -56,13 +56,13 @@ Declared in `<var-template.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-unsigned int xref:A-084.adoc[pass:[A]]<void> = 0;
+unsigned int xref:#A-084[pass:[A]]<void> = 0;
 ----
 
 
 
-[#A-01]
 
+[#A-01]
 == A
 
 
@@ -74,13 +74,13 @@ Declared in `<var-template.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
-unsigned int xref:A-084.adoc[pass:[A]]<T&> = sizeof(T);
+unsigned int xref:#A-084[pass:[A]]<T&> = sizeof(T);
 ----
 
 
 
-[#B]
 
+[#B]
 == B
 
 
@@ -98,20 +98,20 @@ struct B;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:B/C-0e.adoc[`C`]  ¦
+¦xref:#B-C-0e[`C`]  ¦
 
-¦xref:B/C-05.adoc[`C<int>`]  ¦
+¦xref:#B-C-05[`C<int>`]  ¦
 
-¦xref:B/C-0c.adoc[`C<T*>`]  ¦
+¦xref:#B-C-0c[`C<T*>`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#B-C-0e]
 
-== xref:B.adoc[pass:[B]]::C
+
+[#B-C-0e]
+== xref:#B[pass:[B]]::C
 
 
 
@@ -127,10 +127,10 @@ unsigned int C = 0;
 ----
 
 
-:relfileprefix: ../
-[#B-C-05]
 
-== xref:B.adoc[pass:[B]]::C
+
+[#B-C-05]
+== xref:#B[pass:[B]]::C
 
 
 
@@ -142,14 +142,14 @@ Declared in `<var-template.cpp>`
 ----
 template<>
 static
-unsigned int xref:B/C-0e.adoc[pass:[C]]<int> = -1;
+unsigned int xref:#B-C-0e[pass:[C]]<int> = -1;
 ----
 
 
-:relfileprefix: ../
-[#B-C-0c]
 
-== xref:B.adoc[pass:[B]]::C
+
+[#B-C-0c]
+== xref:#B[pass:[B]]::C
 
 
 
@@ -161,9 +161,10 @@ Declared in `<var-template.cpp>`
 ----
 template<typename T>
 static
-unsigned int xref:B/C-0e.adoc[pass:[C]]<T*> = sizeof(T);
+unsigned int xref:#B-C-0e[pass:[C]]<T*> = sizeof(T);
 ----
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

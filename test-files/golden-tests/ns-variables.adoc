@@ -1,44 +1,44 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T.adoc[`T`]  ¦
+¦xref:#T[`T`]  ¦
 
 |===
 === Variables
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:i.adoc[`i`]  ¦
+¦xref:#i[`i`]  ¦
 
-¦xref:j.adoc[`j`]  ¦
+¦xref:#j[`j`]  ¦
 
-¦xref:k.adoc[`k`]  ¦
+¦xref:#k[`k`]  ¦
 
-¦xref:l.adoc[`l`]  ¦
+¦xref:#l[`l`]  ¦
 
-¦xref:pi.adoc[`pi`]  ¦
+¦xref:#pi[`pi`]  ¦
 
-¦xref:t.adoc[`t`]  ¦
+¦xref:#t[`t`]  ¦
 
-¦xref:x0.adoc[`x0`]  ¦
+¦xref:#x0[`x0`]  ¦
 
-¦xref:x1.adoc[`x1`]  ¦
+¦xref:#x1[`x1`]  ¦
 
-¦xref:x2.adoc[`x2`]  ¦
+¦xref:#x2[`x2`]  ¦
 
 |===
 
 
-[#i]
 
+[#i]
 == i
 
 
@@ -55,8 +55,8 @@ int const i = 0;
 
 
 
-[#j]
 
+[#j]
 == j
 
 
@@ -72,8 +72,8 @@ int j = 0;
 
 
 
-[#k]
 
+[#k]
 == k
 
 
@@ -91,8 +91,8 @@ int const k = 1;
 
 
 
-[#l]
 
+[#l]
 == l
 
 
@@ -109,8 +109,8 @@ int l = 1;
 
 
 
-[#pi]
 
+[#pi]
 == pi
 
 
@@ -126,8 +126,8 @@ double pi = 3.14;
 
 
 
-[#T]
 
+[#T]
 == T
 
 
@@ -145,8 +145,8 @@ struct T;
 
 
 
-[#t]
 
+[#t]
 == t
 
 
@@ -158,13 +158,13 @@ Declared in `<ns-variables.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 extern
-xref:T.adoc[T] t;
+xref:#T[T] t;
 ----
 
 
 
-[#x0]
 
+[#x0]
 == x0
 
 
@@ -181,8 +181,8 @@ int x0 = 0;
 
 
 
-[#x1]
 
+[#x1]
 == x1
 
 
@@ -200,8 +200,8 @@ int x1 = 0;
 
 
 
-[#x2]
 
+[#x2]
 == x2
 
 
@@ -220,4 +220,5 @@ int const x2 = 0;
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

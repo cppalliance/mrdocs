@@ -1,21 +1,21 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:range.adoc[`range`]  ¦
+¦xref:#range[`range`]  ¦
 
 |===
 
 
-[#range]
 
+[#range]
 == range
 
 
@@ -34,18 +34,18 @@ class range;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:range/impl-0e.adoc[`impl`]  ¦
+¦xref:#range-impl-0e[`impl`]  ¦
 
-¦xref:range/impl-00.adoc[`impl<R, false>`]  ¦
+¦xref:#range-impl-00[`impl<R, false>`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#range-impl-0e]
 
-== xref:range.adoc[pass:[range]]::impl
+
+[#range-impl-0e]
+== xref:#range[pass:[range]]::impl
 
 
 
@@ -64,10 +64,10 @@ struct impl;
 
 
 
-:relfileprefix: ../
-[#range-impl-00]
 
-== xref:range.adoc[pass:[range]]::impl
+
+[#range-impl-00]
+== xref:#range[pass:[range]]::impl
 
 
 
@@ -78,11 +78,12 @@ Declared in `<nested-private-template.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<class R>
-struct xref:range/impl-0e.adoc[pass:[impl]]<R, false>;
+struct xref:#range-impl-0e[pass:[impl]]<R, false>;
 ----
 
 
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -2,7 +2,7 @@
 {{#if relfileprefix}}:relfileprefix: {{relfileprefix}}{{/if}}
 [#{{sectionref}}]
 
-={{#unless is_multipage}}={{/unless}} {{#if symbol.name}}{{>types/nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}Unnamed overload set{{/if}}
+={{#unless @root.config.multipage}}={{/unless}} {{#if symbol.name}}{{>types/nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}Unnamed overload set{{/if}}
 
 {{#if symbol.members.[0]}}
   
@@ -12,7 +12,7 @@
 
 {{/if}}
 
-=={{#unless is_multipage}}={{/unless}} Synopsis
+=={{#unless @root.config.multipage}}={{/unless}} Synopsis
   
 {{#each symbol.members as | member |}}
 
@@ -23,14 +23,14 @@
 {{/each}}
   
 {{#if symbol.members.[0].doc.description}}
-=={{#unless is_multipage}}={{/unless}} Description
+=={{#unless @root.config.multipage}}={{/unless}} Description
 
 {{symbol.members.[0].doc.description}}
 {{/if}}
 
 {{#with (flattenUnique symbol.members "doc.exceptions" "exception") as |allExceptions|}}
 {{#if (ne (len allExceptions) 0)}}
-=={{#unless is_multipage}}={{/unless}} Exceptions
+=={{#unless @root.config.multipage}}={{/unless}} Exceptions
 
 |===
 | Name | Thrown on
@@ -44,7 +44,7 @@
 {{/with}}
 
 {{#if symbol.members.[0].doc.returns}}
-=={{#unless is_multipage}}={{/unless}} Return Value
+=={{#unless @root.config.multipage}}={{/unless}} Return Value
 
 {{symbol.members.[0].doc.returns}}
 
@@ -52,7 +52,7 @@
 
 {{#with (flattenUnique symbol.members "doc.params" "name") as |allParams|}}
 {{#if (ne (len allParams) 0)}}
-=={{#unless is_multipage}}={{/unless}} Parameters
+=={{#unless @root.config.multipage}}={{/unless}} Parameters
 
 |===
 | Name | Description {{! TODO: | Type? }}
@@ -66,7 +66,7 @@
 {{/with}}
 
 {{#if symbol.members.[0].doc.preconditions}}
-=={{#unless is_multipage}}={{/unless}} Preconditions
+=={{#unless @root.config.multipage}}={{/unless}} Preconditions
 
 {{#each symbol.members.[0].doc.preconditions}}
 {{.}}
@@ -75,7 +75,7 @@
 {{/if}}
 
 {{#if symbol.members.[0].doc.postconditions}}
-=={{#unless is_multipage}}={{/unless}} Postconditions
+=={{#unless @root.config.multipage}}={{/unless}} Postconditions
 
 {{#each symbol.members.[0].doc.postconditions}}
 {{.}}
@@ -84,7 +84,7 @@
 {{/if}}
 
 {{#if symbol.members.[0].doc.see}}
-=={{#unless is_multipage}}={{/unless}} See Also
+=={{#unless @root.config.multipage}}={{/unless}} See Also
 
 {{#each symbol.members.[0].doc.see}}
 {{.}}

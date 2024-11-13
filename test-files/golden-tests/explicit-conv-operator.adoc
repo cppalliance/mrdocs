@@ -1,27 +1,27 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:Explicit.adoc[`Explicit`]  ¦
+¦xref:#Explicit[`Explicit`]  ¦
 
-¦xref:ExplicitExpression.adoc[`ExplicitExpression`]  ¦
+¦xref:#ExplicitExpression[`ExplicitExpression`]  ¦
 
-¦xref:ExplicitFalse.adoc[`ExplicitFalse`]  ¦
+¦xref:#ExplicitFalse[`ExplicitFalse`]  ¦
 
-¦xref:ExplicitTrue.adoc[`ExplicitTrue`]  ¦
+¦xref:#ExplicitTrue[`ExplicitTrue`]  ¦
 
 |===
 
 
-[#Explicit]
 
+[#Explicit]
 == Explicit
 
 
@@ -39,16 +39,16 @@ struct Explicit;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:Explicit/2conversion.adoc[`operator bool`]  ¦
+¦xref:#Explicit-2conversion[`operator bool`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#Explicit-2conversion]
 
-== xref:Explicit.adoc[pass:[Explicit]]::operator bool
+
+[#Explicit-2conversion]
+== xref:#Explicit[pass:[Explicit]]::operator bool
 
 
 
@@ -70,8 +70,8 @@ operator bool();
 
 
 
-[#ExplicitFalse]
 
+[#ExplicitFalse]
 == ExplicitFalse
 
 
@@ -89,16 +89,16 @@ struct ExplicitFalse;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:ExplicitFalse/2conversion.adoc[`operator bool`]  ¦
+¦xref:#ExplicitFalse-2conversion[`operator bool`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#ExplicitFalse-2conversion]
 
-== xref:ExplicitFalse.adoc[pass:[ExplicitFalse]]::operator bool
+
+[#ExplicitFalse-2conversion]
+== xref:#ExplicitFalse[pass:[ExplicitFalse]]::operator bool
 
 
 
@@ -120,8 +120,8 @@ operator bool();
 
 
 
-[#ExplicitTrue]
 
+[#ExplicitTrue]
 == ExplicitTrue
 
 
@@ -139,16 +139,16 @@ struct ExplicitTrue;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:ExplicitTrue/2conversion.adoc[`operator bool`]  ¦
+¦xref:#ExplicitTrue-2conversion[`operator bool`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#ExplicitTrue-2conversion]
 
-== xref:ExplicitTrue.adoc[pass:[ExplicitTrue]]::operator bool
+
+[#ExplicitTrue-2conversion]
+== xref:#ExplicitTrue[pass:[ExplicitTrue]]::operator bool
 
 
 
@@ -170,8 +170,8 @@ operator bool();
 
 
 
-[#ExplicitExpression]
 
+[#ExplicitExpression]
 == ExplicitExpression
 
 
@@ -190,16 +190,16 @@ struct ExplicitExpression;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:ExplicitExpression/2conversion.adoc[`operator bool`]  ¦
+¦xref:#ExplicitExpression-2conversion[`operator bool`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#ExplicitExpression-2conversion]
 
-== xref:ExplicitExpression.adoc[pass:[ExplicitExpression]]::operator bool
+
+[#ExplicitExpression-2conversion]
+== xref:#ExplicitExpression[pass:[ExplicitExpression]]::operator bool
 
 
 
@@ -221,4 +221,5 @@ operator bool();
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

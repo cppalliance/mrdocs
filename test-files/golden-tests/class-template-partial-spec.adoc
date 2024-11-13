@@ -1,21 +1,21 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A.adoc[`A`]  ¦
+¦xref:#A[`A`]  ¦
 
 |===
 
 
-[#A]
 
+[#A]
 == A
 
 
@@ -34,20 +34,20 @@ struct A;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/B-0a.adoc[`B`]  ¦
+¦xref:#A-B-0a[`B`]  ¦
 
-¦xref:A/B-06.adoc[`B<U*, T>`]  ¦
+¦xref:#A-B-06[`B<U*, T>`]  ¦
 
-¦xref:A/B-04.adoc[`B<T, long>`]  ¦
+¦xref:#A-B-04[`B<T, long>`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#A-B-0a]
 
-== xref:A.adoc[pass:[A]]::B
+
+[#A-B-0a]
+== xref:#A[pass:[A]]::B
 
 
 
@@ -66,10 +66,10 @@ struct B;
 
 
 
-:relfileprefix: ../
-[#A-B-06]
 
-== xref:A.adoc[pass:[A]]::B
+
+[#A-B-06]
+== xref:#A[pass:[A]]::B
 
 
 
@@ -80,16 +80,16 @@ Declared in `<class-template-partial-spec.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename U>
-struct xref:A/B-0a.adoc[pass:[B]]<U*, T>;
+struct xref:#A-B-0a[pass:[B]]<U*, T>;
 ----
 
 
 
 
-:relfileprefix: ../
-[#A-B-04]
 
-== xref:A.adoc[pass:[A]]::B
+
+[#A-B-04]
+== xref:#A[pass:[A]]::B
 
 
 
@@ -100,11 +100,12 @@ Declared in `<class-template-partial-spec.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-struct xref:A/B-0a.adoc[pass:[B]]<T, long>;
+struct xref:#A-B-0a[pass:[B]]<T, long>;
 ----
 
 
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

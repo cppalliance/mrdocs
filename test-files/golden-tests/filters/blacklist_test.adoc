@@ -1,37 +1,37 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 === Namespaces
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:blacklisted.adoc[`blacklisted`]  ¦
+¦xref:#blacklisted[`blacklisted`]  ¦
 
-¦xref:to_be_documented.adoc[`to_be_documented`]  ¦
+¦xref:#to_be_documented[`to_be_documented`]  ¦
 
 |===
 
 
-[#to_be_documented]
 
+[#to_be_documented]
 == to_be_documented
 
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:to_be_documented/documented_function.adoc[`documented_function`]  ¦
+¦xref:#to_be_documented-documented_function[`documented_function`]  ¦
 
 |===
 
-:relfileprefix: ../
-[#to_be_documented-documented_function]
 
-== xref:to_be_documented.adoc[pass:[to_be_documented]]::documented_function
+
+[#to_be_documented-documented_function]
+== xref:#to_be_documented[pass:[to_be_documented]]::documented_function
 
 
 
@@ -53,10 +53,11 @@ documented_function();
 
 
 
-[#blacklisted]
 
+[#blacklisted]
 == blacklisted
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

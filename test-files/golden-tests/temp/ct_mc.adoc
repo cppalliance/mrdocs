@@ -1,21 +1,21 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A.adoc[`A`]  ¦
+¦xref:#A[`A`]  ¦
 
 |===
 
 
-[#A]
 
+[#A]
 == A
 
 
@@ -34,16 +34,16 @@ struct A;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/B.adoc[`B`]  ¦
+¦xref:#A-B[`B`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#A-B]
 
-== xref:A.adoc[pass:[A]]::B
+
+[#A-B]
+== xref:#A[pass:[A]]::B
 
 
 
@@ -60,16 +60,16 @@ struct B;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/B/f.adoc[`f`]  ¦
+¦xref:#A-B-f[`f`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../../
-[#A-B-f]
 
-== xref:A.adoc[pass:[A]]::xref:A/B.adoc[pass:[B]]::f
+
+[#A-B-f]
+== xref:#A[pass:[A]]::xref:#A-B[pass:[B]]::f
 
 
 
@@ -91,4 +91,5 @@ f();
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

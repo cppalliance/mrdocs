@@ -1,21 +1,21 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T.adoc[`T`]  ¦
+¦xref:#T[`T`]  ¦
 
 |===
 
 
-[#T]
 
+[#T]
 == T
 
 
@@ -33,16 +33,16 @@ struct T;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T/operator_plus.adoc[`operator+`]  ¦
+¦xref:#T-operator_plus[`operator+`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#T-operator_plus]
 
-== xref:T.adoc[pass:[T]]::operator+
+
+[#T-operator_plus]
+== xref:#T[pass:[T]]::operator+
 
 
 
@@ -52,8 +52,8 @@ Declared in `<overloaded-op-2.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:T.adoc[T]
-operator+(xref:T.adoc[T]);
+xref:#T[T]
+operator+(xref:#T[T]);
 ----
 
 
@@ -64,4 +64,5 @@ operator+(xref:T.adoc[T]);
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -1,35 +1,35 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 === Namespaces
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:N.adoc[`N`]  ¦
+¦xref:#N[`N`]  ¦
 
 |===
 
 
-[#N]
 
+[#N]
 == N
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:N/S.adoc[`S`]  ¦
+¦xref:#N-S[`S`]  ¦
 
 |===
 
-:relfileprefix: ../
-[#N-S]
 
-== xref:N.adoc[pass:[N]]::S
+
+[#N-S]
+== xref:#N[pass:[N]]::S
 
 
 
@@ -46,4 +46,5 @@ struct S;
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -1,36 +1,36 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T.adoc[`T`]  ¦
+¦xref:#T[`T`]  ¦
 
-¦xref:U.adoc[`U`]  ¦
+¦xref:#U[`U`]  ¦
 
 |===
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:f.adoc[`f`]  ¦
+¦xref:#f[`f`]  ¦
 
-¦xref:g.adoc[`g`]  ¦
+¦xref:#g[`g`]  ¦
 
-¦xref:h.adoc[`h`]  ¦
+¦xref:#h[`h`]  ¦
 
-¦xref:i.adoc[`i`]  ¦
+¦xref:#i[`i`]  ¦
 
 |===
 
 
-[#f]
 
+[#f]
 == f
 
 
@@ -54,8 +54,8 @@ f();
 
 
 
-[#g]
 
+[#g]
 == g
 
 
@@ -79,8 +79,8 @@ g();
 
 
 
-[#h]
 
+[#h]
 == h
 
 
@@ -104,8 +104,8 @@ h();
 
 
 
-[#T]
 
+[#T]
 == T
 
 
@@ -121,8 +121,8 @@ using T = int;
 
 
 
-[#U]
 
+[#U]
 == U
 
 
@@ -138,8 +138,8 @@ using U = int const;
 
 
 
-[#i]
 
+[#i]
 == i
 
 
@@ -163,4 +163,5 @@ i();
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

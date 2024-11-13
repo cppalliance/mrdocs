@@ -1,0 +1,9 @@
+{{! The wrapper for single page documentation or symbols in a multipage documentation }}
+{{#unless @root.config.multipage }}
+= Reference
+:mrdocs:
+{{/unless}}
+{{! Content generated with index.hbs }}
+{{contents}}
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

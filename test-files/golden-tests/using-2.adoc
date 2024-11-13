@@ -1,37 +1,37 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 === Namespaces
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:LongName.adoc[`LongName`]  ¦
+¦xref:#LongName[`LongName`]  ¦
 
 |===
 
 
-[#LongName]
 
+[#LongName]
 == LongName
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:LongName/S1.adoc[`S1`]  ¦
+¦xref:#LongName-S1[`S1`]  ¦
 
-¦xref:LongName/S2.adoc[`S2`]  ¦
+¦xref:#LongName-S2[`S2`]  ¦
 
 |===
 
-:relfileprefix: ../
-[#LongName-S1]
 
-== xref:LongName.adoc[pass:[LongName]]::S1
+
+[#LongName-S1]
+== xref:#LongName[pass:[LongName]]::S1
 
 
 
@@ -47,10 +47,10 @@ struct S1;
 
 
 
-:relfileprefix: ../
-[#LongName-S2]
 
-== xref:LongName.adoc[pass:[LongName]]::S2
+
+[#LongName-S2]
+== xref:#LongName[pass:[LongName]]::S2
 
 
 
@@ -67,8 +67,8 @@ struct S2;
 
 
 
-[#S1]
 
+[#S1]
 == S1
 
 
@@ -79,7 +79,7 @@ Declared in `<using-2.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-using xref:LongName.adoc[LongName]::S1;
+using xref:#LongName[LongName]::S1;
 ----
 
 
@@ -92,8 +92,8 @@ using xref:LongName.adoc[LongName]::S1;
 
 
 
-[#S2]
 
+[#S2]
 == S2
 
 
@@ -104,7 +104,7 @@ Declared in `<using-2.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-using xref:LongName.adoc[LongName]::S2;
+using xref:#LongName[LongName]::S2;
 ----
 
 
@@ -117,4 +117,5 @@ using xref:LongName.adoc[LongName]::S2;
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

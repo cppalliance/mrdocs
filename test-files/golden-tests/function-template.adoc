@@ -1,43 +1,43 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:f0.adoc[`f0`]  ¦
+¦xref:#f0[`f0`]  ¦
 
-¦xref:f1.adoc[`f1`]  ¦
+¦xref:#f1[`f1`]  ¦
 
-¦xref:f2.adoc[`f2`]  ¦
+¦xref:#f2[`f2`]  ¦
 
-¦xref:f3.adoc[`f3`]  ¦
+¦xref:#f3[`f3`]  ¦
 
-¦xref:g0.adoc[`g0`]  ¦
+¦xref:#g0[`g0`]  ¦
 
-¦xref:g1.adoc[`g1`]  ¦
+¦xref:#g1[`g1`]  ¦
 
-¦xref:g2.adoc[`g2`]  ¦
+¦xref:#g2[`g2`]  ¦
 
-¦xref:h0.adoc[`h0`]  ¦
+¦xref:#h0[`h0`]  ¦
 
-¦xref:h1.adoc[`h1`]  ¦
+¦xref:#h1[`h1`]  ¦
 
-¦xref:i.adoc[`i`]  ¦
+¦xref:#i[`i`]  ¦
 
-¦xref:j0.adoc[`j0`]  ¦
+¦xref:#j0[`j0`]  ¦
 
-¦xref:j1.adoc[`j1`]  ¦
+¦xref:#j1[`j1`]  ¦
 
 |===
 
 
-[#f0]
 
+[#f0]
 == f0
 
 
@@ -61,8 +61,8 @@ f0(int x);
 
 
 
-[#f1]
 
+[#f1]
 == f1
 
 
@@ -86,8 +86,8 @@ f1(T t);
 
 
 
-[#f2]
 
+[#f2]
 == f2
 
 
@@ -111,8 +111,8 @@ f2();
 
 
 
-[#f3]
 
+[#f3]
 == f3
 
 
@@ -138,8 +138,8 @@ f3();
 
 
 
-[#g0]
 
+[#g0]
 == g0
 
 
@@ -163,8 +163,8 @@ g0(int x);
 
 
 
-[#g1]
 
+[#g1]
 == g1
 
 
@@ -188,8 +188,8 @@ g1();
 
 
 
-[#g2]
 
+[#g2]
 == g2
 
 
@@ -215,8 +215,8 @@ g2();
 
 
 
-[#h0]
 
+[#h0]
 == h0
 
 
@@ -240,8 +240,8 @@ h0(auto x);
 
 
 
-[#h1]
 
+[#h1]
 == h1
 
 
@@ -269,8 +269,8 @@ h1(
 
 
 
-[#i]
 
+[#i]
 == i
 
 
@@ -296,8 +296,8 @@ i();
 
 
 
-[#j0]
 
+[#j0]
 == j0
 
 
@@ -321,8 +321,8 @@ j0();
 
 
 
-[#j1]
 
+[#j1]
 == j1
 
 
@@ -348,4 +348,5 @@ j1();
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

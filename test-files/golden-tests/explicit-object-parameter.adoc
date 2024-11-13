@@ -1,21 +1,21 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:Optional.adoc[`Optional`]  ¦
+¦xref:#Optional[`Optional`]  ¦
 
 |===
 
 
-[#Optional]
 
+[#Optional]
 == Optional
 
 
@@ -33,15 +33,15 @@ struct Optional;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:Optional/value.adoc[`value`]  ¦
+¦xref:Optional-value[`value`]  ¦
 |===
 
 
 
-:relfileprefix: ../
+
 [#Optional-value]
 
-== xref:Optional.adoc[pass:[Optional]]::value
+== xref:#Optional[pass:[Optional]]::value
 
   
 
@@ -53,7 +53,7 @@ struct Optional;
 template<typename Self>
 constexpr
 auto&&
-xref:Optional/value-05.adoc[pass:[value]](this Self&& self);
+xref:#Optional-value-05[pass:[value]](this Self&& self);
 ----
 
 [source,cpp,subs="verbatim,macros,-callouts"]
@@ -61,7 +61,7 @@ xref:Optional/value-05.adoc[pass:[value]](this Self&& self);
 template<typename Self>
 constexpr
 auto&&
-xref:Optional/value-06.adoc[pass:[value]](this 
+xref:#Optional-value-06[pass:[value]](this 
     Self&& self,
     int x);
 ----
@@ -73,10 +73,10 @@ xref:Optional/value-06.adoc[pass:[value]](this
 
 
 
-:relfileprefix: ../
-[#Optional-value-05]
 
-== xref:Optional.adoc[pass:[Optional]]::value
+
+[#Optional-value-05]
+== xref:#Optional[pass:[Optional]]::value
 
 
 
@@ -99,10 +99,10 @@ value(this Self&& self);
 
 
 
-:relfileprefix: ../
-[#Optional-value-06]
 
-== xref:Optional.adoc[pass:[Optional]]::value
+
+[#Optional-value-06]
+== xref:#Optional[pass:[Optional]]::value
 
 
 
@@ -128,4 +128,5 @@ value(this
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

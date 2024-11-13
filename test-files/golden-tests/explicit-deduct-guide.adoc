@@ -1,34 +1,34 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:X-0e.adoc[`X`]  ¦
+¦xref:#X-0e[`X`]  ¦
 
 |===
 ===  Deduction Guides
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:X-0d.adoc[`X<0>`]  ¦
+¦xref:#X-0d[`X<0>`]  ¦
 
-¦xref:X-00.adoc[`X<0>`]  ¦
+¦xref:#X-00[`X<0>`]  ¦
 
-¦xref:X-0b.adoc[`X<0>`]  ¦
+¦xref:#X-0b[`X<0>`]  ¦
 
-¦xref:X-06.adoc[`X<0>`]  ¦
+¦xref:#X-06[`X<0>`]  ¦
 
 |===
 
 
-[#X-0e]
 
+[#X-0e]
 == X
 
 
@@ -47,8 +47,8 @@ struct X;
 
 
 
-[#X-0d]
 
+[#X-0d]
 == X
 
 
@@ -59,13 +59,13 @@ Declared in `<explicit-deduct-guide.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:X-0e.adoc[X]<0>(bool) -> xref:X-0e.adoc[X]<0>;
+xref:#X-0e[X]<0>(bool) -> xref:#X-0e[X]<0>;
 ----
+
 
 
 
 [#X-00]
-
 == X
 
 
@@ -76,13 +76,13 @@ Declared in `<explicit-deduct-guide.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:X-0e.adoc[X]<0>(char) -> xref:X-0e.adoc[X]<0>;
+xref:#X-0e[X]<0>(char) -> xref:#X-0e[X]<0>;
 ----
+
 
 
 
 [#X-0b]
-
 == X
 
 
@@ -93,13 +93,13 @@ Declared in `<explicit-deduct-guide.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:X-0e.adoc[X]<0>(int) -> xref:X-0e.adoc[X]<0>;
+xref:#X-0e[X]<0>(int) -> xref:#X-0e[X]<0>;
 ----
 
 
 
-[#X-06]
 
+[#X-06]
 == X
 
 
@@ -111,9 +111,10 @@ Declared in `<explicit-deduct-guide.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<bool B = true>
-xref:X-0e.adoc[X]<0>(long) -> xref:X-0e.adoc[X]<0>;
+xref:#X-0e[X]<0>(long) -> xref:#X-0e[X]<0>;
 ----
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

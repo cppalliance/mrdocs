@@ -1,28 +1,28 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T.adoc[`T`]  ¦
+¦xref:#T[`T`]  ¦
 
 |===
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:f1.adoc[`f1`]  ¦
+¦xref:#f1[`f1`]  ¦
 
 |===
 
 
-[#f1]
 
+[#f1]
 == f1
 
 
@@ -45,8 +45,8 @@ f1();
 
 
 
-[#T]
 
+[#T]
 == T
 
 
@@ -64,30 +64,30 @@ struct T;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T/f3.adoc[`f3`]  ¦
+¦xref:#T-f3[`f3`]  ¦
 
 |===
 ===  Static Member Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T/f2.adoc[`f2`]  ¦
+¦xref:#T-f2[`f2`]  ¦
 
 |===
 ===  Friends
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T/08friend.adoc[`f1`]  ¦
+¦xref:#T-08friend[`f1`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#T-f2]
 
-== xref:T.adoc[pass:[T]]::f2
+
+[#T-f2]
+== xref:#T[pass:[T]]::f2
 
 
 
@@ -109,10 +109,10 @@ f2();
 
 
 
-:relfileprefix: ../
-[#T-f3]
 
-== xref:T.adoc[pass:[T]]::f3
+
+[#T-f3]
+== xref:#T[pass:[T]]::f3
 
 
 
@@ -133,9 +133,9 @@ f3();
 
 
 
-:relfileprefix: ../
-[#T-08friend]
 
+
+[#T-08friend]
 == f1
 
 
@@ -153,4 +153,5 @@ f1();
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

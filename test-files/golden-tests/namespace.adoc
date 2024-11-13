@@ -1,52 +1,52 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 === Namespaces
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:00namespace.adoc[``]  ¦
+¦xref:#00namespace[``]  ¦
 
-¦xref:A.adoc[`A`]  ¦
+¦xref:#A[`A`]  ¦
 
-¦xref:D.adoc[`D`]  ¦
+¦xref:#D[`D`]  ¦
 
-¦xref:I.adoc[`I`]  ¦
+¦xref:#I[`I`]  ¦
 
 |===
 
 
-[#A]
 
+[#A]
 == A
 
 === Namespaces
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/00namespace.adoc[``]  ¦
+¦xref:#A-00namespace[``]  ¦
 
-¦xref:A/B.adoc[`B`]  ¦
+¦xref:#A-B[`B`]  ¦
 
-¦xref:A/C.adoc[`C`]  ¦
+¦xref:#A-C[`C`]  ¦
 
 |===
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/f0.adoc[`f0`]  ¦
+¦xref:#A-f0[`f0`]  ¦
 
 |===
 
-:relfileprefix: ../
-[#A-f0]
 
-== xref:A.adoc[pass:[A]]::f0
+
+[#A-f0]
+== xref:#A[pass:[A]]::f0
 
 
 
@@ -67,23 +67,23 @@ f0();
 
 
 
-:relfileprefix: ../
-[#A-B]
 
-== xref:A.adoc[pass:[A]]::B
+
+[#A-B]
+== xref:#A[pass:[A]]::B
 
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/B/f1.adoc[`f1`]  ¦
+¦xref:#A-B-f1[`f1`]  ¦
 
 |===
 
-:relfileprefix: ../../
-[#A-B-f1]
 
-== xref:A.adoc[pass:[A]]::xref:A/B.adoc[pass:[B]]::f1
+
+[#A-B-f1]
+== xref:#A[pass:[A]]::xref:#A-B[pass:[B]]::f1
 
 
 
@@ -104,23 +104,23 @@ f1();
 
 
 
-:relfileprefix: ../
-[#A-C]
 
-== xref:A.adoc[pass:[A]]::C
+
+[#A-C]
+== xref:#A[pass:[A]]::C
 
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/C/f2.adoc[`f2`]  ¦
+¦xref:#A-C-f2[`f2`]  ¦
 
 |===
 
-:relfileprefix: ../../
-[#A-C-f2]
 
-== xref:A.adoc[pass:[A]]::xref:A/C.adoc[pass:[C]]::f2
+
+[#A-C-f2]
+== xref:#A[pass:[A]]::xref:#A-C[pass:[C]]::f2
 
 
 
@@ -141,23 +141,23 @@ f2();
 
 
 
-:relfileprefix: ../
-[#A-00namespace]
 
+
+[#A-00namespace]
 == Unnamed namespace
 
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/00namespace/f3.adoc[`f3`]  ¦
+¦xref:#A-00namespace-f3[`f3`]  ¦
 
 |===
 
-:relfileprefix: ../../
-[#A-00namespace-f3]
 
-== xref:A.adoc[pass:[A]]::f3
+
+[#A-00namespace-f3]
+== xref:#A[pass:[A]]::f3
 
 
 
@@ -179,33 +179,33 @@ f3();
 
 
 
-[#D]
 
+[#D]
 == D
 
 === Namespaces
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:D/00namespace.adoc[``]  ¦
+¦xref:#D-00namespace[``]  ¦
 
-¦xref:D/E.adoc[`E`]  ¦
+¦xref:#D-E[`E`]  ¦
 
-¦xref:D/F.adoc[`F`]  ¦
+¦xref:#D-F[`F`]  ¦
 
 |===
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:D/f5.adoc[`f5`]  ¦
+¦xref:#D-f5[`f5`]  ¦
 
 |===
 
-:relfileprefix: ../
-[#D-f5]
 
-== xref:D.adoc[pass:[D]]::f5
+
+[#D-f5]
+== xref:#D[pass:[D]]::f5
 
 
 
@@ -226,23 +226,23 @@ f5();
 
 
 
-:relfileprefix: ../
-[#D-E]
 
-== xref:D.adoc[pass:[D]]::E
+
+[#D-E]
+== xref:#D[pass:[D]]::E
 
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:D/E/f6.adoc[`f6`]  ¦
+¦xref:#D-E-f6[`f6`]  ¦
 
 |===
 
-:relfileprefix: ../../
-[#D-E-f6]
 
-== xref:D.adoc[pass:[D]]::xref:D/E.adoc[pass:[E]]::f6
+
+[#D-E-f6]
+== xref:#D[pass:[D]]::xref:#D-E[pass:[E]]::f6
 
 
 
@@ -263,23 +263,23 @@ f6();
 
 
 
-:relfileprefix: ../
-[#D-F]
 
-== xref:D.adoc[pass:[D]]::F
+
+[#D-F]
+== xref:#D[pass:[D]]::F
 
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:D/F/f7.adoc[`f7`]  ¦
+¦xref:#D-F-f7[`f7`]  ¦
 
 |===
 
-:relfileprefix: ../../
-[#D-F-f7]
 
-== xref:D.adoc[pass:[D]]::xref:D/F.adoc[pass:[F]]::f7
+
+[#D-F-f7]
+== xref:#D[pass:[D]]::xref:#D-F[pass:[F]]::f7
 
 
 
@@ -300,23 +300,23 @@ f7();
 
 
 
-:relfileprefix: ../
-[#D-00namespace]
 
+
+[#D-00namespace]
 == Unnamed namespace
 
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:D/00namespace/f8.adoc[`f8`]  ¦
+¦xref:#D-00namespace-f8[`f8`]  ¦
 
 |===
 
-:relfileprefix: ../../
-[#D-00namespace-f8]
 
-== xref:D.adoc[pass:[D]]::f8
+
+[#D-00namespace-f8]
+== xref:#D[pass:[D]]::f8
 
 
 
@@ -338,30 +338,30 @@ f8();
 
 
 
-[#00namespace]
 
+[#00namespace]
 == Unnamed namespace
 
 === Namespaces
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:00namespace/G.adoc[`G`]  ¦
+¦xref:#00namespace-G[`G`]  ¦
 
-¦xref:00namespace/H.adoc[`H`]  ¦
+¦xref:#00namespace-H[`H`]  ¦
 
 |===
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:00namespace/f10.adoc[`f10`]  ¦
+¦xref:#00namespace-f10[`f10`]  ¦
 
 |===
 
-:relfileprefix: ../
-[#00namespace-f10]
 
+
+[#00namespace-f10]
 == f10
 
 
@@ -383,23 +383,23 @@ f10();
 
 
 
-:relfileprefix: ../
-[#00namespace-G]
 
+
+[#00namespace-G]
 == G
 
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:00namespace/G/f11.adoc[`f11`]  ¦
+¦xref:#00namespace-G-f11[`f11`]  ¦
 
 |===
 
-:relfileprefix: ../../
-[#00namespace-G-f11]
 
-== xref:00namespace/G.adoc[pass:[G]]::f11
+
+[#00namespace-G-f11]
+== xref:#00namespace-G[pass:[G]]::f11
 
 
 
@@ -420,23 +420,23 @@ f11();
 
 
 
-:relfileprefix: ../
-[#00namespace-H]
 
+
+[#00namespace-H]
 == H
 
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:00namespace/H/f12.adoc[`f12`]  ¦
+¦xref:#00namespace-H-f12[`f12`]  ¦
 
 |===
 
-:relfileprefix: ../../
-[#00namespace-H-f12]
 
-== xref:00namespace/H.adoc[pass:[H]]::f12
+
+[#00namespace-H-f12]
+== xref:#00namespace-H[pass:[H]]::f12
 
 
 
@@ -458,35 +458,35 @@ f12();
 
 
 
-[#I]
 
+[#I]
 == I
 
 === Namespaces
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:I/00namespace.adoc[``]  ¦
+¦xref:#I-00namespace[``]  ¦
 
 |===
 
-:relfileprefix: ../
-[#I-00namespace]
 
+
+[#I-00namespace]
 == Unnamed namespace
 
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:I/00namespace/f14.adoc[`f14`]  ¦
+¦xref:#I-00namespace-f14[`f14`]  ¦
 
 |===
 
-:relfileprefix: ../../
-[#I-00namespace-f14]
 
-== xref:I.adoc[pass:[I]]::f14
+
+[#I-00namespace-f14]
+== xref:#I[pass:[I]]::f14
 
 
 
@@ -508,4 +508,5 @@ f14();
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

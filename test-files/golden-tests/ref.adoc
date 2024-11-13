@@ -1,45 +1,45 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 === Namespaces
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A.adoc[`A`]  ¦
+¦xref:#A[`A`]  ¦
 
 |===
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:F.adoc[`F`]  ¦
+¦xref:#F[`F`]  ¦
 
 |===
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:f0.adoc[`f0`]  ¦
+¦xref:#f0[`f0`]  ¦
 
-¦xref:f5.adoc[`f5`]  ¦
-
-See
-xref:A/f1.adoc[A::f1]
-
-¦xref:f6.adoc[`f6`]  ¦
+¦xref:#f5[`f5`]  ¦
 
 See
-xref:F/operator_bitnot.adoc[F::operator~]
+xref:#A-f1[A::f1]
+
+¦xref:#f6[`f6`]  ¦
+
+See
+xref:#F-operator_bitnot[F::operator~]
 
 |===
 
 
-[#f0]
 
+[#f0]
 == f0
 
 
@@ -62,43 +62,43 @@ f0();
 
 
 
-[#A]
 
+[#A]
 == A
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/B.adoc[`B`]  ¦
+¦xref:#A-B[`B`]  ¦
 
 See
-xref:A/f1.adoc[f1]
+xref:#A-f1[f1]
 
-¦xref:A/C.adoc[`C`]  ¦
+¦xref:#A-C[`C`]  ¦
 
-¦xref:A/D.adoc[`D`]  ¦
+¦xref:#A-D[`D`]  ¦
 
 |===
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/f1.adoc[`f1`]  ¦
+¦xref:#A-f1[`f1`]  ¦
 
 See
-xref:f0.adoc[f0]
+xref:#f0[f0]
 
 |===
 
-:relfileprefix: ../
-[#A-f1]
 
-== xref:A.adoc[pass:[A]]::f1
+
+[#A-f1]
+== xref:#A[pass:[A]]::f1
 
 
 See
-xref:f0.adoc[f0]
+xref:#f0[f0]
 
 
 === Synopsis
@@ -115,7 +115,7 @@ f1();
 
 
 See
-xref:f0.adoc[::f0]
+xref:#f0[::f0]
 
 
 
@@ -125,14 +125,14 @@ xref:f0.adoc[::f0]
 
 
 
-:relfileprefix: ../
+
+
 [#A-B]
-
-== xref:A.adoc[pass:[A]]::B
+== xref:#A[pass:[A]]::B
 
 
 See
-xref:A/f1.adoc[f1]
+xref:#A-f1[f1]
 
 
 === Synopsis
@@ -149,7 +149,7 @@ struct B;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/B/f2.adoc[`f2`]  ¦
+¦xref:#A-B-f2[`f2`]  ¦
 
 |===
 
@@ -157,18 +157,18 @@ struct B;
 
 
 See
-xref:A/f1.adoc[A::f1]
+xref:#A-f1[A::f1]
 
 See
-xref:A/f1.adoc[::A::f1]
+xref:#A-f1[::A::f1]
 
 
 
 
-:relfileprefix: ../../
+
+
 [#A-B-f2]
-
-== xref:A.adoc[pass:[A]]::xref:A/B.adoc[pass:[B]]::f2
+== xref:#A[pass:[A]]::xref:#A-B[pass:[B]]::f2
 
 
 
@@ -189,10 +189,10 @@ f2();
 
 
 
-:relfileprefix: ../
-[#A-C]
 
-== xref:A.adoc[pass:[A]]::C
+
+[#A-C]
+== xref:#A[pass:[A]]::C
 
 
 
@@ -209,18 +209,18 @@ struct C;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/C/f3.adoc[`f3`]  ¦
+¦xref:#A-C-f3[`f3`]  ¦
 
-¦xref:A/C/f4.adoc[`f4`]  ¦
+¦xref:#A-C-f4[`f4`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../../
-[#A-C-f3]
 
-== xref:A.adoc[pass:[A]]::xref:A/C.adoc[pass:[C]]::f3
+
+[#A-C-f3]
+== xref:#A[pass:[A]]::xref:#A-C[pass:[C]]::f3
 
 
 
@@ -241,10 +241,10 @@ f3();
 
 
 
-:relfileprefix: ../../
-[#A-C-f4]
 
-== xref:A.adoc[pass:[A]]::xref:A/C.adoc[pass:[C]]::f4
+
+[#A-C-f4]
+== xref:#A[pass:[A]]::xref:#A-C[pass:[C]]::f4
 
 
 
@@ -265,10 +265,10 @@ f4();
 
 
 
-:relfileprefix: ../
-[#A-D]
 
-== xref:A.adoc[pass:[A]]::D
+
+[#A-D]
+== xref:#A[pass:[A]]::D
 
 
 
@@ -279,34 +279,34 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct D
-    : xref:A/C.adoc[C];
+    : xref:#A-C[C];
 ----
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/D/E.adoc[`E`]  ¦
+¦xref:#A-D-E[`E`]  ¦
 
 See
-xref:A/C/f3.adoc[f3]
+xref:#A-C-f3[f3]
 
 |===
 ===  Member Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/C/f3.adoc[`f3`]  ¦
+¦xref:#A-C-f3[`f3`]  ¦
 
-¦xref:A/C/f4.adoc[`f4`]  ¦
+¦xref:A-C-f4[`f4`]  ¦
 |===
 
 
 
-:relfileprefix: ../../
-[#A-D-f4]
 
-== xref:A.adoc[pass:[A]]::xref:A/D.adoc[pass:[D]]::f4
+
+[#A-D-f4]
+== xref:#A[pass:[A]]::xref:#A-D[pass:[D]]::f4
 
 
 
@@ -327,14 +327,14 @@ f4();
 
 
 
-:relfileprefix: ../../
-[#A-D-E]
 
-== xref:A.adoc[pass:[A]]::xref:A/D.adoc[pass:[D]]::E
+
+[#A-D-E]
+== xref:#A[pass:[A]]::xref:#A-D[pass:[D]]::E
 
 
 See
-xref:A/C/f3.adoc[f3]
+xref:#A-C-f3[f3]
 
 
 === Synopsis
@@ -351,22 +351,22 @@ struct E;
 
 
 See
-xref:A/D/f4.adoc[f4]
+xref:#A-D-f4[f4]
 
 See
-xref:A/C/f4.adoc[C::f4]
+xref:#A-C-f4[C::f4]
+
 
 
 
 
 
 [#f5]
-
 == f5
 
 
 See
-xref:A/f1.adoc[A::f1]
+xref:#A-f1[A::f1]
 
 
 === Synopsis
@@ -383,7 +383,8 @@ f5();
 
 
 See
-xref:A/f1.adoc[::A::f1]
+xref:#A-f1[::A::f1]
+
 
 
 
@@ -395,7 +396,6 @@ xref:A/f1.adoc[::A::f1]
 
 
 [#F]
-
 == F
 
 
@@ -413,92 +413,92 @@ struct F;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:F/operator_not.adoc[`operator!`]  ¦
+¦xref:#F-operator_not[`operator!`]  ¦
 
-¦xref:F/operator_not_eq.adoc[`operator!=`]  ¦
+¦xref:#F-operator_not_eq[`operator!=`]  ¦
 
-¦xref:F/operator_mod.adoc[`operator%`]  ¦
+¦xref:#F-operator_mod[`operator%`]  ¦
 
-¦xref:F/operator_mod_eq.adoc[`operator%=`]  ¦
+¦xref:#F-operator_mod_eq[`operator%=`]  ¦
 
-¦xref:F/operator_bitand.adoc[`operator&`]  ¦
+¦xref:#F-operator_bitand[`operator&`]  ¦
 
-¦xref:F/operator_and.adoc[`operator&&`]  ¦
+¦xref:#F-operator_and[`operator&&`]  ¦
 
-¦xref:F/operator_and_eq.adoc[`operator&=`]  ¦
+¦xref:#F-operator_and_eq[`operator&=`]  ¦
 
-¦xref:F/operator_call.adoc[`operator()`]  ¦
+¦xref:#F-operator_call[`operator()`]  ¦
 
-¦xref:F/operator_star.adoc[`operator*`]  ¦
+¦xref:#F-operator_star[`operator*`]  ¦
 
-¦xref:F/operator_star_eq.adoc[`operator*=`]  ¦
+¦xref:#F-operator_star_eq[`operator*=`]  ¦
 
-¦xref:F/operator_plus.adoc[`operator+`]  ¦
+¦xref:#F-operator_plus[`operator+`]  ¦
 
-¦xref:F/operator_inc.adoc[`operator++`]  ¦
+¦xref:#F-operator_inc[`operator++`]  ¦
 
-¦xref:F/operator_plus_eq.adoc[`operator+=`]  ¦
+¦xref:#F-operator_plus_eq[`operator+=`]  ¦
 
-¦xref:F/operator_comma.adoc[`operator,`]  ¦
+¦xref:#F-operator_comma[`operator,`]  ¦
 
-¦xref:F/operator_minus.adoc[`operator-`]  ¦
+¦xref:#F-operator_minus[`operator-`]  ¦
 
-¦xref:F/operator_dec.adoc[`operator--`]  ¦
+¦xref:#F-operator_dec[`operator--`]  ¦
 
-¦xref:F/operator_minus_eq.adoc[`operator-=`]  ¦
+¦xref:#F-operator_minus_eq[`operator-=`]  ¦
 
-¦xref:F/operator_ptr.adoc[`operator->`]  ¦
+¦xref:#F-operator_ptr[`operator->`]  ¦
 
-¦xref:F/operator_ptrmem.adoc[`operator->*`]  ¦
+¦xref:#F-operator_ptrmem[`operator->*`]  ¦
 
-¦xref:F/operator_slash.adoc[`operator/`]  ¦
+¦xref:#F-operator_slash[`operator/`]  ¦
 
-¦xref:F/operator_slash_eq.adoc[`operator/=`]  ¦
+¦xref:#F-operator_slash_eq[`operator/=`]  ¦
 
-¦xref:F/operator_lt.adoc[`operator<`]  ¦
+¦xref:#F-operator_lt[`operator<`]  ¦
 
-¦xref:F/operator_lshift.adoc[`operator<<`]  ¦
+¦xref:#F-operator_lshift[`operator<<`]  ¦
 
-¦xref:F/operator_lshift_eq.adoc[`operator<<=`]  ¦
+¦xref:#F-operator_lshift_eq[`operator<<=`]  ¦
 
-¦xref:F/operator_le.adoc[`operator<=`]  ¦
+¦xref:#F-operator_le[`operator<=`]  ¦
 
-¦xref:F/operator_3way.adoc[`operator<=>`]  ¦
+¦xref:#F-operator_3way[`operator<=>`]  ¦
 
-¦xref:F/operator_assign.adoc[`operator=`]  ¦
+¦xref:#F-operator_assign[`operator=`]  ¦
 
-¦xref:F/operator_eq.adoc[`operator==`]  ¦
+¦xref:#F-operator_eq[`operator==`]  ¦
 
-¦xref:F/operator_gt.adoc[`operator>`]  ¦
+¦xref:#F-operator_gt[`operator>`]  ¦
 
-¦xref:F/operator_ge.adoc[`operator>=`]  ¦
+¦xref:#F-operator_ge[`operator>=`]  ¦
 
-¦xref:F/operator_rshift.adoc[`operator>>`]  ¦
+¦xref:#F-operator_rshift[`operator>>`]  ¦
 
-¦xref:F/operator_rshift_eq.adoc[`operator>>=`]  ¦
+¦xref:#F-operator_rshift_eq[`operator>>=`]  ¦
 
-¦xref:F/operator_subs.adoc[`operator[]`]  ¦
+¦xref:#F-operator_subs[`operator[]`]  ¦
 
-¦xref:F/operator_xor.adoc[`operator^`]  ¦
+¦xref:#F-operator_xor[`operator^`]  ¦
 
-¦xref:F/operator_xor_eq.adoc[`operator^=`]  ¦
+¦xref:#F-operator_xor_eq[`operator^=`]  ¦
 
-¦xref:F/operator_bitor.adoc[`operator|`]  ¦
+¦xref:#F-operator_bitor[`operator|`]  ¦
 
-¦xref:F/operator_or_eq.adoc[`operator|=`]  ¦
+¦xref:#F-operator_or_eq[`operator|=`]  ¦
 
-¦xref:F/operator_or.adoc[`operator||`]  ¦
+¦xref:#F-operator_or[`operator||`]  ¦
 
-¦xref:F/operator_bitnot.adoc[`operator~`]  ¦
+¦xref:#F-operator_bitnot[`operator~`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#F-operator_bitnot]
 
-== xref:F.adoc[pass:[F]]::operator~
+
+[#F-operator_bitnot]
+== xref:#F[pass:[F]]::operator~
 
 
 
@@ -519,10 +519,10 @@ operator~();
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_comma]
-
-== xref:F.adoc[pass:[F]]::operator,
+== xref:#F[pass:[F]]::operator,
 
 
 
@@ -533,7 +533,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator,(xref:F.adoc[F]&);
+operator,(xref:#F[F]&);
 ----
 
 
@@ -543,10 +543,10 @@ operator,(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_call]
-
-== xref:F.adoc[pass:[F]]::operator()
+== xref:#F[pass:[F]]::operator()
 
 
 
@@ -557,7 +557,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator()(xref:F.adoc[F]&);
+operator()(xref:#F[F]&);
 ----
 
 
@@ -567,10 +567,10 @@ operator()(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_subs]
-
-== xref:F.adoc[pass:[F]]::operator[]
+== xref:#F[pass:[F]]::operator[]
 
 
 
@@ -581,7 +581,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator[](xref:F.adoc[F]&);
+operator[](xref:#F[F]&);
 ----
 
 
@@ -591,10 +591,10 @@ operator[](xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_plus]
-
-== xref:F.adoc[pass:[F]]::operator+
+== xref:#F[pass:[F]]::operator+
 
 
 
@@ -605,7 +605,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator+(xref:F.adoc[F]&);
+operator+(xref:#F[F]&);
 ----
 
 
@@ -615,10 +615,10 @@ operator+(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
-[#F-operator_inc]
 
-== xref:F.adoc[pass:[F]]::operator++
+
+[#F-operator_inc]
+== xref:#F[pass:[F]]::operator++
 
 
 
@@ -639,10 +639,10 @@ operator++();
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_plus_eq]
-
-== xref:F.adoc[pass:[F]]::operator+=
+== xref:#F[pass:[F]]::operator+=
 
 
 
@@ -653,7 +653,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator+=(xref:F.adoc[F]&);
+operator+=(xref:#F[F]&);
 ----
 
 
@@ -663,10 +663,10 @@ operator+=(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_bitand]
-
-== xref:F.adoc[pass:[F]]::operator&
+== xref:#F[pass:[F]]::operator&
 
 
 
@@ -677,7 +677,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator&(xref:F.adoc[F]&);
+operator&(xref:#F[F]&);
 ----
 
 
@@ -687,10 +687,10 @@ operator&(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_and]
-
-== xref:F.adoc[pass:[F]]::operator&&
+== xref:#F[pass:[F]]::operator&&
 
 
 
@@ -701,7 +701,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator&&(xref:F.adoc[F]&);
+operator&&(xref:#F[F]&);
 ----
 
 
@@ -711,10 +711,10 @@ operator&&(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_and_eq]
-
-== xref:F.adoc[pass:[F]]::operator&=
+== xref:#F[pass:[F]]::operator&=
 
 
 
@@ -725,7 +725,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator&=(xref:F.adoc[F]&);
+operator&=(xref:#F[F]&);
 ----
 
 
@@ -735,10 +735,10 @@ operator&=(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_bitor]
-
-== xref:F.adoc[pass:[F]]::operator|
+== xref:#F[pass:[F]]::operator|
 
 
 
@@ -749,7 +749,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator|(xref:F.adoc[F]&);
+operator|(xref:#F[F]&);
 ----
 
 
@@ -759,10 +759,10 @@ operator|(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_or]
-
-== xref:F.adoc[pass:[F]]::operator||
+== xref:#F[pass:[F]]::operator||
 
 
 
@@ -773,7 +773,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator||(xref:F.adoc[F]&);
+operator||(xref:#F[F]&);
 ----
 
 
@@ -783,10 +783,10 @@ operator||(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_or_eq]
-
-== xref:F.adoc[pass:[F]]::operator|=
+== xref:#F[pass:[F]]::operator|=
 
 
 
@@ -797,7 +797,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator|=(xref:F.adoc[F]&);
+operator|=(xref:#F[F]&);
 ----
 
 
@@ -807,10 +807,10 @@ operator|=(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_minus]
-
-== xref:F.adoc[pass:[F]]::operator-
+== xref:#F[pass:[F]]::operator-
 
 
 
@@ -821,7 +821,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator-(xref:F.adoc[F]&);
+operator-(xref:#F[F]&);
 ----
 
 
@@ -831,10 +831,10 @@ operator-(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
-[#F-operator_dec]
 
-== xref:F.adoc[pass:[F]]::operator--
+
+[#F-operator_dec]
+== xref:#F[pass:[F]]::operator--
 
 
 
@@ -855,10 +855,10 @@ operator--();
 
 
 
-:relfileprefix: ../
-[#F-operator_minus_eq]
 
-== xref:F.adoc[pass:[F]]::operator-=
+
+[#F-operator_minus_eq]
+== xref:#F[pass:[F]]::operator-=
 
 
 
@@ -869,7 +869,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator-=(xref:F.adoc[F]&);
+operator-=(xref:#F[F]&);
 ----
 
 
@@ -879,10 +879,10 @@ operator-=(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
-[#F-operator_ptr]
 
-== xref:F.adoc[pass:[F]]::operator->
+
+[#F-operator_ptr]
+== xref:#F[pass:[F]]::operator->
 
 
 
@@ -903,10 +903,10 @@ operator->();
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_ptrmem]
-
-== xref:F.adoc[pass:[F]]::operator->*
+== xref:#F[pass:[F]]::operator->*
 
 
 
@@ -917,7 +917,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator->*(xref:F.adoc[F]&);
+operator->*(xref:#F[F]&);
 ----
 
 
@@ -927,10 +927,10 @@ operator->*(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_lt]
-
-== xref:F.adoc[pass:[F]]::operator<
+== xref:#F[pass:[F]]::operator<
 
 
 
@@ -941,7 +941,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator<(xref:F.adoc[F]&);
+operator<(xref:#F[F]&);
 ----
 
 
@@ -951,10 +951,10 @@ operator<(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_lshift]
-
-== xref:F.adoc[pass:[F]]::operator<<
+== xref:#F[pass:[F]]::operator<<
 
 
 
@@ -965,7 +965,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator<<(xref:F.adoc[F]&);
+operator<<(xref:#F[F]&);
 ----
 
 
@@ -975,10 +975,10 @@ operator<<(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_lshift_eq]
-
-== xref:F.adoc[pass:[F]]::operator<<=
+== xref:#F[pass:[F]]::operator<<=
 
 
 
@@ -989,7 +989,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator<<=(xref:F.adoc[F]&);
+operator<<=(xref:#F[F]&);
 ----
 
 
@@ -999,10 +999,10 @@ operator<<=(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_le]
-
-== xref:F.adoc[pass:[F]]::operator<=
+== xref:#F[pass:[F]]::operator<=
 
 
 
@@ -1013,7 +1013,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator<=(xref:F.adoc[F]&);
+operator<=(xref:#F[F]&);
 ----
 
 
@@ -1023,10 +1023,10 @@ operator<=(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_3way]
-
-== xref:F.adoc[pass:[F]]::operator<=>
+== xref:#F[pass:[F]]::operator<=>
 
 
 
@@ -1037,7 +1037,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator<=>(xref:F.adoc[F]&);
+operator<=>(xref:#F[F]&);
 ----
 
 
@@ -1047,10 +1047,10 @@ operator<=>(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_gt]
-
-== xref:F.adoc[pass:[F]]::operator>
+== xref:#F[pass:[F]]::operator>
 
 
 
@@ -1061,7 +1061,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator>(xref:F.adoc[F]&);
+operator>(xref:#F[F]&);
 ----
 
 
@@ -1071,10 +1071,10 @@ operator>(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_rshift]
-
-== xref:F.adoc[pass:[F]]::operator>>
+== xref:#F[pass:[F]]::operator>>
 
 
 
@@ -1085,7 +1085,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator>>(xref:F.adoc[F]&);
+operator>>(xref:#F[F]&);
 ----
 
 
@@ -1095,10 +1095,10 @@ operator>>(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_rshift_eq]
-
-== xref:F.adoc[pass:[F]]::operator>>=
+== xref:#F[pass:[F]]::operator>>=
 
 
 
@@ -1109,7 +1109,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator>>=(xref:F.adoc[F]&);
+operator>>=(xref:#F[F]&);
 ----
 
 
@@ -1119,10 +1119,10 @@ operator>>=(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_ge]
-
-== xref:F.adoc[pass:[F]]::operator>=
+== xref:#F[pass:[F]]::operator>=
 
 
 
@@ -1133,7 +1133,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator>=(xref:F.adoc[F]&);
+operator>=(xref:#F[F]&);
 ----
 
 
@@ -1143,10 +1143,10 @@ operator>=(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_star]
-
-== xref:F.adoc[pass:[F]]::operator*
+== xref:#F[pass:[F]]::operator*
 
 
 
@@ -1157,7 +1157,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator*(xref:F.adoc[F]&);
+operator*(xref:#F[F]&);
 ----
 
 
@@ -1167,10 +1167,10 @@ operator*(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_star_eq]
-
-== xref:F.adoc[pass:[F]]::operator*=
+== xref:#F[pass:[F]]::operator*=
 
 
 
@@ -1181,7 +1181,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator*=(xref:F.adoc[F]&);
+operator*=(xref:#F[F]&);
 ----
 
 
@@ -1191,10 +1191,10 @@ operator*=(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_mod]
-
-== xref:F.adoc[pass:[F]]::operator%
+== xref:#F[pass:[F]]::operator%
 
 
 
@@ -1205,7 +1205,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator%(xref:F.adoc[F]&);
+operator%(xref:#F[F]&);
 ----
 
 
@@ -1215,10 +1215,10 @@ operator%(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_mod_eq]
-
-== xref:F.adoc[pass:[F]]::operator%=
+== xref:#F[pass:[F]]::operator%=
 
 
 
@@ -1229,7 +1229,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator%=(xref:F.adoc[F]&);
+operator%=(xref:#F[F]&);
 ----
 
 
@@ -1239,10 +1239,10 @@ operator%=(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_slash]
-
-== xref:F.adoc[pass:[F]]::operator/
+== xref:#F[pass:[F]]::operator/
 
 
 
@@ -1253,7 +1253,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator/(xref:F.adoc[F]&);
+operator/(xref:#F[F]&);
 ----
 
 
@@ -1263,10 +1263,10 @@ operator/(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_slash_eq]
-
-== xref:F.adoc[pass:[F]]::operator/=
+== xref:#F[pass:[F]]::operator/=
 
 
 
@@ -1277,7 +1277,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator/=(xref:F.adoc[F]&);
+operator/=(xref:#F[F]&);
 ----
 
 
@@ -1287,10 +1287,10 @@ operator/=(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_xor]
-
-== xref:F.adoc[pass:[F]]::operator^
+== xref:#F[pass:[F]]::operator^
 
 
 
@@ -1301,7 +1301,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator^(xref:F.adoc[F]&);
+operator^(xref:#F[F]&);
 ----
 
 
@@ -1311,10 +1311,10 @@ operator^(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_xor_eq]
-
-== xref:F.adoc[pass:[F]]::operator^=
+== xref:#F[pass:[F]]::operator^=
 
 
 
@@ -1325,7 +1325,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator^=(xref:F.adoc[F]&);
+operator^=(xref:#F[F]&);
 ----
 
 
@@ -1335,10 +1335,10 @@ operator^=(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_assign]
-
-== xref:F.adoc[pass:[F]]::operator=
+== xref:#F[pass:[F]]::operator=
 
 
 
@@ -1349,7 +1349,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator=(xref:F.adoc[F]&);
+operator=(xref:#F[F]&);
 ----
 
 
@@ -1359,10 +1359,10 @@ operator=(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
+
+
 [#F-operator_eq]
-
-== xref:F.adoc[pass:[F]]::operator==
+== xref:#F[pass:[F]]::operator==
 
 
 
@@ -1373,7 +1373,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator==(xref:F.adoc[F]&);
+operator==(xref:#F[F]&);
 ----
 
 
@@ -1383,10 +1383,10 @@ operator==(xref:F.adoc[F]&);
 
 
 
-:relfileprefix: ../
-[#F-operator_not]
 
-== xref:F.adoc[pass:[F]]::operator!
+
+[#F-operator_not]
+== xref:#F[pass:[F]]::operator!
 
 
 
@@ -1407,10 +1407,10 @@ operator!();
 
 
 
-:relfileprefix: ../
-[#F-operator_not_eq]
 
-== xref:F.adoc[pass:[F]]::operator!=
+
+[#F-operator_not_eq]
+== xref:#F[pass:[F]]::operator!=
 
 
 
@@ -1421,7 +1421,7 @@ Declared in `<ref.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator!=(xref:F.adoc[F]&);
+operator!=(xref:#F[F]&);
 ----
 
 
@@ -1432,13 +1432,13 @@ operator!=(xref:F.adoc[F]&);
 
 
 
-[#f6]
 
+[#f6]
 == f6
 
 
 See
-xref:F/operator_bitnot.adoc[F::operator~]
+xref:#F-operator_bitnot[F::operator~]
 
 
 === Synopsis
@@ -1455,118 +1455,118 @@ f6();
 
 
 See
-xref:F/operator_comma.adoc[F::operator,]
+xref:#F-operator_comma[F::operator,]
 
 See
-xref:F/operator_call.adoc[F::operator()]
+xref:#F-operator_call[F::operator()]
 
 See
-xref:F/operator_subs.adoc[F::operator&lsqb;&rsqb;]
+xref:#F-operator_subs[F::operator&lsqb;&rsqb;]
 
 See
-xref:F/operator_plus.adoc[F::operator+]
+xref:#F-operator_plus[F::operator+]
 
 See
-xref:F/operator_inc.adoc[F::operator++]
+xref:#F-operator_inc[F::operator++]
 
 See
-xref:F/operator_plus_eq.adoc[F::operator+&equals;]
+xref:#F-operator_plus_eq[F::operator+&equals;]
 
 See
-xref:F/operator_bitand.adoc[F::operator&amp;]
+xref:#F-operator_bitand[F::operator&amp;]
 
 See
-xref:F/operator_and.adoc[F::operator&amp;&amp;]
+xref:#F-operator_and[F::operator&amp;&amp;]
 
 See
-xref:F/operator_and_eq.adoc[F::operator&amp;&equals;]
+xref:#F-operator_and_eq[F::operator&amp;&equals;]
 
 See
-xref:F/operator_bitor.adoc[F::operator&vert;]
+xref:#F-operator_bitor[F::operator&vert;]
 
 See
-xref:F/operator_or.adoc[F::operator&vert;&vert;]
+xref:#F-operator_or[F::operator&vert;&vert;]
 
 See
-xref:F/operator_or_eq.adoc[F::operator&vert;&equals;]
+xref:#F-operator_or_eq[F::operator&vert;&equals;]
 
 See
-xref:F/operator_minus.adoc[F::operator-]
+xref:#F-operator_minus[F::operator-]
 
 See
-xref:F/operator_dec.adoc[F::operator--]
+xref:#F-operator_dec[F::operator--]
 
 See
-xref:F/operator_minus_eq.adoc[F::operator-&equals;]
+xref:#F-operator_minus_eq[F::operator-&equals;]
 
 See
-xref:F/operator_ptr.adoc[F::operator-&gt;]
+xref:#F-operator_ptr[F::operator-&gt;]
 
 See
-xref:F/operator_ptrmem.adoc[F::operator-&gt;*]
+xref:#F-operator_ptrmem[F::operator-&gt;*]
 
 See
-xref:F/operator_lt.adoc[F::operator&lt;]
+xref:#F-operator_lt[F::operator&lt;]
 
 See
-xref:F/operator_lshift.adoc[F::operator&lt;&lt;]
+xref:#F-operator_lshift[F::operator&lt;&lt;]
 
 See
-xref:F/operator_lshift_eq.adoc[F::operator&lt;&lt;&equals;]
+xref:#F-operator_lshift_eq[F::operator&lt;&lt;&equals;]
 
 See
-xref:F/operator_le.adoc[F::operator&lt;&equals;]
+xref:#F-operator_le[F::operator&lt;&equals;]
 
 See
-xref:F/operator_3way.adoc[F::operator&lt;&equals;&gt;]
+xref:#F-operator_3way[F::operator&lt;&equals;&gt;]
 
 See
-xref:F/operator_gt.adoc[F::operator&gt;]
+xref:#F-operator_gt[F::operator&gt;]
 
 See
-xref:F/operator_rshift.adoc[F::operator&gt;&gt;]
+xref:#F-operator_rshift[F::operator&gt;&gt;]
 
 See
-xref:F/operator_rshift_eq.adoc[F::operator&gt;&gt;&equals;]
+xref:#F-operator_rshift_eq[F::operator&gt;&gt;&equals;]
 
 See
-xref:F/operator_ge.adoc[F::operator&gt;&equals;]
+xref:#F-operator_ge[F::operator&gt;&equals;]
 
 See
-xref:F/operator_star.adoc[F::operator*]
+xref:#F-operator_star[F::operator*]
 
 See
-xref:F/operator_star_eq.adoc[F::operator*&equals;]
+xref:#F-operator_star_eq[F::operator*&equals;]
 
 See
-xref:F/operator_mod.adoc[F::operator%]
+xref:#F-operator_mod[F::operator%]
 
 See
-xref:F/operator_mod_eq.adoc[F::operator%&equals;]
+xref:#F-operator_mod_eq[F::operator%&equals;]
 
 See
-xref:F/operator_slash.adoc[F::operator&sol;]
+xref:#F-operator_slash[F::operator&sol;]
 
 See
-xref:F/operator_slash_eq.adoc[F::operator&sol;&equals;]
+xref:#F-operator_slash_eq[F::operator&sol;&equals;]
 
 See
-xref:F/operator_xor.adoc[F::operator^]
+xref:#F-operator_xor[F::operator^]
 
 See
-xref:F/operator_xor_eq.adoc[F::operator^&equals;]
+xref:#F-operator_xor_eq[F::operator^&equals;]
 
 See
-xref:F/operator_assign.adoc[F::operator&equals;]
+xref:#F-operator_assign[F::operator&equals;]
 
 See
-xref:F/operator_eq.adoc[F::operator&equals;&equals;]
+xref:#F-operator_eq[F::operator&equals;&equals;]
 
 See
-xref:F/operator_not.adoc[F::operator!]
+xref:#F-operator_not[F::operator!]
 
 See
-xref:F/operator_not_eq.adoc[F::operator!&equals;]
+xref:#F-operator_not_eq[F::operator!&equals;]
 
 
 
@@ -1577,4 +1577,5 @@ xref:F/operator_not_eq.adoc[F::operator!&equals;]
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

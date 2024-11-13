@@ -1,34 +1,34 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:C.adoc[`C`]  ¦
+¦xref:#C[`C`]  ¦
 
-¦xref:T.adoc[`T`]  ¦
+¦xref:#T[`T`]  ¦
 
-¦xref:U.adoc[`U`]  ¦
+¦xref:#U[`U`]  ¦
 
 |===
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:f.adoc[`f`]  ¦
+¦xref:#f[`f`]  ¦
 
-¦xref:g.adoc[`g`]  ¦
+¦xref:#g[`g`]  ¦
 
 |===
 
 
-[#T]
 
+[#T]
 == T
 
 
@@ -44,8 +44,8 @@ using T = void(...);
 
 
 
-[#U]
 
+[#U]
 == U
 
 
@@ -61,8 +61,8 @@ using U = void(int, ...);
 
 
 
-[#f]
 
+[#f]
 == f
 
 
@@ -85,8 +85,8 @@ f(...);
 
 
 
-[#g]
 
+[#g]
 == g
 
 
@@ -109,8 +109,8 @@ g(int, ...);
 
 
 
-[#C]
 
+[#C]
 == C
 
 
@@ -131,4 +131,5 @@ struct C;
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

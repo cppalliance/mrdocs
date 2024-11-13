@@ -154,6 +154,12 @@
         "details": "Use legible names for ids in the documentation. When set to true, MrDocs uses legible names for symbols in the documentation. These are symbols that are legible but still safe for URLs. When the option is set to false, MrDocs uses a hash of the symbol ID.",
         "type": "bool",
         "default": true
+      },
+      {
+        "name": "embedded",
+        "brief": "Output an embeddable document, which excludes the header, the footer, and everything outside the body of the document. This option is useful for producing documents that can be inserted into an external template.",
+        "type": "bool",
+        "default": false
       }
     ]
   },

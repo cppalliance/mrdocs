@@ -1,21 +1,21 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:Христос_воскрес.adoc[`Христос_воскрес`]  ¦
+¦xref:#Христос_воскрес[`Христос_воскрес`]  ¦
 
 |===
 
 
-[#Христос_воскрес]
 
+[#Христос_воскрес]
 == Христос_воскрес
 
 
@@ -38,4 +38,5 @@ bool
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

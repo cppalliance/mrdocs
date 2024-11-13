@@ -1,39 +1,39 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:f.adoc[`f`]  ¦
+¦xref:#f[`f`]  ¦
 
-¦xref:g.adoc[`g`]  ¦
+¦xref:#g[`g`]  ¦
 
-¦xref:h.adoc[`h`]  ¦
+¦xref:#h[`h`]  ¦
 
-¦xref:i.adoc[`i`]  ¦
+¦xref:#i[`i`]  ¦
 
-¦xref:j.adoc[`j`]  ¦
+¦xref:#j[`j`]  ¦
 
-¦xref:k.adoc[`k`]  ¦
+¦xref:#k[`k`]  ¦
 
-¦xref:l.adoc[`l`]  ¦
+¦xref:#l[`l`]  ¦
 
-¦xref:m.adoc[`m`]  ¦
+¦xref:#m[`m`]  ¦
 
-¦xref:n.adoc[`n`]  ¦
+¦xref:#n[`n`]  ¦
 
-¦xref:o.adoc[`o`]  ¦
+¦xref:#o[`o`]  ¦
 
 |===
 
 
-[#f]
 
+[#f]
 == f
 
 
@@ -65,8 +65,8 @@ f(int x0);
 
 
 
-[#g]
 
+[#g]
 == g
 
 
@@ -102,8 +102,8 @@ g(
 
 
 
-[#h]
 
+[#h]
 == h
 
 
@@ -139,8 +139,8 @@ h(
 
 
 
-[#i]
 
+[#i]
 == i
 
 
@@ -176,8 +176,8 @@ i(
 
 
 
-[#j]
 
+[#j]
 == j
 
 
@@ -213,8 +213,8 @@ j(
 
 
 
-[#k]
 
+[#k]
 == k
 
 
@@ -253,8 +253,8 @@ k(
 
 
 
-[#l]
 
+[#l]
 == l
 
 
@@ -294,8 +294,8 @@ l(
 
 
 
-[#m]
 
+[#m]
 == m
 
 
@@ -331,8 +331,8 @@ m(
 
 
 
-[#n]
 
+[#n]
 == n
 
 
@@ -364,8 +364,8 @@ n(int x8);
 
 
 
-[#o]
 
+[#o]
 == o
 
 
@@ -399,4 +399,5 @@ o(int x9);
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

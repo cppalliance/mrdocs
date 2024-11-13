@@ -1,23 +1,23 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A-0e.adoc[`A`]  ¦
+¦xref:#A-0e[`A`]  ¦
 
-¦xref:D.adoc[`D`]  ¦
+¦xref:#D[`D`]  ¦
 
 |===
 
 
-[#A-0e]
 
+[#A-0e]
 == A
 
 
@@ -36,25 +36,25 @@ struct A;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A-0e/B.adoc[`B`]  ¦
+¦xref:#A-0e-B[`B`]  ¦
 
-¦xref:A-0e/C.adoc[`C`]  ¦
+¦xref:#A-0e-C[`C`]  ¦
 
 |===
 ===  Member Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A-0e/f.adoc[`f`]  ¦
+¦xref:#A-0e-f[`f`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#A-0e-f]
 
-== xref:A-0e.adoc[pass:[A]]::f
+
+[#A-0e-f]
+== xref:#A-0e[pass:[A]]::f
 
 
 
@@ -75,10 +75,10 @@ f();
 
 
 
-:relfileprefix: ../
-[#A-0e-B]
 
-== xref:A-0e.adoc[pass:[A]]::B
+
+[#A-0e-B]
+== xref:#A-0e[pass:[A]]::B
 
 
 
@@ -96,16 +96,16 @@ struct B;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A-0e/B/g.adoc[`g`]  ¦
+¦xref:#A-0e-B-g[`g`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../../
-[#A-0e-B-g]
 
-== xref:A-0e.adoc[pass:[A]]::xref:A-0e/B.adoc[pass:[B]]::g
+
+[#A-0e-B-g]
+== xref:#A-0e[pass:[A]]::xref:#A-0e-B[pass:[B]]::g
 
 
 
@@ -126,10 +126,10 @@ g();
 
 
 
-:relfileprefix: ../
-[#A-0e-C]
 
-== xref:A-0e.adoc[pass:[A]]::C
+
+[#A-0e-C]
+== xref:#A-0e[pass:[A]]::C
 
 
 
@@ -147,16 +147,16 @@ struct C;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A-0e/C/h.adoc[`h`]  ¦
+¦xref:#A-0e-C-h[`h`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../../
-[#A-0e-C-h]
 
-== xref:A-0e.adoc[pass:[A]]::xref:A-0e/C.adoc[pass:[C]]::h
+
+[#A-0e-C-h]
+== xref:#A-0e[pass:[A]]::xref:#A-0e-C[pass:[C]]::h
 
 
 
@@ -178,6 +178,7 @@ h();
 
 
 
+
 [#A-000]
 
 
@@ -188,7 +189,6 @@ h();
 
 
 [#D]
-
 == D
 
 
@@ -206,16 +206,16 @@ struct D;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:D/E-0e.adoc[`E`]  ¦
+¦xref:#D-E-0e[`E`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#D-E-0e]
 
-== xref:D.adoc[pass:[D]]::E
+
+[#D-E-0e]
+== xref:#D[pass:[D]]::E
 
 
 
@@ -233,16 +233,16 @@ struct E;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:D/E-0e/k.adoc[`k`]  ¦
+¦xref:#D-E-0e-k[`k`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../../
-[#D-E-0e-k]
 
-== xref:D.adoc[pass:[D]]::xref:D/E-0e.adoc[pass:[E]]::k
+
+[#D-E-0e-k]
+== xref:#D[pass:[D]]::xref:#D-E-0e[pass:[E]]::k
 
 
 
@@ -263,8 +263,9 @@ k();
 
 
 
-:relfileprefix: ../
+
+
 [#D-E-0d]
 
 
-Created with MrDocs
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

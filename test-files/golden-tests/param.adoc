@@ -1,27 +1,27 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:f.adoc[`f`]  ¦
+¦xref:#f[`f`]  ¦
 
-¦xref:g.adoc[`g`]  ¦
+¦xref:#g[`g`]  ¦
 
-¦xref:h.adoc[`h`]  ¦
+¦xref:#h[`h`]  ¦
 
-¦xref:i.adoc[`i`]  ¦
+¦xref:#i[`i`]  ¦
 
 |===
 
 
-[#f]
 
+[#f]
 == f
 
 
@@ -53,8 +53,8 @@ f(int x);
 
 
 
-[#g]
 
+[#g]
 == g
 
 
@@ -90,8 +90,8 @@ g(
 
 
 
-[#h]
 
+[#h]
 == h
 
 
@@ -130,8 +130,8 @@ h(
 
 
 
-[#i]
 
+[#i]
 == i
 
 
@@ -173,4 +173,5 @@ i(
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

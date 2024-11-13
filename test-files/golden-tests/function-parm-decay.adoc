@@ -1,36 +1,36 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T.adoc[`T`]  ¦
+¦xref:#T[`T`]  ¦
 
-¦xref:U.adoc[`U`]  ¦
+¦xref:#U[`U`]  ¦
 
 |===
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:f.adoc[`f`]  ¦
+¦xref:#f[`f`]  ¦
 
-¦xref:g.adoc[`g`]  ¦
+¦xref:#g[`g`]  ¦
 
-¦xref:h.adoc[`h`]  ¦
+¦xref:#h[`h`]  ¦
 
-¦xref:i.adoc[`i`]  ¦
+¦xref:#i[`i`]  ¦
 
 |===
 
 
-[#f]
 
+[#f]
 == f
 
 
@@ -53,8 +53,8 @@ f(int const x);
 
 
 
-[#g]
 
+[#g]
 == g
 
 
@@ -77,8 +77,8 @@ g(int* x);
 
 
 
-[#h]
 
+[#h]
 == h
 
 
@@ -101,8 +101,8 @@ h(int x(bool));
 
 
 
-[#T]
 
+[#T]
 == T
 
 
@@ -118,8 +118,8 @@ using T = int;
 
 
 
-[#U]
 
+[#U]
 == U
 
 
@@ -135,8 +135,8 @@ using U = int const;
 
 
 
-[#i]
 
+[#i]
 == i
 
 
@@ -148,7 +148,7 @@ Declared in `<function-parm-decay.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-i(xref:T.adoc[T]);
+i(xref:#T[T]);
 ----
 
 
@@ -159,4 +159,5 @@ i(xref:T.adoc[T]);
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

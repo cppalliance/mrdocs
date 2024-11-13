@@ -1,30 +1,30 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:f5.adoc[`f5`]  ¦
+¦xref:#f5[`f5`]  ¦
 
 brief
 *bold*
 it
 continues to the line.
 
-¦xref:f6.adoc[`f6`]  ¦
+¦xref:#f6[`f6`]  ¦
 
 brief
 
 |===
 
 
-[#f5]
 
+[#f5]
 == f5
 
 
@@ -52,8 +52,8 @@ f5();
 
 
 
-[#f6]
 
+[#f6]
 == f6
 
 
@@ -87,4 +87,5 @@ happen?
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

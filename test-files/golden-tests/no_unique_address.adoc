@@ -1,23 +1,23 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:Empty.adoc[`Empty`]  ¦
+¦xref:#Empty[`Empty`]  ¦
 
-¦xref:T.adoc[`T`]  ¦
+¦xref:#T[`T`]  ¦
 
 |===
 
 
-[#Empty]
 
+[#Empty]
 == Empty
 
 
@@ -35,8 +35,8 @@ struct Empty;
 
 
 
-[#T]
 
+[#T]
 == T
 
 
@@ -54,18 +54,18 @@ struct T;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T/e.adoc[`e`]  ¦
+¦xref:#T-e[`e`]  ¦
 
-¦xref:T/i.adoc[`i`]  ¦
+¦xref:#T-i[`i`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#T-i]
 
-== xref:T.adoc[pass:[T]]::i
+
+[#T-i]
+== xref:#T[pass:[T]]::i
 
 
 
@@ -79,10 +79,10 @@ int i;
 ----
 
 
-:relfileprefix: ../
-[#T-e]
 
-== xref:T.adoc[pass:[T]]::e
+
+[#T-e]
+== xref:#T[pass:[T]]::e
 
 
 
@@ -92,9 +92,10 @@ Declared in `<no_unique_address.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:Empty.adoc[Empty] e = Empty{};
+xref:#Empty[Empty] e = Empty{};
 ----
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -1,23 +1,23 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A.adoc[`A`]  ¦
+¦xref:#A[`A`]  ¦
 
 |===
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:f.adoc[`f`]  ¦
-¦xref:g.adoc[`g`]  ¦
+¦xref:f[`f`]  ¦
+¦xref:g[`g`]  ¦
 |===
 
 
@@ -34,14 +34,14 @@
 ----
 template<typename T>
 void
-xref:f-05.adoc[pass:[f]]() requires (sizeof(T) == 4);
+xref:#f-05[pass:[f]]() requires (sizeof(T) == 4);
 ----
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 void
-xref:f-08.adoc[pass:[f]]() requires (sizeof(T) == 2);
+xref:#f-08[pass:[f]]() requires (sizeof(T) == 2);
 ----
   
 
@@ -52,8 +52,8 @@ xref:f-08.adoc[pass:[f]]() requires (sizeof(T) == 2);
 
 
 
-[#f-05]
 
+[#f-05]
 == f
 
 
@@ -77,8 +77,8 @@ f() requires (sizeof(T) == 4);
 
 
 
-[#f-08]
 
+[#f-08]
 == f
 
 
@@ -115,14 +115,14 @@ f() requires (sizeof(T) == 2);
 ----
 template<typename T> requires (sizeof(T) == 4)
 void
-xref:g-0a.adoc[pass:[g]]();
+xref:#g-0a[pass:[g]]();
 ----
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T> requires (sizeof(U) == 2)
 void
-xref:g-0c.adoc[pass:[g]]();
+xref:#g-0c[pass:[g]]();
 ----
   
 
@@ -133,8 +133,8 @@ xref:g-0c.adoc[pass:[g]]();
 
 
 
-[#g-0a]
 
+[#g-0a]
 == g
 
 
@@ -158,8 +158,8 @@ g();
 
 
 
-[#g-0c]
 
+[#g-0c]
 == g
 
 
@@ -183,8 +183,8 @@ g();
 
 
 
-[#A]
 
+[#A]
 == A
 
 
@@ -203,4 +203,5 @@ struct A;
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
