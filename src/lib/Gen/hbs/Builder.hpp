@@ -55,10 +55,14 @@ public:
     Expected<std::string> renderSinglePageHeader();
     Expected<std::string> renderSinglePageFooter();
 
+    /** Render the contents for a symbol.
+     */
     template<class T>
     Expected<std::string>
     operator()(T const&);
 
+    /** Render the contents for an overload set.
+     */
     Expected<std::string>
     operator()(OverloadSet const&);
 };

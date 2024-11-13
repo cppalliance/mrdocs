@@ -26,6 +26,11 @@ class AdocGenerator
 {
 public:
     AdocGenerator();
+
+    std::string
+    toString(
+        hbs::HandlebarsCorpus const&,
+        doc::Node const&) const override;
 };
 
 } // adoc

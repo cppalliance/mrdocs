@@ -92,7 +92,12 @@ build(
 
     Options options = loadOptions(fileExtension(), corpus.config);
     HandlebarsCorpus domCorpus(
-        corpus, std::move(options), fileExtension(), toStringFn);
+        corpus,
+        std::move(options),
+        fileExtension(),
+        [this](HandlebarsCorpus const& c, doc::Node const& n) {
+            return this->toString(c, n);
+        });
     auto ex = createExecutors(domCorpus);
     if (!ex)
     {
@@ -119,7 +124,12 @@ buildOne(
     auto options = loadOptions(fileExtension(), corpus.config);
 
     HandlebarsCorpus domCorpus(
-        corpus, std::move(options), fileExtension(), toStringFn);
+        corpus,
+        std::move(options),
+        fileExtension(),
+        [this](HandlebarsCorpus const& c, doc::Node const& n) {
+            return this->toString(c, n);
+        });
     auto ex = createExecutors(domCorpus);
     if (!ex)
     {

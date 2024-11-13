@@ -28,17 +28,13 @@ class HandlebarsGenerator
 {
     std::string displayName_;
     std::string fileExtension_;
-    using JavadocToStringFn = std::function<std::string(HandlebarsCorpus const&, doc::Node const&)>;
-    JavadocToStringFn toStringFn;
 
 public:
     HandlebarsGenerator(
         std::string_view displayName,
-        std::string_view fileExtension,
-        JavadocToStringFn toStringFn)
+        std::string_view fileExtension)
         : displayName_(displayName)
         , fileExtension_(fileExtension)
-        , toStringFn(std::move(toStringFn))
     {}
 
     std::string_view
@@ -68,6 +64,15 @@ public:
     buildOne(
         std::ostream& os,
         Corpus const& corpus) const override;
+
+    /** Convert a Javadoc node to a string.
+    */
+    virtual
+    std::string
+    toString(HandlebarsCorpus const&, doc::Node const&) const
+    {
+        return {};
+    }
 };
 
 } // hbs

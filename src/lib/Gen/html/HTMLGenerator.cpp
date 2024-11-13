@@ -18,16 +18,18 @@ namespace html {
 
 HTMLGenerator::
 HTMLGenerator()
-    : hbs::HandlebarsGenerator("HTML", "html", [](
-        hbs::HandlebarsCorpus const& c,
-        doc::Node const& I) -> std::string
-    {
-        std::string s;
-        DocVisitor visitor(c, s);
-        doc::visit(I, visitor);
-        return s;
-    })
+    : hbs::HandlebarsGenerator("HTML", "html")
 {}
+
+std::string
+HTMLGenerator::
+toString(hbs::HandlebarsCorpus const& c, doc::Node const& I) const
+{
+    std::string s;
+    DocVisitor visitor(c, s);
+    doc::visit(I, visitor);
+    return s;
+}
 
 } // html
 
