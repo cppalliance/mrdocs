@@ -625,6 +625,7 @@ jobs:
           declare -a generators=(
             "adoc"
             "xml"
+            "html"
           )
           
           # Generate the demos for each variant and generator
