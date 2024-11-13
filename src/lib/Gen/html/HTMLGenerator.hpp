@@ -26,6 +26,11 @@ class HTMLGenerator
 {
 public:
     HTMLGenerator();
+
+    std::string
+    toString(
+        hbs::HandlebarsCorpus const&,
+        doc::Node const&) const override;
 };
 
 } // html

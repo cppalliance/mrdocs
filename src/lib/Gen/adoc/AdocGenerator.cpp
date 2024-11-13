@@ -18,16 +18,18 @@ namespace adoc {
 
 AdocGenerator::
 AdocGenerator()
-    : hbs::HandlebarsGenerator("Asciidoc", "adoc", [](
-        hbs::HandlebarsCorpus const& c,
-        doc::Node const& I) -> std::string
-    {
-        std::string s;
-        DocVisitor visitor(c, s);
-        doc::visit(I, visitor);
-        return s;
-    })
+    : hbs::HandlebarsGenerator("Asciidoc", "adoc")
 {}
+
+std::string
+AdocGenerator::
+toString(hbs::HandlebarsCorpus const& c, doc::Node const& I) const
+{
+    std::string s;
+    DocVisitor visitor(c, s);
+    doc::visit(I, visitor);
+    return s;
+}
 
 } // adoc
 
