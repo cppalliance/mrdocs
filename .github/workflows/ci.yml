@@ -63,7 +63,7 @@ jobs:
             clang: git build-essential pkg-config python3 curl openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev
             msvc: ''
           extra-values: |
-            llvm-hash: e1065370aaacb1b1cb48e77d37d376bf024f4a39
+            llvm-hash: dd7a3d4d798e30dfe53b5bbbbcd9a23c24ea1af9
             llvm-id: {{ substr llvm-hash 0 7 }}
             llvm-build-preset-prefix: {{#if optimized-debug}}debwithopt{{else}}{{lowercase build-type}}{{/if}}
             llvm-build-preset-suffix: {{#if (ieq os 'windows') }}win{{else}}unix{{/if}}
@@ -74,10 +74,6 @@ jobs:
             llvm-archive-basename: llvm-{{ os }}-{{ llvm-build-preset-prefix }}-{{ llvm-id }}
             llvm-archive-extension: {{#if (ieq os 'windows') }}7z{{else}}tar.bz2{{/if}}
             llvm-archive-filename: {{ llvm-archive-basename }}.{{ llvm-archive-extension }}
-            libcxx-runtimes: libcxx;libcxxabi{{#if (ine os 'windows') }};libunwind{{/if}}
-            libcxx-targets: cxx {{#if (ine os 'windows') }}cxxabi unwind{{/if}} install-cxx {{#if (ine os 'windows') }}install-cxxabi install-unwind{{/if}}
-            libcxx-cxxflags: {{#if (ieq os 'windows') }}-D__ORDER_LITTLE_ENDIAN__=1234 -D__ORDER_BIG_ENDIAN__=4321 -D__BYTE_ORDER__=__ORDER_LITTLE_ENDIAN__{{/if}}
-            libcxx-cmake-args: -D LLVM_ENABLE_RUNTIMES="{{ libcxx-runtimes }}" {{#if (ieq os 'windows') }}-D LIBCXXABI_USE_LLVM_UNWINDER=OFF -D LIBCXXABI_ENABLE_SHARED=OFF -D LIBCXXABI_ENABLE_STATIC=ON -D LIBCXX_ENABLE_SHARED=OFF -D LIBCXX_NO_VCRUNTIME=ON{{/if}} {{#if (ieq os 'macos') }}-D CMAKE_OSX_ARCHITECTURES=""{{/if}} 
             mrdocs-ccflags: {{ ccflags }} {{#if (eq compiler 'gcc') }}-static{{/if}} {{#if asan }}-static-libasan{{/if}} {{#if tsan }}-static-libtsan{{/if}}
             mrdocs-cxxflags: {{ cxxflags }} {{#if (eq compiler 'gcc') }}-static{{/if}} {{#if asan }}-static-libasan{{/if}} {{#if tsan }}-static-libtsan{{/if}}
             mrdocs-package-generators: {{#if (ieq os 'windows') }}7Z ZIP WIX{{else}}TGZ TXZ{{/if}}
@@ -178,6 +174,81 @@ jobs:
         with:
           apt-get: ${{ matrix.install }}
 
+      - name: Resolve LLVM Root
+        id: resolve-llvm-root
+        run: |
+          set -x
+          cd ..
+          llvm_root=$(pwd)/third-party/llvm-project/install
+          if [[ ${{ runner.os }} == 'Windows' ]]; then
+              llvm_root=$(echo "$llvm_root" | sed 's/\\/\//g')
+              llvm_root=$(echo $llvm_root | sed 's|^/d/|D:/|')
+              echo "$llvm_root"
+          fi
+          echo -E "llvm-root=$llvm_root" >> $GITHUB_OUTPUT
+
+      - name: Cached LLVM Binaries
+        id: llvm-cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.resolve-llvm-root.outputs.llvm-root }}
+          key: ${{ matrix.llvm-cache-key }}
+
+      - name: Download LLVM Binaries
+        id: llvm-download
+        if: steps.llvm-cache.outputs.cache-hit != 'true'
+        run: |
+          set -x
+          url=https://mrdocs.com/llvm+clang/${{ matrix.llvm-archive-filename }}
+          http_status=$(curl -s -o /dev/null -w "%{http_code}" -I "$url")
+          if [ "$http_status" -eq 200 ]; then
+              found="true"
+              echo "found=$found" >> $GITHUB_OUTPUT
+              curl -L -o ${{ matrix.llvm-archive-filename }} "$url"
+              install_prefix=$(pwd)/../third-party/llvm-project/install
+              mkdir -p $install_prefix
+              if [[ ${{ matrix.llvm-archive-extension }} == '7z' ]]; then
+                  7z x ${{ matrix.llvm-archive-filename }} -o$install_prefix
+              else
+                  tar -xjf ${{ matrix.llvm-archive-filename }} -C $install_prefix
+              fi
+              if [[ $(ls -1 $install_prefix | wc -l) -eq 1 ]]; then
+                  single_dir=$(ls -1 $install_prefix)
+                  if [[ -d $install_prefix/$single_dir ]]; then
+                      mv $install_prefix/$single_dir/* $install_prefix/
+                      rmdir $install_prefix/$single_dir
+                  fi
+              fi
+          else
+              found="false"
+              echo "found=$found" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Install LLVM
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.7
+        if: steps.llvm-cache.outputs.cache-hit != 'true' && steps.llvm-download.outputs.found != 'true'
+        with:
+          cmake-version: '>=3.26'
+          source-dir: ../third-party/llvm-project/llvm
+          git-repository: https://github.com/llvm/llvm-project.git
+          git-tag: ${{ matrix.llvm-hash }}
+          download-dir: ../third-party/llvm-project
+          patches: |
+            ./third-party/llvm/CMakePresets.json
+            ./third-party/llvm/CMakeUserPresets.json
+          build-dir: ${sourceDir}/llvm/build
+          preset: ${{ matrix.llvm-build-preset }}
+          build-type: ${{ matrix.build-type }}
+          extra-args: |
+            ${{ runner.os == 'Windows' && '-DLLVM_ENABLE_RUNTIMES=libcxx' || '-DLLVM_ENABLE_RUNTIMES=libcxx;libcxxabi;libunwind' }}
+          cc: ${{ steps.setup-cpp.outputs.cc }}
+          cxx: ${{ steps.setup-cpp.outputs.cxx }}
+          generator: Ninja
+          install: true
+          install-prefix: ${sourceDir}/../install
+          run-tests: false
+          trace-commands: true
+
       - name: Install Duktape
         uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.7
         with:
@@ -267,97 +338,6 @@ jobs:
             -D LIBXML2_WITH_XPTR=ON
           install: true
           install-prefix: ${sourceDir}/install
-          run-tests: false
-          trace-commands: true
-
-      - name: Resolve LLVM Root
-        id: resolve-llvm-root
-        run: |
-          set -x
-          cd ..
-          llvm_root=$(pwd)/third-party/llvm-project/install
-          if [[ ${{ runner.os }} == 'Windows' ]]; then
-              llvm_root=$(echo "$llvm_root" | sed 's/\\/\//g')
-              llvm_root=$(echo $llvm_root | sed 's|^/d/|D:/|')
-              echo "$llvm_root"
-          fi
-          echo -E "llvm-root=$llvm_root" >> $GITHUB_OUTPUT
-
-      - name: Cached LLVM Binaries
-        id: llvm-cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.resolve-llvm-root.outputs.llvm-root }}
-          key: ${{ matrix.llvm-cache-key }}
-
-      - name: Download LLVM Binaries
-        id: llvm-download
-        if: steps.llvm-cache.outputs.cache-hit != 'true'
-        run: |
-          set -x
-          url=https://mrdocs.com/llvm+clang/${{ matrix.llvm-archive-filename }}
-          http_status=$(curl -s -o /dev/null -w "%{http_code}" -I "$url")
-          if [ "$http_status" -eq 200 ]; then
-              found="true"
-              echo "found=$found" >> $GITHUB_OUTPUT
-              curl -L -o ${{ matrix.llvm-archive-filename }} "$url"
-              install_prefix=$(pwd)/../third-party/llvm-project/install
-              mkdir -p $install_prefix
-              if [[ ${{ matrix.llvm-archive-extension }} == '7z' ]]; then
-                  7z x ${{ matrix.llvm-archive-filename }} -o$install_prefix
-              else
-                  tar -xjf ${{ matrix.llvm-archive-filename }} -C $install_prefix
-              fi
-              if [[ $(ls -1 $install_prefix | wc -l) -eq 1 ]]; then
-                  single_dir=$(ls -1 $install_prefix)
-                  if [[ -d $install_prefix/$single_dir ]]; then
-                      mv $install_prefix/$single_dir/* $install_prefix/
-                      rmdir $install_prefix/$single_dir
-                  fi
-              fi
-          else
-              found="false"
-              echo "found=$found" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Install LLVM
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.7
-        if: steps.llvm-cache.outputs.cache-hit != 'true' && steps.llvm-download.outputs.found != 'true'
-        with:
-          cmake-version: '>=3.26'
-          source-dir: ../third-party/llvm-project/llvm
-          git-repository: https://github.com/llvm/llvm-project.git
-          git-tag: ${{ matrix.llvm-hash }}
-          download-dir: ../third-party/llvm-project
-          patches: |
-            ./third-party/llvm/CMakePresets.json
-            ./third-party/llvm/CMakeUserPresets.json
-          build-dir: ${sourceDir}/llvm/build
-          preset: ${{ matrix.llvm-build-preset }}
-          build-type: ${{ matrix.build-type }}
-          cc: ${{ steps.setup-cpp.outputs.cc }}
-          cxx: ${{ steps.setup-cpp.outputs.cxx }}
-          install: true
-          install-prefix: ${sourceDir}/../install
-          run-tests: false
-          trace-commands: true
-
-      - name: Install LibC++
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.7
-        if: steps.llvm-cache.outputs.cache-hit != 'true' && steps.llvm-download.outputs.found != 'true'
-        with:
-          cmake-version: '>=3.26'
-          source-dir: ../third-party/llvm-project/runtimes
-          build-dir: ${sourceDir}/build-libcxx
-          build-target: ${{ matrix.libcxx-targets }}
-          # MrDocs will only use the LibC++ headers: any compiler that works in this workflow will do
-          cc: ${{ runner.os == 'macOS' && steps.setup-cpp.outputs.cc || '../third-party/llvm-project/install/bin/clang' }}
-          cxx: ${{ runner.os == 'macOS' && steps.setup-cpp.outputs.cxx || '../third-party/llvm-project/install/bin/clang++' }}
-          cxxflags: ${{ matrix.libcxx-cxxflags }}
-          generator: Ninja
-          extra-args: ${{ matrix.libcxx-cmake-args }}
-          install: true
-          install-prefix: ${sourceDir}/../install
           run-tests: false
           trace-commands: true
 

@@ -1697,7 +1697,7 @@ public:
                 template_params, sfinae_info->Arguments, param_idx);
             if(! param_arg)
                 return std::nullopt;
-            unsigned ParamIdx = FindParam(ATD->getInjectedTemplateArgs(), *param_arg);
+            unsigned ParamIdx = FindParam(ATD->getInjectedTemplateArgs(context_), *param_arg);
             return std::make_tuple(ATD->getTemplateParameters(), std::move(controlling_params), ParamIdx);
         }
 
@@ -1705,7 +1705,7 @@ public:
         if(! CTD)
             return std::nullopt;
 
-        auto PrimaryArgs = CTD->getInjectedTemplateArgs();
+        auto PrimaryArgs = CTD->getInjectedTemplateArgs(context_);
         llvm::SmallBitVector ControllingParams(PrimaryArgs.size());
 
         QualType MemberType;

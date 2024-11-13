@@ -9,7 +9,10 @@
 |===
 | Name | Description 
 
-| <<#A,`A`>> 
+| <<#A-09,`A`>> 
+| 
+
+| <<#A-05,`A`>> 
 | 
 
 |===
@@ -34,21 +37,30 @@ Declared in `<pass:[requires-clause.cpp]>`
 ----
 template<typename T>
 void
-<<#f-05,f>>() requires pass:[(sizeof(T) == 4)];
+<<#f-04,f>>() requires pass:[(sizeof(T) == 4)];
 ----
 
-[.small]#<<#f-05,_» more..._>>#
+[.small]#<<#f-04,_» more..._>>#
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 void
-<<#f-08,f>>() requires pass:[(sizeof(T) == 2)];
+<<#f-0b,f>>() requires pass:[(sizeof(T) == 2)];
 ----
 
-[.small]#<<#f-08,_» more..._>>#
+[.small]#<<#f-0b,_» more..._>>#
 
-[#f-05]
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename U>
+void
+<<#f-02,f>>() requires pass:[(sizeof(U) == 2)];
+----
+
+[.small]#<<#f-02,_» more..._>>#
+
+[#f-04]
 == f
 
 === Synopsis
@@ -61,7 +73,7 @@ void
 f() requires pass:[(sizeof(T) == 4)];
 ----
 
-[#f-08]
+[#f-0b]
 == f
 
 === Synopsis
@@ -74,6 +86,19 @@ void
 f() requires pass:[(sizeof(T) == 2)];
 ----
 
+[#f-02]
+== f
+
+=== Synopsis
+
+Declared in `<pass:[requires-clause.cpp]>`
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename U>
+void
+f() requires pass:[(sizeof(U) == 2)];
+----
+
 [#g]
 == g
 
@@ -84,21 +109,30 @@ Declared in `<pass:[requires-clause.cpp]>`
 ----
 template<typename T> requires pass:[(sizeof(T) == 4)]
 void
-<<#g-0a,g>>();
+<<#g-00,g>>();
 ----
 
-[.small]#<<#g-0a,_» more..._>>#
+[.small]#<<#g-00,_» more..._>>#
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-template<typename T> requires pass:[(sizeof(U) == 2)]
+template<typename T> requires pass:[(sizeof(T) == 2)]
 void
-<<#g-0c,g>>();
+<<#g-04,g>>();
 ----
 
-[.small]#<<#g-0c,_» more..._>>#
+[.small]#<<#g-04,_» more..._>>#
 
-[#g-0a]
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename U> requires pass:[(sizeof(U) == 2)]
+void
+<<#g-03,g>>();
+----
+
+[.small]#<<#g-03,_» more..._>>#
+
+[#g-00]
 == g
 
 === Synopsis
@@ -111,7 +145,7 @@ void
 g();
 ----
 
-[#g-0c]
+[#g-04]
 == g
 
 === Synopsis
@@ -119,12 +153,25 @@ g();
 Declared in `<pass:[requires-clause.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-template<typename T> requires pass:[(sizeof(U) == 2)]
+template<typename T> requires pass:[(sizeof(T) == 2)]
 void
 g();
 ----
 
-[#A]
+[#g-03]
+== g
+
+=== Synopsis
+
+Declared in `<pass:[requires-clause.cpp]>`
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename U> requires pass:[(sizeof(U) == 2)]
+void
+g();
+----
+
+[#A-09]
 == A
 
 === Synopsis
@@ -132,7 +179,22 @@ g();
 Declared in `<pass:[requires-clause.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-template<typename T> requires pass:[(sizeof(U) == 2)]
+template<typename T> requires pass:[(sizeof(T) == 2)]
+struct A;
+----
+
+
+
+
+[#A-05]
+== A
+
+=== Synopsis
+
+Declared in `<pass:[requires-clause.cpp]>`
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename U> requires pass:[(sizeof(U) == 2)]
 struct A;
 ----
 

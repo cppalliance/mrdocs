@@ -13,8 +13,11 @@
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/${presetName}",
         "LLVM_ENABLE_PROJECTS": "clang",
-        "LLVM_TARGETS_TO_BUILD": "X86",
+        "LLVM_ENABLE_RUNTIMES": "libcxx",
+        "LLVM_TARGETS_TO_BUILD": "Native",
+
         "LLVM_UNREACHABLE_OPTIMIZE": false,
         "LLVM_ADD_NATIVE_VISUALIZERS_TO_SOLUTION": false,
         "LLVM_ENABLE_RTTI": true,
@@ -22,17 +25,19 @@
         "LLVM_ENABLE_OCAMLDOC": false,
         "LLVM_ENABLE_BINDINGS": false,
         "LLVM_ENABLE_DIA_SDK": false,
+        "LLVM_ENABLE_PER_TARGET_RUNTIME_DIR": false,
+
         "LLVM_INCLUDE_BENCHMARKS": false,
         "LLVM_INCLUDE_DOCS": false,
         "LLVM_INCLUDE_EXAMPLES": false,
-        "LLVM_INCLUDE_RUNTIMES": false,
+        "LLVM_INCLUDE_RUNTIMES": true,
         "LLVM_INCLUDE_TESTS": false,
         "LLVM_INCLUDE_TOOLS": true,
         "LLVM_INCLUDE_UTILS": true,
         "LLVM_BUILD_TOOLS": false,
         "LLVM_BUILD_UTILS": false,
-        "LLVM_BUILD_RUNTIME": false,
-        "LLVM_BUILD_RUNTIMES": false,
+        "LLVM_BUILD_RUNTIME": true,
+        "LLVM_BUILD_RUNTIMES": true,
         "LLVM_BUILD_LLVM_C_DYLIB": false,
         "LLVM_BUILD_TESTS": false,
         "LLVM_BUILD_DOCS": false,
@@ -45,8 +50,7 @@
         "CLANG_ENABLE_STATIC_ANALYZER": true,
         "CLANG_INCLUDE_TESTS": false,
         "CLANG_INCLUDE_DOCS": false,
-        "CLANG_BUILD_EXAMPLES": false,
-        "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/${presetName}"
+        "CLANG_BUILD_EXAMPLES": false
       }
     },
     {
@@ -54,7 +58,6 @@
       "inherits": "debug",
       "displayName": "DebWithOpt-Base",
       "description": "Debug Config with Release Optimization",
-      "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
       }
@@ -64,7 +67,6 @@
       "inherits": "debug",
       "displayName": "Release-Base",
       "description": "Release Config.",
-      "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
       }
@@ -74,7 +76,6 @@
       "inherits": "release",
       "displayName": "RelWithDebInfo-Base",
       "description": "Release Config with Debug Info.",
-      "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "RelWithDebInfo"
       }
@@ -84,10 +85,8 @@
       "inherits": "debug",
       "displayName": "Debug-Base-Win",
       "description": "Debug Config  without any extras and windows flags",
-      "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_CONFIGURATION_TYPES": "Debug",
         "CMAKE_C_FLAGS": "/DWIN32 /D_WINDOWS",
         "CMAKE_CXX_FLAGS": "/DWIN32 /D_WINDOWS /EHsc",
         "CMAKE_C_FLAGS_DEBUG": "/MDd /Zi /Ob0 /Od /RTC1",
@@ -108,10 +107,8 @@
       ],
       "displayName": "DebWithOptde-Base-Win",
       "description": "Debug Config with Release Optimization",
-      "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_CONFIGURATION_TYPES": "Debug",
         "CMAKE_C_FLAGS": "/DWIN32 /D_WINDOWS /Ob1 /O2 /Zi",
         "CMAKE_CXX_FLAGS": "/DWIN32 /D_WINDOWS /Ob1 /O2 /Zi",
         "CMAKE_C_FLAGS_DEBUG": "/Ob1 /O2 /Zi",
@@ -126,10 +123,8 @@
       ],
       "displayName": "Release-Base-Win",
       "description": "Release Config.",
-      "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release",
-        "CMAKE_CONFIGURATION_TYPES": "Release"
+        "CMAKE_BUILD_TYPE": "Release"
       }
     },
     {
@@ -137,10 +132,8 @@
       "inherits": "release",
       "displayName": "RelWithDebInfo-Base-Unix",
       "description": "Release Config with Debug Info.",
-      "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
-        "CMAKE_CONFIGURATION_TYPES": "RelWithDebInfo"
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
       }
     },
     {
@@ -148,7 +141,6 @@
       "inherits": "debug",
       "displayName": "Debug-Base-Unix",
       "description": "Debug Config  without any extras and windows flags",
-      "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
       }
@@ -161,7 +153,6 @@
       ],
       "displayName": "DebWithOpt-Base-Unix",
       "description": "Debug Config with Release Optimization",
-      "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_C_FLAGS": "-Og -g",
@@ -178,7 +169,6 @@
       ],
       "displayName": "Release-Base-Unix",
       "description": "Release Config.",
-      "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
       }
@@ -188,7 +178,6 @@
       "inherits": "release",
       "displayName": "RelWithDebInfo-Base-Unix",
       "description": "Release Config with Debug Info.",
-      "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "RelWithDebInfo"
       }
