@@ -1,51 +1,51 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:C0.adoc[`C0`]  ¦
+¦xref:#C0[`C0`]  ¦
 
-¦xref:C1.adoc[`C1`]  ¦
+¦xref:#C1[`C1`]  ¦
 
-¦xref:C2.adoc[`C2`]  ¦
+¦xref:#C2[`C2`]  ¦
 
-¦xref:C3.adoc[`C3`]  ¦
+¦xref:#C3[`C3`]  ¦
 
-¦xref:C4.adoc[`C4`]  ¦
+¦xref:#C4[`C4`]  ¦
 
-¦xref:C5.adoc[`C5`]  ¦
+¦xref:#C5[`C5`]  ¦
 
-¦xref:C6.adoc[`C6`]  ¦
+¦xref:#C6[`C6`]  ¦
 
-¦xref:C7.adoc[`C7`]  ¦
+¦xref:#C7[`C7`]  ¦
 
-¦xref:S0.adoc[`S0`]  ¦
+¦xref:#S0[`S0`]  ¦
 
-¦xref:S1.adoc[`S1`]  ¦
+¦xref:#S1[`S1`]  ¦
 
-¦xref:S2.adoc[`S2`]  ¦
+¦xref:#S2[`S2`]  ¦
 
-¦xref:S3.adoc[`S3`]  ¦
+¦xref:#S3[`S3`]  ¦
 
-¦xref:S4.adoc[`S4`]  ¦
+¦xref:#S4[`S4`]  ¦
 
-¦xref:S5.adoc[`S5`]  ¦
+¦xref:#S5[`S5`]  ¦
 
-¦xref:S6.adoc[`S6`]  ¦
+¦xref:#S6[`S6`]  ¦
 
-¦xref:U0.adoc[`U0`]  ¦
+¦xref:#U0[`U0`]  ¦
 
 |===
 
 
-[#S0]
 
+[#S0]
 == S0
 
 
@@ -63,8 +63,8 @@ struct S0;
 
 
 
-[#C0]
 
+[#C0]
 == C0
 
 
@@ -82,8 +82,8 @@ class C0;
 
 
 
-[#U0]
 
+[#U0]
 == U0
 
 
@@ -101,8 +101,8 @@ union U0;
 
 
 
-[#S1]
 
+[#S1]
 == S1
 
 
@@ -120,8 +120,8 @@ struct S1;
 
 
 
-[#S2]
 
+[#S2]
 == S2
 
 
@@ -133,15 +133,15 @@ Declared in `<record-inheritance.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct S2
-    : xref:S0.adoc[S0];
+    : xref:#S0[S0];
 ----
 
 
 
 
 
-[#S3]
 
+[#S3]
 == S3
 
 
@@ -153,15 +153,15 @@ Declared in `<record-inheritance.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct S3
-    : xref:S1.adoc[S1];
+    : xref:#S1[S1];
 ----
 
 
 
 
 
-[#S4]
 
+[#S4]
 == S4
 
 
@@ -173,16 +173,16 @@ Declared in `<record-inheritance.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct S4
-    : xref:S2.adoc[S2]
-    , xref:S3.adoc[S3];
+    : xref:#S2[S2]
+    , xref:#S3[S3];
 ----
 
 
 
 
 
-[#C1]
 
+[#C1]
 == C1
 
 
@@ -194,15 +194,15 @@ Declared in `<record-inheritance.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 class C1
-    : xref:C0.adoc[C0];
+    : xref:#C0[C0];
 ----
 
 
 
 
 
-[#C2]
 
+[#C2]
 == C2
 
 
@@ -214,15 +214,15 @@ Declared in `<record-inheritance.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 class C2
-    : public xref:C0.adoc[C0];
+    : public xref:#C0[C0];
 ----
 
 
 
 
 
-[#C3]
 
+[#C3]
 == C3
 
 
@@ -234,15 +234,15 @@ Declared in `<record-inheritance.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 class C3
-    : protected xref:C0.adoc[C0];
+    : protected xref:#C0[C0];
 ----
 
 
 
 
 
-[#C4]
 
+[#C4]
 == C4
 
 
@@ -254,15 +254,15 @@ Declared in `<record-inheritance.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 class C4
-    : xref:C0.adoc[C0];
+    : xref:#C0[C0];
 ----
 
 
 
 
 
-[#C5]
 
+[#C5]
 == C5
 
 
@@ -274,15 +274,15 @@ Declared in `<record-inheritance.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 class C5
-    : virtual xref:C0.adoc[C0];
+    : virtual xref:#C0[C0];
 ----
 
 
 
 
 
-[#C6]
 
+[#C6]
 == C6
 
 
@@ -294,15 +294,15 @@ Declared in `<record-inheritance.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 class C6
-    : virtual xref:C1.adoc[C1];
+    : virtual xref:#C1[C1];
 ----
 
 
 
 
 
-[#C7]
 
+[#C7]
 == C7
 
 
@@ -314,16 +314,16 @@ Declared in `<record-inheritance.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 class C7
-    : public xref:C5.adoc[C5]
-    , public xref:C6.adoc[C6];
+    : public xref:#C5[C5]
+    , public xref:#C6[C6];
 ----
 
 
 
 
 
-[#S5]
 
+[#S5]
 == S5
 
 
@@ -335,16 +335,16 @@ Declared in `<record-inheritance.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct S5
-    : private xref:S0.adoc[S0]
-    , protected xref:S1.adoc[S1];
+    : private xref:#S0[S0]
+    , protected xref:#S1[S1];
 ----
 
 
 
 
 
-[#S6]
 
+[#S6]
 == S6
 
 
@@ -364,4 +364,5 @@ struct S6
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

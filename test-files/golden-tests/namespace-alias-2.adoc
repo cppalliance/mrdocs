@@ -1,27 +1,27 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 === Namespaces
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:LongName.adoc[`LongName`]  ¦
+¦xref:#LongName[`LongName`]  ¦
 
 |===
 
 
-[#LongName]
 
+[#LongName]
 == LongName
 
 
 
-[#A]
 
+[#A]
 == A
 
 
@@ -32,13 +32,13 @@ Declared in `<namespace-alias-2.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-namespace A = xref:LongName.adoc[LongName];
+namespace A = xref:#LongName[LongName];
 ----
 
 
 
-[#B]
 
+[#B]
 == B
 
 
@@ -49,9 +49,10 @@ Declared in `<namespace-alias-2.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-namespace B = xref:LongName.adoc[LongName];
+namespace B = xref:#LongName[LongName];
 ----
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

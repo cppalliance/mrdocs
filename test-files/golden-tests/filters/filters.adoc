@@ -1,52 +1,52 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 === Namespaces
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A.adoc[`A`]  ¦
+¦xref:#A[`A`]  ¦
 
-¦xref:B.adoc[`B`]  ¦
+¦xref:#B[`B`]  ¦
 
-¦xref:C.adoc[`C`]  ¦
+¦xref:#C[`C`]  ¦
 
-¦xref:D.adoc[`D`]  ¦
+¦xref:#D[`D`]  ¦
 
-¦xref:F.adoc[`F`]  ¦
+¦xref:#F[`F`]  ¦
 
 |===
 
 
-[#A]
 
+[#A]
 == A
 
 === Namespaces
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/detail.adoc[`detail`]  ¦
+¦xref:#A-detail[`detail`]  ¦
 
-¦xref:A/detair.adoc[`detair`]  ¦
+¦xref:#A-detair[`detair`]  ¦
 
 |===
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/f0.adoc[`f0`]  ¦
+¦xref:#A-f0[`f0`]  ¦
 
 |===
 
-:relfileprefix: ../
-[#A-f0]
 
-== xref:A.adoc[pass:[A]]::f0
+
+[#A-f0]
+== xref:#A[pass:[A]]::f0
 
 
 
@@ -67,23 +67,23 @@ f0();
 
 
 
-:relfileprefix: ../
-[#A-detail]
 
-== xref:A.adoc[pass:[A]]::detail
+
+[#A-detail]
+== xref:#A[pass:[A]]::detail
 
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/detail/g0.adoc[`g0`]  ¦
+¦xref:#A-detail-g0[`g0`]  ¦
 
 |===
 
-:relfileprefix: ../../
-[#A-detail-g0]
 
-== xref:A.adoc[pass:[A]]::xref:A/detail.adoc[pass:[detail]]::g0
+
+[#A-detail-g0]
+== xref:#A[pass:[A]]::xref:#A-detail[pass:[detail]]::g0
 
 
 
@@ -104,30 +104,30 @@ g0();
 
 
 
-:relfileprefix: ../
-[#A-detair]
 
-== xref:A.adoc[pass:[A]]::detair
+
+[#A-detair]
+== xref:#A[pass:[A]]::detair
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/detair/Y.adoc[`Y`]  ¦
+¦xref:#A-detair-Y[`Y`]  ¦
 
 |===
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/detair/f4.adoc[`f4`]  ¦
+¦xref:#A-detair-f4[`f4`]  ¦
 
 |===
 
-:relfileprefix: ../../
-[#A-detair-f4]
 
-== xref:A.adoc[pass:[A]]::xref:A/detair.adoc[pass:[detair]]::f4
+
+[#A-detair-f4]
+== xref:#A[pass:[A]]::xref:#A-detair[pass:[detair]]::f4
 
 
 
@@ -148,10 +148,10 @@ f4();
 
 
 
-:relfileprefix: ../../
-[#A-detair-Y]
 
-== xref:A.adoc[pass:[A]]::xref:A/detair.adoc[pass:[detair]]::Y
+
+[#A-detair-Y]
+== xref:#A[pass:[A]]::xref:#A-detair[pass:[detair]]::Y
 
 
 
@@ -168,23 +168,23 @@ struct Y;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/detair/Y/Z.adoc[`Z`]  ¦
+¦xref:#A-detair-Y-Z[`Z`]  ¦
 
 |===
 ===  Member Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/detair/Y/f6.adoc[`f6`]  ¦
+¦xref:#A-detair-Y-f6[`f6`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../../../
-[#A-detair-Y-f6]
 
-== xref:A.adoc[pass:[A]]::xref:A/detair.adoc[pass:[detair]]::xref:A/detair/Y.adoc[pass:[Y]]::f6
+
+[#A-detair-Y-f6]
+== xref:#A[pass:[A]]::xref:#A-detair[pass:[detair]]::xref:#A-detair-Y[pass:[Y]]::f6
 
 
 
@@ -205,10 +205,10 @@ f6();
 
 
 
-:relfileprefix: ../../../
-[#A-detair-Y-Z]
 
-== xref:A.adoc[pass:[A]]::xref:A/detair.adoc[pass:[detair]]::xref:A/detair/Y.adoc[pass:[Y]]::Z
+
+[#A-detair-Y-Z]
+== xref:#A[pass:[A]]::xref:#A-detair[pass:[detair]]::xref:#A-detair-Y[pass:[Y]]::Z
 
 
 
@@ -225,16 +225,16 @@ struct Z;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/detair/Y/Z/f7.adoc[`f7`]  ¦
+¦xref:#A-detair-Y-Z-f7[`f7`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../../../../
-[#A-detair-Y-Z-f7]
 
-== xref:A.adoc[pass:[A]]::xref:A/detair.adoc[pass:[detair]]::xref:A/detair/Y.adoc[pass:[Y]]::xref:A/detair/Y/Z.adoc[pass:[Z]]::f7
+
+[#A-detair-Y-Z-f7]
+== xref:#A[pass:[A]]::xref:#A-detair[pass:[detair]]::xref:#A-detair-Y[pass:[Y]]::xref:#A-detair-Y-Z[pass:[Z]]::f7
 
 
 
@@ -247,6 +247,7 @@ Declared in `<filters/filters.cpp>`
 void
 f7();
 ----
+
 
 
 
@@ -257,28 +258,27 @@ f7();
 
 
 [#B]
-
 == B
 
 === Namespaces
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:B/detair.adoc[`detair`]  ¦
+¦xref:#B-detair[`detair`]  ¦
 
 |===
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:B/f0.adoc[`f0`]  ¦
+¦xref:#B-f0[`f0`]  ¦
 
 |===
 
-:relfileprefix: ../
-[#B-f0]
 
-== xref:B.adoc[pass:[B]]::f0
+
+[#B-f0]
+== xref:#B[pass:[B]]::f0
 
 
 
@@ -299,30 +299,30 @@ f0();
 
 
 
-:relfileprefix: ../
-[#B-detair]
 
-== xref:B.adoc[pass:[B]]::detair
+
+[#B-detair]
+== xref:#B[pass:[B]]::detair
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:B/detair/Y.adoc[`Y`]  ¦
+¦xref:#B-detair-Y[`Y`]  ¦
 
 |===
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:B/detair/f4.adoc[`f4`]  ¦
+¦xref:#B-detair-f4[`f4`]  ¦
 
 |===
 
-:relfileprefix: ../../
-[#B-detair-f4]
 
-== xref:B.adoc[pass:[B]]::xref:B/detair.adoc[pass:[detair]]::f4
+
+[#B-detair-f4]
+== xref:#B[pass:[B]]::xref:#B-detair[pass:[detair]]::f4
 
 
 
@@ -343,10 +343,10 @@ f4();
 
 
 
-:relfileprefix: ../../
-[#B-detair-Y]
 
-== xref:B.adoc[pass:[B]]::xref:B/detair.adoc[pass:[detair]]::Y
+
+[#B-detair-Y]
+== xref:#B[pass:[B]]::xref:#B-detair[pass:[detair]]::Y
 
 
 
@@ -363,23 +363,23 @@ struct Y;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:B/detair/Y/Z.adoc[`Z`]  ¦
+¦xref:#B-detair-Y-Z[`Z`]  ¦
 
 |===
 ===  Member Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:B/detair/Y/f6.adoc[`f6`]  ¦
+¦xref:#B-detair-Y-f6[`f6`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../../../
-[#B-detair-Y-f6]
 
-== xref:B.adoc[pass:[B]]::xref:B/detair.adoc[pass:[detair]]::xref:B/detair/Y.adoc[pass:[Y]]::f6
+
+[#B-detair-Y-f6]
+== xref:#B[pass:[B]]::xref:#B-detair[pass:[detair]]::xref:#B-detair-Y[pass:[Y]]::f6
 
 
 
@@ -400,10 +400,10 @@ f6();
 
 
 
-:relfileprefix: ../../../
-[#B-detair-Y-Z]
 
-== xref:B.adoc[pass:[B]]::xref:B/detair.adoc[pass:[detair]]::xref:B/detair/Y.adoc[pass:[Y]]::Z
+
+[#B-detair-Y-Z]
+== xref:#B[pass:[B]]::xref:#B-detair[pass:[detair]]::xref:#B-detair-Y[pass:[Y]]::Z
 
 
 
@@ -420,16 +420,16 @@ struct Z;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:B/detair/Y/Z/f7.adoc[`f7`]  ¦
+¦xref:#B-detair-Y-Z-f7[`f7`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../../../../
-[#B-detair-Y-Z-f7]
 
-== xref:B.adoc[pass:[B]]::xref:B/detair.adoc[pass:[detair]]::xref:B/detair/Y.adoc[pass:[Y]]::xref:B/detair/Y/Z.adoc[pass:[Z]]::f7
+
+[#B-detair-Y-Z-f7]
+== xref:#B[pass:[B]]::xref:#B-detair[pass:[detair]]::xref:#B-detair-Y[pass:[Y]]::xref:#B-detair-Y-Z[pass:[Z]]::f7
 
 
 
@@ -451,22 +451,22 @@ f7();
 
 
 
-[#C]
 
+[#C]
 == C
 
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:C/g0.adoc[`g0`]  ¦
+¦xref:#C-g0[`g0`]  ¦
 
 |===
 
-:relfileprefix: ../
-[#C-g0]
 
-== xref:C.adoc[pass:[C]]::g0
+
+[#C-g0]
+== xref:#C[pass:[C]]::g0
 
 
 
@@ -479,6 +479,7 @@ Declared in `<filters/filters.cpp>`
 void
 g0();
 ----
+
 
 
 
@@ -489,43 +490,42 @@ g0();
 
 
 [#D]
-
 == D
 
 === Namespaces
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:D/E.adoc[`E`]  ¦
+¦xref:#D-E[`E`]  ¦
 
 |===
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:D/f1.adoc[`f1`]  ¦
+¦xref:#D-f1[`f1`]  ¦
 
-¦xref:D/g1.adoc[`g1`]  ¦
+¦xref:#D-g1[`g1`]  ¦
 
 |===
 
-:relfileprefix: ../
+
+
 [#D-E]
-
-== xref:D.adoc[pass:[D]]::E
+== xref:#D[pass:[D]]::E
 
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:D/E/g0.adoc[`g0`]  ¦
+¦xref:#D-E-g0[`g0`]  ¦
 
 |===
 
-:relfileprefix: ../../
-[#D-E-g0]
 
-== xref:D.adoc[pass:[D]]::xref:D/E.adoc[pass:[E]]::g0
+
+[#D-E-g0]
+== xref:#D[pass:[D]]::xref:#D-E[pass:[E]]::g0
 
 
 
@@ -546,10 +546,10 @@ g0();
 
 
 
-:relfileprefix: ../
-[#D-f1]
 
-== xref:D.adoc[pass:[D]]::f1
+
+[#D-f1]
+== xref:#D[pass:[D]]::f1
 
 
 
@@ -570,10 +570,10 @@ f1();
 
 
 
-:relfileprefix: ../
-[#D-g1]
 
-== xref:D.adoc[pass:[D]]::g1
+
+[#D-g1]
+== xref:#D[pass:[D]]::g1
 
 
 
@@ -586,6 +586,7 @@ Declared in `<filters/filters.cpp>`
 void
 g1();
 ----
+
 
 
 
@@ -596,28 +597,27 @@ g1();
 
 
 [#F]
-
 == F
 
 === Namespaces
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:F/G.adoc[`G`]  ¦
+¦xref:#F-G[`G`]  ¦
 
 |===
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:F/g0.adoc[`g0`]  ¦
+¦xref:#F-g0[`g0`]  ¦
 
 |===
 
-:relfileprefix: ../
-[#F-g0]
 
-== xref:F.adoc[pass:[F]]::g0
+
+[#F-g0]
+== xref:#F[pass:[F]]::g0
 
 
 
@@ -638,25 +638,25 @@ g0();
 
 
 
-:relfileprefix: ../
-[#F-G]
 
-== xref:F.adoc[pass:[F]]::G
+
+[#F-G]
+== xref:#F[pass:[F]]::G
 
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:F/G/f1.adoc[`f1`]  ¦
+¦xref:#F-G-f1[`f1`]  ¦
 
-¦xref:F/G/g1.adoc[`g1`]  ¦
+¦xref:#F-G-g1[`g1`]  ¦
 
 |===
 
-:relfileprefix: ../../
-[#F-G-f1]
 
-== xref:F.adoc[pass:[F]]::xref:F/G.adoc[pass:[G]]::f1
+
+[#F-G-f1]
+== xref:#F[pass:[F]]::xref:#F-G[pass:[G]]::f1
 
 
 
@@ -677,10 +677,10 @@ f1();
 
 
 
-:relfileprefix: ../../
-[#F-G-g1]
 
-== xref:F.adoc[pass:[F]]::xref:F/G.adoc[pass:[G]]::g1
+
+[#F-G-g1]
+== xref:#F[pass:[F]]::xref:#F-G[pass:[G]]::g1
 
 
 
@@ -702,4 +702,5 @@ g1();
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -54,15 +54,12 @@ public:
     Expected<std::string>
     operator()(OverloadSet const&);
 
-    /** Render the header for a single page.
+    /** Wrap the contents of a page in the page template.
      */
-    Expected<std::string>
-    renderSinglePageHeader();
-
-    /** Render the footer for a single page.
-     */
-    Expected<std::string>
-    renderSinglePageFooter();
+    Expected<void>
+    wrapPage(
+        std::ostream& out,
+        std::istream& in);
 
 private:
     /** Create a handlebars context with the symbol and helper information.
@@ -73,10 +70,12 @@ private:
         It also includes a sectionref helper that describes
         the section where the symbol is located.
      */
-    dom::Value createContext(Info const& I);
+    dom::Object
+    createContext(Info const& I);
 
     /// @copydoc createContext(Info const&)
-    dom::Value createContext(OverloadSet const& OS);
+    dom::Object
+    createContext(OverloadSet const& OS);
 
     /** Render a Handlebars template from the templates directory.
      */

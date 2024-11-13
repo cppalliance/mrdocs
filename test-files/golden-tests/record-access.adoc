@@ -1,25 +1,25 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:C0.adoc[`C0`]  ¦
+¦xref:#C0[`C0`]  ¦
 
-¦xref:S0.adoc[`S0`]  ¦
+¦xref:#S0[`S0`]  ¦
 
-¦xref:U0.adoc[`U0`]  ¦
+¦xref:#U0[`U0`]  ¦
 
 |===
 
 
-[#S0]
 
+[#S0]
 == S0
 
 
@@ -37,30 +37,30 @@ struct S0;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:S0/f0.adoc[`f0`]  ¦
+¦xref:#S0-f0[`f0`]  ¦
 
 |===
 === Protected Member Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:S0/f1.adoc[`f1`]  ¦
+¦xref:#S0-f1[`f1`]  ¦
 
 |===
 === Private Member Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:S0/f2.adoc[`f2`]  ¦
+¦xref:#S0-f2[`f2`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#S0-f0]
 
-== xref:S0.adoc[pass:[S0]]::f0
+
+[#S0-f0]
+== xref:#S0[pass:[S0]]::f0
 
 
 
@@ -81,10 +81,10 @@ f0();
 
 
 
-:relfileprefix: ../
-[#S0-f1]
 
-== xref:S0.adoc[pass:[S0]]::f1
+
+[#S0-f1]
+== xref:#S0[pass:[S0]]::f1
 
 
 
@@ -105,10 +105,10 @@ f1();
 
 
 
-:relfileprefix: ../
-[#S0-f2]
 
-== xref:S0.adoc[pass:[S0]]::f2
+
+[#S0-f2]
+== xref:#S0[pass:[S0]]::f2
 
 
 
@@ -130,8 +130,8 @@ f2();
 
 
 
-[#C0]
 
+[#C0]
 == C0
 
 
@@ -149,30 +149,30 @@ class C0;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:C0/f2.adoc[`f2`]  ¦
+¦xref:#C0-f2[`f2`]  ¦
 
 |===
 === Protected Member Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:C0/f1.adoc[`f1`]  ¦
+¦xref:#C0-f1[`f1`]  ¦
 
 |===
 === Private Member Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:C0/f0.adoc[`f0`]  ¦
+¦xref:#C0-f0[`f0`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#C0-f0]
 
-== xref:C0.adoc[pass:[C0]]::f0
+
+[#C0-f0]
+== xref:#C0[pass:[C0]]::f0
 
 
 
@@ -193,10 +193,10 @@ f0();
 
 
 
-:relfileprefix: ../
-[#C0-f1]
 
-== xref:C0.adoc[pass:[C0]]::f1
+
+[#C0-f1]
+== xref:#C0[pass:[C0]]::f1
 
 
 
@@ -217,10 +217,10 @@ f1();
 
 
 
-:relfileprefix: ../
-[#C0-f2]
 
-== xref:C0.adoc[pass:[C0]]::f2
+
+[#C0-f2]
+== xref:#C0[pass:[C0]]::f2
 
 
 
@@ -242,8 +242,8 @@ f2();
 
 
 
-[#U0]
 
+[#U0]
 == U0
 
 
@@ -261,30 +261,30 @@ union U0;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:U0/f0.adoc[`f0`]  ¦
+¦xref:#U0-f0[`f0`]  ¦
 
 |===
 === Protected Member Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:U0/f1.adoc[`f1`]  ¦
+¦xref:#U0-f1[`f1`]  ¦
 
 |===
 === Private Member Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:U0/f2.adoc[`f2`]  ¦
+¦xref:#U0-f2[`f2`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#U0-f0]
 
-== xref:U0.adoc[pass:[U0]]::f0
+
+[#U0-f0]
+== xref:#U0[pass:[U0]]::f0
 
 
 
@@ -305,10 +305,10 @@ f0();
 
 
 
-:relfileprefix: ../
-[#U0-f1]
 
-== xref:U0.adoc[pass:[U0]]::f1
+
+[#U0-f1]
+== xref:#U0[pass:[U0]]::f1
 
 
 
@@ -329,10 +329,10 @@ f1();
 
 
 
-:relfileprefix: ../
-[#U0-f2]
 
-== xref:U0.adoc[pass:[U0]]::f2
+
+[#U0-f2]
+== xref:#U0[pass:[U0]]::f2
 
 
 
@@ -354,4 +354,5 @@ f2();
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

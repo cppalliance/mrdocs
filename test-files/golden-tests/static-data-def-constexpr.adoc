@@ -1,23 +1,23 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:S.adoc[`S`]  ¦
+¦xref:#S[`S`]  ¦
 
-¦xref:T.adoc[`T`]  ¦
+¦xref:#T[`T`]  ¦
 
 |===
 
 
-[#S]
 
+[#S]
 == S
 
 
@@ -35,16 +35,16 @@ struct S;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:S/s.adoc[`s`]  ¦
+¦xref:#S-s[`s`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#S-s]
 
-== xref:S.adoc[pass:[S]]::s
+
+[#S-s]
+== xref:#S[pass:[S]]::s
 
 
 
@@ -56,13 +56,13 @@ Declared in `<static-data-def-constexpr.cpp>`
 ----
 constexpr
 static
-xref:S.adoc[S] const s = S{};
+xref:#S[S] const s = S{};
 ----
 
 
 
-[#T]
 
+[#T]
 == T
 
 
@@ -80,16 +80,16 @@ struct T;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T/t.adoc[`t`]  ¦
+¦xref:#T-t[`t`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#T-t]
 
-== xref:T.adoc[pass:[T]]::t
+
+[#T-t]
+== xref:#T[pass:[T]]::t
 
 
 
@@ -106,4 +106,5 @@ int const t = 0;
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

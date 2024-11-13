@@ -1,43 +1,43 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:f0.adoc[`f0`]  ¦
+¦xref:#f0[`f0`]  ¦
 
 f0 brief
 
-¦xref:f1.adoc[`f1`]  ¦
+¦xref:#f1[`f1`]  ¦
 
 f1 brief
 
-¦xref:g0.adoc[`g0`]  ¦
+¦xref:#g0[`g0`]  ¦
 
 g0 brief
 
-¦xref:g1.adoc[`g1`]  ¦
+¦xref:#g1[`g1`]  ¦
 
 g1 brief
 
-¦xref:h0.adoc[`h0`]  ¦
+¦xref:#h0[`h0`]  ¦
 
 h0 brief
 
-¦xref:h1.adoc[`h1`]  ¦
+¦xref:#h1[`h1`]  ¦
 
 h1 brief
 
 |===
 
 
-[#f0]
 
+[#f0]
 == f0
 
 
@@ -68,8 +68,8 @@ int
 
 
 
-[#f1]
 
+[#f1]
 == f1
 
 
@@ -100,8 +100,8 @@ bool
 
 
 
-[#g0]
 
+[#g0]
 == g0
 
 
@@ -141,8 +141,8 @@ one
 
 
 
-[#g1]
 
+[#g1]
 == g1
 
 
@@ -182,8 +182,8 @@ two
 
 
 
-[#h0]
 
+[#h0]
 == h0
 
 
@@ -224,8 +224,8 @@ one
 
 
 
-[#h1]
 
+[#h1]
 == h1
 
 
@@ -266,4 +266,5 @@ two
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

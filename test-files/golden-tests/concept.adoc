@@ -1,35 +1,35 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:f.adoc[`f`]  ¦
+¦xref:#f[`f`]  ¦
 
 |===
 === Variables
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:x.adoc[`x`]  ¦
+¦xref:#x[`x`]  ¦
 
 |===
 === Concepts
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:C.adoc[`C`]  ¦
+¦xref:#C[`C`]  ¦
 
 |===
 
 
-[#C]
 
+[#C]
 = C
 
 
@@ -46,8 +46,8 @@ concept C = sizeof(T) == sizeof(int);
 
 
 
-[#f]
 
+[#f]
 == f
 
 
@@ -58,7 +58,7 @@ Declared in `<concept.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-template<xref:C.adoc[C] T>
+template<xref:#C[C] T>
 void
 f();
 ----
@@ -71,8 +71,8 @@ f();
 
 
 
-[#x]
 
+[#x]
 == x
 
 
@@ -83,9 +83,10 @@ Declared in `<concept.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:C.adoc[C] auto x = 0;
+xref:#C[C] auto x = 0;
 ----
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

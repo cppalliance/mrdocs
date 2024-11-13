@@ -1,15 +1,15 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 === Namespaces
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:LongName.adoc[`LongName`]  ¦
+¦xref:#LongName[`LongName`]  ¦
 
 |===
 
@@ -17,14 +17,15 @@
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:LongName.adoc[`LongName`]  ¦
+¦xref:#LongName[`LongName`]  ¦
 
 |===
 
-[#LongName]
 
+[#LongName]
 == LongName
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -1,25 +1,25 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A.adoc[`A`]  ¦
+¦xref:#A[`A`]  ¦
 
-¦xref:B.adoc[`B`]  ¦
+¦xref:#B[`B`]  ¦
 
-¦xref:C.adoc[`C`]  ¦
+¦xref:#C[`C`]  ¦
 
 |===
 
 
-[#A]
 
+[#A]
 == A
 
 
@@ -37,16 +37,16 @@ struct A;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/f.adoc[`f`]  ¦
+¦xref:#A-f[`f`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#A-f]
 
-== xref:A.adoc[pass:[A]]::f
+
+[#A-f]
+== xref:#A[pass:[A]]::f
 
 
 
@@ -68,8 +68,8 @@ f(int);
 
 
 
-[#B]
 
+[#B]
 == B
 
 
@@ -87,16 +87,16 @@ struct B;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:B/f.adoc[`f`]  ¦
+¦xref:#B-f[`f`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#B-f]
 
-== xref:B.adoc[pass:[B]]::f
+
+[#B-f]
+== xref:#B[pass:[B]]::f
 
 
 
@@ -118,8 +118,8 @@ f(bool);
 
 
 
-[#C]
 
+[#C]
 == C
 
 
@@ -131,32 +131,32 @@ Declared in `<using-3.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct C
-    : xref:A.adoc[A]
-    , xref:B.adoc[B];
+    : xref:#A[A]
+    , xref:#B[B];
 ----
 
 ===  Member Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/f.adoc[`f`]  ¦
+¦xref:A-f[`f`]  ¦
 |===
 ===  Using Declarations
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:C/f-08.adoc[`f`]  ¦
+¦xref:#C-f-08[`f`]  ¦
 
-¦xref:C/f-03.adoc[`f`]  ¦
+¦xref:#C-f-03[`f`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
+
+
 [#C-f-08]
-
-== xref:C.adoc[pass:[C]]::f
+== xref:#C[pass:[C]]::f
 
 
 
@@ -166,7 +166,7 @@ Declared in `<using-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-using xref:A.adoc[A]::f;
+using xref:#A[A]::f;
 ----
 
 
@@ -178,10 +178,10 @@ using xref:A.adoc[A]::f;
 |===
 
 
-:relfileprefix: ../
+
+
 [#C-f-03]
-
-== xref:C.adoc[pass:[C]]::f
+== xref:#C[pass:[C]]::f
 
 
 
@@ -191,7 +191,7 @@ Declared in `<using-3.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-using xref:B.adoc[B]::f;
+using xref:#B[B]::f;
 ----
 
 
@@ -204,4 +204,5 @@ using xref:B.adoc[B]::f;
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

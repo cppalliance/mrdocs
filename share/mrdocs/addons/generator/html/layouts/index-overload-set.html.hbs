@@ -1,6 +1,6 @@
 {{! A page when the symbol type is "overloads" }}
 {{#if relfileprefix}}<meta name="relfileprefix" content="{{relfileprefix}}">{{/if}}
-<div id="{{#if (is_multipage)}}{{symbol.id}}{{else}}{{symbol.ref}}{{/if}}">
+<div id="{{#if @root.config.multipage}}{{symbol.id}}{{else}}{{symbol.ref}}{{/if}}">
 
 <h1>{{#if symbol.name}}Overload set {{>types/nested-name-specifier symbol=symbol.parent}}{{symbol.name}}{{else}}Unnamed overload set{{/if}}</h1>
 

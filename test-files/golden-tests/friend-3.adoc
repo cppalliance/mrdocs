@@ -1,32 +1,32 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T.adoc[`T`]  ¦
+¦xref:#T[`T`]  ¦
 
-¦xref:U.adoc[`U`]  ¦
+¦xref:#U[`U`]  ¦
 
 |===
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:f.adoc[`f`]  ¦
+¦xref:#f[`f`]  ¦
 
 T::f
 
 |===
 
 
-[#T]
 
+[#T]
 == T
 
 
@@ -44,7 +44,7 @@ struct T;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T/08friend.adoc[`f`]  ¦
+¦xref:#T-08friend[`f`]  ¦
 
 T::f
 
@@ -52,9 +52,9 @@ T::f
 
 
 
-:relfileprefix: ../
-[#T-08friend]
 
+
+[#T-08friend]
 == f
 
 
@@ -74,8 +74,8 @@ f();
 
 
 
-[#f]
 
+[#f]
 == f
 
 
@@ -100,8 +100,8 @@ f();
 
 
 
-[#U]
 
+[#U]
 == U
 
 
@@ -119,15 +119,15 @@ struct U;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:U/08friend.adoc[`f`]  ¦
+¦xref:#U-08friend[`f`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#U-08friend]
 
+
+[#U-08friend]
 == f
 
 
@@ -145,4 +145,5 @@ f();
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

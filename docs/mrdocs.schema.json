@@ -50,6 +50,11 @@
       "title": "Detect SFINAE expressions",
       "type": "boolean"
     },
+    "embedded": {
+      "default": false,
+      "title": "Output an embeddable document, which excludes the header, the footer, and everything outside the body of the document. This option is useful for producing documents that can be inserted into an external template.",
+      "type": "boolean"
+    },
     "filters": {
       "properties": {
         "symbols": {

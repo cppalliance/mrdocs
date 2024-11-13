@@ -1,30 +1,30 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A.adoc[`A`]  ¦
+¦xref:#A[`A`]  ¦
 
-¦xref:B.adoc[`B`]  ¦
+¦xref:#B[`B`]  ¦
 
 |===
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:f.adoc[`f`]  ¦
+¦xref:#f[`f`]  ¦
 
 |===
 
 
-[#A]
 
+[#A]
 == A
 
 
@@ -43,30 +43,30 @@ struct A;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/v0.adoc[`v0`]  ¦
+¦xref:#A-v0[`v0`]  ¦
 
-¦xref:A/v1.adoc[`v1`]  ¦
+¦xref:#A-v1[`v1`]  ¦
 
-¦xref:A/v2.adoc[`v2`]  ¦
+¦xref:#A-v2[`v2`]  ¦
 
-¦xref:A/v3.adoc[`v3`]  ¦
+¦xref:#A-v3[`v3`]  ¦
 
-¦xref:A/v4.adoc[`v4`]  ¦
+¦xref:#A-v4[`v4`]  ¦
 
-¦xref:A/v5.adoc[`v5`]  ¦
+¦xref:#A-v5[`v5`]  ¦
 
-¦xref:A/v6.adoc[`v6`]  ¦
+¦xref:#A-v6[`v6`]  ¦
 
-¦xref:A/v7.adoc[`v7`]  ¦
+¦xref:#A-v7[`v7`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#A-v0]
 
-== xref:A.adoc[pass:[A]]::v0
+
+[#A-v0]
+== xref:#A[pass:[A]]::v0
 
 
 
@@ -81,10 +81,10 @@ int v0 = 0;
 ----
 
 
-:relfileprefix: ../
-[#A-v1]
 
-== xref:A.adoc[pass:[A]]::v1
+
+[#A-v1]
+== xref:#A[pass:[A]]::v1
 
 
 
@@ -99,10 +99,10 @@ int v1 = 1;
 ----
 
 
-:relfileprefix: ../
-[#A-v2]
 
-== xref:A.adoc[pass:[A]]::v2
+
+[#A-v2]
+== xref:#A[pass:[A]]::v2
 
 
 
@@ -118,10 +118,10 @@ int const v2 = 2;
 ----
 
 
-:relfileprefix: ../
-[#A-v3]
 
-== xref:A.adoc[pass:[A]]::v3
+
+[#A-v3]
+== xref:#A[pass:[A]]::v3
 
 
 
@@ -136,10 +136,10 @@ int const v3 = 3;
 ----
 
 
-:relfileprefix: ../
-[#A-v4]
 
-== xref:A.adoc[pass:[A]]::v4
+
+[#A-v4]
+== xref:#A[pass:[A]]::v4
 
 
 
@@ -154,10 +154,10 @@ int const v4 = 4;
 ----
 
 
-:relfileprefix: ../
-[#A-v5]
 
-== xref:A.adoc[pass:[A]]::v5
+
+[#A-v5]
+== xref:#A[pass:[A]]::v5
 
 
 
@@ -172,10 +172,10 @@ int v5 = 5;
 ----
 
 
-:relfileprefix: ../
-[#A-v6]
 
-== xref:A.adoc[pass:[A]]::v6
+
+[#A-v6]
+== xref:#A[pass:[A]]::v6
 
 
 
@@ -190,10 +190,10 @@ int const v6 = 6;
 ----
 
 
-:relfileprefix: ../
-[#A-v7]
 
-== xref:A.adoc[pass:[A]]::v7
+
+[#A-v7]
+== xref:#A[pass:[A]]::v7
 
 
 
@@ -210,8 +210,8 @@ int const v7 = 7;
 
 
 
-[#B]
 
+[#B]
 == B
 
 
@@ -229,18 +229,18 @@ struct B;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:B/x0.adoc[`x0`]  ¦
+¦xref:#B-x0[`x0`]  ¦
 
-¦xref:B/x1.adoc[`x1`]  ¦
+¦xref:#B-x1[`x1`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#B-x0]
 
-== xref:B.adoc[pass:[B]]::x0
+
+[#B-x0]
+== xref:#B[pass:[B]]::x0
 
 
 
@@ -256,10 +256,10 @@ int const x0 = 0;
 ----
 
 
-:relfileprefix: ../
-[#B-x1]
 
-== xref:B.adoc[pass:[B]]::x1
+
+[#B-x1]
+== xref:#B[pass:[B]]::x1
 
 
 
@@ -277,8 +277,8 @@ int const x1 = 0;
 
 
 
-[#f]
 
+[#f]
 == f
 
 
@@ -301,4 +301,5 @@ f();
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -57,7 +57,7 @@ Builder(
             hbs_.registerPartial(
                 path.generic_string(), *text);
             return Error::success();
-    }).maybeThrow();
+        }).maybeThrow();
 
     // Load JavaScript helpers
     std::string helpersPath = files::appendPath(
@@ -143,22 +143,7 @@ callTemplate(
     return *exp;
 }
 
-Expected<std::string>
-Builder::
-renderSinglePageHeader()
-{
-    return callTemplate(fmt::format("single-header.{}.hbs", domCorpus.fileExtension), {});
-}
-
-Expected<std::string>
-Builder::
-renderSinglePageFooter()
-{
-    return callTemplate(fmt::format("single-footer.{}.hbs", domCorpus.fileExtension), {});
-}
-
 //------------------------------------------------
-
 
 std::string
 Builder::
@@ -177,37 +162,31 @@ getRelPrefix(std::size_t depth)
     return rel_prefix;
 }
 
-dom::Value
+dom::Object
 Builder::
 createContext(
     Info const& I)
 {
-    dom::Object::storage_type props;
-    props.emplace_back("symbol",
-        domCorpus.get(I.id));
-    props.emplace_back("relfileprefix",
-        getRelPrefix(I.Namespace.size()));
-    props.emplace_back("config", domCorpus->config.object());
-    props.emplace_back("sectionref",
-        domCorpus.names_.getQualified(I.id, '-'));
-    return dom::Object(std::move(props));
+    dom::Object ctx;
+    ctx.set("symbol", domCorpus.get(I.id));
+    ctx.set("relfileprefix", getRelPrefix(I.Namespace.size()));
+    ctx.set("config", domCorpus->config.object());
+    ctx.set("sectionref", domCorpus.names_.getQualified(I.id, '-'));
+    return ctx;
 }
 
-dom::Value
+dom::Object
 Builder::
 createContext(
     OverloadSet const& OS)
 {
-    dom::Object::storage_type props;
-    props.emplace_back("symbol",
-        domCorpus.getOverloads(OS));
+    dom::Object ctx;
+    ctx.set("symbol", domCorpus.getOverloads(OS));
     const Info& Parent = domCorpus->get(OS.Parent);
-    props.emplace_back("relfileprefix",
-        getRelPrefix(Parent.Namespace.size() + 1));
-    props.emplace_back("config", domCorpus->config.object());
-    props.emplace_back("sectionref",
-        domCorpus.names_.getQualified(OS, '-'));
-    return dom::Object(std::move(props));
+    ctx.set("relfileprefix", getRelPrefix(Parent.Namespace.size() + 1));
+    ctx.set("config", domCorpus->config.object());
+    ctx.set("sectionref", domCorpus.names_.getQualified(OS, '-'));
+    return ctx;
 }
 
 template<class T>
@@ -215,19 +194,90 @@ Expected<std::string>
 Builder::
 operator()(T const& I)
 {
-    return callTemplate(
-        fmt::format("single-symbol.{}.hbs", domCorpus.fileExtension),
-        createContext(I));
+    auto const templateFile = fmt::format("index.{}.hbs", domCorpus.fileExtension);
+    dom::Object ctx = createContext(I);
+
+    auto& config = domCorpus->config;
+    bool isSinglePage = !config->multipage;
+    if (config->embedded ||
+        isSinglePage)
+    {
+        return callTemplate(templateFile, ctx);
+    }
+
+    auto const wrapperFile = fmt::format("wrapper.{}.hbs", domCorpus.fileExtension);
+    dom::Object wrapperCtx = createFrame(ctx);
+    wrapperCtx.set("contents", dom::makeInvocable([this, &I, templateFile](
+        dom::Value const& options) -> Expected<dom::Value>
+        {
+            // Helper to write contents directly to stream
+            return callTemplate(templateFile, createContext(I));
+        }));
+    return callTemplate(wrapperFile, wrapperCtx);
 }
 
 Expected<std::string>
 Builder::
 operator()(OverloadSet const& OS)
 {
-    return callTemplate(
-        fmt::format("overload-set.{}.hbs", domCorpus.fileExtension),
-        createContext(OS));
+    auto const templateFile = fmt::format("index-overload-set.{}.hbs", domCorpus.fileExtension);
+    dom::Object ctx = createContext(OS);
+
+    auto& config = domCorpus->config;
+    bool isSinglePage = !config->multipage;
+    if (config->embedded ||
+        isSinglePage)
+    {
+        return callTemplate(templateFile, ctx);
+    }
+
+    auto const wrapperFile = fmt::format("wrapper.{}.hbs", domCorpus.fileExtension);
+    dom::Object wrapperCtx = createFrame(ctx);
+    wrapperCtx.set("contents", dom::makeInvocable([this, &OS, templateFile](
+        dom::Value const& options) -> Expected<dom::Value>
+        {
+            // Helper to write contents directly to stream
+            return callTemplate(templateFile, createContext(OS));
+        }));
+    return callTemplate(wrapperFile, wrapperCtx);
 }
+
+Expected<void>
+Builder::
+wrapPage(
+    std::ostream& out,
+    std::istream& in)
+{
+    auto const wrapperFile = fmt::format("wrapper.{}.hbs", domCorpus.fileExtension);
+    dom::Object ctx;
+    ctx.set("contents", dom::makeInvocable([&in](
+         dom::Value const& options) -> Expected<dom::Value>
+    {
+        // Helper to write contents directly to stream
+        // AFREITAS: custom functions should set options["write"]
+        // to avoid creating a string.
+        return std::string(
+            std::istreambuf_iterator<char>(in),
+            std::istreambuf_iterator<char>());
+    }));
+    // Render directly to ostream
+    Config const& config = domCorpus->config;
+    auto layoutDir = files::appendPath(config->addons,
+        "generator", domCorpus.fileExtension, "layouts");
+    auto pathName = files::appendPath(layoutDir, wrapperFile);
+    MRDOCS_TRY(auto fileText, files::getFileText(pathName));
+    HandlebarsOptions options;
+    options.noEscape = true;
+    OutputRef outRef(out);
+    Expected<void, HandlebarsError> exp =
+        hbs_.try_render_to(outRef, fileText, ctx, options);
+    if (!exp)
+    {
+        return Unexpected(Error(exp.error().what()));
+    }
+    return {};
+}
+
 
 // Define Builder::operator() for each Info type
 #define DEFINE(T) template Expected<std::string> \

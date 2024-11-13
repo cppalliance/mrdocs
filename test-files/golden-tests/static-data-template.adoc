@@ -1,21 +1,21 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A.adoc[`A`]  ¦
+¦xref:#A[`A`]  ¦
 
 |===
 
 
-[#A]
 
+[#A]
 == A
 
 
@@ -34,20 +34,20 @@ struct A;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/x-0e.adoc[`x`]  ¦
+¦xref:#A-x-0e[`x`]  ¦
 
-¦xref:A/x-0a.adoc[`x<U*, T>`]  ¦
+¦xref:#A-x-0a[`x<U*, T>`]  ¦
 
-¦xref:A/x-07.adoc[`x<T, long>`]  ¦
+¦xref:#A-x-07[`x<T, long>`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#A-x-0e]
 
-== xref:A.adoc[pass:[A]]::x
+
+[#A-x-0e]
+== xref:#A[pass:[A]]::x
 
 
 
@@ -66,10 +66,10 @@ T const x = 0;
 ----
 
 
-:relfileprefix: ../
-[#A-x-0a]
 
-== xref:A.adoc[pass:[A]]::x
+
+[#A-x-0a]
+== xref:#A[pass:[A]]::x
 
 
 
@@ -82,14 +82,14 @@ Declared in `<static-data-template.cpp>`
 template<typename U>
 constexpr
 static
-T const xref:A/x-0e.adoc[pass:[x]]<U*, T> = 1;
+T const xref:#A-x-0e[pass:[x]]<U*, T> = 1;
 ----
 
 
-:relfileprefix: ../
-[#A-x-07]
 
-== xref:A.adoc[pass:[A]]::x
+
+[#A-x-07]
+== xref:#A[pass:[A]]::x
 
 
 
@@ -102,9 +102,10 @@ Declared in `<static-data-template.cpp>`
 template<>
 constexpr
 static
-bool const xref:A/x-0e.adoc[pass:[x]]<T, long> = 2;
+bool const xref:#A-x-0e[pass:[x]]<T, long> = 2;
 ----
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -1,23 +1,23 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A.adoc[`A`]  ¦
+¦xref:#A[`A`]  ¦
 
-¦xref:B.adoc[`B`]  ¦
+¦xref:#B[`B`]  ¦
 
 |===
 
 
-[#A]
 
+[#A]
 == A
 
 
@@ -35,18 +35,18 @@ union A;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/x.adoc[`x`] [.small]#[variant member]# ¦
+¦xref:#A-x[`x`] [.small]#[variant member]# ¦
 
-¦xref:A/y.adoc[`y`] [.small]#[variant member]# ¦
+¦xref:#A-y[`y`] [.small]#[variant member]# ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#A-x]
 
-== xref:A.adoc[pass:[A]]::x
+
+[#A-x]
+== xref:#A[pass:[A]]::x
 
 
 
@@ -60,10 +60,10 @@ int x;
 ----
 
 
-:relfileprefix: ../
-[#A-y]
 
-== xref:A.adoc[pass:[A]]::y
+
+[#A-y]
+== xref:#A[pass:[A]]::y
 
 
 
@@ -78,8 +78,8 @@ bool y;
 
 
 
-[#B]
 
+[#B]
 == B
 
 
@@ -97,20 +97,20 @@ struct B;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:B/x.adoc[`x`] [.small]#[variant member]# ¦
+¦xref:#B-x[`x`] [.small]#[variant member]# ¦
 
-¦xref:B/y.adoc[`y`] [.small]#[variant member]# ¦
+¦xref:#B-y[`y`] [.small]#[variant member]# ¦
 
-¦xref:B/z.adoc[`z`]  ¦
+¦xref:#B-z[`z`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#B-x]
 
-== xref:B.adoc[pass:[B]]::x
+
+[#B-x]
+== xref:#B[pass:[B]]::x
 
 
 
@@ -124,10 +124,10 @@ int x;
 ----
 
 
-:relfileprefix: ../
-[#B-y]
 
-== xref:B.adoc[pass:[B]]::y
+
+[#B-y]
+== xref:#B[pass:[B]]::y
 
 
 
@@ -141,10 +141,10 @@ bool y;
 ----
 
 
-:relfileprefix: ../
-[#B-z]
 
-== xref:B.adoc[pass:[B]]::z
+
+[#B-z]
+== xref:#B[pass:[B]]::z
 
 
 
@@ -159,4 +159,5 @@ int z;
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

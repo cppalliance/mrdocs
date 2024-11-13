@@ -1,29 +1,29 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T.adoc[`T`]  ¦
+¦xref:#T[`T`]  ¦
 
-¦xref:U.adoc[`U`]  ¦
+¦xref:#U[`U`]  ¦
 
-¦xref:V.adoc[`V`]  ¦
+¦xref:#V[`V`]  ¦
 
-¦xref:W.adoc[`W`]  ¦
+¦xref:#W[`W`]  ¦
 
-¦xref:X.adoc[`X`]  ¦
+¦xref:#X[`X`]  ¦
 
 |===
 
 
-[#T]
 
+[#T]
 == T
 
 
@@ -41,24 +41,24 @@ struct T;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T/i.adoc[`i`]  ¦
+¦xref:#T-i[`i`]  ¦
 
-¦xref:T/j.adoc[`j`]  ¦
+¦xref:#T-j[`j`]  ¦
 
-¦xref:T/k.adoc[`k`]  ¦
+¦xref:#T-k[`k`]  ¦
 
-¦xref:T/l.adoc[`l`]  ¦
+¦xref:#T-l[`l`]  ¦
 
-¦xref:T/m.adoc[`m`]  ¦
+¦xref:#T-m[`m`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#T-i]
 
-== xref:T.adoc[pass:[T]]::i
+
+[#T-i]
+== xref:#T[pass:[T]]::i
 
 
 
@@ -72,10 +72,10 @@ int i;
 ----
 
 
-:relfileprefix: ../
-[#T-j]
 
-== xref:T.adoc[pass:[T]]::j
+
+[#T-j]
+== xref:#T[pass:[T]]::j
 
 
 
@@ -89,10 +89,10 @@ double j;
 ----
 
 
-:relfileprefix: ../
-[#T-k]
 
-== xref:T.adoc[pass:[T]]::k
+
+[#T-k]
+== xref:#T[pass:[T]]::k
 
 
 
@@ -107,10 +107,10 @@ int k;
 ----
 
 
-:relfileprefix: ../
-[#T-l]
 
-== xref:T.adoc[pass:[T]]::l
+
+[#T-l]
+== xref:#T[pass:[T]]::l
 
 
 
@@ -124,10 +124,10 @@ int l : 8;
 ----
 
 
-:relfileprefix: ../
-[#T-m]
 
-== xref:T.adoc[pass:[T]]::m
+
+[#T-m]
+== xref:#T[pass:[T]]::m
 
 
 
@@ -142,8 +142,8 @@ int m : 4 + 4;
 
 
 
-[#U]
 
+[#U]
 == U
 
 
@@ -161,16 +161,16 @@ struct U;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:U/t.adoc[`t`]  ¦
+¦xref:#U-t[`t`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#U-t]
 
-== xref:U.adoc[pass:[U]]::t
+
+[#U-t]
+== xref:#U[pass:[U]]::t
 
 
 
@@ -180,13 +180,13 @@ Declared in `<record-data.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:T.adoc[T] t;
+xref:#T[T] t;
 ----
 
 
 
-[#V]
 
+[#V]
 == V
 
 
@@ -204,25 +204,25 @@ class V;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:V/j.adoc[`j`]  ¦
+¦xref:#V-j[`j`]  ¦
 
 |===
 === Private Data Members
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:V/i.adoc[`i`]  ¦
+¦xref:#V-i[`i`]  ¦
 
-¦xref:V/k.adoc[`k`]  ¦
+¦xref:#V-k[`k`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#V-i]
 
-== xref:V.adoc[pass:[V]]::i
+
+[#V-i]
+== xref:#V[pass:[V]]::i
 
 
 
@@ -236,10 +236,10 @@ int i;
 ----
 
 
-:relfileprefix: ../
-[#V-j]
 
-== xref:V.adoc[pass:[V]]::j
+
+[#V-j]
+== xref:#V[pass:[V]]::j
 
 
 
@@ -253,10 +253,10 @@ unsigned long j;
 ----
 
 
-:relfileprefix: ../
-[#V-k]
 
-== xref:V.adoc[pass:[V]]::k
+
+[#V-k]
+== xref:#V[pass:[V]]::k
 
 
 
@@ -271,8 +271,8 @@ double k;
 
 
 
-[#W]
 
+[#W]
 == W
 
 
@@ -290,16 +290,16 @@ struct W;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:W/buf.adoc[`buf`]  ¦
+¦xref:#W-buf[`buf`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#W-buf]
 
-== xref:W.adoc[pass:[W]]::buf
+
+[#W-buf]
+== xref:#W[pass:[W]]::buf
 
 
 
@@ -314,8 +314,8 @@ char buf[64];
 
 
 
-[#X]
 
+[#X]
 == X
 
 
@@ -336,31 +336,31 @@ struct X;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:X/Q.adoc[`Q`]  ¦
+¦xref:#X-Q[`Q`]  ¦
 
 |===
 ===  Data Members
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:X/x0.adoc[`x0`]  ¦
+¦xref:#X-x0[`x0`]  ¦
 
-¦xref:X/x1.adoc[`x1`]  ¦
+¦xref:#X-x1[`x1`]  ¦
 
-¦xref:X/x2.adoc[`x2`]  ¦
+¦xref:#X-x2[`x2`]  ¦
 
-¦xref:X/x3.adoc[`x3`]  ¦
+¦xref:#X-x3[`x3`]  ¦
 
-¦xref:X/x4.adoc[`x4`]  ¦
+¦xref:#X-x4[`x4`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#X-Q]
 
-== xref:X.adoc[pass:[X]]::Q
+
+[#X-Q]
+== xref:#X[pass:[X]]::Q
 
 
 
@@ -374,10 +374,10 @@ using Q = P;
 ----
 
 
-:relfileprefix: ../
-[#X-x0]
 
-== xref:X.adoc[pass:[X]]::x0
+
+[#X-x0]
+== xref:#X[pass:[X]]::x0
 
 
 
@@ -391,10 +391,10 @@ int x0 = 0;
 ----
 
 
-:relfileprefix: ../
-[#X-x1]
 
-== xref:X.adoc[pass:[X]]::x1
+
+[#X-x1]
+== xref:#X[pass:[X]]::x1
 
 
 
@@ -408,10 +408,10 @@ P x1;
 ----
 
 
-:relfileprefix: ../
-[#X-x2]
 
-== xref:X.adoc[pass:[X]]::x2
+
+[#X-x2]
+== xref:#X[pass:[X]]::x2
 
 
 
@@ -425,10 +425,10 @@ P const x2[32];
 ----
 
 
-:relfileprefix: ../
-[#X-x3]
 
-== xref:X.adoc[pass:[X]]::x3
+
+[#X-x3]
+== xref:#X[pass:[X]]::x3
 
 
 
@@ -438,14 +438,14 @@ Declared in `<record-data.cpp>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:X/Q.adoc[Q] x3;
+xref:#X-Q[Q] x3;
 ----
 
 
-:relfileprefix: ../
-[#X-x4]
 
-== xref:X.adoc[pass:[X]]::x4
+
+[#X-x4]
+== xref:#X[pass:[X]]::x4
 
 
 
@@ -460,4 +460,5 @@ int x4 : I + 4;
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

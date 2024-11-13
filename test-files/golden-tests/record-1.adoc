@@ -1,21 +1,21 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T.adoc[`T`]  ¦
+¦xref:#T[`T`]  ¦
 
 |===
 
 
-[#T]
 
+[#T]
 == T
 
 
@@ -33,35 +33,35 @@ struct T;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T/U1.adoc[`U1`]  ¦
+¦xref:#T-U1[`U1`]  ¦
 
-¦xref:T/U2.adoc[`U2`]  ¦
+¦xref:#T-U2[`U2`]  ¦
 
 |===
 ===  Member Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T/f1.adoc[`f1`]  ¦
+¦xref:#T-f1[`f1`]  ¦
 
-¦xref:T/f2.adoc[`f2`]  ¦
+¦xref:#T-f2[`f2`]  ¦
 
-¦xref:T/f3.adoc[`f3`]  ¦
+¦xref:#T-f3[`f3`]  ¦
 
 |===
 === Protected Member Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T/g1.adoc[`g1`]  ¦
+¦xref:#T-g1[`g1`]  ¦
 
 brief-g1
 
-¦xref:T/g2.adoc[`g2`]  ¦
+¦xref:#T-g2[`g2`]  ¦
 
 brief-g2
 
-¦xref:T/g3.adoc[`g3`]  ¦
+¦xref:#T-g3[`g3`]  ¦
 
 brief-g3
 
@@ -69,10 +69,10 @@ brief-g3
 
 
 
-:relfileprefix: ../
-[#T-U1]
 
-== xref:T.adoc[pass:[T]]::U1
+
+[#T-U1]
+== xref:#T[pass:[T]]::U1
 
 
 
@@ -86,10 +86,10 @@ using U1 = int;
 ----
 
 
-:relfileprefix: ../
-[#T-U2]
 
-== xref:T.adoc[pass:[T]]::U2
+
+[#T-U2]
+== xref:#T[pass:[T]]::U2
 
 
 
@@ -103,10 +103,10 @@ typedef char U2;
 ----
 
 
-:relfileprefix: ../
-[#T-f1]
 
-== xref:T.adoc[pass:[T]]::f1
+
+[#T-f1]
+== xref:#T[pass:[T]]::f1
 
 
 
@@ -127,10 +127,10 @@ f1();
 
 
 
-:relfileprefix: ../
-[#T-f2]
 
-== xref:T.adoc[pass:[T]]::f2
+
+[#T-f2]
+== xref:#T[pass:[T]]::f2
 
 
 
@@ -151,10 +151,10 @@ f2();
 
 
 
-:relfileprefix: ../
-[#T-f3]
 
-== xref:T.adoc[pass:[T]]::f3
+
+[#T-f3]
+== xref:#T[pass:[T]]::f3
 
 
 
@@ -175,10 +175,10 @@ f3();
 
 
 
-:relfileprefix: ../
-[#T-g1]
 
-== xref:T.adoc[pass:[T]]::g1
+
+[#T-g1]
+== xref:#T[pass:[T]]::g1
 
 
 brief-g1
@@ -207,10 +207,10 @@ desc
 
 
 
-:relfileprefix: ../
-[#T-g2]
 
-== xref:T.adoc[pass:[T]]::g2
+
+[#T-g2]
+== xref:#T[pass:[T]]::g2
 
 
 brief-g2
@@ -239,10 +239,10 @@ the number 2
 
 
 
-:relfileprefix: ../
-[#T-g3]
 
-== xref:T.adoc[pass:[T]]::g3
+
+[#T-g3]
+== xref:#T[pass:[T]]::g3
 
 
 brief-g3
@@ -283,4 +283,5 @@ any old number
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

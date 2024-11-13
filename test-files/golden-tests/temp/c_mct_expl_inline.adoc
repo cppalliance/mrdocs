@@ -1,21 +1,21 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A.adoc[`A`]  ¦
+¦xref:#A[`A`]  ¦
 
 |===
 
 
-[#A]
 
+[#A]
 == A
 
 
@@ -33,18 +33,18 @@ struct A;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/B-04.adoc[`B`]  ¦
+¦xref:#A-B-04[`B`]  ¦
 
-¦xref:A/B-01.adoc[`B<int>`]  ¦
+¦xref:#A-B-01[`B<int>`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#A-B-04]
 
-== xref:A.adoc[pass:[A]]::B
+
+[#A-B-04]
+== xref:#A[pass:[A]]::B
 
 
 
@@ -62,16 +62,16 @@ struct B;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/B-04/f.adoc[`f`]  ¦
+¦xref:#A-B-04-f[`f`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../../
-[#A-B-04-f]
 
-== xref:A.adoc[pass:[A]]::xref:A/B-04.adoc[pass:[B]]::f
+
+[#A-B-04-f]
+== xref:#A[pass:[A]]::xref:#A-B-04[pass:[B]]::f
 
 
 
@@ -92,10 +92,10 @@ f();
 
 
 
-:relfileprefix: ../
-[#A-B-01]
 
-== xref:A.adoc[pass:[A]]::B
+
+[#A-B-01]
+== xref:#A[pass:[A]]::B
 
 
 
@@ -106,23 +106,23 @@ Declared in `<temp/c_mct_expl_inline.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-struct xref:A/B-04.adoc[pass:[B]]<int>;
+struct xref:#A-B-04[pass:[B]]<int>;
 ----
 
 ===  Member Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A/B-01/g.adoc[`g`]  ¦
+¦xref:#A-B-01-g[`g`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../../
-[#A-B-01-g]
 
-== xref:A.adoc[pass:[A]]::xref:A/B-01.adoc[pass:[B]]<int>::g
+
+[#A-B-01-g]
+== xref:#A[pass:[A]]::xref:#A-B-01[pass:[B]]<int>::g
 
 
 
@@ -144,4 +144,5 @@ g();
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

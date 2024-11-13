@@ -1,23 +1,23 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:f1.adoc[`f1`]  ¦
+¦xref:#f1[`f1`]  ¦
 
 brief
 
 |===
 
 
-[#f1]
 
+[#f1]
 == f1
 
 
@@ -48,4 +48,5 @@ mrdocs hello
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

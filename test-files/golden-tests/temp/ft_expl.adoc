@@ -1,15 +1,15 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:f.adoc[`f`]  ¦
+¦xref:f[`f`]  ¦
 |===
 
 
@@ -26,14 +26,14 @@
 ----
 template<typename T>
 void
-xref:f-03.adoc[pass:[f]]();
+xref:#f-03[pass:[f]]();
 ----
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
 void
-xref:f-0c.adoc[pass:[f]]<int>();
+xref:#f-0c[pass:[f]]<int>();
 ----
   
 
@@ -44,8 +44,8 @@ xref:f-0c.adoc[pass:[f]]<int>();
 
 
 
-[#f-03]
 
+[#f-03]
 == f
 
 
@@ -69,8 +69,8 @@ f();
 
 
 
-[#f-0c]
 
+[#f-0c]
 == f
 
 
@@ -83,7 +83,7 @@ Declared in `<temp/ft_expl.cpp>`
 ----
 template<>
 void
-xref:f-03.adoc[pass:[f]]<int>();
+xref:#f-03[pass:[f]]<int>();
 ----
 
 
@@ -94,4 +94,5 @@ xref:f-03.adoc[pass:[f]]<int>();
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

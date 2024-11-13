@@ -1,31 +1,31 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Enums
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:E0.adoc[`E0`]  ¦
+¦xref:#E0[`E0`]  ¦
 
 E0 brief.
 
-¦xref:E1.adoc[`E1`]  ¦
+¦xref:#E1[`E1`]  ¦
 
-¦xref:E2.adoc[`E2`]  ¦
+¦xref:#E2[`E2`]  ¦
 
 E2 brief.
 
-¦xref:E3.adoc[`E3`]  ¦
+¦xref:#E3[`E3`]  ¦
 
 |===
 
 
-[#E0]
 
+[#E0]
 == E0
 
 
@@ -45,10 +45,10 @@ enum E0;
 [,cols=2]
 |===
 |Name |Description
-|xref:E0/e0.adoc[`pass:v[e0]`] |
+|xref:#E0-e0[`pass:v[e0]`] |
 e0 brief.
 
-|xref:E0/e1.adoc[`pass:v[e1]`] |
+|xref:#E0-e1[`pass:v[e1]`] |
 e1 brief.
 
 |===
@@ -59,10 +59,10 @@ e1 brief.
 E0 description.
 
 
-:relfileprefix: ../
-[#E0-e0]
 
-== xref:E0.adoc[pass:[E0]]::e0
+
+[#E0-e0]
+== xref:#E0[pass:[E0]]::e0
 
 
 e0 brief.
@@ -84,10 +84,10 @@ e0 description.
 
 
 
-:relfileprefix: ../
-[#E0-e1]
 
-== xref:E0.adoc[pass:[E0]]::e1
+
+[#E0-e1]
+== xref:#E0[pass:[E0]]::e1
 
 
 e1 brief.
@@ -110,8 +110,8 @@ e1 description.
 
 
 
-[#E1]
 
+[#E1]
 == E1
 
 
@@ -129,15 +129,15 @@ enum E1 : char;
 [,cols=2]
 |===
 |Name |Description
-|xref:E1/e2.adoc[`pass:v[e2]`] |
-|xref:E1/e3.adoc[`pass:v[e3]`] |
+|xref:#E1-e2[`pass:v[e2]`] |
+|xref:#E1-e3[`pass:v[e3]`] |
 |===
 
 
-:relfileprefix: ../
-[#E1-e2]
 
-== xref:E1.adoc[pass:[E1]]::e2
+
+[#E1-e2]
+== xref:#E1[pass:[E1]]::e2
 
 
 
@@ -151,10 +151,10 @@ e2
 ----
 
 
-:relfileprefix: ../
-[#E1-e3]
 
-== xref:E1.adoc[pass:[E1]]::e3
+
+[#E1-e3]
+== xref:#E1[pass:[E1]]::e3
 
 
 
@@ -169,8 +169,8 @@ e3
 
 
 
-[#E2]
 
+[#E2]
 == E2
 
 
@@ -190,10 +190,10 @@ enum E2 : int;
 [,cols=2]
 |===
 |Name |Description
-|xref:E2/e4.adoc[`pass:v[e4]`] |
+|xref:#E2-e4[`pass:v[e4]`] |
 e4 brief.
 
-|xref:E2/e5.adoc[`pass:v[e5]`] |
+|xref:#E2-e5[`pass:v[e5]`] |
 e5 brief.
 
 |===
@@ -204,10 +204,10 @@ e5 brief.
 E2 description.
 
 
-:relfileprefix: ../
-[#E2-e4]
 
-== xref:E2.adoc[pass:[E2]]::e4
+
+[#E2-e4]
+== xref:#E2[pass:[E2]]::e4
 
 
 e4 brief.
@@ -229,10 +229,10 @@ e4 description.
 
 
 
-:relfileprefix: ../
-[#E2-e5]
 
-== xref:E2.adoc[pass:[E2]]::e5
+
+[#E2-e5]
+== xref:#E2[pass:[E2]]::e5
 
 
 e5 brief.
@@ -255,8 +255,8 @@ e5 description.
 
 
 
-[#E3]
 
+[#E3]
 == E3
 
 
@@ -274,15 +274,15 @@ enum E3 : char;
 [,cols=2]
 |===
 |Name |Description
-|xref:E3/e6.adoc[`pass:v[e6]`] |
-|xref:E3/e7.adoc[`pass:v[e7]`] |
+|xref:#E3-e6[`pass:v[e6]`] |
+|xref:#E3-e7[`pass:v[e7]`] |
 |===
 
 
-:relfileprefix: ../
-[#E3-e6]
 
-== xref:E3.adoc[pass:[E3]]::e6
+
+[#E3-e6]
+== xref:#E3[pass:[E3]]::e6
 
 
 
@@ -296,10 +296,10 @@ e6
 ----
 
 
-:relfileprefix: ../
-[#E3-e7]
 
-== xref:E3.adoc[pass:[E3]]::e7
+
+[#E3-e7]
+== xref:#E3[pass:[E3]]::e7
 
 
 
@@ -314,4 +314,5 @@ e7
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -1,55 +1,55 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T01.adoc[`T01`]  ¦
+¦xref:#T01[`T01`]  ¦
 
-¦xref:T02.adoc[`T02`]  ¦
+¦xref:#T02[`T02`]  ¦
 
-¦xref:T03.adoc[`T03`]  ¦
+¦xref:#T03[`T03`]  ¦
 
-¦xref:T04.adoc[`T04`]  ¦
+¦xref:#T04[`T04`]  ¦
 
-¦xref:T05.adoc[`T05`]  ¦
+¦xref:#T05[`T05`]  ¦
 
-¦xref:T06.adoc[`T06`]  ¦
+¦xref:#T06[`T06`]  ¦
 
-¦xref:T08.adoc[`T08`]  ¦
+¦xref:#T08[`T08`]  ¦
 
-¦xref:T09.adoc[`T09`]  ¦
+¦xref:#T09[`T09`]  ¦
 
-¦xref:T10.adoc[`T10`]  ¦
+¦xref:#T10[`T10`]  ¦
 
-¦xref:T11.adoc[`T11`]  ¦
+¦xref:#T11[`T11`]  ¦
 
-¦xref:T12.adoc[`T12`]  ¦
+¦xref:#T12[`T12`]  ¦
 
-¦xref:T13.adoc[`T13`]  ¦
+¦xref:#T13[`T13`]  ¦
 
-¦xref:T14.adoc[`T14`]  ¦
+¦xref:#T14[`T14`]  ¦
 
-¦xref:T15.adoc[`T15`]  ¦
+¦xref:#T15[`T15`]  ¦
 
-¦xref:T16.adoc[`T16`]  ¦
+¦xref:#T16[`T16`]  ¦
 
-¦xref:T17.adoc[`T17`]  ¦
+¦xref:#T17[`T17`]  ¦
 
-¦xref:U.adoc[`U`]  ¦
+¦xref:#U[`U`]  ¦
 
-¦xref:V.adoc[`V`]  ¦
+¦xref:#V[`V`]  ¦
 
 |===
 
 
-[#T01]
 
+[#T01]
 == T01
 
 
@@ -67,16 +67,16 @@ struct T01;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T01/f.adoc[`f`]  ¦
+¦xref:#T01-f[`f`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#T01-f]
 
-== xref:T01.adoc[pass:[T01]]::f
+
+[#T01-f]
+== xref:#T01[pass:[T01]]::f
 
 
 
@@ -98,8 +98,8 @@ f();
 
 
 
-[#T02]
 
+[#T02]
 == T02
 
 
@@ -117,16 +117,16 @@ struct T02;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T02/f.adoc[`f`]  ¦
+¦xref:#T02-f[`f`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#T02-f]
 
-== xref:T02.adoc[pass:[T02]]::f
+
+[#T02-f]
+== xref:#T02[pass:[T02]]::f
 
 
 
@@ -149,8 +149,8 @@ f();
 
 
 
-[#T03]
 
+[#T03]
 == T03
 
 
@@ -168,16 +168,16 @@ struct T03;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T03/f.adoc[`f`]  ¦
+¦xref:#T03-f[`f`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#T03-f]
 
-== xref:T03.adoc[pass:[T03]]::f
+
+[#T03-f]
+== xref:#T03[pass:[T03]]::f
 
 
 
@@ -199,8 +199,8 @@ f() &;
 
 
 
-[#T04]
 
+[#T04]
 == T04
 
 
@@ -218,16 +218,16 @@ struct T04;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T04/f.adoc[`f`]  ¦
+¦xref:#T04-f[`f`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#T04-f]
 
-== xref:T04.adoc[pass:[T04]]::f
+
+[#T04-f]
+== xref:#T04[pass:[T04]]::f
 
 
 
@@ -249,8 +249,8 @@ f() &&;
 
 
 
-[#T05]
 
+[#T05]
 == T05
 
 
@@ -268,16 +268,16 @@ struct T05;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T05/f.adoc[`f`]  ¦
+¦xref:#T05-f[`f`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#T05-f]
 
-== xref:T05.adoc[pass:[T05]]::f
+
+[#T05-f]
+== xref:#T05[pass:[T05]]::f
 
 
 
@@ -299,8 +299,8 @@ f() const;
 
 
 
-[#T06]
 
+[#T06]
 == T06
 
 
@@ -318,16 +318,16 @@ struct T06;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T06/f.adoc[`f`]  ¦
+¦xref:#T06-f[`f`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#T06-f]
 
-== xref:T06.adoc[pass:[T06]]::f
+
+[#T06-f]
+== xref:#T06[pass:[T06]]::f
 
 
 
@@ -350,8 +350,8 @@ f();
 
 
 
-[#T08]
 
+[#T08]
 == T08
 
 
@@ -369,16 +369,16 @@ struct T08;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T08/f.adoc[`f`]  ¦
+¦xref:#T08-f[`f`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#T08-f]
 
-== xref:T08.adoc[pass:[T08]]::f
+
+[#T08-f]
+== xref:#T08[pass:[T08]]::f
 
 
 
@@ -400,8 +400,8 @@ f();
 
 
 
-[#T09]
 
+[#T09]
 == T09
 
 
@@ -419,16 +419,16 @@ struct T09;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T09/f.adoc[`f`]  ¦
+¦xref:#T09-f[`f`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#T09-f]
 
-== xref:T09.adoc[pass:[T09]]::f
+
+[#T09-f]
+== xref:#T09[pass:[T09]]::f
 
 
 
@@ -450,8 +450,8 @@ f() noexcept;
 
 
 
-[#T10]
 
+[#T10]
 == T10
 
 
@@ -469,16 +469,16 @@ struct T10;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T10/f.adoc[`f`]  ¦
+¦xref:#T10-f[`f`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#T10-f]
 
-== xref:T10.adoc[pass:[T10]]::f
+
+[#T10-f]
+== xref:#T10[pass:[T10]]::f
 
 
 
@@ -500,8 +500,8 @@ f();
 
 
 
-[#T11]
 
+[#T11]
 == T11
 
 
@@ -519,16 +519,16 @@ struct T11;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T11/f.adoc[`f`]  ¦
+¦xref:#T11-f[`f`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#T11-f]
 
-== xref:T11.adoc[pass:[T11]]::f
+
+[#T11-f]
+== xref:#T11[pass:[T11]]::f
 
 
 
@@ -550,8 +550,8 @@ f();
 
 
 
-[#T12]
 
+[#T12]
 == T12
 
 
@@ -569,16 +569,16 @@ struct T12;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T12/f.adoc[`f`]  ¦
+¦xref:#T12-f[`f`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#T12-f]
 
-== xref:T12.adoc[pass:[T12]]::f
+
+[#T12-f]
+== xref:#T12[pass:[T12]]::f
 
 
 
@@ -600,8 +600,8 @@ f(...);
 
 
 
-[#T13]
 
+[#T13]
 == T13
 
 
@@ -619,16 +619,16 @@ struct T13;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T13/f.adoc[`f`]  ¦
+¦xref:#T13-f[`f`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#T13-f]
 
-== xref:T13.adoc[pass:[T13]]::f
+
+[#T13-f]
+== xref:#T13[pass:[T13]]::f
 
 
 
@@ -651,8 +651,8 @@ f();
 
 
 
-[#T14]
 
+[#T14]
 == T14
 
 
@@ -670,16 +670,16 @@ struct T14;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T14/f.adoc[`f`]  ¦
+¦xref:#T14-f[`f`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#T14-f]
 
-== xref:T14.adoc[pass:[T14]]::f
+
+[#T14-f]
+== xref:#T14[pass:[T14]]::f
 
 
 
@@ -702,8 +702,8 @@ f() = 0;
 
 
 
-[#T15]
 
+[#T15]
 == T15
 
 
@@ -721,16 +721,16 @@ struct T15;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T15/f.adoc[`f`]  ¦
+¦xref:#T15-f[`f`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#T15-f]
 
-== xref:T15.adoc[pass:[T15]]::f
+
+[#T15-f]
+== xref:#T15[pass:[T15]]::f
 
 
 
@@ -752,8 +752,8 @@ f() volatile;
 
 
 
-[#T16]
 
+[#T16]
 == T16
 
 
@@ -771,16 +771,16 @@ struct T16;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T16/f.adoc[`f`]  ¦
+¦xref:#T16-f[`f`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#T16-f]
 
-== xref:T16.adoc[pass:[T16]]::f
+
+[#T16-f]
+== xref:#T16[pass:[T16]]::f
 
 
 
@@ -803,8 +803,8 @@ f();
 
 
 
-[#T17]
 
+[#T17]
 == T17
 
 
@@ -816,22 +816,22 @@ Declared in `<mem-fn.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct T17
-    : xref:T14.adoc[T14];
+    : xref:#T14[T14];
 ----
 
 ===  Member Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:T14/f.adoc[`f`]  ¦
+¦xref:T14-f[`f`]  ¦
 |===
 
 
 
-:relfileprefix: ../
-[#T17-f]
 
-== xref:T17.adoc[pass:[T17]]::f
+
+[#T17-f]
+== xref:#T17[pass:[T17]]::f
 
 
 
@@ -854,8 +854,8 @@ f() override;
 
 
 
-[#U]
 
+[#U]
 == U
 
 
@@ -873,25 +873,25 @@ struct U;
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:U/f1.adoc[`f1`]  ¦
+¦xref:#U-f1[`f1`]  ¦
 
-¦xref:U/f3.adoc[`f3`]  ¦
+¦xref:#U-f3[`f3`]  ¦
 
 |===
 ===  Static Member Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:U/f2.adoc[`f2`]  ¦
+¦xref:#U-f2[`f2`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#U-f1]
 
-== xref:U.adoc[pass:[U]]::f1
+
+[#U-f1]
+== xref:#U[pass:[U]]::f1
 
 
 
@@ -913,10 +913,10 @@ f1(...) const volatile noexcept;
 
 
 
-:relfileprefix: ../
-[#U-f2]
 
-== xref:U.adoc[pass:[U]]::f2
+
+[#U-f2]
+== xref:#U[pass:[U]]::f2
 
 
 
@@ -939,10 +939,10 @@ f2() noexcept;
 
 
 
-:relfileprefix: ../
-[#U-f3]
 
-== xref:U.adoc[pass:[U]]::f3
+
+[#U-f3]
+== xref:#U[pass:[U]]::f3
 
 
 
@@ -965,8 +965,8 @@ f3() const volatile noexcept = 0;
 
 
 
-[#V]
 
+[#V]
 == V
 
 
@@ -978,31 +978,31 @@ Declared in `<mem-fn.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct V
-    : xref:U.adoc[U];
+    : xref:#U[U];
 ----
 
 ===  Member Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:U/f1.adoc[`f1`]  ¦
+¦xref:#U-f1[`f1`]  ¦
 
-¦xref:U/f3.adoc[`f3`]  ¦
+¦xref:U-f3[`f3`]  ¦
 |===
 ===  Static Member Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:U/f2.adoc[`f2`]  ¦
+¦xref:#U-f2[`f2`]  ¦
 
 |===
 
 
 
-:relfileprefix: ../
-[#V-f3]
 
-== xref:V.adoc[pass:[V]]::f3
+
+[#V-f3]
+== xref:#V[pass:[V]]::f3
 
 
 
@@ -1025,4 +1025,5 @@ f3() const volatile noexcept override;
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

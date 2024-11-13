@@ -1,41 +1,41 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 === Namespaces
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:N0.adoc[`N0`]  ¦
+¦xref:#N0[`N0`]  ¦
 
-¦xref:N3.adoc[`N3`]  ¦
+¦xref:#N3[`N3`]  ¦
 
-¦xref:N4.adoc[`N4`]  ¦
+¦xref:#N4[`N4`]  ¦
 
-¦xref:N7.adoc[`N7`]  ¦
+¦xref:#N7[`N7`]  ¦
 
 |===
 
 
-[#N0]
 
+[#N0]
 == N0
 
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:N0/f0.adoc[`f0`]  ¦
+¦xref:#N0-f0[`f0`]  ¦
 
 |===
 
-:relfileprefix: ../
-[#N0-f0]
 
-== xref:N0.adoc[pass:[N0]]::f0
+
+[#N0-f0]
+== xref:#N0[pass:[N0]]::f0
 
 
 
@@ -57,43 +57,43 @@ f0();
 
 
 
-[#N3]
 
+[#N3]
 == N3
 
 
 
-[#N4]
 
+[#N4]
 == N4
 
 === Namespaces
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:N4/N5.adoc[`N5`]  ¦
+¦xref:#N4-N5[`N5`]  ¦
 
-¦xref:N4/N6.adoc[`N6`]  ¦
+¦xref:#N4-N6[`N6`]  ¦
 
 |===
 
-:relfileprefix: ../
+
+
 [#N4-N5]
-
-== xref:N4.adoc[pass:[N4]]::N5
+== xref:#N4[pass:[N4]]::N5
 
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:N4/N5/f1.adoc[`f1`]  ¦
+¦xref:#N4-N5-f1[`f1`]  ¦
 
 |===
 
-:relfileprefix: ../../
+
+
 [#N4-N5-f1]
-
-== xref:N4.adoc[pass:[N4]]::xref:N4/N5.adoc[pass:[N5]]::f1
+== xref:#N4[pass:[N4]]::xref:#N4-N5[pass:[N5]]::f1
 
 
 
@@ -114,23 +114,23 @@ f1();
 
 
 
-:relfileprefix: ../
-[#N4-N6]
 
-== xref:N4.adoc[pass:[N4]]::N6
+
+[#N4-N6]
+== xref:#N4[pass:[N4]]::N6
 
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:N4/N6/f1.adoc[`f1`]  ¦
+¦xref:#N4-N6-f1[`f1`]  ¦
 
 |===
 
-:relfileprefix: ../../
-[#N4-N6-f1]
 
-== xref:N4.adoc[pass:[N4]]::xref:N4/N6.adoc[pass:[N6]]::f1
+
+[#N4-N6-f1]
+== xref:#N4[pass:[N4]]::xref:#N4-N6[pass:[N6]]::f1
 
 
 
@@ -143,6 +143,7 @@ Declared in `<filters/blacklist_0.cpp>`
 void
 f1();
 ----
+
 
 
 
@@ -153,42 +154,41 @@ f1();
 
 
 [#N7]
-
 == N7
 
 === Namespaces
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:N7/N8.adoc[`N8`]  ¦
+¦xref:#N7-N8[`N8`]  ¦
 
-¦xref:N7/N9.adoc[`N9`]  ¦
+¦xref:#N7-N9[`N9`]  ¦
 
 |===
 
-:relfileprefix: ../
+
+
 [#N7-N8]
+== xref:#N7[pass:[N7]]::N8
 
-== xref:N7.adoc[pass:[N7]]::N8
 
 
-:relfileprefix: ../
+
 [#N7-N9]
-
-== xref:N7.adoc[pass:[N7]]::N9
+== xref:#N7[pass:[N7]]::N9
 
 === Functions
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:N7/N9/g0.adoc[`g0`]  ¦
+¦xref:#N7-N9-g0[`g0`]  ¦
 
 |===
 
-:relfileprefix: ../../
-[#N7-N9-g0]
 
-== xref:N7.adoc[pass:[N7]]::xref:N7/N9.adoc[pass:[N9]]::g0
+
+[#N7-N9-g0]
+== xref:#N7[pass:[N7]]::xref:#N7-N9[pass:[N9]]::g0
 
 
 
@@ -210,4 +210,5 @@ g0();
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

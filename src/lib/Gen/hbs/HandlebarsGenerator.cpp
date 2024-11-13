@@ -16,6 +16,7 @@
 #include "MultiPageVisitor.hpp"
 #include "SinglePageVisitor.hpp"
 #include <mrdocs/Support/Path.hpp>
+#include <sstream>
 
 namespace clang {
 namespace mrdocs {
@@ -98,30 +99,25 @@ buildOne(
     auto ex = createExecutors(domCorpus);
     MRDOCS_CHECK_OR(ex, ex.error());
 
-    // Render the header
-    std::vector<Error> errors;
-    ex->async([&os](Builder& builder) {
-        auto pageText = builder.renderSinglePageHeader().value();
-        os.write(pageText.data(), pageText.size());
-    });
-    errors = ex->wait();
-    MRDOCS_CHECK_OR(errors.empty(), {errors});
-
     // Visit the corpus
-    SinglePageVisitor visitor(*ex, corpus, os);
+    std::stringstream ss;
+    std::ostream& oss = corpus.config->embedded ? os : ss;
+    SinglePageVisitor visitor(*ex, corpus, oss);
     visitor(corpus.globalNamespace());
 
     // Wait for all executors to finish and check errors
-    errors = ex->wait();
+    auto errors = ex->wait();
     MRDOCS_CHECK_OR(errors.empty(), errors);
 
-    // Render the footer
-    ex->async([&os](Builder& builder) {
-        auto pageText = builder.renderSinglePageFooter().value();
-        os.write(pageText.data(), pageText.size());
-    });
-    errors = ex->wait();
-    MRDOCS_CHECK_OR(errors.empty(), {errors});
+    // Wrap page
+    if (!corpus.config->embedded)
+    {
+        ex->async([&os, &ss](Builder& builder) {
+            builder.wrapPage(os, ss);
+        });
+        errors = ex->wait();
+        MRDOCS_CHECK_OR(errors.empty(), {errors});
+    }
 
     return Error::success();
 }

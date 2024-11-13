@@ -1,35 +1,35 @@
 = Reference
 :mrdocs:
 
-[#index]
 
+[#index]
 == Global namespace
 
 ===  Types
 [cols=2,separator=¦]
 |===
 ¦Name ¦Description
-¦xref:A.adoc[`A`]  ¦
+¦xref:#A[`A`]  ¦
 
-¦xref:B.adoc[`B`]  ¦
+¦xref:#B[`B`]  ¦
 
-¦xref:Ba.adoc[`Ba`]  ¦
+¦xref:#Ba[`Ba`]  ¦
 
-¦xref:Bx.adoc[`Bx`]  ¦
+¦xref:#Bx[`Bx`]  ¦
 
-¦xref:a.adoc[`a`]  ¦
+¦xref:#a[`a`]  ¦
 
-¦xref:b.adoc[`b`]  ¦
+¦xref:#b[`b`]  ¦
 
-¦xref:bA.adoc[`bA`]  ¦
+¦xref:#bA[`bA`]  ¦
 
-¦xref:ba.adoc[`ba`]  ¦
+¦xref:#ba[`ba`]  ¦
 
 |===
 
 
-[#B]
 
+[#B]
 == B
 
 
@@ -47,8 +47,8 @@ struct B;
 
 
 
-[#b]
 
+[#b]
 == b
 
 
@@ -66,8 +66,8 @@ struct b;
 
 
 
-[#A]
 
+[#A]
 == A
 
 
@@ -85,8 +85,8 @@ struct A;
 
 
 
-[#a]
 
+[#a]
 == a
 
 
@@ -104,8 +104,8 @@ struct a;
 
 
 
-[#Ba]
 
+[#Ba]
 == Ba
 
 
@@ -123,8 +123,8 @@ struct Ba;
 
 
 
-[#bA]
 
+[#bA]
 == bA
 
 
@@ -142,8 +142,8 @@ struct bA;
 
 
 
-[#Bx]
 
+[#Bx]
 == Bx
 
 
@@ -161,8 +161,8 @@ struct Bx;
 
 
 
-[#ba]
 
+[#ba]
 == ba
 
 
@@ -180,4 +180,5 @@ struct ba;
 
 
 
-Created with MrDocs
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
