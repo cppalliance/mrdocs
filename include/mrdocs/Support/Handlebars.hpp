@@ -268,7 +268,9 @@ public:
         @param os The output stream to write to
      */
     template <detail::LHROStreamable Os>
-    requires std::is_convertible_v<Os*, std::ostream*>
+    requires
+        std::is_convertible_v<Os*, std::ostream*> &&
+        (!detail::StdLHROStreamable<Os>)
     OutputRef( Os& os )
         : out_( &os )
         , fptr_( &write_to_output<Os> )
