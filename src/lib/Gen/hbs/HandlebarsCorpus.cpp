@@ -116,8 +116,13 @@ getXref(Info const& I) const
 {
     bool multipage = getCorpus().config->multipage;
     // use '/' as the seperator for multipage, and '-' for single-page
-    std::string xref = names_.getQualified(
-        I.id, multipage ? '/' : '-');
+    std::string xref;
+    if(!multipage)
+    {
+        xref += "#";
+    }
+    char delim = multipage ? '/' : '-';
+    xref += names_.getQualified(I.id, delim);
     // add the file extension if in multipage mode
     if(multipage)
     {
