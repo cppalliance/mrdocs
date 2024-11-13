@@ -47,13 +47,22 @@ public:
     dom::Value createContext(Info const& I);
     dom::Value createContext(OverloadSet const& OS);
 
+    /** Render a Handlebars template from the templates directory.
+     */
     Expected<std::string>
     callTemplate(
         std::string_view name,
         dom::Value const& context);
 
-    Expected<std::string> renderSinglePageHeader();
-    Expected<std::string> renderSinglePageFooter();
+    /** Render the header for a single page.
+     */
+    Expected<std::string>
+    renderSinglePageHeader();
+
+    /** Render the footer for a single page.
+     */
+    Expected<std::string>
+    renderSinglePageFooter();
 
     /** Render the contents for a symbol.
      */

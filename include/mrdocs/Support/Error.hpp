@@ -606,6 +606,14 @@ namespace detail
 #    define MRDOCS_CHECK_GET_MACRO(_1, _2, NAME, ...) NAME
 #    define MRDOCS_CHECK(...) \
         MRDOCS_CHECK_GET_MACRO(__VA_ARGS__, MRDOCS_CHECK_MSG, MRDOCS_CHECK_VOID)(__VA_ARGS__)
+
+#    define MRDOCS_CHECK_OR(var, expr)                         \
+        if (detail::failed(var)) {                        \
+            return expr;         \
+        }                                                  \
+        void(0)
+
+
 #endif
 
 

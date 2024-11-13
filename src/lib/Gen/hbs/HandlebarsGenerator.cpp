@@ -43,12 +43,6 @@ createExecutors(
     return group;
 }
 
-//------------------------------------------------
-//
-// HandlebarsGenerator
-//
-//------------------------------------------------
-
 /** Return loaded Options from a configuration.
 */
 Options
@@ -79,6 +73,27 @@ loadOptions(
     return opt;
 }
 
+HandlebarsCorpus
+createDomCorpus(
+    HandlebarsGenerator const& gen,
+    Corpus const& corpus)
+{
+    auto options = loadOptions(gen.fileExtension(), corpus.config);
+    return {
+        corpus,
+        std::move(options),
+        gen.fileExtension(),
+        [&gen](HandlebarsCorpus const& c, doc::Node const& n) {
+            return gen.toString(c, n);
+        }};
+}
+
+//------------------------------------------------
+//
+// HandlebarsGenerator
+//
+//------------------------------------------------
+
 Error
 HandlebarsGenerator::
 build(
@@ -90,28 +105,18 @@ build(
         return Generator::build(outputPath, corpus);
     }
 
-    Options options = loadOptions(fileExtension(), corpus.config);
-    HandlebarsCorpus domCorpus(
-        corpus,
-        std::move(options),
-        fileExtension(),
-        [this](HandlebarsCorpus const& c, doc::Node const& n) {
-            return this->toString(c, n);
-        });
+    // Create corpus and executors
+    HandlebarsCorpus domCorpus = createDomCorpus(*this, corpus);
     auto ex = createExecutors(domCorpus);
-    if (!ex)
-    {
-        return ex.error();
-    }
+    MRDOCS_CHECK_OR(ex, ex.error());
 
+    // Visit the corpus
     MultiPageVisitor visitor(*ex, outputPath, corpus);
     visitor(corpus.globalNamespace());
 
+    // Wait for all executors to finish and check errors
     auto errors = ex->wait();
-    if (!errors.empty())
-    {
-        return Error(errors);
-    }
+    MRDOCS_CHECK_OR(errors.empty(), errors);
     return Error::success();
 }
 
@@ -121,47 +126,35 @@ buildOne(
     std::ostream& os,
     Corpus const& corpus) const
 {
-    auto options = loadOptions(fileExtension(), corpus.config);
-
-    HandlebarsCorpus domCorpus(
-        corpus,
-        std::move(options),
-        fileExtension(),
-        [this](HandlebarsCorpus const& c, doc::Node const& n) {
-            return this->toString(c, n);
-        });
+    // Create corpus and executors
+    HandlebarsCorpus domCorpus = createDomCorpus(*this, corpus);
     auto ex = createExecutors(domCorpus);
-    if (!ex)
-    {
-        return ex.error();
-    }
+    MRDOCS_CHECK_OR(ex, ex.error());
 
+    // Render the header
     std::vector<Error> errors;
-    ex->async(
-        [&os](Builder& builder)
-        {
-            auto pageText = builder.renderSinglePageHeader().value();
-            os.write(pageText.data(), pageText.size());
-        });
+    ex->async([&os](Builder& builder) {
+        auto pageText = builder.renderSinglePageHeader().value();
+        os.write(pageText.data(), pageText.size());
+    });
     errors = ex->wait();
-    if(! errors.empty())
-        return {errors};
+    MRDOCS_CHECK_OR(errors.empty(), {errors});
 
+    // Visit the corpus
     SinglePageVisitor visitor(*ex, corpus, os);
     visitor(corpus.globalNamespace());
-    errors = ex->wait();
-    if(! errors.empty())
-        return {errors};
 
-    ex->async(
-        [&os](Builder& builder)
-        {
-            auto pageText = builder.renderSinglePageFooter().value();
-            os.write(pageText.data(), pageText.size());
-        });
+    // Wait for all executors to finish and check errors
     errors = ex->wait();
-    if(! errors.empty())
-        return {errors};
+    MRDOCS_CHECK_OR(errors.empty(), errors);
+
+    // Render the footer
+    ex->async([&os](Builder& builder) {
+        auto pageText = builder.renderSinglePageFooter().value();
+        os.write(pageText.data(), pageText.size());
+    });
+    errors = ex->wait();
+    MRDOCS_CHECK_OR(errors.empty(), {errors});
 
     return Error::success();
 }
