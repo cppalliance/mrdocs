@@ -56,6 +56,17 @@ build(
 
 Error
 Generator::
+build(Corpus const& corpus) const
+{
+    std::string absOutput = files::normalizePath(
+        files::makeAbsolute(
+            corpus.config->output,
+            corpus.config->configDir));
+    return build(absOutput, corpus);
+}
+
+Error
+Generator::
 buildOne(
     std::string_view fileName,
     Corpus const& corpus) const
