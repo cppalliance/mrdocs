@@ -99,8 +99,6 @@ public:
         @param corpus The symbols to emit. The
         generator may modify the contents of
         the object before returning.
-
-        @param config The configuration to use.
     */
     MRDOCS_DECL
     virtual
@@ -108,6 +106,22 @@ public:
     build(
         std::string_view outputPath,
         Corpus const& corpus) const;
+
+    /** Build reference documentation for the corpus.
+
+        This function invokes the generator to emit
+        the documentation using the corpus configuration
+        options to determine the output location.
+
+        @return The error, if any occurred.
+
+        @param corpus The symbols to emit. The
+        generator may modify the contents of
+        the object before returning.
+    */
+    MRDOCS_DECL
+    Error
+    build(Corpus const& corpus) const;
 
     /** Build reference documentation for the corpus.
 

@@ -200,12 +200,8 @@ DoGenerateAction(
     // --------------------------------------------------------------
     // Normalize outputPath path
     MRDOCS_CHECK(settings.output, "The output path argument is missing");
-    std::string absOutput = files::normalizePath(
-        files::makeAbsolute(
-            settings.output,
-            (*config)->configDir));
     report::info("Generating docs\n");
-    MRDOCS_TRY(generator.build(absOutput, *corpus));
+    MRDOCS_TRY(generator.build(*corpus));
 
     // --------------------------------------------------------------
     //
