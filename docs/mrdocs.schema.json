@@ -168,6 +168,12 @@
       "title": "Include files to extract",
       "type": "object"
     },
+    "legible-names": {
+      "default": true,
+      "description": "Use legible names for ids in the documentation. When set to true, MrDocs uses legible names for symbols in the documentation. These are symbols that are legible but still safe for URLs. When the option is set to false, MrDocs uses a hash of the symbol ID.",
+      "title": "Use legible names",
+      "type": "boolean"
+    },
     "multipage": {
       "default": true,
       "description": "Generates a multipage documentation. The output directory must be a directory. This option acts as a hint to the generator to create a multipage documentation. Whether the hint is followed or not depends on the generator.",

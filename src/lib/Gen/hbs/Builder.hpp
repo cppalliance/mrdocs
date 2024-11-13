@@ -12,7 +12,6 @@
 #ifndef MRDOCS_LIB_GEN_HBS_BUILDER_HPP
 #define MRDOCS_LIB_GEN_HBS_BUILDER_HPP
 
-#include "Options.hpp"
 #include "HandlebarsCorpus.hpp"
 #include "lib/Support/Radix.hpp"
 #include <mrdocs/Metadata/DomCorpus.hpp>
@@ -25,7 +24,7 @@ namespace clang {
 namespace mrdocs {
 namespace hbs {
 
-/** Builds reference output.
+/** Builds reference output as a string for any Info type
 
     This contains all the state information
     for a single thread to generate output.
@@ -35,34 +34,14 @@ class Builder
     js::Context ctx_;
     Handlebars hbs_;
 
-    std::string getRelPrefix(std::size_t depth);
+    std::string
+    getRelPrefix(std::size_t depth);
 
 public:
     HandlebarsCorpus const& domCorpus;
 
     explicit
-    Builder(
-        HandlebarsCorpus const& corpus);
-
-    dom::Value createContext(Info const& I);
-    dom::Value createContext(OverloadSet const& OS);
-
-    /** Render a Handlebars template from the templates directory.
-     */
-    Expected<std::string>
-    callTemplate(
-        std::string_view name,
-        dom::Value const& context);
-
-    /** Render the header for a single page.
-     */
-    Expected<std::string>
-    renderSinglePageHeader();
-
-    /** Render the footer for a single page.
-     */
-    Expected<std::string>
-    renderSinglePageFooter();
+    Builder(HandlebarsCorpus const& corpus);
 
     /** Render the contents for a symbol.
      */
@@ -74,6 +53,38 @@ public:
      */
     Expected<std::string>
     operator()(OverloadSet const&);
+
+    /** Render the header for a single page.
+     */
+    Expected<std::string>
+    renderSinglePageHeader();
+
+    /** Render the footer for a single page.
+     */
+    Expected<std::string>
+    renderSinglePageFooter();
+
+private:
+    /** Create a handlebars context with the symbol and helper information.
+
+        The helper information includes all information from the
+        config file, plus the symbol information.
+
+        It also includes a sectionref helper that describes
+        the section where the symbol is located.
+     */
+    dom::Value createContext(Info const& I);
+
+    /// @copydoc createContext(Info const&)
+    dom::Value createContext(OverloadSet const& OS);
+
+    /** Render a Handlebars template from the templates directory.
+     */
+    Expected<std::string>
+    callTemplate(
+        std::string_view name,
+        dom::Value const& context);
+
 };
 
 } // hbs

@@ -14,7 +14,6 @@
 
 #include <mrdocs/Platform.hpp>
 #include "lib/Support/LegibleNames.hpp"
-#include "Options.hpp"
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <optional>
 
@@ -32,9 +31,6 @@ namespace hbs {
 class HandlebarsCorpus : public DomCorpus
 {
 public:
-    /** Options for the Handlebars corpus. */
-    Options options;
-
     /** Legible names for the Handlebars corpus. */
     LegibleNames names_;
 
@@ -49,16 +45,15 @@ public:
         Initializes the HandlebarsCorpus with the given corpus and options.
 
         @param corpus The base corpus.
-        @param opts Options for the Handlebars corpus.
+        @param fileExtension The file extension for the generated files.
+        @param toStringFn The function to convert a Javadoc node to a string.
     */
     HandlebarsCorpus(
         Corpus const& corpus,
-        Options&& opts,
         std::string_view fileExtension,
         std::function<std::string(HandlebarsCorpus const&, doc::Node const&)> toStringFn)
         : DomCorpus(corpus)
-        , options(std::move(opts))
-        , names_(corpus, options.legible_names)
+        , names_(corpus, corpus.config->legibleNames)
         , fileExtension(fileExtension)
         , toStringFn(std::move(toStringFn))
     {

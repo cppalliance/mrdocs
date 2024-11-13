@@ -15,7 +15,6 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Generator.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
-#include <lib/Gen/hbs/Options.hpp>
 #include <lib/Gen/hbs/HandlebarsCorpus.hpp>
 #include <utility>
 

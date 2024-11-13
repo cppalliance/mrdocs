@@ -13,7 +13,6 @@
 #include "HandlebarsGenerator.hpp"
 #include "HandlebarsCorpus.hpp"
 #include "Builder.hpp"
-#include "Options.hpp"
 #include "MultiPageVisitor.hpp"
 #include "SinglePageVisitor.hpp"
 #include <mrdocs/Support/Path.hpp>
@@ -43,45 +42,13 @@ createExecutors(
     return group;
 }
 
-/** Return loaded Options from a configuration.
-*/
-Options
-loadOptions(
-    std::string_view fileExtension,
-    Config const& config)
-{
-    Options opt;
-    dom::Value domOpts = config.object().get("generator").get(fileExtension);
-    if (domOpts.get("legible-names").isBoolean())
-    {
-        opt.legible_names = domOpts.get("legible-names").getBool();
-    }
-    if (domOpts.get("template-dir").isString())
-    {
-        opt.template_dir = domOpts.get("template-dir").getString();
-        opt.template_dir = files::makeAbsolute(
-            opt.template_dir,
-            config->configDir);
-    }
-    else
-    {
-        opt.template_dir = files::appendPath(
-            config->addons,
-            "generator",
-            fileExtension);
-    }
-    return opt;
-}
-
 HandlebarsCorpus
 createDomCorpus(
     HandlebarsGenerator const& gen,
     Corpus const& corpus)
 {
-    auto options = loadOptions(gen.fileExtension(), corpus.config);
     return {
         corpus,
-        std::move(options),
         gen.fileExtension(),
         [&gen](HandlebarsCorpus const& c, doc::Node const& n) {
             return gen.toString(c, n);
