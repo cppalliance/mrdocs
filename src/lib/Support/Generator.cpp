@@ -11,6 +11,7 @@
 
 #include "lib/AST/ParseJavadoc.hpp"
 #include "lib/Support/Path.hpp"
+#include "lib/Support/Chrono.hpp"
 #include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Generator.hpp>
 #include <llvm/ADT/SmallString.h>
@@ -58,11 +59,20 @@ Error
 Generator::
 build(Corpus const& corpus) const
 {
+    using clock_type = std::chrono::steady_clock;
+    auto start_time = clock_type::now();
     std::string absOutput = files::normalizePath(
         files::makeAbsolute(
             corpus.config->output,
             corpus.config->configDir));
-    return build(absOutput, corpus);
+    auto err = build(absOutput, corpus);
+    if (!err.failed())
+    {
+        report::info(
+            "Generated documentation in {}",
+            format_duration(clock_type::now() - start_time));
+    }
+    return err;
 }
 
 Error

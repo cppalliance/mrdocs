@@ -15,6 +15,7 @@
 #include "lib/Metadata/Finalize.hpp"
 #include "lib/Lib/Lookup.hpp"
 #include "lib/Support/Error.hpp"
+#include "lib/Support/Chrono.hpp"
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <llvm/ADT/STLExtras.h>
@@ -77,26 +78,6 @@ find(
 }
 
 //------------------------------------------------
-
-namespace {
-template <class Rep, class Period>
-std::string
-format_duration(
-    std::chrono::duration<Rep, Period> delta)
-{
-    auto delta_ms = std::chrono::duration_cast<
-        std::chrono::milliseconds>(delta).count();
-    if (delta_ms < 1000)
-    {
-        return fmt::format("{} ms", delta_ms);
-    }
-    else
-    {
-        double const delta_s = static_cast<double>(delta_ms) / 1000.0;
-        return fmt::format("{:.02f} s", delta_s);
-    }
-}
-}
 
 mrdocs::Expected<std::unique_ptr<Corpus>>
 CorpusImpl::
