@@ -170,8 +170,10 @@ std::string
 Builder::
 getRelPrefix(std::size_t depth)
 {
+    Config const& config = domCorpus->config;
+
     std::string rel_prefix;
-    if(! depth || ! domCorpus.options.legible_names ||
+    if(! depth || ! config->legibleNames ||
         ! domCorpus->config->multipage)
         return rel_prefix;
     --depth;
@@ -208,6 +210,7 @@ createContext(
     const Info& Parent = domCorpus->get(OS.Parent);
     props.emplace_back("relfileprefix",
         getRelPrefix(Parent.Namespace.size() + 1));
+    props.emplace_back("config", domCorpus->config.object());
     props.emplace_back("sectionref",
         domCorpus.names_.getQualified(OS, '-'));
     return dom::Object(std::move(props));
@@ -232,6 +235,7 @@ operator()(OverloadSet const& OS)
         createContext(OS));
 }
 
+// Define Builder::operator() for each Info type
 #define DEFINE(T) template Expected<std::string> \
     Builder::operator()<T>(T const&)
 
