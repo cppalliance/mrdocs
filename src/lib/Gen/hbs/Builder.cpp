@@ -75,12 +75,6 @@ Builder(
             return {};
         }).maybeThrow();
 
-    hbs_.registerHelper(
-        "is_multipage",
-        dom::makeInvocable([res = config->multipage]() -> Expected<dom::Value> {
-        return res;
-    }));
-
     hbs_.registerHelper("primary_location",
         dom::makeInvocable([](dom::Value const& v) ->
             dom::Value

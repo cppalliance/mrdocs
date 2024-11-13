@@ -1,9 +1,9 @@
 {{!-- record --}}
-={{#unless is_multipage}}={{/unless}} {{#if symbol.name}}{{>types/nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}Unnamed class{{/if}}
+={{#unless @root.config.multipage}}={{/unless}} {{#if symbol.name}}{{>types/nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}Unnamed class{{/if}}
 
 {{symbol.doc.brief}}
 
-=={{#unless is_multipage}}={{/unless}} Synopsis
+=={{#unless @root.config.multipage}}={{/unless}} Synopsis
 
 {{>types/source dcl=(primary_location symbol)}}
 
@@ -19,14 +19,14 @@
 {{/with}}
 
 {{#if symbol.doc.description}}
-=={{#unless is_multipage}}={{/unless}} Description
+=={{#unless @root.config.multipage}}={{/unless}} Description
 
 {{symbol.doc.description}}
 
 {{/if}}
 
 {{#if symbol.doc.tparams}}
-=={{#unless is_multipage}}={{/unless}} Template Parameters
+=={{#unless @root.config.multipage}}={{/unless}} Template Parameters
 
 |===
 | Name | Description
@@ -40,7 +40,7 @@
 {{/if}}
 
 {{#if symbol.doc.see}}
-=={{#unless is_multipage}}={{/unless}} See Also
+=={{#unless @root.config.multipage}}={{/unless}} See Also
 
 {{#each symbol.doc.see}}
 {{.}}

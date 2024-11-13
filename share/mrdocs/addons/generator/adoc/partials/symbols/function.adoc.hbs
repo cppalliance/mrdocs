@@ -1,9 +1,9 @@
 {{!-- function --}}
-={{#unless is_multipage}}={{/unless}} {{>types/nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}
+={{#unless @root.config.multipage}}={{/unless}} {{>types/nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}
 
 {{symbol.doc.brief}}
 
-=={{#unless is_multipage}}={{/unless}} Synopsis
+=={{#unless @root.config.multipage}}={{/unless}} Synopsis
 
 {{>types/source dcl=(primary_location symbol)}}
 
@@ -13,14 +13,14 @@
 ----
 
 {{#if symbol.doc.description}}
-=={{#unless is_multipage}}={{/unless}} Description
+=={{#unless @root.config.multipage}}={{/unless}} Description
 
 {{symbol.doc.description}}
 
 {{/if}}
 
 {{#if symbol.doc.exceptions}}
-=={{#unless is_multipage}}={{/unless}} Exceptions
+=={{#unless @root.config.multipage}}={{/unless}} Exceptions
 
 |===
 | Name | Thrown on
@@ -34,14 +34,14 @@
 {{/if}}
 
 {{#if symbol.doc.returns}}
-=={{#unless is_multipage}}={{/unless}} Return Value
+=={{#unless @root.config.multipage}}={{/unless}} Return Value
 
 {{symbol.doc.returns}}
 
 {{/if}}
 
 {{#if symbol.doc.tparams}}
-=={{#unless is_multipage}}={{/unless}} Template Parameters
+=={{#unless @root.config.multipage}}={{/unless}} Template Parameters
 
 |===
 | Name | Description
@@ -55,7 +55,7 @@
 {{/if}}
 
 {{#if symbol.doc.params}}
-=={{#unless is_multipage}}={{/unless}} Parameters
+=={{#unless @root.config.multipage}}={{/unless}} Parameters
 
 |===
 | Name | Description {{! TODO: | Type? }}
@@ -69,7 +69,7 @@
 {{/if}}
 
 {{#if symbol.doc.preconditions}}
-=={{#unless is_multipage}}={{/unless}} Preconditions
+=={{#unless @root.config.multipage}}={{/unless}} Preconditions
 
 {{#each symbol.doc.preconditions}}
 {{.}}
@@ -78,7 +78,7 @@
 {{/if}}
 
 {{#if symbol.doc.postconditions}}
-=={{#unless is_multipage}}={{/unless}} Postconditions
+=={{#unless @root.config.multipage}}={{/unless}} Postconditions
 
 {{#each symbol.doc.postconditions}}
 {{.}}
@@ -87,7 +87,7 @@
 {{/if}}
 
 {{#if symbol.doc.see}}
-=={{#unless is_multipage}}={{/unless}} See Also
+=={{#unless @root.config.multipage}}={{/unless}} See Also
 
 {{#each symbol.doc.see}}
 {{.}}
