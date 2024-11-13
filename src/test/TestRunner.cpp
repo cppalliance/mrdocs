@@ -285,6 +285,7 @@ checkPath(
     // Check for a directory-wide config
     Config::Settings dirSettings;
     testArgs.apply(dirSettings, dirs_, argv);
+    dirSettings.multipage = false;
     dirSettings.sourceRoot = files::appendPath(inputPath, ".");
     dirSettings.stdlibIncludes.insert(
         dirSettings.stdlibIncludes.end(),
