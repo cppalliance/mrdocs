@@ -99,25 +99,36 @@ buildOne(
     auto ex = createExecutors(domCorpus);
     MRDOCS_CHECK_OR(ex, ex.error());
 
-    // Visit the corpus
-    std::stringstream ss;
-    std::ostream& oss = corpus.config->embedded ? os : ss;
-    SinglePageVisitor visitor(*ex, corpus, oss);
-    visitor(corpus.globalNamespace());
-
-    // Wait for all executors to finish and check errors
-    auto errors = ex->wait();
-    MRDOCS_CHECK_OR(errors.empty(), errors);
-
-    // Wrap page
-    if (!corpus.config->embedded)
+    // Embedded mode
+    if (corpus.config->embedded)
     {
-        ex->async([&os, &ss](Builder& builder) {
-            builder.wrapPage(os, ss);
-        });
-        errors = ex->wait();
-        MRDOCS_CHECK_OR(errors.empty(), {errors});
+        // Visit the corpus
+        SinglePageVisitor visitor(*ex, corpus, os);
+        visitor(corpus.globalNamespace());
+
+        // Wait for all executors to finish and check errors
+        auto errors = ex->wait();
+        MRDOCS_CHECK_OR(errors.empty(), errors);
+
+        return Error::success();
     }
+
+    // Wrapped mode
+    Builder inlineBuilder(domCorpus);
+    auto exp = inlineBuilder.renderWrapped(os, [&]() -> Error {
+        // This helper will write contents directly to ostream
+        SinglePageVisitor visitor(*ex, corpus, os);
+        visitor(corpus.globalNamespace());
+
+        // Wait for all executors to finish and check errors
+        auto errors = ex->wait();
+        MRDOCS_CHECK_OR(errors.empty(), errors);
+
+        return Error::success();
+    });
+
+    // Check for errors in the wrapping process
+    MRDOCS_CHECK_OR(exp, exp.error());
 
     return Error::success();
 }

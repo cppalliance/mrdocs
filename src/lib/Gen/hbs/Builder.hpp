@@ -44,24 +44,53 @@ public:
     Builder(HandlebarsCorpus const& corpus);
 
     /** Render the contents for a symbol.
+
+        If the output is single page or embedded,
+        this function renders the index template
+        with the symbol.
+
+        If the output is multi-page and not embedded,
+        this function renders the wrapper template
+        with the index template as the contents.
      */
     template<class T>
     Expected<std::string>
     operator()(T const&);
 
-    /** Render the contents for an overload set.
-     */
+    /// @copydoc operator()(T const&)
     Expected<std::string>
     operator()(OverloadSet const&);
 
-    /** Wrap the contents of a page in the page template.
+    /** Render the contents in the wrapper layout.
+
+        This function will render the contents
+        of the wrapper template.
+
+        When the {{contents}} are rendered in the
+        wrapper template, the specified function
+        will be executed to render the contents
+        of the page.
+
      */
     Expected<void>
-    wrapPage(
-        std::ostream& out,
-        std::istream& in);
+    renderWrapped(std::ostream& os, std::function<Error()> contentsCb);
 
 private:
+    /** The directory with the all templates.
+     */
+    std::string
+    templatesDir() const;
+
+    /** A subdirectory of the templates dir
+     */
+    std::string
+    templatesDir(std::string_view subdir) const;
+
+    /** The directory with the layout templates.
+     */
+    std::string
+    layoutDir() const;
+
     /** Create a handlebars context with the symbol and helper information.
 
         The helper information includes all information from the
