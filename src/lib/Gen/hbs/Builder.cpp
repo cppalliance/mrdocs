@@ -35,11 +35,8 @@ Builder(
 {
     namespace fs = std::filesystem;
 
-    Config const& config = domCorpus->config;
-
     // load partials
-    std::string partialsPath = files::appendPath(
-        config->addons, "generator", domCorpus.fileExtension, "partials");
+    std::string partialsPath = templatesDir("partials");
     forEachFile(partialsPath, true,
         [&](std::string_view pathName) -> Error
         {
@@ -60,8 +57,7 @@ Builder(
         }).maybeThrow();
 
     // Load JavaScript helpers
-    std::string helpersPath = files::appendPath(
-        config->addons, "generator", domCorpus.fileExtension, "helpers");
+    std::string helpersPath = templatesDir("helpers");
     forEachFile(helpersPath, true,
         [&](std::string_view pathName)-> Expected<void>
         {
@@ -126,11 +122,7 @@ callTemplate(
     std::string_view name,
     dom::Value const& context)
 {
-    Config const& config = domCorpus->config;
-
-    auto layoutDir = files::appendPath(config->addons,
-            "generator", domCorpus.fileExtension, "layouts");
-    auto pathName = files::appendPath(layoutDir, name);
+    auto pathName = files::appendPath(layoutDir(), name);
     MRDOCS_TRY(auto fileText, files::getFileText(pathName));
     HandlebarsOptions options;
     options.noEscape = true;
@@ -244,38 +236,66 @@ operator()(OverloadSet const& OS)
 
 Expected<void>
 Builder::
-wrapPage(
-    std::ostream& out,
-    std::istream& in)
+renderWrapped(std::ostream& os, std::function<Error()> contentsCb)
 {
-    auto const wrapperFile = fmt::format("wrapper.{}.hbs", domCorpus.fileExtension);
+    auto const wrapperFile = fmt::format(
+        "wrapper.{}.hbs", domCorpus.fileExtension);
     dom::Object ctx;
-    ctx.set("contents", dom::makeInvocable([&in](
-         dom::Value const& options) -> Expected<dom::Value>
+    ctx.set("contents", dom::makeInvocable([&](
+        dom::Value const& options) -> Expected<dom::Value>
     {
-        // Helper to write contents directly to stream
-        // AFREITAS: custom functions should set options["write"]
-        // to avoid creating a string.
-        return std::string(
-            std::istreambuf_iterator<char>(in),
-            std::istreambuf_iterator<char>());
+        Error e = contentsCb();
+        if (e.failed())
+        {
+            return Unexpected(e);
+        }
+        return {};
     }));
-    // Render directly to ostream
-    Config const& config = domCorpus->config;
-    auto layoutDir = files::appendPath(config->addons,
-        "generator", domCorpus.fileExtension, "layouts");
-    auto pathName = files::appendPath(layoutDir, wrapperFile);
+
+    // Render the wrapper directly to ostream
+    auto pathName = files::appendPath(layoutDir(), wrapperFile);
     MRDOCS_TRY(auto fileText, files::getFileText(pathName));
     HandlebarsOptions options;
     options.noEscape = true;
-    OutputRef outRef(out);
+    OutputRef outRef(os);
     Expected<void, HandlebarsError> exp =
-        hbs_.try_render_to(outRef, fileText, ctx, options);
+        hbs_.try_render_to(
+            outRef, fileText, ctx, options);
     if (!exp)
     {
-        return Unexpected(Error(exp.error().what()));
+        Error(exp.error().what()).Throw();
     }
     return {};
+}
+
+std::string
+Builder::
+layoutDir() const
+{
+    return templatesDir("layouts");
+}
+
+std::string
+Builder::
+templatesDir() const
+{
+    Config const& config = domCorpus->config;
+    return files::appendPath(
+        config->addons,
+        "generator",
+        domCorpus.fileExtension);
+}
+
+std::string
+Builder::
+templatesDir(std::string_view subdir) const
+{
+    Config const& config = domCorpus->config;
+    return files::appendPath(
+        config->addons,
+        "generator",
+        domCorpus.fileExtension,
+        subdir);
 }
 
 
