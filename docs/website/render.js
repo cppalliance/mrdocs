@@ -1,7 +1,5 @@
 const Handlebars = require('handlebars');
 const hljs = require('highlight.js/lib/core');
-const asciidoc = require('asciidoctor')()
-const cheerio = require('cheerio');
 hljs.registerLanguage('cpp', require('highlight.js/lib/languages/cpp'));
 hljs.registerLanguage('xml', require('highlight.js/lib/languages/xml'));
 const fs = require('fs');
@@ -28,7 +26,6 @@ if (helpersDirExists) {
     });
 }
 
-
 // Read the JSON data file
 const dataFile = 'data.json';
 const dataContents = fs.readFileSync(dataFile, 'utf8')
@@ -47,9 +44,9 @@ if (!fs.existsSync(mrdocsExecutable)) {
 }
 
 // Read panel snippet files and create documentation
+const absSnippetsDir = path.join(__dirname, 'snippets')
 for (let panel of data.panels) {
     // Find source file
-    const absSnippetsDir = path.join(__dirname, 'snippets')
     const sourcePath = path.join(absSnippetsDir, panel.source)
     assert(sourcePath.endsWith('.cpp'))
     assert(fs.existsSync(sourcePath))
@@ -57,42 +54,47 @@ for (let panel of data.panels) {
 
     // Create a CMakeLists.txt file for the snippet
     const cmakeListsPath = path.join(absSnippetsDir, 'CMakeLists.txt')
-    const cmakeListsContent = `cmake_minimum_required(VERSION 3.13)\nproject(${sourceBasename})\nadd_executable(${sourceBasename} ${panel.source})\ntarget_compile_features(${sourceBasename} PRIVATE cxx_std_23)\n`
+    const cmakeListsContent = `
+cmake_minimum_required(VERSION 3.13)
+project(${sourceBasename})
+add_executable(${sourceBasename} ${panel.source})
+target_compile_features(${sourceBasename} PRIVATE cxx_std_23)
+`;
     fs.writeFileSync(cmakeListsPath, cmakeListsContent)
 
     // Run mrdocs to generate documentation
     const mrdocsConfig = path.join(absSnippetsDir, 'mrdocs.yml')
     const mrdocsInput = cmakeListsPath
     const mrdocsOutput = path.join(absSnippetsDir, 'output')
-    const command = `${mrdocsExecutable} --config=${mrdocsConfig} ${mrdocsInput} --output=${mrdocsOutput} --multipage=true --generate=adoc`
+    const args = [
+        mrdocsExecutable,
+        `--config=${mrdocsConfig}`,
+        mrdocsInput,
+        `--output=${mrdocsOutput}`,
+        '--multipage=true',
+        '--generate=html',
+        '--embedded=true',
+    ];
+    const command = args.join(' ');
     console.log(`Running command: ${command}`)
-    execSync(command, {encoding: 'utf8'});
+    try {
+        execSync(command, {stdio: 'inherit'});
+    } catch (error) {
+        console.error(`Command failed with exit code ${error.status}`);
+        process.exit(error.status);
+    }
 
-    // Look for documentation file somewhere in the output directory
-    const documentationFilename = `${sourceBasename}.adoc`
+    // Look load symbol page in the output directory
+    const documentationFilename = `${sourceBasename}.html`
     const documentationPath = path.join(mrdocsOutput, documentationFilename)
     if (!fs.existsSync(documentationPath)) {
         console.log(`Documentation file ${documentationFilename} not found in ${mrdocsOutput}`)
-        console.log('mrdocs failed to generate documentation')
+        console.log('Failed to generate website panel documentation')
         process.exit(1)
     }
-    const documentationContent = fs.readFileSync(documentationPath, 'utf8')
-    const htmlDocumentation = asciidoc.convert(documentationContent, {
-        doctype: 'book',
-        safe: 'safe',
-        standalone: true
-    })
-    const $ = cheerio.load(htmlDocumentation)
-    // Iterate 5, 4, 3, 2, 1
-    for (let i = 5; i >= 1; i--) {
-        $(`h${i}`).replaceWith(function () {
-            return $(`<h${i + 1}>`).html($(this).html());
-        });
-    }
-    $('#footer').remove();
-    panel.documentation = $('body').html();
+    panel.documentation = fs.readFileSync(documentationPath, 'utf8');
 
-    // Also inject the contents of the source file
+    // Also inject the contents of the source file as highlighted C++
     const snippetContents = fs.readFileSync(sourcePath, 'utf8');
     const highlightedSnippet = hljs.highlight(snippetContents, {language: 'cpp'}).value;
     panel.snippet = highlightedSnippet;
@@ -102,10 +104,10 @@ for (let panel of data.panels) {
     fs.unlinkSync(cmakeListsPath);
 }
 
-// Render the template with the data
+// Render the template with the data containing the snippet data
 const result = template(data);
 
-// Write the output to an HTML file
+// Write the rendered website template to an HTML file
 assert(templateFile.endsWith('.hbs'));
 const outputFile = templateFile.slice(0, -4);
 fs.writeFileSync(outputFile, result);
