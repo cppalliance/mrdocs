@@ -193,6 +193,9 @@ void
 XMLTags::
 nest(int levels)
 {
+    if (!nesting_)
+        return;
+    
     if(levels > 0)
     {
         indent_.append(levels * 2, ' ');

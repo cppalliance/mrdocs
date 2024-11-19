@@ -15,7 +15,17 @@
 #include "Builder.hpp"
 #include "MultiPageVisitor.hpp"
 #include "SinglePageVisitor.hpp"
+
+#include "lib/Lib/TagfileWriter.hpp"
+#include "lib/Support/RawOstream.hpp"
+
+#include <llvm/ADT/SmallString.h>
+#include <llvm/Support/FileSystem.h>
+#include <llvm/Support/Path.h>
+
 #include <mrdocs/Support/Path.hpp>
+
+#include <fstream>
 #include <sstream>
 
 namespace clang {
@@ -79,7 +89,21 @@ build(
 {
     if (!corpus.config->multipage)
     {
-        return Generator::build(outputPath, corpus);
+        auto e = Generator::build(outputPath, corpus);
+        if (e.has_value() && !corpus.config->tagfile.empty())
+        {
+            // Generate tagfile if specified
+            auto const singlePagePath = getSinglePageFullPath(outputPath, fileExtension());
+            MRDOCS_CHECK_OR(singlePagePath, Unexpected(singlePagePath.error()));
+            HandlebarsCorpus hbsCorpus = createDomCorpus(*this, corpus);
+            MRDOCS_TRY(auto tagFileWriter, TagfileWriter::create(
+                    hbsCorpus,
+                    corpus.config->tagfile,
+                    files::getFileName(*singlePagePath)));
+            tagFileWriter.build();
+        }
+
+        return e;
     }
 
     // Create corpus and executors
@@ -93,6 +117,16 @@ build(
     // Wait for all executors to finish and check errors
     auto errors = ex.wait();
     MRDOCS_CHECK_OR(errors.empty(), Unexpected(errors));
+
+    if (! corpus.config->tagfile.empty())
+    {
+        MRDOCS_TRY(auto tagFileWriter, TagfileWriter::create(
+                domCorpus,
+                corpus.config->tagfile,
+                outputPath));
+        tagFileWriter.build();
+    }
+
     return {};
 }
 

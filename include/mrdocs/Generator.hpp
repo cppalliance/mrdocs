@@ -182,6 +182,29 @@ public:
         Corpus const& corpus) const;
 };
 
+/** Return the full path for single page output.
+
+    This function determines the full path for a single-page output file
+    based on the provided `outputPath` and file `extension`.
+
+    If the `outputPath` already exists:
+    - If it is a directory, appends the default file name with the provided extension.
+    - If it is a file, uses the provided `outputPath` directly.
+
+    If the `outputPath` does not exist:
+    - If it ends with a '/', assumes it is a directory and appends the default file name.
+    - Otherwise, it returns an error because the path is ambiguous.
+
+    @return The full path or an error if the `outputPath` is ambiguous.
+
+    @param outputPath The specified output path, which can be a directory or file.
+    @param extension The file extension to use for single-page output.
+*/
+Expected<std::string>
+getSinglePageFullPath(
+    std::string_view outputPath,
+    std::string_view extension);
+
 } // mrdocs
 } // clang
 

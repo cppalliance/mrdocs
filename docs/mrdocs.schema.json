@@ -244,6 +244,12 @@
       "title": "System include paths",
       "type": "array"
     },
+    "tagfile": {
+      "default": "<output>/reference.tag.xml",
+      "description": "Specifies the full path (filename) where the generated tagfile should be saved. If left empty, no tagfile will be generated.",
+      "title": "Path for the tagfile",
+      "type": "string"
+    },
     "use-system-stdlib": {
       "default": false,
       "description": "True if the compiler has to use just the system standard library. When set to true, the compiler uses the system standard library instead of the standard library provided by the compiler.",
