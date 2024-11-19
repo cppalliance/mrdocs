@@ -143,6 +143,7 @@ public:
         The type of the first argument is determined
         by the `InfoKind` of the `Info` object.
 
+        @param I The Info to visit.
         @param info The Info to visit.
         @param f The function to invoke.
         @param args The arguments to pass to the function.
@@ -202,6 +203,14 @@ public:
     getFullyQualifiedName(
         const Info& I,
         std::string& temp) const;
+
+    std::string
+    getFullyQualifiedName(const Info& I) const
+    {
+        std::string temp;
+        return getFullyQualifiedName(I, temp);
+    }
+
 };
 
 //------------------------------------------------

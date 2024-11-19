@@ -186,6 +186,7 @@ class XMLTags
 public:
     std::string indent_;
     llvm::raw_ostream& os_;
+    bool nesting_ = true;
 
     explicit
     XMLTags(
@@ -201,6 +202,7 @@ public:
     void write(dom::String const&,
         llvm::StringRef value = {}, Attributes = {});
     void close(dom::String const&);
+    void nesting(bool enable) noexcept { nesting_ = enable; }
 
     void nest(int levels);
 };

@@ -149,6 +149,15 @@
         "relativeto": "<config-dir>"
       },
       {
+        "name": "tagfile",
+        "brief": "Path for the tagfile",
+        "details": "Specifies the full path (filename) where the generated tagfile should be saved. If left empty, no tagfile will be generated.",
+        "type": "file-path",
+        "default": "<output>/reference.tag.xml",
+        "relativeto": "<output>",
+        "must-exist": false
+      },
+      {
         "name": "legible-names",
         "brief": "Use legible names",
         "details": "Use legible names for ids in the documentation. When set to true, MrDocs uses legible names for symbols in the documentation. These are symbols that are legible but still safe for URLs. When the option is set to false, MrDocs uses a hash of the symbol ID.",
