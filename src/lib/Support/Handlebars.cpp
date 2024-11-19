@@ -89,6 +89,7 @@ isEmpty(dom::Value const& arg)
 
 class OverlayObjectImpl : public dom::ObjectImpl
 {
+    std::vector<dom::Object> grandParents_;
     dom::Object parent_;
     dom::Object child_;
 
@@ -96,13 +97,47 @@ public:
     ~OverlayObjectImpl() override = default;
 
     OverlayObjectImpl(dom::Object parent)
-        : parent_(std::move(parent))
-    {}
+    {
+        auto* parImpl = parent.impl().get();
+        auto* parOverlay = dynamic_cast<OverlayObjectImpl*>(parImpl);
+        if (parOverlay == nullptr)
+        {
+            parent_ = std::move(parent);
+        }
+        else if (parOverlay->child_.empty())
+        {
+            grandParents_ = parOverlay->grandParents_;
+            parent_ = parOverlay->parent_;
+        }
+        else
+        {
+            grandParents_.push_back(parOverlay->parent_);
+            grandParents_.insert(
+                grandParents_.end(),
+                parOverlay->grandParents_.begin(),
+                parOverlay->grandParents_.end());
+            parent_ = parOverlay->child_;
+        }
+    }
 
     OverlayObjectImpl(dom::Object child, dom::Object parent)
-        : parent_(std::move(parent))
-        , child_(std::move(child))
-    {}
+        : OverlayObjectImpl(std::move(parent))
+    {
+        child_ = std::move(child);
+        auto* childOverlay = dynamic_cast<OverlayObjectImpl*>(child_.impl().get());
+        if (childOverlay != nullptr)
+        {
+            grandParents_.insert(
+                grandParents_.begin(),
+                parent_);
+            grandParents_.insert(
+                grandParents_.end(),
+                childOverlay->grandParents_.begin(),
+                childOverlay->grandParents_.end());
+            parent_ = childOverlay->parent_;
+            child_ = childOverlay->child_;
+        }
+    }
 
     std::size_t size() const override
     {
@@ -112,6 +147,17 @@ public:
             if (parent_.exists(key))
             {
                 --n;
+            }
+            else
+            {
+                for (auto const& grandParent : grandParents_)
+                {
+                    if (grandParent.exists(key))
+                    {
+                        --n;
+                        break;
+                    }
+                }
             }
         });
         return n;
@@ -126,6 +172,13 @@ public:
         if (parent_.exists(key))
         {
             return parent_.get(key);
+        }
+        for (auto const& grandParent : grandParents_)
+        {
+            if (grandParent.exists(key))
+            {
+                return grandParent.get(key);
+            }
         }
         return dom::Kind::Undefined;
     }
@@ -154,12 +207,55 @@ public:
         {
             return false;
         }
+
+        for (std::size_t i = 0; i < grandParents_.size(); ++i)
+        {
+            auto visit_if_not_in_prev = [&](
+                dom::String const& key, dom::Value const& value)
+            {
+                if (child_.exists(key))
+                {
+                    return true;
+                }
+                if (parent_.exists(key))
+                {
+                    return true;
+                }
+                for (std::size_t j = 0; j < i; ++j)
+                {
+                    if (grandParents_[j].exists(key))
+                    {
+                        return true;
+                    }
+                }
+                return fn(key, value);
+            };
+            if (!grandParents_[i].visit(visit_if_not_in_prev))
+            {
+                return false;
+            }
+        }
         return true;
     }
 
     bool exists(std::string_view key) const override
     {
-        return child_.exists(key) || parent_.exists(key);
+        if (child_.exists(key))
+        {
+            return true;
+        }
+        if (parent_.exists(key))
+        {
+            return true;
+        }
+        for (auto const& grandParent : grandParents_)
+        {
+            if (grandParent.exists(key))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 };
 
