@@ -553,8 +553,9 @@ public:
     std::string
     render(std::string_view templateText) const
     {
-        dom::Object const& context = {};
-        auto exp = try_render(templateText, context, {});
+        dom::Value emptyContext(dom::Object{});
+        HandlebarsOptions defaultOptions;
+        auto exp = try_render(templateText, emptyContext, defaultOptions);
         if (!exp)
         {
             throw exp.error();
