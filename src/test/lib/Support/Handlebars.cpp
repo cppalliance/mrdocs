@@ -1680,6 +1680,15 @@ partial_blocks()
             hbs.render("<template>{{#> outer}}{{value}}{{/outer}}</template>", value) ==
             "<template><outer><nested><outer-block>success success</outer-block><outer-block>success success</outer-block></nested></outer></template>");
     }
+
+    // should render nested partials that support blocks
+    {
+        hbs.registerPartial("nested", "{{> @partial-block }}");
+        BOOST_TEST(
+            hbs.render(
+                "{{#>nested}}1{{#>nested}}2{{/nested}}3{{/nested}}") ==
+                "123");
+    }
 }
 
 void

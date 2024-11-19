@@ -483,19 +483,135 @@ trim_rspaces(std::string_view expression)
 // ==============================================================
 
 namespace detail {
+    /* Holds the state information required for rendering templates.
+
+        This structure contains various fields that are used to manage the state
+        during the rendering process of Handlebars templates.
+     */
     struct RenderState
     {
-        std::string_view templateText0;
+        /* The original template text.
+
+           As the templateText being rendered changes,
+           this is used for features that rely on the
+           context of the template, such as finding
+           the position of an error or identifying the
+           context of a tag.
+
+         */
+        std::string_view rootTemplateText;
+
+        /* The current template text being processed.
+
+           This range of chars keeps changing as we
+           render the template. For instance, when
+           a tag contains ~, the string is updated
+           the whitespaces around the tag.
+
+         */
         std::string_view templateText;
+
+        /* A vector of inline partials view maps.
+
+           This vector is used to store maps of inline partials
+           that are defined directly in the templates.
+
+           Each map contains the partials defined on that level.
+           Any partial in any of the maps can be accessed.
+           When the level is out of scope, its map is removed.
+
+         */
         std::vector<detail::partials_view_map> inlinePartials;
+
+        /* A vector of partial block contents.
+
+           Keeps all partial blocks, so they can be rendered
+           at deeper levels when needed.
+
+           If no partial block content is provided for
+           any higher level partial, and a partial attempts to
+           render {{@partial-block}}, we should return an error
+           "The partial @partial-block could not be found".
+
+           What's tricky is if a nested partial renders
+           {{> @partial-block}}, and this partial block
+           includes another {{> @partial-block}}, the second
+           call should render the partial content of the
+           outer partial and not recursively render the
+           inner partial block.
+
+           This is achieved by keeping all partial blocks
+           in this vector and the partialBlockLevel index
+           to indicate the current level of partial blocks.
+           This level is usually partialBlocks.size(),
+           and is decreased when we recursively render
+           partial blocks at deeper levels so that they
+           can potentially only use partial blocks from
+           outer levels instead of always taking the
+           last element of partialBlocks.back().
+
+         */
         std::vector<std::string_view> partialBlocks;
+
+        /* The current level of partial blocks.
+
+           See `partialBlocks` for more information.
+
+         */
         std::size_t partialBlockLevel = 0;
-        dom::Object data;
-        dom::Object blockValues;
-        dom::Object blockValuePaths;
-        std::vector<dom::Value> parentContext;
+
+        /* The original context object used in the template.
+
+           This allows us to always access the initial
+           context via @root.
+
+           This assumes the context is always an object
+           because the state at deeper levels always
+           use objects.
+
+           If the root context is a dom::Value,
+           it's available from `rootContext`.
+
+         */
+        dom::Object context;
+
+        /* The root context value.
+
+           The root context as a value, when applicable.
+
+           In this case, {{.}} can be used to access the
+           root context.
+
+         */
         dom::Value rootContext;
-        std::vector<dom::Object> dataStack;
+
+        /* A stack of data objects.
+
+           This stack is used to keep track of the
+           context as we render the template at deeper
+           levels.
+
+           Elements are always taken from the highest level,
+           and elements from lower levels can be accessed
+           via "..".
+
+         */
+        std::vector<dom::Object> contextStack;
+
+        // A stack of parent context values.
+        std::vector<dom::Value> parentContext;
+
+        /* The block values object used in the template.
+
+           Block values can also be accessed from a block,
+           and they take precedence over the usual data
+           context.
+
+         */
+        dom::Object blockValues;
+
+        // The block value paths object used in the template.
+        dom::Object blockValuePaths;
     };
 }
 
@@ -785,7 +901,7 @@ checkPath(std::string_view path0, detail::RenderState const& state)
             std::string msg =
                 "Invalid path: " +
                 std::string(path0.substr(0, seg.data() + seg.size() - path0.data()));
-            auto res = find_position_in_text(state.templateText0, path0);
+            auto res = find_position_in_text(state.rootTemplateText, path0);
             if (res)
             {
                 return Unexpected(
@@ -822,7 +938,7 @@ lookupPropertyImpl(
         {
             std::string msg = fmt::format(
                 "\"{}\" not defined in {}", literalSegment, toString(context));
-            auto res = find_position_in_text(state.templateText0, literalSegment);
+            auto res = find_position_in_text(state.rootTemplateText, literalSegment);
             if (res)
             {
                 throw HandlebarsError(msg, res.line, res.column, res.pos);
@@ -861,7 +977,7 @@ lookupPropertyImpl(
                 {
                     std::string msg = fmt::format(
                         "\"{}\" not defined in {}", literalSegment, toString(cur));
-                    auto res = find_position_in_text(state.templateText0, literalSegment);
+                    auto res = find_position_in_text(state.rootTemplateText, literalSegment);
                     if (res)
                     {
                         throw HandlebarsError(msg, res.line, res.column, res.pos);
@@ -935,7 +1051,7 @@ lookupPropertyImpl(
         if (opt.strict || opt.assumeObjects)
         {
             std::string msg = fmt::format("\"{}\" not defined in {}", path, context);
-            auto res = find_position_in_text(state.templateText0, path);
+            auto res = find_position_in_text(state.rootTemplateText, path);
             if (res)
             {
                 return Unexpected(HandlebarsError(msg, res.line, res.column, res.pos));
@@ -1489,14 +1605,14 @@ try_render_to(
     HandlebarsOptions const& options) const
 {
     detail::RenderState state;
-    state.templateText0 = templateText;
+    state.rootTemplateText = templateText;
     state.templateText = templateText;
     if (options.data.isObject()) {
-        state.data = options.data.getObject();
+        state.context = options.data.getObject();
     }
     state.inlinePartials.emplace_back();
     state.rootContext = context;
-    state.dataStack.emplace_back(state.data);
+    state.contextStack.emplace_back(state.context);
     return try_render_to_impl(out, context, options, state);
 }
 
@@ -1508,7 +1624,8 @@ try_render_to_impl(
     HandlebarsOptions const& opt,
     detail::RenderState& state) const
 {
-    while (!state.templateText.empty()) {
+    while (!state.templateText.empty())
+    {
         // ==============================================================
         // Find next tag
         // ==============================================================
@@ -1523,7 +1640,7 @@ try_render_to_impl(
             tagStr.remove_prefix(2);
         }
         std::size_t tagStartPos = tagStr.data() - state.templateText.data();
-        Tag tag = parseTag(tagStr, state.templateText0);
+        Tag tag = parseTag(tagStr, state.rootTemplateText);
 
         // ==============================================================
         // Render template text before tag
@@ -1878,7 +1995,7 @@ evalExpr(
             auto [fn, found] = getHelper(helper, false);
             if (!found)
             {
-                auto res = find_position_in_text(state.templateText0, helper);
+                auto res = find_position_in_text(state.rootTemplateText, helper);
                 std::string msg(helper);
                 msg += " is not a function";
                 if (res)
@@ -1904,13 +2021,13 @@ evalExpr(
     {
         MRDOCS_TRY(checkPath(expression, state));
         expression.remove_prefix(1);
-        dom::Value data = state.data;
+        dom::Value data = state.context;
         if (expression == "root" || expression.starts_with("root.") || expression.starts_with("root/"))
         {
             popFirstSegment(expression);
-            if (state.data.exists("root"))
+            if (state.context.exists("root"))
             {
-                data = state.data.get("root");
+                data = state.context.get("root");
             }
             else
             {
@@ -1919,7 +2036,7 @@ evalExpr(
         }
         else if (expression.starts_with("./") || expression.starts_with("../"))
         {
-            auto rDataStack = std::ranges::views::reverse(state.dataStack);
+            auto rDataStack = std::ranges::views::reverse(state.contextStack);
             auto dataIt = rDataStack.begin();
             while (!expression.empty())
             {
@@ -2128,7 +2245,8 @@ getPartial(
     }
 
     // Partial block
-    if (name == "@partial-block")
+    if (name == "@partial-block" &&
+        state.partialBlockLevel <= state.partialBlocks.size())
     {
         return {
             state.partialBlocks[state.partialBlockLevel - 1],
@@ -2188,7 +2306,7 @@ parseBlock(
             break;
         }
 
-        Handlebars::Tag curTag = parseTag(tagStr, state.templateText0);
+        Handlebars::Tag curTag = parseTag(tagStr, state.rootTemplateText);
 
         // move template after the tag
         auto tag_pos = curTag.buffer.data() - templateText.data();
@@ -2219,7 +2337,7 @@ parseBlock(
                     bool const isBlockNameMismatch = closeTag.content != blockName;
                     if (isBlockNameMismatch)
                     {
-                        auto res = find_position_in_text(state.templateText0, blockName);
+                        auto res = find_position_in_text(state.rootTemplateText, blockName);
                         std::string msg(blockName);
                         msg += " doesn't match ";
                         msg += closeTag.content;
@@ -2302,7 +2420,7 @@ parseBlock(
     // Check if block was closed
     // ==============================================================
     if (!closed && !isChainedBlock) {
-        auto res = find_position_in_text(state.templateText0, blockName);
+        auto res = find_position_in_text(state.rootTemplateText, blockName);
         std::string msg(blockName);
         msg += " missing closing braces";
         if (res)
@@ -2418,7 +2536,7 @@ renderExpression(
         dom::Object cb = dom::newObject<HbsHelperObjectImpl>();
         cb.set("name", tag.helper);
         cb.set("context", context);
-        cb.set("data", state.data);
+        cb.set("data", state.context);
         cb.set("log", logger_);
         HandlebarsOptions noStrict = opt;
         noStrict.strict = false;
@@ -2453,7 +2571,7 @@ renderExpression(
             dom::Object cb = dom::newObject<HbsHelperObjectImpl>();
             cb.set("name", helper_expr);
             cb.set("context", context);
-            cb.set("data", state.data);
+            cb.set("data", state.context);
             cb.set("log", logger_);
             HandlebarsOptions noStrict = opt;
             noStrict.strict = false;
@@ -2481,7 +2599,7 @@ renderExpression(
     dom::Object cb = dom::newObject<HbsHelperObjectImpl>();
     cb.set("name", helper_expr);
     cb.set("context", context);
-    cb.set("data", state.data);
+    cb.set("data", state.context);
     cb.set("log", logger_);
     HandlebarsOptions noStrict = opt;
     noStrict.strict = false;
@@ -2490,7 +2608,7 @@ renderExpression(
     if (!exp2)
     {
         Error e = exp2.error();
-        auto res = find_position_in_text(state.templateText0, helper_expr);
+        auto res = find_position_in_text(state.rootTemplateText, helper_expr);
         std::string const& msg = e.reason();
         if (res)
         {
@@ -2569,7 +2687,7 @@ setupArgs(
         {
             std::string msg = fmt::format(
                 "Parse error. Invalid helper expression. {}{}", expr, expression);
-            auto res = find_position_in_text(expression, state.templateText0);
+            auto res = find_position_in_text(expression, state.rootTemplateText);
             if (res)
             {
                 return Unexpected(HandlebarsError(msg, res.line, res.column, res.pos));
@@ -2769,24 +2887,26 @@ renderPartial(
     }
 
     // ==============================================================
-    // Evaluate partial block to extract inline partials
+    // Evaluate partial block
     // ==============================================================
     if (tag.type2 == '#')
     {
+        // ==========================================================
+        // Extract inline partials
+        // ==========================================================
         state.inlinePartials.emplace_back();
         OutputRef dumb{};
         std::string_view templateText = state.templateText;
         state.templateText = fnBlock;
         MRDOCS_TRY(this->try_render_to_impl(dumb, context, opt, state));
         state.templateText = templateText;
-    }
 
-    // ==============================================================
-    // Set @partial-block
-    // ==============================================================
-    if (tag.type2 == '#')
-    {
-        state.partialBlocks.emplace_back(fnBlock);
+        // ==========================================================
+        // Set @partial-block
+        // ==========================================================
+        state.partialBlocks.insert(
+            state.partialBlocks.begin() + state.partialBlockLevel,
+            fnBlock);
         ++state.partialBlockLevel;
     }
 
@@ -2811,7 +2931,7 @@ renderPartial(
     // Populate with arguments
     // ==========================================
     bool partialCtxChanged = false;
-    dom::Value prevContextPath = state.data.get("contextPath");
+    dom::Value prevContextPath = state.context.get("contextPath");
     if (!tag.arguments.empty())
     {
         // create context from specified keys
@@ -2841,7 +2961,7 @@ renderPartial(
                     }
                     std::string msg = fmt::format(
                         "Unsupported number of partial arguments: {}", n);
-                    auto res = find_position_in_text(state.templateText0, tag.buffer);
+                    auto res = find_position_in_text(state.rootTemplateText, tag.buffer);
                     if (res)
                     {
                         return Unexpected(HandlebarsError(msg, res.line, res.column, res.pos));
@@ -2854,8 +2974,8 @@ renderPartial(
                 if (opt.trackIds)
                 {
                     std::string contextPath = appendContextPath(
-                        state.data.get("contextPath"), expr);
-                    state.data.set("contextPath", contextPath);
+                        state.context.get("contextPath"), expr);
+                    state.context.set("contextPath", contextPath);
                 }
                 if (res.found)
                 {
@@ -2907,7 +3027,7 @@ renderPartial(
             if (opt.trackIds)
             {
                 // should invalidate context for partials with parameters
-                state.data.set("contextPath", true);
+                state.context.set("contextPath", true);
             }
         }
     }
@@ -2918,8 +3038,8 @@ renderPartial(
     // ==========================================
     // Setup partial state
     // ==========================================
-    std::string_view templateText0 = state.templateText0;
-    state.templateText0 = partial_content;
+    std::string_view rootTemplateText = state.rootTemplateText;
+    state.rootTemplateText = partial_content;
     std::string_view templateText = state.templateText;
     state.templateText = partial_content;
     bool const isPartialBlock = partialName == "@partial-block";
@@ -2929,7 +3049,7 @@ renderPartial(
     {
         state.parentContext.emplace_back(context);
     }
-    state.dataStack.emplace_back(state.data);
+    state.contextStack.emplace_back(state.context);
 
     // ==========================================
     // Render partial
@@ -2943,21 +3063,22 @@ renderPartial(
     {
         state.parentContext.pop_back();
     }
-    state.dataStack.pop_back();
+    state.contextStack.pop_back();
     out.setIndent(out.getIndent() - tag.standaloneIndent * !opt.preventIndent);
     state.partialBlockLevel += isPartialBlock;
     state.templateText = templateText;
-    state.templateText0 = templateText0;
+    state.rootTemplateText = rootTemplateText;
     if (opt.trackIds && partialCtxChanged)
     {
-        state.data.set("contextPath", prevContextPath);
+        state.context.set("contextPath", prevContextPath);
     }
 
     if (tag.type2 == '#')
     {
         state.inlinePartials.pop_back();
-        state.partialBlocks.pop_back();
         --state.partialBlockLevel;
+        auto it = state.partialBlocks.begin() + state.partialBlockLevel;
+        state.partialBlocks.erase(it);
     }
 
     // ==============================================================
@@ -3043,7 +3164,7 @@ renderBlock(
         // ============================================
         std::string msg = fmt::format(
             "\"{}\" not defined in {}", tag.helper, toString(context));
-        auto res = find_position_in_text(state.templateText0, tag.helper);
+        auto res = find_position_in_text(state.rootTemplateText, tag.helper);
         if (res)
         {
             return Unexpected(HandlebarsError(msg, res.line, res.column, res.pos));
@@ -3058,7 +3179,7 @@ renderBlock(
     dom::Object cb = dom::newObject<HbsHelperObjectImpl>();
     cb.set("name", tag.helper);
     cb.set("context", context);
-    cb.set("data", state.data);
+    cb.set("data", state.context);
     cb.set("log", logger_);
     HandlebarsOptions noStrict = opt;
     noStrict.strict = opt.strict && emulateMustache;
@@ -3092,7 +3213,7 @@ renderBlock(
         // ==========================================
         std::string_view templateText = state.templateText;
         state.templateText = fnBlock;
-        dom::Object prevStateData = state.data;
+        dom::Object prevStateData = state.context;
         dom::Object prevBlockValues = state.blockValues;
         dom::Object prevBlockValuePaths = state.blockValuePaths;
 
@@ -3121,7 +3242,7 @@ renderBlock(
                 dom::Value dataV = optObj.get("data");
                 if (dataV.isObject())
                 {
-                    state.data = dataV.getObject();
+                    state.context = dataV.getObject();
                 }
             }
 
@@ -3170,7 +3291,7 @@ renderBlock(
         // Restore state
         // ==========================================
         state.templateText = templateText;
-        state.data = std::move(prevStateData);
+        state.context = std::move(prevStateData);
         state.blockValues = std::move(prevBlockValues);
         state.blockValuePaths = std::move(prevBlockValuePaths);
         if (!sameContext)
@@ -3191,7 +3312,7 @@ renderBlock(
         // ==========================================
         std::string_view templateText = state.templateText;
         state.templateText = inverseBlock;
-        dom::Object prevStateData = state.data;
+        dom::Object prevStateData = state.context;
         dom::Object prevBlockValues = state.blockValues;
         dom::Object prevBlockValuePaths = state.blockValuePaths;
 
@@ -3216,7 +3337,7 @@ renderBlock(
                 dom::Value dataV = optObj.get("data");
                 if (dataV.isObject())
                 {
-                    state.data = dataV.getObject();
+                    state.context = dataV.getObject();
                 }
             }
 
@@ -3293,7 +3414,7 @@ renderBlock(
         // Restore state
         // ==========================================
         state.templateText = templateText;
-        state.data = std::move(prevStateData);
+        state.context = std::move(prevStateData);
         state.blockValues = std::move(prevBlockValues);
         state.blockValuePaths = std::move(prevBlockValuePaths);
         if (!sameContext)
@@ -3397,7 +3518,7 @@ renderBlock(
     }
     state.inlinePartials.emplace_back();
     // state.parentContext.emplace_back(context);
-    state.dataStack.emplace_back(state.data);
+    state.contextStack.emplace_back(state.context);
     Expected<dom::Value> exp2 = fn.call(args);
     if (!exp2)
     {
@@ -3412,7 +3533,7 @@ renderBlock(
         // a HandlebarsError with the same message and the position of
         // the helper call.
         Error e = exp2.error();
-        auto res = find_position_in_text(state.templateText0, tag.buffer);
+        auto res = find_position_in_text(state.rootTemplateText, tag.buffer);
         if (res)
         {
             return Unexpected(HandlebarsError(e.reason(), res.line, res.column, res.pos));
@@ -3428,7 +3549,7 @@ renderBlock(
     }
     state.inlinePartials.pop_back();
     // state.parentContext.pop_back();
-    state.dataStack.pop_back();
+    state.contextStack.pop_back();
     return {};
 }
 
