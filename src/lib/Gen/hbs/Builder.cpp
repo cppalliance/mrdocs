@@ -28,6 +28,46 @@ extern void lua_dump(dom::Object const& obj);
 
 namespace hbs {
 
+namespace {
+void
+loadPartials(
+    Handlebars& hbs,
+    std::string const& partialsPath)
+{
+    if (!files::exists(partialsPath))
+    {
+        return;
+    }
+    forEachFile(partialsPath, true,
+        [&](std::string_view pathName) -> Error
+        {
+            // Skip directories
+            MRDOCS_CHECK_OR(!files::isDirectory(pathName), Error::success());
+
+            // Get template relative path
+            std::filesystem::path relPath = pathName;
+            relPath = relPath.lexically_relative(partialsPath);
+
+            // Skip non-handlebars files
+            MRDOCS_CHECK_OR(relPath.extension() == ".hbs", Error::success());
+
+            // Remove any file extensions
+            while(relPath.has_extension())
+            {
+                relPath.replace_extension();
+            }
+
+            // Load partial contents
+            auto text = files::getFileText(pathName);
+            MRDOCS_CHECK_OR(text, text.error());
+
+            // Register partial
+            hbs.registerPartial(relPath.generic_string(), *text);
+            return Error::success();
+        }).maybeThrow();
+}
+}
+
 Builder::
 Builder(
     HandlebarsCorpus const& corpus)
@@ -36,25 +76,8 @@ Builder(
     namespace fs = std::filesystem;
 
     // load partials
-    std::string partialsPath = templatesDir("partials");
-    forEachFile(partialsPath, true,
-        [&](std::string_view pathName) -> Error
-        {
-            fs::path path = pathName;
-            if(path.extension() != ".hbs")
-                return Error::success();
-            path = path.lexically_relative(partialsPath);
-            while(path.has_extension())
-                path.replace_extension();
-
-            auto text = files::getFileText(pathName);
-            if (! text)
-                return text.error();
-
-            hbs_.registerPartial(
-                path.generic_string(), *text);
-            return Error::success();
-        }).maybeThrow();
+    loadPartials(hbs_, commonTemplatesDir("partials"));
+    loadPartials(hbs_, templatesDir("partials"));
 
     // Load JavaScript helpers
     std::string helpersPath = templatesDir("helpers");
@@ -296,6 +319,29 @@ templatesDir(std::string_view subdir) const
         config->addons,
         "generator",
         domCorpus.fileExtension,
+        subdir);
+}
+
+std::string
+Builder::
+commonTemplatesDir() const
+{
+    Config const& config = domCorpus->config;
+    return files::appendPath(
+        config->addons,
+        "generator",
+        "common");
+}
+
+std::string
+Builder::
+commonTemplatesDir(std::string_view subdir) const
+{
+    Config const& config = domCorpus->config;
+    return files::appendPath(
+        config->addons,
+        "generator",
+        "common",
         subdir);
 }
 
