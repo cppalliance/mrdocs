@@ -86,6 +86,16 @@ private:
     std::string
     templatesDir(std::string_view subdir) const;
 
+    /** The directory with the common templates.
+     */
+    std::string
+    commonTemplatesDir() const;
+
+    /** A subdirectory of the common templates dir
+     */
+    std::string
+    commonTemplatesDir(std::string_view subdir) const;
+
     /** The directory with the layout templates.
      */
     std::string
