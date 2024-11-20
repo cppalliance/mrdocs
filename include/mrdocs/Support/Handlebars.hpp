@@ -1117,7 +1117,7 @@ and_fn(dom::Array const& args);
  *  The "or" helper returns true if any of the values are truthy.
  */
 MRDOCS_DECL
-bool
+dom::Value
 or_fn(dom::Array const& args);
 
 /** "eq" helper function
