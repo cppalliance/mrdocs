@@ -129,6 +129,15 @@ jobs:
       - name: Clone MrDocs
         uses: actions/checkout@v4
 
+      - name: Install Git
+        uses: alandefreitas/cpp-actions/package-install@v1.8.7
+        if: matrix.container != ''
+        env:
+          DEBIAN_FRONTEND: 'noninteractive'
+          TZ: 'Etc/UTC'
+        with:
+          apt-get: git
+
       - name: Setup CMake
         uses: alandefreitas/cpp-actions/setup-cmake@v1.8.7
         id: setup-cmake
