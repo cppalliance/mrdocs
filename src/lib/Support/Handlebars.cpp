@@ -5933,6 +5933,74 @@ registerStringHelpers(Handlebars& hbs)
     }));
 }
 
+void
+registerConstructorHelpers(Handlebars& hbs)
+{
+    // A helper that constructs a string from the first argument.
+    hbs.registerHelper("str", dom::makeVariadicInvocable([](
+        dom::Array const& arguments) -> Expected<dom::Value>
+    {
+        if (arguments.size() != 2)
+        {
+            return Unexpected(Error("#str requires exactly one argument"));
+        }
+        return arguments.at(0);
+    }));
+
+    // A helper that constructs an array from the arguments.
+    hbs.registerHelper("arr", dom::makeVariadicInvocable([](
+        dom::Array const& arguments) -> dom::Value
+    {
+        dom::Array res;
+        for (std::size_t i = 0; i < arguments.size() - 1; ++i)
+        {
+            res.emplace_back(arguments.at(i));
+        }
+        return res;
+    }));
+
+    // A helper that constructs an array of indexes.
+    hbs.registerHelper("range", dom::makeVariadicInvocable([](
+        dom::Array const& arguments) -> dom::Value
+    {
+        std::int64_t start = 0;
+        std::int64_t stop = 0;
+        std::int64_t step = 1;
+        std::size_t const n = arguments.size() - 1;
+        if (n == 1)
+        {
+            stop = arguments.at(0).getInteger();
+        }
+        else if (n == 2)
+        {
+            start = arguments.at(0).getInteger();
+            stop = arguments.at(1).getInteger();
+        }
+        else if (n == 3)
+        {
+            start = arguments.at(0).getInteger();
+            stop = arguments.at(1).getInteger();
+            step = arguments.at(2).getInteger();
+        }
+        dom::Array res;
+        if (step > 0)
+        {
+            for (std::int64_t i = start; i < stop; i += step)
+            {
+                res.emplace_back(i);
+            }
+        }
+        else
+        {
+            for (std::int64_t i = start; i > stop; i += step)
+            {
+                res.emplace_back(i);
+            }
+        }
+        return res;
+    }));
+}
+
 std::vector<std::string> 
 parseKeyPath(std::string const& keyPath)
 {

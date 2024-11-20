@@ -1026,6 +1026,18 @@ MRDOCS_DECL
 void
 registerBuiltinHelpers(Handlebars& hbs);
 
+/** Register contructor helpers into a Handlebars instance
+
+    This function registers a number of common helpers that allows
+    the user to create objects of specific types directly from
+    literals in the template.
+
+    @param hbs The Handlebars instance to register the helpers into
+ */
+MRDOCS_DECL
+void
+registerConstructorHelpers(Handlebars& hbs);
+
 /** Register all the Antora helpers into a Handlebars instance
 
     This function registers all the helpers that are part of the
