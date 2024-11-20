@@ -2583,7 +2583,17 @@ renderExpression(
             HandlebarsOptions noStrict = opt;
             noStrict.strict = false;
             setupArgs(tag.arguments, context, state, args, cb, noStrict);
-            auto v2 = resV.value.getFunction().call(args).value();
+            Expected<dom::Value> expV2 = resV.value.getFunction().call(args);
+            if (!expV2) {
+                Error e = expV2.error();
+                auto res = find_position_in_text(state.rootTemplateText, helper_expr);
+                std::string const& msg = e.reason();
+                if (res) {
+                    return Unexpected(HandlebarsError(msg, res.line, res.column, res.pos));
+                }
+                return Unexpected(HandlebarsError(msg));
+            }
+            dom::Value v2 = *std::move(expV2);
             format_to(out, v2, opt2);
         }
         else
