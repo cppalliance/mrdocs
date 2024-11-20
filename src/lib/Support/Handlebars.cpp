@@ -3934,15 +3934,19 @@ and_fn(dom::Array const& args)
     return true;
 }
 
-bool
-or_fn(dom::Array const& args) {
+dom::Value
+or_fn(dom::Array const& args)
+{
     std::size_t const n = args.size();
-    if (n == 0) return false;
+    if (n == 0)
+    {
+        return false;
+    }
     for (std::size_t i = 0; i < n - 1; ++i)
     {
         if (args.get(i))
         {
-            return true;
+            return args.get(i);
         }
     }
     return false;
