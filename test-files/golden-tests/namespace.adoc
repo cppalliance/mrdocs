@@ -6,17 +6,22 @@
 == Global namespace
 
 === Namespaces
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#00namespace[``]  ¦
+| Name | Description 
 
-¦xref:#A[`A`]  ¦
-
-¦xref:#D[`D`]  ¦
-
-¦xref:#I[`I`]  ¦
-
+| xref:#00namespace[``] 
+| 
+    
+| xref:#A[`A`] 
+| 
+    
+| xref:#D[`D`] 
+| 
+    
+| xref:#I[`I`] 
+| 
+    
 |===
 
 
@@ -25,28 +30,34 @@
 == A
 
 === Namespaces
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-00namespace[``]  ¦
+| Name | Description 
 
-¦xref:#A-B[`B`]  ¦
-
-¦xref:#A-C[`C`]  ¦
-
+| xref:#A-00namespace[``] 
+| 
+    
+| xref:#A-B[`B`] 
+| 
+    
+| xref:#A-C[`C`] 
+| 
+    
 |===
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-f0[`f0`]  ¦
+| Name | Description 
 
+| xref:#A-f0[`f0`] 
+| 
+    
 |===
 
 
 
 [#A-f0]
-== xref:#A[pass:[A]]::f0
+== xref:#A[A]::f0
 
 
 
@@ -70,20 +81,22 @@ f0();
 
 
 [#A-B]
-== xref:#A[pass:[A]]::B
+== xref:#A[A]::B
 
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-B-f1[`f1`]  ¦
+| Name | Description 
 
+| xref:#A-B-f1[`f1`] 
+| 
+    
 |===
 
 
 
 [#A-B-f1]
-== xref:#A[pass:[A]]::xref:#A-B[pass:[B]]::f1
+== xref:#A[A]::xref:#A-B[B]::f1
 
 
 
@@ -107,20 +120,22 @@ f1();
 
 
 [#A-C]
-== xref:#A[pass:[A]]::C
+== xref:#A[A]::C
 
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-C-f2[`f2`]  ¦
+| Name | Description 
 
+| xref:#A-C-f2[`f2`] 
+| 
+    
 |===
 
 
 
 [#A-C-f2]
-== xref:#A[pass:[A]]::xref:#A-C[pass:[C]]::f2
+== xref:#A[A]::xref:#A-C[C]::f2
 
 
 
@@ -147,17 +162,19 @@ f2();
 == Unnamed namespace
 
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-00namespace-f3[`f3`]  ¦
+| Name | Description 
 
+| xref:#A-00namespace-f3[`f3`] 
+| 
+    
 |===
 
 
 
 [#A-00namespace-f3]
-== xref:#A[pass:[A]]::f3
+== xref:#A[A]::f3
 
 
 
@@ -184,28 +201,34 @@ f3();
 == D
 
 === Namespaces
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#D-00namespace[``]  ¦
+| Name | Description 
 
-¦xref:#D-E[`E`]  ¦
-
-¦xref:#D-F[`F`]  ¦
-
+| xref:#D-00namespace[``] 
+| 
+    
+| xref:#D-E[`E`] 
+| 
+    
+| xref:#D-F[`F`] 
+| 
+    
 |===
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#D-f5[`f5`]  ¦
+| Name | Description 
 
+| xref:#D-f5[`f5`] 
+| 
+    
 |===
 
 
 
 [#D-f5]
-== xref:#D[pass:[D]]::f5
+== xref:#D[D]::f5
 
 
 
@@ -229,20 +252,22 @@ f5();
 
 
 [#D-E]
-== xref:#D[pass:[D]]::E
+== xref:#D[D]::E
 
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#D-E-f6[`f6`]  ¦
+| Name | Description 
 
+| xref:#D-E-f6[`f6`] 
+| 
+    
 |===
 
 
 
 [#D-E-f6]
-== xref:#D[pass:[D]]::xref:#D-E[pass:[E]]::f6
+== xref:#D[D]::xref:#D-E[E]::f6
 
 
 
@@ -266,20 +291,22 @@ f6();
 
 
 [#D-F]
-== xref:#D[pass:[D]]::F
+== xref:#D[D]::F
 
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#D-F-f7[`f7`]  ¦
+| Name | Description 
 
+| xref:#D-F-f7[`f7`] 
+| 
+    
 |===
 
 
 
 [#D-F-f7]
-== xref:#D[pass:[D]]::xref:#D-F[pass:[F]]::f7
+== xref:#D[D]::xref:#D-F[F]::f7
 
 
 
@@ -306,17 +333,19 @@ f7();
 == Unnamed namespace
 
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#D-00namespace-f8[`f8`]  ¦
+| Name | Description 
 
+| xref:#D-00namespace-f8[`f8`] 
+| 
+    
 |===
 
 
 
 [#D-00namespace-f8]
-== xref:#D[pass:[D]]::f8
+== xref:#D[D]::f8
 
 
 
@@ -343,20 +372,25 @@ f8();
 == Unnamed namespace
 
 === Namespaces
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#00namespace-G[`G`]  ¦
+| Name | Description 
 
-¦xref:#00namespace-H[`H`]  ¦
-
+| xref:#00namespace-G[`G`] 
+| 
+    
+| xref:#00namespace-H[`H`] 
+| 
+    
 |===
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#00namespace-f10[`f10`]  ¦
+| Name | Description 
 
+| xref:#00namespace-f10[`f10`] 
+| 
+    
 |===
 
 
@@ -389,17 +423,19 @@ f10();
 == G
 
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#00namespace-G-f11[`f11`]  ¦
+| Name | Description 
 
+| xref:#00namespace-G-f11[`f11`] 
+| 
+    
 |===
 
 
 
 [#00namespace-G-f11]
-== xref:#00namespace-G[pass:[G]]::f11
+== xref:#00namespace-G[G]::f11
 
 
 
@@ -426,17 +462,19 @@ f11();
 == H
 
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#00namespace-H-f12[`f12`]  ¦
+| Name | Description 
 
+| xref:#00namespace-H-f12[`f12`] 
+| 
+    
 |===
 
 
 
 [#00namespace-H-f12]
-== xref:#00namespace-H[pass:[H]]::f12
+== xref:#00namespace-H[H]::f12
 
 
 
@@ -463,11 +501,13 @@ f12();
 == I
 
 === Namespaces
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#I-00namespace[``]  ¦
+| Name | Description 
 
+| xref:#I-00namespace[``] 
+| 
+    
 |===
 
 
@@ -476,17 +516,19 @@ f12();
 == Unnamed namespace
 
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#I-00namespace-f14[`f14`]  ¦
+| Name | Description 
 
+| xref:#I-00namespace-f14[`f14`] 
+| 
+    
 |===
 
 
 
 [#I-00namespace-f14]
-== xref:#I[pass:[I]]::f14
+== xref:#I[I]::f14
 
 
 

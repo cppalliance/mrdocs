@@ -1,9 +1,0 @@
-{{! Helper for "info-list": renders a symbol as a row in a table of members }}
-¦xref:{{ref}}[`{{>types/declarator-id . nolink=true}}`] {{>types/special-name-suffix .}} ¦
-{{#if (ne kind "overload")~}}
-    {{~doc.brief}}
-{{else~}}
-    {{#each (unique (pluck (pluck members "doc") "brief"))~}}
-        {{.}}
-    {{/each~}}
-{{/if}}

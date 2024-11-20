@@ -6,17 +6,22 @@
 == Global namespace
 
 === Namespaces
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#N0[`N0`]  ¦
+| Name | Description 
 
-¦xref:#N3[`N3`]  ¦
-
-¦xref:#N4[`N4`]  ¦
-
-¦xref:#N7[`N7`]  ¦
-
+| xref:#N0[`N0`] 
+| 
+    
+| xref:#N3[`N3`] 
+| 
+    
+| xref:#N4[`N4`] 
+| 
+    
+| xref:#N7[`N7`] 
+| 
+    
 |===
 
 
@@ -25,17 +30,19 @@
 == N0
 
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#N0-f0[`f0`]  ¦
+| Name | Description 
 
+| xref:#N0-f0[`f0`] 
+| 
+    
 |===
 
 
 
 [#N0-f0]
-== xref:#N0[pass:[N0]]::f0
+== xref:#N0[N0]::f0
 
 
 
@@ -68,32 +75,37 @@ f0();
 == N4
 
 === Namespaces
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#N4-N5[`N5`]  ¦
+| Name | Description 
 
-¦xref:#N4-N6[`N6`]  ¦
-
+| xref:#N4-N5[`N5`] 
+| 
+    
+| xref:#N4-N6[`N6`] 
+| 
+    
 |===
 
 
 
 [#N4-N5]
-== xref:#N4[pass:[N4]]::N5
+== xref:#N4[N4]::N5
 
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#N4-N5-f1[`f1`]  ¦
+| Name | Description 
 
+| xref:#N4-N5-f1[`f1`] 
+| 
+    
 |===
 
 
 
 [#N4-N5-f1]
-== xref:#N4[pass:[N4]]::xref:#N4-N5[pass:[N5]]::f1
+== xref:#N4[N4]::xref:#N4-N5[N5]::f1
 
 
 
@@ -117,20 +129,22 @@ f1();
 
 
 [#N4-N6]
-== xref:#N4[pass:[N4]]::N6
+== xref:#N4[N4]::N6
 
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#N4-N6-f1[`f1`]  ¦
+| Name | Description 
 
+| xref:#N4-N6-f1[`f1`] 
+| 
+    
 |===
 
 
 
 [#N4-N6-f1]
-== xref:#N4[pass:[N4]]::xref:#N4-N6[pass:[N6]]::f1
+== xref:#N4[N4]::xref:#N4-N6[N6]::f1
 
 
 
@@ -157,38 +171,43 @@ f1();
 == N7
 
 === Namespaces
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#N7-N8[`N8`]  ¦
+| Name | Description 
 
-¦xref:#N7-N9[`N9`]  ¦
-
+| xref:#N7-N8[`N8`] 
+| 
+    
+| xref:#N7-N9[`N9`] 
+| 
+    
 |===
 
 
 
 [#N7-N8]
-== xref:#N7[pass:[N7]]::N8
+== xref:#N7[N7]::N8
 
 
 
 
 [#N7-N9]
-== xref:#N7[pass:[N7]]::N9
+== xref:#N7[N7]::N9
 
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#N7-N9-g0[`g0`]  ¦
+| Name | Description 
 
+| xref:#N7-N9-g0[`g0`] 
+| 
+    
 |===
 
 
 
 [#N7-N9-g0]
-== xref:#N7[pass:[N7]]::xref:#N7-N9[pass:[N9]]::g0
+== xref:#N7[N7]::xref:#N7-N9[N9]::g0
 
 
 

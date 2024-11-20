@@ -6,20 +6,25 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A[`A`]  ¦
+| Name | Description 
 
-¦xref:#B[`B`]  ¦
-
+| xref:#A[`A`] 
+| 
+    
+| xref:#B[`B`] 
+| 
+    
 |===
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#f[`f`]  ¦
+| Name | Description 
 
+| xref:#f[`f`] 
+| 
+    
 |===
 
 
@@ -40,25 +45,34 @@ struct A;
 ----
 
 ===  Static Data Members
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-v0[`v0`]  ¦
+| Name | Description 
 
-¦xref:#A-v1[`v1`]  ¦
-
-¦xref:#A-v2[`v2`]  ¦
-
-¦xref:#A-v3[`v3`]  ¦
-
-¦xref:#A-v4[`v4`]  ¦
-
-¦xref:#A-v5[`v5`]  ¦
-
-¦xref:#A-v6[`v6`]  ¦
-
-¦xref:#A-v7[`v7`]  ¦
-
+| xref:#A-v0[`v0`] 
+| 
+    
+| xref:#A-v1[`v1`] 
+| 
+    
+| xref:#A-v2[`v2`] 
+| 
+    
+| xref:#A-v3[`v3`] 
+| 
+    
+| xref:#A-v4[`v4`] 
+| 
+    
+| xref:#A-v5[`v5`] 
+| 
+    
+| xref:#A-v6[`v6`] 
+| 
+    
+| xref:#A-v7[`v7`] 
+| 
+    
 |===
 
 
@@ -66,7 +80,7 @@ struct A;
 
 
 [#A-v0]
-== xref:#A[pass:[A]]::v0
+== xref:#A[A]::v0
 
 
 
@@ -84,7 +98,7 @@ int v0 = 0;
 
 
 [#A-v1]
-== xref:#A[pass:[A]]::v1
+== xref:#A[A]::v1
 
 
 
@@ -102,7 +116,7 @@ int v1 = 1;
 
 
 [#A-v2]
-== xref:#A[pass:[A]]::v2
+== xref:#A[A]::v2
 
 
 
@@ -121,7 +135,7 @@ int const v2 = 2;
 
 
 [#A-v3]
-== xref:#A[pass:[A]]::v3
+== xref:#A[A]::v3
 
 
 
@@ -139,7 +153,7 @@ int const v3 = 3;
 
 
 [#A-v4]
-== xref:#A[pass:[A]]::v4
+== xref:#A[A]::v4
 
 
 
@@ -157,7 +171,7 @@ int const v4 = 4;
 
 
 [#A-v5]
-== xref:#A[pass:[A]]::v5
+== xref:#A[A]::v5
 
 
 
@@ -175,7 +189,7 @@ int v5 = 5;
 
 
 [#A-v6]
-== xref:#A[pass:[A]]::v6
+== xref:#A[A]::v6
 
 
 
@@ -193,7 +207,7 @@ int const v6 = 6;
 
 
 [#A-v7]
-== xref:#A[pass:[A]]::v7
+== xref:#A[A]::v7
 
 
 
@@ -226,13 +240,16 @@ struct B;
 ----
 
 ===  Static Data Members
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#B-x0[`x0`]  ¦
+| Name | Description 
 
-¦xref:#B-x1[`x1`]  ¦
-
+| xref:#B-x0[`x0`] 
+| 
+    
+| xref:#B-x1[`x1`] 
+| 
+    
 |===
 
 
@@ -240,7 +257,7 @@ struct B;
 
 
 [#B-x0]
-== xref:#B[pass:[B]]::x0
+== xref:#B[B]::x0
 
 
 
@@ -259,7 +276,7 @@ int const x0 = 0;
 
 
 [#B-x1]
-== xref:#B[pass:[B]]::x1
+== xref:#B[B]::x1
 
 
 

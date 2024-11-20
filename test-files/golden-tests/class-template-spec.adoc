@@ -6,27 +6,37 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-0e[`A`]  ¦
+| Name | Description 
 
-¦xref:#A-00[`A<int>`]  ¦
-
-¦xref:#A-0c[`A<long>`]  ¦
-
-¦xref:#B-00[`B`]  ¦
-
-¦xref:#B-07[`B<T*>`]  ¦
-
-¦xref:#B-06[`B<T&>`]  ¦
-
-¦xref:#C-0f[`C`]  ¦
-
-¦xref:#C-0a[`C<int, int>`]  ¦
-
-¦xref:#C-0e[`C<T*, int>`]  ¦
-
+| xref:#A-0e[`A`] 
+| 
+    
+| xref:#A-00[`A<int>`] 
+| 
+    
+| xref:#A-0c[`A<long>`] 
+| 
+    
+| xref:#B-00[`B`] 
+| 
+    
+| xref:#B-07[`B<T*>`] 
+| 
+    
+| xref:#B-06[`B<T&>`] 
+| 
+    
+| xref:#C-0f[`C`] 
+| 
+    
+| xref:#C-0a[`C<int, int>`] 
+| 
+    
+| xref:#C-0e[`C<T*, int>`] 
+| 
+    
 |===
 
 
@@ -47,11 +57,13 @@ struct A;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-0e-f[`f`]  ¦
+| Name | Description 
 
+| xref:#A-0e-f[`f`] 
+| 
+    
 |===
 
 
@@ -59,7 +71,7 @@ struct A;
 
 
 [#A-0e-f]
-== xref:#A-0e[pass:[A]]::f
+== xref:#A-0e[A]::f
 
 
 
@@ -94,15 +106,17 @@ Declared in `<class-template-spec.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-struct xref:#A-0e[pass:[A]]<int>;
+struct xref:#A-0e[A]<int>;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-00-g[`g`]  ¦
+| Name | Description 
 
+| xref:#A-00-g[`g`] 
+| 
+    
 |===
 
 
@@ -110,7 +124,7 @@ struct xref:#A-0e[pass:[A]]<int>;
 
 
 [#A-00-g]
-== xref:#A-00[pass:[A]]<int>::g
+== xref:#A-00[A]<int>::g
 
 
 
@@ -145,15 +159,17 @@ Declared in `<class-template-spec.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-struct xref:#A-0e[pass:[A]]<long>;
+struct xref:#A-0e[A]<long>;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-0c-h[`h`]  ¦
+| Name | Description 
 
+| xref:#A-0c-h[`h`] 
+| 
+    
 |===
 
 
@@ -161,7 +177,7 @@ struct xref:#A-0e[pass:[A]]<long>;
 
 
 [#A-0c-h]
-== xref:#A-0c[pass:[A]]<long>::h
+== xref:#A-0c[A]<long>::h
 
 
 
@@ -200,11 +216,13 @@ struct B;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#B-00-f[`f`]  ¦
+| Name | Description 
 
+| xref:#B-00-f[`f`] 
+| 
+    
 |===
 
 
@@ -212,7 +230,7 @@ struct B;
 
 
 [#B-00-f]
-== xref:#B-00[pass:[B]]::f
+== xref:#B-00[B]::f
 
 
 
@@ -247,15 +265,17 @@ Declared in `<class-template-spec.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
-struct xref:#B-00[pass:[B]]<T*>;
+struct xref:#B-00[B]<T*>;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#B-07-g[`g`]  ¦
+| Name | Description 
 
+| xref:#B-07-g[`g`] 
+| 
+    
 |===
 
 
@@ -263,7 +283,7 @@ struct xref:#B-00[pass:[B]]<T*>;
 
 
 [#B-07-g]
-== xref:#B-07[pass:[B]]<T*>::g
+== xref:#B-07[B]<T*>::g
 
 
 
@@ -298,15 +318,17 @@ Declared in `<class-template-spec.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
-struct xref:#B-00[pass:[B]]<T&>;
+struct xref:#B-00[B]<T&>;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#B-06-h[`h`]  ¦
+| Name | Description 
 
+| xref:#B-06-h[`h`] 
+| 
+    
 |===
 
 
@@ -314,7 +336,7 @@ struct xref:#B-00[pass:[B]]<T&>;
 
 
 [#B-06-h]
-== xref:#B-06[pass:[B]]<T&>::h
+== xref:#B-06[B]<T&>::h
 
 
 
@@ -355,11 +377,13 @@ struct C;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#C-0f-f[`f`]  ¦
+| Name | Description 
 
+| xref:#C-0f-f[`f`] 
+| 
+    
 |===
 
 
@@ -367,7 +391,7 @@ struct C;
 
 
 [#C-0f-f]
-== xref:#C-0f[pass:[C]]::f
+== xref:#C-0f[C]::f
 
 
 
@@ -402,15 +426,17 @@ Declared in `<class-template-spec.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-struct xref:#C-0f[pass:[C]]<int, int>;
+struct xref:#C-0f[C]<int, int>;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#C-0a-g[`g`]  ¦
+| Name | Description 
 
+| xref:#C-0a-g[`g`] 
+| 
+    
 |===
 
 
@@ -418,7 +444,7 @@ struct xref:#C-0f[pass:[C]]<int, int>;
 
 
 [#C-0a-g]
-== xref:#C-0a[pass:[C]]<int, int>::g
+== xref:#C-0a[C]<int, int>::g
 
 
 
@@ -453,15 +479,17 @@ Declared in `<class-template-spec.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
-struct xref:#C-0f[pass:[C]]<T*, int>;
+struct xref:#C-0f[C]<T*, int>;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#C-0e-h[`h`]  ¦
+| Name | Description 
 
+| xref:#C-0e-h[`h`] 
+| 
+    
 |===
 
 
@@ -469,7 +497,7 @@ struct xref:#C-0f[pass:[C]]<T*, int>;
 
 
 [#C-0e-h]
-== xref:#C-0e[pass:[C]]<T*, int>::h
+== xref:#C-0e[C]<T*, int>::h
 
 
 

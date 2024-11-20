@@ -6,11 +6,13 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A[`A`]  ¦
+| Name | Description 
 
+| xref:#A[`A`] 
+| 
+    
 |===
 
 
@@ -31,15 +33,19 @@ struct A;
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-B-0a[`B`]  ¦
+| Name | Description 
 
-¦xref:#A-B-06[`B<U*, T>`]  ¦
-
-¦xref:#A-B-04[`B<T, long>`]  ¦
-
+| xref:#A-B-0a[`B`] 
+| 
+    
+| xref:#A-B-06[`B<U*, T>`] 
+| 
+    
+| xref:#A-B-04[`B<T, long>`] 
+| 
+    
 |===
 
 
@@ -47,7 +53,7 @@ struct A;
 
 
 [#A-B-0a]
-== xref:#A[pass:[A]]::B
+== xref:#A[A]::B
 
 
 
@@ -69,7 +75,7 @@ struct B;
 
 
 [#A-B-06]
-== xref:#A[pass:[A]]::B
+== xref:#A[A]::B
 
 
 
@@ -80,7 +86,7 @@ Declared in `<class-template-partial-spec.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename U>
-struct xref:#A-B-0a[pass:[B]]<U*, T>;
+struct xref:#A-B-0a[B]<U*, T>;
 ----
 
 
@@ -89,7 +95,7 @@ struct xref:#A-B-0a[pass:[B]]<U*, T>;
 
 
 [#A-B-04]
-== xref:#A[pass:[A]]::B
+== xref:#A[A]::B
 
 
 
@@ -100,7 +106,7 @@ Declared in `<class-template-partial-spec.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-struct xref:#A-B-0a[pass:[B]]<T, long>;
+struct xref:#A-B-0a[B]<T, long>;
 ----
 
 

@@ -6,26 +6,34 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T[`T`]  ¦
+| Name | Description 
 
-¦xref:#U[`U`]  ¦
-
+| xref:#T[`T`] 
+| 
+    
+| xref:#U[`U`] 
+| 
+    
 |===
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#f[`f`]  ¦
+| Name | Description 
 
-¦xref:#g[`g`]  ¦
-
-¦xref:#h[`h`]  ¦
-
-¦xref:#i[`i`]  ¦
-
+| xref:#f[`f`] 
+| 
+    
+| xref:#g[`g`] 
+| 
+    
+| xref:#h[`h`] 
+| 
+    
+| xref:#i[`i`] 
+| 
+    
 |===
 
 

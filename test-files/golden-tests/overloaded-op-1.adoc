@@ -6,11 +6,13 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T[`T`]  ¦
+| Name | Description 
 
+| xref:#T[`T`] 
+| 
+    
 |===
 
 
@@ -30,11 +32,13 @@ struct T;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T-operator_plus[`operator+`]  ¦
+| Name | Description 
 
+| xref:#T-operator_plus[`operator+`] 
+| 
+    
 |===
 
 
@@ -42,7 +46,7 @@ struct T;
 
 
 [#T-operator_plus]
-== xref:#T[pass:[T]]::operator+
+== xref:#T[T]::operator+
 
 
 

@@ -4,5 +4,5 @@
 {{>types/qualified-path symbol=symbol.parent nolink=nolink~}}
 {{else~}}
 {{/if~}}
-{{#if symbol.name}}{{#if (not nolink)}}xref:{{symbol.ref}}[{{symbol.name}}]{{else}}{{symbol.name}}{{/if}}::{{/if~}}
+{{#if symbol.name}}{{#if (not nolink)}}{{#>markup/a href=symbol.ref}}{{symbol.name}}{{/markup/a}}{{else}}{{symbol.name}}{{/if}}::{{/if~}}
 {{/unless}}

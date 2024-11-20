@@ -6,115 +6,169 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#R0[`R0`]  ¦
+| Name | Description 
 
-¦xref:#R1[`R1`]  ¦
-
-¦xref:#R10[`R10`]  ¦
-
-¦xref:#R11[`R11`]  ¦
-
-¦xref:#R12[`R12`]  ¦
-
-¦xref:#R13[`R13`]  ¦
-
-¦xref:#R14[`R14`]  ¦
-
-¦xref:#R15[`R15`]  ¦
-
-¦xref:#R16[`R16`]  ¦
-
-¦xref:#R17[`R17`]  ¦
-
-¦xref:#R18[`R18`]  ¦
-
-¦xref:#R19[`R19`]  ¦
-
-¦xref:#R2[`R2`]  ¦
-
-¦xref:#R20[`R20`]  ¦
-
-¦xref:#R21[`R21`]  ¦
-
-¦xref:#R22[`R22`]  ¦
-
-¦xref:#R23[`R23`]  ¦
-
-¦xref:#R24[`R24`]  ¦
-
-¦xref:#R25[`R25`]  ¦
-
-¦xref:#R26[`R26`]  ¦
-
-¦xref:#R27[`R27`]  ¦
-
-¦xref:#R28[`R28`]  ¦
-
-¦xref:#R29[`R29`]  ¦
-
-¦xref:#R3[`R3`]  ¦
-
-¦xref:#R30[`R30`]  ¦
-
-¦xref:#R31[`R31`]  ¦
-
-¦xref:#R32[`R32`]  ¦
-
-¦xref:#R33[`R33`]  ¦
-
-¦xref:#R34[`R34`]  ¦
-
-¦xref:#R35[`R35`]  ¦
-
-¦xref:#R36[`R36`]  ¦
-
-¦xref:#R37[`R37`]  ¦
-
-¦xref:#R38[`R38`]  ¦
-
-¦xref:#R39[`R39`]  ¦
-
-¦xref:#R4[`R4`]  ¦
-
-¦xref:#R40[`R40`]  ¦
-
-¦xref:#R41[`R41`]  ¦
-
-¦xref:#R42[`R42`]  ¦
-
-¦xref:#R43[`R43`]  ¦
-
-¦xref:#R44[`R44`]  ¦
-
-¦xref:#R45[`R45`]  ¦
-
-¦xref:#R46[`R46`]  ¦
-
-¦xref:#R47[`R47`]  ¦
-
-¦xref:#R48[`R48`]  ¦
-
-¦xref:#R5[`R5`]  ¦
-
-¦xref:#R6[`R6`]  ¦
-
-¦xref:#R7[`R7`]  ¦
-
-¦xref:#R8[`R8`]  ¦
-
-¦xref:#R9[`R9`]  ¦
-
-¦xref:#S0-02[`S0<1, int*>`]  ¦
-
-¦xref:#S0-0c4[`S0<1, T*>`]  ¦
-
-¦xref:#S0-0be[`S0<0>`]  ¦
-
-¦xref:#S0-0cf[`S0`]  ¦
-
+| xref:#R0[`R0`] 
+| 
+    
+| xref:#R1[`R1`] 
+| 
+    
+| xref:#R10[`R10`] 
+| 
+    
+| xref:#R11[`R11`] 
+| 
+    
+| xref:#R12[`R12`] 
+| 
+    
+| xref:#R13[`R13`] 
+| 
+    
+| xref:#R14[`R14`] 
+| 
+    
+| xref:#R15[`R15`] 
+| 
+    
+| xref:#R16[`R16`] 
+| 
+    
+| xref:#R17[`R17`] 
+| 
+    
+| xref:#R18[`R18`] 
+| 
+    
+| xref:#R19[`R19`] 
+| 
+    
+| xref:#R2[`R2`] 
+| 
+    
+| xref:#R20[`R20`] 
+| 
+    
+| xref:#R21[`R21`] 
+| 
+    
+| xref:#R22[`R22`] 
+| 
+    
+| xref:#R23[`R23`] 
+| 
+    
+| xref:#R24[`R24`] 
+| 
+    
+| xref:#R25[`R25`] 
+| 
+    
+| xref:#R26[`R26`] 
+| 
+    
+| xref:#R27[`R27`] 
+| 
+    
+| xref:#R28[`R28`] 
+| 
+    
+| xref:#R29[`R29`] 
+| 
+    
+| xref:#R3[`R3`] 
+| 
+    
+| xref:#R30[`R30`] 
+| 
+    
+| xref:#R31[`R31`] 
+| 
+    
+| xref:#R32[`R32`] 
+| 
+    
+| xref:#R33[`R33`] 
+| 
+    
+| xref:#R34[`R34`] 
+| 
+    
+| xref:#R35[`R35`] 
+| 
+    
+| xref:#R36[`R36`] 
+| 
+    
+| xref:#R37[`R37`] 
+| 
+    
+| xref:#R38[`R38`] 
+| 
+    
+| xref:#R39[`R39`] 
+| 
+    
+| xref:#R4[`R4`] 
+| 
+    
+| xref:#R40[`R40`] 
+| 
+    
+| xref:#R41[`R41`] 
+| 
+    
+| xref:#R42[`R42`] 
+| 
+    
+| xref:#R43[`R43`] 
+| 
+    
+| xref:#R44[`R44`] 
+| 
+    
+| xref:#R45[`R45`] 
+| 
+    
+| xref:#R46[`R46`] 
+| 
+    
+| xref:#R47[`R47`] 
+| 
+    
+| xref:#R48[`R48`] 
+| 
+    
+| xref:#R5[`R5`] 
+| 
+    
+| xref:#R6[`R6`] 
+| 
+    
+| xref:#R7[`R7`] 
+| 
+    
+| xref:#R8[`R8`] 
+| 
+    
+| xref:#R9[`R9`] 
+| 
+    
+| xref:#S0-02[`S0<1, int*>`] 
+| 
+    
+| xref:#S0-0c4[`S0<1, T*>`] 
+| 
+    
+| xref:#S0-0be[`S0<0>`] 
+| 
+    
+| xref:#S0-0cf[`S0`] 
+| 
+    
 |===
 
 
@@ -137,20 +191,25 @@ struct S0;
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S1[`S1`]  ¦
+| Name | Description 
 
-¦xref:#S0-0cf-S5[`S5`]  ¦
-
+| xref:#S0-0cf-S1[`S1`] 
+| 
+    
+| xref:#S0-0cf-S5[`S5`] 
+| 
+    
 |===
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-f0[`f0`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-f0[`f0`] 
+| 
+    
 |===
 
 
@@ -158,7 +217,7 @@ struct S0;
 
 
 [#S0-0cf-f0]
-== xref:#S0-0cf[pass:[S0]]::f0
+== xref:#S0-0cf[S0]::f0
 
 
 
@@ -182,7 +241,7 @@ f0();
 
 
 [#S0-0cf-S1]
-== xref:#S0-0cf[pass:[S0]]::S1
+== xref:#S0-0cf[S0]::S1
 
 
 
@@ -196,18 +255,22 @@ struct S1;
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S1-S2[`S2`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S1-S2[`S2`] 
+| 
+    
 |===
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S1-f1[`f1`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S1-f1[`f1`] 
+| 
+    
 |===
 
 
@@ -215,7 +278,7 @@ struct S1;
 
 
 [#S0-0cf-S1-f1]
-== xref:#S0-0cf[pass:[S0]]::xref:#S0-0cf-S1[pass:[S1]]::f1
+== xref:#S0-0cf[S0]::xref:#S0-0cf-S1[S1]::f1
 
 
 
@@ -239,7 +302,7 @@ f1();
 
 
 [#S0-0cf-S1-S2]
-== xref:#S0-0cf[pass:[S0]]::xref:#S0-0cf-S1[pass:[S1]]::S2
+== xref:#S0-0cf[S0]::xref:#S0-0cf-S1[S1]::S2
 
 
 
@@ -256,20 +319,25 @@ struct S2;
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S1-S2-S3[`S3`]  ¦
+| Name | Description 
 
-¦xref:#S0-0cf-S1-S2-S4[`S4`]  ¦
-
+| xref:#S0-0cf-S1-S2-S3[`S3`] 
+| 
+    
+| xref:#S0-0cf-S1-S2-S4[`S4`] 
+| 
+    
 |===
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S1-S2-f2[`f2`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S1-S2-f2[`f2`] 
+| 
+    
 |===
 
 
@@ -277,7 +345,7 @@ struct S2;
 
 
 [#S0-0cf-S1-S2-f2]
-== xref:#S0-0cf[pass:[S0]]::xref:#S0-0cf-S1[pass:[S1]]::xref:#S0-0cf-S1-S2[pass:[S2]]::f2
+== xref:#S0-0cf[S0]::xref:#S0-0cf-S1[S1]::xref:#S0-0cf-S1-S2[S2]::f2
 
 
 
@@ -301,7 +369,7 @@ f2();
 
 
 [#S0-0cf-S1-S2-S3]
-== xref:#S0-0cf[pass:[S0]]::xref:#S0-0cf-S1[pass:[S1]]::xref:#S0-0cf-S1-S2[pass:[S2]]::S3
+== xref:#S0-0cf[S0]::xref:#S0-0cf-S1[S1]::xref:#S0-0cf-S1-S2[S2]::S3
 
 
 
@@ -315,11 +383,13 @@ struct S3;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S1-S2-S3-f3[`f3`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S1-S2-S3-f3[`f3`] 
+| 
+    
 |===
 
 
@@ -327,7 +397,7 @@ struct S3;
 
 
 [#S0-0cf-S1-S2-S3-f3]
-== xref:#S0-0cf[pass:[S0]]::xref:#S0-0cf-S1[pass:[S1]]::xref:#S0-0cf-S1-S2[pass:[S2]]::xref:#S0-0cf-S1-S2-S3[pass:[S3]]::f3
+== xref:#S0-0cf[S0]::xref:#S0-0cf-S1[S1]::xref:#S0-0cf-S1-S2[S2]::xref:#S0-0cf-S1-S2-S3[S3]::f3
 
 
 
@@ -351,7 +421,7 @@ f3();
 
 
 [#S0-0cf-S1-S2-S4]
-== xref:#S0-0cf[pass:[S0]]::xref:#S0-0cf-S1[pass:[S1]]::xref:#S0-0cf-S1-S2[pass:[S2]]::S4
+== xref:#S0-0cf[S0]::xref:#S0-0cf-S1[S1]::xref:#S0-0cf-S1-S2[S2]::S4
 
 
 
@@ -368,11 +438,13 @@ struct S4;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S1-S2-S4-f4[`f4`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S1-S2-S4-f4[`f4`] 
+| 
+    
 |===
 
 
@@ -380,7 +452,7 @@ struct S4;
 
 
 [#S0-0cf-S1-S2-S4-f4]
-== xref:#S0-0cf[pass:[S0]]::xref:#S0-0cf-S1[pass:[S1]]::xref:#S0-0cf-S1-S2[pass:[S2]]::xref:#S0-0cf-S1-S2-S4[pass:[S4]]::f4
+== xref:#S0-0cf[S0]::xref:#S0-0cf-S1[S1]::xref:#S0-0cf-S1-S2[S2]::xref:#S0-0cf-S1-S2-S4[S4]::f4
 
 
 
@@ -404,7 +476,7 @@ f4();
 
 
 [#S0-0cf-S5]
-== xref:#S0-0cf[pass:[S0]]::S5
+== xref:#S0-0cf[S0]::S5
 
 
 
@@ -421,18 +493,22 @@ struct S5;
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S5-S6[`S6`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S5-S6[`S6`] 
+| 
+    
 |===
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S5-f5[`f5`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S5-f5[`f5`] 
+| 
+    
 |===
 
 
@@ -440,7 +516,7 @@ struct S5;
 
 
 [#S0-0cf-S5-f5]
-== xref:#S0-0cf[pass:[S0]]::xref:#S0-0cf-S5[pass:[S5]]::f5
+== xref:#S0-0cf[S0]::xref:#S0-0cf-S5[S5]::f5
 
 
 
@@ -464,7 +540,7 @@ f5();
 
 
 [#S0-0cf-S5-S6]
-== xref:#S0-0cf[pass:[S0]]::xref:#S0-0cf-S5[pass:[S5]]::S6
+== xref:#S0-0cf[S0]::xref:#S0-0cf-S5[S5]::S6
 
 
 
@@ -478,18 +554,22 @@ struct S6;
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S5-S6-S7[`S7`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S5-S6-S7[`S7`] 
+| 
+    
 |===
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S5-S6-f6[`f6`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S5-S6-f6[`f6`] 
+| 
+    
 |===
 
 
@@ -497,7 +577,7 @@ struct S6;
 
 
 [#S0-0cf-S5-S6-f6]
-== xref:#S0-0cf[pass:[S0]]::xref:#S0-0cf-S5[pass:[S5]]::xref:#S0-0cf-S5-S6[pass:[S6]]::f6
+== xref:#S0-0cf[S0]::xref:#S0-0cf-S5[S5]::xref:#S0-0cf-S5-S6[S6]::f6
 
 
 
@@ -521,7 +601,7 @@ f6();
 
 
 [#S0-0cf-S5-S6-S7]
-== xref:#S0-0cf[pass:[S0]]::xref:#S0-0cf-S5[pass:[S5]]::xref:#S0-0cf-S5-S6[pass:[S6]]::S7
+== xref:#S0-0cf[S0]::xref:#S0-0cf-S5[S5]::xref:#S0-0cf-S5-S6[S6]::S7
 
 
 
@@ -538,20 +618,25 @@ struct S7;
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S5-S6-S7-S8[`S8`]  ¦
+| Name | Description 
 
-¦xref:#S0-0cf-S5-S6-S7-S9[`S9`]  ¦
-
+| xref:#S0-0cf-S5-S6-S7-S8[`S8`] 
+| 
+    
+| xref:#S0-0cf-S5-S6-S7-S9[`S9`] 
+| 
+    
 |===
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S5-S6-S7-f7[`f7`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S5-S6-S7-f7[`f7`] 
+| 
+    
 |===
 
 
@@ -559,7 +644,7 @@ struct S7;
 
 
 [#S0-0cf-S5-S6-S7-f7]
-== xref:#S0-0cf[pass:[S0]]::xref:#S0-0cf-S5[pass:[S5]]::xref:#S0-0cf-S5-S6[pass:[S6]]::xref:#S0-0cf-S5-S6-S7[pass:[S7]]::f7
+== xref:#S0-0cf[S0]::xref:#S0-0cf-S5[S5]::xref:#S0-0cf-S5-S6[S6]::xref:#S0-0cf-S5-S6-S7[S7]::f7
 
 
 
@@ -583,7 +668,7 @@ f7();
 
 
 [#S0-0cf-S5-S6-S7-S8]
-== xref:#S0-0cf[pass:[S0]]::xref:#S0-0cf-S5[pass:[S5]]::xref:#S0-0cf-S5-S6[pass:[S6]]::xref:#S0-0cf-S5-S6-S7[pass:[S7]]::S8
+== xref:#S0-0cf[S0]::xref:#S0-0cf-S5[S5]::xref:#S0-0cf-S5-S6[S6]::xref:#S0-0cf-S5-S6-S7[S7]::S8
 
 
 
@@ -597,11 +682,13 @@ struct S8;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S5-S6-S7-S8-f8[`f8`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S5-S6-S7-S8-f8[`f8`] 
+| 
+    
 |===
 
 
@@ -609,7 +696,7 @@ struct S8;
 
 
 [#S0-0cf-S5-S6-S7-S8-f8]
-== xref:#S0-0cf[pass:[S0]]::xref:#S0-0cf-S5[pass:[S5]]::xref:#S0-0cf-S5-S6[pass:[S6]]::xref:#S0-0cf-S5-S6-S7[pass:[S7]]::xref:#S0-0cf-S5-S6-S7-S8[pass:[S8]]::f8
+== xref:#S0-0cf[S0]::xref:#S0-0cf-S5[S5]::xref:#S0-0cf-S5-S6[S6]::xref:#S0-0cf-S5-S6-S7[S7]::xref:#S0-0cf-S5-S6-S7-S8[S8]::f8
 
 
 
@@ -633,7 +720,7 @@ f8();
 
 
 [#S0-0cf-S5-S6-S7-S9]
-== xref:#S0-0cf[pass:[S0]]::xref:#S0-0cf-S5[pass:[S5]]::xref:#S0-0cf-S5-S6[pass:[S6]]::xref:#S0-0cf-S5-S6-S7[pass:[S7]]::S9
+== xref:#S0-0cf[S0]::xref:#S0-0cf-S5[S5]::xref:#S0-0cf-S5-S6[S6]::xref:#S0-0cf-S5-S6-S7[S7]::S9
 
 
 
@@ -650,11 +737,13 @@ struct S9;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S5-S6-S7-S9-f9[`f9`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S5-S6-S7-S9-f9[`f9`] 
+| 
+    
 |===
 
 
@@ -662,7 +751,7 @@ struct S9;
 
 
 [#S0-0cf-S5-S6-S7-S9-f9]
-== xref:#S0-0cf[pass:[S0]]::xref:#S0-0cf-S5[pass:[S5]]::xref:#S0-0cf-S5-S6[pass:[S6]]::xref:#S0-0cf-S5-S6-S7[pass:[S7]]::xref:#S0-0cf-S5-S6-S7-S9[pass:[S9]]::f9
+== xref:#S0-0cf[S0]::xref:#S0-0cf-S5[S5]::xref:#S0-0cf-S5-S6[S6]::xref:#S0-0cf-S5-S6-S7[S7]::xref:#S0-0cf-S5-S6-S7-S9[S9]::f9
 
 
 
@@ -697,7 +786,7 @@ Declared in `<class-template-specializations-1.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-struct xref:#S0-0cf[pass:[S0]]<0>;
+struct xref:#S0-0cf[S0]<0>;
 ----
 
 
@@ -717,7 +806,7 @@ Declared in `<class-template-specializations-1.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
-struct xref:#S0-0cf[pass:[S0]]<1, T*>;
+struct xref:#S0-0cf[S0]<1, T*>;
 ----
 
 
@@ -737,7 +826,7 @@ Declared in `<class-template-specializations-1.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-struct xref:#S0-0cf[pass:[S0]]<1, int*>;
+struct xref:#S0-0cf[S0]<1, int*>;
 ----
 
 
@@ -818,20 +907,25 @@ struct R0
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S1[`S1`]  ¦
+| Name | Description 
 
-¦xref:#S0-0cf-S5[`S5`]  ¦
-
+| xref:#S0-0cf-S1[`S1`] 
+| 
+    
+| xref:#S0-0cf-S5[`S5`] 
+| 
+    
 |===
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-f0[`f0`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-f0[`f0`] 
+| 
+    
 |===
 
 
@@ -1394,20 +1488,25 @@ struct R28
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S1[`S1`]  ¦
+| Name | Description 
 
-¦xref:#S0-0cf-S5[`S5`]  ¦
-
+| xref:#S0-0cf-S1[`S1`] 
+| 
+    
+| xref:#S0-0cf-S5[`S5`] 
+| 
+    
 |===
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-f0[`f0`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-f0[`f0`] 
+| 
+    
 |===
 
 
@@ -1430,20 +1529,25 @@ struct R29
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S1[`S1`]  ¦
+| Name | Description 
 
-¦xref:#S0-0cf-S5[`S5`]  ¦
-
+| xref:#S0-0cf-S1[`S1`] 
+| 
+    
+| xref:#S0-0cf-S5[`S5`] 
+| 
+    
 |===
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-f0[`f0`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-f0[`f0`] 
+| 
+    
 |===
 
 
@@ -1466,18 +1570,22 @@ struct R30
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S1-S2[`S2`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S1-S2[`S2`] 
+| 
+    
 |===
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S1-f1[`f1`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S1-f1[`f1`] 
+| 
+    
 |===
 
 
@@ -1503,20 +1611,25 @@ struct R31
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S1-S2-S3[`S3`]  ¦
+| Name | Description 
 
-¦xref:#S0-0cf-S1-S2-S4[`S4`]  ¦
-
+| xref:#S0-0cf-S1-S2-S3[`S3`] 
+| 
+    
+| xref:#S0-0cf-S1-S2-S4[`S4`] 
+| 
+    
 |===
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S1-S2-f2[`f2`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S1-S2-f2[`f2`] 
+| 
+    
 |===
 
 
@@ -1539,20 +1652,25 @@ struct R32
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S1-S2-S3[`S3`]  ¦
+| Name | Description 
 
-¦xref:#S0-0cf-S1-S2-S4[`S4`]  ¦
-
+| xref:#S0-0cf-S1-S2-S3[`S3`] 
+| 
+    
+| xref:#S0-0cf-S1-S2-S4[`S4`] 
+| 
+    
 |===
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S1-S2-f2[`f2`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S1-S2-f2[`f2`] 
+| 
+    
 |===
 
 
@@ -1575,20 +1693,25 @@ struct R33
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S1-S2-S3[`S3`]  ¦
+| Name | Description 
 
-¦xref:#S0-0cf-S1-S2-S4[`S4`]  ¦
-
+| xref:#S0-0cf-S1-S2-S3[`S3`] 
+| 
+    
+| xref:#S0-0cf-S1-S2-S4[`S4`] 
+| 
+    
 |===
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S1-S2-f2[`f2`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S1-S2-f2[`f2`] 
+| 
+    
 |===
 
 
@@ -1611,11 +1734,13 @@ struct R34
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S1-S2-S3-f3[`f3`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S1-S2-S3-f3[`f3`] 
+| 
+    
 |===
 
 
@@ -1641,11 +1766,13 @@ struct R35
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S1-S2-S4-f4[`f4`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S1-S2-S4-f4[`f4`] 
+| 
+    
 |===
 
 
@@ -1668,11 +1795,13 @@ struct R36
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S1-S2-S4-f4[`f4`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S1-S2-S4-f4[`f4`] 
+| 
+    
 |===
 
 
@@ -1695,11 +1824,13 @@ struct R37
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S1-S2-S4-f4[`f4`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S1-S2-S4-f4[`f4`] 
+| 
+    
 |===
 
 
@@ -1725,18 +1856,22 @@ struct R38
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S5-S6[`S6`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S5-S6[`S6`] 
+| 
+    
 |===
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S5-f5[`f5`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S5-f5[`f5`] 
+| 
+    
 |===
 
 
@@ -1759,18 +1894,22 @@ struct R39
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S5-S6[`S6`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S5-S6[`S6`] 
+| 
+    
 |===
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S5-f5[`f5`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S5-f5[`f5`] 
+| 
+    
 |===
 
 
@@ -1793,18 +1932,22 @@ struct R40
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S5-S6[`S6`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S5-S6[`S6`] 
+| 
+    
 |===
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S5-f5[`f5`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S5-f5[`f5`] 
+| 
+    
 |===
 
 
@@ -1827,18 +1970,22 @@ struct R41
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S5-S6-S7[`S7`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S5-S6-S7[`S7`] 
+| 
+    
 |===
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S5-S6-f6[`f6`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S5-S6-f6[`f6`] 
+| 
+    
 |===
 
 
@@ -1864,20 +2011,25 @@ struct R42
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S5-S6-S7-S8[`S8`]  ¦
+| Name | Description 
 
-¦xref:#S0-0cf-S5-S6-S7-S9[`S9`]  ¦
-
+| xref:#S0-0cf-S5-S6-S7-S8[`S8`] 
+| 
+    
+| xref:#S0-0cf-S5-S6-S7-S9[`S9`] 
+| 
+    
 |===
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S5-S6-S7-f7[`f7`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S5-S6-S7-f7[`f7`] 
+| 
+    
 |===
 
 
@@ -1900,20 +2052,25 @@ struct R43
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S5-S6-S7-S8[`S8`]  ¦
+| Name | Description 
 
-¦xref:#S0-0cf-S5-S6-S7-S9[`S9`]  ¦
-
+| xref:#S0-0cf-S5-S6-S7-S8[`S8`] 
+| 
+    
+| xref:#S0-0cf-S5-S6-S7-S9[`S9`] 
+| 
+    
 |===
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S5-S6-S7-f7[`f7`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S5-S6-S7-f7[`f7`] 
+| 
+    
 |===
 
 
@@ -1936,20 +2093,25 @@ struct R44
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S5-S6-S7-S8[`S8`]  ¦
+| Name | Description 
 
-¦xref:#S0-0cf-S5-S6-S7-S9[`S9`]  ¦
-
+| xref:#S0-0cf-S5-S6-S7-S8[`S8`] 
+| 
+    
+| xref:#S0-0cf-S5-S6-S7-S9[`S9`] 
+| 
+    
 |===
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S5-S6-S7-f7[`f7`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S5-S6-S7-f7[`f7`] 
+| 
+    
 |===
 
 
@@ -1972,11 +2134,13 @@ struct R45
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S5-S6-S7-S8-f8[`f8`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S5-S6-S7-S8-f8[`f8`] 
+| 
+    
 |===
 
 
@@ -2002,11 +2166,13 @@ struct R46
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S5-S6-S7-S9-f9[`f9`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S5-S6-S7-S9-f9[`f9`] 
+| 
+    
 |===
 
 
@@ -2029,11 +2195,13 @@ struct R47
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S5-S6-S7-S9-f9[`f9`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S5-S6-S7-S9-f9[`f9`] 
+| 
+    
 |===
 
 
@@ -2056,11 +2224,13 @@ struct R48
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S0-0cf-S5-S6-S7-S9-f9[`f9`]  ¦
+| Name | Description 
 
+| xref:#S0-0cf-S5-S6-S7-S9-f9[`f9`] 
+| 
+    
 |===
 
 

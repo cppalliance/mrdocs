@@ -6,19 +6,24 @@
 == Global namespace
 
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#f1[`f1`]  ¦
+| Name | Description 
 
-¦xref:#f2[`f2`]  ¦
-
-¦xref:#f3[`f3`]  ¦
-
-¦xref:#f4[`f4`]  ¦
-
+| xref:#f1[`f1`] 
+| 
+    
+| xref:#f2[`f2`] 
+| 
+    
+| xref:#f3[`f3`] 
+| 
+    
+| xref:#f4[`f4`] 
+| 
 brief
 
+    
 |===
 
 

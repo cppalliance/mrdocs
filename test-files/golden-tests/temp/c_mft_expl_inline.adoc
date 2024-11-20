@@ -6,11 +6,13 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A[`A`]  ¦
+| Name | Description 
 
+| xref:#A[`A`] 
+| 
+    
 |===
 
 
@@ -30,10 +32,12 @@ struct A;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:A-f[`f`]  ¦
+| Name | Description 
+
+| xref:A-f[`f`] 
+| 
 |===
 
 
@@ -41,7 +45,7 @@ struct A;
 
 [#A-f]
 
-== xref:#A[pass:[A]]::f
+== xref:#A[A]::f
 
   
 
@@ -52,14 +56,14 @@ struct A;
 ----
 template<typename T>
 void
-xref:#A-f-0e[pass:[f]]();
+xref:#A-f-0e[f]();
 ----
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
 void
-xref:#A-f-0b[pass:[f]]<int>();
+xref:#A-f-0b[f]<int>();
 ----
   
 
@@ -72,7 +76,7 @@ xref:#A-f-0b[pass:[f]]<int>();
 
 
 [#A-f-0e]
-== xref:#A[pass:[A]]::f
+== xref:#A[A]::f
 
 
 
@@ -97,7 +101,7 @@ f();
 
 
 [#A-f-0b]
-== xref:#A[pass:[A]]::f
+== xref:#A[A]::f
 
 
 
@@ -109,7 +113,7 @@ Declared in `<temp/c_mft_expl_inline.cpp>`
 ----
 template<>
 void
-xref:#A-f-0e[pass:[f]]<int>();
+xref:#A-f-0e[f]<int>();
 ----
 
 

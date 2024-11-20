@@ -6,11 +6,13 @@
 == Global namespace
 
 === Namespaces
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#LongName[`LongName`]  ¦
+| Name | Description 
 
+| xref:#LongName[`LongName`] 
+| 
+    
 |===
 
 
@@ -19,19 +21,22 @@
 == LongName
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#LongName-S1[`S1`]  ¦
+| Name | Description 
 
-¦xref:#LongName-S2[`S2`]  ¦
-
+| xref:#LongName-S1[`S1`] 
+| 
+    
+| xref:#LongName-S2[`S2`] 
+| 
+    
 |===
 
 
 
 [#LongName-S1]
-== xref:#LongName[pass:[LongName]]::S1
+== xref:#LongName[LongName]::S1
 
 
 
@@ -50,7 +55,7 @@ struct S1;
 
 
 [#LongName-S2]
-== xref:#LongName[pass:[LongName]]::S2
+== xref:#LongName[LongName]::S2
 
 
 

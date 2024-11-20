@@ -6,34 +6,46 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T[`T`]  ¦
+| Name | Description 
 
+| xref:#T[`T`] 
+| 
+    
 |===
 === Variables
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#i[`i`]  ¦
+| Name | Description 
 
-¦xref:#j[`j`]  ¦
-
-¦xref:#k[`k`]  ¦
-
-¦xref:#l[`l`]  ¦
-
-¦xref:#pi[`pi`]  ¦
-
-¦xref:#t[`t`]  ¦
-
-¦xref:#x0[`x0`]  ¦
-
-¦xref:#x1[`x1`]  ¦
-
-¦xref:#x2[`x2`]  ¦
-
+| xref:#i[`i`] 
+| 
+    
+| xref:#j[`j`] 
+| 
+    
+| xref:#k[`k`] 
+| 
+    
+| xref:#l[`l`] 
+| 
+    
+| xref:#pi[`pi`] 
+| 
+    
+| xref:#t[`t`] 
+| 
+    
+| xref:#x0[`x0`] 
+| 
+    
+| xref:#x1[`x1`] 
+| 
+    
+| xref:#x2[`x2`] 
+| 
+    
 |===
 
 

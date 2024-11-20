@@ -6,41 +6,58 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#C0[`C0`]  ¦
+| Name | Description 
 
-¦xref:#C1[`C1`]  ¦
-
-¦xref:#C2[`C2`]  ¦
-
-¦xref:#C3[`C3`]  ¦
-
-¦xref:#C4[`C4`]  ¦
-
-¦xref:#C5[`C5`]  ¦
-
-¦xref:#C6[`C6`]  ¦
-
-¦xref:#C7[`C7`]  ¦
-
-¦xref:#S0[`S0`]  ¦
-
-¦xref:#S1[`S1`]  ¦
-
-¦xref:#S2[`S2`]  ¦
-
-¦xref:#S3[`S3`]  ¦
-
-¦xref:#S4[`S4`]  ¦
-
-¦xref:#S5[`S5`]  ¦
-
-¦xref:#S6[`S6`]  ¦
-
-¦xref:#U0[`U0`]  ¦
-
+| xref:#C0[`C0`] 
+| 
+    
+| xref:#C1[`C1`] 
+| 
+    
+| xref:#C2[`C2`] 
+| 
+    
+| xref:#C3[`C3`] 
+| 
+    
+| xref:#C4[`C4`] 
+| 
+    
+| xref:#C5[`C5`] 
+| 
+    
+| xref:#C6[`C6`] 
+| 
+    
+| xref:#C7[`C7`] 
+| 
+    
+| xref:#S0[`S0`] 
+| 
+    
+| xref:#S1[`S1`] 
+| 
+    
+| xref:#S2[`S2`] 
+| 
+    
+| xref:#S3[`S3`] 
+| 
+    
+| xref:#S4[`S4`] 
+| 
+    
+| xref:#S5[`S5`] 
+| 
+    
+| xref:#S6[`S6`] 
+| 
+    
+| xref:#U0[`U0`] 
+| 
+    
 |===
 
 

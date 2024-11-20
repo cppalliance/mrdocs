@@ -1,2 +1,0 @@
-{{! Renders where the symbol is declared with a link to the source file when the `base-url` config option is defined }}
-Declared in `<{{#unless (and @root.config.base-url (eq dcl.kind "source"))}}{{dcl.file}}{{else}}{{@root.config.base-url}}{{dcl.file}}#L{{dcl.line}}[{{dcl.file}},window=blank_]{{/unless}}>`

@@ -6,19 +6,25 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#C0[`C0`]  ¦
+| Name | Description 
 
-¦xref:#C1[`C1`]  ¦
-
-¦xref:#C2[`C2`]  ¦
-
-¦xref:#C3[`C3`]  ¦
-
-¦xref:#S[`S`]  ¦
-
+| xref:#C0[`C0`] 
+| 
+    
+| xref:#C1[`C1`] 
+| 
+    
+| xref:#C2[`C2`] 
+| 
+    
+| xref:#C3[`C3`] 
+| 
+    
+| xref:#S[`S`] 
+| 
+    
 |===
 
 
@@ -58,22 +64,28 @@ struct C0;
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#C0-N0[`N0`]  ¦
+| Name | Description 
 
+| xref:#C0-N0[`N0`] 
+| 
+    
 |===
 ===  Data Members
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#C0-w[`w`]  ¦
+| Name | Description 
 
-¦xref:#C0-x[`x`]  ¦
-
-¦xref:#C0-y[`y`]  ¦
-
+| xref:#C0-w[`w`] 
+| 
+    
+| xref:#C0-x[`x`] 
+| 
+    
+| xref:#C0-y[`y`] 
+| 
+    
 |===
 
 
@@ -81,7 +93,7 @@ struct C0;
 
 
 [#C0-w]
-== xref:#C0[pass:[C0]]::w
+== xref:#C0[C0]::w
 
 
 
@@ -98,7 +110,7 @@ int w;
 
 
 [#C0-x]
-== xref:#C0[pass:[C0]]::x
+== xref:#C0[C0]::x
 
 
 
@@ -115,7 +127,7 @@ xref:#S[S] x;
 
 
 [#C0-y]
-== xref:#C0[pass:[C0]]::y
+== xref:#C0[C0]::y
 
 
 
@@ -132,7 +144,7 @@ T y;
 
 
 [#C0-N0]
-== xref:#C0[pass:[C0]]::N0
+== xref:#C0[C0]::N0
 
 
 
@@ -146,11 +158,13 @@ struct N0;
 ----
 
 ===  Data Members
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#C0-N0-z[`z`]  ¦
+| Name | Description 
 
+| xref:#C0-N0-z[`z`] 
+| 
+    
 |===
 
 
@@ -158,7 +172,7 @@ struct N0;
 
 
 [#C0-N0-z]
-== xref:#C0[pass:[C0]]::xref:#C0-N0[pass:[N0]]::z
+== xref:#C0[C0]::xref:#C0-N0[N0]::z
 
 
 
@@ -189,18 +203,22 @@ struct C1;
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#C1-N1[`N1`]  ¦
+| Name | Description 
 
+| xref:#C1-N1[`N1`] 
+| 
+    
 |===
 ===  Data Members
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#C1-w[`w`]  ¦
+| Name | Description 
 
+| xref:#C1-w[`w`] 
+| 
+    
 |===
 
 
@@ -208,7 +226,7 @@ struct C1;
 
 
 [#C1-w]
-== xref:#C1[pass:[C1]]::w
+== xref:#C1[C1]::w
 
 
 
@@ -225,7 +243,7 @@ int w;
 
 
 [#C1-N1]
-== xref:#C1[pass:[C1]]::N1
+== xref:#C1[C1]::N1
 
 
 
@@ -240,15 +258,19 @@ struct N1;
 ----
 
 ===  Data Members
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#C1-N1-x[`x`]  ¦
+| Name | Description 
 
-¦xref:#C1-N1-y[`y`]  ¦
-
-¦xref:#C1-N1-z[`z`]  ¦
-
+| xref:#C1-N1-x[`x`] 
+| 
+    
+| xref:#C1-N1-y[`y`] 
+| 
+    
+| xref:#C1-N1-z[`z`] 
+| 
+    
 |===
 
 
@@ -256,7 +278,7 @@ struct N1;
 
 
 [#C1-N1-x]
-== xref:#C1[pass:[C1]]::xref:#C1-N1[pass:[N1]]::x
+== xref:#C1[C1]::xref:#C1-N1[N1]::x
 
 
 
@@ -273,7 +295,7 @@ xref:#S[S] x;
 
 
 [#C1-N1-y]
-== xref:#C1[pass:[C1]]::xref:#C1-N1[pass:[N1]]::y
+== xref:#C1[C1]::xref:#C1-N1[N1]::y
 
 
 
@@ -290,7 +312,7 @@ T y;
 
 
 [#C1-N1-z]
-== xref:#C1[pass:[C1]]::xref:#C1-N1[pass:[N1]]::z
+== xref:#C1[C1]::xref:#C1-N1[N1]::z
 
 
 
@@ -322,18 +344,22 @@ struct C2;
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#C2-N2[`N2`]  ¦
+| Name | Description 
 
+| xref:#C2-N2[`N2`] 
+| 
+    
 |===
 ===  Data Members
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#C2-v[`v`]  ¦
+| Name | Description 
 
+| xref:#C2-v[`v`] 
+| 
+    
 |===
 
 
@@ -341,7 +367,7 @@ struct C2;
 
 
 [#C2-v]
-== xref:#C2[pass:[C2]]::v
+== xref:#C2[C2]::v
 
 
 
@@ -358,7 +384,7 @@ int v;
 
 
 [#C2-N2]
-== xref:#C2[pass:[C2]]::N2
+== xref:#C2[C2]::N2
 
 
 
@@ -373,17 +399,22 @@ struct N2;
 ----
 
 ===  Data Members
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#C2-N2-w[`w`]  ¦
+| Name | Description 
 
-¦xref:#C2-N2-x[`x`]  ¦
-
-¦xref:#C2-N2-y[`y`]  ¦
-
-¦xref:#C2-N2-z[`z`]  ¦
-
+| xref:#C2-N2-w[`w`] 
+| 
+    
+| xref:#C2-N2-x[`x`] 
+| 
+    
+| xref:#C2-N2-y[`y`] 
+| 
+    
+| xref:#C2-N2-z[`z`] 
+| 
+    
 |===
 
 
@@ -391,7 +422,7 @@ struct N2;
 
 
 [#C2-N2-w]
-== xref:#C2[pass:[C2]]::xref:#C2-N2[pass:[N2]]::w
+== xref:#C2[C2]::xref:#C2-N2[N2]::w
 
 
 
@@ -408,7 +439,7 @@ xref:#S[S] w;
 
 
 [#C2-N2-x]
-== xref:#C2[pass:[C2]]::xref:#C2-N2[pass:[N2]]::x
+== xref:#C2[C2]::xref:#C2-N2[N2]::x
 
 
 
@@ -425,7 +456,7 @@ T x;
 
 
 [#C2-N2-y]
-== xref:#C2[pass:[C2]]::xref:#C2-N2[pass:[N2]]::y
+== xref:#C2[C2]::xref:#C2-N2[N2]::y
 
 
 
@@ -442,7 +473,7 @@ U y;
 
 
 [#C2-N2-z]
-== xref:#C2[pass:[C2]]::xref:#C2-N2[pass:[N2]]::z
+== xref:#C2[C2]::xref:#C2-N2[N2]::z
 
 
 
@@ -474,11 +505,13 @@ struct C3;
 ----
 
 ===  Data Members
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#C3-v[`v`]  ¦
+| Name | Description 
 
+| xref:#C3-v[`v`] 
+| 
+    
 |===
 
 
@@ -486,7 +519,7 @@ struct C3;
 
 
 [#C3-v]
-== xref:#C3[pass:[C3]]::v
+== xref:#C3[C3]::v
 
 
 

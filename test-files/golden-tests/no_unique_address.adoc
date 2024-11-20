@@ -6,13 +6,16 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#Empty[`Empty`]  ¦
+| Name | Description 
 
-¦xref:#T[`T`]  ¦
-
+| xref:#Empty[`Empty`] 
+| 
+    
+| xref:#T[`T`] 
+| 
+    
 |===
 
 
@@ -51,13 +54,16 @@ struct T;
 ----
 
 ===  Data Members
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T-e[`e`]  ¦
+| Name | Description 
 
-¦xref:#T-i[`i`]  ¦
-
+| xref:#T-e[`e`] 
+| 
+    
+| xref:#T-i[`i`] 
+| 
+    
 |===
 
 
@@ -65,7 +71,7 @@ struct T;
 
 
 [#T-i]
-== xref:#T[pass:[T]]::i
+== xref:#T[T]::i
 
 
 
@@ -82,7 +88,7 @@ int i;
 
 
 [#T-e]
-== xref:#T[pass:[T]]::e
+== xref:#T[T]::e
 
 
 

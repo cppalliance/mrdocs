@@ -6,22 +6,28 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#B[`B`]  ¦
+| Name | Description 
 
+| xref:#B[`B`] 
+| 
+    
 |===
 === Variables
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-084[`A`]  ¦
+| Name | Description 
 
-¦xref:#A-08e[`A<void>`]  ¦
-
-¦xref:#A-01[`A<T&>`]  ¦
-
+| xref:#A-084[`A`] 
+| 
+    
+| xref:#A-08e[`A<void>`] 
+| 
+    
+| xref:#A-01[`A<T&>`] 
+| 
+    
 |===
 
 
@@ -56,7 +62,7 @@ Declared in `<var-template.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-unsigned int xref:#A-084[pass:[A]]<void> = 0;
+unsigned int xref:#A-084[A]<void> = 0;
 ----
 
 
@@ -74,7 +80,7 @@ Declared in `<var-template.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
-unsigned int xref:#A-084[pass:[A]]<T&> = sizeof(T);
+unsigned int xref:#A-084[A]<T&> = sizeof(T);
 ----
 
 
@@ -95,15 +101,19 @@ struct B;
 ----
 
 ===  Static Data Members
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#B-C-0e[`C`]  ¦
+| Name | Description 
 
-¦xref:#B-C-05[`C<int>`]  ¦
-
-¦xref:#B-C-0c[`C<T*>`]  ¦
-
+| xref:#B-C-0e[`C`] 
+| 
+    
+| xref:#B-C-05[`C<int>`] 
+| 
+    
+| xref:#B-C-0c[`C<T*>`] 
+| 
+    
 |===
 
 
@@ -111,7 +121,7 @@ struct B;
 
 
 [#B-C-0e]
-== xref:#B[pass:[B]]::C
+== xref:#B[B]::C
 
 
 
@@ -130,7 +140,7 @@ unsigned int C = 0;
 
 
 [#B-C-05]
-== xref:#B[pass:[B]]::C
+== xref:#B[B]::C
 
 
 
@@ -142,14 +152,14 @@ Declared in `<var-template.cpp>`
 ----
 template<>
 static
-unsigned int xref:#B-C-0e[pass:[C]]<int> = -1;
+unsigned int xref:#B-C-0e[C]<int> = -1;
 ----
 
 
 
 
 [#B-C-0c]
-== xref:#B[pass:[B]]::C
+== xref:#B[B]::C
 
 
 
@@ -161,7 +171,7 @@ Declared in `<var-template.cpp>`
 ----
 template<typename T>
 static
-unsigned int xref:#B-C-0e[pass:[C]]<T*> = sizeof(T);
+unsigned int xref:#B-C-0e[C]<T*> = sizeof(T);
 ----
 
 

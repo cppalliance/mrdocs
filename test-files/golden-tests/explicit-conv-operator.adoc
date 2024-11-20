@@ -6,17 +6,22 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#Explicit[`Explicit`]  ¦
+| Name | Description 
 
-¦xref:#ExplicitExpression[`ExplicitExpression`]  ¦
-
-¦xref:#ExplicitFalse[`ExplicitFalse`]  ¦
-
-¦xref:#ExplicitTrue[`ExplicitTrue`]  ¦
-
+| xref:#Explicit[`Explicit`] 
+| 
+    
+| xref:#ExplicitExpression[`ExplicitExpression`] 
+| 
+    
+| xref:#ExplicitFalse[`ExplicitFalse`] 
+| 
+    
+| xref:#ExplicitTrue[`ExplicitTrue`] 
+| 
+    
 |===
 
 
@@ -36,11 +41,13 @@ struct Explicit;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#Explicit-2conversion[`operator bool`]  ¦
+| Name | Description 
 
+| xref:#Explicit-2conversion[`operator bool`] 
+| 
+    
 |===
 
 
@@ -48,7 +55,7 @@ struct Explicit;
 
 
 [#Explicit-2conversion]
-== xref:#Explicit[pass:[Explicit]]::operator bool
+== xref:#Explicit[Explicit]::operator bool
 
 
 
@@ -86,11 +93,13 @@ struct ExplicitFalse;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#ExplicitFalse-2conversion[`operator bool`]  ¦
+| Name | Description 
 
+| xref:#ExplicitFalse-2conversion[`operator bool`] 
+| 
+    
 |===
 
 
@@ -98,7 +107,7 @@ struct ExplicitFalse;
 
 
 [#ExplicitFalse-2conversion]
-== xref:#ExplicitFalse[pass:[ExplicitFalse]]::operator bool
+== xref:#ExplicitFalse[ExplicitFalse]::operator bool
 
 
 
@@ -136,11 +145,13 @@ struct ExplicitTrue;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#ExplicitTrue-2conversion[`operator bool`]  ¦
+| Name | Description 
 
+| xref:#ExplicitTrue-2conversion[`operator bool`] 
+| 
+    
 |===
 
 
@@ -148,7 +159,7 @@ struct ExplicitTrue;
 
 
 [#ExplicitTrue-2conversion]
-== xref:#ExplicitTrue[pass:[ExplicitTrue]]::operator bool
+== xref:#ExplicitTrue[ExplicitTrue]::operator bool
 
 
 
@@ -187,11 +198,13 @@ struct ExplicitExpression;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#ExplicitExpression-2conversion[`operator bool`]  ¦
+| Name | Description 
 
+| xref:#ExplicitExpression-2conversion[`operator bool`] 
+| 
+    
 |===
 
 
@@ -199,7 +212,7 @@ struct ExplicitExpression;
 
 
 [#ExplicitExpression-2conversion]
-== xref:#ExplicitExpression[pass:[ExplicitExpression]]::operator bool
+== xref:#ExplicitExpression[ExplicitExpression]::operator bool
 
 
 

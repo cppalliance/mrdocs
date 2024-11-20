@@ -6,11 +6,13 @@
 == Global namespace
 
 === Namespaces
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#LongName[`LongName`]  ¦
+| Name | Description 
 
+| xref:#LongName[`LongName`] 
+| 
+    
 |===
 
 
