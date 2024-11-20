@@ -47,17 +47,23 @@ The templates used to generate the documentation are located in the `share/mrdoc
 addons: /path/to/custom/addons
 ----
 
-Each symbol goes through a main layout template in the `share/mrdocs/addons/generator/<generator>/layouts/single-symbol.<generator>.hbs` directory. This template is a simple entry point that renders the partial relative to the symbol kind.
+Each symbol goes through a main layout template in the `<addons>/generator/<generator>/layouts/single-symbol.<generator>.hbs` directory. This template is a simple entry point that renders the partial relative to the symbol kind.
 
-The partials are located in the `share/mrdocs/addons/generator/<generator>/partials` directory. It contains the following subdirectories:
+The partials are located in the `<addons>/generator/<generator>/partials` directory. It contains the following subdirectories:
 
 * `symbols`: Contains one partial for each symbol kind. The fields of each symbol object are described in the <<symbol-fields,Symbol Object>> section.
 * `signature`: Contains one partial for each symbol kind that renders the signature of the symbol as if declared in {cpp}.
 * `types`: partials for rendering other types of objects in a canonical form. Please refer to the <<dom_reference,Document Object Model Reference>> for more information on each type of object.
+* `markup`: partials for rendering markup elements such as lists, tables, and code blocks, in the output format.
+
+Partials common to all generators are available in the `<addons>/generator/common/partials` directory. The common partials are loaded before the generator-specific partials, which can override any common partials.
 
 The multipage generator renders the layout multiple times as separate pages for each symbol. The single-page generator renders the layout multiple times and concatenates the results in a single page.
 
-Each time the generator encounters a symbol, it renders the layout template with the symbol data as the Handlebars context.The layout template can include other partial templates to render the symbol data.These partials are available in the `share/mrdocs/addons/generator/<generator>/partials` directory.
+Each time the generator encounters a symbol,
+it renders the layout template with the symbol data as the Handlebars context.
+The layout template can include other partial templates
+to render the symbol data.These partials are available in the `<addons>/generator/<generator>/partials` directory.
 
 The Document Object Model (DOM) for each symbol includes all information about the symbol.One advantage of custom templates over post-processing XML files is the ability to access symbols as a graph.If symbol `A` refers to symbol `B`, some properties of symbol `B` are likely to be required in the documentation of `A`.All templates and generators can access a reference to `B` by searching the symbol tree or simply by accessing the elements `A` refers to.All references to other symbols are resolved in the templates.
 
