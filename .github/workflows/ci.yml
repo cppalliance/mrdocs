@@ -45,6 +45,8 @@ jobs:
           factors: ''
           runs-on: |
             apple-clang: macos-15
+          containers: |
+            clang: ubuntu:24.04
           build-types: |
             gcc: Release
             clang: Release
