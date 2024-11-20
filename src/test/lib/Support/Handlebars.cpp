@@ -1689,6 +1689,15 @@ partial_blocks()
                 "{{#>nested}}1{{#>nested}}2{{/nested}}3{{/nested}}") ==
                 "123");
     }
+
+    // should remove whitespace from nested partial blocks
+    {
+        hbs.registerPartial("nested", "{{> @partial-block }}");
+        BOOST_TEST(
+            hbs.render(
+                "{{#>nested~}} 1 {{~#>nested~}} 2 {{~/nested ~}} 3 {{~/nested}}") ==
+                "123");
+    }
 }
 
 void

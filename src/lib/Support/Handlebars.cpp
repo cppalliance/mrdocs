@@ -2431,7 +2431,14 @@ parseBlock(
     }
 
     // ==============================================================
-    // Apply close tag whitespace control
+    // Apply open tag whitespace control to block
+    // ==============================================================
+    if (tag.removeRWhitespace) {
+        fnBlock = trim_lspaces(fnBlock);
+    }
+
+    // ==============================================================
+    // Apply close tag whitespace control after block
     // ==============================================================
     if (closeTag.removeRWhitespace) {
         templateText = trim_lspaces(templateText);
