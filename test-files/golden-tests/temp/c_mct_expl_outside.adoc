@@ -6,11 +6,13 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A[`A`]  ¦
+| Name | Description 
 
+| xref:#A[`A`] 
+| 
+    
 |===
 
 
@@ -30,13 +32,16 @@ struct A;
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-B-04[`B`]  ¦
+| Name | Description 
 
-¦xref:#A-B-01[`B<int>`]  ¦
-
+| xref:#A-B-04[`B`] 
+| 
+    
+| xref:#A-B-01[`B<int>`] 
+| 
+    
 |===
 
 
@@ -44,7 +49,7 @@ struct A;
 
 
 [#A-B-04]
-== xref:#A[pass:[A]]::B
+== xref:#A[A]::B
 
 
 
@@ -59,11 +64,13 @@ struct B;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-B-04-f[`f`]  ¦
+| Name | Description 
 
+| xref:#A-B-04-f[`f`] 
+| 
+    
 |===
 
 
@@ -71,7 +78,7 @@ struct B;
 
 
 [#A-B-04-f]
-== xref:#A[pass:[A]]::xref:#A-B-04[pass:[B]]::f
+== xref:#A[A]::xref:#A-B-04[B]::f
 
 
 
@@ -95,7 +102,7 @@ f();
 
 
 [#A-B-01]
-== xref:#A[pass:[A]]::B
+== xref:#A[A]::B
 
 
 
@@ -106,15 +113,17 @@ Declared in `<temp/c_mct_expl_outside.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-struct xref:#A-B-04[pass:[B]]<int>;
+struct xref:#A-B-04[B]<int>;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-B-01-g[`g`]  ¦
+| Name | Description 
 
+| xref:#A-B-01-g[`g`] 
+| 
+    
 |===
 
 
@@ -122,7 +131,7 @@ struct xref:#A-B-04[pass:[B]]<int>;
 
 
 [#A-B-01-g]
-== xref:#A[pass:[A]]::xref:#A-B-01[pass:[B]]<int>::g
+== xref:#A[A]::xref:#A-B-01[B]<int>::g
 
 
 

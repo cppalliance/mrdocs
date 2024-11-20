@@ -6,13 +6,16 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A[`A`]  ¦
+| Name | Description 
 
-¦xref:#B[`B`]  ¦
-
+| xref:#A[`A`] 
+| 
+    
+| xref:#B[`B`] 
+| 
+    
 |===
 
 
@@ -32,13 +35,16 @@ union A;
 ----
 
 ===  Data Members
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-x[`x`] [.small]#[variant member]# ¦
+| Name | Description 
 
-¦xref:#A-y[`y`] [.small]#[variant member]# ¦
-
+| xref:#A-x[`x`] [.small]#[variant member]#
+| 
+    
+| xref:#A-y[`y`] [.small]#[variant member]#
+| 
+    
 |===
 
 
@@ -46,7 +52,7 @@ union A;
 
 
 [#A-x]
-== xref:#A[pass:[A]]::x
+== xref:#A[A]::x
 
 
 
@@ -63,7 +69,7 @@ int x;
 
 
 [#A-y]
-== xref:#A[pass:[A]]::y
+== xref:#A[A]::y
 
 
 
@@ -94,15 +100,19 @@ struct B;
 ----
 
 ===  Data Members
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#B-x[`x`] [.small]#[variant member]# ¦
+| Name | Description 
 
-¦xref:#B-y[`y`] [.small]#[variant member]# ¦
-
-¦xref:#B-z[`z`]  ¦
-
+| xref:#B-x[`x`] [.small]#[variant member]#
+| 
+    
+| xref:#B-y[`y`] [.small]#[variant member]#
+| 
+    
+| xref:#B-z[`z`] 
+| 
+    
 |===
 
 
@@ -110,7 +120,7 @@ struct B;
 
 
 [#B-x]
-== xref:#B[pass:[B]]::x
+== xref:#B[B]::x
 
 
 
@@ -127,7 +137,7 @@ int x;
 
 
 [#B-y]
-== xref:#B[pass:[B]]::y
+== xref:#B[B]::y
 
 
 
@@ -144,7 +154,7 @@ bool y;
 
 
 [#B-z]
-== xref:#B[pass:[B]]::z
+== xref:#B[B]::z
 
 
 

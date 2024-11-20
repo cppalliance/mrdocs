@@ -6,11 +6,13 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A[`A`]  ¦
+| Name | Description 
 
+| xref:#A[`A`] 
+| 
+    
 |===
 
 
@@ -31,15 +33,19 @@ struct A;
 ----
 
 ===  Static Data Members
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-x-0e[`x`]  ¦
+| Name | Description 
 
-¦xref:#A-x-0a[`x<U*, T>`]  ¦
-
-¦xref:#A-x-07[`x<T, long>`]  ¦
-
+| xref:#A-x-0e[`x`] 
+| 
+    
+| xref:#A-x-0a[`x<U*, T>`] 
+| 
+    
+| xref:#A-x-07[`x<T, long>`] 
+| 
+    
 |===
 
 
@@ -47,7 +53,7 @@ struct A;
 
 
 [#A-x-0e]
-== xref:#A[pass:[A]]::x
+== xref:#A[A]::x
 
 
 
@@ -69,7 +75,7 @@ T const x = 0;
 
 
 [#A-x-0a]
-== xref:#A[pass:[A]]::x
+== xref:#A[A]::x
 
 
 
@@ -82,14 +88,14 @@ Declared in `<static-data-template.cpp>`
 template<typename U>
 constexpr
 static
-T const xref:#A-x-0e[pass:[x]]<U*, T> = 1;
+T const xref:#A-x-0e[x]<U*, T> = 1;
 ----
 
 
 
 
 [#A-x-07]
-== xref:#A[pass:[A]]::x
+== xref:#A[A]::x
 
 
 
@@ -102,7 +108,7 @@ Declared in `<static-data-template.cpp>`
 template<>
 constexpr
 static
-bool const xref:#A-x-0e[pass:[x]]<T, long> = 2;
+bool const xref:#A-x-0e[x]<T, long> = 2;
 ----
 
 

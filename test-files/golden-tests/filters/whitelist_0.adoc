@@ -6,15 +6,19 @@
 == Global namespace
 
 === Namespaces
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#N0[`N0`]  ¦
+| Name | Description 
 
-¦xref:#N1[`N1`]  ¦
-
-¦xref:#N5[`N5`]  ¦
-
+| xref:#N0[`N0`] 
+| 
+    
+| xref:#N1[`N1`] 
+| 
+    
+| xref:#N5[`N5`] 
+| 
+    
 |===
 
 
@@ -23,17 +27,19 @@
 == N0
 
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#N0-f0_WL[`f0_WL`]  ¦
+| Name | Description 
 
+| xref:#N0-f0_WL[`f0_WL`] 
+| 
+    
 |===
 
 
 
 [#N0-f0_WL]
-== xref:#N0[pass:[N0]]::f0_WL
+== xref:#N0[N0]::f0_WL
 
 
 
@@ -60,32 +66,37 @@ f0_WL();
 == N1
 
 === Namespaces
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#N1-N3_WL[`N3_WL`]  ¦
+| Name | Description 
 
-¦xref:#N1-N4[`N4`]  ¦
-
+| xref:#N1-N3_WL[`N3_WL`] 
+| 
+    
+| xref:#N1-N4[`N4`] 
+| 
+    
 |===
 
 
 
 [#N1-N3_WL]
-== xref:#N1[pass:[N1]]::N3_WL
+== xref:#N1[N1]::N3_WL
 
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#N1-N3_WL-f1_WL[`f1_WL`]  ¦
+| Name | Description 
 
+| xref:#N1-N3_WL-f1_WL[`f1_WL`] 
+| 
+    
 |===
 
 
 
 [#N1-N3_WL-f1_WL]
-== xref:#N1[pass:[N1]]::xref:#N1-N3_WL[pass:[N3_WL]]::f1_WL
+== xref:#N1[N1]::xref:#N1-N3_WL[N3_WL]::f1_WL
 
 
 
@@ -109,20 +120,22 @@ f1_WL();
 
 
 [#N1-N4]
-== xref:#N1[pass:[N1]]::N4
+== xref:#N1[N1]::N4
 
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#N1-N4-f1_WL[`f1_WL`]  ¦
+| Name | Description 
 
+| xref:#N1-N4-f1_WL[`f1_WL`] 
+| 
+    
 |===
 
 
 
 [#N1-N4-f1_WL]
-== xref:#N1[pass:[N1]]::xref:#N1-N4[pass:[N4]]::f1_WL
+== xref:#N1[N1]::xref:#N1-N4[N4]::f1_WL
 
 
 
@@ -149,24 +162,28 @@ f1_WL();
 == N5
 
 === Namespaces
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#N5-N6_BL[`N6_BL`]  ¦
+| Name | Description 
 
+| xref:#N5-N6_BL[`N6_BL`] 
+| 
+    
 |===
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#N5-f0[`f0`]  ¦
+| Name | Description 
 
+| xref:#N5-f0[`f0`] 
+| 
+    
 |===
 
 
 
 [#N5-f0]
-== xref:#N5[pass:[N5]]::f0
+== xref:#N5[N5]::f0
 
 
 
@@ -190,35 +207,40 @@ f0();
 
 
 [#N5-N6_BL]
-== xref:#N5[pass:[N5]]::N6_BL
+== xref:#N5[N5]::N6_BL
 
 === Namespaces
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#N5-N6_BL-M7[`M7`]  ¦
+| Name | Description 
 
-¦xref:#N5-N6_BL-N7[`N7`]  ¦
-
+| xref:#N5-N6_BL-M7[`M7`] 
+| 
+    
+| xref:#N5-N6_BL-N7[`N7`] 
+| 
+    
 |===
 
 
 
 [#N5-N6_BL-N7]
-== xref:#N5[pass:[N5]]::xref:#N5-N6_BL[pass:[N6_BL]]::N7
+== xref:#N5[N5]::xref:#N5-N6_BL[N6_BL]::N7
 
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#N5-N6_BL-N7-f2_WL[`f2_WL`]  ¦
+| Name | Description 
 
+| xref:#N5-N6_BL-N7-f2_WL[`f2_WL`] 
+| 
+    
 |===
 
 
 
 [#N5-N6_BL-N7-f2_WL]
-== xref:#N5[pass:[N5]]::xref:#N5-N6_BL[pass:[N6_BL]]::xref:#N5-N6_BL-N7[pass:[N7]]::f2_WL
+== xref:#N5[N5]::xref:#N5-N6_BL[N6_BL]::xref:#N5-N6_BL-N7[N7]::f2_WL
 
 
 
@@ -242,20 +264,22 @@ f2_WL();
 
 
 [#N5-N6_BL-M7]
-== xref:#N5[pass:[N5]]::xref:#N5-N6_BL[pass:[N6_BL]]::M7
+== xref:#N5[N5]::xref:#N5-N6_BL[N6_BL]::M7
 
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#N5-N6_BL-M7-f2_WL[`f2_WL`]  ¦
+| Name | Description 
 
+| xref:#N5-N6_BL-M7-f2_WL[`f2_WL`] 
+| 
+    
 |===
 
 
 
 [#N5-N6_BL-M7-f2_WL]
-== xref:#N5[pass:[N5]]::xref:#N5-N6_BL[pass:[N6_BL]]::xref:#N5-N6_BL-M7[pass:[M7]]::f2_WL
+== xref:#N5[N5]::xref:#N5-N6_BL[N6_BL]::xref:#N5-N6_BL-M7[M7]::f2_WL
 
 
 

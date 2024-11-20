@@ -6,10 +6,12 @@
 == Global namespace
 
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:f[`f`]  ¦
+| Name | Description 
+
+| xref:f[`f`] 
+| 
 |===
 
 
@@ -26,14 +28,14 @@
 ----
 template<typename T>
 void
-xref:#f-03[pass:[f]]();
+xref:#f-03[f]();
 ----
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
 void
-xref:#f-0c[pass:[f]]<int>();
+xref:#f-0c[f]<int>();
 ----
   
 
@@ -83,7 +85,7 @@ Declared in `<temp/ft_expl.cpp>`
 ----
 template<>
 void
-xref:#f-03[pass:[f]]<int>();
+xref:#f-03[f]<int>();
 ----
 
 

@@ -6,19 +6,25 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T[`T`]  ¦
+| Name | Description 
 
-¦xref:#U[`U`]  ¦
-
-¦xref:#V[`V`]  ¦
-
-¦xref:#W[`W`]  ¦
-
-¦xref:#X[`X`]  ¦
-
+| xref:#T[`T`] 
+| 
+    
+| xref:#U[`U`] 
+| 
+    
+| xref:#V[`V`] 
+| 
+    
+| xref:#W[`W`] 
+| 
+    
+| xref:#X[`X`] 
+| 
+    
 |===
 
 
@@ -38,19 +44,25 @@ struct T;
 ----
 
 ===  Data Members
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T-i[`i`]  ¦
+| Name | Description 
 
-¦xref:#T-j[`j`]  ¦
-
-¦xref:#T-k[`k`]  ¦
-
-¦xref:#T-l[`l`]  ¦
-
-¦xref:#T-m[`m`]  ¦
-
+| xref:#T-i[`i`] 
+| 
+    
+| xref:#T-j[`j`] 
+| 
+    
+| xref:#T-k[`k`] 
+| 
+    
+| xref:#T-l[`l`] 
+| 
+    
+| xref:#T-m[`m`] 
+| 
+    
 |===
 
 
@@ -58,7 +70,7 @@ struct T;
 
 
 [#T-i]
-== xref:#T[pass:[T]]::i
+== xref:#T[T]::i
 
 
 
@@ -75,7 +87,7 @@ int i;
 
 
 [#T-j]
-== xref:#T[pass:[T]]::j
+== xref:#T[T]::j
 
 
 
@@ -92,7 +104,7 @@ double j;
 
 
 [#T-k]
-== xref:#T[pass:[T]]::k
+== xref:#T[T]::k
 
 
 
@@ -110,7 +122,7 @@ int k;
 
 
 [#T-l]
-== xref:#T[pass:[T]]::l
+== xref:#T[T]::l
 
 
 
@@ -127,7 +139,7 @@ int l : 8;
 
 
 [#T-m]
-== xref:#T[pass:[T]]::m
+== xref:#T[T]::m
 
 
 
@@ -158,11 +170,13 @@ struct U;
 ----
 
 ===  Data Members
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#U-t[`t`]  ¦
+| Name | Description 
 
+| xref:#U-t[`t`] 
+| 
+    
 |===
 
 
@@ -170,7 +184,7 @@ struct U;
 
 
 [#U-t]
-== xref:#U[pass:[U]]::t
+== xref:#U[U]::t
 
 
 
@@ -201,20 +215,25 @@ class V;
 ----
 
 === Protected Data Members
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#V-j[`j`]  ¦
+| Name | Description 
 
+| xref:#V-j[`j`] 
+| 
+    
 |===
 === Private Data Members
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#V-i[`i`]  ¦
+| Name | Description 
 
-¦xref:#V-k[`k`]  ¦
-
+| xref:#V-i[`i`] 
+| 
+    
+| xref:#V-k[`k`] 
+| 
+    
 |===
 
 
@@ -222,7 +241,7 @@ class V;
 
 
 [#V-i]
-== xref:#V[pass:[V]]::i
+== xref:#V[V]::i
 
 
 
@@ -239,7 +258,7 @@ int i;
 
 
 [#V-j]
-== xref:#V[pass:[V]]::j
+== xref:#V[V]::j
 
 
 
@@ -256,7 +275,7 @@ unsigned long j;
 
 
 [#V-k]
-== xref:#V[pass:[V]]::k
+== xref:#V[V]::k
 
 
 
@@ -287,11 +306,13 @@ struct W;
 ----
 
 ===  Data Members
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#W-buf[`buf`]  ¦
+| Name | Description 
 
+| xref:#W-buf[`buf`] 
+| 
+    
 |===
 
 
@@ -299,7 +320,7 @@ struct W;
 
 
 [#W-buf]
-== xref:#W[pass:[W]]::buf
+== xref:#W[W]::buf
 
 
 
@@ -333,26 +354,34 @@ struct X;
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#X-Q[`Q`]  ¦
+| Name | Description 
 
+| xref:#X-Q[`Q`] 
+| 
+    
 |===
 ===  Data Members
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#X-x0[`x0`]  ¦
+| Name | Description 
 
-¦xref:#X-x1[`x1`]  ¦
-
-¦xref:#X-x2[`x2`]  ¦
-
-¦xref:#X-x3[`x3`]  ¦
-
-¦xref:#X-x4[`x4`]  ¦
-
+| xref:#X-x0[`x0`] 
+| 
+    
+| xref:#X-x1[`x1`] 
+| 
+    
+| xref:#X-x2[`x2`] 
+| 
+    
+| xref:#X-x3[`x3`] 
+| 
+    
+| xref:#X-x4[`x4`] 
+| 
+    
 |===
 
 
@@ -360,7 +389,7 @@ struct X;
 
 
 [#X-Q]
-== xref:#X[pass:[X]]::Q
+== xref:#X[X]::Q
 
 
 
@@ -377,7 +406,7 @@ using Q = P;
 
 
 [#X-x0]
-== xref:#X[pass:[X]]::x0
+== xref:#X[X]::x0
 
 
 
@@ -394,7 +423,7 @@ int x0 = 0;
 
 
 [#X-x1]
-== xref:#X[pass:[X]]::x1
+== xref:#X[X]::x1
 
 
 
@@ -411,7 +440,7 @@ P x1;
 
 
 [#X-x2]
-== xref:#X[pass:[X]]::x2
+== xref:#X[X]::x2
 
 
 
@@ -428,7 +457,7 @@ P const x2[32];
 
 
 [#X-x3]
-== xref:#X[pass:[X]]::x3
+== xref:#X[X]::x3
 
 
 
@@ -445,7 +474,7 @@ xref:#X-Q[Q] x3;
 
 
 [#X-x4]
-== xref:#X[pass:[X]]::x4
+== xref:#X[X]::x4
 
 
 

@@ -6,11 +6,13 @@
 == Global namespace
 
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#f[`f`]  ¦
+| Name | Description 
 
+| xref:#f[`f`] 
+| 
+    
 |===
 
 

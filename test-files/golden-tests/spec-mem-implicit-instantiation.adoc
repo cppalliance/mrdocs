@@ -6,13 +6,16 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-0e[`A`]  ¦
+| Name | Description 
 
-¦xref:#D[`D`]  ¦
-
+| xref:#A-0e[`A`] 
+| 
+    
+| xref:#D[`D`] 
+| 
+    
 |===
 
 
@@ -33,20 +36,25 @@ struct A;
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-0e-B[`B`]  ¦
+| Name | Description 
 
-¦xref:#A-0e-C[`C`]  ¦
-
+| xref:#A-0e-B[`B`] 
+| 
+    
+| xref:#A-0e-C[`C`] 
+| 
+    
 |===
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-0e-f[`f`]  ¦
+| Name | Description 
 
+| xref:#A-0e-f[`f`] 
+| 
+    
 |===
 
 
@@ -54,7 +62,7 @@ struct A;
 
 
 [#A-0e-f]
-== xref:#A-0e[pass:[A]]::f
+== xref:#A-0e[A]::f
 
 
 
@@ -78,7 +86,7 @@ f();
 
 
 [#A-0e-B]
-== xref:#A-0e[pass:[A]]::B
+== xref:#A-0e[A]::B
 
 
 
@@ -93,11 +101,13 @@ struct B;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-0e-B-g[`g`]  ¦
+| Name | Description 
 
+| xref:#A-0e-B-g[`g`] 
+| 
+    
 |===
 
 
@@ -105,7 +115,7 @@ struct B;
 
 
 [#A-0e-B-g]
-== xref:#A-0e[pass:[A]]::xref:#A-0e-B[pass:[B]]::g
+== xref:#A-0e[A]::xref:#A-0e-B[B]::g
 
 
 
@@ -129,7 +139,7 @@ g();
 
 
 [#A-0e-C]
-== xref:#A-0e[pass:[A]]::C
+== xref:#A-0e[A]::C
 
 
 
@@ -144,11 +154,13 @@ struct C;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-0e-C-h[`h`]  ¦
+| Name | Description 
 
+| xref:#A-0e-C-h[`h`] 
+| 
+    
 |===
 
 
@@ -156,7 +168,7 @@ struct C;
 
 
 [#A-0e-C-h]
-== xref:#A-0e[pass:[A]]::xref:#A-0e-C[pass:[C]]::h
+== xref:#A-0e[A]::xref:#A-0e-C[C]::h
 
 
 
@@ -203,11 +215,13 @@ struct D;
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#D-E-0e[`E`]  ¦
+| Name | Description 
 
+| xref:#D-E-0e[`E`] 
+| 
+    
 |===
 
 
@@ -215,7 +229,7 @@ struct D;
 
 
 [#D-E-0e]
-== xref:#D[pass:[D]]::E
+== xref:#D[D]::E
 
 
 
@@ -230,11 +244,13 @@ struct E;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#D-E-0e-k[`k`]  ¦
+| Name | Description 
 
+| xref:#D-E-0e-k[`k`] 
+| 
+    
 |===
 
 
@@ -242,7 +258,7 @@ struct E;
 
 
 [#D-E-0e-k]
-== xref:#D[pass:[D]]::xref:#D-E-0e[pass:[E]]::k
+== xref:#D[D]::xref:#D-E-0e[E]::k
 
 
 

@@ -6,21 +6,25 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T[`T`]  ¦
+| Name | Description 
 
+| xref:#T[`T`] 
+| 
 Struct T brief
 
-¦xref:#U[`U`]  ¦
-
+    
+| xref:#U[`U`] 
+| 
 Struct U brief
 
-¦xref:#V[`V`]  ¦
-
+    
+| xref:#V[`V`] 
+| 
 Struct V brief
 
+    
 |===
 
 
@@ -42,17 +46,20 @@ struct T;
 ----
 
 ===  Friends
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T-08friend-04ce[`[object Object]`]  ¦
+| Name | Description 
 
+| xref:#T-08friend-04ce[`[object Object]`] 
+| 
 Friend int brief
 
-¦xref:#T-08friend-04cb[`[object Object]`]  ¦
-
+    
+| xref:#T-08friend-04cb[`[object Object]`] 
+| 
 Friend class Z brief
 
+    
 |===
 
 
@@ -114,13 +121,15 @@ struct U;
 ----
 
 ===  Friends
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#U-08friend[`[object Object]`]  ¦
+| Name | Description 
 
+| xref:#U-08friend[`[object Object]`] 
+| 
 Friend T brief
 
+    
 |===
 
 
@@ -163,13 +172,15 @@ struct V;
 ----
 
 ===  Friends
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#V-08friend[`[object Object]`]  ¦
+| Name | Description 
 
+| xref:#V-08friend[`[object Object]`] 
+| 
 Friend struct U brief
 
+    
 |===
 
 

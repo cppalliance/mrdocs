@@ -6,18 +6,23 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A[`A`]  ¦
+| Name | Description 
 
+| xref:#A[`A`] 
+| 
+    
 |===
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:f[`f`]  ¦
-¦xref:g[`g`]  ¦
+| Name | Description 
+
+| xref:f[`f`] 
+| 
+| xref:g[`g`] 
+| 
 |===
 
 
@@ -34,14 +39,14 @@
 ----
 template<typename T>
 void
-xref:#f-05[pass:[f]]() requires (sizeof(T) == 4);
+xref:#f-05[f]() requires (sizeof(T) == 4);
 ----
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 void
-xref:#f-08[pass:[f]]() requires (sizeof(T) == 2);
+xref:#f-08[f]() requires (sizeof(T) == 2);
 ----
   
 
@@ -115,14 +120,14 @@ f() requires (sizeof(T) == 2);
 ----
 template<typename T> requires (sizeof(T) == 4)
 void
-xref:#g-0a[pass:[g]]();
+xref:#g-0a[g]();
 ----
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T> requires (sizeof(U) == 2)
 void
-xref:#g-0c[pass:[g]]();
+xref:#g-0c[g]();
 ----
   
 

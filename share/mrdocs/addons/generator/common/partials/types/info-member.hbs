@@ -1,0 +1,15 @@
+{{! Helper for "info-list": renders a symbol as a row in a table of members }}
+{{#>markup/tr~}}
+{{#>markup/td~}}
+    {{#>markup/a href=ref}}{{#>markup/code}}{{>types/declarator-id . nolink=true}}{{/markup/code}}{{/markup/a}} {{>types/special-name-suffix .}}
+{{~/markup/td}}
+{{#>markup/td~}}
+    {{#if (ne kind "overload")~}}
+        {{~doc.brief}}
+    {{else~}}
+        {{#each (unique (pluck (pluck members "doc") "brief"))~}}
+            {{.}}
+        {{/each~}}
+    {{/if}}
+{{~/markup/td}}
+{{~/markup/tr}}

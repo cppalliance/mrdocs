@@ -6,11 +6,13 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A[`A`]  ¦
+| Name | Description 
 
+| xref:#A[`A`] 
+| 
+    
 |===
 
 
@@ -31,11 +33,13 @@ struct A;
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-B[`B`]  ¦
+| Name | Description 
 
+| xref:#A-B[`B`] 
+| 
+    
 |===
 
 
@@ -43,7 +47,7 @@ struct A;
 
 
 [#A-B]
-== xref:#A[pass:[A]]::B
+== xref:#A[A]::B
 
 
 
@@ -57,11 +61,13 @@ struct B;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-B-f[`f`]  ¦
+| Name | Description 
 
+| xref:#A-B-f[`f`] 
+| 
+    
 |===
 
 
@@ -69,7 +75,7 @@ struct B;
 
 
 [#A-B-f]
-== xref:#A[pass:[A]]::xref:#A-B[pass:[B]]::f
+== xref:#A[A]::xref:#A-B[B]::f
 
 
 

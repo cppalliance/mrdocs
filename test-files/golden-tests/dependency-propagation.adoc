@@ -6,18 +6,22 @@
 == Global namespace
 
 === Namespaces
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#N[`N`]  ¦
+| Name | Description 
 
+| xref:#N[`N`] 
+| 
+    
 |===
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#E[`E`]  ¦
+| Name | Description 
 
+| xref:#E[`E`] 
+| 
+    
 |===
 
 
@@ -46,21 +50,25 @@ struct E
 == N
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#N-A[`A`]  ¦
+| Name | Description 
 
-¦xref:#N-B[`B`]  ¦
-
-¦xref:#N-C[`C`]  ¦
-
+| xref:#N-A[`A`] 
+| 
+    
+| xref:#N-B[`B`] 
+| 
+    
+| xref:#N-C[`C`] 
+| 
+    
 |===
 
 
 
 [#N-C]
-== xref:#N[pass:[N]]::C
+== xref:#N[N]::C
 
 
 
@@ -78,7 +86,7 @@ using C = xref:#N-B[B]<T>;
 
 
 [#N-B]
-== xref:#N[pass:[N]]::B
+== xref:#N[N]::B
 
 
 
@@ -96,7 +104,7 @@ using B = xref:#N-A[A]<T>;
 
 
 [#N-A]
-== xref:#N[pass:[N]]::A
+== xref:#N[N]::A
 
 
 

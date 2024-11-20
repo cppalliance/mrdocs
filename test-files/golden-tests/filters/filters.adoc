@@ -6,19 +6,25 @@
 == Global namespace
 
 === Namespaces
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A[`A`]  ¦
+| Name | Description 
 
-¦xref:#B[`B`]  ¦
-
-¦xref:#C[`C`]  ¦
-
-¦xref:#D[`D`]  ¦
-
-¦xref:#F[`F`]  ¦
-
+| xref:#A[`A`] 
+| 
+    
+| xref:#B[`B`] 
+| 
+    
+| xref:#C[`C`] 
+| 
+    
+| xref:#D[`D`] 
+| 
+    
+| xref:#F[`F`] 
+| 
+    
 |===
 
 
@@ -27,26 +33,31 @@
 == A
 
 === Namespaces
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-detail[`detail`]  ¦
+| Name | Description 
 
-¦xref:#A-detair[`detair`]  ¦
-
+| xref:#A-detail[`detail`] 
+| 
+    
+| xref:#A-detair[`detair`] 
+| 
+    
 |===
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-f0[`f0`]  ¦
+| Name | Description 
 
+| xref:#A-f0[`f0`] 
+| 
+    
 |===
 
 
 
 [#A-f0]
-== xref:#A[pass:[A]]::f0
+== xref:#A[A]::f0
 
 
 
@@ -70,20 +81,22 @@ f0();
 
 
 [#A-detail]
-== xref:#A[pass:[A]]::detail
+== xref:#A[A]::detail
 
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-detail-g0[`g0`]  ¦
+| Name | Description 
 
+| xref:#A-detail-g0[`g0`] 
+| 
+    
 |===
 
 
 
 [#A-detail-g0]
-== xref:#A[pass:[A]]::xref:#A-detail[pass:[detail]]::g0
+== xref:#A[A]::xref:#A-detail[detail]::g0
 
 
 
@@ -107,27 +120,31 @@ g0();
 
 
 [#A-detair]
-== xref:#A[pass:[A]]::detair
+== xref:#A[A]::detair
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-detair-Y[`Y`]  ¦
+| Name | Description 
 
+| xref:#A-detair-Y[`Y`] 
+| 
+    
 |===
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-detair-f4[`f4`]  ¦
+| Name | Description 
 
+| xref:#A-detair-f4[`f4`] 
+| 
+    
 |===
 
 
 
 [#A-detair-f4]
-== xref:#A[pass:[A]]::xref:#A-detair[pass:[detair]]::f4
+== xref:#A[A]::xref:#A-detair[detair]::f4
 
 
 
@@ -151,7 +168,7 @@ f4();
 
 
 [#A-detair-Y]
-== xref:#A[pass:[A]]::xref:#A-detair[pass:[detair]]::Y
+== xref:#A[A]::xref:#A-detair[detair]::Y
 
 
 
@@ -165,18 +182,22 @@ struct Y;
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-detair-Y-Z[`Z`]  ¦
+| Name | Description 
 
+| xref:#A-detair-Y-Z[`Z`] 
+| 
+    
 |===
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-detair-Y-f6[`f6`]  ¦
+| Name | Description 
 
+| xref:#A-detair-Y-f6[`f6`] 
+| 
+    
 |===
 
 
@@ -184,7 +205,7 @@ struct Y;
 
 
 [#A-detair-Y-f6]
-== xref:#A[pass:[A]]::xref:#A-detair[pass:[detair]]::xref:#A-detair-Y[pass:[Y]]::f6
+== xref:#A[A]::xref:#A-detair[detair]::xref:#A-detair-Y[Y]::f6
 
 
 
@@ -208,7 +229,7 @@ f6();
 
 
 [#A-detair-Y-Z]
-== xref:#A[pass:[A]]::xref:#A-detair[pass:[detair]]::xref:#A-detair-Y[pass:[Y]]::Z
+== xref:#A[A]::xref:#A-detair[detair]::xref:#A-detair-Y[Y]::Z
 
 
 
@@ -222,11 +243,13 @@ struct Z;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-detair-Y-Z-f7[`f7`]  ¦
+| Name | Description 
 
+| xref:#A-detair-Y-Z-f7[`f7`] 
+| 
+    
 |===
 
 
@@ -234,7 +257,7 @@ struct Z;
 
 
 [#A-detair-Y-Z-f7]
-== xref:#A[pass:[A]]::xref:#A-detair[pass:[detair]]::xref:#A-detair-Y[pass:[Y]]::xref:#A-detair-Y-Z[pass:[Z]]::f7
+== xref:#A[A]::xref:#A-detair[detair]::xref:#A-detair-Y[Y]::xref:#A-detair-Y-Z[Z]::f7
 
 
 
@@ -261,24 +284,28 @@ f7();
 == B
 
 === Namespaces
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#B-detair[`detair`]  ¦
+| Name | Description 
 
+| xref:#B-detair[`detair`] 
+| 
+    
 |===
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#B-f0[`f0`]  ¦
+| Name | Description 
 
+| xref:#B-f0[`f0`] 
+| 
+    
 |===
 
 
 
 [#B-f0]
-== xref:#B[pass:[B]]::f0
+== xref:#B[B]::f0
 
 
 
@@ -302,27 +329,31 @@ f0();
 
 
 [#B-detair]
-== xref:#B[pass:[B]]::detair
+== xref:#B[B]::detair
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#B-detair-Y[`Y`]  ¦
+| Name | Description 
 
+| xref:#B-detair-Y[`Y`] 
+| 
+    
 |===
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#B-detair-f4[`f4`]  ¦
+| Name | Description 
 
+| xref:#B-detair-f4[`f4`] 
+| 
+    
 |===
 
 
 
 [#B-detair-f4]
-== xref:#B[pass:[B]]::xref:#B-detair[pass:[detair]]::f4
+== xref:#B[B]::xref:#B-detair[detair]::f4
 
 
 
@@ -346,7 +377,7 @@ f4();
 
 
 [#B-detair-Y]
-== xref:#B[pass:[B]]::xref:#B-detair[pass:[detair]]::Y
+== xref:#B[B]::xref:#B-detair[detair]::Y
 
 
 
@@ -360,18 +391,22 @@ struct Y;
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#B-detair-Y-Z[`Z`]  ¦
+| Name | Description 
 
+| xref:#B-detair-Y-Z[`Z`] 
+| 
+    
 |===
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#B-detair-Y-f6[`f6`]  ¦
+| Name | Description 
 
+| xref:#B-detair-Y-f6[`f6`] 
+| 
+    
 |===
 
 
@@ -379,7 +414,7 @@ struct Y;
 
 
 [#B-detair-Y-f6]
-== xref:#B[pass:[B]]::xref:#B-detair[pass:[detair]]::xref:#B-detair-Y[pass:[Y]]::f6
+== xref:#B[B]::xref:#B-detair[detair]::xref:#B-detair-Y[Y]::f6
 
 
 
@@ -403,7 +438,7 @@ f6();
 
 
 [#B-detair-Y-Z]
-== xref:#B[pass:[B]]::xref:#B-detair[pass:[detair]]::xref:#B-detair-Y[pass:[Y]]::Z
+== xref:#B[B]::xref:#B-detair[detair]::xref:#B-detair-Y[Y]::Z
 
 
 
@@ -417,11 +452,13 @@ struct Z;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#B-detair-Y-Z-f7[`f7`]  ¦
+| Name | Description 
 
+| xref:#B-detair-Y-Z-f7[`f7`] 
+| 
+    
 |===
 
 
@@ -429,7 +466,7 @@ struct Z;
 
 
 [#B-detair-Y-Z-f7]
-== xref:#B[pass:[B]]::xref:#B-detair[pass:[detair]]::xref:#B-detair-Y[pass:[Y]]::xref:#B-detair-Y-Z[pass:[Z]]::f7
+== xref:#B[B]::xref:#B-detair[detair]::xref:#B-detair-Y[Y]::xref:#B-detair-Y-Z[Z]::f7
 
 
 
@@ -456,17 +493,19 @@ f7();
 == C
 
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#C-g0[`g0`]  ¦
+| Name | Description 
 
+| xref:#C-g0[`g0`] 
+| 
+    
 |===
 
 
 
 [#C-g0]
-== xref:#C[pass:[C]]::g0
+== xref:#C[C]::g0
 
 
 
@@ -493,39 +532,46 @@ g0();
 == D
 
 === Namespaces
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#D-E[`E`]  ¦
+| Name | Description 
 
+| xref:#D-E[`E`] 
+| 
+    
 |===
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#D-f1[`f1`]  ¦
+| Name | Description 
 
-¦xref:#D-g1[`g1`]  ¦
-
+| xref:#D-f1[`f1`] 
+| 
+    
+| xref:#D-g1[`g1`] 
+| 
+    
 |===
 
 
 
 [#D-E]
-== xref:#D[pass:[D]]::E
+== xref:#D[D]::E
 
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#D-E-g0[`g0`]  ¦
+| Name | Description 
 
+| xref:#D-E-g0[`g0`] 
+| 
+    
 |===
 
 
 
 [#D-E-g0]
-== xref:#D[pass:[D]]::xref:#D-E[pass:[E]]::g0
+== xref:#D[D]::xref:#D-E[E]::g0
 
 
 
@@ -549,7 +595,7 @@ g0();
 
 
 [#D-f1]
-== xref:#D[pass:[D]]::f1
+== xref:#D[D]::f1
 
 
 
@@ -573,7 +619,7 @@ f1();
 
 
 [#D-g1]
-== xref:#D[pass:[D]]::g1
+== xref:#D[D]::g1
 
 
 
@@ -600,24 +646,28 @@ g1();
 == F
 
 === Namespaces
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#F-G[`G`]  ¦
+| Name | Description 
 
+| xref:#F-G[`G`] 
+| 
+    
 |===
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#F-g0[`g0`]  ¦
+| Name | Description 
 
+| xref:#F-g0[`g0`] 
+| 
+    
 |===
 
 
 
 [#F-g0]
-== xref:#F[pass:[F]]::g0
+== xref:#F[F]::g0
 
 
 
@@ -641,22 +691,25 @@ g0();
 
 
 [#F-G]
-== xref:#F[pass:[F]]::G
+== xref:#F[F]::G
 
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#F-G-f1[`f1`]  ¦
+| Name | Description 
 
-¦xref:#F-G-g1[`g1`]  ¦
-
+| xref:#F-G-f1[`f1`] 
+| 
+    
+| xref:#F-G-g1[`g1`] 
+| 
+    
 |===
 
 
 
 [#F-G-f1]
-== xref:#F[pass:[F]]::xref:#F-G[pass:[G]]::f1
+== xref:#F[F]::xref:#F-G[G]::f1
 
 
 
@@ -680,7 +733,7 @@ f1();
 
 
 [#F-G-g1]
-== xref:#F[pass:[F]]::xref:#F-G[pass:[G]]::g1
+== xref:#F[F]::xref:#F-G[G]::g1
 
 
 

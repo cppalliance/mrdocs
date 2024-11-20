@@ -6,11 +6,13 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#Optional[`Optional`]  ¦
+| Name | Description 
 
+| xref:#Optional[`Optional`] 
+| 
+    
 |===
 
 
@@ -30,10 +32,12 @@ struct Optional;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:Optional-value[`value`]  ¦
+| Name | Description 
+
+| xref:Optional-value[`value`] 
+| 
 |===
 
 
@@ -41,7 +45,7 @@ struct Optional;
 
 [#Optional-value]
 
-== xref:#Optional[pass:[Optional]]::value
+== xref:#Optional[Optional]::value
 
   
 
@@ -53,7 +57,7 @@ struct Optional;
 template<typename Self>
 constexpr
 auto&&
-xref:#Optional-value-05[pass:[value]](this Self&& self);
+xref:#Optional-value-05[value](this Self&& self);
 ----
 
 [source,cpp,subs="verbatim,macros,-callouts"]
@@ -61,7 +65,7 @@ xref:#Optional-value-05[pass:[value]](this Self&& self);
 template<typename Self>
 constexpr
 auto&&
-xref:#Optional-value-06[pass:[value]](this 
+xref:#Optional-value-06[value](this 
     Self&& self,
     int x);
 ----
@@ -76,7 +80,7 @@ xref:#Optional-value-06[pass:[value]](this
 
 
 [#Optional-value-05]
-== xref:#Optional[pass:[Optional]]::value
+== xref:#Optional[Optional]::value
 
 
 
@@ -102,7 +106,7 @@ value(this Self&& self);
 
 
 [#Optional-value-06]
-== xref:#Optional[pass:[Optional]]::value
+== xref:#Optional[Optional]::value
 
 
 

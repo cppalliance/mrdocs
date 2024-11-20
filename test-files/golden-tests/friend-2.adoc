@@ -6,20 +6,24 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T[`T`]  ¦
+| Name | Description 
 
+| xref:#T[`T`] 
+| 
+    
 |===
 === Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#f[`f`]  ¦
+| Name | Description 
 
+| xref:#f[`f`] 
+| 
 f
 
+    
 |===
 
 
@@ -39,13 +43,15 @@ struct T;
 ----
 
 ===  Friends
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T-08friend[`f`]  ¦
+| Name | Description 
 
+| xref:#T-08friend[`f`] 
+| 
 f
 
+    
 |===
 
 

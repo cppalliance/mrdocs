@@ -6,15 +6,19 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A[`A`]  ¦
+| Name | Description 
 
-¦xref:#B[`B`]  ¦
-
-¦xref:#C[`C`]  ¦
-
+| xref:#A[`A`] 
+| 
+    
+| xref:#B[`B`] 
+| 
+    
+| xref:#C[`C`] 
+| 
+    
 |===
 
 
@@ -34,11 +38,13 @@ struct A;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-f[`f`]  ¦
+| Name | Description 
 
+| xref:#A-f[`f`] 
+| 
+    
 |===
 
 
@@ -46,7 +52,7 @@ struct A;
 
 
 [#A-f]
-== xref:#A[pass:[A]]::f
+== xref:#A[A]::f
 
 
 
@@ -84,11 +90,13 @@ struct B;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#B-f[`f`]  ¦
+| Name | Description 
 
+| xref:#B-f[`f`] 
+| 
+    
 |===
 
 
@@ -96,7 +104,7 @@ struct B;
 
 
 [#B-f]
-== xref:#B[pass:[B]]::f
+== xref:#B[B]::f
 
 
 
@@ -136,19 +144,24 @@ struct C
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:A-f[`f`]  ¦
+| Name | Description 
+
+| xref:A-f[`f`] 
+| 
 |===
 ===  Using Declarations
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#C-f-08[`f`]  ¦
+| Name | Description 
 
-¦xref:#C-f-03[`f`]  ¦
-
+| xref:#C-f-08[`f`] 
+| 
+    
+| xref:#C-f-03[`f`] 
+| 
+    
 |===
 
 
@@ -156,7 +169,7 @@ struct C
 
 
 [#C-f-08]
-== xref:#C[pass:[C]]::f
+== xref:#C[C]::f
 
 
 
@@ -181,7 +194,7 @@ using xref:#A[A]::f;
 
 
 [#C-f-03]
-== xref:#C[pass:[C]]::f
+== xref:#C[C]::f
 
 
 

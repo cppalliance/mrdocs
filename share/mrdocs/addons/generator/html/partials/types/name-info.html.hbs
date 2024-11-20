@@ -1,7 +1,0 @@
-{{! Renders a name info object }}
-{{#if prefix~}}
-{{>types/name-info prefix nolink=nolink~}}::
-{{~/if~}}
-{{#if (or (eq name "see-below") (eq name "implementation-defined"))~}}_{{name}}_{{else~}}
-{{#if (and symbol.ref (not nolink))}}<a href="{{symbol.ref}}">{{name}}</a>{{else~}}
-{{name}}{{/if}}{{#if args}}{{>types/template-args args=args nolink=nolink}}{{/if~}}{{/if~}}

@@ -6,45 +6,64 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T01[`T01`]  ¦
+| Name | Description 
 
-¦xref:#T02[`T02`]  ¦
-
-¦xref:#T03[`T03`]  ¦
-
-¦xref:#T04[`T04`]  ¦
-
-¦xref:#T05[`T05`]  ¦
-
-¦xref:#T06[`T06`]  ¦
-
-¦xref:#T08[`T08`]  ¦
-
-¦xref:#T09[`T09`]  ¦
-
-¦xref:#T10[`T10`]  ¦
-
-¦xref:#T11[`T11`]  ¦
-
-¦xref:#T12[`T12`]  ¦
-
-¦xref:#T13[`T13`]  ¦
-
-¦xref:#T14[`T14`]  ¦
-
-¦xref:#T15[`T15`]  ¦
-
-¦xref:#T16[`T16`]  ¦
-
-¦xref:#T17[`T17`]  ¦
-
-¦xref:#U[`U`]  ¦
-
-¦xref:#V[`V`]  ¦
-
+| xref:#T01[`T01`] 
+| 
+    
+| xref:#T02[`T02`] 
+| 
+    
+| xref:#T03[`T03`] 
+| 
+    
+| xref:#T04[`T04`] 
+| 
+    
+| xref:#T05[`T05`] 
+| 
+    
+| xref:#T06[`T06`] 
+| 
+    
+| xref:#T08[`T08`] 
+| 
+    
+| xref:#T09[`T09`] 
+| 
+    
+| xref:#T10[`T10`] 
+| 
+    
+| xref:#T11[`T11`] 
+| 
+    
+| xref:#T12[`T12`] 
+| 
+    
+| xref:#T13[`T13`] 
+| 
+    
+| xref:#T14[`T14`] 
+| 
+    
+| xref:#T15[`T15`] 
+| 
+    
+| xref:#T16[`T16`] 
+| 
+    
+| xref:#T17[`T17`] 
+| 
+    
+| xref:#U[`U`] 
+| 
+    
+| xref:#V[`V`] 
+| 
+    
 |===
 
 
@@ -64,11 +83,13 @@ struct T01;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T01-f[`f`]  ¦
+| Name | Description 
 
+| xref:#T01-f[`f`] 
+| 
+    
 |===
 
 
@@ -76,7 +97,7 @@ struct T01;
 
 
 [#T01-f]
-== xref:#T01[pass:[T01]]::f
+== xref:#T01[T01]::f
 
 
 
@@ -114,11 +135,13 @@ struct T02;
 ----
 
 ===  Static Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T02-f[`f`]  ¦
+| Name | Description 
 
+| xref:#T02-f[`f`] 
+| 
+    
 |===
 
 
@@ -126,7 +149,7 @@ struct T02;
 
 
 [#T02-f]
-== xref:#T02[pass:[T02]]::f
+== xref:#T02[T02]::f
 
 
 
@@ -165,11 +188,13 @@ struct T03;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T03-f[`f`]  ¦
+| Name | Description 
 
+| xref:#T03-f[`f`] 
+| 
+    
 |===
 
 
@@ -177,7 +202,7 @@ struct T03;
 
 
 [#T03-f]
-== xref:#T03[pass:[T03]]::f
+== xref:#T03[T03]::f
 
 
 
@@ -215,11 +240,13 @@ struct T04;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T04-f[`f`]  ¦
+| Name | Description 
 
+| xref:#T04-f[`f`] 
+| 
+    
 |===
 
 
@@ -227,7 +254,7 @@ struct T04;
 
 
 [#T04-f]
-== xref:#T04[pass:[T04]]::f
+== xref:#T04[T04]::f
 
 
 
@@ -265,11 +292,13 @@ struct T05;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T05-f[`f`]  ¦
+| Name | Description 
 
+| xref:#T05-f[`f`] 
+| 
+    
 |===
 
 
@@ -277,7 +306,7 @@ struct T05;
 
 
 [#T05-f]
-== xref:#T05[pass:[T05]]::f
+== xref:#T05[T05]::f
 
 
 
@@ -315,11 +344,13 @@ struct T06;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T06-f[`f`]  ¦
+| Name | Description 
 
+| xref:#T06-f[`f`] 
+| 
+    
 |===
 
 
@@ -327,7 +358,7 @@ struct T06;
 
 
 [#T06-f]
-== xref:#T06[pass:[T06]]::f
+== xref:#T06[T06]::f
 
 
 
@@ -366,11 +397,13 @@ struct T08;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T08-f[`f`]  ¦
+| Name | Description 
 
+| xref:#T08-f[`f`] 
+| 
+    
 |===
 
 
@@ -378,7 +411,7 @@ struct T08;
 
 
 [#T08-f]
-== xref:#T08[pass:[T08]]::f
+== xref:#T08[T08]::f
 
 
 
@@ -416,11 +449,13 @@ struct T09;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T09-f[`f`]  ¦
+| Name | Description 
 
+| xref:#T09-f[`f`] 
+| 
+    
 |===
 
 
@@ -428,7 +463,7 @@ struct T09;
 
 
 [#T09-f]
-== xref:#T09[pass:[T09]]::f
+== xref:#T09[T09]::f
 
 
 
@@ -466,11 +501,13 @@ struct T10;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T10-f[`f`]  ¦
+| Name | Description 
 
+| xref:#T10-f[`f`] 
+| 
+    
 |===
 
 
@@ -478,7 +515,7 @@ struct T10;
 
 
 [#T10-f]
-== xref:#T10[pass:[T10]]::f
+== xref:#T10[T10]::f
 
 
 
@@ -516,11 +553,13 @@ struct T11;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T11-f[`f`]  ¦
+| Name | Description 
 
+| xref:#T11-f[`f`] 
+| 
+    
 |===
 
 
@@ -528,7 +567,7 @@ struct T11;
 
 
 [#T11-f]
-== xref:#T11[pass:[T11]]::f
+== xref:#T11[T11]::f
 
 
 
@@ -566,11 +605,13 @@ struct T12;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T12-f[`f`]  ¦
+| Name | Description 
 
+| xref:#T12-f[`f`] 
+| 
+    
 |===
 
 
@@ -578,7 +619,7 @@ struct T12;
 
 
 [#T12-f]
-== xref:#T12[pass:[T12]]::f
+== xref:#T12[T12]::f
 
 
 
@@ -616,11 +657,13 @@ struct T13;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T13-f[`f`]  ¦
+| Name | Description 
 
+| xref:#T13-f[`f`] 
+| 
+    
 |===
 
 
@@ -628,7 +671,7 @@ struct T13;
 
 
 [#T13-f]
-== xref:#T13[pass:[T13]]::f
+== xref:#T13[T13]::f
 
 
 
@@ -667,11 +710,13 @@ struct T14;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T14-f[`f`]  ¦
+| Name | Description 
 
+| xref:#T14-f[`f`] 
+| 
+    
 |===
 
 
@@ -679,7 +724,7 @@ struct T14;
 
 
 [#T14-f]
-== xref:#T14[pass:[T14]]::f
+== xref:#T14[T14]::f
 
 
 
@@ -718,11 +763,13 @@ struct T15;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T15-f[`f`]  ¦
+| Name | Description 
 
+| xref:#T15-f[`f`] 
+| 
+    
 |===
 
 
@@ -730,7 +777,7 @@ struct T15;
 
 
 [#T15-f]
-== xref:#T15[pass:[T15]]::f
+== xref:#T15[T15]::f
 
 
 
@@ -768,11 +815,13 @@ struct T16;
 ----
 
 ===  Static Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T16-f[`f`]  ¦
+| Name | Description 
 
+| xref:#T16-f[`f`] 
+| 
+    
 |===
 
 
@@ -780,7 +829,7 @@ struct T16;
 
 
 [#T16-f]
-== xref:#T16[pass:[T16]]::f
+== xref:#T16[T16]::f
 
 
 
@@ -820,10 +869,12 @@ struct T17
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:T14-f[`f`]  ¦
+| Name | Description 
+
+| xref:T14-f[`f`] 
+| 
 |===
 
 
@@ -831,7 +882,7 @@ struct T17
 
 
 [#T17-f]
-== xref:#T17[pass:[T17]]::f
+== xref:#T17[T17]::f
 
 
 
@@ -870,20 +921,25 @@ struct U;
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#U-f1[`f1`]  ¦
+| Name | Description 
 
-¦xref:#U-f3[`f3`]  ¦
-
+| xref:#U-f1[`f1`] 
+| 
+    
+| xref:#U-f3[`f3`] 
+| 
+    
 |===
 ===  Static Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#U-f2[`f2`]  ¦
+| Name | Description 
 
+| xref:#U-f2[`f2`] 
+| 
+    
 |===
 
 
@@ -891,7 +947,7 @@ struct U;
 
 
 [#U-f1]
-== xref:#U[pass:[U]]::f1
+== xref:#U[U]::f1
 
 
 
@@ -916,7 +972,7 @@ f1(...) const volatile noexcept;
 
 
 [#U-f2]
-== xref:#U[pass:[U]]::f2
+== xref:#U[U]::f2
 
 
 
@@ -942,7 +998,7 @@ f2() noexcept;
 
 
 [#U-f3]
-== xref:#U[pass:[U]]::f3
+== xref:#U[U]::f3
 
 
 
@@ -982,19 +1038,24 @@ struct V
 ----
 
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#U-f1[`f1`]  ¦
+| Name | Description 
 
-¦xref:U-f3[`f3`]  ¦
+| xref:#U-f1[`f1`] 
+| 
+    
+| xref:U-f3[`f3`] 
+| 
 |===
 ===  Static Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#U-f2[`f2`]  ¦
+| Name | Description 
 
+| xref:#U-f2[`f2`] 
+| 
+    
 |===
 
 
@@ -1002,7 +1063,7 @@ struct V
 
 
 [#V-f3]
-== xref:#V[pass:[V]]::f3
+== xref:#V[V]::f3
 
 
 

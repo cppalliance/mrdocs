@@ -6,11 +6,13 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#range[`range`]  ¦
+| Name | Description 
 
+| xref:#range[`range`] 
+| 
+    
 |===
 
 
@@ -31,13 +33,16 @@ class range;
 ----
 
 === Private Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#range-impl-0e[`impl`]  ¦
+| Name | Description 
 
-¦xref:#range-impl-00[`impl<R, false>`]  ¦
-
+| xref:#range-impl-0e[`impl`] 
+| 
+    
+| xref:#range-impl-00[`impl<R, false>`] 
+| 
+    
 |===
 
 
@@ -45,7 +50,7 @@ class range;
 
 
 [#range-impl-0e]
-== xref:#range[pass:[range]]::impl
+== xref:#range[range]::impl
 
 
 
@@ -67,7 +72,7 @@ struct impl;
 
 
 [#range-impl-00]
-== xref:#range[pass:[range]]::impl
+== xref:#range[range]::impl
 
 
 
@@ -78,7 +83,7 @@ Declared in `<nested-private-template.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<class R>
-struct xref:#range-impl-0e[pass:[impl]]<R, false>;
+struct xref:#range-impl-0e[impl]<R, false>;
 ----
 
 

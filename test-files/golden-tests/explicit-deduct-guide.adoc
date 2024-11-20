@@ -6,24 +6,31 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#X-0e[`X`]  ¦
+| Name | Description 
 
+| xref:#X-0e[`X`] 
+| 
+    
 |===
 ===  Deduction Guides
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#X-0d[`X<0>`]  ¦
+| Name | Description 
 
-¦xref:#X-00[`X<0>`]  ¦
-
-¦xref:#X-0b[`X<0>`]  ¦
-
-¦xref:#X-06[`X<0>`]  ¦
-
+| xref:#X-0d[`X<0>`] 
+| 
+    
+| xref:#X-00[`X<0>`] 
+| 
+    
+| xref:#X-0b[`X<0>`] 
+| 
+    
+| xref:#X-06[`X<0>`] 
+| 
+    
 |===
 
 

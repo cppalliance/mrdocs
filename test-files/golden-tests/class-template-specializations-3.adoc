@@ -6,13 +6,16 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-0e[`A`]  ¦
+| Name | Description 
 
-¦xref:#E[`E`]  ¦
-
+| xref:#A-0e[`A`] 
+| 
+    
+| xref:#E[`E`] 
+| 
+    
 |===
 
 
@@ -33,13 +36,16 @@ struct A;
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-0e-B-07[`B`]  ¦
+| Name | Description 
 
-¦xref:#A-0e-B-00[`B<double>`]  ¦
-
+| xref:#A-0e-B-07[`B`] 
+| 
+    
+| xref:#A-0e-B-00[`B<double>`] 
+| 
+    
 |===
 
 
@@ -47,7 +53,7 @@ struct A;
 
 
 [#A-0e-B-07]
-== xref:#A-0e[pass:[A]]::B
+== xref:#A-0e[A]::B
 
 
 
@@ -62,15 +68,19 @@ struct B;
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-0e-B-07-C[`C`]  ¦
+| Name | Description 
 
-¦xref:#A-0e-B-07-D-09[`D`]  ¦
-
-¦xref:#A-0e-B-07-D-0f[`D<bool>`]  ¦
-
+| xref:#A-0e-B-07-C[`C`] 
+| 
+    
+| xref:#A-0e-B-07-D-09[`D`] 
+| 
+    
+| xref:#A-0e-B-07-D-0f[`D<bool>`] 
+| 
+    
 |===
 
 
@@ -78,7 +88,7 @@ struct B;
 
 
 [#A-0e-B-07-C]
-== xref:#A-0e[pass:[A]]::xref:#A-0e-B-07[pass:[B]]::C
+== xref:#A-0e[A]::xref:#A-0e-B-07[B]::C
 
 
 
@@ -97,7 +107,7 @@ struct C;
 
 
 [#A-0e-B-07-D-09]
-== xref:#A-0e[pass:[A]]::xref:#A-0e-B-07[pass:[B]]::D
+== xref:#A-0e[A]::xref:#A-0e-B-07[B]::D
 
 
 
@@ -117,7 +127,7 @@ struct D;
 
 
 [#A-0e-B-07-D-0f]
-== xref:#A-0e[pass:[A]]::xref:#A-0e-B-07[pass:[B]]::D
+== xref:#A-0e[A]::xref:#A-0e-B-07[B]::D
 
 
 
@@ -128,7 +138,7 @@ Declared in `<class-template-specializations-3.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-struct xref:#A-0e-B-07-D-09[pass:[D]]<bool>;
+struct xref:#A-0e-B-07-D-09[D]<bool>;
 ----
 
 
@@ -137,7 +147,7 @@ struct xref:#A-0e-B-07-D-09[pass:[D]]<bool>;
 
 
 [#A-0e-B-00]
-== xref:#A-0e[pass:[A]]::B
+== xref:#A-0e[A]::B
 
 
 
@@ -148,19 +158,23 @@ Declared in `<class-template-specializations-3.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-struct xref:#A-0e-B-07[pass:[B]]<double>;
+struct xref:#A-0e-B-07[B]<double>;
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#A-0e-B-00-C[`C`]  ¦
+| Name | Description 
 
-¦xref:#A-0e-B-00-D-09[`D`]  ¦
-
-¦xref:#A-0e-B-00-D-0d[`D<bool>`]  ¦
-
+| xref:#A-0e-B-00-C[`C`] 
+| 
+    
+| xref:#A-0e-B-00-D-09[`D`] 
+| 
+    
+| xref:#A-0e-B-00-D-0d[`D<bool>`] 
+| 
+    
 |===
 
 
@@ -168,7 +182,7 @@ struct xref:#A-0e-B-07[pass:[B]]<double>;
 
 
 [#A-0e-B-00-C]
-== xref:#A-0e[pass:[A]]::xref:#A-0e-B-00[pass:[B]]<double>::C
+== xref:#A-0e[A]::xref:#A-0e-B-00[B]<double>::C
 
 
 
@@ -187,7 +201,7 @@ struct C;
 
 
 [#A-0e-B-00-D-09]
-== xref:#A-0e[pass:[A]]::xref:#A-0e-B-00[pass:[B]]<double>::D
+== xref:#A-0e[A]::xref:#A-0e-B-00[B]<double>::D
 
 
 
@@ -207,7 +221,7 @@ struct D;
 
 
 [#A-0e-B-00-D-0d]
-== xref:#A-0e[pass:[A]]::xref:#A-0e-B-00[pass:[B]]<double>::D
+== xref:#A-0e[A]::xref:#A-0e-B-00[B]<double>::D
 
 
 
@@ -218,7 +232,7 @@ Declared in `<class-template-specializations-3.cpp>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-struct xref:#A-0e-B-00-D-09[pass:[D]]<bool>;
+struct xref:#A-0e-B-00-D-09[D]<bool>;
 ----
 
 
@@ -247,39 +261,55 @@ struct E;
 ----
 
 ===  Data Members
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#E-m0[`m0`]  ¦
+| Name | Description 
 
-¦xref:#E-m1[`m1`]  ¦
-
-¦xref:#E-m10[`m10`]  ¦
-
-¦xref:#E-m11[`m11`]  ¦
-
-¦xref:#E-m12[`m12`]  ¦
-
-¦xref:#E-m13[`m13`]  ¦
-
-¦xref:#E-m14[`m14`]  ¦
-
-¦xref:#E-m2[`m2`]  ¦
-
-¦xref:#E-m3[`m3`]  ¦
-
-¦xref:#E-m4[`m4`]  ¦
-
-¦xref:#E-m5[`m5`]  ¦
-
-¦xref:#E-m6[`m6`]  ¦
-
-¦xref:#E-m7[`m7`]  ¦
-
-¦xref:#E-m8[`m8`]  ¦
-
-¦xref:#E-m9[`m9`]  ¦
-
+| xref:#E-m0[`m0`] 
+| 
+    
+| xref:#E-m1[`m1`] 
+| 
+    
+| xref:#E-m10[`m10`] 
+| 
+    
+| xref:#E-m11[`m11`] 
+| 
+    
+| xref:#E-m12[`m12`] 
+| 
+    
+| xref:#E-m13[`m13`] 
+| 
+    
+| xref:#E-m14[`m14`] 
+| 
+    
+| xref:#E-m2[`m2`] 
+| 
+    
+| xref:#E-m3[`m3`] 
+| 
+    
+| xref:#E-m4[`m4`] 
+| 
+    
+| xref:#E-m5[`m5`] 
+| 
+    
+| xref:#E-m6[`m6`] 
+| 
+    
+| xref:#E-m7[`m7`] 
+| 
+    
+| xref:#E-m8[`m8`] 
+| 
+    
+| xref:#E-m9[`m9`] 
+| 
+    
 |===
 
 
@@ -287,7 +317,7 @@ struct E;
 
 
 [#E-m0]
-== xref:#E[pass:[E]]::m0
+== xref:#E[E]::m0
 
 
 
@@ -304,7 +334,7 @@ xref:#A-0e[A]<float>::xref:#A-0e-B-00[B]<double> m0;
 
 
 [#E-m1]
-== xref:#E[pass:[E]]::m1
+== xref:#E[E]::m1
 
 
 
@@ -321,7 +351,7 @@ xref:#A-0e[A]<long>::xref:#A-0e-B-00[B]<double> m1;
 
 
 [#E-m2]
-== xref:#E[pass:[E]]::m2
+== xref:#E[E]::m2
 
 
 
@@ -338,7 +368,7 @@ xref:#A-0e[A]<long>::xref:#A-0c-B[B]<float> m2;
 
 
 [#E-m3]
-== xref:#E[pass:[E]]::m3
+== xref:#E[E]::m3
 
 
 
@@ -355,7 +385,7 @@ xref:#A-0e[A]<unsigned int>::xref:#A-0e-B-07[B]<float> m3;
 
 
 [#E-m4]
-== xref:#E[pass:[E]]::m4
+== xref:#E[E]::m4
 
 
 
@@ -372,7 +402,7 @@ xref:#A-0e[A]<short>::xref:#A-00-B[B]<void> m4;
 
 
 [#E-m5]
-== xref:#E[pass:[E]]::m5
+== xref:#E[E]::m5
 
 
 
@@ -389,7 +419,7 @@ xref:#A-0e[A]<float>::xref:#A-0e-B-00[B]<double>::xref:#A-0e-B-00-C[C] m5;
 
 
 [#E-m6]
-== xref:#E[pass:[E]]::m6
+== xref:#E[E]::m6
 
 
 
@@ -406,7 +436,7 @@ xref:#A-0e[A]<long>::xref:#A-0e-B-00[B]<double>::xref:#A-0e-B-00-C[C] m6;
 
 
 [#E-m7]
-== xref:#E[pass:[E]]::m7
+== xref:#E[E]::m7
 
 
 
@@ -423,7 +453,7 @@ xref:#A-0e[A]<long>::xref:#A-0c-B[B]<float>::xref:#A-0c-B-C[C] m7;
 
 
 [#E-m8]
-== xref:#E[pass:[E]]::m8
+== xref:#E[E]::m8
 
 
 
@@ -440,7 +470,7 @@ xref:#A-0e[A]<unsigned int>::xref:#A-0e-B-07[B]<float>::xref:#A-0e-B-07-C[C] m8;
 
 
 [#E-m9]
-== xref:#E[pass:[E]]::m9
+== xref:#E[E]::m9
 
 
 
@@ -457,7 +487,7 @@ xref:#A-0e[A]<short>::xref:#A-00-B[B]<void>::xref:#A-00-B-C[C] m9;
 
 
 [#E-m10]
-== xref:#E[pass:[E]]::m10
+== xref:#E[E]::m10
 
 
 
@@ -474,7 +504,7 @@ xref:#A-0e[A]<float>::xref:#A-0e-B-00[B]<double>::xref:#A-0e-B-00-D-0d[D]<bool> 
 
 
 [#E-m11]
-== xref:#E[pass:[E]]::m11
+== xref:#E[E]::m11
 
 
 
@@ -491,7 +521,7 @@ xref:#A-0e[A]<long>::xref:#A-0e-B-00[B]<double>::xref:#A-0e-B-00-D-0d[D]<bool> m
 
 
 [#E-m12]
-== xref:#E[pass:[E]]::m12
+== xref:#E[E]::m12
 
 
 
@@ -508,7 +538,7 @@ xref:#A-0e[A]<long>::xref:#A-0c-B[B]<float>::xref:#A-0c-B-D-0b[D]<bool> m12;
 
 
 [#E-m13]
-== xref:#E[pass:[E]]::m13
+== xref:#E[E]::m13
 
 
 
@@ -525,7 +555,7 @@ xref:#A-0e[A]<unsigned int>::xref:#A-0e-B-07[B]<float>::xref:#A-0e-B-07-D-0f[D]<
 
 
 [#E-m14]
-== xref:#E[pass:[E]]::m14
+== xref:#E[E]::m14
 
 
 

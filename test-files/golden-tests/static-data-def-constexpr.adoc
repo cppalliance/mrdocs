@@ -6,13 +6,16 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S[`S`]  ¦
+| Name | Description 
 
-¦xref:#T[`T`]  ¦
-
+| xref:#S[`S`] 
+| 
+    
+| xref:#T[`T`] 
+| 
+    
 |===
 
 
@@ -32,11 +35,13 @@ struct S;
 ----
 
 ===  Static Data Members
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#S-s[`s`]  ¦
+| Name | Description 
 
+| xref:#S-s[`s`] 
+| 
+    
 |===
 
 
@@ -44,7 +49,7 @@ struct S;
 
 
 [#S-s]
-== xref:#S[pass:[S]]::s
+== xref:#S[S]::s
 
 
 
@@ -77,11 +82,13 @@ struct T;
 ----
 
 ===  Static Data Members
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T-t[`t`]  ¦
+| Name | Description 
 
+| xref:#T-t[`t`] 
+| 
+    
 |===
 
 
@@ -89,7 +96,7 @@ struct T;
 
 
 [#T-t]
-== xref:#T[pass:[T]]::t
+== xref:#T[T]::t
 
 
 

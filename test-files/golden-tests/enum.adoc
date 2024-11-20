@@ -6,21 +6,26 @@
 == Global namespace
 
 ===  Enums
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#E0[`E0`]  ¦
+| Name | Description 
 
+| xref:#E0[`E0`] 
+| 
 E0 brief.
 
-¦xref:#E1[`E1`]  ¦
-
-¦xref:#E2[`E2`]  ¦
-
+    
+| xref:#E1[`E1`] 
+| 
+    
+| xref:#E2[`E2`] 
+| 
 E2 brief.
 
-¦xref:#E3[`E3`]  ¦
-
+    
+| xref:#E3[`E3`] 
+| 
+    
 |===
 
 
@@ -62,7 +67,7 @@ E0 description.
 
 
 [#E0-e0]
-== xref:#E0[pass:[E0]]::e0
+== xref:#E0[E0]::e0
 
 
 e0 brief.
@@ -87,7 +92,7 @@ e0 description.
 
 
 [#E0-e1]
-== xref:#E0[pass:[E0]]::e1
+== xref:#E0[E0]::e1
 
 
 e1 brief.
@@ -137,7 +142,7 @@ enum E1 : char;
 
 
 [#E1-e2]
-== xref:#E1[pass:[E1]]::e2
+== xref:#E1[E1]::e2
 
 
 
@@ -154,7 +159,7 @@ e2
 
 
 [#E1-e3]
-== xref:#E1[pass:[E1]]::e3
+== xref:#E1[E1]::e3
 
 
 
@@ -207,7 +212,7 @@ E2 description.
 
 
 [#E2-e4]
-== xref:#E2[pass:[E2]]::e4
+== xref:#E2[E2]::e4
 
 
 e4 brief.
@@ -232,7 +237,7 @@ e4 description.
 
 
 [#E2-e5]
-== xref:#E2[pass:[E2]]::e5
+== xref:#E2[E2]::e5
 
 
 e5 brief.
@@ -282,7 +287,7 @@ enum E3 : char;
 
 
 [#E3-e6]
-== xref:#E3[pass:[E3]]::e6
+== xref:#E3[E3]::e6
 
 
 
@@ -299,7 +304,7 @@ e6
 
 
 [#E3-e7]
-== xref:#E3[pass:[E3]]::e7
+== xref:#E3[E3]::e7
 
 
 

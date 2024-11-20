@@ -6,11 +6,13 @@
 == Global namespace
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T[`T`]  ¦
+| Name | Description 
 
+| xref:#T[`T`] 
+| 
+    
 |===
 
 
@@ -30,41 +32,52 @@ struct T;
 ----
 
 ===  Types
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T-U1[`U1`]  ¦
+| Name | Description 
 
-¦xref:#T-U2[`U2`]  ¦
-
+| xref:#T-U1[`U1`] 
+| 
+    
+| xref:#T-U2[`U2`] 
+| 
+    
 |===
 ===  Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T-f1[`f1`]  ¦
+| Name | Description 
 
-¦xref:#T-f2[`f2`]  ¦
-
-¦xref:#T-f3[`f3`]  ¦
-
+| xref:#T-f1[`f1`] 
+| 
+    
+| xref:#T-f2[`f2`] 
+| 
+    
+| xref:#T-f3[`f3`] 
+| 
+    
 |===
 === Protected Member Functions
-[cols=2,separator=¦]
+[cols=2]
 |===
-¦Name ¦Description
-¦xref:#T-g1[`g1`]  ¦
+| Name | Description 
 
+| xref:#T-g1[`g1`] 
+| 
 brief-g1
 
-¦xref:#T-g2[`g2`]  ¦
-
+    
+| xref:#T-g2[`g2`] 
+| 
 brief-g2
 
-¦xref:#T-g3[`g3`]  ¦
-
+    
+| xref:#T-g3[`g3`] 
+| 
 brief-g3
 
+    
 |===
 
 
@@ -72,7 +85,7 @@ brief-g3
 
 
 [#T-U1]
-== xref:#T[pass:[T]]::U1
+== xref:#T[T]::U1
 
 
 
@@ -89,7 +102,7 @@ using U1 = int;
 
 
 [#T-U2]
-== xref:#T[pass:[T]]::U2
+== xref:#T[T]::U2
 
 
 
@@ -106,7 +119,7 @@ typedef char U2;
 
 
 [#T-f1]
-== xref:#T[pass:[T]]::f1
+== xref:#T[T]::f1
 
 
 
@@ -130,7 +143,7 @@ f1();
 
 
 [#T-f2]
-== xref:#T[pass:[T]]::f2
+== xref:#T[T]::f2
 
 
 
@@ -154,7 +167,7 @@ f2();
 
 
 [#T-f3]
-== xref:#T[pass:[T]]::f3
+== xref:#T[T]::f3
 
 
 
@@ -178,7 +191,7 @@ f3();
 
 
 [#T-g1]
-== xref:#T[pass:[T]]::g1
+== xref:#T[T]::g1
 
 
 brief-g1
@@ -210,7 +223,7 @@ desc
 
 
 [#T-g2]
-== xref:#T[pass:[T]]::g2
+== xref:#T[T]::g2
 
 
 brief-g2
@@ -242,7 +255,7 @@ the number 2
 
 
 [#T-g3]
-== xref:#T[pass:[T]]::g3
+== xref:#T[T]::g3
 
 
 brief-g3
