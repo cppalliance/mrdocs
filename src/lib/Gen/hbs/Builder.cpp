@@ -108,6 +108,7 @@ Builder(
             return first;
         }));
 
+    helpers::registerConstructorHelpers(hbs_);
     helpers::registerStringHelpers(hbs_);
     helpers::registerAntoraHelpers(hbs_);
     helpers::registerLogicalHelpers(hbs_);
