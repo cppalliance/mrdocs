@@ -24,8 +24,12 @@ namespace mrdocs {
 struct MRDOCS_VISIBLE
     AnyFileVisitor
 {
-    virtual ~AnyFileVisitor() = 0;
-    virtual Error visitFile(std::string_view fileName) = 0;
+    virtual
+    ~AnyFileVisitor() = 0;
+
+    virtual
+    Expected<void>
+    visitFile(std::string_view fileName) = 0;
 };
 
 /** Call a function for each file in a directory.
@@ -38,7 +42,7 @@ struct MRDOCS_VISIBLE
     also visited, recursively.
 */
 MRDOCS_DECL
-Error
+Expected<void>
 forEachFile(
     std::string_view dirPath,
     bool recursive,
@@ -46,8 +50,11 @@ forEachFile(
 
 namespace detail {
 template <class Visitor>
-struct FileVisitor : AnyFileVisitor
+class FileVisitor : public AnyFileVisitor
 {
+    using R = std::invoke_result_t<Visitor, std::string_view>;
+
+public:
     Visitor& visitor_;
 
     explicit FileVisitor(Visitor& v)
@@ -55,54 +62,17 @@ struct FileVisitor : AnyFileVisitor
     {
     }
 
-    Error
+    Expected<void>
     visitFile(std::string_view fileName) override
     {
-        using R = std::invoke_result_t<Visitor, std::string_view>;
         if (std::same_as<R, void>)
         {
             visitor_(fileName);
-            return Error::success();
+            return {};
         }
         else
         {
-            return toError(visitor_(fileName));
-        }
-    }
-
-    static
-    Error
-    toError(Expected<void, Error> const& e)
-    {
-        return e ? Error::success() : e.error();
-    }
-
-    template <class T>
-    static
-    Error
-    toError(Expected<T, Error> const& e)
-    {
-        return e ? toError(e.value()) : e.error();
-    }
-
-    template <class T>
-    static
-    Error
-    toError(T const& e)
-    {
-        if constexpr (std::same_as<T, Error>)
-        {
-            return e;
-        }
-        else if constexpr (std::convertible_to<T, bool>)
-        {
-            if (e)
-                return Error::success();
-            return Error("visitor returned falsy");
-        }
-        else
-        {
-            return Error::success();
+            return visitor_(fileName);
         }
     }
 };
@@ -111,7 +81,7 @@ struct FileVisitor : AnyFileVisitor
 /** Visit each file in a directory.
 */
 template<class Visitor>
-Error
+Expected<void>
 forEachFile(
     std::string_view dirPath,
     bool recursive,
@@ -154,7 +124,7 @@ isAbsolute(
 /** Return an error if pathName is not absolute.
 */
 MRDOCS_DECL
-Error
+Expected<void>
 requireAbsolute(
     std::string_view pathName);
 
@@ -320,7 +290,7 @@ appendPath(
 /** Return an error if the path is not a directory.
 */
 MRDOCS_DECL
-Error
+Expected<void>
 requireDirectory(
     std::string_view pathName);
 
@@ -354,7 +324,7 @@ getSourceFilename(
     to create.
 */
 MRDOCS_DECL
-Error
+Expected<void>
 createDirectory(
     std::string_view pathName);
 

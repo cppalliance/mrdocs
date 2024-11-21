@@ -38,18 +38,18 @@ loadPartials(
     {
         return;
     }
-    forEachFile(partialsPath, true,
-        [&](std::string_view pathName) -> Error
+    auto exp = forEachFile(partialsPath, true,
+        [&](std::string_view pathName) -> Expected<void>
         {
             // Skip directories
-            MRDOCS_CHECK_OR(!files::isDirectory(pathName), Error::success());
+            MRDOCS_CHECK_OR(!files::isDirectory(pathName), {});
 
             // Get template relative path
             std::filesystem::path relPath = pathName;
             relPath = relPath.lexically_relative(partialsPath);
 
             // Skip non-handlebars files
-            MRDOCS_CHECK_OR(relPath.extension() == ".hbs", Error::success());
+            MRDOCS_CHECK_OR(relPath.extension() == ".hbs", {});
 
             // Remove any file extensions
             while(relPath.has_extension())
@@ -58,13 +58,16 @@ loadPartials(
             }
 
             // Load partial contents
-            auto text = files::getFileText(pathName);
-            MRDOCS_CHECK_OR(text, text.error());
+            MRDOCS_TRY(std::string text, files::getFileText(pathName));
 
             // Register partial
-            hbs.registerPartial(relPath.generic_string(), *text);
-            return Error::success();
-        }).maybeThrow();
+            hbs.registerPartial(relPath.generic_string(), text);
+            return {};
+        });
+    if (!exp)
+    {
+        exp.error().Throw();
+    }
 }
 }
 
@@ -81,7 +84,7 @@ Builder(
 
     // Load JavaScript helpers
     std::string helpersPath = templatesDir("helpers");
-    forEachFile(helpersPath, true,
+    auto exp = forEachFile(helpersPath, true,
         [&](std::string_view pathName)-> Expected<void>
         {
             // Register JS helper function in the global object
@@ -92,7 +95,11 @@ Builder(
             MRDOCS_TRY(auto script, files::getFileText(pathName));
             MRDOCS_TRY(js::registerHelper(hbs_, name, ctx_, script));
             return {};
-        }).maybeThrow();
+        });
+    if (!exp)
+    {
+        exp.error().Throw();
+    }
 
     hbs_.registerHelper("primary_location",
         dom::makeInvocable([](dom::Value const& v) ->
@@ -260,7 +267,9 @@ operator()(OverloadSet const& OS)
 
 Expected<void>
 Builder::
-renderWrapped(std::ostream& os, std::function<Error()> contentsCb)
+renderWrapped(
+    std::ostream& os,
+    std::function<Expected<void>()> contentsCb)
 {
     auto const wrapperFile = fmt::format(
         "wrapper.{}.hbs", domCorpus.fileExtension);
@@ -268,11 +277,7 @@ renderWrapped(std::ostream& os, std::function<Error()> contentsCb)
     ctx.set("contents", dom::makeInvocable([&](
         dom::Value const& options) -> Expected<dom::Value>
     {
-        Error e = contentsCb();
-        if (e.failed())
-        {
-            return Unexpected(e);
-        }
+        MRDOCS_TRY(contentsCb());
         return {};
     }));
 

@@ -50,24 +50,17 @@ load_file(
     ReferenceDirectories const& dirs)
 {
     auto ft = files::getFileType(configPath);
-    if(! ft)
-    {
-        return formatError(
-            "Config file does not exist: \"{}\"", ft.error(), configPath);
-    }
-
+    MRDOCS_CHECK(ft, formatError(
+        "Config file does not exist: \"{}\"", ft.error(), configPath));
     if (ft.value() == files::FileType::regular)
     {
         s.config = configPath;
         std::string configYaml = files::getFileText(s.config).value();
         Config::Settings::load(s, configYaml, dirs).value();
+        return {};
     }
-    else if(ft.value() != files::FileType::not_found)
-    {
-        return formatError(
-            "Config file is not regular file: \"{}\"", configPath);
-    }
-
+    MRDOCS_CHECK(ft.value() == files::FileType::not_found,
+        formatError("Config file is not regular file: \"{}\"", configPath));
     return {};
 }
 
@@ -88,10 +81,10 @@ struct PublicSettingsVisitor {
             if (useDefault) {
                 value = std::get<DT>(opts.defaultValue);
             }
-            if (value.empty() && opts.required) {
-                return formatError("`{}` option is required", name);
-            }
-            if constexpr (std::same_as<DT, std::string>) {
+            MRDOCS_CHECK(!value.empty() || !opts.required,
+                formatError("`{}` option is required", name));
+            if constexpr (std::same_as<DT, std::string>)
+            {
                 if (!value.empty() &&
                     (opts.type == PublicSettings::OptionType::Path ||
                     opts.type == PublicSettings::OptionType::DirPath ||
@@ -110,21 +103,12 @@ struct PublicSettingsVisitor {
                             value = files::makeAbsolute(value, baseDir);
                         }
                     }
-                    if (opts.mustExist &&
-                        !files::exists(value))
-                    {
-                        return Unexpected(formatError("`{}` option: path does not exist: {}", name, value));
-                    }
-                    if (opts.type == PublicSettings::OptionType::DirPath &&
-                        !files::isDirectory(value))
-                    {
-                        return Unexpected(formatError("`{}` option: path should be a directory: {}", name, value));
-                    }
-                    if (opts.type == PublicSettings::OptionType::FilePath &&
-                        files::isDirectory(value))
-                    {
-                        return Unexpected(formatError("`{}` option: path should be a regular file: {}", name, value));
-                    }
+                    MRDOCS_CHECK(!opts.mustExist || files::exists(value),
+                        formatError("`{}` option: path does not exist: {}", name, value));
+                    MRDOCS_CHECK(opts.type != PublicSettings::OptionType::DirPath || files::isDirectory(value),
+                        formatError("`{}` option: path should be a directory: {}", name, value));
+                    MRDOCS_CHECK(opts.type != PublicSettings::OptionType::FilePath || !files::isDirectory(value),
+                        formatError("`{}` option: path should be a regular file: {}", name, value));
                 }
                 else if (opts.type == PublicSettings::OptionType::String) {
                     if (name == "base-url")
@@ -151,10 +135,8 @@ struct PublicSettingsVisitor {
                                 v = files::makeAbsolute(v, baseDir);
                             }
                         }
-                        if (opts.mustExist && !files::exists(v))
-                        {
-                            return Unexpected(formatError("`{}` option: path does not exist: {}", name, v));
-                        }
+                        MRDOCS_CHECK(!opts.mustExist || files::exists(v),
+                            formatError("`{}` option: path does not exist: {}", name, v));
                         if (opts.commandLineSink && opts.filenameMapping.has_value())
                         {
                             auto const& map = opts.filenameMapping.value();
@@ -178,14 +160,10 @@ struct PublicSettingsVisitor {
             {
                 value = std::thread::hardware_concurrency();
             }
-            if (opts.minValue && std::cmp_less(value, *opts.minValue))
-            {
-                return Unexpected(formatError("`{}` option: value {} is less than minimum: {}", name, value, *opts.minValue));
-            }
-            if (opts.maxValue && std::cmp_greater(value, *opts.maxValue))
-            {
-                return Unexpected(formatError("`{}` option: value {} is greater than maximum: {}", name, value, *opts.maxValue));
-            }
+            MRDOCS_CHECK(!opts.minValue || std::cmp_greater_equal(value, *opts.minValue),
+                formatError("`{}` option: value {} is less than minimum: {}", name, value, *opts.minValue));
+            MRDOCS_CHECK(!opts.maxValue || std::cmp_less_equal(value, *opts.maxValue),
+                formatError("`{}` option: value {} is greater than maximum: {}", name, value, *opts.maxValue));
         }
 
         // Booleans should already be validated because the struct

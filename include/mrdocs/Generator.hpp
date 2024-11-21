@@ -102,7 +102,7 @@ public:
     */
     MRDOCS_DECL
     virtual
-    Error
+    Expected<void>
     build(
         std::string_view outputPath,
         Corpus const& corpus) const;
@@ -120,7 +120,7 @@ public:
         the object before returning.
     */
     MRDOCS_DECL
-    Error
+    Expected<void>
     build(Corpus const& corpus) const;
 
     /** Build reference documentation for the corpus.
@@ -141,7 +141,7 @@ public:
     */
     MRDOCS_DECL
     virtual
-    Error
+    Expected<void>
     buildOne(
         std::ostream& os,
         Corpus const& corpus) const = 0;
@@ -160,7 +160,7 @@ public:
         @param corpus The metadata to emit.
     */
     MRDOCS_DECL
-    Error
+    Expected<void>
     buildOne(
         std::string_view fileName,
         Corpus const& corpus) const;
@@ -176,7 +176,7 @@ public:
         @param corpus The metadata to emit.
     */
     MRDOCS_DECL
-    Error
+    Expected<void>
     buildOneString(
         std::string& dest,
         Corpus const& corpus) const;

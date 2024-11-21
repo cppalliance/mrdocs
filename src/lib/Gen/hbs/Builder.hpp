@@ -73,7 +73,9 @@ public:
 
      */
     Expected<void>
-    renderWrapped(std::ostream& os, std::function<Error()> contentsCb);
+    renderWrapped(
+        std::ostream& os,
+        std::function<Expected<void>()> contentsCb);
 
 private:
     /** The directory with the all templates.

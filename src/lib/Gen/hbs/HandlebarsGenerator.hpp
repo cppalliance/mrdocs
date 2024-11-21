@@ -54,12 +54,12 @@ public:
         return fileExtension_;
     }
 
-    Error
+    Expected<void>
     build(
         std::string_view outputPath,
         Corpus const& corpus) const override;
 
-    Error
+    Expected<void>
     buildOne(
         std::ostream& os,
         Corpus const& corpus) const override;

@@ -31,7 +31,7 @@ Generator::
     the file reference.ext using the extension
     of the generator.
 */
-Error
+Expected<void>
 Generator::
 build(
     std::string_view outputPath,
@@ -55,7 +55,7 @@ build(
     return buildOne(fileName.str(), corpus);
 }
 
-Error
+Expected<void>
 Generator::
 build(Corpus const& corpus) const
 {
@@ -65,17 +65,14 @@ build(Corpus const& corpus) const
         files::makeAbsolute(
             corpus.config->output,
             corpus.config->configDir));
-    auto err = build(absOutput, corpus);
-    if (!err.failed())
-    {
-        report::info(
-            "Generated documentation in {}",
-            format_duration(clock_type::now() - start_time));
-    }
-    return err;
+    MRDOCS_TRY(build(absOutput, corpus));
+    report::info(
+        "Generated documentation in {}",
+        format_duration(clock_type::now() - start_time));
+    return {};
 }
 
-Error
+Expected<void>
 Generator::
 buildOne(
     std::string_view fileName,
@@ -96,7 +93,7 @@ buildOne(
     }
     catch(std::exception const& ex)
     {
-        return formatError("std::ofstream threw \"{}\"", ex.what());
+        return Unexpected(formatError("std::ofstream threw \"{}\"", ex.what()));
     }
 
     try
@@ -105,11 +102,11 @@ buildOne(
     }
     catch(std::exception const& ex)
     {
-        return formatError("buildOne threw \"{}\"", ex.what());
+        return Unexpected(formatError("buildOne threw \"{}\"", ex.what()));
     }
 }
 
-Error
+Expected<void>
 Generator::
 buildOneString(
     std::string& dest,
@@ -119,19 +116,17 @@ buildOneString(
     std::stringstream ss;
     try
     {
-        auto err = buildOne(ss, corpus);
-        if(err)
-            return err;
+        MRDOCS_TRY(buildOne(ss, corpus));
         dest = ss.str();
         return {};
     }
     catch(Exception const& ex)
     {
-        return ex.error();
+        return Unexpected(ex.error());
     }
     catch(std::exception const& ex)
     {
-        return formatError("buildOne threw \"{}\"", ex.what());
+        return Unexpected(formatError("buildOne threw \"{}\"", ex.what()));
     }
 }
 

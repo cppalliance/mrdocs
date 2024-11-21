@@ -1167,9 +1167,8 @@ lua_dump(dom::Object const& obj)
 {
     Context ctx;
 
-    auto err = tryLoadHandlebars(ctx);
-    if(err)
-        return luaM_report(err);
+    auto exp = tryLoadHandlebars(ctx);
+    MRDOCS_CHECK_OR(exp, luaM_report(exp.error()));
 
     Scope scope(ctx);
     scope.loadChunk(
@@ -1189,9 +1188,8 @@ lua_main()
 {
     Context ctx;
 
-    auto err = tryLoadHandlebars(ctx);
-    if(err)
-        return luaM_report(err);
+    auto exp = tryLoadHandlebars(ctx);
+    MRDOCS_CHECK_OR(exp, luaM_report(exp.error()));
 
     Scope scope(ctx);
     scope.loadChunk(

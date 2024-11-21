@@ -23,15 +23,6 @@
 namespace clang {
 namespace mrdocs {
 
-inline Error toError(llvm::Error err)
-{
-    if(! err)
-        return {};
-    return Error(toString(std::move(err)));
-}
-
-//------------------------------------------------
-
 namespace report {
 
 /** Helper for ensuring correct grammar in expository output.

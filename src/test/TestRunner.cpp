@@ -40,7 +40,7 @@ TestRunner(std::string_view generator)
     MRDOCS_ASSERT(gen_ != nullptr);
 }
 
-Error
+Expected<void>
 TestRunner::
 writeFile(
     llvm::StringRef filePath,
@@ -49,12 +49,10 @@ writeFile(
     std::error_code ec;
     llvm::raw_fd_ostream os(
         filePath, ec, llvm::sys::fs::OF_None);
-    if(ec)
-        return Error(ec);
+    MRDOCS_CHECK(!ec, ec);
     os << contents;
-    if(os.error())
-        return Error(os.error());
-    return Error::success();
+    MRDOCS_CHECK(!os.has_error(), os.error());
+    return {};
 }
 
 void
@@ -120,8 +118,10 @@ handleFile(
 
     // Generate
     std::string generatedDocs;
-    if(auto err = gen_->buildOneString(generatedDocs, **corpus))
-        return report::error("{}: \"{}\"", err, filePath);
+    if (auto exp = gen_->buildOneString(generatedDocs, **corpus); !exp)
+    {
+        return report::error("{}: \"{}\"", exp.error(), filePath);
+    }
     replaceCRLFWithLF(generatedDocs);
 
     // Get expected documentation if it exists
@@ -148,8 +148,10 @@ handleFile(
            testArgs.action == Action::update)
         {
             // Create expected documentation file
-            if(auto err = writeFile(expectedPath, generatedDocs))
-                return report::error("{}: \"{}\"", err, expectedPath);
+            if(auto exp = writeFile(expectedPath, generatedDocs))
+            {
+                return report::error("{}: \"{}\"", exp.error(), expectedPath);
+            }
             report::info("\"{}\" created", expectedPath);
             ++results.expectedDocsWritten;
             return;
@@ -184,8 +186,10 @@ handleFile(
             // Write the .bad.<generator> file
             auto badPath = expectedPath;
             path::replace_extension(badPath, llvm::Twine("bad.").concat(gen_->fileExtension()));
-            if(auto err = writeFile(badPath, generatedDocs))
-                return report::error("{}: \"{}\"", err, badPath);
+            if (auto exp = writeFile(badPath, generatedDocs))
+            {
+                return report::error("{}: \"{}\"", exp.error(), badPath);
+            }
             report::info("\"{}\" written", badPath);
 
             // VFALCO We are calling this over and over again instead of once?
@@ -202,8 +206,10 @@ handleFile(
     else if(testArgs.action == Action::update)
     {
         // Update the expected documentation
-        if(auto err = writeFile(expectedPath, generatedDocs))
-            return report::error("{}: \"{}\"", err, expectedPath);
+        if (auto exp = writeFile(expectedPath, generatedDocs))
+        {
+            return report::error("{}: \"{}\"", exp.error(), expectedPath);
+        }
         report::info("\"{}\" updated", expectedPath);
         ++results.expectedDocsWritten;
         return;

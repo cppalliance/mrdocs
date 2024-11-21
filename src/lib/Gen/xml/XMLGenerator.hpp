@@ -44,7 +44,7 @@ struct XMLGenerator : Generator
         return "xml";
     }
 
-    Error
+    Expected<void>
     buildOne(
         std::ostream& os,
         Corpus const& corpus) const override;

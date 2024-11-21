@@ -62,7 +62,7 @@ createDomCorpus(
 //
 //------------------------------------------------
 
-Error
+Expected<void>
 HandlebarsGenerator::
 build(
     std::string_view outputPath,
@@ -75,20 +75,19 @@ build(
 
     // Create corpus and executors
     HandlebarsCorpus domCorpus = createDomCorpus(*this, corpus);
-    auto ex = createExecutors(domCorpus);
-    MRDOCS_CHECK_OR(ex, ex.error());
+    MRDOCS_TRY(ExecutorGroup<Builder> ex, createExecutors(domCorpus));
 
     // Visit the corpus
-    MultiPageVisitor visitor(*ex, outputPath, corpus);
+    MultiPageVisitor visitor(ex, outputPath, corpus);
     visitor(corpus.globalNamespace());
 
     // Wait for all executors to finish and check errors
-    auto errors = ex->wait();
-    MRDOCS_CHECK_OR(errors.empty(), errors);
-    return Error::success();
+    auto errors = ex.wait();
+    MRDOCS_CHECK_OR(errors.empty(), Unexpected(errors));
+    return {};
 }
 
-Error
+Expected<void>
 HandlebarsGenerator::
 buildOne(
     std::ostream& os,
@@ -96,41 +95,35 @@ buildOne(
 {
     // Create corpus and executors
     HandlebarsCorpus domCorpus = createDomCorpus(*this, corpus);
-    auto ex = createExecutors(domCorpus);
-    MRDOCS_CHECK_OR(ex, ex.error());
+    MRDOCS_TRY(ExecutorGroup<Builder> ex, createExecutors(domCorpus));
 
     // Embedded mode
     if (corpus.config->embedded)
     {
         // Visit the corpus
-        SinglePageVisitor visitor(*ex, corpus, os);
+        SinglePageVisitor visitor(ex, corpus, os);
         visitor(corpus.globalNamespace());
 
         // Wait for all executors to finish and check errors
-        auto errors = ex->wait();
-        MRDOCS_CHECK_OR(errors.empty(), errors);
+        auto errors = ex.wait();
+        MRDOCS_CHECK_OR(errors.empty(), Unexpected(errors));
 
-        return Error::success();
+        return {};
     }
 
     // Wrapped mode
     Builder inlineBuilder(domCorpus);
-    auto exp = inlineBuilder.renderWrapped(os, [&]() -> Error {
+    return inlineBuilder.renderWrapped(os, [&]() -> Expected<void> {
         // This helper will write contents directly to ostream
-        SinglePageVisitor visitor(*ex, corpus, os);
+        SinglePageVisitor visitor(ex, corpus, os);
         visitor(corpus.globalNamespace());
 
         // Wait for all executors to finish and check errors
-        auto errors = ex->wait();
-        MRDOCS_CHECK_OR(errors.empty(), errors);
+        auto errors = ex.wait();
+        MRDOCS_CHECK_OR(errors.empty(), Unexpected(errors));
 
-        return Error::success();
+        return {};
     });
-
-    // Check for errors in the wrapping process
-    MRDOCS_CHECK_OR(exp, exp.error());
-
-    return Error::success();
 }
 
 } // hbs

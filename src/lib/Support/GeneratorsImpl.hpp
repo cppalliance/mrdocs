@@ -53,7 +53,7 @@ public:
 
     /** Insert a generator
     */
-    Error
+    Expected<void>
     insert(std::unique_ptr<Generator> G);
 };
 

@@ -42,10 +42,9 @@ refresh_plist()
 GeneratorsImpl::
 GeneratorsImpl()
 {
-    Error err;
-    err = insert(makeAdocGenerator());
-    err = insert(makeXMLGenerator());
-    err = insert(makeHTMLGenerator());
+    insert(makeAdocGenerator());
+    insert(makeXMLGenerator());
+    insert(makeHTMLGenerator());
 }
 
 Generator const*
@@ -53,22 +52,25 @@ GeneratorsImpl::
 find(
     std::string_view id) const noexcept
 {
-    for(std::size_t i = 0; i < list_.size(); ++i)
-        if(list_[i]->id() == id)
-            return list_[i].get();
+    for (const auto & li : list_)
+    {
+        if(li->id() == id)
+        {
+            return li.get();
+        }
+    }
     return nullptr;
 }
 
-Error
+Expected<void>
 GeneratorsImpl::
 insert(
     std::unique_ptr<Generator> G)
 {
-    if(find(G->id()) != nullptr)
-        return formatError("generator id=\"{}\" already exists", G->id());
+    MRDOCS_CHECK(find(G->id()) == nullptr, formatError("generator id=\"{}\" already exists", G->id()));
     list_.emplace_back(std::move(G));
     refresh_plist();
-    return Error::success();
+    return {};
 }
 
 //------------------------------------------------

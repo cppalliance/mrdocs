@@ -39,7 +39,7 @@ escapeExpression(
     return std::move(args.front());
 }
 
-Error
+Expected<void>
 tryLoadHandlebars(
     lua::Context const& ctx)
 {
@@ -63,10 +63,7 @@ tryLoadHandlebars(
     //hbs.set("escapeExpression", utils.get("escapeExpression"));
 
     G.set("Handlebars", hbs);
-    return Error::success();
-
-
-
+    return {};
 }
 
 } // mrdocs

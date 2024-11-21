@@ -20,7 +20,7 @@ namespace mrdocs {
 /** Add the Handlebars Lua instance as a global
 */
 MRDOCS_DECL
-Error
+Expected<void>
 tryLoadHandlebars(
     lua::Context const& ctx);
 
