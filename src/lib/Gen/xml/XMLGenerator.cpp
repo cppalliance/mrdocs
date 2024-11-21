@@ -20,7 +20,7 @@ namespace clang {
 namespace mrdocs {
 namespace xml {
 
-Error
+Expected<void>
 XMLGenerator::
 buildOne(
     std::ostream& os,

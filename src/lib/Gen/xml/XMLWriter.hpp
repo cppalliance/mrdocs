@@ -52,7 +52,8 @@ public:
         llvm::raw_ostream& os,
         Corpus const& corpus) noexcept;
 
-    Error build();
+    Expected<void>
+    build();
 
     void writeIndex();
 

@@ -77,7 +77,7 @@ public:
         A default constructed error is
         equivalent to success.
     */
-    Error() noexcept = default;
+    Error() noexcept = delete;
 
     /** Constructor.
     */
@@ -209,24 +209,6 @@ public:
     */
     [[noreturn]] void Throw() &&;
 
-    /** Throw Exception(*this), or do nothing if no failure.
-    */
-    void maybeThrow() const&
-    {
-        if(! failed())
-            return;
-        Throw();
-    }
-
-    /** Throw Exception(std::move(*this)), or do nothing if no failure.
-    */
-    void maybeThrow() &&
-    {
-        if(! failed())
-            return;
-        Throw();
-    }
-
     constexpr
     void
     swap(Error& rhs) noexcept
@@ -244,10 +226,6 @@ public:
     {
         lhs.swap(rhs);
     }
-
-    /** Return a value indicating success.
-    */
-    static Error success() noexcept;
 };
 
 //------------------------------------------------
@@ -1934,36 +1912,6 @@ public:
         : unex_(std::move(u).error()), has_value_(false)
     { }
 
-// The following constructors are extensions that allow
-// Expected to be constructed directly from an error type
-// if this is not ambiguous with the value type. This
-// is not part of std::expected. MRDOCS_EXPECTED_FROM_ERROR
-// can be defined to disable this behavior.
-#ifndef MRDOCS_EXPECTED_FROM_ERROR
-    template <class G = E>
-    requires
-        std::is_constructible_v<E, const G&> &&
-        (!std::is_constructible_v<T, const G&>)
-    constexpr
-    explicit(!std::is_convertible_v<const G&, E>)
-    Expected(const G& u)
-    noexcept(std::is_nothrow_constructible_v<E, const G&>)
-        : unex_(u)
-        , has_value_(false)
-    { }
-
-    template <class G = E>
-    requires
-        std::is_constructible_v<E, G> &&
-        (!std::is_constructible_v<T, G>)
-    constexpr
-    explicit(!std::is_convertible_v<G, E>)
-    Expected(G&& u)
-    noexcept(std::is_nothrow_constructible_v<E, G>)
-        : unex_(std::move(u)), has_value_(false)
-    { }
-#endif
-
     constexpr explicit
     Expected(std::in_place_t) noexcept
         : Expected()
@@ -2676,14 +2624,6 @@ struct FormatString
     std::string_view fs;
     source_location loc;
 };
-
-inline
-Error
-Error::
-success() noexcept
-{
-    return Error();
-}
 
 /** Return a formatted error.
 

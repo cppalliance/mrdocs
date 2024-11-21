@@ -35,7 +35,7 @@ convert_to_slash(
 
 //------------------------------------------------
 
-Error
+Expected<void>
 forEachFile(
     std::string_view dirPath,
     bool recursive,
@@ -47,39 +47,27 @@ forEachFile(
     std::error_code ec;
     fs::directory_iterator const end{};
     fs::directory_iterator it(dirPath, ec, false);
-    if(ec)
-        return formatError("fs::directory_iterator(\"{}\") returned \"{}\"", dirPath, ec);
-    while(it != end)
+    MRDOCS_CHECK(!ec, formatError("fs::directory_iterator(\"{}\") returned \"{}\"", dirPath, ec));
+    while (it != end)
     {
         if(it->type() == fs::file_type::directory_file)
         {
             auto s = it->path();
-            auto err = visitor.visitFile(s);
-            if(err)
-                return err;
-
-            if(recursive)
+            MRDOCS_TRY(visitor.visitFile(s));
+            if (recursive)
             {
-                if(auto err = forEachFile(
-                    it->path(), recursive, visitor))
-                    return err;
+                MRDOCS_TRY(forEachFile(it->path(), recursive, visitor));
             }
         }
-        else if(it->type() == fs::file_type::regular_file)
+        else if (it->type() == fs::file_type::regular_file)
         {
-            auto err = visitor.visitFile(it->path());
-            if(err)
-                return err;
+            MRDOCS_TRY(visitor.visitFile(it->path()));
         }
-        else
-        {
-            // we don't handle this type
-        }
+        // else, we don't handle this type
         it.increment(ec);
-        if(ec)
-            return formatError("directory_iterator::increment returned \"{}\"", ec);
+        MRDOCS_CHECK(!ec, formatError("directory_iterator::increment returned \"{}\"", ec));
     }
-    return Error::success();
+    return {};
 }
 
 //------------------------------------------------
@@ -134,13 +122,12 @@ isAbsolute(
     return path::is_absolute(pathName);
 }
 
-Error
+Expected<void>
 requireAbsolute(
     std::string_view pathName)
 {
-    if(! isAbsolute(pathName))
-        return formatError("\"{}\" is not an absolute path");
-    return Error::success();
+    MRDOCS_CHECK(isAbsolute(pathName), formatError("\"{}\" is not an absolute path"));
+    return {};
 }
 
 bool
@@ -354,18 +341,17 @@ appendPath(
     return static_cast<std::string>(temp.str());
 }
 
-Error
+Expected<void>
 requireDirectory(
     std::string_view pathName)
 {
     namespace fs = llvm::sys::fs;
 
     fs::file_status fileStatus;
-    if(auto ec = fs::status(pathName, fileStatus))
-        return formatError("fs::status(\"{}\") returned \"{}\"", pathName, ec);
-    if(fileStatus.type() != fs::file_type::directory_file)
-        return formatError("\"{}\" is not a directory", pathName);
-    return Error::success();
+    auto ec = fs::status(pathName, fileStatus);
+    MRDOCS_CHECK(!ec, formatError(R"(fs::status("{}") returned "{}")", pathName, ec));
+    MRDOCS_CHECK(fileStatus.type() == fs::file_type::directory_file, formatError("\"{}\" is not a directory", pathName));
+    return {};
 }
 
 bool
@@ -416,25 +402,22 @@ getSourceFilename(
     return pathName;
 }
 
-Error
+Expected<void>
 createDirectory(
     std::string_view pathName)
 {
     namespace fs = llvm::sys::fs;
 
     auto kind = files::getFileType(pathName);
-    if (!kind)
-        return kind.error();
-    if(*kind == files::FileType::directory)
-        return Error::success();
-    else if(*kind != files::FileType::not_found)
-        return formatError("creating the directory \"{}\""
-            " would overwrite an existing file", pathName);
-
-    if(auto ec = fs::create_directories(pathName))
-        return formatError("fs::create_directories(\"{}\") returned {}", pathName, ec);
-
-    return Error::success();
+    MRDOCS_CHECK(kind, kind.error());
+    MRDOCS_CHECK_OR(*kind != files::FileType::directory, {});
+    MRDOCS_CHECK(
+        *kind == files::FileType::not_found,
+        formatError("creating the directory \"{}\""
+                    " would overwrite an existing file", pathName));
+    auto ec = fs::create_directories(pathName);
+    MRDOCS_CHECK(!ec, formatError("fs::create_directories(\"{}\") returned \"{}\"", pathName, ec));
+    return {};
 }
 
 bool

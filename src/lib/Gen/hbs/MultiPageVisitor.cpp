@@ -25,9 +25,11 @@ writePage(
 {
     std::string path = files::appendPath(outputPath_, filename);
     std::string dir = files::getParentDir(path);
-    if(auto err = files::createDirectory(dir))
-        err.Throw();
-
+    auto exp = files::createDirectory(dir);
+    if (!exp)
+    {
+        exp.error().Throw();
+    }
     std::ofstream os;
     try
     {
@@ -36,11 +38,11 @@ writePage(
                 std::ios_base::out |
                 std::ios_base::trunc // | std::ios_base::noreplace
             );
-        os.write(text.data(), text.size());
+        os.write(text.data(), static_cast<std::streamsize>(text.size()));
     }
     catch(std::exception const& ex)
     {
-        formatError("std::ofstream(\"{}\") threw \"{}\"", path, ex.what()).Throw();
+        formatError(R"(std::ofstream("{}") threw "{}")", path, ex.what()).Throw();
     }
 }
 

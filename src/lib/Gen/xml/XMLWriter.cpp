@@ -117,7 +117,7 @@ XMLWriter(
 {
 }
 
-Error
+Expected<void>
 XMLWriter::
 build()
 {
@@ -129,8 +129,8 @@ build()
                 &reporter, reporter);
         yin.setAllowUnknownKeys(true);
         yin >> options_;
-        if(auto ec = yin.error())
-            return Error(ec);
+        auto ec = yin.error();
+        MRDOCS_CHECK(!ec, ec);
     }
 
     if(options_.prolog)

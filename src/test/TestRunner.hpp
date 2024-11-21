@@ -55,7 +55,8 @@ class TestRunner
     Generator const* gen_;
     ReferenceDirectories dirs_;
 
-    Error writeFile(
+    Expected<void>
+    writeFile(
         llvm::StringRef filePath,
         llvm::StringRef contents);
 
