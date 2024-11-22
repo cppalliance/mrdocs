@@ -67,7 +67,8 @@ build(Corpus const& corpus) const
             corpus.config->configDir));
     MRDOCS_TRY(build(absOutput, corpus));
     report::info(
-        "Generated documentation in {}",
+        "Generated {} documentation in {}",
+        this->displayName(),
         format_duration(clock_type::now() - start_time));
     return {};
 }
