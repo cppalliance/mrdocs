@@ -30,7 +30,7 @@
 
 === Synopsis
 
-Declared in `<class-template-specializations-2.cpp>`
+Declared in `<pass:[class-template-specializations-2.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -50,7 +50,7 @@ struct A;
 
 === Synopsis
 
-Declared in `<class-template-specializations-2.cpp>`
+Declared in `<pass:[class-template-specializations-2.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -85,7 +85,7 @@ struct xref:#A-0e[A]<T*>;
 
 === Synopsis
 
-Declared in `<class-template-specializations-2.cpp>`
+Declared in `<pass:[class-template-specializations-2.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -105,7 +105,7 @@ struct B;
 
 === Synopsis
 
-Declared in `<class-template-specializations-2.cpp>`
+Declared in `<pass:[class-template-specializations-2.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -134,7 +134,7 @@ struct xref:#A-03-B-05[B]<U*>;
 
 === Synopsis
 
-Declared in `<class-template-specializations-2.cpp>`
+Declared in `<pass:[class-template-specializations-2.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -153,7 +153,7 @@ struct C;
 
 === Synopsis
 
-Declared in `<class-template-specializations-2.cpp>`
+Declared in `<pass:[class-template-specializations-2.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -173,7 +173,7 @@ struct xref:#A-03-B-05[B]<int>;
 
 === Synopsis
 
-Declared in `<class-template-specializations-2.cpp>`
+Declared in `<pass:[class-template-specializations-2.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -205,7 +205,7 @@ struct xref:#A-0e[A]<double>;
 
 === Synopsis
 
-Declared in `<class-template-specializations-2.cpp>`
+Declared in `<pass:[class-template-specializations-2.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -237,7 +237,7 @@ struct D;
 
 === Synopsis
 
-Declared in `<class-template-specializations-2.cpp>`
+Declared in `<pass:[class-template-specializations-2.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -257,7 +257,7 @@ struct E;
 
 === Synopsis
 
-Declared in `<class-template-specializations-2.cpp>`
+Declared in `<pass:[class-template-specializations-2.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -286,7 +286,7 @@ struct xref:#A-06-D-0b-E-01[E]<T*>;
 
 === Synopsis
 
-Declared in `<class-template-specializations-2.cpp>`
+Declared in `<pass:[class-template-specializations-2.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -305,7 +305,7 @@ struct F;
 
 === Synopsis
 
-Declared in `<class-template-specializations-2.cpp>`
+Declared in `<pass:[class-template-specializations-2.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -337,7 +337,7 @@ struct xref:#A-06-D-0b[D]<float>;
 
 === Synopsis
 
-Declared in `<class-template-specializations-2.cpp>`
+Declared in `<pass:[class-template-specializations-2.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -357,7 +357,7 @@ struct G;
 
 === Synopsis
 
-Declared in `<class-template-specializations-2.cpp>`
+Declared in `<pass:[class-template-specializations-2.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

@@ -24,7 +24,7 @@
 
 === Synopsis
 
-Declared in `<pre-post.cpp>`
+Declared in `<pass:[pre-post.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

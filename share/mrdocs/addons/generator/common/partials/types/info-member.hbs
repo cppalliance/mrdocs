@@ -5,10 +5,10 @@
 {{~/markup/td}}
 {{#>markup/td~}}
     {{#if (ne kind "overload")~}}
-        {{~doc.brief}}
+        {{{~doc.brief}}}
     {{else~}}
         {{#each (unique (pluck (pluck members "doc") "brief"))~}}
-            {{.}}
+            {{{.}}}
         {{/each~}}
     {{/if}}
 {{~/markup/td}}

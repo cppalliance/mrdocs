@@ -13,7 +13,7 @@
 | xref:#blacklisted[`blacklisted`] 
 | 
     
-| xref:#to_be_documented[`to_be_documented`] 
+| xref:#to_be_documented[`pass:[to_be_documented]`] 
 | 
     
 |===
@@ -21,14 +21,14 @@
 
 
 [#to_be_documented]
-== to_be_documented
+== pass:[to_be_documented]
 
 === Functions
 [cols=2]
 |===
 | Name | Description 
 
-| xref:#to_be_documented-documented_function[`documented_function`] 
+| xref:#to_be_documented-documented_function[`pass:[documented_function]`] 
 | 
     
 |===
@@ -36,18 +36,18 @@
 
 
 [#to_be_documented-documented_function]
-== xref:#to_be_documented[to_be_documented]::documented_function
+== xref:#to_be_documented[pass:[to_be_documented]]::pass:[documented_function]
 
 
 
 === Synopsis
 
-Declared in `<filters/whitelist_test.cpp>`
+Declared in `<pass:[filters/whitelist_test.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-documented_function();
+pass:[documented_function]();
 ----
 
 
@@ -67,7 +67,7 @@ documented_function();
 |===
 | Name | Description 
 
-| xref:#blacklisted-whitelisted_function[`whitelisted_function`] 
+| xref:#blacklisted-whitelisted_function[`pass:[whitelisted_function]`] 
 | 
     
 |===
@@ -75,18 +75,18 @@ documented_function();
 
 
 [#blacklisted-whitelisted_function]
-== xref:#blacklisted[blacklisted]::whitelisted_function
+== xref:#blacklisted[blacklisted]::pass:[whitelisted_function]
 
 
 
 === Synopsis
 
-Declared in `<filters/whitelist_test.cpp>`
+Declared in `<pass:[filters/whitelist_test.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-whitelisted_function();
+pass:[whitelisted_function]();
 ----
 
 

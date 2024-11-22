@@ -30,7 +30,7 @@
 
 === Synopsis
 
-Declared in `<record-access.cpp>`
+Declared in `<pass:[record-access.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -76,7 +76,7 @@ struct S0;
 
 === Synopsis
 
-Declared in `<record-access.cpp>`
+Declared in `<pass:[record-access.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -100,7 +100,7 @@ f0();
 
 === Synopsis
 
-Declared in `<record-access.cpp>`
+Declared in `<pass:[record-access.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -124,7 +124,7 @@ f1();
 
 === Synopsis
 
-Declared in `<record-access.cpp>`
+Declared in `<pass:[record-access.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -148,7 +148,7 @@ f2();
 
 === Synopsis
 
-Declared in `<record-access.cpp>`
+Declared in `<pass:[record-access.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -194,7 +194,7 @@ class C0;
 
 === Synopsis
 
-Declared in `<record-access.cpp>`
+Declared in `<pass:[record-access.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -218,7 +218,7 @@ f0();
 
 === Synopsis
 
-Declared in `<record-access.cpp>`
+Declared in `<pass:[record-access.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -242,7 +242,7 @@ f1();
 
 === Synopsis
 
-Declared in `<record-access.cpp>`
+Declared in `<pass:[record-access.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -266,7 +266,7 @@ f2();
 
 === Synopsis
 
-Declared in `<record-access.cpp>`
+Declared in `<pass:[record-access.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -312,7 +312,7 @@ union U0;
 
 === Synopsis
 
-Declared in `<record-access.cpp>`
+Declared in `<pass:[record-access.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -336,7 +336,7 @@ f0();
 
 === Synopsis
 
-Declared in `<record-access.cpp>`
+Declared in `<pass:[record-access.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -360,7 +360,7 @@ f1();
 
 === Synopsis
 
-Declared in `<record-access.cpp>`
+Declared in `<pass:[record-access.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

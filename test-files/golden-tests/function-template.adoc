@@ -57,7 +57,7 @@
 
 === Synopsis
 
-Declared in `<function-template.cpp>`
+Declared in `<pass:[function-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -82,7 +82,7 @@ f0(int x);
 
 === Synopsis
 
-Declared in `<function-template.cpp>`
+Declared in `<pass:[function-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -107,7 +107,7 @@ f1(T t);
 
 === Synopsis
 
-Declared in `<function-template.cpp>`
+Declared in `<pass:[function-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -132,7 +132,7 @@ f2();
 
 === Synopsis
 
-Declared in `<function-template.cpp>`
+Declared in `<pass:[function-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -159,7 +159,7 @@ f3();
 
 === Synopsis
 
-Declared in `<function-template.cpp>`
+Declared in `<pass:[function-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -184,7 +184,7 @@ g0(int x);
 
 === Synopsis
 
-Declared in `<function-template.cpp>`
+Declared in `<pass:[function-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -209,7 +209,7 @@ g1();
 
 === Synopsis
 
-Declared in `<function-template.cpp>`
+Declared in `<pass:[function-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -236,7 +236,7 @@ g2();
 
 === Synopsis
 
-Declared in `<function-template.cpp>`
+Declared in `<pass:[function-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -261,7 +261,7 @@ h0(auto x);
 
 === Synopsis
 
-Declared in `<function-template.cpp>`
+Declared in `<pass:[function-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -290,7 +290,7 @@ h1(
 
 === Synopsis
 
-Declared in `<function-template.cpp>`
+Declared in `<pass:[function-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -317,7 +317,7 @@ i();
 
 === Synopsis
 
-Declared in `<function-template.cpp>`
+Declared in `<pass:[function-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -342,7 +342,7 @@ j0();
 
 === Synopsis
 
-Declared in `<function-template.cpp>`
+Declared in `<pass:[function-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

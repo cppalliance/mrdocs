@@ -11,6 +11,7 @@
 
 #include "HTMLGenerator.hpp"
 #include "DocVisitor.hpp"
+#include <mrdocs/Support/Handlebars.hpp>
 
 namespace clang {
 namespace mrdocs {
@@ -29,6 +30,13 @@ toString(hbs::HandlebarsCorpus const& c, doc::Node const& I) const
     DocVisitor visitor(c, s);
     doc::visit(I, visitor);
     return s;
+}
+
+void
+HTMLGenerator::
+escape(OutputRef& os, std::string_view str) const
+{
+    HTMLEscape(os, str);
 }
 
 } // html

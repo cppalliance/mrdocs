@@ -24,7 +24,7 @@
 
 === Synopsis
 
-Declared in `<static-data-template.cpp>`
+Declared in `<pass:[static-data-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -59,7 +59,7 @@ struct A;
 
 === Synopsis
 
-Declared in `<static-data-template.cpp>`
+Declared in `<pass:[static-data-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -81,7 +81,7 @@ T const x = 0;
 
 === Synopsis
 
-Declared in `<static-data-template.cpp>`
+Declared in `<pass:[static-data-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -101,7 +101,7 @@ T const xref:#A-x-0e[x]<U*, T> = 1;
 
 === Synopsis
 
-Declared in `<static-data-template.cpp>`
+Declared in `<pass:[static-data-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

@@ -24,7 +24,7 @@
 
 === Synopsis
 
-Declared in `<record-1.cpp>`
+Declared in `<pass:[record-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -91,7 +91,7 @@ brief-g3
 
 === Synopsis
 
-Declared in `<record-1.cpp>`
+Declared in `<pass:[record-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -108,7 +108,7 @@ using U1 = int;
 
 === Synopsis
 
-Declared in `<record-1.cpp>`
+Declared in `<pass:[record-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -125,7 +125,7 @@ typedef char U2;
 
 === Synopsis
 
-Declared in `<record-1.cpp>`
+Declared in `<pass:[record-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -149,7 +149,7 @@ f1();
 
 === Synopsis
 
-Declared in `<record-1.cpp>`
+Declared in `<pass:[record-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -173,7 +173,7 @@ f2();
 
 === Synopsis
 
-Declared in `<record-1.cpp>`
+Declared in `<pass:[record-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -199,7 +199,7 @@ brief-g1
 
 === Synopsis
 
-Declared in `<record-1.cpp>`
+Declared in `<pass:[record-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -231,7 +231,7 @@ brief-g2
 
 === Synopsis
 
-Declared in `<record-1.cpp>`
+Declared in `<pass:[record-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -263,7 +263,7 @@ brief-g3
 
 === Synopsis
 
-Declared in `<record-1.cpp>`
+Declared in `<pass:[record-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

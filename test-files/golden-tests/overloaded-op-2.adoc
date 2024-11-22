@@ -24,7 +24,7 @@
 
 === Synopsis
 
-Declared in `<overloaded-op-2.cpp>`
+Declared in `<pass:[overloaded-op-2.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -36,7 +36,7 @@ struct T;
 |===
 | Name | Description 
 
-| xref:#T-operator_plus[`operator+`] 
+| xref:#T-operator_plus[`pass:[operator+]`] 
 | 
     
 |===
@@ -46,18 +46,18 @@ struct T;
 
 
 [#T-operator_plus]
-== xref:#T[T]::operator+
+== xref:#T[T]::pass:[operator+]
 
 
 
 === Synopsis
 
-Declared in `<overloaded-op-2.cpp>`
+Declared in `<pass:[overloaded-op-2.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 xref:#T[T]
-operator+(xref:#T[T]);
+pass:[operator+](xref:#T[T]);
 ----
 
 

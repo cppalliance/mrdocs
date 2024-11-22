@@ -42,7 +42,7 @@
 
 === Synopsis
 
-Declared in `<using-2.cpp>`
+Declared in `<pass:[using-2.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -61,7 +61,7 @@ struct S1;
 
 === Synopsis
 
-Declared in `<using-2.cpp>`
+Declared in `<pass:[using-2.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -80,7 +80,7 @@ struct S2;
 
 === Synopsis
 
-Declared in `<using-2.cpp>`
+Declared in `<pass:[using-2.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -105,7 +105,7 @@ using xref:#LongName[LongName]::S1;
 
 === Synopsis
 
-Declared in `<using-2.cpp>`
+Declared in `<pass:[using-2.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

@@ -39,7 +39,7 @@ continues to the line.
 
 === Synopsis
 
-Declared in `<brief-1.cpp>`
+Declared in `<pass:[brief-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -65,7 +65,7 @@ brief
 
 === Synopsis
 
-Declared in `<brief-1.cpp>`
+Declared in `<pass:[brief-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -75,12 +75,12 @@ f6();
 
 === Description
 
-
+pass:[
 many lined
 *bold*
 what will
 happen?
-
+]
 
 
 

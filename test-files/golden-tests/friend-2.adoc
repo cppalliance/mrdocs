@@ -35,7 +35,7 @@ f
 
 === Synopsis
 
-Declared in `<friend-2.cpp>`
+Declared in `<pass:[friend-2.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -67,7 +67,7 @@ f
 
 === Synopsis
 
-Declared in `<friend-2.cpp>`
+Declared in `<pass:[friend-2.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -88,7 +88,7 @@ f
 
 === Synopsis
 
-Declared in `<friend-2.cpp>`
+Declared in `<pass:[friend-2.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

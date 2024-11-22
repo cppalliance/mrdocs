@@ -30,7 +30,7 @@
 
 === Synopsis
 
-Declared in `<namespace-alias-1.cpp>`
+Declared in `<pass:[namespace-alias-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

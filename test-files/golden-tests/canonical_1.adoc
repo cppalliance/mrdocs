@@ -45,7 +45,7 @@
 
 === Synopsis
 
-Declared in `<canonical_1.cpp>`
+Declared in `<pass:[canonical_1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -64,7 +64,7 @@ struct B;
 
 === Synopsis
 
-Declared in `<canonical_1.cpp>`
+Declared in `<pass:[canonical_1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -83,7 +83,7 @@ struct b;
 
 === Synopsis
 
-Declared in `<canonical_1.cpp>`
+Declared in `<pass:[canonical_1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -102,7 +102,7 @@ struct A;
 
 === Synopsis
 
-Declared in `<canonical_1.cpp>`
+Declared in `<pass:[canonical_1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -121,7 +121,7 @@ struct a;
 
 === Synopsis
 
-Declared in `<canonical_1.cpp>`
+Declared in `<pass:[canonical_1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -140,7 +140,7 @@ struct Ba;
 
 === Synopsis
 
-Declared in `<canonical_1.cpp>`
+Declared in `<pass:[canonical_1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -159,7 +159,7 @@ struct bA;
 
 === Synopsis
 
-Declared in `<canonical_1.cpp>`
+Declared in `<pass:[canonical_1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -178,7 +178,7 @@ struct Bx;
 
 === Synopsis
 
-Declared in `<canonical_1.cpp>`
+Declared in `<pass:[canonical_1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

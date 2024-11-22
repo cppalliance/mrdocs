@@ -28,7 +28,7 @@ brief
 
 === Synopsis
 
-Declared in `<para-2.cpp>`
+Declared in `<pass:[para-2.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

@@ -22,8 +22,17 @@ namespace clang {
 namespace mrdocs {
 namespace hbs {
 
+std::function<void(OutputRef&, std::string_view)>
+createEscapeFn(HandlebarsGenerator const& gen)
+{
+    return [&gen](OutputRef out, std::string_view str) {
+        return gen.escape(out, str);
+    };
+}
+
 Expected<ExecutorGroup<Builder>>
 createExecutors(
+    HandlebarsGenerator const& gen,
     HandlebarsCorpus const& hbsCorpus)
 {
     auto const& config = hbsCorpus->config;
@@ -33,7 +42,7 @@ createExecutors(
     {
         try
         {
-           group.emplace(hbsCorpus);
+           group.emplace(hbsCorpus, createEscapeFn(gen));
         }
         catch(Exception const& ex)
         {
@@ -75,7 +84,7 @@ build(
 
     // Create corpus and executors
     HandlebarsCorpus domCorpus = createDomCorpus(*this, corpus);
-    MRDOCS_TRY(ExecutorGroup<Builder> ex, createExecutors(domCorpus));
+    MRDOCS_TRY(ExecutorGroup<Builder> ex, createExecutors(*this, domCorpus));
 
     // Visit the corpus
     MultiPageVisitor visitor(ex, outputPath, corpus);
@@ -95,7 +104,7 @@ buildOne(
 {
     // Create corpus and executors
     HandlebarsCorpus domCorpus = createDomCorpus(*this, corpus);
-    MRDOCS_TRY(ExecutorGroup<Builder> ex, createExecutors(domCorpus));
+    MRDOCS_TRY(ExecutorGroup<Builder> ex, createExecutors(*this, domCorpus));
 
     // Embedded mode
     if (corpus.config->embedded)
@@ -112,7 +121,7 @@ buildOne(
     }
 
     // Wrapped mode
-    Builder inlineBuilder(domCorpus);
+    Builder inlineBuilder(domCorpus, createEscapeFn(*this));
     return inlineBuilder.renderWrapped(os, [&]() -> Expected<void> {
         // This helper will write contents directly to ostream
         SinglePageVisitor visitor(ex, corpus, os);
@@ -124,6 +133,13 @@ buildOne(
 
         return {};
     });
+}
+
+void
+HandlebarsGenerator::
+escape(OutputRef& out, std::string_view str) const
+{
+    out << str;
 }
 
 } // hbs

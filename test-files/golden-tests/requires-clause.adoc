@@ -39,14 +39,14 @@
 ----
 template<typename T>
 void
-xref:#f-05[f]() requires (sizeof(T) == 4);
+xref:#f-05[f]() requires pass:[(sizeof(T) == 4)];
 ----
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 void
-xref:#f-08[f]() requires (sizeof(T) == 2);
+xref:#f-08[f]() requires pass:[(sizeof(T) == 2)];
 ----
   
 
@@ -65,13 +65,13 @@ xref:#f-08[f]() requires (sizeof(T) == 2);
 
 === Synopsis
 
-Declared in `<requires-clause.cpp>`
+Declared in `<pass:[requires-clause.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 void
-f() requires (sizeof(T) == 4);
+f() requires pass:[(sizeof(T) == 4)];
 ----
 
 
@@ -90,13 +90,13 @@ f() requires (sizeof(T) == 4);
 
 === Synopsis
 
-Declared in `<requires-clause.cpp>`
+Declared in `<pass:[requires-clause.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 void
-f() requires (sizeof(T) == 2);
+f() requires pass:[(sizeof(T) == 2)];
 ----
 
 
@@ -118,14 +118,14 @@ f() requires (sizeof(T) == 2);
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-template<typename T> requires (sizeof(T) == 4)
+template<typename T> requires pass:[(sizeof(T) == 4)]
 void
 xref:#g-0a[g]();
 ----
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-template<typename T> requires (sizeof(U) == 2)
+template<typename T> requires pass:[(sizeof(U) == 2)]
 void
 xref:#g-0c[g]();
 ----
@@ -146,11 +146,11 @@ xref:#g-0c[g]();
 
 === Synopsis
 
-Declared in `<requires-clause.cpp>`
+Declared in `<pass:[requires-clause.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-template<typename T> requires (sizeof(T) == 4)
+template<typename T> requires pass:[(sizeof(T) == 4)]
 void
 g();
 ----
@@ -171,11 +171,11 @@ g();
 
 === Synopsis
 
-Declared in `<requires-clause.cpp>`
+Declared in `<pass:[requires-clause.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-template<typename T> requires (sizeof(U) == 2)
+template<typename T> requires pass:[(sizeof(U) == 2)]
 void
 g();
 ----
@@ -196,11 +196,11 @@ g();
 
 === Synopsis
 
-Declared in `<requires-clause.cpp>`
+Declared in `<pass:[requires-clause.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-template<typename T> requires (sizeof(U) == 2)
+template<typename T> requires pass:[(sizeof(U) == 2)]
 struct A;
 ----
 

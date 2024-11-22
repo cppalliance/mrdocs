@@ -30,7 +30,7 @@
 
 === Synopsis
 
-Declared in `<using-3.cpp>`
+Declared in `<pass:[using-3.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -58,7 +58,7 @@ struct A;
 
 === Synopsis
 
-Declared in `<using-3.cpp>`
+Declared in `<pass:[using-3.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -82,7 +82,7 @@ f(int);
 
 === Synopsis
 
-Declared in `<using-3.cpp>`
+Declared in `<pass:[using-3.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -110,7 +110,7 @@ struct B;
 
 === Synopsis
 
-Declared in `<using-3.cpp>`
+Declared in `<pass:[using-3.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -134,7 +134,7 @@ f(bool);
 
 === Synopsis
 
-Declared in `<using-3.cpp>`
+Declared in `<pass:[using-3.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -175,7 +175,7 @@ struct C
 
 === Synopsis
 
-Declared in `<using-3.cpp>`
+Declared in `<pass:[using-3.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -200,7 +200,7 @@ using xref:#A[A]::f;
 
 === Synopsis
 
-Declared in `<using-3.cpp>`
+Declared in `<pass:[using-3.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

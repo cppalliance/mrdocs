@@ -180,7 +180,7 @@
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -223,7 +223,7 @@ struct S0;
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -247,7 +247,7 @@ f0();
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -284,7 +284,7 @@ struct S1;
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -308,7 +308,7 @@ f1();
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -351,7 +351,7 @@ struct S2;
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -375,7 +375,7 @@ f2();
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -403,7 +403,7 @@ struct S3;
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -427,7 +427,7 @@ f3();
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -458,7 +458,7 @@ struct S4;
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -482,7 +482,7 @@ f4();
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -522,7 +522,7 @@ struct S5;
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -546,7 +546,7 @@ f5();
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -583,7 +583,7 @@ struct S6;
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -607,7 +607,7 @@ f6();
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -650,7 +650,7 @@ struct S7;
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -674,7 +674,7 @@ f7();
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -702,7 +702,7 @@ struct S8;
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -726,7 +726,7 @@ f8();
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -757,7 +757,7 @@ struct S9;
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -781,7 +781,7 @@ f9();
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -801,7 +801,7 @@ struct xref:#S0-0cf[S0]<0>;
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -821,7 +821,7 @@ struct xref:#S0-0cf[S0]<1, T*>;
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -898,12 +898,12 @@ struct xref:#S0-0cf[S0]<1, int*>;
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R0
-    : xref:#S0-0cf[S0]<-1>;
+    : xref:#S0-0cf[S0]<pass:[-1]>;
 ----
 
 ===  Types
@@ -939,7 +939,7 @@ struct R0
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -959,7 +959,7 @@ struct R1
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -979,7 +979,7 @@ struct R2
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -999,7 +999,7 @@ struct R3
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1019,12 +1019,12 @@ struct R4
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R5
-    : xref:#S0-0cf[S0]<3>::xref:#S0-0cf-S1[S1]::xref:#S0-073-S1-S2[S2]<-1>;
+    : xref:#S0-0cf[S0]<3>::xref:#S0-0cf-S1[S1]::xref:#S0-073-S1-S2[S2]<pass:[-1]>;
 ----
 
 
@@ -1039,7 +1039,7 @@ struct R5
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1059,7 +1059,7 @@ struct R6
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1079,7 +1079,7 @@ struct R7
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1099,7 +1099,7 @@ struct R8
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1119,12 +1119,12 @@ struct R9
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R10
-    : xref:#S0-0cf[S0]<10>::xref:#S0-0cf-S1[S1]::xref:#S0-0cf-S1-S2[S2]<11>::xref:#S0-08-S1-S2-S4[S4]<-1>;
+    : xref:#S0-0cf[S0]<10>::xref:#S0-0cf-S1[S1]::xref:#S0-0cf-S1-S2[S2]<11>::xref:#S0-08-S1-S2-S4[S4]<pass:[-1]>;
 ----
 
 
@@ -1139,7 +1139,7 @@ struct R10
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1159,7 +1159,7 @@ struct R11
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1179,7 +1179,7 @@ struct R12
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1199,12 +1199,12 @@ struct R13
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R14
-    : xref:#S0-0cf[S0]<18>::xref:#S0-07a-S5[S5]<-1>;
+    : xref:#S0-0cf[S0]<18>::xref:#S0-07a-S5[S5]<pass:[-1]>;
 ----
 
 
@@ -1219,7 +1219,7 @@ struct R14
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1239,7 +1239,7 @@ struct R15
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1259,7 +1259,7 @@ struct R16
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1279,7 +1279,7 @@ struct R17
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1299,12 +1299,12 @@ struct R18
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R19
-    : xref:#S0-0cf[S0]<25>::xref:#S0-0cf-S5[S5]<26>::xref:#S0-0cf-S5-S6[S6]::xref:#S0-0a2-S5-S6-S7[S7]<-1>;
+    : xref:#S0-0cf[S0]<25>::xref:#S0-0cf-S5[S5]<26>::xref:#S0-0cf-S5-S6[S6]::xref:#S0-0a2-S5-S6-S7[S7]<pass:[-1]>;
 ----
 
 
@@ -1319,7 +1319,7 @@ struct R19
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1339,7 +1339,7 @@ struct R20
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1359,7 +1359,7 @@ struct R21
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1379,7 +1379,7 @@ struct R22
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1399,12 +1399,12 @@ struct R23
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R24
-    : xref:#S0-0cf[S0]<36>::xref:#S0-0cf-S5[S5]<37>::xref:#S0-0cf-S5-S6[S6]::xref:#S0-0cf-S5-S6-S7[S7]<38>::xref:#S0-033-S5-S6-S7-S9[S9]<-1>;
+    : xref:#S0-0cf[S0]<36>::xref:#S0-0cf-S5[S5]<37>::xref:#S0-0cf-S5-S6[S6]::xref:#S0-0cf-S5-S6-S7[S7]<38>::xref:#S0-033-S5-S6-S7-S9[S9]<pass:[-1]>;
 ----
 
 
@@ -1419,7 +1419,7 @@ struct R24
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1439,7 +1439,7 @@ struct R25
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1459,7 +1459,7 @@ struct R26
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1479,7 +1479,7 @@ struct R27
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1520,7 +1520,7 @@ struct R28
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1561,7 +1561,7 @@ struct R29
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1599,7 +1599,7 @@ struct R30
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1643,7 +1643,7 @@ struct R31
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1684,7 +1684,7 @@ struct R32
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1725,7 +1725,7 @@ struct R33
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1754,7 +1754,7 @@ struct R34
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1786,7 +1786,7 @@ struct R35
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1815,7 +1815,7 @@ struct R36
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1844,7 +1844,7 @@ struct R37
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1885,7 +1885,7 @@ struct R38
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1923,7 +1923,7 @@ struct R39
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1961,7 +1961,7 @@ struct R40
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1999,7 +1999,7 @@ struct R41
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -2043,7 +2043,7 @@ struct R42
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -2084,7 +2084,7 @@ struct R43
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -2125,7 +2125,7 @@ struct R44
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -2154,7 +2154,7 @@ struct R45
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -2186,7 +2186,7 @@ struct R46
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -2215,7 +2215,7 @@ struct R47
 
 === Synopsis
 
-Declared in `<class-template-specializations-1.cpp>`
+Declared in `<pass:[class-template-specializations-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

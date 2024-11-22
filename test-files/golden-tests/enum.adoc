@@ -39,7 +39,7 @@ E0 brief.
 
 === Synopsis
 
-Declared in `<enum.cpp>`
+Declared in `<pass:[enum.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -50,19 +50,19 @@ enum E0;
 [,cols=2]
 |===
 |Name |Description
-|xref:#E0-e0[`pass:v[e0]`] |
+|xref:#E0-e0[`pass:v[e0]`] |pass:[
 e0 brief.
-
-|xref:#E0-e1[`pass:v[e1]`] |
+]
+|xref:#E0-e1[`pass:v[e1]`] |pass:[
 e1 brief.
-
+]
 |===
 
 === Description
 
-
+pass:[
 E0 description.
-
+]
 
 
 
@@ -75,7 +75,7 @@ e0 brief.
 
 === Synopsis
 
-Declared in `<enum.cpp>`
+Declared in `<pass:[enum.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -84,9 +84,9 @@ e0 = 1
 
 === Description
 
-
+pass:[
 e0 description.
-
+]
 
 
 
@@ -100,7 +100,7 @@ e1 brief.
 
 === Synopsis
 
-Declared in `<enum.cpp>`
+Declared in `<pass:[enum.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -109,9 +109,9 @@ e1
 
 === Description
 
-
+pass:[
 e1 description.
-
+]
 
 
 
@@ -123,7 +123,7 @@ e1 description.
 
 === Synopsis
 
-Declared in `<enum.cpp>`
+Declared in `<pass:[enum.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -148,7 +148,7 @@ enum E1 : char;
 
 === Synopsis
 
-Declared in `<enum.cpp>`
+Declared in `<pass:[enum.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -165,7 +165,7 @@ e2
 
 === Synopsis
 
-Declared in `<enum.cpp>`
+Declared in `<pass:[enum.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -184,7 +184,7 @@ E2 brief.
 
 === Synopsis
 
-Declared in `<enum.cpp>`
+Declared in `<pass:[enum.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -195,19 +195,19 @@ enum E2 : int;
 [,cols=2]
 |===
 |Name |Description
-|xref:#E2-e4[`pass:v[e4]`] |
+|xref:#E2-e4[`pass:v[e4]`] |pass:[
 e4 brief.
-
-|xref:#E2-e5[`pass:v[e5]`] |
+]
+|xref:#E2-e5[`pass:v[e5]`] |pass:[
 e5 brief.
-
+]
 |===
 
 === Description
 
-
+pass:[
 E2 description.
-
+]
 
 
 
@@ -220,7 +220,7 @@ e4 brief.
 
 === Synopsis
 
-Declared in `<enum.cpp>`
+Declared in `<pass:[enum.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -229,9 +229,9 @@ e4
 
 === Description
 
-
+pass:[
 e4 description.
-
+]
 
 
 
@@ -245,7 +245,7 @@ e5 brief.
 
 === Synopsis
 
-Declared in `<enum.cpp>`
+Declared in `<pass:[enum.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -254,9 +254,9 @@ e5
 
 === Description
 
-
+pass:[
 e5 description.
-
+]
 
 
 
@@ -268,7 +268,7 @@ e5 description.
 
 === Synopsis
 
-Declared in `<enum.cpp>`
+Declared in `<pass:[enum.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -293,7 +293,7 @@ enum E3 : char;
 
 === Synopsis
 
-Declared in `<enum.cpp>`
+Declared in `<pass:[enum.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -310,7 +310,7 @@ e6
 
 === Synopsis
 
-Declared in `<enum.cpp>`
+Declared in `<pass:[enum.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

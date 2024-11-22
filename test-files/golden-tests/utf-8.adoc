@@ -10,7 +10,7 @@
 |===
 | Name | Description 
 
-| xref:#Христос_воскрес[`Христос_воскрес`] 
+| xref:#Христос_воскрес[`pass:[Христос_воскрес]`] 
 | 
     
 |===
@@ -18,18 +18,18 @@
 
 
 [#Христос_воскрес]
-== Христос_воскрес
+== pass:[Христос_воскрес]
 
 
 
 === Synopsis
 
-Declared in `<utf-8.cpp>`
+Declared in `<pass:[utf-8.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 bool
-Христос_воскрес();
+pass:[Христос_воскрес]();
 ----
 
 
