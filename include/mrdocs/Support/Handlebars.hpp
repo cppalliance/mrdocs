@@ -56,85 +56,6 @@ struct HandlebarsError
         , pos(pos_) {}
 };
 
-/** Options for handlebars
-
-    In particular, we have the noHTMLEscape option, which we
-    use to disable HTML escaping when rendering asciidoc templates.
-
-    This struct is analogous to the Handlebars.compile options.
-
- */
-struct HandlebarsOptions
-{
-    /** Escape HTML entities
-     */
-    bool noEscape = false;
-
-    /** Templates will throw rather than ignore missing fields
-
-        Run in strict mode. In this mode, templates will throw rather than
-        silently ignore missing fields.
-
-     */
-    bool strict = false;
-
-    /** Removes object existence checks when traversing paths
-
-        This is a subset of strict mode that generates optimized
-        templates when the data inputs are known to be safe.
-     */
-    bool assumeObjects = false;
-
-    /** Disable the auto-indent feature
-
-        By default, an indented partial-call causes the output of the
-        whole partial being indented by the same amount.
-     */
-    bool preventIndent = false;
-
-    /** Disables standalone tag removal when set to true
-
-        When set, blocks and partials that are on their own line will not
-        remove the whitespace on that line.
-     */
-    bool ignoreStandalone = false;
-
-    /** Disables implicit context for partials
-
-        When enabled, partials that are not passed a context value will
-        execute against an empty object.
-     */
-    bool explicitPartialContext = false;
-
-    /** Enable recursive field lookup
-
-        When enabled, fields will be looked up recursively in objects
-        and arrays.
-
-        This mode should be used to enable complete compatibility
-        with Mustache templates.
-     */
-    bool compat = false;
-
-    /** Enable tracking of ids
-
-        When enabled, the ids of the expressions are tracked and
-        passed to the helpers.
-
-        Helpers often use this information to update the context
-        path to the current expression, which can later be used to
-        look up the value of the expression with ".." segments.
-     */
-    bool trackIds = false;
-
-    /** Custom private data object
-
-        This variable can be used to pass in an object to define custom
-        private variables.
-     */
-    dom::Value data = nullptr;
-};
-
 namespace detail {
     // Objects such as llvm::raw_string_ostream
     template <typename Os>
@@ -155,28 +76,6 @@ namespace detail {
     {
         st.append( sv.data(), sv.data() + sv.size() );
     };
-
-    struct RenderState;
-
-    // Heterogeneous lookup support
-    struct string_hash {
-        using is_transparent [[maybe_unused]] = void;
-        size_t operator()(const char *txt) const {
-            return std::hash<std::string_view>{}(txt);
-        }
-        size_t operator()(std::string_view txt) const {
-            return std::hash<std::string_view>{}(txt);
-        }
-        size_t operator()(const std::string &txt) const {
-            return std::hash<std::string>{}(txt);
-        }
-    };
-
-    using partials_map = std::unordered_map<
-        std::string, std::string, string_hash, std::equal_to<>>;
-
-    using partials_view_map = std::unordered_map<
-        std::string, std::string_view, string_hash, std::equal_to<>>;
 }
 
 /** Reference to output stream used by handlebars
@@ -340,6 +239,172 @@ public:
         return indent_;
     }
 };
+
+/** HTML escapes the specified string
+
+    This function HTML escapes the specified string, making it safe for
+    rendering as text within HTML content.
+
+    Replaces `&`, `<`, `>`, `"`, `'`, ```, `=` with the HTML entity
+    equivalent value for string values.
+
+    The output of all expressions except for triple-braced expressions
+    are passed through this method. Helpers should also use this method
+    when returning HTML content via a SafeString instance, to prevent
+    possible code injection.
+
+    Helper values created by the SafeString function are left untouched
+    by the template and are not passed through this function.
+
+    This function has the same behavior as the corresponding utility function
+    in the Handlebars.js library.
+
+    @see https://github.com/handlebars-lang/handlebars.js/blob/master/lib/handlebars/utils.js
+
+    @param out The output stream reference where the escaped string will be written.
+    @param str The string to escape.
+ */
+MRDOCS_DECL
+void
+HTMLEscape(
+    OutputRef& out,
+    std::string_view str);
+
+/** \brief HTML escapes the specified string.
+ *
+ * This function HTML escapes the specified string, making it safe for
+ * rendering as text within HTML content.
+ *
+ * Replaces `&`, `<`, `>`, `"`, `'`, ```, `=` with the HTML entity
+ * equivalent value for string values.
+ *
+ * The output of all expressions except for triple-braced expressions
+ * are passed through this method. Helpers should also use this method
+ * when returning HTML content via a SafeString instance, to prevent
+ * possible code injection.
+ *
+ * Helper values created by the SafeString function are left untouched
+ * by the template and are not passed through this function.
+ *
+ * \param str The string to escape.
+ * \return The escaped string.
+ */
+MRDOCS_DECL
+std::string
+HTMLEscape(std::string_view str);
+
+/** Options for handlebars
+
+    This struct is analogous to the Handlebars.compile options.
+
+    @see https://handlebarsjs.com/api-reference/compilation.html
+
+ */
+struct HandlebarsOptions
+{
+    /** Escape HTML entities or entities defined by the escape function
+     */
+    bool noEscape = false;
+
+    /** Function to escape entities
+
+        It's initialized with a reference to the HTMLEscape function overload
+        that takes an OutputRef and a string_view. This function can be
+        replaced with a custom function that escapes entities in a different
+        way.
+
+     */
+    std::function<void(OutputRef&, std::string_view)> escapeFunction =
+        static_cast<void(*)(OutputRef&, std::string_view)>(HTMLEscape);
+
+    /** Templates will throw rather than ignore missing fields
+
+        Run in strict mode. In this mode, templates will throw rather than
+        silently ignore missing fields.
+
+     */
+    bool strict = false;
+
+    /** Removes object existence checks when traversing paths
+
+        This is a subset of strict mode that generates optimized
+        templates when the data inputs are known to be safe.
+     */
+    bool assumeObjects = false;
+
+    /** Disable the auto-indent feature
+
+        By default, an indented partial-call causes the output of the
+        whole partial being indented by the same amount.
+     */
+    bool preventIndent = false;
+
+    /** Disables standalone tag removal when set to true
+
+        When set, blocks and partials that are on their own line will not
+        remove the whitespace on that line.
+     */
+    bool ignoreStandalone = false;
+
+    /** Disables implicit context for partials
+
+        When enabled, partials that are not passed a context value will
+        execute against an empty object.
+     */
+    bool explicitPartialContext = false;
+
+    /** Enable recursive field lookup
+
+        When enabled, fields will be looked up recursively in objects
+        and arrays.
+
+        This mode should be used to enable complete compatibility
+        with Mustache templates.
+     */
+    bool compat = false;
+
+    /** Enable tracking of ids
+
+        When enabled, the ids of the expressions are tracked and
+        passed to the helpers.
+
+        Helpers often use this information to update the context
+        path to the current expression, which can later be used to
+        look up the value of the expression with ".." segments.
+     */
+    bool trackIds = false;
+
+    /** Custom private data object
+
+        This variable can be used to pass in an object to define custom
+        private variables.
+     */
+    dom::Value data = nullptr;
+};
+
+namespace detail {
+    struct RenderState;
+
+    // Heterogeneous lookup support
+    struct string_hash {
+        using is_transparent [[maybe_unused]] = void;
+        size_t operator()(const char *txt) const {
+            return std::hash<std::string_view>{}(txt);
+        }
+        size_t operator()(std::string_view txt) const {
+            return std::hash<std::string_view>{}(txt);
+        }
+        size_t operator()(const std::string &txt) const {
+            return std::hash<std::string>{}(txt);
+        }
+    };
+
+    using partials_map = std::unordered_map<
+        std::string, std::string, string_hash, std::equal_to<>>;
+
+    using partials_view_map = std::unordered_map<
+        std::string, std::string_view, string_hash, std::equal_to<>>;
+}
 
 /** A handlebars environment
 
@@ -942,37 +1007,6 @@ createFrame(dom::Value const& parent);
 dom::Object
 createFrame(dom::Object const& child, dom::Object const& parent);
 
-/** HTML escapes the specified string
-
-    This function HTML escapes the specified string, making it safe for
-    rendering as text within HTML content.
-
-    Replaces `&`, `<`, `>`, `"`, `'`, ```, `=` with the HTML entity
-    equivalent value for string values.
-
-    The output of all expressions except for triple-braced expressions
-    are passed through this method. Helpers should also use this method
-    when returning HTML content via a SafeString instance, to prevent
-    possible code injection.
-
-    Helper values created by the SafeString function are left untouched
-    by the template and are not passed through this function.
-
-    @param str The string to escape
-    @return The escaped string
- */
-MRDOCS_DECL
-std::string
-escapeExpression(
-    std::string_view str);
-
-/// @overload escapeExpression(std::string_view)
-MRDOCS_DECL
-void
-escapeExpression(
-    OutputRef out,
-    std::string_view str);
-
 /// @overload escapeExpression(std::string_view)
 MRDOCS_DECL
 void
@@ -980,31 +1014,6 @@ escapeExpression(
     OutputRef out,
     std::string_view str,
     HandlebarsOptions const& opt);
-
-template <std::convertible_to<dom::Value> DomValue>
-requires (!std::convertible_to<DomValue, std::string_view>)
-std::string
-escapeExpression(
-    DomValue const& val)
-{
-    dom::Value v = val;
-    if (v.isString())
-    {
-        return escapeExpression(v.getString().get());
-    }
-    if (v.isObject() && v.getObject().exists("toHTML"))
-    {
-        dom::Value fn = v.getObject().get("toHTML");
-        if (fn.isFunction()) {
-            return toString(fn.getFunction()());
-        }
-    }
-    if (v.isNull() || v.isUndefined())
-    {
-        return {};
-    }
-    return toString(v);
-}
 
 namespace helpers {
 
@@ -1164,9 +1173,9 @@ not_fn(dom::Array const& arg);
 MRDOCS_DECL
 dom::Value
 select_fn(
-    dom::Value condition,
-    dom::Value result_true,
-    dom::Value result_false);
+    const dom::Value& condition,
+    const dom::Value& result_true,
+    const dom::Value& result_false);
 
 /** "increment" helper function
  *
