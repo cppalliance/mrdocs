@@ -80,8 +80,7 @@ buildOne(
     Corpus const& corpus) const
 {
     std::string dir = files::getParentDir(fileName);
-    if(auto err = files::createDirectory(dir))
-        return err;
+    MRDOCS_TRY(files::createDirectory(dir));
 
     std::ofstream os;
     try
