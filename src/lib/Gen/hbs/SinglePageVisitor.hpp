@@ -31,13 +31,12 @@ class SinglePageVisitor
     ExecutorGroup<Builder>& ex_;
     Corpus const& corpus_;
     std::ostream& os_;
-    std::size_t numPages_ = 0;
+    std::size_t numSymbols_ = 0;
     std::mutex mutex_;
-    std::size_t topPage_ = 0;
-    std::vector<std::optional<
-        std::string>> pages_;
+    std::size_t topSymbol_ = 0;
+    std::vector<std::optional<std::string>> symbols_;
 
-    void writePage(std::string pageText, std::size_t pageNumber);
+    void writePage(std::string pageText, std::size_t symbolIdx);
 public:
     SinglePageVisitor(
         ExecutorGroup<Builder>& ex,
@@ -49,11 +48,15 @@ public:
     {
     }
 
-    template<class T>
+    /** Push a task for the specified Info to the executor group.
+
+        If the Info object refers to other Info objects, their
+        respective tasks are also pushed to the executor group.
+
+    */
+    template <class T>
+    requires std::derived_from<T, Info> || std::same_as<T, OverloadSet>
     void operator()(T const& I);
-
-    void operator()(OverloadSet const& OS);
-
 };
 
 } // hbs

@@ -32,11 +32,6 @@ class MultiPageVisitor
     std::string_view outputPath_;
     Corpus const& corpus_;
 
-    void
-    writePage(
-        std::string_view text,
-        std::string_view filename);
-
 public:
     MultiPageVisitor(
         ExecutorGroup<Builder>& ex,
@@ -54,16 +49,9 @@ public:
         respective tasks are also pushed to the executor group.
 
     */
-    template <std::derived_from<Info> T>
+    template <class T>
+    requires std::derived_from<T, Info> || std::same_as<T, OverloadSet>
     void operator()(T const& I);
-
-    /** Push a task for the specified OverloadSet to the executor group.
-
-        If the OverloadSet object refers to other Info objects, their
-        respective tasks are also pushed to the executor group.
-
-    */
-    void operator()(OverloadSet const& OS);
 };
 
 } // hbs

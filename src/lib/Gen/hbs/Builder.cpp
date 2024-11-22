@@ -10,11 +10,9 @@
 //
 
 #include "Builder.hpp"
-#include "lib/Support/Radix.hpp"
 #include <lib/Lib/ConfigImpl.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Support/Path.hpp>
-#include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
 #include <fmt/format.h>
 #include <filesystem>
@@ -149,9 +147,10 @@ Builder(
 
 //------------------------------------------------
 
-Expected<std::string>
+Expected<void>
 Builder::
 callTemplate(
+    std::ostream& os,
     std::string_view name,
     dom::Value const& context)
 {
@@ -159,13 +158,14 @@ callTemplate(
     MRDOCS_TRY(auto fileText, files::getFileText(pathName));
     HandlebarsOptions options;
     options.escapeFunction = escapeFn_;
-    Expected<std::string, HandlebarsError> exp =
-        hbs_.try_render(fileText, context, options);
+    OutputRef out(os);
+    Expected<void, HandlebarsError> exp =
+        hbs_.try_render_to(out, fileText, context, options);
     if (!exp)
     {
         return Unexpected(Error(exp.error().what()));
     }
-    return *exp;
+    return {};
 }
 
 //------------------------------------------------
@@ -215,11 +215,15 @@ createContext(
 }
 
 template<class T>
-Expected<std::string>
+requires std::derived_from<T, Info> || std::same_as<T, OverloadSet>
+Expected<void>
 Builder::
-operator()(T const& I)
+operator()(std::ostream& os, T const& I)
 {
-    auto const templateFile = fmt::format("index.{}.hbs", domCorpus.fileExtension);
+    std::string const templateFile =
+        std::derived_from<T, Info> ?
+            fmt::format("index.{}.hbs", domCorpus.fileExtension) :
+            fmt::format("index-overload-set.{}.hbs", domCorpus.fileExtension);
     dom::Object ctx = createContext(I);
 
     auto& config = domCorpus->config;
@@ -227,44 +231,19 @@ operator()(T const& I)
     if (config->embedded ||
         isSinglePage)
     {
-        return callTemplate(templateFile, ctx);
+        return callTemplate(os, templateFile, ctx);
     }
 
     auto const wrapperFile = fmt::format("wrapper.{}.hbs", domCorpus.fileExtension);
     dom::Object wrapperCtx = createFrame(ctx);
-    wrapperCtx.set("contents", dom::makeInvocable([this, &I, templateFile](
+    wrapperCtx.set("contents", dom::makeInvocable([this, &I, templateFile, &os](
         dom::Value const& options) -> Expected<dom::Value>
         {
             // Helper to write contents directly to stream
-            return callTemplate(templateFile, createContext(I));
+            MRDOCS_TRY(callTemplate(os, templateFile, createContext(I)));
+            return {};
         }));
-    return callTemplate(wrapperFile, wrapperCtx);
-}
-
-Expected<std::string>
-Builder::
-operator()(OverloadSet const& OS)
-{
-    auto const templateFile = fmt::format("index-overload-set.{}.hbs", domCorpus.fileExtension);
-    dom::Object ctx = createContext(OS);
-
-    auto& config = domCorpus->config;
-    bool isSinglePage = !config->multipage;
-    if (config->embedded ||
-        isSinglePage)
-    {
-        return callTemplate(templateFile, ctx);
-    }
-
-    auto const wrapperFile = fmt::format("wrapper.{}.hbs", domCorpus.fileExtension);
-    dom::Object wrapperCtx = createFrame(ctx);
-    wrapperCtx.set("contents", dom::makeInvocable([this, &OS, templateFile](
-        dom::Value const& options) -> Expected<dom::Value>
-        {
-            // Helper to write contents directly to stream
-            return callTemplate(templateFile, createContext(OS));
-        }));
-    return callTemplate(wrapperFile, wrapperCtx);
+    return callTemplate(os, wrapperFile, wrapperCtx);
 }
 
 Expected<void>
@@ -352,13 +331,11 @@ commonTemplatesDir(std::string_view subdir) const
         subdir);
 }
 
-
 // Define Builder::operator() for each Info type
-#define DEFINE(T) template Expected<std::string> \
-    Builder::operator()<T>(T const&)
-
-#define INFO(Type) DEFINE(Type##Info);
+#define INFO(T) template Expected<void> Builder::operator()<T##Info>(std::ostream&, T##Info const&);
 #include <mrdocs/Metadata/InfoNodesPascal.inc>
+
+template Expected<void> Builder::operator()<OverloadSet>(std::ostream&, OverloadSet const&);
 
 } // hbs
 } // mrdocs
