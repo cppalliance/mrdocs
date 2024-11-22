@@ -57,12 +57,9 @@ public:
         with the index template as the contents.
      */
     template<class T>
-    Expected<std::string>
-    operator()(T const&);
-
-    /// @copydoc operator()(T const&)
-    Expected<std::string>
-    operator()(OverloadSet const&);
+    requires std::derived_from<T, Info> || std::same_as<T, OverloadSet>
+    Expected<void>
+    operator()(std::ostream& os, T const&);
 
     /** Render the contents in the wrapper layout.
 
@@ -123,8 +120,9 @@ private:
 
     /** Render a Handlebars template from the templates directory.
      */
-    Expected<std::string>
+    Expected<void>
     callTemplate(
+        std::ostream& os,
         std::string_view name,
         dom::Value const& context);
 

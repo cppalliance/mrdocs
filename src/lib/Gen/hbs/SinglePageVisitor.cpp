@@ -11,45 +11,63 @@
 
 #include "SinglePageVisitor.hpp"
 #include <mrdocs/Support/unlock_guard.hpp>
+#include <sstream>
 
 namespace clang {
 namespace mrdocs {
 namespace hbs {
 
 template<class T>
+requires std::derived_from<T, Info> || std::same_as<T, OverloadSet>
 void
 SinglePageVisitor::
-operator()(T const& I)
+operator()(T const& I0)
 {
-    ex_.async([this, &I, page = numPages_++](Builder& builder)
+    // If T is an OverloadSet, we make a copy for the lambda because
+    // these are temporary objects that don't live in the corpus.
+    // Otherwise, the lambda will capture a reference to the corpus Info.
+    auto Ref = [&I0] {
+        if constexpr (std::derived_from<T, Info>)
+        {
+            return std::ref(I0);
+        }
+        else if constexpr (std::same_as<T, OverloadSet>)
+        {
+            return OverloadSet(I0);
+        }
+    }();
+    ex_.async([this, Ref, symbolIdx = numSymbols_++](Builder& builder)
     {
-        if(auto r = builder(I))
-            writePage(*r, page);
+        T const& I = Ref;
+
+        // Output to an independent string first, then write to
+        // the shared stream
+        std::stringstream ss;
+        if(auto r = builder(ss, I))
+        {
+            writePage(ss.str(), symbolIdx);
+        }
         else
+        {
             r.error().Throw();
+        }
     });
-    if constexpr(
+
+    if constexpr (std::derived_from<T, Info>)
+    {
+        if constexpr(
             T::isNamespace() ||
             T::isRecord() ||
             T::isEnum())
-    {
-        // corpus_.traverse(I, *this);
-        corpus_.traverseOverloads(I, *this);
+        {
+            corpus_.traverseOverloads(I0, *this);
+        }
     }
-}
-
-void
-SinglePageVisitor::
-operator()(OverloadSet const& OS)
-{
-    ex_.async([this, OS, page = numPages_++](Builder& builder)
+    else if constexpr (std::same_as<T, OverloadSet>)
     {
-        if(auto r = builder(OS))
-            writePage(*r, page);
-        else
-            r.error().Throw();
-        corpus_.traverse(OS, *this);
-    });
+        corpus_.traverse(I0, *this);
+    }
+
 }
 
 // pageNumber is zero-based
@@ -57,45 +75,57 @@ void
 SinglePageVisitor::
 writePage(
     std::string pageText,
-    std::size_t pageNumber)
+    std::size_t symbolIdx)
 {
     std::unique_lock<std::mutex> lock(mutex_);
 
-    if(pageNumber > topPage_)
+    if (symbolIdx > topSymbol_)
     {
-        // defer this page
-        if( pages_.size() <= pageNumber)
-            pages_.resize(pageNumber + 1);
-        pages_[pageNumber] = std::move(pageText);
+        // Defer this symbol
+        if( symbols_.size() <= symbolIdx)
+            symbols_.resize(symbolIdx + 1);
+        symbols_[symbolIdx] = std::move(pageText);
         return;
     }
 
-    // write contiguous pages
+    // Write contiguous pages
     for(;;)
     {
+        // Write the current symbol
         {
             unlock_guard unlock(mutex_);
-            os_.write(pageText.data(), pageText.size());
-            ++pageNumber;
+            os_.write(
+                pageText.data(),
+                static_cast<std::streamsize>(pageText.size()));
+            ++symbolIdx;
         }
-        topPage_ = pageNumber;
-        if(pageNumber >= pages_.size())
+
+        topSymbol_ = symbolIdx;
+        if(symbolIdx >= symbols_.size())
+        {
+            // No deferred symbols to write
             return;
-        if(! pages_[pageNumber])
+        }
+
+        if(! symbols_[symbolIdx])
+        {
+            // The next symbol is not set yet
             return;
-        pageText = std::move(*pages_[pageNumber]);
-        // VFALCO this is in theory not needed but
+        }
+
+        // Render the next deferred symbol
+        pageText = std::move(*symbols_[symbolIdx]);
+        // VFALCO this is in theory not needed, but
         // I am paranoid about the std::move of the
         // string not resulting in a deallocation.
-        pages_[pageNumber].reset();
+        symbols_[symbolIdx].reset();
     }
 }
 
-#define DEFINE(T) template void \
-    SinglePageVisitor::operator()<T>(T const&)
-
-#define INFO(Type) DEFINE(Type##Info);
+#define INFO(T) template void SinglePageVisitor::operator()<T##Info>(T##Info const&);
 #include <mrdocs/Metadata/InfoNodesPascal.inc>
+
+template void SinglePageVisitor::operator()<OverloadSet>(OverloadSet const&);
 
 } // hbs
 } // mrdocs
