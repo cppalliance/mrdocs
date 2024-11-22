@@ -186,7 +186,7 @@ handleFile(
             // Write the .bad.<generator> file
             auto badPath = expectedPath;
             path::replace_extension(badPath, llvm::Twine("bad.").concat(gen_->fileExtension()));
-            if (auto exp = writeFile(badPath, generatedDocs))
+            if (auto exp = writeFile(badPath, generatedDocs); !exp)
             {
                 return report::error("{}: \"{}\"", exp.error(), badPath);
             }
@@ -206,7 +206,7 @@ handleFile(
     else if(testArgs.action == Action::update)
     {
         // Update the expected documentation
-        if (auto exp = writeFile(expectedPath, generatedDocs))
+        if (auto exp = writeFile(expectedPath, generatedDocs); !exp)
         {
             return report::error("{}: \"{}\"", exp.error(), expectedPath);
         }
@@ -300,10 +300,8 @@ checkPath(
     std::string const& configPath = files::appendPath(inputPath, "mrdocs.yml");
     if (files::exists(configPath)) {
         Config::Settings::load_file(dirSettings, configPath, dirs_).value();
-        auto exp = dirSettings.normalize(dirs_);
-        if (!exp) {
-            report::error("{}: \"{}\"", exp.error(), configPath);
-            return;
+        if (auto exp = dirSettings.normalize(dirs_); !exp) {
+            return report::error("{}: \"{}\"", exp.error(), configPath);
         }
     }
 
