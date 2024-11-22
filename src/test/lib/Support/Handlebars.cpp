@@ -21,6 +21,31 @@
 namespace clang {
 namespace mrdocs {
 
+template <std::convertible_to<dom::Value> DomValue>
+requires (!std::convertible_to<DomValue, std::string_view>)
+std::string
+HTMLEscape(
+    DomValue const& val)
+{
+    dom::Value v = val;
+    if (v.isString())
+    {
+        return HTMLEscape(v.getString().get());
+    }
+    if (v.isObject() && v.getObject().exists("toHTML"))
+    {
+        dom::Value fn = v.getObject().get("toHTML");
+        if (fn.isFunction()) {
+            return toString(fn.getFunction()());
+        }
+    }
+    if (v.isNull() || v.isUndefined())
+    {
+        return {};
+    }
+    return toString(v);
+}
+
 struct Handlebars_test
 {
 
@@ -2433,8 +2458,8 @@ subexpressions()
     {
         hbs.registerHelper("input", [](dom::Value const& options) {
             dom::Value hash = options.get("hash");
-            std::string ariaLabel = escapeExpression(hash.get("aria-label"));
-            std::string placeholder = escapeExpression(hash.get("placeholder"));
+            std::string ariaLabel = HTMLEscape(hash.get("aria-label"));
+            std::string placeholder = HTMLEscape(hash.get("placeholder"));
             std::string res = "<input aria-label=\"";
             res += ariaLabel;
             res += "\" placeholder=\"";
@@ -2459,8 +2484,8 @@ subexpressions()
         ctx.set("item", item);
         hbs.registerHelper("input", [](dom::Value const& options) {
             auto hash = options.get("hash");
-            std::string ariaLabel = escapeExpression(hash.get("aria-label"));
-            std::string placeholder = escapeExpression(hash.get("placeholder"));
+            std::string ariaLabel = HTMLEscape(hash.get("aria-label"));
+            std::string placeholder = HTMLEscape(hash.get("placeholder"));
             std::string res = "<input aria-label=\"";
             res += ariaLabel;
             res += "\" placeholder=\"";
@@ -5153,33 +5178,33 @@ utils()
         }
     }
 
-    // escapeExpression
+    // HTMLEscape
     {
         // should escape html
         {
-            BOOST_TEST(escapeExpression("foo<&\"'>") == "foo&lt;&amp;&quot;&#x27;&gt;");
-            BOOST_TEST(escapeExpression("foo=") == "foo&#x3D;");
+            BOOST_TEST(HTMLEscape("foo<&\"'>") == "foo&lt;&amp;&quot;&#x27;&gt;");
+            BOOST_TEST(HTMLEscape("foo=") == "foo&#x3D;");
         }
 
         // should not escape SafeString
         {
             dom::Value string = safeString("foo<&\"'>");
-            BOOST_TEST(escapeExpression(string) == "foo<&\"'>");
+            BOOST_TEST(HTMLEscape(string) == "foo<&\"'>");
 
             dom::Object ctx;
             ctx.set("toHTML", dom::makeInvocable([]() {
                 return "foo<&\"'>";
             }));
-            BOOST_TEST(escapeExpression(ctx) == "foo<&\"'>");
+            BOOST_TEST(HTMLEscape(ctx) == "foo<&\"'>");
         }
 
         // should handle falsy
         {
-            BOOST_TEST(escapeExpression("").empty());
-            BOOST_TEST(escapeExpression(dom::Value(dom::Kind::Undefined)).empty());
-            BOOST_TEST(escapeExpression(dom::Value(dom::Kind::Null)).empty());
-            BOOST_TEST(escapeExpression(false) == "false");
-            BOOST_TEST(escapeExpression(0) == "0");
+            BOOST_TEST(HTMLEscape("").empty());
+            BOOST_TEST(HTMLEscape(dom::Value(dom::Kind::Undefined)).empty());
+            BOOST_TEST(HTMLEscape(dom::Value(dom::Kind::Null)).empty());
+            BOOST_TEST(HTMLEscape(false) == "false");
+            BOOST_TEST(HTMLEscape(0) == "0");
         }
     }
 

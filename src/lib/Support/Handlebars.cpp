@@ -248,14 +248,12 @@ public:
         {
             return true;
         }
-        for (auto const& grandParent : grandParents_)
-        {
-            if (grandParent.exists(key))
+        return std::ranges::any_of(
+            grandParents_,
+            [&](dom::Object const& grandParent)
             {
-                return true;
-            }
-        }
-        return false;
+                return grandParent.exists(key);
+            });
     }
 };
 
@@ -300,6 +298,45 @@ safeString(dom::Value const& str)
 }
 
 void
+HTMLEscape(
+    OutputRef& out,
+    std::string_view str)
+{
+    // https://github.com/handlebars-lang/handlebars.js/blob/master/lib/handlebars/utils.js
+    static constexpr std::pair<char, std::string_view>
+        escapeMap[] = {
+            {'&', "&amp;"},
+            {'<', "&lt;"},
+            {'>', "&gt;"},
+            {'"', "&quot;"},
+            {'\'', "&#x27;"},
+            {'`', "&#x60;"},
+            {'=', "&#x3D;"}
+        };
+    static constexpr auto badChars = std::views::keys(escapeMap);
+    for (auto c : str)
+    {
+        if (auto it = std::ranges::find(badChars, c); it != badChars.end())
+        {
+            out << it.base()->second;
+        }
+        else
+        {
+            out << c;
+        }
+    }
+}
+
+std::string
+HTMLEscape(std::string_view str)
+{
+    std::string result;
+    OutputRef out(result);
+    HTMLEscape(out, str);
+    return result;
+}
+
+void
 escapeExpression(
     OutputRef out,
     std::string_view str,
@@ -311,55 +348,8 @@ escapeExpression(
     }
     else
     {
-        escapeExpression(out, str);
+        opt.escapeFunction(out, str);
     }
-}
-
-void
-escapeExpression(
-    OutputRef out,
-    std::string_view str)
-{
-    for (auto c : str)
-    {
-        switch (c)
-        {
-        case '&':
-            out << "&amp;";
-            break;
-        case '<':
-            out << "&lt;";
-            break;
-        case '>':
-            out << "&gt;";
-            break;
-        case '"':
-            out << "&quot;";
-            break;
-        case '\'':
-            out << "&#x27;";
-            break;
-        case '`':
-            out << "&#x60;";
-            break;
-        case '=':
-            out << "&#x3D;";
-            break;
-        default:
-            out << c;
-            break;
-        }
-    }
-}
-
-std::string
-escapeExpression(
-    std::string_view str)
-{
-    std::string res;
-    OutputRef out(res);
-    escapeExpression(out, str);
-    return res;
 }
 
 static void
@@ -614,123 +604,6 @@ namespace detail {
         dom::Object blockValuePaths;
     };
 }
-
-//std::string
-//HandlebarsCallback::
-//fn(dom::Value const& context,
-//   dom::Object const& data,
-//   dom::Array const& blockParams,
-//   dom::Array const& blockParamPaths) const {
-//    std::string result;
-//    OutputRef out(result);
-//    fn(out, context, data, blockParams, blockParamPaths);
-//    return result;
-//}
-//
-//void
-//HandlebarsCallback::
-//fn(OutputRef out,
-//   dom::Value const& context,
-//   dom::Object const& data,
-//   dom::Array const& blockParams,
-//   dom::Array const& blockParamPaths) const {
-//    if (!isBlock()) {
-//        return;
-//    }
-//    bool const sameContext =
-//        &context == context_ ||
-//        (context.isObject() && context_->isObject() && context.getObject().impl() == context_->getObject().impl()) ||
-//        (context.isArray() && context_->isArray() && context.getArray().impl() == context_->getArray().impl());
-//    if (!sameContext)
-//    {
-//        renderState_->parentContext.push_back(*context_);
-//    }
-//    dom::Object blockValues;
-//    dom::Object blockValuePaths;
-//    for (std::size_t i = 0; i < blockParamIds_.size(); ++i) {
-//        blockValues.set(blockParamIds_[i], blockParams[i]);
-//        if (blockParamPaths.size() > i) {
-//            blockValuePaths.set(blockParamIds_[i], blockParamPaths[i]);
-//        }
-//    }
-//    fn_(out, context, data, blockValues, blockValuePaths);
-//    if (!sameContext)
-//    {
-//        renderState_->parentContext.pop_back();
-//    }
-//}
-//
-//std::string
-//HandlebarsCallback::
-//fn(dom::Value const& context) const {
-//    return fn(context, data(), dom::Array{}, dom::Array{});
-//}
-//
-//void
-//HandlebarsCallback::
-//fn(OutputRef out, dom::Value const& context) const {
-//    fn(out, context, data(), dom::Array{}, dom::Array{});
-//}
-//
-//std::string
-//HandlebarsCallback::
-//inverse(
-//    dom::Value const& context,
-//    dom::Object const& data,
-//    dom::Array const& blockParams,
-//    dom::Array const& blockParamPaths) const {
-//    std::string result;
-//    OutputRef out(result);
-//    inverse(out, context, data, blockParams, blockParamPaths);
-//    return result;
-//}
-//
-//void
-//HandlebarsCallback::
-//inverse(OutputRef out,
-//   dom::Value const& context,
-//   dom::Object const& data,
-//   dom::Array const& blockParams,
-//   dom::Array const& blockParamPaths) const {
-//    if (!isBlock()) {
-//        return;
-//    }
-//    if (&context != context_)
-//    {
-//        renderState_->parentContext.push_back(*context_);
-//    }
-//    dom::Object blockValues;
-//    dom::Object blockValuePaths;
-//    for (std::size_t i = 0; i < blockParamIds_.size(); ++i) {
-//        blockValues.set(blockParamIds_[i], blockParams[i]);
-//        blockValuePaths.set(blockParamIds_[i], blockParamPaths[i]);
-//    }
-//    inverse_(out, context, data, blockValues, blockValuePaths);
-//    if (&context != context_)
-//    {
-//        renderState_->parentContext.pop_back();
-//    }
-//}
-//
-//std::string
-//HandlebarsCallback::
-//inverse(dom::Value const& context) const {
-//    return inverse(context, data(), dom::Array{}, dom::Array{});
-//}
-//
-//void
-//HandlebarsCallback::
-//inverse(OutputRef out, dom::Value const& context) const {
-//    inverse(out, context, data(), dom::Array{}, dom::Array{});
-//}
-//
-//void
-//HandlebarsCallback::
-//log(dom::Value const& level,
-//    dom::Array const& args) const {
-//    MRDOCS_ASSERT(logger_);
-//    (*logger_)(level, args);
-//}
 
 static bool
 isCurrentContextSegment(std::string_view path)
@@ -1237,8 +1110,6 @@ findTag(std::string_view &tag, std::string_view templateText)
     return true;
 }
 
-
-
 struct Handlebars::Tag {
     std::string_view buffer;
 
@@ -1261,7 +1132,7 @@ struct Handlebars::Tag {
     std::string_view blockParams;
 
     // Whether to escape the result
-    bool forceNoHTMLEscape{false};
+    bool forceNoEscape{false};
 
     // Whether to escape the result
     bool rawBlock{false};
@@ -1394,10 +1265,10 @@ parseTag(
     // ==============================================================
     // No HTML escape {{{ ... }}}
     // ==============================================================
-    t.forceNoHTMLEscape = false;
+    t.forceNoEscape = false;
     if (!tagStr.empty() && tagStr.front() == '{' && tagStr.back() == '}')
     {
-        t.forceNoHTMLEscape = true;
+        t.forceNoEscape = true;
         tagStr = tagStr.substr(1, tagStr.size() - 2);
         if (!tagStr.empty() && tagStr.front() == '{' && tagStr.back() == '}')
         {
@@ -1440,7 +1311,7 @@ parseTag(
     if (!tagStr.empty() && tagStr.front() == '{' && tagStr.back() == '}')
     {
         // {{~{ ... }~}}
-        t.forceNoHTMLEscape = true;
+        t.forceNoEscape = true;
         tagStr = tagStr.substr(1, tagStr.size() - 2);
         if (!tagStr.empty() && tagStr.front() == '{' && tagStr.back() == '}')
         {
@@ -1467,7 +1338,7 @@ parseTag(
     // ==============================================================
     // '&' is also used to unescape expressions
     if (tagStr.front() == '&') {
-        t.forceNoHTMLEscape = true;
+        t.forceNoEscape = true;
         tagStr.remove_prefix(1);
         tagStr = trim_spaces(tagStr);
     }
@@ -2518,7 +2389,7 @@ renderExpression(
     }
 
     auto opt2 = opt;
-    opt2.noEscape = tag.forceNoHTMLEscape || opt.noEscape;
+    opt2.noEscape = tag.forceNoEscape || opt.noEscape;
 
     // ==============================================================
     // Helpers as block params
@@ -2921,8 +2792,10 @@ renderPartial(
         // ==========================================================
         // Set @partial-block
         // ==========================================================
+        using diff_type = std::vector<std::string_view>::difference_type;
         state.partialBlocks.insert(
-            state.partialBlocks.begin() + state.partialBlockLevel,
+            state.partialBlocks.begin() +
+                static_cast<diff_type>(state.partialBlockLevel),
             fnBlock);
         ++state.partialBlockLevel;
     }
@@ -3094,7 +2967,9 @@ renderPartial(
     {
         state.inlinePartials.pop_back();
         --state.partialBlockLevel;
-        auto it = state.partialBlocks.begin() + state.partialBlockLevel;
+        using diff_type = std::vector<std::string_view>::difference_type;
+        auto it = state.partialBlocks.begin() +
+              static_cast<diff_type>(state.partialBlockLevel);
         state.partialBlocks.erase(it);
     }
 
@@ -4000,9 +3875,9 @@ increment_fn(dom::Value const& value)
 
 dom::Value
 select_fn(
-    dom::Value condition,
-    dom::Value result_true,
-    dom::Value result_false)
+    dom::Value const& condition,
+    dom::Value const& result_true,
+    dom::Value const& result_false)
 {
     return isEmpty(condition) ?
         result_false : result_true;
@@ -5777,7 +5652,7 @@ registerStringHelpers(Handlebars& hbs)
     hbs.registerHelper("escape", dom::makeVariadicInvocable([](
         dom::Array const& arguments)
     {
-        std::string res;
+        std::string str;
         dom::Value options = arguments.back();
         dom::Value firstArg = arguments.at(0);
         dom::Value secondArg = arguments.at(1);
@@ -5785,13 +5660,16 @@ registerStringHelpers(Handlebars& hbs)
         bool const isBlock = static_cast<bool>(fn);
         if (isBlock)
         {
-            res = static_cast<std::string>(fn());
+            str = static_cast<std::string>(fn());
         }
         else
         {
-            res = firstArg.getString();
+            str = firstArg.getString();
         }
-        return escapeExpression(res);
+        std::string res;
+        OutputRef out(res);
+        HTMLEscape(out, str);
+        return res;
     }));
 
     static auto slice_fn = dom::makeVariadicInvocable([](
@@ -6028,7 +5906,7 @@ getNestedValue(dom::Value const& obj, std::vector<std::string> const& keys)
         }
         else
         {
-            return dom::Value();
+            return {};
         }
     }
     return current;
