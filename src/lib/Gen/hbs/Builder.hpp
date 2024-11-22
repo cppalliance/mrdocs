@@ -33,6 +33,7 @@ class Builder
 {
     js::Context ctx_;
     Handlebars hbs_;
+    std::map<std::string, std::string, std::less<>> templates_;
     std::function<void(OutputRef&, std::string_view)> escapeFn_;
 
     std::string

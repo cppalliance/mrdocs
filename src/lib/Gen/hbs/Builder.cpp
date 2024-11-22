@@ -143,6 +143,29 @@ Builder(
     helpers::registerAntoraHelpers(hbs_);
     helpers::registerLogicalHelpers(hbs_);
     helpers::registerContainerHelpers(hbs_);
+
+    // load templates
+    exp = forEachFile(layoutDir(), false,
+        [&](std::string_view pathName) -> Expected<void>
+        {
+            // Get template relative path
+            std::filesystem::path relPath = pathName;
+            relPath = relPath.lexically_relative(layoutDir());
+
+            // Skip non-handlebars files
+            MRDOCS_CHECK_OR(relPath.extension() == ".hbs", {});
+
+            // Load template contents
+            MRDOCS_TRY(std::string text, files::getFileText(pathName));
+
+            // Register template
+            this->templates_.emplace(relPath.generic_string(), text);
+            return {};
+        });
+    if (!exp)
+    {
+        exp.error().Throw();
+    }
 }
 
 //------------------------------------------------
@@ -154,8 +177,9 @@ callTemplate(
     std::string_view name,
     dom::Value const& context)
 {
-    auto pathName = files::appendPath(layoutDir(), name);
-    MRDOCS_TRY(auto fileText, files::getFileText(pathName));
+    auto it = templates_.find(name);
+    MRDOCS_CHECK(it != templates_.end(), formatError("Template {} not found", name));
+    std::string_view fileText = it->second;
     HandlebarsOptions options;
     options.escapeFunction = escapeFn_;
     OutputRef out(os);
