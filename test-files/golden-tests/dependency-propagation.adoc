@@ -33,7 +33,7 @@
 
 === Synopsis
 
-Declared in `<dependency-propagation.cpp>`
+Declared in `<pass:[dependency-propagation.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -74,7 +74,7 @@ struct E
 
 === Synopsis
 
-Declared in `<dependency-propagation.cpp>`
+Declared in `<pass:[dependency-propagation.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -92,7 +92,7 @@ using C = xref:#N-B[B]<T>;
 
 === Synopsis
 
-Declared in `<dependency-propagation.cpp>`
+Declared in `<pass:[dependency-propagation.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -110,7 +110,7 @@ using B = xref:#N-A[A]<T>;
 
 === Synopsis
 
-Declared in `<dependency-propagation.cpp>`
+Declared in `<pass:[dependency-propagation.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

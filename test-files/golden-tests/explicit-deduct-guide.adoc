@@ -42,7 +42,7 @@
 
 === Synopsis
 
-Declared in `<explicit-deduct-guide.cpp>`
+Declared in `<pass:[explicit-deduct-guide.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -62,7 +62,7 @@ struct X;
 
 === Synopsis
 
-Declared in `<explicit-deduct-guide.cpp>`
+Declared in `<pass:[explicit-deduct-guide.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -79,7 +79,7 @@ xref:#X-0e[X]<0>(bool) -> xref:#X-0e[X]<0>;
 
 === Synopsis
 
-Declared in `<explicit-deduct-guide.cpp>`
+Declared in `<pass:[explicit-deduct-guide.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -96,7 +96,7 @@ xref:#X-0e[X]<0>(char) -> xref:#X-0e[X]<0>;
 
 === Synopsis
 
-Declared in `<explicit-deduct-guide.cpp>`
+Declared in `<pass:[explicit-deduct-guide.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -113,7 +113,7 @@ xref:#X-0e[X]<0>(int) -> xref:#X-0e[X]<0>;
 
 === Synopsis
 
-Declared in `<explicit-deduct-guide.cpp>`
+Declared in `<pass:[explicit-deduct-guide.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

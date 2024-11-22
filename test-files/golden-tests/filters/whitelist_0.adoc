@@ -31,7 +31,7 @@
 |===
 | Name | Description 
 
-| xref:#N0-f0_WL[`f0_WL`] 
+| xref:#N0-f0_WL[`pass:[f0_WL]`] 
 | 
     
 |===
@@ -39,18 +39,18 @@
 
 
 [#N0-f0_WL]
-== xref:#N0[N0]::f0_WL
+== xref:#N0[N0]::pass:[f0_WL]
 
 
 
 === Synopsis
 
-Declared in `<filters/whitelist_0.cpp>`
+Declared in `<pass:[filters/whitelist_0.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-f0_WL();
+pass:[f0_WL]();
 ----
 
 
@@ -70,7 +70,7 @@ f0_WL();
 |===
 | Name | Description 
 
-| xref:#N1-N3_WL[`N3_WL`] 
+| xref:#N1-N3_WL[`pass:[N3_WL]`] 
 | 
     
 | xref:#N1-N4[`N4`] 
@@ -81,14 +81,14 @@ f0_WL();
 
 
 [#N1-N3_WL]
-== xref:#N1[N1]::N3_WL
+== xref:#N1[N1]::pass:[N3_WL]
 
 === Functions
 [cols=2]
 |===
 | Name | Description 
 
-| xref:#N1-N3_WL-f1_WL[`f1_WL`] 
+| xref:#N1-N3_WL-f1_WL[`pass:[f1_WL]`] 
 | 
     
 |===
@@ -96,18 +96,18 @@ f0_WL();
 
 
 [#N1-N3_WL-f1_WL]
-== xref:#N1[N1]::xref:#N1-N3_WL[N3_WL]::f1_WL
+== xref:#N1[N1]::xref:#N1-N3_WL[pass:[N3_WL]]::pass:[f1_WL]
 
 
 
 === Synopsis
 
-Declared in `<filters/whitelist_0.cpp>`
+Declared in `<pass:[filters/whitelist_0.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-f1_WL();
+pass:[f1_WL]();
 ----
 
 
@@ -127,7 +127,7 @@ f1_WL();
 |===
 | Name | Description 
 
-| xref:#N1-N4-f1_WL[`f1_WL`] 
+| xref:#N1-N4-f1_WL[`pass:[f1_WL]`] 
 | 
     
 |===
@@ -135,18 +135,18 @@ f1_WL();
 
 
 [#N1-N4-f1_WL]
-== xref:#N1[N1]::xref:#N1-N4[N4]::f1_WL
+== xref:#N1[N1]::xref:#N1-N4[N4]::pass:[f1_WL]
 
 
 
 === Synopsis
 
-Declared in `<filters/whitelist_0.cpp>`
+Declared in `<pass:[filters/whitelist_0.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-f1_WL();
+pass:[f1_WL]();
 ----
 
 
@@ -166,7 +166,7 @@ f1_WL();
 |===
 | Name | Description 
 
-| xref:#N5-N6_BL[`N6_BL`] 
+| xref:#N5-N6_BL[`pass:[N6_BL]`] 
 | 
     
 |===
@@ -189,7 +189,7 @@ f1_WL();
 
 === Synopsis
 
-Declared in `<filters/whitelist_0.cpp>`
+Declared in `<pass:[filters/whitelist_0.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -207,7 +207,7 @@ f0();
 
 
 [#N5-N6_BL]
-== xref:#N5[N5]::N6_BL
+== xref:#N5[N5]::pass:[N6_BL]
 
 === Namespaces
 [cols=2]
@@ -225,14 +225,14 @@ f0();
 
 
 [#N5-N6_BL-N7]
-== xref:#N5[N5]::xref:#N5-N6_BL[N6_BL]::N7
+== xref:#N5[N5]::xref:#N5-N6_BL[pass:[N6_BL]]::N7
 
 === Functions
 [cols=2]
 |===
 | Name | Description 
 
-| xref:#N5-N6_BL-N7-f2_WL[`f2_WL`] 
+| xref:#N5-N6_BL-N7-f2_WL[`pass:[f2_WL]`] 
 | 
     
 |===
@@ -240,18 +240,18 @@ f0();
 
 
 [#N5-N6_BL-N7-f2_WL]
-== xref:#N5[N5]::xref:#N5-N6_BL[N6_BL]::xref:#N5-N6_BL-N7[N7]::f2_WL
+== xref:#N5[N5]::xref:#N5-N6_BL[pass:[N6_BL]]::xref:#N5-N6_BL-N7[N7]::pass:[f2_WL]
 
 
 
 === Synopsis
 
-Declared in `<filters/whitelist_0.cpp>`
+Declared in `<pass:[filters/whitelist_0.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-f2_WL();
+pass:[f2_WL]();
 ----
 
 
@@ -264,14 +264,14 @@ f2_WL();
 
 
 [#N5-N6_BL-M7]
-== xref:#N5[N5]::xref:#N5-N6_BL[N6_BL]::M7
+== xref:#N5[N5]::xref:#N5-N6_BL[pass:[N6_BL]]::M7
 
 === Functions
 [cols=2]
 |===
 | Name | Description 
 
-| xref:#N5-N6_BL-M7-f2_WL[`f2_WL`] 
+| xref:#N5-N6_BL-M7-f2_WL[`pass:[f2_WL]`] 
 | 
     
 |===
@@ -279,18 +279,18 @@ f2_WL();
 
 
 [#N5-N6_BL-M7-f2_WL]
-== xref:#N5[N5]::xref:#N5-N6_BL[N6_BL]::xref:#N5-N6_BL-M7[M7]::f2_WL
+== xref:#N5[N5]::xref:#N5-N6_BL[pass:[N6_BL]]::xref:#N5-N6_BL-M7[M7]::pass:[f2_WL]
 
 
 
 === Synopsis
 
-Declared in `<filters/whitelist_0.cpp>`
+Declared in `<pass:[filters/whitelist_0.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-f2_WL();
+pass:[f2_WL]();
 ----
 
 

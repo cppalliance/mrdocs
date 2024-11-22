@@ -24,7 +24,7 @@
 
 === Synopsis
 
-Declared in `<temp/ct_mft_expl_inline.cpp>`
+Declared in `<pass:[temp/ct_mft_expl_inline.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -44,7 +44,7 @@ struct A;
 
 
 
-[#A-f]
+[#pass:[A-f]]
 
 == xref:#A[A]::f
 
@@ -83,7 +83,7 @@ xref:#A-f-04[f]<int>();
 
 === Synopsis
 
-Declared in `<temp/ct_mft_expl_inline.cpp>`
+Declared in `<pass:[temp/ct_mft_expl_inline.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -108,7 +108,7 @@ f();
 
 === Synopsis
 
-Declared in `<temp/ct_mft_expl_inline.cpp>`
+Declared in `<pass:[temp/ct_mft_expl_inline.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

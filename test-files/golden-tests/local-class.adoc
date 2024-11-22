@@ -33,7 +33,7 @@
 
 === Synopsis
 
-Declared in `<local-class.cpp>`
+Declared in `<pass:[local-class.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -57,12 +57,12 @@ f();
 
 === Synopsis
 
-Declared in `<local-class.cpp>`
+Declared in `<pass:[local-class.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct B
-    : decltype(f());
+    : decltype(pass:[f()]);
 ----
 
 

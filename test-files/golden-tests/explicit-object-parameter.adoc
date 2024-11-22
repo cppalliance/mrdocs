@@ -24,7 +24,7 @@
 
 === Synopsis
 
-Declared in `<explicit-object-parameter.cpp>`
+Declared in `<pass:[explicit-object-parameter.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -43,7 +43,7 @@ struct Optional;
 
 
 
-[#Optional-value]
+[#pass:[Optional-value]]
 
 == xref:#Optional[Optional]::value
 
@@ -86,7 +86,7 @@ xref:#Optional-value-06[value](this
 
 === Synopsis
 
-Declared in `<explicit-object-parameter.cpp>`
+Declared in `<pass:[explicit-object-parameter.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -112,7 +112,7 @@ value(this Self&& self);
 
 === Synopsis
 
-Declared in `<explicit-object-parameter.cpp>`
+Declared in `<pass:[explicit-object-parameter.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

@@ -27,7 +27,7 @@
 
 === Synopsis
 
-Declared in `<no_unique_address.cpp>`
+Declared in `<pass:[no_unique_address.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -46,7 +46,7 @@ struct Empty;
 
 === Synopsis
 
-Declared in `<no_unique_address.cpp>`
+Declared in `<pass:[no_unique_address.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -77,7 +77,7 @@ struct T;
 
 === Synopsis
 
-Declared in `<no_unique_address.cpp>`
+Declared in `<pass:[no_unique_address.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -94,11 +94,11 @@ int i;
 
 === Synopsis
 
-Declared in `<no_unique_address.cpp>`
+Declared in `<pass:[no_unique_address.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:#Empty[Empty] e = Empty{};
+xref:#Empty[Empty] e = pass:[Empty{}];
 ----
 
 

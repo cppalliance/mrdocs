@@ -73,8 +73,10 @@ loadPartials(
 
 Builder::
 Builder(
-    HandlebarsCorpus const& corpus)
+    HandlebarsCorpus const& corpus,
+    std::function<void(OutputRef&, std::string_view)> escapeFn)
     : domCorpus(corpus)
+    , escapeFn_(std::move(escapeFn))
 {
     namespace fs = std::filesystem;
 
@@ -156,7 +158,7 @@ callTemplate(
     auto pathName = files::appendPath(layoutDir(), name);
     MRDOCS_TRY(auto fileText, files::getFileText(pathName));
     HandlebarsOptions options;
-    options.noEscape = true;
+    options.escapeFunction = escapeFn_;
     Expected<std::string, HandlebarsError> exp =
         hbs_.try_render(fileText, context, options);
     if (!exp)
@@ -285,7 +287,7 @@ renderWrapped(
     auto pathName = files::appendPath(layoutDir(), wrapperFile);
     MRDOCS_TRY(auto fileText, files::getFileText(pathName));
     HandlebarsOptions options;
-    options.noEscape = true;
+    options.escapeFunction = escapeFn_;
     OutputRef outRef(os);
     Expected<void, HandlebarsError> exp =
         hbs_.try_render_to(

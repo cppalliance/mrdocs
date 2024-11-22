@@ -33,7 +33,7 @@
 
 === Synopsis
 
-Declared in `<alias-template.cpp>`
+Declared in `<pass:[alias-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -53,7 +53,7 @@ struct A;
 
 === Synopsis
 
-Declared in `<alias-template.cpp>`
+Declared in `<pass:[alias-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -75,7 +75,7 @@ struct B;
 
 === Synopsis
 
-Declared in `<alias-template.cpp>`
+Declared in `<pass:[alias-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -93,7 +93,7 @@ using C = xref:#A[A]<T>;
 
 === Synopsis
 
-Declared in `<alias-template.cpp>`
+Declared in `<pass:[alias-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -122,7 +122,7 @@ struct D;
 
 === Synopsis
 
-Declared in `<alias-template.cpp>`
+Declared in `<pass:[alias-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

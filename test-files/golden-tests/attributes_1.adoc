@@ -24,7 +24,7 @@
 
 === Synopsis
 
-Declared in `<attributes_1.cpp>`
+Declared in `<pass:[attributes_1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

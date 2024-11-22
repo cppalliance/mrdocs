@@ -39,7 +39,7 @@
 
 === Synopsis
 
-Declared in `<out-of-line-record-def.cpp>`
+Declared in `<pass:[out-of-line-record-def.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

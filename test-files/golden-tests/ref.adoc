@@ -54,7 +54,7 @@ xref:#F-operator_bitnot[F::operator~]
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -117,7 +117,7 @@ xref:#f0[f0]
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -127,10 +127,10 @@ f1();
 
 === Description
 
-
+pass:[
 See
 xref:#f0[::f0]
-
+]
 
 
 
@@ -151,7 +151,7 @@ xref:#A-f1[f1]
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -171,13 +171,13 @@ struct B;
 
 === Description
 
-
+pass:[
 See
 xref:#A-f1[A::f1]
 
 See
 xref:#A-f1[::A::f1]
-
+]
 
 
 
@@ -190,7 +190,7 @@ xref:#A-f1[::A::f1]
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -214,7 +214,7 @@ f2();
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -245,7 +245,7 @@ struct C;
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -269,7 +269,7 @@ f3();
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -293,7 +293,7 @@ f4();
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -336,7 +336,7 @@ xref:#A-C-f3[f3]
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -363,7 +363,7 @@ xref:#A-C-f3[f3]
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -373,13 +373,13 @@ struct E;
 
 === Description
 
-
+pass:[
 See
 xref:#A-D-f4[f4]
 
 See
 xref:#A-C-f4[C::f4]
-
+]
 
 
 
@@ -395,7 +395,7 @@ xref:#A-f1[A::f1]
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -405,10 +405,10 @@ f5();
 
 === Description
 
-
+pass:[
 See
 xref:#A-f1[::A::f1]
-
+]
 
 
 
@@ -426,7 +426,7 @@ xref:#A-f1[::A::f1]
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -438,10 +438,10 @@ struct F;
 |===
 | Name | Description 
 
-| xref:#F-operator_not[`operator!`] 
+| xref:#F-operator_not[`pass:[operator!]`] 
 | 
     
-| xref:#F-operator_not_eq[`operator!=`] 
+| xref:#F-operator_not_eq[`pass:[operator!=]`] 
 | 
     
 | xref:#F-operator_mod[`operator%`] 
@@ -459,40 +459,40 @@ struct F;
 | xref:#F-operator_and_eq[`operator&=`] 
 | 
     
-| xref:#F-operator_call[`operator()`] 
+| xref:#F-operator_call[`pass:[operator()]`] 
 | 
     
-| xref:#F-operator_star[`operator*`] 
+| xref:#F-operator_star[`pass:[operator*]`] 
 | 
     
-| xref:#F-operator_star_eq[`operator*=`] 
+| xref:#F-operator_star_eq[`pass:[operator*=]`] 
 | 
     
-| xref:#F-operator_plus[`operator+`] 
+| xref:#F-operator_plus[`pass:[operator+]`] 
 | 
     
-| xref:#F-operator_inc[`operator++`] 
+| xref:#F-operator_inc[`pass:[operator++]`] 
 | 
     
-| xref:#F-operator_plus_eq[`operator+=`] 
+| xref:#F-operator_plus_eq[`pass:[operator+=]`] 
 | 
     
 | xref:#F-operator_comma[`operator,`] 
 | 
     
-| xref:#F-operator_minus[`operator-`] 
+| xref:#F-operator_minus[`pass:[operator-]`] 
 | 
     
-| xref:#F-operator_dec[`operator--`] 
+| xref:#F-operator_dec[`pass:[operator--]`] 
 | 
     
-| xref:#F-operator_minus_eq[`operator-=`] 
+| xref:#F-operator_minus_eq[`pass:[operator-=]`] 
 | 
     
-| xref:#F-operator_ptr[`operator->`] 
+| xref:#F-operator_ptr[`pass:[operator->]`] 
 | 
     
-| xref:#F-operator_ptrmem[`operator->*`] 
+| xref:#F-operator_ptrmem[`pass:[operator->*]`] 
 | 
     
 | xref:#F-operator_slash[`operator/`] 
@@ -534,7 +534,7 @@ struct F;
 | xref:#F-operator_rshift_eq[`operator>>=`] 
 | 
     
-| xref:#F-operator_subs[`operator[]`] 
+| xref:#F-operator_subs[`pass:[operator[]]`] 
 | 
     
 | xref:#F-operator_xor[`operator^`] 
@@ -543,13 +543,13 @@ struct F;
 | xref:#F-operator_xor_eq[`operator^=`] 
 | 
     
-| xref:#F-operator_bitor[`operator|`] 
+| xref:#F-operator_bitor[`pass:[operator|]`] 
 | 
     
-| xref:#F-operator_or_eq[`operator|=`] 
+| xref:#F-operator_or_eq[`pass:[operator|=]`] 
 | 
     
-| xref:#F-operator_or[`operator||`] 
+| xref:#F-operator_or[`pass:[operator||]`] 
 | 
     
 | xref:#F-operator_bitnot[`operator~`] 
@@ -568,7 +568,7 @@ struct F;
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -592,7 +592,7 @@ operator~();
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -610,18 +610,18 @@ operator,(xref:#F[F]&);
 
 
 [#F-operator_call]
-== xref:#F[F]::operator()
+== xref:#F[F]::pass:[operator()]
 
 
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator()(xref:#F[F]&);
+pass:[operator()](xref:#F[F]&);
 ----
 
 
@@ -634,18 +634,18 @@ operator()(xref:#F[F]&);
 
 
 [#F-operator_subs]
-== xref:#F[F]::operator[]
+== xref:#F[F]::pass:[operator[]]
 
 
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator[](xref:#F[F]&);
+pass:[operator[]](xref:#F[F]&);
 ----
 
 
@@ -658,18 +658,18 @@ operator[](xref:#F[F]&);
 
 
 [#F-operator_plus]
-== xref:#F[F]::operator+
+== xref:#F[F]::pass:[operator+]
 
 
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator+(xref:#F[F]&);
+pass:[operator+](xref:#F[F]&);
 ----
 
 
@@ -682,18 +682,18 @@ operator+(xref:#F[F]&);
 
 
 [#F-operator_inc]
-== xref:#F[F]::operator++
+== xref:#F[F]::pass:[operator++]
 
 
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator++();
+pass:[operator++]();
 ----
 
 
@@ -706,18 +706,18 @@ operator++();
 
 
 [#F-operator_plus_eq]
-== xref:#F[F]::operator+=
+== xref:#F[F]::pass:[operator+=]
 
 
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator+=(xref:#F[F]&);
+pass:[operator+=](xref:#F[F]&);
 ----
 
 
@@ -736,7 +736,7 @@ operator+=(xref:#F[F]&);
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -760,7 +760,7 @@ operator&(xref:#F[F]&);
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -784,7 +784,7 @@ operator&&(xref:#F[F]&);
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -802,18 +802,18 @@ operator&=(xref:#F[F]&);
 
 
 [#F-operator_bitor]
-== xref:#F[F]::operator|
+== xref:#F[F]::pass:[operator|]
 
 
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator|(xref:#F[F]&);
+pass:[operator|](xref:#F[F]&);
 ----
 
 
@@ -826,18 +826,18 @@ operator|(xref:#F[F]&);
 
 
 [#F-operator_or]
-== xref:#F[F]::operator||
+== xref:#F[F]::pass:[operator||]
 
 
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator||(xref:#F[F]&);
+pass:[operator||](xref:#F[F]&);
 ----
 
 
@@ -850,18 +850,18 @@ operator||(xref:#F[F]&);
 
 
 [#F-operator_or_eq]
-== xref:#F[F]::operator|=
+== xref:#F[F]::pass:[operator|=]
 
 
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator|=(xref:#F[F]&);
+pass:[operator|=](xref:#F[F]&);
 ----
 
 
@@ -874,18 +874,18 @@ operator|=(xref:#F[F]&);
 
 
 [#F-operator_minus]
-== xref:#F[F]::operator-
+== xref:#F[F]::pass:[operator-]
 
 
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator-(xref:#F[F]&);
+pass:[operator-](xref:#F[F]&);
 ----
 
 
@@ -898,18 +898,18 @@ operator-(xref:#F[F]&);
 
 
 [#F-operator_dec]
-== xref:#F[F]::operator--
+== xref:#F[F]::pass:[operator--]
 
 
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator--();
+pass:[operator--]();
 ----
 
 
@@ -922,18 +922,18 @@ operator--();
 
 
 [#F-operator_minus_eq]
-== xref:#F[F]::operator-=
+== xref:#F[F]::pass:[operator-=]
 
 
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator-=(xref:#F[F]&);
+pass:[operator-=](xref:#F[F]&);
 ----
 
 
@@ -946,18 +946,18 @@ operator-=(xref:#F[F]&);
 
 
 [#F-operator_ptr]
-== xref:#F[F]::operator->
+== xref:#F[F]::pass:[operator->]
 
 
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator->();
+pass:[operator->]();
 ----
 
 
@@ -970,18 +970,18 @@ operator->();
 
 
 [#F-operator_ptrmem]
-== xref:#F[F]::operator->*
+== xref:#F[F]::pass:[operator->*]
 
 
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator->*(xref:#F[F]&);
+pass:[operator->*](xref:#F[F]&);
 ----
 
 
@@ -1000,7 +1000,7 @@ operator->*(xref:#F[F]&);
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1024,7 +1024,7 @@ operator<(xref:#F[F]&);
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1048,7 +1048,7 @@ operator<<(xref:#F[F]&);
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1072,7 +1072,7 @@ operator<<=(xref:#F[F]&);
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1096,7 +1096,7 @@ operator<=(xref:#F[F]&);
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1120,7 +1120,7 @@ operator<=>(xref:#F[F]&);
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1144,7 +1144,7 @@ operator>(xref:#F[F]&);
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1168,7 +1168,7 @@ operator>>(xref:#F[F]&);
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1192,7 +1192,7 @@ operator>>=(xref:#F[F]&);
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1210,18 +1210,18 @@ operator>=(xref:#F[F]&);
 
 
 [#F-operator_star]
-== xref:#F[F]::operator*
+== xref:#F[F]::pass:[operator*]
 
 
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator*(xref:#F[F]&);
+pass:[operator*](xref:#F[F]&);
 ----
 
 
@@ -1234,18 +1234,18 @@ operator*(xref:#F[F]&);
 
 
 [#F-operator_star_eq]
-== xref:#F[F]::operator*=
+== xref:#F[F]::pass:[operator*=]
 
 
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator*=(xref:#F[F]&);
+pass:[operator*=](xref:#F[F]&);
 ----
 
 
@@ -1264,7 +1264,7 @@ operator*=(xref:#F[F]&);
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1288,7 +1288,7 @@ operator%(xref:#F[F]&);
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1312,7 +1312,7 @@ operator%=(xref:#F[F]&);
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1336,7 +1336,7 @@ operator/(xref:#F[F]&);
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1360,7 +1360,7 @@ operator/=(xref:#F[F]&);
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1384,7 +1384,7 @@ operator^(xref:#F[F]&);
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1408,7 +1408,7 @@ operator^=(xref:#F[F]&);
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1432,7 +1432,7 @@ operator=(xref:#F[F]&);
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1450,18 +1450,18 @@ operator==(xref:#F[F]&);
 
 
 [#F-operator_not]
-== xref:#F[F]::operator!
+== xref:#F[F]::pass:[operator!]
 
 
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator!();
+pass:[operator!]();
 ----
 
 
@@ -1474,18 +1474,18 @@ operator!();
 
 
 [#F-operator_not_eq]
-== xref:#F[F]::operator!=
+== xref:#F[F]::pass:[operator!=]
 
 
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator!=(xref:#F[F]&);
+pass:[operator!=](xref:#F[F]&);
 ----
 
 
@@ -1507,7 +1507,7 @@ xref:#F-operator_bitnot[F::operator~]
 
 === Synopsis
 
-Declared in `<ref.cpp>`
+Declared in `<pass:[ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -1517,7 +1517,7 @@ f6();
 
 === Description
 
-
+pass:[
 See
 xref:#F-operator_comma[F::operator,]
 
@@ -1631,7 +1631,7 @@ xref:#F-operator_not[F::operator!]
 
 See
 xref:#F-operator_not_eq[F::operator!&equals;]
-
+]
 
 
 

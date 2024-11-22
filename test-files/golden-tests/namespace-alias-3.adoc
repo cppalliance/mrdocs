@@ -30,7 +30,7 @@
 
 === Synopsis
 
-Declared in `<namespace-alias-3.cpp>`
+Declared in `<pass:[namespace-alias-3.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -47,7 +47,7 @@ namespace A = xref:#LongName[LongName];
 
 === Synopsis
 
-Declared in `<namespace-alias-3.cpp>`
+Declared in `<pass:[namespace-alias-3.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

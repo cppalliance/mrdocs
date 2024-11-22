@@ -39,12 +39,12 @@
 
 === Synopsis
 
-Declared in `<var-template.cpp>`
+Declared in `<pass:[var-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
-unsigned int A = sizeof(T);
+unsigned int A = pass:[sizeof(T)];
 ----
 
 
@@ -57,7 +57,7 @@ unsigned int A = sizeof(T);
 
 === Synopsis
 
-Declared in `<var-template.cpp>`
+Declared in `<pass:[var-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -75,12 +75,12 @@ unsigned int xref:#A-084[A]<void> = 0;
 
 === Synopsis
 
-Declared in `<var-template.cpp>`
+Declared in `<pass:[var-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
-unsigned int xref:#A-084[A]<T&> = sizeof(T);
+unsigned int xref:#A-084[A]<T&> = pass:[sizeof(T)];
 ----
 
 
@@ -93,7 +93,7 @@ unsigned int xref:#A-084[A]<T&> = sizeof(T);
 
 === Synopsis
 
-Declared in `<var-template.cpp>`
+Declared in `<pass:[var-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -127,7 +127,7 @@ struct B;
 
 === Synopsis
 
-Declared in `<var-template.cpp>`
+Declared in `<pass:[var-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -146,13 +146,13 @@ unsigned int C = 0;
 
 === Synopsis
 
-Declared in `<var-template.cpp>`
+Declared in `<pass:[var-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
 static
-unsigned int xref:#B-C-0e[C]<int> = -1;
+unsigned int xref:#B-C-0e[C]<int> = pass:[-1];
 ----
 
 
@@ -165,13 +165,13 @@ unsigned int xref:#B-C-0e[C]<int> = -1;
 
 === Synopsis
 
-Declared in `<var-template.cpp>`
+Declared in `<pass:[var-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 static
-unsigned int xref:#B-C-0e[C]<T*> = sizeof(T);
+unsigned int xref:#B-C-0e[C]<T*> = pass:[sizeof(T)];
 ----
 
 

@@ -33,6 +33,7 @@ class Builder
 {
     js::Context ctx_;
     Handlebars hbs_;
+    std::function<void(OutputRef&, std::string_view)> escapeFn_;
 
     std::string
     getRelPrefix(std::size_t depth);
@@ -41,7 +42,9 @@ public:
     HandlebarsCorpus const& domCorpus;
 
     explicit
-    Builder(HandlebarsCorpus const& corpus);
+    Builder(
+        HandlebarsCorpus const& corpus,
+        std::function<void(OutputRef&, std::string_view)> escapeFn);
 
     /** Render the contents for a symbol.
 

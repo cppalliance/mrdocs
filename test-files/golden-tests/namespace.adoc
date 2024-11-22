@@ -63,7 +63,7 @@
 
 === Synopsis
 
-Declared in `<namespace.cpp>`
+Declared in `<pass:[namespace.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -102,7 +102,7 @@ f0();
 
 === Synopsis
 
-Declared in `<namespace.cpp>`
+Declared in `<pass:[namespace.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -141,7 +141,7 @@ f1();
 
 === Synopsis
 
-Declared in `<namespace.cpp>`
+Declared in `<pass:[namespace.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -180,7 +180,7 @@ f2();
 
 === Synopsis
 
-Declared in `<namespace.cpp>`
+Declared in `<pass:[namespace.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -234,7 +234,7 @@ f3();
 
 === Synopsis
 
-Declared in `<namespace.cpp>`
+Declared in `<pass:[namespace.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -273,7 +273,7 @@ f5();
 
 === Synopsis
 
-Declared in `<namespace.cpp>`
+Declared in `<pass:[namespace.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -312,7 +312,7 @@ f6();
 
 === Synopsis
 
-Declared in `<namespace.cpp>`
+Declared in `<pass:[namespace.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -351,7 +351,7 @@ f7();
 
 === Synopsis
 
-Declared in `<namespace.cpp>`
+Declared in `<pass:[namespace.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -402,7 +402,7 @@ f8();
 
 === Synopsis
 
-Declared in `<namespace.cpp>`
+Declared in `<pass:[namespace.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -441,7 +441,7 @@ f10();
 
 === Synopsis
 
-Declared in `<namespace.cpp>`
+Declared in `<pass:[namespace.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -480,7 +480,7 @@ f11();
 
 === Synopsis
 
-Declared in `<namespace.cpp>`
+Declared in `<pass:[namespace.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -534,7 +534,7 @@ f12();
 
 === Synopsis
 
-Declared in `<namespace.cpp>`
+Declared in `<pass:[namespace.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

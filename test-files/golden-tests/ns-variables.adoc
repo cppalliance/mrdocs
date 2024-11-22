@@ -57,7 +57,7 @@
 
 === Synopsis
 
-Declared in `<ns-variables.cpp>`
+Declared in `<pass:[ns-variables.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -75,7 +75,7 @@ int const i = 0;
 
 === Synopsis
 
-Declared in `<ns-variables.cpp>`
+Declared in `<pass:[ns-variables.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -92,7 +92,7 @@ int j = 0;
 
 === Synopsis
 
-Declared in `<ns-variables.cpp>`
+Declared in `<pass:[ns-variables.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -111,7 +111,7 @@ int const k = 1;
 
 === Synopsis
 
-Declared in `<ns-variables.cpp>`
+Declared in `<pass:[ns-variables.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -129,11 +129,11 @@ int l = 1;
 
 === Synopsis
 
-Declared in `<ns-variables.cpp>`
+Declared in `<pass:[ns-variables.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-double pi = 3.14;
+double pi = pass:[3.14];
 ----
 
 
@@ -146,7 +146,7 @@ double pi = 3.14;
 
 === Synopsis
 
-Declared in `<ns-variables.cpp>`
+Declared in `<pass:[ns-variables.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -165,7 +165,7 @@ struct T;
 
 === Synopsis
 
-Declared in `<ns-variables.cpp>`
+Declared in `<pass:[ns-variables.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -183,7 +183,7 @@ xref:#T[T] t;
 
 === Synopsis
 
-Declared in `<ns-variables.cpp>`
+Declared in `<pass:[ns-variables.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -201,7 +201,7 @@ int x0 = 0;
 
 === Synopsis
 
-Declared in `<ns-variables.cpp>`
+Declared in `<pass:[ns-variables.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -220,7 +220,7 @@ int x1 = 0;
 
 === Synopsis
 
-Declared in `<ns-variables.cpp>`
+Declared in `<pass:[ns-variables.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

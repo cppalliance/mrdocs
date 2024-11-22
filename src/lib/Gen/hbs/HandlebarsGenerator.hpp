@@ -20,6 +20,9 @@
 
 namespace clang {
 namespace mrdocs {
+
+class OutputRef;
+
 namespace hbs {
 
 class HandlebarsGenerator
@@ -72,6 +75,12 @@ public:
     {
         return {};
     }
+
+    /** Output a escaped string to the output stream.
+    */
+    virtual
+    void
+    escape(OutputRef& os, std::string_view str) const;
 };
 
 } // hbs

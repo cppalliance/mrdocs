@@ -11,6 +11,7 @@
 
 #include "AdocGenerator.hpp"
 #include "DocVisitor.hpp"
+#include <mrdocs/Support/Handlebars.hpp>
 
 namespace clang {
 namespace mrdocs {
@@ -29,6 +30,24 @@ toString(hbs::HandlebarsCorpus const& c, doc::Node const& I) const
     DocVisitor visitor(c, s);
     doc::visit(I, visitor);
     return s;
+}
+
+void
+AdocGenerator::
+escape(OutputRef& os, std::string_view str) const
+{
+    static constexpr std::string_view formattingChars = "\\`*_{}[]()#+-.!|";
+    bool const needsEscape = str.find_first_of(formattingChars) != std::string_view::npos;
+    if (needsEscape)
+    {
+        os << "pass:[";
+        os << str;
+        os << "]";
+    }
+    else
+    {
+        os << str;
+    }
 }
 
 } // adoc

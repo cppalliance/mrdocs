@@ -42,12 +42,12 @@
 
 == Synopsis
 
-Declared in `<concept.cpp>`
+Declared in `<pass:[concept.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
-concept C = sizeof(T) == sizeof(int);
+concept C = pass:[sizeof(T) == sizeof(int)];
 ----
 
 
@@ -60,7 +60,7 @@ concept C = sizeof(T) == sizeof(int);
 
 === Synopsis
 
-Declared in `<concept.cpp>`
+Declared in `<pass:[concept.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -85,7 +85,7 @@ f();
 
 === Synopsis
 
-Declared in `<concept.cpp>`
+Declared in `<pass:[concept.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

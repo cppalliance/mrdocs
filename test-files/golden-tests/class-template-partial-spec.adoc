@@ -24,7 +24,7 @@
 
 === Synopsis
 
-Declared in `<class-template-partial-spec.cpp>`
+Declared in `<pass:[class-template-partial-spec.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -59,7 +59,7 @@ struct A;
 
 === Synopsis
 
-Declared in `<class-template-partial-spec.cpp>`
+Declared in `<pass:[class-template-partial-spec.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -81,7 +81,7 @@ struct B;
 
 === Synopsis
 
-Declared in `<class-template-partial-spec.cpp>`
+Declared in `<pass:[class-template-partial-spec.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -101,7 +101,7 @@ struct xref:#A-B-0a[B]<U*, T>;
 
 === Synopsis
 
-Declared in `<class-template-partial-spec.cpp>`
+Declared in `<pass:[class-template-partial-spec.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

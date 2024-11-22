@@ -42,7 +42,7 @@
 
 === Synopsis
 
-Declared in `<variadic-function.cpp>`
+Declared in `<pass:[variadic-function.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -59,7 +59,7 @@ using T = void(...);
 
 === Synopsis
 
-Declared in `<variadic-function.cpp>`
+Declared in `<pass:[variadic-function.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -76,7 +76,7 @@ using U = void(int, ...);
 
 === Synopsis
 
-Declared in `<variadic-function.cpp>`
+Declared in `<pass:[variadic-function.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -100,7 +100,7 @@ f(...);
 
 === Synopsis
 
-Declared in `<variadic-function.cpp>`
+Declared in `<pass:[variadic-function.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -124,7 +124,7 @@ g(int, ...);
 
 === Synopsis
 
-Declared in `<variadic-function.cpp>`
+Declared in `<pass:[variadic-function.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----

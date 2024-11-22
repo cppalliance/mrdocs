@@ -31,6 +31,9 @@ public:
     toString(
         hbs::HandlebarsCorpus const&,
         doc::Node const&) const override;
+
+    void
+    escape(OutputRef& os, std::string_view str) const override;
 };
 
 } // adoc

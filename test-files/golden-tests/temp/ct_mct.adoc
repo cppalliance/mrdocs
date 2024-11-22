@@ -24,7 +24,7 @@
 
 === Synopsis
 
-Declared in `<temp/ct_mct.cpp>`
+Declared in `<pass:[temp/ct_mct.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -53,7 +53,7 @@ struct A;
 
 === Synopsis
 
-Declared in `<temp/ct_mct.cpp>`
+Declared in `<pass:[temp/ct_mct.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -82,7 +82,7 @@ struct B;
 
 === Synopsis
 
-Declared in `<temp/ct_mct.cpp>`
+Declared in `<pass:[temp/ct_mct.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
