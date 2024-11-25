@@ -3812,7 +3812,6 @@ registerAntoraHelpers(Handlebars& hbs)
     hbs.registerHelper("ne", dom::makeVariadicInvocable(ne_fn));
     hbs.registerHelper("not", dom::makeVariadicInvocable(not_fn));
     hbs.registerHelper("or", dom::makeVariadicInvocable(or_fn));
-    hbs.registerHelper("relativize", dom::makeInvocable(relativize_fn));
     hbs.registerHelper("year", dom::makeInvocable(year_fn));
 }
 
@@ -3946,89 +3945,6 @@ detag_fn(dom::Value html)
         }
     }
     return result;
-}
-
-dom::Value
-relativize_fn(dom::Value to, dom::Value from, dom::Value context)
-{
-    // https://gitlab.com/antora/antora-ui-default/-/blob/master/src/helpers/relativize.js
-    if (!to)
-    {
-        return "#";
-    }
-
-    if (to.isString() && !std::string_view(to.getString()).starts_with('/'))
-    {
-        return to;
-    }
-
-    if (!context)
-    {
-        // NOTE only legacy invocation provides both to and from
-        context = from;
-        from = context.lookup("data.root.page.url");
-    }
-
-    if (!from)
-    {
-        dom::Value sitePath = context.lookup("data.root.site.path");
-        if (sitePath)
-        {
-            return sitePath + to;
-        }
-        return to;
-    }
-
-    dom::Value hash = "";
-    std::size_t hashIdx = to.getString().get().find('#');
-    if (hashIdx != std::string_view::npos)
-    {
-        hash = to.getString().get().substr(hashIdx);
-        to = to.getString().get().substr(0, hashIdx);
-    }
-
-    /// return to === from
-    //    ? hash || (isDir(to) ? './' : path.basename(to))
-    //    : (path.relative(path.dirname(from + '.'), to) || '.') + (isDir(to) ? '/' + hash : hash)
-    if (to == from)
-    {
-        if (hash) {
-            return hash;
-        }
-        else if (to.isString() && files::isDirsy(to.getString().get()))
-        {
-            return "./";
-        }
-        else if (to.isString())
-        {
-            return files::getFileName(to.getString().get());
-        }
-        else
-        {
-            return to;
-        }
-    }
-    else
-    {
-        // AFREITAS: Implement this functionality without std::filesystem
-        if (!to.isString() || !from.isString()) {
-            return to;
-        }
-        std::string relativePath = std::filesystem::relative(
-            std::filesystem::path(std::string_view(to.getString())),
-            std::filesystem::path(std::string_view(from.getString()))).generic_string();
-        if (relativePath.empty())
-        {
-            relativePath = ".";
-        }
-        if (files::isDirsy(to.getString())) {
-            return relativePath + '/' + hash;
-        }
-        else
-        {
-            return relativePath + hash;
-        }
-    }
 }
 
 int

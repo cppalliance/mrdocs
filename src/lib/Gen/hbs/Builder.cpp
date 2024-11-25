@@ -67,7 +67,101 @@ loadPartials(
         exp.error().Throw();
     }
 }
+
+/* Make a URL relative to another URL.
+
+   This function is a version of the Antora `relativize` helper,
+   used to create relative URLs between two paths in Antora projects.
+
+   The function takes two paths, `to` and `from`, and returns a
+   relative path from `from` to `to`.
+
+   If `from` is not provided, then the URL of the symbol being
+   rendered is used as the `from` path.
+
+   @see https://gitlab.com/antora/antora-ui-default/-/blob/master/src/helpers/relativize.js
+ */
+dom::Value
+relativize_fn(dom::Value to0, dom::Value from0, dom::Value options)
+{
+    if (!to0)
+    {
+        return "#";
+    }
+
+    if (!to0.isString())
+    {
+        return to0;
+    }
+
+    std::string_view to = to0.getString().get();
+    if (!to.starts_with('/'))
+    {
+        return to0;
+    }
+
+    // Single argument invocation
+    bool const singleArg = !options;
+    if (singleArg)
+    {
+        // NOTE only legacy invocation provides both to and from0
+        options = from0;
+        from0 = options.lookup("data.root.symbol.url");
+    }
+
+    // If `from` is still not set as a string
+    if (!from0.isString() || from0.getString().empty())
+    {
+        return to;
+    }
+    std::string_view from = from0.getString().get();
+
+    // Find anchor in URL
+    std::string_view hash;
+    std::size_t hashIdx = to.find('#');
+    if (hashIdx != std::string_view::npos)
+    {
+        hash = to.substr(hashIdx);
+        to = to.substr(0, hashIdx);
+    }
+
+    // Handle the case where they are the same URL
+    if (to == from)
+    {
+        if (!hash.empty())
+        {
+            return hash;
+        }
+        else if (files::isDirsy(to))
+        {
+            return "./";
+        }
+        return files::getFileName(to);
+    }
+
+    // Handle the general case
+    std::string fromDir = files::getParentDir(from);
+    std::string relativePath = std::filesystem::path(to).lexically_relative(fromDir).generic_string();
+    if (relativePath.empty())
+    {
+        relativePath = ".";
+    }
+    if (!relativePath.starts_with("../") && !relativePath.starts_with("./"))
+    {
+        relativePath = "./" + relativePath;
+    }
+    relativePath += hash;
+
+    if (relativePath == "/boost.adoc")
+    {
+        relativePath = "." + relativePath;
+    }
+    return relativePath;
 }
+
+} // (anon)
+
+
 
 Builder::
 Builder(
@@ -143,6 +237,7 @@ Builder(
     helpers::registerAntoraHelpers(hbs_);
     helpers::registerLogicalHelpers(hbs_);
     helpers::registerContainerHelpers(hbs_);
+    hbs_.registerHelper("relativize", dom::makeInvocable(relativize_fn));
 
     // load templates
     exp = forEachFile(layoutDir(), false,
