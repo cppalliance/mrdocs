@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,24 +8,22 @@
 |===
 | Name | Description 
 
-| xref:#C0[`C0`] 
+| <<#C0,`C0`>> 
 | 
     
-| xref:#C1[`C1`] 
+| <<#C1,`C1`>> 
 | 
     
-| xref:#C2[`C2`] 
+| <<#C2,`C2`>> 
 | 
     
-| xref:#C3[`C3`] 
+| <<#C3,`C3`>> 
 | 
     
-| xref:#S[`S`] 
+| <<#S,`S`>> 
 | 
     
 |===
-
-
 
 [#S]
 == S
@@ -42,8 +38,6 @@ Declared in `<pass:[class-template.cpp]>`
 ----
 struct S;
 ----
-
-
 
 
 
@@ -68,7 +62,7 @@ struct C0;
 |===
 | Name | Description 
 
-| xref:#C0-N0[`N0`] 
+| <<#C0-N0,`N0`>> 
 | 
     
 |===
@@ -77,23 +71,21 @@ struct C0;
 |===
 | Name | Description 
 
-| xref:#C0-w[`w`] 
+| <<#C0-w,`w`>> 
 | 
     
-| xref:#C0-x[`x`] 
+| <<#C0-x,`x`>> 
 | 
     
-| xref:#C0-y[`y`] 
+| <<#C0-y,`y`>> 
 | 
     
 |===
 
 
 
-
-
 [#C0-w]
-== xref:#C0[C0]::w
+== <<#C0,C0>>::w
 
 
 
@@ -107,10 +99,8 @@ int w;
 ----
 
 
-
-
 [#C0-x]
-== xref:#C0[C0]::x
+== <<#C0,C0>>::x
 
 
 
@@ -120,14 +110,12 @@ Declared in `<pass:[class-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:#S[S] x;
+<<#S,S>> x;
 ----
 
 
-
-
 [#C0-y]
-== xref:#C0[C0]::y
+== <<#C0,C0>>::y
 
 
 
@@ -141,10 +129,8 @@ T y;
 ----
 
 
-
-
 [#C0-N0]
-== xref:#C0[C0]::N0
+== <<#C0,C0>>::N0
 
 
 
@@ -162,17 +148,15 @@ struct N0;
 |===
 | Name | Description 
 
-| xref:#C0-N0-z[`z`] 
+| <<#C0-N0-z,`z`>> 
 | 
     
 |===
 
 
 
-
-
 [#C0-N0-z]
-== xref:#C0[C0]::xref:#C0-N0[N0]::z
+== <<#C0,C0>>::<<#C0-N0,N0>>::z
 
 
 
@@ -184,8 +168,6 @@ Declared in `<pass:[class-template.cpp]>`
 ----
 int z;
 ----
-
-
 
 
 [#C1]
@@ -207,7 +189,7 @@ struct C1;
 |===
 | Name | Description 
 
-| xref:#C1-N1[`N1`] 
+| <<#C1-N1,`N1`>> 
 | 
     
 |===
@@ -216,17 +198,15 @@ struct C1;
 |===
 | Name | Description 
 
-| xref:#C1-w[`w`] 
+| <<#C1-w,`w`>> 
 | 
     
 |===
 
 
 
-
-
 [#C1-w]
-== xref:#C1[C1]::w
+== <<#C1,C1>>::w
 
 
 
@@ -240,10 +220,8 @@ int w;
 ----
 
 
-
-
 [#C1-N1]
-== xref:#C1[C1]::N1
+== <<#C1,C1>>::N1
 
 
 
@@ -262,23 +240,21 @@ struct N1;
 |===
 | Name | Description 
 
-| xref:#C1-N1-x[`x`] 
+| <<#C1-N1-x,`x`>> 
 | 
     
-| xref:#C1-N1-y[`y`] 
+| <<#C1-N1-y,`y`>> 
 | 
     
-| xref:#C1-N1-z[`z`] 
+| <<#C1-N1-z,`z`>> 
 | 
     
 |===
 
 
 
-
-
 [#C1-N1-x]
-== xref:#C1[C1]::xref:#C1-N1[N1]::x
+== <<#C1,C1>>::<<#C1-N1,N1>>::x
 
 
 
@@ -288,14 +264,12 @@ Declared in `<pass:[class-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:#S[S] x;
+<<#S,S>> x;
 ----
 
 
-
-
 [#C1-N1-y]
-== xref:#C1[C1]::xref:#C1-N1[N1]::y
+== <<#C1,C1>>::<<#C1-N1,N1>>::y
 
 
 
@@ -309,10 +283,8 @@ T y;
 ----
 
 
-
-
 [#C1-N1-z]
-== xref:#C1[C1]::xref:#C1-N1[N1]::z
+== <<#C1,C1>>::<<#C1-N1,N1>>::z
 
 
 
@@ -324,8 +296,6 @@ Declared in `<pass:[class-template.cpp]>`
 ----
 int z;
 ----
-
-
 
 
 [#C2]
@@ -348,7 +318,7 @@ struct C2;
 |===
 | Name | Description 
 
-| xref:#C2-N2[`N2`] 
+| <<#C2-N2,`N2`>> 
 | 
     
 |===
@@ -357,17 +327,15 @@ struct C2;
 |===
 | Name | Description 
 
-| xref:#C2-v[`v`] 
+| <<#C2-v,`v`>> 
 | 
     
 |===
 
 
 
-
-
 [#C2-v]
-== xref:#C2[C2]::v
+== <<#C2,C2>>::v
 
 
 
@@ -381,10 +349,8 @@ int v;
 ----
 
 
-
-
 [#C2-N2]
-== xref:#C2[C2]::N2
+== <<#C2,C2>>::N2
 
 
 
@@ -403,26 +369,24 @@ struct N2;
 |===
 | Name | Description 
 
-| xref:#C2-N2-w[`w`] 
+| <<#C2-N2-w,`w`>> 
 | 
     
-| xref:#C2-N2-x[`x`] 
+| <<#C2-N2-x,`x`>> 
 | 
     
-| xref:#C2-N2-y[`y`] 
+| <<#C2-N2-y,`y`>> 
 | 
     
-| xref:#C2-N2-z[`z`] 
+| <<#C2-N2-z,`z`>> 
 | 
     
 |===
 
 
 
-
-
 [#C2-N2-w]
-== xref:#C2[C2]::xref:#C2-N2[N2]::w
+== <<#C2,C2>>::<<#C2-N2,N2>>::w
 
 
 
@@ -432,14 +396,12 @@ Declared in `<pass:[class-template.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:#S[S] w;
+<<#S,S>> w;
 ----
 
 
-
-
 [#C2-N2-x]
-== xref:#C2[C2]::xref:#C2-N2[N2]::x
+== <<#C2,C2>>::<<#C2-N2,N2>>::x
 
 
 
@@ -453,10 +415,8 @@ T x;
 ----
 
 
-
-
 [#C2-N2-y]
-== xref:#C2[C2]::xref:#C2-N2[N2]::y
+== <<#C2,C2>>::<<#C2-N2,N2>>::y
 
 
 
@@ -470,10 +430,8 @@ U y;
 ----
 
 
-
-
 [#C2-N2-z]
-== xref:#C2[C2]::xref:#C2-N2[N2]::z
+== <<#C2,C2>>::<<#C2-N2,N2>>::z
 
 
 
@@ -485,8 +443,6 @@ Declared in `<pass:[class-template.cpp]>`
 ----
 int z;
 ----
-
-
 
 
 [#C3]
@@ -509,17 +465,15 @@ struct C3;
 |===
 | Name | Description 
 
-| xref:#C3-v[`v`] 
+| <<#C3-v,`v`>> 
 | 
     
 |===
 
 
 
-
-
 [#C3-v]
-== xref:#C3[C3]::v
+== <<#C3,C3>>::v
 
 
 

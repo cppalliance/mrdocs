@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,63 +8,61 @@
 |===
 | Name | Description 
 
-| xref:#T01[`T01`] 
+| <<#T01,`T01`>> 
 | 
     
-| xref:#T02[`T02`] 
+| <<#T02,`T02`>> 
 | 
     
-| xref:#T03[`T03`] 
+| <<#T03,`T03`>> 
 | 
     
-| xref:#T04[`T04`] 
+| <<#T04,`T04`>> 
 | 
     
-| xref:#T05[`T05`] 
+| <<#T05,`T05`>> 
 | 
     
-| xref:#T06[`T06`] 
+| <<#T06,`T06`>> 
 | 
     
-| xref:#T08[`T08`] 
+| <<#T08,`T08`>> 
 | 
     
-| xref:#T09[`T09`] 
+| <<#T09,`T09`>> 
 | 
     
-| xref:#T10[`T10`] 
+| <<#T10,`T10`>> 
 | 
     
-| xref:#T11[`T11`] 
+| <<#T11,`T11`>> 
 | 
     
-| xref:#T12[`T12`] 
+| <<#T12,`T12`>> 
 | 
     
-| xref:#T13[`T13`] 
+| <<#T13,`T13`>> 
 | 
     
-| xref:#T14[`T14`] 
+| <<#T14,`T14`>> 
 | 
     
-| xref:#T15[`T15`] 
+| <<#T15,`T15`>> 
 | 
     
-| xref:#T16[`T16`] 
+| <<#T16,`T16`>> 
 | 
     
-| xref:#T17[`T17`] 
+| <<#T17,`T17`>> 
 | 
     
-| xref:#U[`U`] 
+| <<#U,`U`>> 
 | 
     
-| xref:#V[`V`] 
+| <<#V,`V`>> 
 | 
     
 |===
-
-
 
 [#T01]
 == T01
@@ -87,17 +83,15 @@ struct T01;
 |===
 | Name | Description 
 
-| xref:#T01-f[`f`] 
+| <<#T01-f,`f`>> 
 | 
     
 |===
 
 
 
-
-
 [#T01-f]
-== xref:#T01[T01]::f
+== <<#T01,T01>>::f
 
 
 
@@ -110,8 +104,6 @@ Declared in `<pass:[mem-fn.cpp]>`
 void
 f();
 ----
-
-
 
 
 
@@ -139,17 +131,15 @@ struct T02;
 |===
 | Name | Description 
 
-| xref:#T02-f[`f`] 
+| <<#T02-f,`f`>> 
 | 
     
 |===
 
 
 
-
-
 [#T02-f]
-== xref:#T02[T02]::f
+== <<#T02,T02>>::f
 
 
 
@@ -163,8 +153,6 @@ static
 void
 f();
 ----
-
-
 
 
 
@@ -192,17 +180,15 @@ struct T03;
 |===
 | Name | Description 
 
-| xref:#T03-f[`f`] 
+| <<#T03-f,`f`>> 
 | 
     
 |===
 
 
 
-
-
 [#T03-f]
-== xref:#T03[T03]::f
+== <<#T03,T03>>::f
 
 
 
@@ -215,8 +201,6 @@ Declared in `<pass:[mem-fn.cpp]>`
 void
 f() &;
 ----
-
-
 
 
 
@@ -244,17 +228,15 @@ struct T04;
 |===
 | Name | Description 
 
-| xref:#T04-f[`f`] 
+| <<#T04-f,`f`>> 
 | 
     
 |===
 
 
 
-
-
 [#T04-f]
-== xref:#T04[T04]::f
+== <<#T04,T04>>::f
 
 
 
@@ -267,8 +249,6 @@ Declared in `<pass:[mem-fn.cpp]>`
 void
 f() &&;
 ----
-
-
 
 
 
@@ -296,17 +276,15 @@ struct T05;
 |===
 | Name | Description 
 
-| xref:#T05-f[`f`] 
+| <<#T05-f,`f`>> 
 | 
     
 |===
 
 
 
-
-
 [#T05-f]
-== xref:#T05[T05]::f
+== <<#T05,T05>>::f
 
 
 
@@ -319,8 +297,6 @@ Declared in `<pass:[mem-fn.cpp]>`
 void
 f() const;
 ----
-
-
 
 
 
@@ -348,17 +324,15 @@ struct T06;
 |===
 | Name | Description 
 
-| xref:#T06-f[`f`] 
+| <<#T06-f,`f`>> 
 | 
     
 |===
 
 
 
-
-
 [#T06-f]
-== xref:#T06[T06]::f
+== <<#T06,T06>>::f
 
 
 
@@ -372,8 +346,6 @@ constexpr
 void
 f();
 ----
-
-
 
 
 
@@ -401,17 +373,15 @@ struct T08;
 |===
 | Name | Description 
 
-| xref:#T08-f[`f`] 
+| <<#T08-f,`f`>> 
 | 
     
 |===
 
 
 
-
-
 [#T08-f]
-== xref:#T08[T08]::f
+== <<#T08,T08>>::f
 
 
 
@@ -424,8 +394,6 @@ Declared in `<pass:[mem-fn.cpp]>`
 void
 f();
 ----
-
-
 
 
 
@@ -453,17 +421,15 @@ struct T09;
 |===
 | Name | Description 
 
-| xref:#T09-f[`f`] 
+| <<#T09-f,`f`>> 
 | 
     
 |===
 
 
 
-
-
 [#T09-f]
-== xref:#T09[T09]::f
+== <<#T09,T09>>::f
 
 
 
@@ -476,8 +442,6 @@ Declared in `<pass:[mem-fn.cpp]>`
 void
 f() noexcept;
 ----
-
-
 
 
 
@@ -505,17 +469,15 @@ struct T10;
 |===
 | Name | Description 
 
-| xref:#T10-f[`f`] 
+| <<#T10-f,`f`>> 
 | 
     
 |===
 
 
 
-
-
 [#T10-f]
-== xref:#T10[T10]::f
+== <<#T10,T10>>::f
 
 
 
@@ -528,8 +490,6 @@ Declared in `<pass:[mem-fn.cpp]>`
 void
 f();
 ----
-
-
 
 
 
@@ -557,17 +517,15 @@ struct T11;
 |===
 | Name | Description 
 
-| xref:#T11-f[`f`] 
+| <<#T11-f,`f`>> 
 | 
     
 |===
 
 
 
-
-
 [#T11-f]
-== xref:#T11[T11]::f
+== <<#T11,T11>>::f
 
 
 
@@ -580,8 +538,6 @@ Declared in `<pass:[mem-fn.cpp]>`
 int
 f();
 ----
-
-
 
 
 
@@ -609,17 +565,15 @@ struct T12;
 |===
 | Name | Description 
 
-| xref:#T12-f[`f`] 
+| <<#T12-f,`f`>> 
 | 
     
 |===
 
 
 
-
-
 [#T12-f]
-== xref:#T12[T12]::f
+== <<#T12,T12>>::f
 
 
 
@@ -632,8 +586,6 @@ Declared in `<pass:[mem-fn.cpp]>`
 void
 f(...);
 ----
-
-
 
 
 
@@ -661,17 +613,15 @@ struct T13;
 |===
 | Name | Description 
 
-| xref:#T13-f[`f`] 
+| <<#T13-f,`f`>> 
 | 
     
 |===
 
 
 
-
-
 [#T13-f]
-== xref:#T13[T13]::f
+== <<#T13,T13>>::f
 
 
 
@@ -685,8 +635,6 @@ virtual
 void
 f();
 ----
-
-
 
 
 
@@ -714,17 +662,15 @@ struct T14;
 |===
 | Name | Description 
 
-| xref:#T14-f[`f`] 
+| <<#T14-f,`f`>> 
 | 
     
 |===
 
 
 
-
-
 [#T14-f]
-== xref:#T14[T14]::f
+== <<#T14,T14>>::f
 
 
 
@@ -738,8 +684,6 @@ virtual
 void
 f() = 0;
 ----
-
-
 
 
 
@@ -767,17 +711,15 @@ struct T15;
 |===
 | Name | Description 
 
-| xref:#T15-f[`f`] 
+| <<#T15-f,`f`>> 
 | 
     
 |===
 
 
 
-
-
 [#T15-f]
-== xref:#T15[T15]::f
+== <<#T15,T15>>::f
 
 
 
@@ -790,8 +732,6 @@ Declared in `<pass:[mem-fn.cpp]>`
 void
 f() volatile;
 ----
-
-
 
 
 
@@ -819,17 +759,15 @@ struct T16;
 |===
 | Name | Description 
 
-| xref:#T16-f[`f`] 
+| <<#T16-f,`f`>> 
 | 
     
 |===
 
 
 
-
-
 [#T16-f]
-== xref:#T16[T16]::f
+== <<#T16,T16>>::f
 
 
 
@@ -851,8 +789,6 @@ f();
 
 
 
-
-
 [#T17]
 == T17
 
@@ -865,7 +801,7 @@ Declared in `<pass:[mem-fn.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct T17
-    : xref:#T14[T14];
+    : <<#T14,T14>>;
 ----
 
 ===  Member Functions
@@ -873,16 +809,14 @@ struct T17
 |===
 | Name | Description 
 
-| xref:T14-f[`f`] 
+| <<#T14-f,`f`>> 
 | 
 |===
 
 
 
-
-
 [#T17-f]
-== xref:#T17[T17]::f
+== <<#T17,T17>>::f
 
 
 
@@ -896,8 +830,6 @@ virtual
 void
 f() override;
 ----
-
-
 
 
 
@@ -925,10 +857,10 @@ struct U;
 |===
 | Name | Description 
 
-| xref:#U-f1[`f1`] 
+| <<#U-f1,`f1`>> 
 | 
     
-| xref:#U-f3[`f3`] 
+| <<#U-f3,`f3`>> 
 | 
     
 |===
@@ -937,17 +869,15 @@ struct U;
 |===
 | Name | Description 
 
-| xref:#U-f2[`f2`] 
+| <<#U-f2,`f2`>> 
 | 
     
 |===
 
 
 
-
-
 [#U-f1]
-== xref:#U[U]::f1
+== <<#U,U>>::f1
 
 
 
@@ -969,10 +899,8 @@ f1(...) const volatile noexcept;
 
 
 
-
-
 [#U-f2]
-== xref:#U[U]::f2
+== <<#U,U>>::f2
 
 
 
@@ -995,10 +923,8 @@ f2() noexcept;
 
 
 
-
-
 [#U-f3]
-== xref:#U[U]::f3
+== <<#U,U>>::f3
 
 
 
@@ -1020,8 +946,6 @@ f3() const volatile noexcept = 0;
 
 
 
-
-
 [#V]
 == V
 
@@ -1034,7 +958,7 @@ Declared in `<pass:[mem-fn.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct V
-    : xref:#U[U];
+    : <<#U,U>>;
 ----
 
 ===  Member Functions
@@ -1042,10 +966,10 @@ struct V
 |===
 | Name | Description 
 
-| xref:#U-f1[`f1`] 
+| <<#U-f1,`f1`>> 
 | 
     
-| xref:U-f3[`f3`] 
+| <<#U-f3,`f3`>> 
 | 
 |===
 ===  Static Member Functions
@@ -1053,17 +977,15 @@ struct V
 |===
 | Name | Description 
 
-| xref:#U-f2[`f2`] 
+| <<#U-f2,`f2`>> 
 | 
     
 |===
 
 
 
-
-
 [#V-f3]
-== xref:#V[V]::f3
+== <<#V,V>>::f3
 
 
 

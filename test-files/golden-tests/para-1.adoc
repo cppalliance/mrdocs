@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,23 +8,21 @@
 |===
 | Name | Description 
 
-| xref:#f1[`f1`] 
+| <<#f1,`f1`>> 
 | 
     
-| xref:#f2[`f2`] 
+| <<#f2,`f2`>> 
 | 
     
-| xref:#f3[`f3`] 
+| <<#f3,`f3`>> 
 | 
     
-| xref:#f4[`f4`] 
+| <<#f4,`f4`>> 
 | 
 brief
 
     
 |===
-
-
 
 [#f1]
 == f1
@@ -42,8 +38,6 @@ Declared in `<pass:[para-1.cpp]>`
 void
 f1();
 ----
-
-
 
 
 
@@ -74,8 +68,6 @@ f2();
 
 
 
-
-
 [#f3]
 == f3
 
@@ -90,8 +82,6 @@ Declared in `<pass:[para-1.cpp]>`
 void
 f3();
 ----
-
-
 
 
 

@@ -104,6 +104,14 @@ construct(Info const& I) const
     return dom::ValueFrom(I, this).getObject();
 }
 
+dom::Object
+DomCorpus::
+construct(
+    OverloadSet const& overloads) const
+{
+    return dom::ValueFrom(overloads, this).getObject();
+}
+
 dom::Value
 DomCorpus::
 get(SymbolID const& id) const
@@ -115,19 +123,10 @@ get(SymbolID const& id) const
 
 dom::Value
 DomCorpus::
-getJavadoc(
-    Javadoc const& jd) const
+getJavadoc(Javadoc const&) const
 {
     // Default implementation returns null.
     return nullptr;
-}
-
-dom::Object
-DomCorpus::
-getOverloads(
-    OverloadSet const& overloads) const
-{
-    return dom::ValueFrom(overloads, this).getObject();
 }
 
 } // mrdocs

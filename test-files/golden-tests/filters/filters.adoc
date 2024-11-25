@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,24 +8,22 @@
 |===
 | Name | Description 
 
-| xref:#A[`A`] 
+| <<#A,`A`>> 
 | 
     
-| xref:#B[`B`] 
+| <<#B,`B`>> 
 | 
     
-| xref:#C[`C`] 
+| <<#C,`C`>> 
 | 
     
-| xref:#D[`D`] 
+| <<#D,`D`>> 
 | 
     
-| xref:#F[`F`] 
+| <<#F,`F`>> 
 | 
     
 |===
-
-
 
 [#A]
 == A
@@ -37,10 +33,10 @@
 |===
 | Name | Description 
 
-| xref:#A-detail[`detail`] 
+| <<#A-detail,`detail`>> 
 | 
     
-| xref:#A-detair[`detair`] 
+| <<#A-detair,`detair`>> 
 | 
     
 |===
@@ -49,15 +45,13 @@
 |===
 | Name | Description 
 
-| xref:#A-f0[`f0`] 
+| <<#A-f0,`f0`>> 
 | 
     
 |===
 
-
-
 [#A-f0]
-== xref:#A[A]::f0
+== <<#A,A>>::f0
 
 
 
@@ -78,25 +72,21 @@ f0();
 
 
 
-
-
 [#A-detail]
-== xref:#A[A]::detail
+== <<#A,A>>::detail
 
 === Functions
 [cols=2]
 |===
 | Name | Description 
 
-| xref:#A-detail-g0[`g0`] 
+| <<#A-detail-g0,`g0`>> 
 | 
     
 |===
 
-
-
 [#A-detail-g0]
-== xref:#A[A]::xref:#A-detail[detail]::g0
+== <<#A,A>>::<<#A-detail,detail>>::g0
 
 
 
@@ -117,17 +107,15 @@ g0();
 
 
 
-
-
 [#A-detair]
-== xref:#A[A]::detair
+== <<#A,A>>::detair
 
 ===  Types
 [cols=2]
 |===
 | Name | Description 
 
-| xref:#A-detair-Y[`Y`] 
+| <<#A-detair-Y,`Y`>> 
 | 
     
 |===
@@ -136,15 +124,13 @@ g0();
 |===
 | Name | Description 
 
-| xref:#A-detair-f4[`f4`] 
+| <<#A-detair-f4,`f4`>> 
 | 
     
 |===
 
-
-
 [#A-detair-f4]
-== xref:#A[A]::xref:#A-detair[detair]::f4
+== <<#A,A>>::<<#A-detair,detair>>::f4
 
 
 
@@ -165,10 +151,8 @@ f4();
 
 
 
-
-
 [#A-detair-Y]
-== xref:#A[A]::xref:#A-detair[detair]::Y
+== <<#A,A>>::<<#A-detair,detair>>::Y
 
 
 
@@ -186,7 +170,7 @@ struct Y;
 |===
 | Name | Description 
 
-| xref:#A-detair-Y-Z[`Z`] 
+| <<#A-detair-Y-Z,`Z`>> 
 | 
     
 |===
@@ -195,17 +179,15 @@ struct Y;
 |===
 | Name | Description 
 
-| xref:#A-detair-Y-f6[`f6`] 
+| <<#A-detair-Y-f6,`f6`>> 
 | 
     
 |===
 
 
 
-
-
 [#A-detair-Y-f6]
-== xref:#A[A]::xref:#A-detair[detair]::xref:#A-detair-Y[Y]::f6
+== <<#A,A>>::<<#A-detair,detair>>::<<#A-detair-Y,Y>>::f6
 
 
 
@@ -226,10 +208,8 @@ f6();
 
 
 
-
-
 [#A-detair-Y-Z]
-== xref:#A[A]::xref:#A-detair[detair]::xref:#A-detair-Y[Y]::Z
+== <<#A,A>>::<<#A-detair,detair>>::<<#A-detair-Y,Y>>::Z
 
 
 
@@ -247,17 +227,15 @@ struct Z;
 |===
 | Name | Description 
 
-| xref:#A-detair-Y-Z-f7[`f7`] 
+| <<#A-detair-Y-Z-f7,`f7`>> 
 | 
     
 |===
 
 
 
-
-
 [#A-detair-Y-Z-f7]
-== xref:#A[A]::xref:#A-detair[detair]::xref:#A-detair-Y[Y]::xref:#A-detair-Y-Z[Z]::f7
+== <<#A,A>>::<<#A-detair,detair>>::<<#A-detair-Y,Y>>::<<#A-detair-Y-Z,Z>>::f7
 
 
 
@@ -270,8 +248,6 @@ Declared in `<pass:[filters/filters.cpp]>`
 void
 f7();
 ----
-
-
 
 
 
@@ -288,7 +264,7 @@ f7();
 |===
 | Name | Description 
 
-| xref:#B-detair[`detair`] 
+| <<#B-detair,`detair`>> 
 | 
     
 |===
@@ -297,15 +273,13 @@ f7();
 |===
 | Name | Description 
 
-| xref:#B-f0[`f0`] 
+| <<#B-f0,`f0`>> 
 | 
     
 |===
 
-
-
 [#B-f0]
-== xref:#B[B]::f0
+== <<#B,B>>::f0
 
 
 
@@ -326,17 +300,15 @@ f0();
 
 
 
-
-
 [#B-detair]
-== xref:#B[B]::detair
+== <<#B,B>>::detair
 
 ===  Types
 [cols=2]
 |===
 | Name | Description 
 
-| xref:#B-detair-Y[`Y`] 
+| <<#B-detair-Y,`Y`>> 
 | 
     
 |===
@@ -345,15 +317,13 @@ f0();
 |===
 | Name | Description 
 
-| xref:#B-detair-f4[`f4`] 
+| <<#B-detair-f4,`f4`>> 
 | 
     
 |===
 
-
-
 [#B-detair-f4]
-== xref:#B[B]::xref:#B-detair[detair]::f4
+== <<#B,B>>::<<#B-detair,detair>>::f4
 
 
 
@@ -374,10 +344,8 @@ f4();
 
 
 
-
-
 [#B-detair-Y]
-== xref:#B[B]::xref:#B-detair[detair]::Y
+== <<#B,B>>::<<#B-detair,detair>>::Y
 
 
 
@@ -395,7 +363,7 @@ struct Y;
 |===
 | Name | Description 
 
-| xref:#B-detair-Y-Z[`Z`] 
+| <<#B-detair-Y-Z,`Z`>> 
 | 
     
 |===
@@ -404,17 +372,15 @@ struct Y;
 |===
 | Name | Description 
 
-| xref:#B-detair-Y-f6[`f6`] 
+| <<#B-detair-Y-f6,`f6`>> 
 | 
     
 |===
 
 
 
-
-
 [#B-detair-Y-f6]
-== xref:#B[B]::xref:#B-detair[detair]::xref:#B-detair-Y[Y]::f6
+== <<#B,B>>::<<#B-detair,detair>>::<<#B-detair-Y,Y>>::f6
 
 
 
@@ -435,10 +401,8 @@ f6();
 
 
 
-
-
 [#B-detair-Y-Z]
-== xref:#B[B]::xref:#B-detair[detair]::xref:#B-detair-Y[Y]::Z
+== <<#B,B>>::<<#B-detair,detair>>::<<#B-detair-Y,Y>>::Z
 
 
 
@@ -456,17 +420,15 @@ struct Z;
 |===
 | Name | Description 
 
-| xref:#B-detair-Y-Z-f7[`f7`] 
+| <<#B-detair-Y-Z-f7,`f7`>> 
 | 
     
 |===
 
 
 
-
-
 [#B-detair-Y-Z-f7]
-== xref:#B[B]::xref:#B-detair[detair]::xref:#B-detair-Y[Y]::xref:#B-detair-Y-Z[Z]::f7
+== <<#B,B>>::<<#B-detair,detair>>::<<#B-detair-Y,Y>>::<<#B-detair-Y-Z,Z>>::f7
 
 
 
@@ -487,8 +449,6 @@ f7();
 
 
 
-
-
 [#C]
 == C
 
@@ -497,15 +457,13 @@ f7();
 |===
 | Name | Description 
 
-| xref:#C-g0[`g0`] 
+| <<#C-g0,`g0`>> 
 | 
     
 |===
 
-
-
 [#C-g0]
-== xref:#C[C]::g0
+== <<#C,C>>::g0
 
 
 
@@ -518,8 +476,6 @@ Declared in `<pass:[filters/filters.cpp]>`
 void
 g0();
 ----
-
-
 
 
 
@@ -536,7 +492,7 @@ g0();
 |===
 | Name | Description 
 
-| xref:#D-E[`E`] 
+| <<#D-E,`E`>> 
 | 
     
 |===
@@ -545,33 +501,29 @@ g0();
 |===
 | Name | Description 
 
-| xref:#D-f1[`f1`] 
+| <<#D-f1,`f1`>> 
 | 
     
-| xref:#D-g1[`g1`] 
+| <<#D-g1,`g1`>> 
 | 
     
 |===
-
-
 
 [#D-E]
-== xref:#D[D]::E
+== <<#D,D>>::E
 
 === Functions
 [cols=2]
 |===
 | Name | Description 
 
-| xref:#D-E-g0[`g0`] 
+| <<#D-E-g0,`g0`>> 
 | 
     
 |===
 
-
-
 [#D-E-g0]
-== xref:#D[D]::xref:#D-E[E]::g0
+== <<#D,D>>::<<#D-E,E>>::g0
 
 
 
@@ -592,10 +544,8 @@ g0();
 
 
 
-
-
 [#D-f1]
-== xref:#D[D]::f1
+== <<#D,D>>::f1
 
 
 
@@ -616,10 +566,8 @@ f1();
 
 
 
-
-
 [#D-g1]
-== xref:#D[D]::g1
+== <<#D,D>>::g1
 
 
 
@@ -640,8 +588,6 @@ g1();
 
 
 
-
-
 [#F]
 == F
 
@@ -650,7 +596,7 @@ g1();
 |===
 | Name | Description 
 
-| xref:#F-G[`G`] 
+| <<#F-G,`G`>> 
 | 
     
 |===
@@ -659,15 +605,13 @@ g1();
 |===
 | Name | Description 
 
-| xref:#F-g0[`g0`] 
+| <<#F-g0,`g0`>> 
 | 
     
 |===
 
-
-
 [#F-g0]
-== xref:#F[F]::g0
+== <<#F,F>>::g0
 
 
 
@@ -688,28 +632,24 @@ g0();
 
 
 
-
-
 [#F-G]
-== xref:#F[F]::G
+== <<#F,F>>::G
 
 === Functions
 [cols=2]
 |===
 | Name | Description 
 
-| xref:#F-G-f1[`f1`] 
+| <<#F-G-f1,`f1`>> 
 | 
     
-| xref:#F-G-g1[`g1`] 
+| <<#F-G-g1,`g1`>> 
 | 
     
 |===
 
-
-
 [#F-G-f1]
-== xref:#F[F]::xref:#F-G[G]::f1
+== <<#F,F>>::<<#F-G,G>>::f1
 
 
 
@@ -730,10 +670,8 @@ f1();
 
 
 
-
-
 [#F-G-g1]
-== xref:#F[F]::xref:#F-G[G]::g1
+== <<#F,F>>::<<#F-G,G>>::g1
 
 
 

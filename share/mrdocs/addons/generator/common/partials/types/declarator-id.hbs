@@ -4,7 +4,7 @@
 {{else if (eq kind "guide")~}}
     {{>types/declarator deduced nolink=nolink~}}
 {{else~}}
-    {{#if (and link.ref (not nolink))}}{{#>markup/a href=link.ref}}{{name}}{{/markup/a}}{{else}}{{name}}{{/if~}}
+    {{#if (and link.url (not nolink))}}{{#>markup/a href=(relativize link.url)}}{{name}}{{/markup/a}}{{else}}{{name}}{{/if~}}
     {{#if (or (eq template.kind "explicit") (eq template.kind "partial"))~}}
         {{>types/template-args args=template.args nolink=nolink~}}
     {{/if~}}

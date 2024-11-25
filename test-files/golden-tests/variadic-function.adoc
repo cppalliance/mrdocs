@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,13 +8,13 @@
 |===
 | Name | Description 
 
-| xref:#C[`C`] 
+| <<#C,`C`>> 
 | 
     
-| xref:#T[`T`] 
+| <<#T,`T`>> 
 | 
     
-| xref:#U[`U`] 
+| <<#U,`U`>> 
 | 
     
 |===
@@ -25,15 +23,13 @@
 |===
 | Name | Description 
 
-| xref:#f[`f`] 
+| <<#f,`f`>> 
 | 
     
-| xref:#g[`g`] 
+| <<#g,`g`>> 
 | 
     
 |===
-
-
 
 [#T]
 == T
@@ -50,8 +46,6 @@ using T = void(...);
 ----
 
 
-
-
 [#U]
 == U
 
@@ -65,8 +59,6 @@ Declared in `<pass:[variadic-function.cpp]>`
 ----
 using U = void(int, ...);
 ----
-
-
 
 
 [#f]
@@ -91,8 +83,6 @@ f(...);
 
 
 
-
-
 [#g]
 == g
 
@@ -107,8 +97,6 @@ Declared in `<pass:[variadic-function.cpp]>`
 void
 g(int, ...);
 ----
-
-
 
 
 

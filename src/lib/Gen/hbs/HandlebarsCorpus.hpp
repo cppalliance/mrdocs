@@ -67,21 +67,24 @@ public:
     dom::Object
     construct(Info const& I) const override;
 
+    /** Construct a dom::Object from the given OverloadSet.
+
+        @param os The OverloadSet to get the overloads for.
+        @return A dom::Object representing the overloads.
+    */
+    dom::Object
+    construct(
+        OverloadSet const& os) const override;
+
     /** Get the cross-reference for the given Info.
 
         @param I The Info object to get the cross-reference for.
         @return A string representing the cross-reference.
     */
+    template<class T>
+    requires std::derived_from<T, Info> || std::same_as<T, OverloadSet>
     std::string
-    getXref(Info const& I) const;
-
-    /** Get the cross-reference for the given OverloadSet.
-
-        @param os The OverloadSet to get the cross-reference for.
-        @return A string representing the cross-reference.
-    */
-    std::string
-    getXref(OverloadSet const& os) const;
+    getURL(T const& I) const;
 
     /** Return a Dom value representing the Javadoc.
 
@@ -89,17 +92,7 @@ public:
         @return A dom::Value representing the Javadoc.
     */
     dom::Value
-    getJavadoc(
-        Javadoc const& jd) const override;
-
-    /** Return a Dom value representing an overload set.
-
-        @param os The OverloadSet to get the overloads for.
-        @return A dom::Object representing the overloads.
-    */
-    dom::Object
-    getOverloads(
-        OverloadSet const& os) const override;
+    getJavadoc(Javadoc const& jd) const override;
 };
 
 } // hbs

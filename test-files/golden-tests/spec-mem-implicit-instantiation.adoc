@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,15 +8,13 @@
 |===
 | Name | Description 
 
-| xref:#A-0e[`A`] 
+| <<#A-0e,`A`>> 
 | 
     
-| xref:#D[`D`] 
+| <<#D,`D`>> 
 | 
     
 |===
-
-
 
 [#A-0e]
 == A
@@ -40,10 +36,10 @@ struct A;
 |===
 | Name | Description 
 
-| xref:#A-0e-B[`B`] 
+| <<#A-0e-B,`B`>> 
 | 
     
-| xref:#A-0e-C[`C`] 
+| <<#A-0e-C,`C`>> 
 | 
     
 |===
@@ -52,17 +48,15 @@ struct A;
 |===
 | Name | Description 
 
-| xref:#A-0e-f[`f`] 
+| <<#A-0e-f,`f`>> 
 | 
     
 |===
 
 
 
-
-
 [#A-0e-f]
-== xref:#A-0e[A]::f
+== <<#A-0e,A>>::f
 
 
 
@@ -83,10 +77,8 @@ f();
 
 
 
-
-
 [#A-0e-B]
-== xref:#A-0e[A]::B
+== <<#A-0e,A>>::B
 
 
 
@@ -105,17 +97,15 @@ struct B;
 |===
 | Name | Description 
 
-| xref:#A-0e-B-g[`g`] 
+| <<#A-0e-B-g,`g`>> 
 | 
     
 |===
 
 
 
-
-
 [#A-0e-B-g]
-== xref:#A-0e[A]::xref:#A-0e-B[B]::g
+== <<#A-0e,A>>::<<#A-0e-B,B>>::g
 
 
 
@@ -136,10 +126,8 @@ g();
 
 
 
-
-
 [#A-0e-C]
-== xref:#A-0e[A]::C
+== <<#A-0e,A>>::C
 
 
 
@@ -158,17 +146,15 @@ struct C;
 |===
 | Name | Description 
 
-| xref:#A-0e-C-h[`h`] 
+| <<#A-0e-C-h,`h`>> 
 | 
     
 |===
 
 
 
-
-
 [#A-0e-C-h]
-== xref:#A-0e[A]::xref:#A-0e-C[C]::h
+== <<#A-0e,A>>::<<#A-0e-C,C>>::h
 
 
 
@@ -187,17 +173,6 @@ h();
 
 
 
-
-
-
-
-[#A-000]
-
-
-[#A-00b]
-
-
-[#A-0f]
 
 
 [#D]
@@ -219,17 +194,15 @@ struct D;
 |===
 | Name | Description 
 
-| xref:#D-E-0e[`E`] 
+| <<#D-E-0e,`E`>> 
 | 
     
 |===
 
 
 
-
-
 [#D-E-0e]
-== xref:#D[D]::E
+== <<#D,D>>::E
 
 
 
@@ -248,17 +221,15 @@ struct E;
 |===
 | Name | Description 
 
-| xref:#D-E-0e-k[`k`] 
+| <<#D-E-0e-k,`k`>> 
 | 
     
 |===
 
 
 
-
-
 [#D-E-0e-k]
-== xref:#D[D]::xref:#D-E-0e[E]::k
+== <<#D,D>>::<<#D-E-0e,E>>::k
 
 
 
@@ -279,9 +250,6 @@ k();
 
 
 
-
-
-[#D-E-0d]
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

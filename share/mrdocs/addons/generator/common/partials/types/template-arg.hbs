@@ -4,6 +4,6 @@
 {{else if (eq kind "non-type")~}}
 {{~value~}}
 {{else if (eq kind "template")~}}
-{{#if (and template (not nolink))}}xref:{{template.ref}}[{{name~}}]{{else~}}{{name~}}{{/if~}}
+{{#if (and template (not nolink))}}{{#>markup/a href=(relativize template.url)}}{{name}}{{/markup/a}}{{else~}}{{name~}}{{/if~}}
 {{/if~}}
 {{~#if is-pack}}...{{/if~}}

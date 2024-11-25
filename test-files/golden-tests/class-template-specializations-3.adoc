@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,15 +8,13 @@
 |===
 | Name | Description 
 
-| xref:#A-0e[`A`] 
+| <<#A-0e,`A`>> 
 | 
     
-| xref:#E[`E`] 
+| <<#E,`E`>> 
 | 
     
 |===
-
-
 
 [#A-0e]
 == A
@@ -40,20 +36,18 @@ struct A;
 |===
 | Name | Description 
 
-| xref:#A-0e-B-07[`B`] 
+| <<#A-0e-B-07,`B`>> 
 | 
     
-| xref:#A-0e-B-00[`B<double>`] 
+| <<#A-0e-B-00,`B<double>`>> 
 | 
     
 |===
 
 
 
-
-
 [#A-0e-B-07]
-== xref:#A-0e[A]::B
+== <<#A-0e,A>>::B
 
 
 
@@ -72,23 +66,21 @@ struct B;
 |===
 | Name | Description 
 
-| xref:#A-0e-B-07-C[`C`] 
+| <<#A-0e-B-07-C,`C`>> 
 | 
     
-| xref:#A-0e-B-07-D-09[`D`] 
+| <<#A-0e-B-07-D-09,`D`>> 
 | 
     
-| xref:#A-0e-B-07-D-0f[`D<bool>`] 
+| <<#A-0e-B-07-D-0f,`D<bool>`>> 
 | 
     
 |===
 
 
 
-
-
 [#A-0e-B-07-C]
-== xref:#A-0e[A]::xref:#A-0e-B-07[B]::C
+== <<#A-0e,A>>::<<#A-0e-B-07,B>>::C
 
 
 
@@ -104,10 +96,8 @@ struct C;
 
 
 
-
-
 [#A-0e-B-07-D-09]
-== xref:#A-0e[A]::xref:#A-0e-B-07[B]::D
+== <<#A-0e,A>>::<<#A-0e-B-07,B>>::D
 
 
 
@@ -124,10 +114,8 @@ struct D;
 
 
 
-
-
 [#A-0e-B-07-D-0f]
-== xref:#A-0e[A]::xref:#A-0e-B-07[B]::D
+== <<#A-0e,A>>::<<#A-0e-B-07,B>>::D
 
 
 
@@ -138,16 +126,14 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-struct xref:#A-0e-B-07-D-09[D]<bool>;
+struct <<#A-0e-B-07-D-09,D>><bool>;
 ----
-
-
 
 
 
 
 [#A-0e-B-00]
-== xref:#A-0e[A]::B
+== <<#A-0e,A>>::B
 
 
 
@@ -158,7 +144,7 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-struct xref:#A-0e-B-07[B]<double>;
+struct <<#A-0e-B-07,B>><double>;
 ----
 
 ===  Types
@@ -166,23 +152,21 @@ struct xref:#A-0e-B-07[B]<double>;
 |===
 | Name | Description 
 
-| xref:#A-0e-B-00-C[`C`] 
+| <<#A-0e-B-00-C,`C`>> 
 | 
     
-| xref:#A-0e-B-00-D-09[`D`] 
+| <<#A-0e-B-00-D-09,`D`>> 
 | 
     
-| xref:#A-0e-B-00-D-0d[`D<bool>`] 
+| <<#A-0e-B-00-D-0d,`D<bool>`>> 
 | 
     
 |===
 
 
 
-
-
 [#A-0e-B-00-C]
-== xref:#A-0e[A]::xref:#A-0e-B-00[B]<double>::C
+== <<#A-0e,A>>::<<#A-0e-B-00,B>><double>::C
 
 
 
@@ -198,10 +182,8 @@ struct C;
 
 
 
-
-
 [#A-0e-B-00-D-09]
-== xref:#A-0e[A]::xref:#A-0e-B-00[B]<double>::D
+== <<#A-0e,A>>::<<#A-0e-B-00,B>><double>::D
 
 
 
@@ -218,10 +200,8 @@ struct D;
 
 
 
-
-
 [#A-0e-B-00-D-0d]
-== xref:#A-0e[A]::xref:#A-0e-B-00[B]<double>::D
+== <<#A-0e,A>>::<<#A-0e-B-00,B>><double>::D
 
 
 
@@ -232,18 +212,10 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-struct xref:#A-0e-B-00-D-09[D]<bool>;
+struct <<#A-0e-B-00-D-09,D>><bool>;
 ----
 
 
-
-
-
-
-[#A-0c]
-
-
-[#A-00]
 
 
 [#E]
@@ -265,59 +237,57 @@ struct E;
 |===
 | Name | Description 
 
-| xref:#E-m0[`m0`] 
+| <<#E-m0,`m0`>> 
 | 
     
-| xref:#E-m1[`m1`] 
+| <<#E-m1,`m1`>> 
 | 
     
-| xref:#E-m10[`m10`] 
+| <<#E-m10,`m10`>> 
 | 
     
-| xref:#E-m11[`m11`] 
+| <<#E-m11,`m11`>> 
 | 
     
-| xref:#E-m12[`m12`] 
+| <<#E-m12,`m12`>> 
 | 
     
-| xref:#E-m13[`m13`] 
+| <<#E-m13,`m13`>> 
 | 
     
-| xref:#E-m14[`m14`] 
+| <<#E-m14,`m14`>> 
 | 
     
-| xref:#E-m2[`m2`] 
+| <<#E-m2,`m2`>> 
 | 
     
-| xref:#E-m3[`m3`] 
+| <<#E-m3,`m3`>> 
 | 
     
-| xref:#E-m4[`m4`] 
+| <<#E-m4,`m4`>> 
 | 
     
-| xref:#E-m5[`m5`] 
+| <<#E-m5,`m5`>> 
 | 
     
-| xref:#E-m6[`m6`] 
+| <<#E-m6,`m6`>> 
 | 
     
-| xref:#E-m7[`m7`] 
+| <<#E-m7,`m7`>> 
 | 
     
-| xref:#E-m8[`m8`] 
+| <<#E-m8,`m8`>> 
 | 
     
-| xref:#E-m9[`m9`] 
+| <<#E-m9,`m9`>> 
 | 
     
 |===
 
 
 
-
-
 [#E-m0]
-== xref:#E[E]::m0
+== <<#E,E>>::m0
 
 
 
@@ -327,14 +297,12 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:#A-0e[A]<float>::xref:#A-0e-B-00[B]<double> m0;
+<<#A-0e,A>><float>::<<#A-0e-B-00,B>><double> m0;
 ----
-
-
 
 
 [#E-m1]
-== xref:#E[E]::m1
+== <<#E,E>>::m1
 
 
 
@@ -344,14 +312,12 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:#A-0e[A]<long>::xref:#A-0e-B-00[B]<double> m1;
+<<#A-0e,A>><long>::<<#A-0e-B-00,B>><double> m1;
 ----
-
-
 
 
 [#E-m2]
-== xref:#E[E]::m2
+== <<#E,E>>::m2
 
 
 
@@ -361,14 +327,12 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:#A-0e[A]<long>::xref:#A-0c-B[B]<float> m2;
+<<#A-0e,A>><long>::<<#A-0c-B,B>><float> m2;
 ----
-
-
 
 
 [#E-m3]
-== xref:#E[E]::m3
+== <<#E,E>>::m3
 
 
 
@@ -378,14 +342,12 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:#A-0e[A]<unsigned int>::xref:#A-0e-B-07[B]<float> m3;
+<<#A-0e,A>><unsigned int>::<<#A-0e-B-07,B>><float> m3;
 ----
-
-
 
 
 [#E-m4]
-== xref:#E[E]::m4
+== <<#E,E>>::m4
 
 
 
@@ -395,14 +357,12 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:#A-0e[A]<short>::xref:#A-00-B[B]<void> m4;
+<<#A-0e,A>><short>::<<#A-00-B,B>><void> m4;
 ----
-
-
 
 
 [#E-m5]
-== xref:#E[E]::m5
+== <<#E,E>>::m5
 
 
 
@@ -412,14 +372,12 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:#A-0e[A]<float>::xref:#A-0e-B-00[B]<double>::xref:#A-0e-B-00-C[C] m5;
+<<#A-0e,A>><float>::<<#A-0e-B-00,B>><double>::<<#A-0e-B-00-C,C>> m5;
 ----
-
-
 
 
 [#E-m6]
-== xref:#E[E]::m6
+== <<#E,E>>::m6
 
 
 
@@ -429,14 +387,12 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:#A-0e[A]<long>::xref:#A-0e-B-00[B]<double>::xref:#A-0e-B-00-C[C] m6;
+<<#A-0e,A>><long>::<<#A-0e-B-00,B>><double>::<<#A-0e-B-00-C,C>> m6;
 ----
-
-
 
 
 [#E-m7]
-== xref:#E[E]::m7
+== <<#E,E>>::m7
 
 
 
@@ -446,14 +402,12 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:#A-0e[A]<long>::xref:#A-0c-B[B]<float>::xref:#A-0c-B-C[C] m7;
+<<#A-0e,A>><long>::<<#A-0c-B,B>><float>::<<#A-0c-B-C,C>> m7;
 ----
-
-
 
 
 [#E-m8]
-== xref:#E[E]::m8
+== <<#E,E>>::m8
 
 
 
@@ -463,14 +417,12 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:#A-0e[A]<unsigned int>::xref:#A-0e-B-07[B]<float>::xref:#A-0e-B-07-C[C] m8;
+<<#A-0e,A>><unsigned int>::<<#A-0e-B-07,B>><float>::<<#A-0e-B-07-C,C>> m8;
 ----
-
-
 
 
 [#E-m9]
-== xref:#E[E]::m9
+== <<#E,E>>::m9
 
 
 
@@ -480,14 +432,12 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:#A-0e[A]<short>::xref:#A-00-B[B]<void>::xref:#A-00-B-C[C] m9;
+<<#A-0e,A>><short>::<<#A-00-B,B>><void>::<<#A-00-B-C,C>> m9;
 ----
-
-
 
 
 [#E-m10]
-== xref:#E[E]::m10
+== <<#E,E>>::m10
 
 
 
@@ -497,14 +447,12 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:#A-0e[A]<float>::xref:#A-0e-B-00[B]<double>::xref:#A-0e-B-00-D-0d[D]<bool> m10;
+<<#A-0e,A>><float>::<<#A-0e-B-00,B>><double>::<<#A-0e-B-00-D-0d,D>><bool> m10;
 ----
-
-
 
 
 [#E-m11]
-== xref:#E[E]::m11
+== <<#E,E>>::m11
 
 
 
@@ -514,14 +462,12 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:#A-0e[A]<long>::xref:#A-0e-B-00[B]<double>::xref:#A-0e-B-00-D-0d[D]<bool> m11;
+<<#A-0e,A>><long>::<<#A-0e-B-00,B>><double>::<<#A-0e-B-00-D-0d,D>><bool> m11;
 ----
-
-
 
 
 [#E-m12]
-== xref:#E[E]::m12
+== <<#E,E>>::m12
 
 
 
@@ -531,14 +477,12 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:#A-0e[A]<long>::xref:#A-0c-B[B]<float>::xref:#A-0c-B-D-0b[D]<bool> m12;
+<<#A-0e,A>><long>::<<#A-0c-B,B>><float>::<<#A-0c-B-D-0b,D>><bool> m12;
 ----
-
-
 
 
 [#E-m13]
-== xref:#E[E]::m13
+== <<#E,E>>::m13
 
 
 
@@ -548,14 +492,12 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:#A-0e[A]<unsigned int>::xref:#A-0e-B-07[B]<float>::xref:#A-0e-B-07-D-0f[D]<bool> m13;
+<<#A-0e,A>><unsigned int>::<<#A-0e-B-07,B>><float>::<<#A-0e-B-07-D-0f,D>><bool> m13;
 ----
-
-
 
 
 [#E-m14]
-== xref:#E[E]::m14
+== <<#E,E>>::m14
 
 
 
@@ -565,7 +507,7 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:#A-0e[A]<short>::xref:#A-00-B[B]<void>::xref:#A-00-B-D-07[D]<bool> m14;
+<<#A-0e,A>><short>::<<#A-00-B,B>><void>::<<#A-00-B-D-07,D>><bool> m14;
 ----
 
 

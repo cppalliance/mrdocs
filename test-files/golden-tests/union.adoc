@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,15 +8,13 @@
 |===
 | Name | Description 
 
-| xref:#A[`A`] 
+| <<#A,`A`>> 
 | 
     
-| xref:#B[`B`] 
+| <<#B,`B`>> 
 | 
     
 |===
-
-
 
 [#A]
 == A
@@ -39,20 +35,18 @@ union A;
 |===
 | Name | Description 
 
-| xref:#A-x[`x`] [.small]#[variant member]#
+| <<#A-x,`x`>> [.small]#[variant member]#
 | 
     
-| xref:#A-y[`y`] [.small]#[variant member]#
+| <<#A-y,`y`>> [.small]#[variant member]#
 | 
     
 |===
 
 
 
-
-
 [#A-x]
-== xref:#A[A]::x
+== <<#A,A>>::x
 
 
 
@@ -66,10 +60,8 @@ int x;
 ----
 
 
-
-
 [#A-y]
-== xref:#A[A]::y
+== <<#A,A>>::y
 
 
 
@@ -81,8 +73,6 @@ Declared in `<pass:[union.cpp]>`
 ----
 bool y;
 ----
-
-
 
 
 [#B]
@@ -104,23 +94,21 @@ struct B;
 |===
 | Name | Description 
 
-| xref:#B-x[`x`] [.small]#[variant member]#
+| <<#B-x,`x`>> [.small]#[variant member]#
 | 
     
-| xref:#B-y[`y`] [.small]#[variant member]#
+| <<#B-y,`y`>> [.small]#[variant member]#
 | 
     
-| xref:#B-z[`z`] 
+| <<#B-z,`z`>> 
 | 
     
 |===
 
 
 
-
-
 [#B-x]
-== xref:#B[B]::x
+== <<#B,B>>::x
 
 
 
@@ -134,10 +122,8 @@ int x;
 ----
 
 
-
-
 [#B-y]
-== xref:#B[B]::y
+== <<#B,B>>::y
 
 
 
@@ -151,10 +137,8 @@ bool y;
 ----
 
 
-
-
 [#B-z]
-== xref:#B[B]::z
+== <<#B,B>>::z
 
 
 

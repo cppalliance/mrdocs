@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,21 +8,19 @@
 |===
 | Name | Description 
 
-| xref:#f[`f`] 
+| <<#f,`f`>> 
 | 
     
-| xref:#g[`g`] 
+| <<#g,`g`>> 
 | 
     
-| xref:#h[`h`] 
+| <<#h,`h`>> 
 | 
     
-| xref:#i[`i`] 
+| <<#i,`i`>> 
 | 
     
 |===
-
-
 
 [#f]
 == f
@@ -53,8 +49,6 @@ f(int x);
 | *x*
 | 
 |===
-
-
 
 
 
@@ -94,8 +88,6 @@ g(
 
 
 
-
-
 [#h]
 == h
 
@@ -130,8 +122,6 @@ h(
 | *z*
 | 
 |===
-
-
 
 
 

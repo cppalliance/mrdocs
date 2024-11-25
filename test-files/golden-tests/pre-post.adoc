@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,12 +8,10 @@
 |===
 | Name | Description 
 
-| xref:#f[`f`] 
+| <<#f,`f`>> 
 | 
     
 |===
-
-
 
 [#f]
 == f

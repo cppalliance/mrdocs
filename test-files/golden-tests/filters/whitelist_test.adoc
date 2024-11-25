@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,15 +8,13 @@
 |===
 | Name | Description 
 
-| xref:#blacklisted[`blacklisted`] 
+| <<#blacklisted,`blacklisted`>> 
 | 
     
-| xref:#to_be_documented[`pass:[to_be_documented]`] 
+| <<#to_be_documented,`pass:[to_be_documented]`>> 
 | 
     
 |===
-
-
 
 [#to_be_documented]
 == pass:[to_be_documented]
@@ -28,15 +24,13 @@
 |===
 | Name | Description 
 
-| xref:#to_be_documented-documented_function[`pass:[documented_function]`] 
+| <<#to_be_documented-documented_function,`pass:[documented_function]`>> 
 | 
     
 |===
 
-
-
 [#to_be_documented-documented_function]
-== xref:#to_be_documented[pass:[to_be_documented]]::pass:[documented_function]
+== <<#to_be_documented,pass:[to_be_documented]>>::pass:[documented_function]
 
 
 
@@ -57,8 +51,6 @@ pass:[documented_function]();
 
 
 
-
-
 [#blacklisted]
 == blacklisted
 
@@ -67,15 +59,13 @@ pass:[documented_function]();
 |===
 | Name | Description 
 
-| xref:#blacklisted-whitelisted_function[`pass:[whitelisted_function]`] 
+| <<#blacklisted-whitelisted_function,`pass:[whitelisted_function]`>> 
 | 
     
 |===
 
-
-
 [#blacklisted-whitelisted_function]
-== xref:#blacklisted[blacklisted]::pass:[whitelisted_function]
+== <<#blacklisted,blacklisted>>::pass:[whitelisted_function]
 
 
 

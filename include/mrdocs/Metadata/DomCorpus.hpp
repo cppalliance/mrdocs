@@ -84,6 +84,17 @@ public:
     dom::Object
     construct(Info const& I) const;
 
+    /** Return a Dom value representing an overload set.
+
+        A @ref Generator should override this member
+        and return suitable @ref dom::Value representing
+        the overload set.
+    */
+    virtual
+    dom::Object
+    construct(
+        OverloadSet const& os) const;
+
     /** Return a Dom object representing the given symbol.
 
         @return A value containing the symbol
@@ -103,19 +114,7 @@ public:
     */
     virtual
     dom::Value
-    getJavadoc(
-        Javadoc const& jd) const;
-
-    /** Return a Dom value representing an overload set.
-
-        A @ref Generator should override this member
-        and return suitable @ref dom::Value representing
-        the overload set.
-    */
-    virtual
-    dom::Object
-    getOverloads(
-        OverloadSet const& os) const;
+    getJavadoc(Javadoc const& jd) const;
 };
 
 } // mrdocs

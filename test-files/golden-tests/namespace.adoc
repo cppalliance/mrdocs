@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,21 +8,19 @@
 |===
 | Name | Description 
 
-| xref:#00namespace[``] 
+| <<#00namespace,``>> 
 | 
     
-| xref:#A[`A`] 
+| <<#A,`A`>> 
 | 
     
-| xref:#D[`D`] 
+| <<#D,`D`>> 
 | 
     
-| xref:#I[`I`] 
+| <<#I,`I`>> 
 | 
     
 |===
-
-
 
 [#A]
 == A
@@ -34,13 +30,13 @@
 |===
 | Name | Description 
 
-| xref:#A-00namespace[``] 
+| <<#A-00namespace,``>> 
 | 
     
-| xref:#A-B[`B`] 
+| <<#A-B,`B`>> 
 | 
     
-| xref:#A-C[`C`] 
+| <<#A-C,`C`>> 
 | 
     
 |===
@@ -49,15 +45,13 @@
 |===
 | Name | Description 
 
-| xref:#A-f0[`f0`] 
+| <<#A-f0,`f0`>> 
 | 
     
 |===
 
-
-
 [#A-f0]
-== xref:#A[A]::f0
+== <<#A,A>>::f0
 
 
 
@@ -78,25 +72,21 @@ f0();
 
 
 
-
-
 [#A-B]
-== xref:#A[A]::B
+== <<#A,A>>::B
 
 === Functions
 [cols=2]
 |===
 | Name | Description 
 
-| xref:#A-B-f1[`f1`] 
+| <<#A-B-f1,`f1`>> 
 | 
     
 |===
 
-
-
 [#A-B-f1]
-== xref:#A[A]::xref:#A-B[B]::f1
+== <<#A,A>>::<<#A-B,B>>::f1
 
 
 
@@ -117,25 +107,21 @@ f1();
 
 
 
-
-
 [#A-C]
-== xref:#A[A]::C
+== <<#A,A>>::C
 
 === Functions
 [cols=2]
 |===
 | Name | Description 
 
-| xref:#A-C-f2[`f2`] 
+| <<#A-C-f2,`f2`>> 
 | 
     
 |===
 
-
-
 [#A-C-f2]
-== xref:#A[A]::xref:#A-C[C]::f2
+== <<#A,A>>::<<#A-C,C>>::f2
 
 
 
@@ -156,8 +142,6 @@ f2();
 
 
 
-
-
 [#A-00namespace]
 == Unnamed namespace
 
@@ -166,15 +150,13 @@ f2();
 |===
 | Name | Description 
 
-| xref:#A-00namespace-f3[`f3`] 
+| <<#A-00namespace-f3,`f3`>> 
 | 
     
 |===
 
-
-
 [#A-00namespace-f3]
-== xref:#A[A]::f3
+== <<#A,A>>::f3
 
 
 
@@ -195,8 +177,6 @@ f3();
 
 
 
-
-
 [#D]
 == D
 
@@ -205,13 +185,13 @@ f3();
 |===
 | Name | Description 
 
-| xref:#D-00namespace[``] 
+| <<#D-00namespace,``>> 
 | 
     
-| xref:#D-E[`E`] 
+| <<#D-E,`E`>> 
 | 
     
-| xref:#D-F[`F`] 
+| <<#D-F,`F`>> 
 | 
     
 |===
@@ -220,15 +200,13 @@ f3();
 |===
 | Name | Description 
 
-| xref:#D-f5[`f5`] 
+| <<#D-f5,`f5`>> 
 | 
     
 |===
 
-
-
 [#D-f5]
-== xref:#D[D]::f5
+== <<#D,D>>::f5
 
 
 
@@ -249,25 +227,21 @@ f5();
 
 
 
-
-
 [#D-E]
-== xref:#D[D]::E
+== <<#D,D>>::E
 
 === Functions
 [cols=2]
 |===
 | Name | Description 
 
-| xref:#D-E-f6[`f6`] 
+| <<#D-E-f6,`f6`>> 
 | 
     
 |===
 
-
-
 [#D-E-f6]
-== xref:#D[D]::xref:#D-E[E]::f6
+== <<#D,D>>::<<#D-E,E>>::f6
 
 
 
@@ -288,25 +262,21 @@ f6();
 
 
 
-
-
 [#D-F]
-== xref:#D[D]::F
+== <<#D,D>>::F
 
 === Functions
 [cols=2]
 |===
 | Name | Description 
 
-| xref:#D-F-f7[`f7`] 
+| <<#D-F-f7,`f7`>> 
 | 
     
 |===
 
-
-
 [#D-F-f7]
-== xref:#D[D]::xref:#D-F[F]::f7
+== <<#D,D>>::<<#D-F,F>>::f7
 
 
 
@@ -327,8 +297,6 @@ f7();
 
 
 
-
-
 [#D-00namespace]
 == Unnamed namespace
 
@@ -337,15 +305,13 @@ f7();
 |===
 | Name | Description 
 
-| xref:#D-00namespace-f8[`f8`] 
+| <<#D-00namespace-f8,`f8`>> 
 | 
     
 |===
 
-
-
 [#D-00namespace-f8]
-== xref:#D[D]::f8
+== <<#D,D>>::f8
 
 
 
@@ -366,8 +332,6 @@ f8();
 
 
 
-
-
 [#00namespace]
 == Unnamed namespace
 
@@ -376,10 +340,10 @@ f8();
 |===
 | Name | Description 
 
-| xref:#00namespace-G[`G`] 
+| <<#00namespace-G,`G`>> 
 | 
     
-| xref:#00namespace-H[`H`] 
+| <<#00namespace-H,`H`>> 
 | 
     
 |===
@@ -388,12 +352,10 @@ f8();
 |===
 | Name | Description 
 
-| xref:#00namespace-f10[`f10`] 
+| <<#00namespace-f10,`f10`>> 
 | 
     
 |===
-
-
 
 [#00namespace-f10]
 == f10
@@ -417,8 +379,6 @@ f10();
 
 
 
-
-
 [#00namespace-G]
 == G
 
@@ -427,15 +387,13 @@ f10();
 |===
 | Name | Description 
 
-| xref:#00namespace-G-f11[`f11`] 
+| <<#00namespace-G-f11,`f11`>> 
 | 
     
 |===
 
-
-
 [#00namespace-G-f11]
-== xref:#00namespace-G[G]::f11
+== <<#00namespace-G,G>>::f11
 
 
 
@@ -456,8 +414,6 @@ f11();
 
 
 
-
-
 [#00namespace-H]
 == H
 
@@ -466,15 +422,13 @@ f11();
 |===
 | Name | Description 
 
-| xref:#00namespace-H-f12[`f12`] 
+| <<#00namespace-H-f12,`f12`>> 
 | 
     
 |===
 
-
-
 [#00namespace-H-f12]
-== xref:#00namespace-H[H]::f12
+== <<#00namespace-H,H>>::f12
 
 
 
@@ -495,8 +449,6 @@ f12();
 
 
 
-
-
 [#I]
 == I
 
@@ -505,12 +457,10 @@ f12();
 |===
 | Name | Description 
 
-| xref:#I-00namespace[``] 
+| <<#I-00namespace,``>> 
 | 
     
 |===
-
-
 
 [#I-00namespace]
 == Unnamed namespace
@@ -520,15 +470,13 @@ f12();
 |===
 | Name | Description 
 
-| xref:#I-00namespace-f14[`f14`] 
+| <<#I-00namespace-f14,`f14`>> 
 | 
     
 |===
 
-
-
 [#I-00namespace-f14]
-== xref:#I[I]::f14
+== <<#I,I>>::f14
 
 
 

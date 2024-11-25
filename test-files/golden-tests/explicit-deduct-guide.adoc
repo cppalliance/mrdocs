@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,7 +8,7 @@
 |===
 | Name | Description 
 
-| xref:#X-0e[`X`] 
+| <<#X-0e,`X`>> 
 | 
     
 |===
@@ -19,21 +17,19 @@
 |===
 | Name | Description 
 
-| xref:#X-0d[`X<0>`] 
+| <<#X-0d,`X<0>`>> 
 | 
     
-| xref:#X-00[`X<0>`] 
+| <<#X-00,`X<0>`>> 
 | 
     
-| xref:#X-0b[`X<0>`] 
+| <<#X-0b,`X<0>`>> 
 | 
     
-| xref:#X-06[`X<0>`] 
+| <<#X-06,`X<0>`>> 
 | 
     
 |===
-
-
 
 [#X-0e]
 == X
@@ -53,8 +49,6 @@ struct X;
 
 
 
-
-
 [#X-0d]
 == X
 
@@ -66,10 +60,8 @@ Declared in `<pass:[explicit-deduct-guide.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:#X-0e[X]<0>(bool) -> xref:#X-0e[X]<0>;
+<<#X-0e,X>><0>(bool) -> <<#X-0e,X>><0>;
 ----
-
-
 
 
 [#X-00]
@@ -83,10 +75,8 @@ Declared in `<pass:[explicit-deduct-guide.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:#X-0e[X]<0>(char) -> xref:#X-0e[X]<0>;
+<<#X-0e,X>><0>(char) -> <<#X-0e,X>><0>;
 ----
-
-
 
 
 [#X-0b]
@@ -100,10 +90,8 @@ Declared in `<pass:[explicit-deduct-guide.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:#X-0e[X]<0>(int) -> xref:#X-0e[X]<0>;
+<<#X-0e,X>><0>(int) -> <<#X-0e,X>><0>;
 ----
-
-
 
 
 [#X-06]
@@ -118,7 +106,7 @@ Declared in `<pass:[explicit-deduct-guide.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<bool B = true>
-xref:#X-0e[X]<0>(long) -> xref:#X-0e[X]<0>;
+<<#X-0e,X>><0>(long) -> <<#X-0e,X>><0>;
 ----
 
 

@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,18 +8,16 @@
 |===
 | Name | Description 
 
-| xref:#C0[`C0`] 
+| <<#C0,`C0`>> 
 | 
     
-| xref:#S0[`S0`] 
+| <<#S0,`S0`>> 
 | 
     
-| xref:#U0[`U0`] 
+| <<#U0,`U0`>> 
 | 
     
 |===
-
-
 
 [#S0]
 == S0
@@ -42,7 +38,7 @@ struct S0;
 |===
 | Name | Description 
 
-| xref:#S0-f0[`f0`] 
+| <<#S0-f0,`f0`>> 
 | 
     
 |===
@@ -51,7 +47,7 @@ struct S0;
 |===
 | Name | Description 
 
-| xref:#S0-f1[`f1`] 
+| <<#S0-f1,`f1`>> 
 | 
     
 |===
@@ -60,17 +56,15 @@ struct S0;
 |===
 | Name | Description 
 
-| xref:#S0-f2[`f2`] 
+| <<#S0-f2,`f2`>> 
 | 
     
 |===
 
 
 
-
-
 [#S0-f0]
-== xref:#S0[S0]::f0
+== <<#S0,S0>>::f0
 
 
 
@@ -91,10 +85,8 @@ f0();
 
 
 
-
-
 [#S0-f1]
-== xref:#S0[S0]::f1
+== <<#S0,S0>>::f1
 
 
 
@@ -115,10 +107,8 @@ f1();
 
 
 
-
-
 [#S0-f2]
-== xref:#S0[S0]::f2
+== <<#S0,S0>>::f2
 
 
 
@@ -131,8 +121,6 @@ Declared in `<pass:[record-access.cpp]>`
 void
 f2();
 ----
-
-
 
 
 
@@ -160,7 +148,7 @@ class C0;
 |===
 | Name | Description 
 
-| xref:#C0-f2[`f2`] 
+| <<#C0-f2,`f2`>> 
 | 
     
 |===
@@ -169,7 +157,7 @@ class C0;
 |===
 | Name | Description 
 
-| xref:#C0-f1[`f1`] 
+| <<#C0-f1,`f1`>> 
 | 
     
 |===
@@ -178,17 +166,15 @@ class C0;
 |===
 | Name | Description 
 
-| xref:#C0-f0[`f0`] 
+| <<#C0-f0,`f0`>> 
 | 
     
 |===
 
 
 
-
-
 [#C0-f0]
-== xref:#C0[C0]::f0
+== <<#C0,C0>>::f0
 
 
 
@@ -209,10 +195,8 @@ f0();
 
 
 
-
-
 [#C0-f1]
-== xref:#C0[C0]::f1
+== <<#C0,C0>>::f1
 
 
 
@@ -233,10 +217,8 @@ f1();
 
 
 
-
-
 [#C0-f2]
-== xref:#C0[C0]::f2
+== <<#C0,C0>>::f2
 
 
 
@@ -249,8 +231,6 @@ Declared in `<pass:[record-access.cpp]>`
 void
 f2();
 ----
-
-
 
 
 
@@ -278,7 +258,7 @@ union U0;
 |===
 | Name | Description 
 
-| xref:#U0-f0[`f0`] 
+| <<#U0-f0,`f0`>> 
 | 
     
 |===
@@ -287,7 +267,7 @@ union U0;
 |===
 | Name | Description 
 
-| xref:#U0-f1[`f1`] 
+| <<#U0-f1,`f1`>> 
 | 
     
 |===
@@ -296,17 +276,15 @@ union U0;
 |===
 | Name | Description 
 
-| xref:#U0-f2[`f2`] 
+| <<#U0-f2,`f2`>> 
 | 
     
 |===
 
 
 
-
-
 [#U0-f0]
-== xref:#U0[U0]::f0
+== <<#U0,U0>>::f0
 
 
 
@@ -327,10 +305,8 @@ f0();
 
 
 
-
-
 [#U0-f1]
-== xref:#U0[U0]::f1
+== <<#U0,U0>>::f1
 
 
 
@@ -351,10 +327,8 @@ f1();
 
 
 
-
-
 [#U0-f2]
-== xref:#U0[U0]::f2
+== <<#U0,U0>>::f2
 
 
 

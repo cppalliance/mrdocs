@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,24 +8,22 @@
 |===
 | Name | Description 
 
-| xref:#T[`T`] 
+| <<#T,`T`>> 
 | 
 Struct T brief
 
     
-| xref:#U[`U`] 
+| <<#U,`U`>> 
 | 
 Struct U brief
 
     
-| xref:#V[`V`] 
+| <<#V,`V`>> 
 | 
 Struct V brief
 
     
 |===
-
-
 
 [#T]
 == T
@@ -50,19 +46,17 @@ struct T;
 |===
 | Name | Description 
 
-| xref:#T-08friend-04ce[`[object Object]`] 
+| <<#T-08friend-04ce,`[object Object]`>> 
 | 
 Friend int brief
 
     
-| xref:#T-08friend-04cb[`[object Object]`] 
+| <<#T-08friend-04cb,`[object Object]`>> 
 | 
 Friend class Z brief
 
     
 |===
-
-
 
 
 
@@ -83,8 +77,6 @@ friend int;
 ----
 
 
-
-
 [#T-08friend-04cb]
 == [object Object]
 
@@ -100,8 +92,6 @@ Declared in `<pass:[friend-6.cpp]>`
 ----
 friend Z;
 ----
-
-
 
 
 [#U]
@@ -125,14 +115,12 @@ struct U;
 |===
 | Name | Description 
 
-| xref:#U-08friend[`[object Object]`] 
+| <<#U-08friend,`[object Object]`>> 
 | 
 Friend T brief
 
     
 |===
-
-
 
 
 
@@ -149,10 +137,8 @@ Declared in `<pass:[friend-6.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-friend xref:#T[T];
+friend <<#T,T>>;
 ----
-
-
 
 
 [#V]
@@ -176,14 +162,12 @@ struct V;
 |===
 | Name | Description 
 
-| xref:#V-08friend[`[object Object]`] 
+| <<#V-08friend,`[object Object]`>> 
 | 
 Friend struct U brief
 
     
 |===
-
-
 
 
 
@@ -200,7 +184,7 @@ Declared in `<pass:[friend-6.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-friend xref:#U[U];
+friend <<#U,U>>;
 ----
 
 

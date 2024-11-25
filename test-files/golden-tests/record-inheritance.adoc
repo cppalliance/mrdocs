@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,57 +8,55 @@
 |===
 | Name | Description 
 
-| xref:#C0[`C0`] 
+| <<#C0,`C0`>> 
 | 
     
-| xref:#C1[`C1`] 
+| <<#C1,`C1`>> 
 | 
     
-| xref:#C2[`C2`] 
+| <<#C2,`C2`>> 
 | 
     
-| xref:#C3[`C3`] 
+| <<#C3,`C3`>> 
 | 
     
-| xref:#C4[`C4`] 
+| <<#C4,`C4`>> 
 | 
     
-| xref:#C5[`C5`] 
+| <<#C5,`C5`>> 
 | 
     
-| xref:#C6[`C6`] 
+| <<#C6,`C6`>> 
 | 
     
-| xref:#C7[`C7`] 
+| <<#C7,`C7`>> 
 | 
     
-| xref:#S0[`S0`] 
+| <<#S0,`S0`>> 
 | 
     
-| xref:#S1[`S1`] 
+| <<#S1,`S1`>> 
 | 
     
-| xref:#S2[`S2`] 
+| <<#S2,`S2`>> 
 | 
     
-| xref:#S3[`S3`] 
+| <<#S3,`S3`>> 
 | 
     
-| xref:#S4[`S4`] 
+| <<#S4,`S4`>> 
 | 
     
-| xref:#S5[`S5`] 
+| <<#S5,`S5`>> 
 | 
     
-| xref:#S6[`S6`] 
+| <<#S6,`S6`>> 
 | 
     
-| xref:#U0[`U0`] 
+| <<#U0,`U0`>> 
 | 
     
 |===
-
-
 
 [#S0]
 == S0
@@ -75,8 +71,6 @@ Declared in `<pass:[record-inheritance.cpp]>`
 ----
 struct S0;
 ----
-
-
 
 
 
@@ -98,8 +92,6 @@ class C0;
 
 
 
-
-
 [#U0]
 == U0
 
@@ -113,8 +105,6 @@ Declared in `<pass:[record-inheritance.cpp]>`
 ----
 union U0;
 ----
-
-
 
 
 
@@ -136,8 +126,6 @@ struct S1;
 
 
 
-
-
 [#S2]
 == S2
 
@@ -150,10 +138,8 @@ Declared in `<pass:[record-inheritance.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct S2
-    : xref:#S0[S0];
+    : <<#S0,S0>>;
 ----
-
-
 
 
 
@@ -170,10 +156,8 @@ Declared in `<pass:[record-inheritance.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct S3
-    : xref:#S1[S1];
+    : <<#S1,S1>>;
 ----
-
-
 
 
 
@@ -190,11 +174,9 @@ Declared in `<pass:[record-inheritance.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct S4
-    : xref:#S2[S2]
-    , xref:#S3[S3];
+    : <<#S2,S2>>
+    , <<#S3,S3>>;
 ----
-
-
 
 
 
@@ -211,10 +193,8 @@ Declared in `<pass:[record-inheritance.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 class C1
-    : xref:#C0[C0];
+    : <<#C0,C0>>;
 ----
-
-
 
 
 
@@ -231,10 +211,8 @@ Declared in `<pass:[record-inheritance.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 class C2
-    : public xref:#C0[C0];
+    : public <<#C0,C0>>;
 ----
-
-
 
 
 
@@ -251,10 +229,8 @@ Declared in `<pass:[record-inheritance.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 class C3
-    : protected xref:#C0[C0];
+    : protected <<#C0,C0>>;
 ----
-
-
 
 
 
@@ -271,10 +247,8 @@ Declared in `<pass:[record-inheritance.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 class C4
-    : xref:#C0[C0];
+    : <<#C0,C0>>;
 ----
-
-
 
 
 
@@ -291,10 +265,8 @@ Declared in `<pass:[record-inheritance.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 class C5
-    : virtual xref:#C0[C0];
+    : virtual <<#C0,C0>>;
 ----
-
-
 
 
 
@@ -311,10 +283,8 @@ Declared in `<pass:[record-inheritance.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 class C6
-    : virtual xref:#C1[C1];
+    : virtual <<#C1,C1>>;
 ----
-
-
 
 
 
@@ -331,11 +301,9 @@ Declared in `<pass:[record-inheritance.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 class C7
-    : public xref:#C5[C5]
-    , public xref:#C6[C6];
+    : public <<#C5,C5>>
+    , public <<#C6,C6>>;
 ----
-
-
 
 
 
@@ -352,11 +320,9 @@ Declared in `<pass:[record-inheritance.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct S5
-    : private xref:#S0[S0]
-    , protected xref:#S1[S1];
+    : private <<#S0,S0>>
+    , protected <<#S1,S1>>;
 ----
-
-
 
 
 

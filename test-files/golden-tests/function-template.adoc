@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,45 +8,43 @@
 |===
 | Name | Description 
 
-| xref:#f0[`f0`] 
+| <<#f0,`f0`>> 
 | 
     
-| xref:#f1[`f1`] 
+| <<#f1,`f1`>> 
 | 
     
-| xref:#f2[`f2`] 
+| <<#f2,`f2`>> 
 | 
     
-| xref:#f3[`f3`] 
+| <<#f3,`f3`>> 
 | 
     
-| xref:#g0[`g0`] 
+| <<#g0,`g0`>> 
 | 
     
-| xref:#g1[`g1`] 
+| <<#g1,`g1`>> 
 | 
     
-| xref:#g2[`g2`] 
+| <<#g2,`g2`>> 
 | 
     
-| xref:#h0[`h0`] 
+| <<#h0,`h0`>> 
 | 
     
-| xref:#h1[`h1`] 
+| <<#h1,`h1`>> 
 | 
     
-| xref:#i[`i`] 
+| <<#i,`i`>> 
 | 
     
-| xref:#j0[`j0`] 
+| <<#j0,`j0`>> 
 | 
     
-| xref:#j1[`j1`] 
+| <<#j1,`j1`>> 
 | 
     
 |===
-
-
 
 [#f0]
 == f0
@@ -65,8 +61,6 @@ template<typename T>
 void
 f0(int x);
 ----
-
-
 
 
 
@@ -98,8 +92,6 @@ f1(T t);
 
 
 
-
-
 [#f2]
 == f2
 
@@ -115,8 +107,6 @@ template<typename T = int>
 void
 f2();
 ----
-
-
 
 
 
@@ -150,8 +140,6 @@ f3();
 
 
 
-
-
 [#g0]
 == g0
 
@@ -175,8 +163,6 @@ g0(int x);
 
 
 
-
-
 [#g1]
 == g1
 
@@ -192,8 +178,6 @@ template<int I = 1>
 void
 g1();
 ----
-
-
 
 
 
@@ -227,8 +211,6 @@ g2();
 
 
 
-
-
 [#h0]
 == h0
 
@@ -244,8 +226,6 @@ template<class x:auto>
 void
 h0(auto x);
 ----
-
-
 
 
 
@@ -281,8 +261,6 @@ h1(
 
 
 
-
-
 [#i]
 == i
 
@@ -308,8 +286,6 @@ i();
 
 
 
-
-
 [#j0]
 == j0
 
@@ -325,8 +301,6 @@ template<template<typename U> typename T>
 void
 j0();
 ----
-
-
 
 
 

@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,7 +8,7 @@
 |===
 | Name | Description 
 
-| xref:#f[`f`] 
+| <<#f,`f`>> 
 | 
     
 |===
@@ -19,7 +17,7 @@
 |===
 | Name | Description 
 
-| xref:#x[`x`] 
+| <<#x,`x`>> 
 | 
     
 |===
@@ -28,12 +26,10 @@
 |===
 | Name | Description 
 
-| xref:#C[`C`] 
+| <<#C,`C`>> 
 | 
     
 |===
-
-
 
 [#C]
 = C
@@ -51,8 +47,6 @@ concept C = pass:[sizeof(T) == sizeof(int)];
 ----
 
 
-
-
 [#f]
 == f
 
@@ -64,12 +58,10 @@ Declared in `<pass:[concept.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-template<xref:#C[C] T>
+template<<<#C,C>> T>
 void
 f();
 ----
-
-
 
 
 
@@ -89,7 +81,7 @@ Declared in `<pass:[concept.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:#C[C] auto x = 0;
+<<#C,C>> auto x = 0;
 ----
 
 

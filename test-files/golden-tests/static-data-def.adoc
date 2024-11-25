@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,10 +8,10 @@
 |===
 | Name | Description 
 
-| xref:#A[`A`] 
+| <<#A,`A`>> 
 | 
     
-| xref:#B[`B`] 
+| <<#B,`B`>> 
 | 
     
 |===
@@ -22,12 +20,10 @@
 |===
 | Name | Description 
 
-| xref:#f[`f`] 
+| <<#f,`f`>> 
 | 
     
 |===
-
-
 
 [#A]
 == A
@@ -49,38 +45,36 @@ struct A;
 |===
 | Name | Description 
 
-| xref:#A-v0[`v0`] 
+| <<#A-v0,`v0`>> 
 | 
     
-| xref:#A-v1[`v1`] 
+| <<#A-v1,`v1`>> 
 | 
     
-| xref:#A-v2[`v2`] 
+| <<#A-v2,`v2`>> 
 | 
     
-| xref:#A-v3[`v3`] 
+| <<#A-v3,`v3`>> 
 | 
     
-| xref:#A-v4[`v4`] 
+| <<#A-v4,`v4`>> 
 | 
     
-| xref:#A-v5[`v5`] 
+| <<#A-v5,`v5`>> 
 | 
     
-| xref:#A-v6[`v6`] 
+| <<#A-v6,`v6`>> 
 | 
     
-| xref:#A-v7[`v7`] 
+| <<#A-v7,`v7`>> 
 | 
     
 |===
 
 
 
-
-
 [#A-v0]
-== xref:#A[A]::v0
+== <<#A,A>>::v0
 
 
 
@@ -95,10 +89,8 @@ int v0 = 0;
 ----
 
 
-
-
 [#A-v1]
-== xref:#A[A]::v1
+== <<#A,A>>::v1
 
 
 
@@ -113,10 +105,8 @@ int v1 = 1;
 ----
 
 
-
-
 [#A-v2]
-== xref:#A[A]::v2
+== <<#A,A>>::v2
 
 
 
@@ -132,10 +122,8 @@ int const v2 = 2;
 ----
 
 
-
-
 [#A-v3]
-== xref:#A[A]::v3
+== <<#A,A>>::v3
 
 
 
@@ -150,10 +138,8 @@ int const v3 = 3;
 ----
 
 
-
-
 [#A-v4]
-== xref:#A[A]::v4
+== <<#A,A>>::v4
 
 
 
@@ -168,10 +154,8 @@ int const v4 = 4;
 ----
 
 
-
-
 [#A-v5]
-== xref:#A[A]::v5
+== <<#A,A>>::v5
 
 
 
@@ -186,10 +170,8 @@ int v5 = 5;
 ----
 
 
-
-
 [#A-v6]
-== xref:#A[A]::v6
+== <<#A,A>>::v6
 
 
 
@@ -204,10 +186,8 @@ int const v6 = 6;
 ----
 
 
-
-
 [#A-v7]
-== xref:#A[A]::v7
+== <<#A,A>>::v7
 
 
 
@@ -221,8 +201,6 @@ constexpr
 static
 int const v7 = 7;
 ----
-
-
 
 
 [#B]
@@ -244,20 +222,18 @@ struct B;
 |===
 | Name | Description 
 
-| xref:#B-x0[`x0`] 
+| <<#B-x0,`x0`>> 
 | 
     
-| xref:#B-x1[`x1`] 
+| <<#B-x1,`x1`>> 
 | 
     
 |===
 
 
 
-
-
 [#B-x0]
-== xref:#B[B]::x0
+== <<#B,B>>::x0
 
 
 
@@ -273,10 +249,8 @@ int const x0 = 0;
 ----
 
 
-
-
 [#B-x1]
-== xref:#B[B]::x1
+== <<#B,B>>::x1
 
 
 
@@ -291,8 +265,6 @@ static
 thread_local
 int const x1 = 0;
 ----
-
-
 
 
 [#f]

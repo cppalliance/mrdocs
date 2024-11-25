@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,7 +8,7 @@
 |===
 | Name | Description 
 
-| xref:#B[`B`] 
+| <<#B,`B`>> 
 | 
     
 |===
@@ -19,12 +17,10 @@
 |===
 | Name | Description 
 
-| xref:#f[`f`] 
+| <<#f,`f`>> 
 | 
     
 |===
-
-
 
 [#f]
 == f
@@ -40,8 +36,6 @@ Declared in `<pass:[local-class.cpp]>`
 auto
 f();
 ----
-
-
 
 
 

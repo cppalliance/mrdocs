@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,15 +8,13 @@
 |===
 | Name | Description 
 
-| xref:#A-0e[`A`] 
+| <<#A-0e,`A`>> 
 | 
     
-| xref:#A-00[`A<int>`] 
+| <<#A-00,`A<int>`>> 
 | 
     
 |===
-
-
 
 [#A-0e]
 == A
@@ -40,17 +36,15 @@ struct A;
 |===
 | Name | Description 
 
-| xref:#A-0e-f[`f`] 
+| <<#A-0e-f,`f`>> 
 | 
     
 |===
 
 
 
-
-
 [#A-0e-f]
-== xref:#A-0e[A]::f
+== <<#A-0e,A>>::f
 
 
 
@@ -71,8 +65,6 @@ f();
 
 
 
-
-
 [#A-00]
 == A
 
@@ -85,7 +77,7 @@ Declared in `<pass:[temp/ct_expl.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-struct xref:#A-0e[A]<int>;
+struct <<#A-0e,A>><int>;
 ----
 
 ===  Member Functions
@@ -93,17 +85,15 @@ struct xref:#A-0e[A]<int>;
 |===
 | Name | Description 
 
-| xref:#A-00-g[`g`] 
+| <<#A-00-g,`g`>> 
 | 
     
 |===
 
 
 
-
-
 [#A-00-g]
-== xref:#A-00[A]<int>::g
+== <<#A-00,A>><int>::g
 
 
 

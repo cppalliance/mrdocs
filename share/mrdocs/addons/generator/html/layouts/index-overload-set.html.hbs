@@ -1,6 +1,5 @@
 {{! A page when the symbol type is "overloads" }}
-{{#if relfileprefix}}<meta name="relfileprefix" content="{{relfileprefix}}">{{/if}}
-<div id="{{#if @root.config.multipage}}{{symbol.id}}{{else}}{{symbol.ref}}{{/if}}">
+<div id="{{{symbol.anchor}}}">
 
 <h1>{{#if symbol.name}}Overload set {{>types/nested-name-specifier symbol=symbol.parent}}{{symbol.name}}{{else}}Unnamed overload set{{/if}}</h1>
 
@@ -11,7 +10,7 @@
 <p>{{member.doc.brief}}</p>
 
 <pre><code class="language-cpp">{{> (concat 'signature' '/' (lookup member 'kind')) symbol=member}};</code></pre>
-<a href="{{ref}}"><em>» more...</em></a>
+<a href="{{{relativize member.url}}}"><em>» more...</em></a>
 
 {{/each}}
 

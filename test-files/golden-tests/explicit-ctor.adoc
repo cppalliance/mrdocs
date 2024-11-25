@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,21 +8,19 @@
 |===
 | Name | Description 
 
-| xref:#Explicit[`Explicit`] 
+| <<#Explicit,`Explicit`>> 
 | 
     
-| xref:#ExplicitExpression[`ExplicitExpression`] 
+| <<#ExplicitExpression,`ExplicitExpression`>> 
 | 
     
-| xref:#ExplicitFalse[`ExplicitFalse`] 
+| <<#ExplicitFalse,`ExplicitFalse`>> 
 | 
     
-| xref:#ExplicitTrue[`ExplicitTrue`] 
+| <<#ExplicitTrue,`ExplicitTrue`>> 
 | 
     
 |===
-
-
 
 [#Explicit]
 == Explicit
@@ -45,16 +41,14 @@ struct Explicit;
 |===
 | Name | Description 
 
-| xref:Explicit-2constructor[`Explicit`]         [.small]#[constructor]#
+| <<#Explicit-2constructor,`Explicit`>>         [.small]#[constructor]#
 | 
 |===
 
 
 
-
 [#pass:[Explicit-2constructor]]
-
-== xref:#Explicit[Explicit]::Explicit
+== <<#Explicit,Explicit>>::Explicit
 
   
 
@@ -64,25 +58,25 @@ struct Explicit;
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 explicit
-xref:#Explicit-2constructor-02[Explicit]();
+<<#Explicit-2constructor-02,Explicit>>();
 ----
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 explicit
-xref:#Explicit-2constructor-00[Explicit](xref:#Explicit[Explicit] const&);
+<<#Explicit-2constructor-00,Explicit>>(<<#Explicit,Explicit>> const&);
 ----
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 explicit
-xref:#Explicit-2constructor-0b[Explicit](xref:#Explicit[Explicit]&&) noexcept;
+<<#Explicit-2constructor-0b,Explicit>>(<<#Explicit,Explicit>>&&) noexcept;
 ----
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 explicit
-xref:#Explicit-2constructor-03[Explicit](
+<<#Explicit-2constructor-03,Explicit>>(
     int,
     int);
 ----
@@ -94,10 +88,8 @@ xref:#Explicit-2constructor-03[Explicit](
 
 
 
-
-
 [#Explicit-2constructor-02]
-== xref:#Explicit[Explicit]::Explicit
+== <<#Explicit,Explicit>>::Explicit
 
 
 
@@ -118,10 +110,8 @@ Explicit();
 
 
 
-
-
 [#Explicit-2constructor-00]
-== xref:#Explicit[Explicit]::Explicit
+== <<#Explicit,Explicit>>::Explicit
 
 
 
@@ -132,10 +122,8 @@ Declared in `<pass:[explicit-ctor.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 explicit
-Explicit(xref:#Explicit[Explicit] const&);
+Explicit(<<#Explicit,Explicit>> const&);
 ----
-
-
 
 
 
@@ -145,7 +133,7 @@ Explicit(xref:#Explicit[Explicit] const&);
 
 
 [#Explicit-2constructor-0b]
-== xref:#Explicit[Explicit]::Explicit
+== <<#Explicit,Explicit>>::Explicit
 
 
 
@@ -156,7 +144,7 @@ Declared in `<pass:[explicit-ctor.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 explicit
-Explicit(xref:#Explicit[Explicit]&&) noexcept;
+Explicit(<<#Explicit,Explicit>>&&) noexcept;
 ----
 
 
@@ -166,10 +154,8 @@ Explicit(xref:#Explicit[Explicit]&&) noexcept;
 
 
 
-
-
 [#Explicit-2constructor-03]
-== xref:#Explicit[Explicit]::Explicit
+== <<#Explicit,Explicit>>::Explicit
 
 
 
@@ -184,8 +170,6 @@ Explicit(
     int,
     int);
 ----
-
-
 
 
 
@@ -213,16 +197,14 @@ struct ExplicitTrue;
 |===
 | Name | Description 
 
-| xref:ExplicitTrue-2constructor[`ExplicitTrue`]         [.small]#[constructor]#
+| <<#ExplicitTrue-2constructor,`ExplicitTrue`>>         [.small]#[constructor]#
 | 
 |===
 
 
 
-
 [#pass:[ExplicitTrue-2constructor]]
-
-== xref:#ExplicitTrue[ExplicitTrue]::ExplicitTrue
+== <<#ExplicitTrue,ExplicitTrue>>::ExplicitTrue
 
   
 
@@ -232,25 +214,25 @@ struct ExplicitTrue;
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 pass:[explicit(true)]
-xref:#ExplicitTrue-2constructor-0d[ExplicitTrue]();
+<<#ExplicitTrue-2constructor-0d,ExplicitTrue>>();
 ----
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 pass:[explicit(true)]
-xref:#ExplicitTrue-2constructor-04[ExplicitTrue](xref:#ExplicitTrue[ExplicitTrue] const&);
+<<#ExplicitTrue-2constructor-04,ExplicitTrue>>(<<#ExplicitTrue,ExplicitTrue>> const&);
 ----
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 pass:[explicit(true)]
-xref:#ExplicitTrue-2constructor-08[ExplicitTrue](xref:#ExplicitTrue[ExplicitTrue]&&) noexcept;
+<<#ExplicitTrue-2constructor-08,ExplicitTrue>>(<<#ExplicitTrue,ExplicitTrue>>&&) noexcept;
 ----
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 pass:[explicit(true)]
-xref:#ExplicitTrue-2constructor-05[ExplicitTrue](
+<<#ExplicitTrue-2constructor-05,ExplicitTrue>>(
     int,
     int);
 ----
@@ -262,10 +244,8 @@ xref:#ExplicitTrue-2constructor-05[ExplicitTrue](
 
 
 
-
-
 [#ExplicitTrue-2constructor-0d]
-== xref:#ExplicitTrue[ExplicitTrue]::ExplicitTrue
+== <<#ExplicitTrue,ExplicitTrue>>::ExplicitTrue
 
 
 
@@ -286,10 +266,8 @@ ExplicitTrue();
 
 
 
-
-
 [#ExplicitTrue-2constructor-04]
-== xref:#ExplicitTrue[ExplicitTrue]::ExplicitTrue
+== <<#ExplicitTrue,ExplicitTrue>>::ExplicitTrue
 
 
 
@@ -300,10 +278,8 @@ Declared in `<pass:[explicit-ctor.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 pass:[explicit(true)]
-ExplicitTrue(xref:#ExplicitTrue[ExplicitTrue] const&);
+ExplicitTrue(<<#ExplicitTrue,ExplicitTrue>> const&);
 ----
-
-
 
 
 
@@ -313,7 +289,7 @@ ExplicitTrue(xref:#ExplicitTrue[ExplicitTrue] const&);
 
 
 [#ExplicitTrue-2constructor-08]
-== xref:#ExplicitTrue[ExplicitTrue]::ExplicitTrue
+== <<#ExplicitTrue,ExplicitTrue>>::ExplicitTrue
 
 
 
@@ -324,7 +300,7 @@ Declared in `<pass:[explicit-ctor.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 pass:[explicit(true)]
-ExplicitTrue(xref:#ExplicitTrue[ExplicitTrue]&&) noexcept;
+ExplicitTrue(<<#ExplicitTrue,ExplicitTrue>>&&) noexcept;
 ----
 
 
@@ -334,10 +310,8 @@ ExplicitTrue(xref:#ExplicitTrue[ExplicitTrue]&&) noexcept;
 
 
 
-
-
 [#ExplicitTrue-2constructor-05]
-== xref:#ExplicitTrue[ExplicitTrue]::ExplicitTrue
+== <<#ExplicitTrue,ExplicitTrue>>::ExplicitTrue
 
 
 
@@ -352,8 +326,6 @@ ExplicitTrue(
     int,
     int);
 ----
-
-
 
 
 
@@ -381,16 +353,14 @@ struct ExplicitFalse;
 |===
 | Name | Description 
 
-| xref:ExplicitFalse-2constructor[`ExplicitFalse`]         [.small]#[constructor]#
+| <<#ExplicitFalse-2constructor,`ExplicitFalse`>>         [.small]#[constructor]#
 | 
 |===
 
 
 
-
 [#pass:[ExplicitFalse-2constructor]]
-
-== xref:#ExplicitFalse[ExplicitFalse]::ExplicitFalse
+== <<#ExplicitFalse,ExplicitFalse>>::ExplicitFalse
 
   
 
@@ -400,25 +370,25 @@ struct ExplicitFalse;
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 pass:[explicit(false)]
-xref:#ExplicitFalse-2constructor-01[ExplicitFalse]();
+<<#ExplicitFalse-2constructor-01,ExplicitFalse>>();
 ----
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 pass:[explicit(false)]
-xref:#ExplicitFalse-2constructor-08[ExplicitFalse](xref:#ExplicitFalse[ExplicitFalse] const&);
+<<#ExplicitFalse-2constructor-08,ExplicitFalse>>(<<#ExplicitFalse,ExplicitFalse>> const&);
 ----
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 pass:[explicit(false)]
-xref:#ExplicitFalse-2constructor-0a[ExplicitFalse](xref:#ExplicitFalse[ExplicitFalse]&&) noexcept;
+<<#ExplicitFalse-2constructor-0a,ExplicitFalse>>(<<#ExplicitFalse,ExplicitFalse>>&&) noexcept;
 ----
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 pass:[explicit(false)]
-xref:#ExplicitFalse-2constructor-04[ExplicitFalse](
+<<#ExplicitFalse-2constructor-04,ExplicitFalse>>(
     int,
     int);
 ----
@@ -430,10 +400,8 @@ xref:#ExplicitFalse-2constructor-04[ExplicitFalse](
 
 
 
-
-
 [#ExplicitFalse-2constructor-01]
-== xref:#ExplicitFalse[ExplicitFalse]::ExplicitFalse
+== <<#ExplicitFalse,ExplicitFalse>>::ExplicitFalse
 
 
 
@@ -454,10 +422,8 @@ ExplicitFalse();
 
 
 
-
-
 [#ExplicitFalse-2constructor-08]
-== xref:#ExplicitFalse[ExplicitFalse]::ExplicitFalse
+== <<#ExplicitFalse,ExplicitFalse>>::ExplicitFalse
 
 
 
@@ -468,10 +434,8 @@ Declared in `<pass:[explicit-ctor.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 pass:[explicit(false)]
-ExplicitFalse(xref:#ExplicitFalse[ExplicitFalse] const&);
+ExplicitFalse(<<#ExplicitFalse,ExplicitFalse>> const&);
 ----
-
-
 
 
 
@@ -481,7 +445,7 @@ ExplicitFalse(xref:#ExplicitFalse[ExplicitFalse] const&);
 
 
 [#ExplicitFalse-2constructor-0a]
-== xref:#ExplicitFalse[ExplicitFalse]::ExplicitFalse
+== <<#ExplicitFalse,ExplicitFalse>>::ExplicitFalse
 
 
 
@@ -492,7 +456,7 @@ Declared in `<pass:[explicit-ctor.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 pass:[explicit(false)]
-ExplicitFalse(xref:#ExplicitFalse[ExplicitFalse]&&) noexcept;
+ExplicitFalse(<<#ExplicitFalse,ExplicitFalse>>&&) noexcept;
 ----
 
 
@@ -502,10 +466,8 @@ ExplicitFalse(xref:#ExplicitFalse[ExplicitFalse]&&) noexcept;
 
 
 
-
-
 [#ExplicitFalse-2constructor-04]
-== xref:#ExplicitFalse[ExplicitFalse]::ExplicitFalse
+== <<#ExplicitFalse,ExplicitFalse>>::ExplicitFalse
 
 
 
@@ -520,8 +482,6 @@ ExplicitFalse(
     int,
     int);
 ----
-
-
 
 
 
@@ -550,16 +510,14 @@ struct ExplicitExpression;
 |===
 | Name | Description 
 
-| xref:ExplicitExpression-2constructor[`ExplicitExpression`]         [.small]#[constructor]#
+| <<#ExplicitExpression-2constructor,`ExplicitExpression`>>         [.small]#[constructor]#
 | 
 |===
 
 
 
-
 [#pass:[ExplicitExpression-2constructor]]
-
-== xref:#ExplicitExpression[ExplicitExpression]::ExplicitExpression
+== <<#ExplicitExpression,ExplicitExpression>>::ExplicitExpression
 
   
 
@@ -569,25 +527,25 @@ struct ExplicitExpression;
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 pass:[explicit(B)]
-xref:#ExplicitExpression-2constructor-0b[ExplicitExpression]();
+<<#ExplicitExpression-2constructor-0b,ExplicitExpression>>();
 ----
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 pass:[explicit(B)]
-xref:#ExplicitExpression-2constructor-04[ExplicitExpression](xref:#ExplicitExpression[ExplicitExpression] const&);
+<<#ExplicitExpression-2constructor-04,ExplicitExpression>>(<<#ExplicitExpression,ExplicitExpression>> const&);
 ----
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 pass:[explicit(B)]
-xref:#ExplicitExpression-2constructor-08[ExplicitExpression](xref:#ExplicitExpression[ExplicitExpression]&&) noexcept;
+<<#ExplicitExpression-2constructor-08,ExplicitExpression>>(<<#ExplicitExpression,ExplicitExpression>>&&) noexcept;
 ----
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 pass:[explicit(B)]
-xref:#ExplicitExpression-2constructor-02[ExplicitExpression](
+<<#ExplicitExpression-2constructor-02,ExplicitExpression>>(
     int,
     int);
 ----
@@ -599,10 +557,8 @@ xref:#ExplicitExpression-2constructor-02[ExplicitExpression](
 
 
 
-
-
 [#ExplicitExpression-2constructor-0b]
-== xref:#ExplicitExpression[ExplicitExpression]::ExplicitExpression
+== <<#ExplicitExpression,ExplicitExpression>>::ExplicitExpression
 
 
 
@@ -623,10 +579,8 @@ ExplicitExpression();
 
 
 
-
-
 [#ExplicitExpression-2constructor-04]
-== xref:#ExplicitExpression[ExplicitExpression]::ExplicitExpression
+== <<#ExplicitExpression,ExplicitExpression>>::ExplicitExpression
 
 
 
@@ -637,10 +591,8 @@ Declared in `<pass:[explicit-ctor.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 pass:[explicit(B)]
-ExplicitExpression(xref:#ExplicitExpression[ExplicitExpression] const&);
+ExplicitExpression(<<#ExplicitExpression,ExplicitExpression>> const&);
 ----
-
-
 
 
 
@@ -650,7 +602,7 @@ ExplicitExpression(xref:#ExplicitExpression[ExplicitExpression] const&);
 
 
 [#ExplicitExpression-2constructor-08]
-== xref:#ExplicitExpression[ExplicitExpression]::ExplicitExpression
+== <<#ExplicitExpression,ExplicitExpression>>::ExplicitExpression
 
 
 
@@ -661,7 +613,7 @@ Declared in `<pass:[explicit-ctor.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 pass:[explicit(B)]
-ExplicitExpression(xref:#ExplicitExpression[ExplicitExpression]&&) noexcept;
+ExplicitExpression(<<#ExplicitExpression,ExplicitExpression>>&&) noexcept;
 ----
 
 
@@ -671,10 +623,8 @@ ExplicitExpression(xref:#ExplicitExpression[ExplicitExpression]&&) noexcept;
 
 
 
-
-
 [#ExplicitExpression-2constructor-02]
-== xref:#ExplicitExpression[ExplicitExpression]::ExplicitExpression
+== <<#ExplicitExpression,ExplicitExpression>>::ExplicitExpression
 
 
 

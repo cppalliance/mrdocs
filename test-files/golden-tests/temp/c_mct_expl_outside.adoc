@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,12 +8,10 @@
 |===
 | Name | Description 
 
-| xref:#A[`A`] 
+| <<#A,`A`>> 
 | 
     
 |===
-
-
 
 [#A]
 == A
@@ -36,20 +32,18 @@ struct A;
 |===
 | Name | Description 
 
-| xref:#A-B-04[`B`] 
+| <<#A-B-04,`B`>> 
 | 
     
-| xref:#A-B-01[`B<int>`] 
+| <<#A-B-01,`B<int>`>> 
 | 
     
 |===
 
 
 
-
-
 [#A-B-04]
-== xref:#A[A]::B
+== <<#A,A>>::B
 
 
 
@@ -68,17 +62,15 @@ struct B;
 |===
 | Name | Description 
 
-| xref:#A-B-04-f[`f`] 
+| <<#A-B-04-f,`f`>> 
 | 
     
 |===
 
 
 
-
-
 [#A-B-04-f]
-== xref:#A[A]::xref:#A-B-04[B]::f
+== <<#A,A>>::<<#A-B-04,B>>::f
 
 
 
@@ -99,10 +91,8 @@ f();
 
 
 
-
-
 [#A-B-01]
-== xref:#A[A]::B
+== <<#A,A>>::B
 
 
 
@@ -113,7 +103,7 @@ Declared in `<pass:[temp/c_mct_expl_outside.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-struct xref:#A-B-04[B]<int>;
+struct <<#A-B-04,B>><int>;
 ----
 
 ===  Member Functions
@@ -121,17 +111,15 @@ struct xref:#A-B-04[B]<int>;
 |===
 | Name | Description 
 
-| xref:#A-B-01-g[`g`] 
+| <<#A-B-01-g,`g`>> 
 | 
     
 |===
 
 
 
-
-
 [#A-B-01-g]
-== xref:#A[A]::xref:#A-B-01[B]<int>::g
+== <<#A,A>>::<<#A-B-01,B>><int>::g
 
 
 

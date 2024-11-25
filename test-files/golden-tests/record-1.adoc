@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,12 +8,10 @@
 |===
 | Name | Description 
 
-| xref:#T[`T`] 
+| <<#T,`T`>> 
 | 
     
 |===
-
-
 
 [#T]
 == T
@@ -36,10 +32,10 @@ struct T;
 |===
 | Name | Description 
 
-| xref:#T-U1[`U1`] 
+| <<#T-U1,`U1`>> 
 | 
     
-| xref:#T-U2[`U2`] 
+| <<#T-U2,`U2`>> 
 | 
     
 |===
@@ -48,13 +44,13 @@ struct T;
 |===
 | Name | Description 
 
-| xref:#T-f1[`f1`] 
+| <<#T-f1,`f1`>> 
 | 
     
-| xref:#T-f2[`f2`] 
+| <<#T-f2,`f2`>> 
 | 
     
-| xref:#T-f3[`f3`] 
+| <<#T-f3,`f3`>> 
 | 
     
 |===
@@ -63,17 +59,17 @@ struct T;
 |===
 | Name | Description 
 
-| xref:#T-g1[`g1`] 
+| <<#T-g1,`g1`>> 
 | 
 brief-g1
 
     
-| xref:#T-g2[`g2`] 
+| <<#T-g2,`g2`>> 
 | 
 brief-g2
 
     
-| xref:#T-g3[`g3`] 
+| <<#T-g3,`g3`>> 
 | 
 brief-g3
 
@@ -82,10 +78,8 @@ brief-g3
 
 
 
-
-
 [#T-U1]
-== xref:#T[T]::U1
+== <<#T,T>>::U1
 
 
 
@@ -99,10 +93,8 @@ using U1 = int;
 ----
 
 
-
-
 [#T-U2]
-== xref:#T[T]::U2
+== <<#T,T>>::U2
 
 
 
@@ -116,10 +108,8 @@ typedef char U2;
 ----
 
 
-
-
 [#T-f1]
-== xref:#T[T]::f1
+== <<#T,T>>::f1
 
 
 
@@ -140,10 +130,8 @@ f1();
 
 
 
-
-
 [#T-f2]
-== xref:#T[T]::f2
+== <<#T,T>>::f2
 
 
 
@@ -164,10 +152,8 @@ f2();
 
 
 
-
-
 [#T-f3]
-== xref:#T[T]::f3
+== <<#T,T>>::f3
 
 
 
@@ -188,10 +174,8 @@ f3();
 
 
 
-
-
 [#T-g1]
-== xref:#T[T]::g1
+== <<#T,T>>::g1
 
 
 brief-g1
@@ -220,10 +204,8 @@ desc
 
 
 
-
-
 [#T-g2]
-== xref:#T[T]::g2
+== <<#T,T>>::g2
 
 
 brief-g2
@@ -252,10 +234,8 @@ the number 2
 
 
 
-
-
 [#T-g3]
-== xref:#T[T]::g3
+== <<#T,T>>::g3
 
 
 brief-g3
