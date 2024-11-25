@@ -1880,6 +1880,15 @@ evalExpr(
             dom::Object cb = dom::newObject<HbsHelperObjectImpl>();
             cb.set("name", helper);
             cb.set("context", context);
+            dom::Object data;
+            if (!state.context.empty())
+            {
+                data = createFrame(state.context);
+            }
+            data.set("root", state.rootContext);
+            cb.set("data", data);
+            cb.set("root", state.rootContext);
+            cb.set("log", logger_);
             setupArgs(all, context, state, args, cb, opt);
             return Res{fn.call(args).value(), true, false, true};
             MRDOCS_UNREACHABLE();
@@ -2414,7 +2423,13 @@ renderExpression(
         dom::Object cb = dom::newObject<HbsHelperObjectImpl>();
         cb.set("name", tag.helper);
         cb.set("context", context);
-        cb.set("data", state.context);
+        dom::Object data;
+        if (!state.context.empty())
+        {
+            data = createFrame(state.context);
+        }
+        data.set("root", state.rootContext);
+        cb.set("data", data);
         cb.set("log", logger_);
         HandlebarsOptions noStrict = opt;
         noStrict.strict = false;
@@ -2449,7 +2464,13 @@ renderExpression(
             dom::Object cb = dom::newObject<HbsHelperObjectImpl>();
             cb.set("name", helper_expr);
             cb.set("context", context);
-            cb.set("data", state.context);
+            dom::Object data;
+            if (!state.context.empty())
+            {
+                data = createFrame(state.context);
+            }
+            data.set("root", state.rootContext);
+            cb.set("data", data);
             cb.set("log", logger_);
             HandlebarsOptions noStrict = opt;
             noStrict.strict = false;
@@ -2487,7 +2508,13 @@ renderExpression(
     dom::Object cb = dom::newObject<HbsHelperObjectImpl>();
     cb.set("name", helper_expr);
     cb.set("context", context);
-    cb.set("data", state.context);
+    dom::Object data;
+    if (!state.context.empty())
+    {
+        data = createFrame(state.context);
+    }
+    data.set("root", state.rootContext);
+    cb.set("data", data);
     cb.set("log", logger_);
     HandlebarsOptions noStrict = opt;
     noStrict.strict = false;
@@ -3071,7 +3098,13 @@ renderBlock(
     dom::Object cb = dom::newObject<HbsHelperObjectImpl>();
     cb.set("name", tag.helper);
     cb.set("context", context);
-    cb.set("data", state.context);
+    dom::Object data;
+    if (!state.context.empty())
+    {
+        data = createFrame(state.context);
+    }
+    data.set("root", state.rootContext);
+    cb.set("data", data);
     cb.set("log", logger_);
     HandlebarsOptions noStrict = opt;
     noStrict.strict = opt.strict && emulateMustache;
