@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,12 +8,10 @@
 |===
 | Name | Description 
 
-| xref:#A[`A`] 
+| <<#A,`A`>> 
 | 
     
 |===
-
-
 
 [#A]
 == A
@@ -37,23 +33,21 @@ struct A;
 |===
 | Name | Description 
 
-| xref:#A-B-0a[`B`] 
+| <<#A-B-0a,`B`>> 
 | 
     
-| xref:#A-B-06[`B<U*, T>`] 
+| <<#A-B-06,`B<U*, T>`>> 
 | 
     
-| xref:#A-B-04[`B<T, long>`] 
+| <<#A-B-04,`B<T, long>`>> 
 | 
     
 |===
 
 
 
-
-
 [#A-B-0a]
-== xref:#A[A]::B
+== <<#A,A>>::B
 
 
 
@@ -72,10 +66,8 @@ struct B;
 
 
 
-
-
 [#A-B-06]
-== xref:#A[A]::B
+== <<#A,A>>::B
 
 
 
@@ -86,16 +78,14 @@ Declared in `<pass:[class-template-partial-spec.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename U>
-struct xref:#A-B-0a[B]<U*, T>;
+struct <<#A-B-0a,B>><U*, T>;
 ----
 
 
 
 
-
-
 [#A-B-04]
-== xref:#A[A]::B
+== <<#A,A>>::B
 
 
 
@@ -106,7 +96,7 @@ Declared in `<pass:[class-template-partial-spec.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-struct xref:#A-B-0a[B]<T, long>;
+struct <<#A-B-0a,B>><T, long>;
 ----
 
 

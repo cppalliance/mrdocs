@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,12 +8,10 @@
 |===
 | Name | Description 
 
-| xref:#T[`T`] 
+| <<#T,`T`>> 
 | 
     
 |===
-
-
 
 [#T]
 == T
@@ -36,17 +32,15 @@ struct T;
 |===
 | Name | Description 
 
-| xref:#T-operator_plus[`pass:[operator+]`] 
+| <<#T-operator_plus,`pass:[operator+]`>> 
 | 
     
 |===
 
 
 
-
-
 [#T-operator_plus]
-== xref:#T[T]::pass:[operator+]
+== <<#T,T>>::pass:[operator+]
 
 
 
@@ -56,7 +50,7 @@ Declared in `<pass:[overloaded-op-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:#T[T]
+<<#T,T>>
 pass:[operator+]();
 ----
 

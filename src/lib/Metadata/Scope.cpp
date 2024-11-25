@@ -37,7 +37,7 @@ generateScopeOverloadsArray(
         }
         else /* if constexpr(std::is_same_v<OverloadSet, BareT>) */
         {
-            res.push_back(domCorpus.getOverloads(C));
+            res.push_back(domCorpus.construct(C));
         }
     });
     return res;

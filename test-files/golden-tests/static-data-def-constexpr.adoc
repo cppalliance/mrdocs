@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,15 +8,13 @@
 |===
 | Name | Description 
 
-| xref:#S[`S`] 
+| <<#S,`S`>> 
 | 
     
-| xref:#T[`T`] 
+| <<#T,`T`>> 
 | 
     
 |===
-
-
 
 [#S]
 == S
@@ -39,17 +35,15 @@ struct S;
 |===
 | Name | Description 
 
-| xref:#S-s[`s`] 
+| <<#S-s,`s`>> 
 | 
     
 |===
 
 
 
-
-
 [#S-s]
-== xref:#S[S]::s
+== <<#S,S>>::s
 
 
 
@@ -61,10 +55,8 @@ Declared in `<pass:[static-data-def-constexpr.cpp]>`
 ----
 constexpr
 static
-xref:#S[S] const s = pass:[S{}];
+<<#S,S>> const s = pass:[S{}];
 ----
-
-
 
 
 [#T]
@@ -86,17 +78,15 @@ struct T;
 |===
 | Name | Description 
 
-| xref:#T-t[`t`] 
+| <<#T-t,`t`>> 
 | 
     
 |===
 
 
 
-
-
 [#T-t]
-== xref:#T[T]::t
+== <<#T,T>>::t
 
 
 

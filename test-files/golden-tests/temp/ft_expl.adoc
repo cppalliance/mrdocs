@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,13 +8,11 @@
 |===
 | Name | Description 
 
-| xref:f[`f`] 
+| <<#f,`f`>> 
 | 
 |===
 
-
 [#f]
-
 == f
 
   
@@ -28,18 +24,16 @@
 ----
 template<typename T>
 void
-xref:#f-03[f]();
+<<#f-03,f>>();
 ----
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
 void
-xref:#f-0c[f]<int>();
+<<#f-0c,f>><int>();
 ----
   
-
-
 
 
 
@@ -70,8 +64,6 @@ f();
 
 
 
-
-
 [#f-0c]
 == f
 
@@ -85,7 +77,7 @@ Declared in `<pass:[temp/ft_expl.cpp]>`
 ----
 template<>
 void
-xref:#f-03[f]<int>();
+<<#f-03,f>><int>();
 ----
 
 

@@ -212,7 +212,7 @@ operator()(doc::Reference const& I)
     if(I.id == SymbolID::invalid)
         return (*this)(static_cast<const doc::Text&>(I));
     fmt::format_to(std::back_inserter(dest_), "<a href=\"{}\">{}</a>",
-        corpus_.getXref(corpus_->get(I.id)), I.string);
+        corpus_.getURL(corpus_->get(I.id)), I.string);
 }
 
 void

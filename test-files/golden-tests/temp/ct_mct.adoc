@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,12 +8,10 @@
 |===
 | Name | Description 
 
-| xref:#A[`A`] 
+| <<#A,`A`>> 
 | 
     
 |===
-
-
 
 [#A]
 == A
@@ -37,17 +33,15 @@ struct A;
 |===
 | Name | Description 
 
-| xref:#A-B[`B`] 
+| <<#A-B,`B`>> 
 | 
     
 |===
 
 
 
-
-
 [#A-B]
-== xref:#A[A]::B
+== <<#A,A>>::B
 
 
 
@@ -66,17 +60,15 @@ struct B;
 |===
 | Name | Description 
 
-| xref:#A-B-f[`f`] 
+| <<#A-B-f,`f`>> 
 | 
     
 |===
 
 
 
-
-
 [#A-B-f]
-== xref:#A[A]::xref:#A-B[B]::f
+== <<#A,A>>::<<#A-B,B>>::f
 
 
 

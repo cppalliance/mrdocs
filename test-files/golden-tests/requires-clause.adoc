@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,7 +8,7 @@
 |===
 | Name | Description 
 
-| xref:#A[`A`] 
+| <<#A,`A`>> 
 | 
     
 |===
@@ -19,15 +17,13 @@
 |===
 | Name | Description 
 
-| xref:f[`f`] 
+| <<#f,`f`>> 
 | 
-| xref:g[`g`] 
+| <<#g,`g`>> 
 | 
 |===
 
-
 [#f]
-
 == f
 
   
@@ -39,18 +35,16 @@
 ----
 template<typename T>
 void
-xref:#f-05[f]() requires pass:[(sizeof(T) == 4)];
+<<#f-05,f>>() requires pass:[(sizeof(T) == 4)];
 ----
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 void
-xref:#f-08[f]() requires pass:[(sizeof(T) == 2)];
+<<#f-08,f>>() requires pass:[(sizeof(T) == 2)];
 ----
   
-
-
 
 
 
@@ -73,8 +67,6 @@ template<typename T>
 void
 f() requires pass:[(sizeof(T) == 4)];
 ----
-
-
 
 
 
@@ -106,9 +98,7 @@ f() requires pass:[(sizeof(T) == 2)];
 
 
 
-
 [#g]
-
 == g
 
   
@@ -120,18 +110,16 @@ f() requires pass:[(sizeof(T) == 2)];
 ----
 template<typename T> requires pass:[(sizeof(T) == 4)]
 void
-xref:#g-0a[g]();
+<<#g-0a,g>>();
 ----
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T> requires pass:[(sizeof(U) == 2)]
 void
-xref:#g-0c[g]();
+<<#g-0c,g>>();
 ----
   
-
-
 
 
 
@@ -162,8 +150,6 @@ g();
 
 
 
-
-
 [#g-0c]
 == g
 
@@ -179,8 +165,6 @@ template<typename T> requires pass:[(sizeof(U) == 2)]
 void
 g();
 ----
-
-
 
 
 

@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,168 +8,166 @@
 |===
 | Name | Description 
 
-| xref:#R0[`R0`] 
+| <<#R0,`R0`>> 
 | 
     
-| xref:#R1[`R1`] 
+| <<#R1,`R1`>> 
 | 
     
-| xref:#R10[`R10`] 
+| <<#R10,`R10`>> 
 | 
     
-| xref:#R11[`R11`] 
+| <<#R11,`R11`>> 
 | 
     
-| xref:#R12[`R12`] 
+| <<#R12,`R12`>> 
 | 
     
-| xref:#R13[`R13`] 
+| <<#R13,`R13`>> 
 | 
     
-| xref:#R14[`R14`] 
+| <<#R14,`R14`>> 
 | 
     
-| xref:#R15[`R15`] 
+| <<#R15,`R15`>> 
 | 
     
-| xref:#R16[`R16`] 
+| <<#R16,`R16`>> 
 | 
     
-| xref:#R17[`R17`] 
+| <<#R17,`R17`>> 
 | 
     
-| xref:#R18[`R18`] 
+| <<#R18,`R18`>> 
 | 
     
-| xref:#R19[`R19`] 
+| <<#R19,`R19`>> 
 | 
     
-| xref:#R2[`R2`] 
+| <<#R2,`R2`>> 
 | 
     
-| xref:#R20[`R20`] 
+| <<#R20,`R20`>> 
 | 
     
-| xref:#R21[`R21`] 
+| <<#R21,`R21`>> 
 | 
     
-| xref:#R22[`R22`] 
+| <<#R22,`R22`>> 
 | 
     
-| xref:#R23[`R23`] 
+| <<#R23,`R23`>> 
 | 
     
-| xref:#R24[`R24`] 
+| <<#R24,`R24`>> 
 | 
     
-| xref:#R25[`R25`] 
+| <<#R25,`R25`>> 
 | 
     
-| xref:#R26[`R26`] 
+| <<#R26,`R26`>> 
 | 
     
-| xref:#R27[`R27`] 
+| <<#R27,`R27`>> 
 | 
     
-| xref:#R28[`R28`] 
+| <<#R28,`R28`>> 
 | 
     
-| xref:#R29[`R29`] 
+| <<#R29,`R29`>> 
 | 
     
-| xref:#R3[`R3`] 
+| <<#R3,`R3`>> 
 | 
     
-| xref:#R30[`R30`] 
+| <<#R30,`R30`>> 
 | 
     
-| xref:#R31[`R31`] 
+| <<#R31,`R31`>> 
 | 
     
-| xref:#R32[`R32`] 
+| <<#R32,`R32`>> 
 | 
     
-| xref:#R33[`R33`] 
+| <<#R33,`R33`>> 
 | 
     
-| xref:#R34[`R34`] 
+| <<#R34,`R34`>> 
 | 
     
-| xref:#R35[`R35`] 
+| <<#R35,`R35`>> 
 | 
     
-| xref:#R36[`R36`] 
+| <<#R36,`R36`>> 
 | 
     
-| xref:#R37[`R37`] 
+| <<#R37,`R37`>> 
 | 
     
-| xref:#R38[`R38`] 
+| <<#R38,`R38`>> 
 | 
     
-| xref:#R39[`R39`] 
+| <<#R39,`R39`>> 
 | 
     
-| xref:#R4[`R4`] 
+| <<#R4,`R4`>> 
 | 
     
-| xref:#R40[`R40`] 
+| <<#R40,`R40`>> 
 | 
     
-| xref:#R41[`R41`] 
+| <<#R41,`R41`>> 
 | 
     
-| xref:#R42[`R42`] 
+| <<#R42,`R42`>> 
 | 
     
-| xref:#R43[`R43`] 
+| <<#R43,`R43`>> 
 | 
     
-| xref:#R44[`R44`] 
+| <<#R44,`R44`>> 
 | 
     
-| xref:#R45[`R45`] 
+| <<#R45,`R45`>> 
 | 
     
-| xref:#R46[`R46`] 
+| <<#R46,`R46`>> 
 | 
     
-| xref:#R47[`R47`] 
+| <<#R47,`R47`>> 
 | 
     
-| xref:#R48[`R48`] 
+| <<#R48,`R48`>> 
 | 
     
-| xref:#R5[`R5`] 
+| <<#R5,`R5`>> 
 | 
     
-| xref:#R6[`R6`] 
+| <<#R6,`R6`>> 
 | 
     
-| xref:#R7[`R7`] 
+| <<#R7,`R7`>> 
 | 
     
-| xref:#R8[`R8`] 
+| <<#R8,`R8`>> 
 | 
     
-| xref:#R9[`R9`] 
+| <<#R9,`R9`>> 
 | 
     
-| xref:#S0-02[`S0<1, int*>`] 
+| <<#S0-02,`S0<1, int*>`>> 
 | 
     
-| xref:#S0-0c4[`S0<1, T*>`] 
+| <<#S0-0c4,`S0<1, T*>`>> 
 | 
     
-| xref:#S0-0be[`S0<0>`] 
+| <<#S0-0be,`S0<0>`>> 
 | 
     
-| xref:#S0-0cf[`S0`] 
+| <<#S0-0cf,`S0`>> 
 | 
     
 |===
-
-
 
 [#S0-0cf]
 == S0
@@ -195,10 +191,10 @@ struct S0;
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S1[`S1`] 
+| <<#S0-0cf-S1,`S1`>> 
 | 
     
-| xref:#S0-0cf-S5[`S5`] 
+| <<#S0-0cf-S5,`S5`>> 
 | 
     
 |===
@@ -207,17 +203,15 @@ struct S0;
 |===
 | Name | Description 
 
-| xref:#S0-0cf-f0[`f0`] 
+| <<#S0-0cf-f0,`f0`>> 
 | 
     
 |===
 
 
 
-
-
 [#S0-0cf-f0]
-== xref:#S0-0cf[S0]::f0
+== <<#S0-0cf,S0>>::f0
 
 
 
@@ -238,10 +232,8 @@ f0();
 
 
 
-
-
 [#S0-0cf-S1]
-== xref:#S0-0cf[S0]::S1
+== <<#S0-0cf,S0>>::S1
 
 
 
@@ -259,7 +251,7 @@ struct S1;
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S1-S2[`S2`] 
+| <<#S0-0cf-S1-S2,`S2`>> 
 | 
     
 |===
@@ -268,17 +260,15 @@ struct S1;
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S1-f1[`f1`] 
+| <<#S0-0cf-S1-f1,`f1`>> 
 | 
     
 |===
 
 
 
-
-
 [#S0-0cf-S1-f1]
-== xref:#S0-0cf[S0]::xref:#S0-0cf-S1[S1]::f1
+== <<#S0-0cf,S0>>::<<#S0-0cf-S1,S1>>::f1
 
 
 
@@ -299,10 +289,8 @@ f1();
 
 
 
-
-
 [#S0-0cf-S1-S2]
-== xref:#S0-0cf[S0]::xref:#S0-0cf-S1[S1]::S2
+== <<#S0-0cf,S0>>::<<#S0-0cf-S1,S1>>::S2
 
 
 
@@ -323,10 +311,10 @@ struct S2;
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S1-S2-S3[`S3`] 
+| <<#S0-0cf-S1-S2-S3,`S3`>> 
 | 
     
-| xref:#S0-0cf-S1-S2-S4[`S4`] 
+| <<#S0-0cf-S1-S2-S4,`S4`>> 
 | 
     
 |===
@@ -335,17 +323,15 @@ struct S2;
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S1-S2-f2[`f2`] 
+| <<#S0-0cf-S1-S2-f2,`f2`>> 
 | 
     
 |===
 
 
 
-
-
 [#S0-0cf-S1-S2-f2]
-== xref:#S0-0cf[S0]::xref:#S0-0cf-S1[S1]::xref:#S0-0cf-S1-S2[S2]::f2
+== <<#S0-0cf,S0>>::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>>::f2
 
 
 
@@ -366,10 +352,8 @@ f2();
 
 
 
-
-
 [#S0-0cf-S1-S2-S3]
-== xref:#S0-0cf[S0]::xref:#S0-0cf-S1[S1]::xref:#S0-0cf-S1-S2[S2]::S3
+== <<#S0-0cf,S0>>::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>>::S3
 
 
 
@@ -387,17 +371,15 @@ struct S3;
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S1-S2-S3-f3[`f3`] 
+| <<#S0-0cf-S1-S2-S3-f3,`f3`>> 
 | 
     
 |===
 
 
 
-
-
 [#S0-0cf-S1-S2-S3-f3]
-== xref:#S0-0cf[S0]::xref:#S0-0cf-S1[S1]::xref:#S0-0cf-S1-S2[S2]::xref:#S0-0cf-S1-S2-S3[S3]::f3
+== <<#S0-0cf,S0>>::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>>::<<#S0-0cf-S1-S2-S3,S3>>::f3
 
 
 
@@ -418,10 +400,8 @@ f3();
 
 
 
-
-
 [#S0-0cf-S1-S2-S4]
-== xref:#S0-0cf[S0]::xref:#S0-0cf-S1[S1]::xref:#S0-0cf-S1-S2[S2]::S4
+== <<#S0-0cf,S0>>::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>>::S4
 
 
 
@@ -442,17 +422,15 @@ struct S4;
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S1-S2-S4-f4[`f4`] 
+| <<#S0-0cf-S1-S2-S4-f4,`f4`>> 
 | 
     
 |===
 
 
 
-
-
 [#S0-0cf-S1-S2-S4-f4]
-== xref:#S0-0cf[S0]::xref:#S0-0cf-S1[S1]::xref:#S0-0cf-S1-S2[S2]::xref:#S0-0cf-S1-S2-S4[S4]::f4
+== <<#S0-0cf,S0>>::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>>::<<#S0-0cf-S1-S2-S4,S4>>::f4
 
 
 
@@ -473,10 +451,8 @@ f4();
 
 
 
-
-
 [#S0-0cf-S5]
-== xref:#S0-0cf[S0]::S5
+== <<#S0-0cf,S0>>::S5
 
 
 
@@ -497,7 +473,7 @@ struct S5;
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S5-S6[`S6`] 
+| <<#S0-0cf-S5-S6,`S6`>> 
 | 
     
 |===
@@ -506,17 +482,15 @@ struct S5;
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S5-f5[`f5`] 
+| <<#S0-0cf-S5-f5,`f5`>> 
 | 
     
 |===
 
 
 
-
-
 [#S0-0cf-S5-f5]
-== xref:#S0-0cf[S0]::xref:#S0-0cf-S5[S5]::f5
+== <<#S0-0cf,S0>>::<<#S0-0cf-S5,S5>>::f5
 
 
 
@@ -537,10 +511,8 @@ f5();
 
 
 
-
-
 [#S0-0cf-S5-S6]
-== xref:#S0-0cf[S0]::xref:#S0-0cf-S5[S5]::S6
+== <<#S0-0cf,S0>>::<<#S0-0cf-S5,S5>>::S6
 
 
 
@@ -558,7 +530,7 @@ struct S6;
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S5-S6-S7[`S7`] 
+| <<#S0-0cf-S5-S6-S7,`S7`>> 
 | 
     
 |===
@@ -567,17 +539,15 @@ struct S6;
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S5-S6-f6[`f6`] 
+| <<#S0-0cf-S5-S6-f6,`f6`>> 
 | 
     
 |===
 
 
 
-
-
 [#S0-0cf-S5-S6-f6]
-== xref:#S0-0cf[S0]::xref:#S0-0cf-S5[S5]::xref:#S0-0cf-S5-S6[S6]::f6
+== <<#S0-0cf,S0>>::<<#S0-0cf-S5,S5>>::<<#S0-0cf-S5-S6,S6>>::f6
 
 
 
@@ -598,10 +568,8 @@ f6();
 
 
 
-
-
 [#S0-0cf-S5-S6-S7]
-== xref:#S0-0cf[S0]::xref:#S0-0cf-S5[S5]::xref:#S0-0cf-S5-S6[S6]::S7
+== <<#S0-0cf,S0>>::<<#S0-0cf-S5,S5>>::<<#S0-0cf-S5-S6,S6>>::S7
 
 
 
@@ -622,10 +590,10 @@ struct S7;
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S5-S6-S7-S8[`S8`] 
+| <<#S0-0cf-S5-S6-S7-S8,`S8`>> 
 | 
     
-| xref:#S0-0cf-S5-S6-S7-S9[`S9`] 
+| <<#S0-0cf-S5-S6-S7-S9,`S9`>> 
 | 
     
 |===
@@ -634,17 +602,15 @@ struct S7;
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S5-S6-S7-f7[`f7`] 
+| <<#S0-0cf-S5-S6-S7-f7,`f7`>> 
 | 
     
 |===
 
 
 
-
-
 [#S0-0cf-S5-S6-S7-f7]
-== xref:#S0-0cf[S0]::xref:#S0-0cf-S5[S5]::xref:#S0-0cf-S5-S6[S6]::xref:#S0-0cf-S5-S6-S7[S7]::f7
+== <<#S0-0cf,S0>>::<<#S0-0cf-S5,S5>>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>>::f7
 
 
 
@@ -665,10 +631,8 @@ f7();
 
 
 
-
-
 [#S0-0cf-S5-S6-S7-S8]
-== xref:#S0-0cf[S0]::xref:#S0-0cf-S5[S5]::xref:#S0-0cf-S5-S6[S6]::xref:#S0-0cf-S5-S6-S7[S7]::S8
+== <<#S0-0cf,S0>>::<<#S0-0cf-S5,S5>>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>>::S8
 
 
 
@@ -686,17 +650,15 @@ struct S8;
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S5-S6-S7-S8-f8[`f8`] 
+| <<#S0-0cf-S5-S6-S7-S8-f8,`f8`>> 
 | 
     
 |===
 
 
 
-
-
 [#S0-0cf-S5-S6-S7-S8-f8]
-== xref:#S0-0cf[S0]::xref:#S0-0cf-S5[S5]::xref:#S0-0cf-S5-S6[S6]::xref:#S0-0cf-S5-S6-S7[S7]::xref:#S0-0cf-S5-S6-S7-S8[S8]::f8
+== <<#S0-0cf,S0>>::<<#S0-0cf-S5,S5>>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>>::<<#S0-0cf-S5-S6-S7-S8,S8>>::f8
 
 
 
@@ -717,10 +679,8 @@ f8();
 
 
 
-
-
 [#S0-0cf-S5-S6-S7-S9]
-== xref:#S0-0cf[S0]::xref:#S0-0cf-S5[S5]::xref:#S0-0cf-S5-S6[S6]::xref:#S0-0cf-S5-S6-S7[S7]::S9
+== <<#S0-0cf,S0>>::<<#S0-0cf-S5,S5>>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>>::S9
 
 
 
@@ -741,17 +701,15 @@ struct S9;
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S5-S6-S7-S9-f9[`f9`] 
+| <<#S0-0cf-S5-S6-S7-S9-f9,`f9`>> 
 | 
     
 |===
 
 
 
-
-
 [#S0-0cf-S5-S6-S7-S9-f9]
-== xref:#S0-0cf[S0]::xref:#S0-0cf-S5[S5]::xref:#S0-0cf-S5-S6[S6]::xref:#S0-0cf-S5-S6-S7[S7]::xref:#S0-0cf-S5-S6-S7-S9[S9]::f9
+== <<#S0-0cf,S0>>::<<#S0-0cf-S5,S5>>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>>::<<#S0-0cf-S5-S6-S7-S9,S9>>::f9
 
 
 
@@ -772,8 +730,6 @@ f9();
 
 
 
-
-
 [#S0-0be]
 == S0
 
@@ -786,10 +742,8 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-struct xref:#S0-0cf[S0]<0>;
+struct <<#S0-0cf,S0>><0>;
 ----
-
-
 
 
 
@@ -806,10 +760,8 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
-struct xref:#S0-0cf[S0]<1, T*>;
+struct <<#S0-0cf,S0>><1, T*>;
 ----
-
-
 
 
 
@@ -826,69 +778,10 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-struct xref:#S0-0cf[S0]<1, int*>;
+struct <<#S0-0cf,S0>><1, int*>;
 ----
 
 
-
-
-
-
-[#S0-09c]
-
-
-[#S0-073]
-
-
-[#S0-0a1]
-
-
-[#S0-07e]
-
-
-[#S0-0a3]
-
-
-[#S0-08]
-
-
-[#S0-0e]
-
-
-[#S0-09e4]
-
-
-[#S0-07a]
-
-
-[#S0-0a7]
-
-
-[#S0-031]
-
-
-[#S0-05]
-
-
-[#S0-0a2]
-
-
-[#S0-09e2]
-
-
-[#S0-01]
-
-
-[#S0-09ee]
-
-
-[#S0-033]
-
-
-[#S0-06]
-
-
-[#S0-0ba]
 
 
 [#R0]
@@ -903,7 +796,7 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R0
-    : xref:#S0-0cf[S0]<pass:[-1]>;
+    : <<#S0-0cf,S0>><pass:[-1]>;
 ----
 
 ===  Types
@@ -911,10 +804,10 @@ struct R0
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S1[`S1`] 
+| <<#S0-0cf-S1,`S1`>> 
 | 
     
-| xref:#S0-0cf-S5[`S5`] 
+| <<#S0-0cf-S5,`S5`>> 
 | 
     
 |===
@@ -923,12 +816,10 @@ struct R0
 |===
 | Name | Description 
 
-| xref:#S0-0cf-f0[`f0`] 
+| <<#S0-0cf-f0,`f0`>> 
 | 
     
 |===
-
-
 
 
 
@@ -944,10 +835,8 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R1
-    : xref:#S0-0be[S0]<0>;
+    : <<#S0-0be,S0>><0>;
 ----
-
-
 
 
 
@@ -964,10 +853,8 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R2
-    : xref:#S0-0c4[S0]<1, void*>;
+    : <<#S0-0c4,S0>><1, void*>;
 ----
-
-
 
 
 
@@ -984,10 +871,8 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R3
-    : xref:#S0-02[S0]<1, int*>;
+    : <<#S0-02,S0>><1, int*>;
 ----
-
-
 
 
 
@@ -1004,10 +889,8 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R4
-    : xref:#S0-0cf[S0]<2>::xref:#S0-09c-S1[S1];
+    : <<#S0-0cf,S0>><2>::<<#S0-09c-S1,S1>>;
 ----
-
-
 
 
 
@@ -1024,10 +907,8 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R5
-    : xref:#S0-0cf[S0]<3>::xref:#S0-0cf-S1[S1]::xref:#S0-073-S1-S2[S2]<pass:[-1]>;
+    : <<#S0-0cf,S0>><3>::<<#S0-0cf-S1,S1>>::<<#S0-073-S1-S2,S2>><pass:[-1]>;
 ----
-
-
 
 
 
@@ -1044,10 +925,8 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R6
-    : xref:#S0-0cf[S0]<4>::xref:#S0-0cf-S1[S1]::xref:#S0-0a1-S1-S2[S2]<5>;
+    : <<#S0-0cf,S0>><4>::<<#S0-0cf-S1,S1>>::<<#S0-0a1-S1-S2,S2>><5>;
 ----
-
-
 
 
 
@@ -1064,10 +943,8 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R7
-    : xref:#S0-0cf[S0]<6>::xref:#S0-0cf-S1[S1]::xref:#S0-07e-S1-S2-06[S2]<7, void*>;
+    : <<#S0-0cf,S0>><6>::<<#S0-0cf-S1,S1>>::<<#S0-07e-S1-S2-06,S2>><7, void*>;
 ----
-
-
 
 
 
@@ -1084,10 +961,8 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R8
-    : xref:#S0-0cf[S0]<6>::xref:#S0-0cf-S1[S1]::xref:#S0-07e-S1-S2-07[S2]<7, int*>;
+    : <<#S0-0cf,S0>><6>::<<#S0-0cf-S1,S1>>::<<#S0-07e-S1-S2-07,S2>><7, int*>;
 ----
-
-
 
 
 
@@ -1104,10 +979,8 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R9
-    : xref:#S0-0cf[S0]<8>::xref:#S0-0cf-S1[S1]::xref:#S0-0cf-S1-S2[S2]<9>::xref:#S0-0a3-S1-S2-S3[S3];
+    : <<#S0-0cf,S0>><8>::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>><9>::<<#S0-0a3-S1-S2-S3,S3>>;
 ----
-
-
 
 
 
@@ -1124,10 +997,8 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R10
-    : xref:#S0-0cf[S0]<10>::xref:#S0-0cf-S1[S1]::xref:#S0-0cf-S1-S2[S2]<11>::xref:#S0-08-S1-S2-S4[S4]<pass:[-1]>;
+    : <<#S0-0cf,S0>><10>::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>><11>::<<#S0-08-S1-S2-S4,S4>><pass:[-1]>;
 ----
-
-
 
 
 
@@ -1144,10 +1015,8 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R11
-    : xref:#S0-0cf[S0]<12>::xref:#S0-0cf-S1[S1]::xref:#S0-0cf-S1-S2[S2]<13>::xref:#S0-0e-S1-S2-S4[S4]<14>;
+    : <<#S0-0cf,S0>><12>::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>><13>::<<#S0-0e-S1-S2-S4,S4>><14>;
 ----
-
-
 
 
 
@@ -1164,10 +1033,8 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R12
-    : xref:#S0-0cf[S0]<15>::xref:#S0-0cf-S1[S1]::xref:#S0-0cf-S1-S2[S2]<16>::xref:#S0-09e4-S1-S2-S4-07[S4]<17, void*>;
+    : <<#S0-0cf,S0>><15>::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>><16>::<<#S0-09e4-S1-S2-S4-07,S4>><17, void*>;
 ----
-
-
 
 
 
@@ -1184,10 +1051,8 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R13
-    : xref:#S0-0cf[S0]<15>::xref:#S0-0cf-S1[S1]::xref:#S0-0cf-S1-S2[S2]<16>::xref:#S0-09e4-S1-S2-S4-02[S4]<17, int*>;
+    : <<#S0-0cf,S0>><15>::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>><16>::<<#S0-09e4-S1-S2-S4-02,S4>><17, int*>;
 ----
-
-
 
 
 
@@ -1204,10 +1069,8 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R14
-    : xref:#S0-0cf[S0]<18>::xref:#S0-07a-S5[S5]<pass:[-1]>;
+    : <<#S0-0cf,S0>><18>::<<#S0-07a-S5,S5>><pass:[-1]>;
 ----
-
-
 
 
 
@@ -1224,10 +1087,8 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R15
-    : xref:#S0-0cf[S0]<19>::xref:#S0-0a7-S5[S5]<20>;
+    : <<#S0-0cf,S0>><19>::<<#S0-0a7-S5,S5>><20>;
 ----
-
-
 
 
 
@@ -1244,10 +1105,8 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R16
-    : xref:#S0-0cf[S0]<21>::xref:#S0-031-S5-0b[S5]<22, void*>;
+    : <<#S0-0cf,S0>><21>::<<#S0-031-S5-0b,S5>><22, void*>;
 ----
-
-
 
 
 
@@ -1264,10 +1123,8 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R17
-    : xref:#S0-0cf[S0]<21>::xref:#S0-031-S5-03[S5]<22, int*>;
+    : <<#S0-0cf,S0>><21>::<<#S0-031-S5-03,S5>><22, int*>;
 ----
-
-
 
 
 
@@ -1284,10 +1141,8 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R18
-    : xref:#S0-0cf[S0]<23>::xref:#S0-0cf-S5[S5]<24>::xref:#S0-05-S5-S6[S6];
+    : <<#S0-0cf,S0>><23>::<<#S0-0cf-S5,S5>><24>::<<#S0-05-S5-S6,S6>>;
 ----
-
-
 
 
 
@@ -1304,10 +1159,8 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R19
-    : xref:#S0-0cf[S0]<25>::xref:#S0-0cf-S5[S5]<26>::xref:#S0-0cf-S5-S6[S6]::xref:#S0-0a2-S5-S6-S7[S7]<pass:[-1]>;
+    : <<#S0-0cf,S0>><25>::<<#S0-0cf-S5,S5>><26>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0a2-S5-S6-S7,S7>><pass:[-1]>;
 ----
-
-
 
 
 
@@ -1324,10 +1177,8 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R20
-    : xref:#S0-0cf[S0]<27>::xref:#S0-0cf-S5[S5]<28>::xref:#S0-0cf-S5-S6[S6]::xref:#S0-09e2-S5-S6-S7-0a[S7]<29, void*>;
+    : <<#S0-0cf,S0>><27>::<<#S0-0cf-S5,S5>><28>::<<#S0-0cf-S5-S6,S6>>::<<#S0-09e2-S5-S6-S7-0a,S7>><29, void*>;
 ----
-
-
 
 
 
@@ -1344,10 +1195,8 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R21
-    : xref:#S0-0cf[S0]<27>::xref:#S0-0cf-S5[S5]<28>::xref:#S0-0cf-S5-S6[S6]::xref:#S0-09e2-S5-S6-S7-0d[S7]<29, int*>;
+    : <<#S0-0cf,S0>><27>::<<#S0-0cf-S5,S5>><28>::<<#S0-0cf-S5-S6,S6>>::<<#S0-09e2-S5-S6-S7-0d,S7>><29, int*>;
 ----
-
-
 
 
 
@@ -1364,10 +1213,8 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R22
-    : xref:#S0-0cf[S0]<30>::xref:#S0-0cf-S5[S5]<31>::xref:#S0-0cf-S5-S6[S6]::xref:#S0-01-S5-S6-S7[S7]<32>;
+    : <<#S0-0cf,S0>><30>::<<#S0-0cf-S5,S5>><31>::<<#S0-0cf-S5-S6,S6>>::<<#S0-01-S5-S6-S7,S7>><32>;
 ----
-
-
 
 
 
@@ -1384,10 +1231,8 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R23
-    : xref:#S0-0cf[S0]<33>::xref:#S0-0cf-S5[S5]<34>::xref:#S0-0cf-S5-S6[S6]::xref:#S0-0cf-S5-S6-S7[S7]<35>::xref:#S0-09ee-S5-S6-S7-S8[S8];
+    : <<#S0-0cf,S0>><33>::<<#S0-0cf-S5,S5>><34>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>><35>::<<#S0-09ee-S5-S6-S7-S8,S8>>;
 ----
-
-
 
 
 
@@ -1404,10 +1249,8 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R24
-    : xref:#S0-0cf[S0]<36>::xref:#S0-0cf-S5[S5]<37>::xref:#S0-0cf-S5-S6[S6]::xref:#S0-0cf-S5-S6-S7[S7]<38>::xref:#S0-033-S5-S6-S7-S9[S9]<pass:[-1]>;
+    : <<#S0-0cf,S0>><36>::<<#S0-0cf-S5,S5>><37>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>><38>::<<#S0-033-S5-S6-S7-S9,S9>><pass:[-1]>;
 ----
-
-
 
 
 
@@ -1424,10 +1267,8 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R25
-    : xref:#S0-0cf[S0]<39>::xref:#S0-0cf-S5[S5]<40>::xref:#S0-0cf-S5-S6[S6]::xref:#S0-0cf-S5-S6-S7[S7]<41>::xref:#S0-06-S5-S6-S7-S9-00[S9]<42, void*>;
+    : <<#S0-0cf,S0>><39>::<<#S0-0cf-S5,S5>><40>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>><41>::<<#S0-06-S5-S6-S7-S9-00,S9>><42, void*>;
 ----
-
-
 
 
 
@@ -1444,10 +1285,8 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R26
-    : xref:#S0-0cf[S0]<39>::xref:#S0-0cf-S5[S5]<40>::xref:#S0-0cf-S5-S6[S6]::xref:#S0-0cf-S5-S6-S7[S7]<41>::xref:#S0-06-S5-S6-S7-S9-08[S9]<42, int*>;
+    : <<#S0-0cf,S0>><39>::<<#S0-0cf-S5,S5>><40>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>><41>::<<#S0-06-S5-S6-S7-S9-08,S9>><42, int*>;
 ----
-
-
 
 
 
@@ -1464,10 +1303,8 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R27
-    : xref:#S0-0cf[S0]<43>::xref:#S0-0cf-S5[S5]<44>::xref:#S0-0cf-S5-S6[S6]::xref:#S0-0cf-S5-S6-S7[S7]<45>::xref:#S0-0ba-S5-S6-S7-S9[S9]<46>;
+    : <<#S0-0cf,S0>><43>::<<#S0-0cf-S5,S5>><44>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>><45>::<<#S0-0ba-S5-S6-S7-S9,S9>><46>;
 ----
-
-
 
 
 
@@ -1484,7 +1321,7 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R28
-    : xref:#S0-0cf[S0]<0, bool>;
+    : <<#S0-0cf,S0>><0, bool>;
 ----
 
 ===  Types
@@ -1492,10 +1329,10 @@ struct R28
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S1[`S1`] 
+| <<#S0-0cf-S1,`S1`>> 
 | 
     
-| xref:#S0-0cf-S5[`S5`] 
+| <<#S0-0cf-S5,`S5`>> 
 | 
     
 |===
@@ -1504,12 +1341,10 @@ struct R28
 |===
 | Name | Description 
 
-| xref:#S0-0cf-f0[`f0`] 
+| <<#S0-0cf-f0,`f0`>> 
 | 
     
 |===
-
-
 
 
 
@@ -1525,7 +1360,7 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R29
-    : xref:#S0-0cf[S0]<1, int>;
+    : <<#S0-0cf,S0>><1, int>;
 ----
 
 ===  Types
@@ -1533,10 +1368,10 @@ struct R29
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S1[`S1`] 
+| <<#S0-0cf-S1,`S1`>> 
 | 
     
-| xref:#S0-0cf-S5[`S5`] 
+| <<#S0-0cf-S5,`S5`>> 
 | 
     
 |===
@@ -1545,12 +1380,10 @@ struct R29
 |===
 | Name | Description 
 
-| xref:#S0-0cf-f0[`f0`] 
+| <<#S0-0cf-f0,`f0`>> 
 | 
     
 |===
-
-
 
 
 
@@ -1566,7 +1399,7 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R30
-    : xref:#S0-0cf[S0]<2, bool>::xref:#S0-0cf-S1[S1];
+    : <<#S0-0cf,S0>><2, bool>::<<#S0-0cf-S1,S1>>;
 ----
 
 ===  Types
@@ -1574,7 +1407,7 @@ struct R30
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S1-S2[`S2`] 
+| <<#S0-0cf-S1-S2,`S2`>> 
 | 
     
 |===
@@ -1583,12 +1416,10 @@ struct R30
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S1-f1[`f1`] 
+| <<#S0-0cf-S1-f1,`f1`>> 
 | 
     
 |===
-
-
 
 
 
@@ -1607,7 +1438,7 @@ template<
     int I,
     typename T>
 struct R31
-    : xref:#S0-0cf[S0]<3, bool>::xref:#S0-0cf-S1[S1]::xref:#S0-0cf-S1-S2[S2]<I, T>;
+    : <<#S0-0cf,S0>><3, bool>::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>><I, T>;
 ----
 
 ===  Types
@@ -1615,10 +1446,10 @@ struct R31
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S1-S2-S3[`S3`] 
+| <<#S0-0cf-S1-S2-S3,`S3`>> 
 | 
     
-| xref:#S0-0cf-S1-S2-S4[`S4`] 
+| <<#S0-0cf-S1-S2-S4,`S4`>> 
 | 
     
 |===
@@ -1627,12 +1458,10 @@ struct R31
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S1-S2-f2[`f2`] 
+| <<#S0-0cf-S1-S2-f2,`f2`>> 
 | 
     
 |===
-
-
 
 
 
@@ -1648,7 +1477,7 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R32
-    : xref:#S0-0cf[S0]<4, bool>::xref:#S0-0cf-S1[S1]::xref:#S0-0cf-S1-S2[S2]<5, bool>;
+    : <<#S0-0cf,S0>><4, bool>::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>><5, bool>;
 ----
 
 ===  Types
@@ -1656,10 +1485,10 @@ struct R32
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S1-S2-S3[`S3`] 
+| <<#S0-0cf-S1-S2-S3,`S3`>> 
 | 
     
-| xref:#S0-0cf-S1-S2-S4[`S4`] 
+| <<#S0-0cf-S1-S2-S4,`S4`>> 
 | 
     
 |===
@@ -1668,12 +1497,10 @@ struct R32
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S1-S2-f2[`f2`] 
+| <<#S0-0cf-S1-S2-f2,`f2`>> 
 | 
     
 |===
-
-
 
 
 
@@ -1689,7 +1516,7 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R33
-    : xref:#S0-0cf[S0]<6, bool>::xref:#S0-0cf-S1[S1]::xref:#S0-0cf-S1-S2[S2]<7, int>;
+    : <<#S0-0cf,S0>><6, bool>::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>><7, int>;
 ----
 
 ===  Types
@@ -1697,10 +1524,10 @@ struct R33
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S1-S2-S3[`S3`] 
+| <<#S0-0cf-S1-S2-S3,`S3`>> 
 | 
     
-| xref:#S0-0cf-S1-S2-S4[`S4`] 
+| <<#S0-0cf-S1-S2-S4,`S4`>> 
 | 
     
 |===
@@ -1709,12 +1536,10 @@ struct R33
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S1-S2-f2[`f2`] 
+| <<#S0-0cf-S1-S2-f2,`f2`>> 
 | 
     
 |===
-
-
 
 
 
@@ -1730,7 +1555,7 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R34
-    : xref:#S0-0cf[S0]<8, bool>::xref:#S0-0cf-S1[S1]::xref:#S0-0cf-S1-S2[S2]<9, bool>::xref:#S0-0cf-S1-S2-S3[S3];
+    : <<#S0-0cf,S0>><8, bool>::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>><9, bool>::<<#S0-0cf-S1-S2-S3,S3>>;
 ----
 
 ===  Member Functions
@@ -1738,12 +1563,10 @@ struct R34
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S1-S2-S3-f3[`f3`] 
+| <<#S0-0cf-S1-S2-S3-f3,`f3`>> 
 | 
     
 |===
-
-
 
 
 
@@ -1762,7 +1585,7 @@ template<
     int I,
     typename T>
 struct R35
-    : xref:#S0-0cf[S0]<10, bool>::xref:#S0-0cf-S1[S1]::xref:#S0-0cf-S1-S2[S2]<11, bool>::xref:#S0-0cf-S1-S2-S4[S4]<I, T>;
+    : <<#S0-0cf,S0>><10, bool>::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>><11, bool>::<<#S0-0cf-S1-S2-S4,S4>><I, T>;
 ----
 
 ===  Member Functions
@@ -1770,12 +1593,10 @@ struct R35
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S1-S2-S4-f4[`f4`] 
+| <<#S0-0cf-S1-S2-S4-f4,`f4`>> 
 | 
     
 |===
-
-
 
 
 
@@ -1791,7 +1612,7 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R36
-    : xref:#S0-0cf[S0]<12, bool>::xref:#S0-0cf-S1[S1]::xref:#S0-0cf-S1-S2[S2]<13, bool>::xref:#S0-0cf-S1-S2-S4[S4]<14, bool>;
+    : <<#S0-0cf,S0>><12, bool>::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>><13, bool>::<<#S0-0cf-S1-S2-S4,S4>><14, bool>;
 ----
 
 ===  Member Functions
@@ -1799,12 +1620,10 @@ struct R36
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S1-S2-S4-f4[`f4`] 
+| <<#S0-0cf-S1-S2-S4-f4,`f4`>> 
 | 
     
 |===
-
-
 
 
 
@@ -1820,7 +1639,7 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R37
-    : xref:#S0-0cf[S0]<15, bool>::xref:#S0-0cf-S1[S1]::xref:#S0-0cf-S1-S2[S2]<16, bool>::xref:#S0-0cf-S1-S2-S4[S4]<17, int>;
+    : <<#S0-0cf,S0>><15, bool>::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>><16, bool>::<<#S0-0cf-S1-S2-S4,S4>><17, int>;
 ----
 
 ===  Member Functions
@@ -1828,12 +1647,10 @@ struct R37
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S1-S2-S4-f4[`f4`] 
+| <<#S0-0cf-S1-S2-S4-f4,`f4`>> 
 | 
     
 |===
-
-
 
 
 
@@ -1852,7 +1669,7 @@ template<
     int I,
     typename T>
 struct R38
-    : xref:#S0-0cf[S0]<18, bool>::xref:#S0-0cf-S5[S5]<I, T>;
+    : <<#S0-0cf,S0>><18, bool>::<<#S0-0cf-S5,S5>><I, T>;
 ----
 
 ===  Types
@@ -1860,7 +1677,7 @@ struct R38
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S5-S6[`S6`] 
+| <<#S0-0cf-S5-S6,`S6`>> 
 | 
     
 |===
@@ -1869,12 +1686,10 @@ struct R38
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S5-f5[`f5`] 
+| <<#S0-0cf-S5-f5,`f5`>> 
 | 
     
 |===
-
-
 
 
 
@@ -1890,7 +1705,7 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R39
-    : xref:#S0-0cf[S0]<19, bool>::xref:#S0-0cf-S5[S5]<20, bool>;
+    : <<#S0-0cf,S0>><19, bool>::<<#S0-0cf-S5,S5>><20, bool>;
 ----
 
 ===  Types
@@ -1898,7 +1713,7 @@ struct R39
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S5-S6[`S6`] 
+| <<#S0-0cf-S5-S6,`S6`>> 
 | 
     
 |===
@@ -1907,12 +1722,10 @@ struct R39
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S5-f5[`f5`] 
+| <<#S0-0cf-S5-f5,`f5`>> 
 | 
     
 |===
-
-
 
 
 
@@ -1928,7 +1741,7 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R40
-    : xref:#S0-0cf[S0]<21, bool>::xref:#S0-0cf-S5[S5]<22, int>;
+    : <<#S0-0cf,S0>><21, bool>::<<#S0-0cf-S5,S5>><22, int>;
 ----
 
 ===  Types
@@ -1936,7 +1749,7 @@ struct R40
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S5-S6[`S6`] 
+| <<#S0-0cf-S5-S6,`S6`>> 
 | 
     
 |===
@@ -1945,12 +1758,10 @@ struct R40
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S5-f5[`f5`] 
+| <<#S0-0cf-S5-f5,`f5`>> 
 | 
     
 |===
-
-
 
 
 
@@ -1966,7 +1777,7 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R41
-    : xref:#S0-0cf[S0]<23, bool>::xref:#S0-0cf-S5[S5]<24, bool>::xref:#S0-0cf-S5-S6[S6];
+    : <<#S0-0cf,S0>><23, bool>::<<#S0-0cf-S5,S5>><24, bool>::<<#S0-0cf-S5-S6,S6>>;
 ----
 
 ===  Types
@@ -1974,7 +1785,7 @@ struct R41
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S5-S6-S7[`S7`] 
+| <<#S0-0cf-S5-S6-S7,`S7`>> 
 | 
     
 |===
@@ -1983,12 +1794,10 @@ struct R41
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S5-S6-f6[`f6`] 
+| <<#S0-0cf-S5-S6-f6,`f6`>> 
 | 
     
 |===
-
-
 
 
 
@@ -2007,7 +1816,7 @@ template<
     int I,
     typename T>
 struct R42
-    : xref:#S0-0cf[S0]<25, bool>::xref:#S0-0cf-S5[S5]<26, bool>::xref:#S0-0cf-S5-S6[S6]::xref:#S0-0cf-S5-S6-S7[S7]<I, T>;
+    : <<#S0-0cf,S0>><25, bool>::<<#S0-0cf-S5,S5>><26, bool>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>><I, T>;
 ----
 
 ===  Types
@@ -2015,10 +1824,10 @@ struct R42
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S5-S6-S7-S8[`S8`] 
+| <<#S0-0cf-S5-S6-S7-S8,`S8`>> 
 | 
     
-| xref:#S0-0cf-S5-S6-S7-S9[`S9`] 
+| <<#S0-0cf-S5-S6-S7-S9,`S9`>> 
 | 
     
 |===
@@ -2027,12 +1836,10 @@ struct R42
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S5-S6-S7-f7[`f7`] 
+| <<#S0-0cf-S5-S6-S7-f7,`f7`>> 
 | 
     
 |===
-
-
 
 
 
@@ -2048,7 +1855,7 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R43
-    : xref:#S0-0cf[S0]<27, bool>::xref:#S0-0cf-S5[S5]<28, bool>::xref:#S0-0cf-S5-S6[S6]::xref:#S0-0cf-S5-S6-S7[S7]<29, int>;
+    : <<#S0-0cf,S0>><27, bool>::<<#S0-0cf-S5,S5>><28, bool>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>><29, int>;
 ----
 
 ===  Types
@@ -2056,10 +1863,10 @@ struct R43
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S5-S6-S7-S8[`S8`] 
+| <<#S0-0cf-S5-S6-S7-S8,`S8`>> 
 | 
     
-| xref:#S0-0cf-S5-S6-S7-S9[`S9`] 
+| <<#S0-0cf-S5-S6-S7-S9,`S9`>> 
 | 
     
 |===
@@ -2068,12 +1875,10 @@ struct R43
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S5-S6-S7-f7[`f7`] 
+| <<#S0-0cf-S5-S6-S7-f7,`f7`>> 
 | 
     
 |===
-
-
 
 
 
@@ -2089,7 +1894,7 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R44
-    : xref:#S0-0cf[S0]<30, bool>::xref:#S0-0cf-S5[S5]<31, bool>::xref:#S0-0cf-S5-S6[S6]::xref:#S0-0cf-S5-S6-S7[S7]<32, bool>;
+    : <<#S0-0cf,S0>><30, bool>::<<#S0-0cf-S5,S5>><31, bool>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>><32, bool>;
 ----
 
 ===  Types
@@ -2097,10 +1902,10 @@ struct R44
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S5-S6-S7-S8[`S8`] 
+| <<#S0-0cf-S5-S6-S7-S8,`S8`>> 
 | 
     
-| xref:#S0-0cf-S5-S6-S7-S9[`S9`] 
+| <<#S0-0cf-S5-S6-S7-S9,`S9`>> 
 | 
     
 |===
@@ -2109,12 +1914,10 @@ struct R44
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S5-S6-S7-f7[`f7`] 
+| <<#S0-0cf-S5-S6-S7-f7,`f7`>> 
 | 
     
 |===
-
-
 
 
 
@@ -2130,7 +1933,7 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R45
-    : xref:#S0-0cf[S0]<33, bool>::xref:#S0-0cf-S5[S5]<34, bool>::xref:#S0-0cf-S5-S6[S6]::xref:#S0-0cf-S5-S6-S7[S7]<35, bool>::xref:#S0-0cf-S5-S6-S7-S8[S8];
+    : <<#S0-0cf,S0>><33, bool>::<<#S0-0cf-S5,S5>><34, bool>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>><35, bool>::<<#S0-0cf-S5-S6-S7-S8,S8>>;
 ----
 
 ===  Member Functions
@@ -2138,12 +1941,10 @@ struct R45
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S5-S6-S7-S8-f8[`f8`] 
+| <<#S0-0cf-S5-S6-S7-S8-f8,`f8`>> 
 | 
     
 |===
-
-
 
 
 
@@ -2162,7 +1963,7 @@ template<
     int I,
     typename T>
 struct R46
-    : xref:#S0-0cf[S0]<36, bool>::xref:#S0-0cf-S5[S5]<37, bool>::xref:#S0-0cf-S5-S6[S6]::xref:#S0-0cf-S5-S6-S7[S7]<38, bool>::xref:#S0-0cf-S5-S6-S7-S9[S9]<I, T>;
+    : <<#S0-0cf,S0>><36, bool>::<<#S0-0cf-S5,S5>><37, bool>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>><38, bool>::<<#S0-0cf-S5-S6-S7-S9,S9>><I, T>;
 ----
 
 ===  Member Functions
@@ -2170,12 +1971,10 @@ struct R46
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S5-S6-S7-S9-f9[`f9`] 
+| <<#S0-0cf-S5-S6-S7-S9-f9,`f9`>> 
 | 
     
 |===
-
-
 
 
 
@@ -2191,7 +1990,7 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R47
-    : xref:#S0-0cf[S0]<39, bool>::xref:#S0-0cf-S5[S5]<40, bool>::xref:#S0-0cf-S5-S6[S6]::xref:#S0-0cf-S5-S6-S7[S7]<41, bool>::xref:#S0-0cf-S5-S6-S7-S9[S9]<42, int>;
+    : <<#S0-0cf,S0>><39, bool>::<<#S0-0cf-S5,S5>><40, bool>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>><41, bool>::<<#S0-0cf-S5-S6-S7-S9,S9>><42, int>;
 ----
 
 ===  Member Functions
@@ -2199,12 +1998,10 @@ struct R47
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S5-S6-S7-S9-f9[`f9`] 
+| <<#S0-0cf-S5-S6-S7-S9-f9,`f9`>> 
 | 
     
 |===
-
-
 
 
 
@@ -2220,7 +2017,7 @@ Declared in `<pass:[class-template-specializations-1.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct R48
-    : xref:#S0-0cf[S0]<43, bool>::xref:#S0-0cf-S5[S5]<44, bool>::xref:#S0-0cf-S5-S6[S6]::xref:#S0-0cf-S5-S6-S7[S7]<45, bool>::xref:#S0-0cf-S5-S6-S7-S9[S9]<46, bool>;
+    : <<#S0-0cf,S0>><43, bool>::<<#S0-0cf-S5,S5>><44, bool>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>><45, bool>::<<#S0-0cf-S5-S6-S7-S9,S9>><46, bool>;
 ----
 
 ===  Member Functions
@@ -2228,7 +2025,7 @@ struct R48
 |===
 | Name | Description 
 
-| xref:#S0-0cf-S5-S6-S7-S9-f9[`f9`] 
+| <<#S0-0cf-S5-S6-S7-S9-f9,`f9`>> 
 | 
     
 |===

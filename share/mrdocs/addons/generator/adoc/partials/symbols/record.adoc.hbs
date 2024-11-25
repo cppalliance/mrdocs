@@ -1,4 +1,5 @@
 {{!-- record --}}
+[#{{{symbol.anchor}}}]
 ={{#unless @root.config.multipage}}={{/unless}} {{#if symbol.name}}{{>types/nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}Unnamed class{{/if}}
 
 {{{symbol.doc.brief}}}

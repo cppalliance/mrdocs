@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,17 +8,13 @@
 |===
 | Name | Description 
 
-| xref:#LongName[`LongName`] 
+| <<#LongName,`LongName`>> 
 | 
     
 |===
 
-
-
 [#LongName]
 == LongName
-
-
 
 
 [#A]
@@ -34,7 +28,7 @@ Declared in `<pass:[namespace-alias-1.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-namespace A = xref:#LongName[LongName];
+namespace A = <<#LongName,LongName>>;
 ----
 
 

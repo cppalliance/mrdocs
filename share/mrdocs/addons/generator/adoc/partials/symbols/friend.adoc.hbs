@@ -1,4 +1,5 @@
 {{!-- friend --}}
+[#{{{symbol.anchor}}}]
 ={{#unless @root.config.multipage}}={{/unless}} {{#if symbol.symbol}}{{>types/nested-name-specifier symbol=symbol.symbol.parent includeNamespace=true}}{{symbol.symbol.name}}{{else}}{{symbol.type.name}}{{/if}}
 
 {{{symbol.doc.brief}}}

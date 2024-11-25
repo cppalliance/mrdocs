@@ -83,17 +83,10 @@ The top-level object in the DOM is the context for a template.The top-level obje
 |`<<symbol-fields,Symbol Object>>`
 |The symbol being rendered.
 
-|`relfileprefix`
-|`string`
-|The relative file prefix for the output file.
-
 |`config`
 |`<<config-fields,Config Object>>`
 |The configuration object.
 
-|`sectionref`
-|`string`
-|The section reference.
 |===
 
 [#symbol-fields]
@@ -135,6 +128,21 @@ The `Symbol` object represents a symbol extracted from the source code.The symbo
 | `doc`
 | `Any`
 | The documentation for the symbol.
+
+|===
+
+Handlebars generators extend each symbol with the following fields:
+
+|===
+|Property |Type| Description
+
+| `url`
+| `string`
+| The URL of the symbol. If the documentation is a single page, this is the anchor link to the symbol starting with `#`. If the documentation is multipage, this is the path to the symbol starting with `/`.
+
+| `anchor`
+| `string`
+| The anchor link to the symbol. This is used for section IDs in the documentation.
 
 |===
 

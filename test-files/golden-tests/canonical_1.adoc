@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,33 +8,31 @@
 |===
 | Name | Description 
 
-| xref:#A[`A`] 
+| <<#A,`A`>> 
 | 
     
-| xref:#B[`B`] 
+| <<#B,`B`>> 
 | 
     
-| xref:#Ba[`Ba`] 
+| <<#Ba,`Ba`>> 
 | 
     
-| xref:#Bx[`Bx`] 
+| <<#Bx,`Bx`>> 
 | 
     
-| xref:#a[`a`] 
+| <<#a,`a`>> 
 | 
     
-| xref:#b[`b`] 
+| <<#b,`b`>> 
 | 
     
-| xref:#bA[`bA`] 
+| <<#bA,`bA`>> 
 | 
     
-| xref:#ba[`ba`] 
+| <<#ba,`ba`>> 
 | 
     
 |===
-
-
 
 [#B]
 == B
@@ -51,8 +47,6 @@ Declared in `<pass:[canonical_1.cpp]>`
 ----
 struct B;
 ----
-
-
 
 
 
@@ -74,8 +68,6 @@ struct b;
 
 
 
-
-
 [#A]
 == A
 
@@ -89,8 +81,6 @@ Declared in `<pass:[canonical_1.cpp]>`
 ----
 struct A;
 ----
-
-
 
 
 
@@ -112,8 +102,6 @@ struct a;
 
 
 
-
-
 [#Ba]
 == Ba
 
@@ -127,8 +115,6 @@ Declared in `<pass:[canonical_1.cpp]>`
 ----
 struct Ba;
 ----
-
-
 
 
 
@@ -150,8 +136,6 @@ struct bA;
 
 
 
-
-
 [#Bx]
 == Bx
 
@@ -165,8 +149,6 @@ Declared in `<pass:[canonical_1.cpp]>`
 ----
 struct Bx;
 ----
-
-
 
 
 

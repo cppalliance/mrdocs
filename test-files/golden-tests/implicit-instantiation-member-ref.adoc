@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,45 +8,43 @@
 |===
 | Name | Description 
 
-| xref:#A0[`A0`] 
+| <<#A0,`A0`>> 
 | 
     
-| xref:#A1[`A1`] 
+| <<#A1,`A1`>> 
 | 
     
-| xref:#A10[`A10`] 
+| <<#A10,`A10`>> 
 | 
     
-| xref:#A2[`A2`] 
+| <<#A2,`A2`>> 
 | 
     
-| xref:#A3[`A3`] 
+| <<#A3,`A3`>> 
 | 
     
-| xref:#A4[`A4`] 
+| <<#A4,`A4`>> 
 | 
     
-| xref:#A5[`A5`] 
+| <<#A5,`A5`>> 
 | 
     
-| xref:#A6[`A6`] 
+| <<#A6,`A6`>> 
 | 
     
-| xref:#A7[`A7`] 
+| <<#A7,`A7`>> 
 | 
     
-| xref:#A8[`A8`] 
+| <<#A8,`A8`>> 
 | 
     
-| xref:#A9[`A9`] 
+| <<#A9,`A9`>> 
 | 
     
-| xref:#S0[`S0`] 
+| <<#S0,`S0`>> 
 | 
     
 |===
-
-
 
 [#S0]
 == S0
@@ -70,26 +66,24 @@ struct S0;
 |===
 | Name | Description 
 
-| xref:#S0-M0[`M0`] 
+| <<#S0-M0,`M0`>> 
 | 
     
-| xref:#S0-M1[`M1`] 
+| <<#S0-M1,`M1`>> 
 | 
     
-| xref:#S0-S1[`S1`] 
+| <<#S0-S1,`S1`>> 
 | 
     
-| xref:#S0-S2[`S2`] 
+| <<#S0-S2,`S2`>> 
 | 
     
 |===
 
 
 
-
-
 [#S0-M0]
-== xref:#S0[S0]::M0
+== <<#S0,S0>>::M0
 
 
 
@@ -103,10 +97,8 @@ using M0 = T;
 ----
 
 
-
-
 [#S0-S1]
-== xref:#S0[S0]::S1
+== <<#S0,S0>>::S1
 
 
 
@@ -122,10 +114,8 @@ struct S1;
 
 
 
-
-
 [#S0-M1]
-== xref:#S0[S0]::M1
+== <<#S0,S0>>::M1
 
 
 
@@ -136,14 +126,12 @@ Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename U>
-using M1 = xref:#S0[S0]<U>;
+using M1 = <<#S0,S0>><U>;
 ----
 
 
-
-
 [#S0-S2]
-== xref:#S0[S0]::S2
+== <<#S0,S0>>::S2
 
 
 
@@ -162,26 +150,24 @@ struct S2;
 |===
 | Name | Description 
 
-| xref:#S0-S2-M2[`M2`] 
+| <<#S0-S2-M2,`M2`>> 
 | 
     
-| xref:#S0-S2-M3[`M3`] 
+| <<#S0-S2-M3,`M3`>> 
 | 
     
-| xref:#S0-S2-S3[`S3`] 
+| <<#S0-S2-S3,`S3`>> 
 | 
     
-| xref:#S0-S2-S4[`S4`] 
+| <<#S0-S2-S4,`S4`>> 
 | 
     
 |===
 
 
 
-
-
 [#S0-S2-M2]
-== xref:#S0[S0]::xref:#S0-S2[S2]::M2
+== <<#S0,S0>>::<<#S0-S2,S2>>::M2
 
 
 
@@ -195,10 +181,8 @@ using M2 = U;
 ----
 
 
-
-
 [#S0-S2-S3]
-== xref:#S0[S0]::xref:#S0-S2[S2]::S3
+== <<#S0,S0>>::<<#S0-S2,S2>>::S3
 
 
 
@@ -214,10 +198,8 @@ struct S3;
 
 
 
-
-
 [#S0-S2-M3]
-== xref:#S0[S0]::xref:#S0-S2[S2]::M3
+== <<#S0,S0>>::<<#S0-S2,S2>>::M3
 
 
 
@@ -228,14 +210,12 @@ Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename V>
-using M3 = xref:#S0-S2[S2]<U>;
+using M3 = <<#S0-S2,S2>><U>;
 ----
 
 
-
-
 [#S0-S2-S4]
-== xref:#S0[S0]::xref:#S0-S2[S2]::S4
+== <<#S0,S0>>::<<#S0-S2,S2>>::S4
 
 
 
@@ -254,17 +234,15 @@ struct S4;
 |===
 | Name | Description 
 
-| xref:#S0-S2-S4-M4[`M4`] 
+| <<#S0-S2-S4-M4,`M4`>> 
 | 
     
 |===
 
 
 
-
-
 [#S0-S2-S4-M4]
-== xref:#S0[S0]::xref:#S0-S2[S2]::xref:#S0-S2-S4[S4]::M4
+== <<#S0,S0>>::<<#S0-S2,S2>>::<<#S0-S2-S4,S4>>::M4
 
 
 
@@ -278,8 +256,6 @@ using M4 = V;
 ----
 
 
-
-
 [#A0]
 == A0
 
@@ -291,10 +267,8 @@ Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-using A0 = xref:#S0[S0]<int>;
+using A0 = <<#S0,S0>><int>;
 ----
-
-
 
 
 [#A1]
@@ -308,10 +282,8 @@ Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-using A1 = xref:#A0[A0]::xref:#S0-M0[M0];
+using A1 = <<#A0,A0>>::<<#S0-M0,M0>>;
 ----
-
-
 
 
 [#A2]
@@ -325,10 +297,8 @@ Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-using A2 = xref:#A0[A0]::xref:#S0-S1[S1];
+using A2 = <<#A0,A0>>::<<#S0-S1,S1>>;
 ----
-
-
 
 
 [#A3]
@@ -342,10 +312,8 @@ Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-using A3 = xref:#S0[S0]<long>::xref:#S0-M0[M0];
+using A3 = <<#S0,S0>><long>::<<#S0-M0,M0>>;
 ----
-
-
 
 
 [#A4]
@@ -359,10 +327,8 @@ Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-using A4 = xref:#S0[S0]<long long>::xref:#S0-S1[S1];
+using A4 = <<#S0,S0>><long long>::<<#S0-S1,S1>>;
 ----
-
-
 
 
 [#A5]
@@ -376,10 +342,8 @@ Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-using A5 = xref:#S0[S0]<void>;
+using A5 = <<#S0,S0>><void>;
 ----
-
-
 
 
 [#A6]
@@ -393,10 +357,8 @@ Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-using A6 = xref:#A5[A5]::xref:#S0-M1[M1]<short>::xref:#S0-M0[M0];
+using A6 = <<#A5,A5>>::<<#S0-M1,M1>><short>::<<#S0-M0,M0>>;
 ----
-
-
 
 
 [#A7]
@@ -410,10 +372,8 @@ Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-using A7 = xref:#A5[A5]::xref:#S0-S2[S2]<bool>::xref:#S0-S2-M2[M2];
+using A7 = <<#A5,A5>>::<<#S0-S2,S2>><bool>::<<#S0-S2-M2,M2>>;
 ----
-
-
 
 
 [#A8]
@@ -427,10 +387,8 @@ Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-using A8 = xref:#A5[A5]::xref:#S0-S2[S2]<int>::xref:#S0-S2-S3[S3];
+using A8 = <<#A5,A5>>::<<#S0-S2,S2>><int>::<<#S0-S2-S3,S3>>;
 ----
-
-
 
 
 [#A9]
@@ -444,10 +402,8 @@ Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-using A9 = xref:#A5[A5]::xref:#S0-S2[S2]<char>::xref:#S0-S2-M3[M3]<int>::xref:#S0-S2-M3[M3]<unsigned int>::xref:#S0-S2-M2[M2];
+using A9 = <<#A5,A5>>::<<#S0-S2,S2>><char>::<<#S0-S2-M3,M3>><int>::<<#S0-S2-M3,M3>><unsigned int>::<<#S0-S2-M2,M2>>;
 ----
-
-
 
 
 [#A10]
@@ -461,7 +417,7 @@ Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-using A10 = xref:#A5[A5]::xref:#S0-S2[S2]<float>::xref:#S0-S2-M3[M3]<double>::xref:#S0-S2-M3[M3]<long double>::xref:#S0-S2-S4[S4]<void>::xref:#S0-S2-S4-M4[M4];
+using A10 = <<#A5,A5>>::<<#S0-S2,S2>><float>::<<#S0-S2-M3,M3>><double>::<<#S0-S2-M3,M3>><long double>::<<#S0-S2-S4,S4>><void>::<<#S0-S2-S4-M4,M4>>;
 ----
 
 

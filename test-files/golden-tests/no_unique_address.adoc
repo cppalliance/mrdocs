@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,15 +8,13 @@
 |===
 | Name | Description 
 
-| xref:#Empty[`Empty`] 
+| <<#Empty,`Empty`>> 
 | 
     
-| xref:#T[`T`] 
+| <<#T,`T`>> 
 | 
     
 |===
-
-
 
 [#Empty]
 == Empty
@@ -33,8 +29,6 @@ Declared in `<pass:[no_unique_address.cpp]>`
 ----
 struct Empty;
 ----
-
-
 
 
 
@@ -58,20 +52,18 @@ struct T;
 |===
 | Name | Description 
 
-| xref:#T-e[`e`] 
+| <<#T-e,`e`>> 
 | 
     
-| xref:#T-i[`i`] 
+| <<#T-i,`i`>> 
 | 
     
 |===
 
 
 
-
-
 [#T-i]
-== xref:#T[T]::i
+== <<#T,T>>::i
 
 
 
@@ -85,10 +77,8 @@ int i;
 ----
 
 
-
-
 [#T-e]
-== xref:#T[T]::e
+== <<#T,T>>::e
 
 
 
@@ -98,7 +88,7 @@ Declared in `<pass:[no_unique_address.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-xref:#Empty[Empty] e = pass:[Empty{}];
+<<#Empty,Empty>> e = pass:[Empty{}];
 ----
 
 

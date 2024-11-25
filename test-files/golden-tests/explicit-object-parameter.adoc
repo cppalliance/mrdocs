@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,12 +8,10 @@
 |===
 | Name | Description 
 
-| xref:#Optional[`Optional`] 
+| <<#Optional,`Optional`>> 
 | 
     
 |===
-
-
 
 [#Optional]
 == Optional
@@ -36,16 +32,14 @@ struct Optional;
 |===
 | Name | Description 
 
-| xref:Optional-value[`value`] 
+| <<#Optional-value,`value`>> 
 | 
 |===
 
 
 
-
 [#pass:[Optional-value]]
-
-== xref:#Optional[Optional]::value
+== <<#Optional,Optional>>::value
 
   
 
@@ -57,7 +51,7 @@ struct Optional;
 template<typename Self>
 constexpr
 auto&&
-xref:#Optional-value-05[value](this Self&& self);
+<<#Optional-value-05,value>>(this Self&& self);
 ----
 
 [source,cpp,subs="verbatim,macros,-callouts"]
@@ -65,7 +59,7 @@ xref:#Optional-value-05[value](this Self&& self);
 template<typename Self>
 constexpr
 auto&&
-xref:#Optional-value-06[value](this 
+<<#Optional-value-06,value>>(this 
     Self&& self,
     int x);
 ----
@@ -77,10 +71,8 @@ xref:#Optional-value-06[value](this
 
 
 
-
-
 [#Optional-value-05]
-== xref:#Optional[Optional]::value
+== <<#Optional,Optional>>::value
 
 
 
@@ -103,10 +95,8 @@ value(this Self&& self);
 
 
 
-
-
 [#Optional-value-06]
-== xref:#Optional[Optional]::value
+== <<#Optional,Optional>>::value
 
 
 

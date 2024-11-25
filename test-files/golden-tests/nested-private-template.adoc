@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,12 +8,10 @@
 |===
 | Name | Description 
 
-| xref:#range[`range`] 
+| <<#range,`range`>> 
 | 
     
 |===
-
-
 
 [#range]
 == range
@@ -37,20 +33,18 @@ class range;
 |===
 | Name | Description 
 
-| xref:#range-impl-0e[`impl`] 
+| <<#range-impl-0e,`impl`>> 
 | 
     
-| xref:#range-impl-00[`impl<R, false>`] 
+| <<#range-impl-00,`impl<R, false>`>> 
 | 
     
 |===
 
 
 
-
-
 [#range-impl-0e]
-== xref:#range[range]::impl
+== <<#range,range>>::impl
 
 
 
@@ -69,10 +63,8 @@ struct impl;
 
 
 
-
-
 [#range-impl-00]
-== xref:#range[range]::impl
+== <<#range,range>>::impl
 
 
 
@@ -83,7 +75,7 @@ Declared in `<pass:[nested-private-template.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<class R>
-struct xref:#range-impl-0e[impl]<R, false>;
+struct <<#range-impl-0e,impl>><R, false>;
 ----
 
 

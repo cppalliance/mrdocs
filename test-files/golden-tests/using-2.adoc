@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,12 +8,10 @@
 |===
 | Name | Description 
 
-| xref:#LongName[`LongName`] 
+| <<#LongName,`LongName`>> 
 | 
     
 |===
-
-
 
 [#LongName]
 == LongName
@@ -25,18 +21,16 @@
 |===
 | Name | Description 
 
-| xref:#LongName-S1[`S1`] 
+| <<#LongName-S1,`S1`>> 
 | 
     
-| xref:#LongName-S2[`S2`] 
+| <<#LongName-S2,`S2`>> 
 | 
     
 |===
 
-
-
 [#LongName-S1]
-== xref:#LongName[LongName]::S1
+== <<#LongName,LongName>>::S1
 
 
 
@@ -52,10 +46,8 @@ struct S1;
 
 
 
-
-
 [#LongName-S2]
-== xref:#LongName[LongName]::S2
+== <<#LongName,LongName>>::S2
 
 
 
@@ -71,8 +63,6 @@ struct S2;
 
 
 
-
-
 [#S1]
 == S1
 
@@ -84,7 +74,7 @@ Declared in `<pass:[using-2.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-using xref:#LongName[LongName]::S1;
+using <<#LongName,LongName>>::S1;
 ----
 
 
@@ -94,8 +84,6 @@ using xref:#LongName[LongName]::S1;
 | Name
 | S1
 |===
-
-
 
 
 [#S2]
@@ -109,7 +97,7 @@ Declared in `<pass:[using-2.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-using xref:#LongName[LongName]::S2;
+using <<#LongName,LongName>>::S2;
 ----
 
 

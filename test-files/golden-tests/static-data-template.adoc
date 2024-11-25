@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,12 +8,10 @@
 |===
 | Name | Description 
 
-| xref:#A[`A`] 
+| <<#A,`A`>> 
 | 
     
 |===
-
-
 
 [#A]
 == A
@@ -37,23 +33,21 @@ struct A;
 |===
 | Name | Description 
 
-| xref:#A-x-0e[`x`] 
+| <<#A-x-0e,`x`>> 
 | 
     
-| xref:#A-x-0a[`x<U*, T>`] 
+| <<#A-x-0a,`x<U*, T>`>> 
 | 
     
-| xref:#A-x-07[`x<T, long>`] 
+| <<#A-x-07,`x<T, long>`>> 
 | 
     
 |===
 
 
 
-
-
 [#A-x-0e]
-== xref:#A[A]::x
+== <<#A,A>>::x
 
 
 
@@ -72,10 +66,8 @@ T const x = 0;
 ----
 
 
-
-
 [#A-x-0a]
-== xref:#A[A]::x
+== <<#A,A>>::x
 
 
 
@@ -88,14 +80,12 @@ Declared in `<pass:[static-data-template.cpp]>`
 template<typename U>
 constexpr
 static
-T const xref:#A-x-0e[x]<U*, T> = 1;
+T const <<#A-x-0e,x>><U*, T> = 1;
 ----
 
 
-
-
 [#A-x-07]
-== xref:#A[A]::x
+== <<#A,A>>::x
 
 
 
@@ -108,7 +98,7 @@ Declared in `<pass:[static-data-template.cpp]>`
 template<>
 constexpr
 static
-bool const xref:#A-x-0e[x]<T, long> = 2;
+bool const <<#A-x-0e,x>><T, long> = 2;
 ----
 
 

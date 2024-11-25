@@ -16,6 +16,7 @@
 #include <lib/Dom/LazyArray.hpp>
 #include <llvm/ADT/STLExtras.h>
 #include <llvm/ADT/StringRef.h>
+#include "lib/Support/Radix.hpp"
 
 namespace clang {
 namespace mrdocs {
@@ -34,6 +35,8 @@ tag_invoke(
      * by the `Info` tag_invoke.
      */
     v = dom::Object({
+        // KRYSTIAN FIXME: need a better way to generate IDs
+        { "id", fmt::format("{}-{}", toBase16(overloads.Parent), overloads.Name) },
         { "kind",       "overload"},
         { "name",       overloads.Name },
         { "members",    dom::LazyArray(overloads.Members, domCorpus) },

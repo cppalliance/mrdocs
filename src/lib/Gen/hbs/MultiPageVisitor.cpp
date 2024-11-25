@@ -43,7 +43,7 @@ operator()(T const& I0)
         // ===================================
         // Open the output file
         // ===================================
-        std::string path = files::appendPath(outputPath_, builder.domCorpus.getXref(I));
+        std::string path = files::appendPath(outputPath_, builder.domCorpus.getURL(I));
         std::string dir = files::getParentDir(path);
         if (auto exp = files::createDirectory(dir); !exp)
         {

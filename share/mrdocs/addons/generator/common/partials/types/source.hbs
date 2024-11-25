@@ -9,7 +9,7 @@
         {{ str "<" }}{{#unless (and @root.config.base-url (eq dcl.kind "source"))~}}
             {{dcl.file}}
         {{~else~}}
-            {{#>markup/a href=(concat @root.config.base-url dcl.file '#L' dcl.line)}}{{dcl.file}}{{/markup/a}}>
+            {{#>markup/a href=(concat @root.config.base-url dcl.file '#L' dcl.line)}}{{dcl.file}}{{/markup/a}}
         {{~/unless~}}{{ str ">" }}
     {{~/markup/code}}
 {{~/markup/span}}

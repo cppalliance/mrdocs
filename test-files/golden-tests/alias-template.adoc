@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,21 +8,19 @@
 |===
 | Name | Description 
 
-| xref:#A[`A`] 
+| <<#A,`A`>> 
 | 
     
-| xref:#B[`B`] 
+| <<#B,`B`>> 
 | 
     
-| xref:#C[`C`] 
+| <<#C,`C`>> 
 | 
     
-| xref:#D[`D`] 
+| <<#D,`D`>> 
 | 
     
 |===
-
-
 
 [#A]
 == A
@@ -40,8 +36,6 @@ Declared in `<pass:[alias-template.cpp]>`
 template<typename T>
 struct A;
 ----
-
-
 
 
 
@@ -66,8 +60,6 @@ struct B;
 
 
 
-
-
 [#C]
 == C
 
@@ -80,10 +72,8 @@ Declared in `<pass:[alias-template.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
-using C = xref:#A[A]<T>;
+using C = <<#A,A>><T>;
 ----
-
-
 
 
 [#D]
@@ -106,17 +96,15 @@ struct D;
 |===
 | Name | Description 
 
-| xref:#D-E[`E`] 
+| <<#D-E,`E`>> 
 | 
     
 |===
 
 
 
-
-
 [#D-E]
-== xref:#D[D]::E
+== <<#D,D>>::E
 
 
 
@@ -127,7 +115,7 @@ Declared in `<pass:[alias-template.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename U>
-using E = xref:#B[B]<T, U>;
+using E = <<#B,B>><T, U>;
 ----
 
 

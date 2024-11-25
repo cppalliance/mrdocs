@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,7 +8,7 @@
 |===
 | Name | Description 
 
-| xref:#A[`A`] 
+| <<#A,`A`>> 
 | 
     
 |===
@@ -19,7 +17,7 @@
 |===
 | Name | Description 
 
-| xref:#F[`F`] 
+| <<#F,`F`>> 
 | 
     
 |===
@@ -28,24 +26,22 @@
 |===
 | Name | Description 
 
-| xref:#f0[`f0`] 
+| <<#f0,`f0`>> 
 | 
     
-| xref:#f5[`f5`] 
+| <<#f5,`f5`>> 
 | 
 See
 xref:#A-f1[A::f1]
 
     
-| xref:#f6[`f6`] 
+| <<#f6,`f6`>> 
 | 
 See
 xref:#F-operator_bitnot[F::operator~]
 
     
 |===
-
-
 
 [#f0]
 == f0
@@ -69,8 +65,6 @@ f0();
 
 
 
-
-
 [#A]
 == A
 
@@ -79,16 +73,16 @@ f0();
 |===
 | Name | Description 
 
-| xref:#A-B[`B`] 
+| <<#A-B,`B`>> 
 | 
 See
 xref:#A-f1[f1]
 
     
-| xref:#A-C[`C`] 
+| <<#A-C,`C`>> 
 | 
     
-| xref:#A-D[`D`] 
+| <<#A-D,`D`>> 
 | 
     
 |===
@@ -97,7 +91,7 @@ xref:#A-f1[f1]
 |===
 | Name | Description 
 
-| xref:#A-f1[`f1`] 
+| <<#A-f1,`f1`>> 
 | 
 See
 xref:#f0[f0]
@@ -105,10 +99,8 @@ xref:#f0[f0]
     
 |===
 
-
-
 [#A-f1]
-== xref:#A[A]::f1
+== <<#A,A>>::f1
 
 
 See
@@ -139,10 +131,8 @@ xref:#f0[::f0]
 
 
 
-
-
 [#A-B]
-== xref:#A[A]::B
+== <<#A,A>>::B
 
 
 See
@@ -164,7 +154,7 @@ struct B;
 |===
 | Name | Description 
 
-| xref:#A-B-f2[`f2`] 
+| <<#A-B-f2,`f2`>> 
 | 
     
 |===
@@ -181,10 +171,8 @@ xref:#A-f1[::A::f1]
 
 
 
-
-
 [#A-B-f2]
-== xref:#A[A]::xref:#A-B[B]::f2
+== <<#A,A>>::<<#A-B,B>>::f2
 
 
 
@@ -205,10 +193,8 @@ f2();
 
 
 
-
-
 [#A-C]
-== xref:#A[A]::C
+== <<#A,A>>::C
 
 
 
@@ -226,20 +212,18 @@ struct C;
 |===
 | Name | Description 
 
-| xref:#A-C-f3[`f3`] 
+| <<#A-C-f3,`f3`>> 
 | 
     
-| xref:#A-C-f4[`f4`] 
+| <<#A-C-f4,`f4`>> 
 | 
     
 |===
 
 
 
-
-
 [#A-C-f3]
-== xref:#A[A]::xref:#A-C[C]::f3
+== <<#A,A>>::<<#A-C,C>>::f3
 
 
 
@@ -260,10 +244,8 @@ f3();
 
 
 
-
-
 [#A-C-f4]
-== xref:#A[A]::xref:#A-C[C]::f4
+== <<#A,A>>::<<#A-C,C>>::f4
 
 
 
@@ -284,10 +266,8 @@ f4();
 
 
 
-
-
 [#A-D]
-== xref:#A[A]::D
+== <<#A,A>>::D
 
 
 
@@ -298,7 +278,7 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct D
-    : xref:#A-C[C];
+    : <<#A-C,C>>;
 ----
 
 ===  Types
@@ -306,7 +286,7 @@ struct D
 |===
 | Name | Description 
 
-| xref:#A-D-E[`E`] 
+| <<#A-D-E,`E`>> 
 | 
 See
 xref:#A-C-f3[f3]
@@ -318,19 +298,17 @@ xref:#A-C-f3[f3]
 |===
 | Name | Description 
 
-| xref:#A-C-f3[`f3`] 
+| <<#A-C-f3,`f3`>> 
 | 
     
-| xref:A-C-f4[`f4`] 
+| <<#A-C-f4,`f4`>> 
 | 
 |===
 
 
 
-
-
 [#A-D-f4]
-== xref:#A[A]::xref:#A-D[D]::f4
+== <<#A,A>>::<<#A-D,D>>::f4
 
 
 
@@ -351,10 +329,8 @@ f4();
 
 
 
-
-
 [#A-D-E]
-== xref:#A[A]::xref:#A-D[D]::E
+== <<#A,A>>::<<#A-D,D>>::E
 
 
 See
@@ -380,8 +356,6 @@ xref:#A-D-f4[f4]
 See
 xref:#A-C-f4[C::f4]
 ]
-
-
 
 
 
@@ -417,8 +391,6 @@ xref:#A-f1[::A::f1]
 
 
 
-
-
 [#F]
 == F
 
@@ -438,131 +410,129 @@ struct F;
 |===
 | Name | Description 
 
-| xref:#F-operator_not[`pass:[operator!]`] 
+| <<#F-operator_not,`pass:[operator!]`>> 
 | 
     
-| xref:#F-operator_not_eq[`pass:[operator!=]`] 
+| <<#F-operator_not_eq,`pass:[operator!=]`>> 
 | 
     
-| xref:#F-operator_mod[`operator%`] 
+| <<#F-operator_mod,`operator%`>> 
 | 
     
-| xref:#F-operator_mod_eq[`operator%=`] 
+| <<#F-operator_mod_eq,`operator%=`>> 
 | 
     
-| xref:#F-operator_bitand[`operator&`] 
+| <<#F-operator_bitand,`operator&`>> 
 | 
     
-| xref:#F-operator_and[`operator&&`] 
+| <<#F-operator_and,`operator&&`>> 
 | 
     
-| xref:#F-operator_and_eq[`operator&=`] 
+| <<#F-operator_and_eq,`operator&=`>> 
 | 
     
-| xref:#F-operator_call[`pass:[operator()]`] 
+| <<#F-operator_call,`pass:[operator()]`>> 
 | 
     
-| xref:#F-operator_star[`pass:[operator*]`] 
+| <<#F-operator_star,`pass:[operator*]`>> 
 | 
     
-| xref:#F-operator_star_eq[`pass:[operator*=]`] 
+| <<#F-operator_star_eq,`pass:[operator*=]`>> 
 | 
     
-| xref:#F-operator_plus[`pass:[operator+]`] 
+| <<#F-operator_plus,`pass:[operator+]`>> 
 | 
     
-| xref:#F-operator_inc[`pass:[operator++]`] 
+| <<#F-operator_inc,`pass:[operator++]`>> 
 | 
     
-| xref:#F-operator_plus_eq[`pass:[operator+=]`] 
+| <<#F-operator_plus_eq,`pass:[operator+=]`>> 
 | 
     
-| xref:#F-operator_comma[`operator,`] 
+| <<#F-operator_comma,`operator,`>> 
 | 
     
-| xref:#F-operator_minus[`pass:[operator-]`] 
+| <<#F-operator_minus,`pass:[operator-]`>> 
 | 
     
-| xref:#F-operator_dec[`pass:[operator--]`] 
+| <<#F-operator_dec,`pass:[operator--]`>> 
 | 
     
-| xref:#F-operator_minus_eq[`pass:[operator-=]`] 
+| <<#F-operator_minus_eq,`pass:[operator-=]`>> 
 | 
     
-| xref:#F-operator_ptr[`pass:[operator->]`] 
+| <<#F-operator_ptr,`pass:[operator->]`>> 
 | 
     
-| xref:#F-operator_ptrmem[`pass:[operator->*]`] 
+| <<#F-operator_ptrmem,`pass:[operator->*]`>> 
 | 
     
-| xref:#F-operator_slash[`operator/`] 
+| <<#F-operator_slash,`operator/`>> 
 | 
     
-| xref:#F-operator_slash_eq[`operator/=`] 
+| <<#F-operator_slash_eq,`operator/=`>> 
 | 
     
-| xref:#F-operator_lt[`operator<`] 
+| <<#F-operator_lt,`operator<`>> 
 | 
     
-| xref:#F-operator_lshift[`operator<<`] 
+| <<#F-operator_lshift,`operator<<`>> 
 | 
     
-| xref:#F-operator_lshift_eq[`operator<<=`] 
+| <<#F-operator_lshift_eq,`operator<<=`>> 
 | 
     
-| xref:#F-operator_le[`operator<=`] 
+| <<#F-operator_le,`operator<=`>> 
 | 
     
-| xref:#F-operator_3way[`operator<=>`] 
+| <<#F-operator_3way,`operator<=>`>> 
 | 
     
-| xref:#F-operator_assign[`operator=`] 
+| <<#F-operator_assign,`operator=`>> 
 | 
     
-| xref:#F-operator_eq[`operator==`] 
+| <<#F-operator_eq,`operator==`>> 
 | 
     
-| xref:#F-operator_gt[`operator>`] 
+| <<#F-operator_gt,`operator>`>> 
 | 
     
-| xref:#F-operator_ge[`operator>=`] 
+| <<#F-operator_ge,`operator>=`>> 
 | 
     
-| xref:#F-operator_rshift[`operator>>`] 
+| <<#F-operator_rshift,`operator>>`>> 
 | 
     
-| xref:#F-operator_rshift_eq[`operator>>=`] 
+| <<#F-operator_rshift_eq,`operator>>=`>> 
 | 
     
-| xref:#F-operator_subs[`pass:[operator[]]`] 
+| <<#F-operator_subs,`pass:[operator[]]`>> 
 | 
     
-| xref:#F-operator_xor[`operator^`] 
+| <<#F-operator_xor,`operator^`>> 
 | 
     
-| xref:#F-operator_xor_eq[`operator^=`] 
+| <<#F-operator_xor_eq,`operator^=`>> 
 | 
     
-| xref:#F-operator_bitor[`pass:[operator|]`] 
+| <<#F-operator_bitor,`pass:[operator|]`>> 
 | 
     
-| xref:#F-operator_or_eq[`pass:[operator|=]`] 
+| <<#F-operator_or_eq,`pass:[operator|=]`>> 
 | 
     
-| xref:#F-operator_or[`pass:[operator||]`] 
+| <<#F-operator_or,`pass:[operator||]`>> 
 | 
     
-| xref:#F-operator_bitnot[`operator~`] 
+| <<#F-operator_bitnot,`operator~`>> 
 | 
     
 |===
 
 
 
-
-
 [#F-operator_bitnot]
-== xref:#F[F]::operator~
+== <<#F,F>>::operator~
 
 
 
@@ -583,10 +553,8 @@ operator~();
 
 
 
-
-
 [#F-operator_comma]
-== xref:#F[F]::operator,
+== <<#F,F>>::operator,
 
 
 
@@ -597,10 +565,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator,(xref:#F[F]&);
+operator,(<<#F,F>>&);
 ----
-
-
 
 
 
@@ -610,7 +576,7 @@ operator,(xref:#F[F]&);
 
 
 [#F-operator_call]
-== xref:#F[F]::pass:[operator()]
+== <<#F,F>>::pass:[operator()]
 
 
 
@@ -621,10 +587,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-pass:[operator()](xref:#F[F]&);
+pass:[operator()](<<#F,F>>&);
 ----
-
-
 
 
 
@@ -634,7 +598,7 @@ pass:[operator()](xref:#F[F]&);
 
 
 [#F-operator_subs]
-== xref:#F[F]::pass:[operator[]]
+== <<#F,F>>::pass:[operator[]]
 
 
 
@@ -645,10 +609,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-pass:[operator[]](xref:#F[F]&);
+pass:[operator[]](<<#F,F>>&);
 ----
-
-
 
 
 
@@ -658,7 +620,7 @@ pass:[operator[]](xref:#F[F]&);
 
 
 [#F-operator_plus]
-== xref:#F[F]::pass:[operator+]
+== <<#F,F>>::pass:[operator+]
 
 
 
@@ -669,7 +631,7 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-pass:[operator+](xref:#F[F]&);
+pass:[operator+](<<#F,F>>&);
 ----
 
 
@@ -679,10 +641,8 @@ pass:[operator+](xref:#F[F]&);
 
 
 
-
-
 [#F-operator_inc]
-== xref:#F[F]::pass:[operator++]
+== <<#F,F>>::pass:[operator++]
 
 
 
@@ -703,10 +663,8 @@ pass:[operator++]();
 
 
 
-
-
 [#F-operator_plus_eq]
-== xref:#F[F]::pass:[operator+=]
+== <<#F,F>>::pass:[operator+=]
 
 
 
@@ -717,10 +675,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-pass:[operator+=](xref:#F[F]&);
+pass:[operator+=](<<#F,F>>&);
 ----
-
-
 
 
 
@@ -730,7 +686,7 @@ pass:[operator+=](xref:#F[F]&);
 
 
 [#F-operator_bitand]
-== xref:#F[F]::operator&
+== <<#F,F>>::operator&
 
 
 
@@ -741,10 +697,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator&(xref:#F[F]&);
+operator&(<<#F,F>>&);
 ----
-
-
 
 
 
@@ -754,7 +708,7 @@ operator&(xref:#F[F]&);
 
 
 [#F-operator_and]
-== xref:#F[F]::operator&&
+== <<#F,F>>::operator&&
 
 
 
@@ -765,10 +719,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator&&(xref:#F[F]&);
+operator&&(<<#F,F>>&);
 ----
-
-
 
 
 
@@ -778,7 +730,7 @@ operator&&(xref:#F[F]&);
 
 
 [#F-operator_and_eq]
-== xref:#F[F]::operator&=
+== <<#F,F>>::operator&=
 
 
 
@@ -789,10 +741,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator&=(xref:#F[F]&);
+operator&=(<<#F,F>>&);
 ----
-
-
 
 
 
@@ -802,7 +752,7 @@ operator&=(xref:#F[F]&);
 
 
 [#F-operator_bitor]
-== xref:#F[F]::pass:[operator|]
+== <<#F,F>>::pass:[operator|]
 
 
 
@@ -813,10 +763,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-pass:[operator|](xref:#F[F]&);
+pass:[operator|](<<#F,F>>&);
 ----
-
-
 
 
 
@@ -826,7 +774,7 @@ pass:[operator|](xref:#F[F]&);
 
 
 [#F-operator_or]
-== xref:#F[F]::pass:[operator||]
+== <<#F,F>>::pass:[operator||]
 
 
 
@@ -837,10 +785,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-pass:[operator||](xref:#F[F]&);
+pass:[operator||](<<#F,F>>&);
 ----
-
-
 
 
 
@@ -850,7 +796,7 @@ pass:[operator||](xref:#F[F]&);
 
 
 [#F-operator_or_eq]
-== xref:#F[F]::pass:[operator|=]
+== <<#F,F>>::pass:[operator|=]
 
 
 
@@ -861,10 +807,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-pass:[operator|=](xref:#F[F]&);
+pass:[operator|=](<<#F,F>>&);
 ----
-
-
 
 
 
@@ -874,7 +818,7 @@ pass:[operator|=](xref:#F[F]&);
 
 
 [#F-operator_minus]
-== xref:#F[F]::pass:[operator-]
+== <<#F,F>>::pass:[operator-]
 
 
 
@@ -885,7 +829,7 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-pass:[operator-](xref:#F[F]&);
+pass:[operator-](<<#F,F>>&);
 ----
 
 
@@ -895,10 +839,8 @@ pass:[operator-](xref:#F[F]&);
 
 
 
-
-
 [#F-operator_dec]
-== xref:#F[F]::pass:[operator--]
+== <<#F,F>>::pass:[operator--]
 
 
 
@@ -919,10 +861,8 @@ pass:[operator--]();
 
 
 
-
-
 [#F-operator_minus_eq]
-== xref:#F[F]::pass:[operator-=]
+== <<#F,F>>::pass:[operator-=]
 
 
 
@@ -933,7 +873,7 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-pass:[operator-=](xref:#F[F]&);
+pass:[operator-=](<<#F,F>>&);
 ----
 
 
@@ -943,10 +883,8 @@ pass:[operator-=](xref:#F[F]&);
 
 
 
-
-
 [#F-operator_ptr]
-== xref:#F[F]::pass:[operator->]
+== <<#F,F>>::pass:[operator->]
 
 
 
@@ -967,10 +905,8 @@ pass:[operator->]();
 
 
 
-
-
 [#F-operator_ptrmem]
-== xref:#F[F]::pass:[operator->*]
+== <<#F,F>>::pass:[operator->*]
 
 
 
@@ -981,10 +917,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-pass:[operator->*](xref:#F[F]&);
+pass:[operator->*](<<#F,F>>&);
 ----
-
-
 
 
 
@@ -994,7 +928,7 @@ pass:[operator->*](xref:#F[F]&);
 
 
 [#F-operator_lt]
-== xref:#F[F]::operator<
+== <<#F,F>>::operator<
 
 
 
@@ -1005,10 +939,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator<(xref:#F[F]&);
+operator<(<<#F,F>>&);
 ----
-
-
 
 
 
@@ -1018,7 +950,7 @@ operator<(xref:#F[F]&);
 
 
 [#F-operator_lshift]
-== xref:#F[F]::operator<<
+== <<#F,F>>::operator<<
 
 
 
@@ -1029,10 +961,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator<<(xref:#F[F]&);
+operator<<(<<#F,F>>&);
 ----
-
-
 
 
 
@@ -1042,7 +972,7 @@ operator<<(xref:#F[F]&);
 
 
 [#F-operator_lshift_eq]
-== xref:#F[F]::operator<<=
+== <<#F,F>>::operator<<=
 
 
 
@@ -1053,10 +983,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator<<=(xref:#F[F]&);
+operator<<=(<<#F,F>>&);
 ----
-
-
 
 
 
@@ -1066,7 +994,7 @@ operator<<=(xref:#F[F]&);
 
 
 [#F-operator_le]
-== xref:#F[F]::operator<=
+== <<#F,F>>::operator<=
 
 
 
@@ -1077,10 +1005,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator<=(xref:#F[F]&);
+operator<=(<<#F,F>>&);
 ----
-
-
 
 
 
@@ -1090,7 +1016,7 @@ operator<=(xref:#F[F]&);
 
 
 [#F-operator_3way]
-== xref:#F[F]::operator<=>
+== <<#F,F>>::operator<=>
 
 
 
@@ -1101,10 +1027,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator<=>(xref:#F[F]&);
+operator<=>(<<#F,F>>&);
 ----
-
-
 
 
 
@@ -1114,7 +1038,7 @@ operator<=>(xref:#F[F]&);
 
 
 [#F-operator_gt]
-== xref:#F[F]::operator>
+== <<#F,F>>::operator>
 
 
 
@@ -1125,10 +1049,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator>(xref:#F[F]&);
+operator>(<<#F,F>>&);
 ----
-
-
 
 
 
@@ -1138,7 +1060,7 @@ operator>(xref:#F[F]&);
 
 
 [#F-operator_rshift]
-== xref:#F[F]::operator>>
+== <<#F,F>>::operator>>
 
 
 
@@ -1149,10 +1071,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator>>(xref:#F[F]&);
+operator>>(<<#F,F>>&);
 ----
-
-
 
 
 
@@ -1162,7 +1082,7 @@ operator>>(xref:#F[F]&);
 
 
 [#F-operator_rshift_eq]
-== xref:#F[F]::operator>>=
+== <<#F,F>>::operator>>=
 
 
 
@@ -1173,10 +1093,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator>>=(xref:#F[F]&);
+operator>>=(<<#F,F>>&);
 ----
-
-
 
 
 
@@ -1186,7 +1104,7 @@ operator>>=(xref:#F[F]&);
 
 
 [#F-operator_ge]
-== xref:#F[F]::operator>=
+== <<#F,F>>::operator>=
 
 
 
@@ -1197,10 +1115,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator>=(xref:#F[F]&);
+operator>=(<<#F,F>>&);
 ----
-
-
 
 
 
@@ -1210,7 +1126,7 @@ operator>=(xref:#F[F]&);
 
 
 [#F-operator_star]
-== xref:#F[F]::pass:[operator*]
+== <<#F,F>>::pass:[operator*]
 
 
 
@@ -1221,10 +1137,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-pass:[operator*](xref:#F[F]&);
+pass:[operator*](<<#F,F>>&);
 ----
-
-
 
 
 
@@ -1234,7 +1148,7 @@ pass:[operator*](xref:#F[F]&);
 
 
 [#F-operator_star_eq]
-== xref:#F[F]::pass:[operator*=]
+== <<#F,F>>::pass:[operator*=]
 
 
 
@@ -1245,10 +1159,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-pass:[operator*=](xref:#F[F]&);
+pass:[operator*=](<<#F,F>>&);
 ----
-
-
 
 
 
@@ -1258,7 +1170,7 @@ pass:[operator*=](xref:#F[F]&);
 
 
 [#F-operator_mod]
-== xref:#F[F]::operator%
+== <<#F,F>>::operator%
 
 
 
@@ -1269,10 +1181,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator%(xref:#F[F]&);
+operator%(<<#F,F>>&);
 ----
-
-
 
 
 
@@ -1282,7 +1192,7 @@ operator%(xref:#F[F]&);
 
 
 [#F-operator_mod_eq]
-== xref:#F[F]::operator%=
+== <<#F,F>>::operator%=
 
 
 
@@ -1293,10 +1203,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator%=(xref:#F[F]&);
+operator%=(<<#F,F>>&);
 ----
-
-
 
 
 
@@ -1306,7 +1214,7 @@ operator%=(xref:#F[F]&);
 
 
 [#F-operator_slash]
-== xref:#F[F]::operator/
+== <<#F,F>>::operator/
 
 
 
@@ -1317,10 +1225,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator/(xref:#F[F]&);
+operator/(<<#F,F>>&);
 ----
-
-
 
 
 
@@ -1330,7 +1236,7 @@ operator/(xref:#F[F]&);
 
 
 [#F-operator_slash_eq]
-== xref:#F[F]::operator/=
+== <<#F,F>>::operator/=
 
 
 
@@ -1341,10 +1247,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator/=(xref:#F[F]&);
+operator/=(<<#F,F>>&);
 ----
-
-
 
 
 
@@ -1354,7 +1258,7 @@ operator/=(xref:#F[F]&);
 
 
 [#F-operator_xor]
-== xref:#F[F]::operator^
+== <<#F,F>>::operator^
 
 
 
@@ -1365,10 +1269,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator^(xref:#F[F]&);
+operator^(<<#F,F>>&);
 ----
-
-
 
 
 
@@ -1378,7 +1280,7 @@ operator^(xref:#F[F]&);
 
 
 [#F-operator_xor_eq]
-== xref:#F[F]::operator^=
+== <<#F,F>>::operator^=
 
 
 
@@ -1389,10 +1291,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator^=(xref:#F[F]&);
+operator^=(<<#F,F>>&);
 ----
-
-
 
 
 
@@ -1402,7 +1302,7 @@ operator^=(xref:#F[F]&);
 
 
 [#F-operator_assign]
-== xref:#F[F]::operator=
+== <<#F,F>>::operator=
 
 
 
@@ -1413,10 +1313,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator=(xref:#F[F]&);
+operator=(<<#F,F>>&);
 ----
-
-
 
 
 
@@ -1426,7 +1324,7 @@ operator=(xref:#F[F]&);
 
 
 [#F-operator_eq]
-== xref:#F[F]::operator==
+== <<#F,F>>::operator==
 
 
 
@@ -1437,7 +1335,7 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-operator==(xref:#F[F]&);
+operator==(<<#F,F>>&);
 ----
 
 
@@ -1447,10 +1345,8 @@ operator==(xref:#F[F]&);
 
 
 
-
-
 [#F-operator_not]
-== xref:#F[F]::pass:[operator!]
+== <<#F,F>>::pass:[operator!]
 
 
 
@@ -1471,10 +1367,8 @@ pass:[operator!]();
 
 
 
-
-
 [#F-operator_not_eq]
-== xref:#F[F]::pass:[operator!=]
+== <<#F,F>>::pass:[operator!=]
 
 
 
@@ -1485,10 +1379,8 @@ Declared in `<pass:[ref.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-pass:[operator!=](xref:#F[F]&);
+pass:[operator!=](<<#F,F>>&);
 ----
-
-
 
 
 

@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,21 +8,19 @@
 |===
 | Name | Description 
 
-| xref:#Explicit[`Explicit`] 
+| <<#Explicit,`Explicit`>> 
 | 
     
-| xref:#ExplicitExpression[`ExplicitExpression`] 
+| <<#ExplicitExpression,`ExplicitExpression`>> 
 | 
     
-| xref:#ExplicitFalse[`ExplicitFalse`] 
+| <<#ExplicitFalse,`ExplicitFalse`>> 
 | 
     
-| xref:#ExplicitTrue[`ExplicitTrue`] 
+| <<#ExplicitTrue,`ExplicitTrue`>> 
 | 
     
 |===
-
-
 
 [#Explicit]
 == Explicit
@@ -45,17 +41,15 @@ struct Explicit;
 |===
 | Name | Description 
 
-| xref:#Explicit-2conversion[`operator bool`] 
+| <<#Explicit-2conversion,`operator bool`>> 
 | 
     
 |===
 
 
 
-
-
 [#Explicit-2conversion]
-== xref:#Explicit[Explicit]::operator bool
+== <<#Explicit,Explicit>>::operator bool
 
 
 
@@ -68,8 +62,6 @@ Declared in `<pass:[explicit-conv-operator.cpp]>`
 explicit
 operator bool();
 ----
-
-
 
 
 
@@ -97,17 +89,15 @@ struct ExplicitFalse;
 |===
 | Name | Description 
 
-| xref:#ExplicitFalse-2conversion[`operator bool`] 
+| <<#ExplicitFalse-2conversion,`operator bool`>> 
 | 
     
 |===
 
 
 
-
-
 [#ExplicitFalse-2conversion]
-== xref:#ExplicitFalse[ExplicitFalse]::operator bool
+== <<#ExplicitFalse,ExplicitFalse>>::operator bool
 
 
 
@@ -120,8 +110,6 @@ Declared in `<pass:[explicit-conv-operator.cpp]>`
 pass:[explicit(false)]
 operator bool();
 ----
-
-
 
 
 
@@ -149,17 +137,15 @@ struct ExplicitTrue;
 |===
 | Name | Description 
 
-| xref:#ExplicitTrue-2conversion[`operator bool`] 
+| <<#ExplicitTrue-2conversion,`operator bool`>> 
 | 
     
 |===
 
 
 
-
-
 [#ExplicitTrue-2conversion]
-== xref:#ExplicitTrue[ExplicitTrue]::operator bool
+== <<#ExplicitTrue,ExplicitTrue>>::operator bool
 
 
 
@@ -172,8 +158,6 @@ Declared in `<pass:[explicit-conv-operator.cpp]>`
 pass:[explicit(true)]
 operator bool();
 ----
-
-
 
 
 
@@ -202,17 +186,15 @@ struct ExplicitExpression;
 |===
 | Name | Description 
 
-| xref:#ExplicitExpression-2conversion[`operator bool`] 
+| <<#ExplicitExpression-2conversion,`operator bool`>> 
 | 
     
 |===
 
 
 
-
-
 [#ExplicitExpression-2conversion]
-== xref:#ExplicitExpression[ExplicitExpression]::operator bool
+== <<#ExplicitExpression,ExplicitExpression>>::operator bool
 
 
 

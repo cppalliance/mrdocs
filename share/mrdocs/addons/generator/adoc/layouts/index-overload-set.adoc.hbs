@@ -1,7 +1,5 @@
 {{! A page when the symbol type is "overloads" }}
-{{#if relfileprefix}}:relfileprefix: {{relfileprefix}}{{/if}}
-[#{{sectionref}}]
-
+[#{{symbol.anchor}}]
 ={{#unless @root.config.multipage}}={{/unless}} {{#if symbol.name}}{{>types/nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}Unnamed overload set{{/if}}
 
 {{#if symbol.members.[0]}}

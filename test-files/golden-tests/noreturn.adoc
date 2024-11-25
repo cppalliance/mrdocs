@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,7 +8,7 @@
 |===
 | Name | Description 
 
-| xref:#T[`T`] 
+| <<#T,`T`>> 
 | 
     
 |===
@@ -19,12 +17,10 @@
 |===
 | Name | Description 
 
-| xref:#f1[`f1`] 
+| <<#f1,`f1`>> 
 | 
     
 |===
-
-
 
 [#f1]
 == f1
@@ -40,8 +36,6 @@ Declared in `<pass:[noreturn.cpp]>`
 void
 f1();
 ----
-
-
 
 
 
@@ -69,7 +63,7 @@ struct T;
 |===
 | Name | Description 
 
-| xref:#T-f3[`f3`] 
+| <<#T-f3,`f3`>> 
 | 
     
 |===
@@ -78,7 +72,7 @@ struct T;
 |===
 | Name | Description 
 
-| xref:#T-f2[`f2`] 
+| <<#T-f2,`f2`>> 
 | 
     
 |===
@@ -87,17 +81,15 @@ struct T;
 |===
 | Name | Description 
 
-| xref:#T-08friend[`f1`] 
+| <<#T-08friend,`f1`>> 
 | 
     
 |===
 
 
 
-
-
 [#T-f2]
-== xref:#T[T]::f2
+== <<#T,T>>::f2
 
 
 
@@ -119,10 +111,8 @@ f2();
 
 
 
-
-
 [#T-f3]
-== xref:#T[T]::f3
+== <<#T,T>>::f3
 
 
 
@@ -135,8 +125,6 @@ Declared in `<pass:[noreturn.cpp]>`
 void
 f3();
 ----
-
-
 
 
 

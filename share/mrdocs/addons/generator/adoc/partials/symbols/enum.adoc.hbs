@@ -1,4 +1,5 @@
 {{!-- enum --}}
+[#{{{symbol.anchor}}}]
 ={{#unless @root.config.multipage}}={{/unless}} {{#if symbol.name}}{{>types/nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}Unnamed enum{{/if}}
 
 {{{symbol.doc.brief}}}
@@ -18,7 +19,7 @@
 |===
 |Name |Description
 {{#each symbol.members}}
-|xref:{{{ref}}}[`pass:v[{{>types/declarator-id . nolink=true}}]`] | {{~doc.brief}}
+|xref:{{{anchor}}}[`pass:v[{{>types/declarator-id . nolink=true}}]`] | {{~doc.brief}}
 {{/each}}
 |===
 {{/if}}

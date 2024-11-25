@@ -1,1 +1,1 @@
-xref:{{{href}}}[{{> @partial-block }}]
+{{#if (starts_with href "#")}}<<{{{href}}},{{> @partial-block }}>>{{else}}xref:{{{href}}}[{{> @partial-block }}]{{/if}}

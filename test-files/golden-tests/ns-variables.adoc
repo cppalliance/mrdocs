@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,7 +8,7 @@
 |===
 | Name | Description 
 
-| xref:#T[`T`] 
+| <<#T,`T`>> 
 | 
     
 |===
@@ -19,36 +17,34 @@
 |===
 | Name | Description 
 
-| xref:#i[`i`] 
+| <<#i,`i`>> 
 | 
     
-| xref:#j[`j`] 
+| <<#j,`j`>> 
 | 
     
-| xref:#k[`k`] 
+| <<#k,`k`>> 
 | 
     
-| xref:#l[`l`] 
+| <<#l,`l`>> 
 | 
     
-| xref:#pi[`pi`] 
+| <<#pi,`pi`>> 
 | 
     
-| xref:#t[`t`] 
+| <<#t,`t`>> 
 | 
     
-| xref:#x0[`x0`] 
+| <<#x0,`x0`>> 
 | 
     
-| xref:#x1[`x1`] 
+| <<#x1,`x1`>> 
 | 
     
-| xref:#x2[`x2`] 
+| <<#x2,`x2`>> 
 | 
     
 |===
-
-
 
 [#i]
 == i
@@ -66,8 +62,6 @@ int const i = 0;
 ----
 
 
-
-
 [#j]
 == j
 
@@ -81,8 +75,6 @@ Declared in `<pass:[ns-variables.cpp]>`
 ----
 int j = 0;
 ----
-
-
 
 
 [#k]
@@ -102,8 +94,6 @@ int const k = 1;
 ----
 
 
-
-
 [#l]
 == l
 
@@ -120,8 +110,6 @@ int l = 1;
 ----
 
 
-
-
 [#pi]
 == pi
 
@@ -135,8 +123,6 @@ Declared in `<pass:[ns-variables.cpp]>`
 ----
 double pi = pass:[3.14];
 ----
-
-
 
 
 [#T]
@@ -156,8 +142,6 @@ struct T;
 
 
 
-
-
 [#t]
 == t
 
@@ -170,10 +154,8 @@ Declared in `<pass:[ns-variables.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 extern
-xref:#T[T] t;
+<<#T,T>> t;
 ----
-
-
 
 
 [#x0]
@@ -192,8 +174,6 @@ int x0 = 0;
 ----
 
 
-
-
 [#x1]
 == x1
 
@@ -209,8 +189,6 @@ static
 thread_local
 int x1 = 0;
 ----
-
-
 
 
 [#x2]

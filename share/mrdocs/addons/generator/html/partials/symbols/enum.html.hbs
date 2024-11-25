@@ -1,5 +1,5 @@
 {{!-- enum --}}
-<div {{#if sectionref}}id="{{sectionref}}"{{/if}}>
+<div id="{{symbol.anchor}}">
     <div>
         <h2>{{#if symbol.name}}Enum {{>types/nested-name-specifier symbol=symbol.parent}}{{symbol.name}}{{else}}Unnamed enum{{/if}}</h2>
         {{{symbol.doc.brief}}}
@@ -30,7 +30,7 @@
             <tbody>
                 {{#each symbol.members}}
                 <tr>
-                    <td><a href="#{{ref}}">{{>types/declarator-id . nolink=true}}</a></td>
+                    <td><a href="#{{anchor}}">{{>types/declarator-id . nolink=true}}</a></td>
                     <td>{{{doc.brief}}}</td>
                 </tr>
                 {{/each}}

@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,7 +8,7 @@
 |===
 | Name | Description 
 
-| xref:#LongName[`LongName`] 
+| <<#LongName,`LongName`>> 
 | 
     
 |===
@@ -20,12 +18,10 @@
 |===
 | Name | Description 
 
-| xref:#LongName[`LongName`] 
+| <<#LongName,`LongName`>> 
 | 
     
 |===
-
-
 [#LongName]
 == LongName
 

@@ -313,23 +313,18 @@ createContext(
 {
     dom::Object ctx;
     ctx.set("symbol", domCorpus.get(I.id));
-    ctx.set("relfileprefix", getRelPrefix(I.Namespace.size()));
     ctx.set("config", domCorpus->config.object());
-    ctx.set("sectionref", domCorpus.names_.getQualified(I.id, '-'));
     return ctx;
 }
 
 dom::Object
 Builder::
 createContext(
-    OverloadSet const& OS)
+    OverloadSet const& I)
 {
     dom::Object ctx;
-    ctx.set("symbol", domCorpus.getOverloads(OS));
-    const Info& Parent = domCorpus->get(OS.Parent);
-    ctx.set("relfileprefix", getRelPrefix(Parent.Namespace.size() + 1));
+    ctx.set("symbol", domCorpus.construct(I));
     ctx.set("config", domCorpus->config.object());
-    ctx.set("sectionref", domCorpus.names_.getQualified(OS, '-'));
     return ctx;
 }
 

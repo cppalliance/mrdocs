@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,36 +8,34 @@
 |===
 | Name | Description 
 
-| xref:#A-0e[`A`] 
+| <<#A-0e,`A`>> 
 | 
     
-| xref:#A-00[`A<int>`] 
+| <<#A-00,`A<int>`>> 
 | 
     
-| xref:#A-0c[`A<long>`] 
+| <<#A-0c,`A<long>`>> 
 | 
     
-| xref:#B-00[`B`] 
+| <<#B-00,`B`>> 
 | 
     
-| xref:#B-07[`B<T*>`] 
+| <<#B-07,`B<T*>`>> 
 | 
     
-| xref:#B-06[`B<T&>`] 
+| <<#B-06,`B<T&>`>> 
 | 
     
-| xref:#C-0f[`C`] 
+| <<#C-0f,`C`>> 
 | 
     
-| xref:#C-0a[`C<int, int>`] 
+| <<#C-0a,`C<int, int>`>> 
 | 
     
-| xref:#C-0e[`C<T*, int>`] 
+| <<#C-0e,`C<T*, int>`>> 
 | 
     
 |===
-
-
 
 [#A-0e]
 == A
@@ -61,17 +57,15 @@ struct A;
 |===
 | Name | Description 
 
-| xref:#A-0e-f[`f`] 
+| <<#A-0e-f,`f`>> 
 | 
     
 |===
 
 
 
-
-
 [#A-0e-f]
-== xref:#A-0e[A]::f
+== <<#A-0e,A>>::f
 
 
 
@@ -92,8 +86,6 @@ f();
 
 
 
-
-
 [#A-00]
 == A
 
@@ -106,7 +98,7 @@ Declared in `<pass:[class-template-spec.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-struct xref:#A-0e[A]<int>;
+struct <<#A-0e,A>><int>;
 ----
 
 ===  Member Functions
@@ -114,17 +106,15 @@ struct xref:#A-0e[A]<int>;
 |===
 | Name | Description 
 
-| xref:#A-00-g[`g`] 
+| <<#A-00-g,`g`>> 
 | 
     
 |===
 
 
 
-
-
 [#A-00-g]
-== xref:#A-00[A]<int>::g
+== <<#A-00,A>><int>::g
 
 
 
@@ -145,8 +135,6 @@ g();
 
 
 
-
-
 [#A-0c]
 == A
 
@@ -159,7 +147,7 @@ Declared in `<pass:[class-template-spec.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-struct xref:#A-0e[A]<long>;
+struct <<#A-0e,A>><long>;
 ----
 
 ===  Member Functions
@@ -167,17 +155,15 @@ struct xref:#A-0e[A]<long>;
 |===
 | Name | Description 
 
-| xref:#A-0c-h[`h`] 
+| <<#A-0c-h,`h`>> 
 | 
     
 |===
 
 
 
-
-
 [#A-0c-h]
-== xref:#A-0c[A]<long>::h
+== <<#A-0c,A>><long>::h
 
 
 
@@ -190,8 +176,6 @@ Declared in `<pass:[class-template-spec.cpp]>`
 void
 h();
 ----
-
-
 
 
 
@@ -220,17 +204,15 @@ struct B;
 |===
 | Name | Description 
 
-| xref:#B-00-f[`f`] 
+| <<#B-00-f,`f`>> 
 | 
     
 |===
 
 
 
-
-
 [#B-00-f]
-== xref:#B-00[B]::f
+== <<#B-00,B>>::f
 
 
 
@@ -251,8 +233,6 @@ f();
 
 
 
-
-
 [#B-07]
 == B
 
@@ -265,7 +245,7 @@ Declared in `<pass:[class-template-spec.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
-struct xref:#B-00[B]<T*>;
+struct <<#B-00,B>><T*>;
 ----
 
 ===  Member Functions
@@ -273,17 +253,15 @@ struct xref:#B-00[B]<T*>;
 |===
 | Name | Description 
 
-| xref:#B-07-g[`g`] 
+| <<#B-07-g,`g`>> 
 | 
     
 |===
 
 
 
-
-
 [#B-07-g]
-== xref:#B-07[B]<T*>::g
+== <<#B-07,B>><T*>::g
 
 
 
@@ -304,8 +282,6 @@ g();
 
 
 
-
-
 [#B-06]
 == B
 
@@ -318,7 +294,7 @@ Declared in `<pass:[class-template-spec.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
-struct xref:#B-00[B]<T&>;
+struct <<#B-00,B>><T&>;
 ----
 
 ===  Member Functions
@@ -326,17 +302,15 @@ struct xref:#B-00[B]<T&>;
 |===
 | Name | Description 
 
-| xref:#B-06-h[`h`] 
+| <<#B-06-h,`h`>> 
 | 
     
 |===
 
 
 
-
-
 [#B-06-h]
-== xref:#B-06[B]<T&>::h
+== <<#B-06,B>><T&>::h
 
 
 
@@ -349,8 +323,6 @@ Declared in `<pass:[class-template-spec.cpp]>`
 void
 h();
 ----
-
-
 
 
 
@@ -381,17 +353,15 @@ struct C;
 |===
 | Name | Description 
 
-| xref:#C-0f-f[`f`] 
+| <<#C-0f-f,`f`>> 
 | 
     
 |===
 
 
 
-
-
 [#C-0f-f]
-== xref:#C-0f[C]::f
+== <<#C-0f,C>>::f
 
 
 
@@ -412,8 +382,6 @@ f();
 
 
 
-
-
 [#C-0a]
 == C
 
@@ -426,7 +394,7 @@ Declared in `<pass:[class-template-spec.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-struct xref:#C-0f[C]<int, int>;
+struct <<#C-0f,C>><int, int>;
 ----
 
 ===  Member Functions
@@ -434,17 +402,15 @@ struct xref:#C-0f[C]<int, int>;
 |===
 | Name | Description 
 
-| xref:#C-0a-g[`g`] 
+| <<#C-0a-g,`g`>> 
 | 
     
 |===
 
 
 
-
-
 [#C-0a-g]
-== xref:#C-0a[C]<int, int>::g
+== <<#C-0a,C>><int, int>::g
 
 
 
@@ -465,8 +431,6 @@ g();
 
 
 
-
-
 [#C-0e]
 == C
 
@@ -479,7 +443,7 @@ Declared in `<pass:[class-template-spec.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
-struct xref:#C-0f[C]<T*, int>;
+struct <<#C-0f,C>><T*, int>;
 ----
 
 ===  Member Functions
@@ -487,17 +451,15 @@ struct xref:#C-0f[C]<T*, int>;
 |===
 | Name | Description 
 
-| xref:#C-0e-h[`h`] 
+| <<#C-0e-h,`h`>> 
 | 
     
 |===
 
 
 
-
-
 [#C-0e-h]
-== xref:#C-0e[C]<T*, int>::h
+== <<#C-0e,C>><T*, int>::h
 
 
 

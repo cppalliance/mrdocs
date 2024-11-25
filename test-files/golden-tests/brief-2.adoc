@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,41 +8,39 @@
 |===
 | Name | Description 
 
-| xref:#f1[`f1`] 
+| <<#f1,`f1`>> 
 | 
 brief
 
     
-| xref:#f2[`f2`] 
+| <<#f2,`f2`>> 
 | 
 brief
 
     
-| xref:#f3[`f3`] 
+| <<#f3,`f3`>> 
 | 
 brief
 
     
-| xref:#f4[`f4`] 
+| <<#f4,`f4`>> 
 | 
 brief                    x
 
     
-| xref:#f5[`f5`] 
+| <<#f5,`f5`>> 
 | 
 br
 ief
 
     
-| xref:#f6[`f6`] 
+| <<#f6,`f6`>> 
 | 
 br
 ief
 
     
 |===
-
-
 
 [#f1]
 == f1
@@ -62,8 +58,6 @@ Declared in `<pass:[brief-2.cpp]>`
 void
 f1();
 ----
-
-
 
 
 
@@ -96,8 +90,6 @@ f2();
 
 
 
-
-
 [#f3]
 == f3
 
@@ -114,8 +106,6 @@ Declared in `<pass:[brief-2.cpp]>`
 void
 f3();
 ----
-
-
 
 
 
@@ -155,8 +145,6 @@ ief
 
 
 
-
-
 [#f5]
 == f5
 
@@ -174,8 +162,6 @@ Declared in `<pass:[brief-2.cpp]>`
 void
 f5();
 ----
-
-
 
 
 

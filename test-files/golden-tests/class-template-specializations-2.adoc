@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,18 +8,16 @@
 |===
 | Name | Description 
 
-| xref:#A-0e[`A`] 
+| <<#A-0e,`A`>> 
 | 
     
-| xref:#A-03[`A<T*>`] 
+| <<#A-03,`A<T*>`>> 
 | 
     
-| xref:#A-06[`A<double>`] 
+| <<#A-06,`A<double>`>> 
 | 
     
 |===
-
-
 
 [#A-0e]
 == A
@@ -41,8 +37,6 @@ struct A;
 
 
 
-
-
 [#A-03]
 == A
 
@@ -55,7 +49,7 @@ Declared in `<pass:[class-template-specializations-2.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
-struct xref:#A-0e[A]<T*>;
+struct <<#A-0e,A>><T*>;
 ----
 
 ===  Types
@@ -63,23 +57,21 @@ struct xref:#A-0e[A]<T*>;
 |===
 | Name | Description 
 
-| xref:#A-03-B-05[`B`] 
+| <<#A-03-B-05,`B`>> 
 | 
     
-| xref:#A-03-B-01[`B<U*>`] 
+| <<#A-03-B-01,`B<U*>`>> 
 | 
     
-| xref:#A-03-B-0b[`B<int>`] 
+| <<#A-03-B-0b,`B<int>`>> 
 | 
     
 |===
 
 
 
-
-
 [#A-03-B-05]
-== xref:#A-03[A]<T*>::B
+== <<#A-03,A>><T*>::B
 
 
 
@@ -96,10 +88,8 @@ struct B;
 
 
 
-
-
 [#A-03-B-01]
-== xref:#A-03[A]<T*>::B
+== <<#A-03,A>><T*>::B
 
 
 
@@ -110,7 +100,7 @@ Declared in `<pass:[class-template-specializations-2.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename U>
-struct xref:#A-03-B-05[B]<U*>;
+struct <<#A-03-B-05,B>><U*>;
 ----
 
 ===  Types
@@ -118,17 +108,15 @@ struct xref:#A-03-B-05[B]<U*>;
 |===
 | Name | Description 
 
-| xref:#A-03-B-01-C[`C`] 
+| <<#A-03-B-01-C,`C`>> 
 | 
     
 |===
 
 
 
-
-
 [#A-03-B-01-C]
-== xref:#A-03[A]<T*>::xref:#A-03-B-01[B]<U*>::C
+== <<#A-03,A>><T*>::<<#A-03-B-01,B>><U*>::C
 
 
 
@@ -144,10 +132,8 @@ struct C;
 
 
 
-
-
 [#A-03-B-0b]
-== xref:#A-03[A]<T*>::B
+== <<#A-03,A>><T*>::B
 
 
 
@@ -158,10 +144,8 @@ Declared in `<pass:[class-template-specializations-2.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-struct xref:#A-03-B-05[B]<int>;
+struct <<#A-03-B-05,B>><int>;
 ----
-
-
 
 
 
@@ -178,7 +162,7 @@ Declared in `<pass:[class-template-specializations-2.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-struct xref:#A-0e[A]<double>;
+struct <<#A-0e,A>><double>;
 ----
 
 ===  Types
@@ -186,20 +170,18 @@ struct xref:#A-0e[A]<double>;
 |===
 | Name | Description 
 
-| xref:#A-06-D-0b[`D`] 
+| <<#A-06-D-0b,`D`>> 
 | 
     
-| xref:#A-06-D-04[`D<float>`] 
+| <<#A-06-D-04,`D<float>`>> 
 | 
     
 |===
 
 
 
-
-
 [#A-06-D-0b]
-== xref:#A-06[A]<double>::D
+== <<#A-06,A>><double>::D
 
 
 
@@ -218,20 +200,18 @@ struct D;
 |===
 | Name | Description 
 
-| xref:#A-06-D-0b-E-01[`E`] 
+| <<#A-06-D-0b-E-01,`E`>> 
 | 
     
-| xref:#A-06-D-0b-E-04[`E<T*>`] 
+| <<#A-06-D-0b-E-04,`E<T*>`>> 
 | 
     
 |===
 
 
 
-
-
 [#A-06-D-0b-E-01]
-== xref:#A-06[A]<double>::xref:#A-06-D-0b[D]::E
+== <<#A-06,A>><double>::<<#A-06-D-0b,D>>::E
 
 
 
@@ -248,10 +228,8 @@ struct E;
 
 
 
-
-
 [#A-06-D-0b-E-04]
-== xref:#A-06[A]<double>::xref:#A-06-D-0b[D]::E
+== <<#A-06,A>><double>::<<#A-06-D-0b,D>>::E
 
 
 
@@ -262,7 +240,7 @@ Declared in `<pass:[class-template-specializations-2.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
-struct xref:#A-06-D-0b-E-01[E]<T*>;
+struct <<#A-06-D-0b-E-01,E>><T*>;
 ----
 
 ===  Types
@@ -270,17 +248,15 @@ struct xref:#A-06-D-0b-E-01[E]<T*>;
 |===
 | Name | Description 
 
-| xref:#A-06-D-0b-E-04-F[`F`] 
+| <<#A-06-D-0b-E-04-F,`F`>> 
 | 
     
 |===
 
 
 
-
-
 [#A-06-D-0b-E-04-F]
-== xref:#A-06[A]<double>::xref:#A-06-D-0b[D]::xref:#A-06-D-0b-E-04[E]<T*>::F
+== <<#A-06,A>><double>::<<#A-06-D-0b,D>>::<<#A-06-D-0b-E-04,E>><T*>::F
 
 
 
@@ -296,10 +272,8 @@ struct F;
 
 
 
-
-
 [#A-06-D-04]
-== xref:#A-06[A]<double>::D
+== <<#A-06,A>><double>::D
 
 
 
@@ -310,7 +284,7 @@ Declared in `<pass:[class-template-specializations-2.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-struct xref:#A-06-D-0b[D]<float>;
+struct <<#A-06-D-0b,D>><float>;
 ----
 
 ===  Types
@@ -318,20 +292,18 @@ struct xref:#A-06-D-0b[D]<float>;
 |===
 | Name | Description 
 
-| xref:#A-06-D-04-G-06[`G`] 
+| <<#A-06-D-04-G-06,`G`>> 
 | 
     
-| xref:#A-06-D-04-G-0c[`G<T*>`] 
+| <<#A-06-D-04-G-0c,`G<T*>`>> 
 | 
     
 |===
 
 
 
-
-
 [#A-06-D-04-G-06]
-== xref:#A-06[A]<double>::xref:#A-06-D-04[D]<float>::G
+== <<#A-06,A>><double>::<<#A-06-D-04,D>><float>::G
 
 
 
@@ -348,10 +320,8 @@ struct G;
 
 
 
-
-
 [#A-06-D-04-G-0c]
-== xref:#A-06[A]<double>::xref:#A-06-D-04[D]<float>::G
+== <<#A-06,A>><double>::<<#A-06-D-04,D>><float>::G
 
 
 
@@ -362,18 +332,12 @@ Declared in `<pass:[class-template-specializations-2.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
-struct xref:#A-06-D-04-G-06[G]<T*>;
+struct <<#A-06-D-04-G-06,G>><T*>;
 ----
 
 
 
 
-
-
-[#A-06-D-07]
-
-
-[#A-02]
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

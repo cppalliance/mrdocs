@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,7 +8,7 @@
 |===
 | Name | Description 
 
-| xref:#B[`B`] 
+| <<#B,`B`>> 
 | 
     
 |===
@@ -19,18 +17,16 @@
 |===
 | Name | Description 
 
-| xref:#A-084[`A`] 
+| <<#A-084,`A`>> 
 | 
     
-| xref:#A-08e[`A<void>`] 
+| <<#A-08e,`A<void>`>> 
 | 
     
-| xref:#A-01[`A<T&>`] 
+| <<#A-01,`A<T&>`>> 
 | 
     
 |===
-
-
 
 [#A-084]
 == A
@@ -48,8 +44,6 @@ unsigned int A = pass:[sizeof(T)];
 ----
 
 
-
-
 [#A-08e]
 == A
 
@@ -62,10 +56,8 @@ Declared in `<pass:[var-template.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
-unsigned int xref:#A-084[A]<void> = 0;
+unsigned int <<#A-084,A>><void> = 0;
 ----
-
-
 
 
 [#A-01]
@@ -80,10 +72,8 @@ Declared in `<pass:[var-template.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
-unsigned int xref:#A-084[A]<T&> = pass:[sizeof(T)];
+unsigned int <<#A-084,A>><T&> = pass:[sizeof(T)];
 ----
-
-
 
 
 [#B]
@@ -105,23 +95,21 @@ struct B;
 |===
 | Name | Description 
 
-| xref:#B-C-0e[`C`] 
+| <<#B-C-0e,`C`>> 
 | 
     
-| xref:#B-C-05[`C<int>`] 
+| <<#B-C-05,`C<int>`>> 
 | 
     
-| xref:#B-C-0c[`C<T*>`] 
+| <<#B-C-0c,`C<T*>`>> 
 | 
     
 |===
 
 
 
-
-
 [#B-C-0e]
-== xref:#B[B]::C
+== <<#B,B>>::C
 
 
 
@@ -137,10 +125,8 @@ unsigned int C = 0;
 ----
 
 
-
-
 [#B-C-05]
-== xref:#B[B]::C
+== <<#B,B>>::C
 
 
 
@@ -152,14 +138,12 @@ Declared in `<pass:[var-template.cpp]>`
 ----
 template<>
 static
-unsigned int xref:#B-C-0e[C]<int> = pass:[-1];
+unsigned int <<#B-C-0e,C>><int> = pass:[-1];
 ----
 
 
-
-
 [#B-C-0c]
-== xref:#B[B]::C
+== <<#B,B>>::C
 
 
 
@@ -171,7 +155,7 @@ Declared in `<pass:[var-template.cpp]>`
 ----
 template<typename T>
 static
-unsigned int xref:#B-C-0e[C]<T*> = pass:[sizeof(T)];
+unsigned int <<#B-C-0e,C>><T*> = pass:[sizeof(T)];
 ----
 
 

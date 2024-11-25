@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,7 +8,7 @@
 |===
 | Name | Description 
 
-| xref:#N[`N`] 
+| <<#N,`N`>> 
 | 
     
 |===
@@ -19,12 +17,10 @@
 |===
 | Name | Description 
 
-| xref:#E[`E`] 
+| <<#E,`E`>> 
 | 
     
 |===
-
-
 
 [#E]
 == E
@@ -38,10 +34,8 @@ Declared in `<pass:[dependency-propagation.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct E
-    : xref:#N[N]::xref:#N-C[C]<int>;
+    : <<#N,N>>::<<#N-C,C>><int>;
 ----
-
-
 
 
 
@@ -54,21 +48,19 @@ struct E
 |===
 | Name | Description 
 
-| xref:#N-A[`A`] 
+| <<#N-A,`A`>> 
 | 
     
-| xref:#N-B[`B`] 
+| <<#N-B,`B`>> 
 | 
     
-| xref:#N-C[`C`] 
+| <<#N-C,`C`>> 
 | 
     
 |===
 
-
-
 [#N-C]
-== xref:#N[N]::C
+== <<#N,N>>::C
 
 
 
@@ -79,14 +71,12 @@ Declared in `<pass:[dependency-propagation.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
-using C = xref:#N-B[B]<T>;
+using C = <<#N-B,B>><T>;
 ----
-
-
 
 
 [#N-B]
-== xref:#N[N]::B
+== <<#N,N>>::B
 
 
 
@@ -97,14 +87,12 @@ Declared in `<pass:[dependency-propagation.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
-using B = xref:#N-A[A]<T>;
+using B = <<#N-A,A>><T>;
 ----
 
 
-
-
 [#N-A]
-== xref:#N[N]::A
+== <<#N,N>>::A
 
 
 

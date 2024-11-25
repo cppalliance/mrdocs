@@ -11,7 +11,6 @@
 //
 
 #include "HandlebarsCorpus.hpp"
-#include "lib/Support/Radix.hpp"
 #include <iterator>
 #include <fmt/format.h>
 #include <llvm/Support/raw_ostream.h>
@@ -106,53 +105,58 @@ HandlebarsCorpus::
 construct(Info const& I) const
 {
     dom::Object obj = this->DomCorpus::construct(I);
-    obj.set("ref", getXref(I));
+    obj.set("url", getURL(I));
+    obj.set("anchor", names_.getQualified(I.id, '-'));
     return obj;
 }
 
-std::string
+dom::Object
 HandlebarsCorpus::
-getXref(Info const& I) const
+construct(
+    OverloadSet const& I) const
 {
-    bool multipage = getCorpus().config->multipage;
-    // use '/' as the seperator for multipage, and '-' for single-page
-    std::string xref;
-    if(!multipage)
-    {
-        xref += "#";
-    }
-    char delim = multipage ? '/' : '-';
-    xref += names_.getQualified(I.id, delim);
-    // add the file extension if in multipage mode
-    if(multipage)
-    {
-        xref.append(".");
-        xref.append(fileExtension);
-    }
-    return xref;
+    auto obj = this->DomCorpus::construct(I);
+    obj.set("url", getURL(I));
+    obj.set("anchor", names_.getQualified(I, '-'));
+    return obj;
 }
 
+template<class T>
+requires std::derived_from<T, Info> || std::same_as<T, OverloadSet>
 std::string
 HandlebarsCorpus::
-getXref(OverloadSet const& os) const
+getURL(T const& I) const
 {
-    bool multipage = getCorpus().config->multipage;
-    // use '/' as the seperator for multipage, and '-' for single-page
-    std::string xref = names_.getQualified(
-        os, multipage ? '/' : '-');
-    // add the file extension if in multipage mode
-    if(multipage)
+    bool const multipage = getCorpus().config->multipage;
+    char const prefix = multipage ? '/' : '#';
+    char const delim = multipage ? '/' : '-';
+    std::string href(1, prefix);
+    if constexpr (std::derived_from<T, Info>)
     {
-        xref.append(".");
-        xref.append(fileExtension);
+        href += names_.getQualified(I.id, delim);
     }
-    return xref;
+    else if constexpr (std::same_as<T, OverloadSet>)
+    {
+        href += names_.getQualified(I, delim);
+    }
+    if (multipage)
+    {
+        href.append(".");
+        href.append(fileExtension);
+    }
+    return href;
 }
+
+// Define Builder::operator() for each Info type
+#define INFO(T) template std::string HandlebarsCorpus::getURL<T##Info>(T##Info const&) const;
+#include <mrdocs/Metadata/InfoNodesPascal.inc>
+
+template std::string HandlebarsCorpus::getURL<OverloadSet>(OverloadSet const&) const;
+
 
 dom::Value
 HandlebarsCorpus::
-getJavadoc(
-    Javadoc const& jd) const
+getJavadoc(Javadoc const& jd) const
 {
     dom::Object::storage_type objKeyValues;
     objKeyValues.reserve(2);
@@ -223,21 +227,6 @@ getJavadoc(
     emplaceObjectArray("preconditions", ov.preconditions);
     emplaceObjectArray("postconditions", ov.postconditions);
     return dom::Object(std::move(objKeyValues));
-}
-
-dom::Object
-HandlebarsCorpus::
-getOverloads(
-    OverloadSet const& os) const
-{
-    auto obj = DomCorpus::getOverloads(os);
-    // KRYSTIAN FIXME: need a better way to generate IDs
-    // std::string xref =
-    obj.set("ref", getXref(os));
-    // std::replace(xref.begin(), xref.end(), '/', '-');
-    obj.set("id", fmt::format("{}-{}",
-        toBase16(os.Parent), os.Name));
-    return obj;
 }
 
 } // hbs

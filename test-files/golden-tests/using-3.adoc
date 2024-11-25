@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,18 +8,16 @@
 |===
 | Name | Description 
 
-| xref:#A[`A`] 
+| <<#A,`A`>> 
 | 
     
-| xref:#B[`B`] 
+| <<#B,`B`>> 
 | 
     
-| xref:#C[`C`] 
+| <<#C,`C`>> 
 | 
     
 |===
-
-
 
 [#A]
 == A
@@ -42,17 +38,15 @@ struct A;
 |===
 | Name | Description 
 
-| xref:#A-f[`f`] 
+| <<#A-f,`f`>> 
 | 
     
 |===
 
 
 
-
-
 [#A-f]
-== xref:#A[A]::f
+== <<#A,A>>::f
 
 
 
@@ -65,8 +59,6 @@ Declared in `<pass:[using-3.cpp]>`
 void
 f(int);
 ----
-
-
 
 
 
@@ -94,17 +86,15 @@ struct B;
 |===
 | Name | Description 
 
-| xref:#B-f[`f`] 
+| <<#B-f,`f`>> 
 | 
     
 |===
 
 
 
-
-
 [#B-f]
-== xref:#B[B]::f
+== <<#B,B>>::f
 
 
 
@@ -125,8 +115,6 @@ f(bool);
 
 
 
-
-
 [#C]
 == C
 
@@ -139,8 +127,8 @@ Declared in `<pass:[using-3.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct C
-    : xref:#A[A]
-    , xref:#B[B];
+    : <<#A,A>>
+    , <<#B,B>>;
 ----
 
 ===  Member Functions
@@ -148,7 +136,7 @@ struct C
 |===
 | Name | Description 
 
-| xref:A-f[`f`] 
+| <<#A-f,`f`>> 
 | 
 |===
 ===  Using Declarations
@@ -156,20 +144,18 @@ struct C
 |===
 | Name | Description 
 
-| xref:#C-f-08[`f`] 
+| <<#C-f-08,`f`>> 
 | 
     
-| xref:#C-f-03[`f`] 
+| <<#C-f-03,`f`>> 
 | 
     
 |===
 
 
 
-
-
 [#C-f-08]
-== xref:#C[C]::f
+== <<#C,C>>::f
 
 
 
@@ -179,7 +165,7 @@ Declared in `<pass:[using-3.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-using xref:#A[A]::f;
+using <<#A,A>>::f;
 ----
 
 
@@ -191,10 +177,8 @@ using xref:#A[A]::f;
 |===
 
 
-
-
 [#C-f-03]
-== xref:#C[C]::f
+== <<#C,C>>::f
 
 
 
@@ -204,7 +188,7 @@ Declared in `<pass:[using-3.cpp]>`
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-using xref:#B[B]::f;
+using <<#B,B>>::f;
 ----
 
 

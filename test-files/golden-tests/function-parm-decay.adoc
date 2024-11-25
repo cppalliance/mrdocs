@@ -1,7 +1,5 @@
 = Reference
 :mrdocs:
-
-
 [#index]
 == Global namespace
 
@@ -10,10 +8,10 @@
 |===
 | Name | Description 
 
-| xref:#T[`T`] 
+| <<#T,`T`>> 
 | 
     
-| xref:#U[`U`] 
+| <<#U,`U`>> 
 | 
     
 |===
@@ -22,21 +20,19 @@
 |===
 | Name | Description 
 
-| xref:#f[`f`] 
+| <<#f,`f`>> 
 | 
     
-| xref:#g[`g`] 
+| <<#g,`g`>> 
 | 
     
-| xref:#h[`h`] 
+| <<#h,`h`>> 
 | 
     
-| xref:#i[`i`] 
+| <<#i,`i`>> 
 | 
     
 |===
-
-
 
 [#f]
 == f
@@ -52,8 +48,6 @@ Declared in `<pass:[function-parm-decay.cpp]>`
 void
 f(int const x);
 ----
-
-
 
 
 
@@ -84,8 +78,6 @@ g(int* x);
 
 
 
-
-
 [#h]
 == h
 
@@ -100,8 +92,6 @@ Declared in `<pass:[function-parm-decay.cpp]>`
 void
 h(int x(bool));
 ----
-
-
 
 
 
@@ -125,8 +115,6 @@ using T = int;
 ----
 
 
-
-
 [#U]
 == U
 
@@ -142,8 +130,6 @@ using U = int const;
 ----
 
 
-
-
 [#i]
 == i
 
@@ -156,7 +142,7 @@ Declared in `<pass:[function-parm-decay.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
-i(xref:#T[T]);
+i(<<#T,T>>);
 ----
 
 
