@@ -115,13 +115,12 @@ private:
 
 //------------------------------------------------
 
-static constexpr char baseFNDigits[] =
+constexpr char baseFNDigits[] =
     "0123456789"
     "abcdefghijklmnopqrstuvwxyz";
 
-static constexpr std::size_t baseFN = sizeof(baseFNDigits) - 1;
+constexpr std::size_t baseFN = sizeof(baseFNDigits) - 1;
 
-static
 std::size_t constexpr
 baseFNEncodedSize(
     std::size_t n)
@@ -138,7 +137,6 @@ baseFNEncodedSize(
     @return The number of characters written to `out`. This
     will exclude any null termination.
 */
-static
 std::size_t
 baseFNEncode(
     void* dest,
@@ -159,7 +157,6 @@ baseFNEncode(
 
 //------------------------------------------------
 
-static
 std::size_t constexpr
 base64EncodedSize(
     std::size_t n)
@@ -175,7 +172,6 @@ base64EncodedSize(
     @return The number of characters written to `out`. This
     will exclude any null termination.
 */
-static
 std::size_t
 base64Encode(void* dest, void const* src, std::size_t len)
 {
@@ -240,7 +236,7 @@ toBaseFN(
 {
     dest.resize(baseFNEncodedSize(src.size()));
     auto n = baseFNEncode(&dest[0], src.data(), src.size());
-    return llvm::StringRef(dest.data(), n);
+    return {dest.data(), n};
 }
 
 std::string_view
