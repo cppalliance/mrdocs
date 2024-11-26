@@ -3,7 +3,7 @@
     the symbol is a special member (e.g., constructor,
     destructor, overload, variant member)
 }}
-{{#if (eq kind "overload")~}}
+{{#if (eq kind "overloads")~}}
     {{>types/special-name-suffix (front members)}}
 {{~else if (eq kind "function")~}}
     {{#if (eq class "constructor")}}

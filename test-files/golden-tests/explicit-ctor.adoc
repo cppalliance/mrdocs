@@ -1,5 +1,6 @@
 = Reference
 :mrdocs:
+
 [#index]
 == Global namespace
 
@@ -47,7 +48,7 @@ struct Explicit;
 
 
 
-[#pass:[Explicit-2constructor]]
+[#Explicit-2constructor]
 == <<#Explicit,Explicit>>::Explicit
 
   
@@ -203,7 +204,7 @@ struct ExplicitTrue;
 
 
 
-[#pass:[ExplicitTrue-2constructor]]
+[#ExplicitTrue-2constructor]
 == <<#ExplicitTrue,ExplicitTrue>>::ExplicitTrue
 
   
@@ -359,7 +360,7 @@ struct ExplicitFalse;
 
 
 
-[#pass:[ExplicitFalse-2constructor]]
+[#ExplicitFalse-2constructor]
 == <<#ExplicitFalse,ExplicitFalse>>::ExplicitFalse
 
   
@@ -516,7 +517,7 @@ struct ExplicitExpression;
 
 
 
-[#pass:[ExplicitExpression-2constructor]]
+[#ExplicitExpression-2constructor]
 == <<#ExplicitExpression,ExplicitExpression>>::ExplicitExpression
 
   

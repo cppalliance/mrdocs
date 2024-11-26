@@ -1,5 +1,6 @@
 = Reference
 :mrdocs:
+
 [#index]
 == Global namespace
 
@@ -39,7 +40,7 @@ struct A;
 
 
 
-[#pass:[A-f]]
+[#A-f]
 == <<#A,A>>::f
 
   

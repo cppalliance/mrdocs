@@ -4,7 +4,7 @@
     {{#>markup/a href=(relativize url)}}{{#>markup/code}}{{>types/declarator-id . nolink=true}}{{/markup/code}}{{/markup/a}} {{>types/special-name-suffix .}}
 {{~/markup/td}}
 {{#>markup/td~}}
-    {{#if (ne kind "overload")~}}
+    {{#if (ne kind "overloads")~}}
         {{{~doc.brief}}}
     {{else~}}
         {{#each (unique (pluck (pluck members "doc") "brief"))~}}
