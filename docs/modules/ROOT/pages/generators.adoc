@@ -1,6 +1,7 @@
 = Generators
 
-MrDocs uses a generator to convert the extracted symbols into documentation. MrDocs supports multiple output formats that can be specified via the `generate` option:
+MrDocs uses a generator to convert the extracted symbols into documentation.
+MrDocs supports multiple output formats that can be specified via the `generate` option:
 
 The `generate` option can be used to specify the output format:
 
@@ -28,42 +29,83 @@ Three output formats are supported:
 
 The corpus of symbols is provided to the generator responsible for converting these symbols into the desired output format.
 
-The `xml` generator is used as an intermediary format for other tools or for testing purposes. Users can write their own tools to process the XML output and generate custom documentation.
+The `xml` generator is used as an intermediary format for other tools or for testing purposes.
+Users can write their own tools to process the XML output and generate custom documentation.
 
-The `adoc` and `html` generators use templates to generate the documentation. These templates can be customized to change the output format and style.
+The `adoc` and `html` generators use templates to generate the documentation.
+These templates can be customized to change the output format and style.
 
-Asciidoc is a text-based format that is easy to read and write. It can also be converted to other formats such as HTML and Markdown.
+Asciidoc is a text-based format that is easy to read and write.
+It can also be converted to other formats such as HTML and Markdown.
 
 HTML can be generated directly with the `html` format.
 
+== Choosing the Right Generator
+
+The scatter plot below illustrates the available output formats for MrDocs, along with hypothetical solutions, in terms of **redundancy** and **convenience**.
+
+image::generator_front.svg[Output Formats Scatter Plot,width=600]
+
+- **Redundancy**: The amount of duplicated or unstructured information in the output format.
+Lower redundancy is generally preferred for post-processing, while higher redundancy can allow the output to use formats that are easier to use directly.
+- **Convenience**: Reflects how readily the output format can be used without requiring additional tools or steps.
+
+Although Clang can generate and print an Abstract Syntax Tree (AST) directly for a Translation Unit (TU), it is not the most convenient format for generating documentation:
+
+- It does not provide the AST in a format that's easy to process.
+- Equivalent symbols can be redeclared multiple times in the same translation unit and across translation units.
+- The documentation for equivalent symbols also needs to be unified.
+
+The scatter plot shows the following output formats supported by MrDocs:
+
+1. **XML**: Aggregates all symbols and their documentation in a format that is straightforward to process.
+It's suitable for advanced use cases involving custom post-processing tools.
+2. **Asciidoc**: Similar to HTML in convenience, Asciidoc files can be easily converted to HTML and multiple other formats with https://docs.asciidoctor.org/asciidoctor/latest/convert/available/:[backends].
+3. **HTML**: Generates output that is directly usable in a variety of contexts, such as web pages or documentation systems.
+
+The Asciidoc and HTML generators also support <<generator-templates,*Custom Templates*>> to change the output format and style.
+This forms another possibility in the trade-off between redundancy and convenience.
+
+The best trade-offs, represented by the line passing through the generators, indicate the optimal solutions in terms of redundancy and convenience.
+Solutions on this line balance these goals effectively.
+Dots in the background represent other potential formats that do not lie on the front of best trade-offs, as they fail to optimize either redundancy or convenience compared to the available generators.
+
+[#generator-templates]
 == Generator Templates
 
-MrDocs attempts to support various alternatives for customizing the output format and style without complex workflows to post-process XML output. The `adoc` and `html` generators use https://handlebarsjs.com/[Handlebars,window=_blank] templates. These templates can be customized to change the output format and style of the documentation.
+MrDocs attempts to support various alternatives for customizing the output format and style without complex workflows to post-process XML output.
+The `adoc` and `html` generators use https://handlebarsjs.com/[Handlebars,window=_blank] templates.
+These templates can be customized to change the output format and style of the documentation.
 
-The templates used to generate the documentation are located in the `share/mrdocs/addons/generator` directory. Users can create a copy of these files and provide their own `addons` directory via the `addons` option in the configuration file or via the command line.
+The templates used to generate the documentation are located in the `share/mrdocs/addons/generator` directory.
+Users can create a copy of these files and provide their own `addons` directory via the `addons` option in the configuration file or via the command line.
 
 [source,yaml]
 ----
 addons: /path/to/custom/addons
 ----
 
-Each symbol goes through a main layout template in the `<addons>/generator/<generator>/layouts/single-symbol.<generator>.hbs` directory. This template is a simple entry point that renders the partial relative to the symbol kind.
+Each symbol goes through a main layout template in the `<addons>/generator/<generator>/layouts/single-symbol.<generator>.hbs` directory.
+This template is a simple entry point that renders the partial relative to the symbol kind.
 
-The partials are located in the `<addons>/generator/<generator>/partials` directory. It contains the following subdirectories:
+The partials are located in the `<addons>/generator/<generator>/partials` directory.
+It contains the following subdirectories:
 
-* `symbols`: Contains one partial for each symbol kind. The fields of each symbol object are described in the <<symbol-fields,Symbol Object>> section.
+* `symbols`: Contains one partial for each symbol kind.
+The fields of each symbol object are described in the <<symbol-fields,Symbol Object>> section.
 * `signature`: Contains one partial for each symbol kind that renders the signature of the symbol as if declared in {cpp}.
-* `types`: partials for rendering other types of objects in a canonical form. Please refer to the <<dom_reference,Document Object Model Reference>> for more information on each type of object.
+* `types`: partials for rendering other types of objects in a canonical form.
+Please refer to the <<dom_reference,Document Object Model Reference>> for more information on each type of object.
 * `markup`: partials for rendering markup elements such as lists, tables, and code blocks, in the output format.
 
-Partials common to all generators are available in the `<addons>/generator/common/partials` directory. The common partials are loaded before the generator-specific partials, which can override any common partials.
+Partials common to all generators are available in the `<addons>/generator/common/partials` directory.
+The common partials are loaded before the generator-specific partials, which can override any common partials.
 
-The multipage generator renders the layout multiple times as separate pages for each symbol. The single-page generator renders the layout multiple times and concatenates the results in a single page.
+The multipage generator renders the layout multiple times as separate pages for each symbol.
+The single-page generator renders the layout multiple times and concatenates the results in a single page.
 
-Each time the generator encounters a symbol,
-it renders the layout template with the symbol data as the Handlebars context.
-The layout template can include other partial templates
-to render the symbol data.These partials are available in the `<addons>/generator/<generator>/partials` directory.
+Each time the generator encounters a symbol, it renders the layout template with the symbol data as the Handlebars context.
+The layout template can include other partial templates to render the symbol data.These partials are available in the `<addons>/generator/<generator>/partials` directory.
 
 The Document Object Model (DOM) for each symbol includes all information about the symbol.One advantage of custom templates over post-processing XML files is the ability to access symbols as a graph.If symbol `A` refers to symbol `B`, some properties of symbol `B` are likely to be required in the documentation of `A`.All templates and generators can access a reference to `B` by searching the symbol tree or simply by accessing the elements `A` refers to.All references to other symbols are resolved in the templates.
 
@@ -146,7 +188,8 @@ Handlebars generators extend each symbol with the following fields:
 
 |===
 
-The `Symbol` object has additional properties based on the kind of symbol. The following table lists the additional properties for symbols that contain information about their scope (such as Namespaces and Classes):
+The `Symbol` object has additional properties based on the kind of symbol.
+The following table lists the additional properties for symbols that contain information about their scope (such as Namespaces and Classes):
 
 |===
 |Property |Type| Description
@@ -531,7 +574,8 @@ When the symbol kind is `concept`, the symbol object has the following additiona
 [#source-info-fields]
 === Source Info Fields
 
-The `Source Info` object represents the location of the symbol in the source code. The source info object has the following properties:
+The `Source Info` object represents the location of the symbol in the source code.
+The source info object has the following properties:
 
 |===
 |Property |Type| Description
@@ -548,7 +592,8 @@ The `Source Info` object represents the location of the symbol in the source cod
 [#tranche-fields]
 === Tranche Object Fields
 
-The `Tranche` object represents the symbols in a scope (e.g., namespace). The tranche object has the following properties:
+The `Tranche` object represents the symbols in a scope (e.g., namespace).
+The tranche object has the following properties:
 
 |===
 |Property |Type| Description
@@ -577,7 +622,8 @@ The `Tranche` object represents the symbols in a scope (e.g., namespace). The tr
 [#interface-fields]
 === Interface Object Fields
 
-The `Interface` object represents the interface of a record (e.g., class, struct, union). The interface object has the following properties:
+The `Interface` object represents the interface of a record (e.g., class, struct, union).
+The interface object has the following properties:
 
 |===
 |Property |Type| Description
@@ -598,7 +644,8 @@ The `Interface` object represents the interface of a record (e.g., class, struct
 [#base-info-fields]
 === Base Info Fields
 
-The `Base Info` object represents a base class of a record. The base info object has the following properties:
+The `Base Info` object represents a base class of a record.
+The base info object has the following properties:
 
 |===
 |Property |Type| Description
@@ -619,7 +666,8 @@ The `Base Info` object represents a base class of a record. The base info object
 [#template-info-fields]
 === Template Info Fields
 
-The `Template Info` object represents the template information of a record, function, or typedef. The template info object has the following properties:
+The `Template Info` object represents the template information of a record, function, or typedef.
+The template info object has the following properties:
 
 |===
 |Property |Type| Description
@@ -648,7 +696,8 @@ The `Template Info` object represents the template information of a record, func
 [#type-info-fields]
 === Type Info Fields
 
-The `Type Info` object represents the type information of a symbol. The type info object has the following properties:
+The `Type Info` object represents the type information of a symbol.
+The type info object has the following properties:
 
 |===
 |Property |Type| Description
@@ -725,7 +774,8 @@ The `Type Info` object represents the type information of a symbol. The type inf
 [#param-fields]
 === Param Fields
 
-The `Param` object represents the parameter of a function. The param object has the following properties:
+The `Param` object represents the parameter of a function.
+The param object has the following properties:
 
 |===
 |Property |Type| Description
@@ -746,7 +796,8 @@ The `Param` object represents the parameter of a function. The param object has 
 [#name-info-fields]
 === Name Info Fields
 
-The `Name Info` object represents the name of a symbol. The name info object has the following properties:
+The `Name Info` object represents the name of a symbol.
+The name info object has the following properties:
 
 |===
 |Property |Type| Description
@@ -771,7 +822,8 @@ The `Name Info` object represents the name of a symbol. The name info object has
 [#location-fields]
 === Location Fields
 
-The `Location` object represents the location of a symbol in the source code. The location object has the following properties:
+The `Location` object represents the location of a symbol in the source code.
+The location object has the following properties:
 
 |===
 |Property |Type| Description
@@ -800,7 +852,8 @@ The `Location` object represents the location of a symbol in the source code. Th
 [#tparam-fields]
 === TParam Fields
 
-The `TParam` object represents a template parameter of a record, function, or typedef. The tparam object has the following properties:
+The `TParam` object represents a template parameter of a record, function, or typedef.
+The tparam object has the following properties:
 
 |===
 |Property |Type| Description
@@ -841,7 +894,8 @@ The `TParam` object represents a template parameter of a record, function, or ty
 [#targ-fields]
 === Targ Fields
 
-The `Targ` object represents a template argument of a record, function, or typedef. The targ object has the following properties:
+The `Targ` object represents a template argument of a record, function, or typedef.
+The targ object has the following properties:
 
 |===
 |Property |Type| Description
@@ -874,4 +928,6 @@ The `Targ` object represents a template argument of a record, function, or typed
 [#config-fields]
 === Config Fields
 
-The `Config` object represents the configuration object. It includes all values provided to MrDocs in the configuration file or via the command line. Please refer to the xref:config-file.adoc[configuration file reference] for more information.
+The `Config` object represents the configuration object.
+It includes all values provided to MrDocs in the configuration file or via the command line.
+Please refer to the xref:config-file.adoc[configuration file reference] for more information.
