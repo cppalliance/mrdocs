@@ -4014,48 +4014,80 @@ at_fn(dom::Value range, dom::Value field, dom::Value options)
     }
 }
 
-dom::Value
-concat_fn(
-    dom::Value range1,
-    dom::Value sep,
-    dom::Value range2,
-    dom::Value options)
+Expected<dom::Value>
+concat_fn(dom::Array const& arguments)
 {
-    auto isBlock = options.isUndefined() && static_cast<bool>(range2.get("fn"));
+    dom::Value options = arguments.back();
+    dom::Value fn = options.get("fn");
+    auto const isBlock = static_cast<bool>(fn);
     if (isBlock)
     {
-        options = range2;
-        range2 = sep;
-        sep = range1;
-        range1 = options.get("fn")();
+        // Block overload: concatenate the contents of the
+        // block with the contents of the arguments as strings.
+        std::string str = static_cast<std::string>(fn());
+        for (std::size_t i = 0; i < arguments.size() - 1; ++i)
+        {
+            str += toString(arguments.get(i));
+        }
+        return str;
     }
 
-    if (range1.isString() || range2.isString())
+    // Check if we have at least one argument besides the options
+    if (arguments.size() == 1)
     {
-        return range1 + sep + range2;
+        return Unexpected(Error("#concat requires at least one argument"));
     }
-    else if (range1.isArray() && sep.isArray())
+
+    dom::Value firstArg = arguments.get(0);
+
+    // Array overload: concatenate all arguments a single array.
+    if (firstArg.isArray())
     {
-        options = range2;
-        range2 = sep;
         dom::Array res;
-        for (dom::Value item : range1.getArray())
+        for (std::size_t i = 0; i < arguments.size() - 1; ++i)
         {
-            res.emplace_back(item);
-        }
-        for (dom::Value item : range2.getArray())
-        {
-            res.emplace_back(item);
+            dom::Value arg = arguments.get(i);
+            if (arg.isArray())
+            {
+                for (dom::Value item : arg.getArray())
+                {
+                    res.emplace_back(item);
+                }
+            }
+            else
+            {
+                res.emplace_back(arg);
+            }
         }
         return res;
     }
-    else if (range1.isObject() && sep.isObject())
+
+    // Object overload: concatenate all arguments into a single object.
+    if (firstArg.isObject())
     {
-        options = range2;
-        range2 = sep;
-        return createFrame(range1.getObject(), range2.getObject());
+        dom::Object res = firstArg.getObject();
+        for (std::size_t i = 1; i < arguments.size() - 1; ++i)
+        {
+            dom::Value arg = arguments.get(i);
+            if (arg.isObject())
+            {
+                res = createFrame(arg.getObject(), res);
+            }
+            else
+            {
+                return Unexpected(Error("All arguments to #concat must be objects"));
+            }
+        }
+        return res;
     }
-    return range1 + range2;
+
+    // String overload: concatenate all arguments as strings.
+    std::string str;
+    for (std::size_t i = 0; i < arguments.size() - 1; ++i)
+    {
+        str += toString(arguments.get(i));
+    }
+    return str;
 }
 
 std::int64_t
@@ -5107,7 +5139,7 @@ registerStringHelpers(Handlebars& hbs)
     hbs.registerHelper("join", join_fn);
     hbs.registerHelper("implode", join_fn);
 
-    hbs.registerHelper("concat", dom::makeInvocable(concat_fn));
+    hbs.registerHelper("concat", dom::makeVariadicInvocable(concat_fn));
 
     static auto strip_fn = dom::makeVariadicInvocable([](
         dom::Array const& arguments)
@@ -6570,7 +6602,7 @@ registerContainerHelpers(Handlebars& hbs)
         return res2;
     }));
 
-    hbs.registerHelper("concat", dom::makeInvocable(concat_fn));
+    hbs.registerHelper("concat", dom::makeVariadicInvocable(concat_fn));
 
     static auto flatten_fn = dom::makeInvocable([](dom::Value const& collection, dom::Value const& key) -> dom::Value
     {
