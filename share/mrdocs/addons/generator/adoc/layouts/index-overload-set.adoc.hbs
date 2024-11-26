@@ -6,7 +6,7 @@
   
 {{#if symbol.members.[0].doc.brief}}
 
-{{symbol.members.[0].doc.brief}}
+{{{symbol.members.[0].doc.brief}}}
 
 {{/if}}
 
@@ -23,7 +23,7 @@
 {{#if symbol.members.[0].doc.description}}
 =={{#unless @root.config.multipage}}={{/unless}} Description
 
-{{symbol.members.[0].doc.description}}
+{{{symbol.members.[0].doc.description}}}
 {{/if}}
 
 {{#with (flattenUnique symbol.members "doc.exceptions" "exception") as |allExceptions|}}
@@ -35,7 +35,7 @@
 
 {{#each allExceptions as |exception|}}
 | `{{exception.exception}}`
-| {{exception.description}}
+| {{{exception.description}}}
 {{/each}}
 |===
 {{/if}}
@@ -44,7 +44,7 @@
 {{#if symbol.members.[0].doc.returns}}
 =={{#unless @root.config.multipage}}={{/unless}} Return Value
 
-{{symbol.members.[0].doc.returns}}
+{{{symbol.members.[0].doc.returns}}}
 
 {{/if}}
 
@@ -67,7 +67,7 @@
 =={{#unless @root.config.multipage}}={{/unless}} Preconditions
 
 {{#each symbol.members.[0].doc.preconditions}}
-{{.}}
+{{{.}}}
 {{/each}}
 
 {{/if}}
@@ -76,7 +76,7 @@
 =={{#unless @root.config.multipage}}={{/unless}} Postconditions
 
 {{#each symbol.members.[0].doc.postconditions}}
-{{.}}
+{{{.}}}
 {{/each}}
 
 {{/if}}
@@ -85,7 +85,7 @@
 =={{#unless @root.config.multipage}}={{/unless}} See Also
 
 {{#each symbol.members.[0].doc.see}}
-{{.}}
+{{{.}}}
 {{/each}}
 {{/if}}
 
