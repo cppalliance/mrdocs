@@ -143,10 +143,9 @@ module.exports = function (registry) {
                     }
                 }
 
-                // Remove HTML and Rendered Asciidoc from the list of formats
-                // - The HTML generator is unmaintained
+                // Remove Rendered Asciidoc from the list of formats
                 // - The raw Asciidoc is already rendered by the mrdocs.com server as HTML
-                versionFormats = versionFormats.filter(format => format !== 'html' && format !== 'adoc-asciidoc');
+                versionFormats = versionFormats.filter(format => format !== 'adoc-asciidoc');
                 let multipageFormats = versionFormats.filter(format => format !== 'xml');
 
                 let versionFormatColumns = versionFormats.map(format => `*${humanizeFormat(format)}*`).join(' | ');
@@ -183,12 +182,23 @@ module.exports = function (registry) {
                                             return '/reference.adoc'
                                         }
                                     }
+                                    if (format === 'html')
+                                    {
+                                        if (pageType === 'multi')
+                                        {
+                                            return '/index.html'
+                                        }
+                                        else {
+                                            return '/reference.html'
+                                        }
+                                    }
                                     return '';
                                 })()
-                                if (['adoc', 'xml'].includes(format)) {
+                                if (['adoc', 'xml', 'html'].includes(format)) {
                                     const adoc_icon = 'https://avatars.githubusercontent.com/u/3137042?s=200&v=4'
+                                    const html_icon = 'https://raw.githubusercontent.com/FortAwesome/Font-Awesome/refs/heads/6.x/svgs/brands/html5.svg'
                                     const code_file_icon = 'https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/file-code.svg'
-                                    const icon = format === 'adoc' ? adoc_icon : code_file_icon
+                                    const icon = format === 'adoc' ? adoc_icon : format === 'html' ? html_icon : code_file_icon
                                     text += `| image:${icon}[${humanizeLibrary(library)} reference in ${humanizeFormat(format)} format,width=16,height=16,link=${demoUrlWithSuffix},window=_blank]`
                                 } else {
                                     text += `| ${demoUrlWithSuffix}[🔗,window=_blank]`
