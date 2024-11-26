@@ -1,12 +1,12 @@
 {{! A page when the symbol type is "overloads" }}
-[#{{symbol.anchor}}]
+[#{{{symbol.anchor}}}]
 ={{#unless @root.config.multipage}}={{/unless}} {{#if symbol.name}}{{>types/nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}Unnamed overload set{{/if}}
 
-{{#if symbol.members.[0]}}
+{{#if symbol}}
   
-{{#if symbol.members.[0].doc.brief}}
+{{#if symbol.doc.brief}}
 
-{{{symbol.members.[0].doc.brief}}}
+{{{symbol.doc.brief}}}
 
 {{/if}}
 
@@ -20,10 +20,10 @@
 ----
 {{/each}}
   
-{{#if symbol.members.[0].doc.description}}
+{{#if symbol.doc.description}}
 =={{#unless @root.config.multipage}}={{/unless}} Description
 
-{{{symbol.members.[0].doc.description}}}
+{{{symbol.doc.description}}}
 {{/if}}
 
 {{#with (flattenUnique symbol.members "doc.exceptions" "exception") as |allExceptions|}}
@@ -41,10 +41,10 @@
 {{/if}}
 {{/with}}
 
-{{#if symbol.members.[0].doc.returns}}
+{{#if symbol.doc.returns}}
 =={{#unless @root.config.multipage}}={{/unless}} Return Value
 
-{{{symbol.members.[0].doc.returns}}}
+{{{symbol.doc.returns}}}
 
 {{/if}}
 
@@ -63,28 +63,28 @@
 {{/if}}
 {{/with}}
 
-{{#if symbol.members.[0].doc.preconditions}}
+{{#if symbol.doc.preconditions}}
 =={{#unless @root.config.multipage}}={{/unless}} Preconditions
 
-{{#each symbol.members.[0].doc.preconditions}}
+{{#each symbol.doc.preconditions}}
 {{{.}}}
 {{/each}}
 
 {{/if}}
 
-{{#if symbol.members.[0].doc.postconditions}}
+{{#if symbol.doc.postconditions}}
 =={{#unless @root.config.multipage}}={{/unless}} Postconditions
 
-{{#each symbol.members.[0].doc.postconditions}}
+{{#each symbol.doc.postconditions}}
 {{{.}}}
 {{/each}}
 
 {{/if}}
 
-{{#if symbol.members.[0].doc.see}}
+{{#if symbol.doc.see}}
 =={{#unless @root.config.multipage}}={{/unless}} See Also
 
-{{#each symbol.members.[0].doc.see}}
+{{#each symbol.doc.see}}
 {{{.}}}
 {{/each}}
 {{/if}}

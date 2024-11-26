@@ -41,6 +41,13 @@ escape(OutputRef& os, std::string_view str) const
     if (needsEscape)
     {
         os << "pass:[";
+        // Using passthroughs to pass content (without substitutions) can couple
+        // your content to a specific output format, such as HTML.
+        // In these cases, you should use conditional preprocessor directives
+        // to route passthrough content for different output formats based on
+        // the current backend.
+        // If we would like to couple passthrough content to an HTML format,
+        // then we'd use `HTMLEscape(os, str)` instead of `os << str`.
         os << str;
         os << "]";
     }

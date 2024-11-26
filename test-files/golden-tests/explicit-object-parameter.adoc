@@ -1,5 +1,6 @@
 = Reference
 :mrdocs:
+
 [#index]
 == Global namespace
 
@@ -38,7 +39,7 @@ struct Optional;
 
 
 
-[#pass:[Optional-value]]
+[#Optional-value]
 == <<#Optional,Optional>>::value
 
   

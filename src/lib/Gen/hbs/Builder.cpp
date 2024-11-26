@@ -148,14 +148,11 @@ relativize_fn(dom::Value to0, dom::Value from0, dom::Value options)
     }
     if (!relativePath.starts_with("../") && !relativePath.starts_with("./"))
     {
+        // relative hrefs needs to explicitly include "./" so that
+        // they are always treated as relative to the current page
         relativePath = "./" + relativePath;
     }
     relativePath += hash;
-
-    if (relativePath == "/boost.adoc")
-    {
-        relativePath = "." + relativePath;
-    }
     return relativePath;
 }
 
@@ -239,27 +236,18 @@ Builder(
     helpers::registerContainerHelpers(hbs_);
     hbs_.registerHelper("relativize", dom::makeInvocable(relativize_fn));
 
-    // load templates
-    exp = forEachFile(layoutDir(), false,
-        [&](std::string_view pathName) -> Expected<void>
-        {
-            // Get template relative path
-            std::filesystem::path relPath = pathName;
-            relPath = relPath.lexically_relative(layoutDir());
-
-            // Skip non-handlebars files
-            MRDOCS_CHECK_OR(relPath.extension() == ".hbs", {});
-
-            // Load template contents
-            MRDOCS_TRY(std::string text, files::getFileText(pathName));
-
-            // Register template
-            this->templates_.emplace(relPath.generic_string(), text);
-            return {};
-        });
-    if (!exp)
+    // Load layout templates
+    std::string indexTemplateFilename = fmt::format("index.{}.hbs", domCorpus.fileExtension);
+    std::string wrapperTemplateFilename = fmt::format("wrapper.{}.hbs", domCorpus.fileExtension);
+    for (std::string const& filename : {indexTemplateFilename, wrapperTemplateFilename})
     {
-        exp.error().Throw();
+        std::string pathName = files::appendPath(layoutDir(), filename);
+        Expected<std::string> text = files::getFileText(pathName);
+        if (!text)
+        {
+            text.error().Throw();
+        }
+        templates_.emplace(filename, text.value());
     }
 }
 
@@ -334,10 +322,7 @@ Expected<void>
 Builder::
 operator()(std::ostream& os, T const& I)
 {
-    std::string const templateFile =
-        std::derived_from<T, Info> ?
-            fmt::format("index.{}.hbs", domCorpus.fileExtension) :
-            fmt::format("index-overload-set.{}.hbs", domCorpus.fileExtension);
+    std::string const templateFile = fmt::format("index.{}.hbs", domCorpus.fileExtension);
     dom::Object ctx = createContext(I);
 
     auto& config = domCorpus->config;

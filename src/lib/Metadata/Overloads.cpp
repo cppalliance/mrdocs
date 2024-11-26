@@ -34,15 +34,19 @@ tag_invoke(
      * The `overloads` value is a temporary reference created
      * by the `Info` tag_invoke.
      */
-    v = dom::Object({
-        // KRYSTIAN FIXME: need a better way to generate IDs
-        { "id", fmt::format("{}-{}", toBase16(overloads.Parent), overloads.Name) },
-        { "kind",       "overload"},
-        { "name",       overloads.Name },
-        { "members",    dom::LazyArray(overloads.Members, domCorpus) },
-        { "namespace",  dom::LazyArray(overloads.Namespace, domCorpus) },
-        { "parent",     domCorpus->get(overloads.Parent) }
-    });
+    dom::Object res;
+    res.set("id", fmt::format("{}-{}", toBase16(overloads.Parent), overloads.Name));
+    res.set("kind", "overloads");
+    res.set("name", overloads.Name);
+    res.set("members", dom::LazyArray(overloads.Members, domCorpus));
+    res.set("namespace", dom::LazyArray(overloads.Namespace, domCorpus));
+    res.set("parent", domCorpus->get(overloads.Parent));
+    dom::Value firstM = domCorpus->get(overloads.Members.front());
+    if (firstM.isObject() && firstM.get("doc").isObject())
+    {
+        res.set("doc", firstM.get("doc"));
+    }
+    v = res;
 }
 
 } // mrdocs
