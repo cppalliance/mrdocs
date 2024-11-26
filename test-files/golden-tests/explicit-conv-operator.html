@@ -120,7 +120,8 @@
             </code>
         </div>
         <pre class="source-code cpp">
-            operator bool();
+            explicit
+operator bool();
         </pre>
     </div>
 
@@ -194,7 +195,8 @@
             </code>
         </div>
         <pre class="source-code cpp">
-            operator bool();
+            explicit(false)
+operator bool();
         </pre>
     </div>
 
@@ -268,7 +270,8 @@
             </code>
         </div>
         <pre class="source-code cpp">
-            operator bool();
+            explicit(true)
+operator bool();
         </pre>
     </div>
 
@@ -294,7 +297,7 @@
             </code>
         </div>
         <pre class="source-code cpp">
-            template<bool B>
+            template&lt;bool B&gt;
 struct ExplicitExpression;
         </pre>
     </div>
@@ -343,7 +346,8 @@ struct ExplicitExpression;
             </code>
         </div>
         <pre class="source-code cpp">
-            operator bool();
+            explicit(B)
+operator bool();
         </pre>
     </div>
 

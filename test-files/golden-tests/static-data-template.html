@@ -51,7 +51,7 @@
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T>
+            template&lt;typename T&gt;
 struct A;
         </pre>
     </div>
@@ -77,14 +77,14 @@ struct A;
                     </td>
                 </tr><tr>
                     <td>
-                        <a href="#A-x-0a"><code>x<U*, T></code></a> 
+                        <a href="#A-x-0a"><code>x&lt;U*, T&gt;</code></a> 
                     </td><td>
                         
                             
                     </td>
                 </tr><tr>
                     <td>
-                        <a href="#A-x-07"><code>x<T, long></code></a> 
+                        <a href="#A-x-07"><code>x&lt;T, long&gt;</code></a> 
                     </td><td>
                         
                             
@@ -114,9 +114,9 @@ struct A;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<
+            template&lt;
     typename U,
-    typename V>
+    typename V&gt;
 constexpr
 static
 T const x = 0;
@@ -142,10 +142,10 @@ T const x = 0;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename U>
+            template&lt;typename U&gt;
 constexpr
 static
-T const <a href="#A-x-0e">x</a><U*, T> = 1;
+T const <a href="#A-x-0e">x</a>&lt;U*, T&gt; = 1;
         </pre>
     </div>
 
@@ -168,10 +168,10 @@ T const <a href="#A-x-0e">x</a><U*, T> = 1;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<>
+            template&lt;&gt;
 constexpr
 static
-bool const <a href="#A-x-0e">x</a><T, long> = 2;
+bool const <a href="#A-x-0e">x</a>&lt;T, long&gt; = 2;
         </pre>
     </div>
 

@@ -30,14 +30,14 @@
                     </td>
                 </tr><tr>
                     <td>
-                        <a href="#A-03"><code>A<T*></code></a> 
+                        <a href="#A-03"><code>A&lt;T*&gt;</code></a> 
                     </td><td>
                         
                             
                     </td>
                 </tr><tr>
                     <td>
-                        <a href="#A-06"><code>A<double></code></a> 
+                        <a href="#A-06"><code>A&lt;double&gt;</code></a> 
                     </td><td>
                         
                             
@@ -65,7 +65,7 @@
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T>
+            template&lt;typename T&gt;
 struct A;
         </pre>
     </div>
@@ -93,8 +93,8 @@ struct A;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T>
-struct <a href="#A-0e">A</a><T*>;
+            template&lt;typename T&gt;
+struct <a href="#A-0e">A</a>&lt;T*&gt;;
         </pre>
     </div>
 
@@ -119,14 +119,14 @@ struct <a href="#A-0e">A</a><T*>;
                     </td>
                 </tr><tr>
                     <td>
-                        <a href="#A-03-B-01"><code>B<U*></code></a> 
+                        <a href="#A-03-B-01"><code>B&lt;U*&gt;</code></a> 
                     </td><td>
                         
                             
                     </td>
                 </tr><tr>
                     <td>
-                        <a href="#A-03-B-0b"><code>B<int></code></a> 
+                        <a href="#A-03-B-0b"><code>B&lt;int&gt;</code></a> 
                     </td><td>
                         
                             
@@ -140,7 +140,7 @@ struct <a href="#A-0e">A</a><T*>;
 </div>
 <div id="A-03-B-05">
     <div>
-        <h2>Class <a href="#A-03">A</a><T*>::B</h2>
+        <h2>Class <a href="#A-03">A</a>&lt;T*&gt;::B</h2>
         
     </div>
 
@@ -156,7 +156,7 @@ struct <a href="#A-0e">A</a><T*>;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename U>
+            template&lt;typename U&gt;
 struct B;
         </pre>
     </div>
@@ -168,7 +168,7 @@ struct B;
 </div>
 <div id="A-03-B-01">
     <div>
-        <h2>Class <a href="#A-03">A</a><T*>::B</h2>
+        <h2>Class <a href="#A-03">A</a>&lt;T*&gt;::B</h2>
         
     </div>
 
@@ -184,8 +184,8 @@ struct B;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename U>
-struct <a href="#A-03-B-05">B</a><U*>;
+            template&lt;typename U&gt;
+struct <a href="#A-03-B-05">B</a>&lt;U*&gt;;
         </pre>
     </div>
 
@@ -217,7 +217,7 @@ struct <a href="#A-03-B-05">B</a><U*>;
 </div>
 <div id="A-03-B-01-C">
     <div>
-        <h2>Class <a href="#A-03">A</a><T*>::<a href="#A-03-B-01">B</a><U*>::C</h2>
+        <h2>Class <a href="#A-03">A</a>&lt;T*&gt;::<a href="#A-03-B-01">B</a>&lt;U*&gt;::C</h2>
         
     </div>
 
@@ -244,7 +244,7 @@ struct <a href="#A-03-B-05">B</a><U*>;
 </div>
 <div id="A-03-B-0b">
     <div>
-        <h2>Class <a href="#A-03">A</a><T*>::B</h2>
+        <h2>Class <a href="#A-03">A</a>&lt;T*&gt;::B</h2>
         
     </div>
 
@@ -260,8 +260,8 @@ struct <a href="#A-03-B-05">B</a><U*>;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<>
-struct <a href="#A-03-B-05">B</a><int>;
+            template&lt;&gt;
+struct <a href="#A-03-B-05">B</a>&lt;int&gt;;
         </pre>
     </div>
 
@@ -288,8 +288,8 @@ struct <a href="#A-03-B-05">B</a><int>;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<>
-struct <a href="#A-0e">A</a><double>;
+            template&lt;&gt;
+struct <a href="#A-0e">A</a>&lt;double&gt;;
         </pre>
     </div>
 
@@ -314,7 +314,7 @@ struct <a href="#A-0e">A</a><double>;
                     </td>
                 </tr><tr>
                     <td>
-                        <a href="#A-06-D-04"><code>D<float></code></a> 
+                        <a href="#A-06-D-04"><code>D&lt;float&gt;</code></a> 
                     </td><td>
                         
                             
@@ -328,7 +328,7 @@ struct <a href="#A-0e">A</a><double>;
 </div>
 <div id="A-06-D-0b">
     <div>
-        <h2>Class <a href="#A-06">A</a><double>::D</h2>
+        <h2>Class <a href="#A-06">A</a>&lt;double&gt;::D</h2>
         
     </div>
 
@@ -344,7 +344,7 @@ struct <a href="#A-0e">A</a><double>;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename U>
+            template&lt;typename U&gt;
 struct D;
         </pre>
     </div>
@@ -370,7 +370,7 @@ struct D;
                     </td>
                 </tr><tr>
                     <td>
-                        <a href="#A-06-D-0b-E-04"><code>E<T*></code></a> 
+                        <a href="#A-06-D-0b-E-04"><code>E&lt;T*&gt;</code></a> 
                     </td><td>
                         
                             
@@ -384,7 +384,7 @@ struct D;
 </div>
 <div id="A-06-D-0b-E-01">
     <div>
-        <h2>Class <a href="#A-06">A</a><double>::<a href="#A-06-D-0b">D</a>::E</h2>
+        <h2>Class <a href="#A-06">A</a>&lt;double&gt;::<a href="#A-06-D-0b">D</a>::E</h2>
         
     </div>
 
@@ -400,7 +400,7 @@ struct D;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T>
+            template&lt;typename T&gt;
 struct E;
         </pre>
     </div>
@@ -412,7 +412,7 @@ struct E;
 </div>
 <div id="A-06-D-0b-E-04">
     <div>
-        <h2>Class <a href="#A-06">A</a><double>::<a href="#A-06-D-0b">D</a>::E</h2>
+        <h2>Class <a href="#A-06">A</a>&lt;double&gt;::<a href="#A-06-D-0b">D</a>::E</h2>
         
     </div>
 
@@ -428,8 +428,8 @@ struct E;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T>
-struct <a href="#A-06-D-0b-E-01">E</a><T*>;
+            template&lt;typename T&gt;
+struct <a href="#A-06-D-0b-E-01">E</a>&lt;T*&gt;;
         </pre>
     </div>
 
@@ -461,7 +461,7 @@ struct <a href="#A-06-D-0b-E-01">E</a><T*>;
 </div>
 <div id="A-06-D-0b-E-04-F">
     <div>
-        <h2>Class <a href="#A-06">A</a><double>::<a href="#A-06-D-0b">D</a>::<a href="#A-06-D-0b-E-04">E</a><T*>::F</h2>
+        <h2>Class <a href="#A-06">A</a>&lt;double&gt;::<a href="#A-06-D-0b">D</a>::<a href="#A-06-D-0b-E-04">E</a>&lt;T*&gt;::F</h2>
         
     </div>
 
@@ -488,7 +488,7 @@ struct <a href="#A-06-D-0b-E-01">E</a><T*>;
 </div>
 <div id="A-06-D-04">
     <div>
-        <h2>Class <a href="#A-06">A</a><double>::D</h2>
+        <h2>Class <a href="#A-06">A</a>&lt;double&gt;::D</h2>
         
     </div>
 
@@ -504,8 +504,8 @@ struct <a href="#A-06-D-0b-E-01">E</a><T*>;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<>
-struct <a href="#A-06-D-0b">D</a><float>;
+            template&lt;&gt;
+struct <a href="#A-06-D-0b">D</a>&lt;float&gt;;
         </pre>
     </div>
 
@@ -530,7 +530,7 @@ struct <a href="#A-06-D-0b">D</a><float>;
                     </td>
                 </tr><tr>
                     <td>
-                        <a href="#A-06-D-04-G-0c"><code>G<T*></code></a> 
+                        <a href="#A-06-D-04-G-0c"><code>G&lt;T*&gt;</code></a> 
                     </td><td>
                         
                             
@@ -544,7 +544,7 @@ struct <a href="#A-06-D-0b">D</a><float>;
 </div>
 <div id="A-06-D-04-G-06">
     <div>
-        <h2>Class <a href="#A-06">A</a><double>::<a href="#A-06-D-04">D</a><float>::G</h2>
+        <h2>Class <a href="#A-06">A</a>&lt;double&gt;::<a href="#A-06-D-04">D</a>&lt;float&gt;::G</h2>
         
     </div>
 
@@ -560,7 +560,7 @@ struct <a href="#A-06-D-0b">D</a><float>;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T>
+            template&lt;typename T&gt;
 struct G;
         </pre>
     </div>
@@ -572,7 +572,7 @@ struct G;
 </div>
 <div id="A-06-D-04-G-0c">
     <div>
-        <h2>Class <a href="#A-06">A</a><double>::<a href="#A-06-D-04">D</a><float>::G</h2>
+        <h2>Class <a href="#A-06">A</a>&lt;double&gt;::<a href="#A-06-D-04">D</a>&lt;float&gt;::G</h2>
         
     </div>
 
@@ -588,8 +588,8 @@ struct G;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T>
-struct <a href="#A-06-D-04-G-06">G</a><T*>;
+            template&lt;typename T&gt;
+struct <a href="#A-06-D-04-G-06">G</a>&lt;T*&gt;;
         </pre>
     </div>
 

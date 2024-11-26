@@ -435,9 +435,9 @@
             </code>
         </div>
         <pre class="source-code cpp">
-            template<
+            template&lt;
     typename T,
-    typename U>
+    typename U&gt;
 struct B;
         </pre>
     </div>
@@ -488,7 +488,7 @@ struct B;
             </code>
         </div>
         <pre class="source-code cpp">
-            using D = <a href="#B">B</a><short, long>;
+            using D = <a href="#B">B</a>&lt;short, long&gt;;
         </pre>
     </div>
 
@@ -511,8 +511,8 @@ struct B;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T>
-using E = <a href="#B">B</a><T, long>;
+            template&lt;typename T&gt;
+using E = <a href="#B">B</a>&lt;T, long&gt;;
         </pre>
     </div>
 
@@ -1022,7 +1022,7 @@ g8(<a href="#C">C</a> const const**);
         </div>
         <pre class="source-code cpp">
             void
-h0(<a href="#B">B</a><short, long>);
+h0(<a href="#B">B</a>&lt;short, long&gt;);
         </pre>
     </div>
 
@@ -1049,7 +1049,7 @@ h0(<a href="#B">B</a><short, long>);
         </div>
         <pre class="source-code cpp">
             void
-h1(<a href="#B">B</a><short, long> const);
+h1(<a href="#B">B</a>&lt;short, long&gt; const);
         </pre>
     </div>
 
@@ -1076,7 +1076,7 @@ h1(<a href="#B">B</a><short, long> const);
         </div>
         <pre class="source-code cpp">
             void
-h2(<a href="#B">B</a><short, long>&);
+h2(<a href="#B">B</a>&lt;short, long&gt;&);
         </pre>
     </div>
 
@@ -1103,7 +1103,7 @@ h2(<a href="#B">B</a><short, long>&);
         </div>
         <pre class="source-code cpp">
             void
-h3(<a href="#B">B</a><short, long> const&);
+h3(<a href="#B">B</a>&lt;short, long&gt; const&);
         </pre>
     </div>
 
@@ -1130,7 +1130,7 @@ h3(<a href="#B">B</a><short, long> const&);
         </div>
         <pre class="source-code cpp">
             void
-h4(<a href="#B">B</a><short, long>*);
+h4(<a href="#B">B</a>&lt;short, long&gt;*);
         </pre>
     </div>
 
@@ -1157,7 +1157,7 @@ h4(<a href="#B">B</a><short, long>*);
         </div>
         <pre class="source-code cpp">
             void
-h5(<a href="#B">B</a><short, long> const*);
+h5(<a href="#B">B</a>&lt;short, long&gt; const*);
         </pre>
     </div>
 
@@ -1184,7 +1184,7 @@ h5(<a href="#B">B</a><short, long> const*);
         </div>
         <pre class="source-code cpp">
             void
-h6(<a href="#B">B</a><short, long>**);
+h6(<a href="#B">B</a>&lt;short, long&gt;**);
         </pre>
     </div>
 
@@ -1211,7 +1211,7 @@ h6(<a href="#B">B</a><short, long>**);
         </div>
         <pre class="source-code cpp">
             void
-h7(<a href="#B">B</a><short, long> const**);
+h7(<a href="#B">B</a>&lt;short, long&gt; const**);
         </pre>
     </div>
 
@@ -1238,7 +1238,7 @@ h7(<a href="#B">B</a><short, long> const**);
         </div>
         <pre class="source-code cpp">
             void
-h8(<a href="#B">B</a><short, long> const const**);
+h8(<a href="#B">B</a>&lt;short, long&gt; const const**);
         </pre>
     </div>
 
@@ -1508,7 +1508,7 @@ i8(<a href="#D">D</a> const const**);
         </div>
         <pre class="source-code cpp">
             void
-j0(<a href="#E">E</a><short>);
+j0(<a href="#E">E</a>&lt;short&gt;);
         </pre>
     </div>
 
@@ -1535,7 +1535,7 @@ j0(<a href="#E">E</a><short>);
         </div>
         <pre class="source-code cpp">
             void
-j1(<a href="#E">E</a><short> const);
+j1(<a href="#E">E</a>&lt;short&gt; const);
         </pre>
     </div>
 
@@ -1562,7 +1562,7 @@ j1(<a href="#E">E</a><short> const);
         </div>
         <pre class="source-code cpp">
             void
-j2(<a href="#E">E</a><short>&);
+j2(<a href="#E">E</a>&lt;short&gt;&);
         </pre>
     </div>
 
@@ -1589,7 +1589,7 @@ j2(<a href="#E">E</a><short>&);
         </div>
         <pre class="source-code cpp">
             void
-j3(<a href="#E">E</a><short> const&);
+j3(<a href="#E">E</a>&lt;short&gt; const&);
         </pre>
     </div>
 
@@ -1616,7 +1616,7 @@ j3(<a href="#E">E</a><short> const&);
         </div>
         <pre class="source-code cpp">
             void
-j4(<a href="#E">E</a><short>*);
+j4(<a href="#E">E</a>&lt;short&gt;*);
         </pre>
     </div>
 
@@ -1643,7 +1643,7 @@ j4(<a href="#E">E</a><short>*);
         </div>
         <pre class="source-code cpp">
             void
-j5(<a href="#E">E</a><short> const*);
+j5(<a href="#E">E</a>&lt;short&gt; const*);
         </pre>
     </div>
 
@@ -1670,7 +1670,7 @@ j5(<a href="#E">E</a><short> const*);
         </div>
         <pre class="source-code cpp">
             void
-j6(<a href="#E">E</a><short>**);
+j6(<a href="#E">E</a>&lt;short&gt;**);
         </pre>
     </div>
 
@@ -1697,7 +1697,7 @@ j6(<a href="#E">E</a><short>**);
         </div>
         <pre class="source-code cpp">
             void
-j7(<a href="#E">E</a><short> const**);
+j7(<a href="#E">E</a>&lt;short&gt; const**);
         </pre>
     </div>
 
@@ -1724,7 +1724,7 @@ j7(<a href="#E">E</a><short> const**);
         </div>
         <pre class="source-code cpp">
             void
-j8(<a href="#E">E</a><short> const const**);
+j8(<a href="#E">E</a>&lt;short&gt; const const**);
         </pre>
     </div>
 

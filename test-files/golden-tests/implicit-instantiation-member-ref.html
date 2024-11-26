@@ -128,7 +128,7 @@
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T>
+            template&lt;typename T&gt;
 struct S0;
         </pre>
     </div>
@@ -248,8 +248,8 @@ struct S0;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename U>
-using M1 = <a href="#S0">S0</a><U>;
+            template&lt;typename U&gt;
+using M1 = <a href="#S0">S0</a>&lt;U&gt;;
         </pre>
     </div>
 
@@ -272,7 +272,7 @@ using M1 = <a href="#S0">S0</a><U>;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename U>
+            template&lt;typename U&gt;
 struct S2;
         </pre>
     </div>
@@ -392,8 +392,8 @@ struct S2;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename V>
-using M3 = <a href="#S0-S2">S2</a><U>;
+            template&lt;typename V&gt;
+using M3 = <a href="#S0-S2">S2</a>&lt;U&gt;;
         </pre>
     </div>
 
@@ -416,7 +416,7 @@ using M3 = <a href="#S0-S2">S2</a><U>;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename V>
+            template&lt;typename V&gt;
 struct S4;
         </pre>
     </div>
@@ -488,7 +488,7 @@ struct S4;
             </code>
         </div>
         <pre class="source-code cpp">
-            using A0 = <a href="#S0">S0</a><int>;
+            using A0 = <a href="#S0">S0</a>&lt;int&gt;;
         </pre>
     </div>
 
@@ -557,7 +557,7 @@ struct S4;
             </code>
         </div>
         <pre class="source-code cpp">
-            using A3 = <a href="#S0">S0</a><long>::<a href="#S0-M0">M0</a>;
+            using A3 = <a href="#S0">S0</a>&lt;long&gt;::<a href="#S0-M0">M0</a>;
         </pre>
     </div>
 
@@ -580,7 +580,7 @@ struct S4;
             </code>
         </div>
         <pre class="source-code cpp">
-            using A4 = <a href="#S0">S0</a><long long>::<a href="#S0-S1">S1</a>;
+            using A4 = <a href="#S0">S0</a>&lt;long long&gt;::<a href="#S0-S1">S1</a>;
         </pre>
     </div>
 
@@ -603,7 +603,7 @@ struct S4;
             </code>
         </div>
         <pre class="source-code cpp">
-            using A5 = <a href="#S0">S0</a><void>;
+            using A5 = <a href="#S0">S0</a>&lt;void&gt;;
         </pre>
     </div>
 
@@ -626,7 +626,7 @@ struct S4;
             </code>
         </div>
         <pre class="source-code cpp">
-            using A6 = <a href="#A5">A5</a>::<a href="#S0-M1">M1</a><short>::<a href="#S0-M0">M0</a>;
+            using A6 = <a href="#A5">A5</a>::<a href="#S0-M1">M1</a>&lt;short&gt;::<a href="#S0-M0">M0</a>;
         </pre>
     </div>
 
@@ -649,7 +649,7 @@ struct S4;
             </code>
         </div>
         <pre class="source-code cpp">
-            using A7 = <a href="#A5">A5</a>::<a href="#S0-S2">S2</a><bool>::<a href="#S0-S2-M2">M2</a>;
+            using A7 = <a href="#A5">A5</a>::<a href="#S0-S2">S2</a>&lt;bool&gt;::<a href="#S0-S2-M2">M2</a>;
         </pre>
     </div>
 
@@ -672,7 +672,7 @@ struct S4;
             </code>
         </div>
         <pre class="source-code cpp">
-            using A8 = <a href="#A5">A5</a>::<a href="#S0-S2">S2</a><int>::<a href="#S0-S2-S3">S3</a>;
+            using A8 = <a href="#A5">A5</a>::<a href="#S0-S2">S2</a>&lt;int&gt;::<a href="#S0-S2-S3">S3</a>;
         </pre>
     </div>
 
@@ -695,7 +695,7 @@ struct S4;
             </code>
         </div>
         <pre class="source-code cpp">
-            using A9 = <a href="#A5">A5</a>::<a href="#S0-S2">S2</a><char>::<a href="#S0-S2-M3">M3</a><int>::<a href="#S0-S2-M3">M3</a><unsigned int>::<a href="#S0-S2-M2">M2</a>;
+            using A9 = <a href="#A5">A5</a>::<a href="#S0-S2">S2</a>&lt;char&gt;::<a href="#S0-S2-M3">M3</a>&lt;int&gt;::<a href="#S0-S2-M3">M3</a>&lt;unsigned int&gt;::<a href="#S0-S2-M2">M2</a>;
         </pre>
     </div>
 
@@ -718,7 +718,7 @@ struct S4;
             </code>
         </div>
         <pre class="source-code cpp">
-            using A10 = <a href="#A5">A5</a>::<a href="#S0-S2">S2</a><float>::<a href="#S0-S2-M3">M3</a><double>::<a href="#S0-S2-M3">M3</a><long double>::<a href="#S0-S2-S4">S4</a><void>::<a href="#S0-S2-S4-M4">M4</a>;
+            using A10 = <a href="#A5">A5</a>::<a href="#S0-S2">S2</a>&lt;float&gt;::<a href="#S0-S2-M3">M3</a>&lt;double&gt;::<a href="#S0-S2-M3">M3</a>&lt;long double&gt;::<a href="#S0-S2-S4">S4</a>&lt;void&gt;::<a href="#S0-S2-S4-M4">M4</a>;
         </pre>
     </div>
 

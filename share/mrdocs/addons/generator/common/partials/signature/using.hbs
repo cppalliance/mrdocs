@@ -1,0 +1,1 @@
+using {{#if (contains (arr "typename" "enum") symbol.class)}} {{symbol.class}}{{/if}}{{#if symbol.qualifier}}{{>types/name-info symbol.qualifier}}::{{/if}}{{symbol.name}}

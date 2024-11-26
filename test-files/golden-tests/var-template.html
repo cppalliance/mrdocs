@@ -51,14 +51,14 @@
                     </td>
                 </tr><tr>
                     <td>
-                        <a href="#A-08e"><code>A<void></code></a> 
+                        <a href="#A-08e"><code>A&lt;void&gt;</code></a> 
                     </td><td>
                         
                             
                     </td>
                 </tr><tr>
                     <td>
-                        <a href="#A-01"><code>A<T&></code></a> 
+                        <a href="#A-01"><code>A&lt;T&&gt;</code></a> 
                     </td><td>
                         
                             
@@ -86,7 +86,7 @@
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T>
+            template&lt;typename T&gt;
 unsigned int A = sizeof(T);
         </pre>
     </div>
@@ -110,8 +110,8 @@ unsigned int A = sizeof(T);
             </code>
         </div>
         <pre class="source-code cpp">
-            template<>
-unsigned int <a href="#A-084">A</a><void> = 0;
+            template&lt;&gt;
+unsigned int <a href="#A-084">A</a>&lt;void&gt; = 0;
         </pre>
     </div>
 
@@ -134,8 +134,8 @@ unsigned int <a href="#A-084">A</a><void> = 0;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T>
-unsigned int <a href="#A-084">A</a><T&> = sizeof(T);
+            template&lt;typename T&gt;
+unsigned int <a href="#A-084">A</a>&lt;T&&gt; = sizeof(T);
         </pre>
     </div>
 
@@ -183,14 +183,14 @@ unsigned int <a href="#A-084">A</a><T&> = sizeof(T);
                     </td>
                 </tr><tr>
                     <td>
-                        <a href="#B-C-05"><code>C<int></code></a> 
+                        <a href="#B-C-05"><code>C&lt;int&gt;</code></a> 
                     </td><td>
                         
                             
                     </td>
                 </tr><tr>
                     <td>
-                        <a href="#B-C-0c"><code>C<T*></code></a> 
+                        <a href="#B-C-0c"><code>C&lt;T*&gt;</code></a> 
                     </td><td>
                         
                             
@@ -220,7 +220,7 @@ unsigned int <a href="#A-084">A</a><T&> = sizeof(T);
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T>
+            template&lt;typename T&gt;
 static
 unsigned int C = 0;
         </pre>
@@ -245,9 +245,9 @@ unsigned int C = 0;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<>
+            template&lt;&gt;
 static
-unsigned int <a href="#B-C-0e">C</a><int> = -1;
+unsigned int <a href="#B-C-0e">C</a>&lt;int&gt; = -1;
         </pre>
     </div>
 
@@ -270,9 +270,9 @@ unsigned int <a href="#B-C-0e">C</a><int> = -1;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T>
+            template&lt;typename T&gt;
 static
-unsigned int <a href="#B-C-0e">C</a><T*> = sizeof(T);
+unsigned int <a href="#B-C-0e">C</a>&lt;T*&gt; = sizeof(T);
         </pre>
     </div>
 

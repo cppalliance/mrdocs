@@ -140,7 +140,7 @@
         </div>
         <pre class="source-code cpp">
             void
-f();
+f(...);
         </pre>
     </div>
 
@@ -167,7 +167,7 @@ f();
         </div>
         <pre class="source-code cpp">
             void
-g(int);
+g(int, ...);
         </pre>
     </div>
 
@@ -193,9 +193,9 @@ g(int);
             </code>
         </div>
         <pre class="source-code cpp">
-            template<
+            template&lt;
     typename A = void(...),
-    typename B = void(int, ...)>
+    typename B = void(int, ...)&gt;
 struct C;
         </pre>
     </div>
