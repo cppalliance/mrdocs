@@ -1,5 +1,5 @@
 {{! Render all template arguments }}
-<{{~#each args~}}
+{{ str '<' }}{{~#each args~}}
 {{~>types/template-arg nolink=../nolink~}}
 {{~#if (not @last)}}, {{/if~}}
-{{~/each~}}>
+{{~/each~}}{{ str '>' }}

@@ -58,7 +58,7 @@
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T>
+            template&lt;typename T&gt;
 struct A;
         </pre>
     </div>
@@ -84,7 +84,7 @@ struct A;
                     </td>
                 </tr><tr>
                     <td>
-                        <a href="#A-0e-B-00"><code>B<double></code></a> 
+                        <a href="#A-0e-B-00"><code>B&lt;double&gt;</code></a> 
                     </td><td>
                         
                             
@@ -114,7 +114,7 @@ struct A;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename U>
+            template&lt;typename U&gt;
 struct B;
         </pre>
     </div>
@@ -147,7 +147,7 @@ struct B;
                     </td>
                 </tr><tr>
                     <td>
-                        <a href="#A-0e-B-07-D-0f"><code>D<bool></code></a> 
+                        <a href="#A-0e-B-07-D-0f"><code>D&lt;bool&gt;</code></a> 
                     </td><td>
                         
                             
@@ -204,7 +204,7 @@ struct B;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename V>
+            template&lt;typename V&gt;
 struct D;
         </pre>
     </div>
@@ -232,8 +232,8 @@ struct D;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<>
-struct <a href="#A-0e-B-07-D-09">D</a><bool>;
+            template&lt;&gt;
+struct <a href="#A-0e-B-07-D-09">D</a>&lt;bool&gt;;
         </pre>
     </div>
 
@@ -260,8 +260,8 @@ struct <a href="#A-0e-B-07-D-09">D</a><bool>;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<>
-struct <a href="#A-0e-B-07">B</a><double>;
+            template&lt;&gt;
+struct <a href="#A-0e-B-07">B</a>&lt;double&gt;;
         </pre>
     </div>
 
@@ -293,7 +293,7 @@ struct <a href="#A-0e-B-07">B</a><double>;
                     </td>
                 </tr><tr>
                     <td>
-                        <a href="#A-0e-B-00-D-0d"><code>D<bool></code></a> 
+                        <a href="#A-0e-B-00-D-0d"><code>D&lt;bool&gt;</code></a> 
                     </td><td>
                         
                             
@@ -307,7 +307,7 @@ struct <a href="#A-0e-B-07">B</a><double>;
 </div>
 <div id="A-0e-B-00-C">
     <div>
-        <h2>Class <a href="#A-0e">A</a>::<a href="#A-0e-B-00">B</a><double>::C</h2>
+        <h2>Class <a href="#A-0e">A</a>::<a href="#A-0e-B-00">B</a>&lt;double&gt;::C</h2>
         
     </div>
 
@@ -334,7 +334,7 @@ struct <a href="#A-0e-B-07">B</a><double>;
 </div>
 <div id="A-0e-B-00-D-09">
     <div>
-        <h2>Class <a href="#A-0e">A</a>::<a href="#A-0e-B-00">B</a><double>::D</h2>
+        <h2>Class <a href="#A-0e">A</a>::<a href="#A-0e-B-00">B</a>&lt;double&gt;::D</h2>
         
     </div>
 
@@ -350,7 +350,7 @@ struct <a href="#A-0e-B-07">B</a><double>;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename V>
+            template&lt;typename V&gt;
 struct D;
         </pre>
     </div>
@@ -362,7 +362,7 @@ struct D;
 </div>
 <div id="A-0e-B-00-D-0d">
     <div>
-        <h2>Class <a href="#A-0e">A</a>::<a href="#A-0e-B-00">B</a><double>::D</h2>
+        <h2>Class <a href="#A-0e">A</a>::<a href="#A-0e-B-00">B</a>&lt;double&gt;::D</h2>
         
     </div>
 
@@ -378,8 +378,8 @@ struct D;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<>
-struct <a href="#A-0e-B-00-D-09">D</a><bool>;
+            template&lt;&gt;
+struct <a href="#A-0e-B-00-D-09">D</a>&lt;bool&gt;;
         </pre>
     </div>
 
@@ -552,7 +552,7 @@ struct <a href="#A-0e-B-00-D-09">D</a><bool>;
             </code>
         </div>
         <pre class="source-code cpp">
-            <a href="#A-0e">A</a><float>::<a href="#A-0e-B-00">B</a><double> m0;
+            <a href="#A-0e">A</a>&lt;float&gt;::<a href="#A-0e-B-00">B</a>&lt;double&gt; m0;
         </pre>
     </div>
 
@@ -575,7 +575,7 @@ struct <a href="#A-0e-B-00-D-09">D</a><bool>;
             </code>
         </div>
         <pre class="source-code cpp">
-            <a href="#A-0e">A</a><long>::<a href="#A-0e-B-00">B</a><double> m1;
+            <a href="#A-0e">A</a>&lt;long&gt;::<a href="#A-0e-B-00">B</a>&lt;double&gt; m1;
         </pre>
     </div>
 
@@ -598,7 +598,7 @@ struct <a href="#A-0e-B-00-D-09">D</a><bool>;
             </code>
         </div>
         <pre class="source-code cpp">
-            <a href="#A-0e">A</a><long>::<a href="#A-0c-B">B</a><float> m2;
+            <a href="#A-0e">A</a>&lt;long&gt;::<a href="#A-0c-B">B</a>&lt;float&gt; m2;
         </pre>
     </div>
 
@@ -621,7 +621,7 @@ struct <a href="#A-0e-B-00-D-09">D</a><bool>;
             </code>
         </div>
         <pre class="source-code cpp">
-            <a href="#A-0e">A</a><unsigned int>::<a href="#A-0e-B-07">B</a><float> m3;
+            <a href="#A-0e">A</a>&lt;unsigned int&gt;::<a href="#A-0e-B-07">B</a>&lt;float&gt; m3;
         </pre>
     </div>
 
@@ -644,7 +644,7 @@ struct <a href="#A-0e-B-00-D-09">D</a><bool>;
             </code>
         </div>
         <pre class="source-code cpp">
-            <a href="#A-0e">A</a><short>::<a href="#A-00-B">B</a><void> m4;
+            <a href="#A-0e">A</a>&lt;short&gt;::<a href="#A-00-B">B</a>&lt;void&gt; m4;
         </pre>
     </div>
 
@@ -667,7 +667,7 @@ struct <a href="#A-0e-B-00-D-09">D</a><bool>;
             </code>
         </div>
         <pre class="source-code cpp">
-            <a href="#A-0e">A</a><float>::<a href="#A-0e-B-00">B</a><double>::<a href="#A-0e-B-00-C">C</a> m5;
+            <a href="#A-0e">A</a>&lt;float&gt;::<a href="#A-0e-B-00">B</a>&lt;double&gt;::<a href="#A-0e-B-00-C">C</a> m5;
         </pre>
     </div>
 
@@ -690,7 +690,7 @@ struct <a href="#A-0e-B-00-D-09">D</a><bool>;
             </code>
         </div>
         <pre class="source-code cpp">
-            <a href="#A-0e">A</a><long>::<a href="#A-0e-B-00">B</a><double>::<a href="#A-0e-B-00-C">C</a> m6;
+            <a href="#A-0e">A</a>&lt;long&gt;::<a href="#A-0e-B-00">B</a>&lt;double&gt;::<a href="#A-0e-B-00-C">C</a> m6;
         </pre>
     </div>
 
@@ -713,7 +713,7 @@ struct <a href="#A-0e-B-00-D-09">D</a><bool>;
             </code>
         </div>
         <pre class="source-code cpp">
-            <a href="#A-0e">A</a><long>::<a href="#A-0c-B">B</a><float>::<a href="#A-0c-B-C">C</a> m7;
+            <a href="#A-0e">A</a>&lt;long&gt;::<a href="#A-0c-B">B</a>&lt;float&gt;::<a href="#A-0c-B-C">C</a> m7;
         </pre>
     </div>
 
@@ -736,7 +736,7 @@ struct <a href="#A-0e-B-00-D-09">D</a><bool>;
             </code>
         </div>
         <pre class="source-code cpp">
-            <a href="#A-0e">A</a><unsigned int>::<a href="#A-0e-B-07">B</a><float>::<a href="#A-0e-B-07-C">C</a> m8;
+            <a href="#A-0e">A</a>&lt;unsigned int&gt;::<a href="#A-0e-B-07">B</a>&lt;float&gt;::<a href="#A-0e-B-07-C">C</a> m8;
         </pre>
     </div>
 
@@ -759,7 +759,7 @@ struct <a href="#A-0e-B-00-D-09">D</a><bool>;
             </code>
         </div>
         <pre class="source-code cpp">
-            <a href="#A-0e">A</a><short>::<a href="#A-00-B">B</a><void>::<a href="#A-00-B-C">C</a> m9;
+            <a href="#A-0e">A</a>&lt;short&gt;::<a href="#A-00-B">B</a>&lt;void&gt;::<a href="#A-00-B-C">C</a> m9;
         </pre>
     </div>
 
@@ -782,7 +782,7 @@ struct <a href="#A-0e-B-00-D-09">D</a><bool>;
             </code>
         </div>
         <pre class="source-code cpp">
-            <a href="#A-0e">A</a><float>::<a href="#A-0e-B-00">B</a><double>::<a href="#A-0e-B-00-D-0d">D</a><bool> m10;
+            <a href="#A-0e">A</a>&lt;float&gt;::<a href="#A-0e-B-00">B</a>&lt;double&gt;::<a href="#A-0e-B-00-D-0d">D</a>&lt;bool&gt; m10;
         </pre>
     </div>
 
@@ -805,7 +805,7 @@ struct <a href="#A-0e-B-00-D-09">D</a><bool>;
             </code>
         </div>
         <pre class="source-code cpp">
-            <a href="#A-0e">A</a><long>::<a href="#A-0e-B-00">B</a><double>::<a href="#A-0e-B-00-D-0d">D</a><bool> m11;
+            <a href="#A-0e">A</a>&lt;long&gt;::<a href="#A-0e-B-00">B</a>&lt;double&gt;::<a href="#A-0e-B-00-D-0d">D</a>&lt;bool&gt; m11;
         </pre>
     </div>
 
@@ -828,7 +828,7 @@ struct <a href="#A-0e-B-00-D-09">D</a><bool>;
             </code>
         </div>
         <pre class="source-code cpp">
-            <a href="#A-0e">A</a><long>::<a href="#A-0c-B">B</a><float>::<a href="#A-0c-B-D-0b">D</a><bool> m12;
+            <a href="#A-0e">A</a>&lt;long&gt;::<a href="#A-0c-B">B</a>&lt;float&gt;::<a href="#A-0c-B-D-0b">D</a>&lt;bool&gt; m12;
         </pre>
     </div>
 
@@ -851,7 +851,7 @@ struct <a href="#A-0e-B-00-D-09">D</a><bool>;
             </code>
         </div>
         <pre class="source-code cpp">
-            <a href="#A-0e">A</a><unsigned int>::<a href="#A-0e-B-07">B</a><float>::<a href="#A-0e-B-07-D-0f">D</a><bool> m13;
+            <a href="#A-0e">A</a>&lt;unsigned int&gt;::<a href="#A-0e-B-07">B</a>&lt;float&gt;::<a href="#A-0e-B-07-D-0f">D</a>&lt;bool&gt; m13;
         </pre>
     </div>
 
@@ -874,7 +874,7 @@ struct <a href="#A-0e-B-00-D-09">D</a><bool>;
             </code>
         </div>
         <pre class="source-code cpp">
-            <a href="#A-0e">A</a><short>::<a href="#A-00-B">B</a><void>::<a href="#A-00-B-D-07">D</a><bool> m14;
+            <a href="#A-0e">A</a>&lt;short&gt;::<a href="#A-00-B">B</a>&lt;void&gt;::<a href="#A-00-B-D-07">D</a>&lt;bool&gt; m14;
         </pre>
     </div>
 

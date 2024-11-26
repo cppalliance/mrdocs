@@ -51,7 +51,7 @@
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T>
+            template&lt;typename T&gt;
 struct A;
         </pre>
     </div>
@@ -77,14 +77,14 @@ struct A;
                     </td>
                 </tr><tr>
                     <td>
-                        <a href="#A-B-06"><code>B<U*, T></code></a> 
+                        <a href="#A-B-06"><code>B&lt;U*, T&gt;</code></a> 
                     </td><td>
                         
                             
                     </td>
                 </tr><tr>
                     <td>
-                        <a href="#A-B-04"><code>B<T, long></code></a> 
+                        <a href="#A-B-04"><code>B&lt;T, long&gt;</code></a> 
                     </td><td>
                         
                             
@@ -114,9 +114,9 @@ struct A;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<
+            template&lt;
     typename U,
-    typename V>
+    typename V&gt;
 struct B;
         </pre>
     </div>
@@ -144,8 +144,8 @@ struct B;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename U>
-struct <a href="#A-B-0a">B</a><U*, T>;
+            template&lt;typename U&gt;
+struct <a href="#A-B-0a">B</a>&lt;U*, T&gt;;
         </pre>
     </div>
 
@@ -172,8 +172,8 @@ struct <a href="#A-B-0a">B</a><U*, T>;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<>
-struct <a href="#A-B-0a">B</a><T, long>;
+            template&lt;&gt;
+struct <a href="#A-B-0a">B</a>&lt;T, long&gt;;
         </pre>
     </div>
 

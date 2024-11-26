@@ -128,7 +128,7 @@
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T>
+            template&lt;typename T&gt;
 void
 f0(int x);
         </pre>
@@ -156,7 +156,7 @@ f0(int x);
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T>
+            template&lt;typename T&gt;
 void
 f1(T t);
         </pre>
@@ -184,7 +184,7 @@ f1(T t);
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T = int>
+            template&lt;typename T = int&gt;
 void
 f2();
         </pre>
@@ -212,9 +212,9 @@ f2();
             </code>
         </div>
         <pre class="source-code cpp">
-            template<
+            template&lt;
     typename T,
-    class U = int>
+    class U = int&gt;
 void
 f3();
         </pre>
@@ -242,7 +242,7 @@ f3();
             </code>
         </div>
         <pre class="source-code cpp">
-            template<int I>
+            template&lt;int I&gt;
 void
 g0(int x);
         </pre>
@@ -270,7 +270,7 @@ g0(int x);
             </code>
         </div>
         <pre class="source-code cpp">
-            template<int I = 1>
+            template&lt;int I = 1&gt;
 void
 g1();
         </pre>
@@ -298,9 +298,9 @@ g1();
             </code>
         </div>
         <pre class="source-code cpp">
-            template<
+            template&lt;
     int J,
-    int I = 1>
+    int I = 1&gt;
 void
 g2();
         </pre>
@@ -328,7 +328,7 @@ g2();
             </code>
         </div>
         <pre class="source-code cpp">
-            template<class x:auto>
+            template&lt;class x:auto&gt;
 void
 h0(auto x);
         </pre>
@@ -356,9 +356,9 @@ h0(auto x);
             </code>
         </div>
         <pre class="source-code cpp">
-            template<
+            template&lt;
     class x:auto,
-    class auto:2>
+    class auto:2&gt;
 void
 h1(
     auto x,
@@ -388,9 +388,9 @@ h1(
             </code>
         </div>
         <pre class="source-code cpp">
-            template<
+            template&lt;
     typename T = int,
-    int I = 1>
+    int I = 1&gt;
 void
 i();
         </pre>
@@ -418,7 +418,7 @@ i();
             </code>
         </div>
         <pre class="source-code cpp">
-            template<template<typename U> typename T>
+            template&lt;template&lt;typename U&gt; typename T&gt;
 void
 j0();
         </pre>
@@ -446,9 +446,9 @@ j0();
             </code>
         </div>
         <pre class="source-code cpp">
-            template<
-    template<typename W> typename X,
-    template<typename Y> typename Z>
+            template&lt;
+    template&lt;typename W&gt; typename X,
+    template&lt;typename Y&gt; typename Z&gt;
 void
 j1();
         </pre>

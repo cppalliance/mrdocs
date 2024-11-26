@@ -51,7 +51,7 @@
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T>
+            template&lt;typename T&gt;
 struct A;
         </pre>
     </div>
@@ -90,7 +90,7 @@ struct A;
 
 <p></p>
 
-<pre><code class="language-cpp">template<typename U>
+<pre><code class="language-cpp">template&lt;typename U&gt;
 void
 f();</code></pre>
 <a href="#A-f-07"><em>» more...</em></a>
@@ -98,9 +98,9 @@ f();</code></pre>
 
 <p></p>
 
-<pre><code class="language-cpp">template<>
+<pre><code class="language-cpp">template&lt;&gt;
 void
-<a href="#A-f-07">f</a><int>();</code></pre>
+<a href="#A-f-07">f</a>&lt;int&gt;();</code></pre>
 <a href="#A-f-04"><em>» more...</em></a>
 
 
@@ -123,7 +123,7 @@ void
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename U>
+            template&lt;typename U&gt;
 void
 f();
         </pre>
@@ -151,9 +151,9 @@ f();
             </code>
         </div>
         <pre class="source-code cpp">
-            template<>
+            template&lt;&gt;
 void
-<a href="#A-f-07">f</a><int>();
+<a href="#A-f-07">f</a>&lt;int&gt;();
         </pre>
     </div>
 

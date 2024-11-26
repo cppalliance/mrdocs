@@ -68,17 +68,17 @@
 
 <p></p>
 
-<pre><code class="language-cpp">template<typename T>
+<pre><code class="language-cpp">template&lt;typename T&gt;
 void
-f();</code></pre>
+f() requires (sizeof(T) &#x3D;&#x3D; 4);</code></pre>
 <a href="#f-05"><em>» more...</em></a>
 
 
 <p></p>
 
-<pre><code class="language-cpp">template<typename T>
+<pre><code class="language-cpp">template&lt;typename T&gt;
 void
-f();</code></pre>
+f() requires (sizeof(T) &#x3D;&#x3D; 2);</code></pre>
 <a href="#f-08"><em>» more...</em></a>
 
 
@@ -101,9 +101,9 @@ f();</code></pre>
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T>
+            template&lt;typename T&gt;
 void
-f();
+f() requires (sizeof(T) &#x3D;&#x3D; 4);
         </pre>
     </div>
 
@@ -129,9 +129,9 @@ f();
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T>
+            template&lt;typename T&gt;
 void
-f();
+f() requires (sizeof(T) &#x3D;&#x3D; 2);
         </pre>
     </div>
 
@@ -148,7 +148,7 @@ f();
 
 <p></p>
 
-<pre><code class="language-cpp">template<typename T> requires (sizeof(T) &#x3D;&#x3D; 4)
+<pre><code class="language-cpp">template&lt;typename T&gt; requires (sizeof(T) &#x3D;&#x3D; 4)
 void
 g();</code></pre>
 <a href="#g-0a"><em>» more...</em></a>
@@ -156,7 +156,7 @@ g();</code></pre>
 
 <p></p>
 
-<pre><code class="language-cpp">template<typename T> requires (sizeof(U) &#x3D;&#x3D; 2)
+<pre><code class="language-cpp">template&lt;typename T&gt; requires (sizeof(U) &#x3D;&#x3D; 2)
 void
 g();</code></pre>
 <a href="#g-0c"><em>» more...</em></a>
@@ -181,7 +181,7 @@ g();</code></pre>
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T> requires (sizeof(T) &#x3D;&#x3D; 4)
+            template&lt;typename T&gt; requires (sizeof(T) &#x3D;&#x3D; 4)
 void
 g();
         </pre>
@@ -209,7 +209,7 @@ g();
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T> requires (sizeof(U) &#x3D;&#x3D; 2)
+            template&lt;typename T&gt; requires (sizeof(U) &#x3D;&#x3D; 2)
 void
 g();
         </pre>
@@ -237,7 +237,7 @@ g();
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T> requires (sizeof(U) &#x3D;&#x3D; 2)
+            template&lt;typename T&gt; requires (sizeof(U) &#x3D;&#x3D; 2)
 struct A;
         </pre>
     </div>

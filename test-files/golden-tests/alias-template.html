@@ -72,7 +72,7 @@
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T>
+            template&lt;typename T&gt;
 struct A;
         </pre>
     </div>
@@ -100,9 +100,9 @@ struct A;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<
+            template&lt;
     typename T,
-    typename U>
+    typename U&gt;
 struct B;
         </pre>
     </div>
@@ -130,8 +130,8 @@ struct B;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T>
-using C = <a href="#A">A</a><T>;
+            template&lt;typename T&gt;
+using C = <a href="#A">A</a>&lt;T&gt;;
         </pre>
     </div>
 
@@ -154,7 +154,7 @@ using C = <a href="#A">A</a><T>;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename T>
+            template&lt;typename T&gt;
 struct D;
         </pre>
     </div>
@@ -203,8 +203,8 @@ struct D;
             </code>
         </div>
         <pre class="source-code cpp">
-            template<typename U>
-using E = <a href="#B">B</a><T, U>;
+            template&lt;typename U&gt;
+using E = <a href="#B">B</a>&lt;T, U&gt;;
         </pre>
     </div>
 
