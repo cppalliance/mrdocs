@@ -5,6 +5,9 @@
 </head>
 <body>
 <div>
+    {{#unless @root.config.multipage }}
+    <h1>Reference</h1>
+    {{/unless}}
     {{! Content generated with index.hbs }}
     {{{contents}}}
 </div>
