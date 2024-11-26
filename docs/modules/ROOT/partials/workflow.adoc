@@ -1,0 +1,42 @@
+[mermaid]
+....
+graph TD
+  %% Define styles for visual clarity
+  classDef input fill:#D1E8FF,stroke:#005CFF,stroke-width:2;
+  classDef artifact fill:#FFF5D1,stroke:#FFA500,stroke-width:2;
+  classDef output fill:#D1FFD1,stroke:#008000,stroke-width:2;
+
+  %% Define Inputs
+  subgraph Inputs
+    CF[Configuration File]
+    CL[Command Line Arguments]
+  end
+  class CL,CF input
+
+  %% Define Artifacts
+  subgraph Processes
+    P[Configuration Options]
+    CD[Compilation Database]
+    C[Corpus]
+    G[Generator]
+  end
+  class P artifact
+  class CD,C,G artifact
+
+  %% Define Outputs
+  subgraph Outputs
+    D[Documentation]
+  end
+  class D output
+
+  %% Relationships
+  CF -->|Define| P
+  CL -->|Define| P
+  P -->|Defines| CD
+  CD -->|Extract Symbols| C
+  C -->|Feeds| G
+  G -->|Produces| D
+
+  %% Highlight dependencies for clarity
+  P -->|Influences| G
+....

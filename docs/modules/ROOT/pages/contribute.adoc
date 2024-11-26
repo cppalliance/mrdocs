@@ -7,18 +7,7 @@ It is intended to provide an overview of the codebase and the process of adding 
 
 The MrDocs codebase is divided into several modules:
 
-[mermaid]
-....
-graph TD
-  CL[Command Line Arguments] --> P
-  CF[Configuration File] --> P
-  P[Options] --> E
-  P --> CD
-  P --> G
-  CD[Compilation Database] --> E
-  E[Extract Symbols] -->|Corpus| G
-  G[Generator] --> D(Documentation)
-....
+include::partial$workflow.adoc[]
 
 This section provides an overview of each module and how they interact with each other in the MrDocs codebase.
 
