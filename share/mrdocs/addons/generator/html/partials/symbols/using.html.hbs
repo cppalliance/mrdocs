@@ -1,5 +1,5 @@
 {{!-- symbols/using.html.hbs --}}
-<div id="{{symbol.anchor}}">
+<div id="{{{symbol.anchor}}}">
     <div>
         <h2>Using {{#if (eq symbol.class "namespace")}}Directive: {{symbol.qualifier.name}}{{else}}Declaration: {{symbol.name}}{{/if}}</h2>
         {{{symbol.doc.brief}}}
