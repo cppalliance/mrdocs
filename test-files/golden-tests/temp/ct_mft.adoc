@@ -4,39 +4,36 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A,`A`>> 
 | 
-    
+
 |===
 
 [#A]
 == A
 
-
-
 === Synopsis
 
 Declared in `<pass:[temp/ct_mft.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 struct A;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-f,`f`>> 
 | 
-    
+
 |===
 
 
@@ -44,25 +41,15 @@ struct A;
 [#A-f]
 == <<#A,A>>::f
 
-
-
 === Synopsis
 
 Declared in `<pass:[temp/ct_mft.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename U>
 void
 f();
 ----
-
-
-
-
-
-
-
 
 
 

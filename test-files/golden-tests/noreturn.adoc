@@ -4,14 +4,14 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#T,`T`>> 
 | 
-    
+
 |===
 === Functions
 [cols=2]
@@ -20,71 +20,58 @@
 
 | <<#f1,`f1`>> 
 | 
-    
+
 |===
 
 [#f1]
 == f1
 
-
-
 === Synopsis
 
 Declared in `<pass:[noreturn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f1();
 ----
 
-
-
-
-
-
-
-
 [#T]
 == T
-
-
 
 === Synopsis
 
 Declared in `<pass:[noreturn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct T;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#T-f3,`f3`>> 
 | 
-    
+
 |===
-===  Static Member Functions
+=== Static Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#T-f2,`f2`>> 
 | 
-    
+
 |===
-===  Friends
+=== Friends
 [cols=2]
 |===
 | Name | Description 
 
 | <<#T-08friend,`f1`>> 
 | 
-    
+
 |===
 
 
@@ -92,12 +79,9 @@ struct T;
 [#T-f2]
 == <<#T,T>>::f2
 
-
-
 === Synopsis
 
 Declared in `<pass:[noreturn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 static
@@ -105,51 +89,30 @@ void
 f2();
 ----
 
-
-
-
-
-
-
-
 [#T-f3]
 == <<#T,T>>::f3
-
-
 
 === Synopsis
 
 Declared in `<pass:[noreturn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f3();
 ----
 
-
-
-
-
-
-
-
 [#T-08friend]
 == f1
-
-
 
 === Synopsis
 
 Declared in `<pass:[noreturn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 friend
 void
 f1();
 ----
-
 
 
 

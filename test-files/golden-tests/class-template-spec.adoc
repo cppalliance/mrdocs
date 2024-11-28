@@ -4,63 +4,60 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-0e,`A`>> 
 | 
-    
+
 | <<#A-00,`A<int>`>> 
 | 
-    
+
 | <<#A-0c,`A<long>`>> 
 | 
-    
+
 | <<#B-00,`B`>> 
 | 
-    
+
 | <<#B-07,`B<T*>`>> 
 | 
-    
+
 | <<#B-06,`B<T&>`>> 
 | 
-    
+
 | <<#C-0f,`C`>> 
 | 
-    
+
 | <<#C-0a,`C<int, int>`>> 
 | 
-    
+
 | <<#C-0e,`C<T*, int>`>> 
 | 
-    
+
 |===
 
 [#A-0e]
 == A
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template-spec.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 struct A;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-0e-f,`f`>> 
 | 
-    
+
 |===
 
 
@@ -68,48 +65,35 @@ struct A;
 [#A-0e-f]
 == <<#A-0e,A>>::f
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template-spec.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f();
 ----
 
-
-
-
-
-
-
-
 [#A-00]
 == A
-
-
 
 === Synopsis
 
 Declared in `<pass:[class-template-spec.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
 struct <<#A-0e,A>><int>;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-00-g,`g`>> 
 | 
-    
+
 |===
 
 
@@ -117,48 +101,35 @@ struct <<#A-0e,A>><int>;
 [#A-00-g]
 == <<#A-00,A>><int>::g
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template-spec.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 g();
 ----
 
-
-
-
-
-
-
-
 [#A-0c]
 == A
-
-
 
 === Synopsis
 
 Declared in `<pass:[class-template-spec.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
 struct <<#A-0e,A>><long>;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-0c-h,`h`>> 
 | 
-    
+
 |===
 
 
@@ -166,48 +137,35 @@ struct <<#A-0e,A>><long>;
 [#A-0c-h]
 == <<#A-0c,A>><long>::h
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template-spec.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 h();
 ----
 
-
-
-
-
-
-
-
 [#B-00]
 == B
-
-
 
 === Synopsis
 
 Declared in `<pass:[class-template-spec.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 struct B;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#B-00-f,`f`>> 
 | 
-    
+
 |===
 
 
@@ -215,48 +173,35 @@ struct B;
 [#B-00-f]
 == <<#B-00,B>>::f
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template-spec.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f();
 ----
 
-
-
-
-
-
-
-
 [#B-07]
 == B
-
-
 
 === Synopsis
 
 Declared in `<pass:[class-template-spec.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 struct <<#B-00,B>><T*>;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#B-07-g,`g`>> 
 | 
-    
+
 |===
 
 
@@ -264,48 +209,35 @@ struct <<#B-00,B>><T*>;
 [#B-07-g]
 == <<#B-07,B>><T*>::g
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template-spec.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 g();
 ----
 
-
-
-
-
-
-
-
 [#B-06]
 == B
-
-
 
 === Synopsis
 
 Declared in `<pass:[class-template-spec.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 struct <<#B-00,B>><T&>;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#B-06-h,`h`>> 
 | 
-    
+
 |===
 
 
@@ -313,34 +245,21 @@ struct <<#B-00,B>><T&>;
 [#B-06-h]
 == <<#B-06,B>><T&>::h
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template-spec.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 h();
 ----
 
-
-
-
-
-
-
-
 [#C-0f]
 == C
-
-
 
 === Synopsis
 
 Declared in `<pass:[class-template-spec.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<
@@ -349,14 +268,14 @@ template<
 struct C;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#C-0f-f,`f`>> 
 | 
-    
+
 |===
 
 
@@ -364,48 +283,35 @@ struct C;
 [#C-0f-f]
 == <<#C-0f,C>>::f
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template-spec.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f();
 ----
 
-
-
-
-
-
-
-
 [#C-0a]
 == C
-
-
 
 === Synopsis
 
 Declared in `<pass:[class-template-spec.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
 struct <<#C-0f,C>><int, int>;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#C-0a-g,`g`>> 
 | 
-    
+
 |===
 
 
@@ -413,48 +319,35 @@ struct <<#C-0f,C>><int, int>;
 [#C-0a-g]
 == <<#C-0a,C>><int, int>::g
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template-spec.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 g();
 ----
 
-
-
-
-
-
-
-
 [#C-0e]
 == C
-
-
 
 === Synopsis
 
 Declared in `<pass:[class-template-spec.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 struct <<#C-0f,C>><T*, int>;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#C-0e-h,`h`>> 
 | 
-    
+
 |===
 
 
@@ -462,24 +355,14 @@ struct <<#C-0f,C>><T*, int>;
 [#C-0e-h]
 == <<#C-0e,C>><T*, int>::h
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template-spec.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 h();
 ----
-
-
-
-
-
-
-
 
 
 

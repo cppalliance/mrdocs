@@ -4,7 +4,7 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
@@ -13,17 +13,17 @@
 | 
 Struct T brief
 
-    
+
 | <<#U,`U`>> 
 | 
 Struct U brief
 
-    
+
 | <<#V,`V`>> 
 | 
 Struct V brief
 
-    
+
 |===
 
 [#T]
@@ -36,13 +36,12 @@ Struct T brief
 === Synopsis
 
 Declared in `<pass:[friend-6.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct T;
 ----
 
-===  Friends
+=== Friends
 [cols=2]
 |===
 | Name | Description 
@@ -51,12 +50,12 @@ struct T;
 | 
 Friend int brief
 
-    
+
 | <<#T-08friend-04cb,`[object Object]`>> 
 | 
 Friend class Z brief
 
-    
+
 |===
 
 
@@ -71,12 +70,10 @@ Friend int brief
 === Synopsis
 
 Declared in `<pass:[friend-6.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 friend int;
 ----
-
 
 [#T-08friend-04cb]
 == [object Object]
@@ -88,12 +85,10 @@ Friend class Z brief
 === Synopsis
 
 Declared in `<pass:[friend-6.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 friend Z;
 ----
-
 
 [#U]
 == U
@@ -105,13 +100,12 @@ Struct U brief
 === Synopsis
 
 Declared in `<pass:[friend-6.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct U;
 ----
 
-===  Friends
+=== Friends
 [cols=2]
 |===
 | Name | Description 
@@ -120,7 +114,7 @@ struct U;
 | 
 Friend T brief
 
-    
+
 |===
 
 
@@ -135,12 +129,10 @@ Friend T brief
 === Synopsis
 
 Declared in `<pass:[friend-6.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 friend <<#T,T>>;
 ----
-
 
 [#V]
 == V
@@ -152,13 +144,12 @@ Struct V brief
 === Synopsis
 
 Declared in `<pass:[friend-6.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct V;
 ----
 
-===  Friends
+=== Friends
 [cols=2]
 |===
 | Name | Description 
@@ -167,7 +158,7 @@ struct V;
 | 
 Friend struct U brief
 
-    
+
 |===
 
 
@@ -182,12 +173,10 @@ Friend struct U brief
 === Synopsis
 
 Declared in `<pass:[friend-6.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 friend <<#U,U>>;
 ----
-
 
 
 

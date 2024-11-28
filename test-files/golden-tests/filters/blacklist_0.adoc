@@ -11,16 +11,16 @@
 
 | <<#N0,`N0`>> 
 | 
-    
+
 | <<#N3,`N3`>> 
 | 
-    
+
 | <<#N4,`N4`>> 
 | 
-    
+
 | <<#N7,`N7`>> 
 | 
-    
+
 |===
 
 [#N0]
@@ -33,30 +33,20 @@
 
 | <<#N0-f0,`f0`>> 
 | 
-    
+
 |===
 
 [#N0-f0]
 == <<#N0,N0>>::f0
 
-
-
 === Synopsis
 
 Declared in `<pass:[filters/blacklist_0.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f0();
 ----
-
-
-
-
-
-
-
 
 [#N3]
 == N3
@@ -72,10 +62,10 @@ f0();
 
 | <<#N4-N5,`N5`>> 
 | 
-    
+
 | <<#N4-N6,`N6`>> 
 | 
-    
+
 |===
 
 [#N4-N5]
@@ -88,30 +78,20 @@ f0();
 
 | <<#N4-N5-f1,`f1`>> 
 | 
-    
+
 |===
 
 [#N4-N5-f1]
 == <<#N4,N4>>::<<#N4-N5,N5>>::f1
 
-
-
 === Synopsis
 
 Declared in `<pass:[filters/blacklist_0.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f1();
 ----
-
-
-
-
-
-
-
 
 [#N4-N6]
 == <<#N4,N4>>::N6
@@ -123,30 +103,20 @@ f1();
 
 | <<#N4-N6-f1,`f1`>> 
 | 
-    
+
 |===
 
 [#N4-N6-f1]
 == <<#N4,N4>>::<<#N4-N6,N6>>::f1
 
-
-
 === Synopsis
 
 Declared in `<pass:[filters/blacklist_0.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f1();
 ----
-
-
-
-
-
-
-
 
 [#N7]
 == N7
@@ -158,10 +128,10 @@ f1();
 
 | <<#N7-N8,`N8`>> 
 | 
-    
+
 | <<#N7-N9,`N9`>> 
 | 
-    
+
 |===
 
 [#N7-N8]
@@ -178,30 +148,20 @@ f1();
 
 | <<#N7-N9-g0,`g0`>> 
 | 
-    
+
 |===
 
 [#N7-N9-g0]
 == <<#N7,N7>>::<<#N7-N9,N9>>::g0
 
-
-
 === Synopsis
 
 Declared in `<pass:[filters/blacklist_0.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 g0();
 ----
-
-
-
-
-
-
-
 
 
 

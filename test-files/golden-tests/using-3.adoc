@@ -4,44 +4,41 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A,`A`>> 
 | 
-    
+
 | <<#B,`B`>> 
 | 
-    
+
 | <<#C,`C`>> 
 | 
-    
+
 |===
 
 [#A]
 == A
 
-
-
 === Synopsis
 
 Declared in `<pass:[using-3.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct A;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-f,`f`>> 
 | 
-    
+
 |===
 
 
@@ -49,47 +46,34 @@ struct A;
 [#A-f]
 == <<#A,A>>::f
 
-
-
 === Synopsis
 
 Declared in `<pass:[using-3.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f(int);
 ----
 
-
-
-
-
-
-
-
 [#B]
 == B
-
-
 
 === Synopsis
 
 Declared in `<pass:[using-3.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct B;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#B-f,`f`>> 
 | 
-    
+
 |===
 
 
@@ -97,34 +81,21 @@ struct B;
 [#B-f]
 == <<#B,B>>::f
 
-
-
 === Synopsis
 
 Declared in `<pass:[using-3.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f(bool);
 ----
 
-
-
-
-
-
-
-
 [#C]
 == C
-
-
 
 === Synopsis
 
 Declared in `<pass:[using-3.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct C
@@ -132,7 +103,7 @@ struct C
     , <<#B,B>>;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
@@ -140,17 +111,17 @@ struct C
 | <<#A-f,`f`>> 
 | 
 |===
-===  Using Declarations
+=== Using Declarations
 [cols=2]
 |===
 | Name | Description 
 
 | <<#C-f-08,`f`>> 
 | 
-    
+
 | <<#C-f-03,`f`>> 
 | 
-    
+
 |===
 
 
@@ -158,18 +129,14 @@ struct C
 [#C-f-08]
 == <<#C,C>>::f
 
-
-
 === Synopsis
 
 Declared in `<pass:[using-3.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 using <<#A,A>>::f;
 ----
 
-
 === Introduced Symbols
 
 |===
@@ -177,29 +144,23 @@ using <<#A,A>>::f;
 | f
 |===
 
-
 [#C-f-03]
 == <<#C,C>>::f
-
-
 
 === Synopsis
 
 Declared in `<pass:[using-3.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 using <<#B,B>>::f;
 ----
 
-
 === Introduced Symbols
 
 |===
 | Name
 | f
 |===
-
 
 
 

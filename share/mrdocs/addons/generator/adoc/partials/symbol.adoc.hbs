@@ -1,0 +1,217 @@
+[#{{{symbol.anchor}}}]
+={{#unless @root.config.multipage}}={{/unless}} {{#unless (eq symbol.kind "friend")}}{{#if symbol.name}}{{>types/nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}{{#if symbol.parent}}Unnamed{{else}}Global{{/if}} {{or symbol.tag symbol.kind}}{{/if}}{{else}}{{#if symbol.symbol.name}}{{>types/nested-name-specifier symbol=symbol.symbol.parent includeNamespace=true}}{{symbol.symbol.name}}{{else}}{{symbol.type.name}}{{/if}}{{/unless}}
+
+{{! Brief }}
+{{#if symbol.doc.brief}}
+{{{symbol.doc.brief}}}
+
+{{/if}}
+{{! Synopsis }}
+{{#unless (contains (arr "namespace") symbol.kind)}}
+=={{#unless @root.config.multipage}}={{/unless}} Synopsis
+
+{{>types/source dcl=(primary_location symbol)}}
+
+{{#if (ne symbol.kind "overloads")}}
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+{{> signature }}
+
+----
+
+{{else}}
+{{#each symbol.members as | member |}}
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+{{> signature symbol=member link=member}}
+
+----
+
+{{/each}}
+{{/if}}
+{{/unless}}
+{{! Tranches }}
+{{#if symbol.interface}}
+{{#if (eq symbol.kind "record")}}
+{{#with symbol.interface}}
+{{>types/tranche tranche=public label="" is-namespace=false}}
+
+{{>types/tranche tranche=protected label="Protected" is-namespace=false}}
+
+{{>types/tranche tranche=private label="Private" is-namespace=false}}
+
+{{/with}}
+{{else}}
+{{>types/tranche tranche=symbol.interface label="" is-namespace=true}}
+
+{{/if}}
+{{else if symbol.members}}
+{{! Members }}
+{{#if (and symbol.members (ne symbol.kind "overloads"))}}
+=={{#unless @root.config.multipage}}={{/unless}} Members
+
+[,cols=2]
+|===
+|Name |Description
+{{#each symbol.members}}
+|xref:{{{anchor}}}[`pass:v[{{>types/declarator-id . nolink=true}}]`] | {{~doc.brief}}
+{{/each}}
+|===
+
+{{/if}}
+{{/if}}
+{{! Using directives }}
+{{#if symbol.usingDirectives}}
+{{>types/info-list members=symbol.usingDirectives title="Using Directives"}}
+
+{{/if}}
+{{! Description }}
+{{#if symbol.doc.description}}
+=={{#unless @root.config.multipage}}={{/unless}} Description
+
+{{symbol.doc.description}}
+
+{{/if}}
+{{! Using symbols }}
+{{#if symbol.shadows}}
+=={{#unless @root.config.multipage}}={{/unless}} Introduced Symbols
+
+|===
+| Name
+{{#each symbol.shadows}}
+| {{name}}
+{{/each}}
+|===
+
+{{/if}}
+{{! Exceptions }}
+{{#if (ne symbol.kind "overloads")}}
+{{#if symbol.doc.exceptions}}
+=={{#unless @root.config.multipage}}={{/unless}} Exceptions
+
+|===
+| Name | Thrown on
+
+{{#each symbol.doc.exceptions}}
+| `{{exception}}`
+| {{description}}
+{{/each}}
+|===
+
+{{/if}}
+{{else}}
+{{#with (flattenUnique symbol.members "doc.exceptions" "exception") as |allExceptions|}}
+{{#if (ne (len allExceptions) 0)}}
+=={{#unless @root.config.multipage}}={{/unless}} Exceptions
+
+|===
+| Name | Thrown on
+
+{{#each allExceptions as |exception|}}
+| `{{exception.exception}}`
+| {{{exception.description}}}
+{{/each}}
+|===
+
+{{/if}}
+{{/with}}
+{{/if}}
+{{! Return value }}
+{{#if symbol.doc.returns}}
+=={{#unless @root.config.multipage}}={{/unless}} Return Value
+
+{{{symbol.doc.returns}}}
+
+{{/if}}
+{{! Template Parameters }}
+{{#if (ne symbol.kind "overloads")}}
+{{#if symbol.doc.tparams}}
+=={{#unless @root.config.multipage}}={{/unless}} Template Parameters
+
+|===
+| Name | Description
+
+{{#each symbol.doc.tparams}}
+| *{{name}}*
+| {{description}}
+{{/each}}
+|===
+
+{{/if}}
+{{else}}
+{{#with (flattenUnique symbol.members "doc.tparams" "name") as |allTParams|}}
+{{#if (ne (len allTParams) 0)}}
+=={{#unless @root.config.multipage}}={{/unless}} Parameters
+
+|===
+| Name | Description
+
+{{#each allTParams as |param|}}
+| *{{param.name}}*
+| {{param.description}}
+{{/each}}
+|===
+
+{{/if}}
+{{/with}}
+{{/if}}
+{{! Parameters }}
+{{#if (ne symbol.kind "overloads")}}
+{{#if symbol.doc.params}}
+=={{#unless @root.config.multipage}}={{/unless}} Parameters
+
+|===
+| Name | Description {{! TODO: | Type? }}
+
+{{#each symbol.doc.params}}
+| *{{name}}*
+| {{description}}
+{{/each}}
+|===
+
+{{/if}}
+{{else}}
+{{#with (flattenUnique symbol.members "doc.params" "name") as |allParams|}}
+{{#if (ne (len allParams) 0)}}
+=={{#unless @root.config.multipage}}={{/unless}} Parameters
+
+|===
+| Name | Description {{! TODO: | Type? }}
+
+{{#each allParams as |param|}}
+| *{{param.name}}*
+| {{param.description}}
+{{/each}}
+|===
+
+{{/if}}
+{{/with}}
+{{/if}}
+{{! Preconditions }}
+{{#if symbol.doc.preconditions}}
+=={{#unless @root.config.multipage}}={{/unless}} Preconditions
+
+{{#each symbol.doc.preconditions}}
+{{{.}}}
+{{/each}}
+
+{{/if}}
+{{! Postconditions }}
+{{#if symbol.doc.postconditions}}
+=={{#unless @root.config.multipage}}={{/unless}} Postconditions
+
+{{#each symbol.doc.postconditions}}
+{{{.}}}
+{{/each}}
+
+{{/if}}
+{{! See Also }}
+{{#if symbol.doc.see}}
+=={{#unless @root.config.multipage}}={{/unless}} See Also
+
+{{#each symbol.doc.see}}
+{{{.}}}
+
+{{/each}}
+
+{{/if}}

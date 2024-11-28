@@ -13,32 +13,32 @@
 | 
 f0 brief
 
-    
+
 | <<#f1,`f1`>> 
 | 
 f1 brief
 
-    
+
 | <<#g0,`g0`>> 
 | 
 g0 brief
 
-    
+
 | <<#g1,`g1`>> 
 | 
 g1 brief
 
-    
+
 | <<#h0,`h0`>> 
 | 
 h0 brief
 
-    
+
 | <<#h1,`h1`>> 
 | 
 h1 brief
 
-    
+
 |===
 
 [#f0]
@@ -51,24 +51,16 @@ f0 brief
 === Synopsis
 
 Declared in `<pass:[duplicate-jdoc.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 int
 f0();
 ----
 
-
-
 === Return Value
 
 
 int
-
-
-
-
-
 
 
 [#f1]
@@ -81,24 +73,16 @@ f1 brief
 === Synopsis
 
 Declared in `<pass:[duplicate-jdoc.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 int
 f1();
 ----
 
-
-
 === Return Value
 
 
 bool
-
-
-
-
-
 
 
 [#g0]
@@ -111,16 +95,11 @@ g0 brief
 === Synopsis
 
 Declared in `<pass:[duplicate-jdoc.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 g0(int a);
 ----
-
-
-
-
 
 === Parameters
 
@@ -137,9 +116,6 @@ one
 
 |===
 
-
-
-
 [#g1]
 == g1
 
@@ -150,16 +126,11 @@ g1 brief
 === Synopsis
 
 Declared in `<pass:[duplicate-jdoc.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 g1(int a);
 ----
-
-
-
-
 
 === Parameters
 
@@ -176,9 +147,6 @@ two
 
 |===
 
-
-
-
 [#h0]
 == h0
 
@@ -189,16 +157,12 @@ h0 brief
 === Synopsis
 
 Declared in `<pass:[duplicate-jdoc.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 void
 h0();
 ----
-
-
-
 
 === Template Parameters
 
@@ -215,10 +179,6 @@ one
 
 |===
 
-
-
-
-
 [#h1]
 == h1
 
@@ -229,16 +189,12 @@ h1 brief
 === Synopsis
 
 Declared in `<pass:[duplicate-jdoc.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 void
 h1();
 ----
-
-
-
 
 === Template Parameters
 
@@ -254,10 +210,6 @@ one
 two
 
 |===
-
-
-
-
 
 
 

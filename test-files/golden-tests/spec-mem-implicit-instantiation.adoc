@@ -4,54 +4,51 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-0e,`A`>> 
 | 
-    
+
 | <<#D,`D`>> 
 | 
-    
+
 |===
 
 [#A-0e]
 == A
 
-
-
 === Synopsis
 
 Declared in `<pass:[spec-mem-implicit-instantiation.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 struct A;
 ----
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-0e-B,`B`>> 
 | 
-    
+
 | <<#A-0e-C,`C`>> 
 | 
-    
+
 |===
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-0e-f,`f`>> 
 | 
-    
+
 |===
 
 
@@ -59,48 +56,35 @@ struct A;
 [#A-0e-f]
 == <<#A-0e,A>>::f
 
-
-
 === Synopsis
 
 Declared in `<pass:[spec-mem-implicit-instantiation.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f();
 ----
 
-
-
-
-
-
-
-
 [#A-0e-B]
 == <<#A-0e,A>>::B
-
-
 
 === Synopsis
 
 Declared in `<pass:[spec-mem-implicit-instantiation.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename U>
 struct B;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-0e-B-g,`g`>> 
 | 
-    
+
 |===
 
 
@@ -108,48 +92,35 @@ struct B;
 [#A-0e-B-g]
 == <<#A-0e,A>>::<<#A-0e-B,B>>::g
 
-
-
 === Synopsis
 
 Declared in `<pass:[spec-mem-implicit-instantiation.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 g();
 ----
 
-
-
-
-
-
-
-
 [#A-0e-C]
 == <<#A-0e,A>>::C
-
-
 
 === Synopsis
 
 Declared in `<pass:[spec-mem-implicit-instantiation.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename U>
 struct C;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-0e-C-h,`h`>> 
 | 
-    
+
 |===
 
 
@@ -157,47 +128,34 @@ struct C;
 [#A-0e-C-h]
 == <<#A-0e,A>>::<<#A-0e-C,C>>::h
 
-
-
 === Synopsis
 
 Declared in `<pass:[spec-mem-implicit-instantiation.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 h();
 ----
 
-
-
-
-
-
-
-
 [#D]
 == D
-
-
 
 === Synopsis
 
 Declared in `<pass:[spec-mem-implicit-instantiation.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct D;
 ----
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#D-E-0e,`E`>> 
 | 
-    
+
 |===
 
 
@@ -205,26 +163,23 @@ struct D;
 [#D-E-0e]
 == <<#D,D>>::E
 
-
-
 === Synopsis
 
 Declared in `<pass:[spec-mem-implicit-instantiation.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 struct E;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#D-E-0e-k,`k`>> 
 | 
-    
+
 |===
 
 
@@ -232,24 +187,14 @@ struct E;
 [#D-E-0e-k]
 == <<#D,D>>::<<#D-E-0e,E>>::k
 
-
-
 === Synopsis
 
 Declared in `<pass:[spec-mem-implicit-instantiation.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 k();
 ----
-
-
-
-
-
-
-
 
 
 

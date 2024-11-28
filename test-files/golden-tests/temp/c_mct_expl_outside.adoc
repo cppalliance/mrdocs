@@ -4,41 +4,38 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A,`A`>> 
 | 
-    
+
 |===
 
 [#A]
 == A
 
-
-
 === Synopsis
 
 Declared in `<pass:[temp/c_mct_expl_outside.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct A;
 ----
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-B-04,`B`>> 
 | 
-    
+
 | <<#A-B-01,`B<int>`>> 
 | 
-    
+
 |===
 
 
@@ -46,26 +43,23 @@ struct A;
 [#A-B-04]
 == <<#A,A>>::B
 
-
-
 === Synopsis
 
 Declared in `<pass:[temp/c_mct_expl_outside.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 struct B;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-B-04-f,`f`>> 
 | 
-    
+
 |===
 
 
@@ -73,48 +67,35 @@ struct B;
 [#A-B-04-f]
 == <<#A,A>>::<<#A-B-04,B>>::f
 
-
-
 === Synopsis
 
 Declared in `<pass:[temp/c_mct_expl_outside.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f();
 ----
 
-
-
-
-
-
-
-
 [#A-B-01]
 == <<#A,A>>::B
-
-
 
 === Synopsis
 
 Declared in `<pass:[temp/c_mct_expl_outside.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
 struct <<#A-B-04,B>><int>;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-B-01-g,`g`>> 
 | 
-    
+
 |===
 
 
@@ -122,24 +103,14 @@ struct <<#A-B-04,B>><int>;
 [#A-B-01-g]
 == <<#A,A>>::<<#A-B-01,B>><int>::g
 
-
-
 === Synopsis
 
 Declared in `<pass:[temp/c_mct_expl_outside.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 g();
 ----
-
-
-
-
-
-
-
 
 
 

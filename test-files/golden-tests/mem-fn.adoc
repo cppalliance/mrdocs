@@ -4,89 +4,86 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#T01,`T01`>> 
 | 
-    
+
 | <<#T02,`T02`>> 
 | 
-    
+
 | <<#T03,`T03`>> 
 | 
-    
+
 | <<#T04,`T04`>> 
 | 
-    
+
 | <<#T05,`T05`>> 
 | 
-    
+
 | <<#T06,`T06`>> 
 | 
-    
+
 | <<#T08,`T08`>> 
 | 
-    
+
 | <<#T09,`T09`>> 
 | 
-    
+
 | <<#T10,`T10`>> 
 | 
-    
+
 | <<#T11,`T11`>> 
 | 
-    
+
 | <<#T12,`T12`>> 
 | 
-    
+
 | <<#T13,`T13`>> 
 | 
-    
+
 | <<#T14,`T14`>> 
 | 
-    
+
 | <<#T15,`T15`>> 
 | 
-    
+
 | <<#T16,`T16`>> 
 | 
-    
+
 | <<#T17,`T17`>> 
 | 
-    
+
 | <<#U,`U`>> 
 | 
-    
+
 | <<#V,`V`>> 
 | 
-    
+
 |===
 
 [#T01]
 == T01
 
-
-
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct T01;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#T01-f,`f`>> 
 | 
-    
+
 |===
 
 
@@ -94,47 +91,34 @@ struct T01;
 [#T01-f]
 == <<#T01,T01>>::f
 
-
-
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f();
 ----
 
-
-
-
-
-
-
-
 [#T02]
 == T02
-
-
 
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct T02;
 ----
 
-===  Static Member Functions
+=== Static Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#T02-f,`f`>> 
 | 
-    
+
 |===
 
 
@@ -142,12 +126,9 @@ struct T02;
 [#T02-f]
 == <<#T02,T02>>::f
 
-
-
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 static
@@ -155,35 +136,25 @@ void
 f();
 ----
 
-
-
-
-
-
-
-
 [#T03]
 == T03
-
-
 
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct T03;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#T03-f,`f`>> 
 | 
-    
+
 |===
 
 
@@ -191,47 +162,34 @@ struct T03;
 [#T03-f]
 == <<#T03,T03>>::f
 
-
-
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f() &;
 ----
 
-
-
-
-
-
-
-
 [#T04]
 == T04
-
-
 
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct T04;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#T04-f,`f`>> 
 | 
-    
+
 |===
 
 
@@ -239,47 +197,34 @@ struct T04;
 [#T04-f]
 == <<#T04,T04>>::f
 
-
-
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f() &&;
 ----
 
-
-
-
-
-
-
-
 [#T05]
 == T05
-
-
 
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct T05;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#T05-f,`f`>> 
 | 
-    
+
 |===
 
 
@@ -287,47 +232,34 @@ struct T05;
 [#T05-f]
 == <<#T05,T05>>::f
 
-
-
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f() const;
 ----
 
-
-
-
-
-
-
-
 [#T06]
 == T06
-
-
 
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct T06;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#T06-f,`f`>> 
 | 
-    
+
 |===
 
 
@@ -335,12 +267,9 @@ struct T06;
 [#T06-f]
 == <<#T06,T06>>::f
 
-
-
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 constexpr
@@ -348,35 +277,25 @@ void
 f();
 ----
 
-
-
-
-
-
-
-
 [#T08]
 == T08
-
-
 
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct T08;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#T08-f,`f`>> 
 | 
-    
+
 |===
 
 
@@ -384,47 +303,34 @@ struct T08;
 [#T08-f]
 == <<#T08,T08>>::f
 
-
-
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f();
 ----
 
-
-
-
-
-
-
-
 [#T09]
 == T09
-
-
 
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct T09;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#T09-f,`f`>> 
 | 
-    
+
 |===
 
 
@@ -432,47 +338,34 @@ struct T09;
 [#T09-f]
 == <<#T09,T09>>::f
 
-
-
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f() noexcept;
 ----
 
-
-
-
-
-
-
-
 [#T10]
 == T10
-
-
 
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct T10;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#T10-f,`f`>> 
 | 
-    
+
 |===
 
 
@@ -480,47 +373,34 @@ struct T10;
 [#T10-f]
 == <<#T10,T10>>::f
 
-
-
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f();
 ----
 
-
-
-
-
-
-
-
 [#T11]
 == T11
-
-
 
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct T11;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#T11-f,`f`>> 
 | 
-    
+
 |===
 
 
@@ -528,47 +408,34 @@ struct T11;
 [#T11-f]
 == <<#T11,T11>>::f
 
-
-
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 int
 f();
 ----
 
-
-
-
-
-
-
-
 [#T12]
 == T12
-
-
 
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct T12;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#T12-f,`f`>> 
 | 
-    
+
 |===
 
 
@@ -576,47 +443,34 @@ struct T12;
 [#T12-f]
 == <<#T12,T12>>::f
 
-
-
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f(...);
 ----
 
-
-
-
-
-
-
-
 [#T13]
 == T13
-
-
 
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct T13;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#T13-f,`f`>> 
 | 
-    
+
 |===
 
 
@@ -624,12 +478,9 @@ struct T13;
 [#T13-f]
 == <<#T13,T13>>::f
 
-
-
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 virtual
@@ -637,35 +488,25 @@ void
 f();
 ----
 
-
-
-
-
-
-
-
 [#T14]
 == T14
-
-
 
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct T14;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#T14-f,`f`>> 
 | 
-    
+
 |===
 
 
@@ -673,12 +514,9 @@ struct T14;
 [#T14-f]
 == <<#T14,T14>>::f
 
-
-
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 virtual
@@ -686,35 +524,25 @@ void
 f() = 0;
 ----
 
-
-
-
-
-
-
-
 [#T15]
 == T15
-
-
 
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct T15;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#T15-f,`f`>> 
 | 
-    
+
 |===
 
 
@@ -722,47 +550,34 @@ struct T15;
 [#T15-f]
 == <<#T15,T15>>::f
 
-
-
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f() volatile;
 ----
 
-
-
-
-
-
-
-
 [#T16]
 == T16
-
-
 
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct T16;
 ----
 
-===  Static Member Functions
+=== Static Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#T16-f,`f`>> 
 | 
-    
+
 |===
 
 
@@ -770,12 +585,9 @@ struct T16;
 [#T16-f]
 == <<#T16,T16>>::f
 
-
-
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 static
@@ -783,29 +595,19 @@ void
 f();
 ----
 
-
-
-
-
-
-
-
 [#T17]
 == T17
-
-
 
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct T17
     : <<#T14,T14>>;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
@@ -819,12 +621,9 @@ struct T17
 [#T17-f]
 == <<#T17,T17>>::f
 
-
-
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 virtual
@@ -832,47 +631,37 @@ void
 f() override;
 ----
 
-
-
-
-
-
-
-
 [#U]
 == U
-
-
 
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct U;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#U-f1,`f1`>> 
 | 
-    
+
 | <<#U-f3,`f3`>> 
 | 
-    
+
 |===
-===  Static Member Functions
+=== Static Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#U-f2,`f2`>> 
 | 
-    
+
 |===
 
 
@@ -880,12 +669,9 @@ struct U;
 [#U-f1]
 == <<#U,U>>::f1
 
-
-
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 constexpr
@@ -893,22 +679,12 @@ void
 f1(...) const volatile noexcept;
 ----
 
-
-
-
-
-
-
-
 [#U-f2]
 == <<#U,U>>::f2
-
-
 
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 constexpr
@@ -917,22 +693,12 @@ char
 f2() noexcept;
 ----
 
-
-
-
-
-
-
-
 [#U-f3]
 == <<#U,U>>::f3
-
-
 
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 virtual
@@ -940,47 +706,37 @@ int
 f3() const volatile noexcept = 0;
 ----
 
-
-
-
-
-
-
-
 [#V]
 == V
-
-
 
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct V
     : <<#U,U>>;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#U-f1,`f1`>> 
 | 
-    
+
 | <<#U-f3,`f3`>> 
 | 
 |===
-===  Static Member Functions
+=== Static Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#U-f2,`f2`>> 
 | 
-    
+
 |===
 
 
@@ -988,25 +744,15 @@ struct V
 [#V-f3]
 == <<#V,V>>::f3
 
-
-
 === Synopsis
 
 Declared in `<pass:[mem-fn.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 virtual
 int
 f3() const volatile noexcept override;
 ----
-
-
-
-
-
-
-
 
 
 

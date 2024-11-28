@@ -11,7 +11,7 @@
 
 | <<#LongName,`LongName`>> 
 | 
-    
+
 |===
 
 === Using Directives
@@ -21,8 +21,9 @@
 
 | <<#LongName,`LongName`>> 
 | 
-    
+
 |===
+
 [#LongName]
 == LongName
 

@@ -4,45 +4,42 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A,`A`>> 
 | 
-    
+
 |===
 
 [#A]
 == A
 
-
-
 === Synopsis
 
 Declared in `<pass:[static-data-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 struct A;
 ----
 
-===  Static Data Members
+=== Static Data Members
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-x-0e,`x`>> 
 | 
-    
+
 | <<#A-x-0a,`x<U*, T>`>> 
 | 
-    
+
 | <<#A-x-07,`x<T, long>`>> 
 | 
-    
+
 |===
 
 
@@ -50,12 +47,9 @@ struct A;
 [#A-x-0e]
 == <<#A,A>>::x
 
-
-
 === Synopsis
 
 Declared in `<pass:[static-data-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<
@@ -66,16 +60,12 @@ static
 T const x = 0;
 ----
 
-
 [#A-x-0a]
 == <<#A,A>>::x
-
-
 
 === Synopsis
 
 Declared in `<pass:[static-data-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename U>
@@ -84,16 +74,12 @@ static
 T const <<#A-x-0e,x>><U*, T> = 1;
 ----
 
-
 [#A-x-07]
 == <<#A,A>>::x
-
-
 
 === Synopsis
 
 Declared in `<pass:[static-data-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
@@ -101,7 +87,6 @@ constexpr
 static
 bool const <<#A-x-0e,x>><T, long> = 2;
 ----
-
 
 
 

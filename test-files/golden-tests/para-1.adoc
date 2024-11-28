@@ -11,85 +11,55 @@
 
 | <<#f1,`f1`>> 
 | 
-    
+
 | <<#f2,`f2`>> 
 | 
-    
+
 | <<#f3,`f3`>> 
 | 
-    
+
 | <<#f4,`f4`>> 
 | 
 brief
 
-    
+
 |===
 
 [#f1]
 == f1
 
-
-
 === Synopsis
 
 Declared in `<pass:[para-1.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f1();
 ----
 
-
-
-
-
-
-
-
 [#f2]
 == f2
-
-
 
 === Synopsis
 
 Declared in `<pass:[para-1.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f2();
 ----
 
-
-
-
-
-
-
-
 [#f3]
 == f3
-
-
 
 === Synopsis
 
 Declared in `<pass:[para-1.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f3();
 ----
-
-
-
-
-
-
-
 
 [#f4]
 == f4
@@ -101,7 +71,6 @@ brief
 === Synopsis
 
 Declared in `<pass:[para-1.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
@@ -116,13 +85,6 @@ a
 b
 
 c
-
-
-
-
-
-
-
 
 
 

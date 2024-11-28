@@ -11,19 +11,19 @@
 
 | <<#A,`A`>> 
 | 
-    
+
 | <<#B,`B`>> 
 | 
-    
+
 | <<#C,`C`>> 
 | 
-    
+
 | <<#D,`D`>> 
 | 
-    
+
 | <<#F,`F`>> 
 | 
-    
+
 |===
 
 [#A]
@@ -36,10 +36,10 @@
 
 | <<#A-detail,`detail`>> 
 | 
-    
+
 | <<#A-detair,`detair`>> 
 | 
-    
+
 |===
 === Functions
 [cols=2]
@@ -48,30 +48,20 @@
 
 | <<#A-f0,`f0`>> 
 | 
-    
+
 |===
 
 [#A-f0]
 == <<#A,A>>::f0
 
-
-
 === Synopsis
 
 Declared in `<pass:[filters/filters.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f0();
 ----
-
-
-
-
-
-
-
 
 [#A-detail]
 == <<#A,A>>::detail
@@ -83,42 +73,32 @@ f0();
 
 | <<#A-detail-g0,`g0`>> 
 | 
-    
+
 |===
 
 [#A-detail-g0]
 == <<#A,A>>::<<#A-detail,detail>>::g0
 
-
-
 === Synopsis
 
 Declared in `<pass:[filters/filters.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 g0();
 ----
 
-
-
-
-
-
-
-
 [#A-detair]
 == <<#A,A>>::detair
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-detair-Y,`Y`>> 
 | 
-    
+
 |===
 === Functions
 [cols=2]
@@ -127,62 +107,49 @@ g0();
 
 | <<#A-detair-f4,`f4`>> 
 | 
-    
+
 |===
 
 [#A-detair-f4]
 == <<#A,A>>::<<#A-detair,detair>>::f4
 
-
-
 === Synopsis
 
 Declared in `<pass:[filters/filters.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f4();
 ----
 
-
-
-
-
-
-
-
 [#A-detair-Y]
 == <<#A,A>>::<<#A-detair,detair>>::Y
-
-
 
 === Synopsis
 
 Declared in `<pass:[filters/filters.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct Y;
 ----
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-detair-Y-Z,`Z`>> 
 | 
-    
+
 |===
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-detair-Y-f6,`f6`>> 
 | 
-    
+
 |===
 
 
@@ -190,47 +157,34 @@ struct Y;
 [#A-detair-Y-f6]
 == <<#A,A>>::<<#A-detair,detair>>::<<#A-detair-Y,Y>>::f6
 
-
-
 === Synopsis
 
 Declared in `<pass:[filters/filters.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f6();
 ----
 
-
-
-
-
-
-
-
 [#A-detair-Y-Z]
 == <<#A,A>>::<<#A-detair,detair>>::<<#A-detair-Y,Y>>::Z
-
-
 
 === Synopsis
 
 Declared in `<pass:[filters/filters.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct Z;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-detair-Y-Z-f7,`f7`>> 
 | 
-    
+
 |===
 
 
@@ -238,24 +192,14 @@ struct Z;
 [#A-detair-Y-Z-f7]
 == <<#A,A>>::<<#A-detair,detair>>::<<#A-detair-Y,Y>>::<<#A-detair-Y-Z,Z>>::f7
 
-
-
 === Synopsis
 
 Declared in `<pass:[filters/filters.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f7();
 ----
-
-
-
-
-
-
-
 
 [#B]
 == B
@@ -267,7 +211,7 @@ f7();
 
 | <<#B-detair,`detair`>> 
 | 
-    
+
 |===
 === Functions
 [cols=2]
@@ -276,42 +220,32 @@ f7();
 
 | <<#B-f0,`f0`>> 
 | 
-    
+
 |===
 
 [#B-f0]
 == <<#B,B>>::f0
 
-
-
 === Synopsis
 
 Declared in `<pass:[filters/filters.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f0();
 ----
 
-
-
-
-
-
-
-
 [#B-detair]
 == <<#B,B>>::detair
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#B-detair-Y,`Y`>> 
 | 
-    
+
 |===
 === Functions
 [cols=2]
@@ -320,62 +254,49 @@ f0();
 
 | <<#B-detair-f4,`f4`>> 
 | 
-    
+
 |===
 
 [#B-detair-f4]
 == <<#B,B>>::<<#B-detair,detair>>::f4
 
-
-
 === Synopsis
 
 Declared in `<pass:[filters/filters.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f4();
 ----
 
-
-
-
-
-
-
-
 [#B-detair-Y]
 == <<#B,B>>::<<#B-detair,detair>>::Y
-
-
 
 === Synopsis
 
 Declared in `<pass:[filters/filters.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct Y;
 ----
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#B-detair-Y-Z,`Z`>> 
 | 
-    
+
 |===
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#B-detair-Y-f6,`f6`>> 
 | 
-    
+
 |===
 
 
@@ -383,47 +304,34 @@ struct Y;
 [#B-detair-Y-f6]
 == <<#B,B>>::<<#B-detair,detair>>::<<#B-detair-Y,Y>>::f6
 
-
-
 === Synopsis
 
 Declared in `<pass:[filters/filters.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f6();
 ----
 
-
-
-
-
-
-
-
 [#B-detair-Y-Z]
 == <<#B,B>>::<<#B-detair,detair>>::<<#B-detair-Y,Y>>::Z
-
-
 
 === Synopsis
 
 Declared in `<pass:[filters/filters.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct Z;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#B-detair-Y-Z-f7,`f7`>> 
 | 
-    
+
 |===
 
 
@@ -431,24 +339,14 @@ struct Z;
 [#B-detair-Y-Z-f7]
 == <<#B,B>>::<<#B-detair,detair>>::<<#B-detair-Y,Y>>::<<#B-detair-Y-Z,Z>>::f7
 
-
-
 === Synopsis
 
 Declared in `<pass:[filters/filters.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f7();
 ----
-
-
-
-
-
-
-
 
 [#C]
 == C
@@ -460,30 +358,20 @@ f7();
 
 | <<#C-g0,`g0`>> 
 | 
-    
+
 |===
 
 [#C-g0]
 == <<#C,C>>::g0
 
-
-
 === Synopsis
 
 Declared in `<pass:[filters/filters.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 g0();
 ----
-
-
-
-
-
-
-
 
 [#D]
 == D
@@ -495,7 +383,7 @@ g0();
 
 | <<#D-E,`E`>> 
 | 
-    
+
 |===
 === Functions
 [cols=2]
@@ -504,10 +392,10 @@ g0();
 
 | <<#D-f1,`f1`>> 
 | 
-    
+
 | <<#D-g1,`g1`>> 
 | 
-    
+
 |===
 
 [#D-E]
@@ -520,74 +408,44 @@ g0();
 
 | <<#D-E-g0,`g0`>> 
 | 
-    
+
 |===
 
 [#D-E-g0]
 == <<#D,D>>::<<#D-E,E>>::g0
 
-
-
 === Synopsis
 
 Declared in `<pass:[filters/filters.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 g0();
 ----
 
-
-
-
-
-
-
-
 [#D-f1]
 == <<#D,D>>::f1
-
-
 
 === Synopsis
 
 Declared in `<pass:[filters/filters.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f1();
 ----
 
-
-
-
-
-
-
-
 [#D-g1]
 == <<#D,D>>::g1
-
-
 
 === Synopsis
 
 Declared in `<pass:[filters/filters.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 g1();
 ----
-
-
-
-
-
-
-
 
 [#F]
 == F
@@ -599,7 +457,7 @@ g1();
 
 | <<#F-G,`G`>> 
 | 
-    
+
 |===
 === Functions
 [cols=2]
@@ -608,30 +466,20 @@ g1();
 
 | <<#F-g0,`g0`>> 
 | 
-    
+
 |===
 
 [#F-g0]
 == <<#F,F>>::g0
 
-
-
 === Synopsis
 
 Declared in `<pass:[filters/filters.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 g0();
 ----
-
-
-
-
-
-
-
 
 [#F-G]
 == <<#F,F>>::G
@@ -643,55 +491,35 @@ g0();
 
 | <<#F-G-f1,`f1`>> 
 | 
-    
+
 | <<#F-G-g1,`g1`>> 
 | 
-    
+
 |===
 
 [#F-G-f1]
 == <<#F,F>>::<<#F-G,G>>::f1
 
-
-
 === Synopsis
 
 Declared in `<pass:[filters/filters.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f1();
 ----
 
-
-
-
-
-
-
-
 [#F-G-g1]
 == <<#F,F>>::<<#F-G,G>>::g1
-
-
 
 === Synopsis
 
 Declared in `<pass:[filters/filters.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 g1();
 ----
-
-
-
-
-
-
-
 
 
 

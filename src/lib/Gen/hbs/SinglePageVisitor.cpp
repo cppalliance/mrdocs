@@ -23,6 +23,19 @@ void
 SinglePageVisitor::
 operator()(T const& I0)
 {
+    /*  Determine if the info is supported by this generator.
+
+        This filters Info types for which the generator
+        cannot and should not generate output.
+     */
+    if constexpr (std::derived_from<T, Info>)
+    {
+        if (I0.isSpecialization())
+        {
+            return;
+        }
+    }
+
     // If T is an OverloadSet, we make a copy for the lambda because
     // these are temporary objects that don't live in the corpus.
     // Otherwise, the lambda will capture a reference to the corpus Info.

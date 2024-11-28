@@ -4,37 +4,34 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#C0,`C0`>> 
 | 
-    
+
 | <<#C1,`C1`>> 
 | 
-    
+
 | <<#C2,`C2`>> 
 | 
-    
+
 | <<#C3,`C3`>> 
 | 
-    
+
 | <<#S,`S`>> 
 | 
-    
+
 |===
 
 [#S]
 == S
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct S;
@@ -46,41 +43,38 @@ struct S;
 [#C0]
 == C0
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 struct C0;
 ----
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#C0-N0,`N0`>> 
 | 
-    
+
 |===
-===  Data Members
+=== Data Members
 [cols=2]
 |===
 | Name | Description 
 
 | <<#C0-w,`w`>> 
 | 
-    
+
 | <<#C0-x,`x`>> 
 | 
-    
+
 | <<#C0-y,`y`>> 
 | 
-    
+
 |===
 
 
@@ -88,70 +82,55 @@ struct C0;
 [#C0-w]
 == <<#C0,C0>>::w
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 int w;
 ----
 
-
 [#C0-x]
 == <<#C0,C0>>::x
-
-
 
 === Synopsis
 
 Declared in `<pass:[class-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 <<#S,S>> x;
 ----
 
-
 [#C0-y]
 == <<#C0,C0>>::y
-
-
 
 === Synopsis
 
 Declared in `<pass:[class-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 T y;
 ----
 
-
 [#C0-N0]
 == <<#C0,C0>>::N0
-
-
 
 === Synopsis
 
 Declared in `<pass:[class-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct N0;
 ----
 
-===  Data Members
+=== Data Members
 [cols=2]
 |===
 | Name | Description 
 
 | <<#C0-N0-z,`z`>> 
 | 
-    
+
 |===
 
 
@@ -159,49 +138,42 @@ struct N0;
 [#C0-N0-z]
 == <<#C0,C0>>::<<#C0-N0,N0>>::z
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 int z;
 ----
 
-
 [#C1]
 == C1
-
-
 
 === Synopsis
 
 Declared in `<pass:[class-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct C1;
 ----
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#C1-N1,`N1`>> 
 | 
-    
+
 |===
-===  Data Members
+=== Data Members
 [cols=2]
 |===
 | Name | Description 
 
 | <<#C1-w,`w`>> 
 | 
-    
+
 |===
 
 
@@ -209,47 +181,40 @@ struct C1;
 [#C1-w]
 == <<#C1,C1>>::w
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 int w;
 ----
 
-
 [#C1-N1]
 == <<#C1,C1>>::N1
-
-
 
 === Synopsis
 
 Declared in `<pass:[class-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 struct N1;
 ----
 
-===  Data Members
+=== Data Members
 [cols=2]
 |===
 | Name | Description 
 
 | <<#C1-N1-x,`x`>> 
 | 
-    
+
 | <<#C1-N1-y,`y`>> 
 | 
-    
+
 | <<#C1-N1-z,`z`>> 
 | 
-    
+
 |===
 
 
@@ -257,80 +222,65 @@ struct N1;
 [#C1-N1-x]
 == <<#C1,C1>>::<<#C1-N1,N1>>::x
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 <<#S,S>> x;
 ----
 
-
 [#C1-N1-y]
 == <<#C1,C1>>::<<#C1-N1,N1>>::y
-
-
 
 === Synopsis
 
 Declared in `<pass:[class-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 T y;
 ----
 
-
 [#C1-N1-z]
 == <<#C1,C1>>::<<#C1-N1,N1>>::z
-
-
 
 === Synopsis
 
 Declared in `<pass:[class-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 int z;
 ----
 
-
 [#C2]
 == C2
-
-
 
 === Synopsis
 
 Declared in `<pass:[class-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 struct C2;
 ----
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#C2-N2,`N2`>> 
 | 
-    
+
 |===
-===  Data Members
+=== Data Members
 [cols=2]
 |===
 | Name | Description 
 
 | <<#C2-v,`v`>> 
 | 
-    
+
 |===
 
 
@@ -338,50 +288,43 @@ struct C2;
 [#C2-v]
 == <<#C2,C2>>::v
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 int v;
 ----
 
-
 [#C2-N2]
 == <<#C2,C2>>::N2
-
-
 
 === Synopsis
 
 Declared in `<pass:[class-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename U>
 struct N2;
 ----
 
-===  Data Members
+=== Data Members
 [cols=2]
 |===
 | Name | Description 
 
 | <<#C2-N2-w,`w`>> 
 | 
-    
+
 | <<#C2-N2-x,`x`>> 
 | 
-    
+
 | <<#C2-N2-y,`y`>> 
 | 
-    
+
 | <<#C2-N2-z,`z`>> 
 | 
-    
+
 |===
 
 
@@ -389,86 +332,67 @@ struct N2;
 [#C2-N2-w]
 == <<#C2,C2>>::<<#C2-N2,N2>>::w
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 <<#S,S>> w;
 ----
 
-
 [#C2-N2-x]
 == <<#C2,C2>>::<<#C2-N2,N2>>::x
-
-
 
 === Synopsis
 
 Declared in `<pass:[class-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 T x;
 ----
 
-
 [#C2-N2-y]
 == <<#C2,C2>>::<<#C2-N2,N2>>::y
-
-
 
 === Synopsis
 
 Declared in `<pass:[class-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 U y;
 ----
 
-
 [#C2-N2-z]
 == <<#C2,C2>>::<<#C2-N2,N2>>::z
-
-
 
 === Synopsis
 
 Declared in `<pass:[class-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 int z;
 ----
 
-
 [#C3]
 == C3
-
-
 
 === Synopsis
 
 Declared in `<pass:[class-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 struct C3;
 ----
 
-===  Data Members
+=== Data Members
 [cols=2]
 |===
 | Name | Description 
 
 | <<#C3-v,`v`>> 
 | 
-    
+
 |===
 
 
@@ -476,17 +400,13 @@ struct C3;
 [#C3-v]
 == <<#C3,C3>>::v
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 int v;
 ----
-
 
 
 

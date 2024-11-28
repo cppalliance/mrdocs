@@ -4,43 +4,40 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#X-0e,`X`>> 
 | 
-    
+
 |===
-===  Deduction Guides
+=== Deduction Guides
 [cols=2]
 |===
 | Name | Description 
 
 | <<#X-0d,`X<0>`>> 
 | 
-    
+
 | <<#X-00,`X<0>`>> 
 | 
-    
+
 | <<#X-0b,`X<0>`>> 
 | 
-    
+
 | <<#X-06,`X<0>`>> 
 | 
-    
+
 |===
 
 [#X-0e]
 == X
 
-
-
 === Synopsis
 
 Declared in `<pass:[explicit-deduct-guide.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<int>
@@ -53,63 +50,47 @@ struct X;
 [#X-0d]
 == X
 
-
-
 === Synopsis
 
 Declared in `<pass:[explicit-deduct-guide.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 <<#X-0e,X>><0>(bool) -> <<#X-0e,X>><0>;
 ----
 
-
 [#X-00]
 == X
-
-
 
 === Synopsis
 
 Declared in `<pass:[explicit-deduct-guide.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 <<#X-0e,X>><0>(char) -> <<#X-0e,X>><0>;
 ----
 
-
 [#X-0b]
 == X
-
-
 
 === Synopsis
 
 Declared in `<pass:[explicit-deduct-guide.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 <<#X-0e,X>><0>(int) -> <<#X-0e,X>><0>;
 ----
 
-
 [#X-06]
 == X
-
-
 
 === Synopsis
 
 Declared in `<pass:[explicit-deduct-guide.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<bool B = true>
 <<#X-0e,X>><0>(long) -> <<#X-0e,X>><0>;
 ----
-
 
 
 

@@ -11,27 +11,24 @@
 
 | <<#N,`N`>> 
 | 
-    
+
 |===
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#E,`E`>> 
 | 
-    
+
 |===
 
 [#E]
 == E
 
-
-
 === Synopsis
 
 Declared in `<pass:[dependency-propagation.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct E
@@ -44,63 +41,52 @@ struct E
 [#N]
 == N
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#N-A,`A`>> 
 | 
-    
+
 | <<#N-B,`B`>> 
 | 
-    
+
 | <<#N-C,`C`>> 
 | 
-    
+
 |===
 
 [#N-C]
 == <<#N,N>>::C
 
-
-
 === Synopsis
 
 Declared in `<pass:[dependency-propagation.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 using C = <<#N-B,B>><T>;
 ----
 
-
 [#N-B]
 == <<#N,N>>::B
-
-
 
 === Synopsis
 
 Declared in `<pass:[dependency-propagation.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 using B = <<#N-A,A>><T>;
 ----
 
-
 [#N-A]
 == <<#N,N>>::A
-
-
 
 === Synopsis
 
 Declared in `<pass:[dependency-propagation.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>

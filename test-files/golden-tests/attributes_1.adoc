@@ -11,30 +11,20 @@
 
 | <<#f,`f`>> 
 | 
-    
+
 |===
 
 [#f]
 == f
 
-
-
 === Synopsis
 
 Declared in `<pass:[attributes_1.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 bool
 f();
 ----
-
-
-
-
-
-
-
 
 
 

@@ -4,28 +4,25 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#Empty,`Empty`>> 
 | 
-    
+
 | <<#T,`T`>> 
 | 
-    
+
 |===
 
 [#Empty]
 == Empty
 
-
-
 === Synopsis
 
 Declared in `<pass:[no_unique_address.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct Empty;
@@ -37,28 +34,25 @@ struct Empty;
 [#T]
 == T
 
-
-
 === Synopsis
 
 Declared in `<pass:[no_unique_address.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct T;
 ----
 
-===  Data Members
+=== Data Members
 [cols=2]
 |===
 | Name | Description 
 
 | <<#T-e,`e`>> 
 | 
-    
+
 | <<#T-i,`i`>> 
 | 
-    
+
 |===
 
 
@@ -66,32 +60,24 @@ struct T;
 [#T-i]
 == <<#T,T>>::i
 
-
-
 === Synopsis
 
 Declared in `<pass:[no_unique_address.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 int i;
 ----
 
-
 [#T-e]
 == <<#T,T>>::e
-
-
 
 === Synopsis
 
 Declared in `<pass:[no_unique_address.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 <<#Empty,Empty>> e = pass:[Empty{}];
 ----
-
 
 
 

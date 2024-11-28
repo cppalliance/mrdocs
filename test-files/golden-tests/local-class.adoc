@@ -4,14 +4,14 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#B,`B`>> 
 | 
-    
+
 |===
 === Functions
 [cols=2]
@@ -20,40 +20,27 @@
 
 | <<#f,`f`>> 
 | 
-    
+
 |===
 
 [#f]
 == f
 
-
-
 === Synopsis
 
 Declared in `<pass:[local-class.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 auto
 f();
 ----
 
-
-
-
-
-
-
-
 [#B]
 == B
-
-
 
 === Synopsis
 
 Declared in `<pass:[local-class.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct B

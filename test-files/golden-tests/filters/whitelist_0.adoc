@@ -11,13 +11,13 @@
 
 | <<#N0,`N0`>> 
 | 
-    
+
 | <<#N1,`N1`>> 
 | 
-    
+
 | <<#N5,`N5`>> 
 | 
-    
+
 |===
 
 [#N0]
@@ -30,30 +30,20 @@
 
 | <<#N0-f0_WL,`pass:[f0_WL]`>> 
 | 
-    
+
 |===
 
 [#N0-f0_WL]
 == <<#N0,N0>>::pass:[f0_WL]
 
-
-
 === Synopsis
 
 Declared in `<pass:[filters/whitelist_0.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 pass:[f0_WL]();
 ----
-
-
-
-
-
-
-
 
 [#N1]
 == N1
@@ -65,10 +55,10 @@ pass:[f0_WL]();
 
 | <<#N1-N3_WL,`pass:[N3_WL]`>> 
 | 
-    
+
 | <<#N1-N4,`N4`>> 
 | 
-    
+
 |===
 
 [#N1-N3_WL]
@@ -81,30 +71,20 @@ pass:[f0_WL]();
 
 | <<#N1-N3_WL-f1_WL,`pass:[f1_WL]`>> 
 | 
-    
+
 |===
 
 [#N1-N3_WL-f1_WL]
 == <<#N1,N1>>::<<#N1-N3_WL,pass:[N3_WL]>>::pass:[f1_WL]
 
-
-
 === Synopsis
 
 Declared in `<pass:[filters/whitelist_0.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 pass:[f1_WL]();
 ----
-
-
-
-
-
-
-
 
 [#N1-N4]
 == <<#N1,N1>>::N4
@@ -116,30 +96,20 @@ pass:[f1_WL]();
 
 | <<#N1-N4-f1_WL,`pass:[f1_WL]`>> 
 | 
-    
+
 |===
 
 [#N1-N4-f1_WL]
 == <<#N1,N1>>::<<#N1-N4,N4>>::pass:[f1_WL]
 
-
-
 === Synopsis
 
 Declared in `<pass:[filters/whitelist_0.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 pass:[f1_WL]();
 ----
-
-
-
-
-
-
-
 
 [#N5]
 == N5
@@ -151,7 +121,7 @@ pass:[f1_WL]();
 
 | <<#N5-N6_BL,`pass:[N6_BL]`>> 
 | 
-    
+
 |===
 === Functions
 [cols=2]
@@ -160,30 +130,20 @@ pass:[f1_WL]();
 
 | <<#N5-f0,`f0`>> 
 | 
-    
+
 |===
 
 [#N5-f0]
 == <<#N5,N5>>::f0
 
-
-
 === Synopsis
 
 Declared in `<pass:[filters/whitelist_0.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f0();
 ----
-
-
-
-
-
-
-
 
 [#N5-N6_BL]
 == <<#N5,N5>>::pass:[N6_BL]
@@ -195,10 +155,10 @@ f0();
 
 | <<#N5-N6_BL-M7,`M7`>> 
 | 
-    
+
 | <<#N5-N6_BL-N7,`N7`>> 
 | 
-    
+
 |===
 
 [#N5-N6_BL-N7]
@@ -211,30 +171,20 @@ f0();
 
 | <<#N5-N6_BL-N7-f2_WL,`pass:[f2_WL]`>> 
 | 
-    
+
 |===
 
 [#N5-N6_BL-N7-f2_WL]
 == <<#N5,N5>>::<<#N5-N6_BL,pass:[N6_BL]>>::<<#N5-N6_BL-N7,N7>>::pass:[f2_WL]
 
-
-
 === Synopsis
 
 Declared in `<pass:[filters/whitelist_0.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 pass:[f2_WL]();
 ----
-
-
-
-
-
-
-
 
 [#N5-N6_BL-M7]
 == <<#N5,N5>>::<<#N5-N6_BL,pass:[N6_BL]>>::M7
@@ -246,30 +196,20 @@ pass:[f2_WL]();
 
 | <<#N5-N6_BL-M7-f2_WL,`pass:[f2_WL]`>> 
 | 
-    
+
 |===
 
 [#N5-N6_BL-M7-f2_WL]
 == <<#N5,N5>>::<<#N5-N6_BL,pass:[N6_BL]>>::<<#N5-N6_BL-M7,M7>>::pass:[f2_WL]
 
-
-
 === Synopsis
 
 Declared in `<pass:[filters/whitelist_0.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 pass:[f2_WL]();
 ----
-
-
-
-
-
-
-
 
 
 

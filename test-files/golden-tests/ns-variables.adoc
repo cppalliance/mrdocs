@@ -4,14 +4,14 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#T,`T`>> 
 | 
-    
+
 |===
 === Variables
 [cols=2]
@@ -20,73 +20,62 @@
 
 | <<#i,`i`>> 
 | 
-    
+
 | <<#j,`j`>> 
 | 
-    
+
 | <<#k,`k`>> 
 | 
-    
+
 | <<#l,`l`>> 
 | 
-    
+
 | <<#pi,`pi`>> 
 | 
-    
+
 | <<#t,`t`>> 
 | 
-    
+
 | <<#x0,`x0`>> 
 | 
-    
+
 | <<#x1,`x1`>> 
 | 
-    
+
 | <<#x2,`x2`>> 
 | 
-    
+
 |===
 
 [#i]
 == i
 
-
-
 === Synopsis
 
 Declared in `<pass:[ns-variables.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 constexpr
 int const i = 0;
 ----
 
-
 [#j]
 == j
-
-
 
 === Synopsis
 
 Declared in `<pass:[ns-variables.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 int j = 0;
 ----
 
-
 [#k]
 == k
-
-
 
 === Synopsis
 
 Declared in `<pass:[ns-variables.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 constexpr
@@ -94,47 +83,35 @@ extern
 int const k = 1;
 ----
 
-
 [#l]
 == l
-
-
 
 === Synopsis
 
 Declared in `<pass:[ns-variables.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 extern
 int l = 1;
 ----
 
-
 [#pi]
 == pi
-
-
 
 === Synopsis
 
 Declared in `<pass:[ns-variables.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 double pi = pass:[3.14];
 ----
 
-
 [#T]
 == T
-
-
 
 === Synopsis
 
 Declared in `<pass:[ns-variables.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct T;
@@ -146,44 +123,33 @@ struct T;
 [#t]
 == t
 
-
-
 === Synopsis
 
 Declared in `<pass:[ns-variables.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 extern
 <<#T,T>> t;
 ----
 
-
 [#x0]
 == x0
-
-
 
 === Synopsis
 
 Declared in `<pass:[ns-variables.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 thread_local
 int x0 = 0;
 ----
 
-
 [#x1]
 == x1
-
-
 
 === Synopsis
 
 Declared in `<pass:[ns-variables.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 static
@@ -191,16 +157,12 @@ thread_local
 int x1 = 0;
 ----
 
-
 [#x2]
 == x2
-
-
 
 === Synopsis
 
 Declared in `<pass:[ns-variables.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 constexpr
@@ -208,7 +170,6 @@ static
 thread_local
 int const x2 = 0;
 ----
-
 
 
 

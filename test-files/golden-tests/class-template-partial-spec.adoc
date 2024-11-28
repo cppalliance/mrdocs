@@ -4,45 +4,42 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A,`A`>> 
 | 
-    
+
 |===
 
 [#A]
 == A
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template-partial-spec.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 struct A;
 ----
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-B-0a,`B`>> 
 | 
-    
+
 | <<#A-B-06,`B<U*, T>`>> 
 | 
-    
+
 | <<#A-B-04,`B<T, long>`>> 
 | 
-    
+
 |===
 
 
@@ -50,12 +47,9 @@ struct A;
 [#A-B-0a]
 == <<#A,A>>::B
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template-partial-spec.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<
@@ -70,12 +64,9 @@ struct B;
 [#A-B-06]
 == <<#A,A>>::B
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template-partial-spec.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename U>
@@ -88,12 +79,9 @@ struct <<#A-B-0a,B>><U*, T>;
 [#A-B-04]
 == <<#A,A>>::B
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template-partial-spec.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>

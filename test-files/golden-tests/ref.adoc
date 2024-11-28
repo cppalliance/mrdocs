@@ -11,16 +11,16 @@
 
 | <<#A,`A`>> 
 | 
-    
+
 |===
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#F,`F`>> 
 | 
-    
+
 |===
 === Functions
 [cols=2]
@@ -29,47 +29,37 @@
 
 | <<#f0,`f0`>> 
 | 
-    
+
 | <<#f5,`f5`>> 
 | 
 See
 xref:#A-f1[A::f1]
 
-    
+
 | <<#f6,`f6`>> 
 | 
 See
 xref:#F-operator_bitnot[F::operator~]
 
-    
+
 |===
 
 [#f0]
 == f0
 
-
-
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f0();
 ----
 
-
-
-
-
-
-
-
 [#A]
 == A
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
@@ -79,13 +69,13 @@ f0();
 See
 xref:#A-f1[f1]
 
-    
+
 | <<#A-C,`C`>> 
 | 
-    
+
 | <<#A-D,`D`>> 
 | 
-    
+
 |===
 === Functions
 [cols=2]
@@ -97,7 +87,7 @@ xref:#A-f1[f1]
 See
 xref:#f0[f0]
 
-    
+
 |===
 
 [#A-f1]
@@ -111,7 +101,6 @@ xref:#f0[f0]
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
@@ -125,13 +114,6 @@ See
 xref:#f0[::f0]
 ]
 
-
-
-
-
-
-
-
 [#A-B]
 == <<#A,A>>::B
 
@@ -143,22 +125,23 @@ xref:#A-f1[f1]
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename>
 struct B;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-B-f2,`f2`>> 
 | 
-    
+
 |===
+
+
 
 === Description
 
@@ -170,55 +153,40 @@ See
 xref:#A-f1[::A::f1]
 ]
 
-
-
 [#A-B-f2]
 == <<#A,A>>::<<#A-B,B>>::f2
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f2();
 ----
 
-
-
-
-
-
-
-
 [#A-C]
 == <<#A,A>>::C
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct C;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-C-f3,`f3`>> 
 | 
-    
+
 | <<#A-C-f4,`f4`>> 
 | 
-    
+
 |===
 
 
@@ -226,63 +194,40 @@ struct C;
 [#A-C-f3]
 == <<#A,A>>::<<#A-C,C>>::f3
 
-
-
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f3();
 ----
 
-
-
-
-
-
-
-
 [#A-C-f4]
 == <<#A,A>>::<<#A-C,C>>::f4
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f4();
 ----
 
-
-
-
-
-
-
-
 [#A-D]
 == <<#A,A>>::D
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct D
     : <<#A-C,C>>;
 ----
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
@@ -292,16 +237,16 @@ struct D
 See
 xref:#A-C-f3[f3]
 
-    
+
 |===
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-C-f3,`f3`>> 
 | 
-    
+
 | <<#A-C-f4,`f4`>> 
 | 
 |===
@@ -311,24 +256,14 @@ xref:#A-C-f3[f3]
 [#A-D-f4]
 == <<#A,A>>::<<#A-D,D>>::f4
 
-
-
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f4();
 ----
-
-
-
-
-
-
-
 
 [#A-D-E]
 == <<#A,A>>::<<#A-D,D>>::E
@@ -341,11 +276,12 @@ xref:#A-C-f3[f3]
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct E;
 ----
+
+
 
 
 === Description
@@ -358,8 +294,6 @@ See
 xref:#A-C-f4[C::f4]
 ]
 
-
-
 [#f5]
 == f5
 
@@ -371,7 +305,6 @@ xref:#A-f1[A::f1]
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
@@ -385,149 +318,139 @@ See
 xref:#A-f1[::A::f1]
 ]
 
-
-
-
-
-
-
-
 [#F]
 == F
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct F;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#F-operator_not,`pass:[operator!]`>> 
 | 
-    
+
 | <<#F-operator_not_eq,`pass:[operator!=]`>> 
 | 
-    
+
 | <<#F-operator_mod,`operator%`>> 
 | 
-    
+
 | <<#F-operator_mod_eq,`operator%=`>> 
 | 
-    
+
 | <<#F-operator_bitand,`operator&`>> 
 | 
-    
+
 | <<#F-operator_and,`operator&&`>> 
 | 
-    
+
 | <<#F-operator_and_eq,`operator&=`>> 
 | 
-    
+
 | <<#F-operator_call,`pass:[operator()]`>> 
 | 
-    
+
 | <<#F-operator_star,`pass:[operator*]`>> 
 | 
-    
+
 | <<#F-operator_star_eq,`pass:[operator*=]`>> 
 | 
-    
+
 | <<#F-operator_plus,`pass:[operator+]`>> 
 | 
-    
+
 | <<#F-operator_inc,`pass:[operator++]`>> 
 | 
-    
+
 | <<#F-operator_plus_eq,`pass:[operator+=]`>> 
 | 
-    
+
 | <<#F-operator_comma,`operator,`>> 
 | 
-    
+
 | <<#F-operator_minus,`pass:[operator-]`>> 
 | 
-    
+
 | <<#F-operator_dec,`pass:[operator--]`>> 
 | 
-    
+
 | <<#F-operator_minus_eq,`pass:[operator-=]`>> 
 | 
-    
+
 | <<#F-operator_ptr,`pass:[operator->]`>> 
 | 
-    
+
 | <<#F-operator_ptrmem,`pass:[operator->*]`>> 
 | 
-    
+
 | <<#F-operator_slash,`operator/`>> 
 | 
-    
+
 | <<#F-operator_slash_eq,`operator/=`>> 
 | 
-    
+
 | <<#F-operator_lt,`operator<`>> 
 | 
-    
+
 | <<#F-operator_lshift,`operator<<`>> 
 | 
-    
+
 | <<#F-operator_lshift_eq,`operator<<=`>> 
 | 
-    
+
 | <<#F-operator_le,`operator<=`>> 
 | 
-    
+
 | <<#F-operator_3way,`operator<=>`>> 
 | 
-    
+
 | <<#F-operator_assign,`operator=`>> 
 | 
-    
+
 | <<#F-operator_eq,`operator==`>> 
 | 
-    
+
 | <<#F-operator_gt,`operator>`>> 
 | 
-    
+
 | <<#F-operator_ge,`operator>=`>> 
 | 
-    
+
 | <<#F-operator_rshift,`operator>>`>> 
 | 
-    
+
 | <<#F-operator_rshift_eq,`operator>>=`>> 
 | 
-    
+
 | <<#F-operator_subs,`pass:[operator[]]`>> 
 | 
-    
+
 | <<#F-operator_xor,`operator^`>> 
 | 
-    
+
 | <<#F-operator_xor_eq,`operator^=`>> 
 | 
-    
+
 | <<#F-operator_bitor,`pass:[operator|]`>> 
 | 
-    
+
 | <<#F-operator_or_eq,`pass:[operator|=]`>> 
 | 
-    
+
 | <<#F-operator_or,`pass:[operator||]`>> 
 | 
-    
+
 | <<#F-operator_bitnot,`operator~`>> 
 | 
-    
+
 |===
 
 
@@ -535,860 +458,470 @@ struct F;
 [#F-operator_bitnot]
 == <<#F,F>>::operator~
 
-
-
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 operator~();
 ----
 
-
-
-
-
-
-
-
 [#F-operator_comma]
 == <<#F,F>>::operator,
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 operator,(<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_call]
 == <<#F,F>>::pass:[operator()]
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 pass:[operator()](<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_subs]
 == <<#F,F>>::pass:[operator[]]
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 pass:[operator[]](<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_plus]
 == <<#F,F>>::pass:[operator+]
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 pass:[operator+](<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_inc]
 == <<#F,F>>::pass:[operator++]
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 pass:[operator++]();
 ----
 
-
-
-
-
-
-
-
 [#F-operator_plus_eq]
 == <<#F,F>>::pass:[operator+=]
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 pass:[operator+=](<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_bitand]
 == <<#F,F>>::operator&
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 operator&(<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_and]
 == <<#F,F>>::operator&&
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 operator&&(<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_and_eq]
 == <<#F,F>>::operator&=
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 operator&=(<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_bitor]
 == <<#F,F>>::pass:[operator|]
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 pass:[operator|](<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_or]
 == <<#F,F>>::pass:[operator||]
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 pass:[operator||](<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_or_eq]
 == <<#F,F>>::pass:[operator|=]
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 pass:[operator|=](<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_minus]
 == <<#F,F>>::pass:[operator-]
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 pass:[operator-](<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_dec]
 == <<#F,F>>::pass:[operator--]
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 pass:[operator--]();
 ----
 
-
-
-
-
-
-
-
 [#F-operator_minus_eq]
 == <<#F,F>>::pass:[operator-=]
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 pass:[operator-=](<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_ptr]
 == <<#F,F>>::pass:[operator->]
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 pass:[operator->]();
 ----
 
-
-
-
-
-
-
-
 [#F-operator_ptrmem]
 == <<#F,F>>::pass:[operator->*]
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 pass:[operator->*](<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_lt]
 == <<#F,F>>::operator<
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 operator<(<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_lshift]
 == <<#F,F>>::operator<<
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 operator<<(<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_lshift_eq]
 == <<#F,F>>::operator<<=
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 operator<<=(<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_le]
 == <<#F,F>>::operator<=
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 operator<=(<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_3way]
 == <<#F,F>>::operator<=>
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 operator<=>(<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_gt]
 == <<#F,F>>::operator>
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 operator>(<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_rshift]
 == <<#F,F>>::operator>>
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 operator>>(<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_rshift_eq]
 == <<#F,F>>::operator>>=
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 operator>>=(<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_ge]
 == <<#F,F>>::operator>=
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 operator>=(<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_star]
 == <<#F,F>>::pass:[operator*]
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 pass:[operator*](<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_star_eq]
 == <<#F,F>>::pass:[operator*=]
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 pass:[operator*=](<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_mod]
 == <<#F,F>>::operator%
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 operator%(<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_mod_eq]
 == <<#F,F>>::operator%=
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 operator%=(<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_slash]
 == <<#F,F>>::operator/
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 operator/(<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_slash_eq]
 == <<#F,F>>::operator/=
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 operator/=(<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_xor]
 == <<#F,F>>::operator^
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 operator^(<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_xor_eq]
 == <<#F,F>>::operator^=
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 operator^=(<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_assign]
 == <<#F,F>>::operator=
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 operator=(<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_eq]
 == <<#F,F>>::operator==
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 operator==(<<#F,F>>&);
 ----
 
-
-
-
-
-
-
-
 [#F-operator_not]
 == <<#F,F>>::pass:[operator!]
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 pass:[operator!]();
 ----
 
-
-
-
-
-
-
-
 [#F-operator_not_eq]
 == <<#F,F>>::pass:[operator!=]
-
-
 
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 pass:[operator!=](<<#F,F>>&);
 ----
-
-
-
-
-
-
-
 
 [#f6]
 == f6
@@ -1401,7 +934,6 @@ xref:#F-operator_bitnot[F::operator~]
 === Synopsis
 
 Declared in `<pass:[ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
@@ -1525,13 +1057,6 @@ xref:#F-operator_not[F::operator!]
 See
 xref:#F-operator_not_eq[F::operator!&equals;]
 ]
-
-
-
-
-
-
-
 
 
 

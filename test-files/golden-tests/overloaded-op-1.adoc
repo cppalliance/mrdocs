@@ -4,38 +4,35 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#T,`T`>> 
 | 
-    
+
 |===
 
 [#T]
 == T
 
-
-
 === Synopsis
 
 Declared in `<pass:[overloaded-op-1.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct T;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#T-operator_plus,`pass:[operator+]`>> 
 | 
-    
+
 |===
 
 
@@ -43,24 +40,14 @@ struct T;
 [#T-operator_plus]
 == <<#T,T>>::pass:[operator+]
 
-
-
 === Synopsis
 
 Declared in `<pass:[overloaded-op-1.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 <<#T,T>>
 pass:[operator+]();
 ----
-
-
-
-
-
-
-
 
 
 
