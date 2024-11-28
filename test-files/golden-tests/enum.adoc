@@ -4,7 +4,7 @@
 [#index]
 == Global namespace
 
-===  Enums
+=== Enums
 [cols=2]
 |===
 | Name | Description 
@@ -13,18 +13,18 @@
 | 
 E0 brief.
 
-    
+
 | <<#E1,`E1`>> 
 | 
-    
+
 | <<#E2,`E2`>> 
 | 
 E2 brief.
 
-    
+
 | <<#E3,`E3`>> 
 | 
-    
+
 |===
 
 [#E0]
@@ -37,13 +37,13 @@ E0 brief.
 === Synopsis
 
 Declared in `<pass:[enum.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 enum E0;
 ----
 
 === Members
+
 [,cols=2]
 |===
 |Name |Description
@@ -71,7 +71,6 @@ e0 brief.
 === Synopsis
 
 Declared in `<pass:[enum.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 e0 = 1
@@ -83,7 +82,6 @@ pass:[
 e0 description.
 ]
 
-
 [#E0-e1]
 == <<#E0,E0>>::e1
 
@@ -94,7 +92,6 @@ e1 brief.
 === Synopsis
 
 Declared in `<pass:[enum.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 e1
@@ -106,22 +103,19 @@ pass:[
 e1 description.
 ]
 
-
 [#E1]
 == E1
-
-
 
 === Synopsis
 
 Declared in `<pass:[enum.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 enum E1 : char;
 ----
 
 === Members
+
 [,cols=2]
 |===
 |Name |Description
@@ -129,36 +123,27 @@ enum E1 : char;
 |xref:E1-e3[`pass:v[e3]`] |
 |===
 
-
 [#E1-e2]
 == <<#E1,E1>>::e2
-
-
 
 === Synopsis
 
 Declared in `<pass:[enum.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 e2
 ----
 
-
 [#E1-e3]
 == <<#E1,E1>>::e3
-
-
 
 === Synopsis
 
 Declared in `<pass:[enum.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 e3
 ----
-
 
 [#E2]
 == E2
@@ -170,13 +155,13 @@ E2 brief.
 === Synopsis
 
 Declared in `<pass:[enum.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 enum E2 : int;
 ----
 
 === Members
+
 [,cols=2]
 |===
 |Name |Description
@@ -204,7 +189,6 @@ e4 brief.
 === Synopsis
 
 Declared in `<pass:[enum.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 e4
@@ -216,7 +200,6 @@ pass:[
 e4 description.
 ]
 
-
 [#E2-e5]
 == <<#E2,E2>>::e5
 
@@ -227,7 +210,6 @@ e5 brief.
 === Synopsis
 
 Declared in `<pass:[enum.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 e5
@@ -239,22 +221,19 @@ pass:[
 e5 description.
 ]
 
-
 [#E3]
 == E3
-
-
 
 === Synopsis
 
 Declared in `<pass:[enum.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 enum E3 : char;
 ----
 
 === Members
+
 [,cols=2]
 |===
 |Name |Description
@@ -262,36 +241,27 @@ enum E3 : char;
 |xref:E3-e7[`pass:v[e7]`] |
 |===
 
-
 [#E3-e6]
 == <<#E3,E3>>::e6
-
-
 
 === Synopsis
 
 Declared in `<pass:[enum.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 e6
 ----
 
-
 [#E3-e7]
 == <<#E3,E3>>::e7
-
-
 
 === Synopsis
 
 Declared in `<pass:[enum.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 e7
 ----
-
 
 
 

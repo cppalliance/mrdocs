@@ -1,9 +1,0 @@
-{{!-- namespace --}}
-<div id="{{{symbol.anchor}}}">
-    <div>
-        <h2>{{#if symbol.name}}Namespace {{>types/nested-name-specifier symbol=symbol.parent}}{{symbol.name}}{{else if symbol.parent}}Unnamed namespace{{else}}Global namespace{{/if}}</h2>
-    </div>
-    <div>
-        {{>types/tranche tranche=symbol.interface label="" is-namespace=true}}
-    </div>
-</div>

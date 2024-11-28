@@ -4,45 +4,43 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#C0,`C0`>> 
 | 
-    
+
 | <<#S0,`S0`>> 
 | 
-    
+
 | <<#U0,`U0`>> 
 | 
-    
+
 |===
 
 [#S0]
 == S0
 
-
-
 === Synopsis
 
 Declared in `<pass:[record-access.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct S0;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#S0-f0,`f0`>> 
 | 
-    
+
 |===
+
 === Protected Member Functions
 [cols=2]
 |===
@@ -50,8 +48,9 @@ struct S0;
 
 | <<#S0-f1,`f1`>> 
 | 
-    
+
 |===
+
 === Private Member Functions
 [cols=2]
 |===
@@ -59,100 +58,66 @@ struct S0;
 
 | <<#S0-f2,`f2`>> 
 | 
-    
+
 |===
-
-
 
 [#S0-f0]
 == <<#S0,S0>>::f0
 
-
-
 === Synopsis
 
 Declared in `<pass:[record-access.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f0();
 ----
 
-
-
-
-
-
-
-
 [#S0-f1]
 == <<#S0,S0>>::f1
-
-
 
 === Synopsis
 
 Declared in `<pass:[record-access.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f1();
 ----
 
-
-
-
-
-
-
-
 [#S0-f2]
 == <<#S0,S0>>::f2
-
-
 
 === Synopsis
 
 Declared in `<pass:[record-access.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f2();
 ----
 
-
-
-
-
-
-
-
 [#C0]
 == C0
-
-
 
 === Synopsis
 
 Declared in `<pass:[record-access.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 class C0;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#C0-f2,`f2`>> 
 | 
-    
+
 |===
+
 === Protected Member Functions
 [cols=2]
 |===
@@ -160,8 +125,9 @@ class C0;
 
 | <<#C0-f1,`f1`>> 
 | 
-    
+
 |===
+
 === Private Member Functions
 [cols=2]
 |===
@@ -169,100 +135,66 @@ class C0;
 
 | <<#C0-f0,`f0`>> 
 | 
-    
+
 |===
-
-
 
 [#C0-f0]
 == <<#C0,C0>>::f0
 
-
-
 === Synopsis
 
 Declared in `<pass:[record-access.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f0();
 ----
 
-
-
-
-
-
-
-
 [#C0-f1]
 == <<#C0,C0>>::f1
-
-
 
 === Synopsis
 
 Declared in `<pass:[record-access.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f1();
 ----
 
-
-
-
-
-
-
-
 [#C0-f2]
 == <<#C0,C0>>::f2
-
-
 
 === Synopsis
 
 Declared in `<pass:[record-access.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f2();
 ----
 
-
-
-
-
-
-
-
 [#U0]
 == U0
-
-
 
 === Synopsis
 
 Declared in `<pass:[record-access.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 union U0;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#U0-f0,`f0`>> 
 | 
-    
+
 |===
+
 === Protected Member Functions
 [cols=2]
 |===
@@ -270,8 +202,9 @@ union U0;
 
 | <<#U0-f1,`f1`>> 
 | 
-    
+
 |===
+
 === Private Member Functions
 [cols=2]
 |===
@@ -279,76 +212,44 @@ union U0;
 
 | <<#U0-f2,`f2`>> 
 | 
-    
+
 |===
-
-
 
 [#U0-f0]
 == <<#U0,U0>>::f0
 
-
-
 === Synopsis
 
 Declared in `<pass:[record-access.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f0();
 ----
 
-
-
-
-
-
-
-
 [#U0-f1]
 == <<#U0,U0>>::f1
-
-
 
 === Synopsis
 
 Declared in `<pass:[record-access.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f1();
 ----
 
-
-
-
-
-
-
-
 [#U0-f2]
 == <<#U0,U0>>::f2
-
-
 
 === Synopsis
 
 Declared in `<pass:[record-access.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f2();
 ----
-
-
-
-
-
-
-
 
 
 

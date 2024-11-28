@@ -4,57 +4,55 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#T,`T`>> 
 | 
-    
+
 |===
 
 [#T]
 == T
 
-
-
 === Synopsis
 
 Declared in `<pass:[record-1.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct T;
 ----
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#T-U1,`U1`>> 
 | 
-    
+
 | <<#T-U2,`U2`>> 
 | 
-    
+
 |===
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#T-f1,`f1`>> 
 | 
-    
+
 | <<#T-f2,`f2`>> 
 | 
-    
+
 | <<#T-f3,`f3`>> 
 | 
-    
+
 |===
+
 === Protected Member Functions
 [cols=2]
 |===
@@ -64,116 +62,77 @@ struct T;
 | 
 brief-g1
 
-    
+
 | <<#T-g2,`g2`>> 
 | 
 brief-g2
 
-    
+
 | <<#T-g3,`g3`>> 
 | 
 brief-g3
 
-    
-|===
 
+|===
 
 
 [#T-U1]
 == <<#T,T>>::U1
 
-
-
 === Synopsis
 
 Declared in `<pass:[record-1.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 using U1 = int;
 ----
 
-
 [#T-U2]
 == <<#T,T>>::U2
-
-
 
 === Synopsis
 
 Declared in `<pass:[record-1.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 typedef char U2;
 ----
 
-
 [#T-f1]
 == <<#T,T>>::f1
-
-
 
 === Synopsis
 
 Declared in `<pass:[record-1.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f1();
 ----
 
-
-
-
-
-
-
-
 [#T-f2]
 == <<#T,T>>::f2
-
-
 
 === Synopsis
 
 Declared in `<pass:[record-1.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 int
 f2();
 ----
 
-
-
-
-
-
-
-
 [#T-f3]
 == <<#T,T>>::f3
-
-
 
 === Synopsis
 
 Declared in `<pass:[record-1.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 char
 f3();
 ----
-
-
-
-
-
-
-
 
 [#T-g1]
 == <<#T,T>>::g1
@@ -185,7 +144,6 @@ brief-g1
 === Synopsis
 
 Declared in `<pass:[record-1.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
@@ -198,13 +156,6 @@ g1();
 desc
 
 
-
-
-
-
-
-
-
 [#T-g2]
 == <<#T,T>>::g2
 
@@ -215,24 +166,16 @@ brief-g2
 === Synopsis
 
 Declared in `<pass:[record-1.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 int
 g2();
 ----
 
-
-
 === Return Value
 
 
 the number 2
-
-
-
-
-
 
 
 [#T-g3]
@@ -245,21 +188,16 @@ brief-g3
 === Synopsis
 
 Declared in `<pass:[record-1.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 char
 g3(int x);
 ----
 
-
-
 === Return Value
 
 
 the separator
-
-
 
 
 === Parameters
@@ -272,9 +210,6 @@ the separator
 any old number
 
 |===
-
-
-
 
 
 

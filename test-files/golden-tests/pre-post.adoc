@@ -11,28 +11,20 @@
 
 | <<#f,`f`>> 
 | 
-    
+
 |===
 
 [#f]
 == f
 
-
-
 === Synopsis
 
 Declared in `<pass:[pre-post.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f();
 ----
-
-
-
-
-
 
 === Preconditions
 
@@ -43,12 +35,10 @@ first precondition
 second precondition
 
 
-
 === Postconditions
 
 
 first postcondition
-
 
 
 

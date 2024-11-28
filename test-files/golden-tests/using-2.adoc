@@ -11,34 +11,31 @@
 
 | <<#LongName,`LongName`>> 
 | 
-    
+
 |===
 
 [#LongName]
 == LongName
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#LongName-S1,`S1`>> 
 | 
-    
+
 | <<#LongName-S2,`S2`>> 
 | 
-    
+
 |===
 
 [#LongName-S1]
 == <<#LongName,LongName>>::S1
 
-
-
 === Synopsis
 
 Declared in `<pass:[using-2.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct S1;
@@ -50,12 +47,9 @@ struct S1;
 [#LongName-S2]
 == <<#LongName,LongName>>::S2
 
-
-
 === Synopsis
 
 Declared in `<pass:[using-2.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct S2;
@@ -67,17 +61,13 @@ struct S2;
 [#S1]
 == S1
 
-
-
 === Synopsis
 
 Declared in `<pass:[using-2.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 using <<#LongName,LongName>>::S1;
 ----
-
 
 === Introduced Symbols
 
@@ -86,21 +76,16 @@ using <<#LongName,LongName>>::S1;
 | S1
 |===
 
-
 [#S2]
 == S2
-
-
 
 === Synopsis
 
 Declared in `<pass:[using-2.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 using <<#LongName,LongName>>::S2;
 ----
-
 
 === Introduced Symbols
 
@@ -108,7 +93,6 @@ using <<#LongName,LongName>>::S2;
 | Name
 | S2
 |===
-
 
 
 

@@ -4,17 +4,17 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#T,`T`>> 
 | 
-    
+
 | <<#U,`U`>> 
 | 
-    
+
 |===
 === Functions
 [cols=2]
@@ -23,27 +23,24 @@
 
 | <<#f,`f`>> 
 | 
-    
+
 | <<#g,`g`>> 
 | 
-    
+
 | <<#h,`h`>> 
 | 
-    
+
 | <<#i,`i`>> 
 | 
-    
+
 |===
 
 [#f]
 == f
 
-
-
 === Synopsis
 
 Declared in `<pass:[function-tparm-decay.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<int x>
@@ -51,22 +48,12 @@ void
 f();
 ----
 
-
-
-
-
-
-
-
 [#g]
 == g
-
-
 
 === Synopsis
 
 Declared in `<pass:[function-tparm-decay.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<int x[4]>
@@ -74,22 +61,12 @@ void
 g();
 ----
 
-
-
-
-
-
-
-
 [#h]
 == h
-
-
 
 === Synopsis
 
 Declared in `<pass:[function-tparm-decay.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<int(* x)(bool const)>
@@ -97,65 +74,40 @@ void
 h();
 ----
 
-
-
-
-
-
-
-
 [#T]
 == T
-
-
 
 === Synopsis
 
 Declared in `<pass:[function-tparm-decay.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 using T = int;
 ----
 
-
 [#U]
 == U
-
-
 
 === Synopsis
 
 Declared in `<pass:[function-tparm-decay.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 using U = int const;
 ----
 
-
 [#i]
 == i
-
-
 
 === Synopsis
 
 Declared in `<pass:[function-tparm-decay.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<int>
 void
 i();
 ----
-
-
-
-
-
-
-
 
 
 

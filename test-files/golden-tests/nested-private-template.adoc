@@ -4,30 +4,29 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#range,`range`>> 
 | 
-    
+
 |===
 
 [#range]
 == range
 
-
-
 === Synopsis
 
 Declared in `<pass:[nested-private-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<class T>
 class range;
 ----
+
+
 
 === Private Types
 [cols=2]
@@ -36,23 +35,18 @@ class range;
 
 | <<#range-impl-0e,`impl`>> 
 | 
-    
+
 | <<#range-impl-00,`impl<R, false>`>> 
 | 
-    
+
 |===
-
-
 
 [#range-impl-0e]
 == <<#range,range>>::impl
 
-
-
 === Synopsis
 
 Declared in `<pass:[nested-private-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<
@@ -67,12 +61,9 @@ struct impl;
 [#range-impl-00]
 == <<#range,range>>::impl
 
-
-
 === Synopsis
 
 Declared in `<pass:[nested-private-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<class R>

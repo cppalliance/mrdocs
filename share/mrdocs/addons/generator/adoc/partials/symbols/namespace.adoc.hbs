@@ -1,7 +1,0 @@
-{{!-- namespace --}}
-[#{{{symbol.anchor}}}]
-={{#unless @root.config.multipage}}={{/unless}} {{#if symbol.name}}{{>types/nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else if symbol.parent}}Unnamed namespace{{else}}Global namespace{{/if}}
-
-{{>types/tranche tranche=symbol.interface label="" is-namespace=true}}
-
-{{>types/info-list members=symbol.usingDirectives title="Using Directives"}}

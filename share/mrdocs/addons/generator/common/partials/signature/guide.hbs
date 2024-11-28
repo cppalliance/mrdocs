@@ -5,4 +5,4 @@
     {{/unless}}{{>types/declarator type decl-name=name~}}
     {{#if default}} = {{default}}{{/if~}}
     {{#unless @last}},{{/unless~}}
-{{/each~}}) -> {{>types/declarator symbol.deduced}}
+{{/each~}}) -> {{>types/declarator symbol.deduced}};

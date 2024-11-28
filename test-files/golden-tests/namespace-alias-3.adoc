@@ -11,7 +11,7 @@
 
 | <<#LongName,`LongName`>> 
 | 
-    
+
 |===
 
 [#LongName]
@@ -21,32 +21,24 @@
 [#A]
 == A
 
-
-
 === Synopsis
 
 Declared in `<pass:[namespace-alias-3.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 namespace A = <<#LongName,LongName>>;
 ----
 
-
 [#B]
 == B
-
-
 
 === Synopsis
 
 Declared in `<pass:[namespace-alias-3.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 namespace B = <<#A,A>>;
 ----
-
 
 
 

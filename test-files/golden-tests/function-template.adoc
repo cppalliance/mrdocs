@@ -11,51 +11,48 @@
 
 | <<#f0,`f0`>> 
 | 
-    
+
 | <<#f1,`f1`>> 
 | 
-    
+
 | <<#f2,`f2`>> 
 | 
-    
+
 | <<#f3,`f3`>> 
 | 
-    
+
 | <<#g0,`g0`>> 
 | 
-    
+
 | <<#g1,`g1`>> 
 | 
-    
+
 | <<#g2,`g2`>> 
 | 
-    
+
 | <<#h0,`h0`>> 
 | 
-    
+
 | <<#h1,`h1`>> 
 | 
-    
+
 | <<#i,`i`>> 
 | 
-    
+
 | <<#j0,`j0`>> 
 | 
-    
+
 | <<#j1,`j1`>> 
 | 
-    
+
 |===
 
 [#f0]
 == f0
 
-
-
 === Synopsis
 
 Declared in `<pass:[function-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
@@ -63,22 +60,12 @@ void
 f0(int x);
 ----
 
-
-
-
-
-
-
-
 [#f1]
 == f1
-
-
 
 === Synopsis
 
 Declared in `<pass:[function-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
@@ -86,22 +73,12 @@ void
 f1(T t);
 ----
 
-
-
-
-
-
-
-
 [#f2]
 == f2
-
-
 
 === Synopsis
 
 Declared in `<pass:[function-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T = int>
@@ -109,22 +86,12 @@ void
 f2();
 ----
 
-
-
-
-
-
-
-
 [#f3]
 == f3
-
-
 
 === Synopsis
 
 Declared in `<pass:[function-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<
@@ -134,22 +101,12 @@ void
 f3();
 ----
 
-
-
-
-
-
-
-
 [#g0]
 == g0
-
-
 
 === Synopsis
 
 Declared in `<pass:[function-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<int I>
@@ -157,22 +114,12 @@ void
 g0(int x);
 ----
 
-
-
-
-
-
-
-
 [#g1]
 == g1
-
-
 
 === Synopsis
 
 Declared in `<pass:[function-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<int I = 1>
@@ -180,22 +127,12 @@ void
 g1();
 ----
 
-
-
-
-
-
-
-
 [#g2]
 == g2
-
-
 
 === Synopsis
 
 Declared in `<pass:[function-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<
@@ -205,22 +142,12 @@ void
 g2();
 ----
 
-
-
-
-
-
-
-
 [#h0]
 == h0
-
-
 
 === Synopsis
 
 Declared in `<pass:[function-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<class x:auto>
@@ -228,22 +155,12 @@ void
 h0(auto x);
 ----
 
-
-
-
-
-
-
-
 [#h1]
 == h1
-
-
 
 === Synopsis
 
 Declared in `<pass:[function-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<
@@ -255,22 +172,12 @@ h1(
     auto);
 ----
 
-
-
-
-
-
-
-
 [#i]
 == i
-
-
 
 === Synopsis
 
 Declared in `<pass:[function-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<
@@ -280,22 +187,12 @@ void
 i();
 ----
 
-
-
-
-
-
-
-
 [#j0]
 == j0
-
-
 
 === Synopsis
 
 Declared in `<pass:[function-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<template<typename U> typename T>
@@ -303,22 +200,12 @@ void
 j0();
 ----
 
-
-
-
-
-
-
-
 [#j1]
 == j1
-
-
 
 === Synopsis
 
 Declared in `<pass:[function-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<
@@ -327,13 +214,6 @@ template<
 void
 j1();
 ----
-
-
-
-
-
-
-
 
 
 

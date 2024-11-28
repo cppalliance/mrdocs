@@ -11,16 +11,16 @@
 
 | <<#00namespace,``>> 
 | 
-    
+
 | <<#A,`A`>> 
 | 
-    
+
 | <<#D,`D`>> 
 | 
-    
+
 | <<#I,`I`>> 
 | 
-    
+
 |===
 
 [#A]
@@ -33,13 +33,13 @@
 
 | <<#A-00namespace,``>> 
 | 
-    
+
 | <<#A-B,`B`>> 
 | 
-    
+
 | <<#A-C,`C`>> 
 | 
-    
+
 |===
 === Functions
 [cols=2]
@@ -48,30 +48,20 @@
 
 | <<#A-f0,`f0`>> 
 | 
-    
+
 |===
 
 [#A-f0]
 == <<#A,A>>::f0
 
-
-
 === Synopsis
 
 Declared in `<pass:[namespace.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f0();
 ----
-
-
-
-
-
-
-
 
 [#A-B]
 == <<#A,A>>::B
@@ -83,30 +73,20 @@ f0();
 
 | <<#A-B-f1,`f1`>> 
 | 
-    
+
 |===
 
 [#A-B-f1]
 == <<#A,A>>::<<#A-B,B>>::f1
 
-
-
 === Synopsis
 
 Declared in `<pass:[namespace.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f1();
 ----
-
-
-
-
-
-
-
 
 [#A-C]
 == <<#A,A>>::C
@@ -118,30 +98,20 @@ f1();
 
 | <<#A-C-f2,`f2`>> 
 | 
-    
+
 |===
 
 [#A-C-f2]
 == <<#A,A>>::<<#A-C,C>>::f2
 
-
-
 === Synopsis
 
 Declared in `<pass:[namespace.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f2();
 ----
-
-
-
-
-
-
-
 
 [#A-00namespace]
 == Unnamed namespace
@@ -153,30 +123,20 @@ f2();
 
 | <<#A-00namespace-f3,`f3`>> 
 | 
-    
+
 |===
 
 [#A-00namespace-f3]
 == <<#A,A>>::f3
 
-
-
 === Synopsis
 
 Declared in `<pass:[namespace.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f3();
 ----
-
-
-
-
-
-
-
 
 [#D]
 == D
@@ -188,13 +148,13 @@ f3();
 
 | <<#D-00namespace,``>> 
 | 
-    
+
 | <<#D-E,`E`>> 
 | 
-    
+
 | <<#D-F,`F`>> 
 | 
-    
+
 |===
 === Functions
 [cols=2]
@@ -203,30 +163,20 @@ f3();
 
 | <<#D-f5,`f5`>> 
 | 
-    
+
 |===
 
 [#D-f5]
 == <<#D,D>>::f5
 
-
-
 === Synopsis
 
 Declared in `<pass:[namespace.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f5();
 ----
-
-
-
-
-
-
-
 
 [#D-E]
 == <<#D,D>>::E
@@ -238,30 +188,20 @@ f5();
 
 | <<#D-E-f6,`f6`>> 
 | 
-    
+
 |===
 
 [#D-E-f6]
 == <<#D,D>>::<<#D-E,E>>::f6
 
-
-
 === Synopsis
 
 Declared in `<pass:[namespace.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f6();
 ----
-
-
-
-
-
-
-
 
 [#D-F]
 == <<#D,D>>::F
@@ -273,30 +213,20 @@ f6();
 
 | <<#D-F-f7,`f7`>> 
 | 
-    
+
 |===
 
 [#D-F-f7]
 == <<#D,D>>::<<#D-F,F>>::f7
 
-
-
 === Synopsis
 
 Declared in `<pass:[namespace.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f7();
 ----
-
-
-
-
-
-
-
 
 [#D-00namespace]
 == Unnamed namespace
@@ -308,30 +238,20 @@ f7();
 
 | <<#D-00namespace-f8,`f8`>> 
 | 
-    
+
 |===
 
 [#D-00namespace-f8]
 == <<#D,D>>::f8
 
-
-
 === Synopsis
 
 Declared in `<pass:[namespace.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f8();
 ----
-
-
-
-
-
-
-
 
 [#00namespace]
 == Unnamed namespace
@@ -343,10 +263,10 @@ f8();
 
 | <<#00namespace-G,`G`>> 
 | 
-    
+
 | <<#00namespace-H,`H`>> 
 | 
-    
+
 |===
 === Functions
 [cols=2]
@@ -355,30 +275,20 @@ f8();
 
 | <<#00namespace-f10,`f10`>> 
 | 
-    
+
 |===
 
 [#00namespace-f10]
 == f10
 
-
-
 === Synopsis
 
 Declared in `<pass:[namespace.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f10();
 ----
-
-
-
-
-
-
-
 
 [#00namespace-G]
 == G
@@ -390,30 +300,20 @@ f10();
 
 | <<#00namespace-G-f11,`f11`>> 
 | 
-    
+
 |===
 
 [#00namespace-G-f11]
 == <<#00namespace-G,G>>::f11
 
-
-
 === Synopsis
 
 Declared in `<pass:[namespace.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f11();
 ----
-
-
-
-
-
-
-
 
 [#00namespace-H]
 == H
@@ -425,30 +325,20 @@ f11();
 
 | <<#00namespace-H-f12,`f12`>> 
 | 
-    
+
 |===
 
 [#00namespace-H-f12]
 == <<#00namespace-H,H>>::f12
 
-
-
 === Synopsis
 
 Declared in `<pass:[namespace.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f12();
 ----
-
-
-
-
-
-
-
 
 [#I]
 == I
@@ -460,7 +350,7 @@ f12();
 
 | <<#I-00namespace,``>> 
 | 
-    
+
 |===
 
 [#I-00namespace]
@@ -473,30 +363,20 @@ f12();
 
 | <<#I-00namespace-f14,`f14`>> 
 | 
-    
+
 |===
 
 [#I-00namespace-f14]
 == <<#I,I>>::f14
 
-
-
 === Synopsis
 
 Declared in `<pass:[namespace.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f14();
 ----
-
-
-
-
-
-
-
 
 
 

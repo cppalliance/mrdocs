@@ -4,70 +4,67 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#C0,`C0`>> 
 | 
-    
+
 | <<#C1,`C1`>> 
 | 
-    
+
 | <<#C2,`C2`>> 
 | 
-    
+
 | <<#C3,`C3`>> 
 | 
-    
+
 | <<#C4,`C4`>> 
 | 
-    
+
 | <<#C5,`C5`>> 
 | 
-    
+
 | <<#C6,`C6`>> 
 | 
-    
+
 | <<#C7,`C7`>> 
 | 
-    
+
 | <<#S0,`S0`>> 
 | 
-    
+
 | <<#S1,`S1`>> 
 | 
-    
+
 | <<#S2,`S2`>> 
 | 
-    
+
 | <<#S3,`S3`>> 
 | 
-    
+
 | <<#S4,`S4`>> 
 | 
-    
+
 | <<#S5,`S5`>> 
 | 
-    
+
 | <<#S6,`S6`>> 
 | 
-    
+
 | <<#U0,`U0`>> 
 | 
-    
+
 |===
 
 [#S0]
 == S0
 
-
-
 === Synopsis
 
 Declared in `<pass:[record-inheritance.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct S0;
@@ -79,12 +76,9 @@ struct S0;
 [#C0]
 == C0
 
-
-
 === Synopsis
 
 Declared in `<pass:[record-inheritance.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 class C0;
@@ -96,12 +90,9 @@ class C0;
 [#U0]
 == U0
 
-
-
 === Synopsis
 
 Declared in `<pass:[record-inheritance.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 union U0;
@@ -113,12 +104,9 @@ union U0;
 [#S1]
 == S1
 
-
-
 === Synopsis
 
 Declared in `<pass:[record-inheritance.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct S1;
@@ -130,12 +118,9 @@ struct S1;
 [#S2]
 == S2
 
-
-
 === Synopsis
 
 Declared in `<pass:[record-inheritance.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct S2
@@ -148,12 +133,9 @@ struct S2
 [#S3]
 == S3
 
-
-
 === Synopsis
 
 Declared in `<pass:[record-inheritance.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct S3
@@ -166,12 +148,9 @@ struct S3
 [#S4]
 == S4
 
-
-
 === Synopsis
 
 Declared in `<pass:[record-inheritance.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct S4
@@ -185,12 +164,9 @@ struct S4
 [#C1]
 == C1
 
-
-
 === Synopsis
 
 Declared in `<pass:[record-inheritance.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 class C1
@@ -203,12 +179,9 @@ class C1
 [#C2]
 == C2
 
-
-
 === Synopsis
 
 Declared in `<pass:[record-inheritance.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 class C2
@@ -221,12 +194,9 @@ class C2
 [#C3]
 == C3
 
-
-
 === Synopsis
 
 Declared in `<pass:[record-inheritance.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 class C3
@@ -239,12 +209,9 @@ class C3
 [#C4]
 == C4
 
-
-
 === Synopsis
 
 Declared in `<pass:[record-inheritance.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 class C4
@@ -257,12 +224,9 @@ class C4
 [#C5]
 == C5
 
-
-
 === Synopsis
 
 Declared in `<pass:[record-inheritance.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 class C5
@@ -275,12 +239,9 @@ class C5
 [#C6]
 == C6
 
-
-
 === Synopsis
 
 Declared in `<pass:[record-inheritance.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 class C6
@@ -293,12 +254,9 @@ class C6
 [#C7]
 == C7
 
-
-
 === Synopsis
 
 Declared in `<pass:[record-inheritance.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 class C7
@@ -312,12 +270,9 @@ class C7
 [#S5]
 == S5
 
-
-
 === Synopsis
 
 Declared in `<pass:[record-inheritance.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct S5
@@ -331,12 +286,9 @@ struct S5
 [#S6]
 == S6
 
-
-
 === Synopsis
 
 Declared in `<pass:[record-inheritance.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename... Ts>

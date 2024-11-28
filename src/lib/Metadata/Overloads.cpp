@@ -41,10 +41,20 @@ tag_invoke(
     res.set("members", dom::LazyArray(overloads.Members, domCorpus));
     res.set("namespace", dom::LazyArray(overloads.Namespace, domCorpus));
     res.set("parent", domCorpus->get(overloads.Parent));
-    dom::Value firstM = domCorpus->get(overloads.Members.front());
-    if (firstM.isObject() && firstM.get("doc").isObject())
+
+    // Copy relevant values from the first member with documentation
+    // that contains it.
+    for (std::string_view key: {"doc", "loc", "dcl"})
     {
-        res.set("doc", firstM.get("doc"));
+        for (std::size_t i = 0; i < overloads.Members.size(); ++i)
+        {
+            dom::Value member = domCorpus->get(overloads.Members[i]);
+            if (member.isObject() && member.getObject().exists(key))
+            {
+                res.set(key, member.get(key));
+                break;
+            }
+        }
     }
     v = res;
 }

@@ -4,34 +4,31 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A,`A`>> 
 | 
-    
+
 | <<#B,`B`>> 
 | 
-    
+
 | <<#C,`C`>> 
 | 
-    
+
 | <<#D,`D`>> 
 | 
-    
+
 |===
 
 [#A]
 == A
 
-
-
 === Synopsis
 
 Declared in `<pass:[alias-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
@@ -44,12 +41,9 @@ struct A;
 [#B]
 == B
 
-
-
 === Synopsis
 
 Declared in `<pass:[alias-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<
@@ -64,42 +58,35 @@ struct B;
 [#C]
 == C
 
-
-
 === Synopsis
 
 Declared in `<pass:[alias-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 using C = <<#A,A>><T>;
 ----
 
-
 [#D]
 == D
-
-
 
 === Synopsis
 
 Declared in `<pass:[alias-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 struct D;
 ----
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#D-E,`E`>> 
 | 
-    
+
 |===
 
 
@@ -107,18 +94,14 @@ struct D;
 [#D-E]
 == <<#D,D>>::E
 
-
-
 === Synopsis
 
 Declared in `<pass:[alias-template.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename U>
 using E = <<#B,B>><T, U>;
 ----
-
 
 
 

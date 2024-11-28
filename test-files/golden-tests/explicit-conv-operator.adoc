@@ -4,47 +4,44 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#Explicit,`Explicit`>> 
 | 
-    
+
 | <<#ExplicitExpression,`ExplicitExpression`>> 
 | 
-    
+
 | <<#ExplicitFalse,`ExplicitFalse`>> 
 | 
-    
+
 | <<#ExplicitTrue,`ExplicitTrue`>> 
 | 
-    
+
 |===
 
 [#Explicit]
 == Explicit
 
-
-
 === Synopsis
 
 Declared in `<pass:[explicit-conv-operator.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct Explicit;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#Explicit-2conversion,`operator bool`>> 
 | 
-    
+
 |===
 
 
@@ -52,47 +49,34 @@ struct Explicit;
 [#Explicit-2conversion]
 == <<#Explicit,Explicit>>::operator bool
 
-
-
 === Synopsis
 
 Declared in `<pass:[explicit-conv-operator.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 explicit
 operator bool();
 ----
 
-
-
-
-
-
-
-
 [#ExplicitFalse]
 == ExplicitFalse
-
-
 
 === Synopsis
 
 Declared in `<pass:[explicit-conv-operator.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct ExplicitFalse;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#ExplicitFalse-2conversion,`operator bool`>> 
 | 
-    
+
 |===
 
 
@@ -100,47 +84,34 @@ struct ExplicitFalse;
 [#ExplicitFalse-2conversion]
 == <<#ExplicitFalse,ExplicitFalse>>::operator bool
 
-
-
 === Synopsis
 
 Declared in `<pass:[explicit-conv-operator.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 pass:[explicit(false)]
 operator bool();
 ----
 
-
-
-
-
-
-
-
 [#ExplicitTrue]
 == ExplicitTrue
-
-
 
 === Synopsis
 
 Declared in `<pass:[explicit-conv-operator.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct ExplicitTrue;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#ExplicitTrue-2conversion,`operator bool`>> 
 | 
-    
+
 |===
 
 
@@ -148,48 +119,35 @@ struct ExplicitTrue;
 [#ExplicitTrue-2conversion]
 == <<#ExplicitTrue,ExplicitTrue>>::operator bool
 
-
-
 === Synopsis
 
 Declared in `<pass:[explicit-conv-operator.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 pass:[explicit(true)]
 operator bool();
 ----
 
-
-
-
-
-
-
-
 [#ExplicitExpression]
 == ExplicitExpression
-
-
 
 === Synopsis
 
 Declared in `<pass:[explicit-conv-operator.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<bool B>
 struct ExplicitExpression;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#ExplicitExpression-2conversion,`operator bool`>> 
 | 
-    
+
 |===
 
 
@@ -197,24 +155,14 @@ struct ExplicitExpression;
 [#ExplicitExpression-2conversion]
 == <<#ExplicitExpression,ExplicitExpression>>::operator bool
 
-
-
 === Synopsis
 
 Declared in `<pass:[explicit-conv-operator.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 pass:[explicit(B)]
 operator bool();
 ----
-
-
-
-
-
-
-
 
 
 
