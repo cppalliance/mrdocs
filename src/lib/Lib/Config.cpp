@@ -92,7 +92,7 @@ struct PublicSettingsVisitor {
                 {
                     // If the path is not absolute, we need to expand it
                     if (!files::isAbsolute(value)) {
-                        auto exp = getBaseDir(value, dirs, useDefault, opts);
+                        auto exp = getBaseDir(value, dirs, self, useDefault, opts);
                         if (!exp)
                         {
                             MRDOCS_TRY(value, files::makeAbsolute(value));
@@ -124,7 +124,7 @@ struct PublicSettingsVisitor {
                     for (auto& v : value) {
                         if (!files::isAbsolute(v))
                         {
-                            auto exp = getBaseDir(v, dirs, useDefault, opts);
+                            auto exp = getBaseDir(v, dirs, self, useDefault, opts);
                             if (!exp)
                             {
                                 MRDOCS_TRY(v, files::makeAbsolute(v));
@@ -187,7 +187,8 @@ struct PublicSettingsVisitor {
     Expected<std::string_view>
     getBaseDir(
         std::string_view referenceDirKey,
-        ReferenceDirectories const& dirs)
+        ReferenceDirectories const& dirs,
+        PublicSettings const& settings)
     {
         if (referenceDirKey == "config-dir") {
             return dirs.configDir;
@@ -197,6 +198,10 @@ struct PublicSettingsVisitor {
         }
         else if (referenceDirKey == "mrdocs-root") {
             return dirs.mrdocsRoot;
+        }
+        else if (referenceDirKey == "output") {
+            MRDOCS_ASSERT(!settings.output.empty());
+            return settings.output;
         }
         return Unexpected(formatError("unknown relative-to value: \"{}\"", referenceDirKey));
     }
@@ -218,6 +223,7 @@ struct PublicSettingsVisitor {
     getBaseDir(
         std::string& value,
         ReferenceDirectories const& dirs,
+        PublicSettings const& settings,
         bool useDefault,
         PublicSettings::OptionProperties const& opts)
     {
@@ -226,7 +232,7 @@ struct PublicSettingsVisitor {
             // as the base path
             std::string_view relativeTo = opts.relativeto;
             relativeTo = trimBaseDirReference(relativeTo);
-            return getBaseDir(relativeTo, dirs);
+            return getBaseDir(relativeTo, dirs, settings);
         }
 
         // If we used the default value, the base dir comes from
@@ -237,7 +243,7 @@ struct PublicSettingsVisitor {
             referenceDirKey = referenceDirKey.substr(0, pos);
         }
         referenceDirKey = trimBaseDirReference(referenceDirKey);
-        MRDOCS_TRY(std::string_view baseDir, getBaseDir(referenceDirKey, dirs));
+        MRDOCS_TRY(std::string_view baseDir, getBaseDir(referenceDirKey, dirs, settings));
         if (pos != std::string::npos) {
             value = value.substr(pos + 1);
         }
