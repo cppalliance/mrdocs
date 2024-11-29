@@ -4,17 +4,17 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#T,`T`>> 
 | 
-    
+
 | <<#U,`U`>> 
 | 
-    
+
 |===
 === Functions
 [cols=2]
@@ -25,24 +25,21 @@
 | 
 T::f
 
-    
+
 |===
 
 [#T]
 == T
 
-
-
 === Synopsis
 
 Declared in `<pass:[friend-3.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct T;
 ----
 
-===  Friends
+=== Friends
 [cols=2]
 |===
 | Name | Description 
@@ -51,7 +48,7 @@ struct T;
 | 
 T::f
 
-    
+
 |===
 
 
@@ -66,14 +63,12 @@ T::f
 === Synopsis
 
 Declared in `<pass:[friend-3.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 friend
 void
 f();
 ----
-
 
 [#f]
 == f
@@ -85,42 +80,31 @@ T::f
 === Synopsis
 
 Declared in `<pass:[friend-3.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f();
 ----
 
-
-
-
-
-
-
-
 [#U]
 == U
-
-
 
 === Synopsis
 
 Declared in `<pass:[friend-3.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct U;
 ----
 
-===  Friends
+=== Friends
 [cols=2]
 |===
 | Name | Description 
 
 | <<#U-08friend,`f`>> 
 | 
-    
+
 |===
 
 
@@ -128,19 +112,15 @@ struct U;
 [#U-08friend]
 == f
 
-
-
 === Synopsis
 
 Declared in `<pass:[friend-3.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 friend
 void
 f();
 ----
-
 
 
 

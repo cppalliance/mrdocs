@@ -13,7 +13,7 @@
 | 
 brief
 
-    
+
 |===
 
 [#f1]
@@ -26,7 +26,6 @@ brief
 === Synopsis
 
 Declared in `<pass:[commands.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
@@ -37,13 +36,6 @@ f1();
 
 
 mrdocs hello
-
-
-
-
-
-
-
 
 
 

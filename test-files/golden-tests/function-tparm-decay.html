@@ -1,248 +1,151 @@
 <html lang="en">
 <head>
-    <title>Reference</title>
+<title>Reference</title>
 </head>
 <body>
 <div>
-    <div id="index">
-    <div>
-        <h2>Global namespace</h2>
-    </div>
-    <div>
-        <h2> Types</h2>
+<h1>Reference</h1>
+<div id="index">
+<div>
+<h2>Global namespace</h2>
+</div>
+<h2>Types</h2>
 <table style="table-layout: fixed; width: 100%;">
-            <thead>
-                <tr>
-                    <th>Name</th>
-<th>Description</th>
-
-
-                </tr>
-            </thead>
+<thead>
+<tr>
+<th>Name</th><th>Description</th>
+</tr>
+</thead>
 <tbody>
-                <tr>
-                    <td>
-                        <a href="#T"><code>T</code></a> 
-                    </td><td>
-                        
-                            
-                    </td>
-                </tr><tr>
-                    <td>
-                        <a href="#U"><code>U</code></a> 
-                    </td><td>
-                        
-                            
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+<tr>
+<td><a href="#T"><code>T</code></a> </td><td>
+</td></tr><tr>
+<td><a href="#U"><code>U</code></a> </td><td>
+</td></tr>
+</tbody>
+</table>
 <h2>Functions</h2>
 <table style="table-layout: fixed; width: 100%;">
-            <thead>
-                <tr>
-                    <th>Name</th>
-<th>Description</th>
-
-
-                </tr>
-            </thead>
+<thead>
+<tr>
+<th>Name</th><th>Description</th>
+</tr>
+</thead>
 <tbody>
-                <tr>
-                    <td>
-                        <a href="#f"><code>f</code></a> 
-                    </td><td>
-                        
-                            
-                    </td>
-                </tr><tr>
-                    <td>
-                        <a href="#g"><code>g</code></a> 
-                    </td><td>
-                        
-                            
-                    </td>
-                </tr><tr>
-                    <td>
-                        <a href="#h"><code>h</code></a> 
-                    </td><td>
-                        
-                            
-                    </td>
-                </tr><tr>
-                    <td>
-                        <a href="#i"><code>i</code></a> 
-                    </td><td>
-                        
-                            
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<tr>
+<td><a href="#f"><code>f</code></a> </td><td>
+</td></tr><tr>
+<td><a href="#g"><code>g</code></a> </td><td>
+</td></tr><tr>
+<td><a href="#h"><code>h</code></a> </td><td>
+</td></tr><tr>
+<td><a href="#i"><code>i</code></a> </td><td>
+</td></tr>
+</tbody>
+</table>
 </div>
 <div id="f">
-    <div>
-        <h2>Function f</h2>
-        
-    </div>
-
-    <div>
-        <h3>Synopsis</h3>
-        <div>
-            <code>
-                <p>
-                    <span>
-                        Declared in <code>&lt;function-tparm-decay.cpp&gt;</code>
-                    </span>
-                </p>
-            </code>
-        </div>
-        <pre class="source-code cpp">
-            template<int x>
+<div>
+<h2>f</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;function-tparm-decay.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;int x&gt;
 void
 f();
-        </pre>
-    </div>
-
-
-
-
+</code>
+</pre>
+</div>
 </div>
 <div id="g">
-    <div>
-        <h2>Function g</h2>
-        
-    </div>
-
-    <div>
-        <h3>Synopsis</h3>
-        <div>
-            <code>
-                <p>
-                    <span>
-                        Declared in <code>&lt;function-tparm-decay.cpp&gt;</code>
-                    </span>
-                </p>
-            </code>
-        </div>
-        <pre class="source-code cpp">
-            template<int x[4]>
+<div>
+<h2>g</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;function-tparm-decay.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;int x[4]&gt;
 void
 g();
-        </pre>
-    </div>
-
-
-
-
+</code>
+</pre>
+</div>
 </div>
 <div id="h">
-    <div>
-        <h2>Function h</h2>
-        
-    </div>
-
-    <div>
-        <h3>Synopsis</h3>
-        <div>
-            <code>
-                <p>
-                    <span>
-                        Declared in <code>&lt;function-tparm-decay.cpp&gt;</code>
-                    </span>
-                </p>
-            </code>
-        </div>
-        <pre class="source-code cpp">
-            template<int(* x)(bool const)>
+<div>
+<h2>h</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;function-tparm-decay.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;int(* x)(bool const)&gt;
 void
 h();
-        </pre>
-    </div>
-
-
-
-
+</code>
+</pre>
+</div>
 </div>
 <div id="T">
-    <div>
-        <h2>T</h2>
-        
-    </div>
-
-    <div>
-        <h3>Synopsis</h3>
-        <div>
-            <code>
-                <p>
-                    <span>
-                        Declared in <code>&lt;function-tparm-decay.cpp&gt;</code>
-                    </span>
-                </p>
-            </code>
-        </div>
-        <pre class="source-code cpp">
-            using T = int;
-        </pre>
-    </div>
-
+<div>
+<h2>T</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;function-tparm-decay.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+using T = int;
+</code>
+</pre>
+</div>
 </div>
 <div id="U">
-    <div>
-        <h2>U</h2>
-        
-    </div>
-
-    <div>
-        <h3>Synopsis</h3>
-        <div>
-            <code>
-                <p>
-                    <span>
-                        Declared in <code>&lt;function-tparm-decay.cpp&gt;</code>
-                    </span>
-                </p>
-            </code>
-        </div>
-        <pre class="source-code cpp">
-            using U = int const;
-        </pre>
-    </div>
-
+<div>
+<h2>U</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;function-tparm-decay.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+using U = int const;
+</code>
+</pre>
+</div>
 </div>
 <div id="i">
-    <div>
-        <h2>Function i</h2>
-        
-    </div>
-
-    <div>
-        <h3>Synopsis</h3>
-        <div>
-            <code>
-                <p>
-                    <span>
-                        Declared in <code>&lt;function-tparm-decay.cpp&gt;</code>
-                    </span>
-                </p>
-            </code>
-        </div>
-        <pre class="source-code cpp">
-            template<int>
+<div>
+<h2>i</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;function-tparm-decay.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;int&gt;
 void
 i();
-        </pre>
-    </div>
-
-
-
-
+</code>
+</pre>
+</div>
 </div>
 
 </div>
 <div>
-    <h4>Created with <a href="https://www.mrdocs.com">MrDocs</a></h4>
+<h4>Created with <a href="https://www.mrdocs.com">MrDocs</a></h4>
 </div>
 </body>
 </html>

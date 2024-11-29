@@ -13,34 +13,34 @@
 | 
 brief
 
-    
+
 | <<#f2,`f2`>> 
 | 
 brief
 
-    
+
 | <<#f3,`f3`>> 
 | 
 brief
 
-    
+
 | <<#f4,`f4`>> 
 | 
 brief                    x
 
-    
+
 | <<#f5,`f5`>> 
 | 
 br
 ief
 
-    
+
 | <<#f6,`f6`>> 
 | 
 br
 ief
 
-    
+
 |===
 
 [#f1]
@@ -53,19 +53,11 @@ brief
 === Synopsis
 
 Declared in `<pass:[brief-2.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f1();
 ----
-
-
-
-
-
-
-
 
 [#f2]
 == f2
@@ -77,19 +69,11 @@ brief
 === Synopsis
 
 Declared in `<pass:[brief-2.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f2();
 ----
-
-
-
-
-
-
-
 
 [#f3]
 == f3
@@ -101,19 +85,11 @@ brief
 === Synopsis
 
 Declared in `<pass:[brief-2.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f3();
 ----
-
-
-
-
-
-
-
 
 [#f4]
 == f4
@@ -125,7 +101,6 @@ brief                    x
 === Synopsis
 
 Declared in `<pass:[brief-2.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
@@ -139,13 +114,6 @@ br
 ief
 
 
-
-
-
-
-
-
-
 [#f5]
 == f5
 
@@ -157,19 +125,11 @@ ief
 === Synopsis
 
 Declared in `<pass:[brief-2.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f5();
 ----
-
-
-
-
-
-
-
 
 [#f6]
 == f6
@@ -182,7 +142,6 @@ ief
 === Synopsis
 
 Declared in `<pass:[brief-2.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
@@ -193,13 +152,6 @@ f6();
 
 
 desc
-
-
-
-
-
-
-
 
 
 

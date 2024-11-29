@@ -4,31 +4,28 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-0e,`A`>> 
 | 
-    
+
 | <<#A-03,`A<T*>`>> 
 | 
-    
+
 | <<#A-06,`A<double>`>> 
 | 
-    
+
 |===
 
 [#A-0e]
 == A
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template-specializations-2.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
@@ -41,32 +38,29 @@ struct A;
 [#A-03]
 == A
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template-specializations-2.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 struct <<#A-0e,A>><T*>;
 ----
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-03-B-05,`B`>> 
 | 
-    
+
 | <<#A-03-B-01,`B<U*>`>> 
 | 
-    
+
 | <<#A-03-B-0b,`B<int>`>> 
 | 
-    
+
 |===
 
 
@@ -74,12 +68,9 @@ struct <<#A-0e,A>><T*>;
 [#A-03-B-05]
 == <<#A-03,A>><T*>::B
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template-specializations-2.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename U>
@@ -92,26 +83,23 @@ struct B;
 [#A-03-B-01]
 == <<#A-03,A>><T*>::B
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template-specializations-2.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename U>
 struct <<#A-03-B-05,B>><U*>;
 ----
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-03-B-01-C,`C`>> 
 | 
-    
+
 |===
 
 
@@ -119,12 +107,9 @@ struct <<#A-03-B-05,B>><U*>;
 [#A-03-B-01-C]
 == <<#A-03,A>><T*>::<<#A-03-B-01,B>><U*>::C
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template-specializations-2.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct C;
@@ -136,12 +121,9 @@ struct C;
 [#A-03-B-0b]
 == <<#A-03,A>><T*>::B
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template-specializations-2.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
@@ -154,29 +136,26 @@ struct <<#A-03-B-05,B>><int>;
 [#A-06]
 == A
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template-specializations-2.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
 struct <<#A-0e,A>><double>;
 ----
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-06-D-0b,`D`>> 
 | 
-    
+
 | <<#A-06-D-04,`D<float>`>> 
 | 
-    
+
 |===
 
 
@@ -184,29 +163,26 @@ struct <<#A-0e,A>><double>;
 [#A-06-D-0b]
 == <<#A-06,A>><double>::D
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template-specializations-2.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename U>
 struct D;
 ----
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-06-D-0b-E-01,`E`>> 
 | 
-    
+
 | <<#A-06-D-0b-E-04,`E<T*>`>> 
 | 
-    
+
 |===
 
 
@@ -214,12 +190,9 @@ struct D;
 [#A-06-D-0b-E-01]
 == <<#A-06,A>><double>::<<#A-06-D-0b,D>>::E
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template-specializations-2.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
@@ -232,26 +205,23 @@ struct E;
 [#A-06-D-0b-E-04]
 == <<#A-06,A>><double>::<<#A-06-D-0b,D>>::E
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template-specializations-2.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 struct <<#A-06-D-0b-E-01,E>><T*>;
 ----
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-06-D-0b-E-04-F,`F`>> 
 | 
-    
+
 |===
 
 
@@ -259,12 +229,9 @@ struct <<#A-06-D-0b-E-01,E>><T*>;
 [#A-06-D-0b-E-04-F]
 == <<#A-06,A>><double>::<<#A-06-D-0b,D>>::<<#A-06-D-0b-E-04,E>><T*>::F
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template-specializations-2.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct F;
@@ -276,29 +243,26 @@ struct F;
 [#A-06-D-04]
 == <<#A-06,A>><double>::D
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template-specializations-2.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
 struct <<#A-06-D-0b,D>><float>;
 ----
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-06-D-04-G-06,`G`>> 
 | 
-    
+
 | <<#A-06-D-04-G-0c,`G<T*>`>> 
 | 
-    
+
 |===
 
 
@@ -306,12 +270,9 @@ struct <<#A-06-D-0b,D>><float>;
 [#A-06-D-04-G-06]
 == <<#A-06,A>><double>::<<#A-06-D-04,D>><float>::G
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template-specializations-2.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
@@ -324,12 +285,9 @@ struct G;
 [#A-06-D-04-G-0c]
 == <<#A-06,A>><double>::<<#A-06-D-04,D>><float>::G
 
-
-
 === Synopsis
 
 Declared in `<pass:[class-template-specializations-2.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>

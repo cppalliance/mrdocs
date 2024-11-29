@@ -16,11 +16,9 @@
 [#f]
 == f
 
-  
-
 === Synopsis
-  
 
+Declared in `<pass:[temp/ft_expl.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
@@ -34,23 +32,13 @@ template<>
 void
 <<#f-0c,f>><int>();
 ----
-  
-
-
-
-
-
-
 
 [#f-03]
 == f
 
-
-
 === Synopsis
 
 Declared in `<pass:[temp/ft_expl.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
@@ -58,35 +46,18 @@ void
 f();
 ----
 
-
-
-
-
-
-
-
 [#f-0c]
 == f
-
-
 
 === Synopsis
 
 Declared in `<pass:[temp/ft_expl.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
 void
 <<#f-03,f>><int>();
 ----
-
-
-
-
-
-
-
 
 
 

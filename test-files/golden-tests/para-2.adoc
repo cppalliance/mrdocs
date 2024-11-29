@@ -13,7 +13,7 @@
 | 
 brief
 
-    
+
 |===
 
 [#f1]
@@ -26,7 +26,6 @@ brief
 === Synopsis
 
 Declared in `<pass:[para-2.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
@@ -40,13 +39,6 @@ a
 b
 c
 d
-
-
-
-
-
-
-
 
 
 

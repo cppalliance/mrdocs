@@ -1,0 +1,291 @@
+<div id="{{{symbol.anchor}}}">
+<div>
+<h2>{{#unless (eq symbol.kind "friend")}}{{#if symbol.name}}{{>types/nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}{{#if symbol.parent}}Unnamed{{else}}Global{{/if}} {{or symbol.tag symbol.kind}}{{/if}}{{else}}{{#if symbol.symbol.name}}{{>types/nested-name-specifier symbol=symbol.symbol.parent includeNamespace=true}}{{symbol.symbol.name}}{{else}}{{symbol.type.name}}{{/if}}{{/unless}}</h2>
+{{! Brief }}
+{{#if symbol.doc.brief}}
+<div>
+{{{symbol.doc.brief}}}
+
+</div>
+{{/if}}
+</div>
+{{! Synopsis }}
+{{#unless (contains (arr "namespace") symbol.kind)}}
+<div>
+<h3>Synopsis</h3>
+<div>
+{{>types/source dcl=(primary_location symbol)}}
+</div>
+{{#if (ne symbol.kind "overloads")}}
+<pre>
+<code class="source-code cpp">
+{{> signature }}
+
+</code>
+</pre>
+{{else}}
+{{#each symbol.members as | member |}}
+<pre>
+<code class="language-cpp">
+{{> signature symbol=member link=member}}
+
+</code>
+</pre>
+<a href="{{{relativize member.url}}}"><em>» more...</em></a>
+{{/each}}
+{{/if}}
+</div>
+{{/unless}}
+{{! Tranches }}
+{{#if symbol.interface}}
+{{#if (eq symbol.kind "record")}}
+{{#with symbol.interface}}
+{{>types/tranche tranche=public label="" is-namespace=false}}
+
+{{>types/tranche tranche=protected label="Protected" is-namespace=false}}
+
+{{>types/tranche tranche=private label="Private" is-namespace=false}}
+{{/with}}
+{{else}}
+{{>types/tranche tranche=symbol.interface label="" is-namespace=true}}
+{{/if}}
+{{else if symbol.members}}
+{{! Members }}
+{{#if (and symbol.members (ne symbol.kind "overloads"))}}
+<div>
+<h3>Members</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+{{#each symbol.members}}
+<tr>
+<td><a href="#{{anchor}}">{{>types/declarator-id . nolink=true}}</a></td>
+<td>{{{doc.brief}}}</td>
+</tr>
+{{/each}}
+</tbody>
+</table>
+</div>
+{{/if}}
+{{/if}}
+{{! Using directives }}
+{{#if symbol.usingDirectives}}
+<div>
+{{>types/info-list members=symbol.usingDirectives title="Using Directives"}}
+
+</div>
+
+{{/if}}
+{{! Description }}
+{{#if symbol.doc.description}}
+<div>
+<h3>Description</h3>
+{{{symbol.doc.description}}}
+
+</div>
+{{/if}}
+{{! Using symbols }}
+{{#if symbol.shadows}}
+<div>
+<h3>Introduced Symbols</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+{{#each symbol.shadows}}
+<tr>
+<td>{{name}}</td>
+</tr>
+{{/each}}
+</tbody>
+</table>
+</div>
+
+{{/if}}
+{{! Exceptions }}
+{{#if (ne symbol.kind "overloads")}}
+{{#if symbol.doc.exceptions}}
+<div>
+<h3>Exceptions</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Thrown on</th>
+</tr>
+</thead>
+<tbody>
+{{#each symbol.doc.exceptions}}
+<tr>
+<td><code>{{exception}}</code></td>
+<td>{{description}}</td>
+</tr>
+{{/each}}
+</tbody>
+</table>
+</div>
+{{/if}}
+{{else}}
+{{#with (flattenUnique symbol.members "doc.exceptions" "exception") as |allExceptions|}}
+{{#if (ne (len allExceptions) 0)}}
+<div>
+<h3>Exceptions</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Thrown on</th>
+</tr>
+</thead>
+<tbody>
+{{#each allExceptions as |exception|}}
+<tr>
+<td><code>{{exception}}</code></td>
+<td>{{description}}</td>
+</tr>
+{{/each}}
+</tbody>
+</table>
+</div>
+{{/if}}
+{{/with}}
+{{/if}}
+{{! Return value }}
+{{#if symbol.doc.returns}}
+<div>
+<h3>Return Value</h3>
+{{{symbol.doc.returns}}}
+</div>
+{{/if}}
+{{! Template Parameters }}
+{{#if (ne symbol.kind "overloads")}}
+{{#if symbol.doc.tparams}}
+<div>
+<h3>Template Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+{{#each symbol.doc.tparams}}
+<tr>
+<td><strong>{{name}}</strong></td>
+<td>{{description}}</td>
+</tr>
+{{/each}}
+</tbody>
+</table>
+</div>
+{{/if}}
+{{else}}
+{{#with (flattenUnique symbol.members "doc.tparams" "name") as |allTParams|}}
+{{#if (ne (len allTParams) 0)}}
+<div>
+<h3>Template Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+{{#each allTParams as |param|}}
+<tr>
+<td><strong>{{param.name}}</strong></td>
+<td>{{param.description}}</td>
+</tr>
+{{/each}}
+</tbody>
+</table>
+</div>
+{{/if}}
+{{/with}}
+{{/if}}
+{{! Parameters }}
+{{#if (ne symbol.kind "overloads")}}
+{{#if symbol.doc.params}}
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+{{#each symbol.doc.params}}
+<tr>
+<td><strong>{{name}}</strong></td>
+<td>{{description}}</td>
+</tr>
+{{/each}}
+</tbody>
+</table>
+</div>
+{{/if}}
+{{else}}
+{{#with (flattenUnique symbol.members "doc.params" "name") as |allParams|}}
+{{#if (ne (len allParams) 0)}}
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+{{#each allParams as |param|}}
+<tr>
+<td><strong>{{param.name}}</strong></td>
+<td>{{param.description}}</td>
+</tr>
+{{/each}}
+</tbody>
+</table>
+</div>
+{{/if}}
+{{/with}}
+{{/if}}
+{{! Preconditions }}
+{{#if symbol.doc.preconditions}}
+<div>
+<h3>Preconditions</h3>
+{{#each symbol.doc.preconditions}}
+<p>{{.}}</p>
+{{/each}}
+</div>
+{{/if}}
+{{! Postconditions }}
+{{#if symbol.doc.postconditions}}
+<div>
+<h3>Postconditions</h3>
+{{#each symbol.doc.postconditions}}
+<p>{{.}}</p>
+{{/each}}
+</div>
+{{/if}}
+{{! See Also }}
+{{#if symbol.doc.see}}
+<div>
+<h3>See Also</h3>
+{{#each symbol.doc.see}}
+<p>{{.}}</p>
+{{/each}}
+</div>
+{{/if}}
+</div>

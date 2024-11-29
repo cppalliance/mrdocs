@@ -11,54 +11,47 @@
 
 | <<#f,`f`>> 
 | 
-    
+
 | <<#g,`g`>> 
 | 
-    
+
 | <<#h,`h`>> 
 | 
-    
+
 | <<#i,`i`>> 
 | 
-    
+
 | <<#j,`j`>> 
 | 
-    
+
 | <<#k,`k`>> 
 | 
-    
+
 | <<#l,`l`>> 
 | 
-    
+
 | <<#m,`m`>> 
 | 
-    
+
 | <<#n,`n`>> 
 | 
-    
+
 | <<#o,`o`>> 
 | 
-    
+
 |===
 
 [#f]
 == f
 
-
-
 === Synopsis
 
 Declared in `<pass:[param-direction.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f(int x0);
 ----
-
-
-
-
 
 === Parameters
 
@@ -69,18 +62,12 @@ f(int x0);
 | 
 |===
 
-
-
-
 [#g]
 == g
-
-
 
 === Synopsis
 
 Declared in `<pass:[param-direction.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
@@ -88,10 +75,6 @@ g(
     int x1,
     int y1);
 ----
-
-
-
-
 
 === Parameters
 
@@ -104,18 +87,12 @@ g(
 | 
 |===
 
-
-
-
 [#h]
 == h
-
-
 
 === Synopsis
 
 Declared in `<pass:[param-direction.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
@@ -123,10 +100,6 @@ h(
     int x2,
     int y2);
 ----
-
-
-
-
 
 === Parameters
 
@@ -139,18 +112,12 @@ h(
 | 
 |===
 
-
-
-
 [#i]
 == i
-
-
 
 === Synopsis
 
 Declared in `<pass:[param-direction.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
@@ -158,10 +125,6 @@ i(
     int x3,
     int y3);
 ----
-
-
-
-
 
 === Parameters
 
@@ -174,18 +137,12 @@ i(
 | 
 |===
 
-
-
-
 [#j]
 == j
-
-
 
 === Synopsis
 
 Declared in `<pass:[param-direction.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
@@ -193,10 +150,6 @@ j(
     int x4,
     int y4);
 ----
-
-
-
-
 
 === Parameters
 
@@ -209,18 +162,12 @@ j(
 | 
 |===
 
-
-
-
 [#k]
 == k
-
-
 
 === Synopsis
 
 Declared in `<pass:[param-direction.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
@@ -229,10 +176,6 @@ k(
     int y5,
     int z5);
 ----
-
-
-
-
 
 === Parameters
 
@@ -247,18 +190,12 @@ k(
 | 
 |===
 
-
-
-
 [#l]
 == l
-
-
 
 === Synopsis
 
 Declared in `<pass:[param-direction.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
@@ -268,10 +205,6 @@ l(
     int,
     int z6);
 ----
-
-
-
-
 
 === Parameters
 
@@ -286,18 +219,12 @@ l(
 | 
 |===
 
-
-
-
 [#m]
 == m
-
-
 
 === Synopsis
 
 Declared in `<pass:[param-direction.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
@@ -305,10 +232,6 @@ m(
     int x7,
     int y7);
 ----
-
-
-
-
 
 === Parameters
 
@@ -321,27 +244,17 @@ m(
 | 
 |===
 
-
-
-
 [#n]
 == n
-
-
 
 === Synopsis
 
 Declared in `<pass:[param-direction.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 n(int x8);
 ----
-
-
-
-
 
 === Parameters
 
@@ -352,27 +265,17 @@ n(int x8);
 | 
 |===
 
-
-
-
 [#o]
 == o
-
-
 
 === Synopsis
 
 Declared in `<pass:[param-direction.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 o(int x9);
 ----
-
-
-
-
 
 === Parameters
 
@@ -384,9 +287,6 @@ o(int x9);
 | *x9*
 | 
 |===
-
-
-
 
 
 

@@ -336,10 +336,95 @@ struct HandlebarsOptions
 
         By default, an indented partial-call causes the output of the
         whole partial being indented by the same amount.
+
+        For instance, the partial:
+
+        @code{.handlebars}
+        A
+        B
+        C
+        @endcode
+
+        and the template:
+
+        @code{.handlebars}
+        <div>
+            {{> partial}}
+        </div>
+        @endcode
+
+        will render as:
+
+        @code{.html}
+        <div>
+            A
+            B
+            C
+        </div>
+        @endcode
+
+        because the partial is indented by the same amount as the
+        partial call.
+
+        This can be disabled by setting this option to true. In this case,
+        the partial above would be rendered as:
+
+        @code{.html}
+        <div>
+            A
+        B
+        C
+        </div>
+
+
      */
     bool preventIndent = false;
 
     /** Disables standalone tag removal when set to true
+
+        By default, Handlebars removes whitespace around block and partial
+        expressions. For instance, the partial:
+
+        @code{.handlebars}
+        A
+        @endcode
+
+        and the template:
+
+        @code{.handlebars}
+        <div>
+            {{> partial}}
+        </div>
+        @endcode
+
+        will render as:
+
+        @code{.html}
+        <div>
+            A</div>
+        @endcode
+
+        because the whitespace up to the newline after the partial is removed.
+
+        A double newline is required to ensure that the whitespace is not
+        removed. For instance, the template:
+
+        @code{.handlebars}
+        <div>
+            {{> partial}}
+
+        </div>
+        @endcode
+
+        will render as:
+
+        @code{.html}
+        <div>
+            A
+        </div>
+        @endcode
+
+        This can be disabled by setting this option to true.
 
         When set, blocks and partials that are on their own line will not
         remove the whitespace on that line.

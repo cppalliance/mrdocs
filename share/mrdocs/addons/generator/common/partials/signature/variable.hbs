@@ -6,6 +6,6 @@
 {{/if~}}
 {{#if symbol.isThreadLocal}}thread_local
 {{/if~}}
-{{>types/declarator-before symbol.type}} {{>types/declarator-id symbol link=symbol.template.primary~}}
+{{>types/declarator-before symbol.type}} {{>types/declarator-id symbol link=(select link link symbol.template.primary)~}}
 {{>types/declarator-after symbol.type~}}
-{{#if symbol.initializer}} = {{symbol.initializer}}{{/if}}
+{{#if symbol.initializer}} = {{symbol.initializer}}{{/if}};

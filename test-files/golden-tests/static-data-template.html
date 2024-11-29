@@ -1,184 +1,123 @@
 <html lang="en">
 <head>
-    <title>Reference</title>
+<title>Reference</title>
 </head>
 <body>
 <div>
-    <div id="index">
-    <div>
-        <h2>Global namespace</h2>
-    </div>
-    <div>
-        <h2> Types</h2>
+<h1>Reference</h1>
+<div id="index">
+<div>
+<h2>Global namespace</h2>
+</div>
+<h2>Types</h2>
 <table style="table-layout: fixed; width: 100%;">
-            <thead>
-                <tr>
-                    <th>Name</th>
-<th>Description</th>
-
-
-                </tr>
-            </thead>
+<thead>
+<tr>
+<th>Name</th><th>Description</th>
+</tr>
+</thead>
 <tbody>
-                <tr>
-                    <td>
-                        <a href="#A"><code>A</code></a> 
-                    </td><td>
-                        
-                            
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<tr>
+<td><a href="#A"><code>A</code></a> </td><td>
+</td></tr>
+</tbody>
+</table>
 </div>
 <div id="A">
-    <div>
-        <h2>Class A</h2>
-        
-    </div>
-
-    <div>
-        <h3>Synopsis</h3>
-        <div>
-            <code>
-                <p>
-                    <span>
-                        Declared in <code>&lt;static-data-template.cpp&gt;</code>
-                    </span>
-                </p>
-            </code>
-        </div>
-        <pre class="source-code cpp">
-            template<typename T>
+<div>
+<h2>A</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;static-data-template.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;typename T&gt;
 struct A;
-        </pre>
-    </div>
-
-    <div>
-        <h2> Static Data Members</h2>
+</code>
+</pre>
+</div>
+<h2>Static Data Members</h2>
 <table style="table-layout: fixed; width: 100%;">
-            <thead>
-                <tr>
-                    <th>Name</th>
-<th>Description</th>
-
-
-                </tr>
-            </thead>
+<thead>
+<tr>
+<th>Name</th><th>Description</th>
+</tr>
+</thead>
 <tbody>
-                <tr>
-                    <td>
-                        <a href="#A-x-0e"><code>x</code></a> 
-                    </td><td>
-                        
-                            
-                    </td>
-                </tr><tr>
-                    <td>
-                        <a href="#A-x-0a"><code>x<U*, T></code></a> 
-                    </td><td>
-                        
-                            
-                    </td>
-                </tr><tr>
-                    <td>
-                        <a href="#A-x-07"><code>x<T, long></code></a> 
-                    </td><td>
-                        
-                            
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-                    </div>
+<tr>
+<td><a href="#A-x-0e"><code>x</code></a> </td><td>
+</td></tr><tr>
+<td><a href="#A-x-0a"><code>x&lt;U*, T&gt;</code></a> </td><td>
+</td></tr><tr>
+<td><a href="#A-x-07"><code>x&lt;T, long&gt;</code></a> </td><td>
+</td></tr>
+</tbody>
+</table>
 
 
 </div>
 <div id="A-x-0e">
-    <div>
-        <h2><a href="#A">A</a>::x</h2>
-        
-    </div>
-
-    <div>
-        <h3>Synopsis</h3>
-        <div>
-            <code>
-                <p>
-                    <span>
-                        Declared in <code>&lt;static-data-template.cpp&gt;</code>
-                    </span>
-                </p>
-            </code>
-        </div>
-        <pre class="source-code cpp">
-            template<
+<div>
+<h2><a href="#A">A</a>::x</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;static-data-template.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;
     typename U,
-    typename V>
+    typename V&gt;
 constexpr
 static
 T const x = 0;
-        </pre>
-    </div>
-
+</code>
+</pre>
+</div>
 </div>
 <div id="A-x-0a">
-    <div>
-        <h2><a href="#A">A</a>::x</h2>
-        
-    </div>
-
-    <div>
-        <h3>Synopsis</h3>
-        <div>
-            <code>
-                <p>
-                    <span>
-                        Declared in <code>&lt;static-data-template.cpp&gt;</code>
-                    </span>
-                </p>
-            </code>
-        </div>
-        <pre class="source-code cpp">
-            template<typename U>
+<div>
+<h2><a href="#A">A</a>::x</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;static-data-template.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;typename U&gt;
 constexpr
 static
-T const <a href="#A-x-0e">x</a><U*, T> = 1;
-        </pre>
-    </div>
-
+T const <a href="#A-x-0e">x</a>&lt;U*, T&gt; = 1;
+</code>
+</pre>
+</div>
 </div>
 <div id="A-x-07">
-    <div>
-        <h2><a href="#A">A</a>::x</h2>
-        
-    </div>
-
-    <div>
-        <h3>Synopsis</h3>
-        <div>
-            <code>
-                <p>
-                    <span>
-                        Declared in <code>&lt;static-data-template.cpp&gt;</code>
-                    </span>
-                </p>
-            </code>
-        </div>
-        <pre class="source-code cpp">
-            template<>
+<div>
+<h2><a href="#A">A</a>::x</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;static-data-template.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;&gt;
 constexpr
 static
-bool const <a href="#A-x-0e">x</a><T, long> = 2;
-        </pre>
-    </div>
-
+bool const <a href="#A-x-0e">x</a>&lt;T, long&gt; = 2;
+</code>
+</pre>
+</div>
 </div>
 
 </div>
 <div>
-    <h4>Created with <a href="https://www.mrdocs.com">MrDocs</a></h4>
+<h4>Created with <a href="https://www.mrdocs.com">MrDocs</a></h4>
 </div>
 </body>
 </html>

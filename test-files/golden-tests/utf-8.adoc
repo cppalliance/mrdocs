@@ -11,30 +11,20 @@
 
 | <<#Христос_воскрес,`pass:[Христос_воскрес]`>> 
 | 
-    
+
 |===
 
 [#Христос_воскрес]
 == pass:[Христос_воскрес]
 
-
-
 === Synopsis
 
 Declared in `<pass:[utf-8.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 bool
 pass:[Христос_воскрес]();
 ----
-
-
-
-
-
-
-
 
 
 

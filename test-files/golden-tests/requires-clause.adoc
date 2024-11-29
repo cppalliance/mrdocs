@@ -4,14 +4,14 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A,`A`>> 
 | 
-    
+
 |===
 === Functions
 [cols=2]
@@ -27,11 +27,9 @@
 [#f]
 == f
 
-  
-
 === Synopsis
-  
 
+Declared in `<pass:[requires-clause.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
@@ -45,23 +43,13 @@ template<typename T>
 void
 <<#f-08,f>>() requires pass:[(sizeof(T) == 2)];
 ----
-  
-
-
-
-
-
-
 
 [#f-05]
 == f
 
-
-
 === Synopsis
 
 Declared in `<pass:[requires-clause.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
@@ -69,22 +57,12 @@ void
 f() requires pass:[(sizeof(T) == 4)];
 ----
 
-
-
-
-
-
-
-
 [#f-08]
 == f
-
-
 
 === Synopsis
 
 Declared in `<pass:[requires-clause.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
@@ -92,21 +70,12 @@ void
 f() requires pass:[(sizeof(T) == 2)];
 ----
 
-
-
-
-
-
-
-
 [#g]
 == g
 
-  
-
 === Synopsis
-  
 
+Declared in `<pass:[requires-clause.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T> requires pass:[(sizeof(T) == 4)]
@@ -120,23 +89,13 @@ template<typename T> requires pass:[(sizeof(U) == 2)]
 void
 <<#g-0c,g>>();
 ----
-  
-
-
-
-
-
-
 
 [#g-0a]
 == g
 
-
-
 === Synopsis
 
 Declared in `<pass:[requires-clause.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T> requires pass:[(sizeof(T) == 4)]
@@ -144,22 +103,12 @@ void
 g();
 ----
 
-
-
-
-
-
-
-
 [#g-0c]
 == g
-
-
 
 === Synopsis
 
 Declared in `<pass:[requires-clause.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T> requires pass:[(sizeof(U) == 2)]
@@ -167,22 +116,12 @@ void
 g();
 ----
 
-
-
-
-
-
-
-
 [#A]
 == A
-
-
 
 === Synopsis
 
 Declared in `<pass:[requires-clause.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T> requires pass:[(sizeof(U) == 2)]

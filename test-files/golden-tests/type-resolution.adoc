@@ -4,26 +4,26 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A,`A`>> 
 | 
-    
+
 | <<#B,`B`>> 
 | 
-    
+
 | <<#C,`C`>> 
 | 
-    
+
 | <<#D,`D`>> 
 | 
-    
+
 | <<#E,`E`>> 
 | 
-    
+
 |===
 === Functions
 [cols=2]
@@ -32,150 +32,147 @@
 
 | <<#f0,`f0`>> 
 | 
-    
+
 | <<#f1,`f1`>> 
 | 
-    
+
 | <<#f2,`f2`>> 
 | 
-    
+
 | <<#f3,`f3`>> 
 | 
-    
+
 | <<#f4,`f4`>> 
 | 
-    
+
 | <<#f5,`f5`>> 
 | 
-    
+
 | <<#f6,`f6`>> 
 | 
-    
+
 | <<#f7,`f7`>> 
 | 
-    
+
 | <<#f8,`f8`>> 
 | 
-    
+
 | <<#g0,`g0`>> 
 | 
-    
+
 | <<#g1,`g1`>> 
 | 
-    
+
 | <<#g2,`g2`>> 
 | 
-    
+
 | <<#g3,`g3`>> 
 | 
-    
+
 | <<#g4,`g4`>> 
 | 
-    
+
 | <<#g5,`g5`>> 
 | 
-    
+
 | <<#g6,`g6`>> 
 | 
-    
+
 | <<#g7,`g7`>> 
 | 
-    
+
 | <<#g8,`g8`>> 
 | 
-    
+
 | <<#h0,`h0`>> 
 | 
-    
+
 | <<#h1,`h1`>> 
 | 
-    
+
 | <<#h2,`h2`>> 
 | 
-    
+
 | <<#h3,`h3`>> 
 | 
-    
+
 | <<#h4,`h4`>> 
 | 
-    
+
 | <<#h5,`h5`>> 
 | 
-    
+
 | <<#h6,`h6`>> 
 | 
-    
+
 | <<#h7,`h7`>> 
 | 
-    
+
 | <<#h8,`h8`>> 
 | 
-    
+
 | <<#i0,`i0`>> 
 | 
-    
+
 | <<#i1,`i1`>> 
 | 
-    
+
 | <<#i2,`i2`>> 
 | 
-    
+
 | <<#i3,`i3`>> 
 | 
-    
+
 | <<#i4,`i4`>> 
 | 
-    
+
 | <<#i5,`i5`>> 
 | 
-    
+
 | <<#i6,`i6`>> 
 | 
-    
+
 | <<#i7,`i7`>> 
 | 
-    
+
 | <<#i8,`i8`>> 
 | 
-    
+
 | <<#j0,`j0`>> 
 | 
-    
+
 | <<#j1,`j1`>> 
 | 
-    
+
 | <<#j2,`j2`>> 
 | 
-    
+
 | <<#j3,`j3`>> 
 | 
-    
+
 | <<#j4,`j4`>> 
 | 
-    
+
 | <<#j5,`j5`>> 
 | 
-    
+
 | <<#j6,`j6`>> 
 | 
-    
+
 | <<#j7,`j7`>> 
 | 
-    
+
 | <<#j8,`j8`>> 
 | 
-    
+
 |===
 
 [#A]
 == A
 
-
-
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct A;
@@ -187,12 +184,9 @@ struct A;
 [#B]
 == B
 
-
-
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<
@@ -207,1038 +201,576 @@ struct B;
 [#C]
 == C
 
-
-
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 using C = <<#A,A>>;
 ----
 
-
 [#D]
 == D
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 using D = <<#B,B>><short, long>;
 ----
 
-
 [#E]
 == E
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 using E = <<#B,B>><T, long>;
 ----
 
-
 [#f0]
 == f0
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f0(<<#A,A>>);
 ----
 
-
-
-
-
-
-
-
 [#f1]
 == f1
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f1(<<#A,A>> const);
 ----
 
-
-
-
-
-
-
-
 [#f2]
 == f2
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f2(<<#A,A>>&);
 ----
 
-
-
-
-
-
-
-
 [#f3]
 == f3
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f3(<<#A,A>> const&);
 ----
 
-
-
-
-
-
-
-
 [#f4]
 == f4
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f4(<<#A,A>>*);
 ----
 
-
-
-
-
-
-
-
 [#f5]
 == f5
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f5(<<#A,A>> const*);
 ----
 
-
-
-
-
-
-
-
 [#f6]
 == f6
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f6(<<#A,A>>**);
 ----
 
-
-
-
-
-
-
-
 [#f7]
 == f7
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f7(<<#A,A>> const**);
 ----
 
-
-
-
-
-
-
-
 [#f8]
 == f8
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f8(<<#A,A>> const const**);
 ----
 
-
-
-
-
-
-
-
 [#g0]
 == g0
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 g0(<<#C,C>>);
 ----
 
-
-
-
-
-
-
-
 [#g1]
 == g1
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 g1(<<#C,C>> const);
 ----
 
-
-
-
-
-
-
-
 [#g2]
 == g2
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 g2(<<#C,C>>&);
 ----
 
-
-
-
-
-
-
-
 [#g3]
 == g3
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 g3(<<#C,C>> const&);
 ----
 
-
-
-
-
-
-
-
 [#g4]
 == g4
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 g4(<<#C,C>>*);
 ----
 
-
-
-
-
-
-
-
 [#g5]
 == g5
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 g5(<<#C,C>> const*);
 ----
 
-
-
-
-
-
-
-
 [#g6]
 == g6
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 g6(<<#C,C>>**);
 ----
 
-
-
-
-
-
-
-
 [#g7]
 == g7
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 g7(<<#C,C>> const**);
 ----
 
-
-
-
-
-
-
-
 [#g8]
 == g8
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 g8(<<#C,C>> const const**);
 ----
 
-
-
-
-
-
-
-
 [#h0]
 == h0
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 h0(<<#B,B>><short, long>);
 ----
 
-
-
-
-
-
-
-
 [#h1]
 == h1
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 h1(<<#B,B>><short, long> const);
 ----
 
-
-
-
-
-
-
-
 [#h2]
 == h2
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 h2(<<#B,B>><short, long>&);
 ----
 
-
-
-
-
-
-
-
 [#h3]
 == h3
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 h3(<<#B,B>><short, long> const&);
 ----
 
-
-
-
-
-
-
-
 [#h4]
 == h4
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 h4(<<#B,B>><short, long>*);
 ----
 
-
-
-
-
-
-
-
 [#h5]
 == h5
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 h5(<<#B,B>><short, long> const*);
 ----
 
-
-
-
-
-
-
-
 [#h6]
 == h6
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 h6(<<#B,B>><short, long>**);
 ----
 
-
-
-
-
-
-
-
 [#h7]
 == h7
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 h7(<<#B,B>><short, long> const**);
 ----
 
-
-
-
-
-
-
-
 [#h8]
 == h8
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 h8(<<#B,B>><short, long> const const**);
 ----
 
-
-
-
-
-
-
-
 [#i0]
 == i0
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 i0(<<#D,D>>);
 ----
 
-
-
-
-
-
-
-
 [#i1]
 == i1
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 i1(<<#D,D>> const);
 ----
 
-
-
-
-
-
-
-
 [#i2]
 == i2
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 i2(<<#D,D>>&);
 ----
 
-
-
-
-
-
-
-
 [#i3]
 == i3
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 i3(<<#D,D>> const&);
 ----
 
-
-
-
-
-
-
-
 [#i4]
 == i4
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 i4(<<#D,D>>*);
 ----
 
-
-
-
-
-
-
-
 [#i5]
 == i5
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 i5(<<#D,D>> const*);
 ----
 
-
-
-
-
-
-
-
 [#i6]
 == i6
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 i6(<<#D,D>>**);
 ----
 
-
-
-
-
-
-
-
 [#i7]
 == i7
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 i7(<<#D,D>> const**);
 ----
 
-
-
-
-
-
-
-
 [#i8]
 == i8
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 i8(<<#D,D>> const const**);
 ----
 
-
-
-
-
-
-
-
 [#j0]
 == j0
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 j0(<<#E,E>><short>);
 ----
 
-
-
-
-
-
-
-
 [#j1]
 == j1
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 j1(<<#E,E>><short> const);
 ----
 
-
-
-
-
-
-
-
 [#j2]
 == j2
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 j2(<<#E,E>><short>&);
 ----
 
-
-
-
-
-
-
-
 [#j3]
 == j3
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 j3(<<#E,E>><short> const&);
 ----
 
-
-
-
-
-
-
-
 [#j4]
 == j4
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 j4(<<#E,E>><short>*);
 ----
 
-
-
-
-
-
-
-
 [#j5]
 == j5
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 j5(<<#E,E>><short> const*);
 ----
 
-
-
-
-
-
-
-
 [#j6]
 == j6
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 j6(<<#E,E>><short>**);
 ----
 
-
-
-
-
-
-
-
 [#j7]
 == j7
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 j7(<<#E,E>><short> const**);
 ----
 
-
-
-
-
-
-
-
 [#j8]
 == j8
-
-
 
 === Synopsis
 
 Declared in `<pass:[type-resolution.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 j8(<<#E,E>><short> const const**);
 ----
-
-
-
-
-
-
-
 
 
 

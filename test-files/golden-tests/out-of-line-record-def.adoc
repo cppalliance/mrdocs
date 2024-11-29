@@ -11,31 +11,28 @@
 
 | <<#N,`N`>> 
 | 
-    
+
 |===
 
 [#N]
 == N
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#N-S,`S`>> 
 | 
-    
+
 |===
 
 [#N-S]
 == <<#N,N>>::S
 
-
-
 === Synopsis
 
 Declared in `<pass:[out-of-line-record-def.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct S;

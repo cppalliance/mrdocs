@@ -11,36 +11,29 @@
 
 | <<#f,`f`>> 
 | 
-    
+
 | <<#g,`g`>> 
 | 
-    
+
 | <<#h,`h`>> 
 | 
-    
+
 | <<#i,`i`>> 
 | 
-    
+
 |===
 
 [#f]
 == f
 
-
-
 === Synopsis
 
 Declared in `<pass:[param.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f(int x);
 ----
-
-
-
-
 
 === Parameters
 
@@ -51,18 +44,12 @@ f(int x);
 | 
 |===
 
-
-
-
 [#g]
 == g
-
-
 
 === Synopsis
 
 Declared in `<pass:[param.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
@@ -70,10 +57,6 @@ g(
     int x,
     int y);
 ----
-
-
-
-
 
 === Parameters
 
@@ -86,18 +69,12 @@ g(
 | 
 |===
 
-
-
-
 [#h]
 == h
-
-
 
 === Synopsis
 
 Declared in `<pass:[param.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
@@ -106,10 +83,6 @@ h(
     int y,
     int z);
 ----
-
-
-
-
 
 === Parameters
 
@@ -124,18 +97,12 @@ h(
 | 
 |===
 
-
-
-
 [#i]
 == i
-
-
 
 === Synopsis
 
 Declared in `<pass:[param.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
@@ -145,10 +112,6 @@ i(
     int y,
     int z);
 ----
-
-
-
-
 
 === Parameters
 
@@ -164,9 +127,6 @@ i(
 | *z*
 | 
 |===
-
-
-
 
 
 

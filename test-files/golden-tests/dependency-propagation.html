@@ -1,208 +1,135 @@
 <html lang="en">
 <head>
-    <title>Reference</title>
+<title>Reference</title>
 </head>
 <body>
 <div>
-    <div id="index">
-    <div>
-        <h2>Global namespace</h2>
-    </div>
-    <div>
-        <h2>Namespaces</h2>
+<h1>Reference</h1>
+<div id="index">
+<div>
+<h2>Global namespace</h2>
+</div>
+<h2>Namespaces</h2>
 <table style="table-layout: fixed; width: 100%;">
-            <thead>
-                <tr>
-                    <th>Name</th>
-<th>Description</th>
-
-
-                </tr>
-            </thead>
+<thead>
+<tr>
+<th>Name</th><th>Description</th>
+</tr>
+</thead>
 <tbody>
-                <tr>
-                    <td>
-                        <a href="#N"><code>N</code></a> 
-                    </td><td>
-                        
-                            
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-<h2> Types</h2>
+<tr>
+<td><a href="#N"><code>N</code></a> </td><td>
+</td></tr>
+</tbody>
+</table>
+<h2>Types</h2>
 <table style="table-layout: fixed; width: 100%;">
-            <thead>
-                <tr>
-                    <th>Name</th>
-<th>Description</th>
-
-
-                </tr>
-            </thead>
+<thead>
+<tr>
+<th>Name</th><th>Description</th>
+</tr>
+</thead>
 <tbody>
-                <tr>
-                    <td>
-                        <a href="#E"><code>E</code></a> 
-                    </td><td>
-                        
-                            
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<tr>
+<td><a href="#E"><code>E</code></a> </td><td>
+</td></tr>
+</tbody>
+</table>
 </div>
 <div id="E">
-    <div>
-        <h2>Class E</h2>
-        
-    </div>
-
-    <div>
-        <h3>Synopsis</h3>
-        <div>
-            <code>
-                <p>
-                    <span>
-                        Declared in <code>&lt;dependency-propagation.cpp&gt;</code>
-                    </span>
-                </p>
-            </code>
-        </div>
-        <pre class="source-code cpp">
-            struct E
-    : <a href="#N">N</a>::<a href="#N-C">C</a><int>;
-        </pre>
-    </div>
-
-    <div>
-                            </div>
+<div>
+<h2>E</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;dependency-propagation.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+struct E
+    : <a href="#N">N</a>::<a href="#N-C">C</a>&lt;int&gt;;
+</code>
+</pre>
+</div>
 
 
 </div>
 <div id="N">
-    <div>
-        <h2>Namespace N</h2>
-    </div>
-    <div>
-        <h2> Types</h2>
+<div>
+<h2>N</h2>
+</div>
+<h2>Types</h2>
 <table style="table-layout: fixed; width: 100%;">
-            <thead>
-                <tr>
-                    <th>Name</th>
-<th>Description</th>
-
-
-                </tr>
-            </thead>
+<thead>
+<tr>
+<th>Name</th><th>Description</th>
+</tr>
+</thead>
 <tbody>
-                <tr>
-                    <td>
-                        <a href="#N-A"><code>A</code></a> 
-                    </td><td>
-                        
-                            
-                    </td>
-                </tr><tr>
-                    <td>
-                        <a href="#N-B"><code>B</code></a> 
-                    </td><td>
-                        
-                            
-                    </td>
-                </tr><tr>
-                    <td>
-                        <a href="#N-C"><code>C</code></a> 
-                    </td><td>
-                        
-                            
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<tr>
+<td><a href="#N-A"><code>A</code></a> </td><td>
+</td></tr><tr>
+<td><a href="#N-B"><code>B</code></a> </td><td>
+</td></tr><tr>
+<td><a href="#N-C"><code>C</code></a> </td><td>
+</td></tr>
+</tbody>
+</table>
 </div>
 <div id="N-C">
-    <div>
-        <h2>C</h2>
-        
-    </div>
-
-    <div>
-        <h3>Synopsis</h3>
-        <div>
-            <code>
-                <p>
-                    <span>
-                        Declared in <code>&lt;dependency-propagation.cpp&gt;</code>
-                    </span>
-                </p>
-            </code>
-        </div>
-        <pre class="source-code cpp">
-            template<typename T>
-using C = <a href="#N-B">B</a><T>;
-        </pre>
-    </div>
-
+<div>
+<h2><a href="#N">N</a>::C</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;dependency-propagation.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;typename T&gt;
+using C = <a href="#N-B">B</a>&lt;T&gt;;
+</code>
+</pre>
+</div>
 </div>
 <div id="N-B">
-    <div>
-        <h2>B</h2>
-        
-    </div>
-
-    <div>
-        <h3>Synopsis</h3>
-        <div>
-            <code>
-                <p>
-                    <span>
-                        Declared in <code>&lt;dependency-propagation.cpp&gt;</code>
-                    </span>
-                </p>
-            </code>
-        </div>
-        <pre class="source-code cpp">
-            template<typename T>
-using B = <a href="#N-A">A</a><T>;
-        </pre>
-    </div>
-
+<div>
+<h2><a href="#N">N</a>::B</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;dependency-propagation.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;typename T&gt;
+using B = <a href="#N-A">A</a>&lt;T&gt;;
+</code>
+</pre>
+</div>
 </div>
 <div id="N-A">
-    <div>
-        <h2>Class A</h2>
-        
-    </div>
-
-    <div>
-        <h3>Synopsis</h3>
-        <div>
-            <code>
-                <p>
-                    <span>
-                        Declared in <code>&lt;dependency-propagation.cpp&gt;</code>
-                    </span>
-                </p>
-            </code>
-        </div>
-        <pre class="source-code cpp">
-            template<typename T>
+<div>
+<h2><a href="#N">N</a>::A</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;dependency-propagation.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;typename T&gt;
 struct A;
-        </pre>
-    </div>
-
-    <div>
-                            </div>
+</code>
+</pre>
+</div>
 
 
 </div>
 
 </div>
 <div>
-    <h4>Created with <a href="https://www.mrdocs.com">MrDocs</a></h4>
+<h4>Created with <a href="https://www.mrdocs.com">MrDocs</a></h4>
 </div>
 </body>
 </html>

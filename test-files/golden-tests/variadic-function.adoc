@@ -4,20 +4,20 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#C,`C`>> 
 | 
-    
+
 | <<#T,`T`>> 
 | 
-    
+
 | <<#U,`U`>> 
 | 
-    
+
 |===
 === Functions
 [cols=2]
@@ -26,95 +26,64 @@
 
 | <<#f,`f`>> 
 | 
-    
+
 | <<#g,`g`>> 
 | 
-    
+
 |===
 
 [#T]
 == T
 
-
-
 === Synopsis
 
 Declared in `<pass:[variadic-function.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 using T = void(...);
 ----
 
-
 [#U]
 == U
-
-
 
 === Synopsis
 
 Declared in `<pass:[variadic-function.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 using U = void(int, ...);
 ----
 
-
 [#f]
 == f
-
-
 
 === Synopsis
 
 Declared in `<pass:[variadic-function.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f(...);
 ----
 
-
-
-
-
-
-
-
 [#g]
 == g
-
-
 
 === Synopsis
 
 Declared in `<pass:[variadic-function.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 g(int, ...);
 ----
 
-
-
-
-
-
-
-
 [#C]
 == C
-
-
 
 === Synopsis
 
 Declared in `<pass:[variadic-function.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<

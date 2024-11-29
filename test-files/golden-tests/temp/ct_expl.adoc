@@ -4,42 +4,39 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-0e,`A`>> 
 | 
-    
+
 | <<#A-00,`A<int>`>> 
 | 
-    
+
 |===
 
 [#A-0e]
 == A
 
-
-
 === Synopsis
 
 Declared in `<pass:[temp/ct_expl.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 struct A;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-0e-f,`f`>> 
 | 
-    
+
 |===
 
 
@@ -47,48 +44,35 @@ struct A;
 [#A-0e-f]
 == <<#A-0e,A>>::f
 
-
-
 === Synopsis
 
 Declared in `<pass:[temp/ct_expl.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 f();
 ----
 
-
-
-
-
-
-
-
 [#A-00]
 == A
-
-
 
 === Synopsis
 
 Declared in `<pass:[temp/ct_expl.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
 struct <<#A-0e,A>><int>;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-00-g,`g`>> 
 | 
-    
+
 |===
 
 
@@ -96,24 +80,14 @@ struct <<#A-0e,A>><int>;
 [#A-00-g]
 == <<#A-00,A>><int>::g
 
-
-
 === Synopsis
 
 Declared in `<pass:[temp/ct_expl.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 void
 g();
 ----
-
-
-
-
-
-
-
 
 
 

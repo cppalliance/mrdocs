@@ -3,14 +3,10 @@
     to the source file when the `base-url` config
     option is defined
 }}
-{{#>markup/p}}
-{{#>markup/span~}}
-    Declared in {{#>markup/code~}}
-        {{ str "<" }}{{#unless (and @root.config.base-url (eq dcl.kind "source"))~}}
-            {{dcl.file}}
-        {{~else~}}
-            {{#>markup/a href=(concat @root.config.base-url dcl.file '#L' dcl.line)}}{{dcl.file}}{{/markup/a}}
-        {{~/unless~}}{{ str ">" }}
-    {{~/markup/code}}
-{{~/markup/span}}
-{{/markup/p}}
+Declared in {{#>markup/code~}}
+{{ str "<" }}{{#unless (and @root.config.base-url (eq dcl.kind "source"))~}}
+{{dcl.file}}
+{{~else~}}
+{{#>markup/a href=(concat @root.config.base-url dcl.file '#L' dcl.line)}}{{dcl.file}}{{/markup/a}}
+{{~/unless~}}{{ str ">" }}
+{{~/markup/code}}

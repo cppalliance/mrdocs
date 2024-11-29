@@ -4,44 +4,41 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A,`A`>> 
 | 
-    
+
 | <<#B,`B`>> 
 | 
-    
+
 |===
 
 [#A]
 == A
 
-
-
 === Synopsis
 
 Declared in `<pass:[union.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 union A;
 ----
 
-===  Data Members
+=== Data Members
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A-x,`x`>> [.small]#[variant member]#
 | 
-    
+
 | <<#A-y,`y`>> [.small]#[variant member]#
 | 
-    
+
 |===
 
 
@@ -49,61 +46,50 @@ union A;
 [#A-x]
 == <<#A,A>>::x
 
-
-
 === Synopsis
 
 Declared in `<pass:[union.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 int x;
 ----
 
-
 [#A-y]
 == <<#A,A>>::y
-
-
 
 === Synopsis
 
 Declared in `<pass:[union.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 bool y;
 ----
 
-
 [#B]
 == B
-
-
 
 === Synopsis
 
 Declared in `<pass:[union.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct B;
 ----
 
-===  Data Members
+=== Data Members
 [cols=2]
 |===
 | Name | Description 
 
 | <<#B-x,`x`>> [.small]#[variant member]#
 | 
-    
+
 | <<#B-y,`y`>> [.small]#[variant member]#
 | 
-    
+
 | <<#B-z,`z`>> 
 | 
-    
+
 |===
 
 
@@ -111,47 +97,35 @@ struct B;
 [#B-x]
 == <<#B,B>>::x
 
-
-
 === Synopsis
 
 Declared in `<pass:[union.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 int x;
 ----
 
-
 [#B-y]
 == <<#B,B>>::y
-
-
 
 === Synopsis
 
 Declared in `<pass:[union.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 bool y;
 ----
 
-
 [#B-z]
 == <<#B,B>>::z
-
-
 
 === Synopsis
 
 Declared in `<pass:[union.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 int z;
 ----
-
 
 
 

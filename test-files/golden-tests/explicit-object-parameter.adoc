@@ -4,31 +4,28 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#Optional,`Optional`>> 
 | 
-    
+
 |===
 
 [#Optional]
 == Optional
 
-
-
 === Synopsis
 
 Declared in `<pass:[explicit-object-parameter.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct Optional;
 ----
 
-===  Member Functions
+=== Member Functions
 [cols=2]
 |===
 | Name | Description 
@@ -42,11 +39,9 @@ struct Optional;
 [#Optional-value]
 == <<#Optional,Optional>>::value
 
-  
-
 === Synopsis
-  
 
+Declared in `<pass:[explicit-object-parameter.cpp]>`
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename Self>
@@ -64,23 +59,13 @@ auto&&
     Self&& self,
     int x);
 ----
-  
-
-
-
-
-
-
 
 [#Optional-value-05]
 == <<#Optional,Optional>>::value
 
-
-
 === Synopsis
 
 Declared in `<pass:[explicit-object-parameter.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename Self>
@@ -89,22 +74,12 @@ auto&&
 value(this Self&& self);
 ----
 
-
-
-
-
-
-
-
 [#Optional-value-06]
 == <<#Optional,Optional>>::value
-
-
 
 === Synopsis
 
 Declared in `<pass:[explicit-object-parameter.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename Self>
@@ -114,13 +89,6 @@ value(this
     Self&& self,
     int x);
 ----
-
-
-
-
-
-
-
 
 
 

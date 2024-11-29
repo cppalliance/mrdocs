@@ -4,81 +4,78 @@
 [#index]
 == Global namespace
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#A0,`A0`>> 
 | 
-    
+
 | <<#A1,`A1`>> 
 | 
-    
+
 | <<#A10,`A10`>> 
 | 
-    
+
 | <<#A2,`A2`>> 
 | 
-    
+
 | <<#A3,`A3`>> 
 | 
-    
+
 | <<#A4,`A4`>> 
 | 
-    
+
 | <<#A5,`A5`>> 
 | 
-    
+
 | <<#A6,`A6`>> 
 | 
-    
+
 | <<#A7,`A7`>> 
 | 
-    
+
 | <<#A8,`A8`>> 
 | 
-    
+
 | <<#A9,`A9`>> 
 | 
-    
+
 | <<#S0,`S0`>> 
 | 
-    
+
 |===
 
 [#S0]
 == S0
 
-
-
 === Synopsis
 
 Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 struct S0;
 ----
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#S0-M0,`M0`>> 
 | 
-    
+
 | <<#S0-M1,`M1`>> 
 | 
-    
+
 | <<#S0-S1,`S1`>> 
 | 
-    
+
 | <<#S0-S2,`S2`>> 
 | 
-    
+
 |===
 
 
@@ -86,27 +83,20 @@ struct S0;
 [#S0-M0]
 == <<#S0,S0>>::M0
 
-
-
 === Synopsis
 
 Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 using M0 = T;
 ----
 
-
 [#S0-S1]
 == <<#S0,S0>>::S1
-
-
 
 === Synopsis
 
 Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct S1;
@@ -118,51 +108,44 @@ struct S1;
 [#S0-M1]
 == <<#S0,S0>>::M1
 
-
-
 === Synopsis
 
 Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename U>
 using M1 = <<#S0,S0>><U>;
 ----
 
-
 [#S0-S2]
 == <<#S0,S0>>::S2
-
-
 
 === Synopsis
 
 Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename U>
 struct S2;
 ----
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#S0-S2-M2,`M2`>> 
 | 
-    
+
 | <<#S0-S2-M3,`M3`>> 
 | 
-    
+
 | <<#S0-S2-S3,`S3`>> 
 | 
-    
+
 | <<#S0-S2-S4,`S4`>> 
 | 
-    
+
 |===
 
 
@@ -170,27 +153,20 @@ struct S2;
 [#S0-S2-M2]
 == <<#S0,S0>>::<<#S0-S2,S2>>::M2
 
-
-
 === Synopsis
 
 Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 using M2 = U;
 ----
 
-
 [#S0-S2-S3]
 == <<#S0,S0>>::<<#S0-S2,S2>>::S3
-
-
 
 === Synopsis
 
 Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 struct S3;
@@ -202,42 +178,35 @@ struct S3;
 [#S0-S2-M3]
 == <<#S0,S0>>::<<#S0-S2,S2>>::M3
 
-
-
 === Synopsis
 
 Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename V>
 using M3 = <<#S0-S2,S2>><U>;
 ----
 
-
 [#S0-S2-S4]
 == <<#S0,S0>>::<<#S0-S2,S2>>::S4
-
-
 
 === Synopsis
 
 Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename V>
 struct S4;
 ----
 
-===  Types
+=== Types
 [cols=2]
 |===
 | Name | Description 
 
 | <<#S0-S2-S4-M4,`M4`>> 
 | 
-    
+
 |===
 
 
@@ -245,182 +214,134 @@ struct S4;
 [#S0-S2-S4-M4]
 == <<#S0,S0>>::<<#S0-S2,S2>>::<<#S0-S2-S4,S4>>::M4
 
-
-
 === Synopsis
 
 Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 using M4 = V;
 ----
 
-
 [#A0]
 == A0
-
-
 
 === Synopsis
 
 Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 using A0 = <<#S0,S0>><int>;
 ----
 
-
 [#A1]
 == A1
-
-
 
 === Synopsis
 
 Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 using A1 = <<#A0,A0>>::<<#S0-M0,M0>>;
 ----
 
-
 [#A2]
 == A2
-
-
 
 === Synopsis
 
 Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 using A2 = <<#A0,A0>>::<<#S0-S1,S1>>;
 ----
 
-
 [#A3]
 == A3
-
-
 
 === Synopsis
 
 Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 using A3 = <<#S0,S0>><long>::<<#S0-M0,M0>>;
 ----
 
-
 [#A4]
 == A4
-
-
 
 === Synopsis
 
 Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 using A4 = <<#S0,S0>><long long>::<<#S0-S1,S1>>;
 ----
 
-
 [#A5]
 == A5
-
-
 
 === Synopsis
 
 Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 using A5 = <<#S0,S0>><void>;
 ----
 
-
 [#A6]
 == A6
-
-
 
 === Synopsis
 
 Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 using A6 = <<#A5,A5>>::<<#S0-M1,M1>><short>::<<#S0-M0,M0>>;
 ----
 
-
 [#A7]
 == A7
-
-
 
 === Synopsis
 
 Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 using A7 = <<#A5,A5>>::<<#S0-S2,S2>><bool>::<<#S0-S2-M2,M2>>;
 ----
 
-
 [#A8]
 == A8
-
-
 
 === Synopsis
 
 Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 using A8 = <<#A5,A5>>::<<#S0-S2,S2>><int>::<<#S0-S2-S3,S3>>;
 ----
 
-
 [#A9]
 == A9
-
-
 
 === Synopsis
 
 Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 using A9 = <<#A5,A5>>::<<#S0-S2,S2>><char>::<<#S0-S2-M3,M3>><int>::<<#S0-S2-M3,M3>><unsigned int>::<<#S0-S2-M2,M2>>;
 ----
 
-
 [#A10]
 == A10
-
-
 
 === Synopsis
 
 Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 using A10 = <<#A5,A5>>::<<#S0-S2,S2>><float>::<<#S0-S2-M3,M3>><double>::<<#S0-S2-M3,M3>><long double>::<<#S0-S2-S4,S4>><void>::<<#S0-S2-S4-M4,M4>>;
 ----
-
 
 
 

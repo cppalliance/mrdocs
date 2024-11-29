@@ -11,7 +11,7 @@
 
 | <<#f,`f`>> 
 | 
-    
+
 |===
 === Variables
 [cols=2]
@@ -20,7 +20,7 @@
 
 | <<#x,`x`>> 
 | 
-    
+
 |===
 === Concepts
 [cols=2]
@@ -29,34 +29,27 @@
 
 | <<#C,`C`>> 
 | 
-    
+
 |===
 
 [#C]
-= C
+== C
 
-
-
-== Synopsis
+=== Synopsis
 
 Declared in `<pass:[concept.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 concept C = pass:[sizeof(T) == sizeof(int)];
 ----
 
-
 [#f]
 == f
-
-
 
 === Synopsis
 
 Declared in `<pass:[concept.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<<<#C,C>> T>
@@ -64,27 +57,16 @@ void
 f();
 ----
 
-
-
-
-
-
-
-
 [#x]
 == x
-
-
 
 === Synopsis
 
 Declared in `<pass:[concept.cpp]>`
-
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 <<#C,C>> auto x = 0;
 ----
-
 
 
 

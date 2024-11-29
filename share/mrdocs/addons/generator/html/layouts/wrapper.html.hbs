@@ -1,15 +1,19 @@
 {{! The wrapper for single page documentation or symbols in a multipage documentation }}
 <html lang="en">
 <head>
-    <title>Reference{{#if symbol}}: {{symbol.name}}{{/if}}</title>
+<title>Reference{{#if symbol}}: {{symbol.name}}{{/if}}</title>
 </head>
 <body>
 <div>
-    {{! Content generated with index.hbs }}
-    {{{contents}}}
+{{#unless @root.config.multipage }}
+<h1>Reference</h1>
+{{/unless}}
+{{! Content generated with index.hbs }}
+{{! This content is not indented and neither is the partial because of code blocks }}
+{{{contents}}}
 </div>
 <div>
-    <h4>Created with <a href="https://www.mrdocs.com">MrDocs</a></h4>
+<h4>Created with <a href="https://www.mrdocs.com">MrDocs</a></h4>
 </div>
 </body>
 </html>
