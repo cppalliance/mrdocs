@@ -139,7 +139,7 @@ def validate_and_normalize_option(option):
             option['relativeto'] = '<config-dir>'
         if 'must-exist' not in option:
             option['must-exist'] = True
-        reference_directories = ['<config-dir>', '<cwd>', '<mrdocs-root>']
+        reference_directories = ['<config-dir>', '<cwd>', '<mrdocs-root>', '<output>']
         if option['relativeto'] not in reference_directories:
             raise ValueError(f'Option "{option["name"]}" has an invalid value for "relativeto"')
         default_paths = option['default']
