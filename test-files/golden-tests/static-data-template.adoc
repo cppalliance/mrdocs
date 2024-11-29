@@ -61,7 +61,7 @@ T const x = 0;
 ----
 
 [#A-x-0a]
-== <<#A,A>>::x
+== <<#A,A>>::x<U*, T>
 
 === Synopsis
 
@@ -75,7 +75,7 @@ T const <<#A-x-0e,x>><U*, T> = 1;
 ----
 
 [#A-x-07]
-== <<#A,A>>::x
+== <<#A,A>>::x<T, long>
 
 === Synopsis
 

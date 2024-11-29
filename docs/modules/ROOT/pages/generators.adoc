@@ -89,14 +89,16 @@ Each symbol goes through a main layout template in the `<addons>/generator/<gene
 This template is a simple entry point that renders the partial relative to the symbol kind.
 
 The partials are located in the `<addons>/generator/<generator>/partials` directory.
-It contains the following subdirectories:
+It typically contains the following files and subdirectories:
 
-* `symbols`: Contains one partial for each symbol kind.
-The fields of each symbol object are described in the <<symbol-fields,Symbol Object>> section.
-* `signature`: Contains one partial for each symbol kind that renders the signature of the symbol as if declared in {cpp}.
-* `types`: partials for rendering other types of objects in a canonical form.
-Please refer to the <<dom_reference,Document Object Model Reference>> for more information on each type of object.
+* `symbol`: A generic partial for rendering symbols.
+* `location`: Partials for rendering <<location-fields,location objects>>.
+* `symbol`: Partials for rendering <<symbol-fields,Symbol Objects>>.
+* `template`: Partials for rendering <<template-info-fields,Template Info Objects>>.
+* `type`: Partials for rendering <<type-info-fields,Type Info Objects>>.
 * `markup`: partials for rendering markup elements such as lists, tables, and code blocks, in the output format.
+
+Please refer to the <<dom_reference,Document Object Model Reference>> for more information on each type of object.
 
 Partials common to all generators are available in the `<addons>/generator/common/partials` directory.
 The common partials are loaded before the generator-specific partials, which can override any common partials.

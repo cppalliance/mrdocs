@@ -1,0 +1,15 @@
+{{#if template}}{{>template/head template}}
+{{/if~}}
+{{#if isFriend}}friend {{/if}}{{tag}} {{>symbol/name symbol link=(select link link template.primary)~}}
+{{#unless bases~}}
+{{else if isFriend~}}
+{{else}}
+
+{{#each bases~}}
+    {{#if @first}}
+    :{{else}}
+    ,{{/if~}}
+    {{#unless (eq access ../defaultAccess)}} {{access}}{{/unless~}}
+    {{#if isVirtual}} virtual{{/if}} {{>type/declarator type~}}
+{{/each~}}
+{{/unless}};

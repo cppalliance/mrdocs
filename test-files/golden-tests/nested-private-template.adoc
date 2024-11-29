@@ -59,7 +59,7 @@ struct impl;
 
 
 [#range-impl-00]
-== <<#range,range>>::impl
+== <<#range,range>>::impl<R, false>
 
 === Synopsis
 

@@ -1,0 +1,28 @@
+{{!--
+
+    Renders a template parameter.
+
+    If the template parameter is a type, the templated type name is rendered.
+    If the template parameter is a non-type, the declarator of the type is rendered.
+    If the template parameter is a template, the template head is rendered.
+
+    Expected Context: {TParam}
+
+    Example:
+        {{> template/param tparam }}
+
+    See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
+--}}
+{{#if (eq kind "type")~}}
+    {{#if constraint}}{{>symbol/name-info constraint }}{{else}}{{key}}{{/if~}}
+    {{#if is-pack}}...{{/if~}}
+    {{#if name}} {{name}}{{/if~}}
+    {{#if default}} = {{>template/arg default~}}{{/if~}}
+{{else if (eq kind "non-type")~}}
+    {{>type/declarator type decl-name=name}}{{#if is-pack}}...{{/if~}}
+    {{#if default}} = {{>template/arg default~}}{{/if~}}
+{{else if (eq kind "template")~}}
+    {{>template/head}} typename{{#if is-pack}}...{{/if~}}
+    {{#if name}} {{name}}{{/if~}}
+    {{#if default}} = {{>template/arg default~}}{{/if~}}
+{{/if}}

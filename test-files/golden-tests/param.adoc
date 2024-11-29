@@ -38,7 +38,7 @@ f(int x);
 === Parameters
 
 |===
-| Name | Description 
+| Name | Description
 
 | *x*
 | 
@@ -61,7 +61,7 @@ g(
 === Parameters
 
 |===
-| Name | Description 
+| Name | Description
 
 | *x*
 | 
@@ -87,7 +87,7 @@ h(
 === Parameters
 
 |===
-| Name | Description 
+| Name | Description
 
 | *x*
 | 
@@ -116,7 +116,7 @@ i(
 === Parameters
 
 |===
-| Name | Description 
+| Name | Description
 
 | *w*
 | 

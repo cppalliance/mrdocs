@@ -1,5 +1,9 @@
+{{#unless @root.config.multipage }}
+{{! Single page documentation: symbol is not available to the wrapper but it's available here }}
+{{! Include the symbol title at a higher level }}
 [#{{{symbol.anchor}}}]
-={{#unless @root.config.multipage}}={{/unless}} {{#unless (eq symbol.kind "friend")}}{{#if symbol.name}}{{>types/nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}{{#if symbol.parent}}Unnamed{{else}}Global{{/if}} {{or symbol.tag symbol.kind}}{{/if}}{{else}}{{#if symbol.symbol.name}}{{>types/nested-name-specifier symbol=symbol.symbol.parent includeNamespace=true}}{{symbol.symbol.name}}{{else}}{{symbol.type.name}}{{/if}}{{/unless}}
+== {{> symbol/qualified-name symbol }}
+{{/unless}}
 
 {{! Brief }}
 {{#if symbol.doc.brief}}
@@ -10,12 +14,12 @@
 {{#unless (contains (arr "namespace") symbol.kind)}}
 =={{#unless @root.config.multipage}}={{/unless}} Synopsis
 
-{{>types/source dcl=(primary_location symbol)}}
+{{>location/source dcl=(primary_location symbol)}}
 
 {{#if (ne symbol.kind "overloads")}}
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-{{> signature }}
+{{> symbol/signature symbol }}
 
 ----
 
@@ -23,7 +27,7 @@
 {{#each symbol.members as | member |}}
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-{{> signature symbol=member link=member}}
+{{> symbol/signature member link=member}}
 
 ----
 
@@ -34,15 +38,15 @@
 {{#if symbol.interface}}
 {{#if (eq symbol.kind "record")}}
 {{#with symbol.interface}}
-{{>types/tranche tranche=public label="" is-namespace=false}}
+{{>symbol/tranche tranche=public label="" is-namespace=false}}
 
-{{>types/tranche tranche=protected label="Protected" is-namespace=false}}
+{{>symbol/tranche tranche=protected label="Protected" is-namespace=false}}
 
-{{>types/tranche tranche=private label="Private" is-namespace=false}}
+{{>symbol/tranche tranche=private label="Private" is-namespace=false}}
 
 {{/with}}
 {{else}}
-{{>types/tranche tranche=symbol.interface label="" is-namespace=true}}
+{{>symbol/tranche tranche=symbol.interface label="" is-namespace=true}}
 
 {{/if}}
 {{else if symbol.members}}
@@ -54,7 +58,7 @@
 |===
 |Name |Description
 {{#each symbol.members}}
-|xref:{{{anchor}}}[`pass:v[{{>types/declarator-id . nolink=true}}]`] | {{~doc.brief}}
+|xref:{{{anchor}}}[`pass:v[{{>symbol/name . nolink=true}}]`] | {{~doc.brief}}
 {{/each}}
 |===
 
@@ -62,7 +66,7 @@
 {{/if}}
 {{! Using directives }}
 {{#if symbol.usingDirectives}}
-{{>types/info-list members=symbol.usingDirectives title="Using Directives"}}
+{{>symbol/members-table members=symbol.usingDirectives title="Using Directives"}}
 
 {{/if}}
 {{! Description }}
@@ -161,7 +165,7 @@
 =={{#unless @root.config.multipage}}={{/unless}} Parameters
 
 |===
-| Name | Description {{! TODO: | Type? }}
+| Name | Description
 
 {{#each symbol.doc.params}}
 | *{{name}}*
@@ -176,7 +180,7 @@
 =={{#unless @root.config.multipage}}={{/unless}} Parameters
 
 |===
-| Name | Description {{! TODO: | Type? }}
+| Name | Description
 
 {{#each allParams as |param|}}
 | *{{param.name}}*

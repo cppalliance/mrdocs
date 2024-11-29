@@ -1,15 +1,26 @@
 {{! The wrapper for single page documentation or symbols in a multipage documentation }}
+{{! This content is not indented and neither is the partial to preserve code blocks and minimize diffs }}
 <html lang="en">
 <head>
-<title>Reference{{#if symbol}}: {{symbol.name}}{{/if}}</title>
+{{! Title }}
+{{#if @root.config.multipage }}
+{{! Multipage documentation: symbol is available to the wrapper }}
+<title>Reference{{#if symbol.name}}: {{symbol.name}}{{/if}}</title>
+{{else}}
+{{! Single page documentation: symbol is not available to the wrapper }}
+<title>Reference</title>
+{{/if}}
 </head>
 <body>
 <div>
-{{#unless @root.config.multipage }}
+{{#if @root.config.multipage }}
+{{! Multipage documentation: main title is the linked qualified symbol name }}
+<h1>{{> symbol/qualified-name symbol }}</h1>
+{{else}}
+{{! Single page documentation: main title is "Reference" }}
 <h1>Reference</h1>
-{{/unless}}
+{{/if}}
 {{! Content generated with index.hbs }}
-{{! This content is not indented and neither is the partial because of code blocks }}
 {{{contents}}}
 </div>
 <div>

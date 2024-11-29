@@ -1,0 +1,19 @@
+{{!--
+    Renders where the symbol is declared with a link
+
+    If the `base-url` config option is defined, the file name will be
+    linked to the source file.
+
+    Expected Context: {Location Object}
+
+    Example:
+        {{> location/source symbol.loc.def }}
+
+--}}
+Declared in {{#>markup/code~}}
+    {{ str "<" }}{{#unless (and @root.config.base-url (eq dcl.kind "source"))~}}
+        {{dcl.file}}
+    {{~else~}}
+        {{#>markup/a href=(concat @root.config.base-url dcl.file '#L' dcl.line)}}{{dcl.file}}{{/markup/a}}
+    {{~/unless~}}{{ str ">" }}
+{{~/markup/code}}

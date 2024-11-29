@@ -1,6 +1,10 @@
+{{#unless @root.config.multipage }}
+{{! Single page documentation: symbol is not available to the wrapper but it's available here }}
+{{! Include the symbol title at a higher level }}
 <div id="{{{symbol.anchor}}}">
 <div>
-<h2>{{#unless (eq symbol.kind "friend")}}{{#if symbol.name}}{{>types/nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}{{#if symbol.parent}}Unnamed{{else}}Global{{/if}} {{or symbol.tag symbol.kind}}{{/if}}{{else}}{{#if symbol.symbol.name}}{{>types/nested-name-specifier symbol=symbol.symbol.parent includeNamespace=true}}{{symbol.symbol.name}}{{else}}{{symbol.type.name}}{{/if}}{{/unless}}</h2>
+<h2>{{> symbol/qualified-name symbol }}</h2>
+{{/unless}}
 {{! Brief }}
 {{#if symbol.doc.brief}}
 <div>
@@ -8,18 +12,20 @@
 
 </div>
 {{/if}}
+{{#unless @root.config.multipage }}
 </div>
+{{/unless}}
 {{! Synopsis }}
 {{#unless (contains (arr "namespace") symbol.kind)}}
 <div>
 <h3>Synopsis</h3>
 <div>
-{{>types/source dcl=(primary_location symbol)}}
+{{>location/source dcl=(primary_location symbol)}}
 </div>
 {{#if (ne symbol.kind "overloads")}}
 <pre>
 <code class="source-code cpp">
-{{> signature }}
+{{> symbol/signature symbol }}
 
 </code>
 </pre>
@@ -27,7 +33,7 @@
 {{#each symbol.members as | member |}}
 <pre>
 <code class="language-cpp">
-{{> signature symbol=member link=member}}
+{{> symbol/signature member }}
 
 </code>
 </pre>
@@ -40,14 +46,14 @@
 {{#if symbol.interface}}
 {{#if (eq symbol.kind "record")}}
 {{#with symbol.interface}}
-{{>types/tranche tranche=public label="" is-namespace=false}}
+{{>symbol/tranche tranche=public label="" is-namespace=false}}
 
-{{>types/tranche tranche=protected label="Protected" is-namespace=false}}
+{{>symbol/tranche tranche=protected label="Protected" is-namespace=false}}
 
-{{>types/tranche tranche=private label="Private" is-namespace=false}}
+{{>symbol/tranche tranche=private label="Private" is-namespace=false}}
 {{/with}}
 {{else}}
-{{>types/tranche tranche=symbol.interface label="" is-namespace=true}}
+{{>symbol/tranche tranche=symbol.interface label="" is-namespace=true}}
 {{/if}}
 {{else if symbol.members}}
 {{! Members }}
@@ -64,7 +70,7 @@
 <tbody>
 {{#each symbol.members}}
 <tr>
-<td><a href="#{{anchor}}">{{>types/declarator-id . nolink=true}}</a></td>
+<td><a href="#{{anchor}}">{{>symbol/name . nolink=true}}</a></td>
 <td>{{{doc.brief}}}</td>
 </tr>
 {{/each}}
@@ -76,7 +82,7 @@
 {{! Using directives }}
 {{#if symbol.usingDirectives}}
 <div>
-{{>types/info-list members=symbol.usingDirectives title="Using Directives"}}
+{{>symbol/members-table members=symbol.usingDirectives title="Using Directives"}}
 
 </div>
 
@@ -288,4 +294,6 @@
 {{/each}}
 </div>
 {{/if}}
+{{#unless @root.config.multipage }}
 </div>
+{{/unless}}

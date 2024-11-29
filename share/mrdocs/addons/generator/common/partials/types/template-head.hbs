@@ -1,5 +1,0 @@
-{{! Renders the template head for a template declaration. }}
-template{{ str '<' }}{{#each params}}{{#unless (and @first @last)}}
-    {{/unless}}{{>types/template-param~}}
-    {{#unless @last}},{{/unless~}}
-{{/each}}{{ str '>' }}{{#if requires}} requires {{requires}}{{/if}}

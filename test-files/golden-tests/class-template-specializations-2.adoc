@@ -36,7 +36,7 @@ struct A;
 
 
 [#A-03]
-== A
+== A<T*>
 
 === Synopsis
 
@@ -81,7 +81,7 @@ struct B;
 
 
 [#A-03-B-01]
-== <<#A-03,A>><T*>::B
+== <<#A-03,A>><T*>::B<U*>
 
 === Synopsis
 
@@ -119,7 +119,7 @@ struct C;
 
 
 [#A-03-B-0b]
-== <<#A-03,A>><T*>::B
+== <<#A-03,A>><T*>::B<int>
 
 === Synopsis
 
@@ -134,7 +134,7 @@ struct <<#A-03-B-05,B>><int>;
 
 
 [#A-06]
-== A
+== A<double>
 
 === Synopsis
 
@@ -203,7 +203,7 @@ struct E;
 
 
 [#A-06-D-0b-E-04]
-== <<#A-06,A>><double>::<<#A-06-D-0b,D>>::E
+== <<#A-06,A>><double>::<<#A-06-D-0b,D>>::E<T*>
 
 === Synopsis
 
@@ -241,7 +241,7 @@ struct F;
 
 
 [#A-06-D-04]
-== <<#A-06,A>><double>::D
+== <<#A-06,A>><double>::D<float>
 
 === Synopsis
 
@@ -283,7 +283,7 @@ struct G;
 
 
 [#A-06-D-04-G-0c]
-== <<#A-06,A>><double>::<<#A-06-D-04,D>><float>::G
+== <<#A-06,A>><double>::<<#A-06-D-04,D>><float>::G<T*>
 
 === Synopsis
 

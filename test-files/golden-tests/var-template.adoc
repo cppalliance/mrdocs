@@ -42,7 +42,7 @@ unsigned int A = pass:[sizeof(T)];
 ----
 
 [#A-08e]
-== A
+== A<void>
 
 === Synopsis
 
@@ -54,7 +54,7 @@ unsigned int <<#A-084,A>><void> = 0;
 ----
 
 [#A-01]
-== A
+== A<T&>
 
 === Synopsis
 
@@ -108,7 +108,7 @@ unsigned int C = 0;
 ----
 
 [#B-C-05]
-== <<#B,B>>::C
+== <<#B,B>>::C<int>
 
 === Synopsis
 
@@ -121,7 +121,7 @@ unsigned int <<#B-C-0e,C>><int> = pass:[-1];
 ----
 
 [#B-C-0c]
-== <<#B,B>>::C
+== <<#B,B>>::C<T*>
 
 === Synopsis
 
