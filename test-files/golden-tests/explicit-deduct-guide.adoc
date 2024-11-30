@@ -48,7 +48,7 @@ struct X;
 
 
 [#X-0d]
-== X
+== <<#X-0e,X>><0>
 
 === Synopsis
 
@@ -59,7 +59,7 @@ Declared in `<pass:[explicit-deduct-guide.cpp]>`
 ----
 
 [#X-00]
-== X
+== <<#X-0e,X>><0>
 
 === Synopsis
 
@@ -70,7 +70,7 @@ Declared in `<pass:[explicit-deduct-guide.cpp]>`
 ----
 
 [#X-0b]
-== X
+== <<#X-0e,X>><0>
 
 === Synopsis
 
@@ -81,7 +81,7 @@ Declared in `<pass:[explicit-deduct-guide.cpp]>`
 ----
 
 [#X-06]
-== X
+== <<#X-0e,X>><0>
 
 === Synopsis
 

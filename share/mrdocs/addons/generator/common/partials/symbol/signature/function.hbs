@@ -1,0 +1,31 @@
+{{#if template}}{{>template/head template}}
+{{/if~}}
+{{#if isFriend}}friend
+{{/if~}}
+{{#if constexprKind}}{{constexprKind}}
+{{/if~}}
+{{#if storageClass}}{{storageClass}}
+{{/if~}}
+{{#if isVirtual}}virtual
+{{/if~}}
+{{#if explicitSpec}}{{explicitSpec}}
+{{/if~}}
+{{#if (eq class "normal")}}{{>type/declarator-prefix return}}
+{{/if~}}
+{{>symbol/name symbol link=(select link link template.primary)}}
+({{#if isExplicitObjectMemberFunction}}this {{/if}}{{#each params}}{{#unless (and @first @last)}}
+    {{/unless}}{{>type/declarator type decl-name=name~}}
+    {{#if default}} = {{default}}{{/if~}}
+    {{#unless @last}},{{/unless~}}
+{{/each~}}{{#if isVariadic}}{{#if params}}, {{/if}}...{{/if}})
+{{~#if isConst}} const{{/if~}}
+{{#if isVolatile}} volatile{{/if~}}
+{{#if refQualifier}} {{refQualifier}}{{/if~}}
+{{#if exceptionSpec}} {{exceptionSpec}}{{/if~}}
+{{#if (eq class "normal")}}{{>type/declarator-suffix return}}{{/if~}}
+{{#if requires}} requires {{requires}}{{/if~}}
+{{#if hasOverrideAttr}} override{{/if~}}
+{{#if isFinal}} final{{/if~}}
+{{#if isPure}} = 0{{/if~}}
+{{#if isDeleted}} = delete{{/if~}}
+{{#if isDefaulted}} = default{{/if}};

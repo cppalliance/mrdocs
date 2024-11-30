@@ -1,6 +1,0 @@
-{{! Render a type object as a declaration }}
-{{>types/declarator-before nolink=nolink~}}
-{{~#if decl-name}} {{decl-name~}}
-{{~#if decl-name-targs~}}{{>types/template-args args=decl-name-targs nolink=nolink}}{{~/if~}}
-{{~/if~}}
-{{~>types/declarator-after nolink=nolink}}

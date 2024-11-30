@@ -1,8 +1,14 @@
 {{! The wrapper for single page documentation or symbols in a multipage documentation }}
-{{#unless @root.config.multipage }}
+{{! Title }}
+{{#if @root.config.multipage }}
+{{! Multipage documentation: symbol is available to the wrapper }}
+[#{{{symbol.anchor}}}]
+= {{> symbol/qualified-name symbol }}
+{{else}}
+{{! Single page documentation: symbol is not available to the wrapper }}
 = Reference
+{{/if}}
 :mrdocs:
-{{/unless}}
 
 {{! Content generated with index.hbs }}
 {{{contents}}}

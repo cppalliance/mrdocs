@@ -203,7 +203,7 @@ the separator
 === Parameters
 
 |===
-| Name | Description 
+| Name | Description
 
 | *x*
 | 

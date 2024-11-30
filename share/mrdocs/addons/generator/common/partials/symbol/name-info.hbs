@@ -1,0 +1,33 @@
+{{!--
+    Renders a Name Info object.
+
+    Expected Context: {Name Info Object}
+
+    Optional parameters:
+        nolink: If true, the name will not be linked.
+
+    Example:
+        {{> name-info symbol }}
+
+    See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
+--}}
+{{#if prefix~}}
+    {{> symbol/name-info prefix nolink=nolink~}}::
+{{~/if~}}
+{{#if (contains (arr "see-below" "implementation-defined") name)~}}
+    {{! These are special names that should not be linked. }}
+    {{ str '_'}}{{name}}{{ str '_'~}}
+{{else~}}
+    {{! Render the name of the symbol. ~}}
+    {{#if (and symbol.url (not nolink))~}}
+        {{! Link to the symbol's documentation. ~}}
+        {{#>markup/a href=(relativize symbol.url)}}{{name}}{{/markup/a~}}
+    {{else~}}
+        {{! No link, just the name. ~}}
+        {{name~}}
+    {{/if~}}
+    {{#if args~}}
+        {{! Render the template arguments of the symbol. ~}}
+        {{>template/args args=args nolink=nolink~}}
+    {{/if~}}
+{{/if~}}

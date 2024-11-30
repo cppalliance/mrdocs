@@ -1,0 +1,36 @@
+{{!--
+    Renders the symbol name in an appropriate format for section titles.
+
+    This is typically a linked name, but it can also be a special name like
+    "see-below" or "implementation-defined".
+
+    Expected Context: {Symbol Object}
+
+    Optional parameters:
+        nolink: If true, types and symbols will not be linked.
+        link: Symbol that should be linked to, regardless of the original symbol.
+
+    Example:
+        {{> declarator symbol }}
+
+    See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
+--}}
+{{#if (and (eq kind "function") (eq class "conversion"))~}}
+    {{! Conversion operator: "operator" and the type declarator ~}}
+    operator {{>type/declarator return nolink=nolink~}}
+{{else if (eq kind "guide")~}}
+    {{! Deduction guide: "deduced" type declarator ~}}
+    {{>type/declarator deduced nolink=nolink~}}
+{{else~}}
+    {{#if (and link.url (not nolink))~}}
+        {{! Symbol with URL: link to the symbol documentation ~}}
+        {{#>markup/a href=(relativize link.url)}}{{name}}{{/markup/a~}}
+    {{else~}}
+        {{! Symbol without URL: plain text ~}}
+        {{name~}}
+    {{/if~}}
+    {{#if (contains (arr "explicit" "partial") template.kind)~}}
+        {{! Explicit or partial template: render the template arguments ~}}
+        {{>template/args args=template.args nolink=nolink~}}
+    {{/if~}}
+{{/if}}

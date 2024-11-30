@@ -1,0 +1,17 @@
+{{!--
+
+    Renders all template arguments.
+
+    This partial renders all template arguments for a template instantiation.
+
+    Expected Context: {Template Info}
+
+    Example:
+        {{> template/args symbol.template.args }}
+
+    See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
+--}}
+{{ str '<' }}{{~#each args~}}
+{{~>template/arg nolink=../nolink~}}
+{{~#if (not @last)}}, {{/if~}}
+{{~/each~}}{{ str '>' }}

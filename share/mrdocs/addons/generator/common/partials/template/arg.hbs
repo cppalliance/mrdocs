@@ -1,0 +1,26 @@
+{{!--
+
+    Renders a template argument.
+
+    This partial renders a template argument for a template instantiation.
+
+    Expected Context: {TArg}
+
+    Example:
+        {{> template/arg symbol.template.args[0] }}
+
+    See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
+--}}
+{{#if (eq kind "type")~}}
+    {{! TArg is a type: render the declarator ~}}
+    {{~>type/declarator type nolink=nolink~}}
+{{else if (eq kind "non-type")~}}
+    {{! TArg is a non-type: render the value string as is ~}}
+    {{~value~}}
+{{else if (eq kind "template")~}}
+    {{! TArg is another template: render the template head ~}}
+    {{#if (and template (not nolink))}}{{#>markup/a href=(relativize template.url)}}{{name}}{{/markup/a}}{{else~}}{{name~}}{{/if~}}
+{{/if~}}
+{{~#if is-pack~}}
+    ...
+{{~/if~}}

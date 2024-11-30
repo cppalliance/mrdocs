@@ -1,0 +1,29 @@
+{{!--
+    Renders all symbols of the "members" field as a table.
+
+    This partials renders each row with the symbol name and brief for
+    each member.
+
+    Expected Context: {Symbol Object}
+
+    Example:
+        {{> symbol/members-table symbol }}
+
+    See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
+--}}
+{{#if members}}
+{{#>markup/h level=(select @root.config.multipage 1 2)}}{{title}}{{/markup/h}}
+{{#>markup/table cols=2}}
+{{#>markup/thead}}
+{{#>markup/tr~}}
+{{#>markup/th}}Name{{/markup/th~}}
+{{#>markup/th}}Description{{/markup/th}}
+{{/markup/tr}}
+{{/markup/thead}}
+{{#>markup/tbody}}
+{{#each (sort_by members "name")}}
+{{> symbol/detail/members-table-row .}}
+{{/each}}
+{{/markup/tbody}}
+{{/markup/table}}
+{{/if}}

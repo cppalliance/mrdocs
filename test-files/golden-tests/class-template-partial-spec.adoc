@@ -62,7 +62,7 @@ struct B;
 
 
 [#A-B-06]
-== <<#A,A>>::B
+== <<#A,A>>::B<U*, T>
 
 === Synopsis
 
@@ -77,7 +77,7 @@ struct <<#A-B-0a,B>><U*, T>;
 
 
 [#A-B-04]
-== <<#A,A>>::B
+== <<#A,A>>::B<T, long>
 
 === Synopsis
 

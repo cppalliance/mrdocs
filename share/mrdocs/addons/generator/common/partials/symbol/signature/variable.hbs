@@ -1,0 +1,11 @@
+{{#if template}}{{>template/head template}}
+{{/if~}}
+{{#if constexprKind}}{{constexprKind}}
+{{/if~}}
+{{#if storageClass}}{{storageClass}}
+{{/if~}}
+{{#if isThreadLocal}}thread_local
+{{/if~}}
+{{>type/declarator-prefix type}} {{>symbol/name symbol link=(select link link template.primary)~}}
+{{>type/declarator-suffix type~}}
+{{#if initializer}} = {{initializer}}{{/if}};

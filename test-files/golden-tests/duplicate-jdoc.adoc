@@ -104,7 +104,7 @@ g0(int a);
 === Parameters
 
 |===
-| Name | Description 
+| Name | Description
 
 | *a*
 | 
@@ -135,7 +135,7 @@ g1(int a);
 === Parameters
 
 |===
-| Name | Description 
+| Name | Description
 
 | *a*
 | 

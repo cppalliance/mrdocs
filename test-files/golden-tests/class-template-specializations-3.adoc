@@ -104,7 +104,7 @@ struct D;
 
 
 [#A-0e-B-07-D-0f]
-== <<#A-0e,A>>::<<#A-0e-B-07,B>>::D
+== <<#A-0e,A>>::<<#A-0e-B-07,B>>::D<bool>
 
 === Synopsis
 
@@ -119,7 +119,7 @@ struct <<#A-0e-B-07-D-09,D>><bool>;
 
 
 [#A-0e-B-00]
-== <<#A-0e,A>>::B
+== <<#A-0e,A>>::B<double>
 
 === Synopsis
 
@@ -178,7 +178,7 @@ struct D;
 
 
 [#A-0e-B-00-D-0d]
-== <<#A-0e,A>>::<<#A-0e-B-00,B>><double>::D
+== <<#A-0e,A>>::<<#A-0e-B-00,B>><double>::D<bool>
 
 === Synopsis
 
