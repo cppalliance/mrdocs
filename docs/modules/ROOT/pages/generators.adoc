@@ -107,7 +107,7 @@ The multipage generator renders the layout multiple times as separate pages for 
 The single-page generator renders the layout multiple times and concatenates the results in a single page.
 
 Each time the generator encounters a symbol, it renders the layout template with the symbol data as the Handlebars context.
-The layout template can include other partial templates to render the symbol data.These partials are available in the `<addons>/generator/<generator>/partials` directory.
+The layout template can include other partial templates to render the symbol data. These partials are available in the `<addons>/generator/<generator>/partials` directory.
 
 The Document Object Model (DOM) for each symbol includes all information about the symbol.One advantage of custom templates over post-processing XML files is the ability to access symbols as a graph.If symbol `A` refers to symbol `B`, some properties of symbol `B` are likely to be required in the documentation of `A`.All templates and generators can access a reference to `B` by searching the symbol tree or simply by accessing the elements `A` refers to.All references to other symbols are resolved in the templates.
 

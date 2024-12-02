@@ -233,6 +233,7 @@ Builder(
     helpers::registerStringHelpers(hbs_);
     helpers::registerAntoraHelpers(hbs_);
     helpers::registerLogicalHelpers(hbs_);
+    helpers::registerMathHelpers(hbs_);
     helpers::registerContainerHelpers(hbs_);
     hbs_.registerHelper("relativize", dom::makeInvocable(relativize_fn));
 

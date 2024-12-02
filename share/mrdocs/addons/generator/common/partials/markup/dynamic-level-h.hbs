@@ -1,0 +1,6 @@
+{{#> markup/h
+    level=(select @root.config.multipage (or level 1) (add (or level 1) 1))
+    id=id
+}}
+{{> @partial-block }}
+{{/markup/h}}

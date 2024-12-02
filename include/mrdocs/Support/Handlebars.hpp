@@ -1164,6 +1164,17 @@ MRDOCS_DECL
 void
 registerLogicalHelpers(Handlebars& hbs);
 
+/** Register math helpers into a Handlebars instance
+
+    This function registers a number of common helpers that perform
+    mathemathical operations.
+
+    @param hbs The Handlebars instance to register the helpers into
+ */
+MRDOCS_DECL
+void
+registerMathHelpers(Handlebars& hbs);
+
 /** Register string helpers into a Handlebars instance
 
     This function registers a number of common helpers that operate on
