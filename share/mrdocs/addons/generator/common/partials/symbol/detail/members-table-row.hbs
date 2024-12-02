@@ -2,7 +2,7 @@
 {{#>markup/tr~}}
 {{#>markup/td}}
 {{! Member name, linked to its documentation }}
-{{#>markup/a href=(relativize url)}}{{#>markup/code}}{{>symbol/name . nolink=true}}{{/markup/code}}{{/markup/a}} {{>symbol/special-function-suffix .}}
+{{#>markup/a href=url}}{{#>markup/code}}{{>symbol/name . nolink=true}}{{/markup/code}}{{/markup/a}} {{>symbol/special-function-suffix .}}
 {{~/markup/td}}
 {{#>markup/td}}
 {{#if (ne kind "overloads")~}}
