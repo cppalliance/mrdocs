@@ -57,9 +57,9 @@ e1 brief.
 
 === Description
 
-pass:[
+
 E0 description.
-]
+
 
 [#E0-e0]
 == <<#E0,E0>>::e0
@@ -78,9 +78,9 @@ e0 = 1
 
 === Description
 
-pass:[
+
 e0 description.
-]
+
 
 [#E0-e1]
 == <<#E0,E0>>::e1
@@ -99,9 +99,9 @@ e1
 
 === Description
 
-pass:[
+
 e1 description.
-]
+
 
 [#E1]
 == E1
@@ -175,9 +175,9 @@ e5 brief.
 
 === Description
 
-pass:[
+
 E2 description.
-]
+
 
 [#E2-e4]
 == <<#E2,E2>>::e4
@@ -196,9 +196,9 @@ e4
 
 === Description
 
-pass:[
+
 e4 description.
-]
+
 
 [#E2-e5]
 == <<#E2,E2>>::e5
@@ -217,9 +217,9 @@ e5
 
 === Description
 
-pass:[
+
 e5 description.
-]
+
 
 [#E3]
 == E3

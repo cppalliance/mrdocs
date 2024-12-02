@@ -109,10 +109,10 @@ f1();
 
 === Description
 
-pass:[
+
 See
 xref:#f0[::f0]
-]
+
 
 [#A-B]
 == <<#A,A>>::B
@@ -145,13 +145,13 @@ struct B;
 
 === Description
 
-pass:[
+
 See
 xref:#A-f1[A::f1]
 
 See
 xref:#A-f1[::A::f1]
-]
+
 
 [#A-B-f2]
 == <<#A,A>>::<<#A-B,B>>::f2
@@ -286,13 +286,13 @@ struct E;
 
 === Description
 
-pass:[
+
 See
 xref:#A-D-f4[f4]
 
 See
 xref:#A-C-f4[C::f4]
-]
+
 
 [#f5]
 == f5
@@ -313,10 +313,10 @@ f5();
 
 === Description
 
-pass:[
+
 See
 xref:#A-f1[::A::f1]
-]
+
 
 [#F]
 == F
@@ -942,7 +942,7 @@ f6();
 
 === Description
 
-pass:[
+
 See
 xref:#F-operator_comma[F::operator,]
 
@@ -1056,7 +1056,7 @@ xref:#F-operator_not[F::operator!]
 
 See
 xref:#F-operator_not_eq[F::operator!&equals;]
-]
+
 
 
 

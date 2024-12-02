@@ -61,12 +61,12 @@ f6();
 
 === Description
 
-pass:[
+
 many lined
 *bold*
 what will
 happen?
-]
+
 
 
 

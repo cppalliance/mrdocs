@@ -24,7 +24,7 @@
 {{else~}}
     {{#if (and link.url (not nolink))~}}
         {{! Symbol with URL: link to the symbol documentation ~}}
-        {{#>markup/a href=(relativize link.url)}}{{name}}{{/markup/a~}}
+        {{#>markup/a href=link.url}}{{name}}{{/markup/a~}}
     {{else~}}
         {{! Symbol without URL: plain text ~}}
         {{name~}}

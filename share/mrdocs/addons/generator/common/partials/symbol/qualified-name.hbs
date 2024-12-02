@@ -23,7 +23,7 @@
         {{! General case: linked namespaces followed by the symbol name ~}}
         {{#each (reverse namespace)~}}
             {{#if name~}}
-                {{>symbol/name . link=.}}::
+                {{>symbol/name . link=. nolink=../nolink}}::
             {{~/if}}
         {{~/each}}{{>symbol/name .}}
     {{~else~}}
@@ -39,7 +39,7 @@
 {{~else~}}
     {{~#if symbol~}}
         {{! Friend symbol: use the befriended symbol ~}}
-        {{>symbol/qualified-name symbol~}}
+        {{>symbol/qualified-name symbol nolink=nolink ~}}
     {{~else~}}
         {{! Friend type: use the type name ~}}
         {{~type.name~}}

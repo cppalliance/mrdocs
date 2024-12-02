@@ -3,7 +3,13 @@
 {{#if @root.config.multipage }}
 {{! Multipage documentation: symbol is available to the wrapper }}
 [#{{{symbol.anchor}}}]
-= {{> symbol/qualified-name symbol }}
+{{!
+    This title qualified name does not include links as the Antora
+    UI is not able to render these links in the title.
+
+    Breadcrumbs are included in the symbol template as an alternative.
+}}
+= {{> symbol/qualified-name symbol nolink=true }}
 {{else}}
 {{! Single page documentation: symbol is not available to the wrapper }}
 = Reference

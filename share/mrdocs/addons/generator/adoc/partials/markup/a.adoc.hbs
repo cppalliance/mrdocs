@@ -1,1 +1,14 @@
-{{#if (starts_with href "#")}}<<{{{href}}},{{> @partial-block }}>>{{else}}xref:{{{href}}}[{{> @partial-block }}]{{/if}}
+{{!
+    Do not relativize links as asciidoc does not support it.
+
+    https://gitlab.com/antora/antora/-/issues/428
+}}
+{{#if (starts_with href "#")~}}
+    <<{{{href}}},{{> @partial-block }}>>
+{{~else if (starts_with href "/")~}}
+    xref:{{{remove_prefix href "/"}}}[{{> @partial-block }}]
+{{~else if (starts_with href ".")~}}
+    xref:{{{href}}}[{{> @partial-block }}]
+{{~else~}}
+    {{{href}}}[{{> @partial-block }}]
+{{~/if~}}

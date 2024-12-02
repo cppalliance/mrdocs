@@ -19,7 +19,7 @@
     {{~value~}}
 {{else if (eq kind "template")~}}
     {{! TArg is another template: render the template head ~}}
-    {{#if (and template (not nolink))}}{{#>markup/a href=(relativize template.url)}}{{name}}{{/markup/a}}{{else~}}{{name~}}{{/if~}}
+    {{#if (and template (not nolink))}}{{#>markup/a href=template.url}}{{name}}{{/markup/a}}{{else~}}{{name~}}{{/if~}}
 {{/if~}}
 {{~#if is-pack~}}
     ...
