@@ -1,0 +1,29 @@
+{{!--
+    Renders code blocks with signatures related to a symbol
+
+    For most symbols, this will render a single code block with the symbol's signature.
+
+    For function overloads, this will render a code block for each overload.
+
+    Expected Context: {Symbol Object}
+
+    Example:
+        {{> symbol/signatures symbol }}
+
+    See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
+--}}
+{{#if (ne kind "overloads")}}
+{{#> markup/code-block }}
+{{> symbol/signature }}
+{{/markup/code-block}}
+
+{{else}}
+{{#each members as | member |}}
+{{#> markup/code-block }}
+{{> symbol/signature member link=member}}
+{{/markup/code-block}}
+
+{{#> markup/span class="small" }}{{#> markup/a href=(relativize member.url) }}{{#>markup/em }}» more...{{/markup/em}}{{/markup/a}}{{/markup/span}}
+
+{{/each}}
+{{/if}}

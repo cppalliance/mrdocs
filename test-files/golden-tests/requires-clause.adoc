@@ -37,12 +37,16 @@ void
 <<#f-05,f>>() requires pass:[(sizeof(T) == 4)];
 ----
 
+[.small]#<<#f-05,_» more..._>>#
+
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T>
 void
 <<#f-08,f>>() requires pass:[(sizeof(T) == 2)];
 ----
+
+[.small]#<<#f-08,_» more..._>>#
 
 [#f-05]
 == f
@@ -83,12 +87,16 @@ void
 <<#g-0a,g>>();
 ----
 
+[.small]#<<#g-0a,_» more..._>>#
+
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename T> requires pass:[(sizeof(U) == 2)]
 void
 <<#g-0c,g>>();
 ----
+
+[.small]#<<#g-0c,_» more..._>>#
 
 [#g-0a]
 == g

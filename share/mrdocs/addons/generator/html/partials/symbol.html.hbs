@@ -29,30 +29,14 @@
 </div>
 {{/unless}}
 {{! Synopsis }}
-{{#unless (contains (arr "namespace") symbol.kind)}}
+{{#unless (eq symbol.kind "namespace")}}
 <div>
 {{#> markup/dynamic-level-h level=2 }}Synopsis{{/markup/dynamic-level-h}}
 <div>
 {{>location/source dcl=(primary_location symbol)}}
 </div>
-{{#if (ne symbol.kind "overloads")}}
-<pre>
-<code class="source-code cpp">
-{{> symbol/signature symbol }}
+{{> symbol/signatures symbol }}
 
-</code>
-</pre>
-{{else}}
-{{#each symbol.members as | member |}}
-<pre>
-<code class="language-cpp">
-{{> symbol/signature member }}
-
-</code>
-</pre>
-<a href="{{{relativize member.url}}}"><em>» more...</em></a>
-{{/each}}
-{{/if}}
 </div>
 {{/unless}}
 {{! Tranches }}

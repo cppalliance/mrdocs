@@ -50,6 +50,8 @@ auto&&
 <<#Optional-value-05,value>>(this Self&& self);
 ----
 
+[.small]#<<#Optional-value-05,_» more..._>>#
+
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<typename Self>
@@ -59,6 +61,8 @@ auto&&
     Self&& self,
     int x);
 ----
+
+[.small]#<<#Optional-value-06,_» more..._>>#
 
 [#Optional-value-05]
 == <<#Optional,Optional>>::value

@@ -26,12 +26,16 @@ void
 <<#f-03,f>>();
 ----
 
+[.small]#<<#f-03,_» more..._>>#
+
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
 void
 <<#f-0c,f>><int>();
 ----
+
+[.small]#<<#f-0c,_» more..._>>#
 
 [#f-03]
 == f
