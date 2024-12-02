@@ -57,17 +57,23 @@ explicit
 <<#Explicit-2constructor-02,Explicit>>();
 ----
 
+[.small]#<<#Explicit-2constructor-02,_» more..._>>#
+
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 explicit
 <<#Explicit-2constructor-00,Explicit>>(<<#Explicit,Explicit>> const&);
 ----
 
+[.small]#<<#Explicit-2constructor-00,_» more..._>>#
+
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 explicit
 <<#Explicit-2constructor-0b,Explicit>>(<<#Explicit,Explicit>>&&) noexcept;
 ----
+
+[.small]#<<#Explicit-2constructor-0b,_» more..._>>#
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -76,6 +82,8 @@ explicit
     int,
     int);
 ----
+
+[.small]#<<#Explicit-2constructor-03,_» more..._>>#
 
 [#Explicit-2constructor-02]
 == <<#Explicit,Explicit>>::Explicit
@@ -161,17 +169,23 @@ pass:[explicit(true)]
 <<#ExplicitTrue-2constructor-0d,ExplicitTrue>>();
 ----
 
+[.small]#<<#ExplicitTrue-2constructor-0d,_» more..._>>#
+
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 pass:[explicit(true)]
 <<#ExplicitTrue-2constructor-04,ExplicitTrue>>(<<#ExplicitTrue,ExplicitTrue>> const&);
 ----
 
+[.small]#<<#ExplicitTrue-2constructor-04,_» more..._>>#
+
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 pass:[explicit(true)]
 <<#ExplicitTrue-2constructor-08,ExplicitTrue>>(<<#ExplicitTrue,ExplicitTrue>>&&) noexcept;
 ----
+
+[.small]#<<#ExplicitTrue-2constructor-08,_» more..._>>#
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -180,6 +194,8 @@ pass:[explicit(true)]
     int,
     int);
 ----
+
+[.small]#<<#ExplicitTrue-2constructor-05,_» more..._>>#
 
 [#ExplicitTrue-2constructor-0d]
 == <<#ExplicitTrue,ExplicitTrue>>::ExplicitTrue
@@ -265,17 +281,23 @@ pass:[explicit(false)]
 <<#ExplicitFalse-2constructor-01,ExplicitFalse>>();
 ----
 
+[.small]#<<#ExplicitFalse-2constructor-01,_» more..._>>#
+
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 pass:[explicit(false)]
 <<#ExplicitFalse-2constructor-08,ExplicitFalse>>(<<#ExplicitFalse,ExplicitFalse>> const&);
 ----
 
+[.small]#<<#ExplicitFalse-2constructor-08,_» more..._>>#
+
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 pass:[explicit(false)]
 <<#ExplicitFalse-2constructor-0a,ExplicitFalse>>(<<#ExplicitFalse,ExplicitFalse>>&&) noexcept;
 ----
+
+[.small]#<<#ExplicitFalse-2constructor-0a,_» more..._>>#
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -284,6 +306,8 @@ pass:[explicit(false)]
     int,
     int);
 ----
+
+[.small]#<<#ExplicitFalse-2constructor-04,_» more..._>>#
 
 [#ExplicitFalse-2constructor-01]
 == <<#ExplicitFalse,ExplicitFalse>>::ExplicitFalse
@@ -370,17 +394,23 @@ pass:[explicit(B)]
 <<#ExplicitExpression-2constructor-0b,ExplicitExpression>>();
 ----
 
+[.small]#<<#ExplicitExpression-2constructor-0b,_» more..._>>#
+
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 pass:[explicit(B)]
 <<#ExplicitExpression-2constructor-04,ExplicitExpression>>(<<#ExplicitExpression,ExplicitExpression>> const&);
 ----
 
+[.small]#<<#ExplicitExpression-2constructor-04,_» more..._>>#
+
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 pass:[explicit(B)]
 <<#ExplicitExpression-2constructor-08,ExplicitExpression>>(<<#ExplicitExpression,ExplicitExpression>>&&) noexcept;
 ----
+
+[.small]#<<#ExplicitExpression-2constructor-08,_» more..._>>#
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -389,6 +419,8 @@ pass:[explicit(B)]
     int,
     int);
 ----
+
+[.small]#<<#ExplicitExpression-2constructor-02,_» more..._>>#
 
 [#ExplicitExpression-2constructor-0b]
 == <<#ExplicitExpression,ExplicitExpression>>::ExplicitExpression

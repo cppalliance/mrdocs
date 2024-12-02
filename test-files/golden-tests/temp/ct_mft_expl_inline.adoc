@@ -50,12 +50,16 @@ void
 <<#A-f-07,f>>();
 ----
 
+[.small]#<<#A-f-07,_» more..._>>#
+
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
 void
 <<#A-f-04,f>><int>();
 ----
+
+[.small]#<<#A-f-04,_» more..._>>#
 
 [#A-f-07]
 == <<#A,A>>::f

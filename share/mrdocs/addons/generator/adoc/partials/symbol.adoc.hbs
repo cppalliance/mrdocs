@@ -23,28 +23,12 @@
 
 {{/if}}
 {{! Synopsis }}
-{{#unless (contains (arr "namespace") symbol.kind)}}
+{{#unless (eq symbol.kind "namespace")}}
 {{#> markup/dynamic-level-h }}Synopsis{{/markup/dynamic-level-h}}
 
 {{>location/source dcl=(primary_location symbol)}}
 
-{{#if (ne symbol.kind "overloads")}}
-[source,cpp,subs="verbatim,macros,-callouts"]
-----
-{{> symbol/signature symbol }}
-
-----
-
-{{else}}
-{{#each symbol.members as | member |}}
-[source,cpp,subs="verbatim,macros,-callouts"]
-----
-{{> symbol/signature member link=member}}
-
-----
-
-{{/each}}
-{{/if}}
+{{> symbol/signatures symbol }}
 {{/unless}}
 {{! Tranches }}
 {{#if symbol.interface}}

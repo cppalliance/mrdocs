@@ -49,12 +49,16 @@ void
 <<#A-f-0e,f>>();
 ----
 
+[.small]#<<#A-f-0e,_» more..._>>#
+
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 template<>
 void
 <<#A-f-0b,f>><int>();
 ----
+
+[.small]#<<#A-f-0b,_» more..._>>#
 
 [#A-f-0e]
 == <<#A,A>>::f
