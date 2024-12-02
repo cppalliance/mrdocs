@@ -6689,6 +6689,103 @@ registerContainerHelpers(Handlebars& hbs)
     hbs.registerHelper("flattenUnique", flattenUnique_fn);      
 }
 
+void
+registerMathHelpers(Handlebars& hbs)
+{
+    hbs.registerHelper("add", dom::makeVariadicInvocable([](
+        dom::Array const& arguments) -> Expected<dom::Value>
+    {
+        if (arguments.size() < 2)
+        {
+            return Unexpected(Error("add requires at least two arguments"));
+        }
+        if (!arguments.at(0).isInteger())
+        {
+            return Unexpected(Error("add requires integer arguments"));
+        }
+        std::int64_t res = arguments.at(0).getInteger();
+        for (std::size_t i = 1; i < arguments.size() - 1; ++i)
+        {
+            if (!arguments.at(i).isInteger())
+            {
+                return Unexpected(Error("add requires integer arguments"));
+            }
+            res += arguments.at(i).getInteger();
+        }
+        return res;
+    }));
+
+    hbs.registerHelper("sub", dom::makeVariadicInvocable([](
+        dom::Array const& arguments) -> Expected<dom::Value>
+    {
+        if (arguments.size() < 2)
+        {
+            return Unexpected(Error("sub requires at least two arguments"));
+        }
+        if (!arguments.at(0).isInteger())
+        {
+            return Unexpected(Error("sub requires integer arguments"));
+        }
+        std::int64_t res = arguments.at(0).getInteger();
+        for (std::size_t i = 1; i < arguments.size() - 1; ++i)
+        {
+            if (!arguments.at(i).isInteger())
+            {
+                return Unexpected(Error("sub requires integer arguments"));
+            }
+            res -= arguments.at(i).getInteger();
+        }
+        return res;
+    }));
+
+    hbs.registerHelper("mul", dom::makeVariadicInvocable([](
+        dom::Array const& arguments) -> Expected<dom::Value>
+    {
+        if (arguments.size() < 2)
+        {
+            return Unexpected(Error("mul requires at least two arguments"));
+        }
+        if (!arguments.at(0).isInteger())
+        {
+            return Unexpected(Error("mul requires integer arguments"));
+        }
+        std::int64_t res = arguments.at(0).getInteger();
+        for (std::size_t i = 1; i < arguments.size() - 1; ++i)
+        {
+            if (!arguments.at(i).isInteger())
+            {
+                return Unexpected(Error("mul requires integer arguments"));
+            }
+            res *= arguments.at(i).getInteger();
+        }
+        return res;
+    }));
+
+    hbs.registerHelper("div", dom::makeVariadicInvocable([](
+            dom::Array const& arguments) -> Expected<dom::Value>
+    {
+        if (arguments.size() < 2)
+        {
+            return Unexpected(Error("div requires at least two arguments"));
+        }
+        if (!arguments.at(0).isInteger())
+        {
+            return Unexpected(Error("div requires integer arguments"));
+        }
+        std::int64_t res = arguments.at(0).getInteger();
+        for (std::size_t i = 1; i < arguments.size() - 1; ++i)
+        {
+            if (!arguments.at(i).isInteger())
+            {
+                return Unexpected(Error("div requires integer arguments"));
+            }
+            res /= arguments.at(i).getInteger();
+        }
+        return res;
+    }));
+}
+
+
 } // helpers
 
 void

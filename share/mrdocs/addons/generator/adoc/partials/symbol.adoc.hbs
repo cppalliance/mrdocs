@@ -1,8 +1,20 @@
+{{!--
+    Renders the documentation for a symbol in a format that is coherent for all symbol kinds.
+
+    This partial conditionally checks if each documentation section exists and if a symbol kind
+    does not provide a specific kind of documentation section, that section is not rendered.
+
+    Expected Context: {Root Context Object}
+
+    Example:
+        {{> symbol }}
+
+    See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
+--}}
 {{#unless @root.config.multipage }}
 {{! Single page documentation: symbol is not available to the wrapper but it's available here }}
 {{! Include the symbol title at a higher level }}
-[#{{{symbol.anchor}}}]
-== {{> symbol/qualified-name symbol }}
+{{#> markup/h level=1 id=symbol.anchor }}{{> symbol/qualified-name symbol }}{{/markup/h}}
 {{/unless}}
 
 {{! Brief }}
@@ -12,7 +24,7 @@
 {{/if}}
 {{! Synopsis }}
 {{#unless (contains (arr "namespace") symbol.kind)}}
-=={{#unless @root.config.multipage}}={{/unless}} Synopsis
+{{#> markup/dynamic-level-h }}Synopsis{{/markup/dynamic-level-h}}
 
 {{>location/source dcl=(primary_location symbol)}}
 
@@ -52,7 +64,7 @@
 {{else if symbol.members}}
 {{! Members }}
 {{#if (and symbol.members (ne symbol.kind "overloads"))}}
-=={{#unless @root.config.multipage}}={{/unless}} Members
+{{#> markup/dynamic-level-h }}Members{{/markup/dynamic-level-h}}
 
 [,cols=2]
 |===
@@ -71,14 +83,14 @@
 {{/if}}
 {{! Description }}
 {{#if symbol.doc.description}}
-=={{#unless @root.config.multipage}}={{/unless}} Description
+{{#> markup/dynamic-level-h }}Description{{/markup/dynamic-level-h}}
 
 {{symbol.doc.description}}
 
 {{/if}}
 {{! Using symbols }}
 {{#if symbol.shadows}}
-=={{#unless @root.config.multipage}}={{/unless}} Introduced Symbols
+{{#> markup/dynamic-level-h }}Introduced Symbols{{/markup/dynamic-level-h}}
 
 |===
 | Name
@@ -91,7 +103,7 @@
 {{! Exceptions }}
 {{#if (ne symbol.kind "overloads")}}
 {{#if symbol.doc.exceptions}}
-=={{#unless @root.config.multipage}}={{/unless}} Exceptions
+{{#> markup/dynamic-level-h }}Exceptions{{/markup/dynamic-level-h}}
 
 |===
 | Name | Thrown on
@@ -106,7 +118,7 @@
 {{else}}
 {{#with (flattenUnique symbol.members "doc.exceptions" "exception") as |allExceptions|}}
 {{#if (ne (len allExceptions) 0)}}
-=={{#unless @root.config.multipage}}={{/unless}} Exceptions
+{{#> markup/dynamic-level-h }}Exceptions{{/markup/dynamic-level-h}}
 
 |===
 | Name | Thrown on
@@ -122,7 +134,7 @@
 {{/if}}
 {{! Return value }}
 {{#if symbol.doc.returns}}
-=={{#unless @root.config.multipage}}={{/unless}} Return Value
+{{#> markup/dynamic-level-h }}Return Value{{/markup/dynamic-level-h}}
 
 {{{symbol.doc.returns}}}
 
@@ -130,7 +142,7 @@
 {{! Template Parameters }}
 {{#if (ne symbol.kind "overloads")}}
 {{#if symbol.doc.tparams}}
-=={{#unless @root.config.multipage}}={{/unless}} Template Parameters
+{{#> markup/dynamic-level-h }}Template Parameters{{/markup/dynamic-level-h}}
 
 |===
 | Name | Description
@@ -145,7 +157,7 @@
 {{else}}
 {{#with (flattenUnique symbol.members "doc.tparams" "name") as |allTParams|}}
 {{#if (ne (len allTParams) 0)}}
-=={{#unless @root.config.multipage}}={{/unless}} Parameters
+{{#> markup/dynamic-level-h }}Parameters{{/markup/dynamic-level-h}}
 
 |===
 | Name | Description
@@ -162,7 +174,7 @@
 {{! Parameters }}
 {{#if (ne symbol.kind "overloads")}}
 {{#if symbol.doc.params}}
-=={{#unless @root.config.multipage}}={{/unless}} Parameters
+{{#> markup/dynamic-level-h }}Parameters{{/markup/dynamic-level-h}}
 
 |===
 | Name | Description
@@ -177,7 +189,7 @@
 {{else}}
 {{#with (flattenUnique symbol.members "doc.params" "name") as |allParams|}}
 {{#if (ne (len allParams) 0)}}
-=={{#unless @root.config.multipage}}={{/unless}} Parameters
+{{#> markup/dynamic-level-h }}Parameters{{/markup/dynamic-level-h}}
 
 |===
 | Name | Description
@@ -193,7 +205,7 @@
 {{/if}}
 {{! Preconditions }}
 {{#if symbol.doc.preconditions}}
-=={{#unless @root.config.multipage}}={{/unless}} Preconditions
+{{#> markup/dynamic-level-h }}Preconditions{{/markup/dynamic-level-h}}
 
 {{#each symbol.doc.preconditions}}
 {{{.}}}
@@ -202,7 +214,7 @@
 {{/if}}
 {{! Postconditions }}
 {{#if symbol.doc.postconditions}}
-=={{#unless @root.config.multipage}}={{/unless}} Postconditions
+{{#> markup/dynamic-level-h }}Postconditions{{/markup/dynamic-level-h}}
 
 {{#each symbol.doc.postconditions}}
 {{{.}}}
@@ -211,7 +223,7 @@
 {{/if}}
 {{! See Also }}
 {{#if symbol.doc.see}}
-=={{#unless @root.config.multipage}}={{/unless}} See Also
+{{#> markup/dynamic-level-h }}See Also{{/markup/dynamic-level-h}}
 
 {{#each symbol.doc.see}}
 {{{.}}}

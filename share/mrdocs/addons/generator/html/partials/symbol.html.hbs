@@ -1,9 +1,22 @@
+{{!--
+    Renders the documentation for a symbol in a format that is coherent for all symbol kinds.
+
+    This partial conditionally checks if each documentation section exists and if a symbol kind
+    does not provide a specific kind of documentation section, that section is not rendered.
+
+    Expected Context: {Root Context Object}
+
+    Example:
+        {{> symbol }}
+
+    See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
+--}}
 {{#unless @root.config.multipage }}
 {{! Single page documentation: symbol is not available to the wrapper but it's available here }}
 {{! Include the symbol title at a higher level }}
-<div id="{{{symbol.anchor}}}">
 <div>
-<h2>{{> symbol/qualified-name symbol }}</h2>
+<div>
+{{#> markup/h level=2 id=symbol.anchor }}{{> symbol/qualified-name symbol }}{{/markup/h}}
 {{/unless}}
 {{! Brief }}
 {{#if symbol.doc.brief}}
@@ -18,7 +31,7 @@
 {{! Synopsis }}
 {{#unless (contains (arr "namespace") symbol.kind)}}
 <div>
-<h3>Synopsis</h3>
+{{#> markup/dynamic-level-h level=2 }}Synopsis{{/markup/dynamic-level-h}}
 <div>
 {{>location/source dcl=(primary_location symbol)}}
 </div>
@@ -59,7 +72,7 @@
 {{! Members }}
 {{#if (and symbol.members (ne symbol.kind "overloads"))}}
 <div>
-<h3>Members</h3>
+{{#> markup/dynamic-level-h level=2 }}Members{{/markup/dynamic-level-h}}
 <table>
 <thead>
 <tr>
@@ -90,7 +103,7 @@
 {{! Description }}
 {{#if symbol.doc.description}}
 <div>
-<h3>Description</h3>
+{{#> markup/dynamic-level-h level=2 }}Description{{/markup/dynamic-level-h}}
 {{{symbol.doc.description}}}
 
 </div>
@@ -98,7 +111,7 @@
 {{! Using symbols }}
 {{#if symbol.shadows}}
 <div>
-<h3>Introduced Symbols</h3>
+{{#> markup/dynamic-level-h level=2 }}Introduced Symbols{{/markup/dynamic-level-h}}
 <table>
 <thead>
 <tr>
@@ -120,7 +133,7 @@
 {{#if (ne symbol.kind "overloads")}}
 {{#if symbol.doc.exceptions}}
 <div>
-<h3>Exceptions</h3>
+{{#> markup/dynamic-level-h level=2 }}Exceptions{{/markup/dynamic-level-h}}
 <table>
 <thead>
 <tr>
@@ -143,7 +156,7 @@
 {{#with (flattenUnique symbol.members "doc.exceptions" "exception") as |allExceptions|}}
 {{#if (ne (len allExceptions) 0)}}
 <div>
-<h3>Exceptions</h3>
+{{#> markup/dynamic-level-h level=2 }}Exceptions{{/markup/dynamic-level-h}}
 <table>
 <thead>
 <tr>
@@ -167,7 +180,7 @@
 {{! Return value }}
 {{#if symbol.doc.returns}}
 <div>
-<h3>Return Value</h3>
+{{#> markup/dynamic-level-h level=2 }}Return Value{{/markup/dynamic-level-h}}
 {{{symbol.doc.returns}}}
 </div>
 {{/if}}
@@ -175,7 +188,7 @@
 {{#if (ne symbol.kind "overloads")}}
 {{#if symbol.doc.tparams}}
 <div>
-<h3>Template Parameters</h3>
+{{#> markup/dynamic-level-h level=2 }}Template Parameters{{/markup/dynamic-level-h}}
 <table>
 <thead>
 <tr>
@@ -198,7 +211,7 @@
 {{#with (flattenUnique symbol.members "doc.tparams" "name") as |allTParams|}}
 {{#if (ne (len allTParams) 0)}}
 <div>
-<h3>Template Parameters</h3>
+{{#> markup/dynamic-level-h level=2 }}Template Parameters{{/markup/dynamic-level-h}}
 <table>
 <thead>
 <tr>
@@ -223,7 +236,7 @@
 {{#if (ne symbol.kind "overloads")}}
 {{#if symbol.doc.params}}
 <div>
-<h3>Parameters</h3>
+{{#> markup/dynamic-level-h level=2 }}Parameters{{/markup/dynamic-level-h}}
 <table>
 <thead>
 <tr>
@@ -246,7 +259,7 @@
 {{#with (flattenUnique symbol.members "doc.params" "name") as |allParams|}}
 {{#if (ne (len allParams) 0)}}
 <div>
-<h3>Parameters</h3>
+{{#> markup/dynamic-level-h level=2 }}Parameters{{/markup/dynamic-level-h}}
 <table>
 <thead>
 <tr>
@@ -270,7 +283,7 @@
 {{! Preconditions }}
 {{#if symbol.doc.preconditions}}
 <div>
-<h3>Preconditions</h3>
+{{#> markup/dynamic-level-h level=2 }}Preconditions{{/markup/dynamic-level-h}}
 {{#each symbol.doc.preconditions}}
 <p>{{.}}</p>
 {{/each}}
@@ -279,7 +292,7 @@
 {{! Postconditions }}
 {{#if symbol.doc.postconditions}}
 <div>
-<h3>Postconditions</h3>
+{{#> markup/dynamic-level-h level=2 }}Postconditions{{/markup/dynamic-level-h}}
 {{#each symbol.doc.postconditions}}
 <p>{{.}}</p>
 {{/each}}
@@ -288,7 +301,7 @@
 {{! See Also }}
 {{#if symbol.doc.see}}
 <div>
-<h3>See Also</h3>
+{{#> markup/dynamic-level-h level=2 }}See Also{{/markup/dynamic-level-h}}
 {{#each symbol.doc.see}}
 <p>{{.}}</p>
 {{/each}}

@@ -1,1 +1,3 @@
+{{#if id}}[#{{{id}}}]
+{{/if}}
 ={{select level (repeat "=" level) (select @root.config.multipage "==" "=")}} {{> @partial-block }}
