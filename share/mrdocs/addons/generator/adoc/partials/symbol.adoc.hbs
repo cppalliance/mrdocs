@@ -22,18 +22,6 @@
 {{{symbol.doc.brief}}}
 
 {{/if}}
-{{! Breadcrumbs
-
-    The antora breadcrumbs do not work with the multipage documentation.
-
-    This includes symbol/qualified-name here as an alternative for users
-    to visit parent scopes.
-}}
-{{#if @root.config.multipage }}
-{{#> markup/code-block }}
-{{> symbol/qualified-name symbol }}
-{{/markup/code-block}}
-{{/if}}
 {{! Synopsis }}
 {{#unless (eq symbol.kind "namespace")}}
 {{#> markup/dynamic-level-h }}Synopsis{{/markup/dynamic-level-h}}
