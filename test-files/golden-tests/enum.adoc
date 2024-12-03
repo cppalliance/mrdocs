@@ -47,10 +47,12 @@ enum E0;
 [,cols=2]
 |===
 |Name |Description
-|xref:E0-e0[`pass:v[e0]`] |pass:[
+|`e0`
+|pass:[
 e0 brief.
 ]
-|xref:E0-e1[`pass:v[e1]`] |pass:[
+|`e1`
+|pass:[
 e1 brief.
 ]
 |===
@@ -119,8 +121,10 @@ enum E1 : char;
 [,cols=2]
 |===
 |Name |Description
-|xref:E1-e2[`pass:v[e2]`] |
-|xref:E1-e3[`pass:v[e3]`] |
+|`e2`
+|
+|`e3`
+|
 |===
 
 [#E1-e2]
@@ -165,10 +169,12 @@ enum E2 : int;
 [,cols=2]
 |===
 |Name |Description
-|xref:E2-e4[`pass:v[e4]`] |pass:[
+|`e4`
+|pass:[
 e4 brief.
 ]
-|xref:E2-e5[`pass:v[e5]`] |pass:[
+|`e5`
+|pass:[
 e5 brief.
 ]
 |===
@@ -237,8 +243,10 @@ enum E3 : char;
 [,cols=2]
 |===
 |Name |Description
-|xref:E3-e6[`pass:v[e6]`] |
-|xref:E3-e7[`pass:v[e7]`] |
+|`e6`
+|
+|`e7`
+|
 |===
 
 [#E3-e6]
