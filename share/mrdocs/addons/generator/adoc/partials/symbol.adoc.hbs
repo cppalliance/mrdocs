@@ -45,20 +45,23 @@
 {{>symbol/tranche tranche=symbol.interface label="" is-namespace=true}}
 
 {{/if}}
-{{else if symbol.members}}
+{{else if (and symbol.members (ne symbol.kind "overloads"))}}
 {{! Members }}
-{{#if (and symbol.members (ne symbol.kind "overloads"))}}
 {{#> markup/dynamic-level-h }}Members{{/markup/dynamic-level-h}}
 
 [,cols=2]
 |===
 |Name |Description
 {{#each symbol.members}}
-|xref:{{{anchor}}}[`pass:v[{{>symbol/name . nolink=true}}]`] | {{~doc.brief}}
+{{#if (ne kind "enumerator")}}
+|xref:{{{anchor}}}[`{{>symbol/name . nolink=true}}`]
+{{else}}
+|`{{>symbol/name . nolink=true}}`
+{{/if}}
+|{{~doc.brief}}
 {{/each}}
 |===
 
-{{/if}}
 {{/if}}
 {{! Using directives }}
 {{#if symbol.usingDirectives}}
