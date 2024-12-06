@@ -869,6 +869,7 @@ jobs:
 
           # Start ssh-agent and add the key
           SSH_AUTH_SOCK="$RUNNER_TEMP/ssh_agent.sock"
+          export SSH_AUTH_SOCK
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-add ~/.ssh/github_actions
 
