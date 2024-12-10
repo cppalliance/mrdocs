@@ -342,7 +342,7 @@ void merge(FriendInfo& I, FriendInfo&& Other)
         I.FriendType = std::move(Other.FriendType);
 }
 
-void merge(AliasInfo& I, AliasInfo&& Other)
+void merge(NamespaceAliasInfo& I, NamespaceAliasInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
     if (! I.AliasedSymbol)
@@ -364,7 +364,7 @@ void merge(UsingInfo& I, UsingInfo&& Other)
     mergeInfo(I, std::move(Other));
 }
 
-void merge(EnumeratorInfo& I, EnumeratorInfo&& Other)
+void merge(EnumConstantInfo& I, EnumConstantInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
     if(I.Initializer.Written.empty())

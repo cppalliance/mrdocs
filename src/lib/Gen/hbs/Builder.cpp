@@ -114,11 +114,11 @@ relativize_fn(dom::Value to0, dom::Value from0, dom::Value options)
     {
         return to;
     }
-    std::string_view from = from0.getString().get();
+    std::string_view const from = from0.getString().get();
 
     // Find anchor in URL
     std::string_view hash;
-    std::size_t hashIdx = to.find('#');
+    std::size_t const hashIdx = to.find('#');
     if (hashIdx != std::string_view::npos)
     {
         hash = to.substr(hashIdx);
@@ -132,7 +132,7 @@ relativize_fn(dom::Value to0, dom::Value from0, dom::Value options)
         {
             return hash;
         }
-        else if (files::isDirsy(to))
+        if (files::isDirsy(to))
         {
             return "./";
         }
@@ -140,7 +140,7 @@ relativize_fn(dom::Value to0, dom::Value from0, dom::Value options)
     }
 
     // Handle the general case
-    std::string fromDir = files::getParentDir(from);
+    std::string const fromDir = files::getParentDir(from);
     std::string relativePath = std::filesystem::path(to).lexically_relative(fromDir).generic_string();
     if (relativePath.empty())
     {
@@ -164,8 +164,8 @@ Builder::
 Builder(
     HandlebarsCorpus const& corpus,
     std::function<void(OutputRef&, std::string_view)> escapeFn)
-    : domCorpus(corpus)
-    , escapeFn_(std::move(escapeFn))
+    : escapeFn_(std::move(escapeFn))
+    , domCorpus(corpus)
 {
     namespace fs = std::filesystem;
 
@@ -196,39 +196,45 @@ Builder(
         dom::makeInvocable([](dom::Value const& v) ->
             dom::Value
         {
-            dom::Value src_loc = v.get("loc");
-            if(! src_loc)
+            dom::Value const sourceInfo = v.get("loc");
+            if (!sourceInfo)
+            {
                 return nullptr;
-            dom::Value decls = src_loc.get("decl");
-            if(dom::Value def = src_loc.get("def"))
+            }
+            dom::Value decls = sourceInfo.get("decl");
+            if(dom::Value def = sourceInfo.get("def"))
             {
                 // for classes/enums, prefer the definition
-                dom::Value kind = v.get("kind");
-                if(kind == "record" || kind == "enum")
+                if (dom::Value const kind = v.get("kind");
+                    kind == "record" || kind == "enum")
+                {
                     return def;
-
-                // we only every want to use the definition
+                }
+                // We only want to use the definition
                 // for non-tag types when no other declaration
                 // exists
-                if(! decls)
+                if (!decls)
+                {
                     return def;
+                }
             }
-            if(! decls.isArray())
+            if (!decls.isArray() ||
+                 decls.getArray().empty())
+            {
                 return nullptr;
-            dom::Value first;
-            // otherwise, use whatever declaration had docs.
+            }
+            // Use whatever declaration had docs.
+            for (const dom::Value& loc : decls.getArray())
+            {
+                if (loc.get("documented"))
+                {
+                    return loc;
+                }
+            }
             // if no declaration had docs, fallback to the
             // first declaration
-            for(const dom::Value& loc : decls.getArray())
-            {
-                if(loc.get("documented"))
-                    return loc;
-                else if(! first)
-                    first = loc;
-            }
-            return first;
+            return decls.getArray().get(0);
         }));
-
     helpers::registerConstructorHelpers(hbs_);
     helpers::registerStringHelpers(hbs_);
     helpers::registerAntoraHelpers(hbs_);

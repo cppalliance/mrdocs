@@ -12,20 +12,20 @@
       <file path="type-resolution.cpp" line="4" class="def"/>
     </struct>
   </template>
-  <alias name="C" id="f75RIL8qKOwbyH6ffvrv59F0nCA=">
+  <namespace-alias name="C" id="f75RIL8qKOwbyH6ffvrv59F0nCA=">
     <file path="type-resolution.cpp" line="6" class="def"/>
     <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-  </alias>
-  <alias name="D" id="LXTs1uTCF/vevZU29QYVICehLFQ=">
+  </namespace-alias>
+  <namespace-alias name="D" id="LXTs1uTCF/vevZU29QYVICehLFQ=">
     <file path="type-resolution.cpp" line="8" class="def"/>
     <type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;"/>
-  </alias>
+  </namespace-alias>
   <template>
     <tparam name="T" class="type"/>
-    <alias name="E" id="ikh/cWe22atB10u7UsOKS5W39CA=">
+    <namespace-alias name="E" id="ikh/cWe22atB10u7UsOKS5W39CA=">
       <file path="type-resolution.cpp" line="11" class="def"/>
       <type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;T, long&gt;"/>
-    </alias>
+    </namespace-alias>
   </template>
   <function name="f0" id="NmPMV0MWNFJUjfSOLHtzdbgpFoQ=">
     <file path="type-resolution.cpp" line="13"/>

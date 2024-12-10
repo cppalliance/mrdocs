@@ -2,19 +2,19 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
-  <alias name="T" id="PvNOREc+JWxdkVgvSz+jC45IbGQ=">
+  <namespace-alias name="T" id="PvNOREc+JWxdkVgvSz+jC45IbGQ=">
     <file path="variadic-function.cpp" line="1" class="def"/>
     <type class="function" is-variadic="1">
       <return-type name="void"/>
     </type>
-  </alias>
-  <alias name="U" id="h6hupdyuT6SfsCGFl6UUFGtvrcc=">
+  </namespace-alias>
+  <namespace-alias name="U" id="h6hupdyuT6SfsCGFl6UUFGtvrcc=">
     <file path="variadic-function.cpp" line="3" class="def"/>
     <type class="function" is-variadic="1">
       <return-type name="void"/>
       <param-type name="int"/>
     </type>
-  </alias>
+  </namespace-alias>
   <function name="f" id="CMaAySU4txrIlGl6edqWDSabBRA=">
     <file path="variadic-function.cpp" line="5"/>
     <attr id="is-variadic"/>

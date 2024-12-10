@@ -73,7 +73,7 @@ INFO(Variable,       Variables,       VARIABLE,       variable,       variables,
 INFO(Field,          Fields,          FIELD,          field,          fields,          The symbol is a field)
 INFO(Specialization, Specializations, SPECIALIZATION, specialization, specializations, The symbol is a template specialization)
 INFO(Friend,         Friends,         FRIEND,         friend,         friends,         The symbol is a friend declaration)
-INFO(Enumerator,     Enumerators,     ENUMERATOR,     enumerator,     enumerators,     The symbol is an enumerator)
+INFO(EnumConstant,   EnumConstants,   ENUM_CONSTANT,  enumerator,     enumerators,     The symbol is an enumerator)
 INFO(Guide,          Guides,          GUIDE,          guide,          guides,          The symbol is a deduction guide)
 INFO(Alias,          Aliases,         ALIAS,          alias,          aliases,         The symbol is a namespace alias)
 INFO(Using,          Usings,          USING,          using,          usings,          The symbol is a using declaration)

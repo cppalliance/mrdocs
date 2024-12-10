@@ -1,0 +1,84 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Functions
+[cols=2]
+|===
+| Name | Description 
+
+| <<#sqrt,`sqrt`>> 
+| 
+Computes the square root of an integral value.
+
+
+|===
+
+[#sqrt]
+== sqrt
+
+
+Computes the square root of an integral value.
+
+
+=== Synopsis
+
+Declared in `<pass:[sqrt.cpp]>`
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+template<typename T>
+std::T
+sqrt(T value);
+----
+
+=== Description
+
+
+This function calculates the square root of a
+given integral value using bit manipulation.
+
+
+=== Exceptions
+
+|===
+| Name | Thrown on
+
+| `if`
+| pass:[
+the input value is negative.
+]
+|===
+
+=== Return Value
+
+
+The square root of the input value.
+
+
+=== Template Parameters
+
+|===
+| Name | Description
+
+| *T*
+| pass:[
+The type of the input value. Must be an integral type.
+]
+|===
+
+=== Parameters
+
+|===
+| Name | Description
+
+| *value*
+| pass:[
+The integral value to compute the square root of.
+]
+|===
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

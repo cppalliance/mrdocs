@@ -24,7 +24,7 @@ getDefaultTagName(Info const& I) noexcept
 #define INFO(PascalName, LowerName) \
     case InfoKind::PascalName: \
         return LowerName##TagName;
-#include <mrdocs/Metadata/InfoNodesPascalAndLower.inc>
+#include <mrdocs/Metadata/InfoNodesPascalAndCamel.inc>
     default:
         break;
     }
@@ -49,7 +49,7 @@ getTagName(Info const& I) noexcept
         break;
     case InfoKind::Typedef:
         if(static_cast<TypedefInfo const&>(I).IsUsing)
-            return aliasTagName;
+            return namespaceAliasTagName;
         else
             return typedefTagName;
     default:

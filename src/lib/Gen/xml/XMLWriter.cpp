@@ -244,14 +244,14 @@ writeEnum(
 
 void
 XMLWriter::
-writeEnumerator(
-    EnumeratorInfo const& I)
+writeEnumConstant(
+    EnumConstantInfo const& I)
 {
     std::string val = I.Initializer.Value ?
         std::to_string(*I.Initializer.Value) :
         I.Initializer.Written;
 
-    tags_.open(enumeratorTagName, {
+    tags_.open(enumConstantTagName, {
         { "name", I.Name },
         { "initializer", val },
         { I.Access },
@@ -262,7 +262,7 @@ writeEnumerator(
 
     writeJavadoc(I.javadoc);
 
-    tags_.close(enumeratorTagName);
+    tags_.close(enumConstantTagName);
 }
 
 void
@@ -405,10 +405,10 @@ writeConcept(
 
 void
 XMLWriter::
-writeAlias(
-    AliasInfo const& I)
+writeNamespaceAlias(
+    NamespaceAliasInfo const& I)
 {
-    tags_.open(aliasTagName, {
+    tags_.open(namespaceAliasTagName, {
         { "name", I.Name },
         { I.Access },
         { I.id }
@@ -422,7 +422,7 @@ writeAlias(
         {"name", toString(*I.AliasedSymbol)},
         { I.AliasedSymbol->id }
     });
-    tags_.close(aliasTagName);
+    tags_.close(namespaceAliasTagName);
 }
 
 void
@@ -516,7 +516,7 @@ writeTypedef(
 
     llvm::StringRef tag;
     if(I.IsUsing)
-        tag = aliasTagName;
+        tag = namespaceAliasTagName;
     else
         tag = typedefTagName;
     tags_.open(tag, {

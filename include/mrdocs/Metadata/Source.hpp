@@ -72,11 +72,11 @@ struct MRDOCS_DECL
     //--------------------------------------------
 
     Location(
-        std::string_view filepath = "",
-        std::string_view filename = "",
-        unsigned line = 0,
-        FileKind kind = FileKind::Source,
-        bool documented = false)
+        std::string_view const filepath = {},
+        std::string_view const filename = {},
+        unsigned const line = 0,
+        FileKind const kind = FileKind::Source,
+        bool const documented = false)
         : Path(filepath)
         , Filename(filename)
         , LineNumber(line)

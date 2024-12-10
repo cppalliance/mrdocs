@@ -15,6 +15,7 @@
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
 #include <mrdocs/Metadata/Source.hpp>
+#include <mrdocs/Metadata/Template.hpp>
 
 namespace clang {
 namespace mrdocs {

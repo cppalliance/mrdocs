@@ -244,14 +244,14 @@ isValidMrDocsOption(
 static
 std::vector<std::string>
 adjustCommandLine(
-    llvm::StringRef workingDir,
+    StringRef const workingDir,
     std::vector<std::string> const& cmdline,
     std::vector<std::string> const& additional_defines,
     std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories,
     std::vector<std::string> const& stdlibIncludes,
     std::vector<std::string> const& systemIncludes,
     std::vector<std::string> const& includes,
-    bool useSystemStdlib)
+    bool const useSystemStdlib)
 {
     if (cmdline.empty())
     {
@@ -281,7 +281,7 @@ adjustCommandLine(
     // command line option formats. The value is deduced from
     // the `-drive-mode` option or from `progName`.
     // Common values are "gcc", "g++", "cpp", "cl" and "flang".
-    StringRef driver_mode = driver::getDriverMode(progName, cmdLineCStrs);
+    StringRef const driver_mode = driver::getDriverMode(progName, cmdLineCStrs);
     // Identify if we should use "msvc/clang-cl" or "clang/gcc" format
     // for options.
     bool const is_clang_cl = driver::IsClangCL(driver_mode);
@@ -406,10 +406,11 @@ adjustCommandLine(
         {
             new_cmdline.emplace_back(fmt::format("-isystem{}", inc));
         }
-        for (auto const& inc : stdlibIncludes)
+        for (auto const& inc: stdlibIncludes)
         {
             new_cmdline.emplace_back(fmt::format("-isystem{}", inc));
         }
+        // new_cmdline.emplace_back("-nostdinc");
         new_cmdline.emplace_back("-nostdinc++");
         new_cmdline.emplace_back("-nostdlib++");
     }
@@ -438,7 +439,7 @@ adjustCommandLine(
     {
         // Parse one argument as a Clang option
         // ParseOneArg updates Index to the next argument to be parsed.
-        unsigned idx0 = idx;
+        unsigned const idx0 = idx;
         std::unique_ptr<llvm::opt::Arg> arg =
             opts_table.ParseOneArg(args, idx, visibility);
         if (!isValidMrDocsOption(workingDir, arg))

@@ -29,8 +29,10 @@ convert_to_slash(
     llvm::sys::path::Style style)
 {
     if (! llvm::sys::path::is_style_posix(style))
+    {
         std::replace(path.begin(), path.end(), '\\', '/');
-    return llvm::StringRef(path.data(), path.size());
+    }
+    return {path.data(), path.size()};
 }
 
 //------------------------------------------------

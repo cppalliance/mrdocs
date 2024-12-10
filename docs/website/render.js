@@ -46,6 +46,8 @@ if (!fs.existsSync(mrdocsExecutable)) {
 // Read panel snippet files and create documentation
 const absSnippetsDir = path.join(__dirname, 'snippets')
 for (let panel of data.panels) {
+    console.log(`Generating documentation for panel ${panel.source}`)
+
     // Find source file
     const sourcePath = path.join(absSnippetsDir, panel.source)
     assert(sourcePath.endsWith('.cpp'))
@@ -102,6 +104,9 @@ target_compile_features(${sourceBasename} PRIVATE cxx_std_23)
     // Delete these temporary files
     fs.rmSync(mrdocsOutput, {recursive: true});
     fs.unlinkSync(cmakeListsPath);
+
+    console.log(`Documentation generated successfully for panel ${panel.source}`)
+    console.log(`====================================`)
 }
 
 // Render the template with the data containing the snippet data

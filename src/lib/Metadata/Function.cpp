@@ -93,7 +93,7 @@ static constinit Item const Table[] = {
 
 std::string_view
 getOperatorName(
-    OperatorKind kind,
+    OperatorKind const kind,
     bool include_keyword) noexcept
 {
     MRDOCS_ASSERT(Table[to_underlying(kind)].kind == kind);

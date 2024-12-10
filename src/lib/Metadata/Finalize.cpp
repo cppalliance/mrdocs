@@ -352,7 +352,7 @@ public:
         finalize(I.FriendType);
     }
 
-    void operator()(AliasInfo& I)
+    void operator()(NamespaceAliasInfo& I)
     {
         check(I.Namespace);
         finalize(I.javadoc);
@@ -367,7 +367,7 @@ public:
         finalize(I.UsingSymbols);
     }
 
-    void operator()(EnumeratorInfo& I)
+    void operator()(EnumConstantInfo& I)
     {
         check(I.Namespace);
         finalize(I.javadoc);

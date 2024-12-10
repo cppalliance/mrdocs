@@ -67,7 +67,7 @@
 <tbody>
 {{#each symbol.members}}
 <tr>
-{{#if (ne kind "enumerator")}}
+{{#if (ne kind "enum-constant")}}
 <td><a href="#{{anchor}}">{{>symbol/name . nolink=true}}</a></td>
 {{else}}
 <td>{{>symbol/name . nolink=true}}</td>

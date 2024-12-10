@@ -148,7 +148,8 @@ handleFile(
            testArgs.action == Action::update)
         {
             // Create expected documentation file
-            if(auto exp = writeFile(expectedPath, generatedDocs))
+            if(auto exp = writeFile(expectedPath, generatedDocs);
+                !exp)
             {
                 return report::error("{}: \"{}\"", exp.error(), expectedPath);
             }
@@ -227,26 +228,31 @@ handleDir(
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
-    results.numberOfDirs++;
+    ++results.numberOfDirs;
 
     // Visit each file in the directory
     std::error_code ec;
     fs::directory_iterator const end{};
     fs::directory_iterator iter(dirPath, ec, false);
-    if(ec)
+    if (ec)
+    {
         return report::error("{}: \"{}\"", dirPath, Error(ec));
+    }
     while(iter != end)
     {
-        auto const& entry = *iter;
-        if(entry.type() == fs::file_type::directory_file)
+        if (auto const& entry = *iter;
+            entry.type() == fs::file_type::directory_file)
         {
             // Check for a subdirectory-wide config
             Config::Settings subdirSettings = dirSettings;
-            std::string const& configPath = files::appendPath(
-                files::appendPath(dirPath, entry.path()), "mrdocs.yml");
-            if (files::exists(configPath)) {
+            std::string const& configPath = files::appendPath(entry.path(), "mrdocs.yml");
+            if (files::exists(configPath))
+            {
                 Config::Settings::load_file(subdirSettings, configPath, dirs_).value();
+                auto prev = dirs_.configDir;
+                dirs_.configDir = entry.path();
                 subdirSettings.normalize(dirs_);
+                dirs_.configDir = std::move(prev);
             }
             handleDir(entry.path(), subdirSettings);
         }
@@ -261,9 +267,10 @@ handleDir(
                 });
         }
         iter.increment(ec);
-        if(ec)
-            return report::error("{}: \"{}\"",
-                Error(ec), dirPath);
+        if (ec)
+        {
+            return report::error("{}: \"{}\"", Error(ec), dirPath);
+        }
     }
 }
 

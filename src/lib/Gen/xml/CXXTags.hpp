@@ -31,9 +31,9 @@ namespace clang {
 namespace mrdocs {
 namespace xml {
 
-#define INFO(LowerName) \
-constexpr auto LowerName##TagName = #LowerName;
-#include <mrdocs/Metadata/InfoNodesLower.inc>
+#define INFO(camelName, LowerName) \
+constexpr auto camelName##TagName = #LowerName;
+#include <mrdocs/Metadata/InfoNodesCamelAndLower.inc>
 
 constexpr auto accessTagName         = "access";
 constexpr auto attributeTagName      = "attr";

@@ -16,6 +16,10 @@
     "brief": "The symbol is an enum"
   },
   {
+    "name": "enum-constant",
+    "brief": "The symbol is an enum-constant"
+  },
+  {
     "name": "typedef",
     "brief": "The symbol is a typedef"
   },
@@ -36,15 +40,11 @@
     "brief": "The symbol is a friend declaration"
   },
   {
-    "name": "enumerator",
-    "brief": "The symbol is an enumerator"
-  },
-  {
     "name": "guide",
     "brief": "The symbol is a deduction guide"
   },
   {
-    "name": "alias",
+    "name": "namespace-alias",
     "brief": "The symbol is a namespace alias"
   },
   {

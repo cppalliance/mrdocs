@@ -572,7 +572,7 @@ namespace detail
 
 /// Check existing expected-like type
 #    define MRDOCS_CHECK_VOID(var)                         \
-        if (detail::failed(var)) {                        \
+        if (detail::failed(var)) {                         \
             return Unexpected(detail::error(var));         \
         }                                                  \
         void(0)
@@ -585,13 +585,20 @@ namespace detail
 #    define MRDOCS_CHECK(...) \
         MRDOCS_CHECK_GET_MACRO(__VA_ARGS__, MRDOCS_CHECK_MSG, MRDOCS_CHECK_VOID)(__VA_ARGS__)
 
-#    define MRDOCS_CHECK_OR(var, expr)                         \
-        if (detail::failed(var)) {                        \
-            return expr;         \
+/// Check existing expected-like type and return custom value otherwise
+#    define MRDOCS_CHECK_OR_VOID(var)                      \
+        if (detail::failed(var)) {                         \
+            return;                                        \
         }                                                  \
         void(0)
-
-
+#    define MRDOCS_CHECK_OR_VALUE(var, value)              \
+        if (detail::failed(var)) {                         \
+            return value;                                  \
+        }                                                  \
+        void(0)
+#    define MRDOCS_CHECK_GET_OR_MACRO(_1, _2, NAME, ...) NAME
+#    define MRDOCS_CHECK_OR(...) \
+        MRDOCS_CHECK_GET_OR_MACRO(__VA_ARGS__, MRDOCS_CHECK_OR_VALUE, MRDOCS_CHECK_OR_VOID)(__VA_ARGS__)
 #endif
 
 

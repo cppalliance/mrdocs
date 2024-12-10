@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <function name="terminate" exception-spec="noexcept" id="HJGSj0okQR/JSIlbm5chSNvd9c8=">
+    <file path="terminate.cpp" line="8"/>
+    <attr id="is-no-return"/>
+    <doc>
+      <para>
+        <text>Exit the program.</text>
+      </para>
+      <para>
+        <text>The program will end immediately.</text>
+      </para>
+      <para class="note">
+        <text>This function does not return.</text>
+      </para>
+    </doc>
+  </function>
+</namespace>
+</mrdocs>
