@@ -53,7 +53,7 @@
 |===
 |Name |Description
 {{#each symbol.members}}
-{{#if (ne kind "enumerator")}}
+{{#if (ne kind "enum-constant")}}
 |xref:{{{anchor}}}[`{{>symbol/name . nolink=true}}`]
 {{else}}
 |`{{>symbol/name . nolink=true}}`

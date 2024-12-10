@@ -69,10 +69,10 @@ class LegibleNames::Impl
             "05variable",
             "06field",
             "07specialization",
+            "09enum-constant",
             "08friend",
-            "09enumerator",
             "10guide",
-            "11alias",
+            "11namespace-alias",
             "12using",
             "13concept",
         };
@@ -203,7 +203,7 @@ public:
                     return getReserved(t);
                 }
 
-                if constexpr(T::isAlias())
+                if constexpr(T::isNamespaceAlias())
                 {
                     MRDOCS_ASSERT(! t.Name.empty());
                     return t.Name;
@@ -215,7 +215,7 @@ public:
                     return t.Name;
                 }
 
-                if constexpr(T::isEnumerator())
+                if constexpr(T::isEnumConstant())
                 {
                     MRDOCS_ASSERT(! t.Name.empty());
                     return t.Name;

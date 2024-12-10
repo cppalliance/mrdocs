@@ -3,15 +3,16 @@
 // See https://llvm.org/LICENSE.txt for license information.
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
-// Copyright (c) 2024 Fernando Pelliccioni (fpelliccioni@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_METADATA_ALIAS_HPP
-#define MRDOCS_API_METADATA_ALIAS_HPP
+#ifndef MRDOCS_API_METADATA_ENUMCONSTANT_HPP
+#define MRDOCS_API_METADATA_ENUMCONSTANT_HPP
 
 #include <mrdocs/Platform.hpp>
+#include <mrdocs/Metadata/Expression.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Source.hpp>
 #include <mrdocs/Metadata/Type.hpp>
@@ -20,18 +21,19 @@
 namespace clang {
 namespace mrdocs {
 
-/** Info for namespace aliases.
+/** Info for enum constants.
 */
-struct AliasInfo
-    : InfoCommonBase<InfoKind::Alias>
+struct EnumConstantInfo
+    : InfoCommonBase<InfoKind::EnumConstant>
     , SourceInfo
 {
-    /** The aliased symbol. */
-    std::unique_ptr<NameInfo> AliasedSymbol;
+    /** The initializer expression, if any
+    */
+    ConstantExprInfo<std::uint64_t> Initializer;
 
     //--------------------------------------------
 
-    explicit AliasInfo(SymbolID ID) noexcept
+    explicit EnumConstantInfo(SymbolID ID) noexcept
         : InfoCommonBase(ID)
     {
     }

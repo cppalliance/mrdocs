@@ -1,0 +1,60 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Functions
+[cols=2]
+|===
+| Name | Description 
+
+| <<#is_prime,`pass:[is_prime]`>> 
+| 
+Return true if a number is prime.
+
+
+|===
+
+[#is_prime]
+== pass:[is_prime]
+
+
+Return true if a number is prime.
+
+
+=== Synopsis
+
+Declared in `<pass:[is_prime.cpp]>`
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+bool
+pass:[is_prime](unsigned long long n) noexcept;
+----
+
+=== Description
+
+
+Linear in n.
+
+
+=== Return Value
+
+
+Whether or not n is prime.
+
+
+=== Parameters
+
+|===
+| Name | Description
+
+| *n*
+| 
+The number to test
+
+|===
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

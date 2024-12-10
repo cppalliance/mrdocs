@@ -4,13 +4,13 @@
 <namespace id="//////////////////////////8=">
   <namespace name="LongName" id="IjtkITsyqdEWPMXZF3lD/2/XH0s=">
   </namespace>
-  <alias name="A" id="8bX9GsmeU9RHTU5qqahjfu5RFHw=">
+  <namespace-alias name="A" id="8bX9GsmeU9RHTU5qqahjfu5RFHw=">
     <file path="namespace-alias-2.cpp" line="3" class="def"/>
     <aliased name="LongName" id="IjtkITsyqdEWPMXZF3lD/2/XH0s="/>
-  </alias>
-  <alias name="B" id="vr8SVrdB6byha64PErh7G+ti7GY=">
+  </namespace-alias>
+  <namespace-alias name="B" id="vr8SVrdB6byha64PErh7G+ti7GY=">
     <file path="namespace-alias-2.cpp" line="4" class="def"/>
     <aliased name="LongName" id="IjtkITsyqdEWPMXZF3lD/2/XH0s="/>
-  </alias>
+  </namespace-alias>
 </namespace>
 </mrdocs>

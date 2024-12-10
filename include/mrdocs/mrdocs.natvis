@@ -31,9 +31,9 @@
 		<AlternativeType Name="clang::mrdocs::FieldInfo"/>
 		<AlternativeType Name="clang::mrdocs::SpecializationInfo"/>
 		<AlternativeType Name="clang::mrdocs::FriendInfo"/>
-		<AlternativeType Name="clang::mrdocs::EnumeratorInfo"/>
+		<AlternativeType Name="clang::mrdocs::EnumConstantInfo"/>
 		<AlternativeType Name="clang::mrdocs::GuideInfo"/>
-		<AlternativeType Name="clang::mrdocs::AliasInfo"/>
+		<AlternativeType Name="clang::mrdocs::NamespaceAliasInfo"/>
 		<AlternativeType Name="clang::mrdocs::UsingInfo"/>
 
 		<DisplayString>{Kind,en} {Name} (ID = {id})</DisplayString>
@@ -49,9 +49,9 @@
 		    <ExpandedItem Condition="Kind == InfoKind::Field">(FieldInfo*)this,view(noinherit)</ExpandedItem>
 		    <ExpandedItem Condition="Kind == InfoKind::Specialization">(SpecializationInfo*)this,view(noinherit)</ExpandedItem>
 		    <ExpandedItem Condition="Kind == InfoKind::Friend">(FriendInfo*)this,view(noinherit)</ExpandedItem>
-		    <ExpandedItem Condition="Kind == InfoKind::Enumerator">(EnumeratorInfo*)this,view(noinherit)</ExpandedItem>
+		    <ExpandedItem Condition="Kind == InfoKind::Enumerator">(EnumConstantInfo*)this,view(noinherit)</ExpandedItem>
 		    <ExpandedItem Condition="Kind == InfoKind::Guide">(GuideInfo*)this,view(noinherit)</ExpandedItem>
-		    <ExpandedItem Condition="Kind == InfoKind::Alias">(AliasInfo*)this,view(noinherit)</ExpandedItem>
+		    <ExpandedItem Condition="Kind == InfoKind::NamespaceAlias">(NamespaceAliasInfo*)this,view(noinherit)</ExpandedItem>
 		    <ExpandedItem Condition="Kind == InfoKind::Using">(UsingInfo*)this,view(noinherit)</ExpandedItem>
 		</Expand>
 	</Type>

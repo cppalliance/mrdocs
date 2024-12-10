@@ -499,7 +499,7 @@ When the symbol kind is `friend`, the symbol object has the following additional
 | The friend type.
 |===
 
-When the symbol kind is `alias`, the symbol object has the following additional properties:
+When the symbol kind is `namespace-alias`, the symbol object has the following additional properties:
 
 |===
 | Property | Type | Description
@@ -527,14 +527,14 @@ When the symbol kind is `using`, the symbol object has the following additional 
 | The qualifier of the using declaration.
 |===
 
-When the symbol kind is `enumerator`, the symbol object has the following additional properties:
+When the symbol kind is `enum-constant`, the symbol object has the following additional properties:
 
 |===
 | Property | Type | Description
 
 | `initializer`
 | `string`
-| The initializer of the enumerator.
+| The initializer of the enum-constant.
 |===
 
 When the symbol kind is `guide`, the symbol object has the following additional properties:

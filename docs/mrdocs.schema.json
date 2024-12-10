@@ -111,7 +111,7 @@
     },
     "implementation-defined": {
       "default": [],
-      "description": "Namespaces for symbols rendered as \"implementation-defined\". Symbols in these namespaces are not extracted and are rendered as \"implementation-defined\" in the documentation. This option is used to exclude symbols from the documentation that are considered part of the private API of the project.",
+      "description": "Namespaces for symbols rendered as \"implementation-defined\". Symbols in these are rendered as \"implementation-defined\" in the documentation. This option is used to exclude symbols from the documentation that are considered part of the private API of the project. An \"implementation-defined\" symbol has no documentation page in the output. If any other symbol refers to it, the reference is rendered as \"implementation-defined\".",
       "items": {
         "type": "string"
       },
@@ -130,7 +130,7 @@
     },
     "inaccessible-members": {
       "default": "always",
-      "description": "Determine whether inaccessible members should be extracted. When set to `always`, inaccessible members are always extracted. When set to `dependency`, inaccessible members are extracted only if they are referenced by the source code. When set to `never`, inaccessible members are never extracted.",
+      "description": "Determine whether inaccessible members, such as private members of records, should be extracted. When set to `always`, inaccessible members are always extracted. When set to `dependency`, inaccessible members are extracted only if they are referenced by the source code. When set to `never`, inaccessible members are never extracted.",
       "enum": [
         "always",
         "dependency",
@@ -193,7 +193,7 @@
     },
     "referenced-declarations": {
       "default": "dependency",
-      "description": "Determine whether external declarations should be extracted when they are referenced in the source code. When set to `always`, external declarations are always extracted. When set to `dependency`, external declarations are extracted only if they are referenced by the source code. When set to `never`, external declarations are never extracted.",
+      "description": "Determine whether external declarations should be extracted when they are referenced in the source code. If this option is not `never`, a second pass happens in the extraction process to extract dependencies in the Corpus. When set to `always`, external declarations are always extracted. When set to `dependency`, external declarations are extracted only if they are referenced by the source code. When set to `never`, external declarations are never extracted.",
       "enum": [
         "always",
         "dependency",
@@ -211,7 +211,7 @@
     },
     "see-below": {
       "default": [],
-      "description": "Namespaces for symbols rendered as \"see-below\". Symbols in these namespaces are not extracted and are rendered as \"see-below\" in the documentation. This option is used to exclude symbols from the documentation that are considered part of the private API of the project.",
+      "description": "Namespaces for symbols rendered as \"see-below\". Symbols in these namespaces are rendered as \"see-below\" in the documentation. This option is used to exclude details about symbols from the documentation that are considered part of the private API of the project. In the documentation page for this symbol, the synopsis of the implementation of a \"see-below\" symbol is rendered as \"see-below\". When the symbol is a scope (such as a namespace or record), its members are not listed. The rest of the documentation is rendered as usual.",
       "items": {
         "type": "string"
       },

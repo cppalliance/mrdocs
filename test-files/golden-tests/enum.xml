@@ -12,7 +12,7 @@
         <text>E0 description.</text>
       </para>
     </doc>
-    <enumerator name="e0" initializer="1" id="PKsKOtl3cLUHJP4nEw+EKQK4fUE=">
+    <enum-constant name="e0" initializer="1" id="PKsKOtl3cLUHJP4nEw+EKQK4fUE=">
       <file path="enum.cpp" line="11" class="def"/>
       <doc>
         <para>
@@ -22,8 +22,8 @@
           <text>e0 description.</text>
         </para>
       </doc>
-    </enumerator>
-    <enumerator name="e1" initializer="2" id="AXLqFIJBEk7eAdup5AR/wvnrMzc=">
+    </enum-constant>
+    <enum-constant name="e1" initializer="2" id="AXLqFIJBEk7eAdup5AR/wvnrMzc=">
       <file path="enum.cpp" line="16" class="def"/>
       <doc>
         <para>
@@ -33,19 +33,19 @@
           <text>e1 description.</text>
         </para>
       </doc>
-    </enumerator>
+    </enum-constant>
   </enum>
   <enum name="E1" id="YVlrwdT9xevSZZOb/TqEFyXYRzs=">
     <base>
       <type name="char"/>
     </base>
     <file path="enum.cpp" line="19" class="def"/>
-    <enumerator name="e2" initializer="0" id="WhHxTXqItGXwZujc82O1Xfzbaz4=">
+    <enum-constant name="e2" initializer="0" id="WhHxTXqItGXwZujc82O1Xfzbaz4=">
       <file path="enum.cpp" line="21" class="def"/>
-    </enumerator>
-    <enumerator name="e3" initializer="1" id="Rifzp55QTXd/noKg5TyWoEJWlpE=">
+    </enum-constant>
+    <enum-constant name="e3" initializer="1" id="Rifzp55QTXd/noKg5TyWoEJWlpE=">
       <file path="enum.cpp" line="22" class="def"/>
-    </enumerator>
+    </enum-constant>
   </enum>
   <enum name="E2" class="scoped" id="pjF+x6gHHvGroB7+mumMEpLLPDw=">
     <base>
@@ -60,7 +60,7 @@
         <text>E2 description.</text>
       </para>
     </doc>
-    <enumerator name="e4" initializer="0" id="RyRlkoU0rHCqW5D5O8YXfJrvfaw=">
+    <enum-constant name="e4" initializer="0" id="RyRlkoU0rHCqW5D5O8YXfJrvfaw=">
       <file path="enum.cpp" line="35" class="def"/>
       <doc>
         <para>
@@ -70,8 +70,8 @@
           <text>e4 description.</text>
         </para>
       </doc>
-    </enumerator>
-    <enumerator name="e5" initializer="1" id="xFkU6j7yjwyQB2aStQjCIF9O+sQ=">
+    </enum-constant>
+    <enum-constant name="e5" initializer="1" id="xFkU6j7yjwyQB2aStQjCIF9O+sQ=">
       <file path="enum.cpp" line="40" class="def"/>
       <doc>
         <para>
@@ -81,19 +81,19 @@
           <text>e5 description.</text>
         </para>
       </doc>
-    </enumerator>
+    </enum-constant>
   </enum>
   <enum name="E3" class="scoped" id="sSur7Z1606gfBcxeK64ws2daEXI=">
     <base>
       <type name="char"/>
     </base>
     <file path="enum.cpp" line="43" class="def"/>
-    <enumerator name="e6" initializer="0" id="m/aInWQVfzBhSp/BbwL1S6HYfgI=">
+    <enum-constant name="e6" initializer="0" id="m/aInWQVfzBhSp/BbwL1S6HYfgI=">
       <file path="enum.cpp" line="45" class="def"/>
-    </enumerator>
-    <enumerator name="e7" initializer="1" id="s6xZcC+IxMf8dGaSjBuD4CkmAuU=">
+    </enum-constant>
+    <enum-constant name="e7" initializer="1" id="s6xZcC+IxMf8dGaSjBuD4CkmAuU=">
       <file path="enum.cpp" line="46" class="def"/>
-    </enumerator>
+    </enum-constant>
   </enum>
 </namespace>
 </mrdocs>

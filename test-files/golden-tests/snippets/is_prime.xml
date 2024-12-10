@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <function name="is_prime" exception-spec="noexcept" id="X6uKu3BxyFPud2u42zNKbyA0XfU=">
+    <file path="is_prime.cpp" line="11"/>
+    <return>
+      <type name="bool"/>
+    </return>
+    <param name="n">
+      <type name="unsigned long long"/>
+    </param>
+    <doc>
+      <para>
+        <text>Return true if a number is prime.</text>
+      </para>
+      <para>
+        <text>Linear in n.</text>
+      </para>
+      <returns>
+        <text>Whether or not n is prime.</text>
+      </returns>
+      <param name="n">
+        <text>The number to test</text>
+      </param>
+    </doc>
+  </function>
+</namespace>
+</mrdocs>

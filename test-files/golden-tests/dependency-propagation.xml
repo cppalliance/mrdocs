@@ -11,17 +11,17 @@
   <namespace name="N" id="rjlMNXAaWNMkQYMTJzRA1DR0DiE=">
     <template>
       <tparam name="T" class="type"/>
-      <alias name="C" id="1aINBgFfB9zQVkEDJdB0DyLWTmQ=">
+      <namespace-alias name="C" id="1aINBgFfB9zQVkEDJdB0DyLWTmQ=">
         <file path="dependency-propagation.cpp" line="10" class="def"/>
         <type id="YZjBn7yW7NyL8yCKqswVvbiptNM=" name="B&lt;T&gt;"/>
-      </alias>
+      </namespace-alias>
     </template>
     <template>
       <tparam name="T" class="type"/>
-      <alias name="B" id="YZjBn7yW7NyL8yCKqswVvbiptNM=">
+      <namespace-alias name="B" id="YZjBn7yW7NyL8yCKqswVvbiptNM=">
         <file path="dependency-propagation.cpp" line="7" class="def"/>
         <type id="P3wHAbrIf4CGxTZs+lXT5a3t2K0=" name="A&lt;T&gt;"/>
-      </alias>
+      </namespace-alias>
     </template>
     <template>
       <tparam name="T" class="type"/>

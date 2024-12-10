@@ -73,6 +73,16 @@ def generate_info_nodes_lowercase_inc(info_nodes):
     contents += f'\n#undef INFO\n'
     return contents
 
+def generate_info_nodes_camelcase_inc(info_nodes):
+    contents = generate_header_comment()
+    contents += f'#ifndef INFO\n'
+    contents += f'#define INFO(CamelName) \n'
+    contents += f'#endif\n\n'
+    for info_node in info_nodes:
+        contents += f'INFO({to_camel_case(info_node["name"])})\n'
+    contents += f'\n#undef INFO\n'
+    return contents
+
 
 def generate_info_nodes_pascal_and_lowercase_inc(info_nodes):
     contents = generate_header_comment()
@@ -84,6 +94,25 @@ def generate_info_nodes_pascal_and_lowercase_inc(info_nodes):
     contents += f'\n#undef INFO\n'
     return contents
 
+def generate_info_nodes_pascal_and_camelcase_inc(info_nodes):
+    contents = generate_header_comment()
+    contents += f'#ifndef INFO\n'
+    contents += f'#define INFO(PascalName, CamelName) \n'
+    contents += f'#endif\n\n'
+    for info_node in info_nodes:
+        contents += f'INFO({to_pascal_case(info_node["name"])}, {to_camel_case(info_node["name"])})\n'
+    contents += f'\n#undef INFO\n'
+    return contents
+
+def generate_info_nodes_camel_and_lowercase_inc(info_nodes):
+    contents = generate_header_comment()
+    contents += f'#ifndef INFO\n'
+    contents += f'#define INFO(CamelName, LowerName) \n'
+    contents += f'#endif\n\n'
+    for info_node in info_nodes:
+        contents += f'INFO({to_camel_case(info_node["name"])}, {info_node["name"].lower()})\n'
+    contents += f'\n#undef INFO\n'
+    return contents
 
 def to_plural(name):
     if name.endswith('y'):
@@ -127,7 +156,10 @@ def generate(info_nodes, output_dir):
     files_content = {
         'InfoNodesPascal.inc': generate_info_nodes_pascal_inc(info_nodes),
         'InfoNodesPascalAndLower.inc': generate_info_nodes_pascal_and_lowercase_inc(info_nodes),
+        'InfoNodesPascalAndCamel.inc': generate_info_nodes_pascal_and_camelcase_inc(info_nodes),
+        'InfoNodesCamelAndLower.inc': generate_info_nodes_camel_and_lowercase_inc(info_nodes),
         'InfoNodesLower.inc': generate_info_nodes_lowercase_inc(info_nodes),
+        'InfoNodesCamel.inc': generate_info_nodes_camelcase_inc(info_nodes),
         'InfoNodesPascalPlural.inc': generate_info_nodes_pascal_plural_inc(info_nodes),
         'InfoNodesPascalPluralAndLowerPlural.inc': generate_info_nodes_pascal_plural_and_lowercase_plural_inc(info_nodes)
     }

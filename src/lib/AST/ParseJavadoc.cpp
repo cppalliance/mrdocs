@@ -1448,7 +1448,7 @@ initCustomCommentCommands(ASTContext& context)
 void
 parseJavadoc(
     std::unique_ptr<Javadoc>& jd,
-    FullComment* FC,
+    FullComment const* FC,
     Decl const* D,
     Config const& config,
     Diagnostics& diags)

@@ -225,7 +225,7 @@ tag_invoke(
             io.map("type", I.FriendType);
         }
     }
-    if constexpr (T::isAlias())
+    if constexpr (T::isNamespaceAlias())
     {
         MRDOCS_ASSERT(I.AliasedSymbol);
         io.map("aliasedSymbol", I.AliasedSymbol);
@@ -236,7 +236,7 @@ tag_invoke(
         io.map("shadows", dom::LazyArray(I.UsingSymbols, domCorpus));
         io.map("qualifier", I.Qualifier);
     }
-    if constexpr (T::isEnumerator())
+    if constexpr (T::isEnumConstant())
     {
         if (!I.Initializer.Written.empty())
         {

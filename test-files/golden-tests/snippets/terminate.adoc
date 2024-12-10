@@ -1,0 +1,46 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Functions
+[cols=2]
+|===
+| Name | Description 
+
+| <<#terminate,`terminate`>> 
+| 
+Exit the program.
+
+
+|===
+
+[#terminate]
+== terminate
+
+
+Exit the program.
+
+
+=== Synopsis
+
+Declared in `<pass:[terminate.cpp]>`
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+void
+terminate() noexcept;
+----
+
+=== Description
+
+
+The program will end immediately.
+[NOTE]
+
+This function does not return.
+
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

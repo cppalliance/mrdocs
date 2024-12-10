@@ -6,13 +6,14 @@
 # Copyright (c) 2023 Klemens Morgenstern (klemens.morgenstern@gmx.net)
 # Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 # Copyright (c) 2024 Fernando Pelliccioni (fpelliccioni@gmail.com)
+# Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 #
 # Official repository: https://github.com/cppalliance/mrdocs
 #
 # https://relaxng.org/compact-tutorial-20030326.html
 #
 # convert to mrdocs.rng with tools/trang.jar (https://relaxng.org/jclark/trang.html)
-# when commiting beacuse xmllint doesn't understand the compact format
+# when commiting because xmllint doesn't understand the compact format
 #
 
 namespace xsi= "http://www.w3.org/2001/XMLSchema-instance"
@@ -134,8 +135,8 @@ grammar
 
     #---------------------------------------------
 
-    Enumerator =
-        element enumerator
+    EnumConstant =
+        element enum-constant
         {
             Name,
             ID,
@@ -147,7 +148,7 @@ grammar
     #---------------------------------------------
 
     Typedef =
-        element alias
+        element namespace-alias
         {
             Name,
             ID,
@@ -216,8 +217,8 @@ grammar
 
     #---------------------------------------------
 
-    Alias =
-        element alias
+    NamespaceAlias =
+        element namespace-alias
         {
             Name,
             Access ?,
@@ -351,7 +352,7 @@ grammar
             Variable       |
             Guide          |
             Template       |
-            Alias          |
+            NamespaceAlias |
             Using          |
             Concept        |
             Specialization
@@ -368,12 +369,12 @@ grammar
             Guide          |
             Template       |
             Friend         |
-            Alias          |
+            NamespaceAlias |
             Using          |
             Specialization
         )*
 
-    EnumScope = Enumerator *
+    EnumScope = EnumConstant *
 
     #---------------------------------------------
     #

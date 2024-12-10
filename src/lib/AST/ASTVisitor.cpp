@@ -10,3425 +10,281 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "ASTVisitor.hpp"
-#include "ASTVisitorHelpers.hpp"
-#include "ParseJavadoc.hpp"
+#include "lib/AST/ASTVisitor.hpp"
+#include "lib/AST/NameInfoBuilder.hpp"
+#include "lib/AST/ClangHelpers.hpp"
+#include "lib/AST/ParseJavadoc.hpp"
+#include "lib/AST/TypeInfoBuilder.hpp"
 #include "lib/Support/Path.hpp"
 #include "lib/Support/Debug.hpp"
 #include "lib/Support/Glob.hpp"
 #include "lib/Lib/Diagnostics.hpp"
 #include "lib/Lib/Filters.hpp"
-#include "lib/Lib/Info.hpp"
+#include "lib/AST/SymbolFilterScope.hpp"
 #include <mrdocs/Metadata.hpp>
 #include <clang/AST/AST.h>
 #include <clang/AST/Attr.h>
-#include <clang/AST/DeclVisitor.h>
 #include <clang/AST/ODRHash.h>
 #include <clang/AST/TypeVisitor.h>
 #include <clang/Frontend/CompilerInstance.h>
 #include <clang/Index/USRGeneration.h>
 #include <clang/Lex/Lexer.h>
-#include <clang/Parse/ParseAST.h>
 #include <clang/Sema/Lookup.h>
 #include <clang/Sema/Sema.h>
 #include <clang/Sema/Template.h>
-#include <clang/Sema/SemaConsumer.h>
-#include <clang/Sema/TemplateInstCallback.h>
-#include <llvm/ADT/Hashing.h>
 #include <llvm/ADT/StringExtras.h>
-#include <llvm/ADT/SmallPtrSet.h>
 #include <llvm/Support/Error.h>
 #include <llvm/Support/Path.h>
 #include <llvm/Support/SHA1.h>
 #include <memory>
 #include <optional>
 #include <ranges>
-#include <unordered_map>
 #include <unordered_set>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
-namespace {
-
-struct SymbolFilter
+ASTVisitor::FileInfo
+ASTVisitor::FileInfo::build(
+    std::span<const std::pair<std::string, FileKind>> search_dirs,
+    std::string_view const file_path,
+    std::string_view const sourceRoot)
 {
-    const FilterNode& root;
-    const FilterNode* current = nullptr;
-    const FilterNode* last_explicit = nullptr;
-    bool detached = false;
+    FileInfo file_info;
+    file_info.full_path = std::string(file_path);
+    file_info.short_path = file_info.full_path;
 
-    SymbolFilter(const FilterNode& root_node)
-        : root(root_node)
+    std::ptrdiff_t best_length = 0;
+    auto check_dir = [&](
+        std::string_view const dir_path,
+        FileKind const kind)
     {
-        setCurrent(&root, false);
-    }
+        auto NI = llvm::sys::path::begin(file_path);
+        auto const NE = llvm::sys::path::end(file_path);
+        auto DI = llvm::sys::path::begin(dir_path);
+        auto const DE = llvm::sys::path::end(dir_path);
 
-    SymbolFilter(const SymbolFilter&) = delete;
-    SymbolFilter(SymbolFilter&&) = delete;
-
-    void
-    setCurrent(
-        const FilterNode* node,
-        bool node_detached)
-    {
-        current = node;
-        detached = node_detached;
-        if(node && node->Explicit)
-            last_explicit = node;
-    }
-
-    class FilterScope
-    {
-        SymbolFilter& filter_;
-        const FilterNode* current_prev_;
-        const FilterNode* last_explicit_prev_;
-        bool detached_prev_;
-
-    public:
-        FilterScope(SymbolFilter& filter)
-            : filter_(filter)
-            , current_prev_(filter.current)
-            , last_explicit_prev_(filter.last_explicit)
-            , detached_prev_(filter.detached)
+        for(; NI != NE; ++NI, ++DI)
         {
+            // reached the end of the directory path
+            if(DI == DE)
+            {
+                // update the best prefix length
+                if(std::ptrdiff_t length =
+                    NI - llvm::sys::path::begin(file_path);
+                    length > best_length)
+                {
+                    best_length = length;
+                    file_info.kind = kind;
+                    return true;
+                }
+                break;
+            }
+            // separators always match
+            if(NI->size() == 1 && DI->size() == 1 &&
+                llvm::sys::path::is_separator(NI->front()) &&
+                llvm::sys::path::is_separator(DI->front()))
+                continue;
+            // components don't match
+            if(*NI != *DI)
+                break;
         }
-
-        ~FilterScope()
-        {
-            filter_.current = current_prev_;
-            filter_.last_explicit = last_explicit_prev_;
-            filter_.detached = detached_prev_;
-        }
+        return false;
     };
-};
 
-static const Expr *SubstituteConstraintExpressionWithoutSatisfaction(
-    Sema &S, const Sema::TemplateCompareNewDeclInfo &DeclInfo,
-    const Expr *ConstrExpr) {
-  MultiLevelTemplateArgumentList MLTAL = S.getTemplateInstantiationArgs(
-      DeclInfo.getDecl(), DeclInfo.getLexicalDeclContext(), /*Final=*/false,
-      /*Innermost=*/std::nullopt,
-      /*RelativeToPrimary=*/true,
-      /*Pattern=*/nullptr, /*ForConstraintInstantiation=*/true,
-      /*SkipForSpecialization*/ false);
+    bool const in_sourceRoot = check_dir(
+        sourceRoot, FileKind::Source);
 
-  if (MLTAL.getNumSubstitutedLevels() == 0)
-    return ConstrExpr;
+    // only use a sourceRoot relative path if we
+    // don't find anything in the include search directories
+    // bool any_match = false;
+    // for (auto const& [dir_path, kind]: search_dirs)
+    // {
+    //    any_match |= check_dir(dir_path, kind);
+    // }
 
-  Sema::SFINAETrap SFINAE(S, /*AccessCheckingSFINAE=*/false);
+    // KRYSTIAN TODO: if we don't find any matches,
+    // make the path relative to sourceRoot and return it
 
-  Sema::InstantiatingTemplate Inst(
-      S, DeclInfo.getLocation(),
-      Sema::InstantiatingTemplate::ConstraintNormalization{},
-      const_cast<NamedDecl *>(DeclInfo.getDecl()), SourceRange{});
-  if (Inst.isInvalid())
-    return nullptr;
+    // override the file kind if
+    // the file was found in sourceRoot
+    if (in_sourceRoot)
+    {
+        file_info.kind = FileKind::Source;
+    }
 
-  // Set up a dummy 'instantiation' scope in the case of reference to function
-  // parameters that the surrounding function hasn't been instantiated yet. Note
-  // this may happen while we're comparing two templates' constraint
-  // equivalence.
-  LocalInstantiationScope ScopeForParameters(S);
-  if (auto *FD = DeclInfo.getDecl()->getAsFunction())
-    for (auto *PVD : FD->parameters())
-      ScopeForParameters.InstantiatedLocal(PVD, PVD);
-
-  std::optional<Sema::CXXThisScopeRAII> ThisScope;
-
-  // See TreeTransform::RebuildTemplateSpecializationType. A context scope is
-  // essential for having an injected class as the canonical type for a template
-  // specialization type at the rebuilding stage. This guarantees that, for
-  // out-of-line definitions, injected class name types and their equivalent
-  // template specializations can be profiled to the same value, which makes it
-  // possible that e.g. constraints involving C<Class<T>> and C<Class> are
-  // perceived identical.
-  std::optional<Sema::ContextRAII> ContextScope;
-  if (auto *RD = dyn_cast<CXXRecordDecl>(DeclInfo.getDeclContext())) {
-    ThisScope.emplace(S, const_cast<CXXRecordDecl *>(RD), Qualifiers());
-    ContextScope.emplace(S, const_cast<DeclContext *>(cast<DeclContext>(RD)),
-                         /*NewThisContext=*/false);
-  }
-  ExprResult SubstConstr = S.SubstConstraintExprWithoutSatisfaction(
-      const_cast<clang::Expr *>(ConstrExpr), MLTAL);
-  if (SFINAE.hasErrorOccurred() || !SubstConstr.isUsable())
-    return nullptr;
-  return SubstConstr.get();
+    file_info.short_path.erase(0, best_length);
+    return file_info;
 }
 
-//------------------------------------------------
-//
-// ASTVisitor
-//
-//------------------------------------------------
-
-/** Convert AST to metadata representation.
-
-    An instance of this object traverses the AST
-    for a translation unit and translate AST nodes
-    into our metadata.
-*/
-class ASTVisitor
+ASTVisitor::
+ASTVisitor(
+    const ConfigImpl& config,
+    Diagnostics& diags,
+    CompilerInstance& compiler,
+    ASTContext& context,
+    Sema& sema) noexcept
+    : config_(config)
+    , diags_(diags)
+    , compiler_(compiler)
+    , context_(context)
+    , source_(context.getSourceManager())
+    , sema_(sema)
+    , symbolFilter_(config->symbolFilter)
 {
-public:
-    const ConfigImpl& config_;
-    Diagnostics diags_;
+    // Install handlers for our custom commands
+    initCustomCommentCommands(context_);
 
-    CompilerInstance& compiler_;
-    ASTContext& context_;
-    SourceManager& source_;
-    Sema& sema_;
+    // The traversal scope should *only* consist of the
+    // top-level TranslationUnitDecl.
+    // If this `assert` fires, then it means
+    // ASTContext::setTraversalScope is being (erroneously)
+    // used somewhere
+    MRDOCS_ASSERT(context_.getTraversalScope() ==
+        std::vector<Decl*>{context_.getTranslationUnitDecl()});
 
-    InfoSet info_;
-    std::unordered_set<Decl*> dependencies_;
-
-    struct FileInfo
+    auto make_posix_absolute = [&](std::string_view old_path)
     {
-        FileInfo(std::string_view path)
-            : full_path(path)
-            , short_path(full_path)
+        llvm::SmallString<128> new_path(old_path);
+        if(! llvm::sys::path::is_absolute(new_path))
         {
-        }
-
-        std::string full_path;
-        std::string_view short_path;
-        FileKind kind;
-    };
-
-    std::unordered_map<
-        const FileEntry*,
-        FileInfo> files_;
-
-    llvm::SmallString<128> usr_;
-    ODRHash odr_hash_;
-
-    SymbolFilter symbolFilter_;
-
-    enum class ExtractMode
-    {
-        // extraction of declarations which pass all filters
-        Normal,
-        // extraction of declarations as direct dependencies
-        DirectDependency,
-        // extraction of declarations as indirect dependencies
-        IndirectDependency,
-    };
-
-    ExtractMode mode = ExtractMode::Normal;
-
-    struct [[nodiscard]] ExtractionScope
-    {
-        ASTVisitor& visitor_;
-        ExtractMode previous_;
-
-    public:
-        ExtractionScope(
-            ASTVisitor& visitor,
-            ExtractMode mode) noexcept
-            : visitor_(visitor)
-            , previous_(visitor.mode)
-        {
-            visitor_.mode = mode;
-        }
-
-        ~ExtractionScope()
-        {
-            visitor_.mode = previous_;
-        }
-    };
-
-    ExtractionScope
-    enterMode(
-        ExtractMode new_mode) noexcept
-    {
-        return ExtractionScope(*this, new_mode);
-    }
-
-    ExtractMode
-    currentMode() const noexcept
-    {
-        return mode;
-    }
-
-    ASTVisitor(
-        const ConfigImpl& config,
-        Diagnostics& diags,
-        CompilerInstance& compiler,
-        ASTContext& context,
-        Sema& sema) noexcept
-        : config_(config)
-        , diags_(diags)
-        , compiler_(compiler)
-        , context_(context)
-        , source_(context.getSourceManager())
-        , sema_(sema)
-        , symbolFilter_(config->symbolFilter)
-    {
-        // install handlers for our custom commands
-        initCustomCommentCommands(context_);
-
-        // the traversal scope should *only* consist of the
-        // top-level TranslationUnitDecl. if this assert fires,
-        // then it means ASTContext::setTraversalScope is being
-        // (erroneously) used somewhere
-        MRDOCS_ASSERT(context_.getTraversalScope() ==
-            std::vector<Decl*>{context_.getTranslationUnitDecl()});
-
-        using namespace llvm::sys;
-        Preprocessor& PP = sema_.getPreprocessor();
-        HeaderSearch& HS = PP.getHeaderSearchInfo();
-
-        auto normalize_path = [&](std::string_view old_path)
-        {
-            llvm::SmallString<128> new_path(old_path);
             // KRYSTIAN FIXME: use FileManager::makeAbsolutePath?
-            if(! path::is_absolute(new_path))
-            {
-                auto& cwd = source_.getFileManager().
-                    getFileSystemOpts().WorkingDir;
-                // we can't normalize a relative path
-                // without a base directory
-                // MRDOCS_ASSERT(! cwd.empty());
-                fs::make_absolute(cwd, new_path);
-            }
-            // remove ./ and ../
-            path::remove_dots(new_path, true, path::Style::posix);
-            // convert to posix style
-            path::native(new_path, path::Style::posix);
-            return std::string(new_path);
-        };
-
-        std::string sourceRoot = normalize_path(config_->sourceRoot);
-        std::vector<std::pair<std::string, FileKind>> search_dirs;
-
-        search_dirs.reserve(HS.search_dir_size());
-        // first, convert all the include search directories into POSIX style
-        for(const DirectoryLookup& DL : HS.search_dir_range())
-        {
-            OptionalDirectoryEntryRef DR = DL.getDirRef();
-            // only consider normal directories
-            if(! DL.isNormalDir() || ! DR)
-                continue;
-            // store the normalized path
-            search_dirs.emplace_back(
-                normalize_path(DR->getName()),
-                DL.isSystemHeaderDirectory() ?
-                    FileKind::System : FileKind::Other);
+            auto& cwd = source_.getFileManager().
+                getFileSystemOpts().WorkingDir;
+            // we can't normalize a relative path
+            // without a base directory
+            // MRDOCS_ASSERT(! cwd.empty());
+            llvm::sys::fs::make_absolute(cwd, new_path);
         }
-
-        auto build_file_info = [&](const FileEntry* file)
-        {
-            // "try" implies this may fail, so fallback to getName
-            // if an empty string is returned
-            std::string_view file_path =
-                file->tryGetRealPathName();
-            files_.emplace(file,
-                getFileInfo(search_dirs,
-                    normalize_path(file_path),
-                    sourceRoot));
-        };
-
-        // build the file info for the main file
-        build_file_info(
-            source_.getFileEntryForID(
-                source_.getMainFileID()));
-
-        // build the file info for all included files
-        for(const FileEntry* file : PP.getIncludedFiles())
-            build_file_info(file);
-    }
-
-    FileInfo
-    getFileInfo(
-        std::span<const std::pair<
-            std::string, FileKind>> search_dirs,
-        std::string_view file_path,
-        std::string_view sourceRoot)
-    {
-        using namespace llvm::sys;
-        FileInfo file_info(file_path);
-
-        std::ptrdiff_t best_length = 0;
-        auto check_dir = [&](
-            std::string_view dir_path,
-            FileKind kind)
-        {
-            auto NI = path::begin(file_path), NE = path::end(file_path);
-            auto DI = path::begin(dir_path), DE = path::end(dir_path);
-
-            for(; NI != NE; ++NI, ++DI)
-            {
-                // reached the end of the directory path
-                if(DI == DE)
-                {
-                    // update the best prefix length
-                    if(std::ptrdiff_t length =
-                        NI - path::begin(file_path);
-                        length > best_length)
-                    {
-                        best_length = length;
-                        file_info.kind = kind;
-                        return true;
-                    }
-                    break;
-                }
-                // separators always match
-                if(NI->size() == 1 && DI->size() == 1 &&
-                    path::is_separator(NI->front()) &&
-                    path::is_separator(DI->front()))
-                    continue;
-                // components don't match
-                if(*NI != *DI)
-                    break;
-            }
-            return false;
-        };
-
-        bool in_sourceRoot = check_dir(
-            sourceRoot, FileKind::Source);
-
-        // only use a sourceRoot relative path if we
-        // don't find anything in the include search directories
-        bool any_match = false;
-        for(const auto& [dir_path, kind] : search_dirs)
-            any_match |= check_dir(dir_path, kind);
-
-        // KRYSTIAN TODO: if we don't find any matches,
-        // make the path relative to sourceRoot and return it
-        static_cast<void>(any_match);
-
-        // override the file kind if
-        // the file was found in sourceRoot
-        if(in_sourceRoot)
-            file_info.kind = FileKind::Source;
-
-        file_info.short_path.remove_prefix(best_length);
-        return file_info;
-    }
-
-    InfoSet& results()
-    {
-        return info_;
-    }
-
-    void build()
-    {
-        // traverse the translation unit, only extracting
-        // declarations which satisfy all filter conditions.
-        // dependencies will be tracked, but not extracted
-        traverseDecl(context_.getTranslationUnitDecl());
-
-        // This is to ensure that the global namespace is always present
-        getOrCreateInfo<NamespaceInfo>(SymbolID::global);
-
-        // if dependency extraction is disabled, we are done
-        if(config_->referencedDeclarations ==
-            ConfigImpl::SettingsImpl::ExtractPolicy::Never)
-            return;
-
-        // traverse the current set of dependencies,
-        // and generate a new set based on the results.
-        // if the new set is non-empty, perform another pass.
-        // do this until no new dependencies are generated
-        std::unordered_set<Decl*> previous;
-        buildDependencies(previous);
-    }
-
-    void buildDependencies(
-        std::unordered_set<Decl*>& previous)
-    {
-        auto scope = enterMode(
-            ExtractMode::DirectDependency);
-
-        previous.clear();
-        dependencies_.swap(previous);
-
-        for(Decl* D : previous)
-        {
-            // skip declarations which generate invalid symbol IDs,
-            // or which already have been extract
-            if(SymbolID id = extractSymbolID(D);
-                ! id || info_.contains(id))
-                continue;
-            traverseDecl(D);
-        }
-
-        // perform another pass if there are new dependencies
-        if(! dependencies_.empty())
-            buildDependencies(previous);
-    }
-
-    //------------------------------------------------
-
-    /** Get Info from ASTVisitor InfoSet
-     */
-    Info*
-    getInfo(SymbolID const& id)
-    {
-        if(auto it = info_.find(id); it != info_.end())
-            return it->get();
-        return nullptr;
-    }
-
-    /** Get or create the Info for a declaration.
-
-        This function will return the Info for a declaration
-        if it has already been extracted, or create a new
-        Info for the declaration if it has not been extracted.
-
-        @return a pair containing a reference to the Info
-        and a boolean indicating whether the Info was created.
-    */
-    template<typename InfoTy>
-    std::pair<InfoTy&, bool>
-    getOrCreateInfo(const SymbolID& id)
-    {
-        assert(id != SymbolID::invalid &&
-            "creating symbol with invalid SymbolID?");
-        Info* info = getInfo(id);
-        bool created = ! info;
-        if(! info)
-        {
-            info = info_.emplace(std::make_unique<
-                InfoTy>(id)).first->get();
-            if(currentMode() != ExtractMode::Normal)
-                info->Implicit = true;
-        }
-        MRDOCS_ASSERT(info->Kind == InfoTy::kind_id);
-        return {static_cast<InfoTy&>(*info), created};
-    }
-
-    void
-    getDependencyID(
-        const Decl* D,
-        SymbolID& id)
-    {
-        return getDependencyID(const_cast<Decl*>(D), id);
-    }
-
-    void
-    getDependencyID(
-        Decl* D,
-        SymbolID& id)
-    {
-        if(TemplateDecl* TD = D->getDescribedTemplate())
-            D = TD;
-
-        if(D->isImplicit() ||
-            isa<TemplateTemplateParmDecl>(D) ||
-            isa<BuiltinTemplateDecl>(D))
-            return;
-
-        id = extractSymbolID(D);
-
-        // don't register a dependency if we never extract them
-        if(config_->referencedDeclarations ==
-            ConfigImpl::SettingsImpl::ExtractPolicy::Never)
-            return;
-
-        if(config_->referencedDeclarations ==
-            ConfigImpl::SettingsImpl::ExtractPolicy::Dependency)
-        {
-            if(currentMode() != ExtractMode::DirectDependency)
-                return;
-        }
-
-        // if it was already extracted, we are done
-        if(getInfo(id))
-            return;
-
-        // FIXME: we need to handle member specializations correctly.
-        // we do not want to extract all members of the enclosing
-        // implicit instantiation
-        Decl* Outer = D;
-        DeclContext* DC = D->getDeclContext();
-        do
-        {
-            if(DC->isFileContext() ||
-                DC->isFunctionOrMethod())
-                break;
-
-            if(auto* RD = dyn_cast<CXXRecordDecl>(DC);
-                RD && RD->isAnonymousStructOrUnion())
-                continue;
-
-            // when extracting dependencies, we want to extract
-            // all members of the containing class, not just this one
-            if(auto* TD = dyn_cast<TagDecl>(DC))
-                Outer = TD;
-        }
-        while((DC = DC->getParent()));
-
-        if(TemplateDecl* TD = Outer->getDescribedTemplate())
-            Outer = TD;
-
-        // add the adjusted declaration to the set of dependencies
-        if(! isa<NamespaceDecl, TranslationUnitDecl>(Outer))
-            dependencies_.insert(Outer);
-    }
-
-    //------------------------------------------------
-
-    /** Generates a USR for a declaration.
-
-        Returns true if USR generation failed,
-        and false otherwise.
-    */
-    bool
-    generateUSR(const Decl* D)
-    {
-        MRDOCS_ASSERT(D);
-        MRDOCS_ASSERT(usr_.empty());
-
-        if (const auto* NAD = dyn_cast<NamespaceAliasDecl>(D))
-        {
-            if (index::generateUSRForDecl(cast<Decl>(NAD->getNamespace()), usr_))
-                return true;
-            usr_.append("@NA");
-            usr_.append(NAD->getNameAsString());
-            return false;
-        }
-
-        // Handling UsingDecl
-        if (const auto* UD = dyn_cast<UsingDecl>(D))
-        {
-            for (const auto* shadow : UD->shadows())
-            {
-                if (index::generateUSRForDecl(shadow->getTargetDecl(), usr_))
-                    return true;
-            }
-            usr_.append("@UDec");
-            usr_.append(UD->getQualifiedNameAsString());
-            return false;
-        }
-
-        // Handling UnresolvedUsingTypenameDecl
-        if (const auto* UD = dyn_cast<UnresolvedUsingTypenameDecl>(D))
-        {
-            if (index::generateUSRForDecl(UD, usr_))
-                return true;
-            usr_.append("@UUTDec");
-            usr_.append(UD->getQualifiedNameAsString());
-            return false;
-        }
-
-        // Handling UnresolvedUsingValueDecl
-        if (const auto* UD = dyn_cast<UnresolvedUsingValueDecl>(D))
-        {
-            if (index::generateUSRForDecl(UD, usr_))
-                return true;
-            usr_.append("@UUV");
-            usr_.append(UD->getQualifiedNameAsString());
-            return false;
-        }
-
-        // Handling UsingPackDecl
-        if (const auto* UD = dyn_cast<UsingPackDecl>(D))
-        {
-            if (index::generateUSRForDecl(UD, usr_))
-                return true;
-            usr_.append("@UPD");
-            usr_.append(UD->getQualifiedNameAsString());
-            return false;
-        }
-
-        // Handling UsingEnumDecl
-        if (const auto* UD = dyn_cast<UsingEnumDecl>(D))
-        {
-            if (index::generateUSRForDecl(UD, usr_))
-                return true;
-            usr_.append("@UED");
-            EnumDecl const* ED = UD->getEnumDecl();
-            usr_.append(ED->getQualifiedNameAsString());
-            return false;
-        }
-
-        // KRYSTIAN NOTE: clang doesn't currently support
-        // generating USRs for friend declarations, so we
-        // will improvise until I can merge a patch which
-        // adds support for them
-        if(const auto* FD = dyn_cast<FriendDecl>(D))
-        {
-            // first, generate the USR for the containing class
-            if(index::generateUSRForDecl(
-                cast<Decl>(FD->getDeclContext()), usr_))
-                return true;
-            // add a seperator for uniqueness
-            usr_.append("@FD");
-            // if the friend declaration names a type,
-            // use the USR generator for types
-            if(TypeSourceInfo* TSI = FD->getFriendType())
-                return index::generateUSRForType(
-                    TSI->getType(), context_, usr_);
-            // otherwise, fallthrough and append the
-            // USR of the nominated declaration
-            if(! (D = FD->getFriendDecl()))
-                return true;
-        }
-
-        if (index::generateUSRForDecl(D, usr_))
-            return true;
-
-        const auto* Described = dyn_cast_if_present<TemplateDecl>(D);
-        const auto* Templated = D;
-        if(auto* DT = D->getDescribedTemplate())
-        {
-            Described = DT;
-            if (auto* TD = DT->getTemplatedDecl())
-                Templated = TD;
-        }
-
-        if(Described)
-        {
-            const TemplateParameterList* TPL = Described->getTemplateParameters();
-            if(const auto* RC = TPL->getRequiresClause())
-            {
-                RC = SubstituteConstraintExpressionWithoutSatisfaction(
-                    sema_, cast<NamedDecl>(isa<FunctionTemplateDecl>(Described) ? Described : Templated), RC);
-                if(! RC)
-                    return true;
-                odr_hash_.AddStmt(RC);
-                usr_.append("@TPL#");
-                usr_.append(llvm::itostr(odr_hash_.CalculateHash()));
-                odr_hash_.clear();
-            }
-        }
-
-        if(auto* FD = dyn_cast<FunctionDecl>(Templated);
-            FD && FD->getTrailingRequiresClause())
-        {
-            const Expr* RC = FD->getTrailingRequiresClause();
-            RC = SubstituteConstraintExpressionWithoutSatisfaction(
-                sema_, cast<NamedDecl>(Described ? Described : Templated), RC);
-            if(! RC)
-                return true;
-            odr_hash_.AddStmt(RC);
-            usr_.append("@TRC#");
-            usr_.append(llvm::itostr(odr_hash_.CalculateHash()));
-            odr_hash_.clear();
-        }
-
-        return false;
-    }
-
-    /** Extracts the symbol ID for a declaration.
-
-        This function will extract the symbol ID for a
-        declaration, and store it in the `id` input
-        parameter.
-
-        As USRs (Unified Symbol Resolution) could be
-        large, especially for functions with long type
-        arguments, we use 160-bits SHA1(USR) values.
-
-        To guarantee the uniqueness of symbols while using
-        a relatively small amount of memory (vs storing
-        USRs directly), this function hashes the Decl
-        USR value with SHA1.
-
-        @return true if the symbol ID could not be
-        extracted, and false otherwise.
-
-     */
-    bool
-    extractSymbolID(
-        const Decl* D,
-        SymbolID& id)
-    {
-        if(! D)
-            return false;
-        if(isa<TranslationUnitDecl>(D))
-        {
-            id = SymbolID::global;
-            return true;
-        }
-        usr_.clear();
-        if(generateUSR(D))
-            return false;
-        auto h = llvm::SHA1::hash(arrayRefFromStringRef(usr_));
-        id = SymbolID(h.data());
-        return true;
-    }
-
-    /** Extracts the symbol ID for a declaration.
-
-        This function will extract the symbol ID for a
-        declaration, and return it.
-
-        As USRs (Unified Symbol Resolution) could be
-        large, especially for functions with long type
-        arguments, we use 160-bits SHA1(USR) values.
-
-        To guarantee the uniqueness of symbols while using
-        a relatively small amount of memory (vs storing
-        USRs directly), this function hashes the Decl
-        USR value with SHA1.
-
-        @return the symbol ID for the declaration.
-     */
-    SymbolID
-    extractSymbolID(
-        const Decl* D)
-    {
-        SymbolID id = SymbolID::invalid;
-        extractSymbolID(D, id);
-        return id;
-    }
-
-    //------------------------------------------------
-
-    AccessSpecifier
-    getAccess(const Decl* D)
-    {
-        // First, get the declaration this was instantiated from
-        D = getInstantiatedFrom(D);
-
-        // If this is the template declaration of a template,
-        // use the access of the template
-        if(TemplateDecl const* TD = D->getDescribedTemplate())
-            return TD->getAccessUnsafe();
-
-        // For class/variable template partial/explicit specializations,
-        // we want to use the access of the primary template
-        if(auto const* CTSD = dyn_cast<ClassTemplateSpecializationDecl>(D))
-            return CTSD->getSpecializedTemplate()->getAccessUnsafe();
-
-        if(auto const* VTSD = dyn_cast<VarTemplateSpecializationDecl>(D))
-            return VTSD->getSpecializedTemplate()->getAccessUnsafe();
-
-        // For function template specializations, use the access of the
-        // primary template if it has been resolved
-        if(auto const* FD = dyn_cast<FunctionDecl>(D))
-        {
-            if(auto const* FTD = FD->getPrimaryTemplate())
-                return FTD->getAccessUnsafe();
-        }
-
-        // Since friend declarations are not members, this hack computes
-        // their access based on the default access for the tag they
-        // appear in, and any AccessSpecDecls which appears lexically
-        // before them
-        if(auto const* FD = dyn_cast<FriendDecl>(D))
-        {
-            auto const* RD = dyn_cast<CXXRecordDecl>(
-                FD->getLexicalDeclContext());
-            // RD should never be null in well-formed code,
-            // but clang error recovery may build an AST
-            // where the assumption will not hold
-            if(! RD)
-                return AccessSpecifier::AS_public;
-            auto access = RD->isClass() ?
-                AccessSpecifier::AS_private :
-                AccessSpecifier::AS_public;
-            for(auto* M : RD->decls())
-            {
-                if(auto* AD = dyn_cast<AccessSpecDecl>(M))
-                    access = AD->getAccessUnsafe();
-                else if(M == FD)
-                    return access;
-            }
-            // KRYSTIAN FIXME: will this ever be hit?
-            // it would require a friend declaration that is
-            // not in the lexical traversal of its lexical context
-            MRDOCS_UNREACHABLE();
-        }
-
-        // In all other cases, use the access of this declaration
-        return D->getAccessUnsafe();
-    }
-
-    //------------------------------------------------
-
-    // KRYSTIAN NOTE: we *really* should not have a
-    // type named "SourceLocation"...
-    FileInfo* getFileInfo(clang::SourceLocation loc)
-    {
-        // KRYSTIAN FIXME: we really should not be
-        // calling getPresumedLoc this often,
-        // it's quite expensive
-        auto presumed = source_.getPresumedLoc(loc, false);
-        if(presumed.isInvalid())
-            return nullptr;
-        const FileEntry* file =
-            source_.getFileEntryForID(
-                presumed.getFileID());
-        // KRYSTIAN NOTE: i have no idea under what
-        // circumstances the file entry would be null
-        if(! file)
-            return nullptr;
-        // KRYSTIAN NOTE: i have no idea under what
-        // circumstances the file would not be in either
-        // the main file, or an included file
-        auto it = files_.find(file);
-        if(it == files_.end())
-            return nullptr;
-        return &it->second;
-    }
-
-    /** Add a source location to an Info object.
-
-        This function will add a source location to an Info,
-        if it is not already present.
-
-        @param I the Info to add the source location to
-        @param loc the source location to add
-        @param definition true if the source location is a definition
-        @param documented true if the source location is documented
-     */
-    void
-    addSourceLocation(
-        SourceInfo& I,
-        clang::SourceLocation loc,
-        bool definition,
-        bool documented)
-    {
-        unsigned line = source_.getPresumedLoc(
-            loc, false).getLine();
-        FileInfo* file = getFileInfo(loc);
-        MRDOCS_ASSERT(file);
-        if(definition)
-        {
-            if(I.DefLoc)
-                return;
-            I.DefLoc.emplace(file->full_path,
-                file->short_path, line, file->kind,
-                documented);
-        }
-        else
-        {
-            auto existing = std::find_if(I.Loc.begin(), I.Loc.end(),
-                [line, file](const Location& l)
-                {
-                    return l.LineNumber == line &&
-                        l.Path == file->full_path;
-                });
-            if(existing != I.Loc.end())
-                return;
-            I.Loc.emplace_back(file->full_path,
-                file->short_path, line, file->kind,
-                documented);
-        }
-    }
-
-    std::string
-    getSourceCode(
-        SourceRange const& R)
-    {
-        return Lexer::getSourceText(
-            CharSourceRange::getTokenRange(R),
-            source_,
-            context_.getLangOpts()).str();
-    }
-
-    //------------------------------------------------
-
-    std::string getExprAsString(const Expr* E)
-    {
-        std::string result;
-        llvm::raw_string_ostream stream(result);
-        E->printPretty(stream, nullptr, context_.getPrintingPolicy());
-        return result;
-    }
-
-    std::string getTypeAsString(const Type* T)
-    {
-        if(auto* AT = dyn_cast_if_present<AutoType>(T))
-        {
-            switch(AT->getKeyword())
-            {
-            case AutoTypeKeyword::Auto:
-            case AutoTypeKeyword::GNUAutoType:
-                return "auto";
-            case AutoTypeKeyword::DecltypeAuto:
-                return "decltype(auto)";
-            default:
-                MRDOCS_UNREACHABLE();
-            }
-        }
-        if(auto* TTPT = dyn_cast_if_present<TemplateTypeParmType>(T))
-        {
-            if(TemplateTypeParmDecl* TTPD = TTPT->getDecl();
-                TTPD && TTPD->isImplicit())
-                return "auto";
-        }
-        return QualType(T, 0).getAsString(
-            context_.getPrintingPolicy());
-    }
-
-    /** Get the user-written `Decl` for a `Decl`
-
-        Given a `Decl` `D`, `getInstantiatedFrom` will return the
-        user-written `Decl` corresponding to `D`. For specializations
-        which were implicitly instantiated, this will be whichever `Decl`
-        was used as the pattern for instantiation.
-    */
-    template<typename DeclTy>
-    DeclTy*
-    getInstantiatedFrom(DeclTy* D);
-
-    template<typename DeclTy>
-        requires std::derived_from<DeclTy, FunctionDecl> ||
-            std::same_as<FunctionTemplateDecl, std::remove_cv_t<DeclTy>>
-    FunctionDecl*
-    getInstantiatedFrom(DeclTy* D)
-    {
-        return dyn_cast_if_present<FunctionDecl>(
-            getInstantiatedFrom<Decl>(D));
-    }
-
-    template<typename DeclTy>
-        requires std::derived_from<DeclTy, CXXRecordDecl> ||
-            std::same_as<ClassTemplateDecl, std::remove_cv_t<DeclTy>>
-    CXXRecordDecl*
-    getInstantiatedFrom(DeclTy* D)
-    {
-        return dyn_cast_if_present<CXXRecordDecl>(
-            getInstantiatedFrom<Decl>(D));
-    }
-
-    template<typename DeclTy>
-        requires std::derived_from<DeclTy, VarDecl> ||
-            std::same_as<VarTemplateDecl, std::remove_cv_t<DeclTy>>
-    VarDecl*
-    getInstantiatedFrom(DeclTy* D)
-    {
-        return dyn_cast_if_present<VarDecl>(
-            getInstantiatedFrom<Decl>(D));
-    }
-
-    template<typename DeclTy>
-        requires std::derived_from<DeclTy, TypedefNameDecl> ||
-            std::same_as<TypeAliasTemplateDecl, std::remove_cv_t<DeclTy>>
-    TypedefNameDecl*
-    getInstantiatedFrom(DeclTy* D)
-    {
-        return dyn_cast_if_present<TypedefNameDecl>(
-            getInstantiatedFrom<Decl>(D));
-    }
-
-    std::unique_ptr<TypeInfo>
-    buildTypeInfo(
-        QualType qt,
-        ExtractMode extract_mode = ExtractMode::IndirectDependency);
-
-    std::unique_ptr<NameInfo>
-    buildNameInfo(
-        const NestedNameSpecifier* NNS,
-        ExtractMode extract_mode = ExtractMode::IndirectDependency);
-
-    #if 0
-    std::unique_ptr<NameInfo>
-    buildNameInfo(
-        const Decl* D,
-        ExtractMode extract_mode = ExtractMode::IndirectDependency);
-    #endif
-
-    template<typename TArgRange = ArrayRef<TemplateArgument>>
-    std::unique_ptr<NameInfo>
-    buildNameInfo(
-        DeclarationName Name,
-        std::optional<TArgRange> TArgs = std::nullopt,
-        const NestedNameSpecifier* NNS = nullptr,
-        ExtractMode extract_mode = ExtractMode::IndirectDependency);
-
-    template<typename TArgRange = ArrayRef<TemplateArgument>>
-    std::unique_ptr<NameInfo>
-    buildNameInfo(
-        const Decl* D,
-        std::optional<TArgRange> TArgs = std::nullopt,
-        const NestedNameSpecifier* NNS = nullptr,
-        ExtractMode extract_mode = ExtractMode::IndirectDependency);
-
-
-    template<typename Integer>
-    Integer
-    getValue(const llvm::APInt& V)
-    {
-        if constexpr(std::is_signed_v<Integer>)
-            return static_cast<Integer>(
-                V.getSExtValue());
-        else
-            return static_cast<Integer>(
-                V.getZExtValue());
-    }
-
-    void
-    buildNoexceptInfo(
-        NoexceptInfo& I,
-        const FunctionProtoType* FPT)
-    {
-        MRDOCS_ASSERT(FPT);
-        I.Implicit = ! FPT->hasNoexceptExceptionSpec();
-        #if 0
-        // if the exception specification is unevaluated,
-        // we just consider it to be dependent
-        if(FPT->getExceptionSpecType() ==
-            ExceptionSpecificationType::EST_Unevaluated)
-            I.Kind = NoexceptKind::Dependent;
-        else
-            I.Kind = convertToNoexceptKind(FPT->canThrow());
-        #else
-        I.Kind = convertToNoexceptKind(
-            FPT->getExceptionSpecType());
-        #endif
-
-        // store the operand, if any
-        if(Expr* NoexceptExpr = FPT->getNoexceptExpr())
-            I.Operand = getExprAsString(NoexceptExpr);
-    }
-
-    void
-    buildExplicitInfo(
-        ExplicitInfo& I,
-        const ExplicitSpecifier& ES)
-    {
-        I.Implicit = ! ES.isSpecified();
-        I.Kind = convertToExplicitKind(ES);
-
-        // store the operand, if any
-        if(const Expr* ExplicitExpr = ES.getExpr())
-            I.Operand = getExprAsString(ExplicitExpr);
-    }
-
-    void
-    buildExprInfo(
-        ExprInfo& I,
-        const Expr* E)
-    {
-        if(! E)
-            return;
-        I.Written = getSourceCode(
-            E->getSourceRange());
-    }
-
-    template<typename T>
-    void
-    buildExprInfo(
-        ConstantExprInfo<T>& I,
-        const Expr* E)
-    {
-        buildExprInfo(
-            static_cast<ExprInfo&>(I), E);
-        // if the expression is dependent,
-        // we cannot get its value
-        if(! E || E->isValueDependent())
-            return;
-        I.Value.emplace(getValue<T>(
-            E->EvaluateKnownConstInt(context_)));
-    }
-
-    template<typename T>
-    void
-    buildExprInfo(
-        ConstantExprInfo<T>& I,
-        const Expr* E,
-        const llvm::APInt& V)
-    {
-        buildExprInfo(I, E);
-        I.Value.emplace(getValue<T>(V));
-    }
-
-    QualType
-    getDeclaratorType(
-        const DeclaratorDecl* DD)
-    {
-        if(auto* TSI = DD->getTypeSourceInfo();
-            TSI && ! TSI->getType().isNull())
-            return TSI->getType();
-        return DD->getType();
-    }
-
-    void
-    buildTemplateParam(
-        std::unique_ptr<TParam>& I,
-        const NamedDecl* N)
-    {
-        visit(N, [&]<typename DeclTy>(const DeclTy* P)
-        {
-            constexpr Decl::Kind kind =
-                DeclToKind<DeclTy>();
-
-            if constexpr(kind == Decl::TemplateTypeParm)
-            {
-                if(! I)
-                    I = std::make_unique<TypeTParam>();
-                auto* R = static_cast<TypeTParam*>(I.get());
-                if(P->wasDeclaredWithTypename())
-                    R->KeyKind = TParamKeyKind::Typename;
-                if(P->hasDefaultArgument() && !R->Default)
-                    R->Default = buildTemplateArg(
-                        P->getDefaultArgument().getArgument());
-                if(const TypeConstraint* TC = P->getTypeConstraint())
-                {
-                    const NestedNameSpecifier* NNS =
-                        TC->getNestedNameSpecifierLoc().getNestedNameSpecifier();
-                    std::optional<const ASTTemplateArgumentListInfo*> TArgs;
-                    if(TC->hasExplicitTemplateArgs())
-                        TArgs.emplace(TC->getTemplateArgsAsWritten());
-                    R->Constraint = buildNameInfo(TC->getNamedConcept(), TArgs, NNS);
-                }
-                return;
-            }
-            else if constexpr(kind == Decl::NonTypeTemplateParm)
-            {
-                if(! I)
-                    I = std::make_unique<NonTypeTParam>();
-                auto* R = static_cast<NonTypeTParam*>(I.get());
-                R->Type = buildTypeInfo(P->getType());
-                if(P->hasDefaultArgument() && !R->Default)
-                    R->Default = buildTemplateArg(
-                        P->getDefaultArgument().getArgument());
-                return;
-            }
-            else if constexpr(kind == Decl::TemplateTemplateParm)
-            {
-                if(! I)
-                    I = std::make_unique<TemplateTParam>();
-                auto* R = static_cast<TemplateTParam*>(I.get());
-                if(R->Params.empty())
-                {
-                    for(const NamedDecl* NP : *P->getTemplateParameters())
-                        buildTemplateParam(R->Params.emplace_back(), NP);
-                }
-                if(P->hasDefaultArgument() && !R->Default)
-                    R->Default = buildTemplateArg(
-                        P->getDefaultArgument().getArgument());
-                return;
-            }
-            MRDOCS_UNREACHABLE();
-        });
-
-        if(I->Name.empty())
-            I->Name = extractName(N);
-        // KRYSTIAN NOTE: Decl::isParameterPack
-        // returns true for function parameter packs
-        I->IsParameterPack =
-            N->isTemplateParameterPack();
-    }
-
-    void
-    buildTemplateParams(
-        TemplateInfo& TI,
-        const TemplateParameterList* TPL)
-    {
-        for(std::size_t I = 0; I < TPL->size(); ++I)
-        {
-            auto& PI = I < TI.Params.size() ?
-                TI.Params[I] : TI.Params.emplace_back();
-            buildTemplateParam(PI, TPL->getParam(I));
-        }
-        if(auto* RC = TPL->getRequiresClause())
-            buildExprInfo(TI.Requires, RC);
-    }
-
-    std::unique_ptr<TArg>
-    buildTemplateArg(
-        const TemplateArgument& A)
-    {
-        // TypePrinter generates an internal placeholder name (e.g. type-parameter-0-0)
-        // for template type parameters used as arguments. it also cannonicalizes
-        // types, which we do not want (although, PrintingPolicy has an option to change this).
-        // thus, we use the template arguments as written.
-
-        // KRYSTIAN NOTE: this can probably be changed to select
-        // the argument as written when it is not dependent and is a type.
-        // FIXME: constant folding behavior should be consistent with that of other
-        // constructs, e.g. noexcept specifiers & explicit specifiers
-        switch(A.getKind())
-        {
-        // empty template argument (e.g. not yet deduced)
-        case TemplateArgument::Null:
-            break;
-
-        // a template argument pack (any kind)
-        case TemplateArgument::Pack:
-        {
-            // we should never a TemplateArgument::Pack here
-            MRDOCS_UNREACHABLE();
-            break;
-        }
-        // type
-        case TemplateArgument::Type:
-        {
-            auto R = std::make_unique<TypeTArg>();
-            QualType QT = A.getAsType();
-            MRDOCS_ASSERT(! QT.isNull());
-            // if the template argument is a pack expansion,
-            // use the expansion pattern as the type & mark
-            // the template argument as a pack expansion
-            if(const Type* T = QT.getTypePtr();
-                auto* PT = dyn_cast<PackExpansionType>(T))
-            {
-                R->IsPackExpansion = true;
-                QT = PT->getPattern();
-            }
-            R->Type = buildTypeInfo(QT);
-            return R;
-        }
-        // pack expansion of a template name
-        case TemplateArgument::TemplateExpansion:
-        // template name
-        case TemplateArgument::Template:
-        {
-            auto R = std::make_unique<TemplateTArg>();
-            R->IsPackExpansion = A.isPackExpansion();
-
-            // KRYSTIAN FIXME: template template arguments are
-            // id-expression, so we don't properly support them yet.
-            // for the time being, we will use the name & SymbolID of
-            // the referenced declaration (if it isn't dependent),
-            // and fallback to printing the template name otherwise
-            TemplateName TN = A.getAsTemplateOrTemplatePattern();
-            if(auto* TD = TN.getAsTemplateDecl())
-            {
-                if(auto* II = TD->getIdentifier())
-                    R->Name = II->getName();
-                // do not extract a SymbolID or build Info if
-                // the template template parameter names a
-                // template template parameter or builtin template
-                if(! isa<TemplateTemplateParmDecl>(TD) &&
-                    ! isa<BuiltinTemplateDecl>(TD))
-                {
-                    getDependencyID(getInstantiatedFrom<
-                        NamedDecl>(TD), R->Template);
-                }
-            }
-            else
-            {
-                llvm::raw_string_ostream stream(R->Name);
-                TN.print(stream, context_.getPrintingPolicy(),
-                    TemplateName::Qualified::AsWritten);
-            }
-            return R;
-        }
-        // nullptr value
-        case TemplateArgument::NullPtr:
-        // expression referencing a declaration
-        case TemplateArgument::Declaration:
-        // integral expression
-        case TemplateArgument::Integral:
-        // expression
-        case TemplateArgument::Expression:
-        {
-            auto R = std::make_unique<NonTypeTArg>();
-            R->IsPackExpansion = A.isPackExpansion();
-            // if this is a pack expansion, use the template argument
-            // expansion pattern in place of the template argument pack
-            const TemplateArgument& adjusted =
-                R->IsPackExpansion ?
-                A.getPackExpansionPattern() : A;
-
-            llvm::raw_string_ostream stream(R->Value.Written);
-            adjusted.print(context_.getPrintingPolicy(), stream, false);
-
-            return R;
-        }
-        default:
-            MRDOCS_UNREACHABLE();
-        }
-        return nullptr;
-    }
-
-    template<typename Range>
-    void
-    buildTemplateArgs(
-        std::vector<std::unique_ptr<TArg>>& result,
-        Range&& args)
-    {
-        for(const TemplateArgument& arg : args)
-        {
-            // KRYSTIAN NOTE: is this correct? should we have a
-            // separate TArgKind for packs instead of "unlaminating"
-            // them as we are doing here?
-            if(arg.getKind() == TemplateArgument::Pack)
-                buildTemplateArgs(result, arg.pack_elements());
-            else
-                result.emplace_back(buildTemplateArg(arg));
-        }
-    }
-
-    void
-    buildTemplateArgs(
-        std::vector<std::unique_ptr<TArg>>& result,
-        const ASTTemplateArgumentListInfo* args)
-    {
-        return buildTemplateArgs(result,
-            std::views::transform(args->arguments(),
-                [](auto& x) -> auto&
-            {
-                    return x.getArgument();
-            }));
-    }
-
-    /** Parse the comments above a declaration as Javadoc
-
-        This function will parse the comments above a declaration
-        as Javadoc, and store the results in the `javadoc` input
-        parameter.
-
-        @return true if the comments were successfully parsed as
-        Javadoc, and false otherwise.
-     */
-    bool
-    parseRawComment(
-        std::unique_ptr<Javadoc>& javadoc,
-        Decl const* D)
-    {
-        // VFALCO investigate whether we can use
-        // ASTContext::getCommentForDecl instead
-        #if 1
-        RawComment* RC =
-            D->getASTContext().getRawCommentForDeclNoCache(D);
-        if(! RC)
-            return false;
-        comments::FullComment* FC =
-            RC->parse(D->getASTContext(), &sema_.getPreprocessor(), D);
-        #else
-        comments::FullComment* FC =
-            D->getASTContext().getCommentForDecl(
-                D, &sema_.getPreprocessor());
-        #endif
-        if(! FC)
-            return false;
-        // KRYSTIAN FIXME: clang ignores documentation comments
-        // when there is a preprocessor directive between the end
-        // of the comment and the declaration location. there are two
-        // ways to fix this: either set the declaration begin location
-        // to be before and preprocessor directives, or submit a patch
-        // which disables this behavior (it's not entirely clear why
-        // this check occurs anyways, so some investigation is needed)
-        parseJavadoc(javadoc, FC, D, config_, diags_);
-        return true;
-    }
-
-    //------------------------------------------------
-
-    bool
-    checkSymbolFilter(const NamedDecl* ND)
-    {
-        if(currentMode() != ExtractMode::Normal ||
-            symbolFilter_.detached)
-            return true;
-
-        std::string name = extractName(ND);
-        const FilterNode* parent = symbolFilter_.current;
-        if(const FilterNode* child = parent->findChild(name))
-        {
-            // if there is a matching node, skip extraction if it's
-            // explicitly excluded AND has no children. the presence
-            // of child nodes indicates that some child exists that
-            // is explicitly whitelisted
-            if(child->Explicit && child->Excluded &&
-                child->isTerminal())
-                return false;
-            symbolFilter_.setCurrent(child, false);
-        }
-        else
-        {
-            // if there was no matching node, check the most
-            // recently entered explicitly specified parent node.
-            // if it's blacklisted, then the "filtering default"
-            // is to exclude symbols unless a child is explicitly
-            // whitelisted
-            if(symbolFilter_.last_explicit &&
-                symbolFilter_.last_explicit->Excluded)
-                return false;
-
-            if(const auto* DC = dyn_cast<DeclContext>(ND);
-                ! DC || ! DC->isInlineNamespace())
-            {
-                // if this namespace does not match a child
-                // of the current filter node, set the detached flag
-                // so we don't update the namespace filter state
-                // while traversing the children of this namespace
-                symbolFilter_.detached = true;
-            }
-        }
-        return true;
-    }
-
-    // This also sets IsFileInRootDir
-    bool
-    inExtractedFile(
-        const Decl* D)
-    {
-        namespace path = llvm::sys::path;
-
-        if(const auto* ND = dyn_cast<NamedDecl>(D))
-        {
-            // out-of-line declarations require us to rebuild
-            // the symbol filtering state
-            if(ND->isOutOfLine())
-            {
-                symbolFilter_.setCurrent(
-                    &symbolFilter_.root, false);
-
-                // collect all parent classes/enums/namespaces
-                llvm::SmallVector<const NamedDecl*, 8> parents;
-                const Decl* P = ND;
-                while((P = getParentDecl(P)))
-                {
-                    if(isa<TranslationUnitDecl>(P))
-                        break;
-                    parents.push_back(cast<NamedDecl>(P));
-                }
-
-                // check whether each parent passes the symbol filters
-                // as-if the declaration was inline
-                for(const auto* PND : std::views::reverse(parents))
-                {
-                    if(! checkSymbolFilter(PND))
-                        return false;
-                }
-            }
-
-            if(! checkSymbolFilter(ND))
-                return false;
-        }
-
-        FileInfo* file = getFileInfo(D->getBeginLoc());
-        // KRYSTIAN NOTE: i'm unsure under what conditions
-        // this assert would fire.
-        MRDOCS_ASSERT(file);
-        // only extract from files in source root
-        return file->kind == FileKind::Source;
-    }
-
-    /** Determine if a declaration should be extracted
-
-        This function will determine whether a declaration
-        should be extracted based on the current extraction
-        mode, and the current symbol filter state.
-
-        The function filters private symbols, symbols outside
-        the input files, and symbols in files that do not match
-        the input file patterns.
-
-        @param D the declaration to check
-        @param access the access specifier of the declaration
-        @return true if the declaration should be extracted,
-        and false otherwise.
-     */
-    bool
-    shouldExtract(
-        const Decl* D,
-        AccessSpecifier access)
-    {
-        if (config_->inaccessibleMembers !=
-            ConfigImpl::SettingsImpl::ExtractPolicy::Always)
-        {
-            // KRYSTIAN FIXME: this doesn't handle direct
-            // dependencies on inaccessible declarations
-            if(access == AccessSpecifier::AS_private ||
-                access == AccessSpecifier::AS_protected)
-                return false;
-        }
-
-        // don't extract anonymous unions
-        if(const auto* RD = dyn_cast<RecordDecl>(D);
-            RD && RD->isAnonymousStructOrUnion())
-            return false;
-
-        // don't extract implicitly generated declarations
-        // (except for IndirectFieldDecls)
-        if(D->isImplicit() && !isa<IndirectFieldDecl>(D))
-            return false;
-
-        if (!config_->input.include.empty())
-        {
-            // Get filename
-            FileInfo* file = getFileInfo(D->getBeginLoc());
-            if (!file)
-                return false;
-            std::string filename = file->full_path;
-            bool matchPrefix = std::ranges::any_of(
-                config_->input.include,
-                [&filename](const std::string& prefix)
-                {
-                    return files::startsWith(filename, prefix);
-                });
-            if (!matchPrefix)
-            {
-                return false;
-            }
-        }
-
-        if (!config_->input.filePatterns.empty())
-        {
-            // Get filename
-            FileInfo* file = getFileInfo(D->getBeginLoc());
-            if (!file)
-                return false;
-            std::string filename = file->full_path;
-            bool matchPattern = std::ranges::any_of(
-                config_->input.filePatterns,
-                [&filename](const std::string& pattern)
-                {
-                    return globMatch(pattern, filename);
-                });
-            if (!matchPattern)
-            {
-                return false;
-            }
-        }
-
-    #if 0
-        bool extract = inExtractedFile(D);
-        // if we're extracting a declaration as a dependency,
-        // override the current extraction mode if
-        // it would be extracted anyway
-        if(extract)
-            mode = ExtractMode::Normal;
-
-        return extract || currentMode() != ExtractMode::Normal;
-    #else
-        return inExtractedFile(D) ||
-            currentMode() != ExtractMode::Normal;
-    #endif
-    }
-
-    const NonTypeTemplateParmDecl*
-    getNTTPFromExpr(
-        const Expr* E,
-        unsigned Depth)
-    {
-        while(true)
-        {
-            if(const auto* ICE = dyn_cast<ImplicitCastExpr>(E))
-            {
-                E = ICE->getSubExpr();
-                continue;
-            }
-            if(const auto* CE = dyn_cast<ConstantExpr>(E))
-            {
-                E = CE->getSubExpr();
-                continue;
-            }
-            if(const auto* SNTTPE = dyn_cast<SubstNonTypeTemplateParmExpr>(E))
-            {
-                E = SNTTPE->getReplacement();
-                continue;
-            }
-            if(const auto* CCE = dyn_cast<CXXConstructExpr>(E);
-                CCE && CCE->getParenOrBraceRange().isInvalid())
-            {
-                // look through implicit copy construction from an lvalue of the same type
-                E = CCE->getArg(0);
-                continue;
-            }
-            break;
-        }
-
-        const auto* DRE = dyn_cast<DeclRefExpr>(E);
-        if(! DRE)
-            return nullptr;
-
-        const auto* NTTPD = dyn_cast<NonTypeTemplateParmDecl>(DRE->getDecl());
-        if(! NTTPD || NTTPD->getDepth() != Depth)
-            return nullptr;
-
-        return NTTPD;
-    }
-
-    std::optional<TemplateArgument>
-    tryGetTemplateArgument(
-        TemplateParameterList* Parameters,
-        ArrayRef<TemplateArgument> Arguments,
-        unsigned Index)
-    {
-        if(Index == static_cast<unsigned>(-1))
-            return std::nullopt;
-        if(Index < Arguments.size())
-            return Arguments[Index];
-        if(Parameters && Index < Parameters->size())
-        {
-            NamedDecl* ND = Parameters->getParam(Index);
-            if(auto* TTPD = dyn_cast<TemplateTypeParmDecl>(ND);
-                TTPD && TTPD->hasDefaultArgument())
-            {
-                return TTPD->getDefaultArgument().getArgument();
-            }
-            if(auto* NTTPD = dyn_cast<NonTypeTemplateParmDecl>(ND);
-                NTTPD && NTTPD->hasDefaultArgument())
-            {
-                return NTTPD->getDefaultArgument().getArgument();
-            }
-        }
-        return std::nullopt;
-    }
-
-    std::optional<std::tuple<TemplateParameterList*, llvm::SmallBitVector, unsigned>>
-    isSFINAETemplate(
-        TemplateDecl* TD,
-        const IdentifierInfo* Member)
-    {
-        if(! TD)
-            return std::nullopt;
-
-        auto FindParam = [this](
-            ArrayRef<TemplateArgument> Arguments,
-            const TemplateArgument& Arg) -> unsigned
-        {
-            if(Arg.getKind() != TemplateArgument::Type)
-                return -1;
-            auto Found = std::ranges::find_if(Arguments, [&](const TemplateArgument& Other)
-            {
-                if(Other.getKind() != TemplateArgument::Type)
-                    return false;
-                return context_.hasSameType(Other.getAsType(), Arg.getAsType());
-            });
-            return Found != Arguments.end() ? Found - Arguments.data() : -1;
-        };
-
-        if(auto* ATD = dyn_cast<TypeAliasTemplateDecl>(TD))
-        {
-            auto Underlying = ATD->getTemplatedDecl()->getUnderlyingType();
-            auto sfinae_info = getSFINAETemplate(Underlying, !Member);
-            if(! sfinae_info)
-                return std::nullopt;
-            if(Member)
-                sfinae_info->Member = Member;
-            auto sfinae_result = isSFINAETemplate(
-                sfinae_info->Template, sfinae_info->Member);
-            if(! sfinae_result)
-                return std::nullopt;
-            auto [template_params, controlling_params, param_idx] = *sfinae_result;
-            auto param_arg = tryGetTemplateArgument(
-                template_params, sfinae_info->Arguments, param_idx);
-            if(! param_arg)
-                return std::nullopt;
-            unsigned ParamIdx = FindParam(ATD->getInjectedTemplateArgs(context_), *param_arg);
-            return std::make_tuple(ATD->getTemplateParameters(), std::move(controlling_params), ParamIdx);
-        }
-
-        auto* CTD = dyn_cast<ClassTemplateDecl>(TD);
-        if(! CTD)
-            return std::nullopt;
-
-        auto PrimaryArgs = CTD->getInjectedTemplateArgs(context_);
-        llvm::SmallBitVector ControllingParams(PrimaryArgs.size());
-
-        QualType MemberType;
-        unsigned ParamIdx = -1;
-        auto IsMismatch = [&](CXXRecordDecl* RD, ArrayRef<TemplateArgument> Args)
-        {
-            if(! RD->hasDefinition())
-              return false;
-            auto MemberLookup = RD->lookup(Member);
-            QualType CurrentType;
-            if(MemberLookup.empty())
-            {
-                if(! RD->getNumBases())
-                    return false;
-                for(auto& Base : RD->bases())
-                {
-                    auto sfinae_info = getSFINAETemplate(Base.getType(), false);
-                    if(! sfinae_info)
-                    {
-                        // if the base is an opaque dependent type, we can't determine
-                        // whether it's a SFINAE type
-                        if(Base.getType()->isDependentType())
-                            return true;
-                        continue;
-                    }
-                    // if the class inherits from itself, we can't determine whether
-                    // it's a SFINAE type
-                    if(declaresSameEntity(TD, sfinae_info->Template))
-                        return true;
-
-                    auto sfinae_result = isSFINAETemplate(
-                        sfinae_info->Template, Member);
-                    if(! sfinae_result)
-                        return true;
-
-                    auto [template_params, controlling_params, param_idx] = *sfinae_result;
-                    auto param_arg = tryGetTemplateArgument(
-                        template_params, sfinae_info->Arguments, param_idx);
-                    if(! param_arg)
-                        return true;
-                    auto CurrentTypeFromBase = param_arg->getAsType();
-                    if(CurrentType.isNull())
-                        CurrentType = CurrentTypeFromBase;
-                    else if(! context_.hasSameType(CurrentType, CurrentTypeFromBase))
-                        return true;
-                }
-                // didn't find a base that defines the specified member
-                if(CurrentType.isNull())
-                    return false;
-            }
-            else
-            {
-                // ambiguous lookup
-                if(! MemberLookup.isSingleResult())
-                    return true;
-                if(auto* TND = dyn_cast<TypedefNameDecl>(MemberLookup.front()))
-                    CurrentType = TND->getUnderlyingType();
-                else
-                    // the specialization has a member with the right name,
-                    // but it isn't an alias declaration/typedef declaration...
-                    return true;
-            }
-
-            #if 0
-            if(! CurrentType->isDependentType())
-                return ! context_.hasSameType(MemberType, CurrentType);
-
-            auto FoundIdx = FindParam(Args, TemplateArgument(CurrentType));
-            if(ParamIdx != -1 && FoundIdx != ParamIdx)
-                return true;
-
-            ParamIdx = FoundIdx;
-            #endif
-
-            if(CurrentType->isDependentType())
-            {
-                auto FoundIdx = FindParam(Args, TemplateArgument(CurrentType));
-                if(FoundIdx == static_cast<decltype(FoundIdx)>(-1) || FoundIdx >= PrimaryArgs.size())
-                    return true;
-                ParamIdx = FoundIdx;
-                TemplateArgument MappedPrimary = PrimaryArgs[FoundIdx];
-                assert(MappedPrimary.getKind() == TemplateArgument::Type);
-                CurrentType = MappedPrimary.getAsType();
-            }
-
-            if(MemberType.isNull())
-                MemberType = CurrentType;
-
-            return ! context_.hasSameType(MemberType, CurrentType);
-        };
-
-        if (IsMismatch(CTD->getTemplatedDecl(), PrimaryArgs))
-            return std::nullopt;
-
-        for(auto* CTSD : CTD->specializations())
-        {
-            if(CTSD->isExplicitSpecialization() &&
-                IsMismatch(CTSD, CTSD->getTemplateArgs().asArray()))
-                return std::nullopt;
-        }
-
-        SmallVector<ClassTemplatePartialSpecializationDecl*> PartialSpecs;
-        CTD->getPartialSpecializations(PartialSpecs);
-
-        for(auto* CTPSD : PartialSpecs)
-        {
-            auto PartialArgs = CTPSD->getTemplateArgs().asArray();
-            if(IsMismatch(CTPSD, PartialArgs))
-                return std::nullopt;
-            for(std::size_t I = 0; I < PartialArgs.size(); ++I)
-            {
-                TemplateArgument Arg = PartialArgs[I];
-                switch(Arg.getKind())
-                {
-                case TemplateArgument::Integral:
-                case TemplateArgument::Declaration:
-                case TemplateArgument::StructuralValue:
-                case TemplateArgument::NullPtr:
-                    break;
-                case TemplateArgument::Expression:
-                    if(getNTTPFromExpr(
-                        Arg.getAsExpr(),
-                        CTPSD->getTemplateDepth() - 1))
-                        continue;
-                    break;
-                default:
-                    continue;
-                }
-                ControllingParams.set(I);
-                //.getAsExpr()
-            }
-        }
-
-        return std::make_tuple(CTD->getTemplateParameters(), std::move(ControllingParams), ParamIdx);
-    }
-
-    struct SFINAEInfo
-    {
-        TemplateDecl* Template = nullptr;
-        const IdentifierInfo* Member = nullptr;
-        ArrayRef<TemplateArgument> Arguments;
+        // remove ./ and ../
+        llvm::sys::path::remove_dots(new_path, true, llvm::sys::path::Style::posix);
+        // convert to posix style
+        llvm::sys::path::native(new_path, llvm::sys::path::Style::posix);
+        return std::string(new_path);
     };
 
-    std::optional<SFINAEInfo>
-    getSFINAETemplate(QualType T, bool AllowDependentNames)
+    std::string sourceRoot = make_posix_absolute(config_->sourceRoot);
+    std::vector<std::pair<std::string, FileKind>> search_dirs;
+
+    Preprocessor& PP = sema_.getPreprocessor();
+    HeaderSearch& HS = PP.getHeaderSearchInfo();
+    search_dirs.reserve(HS.search_dir_size());
+    // first, convert all the include search directories into POSIX style
+    for(const DirectoryLookup& DL : HS.search_dir_range())
     {
-        assert(!T.isNull());
-        SFINAEInfo SFINAE;
-        if(auto* ET = T->getAs<ElaboratedType>())
-            T = ET->getNamedType();
-
-        if(auto* DNT = T->getAsAdjusted<DependentNameType>();
-            DNT && AllowDependentNames)
-        {
-            SFINAE.Member = DNT->getIdentifier();
-            T = QualType(DNT->getQualifier()->getAsType(), 0);
-        }
-
-        if(auto* TST = T->getAsAdjusted<TemplateSpecializationType>())
-        {
-            SFINAE.Template = TST->getTemplateName().getAsTemplateDecl();
-            SFINAE.Arguments = TST->template_arguments();
-            return SFINAE;
-        }
-        return std::nullopt;
+        OptionalDirectoryEntryRef DR = DL.getDirRef();
+        // only consider normal directories
+        if(! DL.isNormalDir() || ! DR)
+            continue;
+        // store the normalized path
+        search_dirs.emplace_back(
+            make_posix_absolute(DR->getName()),
+            DL.isSystemHeaderDirectory() ?
+                FileKind::System : FileKind::Other);
     }
 
-    std::optional<std::pair<QualType, std::vector<TemplateArgument>>>
-    isSFINAEType(QualType T)
+    auto cacheFileInfo = [&](const FileEntry* entry)
     {
-        if(! config_->detectSfinae)
-            return std::nullopt;
+        // "try" implies this may fail, so fallback to getName
+        // if an empty string is returned
+        std::string_view file_path =
+            entry->tryGetRealPathName();
+        files_.emplace(
+            entry,
+            FileInfo::build(
+                search_dirs,
+                make_posix_absolute(file_path),
+                sourceRoot));
+    };
 
-        auto sfinae_info = getSFINAETemplate(T, true);
-        if(! sfinae_info)
-            return std::nullopt;
+    // build the file info for the main file
+    cacheFileInfo(source_.getFileEntryForID(source_.getMainFileID()));
 
-        auto sfinae_result = isSFINAETemplate(
-            sfinae_info->Template, sfinae_info->Member);
-
-        if(! sfinae_result)
-            return std::nullopt;
-
-        auto [template_params, controlling_params, param_idx] = *sfinae_result;
-
-        auto Args = sfinae_info->Arguments;
-        auto param_arg = tryGetTemplateArgument(
-            template_params, Args, param_idx);
-        if(! param_arg)
-            return std::nullopt;
-
-        std::vector<TemplateArgument> ControllingArgs;
-        for(std::size_t I = 0; I < Args.size(); ++I)
-        {
-            if(controlling_params[I])
-                ControllingArgs.emplace_back(Args[I]);
-        }
-
-        return std::make_pair(param_arg->getAsType(), std::move(ControllingArgs));
+    // build the file info for all included files
+    for(const FileEntry* file : PP.getIncludedFiles())
+    {
+        cacheFileInfo(file);
     }
+}
 
-    std::optional<std::pair<QualType, std::vector<TemplateArgument>>>
-    isSFINAEType(const Type* T)
-    {
-        return isSFINAEType(QualType(T, 0));
+void
+ASTVisitor::
+build()
+{
+    // traverse the translation unit, only extracting
+    // declarations which satisfy all filter conditions.
+    // dependencies will be tracked, but not extracted
+    traverseAny(context_.getTranslationUnitDecl());
+
+    // This is to ensure that the global namespace is always present
+    upsert<NamespaceInfo>(SymbolID::global);
+
+    // if dependency extraction is disabled, we are done
+    if(config_->referencedDeclarations ==
+        ConfigImpl::SettingsImpl::ExtractPolicy::Never) {
+        return;
     }
+    buildDependencies();
+}
 
-    std::string extractName(DeclarationName N)
+void
+ASTVisitor::
+buildDependencies()
+{
+    auto scope = enterMode(ExtractMode::DirectDependency);
+    std::unordered_set<Decl*> currentPass(std::move(dependencies_));
+    while (!currentPass.empty())
     {
-        std::string result;
-        if(N.isEmpty())
-          return result;
-        switch(N.getNameKind())
+        for (Decl* D : currentPass)
         {
-        case DeclarationName::Identifier:
-            if(const auto* I = N.getAsIdentifierInfo())
-                result.append(I->getName());
-            break;
-        case DeclarationName::CXXDestructorName:
-            result.push_back('~');
-            [[fallthrough]];
-        case DeclarationName::CXXConstructorName:
-            if(const auto* R = N.getCXXNameType()->getAsCXXRecordDecl())
-                result.append(R->getIdentifier()->getName());
-            break;
-        case DeclarationName::CXXDeductionGuideName:
-            if(const auto* T = N.getCXXDeductionGuideTemplate())
-                result.append(T->getIdentifier()->getName());
-            break;
-        case DeclarationName::CXXConversionFunctionName:
-        {
-            result.append("operator ");
-            // KRYSTIAN FIXME: we *really* should not be
-            // converting types to strings like this
-            result.append(toString(
-                *buildTypeInfo(N.getCXXNameType())));
-            break;
-        }
-        case DeclarationName::CXXOperatorName:
-        {
-            OperatorKind K = convertToOperatorKind(
-                N.getCXXOverloadedOperator());
-            result.append("operator");
-            std::string_view name = getOperatorName(K);
-            if(std::isalpha(name.front()))
-                result.push_back(' ');
-            result.append(name);
-            break;
-        }
-        case DeclarationName::CXXLiteralOperatorName:
-        case DeclarationName::CXXUsingDirective:
-            break;
-        default:
-            MRDOCS_UNREACHABLE();
-        }
-        return result;
-    }
-
-    std::string extractName(const NamedDecl* D)
-    {
-        return extractName(D->getDeclName());
-    }
-
-    //------------------------------------------------
-
-    const Decl* getParentDecl(const Decl* D)
-    {
-        return getParentDecl(const_cast<Decl*>(D));
-    }
-
-    Decl* getParentDecl(Decl* D)
-    {
-        while((D = cast_if_present<
-            Decl>(D->getDeclContext())))
-        {
-            switch(D->getKind())
+            SymbolID id = generateID(D);
+            bool const invalidId = !id;
+            bool const alreadyExtracted = info_.contains(id);
+            if (invalidId || alreadyExtracted)
             {
-            case Decl::CXXRecord:
-                // we treat anonymous unions as "transparent"
-                if(auto* RD = cast<CXXRecordDecl>(D);
-                    RD->isAnonymousStructOrUnion())
-                    break;
-                [[fallthrough]];
-            case Decl::TranslationUnit:
-            case Decl::Namespace:
-            case Decl::Enum:
-            case Decl::ClassTemplateSpecialization:
-            case Decl::ClassTemplatePartialSpecialization:
-                return D;
-            // we consider all other DeclContexts to be "transparent"
-            default:
-                break;
-            }
-        }
-        return nullptr;
-    }
-
-    /** Populate the Info with its parent namespaces
-
-        Given a Decl `D`, `getParentNamespaces` will populate
-        the `Info` `I` with the SymbolID of each parent namespace
-        of `D`. The SymbolID of the global namespace is always
-        included as the first element of `I.Namespace`.
-
-        @param I The mrdocs Info to populate
-        @param D The Decl to extract
-     */
-    void
-    getParentNamespaces(
-        Info& I,
-        Decl* D)
-    {
-        Decl* PD = getParentDecl(D);
-        SymbolID ParentID = extractSymbolID(PD);
-        switch(PD->getKind())
-        {
-        // The TranslationUnit DeclContext is the global namespace;
-        // it uses SymbolID::global and should *always* exist
-        case Decl::TranslationUnit:
-        {
-            MRDOCS_ASSERT(ParentID == SymbolID::global);
-            auto [P, created] = getOrCreateInfo<
-                NamespaceInfo>(ParentID);
-            emplaceChild(P, I);
-            break;
-        }
-        case Decl::Namespace:
-        {
-            auto [P, created] = getOrCreateInfo<
-                NamespaceInfo>(ParentID);
-            buildNamespace(P, created, cast<NamespaceDecl>(PD));
-            emplaceChild(P, I);
-            break;
-        }
-        // special case for an explicit specializations of
-        // a member of an implicit instantiation.
-        case Decl::ClassTemplateSpecialization:
-        case Decl::ClassTemplatePartialSpecialization:
-        if(auto* S = dyn_cast<ClassTemplateSpecializationDecl>(PD);
-            S && S->getSpecializationKind() == TSK_ImplicitInstantiation)
-        {
-            // KRYSTIAN FIXME: i'm pretty sure DeclContext::getDeclKind()
-            // will never be Decl::ClassTemplatePartialSpecialization for
-            // implicit instantiations; instead, the ClassTemplatePartialSpecializationDecl
-            // is accessible through S->getSpecializedTemplateOrPartial
-            // if the implicit instantiation used a partially specialized template,
-            MRDOCS_ASSERT(PD->getKind() !=
-                Decl::ClassTemplatePartialSpecialization);
-
-            auto [P, created] = getOrCreateInfo<
-                SpecializationInfo>(ParentID);
-            buildSpecialization(P, created, S);
-            emplaceChild(P, I);
-            break;
-        }
-        // non-implicit instantiations should be
-        // treated like normal CXXRecordDecls
-        [[fallthrough]];
-        // we should never encounter a Record
-        // that is not a CXXRecord
-        case Decl::CXXRecord:
-        {
-            auto [P, created] = getOrCreateInfo<
-                RecordInfo>(ParentID);
-            buildRecord(P, created, cast<CXXRecordDecl>(PD));
-            emplaceChild(P, I);
-            break;
-        }
-        case Decl::Enum:
-        {
-            auto [P, created] = getOrCreateInfo<
-                EnumInfo>(ParentID);
-            buildEnum(P, created, cast<EnumDecl>(PD));
-            emplaceChild(P, I);
-            break;
-        }
-        default:
-            MRDOCS_UNREACHABLE();
-        }
-
-        Info* P = getInfo(ParentID);
-        MRDOCS_ASSERT(P);
-
-        I.Namespace.emplace_back(ParentID);
-        I.Namespace.insert(I.Namespace.end(),
-            P->Namespace.begin(), P->Namespace.end());
-    }
-
-    /** Emplace a child Info into a ScopeInfo
-
-        Given a ScopeInfo `P` and an Info `C`, `emplaceChild` will
-        add the SymbolID of `C` to `P.Members` and `P.Lookups[C.Name]`.
-
-        @param P The parent ScopeInfo
-        @param C The child Info
-     */
-    void
-    emplaceChild(
-        ScopeInfo& P,
-        Info& C)
-    {
-        // Include C.id in P.Members if it's not already there
-        if(std::ranges::find(P.Members, C.id) == P.Members.end())
-            P.Members.emplace_back(C.id);
-
-        // Include C.id in P.Lookups[C.Name] if it's not already there
-        auto& lookups = P.Lookups.try_emplace(C.Name).first->second;
-        if(std::ranges::find(lookups, C.id) == lookups.end())
-            lookups.emplace_back(C.id);
-    }
-
-    //------------------------------------------------
-
-    void
-    buildSpecialization(
-        SpecializationInfo& I,
-        bool created,
-        ClassTemplateSpecializationDecl* D)
-    {
-        if(! created)
-            return;
-
-        CXXRecordDecl* PD = getInstantiatedFrom(D);
-
-        buildTemplateArgs(I.Args,
-            D->getTemplateArgs().asArray());
-
-        extractSymbolID(PD, I.Primary);
-        I.Name = extractName(PD);
-
-        getParentNamespaces(I, D);
-    }
-
-    //------------------------------------------------
-    // Decl types which have isThisDeclarationADefinition:
-    //
-    // VarTemplateDecl
-    // FunctionTemplateDecl
-    // FunctionDecl
-    // TagDecl
-    // ClassTemplateDecl
-    // CXXDeductionGuideDecl
-
-    /** Populate the NamespaceInfo with the content of a NamespaceDecl
-
-        @param I The mrdocs NamespaceInfo to populate
-        @param created Whether the NamespaceInfo was just created
-        @param D The NamespaceDecl to extract
-     */
-    void
-    buildNamespace(
-        NamespaceInfo& I,
-        bool created,
-        NamespaceDecl* D)
-    {
-        if(! created)
-            // Namespace already extracted:
-            // nothing to populate
-            return;
-
-        // KRYSTIAN NOTE: we do not extract
-        // javadocs for namespaces
-        if(D->isAnonymousNamespace())
-            I.IsAnonymous = true;
-        else
-            I.Name = extractName(D);
-        I.IsInline = D->isInline();
-
-        getParentNamespaces(I, D);
-    }
-
-    //------------------------------------------------
-
-    void
-    buildRecord(
-        RecordInfo& I,
-        bool created,
-        CXXRecordDecl* D)
-    {
-        bool documented = parseRawComment(I.javadoc, D);
-        addSourceLocation(I, D->getBeginLoc(),
-            D->isThisDeclarationADefinition(), documented);
-
-        if(! created)
-            return;
-
-        NamedDecl* ND = D;
-        if(TypedefNameDecl* TD =
-            D->getTypedefNameForAnonDecl())
-        {
-            I.IsTypeDef = true;
-            ND = TD;
-        }
-        I.Name = extractName(ND);
-
-        I.KeyKind = convertToRecordKeyKind(D->getTagKind());
-
-        // These are from CXXRecordDecl::isEffectivelyFinal()
-        I.IsFinal = D->template hasAttr<FinalAttr>();
-        if(const auto* DT = D->getDestructor())
-            I.IsFinalDestructor = DT->template hasAttr<FinalAttr>();
-
-        // extract direct bases. D->bases() will get the bases
-        // from whichever declaration is the definition (if any)
-        if(D->hasDefinition())
-        {
-            for(const CXXBaseSpecifier& B : D->bases())
-            {
-                AccessSpecifier access = B.getAccessSpecifier();
-                // KRYSTIAN FIXME: we need finer-grained control
-                // for protected bases, since an inheriting class
-                // will have access to the bases public members...
-                if(config_->inaccessibleBases !=
-                    ConfigImpl::SettingsImpl::ExtractPolicy::Always)
-                {
-                    if(access == AccessSpecifier::AS_private ||
-                        access == AccessSpecifier::AS_protected)
-                        continue;
-                }
-                // the extraction of the base type is
-                // performed in direct dependency mode
-                auto BaseType = buildTypeInfo(
-                    B.getType(),
-                    ExtractMode::DirectDependency);
-                // CXXBaseSpecifier::getEllipsisLoc indicates whether the
-                // base was a pack expansion; a PackExpansionType is not built
-                // for base-specifiers
-                if(BaseType && B.getEllipsisLoc().isValid())
-                    BaseType->IsPackExpansion = true;
-                I.Bases.emplace_back(
-                    std::move(BaseType),
-                    convertToAccessKind(access),
-                    B.isVirtual());
-            }
-        }
-
-        getParentNamespaces(I, D);
-    }
-
-    //------------------------------------------------
-
-    void
-    buildEnum(
-        EnumInfo& I,
-        bool created,
-        EnumDecl* D)
-    {
-        bool documented = parseRawComment(I.javadoc, D);
-        addSourceLocation(I, D->getBeginLoc(),
-            D->isThisDeclarationADefinition(), documented);
-
-        if(! created)
-            return;
-
-        I.Name = extractName(D);
-
-        I.Scoped = D->isScoped();
-
-        if(D->isFixed())
-            I.UnderlyingType = buildTypeInfo(
-                D->getIntegerType());
-
-        getParentNamespaces(I, D);
-    }
-
-    //------------------------------------------------
-
-    void
-    buildEnumerator(
-        EnumeratorInfo& I,
-        bool created,
-        EnumConstantDecl* D)
-    {
-        bool documented = parseRawComment(I.javadoc, D);
-        addSourceLocation(I, D->getBeginLoc(), true, documented);
-
-        if(! created)
-            return;
-
-        I.Name = extractName(D);
-
-        buildExprInfo(
-            I.Initializer,
-            D->getInitExpr(),
-            D->getInitVal());
-
-        getParentNamespaces(I, D);
-    }
-
-    //------------------------------------------------
-
-    void
-    buildTypedef(
-        TypedefInfo& I,
-        bool created,
-        TypedefNameDecl* D)
-    {
-        bool documented = parseRawComment(I.javadoc, D);
-        // KRYSTIAN FIXME: we currently treat typedef/alias
-        // declarations as having a single definition; however,
-        // such declarations are never definitions and can
-        // be redeclared multiple times (even in the same scope)
-        addSourceLocation(I, D->getBeginLoc(), true, documented);
-
-        if(! created)
-            return;
-
-        I.Name = extractName(D);
-
-        // When a symbol has a dependency on a typedef, we also
-        // consider the symbol to have a dependency on the aliased
-        // type. Therefore, we propagate the current dependency mode
-        // when building the TypeInfo for the aliased type
-        I.Type = buildTypeInfo(
-            D->getUnderlyingType(),
-            currentMode());
-
-    #if 0
-        if(I.Type.Name.empty())
-        {
-            // Typedef for an unnamed type. This is like
-            // "typedef struct { } Foo;". The record serializer
-            // explicitly checks for this syntax and constructs
-            // a record with that name, so we don't want to emit
-            // a duplicate here.
-            return;
-        }
-    #endif
-
-        getParentNamespaces(I, D);
-    }
-
-    //------------------------------------------------
-
-    void
-    buildVariable(
-        VariableInfo& I,
-        bool created,
-        VarDecl* D)
-    {
-        bool documented = parseRawComment(I.javadoc, D);
-        addSourceLocation(I, D->getBeginLoc(),
-            D->isThisDeclarationADefinition(), documented);
-
-        // KRYSTIAN FIXME: we need to properly merge storage class
-        if(StorageClass SC = D->getStorageClass())
-            I.StorageClass = convertToStorageClassKind(SC);
-
-        // this handles thread_local, as well as the C
-        // __thread and __Thread_local specifiers
-        I.IsThreadLocal |= D->getTSCSpec() !=
-            ThreadStorageClassSpecifier::TSCS_unspecified;
-
-        // KRYSTIAN NOTE: VarDecl does not provide getConstexprKind,
-        // nor does it use getConstexprKind to store whether
-        // a variable is constexpr/constinit. Although
-        // only one is permitted in a variable declaration,
-        // it is possible to declare a static data member
-        // as both constexpr and constinit in separate declarations..
-        I.IsConstinit |= D->hasAttr<ConstInitAttr>();
-        if(D->isConstexpr())
-            I.Constexpr = ConstexprKind::Constexpr;
-
-        if(const Expr* E = D->getInit())
-            buildExprInfo(I.Initializer, E);
-
-        if(! created)
-            return;
-
-        I.Name = extractName(D);
-
-        I.Type = buildTypeInfo(D->getType());
-
-        getParentNamespaces(I, D);
-    }
-
-    //------------------------------------------------
-
-    void
-    buildField(
-        FieldInfo& I,
-        bool created,
-        FieldDecl* D)
-    {
-        bool documented = parseRawComment(I.javadoc, D);
-        // fields (i.e. non-static data members)
-        // cannot have multiple declarations
-        addSourceLocation(I, D->getBeginLoc(), true, documented);
-
-        if(! created)
-            return;
-
-        I.Name = extractName(D);
-
-        I.Type = buildTypeInfo(D->getType());
-
-        I.IsVariant = D->getParent()->isUnion();
-
-        I.IsMutable = D->isMutable();
-
-        if(const Expr* E = D->getInClassInitializer())
-            buildExprInfo(I.Default, E);
-
-        if(D->isBitField())
-        {
-            I.IsBitfield = true;
-            buildExprInfo(
-                I.BitfieldWidth,
-                D->getBitWidth());
-        }
-
-        I.HasNoUniqueAddress = D->hasAttr<NoUniqueAddressAttr>();
-        I.IsDeprecated = D->hasAttr<DeprecatedAttr>();
-        I.IsMaybeUnused = D->hasAttr<UnusedAttr>();
-
-        getParentNamespaces(I, D);
-    }
-
-    //------------------------------------------------
-
-    template<class DeclTy>
-    void
-    buildFunction(
-        FunctionInfo& I,
-        bool created,
-        DeclTy* D)
-    {
-        bool documented = parseRawComment(I.javadoc, D);
-        addSourceLocation(I, D->getBeginLoc(),
-            D->isThisDeclarationADefinition(), documented);
-
-        // KRYSTIAN TODO: move other extraction that requires
-        // a valid function type here
-        if(auto FT = getDeclaratorType(D); ! FT.isNull())
-        {
-            const auto* FPT = FT->template getAs<FunctionProtoType>();
-
-            buildNoexceptInfo(I.Noexcept, FPT);
-
-            I.HasTrailingReturn |= FPT->hasTrailingReturn();
-        }
-
-        //
-        // FunctionDecl
-        //
-        I.OverloadedOperator = convertToOperatorKind(
-            D->getOverloadedOperator());
-        I.IsVariadic |= D->isVariadic();
-        I.IsDefaulted |= D->isDefaulted();
-        I.IsExplicitlyDefaulted |= D->isExplicitlyDefaulted();
-        I.IsDeleted |= D->isDeleted();
-        I.IsDeletedAsWritten |= D->isDeletedAsWritten();
-        I.IsNoReturn |= D->isNoReturn();
-            // subsumes D->hasAttr<NoReturnAttr>()
-            // subsumes D->hasAttr<CXX11NoReturnAttr>()
-            // subsumes D->hasAttr<C11NoReturnAttr>()
-            // subsumes D->getType()->getAs<FunctionType>()->getNoReturnAttr()
-        I.HasOverrideAttr |= D->template hasAttr<OverrideAttr>();
-
-        if(ConstexprSpecKind CSK = D->getConstexprKind();
-            CSK != ConstexprSpecKind::Unspecified)
-            I.Constexpr = convertToConstexprKind(CSK);
-
-        if(StorageClass SC = D->getStorageClass())
-            I.StorageClass = convertToStorageClassKind(SC);
-
-        I.IsNodiscard |= D->template hasAttr<WarnUnusedResultAttr>();
-        I.IsExplicitObjectMemberFunction |= D->hasCXXExplicitFunctionObjectParameter();
-        //
-        // CXXMethodDecl
-        //
-        if constexpr(std::derived_from<DeclTy, CXXMethodDecl>)
-        {
-            I.IsVirtual |= D->isVirtual();
-            I.IsVirtualAsWritten |= D->isVirtualAsWritten();
-            I.IsPure |= D->isPureVirtual();
-            I.IsConst |= D->isConst();
-            I.IsVolatile |= D->isVolatile();
-            I.RefQualifier = convertToReferenceKind(D->getRefQualifier());
-            I.IsFinal |= D->template hasAttr<FinalAttr>();
-            //D->isCopyAssignmentOperator()
-            //D->isMoveAssignmentOperator()
-            //D->isOverloadedOperator();
-            //D->isStaticOverloadedOperator();
-        }
-
-        //
-        // CXXDestructorDecl
-        //
-        if constexpr(std::derived_from<DeclTy, CXXDestructorDecl>)
-        {
-        }
-
-        //
-        // CXXConstructorDecl
-        //
-        if constexpr(std::derived_from<DeclTy, CXXConstructorDecl>)
-        {
-            buildExplicitInfo(I.Explicit, D->getExplicitSpecifier());
-        }
-
-        //
-        // CXXConversionDecl
-        //
-        if constexpr(std::derived_from<DeclTy, CXXConversionDecl>)
-        {
-            buildExplicitInfo(I.Explicit, D->getExplicitSpecifier());
-        }
-
-        for(const ParmVarDecl* P : D->parameters())
-        {
-            Param& param = created ?
-                I.Params.emplace_back() :
-                I.Params[P->getFunctionScopeIndex()];
-
-            if(param.Name.empty())
-                param.Name = P->getName();
-
-            if(! param.Type)
-                param.Type = buildTypeInfo(P->getOriginalType());
-
-            const Expr* default_arg = P->hasUninstantiatedDefaultArg() ?
-                P->getUninstantiatedDefaultArg() : P->getInit();
-            if(param.Default.empty() && default_arg)
-                param.Default = getSourceCode(
-                    default_arg->getSourceRange());
-        }
-
-        if(! created)
-            return;
-
-        I.Name = extractName(D);
-
-        I.Class = convertToFunctionClass(
-            D->getDeclKind());
-
-        QualType RT = D->getReturnType();
-        ExtractMode next_mode = ExtractMode::IndirectDependency;
-        if(auto* AT = RT->getContainedAutoType();
-            AT && AT->hasUnnamedOrLocalType())
-        {
-            next_mode = ExtractMode::DirectDependency;
-        }
-        // extract the return type in direct dependency mode
-        // if it contains a placeholder type which is
-        // deduceded as a local class type
-        I.ReturnType = buildTypeInfo(RT, next_mode);
-
-        if(auto* TRC = D->getTrailingRequiresClause())
-            buildExprInfo(I.Requires, TRC);
-
-        getParentNamespaces(I, D);
-    }
-
-    //------------------------------------------------
-
-    void
-    buildGuide(
-        GuideInfo& I,
-        bool created,
-        CXXDeductionGuideDecl* D)
-    {
-        bool documented = parseRawComment(I.javadoc, D);
-        addSourceLocation(I, D->getBeginLoc(), true, documented);
-
-        // deduction guides cannot be redeclared, so there is nothing to merge
-        if(! created)
-            return;
-
-        I.Name = extractName(D->getDeducedTemplate());
-
-        I.Deduced = buildTypeInfo(D->getReturnType());
-
-        for(const ParmVarDecl* P : D->parameters())
-        {
-            I.Params.emplace_back(
-                buildTypeInfo(P->getOriginalType()),
-                P->getNameAsString(),
-                // deduction guides cannot have default arguments
-                std::string());
-        }
-
-        buildExplicitInfo(I.Explicit, D->getExplicitSpecifier());
-
-        getParentNamespaces(I, D);
-    }
-
-    //------------------------------------------------
-
-    void
-    buildFriend(
-        FriendInfo& I,
-        bool created,
-        FriendDecl* D)
-    {
-        bool documented = parseRawComment(I.javadoc, D);
-        addSourceLocation(I, D->getBeginLoc(), true, documented);
-
-        if(! created)
-            return;
-
-        // A NamedDecl nominated by a FriendDecl
-        // will be one of the following:
-        // - FunctionDecl
-        // - FunctionTemplateDecl
-        // - ClassTemplateDecl
-        if(NamedDecl* ND = D->getFriendDecl())
-        {
-            extractSymbolID(ND, I.FriendSymbol);
-            // If this is a friend function declaration naming
-            // a previously undeclared function, traverse it.
-            // in addition to this, traverse the declaration if
-            // it's a class templates first declared as a friend
-            if((ND->isFunctionOrFunctionTemplate() &&
-                ND->getFriendObjectKind() == Decl::FOK_Undeclared) ||
-                (isa<ClassTemplateDecl>(ND) && ND->isFirstDecl()))
-                traverseDecl(ND);
-        }
-        // Since a friend declaration which name non-class types
-        // will be ignored, a type nominated by a FriendDecl can
-        // essentially be anything
-        if(TypeSourceInfo* TSI = D->getFriendType())
-            I.FriendType = buildTypeInfo(TSI->getType());
-
-        getParentNamespaces(I, D);
-    }
-
-    //------------------------------------------------
-
-    void
-    buildAlias(
-        AliasInfo& I,
-        bool created,
-        NamespaceAliasDecl* D)
-    {
-        bool documented = parseRawComment(I.javadoc, D);
-        addSourceLocation(I, D->getBeginLoc(), true, documented);
-
-        if(! created)
-            return;
-
-        I.Name = extractName(D);
-        auto& Underlying = I.AliasedSymbol =
-            std::make_unique<NameInfo>();
-
-        NamedDecl* Aliased = D->getAliasedNamespace();
-        Underlying->Name = Aliased->getIdentifier()->getName();
-        getDependencyID(Aliased, Underlying->id);
-        if(NestedNameSpecifier* NNS = D->getQualifier())
-            Underlying->Prefix = buildNameInfo(NNS);
-
-        getParentNamespaces(I, D);
-    }
-
-    //------------------------------------------------
-
-    void
-    buildUsing(
-        UsingInfo& I,
-        bool created,
-        UsingDecl* D)
-    {
-        bool documented = parseRawComment(I.javadoc, D);
-        addSourceLocation(I, D->getBeginLoc(), true, documented);
-
-        if(! created)
-            return;
-
-        I.Name = extractName(D);
-        I.Class = UsingClass::Normal;
-        I.Qualifier = buildNameInfo(D->getQualifier());
-
-        for (auto const* UDS : D->shadows())
-            getDependencyID(UDS->getTargetDecl(), I.UsingSymbols.emplace_back());
-
-        getParentNamespaces(I, D);
-    }
-
-    void
-    buildConcept(
-        ConceptInfo& I,
-        bool created,
-        ConceptDecl* D)
-    {
-        bool documented = parseRawComment(I.javadoc, D);
-        addSourceLocation(I, D->getBeginLoc(), true, documented);
-
-        if(! created)
-            return;
-
-        I.Name = extractName(D);
-        buildExprInfo(I.Constraint, D->getConstraintExpr());
-
-        getParentNamespaces(I, D);
-    }
-
-    //------------------------------------------------
-
-    /** Get the DeclType as a MrDocs Info object
-
-        The function will get or create the MrDocs Info
-        object for the `DeclType` and set the initial
-        Access specifier.
-
-        @param D The declaration to extract
-     */
-    template<typename DeclType>
-    Expected<
-        std::pair<
-            MrDocsType_t<DeclType>&,
-            bool>>
-    upsertMrDocsInfoFor(DeclType* D)
-    {
-        AccessSpecifier access = getAccess(D);
-        MRDOCS_CHECK_MSG(
-            shouldExtract(D, access),
-            "Symbol should not be extracted");
-
-        SymbolID id;
-        MRDOCS_CHECK_MSG(
-            extractSymbolID(D, id),
-            "Failed to extract symbol ID");
-
-        auto [I, created] = getOrCreateInfo<MrDocsType_t<DeclType>>(id);
-        I.Access = convertToAccessKind(access);
-        return std::make_pair(std::ref(I), created);
-    }
-
-
-    /** Traverse a C++ namespace declaration
-
-        This function is called by traverseDecl to traverse a
-        namespace declaration.
-
-        A NamespaceDecl inherits from NamedDecl.
-
-     */
-    void
-    traverse(NamespaceDecl*);
-
-    /** Traverse an enum declaration
-
-        This function is called by traverseDecl to traverse an
-        enum declaration.
-
-        An EnumDecl inherits from TagDecl.
-
-     */
-    void
-    traverse(EnumDecl*);
-
-    /** Traverse an enum constant
-
-        This function is called by traverseDecl to traverse an
-        enum constant.
-
-        An EnumConstantDecl inherits from ValueDecl.
-
-     */
-    void
-    traverse(EnumConstantDecl*);
-
-    /** Traverse a friend declaration
-
-        This function is called by traverseDecl to traverse
-        a friend declaration.
-
-        A FriendDecl inherits from Decl.
-
-    */
-    void
-    traverse(FriendDecl*);
-
-
-    /** Traverse a namespace alias declaration
-
-        This function is called by traverseDecl to traverse
-        a namespace alias declaration.
-
-        A NamespaceAliasDecl inherits from NamedDecl.
-
-    */
-    void
-    traverse(NamespaceAliasDecl*);
-
-    /** Traverse a using directive
-
-        This function is called by traverseDecl to traverse
-        a using directive.
-
-        A UsingDirectiveDecl inherits from NamedDecl.
-
-    */
-    void
-    traverse(UsingDirectiveDecl*);
-
-    /** Traverse a using declaration
-
-        This function is called by traverseDecl to traverse
-        a using declaration.
-
-        A UsingDecl inherits from NamedDecl.
-
-    */
-    void
-    traverse(UsingDecl*);
-
-    /** Traverse a member of a struct, union, or class
-
-        This function is called by traverseDecl to traverse
-        a member of a struct, union, or class.
-
-        A FieldDecl inherits from DeclaratorDecl.
-
-     */
-    void
-    traverse(FieldDecl*);
-
-    /** Traverse a member of an anonymous union.
-
-        This function is called by traverseDecl to traverse
-        a member of an anonymous union.
-
-        A IndirectFieldDecl inherits from ValueDecl.
-
-     */
-    void
-    traverse(IndirectFieldDecl*);
-
-    /** Traverse a concept definition
-
-        This function is called by traverseDecl to traverse a
-        C++ concept definition.
-    */
-    void
-    traverse(ConceptDecl*);
-
-    /** Traverse a deduction guide
-
-        This function is called by traverseDecl to traverse a
-        C++ deduction guide.
-
-        Deduction guides inherit from FunctionDecl.
-
-    */
-    void
-    traverse(CXXDeductionGuideDecl*, FunctionTemplateDecl* = nullptr);
-
-    /** Traverse a C++ struct, union, or class
-
-        This function is called by traverseDecl to traverse a
-        C++ struct, union, or class.
-
-    */
-    template<std::derived_from<CXXRecordDecl> CXXRecordTy>
-    void
-    traverse(CXXRecordTy*, ClassTemplateDecl* = nullptr);
-
-    /** Traverse a variable declaration or definition
-
-        This function is called by traverseDecl to traverse a
-        variable declaration or definition.
-
-    */
-    template<std::derived_from<VarDecl> VarTy>
-    void
-    traverse(VarTy*, VarTemplateDecl* = nullptr);
-
-    /** Traverse a function  declaration or definition
-
-        This function is called by traverseDecl to traverse a
-        typedef declaration.
-
-    */
-    template<std::derived_from<FunctionDecl> FunctionTy>
-    void
-    traverse(FunctionTy*, FunctionTemplateDecl* = nullptr);
-
-    /** Traverse a typedef declaration
-
-        This function is called by traverseDecl to traverse a
-        typedef declaration.
-
-    */
-    template<std::derived_from<TypedefNameDecl> TypedefNameTy>
-    void
-    traverse(TypedefNameTy*, TypeAliasTemplateDecl* = nullptr);
-
-#if 0
-    // includes both linkage-specification forms in [dcl.link]:
-    //     extern string-literal { declaration-seq(opt) }
-    //     extern string-literal name-declaration
-    void traverse(LinkageSpecDecl*);
-    void traverse(ExternCContextDecl*);
-    void traverse(ExportDecl*);
-#endif
-
-    /** Traverse any declaration
-
-        Catch-all function so overload resolution does not
-        cause a hard error in the Traverse function for Decl.
-
-        The function will attempt to convert the declaration
-        to a DeclContext and call traverseContext if
-        successful.
-
-     */
-    template<typename... Args>
-    void
-    traverse(Decl* D, Args&&...);
-
-    /** Traverse a declaration context
-
-        This function is called to traverse the members of a declaration
-        context.
-
-        The build() function will call this function with
-        traverseDecl(context_.getTranslationUnitDecl()) to initiate
-        the traversal of the entire AST.
-
-        The function traverseContext(DeclContext* DC) will
-        also call this function to traverse each member of
-        the declaration context.
-
-     */
-    template<typename... Args>
-    void
-    traverseDecl(Decl* D, Args&&... args);
-
-    /** Traverse declaration contexts
-
-        This function is called to traverse the members of a declaration
-        context. These decls are:
-
-        * TranslationUnitDecl
-        * ExternCContext
-        * NamespaceDecl
-        * TagDecl
-        * OMPDeclareReductionDecl
-        * OMPDeclareMapperDecl
-        * FunctionDecl
-        * ObjCMethodDecl
-        * ObjCContainerDecl
-        * LinkageSpecDecl
-        * ExportDecl
-        * BlockDecl
-        * CapturedDecl
-
-        The function will call traverseDecl for each member of the
-        declaration context.
-
-    */
-    void
-    traverseContext(DeclContext* DC);
-
-    bool
-    isInSpecialNamespace(
-        const Decl* D,
-        std::span<const FilterPattern> Patterns)
-    {
-        if(! D || Patterns.empty())
-            return false;
-        const DeclContext* DC = isa<DeclContext>(D) ?
-            dyn_cast<DeclContext>(D) : D->getDeclContext();
-        for(; DC; DC = DC->getParent())
-        {
-            const NamespaceDecl* ND = dyn_cast<NamespaceDecl>(DC);
-            if(! ND)
                 continue;
-            for(const auto& Pattern : Patterns)
-                if(Pattern.matches(ND->getQualifiedNameAsString()))
-                    return true;
+            }
+            traverseAny(D);
         }
-        return false;
-    }
-
-    bool
-    isInSpecialNamespace(
-        const NestedNameSpecifier* NNS,
-        std::span<const FilterPattern> Patterns)
-    {
-        const NamedDecl* ND = nullptr;
-        while(NNS)
-        {
-            if((ND = NNS->getAsNamespace()))
-                break;
-            if((ND = NNS->getAsNamespaceAlias()))
-                break;
-            NNS = NNS->getPrefix();
-        }
-        return ND && isInSpecialNamespace(ND, Patterns);
-    }
-
-    bool
-    checkSpecialNamespace(
-        std::unique_ptr<NameInfo>& I,
-        const NestedNameSpecifier* NNS,
-        const Decl* D)
-    {
-        if(isInSpecialNamespace(NNS, config_->seeBelowFilter) ||
-            isInSpecialNamespace(D, config_->seeBelowFilter))
-        {
-            I = std::make_unique<NameInfo>();
-            I->Name = "see-below";
-            return true;
-        }
-
-        if(isInSpecialNamespace(NNS, config_->implementationDefinedFilter) ||
-            isInSpecialNamespace(D, config_->implementationDefinedFilter))
-        {
-            I = std::make_unique<NameInfo>();
-            I->Name = "implementation-defined";
-            return true;
-        }
-        return false;
-    }
-
-    bool
-    checkSpecialNamespace(
-        std::unique_ptr<TypeInfo>& I,
-        const NestedNameSpecifier* NNS,
-        const Decl* D)
-    {
-        std::unique_ptr<NameInfo> Name;
-        if(checkSpecialNamespace(Name, NNS, D))
-        {
-            auto T = std::make_unique<NamedTypeInfo>();
-            T->Name = std::move(Name);
-            I = std::move(T);
-            return true;
-        }
-        return false;
-    }
-};
-
-//------------------------------------------------
-// NamespaceDecl
-
-void
-ASTVisitor::
-traverse(NamespaceDecl* D)
-{
-    if(! shouldExtract(D, AccessSpecifier::AS_none))
-        return;
-
-    if(D->isAnonymousNamespace() &&
-        config_->anonymousNamespaces !=
-            ConfigImpl::SettingsImpl::ExtractPolicy::Always)
-    {
-        // Always skip anonymous namespaces if so configured
-        if(config_->anonymousNamespaces ==
-            ConfigImpl::SettingsImpl::ExtractPolicy::Never)
-            return;
-
-        // Otherwise, skip extraction if this isn't a dependency
-        // KRYSTIAN FIXME: is this correct? a namespace should not
-        // be extracted as a dependency (until namespace aliases and
-        // using directives are supported)
-        if(currentMode() == ExtractMode::Normal)
-            return;
-    }
-
-    SymbolID id;
-    if(! extractSymbolID(D, id))
-        return;
-    auto [I, created] = getOrCreateInfo<NamespaceInfo>(id);
-
-    buildNamespace(I, created, D);
-    traverseContext(D);
-}
-
-//------------------------------------------------
-// EnumDecl
-
-void
-ASTVisitor::
-traverse(EnumDecl* D)
-{
-    auto exp = upsertMrDocsInfoFor(D);
-    if(! exp) { return; }
-    auto [I, created] = *exp;
-    buildEnum(I, created, D);
-    traverseContext(D);
-}
-
-//------------------------------------------------
-// FieldDecl
-
-void
-ASTVisitor::
-traverse(FieldDecl* D)
-{
-    auto exp = upsertMrDocsInfoFor(D);
-    if(! exp) { return; }
-    auto [I, created] = *exp;
-    buildField(I, created, D);
-}
-
-void
-ASTVisitor::
-traverse(IndirectFieldDecl* D)
-{
-    traverse(D->getAnonField());
-}
-
-//------------------------------------------------
-// ConceptDecl
-
-void
-ASTVisitor::
-traverse(ConceptDecl* D)
-{
-    auto exp = upsertMrDocsInfoFor(D);
-    if(! exp) { return; }
-    auto [I, created] = *exp;
-
-    if(! I.Template)
-        I.Template = std::make_unique<TemplateInfo>();
-    buildTemplateParams(*I.Template, D->getTemplateParameters());
-    buildConcept(I, created, D);
-}
-
-//------------------------------------------------
-// EnumConstantDecl
-
-void
-ASTVisitor::
-traverse(EnumConstantDecl* D)
-{
-    auto exp = upsertMrDocsInfoFor(D);
-    if(! exp) { return; }
-    auto [I, created] = *exp;
-    buildEnumerator(I, created, D);
-}
-
-//------------------------------------------------
-// FriendDecl
-
-void
-ASTVisitor::
-traverse(FriendDecl* D)
-{
-    auto exp = upsertMrDocsInfoFor(D);
-    if(! exp) { return; }
-    auto [I, created] = *exp;
-    buildFriend(I, created, D);
-}
-
-//------------------------------------------------
-// NamespaceAliasDecl
-
-void
-ASTVisitor::
-traverse(NamespaceAliasDecl* D)
-{
-    auto exp = upsertMrDocsInfoFor(D);
-    if(! exp) { return; }
-    auto [I, created] = *exp;
-    buildAlias(I, created, D);
-}
-
-//------------------------------------------------
-// UsingDirectiveDecl
-
-void
-ASTVisitor::
-traverse(UsingDirectiveDecl* D)
-{
-    if(! shouldExtract(D, getAccess(D)))
-        return;
-
-    Decl* PD = getParentDecl(D);
-    // only extract using-directives in namespace scope
-    if(! cast<DeclContext>(PD)->isFileContext())
-        return;
-
-    if(Info* PI = getInfo(extractSymbolID(PD)))
-    {
-        assert(PI->isNamespace());
-        NamespaceInfo* NI = static_cast<NamespaceInfo*>(PI);
-        getDependencyID(
-            D->getNominatedNamespaceAsWritten(),
-            NI->UsingDirectives.emplace_back());
+        currentPass = std::move(dependencies_);
     }
 }
 
-//------------------------------------------------
-// UsingDecl
-
+template <class... Args>
 void
 ASTVisitor::
-traverse(UsingDecl* D)
-{
-    auto const exp = upsertMrDocsInfoFor(D);
-    if(! exp) { return; }
-    auto [I, created] = *exp;
-    buildUsing(I, created, D);
-}
-
-//------------------------------------------------
-
-template<std::derived_from<CXXRecordDecl> CXXRecordTy>
-void
-ASTVisitor::
-traverse(
-    CXXRecordTy* D,
-    ClassTemplateDecl* CTD)
-{
-    auto exp = upsertMrDocsInfoFor(D);
-    if(! exp) { return; }
-    auto [I, created] = *exp;
-
-    // CTD is the specialized template if D is a partial or
-    // explicit specialization, and the described template otherwise
-    if(CTD)
-    {
-        if(! I.Template)
-            I.Template = std::make_unique<TemplateInfo>();
-        // if D is a partial/explicit specialization, extract the template arguments
-        if(auto* CTSD = dyn_cast<ClassTemplateSpecializationDecl>(D))
-        {
-            extractSymbolID(getInstantiatedFrom(CTD), I.Template->Primary);
-            // extract the template arguments of the specialization
-            buildTemplateArgs(I.Template->Args, CTSD->getTemplateArgsAsWritten());
-            // extract the template parameters if this is a partial specialization
-            if(auto* CTPSD = dyn_cast<ClassTemplatePartialSpecializationDecl>(D))
-                buildTemplateParams(*I.Template, CTPSD->getTemplateParameters());
-        }
-        else
-        {
-            // otherwise, extract the template parameter list from CTD
-            buildTemplateParams(*I.Template, CTD->getTemplateParameters());
-        }
-    }
-
-    buildRecord(I, created, D);
-    traverseContext(D);
-}
-
-template<std::derived_from<VarDecl> VarTy>
-void
-ASTVisitor::
-traverse(
-    VarTy* D,
-    VarTemplateDecl* VTD)
-{
-    auto exp = upsertMrDocsInfoFor(D);
-    if(! exp) { return; }
-    auto [I, created] = *exp;
-
-    // VTD is the specialized template if D is a partial or
-    // explicit specialization, and the described template otherwise
-    if(VTD)
-    {
-        if(! I.Template)
-            I.Template = std::make_unique<TemplateInfo>();
-        // if D is a partial/explicit specialization, extract the template arguments
-        if(auto* VTSD = dyn_cast<VarTemplateSpecializationDecl>(D))
-        {
-            extractSymbolID(getInstantiatedFrom(VTD), I.Template->Primary);
-            // extract the template arguments of the specialization
-            buildTemplateArgs(I.Template->Args, VTSD->getTemplateArgsAsWritten());
-            // extract the template parameters if this is a partial specialization
-            if(auto* VTPSD = dyn_cast<VarTemplatePartialSpecializationDecl>(D))
-                buildTemplateParams(*I.Template, VTPSD->getTemplateParameters());
-        }
-        else
-        {
-            // otherwise, extract the template parameter list from VTD
-            buildTemplateParams(*I.Template, VTD->getTemplateParameters());
-        }
-    }
-
-    buildVariable(I, created, D);
-}
-
-void
-ASTVisitor::
-traverse(
-    CXXDeductionGuideDecl* D,
-    FunctionTemplateDecl* FTD)
-{
-    auto exp = upsertMrDocsInfoFor(D);
-    if(! exp) { return; }
-    auto [I, created] = *exp;
-
-    // D is the templated declaration if FTD is non-null
-    if(FTD)
-    {
-        if(! I.Template)
-            I.Template = std::make_unique<TemplateInfo>();
-        buildTemplateParams(*I.Template, FTD->getTemplateParameters());
-    }
-
-    buildGuide(I, created, D);
-}
-
-template<std::derived_from<FunctionDecl> FunctionTy>
-void
-ASTVisitor::
-traverse(
-    FunctionTy* D,
-    FunctionTemplateDecl* FTD)
-{
-    auto exp = upsertMrDocsInfoFor(D);
-    if(! exp) { return; }
-    auto [I, created] = *exp;
-
-    // D is the templated declaration if FTD is non-null
-    if(FTD || D->isFunctionTemplateSpecialization())
-    {
-        if(! I.Template)
-            I.Template = std::make_unique<TemplateInfo>();
-
-        if(auto* FTSI = D->getTemplateSpecializationInfo())
-        {
-            extractSymbolID(getInstantiatedFrom(
-                FTSI->getTemplate()), I.Template->Primary);
-            // TemplateArguments is used instead of TemplateArgumentsAsWritten
-            // because explicit specializations of function templates may have
-            // template arguments deduced from their return type and parameters
-            if(auto* Args = FTSI->TemplateArguments)
-                buildTemplateArgs(I.Template->Args, Args->asArray());
-        }
-        else if(auto* DFTSI = D->getDependentSpecializationInfo())
-        {
-            // Only extract the ID of the primary template if there is
-            // a single candidate primary template.
-            if(auto Candidates = DFTSI->getCandidates(); Candidates.size() == 1)
-                extractSymbolID(getInstantiatedFrom(
-                    Candidates.front()), I.Template->Primary);
-            if(auto* Args = DFTSI->TemplateArgumentsAsWritten)
-                buildTemplateArgs(I.Template->Args, Args);
-        }
-        else
-        {
-            buildTemplateParams(*I.Template, FTD->getTemplateParameters());
-        }
-    }
-
-    if constexpr(std::same_as<FunctionTy, CXXDeductionGuideDecl>)
-        buildGuide(I, created, D);
-    else
-        buildFunction(I, created, D);
-}
-
-template<std::derived_from<TypedefNameDecl> TypedefNameTy>
-void
-ASTVisitor::
-traverse(
-    TypedefNameTy* D,
-    TypeAliasTemplateDecl* ATD)
-{
-    auto exp = upsertMrDocsInfoFor(D);
-    if(! exp) { return; }
-    auto [I, created] = *exp;
-
-    if(isa<TypeAliasDecl>(D))
-        I.IsUsing = true;
-
-    if(ATD)
-    {
-        if(! I.Template)
-            I.Template = std::make_unique<TemplateInfo>();
-        buildTemplateParams(*I.Template,
-            ATD->getTemplateParameters());
-    }
-
-    buildTypedef(I, created, D);
-}
-
-template<typename... Args>
-void
-ASTVisitor::
-traverse(Decl* D, Args&&...)
-{
-    // If this is a DeclContext, traverse its members
-    if(auto* DC = dyn_cast<DeclContext>(D))
-        traverseContext(DC);
-}
-
-//------------------------------------------------
-
-template<typename... Args>
-void
-ASTVisitor::
-traverseDecl(
+traverseAny(
     Decl* D,
     Args&&... args)
 {
     MRDOCS_ASSERT(D);
+    MRDOCS_CHECK_OR(!D->isInvalidDecl());
 
-    // Decl had a semantic error
-    if(D->isInvalidDecl())
-        return;
-
-    SymbolFilter::FilterScope scope(symbolFilter_);
+    // Restore the symbol filter state when leaving the scope
+    SymbolFilterScope scope(symbolFilter_);
 
     // Convert to the most derived type of the Decl
     // and call the appropriate traverse function
     visit(D, [&]<typename DeclTy>(DeclTy* DD)
     {
-        if constexpr(std::derived_from<DeclTy,
-            RedeclarableTemplateDecl>)
+        if constexpr(
+            std::derived_from<DeclTy,
+                RedeclarableTemplateDecl>)
         {
             // Only ClassTemplateDecl, FunctionTemplateDecl,
             // VarTemplateDecl, and TypeAliasDecl are derived
             // from RedeclarableTemplateDecl.
             // This doesn't include ConceptDecl.
-            // Recursively call traverseDecl so traverse is called with
+            // Recursively call traverseAny so traverse is called with
             // a pointer to the most derived type of the templated Decl
-            traverseDecl(DD->getTemplatedDecl(), DD);
+            traverseAny(DD->getTemplatedDecl(), DD);
         }
-        else if constexpr(std::derived_from<DeclTy,
-            ClassTemplateSpecializationDecl>)
+        else if constexpr(
+            std::derived_from<DeclTy,
+                ClassTemplateSpecializationDecl> ||
+            std::derived_from<DeclTy,
+                VarTemplateSpecializationDecl>)
         {
             // A class template specialization
-            traverse(DD, DD->getSpecializedTemplate());
-        }
-        else if constexpr(std::derived_from<DeclTy,
-            VarTemplateSpecializationDecl>)
-        {
-            // A variable template specialization
             traverse(DD, DD->getSpecializedTemplate());
         }
         else
@@ -3440,869 +296,1596 @@ traverseDecl(
     });
 }
 
+template <class... Args>
 void
 ASTVisitor::
-traverseContext(DeclContext* DC)
+traverse(Decl* D, Args&&...)
+{
+    if (auto* DC = dyn_cast<DeclContext>(D))
+    {
+        traverse(DC);
+    }
+}
+
+void
+ASTVisitor::
+traverse(DeclContext* DC)
 {
     for(auto* D : DC->decls())
-        traverseDecl(D);
+    {
+        traverseAny(D);
+    }
 }
 
-//------------------------------------------------
-
-/** Get the user-written `Decl` for a `Decl`
-
-    Given a `Decl` `D`, `InstantiatedFromVisitor` will return the
-    user-written `Decl` corresponding to `D`. For specializations
-    which were implicitly instantiated, this will be whichever `Decl`
-    was used as the pattern for instantiation.
-*/
-class InstantiatedFromVisitor
-    : public DeclVisitor<InstantiatedFromVisitor, Decl*>
-{
-public:
-    Decl*
-    VisitDecl(Decl* D)
-    {
-        return D;
-    }
-
-    FunctionDecl*
-    VisitFunctionTemplateDecl(FunctionTemplateDecl* D)
-    {
-        while(auto* MT = D->getInstantiatedFromMemberTemplate())
-        {
-            if(D->isMemberSpecialization())
-                break;
-            D = MT;
-        }
-        return D->getTemplatedDecl();
-    }
-
-    CXXRecordDecl*
-    VisitClassTemplateDecl(ClassTemplateDecl* D)
-    {
-        while (auto* MT = D->getInstantiatedFromMemberTemplate())
-        {
-            if(D->isMemberSpecialization())
-                break;
-            D = MT;
-        }
-        return D->getTemplatedDecl();
-    }
-
-    VarDecl*
-    VisitVarTemplateDecl(VarTemplateDecl* D)
-    {
-        while(auto* MT = D->getInstantiatedFromMemberTemplate())
-        {
-            if(D->isMemberSpecialization())
-                break;
-            D = MT;
-        }
-        return D->getTemplatedDecl();
-    }
-
-    TypedefNameDecl*
-    VisitTypeAliasTemplateDecl(TypeAliasTemplateDecl* D)
-    {
-        if(auto* MT = D->getInstantiatedFromMemberTemplate())
-        {
-            // KRYSTIAN NOTE: we don't really need to check this
-            if(! D->isMemberSpecialization())
-                D = MT;
-        }
-        return VisitTypedefNameDecl(D->getTemplatedDecl());
-    }
-
-    FunctionDecl*
-    VisitFunctionDecl(FunctionDecl* D)
-    {
-        FunctionDecl const* DD = nullptr;
-        if(D->isDefined(DD, false))
-            D = const_cast<FunctionDecl*>(DD);
-
-        if(MemberSpecializationInfo* MSI = D->getMemberSpecializationInfo())
-        {
-            if(! MSI->isExplicitSpecialization())
-                D = cast<FunctionDecl>(
-                    MSI->getInstantiatedFrom());
-        }
-        else if(D->getTemplateSpecializationKind() !=
-            TSK_ExplicitSpecialization)
-        {
-            D = D->getFirstDecl();
-            if(auto* FTD = D->getPrimaryTemplate())
-                D = VisitFunctionTemplateDecl(FTD);
-        }
-        return D;
-    }
-
-    CXXRecordDecl*
-    VisitClassTemplatePartialSpecializationDecl(ClassTemplatePartialSpecializationDecl* D)
-    {
-        while (auto* MT = D->getInstantiatedFromMember())
-        {
-            if(D->isMemberSpecialization())
-                break;
-            D = MT;
-        }
-        return VisitClassTemplateSpecializationDecl(D);
-    }
-
-    CXXRecordDecl*
-    VisitClassTemplateSpecializationDecl(ClassTemplateSpecializationDecl* D)
-    {
-        if(! D->isExplicitSpecialization())
-        {
-            auto inst_from = D->getSpecializedTemplateOrPartial();
-            if(auto* CTPSD = inst_from.dyn_cast<
-                ClassTemplatePartialSpecializationDecl*>())
-            {
-                MRDOCS_ASSERT(D != CTPSD);
-                return VisitClassTemplatePartialSpecializationDecl(CTPSD);
-            }
-            // Explicit instantiation declaration/definition
-            else if(auto* CTD = inst_from.dyn_cast<
-                ClassTemplateDecl*>())
-            {
-                return VisitClassTemplateDecl(CTD);
-            }
-        }
-        return VisitCXXRecordDecl(D);
-    }
-
-    CXXRecordDecl*
-    VisitCXXRecordDecl(CXXRecordDecl* D)
-    {
-        while(MemberSpecializationInfo* MSI =
-            D->getMemberSpecializationInfo())
-        {
-            // if this is a member of an explicit specialization,
-            // then we have the correct declaration
-            if(MSI->isExplicitSpecialization())
-                break;
-            D = cast<CXXRecordDecl>(MSI->getInstantiatedFrom());
-        }
-        return D;
-    }
-
-    VarDecl*
-    VisitVarTemplatePartialSpecializationDecl(VarTemplatePartialSpecializationDecl* D)
-    {
-        while(auto* MT = D->getInstantiatedFromMember())
-        {
-            if(D->isMemberSpecialization())
-                break;
-            D = MT;
-        }
-        return VisitVarTemplateSpecializationDecl(D);
-    }
-
-    VarDecl*
-    VisitVarTemplateSpecializationDecl(VarTemplateSpecializationDecl* D)
-    {
-        if(! D->isExplicitSpecialization())
-        {
-            auto inst_from = D->getSpecializedTemplateOrPartial();
-            if(auto* VTPSD = inst_from.dyn_cast<
-                VarTemplatePartialSpecializationDecl*>())
-            {
-                MRDOCS_ASSERT(D != VTPSD);
-                return VisitVarTemplatePartialSpecializationDecl(VTPSD);
-            }
-            // explicit instantiation declaration/definition
-            else if(auto* VTD = inst_from.dyn_cast<
-                VarTemplateDecl*>())
-            {
-                return VisitVarTemplateDecl(VTD);
-            }
-        }
-        return VisitVarDecl(D);
-    }
-
-    VarDecl*
-    VisitVarDecl(VarDecl* D)
-    {
-        while(MemberSpecializationInfo* MSI =
-            D->getMemberSpecializationInfo())
-        {
-            if(MSI->isExplicitSpecialization())
-                break;
-            D = cast<VarDecl>(MSI->getInstantiatedFrom());
-        }
-        return D;
-    }
-
-    EnumDecl*
-    VisitEnumDecl(EnumDecl* D)
-    {
-        while(MemberSpecializationInfo* MSI =
-            D->getMemberSpecializationInfo())
-        {
-            if(MSI->isExplicitSpecialization())
-                break;
-            D = cast<EnumDecl>(MSI->getInstantiatedFrom());
-        }
-        return D;
-    }
-
-    TypedefNameDecl*
-    VisitTypedefNameDecl(TypedefNameDecl* D)
-    {
-        DeclContext* Context = D->getNonTransparentDeclContext();
-        if(Context->isFileContext())
-            return D;
-        DeclContext* ContextPattern =
-            cast<DeclContext>(Visit(cast<Decl>(Context)));
-        if(Context == ContextPattern)
-            return D;
-        auto lookup = ContextPattern->lookup(D->getDeclName());
-        for(NamedDecl* ND : lookup)
-        {
-            if(auto* TND = dyn_cast<TypedefNameDecl>(ND))
-                return TND;
-            if(auto* TATD = dyn_cast<TypeAliasTemplateDecl>(ND))
-                return TATD->getTemplatedDecl();
-        }
-        return D;
-    }
-};
-
-template<typename DeclTy>
-DeclTy*
+template <class DeclTy>
+requires
+    std::same_as<DeclTy, NamespaceDecl> ||
+    std::same_as<DeclTy, EnumDecl> ||
+    std::same_as<DeclTy, EnumConstantDecl> ||
+    std::same_as<DeclTy, FieldDecl> ||
+    std::same_as<DeclTy, FriendDecl> ||
+    std::same_as<DeclTy, NamespaceAliasDecl> ||
+    std::same_as<DeclTy, UsingDecl>
+void
 ASTVisitor::
-getInstantiatedFrom(DeclTy* D)
+traverse(DeclTy* D)
 {
-    if(! D)
-        return nullptr;
-    Decl* decayedD = const_cast<Decl*>(static_cast<const Decl*>(D));
-    Decl* resultDecl = InstantiatedFromVisitor().Visit(decayedD);
-    return cast<DeclTy>(resultDecl);
+    if (auto exp = upsert(D))
+    {
+        populate(exp->I, exp->created, D);
+        if constexpr (std::derived_from<DeclTy, DeclContext>)
+        {
+            traverse(dyn_cast<DeclContext>(D));
+        }
+    }
 }
 
-//------------------------------------------------
-
-template<typename Derived>
-class TerminalTypeVisitor
-    : public TypeVisitor<TerminalTypeVisitor<Derived>, bool>
+template<std::derived_from<CXXRecordDecl> CXXRecordDeclTy>
+void
+ASTVisitor::
+traverse(
+    CXXRecordDeclTy* D,
+    ClassTemplateDecl* CTD)
 {
-    friend class TerminalTypeVisitor::TypeVisitor;
-
-    ASTVisitor& Visitor_;
-
-    unsigned Quals_ = 0;
-    bool IsPack_ = false;
-    const NestedNameSpecifier* NNS_;
-
-    Derived& getDerived()
+    // Upsert the corresponding Info object
+    auto exp = upsert(D);
+    if (!exp)
     {
-        return static_cast<Derived&>(*this);
+        return;
     }
+    auto [I, created] = *exp;
 
-    bool
-    VisitParenType(
-        const ParenType* T)
+    // CTD is the specialized template if D is a partial or
+    // explicit specialization, and the described template otherwise
+    if (CTD)
     {
-        return Visit(T->getInnerType());
-    }
-
-    bool
-    VisitMacroQualified(
-        const MacroQualifiedType* T)
-    {
-        return Visit(T->getUnderlyingType());
-    }
-
-    bool
-    VisitAttributedType(
-        const AttributedType* T)
-    {
-        return Visit(T->getModifiedType());
-    }
-
-    bool
-    VisitAdjustedType(
-        const AdjustedType* T)
-    {
-        return Visit(T->getOriginalType());
-    }
-
-    bool
-    VisitUsingType(
-        const UsingType* T)
-    {
-        return Visit(T->getUnderlyingType());
-    }
-
-    bool
-    VisitSubstTemplateTypeParmType(
-        const SubstTemplateTypeParmType* T)
-    {
-        return Visit(T->getReplacementType());
-    }
-
-    // ----------------------------------------------------------------
-
-    bool
-    VisitElaboratedType(
-        const ElaboratedType* T)
-    {
-        NNS_ = T->getQualifier();
-        return Visit(T->getNamedType());
-    }
-
-    bool
-    VisitPackExpansionType(
-        const PackExpansionType* T)
-    {
-        IsPack_ = true;
-        return Visit(T->getPattern());
-    }
-
-    // ----------------------------------------------------------------
-
-    bool
-    VisitPointerType(
-        const PointerType* T)
-    {
-        getDerived().buildPointer(T, std::exchange(Quals_, 0));
-        return Visit(T->getPointeeType());
-    }
-
-    bool
-    VisitLValueReferenceType(
-        const LValueReferenceType* T)
-    {
-        getDerived().buildLValueReference(T);
-        Quals_ = 0;
-        return Visit(T->getPointeeType());
-    }
-
-    bool
-    VisitRValueReferenceType(
-        const RValueReferenceType* T)
-    {
-        getDerived().buildRValueReference(T);
-        Quals_ = 0;
-        return Visit(T->getPointeeType());
-    }
-
-    bool
-    VisitMemberPointerType(
-        const MemberPointerType* T)
-    {
-        getDerived().buildMemberPointer(T, std::exchange(Quals_, 0));
-        return Visit(T->getPointeeType());
-    }
-
-    bool
-    VisitFunctionType(
-        const FunctionType* T)
-    {
-        getDerived().buildFunction(T);
-        return Visit(T->getReturnType());
-    }
-
-    bool
-    VisitArrayType(
-        const ArrayType* T)
-    {
-        getDerived().buildArray(T);
-        return Visit(T->getElementType());
-    }
-
-    // ----------------------------------------------------------------
-
-    bool
-    VisitDecltypeType(
-        const DecltypeType* T)
-    {
-        getDerived().buildDecltype(T, Quals_, IsPack_);
-        return true;
-    }
-
-    bool
-    VisitAutoType(
-        const AutoType* T)
-    {
-        #if 0
-        // KRYSTIAN NOTE: we don't use isDeduced because it will
-        // return true if the type is dependent
-        // if the type has been deduced, use the deduced type
-        if(QualType DT = T->getDeducedType(); ! DT.isNull())
-            return Visit(DT);
-        #endif
-        getDerived().buildAuto(T, Quals_, IsPack_);
-        return true;
-    }
-
-    bool
-    VisitDeducedTemplateSpecializationType(
-        const DeducedTemplateSpecializationType* T)
-    {
-        // KRYSTIAN TODO: we should probably add a TypeInfo
-        // to represent deduced types that also stores what
-        // it was deduced as.
-        if(QualType DT = T->getDeducedType(); ! DT.isNull())
-            return Visit(DT);
-        TemplateName TN = T->getTemplateName();
-        MRDOCS_ASSERT(! TN.isNull());
-        NamedDecl* ND = TN.getAsTemplateDecl();
-        getDerived().buildTerminal(NNS_, ND,
-            std::nullopt, Quals_, IsPack_);
-        return true;
-    }
-
-    bool
-    VisitDependentNameType(
-        const DependentNameType* T)
-    {
-        if(auto SFINAE = getASTVisitor().isSFINAEType(T); SFINAE.has_value())
-            return getDerived().Visit(SFINAE->first);
-
-        if(auto* NNS = T->getQualifier())
-            NNS_ = NNS;
-        getDerived().buildTerminal(NNS_, T->getIdentifier(),
-            std::nullopt, Quals_, IsPack_);
-        return true;
-    }
-
-    bool
-    VisitDependentTemplateSpecializationType(
-        const DependentTemplateSpecializationType* T)
-    {
-        if(auto* NNS = T->getQualifier())
-            NNS_ = NNS;
-        getDerived().buildTerminal(NNS_, T->getIdentifier(),
-            T->template_arguments(), Quals_, IsPack_);
-        return true;
-    }
-
-    bool
-    VisitTemplateSpecializationType(
-        const TemplateSpecializationType* T)
-    {
-        if(auto SFINAE = getASTVisitor().isSFINAEType(T); SFINAE.has_value())
-            return getDerived().Visit(SFINAE->first);
-
-        TemplateName TN = T->getTemplateName();
-        MRDOCS_ASSERT(! TN.isNull());
-        NamedDecl* ND = TN.getAsTemplateDecl();
-        if(! T->isTypeAlias())
+        if (!I.Template)
         {
-            auto* CT = T->getCanonicalTypeInternal().getTypePtrOrNull();
-            if(auto* ICT = dyn_cast_or_null<InjectedClassNameType>(CT))
-                ND = ICT->getDecl();
-            else if(auto* RT = dyn_cast_or_null<RecordType>(CT))
-                ND = RT->getDecl();
+            I.Template = std::make_unique<TemplateInfo>();
         }
-        getDerived().buildTerminal(NNS_, ND,
-            T->template_arguments(), Quals_, IsPack_);
-        return true;
-    }
 
-    bool
-    VisitRecordType(
-        const RecordType* T)
-    {
-        RecordDecl* RD = T->getDecl();
-        // if this is an instantiation of a class template,
-        // create a SpecializationTypeInfo & extract the template arguments
-        std::optional<ArrayRef<TemplateArgument>> TArgs = std::nullopt;
-        if(auto* CTSD = dyn_cast<ClassTemplateSpecializationDecl>(RD))
-            TArgs = CTSD->getTemplateArgs().asArray();
-        getDerived().buildTerminal(NNS_, RD,
-            TArgs, Quals_, IsPack_);
-        return true;
-    }
-
-    bool
-    VisitInjectedClassNameType(
-        const InjectedClassNameType* T)
-    {
-        getDerived().buildTerminal(NNS_, T->getDecl(),
-            std::nullopt, Quals_, IsPack_);
-        return true;
-    }
-
-    bool
-    VisitEnumType(
-        const EnumType* T)
-    {
-        getDerived().buildTerminal(NNS_, T->getDecl(),
-            std::nullopt, Quals_, IsPack_);
-        return true;
-    }
-
-    bool
-    VisitTypedefType(
-        const TypedefType* T)
-    {
-        getDerived().buildTerminal(NNS_, T->getDecl(),
-            std::nullopt, Quals_, IsPack_);
-        return true;
-    }
-
-    bool
-    VisitTemplateTypeParmType(
-        const TemplateTypeParmType* T)
-    {
-        const IdentifierInfo* II = nullptr;
-        if(TemplateTypeParmDecl* D = T->getDecl())
+        // If D is a partial/explicit specialization, extract the template arguments
+        if (auto* CTSD = dyn_cast<ClassTemplateSpecializationDecl>(D))
         {
-            if(D->isImplicit())
+            generateID(getInstantiatedFrom(CTD), I.Template->Primary);
+
+            // Extract the template arguments of the specialization
+            populate(I.Template->Args, CTSD->getTemplateArgsAsWritten());
+
+            // Extract the template parameters if this is a partial specialization
+            if(auto* CTPSD = dyn_cast<ClassTemplatePartialSpecializationDecl>(D))
             {
-                // special case for implicit template parameters
-                // resulting from abbreviated function templates
-                getDerived().buildTerminal(
-                    NNS_, T, Quals_, IsPack_);
-                return true;
+                populate(*I.Template, CTPSD->getTemplateParameters());
             }
-            II = D->getIdentifier();
         }
-        getDerived().buildTerminal(NNS_, II,
-            std::nullopt, Quals_, IsPack_);
-        return true;
+        else
+        {
+            // Otherwise, extract the template parameter list from CTD
+            populate(*I.Template, CTD->getTemplateParameters());
+        }
     }
 
-    bool
-    VisitSubstTemplateTypeParmPackType(
-        const SubstTemplateTypeParmPackType* T)
-    {
-        getDerived().buildTerminal(NNS_, T->getIdentifier(),
-            std::nullopt, Quals_, IsPack_);
-        return true;
-    }
+    populate(I, created, D);
+    traverse(static_cast<DeclContext*>(D));
+}
 
-    bool
-    VisitType(const Type* T)
-    {
-        getDerived().buildTerminal(
-            NNS_, T, Quals_, IsPack_);
-        return true;
-    }
-
-public:
-    TerminalTypeVisitor(
-        ASTVisitor& Visitor,
-        const NestedNameSpecifier* NNS = nullptr)
-        : Visitor_(Visitor)
-        , NNS_(NNS)
-    {
-    }
-
-    ASTVisitor& getASTVisitor()
-    {
-        return Visitor_;
-    }
-
-    using TerminalTypeVisitor::TypeVisitor::Visit;
-
-    bool
-    Visit(QualType QT)
-    {
-        Quals_ |= QT.getLocalFastQualifiers();
-        return Visit(QT.getTypePtrOrNull());
-    }
-
-    void
-    buildPointer
-        (const PointerType* T,
-        unsigned quals)
-    {
-    }
-
-    void
-    buildLValueReference(
-        const LValueReferenceType* T)
-    {
-    }
-
-    void
-    buildRValueReference(
-        const RValueReferenceType* T)
-    {
-    }
-
-    void
-    buildMemberPointer(
-        const MemberPointerType* T, unsigned quals)
-    {
-    }
-
-    void
-    buildArray(
-        const ArrayType* T)
-    {
-    }
-
-    void
-    buildFunction(
-        const FunctionType* T)
-    {
-    }
-
-    void
-    buildDecltype(
-        const DecltypeType* T,
-        unsigned quals,
-        bool pack)
-    {
-    }
-
-    void
-    buildAuto(
-        const AutoType* T,
-        unsigned quals,
-        bool pack)
-    {
-    }
-
-    void
-    buildTerminal(
-        const NestedNameSpecifier* NNS,
-        const Type* T,
-        unsigned quals,
-        bool pack)
-    {
-    }
-
-    void
-    buildTerminal(
-        const NestedNameSpecifier* NNS,
-        const IdentifierInfo* II,
-        std::optional<ArrayRef<TemplateArgument>> TArgs,
-        unsigned quals,
-        bool pack)
-    {
-    }
-
-    void
-    buildTerminal(
-        const NestedNameSpecifier* NNS,
-        const NamedDecl* D,
-        std::optional<ArrayRef<TemplateArgument>> TArgs,
-        unsigned quals,
-        bool pack)
-    {
-    }
-};
-
-class TypeInfoBuilder
-    : public TerminalTypeVisitor<TypeInfoBuilder>
+template<std::derived_from<FunctionDecl> FunctionDeclTy>
+void
+ASTVisitor::
+traverse(
+    FunctionDeclTy* D,
+    FunctionTemplateDecl* FTD)
 {
-    std::unique_ptr<TypeInfo> Result;
-    std::unique_ptr<TypeInfo>* Inner = &Result;
-
-public:
-    using TerminalTypeVisitor::TerminalTypeVisitor;
-
-    std::unique_ptr<TypeInfo> result()
+    auto exp = upsert(D);
+    if (!exp)
     {
-        return std::move(Result);
+        return;
     }
+    auto [I, created] = *exp;
 
-    void buildPointer(const PointerType* T, unsigned quals)
+    // D is the templated declaration if FTD is non-null
+    if (FTD || D->isFunctionTemplateSpecialization())
     {
-        auto I = std::make_unique<PointerTypeInfo>();
-        I->CVQualifiers = convertToQualifierKind(quals);
-        *std::exchange(Inner, &I->PointeeType) = std::move(I);
-    }
-
-    void buildLValueReference(const LValueReferenceType* T)
-    {
-        auto I = std::make_unique<LValueReferenceTypeInfo>();
-        *std::exchange(Inner, &I->PointeeType) = std::move(I);
-    }
-
-    void buildRValueReference(const RValueReferenceType* T)
-    {
-        auto I = std::make_unique<RValueReferenceTypeInfo>();
-        *std::exchange(Inner, &I->PointeeType) = std::move(I);
-    }
-
-    void buildMemberPointer(const MemberPointerType* T, unsigned quals)
-    {
-        auto I = std::make_unique<MemberPointerTypeInfo>();
-        I->CVQualifiers = convertToQualifierKind(quals);
-        // do not set NNS because the parent type is *not*
-        // a nested-name-specifier which qualifies the pointee type
-        I->ParentType = getASTVisitor().buildTypeInfo(
-            QualType(T->getClass(), 0));
-        *std::exchange(Inner, &I->PointeeType) = std::move(I);
-    }
-
-    void buildArray(const ArrayType* T)
-    {
-        auto I = std::make_unique<ArrayTypeInfo>();
-        if(auto* CAT = dyn_cast<ConstantArrayType>(T))
-            getASTVisitor().buildExprInfo(
-                I->Bounds, CAT->getSizeExpr(), CAT->getSize());
-        else if(auto* DAT = dyn_cast<DependentSizedArrayType>(T))
-            getASTVisitor().buildExprInfo(
-                I->Bounds, DAT->getSizeExpr());
-        *std::exchange(Inner, &I->ElementType) = std::move(I);
-    }
-
-    void buildFunction(const FunctionType* T)
-    {
-        auto* FPT = cast<FunctionProtoType>(T);
-        auto I = std::make_unique<FunctionTypeInfo>();
-        for(QualType PT : FPT->getParamTypes())
-            I->ParamTypes.emplace_back(
-                getASTVisitor().buildTypeInfo(PT));
-        I->RefQualifier = convertToReferenceKind(
-            FPT->getRefQualifier());
-        I->CVQualifiers = convertToQualifierKind(
-            FPT->getMethodQuals().getFastQualifiers());
-        I->IsVariadic = FPT->isVariadic();
-        getASTVisitor().buildNoexceptInfo(I->ExceptionSpec, FPT);
-        *std::exchange(Inner, &I->ReturnType) = std::move(I);
-    }
-
-    void
-    buildDecltype(
-        const DecltypeType* T,
-        unsigned quals,
-        bool pack)
-    {
-        auto I = std::make_unique<DecltypeTypeInfo>();
-        getASTVisitor().buildExprInfo(
-            I->Operand, T->getUnderlyingExpr());
-        I->CVQualifiers = convertToQualifierKind(quals);
-        *Inner = std::move(I);
-        Result->IsPackExpansion = pack;
-    }
-
-    void
-    buildAuto(
-        const AutoType* T,
-        unsigned quals,
-        bool pack)
-    {
-        auto I = std::make_unique<AutoTypeInfo>();
-        I->CVQualifiers = convertToQualifierKind(quals);
-        I->Keyword = convertToAutoKind(T->getKeyword());
-        if(T->isConstrained())
+        if (!I.Template)
         {
-            std::optional<ArrayRef<TemplateArgument>> TArgs;
-            if(auto Args = T->getTypeConstraintArguments();
-                ! Args.empty())
-                TArgs.emplace(Args);
-            I->Constraint = getASTVisitor().buildNameInfo(
-                T->getTypeConstraintConcept(), TArgs);
-            // Constraint->Prefix = getASTVisitor().buildNameInfo(
-            //     cast<Decl>(CD->getDeclContext()));
+            I.Template = std::make_unique<TemplateInfo>();
         }
-        *Inner = std::move(I);
-        Result->IsPackExpansion = pack;
-    }
 
-    void
-    buildTerminal(
-        const NestedNameSpecifier* NNS,
-        const Type* T,
-        unsigned quals,
-        bool pack)
-    {
-        if(getASTVisitor().checkSpecialNamespace(*Inner, NNS, nullptr))
-            return;
-
-        auto I = std::make_unique<NamedTypeInfo>();
-        I->CVQualifiers = convertToQualifierKind(quals);
-
-        auto Name = std::make_unique<NameInfo>();
-        Name->Name = getASTVisitor().getTypeAsString(T);
-        Name->Prefix = getASTVisitor().buildNameInfo(NNS);
-        I->Name = std::move(Name);
-        *Inner = std::move(I);
-        Result->IsPackExpansion = pack;
-    }
-
-    void
-    buildTerminal(
-        const NestedNameSpecifier* NNS,
-        const IdentifierInfo* II,
-        std::optional<ArrayRef<TemplateArgument>> TArgs,
-        unsigned quals,
-        bool pack)
-    {
-        ASTVisitor& V = getASTVisitor();
-        if(V.checkSpecialNamespace(*Inner, NNS, nullptr))
-            return;
-
-        auto I = std::make_unique<NamedTypeInfo>();
-        I->CVQualifiers = convertToQualifierKind(quals);
-
-        if(TArgs)
+        if(auto* FTSI = D->getTemplateSpecializationInfo())
         {
-            auto Name = std::make_unique<SpecializationNameInfo>();
-            if(II)
-                Name->Name = II->getName();
-            Name->Prefix = getASTVisitor().buildNameInfo(NNS);
-            V.buildTemplateArgs(Name->TemplateArgs, *TArgs);
-            I->Name = std::move(Name);
+            generateID(getInstantiatedFrom(
+                FTSI->getTemplate()), I.Template->Primary);
+
+            // TemplateArguments is used instead of TemplateArgumentsAsWritten
+            // because explicit specializations of function templates may have
+            // template arguments deduced from their return type and parameters
+            if(auto* Args = FTSI->TemplateArguments)
+            {
+                populate(I.Template->Args, Args->asArray());
+            }
+        }
+        else if(auto* DFTSI = D->getDependentSpecializationInfo())
+        {
+            // Only extract the ID of the primary template if there is
+            // a single candidate primary template.
+            if (auto Candidates = DFTSI->getCandidates(); Candidates.size() == 1)
+            {
+                generateID(getInstantiatedFrom(
+                    Candidates.front()), I.Template->Primary);
+            }
+            if(auto* Args = DFTSI->TemplateArgumentsAsWritten)
+            {
+                populate(I.Template->Args, Args);
+            }
         }
         else
         {
-            auto Name = std::make_unique<NameInfo>();
-            if(II)
-                Name->Name = II->getName();
-            Name->Prefix = getASTVisitor().buildNameInfo(NNS);
-            I->Name = std::move(Name);
+            populate(*I.Template, FTD->getTemplateParameters());
         }
-        *Inner = std::move(I);
-        Result->IsPackExpansion = pack;
     }
 
-    void
-    buildTerminal(
-        const NestedNameSpecifier* NNS,
-        const NamedDecl* D,
-        std::optional<ArrayRef<TemplateArgument>> TArgs,
-        unsigned quals,
-        bool pack)
+    populate(I, created, D);
+}
+
+template<std::derived_from<TypedefNameDecl> TypedefNameDeclTy>
+void
+ASTVisitor::
+traverse(
+    TypedefNameDeclTy* D,
+    TypeAliasTemplateDecl* ATD)
+{
+    auto exp = upsert(D);
+    if (!exp)
     {
-        ASTVisitor& V = getASTVisitor();
-        if(V.checkSpecialNamespace(*Inner, NNS, D))
-            return;
+        return;
+    }
+    auto [I, created] = *exp;
 
-        auto I = std::make_unique<NamedTypeInfo>();
-        I->CVQualifiers = convertToQualifierKind(quals);
+    if (isa<TypeAliasDecl>(D))
+    {
+        I.IsUsing = true;
+    }
 
-        if(TArgs)
+    if (ATD)
+    {
+        if (!I.Template)
         {
-            auto Name = std::make_unique<SpecializationNameInfo>();
-            if(const IdentifierInfo* II = D->getIdentifier())
-                Name->Name = II->getName();
-            V.getDependencyID(V.getInstantiatedFrom(D), Name->id);
-            if(NNS)
-                Name->Prefix = V.buildNameInfo(NNS);
+            I.Template = std::make_unique<TemplateInfo>();
+        }
+        populate(*I.Template, ATD->getTemplateParameters());
+    }
 
-            V.buildTemplateArgs(Name->TemplateArgs, *TArgs);
-            I->Name = std::move(Name);
+    populate(I, created, D);
+}
+
+template<std::derived_from<VarDecl> VarDeclTy>
+void
+ASTVisitor::
+traverse(
+    VarDeclTy* D,
+    VarTemplateDecl* VTD)
+{
+    auto exp = upsert(D);
+    if (!exp)
+    {
+        return;
+    }
+    auto [I, created] = *exp;
+
+    // VTD is the specialized template if D is a partial or
+    // explicit specialization, and the described template otherwise
+    if (VTD)
+    {
+        if (!I.Template)
+        {
+            I.Template = std::make_unique<TemplateInfo>();
+        }
+
+        // If D is a partial/explicit specialization, extract the template arguments
+        if(auto* VTSD = dyn_cast<VarTemplateSpecializationDecl>(D))
+        {
+            generateID(getInstantiatedFrom(VTD), I.Template->Primary);
+            // extract the template arguments of the specialization
+            populate(I.Template->Args, VTSD->getTemplateArgsAsWritten());
+            // extract the template parameters if this is a partial specialization
+            if(auto* VTPSD = dyn_cast<VarTemplatePartialSpecializationDecl>(D))
+                populate(*I.Template, VTPSD->getTemplateParameters());
         }
         else
         {
-            auto Name = std::make_unique<NameInfo>();
-            if(const IdentifierInfo* II = D->getIdentifier())
-                Name->Name = II->getName();
-            V.getDependencyID(V.getInstantiatedFrom(D), Name->id);
-            if(NNS)
-                Name->Prefix = V.buildNameInfo(NNS);
-            I->Name = std::move(Name);
+            // otherwise, extract the template parameter list from VTD
+            populate(*I.Template, VTD->getTemplateParameters());
         }
-        *Inner = std::move(I);
-        Result->IsPackExpansion = pack;
     }
-};
+
+    populate(I, created, D);
+}
+
+void
+ASTVisitor::
+traverse(
+    CXXDeductionGuideDecl* D,
+    FunctionTemplateDecl const* FTD)
+{
+    auto exp = upsert(D);
+    if (!exp)
+    {
+        return;
+    }
+    auto [I, created] = *exp;
+
+    // D is the templated declaration if FTD is non-null
+    if(FTD)
+    {
+        if(! I.Template)
+        {
+            I.Template = std::make_unique<TemplateInfo>();
+        }
+        populate(*I.Template, FTD->getTemplateParameters());
+    }
+
+    populate(I, created, D);
+}
+
+void
+ASTVisitor::
+traverse(UsingDirectiveDecl* D)
+{
+    // A using directive such as `using namespace std;`
+    if (!shouldExtract(D, getAccess(D)))
+    {
+        return;
+    }
+
+    Decl* PD = getParentDecl(D);
+
+    bool const isNamespaceScope = cast<DeclContext>(PD)->isFileContext();
+    if (!isNamespaceScope)
+    {
+        return;
+    }
+
+    if (Info* PI = find(generateID(PD)))
+    {
+        MRDOCS_ASSERT(PI->isNamespace());
+        auto* NI = dynamic_cast<NamespaceInfo*>(PI);
+        upsertDependency(
+            D->getNominatedNamespaceAsWritten(),
+            NI->UsingDirectives.emplace_back());
+    }
+}
+
+void
+ASTVisitor::
+traverse(ConceptDecl* D)
+{
+    auto exp = upsert(D);
+    if (!exp)
+    {
+        return;
+    }
+    auto [I, created] = *exp;
+    if (!I.Template)
+    {
+        I.Template = std::make_unique<TemplateInfo>();
+    }
+    populate(*I.Template, D->getTemplateParameters());
+    populate(I, created, D);
+}
+
+void
+ASTVisitor::
+traverse(IndirectFieldDecl* D)
+{
+    traverse(D->getAnonField());
+}
+
+Expected<llvm::SmallString<128>>
+ASTVisitor::
+generateUSR(const Decl* D) const
+{
+    MRDOCS_ASSERT(D);
+    llvm::SmallString<128> res;
+
+    if (auto const* NAD = dyn_cast<NamespaceAliasDecl>(D))
+    {
+        if (index::generateUSRForDecl(cast<Decl>(NAD->getNamespace()), res))
+        {
+            return Unexpected(Error("Failed to generate USR"));
+        }
+        res.append("@NA");
+        res.append(NAD->getNameAsString());
+        return res;
+    }
+
+    // Handling UsingDecl
+    if (auto const* UD = dyn_cast<UsingDecl>(D))
+    {
+        for (const auto* shadow : UD->shadows())
+        {
+            if (index::generateUSRForDecl(shadow->getTargetDecl(), res))
+            {
+                return Unexpected(Error("Failed to generate USR"));
+            }
+        }
+        res.append("@UDec");
+        res.append(UD->getQualifiedNameAsString());
+        return res;
+    }
+
+    // Handling UnresolvedUsingTypenameDecl
+    if (auto const* UD = dyn_cast<UnresolvedUsingTypenameDecl>(D))
+    {
+        if (index::generateUSRForDecl(UD, res))
+        {
+            return Unexpected(Error("Failed to generate USR"));
+        }
+        res.append("@UUTDec");
+        res.append(UD->getQualifiedNameAsString());
+        return res;
+    }
+
+    // Handling UnresolvedUsingValueDecl
+    if (auto const* UD = dyn_cast<UnresolvedUsingValueDecl>(D))
+    {
+        if (index::generateUSRForDecl(UD, res))
+        {
+            return Unexpected(Error("Failed to generate USR"));
+        }
+        res.append("@UUV");
+        res.append(UD->getQualifiedNameAsString());
+        return res;
+    }
+
+    // Handling UsingPackDecl
+    if (auto const* UD = dyn_cast<UsingPackDecl>(D))
+    {
+        if (index::generateUSRForDecl(UD, res))
+        {
+            return Unexpected(Error("Failed to generate USR"));
+        }
+        res.append("@UPD");
+        res.append(UD->getQualifiedNameAsString());
+        return res;
+    }
+
+    // Handling UsingEnumDecl
+    if (auto const* UD = dyn_cast<UsingEnumDecl>(D))
+    {
+        if (index::generateUSRForDecl(UD, res))
+        {
+            return Unexpected(Error("Failed to generate USR"));
+        }
+        res.append("@UED");
+        EnumDecl const* ED = UD->getEnumDecl();
+        res.append(ED->getQualifiedNameAsString());
+        return res;
+    }
+
+    // KRYSTIAN NOTE: clang doesn't currently support
+    // generating USRs for friend declarations, so we
+    // will improvise until I can merge a patch which
+    // adds support for them
+    if(auto const* FD = dyn_cast<FriendDecl>(D))
+    {
+        // first, generate the USR for the containing class
+        if (index::generateUSRForDecl(cast<Decl>(FD->getDeclContext()), res))
+        {
+            return Unexpected(Error("Failed to generate USR"));
+        }
+        // add a seperator for uniqueness
+        res.append("@FD");
+        // if the friend declaration names a type,
+        // use the USR generator for types
+        if (TypeSourceInfo* TSI = FD->getFriendType())
+        {
+            if (index::generateUSRForType(TSI->getType(), context_, res))
+            {
+                return Unexpected(Error("Failed to generate USR"));
+            }
+            return res;
+        }
+        // otherwise, fallthrough and append the
+        // USR of the nominated declaration
+        if (!((D = FD->getFriendDecl())))
+        {
+            return Unexpected(Error("Failed to generate USR"));
+        }
+    }
+
+    if (index::generateUSRForDecl(D, res))
+        return Unexpected(Error("Failed to generate USR"));
+
+    const auto* Described = dyn_cast_if_present<TemplateDecl>(D);
+    const auto* Templated = D;
+    if (auto const* DT = D->getDescribedTemplate())
+    {
+        Described = DT;
+        if (auto const* TD = DT->getTemplatedDecl())
+        {
+            Templated = TD;
+        }
+    }
+
+    if(Described)
+    {
+        const TemplateParameterList* TPL = Described->getTemplateParameters();
+        if(const auto* RC = TPL->getRequiresClause())
+        {
+            RC = SubstituteConstraintExpressionWithoutSatisfaction(
+                sema_, cast<NamedDecl>(isa<FunctionTemplateDecl>(Described) ? Described : Templated), RC);
+            if (!RC)
+            {
+                return Unexpected(Error("Failed to generate USR"));
+            }
+            ODRHash odr_hash;
+            odr_hash.AddStmt(RC);
+            res.append("@TPL#");
+            res.append(llvm::itostr(odr_hash.CalculateHash()));
+        }
+    }
+
+    if(auto* FD = dyn_cast<FunctionDecl>(Templated);
+        FD && FD->getTrailingRequiresClause())
+    {
+        const Expr* RC = FD->getTrailingRequiresClause();
+        RC = SubstituteConstraintExpressionWithoutSatisfaction(
+            sema_, cast<NamedDecl>(Described ? Described : Templated), RC);
+        if (!RC)
+        {
+            return Unexpected(Error("Failed to generate USR"));
+        }
+        ODRHash odr_hash;
+        odr_hash.AddStmt(RC);
+        res.append("@TRC#");
+        res.append(llvm::itostr(odr_hash.CalculateHash()));
+    }
+
+    return res;
+}
+
+bool
+ASTVisitor::
+generateID(
+    const Decl* D,
+    SymbolID& id) const
+{
+    if (!D)
+    {
+        return false;
+    }
+
+    if (isa<TranslationUnitDecl>(D))
+    {
+        id = SymbolID::global;
+        return true;
+    }
+
+    if (auto exp = generateUSR(D))
+    {
+        auto h = llvm::SHA1::hash(arrayRefFromStringRef(*exp));
+        id = SymbolID(h.data());
+        return true;
+    }
+
+    return false;
+}
+
+SymbolID
+ASTVisitor::
+generateID(const Decl* D) const
+{
+    SymbolID id = SymbolID::invalid;
+    generateID(D, id);
+    return id;
+}
+
+void
+ASTVisitor::
+populate(
+    NamespaceInfo& I,
+    bool const created,
+    NamespaceDecl* D)
+{
+    MRDOCS_CHECK_OR(created);
+    I.IsAnonymous = D->isAnonymousNamespace();
+    if (!I.IsAnonymous)
+    {
+        I.Name = extractName(D);
+    }
+    I.IsInline = D->isInline();
+    populateNamespaces(I, D);
+}
+
+void
+ASTVisitor::
+populate(
+    RecordInfo& I,
+    bool const created,
+    CXXRecordDecl* D)
+{
+    bool const documented = generateJavadoc(I.javadoc, D);
+    populate(I, D->getBeginLoc(),
+        D->isThisDeclarationADefinition(), documented);
+
+    if (!created)
+    {
+        return;
+    }
+
+    NamedDecl const* ND = D;
+    if (TypedefNameDecl const* TD = D->getTypedefNameForAnonDecl())
+    {
+        I.IsTypeDef = true;
+        ND = TD;
+    }
+    I.Name = extractName(ND);
+
+    I.KeyKind = toRecordKeyKind(D->getTagKind());
+
+    // These are from CXXRecordDecl::isEffectivelyFinal()
+    I.IsFinal = D->hasAttr<FinalAttr>();
+    if (auto const* DT = D->getDestructor())
+    {
+        I.IsFinalDestructor = DT->hasAttr<FinalAttr>();
+    }
+
+    // Extract direct bases. D->bases() will get the bases
+    // from whichever declaration is the definition (if any)
+    if(D->hasDefinition())
+    {
+        for(const CXXBaseSpecifier& B : D->bases())
+        {
+            AccessSpecifier const access = B.getAccessSpecifier();
+            // KRYSTIAN FIXME: we need finer-grained control
+            // for protected bases, since an inheriting class
+            // will have access to the bases public members...
+            if(config_->inaccessibleBases !=
+                ConfigImpl::SettingsImpl::ExtractPolicy::Always)
+            {
+                if(access == AccessSpecifier::AS_private ||
+                    access == AccessSpecifier::AS_protected)
+                    continue;
+            }
+            // the extraction of the base type is
+            // performed in direct dependency mode
+            auto BaseType = toTypeInfo(
+                B.getType(),
+                ExtractMode::DirectDependency);
+            // CXXBaseSpecifier::getEllipsisLoc indicates whether the
+            // base was a pack expansion; a PackExpansionType is not built
+            // for base-specifiers
+            if(BaseType && B.getEllipsisLoc().isValid())
+                BaseType->IsPackExpansion = true;
+            I.Bases.emplace_back(
+                std::move(BaseType),
+                convertToAccessKind(access),
+                B.isVirtual());
+        }
+    }
+
+    populateNamespaces(I, D);
+}
+
+template <std::derived_from<FunctionDecl> DeclTy>
+void
+ASTVisitor::
+populate(
+    FunctionInfo& I,
+    bool const created,
+    DeclTy* D)
+{
+    bool const documented = generateJavadoc(I.javadoc, D);
+    populate(I, D->getBeginLoc(),
+        D->isThisDeclarationADefinition(), documented);
+
+    // KRYSTIAN TODO: move other extraction that requires
+    // a valid function type here
+    if (auto FT = getDeclaratorType(D); ! FT.isNull())
+    {
+        const auto* FPT = FT->template getAs<FunctionProtoType>();
+        populate(I.Noexcept, FPT);
+        I.HasTrailingReturn |= FPT->hasTrailingReturn();
+    }
+
+    //
+    // FunctionDecl
+    //
+    I.OverloadedOperator = convertToOperatorKind(
+        D->getOverloadedOperator());
+    I.IsVariadic |= D->isVariadic();
+    I.IsDefaulted |= D->isDefaulted();
+    I.IsExplicitlyDefaulted |= D->isExplicitlyDefaulted();
+    I.IsDeleted |= D->isDeleted();
+    I.IsDeletedAsWritten |= D->isDeletedAsWritten();
+    I.IsNoReturn |= D->isNoReturn();
+        // subsumes D->hasAttr<NoReturnAttr>()
+        // subsumes D->hasAttr<CXX11NoReturnAttr>()
+        // subsumes D->hasAttr<C11NoReturnAttr>()
+        // subsumes D->getType()->getAs<FunctionType>()->getNoReturnAttr()
+    I.HasOverrideAttr |= D->template hasAttr<OverrideAttr>();
+
+    if (ConstexprSpecKind const CSK = D->getConstexprKind();
+        CSK != ConstexprSpecKind::Unspecified)
+    {
+        I.Constexpr = toConstexprKind(CSK);
+    }
+
+    if (StorageClass const SC = D->getStorageClass())
+    {
+        I.StorageClass = toStorageClassKind(SC);
+    }
+
+    I.IsNodiscard |= D->template hasAttr<WarnUnusedResultAttr>();
+    I.IsExplicitObjectMemberFunction |= D->hasCXXExplicitFunctionObjectParameter();
+    //
+    // CXXMethodDecl
+    //
+    if constexpr(std::derived_from<DeclTy, CXXMethodDecl>)
+    {
+        I.IsVirtual |= D->isVirtual();
+        I.IsVirtualAsWritten |= D->isVirtualAsWritten();
+        I.IsPure |= D->isPureVirtual();
+        I.IsConst |= D->isConst();
+        I.IsVolatile |= D->isVolatile();
+        I.RefQualifier = convertToReferenceKind(D->getRefQualifier());
+        I.IsFinal |= D->template hasAttr<FinalAttr>();
+        //D->isCopyAssignmentOperator()
+        //D->isMoveAssignmentOperator()
+        //D->isOverloadedOperator();
+        //D->isStaticOverloadedOperator();
+    }
+
+    //
+    // CXXDestructorDecl
+    //
+    // if constexpr(std::derived_from<DeclTy, CXXDestructorDecl>)
+    // {
+    // }
+
+    //
+    // CXXConstructorDecl
+    //
+    if constexpr(std::derived_from<DeclTy, CXXConstructorDecl>)
+    {
+        populate(I.Explicit, D->getExplicitSpecifier());
+    }
+
+    //
+    // CXXConversionDecl
+    //
+    if constexpr(std::derived_from<DeclTy, CXXConversionDecl>)
+    {
+        populate(I.Explicit, D->getExplicitSpecifier());
+    }
+
+    for (ParmVarDecl const* P : D->parameters())
+    {
+        Param& param = created ?
+            I.Params.emplace_back() :
+            I.Params[P->getFunctionScopeIndex()];
+
+        if (param.Name.empty())
+        {
+            param.Name = P->getName();
+        }
+
+        if (!param.Type)
+        {
+            param.Type = toTypeInfo(P->getOriginalType());
+        }
+
+        const Expr* default_arg = P->hasUninstantiatedDefaultArg() ?
+            P->getUninstantiatedDefaultArg() : P->getInit();
+        if (param.Default.empty() &&
+            default_arg)
+        {
+            param.Default = getSourceCode(default_arg->getSourceRange());
+        }
+    }
+
+    if (!created)
+    {
+        return;
+    }
+
+    I.Name = extractName(D);
+
+    I.Class = toFunctionClass(D->getDeclKind());
+
+    QualType const RT = D->getReturnType();
+    auto next_mode = ExtractMode::IndirectDependency;
+    if (auto const* AT = RT->getContainedAutoType();
+        AT && AT->hasUnnamedOrLocalType())
+    {
+        next_mode = ExtractMode::DirectDependency;
+    }
+    // extract the return type in direct dependency mode
+    // if it contains a placeholder type which is
+    // deduceded as a local class type
+    I.ReturnType = toTypeInfo(RT, next_mode);
+
+    if(auto* TRC = D->getTrailingRequiresClause())
+        populate(I.Requires, TRC);
+
+    populateNamespaces(I, D);
+}
+
+void
+ASTVisitor::
+populate(
+    EnumInfo& I,
+    bool const created,
+    EnumDecl* D)
+{
+    bool const documented = generateJavadoc(I.javadoc, D);
+    populate(I, D->getBeginLoc(),
+        D->isThisDeclarationADefinition(), documented);
+
+    if (!created)
+    {
+        return;
+    }
+
+    I.Name = extractName(D);
+
+    I.Scoped = D->isScoped();
+
+    if (D->isFixed())
+    {
+        I.UnderlyingType = toTypeInfo(D->getIntegerType());
+    }
+
+    populateNamespaces(I, D);
+}
+
+void
+ASTVisitor::
+populate(
+    EnumConstantInfo& I,
+    bool const created,
+    EnumConstantDecl* D)
+{
+    bool const documented = generateJavadoc(I.javadoc, D);
+    populate(I, D->getBeginLoc(), true, documented);
+
+    if (!created)
+    {
+        return;
+    }
+
+    I.Name = extractName(D);
+
+    populate(
+        I.Initializer,
+        D->getInitExpr(),
+        D->getInitVal());
+
+    populateNamespaces(I, D);
+}
+
+void
+ASTVisitor::
+populate(
+    TypedefInfo& I,
+    bool const created,
+    TypedefNameDecl* D)
+{
+    bool const documented = generateJavadoc(I.javadoc, D);
+
+    // KRYSTIAN FIXME: we currently treat typedef/alias
+    // declarations as having a single definition; however,
+    // such declarations are never definitions and can
+    // be redeclared multiple times (even in the same scope)
+    populate(I, D->getBeginLoc(), true, documented);
+
+    if (!created)
+    {
+        return;
+    }
+
+    I.Name = extractName(D);
+
+    // When a symbol has a dependency on a typedef, we also
+    // consider the symbol to have a dependency on the aliased
+    // type. Therefore, we propagate the current dependency mode
+    // when building the TypeInfo for the aliased type
+    I.Type = toTypeInfo(
+        D->getUnderlyingType(),
+        currentMode());
+
+    populateNamespaces(I, D);
+}
+
+void
+ASTVisitor::
+populate(
+    VariableInfo& I,
+    bool const created,
+    VarDecl* D)
+{
+    bool const documented = generateJavadoc(I.javadoc, D);
+    populate(I, D->getBeginLoc(),
+        D->isThisDeclarationADefinition(), documented);
+
+    // KRYSTIAN FIXME: we need to properly merge storage class
+    if (StorageClass const SC = D->getStorageClass())
+    {
+        I.StorageClass = toStorageClassKind(SC);
+    }
+
+    // this handles thread_local, as well as the C
+    // __thread and __Thread_local specifiers
+    I.IsThreadLocal |= D->getTSCSpec() !=
+        ThreadStorageClassSpecifier::TSCS_unspecified;
+
+    // KRYSTIAN NOTE: VarDecl does not provide getConstexprKind,
+    // nor does it use getConstexprKind to store whether
+    // a variable is constexpr/constinit. Although
+    // only one is permitted in a variable declaration,
+    // it is possible to declare a static data member
+    // as both constexpr and constinit in separate declarations..
+    I.IsConstinit |= D->hasAttr<ConstInitAttr>();
+    if (D->isConstexpr())
+    {
+        I.Constexpr = ConstexprKind::Constexpr;
+    }
+
+    if (Expr const* E = D->getInit())
+    {
+        populate(I.Initializer, E);
+    }
+
+    if (!created)
+    {
+        return;
+    }
+
+    I.Name = extractName(D);
+
+    I.Type = toTypeInfo(D->getType());
+
+    populateNamespaces(I, D);
+}
+
+void
+ASTVisitor::
+populate(
+    FieldInfo& I,
+    bool const created,
+    FieldDecl* D)
+{
+    bool const documented = generateJavadoc(I.javadoc, D);
+    // fields (i.e. non-static data members)
+    // cannot have multiple declarations
+    populate(I, D->getBeginLoc(), true, documented);
+
+    if (!created)
+    {
+        return;
+    }
+
+    I.Name = extractName(D);
+
+    I.Type = toTypeInfo(D->getType());
+
+    I.IsVariant = D->getParent()->isUnion();
+
+    I.IsMutable = D->isMutable();
+
+    if(const Expr* E = D->getInClassInitializer())
+        populate(I.Default, E);
+
+    if(D->isBitField())
+    {
+        I.IsBitfield = true;
+        populate(
+            I.BitfieldWidth,
+            D->getBitWidth());
+    }
+
+    I.HasNoUniqueAddress = D->hasAttr<NoUniqueAddressAttr>();
+    I.IsDeprecated = D->hasAttr<DeprecatedAttr>();
+    I.IsMaybeUnused = D->hasAttr<UnusedAttr>();
+
+    populateNamespaces(I, D);
+}
+
+void
+ASTVisitor::
+populate(
+    SpecializationInfo& I,
+    bool const created,
+    ClassTemplateSpecializationDecl* D)
+{
+    if (!created)
+    {
+        return;
+    }
+
+    CXXRecordDecl const* PD = getInstantiatedFrom(D);
+
+    populate(I.Args, D->getTemplateArgs().asArray());
+
+    generateID(PD, I.Primary);
+    I.Name = extractName(PD);
+
+    populateNamespaces(I, D);
+}
+
+void
+ASTVisitor::
+populate(
+    FriendInfo& I,
+    bool const created,
+    FriendDecl* D)
+{
+    bool const documented = generateJavadoc(I.javadoc, D);
+    populate(I, D->getBeginLoc(), true, documented);
+
+    if (!created)
+    {
+        return;
+    }
+
+    // A NamedDecl nominated by a FriendDecl
+    // will be one of the following:
+    // - FunctionDecl
+    // - FunctionTemplateDecl
+    // - ClassTemplateDecl
+    if (NamedDecl* ND = D->getFriendDecl())
+    {
+        generateID(ND, I.FriendSymbol);
+        // If this is a friend function declaration naming
+        // a previously undeclared function, traverse it.
+        // in addition to this, traverse the declaration if
+        // it's a class templates first declared as a friend
+        if((ND->isFunctionOrFunctionTemplate() &&
+            ND->getFriendObjectKind() == Decl::FOK_Undeclared) ||
+            (isa<ClassTemplateDecl>(ND) && ND->isFirstDecl()))
+        {
+            traverseAny(ND);
+        }
+    }
+
+    // Since a friend declaration which name non-class types
+    // will be ignored, a type nominated by a FriendDecl can
+    // essentially be anything
+    if (TypeSourceInfo const* TSI = D->getFriendType())
+    {
+        I.FriendType = toTypeInfo(TSI->getType());
+    }
+
+    populateNamespaces(I, D);
+}
+
+void
+ASTVisitor::
+populate(
+    GuideInfo& I,
+    bool const created,
+    CXXDeductionGuideDecl* D)
+{
+    bool const documented = generateJavadoc(I.javadoc, D);
+    populate(I, D->getBeginLoc(), true, documented);
+
+    // deduction guides cannot be redeclared, so there is nothing to merge
+    if (!created)
+    {
+        return;
+    }
+
+    I.Name = extractName(D->getDeducedTemplate());
+
+    I.Deduced = toTypeInfo(D->getReturnType());
+
+    for (const ParmVarDecl* P : D->parameters())
+    {
+        I.Params.emplace_back(
+            toTypeInfo(P->getOriginalType()),
+            P->getNameAsString(),
+            // deduction guides cannot have default arguments
+            std::string());
+    }
+
+    populate(I.Explicit, D->getExplicitSpecifier());
+
+    populateNamespaces(I, D);
+}
+
+void
+ASTVisitor::
+populate(
+    NamespaceAliasInfo& I,
+    bool const created,
+    NamespaceAliasDecl* D)
+{
+    bool const documented = generateJavadoc(I.javadoc, D);
+    populate(I, D->getBeginLoc(), true, documented);
+
+    if (!created)
+    {
+        return;
+    }
+
+    I.Name = extractName(D);
+    auto const& Underlying = I.AliasedSymbol =
+        std::make_unique<NameInfo>();
+
+    NamedDecl* Aliased = D->getAliasedNamespace();
+    Underlying->Name = Aliased->getIdentifier()->getName();
+    upsertDependency(Aliased, Underlying->id);
+    if (NestedNameSpecifier const* NNS = D->getQualifier())
+    {
+        Underlying->Prefix = toNameInfo(NNS);
+    }
+
+    populateNamespaces(I, D);
+}
+
+void
+ASTVisitor::
+populate(
+    UsingInfo& I,
+    bool const created,
+    UsingDecl* D)
+{
+    bool const documented = generateJavadoc(I.javadoc, D);
+    populate(I, D->getBeginLoc(), true, documented);
+
+    if (!created)
+    {
+        return;
+    }
+
+    I.Name = extractName(D);
+    I.Class = UsingClass::Normal;
+    I.Qualifier = toNameInfo(D->getQualifier());
+
+    for (auto const* UDS: D->shadows())
+    {
+        upsertDependency(
+            UDS->getTargetDecl(),
+            I.UsingSymbols.emplace_back());
+    }
+
+    populateNamespaces(I, D);
+}
+
+void
+ASTVisitor::
+populate(
+    ConceptInfo& I,
+    bool const created,
+    ConceptDecl* D)
+{
+    bool const documented = generateJavadoc(I.javadoc, D);
+    populate(I, D->getBeginLoc(), true, documented);
+    if (!created)
+    {
+        return;
+    }
+
+    I.Name = extractName(D);
+    populate(I.Constraint, D->getConstraintExpr());
+
+    populateNamespaces(I, D);
+}
+
+void
+ASTVisitor::
+populate(
+    SourceInfo& I,
+    clang::SourceLocation const loc,
+    bool const definition,
+    bool const documented)
+{
+    unsigned line = source_.getPresumedLoc(
+        loc, false).getLine();
+    FileInfo* file = findFileInfo(loc);
+    MRDOCS_ASSERT(file);
+
+    if (definition)
+    {
+        if (I.DefLoc)
+        {
+            return;
+        }
+        I.DefLoc.emplace(file->full_path,
+            file->short_path, line, file->kind,
+            documented);
+    }
+    else
+    {
+        auto const existing = std::ranges::
+            find_if(I.Loc,
+            [line, file](const Location& l)
+            {
+                return l.LineNumber == line &&
+                    l.Path == file->full_path;
+            });
+        if (existing != I.Loc.end())
+        {
+            return;
+        }
+        I.Loc.emplace_back(file->full_path,
+            file->short_path, line, file->kind,
+            documented);
+    }
+}
+
+void
+ASTVisitor::
+populate(
+    NoexceptInfo& I,
+    const FunctionProtoType* FPT)
+{
+    MRDOCS_ASSERT(FPT);
+    I.Implicit = ! FPT->hasNoexceptExceptionSpec();
+    I.Kind = convertToNoexceptKind(
+        FPT->getExceptionSpecType());
+    // store the operand, if any
+    if (Expr const* NoexceptExpr = FPT->getNoexceptExpr())
+    {
+        I.Operand = toString(NoexceptExpr);
+    }
+}
+
+void
+ASTVisitor::
+populate(
+    ExplicitInfo& I,
+    const ExplicitSpecifier& ES)
+{
+    I.Implicit = ! ES.isSpecified();
+    I.Kind = convertToExplicitKind(ES);
+
+    // store the operand, if any
+    if (Expr const* ExplicitExpr = ES.getExpr())
+    {
+        I.Operand = toString(ExplicitExpr);
+    }
+}
+
+void
+ASTVisitor::
+populate(
+    ExprInfo& I,
+    const Expr* E)
+{
+    if (!E)
+    {
+        return;
+    }
+    I.Written = getSourceCode(
+        E->getSourceRange());
+}
+
+template <class T>
+void
+ASTVisitor::
+populate(
+    ConstantExprInfo<T>& I,
+    const Expr* E)
+{
+    populate(static_cast<ExprInfo&>(I), E);
+    // if the expression is dependent,
+    // we cannot get its value
+    if (!E || E->isValueDependent())
+    {
+        return;
+    }
+    I.Value.emplace(toInteger<T>(E->EvaluateKnownConstInt(context_)));
+}
+
+template <class T>
+void
+ASTVisitor::
+populate(
+    ConstantExprInfo<T>& I,
+    const Expr* E,
+    const llvm::APInt& V)
+{
+    populate(I, E);
+    I.Value.emplace(toInteger<T>(V));
+}
+
+template
+void
+ASTVisitor::
+populate<std::uint64_t>(
+    ConstantExprInfo<std::uint64_t>& I,
+    const Expr* E,
+    const llvm::APInt& V);
+
+void
+ASTVisitor::
+populate(
+    std::unique_ptr<TParam>& I,
+    const NamedDecl* N)
+{
+    visit(N, [&]<typename DeclTy>(const DeclTy* P)
+    {
+        constexpr Decl::Kind kind =
+            DeclToKind<DeclTy>();
+
+        if constexpr(kind == Decl::TemplateTypeParm)
+        {
+            if (!I)
+            {
+                I = std::make_unique<TypeTParam>();
+            }
+            auto* R = dynamic_cast<TypeTParam*>(I.get());
+            if (P->wasDeclaredWithTypename())
+            {
+                R->KeyKind = TParamKeyKind::Typename;
+            }
+            if (P->hasDefaultArgument() && !R->Default)
+            {
+                R->Default = toTArg(
+                    P->getDefaultArgument().getArgument());
+            }
+            if(const TypeConstraint* TC = P->getTypeConstraint())
+            {
+                const NestedNameSpecifier* NNS =
+                    TC->getNestedNameSpecifierLoc().getNestedNameSpecifier();
+                std::optional<const ASTTemplateArgumentListInfo*> TArgs;
+                if (TC->hasExplicitTemplateArgs())
+                {
+                    TArgs.emplace(TC->getTemplateArgsAsWritten());
+                }
+                R->Constraint = toNameInfo(TC->getNamedConcept(), TArgs, NNS);
+            }
+            return;
+        }
+        else if constexpr(kind == Decl::NonTypeTemplateParm)
+        {
+            if (!I)
+            {
+                I = std::make_unique<NonTypeTParam>();
+            }
+            auto* R = dynamic_cast<NonTypeTParam*>(I.get());
+            R->Type = toTypeInfo(P->getType());
+            if (P->hasDefaultArgument() && !R->Default)
+            {
+                R->Default = toTArg(
+                    P->getDefaultArgument().getArgument());
+            }
+            return;
+        }
+        else if constexpr(kind == Decl::TemplateTemplateParm)
+        {
+            if (!I)
+            {
+                I = std::make_unique<TemplateTParam>();
+            }
+            auto* R = dynamic_cast<TemplateTParam*>(I.get());
+            if(R->Params.empty())
+            {
+                for (NamedDecl const* NP: *P->getTemplateParameters())
+                {
+                    populate(R->Params.emplace_back(), NP);
+                }
+            }
+            if (P->hasDefaultArgument() && !R->Default)
+            {
+                R->Default = toTArg(
+                    P->getDefaultArgument().getArgument());
+            }
+            return;
+        }
+        MRDOCS_UNREACHABLE();
+    });
+
+    if (I->Name.empty())
+    {
+        I->Name = extractName(N);
+    }
+    // KRYSTIAN NOTE: Decl::isParameterPack
+    // returns true for function parameter packs
+    I->IsParameterPack =
+        N->isTemplateParameterPack();
+}
+
+void
+ASTVisitor::
+populate(
+    TemplateInfo& TI,
+    const TemplateParameterList* TPL)
+{
+    for(std::size_t I = 0; I < TPL->size(); ++I)
+    {
+        auto& PI = I < TI.Params.size() ?
+            TI.Params[I] : TI.Params.emplace_back();
+        populate(PI, TPL->getParam(I));
+    }
+    if (auto* RC = TPL->getRequiresClause())
+    {
+        populate(TI.Requires, RC);
+    }
+}
+
+template <class Range>
+void
+ASTVisitor::
+populate(
+    std::vector<std::unique_ptr<TArg>>& result,
+    Range&& args)
+{
+    for(const TemplateArgument& arg : args)
+    {
+        // KRYSTIAN NOTE: is this correct? should we have a
+        // separate TArgKind for packs instead of "unlaminating"
+        // them as we are doing here?
+        if (arg.getKind() == TemplateArgument::Pack)
+        {
+            populate(result, arg.pack_elements());
+        } else
+        {
+            result.emplace_back(toTArg(arg));
+        }
+    }
+}
+
+template
+void
+ASTVisitor::
+populate<llvm::ArrayRef<clang::TemplateArgument> const&>(
+    std::vector<std::unique_ptr<TArg>>& result,
+    llvm::ArrayRef<clang::TemplateArgument> const& args);
+
+template
+void
+ASTVisitor::
+populate<llvm::ArrayRef<clang::TemplateArgument>&>(
+    std::vector<std::unique_ptr<TArg>>& result,
+    llvm::ArrayRef<clang::TemplateArgument>& args);
+
+void
+ASTVisitor::
+populate(
+    std::vector<std::unique_ptr<TArg>>& result,
+    const ASTTemplateArgumentListInfo* args)
+{
+    return populate(result,
+        std::views::transform(args->arguments(),
+            [](auto& x) -> auto&
+        {
+            return x.getArgument();
+        }));
+}
+
+
+std::string
+ASTVisitor::
+extractName(NamedDecl const* D)
+{
+    return extractName(D->getDeclName());
+}
+
+std::string
+ASTVisitor::
+extractName(DeclarationName const N)
+{
+    std::string result;
+    if (N.isEmpty())
+    {
+        return result;
+    }
+    switch(N.getNameKind())
+    {
+    case DeclarationName::Identifier:
+        if (auto const* I = N.getAsIdentifierInfo())
+        {
+            result.append(I->getName());
+        }
+        break;
+    case DeclarationName::CXXDestructorName:
+        result.push_back('~');
+        [[fallthrough]];
+    case DeclarationName::CXXConstructorName:
+        if (auto const* R = N.getCXXNameType()->getAsCXXRecordDecl())
+        {
+            result.append(R->getIdentifier()->getName());
+        }
+        break;
+    case DeclarationName::CXXDeductionGuideName:
+        if (auto const* T = N.getCXXDeductionGuideTemplate())
+        {
+            result.append(T->getIdentifier()->getName());
+        }
+        break;
+    case DeclarationName::CXXConversionFunctionName:
+    {
+        result.append("operator ");
+        // KRYSTIAN FIXME: we *really* should not be
+        // converting types to strings like this
+        result.append(mrdocs::toString(*toTypeInfo(N.getCXXNameType())));
+        break;
+    }
+    case DeclarationName::CXXOperatorName:
+    {
+        OperatorKind const K = convertToOperatorKind(
+            N.getCXXOverloadedOperator());
+        result.append("operator");
+        std::string_view const name = getOperatorName(K);
+        if (std::isalpha(name.front()))
+        {
+            result.push_back(' ');
+        }
+        result.append(name);
+        break;
+    }
+    case DeclarationName::CXXLiteralOperatorName:
+    case DeclarationName::CXXUsingDirective:
+        break;
+    default:
+        MRDOCS_UNREACHABLE();
+    }
+    return result;
+}
+
+void
+ASTVisitor::
+populateNamespaces(
+    Info& I,
+    Decl* D)
+{
+    Decl* PD = getParentDecl(D);
+    SymbolID ParentID = generateID(PD);
+    switch(PD->getKind())
+    {
+    // The TranslationUnit DeclContext is the global namespace;
+    // it uses SymbolID::global and should *always* exist
+    case Decl::TranslationUnit:
+    {
+        MRDOCS_ASSERT(ParentID == SymbolID::global);
+        auto [P, created] = upsert<
+            NamespaceInfo>(ParentID);
+        addMember(P, I);
+        break;
+    }
+    case Decl::Namespace:
+    {
+        auto [P, created] = upsert<
+            NamespaceInfo>(ParentID);
+        populate(P, created, cast<NamespaceDecl>(PD));
+        addMember(P, I);
+        break;
+    }
+    // special case for an explicit specializations of
+    // a member of an implicit instantiation.
+    case Decl::ClassTemplateSpecialization:
+    case Decl::ClassTemplatePartialSpecialization:
+    if(auto* S = dyn_cast<ClassTemplateSpecializationDecl>(PD);
+        S && S->getSpecializationKind() == TSK_ImplicitInstantiation)
+    {
+        // KRYSTIAN FIXME: i'm pretty sure DeclContext::getDeclKind()
+        // will never be Decl::ClassTemplatePartialSpecialization for
+        // implicit instantiations; instead, the ClassTemplatePartialSpecializationDecl
+        // is accessible through S->getSpecializedTemplateOrPartial
+        // if the implicit instantiation used a partially specialized template,
+        MRDOCS_ASSERT(PD->getKind() !=
+            Decl::ClassTemplatePartialSpecialization);
+
+        auto [P, created] = upsert<
+            SpecializationInfo>(ParentID);
+        populate(P, created, S);
+        addMember(P, I);
+        break;
+    }
+    // non-implicit instantiations should be
+    // treated like normal CXXRecordDecls
+    [[fallthrough]];
+    // we should never encounter a Record
+    // that is not a CXXRecord
+    case Decl::CXXRecord:
+    {
+        auto [P, created] = upsert<
+            RecordInfo>(ParentID);
+        populate(P, created, cast<CXXRecordDecl>(PD));
+        addMember(P, I);
+        break;
+    }
+    case Decl::Enum:
+    {
+        auto [P, created] = upsert<
+            EnumInfo>(ParentID);
+        populate(P, created, cast<EnumDecl>(PD));
+        addMember(P, I);
+        break;
+    }
+    default:
+        MRDOCS_UNREACHABLE();
+    }
+
+    Info* P = find(ParentID);
+    MRDOCS_ASSERT(P);
+
+    I.Namespace.emplace_back(ParentID);
+    I.Namespace.insert(
+        I.Namespace.end(),
+        P->Namespace.begin(),
+        P->Namespace.end());
+}
+
+void
+ASTVisitor::
+addMember(
+    ScopeInfo& P,
+    Info& C)
+{
+    // Include C.id in P.Members if it's not already there
+    if (bool const exists = std::ranges::find(P.Members, C.id)
+                            != P.Members.end();
+        !exists)
+    {
+        P.Members.emplace_back(C.id);
+    }
+
+    // Include C.id in P.Lookups[C.Name] if it's not already there
+    auto& lookups = P.Lookups.try_emplace(C.Name).first->second;
+    if (bool const exists = std::ranges::find(lookups, C.id) != lookups.end();
+        !exists)
+    {
+        lookups.emplace_back(C.id);
+    }
+}
+
+bool
+ASTVisitor::
+generateJavadoc(
+    std::unique_ptr<Javadoc>& javadoc,
+    Decl const* D)
+{
+    RawComment const* RC =
+        D->getASTContext().getRawCommentForDeclNoCache(D);
+    if (!RC)
+    {
+        return false;
+    }
+    comments::FullComment* FC =
+        RC->parse(D->getASTContext(), &sema_.getPreprocessor(), D);
+    if (!FC)
+    {
+        return false;
+    }
+    // KRYSTIAN FIXME: clang ignores documentation comments
+    // when there is a preprocessor directive between the end
+    // of the comment and the declaration location. there are two
+    // ways to fix this: either set the declaration begin location
+    // to be before and preprocessor directives, or submit a patch
+    // which disables this behavior (it's not entirely clear why
+    // this check occurs anyways, so some investigation is needed)
+    parseJavadoc(javadoc, FC, D, config_, diags_);
+    return true;
+}
 
 std::unique_ptr<TypeInfo>
 ASTVisitor::
-buildTypeInfo(
-    QualType qt,
-    ExtractMode extract_mode)
+toTypeInfo(
+    QualType const qt,
+    ExtractMode const extract_mode)
 {
     // extract_mode is only used during the extraction
     // the terminal type & its parents; the extraction of
@@ -4315,126 +1898,24 @@ buildTypeInfo(
     return Builder.result();
 }
 
-class NameInfoBuilder
-    : public TerminalTypeVisitor<NameInfoBuilder>
-{
-    std::unique_ptr<NameInfo> Result;
-
-public:
-    using TerminalTypeVisitor::TerminalTypeVisitor;
-
-    std::unique_ptr<NameInfo> result()
-    {
-        return std::move(Result);
-    }
-
-    void
-    buildDecltype(
-        const DecltypeType* T,
-        unsigned quals,
-        bool pack)
-    {
-        // KRYSTIAN TODO: support decltype in names
-        // (e.g. within nested-name-specifiers).
-    }
-
-    void
-    buildTerminal(
-        const NestedNameSpecifier* NNS,
-        const Type* T,
-        unsigned quals,
-        bool pack)
-    {
-        if(getASTVisitor().checkSpecialNamespace(Result, NNS, nullptr))
-            return;
-
-        auto I = std::make_unique<NameInfo>();
-        I->Name = getASTVisitor().getTypeAsString(T);
-        Result = std::move(I);
-        if(NNS)
-            Result->Prefix = getASTVisitor().buildNameInfo(NNS);
-    }
-
-    void
-    buildTerminal(
-        const NestedNameSpecifier* NNS,
-        const IdentifierInfo* II,
-        std::optional<ArrayRef<TemplateArgument>> TArgs,
-        unsigned quals,
-        bool pack)
-    {
-        ASTVisitor& V = getASTVisitor();
-        if(V.checkSpecialNamespace(Result, NNS, nullptr))
-            return;
-
-        if(TArgs)
-        {
-            auto I = std::make_unique<SpecializationNameInfo>();
-            if(II)
-                I->Name = II->getName();
-            V.buildTemplateArgs(I->TemplateArgs, *TArgs);
-            Result = std::move(I);
-        }
-        else
-        {
-            auto I = std::make_unique<NameInfo>();
-            if(II)
-                I->Name = II->getName();
-            Result = std::move(I);
-        }
-        if(NNS)
-            Result->Prefix = V.buildNameInfo(NNS);
-    }
-
-    void
-    buildTerminal(
-        const NestedNameSpecifier* NNS,
-        const NamedDecl* D,
-        std::optional<ArrayRef<TemplateArgument>> TArgs,
-        unsigned quals,
-        bool pack)
-    {
-        ASTVisitor& V = getASTVisitor();
-        if(V.checkSpecialNamespace(Result, NNS, D))
-            return;
-
-        const IdentifierInfo* II = D->getIdentifier();
-        if(TArgs)
-        {
-            auto I = std::make_unique<SpecializationNameInfo>();
-            if(II)
-                I->Name = II->getName();
-            V.getDependencyID(V.getInstantiatedFrom(D), I->id);
-            V.buildTemplateArgs(I->TemplateArgs, *TArgs);
-            Result = std::move(I);
-        }
-        else
-        {
-            auto I = std::make_unique<NameInfo>();
-            if(II)
-                I->Name = II->getName();
-            V.getDependencyID(V.getInstantiatedFrom(D), I->id);
-            Result = std::move(I);
-        }
-        if(NNS)
-            Result->Prefix = V.buildNameInfo(NNS);
-    }
-};
-
 std::unique_ptr<NameInfo>
 ASTVisitor::
-buildNameInfo(
-    const NestedNameSpecifier* NNS,
-    ExtractMode extract_mode)
+toNameInfo(
+    NestedNameSpecifier const* NNS,
+    ExtractMode const extract_mode)
 {
     ExtractionScope scope = enterMode(extract_mode);
 
     std::unique_ptr<NameInfo> I = nullptr;
-    if(! NNS)
+    if (!NNS)
+    {
         return I;
+    }
 
-    if(checkSpecialNamespace(I, NNS, nullptr))
+    if (checkSpecialNamespace(I, NNS, nullptr))
+    {
         return I;
+    }
 
     if(const Type* T = NNS->getAsType())
     {
@@ -4446,62 +1927,43 @@ buildNameInfo(
     {
         I = std::make_unique<NameInfo>();
         I->Name = II->getName();
-        I->Prefix = buildNameInfo(NNS->getPrefix(), extract_mode);
+        I->Prefix = toNameInfo(NNS->getPrefix(), extract_mode);
     }
     else if(const NamespaceDecl* ND = NNS->getAsNamespace())
     {
         I = std::make_unique<NameInfo>();
         I->Name = ND->getIdentifier()->getName();
-        getDependencyID(ND, I->id);
-        I->Prefix = buildNameInfo(NNS->getPrefix(), extract_mode);
+        upsertDependency(ND, I->id);
+        I->Prefix = toNameInfo(NNS->getPrefix(), extract_mode);
     }
     else if(const NamespaceAliasDecl* NAD = NNS->getAsNamespaceAlias())
     {
         I = std::make_unique<NameInfo>();
         I->Name = NAD->getIdentifier()->getName();
-        getDependencyID(NAD, I->id);
-        I->Prefix = buildNameInfo(NNS->getPrefix(), extract_mode);
+        upsertDependency(NAD, I->id);
+        I->Prefix = toNameInfo(NNS->getPrefix(), extract_mode);
     }
     return I;
 }
 
-#if 0
+template <class TArgRange>
 std::unique_ptr<NameInfo>
 ASTVisitor::
-buildNameInfo(
-    const Decl* D,
-    ExtractMode extract_mode)
-{
-    const auto* ND = dyn_cast_if_present<NamedDecl>(D);
-    if(! ND || ND->getKind() == Decl::TranslationUnit)
-        return nullptr;
-    auto I = std::make_unique<NameInfo>();
-    if(checkSpecialNamespace(I, nullptr, ND))
-        return I;
-    if(const IdentifierInfo* II = ND->getIdentifier())
-        I->Name = II->getName();
-    getDependencyID(getInstantiatedFrom(D), I->id);
-    I->Prefix = buildNameInfo(getParentDecl(D), extract_mode);
-    return I;
-}
-#endif
-
-template<typename TArgRange>
-std::unique_ptr<NameInfo>
-ASTVisitor::
-buildNameInfo(
-    DeclarationName Name,
+toNameInfo(
+    DeclarationName const Name,
     std::optional<TArgRange> TArgs,
-    const NestedNameSpecifier* NNS,
-    ExtractMode extract_mode)
+    NestedNameSpecifier const* NNS,
+    ExtractMode const extract_mode)
 {
-    if(Name.isEmpty())
+    if (Name.isEmpty())
+    {
         return nullptr;
+    }
     std::unique_ptr<NameInfo> I = nullptr;
     if(TArgs)
     {
         auto Specialization = std::make_unique<SpecializationNameInfo>();
-        buildTemplateArgs(Specialization->TemplateArgs, *TArgs);
+        populate(Specialization->TemplateArgs, *TArgs);
         I = std::move(Specialization);
     }
     else
@@ -4509,365 +1971,991 @@ buildNameInfo(
         I = std::make_unique<NameInfo>();
     }
     I->Name = extractName(Name);
-    if(NNS)
-        I->Prefix = buildNameInfo(NNS, extract_mode);
+    if (NNS)
+    {
+        I->Prefix = toNameInfo(NNS, extract_mode);
+    }
     return I;
 }
 
-template<typename TArgRange>
+template <class TArgRange>
 std::unique_ptr<NameInfo>
 ASTVisitor::
-buildNameInfo(
-    const Decl* D,
+toNameInfo(
+    Decl const* D,
     std::optional<TArgRange> TArgs,
-    const NestedNameSpecifier* NNS,
+    NestedNameSpecifier const* NNS,
     ExtractMode extract_mode)
 {
     const auto* ND = dyn_cast_if_present<NamedDecl>(D);
-    if(! ND)
+    if (!ND)
+    {
         return nullptr;
-    auto I = buildNameInfo(ND->getDeclName(),
+    }
+    auto I = toNameInfo(ND->getDeclName(),
         std::move(TArgs), NNS, extract_mode);
-    if(! I)
+    if (!I)
+    {
         return nullptr;
-    getDependencyID(getInstantiatedFrom(D), I->id);
+    }
+    upsertDependency(getInstantiatedFrom(D), I->id);
     return I;
 }
 
-//------------------------------------------------
+template
+std::unique_ptr<NameInfo>
+ASTVisitor::
+toNameInfo<llvm::ArrayRef<clang::TemplateArgument>>(
+    Decl const* D,
+    std::optional<llvm::ArrayRef<clang::TemplateArgument>> TArgs,
+    NestedNameSpecifier const* NNS,
+    ExtractMode extract_mode);
 
-#if 0
-class ASTInstantiationCallbacks
-    : public TemplateInstantiationCallback
+std::unique_ptr<TArg>
+ASTVisitor::
+toTArg(const TemplateArgument& A)
 {
-    void initialize(const Sema&) override { }
-    void finalize(const Sema&) override { }
+    // TypePrinter generates an internal placeholder name (e.g. type-parameter-0-0)
+    // for template type parameters used as arguments. it also cannonicalizes
+    // types, which we do not want (although, PrintingPolicy has an option to change this).
+    // thus, we use the template arguments as written.
 
-    void
-    atTemplateBegin(
-        const Sema& S,
-        const Sema::CodeSynthesisContext& Context) override
+    // KRYSTIAN NOTE: this can probably be changed to select
+    // the argument as written when it is not dependent and is a type.
+    // FIXME: constant folding behavior should be consistent with that of other
+    // constructs, e.g. noexcept specifiers & explicit specifiers
+    switch(A.getKind())
     {
+    // empty template argument (e.g. not yet deduced)
+    case TemplateArgument::Null:
+        break;
+
+    // a template argument pack (any kind)
+    case TemplateArgument::Pack:
+    {
+        // we should never a TemplateArgument::Pack here
+        MRDOCS_UNREACHABLE();
+        break;
+    }
+    // type
+    case TemplateArgument::Type:
+    {
+        auto R = std::make_unique<TypeTArg>();
+        QualType QT = A.getAsType();
+        MRDOCS_ASSERT(! QT.isNull());
+        // if the template argument is a pack expansion,
+        // use the expansion pattern as the type & mark
+        // the template argument as a pack expansion
+        if(const Type* T = QT.getTypePtr();
+            auto* PT = dyn_cast<PackExpansionType>(T))
+        {
+            R->IsPackExpansion = true;
+            QT = PT->getPattern();
+        }
+        R->Type = toTypeInfo(QT);
+        return R;
+    }
+    // pack expansion of a template name
+    case TemplateArgument::TemplateExpansion:
+    // template name
+    case TemplateArgument::Template:
+    {
+        auto R = std::make_unique<TemplateTArg>();
+        R->IsPackExpansion = A.isPackExpansion();
+
+        // KRYSTIAN FIXME: template template arguments are
+        // id-expression, so we don't properly support them yet.
+        // for the time being, we will use the name & SymbolID of
+        // the referenced declaration (if it isn't dependent),
+        // and fallback to printing the template name otherwise
+        TemplateName const TN = A.getAsTemplateOrTemplatePattern();
+        if(auto* TD = TN.getAsTemplateDecl())
+        {
+            if(auto* II = TD->getIdentifier())
+                R->Name = II->getName();
+            // do not extract a SymbolID or build Info if
+            // the template template parameter names a
+            // template template parameter or builtin template
+            if(! isa<TemplateTemplateParmDecl>(TD) &&
+                ! isa<BuiltinTemplateDecl>(TD))
+            {
+                upsertDependency(getInstantiatedFrom<
+                    NamedDecl>(TD), R->Template);
+            }
+        }
+        else
+        {
+            llvm::raw_string_ostream stream(R->Name);
+            TN.print(stream, context_.getPrintingPolicy(),
+                TemplateName::Qualified::AsWritten);
+        }
+        return R;
+    }
+    // nullptr value
+    case TemplateArgument::NullPtr:
+    // expression referencing a declaration
+    case TemplateArgument::Declaration:
+    // integral expression
+    case TemplateArgument::Integral:
+    // expression
+    case TemplateArgument::Expression:
+    {
+        auto R = std::make_unique<NonTypeTArg>();
+        R->IsPackExpansion = A.isPackExpansion();
+        // if this is a pack expansion, use the template argument
+        // expansion pattern in place of the template argument pack
+        const TemplateArgument& adjusted =
+            R->IsPackExpansion ?
+            A.getPackExpansionPattern() : A;
+
+        llvm::raw_string_ostream stream(R->Value.Written);
+        adjusted.print(context_.getPrintingPolicy(), stream, false);
+
+        return R;
+    }
+    default:
+        MRDOCS_UNREACHABLE();
+    }
+    return nullptr;
+}
+
+
+std::string
+ASTVisitor::
+toString(const Expr* E)
+{
+    std::string result;
+    llvm::raw_string_ostream stream(result);
+    E->printPretty(stream, nullptr, context_.getPrintingPolicy());
+    return result;
+}
+
+std::string
+ASTVisitor::
+toString(const Type* T)
+{
+    if(auto* AT = dyn_cast_if_present<AutoType>(T))
+    {
+        switch(AT->getKeyword())
+        {
+        case AutoTypeKeyword::Auto:
+        case AutoTypeKeyword::GNUAutoType:
+            return "auto";
+        case AutoTypeKeyword::DecltypeAuto:
+            return "decltype(auto)";
+        default:
+            MRDOCS_UNREACHABLE();
+        }
+    }
+    if(auto* TTPT = dyn_cast_if_present<TemplateTypeParmType>(T))
+    {
+        if (TemplateTypeParmDecl* TTPD = TTPT->getDecl();
+            TTPD && TTPD->isImplicit())
+        {
+            return "auto";
+        }
+    }
+    return QualType(T, 0).getAsString(
+        context_.getPrintingPolicy());
+}
+
+template<class Integer>
+Integer
+ASTVisitor::
+toInteger(const llvm::APInt& V)
+{
+    if constexpr (std::is_signed_v<Integer>)
+    {
+        return static_cast<Integer>(V.getSExtValue());
+    }
+    else
+    {
+        return static_cast<Integer>(V.getZExtValue());
+    }
+}
+
+std::string
+ASTVisitor::
+getSourceCode(SourceRange const& R) const
+{
+    return Lexer::getSourceText(
+        CharSourceRange::getTokenRange(R),
+        source_,
+        context_.getLangOpts()).str();
+}
+
+std::optional<std::pair<QualType, std::vector<TemplateArgument>>>
+ASTVisitor::
+isSFINAEType(QualType const T)
+{
+    if (!config_->detectSfinae)
+    {
+        return std::nullopt;
     }
 
-    void
-    atTemplateEnd(
-        const Sema& S,
-        const Sema::CodeSynthesisContext& Context) override
+    auto sfinae_info = getSFINAETemplate(T, true);
+    if (!sfinae_info)
     {
-        if(Context.Kind != Sema::CodeSynthesisContext::TemplateInstantiation)
-            return;
+        return std::nullopt;
+    }
 
-        Decl* D = Context.Entity;
-        if(! D)
-            return;
+    auto sfinae_result = isSFINAETemplate(
+        sfinae_info->Template, sfinae_info->Member);
 
-        bool skip = visit(D, [&]<typename DeclTy>(DeclTy* DT) -> bool
+    if (!sfinae_result)
+    {
+        return std::nullopt;
+    }
+
+    auto [template_params, controlling_params, param_idx] = *sfinae_result;
+
+    auto const Args = sfinae_info->Arguments;
+    auto const param_arg = tryGetTemplateArgument(
+        template_params, Args, param_idx);
+    if (!param_arg)
+    {
+        return std::nullopt;
+    }
+
+    std::vector<TemplateArgument> ControllingArgs;
+    for (std::size_t I = 0; I < Args.size(); ++I)
+    {
+        if (controlling_params[I])
         {
-            constexpr Decl::Kind kind = DeclToKind<DeclTy>();
+            ControllingArgs.emplace_back(Args[I]);
+        }
+    }
 
-            if constexpr(std::derived_from<DeclTy, CXXMethodDecl>)
+    return std::make_pair(param_arg->getAsType(), std::move(ControllingArgs));
+}
+
+std::optional<std::tuple<TemplateParameterList*, llvm::SmallBitVector, unsigned>>
+ASTVisitor::
+isSFINAETemplate(
+    TemplateDecl* TD,
+    const IdentifierInfo* Member)
+{
+    if (!TD)
+    {
+        return std::nullopt;
+    }
+
+    auto FindParam = [this](
+        ArrayRef<TemplateArgument> Arguments,
+        const TemplateArgument& Arg) -> unsigned
+    {
+        if (Arg.getKind() != TemplateArgument::Type)
+        {
+            return -1;
+        }
+        auto Found = std::ranges::find_if(Arguments, [&](const TemplateArgument& Other)
+        {
+            if (Other.getKind() != TemplateArgument::Type)
             {
-                CXXMethodDecl* MD = DT;
-                return MD->isFunctionTemplateSpecialization();
+                return false;
             }
+            return context_.hasSameType(Other.getAsType(), Arg.getAsType());
+        });
+        return Found != Arguments.end() ? Found - Arguments.data() : -1;
+    };
 
-            if constexpr(kind == Decl::TypeAliasTemplate)
+    if(auto* ATD = dyn_cast<TypeAliasTemplateDecl>(TD))
+    {
+        auto Underlying = ATD->getTemplatedDecl()->getUnderlyingType();
+        auto sfinae_info = getSFINAETemplate(Underlying, !Member);
+        if (!sfinae_info)
+        {
+            return std::nullopt;
+        }
+        if (Member)
+        {
+            sfinae_info->Member = Member;
+        }
+        auto sfinae_result = isSFINAETemplate(
+            sfinae_info->Template, sfinae_info->Member);
+        if (!sfinae_result)
+        {
+            return std::nullopt;
+        }
+        auto [template_params, controlling_params, param_idx] = *sfinae_result;
+        auto param_arg = tryGetTemplateArgument(
+            template_params, sfinae_info->Arguments, param_idx);
+        if (!param_arg)
+        {
+            return std::nullopt;
+        }
+        unsigned ParamIdx = FindParam(ATD->getInjectedTemplateArgs(context_), *param_arg);
+        return std::make_tuple(ATD->getTemplateParameters(), std::move(controlling_params), ParamIdx);
+    }
+
+    auto* CTD = dyn_cast<ClassTemplateDecl>(TD);
+    if (!CTD)
+    {
+        return std::nullopt;
+    }
+
+    auto PrimaryArgs = CTD->getInjectedTemplateArgs(context_);
+    llvm::SmallBitVector ControllingParams(PrimaryArgs.size());
+
+    QualType MemberType;
+    unsigned ParamIdx = -1;
+    auto IsMismatch = [&](CXXRecordDecl* RD, ArrayRef<TemplateArgument> Args)
+    {
+        if (!RD->hasDefinition())
+        {
+            return false;
+        }
+        auto MemberLookup = RD->lookup(Member);
+        QualType CurrentType;
+        if(MemberLookup.empty())
+        {
+            if (!RD->getNumBases())
             {
-                TypeAliasTemplateDecl* TAD = DT;
-
-                if(DeclContext* DC = TAD->getDeclContext())
+                return false;
+            }
+            for(auto& Base : RD->bases())
+            {
+                auto sfinae_info = getSFINAETemplate(Base.getType(), false);
+                if(! sfinae_info)
                 {
-                    Decl* DCD = cast<Decl>(DC);
-                    return ! DCD->isImplicit();
+                    // if the base is an opaque dependent type, we can't determine
+                    // whether it's a SFINAE type
+                    if (Base.getType()->isDependentType())
+                    {
+                        return true;
+                    }
+                    continue;
+                }
+                // if the class inherits from itself, we can't determine whether
+                // it's a SFINAE type
+                if (declaresSameEntity(TD, sfinae_info->Template))
+                {
+                    return true;
+                }
+
+                auto sfinae_result = isSFINAETemplate(
+                    sfinae_info->Template, Member);
+                if (!sfinae_result)
+                {
+                    return true;
+                }
+
+                auto [template_params, controlling_params, param_idx] = *sfinae_result;
+                auto param_arg = tryGetTemplateArgument(
+                    template_params, sfinae_info->Arguments, param_idx);
+                if(! param_arg)
+                    return true;
+                auto CurrentTypeFromBase = param_arg->getAsType();
+                if (CurrentType.isNull())
+                {
+                    CurrentType = CurrentTypeFromBase;
+                }
+                else if (
+                    !context_.hasSameType(CurrentType, CurrentTypeFromBase))
+                {
+                    return true;
                 }
             }
-
-            return false;
-        });
-
-        if(skip)
-            return;
-
-        D->setImplicit();
-    }
-};
-#endif
-
-
-//------------------------------------------------
-//
-// ASTVisitorConsumer
-//
-//------------------------------------------------
-
-class ASTVisitorConsumer
-    : public SemaConsumer
-{
-    const ConfigImpl& config_;
-    ExecutionContext& ex_;
-    CompilerInstance& compiler_;
-
-    Sema* sema_ = nullptr;
-
-    void
-    InitializeSema(Sema& S) override
-    {
-        // Sema should not have been initialized yet
-        MRDOCS_ASSERT(! sema_);
-        sema_ = &S;
-
-#if 0
-        S.TemplateInstCallbacks.emplace_back(
-            std::make_unique<ASTInstantiationCallbacks>());
-#endif
-    }
-
-    void
-    ForgetSema() override
-    {
-        sema_ = nullptr;
-    }
-
-    void
-    HandleTranslationUnit(ASTContext& Context) override
-    {
-        // the Sema better be valid
-        MRDOCS_ASSERT(sema_);
-
-        // initialize the diagnostics reporter first
-        // so errors prior to traversal are reported
-        Diagnostics diags;
-
-        // loads and caches source files into memory
-        SourceManager& source = Context.getSourceManager();
-        // get the name of the translation unit.
-        // will be std::nullopt_t if it isn't a file
-        std::optional<llvm::SmallString<128>> file_name =
-            source.getNonBuiltinFilenameForID(source.getMainFileID());
-        // KRYSTIAN NOTE: should we report anything here?
-        if (!file_name)
+            // didn't find a base that defines the specified member
+            if (CurrentType.isNull())
+            {
+                return false;
+            }
+        }
+        else
         {
-            return;
+            // ambiguous lookup
+            if (!MemberLookup.isSingleResult())
+            {
+                return true;
+            }
+            if (auto* TND = dyn_cast<TypedefNameDecl>(MemberLookup.front()))
+            {
+                CurrentType = TND->getUnderlyingType();
+            } else
+            {
+                // the specialization has a member with the right name,
+                // but it isn't an alias declaration/typedef declaration...
+                return true;
+            }
         }
 
-        // skip the translation unit if configured to do so
-        convert_to_slash(*file_name);
+        if(CurrentType->isDependentType())
+        {
+            auto FoundIdx = FindParam(Args, TemplateArgument(CurrentType));
+            if (FoundIdx == static_cast<decltype(FoundIdx)>(-1)
+                || FoundIdx >= PrimaryArgs.size())
+            {
+                return true;
+            }
+            ParamIdx = FoundIdx;
+            TemplateArgument MappedPrimary = PrimaryArgs[FoundIdx];
+            assert(MappedPrimary.getKind() == TemplateArgument::Type);
+            CurrentType = MappedPrimary.getAsType();
+        }
 
-        ASTVisitor visitor(
-            config_,
-            diags,
-            compiler_,
-            Context,
-            *sema_);
+        if (MemberType.isNull())
+        {
+            MemberType = CurrentType;
+        }
 
-        // Traverse the translation unit
-        visitor.build();
+        return ! context_.hasSameType(MemberType, CurrentType);
+    };
 
-        // VFALCO If we returned from the function early
-        // then this line won't execute, which means we
-        // will miss error and warnings emitted before
-        // the return.
-        ex_.report(std::move(visitor.results()), std::move(diags));
+    if (IsMismatch(CTD->getTemplatedDecl(), PrimaryArgs))
+    {
+        return std::nullopt;
     }
 
-    /** Skip function bodies
+    for(auto* CTSD : CTD->specializations())
+    {
+        if (CTSD->isExplicitSpecialization()
+            && IsMismatch(CTSD, CTSD->getTemplateArgs().asArray()))
+        {
+            return std::nullopt;
+        }
+    }
 
-        This is called by Sema when parsing a function that has a body and:
-        - is constexpr, or
-        - uses a placeholder for a deduced return type
+    SmallVector<ClassTemplatePartialSpecializationDecl*> PartialSpecs;
+    CTD->getPartialSpecializations(PartialSpecs);
 
-        We always return `true` because whenever this function *is* called,
-        it will be for a function that cannot be used in a constant expression,
-        nor one that introduces a new type via returning a local class.
-    */
-    bool
-    shouldSkipFunctionBody(Decl*) override
+    for(auto* CTPSD : PartialSpecs)
+    {
+        auto PartialArgs = CTPSD->getTemplateArgs().asArray();
+        if (IsMismatch(CTPSD, PartialArgs))
+        {
+            return std::nullopt;
+        }
+        for(std::size_t I = 0; I < PartialArgs.size(); ++I)
+        {
+            TemplateArgument Arg = PartialArgs[I];
+            switch(Arg.getKind())
+            {
+            case TemplateArgument::Integral:
+            case TemplateArgument::Declaration:
+            case TemplateArgument::StructuralValue:
+            case TemplateArgument::NullPtr:
+                break;
+            case TemplateArgument::Expression:
+                if(getNTTPFromExpr(
+                    Arg.getAsExpr(),
+                    CTPSD->getTemplateDepth() - 1))
+                    continue;
+                break;
+            default:
+                continue;
+            }
+            ControllingParams.set(I);
+            //.getAsExpr()
+        }
+    }
+
+    return std::make_tuple(CTD->getTemplateParameters(), std::move(ControllingParams), ParamIdx);
+}
+
+std::optional<ASTVisitor::SFINAEInfo>
+ASTVisitor::
+getSFINAETemplate(QualType T, bool const AllowDependentNames)
+{
+    assert(!T.isNull());
+    SFINAEInfo SFINAE;
+    if (auto* ET = T->getAs<ElaboratedType>())
+    {
+        T = ET->getNamedType();
+    }
+
+    if(auto* DNT = T->getAsAdjusted<DependentNameType>();
+        DNT && AllowDependentNames)
+    {
+        SFINAE.Member = DNT->getIdentifier();
+        T = QualType(DNT->getQualifier()->getAsType(), 0);
+    }
+
+    if(auto* TST = T->getAsAdjusted<TemplateSpecializationType>())
+    {
+        SFINAE.Template = TST->getTemplateName().getAsTemplateDecl();
+        SFINAE.Arguments = TST->template_arguments();
+        return SFINAE;
+    }
+    return std::nullopt;
+}
+
+std::optional<TemplateArgument>
+ASTVisitor::
+tryGetTemplateArgument(
+    TemplateParameterList* Parameters,
+    ArrayRef<TemplateArgument> Arguments,
+    unsigned const Index)
+{
+    if (Index == static_cast<unsigned>(-1))
+    {
+        return std::nullopt;
+    }
+    if (Index < Arguments.size())
+    {
+        return Arguments[Index];
+    }
+    if(Parameters && Index < Parameters->size())
+    {
+        NamedDecl* ND = Parameters->getParam(Index);
+        if(auto* TTPD = dyn_cast<TemplateTypeParmDecl>(ND);
+            TTPD && TTPD->hasDefaultArgument())
+        {
+            return TTPD->getDefaultArgument().getArgument();
+        }
+        if(auto* NTTPD = dyn_cast<NonTypeTemplateParmDecl>(ND);
+            NTTPD && NTTPD->hasDefaultArgument())
+        {
+            return NTTPD->getDefaultArgument().getArgument();
+        }
+    }
+    return std::nullopt;
+}
+
+bool
+ASTVisitor::
+shouldExtract(
+    const Decl* D,
+    AccessSpecifier const access)
+{
+    using enum ConfigImpl::SettingsImpl::ExtractPolicy;
+    if (config_->inaccessibleMembers != Always)
+    {
+        // KRYSTIAN FIXME: this doesn't handle direct
+        // dependencies on inaccessible declarations
+        MRDOCS_CHECK_OR(
+             access != AccessSpecifier::AS_private &&
+             access != AccessSpecifier::AS_protected, false);
+    }
+
+    // Don't extract anonymous unions
+    const auto* RD = dyn_cast<RecordDecl>(D);
+    MRDOCS_CHECK_OR(!RD || !RD->isAnonymousStructOrUnion(), false);
+
+    // Don't extract implicitly generated declarations
+    // (except for IndirectFieldDecls)
+    MRDOCS_CHECK_OR(!D->isImplicit() || isa<IndirectFieldDecl>(D), false);
+
+    // Don't extract declarations that fail the input filter
+    if (!config_->input.include.empty())
+    {
+        // Get filename
+        FileInfo* file = findFileInfo(D->getBeginLoc());
+        MRDOCS_CHECK_OR(file, false);
+        std::string filename = file->full_path;
+        MRDOCS_CHECK_OR(std::ranges::any_of(
+            config_->input.include,
+            [&filename](const std::string& prefix)
+            {
+                return files::startsWith(filename, prefix);
+            }), false);
+    }
+
+    // Don't extract declarations that fail the file pattern filter
+    if (!config_->input.filePatterns.empty())
+    {
+        // Get filename
+        FileInfo* file = findFileInfo(D->getBeginLoc());
+        MRDOCS_CHECK_OR(file, false);
+        std::string filename = file->full_path;
+        MRDOCS_CHECK_OR(std::ranges::any_of(
+            config_->input.filePatterns,
+            [&filename](const std::string& pattern)
+            {
+                return globMatch(pattern, filename);
+            }), false);
+    }
+
+    // Don't extract declarations that fail the symbol filter
+    MRDOCS_CHECK_OR(
+        currentMode() != ExtractMode::Normal ||
+        inExtractedFile(D), false);
+
+    // Don't extract anonymous namespaces unless configured to do so
+    if(const auto* ND = dyn_cast<NamespaceDecl>(D);
+        ND &&
+        ND->isAnonymousNamespace() &&
+        config_->anonymousNamespaces != Always)
+    {
+        // Always skip anonymous namespaces if so configured
+        MRDOCS_CHECK_OR(config_->anonymousNamespaces != Never, false);
+
+        // Otherwise, skip extraction if this isn't a dependency
+        // KRYSTIAN FIXME: is this correct? a namespace should not
+        // be extracted as a dependency (until namespace aliases and
+        // using directives are supported)
+        MRDOCS_CHECK_OR(currentMode() != ExtractMode::Normal, false);
+    }
+
+    return true;
+}
+
+bool
+ASTVisitor::
+checkSymbolFilter(NamedDecl const* ND)
+{
+    if (currentMode() != ExtractMode::Normal ||
+        symbolFilter_.detached)
     {
         return true;
     }
 
-    bool
-    HandleTopLevelDecl(DeclGroupRef) override
+    std::string const name = extractName(ND);
+    const FilterNode* parent = symbolFilter_.current;
+    if(const FilterNode* child = parent->findChild(name))
     {
+        // if there is a matching node, skip extraction if it's
+        // explicitly excluded AND has no children. the presence
+        // of child nodes indicates that some child exists that
+        // is explicitly whitelisted
+        if (child->Explicit &&
+            child->Excluded &&
+            child->isTerminal())
+        {
+            return false;
+        }
+        symbolFilter_.setCurrent(child, false);
+    }
+    else
+    {
+        // if there was no matching node, check the most
+        // recently entered explicitly specified parent node.
+        // if it's blacklisted, then the "filtering default"
+        // is to exclude symbols unless a child is explicitly
+        // whitelisted
+        if (symbolFilter_.last_explicit
+            && symbolFilter_.last_explicit->Excluded)
+        {
+            return false;
+        }
+
+        if (const auto* DC = dyn_cast<DeclContext>(ND);
+            !DC ||
+            !DC->isInlineNamespace())
+        {
+            // if this namespace does not match a child
+            // of the current filter node, set the detached flag
+            // so we don't update the namespace filter state
+            // while traversing the children of this namespace
+            symbolFilter_.detached = true;
+        }
+    }
+    return true;
+}
+
+// This also sets IsFileInRootDir
+bool
+ASTVisitor::
+inExtractedFile(
+    const Decl* D)
+{
+    namespace path = llvm::sys::path;
+
+    if(const auto* ND = dyn_cast<NamedDecl>(D))
+    {
+        // out-of-line declarations require us to rebuild
+        // the symbol filtering state
+        if(ND->isOutOfLine())
+        {
+            symbolFilter_.setCurrent(
+                &symbolFilter_.root, false);
+
+            // collect all parent classes/enums/namespaces
+            llvm::SmallVector<const NamedDecl*, 8> parents;
+            const Decl* P = ND;
+            while((P = getParentDecl(P)))
+            {
+                if (isa<TranslationUnitDecl>(P))
+                {
+                    break;
+                }
+                parents.push_back(cast<NamedDecl>(P));
+            }
+
+            // check whether each parent passes the symbol filters
+            // as-if the declaration was inline
+            for(const auto* PND : std::views::reverse(parents))
+            {
+                if (!checkSymbolFilter(PND))
+                {
+                    return false;
+                }
+            }
+        }
+
+        if (!checkSymbolFilter(ND))
+        {
+            return false;
+        }
+    }
+
+    FileInfo const* file = findFileInfo(D->getBeginLoc());
+    // KRYSTIAN NOTE: I'm unsure under what conditions
+    // this assert would fire.
+    MRDOCS_ASSERT(file);
+    // only extract from files in source root
+    return file->kind == FileKind::Source;
+}
+
+bool
+ASTVisitor::
+isInSpecialNamespace(
+    const Decl* D,
+    std::span<const FilterPattern> const Patterns)
+{
+    if (!D || Patterns.empty())
+    {
+        return false;
+    }
+    const DeclContext* DC = isa<DeclContext>(D) ?
+        dyn_cast<DeclContext>(D) : D->getDeclContext();
+    for(; DC; DC = DC->getParent())
+    {
+        const auto* ND = dyn_cast<NamespaceDecl>(DC);
+        if (!ND)
+        {
+            continue;
+        }
+        for (auto const& Pattern: Patterns)
+        {
+            if (Pattern.matches(ND->getQualifiedNameAsString()))
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool
+ASTVisitor::
+isInSpecialNamespace(
+    const NestedNameSpecifier* NNS,
+    std::span<const FilterPattern> Patterns)
+{
+    const NamedDecl* ND = nullptr;
+    while(NNS)
+    {
+        if ((ND = NNS->getAsNamespace()))
+        {
+            break;
+        }
+        if ((ND = NNS->getAsNamespaceAlias()))
+        {
+            break;
+        }
+        NNS = NNS->getPrefix();
+    }
+    return ND && isInSpecialNamespace(ND, Patterns);
+}
+
+bool
+ASTVisitor::
+checkSpecialNamespace(
+    std::unique_ptr<NameInfo>& I,
+    const NestedNameSpecifier* NNS,
+    const Decl* D) const
+{
+    if (isInSpecialNamespace(NNS, config_->seeBelowFilter) ||
+        isInSpecialNamespace(D, config_->seeBelowFilter))
+    {
+        I = std::make_unique<NameInfo>();
+        I->Name = "see-below";
         return true;
     }
 
-    ASTMutationListener*
-    GetASTMutationListener() override
+    if(isInSpecialNamespace(NNS, config_->implementationDefinedFilter) ||
+        isInSpecialNamespace(D, config_->implementationDefinedFilter))
+    {
+        I = std::make_unique<NameInfo>();
+        I->Name = "implementation-defined";
+        return true;
+    }
+
+    return false;
+}
+
+bool
+ASTVisitor::
+checkSpecialNamespace(
+    std::unique_ptr<TypeInfo>& I,
+    const NestedNameSpecifier* NNS,
+    const Decl* D) const
+{
+    if (std::unique_ptr<NameInfo> Name;
+        checkSpecialNamespace(Name, NNS, D))
+    {
+        auto T = std::make_unique<NamedTypeInfo>();
+        T->Name = std::move(Name);
+        I = std::move(T);
+        return true;
+    }
+    return false;
+}
+
+
+Info*
+ASTVisitor::
+find(SymbolID const& id)
+{
+    if (auto const it = info_.find(id); it != info_.end())
+    {
+        return it->get();
+    }
+    return nullptr;
+}
+
+// KRYSTIAN NOTE: we *really* should not have a
+// type named "SourceLocation"...
+ASTVisitor::FileInfo*
+ASTVisitor::
+findFileInfo(clang::SourceLocation const loc)
+{
+    // KRYSTIAN FIXME: we really should not be
+    // calling getPresumedLoc this often,
+    // it's quite expensive
+    auto const presumed = source_.getPresumedLoc(loc, false);
+    if (presumed.isInvalid())
     {
         return nullptr;
     }
-
-    void
-    HandleCXXStaticMemberVarInstantiation(VarDecl* D) override
+    const FileEntry* file =
+        source_.getFileEntryForID(
+            presumed.getFileID());
+    // KRYSTIAN NOTE: i have no idea under what
+    // circumstances the file entry would be null
+    if (!file)
     {
-        // implicitly instantiated definitions of non-inline
-        // static data members of class templates are added to
-        // the end of the TU DeclContext. Decl::isImplicit returns
-        // false for these VarDecls, so we manually set it here.
-        D->setImplicit();
+        return nullptr;
     }
-
-    void
-    HandleCXXImplicitFunctionInstantiation(FunctionDecl* D) override
+    // KRYSTIAN NOTE: i have no idea under what
+    // circumstances the file would not be in either
+    // the main file, or an included file
+    auto const it = files_.find(file);
+    if (it == files_.end())
     {
-        D->setImplicit();
+        return nullptr;
     }
+    return &it->second;
+}
 
-    void HandleInlineFunctionDefinition(FunctionDecl*) override { }
-    void HandleTagDeclDefinition(TagDecl*) override { }
-    void HandleTagDeclRequiredDefinition(const TagDecl*) override { }
-    void HandleInterestingDecl(DeclGroupRef) override { }
-    void CompleteTentativeDefinition(VarDecl*) override { }
-    void CompleteExternalDeclaration(DeclaratorDecl*) override { }
-    void AssignInheritanceModel(CXXRecordDecl*) override { }
-    void HandleVTable(CXXRecordDecl*) override { }
-    void HandleImplicitImportDecl(ImportDecl*) override { }
-    void HandleTopLevelDeclInObjCContainer(DeclGroupRef) override { }
-
-public:
-    ASTVisitorConsumer(
-        const ConfigImpl& config,
-        ExecutionContext& ex,
-        CompilerInstance& compiler) noexcept
-        : config_(config)
-        , ex_(ex)
-        , compiler_(compiler)
-    {
-    }
-};
-
-//------------------------------------------------
-//
-// ASTAction
-//
-//------------------------------------------------
-
-/** A frontend action for visiting the AST
-
-    This is used by the tooling infrastructure to create
-    an ASTAction for each translation unit.
-
-    The ASTAction is responsible for creating the ASTConsumer
-    which will be used to traverse the AST.
-*/
-struct ASTAction
-    : public clang::ASTFrontendAction
+template <std::derived_from<Info> InfoTy>
+ASTVisitor::upsertResult<InfoTy>
+ASTVisitor::
+upsert(SymbolID const& id)
 {
-    ASTAction(
-        ExecutionContext& ex,
-        ConfigImpl const& config) noexcept
-        : ex_(ex)
-        , config_(config)
+    // Creating symbol with invalid SymbolID
+    MRDOCS_ASSERT(id != SymbolID::invalid);
+    Info* info = find(id);
+    bool const created = !info;
+    if (!info)
     {
+        info = info_.emplace(std::make_unique<
+            InfoTy>(id)).first->get();
+        info->Implicit = currentMode() != ExtractMode::Normal;
+    }
+    MRDOCS_ASSERT(info->Kind == InfoTy::kind_id);
+    return {static_cast<InfoTy&>(*info), created};
+}
+
+template <std::derived_from<Decl> DeclType>
+Expected<ASTVisitor::upsertResult<MrDocsType_t<DeclType>>>
+ASTVisitor::
+upsert(DeclType* D)
+{
+    AccessSpecifier access = getAccess(D);
+    MRDOCS_CHECK_MSG(
+        shouldExtract(D, access),
+        "Symbol should not be extracted");
+
+    SymbolID id = generateID(D);
+    MRDOCS_CHECK_MSG(id, "Failed to extract symbol ID");
+
+    auto [I, created] = upsert<MrDocsType_t<DeclType>>(id);
+    I.Access = convertToAccessKind(access);
+
+    using R = upsertResult<MrDocsType_t<DeclType>>;
+    return R{std::ref(I), created};
+}
+
+void
+ASTVisitor::
+upsertDependency(Decl* D, SymbolID& id)
+{
+    if (TemplateDecl* TD = D->getDescribedTemplate())
+    {
+        D = TD;
     }
 
-    /** Execute the action
-
-        This is called by the tooling infrastructure to execute
-        the action for each translation unit.
-
-        The action will parse the AST with the consumer
-        that should have been previously created with
-        CreateASTConsumer.
-
-        This consumer then creates a ASTVisitor that
-        will convert the AST into a set of MrDocs Info
-        objects.
-     */
-    void
-    ExecuteAction() override
+    if (D->isImplicit() || isa<TemplateTemplateParmDecl>(D)
+        || isa<BuiltinTemplateDecl>(D))
     {
-        CompilerInstance& CI = getCompilerInstance();
-        if (!CI.hasPreprocessor())
+        return;
+    }
+
+    id = generateID(D);
+
+    // Don't register a dependency if we never extract them
+    if (config_->referencedDeclarations
+        == ConfigImpl::SettingsImpl::ExtractPolicy::Never)
+    {
+        return;
+    }
+
+    if(config_->referencedDeclarations ==
+        ConfigImpl::SettingsImpl::ExtractPolicy::Dependency)
+    {
+        if (currentMode() != ExtractMode::DirectDependency)
         {
             return;
         }
+    }
 
-        // Ensure comments in system headers are retained.
-        // We may want them if, e.g., a declaration was extracted
-        // as a dependency
-        CI.getLangOpts().RetainCommentsFromSystemHeaders = true;
+    // If it was already extracted, we are done
+    if (find(id))
+    {
+        return;
+    }
 
-        if (!CI.hasSema())
+    // FIXME: we need to handle member specializations correctly.
+    // we do not want to extract all members of the enclosing
+    // implicit instantiation
+    Decl* Outer = D;
+    DeclContext* DC = D->getDeclContext();
+    do
+    {
+        if (DC->isFileContext() ||
+            DC->isFunctionOrMethod())
         {
-            CI.createSema(getTranslationUnitKind(), nullptr);
+            break;
         }
 
-        ParseAST(
-            CI.getSema(),
-            false, // ShowStats
-            true); // SkipFunctionBodies
+        if (auto const* RD = dyn_cast<CXXRecordDecl>(DC);
+            RD &&
+            RD->isAnonymousStructOrUnion())
+        {
+            continue;
+        }
+
+        // when extracting dependencies, we want to extract
+        // all members of the containing class, not just this one
+        if (auto* TD = dyn_cast<TagDecl>(DC))
+        {
+            Outer = TD;
+        }
     }
+    while((DC = DC->getParent()));
 
-    /** Create the object that will traverse the AST
-
-        This is called by the tooling infrastructure to create
-        an ASTConsumer for each translation unit.
-
-        This consumer creates a ASTVisitor that will convert
-        the AST into a set of our objects.
-
-        The main function of the ASTVisitorConsumer is
-        the HandleTranslationUnit function, which is called
-        to traverse the AST.
-
-     */
-    std::unique_ptr<clang::ASTConsumer>
-    CreateASTConsumer(
-        clang::CompilerInstance& Compiler,
-        llvm::StringRef InFile) override
+    if (TemplateDecl* TD = Outer->getDescribedTemplate())
     {
-        return std::make_unique<ASTVisitorConsumer>(
-            config_, ex_, Compiler);
+        Outer = TD;
     }
 
-private:
-    ExecutionContext& ex_;
-    ConfigImpl const& config_;
-};
-
-//------------------------------------------------
-
-/** A frontend action factory for ASTAction
-
-    This is used by the tooling infrastructure to create
-    an ASTAction for each translation unit.
-*/
-struct ASTActionFactory :
-    tooling::FrontendActionFactory
-{
-    ASTActionFactory(
-        ExecutionContext& ex,
-        ConfigImpl const& config) noexcept
-        : ex_(ex)
-        , config_(config)
+    // Add the adjusted declaration to the set of dependencies
+    if (!isa<NamespaceDecl, TranslationUnitDecl>(Outer))
     {
+        dependencies_.insert(Outer);
     }
-
-    std::unique_ptr<FrontendAction>
-    create() override
-    {
-        return std::make_unique<ASTAction>(ex_, config_);
-    }
-
-private:
-    ExecutionContext& ex_;
-    ConfigImpl const& config_;
-};
-
-} // (anon)
-
-//------------------------------------------------
-
-std::unique_ptr<tooling::FrontendActionFactory>
-makeFrontendActionFactory(
-    ExecutionContext& ex,
-    ConfigImpl const& config)
-{
-    return std::make_unique<ASTActionFactory>(ex, config);
 }
 
-} // mrdocs
-} // clang
+} // clang::mrdocs

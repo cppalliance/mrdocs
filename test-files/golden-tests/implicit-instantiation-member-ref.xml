@@ -6,95 +6,95 @@
     <tparam name="T" class="type"/>
     <struct name="S0" id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=">
       <file path="implicit-instantiation-member-ref.cpp" line="2" class="def"/>
-      <alias name="M0" id="aBQMz/OqX2QEHy4Cqfjgby4lSi4=">
+      <namespace-alias name="M0" id="aBQMz/OqX2QEHy4Cqfjgby4lSi4=">
         <file path="implicit-instantiation-member-ref.cpp" line="4" class="def"/>
         <type name="T"/>
-      </alias>
+      </namespace-alias>
       <struct name="S1" id="ZDBtU18GeVxVwvEXVGYg+L3hBNw=">
         <file path="implicit-instantiation-member-ref.cpp" line="6" class="def"/>
       </struct>
       <template>
         <tparam name="U" class="type"/>
-        <alias name="M1" id="14SKPuw/wwAUmFZKoonB8Uu8gaY=">
+        <namespace-alias name="M1" id="14SKPuw/wwAUmFZKoonB8Uu8gaY=">
           <file path="implicit-instantiation-member-ref.cpp" line="9" class="def"/>
           <type id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=" name="S0&lt;U&gt;"/>
-        </alias>
+        </namespace-alias>
       </template>
       <template>
         <tparam name="U" class="type"/>
         <struct name="S2" id="gxI8lOzHEX5mX3u/0hCHnvUY1OM=">
           <file path="implicit-instantiation-member-ref.cpp" line="12" class="def"/>
-          <alias name="M2" id="NnkA706kKqg/azveB/lExZwRfFI=">
+          <namespace-alias name="M2" id="NnkA706kKqg/azveB/lExZwRfFI=">
             <file path="implicit-instantiation-member-ref.cpp" line="14" class="def"/>
             <type name="U"/>
-          </alias>
+          </namespace-alias>
           <struct name="S3" id="yTyWcP0E2V/EqE8I3ZdKao74yWQ=">
             <file path="implicit-instantiation-member-ref.cpp" line="16" class="def"/>
           </struct>
           <template>
             <tparam name="V" class="type"/>
-            <alias name="M3" id="TBl15ml95lYP4APzAuH1VpGgjgs=">
+            <namespace-alias name="M3" id="TBl15ml95lYP4APzAuH1VpGgjgs=">
               <file path="implicit-instantiation-member-ref.cpp" line="19" class="def"/>
               <type id="gxI8lOzHEX5mX3u/0hCHnvUY1OM=" name="S2&lt;U&gt;"/>
-            </alias>
+            </namespace-alias>
           </template>
           <template>
             <tparam name="V" class="type"/>
             <struct name="S4" id="R8G33ub8Kyk/PqBDLRXqExn7o+A=">
               <file path="implicit-instantiation-member-ref.cpp" line="22" class="def"/>
-              <alias name="M4" id="UQy9OWWe7a9N+jVLD+r6rjr4np8=">
+              <namespace-alias name="M4" id="UQy9OWWe7a9N+jVLD+r6rjr4np8=">
                 <file path="implicit-instantiation-member-ref.cpp" line="24" class="def"/>
                 <type name="V"/>
-              </alias>
+              </namespace-alias>
             </struct>
           </template>
         </struct>
       </template>
     </struct>
   </template>
-  <alias name="A0" id="ApI0xrWYyA88AQ9a3mi+ochJbJc=">
+  <namespace-alias name="A0" id="ApI0xrWYyA88AQ9a3mi+ochJbJc=">
     <file path="implicit-instantiation-member-ref.cpp" line="29" class="def"/>
     <type id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=" name="S0&lt;int&gt;"/>
-  </alias>
-  <alias name="A1" id="zbm2FwMgaOYZ1PJI3zAcR9gD1DE=">
+  </namespace-alias>
+  <namespace-alias name="A1" id="zbm2FwMgaOYZ1PJI3zAcR9gD1DE=">
     <file path="implicit-instantiation-member-ref.cpp" line="30" class="def"/>
     <type id="aBQMz/OqX2QEHy4Cqfjgby4lSi4=" name="A0::M0"/>
-  </alias>
-  <alias name="A2" id="3OXyXNWdB8izo3G750A0tnTvQWI=">
+  </namespace-alias>
+  <namespace-alias name="A2" id="3OXyXNWdB8izo3G750A0tnTvQWI=">
     <file path="implicit-instantiation-member-ref.cpp" line="31" class="def"/>
     <type id="ZDBtU18GeVxVwvEXVGYg+L3hBNw=" name="A0::S1"/>
-  </alias>
-  <alias name="A3" id="iQWZK9m5g9ULZNf8pmkk4AQ6Fu0=">
+  </namespace-alias>
+  <namespace-alias name="A3" id="iQWZK9m5g9ULZNf8pmkk4AQ6Fu0=">
     <file path="implicit-instantiation-member-ref.cpp" line="32" class="def"/>
     <type id="aBQMz/OqX2QEHy4Cqfjgby4lSi4=" name="S0&lt;long&gt;::M0"/>
-  </alias>
-  <alias name="A4" id="DMZ09ePoW0hqt5p5Hbb7r+CUQmE=">
+  </namespace-alias>
+  <namespace-alias name="A4" id="DMZ09ePoW0hqt5p5Hbb7r+CUQmE=">
     <file path="implicit-instantiation-member-ref.cpp" line="33" class="def"/>
     <type id="ZDBtU18GeVxVwvEXVGYg+L3hBNw=" name="S0&lt;long long&gt;::S1"/>
-  </alias>
-  <alias name="A5" id="1Z8U4eFyt2XClP+7afzwsuyeXAI=">
+  </namespace-alias>
+  <namespace-alias name="A5" id="1Z8U4eFyt2XClP+7afzwsuyeXAI=">
     <file path="implicit-instantiation-member-ref.cpp" line="35" class="def"/>
     <type id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=" name="S0&lt;void&gt;"/>
-  </alias>
-  <alias name="A6" id="JkIeD9nM+5+XWFXDHaK2rwRsuXA=">
+  </namespace-alias>
+  <namespace-alias name="A6" id="JkIeD9nM+5+XWFXDHaK2rwRsuXA=">
     <file path="implicit-instantiation-member-ref.cpp" line="36" class="def"/>
     <type id="aBQMz/OqX2QEHy4Cqfjgby4lSi4=" name="A5::M1&lt;short&gt;::M0"/>
-  </alias>
-  <alias name="A7" id="9O5BsaAyDC9AuDDe/ftxNrckbjY=">
+  </namespace-alias>
+  <namespace-alias name="A7" id="9O5BsaAyDC9AuDDe/ftxNrckbjY=">
     <file path="implicit-instantiation-member-ref.cpp" line="37" class="def"/>
     <type id="NnkA706kKqg/azveB/lExZwRfFI=" name="A5::S2&lt;bool&gt;::M2"/>
-  </alias>
-  <alias name="A8" id="dWFupI7cyl8N8963fZrFrd+8ue4=">
+  </namespace-alias>
+  <namespace-alias name="A8" id="dWFupI7cyl8N8963fZrFrd+8ue4=">
     <file path="implicit-instantiation-member-ref.cpp" line="38" class="def"/>
     <type id="yTyWcP0E2V/EqE8I3ZdKao74yWQ=" name="A5::S2&lt;int&gt;::S3"/>
-  </alias>
-  <alias name="A9" id="r6hRllvikhxyJUBT7eKH8Z13wfw=">
+  </namespace-alias>
+  <namespace-alias name="A9" id="r6hRllvikhxyJUBT7eKH8Z13wfw=">
     <file path="implicit-instantiation-member-ref.cpp" line="39" class="def"/>
     <type id="NnkA706kKqg/azveB/lExZwRfFI=" name="A5::S2&lt;char&gt;::M3&lt;int&gt;::M3&lt;unsigned int&gt;::M2"/>
-  </alias>
-  <alias name="A10" id="MR2bsp5xIs+Ga5MbTUu7kt4nT9E=">
+  </namespace-alias>
+  <namespace-alias name="A10" id="MR2bsp5xIs+Ga5MbTUu7kt4nT9E=">
     <file path="implicit-instantiation-member-ref.cpp" line="40" class="def"/>
     <type id="UQy9OWWe7a9N+jVLD+r6rjr4np8=" name="A5::S2&lt;float&gt;::M3&lt;double&gt;::M3&lt;long double&gt;::S4&lt;void&gt;::M4"/>
-  </alias>
+  </namespace-alias>
 </namespace>
 </mrdocs>

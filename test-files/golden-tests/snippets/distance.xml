@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <function name="distance" id="GjxEQxG2FMN3Hr0DOMnJo7wvH5Y=">
+    <file path="distance.cpp" line="12"/>
+    <return>
+      <type name="double"/>
+    </return>
+    <param name="x0">
+      <type name="double"/>
+    </param>
+    <param name="y0">
+      <type name="double"/>
+    </param>
+    <param name="x1">
+      <type name="double"/>
+    </param>
+    <param name="y1">
+      <type name="double"/>
+    </param>
+    <doc>
+      <para>
+        <text>Return the distance between two points</text>
+      </para>
+      <para>
+        <text>This function returns the distance between two points</text>
+        <text>    according to the Euclidean distance formula.</text>
+      </para>
+      <param name="x0">
+        <text>The x-coordinate of the first point</text>
+      </param>
+      <param name="y0">
+        <text>The y-coordinate of the first point</text>
+      </param>
+      <param name="x1">
+        <text>The x-coordinate of the second point</text>
+      </param>
+      <param name="y1">
+        <text>The y-coordinate of the second point</text>
+      </param>
+      <returns>
+        <text>The distance between the two points</text>
+      </returns>
+    </doc>
+  </function>
+</namespace>
+</mrdocs>

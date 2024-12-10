@@ -536,38 +536,59 @@ jobs:
           trace-commands: true
 
       - name: Set up llvm-symbolizer
-        if: ${{ runner.os == 'macOS' }}
+        if: ${{ runner.os != 'Windows' }}
         run: |
           set -x
-
-          # Step 1: Check if llvm-symbolizer is installed
-          if ! command -v llvm-symbolizer &> /dev/null; then
-              echo "llvm-symbolizer is not installed. Installing via Homebrew..."
-              # Step 2: Install llvm if not installed
-              if command -v brew &> /dev/null; then
-                  brew install llvm
-              else
-                  echo "Homebrew is not installed. Please install Homebrew first: https://brew.sh/"
-                  exit 1
-              fi
-          fi
-          
-          # Step 3: Ensure llvm-symbolizer is in your PATH
-          llvm_bin_path=$(brew --prefix)/opt/llvm/bin
-          PATH="$PATH:$llvm_bin_path"
-          LLVM_SYMBOLIZER_PATH=$(which llvm-symbolizer)
-          if [ -z "$LLVM_SYMBOLIZER_PATH" ]; then
-              echo "llvm-symbolizer installation failed or it's not in the PATH."
-              exit 1
+      
+          if [[ $RUNNER_OS == 'macOS' ]]; then
+            # Step 1: Check if llvm-symbolizer is installed
+            if ! command -v llvm-symbolizer &> /dev/null; then
+                echo "llvm-symbolizer is not installed. Installing via Homebrew..."
+                # Step 2: Install llvm if not installed
+                if command -v brew &> /dev/null; then
+                    brew install llvm
+                else
+                    echo "Homebrew is not installed. Please install Homebrew first: https://brew.sh/"
+                    exit 1
+                fi
+            fi
+      
+            # Step 3: Ensure llvm-symbolizer is in your PATH
+            llvm_bin_path=$(brew --prefix)/opt/llvm/bin
+            PATH="$PATH:$llvm_bin_path"
+            LLVM_SYMBOLIZER_PATH=$(which llvm-symbolizer)
+            if [ -z "$LLVM_SYMBOLIZER_PATH" ]; then
+                echo "llvm-symbolizer installation failed or it's not in the PATH."
+                exit 1
+            else
+                echo "llvm-symbolizer found at: $LLVM_SYMBOLIZER_PATH"
+            fi
+          elif [[ $RUNNER_OS == 'Linux' ]]; then
+            # Step 1: Check if llvm-symbolizer is installed
+            if ! command -v llvm-symbolizer &> /dev/null; then
+                echo "llvm-symbolizer is not installed. Installing via apt-get..."
+                apt-get update
+                apt-get install -y llvm
+            fi
+      
+            # Step 2: Ensure llvm-symbolizer is in your PATH
+            LLVM_SYMBOLIZER_PATH=$(which llvm-symbolizer)
+            if [ -z "$LLVM_SYMBOLIZER_PATH" ]; then
+                echo "llvm-symbolizer installation failed or it's not in the PATH."
+                exit 1
+            else
+                echo "llvm-symbolizer found at: $LLVM_SYMBOLIZER_PATH"
+            fi
           else
-              echo "llvm-symbolizer found at: $LLVM_SYMBOLIZER_PATH"
+            echo "Unsupported OS: $RUNNER_OS"
+            exit 1
           fi
-          
+      
           # Step 4: Export LLVM_SYMBOLIZER_PATH environment variable
           export LLVM_SYMBOLIZER_PATH="$LLVM_SYMBOLIZER_PATH"
           echo -e "LLVM_SYMBOLIZER_PATH=$LLVM_SYMBOLIZER_PATH" >> $GITHUB_ENV
           echo "Environment variable LLVM_SYMBOLIZER_PATH set to: $LLVM_SYMBOLIZER_PATH"
-          
+
       - name: Generate Landing Page
         working-directory: docs/website
         run: |

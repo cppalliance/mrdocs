@@ -11,7 +11,7 @@
 //
 
 #include "CorpusImpl.hpp"
-#include "lib/AST/ASTVisitor.hpp"
+#include "lib/AST/FrontendActionFactory.hpp"
 #include "lib/Metadata/Finalize.hpp"
 #include "lib/Lib/Lookup.hpp"
 #include "lib/Support/Error.hpp"

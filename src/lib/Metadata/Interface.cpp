@@ -268,10 +268,10 @@ public:
     }
 
     void operator()(
-        AliasInfo const& I,
+        NamespaceAliasInfo const& I,
         AccessKind access)
     {
-        push(&Tranche::Aliases, access, I);
+        push(&Tranche::NamespaceAliases, access, I);
     }
 
     void operator()(
@@ -282,7 +282,7 @@ public:
     }
 
     void operator()(
-        const EnumeratorInfo& I,
+        const EnumConstantInfo& I,
         AccessKind access)
     {
         // KRYSTIAN FIXME: currently unimplemented

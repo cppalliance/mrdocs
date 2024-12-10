@@ -78,7 +78,8 @@ Here are a few constructs MrDocs attempts to understand and document automatical
 * Private APIs
 * Unspecified Return Types
 * Concepts
-* Typedef / Aliases
+* Typedefs
+* Namespace Aliases
 * Constants
 * Automatic Related Types
 * Macros

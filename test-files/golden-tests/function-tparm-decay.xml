@@ -29,14 +29,14 @@
       <file path="function-tparm-decay.cpp" line="28"/>
     </function>
   </template>
-  <alias name="T" id="PvNOREc+JWxdkVgvSz+jC45IbGQ=">
+  <namespace-alias name="T" id="PvNOREc+JWxdkVgvSz+jC45IbGQ=">
     <file path="function-tparm-decay.cpp" line="30" class="def"/>
     <type name="int"/>
-  </alias>
-  <alias name="U" id="h6hupdyuT6SfsCGFl6UUFGtvrcc=">
+  </namespace-alias>
+  <namespace-alias name="U" id="h6hupdyuT6SfsCGFl6UUFGtvrcc=">
     <file path="function-tparm-decay.cpp" line="31" class="def"/>
     <type name="int" cv-qualifiers="const"/>
-  </alias>
+  </namespace-alias>
   <template>
     <tparam class="non-type" type="int"/>
     <function name="i" id="2woLp3PdyOT/I0DFMkY8OAli5YM=">

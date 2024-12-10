@@ -1,0 +1,77 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Functions
+[cols=2]
+|===
+| Name | Description 
+
+| <<#distance,`distance`>> 
+| 
+Return the distance between two points
+
+
+|===
+
+[#distance]
+== distance
+
+
+Return the distance between two points
+
+
+=== Synopsis
+
+Declared in `<pass:[distance.cpp]>`
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+double
+distance(
+    double x0,
+    double y0,
+    double x1,
+    double y1);
+----
+
+=== Description
+
+
+This function returns the distance between two points
+according to the Euclidean distance formula.
+
+
+=== Return Value
+
+
+The distance between the two points
+
+
+=== Parameters
+
+|===
+| Name | Description
+
+| *x0*
+| pass:[
+The x-coordinate of the first point
+]
+| *y0*
+| pass:[
+The y-coordinate of the first point
+]
+| *x1*
+| pass:[
+The x-coordinate of the second point
+]
+| *y1*
+| pass:[
+The y-coordinate of the second point
+]
+|===
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

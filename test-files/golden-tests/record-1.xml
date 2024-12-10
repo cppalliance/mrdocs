@@ -4,10 +4,10 @@
 <namespace id="//////////////////////////8=">
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     <file path="record-1.cpp" line="1" class="def"/>
-    <alias name="U1" id="6UtddyCJy89K/bZpTmDb5jVXwAY=">
+    <namespace-alias name="U1" id="6UtddyCJy89K/bZpTmDb5jVXwAY=">
       <file path="record-1.cpp" line="3" class="def"/>
       <type name="int"/>
-    </alias>
+    </namespace-alias>
     <typedef name="U2" id="wwp4SQjMPktMmsnvq1thxjxFHFs=">
       <file path="record-1.cpp" line="4" class="def"/>
       <type name="char"/>

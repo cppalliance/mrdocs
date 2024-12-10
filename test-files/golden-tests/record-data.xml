@@ -62,10 +62,10 @@
     <tparam name="I" class="non-type" type="int"/>
     <struct name="X" id="XSI9u4gB6ZYb6pWxN29K8+iKza4=">
       <file path="record-data.cpp" line="34" class="def"/>
-      <alias name="Q" id="nkW23Ykh9wywIjUzLqEQlHf8R5k=">
+      <namespace-alias name="Q" id="nkW23Ykh9wywIjUzLqEQlHf8R5k=">
         <file path="record-data.cpp" line="36" class="def"/>
         <type name="P"/>
-      </alias>
+      </namespace-alias>
       <field name="x0" id="WMA7IrW+2LvVbOV8OxRgz1lZtgs=" default="0">
         <file path="record-data.cpp" line="38" class="def"/>
         <type name="int"/>

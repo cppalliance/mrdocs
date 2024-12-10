@@ -17,10 +17,10 @@
   </template>
   <template>
     <tparam name="T" class="type"/>
-    <alias name="C" id="f75RIL8qKOwbyH6ffvrv59F0nCA=">
+    <namespace-alias name="C" id="f75RIL8qKOwbyH6ffvrv59F0nCA=">
       <file path="alias-template.cpp" line="8" class="def"/>
       <type id="5tUSuMtQqtYE49jBjSYSWp0DJAM=" name="A&lt;T&gt;"/>
-    </alias>
+    </namespace-alias>
   </template>
   <template>
     <tparam name="T" class="type"/>
@@ -28,10 +28,10 @@
       <file path="alias-template.cpp" line="11" class="def"/>
       <template>
         <tparam name="U" class="type"/>
-        <alias name="E" id="STM3CgeaOEakPrQJdlRWWM4MMFo=">
+        <namespace-alias name="E" id="STM3CgeaOEakPrQJdlRWWM4MMFo=">
           <file path="alias-template.cpp" line="14" class="def"/>
           <type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;T, U&gt;"/>
-        </alias>
+        </namespace-alias>
       </template>
     </struct>
   </template>
