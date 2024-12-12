@@ -70,8 +70,9 @@
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct T01;
 ----
@@ -93,8 +94,9 @@ struct T01;
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f();
@@ -105,8 +107,9 @@ f();
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct T02;
 ----
@@ -128,8 +131,9 @@ struct T02;
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 static
 void
@@ -141,8 +145,9 @@ f();
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct T03;
 ----
@@ -164,11 +169,12 @@ struct T03;
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f() &;
+f() &amp;;
 ----
 
 [#T04]
@@ -176,8 +182,9 @@ f() &;
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct T04;
 ----
@@ -199,11 +206,12 @@ struct T04;
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f() &&;
+f() &amp;&amp;;
 ----
 
 [#T05]
@@ -211,8 +219,9 @@ f() &&;
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct T05;
 ----
@@ -234,8 +243,9 @@ struct T05;
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f() const;
@@ -246,8 +256,9 @@ f() const;
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct T06;
 ----
@@ -269,8 +280,9 @@ struct T06;
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 constexpr
 void
@@ -282,8 +294,9 @@ f();
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct T08;
 ----
@@ -305,8 +318,9 @@ struct T08;
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f();
@@ -317,8 +331,9 @@ f();
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct T09;
 ----
@@ -340,8 +355,9 @@ struct T09;
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f() noexcept;
@@ -352,8 +368,9 @@ f() noexcept;
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct T10;
 ----
@@ -375,8 +392,9 @@ struct T10;
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f();
@@ -387,8 +405,9 @@ f();
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct T11;
 ----
@@ -410,8 +429,9 @@ struct T11;
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int
 f();
@@ -422,8 +442,9 @@ f();
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct T12;
 ----
@@ -445,8 +466,9 @@ struct T12;
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f(...);
@@ -457,8 +479,9 @@ f(...);
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct T13;
 ----
@@ -480,8 +503,9 @@ struct T13;
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 virtual
 void
@@ -493,8 +517,9 @@ f();
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct T14;
 ----
@@ -516,8 +541,9 @@ struct T14;
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 virtual
 void
@@ -529,8 +555,9 @@ f() = 0;
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct T15;
 ----
@@ -552,8 +579,9 @@ struct T15;
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f() volatile;
@@ -564,8 +592,9 @@ f() volatile;
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct T16;
 ----
@@ -587,8 +616,9 @@ struct T16;
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 static
 void
@@ -600,8 +630,9 @@ f();
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct T17
     : <<#T14,T14>>;
@@ -623,8 +654,9 @@ struct T17
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 virtual
 void
@@ -636,8 +668,9 @@ f() override;
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct U;
 ----
@@ -671,8 +704,9 @@ struct U;
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 constexpr
 void
@@ -684,8 +718,9 @@ f1(...) const volatile noexcept;
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 constexpr
 static
@@ -698,8 +733,9 @@ f2() noexcept;
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 virtual
 int
@@ -711,8 +747,9 @@ f3() const volatile noexcept = 0;
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct V
     : <<#U,U>>;
@@ -746,8 +783,9 @@ struct V
 
 === Synopsis
 
-Declared in `<pass:[mem-fn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 virtual
 int

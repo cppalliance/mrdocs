@@ -32,8 +32,9 @@
 
 === Synopsis
 
-Declared in `<pass:[out-of-line-record-def.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;out&hyphen;of&hyphen;line&hyphen;record&hyphen;def&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct S;
 ----

@@ -10,16 +10,16 @@
 | Name | Description 
 
 | <<#f5,`f5`>> 
-| 
-brief
+| brief
 *bold*
 it
-continues to the line.
+continues to the line&period;
+
 
 
 | <<#f6,`f6`>> 
-| 
-brief
+| brief
+
 
 
 |===
@@ -27,17 +27,18 @@ brief
 [#f5]
 == f5
 
-
 brief
 *bold*
 it
-continues to the line.
+continues to the line&period;
+
 
 
 === Synopsis
 
-Declared in `<pass:[brief-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;brief&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f5();
@@ -46,14 +47,15 @@ f5();
 [#f6]
 == f6
 
-
 brief
+
 
 
 === Synopsis
 
-Declared in `<pass:[brief-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;brief&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f6();
@@ -61,11 +63,11 @@ f6();
 
 === Description
 
-
 many lined
 *bold*
 what will
 happen?
+
 
 
 

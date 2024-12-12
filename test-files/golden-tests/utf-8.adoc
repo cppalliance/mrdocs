@@ -9,21 +9,22 @@
 |===
 | Name | Description 
 
-| <<#Христос_воскрес,`pass:[Христос_воскрес]`>> 
+| <<#Христос_воскрес,`Христос&lowbar;воскрес`>> 
 | 
 
 |===
 
 [#Христос_воскрес]
-== pass:[Христос_воскрес]
+== Христос&lowbar;воскрес
 
 === Synopsis
 
-Declared in `<pass:[utf-8.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;utf&hyphen;8&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
-pass:[Христос_воскрес]();
+Христос&lowbar;воскрес();
 ----
 
 

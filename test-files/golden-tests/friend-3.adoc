@@ -22,8 +22,8 @@
 | Name | Description 
 
 | <<#f,`f`>> 
-| 
-T::f
+| T&colon;&colon;f
+
 
 
 |===
@@ -33,8 +33,9 @@ T::f
 
 === Synopsis
 
-Declared in `<pass:[friend-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;friend&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct T;
 ----
@@ -45,8 +46,8 @@ struct T;
 | Name | Description 
 
 | <<#T-08friend,`f`>> 
-| 
-T::f
+| T&colon;&colon;f
+
 
 
 |===
@@ -56,14 +57,15 @@ T::f
 [#T-08friend]
 == f
 
+T&colon;&colon;f
 
-T::f
 
 
 === Synopsis
 
-Declared in `<pass:[friend-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;friend&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 friend
 void
@@ -73,14 +75,15 @@ f();
 [#f]
 == f
 
+T&colon;&colon;f
 
-T::f
 
 
 === Synopsis
 
-Declared in `<pass:[friend-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;friend&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f();
@@ -91,8 +94,9 @@ f();
 
 === Synopsis
 
-Declared in `<pass:[friend-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;friend&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct U;
 ----
@@ -114,8 +118,9 @@ struct U;
 
 === Synopsis
 
-Declared in `<pass:[friend-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;friend&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 friend
 void

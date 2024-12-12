@@ -10,33 +10,33 @@
 | Name | Description 
 
 | <<#f0,`f0`>> 
-| 
-f0 brief
+| f0 brief
+
 
 
 | <<#f1,`f1`>> 
-| 
-f1 brief
+| f1 brief
+
 
 
 | <<#g0,`g0`>> 
-| 
-g0 brief
+| g0 brief
+
 
 
 | <<#g1,`g1`>> 
-| 
-g1 brief
+| g1 brief
+
 
 
 | <<#h0,`h0`>> 
-| 
-h0 brief
+| h0 brief
+
 
 
 | <<#h1,`h1`>> 
-| 
-h1 brief
+| h1 brief
+
 
 
 |===
@@ -44,14 +44,15 @@ h1 brief
 [#f0]
 == f0
 
-
 f0 brief
+
 
 
 === Synopsis
 
-Declared in `<pass:[duplicate-jdoc.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;duplicate&hyphen;jdoc&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int
 f0();
@@ -59,21 +60,22 @@ f0();
 
 === Return Value
 
-
 int
+
 
 
 [#f1]
 == f1
 
-
 f1 brief
+
 
 
 === Synopsis
 
-Declared in `<pass:[duplicate-jdoc.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;duplicate&hyphen;jdoc&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int
 f1();
@@ -81,21 +83,22 @@ f1();
 
 === Return Value
 
-
 bool
+
 
 
 [#g0]
 == g0
 
-
 g0 brief
+
 
 
 === Synopsis
 
-Declared in `<pass:[duplicate-jdoc.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;duplicate&hyphen;jdoc&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 g0(int a);
@@ -107,26 +110,27 @@ g0(int a);
 | Name | Description
 
 | *a*
-| 
-one
+| one
+
 
 | *a*
-| 
-one
+| one
+
 
 |===
 
 [#g1]
 == g1
 
-
 g1 brief
+
 
 
 === Synopsis
 
-Declared in `<pass:[duplicate-jdoc.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;duplicate&hyphen;jdoc&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 g1(int a);
@@ -138,28 +142,29 @@ g1(int a);
 | Name | Description
 
 | *a*
-| 
-one
+| one
+
 
 | *b*
-| 
-two
+| two
+
 
 |===
 
 [#h0]
 == h0
 
-
 h0 brief
+
 
 
 === Synopsis
 
-Declared in `<pass:[duplicate-jdoc.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;duplicate&hyphen;jdoc&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
+template&lt;typename T&gt;
 void
 h0();
 ----
@@ -170,28 +175,29 @@ h0();
 | Name | Description
 
 | *T*
-| 
-one
+| one
+
 
 | *T*
-| 
-one
+| one
+
 
 |===
 
 [#h1]
 == h1
 
-
 h1 brief
+
 
 
 === Synopsis
 
-Declared in `<pass:[duplicate-jdoc.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;duplicate&hyphen;jdoc&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
+template&lt;typename T&gt;
 void
 h1();
 ----
@@ -202,12 +208,12 @@ h1();
 | Name | Description
 
 | *T*
-| 
-one
+| one
+
 
 | *U*
-| 
-two
+| two
+
 
 |===
 

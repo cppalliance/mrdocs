@@ -133,7 +133,7 @@
 {{#each symbol.doc.exceptions}}
 <tr>
 <td><code>{{exception}}</code></td>
-<td>{{description}}</td>
+<td>{{{description}}}</td>
 </tr>
 {{/each}}
 </tbody>
@@ -156,7 +156,7 @@
 {{#each allExceptions as |exception|}}
 <tr>
 <td><code>{{exception}}</code></td>
-<td>{{description}}</td>
+<td>{{{description}}}</td>
 </tr>
 {{/each}}
 </tbody>
@@ -188,7 +188,7 @@
 {{#each symbol.doc.tparams}}
 <tr>
 <td><strong>{{name}}</strong></td>
-<td>{{description}}</td>
+<td>{{{description}}}</td>
 </tr>
 {{/each}}
 </tbody>
@@ -211,7 +211,7 @@
 {{#each allTParams as |param|}}
 <tr>
 <td><strong>{{param.name}}</strong></td>
-<td>{{param.description}}</td>
+<td>{{{param.description}}}</td>
 </tr>
 {{/each}}
 </tbody>
@@ -236,7 +236,7 @@
 {{#each symbol.doc.params}}
 <tr>
 <td><strong>{{name}}</strong></td>
-<td>{{description}}</td>
+<td>{{{description}}}</td>
 </tr>
 {{/each}}
 </tbody>
@@ -259,7 +259,7 @@
 {{#each allParams as |param|}}
 <tr>
 <td><strong>{{param.name}}</strong></td>
-<td>{{param.description}}</td>
+<td>{{{param.description}}}</td>
 </tr>
 {{/each}}
 </tbody>
@@ -273,7 +273,7 @@
 <div>
 {{#> markup/dynamic-level-h level=2 }}Preconditions{{/markup/dynamic-level-h}}
 {{#each symbol.doc.preconditions}}
-<p>{{.}}</p>
+<p>{{{.}}}</p>
 {{/each}}
 </div>
 {{/if}}
@@ -282,7 +282,7 @@
 <div>
 {{#> markup/dynamic-level-h level=2 }}Postconditions{{/markup/dynamic-level-h}}
 {{#each symbol.doc.postconditions}}
-<p>{{.}}</p>
+<p>{{{.}}}</p>
 {{/each}}
 </div>
 {{/if}}
@@ -291,7 +291,7 @@
 <div>
 {{#> markup/dynamic-level-h level=2 }}See Also{{/markup/dynamic-level-h}}
 {{#each symbol.doc.see}}
-<p>{{.}}</p>
+<p>{{{.}}}</p>
 {{/each}}
 </div>
 {{/if}}

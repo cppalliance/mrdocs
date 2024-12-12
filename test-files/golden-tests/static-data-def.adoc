@@ -31,10 +31,11 @@
 
 === Synopsis
 
-Declared in `<pass:[static-data-def.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
+template&lt;typename T&gt;
 struct A;
 ----
 
@@ -76,8 +77,9 @@ struct A;
 
 === Synopsis
 
-Declared in `<pass:[static-data-def.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 static
 int v0 = 0;
@@ -88,8 +90,9 @@ int v0 = 0;
 
 === Synopsis
 
-Declared in `<pass:[static-data-def.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 static
 int v1 = 1;
@@ -100,8 +103,9 @@ int v1 = 1;
 
 === Synopsis
 
-Declared in `<pass:[static-data-def.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 constexpr
 static
@@ -113,8 +117,9 @@ int const v2 = 2;
 
 === Synopsis
 
-Declared in `<pass:[static-data-def.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 static
 int const v3 = 3;
@@ -125,8 +130,9 @@ int const v3 = 3;
 
 === Synopsis
 
-Declared in `<pass:[static-data-def.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 static
 int const v4 = 4;
@@ -137,8 +143,9 @@ int const v4 = 4;
 
 === Synopsis
 
-Declared in `<pass:[static-data-def.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 static
 int v5 = 5;
@@ -149,8 +156,9 @@ int v5 = 5;
 
 === Synopsis
 
-Declared in `<pass:[static-data-def.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 static
 int const v6 = 6;
@@ -161,8 +169,9 @@ int const v6 = 6;
 
 === Synopsis
 
-Declared in `<pass:[static-data-def.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 constexpr
 static
@@ -174,8 +183,9 @@ int const v7 = 7;
 
 === Synopsis
 
-Declared in `<pass:[static-data-def.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct B;
 ----
@@ -200,8 +210,9 @@ struct B;
 
 === Synopsis
 
-Declared in `<pass:[static-data-def.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 static
 thread_local
@@ -213,8 +224,9 @@ int const x0 = 0;
 
 === Synopsis
 
-Declared in `<pass:[static-data-def.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 constexpr
 static
@@ -227,8 +239,9 @@ int const x1 = 0;
 
 === Synopsis
 
-Declared in `<pass:[static-data-def.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 auto
 f();

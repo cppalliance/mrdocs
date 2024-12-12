@@ -12,34 +12,35 @@
 | <<#blacklisted,`blacklisted`>> 
 | 
 
-| <<#to_be_documented,`pass:[to_be_documented]`>> 
+| <<#to_be_documented,`to&lowbar;be&lowbar;documented`>> 
 | 
 
 |===
 
 [#to_be_documented]
-== pass:[to_be_documented]
+== to&lowbar;be&lowbar;documented
 
 === Functions
 [cols=2]
 |===
 | Name | Description 
 
-| <<#to_be_documented-documented_function,`pass:[documented_function]`>> 
+| <<#to_be_documented-documented_function,`documented&lowbar;function`>> 
 | 
 
 |===
 
 [#to_be_documented-documented_function]
-== <<#to_be_documented,pass:[to_be_documented]>>::pass:[documented_function]
+== <<#to_be_documented,to&lowbar;be&lowbar;documented>>::documented&lowbar;function
 
 === Synopsis
 
-Declared in `<pass:[filters/whitelist_test.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;filters&sol;whitelist&lowbar;test&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-pass:[documented_function]();
+documented&lowbar;function();
 ----
 
 [#blacklisted]
@@ -50,21 +51,22 @@ pass:[documented_function]();
 |===
 | Name | Description 
 
-| <<#blacklisted-whitelisted_function,`pass:[whitelisted_function]`>> 
+| <<#blacklisted-whitelisted_function,`whitelisted&lowbar;function`>> 
 | 
 
 |===
 
 [#blacklisted-whitelisted_function]
-== <<#blacklisted,blacklisted>>::pass:[whitelisted_function]
+== <<#blacklisted,blacklisted>>::whitelisted&lowbar;function
 
 === Synopsis
 
-Declared in `<pass:[filters/whitelist_test.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;filters&sol;whitelist&lowbar;test&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-pass:[whitelisted_function]();
+whitelisted&lowbar;function();
 ----
 
 

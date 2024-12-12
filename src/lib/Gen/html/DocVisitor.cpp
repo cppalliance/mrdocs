@@ -25,7 +25,7 @@ namespace html {
 void
 DocVisitor::
 operator()(
-    doc::Admonition const& I)
+    doc::Admonition const& I) const
 {
     std::string_view label;
     switch(I.admonish)
@@ -57,7 +57,7 @@ operator()(
 void
 DocVisitor::
 operator()(
-    doc::Code const& I)
+    doc::Code const& I) const
 {
     auto const leftMargin = measureLeftMargin(I.children);
     dest_.append("<code>\n");
@@ -88,7 +88,7 @@ operator()(
 void
 DocVisitor::
 operator()(
-    doc::Heading const& I)
+    doc::Heading const& I) const
 {
     fmt::format_to(ins_, "<h3>{}</h3>\n", I.string);
 }
@@ -97,7 +97,7 @@ operator()(
 void
 DocVisitor::
 operator()(
-    doc::Paragraph const& I)
+    doc::Paragraph const& I) const
 {
     dest_.append("<p>");
     for(auto const& it : RangeFor(I.children))
@@ -108,10 +108,13 @@ operator()(
         if(! it.last && dest_.size() > n)
         {
             // wrap past 80 cols
-            if(dest_.size() < 80)
+            if (dest_.size() < 80)
+            {
                 dest_.push_back(' ');
-            else
+            } else
+            {
                 dest_.push_back('\n');
+            }
         }
     }
     dest_.append("</p>\n\n");
@@ -120,7 +123,33 @@ operator()(
 void
 DocVisitor::
 operator()(
-    doc::Link const& I)
+    doc::Brief const& I) const
+{
+    dest_.append("<span>");
+    for(auto const& it : RangeFor(I.children))
+    {
+        auto const n = dest_.size();
+        doc::visit(*it.value, *this);
+        // detect empty text blocks
+        if(! it.last && dest_.size() > n)
+        {
+            // wrap past 80 cols
+            if (dest_.size() < 80)
+            {
+                dest_.push_back(' ');
+            } else
+            {
+                dest_.push_back('\n');
+            }
+        }
+    }
+    dest_.append("</span>");
+}
+
+void
+DocVisitor::
+operator()(
+    doc::Link const& I) const
 {
     dest_.append("<a href=\"");
     dest_.append(I.href);
@@ -132,7 +161,7 @@ operator()(
 void
 DocVisitor::
 operator()(
-    doc::ListItem const& I)
+    doc::ListItem const& I) const
 {
     dest_.append("<li>");
     for(auto const& it : RangeFor(I.children))
@@ -143,10 +172,13 @@ operator()(
         if(! it.last && dest_.size() > n)
         {
             // wrap past 80 cols
-            if(dest_.size() < 80)
+            if (dest_.size() < 80)
+            {
                 dest_.push_back(' ');
-            else
+            } else
+            {
                 dest_.append("\n");
+            }
         }
     }
     dest_.append("</li>\n");
@@ -154,21 +186,21 @@ operator()(
 
 void
 DocVisitor::
-operator()(doc::Param const& I)
+operator()(doc::Param const& I) const
 {
-    //dest_ += I.string;
+    this->operator()(static_cast<doc::Paragraph const&>(I));
 }
 
 void
 DocVisitor::
-operator()(doc::Returns const& I)
+operator()(doc::Returns const& I) const
 {
-    //dest_ += I.string;
+    (*this)(static_cast<doc::Paragraph const&>(I));
 }
 
 void
 DocVisitor::
-operator()(doc::Text const& I)
+operator()(doc::Text const& I) const
 {
     std::string_view s = trim(I.string);
     fmt::format_to(std::back_inserter(dest_), "<span>{}</span>", s);
@@ -176,7 +208,7 @@ operator()(doc::Text const& I)
 
 void
 DocVisitor::
-operator()(doc::Styled const& I)
+operator()(doc::Styled const& I) const
 {
     std::string_view s = trim(I.string);
     switch(I.style)
@@ -200,25 +232,29 @@ operator()(doc::Styled const& I)
 
 void
 DocVisitor::
-operator()(doc::TParam const& I)
+operator()(doc::TParam const& I) const
 {
-    //dest_ += I.string;
+    this->operator()(static_cast<doc::Paragraph const&>(I));
 }
 
 void
 DocVisitor::
-operator()(doc::Reference const& I)
+operator()(doc::Reference const& I) const
 {
-    if(I.id == SymbolID::invalid)
-        return (*this)(static_cast<const doc::Text&>(I));
+    if (I.id == SymbolID::invalid)
+    {
+        return (*this)(static_cast<doc::Text const&>(I));
+    }
+    // AFREITAS: Unlike Adoc, we need relative URLs for HTML
     fmt::format_to(std::back_inserter(dest_), "<a href=\"{}\">{}</a>",
         corpus_.getURL(corpus_->get(I.id)), I.string);
 }
 
 void
 DocVisitor::
-operator()(doc::Throws const& I)
+operator()(doc::Throws const& I) const
 {
+    this->operator()(static_cast<doc::Paragraph const&>(I));
 }
 
 std::size_t
@@ -227,16 +263,22 @@ measureLeftMargin(
     doc::List<doc::Text> const& list)
 {
     if(list.empty())
+    {
         return 0;
-    std::size_t n = std::size_t(-1);
+    }
+    auto n = static_cast<std::size_t>(-1);
     for(auto& text : list)
     {
-        if(trim(text->string).empty())
+        if (trim(text->string).empty())
+        {
             continue;
+        }
         auto const space =
             text->string.size() - ltrim(text->string).size();
-        if( n > space)
+        if (n > space)
+        {
             n = space;
+        }
     }
     return n;
 }

@@ -40,8 +40,9 @@
 
 === Synopsis
 
-Declared in `<pass:[function-parm-decay.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;function&hyphen;parm&hyphen;decay&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f(int const x);
@@ -52,8 +53,9 @@ f(int const x);
 
 === Synopsis
 
-Declared in `<pass:[function-parm-decay.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;function&hyphen;parm&hyphen;decay&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 g(int* x);
@@ -64,8 +66,9 @@ g(int* x);
 
 === Synopsis
 
-Declared in `<pass:[function-parm-decay.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;function&hyphen;parm&hyphen;decay&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 h(int x(bool));
@@ -76,8 +79,9 @@ h(int x(bool));
 
 === Synopsis
 
-Declared in `<pass:[function-parm-decay.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;function&hyphen;parm&hyphen;decay&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 using T = int;
 ----
@@ -87,8 +91,9 @@ using T = int;
 
 === Synopsis
 
-Declared in `<pass:[function-parm-decay.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;function&hyphen;parm&hyphen;decay&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 using U = int const;
 ----
@@ -98,8 +103,9 @@ using U = int const;
 
 === Synopsis
 
-Declared in `<pass:[function-parm-decay.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;function&hyphen;parm&hyphen;decay&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 i(<<#T,T>>);

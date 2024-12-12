@@ -9,39 +9,40 @@
 |===
 | Name | Description 
 
-| <<#is_prime,`pass:[is_prime]`>> 
-| 
-Return true if a number is prime.
+| <<#is_prime,`is&lowbar;prime`>> 
+| Return true if a number is prime&period;
+
 
 
 |===
 
 [#is_prime]
-== pass:[is_prime]
+== is&lowbar;prime
 
+Return true if a number is prime&period;
 
-Return true if a number is prime.
 
 
 === Synopsis
 
-Declared in `<pass:[is_prime.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;is&lowbar;prime&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
-pass:[is_prime](unsigned long long n) noexcept;
+is&lowbar;prime(unsigned long long n) noexcept;
 ----
 
 === Description
 
+Linear in n&period;
 
-Linear in n.
 
 
 === Return Value
 
+Whether or not n is prime&period;
 
-Whether or not n is prime.
 
 
 === Parameters
@@ -50,8 +51,8 @@ Whether or not n is prime.
 | Name | Description
 
 | *n*
-| 
-The number to test
+| The number to test
+
 
 |===
 

@@ -28,8 +28,9 @@
 
 === Synopsis
 
-Declared in `<pass:[local-class.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;local&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 auto
 f();
@@ -40,11 +41,12 @@ f();
 
 === Synopsis
 
-Declared in `<pass:[local-class.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;local&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct B
-    : decltype(pass:[f()]);
+    : decltype(f());
 ----
 
 

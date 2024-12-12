@@ -156,13 +156,13 @@
 | <<#R9,`R9`>> 
 | 
 
-| <<#S0-02,`S0<1, int*>`>> 
+| <<#S0-02,`S0&lt;1, int*&gt;`>> 
 | 
 
-| <<#S0-0c4,`S0<1, T*>`>> 
+| <<#S0-0c4,`S0&lt;1, T*&gt;`>> 
 | 
 
-| <<#S0-0be,`S0<0>`>> 
+| <<#S0-0be,`S0&lt;0&gt;`>> 
 | 
 
 | <<#S0-0cf,`S0`>> 
@@ -175,12 +175,13 @@
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<
+template&lt;
     int I,
-    typename T = void>
+    typename T = void&gt;
 struct S0;
 ----
 
@@ -213,8 +214,9 @@ struct S0;
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f0();
@@ -225,8 +227,9 @@ f0();
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct S1;
 ----
@@ -257,8 +260,9 @@ struct S1;
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f1();
@@ -269,12 +273,13 @@ f1();
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<
+template&lt;
     int J,
-    typename U = void>
+    typename U = void&gt;
 struct S2;
 ----
 
@@ -307,8 +312,9 @@ struct S2;
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f2();
@@ -319,8 +325,9 @@ f2();
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct S3;
 ----
@@ -342,8 +349,9 @@ struct S3;
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f3();
@@ -354,12 +362,13 @@ f3();
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<
+template&lt;
     int K,
-    typename V = void>
+    typename V = void&gt;
 struct S4;
 ----
 
@@ -380,8 +389,9 @@ struct S4;
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f4();
@@ -392,12 +402,13 @@ f4();
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<
+template&lt;
     int J,
-    typename U = void>
+    typename U = void&gt;
 struct S5;
 ----
 
@@ -427,8 +438,9 @@ struct S5;
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f5();
@@ -439,8 +451,9 @@ f5();
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct S6;
 ----
@@ -471,8 +484,9 @@ struct S6;
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f6();
@@ -483,12 +497,13 @@ f6();
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<
+template&lt;
     int K,
-    typename V = void>
+    typename V = void&gt;
 struct S7;
 ----
 
@@ -521,8 +536,9 @@ struct S7;
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f7();
@@ -533,8 +549,9 @@ f7();
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct S8;
 ----
@@ -556,8 +573,9 @@ struct S8;
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f8();
@@ -568,12 +586,13 @@ f8();
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<
+template&lt;
     int L,
-    typename W = void>
+    typename W = void&gt;
 struct S9;
 ----
 
@@ -594,53 +613,57 @@ struct S9;
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f9();
 ----
 
 [#S0-0be]
-== S0<0>
+== S0&lt;0&gt;
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<>
-struct <<#S0-0cf,S0>><0>;
+template&lt;&gt;
+struct <<#S0-0cf,S0>>&lt;0&gt;;
 ----
 
 
 
 
 [#S0-0c4]
-== S0<1, T*>
+== S0&lt;1, T*&gt;
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
-struct <<#S0-0cf,S0>><1, T*>;
+template&lt;typename T&gt;
+struct <<#S0-0cf,S0>>&lt;1, T*&gt;;
 ----
 
 
 
 
 [#S0-02]
-== S0<1, int*>
+== S0&lt;1, int*&gt;
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<>
-struct <<#S0-0cf,S0>><1, int*>;
+template&lt;&gt;
+struct <<#S0-0cf,S0>>&lt;1, int*&gt;;
 ----
 
 
@@ -651,11 +674,12 @@ struct <<#S0-0cf,S0>><1, int*>;
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R0
-    : <<#S0-0cf,S0>><pass:[-1]>;
+    : <<#S0-0cf,S0>>&lt;&hyphen;1&gt;;
 ----
 
 === Types
@@ -687,11 +711,12 @@ struct R0
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R1
-    : <<#S0-0be,S0>><0>;
+    : <<#S0-0be,S0>>&lt;0&gt;;
 ----
 
 
@@ -702,11 +727,12 @@ struct R1
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R2
-    : <<#S0-0c4,S0>><1, void*>;
+    : <<#S0-0c4,S0>>&lt;1, void*&gt;;
 ----
 
 
@@ -717,11 +743,12 @@ struct R2
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R3
-    : <<#S0-02,S0>><1, int*>;
+    : <<#S0-02,S0>>&lt;1, int*&gt;;
 ----
 
 
@@ -732,11 +759,12 @@ struct R3
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R4
-    : <<#S0-0cf,S0>><2>::<<#S0-09c-S1,S1>>;
+    : <<#S0-0cf,S0>>&lt;2&gt;::<<#S0-09c-S1,S1>>;
 ----
 
 
@@ -747,11 +775,12 @@ struct R4
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R5
-    : <<#S0-0cf,S0>><3>::<<#S0-0cf-S1,S1>>::<<#S0-073-S1-S2,S2>><pass:[-1]>;
+    : <<#S0-0cf,S0>>&lt;3&gt;::<<#S0-0cf-S1,S1>>::<<#S0-073-S1-S2,S2>>&lt;&hyphen;1&gt;;
 ----
 
 
@@ -762,11 +791,12 @@ struct R5
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R6
-    : <<#S0-0cf,S0>><4>::<<#S0-0cf-S1,S1>>::<<#S0-0a1-S1-S2,S2>><5>;
+    : <<#S0-0cf,S0>>&lt;4&gt;::<<#S0-0cf-S1,S1>>::<<#S0-0a1-S1-S2,S2>>&lt;5&gt;;
 ----
 
 
@@ -777,11 +807,12 @@ struct R6
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R7
-    : <<#S0-0cf,S0>><6>::<<#S0-0cf-S1,S1>>::<<#S0-07e-S1-S2-06,S2>><7, void*>;
+    : <<#S0-0cf,S0>>&lt;6&gt;::<<#S0-0cf-S1,S1>>::<<#S0-07e-S1-S2-06,S2>>&lt;7, void*&gt;;
 ----
 
 
@@ -792,11 +823,12 @@ struct R7
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R8
-    : <<#S0-0cf,S0>><6>::<<#S0-0cf-S1,S1>>::<<#S0-07e-S1-S2-07,S2>><7, int*>;
+    : <<#S0-0cf,S0>>&lt;6&gt;::<<#S0-0cf-S1,S1>>::<<#S0-07e-S1-S2-07,S2>>&lt;7, int*&gt;;
 ----
 
 
@@ -807,11 +839,12 @@ struct R8
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R9
-    : <<#S0-0cf,S0>><8>::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>><9>::<<#S0-0a3-S1-S2-S3,S3>>;
+    : <<#S0-0cf,S0>>&lt;8&gt;::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>>&lt;9&gt;::<<#S0-0a3-S1-S2-S3,S3>>;
 ----
 
 
@@ -822,11 +855,12 @@ struct R9
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R10
-    : <<#S0-0cf,S0>><10>::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>><11>::<<#S0-08-S1-S2-S4,S4>><pass:[-1]>;
+    : <<#S0-0cf,S0>>&lt;10&gt;::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>>&lt;11&gt;::<<#S0-08-S1-S2-S4,S4>>&lt;&hyphen;1&gt;;
 ----
 
 
@@ -837,11 +871,12 @@ struct R10
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R11
-    : <<#S0-0cf,S0>><12>::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>><13>::<<#S0-0e-S1-S2-S4,S4>><14>;
+    : <<#S0-0cf,S0>>&lt;12&gt;::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>>&lt;13&gt;::<<#S0-0e-S1-S2-S4,S4>>&lt;14&gt;;
 ----
 
 
@@ -852,11 +887,12 @@ struct R11
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R12
-    : <<#S0-0cf,S0>><15>::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>><16>::<<#S0-09e4-S1-S2-S4-07,S4>><17, void*>;
+    : <<#S0-0cf,S0>>&lt;15&gt;::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>>&lt;16&gt;::<<#S0-09e4-S1-S2-S4-07,S4>>&lt;17, void*&gt;;
 ----
 
 
@@ -867,11 +903,12 @@ struct R12
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R13
-    : <<#S0-0cf,S0>><15>::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>><16>::<<#S0-09e4-S1-S2-S4-02,S4>><17, int*>;
+    : <<#S0-0cf,S0>>&lt;15&gt;::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>>&lt;16&gt;::<<#S0-09e4-S1-S2-S4-02,S4>>&lt;17, int*&gt;;
 ----
 
 
@@ -882,11 +919,12 @@ struct R13
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R14
-    : <<#S0-0cf,S0>><18>::<<#S0-07a-S5,S5>><pass:[-1]>;
+    : <<#S0-0cf,S0>>&lt;18&gt;::<<#S0-07a-S5,S5>>&lt;&hyphen;1&gt;;
 ----
 
 
@@ -897,11 +935,12 @@ struct R14
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R15
-    : <<#S0-0cf,S0>><19>::<<#S0-0a7-S5,S5>><20>;
+    : <<#S0-0cf,S0>>&lt;19&gt;::<<#S0-0a7-S5,S5>>&lt;20&gt;;
 ----
 
 
@@ -912,11 +951,12 @@ struct R15
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R16
-    : <<#S0-0cf,S0>><21>::<<#S0-031-S5-0b,S5>><22, void*>;
+    : <<#S0-0cf,S0>>&lt;21&gt;::<<#S0-031-S5-0b,S5>>&lt;22, void*&gt;;
 ----
 
 
@@ -927,11 +967,12 @@ struct R16
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R17
-    : <<#S0-0cf,S0>><21>::<<#S0-031-S5-03,S5>><22, int*>;
+    : <<#S0-0cf,S0>>&lt;21&gt;::<<#S0-031-S5-03,S5>>&lt;22, int*&gt;;
 ----
 
 
@@ -942,11 +983,12 @@ struct R17
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R18
-    : <<#S0-0cf,S0>><23>::<<#S0-0cf-S5,S5>><24>::<<#S0-05-S5-S6,S6>>;
+    : <<#S0-0cf,S0>>&lt;23&gt;::<<#S0-0cf-S5,S5>>&lt;24&gt;::<<#S0-05-S5-S6,S6>>;
 ----
 
 
@@ -957,11 +999,12 @@ struct R18
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R19
-    : <<#S0-0cf,S0>><25>::<<#S0-0cf-S5,S5>><26>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0a2-S5-S6-S7,S7>><pass:[-1]>;
+    : <<#S0-0cf,S0>>&lt;25&gt;::<<#S0-0cf-S5,S5>>&lt;26&gt;::<<#S0-0cf-S5-S6,S6>>::<<#S0-0a2-S5-S6-S7,S7>>&lt;&hyphen;1&gt;;
 ----
 
 
@@ -972,11 +1015,12 @@ struct R19
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R20
-    : <<#S0-0cf,S0>><27>::<<#S0-0cf-S5,S5>><28>::<<#S0-0cf-S5-S6,S6>>::<<#S0-09e2-S5-S6-S7-0a,S7>><29, void*>;
+    : <<#S0-0cf,S0>>&lt;27&gt;::<<#S0-0cf-S5,S5>>&lt;28&gt;::<<#S0-0cf-S5-S6,S6>>::<<#S0-09e2-S5-S6-S7-0a,S7>>&lt;29, void*&gt;;
 ----
 
 
@@ -987,11 +1031,12 @@ struct R20
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R21
-    : <<#S0-0cf,S0>><27>::<<#S0-0cf-S5,S5>><28>::<<#S0-0cf-S5-S6,S6>>::<<#S0-09e2-S5-S6-S7-0d,S7>><29, int*>;
+    : <<#S0-0cf,S0>>&lt;27&gt;::<<#S0-0cf-S5,S5>>&lt;28&gt;::<<#S0-0cf-S5-S6,S6>>::<<#S0-09e2-S5-S6-S7-0d,S7>>&lt;29, int*&gt;;
 ----
 
 
@@ -1002,11 +1047,12 @@ struct R21
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R22
-    : <<#S0-0cf,S0>><30>::<<#S0-0cf-S5,S5>><31>::<<#S0-0cf-S5-S6,S6>>::<<#S0-01-S5-S6-S7,S7>><32>;
+    : <<#S0-0cf,S0>>&lt;30&gt;::<<#S0-0cf-S5,S5>>&lt;31&gt;::<<#S0-0cf-S5-S6,S6>>::<<#S0-01-S5-S6-S7,S7>>&lt;32&gt;;
 ----
 
 
@@ -1017,11 +1063,12 @@ struct R22
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R23
-    : <<#S0-0cf,S0>><33>::<<#S0-0cf-S5,S5>><34>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>><35>::<<#S0-09ee-S5-S6-S7-S8,S8>>;
+    : <<#S0-0cf,S0>>&lt;33&gt;::<<#S0-0cf-S5,S5>>&lt;34&gt;::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>>&lt;35&gt;::<<#S0-09ee-S5-S6-S7-S8,S8>>;
 ----
 
 
@@ -1032,11 +1079,12 @@ struct R23
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R24
-    : <<#S0-0cf,S0>><36>::<<#S0-0cf-S5,S5>><37>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>><38>::<<#S0-033-S5-S6-S7-S9,S9>><pass:[-1]>;
+    : <<#S0-0cf,S0>>&lt;36&gt;::<<#S0-0cf-S5,S5>>&lt;37&gt;::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>>&lt;38&gt;::<<#S0-033-S5-S6-S7-S9,S9>>&lt;&hyphen;1&gt;;
 ----
 
 
@@ -1047,11 +1095,12 @@ struct R24
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R25
-    : <<#S0-0cf,S0>><39>::<<#S0-0cf-S5,S5>><40>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>><41>::<<#S0-06-S5-S6-S7-S9-00,S9>><42, void*>;
+    : <<#S0-0cf,S0>>&lt;39&gt;::<<#S0-0cf-S5,S5>>&lt;40&gt;::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>>&lt;41&gt;::<<#S0-06-S5-S6-S7-S9-00,S9>>&lt;42, void*&gt;;
 ----
 
 
@@ -1062,11 +1111,12 @@ struct R25
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R26
-    : <<#S0-0cf,S0>><39>::<<#S0-0cf-S5,S5>><40>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>><41>::<<#S0-06-S5-S6-S7-S9-08,S9>><42, int*>;
+    : <<#S0-0cf,S0>>&lt;39&gt;::<<#S0-0cf-S5,S5>>&lt;40&gt;::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>>&lt;41&gt;::<<#S0-06-S5-S6-S7-S9-08,S9>>&lt;42, int*&gt;;
 ----
 
 
@@ -1077,11 +1127,12 @@ struct R26
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R27
-    : <<#S0-0cf,S0>><43>::<<#S0-0cf-S5,S5>><44>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>><45>::<<#S0-0ba-S5-S6-S7-S9,S9>><46>;
+    : <<#S0-0cf,S0>>&lt;43&gt;::<<#S0-0cf-S5,S5>>&lt;44&gt;::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>>&lt;45&gt;::<<#S0-0ba-S5-S6-S7-S9,S9>>&lt;46&gt;;
 ----
 
 
@@ -1092,11 +1143,12 @@ struct R27
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R28
-    : <<#S0-0cf,S0>><0, bool>;
+    : <<#S0-0cf,S0>>&lt;0, bool&gt;;
 ----
 
 === Types
@@ -1128,11 +1180,12 @@ struct R28
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R29
-    : <<#S0-0cf,S0>><1, int>;
+    : <<#S0-0cf,S0>>&lt;1, int&gt;;
 ----
 
 === Types
@@ -1164,11 +1217,12 @@ struct R29
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R30
-    : <<#S0-0cf,S0>><2, bool>::<<#S0-0cf-S1,S1>>;
+    : <<#S0-0cf,S0>>&lt;2, bool&gt;::<<#S0-0cf-S1,S1>>;
 ----
 
 === Types
@@ -1197,14 +1251,15 @@ struct R30
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<
+template&lt;
     int I,
-    typename T>
+    typename T&gt;
 struct R31
-    : <<#S0-0cf,S0>><3, bool>::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>><I, T>;
+    : <<#S0-0cf,S0>>&lt;3, bool&gt;::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>>&lt;I, T&gt;;
 ----
 
 === Types
@@ -1236,11 +1291,12 @@ struct R31
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R32
-    : <<#S0-0cf,S0>><4, bool>::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>><5, bool>;
+    : <<#S0-0cf,S0>>&lt;4, bool&gt;::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>>&lt;5, bool&gt;;
 ----
 
 === Types
@@ -1272,11 +1328,12 @@ struct R32
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R33
-    : <<#S0-0cf,S0>><6, bool>::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>><7, int>;
+    : <<#S0-0cf,S0>>&lt;6, bool&gt;::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>>&lt;7, int&gt;;
 ----
 
 === Types
@@ -1308,11 +1365,12 @@ struct R33
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R34
-    : <<#S0-0cf,S0>><8, bool>::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>><9, bool>::<<#S0-0cf-S1-S2-S3,S3>>;
+    : <<#S0-0cf,S0>>&lt;8, bool&gt;::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>>&lt;9, bool&gt;::<<#S0-0cf-S1-S2-S3,S3>>;
 ----
 
 === Member Functions
@@ -1332,14 +1390,15 @@ struct R34
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<
+template&lt;
     int I,
-    typename T>
+    typename T&gt;
 struct R35
-    : <<#S0-0cf,S0>><10, bool>::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>><11, bool>::<<#S0-0cf-S1-S2-S4,S4>><I, T>;
+    : <<#S0-0cf,S0>>&lt;10, bool&gt;::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>>&lt;11, bool&gt;::<<#S0-0cf-S1-S2-S4,S4>>&lt;I, T&gt;;
 ----
 
 === Member Functions
@@ -1359,11 +1418,12 @@ struct R35
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R36
-    : <<#S0-0cf,S0>><12, bool>::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>><13, bool>::<<#S0-0cf-S1-S2-S4,S4>><14, bool>;
+    : <<#S0-0cf,S0>>&lt;12, bool&gt;::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>>&lt;13, bool&gt;::<<#S0-0cf-S1-S2-S4,S4>>&lt;14, bool&gt;;
 ----
 
 === Member Functions
@@ -1383,11 +1443,12 @@ struct R36
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R37
-    : <<#S0-0cf,S0>><15, bool>::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>><16, bool>::<<#S0-0cf-S1-S2-S4,S4>><17, int>;
+    : <<#S0-0cf,S0>>&lt;15, bool&gt;::<<#S0-0cf-S1,S1>>::<<#S0-0cf-S1-S2,S2>>&lt;16, bool&gt;::<<#S0-0cf-S1-S2-S4,S4>>&lt;17, int&gt;;
 ----
 
 === Member Functions
@@ -1407,14 +1468,15 @@ struct R37
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<
+template&lt;
     int I,
-    typename T>
+    typename T&gt;
 struct R38
-    : <<#S0-0cf,S0>><18, bool>::<<#S0-0cf-S5,S5>><I, T>;
+    : <<#S0-0cf,S0>>&lt;18, bool&gt;::<<#S0-0cf-S5,S5>>&lt;I, T&gt;;
 ----
 
 === Types
@@ -1443,11 +1505,12 @@ struct R38
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R39
-    : <<#S0-0cf,S0>><19, bool>::<<#S0-0cf-S5,S5>><20, bool>;
+    : <<#S0-0cf,S0>>&lt;19, bool&gt;::<<#S0-0cf-S5,S5>>&lt;20, bool&gt;;
 ----
 
 === Types
@@ -1476,11 +1539,12 @@ struct R39
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R40
-    : <<#S0-0cf,S0>><21, bool>::<<#S0-0cf-S5,S5>><22, int>;
+    : <<#S0-0cf,S0>>&lt;21, bool&gt;::<<#S0-0cf-S5,S5>>&lt;22, int&gt;;
 ----
 
 === Types
@@ -1509,11 +1573,12 @@ struct R40
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R41
-    : <<#S0-0cf,S0>><23, bool>::<<#S0-0cf-S5,S5>><24, bool>::<<#S0-0cf-S5-S6,S6>>;
+    : <<#S0-0cf,S0>>&lt;23, bool&gt;::<<#S0-0cf-S5,S5>>&lt;24, bool&gt;::<<#S0-0cf-S5-S6,S6>>;
 ----
 
 === Types
@@ -1542,14 +1607,15 @@ struct R41
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<
+template&lt;
     int I,
-    typename T>
+    typename T&gt;
 struct R42
-    : <<#S0-0cf,S0>><25, bool>::<<#S0-0cf-S5,S5>><26, bool>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>><I, T>;
+    : <<#S0-0cf,S0>>&lt;25, bool&gt;::<<#S0-0cf-S5,S5>>&lt;26, bool&gt;::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>>&lt;I, T&gt;;
 ----
 
 === Types
@@ -1581,11 +1647,12 @@ struct R42
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R43
-    : <<#S0-0cf,S0>><27, bool>::<<#S0-0cf-S5,S5>><28, bool>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>><29, int>;
+    : <<#S0-0cf,S0>>&lt;27, bool&gt;::<<#S0-0cf-S5,S5>>&lt;28, bool&gt;::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>>&lt;29, int&gt;;
 ----
 
 === Types
@@ -1617,11 +1684,12 @@ struct R43
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R44
-    : <<#S0-0cf,S0>><30, bool>::<<#S0-0cf-S5,S5>><31, bool>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>><32, bool>;
+    : <<#S0-0cf,S0>>&lt;30, bool&gt;::<<#S0-0cf-S5,S5>>&lt;31, bool&gt;::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>>&lt;32, bool&gt;;
 ----
 
 === Types
@@ -1653,11 +1721,12 @@ struct R44
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R45
-    : <<#S0-0cf,S0>><33, bool>::<<#S0-0cf-S5,S5>><34, bool>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>><35, bool>::<<#S0-0cf-S5-S6-S7-S8,S8>>;
+    : <<#S0-0cf,S0>>&lt;33, bool&gt;::<<#S0-0cf-S5,S5>>&lt;34, bool&gt;::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>>&lt;35, bool&gt;::<<#S0-0cf-S5-S6-S7-S8,S8>>;
 ----
 
 === Member Functions
@@ -1677,14 +1746,15 @@ struct R45
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<
+template&lt;
     int I,
-    typename T>
+    typename T&gt;
 struct R46
-    : <<#S0-0cf,S0>><36, bool>::<<#S0-0cf-S5,S5>><37, bool>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>><38, bool>::<<#S0-0cf-S5-S6-S7-S9,S9>><I, T>;
+    : <<#S0-0cf,S0>>&lt;36, bool&gt;::<<#S0-0cf-S5,S5>>&lt;37, bool&gt;::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>>&lt;38, bool&gt;::<<#S0-0cf-S5-S6-S7-S9,S9>>&lt;I, T&gt;;
 ----
 
 === Member Functions
@@ -1704,11 +1774,12 @@ struct R46
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R47
-    : <<#S0-0cf,S0>><39, bool>::<<#S0-0cf-S5,S5>><40, bool>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>><41, bool>::<<#S0-0cf-S5-S6-S7-S9,S9>><42, int>;
+    : <<#S0-0cf,S0>>&lt;39, bool&gt;::<<#S0-0cf-S5,S5>>&lt;40, bool&gt;::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>>&lt;41, bool&gt;::<<#S0-0cf-S5-S6-S7-S9,S9>>&lt;42, int&gt;;
 ----
 
 === Member Functions
@@ -1728,11 +1799,12 @@ struct R47
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R48
-    : <<#S0-0cf,S0>><43, bool>::<<#S0-0cf-S5,S5>><44, bool>::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>><45, bool>::<<#S0-0cf-S5-S6-S7-S9,S9>><46, bool>;
+    : <<#S0-0cf,S0>>&lt;43, bool&gt;::<<#S0-0cf-S5,S5>>&lt;44, bool&gt;::<<#S0-0cf-S5-S6,S6>>::<<#S0-0cf-S5-S6-S7,S7>>&lt;45, bool&gt;::<<#S0-0cf-S5-S6-S7-S9,S9>>&lt;46, bool&gt;;
 ----
 
 === Member Functions

@@ -19,10 +19,11 @@
 
 === Synopsis
 
-Declared in `<pass:[temp/ct_mct_expl_inline.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;temp&sol;ct&lowbar;mct&lowbar;expl&lowbar;inline&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
+template&lt;typename T&gt;
 struct A;
 ----
 
@@ -34,7 +35,7 @@ struct A;
 | <<#A-B-07,`B`>> 
 | 
 
-| <<#A-B-06,`B<int>`>> 
+| <<#A-B-06,`B&lt;int&gt;`>> 
 | 
 
 |===
@@ -46,10 +47,11 @@ struct A;
 
 === Synopsis
 
-Declared in `<pass:[temp/ct_mct_expl_inline.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;temp&sol;ct&lowbar;mct&lowbar;expl&lowbar;inline&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename U>
+template&lt;typename U&gt;
 struct B;
 ----
 
@@ -70,23 +72,25 @@ struct B;
 
 === Synopsis
 
-Declared in `<pass:[temp/ct_mct_expl_inline.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;temp&sol;ct&lowbar;mct&lowbar;expl&lowbar;inline&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f();
 ----
 
 [#A-B-06]
-== <<#A,A>>::B<int>
+== <<#A,A>>::B&lt;int&gt;
 
 === Synopsis
 
-Declared in `<pass:[temp/ct_mct_expl_inline.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;temp&sol;ct&lowbar;mct&lowbar;expl&lowbar;inline&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<>
-struct <<#A-B-07,B>><int>;
+template&lt;&gt;
+struct <<#A-B-07,B>>&lt;int&gt;;
 ----
 
 === Member Functions
@@ -102,12 +106,13 @@ struct <<#A-B-07,B>><int>;
 
 
 [#A-B-06-g]
-== <<#A,A>>::<<#A-B-06,B>><int>::g
+== <<#A,A>>::<<#A-B-06,B>>&lt;int&gt;::g
 
 === Synopsis
 
-Declared in `<pass:[temp/ct_mct_expl_inline.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;temp&sol;ct&lowbar;mct&lowbar;expl&lowbar;inline&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 g();

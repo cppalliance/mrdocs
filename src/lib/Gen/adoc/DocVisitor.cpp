@@ -11,6 +11,7 @@
 //
 
 #include "DocVisitor.hpp"
+#include "lib/Gen/adoc/AdocEscape.hpp"
 #include "lib/Support/Radix.hpp"
 #include <iterator>
 #include <fmt/format.h>
@@ -18,56 +19,12 @@
 #include <mrdocs/Support/RangeFor.hpp>
 #include <mrdocs/Support/String.hpp>
 
-namespace clang {
-namespace mrdocs {
-namespace adoc {
-
-std::string
-escapeAdoc(
-    std::string_view str)
-{
-    std::string result;
-    result.reserve(str.size());
-    for(char ch : str)
-    {
-        switch(ch)
-        {
-        case '&':
-            result.append("&amp;");
-            break;
-        case '<':
-            result.append("&lt;");
-            break;
-        case '>':
-            result.append("&gt;");
-            break;
-        case '[':
-            result.append("&lsqb;");
-            break;
-        case ']':
-            result.append("&rsqb;");
-            break;
-        case '|':
-            result.append("&vert;");
-            break;
-        case '=':
-            result.append("&equals;");
-            break;
-        case '/':
-            result.append("&sol;");
-            break;
-        default:
-            result.push_back(ch);
-            break;
-        }
-    }
-    return result;
-}
+namespace clang::mrdocs::adoc {
 
 void
 DocVisitor::
 operator()(
-    doc::Admonition const& I)
+    doc::Admonition const& I) const
 {
     std::string_view label;
     switch(I.admonish)
@@ -97,7 +54,7 @@ operator()(
 void
 DocVisitor::
 operator()(
-    doc::Code const& I)
+    doc::Code const& I) const
 {
     auto const leftMargin = measureLeftMargin(I.children);
     dest_ +=
@@ -130,47 +87,72 @@ operator()(
 void
 DocVisitor::
 operator()(
-    doc::Heading const& I)
+    doc::Heading const& I) const
 {
-    fmt::format_to(ins_, "\n=== {}\n", escapeAdoc(I.string));
+    fmt::format_to(ins_, "\n=== {}\n", AdocEscape(I.string));
 }
 
 // Also handles doc::Brief
 void
 DocVisitor::
 operator()(
-    doc::Paragraph const& I)
+    doc::Paragraph const& I) const
 {
-    std::span children = I.children;
-    if(children.empty())
+    std::span const children = I.children;
+    if (children.empty())
+    {
         return;
-    dest_.append("\n");
+    }
     bool non_empty = write(*children.front(), *this);
     for(auto const& child : children.subspan(1))
     {
-        if(non_empty)
+        if (non_empty)
+        {
             dest_.push_back('\n');
+        }
         non_empty = write(*child, *this);
     }
+    dest_.push_back('\n');
     dest_.push_back('\n');
 }
 
 void
 DocVisitor::
 operator()(
-    doc::Link const& I)
+    doc::Brief const& I) const
+{
+    std::span const children = I.children;
+    if (children.empty())
+    {
+        return;
+    }
+    bool non_empty = write(*children.front(), *this);
+    for(auto const& child : children.subspan(1))
+    {
+        if (non_empty)
+        {
+            dest_.push_back('\n');
+        }
+        non_empty = write(*child, *this);
+    }
+}
+
+void
+DocVisitor::
+operator()(
+    doc::Link const& I) const
 {
     dest_.append("link:");
     dest_.append(I.href);
     dest_.push_back('[');
-    dest_.append(escapeAdoc(I.string));
+    dest_.append(AdocEscape(I.string));
     dest_.push_back(']');
 }
 
 void
 DocVisitor::
 operator()(
-    doc::ListItem const& I)
+    doc::ListItem const& I) const
 {
     std::span children = I.children;
     if(children.empty())
@@ -179,8 +161,10 @@ operator()(
     bool non_empty = write(*children.front(), *this);
     for(auto const& child : children.subspan(1))
     {
-        if(non_empty)
+        if (non_empty)
+        {
             dest_.push_back('\n');
+        }
         non_empty = write(*child, *this);
     }
     dest_.push_back('\n');
@@ -188,48 +172,36 @@ operator()(
 
 void
 DocVisitor::
-operator()(doc::Param const& I)
+operator()(doc::Param const& I) const
 {
     this->operator()(static_cast<doc::Paragraph const&>(I));
 }
 
 void
 DocVisitor::
-operator()(doc::TParam const& I)
-{
-    this->operator()(static_cast<doc::Paragraph const&>(I));
-}
-
-void
-DocVisitor::
-operator()(doc::Throws const& I)
-{
-    this->operator()(static_cast<doc::Paragraph const&>(I));
-}
-
-void
-DocVisitor::
-operator()(doc::Returns const& I)
+operator()(doc::Returns const& I) const
 {
     (*this)(static_cast<doc::Paragraph const&>(I));
 }
 
 void
 DocVisitor::
-operator()(doc::Text const& I)
+operator()(doc::Text const& I) const
 {
     // Asciidoc text must not have leading
     // else they can be rendered up as code.
     std::string_view s = trim(I.string);
     // Render empty lines as paragraph delimiters.
-    if(s.empty())
+    if (s.empty())
+    {
         s = "\n";
-    dest_.append(escapeAdoc(s));
+    }
+    dest_.append(AdocEscape(s));
 }
 
 void
 DocVisitor::
-operator()(doc::Styled const& I)
+operator()(doc::Styled const& I) const
 {
     // VFALCO We need to apply Asciidoc escaping
     // depending on the contents of the string.
@@ -255,12 +227,35 @@ operator()(doc::Styled const& I)
 
 void
 DocVisitor::
-operator()(doc::Reference const& I)
+operator()(doc::TParam const& I) const
 {
-    if(I.id == SymbolID::invalid)
-        return (*this)(static_cast<const doc::Text&>(I));
-    fmt::format_to(std::back_inserter(dest_), "xref:{}[{}]",
-        corpus_.getURL(corpus_->get(I.id)), escapeAdoc(I.string));
+    this->operator()(static_cast<doc::Paragraph const&>(I));
+}
+
+void
+DocVisitor::
+operator()(doc::Reference const& I) const
+{
+    if (I.id == SymbolID::invalid)
+    {
+        return (*this)(static_cast<doc::Text const&>(I));
+    }
+    auto url = corpus_.getURL(corpus_->get(I.id));
+    if (url.starts_with('/'))
+    {
+        url.erase(0, 1);
+    }
+    fmt::format_to(
+        std::back_inserter(dest_),
+        "xref:{}[{}]",
+        url, AdocEscape(I.string));
+}
+
+void
+DocVisitor::
+operator()(doc::Throws const& I) const
+{
+    this->operator()(static_cast<doc::Paragraph const&>(I));
 }
 
 std::size_t
@@ -269,20 +264,24 @@ measureLeftMargin(
     doc::List<doc::Text> const& list)
 {
     if(list.empty())
+    {
         return 0;
-    auto n = std::size_t(-1);
+    }
+    auto n = static_cast<std::size_t>(-1);
     for(auto& text : list)
     {
-        if(trim(text->string).empty())
+        if (trim(text->string).empty())
+        {
             continue;
+        }
         auto const space =
             text->string.size() - ltrim(text->string).size();
-        if( n > space)
+        if (n > space)
+        {
             n = space;
+        }
     }
     return n;
 }
 
-} // adoc
-} // mrdocs
-} // clang
+} // clang::mrdocs::adoc

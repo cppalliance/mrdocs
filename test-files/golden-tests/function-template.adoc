@@ -52,10 +52,11 @@
 
 === Synopsis
 
-Declared in `<pass:[function-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;function&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
+template&lt;typename T&gt;
 void
 f0(int x);
 ----
@@ -65,10 +66,11 @@ f0(int x);
 
 === Synopsis
 
-Declared in `<pass:[function-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;function&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
+template&lt;typename T&gt;
 void
 f1(T t);
 ----
@@ -78,10 +80,11 @@ f1(T t);
 
 === Synopsis
 
-Declared in `<pass:[function-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;function&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T = int>
+template&lt;typename T = int&gt;
 void
 f2();
 ----
@@ -91,12 +94,13 @@ f2();
 
 === Synopsis
 
-Declared in `<pass:[function-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;function&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<
+template&lt;
     typename T,
-    class U = int>
+    class U = int&gt;
 void
 f3();
 ----
@@ -106,10 +110,11 @@ f3();
 
 === Synopsis
 
-Declared in `<pass:[function-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;function&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<int I>
+template&lt;int I&gt;
 void
 g0(int x);
 ----
@@ -119,10 +124,11 @@ g0(int x);
 
 === Synopsis
 
-Declared in `<pass:[function-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;function&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<int I = 1>
+template&lt;int I = 1&gt;
 void
 g1();
 ----
@@ -132,12 +138,13 @@ g1();
 
 === Synopsis
 
-Declared in `<pass:[function-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;function&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<
+template&lt;
     int J,
-    int I = 1>
+    int I = 1&gt;
 void
 g2();
 ----
@@ -147,10 +154,11 @@ g2();
 
 === Synopsis
 
-Declared in `<pass:[function-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;function&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<class x:auto>
+template&lt;class x&colon;auto&gt;
 void
 h0(auto x);
 ----
@@ -160,12 +168,13 @@ h0(auto x);
 
 === Synopsis
 
-Declared in `<pass:[function-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;function&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<
-    class x:auto,
-    class auto:2>
+template&lt;
+    class x&colon;auto,
+    class auto&colon;2&gt;
 void
 h1(
     auto x,
@@ -177,12 +186,13 @@ h1(
 
 === Synopsis
 
-Declared in `<pass:[function-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;function&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<
+template&lt;
     typename T = int,
-    int I = 1>
+    int I = 1&gt;
 void
 i();
 ----
@@ -192,10 +202,11 @@ i();
 
 === Synopsis
 
-Declared in `<pass:[function-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;function&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<template<typename U> typename T>
+template&lt;template&lt;typename U&gt; typename T&gt;
 void
 j0();
 ----
@@ -205,12 +216,13 @@ j0();
 
 === Synopsis
 
-Declared in `<pass:[function-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;function&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<
-    template<typename W> typename X,
-    template<typename Y> typename Z>
+template&lt;
+    template&lt;typename W&gt; typename X,
+    template&lt;typename Y&gt; typename Z&gt;
 void
 j1();
 ----

@@ -28,8 +28,9 @@
 
 === Synopsis
 
-Declared in `<pass:[noreturn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;noreturn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f1();
@@ -40,8 +41,9 @@ f1();
 
 === Synopsis
 
-Declared in `<pass:[noreturn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;noreturn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct T;
 ----
@@ -81,8 +83,9 @@ struct T;
 
 === Synopsis
 
-Declared in `<pass:[noreturn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;noreturn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 static
 void
@@ -94,8 +97,9 @@ f2();
 
 === Synopsis
 
-Declared in `<pass:[noreturn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;noreturn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f3();
@@ -106,8 +110,9 @@ f3();
 
 === Synopsis
 
-Declared in `<pass:[noreturn.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;noreturn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 friend
 void

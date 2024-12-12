@@ -19,8 +19,9 @@
 
 === Synopsis
 
-Declared in `<pass:[record-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct T;
 ----
@@ -59,18 +60,18 @@ struct T;
 | Name | Description 
 
 | <<#T-g1,`g1`>> 
-| 
-brief-g1
+| brief&hyphen;g1
+
 
 
 | <<#T-g2,`g2`>> 
-| 
-brief-g2
+| brief&hyphen;g2
+
 
 
 | <<#T-g3,`g3`>> 
-| 
-brief-g3
+| brief&hyphen;g3
+
 
 
 |===
@@ -81,8 +82,9 @@ brief-g3
 
 === Synopsis
 
-Declared in `<pass:[record-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 using U1 = int;
 ----
@@ -92,8 +94,9 @@ using U1 = int;
 
 === Synopsis
 
-Declared in `<pass:[record-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 typedef char U2;
 ----
@@ -103,8 +106,9 @@ typedef char U2;
 
 === Synopsis
 
-Declared in `<pass:[record-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f1();
@@ -115,8 +119,9 @@ f1();
 
 === Synopsis
 
-Declared in `<pass:[record-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int
 f2();
@@ -127,8 +132,9 @@ f2();
 
 === Synopsis
 
-Declared in `<pass:[record-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 char
 f3();
@@ -137,14 +143,15 @@ f3();
 [#T-g1]
 == <<#T,T>>::g1
 
+brief&hyphen;g1
 
-brief-g1
 
 
 === Synopsis
 
-Declared in `<pass:[record-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 g1();
@@ -152,21 +159,22 @@ g1();
 
 === Description
 
-
 desc
+
 
 
 [#T-g2]
 == <<#T,T>>::g2
 
+brief&hyphen;g2
 
-brief-g2
 
 
 === Synopsis
 
-Declared in `<pass:[record-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int
 g2();
@@ -174,21 +182,22 @@ g2();
 
 === Return Value
 
-
 the number 2
+
 
 
 [#T-g3]
 == <<#T,T>>::g3
 
+brief&hyphen;g3
 
-brief-g3
 
 
 === Synopsis
 
-Declared in `<pass:[record-1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 char
 g3(int x);
@@ -196,8 +205,8 @@ g3(int x);
 
 === Return Value
 
-
 the separator
+
 
 
 === Parameters
@@ -206,8 +215,8 @@ the separator
 | Name | Description
 
 | *x*
-| 
-any old number
+| any old number
+
 
 |===
 

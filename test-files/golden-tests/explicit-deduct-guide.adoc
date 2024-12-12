@@ -18,16 +18,16 @@
 |===
 | Name | Description 
 
-| <<#X-0d,`X<0>`>> 
+| <<#X-0d,`X&lt;0&gt;`>> 
 | 
 
-| <<#X-00,`X<0>`>> 
+| <<#X-00,`X&lt;0&gt;`>> 
 | 
 
-| <<#X-0b,`X<0>`>> 
+| <<#X-0b,`X&lt;0&gt;`>> 
 | 
 
-| <<#X-06,`X<0>`>> 
+| <<#X-06,`X&lt;0&gt;`>> 
 | 
 
 |===
@@ -37,10 +37,11 @@
 
 === Synopsis
 
-Declared in `<pass:[explicit-deduct-guide.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<int>
+template&lt;int&gt;
 struct X;
 ----
 
@@ -48,48 +49,52 @@ struct X;
 
 
 [#X-0d]
-== <<#X-0e,X>><0>
+== <<#X-0e,X>>&lt;0&gt;
 
 === Synopsis
 
-Declared in `<pass:[explicit-deduct-guide.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<#X-0e,X>><0>(bool) -> <<#X-0e,X>><0>;
+<<#X-0e,X>>&lt;0&gt;(bool) -> <<#X-0e,X>>&lt;0&gt;;
 ----
 
 [#X-00]
-== <<#X-0e,X>><0>
+== <<#X-0e,X>>&lt;0&gt;
 
 === Synopsis
 
-Declared in `<pass:[explicit-deduct-guide.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<#X-0e,X>><0>(char) -> <<#X-0e,X>><0>;
+<<#X-0e,X>>&lt;0&gt;(char) -> <<#X-0e,X>>&lt;0&gt;;
 ----
 
 [#X-0b]
-== <<#X-0e,X>><0>
+== <<#X-0e,X>>&lt;0&gt;
 
 === Synopsis
 
-Declared in `<pass:[explicit-deduct-guide.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<#X-0e,X>><0>(int) -> <<#X-0e,X>><0>;
+<<#X-0e,X>>&lt;0&gt;(int) -> <<#X-0e,X>>&lt;0&gt;;
 ----
 
 [#X-06]
-== <<#X-0e,X>><0>
+== <<#X-0e,X>>&lt;0&gt;
 
 === Synopsis
 
-Declared in `<pass:[explicit-deduct-guide.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<bool B = true>
-<<#X-0e,X>><0>(long) -> <<#X-0e,X>><0>;
+template&lt;bool B = true&gt;
+<<#X-0e,X>>&lt;0&gt;(long) -> <<#X-0e,X>>&lt;0&gt;;
 ----
 
 

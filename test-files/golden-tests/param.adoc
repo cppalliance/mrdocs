@@ -28,8 +28,9 @@
 
 === Synopsis
 
-Declared in `<pass:[param.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;param&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f(int x);
@@ -49,8 +50,9 @@ f(int x);
 
 === Synopsis
 
-Declared in `<pass:[param.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;param&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 g(
@@ -74,8 +76,9 @@ g(
 
 === Synopsis
 
-Declared in `<pass:[param.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;param&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 h(
@@ -102,8 +105,9 @@ h(
 
 === Synopsis
 
-Declared in `<pass:[param.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;param&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 i(

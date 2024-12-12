@@ -10,8 +10,8 @@
 | Name | Description 
 
 | <<#distance,`distance`>> 
-| 
-Return the distance between two points
+| Return the distance between two points
+
 
 
 |===
@@ -19,14 +19,15 @@ Return the distance between two points
 [#distance]
 == distance
 
-
 Return the distance between two points
+
 
 
 === Synopsis
 
-Declared in `<pass:[distance.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;distance&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 double
 distance(
@@ -38,15 +39,15 @@ distance(
 
 === Description
 
-
 This function returns the distance between two points
-according to the Euclidean distance formula.
+according to the Euclidean distance formula&period;
+
 
 
 === Return Value
 
-
 The distance between the two points
+
 
 
 === Parameters
@@ -55,21 +56,21 @@ The distance between the two points
 | Name | Description
 
 | *x0*
-| pass:[
-The x-coordinate of the first point
-]
+| The x&amp;hyphen&semi;coordinate of the first point
+
+
 | *y0*
-| pass:[
-The y-coordinate of the first point
-]
+| The y&amp;hyphen&semi;coordinate of the first point
+
+
 | *x1*
-| pass:[
-The x-coordinate of the second point
-]
+| The x&amp;hyphen&semi;coordinate of the second point
+
+
 | *y1*
-| pass:[
-The y-coordinate of the second point
-]
+| The y&amp;hyphen&semi;coordinate of the second point
+
+
 |===
 
 

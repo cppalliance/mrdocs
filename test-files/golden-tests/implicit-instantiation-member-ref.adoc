@@ -52,10 +52,11 @@
 
 === Synopsis
 
-Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
+template&lt;typename T&gt;
 struct S0;
 ----
 
@@ -85,8 +86,9 @@ struct S0;
 
 === Synopsis
 
-Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 using M0 = T;
 ----
@@ -96,8 +98,9 @@ using M0 = T;
 
 === Synopsis
 
-Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct S1;
 ----
@@ -110,11 +113,12 @@ struct S1;
 
 === Synopsis
 
-Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename U>
-using M1 = <<#S0,S0>><U>;
+template&lt;typename U&gt;
+using M1 = <<#S0,S0>>&lt;U&gt;;
 ----
 
 [#S0-S2]
@@ -122,10 +126,11 @@ using M1 = <<#S0,S0>><U>;
 
 === Synopsis
 
-Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename U>
+template&lt;typename U&gt;
 struct S2;
 ----
 
@@ -155,8 +160,9 @@ struct S2;
 
 === Synopsis
 
-Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 using M2 = U;
 ----
@@ -166,8 +172,9 @@ using M2 = U;
 
 === Synopsis
 
-Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct S3;
 ----
@@ -180,11 +187,12 @@ struct S3;
 
 === Synopsis
 
-Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename V>
-using M3 = <<#S0-S2,S2>><U>;
+template&lt;typename V&gt;
+using M3 = <<#S0-S2,S2>>&lt;U&gt;;
 ----
 
 [#S0-S2-S4]
@@ -192,10 +200,11 @@ using M3 = <<#S0-S2,S2>><U>;
 
 === Synopsis
 
-Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename V>
+template&lt;typename V&gt;
 struct S4;
 ----
 
@@ -216,8 +225,9 @@ struct S4;
 
 === Synopsis
 
-Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 using M4 = V;
 ----
@@ -227,10 +237,11 @@ using M4 = V;
 
 === Synopsis
 
-Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using A0 = <<#S0,S0>><int>;
+using A0 = <<#S0,S0>>&lt;int&gt;;
 ----
 
 [#A1]
@@ -238,8 +249,9 @@ using A0 = <<#S0,S0>><int>;
 
 === Synopsis
 
-Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 using A1 = <<#A0,A0>>::<<#S0-M0,M0>>;
 ----
@@ -249,8 +261,9 @@ using A1 = <<#A0,A0>>::<<#S0-M0,M0>>;
 
 === Synopsis
 
-Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 using A2 = <<#A0,A0>>::<<#S0-S1,S1>>;
 ----
@@ -260,10 +273,11 @@ using A2 = <<#A0,A0>>::<<#S0-S1,S1>>;
 
 === Synopsis
 
-Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using A3 = <<#S0,S0>><long>::<<#S0-M0,M0>>;
+using A3 = <<#S0,S0>>&lt;long&gt;::<<#S0-M0,M0>>;
 ----
 
 [#A4]
@@ -271,10 +285,11 @@ using A3 = <<#S0,S0>><long>::<<#S0-M0,M0>>;
 
 === Synopsis
 
-Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using A4 = <<#S0,S0>><long long>::<<#S0-S1,S1>>;
+using A4 = <<#S0,S0>>&lt;long long&gt;::<<#S0-S1,S1>>;
 ----
 
 [#A5]
@@ -282,10 +297,11 @@ using A4 = <<#S0,S0>><long long>::<<#S0-S1,S1>>;
 
 === Synopsis
 
-Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using A5 = <<#S0,S0>><void>;
+using A5 = <<#S0,S0>>&lt;void&gt;;
 ----
 
 [#A6]
@@ -293,10 +309,11 @@ using A5 = <<#S0,S0>><void>;
 
 === Synopsis
 
-Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using A6 = <<#A5,A5>>::<<#S0-M1,M1>><short>::<<#S0-M0,M0>>;
+using A6 = <<#A5,A5>>::<<#S0-M1,M1>>&lt;short&gt;::<<#S0-M0,M0>>;
 ----
 
 [#A7]
@@ -304,10 +321,11 @@ using A6 = <<#A5,A5>>::<<#S0-M1,M1>><short>::<<#S0-M0,M0>>;
 
 === Synopsis
 
-Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using A7 = <<#A5,A5>>::<<#S0-S2,S2>><bool>::<<#S0-S2-M2,M2>>;
+using A7 = <<#A5,A5>>::<<#S0-S2,S2>>&lt;bool&gt;::<<#S0-S2-M2,M2>>;
 ----
 
 [#A8]
@@ -315,10 +333,11 @@ using A7 = <<#A5,A5>>::<<#S0-S2,S2>><bool>::<<#S0-S2-M2,M2>>;
 
 === Synopsis
 
-Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using A8 = <<#A5,A5>>::<<#S0-S2,S2>><int>::<<#S0-S2-S3,S3>>;
+using A8 = <<#A5,A5>>::<<#S0-S2,S2>>&lt;int&gt;::<<#S0-S2-S3,S3>>;
 ----
 
 [#A9]
@@ -326,10 +345,11 @@ using A8 = <<#A5,A5>>::<<#S0-S2,S2>><int>::<<#S0-S2-S3,S3>>;
 
 === Synopsis
 
-Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using A9 = <<#A5,A5>>::<<#S0-S2,S2>><char>::<<#S0-S2-M3,M3>><int>::<<#S0-S2-M3,M3>><unsigned int>::<<#S0-S2-M2,M2>>;
+using A9 = <<#A5,A5>>::<<#S0-S2,S2>>&lt;char&gt;::<<#S0-S2-M3,M3>>&lt;int&gt;::<<#S0-S2-M3,M3>>&lt;unsigned int&gt;::<<#S0-S2-M2,M2>>;
 ----
 
 [#A10]
@@ -337,10 +357,11 @@ using A9 = <<#A5,A5>>::<<#S0-S2,S2>><char>::<<#S0-S2-M3,M3>><int>::<<#S0-S2-M3,M
 
 === Synopsis
 
-Declared in `<pass:[implicit-instantiation-member-ref.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using A10 = <<#A5,A5>>::<<#S0-S2,S2>><float>::<<#S0-S2-M3,M3>><double>::<<#S0-S2-M3,M3>><long double>::<<#S0-S2-S4,S4>><void>::<<#S0-S2-S4-M4,M4>>;
+using A10 = <<#A5,A5>>::<<#S0-S2,S2>>&lt;float&gt;::<<#S0-S2-M3,M3>>&lt;double&gt;::<<#S0-S2-M3,M3>>&lt;long double&gt;::<<#S0-S2-S4,S4>>&lt;void&gt;::<<#S0-S2-S4-M4,M4>>;
 ----
 
 

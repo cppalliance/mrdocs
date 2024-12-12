@@ -10,35 +10,35 @@
 | Name | Description 
 
 | <<#f1,`f1`>> 
-| 
-brief
+| brief
+
 
 
 | <<#f2,`f2`>> 
-| 
-brief
+| brief
+
 
 
 | <<#f3,`f3`>> 
-| 
-brief
+| brief
+
 
 
 | <<#f4,`f4`>> 
-| 
-brief                    x
+| brief                    x
+
 
 
 | <<#f5,`f5`>> 
-| 
-br
+| br
 ief
+
 
 
 | <<#f6,`f6`>> 
-| 
-br
+| br
 ief
+
 
 
 |===
@@ -46,14 +46,15 @@ ief
 [#f1]
 == f1
 
-
 brief
+
 
 
 === Synopsis
 
-Declared in `<pass:[brief-2.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;brief&hyphen;2&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f1();
@@ -62,14 +63,15 @@ f1();
 [#f2]
 == f2
 
-
 brief
+
 
 
 === Synopsis
 
-Declared in `<pass:[brief-2.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;brief&hyphen;2&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f2();
@@ -78,14 +80,15 @@ f2();
 [#f3]
 == f3
 
-
 brief
+
 
 
 === Synopsis
 
-Declared in `<pass:[brief-2.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;brief&hyphen;2&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f3();
@@ -94,14 +97,15 @@ f3();
 [#f4]
 == f4
 
-
 brief                    x
+
 
 
 === Synopsis
 
-Declared in `<pass:[brief-2.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;brief&hyphen;2&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f4();
@@ -109,23 +113,24 @@ f4();
 
 === Description
 
-
 br
 ief
+
 
 
 [#f5]
 == f5
 
-
 br
 ief
 
 
+
 === Synopsis
 
-Declared in `<pass:[brief-2.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;brief&hyphen;2&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f5();
@@ -134,15 +139,16 @@ f5();
 [#f6]
 == f6
 
-
 br
 ief
 
 
+
 === Synopsis
 
-Declared in `<pass:[brief-2.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;brief&hyphen;2&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f6();
@@ -150,8 +156,8 @@ f6();
 
 === Description
 
-
 desc
+
 
 
 

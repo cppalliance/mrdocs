@@ -21,10 +21,10 @@
 | <<#A-084,`A`>> 
 | 
 
-| <<#A-08e,`A<void>`>> 
+| <<#A-08e,`A&lt;void&gt;`>> 
 | 
 
-| <<#A-01,`A<T&>`>> 
+| <<#A-01,`A&lt;T&&gt;`>> 
 | 
 
 |===
@@ -34,35 +34,38 @@
 
 === Synopsis
 
-Declared in `<pass:[var-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;var&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
-unsigned int A = pass:[sizeof(T)];
+template&lt;typename T&gt;
+unsigned int A = sizeof(T);
 ----
 
 [#A-08e]
-== A<void>
+== A&lt;void&gt;
 
 === Synopsis
 
-Declared in `<pass:[var-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;var&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<>
-unsigned int <<#A-084,A>><void> = 0;
+template&lt;&gt;
+unsigned int <<#A-084,A>>&lt;void&gt; = 0;
 ----
 
 [#A-01]
-== A<T&>
+== A&lt;T&&gt;
 
 === Synopsis
 
-Declared in `<pass:[var-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;var&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
-unsigned int <<#A-084,A>><T&> = pass:[sizeof(T)];
+template&lt;typename T&gt;
+unsigned int <<#A-084,A>>&lt;T&&gt; = sizeof(T);
 ----
 
 [#B]
@@ -70,8 +73,9 @@ unsigned int <<#A-084,A>><T&> = pass:[sizeof(T)];
 
 === Synopsis
 
-Declared in `<pass:[var-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;var&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct B;
 ----
@@ -84,10 +88,10 @@ struct B;
 | <<#B-C-0e,`C`>> 
 | 
 
-| <<#B-C-05,`C<int>`>> 
+| <<#B-C-05,`C&lt;int&gt;`>> 
 | 
 
-| <<#B-C-0c,`C<T*>`>> 
+| <<#B-C-0c,`C&lt;T*&gt;`>> 
 | 
 
 |===
@@ -99,38 +103,41 @@ struct B;
 
 === Synopsis
 
-Declared in `<pass:[var-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;var&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
+template&lt;typename T&gt;
 static
 unsigned int C = 0;
 ----
 
 [#B-C-05]
-== <<#B,B>>::C<int>
+== <<#B,B>>::C&lt;int&gt;
 
 === Synopsis
 
-Declared in `<pass:[var-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;var&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<>
+template&lt;&gt;
 static
-unsigned int <<#B-C-0e,C>><int> = pass:[-1];
+unsigned int <<#B-C-0e,C>>&lt;int&gt; = &hyphen;1;
 ----
 
 [#B-C-0c]
-== <<#B,B>>::C<T*>
+== <<#B,B>>::C&lt;T*&gt;
 
 === Synopsis
 
-Declared in `<pass:[var-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;var&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
+template&lt;typename T&gt;
 static
-unsigned int <<#B-C-0e,C>><T*> = pass:[sizeof(T)];
+unsigned int <<#B-C-0e,C>>&lt;T*&gt; = sizeof(T);
 ----
 
 

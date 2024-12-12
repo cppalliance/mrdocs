@@ -18,21 +18,22 @@
 
 === Synopsis
 
-Declared in `<pass:[temp/ft_expl.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;temp&sol;ft&lowbar;expl&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
+template&lt;typename T&gt;
 void
 <<#f-03,f>>();
 ----
 
 [.small]#<<#f-03,_» more..._>>#
 
-[source,cpp,subs="verbatim,macros,-callouts"]
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<>
+template&lt;&gt;
 void
-<<#f-0c,f>><int>();
+<<#f-0c,f>>&lt;int&gt;();
 ----
 
 [.small]#<<#f-0c,_» more..._>>#
@@ -42,25 +43,27 @@ void
 
 === Synopsis
 
-Declared in `<pass:[temp/ft_expl.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;temp&sol;ft&lowbar;expl&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
+template&lt;typename T&gt;
 void
 f();
 ----
 
 [#f-0c]
-== f<int>
+== f&lt;int&gt;
 
 === Synopsis
 
-Declared in `<pass:[temp/ft_expl.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;temp&sol;ft&lowbar;expl&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<>
+template&lt;&gt;
 void
-<<#f-03,f>><int>();
+<<#f-03,f>>&lt;int&gt;();
 ----
 
 

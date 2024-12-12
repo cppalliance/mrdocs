@@ -22,8 +22,9 @@
 
 === Synopsis
 
-Declared in `<pass:[no_unique_address.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;no&lowbar;unique&lowbar;address&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct Empty;
 ----
@@ -36,8 +37,9 @@ struct Empty;
 
 === Synopsis
 
-Declared in `<pass:[no_unique_address.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;no&lowbar;unique&lowbar;address&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct T;
 ----
@@ -62,8 +64,9 @@ struct T;
 
 === Synopsis
 
-Declared in `<pass:[no_unique_address.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;no&lowbar;unique&lowbar;address&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int i;
 ----
@@ -73,10 +76,11 @@ int i;
 
 === Synopsis
 
-Declared in `<pass:[no_unique_address.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;no&lowbar;unique&lowbar;address&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<#Empty,Empty>> e = pass:[Empty{}];
+<<#Empty,Empty>> e = Empty&lcub;&rcub;;
 ----
 
 

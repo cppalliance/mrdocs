@@ -31,8 +31,9 @@
 
 === Synopsis
 
-Declared in `<pass:[class-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct S;
 ----
@@ -45,10 +46,11 @@ struct S;
 
 === Synopsis
 
-Declared in `<pass:[class-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
+template&lt;typename T&gt;
 struct C0;
 ----
 
@@ -84,8 +86,9 @@ struct C0;
 
 === Synopsis
 
-Declared in `<pass:[class-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int w;
 ----
@@ -95,8 +98,9 @@ int w;
 
 === Synopsis
 
-Declared in `<pass:[class-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 <<#S,S>> x;
 ----
@@ -106,8 +110,9 @@ Declared in `<pass:[class-template.cpp]>`
 
 === Synopsis
 
-Declared in `<pass:[class-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 T y;
 ----
@@ -117,8 +122,9 @@ T y;
 
 === Synopsis
 
-Declared in `<pass:[class-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct N0;
 ----
@@ -140,8 +146,9 @@ struct N0;
 
 === Synopsis
 
-Declared in `<pass:[class-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int z;
 ----
@@ -151,8 +158,9 @@ int z;
 
 === Synopsis
 
-Declared in `<pass:[class-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct C1;
 ----
@@ -183,8 +191,9 @@ struct C1;
 
 === Synopsis
 
-Declared in `<pass:[class-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int w;
 ----
@@ -194,10 +203,11 @@ int w;
 
 === Synopsis
 
-Declared in `<pass:[class-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
+template&lt;typename T&gt;
 struct N1;
 ----
 
@@ -224,8 +234,9 @@ struct N1;
 
 === Synopsis
 
-Declared in `<pass:[class-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 <<#S,S>> x;
 ----
@@ -235,8 +246,9 @@ Declared in `<pass:[class-template.cpp]>`
 
 === Synopsis
 
-Declared in `<pass:[class-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 T y;
 ----
@@ -246,8 +258,9 @@ T y;
 
 === Synopsis
 
-Declared in `<pass:[class-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int z;
 ----
@@ -257,10 +270,11 @@ int z;
 
 === Synopsis
 
-Declared in `<pass:[class-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
+template&lt;typename T&gt;
 struct C2;
 ----
 
@@ -290,8 +304,9 @@ struct C2;
 
 === Synopsis
 
-Declared in `<pass:[class-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int v;
 ----
@@ -301,10 +316,11 @@ int v;
 
 === Synopsis
 
-Declared in `<pass:[class-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename U>
+template&lt;typename U&gt;
 struct N2;
 ----
 
@@ -334,8 +350,9 @@ struct N2;
 
 === Synopsis
 
-Declared in `<pass:[class-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 <<#S,S>> w;
 ----
@@ -345,8 +362,9 @@ Declared in `<pass:[class-template.cpp]>`
 
 === Synopsis
 
-Declared in `<pass:[class-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 T x;
 ----
@@ -356,8 +374,9 @@ T x;
 
 === Synopsis
 
-Declared in `<pass:[class-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 U y;
 ----
@@ -367,8 +386,9 @@ U y;
 
 === Synopsis
 
-Declared in `<pass:[class-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int z;
 ----
@@ -378,10 +398,11 @@ int z;
 
 === Synopsis
 
-Declared in `<pass:[class-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
+template&lt;typename T&gt;
 struct C3;
 ----
 
@@ -402,8 +423,9 @@ struct C3;
 
 === Synopsis
 
-Declared in `<pass:[class-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int v;
 ----
