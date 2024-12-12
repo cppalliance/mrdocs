@@ -10,8 +10,8 @@
 | Name | Description 
 
 | <<#f1,`f1`>> 
-| 
-brief
+| brief
+
 
 
 |===
@@ -19,14 +19,15 @@ brief
 [#f1]
 == f1
 
-
 brief
+
 
 
 === Synopsis
 
-Declared in `<pass:[commands.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;commands&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f1();
@@ -34,8 +35,8 @@ f1();
 
 === Description
 
-
 mrdocs hello
+
 
 
 

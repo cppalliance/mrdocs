@@ -172,8 +172,9 @@
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct A;
 ----
@@ -186,12 +187,13 @@ struct A;
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<
+template&lt;
     typename T,
-    typename U>
+    typename U&gt;
 struct B;
 ----
 
@@ -203,8 +205,9 @@ struct B;
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 using C = <<#A,A>>;
 ----
@@ -214,10 +217,11 @@ using C = <<#A,A>>;
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using D = <<#B,B>><short, long>;
+using D = <<#B,B>>&lt;short, long&gt;;
 ----
 
 [#E]
@@ -225,11 +229,12 @@ using D = <<#B,B>><short, long>;
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
-using E = <<#B,B>><T, long>;
+template&lt;typename T&gt;
+using E = <<#B,B>>&lt;T, long&gt;;
 ----
 
 [#f0]
@@ -237,8 +242,9 @@ using E = <<#B,B>><T, long>;
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f0(<<#A,A>>);
@@ -249,8 +255,9 @@ f0(<<#A,A>>);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f1(<<#A,A>> const);
@@ -261,8 +268,9 @@ f1(<<#A,A>> const);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f2(<<#A,A>>&);
@@ -273,8 +281,9 @@ f2(<<#A,A>>&);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f3(<<#A,A>> const&);
@@ -285,8 +294,9 @@ f3(<<#A,A>> const&);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f4(<<#A,A>>*);
@@ -297,8 +307,9 @@ f4(<<#A,A>>*);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f5(<<#A,A>> const*);
@@ -309,8 +320,9 @@ f5(<<#A,A>> const*);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f6(<<#A,A>>**);
@@ -321,8 +333,9 @@ f6(<<#A,A>>**);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f7(<<#A,A>> const**);
@@ -333,8 +346,9 @@ f7(<<#A,A>> const**);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f8(<<#A,A>> const const**);
@@ -345,8 +359,9 @@ f8(<<#A,A>> const const**);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 g0(<<#C,C>>);
@@ -357,8 +372,9 @@ g0(<<#C,C>>);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 g1(<<#C,C>> const);
@@ -369,8 +385,9 @@ g1(<<#C,C>> const);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 g2(<<#C,C>>&);
@@ -381,8 +398,9 @@ g2(<<#C,C>>&);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 g3(<<#C,C>> const&);
@@ -393,8 +411,9 @@ g3(<<#C,C>> const&);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 g4(<<#C,C>>*);
@@ -405,8 +424,9 @@ g4(<<#C,C>>*);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 g5(<<#C,C>> const*);
@@ -417,8 +437,9 @@ g5(<<#C,C>> const*);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 g6(<<#C,C>>**);
@@ -429,8 +450,9 @@ g6(<<#C,C>>**);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 g7(<<#C,C>> const**);
@@ -441,8 +463,9 @@ g7(<<#C,C>> const**);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 g8(<<#C,C>> const const**);
@@ -453,11 +476,12 @@ g8(<<#C,C>> const const**);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-h0(<<#B,B>><short, long>);
+h0(<<#B,B>>&lt;short, long&gt;);
 ----
 
 [#h1]
@@ -465,11 +489,12 @@ h0(<<#B,B>><short, long>);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-h1(<<#B,B>><short, long> const);
+h1(<<#B,B>>&lt;short, long&gt; const);
 ----
 
 [#h2]
@@ -477,11 +502,12 @@ h1(<<#B,B>><short, long> const);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-h2(<<#B,B>><short, long>&);
+h2(<<#B,B>>&lt;short, long&gt;&);
 ----
 
 [#h3]
@@ -489,11 +515,12 @@ h2(<<#B,B>><short, long>&);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-h3(<<#B,B>><short, long> const&);
+h3(<<#B,B>>&lt;short, long&gt; const&);
 ----
 
 [#h4]
@@ -501,11 +528,12 @@ h3(<<#B,B>><short, long> const&);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-h4(<<#B,B>><short, long>*);
+h4(<<#B,B>>&lt;short, long&gt;*);
 ----
 
 [#h5]
@@ -513,11 +541,12 @@ h4(<<#B,B>><short, long>*);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-h5(<<#B,B>><short, long> const*);
+h5(<<#B,B>>&lt;short, long&gt; const*);
 ----
 
 [#h6]
@@ -525,11 +554,12 @@ h5(<<#B,B>><short, long> const*);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-h6(<<#B,B>><short, long>**);
+h6(<<#B,B>>&lt;short, long&gt;**);
 ----
 
 [#h7]
@@ -537,11 +567,12 @@ h6(<<#B,B>><short, long>**);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-h7(<<#B,B>><short, long> const**);
+h7(<<#B,B>>&lt;short, long&gt; const**);
 ----
 
 [#h8]
@@ -549,11 +580,12 @@ h7(<<#B,B>><short, long> const**);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-h8(<<#B,B>><short, long> const const**);
+h8(<<#B,B>>&lt;short, long&gt; const const**);
 ----
 
 [#i0]
@@ -561,8 +593,9 @@ h8(<<#B,B>><short, long> const const**);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 i0(<<#D,D>>);
@@ -573,8 +606,9 @@ i0(<<#D,D>>);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 i1(<<#D,D>> const);
@@ -585,8 +619,9 @@ i1(<<#D,D>> const);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 i2(<<#D,D>>&);
@@ -597,8 +632,9 @@ i2(<<#D,D>>&);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 i3(<<#D,D>> const&);
@@ -609,8 +645,9 @@ i3(<<#D,D>> const&);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 i4(<<#D,D>>*);
@@ -621,8 +658,9 @@ i4(<<#D,D>>*);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 i5(<<#D,D>> const*);
@@ -633,8 +671,9 @@ i5(<<#D,D>> const*);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 i6(<<#D,D>>**);
@@ -645,8 +684,9 @@ i6(<<#D,D>>**);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 i7(<<#D,D>> const**);
@@ -657,8 +697,9 @@ i7(<<#D,D>> const**);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 i8(<<#D,D>> const const**);
@@ -669,11 +710,12 @@ i8(<<#D,D>> const const**);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-j0(<<#E,E>><short>);
+j0(<<#E,E>>&lt;short&gt;);
 ----
 
 [#j1]
@@ -681,11 +723,12 @@ j0(<<#E,E>><short>);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-j1(<<#E,E>><short> const);
+j1(<<#E,E>>&lt;short&gt; const);
 ----
 
 [#j2]
@@ -693,11 +736,12 @@ j1(<<#E,E>><short> const);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-j2(<<#E,E>><short>&);
+j2(<<#E,E>>&lt;short&gt;&);
 ----
 
 [#j3]
@@ -705,11 +749,12 @@ j2(<<#E,E>><short>&);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-j3(<<#E,E>><short> const&);
+j3(<<#E,E>>&lt;short&gt; const&);
 ----
 
 [#j4]
@@ -717,11 +762,12 @@ j3(<<#E,E>><short> const&);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-j4(<<#E,E>><short>*);
+j4(<<#E,E>>&lt;short&gt;*);
 ----
 
 [#j5]
@@ -729,11 +775,12 @@ j4(<<#E,E>><short>*);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-j5(<<#E,E>><short> const*);
+j5(<<#E,E>>&lt;short&gt; const*);
 ----
 
 [#j6]
@@ -741,11 +788,12 @@ j5(<<#E,E>><short> const*);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-j6(<<#E,E>><short>**);
+j6(<<#E,E>>&lt;short&gt;**);
 ----
 
 [#j7]
@@ -753,11 +801,12 @@ j6(<<#E,E>><short>**);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-j7(<<#E,E>><short> const**);
+j7(<<#E,E>>&lt;short&gt; const**);
 ----
 
 [#j8]
@@ -765,11 +814,12 @@ j7(<<#E,E>><short> const**);
 
 === Synopsis
 
-Declared in `<pass:[type-resolution.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-j8(<<#E,E>><short> const const**);
+j8(<<#E,E>>&lt;short&gt; const const**);
 ----
 
 

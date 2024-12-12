@@ -19,10 +19,11 @@
 
 === Synopsis
 
-Declared in `<pass:[temp/ct_mft_expl_outside.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;temp&sol;ct&lowbar;mft&lowbar;expl&lowbar;outside&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
+template&lt;typename T&gt;
 struct A;
 ----
 
@@ -43,10 +44,11 @@ struct A;
 
 === Synopsis
 
-Declared in `<pass:[temp/ct_mft_expl_outside.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;temp&sol;ct&lowbar;mft&lowbar;expl&lowbar;outside&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename U>
+template&lt;typename U&gt;
 void
 f();
 ----

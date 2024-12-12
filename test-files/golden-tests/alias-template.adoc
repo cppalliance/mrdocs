@@ -28,10 +28,11 @@
 
 === Synopsis
 
-Declared in `<pass:[alias-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;alias&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
+template&lt;typename T&gt;
 struct A;
 ----
 
@@ -43,12 +44,13 @@ struct A;
 
 === Synopsis
 
-Declared in `<pass:[alias-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;alias&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<
+template&lt;
     typename T,
-    typename U>
+    typename U&gt;
 struct B;
 ----
 
@@ -60,11 +62,12 @@ struct B;
 
 === Synopsis
 
-Declared in `<pass:[alias-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;alias&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
-using C = <<#A,A>><T>;
+template&lt;typename T&gt;
+using C = <<#A,A>>&lt;T&gt;;
 ----
 
 [#D]
@@ -72,10 +75,11 @@ using C = <<#A,A>><T>;
 
 === Synopsis
 
-Declared in `<pass:[alias-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;alias&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
+template&lt;typename T&gt;
 struct D;
 ----
 
@@ -96,11 +100,12 @@ struct D;
 
 === Synopsis
 
-Declared in `<pass:[alias-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;alias&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename U>
-using E = <<#B,B>><T, U>;
+template&lt;typename U&gt;
+using E = <<#B,B>>&lt;T, U&gt;;
 ----
 
 

@@ -10,18 +10,18 @@
 | Name | Description 
 
 | <<#T,`T`>> 
-| 
-Struct T brief
+| Struct T brief
+
 
 
 | <<#U,`U`>> 
-| 
-Struct U brief
+| Struct U brief
+
 
 
 | <<#V,`V`>> 
-| 
-Struct V brief
+| Struct V brief
+
 
 
 |===
@@ -29,14 +29,15 @@ Struct V brief
 [#T]
 == T
 
-
 Struct T brief
+
 
 
 === Synopsis
 
-Declared in `<pass:[friend-6.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;friend&hyphen;6&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct T;
 ----
@@ -47,13 +48,13 @@ struct T;
 | Name | Description 
 
 | <<#T-08friend-04ce,`[object Object]`>> 
-| 
-Friend int brief
+| Friend int brief
+
 
 
 | <<#T-08friend-04cb,`[object Object]`>> 
-| 
-Friend class Z brief
+| Friend class Z brief
+
 
 
 |===
@@ -63,14 +64,15 @@ Friend class Z brief
 [#T-08friend-04ce]
 == [object Object]
 
-
 Friend int brief
+
 
 
 === Synopsis
 
-Declared in `<pass:[friend-6.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;friend&hyphen;6&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 friend int;
 ----
@@ -78,14 +80,15 @@ friend int;
 [#T-08friend-04cb]
 == [object Object]
 
-
 Friend class Z brief
+
 
 
 === Synopsis
 
-Declared in `<pass:[friend-6.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;friend&hyphen;6&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 friend Z;
 ----
@@ -93,14 +96,15 @@ friend Z;
 [#U]
 == U
 
-
 Struct U brief
+
 
 
 === Synopsis
 
-Declared in `<pass:[friend-6.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;friend&hyphen;6&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct U;
 ----
@@ -111,8 +115,8 @@ struct U;
 | Name | Description 
 
 | <<#U-08friend,`[object Object]`>> 
-| 
-Friend T brief
+| Friend T brief
+
 
 
 |===
@@ -122,14 +126,15 @@ Friend T brief
 [#U-08friend]
 == [object Object]
 
-
 Friend T brief
+
 
 
 === Synopsis
 
-Declared in `<pass:[friend-6.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;friend&hyphen;6&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 friend <<#T,T>>;
 ----
@@ -137,14 +142,15 @@ friend <<#T,T>>;
 [#V]
 == V
 
-
 Struct V brief
+
 
 
 === Synopsis
 
-Declared in `<pass:[friend-6.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;friend&hyphen;6&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct V;
 ----
@@ -155,8 +161,8 @@ struct V;
 | Name | Description 
 
 | <<#V-08friend,`[object Object]`>> 
-| 
-Friend struct U brief
+| Friend struct U brief
+
 
 
 |===
@@ -166,14 +172,15 @@ Friend struct U brief
 [#V-08friend]
 == [object Object]
 
-
 Friend struct U brief
+
 
 
 === Synopsis
 
-Declared in `<pass:[friend-6.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;friend&hyphen;6&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 friend <<#U,U>>;
 ----

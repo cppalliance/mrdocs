@@ -52,8 +52,9 @@
 
 === Synopsis
 
-Declared in `<pass:[ns-variables.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 constexpr
 int const i = 0;
@@ -64,8 +65,9 @@ int const i = 0;
 
 === Synopsis
 
-Declared in `<pass:[ns-variables.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int j = 0;
 ----
@@ -75,8 +77,9 @@ int j = 0;
 
 === Synopsis
 
-Declared in `<pass:[ns-variables.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 constexpr
 extern
@@ -88,8 +91,9 @@ int const k = 1;
 
 === Synopsis
 
-Declared in `<pass:[ns-variables.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 extern
 int l = 1;
@@ -100,10 +104,11 @@ int l = 1;
 
 === Synopsis
 
-Declared in `<pass:[ns-variables.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-double pi = pass:[3.14];
+double pi = 3&period;14;
 ----
 
 [#T]
@@ -111,8 +116,9 @@ double pi = pass:[3.14];
 
 === Synopsis
 
-Declared in `<pass:[ns-variables.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct T;
 ----
@@ -125,8 +131,9 @@ struct T;
 
 === Synopsis
 
-Declared in `<pass:[ns-variables.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 extern
 <<#T,T>> t;
@@ -137,8 +144,9 @@ extern
 
 === Synopsis
 
-Declared in `<pass:[ns-variables.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 thread_local
 int x0 = 0;
@@ -149,8 +157,9 @@ int x0 = 0;
 
 === Synopsis
 
-Declared in `<pass:[ns-variables.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 static
 thread_local
@@ -162,8 +171,9 @@ int x1 = 0;
 
 === Synopsis
 
-Declared in `<pass:[ns-variables.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 constexpr
 static

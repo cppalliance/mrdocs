@@ -22,8 +22,9 @@
 
 === Synopsis
 
-Declared in `<pass:[static-data-def-constexpr.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;static&hyphen;data&hyphen;def&hyphen;constexpr&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct S;
 ----
@@ -45,12 +46,13 @@ struct S;
 
 === Synopsis
 
-Declared in `<pass:[static-data-def-constexpr.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;static&hyphen;data&hyphen;def&hyphen;constexpr&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 constexpr
 static
-<<#S,S>> const s = pass:[S{}];
+<<#S,S>> const s = S&lcub;&rcub;;
 ----
 
 [#T]
@@ -58,8 +60,9 @@ static
 
 === Synopsis
 
-Declared in `<pass:[static-data-def-constexpr.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;static&hyphen;data&hyphen;def&hyphen;constexpr&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct T;
 ----
@@ -81,8 +84,9 @@ struct T;
 
 === Synopsis
 
-Declared in `<pass:[static-data-def-constexpr.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;static&hyphen;data&hyphen;def&hyphen;constexpr&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 constexpr
 static

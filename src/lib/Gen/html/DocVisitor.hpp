@@ -30,7 +30,7 @@ class DocVisitor
     bool
     write(
         const doc::Node& node,
-        Fn&& fn)
+        Fn&& fn) const
     {
         const auto n_before = dest_.size();
         doc::visit(node, std::forward<Fn>(fn));
@@ -47,22 +47,51 @@ public:
     {
     }
 
-    void operator()(doc::Admonition const& I);
-    void operator()(doc::Code const& I);
-    void operator()(doc::Heading const& I);
-    void operator()(doc::Paragraph const& I);
-    void operator()(doc::Link const& I);
-    void operator()(doc::ListItem const& I);
-    void operator()(doc::Param const& I);
-    void operator()(doc::Returns const& I);
-    void operator()(doc::Text const& I);
-    void operator()(doc::Styled const& I);
-    void operator()(doc::TParam const& I);
-    void operator()(doc::Reference const& I);
-    void operator()(doc::Throws const& I);
+    void
+    operator()(doc::Admonition const& I) const;
 
-    std::size_t measureLeftMargin(
-        doc::List<doc::Text> const& list);
+    void
+    operator()(doc::Code const& I) const;
+
+    void
+    operator()(doc::Heading const& I) const;
+
+    void
+    operator()(doc::Paragraph const& I) const;
+
+    void
+    operator()(doc::Brief const& I) const;
+
+    void
+    operator()(doc::Link const& I) const;
+
+    void
+    operator()(doc::ListItem const& I) const;
+
+    void
+    operator()(doc::Param const& I) const;
+
+    void
+    operator()(doc::Returns const& I) const;
+
+    void
+    operator()(doc::Text const& I) const;
+
+    void
+    operator()(doc::Styled const& I) const;
+
+    void
+    operator()(doc::TParam const& I) const;
+
+    void
+    operator()(doc::Reference const& I) const;
+
+    void
+    operator()(doc::Throws const& I) const;
+
+    static
+    std::size_t
+    measureLeftMargin(doc::List<doc::Text> const& list);
 };
 
 } // html

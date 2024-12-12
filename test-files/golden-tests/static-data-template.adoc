@@ -19,10 +19,11 @@
 
 === Synopsis
 
-Declared in `<pass:[static-data-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;static&hyphen;data&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
+template&lt;typename T&gt;
 struct A;
 ----
 
@@ -34,10 +35,10 @@ struct A;
 | <<#A-x-0e,`x`>> 
 | 
 
-| <<#A-x-0a,`x<U*, T>`>> 
+| <<#A-x-0a,`x&lt;U*, T&gt;`>> 
 | 
 
-| <<#A-x-07,`x<T, long>`>> 
+| <<#A-x-07,`x&lt;T, long&gt;`>> 
 | 
 
 |===
@@ -49,43 +50,46 @@ struct A;
 
 === Synopsis
 
-Declared in `<pass:[static-data-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;static&hyphen;data&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<
+template&lt;
     typename U,
-    typename V>
+    typename V&gt;
 constexpr
 static
 T const x = 0;
 ----
 
 [#A-x-0a]
-== <<#A,A>>::x<U*, T>
+== <<#A,A>>::x&lt;U*, T&gt;
 
 === Synopsis
 
-Declared in `<pass:[static-data-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;static&hyphen;data&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename U>
+template&lt;typename U&gt;
 constexpr
 static
-T const <<#A-x-0e,x>><U*, T> = 1;
+T const <<#A-x-0e,x>>&lt;U*, T&gt; = 1;
 ----
 
 [#A-x-07]
-== <<#A,A>>::x<T, long>
+== <<#A,A>>::x&lt;T, long&gt;
 
 === Synopsis
 
-Declared in `<pass:[static-data-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;static&hyphen;data&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<>
+template&lt;&gt;
 constexpr
 static
-bool const <<#A-x-0e,x>><T, long> = 2;
+bool const <<#A-x-0e,x>>&lt;T, long&gt; = 2;
 ----
 
 

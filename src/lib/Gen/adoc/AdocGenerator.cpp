@@ -10,11 +10,11 @@
 //
 
 #include "AdocGenerator.hpp"
+#include "AdocEscape.hpp"
 #include "DocVisitor.hpp"
 #include <mrdocs/Support/Handlebars.hpp>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 namespace adoc {
 
 AdocGenerator::
@@ -34,27 +34,9 @@ toString(hbs::HandlebarsCorpus const& c, doc::Node const& I) const
 
 void
 AdocGenerator::
-escape(OutputRef& os, std::string_view str) const
+escape(OutputRef& os, std::string_view const str) const
 {
-    static constexpr std::string_view formattingChars = "\\`*_{}[]()#+-.!|";
-    bool const needsEscape = str.find_first_of(formattingChars) != std::string_view::npos;
-    if (needsEscape)
-    {
-        os << "pass:[";
-        // Using passthroughs to pass content (without substitutions) can couple
-        // your content to a specific output format, such as HTML.
-        // In these cases, you should use conditional preprocessor directives
-        // to route passthrough content for different output formats based on
-        // the current backend.
-        // If we would like to couple passthrough content to an HTML format,
-        // then we'd use `HTMLEscape(os, str)` instead of `os << str`.
-        os << str;
-        os << "]";
-    }
-    else
-    {
-        os << str;
-    }
+    AdocEscape(os, str);
 }
 
 } // adoc
@@ -65,5 +47,4 @@ makeAdocGenerator()
     return std::make_unique<adoc::AdocGenerator>();
 }
 
-} // mrdocs
-} // clang
+} // clang::mrdocs

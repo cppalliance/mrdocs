@@ -22,10 +22,11 @@
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
+template&lt;typename T&gt;
 struct A;
 ----
 
@@ -37,7 +38,7 @@ struct A;
 | <<#A-0e-B-07,`B`>> 
 | 
 
-| <<#A-0e-B-00,`B<double>`>> 
+| <<#A-0e-B-00,`B&lt;double&gt;`>> 
 | 
 
 |===
@@ -49,10 +50,11 @@ struct A;
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename U>
+template&lt;typename U&gt;
 struct B;
 ----
 
@@ -67,7 +69,7 @@ struct B;
 | <<#A-0e-B-07-D-09,`D`>> 
 | 
 
-| <<#A-0e-B-07-D-0f,`D<bool>`>> 
+| <<#A-0e-B-07-D-0f,`D&lt;bool&gt;`>> 
 | 
 
 |===
@@ -79,8 +81,9 @@ struct B;
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct C;
 ----
@@ -93,10 +96,11 @@ struct C;
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename V>
+template&lt;typename V&gt;
 struct D;
 ----
 
@@ -104,30 +108,32 @@ struct D;
 
 
 [#A-0e-B-07-D-0f]
-== <<#A-0e,A>>::<<#A-0e-B-07,B>>::D<bool>
+== <<#A-0e,A>>::<<#A-0e-B-07,B>>::D&lt;bool&gt;
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<>
-struct <<#A-0e-B-07-D-09,D>><bool>;
+template&lt;&gt;
+struct <<#A-0e-B-07-D-09,D>>&lt;bool&gt;;
 ----
 
 
 
 
 [#A-0e-B-00]
-== <<#A-0e,A>>::B<double>
+== <<#A-0e,A>>::B&lt;double&gt;
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<>
-struct <<#A-0e-B-07,B>><double>;
+template&lt;&gt;
+struct <<#A-0e-B-07,B>>&lt;double&gt;;
 ----
 
 === Types
@@ -141,7 +147,7 @@ struct <<#A-0e-B-07,B>><double>;
 | <<#A-0e-B-00-D-09,`D`>> 
 | 
 
-| <<#A-0e-B-00-D-0d,`D<bool>`>> 
+| <<#A-0e-B-00-D-0d,`D&lt;bool&gt;`>> 
 | 
 
 |===
@@ -149,12 +155,13 @@ struct <<#A-0e-B-07,B>><double>;
 
 
 [#A-0e-B-00-C]
-== <<#A-0e,A>>::<<#A-0e-B-00,B>><double>::C
+== <<#A-0e,A>>::<<#A-0e-B-00,B>>&lt;double&gt;::C
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct C;
 ----
@@ -163,14 +170,15 @@ struct C;
 
 
 [#A-0e-B-00-D-09]
-== <<#A-0e,A>>::<<#A-0e-B-00,B>><double>::D
+== <<#A-0e,A>>::<<#A-0e-B-00,B>>&lt;double&gt;::D
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename V>
+template&lt;typename V&gt;
 struct D;
 ----
 
@@ -178,15 +186,16 @@ struct D;
 
 
 [#A-0e-B-00-D-0d]
-== <<#A-0e,A>>::<<#A-0e-B-00,B>><double>::D<bool>
+== <<#A-0e,A>>::<<#A-0e-B-00,B>>&lt;double&gt;::D&lt;bool&gt;
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<>
-struct <<#A-0e-B-00-D-09,D>><bool>;
+template&lt;&gt;
+struct <<#A-0e-B-00-D-09,D>>&lt;bool&gt;;
 ----
 
 
@@ -197,8 +206,9 @@ struct <<#A-0e-B-00-D-09,D>><bool>;
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct E;
 ----
@@ -262,10 +272,11 @@ struct E;
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<#A-0e,A>><float>::<<#A-0e-B-00,B>><double> m0;
+<<#A-0e,A>>&lt;float&gt;::<<#A-0e-B-00,B>>&lt;double&gt; m0;
 ----
 
 [#E-m1]
@@ -273,10 +284,11 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<#A-0e,A>><long>::<<#A-0e-B-00,B>><double> m1;
+<<#A-0e,A>>&lt;long&gt;::<<#A-0e-B-00,B>>&lt;double&gt; m1;
 ----
 
 [#E-m2]
@@ -284,10 +296,11 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<#A-0e,A>><long>::<<#A-0c-B,B>><float> m2;
+<<#A-0e,A>>&lt;long&gt;::<<#A-0c-B,B>>&lt;float&gt; m2;
 ----
 
 [#E-m3]
@@ -295,10 +308,11 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<#A-0e,A>><unsigned int>::<<#A-0e-B-07,B>><float> m3;
+<<#A-0e,A>>&lt;unsigned int&gt;::<<#A-0e-B-07,B>>&lt;float&gt; m3;
 ----
 
 [#E-m4]
@@ -306,10 +320,11 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<#A-0e,A>><short>::<<#A-00-B,B>><void> m4;
+<<#A-0e,A>>&lt;short&gt;::<<#A-00-B,B>>&lt;void&gt; m4;
 ----
 
 [#E-m5]
@@ -317,10 +332,11 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<#A-0e,A>><float>::<<#A-0e-B-00,B>><double>::<<#A-0e-B-00-C,C>> m5;
+<<#A-0e,A>>&lt;float&gt;::<<#A-0e-B-00,B>>&lt;double&gt;::<<#A-0e-B-00-C,C>> m5;
 ----
 
 [#E-m6]
@@ -328,10 +344,11 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<#A-0e,A>><long>::<<#A-0e-B-00,B>><double>::<<#A-0e-B-00-C,C>> m6;
+<<#A-0e,A>>&lt;long&gt;::<<#A-0e-B-00,B>>&lt;double&gt;::<<#A-0e-B-00-C,C>> m6;
 ----
 
 [#E-m7]
@@ -339,10 +356,11 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<#A-0e,A>><long>::<<#A-0c-B,B>><float>::<<#A-0c-B-C,C>> m7;
+<<#A-0e,A>>&lt;long&gt;::<<#A-0c-B,B>>&lt;float&gt;::<<#A-0c-B-C,C>> m7;
 ----
 
 [#E-m8]
@@ -350,10 +368,11 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<#A-0e,A>><unsigned int>::<<#A-0e-B-07,B>><float>::<<#A-0e-B-07-C,C>> m8;
+<<#A-0e,A>>&lt;unsigned int&gt;::<<#A-0e-B-07,B>>&lt;float&gt;::<<#A-0e-B-07-C,C>> m8;
 ----
 
 [#E-m9]
@@ -361,10 +380,11 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<#A-0e,A>><short>::<<#A-00-B,B>><void>::<<#A-00-B-C,C>> m9;
+<<#A-0e,A>>&lt;short&gt;::<<#A-00-B,B>>&lt;void&gt;::<<#A-00-B-C,C>> m9;
 ----
 
 [#E-m10]
@@ -372,10 +392,11 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<#A-0e,A>><float>::<<#A-0e-B-00,B>><double>::<<#A-0e-B-00-D-0d,D>><bool> m10;
+<<#A-0e,A>>&lt;float&gt;::<<#A-0e-B-00,B>>&lt;double&gt;::<<#A-0e-B-00-D-0d,D>>&lt;bool&gt; m10;
 ----
 
 [#E-m11]
@@ -383,10 +404,11 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<#A-0e,A>><long>::<<#A-0e-B-00,B>><double>::<<#A-0e-B-00-D-0d,D>><bool> m11;
+<<#A-0e,A>>&lt;long&gt;::<<#A-0e-B-00,B>>&lt;double&gt;::<<#A-0e-B-00-D-0d,D>>&lt;bool&gt; m11;
 ----
 
 [#E-m12]
@@ -394,10 +416,11 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<#A-0e,A>><long>::<<#A-0c-B,B>><float>::<<#A-0c-B-D-0b,D>><bool> m12;
+<<#A-0e,A>>&lt;long&gt;::<<#A-0c-B,B>>&lt;float&gt;::<<#A-0c-B-D-0b,D>>&lt;bool&gt; m12;
 ----
 
 [#E-m13]
@@ -405,10 +428,11 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<#A-0e,A>><unsigned int>::<<#A-0e-B-07,B>><float>::<<#A-0e-B-07-D-0f,D>><bool> m13;
+<<#A-0e,A>>&lt;unsigned int&gt;::<<#A-0e-B-07,B>>&lt;float&gt;::<<#A-0e-B-07-D-0f,D>>&lt;bool&gt; m13;
 ----
 
 [#E-m14]
@@ -416,10 +440,11 @@ Declared in `<pass:[class-template-specializations-3.cpp]>`
 
 === Synopsis
 
-Declared in `<pass:[class-template-specializations-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<#A-0e,A>><short>::<<#A-00-B,B>><void>::<<#A-00-B-D-07,D>><bool> m14;
+<<#A-0e,A>>&lt;short&gt;::<<#A-00-B,B>>&lt;void&gt;::<<#A-00-B-D-07,D>>&lt;bool&gt; m14;
 ----
 
 

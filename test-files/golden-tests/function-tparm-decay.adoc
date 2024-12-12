@@ -40,10 +40,11 @@
 
 === Synopsis
 
-Declared in `<pass:[function-tparm-decay.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;function&hyphen;tparm&hyphen;decay&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<int x>
+template&lt;int x&gt;
 void
 f();
 ----
@@ -53,10 +54,11 @@ f();
 
 === Synopsis
 
-Declared in `<pass:[function-tparm-decay.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;function&hyphen;tparm&hyphen;decay&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<int x[4]>
+template&lt;int x[4]&gt;
 void
 g();
 ----
@@ -66,10 +68,11 @@ g();
 
 === Synopsis
 
-Declared in `<pass:[function-tparm-decay.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;function&hyphen;tparm&hyphen;decay&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<int(* x)(bool const)>
+template&lt;int(* x)(bool const)&gt;
 void
 h();
 ----
@@ -79,8 +82,9 @@ h();
 
 === Synopsis
 
-Declared in `<pass:[function-tparm-decay.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;function&hyphen;tparm&hyphen;decay&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 using T = int;
 ----
@@ -90,8 +94,9 @@ using T = int;
 
 === Synopsis
 
-Declared in `<pass:[function-tparm-decay.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;function&hyphen;tparm&hyphen;decay&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 using U = int const;
 ----
@@ -101,10 +106,11 @@ using U = int const;
 
 === Synopsis
 
-Declared in `<pass:[function-tparm-decay.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;function&hyphen;tparm&hyphen;decay&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<int>
+template&lt;int&gt;
 void
 i();
 ----

@@ -35,8 +35,9 @@
 
 === Synopsis
 
-Declared in `<pass:[using-2.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;using&hyphen;2&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct S1;
 ----
@@ -49,8 +50,9 @@ struct S1;
 
 === Synopsis
 
-Declared in `<pass:[using-2.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;using&hyphen;2&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct S2;
 ----
@@ -63,8 +65,9 @@ struct S2;
 
 === Synopsis
 
-Declared in `<pass:[using-2.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;using&hyphen;2&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 using <<#LongName,LongName>>::S1;
 ----
@@ -81,8 +84,9 @@ using <<#LongName,LongName>>::S1;
 
 === Synopsis
 
-Declared in `<pass:[using-2.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;using&hyphen;2&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 using <<#LongName,LongName>>::S2;
 ----

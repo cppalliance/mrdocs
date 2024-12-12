@@ -19,10 +19,11 @@
 
 === Synopsis
 
-Declared in `<pass:[temp/ct_mft_expl_inline.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;temp&sol;ct&lowbar;mft&lowbar;expl&lowbar;inline&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
+template&lt;typename T&gt;
 struct A;
 ----
 
@@ -42,21 +43,22 @@ struct A;
 
 === Synopsis
 
-Declared in `<pass:[temp/ct_mft_expl_inline.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;temp&sol;ct&lowbar;mft&lowbar;expl&lowbar;inline&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename U>
+template&lt;typename U&gt;
 void
 <<#A-f-07,f>>();
 ----
 
 [.small]#<<#A-f-07,_» more..._>>#
 
-[source,cpp,subs="verbatim,macros,-callouts"]
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<>
+template&lt;&gt;
 void
-<<#A-f-04,f>><int>();
+<<#A-f-04,f>>&lt;int&gt;();
 ----
 
 [.small]#<<#A-f-04,_» more..._>>#
@@ -66,25 +68,27 @@ void
 
 === Synopsis
 
-Declared in `<pass:[temp/ct_mft_expl_inline.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;temp&sol;ct&lowbar;mft&lowbar;expl&lowbar;inline&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename U>
+template&lt;typename U&gt;
 void
 f();
 ----
 
 [#A-f-04]
-== <<#A,A>>::f<int>
+== <<#A,A>>::f&lt;int&gt;
 
 === Synopsis
 
-Declared in `<pass:[temp/ct_mft_expl_inline.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;temp&sol;ct&lowbar;mft&lowbar;expl&lowbar;inline&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<>
+template&lt;&gt;
 void
-<<#A-f-07,f>><int>();
+<<#A-f-07,f>>&lt;int&gt;();
 ----
 
 

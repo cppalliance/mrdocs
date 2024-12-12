@@ -19,10 +19,11 @@
 
 === Synopsis
 
-Declared in `<pass:[temp/ct_mc.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;temp&sol;ct&lowbar;mc&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
+template&lt;typename T&gt;
 struct A;
 ----
 
@@ -43,8 +44,9 @@ struct A;
 
 === Synopsis
 
-Declared in `<pass:[temp/ct_mc.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;temp&sol;ct&lowbar;mc&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct B;
 ----
@@ -66,8 +68,9 @@ struct B;
 
 === Synopsis
 
-Declared in `<pass:[temp/ct_mc.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;temp&sol;ct&lowbar;mc&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f();

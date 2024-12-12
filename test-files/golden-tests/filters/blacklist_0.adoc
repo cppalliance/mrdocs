@@ -41,8 +41,9 @@
 
 === Synopsis
 
-Declared in `<pass:[filters/blacklist_0.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;filters&sol;blacklist&lowbar;0&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f0();
@@ -86,8 +87,9 @@ f0();
 
 === Synopsis
 
-Declared in `<pass:[filters/blacklist_0.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;filters&sol;blacklist&lowbar;0&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f1();
@@ -111,8 +113,9 @@ f1();
 
 === Synopsis
 
-Declared in `<pass:[filters/blacklist_0.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;filters&sol;blacklist&lowbar;0&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f1();
@@ -156,8 +159,9 @@ f1();
 
 === Synopsis
 
-Declared in `<pass:[filters/blacklist_0.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;filters&sol;blacklist&lowbar;0&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 g0();

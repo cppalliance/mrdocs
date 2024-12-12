@@ -28,8 +28,9 @@
 
 === Synopsis
 
-Declared in `<pass:[explicit-ctor.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct Explicit;
 ----
@@ -50,8 +51,9 @@ struct Explicit;
 
 === Synopsis
 
-Declared in `<pass:[explicit-ctor.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit
 <<#Explicit-2constructor-02,Explicit>>();
@@ -59,7 +61,7 @@ explicit
 
 [.small]#<<#Explicit-2constructor-02,_» more..._>>#
 
-[source,cpp,subs="verbatim,macros,-callouts"]
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit
 <<#Explicit-2constructor-00,Explicit>>(<<#Explicit,Explicit>> const&);
@@ -67,7 +69,7 @@ explicit
 
 [.small]#<<#Explicit-2constructor-00,_» more..._>>#
 
-[source,cpp,subs="verbatim,macros,-callouts"]
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit
 <<#Explicit-2constructor-0b,Explicit>>(<<#Explicit,Explicit>>&&) noexcept;
@@ -75,7 +77,7 @@ explicit
 
 [.small]#<<#Explicit-2constructor-0b,_» more..._>>#
 
-[source,cpp,subs="verbatim,macros,-callouts"]
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit
 <<#Explicit-2constructor-03,Explicit>>(
@@ -90,8 +92,9 @@ explicit
 
 === Synopsis
 
-Declared in `<pass:[explicit-ctor.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit
 Explicit();
@@ -102,8 +105,9 @@ Explicit();
 
 === Synopsis
 
-Declared in `<pass:[explicit-ctor.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit
 Explicit(<<#Explicit,Explicit>> const&);
@@ -114,8 +118,9 @@ Explicit(<<#Explicit,Explicit>> const&);
 
 === Synopsis
 
-Declared in `<pass:[explicit-ctor.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit
 Explicit(<<#Explicit,Explicit>>&&) noexcept;
@@ -126,8 +131,9 @@ Explicit(<<#Explicit,Explicit>>&&) noexcept;
 
 === Synopsis
 
-Declared in `<pass:[explicit-ctor.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit
 Explicit(
@@ -140,8 +146,9 @@ Explicit(
 
 === Synopsis
 
-Declared in `<pass:[explicit-ctor.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct ExplicitTrue;
 ----
@@ -162,34 +169,35 @@ struct ExplicitTrue;
 
 === Synopsis
 
-Declared in `<pass:[explicit-ctor.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-pass:[explicit(true)]
+explicit(true)
 <<#ExplicitTrue-2constructor-0d,ExplicitTrue>>();
 ----
 
 [.small]#<<#ExplicitTrue-2constructor-0d,_» more..._>>#
 
-[source,cpp,subs="verbatim,macros,-callouts"]
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-pass:[explicit(true)]
+explicit(true)
 <<#ExplicitTrue-2constructor-04,ExplicitTrue>>(<<#ExplicitTrue,ExplicitTrue>> const&);
 ----
 
 [.small]#<<#ExplicitTrue-2constructor-04,_» more..._>>#
 
-[source,cpp,subs="verbatim,macros,-callouts"]
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-pass:[explicit(true)]
+explicit(true)
 <<#ExplicitTrue-2constructor-08,ExplicitTrue>>(<<#ExplicitTrue,ExplicitTrue>>&&) noexcept;
 ----
 
 [.small]#<<#ExplicitTrue-2constructor-08,_» more..._>>#
 
-[source,cpp,subs="verbatim,macros,-callouts"]
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-pass:[explicit(true)]
+explicit(true)
 <<#ExplicitTrue-2constructor-05,ExplicitTrue>>(
     int,
     int);
@@ -202,10 +210,11 @@ pass:[explicit(true)]
 
 === Synopsis
 
-Declared in `<pass:[explicit-ctor.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-pass:[explicit(true)]
+explicit(true)
 ExplicitTrue();
 ----
 
@@ -214,10 +223,11 @@ ExplicitTrue();
 
 === Synopsis
 
-Declared in `<pass:[explicit-ctor.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-pass:[explicit(true)]
+explicit(true)
 ExplicitTrue(<<#ExplicitTrue,ExplicitTrue>> const&);
 ----
 
@@ -226,10 +236,11 @@ ExplicitTrue(<<#ExplicitTrue,ExplicitTrue>> const&);
 
 === Synopsis
 
-Declared in `<pass:[explicit-ctor.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-pass:[explicit(true)]
+explicit(true)
 ExplicitTrue(<<#ExplicitTrue,ExplicitTrue>>&&) noexcept;
 ----
 
@@ -238,10 +249,11 @@ ExplicitTrue(<<#ExplicitTrue,ExplicitTrue>>&&) noexcept;
 
 === Synopsis
 
-Declared in `<pass:[explicit-ctor.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-pass:[explicit(true)]
+explicit(true)
 ExplicitTrue(
     int,
     int);
@@ -252,8 +264,9 @@ ExplicitTrue(
 
 === Synopsis
 
-Declared in `<pass:[explicit-ctor.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct ExplicitFalse;
 ----
@@ -274,34 +287,35 @@ struct ExplicitFalse;
 
 === Synopsis
 
-Declared in `<pass:[explicit-ctor.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-pass:[explicit(false)]
+explicit(false)
 <<#ExplicitFalse-2constructor-01,ExplicitFalse>>();
 ----
 
 [.small]#<<#ExplicitFalse-2constructor-01,_» more..._>>#
 
-[source,cpp,subs="verbatim,macros,-callouts"]
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-pass:[explicit(false)]
+explicit(false)
 <<#ExplicitFalse-2constructor-08,ExplicitFalse>>(<<#ExplicitFalse,ExplicitFalse>> const&);
 ----
 
 [.small]#<<#ExplicitFalse-2constructor-08,_» more..._>>#
 
-[source,cpp,subs="verbatim,macros,-callouts"]
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-pass:[explicit(false)]
+explicit(false)
 <<#ExplicitFalse-2constructor-0a,ExplicitFalse>>(<<#ExplicitFalse,ExplicitFalse>>&&) noexcept;
 ----
 
 [.small]#<<#ExplicitFalse-2constructor-0a,_» more..._>>#
 
-[source,cpp,subs="verbatim,macros,-callouts"]
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-pass:[explicit(false)]
+explicit(false)
 <<#ExplicitFalse-2constructor-04,ExplicitFalse>>(
     int,
     int);
@@ -314,10 +328,11 @@ pass:[explicit(false)]
 
 === Synopsis
 
-Declared in `<pass:[explicit-ctor.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-pass:[explicit(false)]
+explicit(false)
 ExplicitFalse();
 ----
 
@@ -326,10 +341,11 @@ ExplicitFalse();
 
 === Synopsis
 
-Declared in `<pass:[explicit-ctor.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-pass:[explicit(false)]
+explicit(false)
 ExplicitFalse(<<#ExplicitFalse,ExplicitFalse>> const&);
 ----
 
@@ -338,10 +354,11 @@ ExplicitFalse(<<#ExplicitFalse,ExplicitFalse>> const&);
 
 === Synopsis
 
-Declared in `<pass:[explicit-ctor.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-pass:[explicit(false)]
+explicit(false)
 ExplicitFalse(<<#ExplicitFalse,ExplicitFalse>>&&) noexcept;
 ----
 
@@ -350,10 +367,11 @@ ExplicitFalse(<<#ExplicitFalse,ExplicitFalse>>&&) noexcept;
 
 === Synopsis
 
-Declared in `<pass:[explicit-ctor.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-pass:[explicit(false)]
+explicit(false)
 ExplicitFalse(
     int,
     int);
@@ -364,10 +382,11 @@ ExplicitFalse(
 
 === Synopsis
 
-Declared in `<pass:[explicit-ctor.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<bool B>
+template&lt;bool B&gt;
 struct ExplicitExpression;
 ----
 
@@ -387,34 +406,35 @@ struct ExplicitExpression;
 
 === Synopsis
 
-Declared in `<pass:[explicit-ctor.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-pass:[explicit(B)]
+explicit(B)
 <<#ExplicitExpression-2constructor-0b,ExplicitExpression>>();
 ----
 
 [.small]#<<#ExplicitExpression-2constructor-0b,_» more..._>>#
 
-[source,cpp,subs="verbatim,macros,-callouts"]
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-pass:[explicit(B)]
+explicit(B)
 <<#ExplicitExpression-2constructor-04,ExplicitExpression>>(<<#ExplicitExpression,ExplicitExpression>> const&);
 ----
 
 [.small]#<<#ExplicitExpression-2constructor-04,_» more..._>>#
 
-[source,cpp,subs="verbatim,macros,-callouts"]
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-pass:[explicit(B)]
+explicit(B)
 <<#ExplicitExpression-2constructor-08,ExplicitExpression>>(<<#ExplicitExpression,ExplicitExpression>>&&) noexcept;
 ----
 
 [.small]#<<#ExplicitExpression-2constructor-08,_» more..._>>#
 
-[source,cpp,subs="verbatim,macros,-callouts"]
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-pass:[explicit(B)]
+explicit(B)
 <<#ExplicitExpression-2constructor-02,ExplicitExpression>>(
     int,
     int);
@@ -427,10 +447,11 @@ pass:[explicit(B)]
 
 === Synopsis
 
-Declared in `<pass:[explicit-ctor.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-pass:[explicit(B)]
+explicit(B)
 ExplicitExpression();
 ----
 
@@ -439,10 +460,11 @@ ExplicitExpression();
 
 === Synopsis
 
-Declared in `<pass:[explicit-ctor.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-pass:[explicit(B)]
+explicit(B)
 ExplicitExpression(<<#ExplicitExpression,ExplicitExpression>> const&);
 ----
 
@@ -451,10 +473,11 @@ ExplicitExpression(<<#ExplicitExpression,ExplicitExpression>> const&);
 
 === Synopsis
 
-Declared in `<pass:[explicit-ctor.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-pass:[explicit(B)]
+explicit(B)
 ExplicitExpression(<<#ExplicitExpression,ExplicitExpression>>&&) noexcept;
 ----
 
@@ -463,10 +486,11 @@ ExplicitExpression(<<#ExplicitExpression,ExplicitExpression>>&&) noexcept;
 
 === Synopsis
 
-Declared in `<pass:[explicit-ctor.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-pass:[explicit(B)]
+explicit(B)
 ExplicitExpression(
     int,
     int);

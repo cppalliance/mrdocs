@@ -56,8 +56,9 @@
 
 === Synopsis
 
-Declared in `<pass:[filters/filters.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;filters&sol;filters&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f0();
@@ -81,8 +82,9 @@ f0();
 
 === Synopsis
 
-Declared in `<pass:[filters/filters.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;filters&sol;filters&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 g0();
@@ -115,8 +117,9 @@ g0();
 
 === Synopsis
 
-Declared in `<pass:[filters/filters.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;filters&sol;filters&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f4();
@@ -127,8 +130,9 @@ f4();
 
 === Synopsis
 
-Declared in `<pass:[filters/filters.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;filters&sol;filters&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct Y;
 ----
@@ -159,8 +163,9 @@ struct Y;
 
 === Synopsis
 
-Declared in `<pass:[filters/filters.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;filters&sol;filters&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f6();
@@ -171,8 +176,9 @@ f6();
 
 === Synopsis
 
-Declared in `<pass:[filters/filters.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;filters&sol;filters&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct Z;
 ----
@@ -194,8 +200,9 @@ struct Z;
 
 === Synopsis
 
-Declared in `<pass:[filters/filters.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;filters&sol;filters&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f7();
@@ -228,8 +235,9 @@ f7();
 
 === Synopsis
 
-Declared in `<pass:[filters/filters.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;filters&sol;filters&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f0();
@@ -262,8 +270,9 @@ f0();
 
 === Synopsis
 
-Declared in `<pass:[filters/filters.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;filters&sol;filters&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f4();
@@ -274,8 +283,9 @@ f4();
 
 === Synopsis
 
-Declared in `<pass:[filters/filters.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;filters&sol;filters&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct Y;
 ----
@@ -306,8 +316,9 @@ struct Y;
 
 === Synopsis
 
-Declared in `<pass:[filters/filters.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;filters&sol;filters&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f6();
@@ -318,8 +329,9 @@ f6();
 
 === Synopsis
 
-Declared in `<pass:[filters/filters.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;filters&sol;filters&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct Z;
 ----
@@ -341,8 +353,9 @@ struct Z;
 
 === Synopsis
 
-Declared in `<pass:[filters/filters.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;filters&sol;filters&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f7();
@@ -366,8 +379,9 @@ f7();
 
 === Synopsis
 
-Declared in `<pass:[filters/filters.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;filters&sol;filters&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 g0();
@@ -416,8 +430,9 @@ g0();
 
 === Synopsis
 
-Declared in `<pass:[filters/filters.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;filters&sol;filters&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 g0();
@@ -428,8 +443,9 @@ g0();
 
 === Synopsis
 
-Declared in `<pass:[filters/filters.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;filters&sol;filters&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f1();
@@ -440,8 +456,9 @@ f1();
 
 === Synopsis
 
-Declared in `<pass:[filters/filters.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;filters&sol;filters&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 g1();
@@ -474,8 +491,9 @@ g1();
 
 === Synopsis
 
-Declared in `<pass:[filters/filters.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;filters&sol;filters&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 g0();
@@ -502,8 +520,9 @@ g0();
 
 === Synopsis
 
-Declared in `<pass:[filters/filters.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;filters&sol;filters&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f1();
@@ -514,8 +533,9 @@ f1();
 
 === Synopsis
 
-Declared in `<pass:[filters/filters.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;filters&sol;filters&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 g1();

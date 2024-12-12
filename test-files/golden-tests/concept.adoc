@@ -37,11 +37,12 @@
 
 === Synopsis
 
-Declared in `<pass:[concept.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;concept&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
-concept C = pass:[sizeof(T) == sizeof(int)];
+template&lt;typename T&gt;
+concept C = sizeof(T) &equals;&equals; sizeof(int);
 ----
 
 [#f]
@@ -49,10 +50,11 @@ concept C = pass:[sizeof(T) == sizeof(int)];
 
 === Synopsis
 
-Declared in `<pass:[concept.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;concept&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<<<#C,C>> T>
+template&lt;<<#C,C>> T&gt;
 void
 f();
 ----
@@ -62,8 +64,9 @@ f();
 
 === Synopsis
 
-Declared in `<pass:[concept.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;concept&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 <<#C,C>> auto x = 0;
 ----

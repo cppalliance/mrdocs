@@ -31,8 +31,9 @@
 
 === Synopsis
 
-Declared in `<pass:[record-data.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;data&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct T;
 ----
@@ -66,8 +67,9 @@ struct T;
 
 === Synopsis
 
-Declared in `<pass:[record-data.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;data&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int i;
 ----
@@ -77,8 +79,9 @@ int i;
 
 === Synopsis
 
-Declared in `<pass:[record-data.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;data&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 double j;
 ----
@@ -88,8 +91,9 @@ double j;
 
 === Synopsis
 
-Declared in `<pass:[record-data.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;data&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 mutable
 int k;
@@ -100,8 +104,9 @@ int k;
 
 === Synopsis
 
-Declared in `<pass:[record-data.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;data&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int l : 8;
 ----
@@ -111,10 +116,11 @@ int l : 8;
 
 === Synopsis
 
-Declared in `<pass:[record-data.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;data&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-int m : pass:[4 + 4];
+int m : 4 &plus; 4;
 ----
 
 [#U]
@@ -122,8 +128,9 @@ int m : pass:[4 + 4];
 
 === Synopsis
 
-Declared in `<pass:[record-data.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;data&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct U;
 ----
@@ -145,8 +152,9 @@ struct U;
 
 === Synopsis
 
-Declared in `<pass:[record-data.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;data&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 <<#T,T>> t;
 ----
@@ -156,8 +164,9 @@ Declared in `<pass:[record-data.cpp]>`
 
 === Synopsis
 
-Declared in `<pass:[record-data.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;data&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 class V;
 ----
@@ -191,8 +200,9 @@ class V;
 
 === Synopsis
 
-Declared in `<pass:[record-data.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;data&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int i;
 ----
@@ -202,8 +212,9 @@ int i;
 
 === Synopsis
 
-Declared in `<pass:[record-data.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;data&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 unsigned long j;
 ----
@@ -213,8 +224,9 @@ unsigned long j;
 
 === Synopsis
 
-Declared in `<pass:[record-data.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;data&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 double k;
 ----
@@ -224,8 +236,9 @@ double k;
 
 === Synopsis
 
-Declared in `<pass:[record-data.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;data&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct W;
 ----
@@ -247,8 +260,9 @@ struct W;
 
 === Synopsis
 
-Declared in `<pass:[record-data.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;data&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 char buf[64];
 ----
@@ -258,12 +272,13 @@ char buf[64];
 
 === Synopsis
 
-Declared in `<pass:[record-data.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;data&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<
+template&lt;
     typename P,
-    int I>
+    int I&gt;
 struct X;
 ----
 
@@ -305,8 +320,9 @@ struct X;
 
 === Synopsis
 
-Declared in `<pass:[record-data.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;data&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 using Q = P;
 ----
@@ -316,8 +332,9 @@ using Q = P;
 
 === Synopsis
 
-Declared in `<pass:[record-data.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;data&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int x0 = 0;
 ----
@@ -327,8 +344,9 @@ int x0 = 0;
 
 === Synopsis
 
-Declared in `<pass:[record-data.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;data&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 P x1;
 ----
@@ -338,8 +356,9 @@ P x1;
 
 === Synopsis
 
-Declared in `<pass:[record-data.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;data&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 P const x2[32];
 ----
@@ -349,8 +368,9 @@ P const x2[32];
 
 === Synopsis
 
-Declared in `<pass:[record-data.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;data&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 <<#X-Q,Q>> x3;
 ----
@@ -360,10 +380,11 @@ Declared in `<pass:[record-data.cpp]>`
 
 === Synopsis
 
-Declared in `<pass:[record-data.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;data&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-int x4 : pass:[I + 4];
+int x4 : I &plus; 4;
 ----
 
 

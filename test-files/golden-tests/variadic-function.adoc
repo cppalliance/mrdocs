@@ -37,8 +37,9 @@
 
 === Synopsis
 
-Declared in `<pass:[variadic-function.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;variadic&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 using T = void(...);
 ----
@@ -48,8 +49,9 @@ using T = void(...);
 
 === Synopsis
 
-Declared in `<pass:[variadic-function.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;variadic&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 using U = void(int, ...);
 ----
@@ -59,8 +61,9 @@ using U = void(int, ...);
 
 === Synopsis
 
-Declared in `<pass:[variadic-function.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;variadic&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f(...);
@@ -71,8 +74,9 @@ f(...);
 
 === Synopsis
 
-Declared in `<pass:[variadic-function.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;variadic&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 g(int, ...);
@@ -83,12 +87,13 @@ g(int, ...);
 
 === Synopsis
 
-Declared in `<pass:[variadic-function.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;variadic&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<
+template&lt;
     typename A = void(...),
-    typename B = void(int, ...)>
+    typename B = void(int, ...)&gt;
 struct C;
 ----
 

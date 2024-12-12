@@ -23,8 +23,9 @@
 
 === Synopsis
 
-Declared in `<pass:[namespace-alias-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;namespace&hyphen;alias&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 namespace A = <<#LongName,LongName>>;
 ----
@@ -34,8 +35,9 @@ namespace A = <<#LongName,LongName>>;
 
 === Synopsis
 
-Declared in `<pass:[namespace-alias-3.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;namespace&hyphen;alias&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 namespace B = <<#A,A>>;
 ----

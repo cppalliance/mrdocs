@@ -19,10 +19,11 @@
 
 === Synopsis
 
-Declared in `<pass:[nested-private-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;nested&hyphen;private&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<class T>
+template&lt;class T&gt;
 class range;
 ----
 
@@ -36,7 +37,7 @@ class range;
 | <<#range-impl-0e,`impl`>> 
 | 
 
-| <<#range-impl-00,`impl<R, false>`>> 
+| <<#range-impl-00,`impl&lt;R, false&gt;`>> 
 | 
 
 |===
@@ -46,12 +47,13 @@ class range;
 
 === Synopsis
 
-Declared in `<pass:[nested-private-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;nested&hyphen;private&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<
+template&lt;
     class R,
-    bool>
+    bool&gt;
 struct impl;
 ----
 
@@ -59,15 +61,16 @@ struct impl;
 
 
 [#range-impl-00]
-== <<#range,range>>::impl<R, false>
+== <<#range,range>>::impl&lt;R, false&gt;
 
 === Synopsis
 
-Declared in `<pass:[nested-private-template.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;nested&hyphen;private&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<class R>
-struct <<#range-impl-0e,impl>><R, false>;
+template&lt;class R&gt;
+struct <<#range-impl-0e,impl>>&lt;R, false&gt;;
 ----
 
 

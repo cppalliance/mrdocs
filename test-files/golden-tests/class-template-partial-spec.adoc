@@ -19,10 +19,11 @@
 
 === Synopsis
 
-Declared in `<pass:[class-template-partial-spec.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;partial&hyphen;spec&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
+template&lt;typename T&gt;
 struct A;
 ----
 
@@ -34,10 +35,10 @@ struct A;
 | <<#A-B-0a,`B`>> 
 | 
 
-| <<#A-B-06,`B<U*, T>`>> 
+| <<#A-B-06,`B&lt;U*, T&gt;`>> 
 | 
 
-| <<#A-B-04,`B<T, long>`>> 
+| <<#A-B-04,`B&lt;T, long&gt;`>> 
 | 
 
 |===
@@ -49,12 +50,13 @@ struct A;
 
 === Synopsis
 
-Declared in `<pass:[class-template-partial-spec.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;partial&hyphen;spec&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<
+template&lt;
     typename U,
-    typename V>
+    typename V&gt;
 struct B;
 ----
 
@@ -62,30 +64,32 @@ struct B;
 
 
 [#A-B-06]
-== <<#A,A>>::B<U*, T>
+== <<#A,A>>::B&lt;U*, T&gt;
 
 === Synopsis
 
-Declared in `<pass:[class-template-partial-spec.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;partial&hyphen;spec&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename U>
-struct <<#A-B-0a,B>><U*, T>;
+template&lt;typename U&gt;
+struct <<#A-B-0a,B>>&lt;U*, T&gt;;
 ----
 
 
 
 
 [#A-B-04]
-== <<#A,A>>::B<T, long>
+== <<#A,A>>::B&lt;T, long&gt;
 
 === Synopsis
 
-Declared in `<pass:[class-template-partial-spec.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;class&hyphen;template&hyphen;partial&hyphen;spec&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<>
-struct <<#A-B-0a,B>><T, long>;
+template&lt;&gt;
+struct <<#A-B-0a,B>>&lt;T, long&gt;;
 ----
 
 

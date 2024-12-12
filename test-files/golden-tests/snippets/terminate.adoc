@@ -10,8 +10,8 @@
 | Name | Description 
 
 | <<#terminate,`terminate`>> 
-| 
-Exit the program.
+| Exit the program&period;
+
 
 
 |===
@@ -19,14 +19,15 @@ Exit the program.
 [#terminate]
 == terminate
 
+Exit the program&period;
 
-Exit the program.
 
 
 === Synopsis
 
-Declared in `<pass:[terminate.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;terminate&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 terminate() noexcept;
@@ -34,11 +35,11 @@ terminate() noexcept;
 
 === Description
 
+The program will end immediately&period;
 
-The program will end immediately.
 [NOTE]
+This function does not return&period;
 
-This function does not return.
 
 
 

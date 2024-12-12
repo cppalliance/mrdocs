@@ -10,8 +10,8 @@
 | Name | Description 
 
 | <<#sqrt,`sqrt`>> 
-| 
-Computes the square root of an integral value.
+| Computes the square root of an integral value&period;
+
 
 
 |===
@@ -19,25 +19,26 @@ Computes the square root of an integral value.
 [#sqrt]
 == sqrt
 
+Computes the square root of an integral value&period;
 
-Computes the square root of an integral value.
 
 
 === Synopsis
 
-Declared in `<pass:[sqrt.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;sqrt&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
+template&lt;typename T&gt;
 std::T
 sqrt(T value);
 ----
 
 === Description
 
-
 This function calculates the square root of a
-given integral value using bit manipulation.
+given integral value using bit manipulation&period;
+
 
 
 === Exceptions
@@ -46,15 +47,15 @@ given integral value using bit manipulation.
 | Name | Thrown on
 
 | `if`
-| pass:[
-the input value is negative.
-]
+| the input value is negative&amp;period&semi;
+
+
 |===
 
 === Return Value
 
+The square root of the input value&period;
 
-The square root of the input value.
 
 
 === Template Parameters
@@ -63,9 +64,9 @@ The square root of the input value.
 | Name | Description
 
 | *T*
-| pass:[
-The type of the input value. Must be an integral type.
-]
+| The type of the input value&amp;period&semi; Must be an integral type&amp;period&semi;
+
+
 |===
 
 === Parameters
@@ -74,9 +75,9 @@ The type of the input value. Must be an integral type.
 | Name | Description
 
 | *value*
-| pass:[
-The integral value to compute the square root of.
-]
+| The integral value to compute the square root of&amp;period&semi;
+
+
 |===
 
 

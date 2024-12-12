@@ -40,8 +40,9 @@
 
 === Synopsis
 
-Declared in `<pass:[canonical_1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct B;
 ----
@@ -54,8 +55,9 @@ struct B;
 
 === Synopsis
 
-Declared in `<pass:[canonical_1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct b;
 ----
@@ -68,8 +70,9 @@ struct b;
 
 === Synopsis
 
-Declared in `<pass:[canonical_1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct A;
 ----
@@ -82,8 +85,9 @@ struct A;
 
 === Synopsis
 
-Declared in `<pass:[canonical_1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct a;
 ----
@@ -96,8 +100,9 @@ struct a;
 
 === Synopsis
 
-Declared in `<pass:[canonical_1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct Ba;
 ----
@@ -110,8 +115,9 @@ struct Ba;
 
 === Synopsis
 
-Declared in `<pass:[canonical_1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct bA;
 ----
@@ -124,8 +130,9 @@ struct bA;
 
 === Synopsis
 
-Declared in `<pass:[canonical_1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct Bx;
 ----
@@ -138,8 +145,9 @@ struct Bx;
 
 === Synopsis
 
-Declared in `<pass:[canonical_1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct ba;
 ----

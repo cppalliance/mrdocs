@@ -46,8 +46,9 @@
 
 === Synopsis
 
-Declared in `<pass:[param-direction.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f(int x0);
@@ -67,8 +68,9 @@ f(int x0);
 
 === Synopsis
 
-Declared in `<pass:[param-direction.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 g(
@@ -92,8 +94,9 @@ g(
 
 === Synopsis
 
-Declared in `<pass:[param-direction.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 h(
@@ -117,8 +120,9 @@ h(
 
 === Synopsis
 
-Declared in `<pass:[param-direction.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 i(
@@ -142,8 +146,9 @@ i(
 
 === Synopsis
 
-Declared in `<pass:[param-direction.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 j(
@@ -167,8 +172,9 @@ j(
 
 === Synopsis
 
-Declared in `<pass:[param-direction.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 k(
@@ -195,8 +201,9 @@ k(
 
 === Synopsis
 
-Declared in `<pass:[param-direction.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 l(
@@ -224,8 +231,9 @@ l(
 
 === Synopsis
 
-Declared in `<pass:[param-direction.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 m(
@@ -249,8 +257,9 @@ m(
 
 === Synopsis
 
-Declared in `<pass:[param-direction.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 n(int x8);
@@ -270,8 +279,9 @@ n(int x8);
 
 === Synopsis
 
-Declared in `<pass:[param-direction.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 o(int x9);

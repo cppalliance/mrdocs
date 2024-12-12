@@ -28,11 +28,12 @@
 
 === Synopsis
 
-Declared in `<pass:[dependency-propagation.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;dependency&hyphen;propagation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct E
-    : <<#N,N>>::<<#N-C,C>><int>;
+    : <<#N,N>>::<<#N-C,C>>&lt;int&gt;;
 ----
 
 
@@ -62,11 +63,12 @@ struct E
 
 === Synopsis
 
-Declared in `<pass:[dependency-propagation.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;dependency&hyphen;propagation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
-using C = <<#N-B,B>><T>;
+template&lt;typename T&gt;
+using C = <<#N-B,B>>&lt;T&gt;;
 ----
 
 [#N-B]
@@ -74,11 +76,12 @@ using C = <<#N-B,B>><T>;
 
 === Synopsis
 
-Declared in `<pass:[dependency-propagation.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;dependency&hyphen;propagation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
-using B = <<#N-A,A>><T>;
+template&lt;typename T&gt;
+using B = <<#N-A,A>>&lt;T&gt;;
 ----
 
 [#N-A]
@@ -86,10 +89,11 @@ using B = <<#N-A,A>><T>;
 
 === Synopsis
 
-Declared in `<pass:[dependency-propagation.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;dependency&hyphen;propagation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename T>
+template&lt;typename T&gt;
 struct A;
 ----
 

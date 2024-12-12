@@ -174,8 +174,17 @@ handleFile(
         testArgs.action == Action::test ||
         testArgs.action == Action::create)
     {
+        std::string_view filePathSv = filePath;
+        if (filePathSv.starts_with(dirs_.cwd))
+        {
+            filePathSv.remove_prefix(dirs_.cwd.size());
+            if (filePathSv.starts_with("\\") || filePathSv.starts_with("/"))
+            {
+                filePathSv.remove_prefix(1);
+            }
+        }
         report::error("{}: \"{}\"",
-            Error("Incorrect results"), filePath);
+            Error("Incorrect results"), filePathSv);
         auto res = test_suite::diffStrings(expectedDocs, generatedDocs);
         report::error("{} lines added", res.added);
         report::error("{} lines removed", res.removed);

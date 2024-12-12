@@ -19,8 +19,9 @@
 
 === Synopsis
 
-Declared in `<pass:[explicit-object-parameter.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;object&hyphen;parameter&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct Optional;
 ----
@@ -41,10 +42,11 @@ struct Optional;
 
 === Synopsis
 
-Declared in `<pass:[explicit-object-parameter.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;object&hyphen;parameter&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename Self>
+template&lt;typename Self&gt;
 constexpr
 auto&&
 <<#Optional-value-05,value>>(this Self&& self);
@@ -52,9 +54,9 @@ auto&&
 
 [.small]#<<#Optional-value-05,_» more..._>>#
 
-[source,cpp,subs="verbatim,macros,-callouts"]
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename Self>
+template&lt;typename Self&gt;
 constexpr
 auto&&
 <<#Optional-value-06,value>>(this 
@@ -69,10 +71,11 @@ auto&&
 
 === Synopsis
 
-Declared in `<pass:[explicit-object-parameter.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;object&hyphen;parameter&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename Self>
+template&lt;typename Self&gt;
 constexpr
 auto&&
 value(this Self&& self);
@@ -83,10 +86,11 @@ value(this Self&& self);
 
 === Synopsis
 
-Declared in `<pass:[explicit-object-parameter.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;explicit&hyphen;object&hyphen;parameter&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template<typename Self>
+template&lt;typename Self&gt;
 constexpr
 auto&&
 value(this 

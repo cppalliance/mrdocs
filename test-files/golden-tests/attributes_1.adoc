@@ -19,8 +19,9 @@
 
 === Synopsis
 
-Declared in `<pass:[attributes_1.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;attributes&lowbar;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
 f();

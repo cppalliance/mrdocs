@@ -25,8 +25,9 @@
 
 === Synopsis
 
-Declared in `<pass:[record-access.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;access&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct S0;
 ----
@@ -66,8 +67,9 @@ struct S0;
 
 === Synopsis
 
-Declared in `<pass:[record-access.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;access&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f0();
@@ -78,8 +80,9 @@ f0();
 
 === Synopsis
 
-Declared in `<pass:[record-access.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;access&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f1();
@@ -90,8 +93,9 @@ f1();
 
 === Synopsis
 
-Declared in `<pass:[record-access.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;access&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f2();
@@ -102,8 +106,9 @@ f2();
 
 === Synopsis
 
-Declared in `<pass:[record-access.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;access&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 class C0;
 ----
@@ -143,8 +148,9 @@ class C0;
 
 === Synopsis
 
-Declared in `<pass:[record-access.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;access&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f0();
@@ -155,8 +161,9 @@ f0();
 
 === Synopsis
 
-Declared in `<pass:[record-access.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;access&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f1();
@@ -167,8 +174,9 @@ f1();
 
 === Synopsis
 
-Declared in `<pass:[record-access.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;access&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f2();
@@ -179,8 +187,9 @@ f2();
 
 === Synopsis
 
-Declared in `<pass:[record-access.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;access&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 union U0;
 ----
@@ -220,8 +229,9 @@ union U0;
 
 === Synopsis
 
-Declared in `<pass:[record-access.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;access&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f0();
@@ -232,8 +242,9 @@ f0();
 
 === Synopsis
 
-Declared in `<pass:[record-access.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;access&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f1();
@@ -244,8 +255,9 @@ f1();
 
 === Synopsis
 
-Declared in `<pass:[record-access.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;record&hyphen;access&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f2();

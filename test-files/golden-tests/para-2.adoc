@@ -10,8 +10,8 @@
 | Name | Description 
 
 | <<#f1,`f1`>> 
-| 
-brief
+| brief
+
 
 
 |===
@@ -19,14 +19,15 @@ brief
 [#f1]
 == f1
 
-
 brief
+
 
 
 === Synopsis
 
-Declared in `<pass:[para-2.cpp]>`
-[source,cpp,subs="verbatim,macros,-callouts"]
+Declared in `&lt;para&hyphen;2&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
 f1();
@@ -34,11 +35,11 @@ f1();
 
 === Description
 
-
 a
 b
 c
 d
+
 
 
 
