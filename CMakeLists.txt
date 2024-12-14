@@ -168,6 +168,9 @@ add_custom_command(
         ${CMAKE_CURRENT_SOURCE_DIR}/util/generate-config-info.py
         src/lib/Lib/ConfigOptions.json
         ${CMAKE_CURRENT_BINARY_DIR}
+    COMMAND
+        ${PYTHON_EXECUTABLE}
+        ${CMAKE_CURRENT_SOURCE_DIR}/util/generate-yaml-schema.py
     VERBATIM
     DEPENDS
         ${CMAKE_CURRENT_SOURCE_DIR}/util/generate-config-info.py
