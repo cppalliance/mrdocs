@@ -82,17 +82,32 @@
       },
       {
         "name": "use-system-stdlib",
-        "brief": "Use the system standard library",
-        "details": "True if the compiler has to use just the system standard library. When set to true, the compiler uses the system standard library instead of the standard library provided by the compiler.",
+        "brief": "Use the system C++ standard library",
+        "details": "To achieve reproducible results, MrDocs bundles the LibC++ headers. To use the C++ standard library available in the system instead, set this option to true.",
         "type": "bool",
         "default": false
       },
       {
         "name": "stdlib-includes",
-        "brief": "Standard Library include paths",
-        "details": "Standard Library include paths. These paths are used to replace the standard library paths provided by the compiler.",
+        "brief": "C++ Standard Library include paths",
+        "details": "When `use-system-stdlib` is disabled, the C++ standard library headers are available in these paths.",
         "type": "list<path>",
-        "default": ["<mrdocs-root>/share/mrdocs/libcxx", "<mrdocs-root>/share/mrdocs/clang"],
+        "default": ["<mrdocs-root>/share/mrdocs/headers/libcxx", "<mrdocs-root>/share/mrdocs/headers/clang"],
+        "relativeto": "<config-dir>"
+      },
+      {
+        "name": "use-system-libc",
+        "brief": "Use the system C standard library",
+        "details": "To achieve reproducible results, MrDocs bundles the LibC headers with its definitions. To use the C standard library available in the system instead, set this option to true.",
+        "type": "bool",
+        "default": false
+      },
+      {
+        "name": "libc-includes",
+        "brief": "Standard Library include paths",
+        "details": "When `use-system-libc` is disabled, the C standard library headers are available in these paths.",
+        "type": "list<path>",
+        "default": ["<mrdocs-root>/share/mrdocs/headers/libc-stubs"],
         "relativeto": "<config-dir>"
       },
       {

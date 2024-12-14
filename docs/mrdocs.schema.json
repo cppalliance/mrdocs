@@ -179,6 +179,17 @@
       "title": "Use legible names",
       "type": "boolean"
     },
+    "libc-includes": {
+      "default": [
+        "<mrdocs-root>/share/mrdocs/headers/libc-stubs"
+      ],
+      "description": "When `use-system-libc` is disabled, the C standard library headers are available in these paths.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Standard Library include paths",
+      "type": "array"
+    },
     "multipage": {
       "default": true,
       "description": "Generates a multipage documentation. The output directory must be a directory. This option acts as a hint to the generator to create a multipage documentation. Whether the hint is followed or not depends on the generator.",
@@ -225,14 +236,14 @@
     },
     "stdlib-includes": {
       "default": [
-        "<mrdocs-root>/share/mrdocs/libcxx",
-        "<mrdocs-root>/share/mrdocs/clang"
+        "<mrdocs-root>/share/mrdocs/headers/libcxx",
+        "<mrdocs-root>/share/mrdocs/headers/clang"
       ],
-      "description": "Standard Library include paths. These paths are used to replace the standard library paths provided by the compiler.",
+      "description": "When `use-system-stdlib` is disabled, the C++ standard library headers are available in these paths.",
       "items": {
         "type": "string"
       },
-      "title": "Standard Library include paths",
+      "title": "C++ Standard Library include paths",
       "type": "array"
     },
     "system-includes": {
@@ -250,10 +261,16 @@
       "title": "Path for the tagfile",
       "type": "string"
     },
+    "use-system-libc": {
+      "default": false,
+      "description": "To achieve reproducible results, MrDocs bundles the LibC headers with its definitions. To use the C standard library available in the system instead, set this option to true.",
+      "title": "Use the system C standard library",
+      "type": "boolean"
+    },
     "use-system-stdlib": {
       "default": false,
-      "description": "True if the compiler has to use just the system standard library. When set to true, the compiler uses the system standard library instead of the standard library provided by the compiler.",
-      "title": "Use the system standard library",
+      "description": "To achieve reproducible results, MrDocs bundles the LibC++ headers. To use the C++ standard library available in the system instead, set this option to true.",
+      "title": "Use the system C++ standard library",
       "type": "boolean"
     },
     "verbose": {

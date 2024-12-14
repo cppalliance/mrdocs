@@ -25,7 +25,7 @@ Computes the square root of an integral value&period;
 
 === Synopsis
 
-Declared in `&lt;sqrt&period;cpp&gt;`
+Declared in `&lt;libcxx&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----

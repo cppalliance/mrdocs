@@ -246,12 +246,8 @@ std::vector<std::string>
 adjustCommandLine(
     StringRef const workingDir,
     std::vector<std::string> const& cmdline,
-    std::vector<std::string> const& additional_defines,
-    std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories,
-    std::vector<std::string> const& stdlibIncludes,
-    std::vector<std::string> const& systemIncludes,
-    std::vector<std::string> const& includes,
-    bool const useSystemStdlib)
+    std::shared_ptr<Config const> const& config,
+    std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories)
 {
     if (cmdline.empty())
     {
@@ -262,15 +258,15 @@ adjustCommandLine(
     // Copy the compiler path
     // ------------------------------------------------------
     std::string const& progName = cmdline.front();
-    std::vector<std::string> new_cmdline = {progName};
+    std::vector new_cmdline = {progName};
 
     // ------------------------------------------------------
     // Convert to InputArgList
     // ------------------------------------------------------
     // InputArgList is the input format for llvm functions
     auto cmdLineCStrsView = std::views::transform(cmdline, &std::string::c_str);
-    std::vector<const char*> cmdLineCStrs(cmdLineCStrsView.begin(), cmdLineCStrsView.end());
-    llvm::opt::InputArgList args = llvm::opt::InputArgList(
+    std::vector const cmdLineCStrs(cmdLineCStrsView.begin(), cmdLineCStrsView.end());
+    llvm::opt::InputArgList const args(
         cmdLineCStrs.data(),
         cmdLineCStrs.data() + cmdLineCStrs.size());
 
@@ -363,7 +359,7 @@ adjustCommandLine(
     // ------------------------------------------------------
     // Language standard
     // ------------------------------------------------------
-    constexpr auto is_std_option = [](std::string_view opt) {
+    constexpr auto is_std_option = [](std::string_view const opt) {
         return opt.starts_with("-std=") || opt.starts_with("--std=") || opt.starts_with("/std:");
     };
     if (std::ranges::find_if(cmdline, is_std_option) == cmdline.end())
@@ -375,13 +371,13 @@ adjustCommandLine(
     // Add additional defines
     // ------------------------------------------------------
     // These are additional defines specified in the config file
-    for(const auto& def : additional_defines)
+    for(const auto& def : (*config)->defines)
     {
         new_cmdline.emplace_back(fmt::format("-D{}", def));
     }
     new_cmdline.emplace_back("-D__MRDOCS__");
 
-    if (useSystemStdlib)
+    if ((*config)->useSystemStdlib || (*config)->useSystemLibc)
     {
         // ------------------------------------------------------
         // Add implicit include paths
@@ -398,28 +394,42 @@ adjustCommandLine(
             }          
         }
     }
-    else
+
+    if (!(*config)->useSystemStdlib)
     {
         // ------------------------------------------------------
         // Add standard library and system includes
         // ------------------------------------------------------
-        for (auto const& inc : systemIncludes)
-        {
-            new_cmdline.emplace_back(fmt::format("-isystem{}", inc));
-        }
-        for (auto const& inc: stdlibIncludes)
-        {
-            new_cmdline.emplace_back(fmt::format("-isystem{}", inc));
-        }
-        // new_cmdline.emplace_back("-nostdinc");
+        // Regardless of the implicit include directories of the
+        // compiler used in the compilation database, we disable
+        // implicit include paths and add the standard library
+        // and system includes manually. That gives MrDocs
+        // access to libc++ in a portable way.
         new_cmdline.emplace_back("-nostdinc++");
         new_cmdline.emplace_back("-nostdlib++");
+        for (auto const& inc : (*config)->stdlibIncludes)
+        {
+            new_cmdline.emplace_back(fmt::format("-isystem{}", inc));
+        }
+    }
+
+    if (!(*config)->useSystemLibc)
+    {
+        new_cmdline.emplace_back("-nostdinc");
+        for (auto const& inc : (*config)->libcIncludes)
+        {
+            new_cmdline.emplace_back(fmt::format("-isystem{}", inc));
+        }
     }
 
     // ------------------------------------------------------
-    // Add directory to include search path
+    // Add user directories to include search path
     // ------------------------------------------------------
-    for (auto const& inc : includes)
+    for (auto const& inc : (*config)->systemIncludes)
+    {
+        new_cmdline.emplace_back(fmt::format("-isystem{}", inc));
+    }
+    for (auto const& inc : (*config)->includes)
     {
         new_cmdline.emplace_back(fmt::format("-I{}", inc));
     }
@@ -478,35 +488,29 @@ makeAbsoluteAndNative(
 
 MrDocsCompilationDatabase::
 MrDocsCompilationDatabase(
-    llvm::StringRef workingDir,
+    StringRef const workingDir,
     CompilationDatabase const& inner,
-    std::shared_ptr<const Config> config,
+    std::shared_ptr<Config const> const& config,
     std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
     using tooling::CompileCommand;
-    auto config_impl = std::dynamic_pointer_cast<
-        const ConfigImpl>(config);
 
     std::vector<CompileCommand> allCommands = inner.getAllCompileCommands();
     AllCommands_.reserve(allCommands.size());
     SmallPathString temp;
-    for (tooling::CompileCommand const& cmd0 : allCommands)
+    for (CompileCommand const& cmd0 : allCommands)
     {
-        tooling::CompileCommand cmd;
+        CompileCommand cmd;
         cmd.CommandLine = cmd0.CommandLine;
         cmd.Heuristic = cmd0.Heuristic;
         cmd.Output = cmd0.Output;
         cmd.CommandLine = adjustCommandLine(
             workingDir,
             cmd0.CommandLine,
-            (*config_impl)->defines,
-            implicitIncludeDirectories,
-            (*config_impl)->stdlibIncludes,
-            (*config_impl)->systemIncludes,
-            (*config_impl)->includes,
-            (*config_impl)->useSystemStdlib);
+            config,
+            implicitIncludeDirectories);
         cmd.Directory = makeAbsoluteAndNative(workingDir, cmd0.Directory);
         cmd.Filename = makeAbsoluteAndNative(workingDir, cmd0.Filename);
         if (isCXXSrcFile(cmd.Filename))

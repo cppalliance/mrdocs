@@ -54,9 +54,9 @@ public:
      *        implicit include directories, as determined by the system's compiler.
      */
     MrDocsCompilationDatabase(
-        llvm::StringRef workingDir,
+        StringRef workingDir,
         CompilationDatabase const& inner,
-        std::shared_ptr<const Config> config,
+        std::shared_ptr<Config const> const& config,
         std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories);
 
     /** Get all compile commands for a file.
@@ -65,7 +65,7 @@ public:
     */
     std::vector<tooling::CompileCommand>
     getCompileCommands(
-        llvm::StringRef FilePath) const override;
+        StringRef FilePath) const override;
 
     /** Get all files in the database.
 
