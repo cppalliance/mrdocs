@@ -56,19 +56,19 @@ The distance between the two points
 | Name | Description
 
 | *x0*
-| The x&amp;hyphen&semi;coordinate of the first point
+| The x&hyphen;coordinate of the first point
 
 
 | *y0*
-| The y&amp;hyphen&semi;coordinate of the first point
+| The y&hyphen;coordinate of the first point
 
 
 | *x1*
-| The x&amp;hyphen&semi;coordinate of the second point
+| The x&hyphen;coordinate of the second point
 
 
 | *y1*
-| The y&amp;hyphen&semi;coordinate of the second point
+| The y&hyphen;coordinate of the second point
 
 
 |===

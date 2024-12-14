@@ -1,0 +1,4 @@
+source-root: .
+input:
+  include:
+    - .
