@@ -379,6 +379,7 @@ adjustCommandLine(
     {
         new_cmdline.emplace_back(fmt::format("-D{}", def));
     }
+    new_cmdline.emplace_back("-D__MRDOCS__");
 
     if (useSystemStdlib)
     {
