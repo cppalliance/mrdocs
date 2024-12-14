@@ -361,6 +361,16 @@ def generate_public_settings_hpp(config):
         contents += f'        std::forward<F>(f)({escape_as_cpp_string(option["name"])}, {to_camel_case(option["name"])});\n'
     contents += '    }\n\n'
 
+    contents += '    /** Visit all options\n'
+    contents += '     */\n'
+    contents += '    template <class F>\n'
+    contents += '    void\n'
+    contents += '    visit(F&& f) const\n'
+    contents += '    {\n'
+    for option in flat_options:
+        contents += f'        std::forward<F>(f)({escape_as_cpp_string(option["name"])}, {to_camel_case(option["name"])});\n'
+    contents += '    }\n\n'
+
     contents += '}; // struct PublicSettings\n\n'
 
     # Functions to convert enums to strings

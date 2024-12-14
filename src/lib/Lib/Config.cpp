@@ -193,15 +193,34 @@ struct PublicSettingsVisitor {
         if (referenceDirKey == "config-dir") {
             return dirs.configDir;
         }
-        else if (referenceDirKey == "cwd") {
+        if (referenceDirKey == "cwd") {
             return dirs.cwd;
         }
-        else if (referenceDirKey == "mrdocs-root") {
+        if (referenceDirKey == "mrdocs-root") {
             return dirs.mrdocsRoot;
         }
-        else if (referenceDirKey == "output") {
-            MRDOCS_ASSERT(!settings.output.empty());
-            return settings.output;
+        if (!referenceDirKey.empty()) {
+            Expected<std::string_view> res = Unexpected(formatError("unknown relative-to value: \"{}\"", referenceDirKey));
+            settings.visit([&]<typename T>(std::string_view const name, T& value)
+            {
+                if constexpr (std::convertible_to<T, std::string_view>)
+                {
+                    if (name != referenceDirKey)
+                    {
+                        return;
+                    }
+                    std::string_view valueSv(value);
+                    if (!value.empty())
+                    {
+                        res = value;
+                        return;
+                    }
+                    res = Unexpected(formatError(
+                            "relative-to value \"{}\" is empty",
+                            referenceDirKey));
+                }
+            });
+            return res;
         }
         return Unexpected(formatError("unknown relative-to value: \"{}\"", referenceDirKey));
     }
