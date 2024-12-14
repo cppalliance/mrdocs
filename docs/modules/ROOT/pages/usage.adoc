@@ -13,8 +13,10 @@ include::partial$workflow.adoc[]
 
 In summary:
 
-* Begin by specifying the <<config-file,configuration file>> and <<cli,command-line arguments>> to set up the options. The configuration options affect all processes.
-* The configuration options define a <<compilation-database, Compilation Database>>. All symbols are extracted with Clang to generate a unified corpus of symbols with their corresponding xref:page$commands.adoc[documentation].
+* Begin by specifying the <<config-file,configuration file>> and <<cli,command-line arguments>> to set up the options.
+The configuration options affect all processes.
+* The configuration options define a <<compilation-database, Compilation Database>>.
+All symbols are extracted with Clang to generate a unified corpus of symbols with their corresponding xref:page$commands.adoc[documentation].
 * Finally, This corpus is then fed to a xref:page$generators.adoc[Generator] that produces the desired documentation.
 
 For more details on each component, refer to the corresponding sections of this guide.
@@ -210,7 +212,7 @@ However, this ill-formed pattern is problematic:
 * the developer has to effectively maintain two versions of the code
 * the original source code becomes more and more unreadable
 
-Instead, when using MrDocs, the same function could be documented as:
+Instead, when using MrDocs, while the `\\__MRDOCS__` macro is still available for conditional compilation, the same function could be directly documented as:
 
 [source,c++]
 ----
