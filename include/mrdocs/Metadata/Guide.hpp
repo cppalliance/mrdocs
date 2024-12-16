@@ -38,7 +38,7 @@ struct GuideInfo
 
     /** Template head, if any.
     */
-    std::unique_ptr<TemplateInfo> Template;
+    std::optional<TemplateInfo> Template;
 
     /** The parameters of the deduction guide.
     */

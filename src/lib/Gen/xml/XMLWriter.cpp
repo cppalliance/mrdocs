@@ -637,7 +637,7 @@ writeLocation(
 void
 XMLWriter::
 openTemplate(
-    const std::unique_ptr<TemplateInfo>& I)
+    const std::optional<TemplateInfo>& I)
 {
     if(! I)
         return;
@@ -659,7 +659,7 @@ openTemplate(
 void
 XMLWriter::
 closeTemplate(
-    const std::unique_ptr<TemplateInfo>& I)
+    const std::optional<TemplateInfo>& I)
 {
     if(! I)
         return;

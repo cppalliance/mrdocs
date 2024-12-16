@@ -28,7 +28,7 @@ struct ConceptInfo
 {
     /** The concepts template parameters
     */
-    std::unique_ptr<TemplateInfo> Template;
+    std::optional<TemplateInfo> Template;
 
     /** The concepts constraint-expression
     */

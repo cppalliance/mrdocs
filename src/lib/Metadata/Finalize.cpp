@@ -236,6 +236,14 @@ class Finalizer
             finalize(*ptr);
     }
 
+    template<typename T>
+    void finalize(std::optional<T>& ptr) requires
+        requires { this->finalize(*ptr); }
+    {
+        if(ptr)
+            finalize(*ptr);
+    }
+
     template<typename Range>
         requires std::ranges::input_range<Range>
     void finalize(Range&& range)

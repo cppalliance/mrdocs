@@ -369,9 +369,14 @@ struct TemplateInfo
     TemplateSpecKind specializationKind() const noexcept
     {
         if(Params.empty())
+        {
             return TemplateSpecKind::Explicit;
-        return Args.empty() ? TemplateSpecKind::Primary :
-            TemplateSpecKind::Partial;
+        }
+        if (Args.empty())
+        {
+            return TemplateSpecKind::Primary;
+        }
+        return TemplateSpecKind::Partial;
     }
 };
 
@@ -388,7 +393,7 @@ void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
-    std::unique_ptr<TemplateInfo> const& I,
+    std::optional<TemplateInfo> const& I,
     DomCorpus const* domCorpus)
 {
     if (!I)

@@ -85,11 +85,11 @@ struct RecordInfo
     */
     RecordKeyKind KeyKind = RecordKeyKind::Struct;
 
-    // When present, this record is a template or specialization.
-    std::unique_ptr<TemplateInfo> Template;
+    /// When present, this record is a template or specialization.
+    std::optional<TemplateInfo> Template;
 
-    // Indicates if the record was declared using a typedef. Things like anonymous
-    // structs in a typedef:
+    // Indicates if the record was declared using a typedef.
+    // Things like anonymous structs in a typedef:
     //   typedef struct { ... } foo_t;
     // are converted into records with the typedef as the Name + this flag set.
     // KRYSTIAN FIXME: this does not account for alias-declarations
