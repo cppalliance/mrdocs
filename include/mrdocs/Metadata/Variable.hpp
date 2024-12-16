@@ -34,7 +34,7 @@ struct VariableInfo
     /** The type of the variable */
     std::unique_ptr<TypeInfo> Type;
 
-    std::unique_ptr<TemplateInfo> Template;
+    std::optional<TemplateInfo> Template;
 
     ExprInfo Initializer;
 

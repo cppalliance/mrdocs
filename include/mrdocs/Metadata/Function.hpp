@@ -126,13 +126,16 @@ struct FunctionInfo
     : InfoCommonBase<InfoKind::Function>
     , SourceInfo
 {
-    std::unique_ptr<TypeInfo> ReturnType; // Info about the return type of this function.
-    std::vector<Param> Params; // List of parameters.
+    /// Info about the return type of this function.
+    std::unique_ptr<TypeInfo> ReturnType;
 
-    // When present, this function is a template or specialization.
-    std::unique_ptr<TemplateInfo> Template;
+    /// List of parameters.
+    std::vector<Param> Params;
 
-    // the class of function this is
+    /// When present, this function is a template or specialization.
+    std::optional<TemplateInfo> Template;
+
+    /// The class of function this is
     FunctionClass Class = FunctionClass::Normal;
 
     NoexceptInfo Noexcept;

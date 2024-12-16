@@ -58,7 +58,7 @@ class ASTVisitor
     friend class TerminalTypeVisitor;
 
     // MrDocs configuration
-    const ConfigImpl& config_;
+    ConfigImpl const& config_;
 
     // MrDocs diagnostics
     Diagnostics diags_;
@@ -195,7 +195,7 @@ class ASTVisitor
     template <class InfoTy>
     struct upsertResult {
         InfoTy& I;
-        bool created;
+        bool isNew;
     };
 
 public:
@@ -280,44 +280,45 @@ private:
     // AST Traversal
     // =================================================
 
-    /*  Traverse a declaration context
+    /*  Traverse a declaration
 
         This function is called to traverse any declaration.
         The Decl element is converted to its derived type,
         and the appropriate `traverse` overload is called.
 
-        The build() function will call this function with
-        context_.getTranslationUnitDecl() to initiate
+        The `build()` function will call this function with
+        `context_.getTranslationUnitDecl()` to initiate
         the traversal of the entire AST, while
         `buildDependencies()` will call it for each dependency.
 
-        @param DC The declaration context to traverse.
-        @param args The arguments to forward to the `traverse` function.
+        @param D The declaration to traverse.
      */
-    template <class... Args>
     void
-    traverseAny(Decl* D, Args&&... args);
+    traverseAny(Decl* D);
 
-    /*  Traverse an unspecified declaration
+    /*  Traverse a declaration and template declaration
 
-        Catch-all function to traverse any declaration.
-        The function will attempt to convert the declaration
-        to a DeclContext and call traverse it if successful.
+        This function is called to traverse any declaration
+        with the corresponding template declaration.
+
+        The Decl element is converted to its derived type,
+        and the appropriate `traverse` overload is called
+        with the template declaration as the second argument.
+
+        Both the information about the type and the
+        template parameters are extracted into the
+        `Info` object.
+
+        The `traverseAny()` function will call this function
+        for each declaration with a corresponding template
+        declaration.
+
+        @param D The declaration context to traverse.
+        @param TD The corresponding template declaration.
      */
-    template<typename... Args>
+    template <std::derived_from<TemplateDecl> TemplateDeclTy>
     void
-    traverse(Decl* D, Args&&...);
-
-    /*  Traverse declaration contexts
-
-        This function is called to traverse the members of a declaration
-        that is also a context with other members.
-
-        The function will call traverseAny for each member of the
-        declaration context.
-    */
-    void
-    traverse(DeclContext* DC);
+    traverseAny(Decl* D, TemplateDeclTy* TD);
 
     /*  The default implementation for the traverse function
 
@@ -328,118 +329,87 @@ private:
         declaration, populates it with the necessary information,
         and optionally traverses the members of the declaration.
 
-        The Traverse template parameter is used to determine
-        whether the function should traverse the members of
-        the declaration context.
-
         @param D The declaration to traverse
      */
     template <class DeclTy>
+    requires std::derived_from<DeclTy, Decl>
+    void
+    traverse(DeclTy* D)
+    {
+        defaultTraverseImpl<false>(D);
+    }
+
+    /*  The default implementation for the traverse function with a
+        template parameter
+
+        This function defines the usual behavior for the
+        traverse function for a concrete declaration type
+        when associated with a template declaration.
+
+        It creates a new corresponding Info object for the
+        declaration, populates it with the necessary information,
+        populates the Template information, and optionally
+        traverses the members of the declaration.
+
+        @param D The declaration to traverse
+        @param TD The template declaration associated with `D`
+     */
+    template <
+        std::derived_from<Decl> DeclTy,
+        std::derived_from<TemplateDecl> TemplateDeclTy>
+    void
+    traverse(DeclTy* D, TemplateDeclTy* TD)
+    {
+        defaultTraverseImpl<true>(D, TD);
+    }
+
+    /* Default implementation for the traverse function
+
+        This function defines the common logic for
+        `traverse(DeclTy*)` and `traverse(DeclTy*, TemplateDeclTy*)`,
+        where the `PopulateFromTD` parameter determines whether
+        the template information should be populated from the
+        template declaration.
+     */
+    template <
+        bool PopulateFromTD,
+        std::derived_from<Decl> DeclTy,
+        std::derived_from<TemplateDecl> TemplateDeclTy = TemplateDecl>
+    void
+    defaultTraverseImpl(DeclTy* D, TemplateDeclTy* TD = nullptr);
+
+    /*  Traverse a C++ function or function specialization
+
+        This handles `FunctionDecl` and `CXXMethodDecl`.
+
+        Both these classes can return `true` for
+        `D->isFunctionTemplateSpecialization()`,
+        in which case the function will also populate the
+        template parameters of the function.
+
+     */
+    template<class FunctionDeclTy>
     requires
-        std::same_as<DeclTy, NamespaceDecl> ||
-        std::same_as<DeclTy, EnumDecl> ||
-        std::same_as<DeclTy, EnumConstantDecl> ||
-        std::same_as<DeclTy, FieldDecl> ||
-        std::same_as<DeclTy, FriendDecl> ||
-        std::same_as<DeclTy, NamespaceAliasDecl> ||
-        std::same_as<DeclTy, UsingDecl>
+        std::derived_from<FunctionDeclTy, Decl> &&
+        std::derived_from<FunctionDeclTy, FunctionDecl>
     void
-    traverse(DeclTy* D);
-
-    /*  Traverse a C++ struct, union, or class
-
-        This function is called by traverseAny to traverse a
-        C++ struct, union, or class. `D` can be a CXXRecordDecl
-        or a templated CXXRecordDecl.
-
-        If `CTD` is not null, the function will populate
-        the template parameters of the Record object.
-        `CTD` might represent a partial specialization,
-        an explicit specialization, or the primary template.
-    */
-    template<std::derived_from<CXXRecordDecl> CXXRecordDeclTy>
-    void
-    traverse(CXXRecordDeclTy*, ClassTemplateDecl* CTD = nullptr);
-
-    /*  Traverse a C++ function
-
-        This function is called by traverseAny to traverse a
-        C++ function. `D` can be a FunctionDecl
-        or a templated FunctionDecl.
-
-        If `CTD` is not null, the function will populate
-        the template parameters of the function.
-        `CTD` might represent a partial specialization,
-        an explicit specialization, or the primary template.
-    */
-    template<std::derived_from<FunctionDecl> FunctionDeclTy>
-    void
-    traverse(FunctionDeclTy* D, FunctionTemplateDecl* CTD = nullptr);
-
-    /*  Traverse a typedef declaration
-
-        This function is called by traverseAny to traverse a
-        typedef declaration. `D` can be a TypedefNameDecl
-        or a templated TypedefNameDecl.
-
-        If `ATD` is not null, the function will populate
-        the template parameters of the Typedef object.
-        `ATD` might represent a partial specialization,
-        an explicit specialization, or the primary template.
-    */
-    template<std::derived_from<TypedefNameDecl> TypedefNameDeclTy>
-    void
-    traverse(TypedefNameDeclTy * D, TypeAliasTemplateDecl * ATD = nullptr);
-
-    /*  Traverse a variable declaration or definition
-
-        This function is called by traverseAny to traverse a
-        variable declaration or definition. `D` can be a VarDecl
-        or a templated VarDecl.
-
-        If `VTD` is not null, the function will populate
-        the template parameters of the Variable object.
-        `VTD` might represent a partial specialization,
-        an explicit specialization, or the primary template.
-    */
-    template<std::derived_from<VarDecl> VarDeclTy>
-    void
-    traverse(VarDeclTy* D, VarTemplateDecl* VTD = nullptr);
-
-    /*  Traverse a deduction guide
-
-        This function is called by traverseAny to traverse a
-        C++ deduction guide. `D` can be a CXXDeductionGuideDecl
-        or a templated CXXDeductionGuideDecl.
-
-        If `FTD` is not null, the function will populate
-        the template parameters of the Guide object.
-    */
-    void
-    traverse(
-        CXXDeductionGuideDecl* D,
-        FunctionTemplateDecl const* FTD = nullptr);
+    traverse(FunctionDeclTy* D);
 
     /*  Traverse a using directive
 
         This function is called to traverse a using directive
         such as `using namespace std;`.
 
-        The parent declaration is extracted and included
-        in the dependencies.
+        If the parent declaration is a Namespace, we
+        update its `UsingDirectives` field.
     */
     void
-    traverse(UsingDirectiveDecl*);
-
-    /*  Traverse a concept definition
-
-        This function is called by traverseAny to traverse a
-        C++ concept definition.
-    */
-    void
-    traverse(ConceptDecl*);
+    traverse(UsingDirectiveDecl* D);
 
     /*  Traverse a member of an anonymous union.
+
+        We get the anonymous union field and traverse it
+        as a regular `FieldDecl`.
      */
     void
     traverse(IndirectFieldDecl*);
@@ -447,6 +417,18 @@ private:
     // =================================================
     // AST Traversal Helpers
     // =================================================
+
+    /*  Traverse the members of a declaration
+
+        This function is called to traverse the members of
+        a Decl that is a DeclContext with other members.
+
+        The function will call traverseAny for all members of the
+        declaration context.
+    */
+    template <std::derived_from<Decl> DeclTy>
+    void
+    traverseMembers(DeclTy* DC);
 
     /*  Generates a Unified Symbol Resolution value for a declaration.
 
@@ -457,7 +439,7 @@ private:
 
         @returns true if USR generation succeeded.
     */
-    Expected<llvm::SmallString<128>>
+    Expected<SmallString<128>>
     generateUSR(const Decl* D) const;
 
     /*  Generate the symbol ID for a declaration.
@@ -497,50 +479,81 @@ private:
     // Populate functions
     // =================================================
     void
-    populate(NamespaceInfo& I, bool created, NamespaceDecl* D);
+    populate(NamespaceInfo& I, bool isNew, NamespaceDecl* D);
 
     void
-    populate(RecordInfo& I, bool created, CXXRecordDecl* D);
+    populate(RecordInfo& I, bool isNew, CXXRecordDecl* D);
 
     template <std::derived_from<FunctionDecl> DeclTy>
     void
-    populate(FunctionInfo& I, bool created, DeclTy* D);
+    populate(FunctionInfo& I, bool isNew, DeclTy* D);
 
     void
-    populate(EnumInfo& I, bool created, EnumDecl* D);
+    populate(EnumInfo& I, bool isNew, EnumDecl* D);
 
     void
-    populate(EnumConstantInfo& I, bool created, EnumConstantDecl* D);
+    populate(EnumConstantInfo& I, bool isNew, EnumConstantDecl* D);
+
+    template<std::derived_from<TypedefNameDecl> TypedefNameDeclTy>
+    void
+    populate(TypedefInfo& I, bool isNew, TypedefNameDeclTy* D);
 
     void
-    populate(TypedefInfo& I, bool created, TypedefNameDecl* D);
+    populate(VariableInfo& I, bool isNew, VarDecl* D);
 
     void
-    populate(VariableInfo& I, bool created, VarDecl* D);
+    populate(FieldInfo& I, bool isNew, FieldDecl* D);
 
     void
-    populate(FieldInfo& I, bool created, FieldDecl* D);
+    populate(SpecializationInfo& I, bool isNew, ClassTemplateSpecializationDecl* D);
 
     void
-    populate(SpecializationInfo& I, bool created, ClassTemplateSpecializationDecl* D);
+    populate(FriendInfo& I, bool isNew, FriendDecl* D);
 
     void
-    populate(FriendInfo& I, bool created, FriendDecl* D);
+    populate(GuideInfo& I, bool isNew, CXXDeductionGuideDecl* D);
 
     void
-    populate(GuideInfo& I, bool created, CXXDeductionGuideDecl* D);
+    populate(NamespaceAliasInfo& I, bool isNew, NamespaceAliasDecl* D);
 
     void
-    populate(NamespaceAliasInfo& I, bool created, NamespaceAliasDecl* D);
+    populate(UsingInfo& I, bool isNew, UsingDecl* D);
 
     void
-    populate(UsingInfo& I, bool created, UsingDecl* D);
-
-    void
-    populate(ConceptInfo& I, bool created, ConceptDecl* D);
+    populate(ConceptInfo& I, bool isNew, ConceptDecl* D);
 
     void
     populate(SourceInfo& I, clang::SourceLocation loc, bool definition, bool documented);
+
+    /*  Default function to populate the template information
+
+        This overload ignores the declaration and populates
+        the template information with the template parameters
+        of the template declaration.
+     */
+    template <
+        std::derived_from<Decl> DeclTy,
+        std::derived_from<TemplateDecl> TemplateDeclTy>
+    void
+    populate(TemplateInfo& Template, DeclTy* D, TemplateDeclTy* TD);
+
+    /*  Populate the template information for a class template
+
+        The function will populate the template parameters
+        depending on whether the record is a specialization.
+     */
+    template<std::derived_from<CXXRecordDecl> CXXRecordDeclTy>
+    void
+    populate(TemplateInfo& Template, CXXRecordDeclTy*, ClassTemplateDecl* CTD);
+
+    /*  Populate the template information for a variable template
+
+        The function will populate the template parameters
+        depending on whether the variable is a specialization.
+    */
+    template<std::derived_from<VarDecl> VarDeclTy>
+    void
+    populate(TemplateInfo& Template, VarDeclTy* D, VarTemplateDecl* VTD);
 
     void
     populate(NoexceptInfo& I, const FunctionProtoType* FPT);
@@ -565,11 +578,26 @@ private:
     void
     populate(TemplateInfo& TI, const TemplateParameterList* TPL);
 
-    template <class Range>
+    template <std::ranges::range Range>
     void
     populate(
         std::vector<std::unique_ptr<TArg>>& result,
-        Range&& args);
+        Range&& args)
+    {
+        for (TemplateArgument const& arg : args)
+        {
+            // KRYSTIAN NOTE: is this correct? should we have a
+            // separate TArgKind for packs instead of "unlaminating"
+            // them as we are doing here?
+            if (arg.getKind() == TemplateArgument::Pack)
+            {
+                populate(result, arg.pack_elements());
+            } else
+            {
+                result.emplace_back(toTArg(arg));
+            }
+        }
+    }
 
     void
     populate(

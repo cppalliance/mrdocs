@@ -43,12 +43,11 @@
 
 namespace clang::mrdocs {
 
-ASTVisitor::FileInfo
+auto
 ASTVisitor::FileInfo::build(
-    std::span<const std::pair<std::string, FileKind>> search_dirs,
+    std::span<std::pair<std::string, FileKind> const> search_dirs,
     std::string_view const file_path,
-    std::string_view const sourceRoot)
-{
+    std::string_view const sourceRoot) -> ASTVisitor::FileInfo {
     FileInfo file_info;
     file_info.full_path = std::string(file_path);
     file_info.short_path = file_info.full_path;
@@ -142,13 +141,13 @@ ASTVisitor(
     MRDOCS_ASSERT(context_.getTraversalScope() ==
         std::vector<Decl*>{context_.getTranslationUnitDecl()});
 
-    auto make_posix_absolute = [&](std::string_view old_path)
+    auto make_posix_absolute = [&](std::string_view const old_path)
     {
         llvm::SmallString<128> new_path(old_path);
         if(! llvm::sys::path::is_absolute(new_path))
         {
             // KRYSTIAN FIXME: use FileManager::makeAbsolutePath?
-            auto& cwd = source_.getFileManager().
+            auto const& cwd = source_.getFileManager().
                 getFileSystemOpts().WorkingDir;
             // we can't normalize a relative path
             // without a base directory
@@ -162,14 +161,12 @@ ASTVisitor(
         return std::string(new_path);
     };
 
-    std::string sourceRoot = make_posix_absolute(config_->sourceRoot);
-    std::vector<std::pair<std::string, FileKind>> search_dirs;
-
     Preprocessor& PP = sema_.getPreprocessor();
     HeaderSearch& HS = PP.getHeaderSearchInfo();
+    std::vector<std::pair<std::string, FileKind>> search_dirs;
     search_dirs.reserve(HS.search_dir_size());
     // first, convert all the include search directories into POSIX style
-    for(const DirectoryLookup& DL : HS.search_dir_range())
+    for (const DirectoryLookup& DL : HS.search_dir_range())
     {
         OptionalDirectoryEntryRef DR = DL.getDirRef();
         // only consider normal directories
@@ -182,6 +179,7 @@ ASTVisitor(
                 FileKind::System : FileKind::Other);
     }
 
+    std::string const sourceRoot = make_posix_absolute(config_->sourceRoot);
     auto cacheFileInfo = [&](const FileEntry* entry)
     {
         // "try" implies this may fail, so fallback to getName
@@ -215,10 +213,10 @@ build()
     // dependencies will be tracked, but not extracted
     traverseAny(context_.getTranslationUnitDecl());
 
-    // This is to ensure that the global namespace is always present
+    // Ensure the global namespace is always present
     upsert<NamespaceInfo>(SymbolID::global);
 
-    // if dependency extraction is disabled, we are done
+    // Dependency extraction is disabled: we are done
     if(config_->referencedDeclarations ==
         ConfigImpl::SettingsImpl::ExtractPolicy::Never) {
         return;
@@ -249,12 +247,21 @@ buildDependencies()
     }
 }
 
-template <class... Args>
+namespace {
+template <class DeclTy>
+concept isRedeclarableTemplate =
+    std::derived_from<DeclTy, RedeclarableTemplateDecl>;
+
+template <class DeclTy>
+concept isTemplateSpecialization =
+    std::derived_from<DeclTy, ClassTemplateSpecializationDecl> ||
+    std::derived_from<DeclTy, VarTemplateSpecializationDecl>;
+} // (anon)
+
+
 void
 ASTVisitor::
-traverseAny(
-    Decl* D,
-    Args&&... args)
+traverseAny(Decl* D)
 {
     MRDOCS_ASSERT(D);
     MRDOCS_CHECK_OR(!D->isInvalidDecl());
@@ -266,152 +273,149 @@ traverseAny(
     // and call the appropriate traverse function
     visit(D, [&]<typename DeclTy>(DeclTy* DD)
     {
-        if constexpr(
-            std::derived_from<DeclTy,
-                RedeclarableTemplateDecl>)
+        if constexpr (isRedeclarableTemplate<DeclTy>)
         {
-            // Only ClassTemplateDecl, FunctionTemplateDecl,
-            // VarTemplateDecl, and TypeAliasDecl are derived
-            // from RedeclarableTemplateDecl.
-            // This doesn't include ConceptDecl.
-            // Recursively call traverseAny so traverse is called with
-            // a pointer to the most derived type of the templated Decl
+            // If the symbol is a template, we traverse the
+            // templated declaration instead of the template.
+            // The template is provided as the second argument
+            // so that the Info object can also be populated with
+            // this information.
             traverseAny(DD->getTemplatedDecl(), DD);
         }
-        else if constexpr(
-            std::derived_from<DeclTy,
-                ClassTemplateSpecializationDecl> ||
-            std::derived_from<DeclTy,
-                VarTemplateSpecializationDecl>)
+        else if constexpr (isTemplateSpecialization<DeclTy>)
         {
-            // A class template specialization
+            // If the symbol is a template specialization,
+            // we traverse the specialized template and provide
+            // the specialized template as the second argument.
             traverse(DD, DD->getSpecializedTemplate());
         }
         else
         {
-            // Call the appropriate traverse function
-            // for the most derived type of the Decl
-            traverse(DD, std::forward<Args>(args)...);
+            // In the general case, we call the appropriate
+            // traverse function for the most derived type
+            // of the Decl
+            traverse(DD);
         }
     });
 }
 
-template <class... Args>
+template <std::derived_from<TemplateDecl> TemplateDeclTy>
 void
 ASTVisitor::
-traverse(Decl* D, Args&&...)
+traverseAny(Decl* D, TemplateDeclTy* TD)
 {
-    if (auto* DC = dyn_cast<DeclContext>(D))
-    {
-        traverse(DC);
-    }
-}
+    MRDOCS_ASSERT(D);
+    MRDOCS_ASSERT(TD);
+    MRDOCS_CHECK_OR(!D->isInvalidDecl());
+    MRDOCS_CHECK_OR(!TD->isInvalidDecl());
 
-void
-ASTVisitor::
-traverse(DeclContext* DC)
-{
-    for(auto* D : DC->decls())
-    {
-        traverseAny(D);
-    }
-}
+    // Restore the symbol filter state when leaving the scope
+    SymbolFilterScope scope(symbolFilter_);
 
-template <class DeclTy>
-requires
-    std::same_as<DeclTy, NamespaceDecl> ||
-    std::same_as<DeclTy, EnumDecl> ||
-    std::same_as<DeclTy, EnumConstantDecl> ||
-    std::same_as<DeclTy, FieldDecl> ||
-    std::same_as<DeclTy, FriendDecl> ||
-    std::same_as<DeclTy, NamespaceAliasDecl> ||
-    std::same_as<DeclTy, UsingDecl>
-void
-ASTVisitor::
-traverse(DeclTy* D)
-{
-    if (auto exp = upsert(D))
+    // Convert to the most derived type of the Decl
+    // and call the appropriate traverse function
+    visit(D, [&]<typename DeclTy>(DeclTy* DD)
     {
-        populate(exp->I, exp->created, D);
-        if constexpr (std::derived_from<DeclTy, DeclContext>)
+        if constexpr (
+            isRedeclarableTemplate<DeclTy> ||
+            isTemplateSpecialization<DeclTy>)
         {
-            traverse(dyn_cast<DeclContext>(D));
-        }
-    }
-}
-
-template<std::derived_from<CXXRecordDecl> CXXRecordDeclTy>
-void
-ASTVisitor::
-traverse(
-    CXXRecordDeclTy* D,
-    ClassTemplateDecl* CTD)
-{
-    // Upsert the corresponding Info object
-    auto exp = upsert(D);
-    if (!exp)
-    {
-        return;
-    }
-    auto [I, created] = *exp;
-
-    // CTD is the specialized template if D is a partial or
-    // explicit specialization, and the described template otherwise
-    if (CTD)
-    {
-        if (!I.Template)
-        {
-            I.Template = std::make_unique<TemplateInfo>();
-        }
-
-        // If D is a partial/explicit specialization, extract the template arguments
-        if (auto* CTSD = dyn_cast<ClassTemplateSpecializationDecl>(D))
-        {
-            generateID(getInstantiatedFrom(CTD), I.Template->Primary);
-
-            // Extract the template arguments of the specialization
-            populate(I.Template->Args, CTSD->getTemplateArgsAsWritten());
-
-            // Extract the template parameters if this is a partial specialization
-            if(auto* CTPSD = dyn_cast<ClassTemplatePartialSpecializationDecl>(D))
-            {
-                populate(*I.Template, CTPSD->getTemplateParameters());
-            }
+            // If `D` is still a template or a template specialization,
+            // we traverse the secondary templated declaration instead.
+            traverseAny(DD);
         }
         else
         {
-            // Otherwise, extract the template parameter list from CTD
-            populate(*I.Template, CTD->getTemplateParameters());
+            // Call the appropriate traverse function
+            // for the most derived type of the Decl.
+            // The primary template information provided to
+            // the corresponding traverse function.
+            traverse(DD, TD);
         }
-    }
-
-    populate(I, created, D);
-    traverse(static_cast<DeclContext*>(D));
+    });
 }
 
-template<std::derived_from<FunctionDecl> FunctionDeclTy>
+template <
+    bool PopulateFromTD,
+    std::derived_from<Decl> DeclTy,
+    std::derived_from<TemplateDecl> TemplateDeclTy>
 void
 ASTVisitor::
-traverse(
-    FunctionDeclTy* D,
-    FunctionTemplateDecl* FTD)
+defaultTraverseImpl(DeclTy* D, TemplateDeclTy* TD)
+{
+    MRDOCS_ASSERT(D);
+    MRDOCS_ASSERT(!PopulateFromTD || TD);
+
+    // If D is also a template declaration, we extract
+    // the template information from the declaration itself
+    if constexpr (!PopulateFromTD && std::derived_from<DeclTy, TemplateDecl>)
+    {
+        defaultTraverseImpl<true>(D, D);
+        return;
+    }
+
+    using InfoT = MrDocsType_t<DeclTy>;
+    static constexpr bool HasMrDocsInfoType = !std::same_as<InfoT, Info>;
+    if constexpr (!HasMrDocsInfoType)
+    {
+        // Traverse the members of the declaration even if
+        // the declaration does not have a corresponding Info type
+        traverseMembers(D);
+    }
+    else
+    {
+        // If the declaration has a corresponding Info type,
+        // we build the Info object and populate it with the
+        // necessary information.
+        auto exp = upsert(D);
+        MRDOCS_CHECK_OR(exp);
+
+        auto& [I, isNew] = *exp;
+
+        // Populate template information
+        if constexpr (
+            PopulateFromTD &&
+            requires { I.Template; })
+        {
+            if (!I.Template)
+            {
+                I.Template.emplace();
+            }
+            populate(*I.Template, D, TD);
+        }
+
+        // Populate the Info object with the necessary information
+        populate(I, isNew, D);
+
+        // Traverse the members of the declaration
+        traverseMembers(D);
+    }
+}
+
+template<class FunctionDeclTy>
+requires
+    std::derived_from<FunctionDeclTy, Decl> &&
+    std::derived_from<FunctionDeclTy, FunctionDecl>
+void
+ASTVisitor::
+traverse(FunctionDeclTy* D)
 {
     auto exp = upsert(D);
     if (!exp)
     {
         return;
     }
-    auto [I, created] = *exp;
+    auto [I, isNew] = *exp;
 
     // D is the templated declaration if FTD is non-null
-    if (FTD || D->isFunctionTemplateSpecialization())
+    if (D->isFunctionTemplateSpecialization())
     {
         if (!I.Template)
         {
-            I.Template = std::make_unique<TemplateInfo>();
+            I.Template.emplace();
         }
 
-        if(auto* FTSI = D->getTemplateSpecializationInfo())
+        if (auto* FTSI = D->getTemplateSpecializationInfo())
         {
             generateID(getInstantiatedFrom(
                 FTSI->getTemplate()), I.Template->Primary);
@@ -424,7 +428,7 @@ traverse(
                 populate(I.Template->Args, Args->asArray());
             }
         }
-        else if(auto* DFTSI = D->getDependentSpecializationInfo())
+        else if (auto* DFTSI = D->getDependentSpecializationInfo())
         {
             // Only extract the ID of the primary template if there is
             // a single candidate primary template.
@@ -438,113 +442,9 @@ traverse(
                 populate(I.Template->Args, Args);
             }
         }
-        else
-        {
-            populate(*I.Template, FTD->getTemplateParameters());
-        }
     }
 
-    populate(I, created, D);
-}
-
-template<std::derived_from<TypedefNameDecl> TypedefNameDeclTy>
-void
-ASTVisitor::
-traverse(
-    TypedefNameDeclTy* D,
-    TypeAliasTemplateDecl* ATD)
-{
-    auto exp = upsert(D);
-    if (!exp)
-    {
-        return;
-    }
-    auto [I, created] = *exp;
-
-    if (isa<TypeAliasDecl>(D))
-    {
-        I.IsUsing = true;
-    }
-
-    if (ATD)
-    {
-        if (!I.Template)
-        {
-            I.Template = std::make_unique<TemplateInfo>();
-        }
-        populate(*I.Template, ATD->getTemplateParameters());
-    }
-
-    populate(I, created, D);
-}
-
-template<std::derived_from<VarDecl> VarDeclTy>
-void
-ASTVisitor::
-traverse(
-    VarDeclTy* D,
-    VarTemplateDecl* VTD)
-{
-    auto exp = upsert(D);
-    if (!exp)
-    {
-        return;
-    }
-    auto [I, created] = *exp;
-
-    // VTD is the specialized template if D is a partial or
-    // explicit specialization, and the described template otherwise
-    if (VTD)
-    {
-        if (!I.Template)
-        {
-            I.Template = std::make_unique<TemplateInfo>();
-        }
-
-        // If D is a partial/explicit specialization, extract the template arguments
-        if(auto* VTSD = dyn_cast<VarTemplateSpecializationDecl>(D))
-        {
-            generateID(getInstantiatedFrom(VTD), I.Template->Primary);
-            // extract the template arguments of the specialization
-            populate(I.Template->Args, VTSD->getTemplateArgsAsWritten());
-            // extract the template parameters if this is a partial specialization
-            if(auto* VTPSD = dyn_cast<VarTemplatePartialSpecializationDecl>(D))
-                populate(*I.Template, VTPSD->getTemplateParameters());
-        }
-        else
-        {
-            // otherwise, extract the template parameter list from VTD
-            populate(*I.Template, VTD->getTemplateParameters());
-        }
-    }
-
-    populate(I, created, D);
-}
-
-void
-ASTVisitor::
-traverse(
-    CXXDeductionGuideDecl* D,
-    FunctionTemplateDecl const* FTD)
-{
-    auto exp = upsert(D);
-    if (!exp)
-    {
-        return;
-    }
-    auto [I, created] = *exp;
-
-    // D is the templated declaration if FTD is non-null
-    if(FTD)
-    {
-        if(! I.Template)
-        {
-            I.Template = std::make_unique<TemplateInfo>();
-        }
-        populate(*I.Template, FTD->getTemplateParameters());
-    }
-
-    populate(I, created, D);
+    populate(I, isNew, D);
 }
 
 void
@@ -558,12 +458,8 @@ traverse(UsingDirectiveDecl* D)
     }
 
     Decl* PD = getParentDecl(D);
-
     bool const isNamespaceScope = cast<DeclContext>(PD)->isFileContext();
-    if (!isNamespaceScope)
-    {
-        return;
-    }
+    MRDOCS_CHECK_OR(isNamespaceScope);
 
     if (Info* PI = find(generateID(PD)))
     {
@@ -577,27 +473,28 @@ traverse(UsingDirectiveDecl* D)
 
 void
 ASTVisitor::
-traverse(ConceptDecl* D)
-{
-    auto exp = upsert(D);
-    if (!exp)
-    {
-        return;
-    }
-    auto [I, created] = *exp;
-    if (!I.Template)
-    {
-        I.Template = std::make_unique<TemplateInfo>();
-    }
-    populate(*I.Template, D->getTemplateParameters());
-    populate(I, created, D);
-}
-
-void
-ASTVisitor::
 traverse(IndirectFieldDecl* D)
 {
     traverse(D->getAnonField());
+}
+
+template <std::derived_from<Decl> DeclTy>
+void
+ASTVisitor::
+traverseMembers(DeclTy* DC)
+{
+    // When a declaration context is a function, we should
+    // not traverse its members as function arguments are
+    // not main Info members.
+    if constexpr (
+        !std::derived_from<DeclTy, FunctionDecl> &&
+        std::derived_from<DeclTy, DeclContext>)
+    {
+        for (auto* D : DC->decls())
+        {
+            traverseAny(D);
+        }
+    }
 }
 
 Expected<llvm::SmallString<128>>
@@ -804,10 +701,11 @@ void
 ASTVisitor::
 populate(
     NamespaceInfo& I,
-    bool const created,
+    bool const isNew,
     NamespaceDecl* D)
 {
-    MRDOCS_CHECK_OR(created);
+    // Only extract Namespace data once
+    MRDOCS_CHECK_OR(isNew);
     I.IsAnonymous = D->isAnonymousNamespace();
     if (!I.IsAnonymous)
     {
@@ -821,14 +719,14 @@ void
 ASTVisitor::
 populate(
     RecordInfo& I,
-    bool const created,
+    bool const isNew,
     CXXRecordDecl* D)
 {
     bool const documented = generateJavadoc(I.javadoc, D);
     populate(I, D->getBeginLoc(),
         D->isThisDeclarationADefinition(), documented);
 
-    if (!created)
+    if (!isNew)
     {
         return;
     }
@@ -892,7 +790,7 @@ void
 ASTVisitor::
 populate(
     FunctionInfo& I,
-    bool const created,
+    bool const isNew,
     DeclTy* D)
 {
     bool const documented = generateJavadoc(I.javadoc, D);
@@ -981,7 +879,7 @@ populate(
 
     for (ParmVarDecl const* P : D->parameters())
     {
-        Param& param = created ?
+        Param& param = isNew ?
             I.Params.emplace_back() :
             I.Params[P->getFunctionScopeIndex()];
 
@@ -1004,7 +902,7 @@ populate(
         }
     }
 
-    if (!created)
+    if (!isNew)
     {
         return;
     }
@@ -1035,14 +933,14 @@ void
 ASTVisitor::
 populate(
     EnumInfo& I,
-    bool const created,
+    bool const isNew,
     EnumDecl* D)
 {
     bool const documented = generateJavadoc(I.javadoc, D);
     populate(I, D->getBeginLoc(),
         D->isThisDeclarationADefinition(), documented);
 
-    if (!created)
+    if (!isNew)
     {
         return;
     }
@@ -1063,13 +961,13 @@ void
 ASTVisitor::
 populate(
     EnumConstantInfo& I,
-    bool const created,
+    bool const isNew,
     EnumConstantDecl* D)
 {
     bool const documented = generateJavadoc(I.javadoc, D);
     populate(I, D->getBeginLoc(), true, documented);
 
-    if (!created)
+    if (!isNew)
     {
         return;
     }
@@ -1084,12 +982,13 @@ populate(
     populateNamespaces(I, D);
 }
 
+template<std::derived_from<TypedefNameDecl> TypedefNameDeclTy>
 void
 ASTVisitor::
 populate(
     TypedefInfo& I,
-    bool const created,
-    TypedefNameDecl* D)
+    bool const isNew,
+    TypedefNameDeclTy* D)
 {
     bool const documented = generateJavadoc(I.javadoc, D);
 
@@ -1099,11 +998,12 @@ populate(
     // be redeclared multiple times (even in the same scope)
     populate(I, D->getBeginLoc(), true, documented);
 
-    if (!created)
+    if (!isNew)
     {
         return;
     }
 
+    I.IsUsing = isa<TypeAliasDecl>(D);
     I.Name = extractName(D);
 
     // When a symbol has a dependency on a typedef, we also
@@ -1121,7 +1021,7 @@ void
 ASTVisitor::
 populate(
     VariableInfo& I,
-    bool const created,
+    bool const isNew,
     VarDecl* D)
 {
     bool const documented = generateJavadoc(I.javadoc, D);
@@ -1156,7 +1056,7 @@ populate(
         populate(I.Initializer, E);
     }
 
-    if (!created)
+    if (!isNew)
     {
         return;
     }
@@ -1172,7 +1072,7 @@ void
 ASTVisitor::
 populate(
     FieldInfo& I,
-    bool const created,
+    bool const isNew,
     FieldDecl* D)
 {
     bool const documented = generateJavadoc(I.javadoc, D);
@@ -1180,7 +1080,7 @@ populate(
     // cannot have multiple declarations
     populate(I, D->getBeginLoc(), true, documented);
 
-    if (!created)
+    if (!isNew)
     {
         return;
     }
@@ -1215,10 +1115,10 @@ void
 ASTVisitor::
 populate(
     SpecializationInfo& I,
-    bool const created,
+    bool const isNew,
     ClassTemplateSpecializationDecl* D)
 {
-    if (!created)
+    if (!isNew)
     {
         return;
     }
@@ -1237,13 +1137,13 @@ void
 ASTVisitor::
 populate(
     FriendInfo& I,
-    bool const created,
+    bool const isNew,
     FriendDecl* D)
 {
     bool const documented = generateJavadoc(I.javadoc, D);
     populate(I, D->getBeginLoc(), true, documented);
 
-    if (!created)
+    if (!isNew)
     {
         return;
     }
@@ -1283,14 +1183,14 @@ void
 ASTVisitor::
 populate(
     GuideInfo& I,
-    bool const created,
+    bool const isNew,
     CXXDeductionGuideDecl* D)
 {
     bool const documented = generateJavadoc(I.javadoc, D);
     populate(I, D->getBeginLoc(), true, documented);
 
     // deduction guides cannot be redeclared, so there is nothing to merge
-    if (!created)
+    if (!isNew)
     {
         return;
     }
@@ -1317,13 +1217,13 @@ void
 ASTVisitor::
 populate(
     NamespaceAliasInfo& I,
-    bool const created,
+    bool const isNew,
     NamespaceAliasDecl* D)
 {
     bool const documented = generateJavadoc(I.javadoc, D);
     populate(I, D->getBeginLoc(), true, documented);
 
-    if (!created)
+    if (!isNew)
     {
         return;
     }
@@ -1347,13 +1247,13 @@ void
 ASTVisitor::
 populate(
     UsingInfo& I,
-    bool const created,
+    bool const isNew,
     UsingDecl* D)
 {
     bool const documented = generateJavadoc(I.javadoc, D);
     populate(I, D->getBeginLoc(), true, documented);
 
-    if (!created)
+    if (!isNew)
     {
         return;
     }
@@ -1368,7 +1268,6 @@ populate(
             UDS->getTargetDecl(),
             I.UsingSymbols.emplace_back());
     }
-
     populateNamespaces(I, D);
 }
 
@@ -1376,12 +1275,12 @@ void
 ASTVisitor::
 populate(
     ConceptInfo& I,
-    bool const created,
+    bool const isNew,
     ConceptDecl* D)
 {
     bool const documented = generateJavadoc(I.javadoc, D);
     populate(I, D->getBeginLoc(), true, documented);
-    if (!created)
+    if (!isNew)
     {
         return;
     }
@@ -1433,6 +1332,78 @@ populate(
             documented);
     }
 }
+
+/*  Default function to populate template parameters
+ */
+template <
+    std::derived_from<Decl> DeclTy,
+    std::derived_from<TemplateDecl> TemplateDeclTy>
+void
+ASTVisitor::
+populate(TemplateInfo& Template, DeclTy*, TemplateDeclTy* TD)
+{
+    MRDOCS_ASSERT(TD);
+    populate(Template, TD->getTemplateParameters());
+}
+
+template<std::derived_from<CXXRecordDecl> CXXRecordDeclTy>
+void
+ASTVisitor::
+populate(
+    TemplateInfo& Template,
+    CXXRecordDeclTy* D,
+    ClassTemplateDecl* CTD)
+{
+    MRDOCS_ASSERT(CTD);
+
+    // If D is a partial/explicit specialization, extract the template arguments
+    if (auto* CTSD = dyn_cast<ClassTemplateSpecializationDecl>(D))
+    {
+        generateID(getInstantiatedFrom(CTD), Template.Primary);
+
+        // Extract the template arguments of the specialization
+        populate(Template.Args, CTSD->getTemplateArgsAsWritten());
+
+        // Extract the template parameters if this is a partial specialization
+        if (auto* CTPSD = dyn_cast<ClassTemplatePartialSpecializationDecl>(D))
+        {
+            populate(Template, CTPSD->getTemplateParameters());
+        }
+    }
+    else
+    {
+        // Otherwise, extract the template parameter list from CTD
+        populate(Template, CTD->getTemplateParameters());
+    }
+}
+
+template<std::derived_from<VarDecl> VarDeclTy>
+void
+ASTVisitor::
+populate(
+    TemplateInfo& Template,
+    VarDeclTy* D,
+    VarTemplateDecl* VTD)
+{
+    MRDOCS_ASSERT(VTD);
+
+    // If D is a partial/explicit specialization, extract the template arguments
+    if(auto* VTSD = dyn_cast<VarTemplateSpecializationDecl>(D))
+    {
+        generateID(getInstantiatedFrom(VTD), Template.Primary);
+        // extract the template arguments of the specialization
+        populate(Template.Args, VTSD->getTemplateArgsAsWritten());
+        // extract the template parameters if this is a partial specialization
+        if(auto* VTPSD = dyn_cast<VarTemplatePartialSpecializationDecl>(D))
+            populate(Template, VTPSD->getTemplateParameters());
+    }
+    else
+    {
+        // otherwise, extract the template parameter list from VTD
+        populate(Template, VTD->getTemplateParameters());
+    }
+}
+
 
 void
 ASTVisitor::
@@ -1611,55 +1582,21 @@ void
 ASTVisitor::
 populate(
     TemplateInfo& TI,
-    const TemplateParameterList* TPL)
+    TemplateParameterList const* TPL)
 {
-    for(std::size_t I = 0; I < TPL->size(); ++I)
+    if (TPL->size() > TI.Params.size())
     {
-        auto& PI = I < TI.Params.size() ?
-            TI.Params[I] : TI.Params.emplace_back();
-        populate(PI, TPL->getParam(I));
+        TI.Params.resize(TPL->size());
+    }
+    for (std::size_t I = 0; I < TPL->size(); ++I)
+    {
+        populate(TI.Params[I], TPL->getParam(I));
     }
     if (auto* RC = TPL->getRequiresClause())
     {
         populate(TI.Requires, RC);
     }
 }
-
-template <class Range>
-void
-ASTVisitor::
-populate(
-    std::vector<std::unique_ptr<TArg>>& result,
-    Range&& args)
-{
-    for(const TemplateArgument& arg : args)
-    {
-        // KRYSTIAN NOTE: is this correct? should we have a
-        // separate TArgKind for packs instead of "unlaminating"
-        // them as we are doing here?
-        if (arg.getKind() == TemplateArgument::Pack)
-        {
-            populate(result, arg.pack_elements());
-        } else
-        {
-            result.emplace_back(toTArg(arg));
-        }
-    }
-}
-
-template
-void
-ASTVisitor::
-populate<llvm::ArrayRef<clang::TemplateArgument> const&>(
-    std::vector<std::unique_ptr<TArg>>& result,
-    llvm::ArrayRef<clang::TemplateArgument> const& args);
-
-template
-void
-ASTVisitor::
-populate<llvm::ArrayRef<clang::TemplateArgument>&>(
-    std::vector<std::unique_ptr<TArg>>& result,
-    llvm::ArrayRef<clang::TemplateArgument>& args);
 
 void
 ASTVisitor::
@@ -1674,7 +1611,6 @@ populate(
             return x.getArgument();
         }));
 }
-
 
 std::string
 ASTVisitor::
@@ -1760,16 +1696,16 @@ populateNamespaces(
     case Decl::TranslationUnit:
     {
         MRDOCS_ASSERT(ParentID == SymbolID::global);
-        auto [P, created] = upsert<
+        auto [P, isNew] = upsert<
             NamespaceInfo>(ParentID);
         addMember(P, I);
         break;
     }
     case Decl::Namespace:
     {
-        auto [P, created] = upsert<
+        auto [P, isNew] = upsert<
             NamespaceInfo>(ParentID);
-        populate(P, created, cast<NamespaceDecl>(PD));
+        populate(P, isNew, cast<NamespaceDecl>(PD));
         addMember(P, I);
         break;
     }
@@ -1788,9 +1724,9 @@ populateNamespaces(
         MRDOCS_ASSERT(PD->getKind() !=
             Decl::ClassTemplatePartialSpecialization);
 
-        auto [P, created] = upsert<
+        auto [P, isNew] = upsert<
             SpecializationInfo>(ParentID);
-        populate(P, created, S);
+        populate(P, isNew, S);
         addMember(P, I);
         break;
     }
@@ -1801,17 +1737,17 @@ populateNamespaces(
     // that is not a CXXRecord
     case Decl::CXXRecord:
     {
-        auto [P, created] = upsert<
+        auto [P, isNew] = upsert<
             RecordInfo>(ParentID);
-        populate(P, created, cast<CXXRecordDecl>(PD));
+        populate(P, isNew, cast<CXXRecordDecl>(PD));
         addMember(P, I);
         break;
     }
     case Decl::Enum:
     {
-        auto [P, created] = upsert<
+        auto [P, isNew] = upsert<
             EnumInfo>(ParentID);
-        populate(P, created, cast<EnumDecl>(PD));
+        populate(P, isNew, cast<EnumDecl>(PD));
         addMember(P, I);
         break;
     }
@@ -2703,6 +2639,9 @@ isInSpecialNamespace(
     const Decl* D,
     std::span<const FilterPattern> const Patterns)
 {
+    // Check if a Decl is in a special namespace
+    // A Decl is in a special namespace if any of its
+    // parent namespaces match a special namespace pattern
     if (!D || Patterns.empty())
     {
         return false;
@@ -2733,6 +2672,9 @@ isInSpecialNamespace(
     const NestedNameSpecifier* NNS,
     std::span<const FilterPattern> Patterns)
 {
+    // Check if a NestedNameSpecifier is in a special namespace
+    // It's in a special namespace if any of its prefixes are
+    // in a special namespace
     const NamedDecl* ND = nullptr;
     while(NNS)
     {
@@ -2756,6 +2698,8 @@ checkSpecialNamespace(
     const NestedNameSpecifier* NNS,
     const Decl* D) const
 {
+    // Check if a NestedNameSpecifier or a Decl is in a special namespace
+    // If so, update the NameInfo's Name to reflect this
     if (isInSpecialNamespace(NNS, config_->seeBelowFilter) ||
         isInSpecialNamespace(D, config_->seeBelowFilter))
     {
@@ -2782,6 +2726,8 @@ checkSpecialNamespace(
     const NestedNameSpecifier* NNS,
     const Decl* D) const
 {
+    // Check if a NestedNameSpecifier or a Decl is in a special namespace
+    // If so, update the TypeInfo's Name to reflect this
     if (std::unique_ptr<NameInfo> Name;
         checkSpecialNamespace(Name, NNS, D))
     {
@@ -2847,7 +2793,7 @@ upsert(SymbolID const& id)
     // Creating symbol with invalid SymbolID
     MRDOCS_ASSERT(id != SymbolID::invalid);
     Info* info = find(id);
-    bool const created = !info;
+    bool const isNew = !info;
     if (!info)
     {
         info = info_.emplace(std::make_unique<
@@ -2855,7 +2801,7 @@ upsert(SymbolID const& id)
         info->Implicit = currentMode() != ExtractMode::Normal;
     }
     MRDOCS_ASSERT(info->Kind == InfoTy::kind_id);
-    return {static_cast<InfoTy&>(*info), created};
+    return {static_cast<InfoTy&>(*info), isNew};
 }
 
 template <std::derived_from<Decl> DeclType>
@@ -2868,14 +2814,14 @@ upsert(DeclType* D)
         shouldExtract(D, access),
         "Symbol should not be extracted");
 
-    SymbolID id = generateID(D);
+    SymbolID const id = generateID(D);
     MRDOCS_CHECK_MSG(id, "Failed to extract symbol ID");
 
-    auto [I, created] = upsert<MrDocsType_t<DeclType>>(id);
+    auto [I, isNew] = upsert<MrDocsType_t<DeclType>>(id);
     I.Access = convertToAccessKind(access);
 
     using R = upsertResult<MrDocsType_t<DeclType>>;
-    return R{std::ref(I), created};
+    return R{std::ref(I), isNew};
 }
 
 void

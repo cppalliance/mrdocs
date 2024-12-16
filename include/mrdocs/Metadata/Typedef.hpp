@@ -35,7 +35,7 @@ struct TypedefInfo
     //   typedef std::vector<int> MyVector;
     bool IsUsing = false;
 
-    std::unique_ptr<TemplateInfo> Template;
+    std::optional<TemplateInfo> Template;
 
     //--------------------------------------------
 
