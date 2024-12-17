@@ -212,9 +212,7 @@ build()
     // declarations which satisfy all filter conditions.
     // dependencies will be tracked, but not extracted
     traverseAny(context_.getTranslationUnitDecl());
-
-    // Ensure the global namespace is always present
-    upsert<NamespaceInfo>(SymbolID::global);
+    MRDOCS_ASSERT(find(SymbolID::global));
 
     // Dependency extraction is disabled: we are done
     if(config_->referencedDeclarations ==
@@ -449,11 +447,7 @@ void
 ASTVisitor::
 traverse(UsingDirectiveDecl* D)
 {
-    // A using directive such as `using namespace std;`
-    if (!shouldExtract(D, getAccess(D)))
-    {
-        return;
-    }
+    MRDOCS_CHECK_OR(shouldExtract(D));
 
     Decl* PD = getParentDecl(D);
     bool const isNamespaceScope = cast<DeclContext>(PD)->isFileContext();
@@ -711,6 +705,21 @@ populate(
     }
     I.IsInline = D->isInline();
     populateNamespaces(I, D);
+}
+
+void
+ASTVisitor::
+populate(
+    NamespaceInfo& I,
+    bool const isNew,
+    TranslationUnitDecl*)
+{
+    // Only extract Namespace data once
+    MRDOCS_CHECK_OR(isNew);
+    I.id = SymbolID::global;
+    I.IsAnonymous = false;
+    I.Name.clear();
+    I.IsInline = false;
 }
 
 void
@@ -2624,6 +2633,12 @@ inExtractedFile(
     }
 
     FileInfo const* file = findFileInfo(D->getBeginLoc());
+    if (!file && isa<TranslationUnitDecl>(D))
+    {
+        // TranslationUnitDecl is a special case
+        // that doesn't have a valid SourceLocation
+        return true;
+    }
     // KRYSTIAN NOTE: I'm unsure under what conditions
     // this assert would fire.
     MRDOCS_ASSERT(file);
@@ -2755,6 +2770,10 @@ ASTVisitor::FileInfo*
 ASTVisitor::
 findFileInfo(clang::SourceLocation const loc)
 {
+    if (loc.isInvalid())
+    {
+        return nullptr;
+    }
     // KRYSTIAN FIXME: we really should not be
     // calling getPresumedLoc this often,
     // it's quite expensive

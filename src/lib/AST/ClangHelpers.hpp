@@ -67,9 +67,13 @@ SubstituteConstraintExpressionWithoutSatisfaction(
 template <class>
 struct InfoTypeFor {};
 
-// Extract NamespaceInfo from NamespaceDecl
+// Extract NamespaceInfo from NamespaceDecl or TranslationUnitDecl
 template <>
 struct InfoTypeFor<NamespaceDecl>
+    : std::type_identity<NamespaceInfo> {};
+
+template <>
+struct InfoTypeFor<TranslationUnitDecl>
     : std::type_identity<NamespaceInfo> {};
 
 // Extract RecordInfo from anything derived from CXXRecordDecl
