@@ -292,28 +292,28 @@ checkPath(
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
+    // See if inputPath references a file or directory
     inputPath = files::normalizePath(inputPath);
+    auto fileType = files::getFileType(inputPath);
+    if (!fileType)
+    {
+        return report::error("{}: \"{}\"", fileType.error(), inputPath);
+    }
 
     // Set the reference directories for the test
-    dirs_.configDir = inputPath;
+    std::string const inputDir = fileType == files::FileType::directory
+        ? inputPath
+        : files::getParentDir(inputPath);
+    dirs_.configDir = inputDir;
     dirs_.cwd = dirs_.configDir;
-
-    // See if inputPath references a file or directory
-    auto fileType = files::getFileType(inputPath);
-    if(! fileType)
-        return report::error("{}: \"{}\"",
-            fileType.error(), inputPath);
 
     // Check for a directory-wide config
     Config::Settings dirSettings;
     testArgs.apply(dirSettings, dirs_, argv);
     dirSettings.multipage = false;
     dirSettings.sourceRoot = files::appendPath(inputPath, ".");
-    dirSettings.stdlibIncludes.insert(
-        dirSettings.stdlibIncludes.end(),
-        testArgs.stdlibIncludes.begin(),
-        testArgs.stdlibIncludes.end());
-    std::string const& configPath = files::appendPath(inputPath, "mrdocs.yml");
+
+    std::string const& configPath = files::appendPath(inputDir, "mrdocs.yml");
     if (files::exists(configPath)) {
         Config::Settings::load_file(dirSettings, configPath, dirs_).value();
         if (auto exp = dirSettings.normalize(dirs_); !exp) {
