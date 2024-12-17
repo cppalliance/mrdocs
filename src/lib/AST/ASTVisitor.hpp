@@ -481,6 +481,10 @@ private:
     void
     populate(NamespaceInfo& I, bool isNew, NamespaceDecl* D);
 
+    static
+    void
+    populate(NamespaceInfo& I, bool isNew, TranslationUnitDecl* D);
+
     void
     populate(RecordInfo& I, bool isNew, CXXRecordDecl* D);
 
@@ -753,7 +757,22 @@ private:
         and false otherwise.
      */
     bool
-    shouldExtract(const Decl* D, AccessSpecifier access);
+    shouldExtract(Decl const* D, AccessSpecifier access);
+
+    static
+    bool
+    shouldExtract(TranslationUnitDecl const*, AccessSpecifier)
+    {
+        return true;
+    }
+
+    template <std::derived_from<Decl> DeclTy>
+    bool
+    shouldExtract(DeclTy const* D)
+    {
+        return shouldExtract(D, getAccess(D));
+    }
+
 
     // Determine if a declaration passes the symbol filter
     bool
