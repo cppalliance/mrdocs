@@ -51,15 +51,17 @@ globalNamespace() const noexcept
 //------------------------------------------------
 
 // KRYSTIAN NOTE: temporary
-std::string&
+void
 Corpus::
-getFullyQualifiedName(
+qualifiedName(
     const Info& I,
     std::string& temp) const
 {
     temp.clear();
     if(! I.id || I.id == SymbolID::global)
-        return temp;
+    {
+        return;
+    }
 
     MRDOCS_ASSERT(I.Parent);
     for(auto const& pID : getParents(*this, I))
@@ -99,22 +101,29 @@ getFullyQualifiedName(
     {
         temp.append(I.Name);
     }
-    return temp;
 }
 
 std::vector<SymbolID>
 getParents(Corpus const& C, const Info& I)
 {
-    // AFREITAS: This function could eventually
-    // return a view.
     std::vector<SymbolID> parents;
+    std::size_t n = 0;
     auto curParent = I.Parent;
     while (curParent)
     {
-        parents.push_back(curParent);
+        ++n;
+        MRDOCS_ASSERT(C.find(curParent));
         curParent = C.get(curParent).Parent;
     }
-    std::ranges::reverse(parents);
+    parents.reserve(n);
+    parents.resize(n);
+    curParent = I.Parent;
+    while (curParent)
+    {
+        parents[--n] = curParent;
+        MRDOCS_ASSERT(C.find(curParent));
+        curParent = C.get(curParent).Parent;
+    }
     return parents;
 }
 

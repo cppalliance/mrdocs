@@ -134,7 +134,7 @@ writeNamespace(
             { "kind", "namespace" }
         });
 
-        tags_.write("name", corpus_->getFullyQualifiedName(I));
+        tags_.write("name", corpus_->qualifiedName(I));
         tags_.write("filename", generateFilename(I));
 
         // Write the class-like members of this namespace
@@ -144,7 +144,7 @@ writeNamespace(
             {
                 tags_.write(
                     "class",
-                    corpus_->getFullyQualifiedName(J),
+                    corpus_->qualifiedName(J),
                     {{"kind", "class"}});
             }
         });
@@ -178,7 +178,7 @@ writeClassLike(
     tags_.open("compound", {
         { "kind", "class" }
     });
-    tags_.write("name", corpus_->getFullyQualifiedName(I));
+    tags_.write("name", corpus_->qualifiedName(I));
     tags_.write("filename", generateFilename(I));
     if constexpr (T::isRecord())
     {

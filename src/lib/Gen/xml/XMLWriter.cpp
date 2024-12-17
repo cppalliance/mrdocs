@@ -161,13 +161,14 @@ writeIndex()
     tags_.open("symbols");
     if(options_.legible_names)
     {
-        LegibleNames names(corpus_, true);
+        LegibleNames const names(corpus_, true);
         for(auto& I : corpus_)
         {
+            corpus_.qualifiedName(I, temp);
             auto legible_name = names.getUnqualified(I.id);
             tags_.write("symbol", {}, {
                 { "legible", legible_name },
-                { "name", corpus_.getFullyQualifiedName(I, temp) },
+                { "name", temp },
                 { "tag", toString(I.Kind) },
                 { I.id } });
         }
@@ -175,10 +176,13 @@ writeIndex()
     else
     {
         for(auto& I : corpus_)
+        {
+            corpus_.qualifiedName(I, temp);
             tags_.write("symbol", {}, {
-                { "name", corpus_.getFullyQualifiedName(I, temp) },
+                { "name", temp },
                 { "tag", toString(I.Kind) },
                 { I.id } });
+        }
     }
     tags_.close("symbols");
 }
