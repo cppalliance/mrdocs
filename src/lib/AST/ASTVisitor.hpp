@@ -879,7 +879,7 @@ private:
         @param D The declaration to extract
      */
     template <std::derived_from<Decl> DeclType>
-    Expected<upsertResult<MrDocsType_t<DeclType>>>
+    Expected<upsertResult<InfoTypeFor_t<DeclType>>>
     upsert(DeclType* D);
 
     /* Get or construct an empty Info for a dependency declaration.
