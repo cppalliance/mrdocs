@@ -45,9 +45,6 @@ struct OverloadSet
     /// The parent symbol ID.
     SymbolID Parent;
 
-    /// The namespace of the overload set.
-    std::span<const SymbolID> Namespace;
-
     /// The members of the overload set.
     std::span<const SymbolID> Members;
 
@@ -62,11 +59,9 @@ struct OverloadSet
     OverloadSet(
         std::string_view name,
         const SymbolID& parent,
-        std::span<const SymbolID> ns,
         std::span<const SymbolID> members)
         : Name(name)
         , Parent(parent)
-        , Namespace(ns)
         , Members(members)
     {
     }

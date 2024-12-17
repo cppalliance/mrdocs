@@ -103,18 +103,29 @@ void mergeInfo(Info& I, Info&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
     MRDOCS_ASSERT(I.id);
-    if(I.Name == "")
+    if (I.Name == "")
+    {
         I.Name = Other.Name;
-    if(I.Namespace.empty())
-        I.Namespace = std::move(Other.Namespace);
-    if(I.Access == AccessKind::None)
+    }
+    if (I.Parent)
+    {
+        I.Parent = std::move(Other.Parent);
+    }
+    if (I.Access == AccessKind::None)
+    {
         I.Access = Other.Access;
+    }
     I.Implicit &= Other.Implicit;
-    // append javadocs
-    if(! I.javadoc)
+
+    // Append javadocs
+    if (!I.javadoc)
+    {
         I.javadoc = std::move(Other.javadoc);
-    else if(Other.javadoc)
+    }
+    else if (Other.javadoc)
+    {
         merge(*I.javadoc, std::move(*Other.javadoc));
+    }
 }
 
 void mergeScopeInfo(ScopeInfo& I, ScopeInfo&& Other)

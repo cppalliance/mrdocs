@@ -97,14 +97,13 @@ SymbolLookup(const Corpus& corpus)
 const Info*
 SymbolLookup::
 adjustLookupContext(
-    const Info* context)
+    Info const* context)
 {
     // find the innermost enclosing context that supports name lookup
     while(! supportsLookup(context))
     {
-        MRDOCS_ASSERT(! context->Namespace.empty());
-        const SymbolID& parent = context->Namespace.front();
-        context = corpus_.find(parent);
+        MRDOCS_ASSERT(context->Parent);
+        context = corpus_.find(context->Parent);
     }
     return context;
 }
@@ -187,18 +186,22 @@ lookupUnqualifiedImpl(
     bool for_nns,
     LookupCallback& callback)
 {
-    if(! context)
+    if (!context)
+    {
         return nullptr;
+    }
     context = adjustLookupContext(context);
     while(context)
     {
-        if(auto result = lookupInContext(
-            context, name, for_nns, callback))
+        if (auto result = lookupInContext(context, name, for_nns, callback))
+        {
             return result;
-        if(context->Namespace.empty())
+        }
+        if (!context->Parent)
+        {
             return nullptr;
-        const SymbolID& parent = context->Namespace.front();
-        context = corpus_.find(parent);
+        }
+        context = corpus_.find(context->Parent);
     }
     MRDOCS_UNREACHABLE();
 }

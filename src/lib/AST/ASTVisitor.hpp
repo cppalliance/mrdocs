@@ -619,15 +619,23 @@ private:
     std::string
     extractName(DeclarationName N);
 
-    /*  Populate the Info with its parent namespaces
+    /*  Populate the Info.Parent of a declaration
 
-        Given a Decl `D`, this function will populate
-        the `Info` `I` with the SymbolID of each parent namespace
-        of `D`. The SymbolID of the global namespace is always
-        included as the first element of `I.Namespace`.
+        This function will find the parent context `P` of
+        `D` and then:
+
+        @li It ensures the Info object for the parent context `P`
+        exists, and that `D` is included as a member of `P`.
+        @li It ensures the SymbolID of `P` is set as the parent
+        of `D`.
      */
     void
-    populateNamespaces(Info& I, Decl* D);
+    linkParent(Info& I, Decl* D);
+
+    /*  Ensure parent exists and has child has member
+     */
+    SymbolID
+    upsertParent(Decl* Parent, Info& Child);
 
     /*  Emplace a member Info into a ScopeInfo
 

@@ -254,12 +254,14 @@ class Finalizer
 
     // ----------------------------------------------------------------
 
-    void check(const SymbolID& id)
+    void
+    check(const SymbolID& id)
     {
         MRDOCS_ASSERT(info_.contains(id));
     }
 
-    void check(const std::vector<SymbolID>& ids)
+    void
+    check(const std::vector<SymbolID>& ids)
     {
         MRDOCS_ASSERT(std::all_of(ids.begin(), ids.end(),
             [this](const SymbolID& id)
@@ -284,18 +286,26 @@ public:
         visit(I, *this);
     }
 
-    void operator()(NamespaceInfo& I)
+    void
+    operator()(NamespaceInfo& I)
     {
-        check(I.Namespace);
+        if (I.Parent)
+        {
+            check(I.Parent);
+        }
         check(I.Members);
         finalize(I.javadoc);
         finalize(I.UsingDirectives);
         // finalize(I.Specializations);
     }
 
-    void operator()(RecordInfo& I)
+    void
+    operator()(RecordInfo& I)
     {
-        check(I.Namespace);
+        if (I.Parent)
+        {
+            check(I.Parent);
+        }
         check(I.Members);
         finalize(I.javadoc);
         // finalize(I.Specializations);
@@ -303,96 +313,144 @@ public:
         finalize(I.Bases);
     }
 
-    void operator()(SpecializationInfo& I)
+    void
+    operator()(SpecializationInfo& I)
     {
-        check(I.Namespace);
+        if (I.Parent)
+        {
+            check(I.Parent);
+        }
         check(I.Members);
         finalize(I.javadoc);
         finalize(I.Primary);
         finalize(I.Args);
     }
 
-    void operator()(FunctionInfo& I)
+    void
+    operator()(FunctionInfo& I)
     {
-        check(I.Namespace);
+        if (I.Parent)
+        {
+            check(I.Parent);
+        }
         finalize(I.javadoc);
         finalize(I.Template);
         finalize(I.ReturnType);
         finalize(I.Params);
     }
 
-    void operator()(TypedefInfo& I)
+    void
+    operator()(TypedefInfo& I)
     {
-        check(I.Namespace);
+        if (I.Parent)
+        {
+            check(I.Parent);
+        }
         finalize(I.javadoc);
         finalize(I.Template);
         finalize(I.Type);
     }
 
-    void operator()(EnumInfo& I)
+    void
+    operator()(EnumInfo& I)
     {
-        check(I.Namespace);
+        if (I.Parent)
+        {
+            check(I.Parent);
+        }
         check(I.Members);
         finalize(I.javadoc);
         finalize(I.UnderlyingType);
     }
 
-    void operator()(FieldInfo& I)
+    void
+    operator()(FieldInfo& I)
     {
-        check(I.Namespace);
+        if (I.Parent)
+        {
+            check(I.Parent);
+        }
         finalize(I.javadoc);
         finalize(I.Type);
     }
 
-    void operator()(VariableInfo& I)
+    void
+    operator()(VariableInfo& I)
     {
-        check(I.Namespace);
+        if (I.Parent)
+        {
+            check(I.Parent);
+        }
         finalize(I.javadoc);
         finalize(I.Template);
         finalize(I.Type);
     }
 
-    void operator()(FriendInfo& I)
+    void
+    operator()(FriendInfo& I)
     {
-        check(I.Namespace);
+        if (I.Parent)
+        {
+            check(I.Parent);
+        }
         finalize(I.javadoc);
         finalize(I.FriendSymbol);
         finalize(I.FriendType);
     }
 
-    void operator()(NamespaceAliasInfo& I)
+    void
+    operator()(NamespaceAliasInfo& I)
     {
-        check(I.Namespace);
+        if (I.Parent)
+        {
+            check(I.Parent);
+        }
         finalize(I.javadoc);
         finalize(I.AliasedSymbol);
     }
 
-    void operator()(UsingInfo& I)
+    void
+    operator()(UsingInfo& I)
     {
-        check(I.Namespace);
+        if (I.Parent)
+        {
+            check(I.Parent);
+        }
         finalize(I.javadoc);
         finalize(I.Qualifier);
         finalize(I.UsingSymbols);
     }
 
-    void operator()(EnumConstantInfo& I)
+    void
+    operator()(EnumConstantInfo& I)
     {
-        check(I.Namespace);
+        if (I.Parent)
+        {
+            check(I.Parent);
+        }
         finalize(I.javadoc);
     }
 
-    void operator()(GuideInfo& I)
+    void
+    operator()(GuideInfo& I)
     {
-        check(I.Namespace);
+        if (I.Parent)
+        {
+            check(I.Parent);
+        }
         finalize(I.javadoc);
         finalize(I.Template);
         finalize(I.Deduced);
         finalize(I.Params);
     }
 
-    void operator()(ConceptInfo& I)
+    void
+    operator()(ConceptInfo& I)
     {
-        check(I.Namespace);
+        if (I.Parent)
+        {
+            check(I.Parent);
+        }
         finalize(I.javadoc);
         finalize(I.Template);
     }

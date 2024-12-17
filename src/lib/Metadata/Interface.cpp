@@ -113,8 +113,9 @@ class TrancheBuilder
     bool
     isFromParent(const Info& I)
     {
-        return ! I.Namespace.empty() &&
-            I.Namespace.front() == parent_.id;
+        return
+            I.Parent &&
+            I.Parent == parent_.id;
     }
 
     const Info*

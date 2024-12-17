@@ -66,22 +66,28 @@ format(
 fmt::format_context::iterator
 fmt::formatter<clang::mrdocs::Info>::
 format(
-    const clang::mrdocs::Info& i,
+    clang::mrdocs::Info const& i,
     fmt::format_context& ctx) const
 {
     std::string str = fmt::format("Info: kind = {}", i.Kind);
-    if(! i.Name.empty())
-        str += fmt::format(", name = '{}'", i.Name);
-    str += fmt::format(", ID = {}", i.id);
-    if(! i.Namespace.empty())
+    if (!i.Name.empty())
     {
-        std::string namespaces;
-        namespaces += fmt::format("{}", i.Namespace[0]);
-        for(std::size_t idx = 1; idx < i.Namespace.size(); ++idx)
+        str += fmt::format(", name = '{}'", i.Name);
+    }
+    str += fmt::format(", ID = {}", i.id);
+    clang::mrdocs::SymbolID curParent = i.Parent;
+    std::string namespaces;
+    while (curParent)
+    {
+        namespaces += fmt::format("{}", curParent);
+        curParent = i.Parent;
+        if (curParent)
         {
             namespaces += "::";
-            namespaces += fmt::format("{}", i.Namespace[idx]);
         }
+    }
+    if (!namespaces.empty())
+    {
         str += fmt::format(", namespace = {}", namespaces);
     }
     return fmt::formatter<std::string>::format(std::move(str), ctx);

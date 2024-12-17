@@ -161,13 +161,13 @@ The `Symbol` object represents a symbol extracted from the source code.The symbo
 | `string`
 | Whether the symbol was implicitly extracted as a dependency.
 
-| `namespace`
+| `parents`
 | `<<symbol-fields,Symbol Object[]>>`
-| The namespaces of the symbol.
+| The parent contexts (namespaces or records) of the symbol.
 
 | `parent`
 | `<<symbol-fields,Symbol Object>>`
-| The parent namespace of the symbol.
+| The parent context (namespace or record) of the symbol.
 
 | `doc`
 | `Any`
