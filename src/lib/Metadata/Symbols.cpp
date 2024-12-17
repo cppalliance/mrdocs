@@ -96,7 +96,14 @@ tag_invoke(
     dom::Value& v,
     SymbolID const& id)
 {
-    v = toBase16(id);
+    if (id != SymbolID::invalid)
+    {
+        v = toBase16(id);
+    }
+    else
+    {
+        v = {};
+    }
 }
 
 void

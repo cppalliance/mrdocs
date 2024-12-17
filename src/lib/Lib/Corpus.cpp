@@ -61,27 +61,62 @@ getFullyQualifiedName(
     if(! I.id || I.id == SymbolID::global)
         return temp;
 
-    MRDOCS_ASSERT(! I.Namespace.empty());
-    MRDOCS_ASSERT(I.Namespace.back() == SymbolID::global);
-    for(auto const& ns_id : I.Namespace |
-        std::views::reverse |
-        std::views::drop(1))
+    MRDOCS_ASSERT(I.Parent);
+    for(auto const& pID : getParents(*this, I))
     {
-        if(const Info* ns = find(ns_id))
-            temp.append(ns->Name.data(), ns->Name.size());
+        if (!pID || pID == SymbolID::global)
+        {
+            continue;
+        }
+        if (Info const* P = find(pID))
+        {
+            if (!P->Name.empty())
+            {
+                temp.append(P->Name);
+            }
+            else
+            {
+                fmt::format_to(
+                    std::back_inserter(temp),
+                    "<unnamed {}>",
+                    toString(P->Kind));
+            }
+        }
         else
+        {
             temp.append("<unnamed>");
-
+        }
         temp.append("::");
     }
-    if(I.Name.empty())
-        fmt::format_to(std::back_inserter(temp),
-            "<unnamed {}>", toString(I.Kind));
+    if (I.Name.empty())
+    {
+        fmt::format_to(
+            std::back_inserter(temp),
+            "<unnamed {}>",
+            toString(I.Kind));
+    }
     else
+    {
         temp.append(I.Name);
+    }
     return temp;
 }
 
+std::vector<SymbolID>
+getParents(Corpus const& C, const Info& I)
+{
+    // AFREITAS: This function could eventually
+    // return a view.
+    std::vector<SymbolID> parents;
+    auto curParent = I.Parent;
+    while (curParent)
+    {
+        parents.push_back(curParent);
+        curParent = C.get(curParent).Parent;
+    }
+    std::ranges::reverse(parents);
+    return parents;
+}
 
 } // mrdocs
 } // clang

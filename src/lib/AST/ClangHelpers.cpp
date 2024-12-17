@@ -213,7 +213,7 @@ getNTTPFromExpr(const Expr* E, unsigned const Depth)
 }
 
 Decl*
-getParentDecl(Decl* D)
+getParent(Decl* D)
 {
     while((D = cast_if_present<
         Decl>(D->getDeclContext())))

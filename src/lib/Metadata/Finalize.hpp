@@ -17,7 +17,9 @@
 namespace clang {
 namespace mrdocs {
 
-void finalize(InfoSet& Info, SymbolLookup& Lookup);
+MRDOCS_DECL
+void
+finalize(InfoSet& Info, SymbolLookup& Lookup);
 
 } // mrdocs
 } // clang

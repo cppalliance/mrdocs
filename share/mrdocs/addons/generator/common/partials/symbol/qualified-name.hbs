@@ -20,8 +20,8 @@
 {{! We remove whitespace between all tag so the result is in a single line ~}}
 {{~#if (ne kind "friend")~}}
     {{~#if name~}}
-        {{! General case: linked namespaces followed by the symbol name ~}}
-        {{#each (reverse namespace)~}}
+        {{! General case: linked parent symbols followed by the symbol name ~}}
+        {{#each parents~}}
             {{#if name~}}
                 {{>symbol/name . link=. nolink=../nolink}}::
             {{~/if}}

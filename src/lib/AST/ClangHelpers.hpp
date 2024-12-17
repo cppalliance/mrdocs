@@ -718,13 +718,13 @@ getNTTPFromExpr(const Expr* E, unsigned Depth);
 // Get the parent declaration of a declaration
 MRDOCS_DECL
 Decl*
-getParentDecl(Decl* D);
+getParent(Decl* D);
 
 // Get the parent declaration of a declaration
 inline
 Decl const*
-getParentDecl(Decl const* D) {
-    return getParentDecl(const_cast<Decl*>(D));
+getParent(Decl const* D) {
+    return getParent(const_cast<Decl*>(D));
 }
 
 

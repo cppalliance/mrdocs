@@ -449,7 +449,7 @@ traverse(UsingDirectiveDecl* D)
 {
     MRDOCS_CHECK_OR(shouldExtract(D));
 
-    Decl* PD = getParentDecl(D);
+    Decl* PD = getParent(D);
     bool const isNamespaceScope = cast<DeclContext>(PD)->isFileContext();
     MRDOCS_CHECK_OR(isNamespaceScope);
 
@@ -704,7 +704,7 @@ populate(
         I.Name = extractName(D);
     }
     I.IsInline = D->isInline();
-    populateNamespaces(I, D);
+    linkParent(I, D);
 }
 
 void
@@ -789,7 +789,7 @@ populate(
         }
     }
 
-    populateNamespaces(I, D);
+    linkParent(I, D);
 }
 
 template <std::derived_from<FunctionDecl> DeclTy>
@@ -933,7 +933,7 @@ populate(
     if(auto* TRC = D->getTrailingRequiresClause())
         populate(I.Requires, TRC);
 
-    populateNamespaces(I, D);
+    linkParent(I, D);
 }
 
 void
@@ -961,7 +961,7 @@ populate(
         I.UnderlyingType = toTypeInfo(D->getIntegerType());
     }
 
-    populateNamespaces(I, D);
+    linkParent(I, D);
 }
 
 void
@@ -986,7 +986,7 @@ populate(
         D->getInitExpr(),
         D->getInitVal());
 
-    populateNamespaces(I, D);
+    linkParent(I, D);
 }
 
 template<std::derived_from<TypedefNameDecl> TypedefNameDeclTy>
@@ -1021,7 +1021,7 @@ populate(
         D->getUnderlyingType(),
         currentMode());
 
-    populateNamespaces(I, D);
+    linkParent(I, D);
 }
 
 void
@@ -1072,7 +1072,7 @@ populate(
 
     I.Type = toTypeInfo(D->getType());
 
-    populateNamespaces(I, D);
+    linkParent(I, D);
 }
 
 void
@@ -1115,7 +1115,7 @@ populate(
     I.IsDeprecated = D->hasAttr<DeprecatedAttr>();
     I.IsMaybeUnused = D->hasAttr<UnusedAttr>();
 
-    populateNamespaces(I, D);
+    linkParent(I, D);
 }
 
 void
@@ -1137,7 +1137,7 @@ populate(
     generateID(PD, I.Primary);
     I.Name = extractName(PD);
 
-    populateNamespaces(I, D);
+    linkParent(I, D);
 }
 
 void
@@ -1183,7 +1183,7 @@ populate(
         I.FriendType = toTypeInfo(TSI->getType());
     }
 
-    populateNamespaces(I, D);
+    linkParent(I, D);
 }
 
 void
@@ -1217,7 +1217,7 @@ populate(
 
     populate(I.Explicit, D->getExplicitSpecifier());
 
-    populateNamespaces(I, D);
+    linkParent(I, D);
 }
 
 void
@@ -1247,7 +1247,7 @@ populate(
         Underlying->Prefix = toNameInfo(NNS);
     }
 
-    populateNamespaces(I, D);
+    linkParent(I, D);
 }
 
 void
@@ -1275,7 +1275,7 @@ populate(
             UDS->getTargetDecl(),
             I.UsingSymbols.emplace_back());
     }
-    populateNamespaces(I, D);
+    linkParent(I, D);
 }
 
 void
@@ -1295,7 +1295,7 @@ populate(
     I.Name = extractName(D);
     populate(I.Constraint, D->getConstraintExpr());
 
-    populateNamespaces(I, D);
+    linkParent(I, D);
 }
 
 void
@@ -1690,28 +1690,43 @@ extractName(DeclarationName const N)
 
 void
 ASTVisitor::
-populateNamespaces(
+linkParent(
     Info& I,
     Decl* D)
 {
-    Decl* PD = getParentDecl(D);
-    SymbolID ParentID = generateID(PD);
-    switch(PD->getKind())
+    // Find the parent DeclContext
+    Decl* PD = getParent(D);
+    auto const ParentID = upsertParent(PD, I);
+    MRDOCS_ASSERT(find(ParentID));
+    I.Parent = ParentID;
+}
+
+SymbolID
+ASTVisitor::
+upsertParent(Decl* PD, Info& I)
+{
+    // AFREITAS: this function should eventually
+    // be replaced with a simple call to upsert(Decl*)
+    // and another call to addMember(ScopeInfo&, Info&)
+
+    SymbolID const ParentID = generateID(PD);
+
+    // Ensure the Info object for the parent exists
+    // and ensure D is added to the parent's members
+    switch (PD->getKind())
     {
     // The TranslationUnit DeclContext is the global namespace;
     // it uses SymbolID::global and should *always* exist
     case Decl::TranslationUnit:
     {
         MRDOCS_ASSERT(ParentID == SymbolID::global);
-        auto [P, isNew] = upsert<
-            NamespaceInfo>(ParentID);
+        auto [P, isNew] = upsert<NamespaceInfo>(ParentID);
         addMember(P, I);
         break;
     }
     case Decl::Namespace:
     {
-        auto [P, isNew] = upsert<
-            NamespaceInfo>(ParentID);
+        auto [P, isNew] = upsert<NamespaceInfo>(ParentID);
         populate(P, isNew, cast<NamespaceDecl>(PD));
         addMember(P, I);
         break;
@@ -1720,40 +1735,37 @@ populateNamespaces(
     // a member of an implicit instantiation.
     case Decl::ClassTemplateSpecialization:
     case Decl::ClassTemplatePartialSpecialization:
-    if(auto* S = dyn_cast<ClassTemplateSpecializationDecl>(PD);
-        S && S->getSpecializationKind() == TSK_ImplicitInstantiation)
-    {
-        // KRYSTIAN FIXME: i'm pretty sure DeclContext::getDeclKind()
-        // will never be Decl::ClassTemplatePartialSpecialization for
-        // implicit instantiations; instead, the ClassTemplatePartialSpecializationDecl
-        // is accessible through S->getSpecializedTemplateOrPartial
-        // if the implicit instantiation used a partially specialized template,
-        MRDOCS_ASSERT(PD->getKind() !=
-            Decl::ClassTemplatePartialSpecialization);
-
-        auto [P, isNew] = upsert<
-            SpecializationInfo>(ParentID);
-        populate(P, isNew, S);
-        addMember(P, I);
-        break;
-    }
-    // non-implicit instantiations should be
-    // treated like normal CXXRecordDecls
-    [[fallthrough]];
+        if (auto* S = dyn_cast<ClassTemplateSpecializationDecl>(PD);
+            S && S->getSpecializationKind() == TSK_ImplicitInstantiation)
+        {
+            // KRYSTIAN FIXME: i'm pretty sure DeclContext::getDeclKind()
+            // will never be Decl::ClassTemplatePartialSpecialization for
+            // implicit instantiations; instead, the
+            // ClassTemplatePartialSpecializationDecl is accessible through
+            // S->getSpecializedTemplateOrPartial if the implicit instantiation
+            // used a partially specialized template,
+            MRDOCS_ASSERT(
+                PD->getKind() != Decl::ClassTemplatePartialSpecialization);
+            auto [P, isNew] = upsert<SpecializationInfo>(ParentID);
+            populate(P, isNew, S);
+            addMember(P, I);
+            break;
+        }
+        // non-implicit instantiations should be
+        // treated like normal CXXRecordDecls
+        [[fallthrough]];
     // we should never encounter a Record
     // that is not a CXXRecord
     case Decl::CXXRecord:
     {
-        auto [P, isNew] = upsert<
-            RecordInfo>(ParentID);
+        auto [P, isNew] = upsert<RecordInfo>(ParentID);
         populate(P, isNew, cast<CXXRecordDecl>(PD));
         addMember(P, I);
         break;
     }
     case Decl::Enum:
     {
-        auto [P, isNew] = upsert<
-            EnumInfo>(ParentID);
+        auto [P, isNew] = upsert<EnumInfo>(ParentID);
         populate(P, isNew, cast<EnumDecl>(PD));
         addMember(P, I);
         break;
@@ -1762,15 +1774,9 @@ populateNamespaces(
         MRDOCS_UNREACHABLE();
     }
 
-    Info* P = find(ParentID);
-    MRDOCS_ASSERT(P);
-
-    I.Namespace.emplace_back(ParentID);
-    I.Namespace.insert(
-        I.Namespace.end(),
-        P->Namespace.begin(),
-        P->Namespace.end());
+    return ParentID;
 }
+
 
 void
 ASTVisitor::
@@ -2606,7 +2612,7 @@ inExtractedFile(
             // collect all parent classes/enums/namespaces
             llvm::SmallVector<const NamedDecl*, 8> parents;
             const Decl* P = ND;
-            while((P = getParentDecl(P)))
+            while((P = getParent(P)))
             {
                 if (isa<TranslationUnitDecl>(P))
                 {

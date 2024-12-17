@@ -116,8 +116,10 @@ dom::Value
 DomCorpus::
 get(SymbolID const& id) const
 {
-    if(! id)
+    if (!id)
+    {
         return nullptr;
+    }
     return impl_->get(id);
 }
 
