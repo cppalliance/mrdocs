@@ -348,15 +348,7 @@ defaultTraverseImpl(DeclTy* D, TemplateDeclTy* TD)
 
     // If D is also a template declaration, we extract
     // the template information from the declaration itself
-    if constexpr (!PopulateFromTD && std::derived_from<DeclTy, TemplateDecl>)
-    {
-        defaultTraverseImpl<true>(D, D);
-        return;
-    }
-
-    using InfoT = MrDocsType_t<DeclTy>;
-    static constexpr bool HasMrDocsInfoType = !std::same_as<InfoT, Info>;
-    if constexpr (!HasMrDocsInfoType)
+    if constexpr (!HasInfoTypeFor<DeclTy>)
     {
         // Traverse the members of the declaration even if
         // the declaration does not have a corresponding Info type
@@ -364,6 +356,12 @@ defaultTraverseImpl(DeclTy* D, TemplateDeclTy* TD)
     }
     else
     {
+        if constexpr (!PopulateFromTD && std::derived_from<DeclTy, TemplateDecl>)
+        {
+            defaultTraverseImpl<true>(D, D);
+            return;
+        }
+
         // If the declaration has a corresponding Info type,
         // we build the Info object and populate it with the
         // necessary information.
@@ -2805,7 +2803,7 @@ upsert(SymbolID const& id)
 }
 
 template <std::derived_from<Decl> DeclType>
-Expected<ASTVisitor::upsertResult<MrDocsType_t<DeclType>>>
+Expected<ASTVisitor::upsertResult<InfoTypeFor_t<DeclType>>>
 ASTVisitor::
 upsert(DeclType* D)
 {
@@ -2817,10 +2815,10 @@ upsert(DeclType* D)
     SymbolID const id = generateID(D);
     MRDOCS_CHECK_MSG(id, "Failed to extract symbol ID");
 
-    auto [I, isNew] = upsert<MrDocsType_t<DeclType>>(id);
+    auto [I, isNew] = upsert<InfoTypeFor_t<DeclType>>(id);
     I.Access = convertToAccessKind(access);
 
-    using R = upsertResult<MrDocsType_t<DeclType>>;
+    using R = upsertResult<InfoTypeFor_t<DeclType>>;
     return R{std::ref(I), isNew};
 }
 
