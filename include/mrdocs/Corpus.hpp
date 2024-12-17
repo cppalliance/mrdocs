@@ -197,18 +197,18 @@ public:
 
         @return A reference to the string `temp`.
      */
-    // KRYSTIAN NOTE: temporary
     MRDOCS_DECL
-    std::string&
-    getFullyQualifiedName(
-        const Info& I,
+    void
+    qualifiedName(
+        Info const& I,
         std::string& temp) const;
 
     std::string
-    getFullyQualifiedName(const Info& I) const
+    qualifiedName(const Info& I) const
     {
         std::string temp;
-        return getFullyQualifiedName(I, temp);
+        qualifiedName(I, temp);
+        return temp;
     }
 
 };
