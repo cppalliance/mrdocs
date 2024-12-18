@@ -201,7 +201,7 @@
           "dependency",
           "never"
         ],
-        "default": "dependency"
+        "default": "never"
       },
       {
         "name": "anonymous-namespaces",
