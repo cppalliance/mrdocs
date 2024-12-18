@@ -203,7 +203,7 @@
       "type": "string"
     },
     "referenced-declarations": {
-      "default": "dependency",
+      "default": "never",
       "description": "Determine whether external declarations should be extracted when they are referenced in the source code. If this option is not `never`, a second pass happens in the extraction process to extract dependencies in the Corpus. When set to `always`, external declarations are always extracted. When set to `dependency`, external declarations are extracted only if they are referenced by the source code. When set to `never`, external declarations are never extracted.",
       "enum": [
         "always",
