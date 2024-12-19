@@ -9,7 +9,7 @@
 
     Breadcrumbs are included in the symbol template as an alternative.
 }}
-= {{> symbol/qualified-name symbol }}
+= {{> symbol/enclosing-namespace symbol }}{{> symbol/qualified-name symbol }}
 {{!
     Antora does not support relative links to pages in
     parent directories. Therefore, unlike in HTML templates,

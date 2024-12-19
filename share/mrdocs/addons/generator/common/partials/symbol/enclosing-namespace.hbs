@@ -1,0 +1,14 @@
+{{!--
+    Renders a link to the enclosing namespace with a custom symbol (⬆).
+    If no enclosing namespace exists, nothing is rendered.
+
+    Expected Context: {Symbol Object}
+
+    Example:
+        {{> symbol/enclosing-namespace symbol }}
+
+    See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
+--}}
+{{~#if (and parent parent.name)~}}
+    xref:{{{remove_prefix parent.url "/"}}}[⬆]
+{{~/if~}}
