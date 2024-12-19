@@ -100,9 +100,12 @@ struct MRDOCS_VISIBLE
     */
     bool Implicit = false;
 
-    /** Ordered list of parent namespaces.
+    /** The parent symbol, if any.
+
+        This is the parent namespace or record
+        where the symbol is defined.
      */
-    std::vector<SymbolID> Namespace;
+    SymbolID Parent;
 
     /** The extracted javadoc for this declaration.
      */
@@ -224,7 +227,6 @@ tag_invoke(
     dom::Value& v,
     Info const& I,
     DomCorpus const* domCorpus);
-
 
 } // mrdocs
 } // clang

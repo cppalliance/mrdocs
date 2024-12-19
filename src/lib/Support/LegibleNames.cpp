@@ -374,19 +374,18 @@ public:
     getLegibleQualified(
         std::string& result,
         const SymbolID& id,
-        char delim)
+        char const delim)
     {
         MRDOCS_ASSERT(corpus_.exists(id));
-        auto const& parents = corpus_.get(id).Namespace;
-        if(parents.size() > 1)
+        auto const& I = corpus_.get(id);
+        for(auto const& parent : getParents(corpus_, I))
         {
-            for(auto const& parent : parents |
-                std::views::reverse |
-                std::views::drop(1))
+            if (!parent || parent == SymbolID::global)
             {
-                getLegibleUnqualified(result, parent);
-                result.push_back(delim);
+                continue;
             }
+            getLegibleUnqualified(result, parent);
+            result.push_back(delim);
         }
         getLegibleUnqualified(result, id);
     }
@@ -435,8 +434,10 @@ getQualified(
     SymbolID const& id,
     char delim) const
 {
-    if(! impl_)
+    if (!impl_)
+    {
         return toBase16(id);
+    }
     std::string result;
     impl_->getLegibleQualified(result, id, delim);
     return result;

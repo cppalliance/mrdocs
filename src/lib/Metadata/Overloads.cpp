@@ -18,8 +18,7 @@
 #include <llvm/ADT/StringRef.h>
 #include "lib/Support/Radix.hpp"
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 void
 tag_invoke(
@@ -39,12 +38,23 @@ tag_invoke(
     res.set("kind", "overloads");
     res.set("name", overloads.Name);
     res.set("members", dom::LazyArray(overloads.Members, domCorpus));
-    res.set("namespace", dom::LazyArray(overloads.Namespace, domCorpus));
-    res.set("parent", domCorpus->get(overloads.Parent));
+
+    // Copy redundant fields from the first member
+    if (overloads.Members.size() > 0)
+    {
+        dom::Value const member = domCorpus->get(overloads.Members[0]);
+        if (member.isObject())
+        {
+            for (std::string_view const key: {"parent", "parents"})
+            {
+                res.set(key, member.get(key));
+            }
+        }
+    }
 
     // Copy relevant values from the first member with documentation
     // that contains it.
-    for (std::string_view key: {"doc", "loc", "dcl"})
+    for (std::string_view const key: {"doc", "loc", "dcl"})
     {
         for (std::size_t i = 0; i < overloads.Members.size(); ++i)
         {
@@ -59,5 +69,4 @@ tag_invoke(
     v = res;
 }
 
-} // mrdocs
-} // clang
+} // clang::mrdocs

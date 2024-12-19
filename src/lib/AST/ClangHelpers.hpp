@@ -63,53 +63,89 @@ SubstituteConstraintExpressionWithoutSatisfaction(
 
     When there's no direct correspondence, this trait returns
     the base Info type.
-
  */
-template <class DeclType>
-struct MrDocsType : std::type_identity<Info> {};
+template <class>
+struct InfoTypeFor {};
 
+// Extract NamespaceInfo from NamespaceDecl or TranslationUnitDecl
+template <>
+struct InfoTypeFor<NamespaceDecl>
+    : std::type_identity<NamespaceInfo> {};
+
+template <>
+struct InfoTypeFor<TranslationUnitDecl>
+    : std::type_identity<NamespaceInfo> {};
+
+// Extract RecordInfo from anything derived from CXXRecordDecl
 template <std::derived_from<CXXRecordDecl> DeclType>
-struct MrDocsType<DeclType> : std::type_identity<RecordInfo> {};
+struct InfoTypeFor<DeclType>
+    : std::type_identity<RecordInfo> {};
 
-template <std::derived_from<VarDecl> VarTy>
-struct MrDocsType<VarTy> : std::type_identity<VariableInfo> {};
-
+// Extract FunctionInfo from anything derived from FunctionDecl
 template <std::derived_from<FunctionDecl> FunctionTy>
-struct MrDocsType<FunctionTy> : std::type_identity<FunctionInfo> {};
+struct InfoTypeFor<FunctionTy>
+    : std::type_identity<FunctionInfo> {};
 
+// Extract EnumInfo from EnumDecl
+template <>
+struct InfoTypeFor<EnumDecl>
+    : std::type_identity<EnumInfo> {};
+
+// Extract EnumConstantInfo from EnumConstantDecl
+template <>
+struct InfoTypeFor<EnumConstantDecl>
+    : std::type_identity<EnumConstantInfo> {};
+
+// Extract TypedefInfo from anything derived from TypedefNameDecl
 template <std::derived_from<TypedefNameDecl> TypedefNameTy>
-struct MrDocsType<TypedefNameTy> : std::type_identity<TypedefInfo> {};
+struct InfoTypeFor<TypedefNameTy>
+    : std::type_identity<TypedefInfo> {};
 
+// Extract VariableInfo from anything derived from VarDecl
+template <std::derived_from<VarDecl> VarTy>
+struct InfoTypeFor<VarTy>
+    : std::type_identity<VariableInfo> {};
+
+// Extract FieldInfo from FieldDecl
 template <>
-struct MrDocsType<EnumDecl> : std::type_identity<EnumInfo> {};
+struct InfoTypeFor<FieldDecl>
+    : std::type_identity<FieldInfo> {};
 
+// Extract FriendInfo from FriendDecl
 template <>
-struct MrDocsType<FieldDecl> : std::type_identity<FieldInfo> {};
+struct InfoTypeFor<FriendDecl>
+    : std::type_identity<FriendInfo> {};
 
+// Extract GuideInfo from CXXDeductionGuideDecl
 template <>
-struct MrDocsType<EnumConstantDecl> : std::type_identity<EnumConstantInfo> {};
+struct InfoTypeFor<CXXDeductionGuideDecl>
+    : std::type_identity<GuideInfo> {};
 
+// Extract NamespaceAliasInfo from NamespaceAliasDecl
 template <>
-struct MrDocsType<FriendDecl> : std::type_identity<FriendInfo> {};
+struct InfoTypeFor<NamespaceAliasDecl>
+    : std::type_identity<NamespaceAliasInfo> {};
 
+// Extract UsingInfo from UsingDecl
 template <>
-struct MrDocsType<CXXDeductionGuideDecl> : std::type_identity<GuideInfo> {};
+struct InfoTypeFor<UsingDecl>
+    : std::type_identity<UsingInfo> {};
 
+// Extract ConceptInfo from ConceptDecl
 template <>
-struct MrDocsType<NamespaceAliasDecl> : std::type_identity<NamespaceAliasInfo> {};
+struct InfoTypeFor<ConceptDecl>
+    : std::type_identity<ConceptInfo> {};
 
-template <>
-struct MrDocsType<UsingDecl> : std::type_identity<UsingInfo> {};
+/// Determine if there's a MrDocs Info type for a Clang DeclType
+template <class T>
+concept HasInfoTypeFor = requires
+{
+    typename InfoTypeFor<T>::type;
+};
 
-template <>
-struct MrDocsType<NamespaceDecl> : std::type_identity<NamespaceInfo>{};
-
-template <>
-struct MrDocsType<ConceptDecl> : std::type_identity<ConceptInfo>{};
-
-/// @copydoc MrDocsType
+/// @copydoc InfoTypeFor
 template <class DeclType>
-using MrDocsType_t = typename MrDocsType<DeclType>::type;
+using InfoTypeFor_t = typename InfoTypeFor<DeclType>::type;
 
 /** Convert a Clang AccessSpecifier into a MrDocs AccessKind
  */
@@ -682,13 +718,13 @@ getNTTPFromExpr(const Expr* E, unsigned Depth);
 // Get the parent declaration of a declaration
 MRDOCS_DECL
 Decl*
-getParentDecl(Decl* D);
+getParent(Decl* D);
 
 // Get the parent declaration of a declaration
 inline
 Decl const*
-getParentDecl(Decl const* D) {
-    return getParentDecl(const_cast<Decl*>(D));
+getParent(Decl const* D) {
+    return getParent(const_cast<Decl*>(D));
 }
 
 

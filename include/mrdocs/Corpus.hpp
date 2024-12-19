@@ -197,18 +197,18 @@ public:
 
         @return A reference to the string `temp`.
      */
-    // KRYSTIAN NOTE: temporary
     MRDOCS_DECL
-    std::string&
-    getFullyQualifiedName(
-        const Info& I,
+    void
+    qualifiedName(
+        Info const& I,
         std::string& temp) const;
 
     std::string
-    getFullyQualifiedName(const Info& I) const
+    qualifiedName(const Info& I) const
     {
         std::string temp;
-        return getFullyQualifiedName(I, temp);
+        qualifiedName(I, temp);
+        return temp;
     }
 
 };
@@ -247,9 +247,9 @@ traverseOverloads(
     for(const SymbolID& id : S.Members)
     {
         const Info& member = get(id);
-        const auto& lookup = S.Lookups.at(member.Name);
+        const auto& members = S.Lookups.at(member.Name);
         auto first_func = std::ranges::find_if(
-            lookup, [this](const SymbolID& elem)
+            members, [this](const SymbolID& elem)
             {
             #if 0
                 const Info& I = get(elem);
@@ -258,19 +258,20 @@ traverseOverloads(
                 return get(elem).isFunction();
             #endif
             });
-        bool const nonOverloadedFunction = lookup.size() == 1;
-        bool const notFunction = first_func == lookup.end();
-        if(nonOverloadedFunction ||
-           notFunction)
+        bool const nonOverloadedFunction = members.size() == 1;
+        bool const notFunction = first_func == members.end();
+        if (nonOverloadedFunction ||
+            notFunction)
         {
             visit(member, std::forward<F>(f),
                 std::forward<Args>(args)...);
         }
-        else if(*first_func == id)
+        else if (*first_func == id)
         {
-            OverloadSet overloads(member.Name,
-                member.Namespace.front(),
-                member.Namespace, lookup);
+            OverloadSet overloads(
+                member.Name,
+                member.Parent,
+                members);
             visit(overloads, std::forward<F>(f),
                 std::forward<Args>(args)...);
         }
@@ -343,6 +344,12 @@ public:
         return val_ != other.val_;
     }
 };
+
+/** Return a list of the parent symbols of the specified Info.
+ */
+MRDOCS_DECL
+std::vector<SymbolID>
+getParents(Corpus const& C, Info const& I);
 
 } // mrdocs
 } // clang

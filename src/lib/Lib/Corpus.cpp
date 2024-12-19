@@ -51,37 +51,81 @@ globalNamespace() const noexcept
 //------------------------------------------------
 
 // KRYSTIAN NOTE: temporary
-std::string&
+void
 Corpus::
-getFullyQualifiedName(
+qualifiedName(
     const Info& I,
     std::string& temp) const
 {
     temp.clear();
     if(! I.id || I.id == SymbolID::global)
-        return temp;
-
-    MRDOCS_ASSERT(! I.Namespace.empty());
-    MRDOCS_ASSERT(I.Namespace.back() == SymbolID::global);
-    for(auto const& ns_id : I.Namespace |
-        std::views::reverse |
-        std::views::drop(1))
     {
-        if(const Info* ns = find(ns_id))
-            temp.append(ns->Name.data(), ns->Name.size());
-        else
-            temp.append("<unnamed>");
+        return;
+    }
 
+    MRDOCS_ASSERT(I.Parent);
+    for(auto const& pID : getParents(*this, I))
+    {
+        if (!pID || pID == SymbolID::global)
+        {
+            continue;
+        }
+        if (Info const* P = find(pID))
+        {
+            if (!P->Name.empty())
+            {
+                temp.append(P->Name);
+            }
+            else
+            {
+                fmt::format_to(
+                    std::back_inserter(temp),
+                    "<unnamed {}>",
+                    toString(P->Kind));
+            }
+        }
+        else
+        {
+            temp.append("<unnamed>");
+        }
         temp.append("::");
     }
-    if(I.Name.empty())
-        fmt::format_to(std::back_inserter(temp),
-            "<unnamed {}>", toString(I.Kind));
+    if (I.Name.empty())
+    {
+        fmt::format_to(
+            std::back_inserter(temp),
+            "<unnamed {}>",
+            toString(I.Kind));
+    }
     else
+    {
         temp.append(I.Name);
-    return temp;
+    }
 }
 
+std::vector<SymbolID>
+getParents(Corpus const& C, const Info& I)
+{
+    std::vector<SymbolID> parents;
+    std::size_t n = 0;
+    auto curParent = I.Parent;
+    while (curParent)
+    {
+        ++n;
+        MRDOCS_ASSERT(C.find(curParent));
+        curParent = C.get(curParent).Parent;
+    }
+    parents.reserve(n);
+    parents.resize(n);
+    curParent = I.Parent;
+    while (curParent)
+    {
+        parents[--n] = curParent;
+        MRDOCS_ASSERT(C.find(curParent));
+        curParent = C.get(curParent).Parent;
+    }
+    return parents;
+}
 
 } // mrdocs
 } // clang

@@ -481,6 +481,10 @@ private:
     void
     populate(NamespaceInfo& I, bool isNew, NamespaceDecl* D);
 
+    static
+    void
+    populate(NamespaceInfo& I, bool isNew, TranslationUnitDecl* D);
+
     void
     populate(RecordInfo& I, bool isNew, CXXRecordDecl* D);
 
@@ -615,15 +619,23 @@ private:
     std::string
     extractName(DeclarationName N);
 
-    /*  Populate the Info with its parent namespaces
+    /*  Populate the Info.Parent of a declaration
 
-        Given a Decl `D`, this function will populate
-        the `Info` `I` with the SymbolID of each parent namespace
-        of `D`. The SymbolID of the global namespace is always
-        included as the first element of `I.Namespace`.
+        This function will find the parent context `P` of
+        `D` and then:
+
+        @li It ensures the Info object for the parent context `P`
+        exists, and that `D` is included as a member of `P`.
+        @li It ensures the SymbolID of `P` is set as the parent
+        of `D`.
      */
     void
-    populateNamespaces(Info& I, Decl* D);
+    linkParent(Info& I, Decl* D);
+
+    /*  Ensure parent exists and has child has member
+     */
+    SymbolID
+    upsertParent(Decl* Parent, Info& Child);
 
     /*  Emplace a member Info into a ScopeInfo
 
@@ -753,7 +765,22 @@ private:
         and false otherwise.
      */
     bool
-    shouldExtract(const Decl* D, AccessSpecifier access);
+    shouldExtract(Decl const* D, AccessSpecifier access);
+
+    static
+    bool
+    shouldExtract(TranslationUnitDecl const*, AccessSpecifier)
+    {
+        return true;
+    }
+
+    template <std::derived_from<Decl> DeclTy>
+    bool
+    shouldExtract(DeclTy const* D)
+    {
+        return shouldExtract(D, getAccess(D));
+    }
+
 
     // Determine if a declaration passes the symbol filter
     bool
@@ -879,7 +906,7 @@ private:
         @param D The declaration to extract
      */
     template <std::derived_from<Decl> DeclType>
-    Expected<upsertResult<MrDocsType_t<DeclType>>>
+    Expected<upsertResult<InfoTypeFor_t<DeclType>>>
     upsert(DeclType* D);
 
     /* Get or construct an empty Info for a dependency declaration.

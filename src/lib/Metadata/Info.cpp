@@ -72,10 +72,23 @@ tag_invoke(
     io.map("kind", I.Kind);
     io.map("access", I.Access);
     io.map("implicit", I.Implicit);
-    io.map("namespace", dom::LazyArray(I.Namespace, domCorpus));
-    if (!I.Namespace.empty())
+    if (I.Parent)
     {
-        io.map("parent", I.Namespace.front());
+        io.map("parent", I.Parent);
+        io.defer("parents", [&]
+        {
+            // A convenient list to iterate over the parents
+            // with resorting to partial template recursion
+            Corpus const& corpus = domCorpus->getCorpus();
+            auto pIds = getParents(corpus, I);
+            dom::Array res;
+            for (auto const& id : pIds)
+            {
+                Info const& PI = corpus.get(id);
+                res.push_back(domCorpus->construct(PI));
+            }
+            return res;
+        });
     }
     if (I.javadoc)
     {
