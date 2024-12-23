@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <function name="my_function" id="jv2AC4inoS2L4+tVOPxfYiZpb3g=">
+    <file path="para-3.cpp" line="16"/>
+    <doc>
+      <brief>
+        <text>A function</text>
+      </brief>
+      <head>A heading.</head>
+      <para>
+        <text> Some text.</text>
+      </para>
+      <para>
+        <text>More text...</text>
+      </para>
+      <para>
+        <text>Another paragraph</text>
+        <text> Next line</text>
+      </para>
+      <head>Exception safety</head>
+      <para>
+        <text>No-throw guarantee.</text>
+      </para>
+    </doc>
+  </function>
+</namespace>
+</mrdocs>
