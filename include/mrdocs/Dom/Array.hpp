@@ -269,18 +269,21 @@ public:
     /** Compare two arrays for equality.
      */
     friend
+    MRDOCS_DECL
     bool
     operator==(Array const&, Array const&) noexcept;
 
     /** Compare two arrays for precedence.
      */
     friend
+    MRDOCS_DECL
     std::strong_ordering
     operator<=>(Array const&, Array const&) noexcept;
 
     /** Return a diagnostic string.
     */
     friend
+    MRDOCS_DECL
     std::string
     toString(Array const&);
 
@@ -364,6 +367,13 @@ public:
     DefaultArrayImpl();
     explicit DefaultArrayImpl(
         storage_type elements) noexcept;
+
+    DefaultArrayImpl(const DefaultArrayImpl&);
+    DefaultArrayImpl(DefaultArrayImpl&&);
+    DefaultArrayImpl& operator=(const DefaultArrayImpl&);
+    DefaultArrayImpl& operator=(DefaultArrayImpl&&);
+    ~DefaultArrayImpl();
+    
     size_type size() const override;
     value_type get(size_type i) const override;
     void set(size_type i, Value v) override;

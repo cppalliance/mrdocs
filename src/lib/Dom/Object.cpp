@@ -139,6 +139,23 @@ DefaultObjectImpl(
 {
 }
 
+DefaultObjectImpl::
+DefaultObjectImpl(const DefaultObjectImpl&) = default;
+
+DefaultObjectImpl::
+DefaultObjectImpl(DefaultObjectImpl&&) = default;
+
+DefaultObjectImpl&
+DefaultObjectImpl::
+operator=(const DefaultObjectImpl&) = default;
+
+DefaultObjectImpl&
+DefaultObjectImpl::
+operator=(DefaultObjectImpl&&) = default;
+
+DefaultObjectImpl::
+~DefaultObjectImpl() = default;
+
 std::size_t
 DefaultObjectImpl::
 size() const

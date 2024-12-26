@@ -292,11 +292,11 @@ if (WIN32)
         target_compile_options(
             mrdocs-core
             PUBLIC
-            /permissive-    # strict C++
-            /W4             # enable all warnings
-            /MP             # multi-processor compilation
-            /EHs            # C++ Exception handling
-            $<$<CONFIG:Debug>:/Oy-> # Disable frame pointer omission
+            /permissive-                    # strict C++
+            /W4                             # enable all warnings
+            $<$<CXX_COMPILER_ID:MSVC>:/MP>  # multi-processor compilation
+            /EHs                            # C++ Exception handling
+            $<$<CONFIG:Debug>:/Oy->         # Disable frame pointer omission
         )
     endif()
 endif ()
@@ -326,7 +326,6 @@ list(APPEND TOOL_SOURCES
         ${CMAKE_CURRENT_BINARY_DIR}/src/tool/PublicToolArgs.cpp)
 
 add_executable(mrdocs ${TOOL_SOURCES})
-target_compile_definitions(mrdocs PRIVATE -DMRDOCS_TOOL)
 
 target_include_directories(mrdocs
     PUBLIC
@@ -338,7 +337,6 @@ target_include_directories(mrdocs
     "${PROJECT_BINARY_DIR}/src"
 )
 
-target_compile_definitions(mrdocs PRIVATE -DMRDOCS_TOOL)
 target_link_libraries(mrdocs PUBLIC mrdocs-core)
 if (MRDOCS_CLANG)
     target_compile_options(
@@ -529,9 +527,14 @@ if (MRDOCS_INSTALL)
     #-------------------------------------------------
     install(TARGETS mrdocs-core
             EXPORT mrdocs-targets
+            RUNTIME_DEPENDENCIES
+                PRE_EXCLUDE_REGEXES "^api-ms-.*\\.dll$" "^ext-ms-.*\\.dll$"
+                POST_EXCLUDE_REGEXES ".*system32/.*\\.dll$"
             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
             ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-            COMPONENT development
+                COMPONENT development
+            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+            FRAMEWORK DESTINATION ${CMAKE_INSTALL_LIBDIR}
             )
 
     install(EXPORT mrdocs-targets
