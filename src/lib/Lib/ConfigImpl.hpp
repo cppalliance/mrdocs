@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -12,12 +13,9 @@
 #ifndef MRDOCS_LIB_CONFIGIMPL_HPP
 #define MRDOCS_LIB_CONFIGIMPL_HPP
 
-#include "lib/Lib/Filters.hpp"
 #include "lib/Support/YamlFwd.hpp"
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Support/Error.hpp>
-#include <mrdocs/Support/ThreadPool.hpp>
-#include <llvm/ADT/SmallString.h>
 #include <llvm/Support/ThreadPool.h>
 #include <memory>
 
@@ -39,24 +37,7 @@ class ConfigImpl
 public:
     struct access_token {};
 
-    struct SettingsImpl : Settings
-    {
-        /** Symbol filter root node.
-
-            Root node of a preparsed tree of FilterNodes
-            used during AST traversal to determine whether
-            a symbol should be extracted.
-        */
-        FilterNode symbolFilter;
-
-        /** Namespaces for symbols rendered as "see-below".
-         */
-        std::vector<FilterPattern> seeBelowFilter;
-
-        /** Namespaces for symbols rendered as "implementation-defined".
-         */
-        std::vector<FilterPattern> implementationDefinedFilter;
-    };
+    struct SettingsImpl : Settings {};
 
     /// @copydoc Config::settings()
     Settings const&
@@ -147,7 +128,7 @@ public:
 
         If the file is visited, then prefix is
         set to the portion of the file path which
-        should be be removed for matching files.
+        should be removed for matching files.
 
         @param filePath A posix-style full or
         relative path to the file being processed.

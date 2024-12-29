@@ -329,7 +329,7 @@ visit(
 
 enum class TemplateSpecKind
 {
-    Primary = 0, // for bitstream
+    Primary,
     Explicit,
     Partial
 };
@@ -342,16 +342,6 @@ toString(TemplateSpecKind kind);
 */
 struct TemplateInfo
 {
-    /* For primary templates:
-           - Params will be non-empty
-           - Args will be empty
-       For explicit specializations:
-           - Params will be empty
-       For partial specializations:
-           - Params will be non-empty
-           - each template parameter will appear at least
-             once in Args outside of a non-deduced context
-    */
     std::vector<std::unique_ptr<TParam>> Params;
     std::vector<std::unique_ptr<TArg>> Args;
 
@@ -366,9 +356,10 @@ struct TemplateInfo
     // KRYSTIAN NOTE: using the presence of args/params
     // to determine the specialization kind *should* work.
     // emphasis on should.
-    TemplateSpecKind specializationKind() const noexcept
+    TemplateSpecKind
+    specializationKind() const noexcept
     {
-        if(Params.empty())
+        if (Params.empty())
         {
             return TemplateSpecKind::Explicit;
         }

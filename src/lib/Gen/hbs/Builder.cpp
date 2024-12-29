@@ -343,7 +343,7 @@ operator()(std::ostream& os, T const& I)
     auto const wrapperFile = fmt::format("wrapper.{}.hbs", domCorpus.fileExtension);
     dom::Object wrapperCtx = createFrame(ctx);
     wrapperCtx.set("contents", dom::makeInvocable([this, &I, templateFile, &os](
-        dom::Value const& options) -> Expected<dom::Value>
+        dom::Value const&) -> Expected<dom::Value>
         {
             // Helper to write contents directly to stream
             MRDOCS_TRY(callTemplate(os, templateFile, createContext(I)));
@@ -362,7 +362,7 @@ renderWrapped(
         "wrapper.{}.hbs", domCorpus.fileExtension);
     dom::Object ctx;
     ctx.set("contents", dom::makeInvocable([&](
-        dom::Value const& options) -> Expected<dom::Value>
+        dom::Value const&) -> Expected<dom::Value>
     {
         MRDOCS_TRY(contentsCb());
         return {};

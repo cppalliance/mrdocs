@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <function name="f0" id="e1UQQek5v3C9OClW5cGf57XvwQo=">
+    <file path="duplicate-jdoc.cpp" line="5" class="def"/>
+    <return>
+      <type name="int"/>
+    </return>
+    <doc>
+      <para>
+        <text>f0 brief</text>
+      </para>
+      <returns>
+        <text>int</text>
+      </returns>
+      <returns>
+        <text>int</text>
+      </returns>
+    </doc>
+  </function>
+  <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
+    <file path="duplicate-jdoc.cpp" line="11" class="def"/>
+    <return>
+      <type name="int"/>
+    </return>
+    <doc>
+      <para>
+        <text>f1 brief</text>
+      </para>
+      <returns>
+        <text>int</text>
+      </returns>
+      <returns>
+        <text>bool</text>
+      </returns>
+    </doc>
+  </function>
+  <function name="g0" id="Vn88rrW6JgrUc7j/24MUTRnpkRg=">
+    <file path="duplicate-jdoc.cpp" line="17" class="def"/>
+    <param name="a">
+      <type name="int"/>
+    </param>
+    <doc>
+      <para>
+        <text>g0 brief</text>
+      </para>
+      <param name="a">
+        <text>one</text>
+      </param>
+      <param name="a">
+        <text>one</text>
+      </param>
+    </doc>
+  </function>
+  <function name="g1" id="99zzvQbBwXKh7ewapNRMnAKND3I=">
+    <file path="duplicate-jdoc.cpp" line="23" class="def"/>
+    <param name="a">
+      <type name="int"/>
+    </param>
+    <doc>
+      <para>
+        <text>g1 brief</text>
+      </para>
+      <param name="a">
+        <text>one</text>
+      </param>
+      <param name="b">
+        <text>two</text>
+      </param>
+    </doc>
+  </function>
+  <template>
+    <tparam name="T" class="type"/>
+    <function name="h0" id="GUlieEk6E+t8qLpALj3XrWv0CGw=">
+      <file path="duplicate-jdoc.cpp" line="29" class="def"/>
+      <doc>
+        <para>
+          <text>h0 brief</text>
+        </para>
+        <tparam name="T">
+          <text>one</text>
+        </tparam>
+        <tparam name="T">
+          <text>one</text>
+        </tparam>
+      </doc>
+    </function>
+  </template>
+  <template>
+    <tparam name="T" class="type"/>
+    <function name="h1" id="q8fclJU+n2M3XqifIjVL9vT9fKQ=">
+      <file path="duplicate-jdoc.cpp" line="36" class="def"/>
+      <doc>
+        <para>
+          <text>h1 brief</text>
+        </para>
+        <tparam name="T">
+          <text>one</text>
+        </tparam>
+        <tparam name="U">
+          <text>two</text>
+        </tparam>
+      </doc>
+    </function>
+  </template>
+</namespace>
+</mrdocs>

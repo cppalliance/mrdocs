@@ -1,0 +1,501 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+[cols=2]
+|===
+| Name | Description 
+
+| <<#Explicit,`Explicit`>> 
+| 
+
+| <<#ExplicitExpression,`ExplicitExpression`>> 
+| 
+
+| <<#ExplicitFalse,`ExplicitFalse`>> 
+| 
+
+| <<#ExplicitTrue,`ExplicitTrue`>> 
+| 
+
+|===
+
+[#Explicit]
+== Explicit
+
+=== Synopsis
+
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Explicit;
+----
+
+=== Member Functions
+[cols=2]
+|===
+| Name | Description 
+
+| <<#Explicit-2constructor,`Explicit`>>         [.small]#[constructor]#
+| 
+|===
+
+
+
+[#Explicit-2constructor]
+== <<#Explicit,Explicit>>::Explicit
+
+=== Synopsis
+
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit
+<<#Explicit-2constructor-02,Explicit>>();
+----
+
+[.small]#<<#Explicit-2constructor-02,_» more..._>>#
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit
+<<#Explicit-2constructor-00,Explicit>>(<<#Explicit,Explicit>> const&);
+----
+
+[.small]#<<#Explicit-2constructor-00,_» more..._>>#
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit
+<<#Explicit-2constructor-0b,Explicit>>(<<#Explicit,Explicit>>&&) noexcept;
+----
+
+[.small]#<<#Explicit-2constructor-0b,_» more..._>>#
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit
+<<#Explicit-2constructor-03,Explicit>>(
+    int,
+    int);
+----
+
+[.small]#<<#Explicit-2constructor-03,_» more..._>>#
+
+[#Explicit-2constructor-02]
+== <<#Explicit,Explicit>>::Explicit
+
+=== Synopsis
+
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit
+Explicit();
+----
+
+[#Explicit-2constructor-00]
+== <<#Explicit,Explicit>>::Explicit
+
+=== Synopsis
+
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit
+Explicit(<<#Explicit,Explicit>> const&);
+----
+
+[#Explicit-2constructor-0b]
+== <<#Explicit,Explicit>>::Explicit
+
+=== Synopsis
+
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit
+Explicit(<<#Explicit,Explicit>>&&) noexcept;
+----
+
+[#Explicit-2constructor-03]
+== <<#Explicit,Explicit>>::Explicit
+
+=== Synopsis
+
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit
+Explicit(
+    int,
+    int);
+----
+
+[#ExplicitExpression]
+== ExplicitExpression
+
+=== Synopsis
+
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;bool B&gt;
+struct ExplicitExpression;
+----
+
+=== Member Functions
+[cols=2]
+|===
+| Name | Description 
+
+| <<#ExplicitExpression-2constructor,`ExplicitExpression`>>         [.small]#[constructor]#
+| 
+|===
+
+
+
+[#ExplicitExpression-2constructor]
+== <<#ExplicitExpression,ExplicitExpression>>::ExplicitExpression
+
+=== Synopsis
+
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit(B)
+<<#ExplicitExpression-2constructor-0b,ExplicitExpression>>();
+----
+
+[.small]#<<#ExplicitExpression-2constructor-0b,_» more..._>>#
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit(B)
+<<#ExplicitExpression-2constructor-04,ExplicitExpression>>(<<#ExplicitExpression,ExplicitExpression>> const&);
+----
+
+[.small]#<<#ExplicitExpression-2constructor-04,_» more..._>>#
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit(B)
+<<#ExplicitExpression-2constructor-08,ExplicitExpression>>(<<#ExplicitExpression,ExplicitExpression>>&&) noexcept;
+----
+
+[.small]#<<#ExplicitExpression-2constructor-08,_» more..._>>#
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit(B)
+<<#ExplicitExpression-2constructor-02,ExplicitExpression>>(
+    int,
+    int);
+----
+
+[.small]#<<#ExplicitExpression-2constructor-02,_» more..._>>#
+
+[#ExplicitExpression-2constructor-0b]
+== <<#ExplicitExpression,ExplicitExpression>>::ExplicitExpression
+
+=== Synopsis
+
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit(B)
+ExplicitExpression();
+----
+
+[#ExplicitExpression-2constructor-04]
+== <<#ExplicitExpression,ExplicitExpression>>::ExplicitExpression
+
+=== Synopsis
+
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit(B)
+ExplicitExpression(<<#ExplicitExpression,ExplicitExpression>> const&);
+----
+
+[#ExplicitExpression-2constructor-08]
+== <<#ExplicitExpression,ExplicitExpression>>::ExplicitExpression
+
+=== Synopsis
+
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit(B)
+ExplicitExpression(<<#ExplicitExpression,ExplicitExpression>>&&) noexcept;
+----
+
+[#ExplicitExpression-2constructor-02]
+== <<#ExplicitExpression,ExplicitExpression>>::ExplicitExpression
+
+=== Synopsis
+
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit(B)
+ExplicitExpression(
+    int,
+    int);
+----
+
+[#ExplicitFalse]
+== ExplicitFalse
+
+=== Synopsis
+
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct ExplicitFalse;
+----
+
+=== Member Functions
+[cols=2]
+|===
+| Name | Description 
+
+| <<#ExplicitFalse-2constructor,`ExplicitFalse`>>         [.small]#[constructor]#
+| 
+|===
+
+
+
+[#ExplicitFalse-2constructor]
+== <<#ExplicitFalse,ExplicitFalse>>::ExplicitFalse
+
+=== Synopsis
+
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit(false)
+<<#ExplicitFalse-2constructor-01,ExplicitFalse>>();
+----
+
+[.small]#<<#ExplicitFalse-2constructor-01,_» more..._>>#
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit(false)
+<<#ExplicitFalse-2constructor-08,ExplicitFalse>>(<<#ExplicitFalse,ExplicitFalse>> const&);
+----
+
+[.small]#<<#ExplicitFalse-2constructor-08,_» more..._>>#
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit(false)
+<<#ExplicitFalse-2constructor-0a,ExplicitFalse>>(<<#ExplicitFalse,ExplicitFalse>>&&) noexcept;
+----
+
+[.small]#<<#ExplicitFalse-2constructor-0a,_» more..._>>#
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit(false)
+<<#ExplicitFalse-2constructor-04,ExplicitFalse>>(
+    int,
+    int);
+----
+
+[.small]#<<#ExplicitFalse-2constructor-04,_» more..._>>#
+
+[#ExplicitFalse-2constructor-01]
+== <<#ExplicitFalse,ExplicitFalse>>::ExplicitFalse
+
+=== Synopsis
+
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit(false)
+ExplicitFalse();
+----
+
+[#ExplicitFalse-2constructor-08]
+== <<#ExplicitFalse,ExplicitFalse>>::ExplicitFalse
+
+=== Synopsis
+
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit(false)
+ExplicitFalse(<<#ExplicitFalse,ExplicitFalse>> const&);
+----
+
+[#ExplicitFalse-2constructor-0a]
+== <<#ExplicitFalse,ExplicitFalse>>::ExplicitFalse
+
+=== Synopsis
+
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit(false)
+ExplicitFalse(<<#ExplicitFalse,ExplicitFalse>>&&) noexcept;
+----
+
+[#ExplicitFalse-2constructor-04]
+== <<#ExplicitFalse,ExplicitFalse>>::ExplicitFalse
+
+=== Synopsis
+
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit(false)
+ExplicitFalse(
+    int,
+    int);
+----
+
+[#ExplicitTrue]
+== ExplicitTrue
+
+=== Synopsis
+
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct ExplicitTrue;
+----
+
+=== Member Functions
+[cols=2]
+|===
+| Name | Description 
+
+| <<#ExplicitTrue-2constructor,`ExplicitTrue`>>         [.small]#[constructor]#
+| 
+|===
+
+
+
+[#ExplicitTrue-2constructor]
+== <<#ExplicitTrue,ExplicitTrue>>::ExplicitTrue
+
+=== Synopsis
+
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit(true)
+<<#ExplicitTrue-2constructor-0d,ExplicitTrue>>();
+----
+
+[.small]#<<#ExplicitTrue-2constructor-0d,_» more..._>>#
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit(true)
+<<#ExplicitTrue-2constructor-04,ExplicitTrue>>(<<#ExplicitTrue,ExplicitTrue>> const&);
+----
+
+[.small]#<<#ExplicitTrue-2constructor-04,_» more..._>>#
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit(true)
+<<#ExplicitTrue-2constructor-08,ExplicitTrue>>(<<#ExplicitTrue,ExplicitTrue>>&&) noexcept;
+----
+
+[.small]#<<#ExplicitTrue-2constructor-08,_» more..._>>#
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit(true)
+<<#ExplicitTrue-2constructor-05,ExplicitTrue>>(
+    int,
+    int);
+----
+
+[.small]#<<#ExplicitTrue-2constructor-05,_» more..._>>#
+
+[#ExplicitTrue-2constructor-0d]
+== <<#ExplicitTrue,ExplicitTrue>>::ExplicitTrue
+
+=== Synopsis
+
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit(true)
+ExplicitTrue();
+----
+
+[#ExplicitTrue-2constructor-04]
+== <<#ExplicitTrue,ExplicitTrue>>::ExplicitTrue
+
+=== Synopsis
+
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit(true)
+ExplicitTrue(<<#ExplicitTrue,ExplicitTrue>> const&);
+----
+
+[#ExplicitTrue-2constructor-08]
+== <<#ExplicitTrue,ExplicitTrue>>::ExplicitTrue
+
+=== Synopsis
+
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit(true)
+ExplicitTrue(<<#ExplicitTrue,ExplicitTrue>>&&) noexcept;
+----
+
+[#ExplicitTrue-2constructor-05]
+== <<#ExplicitTrue,ExplicitTrue>>::ExplicitTrue
+
+=== Synopsis
+
+Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit(true)
+ExplicitTrue(
+    int,
+    int);
+----
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

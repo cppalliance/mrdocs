@@ -6342,7 +6342,7 @@ registerContainerHelpers(Handlebars& hbs)
             for (std::size_t i = 0; i < n; ++i) {
                 res.emplace_back(arr.at(i));
             }
-            std::ranges::sort(res, [&key](dom::Value const& a, dom::Value const& b)
+            std::ranges::stable_sort(res, [&key](dom::Value const& a, dom::Value const& b)
             {
                 // If the value is not an object, then we can't sort it
                 // by a key, so we just sort it by the value itself
@@ -6385,6 +6385,118 @@ registerContainerHelpers(Handlebars& hbs)
     });
 
     hbs.registerHelper("sort_by", sort_by_fn);
+
+    static auto filter_by_fn = dom::makeVariadicInvocable([](
+        dom::Array const& arguments) -> dom::Value
+    {
+        dom::Value container = arguments.at(0);
+        std::vector<dom::Value> keys;
+        for (std::size_t i = 1; i < arguments.size() - 1; ++i)
+        {
+            dom::Value key = arguments.at(i);
+            keys.push_back(key);
+        }
+
+        // Given an array of objects, filter these objects by values at
+        // a given key. If the value at that key returns true, then the
+        // object is included in the result.
+        if (container.isArray())
+        {
+            auto const& arr = container.getArray();
+
+            std::vector<dom::Value> res;
+            std::size_t const n = arr.size();
+            for (std::size_t i = 0; i < n; ++i) {
+                dom::Value el = arr.at(i);
+
+                // If the value is not an object, then we can't filter it
+                // by a key
+                if (!el.isObject())
+                {
+                    continue;
+                }
+
+                // If the value is an object but the key doesn't exist,
+                // then we can't filter it by a key, so we just filter it by
+                // whichever has the key
+                auto matchIt = std::ranges::find_if(keys, [&](dom::Value const& key)
+                {
+                    return
+                        el.getObject().exists(key.getString()) &&
+                        el.getObject().get(key.getString()).isTruthy();
+                });
+                if (bool const matchAny = matchIt != keys.end();
+                    !matchAny)
+                {
+                    continue;
+                }
+
+                res.emplace_back(el);
+            }
+            return dom::Array(res);
+        }
+
+        // If the value is not an array, then we can't filter it
+        return container;
+    });
+
+    hbs.registerHelper("filter_by", filter_by_fn);
+
+    static auto any_of_by_fn = dom::makeVariadicInvocable([](
+        dom::Array const& arguments) -> dom::Value
+    {
+        dom::Value container = arguments.at(0);
+        std::vector<dom::Value> keys;
+        for (std::size_t i = 1; i < arguments.size() - 1; ++i)
+        {
+            dom::Value key = arguments.at(i);
+            keys.push_back(key);
+        }
+
+        // Given an array of objects, any_of these objects by values at
+        // a given key. If the value at that key returns true, then the
+        // object is included in the result.
+        if (container.isArray())
+        {
+            auto const& arr = container.getArray();
+
+            std::vector<dom::Value> res;
+            std::size_t const n = arr.size();
+            for (std::size_t i = 0; i < n; ++i) {
+                dom::Value el = arr.at(i);
+
+                // If the value is not an object, then we can't any_of it
+                // by a key
+                if (!el.isObject())
+                {
+                    continue;
+                }
+
+                // If the value is an object but the key doesn't exist,
+                // then we can't any_of it by a key, so we just any_of it by
+                // whichever has the key
+                auto matchIt = std::ranges::find_if(keys, [&](dom::Value const& key)
+                {
+                    return
+                        el.getObject().exists(key.getString()) &&
+                        el.getObject().get(key.getString()).isTruthy();
+                });
+                if (bool const matchAny = matchIt != keys.end();
+                    !matchAny)
+                {
+                    continue;
+                }
+
+                return true;
+            }
+            return false;
+        }
+
+        // If the value is not an array, then we can't any_of it
+        return container;
+    });
+
+    hbs.registerHelper("any_of_by", any_of_by_fn);
 
     hbs.registerHelper("at", dom::makeInvocable(at_fn));
 
@@ -6791,9 +6903,10 @@ registerMathHelpers(Handlebars& hbs)
 void
 Handlebars::
 unregisterHelper(std::string_view name) {
-    auto it = helpers_.find(name);
-    if (it != helpers_.end())
+    if (auto it = helpers_.find(name); it != helpers_.end())
+    {
         helpers_.erase(it);
+    }
 
     // Re-register mandatory helpers
     if (name == "helperMissing")

@@ -1,0 +1,780 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Namespaces
+[cols=2]
+|===
+| Name | Description 
+
+| <<#regular_ns,`regular&lowbar;ns`>> 
+| A regular namespace with different filters for members
+
+
+
+| <<#see_below_ns,`see&lowbar;below&lowbar;ns`>> 
+| A see&hyphen;below namespace
+
+
+
+|===
+=== Namespace Aliases
+[cols=2]
+|===
+| Name | Description 
+
+| <<#dependency_ns_alias,`dependency&lowbar;ns&lowbar;alias`>> 
+| Namespace alias to form the dependency on dependency&lowbar;ns
+
+
+
+| <<#implementation_defined_ns_alias,`implementation&lowbar;defined&lowbar;ns&lowbar;alias`>> 
+| Namespace alias to form a dependency on the implementation&hyphen;defined namespace
+
+
+
+| <<#see_below_ns_alias,`see&lowbar;below&lowbar;ns&lowbar;alias`>> 
+| Namespace alias to form a dependency on the see&hyphen;below namespace
+
+
+
+|===
+=== Types
+[cols=2]
+|===
+| Name | Description 
+
+| <<#regular,`regular`>> 
+| A regular symbol in the global namespace
+
+
+
+| <<#see_below,`see&lowbar;below`>> 
+| A see&hyphen;below symbol in the global namespace
+
+
+
+|===
+=== Functions
+[cols=2]
+|===
+| Name | Description 
+
+| <<#get_dependency,`get&lowbar;dependency`>> 
+| A function to get a dependency symbol on the global namespace
+
+
+
+| <<#get_implementation_defined,`get&lowbar;implementation&lowbar;defined`>> 
+| A function to get an implementation&hyphen;defined symbol in the global namespace
+
+
+
+| <<#get_regular,`get&lowbar;regular`>> 
+| A function to get a regular symbol in the global namespace
+
+
+
+| <<#get_see_below,`get&lowbar;see&lowbar;below`>> 
+| A function to get a see&hyphen;below symbol in the global namespace
+
+
+
+|===
+
+[#regular_ns]
+== regular&lowbar;ns
+
+A regular namespace with different filters for members
+
+
+
+=== Types
+[cols=2]
+|===
+| Name | Description 
+
+| <<#regular_ns-regular,`regular`>> 
+| A symbol that passes the filters
+
+
+
+| <<#regular_ns-see_below,`see&lowbar;below`>> 
+| A symbol that passes the see&hyphen;below filter
+
+
+
+|===
+=== Functions
+[cols=2]
+|===
+| Name | Description 
+
+| <<#regular_ns-get_dependency,`get&lowbar;dependency`>> 
+| A function to get an excluded symbol
+
+
+
+| <<#regular_ns-get_implementation_defined,`get&lowbar;implementation&lowbar;defined`>> 
+| A function to get an implementation&hyphen;defined symbol
+
+
+
+| <<#regular_ns-get_regular,`get&lowbar;regular`>> 
+| A function to get a regular symbol
+
+
+
+| <<#regular_ns-get_see_below,`get&lowbar;see&lowbar;below`>> 
+| A function to get a see&hyphen;below symbol
+
+
+
+|===
+
+[#regular_ns-regular]
+== <<#regular_ns,regular&lowbar;ns>>::regular
+
+A symbol that passes the filters
+
+
+
+=== Synopsis
+
+Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct regular;
+----
+
+=== Types
+[cols=2]
+|===
+| Name | Description 
+
+| <<#regular_ns-regular-also_regular,`also&lowbar;regular`>> 
+| Child of a regular symbol extracted as regular
+
+
+
+|===
+
+
+
+=== Description
+
+The symbol should have a page as usual
+
+
+
+[#regular_ns-regular-also_regular]
+== <<#regular_ns,regular&lowbar;ns>>::<<#regular_ns-regular,regular>>::also&lowbar;regular
+
+Child of a regular symbol extracted as regular
+
+
+
+=== Synopsis
+
+Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct also&lowbar;regular;
+----
+
+=== Types
+[cols=2]
+|===
+| Name | Description 
+
+| <<#regular_ns-regular-also_regular-regular_as_well,`regular&lowbar;as&lowbar;well`>> 
+| Grandchild of a regular symbol extracted as regular
+
+
+
+|===
+
+
+
+[#regular_ns-regular-also_regular-regular_as_well]
+== <<#regular_ns,regular&lowbar;ns>>::<<#regular_ns-regular,regular>>::<<#regular_ns-regular-also_regular,also&lowbar;regular>>::regular&lowbar;as&lowbar;well
+
+Grandchild of a regular symbol extracted as regular
+
+
+
+=== Synopsis
+
+Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct regular&lowbar;as&lowbar;well;
+----
+
+
+
+
+[#regular_ns-see_below]
+== <<#regular_ns,regular&lowbar;ns>>::see&lowbar;below
+
+A symbol that passes the see&hyphen;below filter
+
+
+
+=== Synopsis
+
+Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct see&lowbar;below { /* see-below */ };
+----
+
+
+
+
+=== Description
+
+A symbol that passes the filters and the see&hyphen;below filter&period;
+The symbol should have a page as usual but, because it&apos;s a scope
+and not a namespace, the members should not be listed on that page&period;
+
+
+
+[#regular_ns-get_dependency]
+== <<#regular_ns,regular&lowbar;ns>>::get&lowbar;dependency
+
+A function to get an excluded symbol
+
+
+
+=== Synopsis
+
+Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+dependency
+get&lowbar;dependency();
+----
+
+=== Description
+
+When used in a function, only the symbol name should be shown&period;
+No links should be generated for this symbol&period;
+
+
+
+[#regular_ns-get_implementation_defined]
+== <<#regular_ns,regular&lowbar;ns>>::get&lowbar;implementation&lowbar;defined
+
+A function to get an implementation&hyphen;defined symbol
+
+
+
+=== Synopsis
+
+Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&sol;&ast; implementation-defined &ast;&sol;
+get&lowbar;implementation&lowbar;defined();
+----
+
+=== Description
+
+When used in a function, the implementation&hyphen;defined
+comment should replace the real type&period;
+
+It&apos;s the responsibility of the function documentation
+to explain the implementation&hyphen;defined symbol&period;
+
+
+
+[#regular_ns-get_regular]
+== <<#regular_ns,regular&lowbar;ns>>::get&lowbar;regular
+
+A function to get a regular symbol
+
+
+
+=== Synopsis
+
+Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<#regular_ns-regular,regular>>
+get&lowbar;regular();
+----
+
+=== Description
+
+When used in a function, the symbol should be shown as usual
+with a link to the page&period;
+
+
+
+[#regular_ns-get_see_below]
+== <<#regular_ns,regular&lowbar;ns>>::get&lowbar;see&lowbar;below
+
+A function to get a see&hyphen;below symbol
+
+
+
+=== Synopsis
+
+Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<#regular_ns-see_below,see&lowbar;below>>
+get&lowbar;see&lowbar;below();
+----
+
+=== Description
+
+When used in a function, the symbol name should be shown as usual&period;
+The page for this symbol is what should be different because
+the synopsis should say &quot;See below&quot; and the members are not
+listed unless it&apos;s a namespace or the symbol has been explicitly
+used as a dependency elsewhere&period;
+
+
+
+[#see_below_ns]
+== see&lowbar;below&lowbar;ns
+
+A see&hyphen;below namespace
+
+
+
+=== Types
+[cols=2]
+|===
+| Name | Description 
+
+| <<#see_below_ns-regular,`regular`>> 
+| Regular symbol in a see&hyphen;below namespace
+
+
+
+| <<#see_below_ns-see_below,`see&lowbar;below`>> 
+| See&hyphen;below symbol in a see&hyphen;below namespace
+
+
+
+|===
+=== Functions
+[cols=2]
+|===
+| Name | Description 
+
+| <<#see_below_ns-get_dependency,`get&lowbar;dependency`>> 
+| A function to get a dependency symbol in a see&hyphen;below namespace
+
+
+
+| <<#see_below_ns-get_implementation_defined,`get&lowbar;implementation&lowbar;defined`>> 
+| A function to get an implementation&hyphen;defined symbol in a see&hyphen;below namespace
+
+
+
+|===
+
+=== Description
+
+All member symbols should become see&hyphen;below&period; All members are
+traversed as see&hyphen;below&period;
+
+The documentation page for these symbols should include
+the see&hyphen;below comment&period;
+
+
+
+[#see_below_ns-regular]
+== <<#see_below_ns,see&lowbar;below&lowbar;ns>>::regular
+
+Regular symbol in a see&hyphen;below namespace
+
+
+
+=== Synopsis
+
+Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct regular { /* see-below */ };
+----
+
+
+
+
+=== Description
+
+The symbol becomes see&hyphen;below because the whole namespace
+is see&hyphen;below&period;
+
+
+
+[#see_below_ns-see_below]
+== <<#see_below_ns,see&lowbar;below&lowbar;ns>>::see&lowbar;below
+
+See&hyphen;below symbol in a see&hyphen;below namespace
+
+
+
+=== Synopsis
+
+Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct see&lowbar;below { /* see-below */ };
+----
+
+
+
+
+=== Description
+
+The symbol becomes see&hyphen;below because the whole namespace
+is see&hyphen;below and because it&apos;s explicitly marked as see&hyphen;below&period;
+
+
+
+[#see_below_ns-get_dependency]
+== <<#see_below_ns,see&lowbar;below&lowbar;ns>>::get&lowbar;dependency
+
+A function to get a dependency symbol in a see&hyphen;below namespace
+
+
+
+=== Synopsis
+
+Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+dependency
+get&lowbar;dependency();
+----
+
+=== Description
+
+The symbol should be extracted as a dependency because the
+exclude filter has precedence over the see&hyphen;below filter&period;
+Only included symbols can be promoted to see&hyphen;below&period;
+
+It&apos;s the responsibility of the function documentation
+to explain the dependency&period;
+
+
+
+[#see_below_ns-get_implementation_defined]
+== <<#see_below_ns,see&lowbar;below&lowbar;ns>>::get&lowbar;implementation&lowbar;defined
+
+A function to get an implementation&hyphen;defined symbol in a see&hyphen;below namespace
+
+
+
+=== Synopsis
+
+Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&sol;&ast; implementation-defined &ast;&sol;
+get&lowbar;implementation&lowbar;defined();
+----
+
+=== Description
+
+When used in a function, the implementation&hyphen;defined
+comment should replace the real type&period;
+
+It&apos;s the responsibility of the function documentation
+to explain the implementation&hyphen;defined symbol&period;
+
+
+
+[#regular]
+== regular
+
+A regular symbol in the global namespace
+
+
+
+=== Synopsis
+
+Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct regular;
+----
+
+=== Types
+[cols=2]
+|===
+| Name | Description 
+
+| <<#regular-also_regular,`also&lowbar;regular`>> 
+| Child of a regular symbol&colon; should be traversed as usual
+
+
+
+|===
+
+
+
+=== Description
+
+This symbol should have a page as usual&period;
+
+
+
+[#regular-also_regular]
+== <<#regular,regular>>::also&lowbar;regular
+
+Child of a regular symbol&colon; should be traversed as usual
+
+
+
+=== Synopsis
+
+Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct also&lowbar;regular;
+----
+
+=== Types
+[cols=2]
+|===
+| Name | Description 
+
+| <<#regular-also_regular-regular_as_well,`regular&lowbar;as&lowbar;well`>> 
+| Grandchild of a regular symbol&colon; should be traversed as usual
+
+
+
+|===
+
+
+
+[#regular-also_regular-regular_as_well]
+== <<#regular,regular>>::<<#regular-also_regular,also&lowbar;regular>>::regular&lowbar;as&lowbar;well
+
+Grandchild of a regular symbol&colon; should be traversed as usual
+
+
+
+=== Synopsis
+
+Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct regular&lowbar;as&lowbar;well;
+----
+
+
+
+
+[#see_below]
+== see&lowbar;below
+
+A see&hyphen;below symbol in the global namespace
+
+
+
+=== Synopsis
+
+Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct see&lowbar;below { /* see-below */ };
+----
+
+
+
+
+=== Description
+
+This symbol should have a page as usual but, because it&apos;s a scope
+and not a namespace, the members should not be listed on that page&period;
+
+The synopsis should say &quot;See below&quot;&period;
+
+
+
+[#get_dependency]
+== get&lowbar;dependency
+
+A function to get a dependency symbol on the global namespace
+
+
+
+=== Synopsis
+
+Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+dependency
+get&lowbar;dependency();
+----
+
+=== Description
+
+The symbol should be extracted as a dependency but its
+members should not be traversed&period;
+
+
+
+[#get_implementation_defined]
+== get&lowbar;implementation&lowbar;defined
+
+A function to get an implementation&hyphen;defined symbol in the global namespace
+
+
+
+=== Synopsis
+
+Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&sol;&ast; implementation-defined &ast;&sol;
+get&lowbar;implementation&lowbar;defined();
+----
+
+=== Description
+
+When used in a function, the implementation&hyphen;defined
+comment should replace the real type&period;
+
+It&apos;s the responsibility of the function documentation
+to explain the implementation&hyphen;defined symbol&period;
+
+
+
+[#get_regular]
+== get&lowbar;regular
+
+A function to get a regular symbol in the global namespace
+
+
+
+=== Synopsis
+
+Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<#regular,regular>>
+get&lowbar;regular();
+----
+
+=== Description
+
+When used in a function, the symbol should be shown as usual
+with a link to the page&period;
+
+
+
+[#get_see_below]
+== get&lowbar;see&lowbar;below
+
+A function to get a see&hyphen;below symbol in the global namespace
+
+
+
+=== Synopsis
+
+Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<#see_below,see&lowbar;below>>
+get&lowbar;see&lowbar;below();
+----
+
+=== Description
+
+When used in a function, the symbol name should be shown as usual&period;
+The page for this symbol is what should be different because
+the synopsis should say &quot;See below&quot; and the members are not
+listed unless it&apos;s a namespace or the symbol has been explicitly
+used as a dependency elsewhere&period;
+
+
+
+[#dependency_ns_alias]
+== dependency&lowbar;ns&lowbar;alias
+
+Namespace alias to form the dependency on dependency&lowbar;ns
+
+
+
+=== Synopsis
+
+Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+namespace dependency&lowbar;ns&lowbar;alias = dependency&lowbar;ns;
+----
+
+[#implementation_defined_ns_alias]
+== implementation&lowbar;defined&lowbar;ns&lowbar;alias
+
+Namespace alias to form a dependency on the implementation&hyphen;defined namespace
+
+
+
+=== Synopsis
+
+Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+namespace implementation&lowbar;defined&lowbar;ns&lowbar;alias = &sol;&ast; implementation-defined &ast;&sol;;
+----
+
+[#see_below_ns_alias]
+== see&lowbar;below&lowbar;ns&lowbar;alias
+
+Namespace alias to form a dependency on the see&hyphen;below namespace
+
+
+
+=== Synopsis
+
+Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+namespace see&lowbar;below&lowbar;ns&lowbar;alias = <<#see_below_ns,see&lowbar;below&lowbar;ns>>;
+----
+
+=== Description
+
+The alias should be linked as usual and, because it&apos;s a namespace,
+the members should be listed on the page&period;
+
+
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

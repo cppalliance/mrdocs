@@ -27,7 +27,8 @@ class NameInfoBuilder
 public:
     using TerminalTypeVisitor::TerminalTypeVisitor;
 
-    std::unique_ptr<NameInfo> result()
+    std::unique_ptr<NameInfo>
+    result()
     {
         return std::move(Result);
     }

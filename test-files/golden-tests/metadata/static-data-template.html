@@ -1,0 +1,123 @@
+<html lang="en">
+<head>
+<title>Reference</title>
+</head>
+<body>
+<div>
+<h1>Reference</h1>
+<div>
+<div>
+<h2 id="index">Global namespace</h2>
+</div>
+<h2>Types</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th><th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#A"><code>A</code></a> </td><td>
+</td></tr>
+</tbody>
+</table>
+</div>
+<div>
+<div>
+<h2 id="A">A</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;static-data-template.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;typename T&gt;
+struct A;
+</code>
+</pre>
+</div>
+<h2>Static Data Members</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th><th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#A-x-05"><code>x</code></a> </td><td>
+</td></tr><tr>
+<td><a href="#A-x-0a"><code>x&lt;U*, T&gt;</code></a> </td><td>
+</td></tr><tr>
+<td><a href="#A-x-07"><code>x&lt;T, long&gt;</code></a> </td><td>
+</td></tr>
+</tbody>
+</table>
+
+
+</div>
+<div>
+<div>
+<h2 id="A-x-05"><a href="#A">A</a>::x</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;static-data-template.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;
+    typename U,
+    typename V&gt;
+constexpr
+static
+T const x = 0;
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="A-x-0a"><a href="#A">A</a>::x&lt;U*, T&gt;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;static-data-template.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;typename U&gt;
+constexpr
+static
+T const x&lt;U*, T&gt; = 1;
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="A-x-07"><a href="#A">A</a>::x&lt;T, long&gt;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;static-data-template.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;&gt;
+constexpr
+static
+bool const x&lt;T, long&gt; = 2;
+</code>
+</pre>
+</div>
+</div>
+
+</div>
+<div>
+<h4>Created with <a href="https://www.mrdocs.com">MrDocs</a></h4>
+</div>
+</body>
+</html>

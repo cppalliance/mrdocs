@@ -20,7 +20,7 @@ TypeInfoBuilder::
 buildPointer(const PointerType* T, unsigned quals)
 {
     auto I = std::make_unique<PointerTypeInfo>();
-    I->CVQualifiers = convertToQualifierKind(quals);
+    I->CVQualifiers = toQualifierKind(quals);
     *std::exchange(Inner, &I->PointeeType) = std::move(I);
 }
 
@@ -45,7 +45,7 @@ TypeInfoBuilder::
 buildMemberPointer(const MemberPointerType* T, unsigned quals)
 {
     auto I = std::make_unique<MemberPointerTypeInfo>();
-    I->CVQualifiers = convertToQualifierKind(quals);
+    I->CVQualifiers = toQualifierKind(quals);
     // do not set NNS because the parent type is *not*
     // a nested-name-specifier which qualifies the pointee type
     I->ParentType = getASTVisitor().toTypeInfo(
@@ -82,9 +82,9 @@ populate(const FunctionType* T)
         I->ParamTypes.emplace_back(
             getASTVisitor().toTypeInfo(PT));
     }
-    I->RefQualifier = convertToReferenceKind(
+    I->RefQualifier = toReferenceKind(
         FPT->getRefQualifier());
-    I->CVQualifiers = convertToQualifierKind(
+    I->CVQualifiers = toQualifierKind(
         FPT->getMethodQuals().getFastQualifiers());
     I->IsVariadic = FPT->isVariadic();
     getASTVisitor().populate(I->ExceptionSpec, FPT);
@@ -101,7 +101,7 @@ buildDecltype(
     auto I = std::make_unique<DecltypeTypeInfo>();
     getASTVisitor().populate(
         I->Operand, T->getUnderlyingExpr());
-    I->CVQualifiers = convertToQualifierKind(quals);
+    I->CVQualifiers = toQualifierKind(quals);
     *Inner = std::move(I);
     Result->IsPackExpansion = pack;
 }
@@ -114,7 +114,7 @@ buildAuto(
     bool const pack)
 {
     auto I = std::make_unique<AutoTypeInfo>();
-    I->CVQualifiers = convertToQualifierKind(quals);
+    I->CVQualifiers = toQualifierKind(quals);
     I->Keyword = convertToAutoKind(T->getKeyword());
     if(T->isConstrained())
     {
@@ -143,19 +143,14 @@ buildTerminal(
     unsigned quals,
     bool pack)
 {
-    if(getASTVisitor().checkSpecialNamespace(*Inner, NNS, nullptr))
-    {
-        return;
-    }
-
-    auto I = std::make_unique<NamedTypeInfo>();
-    I->CVQualifiers = convertToQualifierKind(quals);
+    auto TI = std::make_unique<NamedTypeInfo>();
+    TI->CVQualifiers = toQualifierKind(quals);
 
     auto Name = std::make_unique<NameInfo>();
     Name->Name = getASTVisitor().toString(T);
     Name->Prefix = getASTVisitor().toNameInfo(NNS);
-    I->Name = std::move(Name);
-    *Inner = std::move(I);
+    TI->Name = std::move(Name);
+    *Inner = std::move(TI);
     Result->IsPackExpansion = pack;
 }
 
@@ -168,14 +163,8 @@ buildTerminal(
     unsigned quals,
     bool pack)
 {
-    ASTVisitor& V = getASTVisitor();
-    if(V.checkSpecialNamespace(*Inner, NNS, nullptr))
-    {
-        return;
-    }
-
     auto I = std::make_unique<NamedTypeInfo>();
-    I->CVQualifiers = convertToQualifierKind(quals);
+    I->CVQualifiers = toQualifierKind(quals);
 
     if(TArgs)
     {
@@ -185,7 +174,7 @@ buildTerminal(
             Name->Name = II->getName();
         }
         Name->Prefix = getASTVisitor().toNameInfo(NNS);
-        V.populate(Name->TemplateArgs, *TArgs);
+        getASTVisitor().populate(Name->TemplateArgs, *TArgs);
         I->Name = std::move(Name);
     }
     else
@@ -205,52 +194,55 @@ buildTerminal(
 void
 TypeInfoBuilder::
 buildTerminal(
-    const NestedNameSpecifier* NNS,
-    const NamedDecl* D,
+    NestedNameSpecifier const* NNS,
+    NamedDecl* D,
     std::optional<ArrayRef<TemplateArgument>> TArgs,
     unsigned quals,
     bool pack)
 {
-    ASTVisitor& V = getASTVisitor();
-    if(V.checkSpecialNamespace(*Inner, NNS, D))
+    MRDOCS_SYMBOL_TRACE(D, getASTVisitor().context_);
+    MRDOCS_SYMBOL_TRACE(NNS, getASTVisitor().context_);
+
+    // Look for the Info type. If this is a template specialization,
+    // we look for the Info of the specialized record.
+    Decl const* ID = decayToPrimaryTemplate(D);
+    MRDOCS_SYMBOL_TRACE(ID, getASTVisitor().context_);
+
+    Info const* I = getASTVisitor().findOrTraverse(const_cast<Decl*>(ID));
+    if (!I)
     {
         return;
     }
 
-    auto I = std::make_unique<NamedTypeInfo>();
-    I->CVQualifiers = convertToQualifierKind(quals);
+    auto TI = std::make_unique<NamedTypeInfo>();
+    TI->CVQualifiers = toQualifierKind(quals);
 
-    if(TArgs)
+    auto populateNameInfo = [&](NameInfo* Name, NamedDecl* D)
     {
-        auto Name = std::make_unique<SpecializationNameInfo>();
         if(const IdentifierInfo* II = D->getIdentifier())
         {
             Name->Name = II->getName();
         }
-        V.upsertDependency(getInstantiatedFrom(D), Name->id);
+        Name->id = I->id;
         if(NNS)
         {
-            Name->Prefix = V.toNameInfo(NNS);
+            Name->Prefix = getASTVisitor().toNameInfo(NNS);
         }
+    };
 
-        V.populate(Name->TemplateArgs, *TArgs);
-        I->Name = std::move(Name);
+    if (!TArgs)
+    {
+        TI->Name = std::make_unique<NameInfo>();
+        populateNameInfo(TI->Name.get(), D);
     }
     else
     {
-        auto Name = std::make_unique<NameInfo>();
-        if(const IdentifierInfo* II = D->getIdentifier())
-        {
-            Name->Name = II->getName();
-        }
-        V.upsertDependency(getInstantiatedFrom(D), Name->id);
-        if(NNS)
-        {
-            Name->Prefix = V.toNameInfo(NNS);
-        }
-        I->Name = std::move(Name);
+        auto Name = std::make_unique<SpecializationNameInfo>();
+        populateNameInfo(Name.get(), D);
+        getASTVisitor().populate(Name->TemplateArgs, *TArgs);
+        TI->Name = std::move(Name);
     }
-    *Inner = std::move(I);
+    *Inner = std::move(TI);
     Result->IsPackExpansion = pack;
 }
 

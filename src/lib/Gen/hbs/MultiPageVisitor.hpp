@@ -19,10 +19,9 @@
 #include <ostream>
 #include <string>
 #include <vector>
+#include <atomic>
 
-namespace clang {
-namespace mrdocs {
-namespace hbs {
+namespace clang::mrdocs::hbs {
 
 /** Visitor which emites a multi-page reference.
 */
@@ -31,6 +30,7 @@ class MultiPageVisitor
     ExecutorGroup<Builder>& ex_;
     std::string_view outputPath_;
     Corpus const& corpus_;
+    std::atomic<std::size_t> count_ = 0;
 
 public:
     MultiPageVisitor(
@@ -51,11 +51,18 @@ public:
     */
     template <class T>
     requires std::derived_from<T, Info> || std::same_as<T, OverloadSet>
-    void operator()(T const& I);
+    void
+    operator()(T const& I);
+
+    /** Get number of pages generated.
+    */
+    std::size_t
+    count() const noexcept
+    {
+        return count_.load(std::memory_order::relaxed);
+    }
 };
 
-} // hbs
-} // mrdocs
-} // clang
+} // clang::mrdocs::hbs
 
 #endif

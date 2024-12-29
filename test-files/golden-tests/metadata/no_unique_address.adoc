@@ -1,0 +1,89 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+[cols=2]
+|===
+| Name | Description 
+
+| <<#Empty,`Empty`>> 
+| 
+
+| <<#T,`T`>> 
+| 
+
+|===
+
+[#Empty]
+== Empty
+
+=== Synopsis
+
+Declared in `&lt;no&lowbar;unique&lowbar;address&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Empty;
+----
+
+
+
+
+[#T]
+== T
+
+=== Synopsis
+
+Declared in `&lt;no&lowbar;unique&lowbar;address&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct T;
+----
+
+=== Data Members
+[cols=2]
+|===
+| Name | Description 
+
+| <<#T-e,`e`>> 
+| 
+
+| <<#T-i,`i`>> 
+| 
+
+|===
+
+
+
+[#T-e]
+== <<#T,T>>::e
+
+=== Synopsis
+
+Declared in `&lt;no&lowbar;unique&lowbar;address&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+[deprecated, maybe&lowbar;unused]
+<<#Empty,Empty>> e = Empty&lcub;&rcub;;
+----
+
+[#T-i]
+== <<#T,T>>::i
+
+=== Synopsis
+
+Declared in `&lt;no&lowbar;unique&lowbar;address&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int i;
+----
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -47,11 +47,11 @@ Generator::
 build(Corpus const& corpus) const
 {
     using clock_type = std::chrono::steady_clock;
-    auto start_time = clock_type::now();
-    std::string absOutput = files::normalizePath(
+    auto const start_time = clock_type::now();
+    std::string const absOutput = files::normalizePath(
         files::makeAbsolute(
             corpus.config->output,
-            corpus.config->configDir));
+            corpus.config->configDir()));
     MRDOCS_TRY(build(absOutput, corpus));
     report::info(
         "Generated {} documentation in {}",

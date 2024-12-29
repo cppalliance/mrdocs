@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <template>
+    <tparam name="T" class="type"/>
+    <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
+      <file path="class-template-specializations-3.cpp" line="1" class="def"/>
+      <template>
+        <tparam name="U" class="type"/>
+        <struct name="B" id="dKDSVrZun8skBV/NUCmJyCUOvJA=">
+          <file path="class-template-specializations-3.cpp" line="4" class="def"/>
+          <struct name="C" id="bmgK1R0ByNI2o0uDX/xUzqUPaB0=">
+            <file path="class-template-specializations-3.cpp" line="7" class="def"/>
+          </struct>
+          <template>
+            <tparam name="V" class="type"/>
+            <struct name="D" id="mavB0Yf/srdYpaA0qL6bxBdfPlk=">
+              <file path="class-template-specializations-3.cpp" line="9" class="def"/>
+            </struct>
+          </template>
+          <template class="explicit" id="mavB0Yf/srdYpaA0qL6bxBdfPlk=">
+            <targ class="type" type="bool"/>
+            <struct name="D" id="8gtdVs8Zc/2hE1ugmc5SJaowDrk=">
+              <file path="class-template-specializations-3.cpp" line="13" class="def"/>
+            </struct>
+          </template>
+        </struct>
+      </template>
+      <template class="explicit" id="dKDSVrZun8skBV/NUCmJyCUOvJA=">
+        <targ class="type" type="double"/>
+        <struct name="B" id="Ax52oDYNHKdb/kayrTPXtP7EnLo=">
+          <file path="class-template-specializations-3.cpp" line="17" class="def"/>
+          <struct name="C" id="AwZsTwyQp9xqkJ5YDcGgbnNSg3Q=">
+            <file path="class-template-specializations-3.cpp" line="19" class="def"/>
+          </struct>
+          <template>
+            <tparam name="V" class="type"/>
+            <struct name="D" id="mlI5CyZeYMi0hLKKprnY2lkWYuI=">
+              <file path="class-template-specializations-3.cpp" line="21" class="def"/>
+            </struct>
+          </template>
+          <template class="explicit" id="mlI5CyZeYMi0hLKKprnY2lkWYuI=">
+            <targ class="type" type="bool"/>
+            <struct name="D" id="2n2EC+ZzX4R61vVgqMqWD1h4Fqc=">
+              <file path="class-template-specializations-3.cpp" line="25" class="def"/>
+            </struct>
+          </template>
+        </struct>
+      </template>
+    </struct>
+  </template>
+  <template class="explicit" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
+    <targ class="type" type="long"/>
+    <struct name="A" id="y/8TvVlacBAIG2ds2aYgZE+zGUU=">
+      <file path="class-template-specializations-3.cpp" line="2" class="def"/>
+      <template>
+        <tparam name="U" class="type"/>
+        <struct name="B" id="sJKQ/XsqBeYlnpwi1s54+RRv5NA=">
+          <file path="class-template-specializations-3.cpp" line="30" class="def"/>
+          <file path="class-template-specializations-3.cpp" line="4"/>
+          <struct name="C" id="Dpv+NzmwhV+wRSY65GFxl+38zQM=">
+            <file path="class-template-specializations-3.cpp" line="33" class="def"/>
+          </struct>
+          <template>
+            <tparam name="V" class="type"/>
+            <struct name="D" id="AzqBWCSJNi1p7gzPriIyLxFdnrY=">
+              <file path="class-template-specializations-3.cpp" line="35" class="def"/>
+            </struct>
+          </template>
+          <template class="explicit" id="AzqBWCSJNi1p7gzPriIyLxFdnrY=">
+            <targ class="type" type="bool"/>
+            <struct name="D" id="vu+upAyFdAr9NpomAT9maDrr5VU=">
+              <file path="class-template-specializations-3.cpp" line="39" class="def"/>
+            </struct>
+          </template>
+        </struct>
+      </template>
+      <template class="explicit" id="sJKQ/XsqBeYlnpwi1s54+RRv5NA=">
+        <targ class="type" type="double"/>
+        <struct name="B" id="3fOXhba/en8Im2gUSThzllitRc0=">
+          <file path="class-template-specializations-3.cpp" line="17" class="def"/>
+          <struct name="C" id="y0bAB1lqim3CuNevLIQcyhSRoF0=">
+            <file path="class-template-specializations-3.cpp" line="19" class="def"/>
+          </struct>
+          <template>
+            <tparam name="V" class="type"/>
+            <struct name="D" id="yLNKrbXJxOfwo1+MCru26q+JH3c=">
+              <file path="class-template-specializations-3.cpp" line="21"/>
+            </struct>
+          </template>
+          <template class="explicit" id="mlI5CyZeYMi0hLKKprnY2lkWYuI=">
+            <targ class="type" type="bool"/>
+            <struct name="D" id="P+rxL5vI4ct+gzn9YkO97Pt7Ras=">
+              <file path="class-template-specializations-3.cpp" line="25" class="def"/>
+            </struct>
+          </template>
+        </struct>
+      </template>
+      <template class="explicit" id="sJKQ/XsqBeYlnpwi1s54+RRv5NA=">
+        <targ class="type" type="float"/>
+        <struct name="B" id="jvnZWmA3eB78JX83nJawhD8NGhw=">
+          <file path="class-template-specializations-3.cpp" line="31" class="def"/>
+          <struct name="C" id="ctaWbbvndczuSnONWd9XeHYCB9w=">
+            <file path="class-template-specializations-3.cpp" line="33" class="def"/>
+          </struct>
+          <template>
+            <tparam name="V" class="type"/>
+            <struct name="D" id="hJww7bbg+EMQbb4Z6K/mcREdNrI=">
+              <file path="class-template-specializations-3.cpp" line="35"/>
+            </struct>
+          </template>
+          <template class="explicit" id="AzqBWCSJNi1p7gzPriIyLxFdnrY=">
+            <targ class="type" type="bool"/>
+            <struct name="D" id="NNxnP63PrqW2AkyLFpJx0uaNuTk=">
+              <file path="class-template-specializations-3.cpp" line="39" class="def"/>
+            </struct>
+          </template>
+        </struct>
+      </template>
+    </struct>
+  </template>
+  <template class="explicit" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
+    <targ class="type" type="short"/>
+    <struct name="A" id="C6fFmGgpPJ7jgwKJA98mfx5cxts=">
+      <file path="class-template-specializations-3.cpp" line="2" class="def"/>
+      <template>
+        <tparam name="U" class="type"/>
+        <struct name="B" id="7YGPyrC+yNaV349G+Ofic+lrQQ0=">
+          <file path="class-template-specializations-3.cpp" line="4"/>
+        </struct>
+      </template>
+      <template class="explicit" id="dKDSVrZun8skBV/NUCmJyCUOvJA=">
+        <targ class="type" type="double"/>
+        <struct name="B" id="fSC2izK+T4vA4Kndw3xNjCTDpoQ=">
+          <file path="class-template-specializations-3.cpp" line="17" class="def"/>
+          <struct name="C" id="7Z6H18MmJp6db1Qe2eaOiN597z0=">
+            <file path="class-template-specializations-3.cpp" line="19"/>
+          </struct>
+          <template>
+            <tparam name="V" class="type"/>
+            <struct name="D" id="FbDKEGMJtBcKX13TWrKFGTDcIfc=">
+              <file path="class-template-specializations-3.cpp" line="21"/>
+            </struct>
+          </template>
+          <template class="explicit" id="mlI5CyZeYMi0hLKKprnY2lkWYuI=">
+            <targ class="type" type="bool"/>
+            <struct name="D" id="FQCRWOnd4VbpVowmyiWSRR2l2cA=">
+              <file path="class-template-specializations-3.cpp" line="25" class="def"/>
+            </struct>
+          </template>
+        </struct>
+      </template>
+      <template class="explicit" id="dKDSVrZun8skBV/NUCmJyCUOvJA=">
+        <targ class="type" type="void"/>
+        <struct name="B" id="AmrHzqMyGcAD714oirSEx/XCTwk=">
+          <file path="class-template-specializations-3.cpp" line="44" class="def"/>
+          <struct name="C" id="uGKF2n5ovA4i95uQxRmzyMq2uqY=">
+            <file path="class-template-specializations-3.cpp" line="46" class="def"/>
+          </struct>
+          <template>
+            <tparam name="V" class="type"/>
+            <struct name="D" id="NXKMuGv+ES2JssXCxPAKpwv8kek=">
+              <file path="class-template-specializations-3.cpp" line="48" class="def"/>
+            </struct>
+          </template>
+          <template class="explicit" id="NXKMuGv+ES2JssXCxPAKpwv8kek=">
+            <targ class="type" type="bool"/>
+            <struct name="D" id="eYdoT3vlHlbkG+t3+ckhZAqrnlY=">
+              <file path="class-template-specializations-3.cpp" line="52" class="def"/>
+            </struct>
+          </template>
+        </struct>
+      </template>
+    </struct>
+  </template>
+  <template class="explicit" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
+    <targ class="type" type="float"/>
+    <struct name="A" id="GFV3P/JtfrnQwjOLVfI9VbJpd9U=">
+      <file path="class-template-specializations-3.cpp" line="2" class="def"/>
+      <template>
+        <tparam name="U" class="type"/>
+        <struct name="B" id="eAzY1gFXtaCsmFJ7gW8gRwXcMpI=">
+          <file path="class-template-specializations-3.cpp" line="4"/>
+        </struct>
+      </template>
+      <template class="explicit" id="dKDSVrZun8skBV/NUCmJyCUOvJA=">
+        <targ class="type" type="double"/>
+        <targ class="type" type="double"/>
+        <struct name="B" id="gNJJgsCrBHI+de6/WxRWfc6QUSQ=">
+          <file path="class-template-specializations-3.cpp" line="17" class="def"/>
+          <struct name="C" id="B/thZ5I0G7tgrSCTq/QPdxvZ7mk=">
+            <file path="class-template-specializations-3.cpp" line="19" class="def"/>
+          </struct>
+          <template>
+            <tparam name="V" class="type"/>
+            <struct name="D" id="rofuVJc3n2uMiYUFG+jEprNPhfk=">
+              <file path="class-template-specializations-3.cpp" line="21"/>
+            </struct>
+          </template>
+          <template class="explicit" id="mlI5CyZeYMi0hLKKprnY2lkWYuI=">
+            <targ class="type" type="bool"/>
+            <targ class="type" type="bool"/>
+            <struct name="D" id="rzmzIDLemEwnRqvVCiQsLO9rHE4=">
+              <file path="class-template-specializations-3.cpp" line="25" class="def"/>
+            </struct>
+          </template>
+        </struct>
+      </template>
+    </struct>
+  </template>
+  <template class="explicit" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
+    <targ class="type" type="unsigned int"/>
+    <struct name="A" id="eeh34/7lF7rCmE7zXKBrUC7mz3A=">
+      <file path="class-template-specializations-3.cpp" line="2" class="def"/>
+      <template>
+        <tparam name="U" class="type"/>
+        <struct name="B" id="OqH2nTulqZzSwHPpqaqq/8Aw1rA=">
+          <file path="class-template-specializations-3.cpp" line="4"/>
+        </struct>
+      </template>
+      <template class="explicit" id="dKDSVrZun8skBV/NUCmJyCUOvJA=">
+        <targ class="type" type="double"/>
+        <struct name="B" id="Pna+OT/o27zekcoRTFxKtb5m+BQ=">
+          <file path="class-template-specializations-3.cpp" line="17" class="def"/>
+          <struct name="C" id="Gv8ovSPi4vbvyLsPbAfOvhMp5+o=">
+            <file path="class-template-specializations-3.cpp" line="19"/>
+          </struct>
+          <template>
+            <tparam name="V" class="type"/>
+            <struct name="D" id="Hx+JG1wcGiKbsf3sdpq4N3s6yPg=">
+              <file path="class-template-specializations-3.cpp" line="21"/>
+            </struct>
+          </template>
+          <template class="explicit" id="mlI5CyZeYMi0hLKKprnY2lkWYuI=">
+            <targ class="type" type="bool"/>
+            <struct name="D" id="9bJvdwRZpk2+HRV+Az3lOybs1Wc=">
+              <file path="class-template-specializations-3.cpp" line="25" class="def"/>
+            </struct>
+          </template>
+        </struct>
+      </template>
+      <template class="explicit" id="dKDSVrZun8skBV/NUCmJyCUOvJA=">
+        <targ class="type" type="float"/>
+        <struct name="B" id="X9RyjucPb3aRFUq3aZCNE4g/ZVE=">
+          <file path="class-template-specializations-3.cpp" line="5" class="def"/>
+          <struct name="C" id="eXPfVkdfVF382Q5KqAEfOcjpVmo=">
+            <file path="class-template-specializations-3.cpp" line="7" class="def"/>
+          </struct>
+          <template>
+            <tparam name="V" class="type"/>
+            <struct name="D" id="7BP9bS6v3+IVgLRg4/sPKlbVgwc=">
+              <file path="class-template-specializations-3.cpp" line="9"/>
+            </struct>
+          </template>
+          <template class="explicit" id="mavB0Yf/srdYpaA0qL6bxBdfPlk=">
+            <targ class="type" type="bool"/>
+            <struct name="D" id="E3rBDckOC8QkP+2YLNtbMxg69mc=">
+              <file path="class-template-specializations-3.cpp" line="13" class="def"/>
+            </struct>
+          </template>
+        </struct>
+      </template>
+    </struct>
+  </template>
+  <struct name="E" id="KJWEqOD/QXinlGIqVHqmIlA5Z6E=">
+    <file path="class-template-specializations-3.cpp" line="55" class="def"/>
+    <field name="m0" id="oHfKrPnHC+B6Hx/yJYk5Fyxe+CI=">
+      <file path="class-template-specializations-3.cpp" line="57"/>
+      <type id="gNJJgsCrBHI+de6/WxRWfc6QUSQ=" name="A&lt;float&gt;::B&lt;double&gt;"/>
+    </field>
+    <field name="m1" id="EvoFLEsY/zIQw+ATCcszcUXQX1U=">
+      <file path="class-template-specializations-3.cpp" line="58"/>
+      <type id="3fOXhba/en8Im2gUSThzllitRc0=" name="A&lt;long&gt;::B&lt;double&gt;"/>
+    </field>
+    <field name="m2" id="QerDxfhCX/VklfvPy6KMWR5/grA=">
+      <file path="class-template-specializations-3.cpp" line="59"/>
+      <type id="sJKQ/XsqBeYlnpwi1s54+RRv5NA=" name="A&lt;long&gt;::B&lt;float&gt;"/>
+    </field>
+    <field name="m3" id="jkZFwdFnuuwOAnc9RU1Pi4xsuZQ=">
+      <file path="class-template-specializations-3.cpp" line="60"/>
+      <type id="OqH2nTulqZzSwHPpqaqq/8Aw1rA=" name="A&lt;unsigned int&gt;::B&lt;float&gt;"/>
+    </field>
+    <field name="m4" id="Jz1/8DLujy3S44Nw3O0+j7/ib/E=">
+      <file path="class-template-specializations-3.cpp" line="61"/>
+      <type id="AmrHzqMyGcAD714oirSEx/XCTwk=" name="A&lt;short&gt;::B&lt;void&gt;"/>
+    </field>
+    <field name="m5" id="caJb3xi3hSrcOYpFTjaGGYy2Lwo=">
+      <file path="class-template-specializations-3.cpp" line="63"/>
+      <type id="B/thZ5I0G7tgrSCTq/QPdxvZ7mk=" name="A&lt;float&gt;::B&lt;double&gt;::C"/>
+    </field>
+    <field name="m6" id="I9XmCN/8GnrjYZlx8qXp383uWq0=">
+      <file path="class-template-specializations-3.cpp" line="64"/>
+      <type id="y0bAB1lqim3CuNevLIQcyhSRoF0=" name="A&lt;long&gt;::B&lt;double&gt;::C"/>
+    </field>
+    <field name="m7" id="1q9S+RfN6FdeN1hVj4px4bBGHps=">
+      <file path="class-template-specializations-3.cpp" line="65"/>
+      <type id="ctaWbbvndczuSnONWd9XeHYCB9w=" name="A&lt;long&gt;::B&lt;float&gt;::C"/>
+    </field>
+    <field name="m8" id="lV8Cih1vnhktZoDmSG/54XfsVMY=">
+      <file path="class-template-specializations-3.cpp" line="66"/>
+      <type id="eXPfVkdfVF382Q5KqAEfOcjpVmo=" name="A&lt;unsigned int&gt;::B&lt;float&gt;::C"/>
+    </field>
+    <field name="m9" id="HXroC5e+xF7qrqN/j/TCTfZsqRM=">
+      <file path="class-template-specializations-3.cpp" line="67"/>
+      <type id="uGKF2n5ovA4i95uQxRmzyMq2uqY=" name="A&lt;short&gt;::B&lt;void&gt;::C"/>
+    </field>
+    <field name="m10" id="M37GfnOSLu7LdwyWNUKiLSwQU8E=">
+      <file path="class-template-specializations-3.cpp" line="69"/>
+      <type id="rzmzIDLemEwnRqvVCiQsLO9rHE4=" name="A&lt;float&gt;::B&lt;double&gt;::D&lt;bool&gt;"/>
+    </field>
+    <field name="m11" id="zs4yFWypzJvC9fBTuqRIWShHXDI=">
+      <file path="class-template-specializations-3.cpp" line="70"/>
+      <type id="P+rxL5vI4ct+gzn9YkO97Pt7Ras=" name="A&lt;long&gt;::B&lt;double&gt;::D&lt;bool&gt;"/>
+    </field>
+    <field name="m12" id="npnYjIFI4UqRV4lM1m0vGdOXafw=">
+      <file path="class-template-specializations-3.cpp" line="71"/>
+      <type id="NNxnP63PrqW2AkyLFpJx0uaNuTk=" name="A&lt;long&gt;::B&lt;float&gt;::D&lt;bool&gt;"/>
+    </field>
+    <field name="m13" id="m3ZkUTvg5FF0YzKrQCCIMDL4Gjk=">
+      <file path="class-template-specializations-3.cpp" line="72"/>
+      <type id="E3rBDckOC8QkP+2YLNtbMxg69mc=" name="A&lt;unsigned int&gt;::B&lt;float&gt;::D&lt;bool&gt;"/>
+    </field>
+    <field name="m14" id="lvoZQmyEhLRRqpEiNgzPQH1SOJ0=">
+      <file path="class-template-specializations-3.cpp" line="73"/>
+      <type id="eYdoT3vlHlbkG+t3+ckhZAqrnlY=" name="A&lt;short&gt;::B&lt;void&gt;::D&lt;bool&gt;"/>
+    </field>
+  </struct>
+</namespace>
+</mrdocs>

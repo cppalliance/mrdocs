@@ -25,7 +25,7 @@ enum class UsingClass
 {
     Normal = 0,     // using
     Typename,       // using typename
-    Enum,           // using enum
+    Enum            // using enum
 };
 
 static constexpr

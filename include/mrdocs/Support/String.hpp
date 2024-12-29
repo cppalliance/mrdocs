@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -13,27 +14,17 @@
 
 #include <mrdocs/Platform.hpp>
 #include <cctype>
+#include <string>
 #include <string_view>
 
 namespace clang {
 namespace mrdocs {
 
 /** Return the substring without leading horizontal whitespace.
-*/
-std::string_view ltrim(std::string_view s) noexcept;
-
-/** Return the substring without trailing horizontal whitespace.
-*/
-std::string_view rtrim(std::string_view s) noexcept;
-
-/** Return the substring without leading and trailing horizontal whitespace.
-*/
-std::string_view trim(std::string_view s) noexcept;
-
-inline
+ */
+constexpr
 std::string_view
-ltrim(
-    std::string_view s) noexcept
+ltrim(std::string_view s) noexcept
 {
     auto it = s.begin();
     for (;; ++it)
@@ -46,10 +37,11 @@ ltrim(
     return s.substr(it - s.begin());
 }
 
-inline
+/** Return the substring without trailing horizontal whitespace.
+ */
+constexpr
 std::string_view
-rtrim(
-    std::string_view s) noexcept
+rtrim(std::string_view s) noexcept
 {
     auto it = s.end() - 1;
     while(it > s.begin() && std::isspace(*it))
@@ -57,10 +49,11 @@ rtrim(
     return s.substr(0, it - s.begin());
 }
 
-inline
+/** Return the substring without leading and trailing horizontal whitespace.
+ */
+constexpr
 std::string_view
-trim(
-    std::string_view s) noexcept
+trim(std::string_view s) noexcept
 {
     auto left = s.begin();
     for (;; ++left)
@@ -75,6 +68,13 @@ trim(
         --right;
     return std::string_view(&*left, right - left + 1);
 }
+
+/** Return the substring without leading and trailing horizontal whitespace.
+*/
+MRDOCS_DECL
+void
+replace(std::string& s, std::string_view from, std::string_view to);
+
 
 } // mrdocs
 } // clang

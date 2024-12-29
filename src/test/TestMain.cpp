@@ -32,9 +32,11 @@ void DoTestAction(char const** argv)
 {
     using namespace clang::mrdocs;
 
-    TestRunner runner(testArgs.generate);
-    for(auto const& inputPath : testArgs.inputs)
+    TestRunner runner(testArgs.generator);
+    for (auto const& inputPath: testArgs.cmdLineInputs)
+    {
         runner.checkPath(inputPath, argv);
+    }
     auto const& results = runner.results;
 
     std::stringstream os;
@@ -50,6 +52,8 @@ void DoTestAction(char const** argv)
     case Action::update:
         os << "Update action: ";
         break;
+    default:
+        MRDOCS_UNREACHABLE();
     }
 
     os <<
@@ -74,9 +78,10 @@ int test_main(int argc, char const** argv)
     llvm::setBugReportMsg("PLEASE submit a bug report to https://github.com/cppalliance/mrdocs/issues/ and include the crash backtrace.\n");
 
     testArgs.hideForeignOptions();
-    if(! llvm::cl::ParseCommandLineOptions(
-            argc, argv, testArgs.usageText))
+    if (!llvm::cl::ParseCommandLineOptions(argc, argv, testArgs.usageText))
+    {
         return EXIT_FAILURE;
+    }
 
     // Apply reportLevel
     report::setMinimumLevel(report::getLevel(
@@ -84,15 +89,21 @@ int test_main(int argc, char const** argv)
 
     report::setSourceLocationWarnings(false);
 
-    if(!testArgs.inputs.empty())
+    if (!testArgs.cmdLineInputs.empty())
+    {
         DoTestAction(argv);
+    }
 
-    if(testArgs.unitOption.getValue())
+    if (testArgs.unitOption.getValue())
+    {
         test_suite::unit_test_main(argc, argv);
+    }
 
-    if( report::results.errorCount > 0 ||
+    if (report::results.errorCount > 0 ||
         report::results.fatalCount > 0)
+    {
         return EXIT_FAILURE;
+    }
     return EXIT_SUCCESS;
 }
 

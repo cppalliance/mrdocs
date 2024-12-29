@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <template>
+    <tparam name="T" class="type"/>
+    <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
+      <file path="templates/ct_mft_expl_inline.cpp" line="1" class="def"/>
+      <template>
+        <tparam name="U" class="type"/>
+        <function name="f" id="fycIFVnUjGsczEihLemEC7pcV4w=">
+          <file path="templates/ct_mft_expl_inline.cpp" line="4" class="def"/>
+        </function>
+      </template>
+      <template class="explicit" id="fycIFVnUjGsczEihLemEC7pcV4w=">
+        <targ class="type" type="int"/>
+        <function name="f" id="TneA5Ayz4v/9oOUbbnRL1ybm8VM=">
+          <file path="templates/ct_mft_expl_inline.cpp" line="7" class="def"/>
+        </function>
+      </template>
+    </struct>
+  </template>
+</namespace>
+</mrdocs>

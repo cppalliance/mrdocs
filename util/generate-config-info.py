@@ -63,8 +63,7 @@ def get_flat_suboptions(option_name, options):
 
 def get_valid_enum_categories():
     valid_enum_cats = {
-        'generator': ["adoc", "html", "xml"],
-        "extract-policy": ["always", "dependency", "never"]
+        'generator': ["adoc", "html", "xml"]
     }
     return valid_enum_cats
 
@@ -87,8 +86,21 @@ def get_enum_category_name(enum_values):
 
 def get_valid_option_values():
     valid_option_values = [
-        'string', 'file-path', 'dir-path', 'path', 'list<string>',
-        'list<path>', 'unsigned', 'int', 'enum', 'bool']
+        'bool',
+        'unsigned',
+        'int',
+        'enum',
+        'string',
+        'file-path',
+        'dir-path',
+        'path',
+        'path-glob',
+        'symbol-glob',
+        'list<string>',
+        'list<path>',
+        'list<path-glob>',
+        'list<symbol-glob>',
+    ]
     return valid_option_values
 
 
@@ -96,7 +108,7 @@ def is_valid_option_type(option_type):
     return option_type in get_valid_option_values()
 
 
-def validate_and_normalize_option(option):
+def validate_and_normalize_option(option, flat_options):
     # Validate and normalize the configuration options
     if 'name' not in option:
         raise ValueError('Option must have a name')
@@ -110,11 +122,15 @@ def validate_and_normalize_option(option):
         raise ValueError(f'Option "{option["name"]}" must have a "brief" description')
     if 'details' not in option:
         option['details'] = ''
+        print(f'Warning: Option "{option["name"]}" has no "details" key. Defaulting to ""')
     if 'type' not in option:
         option['type'] = 'string'
+        print(f'Warning: Option "{option["name"]}" has no "type" key. Defaulting to "string"')
+
     if not is_valid_option_type(option['type']):
         raise ValueError(
             f'Option "{option["name"]}" has an invalid type {option["type"]}: It should be one of {get_valid_option_values()}')
+
     if option['type'] == 'enum':
         if 'values' not in option:
             raise ValueError(f'Option "{option["name"]}" is of type enum and must have "values"')
@@ -135,13 +151,25 @@ def validate_and_normalize_option(option):
         elif option['type'] == 'enum':
             option['default'] = option['values'][0]
     if option['type'] in ['path', 'file-path', 'dir-path', 'list<path>']:
-        if 'relativeto' not in option:
-            option['relativeto'] = '<config-dir>'
+        if 'relative-to' not in option:
+            option['relative-to'] = '<config-dir>'
+            print(f'Warning: Option "{option["name"]}" has no "relative-to" key. Defaulting to "<config-dir>"')
         if 'must-exist' not in option:
             option['must-exist'] = True
-        reference_directories = ['<config-dir>', '<cwd>', '<mrdocs-root>', '<output>']
-        if option['relativeto'] not in reference_directories:
-            raise ValueError(f'Option "{option["name"]}" has an invalid value for "relativeto"')
+            print(f'Warning: Option "{option["name"]}" has no "must-exist" key. Defaulting to "true"')
+        if 'should-exist' not in option:
+            option['should-exist'] = False
+            if not option['must-exist']:
+                print(f'Warning: Option "{option["name"]}" has no "should-exist" key. Defaulting to "false"')
+        reference_directories = ['<config-dir>', '<cwd>', '<mrdocs-root>']
+        for flat_option in flat_options:
+            if flat_option['name'] == option['name']:
+                continue
+            # If option is unique directory option of some form
+            if flat_option['type'] in ['path', 'dir-path', 'file-path']:
+                reference_directories.append(f'<{flat_option["name"]}>')
+        if option['relative-to'] not in reference_directories:
+            raise ValueError(f'Option "{option["name"]}" has an invalid value for "relative-to"')
         default_paths = option['default']
         if not isinstance(default_paths, list):
             default_paths = [default_paths]
@@ -151,7 +179,7 @@ def validate_and_normalize_option(option):
                     default_path.startswith(reference_dir) for reference_dir in reference_directories)
                 if not option_default_starts_with_reference:
                     raise ValueError(
-                        f'Option "{option["name"]}" starts with an invalid reference directory. It should be one of {reference_directories}')
+                        f'Option "{option["name"]}" starts with an invalid reference directory "{default_path}". It should be one of {reference_directories}')
     if 'required' not in option:
         option['required'] = False
     if 'command-line-sink' not in option:
@@ -161,9 +189,69 @@ def validate_and_normalize_option(option):
             validate_and_normalize_option(suboption)
     return option
 
+def validate_relative_to_options(flat_options):
+    # If an option includes a relative-to key or includes
+    # default values that start with a reference directory,
+    # we have to check if the relative-to key is valid
+    # and if the key comes before the current option in the list
+    # because the reference directories are defined in the order
+    # they appear in the list of options. This is important to
+    # ensure that the reference directories are defined before
+    # they are used in the default values of other options.
+    # After that, we should allow <key> and <key-dir> to be used
+    # in the config normalization process implemented in C++.
+    hard_coded_reference_directories = ['config-dir', 'cwd', 'mrdocs-root']
+    single_directory_option_types = ['path', 'dir-path', 'file-path', 'path-glob']
+    list_directory_option_types = [f'list<{option_type}>' for option_type in single_directory_option_types]
+    directory_option_types = single_directory_option_types + list_directory_option_types
+    for i in range(len(flat_options)):
+        option = flat_options[i]
+        if option["type"] not in directory_option_types:
+            continue
+
+        option_default_directories = []
+        if option['default'] is not None:
+            if not isinstance(option['default'], list):
+                if option['default'].startswith('<'):
+                    option_default_directories.append(option['default'])
+            else:
+                for default in option['default']:
+                    if default.startswith('<'):
+                        option_default_directories.append(default)
+
+        option_relative_dependencies = []
+        if 'relative-to' in option:
+            option_relative_dependencies.append(option['relative-to'])
+        for option_default_directory in option_default_directories:
+            if option_default_directory.startswith('<'):
+                pos = option_default_directory.find('>')
+                if pos == -1:
+                    raise ValueError(f'Option "{option["name"]}" has an invalid default value')
+                option_relative_dependencies.append(option_default_directory[0:pos+1])
+        assert(all([directory.startswith('<') and directory.endswith('>') for directory in option_relative_dependencies]))
+        option_relative_dependencies = [directory[1:-1] for directory in option_relative_dependencies]
+
+        for option_relative_dependency in option_relative_dependencies:
+            found = False
+            if option_relative_dependency in hard_coded_reference_directories:
+                found = True
+            else:
+                for j in range(i):
+                    other_option = flat_options[j]
+                    if other_option["type"] not in single_directory_option_types:
+                        continue
+                    if other_option['name'] == option_relative_dependency:
+                        found = True
+                        break
+                    if other_option['name'] + '-dir' == option_relative_dependency:
+                        found = True
+                        break
+            if not found:
+                raise ValueError(f'Option "{option["name"]}" has an invalid relative reference "<{option_relative_dependency}>"')
 
 def validate_and_normalize_config(config):
     # Validate and normalize the configuration options
+    flat_options = flat_config_options(config)
     for category in config:
         if 'category' not in category:
             raise ValueError('Category must have a name')
@@ -176,7 +264,8 @@ def validate_and_normalize_config(config):
         if 'options' not in category:
             raise ValueError(f'Category {category["category"]} must have "options"')
         for option in category['options']:
-            validate_and_normalize_option(option)
+            validate_and_normalize_option(option, flat_options)
+    validate_relative_to_options(flat_options)
     return config
 
 
@@ -202,6 +291,7 @@ def generate_public_settings_hpp(config):
     contents += f'#define {header_guard}\n\n'
 
     headers = [
+        '<mrdocs/Support/Glob.hpp>',
         '<mrdocs/Support/Error.hpp>',
         '<mrdocs/Config/ReferenceDirectories.hpp>',
         '<string>',
@@ -214,8 +304,7 @@ def generate_public_settings_hpp(config):
         contents += f'#include {header}\n'
     contents += '\n'
 
-    contents += 'namespace clang {\n'
-    contents += 'namespace mrdocs {\n\n'
+    contents += 'namespace clang::mrdocs {\n\n'
     contents += 'struct PublicSettings {\n'
 
     contents += '    //--------------------------------------------\n'
@@ -293,6 +382,7 @@ def generate_public_settings_hpp(config):
     contents += f'        bool {to_camel_case("command-line-sink")} = false;\n'
     contents += f'        bool {to_camel_case("command-line-only")} = false;\n'
     contents += f'        bool {to_camel_case("must-exist")} = true;\n'
+    contents += f'        bool {to_camel_case("should-exist")} = false;\n'
     contents += f'        std::optional<int> {to_camel_case("min-value")} = std::nullopt;\n'
     contents += f'        std::optional<int> {to_camel_case("max-value")} = std::nullopt;\n'
     contents += f'        std::optional<std::map<std::string, std::string>> {to_camel_case("filename-mapping")} = std::nullopt;\n'
@@ -302,7 +392,7 @@ def generate_public_settings_hpp(config):
         contents += ',\n'
         contents += f'            {cpp_type}'
     contents += f'> {to_camel_case("default")}Value = std::monostate();\n'
-    contents += f'        std::string {to_camel_case("relativeto")} = {{}};\n'
+    contents += f'        std::string {to_camel_case("relative-to")} = {{}};\n'
     contents += '    };\n\n'
 
     contents += '    /** Normalize the configuration values with a visitor\n'
@@ -333,6 +423,8 @@ def generate_public_settings_hpp(config):
             contents += f'{pad}.{to_camel_case("command-line-only")} = {"true" if option["command-line-only"] else "false"},\n'
         if 'must-exist' in option:
             contents += f'{pad}.{to_camel_case("must-exist")} = {"true" if option["must-exist"] else "false"},\n'
+        if 'should-exist' in option:
+            contents += f'{pad}.{to_camel_case("should-exist")} = {"true" if option["should-exist"] else "false"},\n'
         if 'filename-mapping' in option:
             contents += f'{pad}.{to_camel_case("filename-mapping")} = std::map<std::string, std::string>{{\n'
             for [key, value] in option['filename-mapping'].items():
@@ -343,9 +435,12 @@ def generate_public_settings_hpp(config):
             cpp_default_value = to_cpp_default_value(option, False)
             # print the default in cpp
             if cpp_default_value is not None:
-                contents += f'{pad}.{to_camel_case("default")}Value = {to_cpp_type(option)}({cpp_default_value}),\n'
-        if 'relativeto' in option:
-            contents += f'{pad}.{to_camel_case("relativeto")} = {escape_as_cpp_string(option["relativeto"])},\n'
+                cpp_type = to_cpp_type(option)
+                if cpp_type in ['bool', 'unsigned', 'int']:
+                    cpp_type = f'static_cast<{cpp_type}>'
+                contents += f'{pad}.{to_camel_case("default")}Value = {cpp_type}({cpp_default_value}),\n'
+        if 'relative-to' in option:
+            contents += f'{pad}.{to_camel_case("relative-to")} = {escape_as_cpp_string(option["relative-to"])},\n'
         contents += f'        }}));\n'
     contents += '        return {};\n'
     contents += '    }\n\n'
@@ -391,8 +486,7 @@ def generate_public_settings_hpp(config):
         contents += '    return {};\n'
         contents += '}\n\n'
 
-    contents += '} // namespace mrdocs\n'
-    contents += '} // namespace clang\n\n'
+    contents += '} // namespace clang::mrdocs\n\n'
     contents += f'#endif // {header_guard}\n'
     return contents
 
@@ -505,7 +599,7 @@ def generate_yaml_mapping_traits(option, namespace=None):
     return contents
 
 
-def flat_config_options(config, parent_name=None):
+def flat_config_options_impl(config, parent_name):
     flat_options = []
     for category in config:
         for option in category['options']:
@@ -518,13 +612,18 @@ def flat_config_options(config, parent_name=None):
                 flat_options.append(option_copy)
             else:
                 # If the option has suboptions, recursively flatten them
-                suboptions = flat_config_options([{'category': '', 'options': option['options']}], option_copy['name'])
+                suboptions = flat_config_options_impl([{'category': '', 'options': option['options']}],
+                                                      option_copy['name'])
                 for suboption in suboptions:
                     # Update the name of the suboption to include the parent option's name
                     if parent_name:
                         suboption['name'] = f'{suboption["name"]}'
                     flat_options.append(suboption)
     return flat_options
+
+
+def flat_config_options(config):
+    return flat_config_options_impl(config, None)
 
 
 def remove_reference_dir_from_path(path):
@@ -582,6 +681,70 @@ def generate_public_settings_cpp(config):
     for category in config:
         for option in category['options']:
             contents += generate_yaml_mapping_traits(option)
+
+    # Generate the LLVM YAML traits for glob patterns, such as:
+    for name in ['PathGlobPattern', 'SymbolGlobPattern']:
+        qualified_name = f'clang::mrdocs::{name}'
+        contents += f'template<>\n'
+        contents += f'struct llvm::yaml::ScalarTraits<\n'
+        contents += f'    {qualified_name}>\n'
+        contents += '{\n'
+        contents += f'    static\n'
+        contents += f'    void\n'
+        contents += f'    output(\n'
+        contents += f'        {qualified_name} const& value,\n'
+        contents += f'        void *ctx,\n'
+        contents += f'        llvm::raw_ostream &out)\n'
+        contents += '    {\n'
+        contents += f'        out << value.pattern();\n'
+        contents += '    }\n\n'
+        contents += f'    static\n'
+        contents += f'    llvm::StringRef\n'
+        contents += f'    input(\n'
+        contents += f'        llvm::StringRef scalar,\n'
+        contents += f'        void *ctx,\n'
+        contents += f'        {qualified_name} &value)\n'
+        contents += '    {\n'
+        contents += f'        auto result = {qualified_name}::create(scalar);\n'
+        contents += '        if (!result) {\n'
+        contents += f'            return "Invalid {name}";\n'
+        contents += '        }\n'
+        contents += '        value = result.value();\n'
+        contents += '        return {};\n'
+        contents += '    }\n\n'
+        contents += '    static\n'
+        contents += '    QuotingType\n'
+        contents += '    mustQuote(llvm::StringRef)\n'
+        contents += '    {\n'
+        contents += '        return QuotingType::None;\n'
+        contents += '    }\n'
+        contents += '};\n\n'
+
+        vector_typename = f'std::vector<{qualified_name}>'
+        contents += f'template<>\n'
+        contents += f'struct llvm::yaml::SequenceTraits<\n'
+        contents += f'    {vector_typename}>\n'
+        contents += '{\n'
+        contents += f'    static\n'
+        contents += f'    std::size_t\n'
+        contents += f'    size(\n'
+        contents += f'        IO& io,\n'
+        contents += f'        {vector_typename}& list)\n'
+        contents += '    {\n'
+        contents += f'        return list.size();\n'
+        contents += '    }\n\n'
+        contents += f'    static\n'
+        contents += f'    {qualified_name}&\n'
+        contents += f'    element(\n'
+        contents += f'        IO& io,\n'
+        contents += f'        {vector_typename} &list,\n'
+        contents += f'        std::size_t index)\n'
+        contents += '    {\n'
+        contents += '        if (index >= list.size())\n'
+        contents += '            list.resize(index + 1);\n'
+        contents += '        return list[index];\n'
+        contents += '    }\n\n'
+        contents += '};\n\n'
 
     # Generate the LLVM YAML traits for all PublicSettings
     contents += f'template<>\n'
@@ -793,18 +956,21 @@ def generate_public_toolargs_cpp(config):
     contents += '    // Helper to determine if a key is explicitly set in the command line\n'
     contents += '    auto argv_end = argv;\n'
     contents += '    for (; *argv_end; ++argv_end);\n'
-    contents += '    auto const keyIsSet = [argv, argv_end](\n'
+    contents += '    auto toSV = [](auto arg) { return std::string_view(arg); };\n'
+    contents += '    auto isKey = [](std::string_view arg) { return arg.starts_with("--"); };\n'
+    contents += '    auto getKey = [](std::string_view arg) { return arg.substr(2, arg.find_first_of(\'=\') - 2); };\n'
+    contents += '    auto argKeys =\n'
+    contents += '        std::ranges::subrange(argv, argv_end) |\n'
+    contents += '        // Convert to string_view\n'
+    contents += '        std::ranges::views::transform(toSV) |\n'
+    contents += '        // Filter out non-keys\n'
+    contents += '        std::ranges::views::filter(isKey) |\n'
+    contents += '        // Extract the key\n'
+    contents += '        std::ranges::views::transform(getKey);\n'
+    contents += '    auto const keyIsSet = [&argKeys](\n'
     contents += '        std::string_view key) -> bool\n'
     contents += '    {\n'
-    contents += '        auto toSV = [](auto arg) { return std::string_view(arg); };\n'
-    contents += '        auto isKey = [](std::string_view arg) { return arg.starts_with("--"); };\n'
-    contents += '        auto getKey = [](std::string_view arg) { return arg.substr(2, arg.find_first_of(\'=\') - 2); };\n'
-    contents += '        auto keys =\n'
-    contents += '            std::ranges::subrange(argv, argv_end) |\n'
-    contents += '            std::ranges::views::transform(toSV) |\n'
-    contents += '            std::ranges::views::filter(isKey) |\n'
-    contents += '            std::ranges::views::transform(getKey);\n'
-    contents += '        return std::ranges::find(keys, key) != keys.end();\n'
+    contents += '        return std::ranges::find(argKeys, key) != argKeys.end();\n'
     contents += '    };\n\n'
 
     contents += '    // Override any option explicitly set in the command line\n'
@@ -812,9 +978,9 @@ def generate_public_toolargs_cpp(config):
         camel_name = to_camel_case(option['name'])
         option_contents = ''
         if option["type"].startswith('list<'):
-            option_contents += f'if (!this->{camel_name}.empty())\n'
+           option_contents += f'if (!this->{camel_name}.empty())\n'
         else:
-            option_contents += f'if (keyIsSet({escape_as_cpp_string(option["name"])}))\n'
+           option_contents += f'if (keyIsSet({escape_as_cpp_string(option["name"])}))\n'
         option_contents += '{\n'
         if option["type"] == "enum":
             is_first = True
@@ -832,6 +998,14 @@ def generate_public_toolargs_cpp(config):
             option_contents += f'    else\n'
             option_contents += f'    {{\n'
             option_contents += f'        return Unexpected(formatError("`{option["name"]}` option: invalid value: {{}}", this->{camel_name}));\n'
+            option_contents += f'    }}\n'
+        elif option["type"] in ['list<path-glob>', 'list<symbol-glob>']:
+            cpp_type = 'PathGlobPattern' if option["type"] == 'list<path-glob>' else 'SymbolGlobPattern'
+            option_contents += f'    s.{camel_name}.clear();\n'
+            option_contents += f'    for (auto& pattern : this->{camel_name})\n'
+            option_contents += f'    {{\n'
+            option_contents += f'        MRDOCS_TRY(auto temp, {cpp_type}::create(pattern));\n'
+            option_contents += f'        s.{camel_name}.push_back(temp);\n'
             option_contents += f'    }}\n'
         else:
             option_contents += f'    s.{camel_name} = this->{camel_name};\n'
@@ -870,12 +1044,20 @@ def to_cpp_type(option):
         return 'unsigned'
     if option_type in ['string', 'file-path', 'dir-path', 'path']:
         return 'std::string'
+    if option_type in ['path-glob']:
+        return 'PathGlobPattern'
+    if option_type in ['symbol-glob']:
+        return 'SymbolGlobPattern'
     if option_type == 'enum':
         option_values = option['values']
         cat_name = get_enum_category_name(option_values)
         return f'{to_pascal_case(cat_name)}'
     if option_type in ['list<string>', 'list<path>', 'list<file-path>', 'list<dir-path>']:
         return 'std::vector<std::string>'
+    if option_type in ['list<path-glob>']:
+        return 'std::vector<PathGlobPattern>'
+    if option_type in ['list<symbol-glob>']:
+        return 'std::vector<SymbolGlobPattern>'
     raise ValueError(f'to_cpp_type: Cannot convert option type {option_type} to C++ type')
 
 
@@ -893,7 +1075,7 @@ def to_toolargs_type(option):
         return 'llvm::cl::opt<unsigned>'
     if option_type in ['string', 'file-path', 'dir-path', 'path', 'enum']:
         return 'llvm::cl::opt<std::string>'
-    if option_type in ['list<string>', 'list<path>', 'list<file-path>', 'list<dir-path>']:
+    if option_type in ['list<string>', 'list<path>', 'list<file-path>', 'list<dir-path>', 'list<path-glob>', 'list<symbol-glob>']:
         return 'llvm::cl::list<std::string>'
     raise ValueError(f'to_cpp_type: Cannot convert option type {option_type} to C++ type')
 
@@ -938,6 +1120,14 @@ def to_cpp_default_value(option, replace_reference_dir=None):
         if not option_default:
             return None
         return '{' + ', '.join([f'"{str(s)}"' for s in option_default]) + '}'
+    if option_type in ['list<symbol-glob>']:
+        if not option_default:
+            return None
+        return '{' + ', '.join([f'SymbolGlobPattern::create("{str(s)}").value()' for s in option_default]) + '}'
+    if option_type in ['list<path-glob>']:
+        if not option_default:
+            return None
+        return '{' + ', '.join([f'PathGlobPattern::create("{str(s)}").value()' for s in option_default]) + '}'
     raise ValueError(f'to_cpp_type: Cannot convert option type {option_type} to C++ type')
 
 
@@ -954,6 +1144,7 @@ def generate_option_declaration(option, style=None):
     option_details = option['details']
     has_suboptions = 'options' in option
 
+    # Generate the struct for the suboptions
     if has_suboptions:
         # Generate the struct for the option
         contents += f'/** {option_brief}\n'
@@ -967,6 +1158,7 @@ def generate_option_declaration(option, style=None):
             contents += '\n\n'
         contents += '};\n\n'
 
+    # Generate doc comments
     brief_comment = text_wrap(f'/** {option_brief}', 70)
     brief_first_line = brief_comment.split('\n')[0]
     brief_rest_lines = '\n'.join(brief_comment.split('\n')[1:])
@@ -977,9 +1169,11 @@ def generate_option_declaration(option, style=None):
     if option_details:
         contents += f'\n'
         # Replace all '. ' with '. \n'
-        option_details = option_details.replace('. ', '.\n\n')
+        option_details = option_details.replace('. ', '.\n\n').replace('/*', '/<star>')
         contents += f'{indent(text_wrap(option_details, 70), 4)}\n'
     contents += ' */\n'
+
+    # Generate the declaration
     code_type = to_cpp_type(option) if style == 'cpp' else to_toolargs_type(option)
     contents += f'{code_type} {to_camel_case(option_name)}'
     if style == 'cpp' and option["type"] in ['enum', 'bool', 'unsigned', 'int']:

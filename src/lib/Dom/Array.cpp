@@ -150,7 +150,7 @@ type_key() const noexcept
 void
 ArrayImpl::
 emplace_back(
-    value_type value)
+    value_type)
 {
     Error("Array is const").Throw();
 }

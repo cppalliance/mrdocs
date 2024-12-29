@@ -1,0 +1,98 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+[cols=2]
+|===
+| Name | Description 
+
+| <<#A-0e,`A`>> 
+| 
+
+| <<#A-00,`A&lt;int&gt;`>> 
+| 
+
+|===
+
+[#A-0e]
+== A
+
+=== Synopsis
+
+Declared in `&lt;templates&sol;ct&lowbar;mf&lowbar;expl&lowbar;outside&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+struct A;
+----
+
+=== Member Functions
+[cols=2]
+|===
+| Name | Description 
+
+| <<#A-0e-f,`f`>> 
+| 
+
+|===
+
+
+
+[#A-0e-f]
+== <<#A-0e,A>>::f
+
+=== Synopsis
+
+Declared in `&lt;templates&sol;ct&lowbar;mf&lowbar;expl&lowbar;outside&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f();
+----
+
+[#A-00]
+== A&lt;int&gt;
+
+=== Synopsis
+
+Declared in `&lt;templates&sol;ct&lowbar;mf&lowbar;expl&lowbar;outside&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct <<#A-0e,A>>&lt;int&gt;;
+----
+
+=== Member Functions
+[cols=2]
+|===
+| Name | Description 
+
+| <<#A-00-f,`f`>> 
+| 
+
+|===
+
+
+
+[#A-00-f]
+== <<#A-00,A>>&lt;int&gt;::f
+
+=== Synopsis
+
+Declared in `&lt;templates&sol;ct&lowbar;mf&lowbar;expl&lowbar;outside&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f();
+----
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

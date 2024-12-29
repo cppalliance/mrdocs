@@ -118,6 +118,8 @@ build(
     auto errors = ex.wait();
     MRDOCS_CHECK_OR(errors.empty(), Unexpected(errors));
 
+    report::info("Generated {} pages", visitor.count());
+
     if (! corpus.config->tagfile.empty())
     {
         MRDOCS_TRY(auto tagFileWriter, TagfileWriter::create(

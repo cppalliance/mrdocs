@@ -57,8 +57,9 @@
 	</Type>
 
     <Type Name="clang::mrdocs::SymbolID">
-        <DisplayString Condition="strncmp((char*)this, (char*)&amp;SymbolID::invalid, 20) != 0">{data_[0],nvoXb}{data_[1],nvoXb}{data_[2],nvoXb}{data_[3],nvoXb}{data_[4],nvoXb}{data_[5],nvoXb}{data_[6],nvoXb}{data_[7],nvoXb}{data_[8],nvoXb}{data_[9],nvoXb}{data_[10],nvoXb}{data_[11],nvoXb}{data_[12],nvoXb}{data_[13],nvoXb}{data_[14],nvoXb}{data_[15],nvoXb}{data_[16],nvoXb}{data_[17],nvoXb}{data_[18],nvoXb}{data_[19],nvoXb}</DisplayString>
-        <DisplayString>empty SymbolID</DisplayString>
+        <DisplayString Condition="strncmp((char*)this, (char*)&amp;SymbolID::invalid, 20) == 0">empty SymbolID</DisplayString>
+        <DisplayString Condition="strncmp((char*)this, (char*)&amp;SymbolID::global, 20) == 0">global SymbolID</DisplayString>
+        <DisplayString>{data_[0],nvoXb}{data_[1],nvoXb}{data_[2],nvoXb}{data_[3],nvoXb}{data_[4],nvoXb}{data_[5],nvoXb}{data_[6],nvoXb}{data_[7],nvoXb}{data_[8],nvoXb}{data_[9],nvoXb}{data_[10],nvoXb}{data_[11],nvoXb}{data_[12],nvoXb}{data_[13],nvoXb}{data_[14],nvoXb}{data_[15],nvoXb}{data_[16],nvoXb}{data_[17],nvoXb}{data_[18],nvoXb}{data_[19],nvoXb}</DisplayString>
         <Expand>
         </Expand>
     </Type>
@@ -86,7 +87,7 @@
         </Expand>
     </Type>
 
-<!-- Dom Types -->
+    <!-- Dom Types -->
 
     <Type Name="clang::mrdocs::dom::String">
         <DisplayString Condition="psz_!=0">{psz_,s}</DisplayString>

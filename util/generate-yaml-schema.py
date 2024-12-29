@@ -64,6 +64,8 @@ def to_yaml_schema_type(option: Option) -> SchemaType:
         "list<path>",
         "list<file-path>",
         "list<dir-path>",
+        "list<path-glob>",
+        "list<symbol-glob>",
     ]:
         return {"type": "array", "items": {"type": "string"}}
     raise ValueError(

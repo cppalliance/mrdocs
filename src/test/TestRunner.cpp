@@ -25,12 +25,10 @@
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
 #include <llvm/Support/Program.h>
-#include <llvm/Support/Signals.h>
 #include <atomic>
 #include <iostream>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 TestRunner::
 TestRunner(std::string_view generator)
@@ -91,10 +89,15 @@ handleFile(
     Config::Settings fileSettings = dirSettings;
     auto configPath = files::withExtension(filePath, "yml");
     if (files::exists(configPath)) {
-        Config::Settings::load_file(fileSettings, configPath, dirs_).value();
-        fileSettings.normalize(dirs_);
+        if (auto exp = Config::Settings::load_file(fileSettings, configPath, dirs_); !exp)
+        {
+            return report::error("Failed to load config file: {}: \"{}\"", exp.error(), configPath);
+        }
+        if (auto exp = fileSettings.normalize(dirs_); !exp)
+        {
+            return report::error("Failed to normalize config file: {}: \"{}\"", exp.error(), configPath);
+        }
     }
-
 
     // Config Implementation
     std::shared_ptr<ConfigImpl const> config =
@@ -111,10 +114,13 @@ handleFile(
         llvm::StringRef(parentDir), SingleFileDB(filePath), config, defaultIncludePaths);
 
     report::setMinimumLevel(report::Level::error);
+
     // Build Corpus
     auto corpus = CorpusImpl::build(config, compilations);
-    if(! corpus)
+    if (!corpus)
+    {
         return report::error("{}: \"{}\"", corpus.error(), filePath);
+    }
 
     // Generate
     std::string generatedDocs;
@@ -128,10 +134,14 @@ handleFile(
     std::unique_ptr<llvm::MemoryBuffer> expectedDocsBuf;
     {
         auto fileResult = llvm::MemoryBuffer::getFile(expectedPath, false, true, true);
-        if(fileResult)
+        if (fileResult)
+        {
             expectedDocsBuf = std::move(fileResult.get());
-        else if(fileResult.getError() != std::errc::no_such_file_or_directory)
-            return report::error("{}: \"{}\"", fileResult.getError(), expectedPath);
+        } else if (fileResult.getError() != std::errc::no_such_file_or_directory)
+        {
+            return report::
+                error("{}: \"{}\"", fileResult.getError(), expectedPath);
+        }
     }
 
     // If no expected documentation file
@@ -257,11 +267,14 @@ handleDir(
             std::string const& configPath = files::appendPath(entry.path(), "mrdocs.yml");
             if (files::exists(configPath))
             {
-                Config::Settings::load_file(subdirSettings, configPath, dirs_).value();
-                auto prev = dirs_.configDir;
-                dirs_.configDir = entry.path();
-                subdirSettings.normalize(dirs_);
-                dirs_.configDir = std::move(prev);
+                if (auto exp = Config::Settings::load_file(subdirSettings, configPath, dirs_); !exp)
+                {
+                    return report::error("Failed to load config file: {}: \"{}\"", exp.error(), configPath);
+                }
+                if (auto exp = subdirSettings.normalize(dirs_); !exp)
+                {
+                    return report::error("Failed to normalize config file: {}: \"{}\"", exp.error(), configPath);
+                }
             }
             handleDir(entry.path(), subdirSettings);
         }
@@ -304,8 +317,7 @@ checkPath(
     std::string const inputDir = fileType == files::FileType::directory
         ? inputPath
         : files::getParentDir(inputPath);
-    dirs_.configDir = inputDir;
-    dirs_.cwd = dirs_.configDir;
+    dirs_.cwd = inputDir;
 
     // Check for a directory-wide config
     Config::Settings dirSettings;
@@ -314,10 +326,15 @@ checkPath(
     dirSettings.sourceRoot = files::appendPath(inputPath, ".");
 
     std::string const& configPath = files::appendPath(inputDir, "mrdocs.yml");
-    if (files::exists(configPath)) {
-        Config::Settings::load_file(dirSettings, configPath, dirs_).value();
-        if (auto exp = dirSettings.normalize(dirs_); !exp) {
-            return report::error("{}: \"{}\"", exp.error(), configPath);
+    if (files::exists(configPath))
+    {
+        if (auto exp = Config::Settings::load_file(dirSettings, configPath, dirs_); !exp)
+        {
+            return report::error("Failed to load config file: {}: \"{}\"", exp.error(), configPath);
+        }
+        if (auto exp = dirSettings.normalize(dirs_); !exp)
+        {
+            return report::error("Failed to normalize config file: {}: \"{}\"", exp.error(), configPath);
         }
     }
 
@@ -326,7 +343,7 @@ checkPath(
     case files::FileType::regular:
     {
         // Require a .cpp file
-        if(! path::extension(inputPath).equals_insensitive(".cpp"))
+        if (!path::extension(inputPath).equals_insensitive(".cpp"))
         {
             Error err("not a .cpp file");
             return report::error("{}: \"{}\"",
@@ -358,5 +375,4 @@ checkPath(
     }
 }
 
-} // mrdocs
-} // clang
+} // clang::mrdocs

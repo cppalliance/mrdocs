@@ -1,0 +1,152 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Enums
+[cols=2]
+|===
+| Name | Description 
+
+| <<#E0,`E0`>> 
+| E0 brief&period;
+
+
+
+| <<#E1,`E1`>> 
+| 
+
+| <<#E2,`E2`>> 
+| E2 brief&period;
+
+
+
+| <<#E3,`E3`>> 
+| 
+
+|===
+
+[#E0]
+== E0
+
+E0 brief&period;
+
+
+
+=== Synopsis
+
+Declared in `&lt;enum&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+enum E0;
+----
+
+=== Members
+
+[,cols=2]
+|===
+|Name |Description
+|`e0`
+|e0 brief&amp;period&semi;
+
+
+|`e1`
+|e1 brief&amp;period&semi;
+
+
+|===
+
+=== Description
+
+E0 description&period;
+
+
+
+[#E1]
+== E1
+
+=== Synopsis
+
+Declared in `&lt;enum&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+enum E1 : char;
+----
+
+=== Members
+
+[,cols=2]
+|===
+|Name |Description
+|`e2`
+|
+|`e3`
+|
+|===
+
+[#E2]
+== E2
+
+E2 brief&period;
+
+
+
+=== Synopsis
+
+Declared in `&lt;enum&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+enum E2 : int;
+----
+
+=== Members
+
+[,cols=2]
+|===
+|Name |Description
+|`e4`
+|e4 brief&amp;period&semi;
+
+
+|`e5`
+|e5 brief&amp;period&semi;
+
+
+|===
+
+=== Description
+
+E2 description&period;
+
+
+
+[#E3]
+== E3
+
+=== Synopsis
+
+Declared in `&lt;enum&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+enum E3 : char;
+----
+
+=== Members
+
+[,cols=2]
+|===
+|Name |Description
+|`e6`
+|
+|`e7`
+|
+|===
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -1,0 +1,85 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Namespaces
+[cols=2]
+|===
+| Name | Description 
+
+| <<#regular,`regular`>> 
+| 
+
+|===
+=== Variables
+[cols=2]
+|===
+| Name | Description 
+
+| <<#absolute_uri_rule,`absolute&lowbar;uri&lowbar;rule`>> 
+| 
+
+| <<#regular_absolute_uri_rule,`regular&lowbar;absolute&lowbar;uri&lowbar;rule`>> 
+| 
+
+|===
+
+[#regular]
+== regular
+
+=== Types
+[cols=2]
+|===
+| Name | Description 
+
+| <<#regular-absolute_uri_rule_t,`absolute&lowbar;uri&lowbar;rule&lowbar;t`>> 
+| 
+
+|===
+
+[#regular-absolute_uri_rule_t]
+== <<#regular,regular>>::absolute&lowbar;uri&lowbar;rule&lowbar;t
+
+=== Synopsis
+
+Declared in `&lt;impl&hyphen;defined&hyphen;member&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct absolute&lowbar;uri&lowbar;rule&lowbar;t;
+----
+
+
+
+
+[#absolute_uri_rule]
+== absolute&lowbar;uri&lowbar;rule
+
+=== Synopsis
+
+Declared in `&lt;impl&hyphen;defined&hyphen;member&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr
+&sol;&ast; implementation-defined &ast;&sol; const absolute&lowbar;uri&lowbar;rule = &lcub;&rcub;;
+----
+
+[#regular_absolute_uri_rule]
+== regular&lowbar;absolute&lowbar;uri&lowbar;rule
+
+=== Synopsis
+
+Declared in `&lt;impl&hyphen;defined&hyphen;member&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr
+<<#regular,regular>>::<<#regular-absolute_uri_rule_t,absolute&lowbar;uri&lowbar;rule&lowbar;t>> const regular&lowbar;absolute&lowbar;uri&lowbar;rule = &lcub;&rcub;;
+----
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

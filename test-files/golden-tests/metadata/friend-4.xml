@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
+    <file path="friend-4.cpp" line="3"/>
+    <file path="friend-4.cpp" line="9"/>
+    <file path="friend-4.cpp" line="12"/>
+    <doc>
+      <para>
+        <text>U::f</text>
+      </para>
+    </doc>
+  </function>
+  <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
+    <file path="friend-4.cpp" line="1" class="def"/>
+    <friend id="MKqBnSfb2qzerVryOyz4f9W1BWM=">
+      <file path="friend-4.cpp" line="3"/>
+      <befriended id="s6nsa+zVhpzzrN+yUVPP5rvdXqs="/>
+    </friend>
+  </struct>
+  <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
+    <file path="friend-4.cpp" line="6" class="def"/>
+    <friend id="Yz4fKLBfAghLfXF5KYrKPRlwXMA=">
+      <file path="friend-4.cpp" line="9"/>
+      <doc>
+        <para>
+          <text>U::f</text>
+        </para>
+      </doc>
+      <befriended id="s6nsa+zVhpzzrN+yUVPP5rvdXqs="/>
+    </friend>
+  </struct>
+</namespace>
+</mrdocs>

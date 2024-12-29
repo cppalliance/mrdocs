@@ -4,6 +4,15 @@
 [#index]
 == Global namespace
 
+=== Namespaces
+[cols=2]
+|===
+| Name | Description 
+
+| <<#std,`std`>> 
+| 
+
+|===
 === Functions
 [cols=2]
 |===
@@ -15,6 +24,10 @@
 
 
 |===
+
+[#std]
+== std
+
 
 [#sqrt]
 == sqrt
@@ -30,7 +43,7 @@ Declared in `&lt;sqrt&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-std::T
+<<#std,std>>::T
 sqrt(T value);
 ----
 

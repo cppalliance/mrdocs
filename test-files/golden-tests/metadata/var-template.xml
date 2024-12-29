@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <template>
+    <tparam name="T" class="type"/>
+    <variable name="A" id="z3eMoJQlHlg0acXVyn1pwg9Ktys=">
+      <file path="var-template.cpp" line="1" class="def"/>
+      <type name="unsigned int"/>
+    </variable>
+  </template>
+  <template class="explicit">
+    <targ class="type" type="void"/>
+    <variable name="A" id="jrW9aLj8cqTteNoZmH97vOW7csQ=">
+      <file path="var-template.cpp" line="4" class="def"/>
+      <type name="unsigned int"/>
+    </variable>
+  </template>
+  <template class="partial">
+    <tparam name="T" class="type"/>
+    <targ class="type" type="T&amp;"/>
+    <variable name="A" id="FsEwA9OFNGH4A/cxXIoOOa+ZQg8=">
+      <file path="var-template.cpp" line="7" class="def"/>
+      <type name="unsigned int"/>
+    </variable>
+  </template>
+  <struct name="B" id="3JsK1DO0O+wZhv+0meptQrbs3fY=">
+    <file path="var-template.cpp" line="10" class="def"/>
+    <template>
+      <tparam name="T" class="type"/>
+      <variable name="C" id="kMNXdSEDYBD+T4RYbkq3ekR+jUU=">
+        <file path="var-template.cpp" line="12" class="def"/>
+        <attr id="storage-class" name="static" value="2"/>
+        <type name="unsigned int"/>
+      </variable>
+    </template>
+    <template class="explicit">
+      <targ class="type" type="int"/>
+      <variable name="C" id="Wtlw7VEK38lEEBeqNoDOjTkJE+U=">
+        <file path="var-template.cpp" line="15" class="def"/>
+        <attr id="storage-class" name="static" value="2"/>
+        <type name="unsigned int"/>
+      </variable>
+    </template>
+    <template class="partial">
+      <tparam name="T" class="type"/>
+      <targ class="type" type="T*"/>
+      <variable name="C" id="wvoZkG3eTMaiFAf971AFdvmHCDE=">
+        <file path="var-template.cpp" line="18" class="def"/>
+        <attr id="storage-class" name="static" value="2"/>
+        <type name="unsigned int"/>
+      </variable>
+    </template>
+  </struct>
+</namespace>
+</mrdocs>

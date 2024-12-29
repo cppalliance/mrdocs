@@ -15,15 +15,13 @@
 
     See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
 --}}
-{{#if prefix~}}
-    {{> symbol/name-info prefix nolink=nolink~}}::
-{{~/if~}}
-{{#if symbol.isSeeBelow ~}}
-    {{ str '_'}}see-below{{ str '_'~}}
-{{else if symbol.isImplementationDefined~}}
-    {{! These are special names that should not be linked. }}
-    {{ str '_'}}implementation-defined{{ str '_'~}}
+{{#if symbol.isImplementationDefined~}}
+    {{! These are special names that should not be linked. ~}}
+    {{ str '/* '}}implementation-defined{{ str ' */'~}}
 {{else~}}
+    {{#if prefix~}}
+        {{> symbol/name-info prefix nolink=nolink~}}::
+    {{~/if~}}
     {{! Render the name of the symbol. ~}}
     {{#if (and symbol.url (not nolink))~}}
         {{! Link to the symbol's documentation. ~}}

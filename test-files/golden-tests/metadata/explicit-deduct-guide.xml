@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <template>
+    <tparam class="non-type" type="int"/>
+    <struct name="X" id="7wllQWhGGsbbeoZVa3gh4d7bcq8=">
+      <file path="explicit-deduct-guide.cpp" line="3" class="def"/>
+    </struct>
+  </template>
+  <guide name="X" explicit-spec="explicit" id="2IF4pOfGcA57GQDlE3PJgs7yeUs=">
+    <file path="explicit-deduct-guide.cpp" line="6"/>
+    <deduced>
+      <type id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X&lt;0&gt;"/>
+    </deduced>
+    <param>
+      <type name="bool"/>
+    </param>
+  </guide>
+  <guide name="X" explicit-spec="explicit(true)" id="AtQyLakD3CjcM24GabAbHMNgVU4=">
+    <file path="explicit-deduct-guide.cpp" line="8"/>
+    <deduced>
+      <type id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X&lt;0&gt;"/>
+    </deduced>
+    <param>
+      <type name="char"/>
+    </param>
+  </guide>
+  <guide name="X" explicit-spec="explicit(false)" id="tkYkUU6H8cbFpCU7yBuvBLkT6dg=">
+    <file path="explicit-deduct-guide.cpp" line="10"/>
+    <deduced>
+      <type id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X&lt;0&gt;"/>
+    </deduced>
+    <param>
+      <type name="int"/>
+    </param>
+  </guide>
+  <template>
+    <tparam name="B" class="non-type" type="bool" default="true"/>
+    <guide name="X" explicit-spec="explicit(B)" id="YS/v8XQ/9ShQ2spNAh5EY33PN7s=">
+      <file path="explicit-deduct-guide.cpp" line="12"/>
+      <deduced>
+        <type id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X&lt;0&gt;"/>
+      </deduced>
+      <param>
+        <type name="long"/>
+      </param>
+    </guide>
+  </template>
+</namespace>
+</mrdocs>

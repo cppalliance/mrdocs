@@ -1,0 +1,303 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Functions
+[cols=2]
+|===
+| Name | Description 
+
+| <<#f,`f`>> 
+| 
+
+| <<#g,`g`>> 
+| 
+
+| <<#h,`h`>> 
+| 
+
+| <<#i,`i`>> 
+| 
+
+| <<#j,`j`>> 
+| 
+
+| <<#k,`k`>> 
+| 
+
+| <<#l,`l`>> 
+| 
+
+| <<#m,`m`>> 
+| 
+
+| <<#n,`n`>> 
+| 
+
+| <<#o,`o`>> 
+| 
+
+|===
+
+[#f]
+== f
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(int x0);
+----
+
+=== Parameters
+
+|===
+| Name | Description
+
+| *x0*
+| 
+|===
+
+[#g]
+== g
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+g(
+    int x1,
+    int y1);
+----
+
+=== Parameters
+
+|===
+| Name | Description
+
+| *x1*
+| 
+| *y1* [in]
+| 
+|===
+
+[#h]
+== h
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+h(
+    int x2,
+    int y2);
+----
+
+=== Parameters
+
+|===
+| Name | Description
+
+| *x2*
+| 
+| *y2* [out]
+| 
+|===
+
+[#i]
+== i
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+i(
+    int x3,
+    int y3);
+----
+
+=== Parameters
+
+|===
+| Name | Description
+
+| *x3* [in]
+| 
+| *y3* [out]
+| 
+|===
+
+[#j]
+== j
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+j(
+    int x4,
+    int y4);
+----
+
+=== Parameters
+
+|===
+| Name | Description
+
+| *x4*
+| 
+| *y4* [inout]
+| 
+|===
+
+[#k]
+== k
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+k(
+    int x5,
+    int y5,
+    int z5);
+----
+
+=== Parameters
+
+|===
+| Name | Description
+
+| *x5* [out]
+| 
+| *y5* [in]
+| 
+| *z5*
+| 
+|===
+
+[#l]
+== l
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+l(
+    int x6,
+    int y6,
+    int,
+    int z6);
+----
+
+=== Parameters
+
+|===
+| Name | Description
+
+| *x6* [out]
+| 
+| *y6*
+| 
+| *z6* [in]
+| 
+|===
+
+[#m]
+== m
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+m(
+    int x7,
+    int y7);
+----
+
+=== Parameters
+
+|===
+| Name | Description
+
+| *x7* [in]
+| 
+| *y7* [out]
+| 
+|===
+
+[#n]
+== n
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+n(int x8);
+----
+
+=== Parameters
+
+|===
+| Name | Description
+
+| *x8* [in]
+| 
+|===
+
+[#o]
+== o
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+o(int x9);
+----
+
+=== Parameters
+
+|===
+| Name | Description
+
+| *x9* [in]
+| 
+| *x9* [out]
+| 
+|===
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

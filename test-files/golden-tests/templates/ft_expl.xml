@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <template>
+    <tparam name="T" class="type"/>
+    <function name="f" id="PmhXjCXUJYVnj/a7NhfjjSesyp0=">
+      <file path="templates/ft_expl.cpp" line="1" class="def"/>
+    </function>
+  </template>
+  <template class="explicit" id="PmhXjCXUJYVnj/a7NhfjjSesyp0=">
+    <targ class="type" type="int"/>
+    <function name="f" id="ytuvwgqk+lakIfCF209MYkKEp4k=">
+      <file path="templates/ft_expl.cpp" line="4" class="def"/>
+    </function>
+  </template>
+</namespace>
+</mrdocs>

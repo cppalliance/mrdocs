@@ -39,13 +39,21 @@ tag_invoke(
     res.set("name", overloads.Name);
     res.set("members", dom::LazyArray(overloads.Members, domCorpus));
 
-    // Copy redundant fields from the first member
+    // Copy other redundant fields from the first member
     if (overloads.Members.size() > 0)
     {
         dom::Value const member = domCorpus->get(overloads.Members[0]);
         if (member.isObject())
         {
-            for (std::string_view const key: {"parent", "parents"})
+            for (std::string_view const key:
+                 { "parent",
+                   "parents",
+                   "access",
+                   "extraction",
+                   "isRegular",
+                   "isSeeBelow",
+                   "isImplementationDefined",
+                   "isDependency" })
             {
                 res.set(key, member.get(key));
             }

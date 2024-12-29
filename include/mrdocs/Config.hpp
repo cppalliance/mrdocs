@@ -120,7 +120,8 @@ public:
             This string will always be native style
             and have a trailing directory separator.
         */
-        std::string configDir;
+        std::string
+        configDir() const;
 
         /** Full path to the mrdocs root directory
 

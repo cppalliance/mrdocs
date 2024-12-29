@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
+    <file path="record-1.cpp" line="1" class="def"/>
+    <namespace-alias name="U1" id="6UtddyCJy89K/bZpTmDb5jVXwAY=">
+      <file path="record-1.cpp" line="3"/>
+      <type name="int"/>
+    </namespace-alias>
+    <typedef name="U2" id="wwp4SQjMPktMmsnvq1thxjxFHFs=">
+      <file path="record-1.cpp" line="4"/>
+      <type name="char"/>
+    </typedef>
+    <function name="f1" id="9sznTZ3/SXQNZpCsoMG8KWGLuEc=">
+      <file path="record-1.cpp" line="6"/>
+    </function>
+    <function name="f2" id="w0ONazxXaWlB0RQLjfDqDWICUwo=">
+      <file path="record-1.cpp" line="7"/>
+      <return>
+        <type name="int"/>
+      </return>
+    </function>
+    <function name="f3" id="TkBjWwqMDycyUbq+TJZ9qfUhSn0=">
+      <file path="record-1.cpp" line="8"/>
+      <return>
+        <type name="char"/>
+      </return>
+    </function>
+    <function name="g1" access="protected" id="/xzUDYrXtCl2xCoyCvXqIZ4fKfA=">
+      <file path="record-1.cpp" line="15"/>
+      <doc>
+        <para>
+          <text>brief-g1</text>
+        </para>
+        <para>
+          <text>desc</text>
+        </para>
+      </doc>
+    </function>
+    <function name="g2" access="protected" id="flHl59B/bdRwuiNeh3sHqCycic0=">
+      <file path="record-1.cpp" line="21"/>
+      <return>
+        <type name="int"/>
+      </return>
+      <doc>
+        <para>
+          <text>brief-g2</text>
+        </para>
+        <returns>
+          <text>the number 2</text>
+        </returns>
+      </doc>
+    </function>
+    <function name="g3" access="protected" id="DKxv4h+rP37b0u6O1qbB+u416ZY=">
+      <file path="record-1.cpp" line="28"/>
+      <return>
+        <type name="char"/>
+      </return>
+      <param name="x">
+        <type name="int"/>
+      </param>
+      <doc>
+        <para>
+          <text>brief-g3</text>
+        </para>
+        <returns>
+          <text>the separator</text>
+        </returns>
+        <param name="x">
+          <text>any old number</text>
+        </param>
+      </doc>
+    </function>
+  </struct>
+</namespace>
+</mrdocs>

@@ -1,0 +1,120 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+[cols=2]
+|===
+| Name | Description 
+
+| <<#T,`T`>> 
+| 
+
+| <<#U,`U`>> 
+| 
+
+|===
+=== Functions
+[cols=2]
+|===
+| Name | Description 
+
+| <<#f,`f`>> 
+| 
+
+| <<#g,`g`>> 
+| 
+
+| <<#h,`h`>> 
+| 
+
+| <<#i,`i`>> 
+| 
+
+|===
+
+[#f]
+== f
+
+=== Synopsis
+
+Declared in `&lt;function&hyphen;tparm&hyphen;decay&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;int x&gt;
+void
+f();
+----
+
+[#g]
+== g
+
+=== Synopsis
+
+Declared in `&lt;function&hyphen;tparm&hyphen;decay&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;int x[4]&gt;
+void
+g();
+----
+
+[#h]
+== h
+
+=== Synopsis
+
+Declared in `&lt;function&hyphen;tparm&hyphen;decay&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;int(* x)(bool const)&gt;
+void
+h();
+----
+
+[#i]
+== i
+
+=== Synopsis
+
+Declared in `&lt;function&hyphen;tparm&hyphen;decay&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;int&gt;
+void
+i();
+----
+
+[#T]
+== T
+
+=== Synopsis
+
+Declared in `&lt;function&hyphen;tparm&hyphen;decay&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using T = int;
+----
+
+[#U]
+== U
+
+=== Synopsis
+
+Declared in `&lt;function&hyphen;tparm&hyphen;decay&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using U = int const;
+----
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

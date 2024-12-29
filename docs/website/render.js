@@ -74,7 +74,7 @@ target_compile_features(${sourceBasename} PRIVATE cxx_std_23)
         mrdocsInput,
         `--output=${mrdocsOutput}`,
         '--multipage=true',
-        '--generate=html',
+        '--generator=html',
         '--embedded=true',
     ];
     const command = args.join(' ');

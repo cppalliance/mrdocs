@@ -89,7 +89,7 @@ parseBraceExpansions(
 {
     // If there are no brace expansions, return the original string
     // as the only subpattern.
-    llvm::SmallVector SubPatterns = {std::string(str)};
+    llvm::SmallVector<std::string> SubPatterns = {std::string(str)};
 
     // Parse brace expansions.
     struct BraceExpansion

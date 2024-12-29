@@ -207,7 +207,8 @@ struct LazyObject_test
         // stop visiting
         {
             std::size_t count = 0;
-            obj.visit([&count](String key, Value value) {
+            obj.visit([&count](String, Value)
+            {
                 ++count;
                 return false;
             });

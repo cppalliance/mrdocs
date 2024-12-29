@@ -99,7 +99,8 @@ static void merge(Javadoc& I, Javadoc&& other)
     }
 }
 
-void mergeInfo(Info& I, Info&& Other)
+void
+mergeInfo(Info& I, Info&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
     MRDOCS_ASSERT(I.id);
@@ -115,7 +116,7 @@ void mergeInfo(Info& I, Info&& Other)
     {
         I.Access = Other.Access;
     }
-    I.Implicit &= Other.Implicit;
+    I.Extraction = leastSpecific(I.Extraction, Other.Extraction);
 
     // Append javadocs
     if (!I.javadoc)

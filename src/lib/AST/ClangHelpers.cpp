@@ -14,6 +14,7 @@
 #include <mrdocs/Support/Assert.hpp>
 #include <clang/Sema/Template.h>
 #include <clang/Index/USRGeneration.h>
+#include <ranges>
 
 namespace clang::mrdocs {
 
@@ -240,6 +241,101 @@ getParent(Decl* D)
         }
     }
     return nullptr;
+}
+
+void
+getQualifiedName(
+    NamedDecl const* ND,
+    raw_ostream& stream,
+    const PrintingPolicy &policy)
+{
+    if (const auto* CTS = dyn_cast<ClassTemplateSpecializationDecl>(ND))
+    {
+        CTS->getSpecializedTemplate()->printQualifiedName(stream, policy);
+        TemplateArgumentList const& args = CTS->getTemplateArgs();
+        stream << '<';
+        for (unsigned i = 0, e = args.size(); i != e; ++i) {
+            if (args[i].getIsDefaulted())
+            {
+                break;
+            }
+            if (i)
+            {
+                stream << ",";
+            }
+            args[i].print(policy, stream, true);
+        }
+        stream << '>';
+    }
+    else
+    {
+        ND->printQualifiedName(stream, policy);
+    }
+}
+
+Decl const*
+decayToPrimaryTemplate(Decl const* D)
+{
+#ifndef NDEBUG
+    SmallString<128> symbolName;
+    llvm::raw_svector_ostream os(symbolName);
+    D->print(os);
+    report::debug("symbolName: ", std::string_view(os.str()));
+#endif
+
+    Decl const* ID = D;
+
+    // Check parent
+    if (CXXRecordDecl const* ClassParent = dyn_cast<CXXRecordDecl>(getParent(ID)))
+    {
+        if (Decl const* DecayedClassParent = decayToPrimaryTemplate(ClassParent);
+            DecayedClassParent != ClassParent &&
+            isa<ClassTemplateSpecializationDecl>(DecayedClassParent))
+        {
+            auto const* RD = dyn_cast<ClassTemplateDecl>(DecayedClassParent);
+            CXXRecordDecl* RDParent = RD->getTemplatedDecl();
+            auto* NamedID = dyn_cast<NamedDecl>(ID);
+            auto NamedDecls = RDParent->decls()
+                | std::ranges::views::transform([](Decl* C) { return dyn_cast<NamedDecl>(C); })
+                | std::ranges::views::filter([](NamedDecl* C) { return C; });
+            for (NamedDecl const* Child : NamedDecls)
+            {
+                if (Child->getDeclName() == NamedID->getDeclName() &&
+                    Child->getKind() == ID->getKind())
+                {
+                    ID = Child;
+                    break;
+                }
+            }
+        }
+    }
+
+    // Check template specialization
+    if (auto const* TSD = dynamic_cast<ClassTemplateSpecializationDecl const*>(ID);
+        TSD &&
+        !TSD->isExplicitSpecialization())
+    {
+        ID = TSD->getSpecializedTemplate();
+    }
+
+    return ID;
+}
+
+bool
+isAllImplicit(Decl const* D)
+{
+    if (!D)
+    {
+        return true;
+    }
+    if (auto const* TSD = dynamic_cast<ClassTemplateSpecializationDecl const*>(D);
+        TSD &&
+        TSD->isExplicitSpecialization())
+    {
+        return false;
+    }
+    auto const* P = getParent(D);
+    return isAllImplicit(P);
 }
 
 } // clang::mrdocs

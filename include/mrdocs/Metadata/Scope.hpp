@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -13,12 +14,12 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Symbols.hpp>
+#include <mrdocs/Metadata/Info.hpp>
 #include <unordered_map>
 #include <string>
 #include <vector>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 /** Stores the members and lookups for an Info.
 
@@ -82,7 +83,19 @@ generateScopeOverloadsArray(
     ScopeInfo const& I,
     DomCorpus const& domCorpus);
 
-} // mrdocs
-} // clang
+/** Emplace a member Info into a ScopeInfo
+
+    Given a ScopeInfo `P` and an Info `C`, this function will
+    add the `C.id` to `P.Members` if it's not already there,
+    and add the `C.id` to `P.Lookups[C.Name]` if it's not
+    already there.
+*/
+MRDOCS_DECL
+void
+addMember(
+    ScopeInfo& P,
+    Info& C);
+
+} // clang::mrdocs
 
 #endif

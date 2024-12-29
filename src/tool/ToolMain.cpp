@@ -65,7 +65,7 @@ getReferenceDirectories(std::string const& execPath)
     }
     else
     {
-        llvm::cl::list<std::string>& inputs = toolArgs.inputs;
+        llvm::cl::list<std::string>& inputs = toolArgs.cmdLineInputs;
         for (auto& input: inputs)
         {
             if (files::getFileName(input) == "mrdocs.yml")
@@ -87,7 +87,6 @@ getReferenceDirectories(std::string const& execPath)
         return Unexpected(formatError("The config path is missing"));
     }
     configPath = files::makeAbsolute(configPath, dirs.cwd);
-    dirs.configDir = files::getParentDir(configPath);
     return std::make_pair(configPath, dirs);
 }
 
