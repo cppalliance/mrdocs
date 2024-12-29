@@ -296,6 +296,7 @@ if (WIN32)
             /W4             # enable all warnings
             /MP             # multi-processor compilation
             /EHs            # C++ Exception handling
+            $<$<CONFIG:Debug>:/Oy-> # Disable frame pointer omission
         )
     endif()
 endif ()
@@ -388,7 +389,7 @@ if (MRDOCS_BUILD_TESTS)
                 --action=test
                 "${PROJECT_SOURCE_DIR}/test-files/golden-tests"
                 "--addons=${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
-                --generate=${testgenerator}
+                --generator=${testgenerator}
                 "--stdlib-includes=${LIBCXX_DIR}"
                 "--stdlib-includes=${STDLIB_INCLUDE_DIR}"
                 "--libc-includes=${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs"
@@ -403,7 +404,7 @@ if (MRDOCS_BUILD_TESTS)
                     --action=${action}
                     "${PROJECT_SOURCE_DIR}/test-files/golden-tests"
                     "--addons=${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
-                    --generate=${testgenerator}
+                    --generator=${testgenerator}
                     "--stdlib-includes=${LIBCXX_DIR}"
                     "--stdlib-includes=${STDLIB_INCLUDE_DIR}"
                     "--libc-includes=${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs"
