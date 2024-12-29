@@ -6,6 +6,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -165,6 +166,8 @@ struct FunctionInfo
     OperatorKind OverloadedOperator = OperatorKind::None;
     StorageClassKind StorageClass = StorageClassKind::None;
     ReferenceKind RefQualifier = ReferenceKind::None;
+
+    std::vector<std::string> Attributes;
 
     //--------------------------------------------
 

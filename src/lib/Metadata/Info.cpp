@@ -179,6 +179,7 @@ tag_invoke(
         {
             io.map("requires", I.Requires.Written);
         }
+        io.map("attributes", dom::LazyArray(I.Attributes));
     }
     if constexpr (T::isTypedef())
     {
@@ -222,6 +223,7 @@ tag_invoke(
         {
             io.map("bitfieldWidth", I.BitfieldWidth.Written);
         }
+        io.map("attributes", dom::LazyArray(I.Attributes));
     }
     if constexpr (T::isSpecialization())
     {}
