@@ -42,6 +42,6 @@
         {{>symbol/qualified-name symbol nolink=nolink ~}}
     {{~else~}}
         {{! Friend type: use the type name ~}}
-        {{~type.name~}}
+        {{~>type/declarator type ~}}
     {{~/if~}}
 {{~/if~}}
