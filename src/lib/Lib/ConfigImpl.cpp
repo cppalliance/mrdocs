@@ -30,30 +30,6 @@ namespace mrdocs {
 
 namespace {
 
-void
-parseSymbolFilter(
-    FilterNode& root,
-    std::string_view str,
-    bool excluded)
-{
-    // FIXME: this does not handle invalid qualified-ids
-    std::vector<FilterPattern> parts;
-    if(str.starts_with("::"))
-        str.remove_prefix(2);
-    do
-    {
-        std::size_t idx = str.find("::");
-        parts.emplace_back(str.substr(0, idx));
-        if(idx == std::string_view::npos)
-            break;
-        str.remove_prefix(idx + 2);
-    }
-    while(! str.empty());
-    // merge the parsed patterns into the filter tree
-    // mergeFilter(root, parts);
-    root.mergePattern(parts, excluded);
-}
-
 dom::Object
 toDomObject(std::string_view configYaml);
 
@@ -68,14 +44,13 @@ ConfigImpl(access_token, ThreadPool& threadPool)
 
 bool
 ConfigImpl::
-shouldVisitSymbol(
-    llvm::StringRef filePath) const noexcept
+shouldVisitSymbol(StringRef filePath) const noexcept
 {
-    if (settings_.input.include.empty())
+    if (settings_.input.empty())
     {
         return true;
     }
-    for (auto& p: settings_.input.include)
+    for (auto& p: settings_.input)
     {
         // Exact match
         if (filePath == p)
@@ -85,10 +60,10 @@ shouldVisitSymbol(
         // Prefix match
         if (filePath.starts_with(p))
         {
-            bool validPattern = std::ranges::any_of(
-                    settings_.input.filePatterns,
-                    [&](auto const &pattern) {
-                        return globMatch(pattern, filePath);
+            bool const validPattern = std::ranges::any_of(
+                    settings_.filePatterns,
+                    [&](PathGlobPattern const &pattern) {
+                        return pattern.match(filePath);
                     });
             if (validPattern)
             {
@@ -102,7 +77,7 @@ shouldVisitSymbol(
 bool
 ConfigImpl::
 shouldExtractFromFile(
-    llvm::StringRef filePath,
+    StringRef filePath,
     std::string& prefixPath) const noexcept
 {
     namespace path = llvm::sys::path;
@@ -111,7 +86,7 @@ shouldExtractFromFile(
     if(! files::isAbsolute(filePath))
     {
         temp = files::makePosixStyle(
-            files::makeAbsolute(filePath, settings_.configDir));
+            files::makeAbsolute(filePath, settings_.configDir()));
     }
     else
     {
@@ -132,36 +107,21 @@ shouldExtractFromFile(
 Expected<std::shared_ptr<ConfigImpl const>>
 ConfigImpl::
 load(
-    Config::Settings const& publicSettings,
+    Settings const& publicSettings,
     ReferenceDirectories const& dirs,
     ThreadPool& threadPool)
 {
-    std::shared_ptr<ConfigImpl> c =
-        std::make_shared<ConfigImpl>(access_token{}, threadPool);
+    auto c = std::make_shared<ConfigImpl>(access_token{}, threadPool);
     MRDOCS_ASSERT(c);
 
     // Validate and copy input settings
     SettingsImpl& s = c->settings_;
-    dynamic_cast<Config::Settings&>(s) = publicSettings;
+    dynamic_cast<Settings&>(s) = publicSettings;
     MRDOCS_TRY(Config::Settings::load(s, "", dirs));
     s.configYaml = publicSettings.configYaml;
 
     // Config strings
     c->configObj_ = toDomObject(s.configYaml);
-
-    // Parse the filters
-    for(std::string_view pattern : s.filters.symbols.exclude)
-        parseSymbolFilter(s.symbolFilter, pattern, true);
-    for(std::string_view pattern : s.filters.symbols.include)
-        parseSymbolFilter(s.symbolFilter, pattern, false);
-
-    // Parse the see-below and implementation-defined filters
-    for(std::string_view pattern: s.seeBelow)
-        s.seeBelowFilter.emplace_back(pattern);
-    for(std::string_view pattern: s.implementationDefined)
-        s.implementationDefinedFilter.emplace_back(pattern);
-
-    s.symbolFilter.finalize(false, false, false);
 
     return c;
 }

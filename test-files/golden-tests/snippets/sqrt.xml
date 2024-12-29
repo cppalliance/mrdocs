@@ -2,10 +2,12 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
+  <namespace name="std" id="eIvg7iueGIPcE8p1NVfngsp2ojw=">
+  </namespace>
   <template>
     <tparam name="T" class="type"/>
     <function name="sqrt" id="ulFDUE1svTCX8fV/h8EIp4NNbWs=">
-      <file path="sqrt.cpp" line="16" class="def"/>
+      <file path="sqrt.cpp" line="15" class="def"/>
       <return>
         <type name="std::T"/>
       </return>

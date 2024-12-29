@@ -1,0 +1,132 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+[cols=2]
+|===
+| Name | Description 
+
+| <<#T,`T`>> 
+| 
+
+| <<#U,`U`>> 
+| 
+
+|===
+=== Functions
+[cols=2]
+|===
+| Name | Description 
+
+| <<#f,`f`>> 
+| T&colon;&colon;f
+
+
+
+|===
+
+[#T]
+== T
+
+=== Synopsis
+
+Declared in `&lt;friend&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct T;
+----
+
+=== Friends
+[cols=2]
+|===
+| Name | Description 
+
+| <<#T-08friend,`f`>> 
+| T&colon;&colon;f
+
+
+
+|===
+
+
+
+[#T-08friend]
+== f
+
+T&colon;&colon;f
+
+
+
+=== Synopsis
+
+Declared in `&lt;friend&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+friend
+void
+f();
+----
+
+[#U]
+== U
+
+=== Synopsis
+
+Declared in `&lt;friend&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct U;
+----
+
+=== Friends
+[cols=2]
+|===
+| Name | Description 
+
+| <<#U-08friend,`f`>> 
+| 
+
+|===
+
+
+
+[#U-08friend]
+== f
+
+=== Synopsis
+
+Declared in `&lt;friend&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+friend
+void
+f();
+----
+
+[#f]
+== f
+
+T&colon;&colon;f
+
+
+
+=== Synopsis
+
+Declared in `&lt;friend&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f();
+----
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

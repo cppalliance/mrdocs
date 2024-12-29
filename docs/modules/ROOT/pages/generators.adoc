@@ -157,9 +157,25 @@ The `Symbol` object represents a symbol extracted from the source code.The symbo
 | `string`
 | The access level of the symbol. (e.g., `public`, `protected`, `private`)
 
-| `implicit`
+| `extraction`
 | `string`
-| Whether the symbol was implicitly extracted as a dependency.
+| The extraction mode of the symbol according to the specified filters. (e.g., `regular`, `see-below`, `implementation-defined`, `dependency`)
+
+| `isRegular`
+| `bool`
+| Whether the symbol extraction mode is `regular`.
+
+| `isSeeBelow`
+| `bool`
+| Whether the symbol extraction mode is `see-below`.
+
+| `isImplementationDefined`
+| `bool`
+| Whether the symbol extraction mode is `implementation-defined`.
+
+| `isDependency`
+| `bool`
+| Whether the symbol extraction mode is `dependency`.
 
 | `parents`
 | `<<symbol-fields,Symbol Object[]>>`
@@ -385,6 +401,10 @@ When the symbol kind is `function`, the symbol object has the following addition
 | `requires`
 | `string`
 | The `requires` expression of the function.
+
+| `attributes`
+| `string[]`
+| The attributes of the function.
 |===
 
 When the symbol kind is `typedef`, the symbol object has the following additional properties:
@@ -479,6 +499,10 @@ When the symbol kind is `field` (i.e. non-static data members), the symbol objec
 | `bitfieldWidth`
 | `string`
 | The width of the bitfield.
+
+| `attributes`
+| `string[]`
+| The attributes of the field.
 |===
 
 When the symbol kind is `friend`, the symbol object has the following additional properties:

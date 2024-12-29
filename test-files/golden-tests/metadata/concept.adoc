@@ -1,0 +1,76 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Functions
+[cols=2]
+|===
+| Name | Description 
+
+| <<#f,`f`>> 
+| 
+
+|===
+=== Variables
+[cols=2]
+|===
+| Name | Description 
+
+| <<#x,`x`>> 
+| 
+
+|===
+=== Concepts
+[cols=2]
+|===
+| Name | Description 
+
+| <<#C,`C`>> 
+| 
+
+|===
+
+[#f]
+== f
+
+=== Synopsis
+
+Declared in `&lt;concept&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;<<#C,C>> T&gt;
+void
+f();
+----
+
+[#x]
+== x
+
+=== Synopsis
+
+Declared in `&lt;concept&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<#C,C>> auto x = 0;
+----
+
+[#C]
+== C
+
+=== Synopsis
+
+Declared in `&lt;concept&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+concept C = sizeof(T) &equals;&equals; sizeof(int);
+----
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

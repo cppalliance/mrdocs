@@ -6,7 +6,7 @@
     "details": "The following options can be used to control the general behavior of MrDocs and can only be provided via the command line. These include options to specify inputs and the configuration file, which cannot be set on the configuration file itself.",
     "options": [
       {
-        "name": "inputs",
+        "name": "cmd-line-inputs",
         "command-line-only": true,
         "brief": "Configuration or compilation database files",
         "details": "The inputs are configuration files or compilation database files that used to generate the documentation. When the input ends with `mrdocs.yml`, it is interpreted as a configuration file, the file is read and the options are used to generate the documentation as if it was provided to the `config` option. When the input ends with `compilation_database.json` or `CMakeLists.txt`, it is interpreted as a compilation database file, the file is read and the compiler flags are used to generate the documentation as if it was provided to the `compilation-database` option.",
@@ -17,7 +17,10 @@
           "mrdocs.yml": "config",
           "compile_commands.json": "compilationDatabase",
           "CMakeLists.txt": "compilationDatabase"
-        }
+        },
+        "relative-to": "<cwd>",
+        "must-exist": true,
+        "should-exist": true
       },
       {
         "name": "config",
@@ -26,8 +29,9 @@
         "details": "The configuration file is a YAML file that contains the options used to generate the documentation. The configuration file is read and the options are used to generate the documentation. The configuration file can be used to specify the source code, the output directory, the compilation database, the generator, and the filters.",
         "type": "file-path",
         "default": "<cwd>/mrdocs.yml",
-        "relativeto": "<cwd>",
-        "required": true
+        "relative-to": "<cwd>",
+        "required": true,
+        "must-exist": true
       }
     ]
   },
@@ -38,9 +42,11 @@
       {
         "name": "source-root",
         "brief": "Path to the root directory of the source code",
+        "details": "Path to the root directory of the source code. This path is used as a default for input files and a base for relative paths formed from absolute paths.",
         "type": "dir-path",
         "default": "<config-dir>",
-        "relativeto": "<config-dir>"
+        "relative-to": "<config-dir>",
+        "must-exist": true
       },
       {
         "name": "output",
@@ -48,8 +54,9 @@
         "details": "Multipage generators expect a directory. Single page generators expect a file or a directory where the file will be created. If the directory does not exist, it will be created.",
         "type": "path",
         "default": "<config-dir>/reference-output",
-        "relativeto": "<config-dir>",
-        "must-exist": false
+        "relative-to": "<config-dir>",
+        "must-exist": false,
+        "should-exist": false
       },
       {
         "name": "compilation-database",
@@ -57,7 +64,198 @@
         "details": "Path to the compilation database or a build script to generate it. The compilation database is a JSON file that contains the compiler commands used to build the source code. The compilation database is used to extract the compiler flags and the source files used to build the source code and extract symbols. This option also accepts the path to a build script such as CMakeLists.txt to be used to generate the compilation database. In this case, MrDocs will look for CMake in `PATH` or in `CMAKE_ROOT` and run the script to generate the compilation database file.",
         "type": "file-path",
         "default": "",
-        "relativeto": "<config-dir>"
+        "relative-to": "<config-dir>",
+        "must-exist": true
+      }
+    ]
+  },
+  {
+    "category": "Filters",
+    "brief": "Filters to include or exclude files and symbols from the documentation",
+    "options": [
+      {
+        "name": "input",
+        "brief": "Input directories to extract symbols from",
+        "details": "Input directories to extract. Only symbols defined in files in these directories are extracted. The paths are relative to the mrdocs configuration file.",
+        "type": "list<path>",
+        "must-exist": false,
+        "should-exist": true,
+        "relative-to": "<config-dir>",
+        "default": [
+          "<source-root>/."
+        ]
+      },
+      {
+        "name": "recursive",
+        "brief": "Recursively include files from \"input\" paths",
+        "details": "Recursively include files. When set to true, MrDocs includes files in subdirectories of the input directories. When set to false, MrDocs includes only the files in the input directories.",
+        "type": "bool",
+        "default": true
+      },
+      {
+        "name": "file-patterns",
+        "brief": "File patterns to include",
+        "details": "File patterns to include. Only the files that match these patterns are extracted. The patterns are relative to the input directories.",
+        "type": "list<path-glob>",
+        "default": [
+          "*.hpp",
+          "*.h",
+          "*.hh",
+          "*.ipp",
+          "*.inc",
+          "*.cpp",
+          "*.cc",
+          "*.cxx",
+          "*.c",
+          "*.hxx"
+        ]
+      },
+      {
+        "name": "exclude",
+        "brief": "Input directories to exclude",
+        "details": "Symbols defined in files in these directories are not extracted even if they are in the list of include directories. When relative, the paths are relative to the directory of the mrdocs configuration file. For instance, \"include/experimental\" will exclude all files in the directory `<config-dir>/include/experimental`.",
+        "type": "list<path>",
+        "must-exist": false,
+        "should-exist": true,
+        "relative-to": "<config-dir>",
+        "default": []
+      },
+      {
+        "name": "exclude-patterns",
+        "brief": "File patterns to exclude",
+        "details": "File patterns to exclude. Files that match these patterns are not extracted even if they are in the list of include directories. The patterns are relative to the configuration file. A single * will match all files in the directory. Double ** will match all files in the directory and its subdirectories.",
+        "type": "list<path-glob>",
+        "relative-to": "<config-dir>",
+        "default": []
+      },
+      {
+        "name": "include-symbols",
+        "brief": "Symbol patterns to include",
+        "details": "If any patterns are defined here, only symbols that match one of these patterns are extracted. The patterns are applied to the fully qualified name of the symbol without any leading \"::\". A single \"*\" will match all symbols in the namespace. Double \"**\" will match all symbols in the namespace and its subnamespaces. The patterns also support \"?\" for any chars, \"[<chars>]\" for charsets, \"[^<chars>]\" for inverted charsets, and \"{<glob>,...}\" for alternatives.",
+        "type": "list<symbol-glob>",
+        "relative-to": "<config-dir>",
+        "default": []
+      },
+      {
+        "name": "exclude-symbols",
+        "brief": "Symbol patterns to exclude",
+        "details": "A symbol that matches one of these patterns is not extracted even if whitelisted by \"include-symbols\". See the documentation for \"include-symbols\" for the pattern syntax.",
+        "type": "list<symbol-glob>",
+        "default": []
+      },
+      {
+        "name": "see-below",
+        "brief": "Symbols rendered as \"see-below\"",
+        "details": "Symbols that match one of these filters are tagged as \"see-below\" in the documentation, and so do symbols in scopes tagged as \"see-below\". This option is used to remove details about symbols that are considered part of the private API of the project. In the documentation page for this symbol, the synopsis of the implementation is rendered as \"see-below\" and members of scopes (such as a namespace or record) are not listed. The rest of the documentation is rendered as usual. See the documentation for \"include-symbol\" for the pattern syntax.",
+        "type": "list<symbol-glob>",
+        "default": []
+      },
+      {
+        "name": "implementation-defined",
+        "brief": "Symbols rendered as \"implementation-defined\"",
+        "details": "Symbols that match one of these filters are tagged as \"implementation-defined\" in the documentation, and so do symbols in scopes tagged as \"implementation-defined\". This option is used to exclude symbols from the documentation that are considered part of the private API of the project. An \"implementation-defined\" symbol has no documentation page in the output. If any other symbol refers to it, the reference is rendered as \"implementation-defined\". See the documentation for \"include-symbol\" for the pattern syntax.",
+        "type": "list<symbol-glob>",
+        "default": []
+      }
+    ]
+  },
+  {
+    "category": "Metadata Extraction",
+    "brief": "Metadata and C++ semantic constructs to extract",
+    "details": "MrDocs extracts metadata and C++ semantic constructs from the source code to create the documentation. Semantic constructs are patterns not directly represented in the source code AST but can be inferred from the corpus, such as SFINAE. The following options control the extraction of metadata and C++ semantic constructs.",
+    "options": [
+      {
+        "name": "sfinae",
+        "brief": "Detect and reduce SFINAE expressions",
+        "details": "When set to true, MrDocs detects SFINAE expressions in the source code and extracts them as part of the documentation. Expressions such as `std::enable_if<...>` are detected, removed, and documented as a requirement.",
+        "type": "bool",
+        "default": true
+      },
+      {
+        "name": "private-members",
+        "brief": "Extraction policy for private class members",
+        "details": "Determine whether private class members should be extracted",
+        "type": "bool",
+        "default": false
+      },
+      {
+        "name": "private-bases",
+        "brief": "Extraction policy for private base classes",
+        "details": "Determine whether private base classes should be extracted",
+        "type": "bool",
+        "default": true
+      },
+      {
+        "name": "anonymous-namespaces",
+        "brief": "Extraction policy for anonymous namespaces",
+        "details": "Determine whether symbols in anonymous namespaces should be extracted. When set to `always`, symbols in anonymous namespaces are always extracted. When set to `dependency`, symbols in anonymous namespaces are extracted only if they are referenced by the source code. When set to `never`, symbols in anonymous namespaces are never extracted.",
+        "type": "bool",
+        "default": true
+      }
+    ]
+  },
+  {
+    "category": "Generators",
+    "brief": "Generators to create the documentation and their options",
+    "options": [
+      {
+        "name": "generator",
+        "brief": "Generator used to create the documentation",
+        "details": "The generator is responsible for creating the documentation from the extracted symbols. The generator uses the extracted symbols and the templates to create the documentation. The generator can create different types of documentation such as HTML, XML, and AsciiDoc.",
+        "type": "enum",
+        "values": [
+          "adoc",
+          "html",
+          "xml"
+        ],
+        "default": "adoc"
+      },
+      {
+        "name": "multipage",
+        "brief": "Generate a multipage documentation",
+        "details": "Generates a multipage documentation. The output directory must be a directory. This option acts as a hint to the generator to create a multipage documentation. Whether the hint is followed or not depends on the generator.",
+        "type": "bool",
+        "default": true
+      },
+      {
+        "name": "base-url",
+        "brief": "Base URL for links to source code",
+        "details": "Base URL for links to source code. The base URL is used to create links to the source code in the documentation. The base URL is combined with the path to the source file to create the link.",
+        "type": "string",
+        "default": ""
+      },
+      {
+        "name": "addons",
+        "brief": "Path to the Addons directory",
+        "details": "Path to the Addons directory. The Addons directory contains the template files used by generators to create the documentation. When a custom Addons directory is not specified, the default templates are used. The default templates are located at the `share/mrdocs/addons` directory of the MrDocs installation. Users can create custom templates by copying the default templates to a custom directory and specifying the custom directory using this option.",
+        "type": "path",
+        "default": "<mrdocs-root>/share/mrdocs/addons",
+        "relative-to": "<config-dir>",
+        "must-exist": true
+      },
+      {
+        "name": "tagfile",
+        "brief": "Path for the tagfile",
+        "details": "Specifies the full path (filename) where the generated tagfile should be saved. If left empty, no tagfile will be generated.",
+        "type": "file-path",
+        "default": "<output>/reference.tag.xml",
+        "relative-to": "<output>",
+        "must-exist": false,
+        "should-exist": false
+      },
+      {
+        "name": "legible-names",
+        "brief": "Use legible names",
+        "details": "Use legible names for ids in the documentation. When set to true, MrDocs uses legible names for symbols in the documentation. These are symbols that are legible but still safe for URLs. When the option is set to false, MrDocs uses a hash of the symbol ID.",
+        "type": "bool",
+        "default": true
+      },
+      {
+        "name": "embedded",
+        "brief": "Output an embeddable document",
+        "details": "Output an embeddable document, which excludes the header, the footer, and everything outside the body of the document. This option is useful for producing documents that can be inserted into an external template.",
+        "type": "bool",
+        "default": false
       }
     ]
   },
@@ -92,8 +290,13 @@
         "brief": "C++ Standard Library include paths",
         "details": "When `use-system-stdlib` is disabled, the C++ standard library headers are available in these paths.",
         "type": "list<path>",
-        "default": ["<mrdocs-root>/share/mrdocs/headers/libcxx", "<mrdocs-root>/share/mrdocs/headers/clang"],
-        "relativeto": "<config-dir>"
+        "default": [
+          "<mrdocs-root>/share/mrdocs/headers/libcxx",
+          "<mrdocs-root>/share/mrdocs/headers/clang"
+        ],
+        "relative-to": "<config-dir>",
+        "must-exist": false,
+        "should-exist": true
       },
       {
         "name": "use-system-libc",
@@ -107,213 +310,32 @@
         "brief": "Standard Library include paths",
         "details": "When `use-system-libc` is disabled, the C standard library headers are available in these paths.",
         "type": "list<path>",
-        "default": ["<mrdocs-root>/share/mrdocs/headers/libc-stubs"],
-        "relativeto": "<config-dir>"
+        "default": [
+          "<mrdocs-root>/share/mrdocs/headers/libc-stubs"
+        ],
+        "relative-to": "<config-dir>",
+        "must-exist": false,
+        "should-exist": true
       },
       {
         "name": "system-includes",
         "brief": "System include paths",
         "details": "System include paths. These paths are used to add directories to the system include search path. The system include search path is used to search for system headers. The system headers are headers that are provided by the system and are not part of the project. The system headers are used to provide the standard library headers and other system headers. The system headers are not part of the project and are not checked for warnings and errors.",
         "type": "list<path>",
-        "default": []
+        "relative-to": "<config-dir>",
+        "default": [],
+        "must-exist": false,
+        "should-exist": true
       },
       {
         "name": "includes",
         "brief": "Include paths",
         "details": "Include paths. These paths are used to add directories to the include search path. The include search path is used to search for headers. The headers are used to provide declarations and definitions of symbols. The headers are part of the project and are checked for warnings and errors.",
         "type": "list<path>",
-        "default": []
-      }
-    ]
-  },
-  {
-    "category": "Generators",
-    "brief": "Generators to create the documentation and their options",
-    "options": [
-      {
-        "name": "generate",
-        "brief": "Generator used to create the documentation",
-        "type": "enum",
-        "values": [
-          "adoc",
-          "html",
-          "xml"
-        ],
-        "default": "adoc"
-      },
-      {
-        "name": "multipage",
-        "brief": "Generate a multipage documentation",
-        "details": "Generates a multipage documentation. The output directory must be a directory. This option acts as a hint to the generator to create a multipage documentation. Whether the hint is followed or not depends on the generator.",
-        "type": "bool",
-        "default": true
-      },
-      {
-        "name": "base-url",
-        "brief": "Base URL for links to source code",
-        "details": "Base URL for links to source code. The base URL is used to create links to the source code in the documentation. The base URL is combined with the path to the source file to create the link.",
-        "type": "string",
-        "default": ""
-      },
-      {
-        "name": "addons",
-        "brief": "Path to the Addons directory",
-        "details": "Path to the Addons directory. The Addons directory contains the template files used by generators to create the documentation. When a custom Addons directory is not specified, the default templates are used. The default templates are located at the `share/mrdocs/addons` directory of the MrDocs installation. Users can create custom templates by copying the default templates to a custom directory and specifying the custom directory using this option.",
-        "type": "path",
-        "default": "<mrdocs-root>/share/mrdocs/addons",
-        "relativeto": "<config-dir>"
-      },
-      {
-        "name": "tagfile",
-        "brief": "Path for the tagfile",
-        "details": "Specifies the full path (filename) where the generated tagfile should be saved. If left empty, no tagfile will be generated.",
-        "type": "file-path",
-        "default": "<output>/reference.tag.xml",
-        "relativeto": "<output>",
-        "must-exist": false
-      },
-      {
-        "name": "legible-names",
-        "brief": "Use legible names",
-        "details": "Use legible names for ids in the documentation. When set to true, MrDocs uses legible names for symbols in the documentation. These are symbols that are legible but still safe for URLs. When the option is set to false, MrDocs uses a hash of the symbol ID.",
-        "type": "bool",
-        "default": true
-      },
-      {
-        "name": "embedded",
-        "brief": "Output an embeddable document, which excludes the header, the footer, and everything outside the body of the document. This option is useful for producing documents that can be inserted into an external template.",
-        "type": "bool",
-        "default": false
-      }
-    ]
-  },
-  {
-    "category": "Filters",
-    "brief": "Filters to include or exclude files and symbols from the documentation",
-    "options": [
-      {
-        "name": "referenced-declarations",
-        "brief": "Extraction policy for references to external declarations",
-        "details": "Determine whether external declarations should be extracted when they are referenced in the source code. If this option is not `never`, a second pass happens in the extraction process to extract dependencies in the Corpus. When set to `always`, external declarations are always extracted. When set to `dependency`, external declarations are extracted only if they are referenced by the source code. When set to `never`, external declarations are never extracted.",
-        "type": "enum",
-        "values": [
-          "always",
-          "dependency",
-          "never"
-        ],
-        "default": "never"
-      },
-      {
-        "name": "anonymous-namespaces",
-        "brief": "Extraction policy for anonymous namespaces",
-        "details": "Determine whether symbols in anonymous namespaces should be extracted. When set to `always`, symbols in anonymous namespaces are always extracted. When set to `dependency`, symbols in anonymous namespaces are extracted only if they are referenced by the source code. When set to `never`, symbols in anonymous namespaces are never extracted.",
-        "type": "enum",
-        "values": [
-          "always",
-          "dependency",
-          "never"
-        ],
-        "default": "always"
-      },
-      {
-        "name": "inaccessible-members",
-        "brief": "Extraction policy for inaccessible members",
-        "details": "Determine whether inaccessible members, such as private members of records, should be extracted. When set to `always`, inaccessible members are always extracted. When set to `dependency`, inaccessible members are extracted only if they are referenced by the source code. When set to `never`, inaccessible members are never extracted.",
-        "type": "enum",
-        "values": [
-          "always",
-          "dependency",
-          "never"
-        ],
-        "default": "always"
-      },
-      {
-        "name": "inaccessible-bases",
-        "brief": "Extraction policy for inaccessible base classes",
-        "details": "Determine whether inaccessible base classes should be extracted. When set to `always`, inaccessible base classes are always extracted. When set to `dependency`, inaccessible base classes are extracted only if they are referenced by the source code. When set to `never`, inaccessible base classes are never extracted.",
-        "type": "enum",
-        "values": [
-          "always",
-          "dependency",
-          "never"
-        ],
-        "default": "always"
-      },
-      {
-        "name": "see-below",
-        "brief": "Namespaces for symbols rendered as \"see-below\"",
-        "details": "Namespaces for symbols rendered as \"see-below\". Symbols in these namespaces are rendered as \"see-below\" in the documentation. This option is used to exclude details about symbols from the documentation that are considered part of the private API of the project. In the documentation page for this symbol, the synopsis of the implementation of a \"see-below\" symbol is rendered as \"see-below\". When the symbol is a scope (such as a namespace or record), its members are not listed. The rest of the documentation is rendered as usual.",
-        "type": "list<string>",
-        "default": []
-      },
-      {
-        "name": "implementation-defined",
-        "brief": "Namespaces for symbols rendered as \"implementation-defined\"",
-        "details": "Namespaces for symbols rendered as \"implementation-defined\". Symbols in these are rendered as \"implementation-defined\" in the documentation. This option is used to exclude symbols from the documentation that are considered part of the private API of the project. An \"implementation-defined\" symbol has no documentation page in the output. If any other symbol refers to it, the reference is rendered as \"implementation-defined\".",
-        "type": "list<string>",
-        "default": []
-      },
-      {
-        "name": "input",
-        "brief": "Include files to extract",
-        "details": "Include files to extract. Only the files listed in this option are extracted. The paths are relative to the mrdocs configuration file.",
-        "options": [
-          {
-            "name": "include",
-            "brief": "Input directories to include",
-            "details": "Input directories to include. Only the files in these directories are extracted. The paths are relative to the mrdocs configuration file.",
-            "type": "list<path>",
-            "must-exist": false,
-            "default": []
-          },
-          {
-            "name": "file-patterns",
-            "brief": "File patterns to include",
-            "details": "File patterns to include. Only the files that match these patterns are extracted. The patterns are relative to the input directories.",
-            "type": "list<string>",
-            "default": []
-          }
-        ]
-      },
-      {
-        "name": "filters",
-        "brief": "Filters",
-        "options": [
-          {
-            "name": "symbols",
-            "brief": "Symbol filters",
-            "details": "Symbol filters. Symbols that match these filters are extracted. The filters are applied to the fully qualified name of the symbol.",
-            "options": [
-              {
-                "name": "include",
-                "brief": "Specifies symbol inclusion patterns",
-                "details": "Specifies symbol inclusion patterns. Symbols that match these patterns are extracted. The patterns are applied to the fully qualified name of the symbol.",
-                "type": "list<string>",
-                "default": []
-              },
-              {
-                "name": "exclude",
-                "brief": "Specifies symbol exclusion patterns",
-                "details": "Specifies symbol exclusion patterns. Symbols that match these patterns are not extracted. The patterns are applied to the fully qualified name of the symbol.",
-                "type": "list<string>",
-                "default": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "category": "Metadata",
-    "brief": "Metadata and C++ constructs to extract",
-    "options": [
-      {
-        "name": "detect-sfinae",
-        "brief": "Detect SFINAE expressions",
-        "details": "When set to true, MrDocs detects SFINAE expressions in the source code and extracts them as part of the documentation. Expressions such as `std::enable_if<...>` are detected, removed, and documented as a requirement.",
-        "type": "bool",
-        "default": true
+        "default": [],
+        "relative-to": "<config-dir>",
+        "must-exist": false,
+        "should-exist": true
       }
     ]
   },

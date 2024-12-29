@@ -8,14 +8,10 @@
       "type": "string"
     },
     "anonymous-namespaces": {
-      "default": "always",
+      "default": true,
       "description": "Determine whether symbols in anonymous namespaces should be extracted. When set to `always`, symbols in anonymous namespaces are always extracted. When set to `dependency`, symbols in anonymous namespaces are extracted only if they are referenced by the source code. When set to `never`, symbols in anonymous namespaces are never extracted.",
-      "enum": [
-        "always",
-        "dependency",
-        "never"
-      ],
-      "title": "Extraction policy for anonymous namespaces"
+      "title": "Extraction policy for anonymous namespaces",
+      "type": "boolean"
     },
     "base-url": {
       "default": "",
@@ -44,52 +40,62 @@
       "title": "Additional defines passed to the compiler",
       "type": "array"
     },
-    "detect-sfinae": {
-      "default": true,
-      "description": "When set to true, MrDocs detects SFINAE expressions in the source code and extracts them as part of the documentation. Expressions such as `std::enable_if<...>` are detected, removed, and documented as a requirement.",
-      "title": "Detect SFINAE expressions",
-      "type": "boolean"
-    },
     "embedded": {
       "default": false,
-      "title": "Output an embeddable document, which excludes the header, the footer, and everything outside the body of the document. This option is useful for producing documents that can be inserted into an external template.",
+      "description": "Output an embeddable document, which excludes the header, the footer, and everything outside the body of the document. This option is useful for producing documents that can be inserted into an external template.",
+      "title": "Output an embeddable document",
       "type": "boolean"
     },
-    "filters": {
-      "properties": {
-        "symbols": {
-          "description": "Symbol filters. Symbols that match these filters are extracted. The filters are applied to the fully qualified name of the symbol.",
-          "properties": {
-            "exclude": {
-              "default": [],
-              "description": "Specifies symbol exclusion patterns. Symbols that match these patterns are not extracted. The patterns are applied to the fully qualified name of the symbol.",
-              "items": {
-                "type": "string"
-              },
-              "title": "Specifies symbol exclusion patterns",
-              "type": "array"
-            },
-            "include": {
-              "default": [],
-              "description": "Specifies symbol inclusion patterns. Symbols that match these patterns are extracted. The patterns are applied to the fully qualified name of the symbol.",
-              "items": {
-                "type": "string"
-              },
-              "title": "Specifies symbol inclusion patterns",
-              "type": "array"
-            }
-          },
-          "required": [],
-          "title": "Symbol filters",
-          "type": "object"
-        }
+    "exclude": {
+      "default": [],
+      "description": "Symbols defined in files in these directories are not extracted even if they are in the list of include directories. When relative, the paths are relative to the directory of the mrdocs configuration file. For instance, \"include/experimental\" will exclude all files in the directory `<config-dir>/include/experimental`.",
+      "items": {
+        "type": "string"
       },
-      "required": [],
-      "title": "Filters",
-      "type": "object"
+      "title": "Input directories to exclude",
+      "type": "array"
     },
-    "generate": {
+    "exclude-patterns": {
+      "default": [],
+      "description": "File patterns to exclude. Files that match these patterns are not extracted even if they are in the list of include directories. The patterns are relative to the configuration file. A single * will match all files in the directory. Double ** will match all files in the directory and its subdirectories.",
+      "items": {
+        "type": "string"
+      },
+      "title": "File patterns to exclude",
+      "type": "array"
+    },
+    "exclude-symbols": {
+      "default": [],
+      "description": "A symbol that matches one of these patterns is not extracted even if whitelisted by \"include-symbols\". See the documentation for \"include-symbols\" for the pattern syntax.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Symbol patterns to exclude",
+      "type": "array"
+    },
+    "file-patterns": {
+      "default": [
+        "*.hpp",
+        "*.h",
+        "*.hh",
+        "*.ipp",
+        "*.inc",
+        "*.cpp",
+        "*.cc",
+        "*.cxx",
+        "*.c",
+        "*.hxx"
+      ],
+      "description": "File patterns to include. Only the files that match these patterns are extracted. The patterns are relative to the input directories.",
+      "items": {
+        "type": "string"
+      },
+      "title": "File patterns to include",
+      "type": "array"
+    },
+    "generator": {
       "default": "adoc",
+      "description": "The generator is responsible for creating the documentation from the extracted symbols. The generator uses the extracted symbols and the templates to create the documentation. The generator can create different types of documentation such as HTML, XML, and AsciiDoc.",
       "enum": [
         "adoc",
         "html",
@@ -111,32 +117,21 @@
     },
     "implementation-defined": {
       "default": [],
-      "description": "Namespaces for symbols rendered as \"implementation-defined\". Symbols in these are rendered as \"implementation-defined\" in the documentation. This option is used to exclude symbols from the documentation that are considered part of the private API of the project. An \"implementation-defined\" symbol has no documentation page in the output. If any other symbol refers to it, the reference is rendered as \"implementation-defined\".",
+      "description": "Symbols that match one of these filters are tagged as \"implementation-defined\" in the documentation, and so do symbols in scopes tagged as \"implementation-defined\". This option is used to exclude symbols from the documentation that are considered part of the private API of the project. An \"implementation-defined\" symbol has no documentation page in the output. If any other symbol refers to it, the reference is rendered as \"implementation-defined\". See the documentation for \"include-symbol\" for the pattern syntax.",
       "items": {
         "type": "string"
       },
-      "title": "Namespaces for symbols rendered as \"implementation-defined\"",
+      "title": "Symbols rendered as \"implementation-defined\"",
       "type": "array"
     },
-    "inaccessible-bases": {
-      "default": "always",
-      "description": "Determine whether inaccessible base classes should be extracted. When set to `always`, inaccessible base classes are always extracted. When set to `dependency`, inaccessible base classes are extracted only if they are referenced by the source code. When set to `never`, inaccessible base classes are never extracted.",
-      "enum": [
-        "always",
-        "dependency",
-        "never"
-      ],
-      "title": "Extraction policy for inaccessible base classes"
-    },
-    "inaccessible-members": {
-      "default": "always",
-      "description": "Determine whether inaccessible members, such as private members of records, should be extracted. When set to `always`, inaccessible members are always extracted. When set to `dependency`, inaccessible members are extracted only if they are referenced by the source code. When set to `never`, inaccessible members are never extracted.",
-      "enum": [
-        "always",
-        "dependency",
-        "never"
-      ],
-      "title": "Extraction policy for inaccessible members"
+    "include-symbols": {
+      "default": [],
+      "description": "If any patterns are defined here, only symbols that match one of these patterns are extracted. The patterns are applied to the fully qualified name of the symbol without any leading \"::\". A single \"*\" will match all symbols in the namespace. Double \"**\" will match all symbols in the namespace and its subnamespaces. The patterns also support \"?\" for any chars, \"[<chars>]\" for charsets, \"[^<chars>]\" for inverted charsets, and \"{<glob>,...}\" for alternatives.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Symbol patterns to include",
+      "type": "array"
     },
     "includes": {
       "default": [],
@@ -148,30 +143,15 @@
       "type": "array"
     },
     "input": {
-      "description": "Include files to extract. Only the files listed in this option are extracted. The paths are relative to the mrdocs configuration file.",
-      "properties": {
-        "file-patterns": {
-          "default": [],
-          "description": "File patterns to include. Only the files that match these patterns are extracted. The patterns are relative to the input directories.",
-          "items": {
-            "type": "string"
-          },
-          "title": "File patterns to include",
-          "type": "array"
-        },
-        "include": {
-          "default": [],
-          "description": "Input directories to include. Only the files in these directories are extracted. The paths are relative to the mrdocs configuration file.",
-          "items": {
-            "type": "string"
-          },
-          "title": "Input directories to include",
-          "type": "array"
-        }
+      "default": [
+        "<source-root>/."
+      ],
+      "description": "Input directories to extract. Only symbols defined in files in these directories are extracted. The paths are relative to the mrdocs configuration file.",
+      "items": {
+        "type": "string"
       },
-      "required": [],
-      "title": "Include files to extract",
-      "type": "object"
+      "title": "Input directories to extract symbols from",
+      "type": "array"
     },
     "legible-names": {
       "default": true,
@@ -202,15 +182,23 @@
       "title": "Directory or file for generating output",
       "type": "string"
     },
-    "referenced-declarations": {
-      "default": "never",
-      "description": "Determine whether external declarations should be extracted when they are referenced in the source code. If this option is not `never`, a second pass happens in the extraction process to extract dependencies in the Corpus. When set to `always`, external declarations are always extracted. When set to `dependency`, external declarations are extracted only if they are referenced by the source code. When set to `never`, external declarations are never extracted.",
-      "enum": [
-        "always",
-        "dependency",
-        "never"
-      ],
-      "title": "Extraction policy for references to external declarations"
+    "private-bases": {
+      "default": true,
+      "description": "Determine whether private base classes should be extracted",
+      "title": "Extraction policy for private base classes",
+      "type": "boolean"
+    },
+    "private-members": {
+      "default": false,
+      "description": "Determine whether private class members should be extracted",
+      "title": "Extraction policy for private class members",
+      "type": "boolean"
+    },
+    "recursive": {
+      "default": true,
+      "description": "Recursively include files. When set to true, MrDocs includes files in subdirectories of the input directories. When set to false, MrDocs includes only the files in the input directories.",
+      "title": "Recursively include files from \"input\" paths",
+      "type": "boolean"
     },
     "report": {
       "default": 1,
@@ -222,15 +210,22 @@
     },
     "see-below": {
       "default": [],
-      "description": "Namespaces for symbols rendered as \"see-below\". Symbols in these namespaces are rendered as \"see-below\" in the documentation. This option is used to exclude details about symbols from the documentation that are considered part of the private API of the project. In the documentation page for this symbol, the synopsis of the implementation of a \"see-below\" symbol is rendered as \"see-below\". When the symbol is a scope (such as a namespace or record), its members are not listed. The rest of the documentation is rendered as usual.",
+      "description": "Symbols that match one of these filters are tagged as \"see-below\" in the documentation, and so do symbols in scopes tagged as \"see-below\". This option is used to remove details about symbols that are considered part of the private API of the project. In the documentation page for this symbol, the synopsis of the implementation is rendered as \"see-below\" and members of scopes (such as a namespace or record) are not listed. The rest of the documentation is rendered as usual. See the documentation for \"include-symbol\" for the pattern syntax.",
       "items": {
         "type": "string"
       },
-      "title": "Namespaces for symbols rendered as \"see-below\"",
+      "title": "Symbols rendered as \"see-below\"",
       "type": "array"
+    },
+    "sfinae": {
+      "default": true,
+      "description": "When set to true, MrDocs detects SFINAE expressions in the source code and extracts them as part of the documentation. Expressions such as `std::enable_if<...>` are detected, removed, and documented as a requirement.",
+      "title": "Detect and reduce SFINAE expressions",
+      "type": "boolean"
     },
     "source-root": {
       "default": "<config-dir>",
+      "description": "Path to the root directory of the source code. This path is used as a default for input files and a base for relative paths formed from absolute paths.",
       "title": "Path to the root directory of the source code",
       "type": "string"
     },

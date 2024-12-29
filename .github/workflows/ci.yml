@@ -640,6 +640,8 @@ jobs:
             "html"
           )
           
+          cp example/external/url/mrdocs.yml boost/libs/url/doc/mrdocs.yml
+          
           # Generate the demos for each variant and generator
           for variant in single multi; do
             for generator in "${generators[@]}"; do

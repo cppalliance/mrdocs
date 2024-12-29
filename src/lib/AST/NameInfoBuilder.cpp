@@ -18,9 +18,9 @@ namespace clang::mrdocs {
 void
 NameInfoBuilder::
 buildDecltype(
-    const DecltypeType* T,
-    unsigned quals,
-    bool pack)
+    const DecltypeType*,
+    unsigned,
+    bool)
 {
     // KRYSTIAN TODO: support decltype in names
     // (e.g. within nested-name-specifiers).
@@ -31,14 +31,9 @@ NameInfoBuilder::
 buildTerminal(
     const NestedNameSpecifier* NNS,
     const Type* T,
-    unsigned quals,
-    bool pack)
+    unsigned,
+    bool)
 {
-    if (getASTVisitor().checkSpecialNamespace(Result, NNS, nullptr))
-    {
-        return;
-    }
-
     auto I = std::make_unique<NameInfo>();
     I->Name = getASTVisitor().toString(T);
     Result = std::move(I);
@@ -54,15 +49,9 @@ buildTerminal(
     const NestedNameSpecifier* NNS,
     const IdentifierInfo* II,
     std::optional<ArrayRef<TemplateArgument>> TArgs,
-    unsigned quals,
-    bool pack)
+    unsigned,
+    bool)
 {
-    ASTVisitor& V = getASTVisitor();
-    if (V.checkSpecialNamespace(Result, NNS, nullptr))
-    {
-        return;
-    }
-
     if(TArgs)
     {
         auto I = std::make_unique<SpecializationNameInfo>();
@@ -70,7 +59,7 @@ buildTerminal(
         {
             I->Name = II->getName();
         }
-        V.populate(I->TemplateArgs, *TArgs);
+        getASTVisitor().populate(I->TemplateArgs, *TArgs);
         Result = std::move(I);
     }
     else
@@ -84,7 +73,7 @@ buildTerminal(
     }
     if (NNS)
     {
-        Result->Prefix = V.toNameInfo(NNS);
+        Result->Prefix = getASTVisitor().toNameInfo(NNS);
     }
 }
 
@@ -94,42 +83,45 @@ buildTerminal(
     const NestedNameSpecifier* NNS,
     const NamedDecl* D,
     std::optional<ArrayRef<TemplateArgument>> const& TArgs,
-    unsigned quals,
-    bool pack)
+    unsigned,
+    bool)
 {
-    ASTVisitor& V = getASTVisitor();
-    if (V.checkSpecialNamespace(Result, NNS, D))
+    // Look for the Info type. If this is a template specialization,
+    // we look for the Info of the specialized record.
+    Decl const* ID = decayToPrimaryTemplate(D);
+    Info const* I = getASTVisitor().findOrTraverse(const_cast<Decl*>(ID));
+    if (!I)
     {
         return;
     }
 
-    const IdentifierInfo* II = D->getIdentifier();
-    if(TArgs)
+    auto TI = std::make_unique<NameInfo>();
+
+    auto populateNameInfo = [&](NameInfo* Name, NamedDecl const* D)
     {
-        auto I = std::make_unique<SpecializationNameInfo>();
-        if (II)
+        if(const IdentifierInfo* II = D->getIdentifier())
         {
-            I->Name = II->getName();
+            Name->Name = II->getName();
         }
-        V.upsertDependency(getInstantiatedFrom(D), I->id);
-        V.populate(I->TemplateArgs, *TArgs);
-        Result = std::move(I);
+        Name->id = I->id;
+        if(NNS)
+        {
+            Name->Prefix = getASTVisitor().toNameInfo(NNS);
+        }
+    };
+
+    if (!TArgs)
+    {
+        populateNameInfo(TI.get(), D);
     }
     else
     {
-        auto I = std::make_unique<NameInfo>();
-        if (II)
-        {
-            I->Name = II->getName();
-        }
-        V.upsertDependency(getInstantiatedFrom(D), I->id);
-        Result = std::move(I);
+        auto Name = std::make_unique<SpecializationNameInfo>();
+        populateNameInfo(Name.get(), D);
+        getASTVisitor().populate(Name->TemplateArgs, *TArgs);
+        TI = std::move(Name);
     }
-    if (NNS)
-    {
-        Result->Prefix = V.toNameInfo(NNS);
-    }
+    Result = std::move(TI);
 }
-
 
 } // clang::mrdocs

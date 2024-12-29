@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -17,8 +18,7 @@
 #include <mrdocs/Metadata/Template.hpp>
 #include <memory>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 enum class NameKind
 {
@@ -30,8 +30,24 @@ MRDOCS_DECL
 dom::String
 toString(NameKind kind) noexcept;
 
-/** Represents a (possibly qualified) symbol name.
-*/
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    NameKind const kind)
+{
+    v = toString(kind);
+}
+
+/** Represents a name for a named `TypeInfo`
+
+    When the `TypeInfo` is a named type, this class
+    represents the name of the type.
+
+    It also includes the symbol ID of the named type,
+    so that it can be referenced in the documentation.
+ */
 struct NameInfo
 {
     /** The kind of name this is.
@@ -47,7 +63,19 @@ struct NameInfo
     std::string Name;
 
     /** The parent name info, if any.
-    */
+
+        This recursively includes information about
+        the parent, such as the symbol ID and
+        potentially template arguments, when
+        the parent is a SpecializationNameInfo.
+
+        This is particularly useful because the
+        parent of `id` could be a primary template.
+        In this case, the Prefix will contain
+        this primary template information
+        and the template arguments.
+
+     */
     std::unique_ptr<NameInfo> Prefix;
 
     constexpr bool isIdentifier()     const noexcept { return Kind == NameKind::Identifier; }
@@ -55,15 +83,12 @@ struct NameInfo
 
     constexpr
     NameInfo() noexcept
-        : NameInfo(NameKind::Identifier)
-    {
-    }
+        : NameInfo(NameKind::Identifier) {}
 
+    explicit
     constexpr
     NameInfo(NameKind kind) noexcept
-        : Kind(kind)
-    {
-    }
+        : Kind(kind) {}
 
     virtual ~NameInfo() = default;
 };
@@ -80,8 +105,7 @@ struct SpecializationNameInfo
     constexpr
     SpecializationNameInfo() noexcept
         : NameInfo(NameKind::Specialization)
-    {
-    }
+    {}
 };
 
 template<
@@ -138,7 +162,6 @@ tag_invoke(
 }
 
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

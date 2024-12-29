@@ -22,9 +22,9 @@
 #include <type_traits>
 #include <utility>
 #include <vector>
+#include <algorithm>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 /** The collection of declarations in extracted form.
 */
@@ -415,7 +415,6 @@ MRDOCS_DECL
 std::vector<SymbolID>
 getParents(Corpus const& C, Info const& I);
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

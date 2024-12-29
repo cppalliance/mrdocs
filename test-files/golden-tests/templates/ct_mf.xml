@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <template>
+    <tparam name="T" class="type"/>
+    <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
+      <file path="templates/ct_mf.cpp" line="1" class="def"/>
+      <function name="f" id="c4jAAYDw9qnOxUCpXquNT7fALUY=">
+        <file path="templates/ct_mf.cpp" line="4" class="def"/>
+      </function>
+    </struct>
+  </template>
+</namespace>
+</mrdocs>

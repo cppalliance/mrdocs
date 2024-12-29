@@ -10,12 +10,11 @@
 //
 
 #include "SinglePageVisitor.hpp"
+#include "VisitorHelpers.hpp"
 #include <mrdocs/Support/unlock_guard.hpp>
 #include <sstream>
 
-namespace clang {
-namespace mrdocs {
-namespace hbs {
+namespace clang::mrdocs::hbs {
 
 template<class T>
 requires std::derived_from<T, Info> || std::same_as<T, OverloadSet>
@@ -23,17 +22,9 @@ void
 SinglePageVisitor::
 operator()(T const& I0)
 {
-    /*  Determine if the info is supported by this generator.
-
-        This filters Info types for which the generator
-        cannot and should not generate output.
-     */
     if constexpr (std::derived_from<T, Info>)
     {
-        if (I0.isSpecialization())
-        {
-            return;
-        }
+        MRDOCS_CHECK_OR(shouldGenerate(I0));
     }
 
     // If T is an OverloadSet, we make a copy for the lambda because
@@ -73,12 +64,12 @@ operator()(T const& I0)
             T::isRecord() ||
             T::isEnum())
         {
-            corpus_.traverseOverloads(I0, *this);
+            corpus_.orderedTraverseOverloads(I0, *this);
         }
     }
     else if constexpr (std::same_as<T, OverloadSet>)
     {
-        corpus_.traverse(I0, *this);
+        corpus_.orderedTraverse(I0, *this);
     }
 
 }
@@ -140,6 +131,4 @@ writePage(
 
 template void SinglePageVisitor::operator()<OverloadSet>(OverloadSet const&);
 
-} // hbs
-} // mrdocs
-} // clang
+} // clang::mrdocs::hbs

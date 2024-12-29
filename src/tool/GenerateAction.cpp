@@ -20,6 +20,7 @@
 #include <mrdocs/Generators.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/Path.hpp>
+#include <mrdocs/Support/ThreadPool.hpp>
 #include <clang/Tooling/JSONCompilationDatabase.h>
 
 #include <cstdlib>
@@ -113,10 +114,10 @@ DoGenerateAction(
     auto& settings = config->settings();
     MRDOCS_TRY(
         Generator const& generator,
-        getGenerators().find(to_string(settings.generate)),
+        getGenerators().find(to_string(settings.generator)),
         formatError(
             "the Generator \"{}\" was not found",
-            to_string(config->settings().generate)));
+            to_string(config->settings().generator)));
 
     // --------------------------------------------------------------
     //

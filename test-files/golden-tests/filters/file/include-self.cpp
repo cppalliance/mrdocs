@@ -1,0 +1,4 @@
+namespace TEST
+{
+    struct SUCCESS {};
+}

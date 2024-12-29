@@ -1,0 +1,127 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+[cols=2]
+|===
+| Name | Description 
+
+| <<#T,`T`>> 
+| 
+
+|===
+=== Functions
+[cols=2]
+|===
+| Name | Description 
+
+| <<#f1,`f1`>> 
+| 
+
+|===
+
+[#T]
+== T
+
+=== Synopsis
+
+Declared in `&lt;noreturn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct T;
+----
+
+=== Member Functions
+[cols=2]
+|===
+| Name | Description 
+
+| <<#T-f3,`f3`>> 
+| 
+
+|===
+=== Static Member Functions
+[cols=2]
+|===
+| Name | Description 
+
+| <<#T-f2,`f2`>> 
+| 
+
+|===
+=== Friends
+[cols=2]
+|===
+| Name | Description 
+
+| <<#T-08friend,`f1`>> 
+| 
+
+|===
+
+
+
+[#T-f2]
+== <<#T,T>>::f2
+
+=== Synopsis
+
+Declared in `&lt;noreturn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+[noreturn]
+static
+void
+f2();
+----
+
+[#T-f3]
+== <<#T,T>>::f3
+
+=== Synopsis
+
+Declared in `&lt;noreturn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+[noreturn]
+void
+f3();
+----
+
+[#T-08friend]
+== f1
+
+=== Synopsis
+
+Declared in `&lt;noreturn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+friend
+void
+f1();
+----
+
+[#f1]
+== f1
+
+=== Synopsis
+
+Declared in `&lt;noreturn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+[noreturn]
+void
+f1();
+----
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

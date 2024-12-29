@@ -24,11 +24,11 @@ namespace mrdocs {
 
 enum class FileKind
 {
-    // file in the source directory
+    // File in the source directory
     Source,
-    // file in a system include directory
+    // File in a system include directory
     System,
-    // file outside the source directory
+    // File outside the source directory
     Other
 };
 

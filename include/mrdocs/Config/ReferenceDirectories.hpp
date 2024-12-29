@@ -18,9 +18,15 @@ namespace clang {
 namespace mrdocs {
 
 /** Reference directories used to resolve paths
+
+    These are the main reference directories used to resolve paths in the
+    application.
+
+    All other reference directories come directly from the
+    configuration file.
  */
-struct ReferenceDirectories {
-    std::string configDir;
+struct ReferenceDirectories
+{
     std::string cwd;
     std::string mrdocsRoot;
 };

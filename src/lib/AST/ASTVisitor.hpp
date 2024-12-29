@@ -16,11 +16,12 @@
 
 #include "lib/Lib/ConfigImpl.hpp"
 #include "lib/Lib/ExecutionContext.hpp"
-#include "lib/AST/SymbolFilter.hpp"
 #include "lib/AST/ClangHelpers.hpp"
+#include <mrdocs/Metadata/ExtractionMode.hpp>
 #include <mrdocs/Metadata/Source.hpp>
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Scope.hpp>
+#include <mrdocs/Support/Concepts.hpp>
 #include <clang/Tooling/Tooling.h>
 #include <clang/AST/ODRHash.h>
 #include <llvm/ADT/SmallBitVector.h>
@@ -78,16 +79,6 @@ class ASTVisitor
     // An unordered set of all extracted Info declarations
     InfoSet info_;
 
-    /*  The set of dependencies found during extraction
-
-        The metadata for these dependencies will be extracted
-        after the initial extraction pass, if the configuration
-        option `referencedDeclarations` is not set to `never`.
-
-        @see @ref buildDependencies
-     */
-    std::unordered_set<Decl*> dependencies_;
-
     /* Struct to hold pre-processed file information.
 
         This struct stores information about a file, including its full path,
@@ -112,7 +103,10 @@ class ASTVisitor
         std::string short_path;
 
         // The kind of the file.
-        FileKind kind;
+        FileKind kind = FileKind::Source;
+
+        // Whether this file passes the file filters
+        std::optional<bool> passesFilters;
     };
 
     /*  A map of Clang FileEntry objects to Visitor FileInfo objects
@@ -131,59 +125,28 @@ class ASTVisitor
     */
     std::unordered_map<const FileEntry*, FileInfo> files_;
 
-    /* The filter for symbols to extract
+    /* The current extraction mode
 
-        Whenever traversing a declaration, the ASTVisitor
-        will check if the declaration passes the filter
-        before extracting metadata for it.
+        This defines the extraction mode assigned to
+        new Info types.
+
+        A symbol that passes the filters will be
+        extracted as a regular symbol.
+
+        If a symbol also passes the see-below or
+        implementation-defined filters, we
+        change the current extraction mode
+        accordingly so the symbol can be tagged.
+        Members of this symbol types are not
+        extracted.
+
+        A symbol that doesn't pass the filters
+        can only be extracted as a dependency.
+        A symbol is extracted as a dependency
+        when another symbol makes a reference
+        to it.
      */
-    SymbolFilter symbolFilter_;
-
-    enum class ExtractMode
-    {
-        // Extraction of declarations which pass all filters
-        Normal,
-        // Extraction of declarations as direct dependencies
-        DirectDependency,
-        // Extraction of declarations as indirect dependencies
-        IndirectDependency,
-    };
-
-    // The current extraction mode
-    ExtractMode mode = ExtractMode::Normal;
-
-    struct [[nodiscard]] ExtractionScope
-    {
-        ASTVisitor& visitor_;
-        ExtractMode previous_;
-
-    public:
-        ExtractionScope(
-            ASTVisitor& visitor,
-            ExtractMode mode) noexcept
-            : visitor_(visitor)
-            , previous_(visitor.mode)
-        {
-            visitor_.mode = mode;
-        }
-
-        ~ExtractionScope()
-        {
-            visitor_.mode = previous_;
-        }
-    };
-
-    ExtractionScope
-    enterMode(ExtractMode new_mode) noexcept
-    {
-        return {*this, new_mode};
-    }
-
-    ExtractMode
-    currentMode() const noexcept
-    {
-        return mode;
-    }
+    ExtractionMode mode_ = ExtractionMode::Regular;
 
     struct SFINAEInfo
     {
@@ -197,7 +160,6 @@ class ASTVisitor
         InfoTy& I;
         bool isNew;
     };
-
 public:
     /** Constructor for ASTVisitor.
 
@@ -258,67 +220,9 @@ public:
     }
 
 private:
-    /*  Build metadata representation for all dependencies in the AST
-
-        If the option `referencedDeclarations` is not set to `never`,
-        this function will be called after the initial extraction
-        pass to extract metadata for all referenced declarations
-        in the main symbols extracted.
-
-        It calls `traverseAny` for each declaration in the set
-        of dependencies, which will recursively traverse the
-        declaration and extract the relevant information.
-
-        If this pass finds new dependencies, it will call itself
-        recursively to extract the metadata for those dependencies
-        until no new dependencies are found.
-     */
-    void
-    buildDependencies();
-
     // =================================================
     // AST Traversal
     // =================================================
-
-    /*  Traverse a declaration
-
-        This function is called to traverse any declaration.
-        The Decl element is converted to its derived type,
-        and the appropriate `traverse` overload is called.
-
-        The `build()` function will call this function with
-        `context_.getTranslationUnitDecl()` to initiate
-        the traversal of the entire AST, while
-        `buildDependencies()` will call it for each dependency.
-
-        @param D The declaration to traverse.
-     */
-    void
-    traverseAny(Decl* D);
-
-    /*  Traverse a declaration and template declaration
-
-        This function is called to traverse any declaration
-        with the corresponding template declaration.
-
-        The Decl element is converted to its derived type,
-        and the appropriate `traverse` overload is called
-        with the template declaration as the second argument.
-
-        Both the information about the type and the
-        template parameters are extracted into the
-        `Info` object.
-
-        The `traverseAny()` function will call this function
-        for each declaration with a corresponding template
-        declaration.
-
-        @param D The declaration context to traverse.
-        @param TD The corresponding template declaration.
-     */
-    template <std::derived_from<TemplateDecl> TemplateDeclTy>
-    void
-    traverseAny(Decl* D, TemplateDeclTy* TD);
 
     /*  The default implementation for the traverse function
 
@@ -329,71 +233,28 @@ private:
         declaration, populates it with the necessary information,
         and optionally traverses the members of the declaration.
 
-        @param D The declaration to traverse
-     */
-    template <class DeclTy>
-    requires std::derived_from<DeclTy, Decl>
-    void
-    traverse(DeclTy* D)
-    {
-        defaultTraverseImpl<false>(D);
-    }
-
-    /*  The default implementation for the traverse function with a
-        template parameter
-
-        This function defines the usual behavior for the
-        traverse function for a concrete declaration type
-        when associated with a template declaration.
-
-        It creates a new corresponding Info object for the
-        declaration, populates it with the necessary information,
-        populates the Template information, and optionally
-        traverses the members of the declaration.
+        @tparam InfoTy The type of Info object to create. If the
+        default type is used, the function will determine the
+        appropriate Info type based on the declaration type.
+        @tparam DeclTy The type of the declaration to traverse.
 
         @param D The declaration to traverse
-        @param TD The template declaration associated with `D`
      */
     template <
-        std::derived_from<Decl> DeclTy,
-        std::derived_from<TemplateDecl> TemplateDeclTy>
-    void
-    traverse(DeclTy* D, TemplateDeclTy* TD)
-    {
-        defaultTraverseImpl<true>(D, TD);
-    }
+        class InfoTy = void,
+        std::derived_from<Decl> DeclTy>
+    Info*
+    traverse(DeclTy* D);
 
-    /* Default implementation for the traverse function
+    /*  Traverse a function template
 
-        This function defines the common logic for
-        `traverse(DeclTy*)` and `traverse(DeclTy*, TemplateDeclTy*)`,
-        where the `PopulateFromTD` parameter determines whether
-        the template information should be populated from the
-        template declaration.
-     */
-    template <
-        bool PopulateFromTD,
-        std::derived_from<Decl> DeclTy,
-        std::derived_from<TemplateDecl> TemplateDeclTy = TemplateDecl>
-    void
-    defaultTraverseImpl(DeclTy* D, TemplateDeclTy* TD = nullptr);
-
-    /*  Traverse a C++ function or function specialization
-
-        This handles `FunctionDecl` and `CXXMethodDecl`.
-
-        Both these classes can return `true` for
-        `D->isFunctionTemplateSpecialization()`,
-        in which case the function will also populate the
-        template parameters of the function.
+        This function redirects the traversal
+        so that it can be handled as a
+        concept or function template.
 
      */
-    template<class FunctionDeclTy>
-    requires
-        std::derived_from<FunctionDeclTy, Decl> &&
-        std::derived_from<FunctionDeclTy, FunctionDecl>
-    void
-    traverse(FunctionDeclTy* D);
+    Info*
+    traverse(FunctionTemplateDecl* D);
 
     /*  Traverse a using directive
 
@@ -403,7 +264,7 @@ private:
         If the parent declaration is a Namespace, we
         update its `UsingDirectives` field.
     */
-    void
+    Info*
     traverse(UsingDirectiveDecl* D);
 
     /*  Traverse a member of an anonymous union.
@@ -411,7 +272,7 @@ private:
         We get the anonymous union field and traverse it
         as a regular `FieldDecl`.
      */
-    void
+    Info*
     traverse(IndirectFieldDecl*);
 
     // =================================================
@@ -426,9 +287,45 @@ private:
         The function will call traverseAny for all members of the
         declaration context.
     */
-    template <std::derived_from<Decl> DeclTy>
+    template <
+        std::derived_from<Info> InfoTy,
+        std::derived_from<Decl> DeclTy>
+    requires (!std::derived_from<DeclTy, RedeclarableTemplateDecl>)
     void
-    traverseMembers(DeclTy* DC);
+    traverseMembers(InfoTy& I, DeclTy* DC);
+
+    template <
+        std::derived_from<Info> InfoTy,
+        std::derived_from<RedeclarableTemplateDecl> DeclTy>
+    void
+    traverseMembers(InfoTy& I, DeclTy* DC);
+
+    /*  Traverse the parents of a declaration
+
+        This function is called to traverse the parents of
+        a Decl until we find the translation unit declaration
+        or a parent that has already been extracted.
+
+        This function is called when the declaration is
+        being extracted as a dependency, and we need to
+        identify the parent scope of the declaration.
+
+        For regular symbols, the parent is identified
+        during the normal traversal of the declaration
+        context.
+    */
+    template <
+        std::derived_from<Info> InfoTy,
+        std::derived_from<Decl> DeclTy>
+    requires (!std::derived_from<DeclTy, RedeclarableTemplateDecl>)
+    void
+    traverseParents(InfoTy& I, DeclTy* DC);
+
+    template <
+        std::derived_from<Info> InfoTy,
+        std::derived_from<RedeclarableTemplateDecl> DeclTy>
+    void
+    traverseParents(InfoTy& I, DeclTy* DC);
 
     /*  Generates a Unified Symbol Resolution value for a declaration.
 
@@ -478,56 +375,81 @@ private:
     // =================================================
     // Populate functions
     // =================================================
+    template <std::derived_from<Info> InfoTy, class DeclTy>
     void
-    populate(NamespaceInfo& I, bool isNew, NamespaceDecl* D);
-
-    static
-    void
-    populate(NamespaceInfo& I, bool isNew, TranslationUnitDecl* D);
-
-    void
-    populate(RecordInfo& I, bool isNew, CXXRecordDecl* D);
-
-    template <std::derived_from<FunctionDecl> DeclTy>
-    void
-    populate(FunctionInfo& I, bool isNew, DeclTy* D);
-
-    void
-    populate(EnumInfo& I, bool isNew, EnumDecl* D);
-
-    void
-    populate(EnumConstantInfo& I, bool isNew, EnumConstantDecl* D);
-
-    template<std::derived_from<TypedefNameDecl> TypedefNameDeclTy>
-    void
-    populate(TypedefInfo& I, bool isNew, TypedefNameDeclTy* D);
-
-    void
-    populate(VariableInfo& I, bool isNew, VarDecl* D);
-
-    void
-    populate(FieldInfo& I, bool isNew, FieldDecl* D);
-
-    void
-    populate(SpecializationInfo& I, bool isNew, ClassTemplateSpecializationDecl* D);
-
-    void
-    populate(FriendInfo& I, bool isNew, FriendDecl* D);
-
-    void
-    populate(GuideInfo& I, bool isNew, CXXDeductionGuideDecl* D);
-
-    void
-    populate(NamespaceAliasInfo& I, bool isNew, NamespaceAliasDecl* D);
-
-    void
-    populate(UsingInfo& I, bool isNew, UsingDecl* D);
-
-    void
-    populate(ConceptInfo& I, bool isNew, ConceptDecl* D);
+    populateInfoBases(InfoTy& I, bool isNew, DeclTy* D);
 
     void
     populate(SourceInfo& I, clang::SourceLocation loc, bool definition, bool documented);
+
+    void
+    populate(NamespaceInfo& I, NamespaceDecl* D);
+
+    static
+    void
+    populate(NamespaceInfo& I, TranslationUnitDecl* D);
+
+    void
+    populate(RecordInfo& I, CXXRecordDecl* D);
+
+    void
+    populate(RecordInfo& I, ClassTemplateDecl* D);
+
+    void
+    populate(RecordInfo& I, ClassTemplateSpecializationDecl* D);
+
+    template <std::derived_from<FunctionDecl> DeclTy>
+    void
+    populate(FunctionInfo& I, DeclTy* D);
+
+    void
+    populate(FunctionInfo& I, FunctionTemplateDecl* D);
+
+    void
+    populate(EnumInfo& I, EnumDecl* D);
+
+    void
+    populate(EnumConstantInfo& I, EnumConstantDecl* D);
+
+    template<std::derived_from<TypedefNameDecl> TypedefNameDeclTy>
+    void
+    populate(TypedefInfo& I, TypedefNameDeclTy* D);
+
+    void
+    populate(TypedefInfo& I, TypeAliasTemplateDecl* D);
+
+    void
+    populate(VariableInfo& I, VarDecl* D);
+
+    void
+    populate(VariableInfo& I, VarTemplateDecl* D);
+
+    void
+    populate(VariableInfo& I, VarTemplateSpecializationDecl* D);
+
+    void
+    populate(FieldInfo& I, FieldDecl* D);
+
+    void
+    populate(SpecializationInfo& I, ClassTemplateSpecializationDecl* D);
+
+    void
+    populate(FriendInfo& I, FriendDecl* D);
+
+    void
+    populate(GuideInfo& I, CXXDeductionGuideDecl* D);
+
+    void
+    populate(GuideInfo& I, FunctionTemplateDecl* D);
+
+    void
+    populate(NamespaceAliasInfo& I, NamespaceAliasDecl* D);
+
+    void
+    populate(UsingInfo& I, UsingDecl* D);
+
+    void
+    populate(ConceptInfo& I, ConceptDecl* D);
 
     /*  Default function to populate the template information
 
@@ -550,6 +472,9 @@ private:
     void
     populate(TemplateInfo& Template, CXXRecordDeclTy*, ClassTemplateDecl* CTD);
 
+    void
+    populate(TemplateInfo& Template, ClassTemplateSpecializationDecl* D, ClassTemplateDecl* CTD);
+
     /*  Populate the template information for a variable template
 
         The function will populate the template parameters
@@ -558,6 +483,19 @@ private:
     template<std::derived_from<VarDecl> VarDeclTy>
     void
     populate(TemplateInfo& Template, VarDeclTy* D, VarTemplateDecl* VTD);
+
+    template<
+        std::derived_from<Decl> DeclTy,
+        std::derived_from<TemplateDecl> TemplateDeclTy>
+    void
+    populate(std::optional<TemplateInfo>& Template, DeclTy* D, TemplateDeclTy* VTD)
+    {
+        if (!Template)
+        {
+            Template.emplace();
+        }
+        populate(*Template, D, VTD);
+    }
 
     void
     populate(NoexceptInfo& I, const FunctionProtoType* FPT);
@@ -580,9 +518,18 @@ private:
     populate(std::unique_ptr<TParam>& I, const NamedDecl* N);
 
     void
+    populate(std::optional<TemplateInfo>& TI, const TemplateParameterList* TPL) {
+        if (!TI)
+        {
+            TI.emplace();
+        }
+        populate(*TI, TPL);
+    }
+
+    void
     populate(TemplateInfo& TI, const TemplateParameterList* TPL);
 
-    template <std::ranges::range Range>
+    template <range_of<TemplateArgument> Range>
     void
     populate(
         std::vector<std::unique_ptr<TArg>>& result,
@@ -590,13 +537,18 @@ private:
     {
         for (TemplateArgument const& arg : args)
         {
+            if (arg.getIsDefaulted())
+            {
+                break;
+            }
             // KRYSTIAN NOTE: is this correct? should we have a
             // separate TArgKind for packs instead of "unlaminating"
             // them as we are doing here?
             if (arg.getKind() == TemplateArgument::Pack)
             {
                 populate(result, arg.pack_elements());
-            } else
+            }
+            else
             {
                 result.emplace_back(toTArg(arg));
             }
@@ -619,38 +571,6 @@ private:
     std::string
     extractName(DeclarationName N);
 
-    /*  Populate the Info.Parent of a declaration
-
-        This function will find the parent context `P` of
-        `D` and then:
-
-        @li It ensures the Info object for the parent context `P`
-        exists, and that `D` is included as a member of `P`.
-        @li It ensures the SymbolID of `P` is set as the parent
-        of `D`.
-     */
-    void
-    linkParent(Info& I, Decl* D);
-
-    /*  Ensure parent exists and has child has member
-     */
-    SymbolID
-    upsertParent(Decl* Parent, Info& Child);
-
-    /*  Emplace a member Info into a ScopeInfo
-
-        Given a ScopeInfo `P` and an Info `C`, this function will
-        add the SymbolID of `C` to `P.Members` and `P.Lookups[C.Name]`.
-
-        @param P The parent ScopeInfo
-        @param C The child Info
-     */
-    static
-    void
-    addMember(
-        ScopeInfo& P,
-        Info& C);
-
     /*  Parse the comments above a declaration as Javadoc
 
         This function will parse the comments above a declaration
@@ -666,30 +586,25 @@ private:
         Decl const* D);
 
     std::unique_ptr<TypeInfo>
-    toTypeInfo(
-        QualType qt,
-        ExtractMode extract_mode = ExtractMode::IndirectDependency);
+    toTypeInfo(QualType qt);
 
     std::unique_ptr<NameInfo>
     toNameInfo(
-        NestedNameSpecifier const* NNS,
-        ExtractMode extract_mode = ExtractMode::IndirectDependency);
+        NestedNameSpecifier const* NNS);
 
     template <class TArgRange = ArrayRef<TemplateArgument>>
     std::unique_ptr<NameInfo>
     toNameInfo(
         DeclarationName Name,
         std::optional<TArgRange> TArgs = std::nullopt,
-        const NestedNameSpecifier* NNS = nullptr,
-        ExtractMode extract_mode = ExtractMode::IndirectDependency);
+        const NestedNameSpecifier* NNS = nullptr);
 
     template <class TArgRange = ArrayRef<TemplateArgument>>
     std::unique_ptr<NameInfo>
     toNameInfo(
         const Decl* D,
         std::optional<TArgRange> TArgs = std::nullopt,
-        const NestedNameSpecifier* NNS = nullptr,
-        ExtractMode extract_mode = ExtractMode::IndirectDependency);
+        const NestedNameSpecifier* NNS = nullptr);
 
     std::unique_ptr<TArg>
     toTArg(const TemplateArgument& A);
@@ -781,74 +696,33 @@ private:
         return shouldExtract(D, getAccess(D));
     }
 
-
-    // Determine if a declaration passes the symbol filter
     bool
-    checkSymbolFilter(const NamedDecl* ND);
+    checkTypeFilters(Decl const* D, AccessSpecifier access);
 
-    // Determine if a declaration is in a file that should be extracted
     bool
-    inExtractedFile(const Decl* D);
+    checkFileFilters(Decl const* D);
 
-    /*  Determine if the declaration is in a special namespace
-
-        This function will determine if a declaration is in a
-        special namespace based on the current symbol filter
-        state and the special namespace patterns.
-
-        The function will check if the declaration is in a
-        special namespace, and if so, it will return true.
-
-        @param D the declaration to check
-        @param Patterns the special namespace patterns
-
-        @return true if the declaration is in a special namespace,
-        and false otherwise.
-     */
-    static
     bool
-    isInSpecialNamespace(
-        const Decl* D,
-        std::span<const FilterPattern> Patterns);
+    checkFileFilters(std::string_view symbolPath) const;
 
-    // @overload isInSpecialNamespace
-    static
     bool
-    isInSpecialNamespace(
-        const NestedNameSpecifier* NNS,
-        std::span<const FilterPattern> Patterns);
+    checkSymbolFilters(Decl const* D) const;
 
-    /* Check if a declaration is in a special namespace
-
-        This function will check if a declaration is in a special
-        namespace based on the current symbol filter state and
-        the special namespace patterns.
-
-        If the declaration is in a special namespace, the function
-        will set the NameInfo `I` to the appropriate special
-        namespace name (see-below or implementation-defined), and
-        return true.
-
-        @param I The NameInfo to set if the declaration is in a
-        special namespace
-        @param NNS the nested name specifier of the declaration
-        @param D the declaration to check
-
-        @return true if the declaration is in a special namespace,
-        and false otherwise.
-     */
     bool
-    checkSpecialNamespace(
-        std::unique_ptr<NameInfo>& I,
-        const NestedNameSpecifier* NNS,
-        const Decl* D) const;
+    checkSymbolFilters(NamedDecl const* ND, bool const isScope) const;
 
-    // @overload checkSpecialNamespace
     bool
-    checkSpecialNamespace(
-        std::unique_ptr<TypeInfo>& I,
-        const NestedNameSpecifier* NNS,
-        const Decl* D) const;
+    checkSymbolFilters(std::string_view symbolName, bool const isScope) const;
+
+    template <bool isScope>
+    bool
+    checkSymbolFiltersImpl(std::string_view symbolName) const;
+
+    SmallString<256>
+    qualifiedName(Decl const* D) const;
+
+    SmallString<256>
+    qualifiedName(NamedDecl const* ND) const;
 
     // =================================================
     // Element access
@@ -858,6 +732,54 @@ private:
      */
     Info*
     find(SymbolID const& id);
+
+     /*  Get Info from ASTVisitor InfoSet
+
+        This function will generate a symbol ID for the
+        declaration and call the other `find` function
+        to get the Info object for the declaration.
+     */
+    Info*
+    find(Decl* D);
+
+    /*  Find or traverse a declaration
+
+        This function will first attempt to find the Info
+        object for a declaration in the InfoSet.
+
+        If the Info object does not exist, the function
+        will traverse the declaration and create a new
+        Info object for the declaration.
+
+        This function is useful when we need to find the
+        Info object for a parameter or dependency, but
+        we don't want to traverse or populate the
+        declaration if it has already been extracted
+        because the context where the symbol is being
+        used (such as function parameters or aliases),
+        does not contain extra non-redundant and relevant
+        information about the symbol.
+
+        Thus, it avoids circular dependencies and infinite
+        loops when traversing the AST. If the traversal
+        has been triggered by a dependency, the second
+        call to this function will return the Info object
+        that was created during the first call.
+
+        @param D The declaration to find or traverse.
+
+        @return a pointer to the Info object.
+     */
+    Info*
+    findOrTraverse(Decl* D)
+    {
+        MRDOCS_CHECK_OR(D, nullptr);
+        if (auto* I = find(D))
+        {
+            return I;
+        }
+        return traverse(D);
+    }
 
     /* Get FileInfo from ASTVisitor files
 
@@ -905,29 +827,16 @@ private:
 
         @param D The declaration to extract
      */
-    template <std::derived_from<Decl> DeclType>
-    Expected<upsertResult<InfoTypeFor_t<DeclType>>>
+    template <
+        class InfoTy = void,
+        HasInfoTypeFor DeclType>
+    Expected<
+        upsertResult<
+            std::conditional_t<
+                std::same_as<InfoTy, void>,
+                InfoTypeFor_t<DeclType>,
+                InfoTy>>>
     upsert(DeclType* D);
-
-    /* Get or construct an empty Info for a dependency declaration.
-
-        The function will determine the symbol ID for the
-        declaration, store it in the `id` input parameter,
-        and add it to the set of dependencies.
-
-        The dependencies are processed after the initial
-        extraction pass, if the configuration option
-        `referencedDeclarations` is not set to `never`.
-     */
-    void
-    upsertDependency(Decl* D, SymbolID& id);
-
-    // @overload upsertDependency
-    void
-    upsertDependency(Decl const* D, SymbolID& id)
-    {
-        return upsertDependency(const_cast<Decl*>(D), id);
-    }
 };
 
 } // clang::mrdocs

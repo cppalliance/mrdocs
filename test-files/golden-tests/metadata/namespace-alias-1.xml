@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <namespace name="LongName" id="IjtkITsyqdEWPMXZF3lD/2/XH0s=">
+  </namespace>
+  <namespace-alias name="A" id="8bX9GsmeU9RHTU5qqahjfu5RFHw=">
+    <file path="namespace-alias-1.cpp" line="3"/>
+    <aliased name="LongName" id="IjtkITsyqdEWPMXZF3lD/2/XH0s="/>
+  </namespace-alias>
+</namespace>
+</mrdocs>

@@ -145,8 +145,7 @@ public:
     {
         auto& config = static_cast<
             ConfigImpl const&>(corpus_.config);
-        includePrivate_ = config->inaccessibleMembers !=
-            ConfigImpl::SettingsImpl::ExtractPolicy::Never;
+        includePrivate_ = config->privateMembers;
     }
 
     void
@@ -204,8 +203,8 @@ public:
     }
 
     void operator()(
-        const SpecializationInfo& I,
-        AccessKind access)
+        const SpecializationInfo&,
+        AccessKind)
     {
         // KRYSTIAN FIXME: currently unimplemented
     }
@@ -283,8 +282,8 @@ public:
     }
 
     void operator()(
-        const EnumConstantInfo& I,
-        AccessKind access)
+        const EnumConstantInfo&,
+        AccessKind)
     {
         // KRYSTIAN FIXME: currently unimplemented
     }

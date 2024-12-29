@@ -1,0 +1,138 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+[cols=2]
+|===
+| Name | Description 
+
+| <<#A-0e,`A`>> 
+| 
+
+| <<#A-00,`A&lt;int&gt;`>> 
+| 
+
+|===
+
+[#A-0e]
+== A
+
+=== Synopsis
+
+Declared in `&lt;templates&sol;ct&lowbar;mft&lowbar;expl&lowbar;outside&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+struct A;
+----
+
+=== Member Functions
+[cols=2]
+|===
+| Name | Description 
+
+| <<#A-0e-f,`f`>> 
+| 
+
+|===
+
+
+
+[#A-0e-f]
+== <<#A-0e,A>>::f
+
+=== Synopsis
+
+Declared in `&lt;templates&sol;ct&lowbar;mft&lowbar;expl&lowbar;outside&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename U&gt;
+void
+f();
+----
+
+[#A-00]
+== A&lt;int&gt;
+
+=== Synopsis
+
+Declared in `&lt;templates&sol;ct&lowbar;mft&lowbar;expl&lowbar;outside&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct <<#A-0e,A>>&lt;int&gt;;
+----
+
+=== Member Functions
+[cols=2]
+|===
+| Name | Description 
+
+| <<#A-00-f,`f`>> 
+| 
+|===
+
+
+
+[#A-00-f]
+== <<#A-00,A>>&lt;int&gt;::f
+
+=== Synopsis
+
+Declared in `&lt;templates&sol;ct&lowbar;mft&lowbar;expl&lowbar;outside&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename U&gt;
+void
+<<#A-00-f-03,f>>();
+----
+
+[.small]#<<#A-00-f-03,_» more..._>>#
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+void
+<<#A-00-f-07,f>>&lt;int&gt;();
+----
+
+[.small]#<<#A-00-f-07,_» more..._>>#
+
+[#A-00-f-03]
+== <<#A-00,A>>&lt;int&gt;::f
+
+=== Synopsis
+
+Declared in `&lt;templates&sol;ct&lowbar;mft&lowbar;expl&lowbar;outside&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename U&gt;
+void
+f();
+----
+
+[#A-00-f-07]
+== <<#A-00,A>>&lt;int&gt;::f&lt;int&gt;
+
+=== Synopsis
+
+Declared in `&lt;templates&sol;ct&lowbar;mft&lowbar;expl&lowbar;outside&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+void
+<<#A-0e-f,f>>&lt;int&gt;();
+----
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

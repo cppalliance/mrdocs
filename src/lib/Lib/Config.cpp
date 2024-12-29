@@ -31,11 +31,10 @@ Expected<void>
 Config::Settings::
 load(
     Config::Settings &s,
-    std::string_view configYaml,
+    std::string_view const configYaml,
     ReferenceDirectories const& dirs)
 {
     MRDOCS_TRY(PublicSettings::load(s, configYaml));
-    s.configDir = dirs.configDir;
     s.mrdocsRootDir = dirs.mrdocsRoot;
     s.cwdDir = dirs.cwd;
     s.configYaml = configYaml;
@@ -56,7 +55,7 @@ load_file(
     {
         s.config = configPath;
         std::string configYaml = files::getFileText(s.config).value();
-        Config::Settings::load(s, configYaml, dirs).value();
+        MRDOCS_TRY(Config::Settings::load(s, configYaml, dirs));
         return {};
     }
     MRDOCS_CHECK(ft.value() == files::FileType::not_found,
@@ -72,10 +71,9 @@ struct PublicSettingsVisitor {
         std::string_view name,
         T& value,
         ReferenceDirectories const& dirs,
-        PublicSettings::OptionProperties const& opts)
-    {
+        PublicSettings::OptionProperties const& opts) const {
         using DT = std::decay_t<T>;
-        if constexpr (std::ranges::range<T>)
+        if constexpr (std::ranges::range<DT>)
         {
             bool const useDefault = value.empty() && std::holds_alternative<DT>(opts.defaultValue);
             if (useDefault) {
@@ -85,171 +83,345 @@ struct PublicSettingsVisitor {
                 formatError("`{}` option is required", name));
             if constexpr (std::same_as<DT, std::string>)
             {
-                if (!value.empty() &&
-                    (opts.type == PublicSettings::OptionType::Path ||
-                    opts.type == PublicSettings::OptionType::DirPath ||
-                    opts.type == PublicSettings::OptionType::FilePath))
-                {
-                    // If the path is not absolute, we need to expand it
-                    if (!files::isAbsolute(value)) {
-                        auto exp = getBaseDir(value, dirs, self, useDefault, opts);
-                        if (!exp)
-                        {
-                            MRDOCS_TRY(value, files::makeAbsolute(value));
-                        }
-                        else
-                        {
-                            std::string_view baseDir = *exp;
-                            value = files::makeAbsolute(value, baseDir);
-                        }
-                    }
-                    MRDOCS_CHECK(!opts.mustExist || files::exists(value),
-                        formatError("`{}` option: path does not exist: {}", name, value));
-                    MRDOCS_CHECK(opts.type != PublicSettings::OptionType::DirPath || files::isDirectory(value),
-                        formatError("`{}` option: path should be a directory: {}", name, value));
-                    MRDOCS_CHECK(opts.type != PublicSettings::OptionType::FilePath || !files::isDirectory(value),
-                        formatError("`{}` option: path should be a regular file: {}", name, value));
-                }
-                else if (opts.type == PublicSettings::OptionType::String) {
-                    if (name == "base-url")
-                    {
-                        if (!value.empty() && value.back() != '/') {
-                            value.push_back('/');
-                        }
-                    }
-                }
+                return normalizeString(self, name, value, dirs, opts, useDefault);
             }
-            else if constexpr (std::same_as<DT, std::vector<std::string>>) {
-                if (opts.type == PublicSettings::OptionType::ListPath) {
-                    for (auto& v : value) {
-                        if (!files::isAbsolute(v))
-                        {
-                            auto exp = getBaseDir(v, dirs, self, useDefault, opts);
-                            if (!exp)
-                            {
-                                MRDOCS_TRY(v, files::makeAbsolute(v));
-                            }
-                            else
-                            {
-                                std::string_view baseDir = *exp;
-                                v = files::makeAbsolute(v, baseDir);
-                            }
-                        }
-                        MRDOCS_CHECK(!opts.mustExist || files::exists(v),
-                            formatError("`{}` option: path does not exist: {}", name, v));
-                        if (opts.commandLineSink && opts.filenameMapping.has_value())
-                        {
-                            auto const& map = opts.filenameMapping.value();
-                            for (auto& [from, to] : map) {
-                                auto f = files::getFileName(v);
-                                if (f == from)
-                                {
-                                    auto* dest = fileMapDest(self, to);
-                                    if (dest) {
-                                        *dest = v;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        else if constexpr (std::same_as<DT, int> || std::same_as<DT, unsigned>) {
-            if (name == "concurrency" && std::cmp_equal(value, 0))
+            else if constexpr (std::same_as<std::string, std::ranges::range_value_t<DT>>)
             {
-                value = std::thread::hardware_concurrency();
+                return normalizeStringRange(self, name, value, dirs, opts, useDefault);
             }
-            MRDOCS_CHECK(!opts.minValue || std::cmp_greater_equal(value, *opts.minValue),
-                formatError("`{}` option: value {} is less than minimum: {}", name, value, *opts.minValue));
-            MRDOCS_CHECK(!opts.maxValue || std::cmp_less_equal(value, *opts.maxValue),
-                formatError("`{}` option: value {} is greater than maximum: {}", name, value, *opts.maxValue));
+            else if constexpr (std::same_as<PathGlobPattern, std::ranges::range_value_t<DT>>)
+            {
+                for (auto& v : value)
+                {
+                    MRDOCS_TRY(normalizePathGlob(self, name, v, dirs, opts, useDefault));
+                }
+                return {};
+            }
         }
+        else if constexpr (std::same_as<DT, int> || std::same_as<DT, unsigned>)
+        {
+            return normalizeInteger(name, value, opts);
+        }
+        else
+        {
+            // Booleans and other types should already be validated because
+            // the struct already has their default values and there's no
+            // base path to prepend.
+            return {};
+        }
+        return {};
+    }
 
-        // Booleans should already be validated because the struct
-        // already has their default values
+    Expected<void>
+    normalizeString(
+        PublicSettings& self,
+        std::string_view const name,
+        std::string& value,
+        ReferenceDirectories const& dirs,
+        PublicSettings::OptionProperties const& opts,
+        bool const usingDefault) const {
+        if (!value.empty()
+            && (opts.type == PublicSettings::OptionType::Path
+                || opts.type == PublicSettings::OptionType::DirPath
+                || opts.type == PublicSettings::OptionType::FilePath))
+        {
+            MRDOCS_TRY(
+                normalizeStringPath(self, name, value, dirs, opts, usingDefault));
+        }
+        else if (opts.type == PublicSettings::OptionType::String)
+        {
+            // The base-url option should end with a slash
+            if (name == "base-url")
+            {
+                if (!value.empty() && value.back() != '/')
+                {
+                    value.push_back('/');
+                }
+            }
+        }
         return {};
     }
 
     static
-    std::string*
-    fileMapDest(PublicSettings& self, std::string_view mapDest)
-    {
-        if (mapDest == "config") {
-            return &self.config;
+    Expected<void>
+    normalizeStringPath(
+        PublicSettings& self,
+        std::string_view name,
+        std::string& value,
+        ReferenceDirectories const& dirs,
+        PublicSettings::OptionProperties const& opts,
+        bool const usingDefault) {
+        // If the path is not absolute, we need to expand it
+        if (!files::isAbsolute(value))
+        {
+            // Find the base directory for this option
+            if (auto expBaseDir
+                = getBaseDir(value, dirs, self, usingDefault, opts);
+                !expBaseDir)
+            {
+                // Can't find the base directory, make it absolute
+                MRDOCS_TRY(value, files::makeAbsolute(value));
+            }
+            else
+            {
+                std::string_view baseDir = *expBaseDir;
+                value = files::makeAbsolute(value, baseDir);
+            }
         }
-        if (mapDest == "compilationDatabase") {
-            return &self.compilationDatabase;
+        // Make it POSIX style
+        value = files::makePosixStyle(value);
+        if (!opts.mustExist && opts.shouldExist && !files::exists(value))
+        {
+            report::warn(
+                R"("{}" option: The directory or file "{}" does not exist)",
+                name,
+                value);
         }
-        return nullptr;
+        MRDOCS_CHECK(
+            !opts.mustExist || files::exists(value),
+            formatError("`{}` option: path does not exist: {}", name, value));
+        MRDOCS_CHECK(
+            opts.type != PublicSettings::OptionType::DirPath
+                || files::isDirectory(value),
+            formatError(
+                "`{}` option: path should be a directory: {}",
+                name,
+                value));
+        MRDOCS_CHECK(
+            opts.type != PublicSettings::OptionType::FilePath
+                || !files::isDirectory(value),
+            formatError(
+                "`{}` option: path should be a regular file: {}",
+                name,
+                value));
+
+        return {};
     }
 
-    Expected<std::string_view>
-    getBaseDir(
-        std::string_view referenceDirKey,
+    static
+    Expected<void>
+    normalizePathGlob(
+        PublicSettings& self,
+        std::string_view,
+        PathGlobPattern& value,
         ReferenceDirectories const& dirs,
-        PublicSettings const& settings)
+        PublicSettings::OptionProperties const& opts,
+        bool const usingDefault)
     {
-        if (referenceDirKey == "config-dir") {
-            return dirs.configDir;
+        // If the path is not absolute, we need to expand it
+        if (std::string_view pattern = value.pattern();
+            !files::isAbsolute(pattern))
+        {
+            // Find the base directory for this option
+            std::string absPattern(pattern);
+            if (auto expBaseDir = getBaseDir(absPattern, dirs, self, usingDefault, opts);
+                expBaseDir)
+            {
+                // Make the pattern absolute relative to the base directory
+                std::string baseDir = *expBaseDir;
+                baseDir = files::makePosixStyle(baseDir);
+                absPattern = files::makeAbsolute(pattern, baseDir);
+                MRDOCS_TRY(value, PathGlobPattern::create(absPattern));
+            }
         }
-        if (referenceDirKey == "cwd") {
+        return {};
+    }
+
+    template <std::ranges::range T>
+    requires std::same_as<std::ranges::range_value_t<T>, std::string>
+    Expected<void>
+    normalizeStringRange(
+        PublicSettings& self,
+        std::string_view name,
+        T& values,
+        ReferenceDirectories const& dirs,
+        PublicSettings::OptionProperties const& opts,
+        bool const usingDefault) const
+    {
+        if (opts.type == PublicSettings::OptionType::ListPath)
+        {
+            MRDOCS_TRY(normalizeStringPathRange(self, name, values, dirs, opts, usingDefault));
+        }
+
+        return {};
+    }
+
+    template <class T>
+    Expected<void>
+    normalizeStringPathRange(
+        PublicSettings& self,
+        std::string_view name,
+        T& values,
+        ReferenceDirectories const& dirs,
+        PublicSettings::OptionProperties const& opts,
+        bool const usingDefault) const
+    {
+        for (auto& value : values)
+        {
+            MRDOCS_DECL(normalizeStringPath(self, name, value, dirs, opts, usingDefault));
+        }
+
+        // Move command line sink values to appropriate destinations
+        if (opts.commandLineSink && opts.filenameMapping.has_value())
+        {
+            for (auto& value : values)
+            {
+                for (auto const& map = opts.filenameMapping.value();
+                     auto& [from, to] : map)
+                {
+                    auto filename = files::getFileName(value);
+                    if (filename == from)
+                    {
+                        self.visit(
+                            [&]<typename U>(
+                                std::string_view const otherName, U& otherValue)
+                        {
+                            if constexpr (std::convertible_to<U, std::string>)
+                            {
+                                if (otherName == to)
+                                {
+                                    otherValue = value;
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        }
+
+        return {};
+    }
+
+    template <std::integral T>
+    Expected<void>
+    normalizeInteger(
+        std::string_view name,
+        T& value,
+        PublicSettings::OptionProperties const& opts) const
+    {
+        if (name == "concurrency" && std::cmp_equal(value, 0))
+        {
+            value = std::thread::hardware_concurrency();
+            return {};
+        }
+        MRDOCS_CHECK(
+            !opts.minValue || std::cmp_greater_equal(value, *opts.minValue),
+            formatError(
+                "`{}` option: value {} is less than minimum: {}",
+                name,
+                value,
+                *opts.minValue));
+        MRDOCS_CHECK(
+            !opts.maxValue || std::cmp_less_equal(value, *opts.maxValue),
+            formatError(
+                "`{}` option: value {} is greater than maximum: {}",
+                name,
+                value,
+                *opts.maxValue));
+        return {};
+    }
+
+    static
+    Expected<std::string>
+    getBaseDir(
+        std::string_view relativeTo,
+        ReferenceDirectories const& dirs,
+        PublicSettings const& self)
+    {
+        if (relativeTo.empty())
+        {
+            return Unexpected(Error("relative-to value is empty"));
+        }
+
+        // Get base dir from the main reference directories
+        if (relativeTo == "cwd")
+        {
             return dirs.cwd;
         }
-        if (referenceDirKey == "mrdocs-root") {
+        if (relativeTo == "mrdocs-root")
+        {
             return dirs.mrdocsRoot;
         }
-        if (!referenceDirKey.empty()) {
-            Expected<std::string_view> res = Unexpected(formatError("unknown relative-to value: \"{}\"", referenceDirKey));
-            settings.visit([&]<typename T>(std::string_view const name, T& value)
+        Expected<std::string> res =
+            Unexpected(formatError("unknown relative-to value: \"{}\"", relativeTo));
+        bool found = false;
+        self.visit([&]<typename T>(std::string_view const optionName, T& value)
+        {
+            if constexpr (std::convertible_to<T, std::string_view>)
             {
-                if constexpr (std::convertible_to<T, std::string_view>)
+                if (found)
                 {
-                    if (name != referenceDirKey)
-                    {
-                        return;
-                    }
+                    return;
+                }
+                if (relativeTo == optionName)
+                {
                     std::string_view valueSv(value);
                     if (!value.empty())
                     {
                         res = value;
+                        found = true;
                         return;
                     }
                     res = Unexpected(formatError(
                             "relative-to value \"{}\" is empty",
-                            referenceDirKey));
+                            relativeTo));
                 }
-            });
-            return res;
-        }
-        return Unexpected(formatError("unknown relative-to value: \"{}\"", referenceDirKey));
+                else if (
+                    relativeTo.size() == optionName.size() + 4 &&
+                    relativeTo.starts_with(optionName) &&
+                    relativeTo.ends_with("-dir"))
+                {
+                    std::string_view valueSv(value);
+                    if (!value.empty())
+                    {
+                        res = files::getParentDir(value);
+                        found = true;
+                        return;
+                    }
+                    res = Unexpected(formatError(
+                            "relative-to value \"{}\" is empty",
+                            relativeTo));
+                }
+            }
+        });
+        return res;
     }
 
     static
     std::string_view
-    trimBaseDirReference(std::string_view s)
+    trimBaseDirReference(std::string_view const s0)
     {
+        std::string_view s = s0;
         if (s.size() > 2 &&
             s.front() == '<' &&
-            s.back() == '>') {
+            s.back() == '>')
+        {
             s.remove_prefix(1);
             s.remove_suffix(1);
         }
         return s;
     };
 
-    Expected<std::string_view>
+    static
+    Expected<std::string>
     getBaseDir(
         std::string& value,
         ReferenceDirectories const& dirs,
         PublicSettings const& settings,
-        bool useDefault,
+        bool const useDefault,
         PublicSettings::OptionProperties const& opts)
     {
         if (!useDefault) {
             // If we did not use the default value, we use "relativeto"
             // as the base path
-            std::string_view relativeTo = opts.relativeto;
+            std::string_view relativeTo = opts.relativeTo;
+            if (!relativeTo.starts_with('<') ||
+                !relativeTo.ends_with('>'))
+            {
+                return Unexpected(formatError(
+                    "option \"{}\" has no relativeTo dir '<>'",
+                    value));
+            }
             relativeTo = trimBaseDirReference(relativeTo);
             return getBaseDir(relativeTo, dirs, settings);
         }
@@ -257,16 +429,25 @@ struct PublicSettingsVisitor {
         // If we used the default value, the base dir comes from
         // the first path segment of the value
         std::string_view referenceDirKey = value;
-        auto pos = referenceDirKey.find('/');
+        auto const pos = referenceDirKey.find('/');
         if (pos != std::string::npos) {
             referenceDirKey = referenceDirKey.substr(0, pos);
         }
+        if (!referenceDirKey.starts_with('<') ||
+            !referenceDirKey.ends_with('>'))
+        {
+            return Unexpected(formatError(
+                "default value \"{}\" has no ref dir '<>'",
+                value));
+        }
         referenceDirKey = trimBaseDirReference(referenceDirKey);
-        MRDOCS_TRY(std::string_view baseDir, getBaseDir(referenceDirKey, dirs, settings));
+        MRDOCS_TRY(
+            std::string_view const baseDir,
+            getBaseDir(referenceDirKey, dirs, settings));
         if (pos != std::string::npos) {
             value = value.substr(pos + 1);
         }
-        return baseDir;
+        return std::string(baseDir);
     }
 };
 
@@ -275,6 +456,13 @@ Config::Settings::
 normalize(ReferenceDirectories const& dirs)
 {
     return PublicSettings::normalize(dirs, PublicSettingsVisitor{});
+}
+
+std::string
+Config::Settings::
+configDir() const
+{
+    return files::getParentDir(config);
 }
 
 } // mrdocs

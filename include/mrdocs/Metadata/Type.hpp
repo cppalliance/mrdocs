@@ -23,8 +23,7 @@
 #include <string_view>
 #include <vector>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 enum QualifierKind
 {
@@ -88,6 +87,15 @@ tag_invoke(
     v = toString(kind);
 }
 
+/** A possibly qualified type.
+
+    This class represents a type that may have
+    qualifiers (e.g. const, volatile).
+
+    This base class is used to store the kind
+    of type. Derived classes are used to store
+    the type information according to the kind.
+ */
 struct TypeInfo
 {
     /** The kind of TypeInfo this is
@@ -158,7 +166,7 @@ tag_invoke(
 }
 
 template<TypeKind K>
-struct IsType : TypeInfo
+struct TypeInfoCommonBase : TypeInfo
 {
     static constexpr TypeKind kind_id = K;
 
@@ -174,28 +182,28 @@ struct IsType : TypeInfo
 
 protected:
     constexpr
-    IsType() noexcept
+    TypeInfoCommonBase() noexcept
         : TypeInfo(K)
     {
     }
 };
 
 struct NamedTypeInfo
-    : IsType<TypeKind::Named>
+    : TypeInfoCommonBase<TypeKind::Named>
 {
     QualifierKind CVQualifiers = QualifierKind::None;
     std::unique_ptr<NameInfo> Name;
 };
 
 struct DecltypeTypeInfo
-    : IsType<TypeKind::Decltype>
+    : TypeInfoCommonBase<TypeKind::Decltype>
 {
     QualifierKind CVQualifiers = QualifierKind::None;
     ExprInfo Operand;
 };
 
 struct AutoTypeInfo
-    : IsType<TypeKind::Auto>
+    : TypeInfoCommonBase<TypeKind::Auto>
 {
     QualifierKind CVQualifiers = QualifierKind::None;
     AutoKind Keyword = AutoKind::Auto;
@@ -203,7 +211,7 @@ struct AutoTypeInfo
 };
 
 struct LValueReferenceTypeInfo
-    : IsType<TypeKind::LValueReference>
+    : TypeInfoCommonBase<TypeKind::LValueReference>
 {
     std::unique_ptr<TypeInfo> PointeeType;
 
@@ -214,7 +222,7 @@ struct LValueReferenceTypeInfo
 };
 
 struct RValueReferenceTypeInfo
-    : IsType<TypeKind::RValueReference>
+    : TypeInfoCommonBase<TypeKind::RValueReference>
 {
     std::unique_ptr<TypeInfo> PointeeType;
 
@@ -225,7 +233,7 @@ struct RValueReferenceTypeInfo
 };
 
 struct PointerTypeInfo
-    : IsType<TypeKind::Pointer>
+    : TypeInfoCommonBase<TypeKind::Pointer>
 {
     QualifierKind CVQualifiers = QualifierKind::None;
     std::unique_ptr<TypeInfo> PointeeType;
@@ -237,7 +245,7 @@ struct PointerTypeInfo
 };
 
 struct MemberPointerTypeInfo
-    : IsType<TypeKind::MemberPointer>
+    : TypeInfoCommonBase<TypeKind::MemberPointer>
 {
     QualifierKind CVQualifiers = QualifierKind::None;
     std::unique_ptr<TypeInfo> ParentType;
@@ -250,7 +258,7 @@ struct MemberPointerTypeInfo
 };
 
 struct ArrayTypeInfo
-    : IsType<TypeKind::Array>
+    : TypeInfoCommonBase<TypeKind::Array>
 {
     std::unique_ptr<TypeInfo> ElementType;
     ConstantExprInfo<std::uint64_t> Bounds;
@@ -262,7 +270,7 @@ struct ArrayTypeInfo
 };
 
 struct FunctionTypeInfo
-    : IsType<TypeKind::Function>
+    : TypeInfoCommonBase<TypeKind::Function>
 {
     std::unique_ptr<TypeInfo> ReturnType;
     std::vector<std::unique_ptr<TypeInfo>> ParamTypes;
@@ -340,7 +348,6 @@ toString(
     std::string_view Name = "");
 
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

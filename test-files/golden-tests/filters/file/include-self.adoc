@@ -1,0 +1,47 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Namespaces
+[cols=2]
+|===
+| Name | Description 
+
+| <<#TEST,`TEST`>> 
+| 
+
+|===
+
+[#TEST]
+== TEST
+
+=== Types
+[cols=2]
+|===
+| Name | Description 
+
+| <<#TEST-SUCCESS,`SUCCESS`>> 
+| 
+
+|===
+
+[#TEST-SUCCESS]
+== <<#TEST,TEST>>::SUCCESS
+
+=== Synopsis
+
+Declared in `&lt;include&hyphen;self&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct SUCCESS;
+----
+
+
+
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

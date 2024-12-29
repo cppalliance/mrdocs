@@ -19,11 +19,53 @@
 
 namespace clang::mrdocs {
 
-/** A visitor class for terminal types.
+/** A visitor to build objects from `Type`s.
 
-    This class is used to visit various terminal types in the AST.
-    It derives from the TypeVisitor class and provides specific
-    implementations for visiting different types.
+    MrDocs might need to convert class instances derived from `Type`
+    into other struct instances like `TypeInfo` or `NameInfo`.
+
+    This class can be used to define a visitor to build objects
+    from `Type`s. The visitor can be defined as a class that
+    derives from `TerminalTypeVisitor<Derived>`:
+
+    @code
+    class SomeTypeBuilder
+        : public TerminalTypeVisitor<SomeTypeBuilder> {
+    public:
+        void build{DerivedType}({DerivedType}* T);
+        // ...
+        void buildTerminal(...) { ... }
+        // ...
+        void populate(const FunctionType* T);
+    };
+    @endcode
+
+    When `SomeTypeBuilder::Visit` is called, the `Type` is cast
+    to the derived class type, any corresponding information is gathered,
+    and `Visit()` is called again with internal types until we reach
+    a terminal type. When a terminal type is reached, the corresponding
+    `build{DerivedType}` function or a `buildTerminal` overload is called.
+
+    This base class implements the common functionality to
+    visit different types and build the corresponding objects,
+    so that only the specific `build{DerivedType}` functions
+    need to be implemented by the derived class.
+
+    It inherits the `bool Visit(const Type *T)` function
+    from `TerminalTypeVisitor<Derived>`, which converts the
+    `Type` into the concrete type and calls the corresponding
+    `VisitXXXType` function. It also provides
+    `bool Visit(QualType QT)` as an extension to visit the
+    `Type` associated with the qualified type.
+
+    Each `VisitXXXType` function will store any relative information
+    about that type and call the corresponding `VisitXXXType` function
+    for the internal type. For instance, `VisitUsingType` will
+    call `Visit(T->getUnderlyingType())`, and so on, until we
+    reach terminal types.
+
+    This process will continue recursively until `VisitXXXType`
+    we reach a terminal type, such as `VisitPointerType`.
 
     @tparam Derived The derived class type.
  */
@@ -33,10 +75,16 @@ class TerminalTypeVisitor
 {
     friend class TerminalTypeVisitor::TypeVisitor;
 
+    // The ASTVisitor instance.
     ASTVisitor& Visitor_;
 
+    // The local qualifiers.
     unsigned Quals_ = 0;
+
+    // Whether the type is a pack expansion.
     bool IsPack_ = false;
+
+    // The optional NestedNameSpecifier.
     const NestedNameSpecifier* NNS_;
 
 public:
@@ -57,6 +105,27 @@ public:
     {
     }
 
+    /** Visit a Type.
+
+        This function casts the given Type to the derived class type
+        and calls the corresponding `VisitXXXType` function.
+     */
+    using TerminalTypeVisitor::TypeVisitor::Visit;
+
+    /** Visit a Qualified Type.
+
+        This function stores the local qualifiers of the given
+        Qualified Type and calls the corresponding `VisitXXXType`
+        function for the associated `Type`.
+     */
+    bool
+    Visit(QualType const QT)
+    {
+        Quals_ |= QT.getLocalFastQualifiers();
+        Type const* T = QT.getTypePtrOrNull();
+        return Visit(T);
+    }
+
     /** Get the ASTVisitor instance.
 
         This function returns a reference to the ASTVisitor instance.
@@ -64,99 +133,140 @@ public:
         @return A reference to the ASTVisitor instance.
      */
     ASTVisitor&
-    getASTVisitor()
+    getASTVisitor() const
     {
         return Visitor_;
     }
 
-    using TerminalTypeVisitor::TypeVisitor::Visit;
+    /** A placeholder for `buildPointer`
 
-    bool
-    Visit(QualType const QT)
-    {
-        Quals_ |= QT.getLocalFastQualifiers();
-        return Visit(QT.getTypePtrOrNull());
-    }
-
+        This function is an empty placeholder for `buildPointer` when
+        not defined by the `Derived` visitor.
+     */
     void
     buildPointer
-        (const PointerType* T,
-        unsigned quals)
+        (const PointerType*,
+        unsigned)
     {
     }
 
+    /** A placeholder for `buildLValueRef
+
+        This function is an empty placeholder for `buildLValueReference` when
+        not defined by the `Derived` visitor.
+     */
     void
     buildLValueReference(
-        const LValueReferenceType* T)
+        const LValueReferenceType*)
     {
     }
 
+    /** A placeholder for `buildRValueRef
+
+        This function is an empty placeholder for `buildRValueReference` when
+        not defined by the `Derived` visitor.
+     */
     void
     buildRValueReference(
-        const RValueReferenceType* T)
+        const RValueReferenceType*)
     {
     }
 
+    /** A placeholder for `buildMemberPoi
+
+        This function is an empty placeholder for `buildMemberPointer` when
+        not defined by the `Derived` visitor.
+     */
     void
     buildMemberPointer(
-        const MemberPointerType* T, unsigned quals)
+        const MemberPointerType*, unsigned)
     {
     }
 
+    /** A placeholder for `buildArray` wh
+
+        This function is an empty placeholder for `buildArray` when
+        not defined by the `Derived` visitor.
+     */
     void
     buildArray(
-        const ArrayType* T)
+        const ArrayType*)
     {
     }
 
     void
     populate(
-        const FunctionType* T)
+        const FunctionType*)
     {
     }
 
+    /** A placeholder for `buildDecltype`
+
+        This function is an empty placeholder for `buildDecltype` when
+        not defined by the `Derived` visitor.
+     */
     void
     buildDecltype(
-        const DecltypeType* T,
-        unsigned quals,
-        bool pack)
+        const DecltypeType*,
+        unsigned,
+        bool)
     {
     }
 
+    /** A placeholder for `buildAuto` whe
+
+        This function is an empty placeholder for `buildAuto` when
+        not defined by the `Derived` visitor.
+     */
     void
     buildAuto(
-        const AutoType* T,
-        unsigned quals,
-        bool pack)
+        const AutoType*,
+        unsigned,
+        bool)
     {
     }
 
+    /** A placeholder for `buildTerminal`
+
+        This function is an empty placeholder for `buildTerminal` when
+        not defined by the `Derived` visitor.
+     */
     void
     buildTerminal(
-        const NestedNameSpecifier* NNS,
-        const Type* T,
-        unsigned quals,
-        bool pack)
+        NestedNameSpecifier const*,
+        Type const*,
+        unsigned,
+        bool)
     {
     }
 
+    /** A placeholder for `buildTerminal`
+
+        This function is an empty placeholder for `buildTerminal` when
+        not defined by the `Derived` visitor.
+     */
     void
     buildTerminal(
-        const NestedNameSpecifier* NNS,
-        const IdentifierInfo* II,
-        std::optional<ArrayRef<TemplateArgument>> TArgs,
-        unsigned quals,
-        bool pack)
+        NestedNameSpecifier const*,
+        IdentifierInfo const*,
+        std::optional<ArrayRef<TemplateArgument>>,
+        unsigned,
+        bool)
     {
     }
 
+    /** A placeholder for `buildTerminal`
+
+        This function is an empty placeholder for `buildTerminal` when
+        not defined by the `Derived` visitor.
+     */
     void
     buildTerminal(
-        const NestedNameSpecifier* NNS,
-        const NamedDecl* D,
-        std::optional<ArrayRef<TemplateArgument>> TArgs,
-        unsigned quals,
-        bool pack)
+        NestedNameSpecifier const*,
+        NamedDecl*,
+        std::optional<ArrayRef<TemplateArgument>>,
+        unsigned,
+        bool)
     {
     }
 
@@ -174,56 +284,66 @@ private:
         return static_cast<Derived&>(*this);
     }
 
+    // A type with parentheses, e.g., `(int)`.
     bool
     VisitParenType(
         const ParenType* T)
     {
-        return Visit(T->getInnerType());
+        QualType I = T->getInnerType();
+        return Visit(I);
     }
 
     bool
     VisitMacroQualified(
         const MacroQualifiedType* T)
     {
-        return Visit(T->getUnderlyingType());
+        QualType UT = T->getUnderlyingType();
+        return Visit(UT);
     }
 
     bool
     VisitAttributedType(
         const AttributedType* T)
     {
-        return Visit(T->getModifiedType());
+        QualType MT = T->getModifiedType();
+        return Visit(MT);
     }
 
     bool
     VisitAdjustedType(
         const AdjustedType* T)
     {
-        return Visit(T->getOriginalType());
+        QualType OT = T->getOriginalType();
+        return Visit(OT);
     }
 
     bool
     VisitUsingType(
         const UsingType* T)
     {
-        return Visit(T->getUnderlyingType());
+        QualType UT = T->getUnderlyingType();
+        return Visit(UT);
     }
 
     bool
     VisitSubstTemplateTypeParmType(
         const SubstTemplateTypeParmType* T)
     {
-        return Visit(T->getReplacementType());
+        QualType RT = T->getReplacementType();
+        return Visit(RT);
     }
 
     // ----------------------------------------------------------------
 
+    // A type that was referred to using an elaborated type keyword,
+    // e.g., `struct S`, or via a qualified name, e.g., `N::M::type`.
     bool
     VisitElaboratedType(
         const ElaboratedType* T)
     {
         NNS_ = T->getQualifier();
-        return Visit(T->getNamedType());
+        QualType NT = T->getNamedType();
+        return Visit(NT);
     }
 
     bool
@@ -231,7 +351,8 @@ private:
         const PackExpansionType* T)
     {
         IsPack_ = true;
-        return Visit(T->getPattern());
+        QualType PT = T->getPattern();
+        return Visit(PT);
     }
 
     // ----------------------------------------------------------------
@@ -241,7 +362,8 @@ private:
         const PointerType* T)
     {
         getDerived().buildPointer(T, std::exchange(Quals_, 0));
-        return Visit(T->getPointeeType());
+        QualType PT = T->getPointeeType();
+        return Visit(PT);
     }
 
     bool
@@ -250,7 +372,8 @@ private:
     {
         getDerived().buildLValueReference(T);
         Quals_ = 0;
-        return Visit(T->getPointeeType());
+        QualType PT = T->getPointeeType();
+        return Visit(PT);
     }
 
     bool
@@ -259,7 +382,8 @@ private:
     {
         getDerived().buildRValueReference(T);
         Quals_ = 0;
-        return Visit(T->getPointeeType());
+        QualType PT = T->getPointeeType();
+        return Visit(PT);
     }
 
     bool
@@ -267,7 +391,8 @@ private:
         const MemberPointerType* T)
     {
         getDerived().buildMemberPointer(T, std::exchange(Quals_, 0));
-        return Visit(T->getPointeeType());
+        QualType PT = T->getPointeeType();
+        return Visit(PT);
     }
 
     bool
@@ -275,7 +400,8 @@ private:
         const FunctionType* T)
     {
         getDerived().populate(T);
-        return Visit(T->getReturnType());
+        QualType RT = T->getReturnType();
+        return Visit(RT);
     }
 
     bool
@@ -283,7 +409,8 @@ private:
         const ArrayType* T)
     {
         getDerived().buildArray(T);
-        return Visit(T->getElementType());
+        QualType ET = T->getElementType();
+        return Visit(ET);
     }
 
     // ----------------------------------------------------------------
@@ -312,8 +439,8 @@ private:
         const DeducedTemplateSpecializationType* T)
     {
         // KRYSTIAN TODO: we should probably add a TypeInfo
-        // to represent deduced types that also stores what
-        // it was deduced as.
+        // to represent deduced types also stores what it
+        // was deduced as.
         if (QualType DT = T->getDeducedType(); !DT.isNull())
         {
             return Visit(DT);
@@ -357,32 +484,45 @@ private:
         return true;
     }
 
+    // Visit a template specialization such as `A<T>`
     bool
     VisitTemplateSpecializationType(
-        const TemplateSpecializationType* T)
+        TemplateSpecializationType const* T)
     {
         if (auto SFINAE = getASTVisitor().isSFINAEType(T); SFINAE.has_value())
         {
             return getDerived().Visit(SFINAE->first);
         }
 
+        // In most cases, a template name is simply a reference
+        // to a class template. In `X<int> xi;` the template name
+        // is `template<typename T> class X { };`.
+        // Template names can also refer to function templates,
+        // C++0x template aliases, etc...
         TemplateName const TN = T->getTemplateName();
         MRDOCS_ASSERT(! TN.isNull());
-        NamedDecl* ND = TN.getAsTemplateDecl();
-        if(! T->isTypeAlias())
+
+        // The list of template parameters and a reference to
+        // the templated scoped declaration
+        NamedDecl* D = TN.getAsTemplateDecl();
+
+        if (!T->isTypeAlias())
         {
             auto* CT = T->getCanonicalTypeInternal().getTypePtrOrNull();
             if (auto* ICT = dyn_cast_or_null<InjectedClassNameType>(CT))
             {
-                ND = ICT->getDecl();
+                D = ICT->getDecl();
             }
             else if (auto* RT = dyn_cast_or_null<RecordType>(CT))
             {
-                ND = RT->getDecl();
+                D = RT->getDecl();
             }
         }
-        getDerived().buildTerminal(NNS_, ND,
-            T->template_arguments(), Quals_, IsPack_);
+
+        getDerived().buildTerminal(
+            NNS_, D,
+            T->template_arguments(),
+            Quals_, IsPack_);
         return true;
     }
 
@@ -468,7 +608,6 @@ private:
             NNS_, T, Quals_, IsPack_);
         return true;
     }
-
 };
 
 } // clang::mrdocs

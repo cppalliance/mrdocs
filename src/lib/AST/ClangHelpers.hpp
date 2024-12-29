@@ -77,13 +77,24 @@ struct InfoTypeFor<TranslationUnitDecl>
     : std::type_identity<NamespaceInfo> {};
 
 // Extract RecordInfo from anything derived from CXXRecordDecl
+// and ClassTemplateDecl. Decls derived from CXXRecordDecl
+// include class specializations.
 template <std::derived_from<CXXRecordDecl> DeclType>
 struct InfoTypeFor<DeclType>
     : std::type_identity<RecordInfo> {};
 
+template <>
+struct InfoTypeFor<ClassTemplateDecl>
+    : std::type_identity<RecordInfo> {};
+
 // Extract FunctionInfo from anything derived from FunctionDecl
 template <std::derived_from<FunctionDecl> FunctionTy>
+requires (!std::same_as<FunctionTy, CXXDeductionGuideDecl>)
 struct InfoTypeFor<FunctionTy>
+    : std::type_identity<FunctionInfo> {};
+
+template <>
+struct InfoTypeFor<FunctionTemplateDecl>
     : std::type_identity<FunctionInfo> {};
 
 // Extract EnumInfo from EnumDecl
@@ -101,9 +112,18 @@ template <std::derived_from<TypedefNameDecl> TypedefNameTy>
 struct InfoTypeFor<TypedefNameTy>
     : std::type_identity<TypedefInfo> {};
 
+template <>
+struct InfoTypeFor<TypeAliasTemplateDecl>
+    : std::type_identity<TypedefInfo> {};
+
 // Extract VariableInfo from anything derived from VarDecl
+// and VarTemplateDecl.
 template <std::derived_from<VarDecl> VarTy>
 struct InfoTypeFor<VarTy>
+    : std::type_identity<VariableInfo> {};
+
+template <>
+struct InfoTypeFor<VarTemplateDecl>
     : std::type_identity<VariableInfo> {};
 
 // Extract FieldInfo from FieldDecl
@@ -138,7 +158,7 @@ struct InfoTypeFor<ConceptDecl>
 
 /// Determine if there's a MrDocs Info type for a Clang DeclType
 template <class T>
-concept HasInfoTypeFor = requires
+concept HasInfoTypeFor = std::derived_from<T, Decl> && requires
 {
     typename InfoTypeFor<T>::type;
 };
@@ -151,7 +171,7 @@ using InfoTypeFor_t = typename InfoTypeFor<DeclType>::type;
  */
 inline
 AccessKind
-convertToAccessKind(AccessSpecifier const spec)
+toAccessKind(AccessSpecifier const spec)
 {
     switch(spec)
     {
@@ -209,7 +229,7 @@ toConstexprKind(ConstexprSpecKind const spec)
  */
 inline
 ExplicitKind
-convertToExplicitKind(ExplicitSpecifier const& spec)
+toExplicitKind(ExplicitSpecifier const& spec)
 {
     // no explicit-specifier
     if (!spec.isSpecified())
@@ -231,7 +251,7 @@ convertToExplicitKind(ExplicitSpecifier const& spec)
  */
 inline
 NoexceptKind
-convertToNoexceptKind(ExceptionSpecificationType const spec)
+toNoexceptKind(ExceptionSpecificationType const spec)
 {
     // KRYSTIAN TODO: right now we convert pre-C++17 dynamic exception
     // specifications to an (roughly) equivalent noexcept-specifier
@@ -263,7 +283,7 @@ convertToNoexceptKind(ExceptionSpecificationType const spec)
  */
 inline
 OperatorKind
-convertToOperatorKind(OverloadedOperatorKind const kind)
+toOperatorKind(OverloadedOperatorKind const kind)
 {
     switch(kind)
     {
@@ -368,7 +388,7 @@ convertToOperatorKind(OverloadedOperatorKind const kind)
  */
 inline
 ReferenceKind
-convertToReferenceKind(RefQualifierKind const kind)
+toReferenceKind(RefQualifierKind const kind)
 {
     switch(kind)
     {
@@ -404,7 +424,7 @@ toRecordKeyKind(TagTypeKind const kind)
  */
 inline
 QualifierKind
-convertToQualifierKind(unsigned const quals)
+toQualifierKind(unsigned const quals)
 {
     std::underlying_type_t<QualifierKind> result = QualifierKind::None;
     if (quals & Qualifiers::Const)
@@ -727,6 +747,104 @@ getParent(Decl const* D) {
     return getParent(const_cast<Decl*>(D));
 }
 
+MRDOCS_DECL
+void
+getQualifiedName(
+    NamedDecl const* ND,
+    raw_ostream &Out,
+    const PrintingPolicy &Policy);
+
+// If D refers to an implicit instantiation of a template specialization,
+// decay it to the Decl of the primary template. The template arguments
+// will be extracted separately as part of the TypeInfo.
+// For instance, a Decl to `S<0>` becomes a Decl to `S`, unless `S<0>` is
+// an explicit specialization of the primary template.
+// This function also applies recursively to the parent of D so that
+// the primary template is resolved for nested classes.
+// For instance, a Decl to `A<0>::S` becomes a Decl to `A::S`, unless
+// `A<0>` is an explicit specialization of the primary template.
+MRDOCS_DECL
+Decl const*
+decayToPrimaryTemplate(Decl const* D);
+
+// Iterate the Decl and check if this is a template specialization
+// also considering the parent declarations. For instance,
+// S<0>::M<0> is a template specialization of S<0> and M<0>.
+// This function returns true is both S<0> and M<0> are implicit
+// template specializations.
+MRDOCS_DECL
+bool
+isAllImplicit(Decl const* D);
+
+#ifdef NDEBUG
+#define MRDOCS_SYMBOL_TRACE(D, C)
+#else
+
+#    define MRDOCS_SYMBOL_TRACE_MERGE_(a, b) a##b
+#    define MRDOCS_SYMBOL_TRACE_LABEL_(a)    MRDOCS_SYMBOL_TRACE_MERGE_(symbol_name_, a)
+#    define MRDOCS_SYMBOL_TRACE_UNIQUE_NAME  MRDOCS_SYMBOL_TRACE_LABEL_(__LINE__)
+
+namespace detail {
+    // concept to check if ID->printQualifiedName(
+    // std::declval<llvm::raw_svector_ostream&>(),
+    // getASTVisitor().context_.getPrintingPolicy());
+    // is a valid expression
+    template <class T>
+    concept HasPrintQualifiedName = requires(T const& D, llvm::raw_svector_ostream& OS, PrintingPolicy PP)
+    {
+        D.printQualifiedName(OS, PP);
+    };
+
+    template <class T>
+    concept HasPrint = requires(T const& D, llvm::raw_svector_ostream& OS, PrintingPolicy PP)
+    {
+        D.print(OS, PP);
+    };
+
+    template <class T>
+    void
+    printTraceName(T const* D, ASTContext const& C, SmallString<256>& symbol_name)
+    {
+        if (!D)
+        {
+            return;
+        }
+        llvm::raw_svector_ostream os(symbol_name);
+        if constexpr (std::derived_from<T, Decl>)
+        {
+            if (NamedDecl const* ND = dyn_cast<NamedDecl>(D))
+            {
+                getQualifiedName(ND, os, C.getPrintingPolicy());
+            }
+            else
+            {
+                os << "<unnamed " << D->Decl::getDeclKindName() << ">";
+            }
+        }
+        else if constexpr (HasPrintQualifiedName<T>)
+        {
+            D->printQualifiedName(os, C.getPrintingPolicy());
+        }
+        else if constexpr (HasPrint<T>)
+        {
+            D->print(os, C.getPrintingPolicy());
+        }
+    }
+
+    template <class T>
+    requires (!std::is_pointer_v<T>)
+    void
+    printTraceName(T const& D, ASTContext const& C, SmallString<256>& symbol_name)
+    {
+        printTraceName(&D, C, symbol_name);
+    }
+} // namespace detail
+
+#define MRDOCS_SYMBOL_TRACE(D, C) \
+    SmallString<256> MRDOCS_SYMBOL_TRACE_UNIQUE_NAME;         \
+    detail::printTraceName(D, C, MRDOCS_SYMBOL_TRACE_UNIQUE_NAME); \
+    report::debug("{}", std::string_view(MRDOCS_SYMBOL_TRACE_UNIQUE_NAME.str()))
+#endif
 
 } // clang::mrdocs
 

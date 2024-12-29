@@ -10,12 +10,11 @@
 //
 
 #include "MultiPageVisitor.hpp"
-#include <mrdocs/Support/Path.hpp>
+#include "VisitorHelpers.hpp"
 #include <fstream>
+#include <mrdocs/Support/Path.hpp>
 
-namespace clang {
-namespace mrdocs {
-namespace hbs {
+namespace clang::mrdocs::hbs {
 
 template <class T>
 requires std::derived_from<T, Info> || std::same_as<T, OverloadSet>
@@ -23,18 +22,13 @@ void
 MultiPageVisitor::
 operator()(T const& I0)
 {
-    /*  Determine if the info is supported by this generator.
-
-        This filters Info types for which the generator
-        cannot and should not generate output.
-     */
     if constexpr (std::derived_from<T, Info>)
     {
-        if (I0.isSpecialization())
-        {
-            return;
-        }
+        MRDOCS_CHECK_OR(shouldGenerate(I0));
     }
+
+    // Increment the count
+    count_.fetch_add(1, std::memory_order_relaxed);
 
     // If T is an OverloadSet, we make a copy for the lambda because
     // these are temporary objects that don't live in the corpus.
@@ -114,6 +108,4 @@ operator()(T const& I0)
 
 template void MultiPageVisitor::operator()<OverloadSet>(OverloadSet const&);
 
-} // hbs
-} // mrdocs
-} // clang
+} // clang::mrdocs::hbs

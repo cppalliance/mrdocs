@@ -44,5 +44,27 @@ generateScopeOverloadsArray(
 }
 
 
+void
+addMember(
+    ScopeInfo& P,
+    Info& C)
+{
+    // Include C.id in P.Members if it's not already there
+    if (bool const exists = std::ranges::find(P.Members, C.id)
+                            != P.Members.end();
+        !exists)
+    {
+        P.Members.emplace_back(C.id);
+    }
+
+    // Include C.id in P.Lookups[C.Name] if it's not already there
+    auto& lookups = P.Lookups.try_emplace(C.Name).first->second;
+    if (bool const exists = std::ranges::find(lookups, C.id) != lookups.end();
+        !exists)
+    {
+        lookups.emplace_back(C.id);
+    }
+}
+
 } // mrdocs
 } // clang

@@ -173,8 +173,8 @@ getParentDir(
 
 std::string
 getParentDir(
-    std::string_view pathName,
-    unsigned levels)
+    std::string_view const pathName,
+    unsigned const levels)
 {
     std::string res(pathName);
     for (unsigned i = 0; i < levels; ++i)

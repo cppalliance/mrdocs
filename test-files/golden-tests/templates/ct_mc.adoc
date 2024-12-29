@@ -1,0 +1,81 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+[cols=2]
+|===
+| Name | Description 
+
+| <<#A,`A`>> 
+| 
+
+|===
+
+[#A]
+== A
+
+=== Synopsis
+
+Declared in `&lt;templates&sol;ct&lowbar;mc&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+struct A;
+----
+
+=== Types
+[cols=2]
+|===
+| Name | Description 
+
+| <<#A-B,`B`>> 
+| 
+
+|===
+
+
+
+[#A-B]
+== <<#A,A>>::B
+
+=== Synopsis
+
+Declared in `&lt;templates&sol;ct&lowbar;mc&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct B;
+----
+
+=== Member Functions
+[cols=2]
+|===
+| Name | Description 
+
+| <<#A-B-f,`f`>> 
+| 
+
+|===
+
+
+
+[#A-B-f]
+== <<#A,A>>::<<#A-B,B>>::f
+
+=== Synopsis
+
+Declared in `&lt;templates&sol;ct&lowbar;mc&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f();
+----
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
