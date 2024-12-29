@@ -6,6 +6,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -160,6 +161,32 @@ public:
         }
     }
 
+    /** Visit the members of specified Info in a stable order.
+
+        @param I The Info to visit.
+        @param info The Info to visit.
+        @param f The function to invoke.
+        @param args The arguments to pass to the function.
+    */
+    template <InfoParent T, class F, class... Args>
+    void
+    orderedTraverse(
+        T const& I, F&& f, Args&&... args) const
+    {
+        std::vector<SymbolID> members(I.Members.begin(), I.Members.end());
+        std::stable_sort(members.begin(), members.end(), [this](SymbolID const& lhs, SymbolID const& rhs)
+        {
+            auto const& lhsInfo = get(lhs);
+            auto const& rhsInfo = get(rhs);
+            return lhsInfo < rhsInfo;
+        });
+        for (auto const& id : members)
+        {
+            visit(get(id), std::forward<F>(f),
+                  std::forward<Args>(args)...);
+        }
+    }
+
     /** Visit the member overloads of specified ScopeInfo.
 
         This function iterates the members of the
@@ -180,6 +207,14 @@ public:
     */
     template <class F, class... Args>
     void traverseOverloads(
+        ScopeInfo const& S,
+        F&& f,
+        Args&&... args) const;
+
+    /** Visit the member overloads of specified ScopeInfo in stable order
+    */
+    template <class F, class... Args>
+    void orderedTraverseOverloads(
         ScopeInfo const& S,
         F&& f,
         Args&&... args) const;
@@ -238,25 +273,20 @@ get(
 
 template <class F, class... Args>
 void
-Corpus::
-traverseOverloads(
+traverseOverloadsImpl(
+    Corpus const& c,
+    std::vector<SymbolID> const& members0,
     ScopeInfo const& S,
-    F&& f, Args&&... args) const
+    F&& f, Args&&... args)
 {
-    MRDOCS_ASSERT(S.Members.empty() == S.Lookups.empty());
-    for(const SymbolID& id : S.Members)
+    for(const SymbolID& id : members0)
     {
-        const Info& member = get(id);
+        const Info& member = c.get(id);
         const auto& members = S.Lookups.at(member.Name);
         auto first_func = std::ranges::find_if(
-            members, [this](const SymbolID& elem)
+            members, [&c](const SymbolID& elem)
             {
-            #if 0
-                const Info& I = get(elem);
-                return I.isFunction() || I.isGuide();
-            #else
-                return get(elem).isFunction();
-            #endif
+                return c.get(elem).isFunction();
             });
         bool const nonOverloadedFunction = members.size() == 1;
         bool const notFunction = first_func == members.end();
@@ -277,6 +307,40 @@ traverseOverloads(
         }
     }
 }
+
+template <class F, class... Args>
+void
+Corpus::
+traverseOverloads(
+    ScopeInfo const& S,
+    F&& f, Args&&... args) const
+{
+    MRDOCS_ASSERT(S.Members.empty() == S.Lookups.empty());
+    return traverseOverloadsImpl(
+        *this, S.Members, S, std::forward<F>(f), std::forward<Args>(args)...);
+
+}
+
+template <class F, class... Args>
+void
+Corpus::
+orderedTraverseOverloads(
+    ScopeInfo const& S,
+    F&& f,
+    Args&&... args) const
+{
+    MRDOCS_ASSERT(S.Members.empty() == S.Lookups.empty());
+    std::vector<SymbolID> members(S.Members.begin(), S.Members.end());
+    std::stable_sort(members.begin(), members.end(), [this](SymbolID const& lhs, SymbolID const& rhs)
+    {
+        auto const& lhsInfo = get(lhs);
+        auto const& rhsInfo = get(rhs);
+        return lhsInfo < rhsInfo;
+    });
+    return traverseOverloadsImpl(
+            *this, members, S, std::forward<F>(f), std::forward<Args>(args)...);
+}
+
 
 class Corpus::iterator
 {
