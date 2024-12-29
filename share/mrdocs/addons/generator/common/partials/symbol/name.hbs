@@ -24,10 +24,10 @@
 {{else~}}
     {{#if (and link.url (not nolink))~}}
         {{! Symbol with URL: link to the symbol documentation ~}}
-        {{#>markup/a href=link.url}}{{name}}{{/markup/a~}}
+        {{#>markup/a href=link.url}}{{or name "<unnamed>"}}{{/markup/a~}}
     {{else~}}
         {{! Symbol without URL: plain text ~}}
-        {{name~}}
+        {{or name "<unnamed>"~}}
     {{/if~}}
     {{#if (contains (arr "explicit" "partial") template.kind)~}}
         {{! Explicit or partial template: render the template arguments ~}}
