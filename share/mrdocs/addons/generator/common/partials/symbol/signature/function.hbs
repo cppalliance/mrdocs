@@ -25,7 +25,9 @@
 {{#if refQualifier}} {{refQualifier}}{{/if~}}
 {{#if exceptionSpec}} {{exceptionSpec}}{{/if~}}
 {{#if (eq class "normal")}}{{>type/declarator-suffix return}}{{/if~}}
-{{#if requires}} requires {{requires}}{{/if~}}
+{{#if requires}}
+
+requires {{requires}}{{/if~}}
 {{#if hasOverrideAttr}} override{{/if~}}
 {{#if isFinal}} final{{/if~}}
 {{#if isPure}} = 0{{/if~}}
