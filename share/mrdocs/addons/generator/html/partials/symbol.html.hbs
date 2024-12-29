@@ -272,18 +272,22 @@
 {{#if symbol.doc.preconditions}}
 <div>
 {{#> markup/dynamic-level-h level=2 }}Preconditions{{/markup/dynamic-level-h}}
+<ul>
 {{#each symbol.doc.preconditions}}
-<p>{{{.}}}</p>
+<li>{{{.}}}</li>
 {{/each}}
+</ul>
 </div>
 {{/if}}
 {{! Postconditions }}
 {{#if symbol.doc.postconditions}}
 <div>
 {{#> markup/dynamic-level-h level=2 }}Postconditions{{/markup/dynamic-level-h}}
+<ul>
 {{#each symbol.doc.postconditions}}
-<p>{{{.}}}</p>
+<li>{{{.}}}</li>
 {{/each}}
+</ul>
 </div>
 {{/if}}
 {{! See Also }}
