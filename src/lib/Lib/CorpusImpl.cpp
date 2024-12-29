@@ -6,6 +6,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -18,7 +19,7 @@
 #include "lib/Support/Chrono.hpp"
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Support/Error.hpp>
-#include <llvm/ADT/STLExtras.h>
+#include <mrdocs/Support/ThreadPool.hpp>
 #include <chrono>
 
 namespace clang {

@@ -287,6 +287,70 @@ tag_invoke(
         });
 }
 
+bool
+operator<(
+    Info const& lhs,
+    Info const& rhs) noexcept
+{
+    if (lhs.Kind != rhs.Kind)
+    {
+        return lhs.Kind < rhs.Kind;
+    }
+    if (lhs.Name != rhs.Name)
+    {
+        return lhs.Name < rhs.Name;
+    }
+
+    // If kind and name are the same, compare by template arguments
+    TemplateInfo const* lhsTemplate = visit(lhs, [](auto const& U)
+        -> TemplateInfo const*
+    {
+        if constexpr (requires { U.Template; })
+        {
+            if (U.Template)
+            {
+                return &*U.Template;
+            }
+        }
+        return nullptr;
+    });
+    TemplateInfo const* rhsTemplate = visit(rhs, [](auto const& U)
+        -> TemplateInfo const*
+    {
+        if constexpr (requires { U.Template; })
+        {
+            if (U.Template)
+            {
+                return &*U.Template;
+            }
+        }
+        return nullptr;
+    });
+    if (!lhsTemplate && !rhsTemplate)
+    {
+        return false;
+    }
+    if (!lhsTemplate)
+    {
+        return true;
+    }
+    if (!rhsTemplate)
+    {
+        return false;
+    }
+    if (lhsTemplate->Args.size() != rhsTemplate->Args.size())
+    {
+        return lhsTemplate->Args.size() < rhsTemplate->Args.size();
+    }
+    for (std::size_t i = 0; i < lhsTemplate->Args.size(); ++i)
+    {
+        if (lhsTemplate->Args[i] != rhsTemplate->Args[i])
+        {
+            return lhsTemplate->Args[i]->Kind < rhsTemplate->Args[i]->Kind;
+        }
+    }
+    return false;
+}
 
 } // mrdocs
 } // clang
