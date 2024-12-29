@@ -53,7 +53,7 @@
 [,cols=2]
 |===
 |Name |Description
-{{#each symbol.members}}
+{{#each (filter_by symbol.members "isRegular" "isSeeBelow")}}
 {{#if (ne kind "enum-constant")}}
 |xref:{{{anchor}}}[`{{>symbol/name . nolink=true}}`]
 {{else}}
@@ -145,7 +145,7 @@
 {{else}}
 {{#with (flattenUnique symbol.members "doc.tparams" "name") as |allTParams|}}
 {{#if (ne (len allTParams) 0)}}
-{{#> markup/dynamic-level-h }}Parameters{{/markup/dynamic-level-h}}
+{{#> markup/dynamic-level-h }}Template Parameters{{/markup/dynamic-level-h}}
 
 |===
 | Name | Description

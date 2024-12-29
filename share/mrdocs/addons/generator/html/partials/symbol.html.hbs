@@ -65,7 +65,7 @@
 </tr>
 </thead>
 <tbody>
-{{#each symbol.members}}
+{{#each (filter_by symbol.members "isRegular" "isSeeBelow")}}
 <tr>
 {{#if (ne kind "enum-constant")}}
 <td><a href="#{{anchor}}">{{>symbol/name . nolink=true}}</a></td>

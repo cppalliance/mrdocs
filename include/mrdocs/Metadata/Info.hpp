@@ -17,15 +17,12 @@
 #include <mrdocs/Metadata/Javadoc.hpp>
 #include <mrdocs/Metadata/Specifiers.hpp>
 #include <mrdocs/Metadata/Symbols.hpp>
+#include <mrdocs/Metadata/ExtractionMode.hpp>
 #include <mrdocs/Support/Visitor.hpp>
-#include <array>
 #include <memory>
 #include <string>
-#include <string_view>
-#include <vector>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 /* Forward declarations
  */
@@ -74,7 +71,7 @@ struct MRDOCS_VISIBLE
 
     /** Kind of declaration.
     */
-    InfoKind Kind;
+    InfoKind Kind = InfoKind::None;
 
     /** Declaration access.
 
@@ -87,18 +84,19 @@ struct MRDOCS_VISIBLE
     */
     AccessKind Access = AccessKind::None;
 
-    /** Implicitly extracted flag.
+    /** Determine why a symbol is extracted.
 
-        This flag distinguishes primary `Info` from its dependencies.
+        This flag distinguishes `Info` from its dependencies and
+        indicates why it was extracted.
 
-        A primary `Info` is one which was extracted during AST traversal
-        because it satisfied all configured conditions to be extracted.
+        Non-dependencies can be extracted in normal mode,
+        see-below mode, or implementation-defined mode.
 
-        An `Info` dependency is one which does not meet the configured
+        A dependency is a symbol which does not meet the configured
         conditions for extraction, but had to be extracted due to it
         being used transitively by a primary `Info`.
     */
-    bool Implicit = false;
+    ExtractionMode Extraction = ExtractionMode::Dependency;
 
     /** The parent symbol, if any.
 
@@ -228,7 +226,14 @@ tag_invoke(
     Info const& I,
     DomCorpus const* domCorpus);
 
-} // mrdocs
-} // clang
+/** Compare two Info objects
+ */
+MRDOCS_DECL
+bool
+operator<(
+    Info const& lhs,
+    Info const& rhs) noexcept;
+
+} // clang::mrdocs
 
 #endif

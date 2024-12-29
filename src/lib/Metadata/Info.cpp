@@ -71,7 +71,11 @@ tag_invoke(
     }
     io.map("kind", I.Kind);
     io.map("access", I.Access);
-    io.map("implicit", I.Implicit);
+    io.map("extraction", I.Extraction);
+    io.map("isRegular", I.Extraction == ExtractionMode::Regular);
+    io.map("isSeeBelow", I.Extraction == ExtractionMode::SeeBelow);
+    io.map("isImplementationDefined", I.Extraction == ExtractionMode::ImplementationDefined);
+    io.map("isDependency", I.Extraction == ExtractionMode::Dependency);
     if (I.Parent)
     {
         io.map("parent", I.Parent);

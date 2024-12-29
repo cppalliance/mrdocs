@@ -1,6 +1,10 @@
 {{!--
     Renders a Name Info object.
 
+    Name Info objects are typically fields of a Type Object.
+    They carry information about the Symbol the type
+    refers to.
+
     Expected Context: {Name Info Object}
 
     Optional parameters:
@@ -14,9 +18,11 @@
 {{#if prefix~}}
     {{> symbol/name-info prefix nolink=nolink~}}::
 {{~/if~}}
-{{#if (contains (arr "see-below" "implementation-defined") name)~}}
+{{#if symbol.isSeeBelow ~}}
+    {{ str '_'}}see-below{{ str '_'~}}
+{{else if symbol.isImplementationDefined~}}
     {{! These are special names that should not be linked. }}
-    {{ str '_'}}{{name}}{{ str '_'~}}
+    {{ str '_'}}implementation-defined{{ str '_'~}}
 {{else~}}
     {{! Render the name of the symbol. ~}}
     {{#if (and symbol.url (not nolink))~}}

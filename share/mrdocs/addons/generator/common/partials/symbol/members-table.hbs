@@ -11,7 +11,7 @@
 
     See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
 --}}
-{{#if members}}
+{{#if (any_of_by members "isRegular" "isSeeBelow")}}
 {{#>markup/h level=(select @root.config.multipage 1 2)}}{{title}}{{/markup/h}}
 {{#>markup/table cols=2}}
 {{#>markup/thead}}
@@ -21,7 +21,7 @@
 {{/markup/tr}}
 {{/markup/thead}}
 {{#>markup/tbody}}
-{{#each (sort_by members "name")}}
+{{#each (filter_by (sort_by members "name") "isRegular" "isSeeBelow")}}
 {{> symbol/detail/members-table-row .}}
 {{/each}}
 {{/markup/tbody}}
