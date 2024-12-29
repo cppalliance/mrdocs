@@ -15,6 +15,7 @@
     See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
 --}}
 {{>symbol/members-table members=tranche.namespaces title="Namespaces"}}
+{{>symbol/members-table members=tranche.namespace-aliases title="Namespace Aliases"}}
 {{>symbol/members-table members=(concat tranche.records tranche.types) title=(concat (select label (concat label " ") "") "Types")}}
 {{>symbol/members-table members=tranche.enums title=(concat (select label (concat label " ") "") "Enums")}}
 {{#if is-namespace}}
