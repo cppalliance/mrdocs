@@ -6,6 +6,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -57,6 +58,8 @@ struct FieldInfo
     bool IsDeprecated = false;
 
     bool HasNoUniqueAddress = false;
+
+    std::vector<std::string> Attributes;
 
     //--------------------------------------------
 
