@@ -168,7 +168,7 @@
 | Name | Description
 
 {{#each symbol.doc.params}}
-| *{{name}}*
+| *{{name}}*{{#if direction}} [{{direction}}]{{/if}}
 | {{{description}}}
 {{/each}}
 |===

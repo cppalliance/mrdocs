@@ -235,7 +235,7 @@
 <tbody>
 {{#each symbol.doc.params}}
 <tr>
-<td><strong>{{name}}</strong></td>
+<td><strong>{{name}}</strong>{{#if direction}} [{{direction}}]{{/if}}</td>
 <td>{{{description}}}</td>
 </tr>
 {{/each}}
