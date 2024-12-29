@@ -13,4 +13,5 @@
 template{{ str '<' }}{{#each params}}{{#unless (and @first @last)}}
     {{/unless}}{{>template/param~}}
     {{#unless @last}},{{/unless~}}
-{{/each}}{{ str '>' }}{{#if requires}} requires {{requires}}{{/if}}
+{{/each}}{{ str '>' }}{{#if requires}}
+requires {{requires}}{{/if}}
