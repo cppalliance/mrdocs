@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -26,7 +28,9 @@
 [#A]
 == A
 
+
 === Synopsis
+
 
 Declared in `&lt;alias&hyphen;template&period;cpp&gt;`
 
@@ -42,7 +46,9 @@ struct A;
 [#B]
 == B
 
+
 === Synopsis
+
 
 Declared in `&lt;alias&hyphen;template&period;cpp&gt;`
 
@@ -60,7 +66,9 @@ struct B;
 [#D]
 == D
 
+
 === Synopsis
+
 
 Declared in `&lt;alias&hyphen;template&period;cpp&gt;`
 
@@ -71,6 +79,7 @@ struct D;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -85,7 +94,9 @@ struct D;
 [#D-E]
 == <<D,D>>::E
 
+
 === Synopsis
+
 
 Declared in `&lt;alias&hyphen;template&period;cpp&gt;`
 
@@ -98,7 +109,9 @@ using E = <<B,B>>&lt;T, U&gt;;
 [#C]
 == C
 
+
 === Synopsis
+
 
 Declared in `&lt;alias&hyphen;template&period;cpp&gt;`
 

@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -17,7 +19,9 @@
 [#T]
 == T
 
+
 === Synopsis
+
 
 Declared in `&lt;record&hyphen;1&period;cpp&gt;`
 
@@ -27,6 +31,7 @@ struct T;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -39,6 +44,7 @@ struct T;
 
 |===
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -55,6 +61,7 @@ struct T;
 |===
 
 === Protected Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -80,7 +87,9 @@ struct T;
 [#T-f1]
 == <<T,T>>::f1
 
+
 === Synopsis
+
 
 Declared in `&lt;record&hyphen;1&period;cpp&gt;`
 
@@ -93,7 +102,9 @@ f1();
 [#T-f2]
 == <<T,T>>::f2
 
+
 === Synopsis
+
 
 Declared in `&lt;record&hyphen;1&period;cpp&gt;`
 
@@ -106,7 +117,9 @@ f2();
 [#T-f3]
 == <<T,T>>::f3
 
+
 === Synopsis
+
 
 Declared in `&lt;record&hyphen;1&period;cpp&gt;`
 
@@ -119,11 +132,13 @@ f3();
 [#T-g1]
 == <<T,T>>::g1
 
+
 brief&hyphen;g1
 
 
 
 === Synopsis
+
 
 Declared in `&lt;record&hyphen;1&period;cpp&gt;`
 
@@ -135,6 +150,7 @@ g1();
 
 === Description
 
+
 desc
 
 
@@ -142,11 +158,13 @@ desc
 [#T-g2]
 == <<T,T>>::g2
 
+
 brief&hyphen;g2
 
 
 
 === Synopsis
+
 
 Declared in `&lt;record&hyphen;1&period;cpp&gt;`
 
@@ -158,6 +176,7 @@ g2();
 
 === Return Value
 
+
 the number 2
 
 
@@ -165,11 +184,13 @@ the number 2
 [#T-g3]
 == <<T,T>>::g3
 
+
 brief&hyphen;g3
 
 
 
 === Synopsis
+
 
 Declared in `&lt;record&hyphen;1&period;cpp&gt;`
 
@@ -181,11 +202,13 @@ g3(int x);
 
 === Return Value
 
+
 the separator
 
 
 
 === Parameters
+
 
 |===
 | Name | Description
@@ -199,7 +222,9 @@ the separator
 [#T-U1]
 == <<T,T>>::U1
 
+
 === Synopsis
+
 
 Declared in `&lt;record&hyphen;1&period;cpp&gt;`
 
@@ -211,7 +236,9 @@ using U1 = int;
 [#T-U2]
 == <<T,T>>::U2
 
+
 === Synopsis
+
 
 Declared in `&lt;record&hyphen;1&period;cpp&gt;`
 

@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Namespaces
+
 [cols=2]
 |===
 | Name | Description 
@@ -14,6 +16,7 @@
 
 |===
 === Variables
+
 [cols=2]
 |===
 | Name | Description 
@@ -29,7 +32,9 @@
 [#regular]
 == regular
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -42,7 +47,9 @@
 [#regular-absolute_uri_rule_t]
 == <<regular,regular>>::absolute&lowbar;uri&lowbar;rule&lowbar;t
 
+
 === Synopsis
+
 
 Declared in `&lt;impl&hyphen;defined&hyphen;member&period;cpp&gt;`
 
@@ -57,7 +64,9 @@ struct absolute&lowbar;uri&lowbar;rule&lowbar;t;
 [#absolute_uri_rule]
 == absolute&lowbar;uri&lowbar;rule
 
+
 === Synopsis
+
 
 Declared in `&lt;impl&hyphen;defined&hyphen;member&period;cpp&gt;`
 
@@ -70,7 +79,9 @@ constexpr
 [#regular_absolute_uri_rule]
 == regular&lowbar;absolute&lowbar;uri&lowbar;rule
 
+
 === Synopsis
+
 
 Declared in `&lt;impl&hyphen;defined&hyphen;member&period;cpp&gt;`
 

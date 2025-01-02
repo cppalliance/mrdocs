@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -14,6 +16,7 @@
 
 |===
 === Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -26,7 +29,9 @@
 [#T]
 == T
 
+
 === Synopsis
+
 
 Declared in `&lt;noreturn&period;cpp&gt;`
 
@@ -36,6 +41,7 @@ struct T;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -45,6 +51,7 @@ struct T;
 
 |===
 === Static Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -54,6 +61,7 @@ struct T;
 
 |===
 === Friends
+
 [cols=2]
 |===
 | Name | Description 
@@ -68,7 +76,9 @@ struct T;
 [#T-f2]
 == <<T,T>>::f2
 
+
 === Synopsis
+
 
 Declared in `&lt;noreturn&period;cpp&gt;`
 
@@ -83,7 +93,9 @@ f2();
 [#T-f3]
 == <<T,T>>::f3
 
+
 === Synopsis
+
 
 Declared in `&lt;noreturn&period;cpp&gt;`
 
@@ -97,7 +109,9 @@ f3();
 [#T-08friend]
 == f1
 
+
 === Synopsis
+
 
 Declared in `&lt;noreturn&period;cpp&gt;`
 
@@ -111,7 +125,9 @@ f1();
 [#f1]
 == f1
 
+
 === Synopsis
+
 
 Declared in `&lt;noreturn&period;cpp&gt;`
 

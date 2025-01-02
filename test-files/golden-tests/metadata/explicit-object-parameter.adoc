@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -17,7 +19,9 @@
 [#Optional]
 == Optional
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;object&hyphen;parameter&period;cpp&gt;`
 
@@ -27,6 +31,7 @@ struct Optional;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -40,7 +45,9 @@ struct Optional;
 [#Optional-value]
 == <<Optional,Optional>>::value
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;object&hyphen;parameter&period;cpp&gt;`
 
@@ -69,7 +76,9 @@ auto&&
 [#Optional-value-05]
 == <<Optional,Optional>>::value
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;object&hyphen;parameter&period;cpp&gt;`
 
@@ -84,7 +93,9 @@ value(this Self&& self);
 [#Optional-value-06]
 == <<Optional,Optional>>::value
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;object&hyphen;parameter&period;cpp&gt;`
 

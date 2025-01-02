@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Namespaces
+
 [cols=2]
 |===
 | Name | Description 
@@ -14,6 +16,7 @@
 
 |===
 === Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -29,14 +32,17 @@
 == std
 
 
+
 [#sqrt]
 == sqrt
+
 
 Computes the square root of an integral value&period;
 
 
 
 === Synopsis
+
 
 Declared in `&lt;sqrt&period;cpp&gt;`
 
@@ -49,12 +55,14 @@ sqrt(T value);
 
 === Description
 
+
 This function calculates the square root of a
 given integral value using bit manipulation&period;
 
 
 
 === Exceptions
+
 
 |===
 | Name | Thrown on
@@ -67,11 +75,13 @@ given integral value using bit manipulation&period;
 
 === Return Value
 
+
 The square root of the input value&period;
 
 
 
 === Template Parameters
+
 
 |===
 | Name | Description
@@ -83,6 +93,7 @@ The square root of the input value&period;
 |===
 
 === Parameters
+
 
 |===
 | Name | Description

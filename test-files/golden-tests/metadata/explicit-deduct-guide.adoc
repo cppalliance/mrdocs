@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -14,6 +16,7 @@
 
 |===
 === Deduction Guides
+
 [cols=2]
 |===
 | Name | Description 
@@ -35,7 +38,9 @@
 [#X-0e]
 == X
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
 
@@ -51,7 +56,9 @@ struct X;
 [#X-0d]
 == <<X-0e,X>>&lt;0&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
 
@@ -63,7 +70,9 @@ Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
 [#X-00]
 == <<X-0e,X>>&lt;0&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
 
@@ -75,7 +84,9 @@ Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
 [#X-0b]
 == <<X-0e,X>>&lt;0&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
 
@@ -87,7 +98,9 @@ Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
 [#X-06]
 == <<X-0e,X>>&lt;0&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
 

@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -32,7 +34,9 @@
 [#A-0e]
 == A
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -43,6 +47,7 @@ struct A;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -60,7 +65,9 @@ struct A;
 [#A-0e-B-07]
 == <<A-0e,A>>::B
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -71,6 +78,7 @@ struct B;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -91,7 +99,9 @@ struct B;
 [#A-0e-B-07-C]
 == <<A-0e,A>>::<<A-0e-B-07,B>>::C
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -106,7 +116,9 @@ struct C;
 [#A-0e-B-07-D-09]
 == <<A-0e,A>>::<<A-0e-B-07,B>>::D
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -122,7 +134,9 @@ struct D;
 [#A-0e-B-07-D-0f]
 == <<A-0e,A>>::<<A-0e-B-07,B>>::D&lt;bool&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -138,7 +152,9 @@ struct <<A-0e-B-07-D-09,D>>&lt;bool&gt;;
 [#A-0e-B-00]
 == <<A-0e,A>>::B&lt;double&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -149,6 +165,7 @@ struct <<A-0e-B-07,B>>&lt;double&gt;;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -169,7 +186,9 @@ struct <<A-0e-B-07,B>>&lt;double&gt;;
 [#A-0e-B-00-C]
 == <<A-0e,A>>::<<A-0e-B-00,B>>&lt;double&gt;::C
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -184,7 +203,9 @@ struct C;
 [#A-0e-B-00-D-09]
 == <<A-0e,A>>::<<A-0e-B-00,B>>&lt;double&gt;::D
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -200,7 +221,9 @@ struct D;
 [#A-0e-B-00-D-0d]
 == <<A-0e,A>>::<<A-0e-B-00,B>>&lt;double&gt;::D&lt;bool&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -216,7 +239,9 @@ struct <<A-0e-B-00-D-09,D>>&lt;bool&gt;;
 [#A-0c]
 == A&lt;long&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -227,6 +252,7 @@ struct <<A-0e,A>>&lt;long&gt;;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -247,7 +273,9 @@ struct <<A-0e,A>>&lt;long&gt;;
 [#A-0c-B-0b]
 == <<A-0c,A>>&lt;long&gt;::B
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -258,6 +286,7 @@ struct B;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -278,7 +307,9 @@ struct B;
 [#A-0c-B-0b-C]
 == <<A-0c,A>>&lt;long&gt;::<<A-0c-B-0b,B>>::C
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -293,7 +324,9 @@ struct C;
 [#A-0c-B-0b-D-00]
 == <<A-0c,A>>&lt;long&gt;::<<A-0c-B-0b,B>>::D
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -309,7 +342,9 @@ struct D;
 [#A-0c-B-0b-D-0b]
 == <<A-0c,A>>&lt;long&gt;::<<A-0c-B-0b,B>>::D&lt;bool&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -325,7 +360,9 @@ struct <<A-0c-B-0b-D-00,D>>&lt;bool&gt;;
 [#A-0c-B-0d]
 == <<A-0c,A>>&lt;long&gt;::B&lt;double&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -336,6 +373,7 @@ struct <<A-0c-B-0b,B>>&lt;double&gt;;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -356,7 +394,9 @@ struct <<A-0c-B-0b,B>>&lt;double&gt;;
 [#A-0c-B-0d-C]
 == <<A-0c,A>>&lt;long&gt;::<<A-0c-B-0d,B>>&lt;double&gt;::C
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -371,7 +411,9 @@ struct C;
 [#A-0c-B-0d-D-0c]
 == <<A-0c,A>>&lt;long&gt;::<<A-0c-B-0d,B>>&lt;double&gt;::D
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -387,7 +429,9 @@ struct D;
 [#A-0c-B-0d-D-03]
 == <<A-0c,A>>&lt;long&gt;::<<A-0c-B-0d,B>>&lt;double&gt;::D&lt;bool&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -403,7 +447,9 @@ struct <<A-0e-B-00-D-09,D>>&lt;bool&gt;;
 [#A-0c-B-08]
 == <<A-0c,A>>&lt;long&gt;::B&lt;float&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -414,6 +460,7 @@ struct <<A-0c-B-0b,B>>&lt;float&gt;;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -434,7 +481,9 @@ struct <<A-0c-B-0b,B>>&lt;float&gt;;
 [#A-0c-B-08-C]
 == <<A-0c,A>>&lt;long&gt;::<<A-0c-B-08,B>>&lt;float&gt;::C
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -449,7 +498,9 @@ struct C;
 [#A-0c-B-08-D-08]
 == <<A-0c,A>>&lt;long&gt;::<<A-0c-B-08,B>>&lt;float&gt;::D
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -465,7 +516,9 @@ struct D;
 [#A-0c-B-08-D-03]
 == <<A-0c,A>>&lt;long&gt;::<<A-0c-B-08,B>>&lt;float&gt;::D&lt;bool&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -481,7 +534,9 @@ struct <<A-0c-B-0b-D-00,D>>&lt;bool&gt;;
 [#A-00]
 == A&lt;short&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -492,6 +547,7 @@ struct <<A-0e,A>>&lt;short&gt;;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -512,7 +568,9 @@ struct <<A-0e,A>>&lt;short&gt;;
 [#A-00-B-0e]
 == <<A-00,A>>&lt;short&gt;::B
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -528,7 +586,9 @@ struct B;
 [#A-00-B-07]
 == <<A-00,A>>&lt;short&gt;::B&lt;double&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -539,6 +599,7 @@ struct <<A-0e-B-07,B>>&lt;double&gt;;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -559,7 +620,9 @@ struct <<A-0e-B-07,B>>&lt;double&gt;;
 [#A-00-B-07-C]
 == <<A-00,A>>&lt;short&gt;::<<A-00-B-07,B>>&lt;double&gt;::C
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -574,7 +637,9 @@ struct C;
 [#A-00-B-07-D-015b]
 == <<A-00,A>>&lt;short&gt;::<<A-00-B-07,B>>&lt;double&gt;::D
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -590,7 +655,9 @@ struct D;
 [#A-00-B-07-D-0150]
 == <<A-00,A>>&lt;short&gt;::<<A-00-B-07,B>>&lt;double&gt;::D&lt;bool&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -606,7 +673,9 @@ struct <<A-0e-B-00-D-09,D>>&lt;bool&gt;;
 [#A-00-B-00]
 == <<A-00,A>>&lt;short&gt;::B&lt;void&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -617,6 +686,7 @@ struct <<A-0e-B-07,B>>&lt;void&gt;;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -637,7 +707,9 @@ struct <<A-0e-B-07,B>>&lt;void&gt;;
 [#A-00-B-00-C]
 == <<A-00,A>>&lt;short&gt;::<<A-00-B-00,B>>&lt;void&gt;::C
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -652,7 +724,9 @@ struct C;
 [#A-00-B-00-D-03]
 == <<A-00,A>>&lt;short&gt;::<<A-00-B-00,B>>&lt;void&gt;::D
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -668,7 +742,9 @@ struct D;
 [#A-00-B-00-D-07]
 == <<A-00,A>>&lt;short&gt;::<<A-00-B-00,B>>&lt;void&gt;::D&lt;bool&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -684,7 +760,9 @@ struct <<A-00-B-00-D-03,D>>&lt;bool&gt;;
 [#A-01]
 == A&lt;float&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -695,6 +773,7 @@ struct <<A-0e,A>>&lt;float&gt;;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -712,7 +791,9 @@ struct <<A-0e,A>>&lt;float&gt;;
 [#A-01-B-07]
 == <<A-01,A>>&lt;float&gt;::B
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -728,7 +809,9 @@ struct B;
 [#A-01-B-08]
 == <<A-01,A>>&lt;float&gt;::B&lt;double, double&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -739,6 +822,7 @@ struct <<A-0e-B-07,B>>&lt;double, double&gt;;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -759,7 +843,9 @@ struct <<A-0e-B-07,B>>&lt;double, double&gt;;
 [#A-01-B-08-C]
 == <<A-01,A>>&lt;float&gt;::<<A-01-B-08,B>>&lt;double, double&gt;::C
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -774,7 +860,9 @@ struct C;
 [#A-01-B-08-D-0ae]
 == <<A-01,A>>&lt;float&gt;::<<A-01-B-08,B>>&lt;double, double&gt;::D
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -790,7 +878,9 @@ struct D;
 [#A-01-B-08-D-0af]
 == <<A-01,A>>&lt;float&gt;::<<A-01-B-08,B>>&lt;double, double&gt;::D&lt;bool, bool&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -806,7 +896,9 @@ struct <<A-0e-B-00-D-09,D>>&lt;bool, bool&gt;;
 [#A-07]
 == A&lt;unsigned int&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -817,6 +909,7 @@ struct <<A-0e,A>>&lt;unsigned int&gt;;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -837,7 +930,9 @@ struct <<A-0e,A>>&lt;unsigned int&gt;;
 [#A-07-B-03a]
 == <<A-07,A>>&lt;unsigned int&gt;::B
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -853,7 +948,9 @@ struct B;
 [#A-07-B-03e]
 == <<A-07,A>>&lt;unsigned int&gt;::B&lt;double&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -864,6 +961,7 @@ struct <<A-0e-B-07,B>>&lt;double&gt;;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -884,7 +982,9 @@ struct <<A-0e-B-07,B>>&lt;double&gt;;
 [#A-07-B-03e-C]
 == <<A-07,A>>&lt;unsigned int&gt;::<<A-07-B-03e,B>>&lt;double&gt;::C
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -899,7 +999,9 @@ struct C;
 [#A-07-B-03e-D-01]
 == <<A-07,A>>&lt;unsigned int&gt;::<<A-07-B-03e,B>>&lt;double&gt;::D
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -915,7 +1017,9 @@ struct D;
 [#A-07-B-03e-D-0f]
 == <<A-07,A>>&lt;unsigned int&gt;::<<A-07-B-03e,B>>&lt;double&gt;::D&lt;bool&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -931,7 +1035,9 @@ struct <<A-0e-B-00-D-09,D>>&lt;bool&gt;;
 [#A-07-B-05]
 == <<A-07,A>>&lt;unsigned int&gt;::B&lt;float&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -942,6 +1048,7 @@ struct <<A-0e-B-07,B>>&lt;float&gt;;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -962,7 +1069,9 @@ struct <<A-0e-B-07,B>>&lt;float&gt;;
 [#A-07-B-05-C]
 == <<A-07,A>>&lt;unsigned int&gt;::<<A-07-B-05,B>>&lt;float&gt;::C
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -977,7 +1086,9 @@ struct C;
 [#A-07-B-05-D-0e]
 == <<A-07,A>>&lt;unsigned int&gt;::<<A-07-B-05,B>>&lt;float&gt;::D
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -993,7 +1104,9 @@ struct D;
 [#A-07-B-05-D-01]
 == <<A-07,A>>&lt;unsigned int&gt;::<<A-07-B-05,B>>&lt;float&gt;::D&lt;bool&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -1009,7 +1122,9 @@ struct <<A-0e-B-07-D-09,D>>&lt;bool&gt;;
 [#E]
 == E
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -1019,6 +1134,7 @@ struct E;
 ----
 
 === Data Members
+
 [cols=2]
 |===
 | Name | Description 
@@ -1075,7 +1191,9 @@ struct E;
 [#E-m0]
 == <<E,E>>::m0
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -1087,7 +1205,9 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [#E-m1]
 == <<E,E>>::m1
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -1099,7 +1219,9 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [#E-m10]
 == <<E,E>>::m10
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -1111,7 +1233,9 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [#E-m11]
 == <<E,E>>::m11
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -1123,7 +1247,9 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [#E-m12]
 == <<E,E>>::m12
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -1135,7 +1261,9 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [#E-m13]
 == <<E,E>>::m13
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -1147,7 +1275,9 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [#E-m14]
 == <<E,E>>::m14
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -1159,7 +1289,9 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [#E-m2]
 == <<E,E>>::m2
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -1171,7 +1303,9 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [#E-m3]
 == <<E,E>>::m3
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -1183,7 +1317,9 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [#E-m4]
 == <<E,E>>::m4
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -1195,7 +1331,9 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [#E-m5]
 == <<E,E>>::m5
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -1207,7 +1345,9 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [#E-m6]
 == <<E,E>>::m6
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -1219,7 +1359,9 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [#E-m7]
 == <<E,E>>::m7
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -1231,7 +1373,9 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [#E-m8]
 == <<E,E>>::m8
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 
@@ -1243,7 +1387,9 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [#E-m9]
 == <<E,E>>::m9
 
+
 === Synopsis
+
 
 Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
 

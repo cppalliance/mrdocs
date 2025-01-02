@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -20,7 +22,9 @@
 [#A-0e]
 == A
 
+
 === Synopsis
+
 
 Declared in `&lt;templates&sol;ct&lowbar;mct&lowbar;expl&lowbar;outside&period;cpp&gt;`
 
@@ -31,6 +35,7 @@ struct A;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -45,7 +50,9 @@ struct A;
 [#A-0e-B]
 == <<A-0e,A>>::B
 
+
 === Synopsis
+
 
 Declared in `&lt;templates&sol;ct&lowbar;mct&lowbar;expl&lowbar;outside&period;cpp&gt;`
 
@@ -56,6 +63,7 @@ struct B;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -70,7 +78,9 @@ struct B;
 [#A-0e-B-f]
 == <<A-0e,A>>::<<A-0e-B,B>>::f
 
+
 === Synopsis
+
 
 Declared in `&lt;templates&sol;ct&lowbar;mct&lowbar;expl&lowbar;outside&period;cpp&gt;`
 
@@ -83,7 +93,9 @@ f();
 [#A-00]
 == A&lt;int&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;templates&sol;ct&lowbar;mct&lowbar;expl&lowbar;outside&period;cpp&gt;`
 
@@ -94,6 +106,7 @@ struct <<A-0e,A>>&lt;int&gt;;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -111,7 +124,9 @@ struct <<A-0e,A>>&lt;int&gt;;
 [#A-00-B-03]
 == <<A-00,A>>&lt;int&gt;::B
 
+
 === Synopsis
+
 
 Declared in `&lt;templates&sol;ct&lowbar;mct&lowbar;expl&lowbar;outside&period;cpp&gt;`
 
@@ -127,7 +142,9 @@ struct B;
 [#A-00-B-02]
 == <<A-00,A>>&lt;int&gt;::B&lt;int&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;templates&sol;ct&lowbar;mct&lowbar;expl&lowbar;outside&period;cpp&gt;`
 
@@ -138,6 +155,7 @@ struct <<A-0e-B,B>>&lt;int&gt;;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -152,7 +170,9 @@ struct <<A-0e-B,B>>&lt;int&gt;;
 [#A-00-B-02-g]
 == <<A-00,A>>&lt;int&gt;::<<A-00-B-02,B>>&lt;int&gt;::g
 
+
 === Synopsis
+
 
 Declared in `&lt;templates&sol;ct&lowbar;mct&lowbar;expl&lowbar;outside&period;cpp&gt;`
 

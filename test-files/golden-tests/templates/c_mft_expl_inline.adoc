@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -17,7 +19,9 @@
 [#A]
 == A
 
+
 === Synopsis
+
 
 Declared in `&lt;templates&sol;c&lowbar;mft&lowbar;expl&lowbar;inline&period;cpp&gt;`
 
@@ -27,6 +31,7 @@ struct A;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -40,7 +45,9 @@ struct A;
 [#A-f]
 == <<A,A>>::f
 
+
 === Synopsis
+
 
 Declared in `&lt;templates&sol;c&lowbar;mft&lowbar;expl&lowbar;inline&period;cpp&gt;`
 
@@ -65,7 +72,9 @@ void
 [#A-f-0e]
 == <<A,A>>::f
 
+
 === Synopsis
+
 
 Declared in `&lt;templates&sol;c&lowbar;mft&lowbar;expl&lowbar;inline&period;cpp&gt;`
 
@@ -79,7 +88,9 @@ f();
 [#A-f-0b]
 == <<A,A>>::f&lt;int&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;templates&sol;c&lowbar;mft&lowbar;expl&lowbar;inline&period;cpp&gt;`
 

@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -17,7 +19,9 @@
 [#A]
 == A
 
+
 === Synopsis
+
 
 Declared in `&lt;templates&sol;ct&lowbar;mc&period;cpp&gt;`
 
@@ -28,6 +32,7 @@ struct A;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -42,7 +47,9 @@ struct A;
 [#A-B]
 == <<A,A>>::B
 
+
 === Synopsis
+
 
 Declared in `&lt;templates&sol;ct&lowbar;mc&period;cpp&gt;`
 
@@ -52,6 +59,7 @@ struct B;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -66,7 +74,9 @@ struct B;
 [#A-B-f]
 == <<A,A>>::<<A-B,B>>::f
 
+
 === Synopsis
+
 
 Declared in `&lt;templates&sol;ct&lowbar;mc&period;cpp&gt;`
 

@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -17,6 +19,7 @@
 
 |===
 === Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -38,7 +41,9 @@
 [#f]
 == f
 
+
 === Synopsis
+
 
 Declared in `&lt;function&hyphen;parm&hyphen;decay&period;cpp&gt;`
 
@@ -51,7 +56,9 @@ f(int const x);
 [#g]
 == g
 
+
 === Synopsis
+
 
 Declared in `&lt;function&hyphen;parm&hyphen;decay&period;cpp&gt;`
 
@@ -64,7 +71,9 @@ g(int* x);
 [#h]
 == h
 
+
 === Synopsis
+
 
 Declared in `&lt;function&hyphen;parm&hyphen;decay&period;cpp&gt;`
 
@@ -77,7 +86,9 @@ h(int x(bool));
 [#i]
 == i
 
+
 === Synopsis
+
 
 Declared in `&lt;function&hyphen;parm&hyphen;decay&period;cpp&gt;`
 
@@ -90,7 +101,9 @@ i(<<T,T>>);
 [#T]
 == T
 
+
 === Synopsis
+
 
 Declared in `&lt;function&hyphen;parm&hyphen;decay&period;cpp&gt;`
 
@@ -102,7 +115,9 @@ using T = int;
 [#U]
 == U
 
+
 === Synopsis
+
 
 Declared in `&lt;function&hyphen;parm&hyphen;decay&period;cpp&gt;`
 

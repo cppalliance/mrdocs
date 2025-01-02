@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Namespaces
+
 [cols=2]
 |===
 | Name | Description 
@@ -17,7 +19,9 @@
 [#TEST]
 == TEST
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -30,7 +34,9 @@
 [#TEST-SUCCESS]
 == <<TEST,TEST>>::SUCCESS
 
+
 === Synopsis
+
 
 Declared in `&lt;include&hyphen;self&period;cpp&gt;`
 

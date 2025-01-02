@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -29,7 +31,9 @@
 [#S0-03]
 == S0
 
+
 === Synopsis
+
 
 Declared in `&lt;decay&hyphen;to&hyphen;primary&period;cpp&gt;`
 
@@ -40,6 +44,7 @@ struct S0;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -57,7 +62,9 @@ struct S0;
 [#S0-03-M0]
 == <<S0-03,S0>>::M0
 
+
 === Synopsis
+
 
 Declared in `&lt;decay&hyphen;to&hyphen;primary&period;cpp&gt;`
 
@@ -69,7 +76,9 @@ using M0 = T;
 [#S0-03-M1]
 == <<S0-03,S0>>::M1
 
+
 === Synopsis
+
 
 Declared in `&lt;decay&hyphen;to&hyphen;primary&period;cpp&gt;`
 
@@ -82,7 +91,9 @@ using M1 = <<S0-03,S0>>&lt;U&gt;;
 [#S0-09]
 == S0&lt;short&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;decay&hyphen;to&hyphen;primary&period;cpp&gt;`
 
@@ -93,6 +104,7 @@ struct <<S0-03,S0>>&lt;short&gt;;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -110,7 +122,9 @@ struct <<S0-03,S0>>&lt;short&gt;;
 [#S0-09-M0]
 == <<S0-09,S0>>&lt;short&gt;::M0
 
+
 === Synopsis
+
 
 Declared in `&lt;decay&hyphen;to&hyphen;primary&period;cpp&gt;`
 
@@ -122,7 +136,9 @@ using M0 = short;
 [#S0-09-M1]
 == <<S0-09,S0>>&lt;short&gt;::M1
 
+
 === Synopsis
+
 
 Declared in `&lt;decay&hyphen;to&hyphen;primary&period;cpp&gt;`
 
@@ -135,7 +151,9 @@ using M1 = <<S0-03,S0>>&lt;U&gt;;
 [#S0-00]
 == S0&lt;void&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;decay&hyphen;to&hyphen;primary&period;cpp&gt;`
 
@@ -146,6 +164,7 @@ struct <<S0-03,S0>>&lt;void&gt;;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -163,7 +182,9 @@ struct <<S0-03,S0>>&lt;void&gt;;
 [#S0-00-M0]
 == <<S0-00,S0>>&lt;void&gt;::M0
 
+
 === Synopsis
+
 
 Declared in `&lt;decay&hyphen;to&hyphen;primary&period;cpp&gt;`
 
@@ -175,7 +196,9 @@ using M0 = void;
 [#S0-00-M1]
 == <<S0-00,S0>>&lt;void&gt;::M1
 
+
 === Synopsis
+
 
 Declared in `&lt;decay&hyphen;to&hyphen;primary&period;cpp&gt;`
 
@@ -188,7 +211,9 @@ using M1 = <<S0-03,S0>>&lt;U&gt;;
 [#A0]
 == A0
 
+
 === Synopsis
+
 
 Declared in `&lt;decay&hyphen;to&hyphen;primary&period;cpp&gt;`
 
@@ -200,7 +225,9 @@ using A0 = <<S0-03,S0>>&lt;void&gt;;
 [#A1]
 == A1
 
+
 === Synopsis
+
 
 Declared in `&lt;decay&hyphen;to&hyphen;primary&period;cpp&gt;`
 

@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -47,7 +49,9 @@
 [#R0]
 == R0
 
+
 === Synopsis
+
 
 Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt;`
 
@@ -58,6 +62,7 @@ struct R0
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -72,7 +77,9 @@ struct R0
 [#R1]
 == R1
 
+
 === Synopsis
+
 
 Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt;`
 
@@ -88,7 +95,9 @@ struct R1
 [#R2]
 == R2
 
+
 === Synopsis
+
 
 Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt;`
 
@@ -104,7 +113,9 @@ struct R2
 [#S0-0c]
 == S0
 
+
 === Synopsis
+
 
 Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt;`
 
@@ -117,6 +128,7 @@ struct S0;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -131,7 +143,9 @@ struct S0;
 [#S0-0c-S1]
 == <<S0-0c,S0>>::S1
 
+
 === Synopsis
+
 
 Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt;`
 
@@ -146,7 +160,9 @@ struct S1;
 [#S0-073]
 == S0&lt;3&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt;`
 
@@ -162,7 +178,9 @@ struct <<S0-0c,S0>>&lt;3&gt;;
 [#S0-07e]
 == S0&lt;6&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt;`
 
@@ -178,7 +196,9 @@ struct <<S0-0c,S0>>&lt;6&gt;;
 [#S0-09]
 == S0&lt;2&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt;`
 
@@ -189,6 +209,7 @@ struct <<S0-0c,S0>>&lt;2&gt;;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -203,7 +224,9 @@ struct <<S0-0c,S0>>&lt;2&gt;;
 [#S0-09-S1]
 == <<S0-09,S0>>&lt;2&gt;::S1
 
+
 === Synopsis
+
 
 Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt;`
 
@@ -218,7 +241,9 @@ struct S1;
 [#S0-0e]
 == S0&lt;5&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt;`
 
@@ -229,6 +254,7 @@ struct <<S0-0c,S0>>&lt;5&gt;;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -243,7 +269,9 @@ struct <<S0-0c,S0>>&lt;5&gt;;
 [#S0-0e-S1]
 == <<S0-0e,S0>>&lt;5&gt;::S1
 
+
 === Synopsis
+
 
 Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt;`
 
@@ -258,7 +286,9 @@ struct S1;
 [#U1]
 == U1
 
+
 === Synopsis
+
 
 Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt;`
 
@@ -270,7 +300,9 @@ using U1 = <<S0-0c,S0>>&lt;4&gt;;
 [#U2]
 == U2
 
+
 === Synopsis
+
 
 Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt;`
 
@@ -282,7 +314,9 @@ using U2 = <<S0-0c,S0>>&lt;5&gt;::<<S0-0e-S1,S1>>;
 [#U3]
 == U3
 
+
 === Synopsis
+
 
 Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt;`
 

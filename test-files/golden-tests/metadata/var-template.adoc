@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -14,6 +16,7 @@
 
 |===
 === Variables
+
 [cols=2]
 |===
 | Name | Description 
@@ -32,7 +35,9 @@
 [#B]
 == B
 
+
 === Synopsis
+
 
 Declared in `&lt;var&hyphen;template&period;cpp&gt;`
 
@@ -42,6 +47,7 @@ struct B;
 ----
 
 === Static Data Members
+
 [cols=2]
 |===
 | Name | Description 
@@ -62,7 +68,9 @@ struct B;
 [#B-C-09]
 == <<B,B>>::C
 
+
 === Synopsis
+
 
 Declared in `&lt;var&hyphen;template&period;cpp&gt;`
 
@@ -76,7 +84,9 @@ unsigned int C = 0;
 [#B-C-05]
 == <<B,B>>::C&lt;int&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;var&hyphen;template&period;cpp&gt;`
 
@@ -90,7 +100,9 @@ unsigned int C&lt;int&gt; = &hyphen;1;
 [#B-C-0c]
 == <<B,B>>::C&lt;T*&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;var&hyphen;template&period;cpp&gt;`
 
@@ -104,7 +116,9 @@ unsigned int C&lt;T*&gt; = sizeof(T);
 [#A-0c]
 == A
 
+
 === Synopsis
+
 
 Declared in `&lt;var&hyphen;template&period;cpp&gt;`
 
@@ -117,7 +131,9 @@ unsigned int A = sizeof(T);
 [#A-08]
 == A&lt;void&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;var&hyphen;template&period;cpp&gt;`
 
@@ -130,7 +146,9 @@ unsigned int A&lt;void&gt; = 0;
 [#A-01]
 == A&lt;T&&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;var&hyphen;template&period;cpp&gt;`
 

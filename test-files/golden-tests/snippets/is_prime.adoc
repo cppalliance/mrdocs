@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -19,11 +21,13 @@
 [#is_prime]
 == is&lowbar;prime
 
+
 Return true if a number is prime&period;
 
 
 
 === Synopsis
+
 
 Declared in `&lt;is&lowbar;prime&period;cpp&gt;`
 
@@ -35,17 +39,20 @@ is&lowbar;prime(unsigned long long n) noexcept;
 
 === Description
 
+
 Linear in n&period;
 
 
 
 === Return Value
 
+
 Whether or not n is prime&period;
 
 
 
 === Parameters
+
 
 |===
 | Name | Description

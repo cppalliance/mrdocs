@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -38,7 +40,9 @@
 [#A]
 == A
 
+
 === Synopsis
+
 
 Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
 
@@ -53,7 +57,9 @@ struct A;
 [#B]
 == B
 
+
 === Synopsis
+
 
 Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
 
@@ -68,7 +74,9 @@ struct B;
 [#Ba]
 == Ba
 
+
 === Synopsis
+
 
 Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
 
@@ -83,7 +91,9 @@ struct Ba;
 [#Bx]
 == Bx
 
+
 === Synopsis
+
 
 Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
 
@@ -98,7 +108,9 @@ struct Bx;
 [#a]
 == a
 
+
 === Synopsis
+
 
 Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
 
@@ -113,7 +125,9 @@ struct a;
 [#b]
 == b
 
+
 === Synopsis
+
 
 Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
 
@@ -128,7 +142,9 @@ struct b;
 [#bA]
 == bA
 
+
 === Synopsis
+
 
 Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
 
@@ -143,7 +159,9 @@ struct bA;
 [#ba]
 == ba
 
+
 === Synopsis
+
 
 Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
 

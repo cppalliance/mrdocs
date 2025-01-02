@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -17,7 +19,9 @@
 [#f]
 == f
 
+
 === Synopsis
+
 
 Declared in `&lt;attributes&lowbar;1&period;cpp&gt;`
 

@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Namespaces
+
 [cols=2]
 |===
 | Name | Description 
@@ -14,6 +16,7 @@
 
 |===
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -23,6 +26,7 @@
 
 |===
 === Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -47,7 +51,9 @@ xref:#F-operator_bitnot[F&colon;&colon;operator&tilde;]
 [#A]
 == A
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -66,6 +72,7 @@ xref:#A-f1[f1]
 
 |===
 === Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -81,12 +88,14 @@ xref:#f0[f0]
 [#A-B]
 == <<A,A>>::B
 
+
 See
 xref:#A-f1[f1]
 
 
 
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -97,6 +106,7 @@ struct B;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -110,6 +120,7 @@ struct B;
 
 === Description
 
+
 See
 xref:#A-f1[A&colon;&colon;f1]
 
@@ -121,7 +132,9 @@ xref:#A-f1[&colon;&colon;A&colon;&colon;f1]
 [#A-B-f2]
 == <<A,A>>::<<A-B,B>>::f2
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -134,7 +147,9 @@ f2();
 [#A-C]
 == <<A,A>>::C
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -144,6 +159,7 @@ struct C;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -161,7 +177,9 @@ struct C;
 [#A-C-f3]
 == <<A,A>>::<<A-C,C>>::f3
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -174,7 +192,9 @@ f3();
 [#A-C-f4]
 == <<A,A>>::<<A-C,C>>::f4
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -187,7 +207,9 @@ f4();
 [#A-D]
 == <<A,A>>::D
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -198,6 +220,7 @@ struct D
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -210,6 +233,7 @@ xref:#A-C-f3[f3]
 
 |===
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -226,12 +250,14 @@ xref:#A-C-f3[f3]
 [#A-D-E]
 == <<A,A>>::<<A-D,D>>::E
 
+
 See
 xref:#A-C-f3[f3]
 
 
 
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -245,6 +271,7 @@ struct E;
 
 === Description
 
+
 See
 xref:#A-D-f4[f4]
 
@@ -256,7 +283,9 @@ xref:#A-C-f4[C&colon;&colon;f4]
 [#A-D-f4]
 == <<A,A>>::<<A-D,D>>::f4
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -269,12 +298,14 @@ f4();
 [#A-f1]
 == <<A,A>>::f1
 
+
 See
 xref:#f0[f0]
 
 
 
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -286,6 +317,7 @@ f1();
 
 === Description
 
+
 See
 xref:#f0[&colon;&colon;f0]
 
@@ -294,7 +326,9 @@ xref:#f0[&colon;&colon;f0]
 [#F]
 == F
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -304,6 +338,7 @@ struct F;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -432,7 +467,9 @@ struct F;
 [#F-operator_not]
 == <<F,F>>::operator!
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -445,7 +482,9 @@ operator!();
 [#F-operator_not_eq]
 == <<F,F>>::operator!&equals;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -458,7 +497,9 @@ operator!&equals;(<<F,F>>&);
 [#F-operator_mod]
 == <<F,F>>::operator%
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -471,7 +512,9 @@ operator%(<<F,F>>&);
 [#F-operator_mod_eq]
 == <<F,F>>::operator%&equals;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -484,7 +527,9 @@ operator%&equals;(<<F,F>>&);
 [#F-operator_bitand]
 == <<F,F>>::operator&amp;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -497,7 +542,9 @@ operator&amp;(<<F,F>>&);
 [#F-operator_and]
 == <<F,F>>::operator&amp;&amp;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -510,7 +557,9 @@ operator&amp;&amp;(<<F,F>>&);
 [#F-operator_and_eq]
 == <<F,F>>::operator&amp;&equals;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -523,7 +572,9 @@ operator&amp;&equals;(<<F,F>>&);
 [#F-operator_call]
 == <<F,F>>::operator()
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -536,7 +587,9 @@ operator()(<<F,F>>&);
 [#F-operator_star]
 == <<F,F>>::operator&ast;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -549,7 +602,9 @@ operator&ast;(<<F,F>>&);
 [#F-operator_star_eq]
 == <<F,F>>::operator&ast;&equals;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -562,7 +617,9 @@ operator&ast;&equals;(<<F,F>>&);
 [#F-operator_plus]
 == <<F,F>>::operator&plus;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -575,7 +632,9 @@ operator&plus;(<<F,F>>&);
 [#F-operator_inc]
 == <<F,F>>::operator&plus;&plus;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -588,7 +647,9 @@ operator&plus;&plus;();
 [#F-operator_plus_eq]
 == <<F,F>>::operator&plus;&equals;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -601,7 +662,9 @@ operator&plus;&equals;(<<F,F>>&);
 [#F-operator_comma]
 == <<F,F>>::operator,
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -614,7 +677,9 @@ operator,(<<F,F>>&);
 [#F-operator_minus]
 == <<F,F>>::operator&hyphen;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -627,7 +692,9 @@ operator&hyphen;(<<F,F>>&);
 [#F-operator_dec]
 == <<F,F>>::operator&hyphen;&hyphen;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -640,7 +707,9 @@ operator&hyphen;&hyphen;();
 [#F-operator_minus_eq]
 == <<F,F>>::operator&hyphen;&equals;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -653,7 +722,9 @@ operator&hyphen;&equals;(<<F,F>>&);
 [#F-operator_ptr]
 == <<F,F>>::operator&hyphen;&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -666,7 +737,9 @@ operator&hyphen;&gt;();
 [#F-operator_ptrmem]
 == <<F,F>>::operator&hyphen;&gt;&ast;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -679,7 +752,9 @@ operator&hyphen;&gt;&ast;(<<F,F>>&);
 [#F-operator_slash]
 == <<F,F>>::operator&sol;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -692,7 +767,9 @@ operator&sol;(<<F,F>>&);
 [#F-operator_slash_eq]
 == <<F,F>>::operator&sol;&equals;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -705,7 +782,9 @@ operator&sol;&equals;(<<F,F>>&);
 [#F-operator_lt]
 == <<F,F>>::operator&lt;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -718,7 +797,9 @@ operator&lt;(<<F,F>>&);
 [#F-operator_lshift]
 == <<F,F>>::operator&lt;&lt;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -731,7 +812,9 @@ operator&lt;&lt;(<<F,F>>&);
 [#F-operator_lshift_eq]
 == <<F,F>>::operator&lt;&lt;&equals;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -744,7 +827,9 @@ operator&lt;&lt;&equals;(<<F,F>>&);
 [#F-operator_le]
 == <<F,F>>::operator&lt;&equals;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -757,7 +842,9 @@ operator&lt;&equals;(<<F,F>>&);
 [#F-operator_3way]
 == <<F,F>>::operator&lt;&equals;&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -770,7 +857,9 @@ operator&lt;&equals;&gt;(<<F,F>>&);
 [#F-operator_assign]
 == <<F,F>>::operator&equals;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -783,7 +872,9 @@ operator&equals;(<<F,F>>&);
 [#F-operator_eq]
 == <<F,F>>::operator&equals;&equals;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -796,7 +887,9 @@ operator&equals;&equals;(<<F,F>>&);
 [#F-operator_gt]
 == <<F,F>>::operator&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -809,7 +902,9 @@ operator&gt;(<<F,F>>&);
 [#F-operator_ge]
 == <<F,F>>::operator&gt;&equals;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -822,7 +917,9 @@ operator&gt;&equals;(<<F,F>>&);
 [#F-operator_rshift]
 == <<F,F>>::operator&gt;&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -835,7 +932,9 @@ operator&gt;&gt;(<<F,F>>&);
 [#F-operator_rshift_eq]
 == <<F,F>>::operator&gt;&gt;&equals;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -848,7 +947,9 @@ operator&gt;&gt;&equals;(<<F,F>>&);
 [#F-operator_subs]
 == <<F,F>>::operator&lsqb;&rsqb;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -861,7 +962,9 @@ operator&lsqb;&rsqb;(<<F,F>>&);
 [#F-operator_xor]
 == <<F,F>>::operator&circ;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -874,7 +977,9 @@ operator&circ;(<<F,F>>&);
 [#F-operator_xor_eq]
 == <<F,F>>::operator&circ;&equals;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -887,7 +992,9 @@ operator&circ;&equals;(<<F,F>>&);
 [#F-operator_bitor]
 == <<F,F>>::operator&verbar;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -900,7 +1007,9 @@ operator&verbar;(<<F,F>>&);
 [#F-operator_or_eq]
 == <<F,F>>::operator&verbar;&equals;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -913,7 +1022,9 @@ operator&verbar;&equals;(<<F,F>>&);
 [#F-operator_or]
 == <<F,F>>::operator&verbar;&verbar;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -926,7 +1037,9 @@ operator&verbar;&verbar;(<<F,F>>&);
 [#F-operator_bitnot]
 == <<F,F>>::operator&tilde;
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -939,7 +1052,9 @@ operator&tilde;();
 [#f0]
 == f0
 
+
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -952,12 +1067,14 @@ f0();
 [#f5]
 == f5
 
+
 See
 xref:#A-f1[A&colon;&colon;f1]
 
 
 
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -969,6 +1086,7 @@ f5();
 
 === Description
 
+
 See
 xref:#A-f1[&colon;&colon;A&colon;&colon;f1]
 
@@ -977,12 +1095,14 @@ xref:#A-f1[&colon;&colon;A&colon;&colon;f1]
 [#f6]
 == f6
 
+
 See
 xref:#F-operator_bitnot[F&colon;&colon;operator&tilde;]
 
 
 
 === Synopsis
+
 
 Declared in `&lt;ref&period;cpp&gt;`
 
@@ -993,6 +1113,7 @@ f6();
 ----
 
 === Description
+
 
 See
 xref:#F-operator_comma[F&colon;&colon;operator,]

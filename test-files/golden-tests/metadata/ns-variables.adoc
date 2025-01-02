@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -14,6 +16,7 @@
 
 |===
 === Variables
+
 [cols=2]
 |===
 | Name | Description 
@@ -50,7 +53,9 @@
 [#T]
 == T
 
+
 === Synopsis
+
 
 Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
 
@@ -65,7 +70,9 @@ struct T;
 [#i]
 == i
 
+
 === Synopsis
+
 
 Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
 
@@ -78,7 +85,9 @@ int const i = 0;
 [#j]
 == j
 
+
 === Synopsis
+
 
 Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
 
@@ -90,7 +99,9 @@ int j = 0;
 [#k]
 == k
 
+
 === Synopsis
+
 
 Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
 
@@ -104,7 +115,9 @@ int const k = 1;
 [#l]
 == l
 
+
 === Synopsis
+
 
 Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
 
@@ -117,7 +130,9 @@ int l = 1;
 [#pi]
 == pi
 
+
 === Synopsis
+
 
 Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
 
@@ -129,7 +144,9 @@ double pi = 3&period;14;
 [#t]
 == t
 
+
 === Synopsis
+
 
 Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
 
@@ -142,7 +159,9 @@ extern
 [#x0]
 == x0
 
+
 === Synopsis
+
 
 Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
 
@@ -155,7 +174,9 @@ int x0 = 0;
 [#x1]
 == x1
 
+
 === Synopsis
+
 
 Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
 
@@ -169,7 +190,9 @@ int x1 = 0;
 [#x2]
 == x2
 
+
 === Synopsis
+
 
 Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
 

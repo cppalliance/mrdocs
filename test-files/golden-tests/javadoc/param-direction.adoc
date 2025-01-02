@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -44,7 +46,9 @@
 [#f]
 == f
 
+
 === Synopsis
+
 
 Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
 
@@ -56,6 +60,7 @@ f(int x0);
 
 === Parameters
 
+
 |===
 | Name | Description
 
@@ -66,7 +71,9 @@ f(int x0);
 [#g]
 == g
 
+
 === Synopsis
+
 
 Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
 
@@ -80,6 +87,7 @@ g(
 
 === Parameters
 
+
 |===
 | Name | Description
 
@@ -92,7 +100,9 @@ g(
 [#h]
 == h
 
+
 === Synopsis
+
 
 Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
 
@@ -106,6 +116,7 @@ h(
 
 === Parameters
 
+
 |===
 | Name | Description
 
@@ -118,7 +129,9 @@ h(
 [#i]
 == i
 
+
 === Synopsis
+
 
 Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
 
@@ -132,6 +145,7 @@ i(
 
 === Parameters
 
+
 |===
 | Name | Description
 
@@ -144,7 +158,9 @@ i(
 [#j]
 == j
 
+
 === Synopsis
+
 
 Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
 
@@ -158,6 +174,7 @@ j(
 
 === Parameters
 
+
 |===
 | Name | Description
 
@@ -170,7 +187,9 @@ j(
 [#k]
 == k
 
+
 === Synopsis
+
 
 Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
 
@@ -184,6 +203,7 @@ k(
 ----
 
 === Parameters
+
 
 |===
 | Name | Description
@@ -199,7 +219,9 @@ k(
 [#l]
 == l
 
+
 === Synopsis
+
 
 Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
 
@@ -215,6 +237,7 @@ l(
 
 === Parameters
 
+
 |===
 | Name | Description
 
@@ -229,7 +252,9 @@ l(
 [#m]
 == m
 
+
 === Synopsis
+
 
 Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
 
@@ -243,6 +268,7 @@ m(
 
 === Parameters
 
+
 |===
 | Name | Description
 
@@ -255,7 +281,9 @@ m(
 [#n]
 == n
 
+
 === Synopsis
+
 
 Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
 
@@ -267,6 +295,7 @@ n(int x8);
 
 === Parameters
 
+
 |===
 | Name | Description
 
@@ -277,7 +306,9 @@ n(int x8);
 [#o]
 == o
 
+
 === Synopsis
+
 
 Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
 
@@ -288,6 +319,7 @@ o(int x9);
 ----
 
 === Parameters
+
 
 |===
 | Name | Description

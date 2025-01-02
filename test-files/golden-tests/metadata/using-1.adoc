@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Namespaces
+
 [cols=2]
 |===
 | Name | Description 
@@ -15,6 +17,7 @@
 |===
 
 === Using Directives
+
 [cols=2]
 |===
 | Name | Description 
@@ -26,6 +29,7 @@
 
 [#LongName]
 == LongName
+
 
 
 

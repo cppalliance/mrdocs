@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -17,7 +19,9 @@
 [#Христос_воскрес]
 == Христос&lowbar;воскрес
 
+
 === Synopsis
+
 
 Declared in `&lt;utf&hyphen;8&period;cpp&gt;`
 

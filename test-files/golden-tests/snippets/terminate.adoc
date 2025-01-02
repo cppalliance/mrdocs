@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -19,11 +21,13 @@
 [#terminate]
 == terminate
 
+
 Exit the program&period;
 
 
 
 === Synopsis
+
 
 Declared in `&lt;terminate&period;cpp&gt;`
 
@@ -35,6 +39,7 @@ terminate() noexcept;
 ----
 
 === Description
+
 
 The program will end immediately&period;
 

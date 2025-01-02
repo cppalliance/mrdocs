@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -26,7 +28,9 @@
 [#Explicit]
 == Explicit
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -36,6 +40,7 @@ struct Explicit;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -49,7 +54,9 @@ struct Explicit;
 [#Explicit-2constructor]
 == <<Explicit,Explicit>>::Explicit
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -90,7 +97,9 @@ explicit
 [#Explicit-2constructor-02]
 == <<Explicit,Explicit>>::Explicit
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -103,7 +112,9 @@ Explicit();
 [#Explicit-2constructor-00]
 == <<Explicit,Explicit>>::Explicit
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -116,7 +127,9 @@ Explicit(<<Explicit,Explicit>> const&);
 [#Explicit-2constructor-0b]
 == <<Explicit,Explicit>>::Explicit
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -129,7 +142,9 @@ Explicit(<<Explicit,Explicit>>&&) noexcept;
 [#Explicit-2constructor-03]
 == <<Explicit,Explicit>>::Explicit
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -144,7 +159,9 @@ Explicit(
 [#ExplicitExpression]
 == ExplicitExpression
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -155,6 +172,7 @@ struct ExplicitExpression;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -168,7 +186,9 @@ struct ExplicitExpression;
 [#ExplicitExpression-2constructor]
 == <<ExplicitExpression,ExplicitExpression>>::ExplicitExpression
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -209,7 +229,9 @@ explicit(B)
 [#ExplicitExpression-2constructor-0b]
 == <<ExplicitExpression,ExplicitExpression>>::ExplicitExpression
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -222,7 +244,9 @@ ExplicitExpression();
 [#ExplicitExpression-2constructor-04]
 == <<ExplicitExpression,ExplicitExpression>>::ExplicitExpression
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -235,7 +259,9 @@ ExplicitExpression(<<ExplicitExpression,ExplicitExpression>> const&);
 [#ExplicitExpression-2constructor-08]
 == <<ExplicitExpression,ExplicitExpression>>::ExplicitExpression
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -248,7 +274,9 @@ ExplicitExpression(<<ExplicitExpression,ExplicitExpression>>&&) noexcept;
 [#ExplicitExpression-2constructor-02]
 == <<ExplicitExpression,ExplicitExpression>>::ExplicitExpression
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -263,7 +291,9 @@ ExplicitExpression(
 [#ExplicitFalse]
 == ExplicitFalse
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -273,6 +303,7 @@ struct ExplicitFalse;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -286,7 +317,9 @@ struct ExplicitFalse;
 [#ExplicitFalse-2constructor]
 == <<ExplicitFalse,ExplicitFalse>>::ExplicitFalse
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -327,7 +360,9 @@ explicit(false)
 [#ExplicitFalse-2constructor-01]
 == <<ExplicitFalse,ExplicitFalse>>::ExplicitFalse
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -340,7 +375,9 @@ ExplicitFalse();
 [#ExplicitFalse-2constructor-08]
 == <<ExplicitFalse,ExplicitFalse>>::ExplicitFalse
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -353,7 +390,9 @@ ExplicitFalse(<<ExplicitFalse,ExplicitFalse>> const&);
 [#ExplicitFalse-2constructor-0a]
 == <<ExplicitFalse,ExplicitFalse>>::ExplicitFalse
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -366,7 +405,9 @@ ExplicitFalse(<<ExplicitFalse,ExplicitFalse>>&&) noexcept;
 [#ExplicitFalse-2constructor-04]
 == <<ExplicitFalse,ExplicitFalse>>::ExplicitFalse
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -381,7 +422,9 @@ ExplicitFalse(
 [#ExplicitTrue]
 == ExplicitTrue
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -391,6 +434,7 @@ struct ExplicitTrue;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -404,7 +448,9 @@ struct ExplicitTrue;
 [#ExplicitTrue-2constructor]
 == <<ExplicitTrue,ExplicitTrue>>::ExplicitTrue
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -445,7 +491,9 @@ explicit(true)
 [#ExplicitTrue-2constructor-0d]
 == <<ExplicitTrue,ExplicitTrue>>::ExplicitTrue
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -458,7 +506,9 @@ ExplicitTrue();
 [#ExplicitTrue-2constructor-04]
 == <<ExplicitTrue,ExplicitTrue>>::ExplicitTrue
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -471,7 +521,9 @@ ExplicitTrue(<<ExplicitTrue,ExplicitTrue>> const&);
 [#ExplicitTrue-2constructor-08]
 == <<ExplicitTrue,ExplicitTrue>>::ExplicitTrue
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -484,7 +536,9 @@ ExplicitTrue(<<ExplicitTrue,ExplicitTrue>>&&) noexcept;
 [#ExplicitTrue-2constructor-05]
 == <<ExplicitTrue,ExplicitTrue>>::ExplicitTrue
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 

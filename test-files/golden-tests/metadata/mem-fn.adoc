@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -68,7 +70,9 @@
 [#T01]
 == T01
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -78,6 +82,7 @@ struct T01;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -92,7 +97,9 @@ struct T01;
 [#T01-f]
 == <<T01,T01>>::f
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -105,7 +112,9 @@ f();
 [#T02]
 == T02
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -115,6 +124,7 @@ struct T02;
 ----
 
 === Static Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -129,7 +139,9 @@ struct T02;
 [#T02-f]
 == <<T02,T02>>::f
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -143,7 +155,9 @@ f();
 [#T03]
 == T03
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -153,6 +167,7 @@ struct T03;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -167,7 +182,9 @@ struct T03;
 [#T03-f]
 == <<T03,T03>>::f
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -180,7 +197,9 @@ f() &amp;;
 [#T04]
 == T04
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -190,6 +209,7 @@ struct T04;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -204,7 +224,9 @@ struct T04;
 [#T04-f]
 == <<T04,T04>>::f
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -217,7 +239,9 @@ f() &amp;&amp;;
 [#T05]
 == T05
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -227,6 +251,7 @@ struct T05;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -241,7 +266,9 @@ struct T05;
 [#T05-f]
 == <<T05,T05>>::f
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -254,7 +281,9 @@ f() const;
 [#T06]
 == T06
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -264,6 +293,7 @@ struct T06;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -278,7 +308,9 @@ struct T06;
 [#T06-f]
 == <<T06,T06>>::f
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -292,7 +324,9 @@ f();
 [#T08]
 == T08
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -302,6 +336,7 @@ struct T08;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -316,7 +351,9 @@ struct T08;
 [#T08-f]
 == <<T08,T08>>::f
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -329,7 +366,9 @@ f();
 [#T09]
 == T09
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -339,6 +378,7 @@ struct T09;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -353,7 +393,9 @@ struct T09;
 [#T09-f]
 == <<T09,T09>>::f
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -366,7 +408,9 @@ f() noexcept;
 [#T10]
 == T10
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -376,6 +420,7 @@ struct T10;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -390,7 +435,9 @@ struct T10;
 [#T10-f]
 == <<T10,T10>>::f
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -403,7 +450,9 @@ f();
 [#T11]
 == T11
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -413,6 +462,7 @@ struct T11;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -427,7 +477,9 @@ struct T11;
 [#T11-f]
 == <<T11,T11>>::f
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -440,7 +492,9 @@ f();
 [#T12]
 == T12
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -450,6 +504,7 @@ struct T12;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -464,7 +519,9 @@ struct T12;
 [#T12-f]
 == <<T12,T12>>::f
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -477,7 +534,9 @@ f(...);
 [#T13]
 == T13
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -487,6 +546,7 @@ struct T13;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -501,7 +561,9 @@ struct T13;
 [#T13-f]
 == <<T13,T13>>::f
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -515,7 +577,9 @@ f();
 [#T14]
 == T14
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -525,6 +589,7 @@ struct T14;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -539,7 +604,9 @@ struct T14;
 [#T14-f]
 == <<T14,T14>>::f
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -553,7 +620,9 @@ f() = 0;
 [#T15]
 == T15
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -563,6 +632,7 @@ struct T15;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -577,7 +647,9 @@ struct T15;
 [#T15-f]
 == <<T15,T15>>::f
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -590,7 +662,9 @@ f() volatile;
 [#T16]
 == T16
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -600,6 +674,7 @@ struct T16;
 ----
 
 === Static Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -614,7 +689,9 @@ struct T16;
 [#T16-f]
 == <<T16,T16>>::f
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -628,7 +705,9 @@ f();
 [#T17]
 == T17
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -639,6 +718,7 @@ struct T17
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -652,7 +732,9 @@ struct T17
 [#T17-f]
 == <<T17,T17>>::f
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -666,7 +748,9 @@ f() override;
 [#U]
 == U
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -676,6 +760,7 @@ struct U;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -688,6 +773,7 @@ struct U;
 
 |===
 === Static Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -702,7 +788,9 @@ struct U;
 [#U-f1]
 == <<U,U>>::f1
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -716,7 +804,9 @@ f1(...) const volatile noexcept;
 [#U-f2]
 == <<U,U>>::f2
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -731,7 +821,9 @@ f2() noexcept;
 [#U-f3]
 == <<U,U>>::f3
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -745,7 +837,9 @@ f3() const volatile noexcept = 0;
 [#V]
 == V
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 
@@ -756,6 +850,7 @@ struct V
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -767,6 +862,7 @@ struct V
 | 
 |===
 === Static Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -781,7 +877,9 @@ struct V
 [#V-f3]
 == <<V,V>>::f3
 
+
 === Synopsis
+
 
 Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 

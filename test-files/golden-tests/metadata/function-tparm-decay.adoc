@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -17,6 +19,7 @@
 
 |===
 === Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -38,7 +41,9 @@
 [#f]
 == f
 
+
 === Synopsis
+
 
 Declared in `&lt;function&hyphen;tparm&hyphen;decay&period;cpp&gt;`
 
@@ -52,7 +57,9 @@ f();
 [#g]
 == g
 
+
 === Synopsis
+
 
 Declared in `&lt;function&hyphen;tparm&hyphen;decay&period;cpp&gt;`
 
@@ -66,7 +73,9 @@ g();
 [#h]
 == h
 
+
 === Synopsis
+
 
 Declared in `&lt;function&hyphen;tparm&hyphen;decay&period;cpp&gt;`
 
@@ -80,7 +89,9 @@ h();
 [#i]
 == i
 
+
 === Synopsis
+
 
 Declared in `&lt;function&hyphen;tparm&hyphen;decay&period;cpp&gt;`
 
@@ -94,7 +105,9 @@ i();
 [#T]
 == T
 
+
 === Synopsis
+
 
 Declared in `&lt;function&hyphen;tparm&hyphen;decay&period;cpp&gt;`
 
@@ -106,7 +119,9 @@ using T = int;
 [#U]
 == U
 
+
 === Synopsis
+
 
 Declared in `&lt;function&hyphen;tparm&hyphen;decay&period;cpp&gt;`
 

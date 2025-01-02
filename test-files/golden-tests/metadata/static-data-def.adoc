@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -17,6 +19,7 @@
 
 |===
 === Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -29,7 +32,9 @@
 [#A]
 == A
 
+
 === Synopsis
+
 
 Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
 
@@ -40,6 +45,7 @@ struct A;
 ----
 
 === Static Data Members
+
 [cols=2]
 |===
 | Name | Description 
@@ -75,7 +81,9 @@ struct A;
 [#A-v0]
 == <<A,A>>::v0
 
+
 === Synopsis
+
 
 Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
 
@@ -88,7 +96,9 @@ int v0 = 0;
 [#A-v1]
 == <<A,A>>::v1
 
+
 === Synopsis
+
 
 Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
 
@@ -101,7 +111,9 @@ int v1 = 1;
 [#A-v2]
 == <<A,A>>::v2
 
+
 === Synopsis
+
 
 Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
 
@@ -115,7 +127,9 @@ int const v2 = 2;
 [#A-v3]
 == <<A,A>>::v3
 
+
 === Synopsis
+
 
 Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
 
@@ -128,7 +142,9 @@ int const v3 = 3;
 [#A-v4]
 == <<A,A>>::v4
 
+
 === Synopsis
+
 
 Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
 
@@ -141,7 +157,9 @@ int const v4 = 4;
 [#A-v5]
 == <<A,A>>::v5
 
+
 === Synopsis
+
 
 Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
 
@@ -154,7 +172,9 @@ int v5 = 5;
 [#A-v6]
 == <<A,A>>::v6
 
+
 === Synopsis
+
 
 Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
 
@@ -167,7 +187,9 @@ int const v6 = 6;
 [#A-v7]
 == <<A,A>>::v7
 
+
 === Synopsis
+
 
 Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
 
@@ -181,7 +203,9 @@ int const v7 = 7;
 [#B]
 == B
 
+
 === Synopsis
+
 
 Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
 
@@ -191,6 +215,7 @@ struct B;
 ----
 
 === Static Data Members
+
 [cols=2]
 |===
 | Name | Description 
@@ -208,7 +233,9 @@ struct B;
 [#B-x0]
 == <<B,B>>::x0
 
+
 === Synopsis
+
 
 Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
 
@@ -222,7 +249,9 @@ int const x0 = 0;
 [#B-x1]
 == <<B,B>>::x1
 
+
 === Synopsis
+
 
 Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
 
@@ -237,7 +266,9 @@ int const x1 = 0;
 [#f]
 == f
 
+
 === Synopsis
+
 
 Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
 

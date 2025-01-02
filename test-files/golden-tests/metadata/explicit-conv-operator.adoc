@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -26,7 +28,9 @@
 [#Explicit]
 == Explicit
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;conv&hyphen;operator&period;cpp&gt;`
 
@@ -36,6 +40,7 @@ struct Explicit;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -50,7 +55,9 @@ struct Explicit;
 [#Explicit-2conversion]
 == <<Explicit,Explicit>>::operator bool
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;conv&hyphen;operator&period;cpp&gt;`
 
@@ -63,7 +70,9 @@ operator bool();
 [#ExplicitExpression]
 == ExplicitExpression
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;conv&hyphen;operator&period;cpp&gt;`
 
@@ -74,6 +83,7 @@ struct ExplicitExpression;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -88,7 +98,9 @@ struct ExplicitExpression;
 [#ExplicitExpression-2conversion]
 == <<ExplicitExpression,ExplicitExpression>>::operator bool
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;conv&hyphen;operator&period;cpp&gt;`
 
@@ -101,7 +113,9 @@ operator bool();
 [#ExplicitFalse]
 == ExplicitFalse
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;conv&hyphen;operator&period;cpp&gt;`
 
@@ -111,6 +125,7 @@ struct ExplicitFalse;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -125,7 +140,9 @@ struct ExplicitFalse;
 [#ExplicitFalse-2conversion]
 == <<ExplicitFalse,ExplicitFalse>>::operator bool
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;conv&hyphen;operator&period;cpp&gt;`
 
@@ -138,7 +155,9 @@ operator bool();
 [#ExplicitTrue]
 == ExplicitTrue
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;conv&hyphen;operator&period;cpp&gt;`
 
@@ -148,6 +167,7 @@ struct ExplicitTrue;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -162,7 +182,9 @@ struct ExplicitTrue;
 [#ExplicitTrue-2conversion]
 == <<ExplicitTrue,ExplicitTrue>>::operator bool
 
+
 === Synopsis
+
 
 Declared in `&lt;explicit&hyphen;conv&hyphen;operator&period;cpp&gt;`
 

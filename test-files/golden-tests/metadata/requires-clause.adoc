@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -17,6 +19,7 @@
 
 |===
 === Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -31,7 +34,9 @@
 [#A-0c]
 == A
 
+
 === Synopsis
+
 
 Declared in `&lt;requires&hyphen;clause&period;cpp&gt;`
 
@@ -48,7 +53,9 @@ struct A;
 [#A-08]
 == A
 
+
 === Synopsis
+
 
 Declared in `&lt;requires&hyphen;clause&period;cpp&gt;`
 
@@ -65,7 +72,9 @@ struct A;
 [#f]
 == f
 
+
 === Synopsis
+
 
 Declared in `&lt;requires&hyphen;clause&period;cpp&gt;`
 
@@ -80,7 +89,9 @@ requires (sizeof(U) &equals;&equals; 2);
 [#g]
 == g
 
+
 === Synopsis
+
 
 Declared in `&lt;requires&hyphen;clause&period;cpp&gt;`
 
@@ -117,7 +128,9 @@ void
 [#g-00]
 == g
 
+
 === Synopsis
+
 
 Declared in `&lt;requires&hyphen;clause&period;cpp&gt;`
 
@@ -132,7 +145,9 @@ g();
 [#g-04]
 == g
 
+
 === Synopsis
+
 
 Declared in `&lt;requires&hyphen;clause&period;cpp&gt;`
 
@@ -147,7 +162,9 @@ g();
 [#g-03]
 == g
 
+
 === Synopsis
+
 
 Declared in `&lt;requires&hyphen;clause&period;cpp&gt;`
 

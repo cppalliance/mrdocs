@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -19,11 +21,13 @@
 [#distance]
 == distance
 
+
 Return the distance between two points
 
 
 
 === Synopsis
+
 
 Declared in `&lt;distance&period;cpp&gt;`
 
@@ -39,6 +43,7 @@ distance(
 
 === Description
 
+
 This function returns the distance between two points
 according to the Euclidean distance formula&period;
 
@@ -46,11 +51,13 @@ according to the Euclidean distance formula&period;
 
 === Return Value
 
+
 The distance between the two points
 
 
 
 === Parameters
+
 
 |===
 | Name | Description

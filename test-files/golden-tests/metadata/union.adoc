@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -20,7 +22,9 @@
 [#A]
 == A
 
+
 === Synopsis
+
 
 Declared in `&lt;union&period;cpp&gt;`
 
@@ -30,6 +34,7 @@ union A;
 ----
 
 === Data Members
+
 [cols=2]
 |===
 | Name | Description 
@@ -47,7 +52,9 @@ union A;
 [#A-x]
 == <<A,A>>::x
 
+
 === Synopsis
+
 
 Declared in `&lt;union&period;cpp&gt;`
 
@@ -59,7 +66,9 @@ int x;
 [#A-y]
 == <<A,A>>::y
 
+
 === Synopsis
+
 
 Declared in `&lt;union&period;cpp&gt;`
 
@@ -71,7 +80,9 @@ bool y;
 [#B]
 == B
 
+
 === Synopsis
+
 
 Declared in `&lt;union&period;cpp&gt;`
 
@@ -81,6 +92,7 @@ struct B;
 ----
 
 === Data Members
+
 [cols=2]
 |===
 | Name | Description 
@@ -101,7 +113,9 @@ struct B;
 [#B-x]
 == <<B,B>>::x
 
+
 === Synopsis
+
 
 Declared in `&lt;union&period;cpp&gt;`
 
@@ -113,7 +127,9 @@ int x;
 [#B-y]
 == <<B,B>>::y
 
+
 === Synopsis
+
 
 Declared in `&lt;union&period;cpp&gt;`
 
@@ -125,7 +141,9 @@ bool y;
 [#B-z]
 == <<B,B>>::z
 
+
 === Synopsis
+
 
 Declared in `&lt;union&period;cpp&gt;`
 

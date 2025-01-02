@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -27,6 +29,7 @@ continues to the line&period;
 [#f5]
 == f5
 
+
 brief
 *bold*
 it
@@ -35,6 +38,7 @@ continues to the line&period;
 
 
 === Synopsis
+
 
 Declared in `&lt;brief&hyphen;1&period;cpp&gt;`
 
@@ -47,11 +51,13 @@ f5();
 [#f6]
 == f6
 
+
 brief
 
 
 
 === Synopsis
+
 
 Declared in `&lt;brief&hyphen;1&period;cpp&gt;`
 
@@ -62,6 +68,7 @@ f6();
 ----
 
 === Description
+
 
 many lined
 *bold*

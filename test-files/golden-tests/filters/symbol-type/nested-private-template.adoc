@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -17,7 +19,9 @@
 [#range]
 == range
 
+
 === Synopsis
+
 
 Declared in `&lt;nested&hyphen;private&hyphen;template&period;cpp&gt;`
 
@@ -30,6 +34,7 @@ class range;
 
 
 === Private Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -45,7 +50,9 @@ class range;
 [#range-impl-0e]
 == <<range,range>>::impl
 
+
 === Synopsis
+
 
 Declared in `&lt;nested&hyphen;private&hyphen;template&period;cpp&gt;`
 
@@ -63,7 +70,9 @@ struct impl;
 [#range-impl-00]
 == <<range,range>>::impl&lt;R, false&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;nested&hyphen;private&hyphen;template&period;cpp&gt;`
 
