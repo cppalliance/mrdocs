@@ -7,32 +7,22 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<X-0e,`X`>> 
-| 
-
 |===
 === Deduction Guides
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<X-0d,`X&lt;0&gt;`>> 
-| 
-
 | <<X-00,`X&lt;0&gt;`>> 
-| 
-
 | <<X-0b,`X&lt;0&gt;`>> 
-| 
-
 | <<X-06,`X&lt;0&gt;`>> 
-| 
-
 |===
 
 [#X-0e]

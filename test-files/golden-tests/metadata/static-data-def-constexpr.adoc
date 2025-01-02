@@ -7,16 +7,12 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S,`S`>> 
-| 
-
 | <<T,`T`>> 
-| 
-
 |===
 
 [#S]
@@ -35,13 +31,11 @@ struct S;
 
 === Static Data Members
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S-s,`s`>> 
-| 
-
 |===
 
 
@@ -78,13 +72,11 @@ struct T;
 
 === Static Data Members
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T-t,`t`>> 
-| 
-
 |===
 
 

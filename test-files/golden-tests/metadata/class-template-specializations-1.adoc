@@ -7,283 +7,101 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<R0,`R0`>> 
-| 
-
 | <<R1,`R1`>> 
-| 
-
 | <<R10,`R10`>> 
-| 
-
 | <<R11,`R11`>> 
-| 
-
 | <<R12,`R12`>> 
-| 
-
 | <<R13,`R13`>> 
-| 
-
 | <<R14,`R14`>> 
-| 
-
 | <<R15,`R15`>> 
-| 
-
 | <<R16,`R16`>> 
-| 
-
 | <<R17,`R17`>> 
-| 
-
 | <<R18,`R18`>> 
-| 
-
 | <<R19,`R19`>> 
-| 
-
 | <<R2,`R2`>> 
-| 
-
 | <<R20,`R20`>> 
-| 
-
 | <<R21,`R21`>> 
-| 
-
 | <<R22,`R22`>> 
-| 
-
 | <<R23,`R23`>> 
-| 
-
 | <<R24,`R24`>> 
-| 
-
 | <<R25,`R25`>> 
-| 
-
 | <<R26,`R26`>> 
-| 
-
 | <<R27,`R27`>> 
-| 
-
 | <<R28,`R28`>> 
-| 
-
 | <<R29,`R29`>> 
-| 
-
 | <<R3,`R3`>> 
-| 
-
 | <<R30,`R30`>> 
-| 
-
 | <<R31,`R31`>> 
-| 
-
 | <<R32,`R32`>> 
-| 
-
 | <<R33,`R33`>> 
-| 
-
 | <<R34,`R34`>> 
-| 
-
 | <<R35,`R35`>> 
-| 
-
 | <<R36,`R36`>> 
-| 
-
 | <<R37,`R37`>> 
-| 
-
 | <<R38,`R38`>> 
-| 
-
 | <<R39,`R39`>> 
-| 
-
 | <<R4,`R4`>> 
-| 
-
 | <<R40,`R40`>> 
-| 
-
 | <<R41,`R41`>> 
-| 
-
 | <<R42,`R42`>> 
-| 
-
 | <<R43,`R43`>> 
-| 
-
 | <<R44,`R44`>> 
-| 
-
 | <<R45,`R45`>> 
-| 
-
 | <<R46,`R46`>> 
-| 
-
 | <<R47,`R47`>> 
-| 
-
 | <<R48,`R48`>> 
-| 
-
 | <<R5,`R5`>> 
-| 
-
 | <<R6,`R6`>> 
-| 
-
 | <<R7,`R7`>> 
-| 
-
 | <<R8,`R8`>> 
-| 
-
 | <<R9,`R9`>> 
-| 
-
 | <<S0-0cf,`S0`>> 
-| 
-
 | <<S0-0be,`S0&lt;0&gt;`>> 
-| 
-
 | <<S0-0c4,`S0&lt;1, T*&gt;`>> 
-| 
-
 | <<S0-020a,`S0&lt;1, int*&gt;`>> 
-| 
-
 | <<S0-09c,`S0&lt;2&gt;`>> 
-| 
-
 | <<S0-073,`S0&lt;3&gt;`>> 
-| 
-
 | <<S0-0a1,`S0&lt;4&gt;`>> 
-| 
-
 | <<S0-07e,`S0&lt;6&gt;`>> 
-| 
-
 | <<S0-0a3,`S0&lt;8&gt;`>> 
-| 
-
 | <<S0-08,`S0&lt;10&gt;`>> 
-| 
-
 | <<S0-0e,`S0&lt;12&gt;`>> 
-| 
-
 | <<S0-09e4,`S0&lt;15&gt;`>> 
-| 
-
 | <<S0-07a,`S0&lt;18&gt;`>> 
-| 
-
 | <<S0-0a7,`S0&lt;19&gt;`>> 
-| 
-
 | <<S0-0314,`S0&lt;21&gt;`>> 
-| 
-
 | <<S0-058,`S0&lt;23&gt;`>> 
-| 
-
 | <<S0-0a2,`S0&lt;25&gt;`>> 
-| 
-
 | <<S0-09e2,`S0&lt;27&gt;`>> 
-| 
-
 | <<S0-01,`S0&lt;30&gt;`>> 
-| 
-
 | <<S0-09ee,`S0&lt;33&gt;`>> 
-| 
-
 | <<S0-033,`S0&lt;36&gt;`>> 
-| 
-
 | <<S0-06,`S0&lt;39&gt;`>> 
-| 
-
 | <<S0-0ba,`S0&lt;43&gt;`>> 
-| 
-
 | <<S0-03c,`S0&lt;2, bool&gt;`>> 
-| 
-
 | <<S0-092,`S0&lt;3, bool&gt;`>> 
-| 
-
 | <<S0-0b6,`S0&lt;4, bool&gt;`>> 
-| 
-
 | <<S0-023,`S0&lt;6, bool&gt;`>> 
-| 
-
 | <<S0-04,`S0&lt;8, bool&gt;`>> 
-| 
-
 | <<S0-05a,`S0&lt;10, bool&gt;`>> 
-| 
-
 | <<S0-0cd,`S0&lt;12, bool&gt;`>> 
-| 
-
 | <<S0-000,`S0&lt;15, bool&gt;`>> 
-| 
-
 | <<S0-051,`S0&lt;18, bool&gt;`>> 
-| 
-
 | <<S0-002,`S0&lt;19, bool&gt;`>> 
-| 
-
 | <<S0-003,`S0&lt;21, bool&gt;`>> 
-| 
-
 | <<S0-0c7,`S0&lt;23, bool&gt;`>> 
-| 
-
 | <<S0-0529f,`S0&lt;25, bool&gt;`>> 
-| 
-
 | <<S0-007,`S0&lt;27, bool&gt;`>> 
-| 
-
 | <<S0-021,`S0&lt;30, bool&gt;`>> 
-| 
-
 | <<S0-0318,`S0&lt;33, bool&gt;`>> 
-| 
-
 | <<S0-0d,`S0&lt;36, bool&gt;`>> 
-| 
-
 | <<S0-0206,`S0&lt;39, bool&gt;`>> 
-| 
-
 | <<S0-05291,`S0&lt;43, bool&gt;`>> 
-| 
-
 |===
 
 [#R0]
@@ -303,26 +121,20 @@ struct R0
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cf-S1,`S1`>> 
-| 
-
 | <<S0-0cf-S5,`S5`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cf-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -542,26 +354,20 @@ struct R2
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cf-S1,`S1`>> 
-| 
-
 | <<S0-0cf-S5,`S5`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cf-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -727,26 +533,20 @@ struct R28
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cf-S1,`S1`>> 
-| 
-
 | <<S0-0cf-S5,`S5`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cf-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -768,26 +568,20 @@ struct R29
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cf-S1,`S1`>> 
-| 
-
 | <<S0-0cf-S5,`S5`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cf-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -827,23 +621,19 @@ struct R30
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-03c-S1-S2,`S2`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-03c-S1-f1,`f1`>> 
-| 
-
 |===
 
 
@@ -922,13 +712,11 @@ struct R34
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-04-S1-S2-0a-S3-f3,`f3`>> 
-| 
-
 |===
 
 
@@ -1082,23 +870,19 @@ struct R41
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0c7-S5-0f-S6-S7,`S7`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0c7-S5-0f-S6-f6,`f6`>> 
-| 
-
 |===
 
 
@@ -1177,13 +961,11 @@ struct R45
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0318-S5-0b-S6-S7-05-S8-f8,`f8`>> 
-| 
-
 |===
 
 
@@ -1354,26 +1136,20 @@ struct S0;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cf-S1,`S1`>> 
-| 
-
 | <<S0-0cf-S5,`S5`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cf-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -1394,23 +1170,19 @@ struct S1;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cf-S1-S2,`S2`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cf-S1-f1,`f1`>> 
-| 
-
 |===
 
 
@@ -1434,26 +1206,20 @@ struct S2;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cf-S1-S2-S3,`S3`>> 
-| 
-
 | <<S0-0cf-S1-S2-S4,`S4`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cf-S1-S2-f2,`f2`>> 
-| 
-
 |===
 
 
@@ -1474,13 +1240,11 @@ struct S3;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cf-S1-S2-S3-f3,`f3`>> 
-| 
-
 |===
 
 
@@ -1519,13 +1283,11 @@ struct S4;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cf-S1-S2-S4-f4,`f4`>> 
-| 
-
 |===
 
 
@@ -1594,23 +1356,19 @@ struct S5;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cf-S5-S6,`S6`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cf-S5-f5,`f5`>> 
-| 
-
 |===
 
 
@@ -1631,23 +1389,19 @@ struct S6;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cf-S5-S6-S7,`S7`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cf-S5-S6-f6,`f6`>> 
-| 
-
 |===
 
 
@@ -1671,26 +1425,20 @@ struct S7;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cf-S5-S6-S7-S8,`S8`>> 
-| 
-
 | <<S0-0cf-S5-S6-S7-S9,`S9`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cf-S5-S6-S7-f7,`f7`>> 
-| 
-
 |===
 
 
@@ -1711,13 +1459,11 @@ struct S8;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cf-S5-S6-S7-S8-f8,`f8`>> 
-| 
-
 |===
 
 
@@ -1756,13 +1502,11 @@ struct S9;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cf-S5-S6-S7-S9-f9,`f9`>> 
-| 
-
 |===
 
 
@@ -1877,26 +1621,20 @@ struct <<S0-0cf,S0>>&lt;2&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-09c-S1,`S1`>> 
-| 
-
 | <<S0-09c-S5,`S5`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-09c-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -1970,26 +1708,20 @@ struct <<S0-0cf,S0>>&lt;3&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-073-S1,`S1`>> 
-| 
-
 | <<S0-073-S5,`S5`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-073-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -2010,23 +1742,19 @@ struct S1;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-073-S1-S2,`S2`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-073-S1-f1,`f1`>> 
-| 
-
 |===
 
 
@@ -2118,26 +1846,20 @@ struct <<S0-0cf,S0>>&lt;4&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0a1-S1,`S1`>> 
-| 
-
 | <<S0-0a1-S5,`S5`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0a1-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -2158,26 +1880,20 @@ struct S1;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0a1-S1-S2-00,`S2`>> 
-| 
-
 | <<S0-0a1-S1-S2-0f,`S2&lt;5&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0a1-S1-f1,`f1`>> 
-| 
-
 |===
 
 
@@ -2287,26 +2003,20 @@ struct <<S0-0cf,S0>>&lt;6&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-07e-S1,`S1`>> 
-| 
-
 | <<S0-07e-S5,`S5`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-07e-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -2327,29 +2037,21 @@ struct S1;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-07e-S1-S2-04,`S2`>> 
-| 
-
 | <<S0-07e-S1-S2-06,`S2&lt;7, T*&gt;`>> 
-| 
-
 | <<S0-07e-S1-S2-07,`S2&lt;7, int*&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-07e-S1-f1,`f1`>> 
-| 
-
 |===
 
 
@@ -2477,26 +2179,20 @@ struct <<S0-0cf,S0>>&lt;8&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0a3-S1,`S1`>> 
-| 
-
 | <<S0-0a3-S5,`S5`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0a3-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -2517,26 +2213,20 @@ struct S1;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0a3-S1-S2-0b,`S2`>> 
-| 
-
 | <<S0-0a3-S1-S2-0c,`S2&lt;9&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0a3-S1-f1,`f1`>> 
-| 
-
 |===
 
 
@@ -2578,26 +2268,20 @@ struct <<S0-0cf-S1-S2,S2>>&lt;9&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0a3-S1-S2-0c-S3,`S3`>> 
-| 
-
 | <<S0-0a3-S1-S2-0c-S4,`S4`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0a3-S1-S2-0c-f2,`f2`>> 
-| 
-
 |===
 
 
@@ -2721,26 +2405,20 @@ struct <<S0-0cf,S0>>&lt;10&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-08-S1,`S1`>> 
-| 
-
 | <<S0-08-S5,`S5`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-08-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -2761,26 +2439,20 @@ struct S1;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-08-S1-S2-0b,`S2`>> 
-| 
-
 | <<S0-08-S1-S2-08,`S2&lt;11&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-08-S1-f1,`f1`>> 
-| 
-
 |===
 
 
@@ -2822,26 +2494,20 @@ struct <<S0-0cf-S1-S2,S2>>&lt;11&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-08-S1-S2-08-S3,`S3`>> 
-| 
-
 | <<S0-08-S1-S2-08-S4,`S4`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-08-S1-S2-08-f2,`f2`>> 
-| 
-
 |===
 
 
@@ -2965,26 +2631,20 @@ struct <<S0-0cf,S0>>&lt;12&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0e-S1,`S1`>> 
-| 
-
 | <<S0-0e-S5,`S5`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0e-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -3005,26 +2665,20 @@ struct S1;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0e-S1-S2-09,`S2`>> 
-| 
-
 | <<S0-0e-S1-S2-02,`S2&lt;13&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0e-S1-f1,`f1`>> 
-| 
-
 |===
 
 
@@ -3066,29 +2720,21 @@ struct <<S0-0cf-S1-S2,S2>>&lt;13&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0e-S1-S2-02-S3,`S3`>> 
-| 
-
 | <<S0-0e-S1-S2-02-S4-00,`S4`>> 
-| 
-
 | <<S0-0e-S1-S2-02-S4-0c,`S4&lt;14&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0e-S1-S2-02-f2,`f2`>> 
-| 
-
 |===
 
 
@@ -3230,26 +2876,20 @@ struct <<S0-0cf,S0>>&lt;15&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-09e4-S1,`S1`>> 
-| 
-
 | <<S0-09e4-S5,`S5`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-09e4-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -3270,26 +2910,20 @@ struct S1;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-09e4-S1-S2-07,`S2`>> 
-| 
-
 | <<S0-09e4-S1-S2-02,`S2&lt;16&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-09e4-S1-f1,`f1`>> 
-| 
-
 |===
 
 
@@ -3331,32 +2965,22 @@ struct <<S0-0cf-S1-S2,S2>>&lt;16&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-09e4-S1-S2-02-S3,`S3`>> 
-| 
-
 | <<S0-09e4-S1-S2-02-S4-00,`S4`>> 
-| 
-
 | <<S0-09e4-S1-S2-02-S4-07,`S4&lt;17, T*&gt;`>> 
-| 
-
 | <<S0-09e4-S1-S2-02-S4-02,`S4&lt;17, int*&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-09e4-S1-S2-02-f2,`f2`>> 
-| 
-
 |===
 
 
@@ -3516,26 +3140,20 @@ struct <<S0-0cf,S0>>&lt;18&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-07a-S1,`S1`>> 
-| 
-
 | <<S0-07a-S5,`S5`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-07a-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -3609,29 +3227,21 @@ struct <<S0-0cf,S0>>&lt;19&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0a7-S1,`S1`>> 
-| 
-
 | <<S0-0a7-S5-03,`S5`>> 
-| 
-
 | <<S0-0a7-S5-07,`S5&lt;20&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0a7-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -3723,32 +3333,22 @@ struct <<S0-0cf,S0>>&lt;21&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0314-S1,`S1`>> 
-| 
-
 | <<S0-0314-S5-07,`S5`>> 
-| 
-
 | <<S0-0314-S5-0b,`S5&lt;22, T*&gt;`>> 
-| 
-
 | <<S0-0314-S5-03,`S5&lt;22, int*&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0314-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -3858,29 +3458,21 @@ struct <<S0-0cf,S0>>&lt;23&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-058-S1,`S1`>> 
-| 
-
 | <<S0-058-S5-0b,`S5`>> 
-| 
-
 | <<S0-058-S5-09,`S5&lt;24&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-058-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -3939,23 +3531,19 @@ struct <<S0-0cf-S5,S5>>&lt;24&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-058-S5-09-S6,`S6`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-058-S5-09-f5,`f5`>> 
-| 
-
 |===
 
 
@@ -4024,29 +3612,21 @@ struct <<S0-0cf,S0>>&lt;25&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0a2-S1,`S1`>> 
-| 
-
 | <<S0-0a2-S5-04,`S5`>> 
-| 
-
 | <<S0-0a2-S5-02,`S5&lt;26&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0a2-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -4105,23 +3685,19 @@ struct <<S0-0cf-S5,S5>>&lt;26&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0a2-S5-02-S6,`S6`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0a2-S5-02-f5,`f5`>> 
-| 
-
 |===
 
 
@@ -4142,23 +3718,19 @@ struct S6;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0a2-S5-02-S6-S7,`S7`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0a2-S5-02-S6-f6,`f6`>> 
-| 
-
 |===
 
 
@@ -4245,29 +3817,21 @@ struct <<S0-0cf,S0>>&lt;27&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-09e2-S1,`S1`>> 
-| 
-
 | <<S0-09e2-S5-0b,`S5`>> 
-| 
-
 | <<S0-09e2-S5-0c,`S5&lt;28&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-09e2-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -4326,23 +3890,19 @@ struct <<S0-0cf-S5,S5>>&lt;28&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-09e2-S5-0c-S6,`S6`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-09e2-S5-0c-f5,`f5`>> 
-| 
-
 |===
 
 
@@ -4363,29 +3923,21 @@ struct S6;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-09e2-S5-0c-S6-S7-0b,`S7`>> 
-| 
-
 | <<S0-09e2-S5-0c-S6-S7-0a,`S7&lt;29, T*&gt;`>> 
-| 
-
 | <<S0-09e2-S5-0c-S6-S7-0d,`S7&lt;29, int*&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-09e2-S5-0c-S6-f6,`f6`>> 
-| 
-
 |===
 
 
@@ -4508,29 +4060,21 @@ struct <<S0-0cf,S0>>&lt;30&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-01-S1,`S1`>> 
-| 
-
 | <<S0-01-S5-07,`S5`>> 
-| 
-
 | <<S0-01-S5-04,`S5&lt;31&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-01-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -4589,23 +4133,19 @@ struct <<S0-0cf-S5,S5>>&lt;31&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-01-S5-04-S6,`S6`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-01-S5-04-f5,`f5`>> 
-| 
-
 |===
 
 
@@ -4626,26 +4166,20 @@ struct S6;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-01-S5-04-S6-S7-0c,`S7`>> 
-| 
-
 | <<S0-01-S5-04-S6-S7-05,`S7&lt;32&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-01-S5-04-S6-f6,`f6`>> 
-| 
-
 |===
 
 
@@ -4750,29 +4284,21 @@ struct <<S0-0cf,S0>>&lt;33&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-09ee-S1,`S1`>> 
-| 
-
 | <<S0-09ee-S5-0b,`S5`>> 
-| 
-
 | <<S0-09ee-S5-02,`S5&lt;34&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-09ee-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -4831,23 +4357,19 @@ struct <<S0-0cf-S5,S5>>&lt;34&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-09ee-S5-02-S6,`S6`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-09ee-S5-02-f5,`f5`>> 
-| 
-
 |===
 
 
@@ -4868,26 +4390,20 @@ struct S6;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-09ee-S5-02-S6-S7-09,`S7`>> 
-| 
-
 | <<S0-09ee-S5-02-S6-S7-03,`S7&lt;35&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-09ee-S5-02-S6-f6,`f6`>> 
-| 
-
 |===
 
 
@@ -4929,26 +4445,20 @@ struct <<S0-0cf-S5-S6-S7,S7>>&lt;35&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-09ee-S5-02-S6-S7-03-S8,`S8`>> 
-| 
-
 | <<S0-09ee-S5-02-S6-S7-03-S9,`S9`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-09ee-S5-02-S6-S7-03-f7,`f7`>> 
-| 
-
 |===
 
 
@@ -5067,29 +4577,21 @@ struct <<S0-0cf,S0>>&lt;36&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-033-S1,`S1`>> 
-| 
-
 | <<S0-033-S5-03,`S5`>> 
-| 
-
 | <<S0-033-S5-0f,`S5&lt;37&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-033-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -5148,23 +4650,19 @@ struct <<S0-0cf-S5,S5>>&lt;37&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-033-S5-0f-S6,`S6`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-033-S5-0f-f5,`f5`>> 
-| 
-
 |===
 
 
@@ -5185,26 +4683,20 @@ struct S6;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-033-S5-0f-S6-S7-05,`S7`>> 
-| 
-
 | <<S0-033-S5-0f-S6-S7-0d,`S7&lt;38&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-033-S5-0f-S6-f6,`f6`>> 
-| 
-
 |===
 
 
@@ -5246,26 +4738,20 @@ struct <<S0-0cf-S5-S6-S7,S7>>&lt;38&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-033-S5-0f-S6-S7-0d-S8,`S8`>> 
-| 
-
 | <<S0-033-S5-0f-S6-S7-0d-S9,`S9`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-033-S5-0f-S6-S7-0d-f7,`f7`>> 
-| 
-
 |===
 
 
@@ -5384,29 +4870,21 @@ struct <<S0-0cf,S0>>&lt;39&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-06-S1,`S1`>> 
-| 
-
 | <<S0-06-S5-03,`S5`>> 
-| 
-
 | <<S0-06-S5-07,`S5&lt;40&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-06-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -5465,23 +4943,19 @@ struct <<S0-0cf-S5,S5>>&lt;40&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-06-S5-07-S6,`S6`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-06-S5-07-f5,`f5`>> 
-| 
-
 |===
 
 
@@ -5502,26 +4976,20 @@ struct S6;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-06-S5-07-S6-S7-08,`S7`>> 
-| 
-
 | <<S0-06-S5-07-S6-S7-0a,`S7&lt;41&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-06-S5-07-S6-f6,`f6`>> 
-| 
-
 |===
 
 
@@ -5563,32 +5031,22 @@ struct <<S0-0cf-S5-S6-S7,S7>>&lt;41&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-06-S5-07-S6-S7-0a-S8,`S8`>> 
-| 
-
 | <<S0-06-S5-07-S6-S7-0a-S9-05,`S9`>> 
-| 
-
 | <<S0-06-S5-07-S6-S7-0a-S9-00,`S9&lt;42, T*&gt;`>> 
-| 
-
 | <<S0-06-S5-07-S6-S7-0a-S9-08,`S9&lt;42, int*&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-06-S5-07-S6-S7-0a-f7,`f7`>> 
-| 
-
 |===
 
 
@@ -5743,29 +5201,21 @@ struct <<S0-0cf,S0>>&lt;43&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0ba-S1,`S1`>> 
-| 
-
 | <<S0-0ba-S5-0f,`S5`>> 
-| 
-
 | <<S0-0ba-S5-08,`S5&lt;44&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0ba-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -5824,23 +5274,19 @@ struct <<S0-0cf-S5,S5>>&lt;44&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0ba-S5-08-S6,`S6`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0ba-S5-08-f5,`f5`>> 
-| 
-
 |===
 
 
@@ -5861,26 +5307,20 @@ struct S6;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0ba-S5-08-S6-S7-04,`S7`>> 
-| 
-
 | <<S0-0ba-S5-08-S6-S7-02,`S7&lt;45&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0ba-S5-08-S6-f6,`f6`>> 
-| 
-
 |===
 
 
@@ -5922,29 +5362,21 @@ struct <<S0-0cf-S5-S6-S7,S7>>&lt;45&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0ba-S5-08-S6-S7-02-S8,`S8`>> 
-| 
-
 | <<S0-0ba-S5-08-S6-S7-02-S9-0b,`S9`>> 
-| 
-
 | <<S0-0ba-S5-08-S6-S7-02-S9-0f,`S9&lt;46&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0ba-S5-08-S6-S7-02-f7,`f7`>> 
-| 
-
 |===
 
 
@@ -6117,26 +5549,20 @@ struct <<S0-0cf,S0>>&lt;2, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-03c-S1,`S1`>> 
-| 
-
 | <<S0-03c-S5,`S5`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-03c-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -6157,23 +5583,19 @@ struct S1;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-03c-S1-S2,`S2`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-03c-S1-f1,`f1`>> 
-| 
-
 |===
 
 
@@ -6265,26 +5687,20 @@ struct <<S0-0cf,S0>>&lt;3, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-092-S1,`S1`>> 
-| 
-
 | <<S0-092-S5,`S5`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-092-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -6305,23 +5721,19 @@ struct S1;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-092-S1-S2,`S2`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-092-S1-f1,`f1`>> 
-| 
-
 |===
 
 
@@ -6413,26 +5825,20 @@ struct <<S0-0cf,S0>>&lt;4, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0b6-S1,`S1`>> 
-| 
-
 | <<S0-0b6-S5,`S5`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0b6-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -6453,23 +5859,19 @@ struct S1;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0b6-S1-S2,`S2`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0b6-S1-f1,`f1`>> 
-| 
-
 |===
 
 
@@ -6561,26 +5963,20 @@ struct <<S0-0cf,S0>>&lt;6, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-023-S1,`S1`>> 
-| 
-
 | <<S0-023-S5,`S5`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-023-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -6601,23 +5997,19 @@ struct S1;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-023-S1-S2,`S2`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-023-S1-f1,`f1`>> 
-| 
-
 |===
 
 
@@ -6709,26 +6101,20 @@ struct <<S0-0cf,S0>>&lt;8, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-04-S1,`S1`>> 
-| 
-
 | <<S0-04-S5,`S5`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-04-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -6749,26 +6135,20 @@ struct S1;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-04-S1-S2-0e,`S2`>> 
-| 
-
 | <<S0-04-S1-S2-0a,`S2&lt;9, bool&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-04-S1-f1,`f1`>> 
-| 
-
 |===
 
 
@@ -6810,26 +6190,20 @@ struct <<S0-0cf-S1-S2,S2>>&lt;9, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-04-S1-S2-0a-S3,`S3`>> 
-| 
-
 | <<S0-04-S1-S2-0a-S4,`S4`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-04-S1-S2-0a-f2,`f2`>> 
-| 
-
 |===
 
 
@@ -6850,13 +6224,11 @@ struct S3;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-04-S1-S2-0a-S3-f3,`f3`>> 
-| 
-
 |===
 
 
@@ -6978,26 +6350,20 @@ struct <<S0-0cf,S0>>&lt;10, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-05a-S1,`S1`>> 
-| 
-
 | <<S0-05a-S5,`S5`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-05a-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -7018,26 +6384,20 @@ struct S1;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-05a-S1-S2-07,`S2`>> 
-| 
-
 | <<S0-05a-S1-S2-0b,`S2&lt;11, bool&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-05a-S1-f1,`f1`>> 
-| 
-
 |===
 
 
@@ -7079,26 +6439,20 @@ struct <<S0-0cf-S1-S2,S2>>&lt;11, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-05a-S1-S2-0b-S3,`S3`>> 
-| 
-
 | <<S0-05a-S1-S2-0b-S4,`S4`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-05a-S1-S2-0b-f2,`f2`>> 
-| 
-
 |===
 
 
@@ -7222,26 +6576,20 @@ struct <<S0-0cf,S0>>&lt;12, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cd-S1,`S1`>> 
-| 
-
 | <<S0-0cd-S5,`S5`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cd-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -7262,26 +6610,20 @@ struct S1;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cd-S1-S2-0e,`S2`>> 
-| 
-
 | <<S0-0cd-S1-S2-05,`S2&lt;13, bool&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cd-S1-f1,`f1`>> 
-| 
-
 |===
 
 
@@ -7323,26 +6665,20 @@ struct <<S0-0cf-S1-S2,S2>>&lt;13, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cd-S1-S2-05-S3,`S3`>> 
-| 
-
 | <<S0-0cd-S1-S2-05-S4,`S4`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0cd-S1-S2-05-f2,`f2`>> 
-| 
-
 |===
 
 
@@ -7466,26 +6802,20 @@ struct <<S0-0cf,S0>>&lt;15, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-000-S1,`S1`>> 
-| 
-
 | <<S0-000-S5,`S5`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-000-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -7506,26 +6836,20 @@ struct S1;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-000-S1-S2-08,`S2`>> 
-| 
-
 | <<S0-000-S1-S2-03,`S2&lt;16, bool&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-000-S1-f1,`f1`>> 
-| 
-
 |===
 
 
@@ -7567,26 +6891,20 @@ struct <<S0-0cf-S1-S2,S2>>&lt;16, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-000-S1-S2-03-S3,`S3`>> 
-| 
-
 | <<S0-000-S1-S2-03-S4,`S4`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-000-S1-S2-03-f2,`f2`>> 
-| 
-
 |===
 
 
@@ -7710,26 +7028,20 @@ struct <<S0-0cf,S0>>&lt;18, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-051-S1,`S1`>> 
-| 
-
 | <<S0-051-S5,`S5`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-051-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -7803,26 +7115,20 @@ struct <<S0-0cf,S0>>&lt;19, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-002-S1,`S1`>> 
-| 
-
 | <<S0-002-S5,`S5`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-002-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -7896,26 +7202,20 @@ struct <<S0-0cf,S0>>&lt;21, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-003-S1,`S1`>> 
-| 
-
 | <<S0-003-S5,`S5`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-003-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -7989,29 +7289,21 @@ struct <<S0-0cf,S0>>&lt;23, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0c7-S1,`S1`>> 
-| 
-
 | <<S0-0c7-S5-03,`S5`>> 
-| 
-
 | <<S0-0c7-S5-0f,`S5&lt;24, bool&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0c7-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -8070,23 +7362,19 @@ struct <<S0-0cf-S5,S5>>&lt;24, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0c7-S5-0f-S6,`S6`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0c7-S5-0f-f5,`f5`>> 
-| 
-
 |===
 
 
@@ -8107,23 +7395,19 @@ struct S6;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0c7-S5-0f-S6-S7,`S7`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0c7-S5-0f-S6-f6,`f6`>> 
-| 
-
 |===
 
 
@@ -8210,29 +7494,21 @@ struct <<S0-0cf,S0>>&lt;25, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0529f-S1,`S1`>> 
-| 
-
 | <<S0-0529f-S5-051,`S5`>> 
-| 
-
 | <<S0-0529f-S5-05c,`S5&lt;26, bool&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0529f-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -8291,23 +7567,19 @@ struct <<S0-0cf-S5,S5>>&lt;26, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0529f-S5-05c-S6,`S6`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0529f-S5-05c-f5,`f5`>> 
-| 
-
 |===
 
 
@@ -8328,23 +7600,19 @@ struct S6;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0529f-S5-05c-S6-S7,`S7`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0529f-S5-05c-S6-f6,`f6`>> 
-| 
-
 |===
 
 
@@ -8431,29 +7699,21 @@ struct <<S0-0cf,S0>>&lt;27, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-007-S1,`S1`>> 
-| 
-
 | <<S0-007-S5-0f,`S5`>> 
-| 
-
 | <<S0-007-S5-0d,`S5&lt;28, bool&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-007-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -8512,23 +7772,19 @@ struct <<S0-0cf-S5,S5>>&lt;28, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-007-S5-0d-S6,`S6`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-007-S5-0d-f5,`f5`>> 
-| 
-
 |===
 
 
@@ -8549,23 +7805,19 @@ struct S6;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-007-S5-0d-S6-S7,`S7`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-007-S5-0d-S6-f6,`f6`>> 
-| 
-
 |===
 
 
@@ -8652,29 +7904,21 @@ struct <<S0-0cf,S0>>&lt;30, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-021-S1,`S1`>> 
-| 
-
 | <<S0-021-S5-06,`S5`>> 
-| 
-
 | <<S0-021-S5-0b,`S5&lt;31, bool&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-021-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -8733,23 +7977,19 @@ struct <<S0-0cf-S5,S5>>&lt;31, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-021-S5-0b-S6,`S6`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-021-S5-0b-f5,`f5`>> 
-| 
-
 |===
 
 
@@ -8770,23 +8010,19 @@ struct S6;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-021-S5-0b-S6-S7,`S7`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-021-S5-0b-S6-f6,`f6`>> 
-| 
-
 |===
 
 
@@ -8873,29 +8109,21 @@ struct <<S0-0cf,S0>>&lt;33, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0318-S1,`S1`>> 
-| 
-
 | <<S0-0318-S5-0f,`S5`>> 
-| 
-
 | <<S0-0318-S5-0b,`S5&lt;34, bool&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0318-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -8954,23 +8182,19 @@ struct <<S0-0cf-S5,S5>>&lt;34, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0318-S5-0b-S6,`S6`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0318-S5-0b-f5,`f5`>> 
-| 
-
 |===
 
 
@@ -8991,26 +8215,20 @@ struct S6;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0318-S5-0b-S6-S7-04,`S7`>> 
-| 
-
 | <<S0-0318-S5-0b-S6-S7-05,`S7&lt;35, bool&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0318-S5-0b-S6-f6,`f6`>> 
-| 
-
 |===
 
 
@@ -9052,26 +8270,20 @@ struct <<S0-0cf-S5-S6-S7,S7>>&lt;35, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0318-S5-0b-S6-S7-05-S8,`S8`>> 
-| 
-
 | <<S0-0318-S5-0b-S6-S7-05-S9,`S9`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0318-S5-0b-S6-S7-05-f7,`f7`>> 
-| 
-
 |===
 
 
@@ -9092,13 +8304,11 @@ struct S8;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0318-S5-0b-S6-S7-05-S8-f8,`f8`>> 
-| 
-
 |===
 
 
@@ -9215,29 +8425,21 @@ struct <<S0-0cf,S0>>&lt;36, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0d-S1,`S1`>> 
-| 
-
 | <<S0-0d-S5-09,`S5`>> 
-| 
-
 | <<S0-0d-S5-0b,`S5&lt;37, bool&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0d-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -9296,23 +8498,19 @@ struct <<S0-0cf-S5,S5>>&lt;37, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0d-S5-0b-S6,`S6`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0d-S5-0b-f5,`f5`>> 
-| 
-
 |===
 
 
@@ -9333,26 +8531,20 @@ struct S6;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0d-S5-0b-S6-S7-08,`S7`>> 
-| 
-
 | <<S0-0d-S5-0b-S6-S7-0d,`S7&lt;38, bool&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0d-S5-0b-S6-f6,`f6`>> 
-| 
-
 |===
 
 
@@ -9394,26 +8586,20 @@ struct <<S0-0cf-S5-S6-S7,S7>>&lt;38, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0d-S5-0b-S6-S7-0d-S8,`S8`>> 
-| 
-
 | <<S0-0d-S5-0b-S6-S7-0d-S9,`S9`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0d-S5-0b-S6-S7-0d-f7,`f7`>> 
-| 
-
 |===
 
 
@@ -9532,29 +8718,21 @@ struct <<S0-0cf,S0>>&lt;39, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0206-S1,`S1`>> 
-| 
-
 | <<S0-0206-S5-06,`S5`>> 
-| 
-
 | <<S0-0206-S5-08,`S5&lt;40, bool&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0206-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -9613,23 +8791,19 @@ struct <<S0-0cf-S5,S5>>&lt;40, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0206-S5-08-S6,`S6`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0206-S5-08-f5,`f5`>> 
-| 
-
 |===
 
 
@@ -9650,26 +8824,20 @@ struct S6;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0206-S5-08-S6-S7-06,`S7`>> 
-| 
-
 | <<S0-0206-S5-08-S6-S7-01,`S7&lt;41, bool&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0206-S5-08-S6-f6,`f6`>> 
-| 
-
 |===
 
 
@@ -9711,26 +8879,20 @@ struct <<S0-0cf-S5-S6-S7,S7>>&lt;41, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0206-S5-08-S6-S7-01-S8,`S8`>> 
-| 
-
 | <<S0-0206-S5-08-S6-S7-01-S9,`S9`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-0206-S5-08-S6-S7-01-f7,`f7`>> 
-| 
-
 |===
 
 
@@ -9849,29 +9011,21 @@ struct <<S0-0cf,S0>>&lt;43, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-05291-S1,`S1`>> 
-| 
-
 | <<S0-05291-S5-02,`S5`>> 
-| 
-
 | <<S0-05291-S5-0e,`S5&lt;44, bool&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-05291-f0,`f0`>> 
-| 
-
 |===
 
 
@@ -9930,23 +9084,19 @@ struct <<S0-0cf-S5,S5>>&lt;44, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-05291-S5-0e-S6,`S6`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-05291-S5-0e-f5,`f5`>> 
-| 
-
 |===
 
 
@@ -9967,26 +9117,20 @@ struct S6;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-05291-S5-0e-S6-S7-04,`S7`>> 
-| 
-
 | <<S0-05291-S5-0e-S6-S7-0f,`S7&lt;45, bool&gt;`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-05291-S5-0e-S6-f6,`f6`>> 
-| 
-
 |===
 
 
@@ -10028,26 +9172,20 @@ struct <<S0-0cf-S5-S6-S7,S7>>&lt;45, bool&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-05291-S5-0e-S6-S7-0f-S8,`S8`>> 
-| 
-
 | <<S0-05291-S5-0e-S6-S7-0f-S9,`S9`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-05291-S5-0e-S6-S7-0f-f7,`f7`>> 
-| 
-
 |===
 
 

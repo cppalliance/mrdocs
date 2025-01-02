@@ -7,37 +7,19 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-0e,`A`>> 
-| 
-
 | <<A-00,`A&lt;int&gt;`>> 
-| 
-
 | <<A-0c,`A&lt;long&gt;`>> 
-| 
-
 | <<B-00,`B`>> 
-| 
-
 | <<B-07,`B&lt;T*&gt;`>> 
-| 
-
 | <<B-06,`B&lt;T&&gt;`>> 
-| 
-
 | <<C-0f,`C`>> 
-| 
-
 | <<C-0a,`C&lt;int, int&gt;`>> 
-| 
-
 | <<C-0e,`C&lt;T*, int&gt;`>> 
-| 
-
 |===
 
 [#A-0e]
@@ -57,13 +39,11 @@ struct A;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-0e-f,`f`>> 
-| 
-
 |===
 
 
@@ -100,13 +80,11 @@ struct <<A-0e,A>>&lt;int&gt;;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-00-g,`g`>> 
-| 
-
 |===
 
 
@@ -143,13 +121,11 @@ struct <<A-0e,A>>&lt;long&gt;;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-0c-h,`h`>> 
-| 
-
 |===
 
 
@@ -186,13 +162,11 @@ struct B;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<B-00-f,`f`>> 
-| 
-
 |===
 
 
@@ -229,13 +203,11 @@ struct <<B-00,B>>&lt;T*&gt;;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<B-07-g,`g`>> 
-| 
-
 |===
 
 
@@ -272,13 +244,11 @@ struct <<B-00,B>>&lt;T&&gt;;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<B-06-h,`h`>> 
-| 
-
 |===
 
 
@@ -317,13 +287,11 @@ struct C;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<C-0f-f,`f`>> 
-| 
-
 |===
 
 
@@ -360,13 +328,11 @@ struct <<C-0f,C>>&lt;int, int&gt;;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<C-0a-g,`g`>> 
-| 
-
 |===
 
 
@@ -403,13 +369,11 @@ struct <<C-0f,C>>&lt;T*, int&gt;;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<C-0e-h,`h`>> 
-| 
-
 |===
 
 

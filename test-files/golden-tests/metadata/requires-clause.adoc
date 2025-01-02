@@ -7,28 +7,21 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-0c,`A`>> 
-| 
-
 | <<A-08,`A`>> 
-| 
-
 |===
 === Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<f,`f`>> 
-| 
-
 | <<g,`g`>> 
-| 
 |===
 
 [#A-0c]

@@ -7,24 +7,20 @@
 
 === Namespaces
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<LongName,`LongName`>> 
-| 
-
 |===
 
 === Using Directives
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<LongName,`LongName`>> 
-| 
-
 |===
 
 [#LongName]

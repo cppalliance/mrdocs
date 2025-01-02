@@ -7,23 +7,19 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<B,`B`>> 
-| 
-
 |===
 === Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<f,`f`>> 
-| 
-
 |===
 
 [#B]

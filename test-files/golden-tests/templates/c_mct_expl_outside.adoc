@@ -7,13 +7,11 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A,`A`>> 
-| 
-
 |===
 
 [#A]
@@ -32,16 +30,12 @@ struct A;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-B-04,`B`>> 
-| 
-
 | <<A-B-01,`B&lt;int&gt;`>> 
-| 
-
 |===
 
 
@@ -63,13 +57,11 @@ struct B;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-B-04-f,`f`>> 
-| 
-
 |===
 
 
@@ -106,13 +98,11 @@ struct <<A-B-04,B>>&lt;int&gt;;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-B-01-g,`g`>> 
-| 
-
 |===
 
 

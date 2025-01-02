@@ -7,34 +7,18 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A,`A`>> 
-| 
-
 | <<B,`B`>> 
-| 
-
 | <<Ba,`Ba`>> 
-| 
-
 | <<Bx,`Bx`>> 
-| 
-
 | <<a,`a`>> 
-| 
-
 | <<b,`b`>> 
-| 
-
 | <<bA,`bA`>> 
-| 
-
 | <<ba,`ba`>> 
-| 
-
 |===
 
 [#A]

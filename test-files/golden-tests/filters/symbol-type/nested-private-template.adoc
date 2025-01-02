@@ -7,13 +7,11 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<range,`range`>> 
-| 
-
 |===
 
 [#range]
@@ -35,16 +33,12 @@ class range;
 
 === Private Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<range-impl-0e,`impl`>> 
-| 
-
 | <<range-impl-00,`impl&lt;R, false&gt;`>> 
-| 
-
 |===
 
 [#range-impl-0e]

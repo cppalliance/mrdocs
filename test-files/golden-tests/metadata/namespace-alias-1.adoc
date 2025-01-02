@@ -7,23 +7,19 @@
 
 === Namespaces
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<LongName,`LongName`>> 
-| 
-
 |===
 === Namespace Aliases
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A,`A`>> 
-| 
-
 |===
 
 [#LongName]

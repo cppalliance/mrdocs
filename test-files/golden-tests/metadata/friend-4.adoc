@@ -7,16 +7,12 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T,`T`>> 
-| 
-
 | <<U,`U`>> 
-| 
-
 |===
 === Functions
 
@@ -47,13 +43,11 @@ struct T;
 
 === Friends
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T-08friend,`f`>> 
-| 
-
 |===
 
 

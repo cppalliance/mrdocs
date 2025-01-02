@@ -4,6 +4,7 @@
 {{! Member name, linked to its documentation }}
 {{#>markup/a href=url}}{{#>markup/code}}{{>symbol/name . nolink=true}}{{/markup/code}}{{/markup/a}} {{>symbol/special-function-suffix .}}
 {{~/markup/td}}
+{{#if (eq includeBrief true)}}
 {{#>markup/td}}
 {{#if (ne kind "overloads")~}}
 {{{~doc.brief}}}
@@ -11,6 +12,7 @@
 {{#each (unique (pluck (pluck members "doc") "brief"))~}}
 {{{.}}}
 {{/each~}}
+{{/if~}}
+{{~/markup/td~}}
 {{/if}}
-{{~/markup/td}}
 {{~/markup/tr}}

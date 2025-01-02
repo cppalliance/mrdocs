@@ -7,16 +7,12 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<Empty,`Empty`>> 
-| 
-
 | <<T,`T`>> 
-| 
-
 |===
 
 [#Empty]
@@ -52,16 +48,12 @@ struct T;
 
 === Data Members
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T-e,`e`>> 
-| 
-
 | <<T-i,`i`>> 
-| 
-
 |===
 
 

@@ -7,19 +7,13 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<C0,`C0`>> 
-| 
-
 | <<S0,`S0`>> 
-| 
-
 | <<U0,`U0`>> 
-| 
-
 |===
 
 [#C0]
@@ -38,35 +32,29 @@ class C0;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<C0-f2,`f2`>> 
-| 
-
 |===
 
 === Protected Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<C0-f1,`f1`>> 
-| 
-
 |===
 
 === Private Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<C0-f0,`f0`>> 
-| 
-
 |===
 
 [#C0-f0]
@@ -130,35 +118,29 @@ struct S0;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-f0,`f0`>> 
-| 
-
 |===
 
 === Protected Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-f1,`f1`>> 
-| 
-
 |===
 
 === Private Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-f2,`f2`>> 
-| 
-
 |===
 
 [#S0-f0]
@@ -222,35 +204,29 @@ union U0;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<U0-f0,`f0`>> 
-| 
-
 |===
 
 === Protected Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<U0-f1,`f1`>> 
-| 
-
 |===
 
 === Private Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<U0-f2,`f2`>> 
-| 
-
 |===
 
 [#U0-f0]

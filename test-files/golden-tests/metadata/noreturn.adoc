@@ -7,23 +7,19 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T,`T`>> 
-| 
-
 |===
 === Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<f1,`f1`>> 
-| 
-
 |===
 
 [#T]
@@ -42,33 +38,27 @@ struct T;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T-f3,`f3`>> 
-| 
-
 |===
 === Static Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T-f2,`f2`>> 
-| 
-
 |===
 === Friends
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T-08friend,`f1`>> 
-| 
-
 |===
 
 

@@ -7,13 +7,11 @@
 
 === Namespaces
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<N,`N`>> 
-| 
-
 |===
 
 [#N]
@@ -22,13 +20,11 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<N-S,`S`>> 
-| 
-
 |===
 
 [#N-S]

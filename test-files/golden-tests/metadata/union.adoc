@@ -7,16 +7,12 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A,`A`>> 
-| 
-
 | <<B,`B`>> 
-| 
-
 |===
 
 [#A]
@@ -35,16 +31,12 @@ union A;
 
 === Data Members
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-x,`x`>> [.small]#[variant member]#
-| 
-
 | <<A-y,`y`>> [.small]#[variant member]#
-| 
-
 |===
 
 
@@ -93,19 +85,13 @@ struct B;
 
 === Data Members
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<B-x,`x`>> [.small]#[variant member]#
-| 
-
 | <<B-y,`y`>> [.small]#[variant member]#
-| 
-
 | <<B-z,`z`>> 
-| 
-
 |===
 
 

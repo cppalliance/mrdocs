@@ -7,13 +7,11 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A,`A`>> 
-| 
-
 |===
 
 [#A]
@@ -33,19 +31,13 @@ struct A;
 
 === Static Data Members
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-x-05,`x`>> 
-| 
-
 | <<A-x-0a,`x&lt;U*, T&gt;`>> 
-| 
-
 | <<A-x-07,`x&lt;T, long&gt;`>> 
-| 
-
 |===
 
 

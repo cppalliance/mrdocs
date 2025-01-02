@@ -7,22 +7,14 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A5,`A5`>> 
-| 
-
 | <<A9,`A9`>> 
-| 
-
 | <<S0-03,`S0`>> 
-| 
-
 | <<S0-00,`S0&lt;void&gt;`>> 
-| 
-
 |===
 
 [#S0-03]
@@ -42,13 +34,11 @@ struct S0;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-03-S2,`S2`>> 
-| 
-
 |===
 
 
@@ -70,16 +60,12 @@ struct S2;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-03-S2-M2,`M2`>> 
-| 
-
 | <<S0-03-S2-M3,`M3`>> 
-| 
-
 |===
 
 
@@ -130,16 +116,12 @@ struct <<S0-03,S0>>&lt;void&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-00-S2-0d,`S2`>> 
-| 
-
 | <<S0-00-S2-02,`S2&lt;char&gt;`>> 
-| 
-
 |===
 
 
@@ -179,16 +161,12 @@ struct <<S0-03-S2,S2>>&lt;char&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-00-S2-02-M2,`M2`>> 
-| 
-
 | <<S0-00-S2-02-M3,`M3`>> 
-| 
-
 |===
 
 

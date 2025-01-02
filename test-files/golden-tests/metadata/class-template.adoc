@@ -7,25 +7,15 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<C0,`C0`>> 
-| 
-
 | <<C1,`C1`>> 
-| 
-
 | <<C2,`C2`>> 
-| 
-
 | <<C3,`C3`>> 
-| 
-
 | <<S,`S`>> 
-| 
-
 |===
 
 [#C0]
@@ -45,29 +35,21 @@ struct C0;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<C0-N0,`N0`>> 
-| 
-
 |===
 === Data Members
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<C0-w,`w`>> 
-| 
-
 | <<C0-x,`x`>> 
-| 
-
 | <<C0-y,`y`>> 
-| 
-
 |===
 
 
@@ -88,13 +70,11 @@ struct N0;
 
 === Data Members
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<C0-N0-z,`z`>> 
-| 
-
 |===
 
 
@@ -171,23 +151,19 @@ struct C1;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<C1-N1,`N1`>> 
-| 
-
 |===
 === Data Members
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<C1-w,`w`>> 
-| 
-
 |===
 
 
@@ -209,19 +185,13 @@ struct N1;
 
 === Data Members
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<C1-N1-x,`x`>> 
-| 
-
 | <<C1-N1-y,`y`>> 
-| 
-
 | <<C1-N1-z,`z`>> 
-| 
-
 |===
 
 
@@ -299,23 +269,19 @@ struct C2;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<C2-N2,`N2`>> 
-| 
-
 |===
 === Data Members
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<C2-v,`v`>> 
-| 
-
 |===
 
 
@@ -337,22 +303,14 @@ struct N2;
 
 === Data Members
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<C2-N2-w,`w`>> 
-| 
-
 | <<C2-N2-x,`x`>> 
-| 
-
 | <<C2-N2-y,`y`>> 
-| 
-
 | <<C2-N2-z,`z`>> 
-| 
-
 |===
 
 
@@ -444,13 +402,11 @@ struct C3;
 
 === Data Members
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<C3-v,`v`>> 
-| 
-
 |===
 
 

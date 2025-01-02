@@ -7,26 +7,20 @@
 
 === Namespaces
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<regular,`regular`>> 
-| 
-
 |===
 === Variables
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<absolute_uri_rule,`absolute&lowbar;uri&lowbar;rule`>> 
-| 
-
 | <<regular_absolute_uri_rule,`regular&lowbar;absolute&lowbar;uri&lowbar;rule`>> 
-| 
-
 |===
 
 [#regular]
@@ -35,13 +29,11 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<regular-absolute_uri_rule_t,`absolute&lowbar;uri&lowbar;rule&lowbar;t`>> 
-| 
-
 |===
 
 [#regular-absolute_uri_rule_t]
