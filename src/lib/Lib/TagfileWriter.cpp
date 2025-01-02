@@ -11,6 +11,7 @@
 
 #include "../Gen/xml/CXXTags.hpp"
 #include "TagfileWriter.hpp"
+#include "lib/Gen/hbs/VisitorHelpers.hpp"
 #include "lib/Lib/ConfigImpl.hpp"
 #include "lib/Support/RawOstream.hpp"
 
@@ -92,6 +93,14 @@ void
 TagfileWriter::
 operator()(T const& I)
 {
+    if constexpr (std::derived_from<T, Info>)
+    {
+        if (!hbs::shouldGenerate(I))
+        {
+            return;
+        }
+    }
+
     if constexpr (T::isNamespace())
     {
         // Namespaces are compound elements with members
@@ -119,12 +128,15 @@ writeNamespace(
     bool onlyNamespaces = true;
     corpus_->traverse(I, [&](Info const& I)
     {
+        if (!hbs::shouldGenerate(I))
+        {
+            return;
+        }
+
         if (I.Kind != InfoKind::Namespace)
         {
             onlyNamespaces = false;
-            return false;
         }
-        return true;
     });
 
     // Write the compound element for this namespace
@@ -138,8 +150,13 @@ writeNamespace(
         tags_.write("filename", generateFilename(I));
 
         // Write the class-like members of this namespace
-        corpus_->traverse(I, [this]<typename U>(U const& J)
+        corpus_->orderedTraverse(I, [this]<typename U>(U const& J)
         {
+            if (!hbs::shouldGenerate(J))
+            {
+                return;
+            }
+
             if (!U::isNamespace() && !U::isFunction())
             {
                 tags_.write(
@@ -150,7 +167,7 @@ writeNamespace(
         });
 
         // Write the function-like members of this namespace
-        corpus_->traverse(I, [this]<typename U>(U const& J)
+        corpus_->orderedTraverse(I, [this]<typename U>(U const& J)
         {
             if constexpr (U::isFunction())
             {
@@ -162,7 +179,7 @@ writeNamespace(
     }
 
     // Write compound elements for the members of this namespace
-    corpus_->traverse(I, [this]<typename U>(U const& J)
+    corpus_->orderedTraverse(I, [this]<typename U>(U const& J)
         {
             this->operator()(J);
         });
@@ -183,7 +200,7 @@ writeClassLike(
     if constexpr (T::isRecord())
     {
         // Write the function-like members of this record
-        corpus_->traverse(I, [this]<typename U>(U const& J)
+        corpus_->orderedTraverse(I, [this]<typename U>(U const& J)
         {
             if constexpr (U::isFunction())
             {
