@@ -9,20 +9,20 @@
 |===
 | Name | Description 
 
-| <<#E0,`E0`>> 
+| <<E0,`E0`>> 
 | E0 brief&period;
 
 
 
-| <<#E1,`E1`>> 
+| <<E1,`E1`>> 
 | 
 
-| <<#E2,`E2`>> 
+| <<E2,`E2`>> 
 | E2 brief&period;
 
 
 
-| <<#E3,`E3`>> 
+| <<E3,`E3`>> 
 | 
 
 |===

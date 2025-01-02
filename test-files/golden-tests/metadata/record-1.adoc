@@ -9,7 +9,7 @@
 |===
 | Name | Description 
 
-| <<#T,`T`>> 
+| <<T,`T`>> 
 | 
 
 |===
@@ -31,10 +31,10 @@ struct T;
 |===
 | Name | Description 
 
-| <<#T-U1,`U1`>> 
+| <<T-U1,`U1`>> 
 | 
 
-| <<#T-U2,`U2`>> 
+| <<T-U2,`U2`>> 
 | 
 
 |===
@@ -43,13 +43,13 @@ struct T;
 |===
 | Name | Description 
 
-| <<#T-f1,`f1`>> 
+| <<T-f1,`f1`>> 
 | 
 
-| <<#T-f2,`f2`>> 
+| <<T-f2,`f2`>> 
 | 
 
-| <<#T-f3,`f3`>> 
+| <<T-f3,`f3`>> 
 | 
 
 |===
@@ -59,17 +59,17 @@ struct T;
 |===
 | Name | Description 
 
-| <<#T-g1,`g1`>> 
+| <<T-g1,`g1`>> 
 | brief&hyphen;g1
 
 
 
-| <<#T-g2,`g2`>> 
+| <<T-g2,`g2`>> 
 | brief&hyphen;g2
 
 
 
-| <<#T-g3,`g3`>> 
+| <<T-g3,`g3`>> 
 | brief&hyphen;g3
 
 
@@ -78,7 +78,7 @@ struct T;
 
 
 [#T-f1]
-== <<#T,T>>::f1
+== <<T,T>>::f1
 
 === Synopsis
 
@@ -91,7 +91,7 @@ f1();
 ----
 
 [#T-f2]
-== <<#T,T>>::f2
+== <<T,T>>::f2
 
 === Synopsis
 
@@ -104,7 +104,7 @@ f2();
 ----
 
 [#T-f3]
-== <<#T,T>>::f3
+== <<T,T>>::f3
 
 === Synopsis
 
@@ -117,7 +117,7 @@ f3();
 ----
 
 [#T-g1]
-== <<#T,T>>::g1
+== <<T,T>>::g1
 
 brief&hyphen;g1
 
@@ -140,7 +140,7 @@ desc
 
 
 [#T-g2]
-== <<#T,T>>::g2
+== <<T,T>>::g2
 
 brief&hyphen;g2
 
@@ -163,7 +163,7 @@ the number 2
 
 
 [#T-g3]
-== <<#T,T>>::g3
+== <<T,T>>::g3
 
 brief&hyphen;g3
 
@@ -197,7 +197,7 @@ the separator
 |===
 
 [#T-U1]
-== <<#T,T>>::U1
+== <<T,T>>::U1
 
 === Synopsis
 
@@ -209,7 +209,7 @@ using U1 = int;
 ----
 
 [#T-U2]
-== <<#T,T>>::U2
+== <<T,T>>::U2
 
 === Synopsis
 

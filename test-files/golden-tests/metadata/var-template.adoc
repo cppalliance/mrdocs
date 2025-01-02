@@ -9,7 +9,7 @@
 |===
 | Name | Description 
 
-| <<#B,`B`>> 
+| <<B,`B`>> 
 | 
 
 |===
@@ -18,13 +18,13 @@
 |===
 | Name | Description 
 
-| <<#A-0c,`A`>> 
+| <<A-0c,`A`>> 
 | 
 
-| <<#A-08,`A&lt;void&gt;`>> 
+| <<A-08,`A&lt;void&gt;`>> 
 | 
 
-| <<#A-01,`A&lt;T&&gt;`>> 
+| <<A-01,`A&lt;T&&gt;`>> 
 | 
 
 |===
@@ -46,13 +46,13 @@ struct B;
 |===
 | Name | Description 
 
-| <<#B-C-09,`C`>> 
+| <<B-C-09,`C`>> 
 | 
 
-| <<#B-C-05,`C&lt;int&gt;`>> 
+| <<B-C-05,`C&lt;int&gt;`>> 
 | 
 
-| <<#B-C-0c,`C&lt;T*&gt;`>> 
+| <<B-C-0c,`C&lt;T*&gt;`>> 
 | 
 
 |===
@@ -60,7 +60,7 @@ struct B;
 
 
 [#B-C-09]
-== <<#B,B>>::C
+== <<B,B>>::C
 
 === Synopsis
 
@@ -74,7 +74,7 @@ unsigned int C = 0;
 ----
 
 [#B-C-05]
-== <<#B,B>>::C&lt;int&gt;
+== <<B,B>>::C&lt;int&gt;
 
 === Synopsis
 
@@ -88,7 +88,7 @@ unsigned int C&lt;int&gt; = &hyphen;1;
 ----
 
 [#B-C-0c]
-== <<#B,B>>::C&lt;T*&gt;
+== <<B,B>>::C&lt;T*&gt;
 
 === Synopsis
 

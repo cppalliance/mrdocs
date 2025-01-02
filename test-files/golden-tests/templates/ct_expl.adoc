@@ -9,10 +9,10 @@
 |===
 | Name | Description 
 
-| <<#A-0e,`A`>> 
+| <<A-0e,`A`>> 
 | 
 
-| <<#A-00,`A&lt;int&gt;`>> 
+| <<A-00,`A&lt;int&gt;`>> 
 | 
 
 |===
@@ -35,7 +35,7 @@ struct A;
 |===
 | Name | Description 
 
-| <<#A-0e-f,`f`>> 
+| <<A-0e-f,`f`>> 
 | 
 
 |===
@@ -43,7 +43,7 @@ struct A;
 
 
 [#A-0e-f]
-== <<#A-0e,A>>::f
+== <<A-0e,A>>::f
 
 === Synopsis
 
@@ -65,7 +65,7 @@ Declared in `&lt;templates&sol;ct&lowbar;expl&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<#A-0e,A>>&lt;int&gt;;
+struct <<A-0e,A>>&lt;int&gt;;
 ----
 
 === Member Functions
@@ -73,7 +73,7 @@ struct <<#A-0e,A>>&lt;int&gt;;
 |===
 | Name | Description 
 
-| <<#A-00-g,`g`>> 
+| <<A-00-g,`g`>> 
 | 
 
 |===
@@ -81,7 +81,7 @@ struct <<#A-0e,A>>&lt;int&gt;;
 
 
 [#A-00-g]
-== <<#A-00,A>>&lt;int&gt;::g
+== <<A-00,A>>&lt;int&gt;::g
 
 === Synopsis
 

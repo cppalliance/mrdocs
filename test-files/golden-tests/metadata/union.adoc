@@ -9,10 +9,10 @@
 |===
 | Name | Description 
 
-| <<#A,`A`>> 
+| <<A,`A`>> 
 | 
 
-| <<#B,`B`>> 
+| <<B,`B`>> 
 | 
 
 |===
@@ -34,10 +34,10 @@ union A;
 |===
 | Name | Description 
 
-| <<#A-x,`x`>> [.small]#[variant member]#
+| <<A-x,`x`>> [.small]#[variant member]#
 | 
 
-| <<#A-y,`y`>> [.small]#[variant member]#
+| <<A-y,`y`>> [.small]#[variant member]#
 | 
 
 |===
@@ -45,7 +45,7 @@ union A;
 
 
 [#A-x]
-== <<#A,A>>::x
+== <<A,A>>::x
 
 === Synopsis
 
@@ -57,7 +57,7 @@ int x;
 ----
 
 [#A-y]
-== <<#A,A>>::y
+== <<A,A>>::y
 
 === Synopsis
 
@@ -85,13 +85,13 @@ struct B;
 |===
 | Name | Description 
 
-| <<#B-x,`x`>> [.small]#[variant member]#
+| <<B-x,`x`>> [.small]#[variant member]#
 | 
 
-| <<#B-y,`y`>> [.small]#[variant member]#
+| <<B-y,`y`>> [.small]#[variant member]#
 | 
 
-| <<#B-z,`z`>> 
+| <<B-z,`z`>> 
 | 
 
 |===
@@ -99,7 +99,7 @@ struct B;
 
 
 [#B-x]
-== <<#B,B>>::x
+== <<B,B>>::x
 
 === Synopsis
 
@@ -111,7 +111,7 @@ int x;
 ----
 
 [#B-y]
-== <<#B,B>>::y
+== <<B,B>>::y
 
 === Synopsis
 
@@ -123,7 +123,7 @@ bool y;
 ----
 
 [#B-z]
-== <<#B,B>>::z
+== <<B,B>>::z
 
 === Synopsis
 

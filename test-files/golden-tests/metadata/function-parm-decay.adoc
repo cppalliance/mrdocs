@@ -9,10 +9,10 @@
 |===
 | Name | Description 
 
-| <<#T,`T`>> 
+| <<T,`T`>> 
 | 
 
-| <<#U,`U`>> 
+| <<U,`U`>> 
 | 
 
 |===
@@ -21,16 +21,16 @@
 |===
 | Name | Description 
 
-| <<#f,`f`>> 
+| <<f,`f`>> 
 | 
 
-| <<#g,`g`>> 
+| <<g,`g`>> 
 | 
 
-| <<#h,`h`>> 
+| <<h,`h`>> 
 | 
 
-| <<#i,`i`>> 
+| <<i,`i`>> 
 | 
 
 |===
@@ -84,7 +84,7 @@ Declared in `&lt;function&hyphen;parm&hyphen;decay&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-i(<<#T,T>>);
+i(<<T,T>>);
 ----
 
 [#T]

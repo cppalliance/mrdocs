@@ -9,7 +9,7 @@
 |===
 | Name | Description 
 
-| <<#my_function,`my&lowbar;function`>> 
+| <<my_function,`my&lowbar;function`>> 
 | A function
 
 |===

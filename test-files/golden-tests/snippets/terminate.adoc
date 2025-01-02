@@ -9,7 +9,7 @@
 |===
 | Name | Description 
 
-| <<#terminate,`terminate`>> 
+| <<terminate,`terminate`>> 
 | Exit the program&period;
 
 

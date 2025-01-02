@@ -9,16 +9,16 @@
 |===
 | Name | Description 
 
-| <<#Explicit,`Explicit`>> 
+| <<Explicit,`Explicit`>> 
 | 
 
-| <<#ExplicitExpression,`ExplicitExpression`>> 
+| <<ExplicitExpression,`ExplicitExpression`>> 
 | 
 
-| <<#ExplicitFalse,`ExplicitFalse`>> 
+| <<ExplicitFalse,`ExplicitFalse`>> 
 | 
 
-| <<#ExplicitTrue,`ExplicitTrue`>> 
+| <<ExplicitTrue,`ExplicitTrue`>> 
 | 
 
 |===
@@ -40,7 +40,7 @@ struct Explicit;
 |===
 | Name | Description 
 
-| <<#Explicit-2conversion,`operator bool`>> 
+| <<Explicit-2conversion,`operator bool`>> 
 | 
 
 |===
@@ -48,7 +48,7 @@ struct Explicit;
 
 
 [#Explicit-2conversion]
-== <<#Explicit,Explicit>>::operator bool
+== <<Explicit,Explicit>>::operator bool
 
 === Synopsis
 
@@ -78,7 +78,7 @@ struct ExplicitExpression;
 |===
 | Name | Description 
 
-| <<#ExplicitExpression-2conversion,`operator bool`>> 
+| <<ExplicitExpression-2conversion,`operator bool`>> 
 | 
 
 |===
@@ -86,7 +86,7 @@ struct ExplicitExpression;
 
 
 [#ExplicitExpression-2conversion]
-== <<#ExplicitExpression,ExplicitExpression>>::operator bool
+== <<ExplicitExpression,ExplicitExpression>>::operator bool
 
 === Synopsis
 
@@ -115,7 +115,7 @@ struct ExplicitFalse;
 |===
 | Name | Description 
 
-| <<#ExplicitFalse-2conversion,`operator bool`>> 
+| <<ExplicitFalse-2conversion,`operator bool`>> 
 | 
 
 |===
@@ -123,7 +123,7 @@ struct ExplicitFalse;
 
 
 [#ExplicitFalse-2conversion]
-== <<#ExplicitFalse,ExplicitFalse>>::operator bool
+== <<ExplicitFalse,ExplicitFalse>>::operator bool
 
 === Synopsis
 
@@ -152,7 +152,7 @@ struct ExplicitTrue;
 |===
 | Name | Description 
 
-| <<#ExplicitTrue-2conversion,`operator bool`>> 
+| <<ExplicitTrue-2conversion,`operator bool`>> 
 | 
 
 |===
@@ -160,7 +160,7 @@ struct ExplicitTrue;
 
 
 [#ExplicitTrue-2conversion]
-== <<#ExplicitTrue,ExplicitTrue>>::operator bool
+== <<ExplicitTrue,ExplicitTrue>>::operator bool
 
 === Synopsis
 

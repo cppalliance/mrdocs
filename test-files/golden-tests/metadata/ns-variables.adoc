@@ -9,7 +9,7 @@
 |===
 | Name | Description 
 
-| <<#T,`T`>> 
+| <<T,`T`>> 
 | 
 
 |===
@@ -18,31 +18,31 @@
 |===
 | Name | Description 
 
-| <<#i,`i`>> 
+| <<i,`i`>> 
 | 
 
-| <<#j,`j`>> 
+| <<j,`j`>> 
 | 
 
-| <<#k,`k`>> 
+| <<k,`k`>> 
 | 
 
-| <<#l,`l`>> 
+| <<l,`l`>> 
 | 
 
-| <<#pi,`pi`>> 
+| <<pi,`pi`>> 
 | 
 
-| <<#t,`t`>> 
+| <<t,`t`>> 
 | 
 
-| <<#x0,`x0`>> 
+| <<x0,`x0`>> 
 | 
 
-| <<#x1,`x1`>> 
+| <<x1,`x1`>> 
 | 
 
-| <<#x2,`x2`>> 
+| <<x2,`x2`>> 
 | 
 
 |===
@@ -136,7 +136,7 @@ Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 extern
-<<#T,T>> t;
+<<T,T>> t;
 ----
 
 [#x0]

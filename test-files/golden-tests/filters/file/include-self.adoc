@@ -9,7 +9,7 @@
 |===
 | Name | Description 
 
-| <<#TEST,`TEST`>> 
+| <<TEST,`TEST`>> 
 | 
 
 |===
@@ -22,13 +22,13 @@
 |===
 | Name | Description 
 
-| <<#TEST-SUCCESS,`SUCCESS`>> 
+| <<TEST-SUCCESS,`SUCCESS`>> 
 | 
 
 |===
 
 [#TEST-SUCCESS]
-== <<#TEST,TEST>>::SUCCESS
+== <<TEST,TEST>>::SUCCESS
 
 === Synopsis
 

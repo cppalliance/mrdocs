@@ -9,16 +9,16 @@
 |===
 | Name | Description 
 
-| <<#A5,`A5`>> 
+| <<A5,`A5`>> 
 | 
 
-| <<#A9,`A9`>> 
+| <<A9,`A9`>> 
 | 
 
-| <<#S0-03,`S0`>> 
+| <<S0-03,`S0`>> 
 | 
 
-| <<#S0-00,`S0&lt;void&gt;`>> 
+| <<S0-00,`S0&lt;void&gt;`>> 
 | 
 
 |===
@@ -41,7 +41,7 @@ struct S0;
 |===
 | Name | Description 
 
-| <<#S0-03-S2,`S2`>> 
+| <<S0-03-S2,`S2`>> 
 | 
 
 |===
@@ -49,7 +49,7 @@ struct S0;
 
 
 [#S0-03-S2]
-== <<#S0-03,S0>>::S2
+== <<S0-03,S0>>::S2
 
 === Synopsis
 
@@ -66,10 +66,10 @@ struct S2;
 |===
 | Name | Description 
 
-| <<#S0-03-S2-M2,`M2`>> 
+| <<S0-03-S2-M2,`M2`>> 
 | 
 
-| <<#S0-03-S2-M3,`M3`>> 
+| <<S0-03-S2-M3,`M3`>> 
 | 
 
 |===
@@ -77,7 +77,7 @@ struct S2;
 
 
 [#S0-03-S2-M2]
-== <<#S0-03,S0>>::<<#S0-03-S2,S2>>::M2
+== <<S0-03,S0>>::<<S0-03-S2,S2>>::M2
 
 === Synopsis
 
@@ -89,7 +89,7 @@ using M2 = U;
 ----
 
 [#S0-03-S2-M3]
-== <<#S0-03,S0>>::<<#S0-03-S2,S2>>::M3
+== <<S0-03,S0>>::<<S0-03-S2,S2>>::M3
 
 === Synopsis
 
@@ -98,7 +98,7 @@ Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;c
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename V&gt;
-using M3 = <<#S0-03-S2,S2>>&lt;U&gt;;
+using M3 = <<S0-03-S2,S2>>&lt;U&gt;;
 ----
 
 [#S0-00]
@@ -111,7 +111,7 @@ Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;c
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<#S0-03,S0>>&lt;void&gt;;
+struct <<S0-03,S0>>&lt;void&gt;;
 ----
 
 === Types
@@ -119,10 +119,10 @@ struct <<#S0-03,S0>>&lt;void&gt;;
 |===
 | Name | Description 
 
-| <<#S0-00-S2-0d,`S2`>> 
+| <<S0-00-S2-0d,`S2`>> 
 | 
 
-| <<#S0-00-S2-02,`S2&lt;char&gt;`>> 
+| <<S0-00-S2-02,`S2&lt;char&gt;`>> 
 | 
 
 |===
@@ -130,7 +130,7 @@ struct <<#S0-03,S0>>&lt;void&gt;;
 
 
 [#S0-00-S2-0d]
-== <<#S0-00,S0>>&lt;void&gt;::S2
+== <<S0-00,S0>>&lt;void&gt;::S2
 
 === Synopsis
 
@@ -146,7 +146,7 @@ struct S2;
 
 
 [#S0-00-S2-02]
-== <<#S0-00,S0>>&lt;void&gt;::S2&lt;char&gt;
+== <<S0-00,S0>>&lt;void&gt;::S2&lt;char&gt;
 
 === Synopsis
 
@@ -155,7 +155,7 @@ Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;c
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<#S0-03-S2,S2>>&lt;char&gt;;
+struct <<S0-03-S2,S2>>&lt;char&gt;;
 ----
 
 === Types
@@ -163,10 +163,10 @@ struct <<#S0-03-S2,S2>>&lt;char&gt;;
 |===
 | Name | Description 
 
-| <<#S0-00-S2-02-M2,`M2`>> 
+| <<S0-00-S2-02-M2,`M2`>> 
 | 
 
-| <<#S0-00-S2-02-M3,`M3`>> 
+| <<S0-00-S2-02-M3,`M3`>> 
 | 
 
 |===
@@ -174,7 +174,7 @@ struct <<#S0-03-S2,S2>>&lt;char&gt;;
 
 
 [#S0-00-S2-02-M2]
-== <<#S0-00,S0>>&lt;void&gt;::<<#S0-00-S2-02,S2>>&lt;char&gt;::M2
+== <<S0-00,S0>>&lt;void&gt;::<<S0-00-S2-02,S2>>&lt;char&gt;::M2
 
 === Synopsis
 
@@ -186,7 +186,7 @@ using M2 = char;
 ----
 
 [#S0-00-S2-02-M3]
-== <<#S0-00,S0>>&lt;void&gt;::<<#S0-00-S2-02,S2>>&lt;char&gt;::M3
+== <<S0-00,S0>>&lt;void&gt;::<<S0-00-S2-02,S2>>&lt;char&gt;::M3
 
 === Synopsis
 
@@ -195,7 +195,7 @@ Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;c
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename V&gt;
-using M3 = <<#S0-00-S2-0d,S2>>&lt;char&gt;;
+using M3 = <<S0-00-S2-0d,S2>>&lt;char&gt;;
 ----
 
 [#A5]
@@ -207,7 +207,7 @@ Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;c
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using A5 = <<#S0-03,S0>>&lt;void&gt;;
+using A5 = <<S0-03,S0>>&lt;void&gt;;
 ----
 
 [#A9]
@@ -219,7 +219,7 @@ Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;c
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using A9 = <<#A5,A5>>::<<#S0-00-S2-0d,S2>>&lt;char&gt;::<<#S0-00-S2-02-M3,M3>>&lt;int&gt;::<<#S0-00-S2-02-M3,M3>>&lt;unsigned int&gt;::<<#S0-00-S2-02-M2,M2>>;
+using A9 = <<A5,A5>>::<<S0-00-S2-0d,S2>>&lt;char&gt;::<<S0-00-S2-02-M3,M3>>&lt;int&gt;::<<S0-00-S2-02-M3,M3>>&lt;unsigned int&gt;::<<S0-00-S2-02-M2,M2>>;
 ----
 
 

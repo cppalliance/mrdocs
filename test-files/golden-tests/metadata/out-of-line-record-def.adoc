@@ -9,7 +9,7 @@
 |===
 | Name | Description 
 
-| <<#N,`N`>> 
+| <<N,`N`>> 
 | 
 
 |===
@@ -22,13 +22,13 @@
 |===
 | Name | Description 
 
-| <<#N-S,`S`>> 
+| <<N-S,`S`>> 
 | 
 
 |===
 
 [#N-S]
-== <<#N,N>>::S
+== <<N,N>>::S
 
 === Synopsis
 

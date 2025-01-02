@@ -9,7 +9,7 @@
 |===
 | Name | Description 
 
-| <<#Optional,`Optional`>> 
+| <<Optional,`Optional`>> 
 | 
 
 |===
@@ -31,14 +31,14 @@ struct Optional;
 |===
 | Name | Description 
 
-| <<#Optional-value,`value`>> 
+| <<Optional-value,`value`>> 
 | 
 |===
 
 
 
 [#Optional-value]
-== <<#Optional,Optional>>::value
+== <<Optional,Optional>>::value
 
 === Synopsis
 
@@ -49,25 +49,25 @@ Declared in `&lt;explicit&hyphen;object&hyphen;parameter&period;cpp&gt;`
 template&lt;typename Self&gt;
 constexpr
 auto&&
-<<#Optional-value-05,value>>(this Self&& self);
+<<Optional-value-05,value>>(this Self&& self);
 ----
 
-[.small]#<<#Optional-value-05,_» more..._>>#
+[.small]#<<Optional-value-05,_» more..._>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename Self&gt;
 constexpr
 auto&&
-<<#Optional-value-06,value>>(this 
+<<Optional-value-06,value>>(this 
     Self&& self,
     int x);
 ----
 
-[.small]#<<#Optional-value-06,_» more..._>>#
+[.small]#<<Optional-value-06,_» more..._>>#
 
 [#Optional-value-05]
-== <<#Optional,Optional>>::value
+== <<Optional,Optional>>::value
 
 === Synopsis
 
@@ -82,7 +82,7 @@ value(this Self&& self);
 ----
 
 [#Optional-value-06]
-== <<#Optional,Optional>>::value
+== <<Optional,Optional>>::value
 
 === Synopsis
 

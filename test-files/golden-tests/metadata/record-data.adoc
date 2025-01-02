@@ -9,19 +9,19 @@
 |===
 | Name | Description 
 
-| <<#T,`T`>> 
+| <<T,`T`>> 
 | 
 
-| <<#U,`U`>> 
+| <<U,`U`>> 
 | 
 
-| <<#V,`V`>> 
+| <<V,`V`>> 
 | 
 
-| <<#W,`W`>> 
+| <<W,`W`>> 
 | 
 
-| <<#X,`X`>> 
+| <<X,`X`>> 
 | 
 
 |===
@@ -43,19 +43,19 @@ struct T;
 |===
 | Name | Description 
 
-| <<#T-i,`i`>> 
+| <<T-i,`i`>> 
 | 
 
-| <<#T-j,`j`>> 
+| <<T-j,`j`>> 
 | 
 
-| <<#T-k,`k`>> 
+| <<T-k,`k`>> 
 | 
 
-| <<#T-l,`l`>> 
+| <<T-l,`l`>> 
 | 
 
-| <<#T-m,`m`>> 
+| <<T-m,`m`>> 
 | 
 
 |===
@@ -63,7 +63,7 @@ struct T;
 
 
 [#T-i]
-== <<#T,T>>::i
+== <<T,T>>::i
 
 === Synopsis
 
@@ -75,7 +75,7 @@ int i;
 ----
 
 [#T-j]
-== <<#T,T>>::j
+== <<T,T>>::j
 
 === Synopsis
 
@@ -87,7 +87,7 @@ double j;
 ----
 
 [#T-k]
-== <<#T,T>>::k
+== <<T,T>>::k
 
 === Synopsis
 
@@ -100,7 +100,7 @@ int k;
 ----
 
 [#T-l]
-== <<#T,T>>::l
+== <<T,T>>::l
 
 === Synopsis
 
@@ -112,7 +112,7 @@ int l : 8;
 ----
 
 [#T-m]
-== <<#T,T>>::m
+== <<T,T>>::m
 
 === Synopsis
 
@@ -140,7 +140,7 @@ struct U;
 |===
 | Name | Description 
 
-| <<#U-t,`t`>> 
+| <<U-t,`t`>> 
 | 
 
 |===
@@ -148,7 +148,7 @@ struct U;
 
 
 [#U-t]
-== <<#U,U>>::t
+== <<U,U>>::t
 
 === Synopsis
 
@@ -156,7 +156,7 @@ Declared in `&lt;record&hyphen;data&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<#T,T>> t;
+<<T,T>> t;
 ----
 
 [#V]
@@ -177,7 +177,7 @@ class V;
 |===
 | Name | Description 
 
-| <<#V-j,`j`>> 
+| <<V-j,`j`>> 
 | 
 
 |===
@@ -187,16 +187,16 @@ class V;
 |===
 | Name | Description 
 
-| <<#V-i,`i`>> 
+| <<V-i,`i`>> 
 | 
 
-| <<#V-k,`k`>> 
+| <<V-k,`k`>> 
 | 
 
 |===
 
 [#V-i]
-== <<#V,V>>::i
+== <<V,V>>::i
 
 === Synopsis
 
@@ -208,7 +208,7 @@ int i;
 ----
 
 [#V-j]
-== <<#V,V>>::j
+== <<V,V>>::j
 
 === Synopsis
 
@@ -220,7 +220,7 @@ unsigned long j;
 ----
 
 [#V-k]
-== <<#V,V>>::k
+== <<V,V>>::k
 
 === Synopsis
 
@@ -248,7 +248,7 @@ struct W;
 |===
 | Name | Description 
 
-| <<#W-buf,`buf`>> 
+| <<W-buf,`buf`>> 
 | 
 
 |===
@@ -256,7 +256,7 @@ struct W;
 
 
 [#W-buf]
-== <<#W,W>>::buf
+== <<W,W>>::buf
 
 === Synopsis
 
@@ -287,7 +287,7 @@ struct X;
 |===
 | Name | Description 
 
-| <<#X-Q,`Q`>> 
+| <<X-Q,`Q`>> 
 | 
 
 |===
@@ -296,19 +296,19 @@ struct X;
 |===
 | Name | Description 
 
-| <<#X-x0,`x0`>> 
+| <<X-x0,`x0`>> 
 | 
 
-| <<#X-x1,`x1`>> 
+| <<X-x1,`x1`>> 
 | 
 
-| <<#X-x2,`x2`>> 
+| <<X-x2,`x2`>> 
 | 
 
-| <<#X-x3,`x3`>> 
+| <<X-x3,`x3`>> 
 | 
 
-| <<#X-x4,`x4`>> 
+| <<X-x4,`x4`>> 
 | 
 
 |===
@@ -316,7 +316,7 @@ struct X;
 
 
 [#X-Q]
-== <<#X,X>>::Q
+== <<X,X>>::Q
 
 === Synopsis
 
@@ -328,7 +328,7 @@ using Q = P;
 ----
 
 [#X-x0]
-== <<#X,X>>::x0
+== <<X,X>>::x0
 
 === Synopsis
 
@@ -340,7 +340,7 @@ int x0 = 0;
 ----
 
 [#X-x1]
-== <<#X,X>>::x1
+== <<X,X>>::x1
 
 === Synopsis
 
@@ -352,7 +352,7 @@ P x1;
 ----
 
 [#X-x2]
-== <<#X,X>>::x2
+== <<X,X>>::x2
 
 === Synopsis
 
@@ -364,7 +364,7 @@ P const x2[32];
 ----
 
 [#X-x3]
-== <<#X,X>>::x3
+== <<X,X>>::x3
 
 === Synopsis
 
@@ -372,11 +372,11 @@ Declared in `&lt;record&hyphen;data&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<#X-Q,Q>> x3;
+<<X-Q,Q>> x3;
 ----
 
 [#X-x4]
-== <<#X,X>>::x4
+== <<X,X>>::x4
 
 === Synopsis
 

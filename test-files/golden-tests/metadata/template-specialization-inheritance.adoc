@@ -9,37 +9,37 @@
 |===
 | Name | Description 
 
-| <<#R0,`R0`>> 
+| <<R0,`R0`>> 
 | 
 
-| <<#R1,`R1`>> 
+| <<R1,`R1`>> 
 | 
 
-| <<#R2,`R2`>> 
+| <<R2,`R2`>> 
 | 
 
-| <<#S0-0c,`S0`>> 
+| <<S0-0c,`S0`>> 
 | 
 
-| <<#S0-073,`S0&lt;3&gt;`>> 
+| <<S0-073,`S0&lt;3&gt;`>> 
 | 
 
-| <<#S0-07e,`S0&lt;6&gt;`>> 
+| <<S0-07e,`S0&lt;6&gt;`>> 
 | 
 
-| <<#S0-09,`S0&lt;2&gt;`>> 
+| <<S0-09,`S0&lt;2&gt;`>> 
 | 
 
-| <<#S0-0e,`S0&lt;5&gt;`>> 
+| <<S0-0e,`S0&lt;5&gt;`>> 
 | 
 
-| <<#U1,`U1`>> 
+| <<U1,`U1`>> 
 | 
 
-| <<#U2,`U2`>> 
+| <<U2,`U2`>> 
 | 
 
-| <<#U3,`U3`>> 
+| <<U3,`U3`>> 
 | 
 
 |===
@@ -54,7 +54,7 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R0
-    : <<#S0-0c,S0>>&lt;1&gt;;
+    : <<S0-0c,S0>>&lt;1&gt;;
 ----
 
 === Types
@@ -62,7 +62,7 @@ struct R0
 |===
 | Name | Description 
 
-| <<#S0-0c-S1,`S1`>> 
+| <<S0-0c-S1,`S1`>> 
 | 
 
 |===
@@ -79,7 +79,7 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R1
-    : <<#S0-0c,S0>>&lt;2&gt;::<<#S0-09-S1,S1>>;
+    : <<S0-0c,S0>>&lt;2&gt;::<<S0-09-S1,S1>>;
 ----
 
 
@@ -95,7 +95,7 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R2
-    : <<#S0-073,S0>>&lt;3&gt;;
+    : <<S0-073,S0>>&lt;3&gt;;
 ----
 
 
@@ -121,7 +121,7 @@ struct S0;
 |===
 | Name | Description 
 
-| <<#S0-0c-S1,`S1`>> 
+| <<S0-0c-S1,`S1`>> 
 | 
 
 |===
@@ -129,7 +129,7 @@ struct S0;
 
 
 [#S0-0c-S1]
-== <<#S0-0c,S0>>::S1
+== <<S0-0c,S0>>::S1
 
 === Synopsis
 
@@ -153,7 +153,7 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<#S0-0c,S0>>&lt;3&gt;;
+struct <<S0-0c,S0>>&lt;3&gt;;
 ----
 
 
@@ -169,7 +169,7 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<#S0-0c,S0>>&lt;6&gt;;
+struct <<S0-0c,S0>>&lt;6&gt;;
 ----
 
 
@@ -185,7 +185,7 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<#S0-0c,S0>>&lt;2&gt;;
+struct <<S0-0c,S0>>&lt;2&gt;;
 ----
 
 === Types
@@ -193,7 +193,7 @@ struct <<#S0-0c,S0>>&lt;2&gt;;
 |===
 | Name | Description 
 
-| <<#S0-09-S1,`S1`>> 
+| <<S0-09-S1,`S1`>> 
 | 
 
 |===
@@ -201,7 +201,7 @@ struct <<#S0-0c,S0>>&lt;2&gt;;
 
 
 [#S0-09-S1]
-== <<#S0-09,S0>>&lt;2&gt;::S1
+== <<S0-09,S0>>&lt;2&gt;::S1
 
 === Synopsis
 
@@ -225,7 +225,7 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<#S0-0c,S0>>&lt;5&gt;;
+struct <<S0-0c,S0>>&lt;5&gt;;
 ----
 
 === Types
@@ -233,7 +233,7 @@ struct <<#S0-0c,S0>>&lt;5&gt;;
 |===
 | Name | Description 
 
-| <<#S0-0e-S1,`S1`>> 
+| <<S0-0e-S1,`S1`>> 
 | 
 
 |===
@@ -241,7 +241,7 @@ struct <<#S0-0c,S0>>&lt;5&gt;;
 
 
 [#S0-0e-S1]
-== <<#S0-0e,S0>>&lt;5&gt;::S1
+== <<S0-0e,S0>>&lt;5&gt;::S1
 
 === Synopsis
 
@@ -264,7 +264,7 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using U1 = <<#S0-0c,S0>>&lt;4&gt;;
+using U1 = <<S0-0c,S0>>&lt;4&gt;;
 ----
 
 [#U2]
@@ -276,7 +276,7 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using U2 = <<#S0-0c,S0>>&lt;5&gt;::<<#S0-0e-S1,S1>>;
+using U2 = <<S0-0c,S0>>&lt;5&gt;::<<S0-0e-S1,S1>>;
 ----
 
 [#U3]
@@ -288,7 +288,7 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using U3 = <<#S0-07e,S0>>&lt;6&gt;;
+using U3 = <<S0-07e,S0>>&lt;6&gt;;
 ----
 
 

@@ -9,7 +9,7 @@
 |===
 | Name | Description 
 
-| <<#N,`N`>> 
+| <<N,`N`>> 
 | 
 
 |===
@@ -18,7 +18,7 @@
 |===
 | Name | Description 
 
-| <<#E,`E`>> 
+| <<E,`E`>> 
 | 
 
 |===
@@ -31,22 +31,22 @@
 |===
 | Name | Description 
 
-| <<#N-A,`A`>> 
+| <<N-A,`A`>> 
 | 
 
-| <<#N-B,`B`>> 
+| <<N-B,`B`>> 
 | 
 
-| <<#N-C,`C`>> 
+| <<N-C,`C`>> 
 | 
 
-| <<#N-D,`D`>> 
+| <<N-D,`D`>> 
 | 
 
 |===
 
 [#N-A]
-== <<#N,N>>::A
+== <<N,N>>::A
 
 === Synopsis
 
@@ -62,7 +62,7 @@ struct A;
 
 
 [#N-D]
-== <<#N,N>>::D
+== <<N,N>>::D
 
 === Synopsis
 
@@ -77,7 +77,7 @@ struct D;
 
 
 [#N-B]
-== <<#N,N>>::B
+== <<N,N>>::B
 
 === Synopsis
 
@@ -86,11 +86,11 @@ Declared in `&lt;dependency&hyphen;propagation&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-using B = <<#N-A,A>>&lt;T&gt;;
+using B = <<N-A,A>>&lt;T&gt;;
 ----
 
 [#N-C]
-== <<#N,N>>::C
+== <<N,N>>::C
 
 === Synopsis
 
@@ -99,7 +99,7 @@ Declared in `&lt;dependency&hyphen;propagation&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-using C = <<#N-B,B>>&lt;T&gt;;
+using C = <<N-B,B>>&lt;T&gt;;
 ----
 
 [#E]
@@ -112,7 +112,7 @@ Declared in `&lt;dependency&hyphen;propagation&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct E
-    : <<#N,N>>::<<#N-C,C>>&lt;int&gt;;
+    : <<N,N>>::<<N-C,C>>&lt;int&gt;;
 ----
 
 

@@ -9,7 +9,7 @@
 |===
 | Name | Description 
 
-| <<#f,`f`>> 
+| <<f,`f`>> 
 | 
 
 |===
@@ -18,7 +18,7 @@
 |===
 | Name | Description 
 
-| <<#x,`x`>> 
+| <<x,`x`>> 
 | 
 
 |===
@@ -27,7 +27,7 @@
 |===
 | Name | Description 
 
-| <<#C,`C`>> 
+| <<C,`C`>> 
 | 
 
 |===
@@ -41,7 +41,7 @@ Declared in `&lt;concept&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template&lt;<<#C,C>> T&gt;
+template&lt;<<C,C>> T&gt;
 void
 f();
 ----
@@ -55,7 +55,7 @@ Declared in `&lt;concept&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<#C,C>> auto x = 0;
+<<C,C>> auto x = 0;
 ----
 
 [#C]

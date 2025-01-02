@@ -9,7 +9,7 @@
 |===
 | Name | Description 
 
-| <<#B,`B`>> 
+| <<B,`B`>> 
 | 
 
 |===
@@ -18,7 +18,7 @@
 |===
 | Name | Description 
 
-| <<#f,`f`>> 
+| <<f,`f`>> 
 | 
 
 |===

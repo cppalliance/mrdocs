@@ -9,7 +9,7 @@
 |===
 | Name | Description 
 
-| <<#A,`A`>> 
+| <<A,`A`>> 
 | 
 
 |===
@@ -32,13 +32,13 @@ struct A;
 |===
 | Name | Description 
 
-| <<#A-x-05,`x`>> 
+| <<A-x-05,`x`>> 
 | 
 
-| <<#A-x-0a,`x&lt;U*, T&gt;`>> 
+| <<A-x-0a,`x&lt;U*, T&gt;`>> 
 | 
 
-| <<#A-x-07,`x&lt;T, long&gt;`>> 
+| <<A-x-07,`x&lt;T, long&gt;`>> 
 | 
 
 |===
@@ -46,7 +46,7 @@ struct A;
 
 
 [#A-x-05]
-== <<#A,A>>::x
+== <<A,A>>::x
 
 === Synopsis
 
@@ -63,7 +63,7 @@ T const x = 0;
 ----
 
 [#A-x-0a]
-== <<#A,A>>::x&lt;U*, T&gt;
+== <<A,A>>::x&lt;U*, T&gt;
 
 === Synopsis
 
@@ -78,7 +78,7 @@ T const x&lt;U*, T&gt; = 1;
 ----
 
 [#A-x-07]
-== <<#A,A>>::x&lt;T, long&gt;
+== <<A,A>>::x&lt;T, long&gt;
 
 === Synopsis
 
