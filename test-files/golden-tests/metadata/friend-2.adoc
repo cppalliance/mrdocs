@@ -7,13 +7,11 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T,`T`>> 
-| 
-
 |===
 === Functions
 

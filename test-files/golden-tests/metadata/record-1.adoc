@@ -7,13 +7,11 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T,`T`>> 
-| 
-
 |===
 
 [#T]
@@ -32,32 +30,22 @@ struct T;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T-U1,`U1`>> 
-| 
-
 | <<T-U2,`U2`>> 
-| 
-
 |===
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T-f1,`f1`>> 
-| 
-
 | <<T-f2,`f2`>> 
-| 
-
 | <<T-f3,`f3`>> 
-| 
-
 |===
 
 === Protected Member Functions

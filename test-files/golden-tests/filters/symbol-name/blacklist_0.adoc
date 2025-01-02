@@ -7,22 +7,14 @@
 
 === Namespaces
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<N0,`N0`>> 
-| 
-
 | <<N3,`N3`>> 
-| 
-
 | <<N4,`N4`>> 
-| 
-
 | <<N7,`N7`>> 
-| 
-
 |===
 
 [#N0]
@@ -31,13 +23,11 @@
 
 === Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<N0-f0,`f0`>> 
-| 
-
 |===
 
 [#N0-f0]
@@ -66,16 +56,12 @@ f0();
 
 === Namespaces
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<N4-N5,`N5`>> 
-| 
-
 | <<N4-N6,`N6`>> 
-| 
-
 |===
 
 [#N4-N5]
@@ -84,13 +70,11 @@ f0();
 
 === Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<N4-N5-f1,`f1`>> 
-| 
-
 |===
 
 [#N4-N5-f1]
@@ -114,13 +98,11 @@ f1();
 
 === Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<N4-N6-f1,`f1`>> 
-| 
-
 |===
 
 [#N4-N6-f1]
@@ -144,16 +126,12 @@ f1();
 
 === Namespaces
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<N7-N8,`N8`>> 
-| 
-
 | <<N7-N9,`N9`>> 
-| 
-
 |===
 
 [#N7-N8]
@@ -167,13 +145,11 @@ f1();
 
 === Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<N7-N9-g0,`g0`>> 
-| 
-
 |===
 
 [#N7-N9-g0]

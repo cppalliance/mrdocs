@@ -7,13 +7,11 @@
 
 === Namespaces
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<LongName,`LongName`>> 
-| 
-
 |===
 
 [#LongName]
@@ -22,16 +20,12 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<LongName-S1,`S1`>> 
-| 
-
 | <<LongName-S2,`S2`>> 
-| 
-
 |===
 
 [#LongName-S1]

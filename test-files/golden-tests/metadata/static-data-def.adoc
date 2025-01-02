@@ -7,26 +7,20 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A,`A`>> 
-| 
-
 | <<B,`B`>> 
-| 
-
 |===
 === Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<f,`f`>> 
-| 
-
 |===
 
 [#A]
@@ -46,34 +40,18 @@ struct A;
 
 === Static Data Members
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-v0,`v0`>> 
-| 
-
 | <<A-v1,`v1`>> 
-| 
-
 | <<A-v2,`v2`>> 
-| 
-
 | <<A-v3,`v3`>> 
-| 
-
 | <<A-v4,`v4`>> 
-| 
-
 | <<A-v5,`v5`>> 
-| 
-
 | <<A-v6,`v6`>> 
-| 
-
 | <<A-v7,`v7`>> 
-| 
-
 |===
 
 
@@ -216,16 +194,12 @@ struct B;
 
 === Static Data Members
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<B-x0,`x0`>> 
-| 
-
 | <<B-x1,`x1`>> 
-| 
-
 |===
 
 

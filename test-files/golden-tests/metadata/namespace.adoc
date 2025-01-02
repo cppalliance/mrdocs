@@ -7,22 +7,14 @@
 
 === Namespaces
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<00namespace,`&lt;unnamed&gt;`>> 
-| 
-
 | <<A,`A`>> 
-| 
-
 | <<D,`D`>> 
-| 
-
 | <<I,`I`>> 
-| 
-
 |===
 
 [#00namespace]
@@ -31,26 +23,20 @@
 
 === Namespaces
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<00namespace-G,`G`>> 
-| 
-
 | <<00namespace-H,`H`>> 
-| 
-
 |===
 === Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<00namespace-f10,`f10`>> 
-| 
-
 |===
 
 [#00namespace-G]
@@ -59,13 +45,11 @@
 
 === Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<00namespace-G-f11,`f11`>> 
-| 
-
 |===
 
 [#00namespace-G-f11]
@@ -89,13 +73,11 @@ f11();
 
 === Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<00namespace-H-f12,`f12`>> 
-| 
-
 |===
 
 [#00namespace-H-f12]
@@ -134,29 +116,21 @@ f10();
 
 === Namespaces
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-00namespace,`&lt;unnamed&gt;`>> 
-| 
-
 | <<A-B,`B`>> 
-| 
-
 | <<A-C,`C`>> 
-| 
-
 |===
 === Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-f0,`f0`>> 
-| 
-
 |===
 
 [#A-00namespace]
@@ -165,13 +139,11 @@ f10();
 
 === Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-00namespace-f3,`f3`>> 
-| 
-
 |===
 
 [#A-00namespace-f3]
@@ -195,13 +167,11 @@ f3();
 
 === Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-B-f1,`f1`>> 
-| 
-
 |===
 
 [#A-B-f1]
@@ -225,13 +195,11 @@ f1();
 
 === Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-C-f2,`f2`>> 
-| 
-
 |===
 
 [#A-C-f2]
@@ -270,29 +238,21 @@ f0();
 
 === Namespaces
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<D-00namespace,`&lt;unnamed&gt;`>> 
-| 
-
 | <<D-E,`E`>> 
-| 
-
 | <<D-F,`F`>> 
-| 
-
 |===
 === Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<D-f5,`f5`>> 
-| 
-
 |===
 
 [#D-00namespace]
@@ -301,13 +261,11 @@ f0();
 
 === Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<D-00namespace-f8,`f8`>> 
-| 
-
 |===
 
 [#D-00namespace-f8]
@@ -331,13 +289,11 @@ f8();
 
 === Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<D-E-f6,`f6`>> 
-| 
-
 |===
 
 [#D-E-f6]
@@ -361,13 +317,11 @@ f6();
 
 === Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<D-F-f7,`f7`>> 
-| 
-
 |===
 
 [#D-F-f7]
@@ -406,13 +360,11 @@ f5();
 
 === Namespaces
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<I-00namespace,`&lt;unnamed&gt;`>> 
-| 
-
 |===
 
 [#I-00namespace]
@@ -421,13 +373,11 @@ f5();
 
 === Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<I-00namespace-f14,`f14`>> 
-| 
-
 |===
 
 [#I-00namespace-f14]

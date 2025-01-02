@@ -7,13 +7,11 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T,`T`>> 
-| 
-
 |===
 
 [#T]
@@ -32,13 +30,11 @@ struct T;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T-operator_plus,`operator&plus;`>> 
-| 
-
 |===
 
 

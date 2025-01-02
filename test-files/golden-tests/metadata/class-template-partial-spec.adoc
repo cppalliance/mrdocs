@@ -7,13 +7,11 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A,`A`>> 
-| 
-
 |===
 
 [#A]
@@ -33,19 +31,13 @@ struct A;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-B-0a,`B`>> 
-| 
-
 | <<A-B-06,`B&lt;U*, T&gt;`>> 
-| 
-
 | <<A-B-04,`B&lt;T, long&gt;`>> 
-| 
-
 |===
 
 

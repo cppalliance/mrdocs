@@ -7,25 +7,15 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A0,`A0`>> 
-| 
-
 | <<A1,`A1`>> 
-| 
-
 | <<S0-03,`S0`>> 
-| 
-
 | <<S0-09,`S0&lt;short&gt;`>> 
-| 
-
 | <<S0-00,`S0&lt;void&gt;`>> 
-| 
-
 |===
 
 [#S0-03]
@@ -45,16 +35,12 @@ struct S0;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-03-M0,`M0`>> 
-| 
-
 | <<S0-03-M1,`M1`>> 
-| 
-
 |===
 
 
@@ -105,16 +91,12 @@ struct <<S0-03,S0>>&lt;short&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-09-M0,`M0`>> 
-| 
-
 | <<S0-09-M1,`M1`>> 
-| 
-
 |===
 
 
@@ -165,16 +147,12 @@ struct <<S0-03,S0>>&lt;void&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<S0-00-M0,`M0`>> 
-| 
-
 | <<S0-00-M1,`M1`>> 
-| 
-
 |===
 
 

@@ -7,32 +7,22 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<C,`C`>> 
-| 
-
 | <<T,`T`>> 
-| 
-
 | <<U,`U`>> 
-| 
-
 |===
 === Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<f,`f`>> 
-| 
-
 | <<g,`g`>> 
-| 
-
 |===
 
 [#C]

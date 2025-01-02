@@ -7,25 +7,15 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T,`T`>> 
-| 
-
 | <<U,`U`>> 
-| 
-
 | <<V,`V`>> 
-| 
-
 | <<W,`W`>> 
-| 
-
 | <<X,`X`>> 
-| 
-
 |===
 
 [#T]
@@ -44,25 +34,15 @@ struct T;
 
 === Data Members
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T-i,`i`>> 
-| 
-
 | <<T-j,`j`>> 
-| 
-
 | <<T-k,`k`>> 
-| 
-
 | <<T-l,`l`>> 
-| 
-
 | <<T-m,`m`>> 
-| 
-
 |===
 
 
@@ -154,13 +134,11 @@ struct U;
 
 === Data Members
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<U-t,`t`>> 
-| 
-
 |===
 
 
@@ -196,27 +174,21 @@ class V;
 
 === Protected Data Members
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<V-j,`j`>> 
-| 
-
 |===
 
 === Private Data Members
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<V-i,`i`>> 
-| 
-
 | <<V-k,`k`>> 
-| 
-
 |===
 
 [#V-i]
@@ -277,13 +249,11 @@ struct W;
 
 === Data Members
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<W-buf,`buf`>> 
-| 
-
 |===
 
 
@@ -321,35 +291,23 @@ struct X;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<X-Q,`Q`>> 
-| 
-
 |===
 === Data Members
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<X-x0,`x0`>> 
-| 
-
 | <<X-x1,`x1`>> 
-| 
-
 | <<X-x2,`x2`>> 
-| 
-
 | <<X-x3,`x3`>> 
-| 
-
 | <<X-x4,`x4`>> 
-| 
-
 |===
 
 

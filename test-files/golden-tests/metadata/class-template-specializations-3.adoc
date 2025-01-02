@@ -7,28 +7,16 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-0e,`A`>> 
-| 
-
 | <<A-0c,`A&lt;long&gt;`>> 
-| 
-
 | <<A-00,`A&lt;short&gt;`>> 
-| 
-
 | <<A-01,`A&lt;float&gt;`>> 
-| 
-
 | <<A-07,`A&lt;unsigned int&gt;`>> 
-| 
-
 | <<E,`E`>> 
-| 
-
 |===
 
 [#A-0e]
@@ -48,16 +36,12 @@ struct A;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-0e-B-07,`B`>> 
-| 
-
 | <<A-0e-B-00,`B&lt;double&gt;`>> 
-| 
-
 |===
 
 
@@ -79,19 +63,13 @@ struct B;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-0e-B-07-C,`C`>> 
-| 
-
 | <<A-0e-B-07-D-09,`D`>> 
-| 
-
 | <<A-0e-B-07-D-0f,`D&lt;bool&gt;`>> 
-| 
-
 |===
 
 
@@ -166,19 +144,13 @@ struct <<A-0e-B-07,B>>&lt;double&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-0e-B-00-C,`C`>> 
-| 
-
 | <<A-0e-B-00-D-09,`D`>> 
-| 
-
 | <<A-0e-B-00-D-0d,`D&lt;bool&gt;`>> 
-| 
-
 |===
 
 
@@ -253,19 +225,13 @@ struct <<A-0e,A>>&lt;long&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-0c-B-0b,`B`>> 
-| 
-
 | <<A-0c-B-0d,`B&lt;double&gt;`>> 
-| 
-
 | <<A-0c-B-08,`B&lt;float&gt;`>> 
-| 
-
 |===
 
 
@@ -287,19 +253,13 @@ struct B;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-0c-B-0b-C,`C`>> 
-| 
-
 | <<A-0c-B-0b-D-00,`D`>> 
-| 
-
 | <<A-0c-B-0b-D-0b,`D&lt;bool&gt;`>> 
-| 
-
 |===
 
 
@@ -374,19 +334,13 @@ struct <<A-0c-B-0b,B>>&lt;double&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-0c-B-0d-C,`C`>> 
-| 
-
 | <<A-0c-B-0d-D-0c,`D`>> 
-| 
-
 | <<A-0c-B-0d-D-03,`D&lt;bool&gt;`>> 
-| 
-
 |===
 
 
@@ -461,19 +415,13 @@ struct <<A-0c-B-0b,B>>&lt;float&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-0c-B-08-C,`C`>> 
-| 
-
 | <<A-0c-B-08-D-08,`D`>> 
-| 
-
 | <<A-0c-B-08-D-03,`D&lt;bool&gt;`>> 
-| 
-
 |===
 
 
@@ -548,19 +496,13 @@ struct <<A-0e,A>>&lt;short&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-00-B-0e,`B`>> 
-| 
-
 | <<A-00-B-07,`B&lt;double&gt;`>> 
-| 
-
 | <<A-00-B-00,`B&lt;void&gt;`>> 
-| 
-
 |===
 
 
@@ -600,19 +542,13 @@ struct <<A-0e-B-07,B>>&lt;double&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-00-B-07-C,`C`>> 
-| 
-
 | <<A-00-B-07-D-015b,`D`>> 
-| 
-
 | <<A-00-B-07-D-0150,`D&lt;bool&gt;`>> 
-| 
-
 |===
 
 
@@ -687,19 +623,13 @@ struct <<A-0e-B-07,B>>&lt;void&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-00-B-00-C,`C`>> 
-| 
-
 | <<A-00-B-00-D-03,`D`>> 
-| 
-
 | <<A-00-B-00-D-07,`D&lt;bool&gt;`>> 
-| 
-
 |===
 
 
@@ -774,16 +704,12 @@ struct <<A-0e,A>>&lt;float&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-01-B-07,`B`>> 
-| 
-
 | <<A-01-B-08,`B&lt;double, double&gt;`>> 
-| 
-
 |===
 
 
@@ -823,19 +749,13 @@ struct <<A-0e-B-07,B>>&lt;double, double&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-01-B-08-C,`C`>> 
-| 
-
 | <<A-01-B-08-D-0ae,`D`>> 
-| 
-
 | <<A-01-B-08-D-0af,`D&lt;bool, bool&gt;`>> 
-| 
-
 |===
 
 
@@ -910,19 +830,13 @@ struct <<A-0e,A>>&lt;unsigned int&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-07-B-03a,`B`>> 
-| 
-
 | <<A-07-B-03e,`B&lt;double&gt;`>> 
-| 
-
 | <<A-07-B-05,`B&lt;float&gt;`>> 
-| 
-
 |===
 
 
@@ -962,19 +876,13 @@ struct <<A-0e-B-07,B>>&lt;double&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-07-B-03e-C,`C`>> 
-| 
-
 | <<A-07-B-03e-D-01,`D`>> 
-| 
-
 | <<A-07-B-03e-D-0f,`D&lt;bool&gt;`>> 
-| 
-
 |===
 
 
@@ -1049,19 +957,13 @@ struct <<A-0e-B-07,B>>&lt;float&gt;;
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-07-B-05-C,`C`>> 
-| 
-
 | <<A-07-B-05-D-0e,`D`>> 
-| 
-
 | <<A-07-B-05-D-01,`D&lt;bool&gt;`>> 
-| 
-
 |===
 
 
@@ -1135,55 +1037,25 @@ struct E;
 
 === Data Members
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<E-m0,`m0`>> 
-| 
-
 | <<E-m1,`m1`>> 
-| 
-
 | <<E-m10,`m10`>> 
-| 
-
 | <<E-m11,`m11`>> 
-| 
-
 | <<E-m12,`m12`>> 
-| 
-
 | <<E-m13,`m13`>> 
-| 
-
 | <<E-m14,`m14`>> 
-| 
-
 | <<E-m2,`m2`>> 
-| 
-
 | <<E-m3,`m3`>> 
-| 
-
 | <<E-m4,`m4`>> 
-| 
-
 | <<E-m5,`m5`>> 
-| 
-
 | <<E-m6,`m6`>> 
-| 
-
 | <<E-m7,`m7`>> 
-| 
-
 | <<E-m8,`m8`>> 
-| 
-
 | <<E-m9,`m9`>> 
-| 
-
 |===
 
 

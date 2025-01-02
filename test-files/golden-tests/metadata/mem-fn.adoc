@@ -7,64 +7,28 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T01,`T01`>> 
-| 
-
 | <<T02,`T02`>> 
-| 
-
 | <<T03,`T03`>> 
-| 
-
 | <<T04,`T04`>> 
-| 
-
 | <<T05,`T05`>> 
-| 
-
 | <<T06,`T06`>> 
-| 
-
 | <<T08,`T08`>> 
-| 
-
 | <<T09,`T09`>> 
-| 
-
 | <<T10,`T10`>> 
-| 
-
 | <<T11,`T11`>> 
-| 
-
 | <<T12,`T12`>> 
-| 
-
 | <<T13,`T13`>> 
-| 
-
 | <<T14,`T14`>> 
-| 
-
 | <<T15,`T15`>> 
-| 
-
 | <<T16,`T16`>> 
-| 
-
 | <<T17,`T17`>> 
-| 
-
 | <<U,`U`>> 
-| 
-
 | <<V,`V`>> 
-| 
-
 |===
 
 [#T01]
@@ -83,13 +47,11 @@ struct T01;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T01-f,`f`>> 
-| 
-
 |===
 
 
@@ -125,13 +87,11 @@ struct T02;
 
 === Static Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T02-f,`f`>> 
-| 
-
 |===
 
 
@@ -168,13 +128,11 @@ struct T03;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T03-f,`f`>> 
-| 
-
 |===
 
 
@@ -210,13 +168,11 @@ struct T04;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T04-f,`f`>> 
-| 
-
 |===
 
 
@@ -252,13 +208,11 @@ struct T05;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T05-f,`f`>> 
-| 
-
 |===
 
 
@@ -294,13 +248,11 @@ struct T06;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T06-f,`f`>> 
-| 
-
 |===
 
 
@@ -337,13 +289,11 @@ struct T08;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T08-f,`f`>> 
-| 
-
 |===
 
 
@@ -379,13 +329,11 @@ struct T09;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T09-f,`f`>> 
-| 
-
 |===
 
 
@@ -421,13 +369,11 @@ struct T10;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T10-f,`f`>> 
-| 
-
 |===
 
 
@@ -463,13 +409,11 @@ struct T11;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T11-f,`f`>> 
-| 
-
 |===
 
 
@@ -505,13 +449,11 @@ struct T12;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T12-f,`f`>> 
-| 
-
 |===
 
 
@@ -547,13 +489,11 @@ struct T13;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T13-f,`f`>> 
-| 
-
 |===
 
 
@@ -590,13 +530,11 @@ struct T14;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T14-f,`f`>> 
-| 
-
 |===
 
 
@@ -633,13 +571,11 @@ struct T15;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T15-f,`f`>> 
-| 
-
 |===
 
 
@@ -675,13 +611,11 @@ struct T16;
 
 === Static Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T16-f,`f`>> 
-| 
-
 |===
 
 
@@ -719,12 +653,11 @@ struct T17
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T14-f,`f`>> 
-| 
 |===
 
 
@@ -761,26 +694,20 @@ struct U;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<U-f1,`f1`>> 
-| 
-
 | <<U-f3,`f3`>> 
-| 
-
 |===
 === Static Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<U-f2,`f2`>> 
-| 
-
 |===
 
 
@@ -851,25 +778,20 @@ struct V
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<U-f1,`f1`>> 
-| 
-
 | <<U-f3,`f3`>> 
-| 
 |===
 === Static Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<U-f2,`f2`>> 
-| 
-
 |===
 
 

@@ -7,47 +7,27 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<T,`T`>> 
-| 
-
 |===
 === Variables
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<i,`i`>> 
-| 
-
 | <<j,`j`>> 
-| 
-
 | <<k,`k`>> 
-| 
-
 | <<l,`l`>> 
-| 
-
 | <<pi,`pi`>> 
-| 
-
 | <<t,`t`>> 
-| 
-
 | <<x0,`x0`>> 
-| 
-
 | <<x1,`x1`>> 
-| 
-
 | <<x2,`x2`>> 
-| 
-
 |===
 
 [#T]

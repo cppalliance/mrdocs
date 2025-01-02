@@ -13,6 +13,7 @@
 --}}
 {{#if (any_of_by members "isRegular" "isSeeBelow")}}
 {{#>markup/h level=(select @root.config.multipage 1 2)}}{{title}}{{/markup/h}}
+{{#if (any_of_by members "doc")}}
 {{#>markup/table cols=2}}
 {{#>markup/thead}}
 {{#>markup/tr~}}
@@ -22,8 +23,22 @@
 {{/markup/thead}}
 {{#>markup/tbody}}
 {{#each (filter_by (sort_by members "name") "isRegular" "isSeeBelow")}}
-{{> symbol/detail/members-table-row .}}
+{{> symbol/detail/members-table-row . includeBrief=true}}
 {{/each}}
 {{/markup/tbody}}
 {{/markup/table}}
+{{else}}
+{{#>markup/table cols=1}}
+{{#>markup/thead}}
+{{#>markup/tr~}}
+{{#>markup/th}}Name{{/markup/th}}
+{{/markup/tr}}
+{{/markup/thead}}
+{{#>markup/tbody}}
+{{#each (filter_by (sort_by members "name") "isRegular" "isSeeBelow")}}
+{{> symbol/detail/members-table-row . includeBrief=false}}
+{{/each}}
+{{/markup/tbody}}
+{{/markup/table}}
+{{/if}}
 {{/if}}

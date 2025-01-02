@@ -7,22 +7,14 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<Explicit,`Explicit`>> 
-| 
-
 | <<ExplicitExpression,`ExplicitExpression`>> 
-| 
-
 | <<ExplicitFalse,`ExplicitFalse`>> 
-| 
-
 | <<ExplicitTrue,`ExplicitTrue`>> 
-| 
-
 |===
 
 [#Explicit]
@@ -41,12 +33,11 @@ struct Explicit;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<Explicit-2constructor,`Explicit`>>         [.small]#[constructor]#
-| 
 |===
 
 
@@ -173,12 +164,11 @@ struct ExplicitExpression;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<ExplicitExpression-2constructor,`ExplicitExpression`>>         [.small]#[constructor]#
-| 
 |===
 
 
@@ -304,12 +294,11 @@ struct ExplicitFalse;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<ExplicitFalse-2constructor,`ExplicitFalse`>>         [.small]#[constructor]#
-| 
 |===
 
 
@@ -435,12 +424,11 @@ struct ExplicitTrue;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<ExplicitTrue-2constructor,`ExplicitTrue`>>         [.small]#[constructor]#
-| 
 |===
 
 

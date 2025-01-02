@@ -7,13 +7,11 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<Optional,`Optional`>> 
-| 
-
 |===
 
 [#Optional]
@@ -32,12 +30,11 @@ struct Optional;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<Optional-value,`value`>> 
-| 
 |===
 
 

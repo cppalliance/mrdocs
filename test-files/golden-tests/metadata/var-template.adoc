@@ -7,29 +7,21 @@
 
 === Types
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<B,`B`>> 
-| 
-
 |===
 === Variables
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<A-0c,`A`>> 
-| 
-
 | <<A-08,`A&lt;void&gt;`>> 
-| 
-
 | <<A-01,`A&lt;T&&gt;`>> 
-| 
-
 |===
 
 [#B]
@@ -48,19 +40,13 @@ struct B;
 
 === Static Data Members
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
 | <<B-C-09,`C`>> 
-| 
-
 | <<B-C-05,`C&lt;int&gt;`>> 
-| 
-
 | <<B-C-0c,`C&lt;T*&gt;`>> 
-| 
-
 |===
 
 
