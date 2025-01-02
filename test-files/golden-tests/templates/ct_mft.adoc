@@ -9,7 +9,7 @@
 |===
 | Name | Description 
 
-| <<#A,`A`>> 
+| <<A,`A`>> 
 | 
 
 |===
@@ -32,7 +32,7 @@ struct A;
 |===
 | Name | Description 
 
-| <<#A-f,`f`>> 
+| <<A-f,`f`>> 
 | 
 
 |===
@@ -40,7 +40,7 @@ struct A;
 
 
 [#A-f]
-== <<#A,A>>::f
+== <<A,A>>::f
 
 === Synopsis
 

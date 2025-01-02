@@ -9,10 +9,10 @@
 |===
 | Name | Description 
 
-| <<#A-0c,`A`>> 
+| <<A-0c,`A`>> 
 | 
 
-| <<#A-08,`A`>> 
+| <<A-08,`A`>> 
 | 
 
 |===
@@ -21,10 +21,10 @@
 |===
 | Name | Description 
 
-| <<#f,`f`>> 
+| <<f,`f`>> 
 | 
 
-| <<#g,`g`>> 
+| <<g,`g`>> 
 | 
 |===
 
@@ -89,30 +89,30 @@ Declared in `&lt;requires&hyphen;clause&period;cpp&gt;`
 template&lt;typename T&gt;
 requires (sizeof(T) &equals;&equals; 4)
 void
-<<#g-00,g>>();
+<<g-00,g>>();
 ----
 
-[.small]#<<#g-00,_» more..._>>#
+[.small]#<<g-00,_» more..._>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
 requires (sizeof(T) &equals;&equals; 2)
 void
-<<#g-04,g>>();
+<<g-04,g>>();
 ----
 
-[.small]#<<#g-04,_» more..._>>#
+[.small]#<<g-04,_» more..._>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename U&gt;
 requires (sizeof(U) &equals;&equals; 2)
 void
-<<#g-03,g>>();
+<<g-03,g>>();
 ----
 
-[.small]#<<#g-03,_» more..._>>#
+[.small]#<<g-03,_» more..._>>#
 
 [#g-00]
 == g

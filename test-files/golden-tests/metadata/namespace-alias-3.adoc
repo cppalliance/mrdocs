@@ -9,7 +9,7 @@
 |===
 | Name | Description 
 
-| <<#LongName,`LongName`>> 
+| <<LongName,`LongName`>> 
 | 
 
 |===
@@ -18,10 +18,10 @@
 |===
 | Name | Description 
 
-| <<#A,`A`>> 
+| <<A,`A`>> 
 | 
 
-| <<#B,`B`>> 
+| <<B,`B`>> 
 | 
 
 |===
@@ -39,7 +39,7 @@ Declared in `&lt;namespace&hyphen;alias&hyphen;3&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-namespace A = <<#LongName,LongName>>;
+namespace A = <<LongName,LongName>>;
 ----
 
 [#B]
@@ -51,7 +51,7 @@ Declared in `&lt;namespace&hyphen;alias&hyphen;3&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-namespace B = <<#A,A>>;
+namespace B = <<A,A>>;
 ----
 
 

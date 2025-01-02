@@ -9,13 +9,13 @@
 |===
 | Name | Description 
 
-| <<#N0,`N0`>> 
+| <<N0,`N0`>> 
 | 
 
-| <<#N1,`N1`>> 
+| <<N1,`N1`>> 
 | 
 
-| <<#N5,`N5`>> 
+| <<N5,`N5`>> 
 | 
 
 |===
@@ -28,13 +28,13 @@
 |===
 | Name | Description 
 
-| <<#N0-f0_WL,`f0&lowbar;WL`>> 
+| <<N0-f0_WL,`f0&lowbar;WL`>> 
 | 
 
 |===
 
 [#N0-f0_WL]
-== <<#N0,N0>>::f0&lowbar;WL
+== <<N0,N0>>::f0&lowbar;WL
 
 === Synopsis
 
@@ -54,33 +54,33 @@ f0&lowbar;WL();
 |===
 | Name | Description 
 
-| <<#N1-N3_WL,`N3&lowbar;WL`>> 
+| <<N1-N3_WL,`N3&lowbar;WL`>> 
 | 
 
-| <<#N1-N4,`N4`>> 
+| <<N1-N4,`N4`>> 
 | 
 
 |===
 
 [#N1-N3_WL]
-== <<#N1,N1>>::N3&lowbar;WL
+== <<N1,N1>>::N3&lowbar;WL
 
 
 [#N1-N4]
-== <<#N1,N1>>::N4
+== <<N1,N1>>::N4
 
 === Functions
 [cols=2]
 |===
 | Name | Description 
 
-| <<#N1-N4-f1_WL,`f1&lowbar;WL`>> 
+| <<N1-N4-f1_WL,`f1&lowbar;WL`>> 
 | 
 
 |===
 
 [#N1-N4-f1_WL]
-== <<#N1,N1>>::<<#N1-N4,N4>>::f1&lowbar;WL
+== <<N1,N1>>::<<N1-N4,N4>>::f1&lowbar;WL
 
 === Synopsis
 
@@ -100,26 +100,26 @@ f1&lowbar;WL();
 |===
 | Name | Description 
 
-| <<#N5-N6_BL,`N6&lowbar;BL`>> 
+| <<N5-N6_BL,`N6&lowbar;BL`>> 
 | 
 
 |===
 
 [#N5-N6_BL]
-== <<#N5,N5>>::N6&lowbar;BL
+== <<N5,N5>>::N6&lowbar;BL
 
 === Namespaces
 [cols=2]
 |===
 | Name | Description 
 
-| <<#N5-N6_BL-M7,`M7`>> 
+| <<N5-N6_BL-M7,`M7`>> 
 | 
 
-| <<#N5-N6_BL-N7,`N7`>> 
+| <<N5-N6_BL-N7,`N7`>> 
 | 
 
-| <<#N5-N6_BL-N8,`N8`>> 
+| <<N5-N6_BL-N8,`N8`>> 
 | 
 
 |===
@@ -128,25 +128,25 @@ f1&lowbar;WL();
 |===
 | Name | Description 
 
-| <<#N5-N6_BL-f1_BL,`f1&lowbar;BL`>> 
+| <<N5-N6_BL-f1_BL,`f1&lowbar;BL`>> 
 | 
 
 |===
 
 [#N5-N6_BL-M7]
-== <<#N5,N5>>::<<#N5-N6_BL,N6&lowbar;BL>>::M7
+== <<N5,N5>>::<<N5-N6_BL,N6&lowbar;BL>>::M7
 
 
 [#N5-N6_BL-N7]
-== <<#N5,N5>>::<<#N5-N6_BL,N6&lowbar;BL>>::N7
+== <<N5,N5>>::<<N5-N6_BL,N6&lowbar;BL>>::N7
 
 
 [#N5-N6_BL-N8]
-== <<#N5,N5>>::<<#N5-N6_BL,N6&lowbar;BL>>::N8
+== <<N5,N5>>::<<N5-N6_BL,N6&lowbar;BL>>::N8
 
 
 [#N5-N6_BL-f1_BL]
-== <<#N5,N5>>::<<#N5-N6_BL,N6&lowbar;BL>>::f1&lowbar;BL
+== <<N5,N5>>::<<N5-N6_BL,N6&lowbar;BL>>::f1&lowbar;BL
 
 === Synopsis
 

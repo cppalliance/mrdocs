@@ -9,7 +9,7 @@
 |===
 | Name | Description 
 
-| <<#A,`A`>> 
+| <<A,`A`>> 
 | 
 
 |===
@@ -32,10 +32,10 @@ struct A;
 |===
 | Name | Description 
 
-| <<#A-B-07,`B`>> 
+| <<A-B-07,`B`>> 
 | 
 
-| <<#A-B-06,`B&lt;int&gt;`>> 
+| <<A-B-06,`B&lt;int&gt;`>> 
 | 
 
 |===
@@ -43,7 +43,7 @@ struct A;
 
 
 [#A-B-07]
-== <<#A,A>>::B
+== <<A,A>>::B
 
 === Synopsis
 
@@ -60,7 +60,7 @@ struct B;
 |===
 | Name | Description 
 
-| <<#A-B-07-f,`f`>> 
+| <<A-B-07-f,`f`>> 
 | 
 
 |===
@@ -68,7 +68,7 @@ struct B;
 
 
 [#A-B-07-f]
-== <<#A,A>>::<<#A-B-07,B>>::f
+== <<A,A>>::<<A-B-07,B>>::f
 
 === Synopsis
 
@@ -81,7 +81,7 @@ f();
 ----
 
 [#A-B-06]
-== <<#A,A>>::B&lt;int&gt;
+== <<A,A>>::B&lt;int&gt;
 
 === Synopsis
 
@@ -90,7 +90,7 @@ Declared in `&lt;templates&sol;ct&lowbar;mct&lowbar;expl&lowbar;inline&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<#A-B-07,B>>&lt;int&gt;;
+struct <<A-B-07,B>>&lt;int&gt;;
 ----
 
 === Member Functions
@@ -98,7 +98,7 @@ struct <<#A-B-07,B>>&lt;int&gt;;
 |===
 | Name | Description 
 
-| <<#A-B-06-g,`g`>> 
+| <<A-B-06-g,`g`>> 
 | 
 
 |===
@@ -106,7 +106,7 @@ struct <<#A-B-07,B>>&lt;int&gt;;
 
 
 [#A-B-06-g]
-== <<#A,A>>::<<#A-B-06,B>>&lt;int&gt;::g
+== <<A,A>>::<<A-B-06,B>>&lt;int&gt;::g
 
 === Synopsis
 

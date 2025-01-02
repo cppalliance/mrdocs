@@ -9,7 +9,7 @@
 |===
 | Name | Description 
 
-| <<#is_prime,`is&lowbar;prime`>> 
+| <<is_prime,`is&lowbar;prime`>> 
 | Return true if a number is prime&period;
 
 

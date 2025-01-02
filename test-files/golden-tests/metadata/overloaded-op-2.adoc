@@ -9,7 +9,7 @@
 |===
 | Name | Description 
 
-| <<#T,`T`>> 
+| <<T,`T`>> 
 | 
 
 |===
@@ -31,7 +31,7 @@ struct T;
 |===
 | Name | Description 
 
-| <<#T-operator_plus,`operator&plus;`>> 
+| <<T-operator_plus,`operator&plus;`>> 
 | 
 
 |===
@@ -39,7 +39,7 @@ struct T;
 
 
 [#T-operator_plus]
-== <<#T,T>>::operator&plus;
+== <<T,T>>::operator&plus;
 
 === Synopsis
 
@@ -47,8 +47,8 @@ Declared in `&lt;overloaded&hyphen;op&hyphen;2&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<#T,T>>
-operator&plus;(<<#T,T>>);
+<<T,T>>
+operator&plus;(<<T,T>>);
 ----
 
 

@@ -9,7 +9,7 @@
 |===
 | Name | Description 
 
-| <<#std,`std`>> 
+| <<std,`std`>> 
 | 
 
 |===
@@ -18,7 +18,7 @@
 |===
 | Name | Description 
 
-| <<#sqrt,`sqrt`>> 
+| <<sqrt,`sqrt`>> 
 | Computes the square root of an integral value&period;
 
 
@@ -43,7 +43,7 @@ Declared in `&lt;libcxx&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-<<#std,std>>::T
+<<std,std>>::T
 sqrt(T value);
 ----
 

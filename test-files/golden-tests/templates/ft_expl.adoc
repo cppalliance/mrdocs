@@ -9,7 +9,7 @@
 |===
 | Name | Description 
 
-| <<#f,`f`>> 
+| <<f,`f`>> 
 | 
 |===
 
@@ -24,19 +24,19 @@ Declared in `&lt;templates&sol;ft&lowbar;expl&period;cpp&gt;`
 ----
 template&lt;typename T&gt;
 void
-<<#f-03,f>>();
+<<f-03,f>>();
 ----
 
-[.small]#<<#f-03,_» more..._>>#
+[.small]#<<f-03,_» more..._>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
 void
-<<#f-0c,f>>&lt;int&gt;();
+<<f-0c,f>>&lt;int&gt;();
 ----
 
-[.small]#<<#f-0c,_» more..._>>#
+[.small]#<<f-0c,_» more..._>>#
 
 [#f-03]
 == f
@@ -63,7 +63,7 @@ Declared in `&lt;templates&sol;ft&lowbar;expl&period;cpp&gt;`
 ----
 template&lt;&gt;
 void
-<<#f-03,f>>&lt;int&gt;();
+<<f-03,f>>&lt;int&gt;();
 ----
 
 

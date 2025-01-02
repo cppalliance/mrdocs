@@ -9,58 +9,58 @@
 |===
 | Name | Description 
 
-| <<#T01,`T01`>> 
+| <<T01,`T01`>> 
 | 
 
-| <<#T02,`T02`>> 
+| <<T02,`T02`>> 
 | 
 
-| <<#T03,`T03`>> 
+| <<T03,`T03`>> 
 | 
 
-| <<#T04,`T04`>> 
+| <<T04,`T04`>> 
 | 
 
-| <<#T05,`T05`>> 
+| <<T05,`T05`>> 
 | 
 
-| <<#T06,`T06`>> 
+| <<T06,`T06`>> 
 | 
 
-| <<#T08,`T08`>> 
+| <<T08,`T08`>> 
 | 
 
-| <<#T09,`T09`>> 
+| <<T09,`T09`>> 
 | 
 
-| <<#T10,`T10`>> 
+| <<T10,`T10`>> 
 | 
 
-| <<#T11,`T11`>> 
+| <<T11,`T11`>> 
 | 
 
-| <<#T12,`T12`>> 
+| <<T12,`T12`>> 
 | 
 
-| <<#T13,`T13`>> 
+| <<T13,`T13`>> 
 | 
 
-| <<#T14,`T14`>> 
+| <<T14,`T14`>> 
 | 
 
-| <<#T15,`T15`>> 
+| <<T15,`T15`>> 
 | 
 
-| <<#T16,`T16`>> 
+| <<T16,`T16`>> 
 | 
 
-| <<#T17,`T17`>> 
+| <<T17,`T17`>> 
 | 
 
-| <<#U,`U`>> 
+| <<U,`U`>> 
 | 
 
-| <<#V,`V`>> 
+| <<V,`V`>> 
 | 
 
 |===
@@ -82,7 +82,7 @@ struct T01;
 |===
 | Name | Description 
 
-| <<#T01-f,`f`>> 
+| <<T01-f,`f`>> 
 | 
 
 |===
@@ -90,7 +90,7 @@ struct T01;
 
 
 [#T01-f]
-== <<#T01,T01>>::f
+== <<T01,T01>>::f
 
 === Synopsis
 
@@ -119,7 +119,7 @@ struct T02;
 |===
 | Name | Description 
 
-| <<#T02-f,`f`>> 
+| <<T02-f,`f`>> 
 | 
 
 |===
@@ -127,7 +127,7 @@ struct T02;
 
 
 [#T02-f]
-== <<#T02,T02>>::f
+== <<T02,T02>>::f
 
 === Synopsis
 
@@ -157,7 +157,7 @@ struct T03;
 |===
 | Name | Description 
 
-| <<#T03-f,`f`>> 
+| <<T03-f,`f`>> 
 | 
 
 |===
@@ -165,7 +165,7 @@ struct T03;
 
 
 [#T03-f]
-== <<#T03,T03>>::f
+== <<T03,T03>>::f
 
 === Synopsis
 
@@ -194,7 +194,7 @@ struct T04;
 |===
 | Name | Description 
 
-| <<#T04-f,`f`>> 
+| <<T04-f,`f`>> 
 | 
 
 |===
@@ -202,7 +202,7 @@ struct T04;
 
 
 [#T04-f]
-== <<#T04,T04>>::f
+== <<T04,T04>>::f
 
 === Synopsis
 
@@ -231,7 +231,7 @@ struct T05;
 |===
 | Name | Description 
 
-| <<#T05-f,`f`>> 
+| <<T05-f,`f`>> 
 | 
 
 |===
@@ -239,7 +239,7 @@ struct T05;
 
 
 [#T05-f]
-== <<#T05,T05>>::f
+== <<T05,T05>>::f
 
 === Synopsis
 
@@ -268,7 +268,7 @@ struct T06;
 |===
 | Name | Description 
 
-| <<#T06-f,`f`>> 
+| <<T06-f,`f`>> 
 | 
 
 |===
@@ -276,7 +276,7 @@ struct T06;
 
 
 [#T06-f]
-== <<#T06,T06>>::f
+== <<T06,T06>>::f
 
 === Synopsis
 
@@ -306,7 +306,7 @@ struct T08;
 |===
 | Name | Description 
 
-| <<#T08-f,`f`>> 
+| <<T08-f,`f`>> 
 | 
 
 |===
@@ -314,7 +314,7 @@ struct T08;
 
 
 [#T08-f]
-== <<#T08,T08>>::f
+== <<T08,T08>>::f
 
 === Synopsis
 
@@ -343,7 +343,7 @@ struct T09;
 |===
 | Name | Description 
 
-| <<#T09-f,`f`>> 
+| <<T09-f,`f`>> 
 | 
 
 |===
@@ -351,7 +351,7 @@ struct T09;
 
 
 [#T09-f]
-== <<#T09,T09>>::f
+== <<T09,T09>>::f
 
 === Synopsis
 
@@ -380,7 +380,7 @@ struct T10;
 |===
 | Name | Description 
 
-| <<#T10-f,`f`>> 
+| <<T10-f,`f`>> 
 | 
 
 |===
@@ -388,7 +388,7 @@ struct T10;
 
 
 [#T10-f]
-== <<#T10,T10>>::f
+== <<T10,T10>>::f
 
 === Synopsis
 
@@ -417,7 +417,7 @@ struct T11;
 |===
 | Name | Description 
 
-| <<#T11-f,`f`>> 
+| <<T11-f,`f`>> 
 | 
 
 |===
@@ -425,7 +425,7 @@ struct T11;
 
 
 [#T11-f]
-== <<#T11,T11>>::f
+== <<T11,T11>>::f
 
 === Synopsis
 
@@ -454,7 +454,7 @@ struct T12;
 |===
 | Name | Description 
 
-| <<#T12-f,`f`>> 
+| <<T12-f,`f`>> 
 | 
 
 |===
@@ -462,7 +462,7 @@ struct T12;
 
 
 [#T12-f]
-== <<#T12,T12>>::f
+== <<T12,T12>>::f
 
 === Synopsis
 
@@ -491,7 +491,7 @@ struct T13;
 |===
 | Name | Description 
 
-| <<#T13-f,`f`>> 
+| <<T13-f,`f`>> 
 | 
 
 |===
@@ -499,7 +499,7 @@ struct T13;
 
 
 [#T13-f]
-== <<#T13,T13>>::f
+== <<T13,T13>>::f
 
 === Synopsis
 
@@ -529,7 +529,7 @@ struct T14;
 |===
 | Name | Description 
 
-| <<#T14-f,`f`>> 
+| <<T14-f,`f`>> 
 | 
 
 |===
@@ -537,7 +537,7 @@ struct T14;
 
 
 [#T14-f]
-== <<#T14,T14>>::f
+== <<T14,T14>>::f
 
 === Synopsis
 
@@ -567,7 +567,7 @@ struct T15;
 |===
 | Name | Description 
 
-| <<#T15-f,`f`>> 
+| <<T15-f,`f`>> 
 | 
 
 |===
@@ -575,7 +575,7 @@ struct T15;
 
 
 [#T15-f]
-== <<#T15,T15>>::f
+== <<T15,T15>>::f
 
 === Synopsis
 
@@ -604,7 +604,7 @@ struct T16;
 |===
 | Name | Description 
 
-| <<#T16-f,`f`>> 
+| <<T16-f,`f`>> 
 | 
 
 |===
@@ -612,7 +612,7 @@ struct T16;
 
 
 [#T16-f]
-== <<#T16,T16>>::f
+== <<T16,T16>>::f
 
 === Synopsis
 
@@ -635,7 +635,7 @@ Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct T17
-    : <<#T14,T14>>;
+    : <<T14,T14>>;
 ----
 
 === Member Functions
@@ -643,14 +643,14 @@ struct T17
 |===
 | Name | Description 
 
-| <<#T14-f,`f`>> 
+| <<T14-f,`f`>> 
 | 
 |===
 
 
 
 [#T17-f]
-== <<#T17,T17>>::f
+== <<T17,T17>>::f
 
 === Synopsis
 
@@ -680,10 +680,10 @@ struct U;
 |===
 | Name | Description 
 
-| <<#U-f1,`f1`>> 
+| <<U-f1,`f1`>> 
 | 
 
-| <<#U-f3,`f3`>> 
+| <<U-f3,`f3`>> 
 | 
 
 |===
@@ -692,7 +692,7 @@ struct U;
 |===
 | Name | Description 
 
-| <<#U-f2,`f2`>> 
+| <<U-f2,`f2`>> 
 | 
 
 |===
@@ -700,7 +700,7 @@ struct U;
 
 
 [#U-f1]
-== <<#U,U>>::f1
+== <<U,U>>::f1
 
 === Synopsis
 
@@ -714,7 +714,7 @@ f1(...) const volatile noexcept;
 ----
 
 [#U-f2]
-== <<#U,U>>::f2
+== <<U,U>>::f2
 
 === Synopsis
 
@@ -729,7 +729,7 @@ f2() noexcept;
 ----
 
 [#U-f3]
-== <<#U,U>>::f3
+== <<U,U>>::f3
 
 === Synopsis
 
@@ -752,7 +752,7 @@ Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct V
-    : <<#U,U>>;
+    : <<U,U>>;
 ----
 
 === Member Functions
@@ -760,10 +760,10 @@ struct V
 |===
 | Name | Description 
 
-| <<#U-f1,`f1`>> 
+| <<U-f1,`f1`>> 
 | 
 
-| <<#U-f3,`f3`>> 
+| <<U-f3,`f3`>> 
 | 
 |===
 === Static Member Functions
@@ -771,7 +771,7 @@ struct V
 |===
 | Name | Description 
 
-| <<#U-f2,`f2`>> 
+| <<U-f2,`f2`>> 
 | 
 
 |===
@@ -779,7 +779,7 @@ struct V
 
 
 [#V-f3]
-== <<#V,V>>::f3
+== <<V,V>>::f3
 
 === Synopsis
 

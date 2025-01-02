@@ -9,7 +9,7 @@
 |===
 | Name | Description 
 
-| <<#range,`range`>> 
+| <<range,`range`>> 
 | 
 
 |===
@@ -34,16 +34,16 @@ class range;
 |===
 | Name | Description 
 
-| <<#range-impl-0e,`impl`>> 
+| <<range-impl-0e,`impl`>> 
 | 
 
-| <<#range-impl-00,`impl&lt;R, false&gt;`>> 
+| <<range-impl-00,`impl&lt;R, false&gt;`>> 
 | 
 
 |===
 
 [#range-impl-0e]
-== <<#range,range>>::impl
+== <<range,range>>::impl
 
 === Synopsis
 
@@ -61,7 +61,7 @@ struct impl;
 
 
 [#range-impl-00]
-== <<#range,range>>::impl&lt;R, false&gt;
+== <<range,range>>::impl&lt;R, false&gt;
 
 === Synopsis
 
@@ -70,7 +70,7 @@ Declared in `&lt;nested&hyphen;private&hyphen;template&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;class R&gt;
-struct <<#range-impl-0e,impl>>&lt;R, false&gt;;
+struct <<range-impl-0e,impl>>&lt;R, false&gt;;
 ----
 
 

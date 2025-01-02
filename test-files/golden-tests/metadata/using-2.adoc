@@ -9,7 +9,7 @@
 |===
 | Name | Description 
 
-| <<#LongName,`LongName`>> 
+| <<LongName,`LongName`>> 
 | 
 
 |===
@@ -22,16 +22,16 @@
 |===
 | Name | Description 
 
-| <<#LongName-S1,`S1`>> 
+| <<LongName-S1,`S1`>> 
 | 
 
-| <<#LongName-S2,`S2`>> 
+| <<LongName-S2,`S2`>> 
 | 
 
 |===
 
 [#LongName-S1]
-== <<#LongName,LongName>>::S1
+== <<LongName,LongName>>::S1
 
 === Synopsis
 
@@ -46,7 +46,7 @@ struct S1;
 
 
 [#LongName-S2]
-== <<#LongName,LongName>>::S2
+== <<LongName,LongName>>::S2
 
 === Synopsis
 
@@ -69,7 +69,7 @@ Declared in `&lt;using&hyphen;2&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using <<#LongName,LongName>>::S1;
+using <<LongName,LongName>>::S1;
 ----
 
 === Introduced Symbols
@@ -88,7 +88,7 @@ Declared in `&lt;using&hyphen;2&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using <<#LongName,LongName>>::S2;
+using <<LongName,LongName>>::S2;
 ----
 
 === Introduced Symbols

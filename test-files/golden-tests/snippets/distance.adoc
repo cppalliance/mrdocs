@@ -9,7 +9,7 @@
 |===
 | Name | Description 
 
-| <<#distance,`distance`>> 
+| <<distance,`distance`>> 
 | Return the distance between two points
 
 

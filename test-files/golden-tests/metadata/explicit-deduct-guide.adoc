@@ -9,7 +9,7 @@
 |===
 | Name | Description 
 
-| <<#X-0e,`X`>> 
+| <<X-0e,`X`>> 
 | 
 
 |===
@@ -18,16 +18,16 @@
 |===
 | Name | Description 
 
-| <<#X-0d,`X&lt;0&gt;`>> 
+| <<X-0d,`X&lt;0&gt;`>> 
 | 
 
-| <<#X-00,`X&lt;0&gt;`>> 
+| <<X-00,`X&lt;0&gt;`>> 
 | 
 
-| <<#X-0b,`X&lt;0&gt;`>> 
+| <<X-0b,`X&lt;0&gt;`>> 
 | 
 
-| <<#X-06,`X&lt;0&gt;`>> 
+| <<X-06,`X&lt;0&gt;`>> 
 | 
 
 |===
@@ -49,7 +49,7 @@ struct X;
 
 
 [#X-0d]
-== <<#X-0e,X>>&lt;0&gt;
+== <<X-0e,X>>&lt;0&gt;
 
 === Synopsis
 
@@ -57,11 +57,11 @@ Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<#X-0e,X>>&lt;0&gt;(bool) -> <<#X-0e,X>>&lt;0&gt;;
+<<X-0e,X>>&lt;0&gt;(bool) -> <<X-0e,X>>&lt;0&gt;;
 ----
 
 [#X-00]
-== <<#X-0e,X>>&lt;0&gt;
+== <<X-0e,X>>&lt;0&gt;
 
 === Synopsis
 
@@ -69,11 +69,11 @@ Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<#X-0e,X>>&lt;0&gt;(char) -> <<#X-0e,X>>&lt;0&gt;;
+<<X-0e,X>>&lt;0&gt;(char) -> <<X-0e,X>>&lt;0&gt;;
 ----
 
 [#X-0b]
-== <<#X-0e,X>>&lt;0&gt;
+== <<X-0e,X>>&lt;0&gt;
 
 === Synopsis
 
@@ -81,11 +81,11 @@ Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<#X-0e,X>>&lt;0&gt;(int) -> <<#X-0e,X>>&lt;0&gt;;
+<<X-0e,X>>&lt;0&gt;(int) -> <<X-0e,X>>&lt;0&gt;;
 ----
 
 [#X-06]
-== <<#X-0e,X>>&lt;0&gt;
+== <<X-0e,X>>&lt;0&gt;
 
 === Synopsis
 
@@ -94,7 +94,7 @@ Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;bool B = true&gt;
-<<#X-0e,X>>&lt;0&gt;(long) -> <<#X-0e,X>>&lt;0&gt;;
+<<X-0e,X>>&lt;0&gt;(long) -> <<X-0e,X>>&lt;0&gt;;
 ----
 
 

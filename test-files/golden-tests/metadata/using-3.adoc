@@ -9,13 +9,13 @@
 |===
 | Name | Description 
 
-| <<#A,`A`>> 
+| <<A,`A`>> 
 | 
 
-| <<#B,`B`>> 
+| <<B,`B`>> 
 | 
 
-| <<#C,`C`>> 
+| <<C,`C`>> 
 | 
 
 |===
@@ -37,7 +37,7 @@ struct A;
 |===
 | Name | Description 
 
-| <<#A-f,`f`>> 
+| <<A-f,`f`>> 
 | 
 
 |===
@@ -45,7 +45,7 @@ struct A;
 
 
 [#A-f]
-== <<#A,A>>::f
+== <<A,A>>::f
 
 === Synopsis
 
@@ -74,7 +74,7 @@ struct B;
 |===
 | Name | Description 
 
-| <<#B-f,`f`>> 
+| <<B-f,`f`>> 
 | 
 
 |===
@@ -82,7 +82,7 @@ struct B;
 
 
 [#B-f]
-== <<#B,B>>::f
+== <<B,B>>::f
 
 === Synopsis
 
@@ -104,8 +104,8 @@ Declared in `&lt;using&hyphen;3&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct C
-    : <<#A,A>>
-    , <<#B,B>>;
+    : <<A,A>>
+    , <<B,B>>;
 ----
 
 === Member Functions
@@ -113,7 +113,7 @@ struct C
 |===
 | Name | Description 
 
-| <<#A-f,`f`>> 
+| <<A-f,`f`>> 
 | 
 |===
 === Using Declarations
@@ -121,10 +121,10 @@ struct C
 |===
 | Name | Description 
 
-| <<#C-f-08,`f`>> 
+| <<C-f-08,`f`>> 
 | 
 
-| <<#C-f-03,`f`>> 
+| <<C-f-03,`f`>> 
 | 
 
 |===
@@ -132,7 +132,7 @@ struct C
 
 
 [#C-f-08]
-== <<#C,C>>::f
+== <<C,C>>::f
 
 === Synopsis
 
@@ -140,7 +140,7 @@ Declared in `&lt;using&hyphen;3&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using <<#A,A>>::f;
+using <<A,A>>::f;
 ----
 
 === Introduced Symbols
@@ -151,7 +151,7 @@ using <<#A,A>>::f;
 |===
 
 [#C-f-03]
-== <<#C,C>>::f
+== <<C,C>>::f
 
 === Synopsis
 
@@ -159,7 +159,7 @@ Declared in `&lt;using&hyphen;3&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using <<#B,B>>::f;
+using <<B,B>>::f;
 ----
 
 === Introduced Symbols

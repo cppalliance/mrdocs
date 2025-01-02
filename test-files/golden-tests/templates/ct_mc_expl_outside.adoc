@@ -9,10 +9,10 @@
 |===
 | Name | Description 
 
-| <<#A-0e,`A`>> 
+| <<A-0e,`A`>> 
 | 
 
-| <<#A-00,`A&lt;int&gt;`>> 
+| <<A-00,`A&lt;int&gt;`>> 
 | 
 
 |===
@@ -35,7 +35,7 @@ struct A;
 |===
 | Name | Description 
 
-| <<#A-0e-B,`B`>> 
+| <<A-0e-B,`B`>> 
 | 
 
 |===
@@ -43,7 +43,7 @@ struct A;
 
 
 [#A-0e-B]
-== <<#A-0e,A>>::B
+== <<A-0e,A>>::B
 
 === Synopsis
 
@@ -59,7 +59,7 @@ struct B;
 |===
 | Name | Description 
 
-| <<#A-0e-B-f,`f`>> 
+| <<A-0e-B-f,`f`>> 
 | 
 
 |===
@@ -67,7 +67,7 @@ struct B;
 
 
 [#A-0e-B-f]
-== <<#A-0e,A>>::<<#A-0e-B,B>>::f
+== <<A-0e,A>>::<<A-0e-B,B>>::f
 
 === Synopsis
 
@@ -89,7 +89,7 @@ Declared in `&lt;templates&sol;ct&lowbar;mc&lowbar;expl&lowbar;outside&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<#A-0e,A>>&lt;int&gt;;
+struct <<A-0e,A>>&lt;int&gt;;
 ----
 
 === Types
@@ -97,7 +97,7 @@ struct <<#A-0e,A>>&lt;int&gt;;
 |===
 | Name | Description 
 
-| <<#A-00-B,`B`>> 
+| <<A-00-B,`B`>> 
 | 
 
 |===
@@ -105,7 +105,7 @@ struct <<#A-0e,A>>&lt;int&gt;;
 
 
 [#A-00-B]
-== <<#A-00,A>>&lt;int&gt;::B
+== <<A-00,A>>&lt;int&gt;::B
 
 === Synopsis
 
@@ -121,7 +121,7 @@ struct B;
 |===
 | Name | Description 
 
-| <<#A-00-B-g,`g`>> 
+| <<A-00-B-g,`g`>> 
 | 
 
 |===
@@ -129,7 +129,7 @@ struct B;
 
 
 [#A-00-B-g]
-== <<#A-00,A>>&lt;int&gt;::<<#A-00-B,B>>::g
+== <<A-00,A>>&lt;int&gt;::<<A-00-B,B>>::g
 
 === Synopsis
 

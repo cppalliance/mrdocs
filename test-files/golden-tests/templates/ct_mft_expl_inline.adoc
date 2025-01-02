@@ -9,7 +9,7 @@
 |===
 | Name | Description 
 
-| <<#A,`A`>> 
+| <<A,`A`>> 
 | 
 
 |===
@@ -32,14 +32,14 @@ struct A;
 |===
 | Name | Description 
 
-| <<#A-f,`f`>> 
+| <<A-f,`f`>> 
 | 
 |===
 
 
 
 [#A-f]
-== <<#A,A>>::f
+== <<A,A>>::f
 
 === Synopsis
 
@@ -49,22 +49,22 @@ Declared in `&lt;templates&sol;ct&lowbar;mft&lowbar;expl&lowbar;inline&period;cp
 ----
 template&lt;typename U&gt;
 void
-<<#A-f-07,f>>();
+<<A-f-07,f>>();
 ----
 
-[.small]#<<#A-f-07,_» more..._>>#
+[.small]#<<A-f-07,_» more..._>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
 void
-<<#A-f-04,f>>&lt;int&gt;();
+<<A-f-04,f>>&lt;int&gt;();
 ----
 
-[.small]#<<#A-f-04,_» more..._>>#
+[.small]#<<A-f-04,_» more..._>>#
 
 [#A-f-07]
-== <<#A,A>>::f
+== <<A,A>>::f
 
 === Synopsis
 
@@ -78,7 +78,7 @@ f();
 ----
 
 [#A-f-04]
-== <<#A,A>>::f&lt;int&gt;
+== <<A,A>>::f&lt;int&gt;
 
 === Synopsis
 
@@ -88,7 +88,7 @@ Declared in `&lt;templates&sol;ct&lowbar;mft&lowbar;expl&lowbar;inline&period;cp
 ----
 template&lt;&gt;
 void
-<<#A-f-07,f>>&lt;int&gt;();
+<<A-f-07,f>>&lt;int&gt;();
 ----
 
 

@@ -9,7 +9,7 @@
 |===
 | Name | Description 
 
-| <<#regular,`regular`>> 
+| <<regular,`regular`>> 
 | 
 
 |===
@@ -18,10 +18,10 @@
 |===
 | Name | Description 
 
-| <<#absolute_uri_rule,`absolute&lowbar;uri&lowbar;rule`>> 
+| <<absolute_uri_rule,`absolute&lowbar;uri&lowbar;rule`>> 
 | 
 
-| <<#regular_absolute_uri_rule,`regular&lowbar;absolute&lowbar;uri&lowbar;rule`>> 
+| <<regular_absolute_uri_rule,`regular&lowbar;absolute&lowbar;uri&lowbar;rule`>> 
 | 
 
 |===
@@ -34,13 +34,13 @@
 |===
 | Name | Description 
 
-| <<#regular-absolute_uri_rule_t,`absolute&lowbar;uri&lowbar;rule&lowbar;t`>> 
+| <<regular-absolute_uri_rule_t,`absolute&lowbar;uri&lowbar;rule&lowbar;t`>> 
 | 
 
 |===
 
 [#regular-absolute_uri_rule_t]
-== <<#regular,regular>>::absolute&lowbar;uri&lowbar;rule&lowbar;t
+== <<regular,regular>>::absolute&lowbar;uri&lowbar;rule&lowbar;t
 
 === Synopsis
 
@@ -77,7 +77,7 @@ Declared in `&lt;impl&hyphen;defined&hyphen;member&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 constexpr
-<<#regular,regular>>::<<#regular-absolute_uri_rule_t,absolute&lowbar;uri&lowbar;rule&lowbar;t>> const regular&lowbar;absolute&lowbar;uri&lowbar;rule = &lcub;&rcub;;
+<<regular,regular>>::<<regular-absolute_uri_rule_t,absolute&lowbar;uri&lowbar;rule&lowbar;t>> const regular&lowbar;absolute&lowbar;uri&lowbar;rule = &lcub;&rcub;;
 ----
 
 

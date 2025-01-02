@@ -9,10 +9,10 @@
 |===
 | Name | Description 
 
-| <<#Empty,`Empty`>> 
+| <<Empty,`Empty`>> 
 | 
 
-| <<#T,`T`>> 
+| <<T,`T`>> 
 | 
 
 |===
@@ -49,10 +49,10 @@ struct T;
 |===
 | Name | Description 
 
-| <<#T-e,`e`>> 
+| <<T-e,`e`>> 
 | 
 
-| <<#T-i,`i`>> 
+| <<T-i,`i`>> 
 | 
 
 |===
@@ -60,7 +60,7 @@ struct T;
 
 
 [#T-e]
-== <<#T,T>>::e
+== <<T,T>>::e
 
 === Synopsis
 
@@ -69,11 +69,11 @@ Declared in `&lt;no&lowbar;unique&lowbar;address&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 [deprecated, maybe&lowbar;unused]
-<<#Empty,Empty>> e = Empty&lcub;&rcub;;
+<<Empty,Empty>> e = Empty&lcub;&rcub;;
 ----
 
 [#T-i]
-== <<#T,T>>::i
+== <<T,T>>::i
 
 === Synopsis
 

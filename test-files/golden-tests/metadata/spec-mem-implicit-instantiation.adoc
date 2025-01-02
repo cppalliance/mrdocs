@@ -9,19 +9,19 @@
 |===
 | Name | Description 
 
-| <<#A-0e,`A`>> 
+| <<A-0e,`A`>> 
 | 
 
-| <<#A-000,`A&lt;int&gt;`>> 
+| <<A-000,`A&lt;int&gt;`>> 
 | 
 
-| <<#A-00b,`A&lt;short&gt;`>> 
+| <<A-00b,`A&lt;short&gt;`>> 
 | 
 
-| <<#A-0f,`A&lt;bool&gt;`>> 
+| <<A-0f,`A&lt;bool&gt;`>> 
 | 
 
-| <<#D,`D`>> 
+| <<D,`D`>> 
 | 
 
 |===
@@ -44,10 +44,10 @@ struct A;
 |===
 | Name | Description 
 
-| <<#A-0e-B,`B`>> 
+| <<A-0e-B,`B`>> 
 | 
 
-| <<#A-0e-C,`C`>> 
+| <<A-0e-C,`C`>> 
 | 
 
 |===
@@ -56,7 +56,7 @@ struct A;
 |===
 | Name | Description 
 
-| <<#A-0e-f,`f`>> 
+| <<A-0e-f,`f`>> 
 | 
 
 |===
@@ -64,7 +64,7 @@ struct A;
 
 
 [#A-0e-B]
-== <<#A-0e,A>>::B
+== <<A-0e,A>>::B
 
 === Synopsis
 
@@ -81,7 +81,7 @@ struct B;
 |===
 | Name | Description 
 
-| <<#A-0e-B-g,`g`>> 
+| <<A-0e-B-g,`g`>> 
 | 
 
 |===
@@ -89,7 +89,7 @@ struct B;
 
 
 [#A-0e-B-g]
-== <<#A-0e,A>>::<<#A-0e-B,B>>::g
+== <<A-0e,A>>::<<A-0e-B,B>>::g
 
 === Synopsis
 
@@ -102,7 +102,7 @@ g();
 ----
 
 [#A-0e-C]
-== <<#A-0e,A>>::C
+== <<A-0e,A>>::C
 
 === Synopsis
 
@@ -119,7 +119,7 @@ struct C;
 |===
 | Name | Description 
 
-| <<#A-0e-C-h,`h`>> 
+| <<A-0e-C-h,`h`>> 
 | 
 
 |===
@@ -127,7 +127,7 @@ struct C;
 
 
 [#A-0e-C-h]
-== <<#A-0e,A>>::<<#A-0e-C,C>>::h
+== <<A-0e,A>>::<<A-0e-C,C>>::h
 
 === Synopsis
 
@@ -140,7 +140,7 @@ h();
 ----
 
 [#A-0e-f]
-== <<#A-0e,A>>::f
+== <<A-0e,A>>::f
 
 === Synopsis
 
@@ -162,7 +162,7 @@ Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<#A-0e,A>>&lt;int&gt;;
+struct <<A-0e,A>>&lt;int&gt;;
 ----
 
 === Types
@@ -170,13 +170,13 @@ struct <<#A-0e,A>>&lt;int&gt;;
 |===
 | Name | Description 
 
-| <<#A-000-B-03,`B`>> 
+| <<A-000-B-03,`B`>> 
 | 
 
-| <<#A-000-B-09,`B&lt;long&gt;`>> 
+| <<A-000-B-09,`B&lt;long&gt;`>> 
 | 
 
-| <<#A-000-C,`C`>> 
+| <<A-000-C,`C`>> 
 | 
 
 |===
@@ -185,7 +185,7 @@ struct <<#A-0e,A>>&lt;int&gt;;
 |===
 | Name | Description 
 
-| <<#A-000-f,`f`>> 
+| <<A-000-f,`f`>> 
 | 
 
 |===
@@ -193,7 +193,7 @@ struct <<#A-0e,A>>&lt;int&gt;;
 
 
 [#A-000-B-03]
-== <<#A-000,A>>&lt;int&gt;::B
+== <<A-000,A>>&lt;int&gt;::B
 
 === Synopsis
 
@@ -209,7 +209,7 @@ struct B;
 
 
 [#A-000-B-09]
-== <<#A-000,A>>&lt;int&gt;::B&lt;long&gt;
+== <<A-000,A>>&lt;int&gt;::B&lt;long&gt;
 
 === Synopsis
 
@@ -218,7 +218,7 @@ Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<#A-0e-B,B>>&lt;long&gt;;
+struct <<A-0e-B,B>>&lt;long&gt;;
 ----
 
 === Member Functions
@@ -226,7 +226,7 @@ struct <<#A-0e-B,B>>&lt;long&gt;;
 |===
 | Name | Description 
 
-| <<#A-000-B-09-g,`g`>> 
+| <<A-000-B-09-g,`g`>> 
 | 
 
 |===
@@ -234,7 +234,7 @@ struct <<#A-0e-B,B>>&lt;long&gt;;
 
 
 [#A-000-B-09-g]
-== <<#A-000,A>>&lt;int&gt;::<<#A-000-B-09,B>>&lt;long&gt;::g
+== <<A-000,A>>&lt;int&gt;::<<A-000-B-09,B>>&lt;long&gt;::g
 
 === Synopsis
 
@@ -247,7 +247,7 @@ g();
 ----
 
 [#A-000-C]
-== <<#A-000,A>>&lt;int&gt;::C
+== <<A-000,A>>&lt;int&gt;::C
 
 === Synopsis
 
@@ -263,7 +263,7 @@ struct C;
 
 
 [#A-000-f]
-== <<#A-000,A>>&lt;int&gt;::f
+== <<A-000,A>>&lt;int&gt;::f
 
 === Synopsis
 
@@ -285,7 +285,7 @@ Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<#A-0e,A>>&lt;short&gt;;
+struct <<A-0e,A>>&lt;short&gt;;
 ----
 
 === Types
@@ -293,10 +293,10 @@ struct <<#A-0e,A>>&lt;short&gt;;
 |===
 | Name | Description 
 
-| <<#A-00b-B,`B`>> 
+| <<A-00b-B,`B`>> 
 | 
 
-| <<#A-00b-C,`C`>> 
+| <<A-00b-C,`C`>> 
 | 
 
 |===
@@ -305,7 +305,7 @@ struct <<#A-0e,A>>&lt;short&gt;;
 |===
 | Name | Description 
 
-| <<#A-00b-f,`f`>> 
+| <<A-00b-f,`f`>> 
 | 
 
 |===
@@ -313,7 +313,7 @@ struct <<#A-0e,A>>&lt;short&gt;;
 
 
 [#A-00b-B]
-== <<#A-00b,A>>&lt;short&gt;::B
+== <<A-00b,A>>&lt;short&gt;::B
 
 === Synopsis
 
@@ -329,7 +329,7 @@ struct B;
 
 
 [#A-00b-C]
-== <<#A-00b,A>>&lt;short&gt;::C
+== <<A-00b,A>>&lt;short&gt;::C
 
 === Synopsis
 
@@ -346,7 +346,7 @@ struct C;
 |===
 | Name | Description 
 
-| <<#A-00b-C-i,`i`>> 
+| <<A-00b-C-i,`i`>> 
 | 
 
 |===
@@ -354,7 +354,7 @@ struct C;
 
 
 [#A-00b-C-i]
-== <<#A-00b,A>>&lt;short&gt;::<<#A-00b-C,C>>::i
+== <<A-00b,A>>&lt;short&gt;::<<A-00b-C,C>>::i
 
 === Synopsis
 
@@ -367,7 +367,7 @@ i();
 ----
 
 [#A-00b-f]
-== <<#A-00b,A>>&lt;short&gt;::f
+== <<A-00b,A>>&lt;short&gt;::f
 
 === Synopsis
 
@@ -389,7 +389,7 @@ Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<#A-0e,A>>&lt;bool&gt;;
+struct <<A-0e,A>>&lt;bool&gt;;
 ----
 
 === Types
@@ -397,16 +397,16 @@ struct <<#A-0e,A>>&lt;bool&gt;;
 |===
 | Name | Description 
 
-| <<#A-0f-B,`B`>> 
+| <<A-0f-B,`B`>> 
 | 
 
-| <<#A-0f-C-00,`C`>> 
+| <<A-0f-C-00,`C`>> 
 | 
 
-| <<#A-0f-C-0c,`C&lt;U*&gt;`>> 
+| <<A-0f-C-0c,`C&lt;U*&gt;`>> 
 | 
 
-| <<#A-0f-C-01,`C&lt;double*&gt;`>> 
+| <<A-0f-C-01,`C&lt;double*&gt;`>> 
 | 
 
 |===
@@ -415,7 +415,7 @@ struct <<#A-0e,A>>&lt;bool&gt;;
 |===
 | Name | Description 
 
-| <<#A-0f-f,`f`>> 
+| <<A-0f-f,`f`>> 
 | 
 
 |===
@@ -423,7 +423,7 @@ struct <<#A-0e,A>>&lt;bool&gt;;
 
 
 [#A-0f-B]
-== <<#A-0f,A>>&lt;bool&gt;::B
+== <<A-0f,A>>&lt;bool&gt;::B
 
 === Synopsis
 
@@ -439,7 +439,7 @@ struct B;
 
 
 [#A-0f-C-00]
-== <<#A-0f,A>>&lt;bool&gt;::C
+== <<A-0f,A>>&lt;bool&gt;::C
 
 === Synopsis
 
@@ -455,7 +455,7 @@ struct C;
 
 
 [#A-0f-C-0c]
-== <<#A-0f,A>>&lt;bool&gt;::C&lt;U*&gt;
+== <<A-0f,A>>&lt;bool&gt;::C&lt;U*&gt;
 
 === Synopsis
 
@@ -464,7 +464,7 @@ Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename U&gt;
-struct <<#A-0e-C,C>>&lt;U*&gt;;
+struct <<A-0e-C,C>>&lt;U*&gt;;
 ----
 
 === Member Functions
@@ -472,7 +472,7 @@ struct <<#A-0e-C,C>>&lt;U*&gt;;
 |===
 | Name | Description 
 
-| <<#A-0f-C-0c-j,`j`>> 
+| <<A-0f-C-0c-j,`j`>> 
 | 
 
 |===
@@ -480,7 +480,7 @@ struct <<#A-0e-C,C>>&lt;U*&gt;;
 
 
 [#A-0f-C-0c-j]
-== <<#A-0f,A>>&lt;bool&gt;::<<#A-0f-C-0c,C>>&lt;U*&gt;::j
+== <<A-0f,A>>&lt;bool&gt;::<<A-0f-C-0c,C>>&lt;U*&gt;::j
 
 === Synopsis
 
@@ -493,7 +493,7 @@ j();
 ----
 
 [#A-0f-C-01]
-== <<#A-0f,A>>&lt;bool&gt;::C&lt;double*&gt;
+== <<A-0f,A>>&lt;bool&gt;::C&lt;double*&gt;
 
 === Synopsis
 
@@ -502,7 +502,7 @@ Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<#A-0e-C,C>>&lt;double*&gt;;
+struct <<A-0e-C,C>>&lt;double*&gt;;
 ----
 
 === Member Functions
@@ -510,7 +510,7 @@ struct <<#A-0e-C,C>>&lt;double*&gt;;
 |===
 | Name | Description 
 
-| <<#A-0f-C-01-j,`j`>> 
+| <<A-0f-C-01-j,`j`>> 
 | 
 
 |===
@@ -518,7 +518,7 @@ struct <<#A-0e-C,C>>&lt;double*&gt;;
 
 
 [#A-0f-C-01-j]
-== <<#A-0f,A>>&lt;bool&gt;::<<#A-0f-C-01,C>>&lt;double*&gt;::j
+== <<A-0f,A>>&lt;bool&gt;::<<A-0f-C-01,C>>&lt;double*&gt;::j
 
 === Synopsis
 
@@ -531,7 +531,7 @@ j();
 ----
 
 [#A-0f-f]
-== <<#A-0f,A>>&lt;bool&gt;::f
+== <<A-0f,A>>&lt;bool&gt;::f
 
 === Synopsis
 
@@ -560,10 +560,10 @@ struct D;
 |===
 | Name | Description 
 
-| <<#D-E-0e,`E`>> 
+| <<D-E-0e,`E`>> 
 | 
 
-| <<#D-E-0d,`E&lt;int&gt;`>> 
+| <<D-E-0d,`E&lt;int&gt;`>> 
 | 
 
 |===
@@ -571,7 +571,7 @@ struct D;
 
 
 [#D-E-0e]
-== <<#D,D>>::E
+== <<D,D>>::E
 
 === Synopsis
 
@@ -588,7 +588,7 @@ struct E;
 |===
 | Name | Description 
 
-| <<#D-E-0e-k,`k`>> 
+| <<D-E-0e-k,`k`>> 
 | 
 
 |===
@@ -596,7 +596,7 @@ struct E;
 
 
 [#D-E-0e-k]
-== <<#D,D>>::<<#D-E-0e,E>>::k
+== <<D,D>>::<<D-E-0e,E>>::k
 
 === Synopsis
 
@@ -609,7 +609,7 @@ k();
 ----
 
 [#D-E-0d]
-== <<#D,D>>::E&lt;int&gt;
+== <<D,D>>::E&lt;int&gt;
 
 === Synopsis
 
@@ -618,7 +618,7 @@ Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<#D-E-0e,E>>&lt;int&gt;;
+struct <<D-E-0e,E>>&lt;int&gt;;
 ----
 
 === Member Functions
@@ -626,7 +626,7 @@ struct <<#D-E-0e,E>>&lt;int&gt;;
 |===
 | Name | Description 
 
-| <<#D-E-0d-k,`k`>> 
+| <<D-E-0d-k,`k`>> 
 | 
 
 |===
@@ -634,7 +634,7 @@ struct <<#D-E-0e,E>>&lt;int&gt;;
 
 
 [#D-E-0d-k]
-== <<#D,D>>::<<#D-E-0d,E>>&lt;int&gt;::k
+== <<D,D>>::<<D-E-0d,E>>&lt;int&gt;::k
 
 === Synopsis
 

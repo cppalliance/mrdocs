@@ -9,19 +9,19 @@
 |===
 | Name | Description 
 
-| <<#A,`A`>> 
+| <<A,`A`>> 
 | 
 
-| <<#B,`B`>> 
+| <<B,`B`>> 
 | 
 
-| <<#C,`C`>> 
+| <<C,`C`>> 
 | 
 
-| <<#D,`D`>> 
+| <<D,`D`>> 
 | 
 
-| <<#E,`E`>> 
+| <<E,`E`>> 
 | 
 
 |===
@@ -30,139 +30,139 @@
 |===
 | Name | Description 
 
-| <<#f0,`f0`>> 
+| <<f0,`f0`>> 
 | 
 
-| <<#f1,`f1`>> 
+| <<f1,`f1`>> 
 | 
 
-| <<#f2,`f2`>> 
+| <<f2,`f2`>> 
 | 
 
-| <<#f3,`f3`>> 
+| <<f3,`f3`>> 
 | 
 
-| <<#f4,`f4`>> 
+| <<f4,`f4`>> 
 | 
 
-| <<#f5,`f5`>> 
+| <<f5,`f5`>> 
 | 
 
-| <<#f6,`f6`>> 
+| <<f6,`f6`>> 
 | 
 
-| <<#f7,`f7`>> 
+| <<f7,`f7`>> 
 | 
 
-| <<#f8,`f8`>> 
+| <<f8,`f8`>> 
 | 
 
-| <<#g0,`g0`>> 
+| <<g0,`g0`>> 
 | 
 
-| <<#g1,`g1`>> 
+| <<g1,`g1`>> 
 | 
 
-| <<#g2,`g2`>> 
+| <<g2,`g2`>> 
 | 
 
-| <<#g3,`g3`>> 
+| <<g3,`g3`>> 
 | 
 
-| <<#g4,`g4`>> 
+| <<g4,`g4`>> 
 | 
 
-| <<#g5,`g5`>> 
+| <<g5,`g5`>> 
 | 
 
-| <<#g6,`g6`>> 
+| <<g6,`g6`>> 
 | 
 
-| <<#g7,`g7`>> 
+| <<g7,`g7`>> 
 | 
 
-| <<#g8,`g8`>> 
+| <<g8,`g8`>> 
 | 
 
-| <<#h0,`h0`>> 
+| <<h0,`h0`>> 
 | 
 
-| <<#h1,`h1`>> 
+| <<h1,`h1`>> 
 | 
 
-| <<#h2,`h2`>> 
+| <<h2,`h2`>> 
 | 
 
-| <<#h3,`h3`>> 
+| <<h3,`h3`>> 
 | 
 
-| <<#h4,`h4`>> 
+| <<h4,`h4`>> 
 | 
 
-| <<#h5,`h5`>> 
+| <<h5,`h5`>> 
 | 
 
-| <<#h6,`h6`>> 
+| <<h6,`h6`>> 
 | 
 
-| <<#h7,`h7`>> 
+| <<h7,`h7`>> 
 | 
 
-| <<#h8,`h8`>> 
+| <<h8,`h8`>> 
 | 
 
-| <<#i0,`i0`>> 
+| <<i0,`i0`>> 
 | 
 
-| <<#i1,`i1`>> 
+| <<i1,`i1`>> 
 | 
 
-| <<#i2,`i2`>> 
+| <<i2,`i2`>> 
 | 
 
-| <<#i3,`i3`>> 
+| <<i3,`i3`>> 
 | 
 
-| <<#i4,`i4`>> 
+| <<i4,`i4`>> 
 | 
 
-| <<#i5,`i5`>> 
+| <<i5,`i5`>> 
 | 
 
-| <<#i6,`i6`>> 
+| <<i6,`i6`>> 
 | 
 
-| <<#i7,`i7`>> 
+| <<i7,`i7`>> 
 | 
 
-| <<#i8,`i8`>> 
+| <<i8,`i8`>> 
 | 
 
-| <<#j0,`j0`>> 
+| <<j0,`j0`>> 
 | 
 
-| <<#j1,`j1`>> 
+| <<j1,`j1`>> 
 | 
 
-| <<#j2,`j2`>> 
+| <<j2,`j2`>> 
 | 
 
-| <<#j3,`j3`>> 
+| <<j3,`j3`>> 
 | 
 
-| <<#j4,`j4`>> 
+| <<j4,`j4`>> 
 | 
 
-| <<#j5,`j5`>> 
+| <<j5,`j5`>> 
 | 
 
-| <<#j6,`j6`>> 
+| <<j6,`j6`>> 
 | 
 
-| <<#j7,`j7`>> 
+| <<j7,`j7`>> 
 | 
 
-| <<#j8,`j8`>> 
+| <<j8,`j8`>> 
 | 
 
 |===
@@ -210,7 +210,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f0(<<#A,A>>);
+f0(<<A,A>>);
 ----
 
 [#f1]
@@ -223,7 +223,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f1(<<#A,A>> const);
+f1(<<A,A>> const);
 ----
 
 [#f2]
@@ -236,7 +236,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f2(<<#A,A>>&);
+f2(<<A,A>>&);
 ----
 
 [#f3]
@@ -249,7 +249,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f3(<<#A,A>> const&);
+f3(<<A,A>> const&);
 ----
 
 [#f4]
@@ -262,7 +262,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f4(<<#A,A>>*);
+f4(<<A,A>>*);
 ----
 
 [#f5]
@@ -275,7 +275,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f5(<<#A,A>> const*);
+f5(<<A,A>> const*);
 ----
 
 [#f6]
@@ -288,7 +288,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f6(<<#A,A>>**);
+f6(<<A,A>>**);
 ----
 
 [#f7]
@@ -301,7 +301,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f7(<<#A,A>> const**);
+f7(<<A,A>> const**);
 ----
 
 [#f8]
@@ -314,7 +314,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f8(<<#A,A>> const const**);
+f8(<<A,A>> const const**);
 ----
 
 [#g0]
@@ -327,7 +327,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-g0(<<#C,C>>);
+g0(<<C,C>>);
 ----
 
 [#g1]
@@ -340,7 +340,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-g1(<<#C,C>> const);
+g1(<<C,C>> const);
 ----
 
 [#g2]
@@ -353,7 +353,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-g2(<<#C,C>>&);
+g2(<<C,C>>&);
 ----
 
 [#g3]
@@ -366,7 +366,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-g3(<<#C,C>> const&);
+g3(<<C,C>> const&);
 ----
 
 [#g4]
@@ -379,7 +379,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-g4(<<#C,C>>*);
+g4(<<C,C>>*);
 ----
 
 [#g5]
@@ -392,7 +392,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-g5(<<#C,C>> const*);
+g5(<<C,C>> const*);
 ----
 
 [#g6]
@@ -405,7 +405,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-g6(<<#C,C>>**);
+g6(<<C,C>>**);
 ----
 
 [#g7]
@@ -418,7 +418,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-g7(<<#C,C>> const**);
+g7(<<C,C>> const**);
 ----
 
 [#g8]
@@ -431,7 +431,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-g8(<<#C,C>> const const**);
+g8(<<C,C>> const const**);
 ----
 
 [#h0]
@@ -444,7 +444,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-h0(<<#B,B>>&lt;short, long&gt;);
+h0(<<B,B>>&lt;short, long&gt;);
 ----
 
 [#h1]
@@ -457,7 +457,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-h1(<<#B,B>>&lt;short, long&gt; const);
+h1(<<B,B>>&lt;short, long&gt; const);
 ----
 
 [#h2]
@@ -470,7 +470,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-h2(<<#B,B>>&lt;short, long&gt;&);
+h2(<<B,B>>&lt;short, long&gt;&);
 ----
 
 [#h3]
@@ -483,7 +483,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-h3(<<#B,B>>&lt;short, long&gt; const&);
+h3(<<B,B>>&lt;short, long&gt; const&);
 ----
 
 [#h4]
@@ -496,7 +496,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-h4(<<#B,B>>&lt;short, long&gt;*);
+h4(<<B,B>>&lt;short, long&gt;*);
 ----
 
 [#h5]
@@ -509,7 +509,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-h5(<<#B,B>>&lt;short, long&gt; const*);
+h5(<<B,B>>&lt;short, long&gt; const*);
 ----
 
 [#h6]
@@ -522,7 +522,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-h6(<<#B,B>>&lt;short, long&gt;**);
+h6(<<B,B>>&lt;short, long&gt;**);
 ----
 
 [#h7]
@@ -535,7 +535,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-h7(<<#B,B>>&lt;short, long&gt; const**);
+h7(<<B,B>>&lt;short, long&gt; const**);
 ----
 
 [#h8]
@@ -548,7 +548,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-h8(<<#B,B>>&lt;short, long&gt; const const**);
+h8(<<B,B>>&lt;short, long&gt; const const**);
 ----
 
 [#i0]
@@ -561,7 +561,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-i0(<<#D,D>>);
+i0(<<D,D>>);
 ----
 
 [#i1]
@@ -574,7 +574,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-i1(<<#D,D>> const);
+i1(<<D,D>> const);
 ----
 
 [#i2]
@@ -587,7 +587,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-i2(<<#D,D>>&);
+i2(<<D,D>>&);
 ----
 
 [#i3]
@@ -600,7 +600,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-i3(<<#D,D>> const&);
+i3(<<D,D>> const&);
 ----
 
 [#i4]
@@ -613,7 +613,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-i4(<<#D,D>>*);
+i4(<<D,D>>*);
 ----
 
 [#i5]
@@ -626,7 +626,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-i5(<<#D,D>> const*);
+i5(<<D,D>> const*);
 ----
 
 [#i6]
@@ -639,7 +639,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-i6(<<#D,D>>**);
+i6(<<D,D>>**);
 ----
 
 [#i7]
@@ -652,7 +652,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-i7(<<#D,D>> const**);
+i7(<<D,D>> const**);
 ----
 
 [#i8]
@@ -665,7 +665,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-i8(<<#D,D>> const const**);
+i8(<<D,D>> const const**);
 ----
 
 [#j0]
@@ -678,7 +678,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-j0(<<#E,E>>&lt;short&gt;);
+j0(<<E,E>>&lt;short&gt;);
 ----
 
 [#j1]
@@ -691,7 +691,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-j1(<<#E,E>>&lt;short&gt; const);
+j1(<<E,E>>&lt;short&gt; const);
 ----
 
 [#j2]
@@ -704,7 +704,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-j2(<<#E,E>>&lt;short&gt;&);
+j2(<<E,E>>&lt;short&gt;&);
 ----
 
 [#j3]
@@ -717,7 +717,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-j3(<<#E,E>>&lt;short&gt; const&);
+j3(<<E,E>>&lt;short&gt; const&);
 ----
 
 [#j4]
@@ -730,7 +730,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-j4(<<#E,E>>&lt;short&gt;*);
+j4(<<E,E>>&lt;short&gt;*);
 ----
 
 [#j5]
@@ -743,7 +743,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-j5(<<#E,E>>&lt;short&gt; const*);
+j5(<<E,E>>&lt;short&gt; const*);
 ----
 
 [#j6]
@@ -756,7 +756,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-j6(<<#E,E>>&lt;short&gt;**);
+j6(<<E,E>>&lt;short&gt;**);
 ----
 
 [#j7]
@@ -769,7 +769,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-j7(<<#E,E>>&lt;short&gt; const**);
+j7(<<E,E>>&lt;short&gt; const**);
 ----
 
 [#j8]
@@ -782,7 +782,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-j8(<<#E,E>>&lt;short&gt; const const**);
+j8(<<E,E>>&lt;short&gt; const const**);
 ----
 
 [#C]
@@ -794,7 +794,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using C = <<#A,A>>;
+using C = <<A,A>>;
 ----
 
 [#D]
@@ -806,7 +806,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using D = <<#B,B>>&lt;short, long&gt;;
+using D = <<B,B>>&lt;short, long&gt;;
 ----
 
 [#E]
@@ -819,7 +819,7 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-using E = <<#B,B>>&lt;T, long&gt;;
+using E = <<B,B>>&lt;T, long&gt;;
 ----
 
 

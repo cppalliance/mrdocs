@@ -9,16 +9,16 @@
 |===
 | Name | Description 
 
-| <<#A,`A`>> 
+| <<A,`A`>> 
 | 
 
-| <<#B,`B`>> 
+| <<B,`B`>> 
 | 
 
-| <<#C,`C`>> 
+| <<C,`C`>> 
 | 
 
-| <<#D,`D`>> 
+| <<D,`D`>> 
 | 
 
 |===
@@ -75,7 +75,7 @@ struct D;
 |===
 | Name | Description 
 
-| <<#D-E,`E`>> 
+| <<D-E,`E`>> 
 | 
 
 |===
@@ -83,7 +83,7 @@ struct D;
 
 
 [#D-E]
-== <<#D,D>>::E
+== <<D,D>>::E
 
 === Synopsis
 
@@ -92,7 +92,7 @@ Declared in `&lt;alias&hyphen;template&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename U&gt;
-using E = <<#B,B>>&lt;T, U&gt;;
+using E = <<B,B>>&lt;T, U&gt;;
 ----
 
 [#C]
@@ -105,7 +105,7 @@ Declared in `&lt;alias&hyphen;template&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-using C = <<#A,A>>&lt;T&gt;;
+using C = <<A,A>>&lt;T&gt;;
 ----
 
 

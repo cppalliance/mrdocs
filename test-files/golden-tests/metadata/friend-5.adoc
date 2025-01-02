@@ -9,10 +9,10 @@
 |===
 | Name | Description 
 
-| <<#T,`T`>> 
+| <<T,`T`>> 
 | 
 
-| <<#U,`U`>> 
+| <<U,`U`>> 
 | 
 
 |===
@@ -21,7 +21,7 @@
 |===
 | Name | Description 
 
-| <<#f,`f`>> 
+| <<f,`f`>> 
 | f
 
 
@@ -45,7 +45,7 @@ struct T;
 |===
 | Name | Description 
 
-| <<#T-08friend,`f`>> 
+| <<T-08friend,`f`>> 
 | 
 
 |===
@@ -83,7 +83,7 @@ struct U;
 |===
 | Name | Description 
 
-| <<#U-08friend,`f`>> 
+| <<U-08friend,`f`>> 
 | 
 
 |===
