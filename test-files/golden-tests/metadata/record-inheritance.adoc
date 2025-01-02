@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -62,7 +64,9 @@
 [#C0]
 == C0
 
+
 === Synopsis
+
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -77,7 +81,9 @@ class C0;
 [#C1]
 == C1
 
+
 === Synopsis
+
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -93,7 +99,9 @@ class C1
 [#C2]
 == C2
 
+
 === Synopsis
+
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -109,7 +117,9 @@ class C2
 [#C3]
 == C3
 
+
 === Synopsis
+
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -125,7 +135,9 @@ class C3
 [#C4]
 == C4
 
+
 === Synopsis
+
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -141,7 +153,9 @@ class C4
 [#C5]
 == C5
 
+
 === Synopsis
+
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -157,7 +171,9 @@ class C5
 [#C6]
 == C6
 
+
 === Synopsis
+
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -173,7 +189,9 @@ class C6
 [#C7]
 == C7
 
+
 === Synopsis
+
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -190,7 +208,9 @@ class C7
 [#S0]
 == S0
 
+
 === Synopsis
+
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -205,7 +225,9 @@ struct S0;
 [#S1]
 == S1
 
+
 === Synopsis
+
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -220,7 +242,9 @@ struct S1;
 [#S2]
 == S2
 
+
 === Synopsis
+
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -236,7 +260,9 @@ struct S2
 [#S3]
 == S3
 
+
 === Synopsis
+
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -252,7 +278,9 @@ struct S3
 [#S4]
 == S4
 
+
 === Synopsis
+
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -269,7 +297,9 @@ struct S4
 [#S5]
 == S5
 
+
 === Synopsis
+
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -286,7 +316,9 @@ struct S5
 [#S6]
 == S6
 
+
 === Synopsis
+
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -303,7 +335,9 @@ struct S6
 [#U0]
 == U0
 
+
 === Synopsis
+
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 

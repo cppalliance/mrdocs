@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -14,6 +16,7 @@
 
 |===
 === Variables
+
 [cols=2]
 |===
 | Name | Description 
@@ -23,6 +26,7 @@
 
 |===
 === Concepts
+
 [cols=2]
 |===
 | Name | Description 
@@ -35,7 +39,9 @@
 [#f]
 == f
 
+
 === Synopsis
+
 
 Declared in `&lt;concept&period;cpp&gt;`
 
@@ -49,7 +55,9 @@ f();
 [#x]
 == x
 
+
 === Synopsis
+
 
 Declared in `&lt;concept&period;cpp&gt;`
 
@@ -61,7 +69,9 @@ Declared in `&lt;concept&period;cpp&gt;`
 [#C]
 == C
 
+
 === Synopsis
+
 
 Declared in `&lt;concept&period;cpp&gt;`
 

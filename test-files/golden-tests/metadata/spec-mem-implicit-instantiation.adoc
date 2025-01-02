@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -29,7 +31,9 @@
 [#A-0e]
 == A
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 
@@ -40,6 +44,7 @@ struct A;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -52,6 +57,7 @@ struct A;
 
 |===
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -66,7 +72,9 @@ struct A;
 [#A-0e-B]
 == <<A-0e,A>>::B
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 
@@ -77,6 +85,7 @@ struct B;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -91,7 +100,9 @@ struct B;
 [#A-0e-B-g]
 == <<A-0e,A>>::<<A-0e-B,B>>::g
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 
@@ -104,7 +115,9 @@ g();
 [#A-0e-C]
 == <<A-0e,A>>::C
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 
@@ -115,6 +128,7 @@ struct C;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -129,7 +143,9 @@ struct C;
 [#A-0e-C-h]
 == <<A-0e,A>>::<<A-0e-C,C>>::h
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 
@@ -142,7 +158,9 @@ h();
 [#A-0e-f]
 == <<A-0e,A>>::f
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 
@@ -155,7 +173,9 @@ f();
 [#A-000]
 == A&lt;int&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 
@@ -166,6 +186,7 @@ struct <<A-0e,A>>&lt;int&gt;;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -181,6 +202,7 @@ struct <<A-0e,A>>&lt;int&gt;;
 
 |===
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -195,7 +217,9 @@ struct <<A-0e,A>>&lt;int&gt;;
 [#A-000-B-03]
 == <<A-000,A>>&lt;int&gt;::B
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 
@@ -211,7 +235,9 @@ struct B;
 [#A-000-B-09]
 == <<A-000,A>>&lt;int&gt;::B&lt;long&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 
@@ -222,6 +248,7 @@ struct <<A-0e-B,B>>&lt;long&gt;;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -236,7 +263,9 @@ struct <<A-0e-B,B>>&lt;long&gt;;
 [#A-000-B-09-g]
 == <<A-000,A>>&lt;int&gt;::<<A-000-B-09,B>>&lt;long&gt;::g
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 
@@ -249,7 +278,9 @@ g();
 [#A-000-C]
 == <<A-000,A>>&lt;int&gt;::C
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 
@@ -265,7 +296,9 @@ struct C;
 [#A-000-f]
 == <<A-000,A>>&lt;int&gt;::f
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 
@@ -278,7 +311,9 @@ f();
 [#A-00b]
 == A&lt;short&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 
@@ -289,6 +324,7 @@ struct <<A-0e,A>>&lt;short&gt;;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -301,6 +337,7 @@ struct <<A-0e,A>>&lt;short&gt;;
 
 |===
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -315,7 +352,9 @@ struct <<A-0e,A>>&lt;short&gt;;
 [#A-00b-B]
 == <<A-00b,A>>&lt;short&gt;::B
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 
@@ -331,7 +370,9 @@ struct B;
 [#A-00b-C]
 == <<A-00b,A>>&lt;short&gt;::C
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 
@@ -342,6 +383,7 @@ struct C;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -356,7 +398,9 @@ struct C;
 [#A-00b-C-i]
 == <<A-00b,A>>&lt;short&gt;::<<A-00b-C,C>>::i
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 
@@ -369,7 +413,9 @@ i();
 [#A-00b-f]
 == <<A-00b,A>>&lt;short&gt;::f
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 
@@ -382,7 +428,9 @@ f();
 [#A-0f]
 == A&lt;bool&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 
@@ -393,6 +441,7 @@ struct <<A-0e,A>>&lt;bool&gt;;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -411,6 +460,7 @@ struct <<A-0e,A>>&lt;bool&gt;;
 
 |===
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -425,7 +475,9 @@ struct <<A-0e,A>>&lt;bool&gt;;
 [#A-0f-B]
 == <<A-0f,A>>&lt;bool&gt;::B
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 
@@ -441,7 +493,9 @@ struct B;
 [#A-0f-C-00]
 == <<A-0f,A>>&lt;bool&gt;::C
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 
@@ -457,7 +511,9 @@ struct C;
 [#A-0f-C-0c]
 == <<A-0f,A>>&lt;bool&gt;::C&lt;U*&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 
@@ -468,6 +524,7 @@ struct <<A-0e-C,C>>&lt;U*&gt;;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -482,7 +539,9 @@ struct <<A-0e-C,C>>&lt;U*&gt;;
 [#A-0f-C-0c-j]
 == <<A-0f,A>>&lt;bool&gt;::<<A-0f-C-0c,C>>&lt;U*&gt;::j
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 
@@ -495,7 +554,9 @@ j();
 [#A-0f-C-01]
 == <<A-0f,A>>&lt;bool&gt;::C&lt;double*&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 
@@ -506,6 +567,7 @@ struct <<A-0e-C,C>>&lt;double*&gt;;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -520,7 +582,9 @@ struct <<A-0e-C,C>>&lt;double*&gt;;
 [#A-0f-C-01-j]
 == <<A-0f,A>>&lt;bool&gt;::<<A-0f-C-01,C>>&lt;double*&gt;::j
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 
@@ -533,7 +597,9 @@ j();
 [#A-0f-f]
 == <<A-0f,A>>&lt;bool&gt;::f
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 
@@ -546,7 +612,9 @@ f();
 [#D]
 == D
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 
@@ -556,6 +624,7 @@ struct D;
 ----
 
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -573,7 +642,9 @@ struct D;
 [#D-E-0e]
 == <<D,D>>::E
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 
@@ -584,6 +655,7 @@ struct E;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -598,7 +670,9 @@ struct E;
 [#D-E-0e-k]
 == <<D,D>>::<<D-E-0e,E>>::k
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 
@@ -611,7 +685,9 @@ k();
 [#D-E-0d]
 == <<D,D>>::E&lt;int&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 
@@ -622,6 +698,7 @@ struct <<D-E-0e,E>>&lt;int&gt;;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -636,7 +713,9 @@ struct <<D-E-0e,E>>&lt;int&gt;;
 [#D-E-0d-k]
 == <<D,D>>::<<D-E-0d,E>>&lt;int&gt;::k
 
+
 === Synopsis
+
 
 Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
 

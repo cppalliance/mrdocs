@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -26,7 +28,9 @@
 [#f]
 == f
 
+
 === Synopsis
+
 
 Declared in `&lt;param&period;cpp&gt;`
 
@@ -38,6 +42,7 @@ f(int x);
 
 === Parameters
 
+
 |===
 | Name | Description
 
@@ -48,7 +53,9 @@ f(int x);
 [#g]
 == g
 
+
 === Synopsis
+
 
 Declared in `&lt;param&period;cpp&gt;`
 
@@ -62,6 +69,7 @@ g(
 
 === Parameters
 
+
 |===
 | Name | Description
 
@@ -74,7 +82,9 @@ g(
 [#h]
 == h
 
+
 === Synopsis
+
 
 Declared in `&lt;param&period;cpp&gt;`
 
@@ -88,6 +98,7 @@ h(
 ----
 
 === Parameters
+
 
 |===
 | Name | Description
@@ -103,7 +114,9 @@ h(
 [#i]
 == i
 
+
 === Synopsis
+
 
 Declared in `&lt;param&period;cpp&gt;`
 
@@ -118,6 +131,7 @@ i(
 ----
 
 === Parameters
+
 
 |===
 | Name | Description

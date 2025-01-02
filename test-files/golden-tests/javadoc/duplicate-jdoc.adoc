@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -44,11 +46,13 @@
 [#f0]
 == f0
 
+
 f0 brief
 
 
 
 === Synopsis
+
 
 Declared in `&lt;duplicate&hyphen;jdoc&period;cpp&gt;`
 
@@ -60,6 +64,7 @@ f0();
 
 === Return Value
 
+
 int
 
 
@@ -67,11 +72,13 @@ int
 [#f1]
 == f1
 
+
 f1 brief
 
 
 
 === Synopsis
+
 
 Declared in `&lt;duplicate&hyphen;jdoc&period;cpp&gt;`
 
@@ -83,6 +90,7 @@ f1();
 
 === Return Value
 
+
 bool
 
 
@@ -90,11 +98,13 @@ bool
 [#g0]
 == g0
 
+
 g0 brief
 
 
 
 === Synopsis
+
 
 Declared in `&lt;duplicate&hyphen;jdoc&period;cpp&gt;`
 
@@ -105,6 +115,7 @@ g0(int a);
 ----
 
 === Parameters
+
 
 |===
 | Name | Description
@@ -122,11 +133,13 @@ g0(int a);
 [#g1]
 == g1
 
+
 g1 brief
 
 
 
 === Synopsis
+
 
 Declared in `&lt;duplicate&hyphen;jdoc&period;cpp&gt;`
 
@@ -137,6 +150,7 @@ g1(int a);
 ----
 
 === Parameters
+
 
 |===
 | Name | Description
@@ -154,11 +168,13 @@ g1(int a);
 [#h0]
 == h0
 
+
 h0 brief
 
 
 
 === Synopsis
+
 
 Declared in `&lt;duplicate&hyphen;jdoc&period;cpp&gt;`
 
@@ -170,6 +186,7 @@ h0();
 ----
 
 === Template Parameters
+
 
 |===
 | Name | Description
@@ -187,11 +204,13 @@ h0();
 [#h1]
 == h1
 
+
 h1 brief
 
 
 
 === Synopsis
+
 
 Declared in `&lt;duplicate&hyphen;jdoc&period;cpp&gt;`
 
@@ -203,6 +222,7 @@ h1();
 ----
 
 === Template Parameters
+
 
 |===
 | Name | Description

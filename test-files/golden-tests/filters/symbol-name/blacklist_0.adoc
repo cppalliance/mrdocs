@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Namespaces
+
 [cols=2]
 |===
 | Name | Description 
@@ -26,7 +28,9 @@
 [#N0]
 == N0
 
+
 === Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -39,7 +43,9 @@
 [#N0-f0]
 == <<N0,N0>>::f0
 
+
 === Synopsis
+
 
 Declared in `&lt;blacklist&lowbar;0&period;cpp&gt;`
 
@@ -53,10 +59,13 @@ f0();
 == N3
 
 
+
 [#N4]
 == N4
 
+
 === Namespaces
+
 [cols=2]
 |===
 | Name | Description 
@@ -72,7 +81,9 @@ f0();
 [#N4-N5]
 == <<N4,N4>>::N5
 
+
 === Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -85,7 +96,9 @@ f0();
 [#N4-N5-f1]
 == <<N4,N4>>::<<N4-N5,N5>>::f1
 
+
 === Synopsis
+
 
 Declared in `&lt;blacklist&lowbar;0&period;cpp&gt;`
 
@@ -98,7 +111,9 @@ f1();
 [#N4-N6]
 == <<N4,N4>>::N6
 
+
 === Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -111,7 +126,9 @@ f1();
 [#N4-N6-f1]
 == <<N4,N4>>::<<N4-N6,N6>>::f1
 
+
 === Synopsis
+
 
 Declared in `&lt;blacklist&lowbar;0&period;cpp&gt;`
 
@@ -124,7 +141,9 @@ f1();
 [#N7]
 == N7
 
+
 === Namespaces
+
 [cols=2]
 |===
 | Name | Description 
@@ -141,10 +160,13 @@ f1();
 == <<N7,N7>>::N8
 
 
+
 [#N7-N9]
 == <<N7,N7>>::N9
 
+
 === Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -157,7 +179,9 @@ f1();
 [#N7-N9-g0]
 == <<N7,N7>>::<<N7-N9,N9>>::g0
 
+
 === Synopsis
+
 
 Declared in `&lt;blacklist&lowbar;0&period;cpp&gt;`
 

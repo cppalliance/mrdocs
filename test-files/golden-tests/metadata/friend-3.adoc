@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -17,6 +19,7 @@
 
 |===
 === Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -31,7 +34,9 @@
 [#T]
 == T
 
+
 === Synopsis
+
 
 Declared in `&lt;friend&hyphen;3&period;cpp&gt;`
 
@@ -41,6 +46,7 @@ struct T;
 ----
 
 === Friends
+
 [cols=2]
 |===
 | Name | Description 
@@ -57,11 +63,13 @@ struct T;
 [#T-08friend]
 == f
 
+
 T&colon;&colon;f
 
 
 
 === Synopsis
+
 
 Declared in `&lt;friend&hyphen;3&period;cpp&gt;`
 
@@ -75,7 +83,9 @@ f();
 [#U]
 == U
 
+
 === Synopsis
+
 
 Declared in `&lt;friend&hyphen;3&period;cpp&gt;`
 
@@ -85,6 +95,7 @@ struct U;
 ----
 
 === Friends
+
 [cols=2]
 |===
 | Name | Description 
@@ -99,7 +110,9 @@ struct U;
 [#U-08friend]
 == f
 
+
 === Synopsis
+
 
 Declared in `&lt;friend&hyphen;3&period;cpp&gt;`
 
@@ -113,11 +126,13 @@ f();
 [#f]
 == f
 
+
 T&colon;&colon;f
 
 
 
 === Synopsis
+
 
 Declared in `&lt;friend&hyphen;3&period;cpp&gt;`
 

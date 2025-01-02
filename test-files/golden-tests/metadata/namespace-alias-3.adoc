@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Namespaces
+
 [cols=2]
 |===
 | Name | Description 
@@ -14,6 +16,7 @@
 
 |===
 === Namespace Aliases
+
 [cols=2]
 |===
 | Name | Description 
@@ -30,10 +33,13 @@
 == LongName
 
 
+
 [#A]
 == A
 
+
 === Synopsis
+
 
 Declared in `&lt;namespace&hyphen;alias&hyphen;3&period;cpp&gt;`
 
@@ -45,7 +51,9 @@ namespace A = <<LongName,LongName>>;
 [#B]
 == B
 
+
 === Synopsis
+
 
 Declared in `&lt;namespace&hyphen;alias&hyphen;3&period;cpp&gt;`
 

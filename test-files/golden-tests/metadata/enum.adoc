@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Enums
+
 [cols=2]
 |===
 | Name | Description 
@@ -30,11 +32,13 @@
 [#E0]
 == E0
 
+
 E0 brief&period;
 
 
 
 === Synopsis
+
 
 Declared in `&lt;enum&period;cpp&gt;`
 
@@ -44,6 +48,7 @@ enum E0;
 ----
 
 === Members
+
 
 [,cols=2]
 |===
@@ -60,6 +65,7 @@ enum E0;
 
 === Description
 
+
 E0 description&period;
 
 
@@ -67,7 +73,9 @@ E0 description&period;
 [#E1]
 == E1
 
+
 === Synopsis
+
 
 Declared in `&lt;enum&period;cpp&gt;`
 
@@ -77,6 +85,7 @@ enum E1 : char;
 ----
 
 === Members
+
 
 [,cols=2]
 |===
@@ -90,11 +99,13 @@ enum E1 : char;
 [#E2]
 == E2
 
+
 E2 brief&period;
 
 
 
 === Synopsis
+
 
 Declared in `&lt;enum&period;cpp&gt;`
 
@@ -104,6 +115,7 @@ enum E2 : int;
 ----
 
 === Members
+
 
 [,cols=2]
 |===
@@ -120,6 +132,7 @@ enum E2 : int;
 
 === Description
 
+
 E2 description&period;
 
 
@@ -127,7 +140,9 @@ E2 description&period;
 [#E3]
 == E3
 
+
 === Synopsis
+
 
 Declared in `&lt;enum&period;cpp&gt;`
 
@@ -137,6 +152,7 @@ enum E3 : char;
 ----
 
 === Members
+
 
 [,cols=2]
 |===

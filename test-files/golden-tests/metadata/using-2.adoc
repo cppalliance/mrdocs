@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Namespaces
+
 [cols=2]
 |===
 | Name | Description 
@@ -17,7 +19,9 @@
 [#LongName]
 == LongName
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -33,7 +37,9 @@
 [#LongName-S1]
 == <<LongName,LongName>>::S1
 
+
 === Synopsis
+
 
 Declared in `&lt;using&hyphen;2&period;cpp&gt;`
 
@@ -48,7 +54,9 @@ struct S1;
 [#LongName-S2]
 == <<LongName,LongName>>::S2
 
+
 === Synopsis
+
 
 Declared in `&lt;using&hyphen;2&period;cpp&gt;`
 
@@ -63,7 +71,9 @@ struct S2;
 [#S1]
 == S1
 
+
 === Synopsis
+
 
 Declared in `&lt;using&hyphen;2&period;cpp&gt;`
 
@@ -74,6 +84,7 @@ using <<LongName,LongName>>::S1;
 
 === Introduced Symbols
 
+
 |===
 | Name
 | S1
@@ -82,7 +93,9 @@ using <<LongName,LongName>>::S1;
 [#S2]
 == S2
 
+
 === Synopsis
+
 
 Declared in `&lt;using&hyphen;2&period;cpp&gt;`
 
@@ -92,6 +105,7 @@ using <<LongName,LongName>>::S2;
 ----
 
 === Introduced Symbols
+
 
 |===
 | Name

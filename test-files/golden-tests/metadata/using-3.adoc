@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -23,7 +25,9 @@
 [#A]
 == A
 
+
 === Synopsis
+
 
 Declared in `&lt;using&hyphen;3&period;cpp&gt;`
 
@@ -33,6 +37,7 @@ struct A;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -47,7 +52,9 @@ struct A;
 [#A-f]
 == <<A,A>>::f
 
+
 === Synopsis
+
 
 Declared in `&lt;using&hyphen;3&period;cpp&gt;`
 
@@ -60,7 +67,9 @@ f(int);
 [#B]
 == B
 
+
 === Synopsis
+
 
 Declared in `&lt;using&hyphen;3&period;cpp&gt;`
 
@@ -70,6 +79,7 @@ struct B;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -84,7 +94,9 @@ struct B;
 [#B-f]
 == <<B,B>>::f
 
+
 === Synopsis
+
 
 Declared in `&lt;using&hyphen;3&period;cpp&gt;`
 
@@ -97,7 +109,9 @@ f(bool);
 [#C]
 == C
 
+
 === Synopsis
+
 
 Declared in `&lt;using&hyphen;3&period;cpp&gt;`
 
@@ -109,6 +123,7 @@ struct C
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -117,6 +132,7 @@ struct C
 | 
 |===
 === Using Declarations
+
 [cols=2]
 |===
 | Name | Description 
@@ -134,7 +150,9 @@ struct C
 [#C-f-08]
 == <<C,C>>::f
 
+
 === Synopsis
+
 
 Declared in `&lt;using&hyphen;3&period;cpp&gt;`
 
@@ -145,6 +163,7 @@ using <<A,A>>::f;
 
 === Introduced Symbols
 
+
 |===
 | Name
 | f
@@ -153,7 +172,9 @@ using <<A,A>>::f;
 [#C-f-03]
 == <<C,C>>::f
 
+
 === Synopsis
+
 
 Declared in `&lt;using&hyphen;3&period;cpp&gt;`
 
@@ -163,6 +184,7 @@ using <<B,B>>::f;
 ----
 
 === Introduced Symbols
+
 
 |===
 | Name

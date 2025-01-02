@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -17,9 +19,11 @@
 [#my_function]
 == my&lowbar;function
 
+
 A function
 
 === Synopsis
+
 
 Declared in `&lt;para&hyphen;3&period;cpp&gt;`
 
@@ -30,6 +34,7 @@ my&lowbar;function();
 ----
 
 === Description
+
 
 
 === A heading&period;

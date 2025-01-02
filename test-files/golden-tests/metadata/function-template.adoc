@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -50,7 +52,9 @@
 [#f0]
 == f0
 
+
 === Synopsis
+
 
 Declared in `&lt;function&hyphen;template&period;cpp&gt;`
 
@@ -64,7 +68,9 @@ f0(int x);
 [#f1]
 == f1
 
+
 === Synopsis
+
 
 Declared in `&lt;function&hyphen;template&period;cpp&gt;`
 
@@ -78,7 +84,9 @@ f1(T t);
 [#f2]
 == f2
 
+
 === Synopsis
+
 
 Declared in `&lt;function&hyphen;template&period;cpp&gt;`
 
@@ -92,7 +100,9 @@ f2();
 [#f3]
 == f3
 
+
 === Synopsis
+
 
 Declared in `&lt;function&hyphen;template&period;cpp&gt;`
 
@@ -108,7 +118,9 @@ f3();
 [#g0]
 == g0
 
+
 === Synopsis
+
 
 Declared in `&lt;function&hyphen;template&period;cpp&gt;`
 
@@ -122,7 +134,9 @@ g0(int x);
 [#g1]
 == g1
 
+
 === Synopsis
+
 
 Declared in `&lt;function&hyphen;template&period;cpp&gt;`
 
@@ -136,7 +150,9 @@ g1();
 [#g2]
 == g2
 
+
 === Synopsis
+
 
 Declared in `&lt;function&hyphen;template&period;cpp&gt;`
 
@@ -152,7 +168,9 @@ g2();
 [#h0]
 == h0
 
+
 === Synopsis
+
 
 Declared in `&lt;function&hyphen;template&period;cpp&gt;`
 
@@ -166,7 +184,9 @@ h0(auto x);
 [#h1]
 == h1
 
+
 === Synopsis
+
 
 Declared in `&lt;function&hyphen;template&period;cpp&gt;`
 
@@ -184,7 +204,9 @@ h1(
 [#i]
 == i
 
+
 === Synopsis
+
 
 Declared in `&lt;function&hyphen;template&period;cpp&gt;`
 
@@ -200,7 +222,9 @@ i();
 [#j0]
 == j0
 
+
 === Synopsis
+
 
 Declared in `&lt;function&hyphen;template&period;cpp&gt;`
 
@@ -214,7 +238,9 @@ j0();
 [#j1]
 == j1
 
+
 === Synopsis
+
 
 Declared in `&lt;function&hyphen;template&period;cpp&gt;`
 

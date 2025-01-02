@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -17,7 +19,9 @@
 [#f]
 == f
 
+
 === Synopsis
+
 
 Declared in `&lt;pre&hyphen;post&period;cpp&gt;`
 
@@ -29,6 +33,7 @@ f();
 
 === Preconditions
 
+
 * first precondition
 
 
@@ -37,6 +42,7 @@ f();
 
 
 === Postconditions
+
 
 * first postcondition
 

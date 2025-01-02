@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Namespaces
+
 [cols=2]
 |===
 | Name | Description 
@@ -17,7 +19,9 @@
 [#N]
 == N
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -30,7 +34,9 @@
 [#N-S]
 == <<N,N>>::S
 
+
 === Synopsis
+
 
 Declared in `&lt;out&hyphen;of&hyphen;line&hyphen;record&hyphen;def&period;cpp&gt;`
 

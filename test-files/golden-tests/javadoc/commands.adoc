@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -19,11 +21,13 @@
 [#f1]
 == f1
 
+
 brief
 
 
 
 === Synopsis
+
 
 Declared in `&lt;commands&period;cpp&gt;`
 
@@ -34,6 +38,7 @@ f1();
 ----
 
 === Description
+
 
 mrdocs hello
 

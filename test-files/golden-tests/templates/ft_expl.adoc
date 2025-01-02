@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -16,7 +18,9 @@
 [#f]
 == f
 
+
 === Synopsis
+
 
 Declared in `&lt;templates&sol;ft&lowbar;expl&period;cpp&gt;`
 
@@ -41,7 +45,9 @@ void
 [#f-03]
 == f
 
+
 === Synopsis
+
 
 Declared in `&lt;templates&sol;ft&lowbar;expl&period;cpp&gt;`
 
@@ -55,7 +61,9 @@ f();
 [#f-0c]
 == f&lt;int&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;templates&sol;ft&lowbar;expl&period;cpp&gt;`
 

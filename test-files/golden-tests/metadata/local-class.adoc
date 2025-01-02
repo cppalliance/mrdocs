@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -14,6 +16,7 @@
 
 |===
 === Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -26,7 +29,9 @@
 [#B]
 == B
 
+
 === Synopsis
+
 
 Declared in `&lt;local&hyphen;class&period;cpp&gt;`
 
@@ -42,7 +47,9 @@ struct B
 [#f]
 == f
 
+
 === Synopsis
+
 
 Declared in `&lt;local&hyphen;class&period;cpp&gt;`
 

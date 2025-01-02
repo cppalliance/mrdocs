@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -17,7 +19,9 @@
 [#T]
 == T
 
+
 === Synopsis
+
 
 Declared in `&lt;overloaded&hyphen;op&hyphen;1&period;cpp&gt;`
 
@@ -27,6 +31,7 @@ struct T;
 ----
 
 === Member Functions
+
 [cols=2]
 |===
 | Name | Description 
@@ -41,7 +46,9 @@ struct T;
 [#T-operator_plus]
 == <<T,T>>::operator&plus;
 
+
 === Synopsis
+
 
 Declared in `&lt;overloaded&hyphen;op&hyphen;1&period;cpp&gt;`
 

@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -17,7 +19,9 @@
 [#A]
 == A
 
+
 === Synopsis
+
 
 Declared in `&lt;static&hyphen;data&hyphen;template&period;cpp&gt;`
 
@@ -28,6 +32,7 @@ struct A;
 ----
 
 === Static Data Members
+
 [cols=2]
 |===
 | Name | Description 
@@ -48,7 +53,9 @@ struct A;
 [#A-x-05]
 == <<A,A>>::x
 
+
 === Synopsis
+
 
 Declared in `&lt;static&hyphen;data&hyphen;template&period;cpp&gt;`
 
@@ -65,7 +72,9 @@ T const x = 0;
 [#A-x-0a]
 == <<A,A>>::x&lt;U*, T&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;static&hyphen;data&hyphen;template&period;cpp&gt;`
 
@@ -80,7 +89,9 @@ T const x&lt;U*, T&gt; = 1;
 [#A-x-07]
 == <<A,A>>::x&lt;T, long&gt;
 
+
 === Synopsis
+
 
 Declared in `&lt;static&hyphen;data&hyphen;template&period;cpp&gt;`
 

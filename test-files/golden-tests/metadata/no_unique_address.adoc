@@ -4,7 +4,9 @@
 [#index]
 == Global namespace
 
+
 === Types
+
 [cols=2]
 |===
 | Name | Description 
@@ -20,7 +22,9 @@
 [#Empty]
 == Empty
 
+
 === Synopsis
+
 
 Declared in `&lt;no&lowbar;unique&lowbar;address&period;cpp&gt;`
 
@@ -35,7 +39,9 @@ struct Empty;
 [#T]
 == T
 
+
 === Synopsis
+
 
 Declared in `&lt;no&lowbar;unique&lowbar;address&period;cpp&gt;`
 
@@ -45,6 +51,7 @@ struct T;
 ----
 
 === Data Members
+
 [cols=2]
 |===
 | Name | Description 
@@ -62,7 +69,9 @@ struct T;
 [#T-e]
 == <<T,T>>::e
 
+
 === Synopsis
+
 
 Declared in `&lt;no&lowbar;unique&lowbar;address&period;cpp&gt;`
 
@@ -75,7 +84,9 @@ Declared in `&lt;no&lowbar;unique&lowbar;address&period;cpp&gt;`
 [#T-i]
 == <<T,T>>::i
 
+
 === Synopsis
+
 
 Declared in `&lt;no&lowbar;unique&lowbar;address&period;cpp&gt;`
 
