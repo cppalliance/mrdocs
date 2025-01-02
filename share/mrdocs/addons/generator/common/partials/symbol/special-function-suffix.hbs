@@ -20,6 +20,12 @@
     {{~else if (eq class "destructor")~}}
         {{#>markup/span class="small"}}[destructor]{{/markup/span}}
     {{~/if~}}
+    {{~#if isVirtual~}}
+        {{str ' '}}{{#>markup/span class="small"}}[virtual]{{/markup/span}}
+    {{~/if~}}
+    {{~#if isDeleted~}}
+        {{str ' '}}{{#>markup/span class="small"}}[deleted]{{/markup/span}}
+    {{~/if~}}
 {{else if (eq kind "field")~}}
     {{~#if isVariant~}}
         {{#>markup/span class="small"}}[variant member]{{/markup/span}}
