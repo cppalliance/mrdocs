@@ -493,7 +493,7 @@ struct T13;
 |===
 | Name 
 
-| <<T13-f,`f`>> 
+| <<T13-f,`f`>>  [.small]#[virtual]#
 |===
 
 
@@ -534,7 +534,7 @@ struct T14;
 |===
 | Name 
 
-| <<T14-f,`f`>> 
+| <<T14-f,`f`>>  [.small]#[virtual]#
 |===
 
 
@@ -657,7 +657,7 @@ struct T17
 |===
 | Name 
 
-| <<T14-f,`f`>> 
+| <<T14-f,`f`>>  [.small]#[virtual]#
 |===
 
 
@@ -699,7 +699,7 @@ struct U;
 | Name 
 
 | <<U-f1,`f1`>> 
-| <<U-f3,`f3`>> 
+| <<U-f3,`f3`>>  [.small]#[virtual]#
 |===
 === Static Member Functions
 
@@ -783,7 +783,7 @@ struct V
 | Name 
 
 | <<U-f1,`f1`>> 
-| <<U-f3,`f3`>> 
+| <<U-f3,`f3`>>  [.small]#[virtual]#
 |===
 === Static Member Functions
 
