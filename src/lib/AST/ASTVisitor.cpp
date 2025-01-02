@@ -896,14 +896,14 @@ populate(
 
     // Extract direct bases. D->bases() will get the bases
     // from whichever declaration is the definition (if any)
-    if(D->hasDefinition())
+    if(D->hasDefinition() && I.Bases.empty())
     {
         for (const CXXBaseSpecifier& B : D->bases())
         {
             AccessSpecifier const access = B.getAccessSpecifier();
 
             if (!config_->privateBases &&
-                access == AccessSpecifier::AS_private)
+                access == AS_private)
             {
                 continue;
             }
