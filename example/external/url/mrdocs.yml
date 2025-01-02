@@ -30,6 +30,9 @@ see-below:
   - 'boost::urls::grammar::see_below'
   - 'boost::urls::string_token::see_below'
 
+# Metadata Extraction
+private-bases: false
+
 # Generator
 generate: adoc
 base-url: https://www.github.com/boostorg/url/blob/develop/include/ # boost/url/url_view.hpp
