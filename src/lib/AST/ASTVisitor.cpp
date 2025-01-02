@@ -1334,8 +1334,10 @@ populate(
     NamespaceAliasDecl* D)
 {
     NamedDecl const* Aliased = D->getAliasedNamespace();
-    I.AliasedSymbol = toNameInfo(Aliased);
+    NestedNameSpecifier const* NNS = D->getQualifier();
+    I.AliasedSymbol = toNameInfo(Aliased, {}, NNS);
 }
+
 
 void
 ASTVisitor::

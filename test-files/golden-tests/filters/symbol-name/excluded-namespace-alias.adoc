@@ -1,0 +1,59 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+=== Namespaces
+
+[cols=1]
+|===
+| Name 
+
+| <<B,`B`>> 
+|===
+
+[#B]
+== B
+
+
+=== Namespaces
+
+[cols=1]
+|===
+| Name 
+
+| <<B-U,`U`>> 
+|===
+
+[#B-U]
+== <<B,B>>::U
+
+
+=== Namespace Aliases
+
+[cols=1]
+|===
+| Name 
+
+| <<B-U-E,`E`>> 
+|===
+
+[#B-U-E]
+== <<B,B>>::<<B-U,U>>::E
+
+
+=== Synopsis
+
+
+Declared in `&lt;excluded&hyphen;namespace&hyphen;alias&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+namespace E = <<B,B>>::S::E;
+----
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
