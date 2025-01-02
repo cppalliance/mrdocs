@@ -668,6 +668,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/') && runner.os == 'Linux'
         id: download-prev-demos
         uses: actions/download-artifact@v4
+        continue-on-error: true
         with:
           name: demos-develop-${{ runner.os }}
           path: demos-previous
@@ -682,6 +683,13 @@ jobs:
           LOCAL_DEMOS_DIR="./demos/"
           PREV_DEMOS_DIR="./demos-previous/"
           DIFF_DIR="./demos-diff/"
+          
+          # Check if PREV_DEMOS_DIR exists and is not empty
+          if [[ ! -d $PREV_DEMOS_DIR || -z $(ls -A $PREV_DEMOS_DIR) ]]; then
+              echo "No previous demos found."
+              echo "diff=false" >> $GITHUB_OUTPUT
+              exit 0
+          fi
 
           # Create directories if they don't exist
           mkdir -p $PREV_DEMOS_DIR $DIFF_DIR
