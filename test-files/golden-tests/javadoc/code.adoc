@@ -11,15 +11,15 @@
 |===
 | Name | Description 
 
-| <<f1,`f1`>> 
+| <<f,`f`>> 
 | brief
 
 
 
 |===
 
-[#f1]
-== f1
+[#f]
+== f
 
 
 brief
@@ -29,19 +29,31 @@ brief
 === Synopsis
 
 
-Declared in `&lt;para&hyphen;2&period;cpp&gt;`
+Declared in `&lt;code&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f1();
+f();
 ----
 
 === Description
 
 
-a b  c   d
+This description contains code&colon;
 
+[,cpp]
+----
+// code comment
+// code comment
+template < class T >
+auto
+algorithm( T&& v = {} ) ->
+    typename T::result_type
+{
+    return v.result();
+}
+----
 
 
 

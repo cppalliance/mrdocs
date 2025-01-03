@@ -45,8 +45,10 @@ rtrim(std::string_view s) noexcept
 {
     auto it = s.end() - 1;
     while(it > s.begin() && std::isspace(*it))
+    {
         --it;
-    return s.substr(0, it - s.begin());
+    }
+    return s.substr(0, it - s.begin() + 1);
 }
 
 /** Return the substring without leading and trailing horizontal whitespace.

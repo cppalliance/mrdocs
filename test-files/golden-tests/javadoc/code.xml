@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
+    <file path="code.cpp" line="18"/>
+    <doc>
+      <para>
+        <text>brief</text>
+      </para>
+      <para>
+        <text>This description contains code:</text>
+      </para>
+      <code>
+        <text>    // code comment</text>
+        <text>    // code comment</text>
+        <text>    template &lt; class T &gt;</text>
+        <text>    auto</text>
+        <text>    algorithm( T&amp;&amp; v = {} ) -&gt;</text>
+        <text>        typename T::result_type</text>
+        <text>    {</text>
+        <text>        return v.result();</text>
+        <text>    }</text>
+      </code>
+    </doc>
+  </function>
+</namespace>
+</mrdocs>

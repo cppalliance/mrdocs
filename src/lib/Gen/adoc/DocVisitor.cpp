@@ -18,6 +18,7 @@
 #include <llvm/Support/raw_ostream.h>
 #include <mrdocs/Support/RangeFor.hpp>
 #include <mrdocs/Support/String.hpp>
+#include <ranges>
 
 namespace clang::mrdocs::adoc {
 
@@ -65,7 +66,7 @@ operator()(
         doc::visit(*it.value,
             [&]<class T>(T const& text)
             {
-                if constexpr(std::is_same_v<T, doc::Text>)
+                if constexpr(std::derived_from<T, doc::Text>)
                 {
                     if(! text.string.empty())
                     {
@@ -89,7 +90,7 @@ DocVisitor::
 operator()(
     doc::Heading const& I) const
 {
-    fmt::format_to(ins_, "\n=== {}\n", AdocEscape(I.string));
+    fmt::format_to(ins_, "\n=== {}\n\n", AdocEscape(I.string));
 }
 
 // Also handles doc::Brief
@@ -103,15 +104,23 @@ operator()(
     {
         return;
     }
-    bool non_empty = write(*children.front(), *this);
-    for(auto const& child : children.subspan(1))
+
+    std::size_t i = 0;
+    for (auto it = children.begin(); it != children.end(); ++it)
     {
-        if (non_empty)
+        auto& child = *it;
+        if (i == 0)
         {
-            dest_.push_back('\n');
+            child->string = ltrim(child->string);
         }
-        non_empty = write(*child, *this);
+        if (i == children.size() - 1)
+        {
+            child->string = rtrim(child->string);
+        }
+        write(*child, *this);
+        i = i + 1;
     }
+
     dest_.push_back('\n');
     dest_.push_back('\n');
 }
@@ -188,37 +197,32 @@ void
 DocVisitor::
 operator()(doc::Text const& I) const
 {
-    // Asciidoc text must not have leading
-    // else they can be rendered up as code.
-    std::string_view s = trim(I.string);
-    // Render empty lines as paragraph delimiters.
-    if (s.empty())
+    if (I.string.empty())
     {
-        s = "\n";
+        dest_.append("\n\n");
+    } else
+    {
+        dest_.append(AdocEscape(I.string));
     }
-    dest_.append(AdocEscape(s));
 }
 
 void
 DocVisitor::
 operator()(doc::Styled const& I) const
 {
-    // VFALCO We need to apply Asciidoc escaping
-    // depending on the contents of the string.
-    std::string_view s = trim(I.string);
     switch(I.style)
     {
     case doc::Style::none:
-        dest_.append(s);
+        dest_.append(AdocEscape(I.string));
         break;
     case doc::Style::bold:
-        fmt::format_to(std::back_inserter(dest_), "*{}*", s);
+        fmt::format_to(std::back_inserter(dest_), "*{}*", AdocEscape(I.string));
         break;
     case doc::Style::mono:
-        fmt::format_to(std::back_inserter(dest_), "`{}`", s);
+        fmt::format_to(std::back_inserter(dest_), "`{}`", AdocEscape(I.string));
         break;
     case doc::Style::italic:
-        fmt::format_to(std::back_inserter(dest_), "_{}_", s);
+        fmt::format_to(std::back_inserter(dest_), "_{}_", AdocEscape(I.string));
         break;
     default:
         MRDOCS_UNREACHABLE();

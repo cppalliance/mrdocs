@@ -18,7 +18,8 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="#f"><code>f</code></a> </td><td>
+<td><a href="#f"><code>f</code></a> </td><td><p><span>brief</span></p>
+
 </td></tr>
 </tbody>
 </table>
@@ -26,11 +27,16 @@
 <div>
 <div>
 <h2 id="f">f</h2>
+<div>
+<p><span>brief</span></p>
+
+
+</div>
 </div>
 <div>
 <h3>Synopsis</h3>
 <div>
-Declared in <code>&lt;pre-post.cpp&gt;</code></div>
+Declared in <code>&lt;code.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 void
@@ -39,20 +45,21 @@ f();
 </pre>
 </div>
 <div>
-<h3>Preconditions</h3>
-<ul>
-<li><p><span>first precondition</span></p>
-</li>
-<li><p><span>second precondition</span></p>
-</li>
-</ul>
-</div>
-<div>
-<h3>Postconditions</h3>
-<ul>
-<li><p><span>first postcondition</span></p>
-</li>
-</ul>
+<h3>Description</h3>
+<p><span>This description contains code:</span></p>
+<code>
+// code comment
+// code comment
+template < class T >
+auto
+algorithm( T&& v = {} ) ->
+    typename T::result_type
+{
+    return v.result();
+}
+</code>
+
+
 </div>
 </div>
 

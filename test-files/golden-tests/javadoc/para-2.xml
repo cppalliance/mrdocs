@@ -9,10 +9,8 @@
         <text>brief</text>
       </para>
       <para>
-        <text>a</text>
-        <text> b</text>
-        <text>  c</text>
-        <text>   d</text>
+        <text>a b</text>
+        <text>  c   d</text>
       </para>
     </doc>
   </function>

@@ -260,9 +260,7 @@ struct see&lowbar;below { /* see-below */ };
 === Description
 
 
-A symbol that passes the filters and the see&hyphen;below filter&period;
-The symbol should have a page as usual but, because it&apos;s a scope
-and not a namespace, the members should not be listed on that page&period;
+A symbol that passes the filters and the see&hyphen;below filter&period; The symbol should have a page as usual but, because it&apos;s a scope and not a namespace, the members should not be listed on that page&period;
 
 
 
@@ -288,8 +286,7 @@ get&lowbar;dependency();
 === Description
 
 
-When used in a function, only the symbol name should be shown&period;
-No links should be generated for this symbol&period;
+When used in a function, only the symbol name should be shown&period; No links should be generated for this symbol&period;
 
 
 
@@ -315,11 +312,9 @@ get&lowbar;implementation&lowbar;defined();
 === Description
 
 
-When used in a function, the implementation&hyphen;defined
-comment should replace the real type&period;
+When used in a function, the implementation&hyphen;defined comment should replace the real type&period;
 
-It&apos;s the responsibility of the function documentation
-to explain the implementation&hyphen;defined symbol&period;
+It&apos;s the responsibility of the function documentation to explain the implementation&hyphen;defined symbol&period;
 
 
 
@@ -345,8 +340,7 @@ get&lowbar;regular();
 === Description
 
 
-When used in a function, the symbol should be shown as usual
-with a link to the page&period;
+When used in a function, the symbol should be shown as usual with a link to the page&period;
 
 
 
@@ -372,11 +366,7 @@ get&lowbar;see&lowbar;below();
 === Description
 
 
-When used in a function, the symbol name should be shown as usual&period;
-The page for this symbol is what should be different because
-the synopsis should say &quot;See below&quot; and the members are not
-listed unless it&apos;s a namespace or the symbol has been explicitly
-used as a dependency elsewhere&period;
+When used in a function, the symbol name should be shown as usual&period; The page for this symbol is what should be different because the synopsis should say &quot;See below&quot; and the members are not listed unless it&apos;s a namespace or the symbol has been explicitly used as a dependency elsewhere&period;
 
 
 
@@ -426,11 +416,9 @@ A see&hyphen;below namespace
 === Description
 
 
-All member symbols should become see&hyphen;below&period; All members are
-traversed as see&hyphen;below&period;
+All member symbols should become see&hyphen;below&period; All members are traversed as see&hyphen;below&period;
 
-The documentation page for these symbols should include
-the see&hyphen;below comment&period;
+The documentation page for these symbols should include the see&hyphen;below comment&period;
 
 
 
@@ -458,8 +446,7 @@ struct regular { /* see-below */ };
 === Description
 
 
-The symbol becomes see&hyphen;below because the whole namespace
-is see&hyphen;below&period;
+The symbol becomes see&hyphen;below because the whole namespace is see&hyphen;below&period;
 
 
 
@@ -487,8 +474,7 @@ struct see&lowbar;below { /* see-below */ };
 === Description
 
 
-The symbol becomes see&hyphen;below because the whole namespace
-is see&hyphen;below and because it&apos;s explicitly marked as see&hyphen;below&period;
+The symbol becomes see&hyphen;below because the whole namespace is see&hyphen;below and because it&apos;s explicitly marked as see&hyphen;below&period;
 
 
 
@@ -514,12 +500,9 @@ get&lowbar;dependency();
 === Description
 
 
-The symbol should be extracted as a dependency because the
-exclude filter has precedence over the see&hyphen;below filter&period;
-Only included symbols can be promoted to see&hyphen;below&period;
+The symbol should be extracted as a dependency because the exclude filter has precedence over the see&hyphen;below filter&period; Only included symbols can be promoted to see&hyphen;below&period;
 
-It&apos;s the responsibility of the function documentation
-to explain the dependency&period;
+It&apos;s the responsibility of the function documentation to explain the dependency&period;
 
 
 
@@ -545,11 +528,9 @@ get&lowbar;implementation&lowbar;defined();
 === Description
 
 
-When used in a function, the implementation&hyphen;defined
-comment should replace the real type&period;
+When used in a function, the implementation&hyphen;defined comment should replace the real type&period;
 
-It&apos;s the responsibility of the function documentation
-to explain the implementation&hyphen;defined symbol&period;
+It&apos;s the responsibility of the function documentation to explain the implementation&hyphen;defined symbol&period;
 
 
 
@@ -671,8 +652,7 @@ struct see&lowbar;below { /* see-below */ };
 === Description
 
 
-This symbol should have a page as usual but, because it&apos;s a scope
-and not a namespace, the members should not be listed on that page&period;
+This symbol should have a page as usual but, because it&apos;s a scope and not a namespace, the members should not be listed on that page&period;
 
 The synopsis should say &quot;See below&quot;&period;
 
@@ -700,8 +680,7 @@ get&lowbar;dependency();
 === Description
 
 
-The symbol should be extracted as a dependency but its
-members should not be traversed&period;
+The symbol should be extracted as a dependency but its members should not be traversed&period;
 
 
 
@@ -727,11 +706,9 @@ get&lowbar;implementation&lowbar;defined();
 === Description
 
 
-When used in a function, the implementation&hyphen;defined
-comment should replace the real type&period;
+When used in a function, the implementation&hyphen;defined comment should replace the real type&period;
 
-It&apos;s the responsibility of the function documentation
-to explain the implementation&hyphen;defined symbol&period;
+It&apos;s the responsibility of the function documentation to explain the implementation&hyphen;defined symbol&period;
 
 
 
@@ -757,8 +734,7 @@ get&lowbar;regular();
 === Description
 
 
-When used in a function, the symbol should be shown as usual
-with a link to the page&period;
+When used in a function, the symbol should be shown as usual with a link to the page&period;
 
 
 
@@ -784,11 +760,7 @@ get&lowbar;see&lowbar;below();
 === Description
 
 
-When used in a function, the symbol name should be shown as usual&period;
-The page for this symbol is what should be different because
-the synopsis should say &quot;See below&quot; and the members are not
-listed unless it&apos;s a namespace or the symbol has been explicitly
-used as a dependency elsewhere&period;
+When used in a function, the symbol name should be shown as usual&period; The page for this symbol is what should be different because the synopsis should say &quot;See below&quot; and the members are not listed unless it&apos;s a namespace or the symbol has been explicitly used as a dependency elsewhere&period;
 
 
 
@@ -849,8 +821,7 @@ namespace see&lowbar;below&lowbar;ns&lowbar;alias = <<see_below_ns,see&lowbar;be
 === Description
 
 
-The alias should be linked as usual and, because it&apos;s a namespace,
-the members should be listed on the page&period;
+The alias should be linked as usual and, because it&apos;s a namespace, the members should be listed on the page&period;
 
 
 

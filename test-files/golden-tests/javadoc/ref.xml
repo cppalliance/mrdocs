@@ -16,6 +16,7 @@
         <para>
           <text>See </text>
           <reference id="e1UQQek5v3C9OClW5cGf57XvwQo=">::f0</reference>
+          <text>    </text>
         </para>
       </doc>
     </function>
@@ -35,6 +36,7 @@
           <para>
             <text>See </text>
             <reference id="DXEL7gSsX/52beNneRRW463qzLQ=">::A::f1</reference>
+            <text>    </text>
           </para>
         </doc>
         <function name="f2" id="UrNEyy62P/QaY1BkJmO7NDGZSj4=">
@@ -73,6 +75,7 @@
           <para>
             <text>See </text>
             <reference id="8ScA2YfwRe5KHsj/rEbtJeXWYz8=">C::f4</reference>
+            <text>        </text>
           </para>
         </doc>
       </struct>

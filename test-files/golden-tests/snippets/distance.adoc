@@ -44,8 +44,7 @@ distance(
 === Description
 
 
-This function returns the distance between two points
-according to the Euclidean distance formula&period;
+This function returns the distance between two points    according to the Euclidean distance formula&period;
 
 
 

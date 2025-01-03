@@ -12,6 +12,7 @@
 
 #include "DocVisitor.hpp"
 #include "lib/Support/Radix.hpp"
+#include "mrdocs/Support/Handlebars.hpp"
 #include <iterator>
 #include <fmt/format.h>
 #include <llvm/Support/raw_ostream.h>
@@ -99,25 +100,38 @@ DocVisitor::
 operator()(
     doc::Paragraph const& I) const
 {
-    dest_.append("<p>");
-    for(auto const& it : RangeFor(I.children))
+    if (I.children.empty())
     {
-        auto const n = dest_.size();
-        doc::visit(*it.value, *this);
-        // detect empty text blocks
-        if(! it.last && dest_.size() > n)
+        return;
+    }
+
+    dest_.append("<p>");
+    std::size_t i = 0;
+    for (auto it = I.children.begin(); it != I.children.end(); ++it)
+    {
+        auto& child = *it;
+        if (i == 0)
         {
-            // wrap past 80 cols
-            if (dest_.size() < 80)
+            child->string = ltrim(child->string);
+        }
+        else if (auto prevIt = std::prev(it);
+            !(*prevIt)->string.empty() && !child->string.empty())
+        {
+            char const pc = (*(prevIt))->string.back();
+            char const cc = child->string.front();
+            if (!std::isspace(pc) && !std::isspace(cc))
             {
                 dest_.push_back(' ');
-            } else
-            {
-                dest_.push_back('\n');
             }
         }
+        if (i == I.children.size() - 1)
+        {
+            child->string = rtrim(child->string);
+        }
+        write(*child, *this);
+        i = i + 1;
     }
-    dest_.append("</p>\n\n");
+    dest_.append("</p>\n");
 }
 
 void
@@ -202,28 +216,26 @@ void
 DocVisitor::
 operator()(doc::Text const& I) const
 {
-    std::string_view s = trim(I.string);
-    fmt::format_to(std::back_inserter(dest_), "<span>{}</span>", s);
+    fmt::format_to(std::back_inserter(dest_), "<span>{}</span>", HTMLEscape(I.string));
 }
 
 void
 DocVisitor::
 operator()(doc::Styled const& I) const
 {
-    std::string_view s = trim(I.string);
     switch(I.style)
     {
     case doc::Style::none:
-        dest_.append(s);
+        dest_.append(I.string);
         break;
     case doc::Style::bold:
-        fmt::format_to(std::back_inserter(dest_), "<b>{}</b>", s);
+        fmt::format_to(std::back_inserter(dest_), "<b>{}</b>", HTMLEscape(I.string));
         break;
     case doc::Style::mono:
-        fmt::format_to(std::back_inserter(dest_), "<code>{}</code>", s);
+        fmt::format_to(std::back_inserter(dest_), "<code>{}</code>", HTMLEscape(I.string));
         break;
     case doc::Style::italic:
-        fmt::format_to(std::back_inserter(dest_), "<i>{}</i>", s);
+        fmt::format_to(std::back_inserter(dest_), "<i>{}</i>", HTMLEscape(I.string));
         break;
     default:
         MRDOCS_UNREACHABLE();

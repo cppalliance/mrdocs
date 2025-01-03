@@ -8,8 +8,7 @@
       <para>
         <text>brief </text>
         <bold>bold</bold>
-        <text> it</text>
-        <text>continues to the line.</text>
+        <text> itcontinues to the line.</text>
       </para>
     </doc>
   </function>
@@ -20,10 +19,9 @@
         <text>brief</text>
       </para>
       <para>
-        <text>many lined</text>
+        <text>many lined    </text>
         <bold>bold</bold>
-        <text>    what will</text>
-        <text>    happen?</text>
+        <text>    what will    happen?</text>
       </para>
     </doc>
   </function>
