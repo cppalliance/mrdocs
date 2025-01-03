@@ -8,16 +8,12 @@
       <brief>
         <text>A function</text>
       </brief>
-      <head>A heading.</head>
-      <para>
-        <text> Some text.</text>
-      </para>
+      <head>A heading. Some text.</head>
       <para>
         <text>More text...</text>
       </para>
       <para>
-        <text>Another paragraph</text>
-        <text> Next line</text>
+        <text>Another paragraph Next line</text>
       </para>
       <head>Exception safety</head>
       <para>

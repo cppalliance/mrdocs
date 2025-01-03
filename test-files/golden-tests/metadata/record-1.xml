@@ -65,7 +65,7 @@
           <text>brief-g3</text>
         </para>
         <returns>
-          <text>the separator</text>
+          <text>the separator        </text>
         </returns>
         <param name="x">
           <text>any old number</text>

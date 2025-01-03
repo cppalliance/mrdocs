@@ -37,16 +37,15 @@ my&lowbar;function();
 
 
 
-=== A heading&period;
-Some text&period;
+=== A heading&period; Some text&period;
 
 More text&period;&period;&period;
 
-Another paragraph
-Next line
+Another paragraph Next line
 
 
 === Exception safety
+
 No&hyphen;throw guarantee&period;
 
 

@@ -31,14 +31,12 @@
 | 
 
 | <<f5,`f5`>> 
-| See
-xref:#A-f1[A&colon;&colon;f1]
+| See xref:#A-f1[A&colon;&colon;f1]
 
 
 
 | <<f6,`f6`>> 
-| See
-xref:#F-operator_bitnot[F&colon;&colon;operator&tilde;]
+| See xref:#F-operator_bitnot[F&colon;&colon;operator&tilde;]
 
 
 
@@ -55,8 +53,7 @@ xref:#F-operator_bitnot[F&colon;&colon;operator&tilde;]
 | Name | Description 
 
 | <<A-B,`B`>> 
-| See
-xref:#A-f1[f1]
+| See xref:#A-f1[f1]
 
 
 
@@ -74,8 +71,7 @@ xref:#A-f1[f1]
 | Name | Description 
 
 | <<A-f1,`f1`>> 
-| See
-xref:#f0[f0]
+| See xref:#f0[f0]
 
 
 
@@ -85,8 +81,7 @@ xref:#f0[f0]
 == <<A,A>>::B
 
 
-See
-xref:#A-f1[f1]
+See xref:#A-f1[f1]
 
 
 
@@ -115,11 +110,9 @@ struct B;
 === Description
 
 
-See
-xref:#A-f1[A&colon;&colon;f1]
+See xref:#A-f1[A&colon;&colon;f1]
 
-See
-xref:#A-f1[&colon;&colon;A&colon;&colon;f1]
+See xref:#A-f1[&colon;&colon;A&colon;&colon;f1] 
 
 
 
@@ -216,8 +209,7 @@ struct D
 | Name | Description 
 
 | <<A-D-E,`E`>> 
-| See
-xref:#A-C-f3[f3]
+| See xref:#A-C-f3[f3]
 
 
 
@@ -238,8 +230,7 @@ xref:#A-C-f3[f3]
 == <<A,A>>::<<A-D,D>>::E
 
 
-See
-xref:#A-C-f3[f3]
+See xref:#A-C-f3[f3]
 
 
 
@@ -259,11 +250,9 @@ struct E;
 === Description
 
 
-See
-xref:#A-D-f4[f4]
+See xref:#A-D-f4[f4]
 
-See
-xref:#A-C-f4[C&colon;&colon;f4]
+See xref:#A-C-f4[C&colon;&colon;f4] 
 
 
 
@@ -286,8 +275,7 @@ f4();
 == <<A,A>>::f1
 
 
-See
-xref:#f0[f0]
+See xref:#f0[f0]
 
 
 
@@ -305,8 +293,7 @@ f1();
 === Description
 
 
-See
-xref:#f0[&colon;&colon;f0]
+See xref:#f0[&colon;&colon;f0] 
 
 
 
@@ -977,8 +964,7 @@ f0();
 == f5
 
 
-See
-xref:#A-f1[A&colon;&colon;f1]
+See xref:#A-f1[A&colon;&colon;f1]
 
 
 
@@ -996,8 +982,7 @@ f5();
 === Description
 
 
-See
-xref:#A-f1[&colon;&colon;A&colon;&colon;f1]
+See xref:#A-f1[&colon;&colon;A&colon;&colon;f1]
 
 
 
@@ -1005,8 +990,7 @@ xref:#A-f1[&colon;&colon;A&colon;&colon;f1]
 == f6
 
 
-See
-xref:#F-operator_bitnot[F&colon;&colon;operator&tilde;]
+See xref:#F-operator_bitnot[F&colon;&colon;operator&tilde;]
 
 
 
@@ -1024,119 +1008,81 @@ f6();
 === Description
 
 
-See
-xref:#F-operator_comma[F&colon;&colon;operator,]
+See xref:#F-operator_comma[F&colon;&colon;operator,]
 
-See
-xref:#F-operator_call[F&colon;&colon;operator()]
+See xref:#F-operator_call[F&colon;&colon;operator()]
 
-See
-xref:#F-operator_subs[F&colon;&colon;operator&lsqb;&rsqb;]
+See xref:#F-operator_subs[F&colon;&colon;operator&lsqb;&rsqb;]
 
-See
-xref:#F-operator_plus[F&colon;&colon;operator&plus;]
+See xref:#F-operator_plus[F&colon;&colon;operator&plus;]
 
-See
-xref:#F-operator_inc[F&colon;&colon;operator&plus;&plus;]
+See xref:#F-operator_inc[F&colon;&colon;operator&plus;&plus;]
 
-See
-xref:#F-operator_plus_eq[F&colon;&colon;operator&plus;&equals;]
+See xref:#F-operator_plus_eq[F&colon;&colon;operator&plus;&equals;]
 
-See
-xref:#F-operator_bitand[F&colon;&colon;operator&amp;]
+See xref:#F-operator_bitand[F&colon;&colon;operator&amp;]
 
-See
-xref:#F-operator_and[F&colon;&colon;operator&amp;&amp;]
+See xref:#F-operator_and[F&colon;&colon;operator&amp;&amp;]
 
-See
-xref:#F-operator_and_eq[F&colon;&colon;operator&amp;&equals;]
+See xref:#F-operator_and_eq[F&colon;&colon;operator&amp;&equals;]
 
-See
-xref:#F-operator_bitor[F&colon;&colon;operator&verbar;]
+See xref:#F-operator_bitor[F&colon;&colon;operator&verbar;]
 
-See
-xref:#F-operator_or[F&colon;&colon;operator&verbar;&verbar;]
+See xref:#F-operator_or[F&colon;&colon;operator&verbar;&verbar;]
 
-See
-xref:#F-operator_or_eq[F&colon;&colon;operator&verbar;&equals;]
+See xref:#F-operator_or_eq[F&colon;&colon;operator&verbar;&equals;]
 
-See
-xref:#F-operator_minus[F&colon;&colon;operator&hyphen;]
+See xref:#F-operator_minus[F&colon;&colon;operator&hyphen;]
 
-See
-xref:#F-operator_dec[F&colon;&colon;operator&hyphen;&hyphen;]
+See xref:#F-operator_dec[F&colon;&colon;operator&hyphen;&hyphen;]
 
-See
-xref:#F-operator_minus_eq[F&colon;&colon;operator&hyphen;&equals;]
+See xref:#F-operator_minus_eq[F&colon;&colon;operator&hyphen;&equals;]
 
-See
-xref:#F-operator_ptr[F&colon;&colon;operator&hyphen;&gt;]
+See xref:#F-operator_ptr[F&colon;&colon;operator&hyphen;&gt;]
 
-See
-xref:#F-operator_ptrmem[F&colon;&colon;operator&hyphen;&gt;&ast;]
+See xref:#F-operator_ptrmem[F&colon;&colon;operator&hyphen;&gt;&ast;]
 
-See
-xref:#F-operator_lt[F&colon;&colon;operator&lt;]
+See xref:#F-operator_lt[F&colon;&colon;operator&lt;]
 
-See
-xref:#F-operator_lshift[F&colon;&colon;operator&lt;&lt;]
+See xref:#F-operator_lshift[F&colon;&colon;operator&lt;&lt;]
 
-See
-xref:#F-operator_lshift_eq[F&colon;&colon;operator&lt;&lt;&equals;]
+See xref:#F-operator_lshift_eq[F&colon;&colon;operator&lt;&lt;&equals;]
 
-See
-xref:#F-operator_le[F&colon;&colon;operator&lt;&equals;]
+See xref:#F-operator_le[F&colon;&colon;operator&lt;&equals;]
 
-See
-xref:#F-operator_3way[F&colon;&colon;operator&lt;&equals;&gt;]
+See xref:#F-operator_3way[F&colon;&colon;operator&lt;&equals;&gt;]
 
-See
-xref:#F-operator_gt[F&colon;&colon;operator&gt;]
+See xref:#F-operator_gt[F&colon;&colon;operator&gt;]
 
-See
-xref:#F-operator_rshift[F&colon;&colon;operator&gt;&gt;]
+See xref:#F-operator_rshift[F&colon;&colon;operator&gt;&gt;]
 
-See
-xref:#F-operator_rshift_eq[F&colon;&colon;operator&gt;&gt;&equals;]
+See xref:#F-operator_rshift_eq[F&colon;&colon;operator&gt;&gt;&equals;]
 
-See
-xref:#F-operator_ge[F&colon;&colon;operator&gt;&equals;]
+See xref:#F-operator_ge[F&colon;&colon;operator&gt;&equals;]
 
-See
-xref:#F-operator_star[F&colon;&colon;operator&ast;]
+See xref:#F-operator_star[F&colon;&colon;operator&ast;]
 
-See
-xref:#F-operator_star_eq[F&colon;&colon;operator&ast;&equals;]
+See xref:#F-operator_star_eq[F&colon;&colon;operator&ast;&equals;]
 
-See
-xref:#F-operator_mod[F&colon;&colon;operator%]
+See xref:#F-operator_mod[F&colon;&colon;operator%]
 
-See
-xref:#F-operator_mod_eq[F&colon;&colon;operator%&equals;]
+See xref:#F-operator_mod_eq[F&colon;&colon;operator%&equals;]
 
-See
-xref:#F-operator_slash[F&colon;&colon;operator&sol;]
+See xref:#F-operator_slash[F&colon;&colon;operator&sol;]
 
-See
-xref:#F-operator_slash_eq[F&colon;&colon;operator&sol;&equals;]
+See xref:#F-operator_slash_eq[F&colon;&colon;operator&sol;&equals;]
 
-See
-xref:#F-operator_xor[F&colon;&colon;operator&circ;]
+See xref:#F-operator_xor[F&colon;&colon;operator&circ;]
 
-See
-xref:#F-operator_xor_eq[F&colon;&colon;operator&circ;&equals;]
+See xref:#F-operator_xor_eq[F&colon;&colon;operator&circ;&equals;]
 
-See
-xref:#F-operator_assign[F&colon;&colon;operator&equals;]
+See xref:#F-operator_assign[F&colon;&colon;operator&equals;]
 
-See
-xref:#F-operator_eq[F&colon;&colon;operator&equals;&equals;]
+See xref:#F-operator_eq[F&colon;&colon;operator&equals;&equals;]
 
-See
-xref:#F-operator_not[F&colon;&colon;operator!]
+See xref:#F-operator_not[F&colon;&colon;operator!]
 
-See
-xref:#F-operator_not_eq[F&colon;&colon;operator!&equals;]
+See xref:#F-operator_not_eq[F&colon;&colon;operator!&equals;]
 
 
 

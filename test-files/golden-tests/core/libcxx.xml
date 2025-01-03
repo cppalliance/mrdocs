@@ -19,17 +19,16 @@
           <text>Computes the square root of an integral value.</text>
         </para>
         <para>
-          <text>This function calculates the square root of a</text>
-          <text>    given integral value using bit manipulation.</text>
+          <text>This function calculates the square root of a    given integral value using bit manipulation.</text>
         </para>
         <throws>
           <text>the input value is negative.</text>
         </throws>
         <tparam name="T">
-          <text>The type of the input value. Must be an integral type.</text>
+          <text>The type of the input value. Must be an integral type.    </text>
         </tparam>
         <param name="value">
-          <text>The integral value to compute the square root of.</text>
+          <text>The integral value to compute the square root of.    </text>
         </param>
         <returns>
           <text>The square root of the input value.</text>

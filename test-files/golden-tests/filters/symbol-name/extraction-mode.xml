@@ -45,8 +45,7 @@
           <text>A function to get a regular symbol</text>
         </para>
         <para>
-          <text>When used in a function, the symbol should be shown as usual</text>
-          <text> with a link to the page.</text>
+          <text>When used in a function, the symbol should be shown as usual with a link to the page.</text>
         </para>
       </doc>
     </function>
@@ -57,8 +56,7 @@
           <text>A symbol that passes the see-below filter</text>
         </para>
         <para>
-          <text>A symbol that passes the filters and the see-below filter.</text>
-          <text> The symbol should have a page as usual but, because it&apos;s a scope</text>
+          <text>A symbol that passes the filters and the see-below filter. The symbol should have a page as usual but, because it&apos;s a scope</text>
           <text> and not a namespace, the members should not be listed on that page.</text>
         </para>
       </doc>
@@ -73,10 +71,8 @@
           <text>A function to get a see-below symbol</text>
         </para>
         <para>
-          <text>When used in a function, the symbol name should be shown as usual.</text>
-          <text> The page for this symbol is what should be different because</text>
-          <text> the synopsis should say &quot;See below&quot; and the members are not</text>
-          <text> listed unless it&apos;s a namespace or the symbol has been explicitly</text>
+          <text>When used in a function, the symbol name should be shown as usual. The page for this symbol is what should be different because</text>
+          <text> the synopsis should say &quot;See below&quot; and the members are not listed unless it&apos;s a namespace or the symbol has been explicitly</text>
           <text> used as a dependency elsewhere.</text>
         </para>
       </doc>
@@ -88,10 +84,8 @@
           <text>A symbol that passes the implementation-defined filter</text>
         </para>
         <para>
-          <text>A symbol that passes the filters and the implementation-defined filter</text>
-          <text> The symbol is implementation defined and should not have a page.</text>
-          <text> Members of an implementation-defined scope should not be traversed.</text>
-          <text> If they are traversed for some other reason, they should also become</text>
+          <text>A symbol that passes the filters and the implementation-defined filter The symbol is implementation defined and should not have a page.</text>
+          <text> Members of an implementation-defined scope should not be traversed. If they are traversed for some other reason, they should also become</text>
           <text> implementation-defined.</text>
         </para>
       </doc>
@@ -106,12 +100,10 @@
           <text>A function to get an implementation-defined symbol</text>
         </para>
         <para>
-          <text>When used in a function, the implementation-defined</text>
-          <text> comment should replace the real type.</text>
+          <text>When used in a function, the implementation-defined comment should replace the real type.</text>
         </para>
         <para>
-          <text>It&apos;s the responsibility of the function documentation</text>
-          <text> to explain the implementation-defined symbol.</text>
+          <text>It&apos;s the responsibility of the function documentation to explain the implementation-defined symbol.</text>
         </para>
       </doc>
     </function>
@@ -122,8 +114,7 @@
           <text>An excluded symbol used as a dependency by a regular symbol</text>
         </para>
         <para>
-          <text>A symbol excluded by filters but is used as a dependency</text>
-          <text> The symbol should be extracted as a dependency but its</text>
+          <text>A symbol excluded by filters but is used as a dependency The symbol should be extracted as a dependency but its</text>
           <text> members should not be traversed.</text>
         </para>
       </doc>
@@ -138,8 +129,7 @@
           <text>A function to get an excluded symbol</text>
         </para>
         <para>
-          <text>When used in a function, only the symbol name should be shown.</text>
-          <text> No links should be generated for this symbol.</text>
+          <text>When used in a function, only the symbol name should be shown. No links should be generated for this symbol.</text>
         </para>
       </doc>
     </function>
@@ -150,12 +140,10 @@
         <text>A see-below namespace</text>
       </para>
       <para>
-        <text>All member symbols should become see-below. All members are</text>
-        <text> traversed as see-below.</text>
+        <text>All member symbols should become see-below. All members are traversed as see-below.</text>
       </para>
       <para>
-        <text>The documentation page for these symbols should include</text>
-        <text> the see-below comment.</text>
+        <text>The documentation page for these symbols should include the see-below comment.</text>
       </para>
     </doc>
     <struct name="regular" id="oCi9GhACSlMlNqMEp/8CzrcvYUc=">
@@ -165,8 +153,7 @@
           <text>Regular symbol in a see-below namespace</text>
         </para>
         <para>
-          <text>The symbol becomes see-below because the whole namespace</text>
-          <text> is see-below.</text>
+          <text>The symbol becomes see-below because the whole namespace is see-below.</text>
         </para>
       </doc>
     </struct>
@@ -177,8 +164,7 @@
           <text>See-below symbol in a see-below namespace</text>
         </para>
         <para>
-          <text>The symbol becomes see-below because the whole namespace</text>
-          <text> is see-below and because it&apos;s explicitly marked as see-below.</text>
+          <text>The symbol becomes see-below because the whole namespace is see-below and because it&apos;s explicitly marked as see-below.</text>
         </para>
       </doc>
     </struct>
@@ -189,13 +175,11 @@
           <text>Implementation-defined symbol in a see-below namespace</text>
         </para>
         <para>
-          <text>The symbol does not become see-below because the</text>
-          <text> the implentation-defined filter has precedence over the</text>
+          <text>The symbol does not become see-below because the the implentation-defined filter has precedence over the</text>
           <text> see-below filter.</text>
         </para>
         <para>
-          <text>Functions using this symbol should explain the implementation-defined</text>
-          <text> nature of the symbol.</text>
+          <text>Functions using this symbol should explain the implementation-defined nature of the symbol.</text>
         </para>
       </doc>
     </struct>
@@ -209,12 +193,10 @@
           <text>A function to get an implementation-defined symbol in a see-below namespace</text>
         </para>
         <para>
-          <text>When used in a function, the implementation-defined</text>
-          <text> comment should replace the real type.</text>
+          <text>When used in a function, the implementation-defined comment should replace the real type.</text>
         </para>
         <para>
-          <text>It&apos;s the responsibility of the function documentation</text>
-          <text> to explain the implementation-defined symbol.</text>
+          <text>It&apos;s the responsibility of the function documentation to explain the implementation-defined symbol.</text>
         </para>
       </doc>
     </function>
@@ -225,13 +207,11 @@
           <text>A dependency symbol in a see-below namespace</text>
         </para>
         <para>
-          <text>The symbol should be extracted as a dependency because the</text>
-          <text> exclude filter has precedence over the see-below filter.</text>
+          <text>The symbol should be extracted as a dependency because the exclude filter has precedence over the see-below filter.</text>
           <text> Only included symbols can be promoted to see-below.</text>
         </para>
         <para>
-          <text>This will not have a page and functions using this symbol</text>
-          <text> should explain the dependency.</text>
+          <text>This will not have a page and functions using this symbol should explain the dependency.</text>
         </para>
       </doc>
     </struct>
@@ -245,13 +225,11 @@
           <text>A function to get a dependency symbol in a see-below namespace</text>
         </para>
         <para>
-          <text>The symbol should be extracted as a dependency because the</text>
-          <text> exclude filter has precedence over the see-below filter.</text>
+          <text>The symbol should be extracted as a dependency because the exclude filter has precedence over the see-below filter.</text>
           <text> Only included symbols can be promoted to see-below.</text>
         </para>
         <para>
-          <text>It&apos;s the responsibility of the function documentation</text>
-          <text> to explain the dependency.</text>
+          <text>It&apos;s the responsibility of the function documentation to explain the dependency.</text>
         </para>
       </doc>
     </function>
@@ -263,8 +241,7 @@
         <text>Namespace alias to form a dependency on the see-below namespace</text>
       </para>
       <para>
-        <text>The alias should be linked as usual and, because it&apos;s a namespace,</text>
-        <text> the members should be listed on the page.</text>
+        <text>The alias should be linked as usual and, because it&apos;s a namespace, the members should be listed on the page.</text>
       </para>
     </doc>
     <aliased name="see_below_ns" id="exW9PGqoF7V7OCpvgUIZOhj7WwI="/>
@@ -275,8 +252,7 @@
         <text>An implementation-defined namespace</text>
       </para>
       <para>
-        <text>Members are not traversed and, if traversed for some</text>
-        <text> other reason, they also become implementation-defined.</text>
+        <text>Members are not traversed and, if traversed for some other reason, they also become implementation-defined.</text>
       </para>
     </doc>
   </namespace>
@@ -337,8 +313,7 @@
         <text>A function to get a regular symbol in the global namespace</text>
       </para>
       <para>
-        <text>When used in a function, the symbol should be shown as usual</text>
-        <text> with a link to the page.</text>
+        <text>When used in a function, the symbol should be shown as usual with a link to the page.</text>
       </para>
     </doc>
   </function>
@@ -349,8 +324,7 @@
         <text>A see-below symbol in the global namespace</text>
       </para>
       <para>
-        <text>This symbol should have a page as usual but, because it&apos;s a scope</text>
-        <text> and not a namespace, the members should not be listed on that page.</text>
+        <text>This symbol should have a page as usual but, because it&apos;s a scope and not a namespace, the members should not be listed on that page.</text>
       </para>
       <para>
         <text>The synopsis should say &quot;See below&quot;.</text>
@@ -367,10 +341,8 @@
         <text>A function to get a see-below symbol in the global namespace</text>
       </para>
       <para>
-        <text>When used in a function, the symbol name should be shown as usual.</text>
-        <text> The page for this symbol is what should be different because</text>
-        <text> the synopsis should say &quot;See below&quot; and the members are not</text>
-        <text> listed unless it&apos;s a namespace or the symbol has been explicitly</text>
+        <text>When used in a function, the symbol name should be shown as usual. The page for this symbol is what should be different because</text>
+        <text> the synopsis should say &quot;See below&quot; and the members are not listed unless it&apos;s a namespace or the symbol has been explicitly</text>
         <text> used as a dependency elsewhere.</text>
       </para>
     </doc>
@@ -396,12 +368,10 @@
         <text>A function to get an implementation-defined symbol in the global namespace</text>
       </para>
       <para>
-        <text>When used in a function, the implementation-defined</text>
-        <text> comment should replace the real type.</text>
+        <text>When used in a function, the implementation-defined comment should replace the real type.</text>
       </para>
       <para>
-        <text>It&apos;s the responsibility of the function documentation</text>
-        <text> to explain the implementation-defined symbol.</text>
+        <text>It&apos;s the responsibility of the function documentation to explain the implementation-defined symbol.</text>
       </para>
     </doc>
   </function>
@@ -423,8 +393,7 @@
         <text>A function to get a dependency symbol on the global namespace</text>
       </para>
       <para>
-        <text>The symbol should be extracted as a dependency but its</text>
-        <text> members should not be traversed.</text>
+        <text>The symbol should be extracted as a dependency but its members should not be traversed.</text>
       </para>
     </doc>
   </function>

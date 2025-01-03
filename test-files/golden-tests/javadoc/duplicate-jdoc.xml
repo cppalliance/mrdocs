@@ -9,10 +9,10 @@
     </return>
     <doc>
       <para>
-        <text>f0 brief</text>
+        <text>f0 brief    </text>
       </para>
       <returns>
-        <text>int</text>
+        <text>int    </text>
       </returns>
       <returns>
         <text>int</text>
@@ -26,10 +26,10 @@
     </return>
     <doc>
       <para>
-        <text>f1 brief</text>
+        <text>f1 brief    </text>
       </para>
       <returns>
-        <text>int</text>
+        <text>int    </text>
       </returns>
       <returns>
         <text>bool</text>
@@ -43,10 +43,10 @@
     </param>
     <doc>
       <para>
-        <text>g0 brief</text>
+        <text>g0 brief    </text>
       </para>
       <param name="a">
-        <text>one</text>
+        <text>one    </text>
       </param>
       <param name="a">
         <text>one</text>
@@ -60,10 +60,10 @@
     </param>
     <doc>
       <para>
-        <text>g1 brief</text>
+        <text>g1 brief    </text>
       </para>
       <param name="a">
-        <text>one</text>
+        <text>one    </text>
       </param>
       <param name="b">
         <text>two</text>
@@ -76,10 +76,10 @@
       <file path="duplicate-jdoc.cpp" line="29" class="def"/>
       <doc>
         <para>
-          <text>h0 brief</text>
+          <text>h0 brief    </text>
         </para>
         <tparam name="T">
-          <text>one</text>
+          <text>one    </text>
         </tparam>
         <tparam name="T">
           <text>one</text>
@@ -93,10 +93,10 @@
       <file path="duplicate-jdoc.cpp" line="36" class="def"/>
       <doc>
         <para>
-          <text>h1 brief</text>
+          <text>h1 brief    </text>
         </para>
         <tparam name="T">
-          <text>one</text>
+          <text>one    </text>
         </tparam>
         <tparam name="U">
           <text>two</text>

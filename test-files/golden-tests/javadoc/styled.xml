@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
+    <file path="styled.cpp" line="8" class="def"/>
+    <doc>
+      <para>
+        <text>Brief for A</text>
+      </para>
+      <para>
+        <text>Paragraph with </text>
+        <mono>code</mono>
+        <text>, </text>
+        <bold>bold</bold>
+        <text> text, and </text>
+        <italic>italic</italic>
+        <text> text.</text>
+      </para>
+      <para>
+        <text>We can also escape these markers: `, *, and _.</text>
+      </para>
+    </doc>
+    <function name="compare" exception-spec="noexcept" id="CKPqawUTt6FNIN9qEFTMcdnvPkI=">
+      <file path="styled.cpp" line="14"/>
+      <attr id="is-const"/>
+      <return>
+        <type name="int"/>
+      </return>
+      <param name="other">
+        <type class="lvalue-reference">
+          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
+        </type>
+      </param>
+      <doc>
+        <para>
+          <text>Compare function</text>
+        </para>
+        <returns>
+          <mono>-1</mono>
+          <text> if </text>
+          <mono>*this &lt; other</mono>
+          <text>, </text>
+          <mono>0</mono>
+          <text> if        </text>
+          <mono>this == other</mono>
+          <text>, and 1 if </text>
+          <mono>this &gt; other</mono>
+          <text>.</text>
+        </returns>
+      </doc>
+    </function>
+  </struct>
+</namespace>
+</mrdocs>

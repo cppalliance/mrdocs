@@ -16,6 +16,7 @@
 #include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Support/String.hpp>
+#include <mrdocs/Support/ScopeExit.hpp>
 #include <clang/AST/CommentCommandTraits.h>
 #include <clang/AST/ASTContext.h>
 #include <clang/AST/RawCommentList.h>
@@ -397,22 +398,183 @@ ensureUTF8(
     return s;
 }
 
+/*  Parse the inline content of a text
+
+    This function takes a string from a comment
+    and parses it into a sequence of styled text
+    nodes.
+
+    The string may contain inline commands that
+    change the style of the text:
+
+    Regular text is stored as a doc::Text.
+    Styled text is stored as a doc::Styled.
+
+    The styles can be one of: mono, bold, or italic.
+
+    The tags "`", "*", and "_" are used to indicate
+    the start and end of styled text. They can be
+    escaped by prefixing them with a backslash.
+
+ */
+doc::List<doc::Text>
+parseStyled(StringRef s)
+{
+    doc::List<doc::Text> result;
+    std::string currentText;
+    doc::Style currentStyle = doc::Style::none;
+    bool escapeNext = false;
+
+    auto isStyleMarker = [](char c) {
+        return c == '`' || c == '*' || c == '_';
+    };
+
+    auto flushCurrentText = [&]() {
+        if (!currentText.empty()) {
+            if (currentStyle == doc::Style::none) {
+                bool const lastIsSame =
+                    !result.empty() &&
+                    result.back()->kind == doc::Kind::text;
+                if (lastIsSame)
+                {
+                    auto& lastText = static_cast<doc::Text&>(*result.back());
+                    lastText.string.append(currentText);
+                }
+                else
+                {
+                    result.emplace_back(std::make_unique<doc::Text>(std::move(currentText)));
+                }
+            } else {
+                bool const lastIsSame =
+                    !result.empty() &&
+                    result.back()->kind == doc::Kind::styled &&
+                    static_cast<doc::Styled&>(*result.back()).style == currentStyle;
+                if (lastIsSame)
+                {
+                    auto& lastStyled = static_cast<doc::Styled&>(*result.back());
+                    lastStyled.string.append(currentText);
+                }
+                else
+                {
+                    result.emplace_back(std::make_unique<doc::Styled>(std::move(currentText), currentStyle));
+                }
+            }
+            currentText.clear();
+        }
+    };
+
+    auto isPunctuationOrSpace = [](char c) {
+        return std::isspace(c) || std::ispunct(c);
+    };
+
+    for (std::size_t i = 0; i < s.size(); ++i) {
+        char c = s[i];
+        if (escapeNext) {
+            currentText.push_back(c);
+            escapeNext = false;
+        } else if (c == '\\') {
+            escapeNext = true;
+        } else if (isStyleMarker(c)) {
+            bool const atWordBoundary =
+                (currentStyle == doc::Style::none && ((i == 0) || isPunctuationOrSpace(s[i - 1]))) ||
+                (currentStyle != doc::Style::none && ((i == s.size() - 1) || isPunctuationOrSpace(s[i + 1])));
+            if (atWordBoundary) {
+                flushCurrentText();
+                if (c == '`') {
+                    currentStyle = (currentStyle == doc::Style::mono) ? doc::Style::none : doc::Style::mono;
+                } else if (c == '*') {
+                    currentStyle = (currentStyle == doc::Style::bold) ? doc::Style::none : doc::Style::bold;
+                } else if (c == '_') {
+                    currentStyle = (currentStyle == doc::Style::italic) ? doc::Style::none : doc::Style::italic;
+                }
+            } else {
+                currentText.push_back(c);
+            }
+        } else {
+            currentText.push_back(c);
+        }
+    }
+
+    // Whatever style we started, we should end it because
+    // we reached the end of the string without a closing
+    // marker.
+    currentStyle = doc::Style::none;
+    flushCurrentText();
+
+    return result;
+}
+
 void
 JavadocVisitor::
 visitChildren(
     Comment const* C)
 {
-    auto const it0 = it_;
-    auto const end0 = end_;
-    it_ = C->child_begin();
-    end_ = C->child_end();
+    ScopeExitRestore s1(it_, C->child_begin());
+    ScopeExitRestore s2(end_, C->child_end());
     while(it_ != end_)
     {
         visit(*it_);
         ++it_; // must happen after
     }
-    it_ = it0;
-    end_ = end0;
+
+    if (!block_)
+    {
+        return;
+    }
+
+    bool const isVerbatim = block_->kind == doc::Kind::code;
+    if (isVerbatim)
+    {
+        return;
+    }
+
+    // Merge consecutive plain text nodes in the current block
+    auto it = block_->children.begin();
+    while(it != block_->children.end())
+    {
+        auto& child = *it;
+        if (child.get()->kind == doc::Kind::text)
+        {
+            auto* text = dynamic_cast<doc::Text*>(child.get());
+            MRDOCS_ASSERT(text);
+            auto next = std::next(it);
+            if(next != block_->children.end())
+            {
+                if(next->get()->kind == doc::Kind::text)
+                {
+                    auto* next_text = dynamic_cast<doc::Text*>(next->get());
+                    MRDOCS_ASSERT(next_text);
+                    text->string.append(next_text->string);
+                    it = block_->children.erase(next);
+                    continue;
+                }
+            }
+        }
+        ++it;
+    }
+
+    // Parse any Text nodes for styled text
+    for (auto it = block_->children.begin(); it != block_->children.end();)
+    {
+        MRDOCS_ASSERT(it->get());
+        if (it->get()->kind == doc::Kind::text)
+        {
+            auto* text = dynamic_cast<doc::Text*>(it->get());
+            auto styledText = parseStyled(text->string);
+            std::size_t const offset = std::distance(block_->children.begin(), it);
+            std::size_t const n = styledText.size();
+            block_->children.erase(it);
+            block_->children.insert(
+                block_->children.begin() + offset,
+                std::make_move_iterator(styledText.begin()),
+                std::make_move_iterator(styledText.end()));
+            it = block_->children.begin() + offset + n;
+        }
+        else
+        {
+            ++it;
+        }
+    }
 }
 
 //------------------------------------------------
@@ -462,16 +624,18 @@ visitTextComment(
     // If this is the first text comment in the
     // paragraph then remove all the leading space.
     // Otherwise, just remove the trailing space.
-    if(block_->children.empty())
+    if (block_->children.empty())
+    {
         s = s.ltrim();
-    else
-        s = s.rtrim();
+    }
 
     // Only insert non-empty text nodes
     if(! s.empty())
+    {
         emplaceText<doc::Text>(
             C->hasTrailingNewline(),
             ensureUTF8(s.str()));
+    }
 }
 
 Expected<JavadocVisitor::TagComponents>

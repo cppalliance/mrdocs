@@ -18,7 +18,7 @@
         <text>Linear in n.</text>
       </para>
       <returns>
-        <text>Whether or not n is prime.</text>
+        <text>Whether or not n is prime.    </text>
       </returns>
       <param name="n">
         <text>The number to test</text>

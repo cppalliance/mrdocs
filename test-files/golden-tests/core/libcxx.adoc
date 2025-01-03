@@ -54,8 +54,7 @@ sqrt(T value);
 === Description
 
 
-This function calculates the square root of a
-given integral value using bit manipulation&period;
+This function calculates the square root of a    given integral value using bit manipulation&period;
 
 
 

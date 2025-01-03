@@ -1,0 +1,91 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+=== Types
+
+[cols=2]
+|===
+| Name | Description 
+
+| <<A,`A`>> 
+| Brief for A
+
+
+
+|===
+
+[#A]
+== A
+
+
+Brief for A
+
+
+
+=== Synopsis
+
+
+Declared in `&lt;styled&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct A;
+----
+
+=== Member Functions
+
+[cols=2]
+|===
+| Name | Description 
+
+| <<A-compare,`compare`>> 
+| Compare function
+
+
+
+|===
+
+
+
+=== Description
+
+
+Paragraph with `code`, *bold* text, and _italic_ text&period;
+
+We can also escape these markers&colon; &grave;, &ast;, and &lowbar;&period;
+
+
+
+[#A-compare]
+== <<A,A>>::compare
+
+
+Compare function
+
+
+
+=== Synopsis
+
+
+Declared in `&lt;styled&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+compare(<<A,A>> const& other) const noexcept;
+----
+
+=== Return Value
+
+
+`&hyphen;1` if `&ast;this &lt; other`, `0` if        `this &equals;&equals; other`, and 1 if `this &gt; other`&period;
+
+
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

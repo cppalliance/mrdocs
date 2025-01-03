@@ -32,14 +32,12 @@
 
 
 | <<f5,`f5`>> 
-| br
-ief
+| brief
 
 
 
 | <<f6,`f6`>> 
-| br
-ief
+| brief
 
 
 
@@ -124,8 +122,7 @@ f4();
 === Description
 
 
-br
-ief
+brief
 
 
 
@@ -133,8 +130,7 @@ ief
 == f5
 
 
-br
-ief
+brief
 
 
 
@@ -153,8 +149,7 @@ f5();
 == f6
 
 
-br
-ief
+brief
 
 
 

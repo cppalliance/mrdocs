@@ -1754,13 +1754,6 @@ generateJavadoc(
     {
         return false;
     }
-    // KRYSTIAN FIXME: clang ignores documentation comments
-    // when there is a preprocessor directive between the end
-    // of the comment and the declaration location. there are two
-    // ways to fix this: either set the declaration begin location
-    // to be before and preprocessor directives, or submit a patch
-    // which disables this behavior (it's not entirely clear why
-    // this check occurs anyways, so some investigation is needed)
     parseJavadoc(javadoc, FC, D, config_, diags_);
     return true;
 }
