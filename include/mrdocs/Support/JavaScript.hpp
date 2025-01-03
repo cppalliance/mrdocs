@@ -414,7 +414,7 @@ public:
         via @ref Scope::reset.
 
      */
-    MRDOCS_DECL ~Value();
+    ~Value();
 
     /** Constructor
 
@@ -424,7 +424,7 @@ public:
         The value is undefined.
 
      */
-    MRDOCS_DECL Value() noexcept;
+    Value() noexcept;
 
     /** Constructor
 
@@ -432,28 +432,28 @@ public:
         value to the stack and associates
         the new value the top of the stack.
      */
-    MRDOCS_DECL Value(Value const&);
+    Value(Value const&);
 
     /** Constructor
 
         The function associates the
         existing value with this object.
      */
-    MRDOCS_DECL Value(Value&&) noexcept;
+    Value(Value&&) noexcept;
 
     /** Copy assignment.
 
         @copydetails Value(Value const&)
 
      */
-    MRDOCS_DECL Value& operator=(Value const&);
+    Value& operator=(Value const&);
 
     /** Move assignment.
 
         @copydetails Value(Value&&)
 
      */
-    MRDOCS_DECL Value& operator=(Value&&) noexcept;
+    Value& operator=(Value&&) noexcept;
 
     /** Return the type of the value.
 
@@ -476,7 +476,7 @@ public:
         internal ECMAScript class `Function`.
 
      */
-    MRDOCS_DECL Type type() const noexcept;
+    Type type() const noexcept;
 
     /// Check if the value is undefined.
     bool
@@ -706,7 +706,6 @@ public:
 
     /** Set or replace the value for a given key.
      */
-    MRDOCS_DECL
     void
     set(
         std::string_view key,
@@ -714,7 +713,6 @@ public:
 
     /** Set or replace the value for a given key.
      */
-    MRDOCS_DECL
     void
     set(
         std::string_view key,
@@ -821,6 +819,7 @@ public:
         operator, which does not perform type conversions.
      */
     friend
+    MRDOCS_DECL
     bool
     operator==(
         Value const& lhs,
@@ -870,6 +869,7 @@ public:
     /** Compare two values for inequality.
      */
     friend
+    MRDOCS_DECL
     std::strong_ordering
     operator<=>(
         Value const& lhs,
@@ -880,6 +880,7 @@ public:
         This function is equivalent to the JavaScript `||` operator.
      */
     friend
+    MRDOCS_DECL
     Value
     operator||(Value const& lhs, Value const& rhs);
 
@@ -904,6 +905,7 @@ public:
         This function is equivalent to the JavaScript `&&` operator.
      */
     friend
+    MRDOCS_DECL
     Value
     operator&&(Value const& lhs, Value const& rhs);
 
@@ -928,20 +930,18 @@ public:
         This function coerces any value to a string.
     */
     friend
+    MRDOCS_DECL
     std::string
     toString(Value const& value);
 
 private:
-    MRDOCS_DECL
     Expected<Value>
     callImpl(
         std::initializer_list<dom::Value> args) const;
 
-    MRDOCS_DECL
     Expected<Value>
     callImpl(std::span<dom::Value> args) const;
 
-    MRDOCS_DECL
     Expected<Value>
     callPropImpl(
         std::string_view prop,

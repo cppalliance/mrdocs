@@ -258,7 +258,7 @@ struct PublicSettingsVisitor {
     {
         for (auto& value : values)
         {
-            MRDOCS_DECL(normalizeStringPath(self, name, value, dirs, opts, usingDefault));
+            MRDOCS_TRY(normalizeStringPath(self, name, value, dirs, opts, usingDefault));
         }
 
         // Move command line sink values to appropriate destinations

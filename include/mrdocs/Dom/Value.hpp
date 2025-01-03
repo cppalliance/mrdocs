@@ -46,9 +46,11 @@ namespace mrdocs {
 
     @see https://handlebarsjs.com/api-reference/utilities.html#handlebars-safestring-string
  */
+MRDOCS_DECL
 dom::Value
 safeString(std::string_view str);
 
+MRDOCS_DECL
 dom::Value
 safeString(dom::Value const& str);
 
@@ -415,6 +417,7 @@ public:
         operator, which does not perform type conversions.
      */
     friend
+    MRDOCS_DECL
     bool
     operator==(
         Value const& lhs,
@@ -423,6 +426,7 @@ public:
     /** Compare two values for inequality.
      */
     friend
+    MRDOCS_DECL
     std::strong_ordering
     operator<=>(
         Value const& lhs,
@@ -453,6 +457,7 @@ public:
     /** Add or concatenate two values.
      */
     friend
+    MRDOCS_DECL
     dom::Value
     operator+(Value const& lhs, Value const& rhs);
 
@@ -477,6 +482,7 @@ public:
         This function is equivalent to the JavaScript `||` operator.
      */
     friend
+    MRDOCS_DECL
     dom::Value
     operator||(Value const& lhs, Value const& rhs);
 
@@ -501,6 +507,7 @@ public:
         This function is equivalent to the JavaScript `&&` operator.
      */
     friend
+    MRDOCS_DECL
     dom::Value
     operator&&(Value const& lhs, Value const& rhs);
 
@@ -523,6 +530,7 @@ public:
     /** Return value as a string.
     */
     friend
+    MRDOCS_DECL
     std::string
     toString(Value const& value);
 };

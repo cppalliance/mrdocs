@@ -371,6 +371,12 @@ struct Copied : Reference
 struct MRDOCS_DECL
     Block : Node
 {
+    Block(const Block&) = delete;
+    Block(Block&&);
+    Block& operator=(const Block&) = delete;
+    Block& operator=(Block&&);
+    ~Block();
+
     List<Text> children;
 
     bool isBlock() const noexcept final
@@ -919,7 +925,6 @@ class MRDOCS_DECL
 public:
     /** Constructor.
     */
-    MRDOCS_DECL
     Javadoc() noexcept;
 
     /** Constructor
@@ -927,6 +932,11 @@ public:
     explicit
     Javadoc(
         doc::List<doc::Block> blocks);
+
+    Javadoc(const Javadoc&) = delete;
+    Javadoc(Javadoc&&);
+    Javadoc& operator=(const Javadoc&) = delete;
+    Javadoc& operator=(Javadoc&&);
 
     /** Return true if this is empty
     */
