@@ -80,7 +80,7 @@ domCreate(
     const HandlebarsCorpus& corpus)
 {
     dom::Object::storage_type entries = {
-        { "exception", I.exception }
+        { "exception", I.exception.string }
     };
     std::string s = corpus.toStringFn(corpus, I);
     if (!s.empty())

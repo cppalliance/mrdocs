@@ -22,7 +22,7 @@
           <text>This function calculates the square root of a    given integral value using bit manipulation.</text>
         </para>
         <throws>
-          <text>the input value is negative.</text>
+          <text>if the input value is negative.</text>
         </throws>
         <tparam name="T">
           <text>The type of the input value. Must be an integral type.    </text>
