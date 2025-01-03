@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Contributor&#8217;s Guide :: MrDocs</title>
+  <link rel="canonical" href="https://www.mrdocs.com/mrdocs/develop/contribute.html">
+  <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../_/css/boostlook.css">
+    <link rel="stylesheet" href="../../_/css/site.css">
+    <link rel="stylesheet" href="../../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../../_'</script>
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs'; mermaid.initialize({"startOnLoad":true});</script><div id="header">
+    <div id="toc" class="nav-container toc2" data-component="mrdocs" data-version="develop">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="index.html">MrDocs</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="index.html">Home</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="demos.html">Demos</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="install.html">Installation</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="usage.html">Getting Started</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="commands.html">Documenting the Code</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="config-file.html">The Configuration File</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="generators.html">Generators</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="design-notes.html">Design Notes</a>
+        </li>
+              <li class=" is-current-page" data-depth="1">
+            <a class="nav-link" href="contribute.html">Contributor&#8217;s Guide</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="license.html">License</a>
+        </li>
+        </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="index.html" aria-label="Home: MrDocs">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li><a href="contribute.html">Contributor&#8217;s Guide</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a accesskey="p" href="design-notes.html"><span class="material-symbols-outlined" title="Previous: Design Notes">arrow_back</span></a>
+    <a accesskey="p" href="license.html"><span class="material-symbols-outlined" title="Next: License">arrow_forward</span></a>
+</div>
+</div>
+    <h1 class="page">Contributor&#8217;s Guide</h1>
+  <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This page contains information for contributors to the MrDocs project.
+It is intended to provide an overview of the codebase and the process of adding new features.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_codebase_overview"><a class="anchor" href="#_codebase_overview"></a>Codebase Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The MrDocs codebase is divided into several modules:</p>
+</div>
+<div class="imageblock"><div class="mermaid content" style=" ">graph TD
+  %% Define styles for visual clarity
+  classDef input fill:#D1E8FF,stroke:#005CFF,stroke-width:2;
+  classDef artifact fill:#FFF5D1,stroke:#FFA500,stroke-width:2;
+  classDef output fill:#D1FFD1,stroke:#008000,stroke-width:2;
+
+  %% Define Inputs
+  subgraph Inputs
+    CF[Configuration File]
+    CL[Command Line Arguments]
+  end
+  class CL,CF input
+
+  %% Define Artifacts
+  subgraph Processes
+    P[Configuration Options]
+    CD[Compilation Database]
+    C[Corpus]
+    G[Generator]
+  end
+  class P artifact
+  class CD,C,G artifact
+
+  %% Define Outputs
+  subgraph Outputs
+    D[Documentation]
+  end
+  class D output
+
+  %% Relationships
+  CF -->|Define| P
+  CL -->|Define| P
+  P -->|Defines| CD
+  CD -->|Extract Symbols| C
+  C -->|Feeds| G
+  G -->|Produces| D
+
+  %% Highlight dependencies for clarity
+  P -->|Influences| G</div></div>
+<div class="paragraph">
+<p>This section provides an overview of each module and how they interact with each other in the MrDocs codebase.</p>
+</div>
+<div class="sect2">
+<h3 id="options"><a class="anchor" href="#options"></a>Parsing options</h3>
+<div class="paragraph">
+<p>MrDocs options affect the behavior of the compilation database, how symbols are extracted, and how the documentation is generated.
+They are parsed from the command line and configuration file.</p>
+</div>
+<div class="paragraph">
+<p>The main entry point of MrDocs is the <code>DoGenerateAction</code> function in <code>src/tool/GenerateAction.cpp</code>.
+It loads the options, creates the compilation database, and runs the extraction and generation steps.
+The options formed from a combination of command line arguments and configuration file settings.</p>
+</div>
+<div class="sect3">
+<h4 id="_command_line_options"><a class="anchor" href="#_command_line_options"></a>Command Line Options</h4>
+<div class="paragraph">
+<p>Command line and common options are defined in <code>src/tool/ToolArgs.hpp</code>.
+The <code>ToolArgs</code> class uses the <code>llvm::cl</code> library to define and parse the command line arguments.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_configuration_file"><a class="anchor" href="#_configuration_file"></a>Configuration File</h4>
+<div class="paragraph">
+<p>Common options are defined in <code>mrdocs/Config.hpp</code>.
+The <code>Config</code> class represents all public options that could be defined in a configuration file.
+It also provides a representation plugins can use to access public options from the command line or configuration file.</p>
+</div>
+<div class="paragraph">
+<p>The function <code>clang::mrdocs::loadConfig</code> is also provided to parse all public options from a YAML configuration file.</p>
+</div>
+<div class="paragraph">
+<p>Internally, MrDocs uses the derived <code>clang::mrdocs::ConfigImpl</code> class (<code>src/lib/Lib/ConfigImpl.hpp</code>) to also store the private representation of parsed options, such as filters.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_finalizing_options"><a class="anchor" href="#_finalizing_options"></a>Finalizing Options</h4>
+<div class="paragraph">
+<p>Common options are stored in the <code>Config</code> class, while the <code>ToolArgs</code> class stores common options and the command line options.
+For instance, the <code>config</code> option can only be set from the command line, as it would be illogical to expect the location of the configuration file to be defined in the configuration file itself.
+On the other hand, the <code>output</code> option can be set from both the command line and the configuration file so that the user can define a default output location in the configuration file.</p>
+</div>
+<div class="paragraph">
+<p>Thus, after the command line and configuration file options are parsed, they are finalized in the <code>DoGenerateAction</code> function by calling <code>ToolArgs::apply</code>, which overrides the configuration file options in <code>Config</code> with the command line options, when applicable.</p>
+</div>
+<div class="paragraph">
+<p>As a last step, <code>DoGenerateAction</code> converts the public <code>Config</code> settings into a <code>ConfigImpl</code> object, which is used by the rest of the program with the parsed options.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="extract_symbols"><a class="anchor" href="#extract_symbols"></a>Extracting Symbols</h3>
+<div class="paragraph">
+<p>At this stage, the clang frontend is used to parse the source code and generate an AST.
+The AST information is extracted and stored in a <code>Corpus</code> object (<code>mrdocs/Corpus.hpp</code>).</p>
+</div>
+<div class="sect3">
+<h4 id="compilation_database"><a class="anchor" href="#compilation_database"></a>Compilation Database</h4>
+<div class="paragraph">
+<p>The second step in <code>DoGenerateAction</code> is to create a <code>CompilationDatabase</code> object, so we can extract symbols from its source files.
+There are multiple possible sources for this file according to the configuration options: the file might be read directly from the path specified in the options, or it might be generated by MrDocs from build scripts.</p>
+</div>
+<div class="paragraph">
+<p>Whatever the source, a derived <code>MrDocsCompilationDatabase</code> object (<code>lib/Lib/MrDocsCompilationDatabase.hpp</code>) is created to represent the compilation database.
+The difference between the original <code>CompilationDatabase</code> and the <code>MrDocsCompilationDatabase</code> is that the latter includes a number of pre-processing steps to filter and transform compilation commands.</p>
+</div>
+<div class="paragraph">
+<p>For each compilation command:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Command line arguments are adjusted</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Warnings are supressed</p>
+</li>
+<li>
+<p>Additional defines are added</p>
+</li>
+<li>
+<p>Implicit include directories are added</p>
+</li>
+<li>
+<p>Unrecognized arguments are removed</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Paths are normalized</p>
+</li>
+<li>
+<p>Non C++ files are filtered</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="info_nodes"><a class="anchor" href="#info_nodes"></a>Info Nodes</h4>
+<div class="paragraph">
+<p>MrDocs represents each C++ symbol or construct as an <code>Info</code> node (<code>mrdocs/Metadata/Info.hpp</code>).
+MrDocs currently defines the following <code>Info</code> nodes:</p>
+</div>
+<div class="openblock">
+<div class="content">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 50%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Declaration</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NamespaceInfo</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The symbol is a namespace</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>mrdocs/Metadata/Namespace.hpp</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>RecordInfo</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The symbol is a record (class or struct)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>mrdocs/Metadata/Record.hpp</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>FunctionInfo</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The symbol is a function</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>mrdocs/Metadata/Function.hpp</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>EnumInfo</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The symbol is an enum</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>mrdocs/Metadata/Enum.hpp</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>TypedefInfo</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The symbol is a typedef</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>mrdocs/Metadata/Typedef.hpp</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>VariableInfo</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The symbol is a variable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>mrdocs/Metadata/Variable.hpp</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>FieldInfo</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The symbol is a field</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>mrdocs/Metadata/Field.hpp</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>SpecializationInfo</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The symbol is a template specialization</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>mrdocs/Metadata/Specialization.hpp</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>FriendInfo</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The symbol is a friend declaration</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>mrdocs/Metadata/Friend.hpp</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>EnumConstantInfo</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The symbol is an enumerator</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>mrdocs/Metadata/EnumConstant.hpp</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>GuideInfo</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The symbol is a deduction guide</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>mrdocs/Metadata/Guide.hpp</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>AliasInfo</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The symbol is a namespace alias</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>mrdocs/Metadata/Alias.hpp</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>UsingInfo</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The symbol is a using declaration</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>mrdocs/Metadata/Using.hpp</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ConceptInfo</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The symbol is a concept</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>mrdocs/Metadata/Concept.hpp</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="paragraph">
+<p><code>Info</code> can not only represent direct AST symbols but also C&#43;&#43; constructs that need to be inferred from these symbols.
+Nodes in the first category will typically be created in the initial extraction step, and nodes in the second category will be created in the finalization step.</p>
+</div>
+<div class="paragraph">
+<p>When defining a new <code>Info</code> type, it is important to consider how this type will be supported in all other modules of the codebase, including the AST visitor, generators, tests, and the documentation.
+The script <code>.github/check_info_nodes_support.sh</code> will attempt to infer whether most of these features have been implemented for each node type.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_clang_libtooling"><a class="anchor" href="#_clang_libtooling"></a>Clang LibTooling</h4>
+<div class="paragraph">
+<p>MrDocs uses Clang to extract <code>Info</code> objects from the C&#43;&#43; AST.
+Clang offers two <a href="https://clang.llvm.org/docs/Tooling.html">interfaces</a> to access the C++ AST: the <a href="https://clang.llvm.org/doxygen/group__CINDEX.html"><code>LibClang</code></a> and <a href="https://clang.llvm.org/docs/LibTooling.html"><code>LibTooling</code></a> libraries.
+MrDocs uses the latter, as it provides full control over the AST traversal process at the cost of an unstable API.</p>
+</div>
+<div class="paragraph">
+<p>In LibTooling, once we have a <a href="#compilation_database">Compilation Database</a>, we can create a <code>ClangTool</code> object to run the Clang frontend on a set of source files.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">clang::tooling::ClangTool Tool(compilationDatabase, sourceFiles);
+newFrontendActionFactory&lt;clang::SyntaxOnlyAction&gt; actionFactory();
+return Tool.run(actionFactory.get());</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>clang::tooling::ClangTool::run</code> method takes a <code>clang::tooling::ToolAction</code> object that defines how to process the AST.
+The action object that usually comes from a <code>clang::tooling::FrontendActionFactory</code>.
+In the example above, the <code>SyntaxOnlyAction</code> is used to parse the source code and generate the AST without any further processing.</p>
+</div>
+<div class="paragraph">
+<p>In MrDocs, this process happens in <code>clang::mrdocs::CorpusImpl::build</code> (<code>src/lib/Lib/CorpusImpl.cpp</code>), where we call <code>Tool.run</code> for each object in the database with our custom <code>ASTAction</code> action and <code>ASTActionFactory</code> factory (<code>src/lib/AST/ASTVisitor.cpp</code>).</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_ast_traversal"><a class="anchor" href="#_ast_traversal"></a>AST Traversal</h4>
+<div class="paragraph">
+<p>While <code>ASTAction</code> is the entry point for processing the AST, the real work is done by the <code>ASTVisitor</code> class.
+As the AST is generated, it is traversed by the <code>ASTVisitor</code> class.</p>
+</div>
+<div class="paragraph">
+<p>The entry point of this class is <code>ASTVisitor::build</code>, which recursively calls <code>ASTVisitor::traverseDecl</code> for the root <code>clang::TranslationUnitDecl</code> node of the translation unit.
+During the AST traversal stage, the complete AST generated by the clang frontend is walked beginning with this root <code>TranslationUnitDecl</code> node.</p>
+</div>
+<div class="paragraph">
+<p>Each <code>clang</code> node is converted into a <code><a href="#info_nodes">mrdocs::Info</a></code> node, which is then stored with any relevant information in a <code>mrdocs::Corpus</code> object.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_usr_generation"><a class="anchor" href="#_usr_generation"></a>USR Generation</h4>
+<div class="paragraph">
+<p>It is during this stage that USRs (universal symbol references) are generated and hashed with SHA1 to form the 160 bit <code>SymbolID</code> for an entity.
+Except for built-in types, <strong>all</strong> entities referenced in the corpus will be traversed and be assigned a <code>SymbolID</code>; including those from the standard library.
+This is necessary to generate the full interface for user-defined types.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_finalizing_the_corpus"><a class="anchor" href="#_finalizing_the_corpus"></a>Finalizing the Corpus</h4>
+<div class="paragraph">
+<p>After running the AST traversal on all translation units, <code>CorpusImpl::build</code> contains finalization steps for the <code>Corpus</code> object.
+At this point, we process C++ constructs that are not directly represented in the AST.</p>
+</div>
+<div class="paragraph">
+<p>The first finalization step happens in <code>CorpusImpl::build</code> (<code>src/lib/Lib/CorpusImpl.cpp</code>), where the <code>Info</code> objects from a single translation unit
+are merged into a map containing the merged results from all other TUs.
+The merging step is necessary as there may be multiple identical definitions of the same entity.
+For instance, this represents the case where a function is declared at different points in the code base and might have different attributes or comments.
+At this step, the doc comments are also finalized.
+Each <code>Info</code> object has a pointer to its <code>Javadoc</code>  object (<code>mrdocs/Metadata/Javadoc.hpp</code>), which is a representation of the documentation comments.</p>
+</div>
+<div class="paragraph">
+<p>After AST traversal and <code>Info</code> merging, the result is stored as a map of <code>Info</code> objects indexed by their respective <code>SymbolID</code>.
+A second finalization step is then performed in <code>clang::mrdocs::finalize</code> (<code>src/lib/Metadata/Finalize.cpp</code>), where any references to <code>SymbolID</code> objects that don&#8217;t exist are removed.
+This is necessary because the AST traversal will generate references to entities that should be filtered and are not present in the corpus.</p>
+</div>
+<div class="paragraph">
+<p>At this point, the <code>Corpus</code> object contains representations of all entities in the code base and further semantic C&#43;&#43; constructs that are not directly represented in the AST can be inferred.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_generators"><a class="anchor" href="#_generators"></a>Generators</h3>
+<div class="paragraph">
+<p>Documentation generators may traverse this structure by calling <code>Corpus::traverse</code> with a <code>Corpus::Visitor</code> derived visitor and the <code>SymbolID</code> of the entity to visit (e.g. the global namespace).</p>
+</div>
+<div class="paragraph">
+<p>Documentation generators are responsible for traversing the corpus and generating documentation in the desired format.</p>
+</div>
+<div class="paragraph">
+<p>The API for documentation generators is defined in <code>mrdocs/Generator.hpp</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_directory_layout"><a class="anchor" href="#_directory_layout"></a>Directory Layout</h3>
+<div class="paragraph">
+<p>The MrDocs codebase is organized as follows:</p>
+</div>
+<div class="sect3">
+<h4 id="_includethe_main_include_directory"><a class="anchor" href="#_includethe_main_include_directory"></a><code>include/</code>—The main include directory</h4>
+<div class="paragraph">
+<p>This directory contains the public headers for the MrDocs library.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>include/mrdocs/</code>—The core library headers</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>include/mrdocs/ADT</code>—Data Structures</p>
+</li>
+<li>
+<p><code>include/mrdocs/Dom</code>—The Document Object Model for Abstract Trees</p>
+</li>
+<li>
+<p><code>include/mrdocs/Metadata</code>—<code>Info</code> nodes and metadata classes</p>
+</li>
+<li>
+<p><code>include/mrdocs/Support</code>—Various utility classes</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_srcthe_main_source_directory"><a class="anchor" href="#_srcthe_main_source_directory"></a><code>src/</code>—The main source directory</h4>
+<div class="paragraph">
+<p>This directory contains the source code for the MrDocs library and private headers.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>src/lib/</code>—The core library</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>src/lib/AST/</code>—The AST traversal code</p>
+</li>
+<li>
+<p><code>src/lib/Dom/</code>—The Document Object Model for Abstract Trees</p>
+</li>
+<li>
+<p><code>src/lib/Gen/</code>—Generators</p>
+</li>
+<li>
+<p><code>src/lib/Lib/</code>—The core library classes</p>
+</li>
+<li>
+<p><code>src/lib/Metadata/</code>—<code>Info</code> nodes and metadata classes</p>
+</li>
+<li>
+<p><code>src/lib/Support/</code>—Various utility classes</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>src/test/</code>—The test directory</p>
+</li>
+<li>
+<p><code>src/test_suite/</code>—The library used for testing</p>
+</li>
+<li>
+<p><code>src/tool/</code>—The main program</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_shareshared_resources"><a class="anchor" href="#_shareshared_resources"></a><code>share/</code>—Shared resources</h4>
+<div class="paragraph">
+<p>This directory contains shared resources for the documentation generators and utilities for developers.
+Its subdirectories are installed in the <code>share</code> directory of the installation.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>share/</code>—Shared resources for the documentation generators</p>
+</li>
+<li>
+<p><code>share/cmake/</code>—CMake modules to generate the documentation</p>
+</li>
+<li>
+<p><code>share/gdb/</code>—GDB pretty printers</p>
+</li>
+<li>
+<p><code>share/mrdocs/</code>—Shared resources for the documentation generators</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_docsdocumentation"><a class="anchor" href="#_docsdocumentation"></a><code>docs</code>—Documentation</h4>
+<div class="paragraph">
+<p>This directory contains the documentation for the MrDocs project.
+The documentation is written in AsciiDoc and can be built using the Antora tool.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>docs/</code>—Documentation configuration files and scripts</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>docs/modules/</code>—The documentation asciidoc files</p>
+</li>
+<li>
+<p><code>docs/extensions</code>—Antora extensions for the documentation</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_third_partyhelpers_for_third_party_libraries"><a class="anchor" href="#_third_partyhelpers_for_third_party_libraries"></a><code>third-party/</code>—Helpers for third-party libraries</h4>
+<div class="paragraph">
+<p>This directory contains build scripts and configuration files for third-party libraries.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>third-party/</code>—Third-party libraries</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>third-party/llvm/</code>—CMake Presets for LLVM</p>
+</li>
+<li>
+<p><code>third-party/duktape/</code>—CMake scripts for Duktape</p>
+</li>
+<li>
+<p><code>third-party/lua/</code>—A bundled Lua interpreter</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_coding_standards"><a class="anchor" href="#_coding_standards"></a>Coding Standards</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_paths"><a class="anchor" href="#_paths"></a>Paths</h3>
+<div class="paragraph">
+<p>The AST visitor and metadata all use forward slashes to represent file pathnames, even on Windows.
+This is so the generated reference documentation does not vary based on the platform.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_exceptions"><a class="anchor" href="#_exceptions"></a>Exceptions</h3>
+<div class="paragraph">
+<p>Errors thrown by the program should always have type <code>Exception</code>.
+Objects of this type are capable of transporting an <code>Error</code> object.
+This is important for the scripting to work; exceptions are used to propagate errors from library code to scripts and back to the invoking code.
+For exceptional cases, these thrown exceptions should be uncaught.
+The tool installs an uncaught exception handler that prints a stack trace and exits the process immediately.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_testing"><a class="anchor" href="#_testing"></a>Testing</h3>
+<div class="paragraph">
+<p>All new features should be accompanied by tests.
+The <code>mrdocs-test</code> target is used to run the test suites.
+This target has its entry point in <code>src/test/TestMain.cpp</code>, which can take two paths:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Golden testing: When input paths are provided to the test executable via the command line, the test suite will run the <code>DoTestAction()</code> that iterates all files in <code>test-files</code> comparing the input source files with the expected XML output files.</p>
+</li>
+<li>
+<p>Unit testing: When no input paths are provided, all unit tests will be run via <code>unit_test_main()</code>, defined by the our test-suite library in <code>src/test_suite/test_suite.cpp</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The fixtures for golden testing are defined in <code>test-files/golden-tests</code>, where files in each directory have the following format:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>mrdocs.yml</code>: Basic configuration options for all files in this directory.</p>
+</li>
+<li>
+<p><code>&lt;filename&gt;.cpp</code>: The input source file to extract symbols from.</p>
+</li>
+<li>
+<p><code>&lt;filename&gt;.xml</code>: The expected XML output file generated with the XML generator.</p>
+</li>
+<li>
+<p><code>&lt;filename&gt;.bad.xml</code>: The test output file generated when the test fails.</p>
+</li>
+<li>
+<p><code>&lt;filename&gt;.yml</code>: Extra configuration options for this specific file.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_contributing"><a class="anchor" href="#_contributing"></a>Contributing</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you find a bug or have a feature request, please open an issue on the MrDocs GitHub repository: <a href="https://github.com/cppalliance/mrdocs/issues" class="bare">https://github.com/cppalliance/mrdocs/issues</a></p>
+</div>
+<div class="paragraph">
+<p>If you would like to contribute a feature or bug fix, please open a pull request on the MrDocs GitHub repository: <a href="https://github.com/cppalliance/mrdocs/pulls" class="bare">https://github.com/cppalliance/mrdocs/pulls</a></p>
+</div>
+<div class="paragraph">
+<p>If you would like to discuss a feature or bug fix before opening a pull request, discussing happen in the <code>#mrdocs</code> channel on the Cpplang Slack: <a href="https://cpplang.slack.com/" class="bare">https://cpplang.slack.com/</a></p>
+</div>
+</div>
+</div>
+  <div class="edit-this-page">
+      <a href="https://github.com/cppalliance/mrdocs/edit/develop/docs/modules/ROOT/pages/contribute.adoc">Edit this Page</a>
+      </div>
+  </article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+<script async src="../../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

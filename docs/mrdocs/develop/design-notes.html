@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Design Notes :: MrDocs</title>
+  <link rel="canonical" href="https://www.mrdocs.com/mrdocs/develop/design-notes.html">
+  <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../_/css/boostlook.css">
+    <link rel="stylesheet" href="../../_/css/site.css">
+    <link rel="stylesheet" href="../../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../../_'</script>
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs'; mermaid.initialize({"startOnLoad":true});</script><div id="header">
+    <div id="toc" class="nav-container toc2" data-component="mrdocs" data-version="develop">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="index.html">MrDocs</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="index.html">Home</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="demos.html">Demos</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="install.html">Installation</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="usage.html">Getting Started</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="commands.html">Documenting the Code</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="config-file.html">The Configuration File</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="generators.html">Generators</a>
+        </li>
+              <li class=" is-current-page" data-depth="1">
+            <a class="nav-link" href="design-notes.html">Design Notes</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="contribute.html">Contributor&#8217;s Guide</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="license.html">License</a>
+        </li>
+        </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="index.html" aria-label="Home: MrDocs">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li><a href="design-notes.html">Design Notes</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a accesskey="p" href="generators.html"><span class="material-symbols-outlined" title="Previous: Generators">arrow_back</span></a>
+    <a accesskey="p" href="contribute.html"><span class="material-symbols-outlined" title="Next: Contributor&#8217;s Guide">arrow_forward</span></a>
+</div>
+</div>
+    <h1 class="page">Design Notes</h1>
+  <div class="sect1">
+<h2 id="_why_automate_documentation"><a class="anchor" href="#_why_automate_documentation"></a>Why automate documentation?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>C&#43;&#43; API design is challenging.
+When you write a function signature, or declare a class, it is at that moment when you are likely to have as much information as you will ever have about what it is supposed to do.
+The more time passes before you write the documentation, the less likely you are to remember all the details of what motivated the API in the first place.</p>
+</div>
+<div class="paragraph">
+<p>In other words, because best and worst engineers are naturally lazy, the <strong>temporal adjacency</strong> of the C&#43;&#43; declaration to the documentation improves outcomes.
+For this reason, having the documentation be as close as possible to the declaration is ideal.
+That is, the <strong>spatial adjacency</strong> of the C++ declaration to the documentation improves outcomes because it facilitates temporal adjacency.</p>
+</div>
+<div class="paragraph">
+<p>In summary, the automated extraction of reference documentation from C&#43;&#43; declarations containing attached documentation comments is ideal because:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Temporally adjacent documentation is more comprehensive</p>
+</li>
+<li>
+<p>Spatially adjacent documentation requires less effort to maintain</p>
+</li>
+<li>
+<p>And causally connected documentation is more accurate</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>From the perspective of engineers, however, the biggest advantage of automated documentation is that it implies a single source of truth for the API at a low cost.
+However, C&#43;&#43; codebases are notoriously difficult to document automatically because of constructs where the code needs to diverge from the intended API that represents the contract with the user.</p>
+</div>
+<div class="paragraph">
+<p>Tools like Doxygen typically require workarounds and manual intervention via preprocessor macros to get the documentation right.
+These workarounds are problematic because they effectively mean that there are two versions of the code: the well-formed and the ill-formed versions.
+This subverts the single sources of truth for the code.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"></th>
+<th class="tableblock halign-left valign-top">Mr. Docs</th>
+<th class="tableblock halign-left valign-top">Automatic</th>
+<th class="tableblock halign-left valign-top">Manual</th>
+<th class="tableblock halign-left valign-top">No Reference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No workarounds</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">❌</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">❌</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Nice for users</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">❌</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Single Source of Truth</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">❌</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">❌</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">❌</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Less Work for Developers</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">❌</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">❌</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Always up-to-date</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">✅</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">❌</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">❌</p></td>
+</tr>
+</tbody>
+</table>
+<div class="ulist">
+<ul>
+<li>
+<p>By providing no reference to users, they are forced to read header files to understand the API.
+This is a problem because header files are not always the best source of truth for the API.
+Developers familiar with <a href="https://cppreference.com" target="_blank" rel="noopener">cppreference.com</a> will know that the documentation there is often more informative than the header files.</p>
+</li>
+<li>
+<p>A common alternative is to provide a manual reference to the API.
+Developers duplicate the signatures, which requires extra work.
+This strategy tends to work well for small libraries and allows the developer to directly express the contract with the user.
+However, as the single source of truth is lost, it becomes unmanageable as the codebase grows.
+When the declaration changes, they forget to edit the docs, and the reference becomes out of date.</p>
+</li>
+<li>
+<p>In this case, it looks like the best solution is to automate the documentation.
+The causal connection between the declaration and the generated documentation improves outcomes.
+That&#8217;s when developers face difficulties with existing tools like Doxygen, which require workarounds and manual intervention to get the documentation right.
+The workarounds mean that there are two versions of the code: the well-formed and the ill-formed versions.</p>
+</li>
+<li>
+<p>The philosophy behind MrDocs is to provide solutions to these workarounds so that the single source of truth can be maintained with minimal effort by developers.
+With Mr.Docs, the documented C&#43;&#43; code should be the same as the code that is compiled.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_customization"><a class="anchor" href="#_customization"></a>Customization</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Once the documentation is extracted from the code, it is necessary to format it in a way that is useful to the user.
+This usually involves generating output files that match the content of the documentation to the user&#8217;s needs.</p>
+</div>
+<div class="paragraph">
+<p>A limitation of existing tools like Doxygen is that their output formats are not very customizable.
+It supports minor customization in the output style and, for custom content formats, it requires much more complex workflows, like generating XML files and writing secondary applications to process them.</p>
+</div>
+<div class="paragraph">
+<p>MrDocs attempts to support multiple output formats and customization options.
+In practice, MrDocs attempts to provide three levels of customization:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>At the first level, the user can use an existing generator and customize its templates and helper functions.</p>
+</li>
+<li>
+<p>The user can write a MrDocs plugin at a second level that defines a new generator.</p>
+</li>
+<li>
+<p>At a third level, it can use a generator for a structured file format and consume the output in a more uncomplicated secondary application or script.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>These multiple levels of complexity mean developers can worry only about the documentation content.
+In practice, developers rarely need new generators and are usually only interested in changing how an existing generator formats the output.
+Removing the necessity of writing and maintaining a secondary application only to customize the output via XML files can save these developers an immense amount of time.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_c_constructs"><a class="anchor" href="#_c_constructs"></a>C&#43;&#43; Constructs</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To deal with the complexity of C&#43;&#43; constructs, MrDocs uses clang&#8217;s libtooling API.
+That means MrDocs understands all C&#43;&#43;: if clang can compile it, MrDocs knows about it.</p>
+</div>
+<div class="paragraph">
+<p>Here are a few constructs MrDocs attempts to understand and document automatically from the metadata:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Overload sets</p>
+</li>
+<li>
+<p>Private APIs</p>
+</li>
+<li>
+<p>Unspecified Return Types</p>
+</li>
+<li>
+<p>Concepts</p>
+</li>
+<li>
+<p>Typedefs</p>
+</li>
+<li>
+<p>Namespace Aliases</p>
+</li>
+<li>
+<p>Constants</p>
+</li>
+<li>
+<p>Automatic Related Types</p>
+</li>
+<li>
+<p>Macros</p>
+</li>
+<li>
+<p>SFINAE</p>
+</li>
+<li>
+<p>Hidden Base Classes</p>
+</li>
+<li>
+<p>Hidden EBO</p>
+</li>
+<li>
+<p>Niebloids</p>
+</li>
+<li>
+<p>Coroutines</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+  <div class="edit-this-page">
+      <a href="https://github.com/cppalliance/mrdocs/edit/develop/docs/modules/ROOT/pages/design-notes.adoc">Edit this Page</a>
+      </div>
+  </article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+<script async src="../../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

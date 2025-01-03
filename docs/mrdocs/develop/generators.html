@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Generators :: MrDocs</title>
+  <link rel="canonical" href="https://www.mrdocs.com/mrdocs/develop/generators.html">
+  <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../_/css/boostlook.css">
+    <link rel="stylesheet" href="../../_/css/site.css">
+    <link rel="stylesheet" href="../../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../../_'</script>
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs'; mermaid.initialize({"startOnLoad":true});</script><div id="header">
+    <div id="toc" class="nav-container toc2" data-component="mrdocs" data-version="develop">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="index.html">MrDocs</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="index.html">Home</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="demos.html">Demos</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="install.html">Installation</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="usage.html">Getting Started</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="commands.html">Documenting the Code</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="config-file.html">The Configuration File</a>
+        </li>
+              <li class=" is-current-page" data-depth="1">
+            <a class="nav-link" href="generators.html">Generators</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="design-notes.html">Design Notes</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="contribute.html">Contributor&#8217;s Guide</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="license.html">License</a>
+        </li>
+        </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="index.html" aria-label="Home: MrDocs">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li><a href="generators.html">Generators</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a accesskey="p" href="config-file.html"><span class="material-symbols-outlined" title="Previous: The Configuration File">arrow_back</span></a>
+    <a accesskey="p" href="design-notes.html"><span class="material-symbols-outlined" title="Next: Design Notes">arrow_forward</span></a>
+</div>
+</div>
+    <h1 class="page">Generators</h1>
+  <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>MrDocs uses a generator to convert the extracted symbols into documentation.
+MrDocs supports multiple output formats that can be specified via the <code>generate</code> option:</p>
+</div>
+<div class="paragraph">
+<p>The <code>generate</code> option can be used to specify the output format:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># ...
+generate: adoc
+# ...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Three output formats are supported:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Format</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>adoc</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AsciiDoc format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>html</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HTML format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>xml</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">XML format.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>The corpus of symbols is provided to the generator responsible for converting these symbols into the desired output format.</p>
+</div>
+<div class="paragraph">
+<p>The <code>xml</code> generator is used as an intermediary format for other tools or for testing purposes.
+Users can write their own tools to process the XML output and generate custom documentation.</p>
+</div>
+<div class="paragraph">
+<p>The <code>adoc</code> and <code>html</code> generators use templates to generate the documentation.
+These templates can be customized to change the output format and style.</p>
+</div>
+<div class="paragraph">
+<p>Asciidoc is a text-based format that is easy to read and write.
+It can also be converted to other formats such as HTML and Markdown.</p>
+</div>
+<div class="paragraph">
+<p>HTML can be generated directly with the <code>html</code> format.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_choosing_the_right_generator"><a class="anchor" href="#_choosing_the_right_generator"></a>Choosing the Right Generator</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The scatter plot below illustrates the available output formats for MrDocs, along with hypothetical solutions, in terms of <strong>redundancy</strong> and <strong>convenience</strong>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/generator_front.svg" alt="Output Formats Scatter Plot" width="600">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Redundancy</strong>: The amount of duplicated or unstructured information in the output format.
+Lower redundancy is generally preferred for post-processing, while higher redundancy can allow the output to use formats that are easier to use directly.</p>
+</li>
+<li>
+<p><strong>Convenience</strong>: Reflects how readily the output format can be used without requiring additional tools or steps.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Although Clang can generate and print an Abstract Syntax Tree (AST) directly for a Translation Unit (TU), it is not the most convenient format for generating documentation:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>It does not provide the AST in a format that&#8217;s easy to process.</p>
+</li>
+<li>
+<p>Equivalent symbols can be redeclared multiple times in the same translation unit and across translation units.</p>
+</li>
+<li>
+<p>The documentation for equivalent symbols also needs to be unified.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The scatter plot shows the following output formats supported by MrDocs:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>XML</strong>: Aggregates all symbols and their documentation in a format that is straightforward to process.
+It&#8217;s suitable for advanced use cases involving custom post-processing tools.</p>
+</li>
+<li>
+<p><strong>Asciidoc</strong>: Similar to HTML in convenience, Asciidoc files can be easily converted to HTML and multiple other formats with <a href="https://docs.asciidoctor.org/asciidoctor/latest/convert/available/:">backends</a>.</p>
+</li>
+<li>
+<p><strong>HTML</strong>: Generates output that is directly usable in a variety of contexts, such as web pages or documentation systems.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The Asciidoc and HTML generators also support <a href="#generator-templates"><strong>Custom Templates</strong></a> to change the output format and style.
+This forms another possibility in the trade-off between redundancy and convenience.</p>
+</div>
+<div class="paragraph">
+<p>The best trade-offs, represented by the line passing through the generators, indicate the optimal solutions in terms of redundancy and convenience.
+Solutions on this line balance these goals effectively.
+Dots in the background represent other potential formats that do not lie on the front of best trade-offs, as they fail to optimize either redundancy or convenience compared to the available generators.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="generator-templates"><a class="anchor" href="#generator-templates"></a>Generator Templates</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>MrDocs attempts to support various alternatives for customizing the output format and style without complex workflows to post-process XML output.
+The <code>adoc</code> and <code>html</code> generators use <a href="https://handlebarsjs.com/" target="_blank" rel="noopener">Handlebars</a> templates.
+These templates can be customized to change the output format and style of the documentation.</p>
+</div>
+<div class="paragraph">
+<p>The templates used to generate the documentation are located in the <code>share/mrdocs/addons/generator</code> directory.
+Users can create a copy of these files and provide their own <code>addons</code> directory via the <code>addons</code> option in the configuration file or via the command line.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">addons: /path/to/custom/addons</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Each symbol goes through a main layout template in the <code>&lt;addons&gt;/generator/&lt;generator&gt;/layouts/single-symbol.&lt;generator&gt;.hbs</code> directory.
+This template is a simple entry point that renders the partial relative to the symbol kind.</p>
+</div>
+<div class="paragraph">
+<p>The partials are located in the <code>&lt;addons&gt;/generator/&lt;generator&gt;/partials</code> directory.
+It typically contains the following files and subdirectories:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>symbol</code>: A generic partial for rendering symbols.</p>
+</li>
+<li>
+<p><code>location</code>: Partials for rendering <a href="#location-fields">location objects</a>.</p>
+</li>
+<li>
+<p><code>symbol</code>: Partials for rendering <a href="#symbol-fields">Symbol Objects</a>.</p>
+</li>
+<li>
+<p><code>template</code>: Partials for rendering <a href="#template-info-fields">Template Info Objects</a>.</p>
+</li>
+<li>
+<p><code>type</code>: Partials for rendering <a href="#type-info-fields">Type Info Objects</a>.</p>
+</li>
+<li>
+<p><code>markup</code>: partials for rendering markup elements such as lists, tables, and code blocks, in the output format.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Please refer to the <a href="#dom_reference">Document Object Model Reference</a> for more information on each type of object.</p>
+</div>
+<div class="paragraph">
+<p>Partials common to all generators are available in the <code>&lt;addons&gt;/generator/common/partials</code> directory.
+The common partials are loaded before the generator-specific partials, which can override any common partials.</p>
+</div>
+<div class="paragraph">
+<p>The multipage generator renders the layout multiple times as separate pages for each symbol.
+The single-page generator renders the layout multiple times and concatenates the results in a single page.</p>
+</div>
+<div class="paragraph">
+<p>Each time the generator encounters a symbol, it renders the layout template with the symbol data as the Handlebars context.
+The layout template can include other partial templates to render the symbol data. These partials are available in the <code>&lt;addons&gt;/generator/&lt;generator&gt;/partials</code> directory.</p>
+</div>
+<div class="paragraph">
+<p>The Document Object Model (DOM) for each symbol includes all information about the symbol.One advantage of custom templates over post-processing XML files is the ability to access symbols as a graph.If symbol <code>A</code> refers to symbol <code>B</code>, some properties of symbol <code>B</code> are likely to be required in the documentation of <code>A</code>.All templates and generators can access a reference to <code>B</code> by searching the symbol tree or simply by accessing the elements <code>A</code> refers to.All references to other symbols are resolved in the templates.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="dom_reference"><a class="anchor" href="#dom_reference"></a>Document Object Model Reference</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Document Object Model (DOM) is a tree structure that represents the symbols extracted from the source code.The DOM is used by the generator to render the documentation.</p>
+</div>
+<div class="sect2">
+<h3 id="_top_level_fields"><a class="anchor" href="#_top_level_fields"></a>Top-Level Fields</h3>
+<div class="paragraph">
+<p>The top-level object in the DOM is the context for a template.The top-level object has the following properties:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>symbol</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#symbol-fields">Symbol Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The symbol being rendered.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>config</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#config-fields">Config Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The configuration object.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="symbol-fields"><a class="anchor" href="#symbol-fields"></a>Symbol</h3>
+<div class="paragraph">
+<p>The <code>Symbol</code> object represents a symbol extracted from the source code.The symbol being rendered is available in the <code>symbol</code> object in the Handlebars context.The symbol object has the following properties:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A unique identifier for the symbol.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The nonqualified name of the symbol.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>kind</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The kind of symbol. (e.g., <code>class</code>, <code>function</code>, <code>variable</code>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>access</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The access level of the symbol. (e.g., <code>public</code>, <code>protected</code>, <code>private</code>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>extraction</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The extraction mode of the symbol according to the specified filters. (e.g., <code>regular</code>, <code>see-below</code>, <code>implementation-defined</code>, <code>dependency</code>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isRegular</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the symbol extraction mode is <code>regular</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isSeeBelow</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the symbol extraction mode is <code>see-below</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isImplementationDefined</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the symbol extraction mode is <code>implementation-defined</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isDependency</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the symbol extraction mode is <code>dependency</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>parents</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#symbol-fields">Symbol Object[]</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The parent contexts (namespaces or records) of the symbol.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>parent</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#symbol-fields">Symbol Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The parent context (namespace or record) of the symbol.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>doc</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Any</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The documentation for the symbol.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Handlebars generators extend each symbol with the following fields:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>url</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The URL of the symbol. If the documentation is a single page, this is the anchor link to the symbol starting with <code>#</code>. If the documentation is multipage, this is the path to the symbol starting with <code>/</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>anchor</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The anchor link to the symbol. This is used for section IDs in the documentation.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>The <code>Symbol</code> object has additional properties based on the kind of symbol.
+The following table lists the additional properties for symbols that contain information about their scope (such as Namespaces and Classes):</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>members</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#symbol-fields">Symbol Object[]</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The members of that scope (e.g., member functions, namespace symbols).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>overloads</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#symbol-fields">Symbol Object[]</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Same as <code>members</code>, but groups overloaded functions as unique symbols of kind <code>overload</code>.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Symbol objects that contain information about the location include the following properties:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>loc</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#source-info-fields">Source Info Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The location of the symbol in the source code.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>When the symbol kind is <code>namespace</code>, the symbol object has the following additional properties:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>interface</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#tranche-fields">Tranche Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The interface of the namespace.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>usingDirectives</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#symbol-fields">Symbol Object[]</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The using directives of the namespace.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>When the symbol kind is <code>record</code> (e.g., <code>class</code>, <code>struct</code>, <code>union</code>), the symbol object has the following additional properties:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>tag</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The type of record (e.g., <code>class</code>, <code>struct</code>, <code>union</code>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>defaultAccess</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The default access level of the record members (e.g., <code>public</code>, <code>private</code>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isTypedef</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the record is a typedef.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bases</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#base-info-fields">Base Info Object[]</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The base classes of the record.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>interface</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#interface-fields">Interface Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The interface of the record.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>template</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#template-info-fields">Template Info Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The template information of the record.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>When the symbol kind is <code>enum</code>, the symbol object has the following additional properties:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#type-info-fields">Type Info Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The type information of the enum.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isScoped</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the enum is scoped.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>When the symbol kind is <code>function</code>, the symbol object has the following additional properties:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isVariadic</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the function is variadic.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isVirtual</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the function is virtual.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isVirtualAsWritten</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the function is virtual as written.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isPure</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the function is pure.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isDefaulted</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the function is defaulted.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isExplicitlyDefaulted</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the function is explicitly defaulted.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isDeleted</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the function is deleted.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isDeletedAsWritten</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the function is deleted as written.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isNoReturn</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the function is noreturn.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>hasOverrideAttr</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the function has the override attribute.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>hasTrailingReturn</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the function has a trailing return type.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isConst</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the function is const.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isVolatile</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the function is volatile.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isFinal</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the function is final.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isNodiscard</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the function is nodiscard.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isExplicitObjectMemberFunction</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the function is an explicit object member function.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>constexprKind</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The constexpr kind of the function (e.g., <code>consteval</code>, <code>constexpr</code>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>storageClass</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The storage class of the function (e.g., <code>static</code>, <code>extern</code>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>refQualifier</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The reference qualifier of the function (e.g., <code>&amp;</code>, <code>&amp;&amp;</code>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>class</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The function class (e.g., <code>constructor</code>, <code>conversion</code>, <code>destructor</code>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>params</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#param-fields">Param Object[]</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The parameters of the function.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>return</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#type-info-fields">Type Info Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The return type of the function.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>template</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#template-info-fields">Template Info Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The template information of the function.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>overloadedOperator</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The overloaded operator of the function.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>exceptionSpec</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The exception specification of the function.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>explicitSpec</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The explicit specification of the function.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>requires</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The <code>requires</code> expression of the function.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>attributes</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The attributes of the function.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>When the symbol kind is <code>typedef</code>, the symbol object has the following additional properties:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#type-info-fields">Type Info Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The type information of the typedef.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>template</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#template-info-fields">Template Info Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The template information of the typedef.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isUsing</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the typedef is a <code>using</code> declaration.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>When the symbol kind is <code>variable</code>, the symbol object has the following additional properties:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#type-info-fields">Type Info Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The type information of the variable.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>template</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#template-info-fields">Template Info Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The template information of the variable.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>constexprKind</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The constexpr kind of the variable (e.g., <code>consteval</code>, <code>constexpr</code>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>storageClass</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The storage class of the variable (e.g., <code>static</code>, <code>extern</code>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isConstinit</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the variable is <code>constinit</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isThreadLocal</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the variable is thread-local.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>initializer</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The initializer of the variable.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>When the symbol kind is <code>field</code> (i.e. non-static data members), the symbol object has the following additional properties:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#type-info-fields">Type Info Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The type information of the field.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>default</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The default value of the field.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isMaybeUnused</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the field is maybe unused.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isDeprecated</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the field is deprecated.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isVariant</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the field is a variant.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isMutable</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the field is mutable.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isBitfield</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the field is a bitfield.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>hasNoUniqueAddress</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the field has the <code><a id="no_unique_address"></a></code> attribute.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bitfieldWidth</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The width of the bitfield.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>attributes</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The attributes of the field.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>When the symbol kind is <code>friend</code>, the symbol object has the following additional properties:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The name of the friend symbol or type.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>symbol</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#symbol-fields">Symbol Object</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The friend symbol.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#type-info-fields">Type Info Object</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The friend type.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>When the symbol kind is <code>namespace-alias</code>, the symbol object has the following additional properties:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aliasedSymbol</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#name-info-fields">Name Info Object</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The aliased symbol.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>When the symbol kind is <code>using</code>, the symbol object has the following additional properties:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>class</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The class of the using declaration (e.g., <code>normal</code>, <code>typename</code>, <code>enum</code>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>shadows</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#symbol-fields">Symbol Object[]</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The symbols being used.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>qualifier</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#name-info-fields">Name Info Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The qualifier of the using declaration.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>When the symbol kind is <code>enum-constant</code>, the symbol object has the following additional properties:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>initializer</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The initializer of the enum-constant.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>When the symbol kind is <code>guide</code>, the symbol object has the following additional properties:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>params</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#param-fields">Param Object[]</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The parameters of the guide.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>deduced</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#type-info-fields">Type Info Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The deduced type of the guide.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>template</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#template-info-fields">Template Info Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The template information of the guide.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>explicitSpec</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The explicit specification of the guide.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>When the symbol kind is <code>concept</code>, the symbol object has the following additional properties:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>template</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#template-info-fields">Template Info Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The template information of the concept.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>constraint</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The constraint of the concept.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="source-info-fields"><a class="anchor" href="#source-info-fields"></a>Source Info Fields</h3>
+<div class="paragraph">
+<p>The <code>Source Info</code> object represents the location of the symbol in the source code.
+The source info object has the following properties:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>def</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#location-fields">Location Object</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Location where the entity was defined.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>decl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#location-fields">Location Object[]</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Locations where the entity was declared.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="tranche-fields"><a class="anchor" href="#tranche-fields"></a>Tranche Object Fields</h3>
+<div class="paragraph">
+<p>The <code>Tranche</code> object represents the symbols in a scope (e.g., namespace).
+The tranche object has the following properties:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(symbol kind in plural form: e.g., <code>classes</code>, <code>functions</code>, <code>variables</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#symbol-fields">Symbol Object[]</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The symbols of that kind in the scope.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>types</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#symbol-fields">Symbol Object[]</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The types in the scope.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>staticfuncs</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#symbol-fields">Symbol Object[]</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The static functions in the scope.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>overloads</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#symbol-fields">Symbol Object[]</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The overloads in the scope.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>staticoverloads</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#symbol-fields">Symbol Object[]</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The static overloads in the scope.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="interface-fields"><a class="anchor" href="#interface-fields"></a>Interface Object Fields</h3>
+<div class="paragraph">
+<p>The <code>Interface</code> object represents the interface of a record (e.g., class, struct, union).
+The interface object has the following properties:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>public</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#tranche-fields">Tranche Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The public interface of the record.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>protected</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#tranche-fields">Tranche Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The protected interface of the record.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>private</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#tranche-fields">Tranche Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The private interface of the record.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="base-info-fields"><a class="anchor" href="#base-info-fields"></a>Base Info Fields</h3>
+<div class="paragraph">
+<p>The <code>Base Info</code> object represents a base class of a record.
+The base info object has the following properties:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>access</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The access level of the base class.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isVirtual</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the base class is virtual.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#type-info-fields">Type Info Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The type information of the base class.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="template-info-fields"><a class="anchor" href="#template-info-fields"></a>Template Info Fields</h3>
+<div class="paragraph">
+<p>The <code>Template Info</code> object represents the template information of a record, function, or typedef.
+The template info object has the following properties:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>kind</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The kind of template (e.g., <code>explicit</code>, <code>partial</code>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>primary</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#symbol-fields">Symbol Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The primary template.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>params</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#tparam-fields">tParam Object[]</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The template parameters.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>args</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#targ-fields">Type Info Object[]</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The template arguments.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>requires</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The <code>requires</code> expression of the template.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="type-info-fields"><a class="anchor" href="#type-info-fields"></a>Type Info Fields</h3>
+<div class="paragraph">
+<p>The <code>Type Info</code> object represents the type information of a symbol.
+The type info object has the following properties:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>kind</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The kind of type (e.g., <code>named</code>, <code>decltype</code>, <code>auto</code>, <code>pointer</code>, <code>reference</code>, <code>array</code>, <code>function</code>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>is-pack</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the type is a pack expansion.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The name of the type.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>operand</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The operand of the type.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>keyword</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The keyword of the type.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>constraint</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The constraint of the type.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>cv-qualifiers</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The cv qualifier of the type (e.g., <code>const</code>, <code>volatile</code>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>parent-type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#type-info-fields">Type Info Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The parent type of the type.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pointee-type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#type-info-fields">Type Info Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The pointee type of the type.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>element-type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#type-info-fields">Type Info Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The element type of the type.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bounds-value</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The bounds value of the type.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bounds-expr</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The bounds expression of the type.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>return-type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#type-info-fields">Type Info Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The return type of the type.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>param-types</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#type-info-fields">Type Info Object[]</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The parameter types of the type.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>exception-spec</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The exception specification of the type.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ref-qualifier</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The reference qualifier of the type.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>is-variadic</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the type is variadic.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="param-fields"><a class="anchor" href="#param-fields"></a>Param Fields</h3>
+<div class="paragraph">
+<p>The <code>Param</code> object represents the parameter of a function.
+The param object has the following properties:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The name of the parameter.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#type-info-fields">Type Info Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The type information of the parameter.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>default</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The default value of the parameter.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="name-info-fields"><a class="anchor" href="#name-info-fields"></a>Name Info Fields</h3>
+<div class="paragraph">
+<p>The <code>Name Info</code> object represents the name of a symbol.
+The name info object has the following properties:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The name of the symbol.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>symbol</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The unique identifier of the symbol.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>args</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#targ-fields">Type Info Object[]</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The template arguments of the symbol.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>prefix</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The prefix of the symbol.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="location-fields"><a class="anchor" href="#location-fields"></a>Location Fields</h3>
+<div class="paragraph">
+<p>The <code>Location</code> object represents the location of a symbol in the source code.
+The location object has the following properties:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>path</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The path of the source file.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>file</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The filename of the source file.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>line</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>integer</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The line number of the symbol.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>kind</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The kind of file (e.g., <code>source</code>, <code>system</code>, <code>other</code>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>documented</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the symbol is documented.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="tparam-fields"><a class="anchor" href="#tparam-fields"></a>TParam Fields</h3>
+<div class="paragraph">
+<p>The <code>TParam</code> object represents a template parameter of a record, function, or typedef.
+The tparam object has the following properties:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>kind</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The kind of template parameter (e.g., <code>type</code>, <code>non-type</code>, <code>template</code>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The name of the template parameter.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>is-pack</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the template parameter is a pack expansion.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>default</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The default value of the template parameter.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>key</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The key kind of the template parameter.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>constraint</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The constraint of the template parameter.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#type-info-fields">Type Info Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The type information of the template parameter.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>params</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#tparam-fields">TParam Object[]</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The template parameters of the template parameter.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="targ-fields"><a class="anchor" href="#targ-fields"></a>Targ Fields</h3>
+<div class="paragraph">
+<p>The <code>Targ</code> object represents a template argument of a record, function, or typedef.
+The targ object has the following properties:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>kind</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The kind of template argument (e.g., <code>type</code>, <code>non-type</code>, <code>template</code>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>is-pack</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the template argument is a pack expansion.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#type-info-fields">Type Info Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The type information of the template argument.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>value</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The value of the template argument.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The name of the template argument.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>template</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="#template-info-fields">Template Info Object</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The template information of the template argument.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="config-fields"><a class="anchor" href="#config-fields"></a>Config Fields</h3>
+<div class="paragraph">
+<p>The <code>Config</code> object represents the configuration object.
+It includes all values provided to MrDocs in the configuration file or via the command line.
+Please refer to the <a href="config-file.html" class="xref page">configuration file reference</a> for more information.</p>
+</div>
+</div>
+</div>
+</div>
+  <div class="edit-this-page">
+      <a href="https://github.com/cppalliance/mrdocs/edit/develop/docs/modules/ROOT/pages/generators.adoc">Edit this Page</a>
+      </div>
+  </article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+<script async src="../../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>

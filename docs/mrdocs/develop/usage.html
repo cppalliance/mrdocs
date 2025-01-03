@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Basic Usage :: MrDocs</title>
+  <link rel="canonical" href="https://www.mrdocs.com/mrdocs/develop/usage.html">
+  <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../_/css/boostlook.css">
+    <link rel="stylesheet" href="../../_/css/site.css">
+    <link rel="stylesheet" href="../../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../../_'</script>
+  </head>
+  <body class="article toc2 toc-left">
+    <div class="boostlook">
+  <script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs'; mermaid.initialize({"startOnLoad":true});</script><div id="header">
+    <div id="toc" class="nav-container toc2" data-component="mrdocs" data-version="develop">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="index.html">MrDocs</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="index.html">Home</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="demos.html">Demos</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="install.html">Installation</a>
+        </li>
+              <li class=" is-current-page" data-depth="1">
+            <a class="nav-link" href="usage.html">Getting Started</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="commands.html">Documenting the Code</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="config-file.html">The Configuration File</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="generators.html">Generators</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="design-notes.html">Design Notes</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="contribute.html">Contributor&#8217;s Guide</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="license.html">License</a>
+        </li>
+        </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+</div>
+  <div id="content">
+    <article class="doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="index.html" aria-label="Home: MrDocs">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 -960 960 960" fill="#000000" aria-hidden="true"><path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z"/></svg>
+      </a>
+    </li>
+    <li><a href="usage.html">Getting Started</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a accesskey="p" href="install.html"><span class="material-symbols-outlined" title="Previous: Installation">arrow_back</span></a>
+    <a accesskey="p" href="commands.html"><span class="material-symbols-outlined" title="Next: Documenting the Code">arrow_forward</span></a>
+</div>
+</div>
+    <h1 class="page">Basic Usage</h1>
+  <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>The diagram below illustrates the workflow of the MrDocs documentation tool.
+It shows how inputs are transformed step by step into the final documentation output.
+Each component in the diagram represents a distinct type of entity:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Inputs</strong>: Provide the initial parameters and settings required to configure and run the tool.
+These include the <a href="#config-file">configuration file</a> and <a href="#cli">command-line arguments</a>.</p>
+</li>
+<li>
+<p><strong>Processes</strong>: Represent intermediary outputs or data generated during the workflow.</p>
+</li>
+<li>
+<p><strong>Outputs</strong>: The final product, in this case, the generated documentation.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock"><div class="mermaid content" style=" ">graph TD
+  %% Define styles for visual clarity
+  classDef input fill:#D1E8FF,stroke:#005CFF,stroke-width:2;
+  classDef artifact fill:#FFF5D1,stroke:#FFA500,stroke-width:2;
+  classDef output fill:#D1FFD1,stroke:#008000,stroke-width:2;
+
+  %% Define Inputs
+  subgraph Inputs
+    CF[Configuration File]
+    CL[Command Line Arguments]
+  end
+  class CL,CF input
+
+  %% Define Artifacts
+  subgraph Processes
+    P[Configuration Options]
+    CD[Compilation Database]
+    C[Corpus]
+    G[Generator]
+  end
+  class P artifact
+  class CD,C,G artifact
+
+  %% Define Outputs
+  subgraph Outputs
+    D[Documentation]
+  end
+  class D output
+
+  %% Relationships
+  CF -->|Define| P
+  CL -->|Define| P
+  P -->|Defines| CD
+  CD -->|Extract Symbols| C
+  C -->|Feeds| G
+  G -->|Produces| D
+
+  %% Highlight dependencies for clarity
+  P -->|Influences| G</div></div>
+<div class="paragraph">
+<p>In summary:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Begin by specifying the <a href="#config-file">configuration file</a> and <a href="#cli">command-line arguments</a> to set up the options.
+The configuration options affect all processes.</p>
+</li>
+<li>
+<p>The configuration options define a <a href="#compilation-database">Compilation Database</a>.
+All symbols are extracted with Clang to generate a unified corpus of symbols with their corresponding <a href="commands.html" class="xref page">documentation</a>.</p>
+</li>
+<li>
+<p>Finally, This corpus is then fed to a <a href="generators.html" class="xref page">Generator</a> that produces the desired documentation.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For more details on each component, refer to the corresponding sections of this guide.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="config-file"><a class="anchor" href="#config-file"></a>MrDocs configuration file</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>mrdocs.yml</code> configuration file contains information about the project.
+If you&#8217;re used to Doxygen, this file is similar to the <code>Doxyfile</code> configuration file.</p>
+</div>
+<div class="paragraph">
+<p>Here is an example of a <code>mrdocs.yml</code> file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">source-root: ../include
+multipage: false
+generate: adoc</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In many projects, it is common to have the documentation in a <code>docs</code> directory, which can also contain this configuration file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-asciidoc hljs" data-lang="asciidoc">+ &lt;project-directory&gt;
+  + docs
+    + mrdocs.yml
+    + ...
+  + include
+  + src
+  + test
+  + ...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The most important information is the <code>source-root</code> option, which determines the root of the source tree relative to the <code>mrdocs.yml</code> file.</p>
+</div>
+<div class="paragraph">
+<p>The list of all available options can be found in the <a href="config-file.html" class="xref page">The Configuration File</a> page.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="cli"><a class="anchor" href="#cli"></a>MrDocs invocation</h2>
+<div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+For consistency, these instructions assume you have the <code>mrdocs</code> executable in PATH.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_basic_invocation"><a class="anchor" href="#_basic_invocation"></a>Basic invocation</h3>
+<div class="paragraph">
+<p>You can invoke MrDocs from the command line with the following command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mrdocs path/to/mrdocs.yml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you are at the path of the <code>mrdocs.yml</code> file, you can simply run:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mrdocs</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also specify other commands to MrDocs directly from the command line to set or override options from the <code>mrdocs.yml</code> file (See all options in <a href="config-file.html" class="xref page">The Configuration File</a> page).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mrdocs path/to/mrdocs.yml --output=../docs/reference</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Except for the path to the <code>mrdocs.yml</code> file, all other relative paths are made absolute relative to the <code>mrdocs.yml</code> file.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="compilation-database"><a class="anchor" href="#compilation-database"></a>Compilation databases</h3>
+<div class="paragraph">
+<p>One way to simplify the documentation generation process is by using a <code>compile_commands.json</code> file generated by CMake to determine the source files to process and their compile options.
+This file is generated by the CMake configuration step when the <code>CMAKE_EXPORT_COMPILE_COMMANDS</code> option is set to <code>ON</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cmake -B build -S . -DCMAKE_EXPORT_COMPILE_COMMANDS=ON</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>At this step, you can also add any other flags you want to pass to <code>cmake</code>, such as <code>-DCMAKE_BUILD_TYPE=Release</code> or <code>-DCMAKE_CXX_COMPILER=clang++</code>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you are using the Visual Studio generator, you might need to switch to the Ninja generator to generate the <code>compile_commands.json</code> file.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This will generate a <code>compile_commands.json</code> file in the <code>build</code> directory containing all commands needed to compile your project.
+This file can be used by MrDocs to determine the source files to process and their compile options.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mrdocs --compilation-database=../build/compile_commands.json --output=../docs/reference</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>MrDocs will go through all the source files listed in the <code>compile_commands.json</code> file and generate the documentation for them.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+When MrDocs goes through the commands in the compilation database, it will go through the same targets as the compiler.
+Only symbols present in these targets will be documented.
+In the case of header-only libraries, the symbols will be documented only if they are included in one of these targets.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_cmake_integration"><a class="anchor" href="#_cmake_integration"></a>CMake integration</h3>
+<div class="paragraph">
+<p>It&#8217;s common to have different configurations for the documentation generation than for the project build.
+This means CMake is often being run just to generate a custom <code>compile_commands.json</code> for the documentation.
+Also, the <code>compile_commands.json</code> file is a configuration artifact, which means it often lacks a stable location that can be referenced in the <code>mrdocs.yml</code> configuration file.</p>
+</div>
+<div class="paragraph">
+<p>Thus, the pattern of using a <code>compile_commands.json</code> file generated by CMake is so common that MrDocs provides a CMake module to simplify the process.
+You can let MrDocs generate the <code>compile_commands.json</code> file for you by providing the path to the <code>CMakeLists.txt</code> file of your project.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mrdocs --compilation-database=../CMakeLists.txt --output=../docs/reference</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By providing your <code>CMakeLists.txt</code> file as the reference for you compilation database, MrDocs will automatically run CMake to generate the <code>compile_commands.json</code> file in a temporary directory.
+Not only this simplifies the usage but also ensures that the stable compilation database file can be used in the <code>mrdocs.yml</code> configuration file.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+MrDocs does not bundle CMake.
+If you want to use this feature, you need to have CMake installed on your system and available in PATH.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Parameters for cmake, such as <code>-D BUILDING_TEST=OFF -D MRDOCS_BUILD=ON</code> can also be specified with the <code>cmake</code> option in configuration file.
+MrDocs will always append the <code>CMAKE_EXPORT_COMPILE_COMMANDS=ON</code> flag to the cmake command.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_mrdocs_builds"><a class="anchor" href="#_mrdocs_builds"></a>MrDocs Builds</h3>
+<div class="paragraph">
+<p>In many projects, a common pattern is to define a special build configuration for the documentation generation such that:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Tests, examples, and auxiliary targets excluded</p>
+</li>
+<li>
+<p>All header-only files are included in targets</p>
+</li>
+<li>
+<p>Unnecessary sources files are excluded from targets</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>This can usually be achieved by defining a custom target in the <code>CMakeLists.txt</code> with a single source file that includes all the necessary header files.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cmake hljs" data-lang="cmake">if (MY_PROJECT_MRDOCS_BUILD)
+    # Glob all header files
+    set(INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include")
+    file(GLOB_RECURSE HEADER_FILES "${INCLUDE_DIR}/*.hpp")
+
+    # Create a temporary source file that includes all header files
+    set(TEMP_CPP_FILE "${CMAKE_CURRENT_BINARY_DIR}/all_headers.cpp")
+    file(WRITE ${TEMP_CPP_FILE} "// This file is generated automatically by CMake\n\n")
+    foreach(HEADER_FILE ${HEADER_FILES_LIST})
+        file(APPEND ${TEMP_CPP_FILE} "#include \"${HEADER_FILE}\"\n")
+    endforeach()
+
+    # Create a custom target for MrDocs
+    add_library(my_project_mrdocs_target ${TEMP_CPP_FILE})
+
+    # Set any other target properties here
+    target_include_directories(my_project_mrdocs_target PRIVATE ${INCLUDE_DIR})
+    target_link_libraries(my_project_mrdocs_target PRIVATE an_external_library)
+
+    # Don't create any other targets
+    return()
+endif()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To use this target, you can run CMake with the <code>MY_PROJECT_MRDOCS_BUILD</code> flag set to <code>ON</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mrdocs --cmake="-D MY_PROJECT_MRDOCS_BUILD=ON" --compilation-database=../CMakeLists.txt --output=..\docs\reference</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Because these paths and options are stable, you can specify them in the <code>mrdocs.yml</code> configuration file.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">cmake: "-D MY_PROJECT_MRDOCS_BUILD=ON"
+compilation-database: ../CMakeLists.txt
+output: ../docs/reference</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_extracting_documentation"><a class="anchor" href="#_extracting_documentation"></a>Extracting Documentation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Unlike other documentation generators, MrDocs only works with valid C&#43;&#43; code.
+Instead of partially preprocessing the source files and inferring symbols from potentially ill-formed code, MrDocs relies on the compilation database and Clang to preprocess the source files.</p>
+</div>
+<div class="paragraph">
+<p>Thus, for each common C&#43;&#43; construct, MrDocs provides commands or options to identify and extract the relevant information as intended by the user.
+For instance, a common ill-formed Doxygen pattern to specify a class as an implementation detail is:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">#ifdef DOCS
+__implementation_defined__
+#else
+impl::f_return_t
+#endif
+f();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this pattern, the user wants to document the function <code>f</code> as <code><em>implementation_defined</em> f();</code> because the library contract is that the user should not rely on a specific return type here.
+However, this ill-formed pattern is problematic:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code><em>implementation_defined</em></code> is not a valid symbol so the code is ill-formed</p>
+</li>
+<li>
+<p><code>impl::f_return_t</code> doesn&#8217;t express the intent of the user for the documentation</p>
+</li>
+<li>
+<p>the developer has to effectively maintain two versions of the code</p>
+</li>
+<li>
+<p>the original source code becomes more and more unreadable</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Instead, when using MrDocs, while the <code>__MRDOCS__</code> macro is still available for conditional compilation, the same function could be directly documented as:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c++ hljs" data-lang="c++">impl::f_return_t f();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And the user can specify that <code>impl</code> as a namespace for implementation details in the configuration file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># ...
+implementation-detail: impl
+# ...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <a href="commands.html" class="xref page">Commands</a> and <a href="config-file.html" class="xref page">The Configuration File</a> pages contain a list of all available commands and options to identify and extract the relevant information as intended by the user.</p>
+</div>
+<div class="paragraph">
+<p>MrDocs provides multiple mechanisms are provided to specify special C&#43;&#43; patterns, such as the example above.
+For each common C&#43;&#43; construct that would require macros and two versions of the code, MrDocs provides commands to identify the construct and extract the relevant information as intented by the user.</p>
+</div>
+</div>
+</div>
+  <div class="edit-this-page">
+      <a href="https://github.com/cppalliance/mrdocs/edit/develop/docs/modules/ROOT/pages/usage.adoc">Edit this Page</a>
+      </div>
+  </article>
+</div>
+  <div id="footer">
+  <script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+<script async src="../../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+</div>
+</div>
+  </body>
+</html>
