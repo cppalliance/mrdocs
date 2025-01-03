@@ -64,8 +64,8 @@ This function calculates the square root of a    given integral value using bit 
 |===
 | Name | Thrown on
 
-| `if`
-| the input value is negative&period;
+| `std&colon;&colon;invalid&lowbar;argument`
+| if the input value is negative&period;
 
 
 |===

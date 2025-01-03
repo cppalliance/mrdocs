@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <function name="operator==" id="pqHl3WkOZfX6m6ltquhjuQtzXp4=">
+    <file path="overloads.cpp" line="8"/>
+    <attr id="operator" name="eq" value="30"/>
+    <return>
+      <type name="bool"/>
+    </return>
+    <param>
+      <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
+    </param>
+    <param>
+      <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
+    </param>
+  </function>
+  <function name="operator==" id="7bqo4XOxyyg5NIOu+8i4lZ3L47c=">
+    <file path="overloads.cpp" line="9"/>
+    <attr id="operator" name="eq" value="30"/>
+    <return>
+      <type name="bool"/>
+    </return>
+    <param>
+      <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
+    </param>
+    <param>
+      <type name="int"/>
+    </param>
+  </function>
+  <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
+    <file path="overloads.cpp" line="1" class="def"/>
+    <function name="f" id="hLXvGC+nOrLQRH9lODKkgi/oUas=">
+      <file path="overloads.cpp" line="2"/>
+    </function>
+    <function name="f" id="7Bg4Ruo9NHdsGok6ICFQWW1MBuE=">
+      <file path="overloads.cpp" line="3"/>
+      <return>
+        <type name="int"/>
+      </return>
+      <param>
+        <type name="int"/>
+      </param>
+    </function>
+    <function name="g" id="qw8/QuVZ7n9UkJWa5gz1gYkPlBc=">
+      <file path="overloads.cpp" line="5"/>
+      <attr id="storage-class" name="static" value="2"/>
+    </function>
+    <function name="g" id="E2RBHdoNQKveCfR6zUiWe+Ztmtk=">
+      <file path="overloads.cpp" line="6"/>
+      <attr id="storage-class" name="static" value="2"/>
+      <return>
+        <type name="int"/>
+      </return>
+      <param>
+        <type name="int"/>
+      </param>
+    </function>
+    <friend id="oIHRrgqp8DWHsLP+W6GIG30sf4w=">
+      <file path="overloads.cpp" line="8"/>
+      <befriended id="pqHl3WkOZfX6m6ltquhjuQtzXp4="/>
+    </friend>
+    <friend id="4ajaf5Te8WqGTnGDFq9hJqMofac=">
+      <file path="overloads.cpp" line="9"/>
+      <befriended id="7bqo4XOxyyg5NIOu+8i4lZ3L47c="/>
+    </friend>
+  </struct>
+  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
+    <file path="overloads.cpp" line="12"/>
+  </function>
+  <function name="f" id="ackjGh57CJQLwtO8PihiSPPKIBY=">
+    <file path="overloads.cpp" line="13"/>
+    <return>
+      <type name="int"/>
+    </return>
+    <param>
+      <type name="int"/>
+    </param>
+  </function>
+  <struct name="B" id="3JsK1DO0O+wZhv+0meptQrbs3fY=">
+    <file path="overloads.cpp" line="15" class="def"/>
+  </struct>
+  <function name="operator==" id="gddLjn5hKdr6Ei8xKgtcB3bktI4=">
+    <file path="overloads.cpp" line="17"/>
+    <attr id="operator" name="eq" value="30"/>
+    <return>
+      <type name="bool"/>
+    </return>
+    <param>
+      <type id="3JsK1DO0O+wZhv+0meptQrbs3fY=" name="B"/>
+    </param>
+    <param>
+      <type id="3JsK1DO0O+wZhv+0meptQrbs3fY=" name="B"/>
+    </param>
+  </function>
+  <function name="operator==" id="cVrZLPSmQHMz47ziL64cElytjh0=">
+    <file path="overloads.cpp" line="18"/>
+    <attr id="operator" name="eq" value="30"/>
+    <return>
+      <type name="bool"/>
+    </return>
+    <param>
+      <type id="3JsK1DO0O+wZhv+0meptQrbs3fY=" name="B"/>
+    </param>
+    <param>
+      <type name="int"/>
+    </param>
+  </function>
+</namespace>
+</mrdocs>

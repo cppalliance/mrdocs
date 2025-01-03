@@ -683,7 +683,7 @@ struct TParam : Paragraph
 */
 struct Throws : Paragraph
 {
-    String exception;
+    Reference exception;
 
     static constexpr Kind static_kind = Kind::throws;
 

@@ -1,0 +1,410 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+=== Types
+
+[cols=1]
+|===
+| Name 
+
+| <<A,`A`>> 
+| <<B,`B`>> 
+|===
+=== Functions
+
+[cols=1]
+|===
+| Name 
+
+| <<f,`f`>> 
+| <<operator_eq,`operator&equals;&equals;`>> 
+|===
+
+[#A]
+== A
+
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct A;
+----
+
+=== Member Functions
+
+[cols=1]
+|===
+| Name 
+
+| <<A-f,`f`>> 
+|===
+=== Static Member Functions
+
+[cols=1]
+|===
+| Name 
+
+| <<A-g,`g`>> 
+|===
+=== Friends
+
+[cols=1]
+|===
+| Name 
+
+| <<A-08friend-0a,`operator&equals;&equals;`>> 
+| <<A-08friend-0e,`operator&equals;&equals;`>> 
+|===
+
+
+
+[#A-f]
+== <<A,A>>::f
+
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<A-f-08,f>>();
+----
+
+[.small]#<<A-f-08,_» more..._>>#
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+<<A-f-0e,f>>(int);
+----
+
+[.small]#<<A-f-0e,_» more..._>>#
+
+[#A-f-08]
+== <<A,A>>::f
+
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f();
+----
+
+[#A-f-0e]
+== <<A,A>>::f
+
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+f(int);
+----
+
+[#A-g]
+== <<A,A>>::g
+
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+static
+void
+<<A-g-0a,g>>();
+----
+
+[.small]#<<A-g-0a,_» more..._>>#
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+static
+int
+<<A-g-01,g>>(int);
+----
+
+[.small]#<<A-g-01,_» more..._>>#
+
+[#A-g-0a]
+== <<A,A>>::g
+
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+static
+void
+g();
+----
+
+[#A-g-01]
+== <<A,A>>::g
+
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+static
+int
+g(int);
+----
+
+[#A-08friend-0a]
+== operator&equals;&equals;
+
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+friend
+bool
+operator&equals;&equals;(
+    <<A,A>>,
+    <<A,A>>);
+----
+
+[#A-08friend-0e]
+== operator&equals;&equals;
+
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+friend
+bool
+operator&equals;&equals;(
+    <<A,A>>,
+    int);
+----
+
+[#B]
+== B
+
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct B;
+----
+
+
+
+
+[#f]
+== f
+
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<f-0b,f>>();
+----
+
+[.small]#<<f-0b,_» more..._>>#
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+<<f-06,f>>(int);
+----
+
+[.small]#<<f-06,_» more..._>>#
+
+[#f-0b]
+== f
+
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f();
+----
+
+[#f-06]
+== f
+
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+f(int);
+----
+
+[#operator_eq]
+== operator&equals;&equals;
+
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+<<operator_eq-0a,operator&equals;&equals;>>(
+    <<A,A>>,
+    <<A,A>>);
+----
+
+[.small]#<<operator_eq-0a,_» more..._>>#
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+<<operator_eq-0e,operator&equals;&equals;>>(
+    <<A,A>>,
+    int);
+----
+
+[.small]#<<operator_eq-0e,_» more..._>>#
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+<<operator_eq-08,operator&equals;&equals;>>(
+    <<B,B>>,
+    <<B,B>>);
+----
+
+[.small]#<<operator_eq-08,_» more..._>>#
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+<<operator_eq-07,operator&equals;&equals;>>(
+    <<B,B>>,
+    int);
+----
+
+[.small]#<<operator_eq-07,_» more..._>>#
+
+[#operator_eq-0a]
+== operator&equals;&equals;
+
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+operator&equals;&equals;(
+    <<A,A>>,
+    <<A,A>>);
+----
+
+[#operator_eq-0e]
+== operator&equals;&equals;
+
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+operator&equals;&equals;(
+    <<A,A>>,
+    int);
+----
+
+[#operator_eq-08]
+== operator&equals;&equals;
+
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+operator&equals;&equals;(
+    <<B,B>>,
+    <<B,B>>);
+----
+
+[#operator_eq-07]
+== operator&equals;&equals;
+
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+operator&equals;&equals;(
+    <<B,B>>,
+    int);
+----
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
