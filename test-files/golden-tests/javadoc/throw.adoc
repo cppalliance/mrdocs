@@ -1,0 +1,54 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+=== Functions
+
+[cols=2]
+|===
+| Name | Description 
+
+| <<f,`f`>> 
+| brief
+
+
+
+|===
+
+[#f]
+== f
+
+
+brief
+
+
+
+=== Synopsis
+
+
+Declared in `&lt;throw&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f();
+----
+
+=== Exceptions
+
+
+|===
+| Name | Thrown on
+
+| `std&colon;&colon;length&lowbar;error`
+| `dest&lowbar;size &lt; ipv4&lowbar;address&colon;&colon;max&lowbar;str&lowbar;len`
+
+
+|===
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

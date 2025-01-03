@@ -1143,28 +1143,14 @@ visitBlockCommandComment(
         doc::Throws throws;
         auto scope = enterScope(throws);
         visitChildren(C->getParagraph());
-        // KRYSTIAN NOTE: clang doesn't consider these commands
-        // to have any arguments, so we have to extract the exception
-        // type manually
-        if(! throws.children.empty())
+        if (C->getNumArgs())
         {
-            // string will start with a non-whitespace character
-            doc::String& text =
-                throws.children.front()->string;
-            constexpr char ws[] = " \t\n\v\f\r";
-            const auto except_end = text.find_first_of(ws);
-            throws.exception = text.substr(0, except_end);
-            // find the start of the next word, ignoring whitespace
-            const auto word_start =
-                text.find_first_not_of(ws, except_end);
-            // if we ran out of string, remove this block
-            if(word_start == doc::String::npos)
-                throws.children.erase(throws.children.begin());
-            // otherwise, trim the string to exclude the argument
-            else
-                text.erase(0, word_start);
+            throws.exception.string = C->getArgText(0);
         }
-
+        else
+        {
+            throws.exception.string = "undefined";
+        }
         jd_.emplace_back(std::move(throws));
         return;
     }
