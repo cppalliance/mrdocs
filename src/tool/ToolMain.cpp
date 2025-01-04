@@ -58,33 +58,20 @@ getReferenceDirectories(std::string const& execPath)
         return Unexpected(formatError("Unable to determine current working directory: {}", ec.message()));
     }
     dirs.cwd = std::string(cwd.data(), cwd.size());
-    std::string configPath;
-    if (toolArgs.config.getValue() != "")
+    std::string configPath = toolArgs.config.getValue();
+
+    llvm::cl::list<std::string>& inputs = toolArgs.cmdLineInputs;
+    for (auto& input : inputs)
     {
-        configPath = toolArgs.config.getValue();
+        if (files::getFileName(input) == "mrdocs.yml")
+            configPath = input;
     }
-    else
-    {
-        llvm::cl::list<std::string>& inputs = toolArgs.cmdLineInputs;
-        for (auto& input: inputs)
-        {
-            if (files::getFileName(input) == "mrdocs.yml")
-            {
-                configPath = input;
-                break;
-            }
-        }
-    }
+
     if (configPath.empty())
     {
-        if (files::exists("./mrdocs.yml"))
-        {
-            configPath = "./mrdocs.yml";
-        }
-    }
-    if (configPath.empty())
-    {
-        return Unexpected(formatError("The config path is missing"));
+        if (! files::exists("./mrdocs.yml"))
+            return Unexpected(formatError("The config path is missing"));
+        configPath = "./mrdocs.yml";
     }
     configPath = files::makeAbsolute(configPath, dirs.cwd);
     return std::make_pair(configPath, dirs);
