@@ -15,8 +15,8 @@
         "command-line-sink": true,
         "filename-mapping": {
           "mrdocs.yml": "config",
-          "compile_commands.json": "compilationDatabase",
-          "CMakeLists.txt": "compilationDatabase"
+          "compile_commands.json": "compilation-database",
+          "CMakeLists.txt": "compilation-database"
         },
         "relative-to": "<cwd>",
         "must-exist": true,
