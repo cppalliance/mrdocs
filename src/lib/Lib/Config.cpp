@@ -257,39 +257,71 @@ struct PublicSettingsVisitor {
         PublicSettings::OptionProperties const& opts,
         bool const usingDefault) const
     {
-        for (auto& value : values)
-        {
-            MRDOCS_TRY(normalizeStringPath(self, name, value, dirs, opts, usingDefault));
-        }
-
         // Move command line sink values to appropriate destinations
+        // Normalization happens later for each destination
         if (opts.commandLineSink && opts.filenameMapping.has_value())
         {
+            MRDOCS_TRY(normalizeCmdLineSink(self, values, opts));
+        }
+        else
+        {
+            // General case, normalize each path
             for (auto& value : values)
             {
-                for (auto const& map = opts.filenameMapping.value();
-                     auto& [from, to] : map)
-                {
-                    auto filename = files::getFileName(value);
-                    if (filename == from)
-                    {
-                        self.visit(
-                            [&]<typename U>(
-                                std::string_view const otherName, U& otherValue)
-                        {
-                            if constexpr (std::convertible_to<U, std::string>)
-                            {
-                                if (otherName == to)
-                                {
-                                    otherValue = value;
-                                }
-                            }
-                        });
-                    }
-                }
+                MRDOCS_TRY(normalizeStringPath(self, name, value, dirs, opts, usingDefault));
             }
         }
+        return {};
+    }
 
+    template <class T>
+    Expected<void>
+    normalizeCmdLineSink(
+        PublicSettings& self,
+        T& values,
+        PublicSettings::OptionProperties const& opts) const
+    {
+        // Move command line sink values to appropriate destinations
+        for (auto& value : values)
+        {
+            std::string_view filename = files::getFileName(value);
+            auto it = opts.filenameMapping->find(std::string(filename));
+            if (it == opts.filenameMapping->end())
+            {
+                report::warn("command line input: unknown destination for filename \"{}\"", filename);
+                continue;
+            }
+            // Assign the value to the destination option of the map
+            std::string const& destOption = it->second;
+            bool foundOption = false;
+            bool setOption = false;
+            self.visit(
+                [&]<typename U>(
+                    std::string_view const optionName, U& optionValue)
+            {
+                if constexpr (std::convertible_to<U, std::string>)
+                {
+                    if (optionName == destOption)
+                    {
+                        foundOption = true;
+                        if (optionValue.empty())
+                        {
+                            optionValue = value;
+                            setOption = true;
+                        }
+                    }
+                }
+            });
+            if (!foundOption)
+            {
+                report::warn("command line input: cannot find destination option \"{}\"", destOption);
+            }
+            else if (!setOption)
+            {
+                report::warn("command line input: destination option was \"{}\" already set", destOption);
+            }
+        }
+        values.clear();
         return {};
     }
 
