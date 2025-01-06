@@ -19,11 +19,11 @@
 #include <llvm/Support/PrettyStackTrace.h>
 #include <llvm/Support/Signals.h>
 #include <cstdlib>
+#include <ranges>
 
 extern int main(int argc, char const** argv);
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 extern
 int
@@ -47,7 +47,7 @@ print_version(llvm::raw_ostream& os)
        << "\n";
 }
 
-Expected<std::pair<std::string, ReferenceDirectories>>
+Expected<ReferenceDirectories>
 getReferenceDirectories(std::string const& execPath)
 {
     ReferenceDirectories dirs;
@@ -58,36 +58,37 @@ getReferenceDirectories(std::string const& execPath)
         return Unexpected(formatError("Unable to determine current working directory: {}", ec.message()));
     }
     dirs.cwd = std::string(cwd.data(), cwd.size());
+    return dirs;
+}
+
+Expected<std::string>
+getConfigPath(ReferenceDirectories const& dirs)
+{
     std::string configPath;
-    if (toolArgs.config.getValue() != "")
+    auto cmdLineFilenames = std::ranges::views::transform(
+        toolArgs.cmdLineInputs, files::getFileName);
+    if (!toolArgs.config.getValue().empty())
     {
+        // From explicit --config argument
         configPath = toolArgs.config.getValue();
     }
+    else if (auto const it = std::ranges::find(cmdLineFilenames, "mrdocs.yml");
+             it != cmdLineFilenames.end())
+    {
+        // From implicit command line inputs
+        configPath = *(it.base());
+    }
+    else if (files::exists("./mrdocs.yml"))
+    {
+        // From current directory
+        configPath = "./mrdocs.yml";
+    }
     else
-    {
-        llvm::cl::list<std::string>& inputs = toolArgs.cmdLineInputs;
-        for (auto& input: inputs)
-        {
-            if (files::getFileName(input) == "mrdocs.yml")
-            {
-                configPath = input;
-                break;
-            }
-        }
-    }
-    if (configPath.empty())
-    {
-        if (files::exists("./mrdocs.yml"))
-        {
-            configPath = "./mrdocs.yml";
-        }
-    }
-    if (configPath.empty())
     {
         return Unexpected(formatError("The config path is missing"));
     }
     configPath = files::makeAbsolute(configPath, dirs.cwd);
-    return std::make_pair(configPath, dirs);
+    return configPath;
 }
 
 int
@@ -129,7 +130,15 @@ mrdocs_main(int argc, char const** argv)
         report::fatal("Failed to determine reference directories: {}", res.error().message());
         return EXIT_FAILURE;
     }
-    auto [configPath, dirs] = *res;
+    auto dirs = *std::move(res);
+
+    auto expConfigPath = getConfigPath(dirs);
+    if (!expConfigPath)
+    {
+        report::fatal("Failed to determine config path: {}", expConfigPath.error().message());
+        return EXIT_FAILURE;
+    }
+    auto configPath = *std::move(expConfigPath);
 
     // Generate
     auto exp = DoGenerateAction(configPath, dirs, argv);
@@ -156,8 +165,7 @@ reportUnhandledException(
     sys::PrintStackTrace(llvm::errs());
 }
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 int
 main(int argc, char const** argv)

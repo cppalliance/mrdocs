@@ -839,11 +839,11 @@ def generate_toolargs_final_option_initializer(option, category_str, parents=Non
     if option['command-line-sink']:
         constructor_args.append('llvm::cl::Sink')
     if 'default' in option:
-        if option["type"] in ['string', 'enum']:
-            constructor_args.append(f'llvm::cl::init("{option["default"]}")')
-        elif option["type"] in ['path', 'file-path', 'dir-path']:
-            constructor_args.append(f'llvm::cl::init("{remove_reference_dir_from_path(option["default"])}")')
-        elif option['type'] in ['unsigned', 'int']:
+        # if option["type"] in ['string', 'enum']:
+        #     constructor_args.append(f'llvm::cl::init("{option["default"]}")')
+        # elif option["type"] in ['path', 'file-path', 'dir-path']:
+        #     constructor_args.append(f'llvm::cl::init("{remove_reference_dir_from_path(option["default"])}")')
+        if option['type'] in ['unsigned', 'int']:
             constructor_args.append(f'llvm::cl::init({option["default"]})')
         elif option['type'] == 'bool':
             bool_str = 'true' if option['default'] else 'false'
