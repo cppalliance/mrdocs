@@ -35,7 +35,16 @@ isCXXSrcFile(
 {
     StringRef ext = llvm::sys::path::extension(filename).drop_front();
     driver::types::ID extensionId = driver::types::lookupTypeForExtension(ext);
-    return driver::types::isCXX(extensionId) || ext == "c";
+    return driver::types::isCXX(extensionId);
+}
+
+static
+bool
+isCSrcFile(
+    std::string_view filename)
+{
+    StringRef ext = llvm::sys::path::extension(filename).drop_front();
+    return ext == "c";
 }
 
 template<typename... Opts>
@@ -247,7 +256,8 @@ adjustCommandLine(
     StringRef const workingDir,
     std::vector<std::string> const& cmdline,
     std::shared_ptr<Config const> const& config,
-    std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories)
+    std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories,
+    std::string_view filename)
 {
     if (cmdline.empty())
     {
@@ -359,12 +369,40 @@ adjustCommandLine(
     // ------------------------------------------------------
     // Language standard
     // ------------------------------------------------------
+    // If cmdline contains `-x c` or `-x c++`, then the
+    // language is explicitly set.
+    bool isExplicitCppCompileCommand = false;
+    bool isExplicitCCompileCommand = false;
+    constexpr auto is_x_option = [](std::string_view const opt) {
+        return opt == "-x" || opt == "--language";
+    };
+    if (auto const it = std::ranges::find_if(cmdline, is_x_option);
+            it != cmdline.end())
+    {
+        if (auto const next = std::next(it);
+            next != cmdline.end())
+        {
+            isExplicitCppCompileCommand = *next == "c++";
+            isExplicitCCompileCommand = *next == "c";
+        }
+    }
+    bool const isImplicitCSourceFile = isCSrcFile(filename);
+    bool const isCCompileCommand =
+        isExplicitCCompileCommand || (!isExplicitCppCompileCommand && isImplicitCSourceFile);
+
     constexpr auto is_std_option = [](std::string_view const opt) {
         return opt.starts_with("-std=") || opt.starts_with("--std=") || opt.starts_with("/std:");
     };
     if (std::ranges::find_if(cmdline, is_std_option) == cmdline.end())
     {
-        new_cmdline.emplace_back("-std=c++23");
+        if (!isCCompileCommand)
+        {
+            new_cmdline.emplace_back("-std=c++23");
+        }
+        else
+        {
+            new_cmdline.emplace_back("-std=c23");
+        }
     }
 
     // ------------------------------------------------------
@@ -510,10 +548,11 @@ MrDocsCompilationDatabase(
             workingDir,
             cmd0.CommandLine,
             config,
-            implicitIncludeDirectories);
+            implicitIncludeDirectories,
+            cmd0.Filename);
         cmd.Directory = makeAbsoluteAndNative(workingDir, cmd0.Directory);
         cmd.Filename = makeAbsoluteAndNative(workingDir, cmd0.Filename);
-        if (isCXXSrcFile(cmd.Filename))
+        if (isCXXSrcFile(cmd.Filename) || isCSrcFile(cmd.Filename))
         {
             const bool emplaced = IndexByFile_.try_emplace(cmd.Filename, AllCommands_.size()).second;
             if (emplaced)
