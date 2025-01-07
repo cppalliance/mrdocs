@@ -111,7 +111,7 @@ Declared in `&lt;enum&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-enum E2 : int;
+enum class E2 : int;
 ----
 
 === Members
@@ -148,7 +148,7 @@ Declared in `&lt;enum&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-enum E3 : char;
+enum class E3 : char;
 ----
 
 === Members
