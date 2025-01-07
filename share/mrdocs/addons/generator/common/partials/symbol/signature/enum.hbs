@@ -1,2 +1,2 @@
-enum {{>symbol/name .~}}
+enum {{#if isScoped}}class {{/if}}{{>symbol/name .~}}
 {{#if type}} : {{>type/declarator type}}{{/if}};
