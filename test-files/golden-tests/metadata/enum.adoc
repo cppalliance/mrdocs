@@ -54,11 +54,11 @@ enum E0;
 |===
 |Name |Description
 |`e0`
-|e0 brief&amp;period&semi;
+|e0 brief&period;
 
 
 |`e1`
-|e1 brief&amp;period&semi;
+|e1 brief&period;
 
 
 |===
@@ -121,11 +121,11 @@ enum class E2 : int;
 |===
 |Name |Description
 |`e4`
-|e4 brief&amp;period&semi;
+|e4 brief&period;
 
 
 |`e5`
-|e5 brief&amp;period&semi;
+|e5 brief&period;
 
 
 |===
