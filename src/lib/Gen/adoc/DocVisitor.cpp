@@ -244,15 +244,24 @@ operator()(doc::Reference const& I) const
     {
         return (*this)(static_cast<doc::Text const&>(I));
     }
-    auto url = corpus_.getURL(corpus_->get(I.id));
-    if (url.starts_with('/'))
+    dom::Object symbolObj = corpus_.construct(corpus_->get(I.id));
+    if (symbolObj.exists("url"))
     {
-        url.erase(0, 1);
+        std::string url = symbolObj.get("url").getString().str();
+        if (url.starts_with('/'))
+        {
+            url.erase(0, 1);
+        }
+        fmt::format_to(
+            std::back_inserter(dest_),
+            "xref:{}[{}]",
+            url, AdocEscape(I.string));
+        return;
     }
     fmt::format_to(
-        std::back_inserter(dest_),
-        "xref:{}[{}]",
-        url, AdocEscape(I.string));
+            std::back_inserter(dest_),
+            "`{}`",
+            AdocEscape(I.string));
 }
 
 void

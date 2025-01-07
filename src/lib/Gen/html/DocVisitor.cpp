@@ -257,9 +257,25 @@ operator()(doc::Reference const& I) const
     {
         return (*this)(static_cast<doc::Text const&>(I));
     }
-    // AFREITAS: Unlike Adoc, we need relative URLs for HTML
-    fmt::format_to(std::back_inserter(dest_), "<a href=\"{}\">{}</a>",
-        corpus_.getURL(corpus_->get(I.id)), I.string);
+    dom::Object symbolObj = corpus_.construct(corpus_->get(I.id));
+    if (symbolObj.exists("url"))
+    {
+        std::string url = symbolObj.get("url").getString().str();
+        if (url.starts_with('/'))
+        {
+            url.erase(0, 1);
+        }
+        // AFREITAS: Unlike Adoc, we need relative URLs for HTML
+        fmt::format_to(
+            std::back_inserter(dest_),
+            "<a href=\"{}\"><code>{}</code></a>",
+            url, HTMLEscape(I.string));
+        return;
+    }
+    fmt::format_to(
+            std::back_inserter(dest_),
+            "<code>{}</code>",
+            HTMLEscape(I.string));
 }
 
 void

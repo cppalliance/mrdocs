@@ -32,15 +32,26 @@ void DoTestAction(char const** argv)
 {
     using namespace clang::mrdocs;
 
+    std::vector<std::string> testPaths(
+        testArgs.cmdLineInputs.begin(),
+        testArgs.cmdLineInputs.end());
+    testArgs.cmdLineInputs.clear();
+    for (auto const& inputPath: testPaths)
+    {
+        if (!files::exists(inputPath))
+        {
+            report::warn("Path does not exist: \"{}\"", inputPath);
+        }
+    }
+
     TestRunner runner(testArgs.generator);
-    for (auto const& inputPath: testArgs.cmdLineInputs)
+    for (auto const& inputPath: testPaths)
     {
         runner.checkPath(inputPath, argv);
     }
     auto const& results = runner.results;
 
     std::stringstream os;
-
     switch(testArgs.action)
     {
     case Action::test:
