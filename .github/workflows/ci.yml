@@ -30,7 +30,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Generate Test Matrix
-        uses: alandefreitas/cpp-actions/cpp-matrix@v1.8.7
+        uses: alandefreitas/cpp-actions/cpp-matrix@v1.8.8
         id: cpp-matrix
         with:
           compilers: |
@@ -128,7 +128,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Git
-        uses: alandefreitas/cpp-actions/package-install@v1.8.7
+        uses: alandefreitas/cpp-actions/package-install@v1.8.8
         if: matrix.container != ''
         env:
           DEBIAN_FRONTEND: 'noninteractive'
@@ -149,7 +149,7 @@ jobs:
         uses: seanmiddleditch/gha-setup-ninja@v5
 
       - name: Setup C++
-        uses: alandefreitas/cpp-actions/setup-cpp@v1.8.7
+        uses: alandefreitas/cpp-actions/setup-cpp@v1.8.8
         id: setup-cpp
         with:
           compiler: ${{ matrix.compiler }}
@@ -165,7 +165,7 @@ jobs:
           ${{ steps.setup-cpp.outputs.cxx }} --print-target-triple
 
       - name: Install System Packages
-        uses: alandefreitas/cpp-actions/package-install@v1.8.7
+        uses: alandefreitas/cpp-actions/package-install@v1.8.8
         if: matrix.compiler != 'msvc'
         id: package-install
         env:
@@ -225,7 +225,7 @@ jobs:
           fi
 
       - name: Install LLVM
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.7
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.8
         if: steps.llvm-cache.outputs.cache-hit != 'true' && steps.llvm-download.outputs.found != 'true'
         with:
           cmake-version: '>=3.26'
@@ -250,7 +250,7 @@ jobs:
           trace-commands: true
 
       - name: Install Duktape
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.7
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.8
         with:
           source-dir: ../third-party/duktape
           url: https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz
@@ -270,7 +270,7 @@ jobs:
           trace-commands: true
 
       - name: Install Fmt
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.7
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.8
         with:
           source-dir: ../third-party/fmt
           git-repository: https://github.com/fmtlib/fmt
@@ -290,7 +290,7 @@ jobs:
           trace-commands: true
 
       - name: Install Libxml2
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.7
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.8
         if: matrix.compiler == 'msvc'
         with:
           source-dir: ../third-party/libxml2
@@ -347,7 +347,7 @@ jobs:
           node-version: '20'
 
       - name: CMake Workflow
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.7
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.8
         with:
           cmake-version: '>=3.26'
           cxxstd: ${{ matrix.cxxstd }}
@@ -396,7 +396,7 @@ jobs:
           retention-days: 1
 
       - name: FlameGraph
-        uses: alandefreitas/cpp-actions/flamegraph@v1.8.7
+        uses: alandefreitas/cpp-actions/flamegraph@v1.8.8
         if: matrix.time-trace
         with:
           build-dir: build
@@ -466,7 +466,7 @@ jobs:
 
     steps:
       - name: Install packages
-        uses: alandefreitas/cpp-actions/package-install@v1.8.7
+        uses: alandefreitas/cpp-actions/package-install@v1.8.8
         id: package-install
         with:
           apt-get: build-essential asciidoctor cmake bzip2 git
@@ -525,7 +525,7 @@ jobs:
           $MRDOCS_ROOT/bin/mrdocs --version
 
       - name: Clone Boost.URL
-        uses: alandefreitas/cpp-actions/boost-clone@v1.8.7
+        uses: alandefreitas/cpp-actions/boost-clone@v1.8.8
         id: boost-url-clone
         with:
           branch: develop
@@ -778,7 +778,7 @@ jobs:
           scp -o StrictHostKeyChecking=no -r $(pwd)/demos/* ubuntu@dev-websites.cpp.al:$demo_dir/
 
       - name: Create changelog
-        uses: alandefreitas/cpp-actions/create-changelog@v1.8.7
+        uses: alandefreitas/cpp-actions/create-changelog@v1.8.8
         with:
           output-path: CHANGELOG.md
           thank-non-regular: ${{ startsWith(github.ref, 'refs/tags/') }}
@@ -820,7 +820,7 @@ jobs:
 
     steps:
       - name: Install packages
-        uses: alandefreitas/cpp-actions/package-install@v1.8.7
+        uses: alandefreitas/cpp-actions/package-install@v1.8.8
         id: package-install
         with:
           apt-get: ${{ matrix.install }}
