@@ -560,6 +560,11 @@ private:
         std::vector<std::unique_ptr<TArg>>& result,
         const ASTTemplateArgumentListInfo* args);
 
+    template <std::derived_from<Info> InfoTy>
+    static
+    void
+    populateAttributes(InfoTy& I, const Decl* D);
+
     // =================================================
     // Populate function helpers
     // =================================================

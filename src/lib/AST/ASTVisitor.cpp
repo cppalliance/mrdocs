@@ -1112,17 +1112,7 @@ populate(
         populate(I.Requires, TRC);
     }
 
-    if (D->hasAttrs())
-    {
-        for (AttrVec& attrs = D->getAttrs();
-             Attr const* attr: attrs)
-        {
-            if (IdentifierInfo const* II = attr->getAttrName())
-            {
-                I.Attributes.emplace_back(II->getName());
-            }
-        }
-    }
+    populateAttributes(I, D);
 }
 
 void
@@ -1234,14 +1224,7 @@ populate(
     I.HasNoUniqueAddress = D->hasAttr<NoUniqueAddressAttr>();
     I.IsDeprecated = D->hasAttr<DeprecatedAttr>();
     I.IsMaybeUnused = D->hasAttr<UnusedAttr>();
-    if (D->hasAttrs())
-    {
-        for (AttrVec& attrs = D->getAttrs();
-             Attr const* attr: attrs)
-        {
-            I.Attributes.emplace_back(attr->getAttrName()->getName());
-        }
-    }
+    populateAttributes(I, D);
 }
 
 void
@@ -1671,6 +1654,29 @@ populate(
         {
             return x.getArgument();
         }));
+}
+
+template <std::derived_from<Info> InfoTy>
+void
+ASTVisitor::
+populateAttributes(InfoTy& I, const Decl* D)
+{
+    if constexpr (requires { I.Attributes; })
+    {
+        MRDOCS_CHECK_OR(D->hasAttrs());
+        for (Attr const* attr: D->getAttrs())
+        {
+            IdentifierInfo const* II = attr->getAttrName();
+            if (!II)
+            {
+                continue;
+            }
+            if (std::ranges::find(I.Attributes, II->getName()) == I.Attributes.end())
+            {
+                I.Attributes.emplace_back(II->getName());
+            }
+        }
+    }
 }
 
 std::string
