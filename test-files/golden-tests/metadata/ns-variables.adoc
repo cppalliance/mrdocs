@@ -58,8 +58,7 @@ Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-constexpr
-int const i = 0;
+constexpr int i = 0;
 ----
 
 [#j]
@@ -87,9 +86,8 @@ Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-constexpr
-extern
-int const k = 1;
+constexpr extern
+int k = 1;
 ----
 
 [#l]
@@ -178,10 +176,9 @@ Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-constexpr
-static
+constexpr static
 thread_local
-int const x2 = 0;
+int x2 = 0;
 ----
 
 

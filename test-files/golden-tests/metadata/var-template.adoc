@@ -63,7 +63,7 @@ Declared in `&lt;var&hyphen;template&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-static
+inline static
 unsigned int C = 0;
 ----
 
@@ -79,7 +79,7 @@ Declared in `&lt;var&hyphen;template&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-static
+inline static
 unsigned int C&lt;int&gt; = &hyphen;1;
 ----
 
@@ -95,7 +95,7 @@ Declared in `&lt;var&hyphen;template&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-static
+inline static
 unsigned int C&lt;T*&gt; = sizeof(T);
 ----
 

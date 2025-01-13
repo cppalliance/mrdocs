@@ -325,11 +325,19 @@ void merge(VariableInfo& I, VariableInfo&& Other)
 
     I.IsConstinit |= Other.IsConstinit;
     I.IsThreadLocal |= Other.IsThreadLocal;
-
-    if(I.Constexpr == ConstexprKind::None)
-        I.Constexpr = Other.Constexpr;
-    if(I.StorageClass == StorageClassKind::None)
+    I.IsConstexpr |= Other.IsConstexpr;
+    I.IsInline |= Other.IsInline;
+    if (I.StorageClass == StorageClassKind::None)
+    {
         I.StorageClass = Other.StorageClass;
+    }
+    for (auto& otherAttr: Other.Attributes)
+    {
+        if (std::ranges::find(I.Attributes, otherAttr) == I.Attributes.end())
+        {
+            I.Attributes.push_back(otherAttr);
+        }
+    }
 }
 
 void merge(SpecializationInfo& I, SpecializationInfo&& Other)

@@ -56,9 +56,8 @@ Declared in `&lt;static&hyphen;data&hyphen;template&period;cpp&gt;`
 template&lt;
     typename U,
     typename V&gt;
-constexpr
-static
-T const x = 0;
+inline constexpr static
+T x = 0;
 ----
 
 [#A-x-0a]
@@ -73,9 +72,8 @@ Declared in `&lt;static&hyphen;data&hyphen;template&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename U&gt;
-constexpr
-static
-T const x&lt;U*, T&gt; = 1;
+inline constexpr static
+T x&lt;U*, T&gt; = 1;
 ----
 
 [#A-x-07]
@@ -90,9 +88,8 @@ Declared in `&lt;static&hyphen;data&hyphen;template&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-constexpr
-static
-bool const x&lt;T, long&gt; = 2;
+inline constexpr static
+bool x&lt;T, long&gt; = 2;
 ----
 
 

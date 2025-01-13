@@ -12,8 +12,9 @@
         <variable name="x" id="XzfcXqh7M7tQVHWKvlB891KIC/0=">
           <file path="static-data-template.cpp" line="4" class="def"/>
           <attr id="storage-class" name="static" value="2"/>
-          <attr id="constexpr-kind" name="constexpr" value="1"/>
-          <type name="T" cv-qualifiers="const"/>
+          <attr id="is-inline"/>
+          <attr id="is-constexpr"/>
+          <type name="T"/>
         </variable>
       </template>
       <template class="partial">
@@ -23,8 +24,9 @@
         <variable name="x" id="odTOUblgmooUozrBqW3qKzPWSO4=">
           <file path="static-data-template.cpp" line="7" class="def"/>
           <attr id="storage-class" name="static" value="2"/>
-          <attr id="constexpr-kind" name="constexpr" value="1"/>
-          <type name="T" cv-qualifiers="const"/>
+          <attr id="is-inline"/>
+          <attr id="is-constexpr"/>
+          <type name="T"/>
         </variable>
       </template>
       <template class="explicit">
@@ -33,8 +35,9 @@
         <variable name="x" id="eKdgKT44WwfN7UkQXGEqVJssIPM=">
           <file path="static-data-template.cpp" line="10" class="def"/>
           <attr id="storage-class" name="static" value="2"/>
-          <attr id="constexpr-kind" name="constexpr" value="1"/>
-          <type name="bool" cv-qualifiers="const"/>
+          <attr id="is-inline"/>
+          <attr id="is-constexpr"/>
+          <type name="bool"/>
         </variable>
       </template>
     </struct>

@@ -438,13 +438,17 @@ When the symbol kind is `variable`, the symbol object has the following addition
 | `<<template-info-fields,Template Info Object>>`
 | The template information of the variable.
 
-| `constexprKind`
-| `string`
-| The constexpr kind of the variable (e.g., `consteval`, `constexpr`).
-
 | `storageClass`
 | `string`
 | The storage class of the variable (e.g., `static`, `extern`).
+
+| `isInline`
+| `bool`
+| Whether the variable is `inline`.
+
+| `isConstexpr`
+| `bool`
+| Whether the variable is `constexpr`.
 
 | `isConstinit`
 | `bool`
@@ -457,6 +461,10 @@ When the symbol kind is `variable`, the symbol object has the following addition
 | `initializer`
 | `string`
 | The initializer of the variable.
+
+| `attributes`
+| `string[]`
+| The attributes of the variable.
 |===
 
 When the symbol kind is `field` (i.e. non-static data members), the symbol object has the following additional properties:

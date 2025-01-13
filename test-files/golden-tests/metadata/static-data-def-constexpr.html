@@ -62,9 +62,8 @@ struct S;
 Declared in <code>&lt;static-data-def-constexpr.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
-constexpr
-static
-<a href="#S">S</a> const s = S{};
+inline constexpr static
+<a href="#S">S</a> s = S{};
 </code>
 </pre>
 </div>
@@ -108,9 +107,8 @@ struct T;
 Declared in <code>&lt;static-data-def-constexpr.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
-constexpr
-static
-int const t = 0;
+inline constexpr static
+int t = 0;
 </code>
 </pre>
 </div>
