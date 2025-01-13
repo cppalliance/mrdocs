@@ -1089,9 +1089,11 @@ populate(
             default_arg)
         {
             param.Default = getSourceCode(default_arg->getSourceRange());
+            param.Default = trim(param.Default);
             if (param.Default.starts_with("= "))
             {
                 param.Default.erase(0, 2);
+                param.Default = ltrim(param.Default);
             }
         }
     }
