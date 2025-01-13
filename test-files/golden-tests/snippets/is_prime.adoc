@@ -40,6 +40,9 @@ is&lowbar;prime(unsigned long long n) noexcept;
 === Description
 
 
+
+=== Complexity
+
 Linear in n&period;
 
 
