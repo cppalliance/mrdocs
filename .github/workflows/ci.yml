@@ -19,7 +19,7 @@ concurrency:
 
 jobs:
   cpp-matrix:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     name: Generate Test Matrix
     outputs:
       matrix: ${{ steps.cpp-matrix.outputs.matrix }}
