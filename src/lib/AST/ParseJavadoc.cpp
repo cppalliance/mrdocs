@@ -1233,24 +1233,26 @@ visitBlockCommandComment(
         doc::Paragraph paragraph;
         auto scope = enterScope(paragraph);
         visitChildren(C->getParagraph());
-        if(! paragraph.children.empty())
+        if (C->getNumArgs() > 0)
         {
-            if (C->getNumArgs() > 0)
+            jd_.emplace_back(doc::Heading(C->getArgText(0).str()));
+        }
+        if (!paragraph.children.empty())
+        {
+            // the first TextComment is the heading text
+            if (C->getNumArgs() == 0)
             {
-                jd_.emplace_back(doc::Heading(C->getArgText(0).str()));
-            }
-            else
-            {
-                // the first TextComment is the heading text
                 doc::String text(std::move(
                         paragraph.children.front()->string));
 
                 // VFALCO Unfortunately clang puts at least
                 // one space in front of the text, which seems
                 // incorrect.
-                auto const s = trim(text);
-                if(s.size() != text.size())
+                if (auto const s = trim(text);
+                    s.size() != text.size())
+                {
                     text = s;
+                }
 
                 doc::Heading heading(std::move(text));
                 jd_.emplace_back(std::move(heading));
@@ -1259,8 +1261,10 @@ visitBlockCommandComment(
                 paragraph.children.erase(paragraph.children.begin());
             }
 
-            if(! paragraph.children.empty())
+            if (!paragraph.children.empty())
+            {
                 jd_.emplace_back(std::move(paragraph));
+            }
         }
         return;
     }

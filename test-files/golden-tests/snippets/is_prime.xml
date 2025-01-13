@@ -14,6 +14,7 @@
       <para>
         <text>Return true if a number is prime.</text>
       </para>
+      <head>Complexity</head>
       <para>
         <text>Linear in n.</text>
       </para>

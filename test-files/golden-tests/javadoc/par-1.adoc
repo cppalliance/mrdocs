@@ -1,0 +1,166 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+=== Functions
+
+[cols=2]
+|===
+| Name | Description 
+
+| <<f1,`f1`>> 
+| Brief
+
+
+
+| <<f2,`f2`>> 
+| Brief
+
+
+
+| <<f3,`f3`>> 
+| Brief
+
+
+
+| <<f4,`f4`>> 
+| Brief
+
+
+
+|===
+
+[#f1]
+== f1
+
+
+Brief
+
+
+
+=== Synopsis
+
+
+Declared in `&lt;par&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f1();
+----
+
+=== Description
+
+
+
+=== Custom par
+
+Paragraph 1
+
+[,cpp]
+----
+void f1();
+----
+
+
+[#f2]
+== f2
+
+
+Brief
+
+
+
+=== Synopsis
+
+
+Declared in `&lt;par&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f2();
+----
+
+=== Description
+
+
+
+=== Custom par
+
+Paragraph 2
+
+[,cpp]
+----
+void f2();
+----
+
+
+[#f3]
+== f3
+
+
+Brief
+
+
+
+=== Synopsis
+
+
+Declared in `&lt;par&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f3();
+----
+
+=== Description
+
+
+
+=== Custom par
+
+[,cpp]
+----
+void f3();
+----
+
+
+[#f4]
+== f4
+
+
+Brief
+
+
+
+=== Synopsis
+
+
+Declared in `&lt;par&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f4();
+----
+
+=== Description
+
+
+
+=== Custom par
+
+[,cpp]
+----
+void f4();
+----
+
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

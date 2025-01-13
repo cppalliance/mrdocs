@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
+    <file path="par-1.cpp" line="11"/>
+    <doc>
+      <para>
+        <text>Brief</text>
+      </para>
+      <head>Custom par</head>
+      <para>
+        <text>Paragraph 1</text>
+      </para>
+      <code>
+        <text>    void f1();</text>
+      </code>
+    </doc>
+  </function>
+  <function name="f2" id="0MJUv5yGFR9nXWFLeYc+rjOY+iM=">
+    <file path="par-1.cpp" line="24"/>
+    <doc>
+      <para>
+        <text>Brief</text>
+      </para>
+      <head>Custom par</head>
+      <para>
+        <text>Paragraph 2</text>
+      </para>
+      <code>
+        <text>    void f2();</text>
+      </code>
+    </doc>
+  </function>
+  <function name="f3" id="khwJweIqd5FuWAg8T+l+GEljQVc=">
+    <file path="par-1.cpp" line="33"/>
+    <doc>
+      <para>
+        <text>Brief</text>
+      </para>
+      <head>Custom par</head>
+      <code>
+        <text>    void f3();</text>
+      </code>
+    </doc>
+  </function>
+  <function name="f4" id="5wJFEWD4Ev/Vf3QN/mFlKhtbC6E=">
+    <file path="par-1.cpp" line="43"/>
+    <doc>
+      <para>
+        <text>Brief</text>
+      </para>
+      <head>Custom par</head>
+      <code>
+        <text>    void f4();</text>
+      </code>
+    </doc>
+  </function>
+</namespace>
+</mrdocs>
