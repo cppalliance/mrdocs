@@ -189,22 +189,22 @@ tag_invoke(
     }
     if constexpr (T::isVariable())
     {
-        io.map("type", I.Type);
-        io.map("template", I.Template);
-        if (I.Constexpr != ConstexprKind::None)
+        auto const& U = static_cast<VariableInfo const&>(I);
+        io.map("type", U.Type);
+        io.map("template", U.Template);
+        if (U.StorageClass != StorageClassKind::None)
         {
-            io.map("constexprKind", I.Constexpr);
+            io.map("storageClass", U.StorageClass);
         }
-        if (I.StorageClass != StorageClassKind::None)
+        io.map("isInline", U.IsInline);
+        io.map("isConstexpr", U.IsConstexpr);
+        io.map("isConstinit", U.IsConstinit);
+        io.map("isThreadLocal", U.IsThreadLocal);
+        if (!U.Initializer.Written.empty())
         {
-            io.map("storageClass", I.StorageClass);
+            io.map("initializer", U.Initializer.Written);
         }
-        io.map("isConstinit", I.IsConstinit);
-        io.map("isThreadLocal", I.IsThreadLocal);
-        if (!I.Initializer.Written.empty())
-        {
-            io.map("initializer", I.Initializer.Written);
-        }
+        io.map("attributes", dom::LazyArray(U.Attributes));
     }
     if constexpr (T::isField())
     {

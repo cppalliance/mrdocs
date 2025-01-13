@@ -1,7 +1,7 @@
 {{#if template}}{{>template/head template}}
 {{/if~}}
-{{#if constexprKind}}{{constexprKind}}
-{{/if~}}
+{{#if isInline}}inline {{/if~}}
+{{#if isConstexpr}}constexpr {{/if~}}
 {{#if storageClass}}{{storageClass}}
 {{/if~}}
 {{#if isThreadLocal}}thread_local

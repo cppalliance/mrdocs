@@ -4,8 +4,8 @@
 <namespace id="//////////////////////////8=">
   <variable name="i" id="X2Wd7fyQ8BJNJ0tn4nnA77ckJM8=">
     <file path="ns-variables.cpp" line="3" class="def"/>
-    <attr id="constexpr-kind" name="constexpr" value="1"/>
-    <type name="int" cv-qualifiers="const"/>
+    <attr id="is-constexpr"/>
+    <type name="int"/>
   </variable>
   <variable name="j" id="pKvK/kHXdM/1/pu86JcSrLqVypE=">
     <file path="ns-variables.cpp" line="4" class="def"/>
@@ -16,8 +16,8 @@
     <file path="ns-variables.cpp" line="9" class="def"/>
     <file path="ns-variables.cpp" line="6"/>
     <attr id="storage-class" name="extern" value="1"/>
-    <attr id="constexpr-kind" name="constexpr" value="1"/>
-    <type name="int" cv-qualifiers="const"/>
+    <attr id="is-constexpr"/>
+    <type name="int"/>
   </variable>
   <variable name="l" id="h5r4fNloVAMKqMyVJI+iWTxRjhM=">
     <file path="ns-variables.cpp" line="10" class="def"/>
@@ -52,9 +52,9 @@
   <variable name="x2" id="EpcDWput1W/SJ3IYEINS0W815Zw=">
     <file path="ns-variables.cpp" line="20" class="def"/>
     <attr id="storage-class" name="static" value="2"/>
-    <attr id="constexpr-kind" name="constexpr" value="1"/>
+    <attr id="is-constexpr"/>
     <attr id="is-thread-local"/>
-    <type name="int" cv-qualifiers="const"/>
+    <type name="int"/>
   </variable>
 </namespace>
 </mrdocs>

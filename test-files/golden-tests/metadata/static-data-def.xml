@@ -16,19 +16,22 @@
         <file path="static-data-def.cpp" line="24" class="def"/>
         <file path="static-data-def.cpp" line="5"/>
         <attr id="storage-class" name="static" value="2"/>
+        <attr id="is-inline"/>
         <type name="int"/>
       </variable>
       <variable name="v2" id="e48c97dC3AIWJHWE5T0yWVxezgg=">
         <file path="static-data-def.cpp" line="27" class="def"/>
         <file path="static-data-def.cpp" line="6"/>
         <attr id="storage-class" name="static" value="2"/>
-        <attr id="constexpr-kind" name="constexpr" value="1"/>
-        <type name="int" cv-qualifiers="const"/>
+        <attr id="is-inline"/>
+        <attr id="is-constexpr"/>
+        <type name="int"/>
       </variable>
       <variable name="v3" id="Wx5S5oWv5o4nV7I+zFEKTvWl40g=">
         <file path="static-data-def.cpp" line="30" class="def"/>
         <file path="static-data-def.cpp" line="7"/>
         <attr id="storage-class" name="static" value="2"/>
+        <attr id="is-inline"/>
         <type name="int" cv-qualifiers="const"/>
       </variable>
       <variable name="v4" id="6a2wBN4mHiuAAqV0gYgYQeqFNVM=">
@@ -40,18 +43,21 @@
       <variable name="v5" id="Q96okKllwtE2Tg+t7HAkms6flbk=">
         <file path="static-data-def.cpp" line="10" class="def"/>
         <attr id="storage-class" name="static" value="2"/>
+        <attr id="is-inline"/>
         <type name="int"/>
       </variable>
       <variable name="v6" id="0Xh4ypD2+Eipbqc5Z8n4fEkXZ8c=">
         <file path="static-data-def.cpp" line="11" class="def"/>
         <attr id="storage-class" name="static" value="2"/>
+        <attr id="is-inline"/>
         <type name="int" cv-qualifiers="const"/>
       </variable>
       <variable name="v7" id="VCnmz8Cp9RtJzQQQ7yw57uzbQAY=">
         <file path="static-data-def.cpp" line="12" class="def"/>
         <attr id="storage-class" name="static" value="2"/>
-        <attr id="constexpr-kind" name="constexpr" value="1"/>
-        <type name="int" cv-qualifiers="const"/>
+        <attr id="is-inline"/>
+        <attr id="is-constexpr"/>
+        <type name="int"/>
       </variable>
     </struct>
   </template>
@@ -67,9 +73,10 @@
     <variable name="x1" id="vNYWHh2ovZiBP3uVEeJhMkaiF3w=">
       <file path="static-data-def.cpp" line="18" class="def"/>
       <attr id="storage-class" name="static" value="2"/>
-      <attr id="constexpr-kind" name="constexpr" value="1"/>
+      <attr id="is-inline"/>
+      <attr id="is-constexpr"/>
       <attr id="is-thread-local"/>
-      <type name="int" cv-qualifiers="const"/>
+      <type name="int"/>
     </variable>
   </struct>
   <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">

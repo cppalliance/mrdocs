@@ -598,7 +598,8 @@ writeVariable(
     writeSourceInfo(I);
 
     writeAttr(I.StorageClass, "storage-class", tags_);
-    writeAttr(I.Constexpr, "constexpr-kind", tags_);
+    writeAttr(I.IsInline, "is-inline", tags_);
+    writeAttr(I.IsConstexpr, "is-constexpr", tags_);
     writeAttr(I.IsConstinit, "is-constinit", tags_);
     writeAttr(I.IsThreadLocal, "is-thread-local", tags_);
 

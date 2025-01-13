@@ -98,7 +98,7 @@ int v0 = 0;
 Declared in <code>&lt;static-data-def.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
-static
+inline static
 int v1 = 1;
 </code>
 </pre>
@@ -114,9 +114,8 @@ int v1 = 1;
 Declared in <code>&lt;static-data-def.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
-constexpr
-static
-int const v2 = 2;
+inline constexpr static
+int v2 = 2;
 </code>
 </pre>
 </div>
@@ -131,7 +130,7 @@ int const v2 = 2;
 Declared in <code>&lt;static-data-def.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
-static
+inline static
 int const v3 = 3;
 </code>
 </pre>
@@ -163,7 +162,7 @@ int const v4 = 4;
 Declared in <code>&lt;static-data-def.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
-static
+inline static
 int v5 = 5;
 </code>
 </pre>
@@ -179,7 +178,7 @@ int v5 = 5;
 Declared in <code>&lt;static-data-def.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
-static
+inline static
 int const v6 = 6;
 </code>
 </pre>
@@ -195,9 +194,8 @@ int const v6 = 6;
 Declared in <code>&lt;static-data-def.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
-constexpr
-static
-int const v7 = 7;
+inline constexpr static
+int v7 = 7;
 </code>
 </pre>
 </div>
@@ -259,10 +257,9 @@ int const x0 = 0;
 Declared in <code>&lt;static-data-def.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
-constexpr
-static
+inline constexpr static
 thread_local
-int const x1 = 0;
+int x1 = 0;
 </code>
 </pre>
 </div>

@@ -64,8 +64,7 @@ Declared in `&lt;impl&hyphen;defined&hyphen;member&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-constexpr
-&sol;&ast; implementation-defined &ast;&sol; const absolute&lowbar;uri&lowbar;rule = &lcub;&rcub;;
+constexpr &sol;&ast; implementation-defined &ast;&sol; absolute&lowbar;uri&lowbar;rule = &lcub;&rcub;;
 ----
 
 [#regular_absolute_uri_rule]
@@ -79,8 +78,7 @@ Declared in `&lt;impl&hyphen;defined&hyphen;member&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-constexpr
-<<regular,regular>>::<<regular-absolute_uri_rule_t,absolute&lowbar;uri&lowbar;rule&lowbar;t>> const regular&lowbar;absolute&lowbar;uri&lowbar;rule = &lcub;&rcub;;
+constexpr <<regular,regular>>::<<regular-absolute_uri_rule_t,absolute&lowbar;uri&lowbar;rule&lowbar;t>> regular&lowbar;absolute&lowbar;uri&lowbar;rule = &lcub;&rcub;;
 ----
 
 

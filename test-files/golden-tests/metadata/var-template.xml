@@ -31,6 +31,7 @@
       <variable name="C" id="kMNXdSEDYBD+T4RYbkq3ekR+jUU=">
         <file path="var-template.cpp" line="12" class="def"/>
         <attr id="storage-class" name="static" value="2"/>
+        <attr id="is-inline"/>
         <type name="unsigned int"/>
       </variable>
     </template>
@@ -39,6 +40,7 @@
       <variable name="C" id="Wtlw7VEK38lEEBeqNoDOjTkJE+U=">
         <file path="var-template.cpp" line="15" class="def"/>
         <attr id="storage-class" name="static" value="2"/>
+        <attr id="is-inline"/>
         <type name="unsigned int"/>
       </variable>
     </template>
@@ -48,6 +50,7 @@
       <variable name="C" id="wvoZkG3eTMaiFAf971AFdvmHCDE=">
         <file path="var-template.cpp" line="18" class="def"/>
         <attr id="storage-class" name="static" value="2"/>
+        <attr id="is-inline"/>
         <type name="unsigned int"/>
       </variable>
     </template>

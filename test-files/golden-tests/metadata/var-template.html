@@ -78,7 +78,7 @@ Declared in <code>&lt;var-template.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 template&lt;typename T&gt;
-static
+inline static
 unsigned int C = 0;
 </code>
 </pre>
@@ -95,7 +95,7 @@ Declared in <code>&lt;var-template.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 template&lt;&gt;
-static
+inline static
 unsigned int C&lt;int&gt; = -1;
 </code>
 </pre>
@@ -112,7 +112,7 @@ Declared in <code>&lt;var-template.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 template&lt;typename T&gt;
-static
+inline static
 unsigned int C&lt;T*&gt; = sizeof(T);
 </code>
 </pre>

@@ -51,9 +51,8 @@ Declared in `&lt;static&hyphen;data&hyphen;def&hyphen;constexpr&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-constexpr
-static
-<<S,S>> const s = S&lcub;&rcub;;
+inline constexpr static
+<<S,S>> s = S&lcub;&rcub;;
 ----
 
 [#T]
@@ -92,9 +91,8 @@ Declared in `&lt;static&hyphen;data&hyphen;def&hyphen;constexpr&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-constexpr
-static
-int const t = 0;
+inline constexpr static
+int t = 0;
 ----
 
 

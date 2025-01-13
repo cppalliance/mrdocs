@@ -67,9 +67,8 @@ Declared in <code>&lt;static-data-template.cpp&gt;</code></div>
 template&lt;
     typename U,
     typename V&gt;
-constexpr
-static
-T const x = 0;
+inline constexpr static
+T x = 0;
 </code>
 </pre>
 </div>
@@ -85,9 +84,8 @@ Declared in <code>&lt;static-data-template.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 template&lt;typename U&gt;
-constexpr
-static
-T const x&lt;U*, T&gt; = 1;
+inline constexpr static
+T x&lt;U*, T&gt; = 1;
 </code>
 </pre>
 </div>
@@ -103,9 +101,8 @@ Declared in <code>&lt;static-data-template.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 template&lt;&gt;
-constexpr
-static
-bool const x&lt;T, long&gt; = 2;
+inline constexpr static
+bool x&lt;T, long&gt; = 2;
 </code>
 </pre>
 </div>

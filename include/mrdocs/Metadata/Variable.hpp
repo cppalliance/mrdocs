@@ -40,11 +40,15 @@ struct VariableInfo
 
     StorageClassKind StorageClass = StorageClassKind::None;
 
-    ConstexprKind Constexpr = ConstexprKind::None;
+    bool IsInline = false;
+
+    bool IsConstexpr = false;
 
     bool IsConstinit = false;
 
     bool IsThreadLocal = false;
+
+    std::vector<std::string> Attributes;
 
     //--------------------------------------------
 

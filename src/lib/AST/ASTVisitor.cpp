@@ -1192,15 +1192,20 @@ populate(
     // it is possible to declare a static data member
     // as both constexpr and constinit in separate declarations..
     I.IsConstinit |= D->hasAttr<ConstInitAttr>();
-    if (D->isConstexpr())
-    {
-        I.Constexpr = ConstexprKind::Constexpr;
-    }
+    I.IsConstexpr |= D->isConstexpr();
+    I.IsInline |= D->isInline();
     if (Expr const* E = D->getInit())
     {
         populate(I.Initializer, E);
     }
-    I.Type = toTypeInfo(D->getType());
+    auto QT = D->getType();
+    if (D->isConstexpr()) {
+        // when D->isConstexpr() is true, QT contains a redundant
+        // `const` qualifier which we need to remove
+        QT.removeLocalConst();
+    }
+    I.Type = toTypeInfo(QT);
+    populateAttributes(I, D);
 }
 
 void

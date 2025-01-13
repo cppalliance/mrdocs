@@ -14,13 +14,13 @@
   </namespace>
   <variable name="absolute_uri_rule" id="/ePshzEghZYl/D7bJ6X3M2XbKEg=">
     <file path="impl-defined-member.cpp" line="9" class="def"/>
-    <attr id="constexpr-kind" name="constexpr" value="1"/>
-    <type id="vOKKVGAcuI3CBaMkdZstuFgnnuQ=" name="detail::absolute_uri_rule_t" cv-qualifiers="const"/>
+    <attr id="is-constexpr"/>
+    <type id="vOKKVGAcuI3CBaMkdZstuFgnnuQ=" name="detail::absolute_uri_rule_t"/>
   </variable>
   <variable name="regular_absolute_uri_rule" id="ixmivDXFAcQVJd4G7XOqINAR858=">
     <file path="impl-defined-member.cpp" line="11" class="def"/>
-    <attr id="constexpr-kind" name="constexpr" value="1"/>
-    <type id="fA+/UQOR2lG0f1+BZ+GeGlfo5sY=" name="regular::absolute_uri_rule_t" cv-qualifiers="const"/>
+    <attr id="is-constexpr"/>
+    <type id="fA+/UQOR2lG0f1+BZ+GeGlfo5sY=" name="regular::absolute_uri_rule_t"/>
   </variable>
 </namespace>
 </mrdocs>
