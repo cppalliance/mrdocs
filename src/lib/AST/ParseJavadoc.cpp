@@ -20,6 +20,8 @@
 #include <clang/AST/CommentCommandTraits.h>
 #include <clang/AST/ASTContext.h>
 #include <clang/AST/RawCommentList.h>
+#include <clang/Lex/Lexer.h>
+#include <clang/Basic/SourceLocation.h>
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable: 5054) // C5054: operator '+': deprecated between enumerations of different types
@@ -32,6 +34,52 @@
 #include <clang/Basic/SourceManager.h>
 #include <llvm/Support/JSON.h>
 #include <ranges>
+
+#ifdef NDEBUG
+#define MRDOCS_COMMENT_TRACE(D, C)
+#else
+
+#    define MRDOCS_COMMENT_TRACE_MERGE_(a, b) a##b
+#    define MRDOCS_COMMENT_TRACE_LABEL_(a)    MRDOCS_COMMENT_TRACE_MERGE_(comment_content_, a)
+#    define MRDOCS_COMMENT_TRACE_UNIQUE_NAME  MRDOCS_COMMENT_TRACE_LABEL_(__LINE__)
+
+namespace detail {
+    template <class T>
+    void
+    dumpCommentContent(T const* C, clang::ASTContext const& Ctx, llvm::SmallString<1024>& contents)
+    {
+        if (!C)
+        {
+            return;
+        }
+        llvm::raw_svector_ostream os(contents);
+        if constexpr (std::derived_from<T, clang::comments::Comment>)
+        {
+            auto const* CC = static_cast<clang::comments::Comment const*>(C);
+            clang::SourceRange const R = CC->getSourceRange();
+            clang::SourceManager const& SM = Ctx.getSourceManager();
+            contents = clang::Lexer::getSourceText(
+                clang::CharSourceRange::getTokenRange(R),
+                SM,
+                Ctx.getLangOpts());
+        }
+    }
+
+    template <class T>
+    requires (!std::is_pointer_v<T>)
+    void
+    dumpCommentContent(T const& C, clang::ASTContext const& Ctx, llvm::SmallString<1024>& contents)
+    {
+        dumpCommentContent(&C, Ctx, contents);
+    }
+} // namespace detail
+
+#define MRDOCS_COMMENT_TRACE(D, C) \
+    SmallString<1024> MRDOCS_COMMENT_TRACE_UNIQUE_NAME;                 \
+    ::detail::dumpCommentContent(D, C, MRDOCS_COMMENT_TRACE_UNIQUE_NAME);        \
+    report::debug("{}", std::string_view(MRDOCS_COMMENT_TRACE_UNIQUE_NAME.str()))
+#endif
+
 
 /*  AST Types
 
@@ -509,10 +557,12 @@ JavadocVisitor::
 visitChildren(
     Comment const* C)
 {
+    MRDOCS_COMMENT_TRACE(C, ctx_);
     ScopeExitRestore s1(it_, C->child_begin());
     ScopeExitRestore s2(end_, C->child_end());
     while(it_ != end_)
     {
+        MRDOCS_COMMENT_TRACE(*it_, ctx_);
         visit(*it_);
         ++it_; // must happen after
     }
@@ -597,6 +647,7 @@ Javadoc
 JavadocVisitor::
 build()
 {
+    MRDOCS_COMMENT_TRACE(FC_, ctx_);
     visit(FC_);
     return std::move(jd_);
 }
@@ -606,6 +657,7 @@ JavadocVisitor::
 visitComment(
     Comment const* C)
 {
+    MRDOCS_COMMENT_TRACE(C, ctx_);
     visitChildren(C);
 }
 
@@ -620,6 +672,7 @@ JavadocVisitor::
 visitTextComment(
     TextComment const* C)
 {
+    MRDOCS_COMMENT_TRACE(C, ctx_);
     llvm::StringRef s = C->getText();
     // If this is the first text comment in the
     // paragraph then remove all the leading space.
@@ -642,6 +695,7 @@ Expected<JavadocVisitor::TagComponents>
 JavadocVisitor::
 parseHTMLTag(HTMLStartTagComment const* C)
 {
+    MRDOCS_COMMENT_TRACE(C, ctx_);
     TagComponents res;
     res.tag = C->getTagName().str();
 
@@ -700,6 +754,7 @@ JavadocVisitor::
 visitHTMLStartTagComment(
     HTMLStartTagComment const* C)
 {
+    MRDOCS_COMMENT_TRACE(C, ctx_);
     MRDOCS_ASSERT(C->child_begin() == C->child_end());
     PresumedLoc const loc = sm_.getPresumedLoc(C->getBeginLoc());
     auto filename = files::makePosixStyle(loc.getFilename());
@@ -766,6 +821,7 @@ JavadocVisitor::
 visitHTMLEndTagComment(
     HTMLEndTagComment const* C)
 {
+    MRDOCS_COMMENT_TRACE(C, ctx_);
     MRDOCS_ASSERT(C->child_begin() == C->child_end());
     --htmlTagNesting_;
 }
@@ -923,6 +979,7 @@ JavadocVisitor::
 visitInlineCommandComment(
     InlineCommandComment const* C)
 {
+    MRDOCS_COMMENT_TRACE(C, ctx_);
     auto const* cmd = ctx_
         .getCommentCommandTraits()
         .getCommandInfo(C->getCommandID());
@@ -1074,6 +1131,7 @@ JavadocVisitor::
 visitParagraphComment(
     ParagraphComment const* C)
 {
+    MRDOCS_COMMENT_TRACE(C, ctx_);
     if(block_)
         return visitChildren(C);
     doc::Paragraph paragraph;
@@ -1089,6 +1147,7 @@ JavadocVisitor::
 visitBlockCommandComment(
     BlockCommandComment const* C)
 {
+    MRDOCS_COMMENT_TRACE(C, ctx_);
     auto const* cmd = ctx_
         .getCommentCommandTraits()
         .getCommandInfo(C->getCommandID());
@@ -1451,6 +1510,7 @@ JavadocVisitor::
 visitParamCommandComment(
     ParamCommandComment const* C)
 {
+    MRDOCS_COMMENT_TRACE(C, ctx_);
     doc::Param param;
     if(C->hasParamName())
     {
@@ -1494,6 +1554,7 @@ JavadocVisitor::
 visitTParamCommandComment(
     TParamCommandComment const* C)
 {
+    MRDOCS_COMMENT_TRACE(C, ctx_);
     doc::TParam tparam;
     if(C->hasParamName())
     {
@@ -1534,6 +1595,7 @@ JavadocVisitor::
 visitVerbatimBlockComment(
     VerbatimBlockComment const* C)
 {
+    MRDOCS_COMMENT_TRACE(C, ctx_);
     doc::Code code;
     auto scope = enterScope(code);
     //if(C->hasNonWhitespaceParagraph())
@@ -1546,6 +1608,7 @@ JavadocVisitor::
 visitVerbatimLineComment(
     VerbatimLineComment const* C)
 {
+    MRDOCS_COMMENT_TRACE(C, ctx_);
     // VFALCO This doesn't seem to be used
     //        in any of my codebases, follow up
 }
@@ -1555,6 +1618,7 @@ JavadocVisitor::
 visitVerbatimBlockLineComment(
     VerbatimBlockLineComment const* C)
 {
+    MRDOCS_COMMENT_TRACE(C, ctx_);
     emplaceText<doc::Text>(true, C->getText().str());
 }
 
@@ -1565,6 +1629,7 @@ JavadocVisitor::
 goodArgCount(std::size_t n,
     InlineCommandComment const& C)
 {
+    MRDOCS_COMMENT_TRACE(C, ctx_);
     if(C.getNumArgs() != n)
     {
         auto loc = sm_.getPresumedLoc(C.getBeginLoc());
@@ -1611,7 +1676,9 @@ parseJavadoc(
     Config const& config,
     Diagnostics& diags)
 {
-    auto result = JavadocVisitor(FC, D, config, diags).build();
+    MRDOCS_COMMENT_TRACE(FC, D->getASTContext());
+    JavadocVisitor visitor(FC, D, config, diags);
+    auto result = visitor.build();
     if(jd == nullptr)
     {
         // Do not create javadocs which have no nodes
