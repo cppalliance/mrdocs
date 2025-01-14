@@ -69,7 +69,7 @@ Declared in `&lt;no&lowbar;unique&lowbar;address&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-[deprecated, maybe&lowbar;unused]
+[[deprecated, maybe&lowbar;unused]]
 <<Empty,Empty>> e = Empty&lcub;&rcub;;
 ----
 

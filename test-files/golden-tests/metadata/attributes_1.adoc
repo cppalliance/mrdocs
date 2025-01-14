@@ -25,7 +25,7 @@ Declared in `&lt;attributes&lowbar;1&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-[nodiscard]
+[[nodiscard]]
 bool
 f();
 ----

@@ -33,7 +33,7 @@ Declared in `&lt;terminate&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-[noreturn]
+[[noreturn]]
 void
 terminate() noexcept;
 ----
