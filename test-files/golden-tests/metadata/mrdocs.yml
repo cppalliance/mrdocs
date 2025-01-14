@@ -2,3 +2,5 @@
 concurrency: 1
 source-root: .
 single-page: true
+input:
+  - .
