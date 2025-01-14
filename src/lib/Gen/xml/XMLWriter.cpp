@@ -195,6 +195,13 @@ XMLWriter::
 operator()(
     T const& I)
 {
+    Info const& base = I;
+    if (base.Extraction == ExtractionMode::Dependency)
+    {
+        return;
+    }
+
+
     #define INFO(Type) if constexpr(T::is##Type()) write##Type(I);
     #include <mrdocs/Metadata/InfoNodesPascal.inc>
 }

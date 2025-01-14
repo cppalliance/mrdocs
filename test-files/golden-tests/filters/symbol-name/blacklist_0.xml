@@ -7,17 +7,6 @@
       <file path="blacklist_0.cpp" line="3"/>
       <file path="blacklist_0.cpp" line="16"/>
     </function>
-    <namespace name="N1_BL" id="jVE2p1i0UYk89pn+WDz4eo5TtqY=">
-      <function name="f1" id="GZOWK/jcE53ZZmWVzFx8XNJbbcw=">
-        <file path="blacklist_0.cpp" line="17"/>
-      </function>
-    </namespace>
-    <struct name="S0_BL" id="DQybmH4GmrFs/AMwQ8xUtIXTtFw=">
-      <file path="blacklist_0.cpp" line="10" class="def"/>
-      <function name="f2" id="MY6mDcv064Ns4eMtVO7GTdXsGMk=">
-        <file path="blacklist_0.cpp" line="18" class="def"/>
-      </function>
-    </struct>
   </namespace>
   <namespace name="N3" id="N8VuRKoz/jzHCbelCVCZNKALQAQ=">
   </namespace>
