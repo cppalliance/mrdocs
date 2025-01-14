@@ -148,18 +148,6 @@ class ASTVisitor
      */
     ExtractionMode mode_ = ExtractionMode::Regular;
 
-    struct SFINAEInfo
-    {
-        TemplateDecl* Template = nullptr;
-        const IdentifierInfo* Member = nullptr;
-        ArrayRef<TemplateArgument> Arguments;
-    };
-
-    template <class InfoTy>
-    struct upsertResult {
-        InfoTy& I;
-        bool isNew;
-    };
 public:
     /** Constructor for ASTVisitor.
 
@@ -636,30 +624,152 @@ private:
     std::string
     getSourceCode(SourceRange const& R) const;
 
-    // Determine if a type is a SFINAE type
-    std::optional<std::pair<QualType, std::vector<TemplateArgument>>>
-    isSFINAEType(QualType T);
+    /*  Struct to hold the underlying type result of a SFINAE type.
 
-    // Determine if a type is a SFINAE type
-    std::optional<std::pair<QualType, std::vector<TemplateArgument>>>
-    isSFINAEType(Type const* T)
+        This struct is used to store the underlying type and the template
+        arguments of a type used in a SFINAE context.
+
+        For instance, for the type `std::enable_if_t<std::is_integral_v<T>, T>`,
+        the `Type` would be `T`, and the `Arguments` would be
+        `{std::is_integral_v<T>, T}`.
+     */
+    struct SFINAEInfo
     {
-        return isSFINAEType(QualType(T, 0));
+        // The underlying type of the SFINAE type.
+        QualType Type;
+
+        // The template arguments used in the SFINAE context.
+        std::vector<TemplateArgument> Arguments;
+    };
+
+    /* Get the underlying type result of a SFINAE type
+
+        This function will return the underlying type of a
+        type used in a SFINAE context.
+
+        For instance, it returns the type `T` for the
+        type `std::enable_if_t<std::is_integral_v<T>, T>`.
+
+        @param T The type to check.
+
+        @return `std::nullopt` if the type is not a SFINAE type,
+        and the underlying type with the template arguments
+        otherwise.
+     */
+    std::optional<SFINAEInfo>
+    extractSFINAEInfo(QualType T);
+
+    // @copydoc extractSFINAEInfo(QualType)
+    std::optional<SFINAEInfo>
+    extractSFINAEInfo(Type const* T)
+    {
+        return extractSFINAEInfo(QualType(T, 0));
     }
 
-    std::optional<
-        std::tuple<TemplateParameterList*, llvm::SmallBitVector, unsigned>>
-    isSFINAETemplate(TemplateDecl* TD, IdentifierInfo const* Member);
+    /* Struct to hold SFINAE information.
 
-    static std::optional<SFINAEInfo>
-    getSFINAETemplate(QualType T, bool AllowDependentNames);
+       This struct is used to store information about a template that is
+       involved in a SFINAE context. It contains the template declaration,
+       the member identifier, and the template arguments.
 
-    static
+       For instance, for the type `std::enabled_if_t<std::is_integral_v<T>, T>`,
+       the struct would contain the `Template` declaration for `std::enable_if`,
+       and the `Arguments` `{std::is_integral_v<T>, T}`.
+     */
+    struct SFINAETemplateInfo
+    {
+        /// The template declaration involved in SFINAE
+        TemplateDecl* Template = nullptr;
+
+        /// The identifier of the member being checked.
+        IdentifierInfo const* Member = nullptr;
+
+        /// The template arguments used in the SFINAE context.
+        ArrayRef<TemplateArgument> Arguments;
+    };
+
+    /* Get the template declaration and member identifier
+
+        This function is a helper used by `extractSFINAEInfo` to
+        extract the template declaration and member identifier
+        from a type used in a SFINAE context.
+
+        For instance, for the type `std::enabled_if_t<std::is_integral_v<T>, T>`,
+        the struct would contain the `Template` declaration for `std::enable_if`,
+        and the `Arguments` `{std::is_integral_v<T>, T}`.
+
+        If `AllowDependentNames` is set to `true`, the function will
+        also populate the `Member` field with the member identifier
+        if the type is a dependent name type. For instance,
+        for the type `typename std::enable_if<B,T>::type`, the `Member`
+        field would be `type`, and the other fields would be populated
+        respective to `std::enable_if<B,T>`: `Template` would be `std::enable_if`,
+        and `Arguments` would be `{B,T}`.
+     */
+    std::optional<SFINAETemplateInfo>
+    getSFINAETemplateInfo(QualType T, bool AllowDependentNames) const;
+
+    /* The controlling parameters of a SFINAE template
+
+       This struct is used to store information about the controlling
+       parameters of a template that is involved in a SFINAE context.
+
+       It contains the template parameters, the controlling parameters,
+       and the index of the parameter that represents the result.
+
+       For instance, for the template `template<bool B, typename T> typename
+       std::enable_if<B,T>::type`, the struct would contain the template
+       parameters `{B, T}`, the index of the controlling parameters `{B}`,
+       and the index `1` to represent the second result parameter `T`.
+     */
+    struct SFINAEControlParams
+    {
+        // The template parameters of the template declaration
+        TemplateParameterList* Parameters = nullptr;
+
+        // The controlling parameters of the template declaration
+        llvm::SmallBitVector ControllingParams;
+
+        // The index of the parameter that represents the SFINAE result
+        std::size_t ParamIdx = static_cast<std::size_t>(-1);
+    };
+
+    /* Determine if a template is SFINAE and returns constraints
+
+       This function is used by `isSFINAETemplate` to determine if a
+       template is involved in a SFINAE context.
+
+       If the template is involved in a SFINAE context, the function
+       will return the template parameters, the controlling parameters,
+       and the index of the parameter that controls the SFINAE context.
+
+       If the template is an alias (such as `std::enable_if_t`), the
+       template information of the underlying type
+       (such as `typename enable_if<B,T>::type`) will be extract instead.
+     */
+    std::optional<SFINAEControlParams>
+    getSFINAEControlParams(TemplateDecl* TD, IdentifierInfo const* Member);
+
+    std::optional<SFINAEControlParams>
+    getSFINAEControlParams(SFINAETemplateInfo const& SFINAE) {
+        return getSFINAEControlParams(SFINAE.Template, SFINAE.Member);
+    }
+
+    /* Get the template argument with specified index.
+
+        If the index is a valid index in the template arguments,
+        the function will return the template argument at the
+        specified index.
+
+        If the index is outside the bounds of the
+        arguments, the function will attempt to get the
+        argument from the default template arguments.
+     */
     std::optional<TemplateArgument>
     tryGetTemplateArgument(
         TemplateParameterList* Parameters,
         ArrayRef<TemplateArgument> Arguments,
-        unsigned Index);
+        std::size_t Index);
 
     // =================================================
     // Filters
@@ -805,6 +915,20 @@ private:
      */
     FileInfo*
     findFileInfo(clang::SourceLocation loc);
+
+    /* Result of an upsert operation
+
+        This struct is used to return the result of an
+        upsert operation. The struct contains a reference
+        to the Info object that was created or found, and
+        a boolean flag indicating whether the Info object
+        was newly created or not.
+     */
+    template <class InfoTy>
+    struct upsertResult {
+        InfoTy& I;
+        bool isNew;
+    };
 
     /*  Get or construct an empty Info with a specified id.
 

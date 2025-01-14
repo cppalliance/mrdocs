@@ -731,6 +731,26 @@ MRDOCS_DECL
 QualType
 getDeclaratorType(const DeclaratorDecl* DD);
 
+/** Get the NonTypeTemplateParm of an expression
+
+    This function will return the NonTypeTemplateParmDecl
+    corresponding to the expression `E` if it is a
+    NonTypeTemplateParmDecl. If the expression is not
+    a NonTypeTemplateParmDecl, the function will return
+    nullptr.
+
+    For instance, given the expression `x` in the following
+    code snippet:
+
+    @code
+    template<int x>
+    void f() {}
+    @endcode
+
+    the function will return the NonTypeTemplateParmDecl
+    corresponding to `x`, which is the template parameter
+    of the function `f`.
+ */
 MRDOCS_DECL
 NonTypeTemplateParmDecl const*
 getNTTPFromExpr(const Expr* E, unsigned Depth);
@@ -779,11 +799,6 @@ isAllImplicit(Decl const* D);
 #ifdef NDEBUG
 #define MRDOCS_SYMBOL_TRACE(D, C)
 #else
-
-#    define MRDOCS_SYMBOL_TRACE_MERGE_(a, b) a##b
-#    define MRDOCS_SYMBOL_TRACE_LABEL_(a)    MRDOCS_SYMBOL_TRACE_MERGE_(symbol_name_, a)
-#    define MRDOCS_SYMBOL_TRACE_UNIQUE_NAME  MRDOCS_SYMBOL_TRACE_LABEL_(__LINE__)
-
 namespace detail {
     // concept to check if ID->printQualifiedName(
     // std::declval<llvm::raw_svector_ostream&>(),
@@ -800,6 +815,35 @@ namespace detail {
     {
         D.print(OS, PP);
     };
+
+    template <class T>
+    concept HasPrintWithPolicyFirst = requires(T const& D, llvm::raw_svector_ostream& OS, PrintingPolicy PP)
+    {
+        D.print(PP, OS, true);
+    };
+
+    template <class T>
+    concept HasDump = requires(T const& D, llvm::raw_svector_ostream& OS, ASTContext const& C)
+    {
+        D.dump(OS, C);
+    };
+
+    template <class T>
+    concept ConvertibleToUnqualifiedQualType = requires(T const& D)
+    {
+        QualType(&D, 0);
+    };
+
+    template <class T>
+    concept HasGetName = requires(T const& D)
+    {
+        D.getName();
+    };
+
+    template <class T>
+    requires (!std::is_pointer_v<T>)
+    void
+    printTraceName(T const& D, ASTContext const& C, SmallString<256>& symbol_name);
 
     template <class T>
     void
@@ -829,6 +873,38 @@ namespace detail {
         {
             D->print(os, C.getPrintingPolicy());
         }
+        else if constexpr (HasPrintWithPolicyFirst<T>)
+        {
+            D->print(C.getPrintingPolicy(), os, true);
+        }
+        else if constexpr (ConvertibleToUnqualifiedQualType<T>)
+        {
+            QualType const QT(D, 0);
+            QT.print(os, C.getPrintingPolicy());
+        }
+        else if constexpr (HasDump<T>)
+        {
+            D->dump(os, C);
+        }
+        else if constexpr (HasGetName<T>)
+        {
+            os << D->getName();
+        }
+        else if constexpr (std::ranges::range<T>)
+        {
+            bool first = true;
+            os << "{";
+            for (auto it = D->begin(); it != D->end(); ++it)
+            {
+                if (!first)
+                {
+                    os << ", ";
+                }
+                first = false;
+                printTraceName(*it, C, symbol_name);
+            }
+            os << "}";
+        }
     }
 
     template <class T>
@@ -840,6 +916,9 @@ namespace detail {
     }
 } // namespace detail
 
+#    define MRDOCS_SYMBOL_TRACE_MERGE_(a, b) a##b
+#    define MRDOCS_SYMBOL_TRACE_LABEL_(a)    MRDOCS_SYMBOL_TRACE_MERGE_(symbol_name_, a)
+#    define MRDOCS_SYMBOL_TRACE_UNIQUE_NAME  MRDOCS_SYMBOL_TRACE_LABEL_(__LINE__)
 #define MRDOCS_SYMBOL_TRACE(D, C) \
     SmallString<256> MRDOCS_SYMBOL_TRACE_UNIQUE_NAME;         \
     detail::printTraceName(D, C, MRDOCS_SYMBOL_TRACE_UNIQUE_NAME); \
