@@ -1067,7 +1067,7 @@ populate(
         populate(I.Explicit, D->getExplicitSpecifier());
     }
 
-    ArrayRef<ParmVarDecl*> params = D->parameters();
+    ArrayRef<ParmVarDecl*> const params = D->parameters();
     I.Params.resize(params.size());
     for (std::size_t i = 0; i < params.size(); ++i)
     {
@@ -1101,11 +1101,11 @@ populate(
 
     I.Class = toFunctionClass(D->getDeclKind());
 
-    QualType const RT = D->getReturnType();
-
     // extract the return type in direct dependency mode
     // if it contains a placeholder type which is
     // deduceded as a local class type
+    QualType const RT = D->getReturnType();
+    MRDOCS_SYMBOL_TRACE(RT, context_);
     I.ReturnType = toTypeInfo(RT);
 
     if (auto* TRC = D->getTrailingRequiresClause())
@@ -2084,138 +2084,175 @@ getSourceCode(SourceRange const& R) const
         context_.getLangOpts()).str();
 }
 
-std::optional<std::pair<QualType, std::vector<TemplateArgument>>>
+std::optional<ASTVisitor::SFINAEInfo>
 ASTVisitor::
-isSFINAEType(QualType const T)
+extractSFINAEInfo(QualType const T)
 {
-    if (!config_->sfinae)
-    {
-        return std::nullopt;
-    }
+    MRDOCS_SYMBOL_TRACE(T, context_);
+    MRDOCS_CHECK_OR(config_->sfinae, std::nullopt);
 
-    auto sfinae_info = getSFINAETemplate(T, true);
-    if (!sfinae_info)
-    {
-        return std::nullopt;
-    }
+    // Get the primary template information of the type
+    auto const templateInfo = getSFINAETemplateInfo(T, true);
+    MRDOCS_CHECK_OR(templateInfo, std::nullopt);
 
-    auto sfinae_result = isSFINAETemplate(
-        sfinae_info->Template, sfinae_info->Member);
+    // Find the control parameters for SFINAE
+    auto SFINAEControl = getSFINAEControlParams(*templateInfo);
+    MRDOCS_CHECK_OR(SFINAEControl, std::nullopt);
 
-    if (!sfinae_result)
-    {
-        return std::nullopt;
-    }
-
-    auto [template_params, controlling_params, param_idx] = *sfinae_result;
-
-    auto const Args = sfinae_info->Arguments;
+    // Find the parameter that represents the SFINAE result
+    auto const Args = templateInfo->Arguments;
+    MRDOCS_SYMBOL_TRACE(Args, context_);
     auto const param_arg = tryGetTemplateArgument(
-        template_params, Args, param_idx);
-    if (!param_arg)
-    {
-        return std::nullopt;
-    }
+        SFINAEControl->Parameters, Args, SFINAEControl->ParamIdx);
+    MRDOCS_CHECK_OR(param_arg, std::nullopt);
+    MRDOCS_SYMBOL_TRACE(*param_arg, context_);
 
+    // Create a vector of template arguments that represent the
+    // controlling parameters of the SFINAE template
     std::vector<TemplateArgument> ControllingArgs;
     for (std::size_t I = 0; I < Args.size(); ++I)
     {
-        if (controlling_params[I])
+        if (SFINAEControl->ControllingParams[I])
         {
+            MRDOCS_SYMBOL_TRACE(Args[I], context_);
             ControllingArgs.emplace_back(Args[I]);
         }
     }
 
-    return std::make_pair(param_arg->getAsType(), std::move(ControllingArgs));
+    // Return the main type and controlling types
+    return SFINAEInfo{param_arg->getAsType(), std::move(ControllingArgs)};
 }
 
-std::optional<std::tuple<TemplateParameterList*, llvm::SmallBitVector, unsigned>>
+std::optional<ASTVisitor::SFINAEControlParams>
 ASTVisitor::
-isSFINAETemplate(
+getSFINAEControlParams(
     TemplateDecl* TD,
-    const IdentifierInfo* Member)
+    IdentifierInfo const* Member)
 {
-    if (!TD)
-    {
-        return std::nullopt;
-    }
+    MRDOCS_SYMBOL_TRACE(TD, context_);
+    MRDOCS_SYMBOL_TRACE(Member, context_);
+    MRDOCS_CHECK_OR(TD, std::nullopt);
 
+    // The `FindParam` lambda function is used to find the index of a
+    // template argument in a list of template arguments. It is used
+    // to find the index of the controlling parameter in the list of
+    // template arguments of the template declaration.
     auto FindParam = [this](
         ArrayRef<TemplateArgument> Arguments,
-        const TemplateArgument& Arg) -> unsigned
+        const TemplateArgument& Arg) -> std::size_t
     {
         if (Arg.getKind() != TemplateArgument::Type)
         {
             return -1;
         }
-        auto Found = std::ranges::find_if(Arguments, [&](const TemplateArgument& Other)
-        {
-            if (Other.getKind() != TemplateArgument::Type)
+        auto const It = std::ranges::find_if(
+            Arguments,
+            [&](const TemplateArgument& Other)
             {
-                return false;
-            }
-            return context_.hasSameType(Other.getAsType(), Arg.getAsType());
-        });
-        return Found != Arguments.end() ? Found - Arguments.data() : -1;
+                if (Other.getKind() != TemplateArgument::Type)
+                {
+                    return false;
+                }
+                return context_.hasSameType(Other.getAsType(), Arg.getAsType());
+            });
+        bool const found = It != Arguments.end();
+        return found ? It - Arguments.data() : static_cast<std::size_t>(-1);
     };
 
     if(auto* ATD = dyn_cast<TypeAliasTemplateDecl>(TD))
     {
+        // If the alias template is an alias template specialization,
+        // we need to do the process for the underlying type
+        MRDOCS_SYMBOL_TRACE(ATD, context_);
         auto Underlying = ATD->getTemplatedDecl()->getUnderlyingType();
-        auto sfinae_info = getSFINAETemplate(Underlying, !Member);
-        if (!sfinae_info)
-        {
-            return std::nullopt;
-        }
+        MRDOCS_SYMBOL_TRACE(Underlying, context_);
+        auto underlyingTemplateInfo = getSFINAETemplateInfo(Underlying, Member == nullptr);
+        MRDOCS_CHECK_OR(underlyingTemplateInfo, std::nullopt);
         if (Member)
         {
-            sfinae_info->Member = Member;
+            // Get the member specified in the alias type from
+            // the underlying type. If `Member` is `nullptr`,
+            // `getSFINAETemplateInfo` was already allowed to populate
+            // the `Member` field.
+            underlyingTemplateInfo->Member = Member;
         }
-        auto sfinae_result = isSFINAETemplate(
-            sfinae_info->Template, sfinae_info->Member);
-        if (!sfinae_result)
-        {
-            return std::nullopt;
-        }
-        auto [template_params, controlling_params, param_idx] = *sfinae_result;
+        auto sfinaeControl = getSFINAEControlParams(*underlyingTemplateInfo);
+        MRDOCS_CHECK_OR(sfinaeControl, std::nullopt);
+
+        // Find the index of the parameter that represents the SFINAE result
+        // in the underlying template arguments
         auto param_arg = tryGetTemplateArgument(
-            template_params, sfinae_info->Arguments, param_idx);
-        if (!param_arg)
-        {
-            return std::nullopt;
-        }
+            sfinaeControl->Parameters,
+            underlyingTemplateInfo->Arguments,
+            sfinaeControl->ParamIdx);
+        MRDOCS_CHECK_OR(param_arg, std::nullopt);
+        MRDOCS_SYMBOL_TRACE(*param_arg, context_);
+
+        // Find the index of the parameter that represents the SFINAE result
+        // in the primary template arguments
         unsigned ParamIdx = FindParam(ATD->getInjectedTemplateArgs(context_), *param_arg);
-        return std::make_tuple(ATD->getTemplateParameters(), std::move(controlling_params), ParamIdx);
+
+        // Return the controlling parameters with values corresponding to
+        // the primary template arguments
+        TemplateParameterList* primaryTemplParams = ATD->getTemplateParameters();
+        MRDOCS_SYMBOL_TRACE(primaryTemplParams, context_);
+        return SFINAEControlParams(
+            primaryTemplParams,
+            std::move(sfinaeControl->ControllingParams),
+            ParamIdx);
     }
 
+    // Ensure this is a ClassTemplateDecl
     auto* CTD = dyn_cast<ClassTemplateDecl>(TD);
-    if (!CTD)
-    {
-        return std::nullopt;
-    }
+    MRDOCS_SYMBOL_TRACE(CTD, context_);
+    MRDOCS_CHECK_OR(CTD, std::nullopt);
 
+    // Get the template arguments of the primary template
     auto PrimaryArgs = CTD->getInjectedTemplateArgs(context_);
-    llvm::SmallBitVector ControllingParams(PrimaryArgs.size());
+    MRDOCS_SYMBOL_TRACE(PrimaryArgs, context_);
 
+    // Type of the member that represents the SFINAE result.
     QualType MemberType;
+
+    // Index of the parameter that represents the the SFINAE result.
+    // For instance, in the specialization `std::enable_if<true,T>::type`,
+    // `type` is `T`, which corresponds to the second template parameter
+    // `T`, so `ParamIdx` is `1` to represent the second parameter.
     unsigned ParamIdx = -1;
+
+    // The `IsMismatch` function checks if there's a mismatch between the
+    // CXXRecordDecl of the ClassTemplateDecl and the specified template
+    // arguments. If there's a mismatch and `IsMismatch` returns `true`,
+    // the caller returns `std::nullopt` to indicate that the template
+    // is not a SFINAE template. If there are no mismatches, the caller
+    // continues to check the controlling parameters of the template.
+    // This function also updates the `MemberType` and `ParamIdx` variables
+    // so that they can be used to check the controlling parameters.
     auto IsMismatch = [&](CXXRecordDecl* RD, ArrayRef<TemplateArgument> Args)
     {
+        MRDOCS_SYMBOL_TRACE(RD, context_);
+        MRDOCS_SYMBOL_TRACE(Args, context_);
         if (!RD->hasDefinition())
         {
             return false;
         }
+        // Look for member in the record, such
+        // as the member `::type` in `std::enable_if<B,T>`
         auto MemberLookup = RD->lookup(Member);
+        MRDOCS_SYMBOL_TRACE(MemberLookup, context_);
         QualType CurrentType;
         if(MemberLookup.empty())
         {
             if (!RD->getNumBases())
             {
+                // Didn't find a definition for the specified member and
+                // there can't be a base class that defines the
+                // specified member: no mismatch
                 return false;
             }
             for(auto& Base : RD->bases())
             {
-                auto sfinae_info = getSFINAETemplate(Base.getType(), false);
+                auto sfinae_info = getSFINAETemplateInfo(Base.getType(), false);
                 if(! sfinae_info)
                 {
                     // if the base is an opaque dependent type, we can't determine
@@ -2233,7 +2270,7 @@ isSFINAETemplate(
                     return true;
                 }
 
-                auto sfinae_result = isSFINAETemplate(
+                auto sfinae_result = getSFINAEControlParams(
                     sfinae_info->Template, Member);
                 if (!sfinae_result)
                 {
@@ -2264,15 +2301,26 @@ isSFINAETemplate(
         }
         else
         {
-            // ambiguous lookup
+            // MemberLookup is not empty.
             if (!MemberLookup.isSingleResult())
             {
+                // Ambiguous lookup: If there's more than one result,
+                // we can't determine if the template is a SFINAE template
+                // and return `true` to indicate that the template is not a
+                // SFINAE template.
                 return true;
             }
             if (auto* TND = dyn_cast<TypedefNameDecl>(MemberLookup.front()))
             {
+                // Update the current type to the underlying type of the
+                // typedef declaration.
+                // For instance, if the member is `::type` in the record
+                // `std::enable_if<true,T>`, then the current type is `T`.
+                // The next checks will occur for this underlying type.
                 CurrentType = TND->getUnderlyingType();
-            } else
+                MRDOCS_SYMBOL_TRACE(CurrentType, context_);
+            }
+            else
             {
                 // the specialization has a member with the right name,
                 // but it isn't an alias declaration/typedef declaration...
@@ -2280,56 +2328,93 @@ isSFINAETemplate(
             }
         }
 
+        // If the current type depends on a template parameter, we need to
+        // find the corresponding template argument in the template arguments
+        // of the primary template. If the template argument is not found,
+        // we can't determine if the template is a SFINAE template and return
+        // `true` to indicate a mismatch.
         if(CurrentType->isDependentType())
         {
-            auto FoundIdx = FindParam(Args, TemplateArgument(CurrentType));
-            if (FoundIdx == static_cast<decltype(FoundIdx)>(-1)
-                || FoundIdx >= PrimaryArgs.size())
+            TemplateArgument asTemplateArg(CurrentType);
+            auto FoundIdx = FindParam(Args, asTemplateArg);
+            if (FoundIdx == static_cast<std::size_t>(-1) ||
+                FoundIdx >= PrimaryArgs.size())
             {
                 return true;
             }
+            // Set the controlling parameter index to the index of the
+            // template argument that controls the SFINAE. For instance,
+            // in the specialization `std::enable_if<true,T>::type`,
+            // `type` is `T`, which corresponds to the second template
+            // parameter `T`, so `ParamIdx` is `1` to represent the
+            // second parameter.
             ParamIdx = FoundIdx;
+            // Get this primary template argument as a template
+            // argument of the current type.
             TemplateArgument MappedPrimary = PrimaryArgs[FoundIdx];
-            assert(MappedPrimary.getKind() == TemplateArgument::Type);
+            MRDOCS_SYMBOL_TRACE(MappedPrimary, context_);
+            // The primary argument in SFINAE should be a type
+            MRDOCS_ASSERT(MappedPrimary.getKind() == TemplateArgument::Type);
+            // Update the current type to the type of the primary argument
             CurrentType = MappedPrimary.getAsType();
+            MRDOCS_SYMBOL_TRACE(CurrentType, context_);
         }
 
+        // Update the type of the member that represents the SFINAE result
+        // to the current type if it is not already set.
         if (MemberType.isNull())
         {
             MemberType = CurrentType;
         }
 
-        return ! context_.hasSameType(MemberType, CurrentType);
+        // As a last check, the current type should be the same as the
+        // type of the member that represents the SFINAE result so that
+        // we can extract SFINAE information from the template.
+        return !context_.hasSameType(MemberType, CurrentType);
     };
 
-    if (IsMismatch(CTD->getTemplatedDecl(), PrimaryArgs))
-    {
-        return std::nullopt;
-    }
+    // Check if there's a mismatch between the primary record and the arguments
+    CXXRecordDecl* PrimaryRD = CTD->getTemplatedDecl();
+    MRDOCS_SYMBOL_TRACE(PrimaryRD, context_);
+    MRDOCS_CHECK_OR(!IsMismatch(PrimaryRD, PrimaryArgs), std::nullopt);
 
+    // Check if there's a mismatch between any explicit specialization and the arguments
     for(auto* CTSD : CTD->specializations())
     {
-        if (CTSD->isExplicitSpecialization()
-            && IsMismatch(CTSD, CTSD->getTemplateArgs().asArray()))
+        MRDOCS_SYMBOL_TRACE(CTSD, context_);
+        if (!CTSD->isExplicitSpecialization())
         {
-            return std::nullopt;
+            continue;
         }
+        ArrayRef<TemplateArgument> SpecArgs = CTSD->getTemplateArgs().asArray();
+        MRDOCS_CHECK_OR(!IsMismatch(CTSD, SpecArgs), std::nullopt);
     }
 
+    // Check if there's a mismatch between any partial specialization and the arguments
     SmallVector<ClassTemplatePartialSpecializationDecl*> PartialSpecs;
     CTD->getPartialSpecializations(PartialSpecs);
-
     for(auto* CTPSD : PartialSpecs)
     {
+        MRDOCS_SYMBOL_TRACE(CTPSD, context_);
         auto PartialArgs = CTPSD->getTemplateArgs().asArray();
-        if (IsMismatch(CTPSD, PartialArgs))
+        MRDOCS_SYMBOL_TRACE(PartialArgs, context_);
+        MRDOCS_CHECK_OR(!IsMismatch(CTPSD, PartialArgs), std::nullopt);
+    }
+
+    // Find the controlling parameters of the template, that is, the
+    // template parameters that control the SFINAE result. The controlling
+    // parameters are expressions that cannot be converted to
+    // non-type template parameters.
+    llvm::SmallBitVector ControllingParams(PrimaryArgs.size());
+    for(auto* CTPSD : PartialSpecs) {
+        MRDOCS_SYMBOL_TRACE(CTPSD, context_);
+        auto PartialArgs = CTPSD->getTemplateArgs().asArray();
+        MRDOCS_SYMBOL_TRACE(PartialArgs, context_);
+        for(std::size_t i = 0; i < PartialArgs.size(); ++i)
         {
-            return std::nullopt;
-        }
-        for(std::size_t I = 0; I < PartialArgs.size(); ++I)
-        {
-            TemplateArgument Arg = PartialArgs[I];
-            switch(Arg.getKind())
+            TemplateArgument Arg = PartialArgs[i];
+            MRDOCS_SYMBOL_TRACE(Arg, context_);
+            switch (Arg.getKind())
             {
             case TemplateArgument::Integral:
             case TemplateArgument::Declaration:
@@ -2345,38 +2430,50 @@ isSFINAETemplate(
             default:
                 continue;
             }
-            ControllingParams.set(I);
-            //.getAsExpr()
+            ControllingParams.set(i);
         }
     }
 
-    return std::make_tuple(CTD->getTemplateParameters(), std::move(ControllingParams), ParamIdx);
+    return SFINAEControlParams(CTD->getTemplateParameters(), std::move(ControllingParams), ParamIdx);
 }
 
-std::optional<ASTVisitor::SFINAEInfo>
-ASTVisitor::
-getSFINAETemplate(QualType T, bool const AllowDependentNames)
+std::optional<ASTVisitor::SFINAETemplateInfo>
+ASTVisitor::getSFINAETemplateInfo(QualType T, bool const AllowDependentNames) const
 {
-    assert(!T.isNull());
-    SFINAEInfo SFINAE;
+    MRDOCS_SYMBOL_TRACE(T, context_);
+    MRDOCS_ASSERT(!T.isNull());
+
+    // If the type is an elaborated type, get the named type
     if (auto* ET = T->getAs<ElaboratedType>())
     {
         T = ET->getNamedType();
     }
 
-    if(auto* DNT = T->getAsAdjusted<DependentNameType>();
+    // If the type is a dependent name type and dependent names are allowed,
+    // extract the identifier and the qualifier's type
+    SFINAETemplateInfo SFINAE;
+    if (auto* DNT = T->getAsAdjusted<DependentNameType>();
         DNT && AllowDependentNames)
     {
         SFINAE.Member = DNT->getIdentifier();
+        MRDOCS_SYMBOL_TRACE(SFINAE.Member, context_);
         T = QualType(DNT->getQualifier()->getAsType(), 0);
+        MRDOCS_SYMBOL_TRACE(T, context_);
     }
 
-    if(auto* TST = T->getAsAdjusted<TemplateSpecializationType>())
+    // If the type is a template specialization type, extract the template name
+    // and the template arguments
+    if (auto* TST = T->getAsAdjusted<TemplateSpecializationType>())
     {
+        MRDOCS_SYMBOL_TRACE(TST, context_);
         SFINAE.Template = TST->getTemplateName().getAsTemplateDecl();
+        MRDOCS_SYMBOL_TRACE(SFINAE.Template, context_);
         SFINAE.Arguments = TST->template_arguments();
+        MRDOCS_SYMBOL_TRACE(SFINAE.Arguments, context_);
         return SFINAE;
     }
+
+    // Return nullopt if the type does not match the expected patterns
     return std::nullopt;
 }
 
@@ -2384,30 +2481,36 @@ std::optional<TemplateArgument>
 ASTVisitor::
 tryGetTemplateArgument(
     TemplateParameterList* Parameters,
-    ArrayRef<TemplateArgument> Arguments,
-    unsigned const Index)
+    ArrayRef<TemplateArgument> const Arguments,
+    std::size_t const Index)
 {
-    if (Index == static_cast<unsigned>(-1))
-    {
-        return std::nullopt;
-    }
+    MRDOCS_SYMBOL_TRACE(Parameters, context_);
+    MRDOCS_SYMBOL_TRACE(Arguments, context_);
+    MRDOCS_CHECK_OR(Index != static_cast<unsigned>(-1), std::nullopt);
+
+    // If the index is within the range of the template arguments, return the argument
     if (Index < Arguments.size())
     {
         return Arguments[Index];
     }
-    if(Parameters && Index < Parameters->size())
+
+    MRDOCS_CHECK_OR(Parameters, std::nullopt);
+    MRDOCS_CHECK_OR(Index < Parameters->size(), std::nullopt);
+
+    // Attempt to get the default argument of the template parameter
+    NamedDecl* ND = Parameters->getParam(Index);
+    MRDOCS_SYMBOL_TRACE(ND, context_);
+    if(auto* TTPD = dyn_cast<TemplateTypeParmDecl>(ND);
+        TTPD && TTPD->hasDefaultArgument())
     {
-        NamedDecl* ND = Parameters->getParam(Index);
-        if(auto* TTPD = dyn_cast<TemplateTypeParmDecl>(ND);
-            TTPD && TTPD->hasDefaultArgument())
-        {
-            return TTPD->getDefaultArgument().getArgument();
-        }
-        if(auto* NTTPD = dyn_cast<NonTypeTemplateParmDecl>(ND);
-            NTTPD && NTTPD->hasDefaultArgument())
-        {
-            return NTTPD->getDefaultArgument().getArgument();
-        }
+        MRDOCS_SYMBOL_TRACE(TTPD, context_);
+        return TTPD->getDefaultArgument().getArgument();
+    }
+    if(auto* NTTPD = dyn_cast<NonTypeTemplateParmDecl>(ND);
+        NTTPD && NTTPD->hasDefaultArgument())
+    {
+        MRDOCS_SYMBOL_TRACE(NTTPD, context_);
+        return NTTPD->getDefaultArgument().getArgument();
     }
     return std::nullopt;
 }

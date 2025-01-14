@@ -117,12 +117,18 @@ public:
         This function stores the local qualifiers of the given
         Qualified Type and calls the corresponding `VisitXXXType`
         function for the associated `Type`.
+
+        Example:
+        - Wrapped type: `const int`
+        - Unwrapped type: `int`
      */
     bool
     Visit(QualType const QT)
     {
+        MRDOCS_SYMBOL_TRACE(QT, Visitor_.context_);
         Quals_ |= QT.getLocalFastQualifiers();
         Type const* T = QT.getTypePtrOrNull();
+        MRDOCS_SYMBOL_TRACE(T, Visitor_.context_);
         return Visit(T);
     }
 
@@ -284,23 +290,45 @@ private:
         return static_cast<Derived&>(*this);
     }
 
-    // A type with parentheses, e.g., `(int)`.
+    /** Visit a type with parentheses, e.g., `(int)`.
+
+        This function unwraps the inner type from the parentheses.
+
+        Example:
+        - Wrapped type: `(int)`
+        - Unwrapped type: `int`
+     */
     bool
-    VisitParenType(
-        const ParenType* T)
+    VisitParenType(const ParenType* T)
     {
         QualType I = T->getInnerType();
         return Visit(I);
     }
 
+    /** Visit a macro qualified type.
+
+        This function unwraps the underlying type from the macro qualifier.
+
+        Example:
+        - Wrapped type: `MACRO_QUALIFIED(int)`
+        - Unwrapped type: `int`
+     */
     bool
     VisitMacroQualified(
-        const MacroQualifiedType* T)
+        MacroQualifiedType const* T)
     {
         QualType UT = T->getUnderlyingType();
         return Visit(UT);
     }
 
+    /** Visit an attributed type.
+
+        This function unwraps the modified type from the attribute.
+
+        Example:
+        - Wrapped type: `[[attribute]] int`
+        - Unwrapped type: `int`
+     */
     bool
     VisitAttributedType(
         const AttributedType* T)
@@ -309,22 +337,44 @@ private:
         return Visit(MT);
     }
 
+    /** Visit an adjusted type.
+
+        This function unwraps the original type from the adjusted type.
+
+        Example:
+        - Wrapped type: adjusted/decayed `int*`
+        - Unwrapped type: original `int[4]`
+     */
     bool
-    VisitAdjustedType(
-        const AdjustedType* T)
+    VisitAdjustedType(AdjustedType const* T)
     {
         QualType OT = T->getOriginalType();
         return Visit(OT);
     }
 
+    /** Visit a using type.
+
+        This function unwraps the underlying type from the using type.
+
+        Example:
+        - Wrapped type: `using TypeAlias = int`
+        - Unwrapped type: `int`
+     */
     bool
-    VisitUsingType(
-        const UsingType* T)
+    VisitUsingType(UsingType const* T)
     {
         QualType UT = T->getUnderlyingType();
         return Visit(UT);
     }
 
+    /** Visit a substituted template type parameter type.
+
+        This function unwraps the replacement type from the substituted template type parameter.
+
+        Example:
+        - Wrapped type: `T`
+        - Unwrapped type: `int` (if `T` is substituted with `int`)
+     */
     bool
     VisitSubstTemplateTypeParmType(
         const SubstTemplateTypeParmType* T)
@@ -335,17 +385,38 @@ private:
 
     // ----------------------------------------------------------------
 
-    // A type that was referred to using an elaborated type keyword,
-    // e.g., `struct S`, or via a qualified name, e.g., `N::M::type`.
+
+
+    /** Visit an elaborated type.
+
+        This function unwraps the named type from the elaborated type:
+        a type that was referred to using an elaborated type keyword,
+        e.g., `struct S`, or via a qualified name, e.g., `N::M::type`.
+
+        Example:
+        - Wrapped type: `struct S`
+        - Unwrapped type: `S`
+     */
     bool
     VisitElaboratedType(
         const ElaboratedType* T)
     {
+        MRDOCS_SYMBOL_TRACE(T, Visitor_.context_);
         NNS_ = T->getQualifier();
+        MRDOCS_SYMBOL_TRACE(NNS_, Visitor_.context_);
         QualType NT = T->getNamedType();
+        MRDOCS_SYMBOL_TRACE(NT, Visitor_.context_);
         return Visit(NT);
     }
 
+    /** Visit a pack expansion type.
+
+        This function unwraps the pattern type from the pack expansion.
+
+        Example:
+        - Wrapped type: `int...`
+        - Unwrapped type: `int`
+     */
     bool
     VisitPackExpansionType(
         const PackExpansionType* T)
@@ -357,6 +428,14 @@ private:
 
     // ----------------------------------------------------------------
 
+    /** Visit a pointer type.
+
+        This function unwraps the pointee type from the pointer type.
+
+        Example:
+        - Wrapped type: `int*`
+        - Unwrapped type: `int`
+     */
     bool
     VisitPointerType(
         const PointerType* T)
@@ -366,6 +445,14 @@ private:
         return Visit(PT);
     }
 
+    /** Visit an lvalue reference type.
+
+        This function unwraps the pointee type from the lvalue reference type.
+
+        Example:
+        - Wrapped type: `int&`
+        - Unwrapped type: `int`
+     */
     bool
     VisitLValueReferenceType(
         const LValueReferenceType* T)
@@ -376,6 +463,14 @@ private:
         return Visit(PT);
     }
 
+    /** Visit an rvalue reference type.
+
+        This function unwraps the pointee type from the rvalue reference type.
+
+        Example:
+        - Wrapped type: `int&&`
+        - Unwrapped type: `int`
+     */
     bool
     VisitRValueReferenceType(
         const RValueReferenceType* T)
@@ -386,6 +481,14 @@ private:
         return Visit(PT);
     }
 
+    /** Visit a member pointer type.
+
+        This function unwraps the pointee type from the member pointer type.
+
+        Example:
+        - Wrapped type: `int Class::*`
+        - Unwrapped type: `int`
+     */
     bool
     VisitMemberPointerType(
         const MemberPointerType* T)
@@ -404,6 +507,14 @@ private:
         return Visit(RT);
     }
 
+    /** Visit an array type.
+
+        This function unwraps the element type from the array type.
+
+        Example:
+        - Wrapped type: `int[10]`
+        - Unwrapped type: `int`
+     */
     bool
     VisitArrayType(
         const ArrayType* T)
@@ -457,7 +568,7 @@ private:
     VisitDependentNameType(
         const DependentNameType* T)
     {
-        if (auto SFINAE = getASTVisitor().isSFINAEType(T); SFINAE.has_value())
+        if (auto SFINAE = getASTVisitor().extractSFINAEInfo(T))
         {
             return getDerived().Visit(SFINAE->first);
         }
@@ -475,6 +586,7 @@ private:
     VisitDependentTemplateSpecializationType(
         const DependentTemplateSpecializationType* T)
     {
+        MRDOCS_SYMBOL_TRACE(T, Visitor_.context_);
         if (auto const* NNS = T->getQualifier())
         {
             NNS_ = NNS;
@@ -489,7 +601,8 @@ private:
     VisitTemplateSpecializationType(
         TemplateSpecializationType const* T)
     {
-        if (auto SFINAE = getASTVisitor().isSFINAEType(T); SFINAE.has_value())
+        MRDOCS_SYMBOL_TRACE(T, Visitor_.context_);
+        if (auto SFINAE = getASTVisitor().extractSFINAEInfo(T))
         {
             return getDerived().Visit(SFINAE->first);
         }
@@ -574,9 +687,11 @@ private:
     VisitTemplateTypeParmType(
         const TemplateTypeParmType* T)
     {
+        MRDOCS_SYMBOL_TRACE(T, Visitor_.context_);
         const IdentifierInfo* II = nullptr;
         if (TemplateTypeParmDecl const* D = T->getDecl())
         {
+            MRDOCS_SYMBOL_TRACE(D, Visitor_.context_);
             if(D->isImplicit())
             {
                 // special case for implicit template parameters
