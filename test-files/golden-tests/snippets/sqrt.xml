@@ -7,7 +7,7 @@
     <function name="sqrt" id="ulFDUE1svTCX8fV/h8EIp4NNbWs=">
       <file path="sqrt.cpp" line="15" class="def"/>
       <return>
-        <type name="std::T"/>
+        <type name="T"/>
       </return>
       <param name="value">
         <type name="T"/>
