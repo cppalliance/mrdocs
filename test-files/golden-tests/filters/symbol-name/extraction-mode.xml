@@ -107,18 +107,6 @@
         </para>
       </doc>
     </function>
-    <struct name="dependency" id="1L0CXReBnwnJJ+QMfbufLsSVX8Q=">
-      <file path="extraction-mode.cpp" line="89" class="def"/>
-      <doc>
-        <para>
-          <text>An excluded symbol used as a dependency by a regular symbol</text>
-        </para>
-        <para>
-          <text>A symbol excluded by filters but is used as a dependency The symbol should be extracted as a dependency but its</text>
-          <text> members should not be traversed.</text>
-        </para>
-      </doc>
-    </struct>
     <function name="get_dependency" id="JsA4nL3r830aRrxkYOJehKibEWE=">
       <file path="extraction-mode.cpp" line="102" class="def"/>
       <return>
@@ -200,21 +188,6 @@
         </para>
       </doc>
     </function>
-    <struct name="dependency" id="CyWO4Tsh/ybq2vl/ylZdyGSc20U=">
-      <file path="extraction-mode.cpp" line="174" class="def"/>
-      <doc>
-        <para>
-          <text>A dependency symbol in a see-below namespace</text>
-        </para>
-        <para>
-          <text>The symbol should be extracted as a dependency because the exclude filter has precedence over the see-below filter.</text>
-          <text> Only included symbols can be promoted to see-below.</text>
-        </para>
-        <para>
-          <text>This will not have a page and functions using this symbol should explain the dependency.</text>
-        </para>
-      </doc>
-    </struct>
     <function name="get_dependency" id="a9NW/0+lwniKyNoc79ktu9ydz9Q=">
       <file path="extraction-mode.cpp" line="184" class="def"/>
       <return>
@@ -265,8 +238,6 @@
     </doc>
     <aliased name="implementation_defined_ns" id="ZYn+worzOdzCMW6yaZC9jAkpVTk="/>
   </namespace-alias>
-  <namespace name="dependency_ns" id="FVHkx2YC1v9lxjwdG5D+M2e5SIA=">
-  </namespace>
   <namespace-alias name="dependency_ns_alias" id="iz2edsTj1BrHatwuxuBXSOfqpDE=">
     <file path="extraction-mode.cpp" line="233"/>
     <doc>
@@ -375,14 +346,6 @@
       </para>
     </doc>
   </function>
-  <struct name="dependency" id="t1gs2ps85mDDF3gcK68GCS5x23g=">
-    <file path="extraction-mode.cpp" line="307" class="def"/>
-    <doc>
-      <para>
-        <text>A dependency symbol in the global namespace</text>
-      </para>
-    </doc>
-  </struct>
   <function name="get_dependency" id="TDPbPaUgAt15wH9Aq054dH6qByE=">
     <file path="extraction-mode.cpp" line="313" class="def"/>
     <return>
