@@ -675,7 +675,8 @@ populateInfoBases(InfoTy& I, bool const isNew, DeclTy* D)
     {
         // Try an exact match here
         auto qualifiedName = this->qualifiedName(D);
-        if (checkSymbolFiltersImpl<false>(std::string_view(qualifiedName.str())))
+        if (checkSymbolFiltersImpl<false>(std::string_view(qualifiedName.str())) &&
+            checkFileFilters(D))
         {
             I.Extraction = ExtractionMode::Regular;
             // default mode also becomes regular for its
