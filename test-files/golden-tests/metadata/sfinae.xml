@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <template>
+    <tparam name="T" class="type"/>
+    <function name="f1" id="Bs19YS1cqZhrsbv149xgnjRFUAk=">
+      <file path="sfinae.cpp" line="5"/>
+      <return>
+        <type name="T"/>
+      </return>
+      <param name="value">
+        <type name="T"/>
+      </param>
+      <doc>
+        <para>
+          <text>Enabled via return type</text>
+        </para>
+      </doc>
+    </function>
+  </template>
+  <template>
+    <tparam name="T" class="type"/>
+    <function name="f2" id="uckUKgu5WdbIitoodkl2kXQ7RWI=">
+      <file path="sfinae.cpp" line="10"/>
+      <return>
+        <type name="int"/>
+      </return>
+      <param name="value">
+        <type name="T"/>
+      </param>
+      <doc>
+        <para>
+          <text>Enabling a specified return type</text>
+        </para>
+      </doc>
+    </function>
+  </template>
+  <namespace name="B" id="kPgq2AM8TvyGDGm5jEWfqYlOPmY=">
+    <struct name="C" id="r/5vKTgl4cXSK5TnuZ/+P7qmkJ0=">
+      <file path="sfinae.cpp" line="15" class="def"/>
+    </struct>
+  </namespace>
+  <template>
+    <tparam name="T" class="type"/>
+    <function name="f3" id="HIZ4NeNKvHJFhj0tJIjpjaLL30U=">
+      <file path="sfinae.cpp" line="19"/>
+      <return>
+        <type id="r/5vKTgl4cXSK5TnuZ/+P7qmkJ0=" name="B::C"/>
+      </return>
+      <param name="value">
+        <type name="T"/>
+      </param>
+      <doc>
+        <para>
+          <text>Enabling a specified return type in another namespace</text>
+        </para>
+      </doc>
+    </function>
+  </template>
+  <template>
+    <tparam name="T" class="type"/>
+    <function name="f4" id="45LJB0/nCsN3KRlVtnRqNrJG818=">
+      <file path="sfinae.cpp" line="24"/>
+      <return>
+        <type name="T"/>
+      </return>
+      <param name="value">
+        <type name="T"/>
+      </param>
+      <doc>
+        <para>
+          <text>Enabled via return type with std::enable_if</text>
+        </para>
+      </doc>
+    </function>
+  </template>
+  <template>
+    <tparam name="T" class="type"/>
+    <tparam class="non-type" type="bool" default="true"/>
+    <function name="f5" id="a+UWurTVrgCdwaj2WmRbGzoFaPE=">
+      <file path="sfinae.cpp" line="29"/>
+      <return>
+        <type name="T"/>
+      </return>
+      <param name="value">
+        <type name="T"/>
+      </param>
+      <doc>
+        <para>
+          <text>Enabled via a non-type template parameter with helper</text>
+        </para>
+      </doc>
+    </function>
+  </template>
+  <template>
+    <tparam name="T" class="type"/>
+    <tparam class="non-type" type="bool" default="true"/>
+    <function name="f6" id="/yE6fwRwAIxETBjA2qovg6HKvcI=">
+      <file path="sfinae.cpp" line="34"/>
+      <return>
+        <type name="T"/>
+      </return>
+      <param name="value">
+        <type name="T"/>
+      </param>
+      <doc>
+        <para>
+          <text>Enabled via a non-type template parameter without helper</text>
+        </para>
+      </doc>
+    </function>
+  </template>
+  <template>
+    <tparam name="T" class="type"/>
+    <tparam class="non-type" type="int" default="0"/>
+    <function name="f7" id="yvozC1ZfCOoeBsvYrNKSBY1/EYg=">
+      <file path="sfinae.cpp" line="39"/>
+      <param name="value">
+        <type name="T"/>
+      </param>
+      <doc>
+        <para>
+          <text>Enabled via a non-type template parameter using int instead of bool</text>
+        </para>
+      </doc>
+    </function>
+  </template>
+  <template>
+    <tparam name="T" class="type"/>
+    <function name="f8" id="Gf4cp25Ok5ZDmOsaPZYkV1j/6kM=">
+      <file path="sfinae.cpp" line="43"/>
+      <return>
+        <type name="T"/>
+      </return>
+      <param name="value">
+        <type name="T"/>
+      </param>
+      <param default="0">
+        <type class="pointer">
+          <pointee-type name="void"/>
+        </type>
+      </param>
+      <doc>
+        <para>
+          <text>Enabled via parameter without helper</text>
+        </para>
+      </doc>
+    </function>
+  </template>
+  <template>
+    <tparam name="T" class="type"/>
+    <function name="f9" id="nt7dkGV/+Wo4uvfBAeMzChGggJs=">
+      <file path="sfinae.cpp" line="48"/>
+      <return>
+        <type name="T"/>
+      </return>
+      <param name="value">
+        <type name="T"/>
+      </param>
+      <param default="0">
+        <type class="pointer">
+          <pointee-type name="void"/>
+        </type>
+      </param>
+      <doc>
+        <para>
+          <text>Enabled via parameter with helper</text>
+        </para>
+      </doc>
+    </function>
+  </template>
+  <template>
+    <tparam name="T" class="type"/>
+    <tparam class="type" default="void"/>
+    <function name="f10" id="n8wiRMXq5jqiYScw4e5BxcZdL+c=">
+      <file path="sfinae.cpp" line="64"/>
+      <param name="t">
+        <type class="pointer">
+          <pointee-type name="T"/>
+        </type>
+      </param>
+      <doc>
+        <para>
+          <text>Enabled via type template parameter</text>
+        </para>
+        <para>
+          <text>This pattern should not be used because the function signature is unmodified and therefore only supports one overload.</text>
+        </para>
+        <para>
+          <text>It&apos;s a common mistake is to declare two function templates that differ only in their default template arguments.</text>
+        </para>
+        <para>
+          <text>This does not work because the declarations are treated as redeclarations of the same function template (default template</text>
+          <text> arguments are not accounted for in function template equivalence).</text>
+        </para>
+      </doc>
+    </function>
+  </template>
+  <template>
+    <tparam name="T" class="type"/>
+    <tparam name="Enable" class="type" default="void"/>
+    <class name="A" id="m/JW900ik2XLYvUdA4MCuWZQd80=">
+      <file path="sfinae.cpp" line="68" class="def"/>
+      <doc>
+        <para>
+          <text>The partial specialization of A is enabled via a template parameter</text>
+        </para>
+      </doc>
+    </class>
+  </template>
+  <template class="partial" id="m/JW900ik2XLYvUdA4MCuWZQd80=">
+    <tparam name="T" class="type"/>
+    <targ class="type" type="T"/>
+    <targ class="type" type="void"/>
+    <class name="A" id="IiCxqBbybfSkEqtDiLE90hOwXD8=">
+      <file path="sfinae.cpp" line="73" class="def"/>
+      <doc>
+        <para>
+          <text>Specialization for floating point types</text>
+        </para>
+      </doc>
+    </class>
+  </template>
+</namespace>
+</mrdocs>

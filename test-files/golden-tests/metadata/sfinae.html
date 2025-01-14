@@ -1,0 +1,411 @@
+<html lang="en">
+<head>
+<title>Reference</title>
+</head>
+<body>
+<div>
+<h1>Reference</h1>
+<div>
+<div>
+<h2 id="index">Global namespace</h2>
+</div>
+<h2>Namespaces</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#B"><code>B</code></a> </td></tr>
+</tbody>
+</table>
+<h2>Types</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th><th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#A-09"><code>A</code></a> </td><td><p><span>The partial specialization of A is enabled via a template parameter</span></p>
+
+</td></tr><tr>
+<td><a href="#A-02"><code>A&lt;T, void&gt;</code></a> </td><td><p><span>Specialization for floating point types</span></p>
+
+</td></tr>
+</tbody>
+</table>
+<h2>Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th><th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#f1"><code>f1</code></a> </td><td><p><span>Enabled via return type</span></p>
+
+</td></tr><tr>
+<td><a href="#f10"><code>f10</code></a> </td><td><p><span>Enabled via type template parameter</span></p>
+
+</td></tr><tr>
+<td><a href="#f2"><code>f2</code></a> </td><td><p><span>Enabling a specified return type</span></p>
+
+</td></tr><tr>
+<td><a href="#f3"><code>f3</code></a> </td><td><p><span>Enabling a specified return type in another namespace</span></p>
+
+</td></tr><tr>
+<td><a href="#f4"><code>f4</code></a> </td><td><p><span>Enabled via return type with std::enable_if</span></p>
+
+</td></tr><tr>
+<td><a href="#f5"><code>f5</code></a> </td><td><p><span>Enabled via a non-type template parameter with helper</span></p>
+
+</td></tr><tr>
+<td><a href="#f6"><code>f6</code></a> </td><td><p><span>Enabled via a non-type template parameter without helper</span></p>
+
+</td></tr><tr>
+<td><a href="#f7"><code>f7</code></a> </td><td><p><span>Enabled via a non-type template parameter using int instead of bool</span></p>
+
+</td></tr><tr>
+<td><a href="#f8"><code>f8</code></a> </td><td><p><span>Enabled via parameter without helper</span></p>
+
+</td></tr><tr>
+<td><a href="#f9"><code>f9</code></a> </td><td><p><span>Enabled via parameter with helper</span></p>
+
+</td></tr>
+</tbody>
+</table>
+</div>
+<div>
+<div>
+<h2 id="B">B</h2>
+</div>
+<h2>Types</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#B-C"><code>C</code></a> </td></tr>
+</tbody>
+</table>
+</div>
+<div>
+<div>
+<h2 id="B-C"><a href="#B">B</a>::C</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sfinae.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+struct C;
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="A-09">A</h2>
+<div>
+<p><span>The partial specialization of A is enabled via a template parameter</span></p>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sfinae.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;
+    class T,
+    class Enable = void&gt;
+class A;
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="A-02">A&lt;T, void&gt;</h2>
+<div>
+<p><span>Specialization for floating point types</span></p>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sfinae.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;class T&gt;
+class <a href="#A-09">A</a>&lt;T, void&gt;;
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="f1">f1</h2>
+<div>
+<p><span>Enabled via return type</span></p>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sfinae.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;class T&gt;
+T
+f1(T value);
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="f10">f10</h2>
+<div>
+<p><span>Enabled via type template parameter</span></p>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sfinae.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;
+    class T,
+    typename = void&gt;
+void
+f10(T* t);
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>This pattern should not be used because the function signature is unmodified and therefore only supports one overload.</span></p>
+<p><span>It&#x27;s a common mistake is to declare two function templates that differ only in their default template arguments.</span></p>
+<p><span>This does not work because the declarations are treated as redeclarations of the same function template (default template</span><span> arguments are not accounted for in function template equivalence).</span></p>
+
+
+</div>
+</div>
+<div>
+<div>
+<h2 id="f2">f2</h2>
+<div>
+<p><span>Enabling a specified return type</span></p>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sfinae.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;class T&gt;
+int
+f2(T value);
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="f3">f3</h2>
+<div>
+<p><span>Enabling a specified return type in another namespace</span></p>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sfinae.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;class T&gt;
+<a href="#B">B</a>::<a href="#B-C">C</a>
+f3(T value);
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="f4">f4</h2>
+<div>
+<p><span>Enabled via return type with std::enable_if</span></p>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sfinae.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;class T&gt;
+T
+f4(T value);
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="f5">f5</h2>
+<div>
+<p><span>Enabled via a non-type template parameter with helper</span></p>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sfinae.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;
+    class T,
+    bool = true&gt;
+T
+f5(T value);
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="f6">f6</h2>
+<div>
+<p><span>Enabled via a non-type template parameter without helper</span></p>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sfinae.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;
+    class T,
+    bool = true&gt;
+T
+f6(T value);
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="f7">f7</h2>
+<div>
+<p><span>Enabled via a non-type template parameter using int instead of bool</span></p>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sfinae.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;
+    class T,
+    int = 0&gt;
+void
+f7(T value);
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="f8">f8</h2>
+<div>
+<p><span>Enabled via parameter without helper</span></p>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sfinae.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;class T&gt;
+T
+f8(
+    T value,
+    void* = 0);
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="f9">f9</h2>
+<div>
+<p><span>Enabled via parameter with helper</span></p>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sfinae.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;class T&gt;
+T
+f9(
+    T value,
+    void* = 0);
+</code>
+</pre>
+</div>
+</div>
+
+</div>
+<div>
+<h4>Created with <a href="https://www.mrdocs.com">MrDocs</a></h4>
+</div>
+</body>
+</html>
