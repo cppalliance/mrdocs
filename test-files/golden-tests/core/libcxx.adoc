@@ -34,7 +34,7 @@ Declared in `&lt;libcxx&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-<<std,std>>::T
+T
 sqrt(T value);
 ----
 

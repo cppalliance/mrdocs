@@ -85,7 +85,7 @@ class TerminalTypeVisitor
     bool IsPack_ = false;
 
     // The optional NestedNameSpecifier.
-    const NestedNameSpecifier* NNS_;
+    const NestedNameSpecifier* NNS_ = nullptr;
 
 public:
     /** Constructor for TerminalTypeVisitor.
@@ -570,7 +570,8 @@ private:
     {
         if (auto SFINAE = getASTVisitor().extractSFINAEInfo(T))
         {
-            return getDerived().Visit(SFINAE->first);
+            NNS_ = nullptr;
+            return getDerived().Visit(SFINAE->Type);
         }
 
         if (auto const* NNS = T->getQualifier())
@@ -604,7 +605,8 @@ private:
         MRDOCS_SYMBOL_TRACE(T, Visitor_.context_);
         if (auto SFINAE = getASTVisitor().extractSFINAEInfo(T))
         {
-            return getDerived().Visit(SFINAE->first);
+            NNS_ = nullptr;
+            return getDerived().Visit(SFINAE->Type);
         }
 
         // In most cases, a template name is simply a reference
