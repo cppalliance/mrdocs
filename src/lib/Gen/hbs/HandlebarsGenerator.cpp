@@ -28,10 +28,9 @@
 #include <fstream>
 #include <sstream>
 
-namespace clang {
-namespace mrdocs {
-namespace hbs {
+namespace clang::mrdocs::hbs {
 
+namespace {
 std::function<void(OutputRef&, std::string_view)>
 createEscapeFn(HandlebarsGenerator const& gen)
 {
@@ -65,8 +64,7 @@ createExecutors(
 HandlebarsCorpus
 createDomCorpus(
     HandlebarsGenerator const& gen,
-    Corpus const& corpus)
-{
+    Corpus const& corpus) {
     return {
         corpus,
         gen.fileExtension(),
@@ -74,6 +72,7 @@ createDomCorpus(
             return gen.toString(c, n);
         }};
 }
+} // (anon)
 
 //------------------------------------------------
 //
@@ -89,21 +88,10 @@ build(
 {
     if (!corpus.config->multipage)
     {
-        auto e = Generator::build(outputPath, corpus);
-        if (e.has_value() && !corpus.config->tagfile.empty())
-        {
-            // Generate tagfile if specified
-            auto const singlePagePath = getSinglePageFullPath(outputPath, fileExtension());
-            MRDOCS_CHECK_OR(singlePagePath, Unexpected(singlePagePath.error()));
-            HandlebarsCorpus hbsCorpus = createDomCorpus(*this, corpus);
-            MRDOCS_TRY(auto tagFileWriter, TagfileWriter::create(
-                    hbsCorpus,
-                    corpus.config->tagfile,
-                    files::getFileName(*singlePagePath)));
-            tagFileWriter.build();
-        }
-
-        return e;
+        MRDOCS_TRY(Generator::build(outputPath, corpus));
+        MRDOCS_CHECK_OR(!corpus.config->tagfile.empty(), {});
+        MRDOCS_TRY(buildTagfile(corpus.config->tagfile, corpus));
+        return {};
     }
 
     // Create corpus and executors
@@ -117,19 +105,72 @@ build(
     // Wait for all executors to finish and check errors
     auto errors = ex.wait();
     MRDOCS_CHECK_OR(errors.empty(), Unexpected(errors));
-
     report::info("Generated {} pages", visitor.count());
 
-    if (! corpus.config->tagfile.empty())
+    MRDOCS_CHECK_OR(!corpus.config->tagfile.empty(), {});
+    MRDOCS_TRY(buildTagfile(corpus.config->tagfile, corpus));
+    return {};
+}
+
+Expected<void>
+HandlebarsGenerator::
+buildTagfile(
+    std::ostream& os,
+    Corpus const& corpus) const
+{
+    HandlebarsCorpus domCorpus = createDomCorpus(*this, corpus);
+    RawOstream raw_os(os);
+    if (corpus.config->multipage)
     {
         MRDOCS_TRY(auto tagFileWriter, TagfileWriter::create(
-                domCorpus,
-                corpus.config->tagfile,
-                outputPath));
+                        domCorpus,
+                        raw_os));
         tagFileWriter.build();
     }
-
+    else
+    {
+        // Get the name of the single page output file
+        auto const singlePagePath = getSinglePageFullPath(corpus.config->output, fileExtension());
+        MRDOCS_CHECK_OR(singlePagePath, Unexpected(singlePagePath.error()));
+        auto const singlePathFilename = files::getFileName(*singlePagePath);
+        MRDOCS_TRY(auto tagFileWriter, TagfileWriter::create(
+                                domCorpus,
+                                raw_os,
+                                singlePathFilename));
+        tagFileWriter.build();
+    }
     return {};
+}
+
+Expected<void>
+HandlebarsGenerator::
+buildTagfile(
+    std::string_view const fileName,
+    Corpus const& corpus) const
+{
+    std::string const dir = files::getParentDir(fileName);
+    MRDOCS_TRY(files::createDirectory(dir));
+    std::ofstream os;
+    try
+    {
+        os.open(std::string(fileName),
+            std::ios_base::binary |
+                std::ios_base::out |
+                std::ios_base::trunc // | std::ios_base::noreplace
+            );
+    }
+    catch(std::exception const& ex)
+    {
+        return Unexpected(formatError("std::ofstream threw \"{}\"", ex.what()));
+    }
+    try
+    {
+        return buildTagfile(os, corpus);
+    }
+    catch(std::exception const& ex)
+    {
+        return Unexpected(formatError("buildOne threw \"{}\"", ex.what()));
+    }
 }
 
 Expected<void>
@@ -178,6 +219,4 @@ escape(OutputRef& out, std::string_view str) const
     out << str;
 }
 
-} // hbs
-} // mrdocs
-} // clang
+} // clang::mrdocs::hbs
