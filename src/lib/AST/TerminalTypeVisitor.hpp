@@ -615,22 +615,27 @@ private:
         // Template names can also refer to function templates,
         // C++0x template aliases, etc...
         TemplateName const TN = T->getTemplateName();
+        MRDOCS_SYMBOL_TRACE(TN, Visitor_.context_);
         MRDOCS_ASSERT(! TN.isNull());
 
         // The list of template parameters and a reference to
         // the templated scoped declaration
         NamedDecl* D = TN.getAsTemplateDecl();
+        MRDOCS_SYMBOL_TRACE(TN, Visitor_.context_);
 
         if (!T->isTypeAlias())
         {
             auto* CT = T->getCanonicalTypeInternal().getTypePtrOrNull();
+            MRDOCS_SYMBOL_TRACE(CT, Visitor_.context_);
             if (auto* ICT = dyn_cast_or_null<InjectedClassNameType>(CT))
             {
                 D = ICT->getDecl();
+                MRDOCS_SYMBOL_TRACE(D, Visitor_.context_);
             }
             else if (auto* RT = dyn_cast_or_null<RecordType>(CT))
             {
                 D = RT->getDecl();
+                MRDOCS_SYMBOL_TRACE(D, Visitor_.context_);
             }
         }
 

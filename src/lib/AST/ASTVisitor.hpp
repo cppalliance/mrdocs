@@ -482,7 +482,8 @@ private:
         {
             Template.emplace();
         }
-        populate(*Template, D, VTD);
+        TemplateInfo &TI = *Template;
+        populate(TI, D, VTD);
     }
 
     void

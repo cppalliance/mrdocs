@@ -89,11 +89,6 @@ buildTerminal(
     // Look for the Info type. If this is a template specialization,
     // we look for the Info of the specialized record.
     Decl const* ID = decayToPrimaryTemplate(D);
-    Info const* I = getASTVisitor().findOrTraverse(const_cast<Decl*>(ID));
-    if (!I)
-    {
-        return;
-    }
 
     auto TI = std::make_unique<NameInfo>();
 
@@ -103,7 +98,10 @@ buildTerminal(
         {
             Name->Name = II->getName();
         }
-        Name->id = I->id;
+        if (Info const* I = getASTVisitor().findOrTraverse(const_cast<Decl*>(ID)))
+        {
+            Name->id = I->id;
+        }
         if(NNS)
         {
             Name->Prefix = getASTVisitor().toNameInfo(NNS);
