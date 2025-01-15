@@ -17,11 +17,6 @@
 namespace clang::mrdocs {
 namespace adoc {
 
-AdocGenerator::
-AdocGenerator()
-    : hbs::HandlebarsGenerator("Asciidoc", "adoc")
-{}
-
 std::string
 AdocGenerator::
 toString(hbs::HandlebarsCorpus const& c, doc::Node const& I) const

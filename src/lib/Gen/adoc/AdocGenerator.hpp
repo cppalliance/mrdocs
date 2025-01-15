@@ -25,7 +25,24 @@ class AdocGenerator
     : public hbs::HandlebarsGenerator
 {
 public:
-    AdocGenerator();
+    std::string_view
+    id() const noexcept override
+    {
+        return "adoc";
+    }
+
+    std::string_view
+    fileExtension() const noexcept override
+    {
+        return "adoc";
+    }
+
+
+    std::string_view
+    displayName() const noexcept override
+    {
+        return "Asciidoc";
+    }
 
     std::string
     toString(

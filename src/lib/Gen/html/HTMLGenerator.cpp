@@ -17,11 +17,6 @@ namespace clang {
 namespace mrdocs {
 namespace html {
 
-HTMLGenerator::
-HTMLGenerator()
-    : hbs::HandlebarsGenerator("HTML", "html")
-{}
-
 std::string
 HTMLGenerator::
 toString(hbs::HandlebarsCorpus const& c, doc::Node const& I) const

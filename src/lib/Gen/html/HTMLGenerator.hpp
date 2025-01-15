@@ -25,7 +25,23 @@ class HTMLGenerator
     : public hbs::HandlebarsGenerator
 {
 public:
-    HTMLGenerator();
+    std::string_view
+    id() const noexcept override
+    {
+        return "html";
+    }
+
+    std::string_view
+    fileExtension() const noexcept override
+    {
+        return "html";
+    }
+
+    std::string_view
+    displayName() const noexcept override
+    {
+        return "HTML";
+    }
 
     std::string
     toString(
