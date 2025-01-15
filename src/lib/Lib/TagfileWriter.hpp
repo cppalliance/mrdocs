@@ -34,13 +34,13 @@ class TagfileWriter
     using os_ptr = std::unique_ptr<llvm::raw_fd_ostream>;
 
     hbs::HandlebarsCorpus const& corpus_;
-    os_ptr os_;
+    llvm::raw_ostream& os_;
     xml::XMLTags tags_;
     std::string defaultFilename_;
 
     TagfileWriter(
         hbs::HandlebarsCorpus const& corpus,
-        os_ptr os,
+        llvm::raw_ostream& os,
         std::string_view defaultFilename) noexcept;
 
 public:
@@ -49,8 +49,13 @@ public:
         This static function creates a TagfileWriter instance using the provided
         HandlebarsCorpus, tagfile, and default filename.
 
+        This overload provides a default filename for symbols. This is useful
+        when generating a tagfile for single page output, as there's a single
+        page to reference before the anchors. All symbols are references to
+        the same file with different anchors.
+
         @param corpus The HandlebarsCorpus to use for the writer.
-        @param tagfile The name of the tagfile to write to.
+        @param os The output stream to write the tagfile to.
         @param defaultFilename The default filename to use for a symbol if none
         is provided. Typically, the relative path to a single page output file.
         This parameter is ignored in multipage mode.
@@ -60,8 +65,30 @@ public:
     Expected<TagfileWriter>
     create(
         hbs::HandlebarsCorpus const& corpus,
-        std::string_view tagfile,
+        llvm::raw_ostream& os,
         std::string_view defaultFilename);
+
+    /** Create a TagfileWriter instance without a reference to a default filename.
+
+        This static function creates a TagfileWriter instance using the provided
+        HandlebarsCorpus and tagfile.
+
+        This overload provides no default filename for symbols. This is useful
+        when generating a tagfile for multipage output, as there's no single
+        page to reference. All symbols are references to other files.
+
+        @param corpus The HandlebarsCorpus to use for the writer.
+        @param os The output stream to write the tagfile to.
+        @return An Expected object containing the TagfileWriter instance or an error.
+     */
+    static
+    Expected<TagfileWriter>
+    create(
+        hbs::HandlebarsCorpus const& corpus,
+        llvm::raw_ostream& os)
+    {
+        return create(corpus, os, {});
+    }
 
     /** Build the tagfile.
 

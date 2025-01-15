@@ -67,6 +67,20 @@ public:
         std::ostream& os,
         Corpus const& corpus) const override;
 
+    /** Build a tagfile for the corpus.
+     */
+    Expected<void>
+    buildTagfile(
+        std::ostream& os,
+        Corpus const& corpus) const;
+
+    /** Build a tagfile for the corpus and store the result in a file.
+     */
+    Expected<void>
+    buildTagfile(
+        std::string_view fileName,
+        Corpus const& corpus) const;
+
     /** Convert a Javadoc node to a string.
     */
     virtual
@@ -76,7 +90,7 @@ public:
         return {};
     }
 
-    /** Output a escaped string to the output stream.
+    /** Output an escaped string to the output stream.
     */
     virtual
     void

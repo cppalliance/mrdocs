@@ -31,36 +31,23 @@ namespace mrdocs {
 TagfileWriter::
 TagfileWriter(
     hbs::HandlebarsCorpus const& corpus,
-    os_ptr os,
+    llvm::raw_ostream& os,
     std::string_view const defaultFilename
     ) noexcept
     : corpus_(corpus)
-    , os_(std::move(os))
-    , tags_(*os_)
+    , os_(os)
+    , tags_(os)
     , defaultFilename_(defaultFilename)
-{
-    tags_.nesting(false);
-}
+{}
 
 Expected<TagfileWriter>
 TagfileWriter::
 create(
     hbs::HandlebarsCorpus const& corpus,
-        std::string_view tagfile,
-        std::string_view defaultFilename)
+    llvm::raw_ostream& os,
+    std::string_view defaultFilename)
 {
-    std::error_code ec;
-
-    auto os = std::make_unique<llvm::raw_fd_ostream>(
-        tagfile.data(),
-        ec,
-        llvm::sys::fs::OF_None);
-
-    if (ec)
-    {
-        return Unexpected(formatError("llvm::raw_fd_ostream(\"{}\") failed with error: {}", tagfile, ec.message()));
-    }
-    return TagfileWriter(corpus, std::move(os), defaultFilename);
+    return TagfileWriter(corpus, os, defaultFilename);
 }
 
 void
@@ -76,15 +63,15 @@ void
 TagfileWriter::
 initialize()
 {
-    (*os_) << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n";
-    (*os_) << "<tagfile>\n";
+    os_ << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n";
+    os_ << "<tagfile>\n";
 }
 
 void
 TagfileWriter::
 finalize()
 {
-    (*os_) << "</tagfile>\n";
+    os_ << "</tagfile>\n";
 }
 
 
