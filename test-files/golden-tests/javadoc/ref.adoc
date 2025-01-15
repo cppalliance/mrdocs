@@ -36,7 +36,7 @@
 
 
 | <<f6,`f6`>> 
-| See xref:#F-operator_bitnot[F&colon;&colon;operator&tilde;]
+| See xref:#F-operator_bitnot[F&colon;&colon;operator&#126;]
 
 
 
@@ -355,7 +355,7 @@ struct F;
 | <<F-operator_bitor,`operator&verbar;`>> 
 | <<F-operator_or_eq,`operator&verbar;&equals;`>> 
 | <<F-operator_or,`operator&verbar;&verbar;`>> 
-| <<F-operator_bitnot,`operator&tilde;`>> 
+| <<F-operator_bitnot,`operator&#126;`>> 
 |===
 
 
@@ -931,7 +931,7 @@ operator&verbar;&verbar;(<<F,F>>&);
 ----
 
 [#F-operator_bitnot]
-== <<F,F>>::operator&tilde;
+== <<F,F>>::operator&#126;
 
 
 === Synopsis
@@ -942,7 +942,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&tilde;();
+operator&#126;();
 ----
 
 [#f0]
@@ -990,7 +990,7 @@ See xref:#A-f1[&colon;&colon;A&colon;&colon;f1]
 == f6
 
 
-See xref:#F-operator_bitnot[F&colon;&colon;operator&tilde;]
+See xref:#F-operator_bitnot[F&colon;&colon;operator&#126;]
 
 
 
