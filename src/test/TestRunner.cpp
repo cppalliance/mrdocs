@@ -16,6 +16,7 @@
 #include "lib/Lib/CorpusImpl.hpp"
 #include "lib/Lib/MrDocsCompilationDatabase.hpp"
 #include "lib/Lib/SingleFileDB.hpp"
+#include "lib/Gen/hbs/HandlebarsGenerator.hpp"
 #include "test_suite/diff.hpp"
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Generators.hpp>
@@ -129,6 +130,16 @@ handleFile(
         return report::error("{}: \"{}\"", exp.error(), filePath);
     }
     replaceCRLFWithLF(generatedDocs);
+
+    // Generate tagfile
+    if (auto hbsGen = dynamic_cast<hbs::HandlebarsGenerator const*>(gen_))
+    {
+        std::stringstream ss;
+        if (auto exp = hbsGen->buildTagfile(ss, **corpus); !exp)
+        {
+            return report::error("{}: \"{}\"", exp.error(), filePath);
+        }
+    }
 
     // Get expected documentation if it exists
     std::unique_ptr<llvm::MemoryBuffer> expectedDocsBuf;
