@@ -28,35 +28,7 @@ namespace hbs {
 class HandlebarsGenerator
     : public Generator
 {
-    std::string displayName_;
-    std::string fileExtension_;
-
 public:
-    HandlebarsGenerator(
-        std::string_view displayName,
-        std::string_view fileExtension)
-        : displayName_(displayName)
-        , fileExtension_(fileExtension)
-    {}
-
-    std::string_view
-    id() const noexcept override
-    {
-        return fileExtension_;
-    }
-
-    std::string_view
-    displayName() const noexcept override
-    {
-        return displayName_;
-    }
-
-    std::string_view
-    fileExtension() const noexcept override
-    {
-        return fileExtension_;
-    }
-
     Expected<void>
     build(
         std::string_view outputPath,
