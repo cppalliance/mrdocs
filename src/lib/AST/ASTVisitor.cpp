@@ -950,6 +950,8 @@ populate(
     FunctionInfo& I,
     DeclTy* D)
 {
+    MRDOCS_SYMBOL_TRACE(D, context_);
+
     // D is the templated declaration if FTD is non-null
     if (D->isFunctionTemplateSpecialization())
     {
@@ -987,11 +989,12 @@ populate(
         }
     }
 
-    // KRYSTIAN TODO: move other extraction that requires
-    // a valid function type here
-    if (auto FT = getDeclaratorType(D); ! FT.isNull())
+    // Get the function type and extract information that comes from the type
+    if (auto FT = getDeclaratorType(D); !FT.isNull())
     {
+        MRDOCS_SYMBOL_TRACE(FT, context_);
         const auto* FPT = FT->template getAs<FunctionProtoType>();
+        MRDOCS_SYMBOL_TRACE(FPT, context_);
         populate(I.Noexcept, FPT);
         I.HasTrailingReturn |= FPT->hasTrailingReturn();
     }
@@ -999,79 +1002,78 @@ populate(
     //
     // FunctionDecl
     //
-    I.OverloadedOperator = toOperatorKind(
-        D->getOverloadedOperator());
-    I.IsVariadic |= D->isVariadic();
-    I.IsDefaulted |= D->isDefaulted();
-    I.IsExplicitlyDefaulted |= D->isExplicitlyDefaulted();
-    I.IsDeleted |= D->isDeleted();
-    I.IsDeletedAsWritten |= D->isDeletedAsWritten();
-    I.IsNoReturn |= D->isNoReturn();
-        // subsumes D->hasAttr<NoReturnAttr>()
-        // subsumes D->hasAttr<CXX11NoReturnAttr>()
-        // subsumes D->hasAttr<C11NoReturnAttr>()
-        // subsumes D->getType()->getAs<FunctionType>()->getNoReturnAttr()
-    I.HasOverrideAttr |= D->template hasAttr<OverrideAttr>();
+    FunctionDecl const* FD = D;
+    I.OverloadedOperator = toOperatorKind(FD->getOverloadedOperator());
+    I.IsVariadic |= FD->isVariadic();
+    I.IsDefaulted |= FD->isDefaulted();
+    I.IsExplicitlyDefaulted |= FD->isExplicitlyDefaulted();
+    I.IsDeleted |= FD->isDeleted();
+    I.IsDeletedAsWritten |= FD->isDeletedAsWritten();
+    I.IsNoReturn |= FD->isNoReturn();
+    I.HasOverrideAttr |= FD->template hasAttr<OverrideAttr>();
 
-    if (ConstexprSpecKind const CSK = D->getConstexprKind();
+    if (ConstexprSpecKind const CSK = FD->getConstexprKind();
         CSK != ConstexprSpecKind::Unspecified)
     {
         I.Constexpr = toConstexprKind(CSK);
     }
 
-    if (StorageClass const SC = D->getStorageClass())
+    if (StorageClass const SC = FD->getStorageClass())
     {
         I.StorageClass = toStorageClassKind(SC);
     }
 
-    I.IsNodiscard |= D->template hasAttr<WarnUnusedResultAttr>();
-    I.IsExplicitObjectMemberFunction |= D->hasCXXExplicitFunctionObjectParameter();
+    I.IsNodiscard |= FD->template hasAttr<WarnUnusedResultAttr>();
+    I.IsExplicitObjectMemberFunction |= FD->hasCXXExplicitFunctionObjectParameter();
+
     //
     // CXXMethodDecl
     //
     if constexpr(std::derived_from<DeclTy, CXXMethodDecl>)
     {
-        I.IsVirtual |= D->isVirtual();
-        I.IsVirtualAsWritten |= D->isVirtualAsWritten();
-        I.IsPure |= D->isPureVirtual();
-        I.IsConst |= D->isConst();
-        I.IsVolatile |= D->isVolatile();
-        I.RefQualifier = toReferenceKind(D->getRefQualifier());
-        I.IsFinal |= D->template hasAttr<FinalAttr>();
-        //D->isCopyAssignmentOperator()
-        //D->isMoveAssignmentOperator()
-        //D->isOverloadedOperator();
-        //D->isStaticOverloadedOperator();
+        CXXMethodDecl const* MD = D;
+        I.IsVirtual |= MD->isVirtual();
+        I.IsVirtualAsWritten |= MD->isVirtualAsWritten();
+        I.IsPure |= MD->isPureVirtual();
+        I.IsConst |= MD->isConst();
+        I.IsVolatile |= MD->isVolatile();
+        I.RefQualifier = toReferenceKind(MD->getRefQualifier());
+        I.IsFinal |= MD->template hasAttr<FinalAttr>();
+        //MD->isCopyAssignmentOperator()
+        //MD->isMoveAssignmentOperator()
+        //MD->isOverloadedOperator();
+        //MD->isStaticOverloadedOperator();
+
+        //
+        // CXXDestructorDecl
+        //
+        // if constexpr(std::derived_from<DeclTy, CXXDestructorDecl>)
+        // {
+        // }
+
+        //
+        // CXXConstructorDecl
+        //
+        if constexpr(std::derived_from<DeclTy, CXXConstructorDecl>)
+        {
+            populate(I.Explicit, D->getExplicitSpecifier());
+        }
+
+        //
+        // CXXConversionDecl
+        //
+        if constexpr(std::derived_from<DeclTy, CXXConversionDecl>)
+        {
+            populate(I.Explicit, D->getExplicitSpecifier());
+        }
     }
 
-    //
-    // CXXDestructorDecl
-    //
-    // if constexpr(std::derived_from<DeclTy, CXXDestructorDecl>)
-    // {
-    // }
-
-    //
-    // CXXConstructorDecl
-    //
-    if constexpr(std::derived_from<DeclTy, CXXConstructorDecl>)
-    {
-        populate(I.Explicit, D->getExplicitSpecifier());
-    }
-
-    //
-    // CXXConversionDecl
-    //
-    if constexpr(std::derived_from<DeclTy, CXXConversionDecl>)
-    {
-        populate(I.Explicit, D->getExplicitSpecifier());
-    }
-
-    ArrayRef<ParmVarDecl*> const params = D->parameters();
+    ArrayRef<ParmVarDecl*> const params = FD->parameters();
     I.Params.resize(params.size());
     for (std::size_t i = 0; i < params.size(); ++i)
     {
         ParmVarDecl const* P = params[i];
+        MRDOCS_SYMBOL_TRACE(P, context_);
         Param& param = I.Params[i];
 
         if (param.Name.empty())
@@ -1099,16 +1101,16 @@ populate(
         }
     }
 
-    I.Class = toFunctionClass(D->getDeclKind());
+    I.Class = toFunctionClass(FD->getDeclKind());
 
     // extract the return type in direct dependency mode
     // if it contains a placeholder type which is
     // deduceded as a local class type
-    QualType const RT = D->getReturnType();
+    QualType const RT = FD->getReturnType();
     MRDOCS_SYMBOL_TRACE(RT, context_);
     I.ReturnType = toTypeInfo(RT);
 
-    if (auto* TRC = D->getTrailingRequiresClause())
+    if (auto* TRC = FD->getTrailingRequiresClause())
     {
         populate(I.Requires, TRC);
     }
@@ -1120,8 +1122,9 @@ void
 ASTVisitor::
 populate(FunctionInfo& I, FunctionTemplateDecl* D)
 {
-    populate(I.Template, D->getTemplatedDecl(), D);
-    populate(I, D->getTemplatedDecl());
+    FunctionDecl* TD = D->getTemplatedDecl();
+    populate(I.Template, TD, D);
+    populate(I, TD);
 }
 
 void
@@ -1375,7 +1378,8 @@ ASTVisitor::
 populate(TemplateInfo& Template, DeclTy*, TemplateDeclTy* TD)
 {
     MRDOCS_ASSERT(TD);
-    populate(Template, TD->getTemplateParameters());
+    TemplateParameterList const* TPL = TD->getTemplateParameters();
+    populate(Template, TPL);
 }
 
 template<std::derived_from<CXXRecordDecl> CXXRecordDeclTy>
@@ -1592,18 +1596,25 @@ populate(
             {
                 I = std::make_unique<TemplateTParam>();
             }
-            auto* R = dynamic_cast<TemplateTParam*>(I.get());
-            if(R->Params.empty())
+            TemplateTemplateParmDecl const* TTPD = cast<TemplateTemplateParmDecl>(P);
+            MRDOCS_CHECK_OR(TTPD);
+            TemplateParameterList const* TPL = TTPD->getTemplateParameters();
+            MRDOCS_CHECK_OR(TPL);
+            auto* Result = dynamic_cast<TemplateTParam*>(I.get());
+            if (Result->Params.size() < TPL->size())
             {
-                for (NamedDecl const* NP: *P->getTemplateParameters())
-                {
-                    populate(R->Params.emplace_back(), NP);
-                }
+                Result->Params.resize(TPL->size());
             }
-            if (P->hasDefaultArgument() && !R->Default)
+            for (std::size_t i = 0; i < TPL->size(); ++i)
             {
-                R->Default = toTArg(
-                    P->getDefaultArgument().getArgument());
+                NamedDecl const* TP = TPL->getParam(i);
+                populate(Result->Params[i], TP);
+            }
+            if (TTPD->hasDefaultArgument() && !Result->Default)
+            {
+                TemplateArgumentLoc const& TAL = TTPD->getDefaultArgument();
+                TemplateArgument const& TA = TAL.getArgument();
+                Result->Default = toTArg(TA);
             }
             return;
         }
@@ -1634,9 +1645,10 @@ populate(
     {
         TI.Params.resize(TPL->size());
     }
-    for (std::size_t I = 0; I < TPL->size(); ++I)
+    for (std::size_t i = 0; i < TPL->size(); ++i)
     {
-        populate(TI.Params[I], TPL->getParam(I));
+        NamedDecl const* P = TPL->getParam(i);
+        populate(TI.Params[i], P);
     }
     if (auto* RC = TPL->getRequiresClause())
     {

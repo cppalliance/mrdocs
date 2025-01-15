@@ -200,19 +200,14 @@ buildTerminal(
     unsigned quals,
     bool pack)
 {
-    MRDOCS_SYMBOL_TRACE(D, getASTVisitor().context_);
     MRDOCS_SYMBOL_TRACE(NNS, getASTVisitor().context_);
+    MRDOCS_SYMBOL_TRACE(D, getASTVisitor().context_);
+    MRDOCS_SYMBOL_TRACE(TArgs, getASTVisitor().context_);
 
     // Look for the Info type. If this is a template specialization,
     // we look for the Info of the specialized record.
     Decl const* ID = decayToPrimaryTemplate(D);
     MRDOCS_SYMBOL_TRACE(ID, getASTVisitor().context_);
-
-    Info const* I = getASTVisitor().findOrTraverse(const_cast<Decl*>(ID));
-    if (!I)
-    {
-        return;
-    }
 
     auto TI = std::make_unique<NamedTypeInfo>();
     TI->CVQualifiers = toQualifierKind(quals);
@@ -223,7 +218,10 @@ buildTerminal(
         {
             Name->Name = II->getName();
         }
-        Name->id = I->id;
+        if (Info const* I = getASTVisitor().findOrTraverse(const_cast<Decl*>(ID)))
+        {
+            Name->id = I->id;
+        }
         if(NNS)
         {
             Name->Prefix = getASTVisitor().toNameInfo(NNS);

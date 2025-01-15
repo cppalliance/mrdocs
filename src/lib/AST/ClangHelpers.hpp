@@ -914,6 +914,20 @@ namespace detail {
     {
         printTraceName(&D, C, symbol_name);
     }
+
+    template <class T>
+    void
+    printTraceName(std::optional<T> const& D, ASTContext const& C, SmallString<256>& symbol_name)
+    {
+        if (D)
+        {
+            printTraceName(*D, C, symbol_name);
+        }
+        else
+        {
+            symbol_name += "<empty>";
+        }
+    }
 } // namespace detail
 
 #    define MRDOCS_SYMBOL_TRACE_MERGE_(a, b) a##b

@@ -175,7 +175,7 @@ enum class TParamKind : int
     Type = 1, // for bitstream
     // template non-type parameter, e.g. "int N" or "auto N"
     NonType,
-    // template template parameter, e.g. "template<typename> typename T"
+    // Template-template parameter, e.g. "template<typename> typename T"
     Template
 };
 
@@ -235,7 +235,7 @@ tag_invoke(
 
 
 template<TParamKind K>
-struct IsTParam : TParam
+struct TParamCommonBase : TParam
 {
     static constexpr TParamKind kind_id = K;
 
@@ -245,7 +245,7 @@ struct IsTParam : TParam
 
 protected:
     constexpr
-    IsTParam() noexcept
+    TParamCommonBase() noexcept
         : TParam(K)
     {
     }
@@ -271,7 +271,7 @@ tag_invoke(
 }
 
 struct TypeTParam
-    : IsTParam<TParamKind::Type>
+    : TParamCommonBase<TParamKind::Type>
 {
     /** Keyword (class/typename) the parameter uses */
     TParamKeyKind KeyKind = TParamKeyKind::Class;
@@ -281,14 +281,14 @@ struct TypeTParam
 };
 
 struct NonTypeTParam
-    : IsTParam<TParamKind::NonType>
+    : TParamCommonBase<TParamKind::NonType>
 {
     /** Type of the non-type template parameter */
     std::unique_ptr<TypeInfo> Type;
 };
 
 struct TemplateTParam
-    : IsTParam<TParamKind::Template>
+    : TParamCommonBase<TParamKind::Template>
 {
     /** Template parameters for the template template parameter */
     std::vector<std::unique_ptr<TParam>> Params;
