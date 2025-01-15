@@ -24,7 +24,13 @@ HTMLNamedEntity(char const c)
     // Otherwise, we return std::nullopt
     switch (c)
     {
-        case '~': return "&tilde;";
+        // There's no named entity for '~' (U+007E / &#126;) in HTML
+        // - "&tilde;" represents a small tilde (U+02DC)
+        // - "&Tilde;" or "&sim;" represent the tilde operator (U+223C)
+        // The 'tilde operator' (U+223C) is not the same character as
+        // "tilde" (U+007E) although the same glyph might be used to
+        // represent both.
+        // case '~': return "&tilde;";
         case '^': return "&circ;";
         case '_': return "&lowbar;";
         case '*': return "&ast;";
