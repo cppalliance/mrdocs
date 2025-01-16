@@ -18,6 +18,15 @@ function humanizeBytes(bytes) {
     return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
 }
 
+/**
+ * Converts a date to a human-readable string format.
+ *
+ * This function takes a date object or a date string and returns a formatted string
+ * representing the date in the 'en-US' locale with the format 'Month Day, Year'.
+ *
+ * @param {Date|string} date - The date to be formatted.
+ * @returns {string} - A human-readable string representing the date.
+ */
 function humanizeDate(date) {
     const options = {year: 'numeric', month: 'long', day: 'numeric'};
     return new Date(date).toLocaleDateString('en-US', options);
@@ -89,6 +98,44 @@ function fetchWithRetry(url, headers) {
     }
 }
 
+/**
+ * Gets the latest date among the various date fields in the release object.
+ *
+ * This function checks the `published_at` and `created_at` fields of the release,
+ * as well as the `created_at` and `updated_at` fields of each asset in the release.
+ * It returns the most recent date found among these fields.
+ *
+ * @param {Object} release - The release object containing date fields and assets.
+ * @param {string} [release.published_at] - The published date of the release.
+ * @param {string} [release.created_at] - The creation date of the release.
+ * @param {Array} [release.assets] - An array of asset objects.
+ * @param {string} [release.assets[].created_at] - The creation date of an asset.
+ * @param {string} [release.assets[].updated_at] - The last updated date of an asset.
+ * @returns {Date|null} - The latest date found among the release and asset dates, or null if no dates are found.
+ */
+function getReleaseDate(release) {
+    const dates = [];
+
+    if (release.published_at) {
+        dates.push(new Date(release.published_at));
+    }
+    if (release.created_at) {
+        dates.push(new Date(release.created_at));
+    }
+    if (release.assets && Array.isArray(release.assets)) {
+        release.assets.forEach(asset => {
+            if (asset.created_at) {
+                dates.push(new Date(asset.created_at));
+            }
+            if (asset.updated_at) {
+                dates.push(new Date(asset.updated_at));
+            }
+        });
+    }
+
+    return dates.length > 0 ? new Date(Math.max(...dates)) : null;
+}
+
 module.exports = function (registry) {
     registry.blockMacro('mrdocs-releases', function () {
         const self = this
@@ -118,9 +165,11 @@ module.exports = function (registry) {
             let text = '|===\n'
             text += '|          3+| 🪟 Windows                2+| 🐧 Linux                 \n'
             text += '| 📃 Release | 📦 7z   | 📦 msi  | 📦 zip  | 📦 tar.xz  | 📦 tar.gz  \n'
+            releases.sort((a, b) => getReleaseDate(b) - getReleaseDate(a));
             for (const release of releases) {
                 if (release.name === 'llvm-package') continue
-                text += `| ${release.html_url}[${release.name},window=_blank]\n\n${humanizeDate(release.published_at)} `
+                const date = getReleaseDate(release)
+                text += `| ${release.html_url}[${release.name},window=_blank]\n\n${humanizeDate(date)} `
                 const assetSuffixes = ['win64.7z', 'win64.msi', 'win64.zip', 'Linux.tar.xz', 'Linux.tar.gz']
                 for (const suffix of assetSuffixes) {
                     const asset = release.assets.find(asset => asset.name.endsWith(suffix))
