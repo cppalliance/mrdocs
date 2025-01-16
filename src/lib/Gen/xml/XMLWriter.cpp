@@ -747,6 +747,9 @@ writeNode(
     case doc::Kind::list_item:
         writeListItem(dynamic_cast<doc::ListItem const&>(node));
         break;
+    case doc::Kind::unordered_list:
+        writeUnorderedList(dynamic_cast<doc::UnorderedList const&>(node));
+        break;
     case doc::Kind::brief:
         writeBrief(dynamic_cast<doc::Brief const&>(node));
         break;
@@ -845,6 +848,16 @@ writeListItem(
     tags_.open("listitem");
     writeNodes(node.children);
     tags_.close("listitem");
+}
+
+void
+XMLWriter::
+writeUnorderedList(
+    doc::UnorderedList const& node)
+{
+    tags_.open("unorderedlist");
+    writeNodes(node.items);
+    tags_.close("unorderedlist");
 }
 
 void

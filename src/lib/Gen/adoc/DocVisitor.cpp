@@ -170,9 +170,11 @@ operator()(
     doc::ListItem const& I) const
 {
     std::span children = I.children;
-    if(children.empty())
+    if (children.empty())
+    {
         return;
-    dest_.append("\n* ");
+    }
+    dest_.append("* ");
     bool non_empty = write(*children.front(), *this);
     for(auto const& child : children.subspan(1))
     {
@@ -181,6 +183,22 @@ operator()(
             dest_.push_back('\n');
         }
         non_empty = write(*child, *this);
+    }
+    dest_.push_back('\n');
+}
+
+void
+DocVisitor::
+operator()(
+    doc::UnorderedList const& I) const
+{
+    if (I.items.empty())
+    {
+        return;
+    }
+    for(auto const& child : I.items)
+    {
+        operator()(*child);
     }
     dest_.push_back('\n');
 }
