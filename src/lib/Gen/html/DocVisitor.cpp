@@ -213,6 +213,23 @@ operator()(
 
 void
 DocVisitor::
+operator()(
+    doc::UnorderedList const& I) const
+{
+    if (I.items.empty())
+    {
+        return;
+    }
+    dest_.append("<ul>\n");
+    for(auto const& child : I.items)
+    {
+        operator()(*child);
+    }
+    dest_.append("</ul>\n");
+}
+
+void
+DocVisitor::
 operator()(doc::Param const& I) const
 {
     this->operator()(static_cast<doc::Paragraph const&>(I));

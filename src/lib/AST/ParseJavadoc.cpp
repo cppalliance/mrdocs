@@ -39,7 +39,7 @@
 #define MRDOCS_COMMENT_TRACE(D, C)
 #else
 
-#    define MRDOCS_COMMENT_TRACE_MERGE_(a, b) a##b
+#    define MRDOCS_COMMENT_TRACE_MERGE_(a, b) a## b
 #    define MRDOCS_COMMENT_TRACE_LABEL_(a)    MRDOCS_COMMENT_TRACE_MERGE_(comment_content_, a)
 #    define MRDOCS_COMMENT_TRACE_UNIQUE_NAME  MRDOCS_COMMENT_TRACE_LABEL_(__LINE__)
 
@@ -564,7 +564,7 @@ visitChildren(
     {
         MRDOCS_COMMENT_TRACE(*it_, ctx_);
         visit(*it_);
-        ++it_; // must happen after
+        ++it_;
     }
 
     if (!block_)
@@ -649,6 +649,35 @@ build()
 {
     MRDOCS_COMMENT_TRACE(FC_, ctx_);
     visit(FC_);
+
+    // Merge ListItems into UnorderedList
+    auto& blocks = jd_.getBlocks();
+    for (auto it = blocks.begin(); it != blocks.end(); ) {
+        if ((*it)->kind == doc::Kind::list_item) {
+            doc::UnorderedList ul;
+            // Find last list item
+            auto const begin = it;
+            auto last = it;
+            while (last != blocks.end() && (*last)->kind == doc::Kind::list_item) {
+                ++last;
+            }
+            // Move list items to ul.items
+            ul.items.reserve(std::distance(it, last));
+            for (auto li_it = begin; li_it != last; ++li_it) {
+                std::unique_ptr<doc::Block> block = std::move(*li_it);
+                MRDOCS_ASSERT(dynamic_cast<doc::ListItem*>(block.get()));
+                doc::Block* raw_block_ptr = block.release();
+                auto const raw_li_ptr = static_cast<doc::ListItem*>(raw_block_ptr);
+                auto li = std::make_unique<doc::ListItem>(std::move(*raw_li_ptr));
+                ul.items.emplace_back(std::move(li));
+            }
+            // Remove the list items and insert the ul
+            it = blocks.erase(begin, last);
+            it = blocks.insert(it, std::make_unique<doc::UnorderedList>(std::move(ul)));
+        }
+        ++it;
+    }
+
     return std::move(jd_);
 }
 

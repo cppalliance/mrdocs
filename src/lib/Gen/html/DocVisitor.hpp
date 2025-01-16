@@ -69,6 +69,9 @@ public:
     operator()(doc::ListItem const& I) const;
 
     void
+    operator()(doc::UnorderedList const& I) const;
+
+    void
     operator()(doc::Param const& I) const;
 
     void

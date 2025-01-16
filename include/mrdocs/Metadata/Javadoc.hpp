@@ -116,6 +116,7 @@ enum class Kind
     heading,
     link,
     list_item,
+    unordered_list,
     paragraph,
     param,
     returns,
@@ -178,6 +179,12 @@ enum class Parts
 //--------------------------------------------
 
 /** This is a variant-like list element.
+
+    There are two types of nodes: text and block.
+
+    - The javadoc is a list of blocks.
+    - A block contains a list of text elements.
+    - A text element contains a string.
 */
 struct MRDOCS_DECL
     Node
@@ -367,6 +374,8 @@ struct Copied : Reference
 /** A piece of block content
 
     The top level is a list of blocks.
+
+    There are two types of blocks: headings and paragraphs
 */
 struct MRDOCS_DECL
     Block : Node
@@ -447,7 +456,7 @@ struct Heading : Block
     bool equals(const Node& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == static_cast<const Heading&>(other);
+            *this == dynamic_cast<const Heading&>(other);
     }
 };
 
@@ -494,7 +503,7 @@ struct Brief : Paragraph
     bool equals(const Node& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == static_cast<const Brief&>(other);
+            *this == dynamic_cast<const Brief&>(other);
     }
 };
 
@@ -520,7 +529,7 @@ struct Admonition : Paragraph
     bool equals(const Node& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == static_cast<const Admonition&>(other);
+            *this == dynamic_cast<const Admonition&>(other);
     }
 };
 
@@ -542,7 +551,7 @@ struct Code : Paragraph
     bool equals(const Node& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == static_cast<const Code&>(other);
+            *this == dynamic_cast<const Code&>(other);
     }
 };
 
@@ -563,7 +572,31 @@ struct ListItem : Paragraph
     bool equals(const Node& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == static_cast<const ListItem&>(other);
+            *this == dynamic_cast<const ListItem&>(other);
+    }
+};
+
+/** A list of list items
+*/
+struct UnorderedList : Paragraph
+{
+    static constexpr Kind static_kind = Kind::unordered_list;
+
+    // Vector of list items
+    List<ListItem> items;
+
+    UnorderedList()
+        : Paragraph(Kind::unordered_list)
+    {
+    }
+
+    bool operator==(const UnorderedList&)
+        const noexcept = default;
+
+    bool equals(const Node& other) const noexcept override
+    {
+        return kind == other.kind &&
+            *this == dynamic_cast<const UnorderedList&>(other);
     }
 };
 
@@ -784,6 +817,8 @@ visit(
         return f.template operator()<Copied>(std::forward<Args>(args)...);
     case Kind::list_item:
         return f.template operator()<ListItem>(std::forward<Args>(args)...);
+    case Kind::unordered_list:
+        return f.template operator()<UnorderedList>(std::forward<Args>(args)...);
     case Kind::paragraph:
         return f.template operator()<Paragraph>(std::forward<Args>(args)...);
     case Kind::param:
@@ -851,6 +886,8 @@ visit(
         return visitor.template visit<Copied>();
     case Kind::list_item:
         return visitor.template visit<ListItem>();
+    case Kind::unordered_list:
+        return visitor.template visit<UnorderedList>();
     case Kind::param:
         return visitor.template visit<Param>();
     case Kind::returns:
@@ -917,12 +954,11 @@ class Corpus;
 
 /** A processed Doxygen-style comment attached to a declaration.
 */
-class MRDOCS_DECL
+struct MRDOCS_DECL
     Javadoc
 {
     doc::List<doc::Block> blocks_;
 
-public:
     /** Constructor.
     */
     MRDOCS_DECL

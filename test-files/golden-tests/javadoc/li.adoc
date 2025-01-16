@@ -1,0 +1,50 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+=== Functions
+
+[cols=2]
+|===
+| Name | Description 
+
+| <<f,`f`>> 
+| A function
+
+|===
+
+[#f]
+== f
+
+
+A function
+
+=== Synopsis
+
+
+Declared in `&lt;li&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f();
+----
+
+=== Description
+
+
+Description&colon;
+
+* Point 1 
+* Point 2
+
+Another paragraph&period;
+
+
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

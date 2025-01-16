@@ -81,6 +81,7 @@ public:
     void writeHeading(doc::Heading const& node);
     void writeLink(doc::Link const& node);
     void writeListItem(doc::ListItem const& node);
+    void writeUnorderedList(doc::UnorderedList const& node);
     void writeParagraph(doc::Paragraph const& node, llvm::StringRef tag = "");
     void writeJParam(doc::Param const& node);
     void writeReturns(doc::Returns const& node);

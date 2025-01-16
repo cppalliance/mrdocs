@@ -386,14 +386,15 @@ grammar
 
     BlockNode = (
         Admonition | Brief | Code | Heading | ListItem |
-        Paragraph | Param | Returns | TParam | Throws |
-        See | Precondition | Postcondition | Details)
+        UnorderedList | Paragraph | Param | Returns | TParam |
+        Throws | See | Precondition | Postcondition | Details)
 
     Admonition = Paragraph
     Brief = element brief { TextNode * }
     Code = element code { TextNode* }
     Heading = element head { text }
     ListItem = element listitem { TextNode* }
+    UnorderedList = element unorderedlist { ListItem * }
     Paragraph = element para {
         attribute class { text } ?,
         TextNode * }

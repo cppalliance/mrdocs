@@ -41,7 +41,7 @@ struct Type##Info;
 
 struct BaseInfo;
 struct Info;
-class Javadoc;
+struct Javadoc;
 struct Location;
 struct NameInfo;
 struct Param;
