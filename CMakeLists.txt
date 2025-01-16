@@ -36,6 +36,7 @@ option(MRDOCS_INSTALL "Configure install target" ON)
 option(MRDOCS_PACKAGE "Build install package" ON)
 option(MRDOCS_BUILD_SHARED "Link shared" ${BUILD_SHARED_LIBS})
 option(MRDOCS_BUILD_TESTS "Build tests" ${BUILD_TESTING})
+option(MRDOCS_REQUIRE_GIT "Git is required: not being able to extract version build is an error" ON)
 if (MRDOCS_BUILD_TESTS OR MRDOCS_INSTALL)
     option(MRDOCS_BUILD_DOCS "Build documentation" ON)
 else()
@@ -151,8 +152,15 @@ if (GIT_FOUND)
             OUTPUT_VARIABLE PROJECT_VERSION_BUILD
             OUTPUT_STRIP_TRAILING_WHITESPACE
     )
+    # Check if PROJECT_VERSION_BUILD is populated
+    if (NOT PROJECT_VERSION_BUILD AND MRDOCS_REQUIRE_GIT)
+        message(FATAL_ERROR "Git was found but could not extract the version build")
+    endif()
     set(PROJECT_VERSION_BUILD "${PROJECT_VERSION_BUILD}")
 else()
+    if (MRDOCS_REQUIRE_GIT)
+        message(FATAL_ERROR "Git is required to extract the version build")
+    endif()
     set(PROJECT_VERSION_BUILD "")
 endif()
 configure_file(
