@@ -279,9 +279,13 @@ call_impl(
         }
         os << '\n';
     }
+
+    // Update counters
     std::lock_guard<llvm::sys::Mutex> lock(mutex_);
-    if(! s.empty())
+    if (!s.empty())
+    {
         llvm::errs() << s;
+    }
     switch(level)
     {
     case Level::debug:
