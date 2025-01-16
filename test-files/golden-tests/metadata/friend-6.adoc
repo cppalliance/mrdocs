@@ -14,17 +14,11 @@
 | <<T,`T`>> 
 | Struct T brief
 
-
-
 | <<U,`U`>> 
 | Struct U brief
 
-
-
 | <<V,`V`>> 
 | Struct V brief
-
-
 
 | <<Z,`Z`>> 
 | 
@@ -36,8 +30,6 @@
 
 
 Struct T brief
-
-
 
 === Synopsis
 
@@ -58,12 +50,8 @@ struct T;
 | <<T-08friend-04cb,`class Z`>> 
 | Friend class Z brief
 
-
-
 | <<T-08friend-04ce,`int`>> 
 | Friend int brief
-
-
 
 |===
 
@@ -74,8 +62,6 @@ struct T;
 
 
 Friend class Z brief
-
-
 
 === Synopsis
 
@@ -93,8 +79,6 @@ friend <<Z,Z>>;
 
 Friend int brief
 
-
-
 === Synopsis
 
 
@@ -110,8 +94,6 @@ friend int;
 
 
 Struct U brief
-
-
 
 === Synopsis
 
@@ -132,8 +114,6 @@ struct U;
 | <<U-08friend,`T`>> 
 | Friend T brief
 
-
-
 |===
 
 
@@ -143,8 +123,6 @@ struct U;
 
 
 Friend T brief
-
-
 
 === Synopsis
 
@@ -161,8 +139,6 @@ friend <<T,T>>;
 
 
 Struct V brief
-
-
 
 === Synopsis
 
@@ -183,8 +159,6 @@ struct V;
 | <<V-08friend,`struct U`>> 
 | Friend struct U brief
 
-
-
 |===
 
 
@@ -194,8 +168,6 @@ struct V;
 
 
 Friend struct U brief
-
-
 
 === Synopsis
 

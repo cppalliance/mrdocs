@@ -14,15 +14,11 @@
 | <<E0,`E0`>> 
 | E0 brief&period;
 
-
-
 | <<E1,`E1`>> 
 | 
 
 | <<E2,`E2`>> 
 | E2 brief&period;
-
-
 
 | <<E3,`E3`>> 
 | 
@@ -34,8 +30,6 @@
 
 
 E0 brief&period;
-
-
 
 === Synopsis
 
@@ -55,12 +49,8 @@ enum E0;
 |Name |Description
 |`e0`
 |e0 brief&period;
-
-
 |`e1`
 |e1 brief&period;
-
-
 |===
 
 === Description
@@ -102,8 +92,6 @@ enum E1 : char;
 
 E2 brief&period;
 
-
-
 === Synopsis
 
 
@@ -122,12 +110,8 @@ enum class E2 : int;
 |Name |Description
 |`e4`
 |e4 brief&period;
-
-
 |`e5`
 |e5 brief&period;
-
-
 |===
 
 === Description

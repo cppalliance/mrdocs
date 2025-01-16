@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <function name="f" id="ackjGh57CJQLwtO8PihiSPPKIBY=">
+    <file path="brief-3.cpp" line="5"/>
+    <param>
+      <type name="int"/>
+    </param>
+    <doc>
+      <brief>
+        <text>Integer overload. </text>
+      </brief>
+      <details>
+        <text>More info</text>
+      </details>
+    </doc>
+  </function>
+  <function name="f" id="dA/yAiFWSDtn+ZTCAVyKiceMjwY=">
+    <file path="brief-3.cpp" line="11"/>
+    <param>
+      <type class="pointer">
+        <pointee-type name="char" cv-qualifiers="const"/>
+      </type>
+    </param>
+    <doc>
+      <brief>
+        <text>C string overload. </text>
+      </brief>
+      <details>
+        <text>More info</text>
+      </details>
+    </doc>
+  </function>
+  <function name="f" id="8HikSjplV248Xlimdc3WQFts5g8=">
+    <file path="brief-3.cpp" line="14"/>
+    <param>
+      <type name="double"/>
+    </param>
+    <doc>
+      <para>
+        <text>Integer overload.</text>
+      </para>
+    </doc>
+  </function>
+  <function name="f" id="u1t7CFC30SbmMkunoYuyE7paABA=">
+    <file path="brief-3.cpp" line="17"/>
+    <param>
+      <type class="pointer">
+        <pointee-type name="float" cv-qualifiers="const"/>
+      </type>
+    </param>
+    <doc>
+      <para>
+        <text>C string overload.</text>
+      </para>
+    </doc>
+  </function>
+</namespace>
+</mrdocs>

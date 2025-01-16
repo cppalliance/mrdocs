@@ -14,32 +14,20 @@
 | <<f0,`f0`>> 
 | f0 brief
 
-
-
 | <<f1,`f1`>> 
 | f1 brief
-
-
 
 | <<g0,`g0`>> 
 | g0 brief
 
-
-
 | <<g1,`g1`>> 
 | g1 brief
-
-
 
 | <<h0,`h0`>> 
 | h0 brief
 
-
-
 | <<h1,`h1`>> 
 | h1 brief
-
-
 
 |===
 
@@ -48,8 +36,6 @@
 
 
 f0 brief
-
-
 
 === Synopsis
 
@@ -75,8 +61,6 @@ int
 
 f1 brief
 
-
-
 === Synopsis
 
 
@@ -100,8 +84,6 @@ bool
 
 
 g0 brief
-
-
 
 === Synopsis
 
@@ -136,8 +118,6 @@ g0(int a);
 
 g1 brief
 
-
-
 === Synopsis
 
 
@@ -170,8 +150,6 @@ g1(int a);
 
 
 h0 brief
-
-
 
 === Synopsis
 
@@ -206,8 +184,6 @@ h0();
 
 
 h1 brief
-
-
 
 === Synopsis
 

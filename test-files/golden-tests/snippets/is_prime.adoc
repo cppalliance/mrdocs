@@ -14,8 +14,6 @@
 | <<is_prime,`is&lowbar;prime`>> 
 | Return true if a number is prime&period;
 
-
-
 |===
 
 [#is_prime]
@@ -23,8 +21,6 @@
 
 
 Return true if a number is prime&period;
-
-
 
 === Synopsis
 

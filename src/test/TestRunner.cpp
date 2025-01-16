@@ -70,6 +70,8 @@ handleFile(
     llvm::StringRef filePath,
     Config::Settings const& dirSettings)
 {
+    report::debug("Handling {}", filePath);
+
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
@@ -87,6 +89,7 @@ handleFile(
     }
 
     // File-specific config
+    report::debug("Loading Config");
     Config::Settings fileSettings = dirSettings;
     auto configPath = files::withExtension(filePath, "yml");
     if (files::exists(configPath)) {
@@ -114,16 +117,18 @@ handleFile(
     MrDocsCompilationDatabase compilations(
         llvm::StringRef(parentDir), SingleFileDB(filePath), config, defaultIncludePaths);
 
+    report::debug("Building Corpus", filePath);
+    auto prev = report::getMinimumLevel();
     report::setMinimumLevel(report::Level::error);
-
-    // Build Corpus
     auto corpus = CorpusImpl::build(config, compilations);
+    report::setMinimumLevel(prev);
     if (!corpus)
     {
         return report::error("{}: \"{}\"", corpus.error(), filePath);
     }
 
     // Generate
+    report::debug("Generating documentation", filePath);
     std::string generatedDocs;
     if (auto exp = gen_->buildOneString(generatedDocs, **corpus); !exp)
     {
@@ -134,6 +139,7 @@ handleFile(
     // Generate tagfile
     if (auto hbsGen = dynamic_cast<hbs::HandlebarsGenerator const*>(gen_))
     {
+        report::debug("Generating tagfile", filePath);
         std::stringstream ss;
         if (auto exp = hbsGen->buildTagfile(ss, **corpus); !exp)
         {

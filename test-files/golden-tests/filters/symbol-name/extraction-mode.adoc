@@ -14,12 +14,8 @@
 | <<regular_ns,`regular&lowbar;ns`>> 
 | A regular namespace with different filters for members
 
-
-
 | <<see_below_ns,`see&lowbar;below&lowbar;ns`>> 
 | A see&hyphen;below namespace
-
-
 
 |===
 === Namespace Aliases
@@ -31,17 +27,11 @@
 | <<dependency_ns_alias,`dependency&lowbar;ns&lowbar;alias`>> 
 | Namespace alias to form the dependency on dependency&lowbar;ns
 
-
-
 | <<implementation_defined_ns_alias,`implementation&lowbar;defined&lowbar;ns&lowbar;alias`>> 
 | Namespace alias to form a dependency on the implementation&hyphen;defined namespace
 
-
-
 | <<see_below_ns_alias,`see&lowbar;below&lowbar;ns&lowbar;alias`>> 
 | Namespace alias to form a dependency on the see&hyphen;below namespace
-
-
 
 |===
 === Types
@@ -53,12 +43,8 @@
 | <<regular,`regular`>> 
 | A regular symbol in the global namespace
 
-
-
 | <<see_below,`see&lowbar;below`>> 
 | A see&hyphen;below symbol in the global namespace
-
-
 
 |===
 === Functions
@@ -70,22 +56,14 @@
 | <<get_dependency,`get&lowbar;dependency`>> 
 | A function to get a dependency symbol on the global namespace
 
-
-
 | <<get_implementation_defined,`get&lowbar;implementation&lowbar;defined`>> 
 | A function to get an implementation&hyphen;defined symbol in the global namespace
-
-
 
 | <<get_regular,`get&lowbar;regular`>> 
 | A function to get a regular symbol in the global namespace
 
-
-
 | <<get_see_below,`get&lowbar;see&lowbar;below`>> 
 | A function to get a see&hyphen;below symbol in the global namespace
-
-
 
 |===
 
@@ -94,8 +72,6 @@
 
 
 A regular namespace with different filters for members
-
-
 
 === Types
 
@@ -106,12 +82,8 @@ A regular namespace with different filters for members
 | <<regular_ns-regular,`regular`>> 
 | A symbol that passes the filters
 
-
-
 | <<regular_ns-see_below,`see&lowbar;below`>> 
 | A symbol that passes the see&hyphen;below filter
-
-
 
 |===
 === Functions
@@ -123,22 +95,14 @@ A regular namespace with different filters for members
 | <<regular_ns-get_dependency,`get&lowbar;dependency`>> 
 | A function to get an excluded symbol
 
-
-
 | <<regular_ns-get_implementation_defined,`get&lowbar;implementation&lowbar;defined`>> 
 | A function to get an implementation&hyphen;defined symbol
-
-
 
 | <<regular_ns-get_regular,`get&lowbar;regular`>> 
 | A function to get a regular symbol
 
-
-
 | <<regular_ns-get_see_below,`get&lowbar;see&lowbar;below`>> 
 | A function to get a see&hyphen;below symbol
-
-
 
 |===
 
@@ -147,8 +111,6 @@ A regular namespace with different filters for members
 
 
 A symbol that passes the filters
-
-
 
 === Synopsis
 
@@ -169,8 +131,6 @@ struct regular;
 | <<regular_ns-regular-also_regular,`also&lowbar;regular`>> 
 | Child of a regular symbol extracted as regular
 
-
-
 |===
 
 
@@ -187,8 +147,6 @@ The symbol should have a page as usual
 
 
 Child of a regular symbol extracted as regular
-
-
 
 === Synopsis
 
@@ -209,8 +167,6 @@ struct also&lowbar;regular;
 | <<regular_ns-regular-also_regular-regular_as_well,`regular&lowbar;as&lowbar;well`>> 
 | Grandchild of a regular symbol extracted as regular
 
-
-
 |===
 
 
@@ -220,8 +176,6 @@ struct also&lowbar;regular;
 
 
 Grandchild of a regular symbol extracted as regular
-
-
 
 === Synopsis
 
@@ -241,8 +195,6 @@ struct regular&lowbar;as&lowbar;well;
 
 
 A symbol that passes the see&hyphen;below filter
-
-
 
 === Synopsis
 
@@ -270,8 +222,6 @@ A symbol that passes the filters and the see&hyphen;below filter&period; The sym
 
 A function to get an excluded symbol
 
-
-
 === Synopsis
 
 
@@ -295,8 +245,6 @@ When used in a function, only the symbol name should be shown&period; No links s
 
 
 A function to get an implementation&hyphen;defined symbol
-
-
 
 === Synopsis
 
@@ -324,8 +272,6 @@ It&apos;s the responsibility of the function documentation to explain the implem
 
 A function to get a regular symbol
 
-
-
 === Synopsis
 
 
@@ -349,8 +295,6 @@ When used in a function, the symbol should be shown as usual with a link to the 
 
 
 A function to get a see&hyphen;below symbol
-
-
 
 === Synopsis
 
@@ -376,8 +320,6 @@ When used in a function, the symbol name should be shown as usual&period; The pa
 
 A see&hyphen;below namespace
 
-
-
 === Types
 
 [cols=2]
@@ -387,12 +329,8 @@ A see&hyphen;below namespace
 | <<see_below_ns-regular,`regular`>> 
 | Regular symbol in a see&hyphen;below namespace
 
-
-
 | <<see_below_ns-see_below,`see&lowbar;below`>> 
 | See&hyphen;below symbol in a see&hyphen;below namespace
-
-
 
 |===
 === Functions
@@ -404,12 +342,8 @@ A see&hyphen;below namespace
 | <<see_below_ns-get_dependency,`get&lowbar;dependency`>> 
 | A function to get a dependency symbol in a see&hyphen;below namespace
 
-
-
 | <<see_below_ns-get_implementation_defined,`get&lowbar;implementation&lowbar;defined`>> 
 | A function to get an implementation&hyphen;defined symbol in a see&hyphen;below namespace
-
-
 
 |===
 
@@ -427,8 +361,6 @@ The documentation page for these symbols should include the see&hyphen;below com
 
 
 Regular symbol in a see&hyphen;below namespace
-
-
 
 === Synopsis
 
@@ -456,8 +388,6 @@ The symbol becomes see&hyphen;below because the whole namespace is see&hyphen;be
 
 See&hyphen;below symbol in a see&hyphen;below namespace
 
-
-
 === Synopsis
 
 
@@ -483,8 +413,6 @@ The symbol becomes see&hyphen;below because the whole namespace is see&hyphen;be
 
 
 A function to get a dependency symbol in a see&hyphen;below namespace
-
-
 
 === Synopsis
 
@@ -512,8 +440,6 @@ It&apos;s the responsibility of the function documentation to explain the depend
 
 A function to get an implementation&hyphen;defined symbol in a see&hyphen;below namespace
 
-
-
 === Synopsis
 
 
@@ -540,8 +466,6 @@ It&apos;s the responsibility of the function documentation to explain the implem
 
 A regular symbol in the global namespace
 
-
-
 === Synopsis
 
 
@@ -561,8 +485,6 @@ struct regular;
 | <<regular-also_regular,`also&lowbar;regular`>> 
 | Child of a regular symbol&colon; should be traversed as usual
 
-
-
 |===
 
 
@@ -579,8 +501,6 @@ This symbol should have a page as usual&period;
 
 
 Child of a regular symbol&colon; should be traversed as usual
-
-
 
 === Synopsis
 
@@ -601,8 +521,6 @@ struct also&lowbar;regular;
 | <<regular-also_regular-regular_as_well,`regular&lowbar;as&lowbar;well`>> 
 | Grandchild of a regular symbol&colon; should be traversed as usual
 
-
-
 |===
 
 
@@ -612,8 +530,6 @@ struct also&lowbar;regular;
 
 
 Grandchild of a regular symbol&colon; should be traversed as usual
-
-
 
 === Synopsis
 
@@ -633,8 +549,6 @@ struct regular&lowbar;as&lowbar;well;
 
 
 A see&hyphen;below symbol in the global namespace
-
-
 
 === Synopsis
 
@@ -664,8 +578,6 @@ The synopsis should say &quot;See below&quot;&period;
 
 A function to get a dependency symbol on the global namespace
 
-
-
 === Synopsis
 
 
@@ -689,8 +601,6 @@ The symbol should be extracted as a dependency but its members should not be tra
 
 
 A function to get an implementation&hyphen;defined symbol in the global namespace
-
-
 
 === Synopsis
 
@@ -718,8 +628,6 @@ It&apos;s the responsibility of the function documentation to explain the implem
 
 A function to get a regular symbol in the global namespace
 
-
-
 === Synopsis
 
 
@@ -743,8 +651,6 @@ When used in a function, the symbol should be shown as usual with a link to the 
 
 
 A function to get a see&hyphen;below symbol in the global namespace
-
-
 
 === Synopsis
 
@@ -770,8 +676,6 @@ When used in a function, the symbol name should be shown as usual&period; The pa
 
 Namespace alias to form the dependency on dependency&lowbar;ns
 
-
-
 === Synopsis
 
 
@@ -788,8 +692,6 @@ namespace dependency&lowbar;ns&lowbar;alias = dependency&lowbar;ns;
 
 Namespace alias to form a dependency on the implementation&hyphen;defined namespace
 
-
-
 === Synopsis
 
 
@@ -805,8 +707,6 @@ namespace implementation&lowbar;defined&lowbar;ns&lowbar;alias = &sol;&ast; impl
 
 
 Namespace alias to form a dependency on the see&hyphen;below namespace
-
-
 
 === Synopsis
 

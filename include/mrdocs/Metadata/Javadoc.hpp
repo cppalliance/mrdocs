@@ -385,8 +385,10 @@ struct MRDOCS_DECL
 
     bool operator==(const Block& other) const noexcept
     {
-        if(kind != other.kind)
+        if (kind != other.kind)
+        {
             return false;
+        }
         return std::equal(children.begin(), children.end(),
             other.children.begin(), other.children.end(),
             [](const auto& a, const auto& b)
@@ -409,6 +411,8 @@ struct MRDOCS_DECL
     }
 
     void append(List<Node>&& blocks);
+
+    void append(List<Text> const& otherChildren);
 
 protected:
     explicit
@@ -892,7 +896,7 @@ void traverse(
 
 struct Overview
 {
-    Paragraph const* brief = nullptr;
+    std::shared_ptr<Paragraph> brief = nullptr;
     std::vector<Block const*> blocks;
     Returns const* returns = nullptr;
     std::vector<Param const*> params;
@@ -916,6 +920,8 @@ class Corpus;
 class MRDOCS_DECL
     Javadoc
 {
+    doc::List<doc::Block> blocks_;
+
 public:
     /** Constructor.
     */
@@ -1015,8 +1021,6 @@ public:
 
 private:
     std::string emplace_back(std::unique_ptr<doc::Block>);
-
-    doc::List<doc::Block> blocks_;
 };
 
 /** Return the Javadoc as a @ref dom::Value.

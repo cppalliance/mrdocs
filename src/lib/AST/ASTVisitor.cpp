@@ -1774,16 +1774,10 @@ generateJavadoc(
 {
     RawComment const* RC =
         D->getASTContext().getRawCommentForDeclNoCache(D);
-    if (!RC)
-    {
-        return false;
-    }
+    MRDOCS_CHECK_OR(RC, false);
     comments::FullComment* FC =
         RC->parse(D->getASTContext(), &sema_.getPreprocessor(), D);
-    if (!FC)
-    {
-        return false;
-    }
+    MRDOCS_CHECK_OR(FC, false);
     parseJavadoc(javadoc, FC, D, config_, diags_);
     return true;
 }

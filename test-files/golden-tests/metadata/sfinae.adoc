@@ -22,12 +22,8 @@
 | <<A-09,`A`>> 
 | The partial specialization of A is enabled via a template parameter
 
-
-
 | <<A-02,`A&lt;T, void&gt;`>> 
 | Specialization for floating point types
-
-
 
 |===
 === Functions
@@ -39,52 +35,32 @@
 | <<f1,`f1`>> 
 | Enabled via return type
 
-
-
 | <<f10,`f10`>> 
 | Enabled via type template parameter
-
-
 
 | <<f2,`f2`>> 
 | Enabling a specified return type
 
-
-
 | <<f3,`f3`>> 
 | Enabling a specified return type in another namespace
-
-
 
 | <<f4,`f4`>> 
 | Enabled via return type with std&colon;&colon;enable&lowbar;if
 
-
-
 | <<f5,`f5`>> 
 | Enabled via a non&hyphen;type template parameter with helper
-
-
 
 | <<f6,`f6`>> 
 | Enabled via a non&hyphen;type template parameter without helper
 
-
-
 | <<f7,`f7`>> 
 | Enabled via a non&hyphen;type template parameter using int instead of bool
-
-
 
 | <<f8,`f8`>> 
 | Enabled via parameter without helper
 
-
-
 | <<f9,`f9`>> 
 | Enabled via parameter with helper
-
-
 
 |===
 
@@ -124,8 +100,6 @@ struct C;
 
 The partial specialization of A is enabled via a template parameter
 
-
-
 === Synopsis
 
 
@@ -148,8 +122,6 @@ class A;
 
 Specialization for floating point types
 
-
-
 === Synopsis
 
 
@@ -170,8 +142,6 @@ class <<A-09,A>>&lt;T, void&gt;;
 
 Enabled via return type
 
-
-
 === Synopsis
 
 
@@ -189,8 +159,6 @@ f1(T value);
 
 
 Enabled via type template parameter
-
-
 
 === Synopsis
 
@@ -223,8 +191,6 @@ This does not work because the declarations are treated as redeclarations of the
 
 Enabling a specified return type
 
-
-
 === Synopsis
 
 
@@ -242,8 +208,6 @@ f2(T value);
 
 
 Enabling a specified return type in another namespace
-
-
 
 === Synopsis
 
@@ -263,8 +227,6 @@ f3(T value);
 
 Enabled via return type with std&colon;&colon;enable&lowbar;if
 
-
-
 === Synopsis
 
 
@@ -282,8 +244,6 @@ f4(T value);
 
 
 Enabled via a non&hyphen;type template parameter with helper
-
-
 
 === Synopsis
 
@@ -305,8 +265,6 @@ f5(T value);
 
 Enabled via a non&hyphen;type template parameter without helper
 
-
-
 === Synopsis
 
 
@@ -326,8 +284,6 @@ f6(T value);
 
 
 Enabled via a non&hyphen;type template parameter using int instead of bool
-
-
 
 === Synopsis
 
@@ -349,8 +305,6 @@ f7(T value);
 
 Enabled via parameter without helper
 
-
-
 === Synopsis
 
 
@@ -370,8 +324,6 @@ f8(
 
 
 Enabled via parameter with helper
-
-
 
 === Synopsis
 

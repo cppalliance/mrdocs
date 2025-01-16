@@ -1,0 +1,156 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+=== Functions
+
+[cols=2]
+|===
+| Name | Description 
+
+| <<f,`f`>> 
+| C string overload&period;
+
+Integer overload&period;
+
+
+|===
+
+[#f]
+== f
+
+
+Integer overload&period;
+
+=== Synopsis
+
+
+Declared in `&lt;brief&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<f-06,f>>(int);
+----
+
+[.small]#<<f-06,_» more..._>>#
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<f-07,f>>(char const*);
+----
+
+[.small]#<<f-07,_» more..._>>#
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<f-0f,f>>(double);
+----
+
+[.small]#<<f-0f,_» more..._>>#
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<f-0b,f>>(float const*);
+----
+
+[.small]#<<f-0b,_» more..._>>#
+
+=== Description
+
+
+More info
+
+
+
+[#f-06]
+== f
+
+
+Integer overload&period;
+
+=== Synopsis
+
+
+Declared in `&lt;brief&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(int);
+----
+
+=== Description
+
+
+More info
+
+
+
+[#f-07]
+== f
+
+
+C string overload&period;
+
+=== Synopsis
+
+
+Declared in `&lt;brief&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(char const*);
+----
+
+=== Description
+
+
+More info
+
+
+
+[#f-0f]
+== f
+
+
+Integer overload&period;
+
+=== Synopsis
+
+
+Declared in `&lt;brief&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(double);
+----
+
+[#f-0b]
+== f
+
+
+C string overload&period;
+
+=== Synopsis
+
+
+Declared in `&lt;brief&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(float const*);
+----
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

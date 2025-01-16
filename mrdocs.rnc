@@ -387,7 +387,7 @@ grammar
     BlockNode = (
         Admonition | Brief | Code | Heading | ListItem |
         Paragraph | Param | Returns | TParam | Throws |
-        See | Precondition | Postcondition)
+        See | Precondition | Postcondition | Details)
 
     Admonition = Paragraph
     Brief = element brief { TextNode * }
@@ -411,7 +411,7 @@ grammar
         TextNode * }
     Precondition = element pre { TextNode * }
     Postcondition = element post { TextNode * }
-
+    Details = element details { TextNode * }
 
     TextNode = ( Link | Styled | Text | Reference | Copied )
 

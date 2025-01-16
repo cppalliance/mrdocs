@@ -14,8 +14,6 @@
 | <<A,`A`>> 
 | Brief for A
 
-
-
 |===
 
 [#A]
@@ -23,8 +21,6 @@
 
 
 Brief for A
-
-
 
 === Synopsis
 
@@ -45,8 +41,6 @@ struct A;
 | <<A-compare,`compare`>> 
 | Compare function
 
-
-
 |===
 
 
@@ -65,8 +59,6 @@ We can also escape these markers&colon; &grave;, &ast;, and &lowbar;&period;
 
 
 Compare function
-
-
 
 === Synopsis
 
