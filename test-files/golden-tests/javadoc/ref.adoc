@@ -33,12 +33,8 @@
 | <<f5,`f5`>> 
 | See xref:#A-f1[A&colon;&colon;f1]
 
-
-
 | <<f6,`f6`>> 
 | See xref:#F-operator_bitnot[F&colon;&colon;operator&#126;]
-
-
 
 |===
 
@@ -54,8 +50,6 @@
 
 | <<A-B,`B`>> 
 | See xref:#A-f1[f1]
-
-
 
 | <<A-C,`C`>> 
 | 
@@ -73,8 +67,6 @@
 | <<A-f1,`f1`>> 
 | See xref:#f0[f0]
 
-
-
 |===
 
 [#A-B]
@@ -82,8 +74,6 @@
 
 
 See xref:#A-f1[f1]
-
-
 
 === Synopsis
 
@@ -211,8 +201,6 @@ struct D
 | <<A-D-E,`E`>> 
 | See xref:#A-C-f3[f3]
 
-
-
 |===
 === Member Functions
 
@@ -231,8 +219,6 @@ struct D
 
 
 See xref:#A-C-f3[f3]
-
-
 
 === Synopsis
 
@@ -276,8 +262,6 @@ f4();
 
 
 See xref:#f0[f0]
-
-
 
 === Synopsis
 
@@ -966,8 +950,6 @@ f0();
 
 See xref:#A-f1[A&colon;&colon;f1]
 
-
-
 === Synopsis
 
 
@@ -991,8 +973,6 @@ See xref:#A-f1[&colon;&colon;A&colon;&colon;f1]
 
 
 See xref:#F-operator_bitnot[F&colon;&colon;operator&#126;]
-
-
 
 === Synopsis
 

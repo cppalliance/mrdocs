@@ -2702,6 +2702,10 @@ void
 setMinimumLevel(
     Level level) noexcept;
 
+MRDOCS_DECL
+Level
+getMinimumLevel() noexcept;
+
 /** If true, source location information will be
     printed with warnings, errors, and fatal messages.
 */
@@ -2787,9 +2791,11 @@ log_impl(
     Level level,
     Located<std::string_view> fs)
 {
+    std::string str = fmt::vformat(
+        fs.value, fmt::make_format_args());
     return print(
         level,
-        {},
+        str,
         &fs.where);
 }
 }

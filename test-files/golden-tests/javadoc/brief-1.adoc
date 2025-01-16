@@ -12,14 +12,10 @@
 | Name | Description 
 
 | <<f5,`f5`>> 
-| brief *bold* itcontinues to the line&period;
-
-
+| brief *bold* it continues to the line&period;
 
 | <<f6,`f6`>> 
 | brief
-
-
 
 |===
 
@@ -27,9 +23,7 @@
 == f5
 
 
-brief *bold* itcontinues to the line&period;
-
-
+brief *bold* it continues to the line&period;
 
 === Synopsis
 
@@ -47,8 +41,6 @@ f5();
 
 
 brief
-
-
 
 === Synopsis
 

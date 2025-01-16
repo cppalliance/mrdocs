@@ -14,32 +14,20 @@
 | <<f1,`f1`>> 
 | brief
 
-
-
 | <<f2,`f2`>> 
 | brief
-
-
 
 | <<f3,`f3`>> 
 | brief
 
-
-
 | <<f4,`f4`>> 
 | brief                    x
-
-
 
 | <<f5,`f5`>> 
 | brief
 
-
-
 | <<f6,`f6`>> 
 | brief
-
-
 
 |===
 
@@ -48,8 +36,6 @@
 
 
 brief
-
-
 
 === Synopsis
 
@@ -68,8 +54,6 @@ f1();
 
 brief
 
-
-
 === Synopsis
 
 
@@ -87,8 +71,6 @@ f2();
 
 brief
 
-
-
 === Synopsis
 
 
@@ -105,8 +87,6 @@ f3();
 
 
 brief                    x
-
-
 
 === Synopsis
 
@@ -132,8 +112,6 @@ brief
 
 brief
 
-
-
 === Synopsis
 
 
@@ -150,8 +128,6 @@ f5();
 
 
 brief
-
-
 
 === Synopsis
 

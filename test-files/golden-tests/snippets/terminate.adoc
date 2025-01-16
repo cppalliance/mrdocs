@@ -14,8 +14,6 @@
 | <<terminate,`terminate`>> 
 | Exit the program&period;
 
-
-
 |===
 
 [#terminate]
@@ -23,8 +21,6 @@
 
 
 Exit the program&period;
-
-
 
 === Synopsis
 

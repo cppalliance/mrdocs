@@ -57,17 +57,11 @@ struct T;
 | <<T-g1,`g1`>> 
 | brief&hyphen;g1
 
-
-
 | <<T-g2,`g2`>> 
 | brief&hyphen;g2
 
-
-
 | <<T-g3,`g3`>> 
 | brief&hyphen;g3
-
-
 
 |===
 
@@ -123,8 +117,6 @@ f3();
 
 brief&hyphen;g1
 
-
-
 === Synopsis
 
 
@@ -149,8 +141,6 @@ desc
 
 brief&hyphen;g2
 
-
-
 === Synopsis
 
 
@@ -174,8 +164,6 @@ the number 2
 
 
 brief&hyphen;g3
-
-
 
 === Synopsis
 

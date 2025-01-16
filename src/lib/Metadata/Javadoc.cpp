@@ -41,63 +41,41 @@ append(List<Node>&& blocks)
     {
         MRDOCS_ASSERT(block->isText());
         emplace_back(std::unique_ptr<Text>(
-            static_cast<Text*>(block.release())));
+            dynamic_cast<Text*>(block.release())));
     }
 }
 
-#if 0
-static
-Overview
-makeOverview(
-    Block* brief,
-    List<Block> const& list)
+void
+Block::
+append(List<Text> const& otherChildren)
 {
-    doc::Overview ov;
-
-    // VFALCO dupes should already be reported as
-    // warnings or errors by now so we don't have
-    // to care about it here.
-
-    for(auto it = list.begin();
-        it != list.end(); ++it)
+    children.reserve(children.size() + otherChildren.size());
+    for(auto const& otherChildPtr : otherChildren)
     {
-        switch((*it)->kind)
-        {
-        case Kind::brief:
-            // ov.brief = static_cast<
-            //     Paragraph const*>(it->get());
-            break;
-        case Kind::returns:
-            ov.returns = static_cast<
-                Returns const*>(it->get());
-            break;
-        case Kind::param:
-            ov.params.push_back(static_cast<
-                Param const*>(it->get()));
-            break;
-        case Kind::tparam:
-            ov.tparams.push_back(static_cast<
-                TParam const*>(it->get()));
-            break;
-            #if 0
-        case Kind::paragraph:
-            if(! ov.brief)
-                ov.brief = static_cast<
-                    Paragraph const*>(it->get());
-            else
-                ov.blocks.push_back(it->get());
-            break;
-            #endif
-        default:
-            if(ov.brief == it->get())
-                break;
-            ov.blocks.push_back(it->get());
-        }
+        Text const& otherChild = *otherChildPtr;
+        visit(otherChild, [this]<typename U>(U const& otherChildU) {
+            if constexpr (std::derived_from<U, Text>)
+            {
+                U otherChildCopy;
+                otherChildCopy.string = otherChildU.string;
+                if constexpr (std::derived_from<U, Styled>)
+                {
+                    otherChildCopy.style = otherChildU.style;
+                }
+                if constexpr (std::derived_from<U, Link>)
+                {
+                    otherChildCopy.href = otherChildU.href;
+                }
+                if constexpr (std::derived_from<U, Reference>)
+                {
+                    otherChildCopy.id = otherChildU.id;
+                }
+                auto otherChildCopyPtr = std::make_unique<U>(std::move(otherChildCopy));
+                children.push_back(std::move(otherChildCopyPtr));
+            }
+        });
     }
-
-    return ov;
 }
-#endif
 
 dom::String
 toString(
@@ -153,43 +131,62 @@ doc::Paragraph const*
 Javadoc::
 getBrief(Corpus const& corpus) const noexcept
 {
+    // Brief from a @brief tag
     const doc::Block* brief = nullptr;
+    // The first paragraph promoted to brief
     const doc::Block* promoted_brief = nullptr;
+    // A brief copied from another symbol
     const doc::Block* copied_brief = nullptr;
     for(auto const& block : blocks_)
     {
-        if(! brief &&
-            block->kind == doc::Kind::brief)
+        if (!brief && block->kind == doc::Kind::brief)
+        {
             brief = block.get();
-        if(! promoted_brief &&
-            block->kind == doc::Kind::paragraph)
+        }
+        if (!promoted_brief && block->kind == doc::Kind::paragraph)
+        {
             promoted_brief = block.get();
+        }
 
         // if we already have an explicit/copied brief,
         // don't check for additional copied briefs
-        if(brief || copied_brief)
-            continue;
-
-        for(auto const& text : block->children)
+        if (brief || copied_brief)
         {
-            if(text->kind != doc::Kind::copied)
+            continue;
+        }
+
+        // Look for a @copydoc command
+        for (auto const& text : block->children)
+        {
+            if (text->kind != doc::Kind::copied)
+            {
                 continue;
-            auto* copy = static_cast<doc::Copied*>(text.get());
+            }
+            auto const* copy = dynamic_cast<doc::Copied*>(text.get());
             if(copy->id &&
                 (copy->parts == doc::Parts::all ||
                 copy->parts == doc::Parts::brief))
             {
-                if(auto& jd = corpus.get(copy->id).javadoc)
+                // Look for the symbol to copy from
+                if (auto& jd = corpus.get(copy->id).javadoc)
+                {
                     copied_brief = jd->getBrief(corpus);
+                }
             }
         }
     }
-    // an explicit brief superceeds a copied brief
-    if(! brief)
+    // An explicit brief superceeds a copied brief
+    if (!brief)
+    {
+        // No explicit brief: use copied brief
         brief = copied_brief;
-    // a copied brief superceeds a promoted brief
-    if(! brief)
+    }
+    // A copied brief superceeds a promoted brief
+    if (!brief)
+    {
+        // No copied brief: use promoted brief
         brief = promoted_brief;
+    }
     return static_cast<const doc::Paragraph*>(brief);
 }
 
@@ -242,9 +239,16 @@ Javadoc::
 makeOverview(
     const Corpus& corpus) const
 {
-    // return doc::makeOverview(blocks_);
     doc::Overview ov;
-    ov.brief = getBrief(corpus);
+    doc::Paragraph const* briefP = getBrief(corpus);
+    if (briefP)
+    {
+        // Brief can be a brief or paragraph (if it was promoted)
+        // Ensure it's always a brief so that they are all
+        // rendered the same way.
+        ov.brief = std::make_shared<doc::Brief>();
+        ov.brief->append(briefP->children);
+    }
 
     const auto& list = getDescription(corpus);
     // VFALCO dupes should already be reported as
@@ -288,8 +292,10 @@ makeOverview(
                 doc::Postcondition const*>(it->get()));
             break;
         default:
-            if(ov.brief == it->get())
+            if (briefP == it->get())
+            {
                 break;
+            }
             ov.blocks.push_back(it->get());
         }
     }

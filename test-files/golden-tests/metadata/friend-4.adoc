@@ -23,8 +23,6 @@
 | <<f,`f`>> 
 | U&colon;&colon;f
 
-
-
 |===
 
 [#T]
@@ -91,8 +89,6 @@ struct U;
 | <<U-08friend,`f`>> 
 | U&colon;&colon;f
 
-
-
 |===
 
 
@@ -102,8 +98,6 @@ struct U;
 
 
 U&colon;&colon;f
-
-
 
 === Synopsis
 
@@ -122,8 +116,6 @@ f();
 
 
 U&colon;&colon;f
-
-
 
 === Synopsis
 

@@ -14,8 +14,6 @@
 | <<distance,`distance`>> 
 | Return the distance between two points
 
-
-
 |===
 
 [#distance]
@@ -23,8 +21,6 @@
 
 
 Return the distance between two points
-
-
 
 === Synopsis
 

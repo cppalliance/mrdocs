@@ -25,7 +25,7 @@ void f4();
 #endif
 
 /** brief @b bold it
-continues to the line.
+ continues to the line.
 */
 void f5();
 

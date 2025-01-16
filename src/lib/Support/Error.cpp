@@ -192,6 +192,12 @@ setMinimumLevel(
     level_ = level;
 }
 
+Level
+getMinimumLevel() noexcept
+{
+    return level_;
+}
+
 void
 setSourceLocationWarnings(bool b) noexcept
 {

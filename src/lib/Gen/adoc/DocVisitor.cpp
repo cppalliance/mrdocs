@@ -93,7 +93,6 @@ operator()(
     fmt::format_to(ins_, "\n=== {}\n\n", AdocEscape(I.string));
 }
 
-// Also handles doc::Brief
 void
 DocVisitor::
 operator()(
@@ -135,14 +134,21 @@ operator()(
     {
         return;
     }
-    bool non_empty = write(*children.front(), *this);
-    for(auto const& child : children.subspan(1))
+
+    std::size_t i = 0;
+    for (auto it = children.begin(); it != children.end(); ++it)
     {
-        if (non_empty)
+        auto& child = *it;
+        if (i == 0)
         {
-            dest_.push_back('\n');
+            child->string = ltrim(child->string);
         }
-        non_empty = write(*child, *this);
+        if (i == children.size() - 1)
+        {
+            child->string = rtrim(child->string);
+        }
+        write(*child, *this);
+        i = i + 1;
     }
 }
 

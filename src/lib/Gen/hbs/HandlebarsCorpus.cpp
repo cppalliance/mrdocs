@@ -197,12 +197,10 @@ getJavadoc(Javadoc const& jd) const
        When the string is empty, the object key
        is undefined.
      */
-    auto emplaceString = [&](
-        std::string_view key,
-        auto const& I)
+    auto emplaceString = [&]<typename T>(
+        std::string_view key, T const& I)
     {
         std::string s;
-        using T = std::decay_t<decltype(I)>;
         if constexpr (std::derived_from<T, doc::Node>)
         {
             // doc::visit(*t, visitor);
@@ -232,13 +230,17 @@ getJavadoc(Javadoc const& jd) const
         elements.reserve(nodes.size());
         for(auto const& elem : nodes)
         {
-            if(!elem)
+            if (!elem)
+            {
                 continue;
+            }
             elements.emplace_back(
                 domCreate(*elem, *this));
         }
-        if(elements.empty())
+        if (elements.empty())
+        {
             return;
+        }
         objKeyValues.emplace_back(key, dom::newArray<
             dom::DefaultArrayImpl>(std::move(elements)));
     };
