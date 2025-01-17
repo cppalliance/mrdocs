@@ -266,11 +266,9 @@ std::string
 makePosixStyle(
     std::string_view pathName)
 {
-    std::string result(pathName);
-    for(auto& c : result)
-        if(c == '\\')
-            c = '/';
-    return result;
+    SmallPathString result(pathName);
+    llvm::sys::path::native(result, llvm::sys::path::Style::posix);
+    return std::string(result);
 }
 
 std::string

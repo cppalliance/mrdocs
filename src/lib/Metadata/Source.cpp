@@ -42,7 +42,6 @@ tag_invoke(
     io.map("path", loc.Path);
     io.map("file", loc.Filename);
     io.map("line", loc.LineNumber);
-    io.map("kind", loc.Kind);
     io.map("documented", loc.Documented);
 }
 

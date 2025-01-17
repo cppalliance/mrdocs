@@ -79,6 +79,17 @@ class ASTVisitor
     // An unordered set of all extracted Info declarations
     InfoSet info_;
 
+    /*  Preprocessed information about search directories
+
+        This vector stores information about the search directories
+        used by the translation unit.
+
+        Whenever we extract information about where a symbol is located,
+        we store the full path of the symbol and the path relative
+        to the search directory in this vector.
+     */
+    std::vector<std::string> search_dirs_;
+
     /* Struct to hold pre-processed file information.
 
         This struct stores information about a file, including its full path,
@@ -92,7 +103,7 @@ class ASTVisitor
         static
         FileInfo
         build(
-            std::span<const std::pair<std::string, FileKind>> search_dirs,
+            std::span<std::string> search_dirs,
             std::string_view file_path,
             std::string_view sourceRoot);
 
@@ -101,9 +112,6 @@ class ASTVisitor
 
         // The file path relative to a search directory.
         std::string short_path;
-
-        // The kind of the file.
-        FileKind kind = FileKind::Source;
 
         // Whether this file passes the file filters
         std::optional<bool> passesFilters;
