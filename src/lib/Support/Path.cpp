@@ -263,13 +263,30 @@ makeAbsolute(
 }
 
 std::string
-makePosixStyle(
-    std::string_view pathName)
+makePosixStyle(std::string_view pathName)
 {
     SmallPathString result(pathName);
     llvm::sys::path::native(result, llvm::sys::path::Style::posix);
     return std::string(result);
 }
+
+bool
+isPosixStyle(std::string_view pathName)
+{
+    namespace path = llvm::sys::path;
+
+    if(pathName.empty())
+    {
+        return true;
+    }
+    llvm::StringRef separator = llvm::sys::path::get_separator(path::Style::windows);
+    if (pathName.find(separator) != llvm::StringRef::npos)
+    {
+        return false;
+    }
+    return true;
+}
+
 
 std::string
 withExtension(

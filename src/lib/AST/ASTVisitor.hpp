@@ -79,17 +79,6 @@ class ASTVisitor
     // An unordered set of all extracted Info declarations
     InfoSet info_;
 
-    /*  Preprocessed information about search directories
-
-        This vector stores information about the search directories
-        used by the translation unit.
-
-        Whenever we extract information about where a symbol is located,
-        we store the full path of the symbol and the path relative
-        to the search directory in this vector.
-     */
-    std::vector<std::string> search_dirs_;
-
     /* Struct to hold pre-processed file information.
 
         This struct stores information about a file, including its full path,
@@ -100,13 +89,6 @@ class ASTVisitor
      */
     struct FileInfo
     {
-        static
-        FileInfo
-        build(
-            std::span<std::string> search_dirs,
-            std::string_view file_path,
-            std::string_view sourceRoot);
-
         // The full path of the file.
         std::string full_path;
 
@@ -910,13 +892,9 @@ private:
         This function will return a pointer to a FileInfo
         object for a given Clang FileEntry object.
 
-        If the FileInfo object does not exist, the function
-        will construct a new FileInfo object and add it to
-        the files_ map.
-
-        The map of files is created during the object
-        construction, and is populated with the FileInfo
-        for each file in the translation unit.
+        If the FileInfo object does not exist in the cache,
+        the function will build a new FileInfo object and
+        add it to the files_ map.
 
         @param file The Clang FileEntry object to get the FileInfo for.
 
@@ -924,6 +902,49 @@ private:
      */
     FileInfo*
     findFileInfo(clang::SourceLocation loc);
+
+    /* Build a FileInfo for a FileEntry
+
+        This function will build a FileInfo object for a
+        given Clang FileEntry object.
+
+        The function will extract the full path and short
+        path of the file, and store the information in the
+        FileInfo object.
+
+        This function is used as an auxiliary function to
+        `findFileInfo` when the FileInfo object does not
+        exist in the cache.
+
+        @param file The Clang FileEntry object to build the FileInfo for.
+        @return the FileInfo object.
+
+     */
+    std::optional<FileInfo>
+    buildFileInfo(FileEntry const* entry);
+
+    /* Build a FileInfo for a string path
+
+        This function will build a FileInfo object for a
+        given file path.
+
+        The function will extract the full path and short
+        path of the file, and store the information in the
+        FileInfo object.
+
+        The search paths will be used to identify the
+        short path of the file relative to the search
+        directories.
+
+        This function is used as an auxiliary function to
+        `buildFileInfo` once the file path has been extracted
+        from the FileEntry object.
+
+        @param file_path The file path to build the FileInfo for.
+        @return the FileInfo object.
+     */
+    FileInfo
+    buildFileInfo(std::string_view file_path);
 
     /* Result of an upsert operation
 

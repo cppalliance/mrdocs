@@ -241,6 +241,12 @@ std::string
 makePosixStyle(
     std::string_view pathName);
 
+/** Check if the path is posix style.
+*/
+MRDOCS_DECL
+bool
+isPosixStyle(std::string_view pathName);
+
 /** Return the filename with a new or different extension.
 
     @param fileName The absolute or relative path

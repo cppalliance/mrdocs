@@ -44,61 +44,6 @@
 
 namespace clang::mrdocs {
 
-ASTVisitor::FileInfo
-ASTVisitor::FileInfo::build(
-    std::span<std::string> const search_dirs,
-    std::string_view const file_path,
-    std::string_view const sourceRoot) {
-    FileInfo file_info;
-    file_info.full_path = std::string(file_path);
-    file_info.short_path = std::string(file_path);
-
-    // Find the best match for the file path
-    for (auto const& search_dir : search_dirs)
-    {
-        if (files::startsWith(file_path, search_dir))
-        {
-            file_info.short_path.erase(0, search_dir.size());
-            if (file_info.short_path.starts_with('/'))
-            {
-                file_info.short_path.erase(0, 1);
-            }
-            return file_info;
-        }
-    }
-
-    // Fallback to sourceRoot
-    if (files::startsWith(file_path, sourceRoot))
-    {
-        file_info.short_path.erase(0, sourceRoot.size());
-        if (file_info.short_path.starts_with('/'))
-        {
-            file_info.short_path.erase(0, 1);
-        }
-        return file_info;
-    }
-
-    // Fallback to system search paths in PATH
-    std::optional<std::string> const optEnvPathsStr = llvm::sys::Process::GetEnv("PATH");
-    MRDOCS_CHECK_OR(optEnvPathsStr, file_info);
-    std::string const& envPathsStr = *optEnvPathsStr;
-    for (auto const envPaths = llvm::split(envPathsStr, llvm::sys::EnvPathSeparator);
-         auto envPath: envPaths)
-    {
-        auto normEnvPath = files::makePosixStyle(envPath);
-        if (files::startsWith(file_path, normEnvPath))
-        {
-            file_info.short_path.erase(0, normEnvPath.size());
-            if (file_info.short_path.starts_with('/'))
-            {
-                file_info.short_path.erase(0, 1);
-            }
-            return file_info;
-        }
-    }
-    return file_info;
-}
-
 ASTVisitor::
 ASTVisitor(
     const ConfigImpl& config,
@@ -123,42 +68,6 @@ ASTVisitor(
     // used somewhere
     MRDOCS_ASSERT(context_.getTraversalScope() ==
         std::vector<Decl*>{context_.getTranslationUnitDecl()});
-
-    // Store the search directories
-    auto const& cwd = source_.getFileManager().getFileSystemOpts().WorkingDir;
-    Preprocessor& PP = sema_.getPreprocessor();
-    HeaderSearch& HS = PP.getHeaderSearchInfo();
-    search_dirs_.reserve(HS.search_dir_size());
-    // first, convert all the include search directories into POSIX style
-    for (const DirectoryLookup& DL : HS.search_dir_range())
-    {
-        OptionalDirectoryEntryRef DR = DL.getDirRef();
-        // only consider normal directories
-        if (!DL.isNormalDir() || !DR)
-        {
-            continue;
-        }
-        // store the normalized path
-        auto normPath = files::makePosixStyle(files::makeAbsolute(DR->getName(), cwd));
-        search_dirs_.push_back(std::move(normPath));
-    }
-
-    // Store preprocessed information about all file entries
-    std::string const sourceRoot = files::makePosixStyle(files::makeAbsolute(config_->sourceRoot, cwd));
-    auto cacheFileInfo = [&](FileEntry const* entry) {
-        std::string_view const file_path = entry->tryGetRealPathName();
-        MRDOCS_CHECK_OR(!file_path.empty());
-        auto const normPath = files::makePosixStyle(
-            files::makeAbsolute(file_path, cwd));
-        auto FI = FileInfo::build(search_dirs_, normPath, sourceRoot);
-        files_.emplace(entry, FI);
-    };
-    FileEntry const* mainFileEntry = source_.getFileEntryForID(source_.getMainFileID());
-    cacheFileInfo(mainFileEntry);
-    for(const FileEntry* file : PP.getIncludedFiles())
-    {
-        cacheFileInfo(file);
-    }
 }
 
 void
@@ -2514,8 +2423,8 @@ shouldExtract(
         // This is not a scoped promotion because
         // parents and members should also assume
         // the same base extraction mode.
-        if (checkFileFilters(D) &&
-            checkSymbolFilters(D))
+        if (checkSymbolFilters(D) &&
+            checkFileFilters(D))
         {
             mode_ = ExtractionMode::Regular;
         }
@@ -2524,15 +2433,15 @@ shouldExtract(
     }
 
     // Check if this symbol should be extracted according
+    // to its qualified name. This checks if it matches
+    // the symbol patterns and if it's not excluded.
+    MRDOCS_CHECK_OR(checkSymbolFilters(D), false);
+
+    // Check if this symbol should be extracted according
     // to its location. This checks if it's in one of the
     // input directories, if it matches the file patterns,
     // and it's not in an excluded file.
     MRDOCS_CHECK_OR(checkFileFilters(D), false);
-
-    // Check if this symbol should be extracted according
-    // to its qualified name. This checks if it matches
-    // the symbol patterns and if it's not excluded.
-    MRDOCS_CHECK_OR(checkSymbolFilters(D), false);
 
     return true;
 }
@@ -2776,36 +2685,132 @@ ASTVisitor::FileInfo*
 ASTVisitor::
 findFileInfo(clang::SourceLocation const loc)
 {
-    if (loc.isInvalid())
-    {
-        return nullptr;
-    }
-    // KRYSTIAN FIXME: we really should not be
-    // calling getPresumedLoc this often,
+    MRDOCS_CHECK_OR(!loc.isInvalid(), nullptr);
+
+    // KRYSTIAN FIXME: we really should not be calling getPresumedLoc this often,
     // it's quite expensive
     auto const presumed = source_.getPresumedLoc(loc, false);
-    if (presumed.isInvalid())
+    MRDOCS_CHECK_OR(!presumed.isInvalid(), nullptr);
+
+    const FileEntry* entry = source_.getFileEntryForID( presumed.getFileID());
+    MRDOCS_CHECK_OR(entry, nullptr);
+
+    // Find in the cache
+    if (auto const it = files_.find(entry); it != files_.end())
     {
-        return nullptr;
+        return std::addressof(it->second);
     }
-    const FileEntry* file =
-        source_.getFileEntryForID(
-            presumed.getFileID());
-    // KRYSTIAN NOTE: i have no idea under what
-    // circumstances the file entry would be null
-    if (!file)
+
+    // Build FileInfo
+    auto const FI = buildFileInfo(entry);
+    MRDOCS_CHECK_OR(FI, nullptr);
+    auto [it, inserted] = files_.try_emplace(entry, std::move(*FI));
+    return std::addressof(it->second);
+}
+
+std::optional<ASTVisitor::FileInfo>
+ASTVisitor::
+buildFileInfo(FileEntry const* entry)
+{
+    std::string_view const file_path = entry->tryGetRealPathName();
+    MRDOCS_CHECK_OR(!file_path.empty(), std::nullopt);
+    return buildFileInfo(file_path);
+}
+
+ASTVisitor::FileInfo
+ASTVisitor::
+buildFileInfo(std::string_view const file_path)
+{
+    FileInfo file_info;
+    file_info.full_path = file_path;
+    if (!files::isPosixStyle(file_info.full_path))
     {
-        return nullptr;
+        file_info.full_path = files::makePosixStyle(file_info.full_path);
     }
-    // KRYSTIAN NOTE: i have no idea under what
-    // circumstances the file would not be in either
-    // the main file, or an included file
-    auto const it = files_.find(file);
-    if (it == files_.end())
+
+    // Attempts to get a relative path for the prefix
+    auto tryGetRelativePosixPath = [&file_info](std::string_view const prefix)
+        -> std::optional<std::string_view>
     {
-        return nullptr;
+        if (files::startsWith(file_info.full_path, prefix))
+        {
+            std::string_view res = file_info.full_path;
+            res.remove_prefix(prefix.size());
+            if (res.starts_with('/'))
+            {
+                res.remove_prefix(1);
+            }
+            return res;
+        }
+        return std::nullopt;
+    };
+
+    auto tryGetRelativePath = [&tryGetRelativePosixPath](std::string_view const prefix)
+        -> std::optional<std::string_view>
+    {
+        if (!files::isAbsolute(prefix))
+        {
+            return std::nullopt;
+        }
+        if (files::isPosixStyle(prefix))
+        {
+            // If already posix, we use the string view directly
+            // to avoid creating a new string for the check
+            return tryGetRelativePosixPath(prefix);
+        }
+        std::string const posixPrefix = files::makePosixStyle(prefix);
+        return tryGetRelativePosixPath(posixPrefix);
+    };
+
+    // Find the best match for the file path in the search directories
+    for (HeaderSearch& HS = sema_.getPreprocessor().getHeaderSearchInfo();
+         DirectoryLookup const& DL : HS.search_dir_range())
+    {
+        OptionalDirectoryEntryRef DR = DL.getDirRef();
+        if (!DL.isNormalDir() || !DR)
+        {
+            // Only consider normal directories
+            continue;
+        }
+        StringRef searchDir = DR->getName();
+        if (auto shortPath = tryGetRelativePath(searchDir))
+        {
+            file_info.short_path = std::string(*shortPath);
+            return file_info;
+        }
     }
-    return &it->second;
+
+    // Fallback to sourceRoot
+    if (files::isAbsolute(config_->sourceRoot))
+    {
+        if (auto shortPath = tryGetRelativePath(config_->sourceRoot))
+        {
+            file_info.short_path = std::string(*shortPath);
+            return file_info;
+        }
+    }
+
+    // Fallback to system search paths in PATH
+    std::optional<std::string> const optEnvPathsStr = llvm::sys::Process::GetEnv("PATH");
+    MRDOCS_CHECK_OR(optEnvPathsStr, file_info);
+    std::string const& envPathsStr = *optEnvPathsStr;
+    for (auto const envPaths = llvm::split(envPathsStr, llvm::sys::EnvPathSeparator);
+         auto envPath: envPaths)
+    {
+        if (!files::isAbsolute(envPath))
+        {
+            continue;
+        }
+        if (auto shortPath = tryGetRelativePath(envPath))
+        {
+            file_info.short_path = std::string(*shortPath);
+            return file_info;
+        }
+    }
+
+    // Fallback to the full path
+    file_info.short_path = file_info.full_path;
+    return file_info;
 }
 
 template <std::derived_from<Info> InfoTy>
@@ -2840,9 +2845,10 @@ ASTVisitor::
 upsert(DeclType* D)
 {
     AccessSpecifier access = getAccess(D);
-    MRDOCS_CHECK_MSG(
-        shouldExtract(D, access),
-        "Symbol should not be extracted");
+    if (!shouldExtract(D, access))
+    {
+        return Unexpected(Error("Symbol should not be extracted"));
+    }
 
     SymbolID const id = generateID(D);
     MRDOCS_CHECK_MSG(id, "Failed to extract symbol ID");
