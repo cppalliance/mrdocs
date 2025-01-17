@@ -61,10 +61,6 @@ struct MRDOCS_DECL
     */
     unsigned LineNumber = 0;
 
-    /** The kind of file this is
-    */
-    FileKind Kind = FileKind::Source;
-
     /** Whether this location has documentation.
     */
     bool Documented = false;
@@ -75,12 +71,10 @@ struct MRDOCS_DECL
         std::string_view const filepath = {},
         std::string_view const filename = {},
         unsigned const line = 0,
-        FileKind const kind = FileKind::Source,
         bool const documented = false)
         : Path(filepath)
         , Filename(filename)
         , LineNumber(line)
-        , Kind(kind)
         , Documented(documented)
     {
     }

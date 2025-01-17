@@ -36,6 +36,7 @@
 #include <llvm/Support/Error.h>
 #include <llvm/Support/Path.h>
 #include <llvm/Support/SHA1.h>
+#include <llvm/Support/Process.h>
 #include <memory>
 #include <optional>
 #include <ranges>
@@ -43,75 +44,58 @@
 
 namespace clang::mrdocs {
 
-auto
+ASTVisitor::FileInfo
 ASTVisitor::FileInfo::build(
-    std::span<std::pair<std::string, FileKind> const> /* search_dirs */,
+    std::span<std::string> const search_dirs,
     std::string_view const file_path,
-    std::string_view const sourceRoot) -> ASTVisitor::FileInfo {
+    std::string_view const sourceRoot) {
     FileInfo file_info;
     file_info.full_path = std::string(file_path);
-    file_info.short_path = file_info.full_path;
+    file_info.short_path = std::string(file_path);
 
-    std::ptrdiff_t best_length = 0;
-    auto check_dir = [&](
-        std::string_view const dir_path,
-        FileKind const kind)
+    // Find the best match for the file path
+    for (auto const& search_dir : search_dirs)
     {
-        auto NI = llvm::sys::path::begin(file_path);
-        auto const NE = llvm::sys::path::end(file_path);
-        auto DI = llvm::sys::path::begin(dir_path);
-        auto const DE = llvm::sys::path::end(dir_path);
-
-        for(; NI != NE; ++NI, ++DI)
+        if (files::startsWith(file_path, search_dir))
         {
-            // reached the end of the directory path
-            if(DI == DE)
+            file_info.short_path.erase(0, search_dir.size());
+            if (file_info.short_path.starts_with('/'))
             {
-                // update the best prefix length
-                if(std::ptrdiff_t length =
-                    NI - llvm::sys::path::begin(file_path);
-                    length > best_length)
-                {
-                    best_length = length;
-                    file_info.kind = kind;
-                    return true;
-                }
-                break;
+                file_info.short_path.erase(0, 1);
             }
-            // separators always match
-            if(NI->size() == 1 && DI->size() == 1 &&
-                llvm::sys::path::is_separator(NI->front()) &&
-                llvm::sys::path::is_separator(DI->front()))
-                continue;
-            // components don't match
-            if(*NI != *DI)
-                break;
+            return file_info;
         }
-        return false;
-    };
-
-    bool const in_sourceRoot = check_dir(
-        sourceRoot, FileKind::Source);
-
-    // only use a sourceRoot relative path if we
-    // don't find anything in the include search directories
-    // bool any_match = false;
-    // for (auto const& [dir_path, kind]: search_dirs)
-    // {
-    //    any_match |= check_dir(dir_path, kind);
-    // }
-
-    // KRYSTIAN TODO: if we don't find any matches,
-    // make the path relative to sourceRoot and return it
-
-    // override the file kind if
-    // the file was found in sourceRoot
-    if (in_sourceRoot)
-    {
-        file_info.kind = FileKind::Source;
     }
 
-    file_info.short_path.erase(0, best_length);
+    // Fallback to sourceRoot
+    if (files::startsWith(file_path, sourceRoot))
+    {
+        file_info.short_path.erase(0, sourceRoot.size());
+        if (file_info.short_path.starts_with('/'))
+        {
+            file_info.short_path.erase(0, 1);
+        }
+        return file_info;
+    }
+
+    // Fallback to system search paths in PATH
+    std::optional<std::string> const optEnvPathsStr = llvm::sys::Process::GetEnv("PATH");
+    MRDOCS_CHECK_OR(optEnvPathsStr, file_info);
+    std::string const& envPathsStr = *optEnvPathsStr;
+    for (auto const envPaths = llvm::split(envPathsStr, llvm::sys::EnvPathSeparator);
+         auto envPath: envPaths)
+    {
+        auto normEnvPath = files::makePosixStyle(envPath);
+        if (files::startsWith(file_path, normEnvPath))
+        {
+            file_info.short_path.erase(0, normEnvPath.size());
+            if (file_info.short_path.starts_with('/'))
+            {
+                file_info.short_path.erase(0, 1);
+            }
+            return file_info;
+        }
+    }
     return file_info;
 }
 
@@ -140,63 +124,37 @@ ASTVisitor(
     MRDOCS_ASSERT(context_.getTraversalScope() ==
         std::vector<Decl*>{context_.getTranslationUnitDecl()});
 
-    auto make_posix_absolute = [&](std::string_view const old_path)
-    {
-        llvm::SmallString<128> new_path(old_path);
-        if(! llvm::sys::path::is_absolute(new_path))
-        {
-            // KRYSTIAN FIXME: use FileManager::makeAbsolutePath?
-            auto const& cwd = source_.getFileManager().
-                getFileSystemOpts().WorkingDir;
-            // we can't normalize a relative path
-            // without a base directory
-            // MRDOCS_ASSERT(! cwd.empty());
-            llvm::sys::fs::make_absolute(cwd, new_path);
-        }
-        // remove ./ and ../
-        llvm::sys::path::remove_dots(new_path, true, llvm::sys::path::Style::posix);
-        // convert to posix style
-        llvm::sys::path::native(new_path, llvm::sys::path::Style::posix);
-        return std::string(new_path);
-    };
-
+    // Store the search directories
+    auto const& cwd = source_.getFileManager().getFileSystemOpts().WorkingDir;
     Preprocessor& PP = sema_.getPreprocessor();
     HeaderSearch& HS = PP.getHeaderSearchInfo();
-    std::vector<std::pair<std::string, FileKind>> search_dirs;
-    search_dirs.reserve(HS.search_dir_size());
+    search_dirs_.reserve(HS.search_dir_size());
     // first, convert all the include search directories into POSIX style
     for (const DirectoryLookup& DL : HS.search_dir_range())
     {
         OptionalDirectoryEntryRef DR = DL.getDirRef();
         // only consider normal directories
-        if(! DL.isNormalDir() || ! DR)
+        if (!DL.isNormalDir() || !DR)
+        {
             continue;
+        }
         // store the normalized path
-        search_dirs.emplace_back(
-            make_posix_absolute(DR->getName()),
-            DL.isSystemHeaderDirectory() ?
-                FileKind::System : FileKind::Other);
+        auto normPath = files::makePosixStyle(files::makeAbsolute(DR->getName(), cwd));
+        search_dirs_.push_back(std::move(normPath));
     }
 
-    std::string const sourceRoot = make_posix_absolute(config_->sourceRoot);
-    auto cacheFileInfo = [&](const FileEntry* entry)
-    {
-        // "try" implies this may fail, so fallback to getName
-        // if an empty string is returned
-        std::string_view file_path =
-            entry->tryGetRealPathName();
-        files_.emplace(
-            entry,
-            FileInfo::build(
-                search_dirs,
-                make_posix_absolute(file_path),
-                sourceRoot));
+    // Store preprocessed information about all file entries
+    std::string const sourceRoot = files::makePosixStyle(files::makeAbsolute(config_->sourceRoot, cwd));
+    auto cacheFileInfo = [&](FileEntry const* entry) {
+        std::string_view const file_path = entry->tryGetRealPathName();
+        MRDOCS_CHECK_OR(!file_path.empty());
+        auto const normPath = files::makePosixStyle(
+            files::makeAbsolute(file_path, cwd));
+        auto FI = FileInfo::build(search_dirs_, normPath, sourceRoot);
+        files_.emplace(entry, FI);
     };
-
-    // build the file info for the main file
-    cacheFileInfo(source_.getFileEntryForID(source_.getMainFileID()));
-
-    // build the file info for all included files
+    FileEntry const* mainFileEntry = source_.getFileEntryForID(source_.getMainFileID());
+    cacheFileInfo(mainFileEntry);
     for(const FileEntry* file : PP.getIncludedFiles())
     {
         cacheFileInfo(file);
@@ -829,9 +787,7 @@ populate(
         {
             return;
         }
-        I.DefLoc.emplace(file->full_path,
-            file->short_path, line, file->kind,
-            documented);
+        I.DefLoc.emplace(file->full_path, file->short_path, line, documented);
     }
     else
     {
@@ -846,9 +802,7 @@ populate(
         {
             return;
         }
-        I.Loc.emplace_back(file->full_path,
-            file->short_path, line, file->kind,
-            documented);
+        I.Loc.emplace_back(file->full_path, file->short_path, line, documented);
     }
 }
 
