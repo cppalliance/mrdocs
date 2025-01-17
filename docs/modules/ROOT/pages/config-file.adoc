@@ -49,154 +49,139 @@ These definitions are included in all targets of the compilation database.
 
 == Filters
 
-=== Symbol Filters
-
 Not all symbols in a project may be relevant to the documentation.
-MrDocs provides a way to filter out symbols based on their names.
-
-[,yaml]
-----
-filters:
-  symbols: # <.>
-    exclude: # <.>
-    include: # <.>
-----
-
-<.> Optional `symbols` key
-<.> Optional `exclude` key
-<.> Optional `include` key
-
-Symbol filter patterns are specified using (optionally) qualified names, and may contain wildcards:
-
-[,yaml]
-----
-filters:
-  symbols:
-    exclude:
-      - 'A::B'
-      - 'A::f*'
-----
-
-If a symbol matches a pattern in the exclude list, that symbol and its members will not be extracted:
-
-[,yaml]
-----
-filters:
-  symbols:
-    exclude:
-      - 'A'
-----
-
-[,cpp]
-----
-// ok, does not match any excluded pattern
-void f0();
-
-namespace A // matches the pattern 'A', will not be extracted
-{
-    // enclosing namespace matches an excluded pattern:
-    // the symbol will not be extracted
-    void f1();
-}
-----
-
-The `filters.symbols.include` key can be used to override the exclude list for specific symbols.
-A symbol which matches an included pattern and an excluded pattern will be extracted.
-
-This permits fine-grained control of extraction for individual members of a class or namespace:
-
-[,yaml]
-----
-filters:
-  symbols:
-    exclude:
-      - 'A'
-    include:
-      - 'A::g*'
-----
-
-[,cpp]
-----
-namespace A
-{
-    // enclosing namespace matches an excluded pattern, will not be extracted
-    void f0();
-
-    // ok, matches the pattern 'A::g*' which overrides the exclude list
-    void g0();
-}
-----
-
-In order for a filter pattern to match a symbol, it must consist of simple identifiers that match the name as written in its declaration: namespace aliases, typedef-names, and `decltype` specifiers naming the symbol cannot be used.
-
-NOTE: Specifying include patterns is only useful when the pattern would match a subset of symbols matched by an exclude pattern.
-An include pattern without a subsuming exclude pattern will be ignored.
+MrDocs provides a way to filter out symbols based on their location and names.
 
 === File Filters
 
-Symbols can also be filtered based on the files they are declared in.
-This can be useful for excluding files that exclusively contain implementation details or test code.
+Symbols can also be filtered based on the files where they are declared. This can be useful for excluding files that exclusively contain implementation details or test code.
+
+The `input` option is a list of directories to include and a list of file patterns to include. Only symbols in files from these directories will be extracted.
 
 [,yaml]
 ----
 input:
-  include:
-      - ../include  # <.>
-  file-patterns:
-      - *.hpp       # <.>
+  - ../include
 ----
 
-<.> A list of directories to include.
-Only symbols defined in these files will be extracted.
-<.> A list of file patterns to include.
-Only symbols defined in files matching these patterns will be extracted.
+The default value for `input` is `"<source-root>/."`, so only symbols defined in your project source directory will be extracted.
 
-=== Private Symbols
-
-The `implementation-detail` and `see-below` options can be used to designate namespaces as implementation detail namespaces.
+The `file-patterns` options allows you to specify a list of glob file patterns to include. Only symbols in files whose filename match these patterns will be extracted.
 
 [,yaml]
 ----
-implementation-detail: 'impl'
-see-below: 'see_below'
+file-patterns:
+  - '*.hpp'
+  - '*.h'
 ----
 
-If a namespace is designated as an implementation detail namespace, all symbols within that namespace will be marked as implementation details in the documentation.
+The default value for `file-patterns` include a variety of common C++ header file extensions.
+
+The `exclude` option is a list of subdirectories in `input` we want to exclude. Meanwhile, `exclude-patterns` can use glob patterns to exclude files from the extraction process.
+
+[,yaml]
+----
+input:
+  - ../include
+exclude:
+  - ../include/detail
+exclude-patterns:
+  - ../include/*/detail/**
+  - ../include/*/impl/**
+----
+
+The glob patterns support the following wildcards:
+
+* `*` matches all characters except delimiters `/`
+* `**` matches all characters
+* `?` matches any single character.
+* `[<chars>]` matches one character in the bracket.
+* `[<char>-<char>]` matches one character in the bracket range.
+* `[^<chars>]` or `[!<chars>]` matches one character not in the bracket.
+* `{<glob>,...}` matches one of the globs in the list.
+* `\` escapes the next character so it is treated as a literal.
+
+=== Symbol Filters
+
+Symbols can also be filtered based on their qualified names. You can use glob patterns to specify which symbols to include or exclude.
+
+[,yaml]
+----
+include-symbols:
+  - 'my_library::public_namespace::*'
+----
+
+By default, all symbols are included by `include-symbols`. The syntax for symbol glob patterns is the same as for file patterns, with the exception that the delimiter `::` is used instead of `/`. So you can match all symbols in a namespace and its subnamespaces with `my_library::public_namespace::**`.
+
+The option `exclude-symbols` can be used to exclude symbols from the extraction process.
+
+[,yaml]
+----
+include-symbols:
+  - 'my_library::**'
+exclude-symbols:
+  - 'my_library::private_namespace::**'
+----
 
 [,cpp]
 ----
-namespace impl
+// excluded by `include-symbols`
+void f0();
+
+// included because it matches the prefix of 'my_library::**' in `include-symbols`
+namespace my_library
 {
-    class A {};
+    // included because it matches the pattern 'my_library::**' in `include-symbols`
+    void f1();
+
+    namespace private_namespace
+    {
+        // excluded by the pattern 'my_library::private_namespace::**' in `exclude-symbols`
+        void f2();
+    }
 }
-
-/// @brief A foo function
-A foo();
 ----
 
-The `impl` namespace is designated as an implementation detail namespace, so all symbols within it will be marked as implementation details in the documentation.
-This means the symbol `A` would not be documented and the function `foo` could be documented as follows:
+=== Private Symbols
+
+The `implementation-detail` and `see-below` options can be used to designate symbols as implementation details or "see below" in the documentation.
+
+[,yaml]
+----
+include-symbols:
+  - 'my_library::**'
+implementation-detail:
+  - 'my_library::detail::**'
+see-below:
+  - 'my_library::see_below::**'
+----
+
+Symbols are only checked against the `implementation-detail` and `see-below` options if they match the `include-symbols` option.
 
 [,cpp]
 ----
-/* implementation detail */ foo();
-----
-
-On the other hand, if a namespace is designated as a `see_below` namespace, all symbols within that namespace will be marked as "see below" in the documentation.
-
-[,cpp]
-----
-namespace see_below
+namespace my_library
 {
-    class B {};
+    namespace detail
+    {
+        // There's no documentation page for A
+        // Any reference to `A` is rendered as `/* implementation detail */`
+        class A {};
+    }
+
+    namespace see_below
+    {
+        // The documentation page for B is marked as "see below" and its members are not extracted.
+        class B {
+            // There's no documentation page for iterator
+            class iterator;
+        };
+    }
+
+    // This function is documented, but the return type is rendered as `/* implementation detail */`
+    detail::A
+    foo();
 }
-----
-
-In the documentation, the symbol `B` would be marked as "see-below" and could be documented as:
-
-[,cpp]
-----
-class B { /* see below */ };
 ----
 
 [#config-options-reference]
