@@ -4,8 +4,8 @@
 <namespace id="//////////////////////////8=">
   <namespace name="N" id="rjlMNXAaWNMkQYMTJzRA1DR0DiE=">
     <struct name="S" id="BOgJOhZPKKMy9QBLYD1JPMD1Doc=">
-      <file path="out-of-line-record-def.cpp" line="6" class="def"/>
-      <file path="out-of-line-record-def.cpp" line="3"/>
+      <file short-path="out-of-line-record-def.cpp" source-path="out-of-line-record-def.cpp" line="6" class="def"/>
+      <file short-path="out-of-line-record-def.cpp" source-path="out-of-line-record-def.cpp" line="3"/>
     </struct>
   </namespace>
 </namespace>

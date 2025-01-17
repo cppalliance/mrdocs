@@ -3,9 +3,9 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
-    <file path="overloaded-op-2.cpp" line="1" class="def"/>
+    <file short-path="overloaded-op-2.cpp" source-path="overloaded-op-2.cpp" line="1" class="def"/>
     <function name="operator+" id="LhEvBUAmiZm97R+EE8Wp8+CtOwU=">
-      <file path="overloaded-op-2.cpp" line="3"/>
+      <file short-path="overloaded-op-2.cpp" source-path="overloaded-op-2.cpp" line="3"/>
       <attr id="operator" name="plus" value="5"/>
       <return>
         <type id="CgGNdHpW5mG/i5741WPYQDw28OQ=" name="T"/>

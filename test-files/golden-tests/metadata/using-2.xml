@@ -4,18 +4,18 @@
 <namespace id="//////////////////////////8=">
   <namespace name="LongName" id="IjtkITsyqdEWPMXZF3lD/2/XH0s=">
     <struct name="S1" id="ZJXGFTX+0w4vyLiZBRJM4VP5/5Y=">
-      <file path="using-2.cpp" line="2" class="def"/>
+      <file short-path="using-2.cpp" source-path="using-2.cpp" line="2" class="def"/>
     </struct>
     <struct name="S2" id="AsUl1L5PkCm5NvYpI3F7g6rfMlw=">
-      <file path="using-2.cpp" line="3" class="def"/>
+      <file short-path="using-2.cpp" source-path="using-2.cpp" line="3" class="def"/>
     </struct>
   </namespace>
   <using id="G92XaEqIwVs05hrwdNXMhpeFqkU=" class="using" qualifier="LongName">
-    <file path="using-2.cpp" line="6"/>
+    <file short-path="using-2.cpp" source-path="using-2.cpp" line="6"/>
     <named id="ZJXGFTX+0w4vyLiZBRJM4VP5/5Y="/>
   </using>
   <using id="0Ljxy8EQ03btL9wIVt4SqbP1U2M=" class="using" qualifier="LongName">
-    <file path="using-2.cpp" line="7"/>
+    <file short-path="using-2.cpp" source-path="using-2.cpp" line="7"/>
     <named id="AsUl1L5PkCm5NvYpI3F7g6rfMlw="/>
   </using>
 </namespace>

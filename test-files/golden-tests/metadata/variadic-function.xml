@@ -3,24 +3,24 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <namespace-alias name="T" id="PvNOREc+JWxdkVgvSz+jC45IbGQ=">
-    <file path="variadic-function.cpp" line="1"/>
+    <file short-path="variadic-function.cpp" source-path="variadic-function.cpp" line="1"/>
     <type class="function" is-variadic="1">
       <return-type name="void"/>
     </type>
   </namespace-alias>
   <namespace-alias name="U" id="h6hupdyuT6SfsCGFl6UUFGtvrcc=">
-    <file path="variadic-function.cpp" line="3"/>
+    <file short-path="variadic-function.cpp" source-path="variadic-function.cpp" line="3"/>
     <type class="function" is-variadic="1">
       <return-type name="void"/>
       <param-type name="int"/>
     </type>
   </namespace-alias>
   <function name="f" id="CMaAySU4txrIlGl6edqWDSabBRA=">
-    <file path="variadic-function.cpp" line="5"/>
+    <file short-path="variadic-function.cpp" source-path="variadic-function.cpp" line="5"/>
     <attr id="is-variadic"/>
   </function>
   <function name="g" id="lldWvRg9y+NwRnDpK3x2NF9+e08=">
-    <file path="variadic-function.cpp" line="7"/>
+    <file short-path="variadic-function.cpp" source-path="variadic-function.cpp" line="7"/>
     <attr id="is-variadic"/>
     <param>
       <type name="int"/>
@@ -30,7 +30,7 @@
     <tparam name="A" class="type" default="void(...)"/>
     <tparam name="B" class="type" default="void(int, ...)"/>
     <struct name="C" id="8nYw0KA23eAszqSOs0wOXAD1DYQ=">
-      <file path="variadic-function.cpp" line="9"/>
+      <file short-path="variadic-function.cpp" source-path="variadic-function.cpp" line="9"/>
     </struct>
   </template>
 </namespace>

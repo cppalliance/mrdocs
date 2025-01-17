@@ -5,36 +5,36 @@
   <template>
     <tparam name="T" class="type"/>
     <struct name="S0" id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=">
-      <file path="decay-to-primary.cpp" line="1" class="def"/>
+      <file short-path="decay-to-primary.cpp" source-path="decay-to-primary.cpp" line="1" class="def"/>
       <namespace-alias name="M0" id="aBQMz/OqX2QEHy4Cqfjgby4lSi4=">
-        <file path="decay-to-primary.cpp" line="4"/>
+        <file short-path="decay-to-primary.cpp" source-path="decay-to-primary.cpp" line="4"/>
         <type name="T"/>
       </namespace-alias>
       <template>
         <tparam name="U" class="type"/>
         <namespace-alias name="M1" id="14SKPuw/wwAUmFZKoonB8Uu8gaY=">
-          <file path="decay-to-primary.cpp" line="6"/>
+          <file short-path="decay-to-primary.cpp" source-path="decay-to-primary.cpp" line="6"/>
           <type id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=" name="S0&lt;U&gt;"/>
         </namespace-alias>
       </template>
     </struct>
   </template>
   <namespace-alias name="A0" id="ApI0xrWYyA88AQ9a3mi+ochJbJc=">
-    <file path="decay-to-primary.cpp" line="10"/>
+    <file short-path="decay-to-primary.cpp" source-path="decay-to-primary.cpp" line="10"/>
     <type id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=" name="S0&lt;void&gt;"/>
   </namespace-alias>
   <template class="explicit" id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=">
     <targ class="type" type="short"/>
     <struct name="S0" id="nM49pHyBLj9V6pphxxYAxi4tXXc=">
-      <file path="decay-to-primary.cpp" line="2" class="def"/>
+      <file short-path="decay-to-primary.cpp" source-path="decay-to-primary.cpp" line="2" class="def"/>
       <namespace-alias name="M0" id="rd0VksPlzUP2z9uBlAh7QCSvXlc=">
-        <file path="decay-to-primary.cpp" line="4"/>
+        <file short-path="decay-to-primary.cpp" source-path="decay-to-primary.cpp" line="4"/>
         <type name="short"/>
       </namespace-alias>
       <template>
         <tparam name="U" class="type"/>
         <namespace-alias name="M1" id="55w2+SxFbPDR4zxtZen23YT6oyY=">
-          <file path="decay-to-primary.cpp" line="6"/>
+          <file short-path="decay-to-primary.cpp" source-path="decay-to-primary.cpp" line="6"/>
           <type id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=" name="S0&lt;U&gt;"/>
         </namespace-alias>
       </template>
@@ -43,22 +43,22 @@
   <template class="explicit" id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=">
     <targ class="type" type="void"/>
     <struct name="S0" id="BWgkCsMw6w/Tkzj0tkQJ8/AWTUo=">
-      <file path="decay-to-primary.cpp" line="2" class="def"/>
+      <file short-path="decay-to-primary.cpp" source-path="decay-to-primary.cpp" line="2" class="def"/>
       <namespace-alias name="M0" id="xwZQjxyx34OE1PjRX/paK2bdWb0=">
-        <file path="decay-to-primary.cpp" line="4"/>
+        <file short-path="decay-to-primary.cpp" source-path="decay-to-primary.cpp" line="4"/>
         <type name="void"/>
       </namespace-alias>
       <template>
         <tparam name="U" class="type"/>
         <namespace-alias name="M1" id="59lOx3WiBtHW8lORAEbx2R0bEwM=">
-          <file path="decay-to-primary.cpp" line="6"/>
+          <file short-path="decay-to-primary.cpp" source-path="decay-to-primary.cpp" line="6"/>
           <type id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=" name="S0&lt;U&gt;"/>
         </namespace-alias>
       </template>
     </struct>
   </template>
   <namespace-alias name="A1" id="zbm2FwMgaOYZ1PJI3zAcR9gD1DE=">
-    <file path="decay-to-primary.cpp" line="11"/>
+    <file short-path="decay-to-primary.cpp" source-path="decay-to-primary.cpp" line="11"/>
     <type id="rd0VksPlzUP2z9uBlAh7QCSvXlc=" name="A0::M1&lt;short&gt;::M0"/>
   </namespace-alias>
 </namespace>

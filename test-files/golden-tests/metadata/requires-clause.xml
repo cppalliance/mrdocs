@@ -5,39 +5,39 @@
   <template>
     <tparam name="T" class="type"/>
     <function name="f" requires="(sizeof(U) == 2)" id="PmhXjCXUJYVnj/a7NhfjjSesyp0=">
-      <file path="requires-clause.cpp" line="1"/>
-      <file path="requires-clause.cpp" line="4"/>
-      <file path="requires-clause.cpp" line="7"/>
+      <file short-path="requires-clause.cpp" source-path="requires-clause.cpp" line="1"/>
+      <file short-path="requires-clause.cpp" source-path="requires-clause.cpp" line="4"/>
+      <file short-path="requires-clause.cpp" source-path="requires-clause.cpp" line="7"/>
     </function>
   </template>
   <template requires="(sizeof(T) == 4)">
     <tparam name="T" class="type"/>
     <function name="g" id="DpFFGgi+BFqL0vqMeTo07C/C52U=">
-      <file path="requires-clause.cpp" line="10"/>
+      <file short-path="requires-clause.cpp" source-path="requires-clause.cpp" line="10"/>
     </function>
   </template>
   <template requires="(sizeof(T) == 2)">
     <tparam name="T" class="type"/>
     <function name="g" id="RaeBbQ+JdyeIhQj1YFV9px9qQX4=">
-      <file path="requires-clause.cpp" line="13"/>
+      <file short-path="requires-clause.cpp" source-path="requires-clause.cpp" line="13"/>
     </function>
   </template>
   <template requires="(sizeof(U) == 2)">
     <tparam name="U" class="type"/>
     <function name="g" id="MBfRSzQTxxU/MHbtcQQLCODsyvE=">
-      <file path="requires-clause.cpp" line="16"/>
+      <file short-path="requires-clause.cpp" source-path="requires-clause.cpp" line="16"/>
     </function>
   </template>
   <template requires="(sizeof(T) == 2)">
     <tparam name="T" class="type"/>
     <struct name="A" id="z7MI+IUsfEDLtbTA1tQWSumGLBs=">
-      <file path="requires-clause.cpp" line="19"/>
+      <file short-path="requires-clause.cpp" source-path="requires-clause.cpp" line="19"/>
     </struct>
   </template>
   <template requires="(sizeof(U) == 2)">
     <tparam name="U" class="type"/>
     <struct name="A" id="hE7z0ScEG2siyLDy5uy7WHaROj0=">
-      <file path="requires-clause.cpp" line="22"/>
+      <file short-path="requires-clause.cpp" source-path="requires-clause.cpp" line="22"/>
     </struct>
   </template>
 </namespace>

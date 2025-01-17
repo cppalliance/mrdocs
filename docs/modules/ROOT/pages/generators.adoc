@@ -862,25 +862,25 @@ The location object has the following properties:
 |===
 |Property |Type| Description
 
-| `path`
+| `fullPath`
 | `string`
-| The path of the source file.
+| The full path of the source file.
 
-| `file`
+| `shortPath`
 | `string`
-| The filename of the source file.
+| The path of the source file relative to the search directories.
+
+| `sourcePath`
+| `string`
+| The path of the source file relative to the `source-root`.
 
 | `line`
 | `integer`
-| The line number of the symbol.
-
-| `kind`
-| `string`
-| The kind of file (e.g., `source`, `system`, `other`).
+| The line number of the symbol at this location.
 
 | `documented`
 | `bool`
-| Whether the symbol is documented.
+| Whether the symbol is documented at this location.
 |===
 
 [#tparam-fields]

@@ -5,7 +5,7 @@
   <template>
     <tparam name="T" class="type"/>
     <function name="sqrt" id="ulFDUE1svTCX8fV/h8EIp4NNbWs=">
-      <file path="sqrt.cpp" line="15" class="def"/>
+      <file short-path="sqrt.cpp" source-path="sqrt.cpp" line="15" class="def"/>
       <return>
         <type name="T"/>
       </return>

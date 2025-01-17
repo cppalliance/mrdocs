@@ -5,45 +5,45 @@
   <template>
     <tparam name="x" class="non-type" type="int"/>
     <function name="f" id="eqMdBnxdb22zO3kokXFKlz9ktqg=">
-      <file path="function-tparm-decay.cpp" line="3"/>
-      <file path="function-tparm-decay.cpp" line="5"/>
-      <file path="function-tparm-decay.cpp" line="7"/>
-      <file path="function-tparm-decay.cpp" line="9"/>
+      <file short-path="function-tparm-decay.cpp" source-path="function-tparm-decay.cpp" line="3"/>
+      <file short-path="function-tparm-decay.cpp" source-path="function-tparm-decay.cpp" line="5"/>
+      <file short-path="function-tparm-decay.cpp" source-path="function-tparm-decay.cpp" line="7"/>
+      <file short-path="function-tparm-decay.cpp" source-path="function-tparm-decay.cpp" line="9"/>
     </function>
   </template>
   <template>
     <tparam name="x" class="non-type" type="int[4]"/>
     <function name="g" id="WsEgNgLbqe3a0eM5Bqsuf58XoH0=">
-      <file path="function-tparm-decay.cpp" line="12"/>
-      <file path="function-tparm-decay.cpp" line="14"/>
-      <file path="function-tparm-decay.cpp" line="16"/>
-      <file path="function-tparm-decay.cpp" line="18"/>
+      <file short-path="function-tparm-decay.cpp" source-path="function-tparm-decay.cpp" line="12"/>
+      <file short-path="function-tparm-decay.cpp" source-path="function-tparm-decay.cpp" line="14"/>
+      <file short-path="function-tparm-decay.cpp" source-path="function-tparm-decay.cpp" line="16"/>
+      <file short-path="function-tparm-decay.cpp" source-path="function-tparm-decay.cpp" line="18"/>
     </function>
   </template>
   <template>
     <tparam name="x" class="non-type" type="int(*)(const bool)"/>
     <function name="h" id="TjNHTu8/auH8QPVcgjW7FUo2dFM=">
-      <file path="function-tparm-decay.cpp" line="21"/>
-      <file path="function-tparm-decay.cpp" line="23"/>
-      <file path="function-tparm-decay.cpp" line="25"/>
-      <file path="function-tparm-decay.cpp" line="27"/>
+      <file short-path="function-tparm-decay.cpp" source-path="function-tparm-decay.cpp" line="21"/>
+      <file short-path="function-tparm-decay.cpp" source-path="function-tparm-decay.cpp" line="23"/>
+      <file short-path="function-tparm-decay.cpp" source-path="function-tparm-decay.cpp" line="25"/>
+      <file short-path="function-tparm-decay.cpp" source-path="function-tparm-decay.cpp" line="27"/>
     </function>
   </template>
   <namespace-alias name="T" id="PvNOREc+JWxdkVgvSz+jC45IbGQ=">
-    <file path="function-tparm-decay.cpp" line="30"/>
+    <file short-path="function-tparm-decay.cpp" source-path="function-tparm-decay.cpp" line="30"/>
     <type name="int"/>
   </namespace-alias>
   <namespace-alias name="U" id="h6hupdyuT6SfsCGFl6UUFGtvrcc=">
-    <file path="function-tparm-decay.cpp" line="31"/>
+    <file short-path="function-tparm-decay.cpp" source-path="function-tparm-decay.cpp" line="31"/>
     <type name="int" cv-qualifiers="const"/>
   </namespace-alias>
   <template>
     <tparam class="non-type" type="int"/>
     <function name="i" id="2woLp3PdyOT/I0DFMkY8OAli5YM=">
-      <file path="function-tparm-decay.cpp" line="33"/>
-      <file path="function-tparm-decay.cpp" line="35"/>
-      <file path="function-tparm-decay.cpp" line="37"/>
-      <file path="function-tparm-decay.cpp" line="39"/>
+      <file short-path="function-tparm-decay.cpp" source-path="function-tparm-decay.cpp" line="33"/>
+      <file short-path="function-tparm-decay.cpp" source-path="function-tparm-decay.cpp" line="35"/>
+      <file short-path="function-tparm-decay.cpp" source-path="function-tparm-decay.cpp" line="37"/>
+      <file short-path="function-tparm-decay.cpp" source-path="function-tparm-decay.cpp" line="39"/>
     </function>
   </template>
 </namespace>

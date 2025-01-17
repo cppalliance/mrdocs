@@ -3,9 +3,9 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
-    <file path="friend-3.cpp" line="4"/>
-    <file path="friend-3.cpp" line="9"/>
-    <file path="friend-3.cpp" line="12"/>
+    <file short-path="friend-3.cpp" source-path="friend-3.cpp" line="4"/>
+    <file short-path="friend-3.cpp" source-path="friend-3.cpp" line="9"/>
+    <file short-path="friend-3.cpp" source-path="friend-3.cpp" line="12"/>
     <doc>
       <para>
         <text>T::f</text>
@@ -13,9 +13,9 @@
     </doc>
   </function>
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
-    <file path="friend-3.cpp" line="1" class="def"/>
+    <file short-path="friend-3.cpp" source-path="friend-3.cpp" line="1" class="def"/>
     <friend id="MKqBnSfb2qzerVryOyz4f9W1BWM=">
-      <file path="friend-3.cpp" line="4"/>
+      <file short-path="friend-3.cpp" source-path="friend-3.cpp" line="4"/>
       <doc>
         <para>
           <text>T::f</text>
@@ -25,9 +25,9 @@
     </friend>
   </struct>
   <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
-    <file path="friend-3.cpp" line="7" class="def"/>
+    <file short-path="friend-3.cpp" source-path="friend-3.cpp" line="7" class="def"/>
     <friend id="Yz4fKLBfAghLfXF5KYrKPRlwXMA=">
-      <file path="friend-3.cpp" line="9"/>
+      <file short-path="friend-3.cpp" source-path="friend-3.cpp" line="9"/>
       <befriended id="s6nsa+zVhpzzrN+yUVPP5rvdXqs="/>
     </friend>
   </struct>

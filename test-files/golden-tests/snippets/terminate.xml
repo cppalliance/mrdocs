@@ -3,7 +3,7 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <function name="terminate" exception-spec="noexcept" id="HJGSj0okQR/JSIlbm5chSNvd9c8=">
-    <file path="terminate.cpp" line="8"/>
+    <file short-path="terminate.cpp" source-path="terminate.cpp" line="8"/>
     <attr id="is-no-return"/>
     <doc>
       <para>

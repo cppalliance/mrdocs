@@ -3,11 +3,11 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <struct name="Optional" id="/TAtWMuvF+kz/B0ChmDlGQtnkaA=">
-    <file path="explicit-object-parameter.cpp" line="1" class="def"/>
+    <file short-path="explicit-object-parameter.cpp" source-path="explicit-object-parameter.cpp" line="1" class="def"/>
     <template>
       <tparam name="Self" class="type"/>
       <function name="value" id="XLLL4h9bZlRyA4AQMlfVPCuwMoU=">
-        <file path="explicit-object-parameter.cpp" line="3"/>
+        <file short-path="explicit-object-parameter.cpp" source-path="explicit-object-parameter.cpp" line="3"/>
         <attr id="constexpr-kind" name="constexpr" value="1"/>
         <attr id="is-explicit-object-member-function"/>
         <return>
@@ -26,7 +26,7 @@
     <template>
       <tparam name="Self" class="type"/>
       <function name="value" id="aOpxAmSvyM7g6X3lLAJG5i3CTZA=">
-        <file path="explicit-object-parameter.cpp" line="6"/>
+        <file short-path="explicit-object-parameter.cpp" source-path="explicit-object-parameter.cpp" line="6"/>
         <attr id="constexpr-kind" name="constexpr" value="1"/>
         <attr id="is-explicit-object-member-function"/>
         <return>

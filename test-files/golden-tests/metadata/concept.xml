@@ -5,17 +5,17 @@
   <template>
     <tparam name="T" class="type"/>
     <concept name="C" id="Bzh2Bz1ZBW0d6sKvxtXunIUU31k=" constraint="sizeof(T) == sizeof(int)">
-      <file path="concept.cpp" line="1"/>
+      <file short-path="concept.cpp" source-path="concept.cpp" line="1"/>
     </concept>
   </template>
   <template>
     <tparam name="T" class="type"/>
     <function name="f" id="PmhXjCXUJYVnj/a7NhfjjSesyp0=">
-      <file path="concept.cpp" line="4"/>
+      <file short-path="concept.cpp" source-path="concept.cpp" line="4"/>
     </function>
   </template>
   <variable name="x" id="ujOvtFFNPf6akih2fga4S9j6Y9M=">
-    <file path="concept.cpp" line="7" class="def"/>
+    <file short-path="concept.cpp" source-path="concept.cpp" line="7" class="def"/>
     <type class="auto" keyword="auto" constraint="C">
     </type>
   </variable>

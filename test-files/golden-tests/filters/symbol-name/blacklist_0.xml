@@ -4,8 +4,8 @@
 <namespace id="//////////////////////////8=">
   <namespace name="N0" id="YAQKEfxRmUjg43kkhT1n65uziVY=">
     <function name="f0" id="YuxL8gi2heeMoessDsonV4JrAE8=">
-      <file path="blacklist_0.cpp" line="3"/>
-      <file path="blacklist_0.cpp" line="16"/>
+      <file short-path="blacklist_0.cpp" source-path="blacklist_0.cpp" line="3"/>
+      <file short-path="blacklist_0.cpp" source-path="blacklist_0.cpp" line="16"/>
     </function>
   </namespace>
   <namespace name="N3" id="N8VuRKoz/jzHCbelCVCZNKALQAQ=">
@@ -13,12 +13,12 @@
   <namespace name="N4" id="5KW7wj+cGonGOIACqamGb1QGyoA=">
     <namespace name="N5" id="9FbH1+tQ3QOHCAntoCpAF02+8Kk=">
       <function name="f1" id="sK1hKPIAxfUIYUOIhOe9SnoXfg0=">
-        <file path="blacklist_0.cpp" line="43"/>
+        <file short-path="blacklist_0.cpp" source-path="blacklist_0.cpp" line="43"/>
       </function>
     </namespace>
     <namespace name="N6" id="MNQItF4HxM3PrWN0lDhIV9SWyJ0=">
       <function name="f1" id="A2qNEj3jle5vHK6wdVGm8fPrpmA=">
-        <file path="blacklist_0.cpp" line="49"/>
+        <file short-path="blacklist_0.cpp" source-path="blacklist_0.cpp" line="49"/>
       </function>
     </namespace>
   </namespace>
@@ -27,7 +27,7 @@
     </namespace>
     <namespace name="N9" id="u4ylO6On5J13jZbcYjnClcxqHJ4=">
       <function name="g0" id="n2jChqyQNCb7NN3FjohUkKbB2M8=">
-        <file path="blacklist_0.cpp" line="64"/>
+        <file short-path="blacklist_0.cpp" source-path="blacklist_0.cpp" line="64"/>
       </function>
     </namespace>
   </namespace>

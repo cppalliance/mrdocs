@@ -5,11 +5,11 @@
   <template>
     <tparam class="non-type" type="int"/>
     <struct name="X" id="7wllQWhGGsbbeoZVa3gh4d7bcq8=">
-      <file path="explicit-deduct-guide.cpp" line="3" class="def"/>
+      <file short-path="explicit-deduct-guide.cpp" source-path="explicit-deduct-guide.cpp" line="3" class="def"/>
     </struct>
   </template>
   <guide name="X" explicit-spec="explicit" id="2IF4pOfGcA57GQDlE3PJgs7yeUs=">
-    <file path="explicit-deduct-guide.cpp" line="6"/>
+    <file short-path="explicit-deduct-guide.cpp" source-path="explicit-deduct-guide.cpp" line="6"/>
     <deduced>
       <type id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X&lt;0&gt;"/>
     </deduced>
@@ -18,7 +18,7 @@
     </param>
   </guide>
   <guide name="X" explicit-spec="explicit(true)" id="AtQyLakD3CjcM24GabAbHMNgVU4=">
-    <file path="explicit-deduct-guide.cpp" line="8"/>
+    <file short-path="explicit-deduct-guide.cpp" source-path="explicit-deduct-guide.cpp" line="8"/>
     <deduced>
       <type id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X&lt;0&gt;"/>
     </deduced>
@@ -27,7 +27,7 @@
     </param>
   </guide>
   <guide name="X" explicit-spec="explicit(false)" id="tkYkUU6H8cbFpCU7yBuvBLkT6dg=">
-    <file path="explicit-deduct-guide.cpp" line="10"/>
+    <file short-path="explicit-deduct-guide.cpp" source-path="explicit-deduct-guide.cpp" line="10"/>
     <deduced>
       <type id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X&lt;0&gt;"/>
     </deduced>
@@ -38,7 +38,7 @@
   <template>
     <tparam name="B" class="non-type" type="bool" default="true"/>
     <guide name="X" explicit-spec="explicit(B)" id="YS/v8XQ/9ShQ2spNAh5EY33PN7s=">
-      <file path="explicit-deduct-guide.cpp" line="12"/>
+      <file short-path="explicit-deduct-guide.cpp" source-path="explicit-deduct-guide.cpp" line="12"/>
       <deduced>
         <type id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X&lt;0&gt;"/>
       </deduced>

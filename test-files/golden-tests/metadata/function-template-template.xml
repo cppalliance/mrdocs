@@ -7,7 +7,7 @@
       <tparam class="type"/>
     </tparam>
     <function name="f" id="bE2iHZMP9X3RlkJcBwZ03NU57Pg=">
-      <file path="function-template-template.cpp" line="1" class="def"/>
+      <file short-path="function-template-template.cpp" source-path="function-template-template.cpp" line="1" class="def"/>
       <attr id="constexpr-kind" name="constexpr" value="1"/>
       <param name="param">
         <type name="ListType&lt;int&gt;"/>

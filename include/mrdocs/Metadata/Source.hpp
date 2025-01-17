@@ -51,11 +51,15 @@ struct MRDOCS_DECL
 {
     /** The full file path
     */
-    std::string Path;
+    std::string FullPath;
 
-    /** Name of the file
+    /** The file path relative to one of the search directories
     */
-    std::string Filename;
+    std::string ShortPath;
+
+    /** The file path relative to the source-root directory
+     */
+    std::string SourcePath;
 
     /** Line number within the file
     */
@@ -68,12 +72,14 @@ struct MRDOCS_DECL
     //--------------------------------------------
 
     Location(
-        std::string_view const filepath = {},
-        std::string_view const filename = {},
+        std::string_view const full_path = {},
+        std::string_view const short_path = {},
+        std::string_view const source_path = {},
         unsigned const line = 0,
         bool const documented = false)
-        : Path(filepath)
-        , Filename(filename)
+        : FullPath(full_path)
+        , ShortPath(short_path)
+        , SourcePath(source_path)
         , LineNumber(line)
         , Documented(documented)
     {
@@ -92,7 +98,7 @@ struct LocationEmptyPredicate
     constexpr bool operator()(
         Location const& loc) const noexcept
     {
-        return loc.Filename.empty();
+        return loc.ShortPath.empty();
     }
 };
 

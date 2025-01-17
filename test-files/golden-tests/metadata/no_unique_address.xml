@@ -3,16 +3,16 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <struct name="Empty" id="iczIHP1J59EwYw3xxL3w2C3Q43Q=">
-    <file path="no_unique_address.cpp" line="3" class="def"/>
+    <file short-path="no_unique_address.cpp" source-path="no_unique_address.cpp" line="3" class="def"/>
   </struct>
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
-    <file path="no_unique_address.cpp" line="5" class="def"/>
+    <file short-path="no_unique_address.cpp" source-path="no_unique_address.cpp" line="5" class="def"/>
     <field name="i" id="91xV6rCFObgi6i1/U2uZ/GnD3WM=">
-      <file path="no_unique_address.cpp" line="7"/>
+      <file short-path="no_unique_address.cpp" source-path="no_unique_address.cpp" line="7"/>
       <type name="int"/>
     </field>
     <field name="e" id="h2j8f921HD+Fyaokcs4ndGM/yNk=" default="Empty{}">
-      <file path="no_unique_address.cpp" line="8"/>
+      <file short-path="no_unique_address.cpp" source-path="no_unique_address.cpp" line="8"/>
       <attr id="maybe-unused"/>
       <attr id="deprecated"/>
       <type id="iczIHP1J59EwYw3xxL3w2C3Q43Q=" name="Empty"/>

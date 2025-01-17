@@ -5,11 +5,11 @@
   <template>
     <tparam name="T" class="type"/>
     <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-      <file path="templates/ct_mc.cpp" line="1" class="def"/>
+      <file short-path="templates/ct_mc.cpp" source-path="templates/ct_mc.cpp" line="1" class="def"/>
       <struct name="B" id="fWoD36lD5WiSb4UmeWlbUQhHuXU=">
-        <file path="templates/ct_mc.cpp" line="4" class="def"/>
+        <file short-path="templates/ct_mc.cpp" source-path="templates/ct_mc.cpp" line="4" class="def"/>
         <function name="f" id="FBE8MWhdRJutTkraJIXajcEr4U0=">
-          <file path="templates/ct_mc.cpp" line="4" class="def"/>
+          <file short-path="templates/ct_mc.cpp" source-path="templates/ct_mc.cpp" line="4" class="def"/>
         </function>
       </struct>
     </struct>

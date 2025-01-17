@@ -3,9 +3,9 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <class name="S" id="pOYGF6pLJlICuiGO0Xj0daDb/to=">
-    <file path="class-private-alias.cpp" line="1" class="def"/>
+    <file short-path="class-private-alias.cpp" source-path="class-private-alias.cpp" line="1" class="def"/>
     <function name="f" id="rEl08eLCQtT5kTV7R87YlkuVPa8=">
-      <file path="class-private-alias.cpp" line="5" class="def"/>
+      <file short-path="class-private-alias.cpp" source-path="class-private-alias.cpp" line="5" class="def"/>
       <param>
         <type name="type"/>
       </param>

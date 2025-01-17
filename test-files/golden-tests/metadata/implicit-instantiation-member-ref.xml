@@ -5,19 +5,19 @@
   <template>
     <tparam name="T" class="type"/>
     <struct name="S0" id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=">
-      <file path="implicit-instantiation-member-ref.cpp" line="1" class="def"/>
+      <file short-path="implicit-instantiation-member-ref.cpp" source-path="implicit-instantiation-member-ref.cpp" line="1" class="def"/>
       <template>
         <tparam name="U" class="type"/>
         <struct name="S2" id="gxI8lOzHEX5mX3u/0hCHnvUY1OM=">
-          <file path="implicit-instantiation-member-ref.cpp" line="4" class="def"/>
+          <file short-path="implicit-instantiation-member-ref.cpp" source-path="implicit-instantiation-member-ref.cpp" line="4" class="def"/>
           <namespace-alias name="M2" id="NnkA706kKqg/azveB/lExZwRfFI=">
-            <file path="implicit-instantiation-member-ref.cpp" line="7"/>
+            <file short-path="implicit-instantiation-member-ref.cpp" source-path="implicit-instantiation-member-ref.cpp" line="7"/>
             <type name="U"/>
           </namespace-alias>
           <template>
             <tparam name="V" class="type"/>
             <namespace-alias name="M3" id="TBl15ml95lYP4APzAuH1VpGgjgs=">
-              <file path="implicit-instantiation-member-ref.cpp" line="9"/>
+              <file short-path="implicit-instantiation-member-ref.cpp" source-path="implicit-instantiation-member-ref.cpp" line="9"/>
               <type id="gxI8lOzHEX5mX3u/0hCHnvUY1OM=" name="S2&lt;U&gt;"/>
             </namespace-alias>
           </template>
@@ -26,31 +26,31 @@
     </struct>
   </template>
   <namespace-alias name="A5" id="1Z8U4eFyt2XClP+7afzwsuyeXAI=">
-    <file path="implicit-instantiation-member-ref.cpp" line="14"/>
+    <file short-path="implicit-instantiation-member-ref.cpp" source-path="implicit-instantiation-member-ref.cpp" line="14"/>
     <type id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=" name="S0&lt;void&gt;"/>
   </namespace-alias>
   <template class="explicit" id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=">
     <targ class="type" type="void"/>
     <struct name="S0" id="BWgkCsMw6w/Tkzj0tkQJ8/AWTUo=">
-      <file path="implicit-instantiation-member-ref.cpp" line="2" class="def"/>
+      <file short-path="implicit-instantiation-member-ref.cpp" source-path="implicit-instantiation-member-ref.cpp" line="2" class="def"/>
       <template>
         <tparam name="U" class="type"/>
         <struct name="S2" id="3bDJlUJg+Wg63OKbCChN7xs/THg=">
-          <file path="implicit-instantiation-member-ref.cpp" line="4"/>
+          <file short-path="implicit-instantiation-member-ref.cpp" source-path="implicit-instantiation-member-ref.cpp" line="4"/>
         </struct>
       </template>
       <template class="explicit" id="gxI8lOzHEX5mX3u/0hCHnvUY1OM=">
         <targ class="type" type="char"/>
         <struct name="S2" id="LQDMND21bNwDyy/hE3qQoQzFLXY=">
-          <file path="implicit-instantiation-member-ref.cpp" line="5" class="def"/>
+          <file short-path="implicit-instantiation-member-ref.cpp" source-path="implicit-instantiation-member-ref.cpp" line="5" class="def"/>
           <namespace-alias name="M2" id="KI+cz9NSHQSZN2PnUoAaBtILqNQ=">
-            <file path="implicit-instantiation-member-ref.cpp" line="7"/>
+            <file short-path="implicit-instantiation-member-ref.cpp" source-path="implicit-instantiation-member-ref.cpp" line="7"/>
             <type name="char"/>
           </namespace-alias>
           <template>
             <tparam name="V" class="type"/>
             <namespace-alias name="M3" id="xu84aTnEsoVB4EugJR5m2weQzUE=">
-              <file path="implicit-instantiation-member-ref.cpp" line="9"/>
+              <file short-path="implicit-instantiation-member-ref.cpp" source-path="implicit-instantiation-member-ref.cpp" line="9"/>
               <type id="3bDJlUJg+Wg63OKbCChN7xs/THg=" name="S2&lt;char&gt;"/>
             </namespace-alias>
           </template>
@@ -59,7 +59,7 @@
     </struct>
   </template>
   <namespace-alias name="A9" id="r6hRllvikhxyJUBT7eKH8Z13wfw=">
-    <file path="implicit-instantiation-member-ref.cpp" line="15"/>
+    <file short-path="implicit-instantiation-member-ref.cpp" source-path="implicit-instantiation-member-ref.cpp" line="15"/>
     <type id="KI+cz9NSHQSZN2PnUoAaBtILqNQ=" name="A5::S2&lt;char&gt;::M3&lt;int&gt;::M3&lt;unsigned int&gt;::M2"/>
   </namespace-alias>
 </namespace>

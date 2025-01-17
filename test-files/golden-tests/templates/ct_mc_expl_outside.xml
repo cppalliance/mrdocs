@@ -5,11 +5,11 @@
   <template>
     <tparam name="T" class="type"/>
     <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-      <file path="templates/ct_mc_expl_outside.cpp" line="1" class="def"/>
+      <file short-path="templates/ct_mc_expl_outside.cpp" source-path="templates/ct_mc_expl_outside.cpp" line="1" class="def"/>
       <struct name="B" id="fWoD36lD5WiSb4UmeWlbUQhHuXU=">
-        <file path="templates/ct_mc_expl_outside.cpp" line="4" class="def"/>
+        <file short-path="templates/ct_mc_expl_outside.cpp" source-path="templates/ct_mc_expl_outside.cpp" line="4" class="def"/>
         <function name="f" id="FBE8MWhdRJutTkraJIXajcEr4U0=">
-          <file path="templates/ct_mc_expl_outside.cpp" line="4" class="def"/>
+          <file short-path="templates/ct_mc_expl_outside.cpp" source-path="templates/ct_mc_expl_outside.cpp" line="4" class="def"/>
         </function>
       </struct>
     </struct>
@@ -17,12 +17,12 @@
   <template class="explicit" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
     <targ class="type" type="int"/>
     <struct name="A" id="AKwlChAOi+0ttIAPsD7uitS+gk0=">
-      <file path="templates/ct_mc_expl_outside.cpp" line="2" class="def"/>
+      <file short-path="templates/ct_mc_expl_outside.cpp" source-path="templates/ct_mc_expl_outside.cpp" line="2" class="def"/>
       <struct name="B" id="xks7eBJx25CIVelbqBa2LCCEll4=">
-        <file path="templates/ct_mc_expl_outside.cpp" line="8" class="def"/>
-        <file path="templates/ct_mc_expl_outside.cpp" line="4"/>
+        <file short-path="templates/ct_mc_expl_outside.cpp" source-path="templates/ct_mc_expl_outside.cpp" line="8" class="def"/>
+        <file short-path="templates/ct_mc_expl_outside.cpp" source-path="templates/ct_mc_expl_outside.cpp" line="4"/>
         <function name="g" id="692fgnQlzTAWgxI/0d6qH/zXq2w=">
-          <file path="templates/ct_mc_expl_outside.cpp" line="8" class="def"/>
+          <file short-path="templates/ct_mc_expl_outside.cpp" source-path="templates/ct_mc_expl_outside.cpp" line="8" class="def"/>
         </function>
       </struct>
     </struct>

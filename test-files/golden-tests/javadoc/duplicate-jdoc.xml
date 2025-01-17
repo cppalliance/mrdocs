@@ -3,7 +3,7 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <function name="f0" id="e1UQQek5v3C9OClW5cGf57XvwQo=">
-    <file path="duplicate-jdoc.cpp" line="5" class="def"/>
+    <file short-path="duplicate-jdoc.cpp" source-path="duplicate-jdoc.cpp" line="5" class="def"/>
     <return>
       <type name="int"/>
     </return>
@@ -20,7 +20,7 @@
     </doc>
   </function>
   <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
-    <file path="duplicate-jdoc.cpp" line="11" class="def"/>
+    <file short-path="duplicate-jdoc.cpp" source-path="duplicate-jdoc.cpp" line="11" class="def"/>
     <return>
       <type name="int"/>
     </return>
@@ -37,7 +37,7 @@
     </doc>
   </function>
   <function name="g0" id="Vn88rrW6JgrUc7j/24MUTRnpkRg=">
-    <file path="duplicate-jdoc.cpp" line="17" class="def"/>
+    <file short-path="duplicate-jdoc.cpp" source-path="duplicate-jdoc.cpp" line="17" class="def"/>
     <param name="a">
       <type name="int"/>
     </param>
@@ -54,7 +54,7 @@
     </doc>
   </function>
   <function name="g1" id="99zzvQbBwXKh7ewapNRMnAKND3I=">
-    <file path="duplicate-jdoc.cpp" line="23" class="def"/>
+    <file short-path="duplicate-jdoc.cpp" source-path="duplicate-jdoc.cpp" line="23" class="def"/>
     <param name="a">
       <type name="int"/>
     </param>
@@ -73,7 +73,7 @@
   <template>
     <tparam name="T" class="type"/>
     <function name="h0" id="GUlieEk6E+t8qLpALj3XrWv0CGw=">
-      <file path="duplicate-jdoc.cpp" line="29" class="def"/>
+      <file short-path="duplicate-jdoc.cpp" source-path="duplicate-jdoc.cpp" line="29" class="def"/>
       <doc>
         <para>
           <text>h0 brief    </text>
@@ -90,7 +90,7 @@
   <template>
     <tparam name="T" class="type"/>
     <function name="h1" id="q8fclJU+n2M3XqifIjVL9vT9fKQ=">
-      <file path="duplicate-jdoc.cpp" line="36" class="def"/>
+      <file short-path="duplicate-jdoc.cpp" source-path="duplicate-jdoc.cpp" line="36" class="def"/>
       <doc>
         <para>
           <text>h1 brief    </text>

@@ -3,7 +3,7 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <function name="distance" id="GjxEQxG2FMN3Hr0DOMnJo7wvH5Y=">
-    <file path="distance.cpp" line="12"/>
+    <file short-path="distance.cpp" source-path="distance.cpp" line="12"/>
     <return>
       <type name="double"/>
     </return>

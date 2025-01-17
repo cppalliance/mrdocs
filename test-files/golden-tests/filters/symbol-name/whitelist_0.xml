@@ -4,7 +4,7 @@
 <namespace id="//////////////////////////8=">
   <namespace name="N0" id="YAQKEfxRmUjg43kkhT1n65uziVY=">
     <function name="f0_WL" id="Wh1//CHkEeCK/Sbv3ShkayyURHI=">
-      <file path="whitelist_0.cpp" line="3"/>
+      <file short-path="whitelist_0.cpp" source-path="whitelist_0.cpp" line="3"/>
     </function>
   </namespace>
   <namespace name="N1" id="BjVED4etdK1saUZITQfgE7SCCPI=">
@@ -12,14 +12,14 @@
     </namespace>
     <namespace name="N4" id="gTTyBBJ//JO3QEp36iu198cetXI=">
       <function name="f1_WL" id="DqNFGUiBz22gD9dvzuf4hmwiMIQ=">
-        <file path="whitelist_0.cpp" line="23"/>
+        <file short-path="whitelist_0.cpp" source-path="whitelist_0.cpp" line="23"/>
       </function>
     </namespace>
   </namespace>
   <namespace name="N5" id="bhpVTks6uYUbdSEnCkcSZ80Va4Y=">
     <namespace name="N6_BL" id="fXYakTji6P2RmLNlQ02I8HWgJKM=">
       <function name="f1_BL" id="UUbDZA3RoYupttZ+bznyVNk9pms=">
-        <file path="whitelist_0.cpp" line="34"/>
+        <file short-path="whitelist_0.cpp" source-path="whitelist_0.cpp" line="34"/>
       </function>
       <namespace name="N7" id="BeEWEtpmZDucoTB+CzhJOj5NsXc=">
       </namespace>

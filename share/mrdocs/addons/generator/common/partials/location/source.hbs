@@ -11,9 +11,9 @@
 
 --}}
 Declared in {{#>markup/code~}}
-    {{ str "<" }}{{#unless (and @root.config.base-url (eq dcl.kind "source"))~}}
-        {{dcl.file}}
+    {{ str "<" }}{{#if (and @root.config.base-url dcl.shortPath dcl.sourcePath)~}}
+        {{#>markup/a href=(concat @root.config.base-url dcl.sourcePath '#L' dcl.line)}}{{dcl.shortPath}}{{/markup/a}}
     {{~else~}}
-        {{#>markup/a href=(concat @root.config.base-url dcl.file '#L' dcl.line)}}{{dcl.file}}{{/markup/a}}
-    {{~/unless~}}{{ str ">" }}
+        {{dcl.shortPath}}
+    {{~/if~}}{{ str ">" }}
 {{~/markup/code}}

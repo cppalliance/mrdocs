@@ -3,7 +3,7 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
-    <file path="code.cpp" line="18"/>
+    <file short-path="code.cpp" source-path="code.cpp" line="18"/>
     <doc>
       <para>
         <text>brief</text>

@@ -3,7 +3,7 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <function name="is_prime" exception-spec="noexcept" id="X6uKu3BxyFPud2u42zNKbyA0XfU=">
-    <file path="is_prime.cpp" line="11"/>
+    <file short-path="is_prime.cpp" source-path="is_prime.cpp" line="11"/>
     <return>
       <type name="bool"/>
     </return>
