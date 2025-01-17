@@ -3,7 +3,7 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <function name="Христос_воскрес" id="s6XCVcQ8RMTkyc8SmoMVVgJrVgs=">
-    <file path="utf-8.cpp" line="1" class="def"/>
+    <file short-path="utf-8.cpp" source-path="utf-8.cpp" line="1" class="def"/>
     <return>
       <type name="bool"/>
     </return>

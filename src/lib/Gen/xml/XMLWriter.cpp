@@ -626,10 +626,14 @@ XMLWriter::
 writeSourceInfo(
     SourceInfo const& I)
 {
-    if(I.DefLoc)
+    if (I.DefLoc)
+    {
         writeLocation(*I.DefLoc, true);
-    for(auto const& loc : I.Loc)
+    }
+    for (auto const& loc: I.Loc)
+    {
         writeLocation(loc, false);
+    }
 }
 
 void
@@ -639,9 +643,11 @@ writeLocation(
     bool def)
 {
     tags_.write("file", {}, {
-        { "path", loc.Filename },
+        // { "full-path", loc.FullPath },
+        { "short-path", loc.ShortPath },
+        { "source-path", loc.SourcePath },
         { "line", std::to_string(loc.LineNumber) },
-        { "class", "def", def } });
+        { "class", "def", def }});
 }
 
 //------------------------------------------------

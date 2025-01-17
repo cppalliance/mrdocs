@@ -3,7 +3,7 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <function name="f" id="ackjGh57CJQLwtO8PihiSPPKIBY=">
-    <file path="brief-3.cpp" line="5"/>
+    <file short-path="brief-3.cpp" source-path="brief-3.cpp" line="5"/>
     <param>
       <type name="int"/>
     </param>
@@ -17,7 +17,7 @@
     </doc>
   </function>
   <function name="f" id="dA/yAiFWSDtn+ZTCAVyKiceMjwY=">
-    <file path="brief-3.cpp" line="11"/>
+    <file short-path="brief-3.cpp" source-path="brief-3.cpp" line="11"/>
     <param>
       <type class="pointer">
         <pointee-type name="char" cv-qualifiers="const"/>
@@ -33,7 +33,7 @@
     </doc>
   </function>
   <function name="f" id="8HikSjplV248Xlimdc3WQFts5g8=">
-    <file path="brief-3.cpp" line="14"/>
+    <file short-path="brief-3.cpp" source-path="brief-3.cpp" line="14"/>
     <param>
       <type name="double"/>
     </param>
@@ -44,7 +44,7 @@
     </doc>
   </function>
   <function name="f" id="u1t7CFC30SbmMkunoYuyE7paABA=">
-    <file path="brief-3.cpp" line="17"/>
+    <file short-path="brief-3.cpp" source-path="brief-3.cpp" line="17"/>
     <param>
       <type class="pointer">
         <pointee-type name="float" cv-qualifiers="const"/>

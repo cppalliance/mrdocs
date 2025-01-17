@@ -440,7 +440,7 @@ if (MRDOCS_BUILD_TESTS)
             DEPENDS mrdocs.rnc)
         add_custom_target(mrdocs_rng ALL DEPENDS mrdocs.rng)
 
-        file(GLOB_RECURSE XML_SOURCES CONFIGURE_DEPENDS test-files/*.xml)
+        file(GLOB_RECURSE XML_SOURCES CONFIGURE_DEPENDS test-files/golden-tests/*.xml)
         add_test(NAME xml-lint
                  COMMAND ${LIBXML2_XMLLINT_EXECUTABLE} --dropdtd --noout
                      --relaxng ${CMAKE_CURRENT_BINARY_DIR}/mrdocs.rng ${XML_SOURCES}

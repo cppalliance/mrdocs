@@ -95,6 +95,9 @@ class ASTVisitor
         // The file path relative to a search directory.
         std::string short_path;
 
+        // The file path relative to the source-root directory.
+        std::string source_path;
+
         // Whether this file passes the file filters
         std::optional<bool> passesFilters;
     };

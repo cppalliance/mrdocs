@@ -42,7 +42,7 @@
       {
         "name": "source-root",
         "brief": "Path to the root directory of the source code",
-        "details": "Path to the root directory of the source code. This path is used as a default for input files and a base for relative paths formed from absolute paths.",
+        "details": "Path to the root directory of the source code. This path is used as a default for input files and a base for relative paths formed from absolute paths. This should typically be the root directory of the git project, as relative paths formed from it can be used to create links to these source files in the repository. Templates use the `base-url` option to create links to the source code.",
         "type": "dir-path",
         "default": "<config-dir>",
         "relative-to": "<config-dir>",

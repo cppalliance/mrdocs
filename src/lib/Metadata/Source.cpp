@@ -39,8 +39,9 @@ tag_invoke(
     IO& io,
     Location const& loc)
 {
-    io.map("path", loc.Path);
-    io.map("file", loc.Filename);
+    io.map("fullPath", loc.FullPath);
+    io.map("shortPath", loc.ShortPath);
+    io.map("sourcePath", loc.SourcePath);
     io.map("line", loc.LineNumber);
     io.map("documented", loc.Documented);
 }

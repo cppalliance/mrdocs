@@ -3,7 +3,7 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
-    <file path="pre-post.cpp" line="7"/>
+    <file short-path="pre-post.cpp" source-path="pre-post.cpp" line="7"/>
     <doc>
       <pre>
         <text>first precondition    </text>

@@ -3,12 +3,12 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <struct name="Explicit" id="bonobNKGOblPVcRjxpiPan4nYnc=">
-    <file path="explicit-ctor.cpp" line="3" class="def"/>
+    <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="3" class="def"/>
     <function class="constructor" name="Explicit" explicit-spec="explicit" id="JPrjQsrkg+QoApI2wln2eGwCGP4=">
-      <file path="explicit-ctor.cpp" line="4"/>
+      <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="4"/>
     </function>
     <function class="constructor" name="Explicit" explicit-spec="explicit" id="CuzDbFSxtCdVcGerq2UySnHF7po=">
-      <file path="explicit-ctor.cpp" line="5"/>
+      <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="5"/>
       <param>
         <type class="lvalue-reference">
           <pointee-type id="bonobNKGOblPVcRjxpiPan4nYnc=" name="Explicit" cv-qualifiers="const"/>
@@ -16,7 +16,7 @@
       </param>
     </function>
     <function class="constructor" name="Explicit" exception-spec="noexcept" explicit-spec="explicit" id="saOH3agrCzNHcRhbXHOM0FYFxGc=">
-      <file path="explicit-ctor.cpp" line="6"/>
+      <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="6"/>
       <param>
         <type class="rvalue-reference">
           <pointee-type id="bonobNKGOblPVcRjxpiPan4nYnc=" name="Explicit"/>
@@ -24,7 +24,7 @@
       </param>
     </function>
     <function class="constructor" name="Explicit" explicit-spec="explicit" id="Oj6cGCOaarVfZXkgsr/pOPOOiFY=">
-      <file path="explicit-ctor.cpp" line="7"/>
+      <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="7"/>
       <param>
         <type name="int"/>
       </param>
@@ -34,12 +34,12 @@
     </function>
   </struct>
   <struct name="ExplicitTrue" id="htdCGapMsdazR1XkXoanrOCkvDE=">
-    <file path="explicit-ctor.cpp" line="10" class="def"/>
+    <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="10" class="def"/>
     <function class="constructor" name="ExplicitTrue" explicit-spec="explicit(true)" id="3sd37ryB4gMx1BgYdDdQzVJFniU=">
-      <file path="explicit-ctor.cpp" line="11"/>
+      <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="11"/>
     </function>
     <function class="constructor" name="ExplicitTrue" explicit-spec="explicit(true)" id="Tj9uY+jY7QBYQC8IsjplHuoDgQo=">
-      <file path="explicit-ctor.cpp" line="12"/>
+      <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="12"/>
       <param>
         <type class="lvalue-reference">
           <pointee-type id="htdCGapMsdazR1XkXoanrOCkvDE=" name="ExplicitTrue" cv-qualifiers="const"/>
@@ -47,7 +47,7 @@
       </param>
     </function>
     <function class="constructor" name="ExplicitTrue" exception-spec="noexcept" explicit-spec="explicit(true)" id="iQOO8pEh0iNSnpupVwR9tCVIf8U=">
-      <file path="explicit-ctor.cpp" line="13"/>
+      <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="13"/>
       <param>
         <type class="rvalue-reference">
           <pointee-type id="htdCGapMsdazR1XkXoanrOCkvDE=" name="ExplicitTrue"/>
@@ -55,7 +55,7 @@
       </param>
     </function>
     <function class="constructor" name="ExplicitTrue" explicit-spec="explicit(true)" id="XCoHYDLlYJYpV6Ut7Ms0GjcQKjM=">
-      <file path="explicit-ctor.cpp" line="14"/>
+      <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="14"/>
       <param>
         <type name="int"/>
       </param>
@@ -65,12 +65,12 @@
     </function>
   </struct>
   <struct name="ExplicitFalse" id="Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=">
-    <file path="explicit-ctor.cpp" line="17" class="def"/>
+    <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="17" class="def"/>
     <function class="constructor" name="ExplicitFalse" explicit-spec="explicit(false)" id="GVN7KvqFotNClBLUnxR3nnPlH7Y=">
-      <file path="explicit-ctor.cpp" line="18"/>
+      <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="18"/>
     </function>
     <function class="constructor" name="ExplicitFalse" explicit-spec="explicit(false)" id="gsl+2i8v8v4Lifq3SZ5sFhSfseQ=">
-      <file path="explicit-ctor.cpp" line="19"/>
+      <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="19"/>
       <param>
         <type class="lvalue-reference">
           <pointee-type id="Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=" name="ExplicitFalse" cv-qualifiers="const"/>
@@ -78,7 +78,7 @@
       </param>
     </function>
     <function class="constructor" name="ExplicitFalse" exception-spec="noexcept" explicit-spec="explicit(false)" id="qXjKOO0FQ3p2vTehkEQl2kIKpFs=">
-      <file path="explicit-ctor.cpp" line="20"/>
+      <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="20"/>
       <param>
         <type class="rvalue-reference">
           <pointee-type id="Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=" name="ExplicitFalse"/>
@@ -86,7 +86,7 @@
       </param>
     </function>
     <function class="constructor" name="ExplicitFalse" explicit-spec="explicit(false)" id="T0aRgSzz7xtFbPWKv3q57ueIYlI=">
-      <file path="explicit-ctor.cpp" line="21"/>
+      <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="21"/>
       <param>
         <type name="int"/>
       </param>
@@ -98,12 +98,12 @@
   <template>
     <tparam name="B" class="non-type" type="bool"/>
     <struct name="ExplicitExpression" id="ztb0u1Q4SVBUQ0roTOM7MFlUt/o=">
-      <file path="explicit-ctor.cpp" line="24" class="def"/>
+      <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="24" class="def"/>
       <function class="constructor" name="ExplicitExpression" explicit-spec="explicit(B)" id="s6L5UKI8FLTRiyny1rXgYxG/f/0=">
-        <file path="explicit-ctor.cpp" line="26"/>
+        <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="26"/>
       </function>
       <function class="constructor" name="ExplicitExpression" explicit-spec="explicit(B)" id="Ty1Sv+L6at7TykYdCITSQKmXwVs=">
-        <file path="explicit-ctor.cpp" line="27"/>
+        <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="27"/>
         <param>
           <type class="lvalue-reference">
             <pointee-type id="ztb0u1Q4SVBUQ0roTOM7MFlUt/o=" name="ExplicitExpression" cv-qualifiers="const"/>
@@ -111,7 +111,7 @@
         </param>
       </function>
       <function class="constructor" name="ExplicitExpression" exception-spec="noexcept" explicit-spec="explicit(B)" id="gDoLCstIvgYYJng1jhLOLe/yz+Q=">
-        <file path="explicit-ctor.cpp" line="28"/>
+        <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="28"/>
         <param>
           <type class="rvalue-reference">
             <pointee-type id="ztb0u1Q4SVBUQ0roTOM7MFlUt/o=" name="ExplicitExpression"/>
@@ -119,7 +119,7 @@
         </param>
       </function>
       <function class="constructor" name="ExplicitExpression" explicit-spec="explicit(B)" id="J31K1hQq31LWiQhVy5ro0V+1pD0=">
-        <file path="explicit-ctor.cpp" line="29"/>
+        <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="29"/>
         <param>
           <type name="int"/>
         </param>

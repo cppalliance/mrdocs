@@ -3,7 +3,7 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
-    <file path="styled.cpp" line="8" class="def"/>
+    <file short-path="styled.cpp" source-path="styled.cpp" line="8" class="def"/>
     <doc>
       <para>
         <text>Brief for A</text>
@@ -22,7 +22,7 @@
       </para>
     </doc>
     <function name="compare" exception-spec="noexcept" id="CKPqawUTt6FNIN9qEFTMcdnvPkI=">
-      <file path="styled.cpp" line="14"/>
+      <file short-path="styled.cpp" source-path="styled.cpp" line="14"/>
       <attr id="is-const"/>
       <return>
         <type name="int"/>

@@ -3,32 +3,32 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
-    <file path="record-1.cpp" line="1" class="def"/>
+    <file short-path="record-1.cpp" source-path="record-1.cpp" line="1" class="def"/>
     <namespace-alias name="U1" id="6UtddyCJy89K/bZpTmDb5jVXwAY=">
-      <file path="record-1.cpp" line="3"/>
+      <file short-path="record-1.cpp" source-path="record-1.cpp" line="3"/>
       <type name="int"/>
     </namespace-alias>
     <typedef name="U2" id="wwp4SQjMPktMmsnvq1thxjxFHFs=">
-      <file path="record-1.cpp" line="4"/>
+      <file short-path="record-1.cpp" source-path="record-1.cpp" line="4"/>
       <type name="char"/>
     </typedef>
     <function name="f1" id="9sznTZ3/SXQNZpCsoMG8KWGLuEc=">
-      <file path="record-1.cpp" line="6"/>
+      <file short-path="record-1.cpp" source-path="record-1.cpp" line="6"/>
     </function>
     <function name="f2" id="w0ONazxXaWlB0RQLjfDqDWICUwo=">
-      <file path="record-1.cpp" line="7"/>
+      <file short-path="record-1.cpp" source-path="record-1.cpp" line="7"/>
       <return>
         <type name="int"/>
       </return>
     </function>
     <function name="f3" id="TkBjWwqMDycyUbq+TJZ9qfUhSn0=">
-      <file path="record-1.cpp" line="8"/>
+      <file short-path="record-1.cpp" source-path="record-1.cpp" line="8"/>
       <return>
         <type name="char"/>
       </return>
     </function>
     <function name="g1" access="protected" id="/xzUDYrXtCl2xCoyCvXqIZ4fKfA=">
-      <file path="record-1.cpp" line="15"/>
+      <file short-path="record-1.cpp" source-path="record-1.cpp" line="15"/>
       <doc>
         <para>
           <text>brief-g1</text>
@@ -39,7 +39,7 @@
       </doc>
     </function>
     <function name="g2" access="protected" id="flHl59B/bdRwuiNeh3sHqCycic0=">
-      <file path="record-1.cpp" line="21"/>
+      <file short-path="record-1.cpp" source-path="record-1.cpp" line="21"/>
       <return>
         <type name="int"/>
       </return>
@@ -53,7 +53,7 @@
       </doc>
     </function>
     <function name="g3" access="protected" id="DKxv4h+rP37b0u6O1qbB+u416ZY=">
-      <file path="record-1.cpp" line="28"/>
+      <file short-path="record-1.cpp" source-path="record-1.cpp" line="28"/>
       <return>
         <type name="char"/>
       </return>

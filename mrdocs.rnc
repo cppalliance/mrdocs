@@ -326,7 +326,9 @@ grammar
     Location =
         element file
         {
-            attribute path {text},
+            # attribute full-path {text},
+            attribute short-path {text},
+            attribute source-path {text},
             attribute line {text},
             attribute class {"def"} ?,
             empty

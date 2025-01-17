@@ -5,31 +5,31 @@
   <template>
     <tparam name="T" class="type"/>
     <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-      <file path="alias-template.cpp" line="1" class="def"/>
+      <file short-path="alias-template.cpp" source-path="alias-template.cpp" line="1" class="def"/>
     </struct>
   </template>
   <template>
     <tparam name="T" class="type"/>
     <tparam name="U" class="type"/>
     <struct name="B" id="swBEqeWAJoaWVKty+1lCoYUK04A=">
-      <file path="alias-template.cpp" line="4" class="def"/>
+      <file short-path="alias-template.cpp" source-path="alias-template.cpp" line="4" class="def"/>
     </struct>
   </template>
   <template>
     <tparam name="T" class="type"/>
     <namespace-alias name="C" id="f75RIL8qKOwbyH6ffvrv59F0nCA=">
-      <file path="alias-template.cpp" line="7"/>
+      <file short-path="alias-template.cpp" source-path="alias-template.cpp" line="7"/>
       <type id="5tUSuMtQqtYE49jBjSYSWp0DJAM=" name="A&lt;T&gt;"/>
     </namespace-alias>
   </template>
   <template>
     <tparam name="T" class="type"/>
     <struct name="D" id="i5oK/nki0o3BH2ZAgkGyaGib07g=">
-      <file path="alias-template.cpp" line="10" class="def"/>
+      <file short-path="alias-template.cpp" source-path="alias-template.cpp" line="10" class="def"/>
       <template>
         <tparam name="U" class="type"/>
         <namespace-alias name="E" id="STM3CgeaOEakPrQJdlRWWM4MMFo=">
-          <file path="alias-template.cpp" line="13"/>
+          <file short-path="alias-template.cpp" source-path="alias-template.cpp" line="13"/>
           <type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;T, U&gt;"/>
         </namespace-alias>
       </template>

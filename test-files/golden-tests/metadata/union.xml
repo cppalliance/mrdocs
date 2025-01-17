@@ -3,32 +3,32 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <union name="A" id="rOga+mYntM7ytFb7bhJSklZ0r34=">
-    <file path="union.cpp" line="1" class="def"/>
+    <file short-path="union.cpp" source-path="union.cpp" line="1" class="def"/>
     <field name="x" id="Be23kXXQRAQHfKNTp2HOM2jouJo=">
-      <file path="union.cpp" line="3"/>
+      <file short-path="union.cpp" source-path="union.cpp" line="3"/>
       <attr id="is-variant"/>
       <type name="int"/>
     </field>
     <field name="y" id="HqUCV+CnE+akUirdwlf8maZxw40=">
-      <file path="union.cpp" line="4"/>
+      <file short-path="union.cpp" source-path="union.cpp" line="4"/>
       <attr id="is-variant"/>
       <type name="bool"/>
     </field>
   </union>
   <struct name="B" id="3JsK1DO0O+wZhv+0meptQrbs3fY=">
-    <file path="union.cpp" line="7" class="def"/>
+    <file short-path="union.cpp" source-path="union.cpp" line="7" class="def"/>
     <field name="x" id="QtOrWpj/+5ytPBCEoNlbW+uW/oA=">
-      <file path="union.cpp" line="11"/>
+      <file short-path="union.cpp" source-path="union.cpp" line="11"/>
       <attr id="is-variant"/>
       <type name="int"/>
     </field>
     <field name="y" id="8o+2/UVx4hIiDLQRYohp688sXmI=">
-      <file path="union.cpp" line="12"/>
+      <file short-path="union.cpp" source-path="union.cpp" line="12"/>
       <attr id="is-variant"/>
       <type name="bool"/>
     </field>
     <field name="z" id="zTVqdWL2ShJziu85kaeOk2wfYFs=">
-      <file path="union.cpp" line="15"/>
+      <file short-path="union.cpp" source-path="union.cpp" line="15"/>
       <type name="int"/>
     </field>
   </struct>

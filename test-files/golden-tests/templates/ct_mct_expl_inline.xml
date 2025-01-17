@@ -5,22 +5,22 @@
   <template>
     <tparam name="T" class="type"/>
     <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-      <file path="templates/ct_mct_expl_inline.cpp" line="1" class="def"/>
+      <file short-path="templates/ct_mct_expl_inline.cpp" source-path="templates/ct_mct_expl_inline.cpp" line="1" class="def"/>
       <template>
         <tparam name="U" class="type"/>
         <struct name="B" id="dKDSVrZun8skBV/NUCmJyCUOvJA=">
-          <file path="templates/ct_mct_expl_inline.cpp" line="4" class="def"/>
+          <file short-path="templates/ct_mct_expl_inline.cpp" source-path="templates/ct_mct_expl_inline.cpp" line="4" class="def"/>
           <function name="f" id="E/7hys/9wYX9YmsaiN5VHroNb8A=">
-            <file path="templates/ct_mct_expl_inline.cpp" line="5" class="def"/>
+            <file short-path="templates/ct_mct_expl_inline.cpp" source-path="templates/ct_mct_expl_inline.cpp" line="5" class="def"/>
           </function>
         </struct>
       </template>
       <template class="explicit" id="dKDSVrZun8skBV/NUCmJyCUOvJA=">
         <targ class="type" type="int"/>
         <struct name="B" id="bHsbts/3qH4qdnqFkFXkR6e8OCw=">
-          <file path="templates/ct_mct_expl_inline.cpp" line="8" class="def"/>
+          <file short-path="templates/ct_mct_expl_inline.cpp" source-path="templates/ct_mct_expl_inline.cpp" line="8" class="def"/>
           <function name="g" id="ymRqXpmLCXBjCy4HMrul4HOObrs=">
-            <file path="templates/ct_mct_expl_inline.cpp" line="8" class="def"/>
+            <file short-path="templates/ct_mct_expl_inline.cpp" source-path="templates/ct_mct_expl_inline.cpp" line="8" class="def"/>
           </function>
         </struct>
       </template>

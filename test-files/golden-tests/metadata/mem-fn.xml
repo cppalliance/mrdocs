@@ -3,69 +3,69 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <struct name="T01" id="O2UBDeG42PMrk1up8f8PGVFhIGk=">
-    <file path="mem-fn.cpp" line="3" class="def"/>
+    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="3" class="def"/>
     <function name="f" id="dmtEtFE6EVKE6hWuugP9vFuib6Y=">
-      <file path="mem-fn.cpp" line="3"/>
+      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="3"/>
     </function>
   </struct>
   <struct name="T02" id="H+pnPDuG6B+W6+srjVP2qhqXCrQ=">
-    <file path="mem-fn.cpp" line="4" class="def"/>
+    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="4" class="def"/>
     <function name="f" id="QPLurkQ2BXODb4xY6bw1mlNtQ28=">
-      <file path="mem-fn.cpp" line="4"/>
+      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="4"/>
       <attr id="storage-class" name="static" value="2"/>
     </function>
   </struct>
   <struct name="T03" id="rM+ml6ikwiS9Twa1IwpCHbSHTbg=">
-    <file path="mem-fn.cpp" line="5" class="def"/>
+    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="5" class="def"/>
     <function name="f" id="p6A5dCCvCkASDE6pH4cJA/27/o8=">
-      <file path="mem-fn.cpp" line="5"/>
+      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="5"/>
       <attr id="ref-qualifier" name="&amp;" value="1"/>
     </function>
   </struct>
   <struct name="T04" id="MBpLzhyCDdQBHul4AN2i2fR8fw0=">
-    <file path="mem-fn.cpp" line="6" class="def"/>
+    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="6" class="def"/>
     <function name="f" id="G71rDzcAZPSKGoGGoDswQjD1JuA=">
-      <file path="mem-fn.cpp" line="6"/>
+      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="6"/>
       <attr id="ref-qualifier" name="&amp;&amp;" value="2"/>
     </function>
   </struct>
   <struct name="T05" id="5s81XyCIgauM5viJN9KAwx2A6DU=">
-    <file path="mem-fn.cpp" line="7" class="def"/>
+    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="7" class="def"/>
     <function name="f" id="rWLMsKBEv1FtDyk7Y7XNzcgmt68=">
-      <file path="mem-fn.cpp" line="7"/>
+      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="7"/>
       <attr id="is-const"/>
     </function>
   </struct>
   <struct name="T06" id="SzwXGFnhX4HlHjHolU7XF/KEqDs=">
-    <file path="mem-fn.cpp" line="8" class="def"/>
+    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="8" class="def"/>
     <function name="f" id="A3MUO5+pwkURxw+SBeh1y0BKv7c=">
-      <file path="mem-fn.cpp" line="8" class="def"/>
+      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="8" class="def"/>
       <attr id="constexpr-kind" name="constexpr" value="1"/>
     </function>
   </struct>
   <struct name="T08" id="WU9ZeQm0IOT8cYJkWXom3NXeWsM=">
-    <file path="mem-fn.cpp" line="10" class="def"/>
+    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="10" class="def"/>
     <function name="f" id="jlrEtbnYd1B6OAjYlF0gQ/oYu5w=">
-      <file path="mem-fn.cpp" line="10"/>
+      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="10"/>
     </function>
   </struct>
   <struct name="T09" id="SX7tpa77UInh7a4AsMFjfiCtoLY=">
-    <file path="mem-fn.cpp" line="11" class="def"/>
+    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="11" class="def"/>
     <function name="f" exception-spec="noexcept" id="u+MePKsNF/sYSk6UpgNS65+USGU=">
-      <file path="mem-fn.cpp" line="11"/>
+      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="11"/>
     </function>
   </struct>
   <struct name="T10" id="TJnjDRnoO8E/5XEw8BaODsKxlwQ=">
-    <file path="mem-fn.cpp" line="12" class="def"/>
+    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="12" class="def"/>
     <function name="f" id="0hjrVGeDlQhdYkOu4shvWWPqNKU=">
-      <file path="mem-fn.cpp" line="12"/>
+      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="12"/>
       <attr id="has-trailing-return"/>
     </function>
   </struct>
   <struct name="T11" id="MXMa4TZZfdRkREzWSLpIF6ruUyw=">
-    <file path="mem-fn.cpp" line="13" class="def"/>
+    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="13" class="def"/>
     <function name="f" id="+NevzZlqigIe1KSKS7eqq7pCd40=">
-      <file path="mem-fn.cpp" line="13"/>
+      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="13"/>
       <attr id="has-trailing-return"/>
       <return>
         <type name="int"/>
@@ -73,55 +73,55 @@
     </function>
   </struct>
   <struct name="T12" id="7rg34TfmIwu+7zOd7DN+Dq8mLCc=">
-    <file path="mem-fn.cpp" line="14" class="def"/>
+    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="14" class="def"/>
     <function name="f" id="I0S8eMgTnTkagm+IrM34MBiU4XI=">
-      <file path="mem-fn.cpp" line="14"/>
+      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="14"/>
       <attr id="is-variadic"/>
     </function>
   </struct>
   <struct name="T13" id="NyLraUP0R3lYeyTpHQYZpyZMstc=">
-    <file path="mem-fn.cpp" line="15" class="def"/>
+    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="15" class="def"/>
     <function name="f" id="5d5eSOvkYwBOnpbLcrkRuFvJGP4=">
-      <file path="mem-fn.cpp" line="15"/>
+      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="15"/>
       <attr id="is-virtual-as-written"/>
     </function>
   </struct>
   <struct name="T14" id="SLJhBKx+2u4KxSJ78Fg6wqlObPc=">
-    <file path="mem-fn.cpp" line="16" class="def"/>
+    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="16" class="def"/>
     <function name="f" id="1Lz3aFupR+OsCqiPOaIFWqGuyCc=">
-      <file path="mem-fn.cpp" line="16"/>
+      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="16"/>
       <attr id="is-virtual-as-written"/>
       <attr id="is-pure"/>
     </function>
   </struct>
   <struct name="T15" id="Bu7lz+fvOPzOR6oSlAo9R8R0alg=">
-    <file path="mem-fn.cpp" line="17" class="def"/>
+    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="17" class="def"/>
     <function name="f" id="wSFf8IAx5Twq6aD5T8XdnXGuhw8=">
-      <file path="mem-fn.cpp" line="17"/>
+      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="17"/>
       <attr id="is-volatile"/>
     </function>
   </struct>
   <struct name="T16" id="75395VGvKeZbe1EhfJwktZuWLs0=">
-    <file path="mem-fn.cpp" line="18" class="def"/>
+    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="18" class="def"/>
     <function name="f" id="OEX+TUed8FjXJPiI4c3+9WHzJl4=">
-      <file path="mem-fn.cpp" line="18"/>
+      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="18"/>
       <attr id="storage-class" name="static" value="2"/>
     </function>
   </struct>
   <struct name="T17" id="HL3/1NhKSels2G5ay7F0IYzlSLs=">
-    <file path="mem-fn.cpp" line="20" class="def"/>
+    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="20" class="def"/>
     <base>
       <type id="SLJhBKx+2u4KxSJ78Fg6wqlObPc=" name="T14"/>
     </base>
     <function name="f" id="5+yfyWtDpz80IwKT3xugro18Ev0=">
-      <file path="mem-fn.cpp" line="20"/>
+      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="20"/>
       <attr id="has-override"/>
     </function>
   </struct>
   <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
-    <file path="mem-fn.cpp" line="22" class="def"/>
+    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="22" class="def"/>
     <function name="f1" exception-spec="noexcept" id="DBXd564vaQo7GHkh6XCC6HV78/I=">
-      <file path="mem-fn.cpp" line="24" class="def"/>
+      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="24" class="def"/>
       <attr id="is-variadic"/>
       <attr id="has-trailing-return"/>
       <attr id="constexpr-kind" name="constexpr" value="1"/>
@@ -129,7 +129,7 @@
       <attr id="is-volatile"/>
     </function>
     <function name="f2" exception-spec="noexcept" id="II436kVwM/ZBYOf9q474VxRXK6c=">
-      <file path="mem-fn.cpp" line="25" class="def"/>
+      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="25" class="def"/>
       <attr id="has-trailing-return"/>
       <attr id="constexpr-kind" name="constexpr" value="1"/>
       <attr id="storage-class" name="static" value="2"/>
@@ -138,7 +138,7 @@
       </return>
     </function>
     <function name="f3" exception-spec="noexcept" id="YOkqb7VjZXBs2Rg5gWCOYGX3Tnw=">
-      <file path="mem-fn.cpp" line="26"/>
+      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="26"/>
       <attr id="is-virtual-as-written"/>
       <attr id="is-pure"/>
       <attr id="is-const"/>
@@ -149,12 +149,12 @@
     </function>
   </struct>
   <struct name="V" id="9kzYwt0WPztMEDUaFxul1Jvqqs8=">
-    <file path="mem-fn.cpp" line="29" class="def"/>
+    <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="29" class="def"/>
     <base>
       <type id="FLgkhM3m0U3Lo2o3XLPUizWPH00=" name="U"/>
     </base>
     <function name="f3" exception-spec="noexcept" id="/C2pxLlwRMKnr6YRbVnykUArzEI=">
-      <file path="mem-fn.cpp" line="31"/>
+      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="31"/>
       <attr id="has-override"/>
       <attr id="is-const"/>
       <attr id="is-volatile"/>

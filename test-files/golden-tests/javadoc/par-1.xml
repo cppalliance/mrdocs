@@ -3,7 +3,7 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
-    <file path="par-1.cpp" line="11"/>
+    <file short-path="par-1.cpp" source-path="par-1.cpp" line="11"/>
     <doc>
       <para>
         <text>Brief</text>
@@ -18,7 +18,7 @@
     </doc>
   </function>
   <function name="f2" id="0MJUv5yGFR9nXWFLeYc+rjOY+iM=">
-    <file path="par-1.cpp" line="24"/>
+    <file short-path="par-1.cpp" source-path="par-1.cpp" line="24"/>
     <doc>
       <para>
         <text>Brief</text>
@@ -33,7 +33,7 @@
     </doc>
   </function>
   <function name="f3" id="khwJweIqd5FuWAg8T+l+GEljQVc=">
-    <file path="par-1.cpp" line="33"/>
+    <file short-path="par-1.cpp" source-path="par-1.cpp" line="33"/>
     <doc>
       <para>
         <text>Brief</text>
@@ -45,7 +45,7 @@
     </doc>
   </function>
   <function name="f4" id="5wJFEWD4Ev/Vf3QN/mFlKhtbC6E=">
-    <file path="par-1.cpp" line="43"/>
+    <file short-path="par-1.cpp" source-path="par-1.cpp" line="43"/>
     <doc>
       <para>
         <text>Brief</text>

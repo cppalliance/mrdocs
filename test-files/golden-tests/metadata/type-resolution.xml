@@ -3,44 +3,44 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
-    <file path="type-resolution.cpp" line="1" class="def"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="1" class="def"/>
   </struct>
   <template>
     <tparam name="T" class="type"/>
     <tparam name="U" class="type"/>
     <struct name="B" id="swBEqeWAJoaWVKty+1lCoYUK04A=">
-      <file path="type-resolution.cpp" line="3" class="def"/>
+      <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="3" class="def"/>
     </struct>
   </template>
   <namespace-alias name="C" id="f75RIL8qKOwbyH6ffvrv59F0nCA=">
-    <file path="type-resolution.cpp" line="6"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="6"/>
     <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
   </namespace-alias>
   <namespace-alias name="D" id="LXTs1uTCF/vevZU29QYVICehLFQ=">
-    <file path="type-resolution.cpp" line="8"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="8"/>
     <type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;"/>
   </namespace-alias>
   <template>
     <tparam name="T" class="type"/>
     <namespace-alias name="E" id="ikh/cWe22atB10u7UsOKS5W39CA=">
-      <file path="type-resolution.cpp" line="10"/>
+      <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="10"/>
       <type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;T, long&gt;"/>
     </namespace-alias>
   </template>
   <function name="f0" id="NmPMV0MWNFJUjfSOLHtzdbgpFoQ=">
-    <file path="type-resolution.cpp" line="13"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="13"/>
     <param>
       <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
     </param>
   </function>
   <function name="f1" id="BaEDPGJuuB/LSgDi3IbZIcI8+hQ=">
-    <file path="type-resolution.cpp" line="14"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="14"/>
     <param>
       <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
     </param>
   </function>
   <function name="f2" id="7hoCtaKnV3q0+0LGpIwT05DsCzM=">
-    <file path="type-resolution.cpp" line="15"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="15"/>
     <param>
       <type class="lvalue-reference">
         <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
@@ -48,7 +48,7 @@
     </param>
   </function>
   <function name="f3" id="+u77KXnhVCt71fF6pXSP0epFvnk=">
-    <file path="type-resolution.cpp" line="16"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="16"/>
     <param>
       <type class="lvalue-reference">
         <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
@@ -56,7 +56,7 @@
     </param>
   </function>
   <function name="f4" id="9T7aRCZADylTGfrzXLBOVh0ozys=">
-    <file path="type-resolution.cpp" line="17"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="17"/>
     <param>
       <type class="pointer">
         <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
@@ -64,7 +64,7 @@
     </param>
   </function>
   <function name="f5" id="kT0jo07C7QGLPer3WTjynau4uqw=">
-    <file path="type-resolution.cpp" line="18"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="18"/>
     <param>
       <type class="pointer">
         <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
@@ -72,7 +72,7 @@
     </param>
   </function>
   <function name="f6" id="MdHfxQfzVjQ3CUyn9Mpn7fQk+/M=">
-    <file path="type-resolution.cpp" line="19"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="19"/>
     <param>
       <type class="pointer">
         <pointee-type class="pointer">
@@ -82,7 +82,7 @@
     </param>
   </function>
   <function name="f7" id="w10F/8wyLcytn7L65/ILYU0EdXo=">
-    <file path="type-resolution.cpp" line="20"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="20"/>
     <param>
       <type class="pointer">
         <pointee-type class="pointer">
@@ -92,7 +92,7 @@
     </param>
   </function>
   <function name="f8" id="CClm4VbfLVJuyMbCoDMeADEgyqc=">
-    <file path="type-resolution.cpp" line="21"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="21"/>
     <param>
       <type class="pointer">
         <pointee-type class="pointer" cv-qualifiers="const">
@@ -102,19 +102,19 @@
     </param>
   </function>
   <function name="g0" id="yrx2OB9QNNSl9+wzVkVQ8SEabRs=">
-    <file path="type-resolution.cpp" line="23"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="23"/>
     <param>
       <type id="f75RIL8qKOwbyH6ffvrv59F0nCA=" name="C"/>
     </param>
   </function>
   <function name="g1" id="Rj6P6+H/ZPGfGuoquGgLekbJPqg=">
-    <file path="type-resolution.cpp" line="24"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="24"/>
     <param>
       <type id="f75RIL8qKOwbyH6ffvrv59F0nCA=" name="C" cv-qualifiers="const"/>
     </param>
   </function>
   <function name="g2" id="ZoIZSEi5P7rybxKK8Kjgxla7+4Y=">
-    <file path="type-resolution.cpp" line="25"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="25"/>
     <param>
       <type class="lvalue-reference">
         <pointee-type id="f75RIL8qKOwbyH6ffvrv59F0nCA=" name="C"/>
@@ -122,7 +122,7 @@
     </param>
   </function>
   <function name="g3" id="Q0DuYbFpCkEF2ouXRvQLKKq1zh8=">
-    <file path="type-resolution.cpp" line="26"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="26"/>
     <param>
       <type class="lvalue-reference">
         <pointee-type id="f75RIL8qKOwbyH6ffvrv59F0nCA=" name="C" cv-qualifiers="const"/>
@@ -130,7 +130,7 @@
     </param>
   </function>
   <function name="g4" id="SayuQ3M/mTSdbTbGozDw6t08++w=">
-    <file path="type-resolution.cpp" line="27"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="27"/>
     <param>
       <type class="pointer">
         <pointee-type id="f75RIL8qKOwbyH6ffvrv59F0nCA=" name="C"/>
@@ -138,7 +138,7 @@
     </param>
   </function>
   <function name="g5" id="PaQ7BnZjNHfJZQsH/h+VxhlT36c=">
-    <file path="type-resolution.cpp" line="28"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="28"/>
     <param>
       <type class="pointer">
         <pointee-type id="f75RIL8qKOwbyH6ffvrv59F0nCA=" name="C" cv-qualifiers="const"/>
@@ -146,7 +146,7 @@
     </param>
   </function>
   <function name="g6" id="Q3jmjtDscKaRlk9NmZeWQrE/qC0=">
-    <file path="type-resolution.cpp" line="29"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="29"/>
     <param>
       <type class="pointer">
         <pointee-type class="pointer">
@@ -156,7 +156,7 @@
     </param>
   </function>
   <function name="g7" id="c258MEng+EH63J85RJQ0lCqTn9c=">
-    <file path="type-resolution.cpp" line="30"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="30"/>
     <param>
       <type class="pointer">
         <pointee-type class="pointer">
@@ -166,7 +166,7 @@
     </param>
   </function>
   <function name="g8" id="ycKVTIHwB/Z8IbNKkEaJj75S3bA=">
-    <file path="type-resolution.cpp" line="31"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="31"/>
     <param>
       <type class="pointer">
         <pointee-type class="pointer" cv-qualifiers="const">
@@ -176,19 +176,19 @@
     </param>
   </function>
   <function name="h0" id="E5y/fD9iZ0MCXYoHtunBFFWTWhg=">
-    <file path="type-resolution.cpp" line="33"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="33"/>
     <param>
       <type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;"/>
     </param>
   </function>
   <function name="h1" id="BI0JWw00VfmJGJLhcVYpoks79MI=">
-    <file path="type-resolution.cpp" line="34"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="34"/>
     <param>
       <type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;" cv-qualifiers="const"/>
     </param>
   </function>
   <function name="h2" id="ysfWNk4t2HuUA1jfw595fkiD1PA=">
-    <file path="type-resolution.cpp" line="35"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="35"/>
     <param>
       <type class="lvalue-reference">
         <pointee-type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;"/>
@@ -196,7 +196,7 @@
     </param>
   </function>
   <function name="h3" id="3YZIC0cuzzvjybwCWJjk6kMYkzk=">
-    <file path="type-resolution.cpp" line="36"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="36"/>
     <param>
       <type class="lvalue-reference">
         <pointee-type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;" cv-qualifiers="const"/>
@@ -204,7 +204,7 @@
     </param>
   </function>
   <function name="h4" id="fIfvv5LTjuRTX2EoKkdnMHXq8E0=">
-    <file path="type-resolution.cpp" line="37"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="37"/>
     <param>
       <type class="pointer">
         <pointee-type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;"/>
@@ -212,7 +212,7 @@
     </param>
   </function>
   <function name="h5" id="oFewAAa3bKYS3Sk8SzrCV2pZjwY=">
-    <file path="type-resolution.cpp" line="38"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="38"/>
     <param>
       <type class="pointer">
         <pointee-type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;" cv-qualifiers="const"/>
@@ -220,7 +220,7 @@
     </param>
   </function>
   <function name="h6" id="4+iF5tOtJgZ7ZcqfZljDl0zsJaY=">
-    <file path="type-resolution.cpp" line="39"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="39"/>
     <param>
       <type class="pointer">
         <pointee-type class="pointer">
@@ -230,7 +230,7 @@
     </param>
   </function>
   <function name="h7" id="spvd/tFS+th4JW6fc601EqTD5hA=">
-    <file path="type-resolution.cpp" line="40"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="40"/>
     <param>
       <type class="pointer">
         <pointee-type class="pointer">
@@ -240,7 +240,7 @@
     </param>
   </function>
   <function name="h8" id="AIIJjypsyznlYuu8zS5f9VVTsqM=">
-    <file path="type-resolution.cpp" line="41"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="41"/>
     <param>
       <type class="pointer">
         <pointee-type class="pointer" cv-qualifiers="const">
@@ -250,19 +250,19 @@
     </param>
   </function>
   <function name="i0" id="UUnnujM/qHDrH/lhqape19i4ygc=">
-    <file path="type-resolution.cpp" line="43"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="43"/>
     <param>
       <type id="LXTs1uTCF/vevZU29QYVICehLFQ=" name="D"/>
     </param>
   </function>
   <function name="i1" id="oZaT3+tjcRZ1TqV3dDRcibfcIUA=">
-    <file path="type-resolution.cpp" line="44"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="44"/>
     <param>
       <type id="LXTs1uTCF/vevZU29QYVICehLFQ=" name="D" cv-qualifiers="const"/>
     </param>
   </function>
   <function name="i2" id="9ssXVWUhTzxQgA12dFAzDjoQsSo=">
-    <file path="type-resolution.cpp" line="45"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="45"/>
     <param>
       <type class="lvalue-reference">
         <pointee-type id="LXTs1uTCF/vevZU29QYVICehLFQ=" name="D"/>
@@ -270,7 +270,7 @@
     </param>
   </function>
   <function name="i3" id="lt3C1MYHyvgc69kaQIicxt6GShw=">
-    <file path="type-resolution.cpp" line="46"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="46"/>
     <param>
       <type class="lvalue-reference">
         <pointee-type id="LXTs1uTCF/vevZU29QYVICehLFQ=" name="D" cv-qualifiers="const"/>
@@ -278,7 +278,7 @@
     </param>
   </function>
   <function name="i4" id="T8COa5LWeytxzI9W9tsQ0yn3pMQ=">
-    <file path="type-resolution.cpp" line="47"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="47"/>
     <param>
       <type class="pointer">
         <pointee-type id="LXTs1uTCF/vevZU29QYVICehLFQ=" name="D"/>
@@ -286,7 +286,7 @@
     </param>
   </function>
   <function name="i5" id="yjcvYN+iBULxlO9Ye2mlCrItu0E=">
-    <file path="type-resolution.cpp" line="48"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="48"/>
     <param>
       <type class="pointer">
         <pointee-type id="LXTs1uTCF/vevZU29QYVICehLFQ=" name="D" cv-qualifiers="const"/>
@@ -294,7 +294,7 @@
     </param>
   </function>
   <function name="i6" id="n5ijVugkR+RdqWc8HhULfhumEa8=">
-    <file path="type-resolution.cpp" line="49"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="49"/>
     <param>
       <type class="pointer">
         <pointee-type class="pointer">
@@ -304,7 +304,7 @@
     </param>
   </function>
   <function name="i7" id="ZjHOF6kLLIcBXeh5KZapmnzPEnI=">
-    <file path="type-resolution.cpp" line="50"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="50"/>
     <param>
       <type class="pointer">
         <pointee-type class="pointer">
@@ -314,7 +314,7 @@
     </param>
   </function>
   <function name="i8" id="D9mUtv975QoRibry0HtjynvRkzs=">
-    <file path="type-resolution.cpp" line="51"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="51"/>
     <param>
       <type class="pointer">
         <pointee-type class="pointer" cv-qualifiers="const">
@@ -324,19 +324,19 @@
     </param>
   </function>
   <function name="j0" id="iegBG/1Lpr/GF9vznbapPd8d6Ws=">
-    <file path="type-resolution.cpp" line="53"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="53"/>
     <param>
       <type id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E&lt;short&gt;"/>
     </param>
   </function>
   <function name="j1" id="al+9zRjNTBZZcU69a8iMD6KngWA=">
-    <file path="type-resolution.cpp" line="54"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="54"/>
     <param>
       <type id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E&lt;short&gt;" cv-qualifiers="const"/>
     </param>
   </function>
   <function name="j2" id="2cJI8v0G+GfLxlnF+d0p52Lt9zE=">
-    <file path="type-resolution.cpp" line="55"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="55"/>
     <param>
       <type class="lvalue-reference">
         <pointee-type id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E&lt;short&gt;"/>
@@ -344,7 +344,7 @@
     </param>
   </function>
   <function name="j3" id="gGkJqESKyHkjrDimz/Z1Uj2cK+0=">
-    <file path="type-resolution.cpp" line="56"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="56"/>
     <param>
       <type class="lvalue-reference">
         <pointee-type id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E&lt;short&gt;" cv-qualifiers="const"/>
@@ -352,7 +352,7 @@
     </param>
   </function>
   <function name="j4" id="Mj/s1nUSVoc1ekzTBsQf9pPgkFw=">
-    <file path="type-resolution.cpp" line="57"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="57"/>
     <param>
       <type class="pointer">
         <pointee-type id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E&lt;short&gt;"/>
@@ -360,7 +360,7 @@
     </param>
   </function>
   <function name="j5" id="gVVoORJQLKCql9+xiRwm1JBfiBE=">
-    <file path="type-resolution.cpp" line="58"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="58"/>
     <param>
       <type class="pointer">
         <pointee-type id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E&lt;short&gt;" cv-qualifiers="const"/>
@@ -368,7 +368,7 @@
     </param>
   </function>
   <function name="j6" id="sprKg2FCJZqWV8vVSeoW2hF5RL8=">
-    <file path="type-resolution.cpp" line="59"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="59"/>
     <param>
       <type class="pointer">
         <pointee-type class="pointer">
@@ -378,7 +378,7 @@
     </param>
   </function>
   <function name="j7" id="VSCpXF9FwRBZvC4dq2fu0/+CXgY=">
-    <file path="type-resolution.cpp" line="60"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="60"/>
     <param>
       <type class="pointer">
         <pointee-type class="pointer">
@@ -388,7 +388,7 @@
     </param>
   </function>
   <function name="j8" id="rjNquALg5slBV3zcGK7kbMiR/Oc=">
-    <file path="type-resolution.cpp" line="61"/>
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="61"/>
     <param>
       <type class="pointer">
         <pointee-type class="pointer" cv-qualifiers="const">

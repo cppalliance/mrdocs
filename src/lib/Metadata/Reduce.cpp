@@ -27,8 +27,8 @@ struct LocationEqual
         Location const& L1) const noexcept
     {
         return
-            std::tie(L0.LineNumber, L0.Filename) ==
-            std::tie(L1.LineNumber, L1.Filename);
+            std::tie(L0.LineNumber, L0.FullPath) ==
+            std::tie(L1.LineNumber, L1.FullPath);
     }
 };
 
@@ -43,8 +43,8 @@ struct LocationLess
         Location const& L1) const noexcept
     {
         return
-            std::tie(L0.LineNumber, L0.Filename) <
-            std::tie(L1.LineNumber, L1.Filename);
+            std::tie(L0.LineNumber, L0.FullPath) <
+            std::tie(L1.LineNumber, L1.FullPath);
     }
 };
 

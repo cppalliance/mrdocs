@@ -696,7 +696,7 @@ populate(
         {
             return;
         }
-        I.DefLoc.emplace(file->full_path, file->short_path, line, documented);
+        I.DefLoc.emplace(file->full_path, file->short_path, file->source_path, line, documented);
     }
     else
     {
@@ -705,13 +705,13 @@ populate(
             [line, file](const Location& l)
             {
                 return l.LineNumber == line &&
-                    l.Path == file->full_path;
+                    l.FullPath == file->full_path;
             });
         if (existing != I.Loc.end())
         {
             return;
         }
-        I.Loc.emplace_back(file->full_path, file->short_path, line, documented);
+        I.Loc.emplace_back(file->full_path, file->short_path, file->source_path, line, documented);
     }
 }
 
@@ -2762,6 +2762,15 @@ buildFileInfo(std::string_view const file_path)
         return tryGetRelativePosixPath(posixPrefix);
     };
 
+    // Populate file relative to source-root
+    if (files::isAbsolute(config_->sourceRoot))
+    {
+        if (auto shortPath = tryGetRelativePath(config_->sourceRoot))
+        {
+            file_info.source_path = std::string(*shortPath);
+        }
+    }
+
     // Find the best match for the file path in the search directories
     for (HeaderSearch& HS = sema_.getPreprocessor().getHeaderSearchInfo();
          DirectoryLookup const& DL : HS.search_dir_range())
@@ -2780,14 +2789,11 @@ buildFileInfo(std::string_view const file_path)
         }
     }
 
-    // Fallback to sourceRoot
-    if (files::isAbsolute(config_->sourceRoot))
+    // Fallback to the source root
+    if (!file_info.source_path.empty())
     {
-        if (auto shortPath = tryGetRelativePath(config_->sourceRoot))
-        {
-            file_info.short_path = std::string(*shortPath);
-            return file_info;
-        }
+        file_info.short_path = file_info.source_path;
+        return file_info;
     }
 
     // Fallback to system search paths in PATH

@@ -3,7 +3,7 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <function name="f" id="ackjGh57CJQLwtO8PihiSPPKIBY=">
-    <file path="param.cpp" line="4" class="def"/>
+    <file short-path="param.cpp" source-path="param.cpp" line="4" class="def"/>
     <param name="x">
       <type name="int"/>
     </param>
@@ -13,7 +13,7 @@
     </doc>
   </function>
   <function name="g" id="wOc7mtwXPodKdeWFmSfib8PaSww=">
-    <file path="param.cpp" line="10" class="def"/>
+    <file short-path="param.cpp" source-path="param.cpp" line="10" class="def"/>
     <param name="x">
       <type name="int"/>
     </param>
@@ -28,7 +28,7 @@
     </doc>
   </function>
   <function name="h" id="rxzCccrw6I3QTAhGPnAfCKLwzTA=">
-    <file path="param.cpp" line="17" class="def"/>
+    <file short-path="param.cpp" source-path="param.cpp" line="17" class="def"/>
     <param name="x">
       <type name="int"/>
     </param>
@@ -48,7 +48,7 @@
     </doc>
   </function>
   <function name="i" id="owRiLpD5mLW5E/kfLQC0oOzxkDM=">
-    <file path="param.cpp" line="25" class="def"/>
+    <file short-path="param.cpp" source-path="param.cpp" line="25" class="def"/>
     <param name="w">
       <type name="int"/>
     </param>
