@@ -581,9 +581,9 @@ match(std::string_view const str, char const delimiter) const
 }
 
 bool
-GlobPattern::
-matchPatternPrefix(std::string_view const str, char const delimiter) const
-{
+GlobPattern::matchPatternPrefix(
+    std::string_view const str,
+    char const delimiter) const {
     if (!impl_)
     {
         return str.empty();
@@ -604,12 +604,23 @@ matchPatternPrefix(std::string_view const str, char const delimiter) const
     for (auto& subGlob: impl_->subGlobs)
     {
         if (auto m = subGlob.match(suffix, delimiter);
-            m == SubGlobPattern::MatchType::FULL || m == SubGlobPattern::MatchType::PARTIAL)
+            m == SubGlobPattern::MatchType::FULL
+            || m == SubGlobPattern::MatchType::PARTIAL)
         {
             return true;
         }
     }
     return false;
+}
+
+bool
+GlobPattern::isLiteral() const
+{
+    if (!impl_)
+    {
+        return true;
+    }
+    return impl_->subGlobs.empty();
 }
 
 std::string_view

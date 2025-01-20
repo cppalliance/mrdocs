@@ -97,6 +97,16 @@ public:
     bool
     matchPatternPrefix(std::string_view prefix, char delimiter) const;
 
+    /** Checks if the glob pattern is a literal string.
+
+        This function determines if the glob pattern does not contain
+        any special characters. In other words, it matches a single string.
+
+        @return true if the glob pattern is a literal string, false otherwise.
+     */
+    bool
+    isLiteral() const;
+
     /** Returns the glob pattern.
 
         @return The glob pattern as a string view.
@@ -183,6 +193,19 @@ public:
     matchPatternPrefix(std::string_view prefix) const
     {
         return glob_.matchPatternPrefix(prefix, '/');
+    }
+
+    /** Checks if the glob pattern is a literal string.
+
+        This function determines if the glob pattern does not contain
+        any special characters. In other words, it matches a single string.
+
+        @return true if the glob pattern is a literal string, false otherwise.
+     */
+    bool
+    isLiteral() const
+    {
+        return glob_.isLiteral();
     }
 
     /** Returns the glob pattern.
@@ -274,6 +297,19 @@ public:
     matchPatternPrefix(std::string_view prefix) const
     {
         return glob_.matchPatternPrefix(prefix, ':');
+    }
+
+    /** Checks if the glob pattern is a literal string.
+
+        This function determines if the glob pattern does not contain
+        any special characters. In other words, it matches a single string.
+
+        @return true if the glob pattern is a literal string, false otherwise.
+     */
+    bool
+    isLiteral() const
+    {
+        return glob_.isLiteral();
     }
 
     /** Returns the glob pattern.

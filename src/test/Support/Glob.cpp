@@ -551,6 +551,38 @@ struct Glob_test
                 BOOST_TEST_NOT(glob.matchPatternPrefix("std"));
             }
         }
+
+        // isLiteral
+        {
+            // default constructed to empty string
+            {
+                PathGlobPattern glob;
+                BOOST_TEST(glob.isLiteral());
+                BOOST_TEST(glob.match(""));
+                BOOST_TEST_NOT(glob.match("a"));
+            }
+
+            // empty string
+            {
+                auto globExp = PathGlobPattern::create("");
+                BOOST_TEST(globExp);
+                PathGlobPattern const& glob = *globExp;
+                BOOST_TEST(glob.isLiteral());
+                BOOST_TEST(glob.match(""));
+                BOOST_TEST_NOT(glob.match("a"));
+            }
+
+            // literal string
+            {
+                auto globExp = PathGlobPattern::create("abc");
+                BOOST_TEST(globExp);
+                PathGlobPattern const& glob = *globExp;
+                BOOST_TEST(glob.isLiteral());
+                BOOST_TEST(glob.match("abc"));
+                BOOST_TEST_NOT(glob.match("abcd"));
+                BOOST_TEST_NOT(glob.match("a/b/c"));
+            }
+        }
     }
 };
 
