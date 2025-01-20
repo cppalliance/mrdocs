@@ -384,10 +384,9 @@ struct Glob_test
                 BOOST_TEST_NOT(glob.match("aab"));
             }
 
-            // invalid
+            // stray \ becomes part of the literal prefix
             {
-                // stray \ at the end
-                BOOST_TEST_NOT(PathGlobPattern::create("a\\"));
+                BOOST_TEST(PathGlobPattern::create("a\\"));
             }
         }
 
@@ -581,6 +580,26 @@ struct Glob_test
                 BOOST_TEST(glob.match("abc"));
                 BOOST_TEST_NOT(glob.match("abcd"));
                 BOOST_TEST_NOT(glob.match("a/b/c"));
+            }
+
+            // literal string with escaped characters
+            {
+                auto globExp = PathGlobPattern::create("a\\*b");
+                BOOST_TEST(globExp);
+                PathGlobPattern const& glob = *globExp;
+                BOOST_TEST(glob.isLiteral());
+                BOOST_TEST(glob.match("a*b"));
+                BOOST_TEST_NOT(glob.match("aab"));
+            }
+
+            // literal string with all special characters escaped
+            {
+                auto globExp = PathGlobPattern::create("a\\*\\?\\[\\{\\}\\^\\!\\-\\]\\c");
+                BOOST_TEST(globExp);
+                PathGlobPattern const& glob = *globExp;
+                BOOST_TEST(glob.isLiteral());
+                BOOST_TEST(glob.match("a*?[{}^!-]c"));
+                BOOST_TEST_NOT(glob.match("a"));
             }
         }
     }
