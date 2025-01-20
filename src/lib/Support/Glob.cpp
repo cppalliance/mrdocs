@@ -467,6 +467,90 @@ match(std::string_view str, char const delimiter) const
     }
     return MatchType::PARTIAL;
 }
+
+/*  Check if a character at a given position is escaped.
+
+    @param pattern The glob pattern.
+    @param pos The position of the character to check.
+    @return true if the character is escaped, false otherwise.
+ */
+bool isEscaped(std::string_view pattern, std::size_t pos)
+{
+    if (pos == 0)
+    {
+        return false;
+    }
+    std::size_t backslashCount = 0;
+    while (pos > 0 && pattern[--pos] == '\\')
+    {
+        ++backslashCount;
+    }
+    return backslashCount % 2 != 0;
+}
+
+struct PrefixInfo
+{
+    // The unescaped prefix
+    std::string prefix;
+
+    // The encoded prefix size
+    std::size_t prefixSize;
+};
+
+
+/*  Extract the prefix of a glob pattern up to the first non-escaped metacharacter.
+
+    @param pattern The glob pattern.
+    @return The prefix of the pattern.
+ */
+PrefixInfo
+extractPrefix(std::string_view pattern)
+{
+    PrefixInfo result;
+    std::size_t pos = 0;
+
+    while (pos < pattern.size())
+    {
+        // Find the first metacharacter or backslash
+        std::size_t const metacharPos = pattern.find_first_of("?*[{\\", pos);
+
+        // Copy all literal characters up to the metacharacter
+        result.prefix.append(pattern.substr(pos, metacharPos - pos));
+        pos = metacharPos;
+
+        if (pos == std::string_view::npos)
+        {
+            // No more characters, we're done
+            result.prefixSize = pattern.size();
+            return result;
+        }
+
+        if (char const c = pattern[pos];
+            c == '\\' &&
+            pos + 1 < pattern.size())
+        {
+            // Push the escaped character instead of the backslash
+            result.prefix += pattern[pos + 1];
+            pos += 2;
+        }
+        else if (c == '?' || c == '*' || c == '[' || c == '{')
+        {
+            // If it's escaped, it should have been handled in the
+            // previous case.
+            MRDOCS_ASSERT(!isEscaped(pattern, pos));
+            break;
+        }
+        else
+        {
+            // Handle a backslash that is not escaping anything
+            result.prefix += c;
+            ++pos;
+        }
+    }
+    result.prefixSize = pos;
+    return result;
+}
+
 } // (anon)
 
 struct GlobPattern::Impl {
@@ -492,12 +576,12 @@ create(
     // Store the original pattern.
     res.impl_->pattern = std::string(pattern);
 
-    // Store the prefix that does not contain any metacharacter.
-    std::size_t const prefixSize = pattern.find_first_of("?*[{\\");
-    res.impl_->prefix = pattern.substr(0, prefixSize);
-    if (prefixSize == std::string::npos)
+    // Store the pattern literal prefix.
+    auto [prefix, prefixSize] = extractPrefix(pattern);
+    res.impl_->prefix = std::move(prefix);
+    if (prefixSize == pattern.size())
     {
-        // The pattern does not contain any metacharacter.
+        // The pattern does not contain any unescaped metacharacter.
         return res;
     }
 
