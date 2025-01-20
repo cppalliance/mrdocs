@@ -657,7 +657,7 @@ struct T17
 |===
 | Name 
 
-| <<T14-f,`f`>>  [.small]#[virtual]#
+| <<T17-f,`f`>>  [.small]#[virtual]#
 |===
 
 
@@ -783,7 +783,7 @@ struct V
 | Name 
 
 | <<U-f1,`f1`>> 
-| <<U-f3,`f3`>>  [.small]#[virtual]#
+| <<V-f3,`f3`>>  [.small]#[virtual]#
 |===
 === Static Member Functions
 

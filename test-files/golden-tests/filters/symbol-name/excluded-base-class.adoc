@@ -1,0 +1,166 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+=== Namespaces
+
+[cols=1]
+|===
+| Name 
+
+| <<A,`A`>> 
+|===
+
+[#A]
+== A
+
+
+=== Types
+
+[cols=1]
+|===
+| Name 
+
+| <<A-D,`D`>> 
+| <<A-E,`E`>> 
+|===
+
+[#A-D]
+== <<A,A>>::D
+
+
+=== Synopsis
+
+
+Declared in `&lt;excluded&hyphen;base&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class D
+    : public B::C;
+----
+
+=== Member Functions
+
+[cols=1]
+|===
+| Name 
+
+| <<A-D-g,`g`>>  [.small]#[virtual]#
+| <<A-D-h,`h`>>  [.small]#[virtual]#
+| <<A-D-i,`i`>> 
+|===
+
+
+
+[#A-D-g]
+== <<A,A>>::<<A-D,D>>::g
+
+
+=== Synopsis
+
+
+Declared in `&lt;excluded&hyphen;base&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+virtual
+void
+g() override;
+----
+
+[#A-D-h]
+== <<A,A>>::<<A-D,D>>::h
+
+
+=== Synopsis
+
+
+Declared in `&lt;excluded&hyphen;base&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+virtual
+void
+h() override;
+----
+
+[#A-D-i]
+== <<A,A>>::<<A-D,D>>::i
+
+
+=== Synopsis
+
+
+Declared in `&lt;excluded&hyphen;base&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+i();
+----
+
+[#A-E]
+== <<A,A>>::E
+
+
+=== Synopsis
+
+
+Declared in `&lt;excluded&hyphen;base&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class E
+    : public B::C;
+----
+
+=== Member Functions
+
+[cols=1]
+|===
+| Name 
+
+| <<A-E-h,`h`>>  [.small]#[virtual]#
+| <<A-E-i,`i`>> 
+|===
+
+
+
+[#A-E-h]
+== <<A,A>>::<<A-E,E>>::h
+
+
+=== Synopsis
+
+
+Declared in `&lt;excluded&hyphen;base&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+virtual
+void
+h() override;
+----
+
+[#A-E-i]
+== <<A,A>>::<<A-E,E>>::i
+
+
+=== Synopsis
+
+
+Declared in `&lt;excluded&hyphen;base&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+i();
+----
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <namespace name="A" id="jQQu/8mLNzRQvGtbkKMwwloVDpw=">
+    <class name="D" id="/TldxA72JGXtufh5RbJgxLW2mwU=">
+      <file short-path="excluded-base-class.cpp" source-path="excluded-base-class.cpp" line="15" class="def"/>
+      <base>
+        <type id="9QgUJNKn+WNP3bawIZL9jzTlEGc=" name="B::C"/>
+      </base>
+      <function name="g" id="o+85JO3Sv4bIWiG3+bfyUw5gJWI=">
+        <file short-path="excluded-base-class.cpp" source-path="excluded-base-class.cpp" line="17"/>
+        <attr id="has-override"/>
+      </function>
+      <function name="h" id="NiHV825xQJhfQDhKCeAex3UuHGY=">
+        <file short-path="excluded-base-class.cpp" source-path="excluded-base-class.cpp" line="18"/>
+        <attr id="has-override"/>
+      </function>
+      <function name="i" id="d5/JtPJCrP6OG8ToxUKNR5xqJ4I=">
+        <file short-path="excluded-base-class.cpp" source-path="excluded-base-class.cpp" line="19"/>
+      </function>
+    </class>
+    <class name="E" id="ejPqzkotYMoiJcYkJf0fmJ0UNFM=">
+      <file short-path="excluded-base-class.cpp" source-path="excluded-base-class.cpp" line="27" class="def"/>
+      <base>
+        <type id="9QgUJNKn+WNP3bawIZL9jzTlEGc=" name="B::C"/>
+      </base>
+      <function name="h" id="KiY+7o+uUp3h7bndNOpI2AuCrAE=">
+        <file short-path="excluded-base-class.cpp" source-path="excluded-base-class.cpp" line="29"/>
+        <attr id="has-override"/>
+      </function>
+      <function name="i" id="0wO8aZwuOLvF7/RooHUZJ5SyKzk=">
+        <file short-path="excluded-base-class.cpp" source-path="excluded-base-class.cpp" line="30"/>
+      </function>
+    </class>
+  </namespace>
+</namespace>
+</mrdocs>
