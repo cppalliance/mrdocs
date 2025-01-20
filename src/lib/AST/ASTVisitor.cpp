@@ -160,7 +160,7 @@ ASTVisitor::
 traverse(UsingDirectiveDecl* D)
 {
     // Find the parent namespace
-    ScopeExitRestore s1(mode_, ExtractionMode::Dependency);
+    ScopeExitRestore s1(mode_, TraversalMode::Dependency);
     Decl* P = getParent(D);
     MRDOCS_SYMBOL_TRACE(P, context_);
     Info* PI = findOrTraverse(P);
@@ -171,7 +171,7 @@ traverse(UsingDirectiveDecl* D)
     // Find the nominated namespace
     Decl* ND = D->getNominatedNamespace();
     MRDOCS_SYMBOL_TRACE(ND, context_);
-    ScopeExitRestore s2(mode_, ExtractionMode::Dependency);
+    ScopeExitRestore s2(mode_, TraversalMode::Dependency);
     Info* NDI = findOrTraverse(ND);
     MRDOCS_CHECK_OR(NDI, nullptr);
 
@@ -205,29 +205,35 @@ traverseMembers(InfoTy& I, DeclTy* DC)
         std::derived_from<DeclTy, DeclContext>)
     {
         // We only need members of regular symbols and see-below namespaces
-        // - SeeBelow symbols (that are not namespaces) are only the
-        //   symbol and the documentation.
-        // - ImplementationDefined symbols have no pages
-        // - Dependency symbols only need the names
-        MRDOCS_CHECK_OR(
-            I.Extraction == ExtractionMode::Regular ||
-            I.Extraction == ExtractionMode::SeeBelow);
+        // - If symbol is SeeBelow we want the members if it's a namespace
         MRDOCS_CHECK_OR(
             I.Extraction != ExtractionMode::SeeBelow ||
             I.Kind == InfoKind::Namespace);
 
-        // Set the context for the members
-        ScopeExitRestore s(mode_, I.Extraction);
+        // - If symbol is a Dependency, we only want the members if
+        //   the traversal mode is BaseClass
+        MRDOCS_CHECK_OR(
+            I.Extraction != ExtractionMode::Dependency ||
+            mode_ == TraversalMode::BaseClass);
 
-        // There are many implicit declarations in the
-        // translation unit declaration, so we preemtively
-        // skip them here.
+        // - If symbol is ImplementationDefined, we only want the members if
+        //   the traversal mode is BaseClass
+        MRDOCS_CHECK_OR(
+            I.Extraction != ExtractionMode::ImplementationDefined ||
+            mode_ == TraversalMode::BaseClass);
+
+        // There are many implicit declarations, especially in the
+        // translation unit declaration, so we preemtively skip them here.
         auto explicitMembers = std::ranges::views::filter(DC->decls(), [](Decl* D)
             {
                 return !D->isImplicit() || isa<IndirectFieldDecl>(D);
             });
         for (auto* D : explicitMembers)
         {
+            // No matter what happens in the process, we restore the
+            // traversal mode to the original mode for the next member
+            ScopeExitRestore s(mode_);
+            // Traverse the member
             traverse(D);
         }
     }
@@ -259,12 +265,11 @@ traverseParents(InfoTy& I, DeclTy* DC)
         // Check if we haven't already extracted or started
         // to extract the parent scope
 
-
         // Traverse the parent scope as a dependency if it
         // hasn't been extracted yet
         Info* PI = nullptr;
         {
-            ScopeExitRestore s(mode_, ExtractionMode::Dependency);
+            ScopeExitRestore s(mode_, Dependency);
             if (PI = findOrTraverse(PD); !PI)
             {
                 return;
@@ -548,7 +553,7 @@ populateInfoBases(InfoTy& I, bool const isNew, DeclTy* D)
             I.Extraction = ExtractionMode::Regular;
             // default mode also becomes regular for its
             // members
-            mode_ = ExtractionMode::Regular;
+            mode_ = TraversalMode::Regular;
         }
     }
 
@@ -773,7 +778,7 @@ populate(
             }
 
             QualType const BT = B.getType();
-            auto BaseType = toTypeInfo(BT);
+            auto BaseType = toTypeInfo(BT, BaseClass);
 
             // CXXBaseSpecifier::getEllipsisLoc indicates whether the
             // base was a pack expansion; a PackExpansionType is not built
@@ -1210,10 +1215,9 @@ populate(
     I.Qualifier = toNameInfo(D->getQualifier());
     for (UsingShadowDecl const* UDS: D->shadows())
     {
-        ScopeExitRestore s(mode_, ExtractionMode::Dependency);
+        ScopeExitRestore s(mode_, Dependency);
         Decl* S = UDS->getTargetDecl();
-        Info* SI = findOrTraverse(S);
-        if (SI)
+        if (Info* SI = findOrTraverse(S))
         {
             I.UsingSymbols.emplace_back(SI->id);
         }
@@ -1647,7 +1651,7 @@ generateJavadoc(
 
 std::unique_ptr<TypeInfo>
 ASTVisitor::
-toTypeInfo(QualType const qt)
+toTypeInfo(QualType const qt, TraversalMode const mode)
 {
     MRDOCS_SYMBOL_TRACE(qt, context_);
 
@@ -1655,7 +1659,7 @@ toTypeInfo(QualType const qt)
     // For library types, can be proved wrong and the Info type promoted
     // to a regular type later on if the type matches the regular
     // extraction criteria
-    ScopeExitRestore s(mode_, ExtractionMode::Dependency);
+    ScopeExitRestore s(mode_, mode);
 
     // Build the TypeInfo representation for the type
     TypeInfoBuilder Builder(*this);
@@ -1674,7 +1678,7 @@ toNameInfo(
     }
     MRDOCS_SYMBOL_TRACE(NNS, context_);
 
-    ScopeExitRestore scope(mode_,ExtractionMode::Dependency);
+    ScopeExitRestore scope(mode_, Dependency);
     std::unique_ptr<NameInfo> I = nullptr;
     if (const Type* T = NNS->getAsType())
     {
@@ -1763,7 +1767,7 @@ toNameInfo(
     {
         return nullptr;
     }
-    ScopeExitRestore scope(mode_, ExtractionMode::Dependency);
+    ScopeExitRestore scope(mode_, Dependency);
     auto* ID = getInstantiatedFrom(D);
     if (Info const* info = findOrTraverse(const_cast<Decl*>(ID)))
     {
@@ -2397,7 +2401,7 @@ shouldExtract(
     MRDOCS_CHECK_OR(!isa<TranslationUnitDecl>(D), true);
 
     // Check if this kind of symbol should be extracted.
-    // This filters symbols supported by mrdocs and
+    // This filters symbols supported by MrDocs and
     // symbol types whitelisted in the configuration,
     // such as private members and anonymous namespaces.
     MRDOCS_CHECK_OR(checkTypeFilters(D, access), false);
@@ -2405,7 +2409,7 @@ shouldExtract(
     // In dependency mode, we don't need the file and symbol
     // filters because this is a dependency of another
     // declaration that passes the filters.
-    if (mode_ == ExtractionMode::Dependency)
+    if (mode_ != TraversalMode::Regular)
     {
         // If the whole declaration is implicit, we should
         // not promote the extraction mode to regular
@@ -2426,7 +2430,7 @@ shouldExtract(
         if (checkSymbolFilters(D) &&
             checkFileFilters(D))
         {
-            mode_ = ExtractionMode::Regular;
+            mode_ = TraversalMode::Regular;
         }
         // But we return true either way
         return true;
@@ -2477,7 +2481,7 @@ checkTypeFilters(Decl const* D, AccessSpecifier access)
         // KRYSTIAN FIXME: is this correct? a namespace should not
         // be extracted as a dependency (until namespace aliases and
         // using directives are supported)
-        MRDOCS_CHECK_OR(mode_ == ExtractionMode::Regular, false);
+        MRDOCS_CHECK_OR(mode_ == TraversalMode::Regular, false);
     }
 
     return true;
@@ -2832,7 +2836,9 @@ upsert(SymbolID const& id)
     {
         info = info_.emplace(std::make_unique<
             InfoTy>(id)).first->get();
-        info->Extraction = mostSpecific(info->Extraction, mode_);
+        auto const minExtract = mode_ == TraversalMode::Regular ?
+            ExtractionMode::Regular : ExtractionMode::Dependency;
+        info->Extraction = mostSpecific(info->Extraction, minExtract);
     }
     MRDOCS_ASSERT(info->Kind == InfoTy::kind_id);
     return {static_cast<InfoTy&>(*info), isNew};
@@ -2873,11 +2879,11 @@ upsert(DeclType* D)
     // this time.
     bool const previouslyExtractedAsDependency =
         !isNew &&
-        mode_ != ExtractionMode::Dependency &&
+        mode_ != TraversalMode::Dependency &&
         I.Extraction == ExtractionMode::Dependency;
     if (previouslyExtractedAsDependency)
     {
-        I.Extraction = mostSpecific(I.Extraction, mode_);
+        I.Extraction = mostSpecific(I.Extraction, ExtractionMode::Regular);
         isNew = true;
     }
 

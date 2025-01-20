@@ -9,23 +9,24 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include "lib/Dom/LazyArray.hpp"
 #include "lib/Lib/ConfigImpl.hpp"
 #include "lib/Support/Debug.hpp"
-#include "lib/Dom/LazyArray.hpp"
-#include <mrdocs/Metadata/Interface.hpp>
-#include <mrdocs/Metadata/DomCorpus.hpp>
-#include <mrdocs/Support/TypeTraits.hpp>
+#include "mrdocs/Support/ScopeExit.hpp"
+#include <algorithm>
+#include <ranges>
+#include <variant>
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Corpus.hpp>
+#include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Metadata/Enum.hpp>
 #include <mrdocs/Metadata/Function.hpp>
+#include <mrdocs/Metadata/Interface.hpp>
 #include <mrdocs/Metadata/Overloads.hpp>
 #include <mrdocs/Metadata/Record.hpp>
 #include <mrdocs/Metadata/Typedef.hpp>
 #include <mrdocs/Metadata/Variable.hpp>
-#include <algorithm>
-#include <ranges>
-#include <variant>
+#include <mrdocs/Support/TypeTraits.hpp>
 
 namespace clang {
 namespace mrdocs {
@@ -42,6 +43,7 @@ class TrancheBuilder
     Tranche* private_;
 
     bool includePrivate_ = true;
+    bool buildingFromBase_ = false;
 
     Tranche* trancheFor(AccessKind access)
     {
@@ -86,10 +88,43 @@ class TrancheBuilder
     push(
         ListTy Tranche::* list,
         AccessKind access,
-        const Info& member)
+        Info const& member)
     {
-        if(Tranche* tranche = trancheFor(access))
+        if (Tranche* tranche = trancheFor(access))
+        {
             push(tranche->*list, member);
+        }
+    }
+
+    void
+    push(
+        std::vector<SymbolID>& list,
+        AccessKind access,
+        FunctionInfo const& member)
+    {
+        // When adding a function to the tranche, we have to
+        // check if the function isn't already overriden by
+        // a function with the same name and signature.
+        if (Tranche* tranche = trancheFor(access))
+        {
+            if (buildingFromBase_)
+            {
+                // Iterate members of list
+                for (auto const& id: list)
+                {
+                    // Get the function info
+                    auto const& I = corpus_.get<FunctionInfo>(id);
+                    // Check if the function is overriden or shadowed
+                    // TODO: We need to improve the function signature comparison
+                    if (I.Name == member.Name)
+                    {
+                        // The function is shadowed, we don't add it
+                        return;
+                    }
+                }
+            }
+            push(list, member);
+        }
     }
 
     static
@@ -98,15 +133,21 @@ class TrancheBuilder
         AccessKind memberAccess,
         AccessKind baseAccess) noexcept
     {
-        if(memberAccess == AccessKind::None ||
+        if (memberAccess == AccessKind::None ||
             baseAccess == AccessKind::None)
+        {
             return AccessKind::None;
-        if(memberAccess == AccessKind::Private ||
+        }
+        if (memberAccess == AccessKind::Private ||
             baseAccess == AccessKind::Private)
+        {
             return AccessKind::Private;
-        if(memberAccess == AccessKind::Protected ||
+        }
+        if (memberAccess == AccessKind::Protected ||
             baseAccess == AccessKind::Protected)
+        {
             return AccessKind::Protected;
+        }
         return AccessKind::Public;
     }
 
@@ -121,8 +162,11 @@ class TrancheBuilder
     const Info*
     lookThroughTypedefs(const Info* I)
     {
-        if(! I || ! I->isTypedef())
+        if (!I ||
+            !I->isTypedef())
+        {
             return I;
+        }
         auto* TI = static_cast<const TypedefInfo*>(I);
         return lookThroughTypedefs(
             corpus_.find(TI->Type->namedSymbol()));
@@ -150,7 +194,7 @@ public:
 
     void
     add(
-        const SymbolID& id,
+        SymbolID const& id,
         AccessKind baseAccess)
     {
         const auto& I = corpus_.get<Info>(id);
@@ -158,69 +202,93 @@ public:
         visit(I, *this, actualAccess);
     }
 
+    // Add members from RecordInfo to the tranches
     void
     addFrom(
         const RecordInfo& I,
         AccessKind baseAccess)
     {
-        for(auto const& B : I.Bases)
+        for (auto const& id: I.Members)
         {
-            auto actualAccess = effectiveAccess(baseAccess, B.Access);
+            add(id, baseAccess);
+        }
+        // Add members from the base classes to the tranches
+        ScopeExitRestore s(buildingFromBase_, true);
+        for (auto const& B : I.Bases)
+        {
+            auto const actualAccess =
+                effectiveAccess(baseAccess, B.Access);
 
-            if( ! includePrivate_ &&
+            if (!includePrivate_ &&
                 actualAccess == AccessKind::Private)
+            {
                 continue;
-            const Info* Base = lookThroughTypedefs(
+            }
+            Info const* Base = lookThroughTypedefs(
                 corpus_.find(B.Type->namedSymbol()));
-            if(! Base || Base->id == I.id ||
-                ! Base->isRecord())
+            if (!Base ||
+                Base->id == I.id ||
+                !Base->isRecord())
+            {
                 continue;
+            }
             addFrom(*static_cast<
                 const RecordInfo*>(Base), actualAccess);
         }
-        for(auto const& id : I.Members)
-            add(id, baseAccess);
     }
 
-    void addFrom(const NamespaceInfo& I)
+    // Add members from RecordInfo to the tranches
+    void
+    addFrom(const NamespaceInfo& I)
     {
-        for(auto const& id : I.Members)
+        for (auto const& id: I.Members)
+        {
             add(id, AccessKind::None);
+        }
     }
 
-    void operator()(
+    // Add a namespace to the tranche
+    void
+    operator()(
         const NamespaceInfo& I,
         AccessKind access)
     {
         push(&Tranche::Namespaces, access, I);
     }
 
-    void operator()(
+    // Add a record to the tranche
+    void
+    operator()(
         const RecordInfo& I,
         AccessKind access)
     {
         push(&Tranche::Records, access, I);
     }
 
-    void operator()(
-        const SpecializationInfo&,
+    void
+    operator()(
+        SpecializationInfo const&,
         AccessKind)
     {
         // KRYSTIAN FIXME: currently unimplemented
     }
 
+    // Add a function to the tranche
     void operator()(
         const FunctionInfo& I,
-        AccessKind access)
+        AccessKind const access)
     {
         // do not inherit constructors or destructors
-        if(parent_.isRecord() && ! isFromParent(I) &&
-            (I.Class == FunctionClass::Constructor ||
-            I.Class == FunctionClass::Destructor))
+        if (parent_.isRecord() && !isFromParent(I)
+            && (I.Class == FunctionClass::Constructor
+                || I.Class == FunctionClass::Destructor))
+        {
             return;
+        }
 
-        bool isStatic = I.StorageClass == StorageClassKind::Static;
-        if(! parent_.isRecord() || ! isStatic)
+        bool const isStatic = I.StorageClass == StorageClassKind::Static;
+        if (!parent_.isRecord() ||
+            !isStatic)
         {
             push(&Tranche::Functions, access, I);
             push(&Tranche::Overloads, access, I);
@@ -324,10 +392,14 @@ buildTranches(
         Private);
     visit(I, [&]<typename InfoTy>(const InfoTy& II)
     {
-        if constexpr(InfoTy::isRecord())
+        if constexpr (InfoTy::isRecord())
+        {
             builder.addFrom(II, AccessKind::Public);
-        if constexpr(InfoTy::isNamespace())
+        }
+        if constexpr (InfoTy::isNamespace())
+        {
             builder.addFrom(II);
+        }
     });
 }
 

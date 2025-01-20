@@ -118,9 +118,55 @@ class ASTVisitor
     */
     std::unordered_map<const FileEntry*, FileInfo> files_;
 
-    /* The current extraction mode
+    /* How we should traverse the current node
+     */
+    enum TraversalMode {
+        /*  Only symbols that pass the filters will be extracted
 
-        This defines the extraction mode assigned to
+            Excluded symbols are not traversed. All other symbols
+            are traversed and their appropriate ExtractionMode
+            is determined.
+
+            Member of these symbols are also traversed.
+
+         */
+        Regular,
+
+        /*  All symbols are extracted
+
+            Even excluded symbols are traversed. If a sy bol
+            doesn't pass the filters, it is extracted as a
+            dependency.
+
+            Members of these dependency symbols are not
+            traversed.
+
+            This is used when an included symbol makes a
+            reference to an excluded symbol.
+         */
+        Dependency,
+
+        /*  All symbols will be extracted and traversed
+
+            This mode is used to extract all symbols, including
+            those that are excluded by the filters. These
+            excluded symbols are marked as dependencies.
+
+            However, members of these dependency symbols are
+            also traversed.
+
+            This is used when an included record makes use
+            of an excluded record as a base class.
+            In this case, we also need information about the
+            excluded base class members to populate the
+            derived class.
+         */
+        BaseClass
+    };
+
+    /* The current traversal mode
+
+        This defines the traversal mode assigned to
         new Info types.
 
         A symbol that passes the filters will be
@@ -128,7 +174,7 @@ class ASTVisitor
 
         If a symbol also passes the see-below or
         implementation-defined filters, we
-        change the current extraction mode
+        change the current traversal mode
         accordingly so the symbol can be tagged.
         Members of this symbol types are not
         extracted.
@@ -139,7 +185,7 @@ class ASTVisitor
         when another symbol makes a reference
         to it.
      */
-    ExtractionMode mode_ = ExtractionMode::Regular;
+    TraversalMode mode_ = Regular;
 
 public:
     /** Constructor for ASTVisitor.
@@ -573,7 +619,13 @@ private:
         Decl const* D);
 
     std::unique_ptr<TypeInfo>
-    toTypeInfo(QualType qt);
+    toTypeInfo(QualType qt, TraversalMode mode);
+
+    std::unique_ptr<TypeInfo>
+    toTypeInfo(QualType qt)
+    {
+        return toTypeInfo(qt, TraversalMode::Dependency);
+    }
 
     std::unique_ptr<NameInfo>
     toNameInfo(
