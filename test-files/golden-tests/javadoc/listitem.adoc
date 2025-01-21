@@ -1,0 +1,126 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+=== Functions
+
+[cols=2]
+|===
+| Name | Description 
+
+| <<f0,`f0`>> 
+| 
+
+| <<f1,`f1`>> 
+| 
+
+| <<f2,`f2`>> 
+| brief
+
+| <<f3,`f3`>> 
+| brief
+
+|===
+
+[#f0]
+== f0
+
+
+=== Synopsis
+
+
+Declared in `&lt;listitem&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f0();
+----
+
+=== Description
+
+
+* item
+
+
+
+[#f1]
+== f1
+
+
+=== Synopsis
+
+
+Declared in `&lt;listitem&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f1();
+----
+
+=== Description
+
+
+* item 1    
+* item 2
+
+
+
+[#f2]
+== f2
+
+
+brief
+
+=== Synopsis
+
+
+Declared in `&lt;listitem&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f2();
+----
+
+=== Description
+
+
+* item 1    
+* item 2
+
+
+
+[#f3]
+== f3
+
+
+brief
+
+=== Synopsis
+
+
+Declared in `&lt;listitem&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f3();
+----
+
+=== Description
+
+
+* item 1
+* item 2
+* item 3
+
+
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace>
+<namespace id="//////////////////////////8=">
   <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
-    <file path="copydoc.cpp" line="4"/>
+    <file short-path="copydoc.cpp" source-path="copydoc.cpp" line="4"/>
     <doc>
       <para>
         <text>brief1</text>
@@ -11,13 +11,19 @@
     </doc>
   </function>
   <function name="f2" id="0MJUv5yGFR9nXWFLeYc+rjOY+iM=">
-    <file path="copydoc.cpp" line="7"/>
-  </function>
-  <function name="f3" id="khwJweIqd5FuWAg8T+l+GEljQVc=">
-    <file path="copydoc.cpp" line="10"/>
+    <file short-path="copydoc.cpp" source-path="copydoc.cpp" line="7"/>
     <doc>
       <para>
-        <text>f2</text>
+        <copybrief id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">f1</copybrief>
+      </para>
+    </doc>
+  </function>
+  <function name="f3" id="khwJweIqd5FuWAg8T+l+GEljQVc=">
+    <file short-path="copydoc.cpp" source-path="copydoc.cpp" line="10"/>
+    <doc>
+      <para>
+        <copybrief id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">f1</copybrief>
+        <text> f2</text>
       </para>
     </doc>
   </function>

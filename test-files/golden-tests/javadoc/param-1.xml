@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace>
+<namespace id="//////////////////////////8=">
   <function name="f0" id="06c9/cj7ynxO8s2xGFiUMmPoJrQ=">
-    <file path="param-1.cpp" line="2"/>
+    <file short-path="param-1.cpp" source-path="param-1.cpp" line="2"/>
     <param name="i">
       <type name="int"/>
     </param>
@@ -14,7 +14,7 @@
     </doc>
   </function>
   <function name="f1" id="5jofYOgd8K45NHlUAz2rdRdXV8c=">
-    <file path="param-1.cpp" line="5"/>
+    <file short-path="param-1.cpp" source-path="param-1.cpp" line="5"/>
     <param name="i">
       <type name="int"/>
     </param>
@@ -25,7 +25,7 @@
     </doc>
   </function>
   <function name="f2" id="RSBDchPpm5nUn2mXG3zSA6ly9zE=">
-    <file path="param-1.cpp" line="8"/>
+    <file short-path="param-1.cpp" source-path="param-1.cpp" line="8"/>
     <param name="i">
       <type class="lvalue-reference">
         <pointee-type name="int"/>
@@ -38,7 +38,7 @@
     </doc>
   </function>
   <function name="f3" id="EL2iVro4/+6fOXPPcX7IoMmSMZk=">
-    <file path="param-1.cpp" line="11"/>
+    <file short-path="param-1.cpp" source-path="param-1.cpp" line="11"/>
     <param name="i">
       <type class="lvalue-reference">
         <pointee-type name="int"/>
@@ -51,7 +51,7 @@
     </doc>
   </function>
   <function name="f4" id="IUsMOl+tEebMT021/9YMOSRZVIY=">
-    <file path="param-1.cpp" line="14"/>
+    <file short-path="param-1.cpp" source-path="param-1.cpp" line="14"/>
     <param name="i">
       <type name="int"/>
     </param>

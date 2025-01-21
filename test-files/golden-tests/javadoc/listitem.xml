@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <function name="f0" id="e1UQQek5v3C9OClW5cGf57XvwQo=">
+    <file short-path="listitem.cpp" source-path="listitem.cpp" line="2"/>
+    <doc>
+      <unorderedlist>
+        <listitem>
+          <text>item</text>
+        </listitem>
+      </unorderedlist>
+    </doc>
+  </function>
+  <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
+    <file short-path="listitem.cpp" source-path="listitem.cpp" line="7"/>
+    <doc>
+      <unorderedlist>
+        <listitem>
+          <text>item 1    </text>
+        </listitem>
+        <listitem>
+          <text>item 2</text>
+        </listitem>
+      </unorderedlist>
+    </doc>
+  </function>
+  <function name="f2" id="0MJUv5yGFR9nXWFLeYc+rjOY+iM=">
+    <file short-path="listitem.cpp" source-path="listitem.cpp" line="14"/>
+    <doc>
+      <para>
+        <text>brief </text>
+      </para>
+      <unorderedlist>
+        <listitem>
+          <text>item 1    </text>
+        </listitem>
+        <listitem>
+          <text>item 2</text>
+        </listitem>
+      </unorderedlist>
+    </doc>
+  </function>
+  <function name="f3" id="khwJweIqd5FuWAg8T+l+GEljQVc=">
+    <file short-path="listitem.cpp" source-path="listitem.cpp" line="24"/>
+    <doc>
+      <para>
+        <text>brief </text>
+      </para>
+      <unorderedlist>
+        <listitem>
+          <text>item 1</text>
+        </listitem>
+        <listitem>
+          <text>item 2</text>
+        </listitem>
+        <listitem>
+          <text>item 3</text>
+        </listitem>
+      </unorderedlist>
+    </doc>
+  </function>
+</namespace>
+</mrdocs>

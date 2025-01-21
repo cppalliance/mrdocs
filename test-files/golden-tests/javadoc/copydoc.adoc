@@ -1,0 +1,92 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+=== Functions
+
+[cols=2]
+|===
+| Name | Description 
+
+| <<f1,`f1`>> 
+| brief1
+
+| <<f2,`f2`>> 
+| brief1
+
+| <<f3,`f3`>> 
+| brief1
+
+|===
+
+[#f1]
+== f1
+
+
+brief1
+
+=== Synopsis
+
+
+Declared in `&lt;copydoc&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f1();
+----
+
+[#f2]
+== f2
+
+
+brief1
+
+=== Synopsis
+
+
+Declared in `&lt;copydoc&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f2();
+----
+
+=== Description
+
+
+xref:#f1[f1]
+
+
+
+[#f3]
+== f3
+
+
+brief1
+
+=== Synopsis
+
+
+Declared in `&lt;copydoc&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f3();
+----
+
+=== Description
+
+
+xref:#f1[f1] f2
+
+
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
