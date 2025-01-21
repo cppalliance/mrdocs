@@ -334,7 +334,7 @@ isAllImplicit(Decl const* D)
     {
         return false;
     }
-    else if (auto const* TSD = dynamic_cast<VarTemplateSpecializationDecl const*>(D);
+    if (auto const* TSD = dynamic_cast<VarTemplateSpecializationDecl const*>(D);
         TSD &&
         TSD->isExplicitSpecialization())
     {

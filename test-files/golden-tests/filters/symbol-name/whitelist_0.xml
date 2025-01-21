@@ -3,31 +3,159 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <namespace name="N0" id="YAQKEfxRmUjg43kkhT1n65uziVY=">
+    <doc>
+      <para>
+        <text>This namespace should extracted because it&apos;s implied by </text>
+        <mono>N0::f0_WL</mono>
+      </para>
+    </doc>
     <function name="f0_WL" id="Wh1//CHkEeCK/Sbv3ShkayyURHI=">
-      <file short-path="whitelist_0.cpp" source-path="whitelist_0.cpp" line="3"/>
+      <file short-path="whitelist_0.cpp" source-path="whitelist_0.cpp" line="7"/>
+      <doc>
+        <para>
+          <text>This function should be included because it matches </text>
+          <mono>N0::f0_WL</mono>
+        </para>
+      </doc>
     </function>
   </namespace>
   <namespace name="N1" id="BjVED4etdK1saUZITQfgE7SCCPI=">
+    <doc>
+      <para>
+        <text>This namespace should extracted because it&apos;s implied by </text>
+        <mono>N1::N3_WL</mono>
+        <text> and </text>
+        <mono>N1::N4::f1_WL</mono>
+      </para>
+    </doc>
     <namespace name="N3_WL" id="tySliu/J1lEvVfGwELlCaMsWPUs=">
+      <doc>
+        <para>
+          <text>This namespace should extracted because it&apos;s explicitly included by </text>
+          <mono>N1::N3_WL</mono>
+        </para>
+      </doc>
+      <function name="f1_WL" id="eGeX3DO44VLOHBJLdaGkYowxcHk=">
+        <file short-path="whitelist_0.cpp" source-path="whitelist_0.cpp" line="38"/>
+        <doc>
+          <para>
+            <text>This function should extracted because the namespace </text>
+            <mono>N1::N3_WL</mono>
+            <text> is included</text>
+            <text> as a literal.</text>
+          </para>
+        </doc>
+      </function>
     </namespace>
     <namespace name="N4" id="gTTyBBJ//JO3QEp36iu198cetXI=">
+      <doc>
+        <para>
+          <text>This namespace should extracted because it&apos;s implied by </text>
+          <mono>N1::N4::f1_WL</mono>
+        </para>
+      </doc>
       <function name="f1_WL" id="DqNFGUiBz22gD9dvzuf4hmwiMIQ=">
-        <file short-path="whitelist_0.cpp" source-path="whitelist_0.cpp" line="23"/>
+        <file short-path="whitelist_0.cpp" source-path="whitelist_0.cpp" line="47"/>
+        <doc>
+          <para>
+            <text>This function should extracted because it matches </text>
+            <mono>N1::N4::f1_WL</mono>
+          </para>
+        </doc>
       </function>
     </namespace>
   </namespace>
   <namespace name="N5" id="bhpVTks6uYUbdSEnCkcSZ80Va4Y=">
-    <namespace name="N6_BL" id="fXYakTji6P2RmLNlQ02I8HWgJKM=">
-      <function name="f1_BL" id="UUbDZA3RoYupttZ+bznyVNk9pms=">
-        <file short-path="whitelist_0.cpp" source-path="whitelist_0.cpp" line="34"/>
-      </function>
-      <namespace name="N7" id="BeEWEtpmZDucoTB+CzhJOj5NsXc=">
+    <doc>
+      <para>
+        <text>This namespace should extracted because it&apos;s implied by </text>
+        <mono>N5::N6::*7</mono>
+      </para>
+    </doc>
+    <namespace name="N6" id="Hd7HJHspRdJ75zQ2gjaf37XEVEI=">
+      <doc>
+        <para>
+          <text>This namespace should extracted because it&apos;s implied by </text>
+          <mono>N5::N6::*7</mono>
+        </para>
+      </doc>
+      <namespace name="N7" id="80mHUKSfQIyK2/8/2Pv7Vx6gUbE=">
+        <doc>
+          <para>
+            <text>This namespace should be included because it matches </text>
+            <mono>N5::N6::*7</mono>
+          </para>
+        </doc>
+        <function name="f2_WL" id="hMy4bR/Pm1VhNdwzbkfuKtLNnL8=">
+          <file short-path="whitelist_0.cpp" source-path="whitelist_0.cpp" line="78"/>
+          <doc>
+            <para>
+              <text>This function should be included because it&apos;s a member of </text>
+              <mono>N7</mono>
+              <text>, which matches</text>
+              <text> </text>
+              <mono>N5::N6::*7</mono>
+            </para>
+          </doc>
+        </function>
       </namespace>
-      <namespace name="M7" id="ZPqVSgTQJ0t1yaXoLJ02tbuyGpA=">
-      </namespace>
-      <namespace name="N8" id="VfD5s6e/yIaxv9t5K7ciJCdsaWk=">
+      <namespace name="M7" id="oQQ87evv0wAHmyyua78i6ilqQiY=">
+        <doc>
+          <para>
+            <text>This namespace should be included because it matches </text>
+            <mono>N5::N6::*7</mono>
+          </para>
+        </doc>
+        <function name="f2_WL" id="UUaWPiTlYnVSUAmT0IVfux0AGyM=">
+          <file short-path="whitelist_0.cpp" source-path="whitelist_0.cpp" line="88"/>
+          <doc>
+            <para>
+              <text>This function should be included because it&apos;s a member of </text>
+              <mono>M7</mono>
+              <text>, which matches</text>
+              <text> </text>
+              <mono>N5::N6::*7</mono>
+            </para>
+          </doc>
+        </function>
       </namespace>
     </namespace>
   </namespace>
+  <struct name="C" id="BrX2oZup9qgy4SfJloKCuUYZshA=">
+    <file short-path="whitelist_0.cpp" source-path="whitelist_0.cpp" line="105" class="def"/>
+    <doc>
+      <para>
+        <text>This namespace should be included because it strictly matches </text>
+        <mono>C</mono>
+      </para>
+    </doc>
+    <function name="f0_WL" id="vL6CN4hW4T9Ah0GmoIu9Hx4iaPo=">
+      <file short-path="whitelist_0.cpp" source-path="whitelist_0.cpp" line="109"/>
+      <doc>
+        <para>
+          <text>This function should be included because it&apos;s a member of </text>
+          <mono>C</mono>
+        </para>
+      </doc>
+    </function>
+    <struct name="D" id="WRUY2j3O9l2Pd1qDymu1ksSw07c=">
+      <file short-path="whitelist_0.cpp" source-path="whitelist_0.cpp" line="113" class="def"/>
+      <doc>
+        <para>
+          <text>This struct should be included because it&apos;s a member of </text>
+          <mono>C</mono>
+        </para>
+      </doc>
+      <function name="f1_WL" id="/QkJ00FbaOOH1IQKxpOPbklxM0c=">
+        <file short-path="whitelist_0.cpp" source-path="whitelist_0.cpp" line="116"/>
+        <doc>
+          <para>
+            <text>This function should be included because it&apos;s a member of </text>
+            <mono>D</mono>
+          </para>
+        </doc>
+      </function>
+    </struct>
+  </struct>
 </namespace>
 </mrdocs>

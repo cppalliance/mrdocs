@@ -156,8 +156,6 @@ see-below:
   - 'my_library::see_below::**'
 ----
 
-Symbols are only checked against the `implementation-detail` and `see-below` options if they match the `include-symbols` option.
-
 [,cpp]
 ----
 namespace my_library
@@ -183,6 +181,21 @@ namespace my_library
     foo();
 }
 ----
+
+=== Whitelisting Rules
+
+The rules for whitelisting symbols (`include-symbols`, `implementation-defined`, and `see-below`) are less strict than the rules for blacklisting symbols (`exclude-symbols`). A symbol is considered whitelisted if it matches any of the following conditions:
+
+1. The symbol strictly matches one of the patterns.
+** For instance, the patterns `std::vector` and `std::*` both match `std::vector` strictly.
+2. The symbol is a parent namespace of an included symbol.
+** For instance, the pattern `std::filesystem::*` also includes `std` and `std::filesystem`.
+3. The parent symbol is also included.
+** For instance, the pattern `std::*` also matches `std::vector::iterator` because `std::vector::iterator` is a member of  `std::vector`, which is matches the pattern.
+4. The symbol is a child of a literal pattern representing a namespace.
+** For instance, the literal pattern `std` matches `std::filesystem::path::iterator` because `std` is a literal pattern matching a namespace. In other words, these literal patterns represent the namespace and its subnamespaces as if the pattern were `std::**`.
+
+For exclusion rules, the symbol must strictly match the pattern to be excluded.
 
 [#config-options-reference]
 == Reference
