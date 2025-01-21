@@ -134,6 +134,15 @@ If you want to use this feature, you need to have CMake installed on your system
 Parameters for cmake, such as `-D BUILDING_TEST=OFF -D MRDOCS_BUILD=ON` can also be specified with the `cmake` option in configuration file.
 MrDocs will always append the `CMAKE_EXPORT_COMPILE_COMMANDS=ON` flag to the cmake command.
 
+[NOTE]
+====
+When the `cmake` option is provided, MrDocs will still adjust the CMake configure arguments to properly generate the compilation database file.
+
+* MrDocs will set the `-S` and `-B` options to the proper directories determined by the `mrdocs.yml` file. If the user explicitly sets `-S` or `-B` in the `cmake` option, these arguments are ignored.
+* If the user explicitly sets the generator with `-G`, the user option will typically be honored. However, if the user explicitly sets the generator to `Visual Studio` or the option is not set and `Visual Studio` is still the default generator, MrDocs will override it to `-G Ninja` to ensure a `compile_commands.json` file is generated.
+* MrDocs will typically ensure the `CMAKE_EXPORT_COMPILE_COMMANDS` flag is set to `ON`. If the user explicitly sets `-D CMAKE_EXPORT_COMPILE_COMMANDS=OFF`, the user flag will be honored. This can be used to manually determine the logic to generate the `compile_commands.json` file in the `CMakeLists.txt` file.
+====
+
 === MrDocs Builds
 
 In many projects, a common pattern is to define a special build configuration for the documentation generation such that:

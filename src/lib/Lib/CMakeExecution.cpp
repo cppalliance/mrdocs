@@ -386,74 +386,123 @@ parseBashArgs(std::string_view str)
 /* Pushes the CMake arguments to the `args` vector, replacing the
  * default generator with Ninja if Visual Studio is the default generator.
  */
-Expected<void>
-pushCMakeArgs(
+Expected<llvm::SmallVector<llvm::SmallString<128>, 50>>
+generateCMakeArgs(
     std::string const& cmakePath,
-    std::vector<llvm::StringRef> &args,
-    std::vector<std::string> const& additionalArgs) {
-    bool visualStudioFound = false;
-    for (size_t i = 0; i < additionalArgs.size(); ++i)
+    llvm::StringRef cmakeArgs,
+    llvm::StringRef projectPath,
+    llvm::StringRef buildDir)
+{
+    auto const userArgs = parseBashArgs(cmakeArgs.str());
+    llvm::SmallVector<llvm::SmallString<128>, 50> res;
+
+    res.emplace_back(cmakePath);
+    res.emplace_back("-S");
+    res.emplace_back(projectPath);
+    res.emplace_back("-B");
+    res.emplace_back(buildDir);
+
+    bool generatorSet = false;
+    std::string_view generatorName = {};
+    bool visualStudioSet = false;
+    bool compileCommandsSet = false;
+
+    for (size_t i = 0; i < userArgs.size(); ++i)
     {
-        auto const& arg = additionalArgs[i];
-        if (arg.starts_with("-G"))
+        // Compile commands
+        if (userArgs[i].starts_with("-D"))
         {
-            if (arg.size() == 2)
+            std::string_view cacheValue;
+            if (userArgs[i].size() == 2 &&
+                i + 1 < userArgs.size())
             {
-                if (i + 1 < additionalArgs.size())
-                {
-                    auto const& generatorName = additionalArgs[i + 1];
-                    if (generatorName.starts_with("Visual Studio"))
-                    {
-                        args.emplace_back("-GNinja");
-                        visualStudioFound = true;
-                        ++i;
-                        continue;
-                    }
-                }
-            } else {
-                if (arg.find("Visual Studio", 2) != std::string::npos)
-                {
-                    args.emplace_back("-GNinja");
-                    visualStudioFound = true;
-                    continue;
-                }
+                res.emplace_back(userArgs[i]);
+                res.emplace_back(userArgs[i+1]);
+                cacheValue = userArgs[i+1];
+                ++i;
             }
+            else if (userArgs[i].size() > 2)
+            {
+                res.emplace_back(userArgs[i]);
+                cacheValue = userArgs[i];
+                cacheValue.remove_prefix(2);
+            }
+            if (cacheValue.starts_with("CMAKE_EXPORT_COMPILE_COMMANDS="))
+            {
+                compileCommandsSet = true;
+            }
+            continue;
         }
 
-        if (arg.starts_with("-D"))
+        // Build dir or source dir
+        if (userArgs[i] == "-B" ||
+            userArgs[i] == "-S")
         {
-            if (arg.size() == 2)
+            // The build and source dirs will be set by MrDocs
+            // Don't push the argument
+            if (i + 1 < userArgs.size())
             {
-                if (i + 1 < additionalArgs.size())
-                {
-                    auto const& optionName = additionalArgs[i + 1];
-                    if (optionName.starts_with("CMAKE_EXPORT_COMPILE_COMMANDS"))
-                    {
-                        ++i;
-                        continue;
-                    }
-                }
-            } else {
-                if (arg.find("CMAKE_EXPORT_COMPILE_COMMANDS", 2) != std::string::npos)
-                {
-                    continue;
-                }
+                ++i;
             }
+            continue;
         }
-        args.emplace_back(arg);
+
+        // Generator
+        if (userArgs[i].starts_with("-G"))
+        {
+            if (userArgs[i].size() == 2 &&
+                i + 1 < userArgs.size())
+            {
+                generatorSet = true;
+                generatorName = userArgs[i+1];
+                ++i;
+            }
+            else if (userArgs.size() > 2)
+            {
+                generatorSet = true;
+                generatorName = userArgs[i+1];
+                generatorName.remove_prefix(2);
+            }
+            if (generatorSet)
+            {
+                visualStudioSet = generatorName.starts_with("Visual Studio");
+            }
+            if (generatorSet && !visualStudioSet)
+            {
+                res.emplace_back("-G");
+                res.emplace_back(generatorName);
+            }
+            continue;
+        }
+
+        // Other args
+        res.emplace_back(userArgs[i]);
     }
 
-    if (!visualStudioFound)
+    if (!compileCommandsSet)
+    {
+        res.emplace_back("-D");
+        res.emplace_back("CMAKE_EXPORT_COMPILE_COMMANDS=ON");
+    }
+
+    if (visualStudioSet)
+    {
+        res.emplace_back("-G");
+        res.emplace_back("Ninja");
+    }
+    else if (!generatorSet)
     {
         MRDOCS_TRY(
             bool const cmakeDefaultGeneratorIsVisualStudio,
             cmakeDefaultGeneratorIsVisualStudio(cmakePath));
         if (cmakeDefaultGeneratorIsVisualStudio)
         {
-            args.emplace_back("-GNinja");
+            res.emplace_back("-G");
+            res.emplace_back("Ninja");
         }
     }
-    return {};
+
+    return res;
 }
 
 } // anonymous namespace
@@ -464,13 +513,12 @@ executeCmakeExportCompileCommands(llvm::StringRef projectPath, llvm::StringRef c
     MRDOCS_CHECK(llvm::sys::fs::exists(projectPath), "Project path does not exist");
     MRDOCS_TRY(auto const cmakePath, getCmakePath());
 
-    std::array<std::optional<llvm::StringRef>, 3> const redirects = {std::nullopt, std::nullopt, std::nullopt};
-    std::vector<llvm::StringRef> args = {cmakePath, "-S", projectPath, "-B", buildDir, "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"};
+    constexpr std::array<std::optional<llvm::StringRef>, 3>
+        redirects = {std::nullopt, std::nullopt, std::nullopt};
+    MRDOCS_TRY(auto args, generateCMakeArgs(cmakePath, cmakeArgs, projectPath, buildDir));
+    std::vector<llvm::StringRef> argsRef(args.begin(), args.end());
 
-    auto const additionalArgs = parseBashArgs(cmakeArgs.str());
-    MRDOCS_TRY(pushCMakeArgs(cmakePath, args, additionalArgs));
-
-    int const result = llvm::sys::ExecuteAndWait(cmakePath, args, std::nullopt, redirects);
+    int const result = llvm::sys::ExecuteAndWait(cmakePath, argsRef, std::nullopt, redirects);
     if (result != 0) {
         return Unexpected(Error("CMake execution failed"));
     }
