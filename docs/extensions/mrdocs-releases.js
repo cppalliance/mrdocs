@@ -163,14 +163,14 @@ module.exports = function (registry) {
 
             // Create table
             let text = '|===\n'
-            text += '|          3+| 🪟 Windows                2+| 🐧 Linux                 \n'
-            text += '| 📃 Release | 📦 7z   | 📦 msi  | 📦 zip  | 📦 tar.xz  | 📦 tar.gz  \n'
+            text += '|          3+| 🪟 Windows                2+| 🐧 Linux               2+| 🍏 macOS                \n'
+            text += '| 📃 Release | 📦 7z   | 📦 msi  | 📦 zip  | 📦 tar.xz  | 📦 tar.gz  | 📦 tar.xz  | 📦 tar.gz  \n'
             releases.sort((a, b) => getReleaseDate(b) - getReleaseDate(a));
             for (const release of releases) {
                 if (release.name === 'llvm-package') continue
                 const date = getReleaseDate(release)
                 text += `| ${release.html_url}[${release.name},window=_blank]\n\n${humanizeDate(date)} `
-                const assetSuffixes = ['win64.7z', 'win64.msi', 'win64.zip', 'Linux.tar.xz', 'Linux.tar.gz']
+                const assetSuffixes = ['win64.7z', 'win64.msi', 'win64.zip', 'Linux.tar.xz', 'Linux.tar.gz', 'Darwin.tar.xz', 'Darwin.tar.gz']
                 for (const suffix of assetSuffixes) {
                     const asset = release.assets.find(asset => asset.name.endsWith(suffix))
                     if (asset) {
