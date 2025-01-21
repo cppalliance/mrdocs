@@ -35,6 +35,12 @@
 </td></tr><tr>
 <td><a href="#A-02"><code>A&lt;T, void&gt;</code></a> </td><td><span><span>Specialization for floating point types</span></span>
 
+</td></tr><tr>
+<td><a href="#S-02"><code>S</code></a> </td><td><span><span>SFINAE with std::void_t</span></span>
+
+</td></tr><tr>
+<td><a href="#S-08"><code>S&lt;T, std::void_t&lt;T::a::b&gt;&gt;</code></a> </td><td><span><span>SFINAE with std::void_t</span></span>
+
 </td></tr>
 </tbody>
 </table>
@@ -161,6 +167,110 @@ class <a href="#A-09">A</a>&lt;T, void&gt;;
 </div>
 
 
+</div>
+<div>
+<div>
+<h2 id="S-02">S</h2>
+<div>
+<span><span>SFINAE with std::void_t</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sfinae.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;
+    class T,
+    class = void&gt;
+struct S;
+</code>
+</pre>
+</div>
+<h2>Member Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#S-02-store"><code>store</code></a> </td></tr>
+</tbody>
+</table>
+
+
+</div>
+<div>
+<div>
+<h2 id="S-02-store"><a href="#S-02">S</a>::store</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sfinae.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+store(void const*);
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="S-08">S&lt;T, std::void_t&lt;T::a::b&gt;&gt;</h2>
+<div>
+<span><span>SFINAE with std::void_t</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sfinae.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;class T&gt;
+struct <a href="#S-02">S</a>&lt;T, std::void_t&lt;T::a::b&gt;&gt;;
+</code>
+</pre>
+</div>
+<h2>Member Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#S-08-store"><code>store</code></a> </td></tr>
+</tbody>
+</table>
+
+
+</div>
+<div>
+<div>
+<h2 id="S-08-store"><a href="#S-08">S</a>&lt;T, std::void_t&lt;T::a::b&gt;&gt;::store</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sfinae.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+store(void const*);
+</code>
+</pre>
+</div>
 </div>
 <div>
 <div>

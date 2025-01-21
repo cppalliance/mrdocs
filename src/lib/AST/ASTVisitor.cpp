@@ -2242,6 +2242,10 @@ ASTVisitor::getSFINAETemplateInfo(QualType T, bool const AllowDependentNames) co
         T = QualType(DNT->getQualifier()->getAsType(), 0);
         MRDOCS_SYMBOL_TRACE(T, context_);
     }
+    if (!T.getTypePtrOrNull())
+    {
+        return std::nullopt;
+    }
 
     // If the type is a template specialization type, extract the template name
     // and the template arguments

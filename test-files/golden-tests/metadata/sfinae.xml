@@ -222,5 +222,46 @@
       </doc>
     </class>
   </template>
+  <template>
+    <tparam name="T" class="type"/>
+    <tparam class="type" default="void"/>
+    <struct name="S" id="IZrmVBMJu1uvsP9zur5JVrwgYmE=">
+      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="76" class="def"/>
+      <doc>
+        <para>
+          <text>SFINAE with std::void_t</text>
+        </para>
+      </doc>
+      <function name="store" id="KmwKarrWHSv7aalrBX18hjPbEfs=">
+        <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="79" class="def"/>
+        <param>
+          <type class="pointer">
+            <pointee-type name="void" cv-qualifiers="const"/>
+          </type>
+        </param>
+      </function>
+    </struct>
+  </template>
+  <template class="partial" id="IZrmVBMJu1uvsP9zur5JVrwgYmE=">
+    <tparam name="T" class="type"/>
+    <targ class="type" type="T"/>
+    <targ class="type" type="std::void_t&lt;T::a::b&gt;"/>
+    <struct name="S" id="g0UNZpdodOU5mGCtcpviXd8o6Vk=">
+      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="84" class="def"/>
+      <doc>
+        <para>
+          <text>SFINAE with std::void_t</text>
+        </para>
+      </doc>
+      <function name="store" id="2KfuSRGlpNo9Lk/lk1bhwZqm/BY=">
+        <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="86" class="def"/>
+        <param>
+          <type class="pointer">
+            <pointee-type name="void" cv-qualifiers="const"/>
+          </type>
+        </param>
+      </function>
+    </struct>
+  </template>
 </namespace>
 </mrdocs>
