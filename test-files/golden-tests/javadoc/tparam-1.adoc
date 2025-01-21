@@ -1,0 +1,91 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+=== Functions
+
+[cols=2]
+|===
+| Name | Description 
+
+| <<f0,`f0`>> 
+| 
+
+| <<f1,`f1`>> 
+| brief
+
+|===
+
+[#f0]
+== f0
+
+
+=== Synopsis
+
+
+Declared in `&lt;tparam&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class T&gt;
+void
+f0();
+----
+
+=== Template Parameters
+
+
+|===
+| Name | Description
+
+| *T*
+| 
+|===
+
+[#f1]
+== f1
+
+
+brief
+
+=== Synopsis
+
+
+Declared in `&lt;tparam&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class T&gt;
+void
+f1();
+----
+
+=== Description
+
+
+desc
+
+
+
+=== Template Parameters
+
+
+|===
+| Name | Description
+
+| *T*
+| type
+
+
+| *T*
+| type
+
+
+|===
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

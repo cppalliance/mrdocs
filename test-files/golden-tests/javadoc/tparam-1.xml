@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace>
+<namespace id="//////////////////////////8=">
   <template>
     <tparam name="T" class="type"/>
     <function name="f0" id="zlkXfDmjJpYtp7dk60AvntW+WFM=">
-      <file path="tparam-1.cpp" line="3"/>
+      <file short-path="tparam-1.cpp" source-path="tparam-1.cpp" line="2"/>
       <doc>
         <tparam name="T">
         </tparam>
@@ -15,8 +15,8 @@
   <template>
     <tparam name="T" class="type"/>
     <function name="f1" id="5Sh/JptAi+QRDezCKRenByFsQ+I=">
-      <file path="tparam-1.cpp" line="7"/>
-      <file path="tparam-1.cpp" line="16"/>
+      <file short-path="tparam-1.cpp" source-path="tparam-1.cpp" line="6"/>
+      <file short-path="tparam-1.cpp" source-path="tparam-1.cpp" line="15"/>
       <doc>
         <tparam name="T">
           <text>type</text>

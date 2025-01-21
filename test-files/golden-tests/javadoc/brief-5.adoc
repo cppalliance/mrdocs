@@ -1,0 +1,134 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+=== Functions
+
+[cols=2]
+|===
+| Name | Description 
+
+| <<f0,`f0`>> 
+| brief
+
+| <<f1,`f1`>> 
+| 
+
+| <<f2,`f2`>> 
+| 
+
+| <<f3,`f3`>> 
+| brief
+
+| <<f4,`f4`>> 
+| brief
+
+| <<f5,`f5`>> 
+| brief
+
+|===
+
+[#f0]
+== f0
+
+
+brief
+
+=== Synopsis
+
+
+Declared in `&lt;brief&hyphen;5&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f0();
+----
+
+[#f1]
+== f1
+
+
+=== Synopsis
+
+
+Declared in `&lt;brief&hyphen;5&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f1();
+----
+
+[#f2]
+== f2
+
+
+=== Synopsis
+
+
+Declared in `&lt;brief&hyphen;5&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f2();
+----
+
+[#f3]
+== f3
+
+
+brief
+
+=== Synopsis
+
+
+Declared in `&lt;brief&hyphen;5&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f3();
+----
+
+[#f4]
+== f4
+
+
+brief
+
+=== Synopsis
+
+
+Declared in `&lt;brief&hyphen;5&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f4();
+----
+
+[#f5]
+== f5
+
+
+brief
+
+=== Synopsis
+
+
+Declared in `&lt;brief&hyphen;5&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f5();
+----
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
