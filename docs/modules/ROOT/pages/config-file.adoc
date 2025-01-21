@@ -18,10 +18,15 @@ More information about the generators can be found in the xref:generators.adoc[G
 
 == YAML Schema
 
-To get linting and autocompletion in the config file, a schema for the config can be specified.
-In JetBrains IDEs, `# $schema: <url>` can be used to bind a schema to a file.
-In editors with plugins based on the https://github.com/redhat-developer/yaml-language-server[YAML language server], `# yaml-language-server: $schema=<url>` can be used.
-The schema for `mrdocs.yml` is provided xref:attachment$mrdocs.schema.json[here].
+To get linting and autocompletion in the config file, a schema for the config can be specified. The schema for `mrdocs.yml` is provided xref:attachment$mrdocs.schema.json[here].
+
+The schema for `mrdocs.yml` is available from https://www.schemastore.org/json/, which is automatically detected and used by most editors.
+
+To manually set the schema in an editor, the following can be used:
+
+* In JetBrains IDEs, `# $schema: <url>` can be used to bind a schema to a file.
+* In editors with plugins based on the https://github.com/redhat-developer/yaml-language-server[YAML language server], `# yaml-language-server: $schema=<url>` can be used.
+
 The following shows an example of a file specifying an inline-schema that's compatible with JetBrains IDEs and editors using the YAML language server.
 
 [source,yaml]
