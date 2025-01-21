@@ -25,6 +25,12 @@
 | <<A-02,`A&lt;T, void&gt;`>> 
 | Specialization for floating point types
 
+| <<S-02,`S`>> 
+| SFINAE with std&colon;&colon;void&lowbar;t
+
+| <<S-08,`S&lt;T, std::void&lowbar;t&lt;T::a::b&gt;&gt;`>> 
+| SFINAE with std&colon;&colon;void&lowbar;t
+
 |===
 === Functions
 
@@ -135,6 +141,94 @@ class <<A-09,A>>&lt;T, void&gt;;
 
 
 
+
+[#S-02]
+== S
+
+
+SFINAE with std&colon;&colon;void&lowbar;t
+
+=== Synopsis
+
+
+Declared in `&lt;sfinae&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;
+    class T,
+    class = void&gt;
+struct S;
+----
+
+=== Member Functions
+
+[cols=1]
+|===
+| Name 
+
+| <<S-02-store,`store`>> 
+|===
+
+
+
+[#S-02-store]
+== <<S-02,S>>::store
+
+
+=== Synopsis
+
+
+Declared in `&lt;sfinae&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+store(void const*);
+----
+
+[#S-08]
+== S&lt;T, std::void&lowbar;t&lt;T::a::b&gt;&gt;
+
+
+SFINAE with std&colon;&colon;void&lowbar;t
+
+=== Synopsis
+
+
+Declared in `&lt;sfinae&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class T&gt;
+struct <<S-02,S>>&lt;T, std::void&lowbar;t&lt;T::a::b&gt;&gt;;
+----
+
+=== Member Functions
+
+[cols=1]
+|===
+| Name 
+
+| <<S-08-store,`store`>> 
+|===
+
+
+
+[#S-08-store]
+== <<S-08,S>>&lt;T, std::void&lowbar;t&lt;T::a::b&gt;&gt;::store
+
+
+=== Synopsis
+
+
+Declared in `&lt;sfinae&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+store(void const*);
+----
 
 [#f1]
 == f1

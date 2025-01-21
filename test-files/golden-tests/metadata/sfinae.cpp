@@ -71,3 +71,17 @@ class A {};
 /// Specialization for floating point types
 template<class T>
 class A<T, std::enable_if_t<std::is_integral_v<T>>> {};
+
+/// SFINAE with std::void_t
+template <class T, class = void>
+struct S
+{
+    void store(const void*) {}
+};
+
+/// SFINAE with std::void_t
+template <class T>
+struct S<T, std::void_t<typename T::a::b>>
+{
+    void store(const void*) {}
+};
