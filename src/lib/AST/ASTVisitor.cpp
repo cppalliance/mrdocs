@@ -18,7 +18,6 @@
 #include "lib/AST/TypeInfoBuilder.hpp"
 #include "lib/Support/Path.hpp"
 #include "lib/Support/Debug.hpp"
-#include "lib/Support/Glob.hpp"
 #include "lib/Lib/Diagnostics.hpp"
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Support/ScopeExit.hpp>
@@ -34,7 +33,6 @@
 #include <clang/Sema/Template.h>
 #include <llvm/ADT/StringExtras.h>
 #include <llvm/Support/Error.h>
-#include <llvm/Support/Path.h>
 #include <llvm/Support/SHA1.h>
 #include <llvm/Support/Process.h>
 #include <memory>
@@ -46,8 +44,8 @@ namespace clang::mrdocs {
 
 ASTVisitor::
 ASTVisitor(
-    const ConfigImpl& config,
-    Diagnostics& diags,
+    ConfigImpl const& config,
+    Diagnostics const& diags,
     CompilerInstance& compiler,
     ASTContext& context,
     Sema& sema) noexcept
@@ -539,116 +537,6 @@ populateInfoBases(InfoTy& I, bool const isNew, DeclTy* D)
         }
     }
 
-    // If a symbol is extracted as a new dependency, check if
-    // the symbol passes the include filters and already promote
-    // it to regular.
-    if (isNew &&
-        I.Extraction == ExtractionMode::Dependency)
-    {
-        // Try an exact match here
-        auto qualifiedName = this->qualifiedName(D);
-        if (checkSymbolFiltersImpl<false>(std::string_view(qualifiedName.str())) &&
-            checkFileFilters(D))
-        {
-            I.Extraction = ExtractionMode::Regular;
-            // default mode also becomes regular for its
-            // members
-            mode_ = TraversalMode::Regular;
-        }
-    }
-
-    // Determine the reason why the symbol is being extracted
-    if (I.Extraction == ExtractionMode::Regular ||
-        I.Extraction == ExtractionMode::SeeBelow)
-    {
-        auto matchQualifiedName =
-            [qualifiedName = this->qualifiedName(D)]
-            (SymbolGlobPattern const& pattern)
-            {
-                std::string_view const qualifiedNameSV = qualifiedName.str();
-                return pattern.match(std::string_view(qualifiedNameSV));
-            };
-
-        // Promote the extraction mode to SeeBelow if the symbol
-        // matches any of the patterns or if any of its parents
-        // are being extracted in SeeBelow mode
-        if (I.Extraction == ExtractionMode::Regular &&
-            !config_->seeBelow.empty())
-        {
-            if (std::ranges::any_of(config_->seeBelow, matchQualifiedName))
-            {
-                I.Extraction = ExtractionMode::SeeBelow;
-            }
-            else if (I.Parent)
-            {
-                Info const* PI = find(I.Parent);
-                while (PI)
-                {
-                    if (PI->Extraction == ExtractionMode::SeeBelow)
-                    {
-                        I.Extraction = ExtractionMode::SeeBelow;
-                        break;
-                    }
-                    PI = find(PI->Parent);
-                }
-            }
-            else
-            {
-                auto* PD = getParent(D);
-                Info const* PI = findOrTraverse(PD);
-                while (PI)
-                {
-                    if (PI->Extraction == ExtractionMode::SeeBelow)
-                    {
-                        I.Extraction = ExtractionMode::SeeBelow;
-                        break;
-                    }
-                    PD = getParent(PD);
-                    PI = find(PD);
-                }
-            }
-        }
-
-        // Promote the extraction mode to ImplementationDefined if the symbol
-        // matches any of the patterns or if any of its parents
-        // are being extracted in ImplementationDefined mode
-        if (!config_->implementationDefined.empty())
-        {
-            if (std::ranges::any_of(config_->implementationDefined, matchQualifiedName))
-            {
-                I.Extraction = ExtractionMode::ImplementationDefined;
-            }
-            else if (I.Parent)
-            {
-                Info const* PI = find(I.Parent);
-                while (PI)
-                {
-                    if (PI->Extraction == ExtractionMode::ImplementationDefined)
-                    {
-                        I.Extraction = ExtractionMode::ImplementationDefined;
-                        break;
-                    }
-                    PI = find(PI->Parent);
-                }
-            }
-            else
-            {
-                auto* PD = getParent(D);
-                Info const* PI = findOrTraverse(PD);
-                while (PI)
-                {
-                    if (PI->Extraction == ExtractionMode::ImplementationDefined)
-                    {
-                        I.Extraction = ExtractionMode::ImplementationDefined;
-                        break;
-                    }
-                    PD = getParent(PD);
-                    PI = find(PD);
-                }
-            }
-        }
-    }
-
     // All other information is redundant if the symbol is not new
     MRDOCS_CHECK_OR(isNew);
 
@@ -878,7 +766,7 @@ populate(
     I.IsDeleted |= FD->isDeleted();
     I.IsDeletedAsWritten |= FD->isDeletedAsWritten();
     I.IsNoReturn |= FD->isNoReturn();
-    I.HasOverrideAttr |= FD->template hasAttr<OverrideAttr>();
+    I.HasOverrideAttr |= FD->hasAttr<OverrideAttr>();
 
     if (ConstexprSpecKind const CSK = FD->getConstexprKind();
         CSK != ConstexprSpecKind::Unspecified)
@@ -891,7 +779,7 @@ populate(
         I.StorageClass = toStorageClassKind(SC);
     }
 
-    I.IsNodiscard |= FD->template hasAttr<WarnUnusedResultAttr>();
+    I.IsNodiscard |= FD->hasAttr<WarnUnusedResultAttr>();
     I.IsExplicitObjectMemberFunction |= FD->hasCXXExplicitFunctionObjectParameter();
 
     //
@@ -906,7 +794,7 @@ populate(
         I.IsConst |= MD->isConst();
         I.IsVolatile |= MD->isVolatile();
         I.RefQualifier = toReferenceKind(MD->getRefQualifier());
-        I.IsFinal |= MD->template hasAttr<FinalAttr>();
+        I.IsFinal |= MD->hasAttr<FinalAttr>();
         //MD->isCopyAssignmentOperator()
         //MD->isMoveAssignmentOperator()
         //MD->isOverloadedOperator();
@@ -1631,6 +1519,27 @@ extractName(DeclarationName const N)
         MRDOCS_UNREACHABLE();
     }
     return result;
+}
+
+SmallString<256>
+ASTVisitor::
+qualifiedName(Decl const* D) const
+{
+    if (auto* ND = dyn_cast<NamedDecl>(D))
+    {
+        return qualifiedName(ND);
+    }
+    return {};
+}
+
+SmallString<256>
+ASTVisitor::
+qualifiedName(NamedDecl const* ND) const
+{
+    SmallString<256> name;
+    llvm::raw_svector_ostream stream(name);
+    getQualifiedName(ND, stream, context_.getPrintingPolicy());
+    return name;
 }
 
 bool
@@ -2388,9 +2297,9 @@ tryGetTemplateArgument(
     return std::nullopt;
 }
 
-bool
+ExtractionMode
 ASTVisitor::
-shouldExtract(
+checkFilters(
     const Decl* D,
     AccessSpecifier const access)
 {
@@ -2398,56 +2307,30 @@ shouldExtract(
     // global namespace. It can't fail any of the filters
     // because its qualified name is represented by the
     // empty string, and it has no file associated with it.
-    MRDOCS_CHECK_OR(!isa<TranslationUnitDecl>(D), true);
+    MRDOCS_CHECK_OR(!isa<TranslationUnitDecl>(D), ExtractionMode::Regular);
 
     // Check if this kind of symbol should be extracted.
     // This filters symbols supported by MrDocs and
     // symbol types whitelisted in the configuration,
     // such as private members and anonymous namespaces.
-    MRDOCS_CHECK_OR(checkTypeFilters(D, access), false);
-
-    // In dependency mode, we don't need the file and symbol
-    // filters because this is a dependency of another
-    // declaration that passes the filters.
-    if (mode_ != TraversalMode::Regular)
-    {
-        // If the whole declaration is implicit, we should
-        // not promote the extraction mode to regular
-        // even if it passes the filters. We should
-        // extract `D` in dependency mode so that
-        // its symbol ID is available but there's
-        // no need to extract its members.
-        if (isAllImplicit(D))
-        {
-            return true;
-        }
-
-        // So, the filters are used to determine if we
-        // should upgrade the extraction mode already.
-        // This is not a scoped promotion because
-        // parents and members should also assume
-        // the same base extraction mode.
-        if (checkSymbolFilters(D) &&
-            checkFileFilters(D))
-        {
-            mode_ = TraversalMode::Regular;
-        }
-        // But we return true either way
-        return true;
-    }
+    MRDOCS_CHECK_OR(checkTypeFilters(D, access), ExtractionMode::Dependency);
 
     // Check if this symbol should be extracted according
     // to its qualified name. This checks if it matches
     // the symbol patterns and if it's not excluded.
-    MRDOCS_CHECK_OR(checkSymbolFilters(D), false);
+    auto const [Cat, Kind] = checkSymbolFilters(D);
+    if (Cat == ExtractionMode::Dependency)
+    {
+        return Cat;
+    }
 
     // Check if this symbol should be extracted according
     // to its location. This checks if it's in one of the
     // input directories, if it matches the file patterns,
     // and it's not in an excluded file.
-    MRDOCS_CHECK_OR(checkFileFilters(D), false);
+    MRDOCS_CHECK_OR(checkFileFilters(D), ExtractionMode::Dependency);
 
-    return true;
+    return Cat;
 }
 
 bool
@@ -2567,44 +2450,244 @@ checkFileFilters(std::string_view const symbolPath) const
     return true;
 }
 
-bool
+ASTVisitor::ExtractionInfo
 ASTVisitor::
-checkSymbolFilters(Decl const* D) const
+checkSymbolFilters(Decl const* D, bool AllowParent)
 {
+    // Use the cache
+    if (auto const it = extraction_.find(D); it != extraction_.end())
+    {
+        return it->second;
+    }
+
+    // Update cache
+    auto updateCache = [this, D](ExtractionInfo const result) {
+        extraction_.emplace(D, result);
+    };
+
     // If not a NamedDecl, then symbol filters don't apply
     const auto* ND = dyn_cast<NamedDecl>(D);
-    MRDOCS_CHECK_OR(ND, true);
-    return checkSymbolFilters(ND, isa<DeclContext>(D));
-}
-
-bool
-ASTVisitor::
-checkSymbolFilters(NamedDecl const* ND, bool const isScope) const
-{
-    SmallString<256> const name = qualifiedName(ND);
-    return checkSymbolFilters(name.str(), isScope);
-}
-
-bool
-ASTVisitor::
-checkSymbolFilters(std::string_view const symbolName, bool const isScope) const
-{
-    if (isScope)
+    if (!ND)
     {
-        return checkSymbolFiltersImpl<true>(symbolName);
+        ExtractionInfo const res{ExtractionMode::Regular, ExtractionMatchType::Strict};
+        updateCache(res);
+        return res;
     }
-    return checkSymbolFiltersImpl<false>(symbolName);
+
+    // Get the symbol name
+    SmallString<256> const name = qualifiedName(ND);
+    auto const symbolName = name.str();
+
+    // We should check the exclusion filters first. If a symbol is
+    // explicitly excluded, there's nothing else to check.
+    if (!config_->excludeSymbols.empty() &&
+        checkSymbolFiltersImpl<Strict>(config_->excludeSymbols, symbolName))
+    {
+        ExtractionInfo const res{ExtractionMode::Dependency, ExtractionMatchType::Strict};
+        updateCache(res);
+        return res;
+    }
+
+    // If not excluded, we should check the filters in this order:
+    // - implementation-defined
+    // - see-below
+    // - include-symbols
+    // These filters have precedence over each other.
+    std::array const patternsAndModes = {
+        std::make_pair(&config_->implementationDefined, ExtractionMode::ImplementationDefined),
+        std::make_pair(&config_->seeBelow, ExtractionMode::SeeBelow),
+        std::make_pair(&config_->includeSymbols, ExtractionMode::Regular)
+    };
+
+    // 1) The symbol strictly matches one of the patterns
+    for (auto const& [patterns, mode] : patternsAndModes)
+    {
+        if (!patterns->empty() &&
+            checkSymbolFiltersImpl<Strict>(*patterns, symbolName))
+        {
+            ExtractionInfo res = {mode, ExtractionMatchType::Strict};
+            updateCache(res);
+            return res;
+        }
+    }
+
+    // 2) A namespace where the symbol is defined matches one of the
+    // literal patterns in `include-symbols`.
+    // For instance, if the literal pattern `std` is in `include-symbols`,
+    // then `std::filesystem::path::iterator` is extracted even though
+    // the pattern only matches `std`.
+    // In other words, because `std` is a namespace and `std` is a
+    // literal pattern, it matches all symbols in the `std` namespace
+    // and its subnamespaces as if the pattern were `std::**`.
+    // 2a) Check if there are any literal patterns in the filters.
+    // This is an optimization to avoid checking the parent namespaces
+    // if there are no literal patterns in the filters.
+    bool const containsLiteralPatterns = std::ranges::any_of(patternsAndModes,
+        [&](auto const& v)
+        {
+            auto& [patterns, mode] = v;
+            return std::ranges::any_of(*patterns, [](auto const& pattern)
+            {
+                return pattern.isLiteral();
+            });
+        });
+    if (containsLiteralPatterns)
+    {
+        // 2b) For each parent namespace
+        Decl const* Cur = getParent(D);
+        while (Cur)
+        {
+            if (isa<NamespaceDecl>(Cur))
+            {
+                // 2c) Check if it matches any literal pattern
+                SmallString<256> const namespaceName = qualifiedName(Cur);
+                for (auto const& [patterns, mode] : patternsAndModes)
+                {
+                    if (!patterns->empty() &&
+                        checkSymbolFiltersImpl<Literal>(*patterns, namespaceName.str()))
+                    {
+                        ExtractionInfo const res = {mode, ExtractionMatchType::LiteralParent};
+                        updateCache(res);
+                        return res;
+                    }
+                }
+            }
+            Cur = getParent(Cur);
+        }
+    }
+
+    // 3) Child symbols imply this symbol should be included
+    // If symbol is a namespace, the namespace is the parent of a symbol that matches
+    // one of the patterns in the filters.
+    // For instance, if `std::filesystem::*` is in `include-symbols`, then `std`
+    // and `std::filesystem` are extracted even though `std::` and `std::filesystem::`
+    // only match the prefix of the pattern.
+    // In other words, including `std::filesystem::*` implies `std` and `std::filesystem`
+    // should be included.
+    // We evaluate this rule in the reverse order of precedence of the filters
+    // because, for instance, if a namespace matches as a prefix for `include-symbol`
+    // and `implementation-defined`, we should extract it as `include-symbol`,
+    // since symbols that only pass `include-symbol` will also be included in this namespace
+    // later on.
+    if (isa<NamespaceDecl>(D) || isa<TranslationUnitDecl>(D))
+    {
+        SmallString<256> symbolAsPrefix{ symbolName };
+        symbolAsPrefix += "::";
+        for (auto const& [patterns, mode] : std::ranges::views::reverse(patternsAndModes))
+        {
+            if (!patterns->empty() &&
+                checkSymbolFiltersImpl<PrefixOnly>(*patterns, symbolAsPrefix.str()))
+            {
+                // We know this namespace matches one of the pattern
+                // prefixes that can potentially include children, but
+                // we have to check if any children actually matches
+                // the pattern strictly.
+                DeclContext const* DC = cast<DeclContext>(D);
+                auto childrenMode = ExtractionMode::Dependency;
+                for (auto* M : DC->decls())
+                {
+                    if (M->isImplicit() && !isa<IndirectFieldDecl>(M))
+                    {
+                        // Ignore implicit members
+                        continue;
+                    }
+                    if (getParent(M) != D)
+                    {
+                        // Not a semantic member
+                        continue;
+                    }
+                    auto const R = checkSymbolFilters(M, false);
+                    if (R.mode == ExtractionMode::Dependency)
+                    {
+                        // The child should not be extracted.
+                        // Go to next child.
+                        continue;
+                    }
+                    if (childrenMode == ExtractionMode::Dependency)
+                    {
+                        // Still a dependency. Initialize it with child mode.
+                        childrenMode = R.mode;
+                    }
+                    else
+                    {
+                        // Children mode already initialized. Get the least specific one.
+                        childrenMode = leastSpecific(childrenMode, R.mode);
+                    }
+                    if (childrenMode == ExtractionMode::Regular)
+                    {
+                        // Already the least specific
+                        break;
+                    }
+                }
+                if (childrenMode != ExtractionMode::Dependency)
+                {
+                    ExtractionInfo const res = {mode, ExtractionMatchType::Prefix};
+                    updateCache(res);
+                    return res;
+                }
+            }
+        }
+    }
+    else if (AllowParent)
+    {
+        Decl const* P = getParent(D);
+        if (P)
+        {
+            // 4) Parent symbols imply this symbol should be included
+            // If the first record, enum, or namespace parent of the symbol
+            // matches one of the patterns, we extract the symbol in the same mode.
+            // For instance, if `std::*` is in `include-symbols`, then
+            // `std::vector::iterator` is extracted even though the
+            // pattern only matches `std::vector`.
+            // In other words, including `std::vector` implies
+            // `std::vector::iterator` should be included.
+            // This operates recursively, which will already update
+            // the cache with the proper extraction mode for this parent.
+            if (auto const [mode, kind] = checkSymbolFilters(P);
+                mode != ExtractionMode::Dependency &&
+                kind != ExtractionMatchType::Prefix)
+            {
+                // The parent is being extracted and the reason
+                // is not because it's a prefix.
+                // When it's a prefix, the parent is only
+                // being extracted so that symbols that match
+                // the full pattern are included and not all symbols.
+                ExtractionInfo const res = {mode, ExtractionMatchType::StrictParent};
+                updateCache(res);
+                return res;
+            }
+        }
+    }
+
+    // 4) It doesn't match any of the filters
+    // 4a) If this happened because there are no include-symbol
+    // filters, we assume the `include-symbol` works as if
+    // `**` is included instead of nothing being included.
+    // Thus, we should extract the symbol.
+    if (config_->includeSymbols.empty())
+    {
+        constexpr ExtractionInfo res = {ExtractionMode::Regular, ExtractionMatchType::Strict};
+        updateCache(res);
+        return res;
+    }
+    // 4b) Otherwise, we don't extract the symbol
+    // because it doesn't match any of `include-symbol` filters
+    constexpr ExtractionInfo res = {ExtractionMode::Dependency, ExtractionMatchType::Strict};
+    updateCache(res);
+    return res;
 }
 
-template <bool isScope>
+template <ASTVisitor::SymbolCheckType t>
 bool
 ASTVisitor::
-checkSymbolFiltersImpl(std::string_view const symbolName) const
+checkSymbolFiltersImpl(
+    std::vector<SymbolGlobPattern> const& patterns,
+    std::string_view const symbolName) const
 {
     // Don't extract declarations that fail the symbol filter
     auto includeMatchFn = [&](SymbolGlobPattern const& pattern)
     {
-        if constexpr (isScope)
+        if constexpr (t == SymbolCheckType::PrefixOnly)
         {
             // If the symbol is a scope, such as a namespace or class,
             // we want to know if symbols in that scope might match
@@ -2616,51 +2699,22 @@ checkSymbolFiltersImpl(std::string_view const symbolName) const
             // symbol pattern for the escope.
             return pattern.matchPatternPrefix(symbolName);
         }
-        else
+        else if constexpr (t == SymbolCheckType::Literal)
         {
+            return pattern.isLiteral() && pattern.match(symbolName);
+        }
+        else if constexpr (t == SymbolCheckType::Strict)
+        {
+            // Strict match
             return pattern.match(symbolName);
         }
     };
     MRDOCS_CHECK_OR(
-        config_->includeSymbols.empty() ||
-        std::ranges::any_of(config_->includeSymbols, includeMatchFn), false);
-
-    // Don't extract declarations that fail the exclude symbol filter
-    auto excludeMatchFn = [&](SymbolGlobPattern const& pattern)
-    {
-        // Unlike the include filter, we want to match the entire symbol name
-        // for the exclude filter regardless of whether the symbol is a scope.
-        // If the scope is explicitly excluded, we already know we want to
-        // exclude all symbols in that scope
-        return pattern.match(symbolName);
-    };
-    MRDOCS_CHECK_OR(
-        config_->excludeSymbols.empty() ||
-        std::ranges::none_of(config_->excludeSymbols, excludeMatchFn), false);
+        std::ranges::any_of(patterns, includeMatchFn), false);
 
     return true;
 }
 
-SmallString<256>
-ASTVisitor::
-qualifiedName(Decl const* D) const
-{
-    if (auto* ND = dyn_cast<NamedDecl>(D))
-    {
-        return qualifiedName(ND);
-    }
-    return {};
-}
-
-SmallString<256>
-ASTVisitor::
-qualifiedName(NamedDecl const* ND) const
-{
-    SmallString<256> name;
-    llvm::raw_svector_ostream stream(name);
-    getQualifiedName(ND, stream, context_.getPrintingPolicy());
-    return name;
-}
 
 Info*
 ASTVisitor::
@@ -2856,10 +2910,20 @@ Expected<
 ASTVisitor::
 upsert(DeclType* D)
 {
-    AccessSpecifier access = getAccess(D);
-    if (!shouldExtract(D, access))
+    ExtractionMode const m = checkFilters(D);
+    if (m == ExtractionMode::Dependency)
     {
-        return Unexpected(Error("Symbol should not be extracted"));
+        if (mode_ == Regular)
+        {
+            return Unexpected(Error("Symbol should not be extracted"));
+        }
+        if (!isAllImplicit(D))
+        {
+            // We should not extract explicit declarations in dependency mode.
+            // The calling code should handle this case instead of
+            // populating the symbol table with instantiations.
+            return Unexpected(Error("Explicit declaration in dependency mode"));
+        }
     }
 
     SymbolID const id = generateID(D);
@@ -2870,22 +2934,13 @@ upsert(DeclType* D)
         InfoTypeFor_t<DeclType>,
         InfoTy>;
     auto [I, isNew] = upsert<R>(id);
-    I.Access = toAccessKind(access);
 
-    // If the symbol was previously extracted as a dependency
-    // and is now being extracted as a regular symbol because
-    // it passed the more constrained filters, update the
-    // extraction mode and set the symbol as new so it's populated
-    // this time.
-    bool const previouslyExtractedAsDependency =
-        !isNew &&
-        mode_ != TraversalMode::Dependency &&
-        I.Extraction == ExtractionMode::Dependency;
-    if (previouslyExtractedAsDependency)
-    {
-        I.Extraction = mostSpecific(I.Extraction, ExtractionMode::Regular);
-        isNew = true;
-    }
+    // Already populate the extraction mode
+    I.Extraction = mostSpecific(I.Extraction, m);
+
+    // Already populate the access specifier
+    AccessSpecifier const access = getAccess(D);
+    I.Access = toAccessKind(access);
 
     return upsertResult<R>{std::ref(I), isNew};
 }

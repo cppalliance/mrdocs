@@ -51,7 +51,7 @@ Declared in `&lt;class&hyphen;private&hyphen;alias&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f(type);
+f(<<S,type>>);
 ----
 
 

@@ -116,7 +116,50 @@ class ASTVisitor
         if a file should be extracted or to add the
         SourceInfo to an Info object.
     */
-    std::unordered_map<const FileEntry*, FileInfo> files_;
+    std::unordered_map<FileEntry const*, FileInfo> files_;
+
+    /*  Determine how a Decl matched the filters
+     */
+    enum class ExtractionMatchType {
+        // It matches one of the patterns as is
+        Strict,
+        // It matches the prefix of a pattern, meaning
+        // children of this symbol might be included
+        Prefix,
+        // A parent of this symbol matches a literal pattern,
+        // meaning `parent::**`.
+        LiteralParent,
+        // The symbol is included because the parent is
+        // included and the parent is not a prefix.
+        StrictParent
+    };
+
+    /*  Extraction Info
+
+        This struct is used to store information about
+        the filters a Decl pass.
+     */
+    struct ExtractionInfo
+    {
+        // The extraction mode for this symbol
+        ExtractionMode mode;
+
+        // Whether this is extraction mode is due to
+        // it matching a prefix of another symbol.
+        ExtractionMatchType kind;
+    };
+
+    /*  A map of Clang Decl objects to ExtractionMode values
+
+        This map is used to store the extraction mode for
+        declarations that have been identified through the
+        translation unit AST.
+
+        This map is later used by the @ref shouldExtract
+        function to determine if a declaration should be
+        extracted based on the extraction mode.
+    */
+    std::unordered_map<Decl const*, ExtractionInfo> extraction_;
 
     /* How we should traverse the current node
      */
@@ -204,8 +247,8 @@ public:
         @param sema The Sema object.
      */
     ASTVisitor(
-        const ConfigImpl& config,
-        Diagnostics& diags,
+        ConfigImpl const& config,
+        Diagnostics const& diags,
         CompilerInstance& compiler,
         ASTContext& context,
         Sema& sema) noexcept;
@@ -604,6 +647,12 @@ private:
     std::string
     extractName(DeclarationName N);
 
+    SmallString<256>
+    qualifiedName(Decl const* D) const;
+
+    SmallString<256>
+    qualifiedName(NamedDecl const* ND) const;
+
     /*  Parse the comments above a declaration as Javadoc
 
         This function will parse the comments above a declaration
@@ -821,11 +870,16 @@ private:
     // Filters
     // =================================================
 
-    /*  Determine if a declaration should be extracted
+    /*  Determine in what mode a declaration should be extracted
 
         This function will determine whether a declaration
-        should be extracted based on the current extraction
-        mode, and the current symbol filter state.
+        should be extracted and what extraction mode
+        applies to the symbol.
+
+        If the symbol should not be extracted, the function
+        will return `ExtractionMode::Dependency`, meaning
+        we should only extract it if the traversal is in
+        dependency mode.
 
         The function filters private symbols, symbols outside
         the input files, and symbols in files that do not match
@@ -837,24 +891,25 @@ private:
         @param D the declaration to check
         @param access the access specifier of the declaration
 
-        @return true if the declaration should be extracted,
-        and false otherwise.
+        @return Return the most specific extraction mode
+        possible for the declaration.
      */
-    bool
-    shouldExtract(Decl const* D, AccessSpecifier access);
+    ExtractionMode
+    checkFilters(Decl const* D, AccessSpecifier access);
 
     static
-    bool
-    shouldExtract(TranslationUnitDecl const*, AccessSpecifier)
+    ExtractionMode
+    checkFilters(TranslationUnitDecl const*, AccessSpecifier)
     {
-        return true;
+        return ExtractionMode::Regular;
     }
 
     template <std::derived_from<Decl> DeclTy>
-    bool
-    shouldExtract(DeclTy const* D)
+    ExtractionMode
+    checkFilters(DeclTy const* D)
     {
-        return shouldExtract(D, getAccess(D));
+        AccessSpecifier A = getAccess(D);
+        return checkFilters(D, A);
     }
 
     bool
@@ -866,24 +921,45 @@ private:
     bool
     checkFileFilters(std::string_view symbolPath) const;
 
+    /* Check all symbol filters for a declaration
+
+       @param D The declaration to check
+       @param AllowParent Whether a member declaration should
+       be allowed to inherit the value from the parent.
+     */
+    ExtractionInfo
+    checkSymbolFilters(Decl const* D, bool AllowParent);
+
+    ExtractionInfo
+    checkSymbolFilters(Decl const* D)
+    {
+        return checkSymbolFilters(D, true);
+    }
+
+    /* The strategy for checking filters in `checkSymbolFilters`
+     */
+    enum SymbolCheckType {
+        // Check if the symbol matches one of the patterns as a whole
+        Strict,
+        // Check if the symbol matches the prefix of the patterns
+        // even if the symbol is not a whole match
+        PrefixOnly,
+        // Check if the pattern is literal and the symbol contains
+        // exactly the same contents.
+        Literal
+    };
+
+    /* Check if the symbol name matches one of the patterns
+
+        This function checks if the symbol name matches one of the
+        patterns according to the strategy defined by `t`.
+     */
+    template <SymbolCheckType t>
     bool
-    checkSymbolFilters(Decl const* D) const;
+    checkSymbolFiltersImpl(
+        std::vector<SymbolGlobPattern> const& patterns,
+        std::string_view symbolName) const;
 
-    bool
-    checkSymbolFilters(NamedDecl const* ND, bool const isScope) const;
-
-    bool
-    checkSymbolFilters(std::string_view symbolName, bool const isScope) const;
-
-    template <bool isScope>
-    bool
-    checkSymbolFiltersImpl(std::string_view symbolName) const;
-
-    SmallString<256>
-    qualifiedName(Decl const* D) const;
-
-    SmallString<256>
-    qualifiedName(NamedDecl const* ND) const;
 
     // =================================================
     // Element access

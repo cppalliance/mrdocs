@@ -790,7 +790,7 @@ decayToPrimaryTemplate(Decl const* D);
 // Iterate the Decl and check if this is a template specialization
 // also considering the parent declarations. For instance,
 // S<0>::M<0> is a template specialization of S<0> and M<0>.
-// This function returns true is both S<0> and M<0> are implicit
+// This function returns true if both S<0> and M<0> are implicit
 // template specializations.
 MRDOCS_DECL
 bool
