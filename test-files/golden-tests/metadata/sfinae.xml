@@ -75,9 +75,8 @@
       </doc>
     </function>
   </template>
-  <template>
+  <template requires="std::is_integral_v&lt;T&gt;">
     <tparam name="T" class="type"/>
-    <tparam class="non-type" type="bool" default="true"/>
     <function name="f5" id="a+UWurTVrgCdwaj2WmRbGzoFaPE=">
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="29"/>
       <return>
@@ -93,9 +92,8 @@
       </doc>
     </function>
   </template>
-  <template>
+  <template requires="std::is_integral_v&lt;T&gt;">
     <tparam name="T" class="type"/>
-    <tparam class="non-type" type="bool" default="true"/>
     <function name="f6" id="/yE6fwRwAIxETBjA2qovg6HKvcI=">
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="34"/>
       <return>
@@ -111,10 +109,9 @@
       </doc>
     </function>
   </template>
-  <template>
+  <template requires="std::is_integral_v&lt;T&gt;">
     <tparam name="T" class="type"/>
-    <tparam class="non-type" type="int" default="0"/>
-    <function name="f7" id="yvozC1ZfCOoeBsvYrNKSBY1/EYg=">
+    <function name="f7" id="1hZIKbRpnfaQN31DmwXQdyOuadA=">
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="39"/>
       <param name="value">
         <type name="T"/>
@@ -128,18 +125,13 @@
   </template>
   <template>
     <tparam name="T" class="type"/>
-    <function name="f8" id="Gf4cp25Ok5ZDmOsaPZYkV1j/6kM=">
+    <function name="f8" requires="std::is_integral_v&lt;T&gt;" id="Gf4cp25Ok5ZDmOsaPZYkV1j/6kM=">
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="43"/>
       <return>
         <type name="T"/>
       </return>
       <param name="value">
         <type name="T"/>
-      </param>
-      <param default="0">
-        <type class="pointer">
-          <pointee-type name="void"/>
-        </type>
       </param>
       <doc>
         <para>
@@ -150,18 +142,13 @@
   </template>
   <template>
     <tparam name="T" class="type"/>
-    <function name="f9" id="nt7dkGV/+Wo4uvfBAeMzChGggJs=">
+    <function name="f9" requires="std::is_integral_v&lt;T&gt;" id="nt7dkGV/+Wo4uvfBAeMzChGggJs=">
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="48"/>
       <return>
         <type name="T"/>
       </return>
       <param name="value">
         <type name="T"/>
-      </param>
-      <param default="0">
-        <type class="pointer">
-          <pointee-type name="void"/>
-        </type>
       </param>
       <doc>
         <para>
@@ -170,15 +157,12 @@
       </doc>
     </function>
   </template>
-  <template>
+  <template requires="std::is_integral_v&lt;T&gt;">
     <tparam name="T" class="type"/>
-    <tparam class="type" default="void"/>
-    <function name="f10" id="n8wiRMXq5jqiYScw4e5BxcZdL+c=">
+    <function name="f10" id="MX3B1GMAk3D0sirBOV2sk9C49uw=">
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="64"/>
-      <param name="t">
-        <type class="pointer">
-          <pointee-type name="T"/>
-        </type>
+      <param name="value">
+        <type name="T"/>
       </param>
       <doc>
         <para>
@@ -209,10 +193,9 @@
       </doc>
     </class>
   </template>
-  <template class="partial" id="m/JW900ik2XLYvUdA4MCuWZQd80=">
+  <template class="partial" requires="std::is_integral_v&lt;T&gt;" id="m/JW900ik2XLYvUdA4MCuWZQd80=">
     <tparam name="T" class="type"/>
     <targ class="type" type="T"/>
-    <targ class="type" type="void"/>
     <class name="A" id="IiCxqBbybfSkEqtDiLE90hOwXD8=">
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="73" class="def"/>
       <doc>
@@ -224,7 +207,7 @@
   </template>
   <template>
     <tparam name="T" class="type"/>
-    <tparam class="type" default="void"/>
+    <tparam name="Enable" class="type" default="void"/>
     <struct name="S" id="IZrmVBMJu1uvsP9zur5JVrwgYmE=">
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="76" class="def"/>
       <doc>

@@ -22,7 +22,7 @@
 | <<A-09,`A`>> 
 | The partial specialization of A is enabled via a template parameter
 
-| <<A-02,`A&lt;T, void&gt;`>> 
+| <<A-02,`A&lt;T&gt;`>> 
 | Specialization for floating point types
 
 | <<S-02,`S`>> 
@@ -123,7 +123,7 @@ class A;
 
 
 [#A-02]
-== A&lt;T, void&gt;
+== A&lt;T&gt;
 
 
 Specialization for floating point types
@@ -136,7 +136,8 @@ Declared in `&lt;sfinae&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;class T&gt;
-class <<A-09,A>>&lt;T, void&gt;;
+requires std&colon;&colon;is&lowbar;integral&lowbar;v&lt;T&gt;
+class <<A-09,A>>&lt;T&gt;;
 ----
 
 
@@ -157,7 +158,7 @@ Declared in `&lt;sfinae&period;cpp&gt;`
 ----
 template&lt;
     class T,
-    class = void&gt;
+    class Enable = void&gt;
 struct S;
 ----
 
@@ -261,11 +262,10 @@ Declared in `&lt;sfinae&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template&lt;
-    class T,
-    typename = void&gt;
+template&lt;class T&gt;
+requires std&colon;&colon;is&lowbar;integral&lowbar;v&lt;T&gt;
 void
-f10(T* t);
+f10(T value);
 ----
 
 === Description
@@ -346,9 +346,8 @@ Declared in `&lt;sfinae&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template&lt;
-    class T,
-    bool = true&gt;
+template&lt;class T&gt;
+requires std&colon;&colon;is&lowbar;integral&lowbar;v&lt;T&gt;
 T
 f5(T value);
 ----
@@ -366,9 +365,8 @@ Declared in `&lt;sfinae&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template&lt;
-    class T,
-    bool = true&gt;
+template&lt;class T&gt;
+requires std&colon;&colon;is&lowbar;integral&lowbar;v&lt;T&gt;
 T
 f6(T value);
 ----
@@ -386,9 +384,8 @@ Declared in `&lt;sfinae&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template&lt;
-    class T,
-    int = 0&gt;
+template&lt;class T&gt;
+requires std&colon;&colon;is&lowbar;integral&lowbar;v&lt;T&gt;
 void
 f7(T value);
 ----
@@ -408,9 +405,8 @@ Declared in `&lt;sfinae&period;cpp&gt;`
 ----
 template&lt;class T&gt;
 T
-f8(
-    T value,
-    void* = 0);
+f8(T value)
+requires std&colon;&colon;is&lowbar;integral&lowbar;v&lt;T&gt;;
 ----
 
 [#f9]
@@ -428,9 +424,8 @@ Declared in `&lt;sfinae&period;cpp&gt;`
 ----
 template&lt;class T&gt;
 T
-f9(
-    T value,
-    void* = 0);
+f9(T value)
+requires std&colon;&colon;is&lowbar;integral&lowbar;v&lt;T&gt;;
 ----
 
 

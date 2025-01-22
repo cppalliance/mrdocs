@@ -1461,6 +1461,55 @@ populate(
     {
         populate(TI.Requires, RC);
     }
+    else
+    {
+        // If there's no requires clause, check if the template
+        // parameter types we extracted have constraints
+        for (auto it = TI.Params.begin(); it != TI.Params.end(); )
+        {
+            std::unique_ptr<TParam>& param = *it;
+
+            if (auto const* T = dynamic_cast<NonTypeTParam*>(param.get());
+                T &&
+                T->Type &&
+                !T->Type->Constraints.empty())
+            {
+                for (ExprInfo const& constraint: T->Type->Constraints)
+                {
+                    if (!TI.Requires.Written.empty())
+                    {
+                        TI.Requires.Written += " && ";
+                    }
+                    TI.Requires.Written += constraint.Written;
+                }
+                it = TI.Params.erase(it);
+                continue;
+            }
+
+            if (param->Default &&
+                param->Default->isType())
+            {
+                if (auto const* T = dynamic_cast<TypeTArg*>(param->Default.get());
+                    T &&
+                    T->Type &&
+                    !T->Type->Constraints.empty())
+                {
+                    for (ExprInfo const& constraint: T->Type->Constraints)
+                    {
+                        if (!TI.Requires.Written.empty())
+                        {
+                            TI.Requires.Written += " && ";
+                        }
+                        TI.Requires.Written += constraint.Written;
+                    }
+                    it = TI.Params.erase(it);
+                    continue;
+                }
+            }
+
+            ++it;
+        }
+    }
 }
 
 void

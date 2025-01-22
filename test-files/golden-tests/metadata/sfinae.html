@@ -33,7 +33,7 @@
 <td><a href="#A-09"><code>A</code></a> </td><td><span><span>The partial specialization of A is enabled via a template parameter</span></span>
 
 </td></tr><tr>
-<td><a href="#A-02"><code>A&lt;T, void&gt;</code></a> </td><td><span><span>Specialization for floating point types</span></span>
+<td><a href="#A-02"><code>A&lt;T&gt;</code></a> </td><td><span><span>Specialization for floating point types</span></span>
 
 </td></tr><tr>
 <td><a href="#S-02"><code>S</code></a> </td><td><span><span>SFINAE with std::void_t</span></span>
@@ -147,7 +147,7 @@ class A;
 </div>
 <div>
 <div>
-<h2 id="A-02">A&lt;T, void&gt;</h2>
+<h2 id="A-02">A&lt;T&gt;</h2>
 <div>
 <span><span>Specialization for floating point types</span></span>
 
@@ -161,7 +161,8 @@ Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 template&lt;class T&gt;
-class <a href="#A-09">A</a>&lt;T, void&gt;;
+requires std::is_integral_v&lt;T&gt;
+class <a href="#A-09">A</a>&lt;T&gt;;
 </code>
 </pre>
 </div>
@@ -185,7 +186,7 @@ Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <code class="source-code cpp">
 template&lt;
     class T,
-    class = void&gt;
+    class Enable = void&gt;
 struct S;
 </code>
 </pre>
@@ -309,11 +310,10 @@ f1(T value);
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
-template&lt;
-    class T,
-    typename = void&gt;
+template&lt;class T&gt;
+requires std::is_integral_v&lt;T&gt;
 void
-f10(T* t);
+f10(T value);
 </code>
 </pre>
 </div>
@@ -407,9 +407,8 @@ f4(T value);
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
-template&lt;
-    class T,
-    bool = true&gt;
+template&lt;class T&gt;
+requires std::is_integral_v&lt;T&gt;
 T
 f5(T value);
 </code>
@@ -431,9 +430,8 @@ f5(T value);
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
-template&lt;
-    class T,
-    bool = true&gt;
+template&lt;class T&gt;
+requires std::is_integral_v&lt;T&gt;
 T
 f6(T value);
 </code>
@@ -455,9 +453,8 @@ f6(T value);
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
-template&lt;
-    class T,
-    int = 0&gt;
+template&lt;class T&gt;
+requires std::is_integral_v&lt;T&gt;
 void
 f7(T value);
 </code>
@@ -481,9 +478,8 @@ Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <code class="source-code cpp">
 template&lt;class T&gt;
 T
-f8(
-    T value,
-    void* = 0);
+f8(T value)
+requires std::is_integral_v&lt;T&gt;;
 </code>
 </pre>
 </div>
@@ -505,9 +501,8 @@ Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <code class="source-code cpp">
 template&lt;class T&gt;
 T
-f9(
-    T value,
-    void* = 0);
+f9(T value)
+requires std::is_integral_v&lt;T&gt;;
 </code>
 </pre>
 </div>

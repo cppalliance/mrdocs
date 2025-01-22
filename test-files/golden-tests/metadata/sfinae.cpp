@@ -36,7 +36,7 @@ T
 f6(T value);
 
 /// Enabled via a non-type template parameter using int instead of bool
-template<class T, std::enable_if_t<T::value1, int> = 0>
+template<class T, std::enable_if_t<std::is_integral_v<T>, int> = 0>
 void f7(T value);
 
 /// Enabled via parameter without helper
@@ -62,7 +62,7 @@ f9(T value, std::enable_if_t<std::is_integral_v<T>>* = 0);
 /// arguments are not accounted for in function template equivalence).
 ///
 template<class T, typename = std::enable_if_t<std::is_integral_v<T>>>
-void f10(T* t);
+void f10(T value);
 
 /// The partial specialization of A is enabled via a template parameter
 template<class T, class Enable = void>
@@ -73,7 +73,7 @@ template<class T>
 class A<T, std::enable_if_t<std::is_integral_v<T>>> {};
 
 /// SFINAE with std::void_t
-template <class T, class = void>
+template <class T, class Enable = void>
 struct S
 {
     void store(const void*) {}
