@@ -1193,6 +1193,34 @@ populate(
         populate(Template.Args, CTSD->getTemplateArgs().asArray());
     }
 
+    // Extract requires clause from SFINAE context
+    for (auto it = Template.Args.begin(); it != Template.Args.end();)
+    {
+        auto& arg = *it;
+        if (!arg)
+        {
+            ++it;
+            continue;
+        }
+        if (auto* T = dynamic_cast<TypeTArg*>(arg.get());
+            T &&
+            T->Type &&
+            !T->Type->Constraints.empty())
+        {
+            for (ExprInfo const& constraint: T->Type->Constraints)
+            {
+                if (!Template.Requires.Written.empty())
+                {
+                    Template.Requires.Written += " && ";
+                }
+                Template.Requires.Written += constraint.Written;
+            }
+            it = Template.Args.erase(it);
+            continue;
+        }
+        ++it;
+    }
+
     // Extract the template parameters if this is a partial specialization
     if (auto* CTPSD = dyn_cast<ClassTemplatePartialSpecializationDecl>(CTSD))
     {
