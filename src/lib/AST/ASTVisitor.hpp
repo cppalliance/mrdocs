@@ -734,7 +734,7 @@ private:
         QualType Type;
 
         // The template arguments used in the SFINAE context.
-        std::vector<TemplateArgument> Arguments;
+        std::vector<ExprInfo> Constraints;
     };
 
     /* Get the underlying type result of a SFINAE type

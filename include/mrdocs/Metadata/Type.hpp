@@ -106,6 +106,18 @@ struct TypeInfo
     */
     bool IsPackExpansion = false;
 
+    /** The constraints associated with the type
+
+        This represents the constraints associated with the type,
+        such as SFINAE constraints.
+
+        For instance, if SFINAE detection is enabled, the
+        expression `std::enable_if_t<std::is_integral_v<T>, T>`
+        will have type `T` (NamedType) and constraints
+        `{std::is_integral_v<T>}`.
+     */
+    std::vector<ExprInfo> Constraints;
+
     constexpr virtual ~TypeInfo() = default;
 
     constexpr bool isNamed()           const noexcept { return Kind == TypeKind::Named; }
@@ -123,14 +135,17 @@ struct TypeInfo
         The inner type is the type which is modified
         by a specifier (e.g. "int" in "pointer to int".
     */
-    virtual TypeInfo* innerType() const noexcept
+    virtual
+    TypeInfo*
+    innerType() const noexcept
     {
         return nullptr;
     }
 
     /** Return the symbol named by this type.
     */
-    SymbolID namedSymbol() const noexcept;
+    SymbolID
+    namedSymbol() const noexcept;
 
 protected:
     constexpr

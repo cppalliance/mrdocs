@@ -102,6 +102,7 @@ buildDecltype(
     getASTVisitor().populate(
         I->Operand, T->getUnderlyingExpr());
     I->CVQualifiers = toQualifierKind(quals);
+    I->Constraints = this->Constraints;
     *Inner = std::move(I);
     Result->IsPackExpansion = pack;
 }
@@ -129,6 +130,7 @@ buildAuto(
         // Constraint->Prefix = getASTVisitor().buildNameInfo(
         //     cast<Decl>(CD->getDeclContext()));
     }
+    I->Constraints = this->Constraints;
     *Inner = std::move(I);
     Result->IsPackExpansion = pack;
 }
@@ -145,12 +147,12 @@ buildTerminal(
 {
     auto TI = std::make_unique<NamedTypeInfo>();
     TI->CVQualifiers = toQualifierKind(quals);
-
-    auto Name = std::make_unique<NameInfo>();
-    Name->Name = getASTVisitor().toString(T);
-    Name->Prefix = getASTVisitor().toNameInfo(NNS);
-    TI->Name = std::move(Name);
+    TI->Name = std::make_unique<NameInfo>();
+    TI->Name->Name = getASTVisitor().toString(T);
+    TI->Name->Prefix = getASTVisitor().toNameInfo(NNS);
+    TI->Constraints = this->Constraints;
     *Inner = std::move(TI);
+    Result->Constraints = this->Constraints;
     Result->IsPackExpansion = pack;
 }
 
@@ -187,7 +189,9 @@ buildTerminal(
         Name->Prefix = getASTVisitor().toNameInfo(NNS);
         I->Name = std::move(Name);
     }
+    I->Constraints = this->Constraints;
     *Inner = std::move(I);
+    Result->Constraints = this->Constraints;
     Result->IsPackExpansion = pack;
 }
 
@@ -240,7 +244,9 @@ buildTerminal(
         getASTVisitor().populate(Name->TemplateArgs, *TArgs);
         TI->Name = std::move(Name);
     }
+    TI->Constraints = this->Constraints;
     *Inner = std::move(TI);
+    Result->Constraints = this->Constraints;
     Result->IsPackExpansion = pack;
 }
 
