@@ -872,6 +872,20 @@ populate(
     }
     else
     {
+        // Return type SFINAE constraints
+        if (I.ReturnType &&
+            !I.ReturnType->Constraints.empty())
+        {
+            for (ExprInfo const& constraint: I.ReturnType->Constraints)
+            {
+                if (!I.Requires.Written.empty())
+                {
+                    I.Requires.Written += " && ";
+                }
+                I.Requires.Written += constraint.Written;
+            }
+        }
+
         // Iterate I.Params to find trailing requires clauses
         for (auto it = I.Params.begin(); it != I.Params.end(); )
         {

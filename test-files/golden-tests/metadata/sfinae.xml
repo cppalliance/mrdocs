@@ -4,7 +4,7 @@
 <namespace id="//////////////////////////8=">
   <template>
     <tparam name="T" class="type"/>
-    <function name="f1" id="Bs19YS1cqZhrsbv149xgnjRFUAk=">
+    <function name="f1" requires="std::is_integral_v&lt;T&gt;" id="Bs19YS1cqZhrsbv149xgnjRFUAk=">
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="5"/>
       <return>
         <type name="T"/>
@@ -21,7 +21,7 @@
   </template>
   <template>
     <tparam name="T" class="type"/>
-    <function name="f2" id="uckUKgu5WdbIitoodkl2kXQ7RWI=">
+    <function name="f2" requires="std::is_integral_v&lt;T&gt;" id="uckUKgu5WdbIitoodkl2kXQ7RWI=">
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="10"/>
       <return>
         <type name="int"/>
@@ -43,7 +43,7 @@
   </namespace>
   <template>
     <tparam name="T" class="type"/>
-    <function name="f3" id="HIZ4NeNKvHJFhj0tJIjpjaLL30U=">
+    <function name="f3" requires="std::is_integral_v&lt;T&gt;" id="HIZ4NeNKvHJFhj0tJIjpjaLL30U=">
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="19"/>
       <return>
         <type id="r/5vKTgl4cXSK5TnuZ/+P7qmkJ0=" name="B::C"/>
@@ -60,7 +60,7 @@
   </template>
   <template>
     <tparam name="T" class="type"/>
-    <function name="f4" id="45LJB0/nCsN3KRlVtnRqNrJG818=">
+    <function name="f4" requires="std::is_integral_v&lt;T&gt;" id="45LJB0/nCsN3KRlVtnRqNrJG818=">
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="24"/>
       <return>
         <type name="T"/>
