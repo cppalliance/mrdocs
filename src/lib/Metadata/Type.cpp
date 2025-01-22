@@ -83,12 +83,15 @@ SymbolID
 TypeInfo::
 namedSymbol() const noexcept
 {
-    if(! isNamed())
+    if (!isNamed())
+    {
         return SymbolID::invalid;
-    const auto* NT = static_cast<
-        const NamedTypeInfo*>(this);
-    if(! NT->Name)
+    }
+    auto const* NT = static_cast<NamedTypeInfo const*>(this);
+    if (!NT->Name)
+    {
         return SymbolID::invalid;
+    }
     return NT->Name->id;
 }
 

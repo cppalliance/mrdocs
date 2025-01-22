@@ -1884,25 +1884,32 @@ extractSFINAEInfo(QualType const T)
     // Find the parameter that represents the SFINAE result
     auto const Args = templateInfo->Arguments;
     MRDOCS_SYMBOL_TRACE(Args, context_);
-    auto const param_arg = tryGetTemplateArgument(
+    auto const resultType = tryGetTemplateArgument(
         SFINAEControl->Parameters, Args, SFINAEControl->ParamIdx);
-    MRDOCS_CHECK_OR(param_arg, std::nullopt);
-    MRDOCS_SYMBOL_TRACE(*param_arg, context_);
+    MRDOCS_CHECK_OR(resultType, std::nullopt);
+    MRDOCS_SYMBOL_TRACE(*resultType, context_);
 
     // Create a vector of template arguments that represent the
     // controlling parameters of the SFINAE template
-    std::vector<TemplateArgument> ControllingArgs;
+    SFINAEInfo Result;
+    Result.Type = resultType->getAsType();
     for (std::size_t I = 0; I < Args.size(); ++I)
     {
         if (SFINAEControl->ControllingParams[I])
         {
             MRDOCS_SYMBOL_TRACE(Args[I], context_);
-            ControllingArgs.emplace_back(Args[I]);
+            Expr* E = Args[I].getAsExpr();
+            if (!E)
+            {
+                continue;
+            }
+            Result.Constraints.emplace_back();
+            populate(Result.Constraints.back(), E);
         }
     }
 
     // Return the main type and controlling types
-    return SFINAEInfo{param_arg->getAsType(), std::move(ControllingArgs)};
+    return Result;
 }
 
 std::optional<ASTVisitor::SFINAEControlParams>
@@ -1963,16 +1970,16 @@ getSFINAEControlParams(
 
         // Find the index of the parameter that represents the SFINAE result
         // in the underlying template arguments
-        auto param_arg = tryGetTemplateArgument(
+        auto resultType = tryGetTemplateArgument(
             sfinaeControl->Parameters,
             underlyingTemplateInfo->Arguments,
             sfinaeControl->ParamIdx);
-        MRDOCS_CHECK_OR(param_arg, std::nullopt);
-        MRDOCS_SYMBOL_TRACE(*param_arg, context_);
+        MRDOCS_CHECK_OR(resultType, std::nullopt);
+        MRDOCS_SYMBOL_TRACE(*resultType, context_);
 
         // Find the index of the parameter that represents the SFINAE result
         // in the primary template arguments
-        unsigned ParamIdx = FindParam(ATD->getInjectedTemplateArgs(context_), *param_arg);
+        unsigned ParamIdx = FindParam(ATD->getInjectedTemplateArgs(context_), *resultType);
 
         // Return the controlling parameters with values corresponding to
         // the primary template arguments
@@ -2060,11 +2067,11 @@ getSFINAEControlParams(
                 }
 
                 auto [template_params, controlling_params, param_idx] = *sfinae_result;
-                auto param_arg = tryGetTemplateArgument(
+                auto resultType = tryGetTemplateArgument(
                     template_params, sfinae_info->Arguments, param_idx);
-                if(! param_arg)
+                if(! resultType)
                     return true;
-                auto CurrentTypeFromBase = param_arg->getAsType();
+                auto CurrentTypeFromBase = resultType->getAsType();
                 if (CurrentType.isNull())
                 {
                     CurrentType = CurrentTypeFromBase;

@@ -87,6 +87,10 @@ class TerminalTypeVisitor
     // The optional NestedNameSpecifier.
     const NestedNameSpecifier* NNS_ = nullptr;
 
+protected:
+    // Constraints associated with the type (e.g., SFINAE)
+    std::vector<ExprInfo> Constraints;
+
 public:
     /** Constructor for TerminalTypeVisitor.
 
@@ -571,6 +575,7 @@ private:
         if (auto SFINAE = getASTVisitor().extractSFINAEInfo(T))
         {
             NNS_ = nullptr;
+            Constraints = SFINAE->Constraints;
             return getDerived().Visit(SFINAE->Type);
         }
 
@@ -606,6 +611,7 @@ private:
         if (auto SFINAE = getASTVisitor().extractSFINAEInfo(T))
         {
             NNS_ = nullptr;
+            Constraints = SFINAE->Constraints;
             return getDerived().Visit(SFINAE->Type);
         }
 
