@@ -31,7 +31,8 @@ Declared in `&lt;sqrt&period;cpp&gt;`
 ----
 template&lt;typename T&gt;
 T
-sqrt(T value);
+sqrt(T value)
+requires std&colon;&colon;is&lowbar;integral&lowbar;v&lt;T&gt;;
 ----
 
 === Description

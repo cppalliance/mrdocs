@@ -41,7 +41,8 @@ Declared in <code>&lt;sqrt.cpp&gt;</code></div>
 <code class="source-code cpp">
 template&lt;typename T&gt;
 T
-sqrt(T value);
+sqrt(T value)
+requires std::is_integral_v&lt;T&gt;;
 </code>
 </pre>
 </div>

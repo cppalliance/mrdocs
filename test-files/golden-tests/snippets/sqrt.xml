@@ -4,7 +4,7 @@
 <namespace id="//////////////////////////8=">
   <template>
     <tparam name="T" class="type"/>
-    <function name="sqrt" id="ulFDUE1svTCX8fV/h8EIp4NNbWs=">
+    <function name="sqrt" requires="std::is_integral_v&lt;T&gt;" id="ulFDUE1svTCX8fV/h8EIp4NNbWs=">
       <file short-path="sqrt.cpp" source-path="sqrt.cpp" line="15" class="def"/>
       <return>
         <type name="T"/>

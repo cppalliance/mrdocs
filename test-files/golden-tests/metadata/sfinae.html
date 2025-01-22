@@ -290,7 +290,8 @@ Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <code class="source-code cpp">
 template&lt;class T&gt;
 T
-f1(T value);
+f1(T value)
+requires std::is_integral_v&lt;T&gt;;
 </code>
 </pre>
 </div>
@@ -343,7 +344,8 @@ Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <code class="source-code cpp">
 template&lt;class T&gt;
 int
-f2(T value);
+f2(T value)
+requires std::is_integral_v&lt;T&gt;;
 </code>
 </pre>
 </div>
@@ -365,7 +367,8 @@ Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <code class="source-code cpp">
 template&lt;class T&gt;
 <a href="#B">B</a>::<a href="#B-C">C</a>
-f3(T value);
+f3(T value)
+requires std::is_integral_v&lt;T&gt;;
 </code>
 </pre>
 </div>
@@ -387,7 +390,8 @@ Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <code class="source-code cpp">
 template&lt;class T&gt;
 T
-f4(T value);
+f4(T value)
+requires std::is_integral_v&lt;T&gt;;
 </code>
 </pre>
 </div>

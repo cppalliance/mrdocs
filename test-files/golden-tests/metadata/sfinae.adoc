@@ -246,7 +246,8 @@ Declared in `&lt;sfinae&period;cpp&gt;`
 ----
 template&lt;class T&gt;
 T
-f1(T value);
+f1(T value)
+requires std&colon;&colon;is&lowbar;integral&lowbar;v&lt;T&gt;;
 ----
 
 [#f10]
@@ -294,7 +295,8 @@ Declared in `&lt;sfinae&period;cpp&gt;`
 ----
 template&lt;class T&gt;
 int
-f2(T value);
+f2(T value)
+requires std&colon;&colon;is&lowbar;integral&lowbar;v&lt;T&gt;;
 ----
 
 [#f3]
@@ -312,7 +314,8 @@ Declared in `&lt;sfinae&period;cpp&gt;`
 ----
 template&lt;class T&gt;
 <<B,B>>::<<B-C,C>>
-f3(T value);
+f3(T value)
+requires std&colon;&colon;is&lowbar;integral&lowbar;v&lt;T&gt;;
 ----
 
 [#f4]
@@ -330,7 +333,8 @@ Declared in `&lt;sfinae&period;cpp&gt;`
 ----
 template&lt;class T&gt;
 T
-f4(T value);
+f4(T value)
+requires std&colon;&colon;is&lowbar;integral&lowbar;v&lt;T&gt;;
 ----
 
 [#f5]
