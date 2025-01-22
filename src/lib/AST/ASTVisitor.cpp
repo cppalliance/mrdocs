@@ -870,6 +870,30 @@ populate(
     {
         populate(I.Requires, TRC);
     }
+    else
+    {
+        // Iterate I.Params to find trailing requires clauses
+        for (auto it = I.Params.begin(); it != I.Params.end(); )
+        {
+            if (it->Type &&
+                !it->Type->Constraints.empty())
+            {
+                for (ExprInfo const& constraint: it->Type->Constraints)
+                {
+                    if (!I.Requires.Written.empty())
+                    {
+                        I.Requires.Written += " && ";
+                    }
+                    I.Requires.Written += constraint.Written;
+                }
+                it = I.Params.erase(it);
+            }
+            else
+            {
+                ++it;
+            }
+        }
+    }
 
     populateAttributes(I, D);
 }
