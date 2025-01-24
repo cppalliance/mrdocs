@@ -1,0 +1,10 @@
+= protectedsection
+
+== Syntax
+@protectedsection
+
+== Description
+Starting a section of protected members, in a way similar to the "protected:" class marker in C++. Indicates that the member documented by the comment block is protected, i.e., should only be accessed by other members in the same or derived classes.
+
+== See Also
+sections xref:commands/memberof.adoc[@memberof], xref:commands/public.adoc[@public], xref:commands/private.adoc[@private] and xref:commands/protected.adoc[@protected].

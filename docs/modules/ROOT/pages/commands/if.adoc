@@ -1,0 +1,67 @@
+= if
+
+== Syntax
+@if (section-label)
+
+== Description
+Starts a conditional documentation section. The section ends with a matching xref:commands/endif.adoc[@endif] command. A conditional section is disabled by default. To enable it you must put the section-label after the ENABLED_SECTIONS tag in the configuration file.
+
+The section label can be a logical expression build of section names, round brackets, && (AND), || (OR) and ! (NOT). If you use an expression you need to wrap it in round brackets, i.e `@if (!LABEL1 && LABEL2)`.
+
+Conditional blocks can be nested. A nested section is only enabled if all enclosing sections are enabled as well.
+
+The `@if` and corresponding xref:commands/endif.adoc[@endif] have to be in the same comment block. When a conditional block needs to span more than one comment block one has to use xref:commands/cond.adoc[@cond] ... xref:commands/endcond.adoc[@endcond].
+
+You can also use conditional commands inside aliases. To document a class in two languages you could for instance use:
+
+Example 2:
+
+```
+/*! \english
+ *  This is English.
+ *  \endenglish
+ *  \dutch
+ *  Dit is Nederlands.
+ *  \enddutch
+ */
+class Example
+{
+};
+
+```
+// [CODE_END]
+
+Where the following aliases are defined in the configuration file:
+
+```
+ALIASES  = "english=@if english" \
+           "endenglish=\endif" \
+           "dutch=@if dutch" \
+           "enddutch=\endif"
+
+```
+// [CODE_END]
+and ENABLED_SECTIONS can be used to enable either `english` or `dutch`.
+
+== Example
+```
+  /*! Unconditionally shown documentation.
+   *  @if Cond1
+   *    Only included if Cond1 is set.
+   *  @endif
+   *  @if Cond2
+   *    Only included if Cond2 is set.
+   *    @if Cond3
+   *      Only included if Cond2 and Cond3 are set.
+   *    @endif
+   *    More text.
+   *  @endif
+   *  Unconditional text.
+   */
+
+```
+// [CODE_END]
+
+
+== See Also
+sections xref:commands/endif.adoc[@endif], xref:commands/ifnot.adoc[@ifnot], xref:commands/else.adoc[@else], xref:commands/elseif.adoc[@elseif], xref:commands/cond.adoc[@cond], xref:commands/endcond.adoc[@endcond], and ENABLED_SECTIONS.

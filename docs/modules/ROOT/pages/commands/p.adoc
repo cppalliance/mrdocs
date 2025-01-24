@@ -1,0 +1,20 @@
+= p
+
+== Syntax
+@p &lt;word&gt;
+
+== Description
+Displays the parameter <word> using a typewriter font. You can use this command to refer to member function parameters in the running text.
+
+Equivalent to xref:commands/c.adoc[@c]. To have multiple words in typewriter font use <tt>multiple words</tt>.
+
+== Example
+```
+  ... the @p x and @p y coordinates are used to ...
+
+```
+// [CODE_END]
+
+
+== Rendering
+\... the `x` and `y` coordinates are used to ...

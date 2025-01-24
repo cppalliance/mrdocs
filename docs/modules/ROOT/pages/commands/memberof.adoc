@@ -1,0 +1,106 @@
+= memberof
+
+== Syntax
+@memberof &lt;name&gt;
+
+== Description
+This command makes a function a member of a class in a similar way as xref:commands/relates.adoc[@relates] does, only with this command the function is represented as a real member of the class. This can be useful when the programming language does not support the concept of member functions natively (e.g. C).
+
+It is also possible to use this command together with xref:commands/public.adoc[@public], xref:commands/protected.adoc[@protected] or xref:commands/private.adoc[@private].
+
+== Example
+```
+/**
+ * @file manual.c
+ */
+ 
+typedef struct Object Object;   //!< Object type
+typedef struct Vehicle Vehicle; //!< Vehicle type
+typedef struct Car Car;         //!< Car type
+typedef struct Truck Truck;     //!< Truck type
+ 
+/*!
+ * Base object class.
+ */
+struct Object
+{
+  int ref;    //!< @private Reference count.
+};
+ 
+ 
+/*!
+ * Increments object reference count by one.
+ * @public @memberof Object
+ */
+static Object * objRef(Object *obj);
+ 
+ 
+/*!
+ * Decrements object reference count by one.
+ * @public @memberof Object
+ */
+static Object * objUnref(Object *obj);
+ 
+ 
+/*!
+ * Vehicle class.
+ * @extends Object
+ */
+struct Vehicle
+{
+  Object base;    //!< @protected Base class.
+};
+ 
+ 
+/*!
+ * Starts the vehicle.
+ * @public @memberof Vehicle
+ */
+void vehicleStart(Vehicle *obj);
+ 
+ 
+/*!
+ * Stops the vehicle.
+ * @public @memberof Vehicle
+ */
+void vehicleStop(Vehicle *obj);
+ 
+ 
+/*!
+ * Car class.
+ * @extends Vehicle
+ */
+struct Car
+{
+  Vehicle base;    //!< @protected Base class.
+};
+ 
+ 
+/*!
+ * Truck class.
+ * @extends Vehicle
+ */
+struct Truck
+{
+  Vehicle base;    //!< @protected Base class.
+};
+ 
+ 
+/*!
+ * Main function.
+ *
+ * Ref vehicleStart(), objRef(), objUnref().
+ */
+int main(void)
+{
+  Car c;
+  vehicleStart((Vehicle*) &c);
+}
+ 
+
+```
+// [CODE_END]
+
+
+== See Also
+sections xref:commands/extends.adoc[@extends], xref:commands/implements.adoc[@implements], xref:commands/public.adoc[@public], xref:commands/protected.adoc[@protected] and xref:commands/private.adoc[@private].

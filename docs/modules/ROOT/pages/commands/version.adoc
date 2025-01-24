@@ -1,0 +1,7 @@
+= version
+
+== Syntax
+@version { version number }
+
+== Description
+Starts a paragraph where one or more version strings may be entered. The paragraph will be indented. The text of the paragraph has no special internal structure. All visual enhancement commands may be used inside the paragraph. Multiple adjacent `@version` commands will be joined into a single paragraph. Each version description will start on a new line. Alternatively, one `@version` command may mention several version strings. The @version command ends when a blank line or some other sectioning command is encountered. See section xref:commands/author.adoc[@author] for an example.

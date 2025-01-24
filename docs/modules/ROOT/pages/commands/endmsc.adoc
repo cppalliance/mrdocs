@@ -1,0 +1,7 @@
+= endmsc
+
+== Syntax
+@endmsc
+
+== Description
+Ends a block that was started with xref:commands/msc.adoc[@msc].

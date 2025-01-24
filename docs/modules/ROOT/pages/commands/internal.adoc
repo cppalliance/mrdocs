@@ -1,0 +1,14 @@
+= internal
+
+== Syntax
+@internal
+
+== Description
+This command starts a documentation fragment that is meant for internal use only. The fragment naturally ends at the end of the comment block. You can also force the internal section to end earlier by using the xref:commands/endinternal.adoc[@endinternal] command.
+
+If the `@internal` command is put inside a section (see for example xref:commands/section.adoc[@section]) all subsections after the command are considered to be internal as well. Only a new section at the same level will end the fragment that is considered internal.
+
+You can use INTERNAL_DOCS in the configuration file to show (`YES`) or hide (`NO`) the internal documentation.
+
+== See Also
+section xref:commands/endinternal.adoc[@endinternal].

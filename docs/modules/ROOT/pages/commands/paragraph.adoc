@@ -1,0 +1,11 @@
+= paragraph
+
+== Syntax
+@paragraph &lt;paragraph-name&gt; (paragraph title)
+
+== Description
+Creates a named paragraph with name <paragraph-name>. The title of the paragraph should be specified as the second argument of the `@paragraph` command.
+
+
+
+*Warning:* This command only works inside a subsubsection of a related page documentation block and not in other documentation blocks!

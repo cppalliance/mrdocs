@@ -1,0 +1,7 @@
+= endinternal
+
+== Syntax
+@endinternal
+
+== Description
+This command ends a documentation fragment that was started with a xref:commands/internal.adoc[@internal] command. The text between xref:commands/internal.adoc[@internal] and `@endinternal` will only be visible if INTERNAL_DOCS is set to `YES`.

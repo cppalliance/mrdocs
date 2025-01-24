@@ -1,0 +1,7 @@
+= enddot
+
+== Syntax
+@enddot
+
+== Description
+Ends a block that was started with xref:commands/dot.adoc[@dot].

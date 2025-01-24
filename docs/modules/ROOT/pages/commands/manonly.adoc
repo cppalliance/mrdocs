@@ -1,0 +1,12 @@
+= manonly
+
+== Syntax
+@manonly
+
+== Description
+Starts a block of text that only will be verbatim included in the generated MAN documentation and tagged with `<manonly>` in the generated XML output. The block ends with a xref:commands/endmanonly.adoc[@endmanonly] command.
+
+This command can be used to include groff code directly into MAN pages. You can use the xref:commands/htmlonly.adoc[@htmlonly] and xref:commands/endhtmlonly.adoc[@endhtmlonly] and xref:commands/latexonly.adoc[@latexonly] and xref:commands/endlatexonly.adoc[@endlatexonly] pairs to provide proper HTML and LaTeX alternatives.
+
+== See Also
+sections xref:commands/htmlonly.adoc[@htmlonly], xref:commands/xmlonly.adoc[@xmlonly], xref:commands/rtfonly.adoc[@rtfonly], xref:commands/latexonly.adoc[@latexonly], xref:commands/docbookonly.adoc[@docbookonly] and xref:commands/maninclude.adoc[@maninclude].

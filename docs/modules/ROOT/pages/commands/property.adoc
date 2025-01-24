@@ -1,0 +1,10 @@
+= property
+
+== Syntax
+@property (qualified property name)
+
+== Description
+Indicates that a comment block contains documentation for a property (either global or as a member of a class). This command is equivalent to xref:commands/fn.adoc[@fn], xref:commands/typedef.adoc[@typedef], and xref:commands/var.adoc[@var].
+
+== See Also
+sections xref:commands/fn.adoc[@fn], xref:commands/typedef.adoc[@typedef], and xref:commands/var.adoc[@var].

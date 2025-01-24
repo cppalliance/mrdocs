@@ -1,0 +1,43 @@
+= image
+
+== Syntax
+@image['{'option[,option]'}'] &lt;format&gt; &lt;file&gt; ["caption"] [&lt;sizeindication&gt;=&lt;size&gt;]
+
+== Description
+Inserts an image into the documentation. This command is format specific, so if you want to insert an image for more than one format you'll have to repeat this command for each format.
+
+The first argument specifies the output format in which the image should be embedded. Currently, the following values are supported: `html`, `latex`, `docbook`, `rtf` and `xml`.
+
+The second argument specifies the file name of the image. MrDocs will look for files in the paths (or files) that you specified after the IMAGE_PATH tag. If the image is found it will be copied to the correct output directory. If the image name contains spaces you'll have to put quotes ("...") around the name. You can also specify an absolute URL instead of a file name, but then MrDocs does not copy the image nor check its existence.
+
+The third argument is optional and can be used to specify the caption that is displayed below the image. This argument has to be specified on a single line and between quotes even if it does not contain any spaces. The quotes are stripped before the caption is displayed.
+
+The fourth argument is also optional and can be used to specify the width or height of the image. This can be useful for LaTeX or DocBook output (i.e. format=`latex` or format=`docbook`). 
+
+Size indicationThe `sizeindication` can specify the width or height to be used (or a combination). The size specifier in LaTeX (for example `10cm` or `4in` or a symbolic width like `@textwidth`).
+Currently only the options `inline` and `anchor` are supported. In case the option `inline` is specified the image is placed "in the line", when a caption is present it is shown in HTML as tooltip (ignored for the other formats). For the `anchor` option the syntax is: `anchor:<anchorId>`.
+
+Here is example of a comment block:
+
+```
+  /*! Here is a snapshot of my new application:
+   *  @image html application.jpg
+   *  @image latex application.eps "My application" width=10cm
+   */
+
+```
+// [CODE_END]
+And this is an example of how the relevant part of the configuration file may look:
+
+```
+  IMAGE_PATH     = my_image_dir
+
+```
+// [CODE_END]
+
+
+
+*Warning:* The image format for HTML is limited to what your browser supports.
+For LaTeX, the image format must be supported by the LaTeX `@includegraphics` command i.e. Encapsulated PostScript (eps), Portable network graphics (png), Joint photographic experts group (jpg / jpeg). 
+
+ MrDocs does not check if the image is in the correct format. So you have to make sure this is the case!

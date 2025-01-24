@@ -1,0 +1,7 @@
+= authors
+
+== Syntax
+@authors { list of authors }
+
+== Description
+Equivalent to xref:commands/author.adoc[@author].

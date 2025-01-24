@@ -1,0 +1,11 @@
+= skip
+
+== Syntax
+@skip ( pattern )
+
+== Description
+This command searches line by line through the example that was last included using xref:commands/include.adoc[@include] or xref:commands/dontinclude.adoc[@dontinclude] until it finds a line that contains the specified pattern.
+
+The internal pointer that is used to keep track of the current line in the example, is set to the start of the line that contains the specified pattern (or to the end of the example if the pattern could not be found).
+
+See section xref:commands/dontinclude.adoc[@dontinclude] for an example.

@@ -1,0 +1,7 @@
+= concept
+
+== Syntax
+@concept &lt;name&gt;
+
+== Description
+Indicates that a comment block contains documentation for a C++20 concept with name <name>. See also the xref:commands/headerfile.adoc[@headerfile] command to specify the header a user should be included to use the concept.

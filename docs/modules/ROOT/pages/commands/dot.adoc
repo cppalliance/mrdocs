@@ -1,0 +1,43 @@
+= dot
+
+== Syntax
+@dot ["caption"] [&lt;sizeindication&gt;=&lt;size&gt;]
+
+== Description
+Starts a text fragment which should contain a valid description of a dot graph. The text fragment ends with xref:commands/enddot.adoc[@enddot]. MrDocs will pass the text on to dot and include the resulting image (and image map) into the output.
+
+The first argument is optional and can be used to specify the caption that is displayed below the image. This argument has to be specified between quotes even if it does not contain any spaces. The quotes are stripped before the caption is displayed.
+
+The second argument is also optional and can be used to specify the width or height of the image. For a description of the possibilities see the paragraph Size indication with the xref:commands/image.adoc[@image] command.
+
+The nodes of a graph can be made clickable by using the URL attribute. By using the command xref:commands/ref.adoc[@ref] inside the URL value you can conveniently link to an item inside MrDocs. Here is an example:
+
+```
+/*! class B */
+class B {};
+ 
+/*! class C */
+class C {};
+ 
+/*! @mainpage
+ *
+ *  Class relations expressed via an inline dot graph:
+ *  @dot
+ *  digraph example {
+ *      node [shape=record, fontname=Helvetica, fontsize=10];
+ *      b [ label="class B" URL="@ref B"];
+ *      c [ label="class C" URL="@ref C"];
+ *      b -> c [ arrowhead="open", style="dashed" ];
+ *  }
+ *  @enddot
+ *  Note that the classes in the above graph are clickable
+ *  (in the HTML output).
+ */
+
+```
+// [CODE_END]
+
+
+*Note:* usage of this command requires that HAVE_DOT is set to `YES` 
+
+MrDocs creates a temporary file that is automatically removed unless the DOT_CLEANUP tag is set to `NO`.

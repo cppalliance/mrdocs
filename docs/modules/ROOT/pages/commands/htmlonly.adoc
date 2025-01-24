@@ -1,0 +1,18 @@
+= htmlonly
+
+== Syntax
+@htmlonly['[block]']
+
+== Description
+Starts a block of text that only will be verbatim included in the generated HTML documentation and tagged with `<htmlonly>` in the generated XML output. The block ends with a xref:commands/endhtmlonly.adoc[@endhtmlonly] command.
+
+This command can be used to include HTML code that is too complex for MrDocs (i.e. HTML tags that require specific attributes).
+
+Normally the contents between xref:commands/htmlonly.adoc[@htmlonly] and xref:commands/endhtmlonly.adoc[@endhtmlonly] is inserted as-is. When you want to insert a HTML fragment that has block scope like a table or list which should appear outside <p>..</p>, this can lead to invalid HTML. You can use `@htmlonly[block]` to make MrDocs end the current paragraph and restart it after `@endhtmlonly`.
+
+
+
+*Note:* environment variables (like $(HOME) ) are resolved inside a HTML-only block.
+
+== See Also
+section xref:commands/manonly.adoc[@manonly], xref:commands/latexonly.adoc[@latexonly], xref:commands/rtfonly.adoc[@rtfonly], xref:commands/xmlonly.adoc[@xmlonly], xref:commands/docbookonly.adoc[@docbookonly], and xref:commands/htmlinclude.adoc[@htmlinclude].

@@ -1,0 +1,7 @@
+= addindex
+
+== Syntax
+@addindex (text)
+
+== Description
+This command adds (text) to the LaTeX , DocBook and RTF index.

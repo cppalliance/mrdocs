@@ -1,0 +1,10 @@
+= typedef
+
+== Syntax
+@typedef (typedef declaration)
+
+== Description
+Indicates that a comment block contains documentation for a typedef (either global or as a member of a class). This command is equivalent to xref:commands/fn.adoc[@fn], xref:commands/property.adoc[@property], and xref:commands/var.adoc[@var].
+
+== See Also
+section xref:commands/fn.adoc[@fn], xref:commands/property.adoc[@property], and xref:commands/var.adoc[@var].

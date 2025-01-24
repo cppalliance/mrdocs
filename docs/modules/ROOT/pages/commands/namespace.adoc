@@ -1,0 +1,7 @@
+= namespace
+
+== Syntax
+@namespace &lt;name&gt;
+
+== Description
+Indicates that a comment block contains documentation for a namespace with name <name>.

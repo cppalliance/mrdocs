@@ -1,0 +1,35 @@
+= addtogroup
+
+== Syntax
+@addtogroup &lt;name&gt; [(title)]
+
+== Description
+Defines a group just like xref:commands/defgroup.adoc[@defgroup], but in contrast to that command using the same <name> more than once will not result in a warning, but rather one group with a merged documentation and the first title found in any of the commands.
+
+The title is optional, so this command can also be used to add a number of entities to an existing group using `@{` and `@}` like this:
+
+```
+  /*! @addtogroup mygrp
+   *  Additional documentation for group 'mygrp'
+   *  @{
+   */
+
+  /*!
+   *  A function
+   */
+  void func1()
+  {
+  }
+
+  /*! Another function */
+  void func2()
+  {
+  }
+
+  /*! @} */
+
+```
+// [CODE_END]
+
+== See Also
+sections xref:commands/defgroup.adoc[@defgroup], xref:commands/ingroup.adoc[@ingroup], and xref:commands/weakgroup.adoc[@weakgroup].

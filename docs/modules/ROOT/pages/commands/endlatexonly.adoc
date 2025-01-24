@@ -1,0 +1,10 @@
+= endlatexonly
+
+== Syntax
+@endlatexonly
+
+== Description
+Ends a block of text that was started with a xref:commands/latexonly.adoc[@latexonly] command.
+
+== See Also
+section xref:commands/latexonly.adoc[@latexonly].

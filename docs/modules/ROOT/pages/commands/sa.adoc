@@ -1,0 +1,9 @@
+= sa
+
+== Syntax
+@sa { references }
+
+== Description
+Starts a paragraph where one or more cross-references to classes, functions, methods, variables, files or URL may be specified. Two names joined by either `::` or `#` are understood as referring to a class and one of its members. One of several overloaded methods or constructors may be selected by including a parenthesized list of argument types after the method name.
+
+Synonymous to xref:commands/see.adoc[@see].

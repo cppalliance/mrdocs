@@ -1,0 +1,7 @@
+= refitem
+
+== Syntax
+@refitem &lt;name&gt;
+
+== Description
+Just like the xref:commands/ref.adoc[@ref] command, this command creates a reference to a named section, but this reference appears in a list that is started by xref:commands/secreflist.adoc[@secreflist] and ends with xref:commands/endsecreflist.adoc[@endsecreflist]. An example of such a list can be seen at the top of the page.

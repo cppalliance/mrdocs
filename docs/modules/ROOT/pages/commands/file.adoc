@@ -1,0 +1,30 @@
+= file
+
+== Syntax
+@file [&lt;name&gt;]
+
+== Description
+Indicates that a comment block contains documentation for a source or header file with name <name>. The file name may include (part of) the path if the file-name alone is not unique. If the file name is omitted (i.e. the line after `@file` is left blank) then the documentation block that contains the `@file` command will belong to the file it is located in.
+
+
+
+*Important:* The documentation of global functions, variables, typedefs, and enums will only be included in the output if the file they are in is documented as well or if EXTRACT_ALL is set to `YES`.
+
+
+*Note:* In the above example JAVADOC_AUTOBRIEF has been set to `YES` in the configuration file.
+
+== Example
+```
+/** @file file.h
+ * A brief file description.
+ * A more elaborated file description.
+ */
+ 
+/**
+ * A global integer value.
+ * More details about this value.
+ */
+extern int globalValue;
+
+```
+// [CODE_END]

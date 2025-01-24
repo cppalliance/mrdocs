@@ -1,0 +1,10 @@
+= weakgroup
+
+== Syntax
+@weakgroup &lt;name&gt; [(title)]
+
+== Description
+Can be used exactly like xref:commands/addtogroup.adoc[@addtogroup], but has a lower priority when it comes to resolving conflicting grouping definitions.
+
+== See Also
+section xref:commands/addtogroup.adoc[@addtogroup].

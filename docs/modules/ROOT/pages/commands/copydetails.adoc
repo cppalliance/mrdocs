@@ -1,0 +1,7 @@
+= copydetails
+
+== Syntax
+@copydetails &lt;link-object&gt;
+
+== Description
+Works in a similar way as xref:commands/copydoc.adoc[@copydoc] but will only copy the detailed documentation, not the brief description.

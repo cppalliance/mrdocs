@@ -1,0 +1,10 @@
+= nosubgrouping
+
+== Syntax
+@nosubgrouping
+
+== Description
+This command can be put in the documentation of a class. It can be used in combination with member grouping to avoid that MrDocs puts a member group as a subgroup of a Public/Protected/Private/... section.
+
+== See Also
+sections xref:commands/publicsection.adoc[@publicsection], xref:commands/protectedsection.adoc[@protectedsection] and xref:commands/privatesection.adoc[@privatesection].

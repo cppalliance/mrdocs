@@ -1,0 +1,10 @@
+= f(
+
+== Syntax
+@f(
+
+== Description
+Marks the start of an in-text formula, but contrary to xref:commands/fdollar.adoc[@f$] it will not explicitly open the math-mode in LaTeX.
+
+== See Also
+section xref:commands/frparen.adoc[@f)]

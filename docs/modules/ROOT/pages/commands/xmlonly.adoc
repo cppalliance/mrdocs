@@ -1,0 +1,12 @@
+= xmlonly
+
+== Syntax
+@xmlonly
+
+== Description
+Starts a block of text that only will be verbatim included in the generated XML output. The block ends with a xref:commands/endxmlonly.adoc[@endxmlonly] command.
+
+This command can be used to include custom XML tags.
+
+== See Also
+sections xref:commands/manonly.adoc[@manonly], xref:commands/rtfonly.adoc[@rtfonly], xref:commands/latexonly.adoc[@latexonly], xref:commands/htmlonly.adoc[@htmlonly], and xref:commands/docbookonly.adoc[@docbookonly].

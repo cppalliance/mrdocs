@@ -1,0 +1,52 @@
+= include
+
+== Syntax
+@include['{'option'}'] &lt;file-name&gt;
+
+== Description
+This command can be used to include a source file as a block of code. The command takes the name of an include file as an argument. Source files or directories can be specified using the EXAMPLE_PATH tag of MrDocs's configuration file.
+
+If <file-name> itself is not unique for the set of example files specified by the EXAMPLE_PATH tag, you can include part of the absolute path to disambiguate it.
+
+Using the `@include` command is equivalent to inserting the file into the documentation block and surrounding it with xref:commands/code.adoc[@code] and xref:commands/endcode.adoc[@endcode] commands.
+
+The main purpose of the `@include` command is to avoid code duplication in case of example blocks that consist of multiple source and header files.
+
+For a line by line description of a source files use the xref:commands/dontinclude.adoc[@dontinclude] command in combination with the xref:commands/line.adoc[@line], xref:commands/skip.adoc[@skip], xref:commands/skipline.adoc[@skipline], and xref:commands/until.adoc[@until] commands.
+
+Alternatively, the xref:commands/snippet.adoc[@snippet] command can be used to include only a fragment of a source file. For this to work the fragment has to be marked.
+
+The `option` can either be `lineno`, or `doc`, and additionally `local` can be specified.
+
+The `option` `lineno` can be used to enable line numbers for the included code if desired.
+The `option` `doc` can be used to treat the file as documentation rather than code.
+The `option` `local` can be used make MrDocs interpret the code as if it was in the class or namespace in which the include command appears, rather than the global namespace.
+The `option` `strip` can be used to always hide any special comments from the included code, overruling the STRIP_CODE_COMMENTS setting, and option `nostrip` can be used to always show the special comments. These options have no effect in combination with the `option` `doc`.
+
+When using option `doc`, there is also the option `raise` that can be specified to raise all sections found in the referenced file by a certain amount. For example
+
+```
+  @include{doc,raise=1} file.dox
+
+```
+// [CODE_END]
+will treat any level 1 `@section` found in `file.dox` as a level 2 `@subsection`, and any level 2 `@subsection` into a level 3 `@subsubsection`, etc.
+
+Furthermore, there is the option `prefix` that can be used to add a prefix to each label of the included sections, so that they remain unique. For example:
+
+```
+  @include{doc,prefix=fn_} file.dox
+
+```
+// [CODE_END]
+will treat e.g. `@section s1` found in `file.dox` as if it was specified as `@section fn_s1`.
+
+
+
+*Note:* MrDocs's special commands do not work inside blocks of code. It is allowed to nest C-style comments inside a code block though.
+
+
+*Note:* The included documentation should not have comment signs in it as they will appear in the documentation as well.
+
+== See Also
+sections xref:commands/example.adoc[@example], xref:commands/dontinclude.adoc[@dontinclude], xref:commands/verbatim.adoc[@verbatim], and xref:commands/snippet.adoc[@snippet].

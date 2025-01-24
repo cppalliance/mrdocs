@@ -1,0 +1,9 @@
+= static
+
+== Syntax
+@static
+
+== Description
+Indicates that the member documented by the comment block is static, i.e., it works on a class, instead of on an instance of the class.
+
+This command is intended for use only when the language does not support the concept of static methods natively (e.g. C).

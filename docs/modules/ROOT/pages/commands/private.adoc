@@ -1,0 +1,14 @@
+= private
+
+== Syntax
+@private
+
+== Description
+Indicates that the member documented by the comment block is private, i.e., should only be accessed by other members in the same class.
+
+Note that MrDocs automatically detects the protection level of members in object-oriented languages. This command is intended for use only when the language does not support the concept of protection level natively (e.g. C).
+
+For starting a section of private members, in a way similar to the "private:" class marker in C++, use xref:commands/privatesection.adoc[@privatesection].
+
+== See Also
+sections xref:commands/memberof.adoc[@memberof], xref:commands/public.adoc[@public], xref:commands/protected.adoc[@protected] and xref:commands/privatesection.adoc[@privatesection].

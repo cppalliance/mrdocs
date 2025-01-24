@@ -1,0 +1,7 @@
+= remark
+
+== Syntax
+@remark { remark text }
+
+== Description
+Starts a paragraph where one or more remarks may be entered. The paragraph will be indented. The text of the paragraph has no special internal structure. All visual enhancement commands may be used inside the paragraph. Multiple adjacent `@remark` commands will be joined into a single paragraph. Each remark will start on a new line. Alternatively, one `@remark` command may mention several remarks. The `@remark` command ends when a blank line or some other sectioning command is encountered.

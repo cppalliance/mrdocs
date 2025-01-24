@@ -1,0 +1,10 @@
+= f}
+
+== Syntax
+@f}
+
+== Description
+Marks the end of a formula that is in a specific environment.
+
+== See Also
+section xref:commands/flbrace.adoc[@f{]

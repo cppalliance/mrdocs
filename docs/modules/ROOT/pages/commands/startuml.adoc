@@ -1,0 +1,74 @@
+= startuml
+
+== Syntax
+@startuml ['{'option[,option]'}'] ["caption"] [&lt;sizeindication&gt;=&lt;size&gt;]
+
+== Description
+Starts a text fragment which should contain a valid description of a PlantUML diagram. See https://plantuml.com/ for examples. The text fragment ends with xref:commands/enduml.adoc[@enduml]. 
+
+Not all diagrams can be created with the PlantUML `@startuml` command but need another PlantUML `@start...` command. This will look like `@start<engine>` where currently supported are the following `<engine>`s: `uml`, `bpm`, `wire`, `dot`, `ditaa`, `salt`, `math`, `latex`, `gantt`, `mindmap`, `wbs`, `yaml`, `creole`, `json`, `flow`, `board`, `git`, `hcl`, `regex`, `ebnf`, `files`, `chen` and `chronology`. By default the `<engine>` is `uml`. The `<engine>` can be specified as an option. Also the file to write the resulting image to can be specified by means of an option, see the description of the first (optional) argument for details. Of course only one `<engine>` can be specified and also the filename can only be specified once.
+
+The first argument is optional and is for compatibility with running PlantUML as a preprocessing step before running MrDocs, you can also add the name of the image file after `@startuml` and inside curly brackets as option, i.e.
+
+```
+  @startuml{myimage.png} "Image Caption" width=5cm
+  Alice -> Bob : Hello
+  @enduml
+
+```
+// [CODE_END]
+When the name of the image is specified, MrDocs will generate an image with that name. Without the name MrDocs will choose a name automatically.
+
+The second argument is optional and can be used to specify the caption that is displayed below the image. This argument has to be specified between quotes even if it does not contain any spaces. The quotes are stripped before the caption is displayed.
+
+The third argument is also optional and can be used to specify the width or height of the image. For a description of the possibilities see the paragraph Size indication with the xref:commands/image.adoc[@image] command.
+
+Here is an example of the use of the `@startuml` command.
+
+```
+/** Sender class. Can be used to send a command to the server.
+ *  The receiver will acknowledge the command by calling Ack().
+ *  @startuml
+ *    Sender->Receiver  : Command()
+ *    Sender<--Receiver : Ack()
+ *  @enduml
+ */
+class Sender
+{
+  public:
+    /** Acknowledgment from server */
+    void Ack(bool ok);
+};
+ 
+/** Receiver class. Can be used to receive and execute commands.
+ *  After execution of a command, the receiver will send an acknowledgment
+ *  @startuml
+ *    Receiver<-Sender  : Command()
+ *    Receiver-->Sender : Ack()
+ *  @enduml
+ */
+class Receiver
+{
+  public:
+    /** Executable a command on the server */
+    void Command(int commandId);
+};
+
+```
+// [CODE_END]
+
+
+*Note:* You need to install Java and the PlantUML's jar file, if you want to use this command. When using PlantUML in LaTeX you have to download some more `jar` files, for details see the PlantUML documentation. This also is valid for the `&lt;engine&gt;`s `latex` and `math`. The location of the PlantUML file should be specified using PLANTUML_JAR_PATH. The other jar files should also reside in this directory. 
+
+The use of the `&lt;engine&gt;` `ditaa` is not possible in LaTeX as PlantUML only supports the `png` format and MrDocs requires, temporary, `eps` output.
+
+
+*Note:* MrDocs does not support the Plantuml commands like `@startjson`, by design, directly but the support can be accomplished, by the user, by adding to the MrDocs settings file: 
+```
+  ALIASES += startjson=@startuml{json}
+  ALIASES += endjson=@enduml
+
+```
+
+
+MrDocs creates a temporary file that is automatically removed unless the DOT_CLEANUP tag is set to `NO`.

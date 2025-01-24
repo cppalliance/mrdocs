@@ -1,0 +1,7 @@
+= remarks
+
+== Syntax
+@remarks { remark text }
+
+== Description
+Equivalent to xref:commands/remark.adoc[@remark].

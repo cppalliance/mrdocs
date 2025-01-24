@@ -1,0 +1,7 @@
+= cite
+
+== Syntax
+@cite &lt;label&gt;
+
+== Description
+Adds a bibliographic reference in the text and in the list of bibliographic references. The <label> must be a valid BibTeX label that can be found in one of the .bib files listed in CITE_BIB_FILES. For the LaTeX output the formatting of the reference in the text can be configured with LATEX_BIB_STYLE. For other output formats a fixed representation is used. Note that using this command requires the `bibtex` tool to be present in the search path.

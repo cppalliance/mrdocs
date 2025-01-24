@@ -1,0 +1,10 @@
+= category
+
+== Syntax
+@category &lt;name&gt; [&lt;header-file&gt;] [&lt;header-name&gt;]
+
+== Description
+For Objective-C only: Indicates that a comment block contains documentation for a class category with name <name>. The arguments are equal to the xref:commands/class.adoc[@class] command.
+
+== See Also
+section xref:commands/class.adoc[@class].

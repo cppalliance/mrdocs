@@ -1,0 +1,7 @@
+= copyright
+
+== Syntax
+@copyright { copyright description }
+
+== Description
+Starts a paragraph where the copyright of an entity can be described. This paragraph will be indented. The text of the paragraph has no special internal structure. See section xref:commands/author.adoc[@author] for an example.

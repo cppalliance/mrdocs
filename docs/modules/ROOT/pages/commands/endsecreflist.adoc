@@ -1,0 +1,7 @@
+= endsecreflist
+
+== Syntax
+@endsecreflist
+
+== Description
+End an index list started with xref:commands/secreflist.adoc[@secreflist].

@@ -1,0 +1,12 @@
+= latexinclude
+
+== Syntax
+@latexinclude &lt;file-name&gt;
+
+== Description
+This command includes the contents of the file <file-name> as is in the LaTeX documentation and tagged with `<latexonly>` in the generated XML output. The command is equivalent to pasting the contents of the file in the documentation and placing xref:commands/latexonly.adoc[@latexonly] and xref:commands/endlatexonly.adoc[@endlatexonly] commands around it.
+
+Files or directories that MrDocs should look for can be specified using the EXAMPLE_PATH tag of MrDocs's configuration file.
+
+== See Also
+section xref:commands/latexonly.adoc[@latexonly], xref:commands/htmlinclude.adoc[@htmlinclude], xref:commands/rtfinclude.adoc[@rtfinclude], xref:commands/maninclude.adoc[@maninclude], xref:commands/docbookinclude.adoc[@docbookinclude] and xref:commands/xmlinclude.adoc[@xmlinclude].

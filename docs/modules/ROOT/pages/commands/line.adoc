@@ -1,0 +1,11 @@
+= line
+
+== Syntax
+@line ( pattern )
+
+== Description
+This command searches line by line through the example that was last included using xref:commands/include.adoc[@include] or xref:commands/dontinclude.adoc[@dontinclude] until it finds a non-blank line. If that line contains the specified pattern, it is written to the output.
+
+The internal pointer that is used to keep track of the current line in the example, is set to the start of the line following the non-blank line that was found (or to the end of the example if no such line could be found).
+
+See section xref:commands/dontinclude.adoc[@dontinclude] for an example.

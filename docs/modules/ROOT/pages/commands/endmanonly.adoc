@@ -1,0 +1,10 @@
+= endmanonly
+
+== Syntax
+@endmanonly
+
+== Description
+Ends a block of text that was started with a xref:commands/manonly.adoc[@manonly] command.
+
+== See Also
+section xref:commands/manonly.adoc[@manonly].

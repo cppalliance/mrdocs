@@ -1,0 +1,14 @@
+= callergraph
+
+== Syntax
+@callergraph
+
+== Description
+When this command is put in a comment block of a function or method and HAVE_DOT is set to `YES`, then MrDocs will generate a caller graph for that function (provided the implementation of the function or method is called by other documented functions). The caller graph will be generated regardless of the value of CALLER_GRAPH. 
+
+
+
+*Note:* The completeness (and correctness) of the caller graph depends on the MrDocs code parser which is not perfect.
+
+== See Also
+section xref:commands/callgraph.adoc[@callgraph], section xref:commands/hidecallgraph.adoc[@hidecallgraph], section xref:commands/hidecallergraph.adoc[@hidecallergraph] and option CALLER_GRAPH

@@ -1,0 +1,7 @@
+= noop
+
+== Syntax
+@noop ( text to be ignored )
+
+== Description
+All the text, including the command, till the end of the line is ignored. The command will most commonly be used in combination with ALIASES to ignore not supported commands that are present for e.g. other processing tools.

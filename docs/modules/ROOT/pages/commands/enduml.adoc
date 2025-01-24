@@ -1,0 +1,7 @@
+= enduml
+
+== Syntax
+@enduml
+
+== Description
+Ends a block that was started with xref:commands/startuml.adoc[@startuml].

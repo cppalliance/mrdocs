@@ -1,0 +1,10 @@
+= var
+
+== Syntax
+@var (variable declaration)
+
+== Description
+Indicates that a comment block contains documentation for a variable or enum value (either global or as a member of a class). This command is equivalent to xref:commands/fn.adoc[@fn], xref:commands/property.adoc[@property], and xref:commands/typedef.adoc[@typedef].
+
+== See Also
+section xref:commands/fn.adoc[@fn], xref:commands/property.adoc[@property], and xref:commands/typedef.adoc[@typedef].

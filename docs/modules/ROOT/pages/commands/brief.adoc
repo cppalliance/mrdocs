@@ -1,0 +1,9 @@
+= brief
+
+== Syntax
+@brief { brief description }
+
+== Description
+Starts a paragraph that serves as a brief description. For classes and files the brief description will be used in lists and at the start of the documentation page. For class and file members, the brief description will be placed at the declaration of the member and prepended to the detailed description. A brief description may span several lines (although it is advised to keep it brief!). A brief description ends when a blank line or another sectioning command is encountered. If multiple `@brief` commands are present they will be joined. See section xref:commands/author.adoc[@author] for an example.
+
+Synonymous to xref:commands/short.adoc[@short].

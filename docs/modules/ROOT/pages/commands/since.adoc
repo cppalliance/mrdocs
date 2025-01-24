@@ -1,0 +1,7 @@
+= since
+
+== Syntax
+@since { text }
+
+== Description
+This command can be used to specify since when (version or time) an entity is available. The paragraph that follows `@since` does not have any special internal structure. All visual enhancement commands may be used inside the paragraph. The `@since` description ends when a blank line or some other sectioning command is encountered.

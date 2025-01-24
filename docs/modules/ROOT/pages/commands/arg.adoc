@@ -1,0 +1,34 @@
+= arg
+
+== Syntax
+@arg { item-description }
+
+== Description
+This command has one argument that continues until the first blank line or until another `@arg` is encountered. The command can be used to generate a simple, not nested list of arguments. Each argument should start with a `@arg` command.
+
+Equivalent to xref:commands/li.adoc[@li]
+
+
+
+*Note:* For nested lists, HTML commands should be used.
+
+== Example
+```
+  @arg @c AlignLeft left alignment.
+  @arg @c AlignCenter center alignment.
+  @arg @c AlignRight right alignment
+
+  No other types of alignment are supported.
+
+```
+// [CODE_END]
+
+
+== Rendering
+`AlignLeft` left alignment. 
+
+`AlignCenter` center alignment. 
+
+`AlignRight` right alignment 
+
+No other types of alignment are supported.

@@ -1,0 +1,10 @@
+= endverbatim
+
+== Syntax
+@endverbatim
+
+== Description
+Ends a block of text that was started with a xref:commands/verbatim.adoc[@verbatim] command.
+
+== See Also
+section xref:commands/verbatim.adoc[@verbatim].

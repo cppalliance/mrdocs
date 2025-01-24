@@ -1,0 +1,14 @@
+= endcond
+
+== Syntax
+@endcond
+
+== Description
+Ends a conditional section that was started by xref:commands/cond.adoc[@cond].
+
+
+
+*Note:* Due to the moment of parsing the `@endcond` and xref:commands/cond.adoc[@cond] commands cannot be used in ALIASES.
+
+== See Also
+section xref:commands/cond.adoc[@cond].

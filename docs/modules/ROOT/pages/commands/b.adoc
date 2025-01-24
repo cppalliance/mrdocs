@@ -1,0 +1,7 @@
+= b
+
+== Syntax
+@b &lt;word&gt;
+
+== Description
+Displays the argument <word> using a bold font. Equivalent to <b>word</b>. To put multiple words in bold use <b>multiple words</b>.

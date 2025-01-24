@@ -1,0 +1,14 @@
+= hiderefs
+
+== Syntax
+@hiderefs
+
+== Description
+When this command is put in a comment block of a function or method and then MrDocs will not generate an overview for that function or method of the functions and methods that call it. The overview will not be generated regardless of the value of REFERENCES_RELATION. 
+
+
+
+*Note:* The completeness (and correctness) of the overview depends on the MrDocs code parser which is not perfect.
+
+== See Also
+section xref:commands/showrefs.adoc[@showrefs], section xref:commands/showrefby.adoc[@showrefby], section xref:commands/hiderefby.adoc[@hiderefby] and option REFERENCES_RELATION

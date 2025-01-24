@@ -1,0 +1,10 @@
+= publicsection
+
+== Syntax
+@publicsection
+
+== Description
+Starting a section of public members, in a way similar to the "public:" class marker in C++. Indicates that the member documented by the comment block is public, i.e., can be accessed by any other class or function.
+
+== See Also
+sections xref:commands/memberof.adoc[@memberof], xref:commands/protected.adoc[@protected], xref:commands/private.adoc[@private] and xref:commands/public.adoc[@public].

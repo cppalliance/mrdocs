@@ -1,0 +1,9 @@
+= tparam
+
+== Syntax
+@tparam &lt;template-parameter-name&gt; { description }
+
+== Description
+Starts a template parameter for a class or function template parameter with name <template-parameter-name>, followed by a description of the template parameter.
+
+Otherwise similar to xref:commands/param.adoc[@param].

@@ -1,0 +1,14 @@
+= protected
+
+== Syntax
+@protected
+
+== Description
+Indicates that the member documented by the comment block is protected, i.e., should only be accessed by other members in the same or derived classes.
+
+Note that MrDocs automatically detects the protection level of members in object-oriented languages. This command is intended for use only when the language does not support the concept of protection level natively (e.g. C).
+
+For starting a section of protected members, in a way similar to the "protected:" class marker in C++, use xref:commands/protectedsection.adoc[@protectedsection].
+
+== See Also
+sections xref:commands/memberof.adoc[@memberof], xref:commands/public.adoc[@public], xref:commands/private.adoc[@private] and xref:commands/protectedsection.adoc[@protectedsection].

@@ -1,0 +1,14 @@
+= f{
+
+== Syntax
+@f\{environment\}\{
+
+== Description
+Marks the start of a formula that is in a specific environment. 
+
+
+
+*Note:* The second `{` is optional and is only to help editors (such as `Vim`) to do proper syntax highlighting by making the number of opening and closing braces the same.
+
+== See Also
+section xref:commands/frbrace.adoc[@f}]

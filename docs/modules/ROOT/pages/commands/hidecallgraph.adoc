@@ -1,0 +1,14 @@
+= hidecallgraph
+
+== Syntax
+@hidecallgraph
+
+== Description
+When this command is put in a comment block of a function or method and then MrDocs will not generate a call graph for that function. The call graph will not be generated regardless of the value of CALL_GRAPH. 
+
+
+
+*Note:* The completeness (and correctness) of the call graph depends on the MrDocs code parser which is not perfect.
+
+== See Also
+section xref:commands/callergraph.adoc[@callergraph], section xref:commands/callgraph.adoc[@callgraph], section xref:commands/hidecallergraph.adoc[@hidecallergraph] and option CALL_GRAPH

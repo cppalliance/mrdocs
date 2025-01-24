@@ -1,0 +1,7 @@
+= warning
+
+== Syntax
+@warning { warning message }
+
+== Description
+Starts a paragraph where one or more warning messages may be entered. The paragraph will be indented. The text of the paragraph has no special internal structure. All visual enhancement commands may be used inside the paragraph. Multiple adjacent `@warning` commands will be joined into a single paragraph. Each warning description will start on a new line. Alternatively, one `@warning` command may mention several warnings. The `@warning` command ends when a blank line or some other sectioning command is encountered. See section xref:commands/author.adoc[@author] for an example.

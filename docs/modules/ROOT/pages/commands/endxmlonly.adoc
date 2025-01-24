@@ -1,0 +1,10 @@
+= endxmlonly
+
+== Syntax
+@endxmlonly
+
+== Description
+Ends a block of text that was started with a xref:commands/xmlonly.adoc[@xmlonly] command.
+
+== See Also
+section xref:commands/xmlonly.adoc[@xmlonly].
