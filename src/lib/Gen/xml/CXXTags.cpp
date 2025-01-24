@@ -10,11 +10,10 @@
 //
 
 #include "CXXTags.hpp"
-#include <mrdocs/Metadata/Typedef.hpp>
+#include <mrdocs/Metadata/Info/Typedef.hpp>
+#include <mrdocs/Metadata/Info/Record.hpp>
 
-namespace clang {
-namespace mrdocs {
-namespace xml {
+namespace clang::mrdocs::xml {
 
 llvm::StringRef
 getDefaultTagName(Info const& I) noexcept
@@ -58,6 +57,4 @@ getTagName(Info const& I) noexcept
     MRDOCS_UNREACHABLE();
 }
 
-} // xml
-} // mrdocs
-} // clang
+} // clang::mrdocs::xml

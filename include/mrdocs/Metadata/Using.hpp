@@ -18,8 +18,7 @@
 #include <vector>
 #include <utility>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 enum class UsingClass
 {
@@ -56,7 +55,7 @@ tag_invoke(
 
 /** Info for using declarations.
  */
-struct UsingInfo
+struct UsingInfo final
     : InfoCommonBase<InfoKind::Using>,
     SourceInfo
 {
@@ -70,7 +69,7 @@ struct UsingInfo
 
     /** The qualifier for a using declaration.
     */
-    std::unique_ptr<NameInfo> Qualifier;
+    PolymorphicValue<NameInfo> Qualifier;
 
     //--------------------------------------------
 
@@ -80,7 +79,6 @@ struct UsingInfo
     }
 };
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

@@ -16,9 +16,9 @@
 #include <concepts>
 #include <type_traits>
 #include <utility>
+#include <ranges>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 /** The default empty predicate.
 
@@ -27,21 +27,23 @@ namespace mrdocs {
 */
 struct DefaultEmptyPredicate
 {
-    template<class T>
-    constexpr bool operator()(T const& t) const noexcept
-        requires requires
-        {
-            { t.empty() } -> std::convertible_to<bool>;
-        }
+    template <std::ranges::range T>
+    constexpr
+    bool
+    operator()(T const& t) const noexcept
     {
-        return t.empty();
+        return std::ranges::empty(t);
     }
 
     template<class T>
-    constexpr bool operator()(T const& t) const noexcept
+    constexpr
+    bool
+    operator()(T const& t) const noexcept
     {
-        return ! t;
+        return !t;
     }
+
+
 };
 
 /** A compact optional.
@@ -138,7 +140,6 @@ public:
     }
 };
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

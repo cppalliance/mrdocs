@@ -14,14 +14,12 @@
 #include "lib/Lib/Info.hpp"
 #include "lib/Lib/Lookup.hpp"
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 MRDOCS_DECL
 void
 finalize(InfoSet& Info, SymbolLookup& Lookup);
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

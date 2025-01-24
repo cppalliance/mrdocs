@@ -237,7 +237,7 @@ writeEnum(
         { I.Access },
         { I.id }
     });
-    if(I.UnderlyingType)
+    if (I.UnderlyingType)
     {
         tags_.open(baseTagName);
         writeType(I.UnderlyingType, tags_);
@@ -707,31 +707,21 @@ writeSpecialization(
 void
 XMLWriter::
 writeJavadoc(
-    std::unique_ptr<Javadoc> const& javadoc)
+    std::optional<Javadoc> const& javadoc)
 {
-    if(! javadoc)
+    if (!javadoc)
+    {
         return;
+    }
     tags_.open(javadocTagName);
     writeNodes(javadoc->getBlocks());
     tags_.close(javadocTagName);
 }
 
-template<class T>
-void
-XMLWriter::
-writeNodes(
-    doc::List<T> const& list)
-{
-    if(list.empty())
-        return;
-    for(auto const& node : list)
-        writeNode(*node);
-}
 
 void
 XMLWriter::
-writeNode(
-    doc::Node const& node)
+writeNode(doc::Node const& node)
 {
     switch(node.kind)
     {

@@ -14,26 +14,23 @@
 #ifndef MRDOCS_API_METADATA_FIELD_HPP
 #define MRDOCS_API_METADATA_FIELD_HPP
 
-#include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Source.hpp>
 #include <mrdocs/Metadata/Type.hpp>
-#include <utility>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 /** Info for fields (i.e. non-static data members)
 
     Non-static data members cannot be redeclared.
 */
-struct FieldInfo
+struct FieldInfo final
     : InfoCommonBase<InfoKind::Field>
     , SourceInfo
 {
     /** Type of the field */
-    std::unique_ptr<TypeInfo> Type;
+    PolymorphicValue<TypeInfo> Type;
 
     /** The default member initializer, if any.
     */
@@ -69,7 +66,6 @@ struct FieldInfo
     }
 };
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

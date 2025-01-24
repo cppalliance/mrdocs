@@ -14,18 +14,17 @@
 #define MRDOCS_API_METADATA_JAVADOC_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Dom.hpp>
 #include <mrdocs/Metadata/Symbols.hpp>
-#include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/Visitor.hpp>
+#include <mrdocs/ADT/PolymorphicValue.hpp>
+#include <mrdocs/Dom/String.hpp>
 #include <memory>
 #include <string>
 #include <type_traits>
 #include <utility>
 #include <vector>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 /** Javadoc related types and functions.
 
@@ -54,13 +53,7 @@ namespace doc {
 
 struct Node;
 
-using String = std::string;
-
-template<typename T>
-requires std::derived_from<T, doc::Node>
-using List = std::vector<std::unique_ptr<T>>;
-
-/** The kind of a node.
+/** The kind of node.
 
     This includes tags and block types.
 
@@ -226,13 +219,13 @@ struct MRDOCS_DECL
 */
 struct Text : Node
 {
-    String string;
+    std::string string;
 
     static constexpr Kind static_kind = Kind::text;
 
     explicit
     Text(
-        String string_ = String()) noexcept
+        std::string string_ = std::string()) noexcept
         : Node(Kind::text)
         , string(std::move(string_))
     {
@@ -247,12 +240,12 @@ struct Text : Node
     bool equals(const Node& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == static_cast<const Text&>(other);
+            *this == dynamic_cast<const Text&>(other);
     }
 
 protected:
     Text(
-        String string_,
+        std::string string_,
         Kind kind_)
         : Node(kind_)
         , string(std::move(string_))
@@ -262,14 +255,14 @@ protected:
 
 /** A piece of styled text.
 */
-struct Styled : Text
+struct Styled final : Text
 {
     Style style;
 
     static constexpr Kind static_kind = Kind::styled;
 
     Styled(
-        String string_ = String(),
+        std::string string_ = std::string(),
         Style style_ = Style::none) noexcept
         : Text(std::move(string_), Kind::styled)
         , style(style_)
@@ -280,7 +273,7 @@ struct Styled : Text
     bool equals(Node const& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == static_cast<const Styled&>(other);
+            *this == dynamic_cast<const Styled&>(other);
     }
 
 };
@@ -289,14 +282,14 @@ struct Styled : Text
 */
 struct Link : Text
 {
-    String href;
+    std::string href;
 
     static constexpr Kind static_kind = Kind::link;
 
     explicit
     Link(
-        String string_ = String(),
-        String href_ = String()) noexcept
+        std::string string_ = std::string(),
+        std::string href_ = std::string()) noexcept
         : Text(std::move(string_), Kind::link)
         , href(std::move(href_))
     {
@@ -306,7 +299,7 @@ struct Link : Text
     bool equals(const Node& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == static_cast<const Link&>(other);
+            *this == dynamic_cast<const Link&>(other);
     }
 };
 
@@ -320,7 +313,7 @@ struct Reference : Text
 
     explicit
     Reference(
-        String string_ = String()) noexcept
+        std::string string_ = std::string()) noexcept
         : Text(std::move(string_), Kind::reference)
     {
     }
@@ -329,12 +322,12 @@ struct Reference : Text
     bool equals(const Node& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == static_cast<const Reference&>(other);
+            *this == dynamic_cast<const Reference&>(other);
     }
 
 protected:
     Reference(
-        String string_,
+        std::string string_,
         Kind kind_) noexcept
         : Text(std::move(string_), kind_)
     {
@@ -350,7 +343,7 @@ struct Copied : Reference
     static constexpr Kind static_kind = Kind::copied;
 
     Copied(
-        String string_ = String(),
+        std::string string_ = std::string(),
         Parts parts_ = Parts::all) noexcept
         : Reference(std::move(string_), Kind::copied)
         , parts(parts_)
@@ -361,7 +354,7 @@ struct Copied : Reference
     bool equals(Node const& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == static_cast<const Copied&>(other);
+            *this == dynamic_cast<const Copied&>(other);
     }
 };
 
@@ -380,7 +373,7 @@ struct Copied : Reference
 struct MRDOCS_DECL
     Block : Node
 {
-    List<Text> children;
+    std::vector<PolymorphicValue<Text>> children;
 
     bool isBlock() const noexcept final
     {
@@ -409,7 +402,7 @@ struct MRDOCS_DECL
     bool equals(Node const& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == static_cast<const Block&>(other);
+            *this == dynamic_cast<const Block&>(other);
     }
 
     template<std::derived_from<Text> T>
@@ -419,22 +412,22 @@ struct MRDOCS_DECL
             std::make_unique<T>(std::forward<T>(text))));
     }
 
-    void append(List<Node>&& blocks);
+    void append(std::vector<PolymorphicValue<Node>>&& blocks);
 
-    void append(List<Text> const& otherChildren);
+    void append(std::vector<PolymorphicValue<Text>> const& otherChildren);
 
 protected:
     explicit
     Block(
         Kind kind_,
-        List<Text> children_ = {}) noexcept
+        std::vector<PolymorphicValue<Text>> children_ = {}) noexcept
         : Node(kind_)
         , children(std::move(children_))
     {
     }
 
 private:
-    Text& emplace_back(std::unique_ptr<Text> text);
+    Text& emplace_back(PolymorphicValue<Text> text);
 };
 
 /** A manually specified section heading.
@@ -443,10 +436,10 @@ struct Heading : Block
 {
     static constexpr Kind static_kind = Kind::heading;
 
-    String string;
+    std::string string;
 
     Heading(
-        String string_ = String()) noexcept
+        std::string string_ = std::string()) noexcept
         : Block(Kind::heading)
         , string(std::move(string_))
     {
@@ -475,14 +468,14 @@ struct Paragraph : Block
     bool equals(const Node& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == static_cast<const Paragraph&>(other);
+            *this == dynamic_cast<const Paragraph&>(other);
     }
 
 protected:
     explicit
     Paragraph(
         Kind kind,
-        List<Text> children_ = {}) noexcept
+        std::vector<PolymorphicValue<Text>> children_ = {}) noexcept
         : Block(kind, std::move(children_))
     {
     }
@@ -557,67 +550,90 @@ struct Code : Paragraph
 
 /** An item in a list
 */
-struct ListItem : Paragraph
+struct ListItem final : Paragraph
 {
-    static constexpr Kind static_kind = Kind::list_item;
+    static constexpr auto static_kind = Kind::list_item;
 
     ListItem()
         : Paragraph(Kind::list_item)
-    {
-    }
+    {}
 
-    bool operator==(const ListItem&)
-        const noexcept = default;
+    bool
+    operator==(const ListItem&) const noexcept = default;
 
-    bool equals(const Node& other) const noexcept override
+    bool
+    equals(const Node& other) const noexcept override
     {
-        return kind == other.kind &&
-            *this == dynamic_cast<const ListItem&>(other);
+        auto* p = dynamic_cast<const ListItem*>(&other);
+        if (!p)
+        {
+            return false;
+        }
+        if (this == &other)
+        {
+            return true;
+        }
+        return *this == *p;
     }
 };
 
 /** A list of list items
 */
-struct UnorderedList : Paragraph
+struct UnorderedList final : Paragraph
 {
-    static constexpr Kind static_kind = Kind::unordered_list;
+    static constexpr auto static_kind = Kind::unordered_list;
 
-    // Vector of list items
-    List<ListItem> items;
+    std::vector<ListItem> items;
 
     UnorderedList()
         : Paragraph(Kind::unordered_list)
     {
     }
 
-    bool operator==(const UnorderedList&)
-        const noexcept = default;
+    bool
+    operator==(const UnorderedList&) const noexcept = default;
 
-    bool equals(const Node& other) const noexcept override
+    bool
+    equals(const Node& other) const noexcept override
     {
-        return kind == other.kind &&
-            *this == dynamic_cast<const UnorderedList&>(other);
+        auto* p = dynamic_cast<const UnorderedList*>(&other);
+        if (!p)
+        {
+            return false;
+        }
+        if (this == &other)
+        {
+            return true;
+        }
+        return *this == *p;
     }
 };
 
 /** A @details paragraph
 */
-struct Details : Paragraph
+struct Details final : Paragraph
 {
-    static constexpr Kind static_kind = Kind::details;
+    static constexpr auto static_kind = Kind::details;
 
     Details()
         : Paragraph(Kind::details)
-    {
-    }
+    {}
 
-    bool operator==(const Details&)
-        const noexcept = default;
+    bool
+    operator==(const Details&) const noexcept = default;
 
     bool equals(const Node& other) const noexcept override
     {
-        return kind == other.kind &&
-            *this == static_cast<const Details&>(other);
+        auto* p = dynamic_cast<const Details*>(&other);
+        if (!p)
+        {
+            return false;
+        }
+        if (this == &other)
+        {
+            return true;
+        }
+        return *this == *p;
     }
 };
 
@@ -638,7 +654,7 @@ struct See : Paragraph
     bool equals(const Node& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == static_cast<const See&>(other);
+            *this == dynamic_cast<const See&>(other);
     }
 };
 
@@ -646,13 +662,13 @@ struct See : Paragraph
 */
 struct Param : Paragraph
 {
-    String name;
+    std::string name;
     ParamDirection direction;
 
     static constexpr Kind static_kind = Kind::param;
 
     Param(
-        String name_ = String(),
+        std::string name_ = std::string(),
         Paragraph details_ = Paragraph(),
         ParamDirection direction_ = ParamDirection::none)
         : Paragraph(
@@ -669,7 +685,7 @@ struct Param : Paragraph
     bool equals(const Node& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == static_cast<const Param&>(other);
+            *this == dynamic_cast<const Param&>(other);
     }
 };
 
@@ -691,7 +707,7 @@ struct Returns : Paragraph
     bool equals(const Node& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == static_cast<const Returns&>(other);
+            *this == dynamic_cast<const Returns&>(other);
     }
 };
 
@@ -699,7 +715,7 @@ struct Returns : Paragraph
 */
 struct TParam : Paragraph
 {
-    String name;
+    std::string name;
 
     static constexpr Kind static_kind = Kind::tparam;
 
@@ -712,7 +728,7 @@ struct TParam : Paragraph
     bool equals(const Node& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == static_cast<const TParam&>(other);
+            *this == dynamic_cast<const TParam&>(other);
     }
 };
 
@@ -725,7 +741,7 @@ struct Throws : Paragraph
     static constexpr Kind static_kind = Kind::throws;
 
     Throws(
-        String exception_ = String(),
+        std::string exception_ = std::string(),
         Paragraph details_ = Paragraph())
         : Paragraph(
             Kind::throws,
@@ -740,7 +756,7 @@ struct Throws : Paragraph
     bool equals(const Node& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == static_cast<const Throws&>(other);
+            *this == dynamic_cast<const Throws&>(other);
     }
 };
 
@@ -762,7 +778,7 @@ struct Precondition : Paragraph
     bool equals(const Node& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == static_cast<const Precondition&>(other);
+            *this == dynamic_cast<const Precondition&>(other);
     }
 };
 
@@ -784,7 +800,7 @@ struct Postcondition : Paragraph
     bool equals(const Node& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == static_cast<const Postcondition&>(other);
+            *this == dynamic_cast<const Postcondition&>(other);
     }
 };
 
@@ -849,7 +865,7 @@ visit(
 /** Visit a node.
 
     @param node The node to visit.
-    @param f The function to call for each node.
+    @param fn The function to call for each node.
     @param args Additional arguments to pass to the function.
  */
 template<
@@ -944,7 +960,9 @@ struct Overview
     std::vector<Postcondition const*> postconditions;
 };
 
-MRDOCS_DECL dom::String toString(Style style) noexcept;
+MRDOCS_DECL
+dom::String
+toString(Style style) noexcept;
 
 } // doc
 
@@ -957,7 +975,7 @@ class Corpus;
 struct MRDOCS_DECL
     Javadoc
 {
-    doc::List<doc::Block> blocks_;
+    std::vector<PolymorphicValue<doc::Block>> blocks_;
 
     /** Constructor.
     */
@@ -968,7 +986,7 @@ struct MRDOCS_DECL
     */
     explicit
     Javadoc(
-        doc::List<doc::Block> blocks);
+        std::vector<PolymorphicValue<doc::Block>> blocks);
 
     /** Return true if this is empty
     */
@@ -983,12 +1001,12 @@ struct MRDOCS_DECL
     doc::Paragraph const*
     getBrief(Corpus const& corpus) const noexcept;
 
-    doc::List<doc::Block> const&
+    std::vector<PolymorphicValue<doc::Block>> const&
     getDescription(Corpus const& corpus) const noexcept;
 
     /** Return the list of top level blocks.
     */
-    doc::List<doc::Block> const&
+    std::vector<PolymorphicValue<doc::Block>> const&
     getBlocks() const noexcept
     {
         return blocks_;
@@ -996,7 +1014,7 @@ struct MRDOCS_DECL
 
     // VFALCO This is unfortunately necessary for
     //        the deserialization from bitcode...
-    doc::List<doc::Block>&
+    std::vector<PolymorphicValue<doc::Block>>&
     getBlocks() noexcept
     {
         return blocks_;
@@ -1044,7 +1062,7 @@ struct MRDOCS_DECL
     std::string
     emplace_back(T&& block)
     {
-        return emplace_back(std::make_unique<T>(std::forward<T>(block)));
+        return emplace_back(MakePolymorphicValue<doc::Block, T>(std::forward<T>(block)));
     }
 
     /** Append blocks from another javadoc to this.
@@ -1053,10 +1071,12 @@ struct MRDOCS_DECL
 
     /** Append blocks from a list to this.
      */
-    void append(doc::List<doc::Node>&& blocks);
+    void
+    append(std::vector<PolymorphicValue<doc::Node>>&& blocks);
 
 private:
-    std::string emplace_back(std::unique_ptr<doc::Block>);
+    std::string
+    emplace_back(PolymorphicValue<doc::Block>);
 };
 
 /** Return the Javadoc as a @ref dom::Value.
@@ -1069,7 +1089,6 @@ tag_invoke(
     Javadoc const& I,
     DomCorpus const* domCorpus);
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

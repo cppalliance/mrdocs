@@ -12,14 +12,10 @@
 #ifndef MRDOCS_API_METADATAFWD_HPP
 #define MRDOCS_API_METADATAFWD_HPP
 
-#include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Symbols.hpp>
-
 // Forward declarations for all types
 // related to metadata extracted from AST
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 class Corpus;
 
@@ -73,7 +69,6 @@ struct StaticDataMember;
 
 struct OverloadSet;
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

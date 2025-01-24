@@ -8,7 +8,7 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdocs/Metadata/Record.hpp>
+#include <mrdocs/Metadata/Info/Record.hpp>
 #include <lib/Dom/LazyObject.hpp>
 
 namespace clang {

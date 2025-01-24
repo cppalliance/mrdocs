@@ -20,7 +20,6 @@
 #include <mrdocs/Metadata/ExtractionMode.hpp>
 #include <mrdocs/Metadata/Source.hpp>
 #include <mrdocs/Metadata/Name.hpp>
-#include <mrdocs/Metadata/Scope.hpp>
 #include <mrdocs/Support/Concepts.hpp>
 #include <clang/Tooling/Tooling.h>
 #include <clang/AST/ODRHash.h>
@@ -586,7 +585,7 @@ private:
     populate(ConstantExprInfo<T>& I, const Expr* E, const llvm::APInt& V);
 
     void
-    populate(std::unique_ptr<TParam>& I, const NamedDecl* N);
+    populate(PolymorphicValue<TParam>& I, const NamedDecl* N);
 
     void
     populate(std::optional<TemplateInfo>& TI, const TemplateParameterList* TPL) {
@@ -603,7 +602,7 @@ private:
     template <range_of<TemplateArgument> Range>
     void
     populate(
-        std::vector<std::unique_ptr<TArg>>& result,
+        std::vector<PolymorphicValue<TArg>>& result,
         Range&& args)
     {
         for (TemplateArgument const& arg : args)
@@ -628,7 +627,7 @@ private:
 
     void
     populate(
-        std::vector<std::unique_ptr<TArg>>& result,
+        std::vector<PolymorphicValue<TArg>>& result,
         const ASTTemplateArgumentListInfo* args);
 
     template <std::derived_from<Info> InfoTy>
@@ -664,37 +663,37 @@ private:
      */
     bool
     generateJavadoc(
-        std::unique_ptr<Javadoc>& javadoc,
+        std::optional<Javadoc>& javadoc,
         Decl const* D);
 
-    std::unique_ptr<TypeInfo>
+    PolymorphicValue<TypeInfo>
     toTypeInfo(QualType qt, TraversalMode mode);
 
-    std::unique_ptr<TypeInfo>
+    PolymorphicValue<TypeInfo>
     toTypeInfo(QualType qt)
     {
         return toTypeInfo(qt, TraversalMode::Dependency);
     }
 
-    std::unique_ptr<NameInfo>
+    PolymorphicValue<NameInfo>
     toNameInfo(
         NestedNameSpecifier const* NNS);
 
     template <class TArgRange = ArrayRef<TemplateArgument>>
-    std::unique_ptr<NameInfo>
+    PolymorphicValue<NameInfo>
     toNameInfo(
         DeclarationName Name,
         std::optional<TArgRange> TArgs = std::nullopt,
         const NestedNameSpecifier* NNS = nullptr);
 
     template <class TArgRange = ArrayRef<TemplateArgument>>
-    std::unique_ptr<NameInfo>
+    PolymorphicValue<NameInfo>
     toNameInfo(
         const Decl* D,
         std::optional<TArgRange> TArgs = std::nullopt,
         const NestedNameSpecifier* NNS = nullptr);
 
-    std::unique_ptr<TArg>
+    PolymorphicValue<TArg>
     toTArg(const TemplateArgument& A);
 
     // Pretty-print an expression

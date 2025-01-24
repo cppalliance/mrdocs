@@ -14,12 +14,9 @@
 #define MRDOCS_LIB_GEN_XML_CXXTAGS_HPP
 
 #include "XMLTags.hpp"
-#include <mrdocs/Metadata/Function.hpp>
+#include <mrdocs/Metadata/Info/Function.hpp>
 #include <mrdocs/Metadata/Name.hpp>
-#include <mrdocs/Metadata/Record.hpp>
 #include <mrdocs/Metadata/Type.hpp>
-#include <mrdocs/Metadata/Variable.hpp>
-#include <mrdocs/Platform.hpp>
 
 /*
     This file holds the business logic for transforming
@@ -232,7 +229,7 @@ writeType(
 inline
 void
 writeType(
-    const std::unique_ptr<TypeInfo>& type,
+    PolymorphicValue<TypeInfo> const& type,
     XMLTags& tags)
 {
     if(! type)

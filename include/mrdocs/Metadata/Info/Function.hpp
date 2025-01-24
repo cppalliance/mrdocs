@@ -15,20 +15,21 @@
 #define MRDOCS_API_METADATA_FUNCTION_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Field.hpp>
+#include <mrdocs/Metadata/Specifiers.hpp>
+#include <mrdocs/Metadata/Type.hpp>
+#include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Source.hpp>
-#include <mrdocs/Metadata/Symbols.hpp>
 #include <mrdocs/Metadata/Template.hpp>
-#include <mrdocs/Dom.hpp>
+#include <mrdocs/ADT/PolymorphicValue.hpp>
 #include <memory>
 #include <string>
 #include <vector>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 /** Return the name of an operator as a string.
 
+    @param kind The kind of operator.
     @param include_keyword Whether the name
     should be prefixed with the `operator` keyword.
 */
@@ -47,6 +48,7 @@ getShortOperatorName(
 
 /** Return the safe name of an operator as a string.
 
+    @param kind The kind of operator.
     @param include_keyword Whether the name
     should be prefixed with `operator_`.
 */
@@ -75,7 +77,7 @@ void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
-    FunctionClass kind)
+    FunctionClass const kind)
 {
     v = toString(kind);
 }
@@ -87,7 +89,7 @@ tag_invoke(
 struct Param
 {
     /** The type of this parameter */
-    std::unique_ptr<TypeInfo> Type;
+    PolymorphicValue<TypeInfo> Type;
 
     /** The parameter name.
 
@@ -101,14 +103,13 @@ struct Param
     Param() = default;
 
     Param(
-        std::unique_ptr<TypeInfo>&& type,
+        PolymorphicValue<TypeInfo>&& type,
         std::string&& name,
         std::string&& def_arg)
         : Type(std::move(type))
         , Name(std::move(name))
         , Default(std::move(def_arg))
-    {
-    }
+    {}
 };
 
 /** Return the Param as a @ref dom::Value object.
@@ -123,12 +124,12 @@ tag_invoke(
 
 // TODO: Expand to allow for documenting templating and default args.
 // Info for functions.
-struct FunctionInfo
+struct FunctionInfo final
     : InfoCommonBase<InfoKind::Function>
     , SourceInfo
 {
     /// Info about the return type of this function.
-    std::unique_ptr<TypeInfo> ReturnType;
+    PolymorphicValue<TypeInfo> ReturnType;
 
     /// List of parameters.
     std::vector<Param> Params;
@@ -171,7 +172,7 @@ struct FunctionInfo
 
     //--------------------------------------------
 
-    explicit FunctionInfo(SymbolID ID) noexcept
+    explicit FunctionInfo(SymbolID const& ID) noexcept
         : InfoCommonBase(ID)
     {
     }
@@ -179,7 +180,6 @@ struct FunctionInfo
 
 //------------------------------------------------
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

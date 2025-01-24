@@ -17,10 +17,10 @@
 #include <llvm/Support/ErrorHandling.h>
 #endif
 #include <llvm/Support/raw_ostream.h>
-
+#include <mrdocs/Metadata/Symbols.hpp>
+#include <mrdocs/MetadataFwd.hpp>
 #include <fmt/format.h>
 #include <string>
-#include <mrdocs/MetadataFwd.hpp>
 
 template<>
 struct fmt::formatter<clang::mrdocs::SymbolID>
@@ -61,8 +61,7 @@ struct fmt::formatter<clang::mrdocs::Info>
 // Some nice odds and ends such as leak checking
 // and redirection to the Visual Studio output window.
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 /** Enable debug heap checking.
 */
@@ -71,7 +70,6 @@ MRDOCS_DECL void debugEnableHeapChecking();
 #define static_error(msg, value) \
     static_assert(!std::is_same_v<decltype(value),decltype(value)>,msg)
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

@@ -12,15 +12,16 @@
 #ifndef MRDOCS_API_METADATA_INFO_HPP
 #define MRDOCS_API_METADATA_INFO_HPP
 
-#include <mrdocs/Platform.hpp>
+#include <memory>
+#include <string>
+#include <mrdocs/ADT/PolymorphicValue.hpp>
 #include <mrdocs/Dom.hpp>
+#include <mrdocs/Metadata/ExtractionMode.hpp>
 #include <mrdocs/Metadata/Javadoc.hpp>
 #include <mrdocs/Metadata/Specifiers.hpp>
 #include <mrdocs/Metadata/Symbols.hpp>
-#include <mrdocs/Metadata/ExtractionMode.hpp>
+#include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/Visitor.hpp>
-#include <memory>
-#include <string>
 
 namespace clang::mrdocs {
 
@@ -107,11 +108,12 @@ struct MRDOCS_VISIBLE
 
     /** The extracted javadoc for this declaration.
      */
-    std::unique_ptr<Javadoc> javadoc;
+    std::optional<Javadoc> javadoc;
 
     //--------------------------------------------
 
     virtual ~Info() = default;
+
     Info(Info const& Other) = delete;
 
     /** Move constructor.

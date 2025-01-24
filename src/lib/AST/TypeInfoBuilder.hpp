@@ -34,18 +34,34 @@ namespace clang::mrdocs {
 class TypeInfoBuilder
     : public TerminalTypeVisitor<TypeInfoBuilder>
 {
-    std::unique_ptr<TypeInfo> Result;
+    /* The resulting of converting a QualType to a TypeInfo
 
-    /* A pointer to the inner type being constructed.
+       This variable holds the result of the type information
+       as a polymorphic `TypeInfo` object.
 
-       This variable is used to chain the construction of
-       nested type information.
-
-       It temporarily holds the current inner type
-       until it is assigned to the appropriate member
-       of the outer type.
      */
-    std::unique_ptr<TypeInfo>* Inner = &Result;
+    PolymorphicValue<TypeInfo> Result;
+
+    /*  A pointer to the inner type of result currently being populated.
+
+        The Result variable is a polymorphic `TypeInfo` object that
+        might contain nested type information, also represented
+        as a `TypeInfo` object.
+
+        For instance `int&` is represented as a `ReferenceTypeInfo`
+        object that contains a `NamedTypeInfo` object representing
+        the `int` type.
+
+        The builder will always populate the inner type of the
+        result being constructed. For instance, when building
+        a `ReferenceTypeInfo` object for `int&`, the inner type
+        (initially the same as the result) will be set to a
+        `LValueReferenceTypeInfo`, that contains the `NamedTypeInfo`
+        as a member. So `Inner` becomes a pointer to this
+        `NamedTypeInfo` object, and the visiting process continues
+        populating the `Inner` object.
+     */
+    PolymorphicValue<TypeInfo>* Inner = &Result;
 
 public:
     using TerminalTypeVisitor::TerminalTypeVisitor;
@@ -57,7 +73,7 @@ public:
 
         @return A unique pointer to the `TypeInfo` object.
      */
-    std::unique_ptr<TypeInfo>
+    PolymorphicValue<TypeInfo>
     result()
     {
         return std::move(Result);

@@ -12,16 +12,12 @@
 #ifndef MRDOCS_API_METADATA_INTERFACE_HPP
 #define MRDOCS_API_METADATA_INTERFACE_HPP
 
-#include <mrdocs/Platform.hpp>
-#include <mrdocs/MetadataFwd.hpp>
-#include <mrdocs/Metadata/Record.hpp>
 #include <memory>
-#include <span>
-#include <utility>
 #include <vector>
+#include <mrdocs/MetadataFwd.hpp>
+#include <mrdocs/Platform.hpp>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 /** A group of children that have the same access specifier.
 
@@ -58,8 +54,7 @@ struct Tranche
 
     @return The tranche.
 
-    @param Derived The namespace to build the tranche for.
-
+    @param Namespace The namespace to build the tranche for.
     @param corpus The complete metadata.
 */
 MRDOCS_DECL
@@ -146,9 +141,6 @@ private:
     @return The interface.
 
     @param I The interface to store the results in.
-
-    @param Derived The most derived record to start from.
-
     @param corpus The complete metadata.
 */
 MRDOCS_DECL
@@ -167,7 +159,6 @@ tag_invoke(
     std::shared_ptr<Interface> const& sp,
     DomCorpus const* domCorpus);
 
-} // mrdocs
-} // clang
+} // mrdocs::clang
 
 #endif

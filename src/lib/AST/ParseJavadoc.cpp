@@ -164,7 +164,7 @@ class JavadocVisitor
     FullComment const* FC_;
     Javadoc jd_;
     Diagnostics& diags_;
-    doc::List<doc::Param> params_;
+    std::vector<PolymorphicValue<doc::Param>> params_;
     doc::Block* block_ = nullptr;
     doc::Text* last_child_ = nullptr;
     std::size_t htmlTagNesting_ = 0;
@@ -400,7 +400,7 @@ public:
      */
     template<std::derived_from<doc::Text> TextTy, typename... Args>
     void
-    emplaceText(bool end_with_nl, Args&&... args)
+    emplaceText(bool const end_with_nl, Args&&... args)
     {
         TextTy elem(std::forward<Args>(args)...);
         bool can_merge = false;
@@ -411,16 +411,15 @@ public:
                 can_merge = true;
 
             if constexpr(TextTy::static_kind == doc::Kind::styled)
-                can_merge = static_cast<doc::Styled*>(
+                can_merge = dynamic_cast<doc::Styled*>(
                     last_child_)->style == elem.style;
         }
 
         if(! can_merge)
         {
-            auto new_text = std::make_unique<TextTy>(std::move(elem));
-            last_child_ = new_text.get();
+            auto new_text = MakePolymorphicValue<TextTy>(std::move(elem));
+            last_child_ = new_text.operator->();
             block_->children.emplace_back(std::move(new_text));
-
         }
         else
         {
@@ -465,12 +464,12 @@ ensureUTF8(
     escaped by prefixing them with a backslash.
 
  */
-doc::List<doc::Text>
+std::vector<PolymorphicValue<doc::Text>>
 parseStyled(StringRef s)
 {
-    doc::List<doc::Text> result;
+    std::vector<PolymorphicValue<doc::Text>> result;
     std::string currentText;
-    doc::Style currentStyle = doc::Style::none;
+    auto currentStyle = doc::Style::none;
     bool escapeNext = false;
 
     auto isStyleMarker = [](char c) {
@@ -490,21 +489,21 @@ parseStyled(StringRef s)
                 }
                 else
                 {
-                    result.emplace_back(std::make_unique<doc::Text>(std::move(currentText)));
+                    result.emplace_back(MakePolymorphicValue<doc::Text>(std::move(currentText)));
                 }
             } else {
                 bool const lastIsSame =
                     !result.empty() &&
                     result.back()->kind == doc::Kind::styled &&
-                    static_cast<doc::Styled&>(*result.back()).style == currentStyle;
+                    dynamic_cast<doc::Styled&>(*result.back()).style == currentStyle;
                 if (lastIsSame)
                 {
-                    auto& lastStyled = static_cast<doc::Styled&>(*result.back());
+                    auto& lastStyled = dynamic_cast<doc::Styled&>(*result.back());
                     lastStyled.string.append(currentText);
                 }
                 else
                 {
-                    result.emplace_back(std::make_unique<doc::Styled>(std::move(currentText), currentStyle));
+                    result.emplace_back(MakePolymorphicValue<doc::Styled>(std::move(currentText), currentStyle));
                 }
             }
             currentText.clear();
@@ -582,17 +581,17 @@ visitChildren(
     auto it = block_->children.begin();
     while(it != block_->children.end())
     {
-        auto& child = *it;
-        if (child.get()->kind == doc::Kind::text)
+        if (auto& child = *it;
+            child->kind == doc::Kind::text)
         {
-            auto* text = dynamic_cast<doc::Text*>(child.get());
+            auto* text = dynamic_cast<doc::Text*>(child.operator->());
             MRDOCS_ASSERT(text);
             auto next = std::next(it);
             if(next != block_->children.end())
             {
-                if(next->get()->kind == doc::Kind::text)
+                if((*next)->kind == doc::Kind::text)
                 {
-                    auto* next_text = dynamic_cast<doc::Text*>(next->get());
+                    auto* next_text = dynamic_cast<doc::Text*>(next->operator->());
                     MRDOCS_ASSERT(next_text);
                     text->string.append(next_text->string);
                     it = block_->children.erase(next);
@@ -604,25 +603,25 @@ visitChildren(
     }
 
     // Parse any Text nodes for styled text
-    for (auto it = block_->children.begin(); it != block_->children.end();)
+    for (auto cIt = block_->children.begin(); cIt != block_->children.end();)
     {
-        MRDOCS_ASSERT(it->get());
-        if (it->get()->kind == doc::Kind::text)
+        MRDOCS_ASSERT(cIt->operator->());
+        if ((*cIt)->kind == doc::Kind::text)
         {
-            auto* text = dynamic_cast<doc::Text*>(it->get());
+            auto* text = dynamic_cast<doc::Text*>(cIt->operator->());
             auto styledText = parseStyled(text->string);
-            std::size_t const offset = std::distance(block_->children.begin(), it);
+            std::size_t const offset = std::distance(block_->children.begin(), cIt);
             std::size_t const n = styledText.size();
-            block_->children.erase(it);
+            block_->children.erase(cIt);
             block_->children.insert(
                 block_->children.begin() + offset,
                 std::make_move_iterator(styledText.begin()),
                 std::make_move_iterator(styledText.end()));
-            it = block_->children.begin() + offset + n;
+            cIt = block_->children.begin() + offset + n;
         }
         else
         {
-            ++it;
+            ++cIt;
         }
     }
 }
@@ -664,16 +663,17 @@ build()
             // Move list items to ul.items
             ul.items.reserve(std::distance(it, last));
             for (auto li_it = begin; li_it != last; ++li_it) {
-                std::unique_ptr<doc::Block> block = std::move(*li_it);
-                MRDOCS_ASSERT(dynamic_cast<doc::ListItem*>(block.get()));
-                doc::Block* raw_block_ptr = block.release();
-                auto const raw_li_ptr = static_cast<doc::ListItem*>(raw_block_ptr);
-                auto li = std::make_unique<doc::ListItem>(std::move(*raw_li_ptr));
-                ul.items.emplace_back(std::move(li));
+                PolymorphicValue<doc::Block> block = std::move(*li_it);
+                MRDOCS_ASSERT(IsA<doc::ListItem>(block));
+                PolymorphicValue<doc::ListItem> li = DynamicCast<doc::ListItem>(std::move(block));
+                ul.items.emplace_back(std::move(*li));
             }
             // Remove the list items and insert the ul
             it = blocks.erase(begin, last);
-            it = blocks.insert(it, std::make_unique<doc::UnorderedList>(std::move(ul)));
+            it = blocks.insert(
+                it,
+                PolymorphicValue<doc::Block>(
+                    MakePolymorphicValue<doc::UnorderedList>(std::move(ul))));
         }
         ++it;
     }
@@ -1128,25 +1128,26 @@ visitInlineCommandComment(
     // It looks like the clang parser does not
     // emit nested styles, so only one inline
     // style command can be applied per args.
-
-    doc::String s;
+    std::string s;
     std::size_t n = 0;
-    for(unsigned i = 0; i < C->getNumArgs(); ++i)
+    for (unsigned i = 0; i < C->getNumArgs(); ++i)
+    {
         n += C->getArgText(i).size();
+    }
     s.reserve(n);
-    for(unsigned i = 0; i < C->getNumArgs(); ++i)
+    for (unsigned i = 0; i < C->getNumArgs(); ++i)
+    {
         s.append(C->getArgText(i));
+    }
 
-    doc::Style style = convertStyle(C->getRenderKind());
-    if(style != doc::Style::none)
-        emplaceText<doc::Styled>(
-            C->hasTrailingNewline(),
-            std::move(s),
-            style);
-    else
-        emplaceText<doc::Text>(
-            C->hasTrailingNewline(),
-            std::move(s));
+    if (doc::Style style = convertStyle(C->getRenderKind());
+        style != doc::Style::none)
+    {
+        emplaceText<doc::Styled>(C->hasTrailingNewline(), std::move(s), style);
+    } else
+    {
+        emplaceText<doc::Text>(C->hasTrailingNewline(), std::move(s));
+    }
 }
 
 //------------------------------------------------
@@ -1208,7 +1209,7 @@ visitBlockCommandComment(
     {
         auto itr = std::ranges::find_if(
             jd_.getBlocks(),
-            [&](const std::unique_ptr<doc::Block> & b)
+            [&](const PolymorphicValue<doc::Block> & b)
         {
             return b->kind == doc::Kind::returns;
         });
@@ -1271,7 +1272,7 @@ visitBlockCommandComment(
             // the first TextComment is the heading text
             if (C->getNumArgs() == 0)
             {
-                doc::String text(std::move(
+                std::string text(std::move(
                         paragraph.children.front()->string));
 
                 // VFALCO Unfortunately clang puts at least
@@ -1561,13 +1562,15 @@ visitParamCommandComment(
     auto scope = enterScope(param);
     visitChildren(C->getParagraph());
 
-    auto itr = std::ranges::find_if(
+    auto const itr = std::ranges::find_if(
         jd_.getBlocks(),
-        [&](const std::unique_ptr<doc::Block> & b)
+        [&](PolymorphicValue<doc::Block> const& b)
     {
         if (b->kind != doc::Kind::param)
+        {
             return false;
-        auto p = dynamic_cast<const doc::Param*>(b.get());
+        }
+        auto p = dynamic_cast<const doc::Param*>(b.operator->());
         MRDOCS_ASSERT(p != nullptr);
         return p->name == param.name;
     });
@@ -1602,13 +1605,15 @@ visitTParamCommandComment(
     auto scope = enterScope(tparam);
     visitChildren(C->getParagraph());
 
-    auto itr = std::ranges::find_if(
+    auto const itr = std::ranges::find_if(
         jd_.getBlocks(),
-        [&](const std::unique_ptr<doc::Block> & b)
+        [&](PolymorphicValue<doc::Block> const& b)
     {
         if (b->kind != doc::Kind::tparam)
+        {
             return false;
-        auto tp = dynamic_cast<const doc::TParam*>(b.get());
+        }
+        auto const tp = dynamic_cast<const doc::TParam*>(b.operator->());
         MRDOCS_ASSERT(tp != nullptr);
         return tp->name == tparam.name;
     });
@@ -1703,7 +1708,7 @@ initCustomCommentCommands(ASTContext& context)
 
 void
 parseJavadoc(
-    std::unique_ptr<Javadoc>& jd,
+    std::optional<Javadoc>& jd,
     FullComment const* FC,
     Decl const* D,
     Config const& config,
@@ -1712,11 +1717,13 @@ parseJavadoc(
     MRDOCS_COMMENT_TRACE(FC, D->getASTContext());
     JavadocVisitor visitor(FC, D, config, diags);
     auto result = visitor.build();
-    if(jd == nullptr)
+    if (!jd)
     {
         // Do not create javadocs which have no nodes
-        if(! result.getBlocks().empty())
-            jd = std::make_unique<Javadoc>(std::move(result));
+        if (!result.getBlocks().empty())
+        {
+            jd = std::move(result);
+        }
     }
     else if(*jd != result)
     {

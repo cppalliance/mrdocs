@@ -11,23 +11,19 @@
 #ifndef MRDOCS_API_METADATA_SPECIALIZATION_HPP
 #define MRDOCS_API_METADATA_SPECIALIZATION_HPP
 
-#include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Info.hpp>
-#include <mrdocs/Metadata/Scope.hpp>
-#include <utility>
+#include <mrdocs/Metadata/Info/Scope.hpp>
 #include <vector>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 /** Specialization info for members of implicit instantiations
 */
-struct SpecializationInfo
+struct SpecializationInfo final
     : InfoCommonBase<InfoKind::Specialization>
     , ScopeInfo
 {
     /** The template arguments the parent template is specialized for */
-    std::vector<std::unique_ptr<TArg>> Args;
+    std::vector<PolymorphicValue<TArg>> Args;
 
     /** ID of the template to which the arguments pertain */
     SymbolID Primary = SymbolID::invalid;
@@ -38,7 +34,6 @@ struct SpecializationInfo
     }
 };
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

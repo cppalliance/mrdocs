@@ -11,19 +11,19 @@
 #ifndef MRDOCS_API_METADATA_EXPRESSION_HPP
 #define MRDOCS_API_METADATA_EXPRESSION_HPP
 
-#include <mrdocs/Platform.hpp>
 #include <concepts>
 #include <optional>
 #include <string>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 /** Represents an expression */
 struct ExprInfo
 {
     /** The expression, as written */
     std::string Written;
+
+    auto operator<=>(ExprInfo const&) const = default;
 };
 
 /** Represents an expression with a (possibly known) value */
@@ -41,11 +41,12 @@ struct ConstantExprInfo
     */
     std::optional<type> Value;
 
+    auto operator<=>(ConstantExprInfo const&) const = default;
+
     static_assert(std::integral<type>,
         "expression type must be integral");
 };
 
-} // clang
-} // mrdocs
+} // clang::mrdocs
 
 #endif

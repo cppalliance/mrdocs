@@ -9,11 +9,10 @@
 //
 
 #include "VisitorHelpers.hpp"
-#include <mrdocs/Metadata/Info.hpp>
-#include <mrdocs/Metadata/Typedef.hpp>
-#include <mrdocs/Metadata/Type.hpp>
-#include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Corpus.hpp>
+#include <mrdocs/Metadata/Info.hpp>
+#include <mrdocs/Metadata/Name.hpp>
+#include <mrdocs/Metadata/Type.hpp>
 
 namespace clang::mrdocs::hbs {
 
@@ -50,10 +49,10 @@ resolveTypedef(Corpus const& c, Info const& I)
 {
     if (I.Kind == InfoKind::Typedef)
     {
-        TypedefInfo const& TI = dynamic_cast<TypedefInfo const&>(I);
-        std::unique_ptr<TypeInfo> const& T = TI.Type;
+        auto const& TI = dynamic_cast<TypedefInfo const&>(I);
+        PolymorphicValue<TypeInfo> const& T = TI.Type;
         MRDOCS_CHECK_OR(T && T->Kind == TypeKind::Named, &I);
-        NamedTypeInfo const& NT = dynamic_cast<NamedTypeInfo const&>(*T);
+        auto const& NT = dynamic_cast<NamedTypeInfo const&>(*T);
         MRDOCS_CHECK_OR(NT.Name, &I);
         Info const* resolved = c.find(NT.Name->id);
         MRDOCS_CHECK_OR(resolved, &I);
@@ -156,7 +155,7 @@ findResolvedPrimarySiblingWithUrl(Corpus const& c, Info const& I)
         // The symbol is a typedef to a specialization
         if constexpr (std::same_as<InfoTy, TypedefInfo>)
         {
-            std::unique_ptr<TypeInfo> const& T = U.Type;
+            PolymorphicValue<TypeInfo> const& T = U.Type;
             MRDOCS_CHECK_OR(T && T->Kind == TypeKind::Named, false);
             auto const& NT = dynamic_cast<NamedTypeInfo const&>(*T);
             MRDOCS_CHECK_OR(NT.Name, false);

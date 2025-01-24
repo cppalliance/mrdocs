@@ -49,7 +49,7 @@ def to_yaml_schema_type(option: Option) -> SchemaType:
 
     option_type = option["type"]
     if option_type == "bool":
-        return {"type": "boolean"}
+        return {"type": "boolean", "enum": [True, False]}
     if option_type == "int":
         return {"type": "integer"}
     if option_type == "unsigned":

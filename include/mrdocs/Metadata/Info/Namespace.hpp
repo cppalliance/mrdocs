@@ -12,17 +12,15 @@
 #ifndef MRDOCS_API_METADATA_NAMESPACE_HPP
 #define MRDOCS_API_METADATA_NAMESPACE_HPP
 
-#include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Info.hpp>
-#include <mrdocs/Metadata/Scope.hpp>
 #include <vector>
+#include <mrdocs/Metadata/Info.hpp>
+#include <mrdocs/Metadata/Info/Scope.hpp>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 /** Describes a namespace.
 */
-struct NamespaceInfo
+struct NamespaceInfo final
     : InfoCommonBase<InfoKind::Namespace>
     , ScopeInfo
 {
@@ -41,7 +39,6 @@ struct NamespaceInfo
     }
 };
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

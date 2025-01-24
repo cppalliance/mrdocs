@@ -13,21 +13,18 @@
 #ifndef MRDOCS_API_METADATA_TYPEDEF_HPP
 #define MRDOCS_API_METADATA_TYPEDEF_HPP
 
-#include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Source.hpp>
 #include <mrdocs/Metadata/Template.hpp>
 #include <mrdocs/Metadata/Type.hpp>
-#include <memory>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 // Info for typedef and using statements.
-struct TypedefInfo
+struct TypedefInfo final
     : InfoCommonBase<InfoKind::Typedef>
     , SourceInfo
 {
-    std::unique_ptr<TypeInfo> Type;
+    PolymorphicValue<TypeInfo> Type;
 
     // Indicates if this is a new C++ "using"-style typedef:
     //   using MyVector = std::vector<int>
@@ -45,7 +42,6 @@ struct TypedefInfo
     }
 };
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

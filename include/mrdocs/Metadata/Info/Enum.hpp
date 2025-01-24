@@ -12,23 +12,15 @@
 #ifndef MRDOCS_API_METADATA_ENUM_HPP
 #define MRDOCS_API_METADATA_ENUM_HPP
 
-#include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Expression.hpp>
-#include <mrdocs/Metadata/Javadoc.hpp>
-#include <mrdocs/Metadata/Scope.hpp>
+#include <mrdocs/ADT/PolymorphicValue.hpp>
+#include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Source.hpp>
+#include <mrdocs/Metadata/Info/Scope.hpp>
 #include <mrdocs/Metadata/Type.hpp>
-#include <optional>
-#include <string>
-#include <string_view>
-#include <utility>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
-// TODO: Expand to allow for documenting templating.
-// Info for types.
-struct EnumInfo
+struct EnumInfo final
     : InfoCommonBase<InfoKind::Enum>
     , SourceInfo
     , ScopeInfo
@@ -36,10 +28,10 @@ struct EnumInfo
     // Indicates whether this enum is scoped (e.g. enum class).
     bool Scoped = false;
 
-    // Set to nonempty to the type when this is an explicitly typed enum. For
+    // Set too nonempty to the type when this is an explicitly typed enum. For
     //   enum Foo : short { ... };
     // this will be "short".
-    std::unique_ptr<TypeInfo> UnderlyingType;
+    PolymorphicValue<TypeInfo> UnderlyingType;
 
     //--------------------------------------------
 
@@ -49,7 +41,6 @@ struct EnumInfo
     }
 };
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

@@ -110,15 +110,16 @@ operator()(
     for (auto it = I.children.begin(); it != I.children.end(); ++it)
     {
         auto& child = *it;
+        auto childCopy = child;
         if (i == 0)
         {
-            child->string = ltrim(child->string);
+            childCopy->string = ltrim(childCopy->string);
         }
         else if (auto prevIt = std::prev(it);
-            !(*prevIt)->string.empty() && !child->string.empty())
+            !(*prevIt)->string.empty() && !childCopy->string.empty())
         {
             char const pc = (*(prevIt))->string.back();
-            char const cc = child->string.front();
+            char const cc = childCopy->string.front();
             if (!std::isspace(pc) && !std::isspace(cc))
             {
                 dest_.push_back(' ');
@@ -126,9 +127,9 @@ operator()(
         }
         if (i == I.children.size() - 1)
         {
-            child->string = rtrim(child->string);
+            childCopy->string = rtrim(childCopy->string);
         }
-        write(*child, *this);
+        write(*childCopy, *this);
         i = i + 1;
     }
     dest_.append("</p>\n");
@@ -149,15 +150,16 @@ operator()(
     for (auto it = I.children.begin(); it != I.children.end(); ++it)
     {
         auto& child = *it;
+        auto childCopy = child;
         if (i == 0)
         {
-            child->string = ltrim(child->string);
+            childCopy->string = ltrim(childCopy->string);
         }
         else if (auto prevIt = std::prev(it);
-            !(*prevIt)->string.empty() && !child->string.empty())
+            !(*prevIt)->string.empty() && !childCopy->string.empty())
         {
             char const pc = (*(prevIt))->string.back();
-            char const cc = child->string.front();
+            char const cc = childCopy->string.front();
             if (!std::isspace(pc) && !std::isspace(cc))
             {
                 dest_.push_back(' ');
@@ -165,9 +167,9 @@ operator()(
         }
         if (i == I.children.size() - 1)
         {
-            child->string = rtrim(child->string);
+            childCopy->string = rtrim(childCopy->string);
         }
-        write(*child, *this);
+        write(*childCopy, *this);
         i = i + 1;
     }
     dest_.append("</span>\n");
@@ -223,7 +225,7 @@ operator()(
     dest_.append("<ul>\n");
     for(auto const& child : I.items)
     {
-        operator()(*child);
+        operator()(child);
     }
     dest_.append("</ul>\n");
 }
@@ -318,7 +320,7 @@ operator()(doc::Throws const& I) const
 std::size_t
 DocVisitor::
 measureLeftMargin(
-    doc::List<doc::Text> const& list)
+    std::vector<PolymorphicValue<doc::Text>> const& list)
 {
     if(list.empty())
     {

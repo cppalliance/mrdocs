@@ -11,18 +11,16 @@
 #ifndef MRDOCS_API_METADATA_CONCEPT_HPP
 #define MRDOCS_API_METADATA_CONCEPT_HPP
 
-#include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
 #include <mrdocs/Metadata/Source.hpp>
 #include <mrdocs/Metadata/Template.hpp>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 /** Info for concepts.
 */
-struct ConceptInfo
+struct ConceptInfo final
     : InfoCommonBase<InfoKind::Concept>
     , SourceInfo
 {
@@ -36,13 +34,12 @@ struct ConceptInfo
 
     //--------------------------------------------
 
-    explicit ConceptInfo(SymbolID ID) noexcept
+    explicit ConceptInfo(SymbolID const &ID) noexcept
         : InfoCommonBase(ID)
     {
     }
 };
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif
