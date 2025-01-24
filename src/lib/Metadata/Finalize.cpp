@@ -91,13 +91,15 @@ class Finalizer
         return found;
     }
 
-    void finalize(SymbolID& id)
+    void
+    finalize(SymbolID& id)
     {
         if(id && ! info_.contains(id))
             id = SymbolID::invalid;
     }
 
-    void finalize(std::vector<SymbolID>& ids)
+    void
+    finalize(std::vector<SymbolID>& ids)
     {
         std::erase_if(ids, [this](const SymbolID& id)
         {
@@ -105,15 +107,19 @@ class Finalizer
         });
     }
 
-    void finalize(TArg& arg)
+    void
+    finalize(TArg& arg)
     {
         visit(arg, [this]<typename Ty>(Ty& A)
         {
-            if constexpr(Ty::isType())
+            if constexpr (Ty::isType())
+            {
                 finalize(A.Type);
-
-            if constexpr(Ty::isTemplate())
+            }
+            if constexpr (Ty::isTemplate())
+            {
                 finalize(A.Template);
+            }
         });
     }
 
@@ -224,32 +230,50 @@ class Finalizer
         // name unless part of a class member access...
         requires { this->finalize(*ptr); }
     {
-        if(ptr)
+        if (ptr)
+        {
             finalize(*ptr);
+        }
     }
 
     template<typename T>
     void finalize(std::unique_ptr<T>& ptr) requires
-        requires { this->finalize(*ptr); }
+    requires { this->finalize(*ptr); }
     {
-        if(ptr)
+        if (ptr)
+        {
             finalize(*ptr);
+        }
     }
 
     template<typename T>
     void finalize(std::optional<T>& ptr) requires
         requires { this->finalize(*ptr); }
     {
-        if(ptr)
+        if (ptr)
+        {
             finalize(*ptr);
+        }
+    }
+
+    template<typename T>
+    void finalize(PolymorphicValue<T>& v) requires
+        requires { this->finalize(*v); }
+    {
+        if (v)
+        {
+            finalize(*v);
+        }
     }
 
     template<typename Range>
-        requires std::ranges::input_range<Range>
+    requires std::ranges::input_range<Range>
     void finalize(Range&& range)
     {
-        for(auto&& elem : range)
+        for (auto&& elem: range)
+        {
             finalize(elem);
+        }
     }
 
     // ----------------------------------------------------------------

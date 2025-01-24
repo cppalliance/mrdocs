@@ -145,8 +145,8 @@
       },
       {
         "name": "see-below",
-        "brief": "Symbols rendered as \"see-below\"",
-        "details": "Symbols that match one of these filters are tagged as \"see-below\" in the documentation, and so do symbols in scopes tagged as \"see-below\". This option is used to remove details about symbols that are considered part of the private API of the project. In the documentation page for this symbol, the synopsis of the implementation is rendered as \"see-below\" and members of scopes (such as a namespace or record) are not listed. The rest of the documentation is rendered as usual. See the documentation for \"include-symbol\" for the pattern syntax.",
+        "brief": "Exposition only symbols rendered as \"see-below\".",
+        "details": "Symbols that match one of these filters are tagged as \"see-below\" in the documentation, and so do symbols in scopes tagged as \"see-below\". This option is used to remove details about symbols that are considered part of the private API of the project but the user might need to interact with. In the documentation page for this symbol, the symbol is exposition only: the synopsis of the implementation is rendered as \"see-below\" and members of scopes (such as a namespace or record) are not listed. The rest of the documentation is rendered as usual to explain the symbol. See the documentation for \"include-symbol\" for the pattern syntax.",
         "type": "list<symbol-glob>",
         "default": []
       },

@@ -11,10 +11,10 @@
 
 #include "lib/Support/Debug.hpp"
 #include "lib/Support/Radix.hpp"
-#include <mrdocs/Metadata/Info.hpp>
-#include <mrdocs/Metadata/Record.hpp>
-#include <mrdocs/Metadata/Symbols.hpp>
 #include <memory>
+#include <mrdocs/Metadata/Info/Record.hpp>
+#include <mrdocs/Metadata/Info.hpp>
+#include <mrdocs/Metadata/Symbols.hpp>
 
 namespace clang {
 namespace mrdocs {

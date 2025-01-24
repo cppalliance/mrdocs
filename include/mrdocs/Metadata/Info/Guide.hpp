@@ -11,22 +11,17 @@
 #ifndef MRDOCS_API_METADATA_GUIDE_HPP
 #define MRDOCS_API_METADATA_GUIDE_HPP
 
-#include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Function.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Source.hpp>
 #include <mrdocs/Metadata/Template.hpp>
 #include <mrdocs/Metadata/Type.hpp>
-#include <memory>
-#include <utility>
 #include <vector>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 /** Info for deduction guides.
 */
-struct GuideInfo
+struct GuideInfo final
     : InfoCommonBase<InfoKind::Guide>
     , SourceInfo
 {
@@ -34,7 +29,7 @@ struct GuideInfo
 
         This is always a SpecializationTypeInfo.
     */
-    std::unique_ptr<TypeInfo> Deduced;
+    PolymorphicValue<TypeInfo> Deduced;
 
     /** Template head, if any.
     */
@@ -56,7 +51,6 @@ struct GuideInfo
     }
 };
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

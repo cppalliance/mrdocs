@@ -14,10 +14,8 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
 #include <string>
-#include <string_view>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 /** Access specifier.
 
@@ -111,6 +109,8 @@ struct NoexceptInfo
     /** The operand of the noexcept-specifier, if any.
     */
     std::string Operand;
+
+    auto operator<=>(NoexceptInfo const&) const = default;
 };
 
 /** Operator kinds
@@ -237,9 +237,9 @@ tag_invoke(
 
 /** Convert ExplicitInfo to a string.
 
+    @param info The explicit-specifier information.
     @param resolved If true, the operand is not shown when
     the explicit-specifier is non-dependent.
-
     @param implicit If true, implicit explicit-specifiers are shown.
 */
 MRDOCS_DECL
@@ -268,7 +268,7 @@ void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
-    AccessKind kind)
+    AccessKind const kind)
 {
     v = toString(kind);
 }
@@ -280,7 +280,7 @@ void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
-    ConstexprKind kind)
+    ConstexprKind const kind)
 {
     v = toString(kind);
 }
@@ -292,7 +292,7 @@ void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
-    StorageClassKind kind)
+    StorageClassKind const kind)
 {
     v = toString(kind);
 }
@@ -309,7 +309,6 @@ tag_invoke(
     v = toString(kind);
 }
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

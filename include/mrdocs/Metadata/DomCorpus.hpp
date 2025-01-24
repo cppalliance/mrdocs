@@ -20,8 +20,7 @@
 #include <type_traits>
 #include <memory>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 /** Front-end factory for producing Dom nodes.
 
@@ -117,7 +116,6 @@ public:
     getJavadoc(Javadoc const& jd) const;
 };
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

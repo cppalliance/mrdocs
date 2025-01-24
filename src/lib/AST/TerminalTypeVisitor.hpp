@@ -153,6 +153,7 @@ public:
         This function is an empty placeholder for `buildPointer` when
         not defined by the `Derived` visitor.
      */
+    static
     void
     buildPointer
         (const PointerType*,

@@ -9,17 +9,16 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "lib/Support/Radix.hpp"
-#include "lib/Dom/LazyObject.hpp"
 #include "lib/Dom/LazyArray.hpp"
-#include <mrdocs/Metadata/Info.hpp>
-#include <mrdocs/Metadata/DomCorpus.hpp>
-#include <mrdocs/Metadata/DomCorpus.hpp>
-#include <mrdocs/Metadata/Record.hpp>
+#include "lib/Dom/LazyObject.hpp"
+#include "lib/Support/Radix.hpp"
+#include <mrdocs/Metadata/Info/Record.hpp>
 #include <clang/AST/Type.h>
 #include <llvm/ADT/STLExtras.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
+#include <mrdocs/Metadata/DomCorpus.hpp>
+#include <mrdocs/Metadata/Info.hpp>
 
 namespace clang {
 namespace mrdocs {
@@ -298,51 +297,33 @@ operator<(
     Info const& lhs,
     Info const& rhs) noexcept
 {
+    // Consider kind
     if (lhs.Kind != rhs.Kind)
     {
         return lhs.Kind < rhs.Kind;
     }
+
+    // Consider name
     if (lhs.Name != rhs.Name)
     {
         return lhs.Name < rhs.Name;
     }
 
-    // If kind and name are the same, compare by template arguments
-    TemplateInfo const* lhsTemplate = visit(lhs, [](auto const& U)
+    // Consider template arguments
+    auto getTemplateInfoFn = [](auto const& U)
         -> TemplateInfo const*
     {
         if constexpr (requires { U.Template; })
         {
-            if (U.Template)
-            {
-                return &*U.Template;
-            }
+            MRDOCS_CHECK_OR(U.Template, nullptr);
+            return &*U.Template;
         }
         return nullptr;
-    });
-    TemplateInfo const* rhsTemplate = visit(rhs, [](auto const& U)
-        -> TemplateInfo const*
-    {
-        if constexpr (requires { U.Template; })
-        {
-            if (U.Template)
-            {
-                return &*U.Template;
-            }
-        }
-        return nullptr;
-    });
-    if (!lhsTemplate && !rhsTemplate)
-    {
-        return false;
-    }
-    if (!lhsTemplate)
-    {
-        return true;
-    }
-    if (!rhsTemplate)
-    {
-        return false;
+    };
+    TemplateInfo const* lhsTemplate = visit(lhs, getTemplateInfoFn);
+    TemplateInfo const* rhsTemplate = visit(rhs, getTemplateInfoFn);
+    if (!lhsTemplate || !rhsTemplate) {
+        return lhsTemplate != nullptr;
     }
     if (lhsTemplate->Args.size() != rhsTemplate->Args.size())
     {

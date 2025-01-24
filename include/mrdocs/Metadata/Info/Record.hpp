@@ -12,34 +12,31 @@
 #ifndef MRDOCS_API_METADATA_RECORD_HPP
 #define MRDOCS_API_METADATA_RECORD_HPP
 
-#include <mrdocs/Platform.hpp>
+#include <mrdocs/ADT/PolymorphicValue.hpp>
+#include <mrdocs/Metadata/Type.hpp>
 #include <mrdocs/Metadata/Info.hpp>
-#include <mrdocs/Metadata/Scope.hpp>
+#include <mrdocs/Metadata/Info/Scope.hpp>
 #include <mrdocs/Metadata/Source.hpp>
 #include <mrdocs/Metadata/Template.hpp>
-#include <mrdocs/Dom.hpp>
-#include <memory>
-#include <string>
-#include <string_view>
 #include <vector>
+#include <string_view>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 /** Metadata for a direct base.
 */
 struct BaseInfo
 {
-    std::unique_ptr<TypeInfo> Type;
+    PolymorphicValue<TypeInfo> Type;
     AccessKind Access = AccessKind::Public;
     bool IsVirtual = false;
 
     BaseInfo() = default;
 
     BaseInfo(
-        std::unique_ptr<TypeInfo>&& type,
-        AccessKind access,
-        bool is_virtual)
+        PolymorphicValue<TypeInfo>&& type,
+        AccessKind const access,
+        bool const is_virtual)
         : Type(std::move(type))
         , Access(access)
         , IsVirtual(is_virtual)
@@ -76,7 +73,7 @@ tag_invoke(
 
 /** Metadata for struct, class, or union.
 */
-struct RecordInfo
+struct RecordInfo final
     : InfoCommonBase<InfoKind::Record>
     , SourceInfo
     , ScopeInfo
@@ -104,7 +101,7 @@ struct RecordInfo
 
     //--------------------------------------------
 
-    explicit RecordInfo(SymbolID ID) noexcept
+    explicit RecordInfo(SymbolID const& ID) noexcept
         : InfoCommonBase(ID)
     {
     }
@@ -127,8 +124,6 @@ getDefaultAccessString(
     }
 }
 
-
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

@@ -9,7 +9,7 @@
 //
 
 #include <mrdocs/Metadata/Info.hpp>
-#include <mrdocs/Metadata/Scope.hpp>
+#include <mrdocs/Metadata/Info/Scope.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Dom.hpp>
 

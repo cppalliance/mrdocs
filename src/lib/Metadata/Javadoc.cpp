@@ -26,7 +26,7 @@ namespace doc {
 Text&
 Block::
 emplace_back(
-    std::unique_ptr<Text> text)
+    PolymorphicValue<Text> text)
 {
     MRDOCS_ASSERT(text->isText());
     return *children.emplace_back(std::move(text));
@@ -34,47 +34,24 @@ emplace_back(
 
 void
 Block::
-append(List<Node>&& blocks)
+append(std::vector<PolymorphicValue<Node>>&& blocks)
 {
     children.reserve(children.size() + blocks.size());
-    for(auto&& block : blocks)
+    for (auto&& block : blocks)
     {
         MRDOCS_ASSERT(block->isText());
-        emplace_back(std::unique_ptr<Text>(
-            dynamic_cast<Text*>(block.release())));
+        emplace_back(DynamicCast<Text>(std::move(block)));
     }
 }
 
 void
 Block::
-append(List<Text> const& otherChildren)
+append(std::vector<PolymorphicValue<Text>> const& otherChildren)
 {
-    children.reserve(children.size() + otherChildren.size());
-    for(auto const& otherChildPtr : otherChildren)
-    {
-        Text const& otherChild = *otherChildPtr;
-        visit(otherChild, [this]<typename U>(U const& otherChildU) {
-            if constexpr (std::derived_from<U, Text>)
-            {
-                U otherChildCopy;
-                otherChildCopy.string = otherChildU.string;
-                if constexpr (std::derived_from<U, Styled>)
-                {
-                    otherChildCopy.style = otherChildU.style;
-                }
-                if constexpr (std::derived_from<U, Link>)
-                {
-                    otherChildCopy.href = otherChildU.href;
-                }
-                if constexpr (std::derived_from<U, Reference>)
-                {
-                    otherChildCopy.id = otherChildU.id;
-                }
-                auto otherChildCopyPtr = std::make_unique<U>(std::move(otherChildCopy));
-                children.push_back(std::move(otherChildCopyPtr));
-            }
-        });
-    }
+    children.insert(
+        children.end(),
+        otherChildren.begin(),
+        otherChildren.end());
 }
 
 dom::String
@@ -100,29 +77,12 @@ toString(
 
 //------------------------------------------------
 
-template<typename T, typename U>
-static
-auto
-move_to(
-    doc::List<T>& dst,
-    doc::List<U>& src,
-    typename doc::List<U>::iterator it)
-{
-    auto elem = std::move(*it);
-    it = src.erase(it);
-    dst.emplace(dst.end(),
-        static_cast<T*>(elem.release()));
-    return it;
-}
-
-//------------------------------------------------
-
 Javadoc::
 Javadoc() noexcept = default;
 
 Javadoc::
 Javadoc(
-    doc::List<doc::Block> blocks)
+    std::vector<PolymorphicValue<doc::Block>> blocks)
     : blocks_(std::move(blocks))
 {
 }
@@ -132,20 +92,20 @@ Javadoc::
 getBrief(Corpus const& corpus) const noexcept
 {
     // Brief from a @brief tag
-    const doc::Block* brief = nullptr;
+    doc::Block const* brief = nullptr;
     // The first paragraph promoted to brief
-    const doc::Block* promoted_brief = nullptr;
+    doc::Block const* promoted_brief = nullptr;
     // A brief copied from another symbol
-    const doc::Block* copied_brief = nullptr;
+    doc::Block const* copied_brief = nullptr;
     for(auto const& block : blocks_)
     {
         if (!brief && block->kind == doc::Kind::brief)
         {
-            brief = block.get();
+            brief = block.operator->();
         }
         if (!promoted_brief && block->kind == doc::Kind::paragraph)
         {
-            promoted_brief = block.get();
+            promoted_brief = block.operator->();
         }
 
         // if we already have an explicit/copied brief,
@@ -162,13 +122,13 @@ getBrief(Corpus const& corpus) const noexcept
             {
                 continue;
             }
-            auto const* copy = dynamic_cast<doc::Copied*>(text.get());
-            if(copy->id &&
-                (copy->parts == doc::Parts::all ||
-                copy->parts == doc::Parts::brief))
+            if (auto const* copied = dynamic_cast<doc::Copied const*>(text.operator->());
+                copied->id &&
+                (copied->parts == doc::Parts::all ||
+                copied->parts == doc::Parts::brief))
             {
                 // Look for the symbol to copy from
-                if (auto& jd = corpus.get(copy->id).javadoc)
+                if (auto& jd = corpus.get(copied->id).javadoc)
                 {
                     copied_brief = jd->getBrief(corpus);
                 }
@@ -190,23 +150,27 @@ getBrief(Corpus const& corpus) const noexcept
     return static_cast<const doc::Paragraph*>(brief);
 }
 
-doc::List<doc::Block> const&
+std::vector<PolymorphicValue<doc::Block>> const&
 Javadoc::
 getDescription(Corpus const& corpus) const noexcept
 {
-    for(auto const& block : blocks_)
+    for (auto const& block : blocks_)
     {
         for(auto const& text : block->children)
         {
-            if(text->kind != doc::Kind::copied)
-                continue;
-            auto* copy = static_cast<doc::Copied*>(text.get());
-            if(copy->id &&
-                (copy->parts == doc::Parts::all ||
-                copy->parts == doc::Parts::description))
+            if (!IsA<doc::Copied>(text))
             {
-                if(auto& jd = corpus.get(copy->id).javadoc)
+                continue;
+            }
+            if (auto const* copied = dynamic_cast<doc::Copied const*>(text.operator->());
+                copied->id &&
+                (copied->parts == doc::Parts::all ||
+                 copied->parts == doc::Parts::description))
+            {
+                if (auto& jd = corpus.get(copied->id).javadoc)
+                {
                     return jd->getDescription(corpus);
+                }
             }
         }
     }
@@ -215,11 +179,9 @@ getDescription(Corpus const& corpus) const noexcept
 
 bool
 Javadoc::
-operator==(
-    Javadoc const& other) const noexcept
+operator==(Javadoc const& other) const noexcept
 {
-    return std::equal(blocks_.begin(), blocks_.end(),
-        other.blocks_.begin(), other.blocks_.end(),
+    return std::ranges::equal(blocks_, other.blocks_,
         [](const auto& a, const auto& b)
         {
             return a->equals(static_cast<const doc::Node&>(*b));
@@ -264,39 +226,39 @@ makeOverview(
         case doc::Kind::brief:
             break;
         case doc::Kind::returns:
-            ov.returns = static_cast<
-                doc::Returns const*>(it->get());
+            ov.returns = dynamic_cast<
+                doc::Returns const*>(it->operator->());
             break;
         case doc::Kind::param:
-            ov.params.push_back(static_cast<
-                doc::Param const*>(it->get()));
+            ov.params.push_back(dynamic_cast<
+                doc::Param const*>(it->operator->()));
             break;
         case doc::Kind::tparam:
-            ov.tparams.push_back(static_cast<
-                doc::TParam const*>(it->get()));
+            ov.tparams.push_back(dynamic_cast<
+                doc::TParam const*>(it->operator->()));
             break;
         case doc::Kind::throws:
-            ov.exceptions.push_back(static_cast<
-                doc::Throws const*>(it->get()));
+            ov.exceptions.push_back(dynamic_cast<
+                doc::Throws const*>(it->operator->()));
             break;
         case doc::Kind::see:
-            ov.sees.push_back(static_cast<
-                doc::See const*>(it->get()));
+            ov.sees.push_back(dynamic_cast<
+                doc::See const*>(it->operator->()));
             break;
         case doc::Kind::precondition:
-            ov.preconditions.push_back(static_cast<
-                doc::Precondition const*>(it->get()));
+            ov.preconditions.push_back(dynamic_cast<
+                doc::Precondition const*>(it->operator->()));
             break;
         case doc::Kind::postcondition:
-            ov.postconditions.push_back(static_cast<
-                doc::Postcondition const*>(it->get()));
+            ov.postconditions.push_back(dynamic_cast<
+                doc::Postcondition const*>(it->operator->()));
             break;
         default:
-            if (briefP == it->get())
+            if (briefP == it->operator->())
             {
                 break;
             }
-            ov.blocks.push_back(it->get());
+            ov.blocks.push_back(it->operator->());
         }
     }
 
@@ -306,7 +268,7 @@ makeOverview(
 std::string
 Javadoc::
 emplace_back(
-    std::unique_ptr<doc::Block> block)
+    PolymorphicValue<doc::Block> block)
 {
     MRDOCS_ASSERT(block->isBlock());
 
@@ -316,12 +278,12 @@ emplace_back(
     case doc::Kind::param:
     {
         // check for duplicate parameter name
-        auto t = static_cast<doc::Param const*>(block.get());
+        auto t = dynamic_cast<doc::Param const*>(block.operator->());
         for(auto const& q : blocks_)
         {
             if(q->kind == doc::Kind::param)
             {
-                auto u = static_cast<doc::Param const*>(q.get());
+                auto u = dynamic_cast<doc::Param const*>(q.operator->());
                 if(u->name == t->name)
                 {
                     result = fmt::format(
@@ -335,12 +297,12 @@ emplace_back(
     case doc::Kind::tparam:
     {
         // check for duplicate template parameter name
-        auto t = static_cast<doc::TParam const*>(block.get());
+        auto t = dynamic_cast<doc::TParam const*>(block.operator->());
         for(auto const& q : blocks_)
         {
             if(q->kind == doc::Kind::tparam)
             {
-                auto u = static_cast<doc::TParam const*>(q.get());
+                auto u = dynamic_cast<doc::TParam const*>(q.operator->());
                 if(u->name == t->name)
                 {
                     result = fmt::format(
@@ -372,19 +334,20 @@ append(
 
 void
 Javadoc::
-append(doc::List<doc::Node>&& blocks)
+append(std::vector<PolymorphicValue<doc::Node>>&& blocks)
 {
     blocks_.reserve(blocks_.size() + blocks.size());
-    for(auto&& block : blocks)
-        emplace_back(std::unique_ptr<doc::Block>(
-            static_cast<doc::Block*>(block.release())));
-    #if 0
+    for(auto&& blockAsNode : blocks)
     {
-        MRDOCS_ASSERT(block->isBlock());
-        blocks_.emplace_back(
-            static_cast<doc::Block*>(block.release()));
+        if (IsA<doc::Block>(blockAsNode))
+        {
+            emplace_back(DynamicCast<doc::Block>(std::move(blockAsNode)));
+        }
+        else
+        {
+            blockAsNode = {};
+        }
     }
-    #endif
 }
 
 /** Return the Javadoc as a @ref dom::Value.

@@ -34,8 +34,8 @@ buildTerminal(
     unsigned,
     bool)
 {
-    auto I = std::make_unique<NameInfo>();
-    I->Name = getASTVisitor().toString(T);
+    NameInfo I;
+    I.Name = getASTVisitor().toString(T);
     Result = std::move(I);
     if (NNS)
     {
@@ -52,19 +52,19 @@ buildTerminal(
     unsigned,
     bool)
 {
-    if(TArgs)
+    if (TArgs)
     {
-        auto I = std::make_unique<SpecializationNameInfo>();
+        auto I = MakePolymorphicValue<SpecializationNameInfo>();
         if (II)
         {
             I->Name = II->getName();
         }
         getASTVisitor().populate(I->TemplateArgs, *TArgs);
-        Result = std::move(I);
+        Result = PolymorphicValue<NameInfo>(std::move(I));
     }
     else
     {
-        auto I = std::make_unique<NameInfo>();
+        auto I = MakePolymorphicValue<NameInfo>();
         if (II)
         {
             I->Name = II->getName();
@@ -90,33 +90,35 @@ buildTerminal(
     // we look for the Info of the specialized record.
     Decl const* ID = decayToPrimaryTemplate(D);
 
-    auto TI = std::make_unique<NameInfo>();
 
-    auto populateNameInfo = [&](NameInfo* Name, NamedDecl const* D)
+    auto populateNameInfo = [&](NameInfo& Name, NamedDecl const* DU)
     {
-        if(const IdentifierInfo* II = D->getIdentifier())
+        if(const IdentifierInfo* II = DU->getIdentifier())
         {
-            Name->Name = II->getName();
+            Name.Name = II->getName();
         }
         if (Info const* I = getASTVisitor().findOrTraverse(const_cast<Decl*>(ID)))
         {
-            Name->id = I->id;
+            Name.id = I->id;
         }
-        if(NNS)
+        if (NNS)
         {
-            Name->Prefix = getASTVisitor().toNameInfo(NNS);
+            Name.Prefix = getASTVisitor().toNameInfo(NNS);
         }
     };
 
+    PolymorphicValue<NameInfo> TI;
     if (!TArgs)
     {
-        populateNameInfo(TI.get(), D);
+        NameInfo Name;
+        populateNameInfo(Name, D);
+        TI = std::move(Name);
     }
     else
     {
-        auto Name = std::make_unique<SpecializationNameInfo>();
-        populateNameInfo(Name.get(), D);
-        getASTVisitor().populate(Name->TemplateArgs, *TArgs);
+        SpecializationNameInfo Name;
+        populateNameInfo(Name, D);
+        getASTVisitor().populate(Name.TemplateArgs, *TArgs);
         TI = std::move(Name);
     }
     Result = std::move(TI);

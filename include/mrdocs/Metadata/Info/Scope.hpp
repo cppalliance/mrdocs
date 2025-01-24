@@ -12,12 +12,10 @@
 #ifndef MRDOCS_API_METADATA_SCOPE_HPP
 #define MRDOCS_API_METADATA_SCOPE_HPP
 
-#include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Symbols.hpp>
-#include <mrdocs/Metadata/Info.hpp>
-#include <unordered_map>
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 namespace clang::mrdocs {
 

@@ -22,15 +22,11 @@
 #include <memory>
 
 namespace clang::mrdocs {
-    class DomCorpus;
-    namespace dom {
-        struct ValueFromTag;
-        class Value;
-    }
+class DomCorpus;
+namespace dom {
+    struct ValueFromTag;
+    class Value;
 }
-
-namespace clang {
-namespace mrdocs {
 
 /** A unique identifier for a symbol.
 
@@ -189,14 +185,13 @@ tag_invoke(
     std::unique_ptr<SymbolID> const& t,
     DomCorpus const* domCorpus);
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 template<>
 struct std::hash<clang::mrdocs::SymbolID>
 {
-    std::size_t operator()(
-        const clang::mrdocs::SymbolID& id) const
+    std::size_t
+    operator()(const clang::mrdocs::SymbolID& id) const noexcept
     {
         return std::hash<std::string_view>()(
             std::string_view(id));

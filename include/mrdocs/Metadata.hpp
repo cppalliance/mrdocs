@@ -17,29 +17,29 @@
 // All headers related to
 // metadata extracted from AST
 
-#include <mrdocs/Metadata/Concept.hpp>
-#include <mrdocs/Metadata/Enum.hpp>
-#include <mrdocs/Metadata/EnumConstant.hpp>
+#include <mrdocs/Metadata/Info/Enum.hpp>
+#include <mrdocs/Metadata/Info/EnumConstant.hpp>
+#include <mrdocs/Metadata/Info/Field.hpp>
+#include <mrdocs/Metadata/Info/Friend.hpp>
+#include <mrdocs/Metadata/Info/Function.hpp>
+#include <mrdocs/Metadata/Info/Guide.hpp>
+#include <mrdocs/Metadata/Info/Namespace.hpp>
+#include <mrdocs/Metadata/Info/NamespaceAlias.hpp>
+#include <mrdocs/Metadata/Info/Overloads.hpp>
+#include <mrdocs/Metadata/Info/Record.hpp>
+#include <mrdocs/Metadata/Info/Specialization.hpp>
+#include <mrdocs/Metadata/Info/Typedef.hpp>
+#include <mrdocs/Metadata/Info/Variable.hpp>
+#include <mrdocs/Metadata/Info/Concept.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
-#include <mrdocs/Metadata/Field.hpp>
-#include <mrdocs/Metadata/Friend.hpp>
-#include <mrdocs/Metadata/Function.hpp>
-#include <mrdocs/Metadata/Guide.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Interface.hpp>
 #include <mrdocs/Metadata/Javadoc.hpp>
 #include <mrdocs/Metadata/Name.hpp>
-#include <mrdocs/Metadata/Namespace.hpp>
-#include <mrdocs/Metadata/NamespaceAlias.hpp>
-#include <mrdocs/Metadata/Overloads.hpp>
-#include <mrdocs/Metadata/Record.hpp>
 #include <mrdocs/Metadata/Source.hpp>
-#include <mrdocs/Metadata/Specialization.hpp>
 #include <mrdocs/Metadata/Symbols.hpp>
 #include <mrdocs/Metadata/Template.hpp>
 #include <mrdocs/Metadata/Type.hpp>
-#include <mrdocs/Metadata/Typedef.hpp>
 #include <mrdocs/Metadata/Using.hpp>
-#include <mrdocs/Metadata/Variable.hpp>
 
 #endif

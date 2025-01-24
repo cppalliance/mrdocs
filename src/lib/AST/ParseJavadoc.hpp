@@ -51,7 +51,7 @@ initCustomCommentCommands(
 */
 void
 parseJavadoc(
-    std::unique_ptr<Javadoc>& jd,
+    std::optional<Javadoc>& jd,
     comments::FullComment const* FC,
     Decl const* D,
     Config const& config,

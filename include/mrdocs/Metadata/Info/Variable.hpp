@@ -12,27 +12,24 @@
 #ifndef MRDOCS_API_METADATA_VARIABLE_HPP
 #define MRDOCS_API_METADATA_VARIABLE_HPP
 
-#include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
 #include <mrdocs/Metadata/Source.hpp>
 #include <mrdocs/Metadata/Template.hpp>
 #include <mrdocs/Metadata/Type.hpp>
-#include <memory>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 /** A variable.
 
     This includes variables at namespace
     scope, and static variables at class scope.
 */
-struct VariableInfo
+struct VariableInfo final
     : InfoCommonBase<InfoKind::Variable>
     , SourceInfo
 {
     /** The type of the variable */
-    std::unique_ptr<TypeInfo> Type;
+    PolymorphicValue<TypeInfo> Type;
 
     std::optional<TemplateInfo> Template;
 
@@ -52,13 +49,12 @@ struct VariableInfo
 
     //--------------------------------------------
 
-    explicit VariableInfo(SymbolID ID) noexcept
+    explicit VariableInfo(SymbolID const &ID) noexcept
         : InfoCommonBase(ID)
     {
     }
 };
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

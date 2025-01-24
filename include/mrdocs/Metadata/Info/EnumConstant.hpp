@@ -11,19 +11,15 @@
 #ifndef MRDOCS_API_METADATA_ENUMCONSTANT_HPP
 #define MRDOCS_API_METADATA_ENUMCONSTANT_HPP
 
-#include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Source.hpp>
-#include <mrdocs/Metadata/Type.hpp>
-#include <utility>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 /** Info for enum constants.
 */
-struct EnumConstantInfo
+struct EnumConstantInfo final
     : InfoCommonBase<InfoKind::EnumConstant>
     , SourceInfo
 {
@@ -39,7 +35,6 @@ struct EnumConstantInfo
     }
 };
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

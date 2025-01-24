@@ -11,33 +11,28 @@
 #ifndef MRDOCS_API_METADATA_NAMESPACEALIAS_HPP
 #define MRDOCS_API_METADATA_NAMESPACEALIAS_HPP
 
-#include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Source.hpp>
-#include <mrdocs/Metadata/Type.hpp>
-#include <utility>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 /** Info for namespace aliases.
 */
-struct NamespaceAliasInfo
+struct NamespaceAliasInfo final
     : InfoCommonBase<InfoKind::NamespaceAlias>
     , SourceInfo
 {
     /** The aliased symbol. */
-    std::unique_ptr<NameInfo> AliasedSymbol;
+    PolymorphicValue<NameInfo> AliasedSymbol;
 
     //--------------------------------------------
 
-    explicit NamespaceAliasInfo(SymbolID ID) noexcept
+    explicit NamespaceAliasInfo(SymbolID const &ID) noexcept
         : InfoCommonBase(ID)
     {
     }
 };
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

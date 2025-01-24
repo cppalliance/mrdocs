@@ -11,14 +11,10 @@
 #ifndef MRDOCS_API_METADATA_OVERLOADS_HPP
 #define MRDOCS_API_METADATA_OVERLOADS_HPP
 
-#include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Function.hpp>
-#include <mrdocs/MetadataFwd.hpp>
 #include <span>
-#include <string_view>
+#include <mrdocs/Platform.hpp>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 /** Represents a set of function overloads.
 
@@ -88,7 +84,6 @@ tag_invoke(
     OverloadSet const& overloads,
     DomCorpus const* domCorpus);
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

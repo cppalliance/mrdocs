@@ -98,25 +98,33 @@ DocVisitor::
 operator()(
     doc::Paragraph const& I) const
 {
-    std::span const children = I.children;
-    if (children.empty())
+    if (I.children.empty())
     {
         return;
     }
 
     std::size_t i = 0;
-    for (auto it = children.begin(); it != children.end(); ++it)
+    for (auto it = I.children.begin(); it != I.children.end(); ++it)
     {
         auto& child = *it;
-        if (i == 0)
+        if (i != 0 &&
+            i != I.children.size() - 1)
         {
-            child->string = ltrim(child->string);
+            write(*child, *this);
         }
-        if (i == children.size() - 1)
+        else
         {
-            child->string = rtrim(child->string);
+            auto childCopy = *it;
+            if (i == 0)
+            {
+                childCopy->string = ltrim(childCopy->string);
+            }
+            if (i == I.children.size() - 1)
+            {
+                childCopy->string = rtrim(childCopy->string);
+            }
+            write(*childCopy, *this);
         }
-        write(*child, *this);
         i = i + 1;
     }
 
@@ -139,15 +147,24 @@ operator()(
     for (auto it = children.begin(); it != children.end(); ++it)
     {
         auto& child = *it;
-        if (i == 0)
+        if (i != 0 &&
+            i != children.size() - 1)
         {
-            child->string = ltrim(child->string);
+            write(*child, *this);
         }
-        if (i == children.size() - 1)
+        else
         {
-            child->string = rtrim(child->string);
+            auto childCopy = *it;
+            if (i == 0)
+            {
+                childCopy->string = ltrim(childCopy->string);
+            }
+            if (i == children.size() - 1)
+            {
+                childCopy->string = rtrim(childCopy->string);
+            }
+            write(*childCopy, *this);
         }
-        write(*child, *this);
         i = i + 1;
     }
 }
@@ -198,7 +215,7 @@ operator()(
     }
     for(auto const& child : I.items)
     {
-        operator()(*child);
+        operator()(child);
     }
     dest_.push_back('\n');
 }
@@ -297,8 +314,7 @@ operator()(doc::Throws const& I) const
 
 std::size_t
 DocVisitor::
-measureLeftMargin(
-    doc::List<doc::Text> const& list)
+measureLeftMargin(std::vector<PolymorphicValue<doc::Text>> const& list)
 {
     if(list.empty())
     {

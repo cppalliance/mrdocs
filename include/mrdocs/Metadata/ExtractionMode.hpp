@@ -12,9 +12,7 @@
 #ifndef MRDOCS_API_METADATA_EXTRACTIONMODE_HPP
 #define MRDOCS_API_METADATA_EXTRACTIONMODE_HPP
 
-#include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
-#include <string_view>
 
 namespace clang::mrdocs {
 

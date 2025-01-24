@@ -11,18 +11,15 @@
 #ifndef MRDOCS_API_METADATA_FRIEND_HPP
 #define MRDOCS_API_METADATA_FRIEND_HPP
 
-#include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Source.hpp>
 #include <mrdocs/Metadata/Type.hpp>
-#include <utility>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 /** Info for friend declarations.
 */
-struct FriendInfo
+struct FriendInfo final
     : InfoCommonBase<InfoKind::Friend>
     , SourceInfo
 {
@@ -32,7 +29,7 @@ struct FriendInfo
 
     /** Befriended type.
     */
-    std::unique_ptr<TypeInfo> FriendType;
+    PolymorphicValue<TypeInfo> FriendType;
 
     //--------------------------------------------
 
@@ -42,7 +39,6 @@ struct FriendInfo
     }
 };
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

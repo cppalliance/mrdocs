@@ -40,13 +40,26 @@ writeTo(
     (result += ... += args);
 }
 
+std::strong_ordering
+NameInfo::
+operator<=>(NameInfo const& other) const
+{
+    auto const r = std::tie(Kind, id, Name) <=>
+             std::tie(other.Kind, other.id, other.Name);
+    if (!std::is_eq(r))
+    {
+        return r;
+    }
+    return visit(other, detail::VisitCompareFn<NameInfo>{other});
+}
+
 static
 void
 toStringImpl(
     std::string& result,
     const NameInfo& N)
 {
-    if(N.Prefix)
+    if (N.Prefix)
     {
         toStringImpl(result, *N.Prefix);
         writeTo(result, "::");
@@ -54,10 +67,12 @@ toStringImpl(
 
     writeTo(result, N.Name);
 
-    if(! N.isSpecialization())
+    if (!N.isSpecialization())
+    {
         return;
-    std::span<const std::unique_ptr<TArg>> targs =
-        static_cast<const SpecializationNameInfo&>(N).TemplateArgs;
+    }
+    auto const& NN = dynamic_cast<SpecializationNameInfo const&>(N);
+    std::span const targs = NN.TemplateArgs;
     writeTo(result, '<');
     if(! targs.empty())
     {

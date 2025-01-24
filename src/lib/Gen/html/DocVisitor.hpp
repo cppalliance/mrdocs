@@ -16,9 +16,7 @@
 #include "lib/Gen/hbs/HandlebarsCorpus.hpp"
 #include <optional>
 
-namespace clang {
-namespace mrdocs {
-namespace html {
+namespace clang::mrdocs::html {
 
 class DocVisitor
 {
@@ -94,11 +92,9 @@ public:
 
     static
     std::size_t
-    measureLeftMargin(doc::List<doc::Text> const& list);
+    measureLeftMargin(std::vector<PolymorphicValue<doc::Text>> const& list);
 };
 
-} // html
-} // mrdocs
-} // clang
+} // clang::mrdocs::html
 
 #endif

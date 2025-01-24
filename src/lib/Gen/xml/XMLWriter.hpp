@@ -19,9 +19,7 @@
 #include <mrdocs/Support/Error.hpp>
 #include <string>
 
-namespace clang {
-namespace mrdocs {
-namespace xml {
+namespace clang::mrdocs::xml {
 
 class jit_indenter;
 
@@ -60,20 +58,21 @@ public:
     template<class T>
     void operator()(T const&);
 
+
+    // ---------------
+    // Info types
+
 #define INFO(Type) void write##Type(Type##Info const&);
 #include <mrdocs/Metadata/InfoNodesPascal.inc>
 
     void writeSourceInfo(SourceInfo const& I);
     void writeLocation(Location const& loc, bool def = false);
-    void writeJavadoc(std::unique_ptr<Javadoc> const& javadoc);
+    void writeJavadoc(std::optional<Javadoc> const& javadoc);
     void openTemplate(const std::optional<TemplateInfo>& I);
     void closeTemplate(const std::optional<TemplateInfo>& I);
 
-    // void writeType(std::unique_ptr<TypeInfo> const& type);
-
-    template<class T>
-    void writeNodes(doc::List<T> const& list);
-    void writeNode(doc::Node const& node);
+    // ---------------
+    // Javadoc types
 
     void writeAdmonition(doc::Admonition const& node);
     void writeBrief(doc::Paragraph const& node);
@@ -95,10 +94,29 @@ public:
     void writeSee(doc::See const& node, llvm::StringRef tag = "");
     void writePrecondition(doc::Precondition const& node);
     void writePostcondition(doc::Postcondition const& node);
+
+    void writeNode(doc::Node const& node);
+
+    template <class T>
+    void
+    writeNodes(std::vector<PolymorphicValue<T>> const& list)
+    {
+        for (auto const& node: list)
+        {
+            writeNode(*node);
+        }
+    }
+
+    template <std::derived_from<doc::Node> T>
+    void writeNodes(std::vector<T> const& list)
+    {
+        for (auto const& node: list)
+        {
+            writeNode(node);
+        }
+    }
 };
 
-} // xml
-} // mrdocs
-} // clang
+} // clang::mrdocs::xml
 
 #endif

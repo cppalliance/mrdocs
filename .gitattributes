@@ -1,1 +1,2 @@
 test-files/**/*.xml binary
+test-files/golden-tests/** text eol=lf

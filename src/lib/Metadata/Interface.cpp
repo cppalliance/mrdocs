@@ -16,16 +16,16 @@
 #include <algorithm>
 #include <ranges>
 #include <variant>
+#include <mrdocs/Metadata/Info/Enum.hpp>
+#include <mrdocs/Metadata/Info/Function.hpp>
+#include <mrdocs/Metadata/Info/Overloads.hpp>
+#include <mrdocs/Metadata/Info/Record.hpp>
+#include <mrdocs/Metadata/Info/Typedef.hpp>
+#include <mrdocs/Metadata/Info/Variable.hpp>
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
-#include <mrdocs/Metadata/Enum.hpp>
-#include <mrdocs/Metadata/Function.hpp>
 #include <mrdocs/Metadata/Interface.hpp>
-#include <mrdocs/Metadata/Overloads.hpp>
-#include <mrdocs/Metadata/Record.hpp>
-#include <mrdocs/Metadata/Typedef.hpp>
-#include <mrdocs/Metadata/Variable.hpp>
 #include <mrdocs/Support/TypeTraits.hpp>
 
 namespace clang {
@@ -105,7 +105,7 @@ class TrancheBuilder
         // When adding a function to the tranche, we have to
         // check if the function isn't already overriden by
         // a function with the same name and signature.
-        if (Tranche* tranche = trancheFor(access))
+        if (trancheFor(access))
         {
             if (buildingFromBase_)
             {

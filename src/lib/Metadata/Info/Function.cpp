@@ -10,10 +10,10 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdocs/Metadata/Function.hpp>
-#include <mrdocs/Support/TypeTraits.hpp>
-#include <lib/Dom/LazyObject.hpp>
 #include <utility>
+#include <mrdocs/Metadata/Info/Function.hpp>
+#include <lib/Dom/LazyObject.hpp>
+#include <mrdocs/Support/TypeTraits.hpp>
 
 namespace clang {
 namespace mrdocs {

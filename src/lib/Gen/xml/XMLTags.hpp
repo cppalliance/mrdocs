@@ -12,26 +12,22 @@
 #ifndef MRDOCS_LIB_GEN_XML_XMLTAGS_HPP
 #define MRDOCS_LIB_GEN_XML_XMLTAGS_HPP
 
-#include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Javadoc.hpp>
-#include <mrdocs/Metadata/Record.hpp>
-#include <mrdocs/Metadata/Symbols.hpp>
-#include <mrdocs/Metadata/Type.hpp>
-#include <mrdocs/Dom.hpp>
+#include <optional>
+#include <vector>
 #include <clang/Basic/Specifiers.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/raw_ostream.h>
-#include <optional>
-#include <vector>
+#include <mrdocs/Dom.hpp>
+#include <mrdocs/Metadata/Javadoc.hpp>
+#include <mrdocs/Metadata/Symbols.hpp>
+#include <mrdocs/Metadata/Type.hpp>
 
 /*
     Object for assisting with generating
     XML tags and correctly escaped strings
 */
 
-namespace clang {
-namespace mrdocs {
-namespace xml {
+namespace clang::mrdocs::xml {
 
 class jit_indenter;
 
@@ -207,8 +203,6 @@ public:
     void nest(int levels);
 };
 
-} // xml
-} // mrdocs
-} // clang
+} // clang::mrdocs::xml
 
 #endif

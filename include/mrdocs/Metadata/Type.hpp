@@ -11,19 +11,24 @@
 #ifndef MRDOCS_API_METADATA_TYPE_HPP
 #define MRDOCS_API_METADATA_TYPE_HPP
 
-#include <mrdocs/Platform.hpp>
+#include <string>
+#include <vector>
+#include <mrdocs/ADT/PolymorphicValue.hpp>
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
 #include <mrdocs/Metadata/Specifiers.hpp>
 #include <mrdocs/Metadata/Symbols.hpp>
 #include <mrdocs/MetadataFwd.hpp>
+#include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/TypeTraits.hpp>
-#include <memory>
-#include <string>
-#include <string_view>
-#include <vector>
 
 namespace clang::mrdocs {
+
+std::strong_ordering
+operator<=>(PolymorphicValue<NameInfo> const& lhs, PolymorphicValue<NameInfo> const& rhs);
+
+std::strong_ordering
+operator<=>(PolymorphicValue<TypeInfo> const& lhs, PolymorphicValue<TypeInfo> const& rhs);
 
 enum QualifierKind
 {
@@ -137,15 +142,24 @@ struct TypeInfo
     */
     virtual
     TypeInfo*
-    innerType() const noexcept
+    innerType() noexcept
     {
         return nullptr;
+    }
+
+    virtual
+    TypeInfo const*
+    cInnerType() const noexcept
+    {
+        return const_cast<TypeInfo*>(this)->innerType();
     }
 
     /** Return the symbol named by this type.
     */
     SymbolID
     namedSymbol() const noexcept;
+
+    auto operator<=>(TypeInfo const&) const = default;
 
 protected:
     constexpr
@@ -169,7 +183,7 @@ void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
-    std::unique_ptr<TypeInfo> const& I,
+    PolymorphicValue<TypeInfo> const& I,
     DomCorpus const* domCorpus)
 {
     if (!I)
@@ -195,6 +209,8 @@ struct TypeInfoCommonBase : TypeInfo
     static constexpr bool isArray()           noexcept { return K == TypeKind::Array; }
     static constexpr bool isFunction()        noexcept { return K == TypeKind::Function; }
 
+    auto operator<=>(TypeInfoCommonBase const&) const = default;
+
 protected:
     constexpr
     TypeInfoCommonBase() noexcept
@@ -203,108 +219,160 @@ protected:
     }
 };
 
-struct NamedTypeInfo
+struct NamedTypeInfo final
     : TypeInfoCommonBase<TypeKind::Named>
 {
     QualifierKind CVQualifiers = QualifierKind::None;
-    std::unique_ptr<NameInfo> Name;
+    PolymorphicValue<NameInfo> Name;
+
+    std::strong_ordering
+    operator<=>(NamedTypeInfo const& other) const;
 };
 
-struct DecltypeTypeInfo
+struct DecltypeTypeInfo final
     : TypeInfoCommonBase<TypeKind::Decltype>
 {
     QualifierKind CVQualifiers = QualifierKind::None;
     ExprInfo Operand;
+
+    auto operator<=>(DecltypeTypeInfo const&) const = default;
 };
 
-struct AutoTypeInfo
+struct AutoTypeInfo final
     : TypeInfoCommonBase<TypeKind::Auto>
 {
     QualifierKind CVQualifiers = QualifierKind::None;
     AutoKind Keyword = AutoKind::Auto;
-    std::unique_ptr<NameInfo> Constraint;
+    PolymorphicValue<NameInfo> Constraint;
+
+    auto operator<=>(AutoTypeInfo const&) const = default;
 };
 
-struct LValueReferenceTypeInfo
+struct LValueReferenceTypeInfo final
     : TypeInfoCommonBase<TypeKind::LValueReference>
 {
-    std::unique_ptr<TypeInfo> PointeeType;
+    PolymorphicValue<TypeInfo> PointeeType;
 
-    TypeInfo* innerType() const noexcept override
+    TypeInfo*
+    innerType() noexcept override
     {
-        return PointeeType.get();
+        return PointeeType.operator->();
     }
+
+    auto operator<=>(LValueReferenceTypeInfo const&) const = default;
 };
 
-struct RValueReferenceTypeInfo
+struct RValueReferenceTypeInfo final
     : TypeInfoCommonBase<TypeKind::RValueReference>
 {
-    std::unique_ptr<TypeInfo> PointeeType;
+    PolymorphicValue<TypeInfo> PointeeType;
 
-    TypeInfo* innerType() const noexcept override
+    TypeInfo*
+    innerType() noexcept override
     {
-        return PointeeType.get();
+        return PointeeType.operator->();
     }
+
+    auto operator<=>(RValueReferenceTypeInfo const&) const = default;
 };
 
-struct PointerTypeInfo
+struct PointerTypeInfo final
     : TypeInfoCommonBase<TypeKind::Pointer>
 {
     QualifierKind CVQualifiers = QualifierKind::None;
-    std::unique_ptr<TypeInfo> PointeeType;
+    PolymorphicValue<TypeInfo> PointeeType;
 
-    TypeInfo* innerType() const noexcept override
+    TypeInfo*
+    innerType() noexcept override
     {
-        return PointeeType.get();
+        return PointeeType.operator->();
     }
+
+    auto operator<=>(PointerTypeInfo const&) const = default;
 };
 
-struct MemberPointerTypeInfo
+struct MemberPointerTypeInfo final
     : TypeInfoCommonBase<TypeKind::MemberPointer>
 {
     QualifierKind CVQualifiers = QualifierKind::None;
-    std::unique_ptr<TypeInfo> ParentType;
-    std::unique_ptr<TypeInfo> PointeeType;
+    PolymorphicValue<TypeInfo> ParentType;
+    PolymorphicValue<TypeInfo> PointeeType;
 
-    TypeInfo* innerType() const noexcept override
+    TypeInfo*
+    innerType() noexcept override
     {
-        return PointeeType.get();
+        return PointeeType.operator->();
     }
+
+    auto operator<=>(MemberPointerTypeInfo const&) const = default;
 };
 
-struct ArrayTypeInfo
+struct ArrayTypeInfo final
     : TypeInfoCommonBase<TypeKind::Array>
 {
-    std::unique_ptr<TypeInfo> ElementType;
+    PolymorphicValue<TypeInfo> ElementType;
     ConstantExprInfo<std::uint64_t> Bounds;
 
-    TypeInfo* innerType() const noexcept override
+    TypeInfo*
+    innerType() noexcept override
     {
-        return ElementType.get();
+        return ElementType.operator->();
     }
+
+    auto operator<=>(ArrayTypeInfo const&) const = default;
 };
 
-struct FunctionTypeInfo
+struct FunctionTypeInfo final
     : TypeInfoCommonBase<TypeKind::Function>
 {
-    std::unique_ptr<TypeInfo> ReturnType;
-    std::vector<std::unique_ptr<TypeInfo>> ParamTypes;
+    PolymorphicValue<TypeInfo> ReturnType;
+    std::vector<PolymorphicValue<TypeInfo>> ParamTypes;
     QualifierKind CVQualifiers = QualifierKind::None;
     ReferenceKind RefQualifier = ReferenceKind::None;
     NoexceptInfo ExceptionSpec;
     bool IsVariadic = false;
 
-    TypeInfo* innerType() const noexcept override
+    TypeInfo*
+    innerType() noexcept override
     {
-        return ReturnType.get();
+        return ReturnType.operator->();
+    }
+
+    auto
+    operator<=>(FunctionTypeInfo const& other) const {
+        if (auto const r = dynamic_cast<TypeInfo const&>(*this) <=>
+                 dynamic_cast<TypeInfo const&>(other);
+            !std::is_eq(r))
+        {
+            return r;
+        }
+        if (auto const r = ReturnType <=> other.ReturnType;
+            !std::is_eq(r))
+        {
+            return r;
+        }
+        if (auto const r = ParamTypes.size() <=> other.ParamTypes.size();
+            !std::is_eq(r))
+        {
+            return r;
+        }
+        for (std::size_t i = 0; i < ParamTypes.size(); ++i)
+        {
+            if (auto const r = ParamTypes[i] <=> other.ParamTypes[i];
+                !std::is_eq(r))
+            {
+                return r;
+            }
+        }
+        return std::tie(CVQualifiers, RefQualifier, ExceptionSpec, IsVariadic) <=>
+               std::tie(other.CVQualifiers, other.RefQualifier, other.ExceptionSpec, other.IsVariadic);
     }
 };
 
 template<
-    class TypeTy,
+    std::derived_from<TypeInfo> TypeTy,
     class F,
     class... Args>
-    requires std::derived_from<TypeTy, TypeInfo>
 decltype(auto)
 visit(
     TypeTy& I,
@@ -355,13 +423,26 @@ visit(
     }
 }
 
+inline
+std::strong_ordering
+operator<=>(PolymorphicValue<TypeInfo> const& lhs, PolymorphicValue<TypeInfo> const& rhs)
+{
+    return CompareDerived(lhs, rhs);
+}
+
+inline
+bool
+operator==(PolymorphicValue<TypeInfo> const& lhs, PolymorphicValue<TypeInfo> const& rhs) {
+    return lhs <=> rhs == std::strong_ordering::equal;
+}
+
+
 // VFALCO maybe we should rename this to `renderType` or something?
 MRDOCS_DECL
 std::string
 toString(
     const TypeInfo& T,
     std::string_view Name = "");
-
 
 } // clang::mrdocs
 

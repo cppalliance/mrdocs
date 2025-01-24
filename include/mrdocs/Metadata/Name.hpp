@@ -47,6 +47,12 @@ tag_invoke(
 
     It also includes the symbol ID of the named type,
     so that it can be referenced in the documentation.
+
+    This allows the `TypeInfo` to store either a
+    `NameInfo` or a `SpecializationNameInfo`,
+    which contains the arguments for a template specialization
+    without requiring the application to extract an
+    unnecessary symbol.
  */
 struct NameInfo
 {
@@ -76,7 +82,7 @@ struct NameInfo
         and the template arguments.
 
      */
-    std::unique_ptr<NameInfo> Prefix;
+    PolymorphicValue<NameInfo> Prefix;
 
     constexpr bool isIdentifier()     const noexcept { return Kind == NameKind::Identifier; }
     constexpr bool isSpecialization() const noexcept { return Kind == NameKind::Specialization; }
@@ -87,32 +93,46 @@ struct NameInfo
 
     explicit
     constexpr
-    NameInfo(NameKind kind) noexcept
+    NameInfo(NameKind const kind) noexcept
         : Kind(kind) {}
 
-    virtual ~NameInfo() = default;
+    constexpr virtual ~NameInfo() = default;
+
+    std::strong_ordering
+    operator<=>(NameInfo const& other) const;
 };
 
 /** Represents a (possibly qualified) symbol name with template arguments.
 */
-struct SpecializationNameInfo
+struct SpecializationNameInfo final
     : NameInfo
 {
     /** The template arguments.
     */
-    std::vector<std::unique_ptr<TArg>> TemplateArgs;
+    std::vector<PolymorphicValue<TArg>> TemplateArgs;
 
     constexpr
     SpecializationNameInfo() noexcept
         : NameInfo(NameKind::Specialization)
     {}
+
+    auto
+    operator<=>(SpecializationNameInfo const& other) const
+    {
+        if (auto const r =
+            dynamic_cast<NameInfo const&>(*this) <=> dynamic_cast<NameInfo const&>(other);
+            !std::is_eq(r))
+        {
+            return r;
+        }
+        return TemplateArgs <=> other.TemplateArgs;
+    }
 };
 
 template<
-    class NameInfoTy,
+    std::derived_from<NameInfo> NameInfoTy,
     class Fn,
     class... Args>
-    requires std::derived_from<NameInfoTy, NameInfo>
 decltype(auto)
 visit(
     NameInfoTy& info,
@@ -120,8 +140,7 @@ visit(
     Args&&... args)
 {
     auto visitor = makeVisitor<NameInfo>(
-        info, std::forward<Fn>(fn),
-        std::forward<Args>(args)...);
+        info, std::forward<Fn>(fn), std::forward<Args>(args)...);
     switch(info.Kind)
     {
     case NameKind::Identifier:
@@ -131,6 +150,19 @@ visit(
     default:
         MRDOCS_UNREACHABLE();
     }
+}
+
+inline
+std::strong_ordering
+operator<=>(PolymorphicValue<NameInfo> const& lhs, PolymorphicValue<NameInfo> const& rhs)
+{
+    return CompareDerived(lhs, rhs);
+}
+
+inline
+bool
+operator==(PolymorphicValue<NameInfo> const& lhs, PolymorphicValue<NameInfo> const& rhs) {
+    return lhs <=> rhs == std::strong_ordering::equal;
 }
 
 MRDOCS_DECL
@@ -150,7 +182,7 @@ void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
-    std::unique_ptr<NameInfo> const& I,
+    PolymorphicValue<NameInfo> const& I,
     DomCorpus const* domCorpus)
 {
     if(! I)

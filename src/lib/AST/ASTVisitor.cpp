@@ -112,6 +112,7 @@ traverse(DeclTy* D)
         using R = std::conditional_t<
             std::same_as<InfoTy, void>,
             InfoTypeFor_t<DeclTy>,
+
             InfoTy>;
 
         auto exp = upsert<R>(D);
@@ -1216,7 +1217,7 @@ populate(
             ++it;
             continue;
         }
-        if (auto* T = dynamic_cast<TypeTArg*>(arg.get());
+        if (auto* T = dynamic_cast<TypeTArg*>(arg.operator->());
             T &&
             T->Type &&
             !T->Type->Constraints.empty())
@@ -1356,10 +1357,11 @@ populate<std::uint64_t>(
     const Expr* E,
     const llvm::APInt& V);
 
+
 void
 ASTVisitor::
 populate(
-    std::unique_ptr<TParam>& I,
+    PolymorphicValue<TParam>& I,
     const NamedDecl* N)
 {
     visit(N, [&]<typename DeclTy>(const DeclTy* P)
@@ -1371,9 +1373,9 @@ populate(
         {
             if (!I)
             {
-                I = std::make_unique<TypeTParam>();
+                I = MakePolymorphicValue<TParam, TypeTParam>();
             }
-            auto* R = dynamic_cast<TypeTParam*>(I.get());
+            auto* R = dynamic_cast<TypeTParam*>(I.operator->());
             if (P->wasDeclaredWithTypename())
             {
                 R->KeyKind = TParamKeyKind::Typename;
@@ -1400,9 +1402,9 @@ populate(
         {
             if (!I)
             {
-                I = std::make_unique<NonTypeTParam>();
+                I = MakePolymorphicValue<TParam, NonTypeTParam>();
             }
-            auto* R = dynamic_cast<NonTypeTParam*>(I.get());
+            auto* R = dynamic_cast<NonTypeTParam*>(I.operator->());
             R->Type = toTypeInfo(P->getType());
             if (P->hasDefaultArgument() && !R->Default)
             {
@@ -1415,13 +1417,13 @@ populate(
         {
             if (!I)
             {
-                I = std::make_unique<TemplateTParam>();
+                I = MakePolymorphicValue<TParam, TemplateTParam>();
             }
-            TemplateTemplateParmDecl const* TTPD = cast<TemplateTemplateParmDecl>(P);
+            auto const* TTPD = cast<TemplateTemplateParmDecl>(P);
             MRDOCS_CHECK_OR(TTPD);
             TemplateParameterList const* TPL = TTPD->getTemplateParameters();
             MRDOCS_CHECK_OR(TPL);
-            auto* Result = dynamic_cast<TemplateTParam*>(I.get());
+            auto* Result = dynamic_cast<TemplateTParam*>(I.operator->());
             if (Result->Params.size() < TPL->size())
             {
                 Result->Params.resize(TPL->size());
@@ -1481,9 +1483,9 @@ populate(
         // parameter types we extracted have constraints
         for (auto it = TI.Params.begin(); it != TI.Params.end(); )
         {
-            std::unique_ptr<TParam>& param = *it;
+            PolymorphicValue<TParam>& param = *it;
 
-            if (auto const* T = dynamic_cast<NonTypeTParam*>(param.get());
+            if (auto const* T = dynamic_cast<NonTypeTParam*>(param.operator->());
                 T &&
                 T->Type &&
                 !T->Type->Constraints.empty())
@@ -1503,7 +1505,7 @@ populate(
             if (param->Default &&
                 param->Default->isType())
             {
-                if (auto const* T = dynamic_cast<TypeTArg*>(param->Default.get());
+                if (auto const* T = dynamic_cast<TypeTArg*>(param->Default.operator->());
                     T &&
                     T->Type &&
                     !T->Type->Constraints.empty())
@@ -1529,7 +1531,7 @@ populate(
 void
 ASTVisitor::
 populate(
-    std::vector<std::unique_ptr<TArg>>& result,
+    std::vector<PolymorphicValue<TArg>>& result,
     const ASTTemplateArgumentListInfo* args)
 {
     if (!args)
@@ -1660,7 +1662,7 @@ qualifiedName(NamedDecl const* ND) const
 bool
 ASTVisitor::
 generateJavadoc(
-    std::unique_ptr<Javadoc>& javadoc,
+    std::optional<Javadoc>& javadoc,
     Decl const* D)
 {
     RawComment const* RC =
@@ -1673,7 +1675,7 @@ generateJavadoc(
     return true;
 }
 
-std::unique_ptr<TypeInfo>
+PolymorphicValue<TypeInfo>
 ASTVisitor::
 toTypeInfo(QualType const qt, TraversalMode const mode)
 {
@@ -1691,7 +1693,7 @@ toTypeInfo(QualType const qt, TraversalMode const mode)
     return Builder.result();
 }
 
-std::unique_ptr<NameInfo>
+PolymorphicValue<NameInfo>
 ASTVisitor::
 toNameInfo(
     NestedNameSpecifier const* NNS)
@@ -1703,7 +1705,7 @@ toNameInfo(
     MRDOCS_SYMBOL_TRACE(NNS, context_);
 
     ScopeExitRestore scope(mode_, Dependency);
-    std::unique_ptr<NameInfo> I = nullptr;
+    PolymorphicValue<NameInfo> I = nullptr;
     if (const Type* T = NNS->getAsType())
     {
         NameInfoBuilder Builder(*this, NNS->getPrefix());
@@ -1712,13 +1714,13 @@ toNameInfo(
     }
     else if(const IdentifierInfo* II = NNS->getAsIdentifier())
     {
-        I = std::make_unique<NameInfo>();
+        I = MakePolymorphicValue<NameInfo>();
         I->Name = II->getName();
         I->Prefix = toNameInfo(NNS->getPrefix());
     }
     else if(const NamespaceDecl* ND = NNS->getAsNamespace())
     {
-        I = std::make_unique<NameInfo>();
+        I = MakePolymorphicValue<NameInfo>();
         I->Name = ND->getIdentifier()->getName();
         I->Prefix = toNameInfo(NNS->getPrefix());
         Decl const* ID = getInstantiatedFrom(ND);
@@ -1729,7 +1731,7 @@ toNameInfo(
     }
     else if(const NamespaceAliasDecl* NAD = NNS->getAsNamespaceAlias())
     {
-        I = std::make_unique<NameInfo>();
+        I = MakePolymorphicValue<NameInfo>();
         I->Name = NAD->getIdentifier()->getName();
         I->Prefix = toNameInfo(NNS->getPrefix());
         Decl const* ID = getInstantiatedFrom(NAD);
@@ -1742,7 +1744,7 @@ toNameInfo(
 }
 
 template <class TArgRange>
-std::unique_ptr<NameInfo>
+PolymorphicValue<NameInfo>
 ASTVisitor::
 toNameInfo(
     DeclarationName const Name,
@@ -1753,16 +1755,16 @@ toNameInfo(
     {
         return nullptr;
     }
-    std::unique_ptr<NameInfo> I = nullptr;
+    PolymorphicValue<NameInfo> I = nullptr;
     if(TArgs)
     {
-        auto Specialization = std::make_unique<SpecializationNameInfo>();
+        auto Specialization = MakePolymorphicValue<SpecializationNameInfo>();
         populate(Specialization->TemplateArgs, *TArgs);
-        I = std::move(Specialization);
+        I = PolymorphicValue<NameInfo>(std::move(Specialization));
     }
     else
     {
-        I = std::make_unique<NameInfo>();
+        I = MakePolymorphicValue<NameInfo>();
     }
     I->Name = extractName(Name);
     if (NNS)
@@ -1773,7 +1775,7 @@ toNameInfo(
 }
 
 template <class TArgRange>
-std::unique_ptr<NameInfo>
+PolymorphicValue<NameInfo>
 ASTVisitor::
 toNameInfo(
     Decl const* D,
@@ -1801,14 +1803,14 @@ toNameInfo(
 }
 
 template
-std::unique_ptr<NameInfo>
+PolymorphicValue<NameInfo>
 ASTVisitor::
 toNameInfo<llvm::ArrayRef<clang::TemplateArgument>>(
     Decl const* D,
     std::optional<llvm::ArrayRef<clang::TemplateArgument>> TArgs,
     NestedNameSpecifier const* NNS);
 
-std::unique_ptr<TArg>
+PolymorphicValue<TArg>
 ASTVisitor::
 toTArg(const TemplateArgument& A)
 {
@@ -1837,7 +1839,7 @@ toTArg(const TemplateArgument& A)
     // type
     case TemplateArgument::Type:
     {
-        auto R = std::make_unique<TypeTArg>();
+        auto R = MakePolymorphicValue<TypeTArg>();
         QualType QT = A.getAsType();
         MRDOCS_ASSERT(! QT.isNull());
         // if the template argument is a pack expansion,
@@ -1850,14 +1852,14 @@ toTArg(const TemplateArgument& A)
             QT = PT->getPattern();
         }
         R->Type = toTypeInfo(QT);
-        return R;
+        return PolymorphicValue<TArg>(R);
     }
     // pack expansion of a template name
     case TemplateArgument::TemplateExpansion:
     // template name
     case TemplateArgument::Template:
     {
-        auto R = std::make_unique<TemplateTArg>();
+        auto R = MakePolymorphicValue<TemplateTArg>();
         R->IsPackExpansion = A.isPackExpansion();
 
         // KRYSTIAN FIXME: template template arguments are
@@ -1868,16 +1870,9 @@ toTArg(const TemplateArgument& A)
         TemplateName const TN = A.getAsTemplateOrTemplatePattern();
         if(auto* TD = TN.getAsTemplateDecl())
         {
-            if(auto* II = TD->getIdentifier())
-                R->Name = II->getName();
-            // do not extract a SymbolID or build Info if
-            // the template template parameter names a
-            // template template parameter or builtin template
-            if(! isa<TemplateTemplateParmDecl>(TD) &&
-                ! isa<BuiltinTemplateDecl>(TD))
+            if (auto* II = TD->getIdentifier())
             {
-                // upsertDependency(getInstantiatedFrom<
-                //    NamedDecl>(TD), R->Template);
+                R->Name = II->getName();
             }
         }
         else
@@ -1886,7 +1881,7 @@ toTArg(const TemplateArgument& A)
             TN.print(stream, context_.getPrintingPolicy(),
                 TemplateName::Qualified::AsWritten);
         }
-        return R;
+        return PolymorphicValue<TArg>(R);
     }
     // nullptr value
     case TemplateArgument::NullPtr:
@@ -1897,7 +1892,7 @@ toTArg(const TemplateArgument& A)
     // expression
     case TemplateArgument::Expression:
     {
-        auto R = std::make_unique<NonTypeTArg>();
+        auto R = MakePolymorphicValue<NonTypeTArg>();
         R->IsPackExpansion = A.isPackExpansion();
         // if this is a pack expansion, use the template argument
         // expansion pattern in place of the template argument pack
@@ -1908,7 +1903,7 @@ toTArg(const TemplateArgument& A)
         llvm::raw_string_ostream stream(R->Value.Written);
         adjusted.print(context_.getPrintingPolicy(), stream, false);
 
-        return R;
+        return PolymorphicValue<TArg>(R);
     }
     default:
         MRDOCS_UNREACHABLE();
@@ -3014,8 +3009,7 @@ upsert(SymbolID const& id)
     bool const isNew = !info;
     if (!info)
     {
-        info = info_.emplace(std::make_unique<
-            InfoTy>(id)).first->get();
+        info = info_.emplace(std::make_unique<InfoTy>(id)).first->get();
         auto const minExtract = mode_ == TraversalMode::Regular ?
             ExtractionMode::Regular : ExtractionMode::Dependency;
         info->Extraction = mostSpecific(info->Extraction, minExtract);

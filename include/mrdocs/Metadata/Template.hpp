@@ -21,8 +21,10 @@
 #include <string>
 #include <vector>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
+
+std::strong_ordering
+operator<=>(PolymorphicValue<TParam> const& lhs, PolymorphicValue<TParam> const& rhs);
 
 enum class TArgKind : int
 {
@@ -60,6 +62,8 @@ struct TArg
     constexpr bool isNonType()  const noexcept { return Kind == TArgKind::NonType; }
     constexpr bool isTemplate() const noexcept { return Kind == TArgKind::Template; }
 
+    auto operator<=>(TArg const&) const = default;
+
 protected:
     constexpr
     TArg(
@@ -86,21 +90,26 @@ protected:
     }
 };
 
-struct TypeTArg
+struct TypeTArg final
     : IsTArg<TArgKind::Type>
 {
     /** Template argument type. */
-    std::unique_ptr<TypeInfo> Type;
+    PolymorphicValue<TypeInfo> Type;
+
+    auto operator<=>(TypeTArg const&) const = default;
 };
 
-struct NonTypeTArg
+
+struct NonTypeTArg final
     : IsTArg<TArgKind::NonType>
 {
     /** Template argument expression. */
     ExprInfo Value;
+
+    auto operator<=>(NonTypeTArg const&) const = default;
 };
 
-struct TemplateTArg
+struct TemplateTArg final
     : IsTArg<TArgKind::Template>
 {
     /** SymbolID of the referenced template. */
@@ -108,13 +117,14 @@ struct TemplateTArg
 
     /** Name of the referenced template. */
     std::string Name;
+
+    auto operator<=>(TemplateTArg const&) const = default;
 };
 
 template<
-    typename TArgTy,
-    typename F,
-    typename... Args>
-    requires std::derived_from<TArgTy, TArg>
+    std::derived_from<TArg> TArgTy,
+    class F,
+    class... Args>
 constexpr
 decltype(auto)
 visit(
@@ -141,7 +151,22 @@ visit(
     }
 }
 
-MRDOCS_DECL std::string toString(const TArg& arg) noexcept;
+inline
+std::strong_ordering
+operator<=>(PolymorphicValue<TArg> const& lhs, PolymorphicValue<TArg> const& rhs)
+{
+    return CompareDerived(lhs, rhs);
+}
+
+inline
+bool
+operator==(PolymorphicValue<TArg> const& lhs, PolymorphicValue<TArg> const& rhs) {
+    return lhs <=> rhs == std::strong_ordering::equal;
+}
+
+MRDOCS_DECL
+std::string
+toString(const TArg& arg) noexcept;
 
 MRDOCS_DECL
 void
@@ -156,7 +181,7 @@ void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
-    std::unique_ptr<TArg> const& I,
+    PolymorphicValue<TArg> const& I,
     DomCorpus const* domCorpus)
 {
     if (!I)
@@ -193,13 +218,15 @@ struct TParam
     bool IsParameterPack = false;
 
     /** The default template argument, if any */
-    std::unique_ptr<TArg> Default;
+    PolymorphicValue<TArg> Default;
 
-    virtual ~TParam() = default;
+    constexpr virtual ~TParam() = default;
 
     constexpr bool isType()     const noexcept { return Kind == TParamKind::Type; }
     constexpr bool isNonType()  const noexcept { return Kind == TParamKind::NonType; }
     constexpr bool isTemplate() const noexcept { return Kind == TParamKind::Template; }
+
+    auto operator<=>(TParam const&) const = default;
 
 protected:
     constexpr
@@ -222,7 +249,7 @@ void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
-    std::unique_ptr<TParam> const& I,
+    PolymorphicValue<TParam> const& I,
     DomCorpus const* domCorpus)
 {
     if (!I)
@@ -242,6 +269,8 @@ struct TParamCommonBase : TParam
     static constexpr bool isType()     noexcept { return K == TParamKind::Type; }
     static constexpr bool isNonType()  noexcept { return K == TParamKind::NonType; }
     static constexpr bool isTemplate() noexcept { return K == TParamKind::Template; }
+
+    auto operator<=>(TParamCommonBase const&) const = default;
 
 protected:
     constexpr
@@ -270,28 +299,50 @@ tag_invoke(
     v = toString(kind);
 }
 
-struct TypeTParam
+struct TypeTParam final
     : TParamCommonBase<TParamKind::Type>
 {
     /** Keyword (class/typename) the parameter uses */
     TParamKeyKind KeyKind = TParamKeyKind::Class;
 
     /** The type-constraint for the parameter, if any. */
-    std::unique_ptr<NameInfo> Constraint;
+    PolymorphicValue<NameInfo> Constraint;
+
+    auto operator<=>(TypeTParam const&) const = default;
 };
 
-struct NonTypeTParam
+struct NonTypeTParam final
     : TParamCommonBase<TParamKind::NonType>
 {
     /** Type of the non-type template parameter */
-    std::unique_ptr<TypeInfo> Type;
+    PolymorphicValue<TypeInfo> Type;
+
+    auto operator<=>(NonTypeTParam const&) const = default;
 };
 
-struct TemplateTParam
+struct TemplateTParam final
     : TParamCommonBase<TParamKind::Template>
 {
-    /** Template parameters for the template template parameter */
-    std::vector<std::unique_ptr<TParam>> Params;
+    /** Template parameters for the template-template parameter */
+    std::vector<PolymorphicValue<TParam>> Params;
+
+    auto operator<=>(TemplateTParam const& other) const
+    {
+        if (auto const r = Params.size() <=> other.Params.size();
+            !std::is_eq(r))
+        {
+            return r;
+        }
+        for (std::size_t i = 0; i < Params.size(); ++i)
+        {
+            if (auto const r = Params[i] <=> other.Params[i];
+                !std::is_eq(r))
+            {
+                return r;
+            }
+        }
+        return std::strong_ordering::equal;
+    }
 };
 
 template<
@@ -325,6 +376,20 @@ visit(
     }
 }
 
+inline
+std::strong_ordering
+operator<=>(PolymorphicValue<TParam> const& lhs, PolymorphicValue<TParam> const& rhs)
+{
+    return CompareDerived(lhs, rhs);
+}
+
+inline
+bool
+operator==(PolymorphicValue<TParam> const& lhs, PolymorphicValue<TParam> const& rhs) {
+    return lhs <=> rhs == std::strong_ordering::equal;
+}
+
+
 // ----------------------------------------------------------------
 
 enum class TemplateSpecKind
@@ -342,8 +407,8 @@ toString(TemplateSpecKind kind);
 */
 struct TemplateInfo
 {
-    std::vector<std::unique_ptr<TParam>> Params;
-    std::vector<std::unique_ptr<TArg>> Args;
+    std::vector<PolymorphicValue<TParam>> Params;
+    std::vector<PolymorphicValue<TArg>> Args;
 
     /** The requires-clause for the template parameter list, if any.
     */
@@ -395,7 +460,6 @@ tag_invoke(
     tag_invoke(dom::ValueFromTag{}, v, *I, domCorpus);
 }
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

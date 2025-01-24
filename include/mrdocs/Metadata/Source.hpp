@@ -17,10 +17,8 @@
 #include <mrdocs/ADT/Optional.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <string>
-#include <string_view>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 enum class FileKind
 {
@@ -126,6 +124,8 @@ struct MRDOCS_DECL
     */
     std::vector<Location> Loc;
 
+    constexpr virtual ~SourceInfo() = default;
+
 protected:
     SourceInfo() = default;
 };
@@ -136,7 +136,6 @@ tag_invoke(
     dom::Value& v,
     SourceInfo const& I);
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

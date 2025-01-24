@@ -11,8 +11,8 @@
 #ifndef MRDOCS_LIB_SUPPORT_LEGIBLENAMES_HPP
 #define MRDOCS_LIB_SUPPORT_LEGIBLENAMES_HPP
 
-#include <mrdocs/Platform.hpp>
 #include <mrdocs/MetadataFwd.hpp>
+#include <mrdocs/Metadata/Symbols.hpp>
 #include <memory>
 #include <string>
 

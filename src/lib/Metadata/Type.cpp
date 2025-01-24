@@ -87,7 +87,7 @@ namedSymbol() const noexcept
     {
         return SymbolID::invalid;
     }
-    auto const* NT = static_cast<NamedTypeInfo const*>(this);
+    auto const* NT = dynamic_cast<NamedTypeInfo const*>(this);
     if (!NT->Name)
     {
         return SymbolID::invalid;
@@ -144,13 +144,16 @@ inline
 void
 TypeBeforeWriter::
 operator()(
-    const T& t,
+    T const& t,
     auto& write,
     std::bool_constant<NeedParens>) const
 {
-    if(TypeInfo* inner = t.innerType())
-        visit(*inner, *this, write, std::bool_constant<
-            requires { t.PointeeType; }>{});
+    if (TypeInfo const* inner = t.cInnerType())
+    {
+        visit(*inner, *this, write, std::bool_constant<requires {
+            t.PointeeType;
+        }>{});
+    }
 
     if(t.IsPackExpansion)
         write("...");
@@ -276,9 +279,12 @@ operator()(
             write(' ', spec);
     }
 
-    if(TypeInfo* inner = t.innerType())
-        visit(*inner, *this, write, std::bool_constant<
-            requires { t.PointeeType; }>{});
+    if (TypeInfo const* inner = t.cInnerType())
+    {
+        visit(*inner, *this, write, std::bool_constant<requires {
+            t.PointeeType;
+        }>{});
+    }
 }
 
 void
@@ -290,6 +296,23 @@ writeTypeTo(
 }
 
 } // (anon)
+
+std::strong_ordering
+NamedTypeInfo::
+operator<=>(NamedTypeInfo const& other) const
+{
+    if (auto const br = dynamic_cast<TypeInfo const&>(*this) <=> dynamic_cast<TypeInfo const&>(other);
+        !std::is_eq(br))
+    {
+        return br;
+    }
+    if (auto const br = CVQualifiers <=> other.CVQualifiers;
+        !std::is_eq(br))
+    {
+        return br;
+    }
+    return Name <=> other.Name;
+}
 
 std::string
 toString(
