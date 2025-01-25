@@ -8,6 +8,16 @@
 # Official repository: https://github.com/cppalliance/mrdocs
 #
 
+echo "Building documentation UI"
+cwd=$(pwd)
+script_dir=$(dirname "$(readlink -f "$0")")
+if ! [ -e "$script_dir/ui/build/ui-bundle.zip" ]; then
+  echo "Building antora-ui"
+  cd "$script_dir/ui" || exit
+  ./build.sh
+  cd "$cwd" || exit
+fi
+
 echo "Building documentation with Antora..."
 echo "Installing npm dependencies..."
 npm ci

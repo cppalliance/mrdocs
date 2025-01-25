@@ -1,0 +1,346 @@
+= Work with the Handlebars Templates
+
+Antora combines the Handlebars templates with the converted AsciiDoc content and other UI model data to make the pages in the site.
+These "`logic-less`" templates are mostly HTML with some special mustache tags sprinkled in where content should be inserted.
+
+== What do the templates do?
+
+The layout templates, which are stored in [.path]_src/layouts/_, provide the main page structure.
+The partial templates, in [.path]_src/partials/_, fill in different regions of a page, such as the navigation and footer.
+
+The templates read from a model that's populated by Antora.
+The model can be accessed by enclosing path expressions in mustaches, which are `{{` and `}}` or `{{{` and `}}}` (e.g., `+{{{page.title}}}+`).
+The double mustaches escape the value for HTML, whereas triple mustaches insert the value as is.
+
+WARNING: If the mustaches are preceded by a backslash (e.g, `\{{`), the expression will be disabled.
+This often comes up when constructing URLs.
+To avoid this problem, you should use forward slashes in URLs instead of backslashes.
+
+When `{{` is immediately followed by `>`, that invokes a partial (from the partials directory) and inserts the result (e.g., `+{{> head}}+`.
+In other words, that's not a model reference like the other mustache expressions.
+
+=== Template variables
+
+CAUTION: This model is not final.
+Variable names and purposes may change.
+
+Here's an overview of the available UI model:
+
+.Variables available to the Handlebars templates (top-level variables in bold)
+[#template-variables-ref,cols="1m,2"]
+|===
+| Name | Description
+
+s| [[site]]site
+| Information about the site.
+
+| site.url
+| The base URL of the site, if specified in the playbook.
+If a site start page is defined, the visitor will be redirected from this location to the start page.
+Includes the value of `site.path`.
+Can be prepended to `page.url` to create an absolute URL for a page (e.g., `+{{{site.url}}}{{{page.url}}}+`).
+
+| site.path
+| The pathname (i.e., subpath) of the site.url under which the site is hosted (e.g., /docs).
+This value is empty if site.url is not defined, has no path segment, or matches /.
+Can be dropped from the site.url value using a helper (e.g., `deleteSuffix site.url site.path`)
+Can be prepended to `page.url` to create a root-relative URL for a page (e.g., `+{{{site.path}}}{{{page.url}}}+`).
+(since Antora 2.1)
+
+| site.title
+| The title of the site.
+
+| site.homeUrl
+| The URL that points directly to the start (aka home) page of the site.
+
+| site.components
+| A map of all the components in the site, keyed by component name.
+Properties of each component include name, title, url, latest, and versions.
+Properties of each version include name (since 2.3), version, displayVersion, prerelease (if set), title, url, asciidoc (since 2.3), and navigation.
+The navigation property on each version provides access to the navigation menu for that component version.
+
+| site.ui
+| Information about the site UI.
+
+| site.ui.defaultLayout
+| The default page layout used for this site.
+
+| site.ui.url
+| The absolute base URL of the UI.
+
+s| [[page]]page
+| Information about the current page.
+
+| page.title
+| The page title in HTML format (often used as the primary heading).
+This value may include inline HTML elements and XML character references.
+
+| page.contents
+| The main article content in HTML format.
+Sourced from AsciiDoc and converted to HTML by the Asciidoctor processor.
+
+| page.attributes
+| Any AsciiDoc document attribute prefixed with `page-`.
+The `page-` prefix is dropped from the name used in this model.
+For example, the value of the document attribute named `page-support-phone` can be accessed via the UI model using `page.attributes.support-phone`.
+Page attributes can be defined per page in the AsciiDoc document header (e.g., `:page-support-phone: +1 212-555-1234`) or globally in the playbook under the key `asciidoc.attributes`.
+The `page-` prefix is used to isolate page-related attributes from the numerous other document attributes in AsciiDoc.
+
+| page.author
+| The first author of the document, if one or more authors are specified in the AsciiDoc header.
+
+| page.description
+| The text of the description attribute in the AsciiDoc header, if specified.
+
+| page.keywords
+| A comma-separated list of keywords defined in the AsciiDoc header, if specified.
+
+| page.component
+| Information about the component for the current page.
+Properties include name, title, url, latest, and versions.
+
+| page.componentVersion
+| Information about the component version for the current page.
+Properties include name (since 2.3), version, displayVersion, prerelease (if set), title, url, and asciidoc (since 2.3).
+
+| page.module
+| The name of the module for the current page.
+
+| page.relativeSrcPath
+| The path of the current page relative to the pages directory in the current module (since 2.3).
+
+| page.version
+| The name of the version for the current page.
+
+| page.displayVersion
+| The name of the display version for the current page.
+
+| page.versions
+| All versions of the current page, including the current page.
+Each entry has the properties url, string, and missing.
+
+| page.latest
+| The entry from `page.versions` that corresponds to the latest version available of this page.
+The latest page may not come from the latest version of the component (if the page is missing in that version).
+This property is not set if this page is in a versionless component.
+
+| page.breadcrumbs
+| An array of breadcrumb items that represent the current selection in the navigation tree.
+Includes text-only and external items.
+
+| page.navigation
+| The hierarchical navigation menu for the component version of the current page.
+Each navigation item contains the property `content` as well as the optional properties `url` and (child) `items`.
+
+| page.url
+| The URL for the current page.
+This URL is a root-relative path (i.e., it begins with `/`), where root refers to where Antora published the files.
+The value is most often used by the `relativize` helper to generate relative URLs from this page.
+
+| page.canonicalUrl
+| The canonical URL for the current page.
+The canonicalUrl is only set if site.url is set to an absolute URL and the page's component has at least one non-prerelease version.
+If there are multiple versions of the component, the canonical URL is the qualified URL of the most recent, non-prerelease version of the page.
+If there's only a single version of the component, the canonical URL is the qualified URL of the current page.
+
+| page.editUrl
+| The URL to edit the current page (i.e., activates the web-based editor on the git host).
+This value is derived automatically for the hosts github.com, gitlab.com, pagure.io, and bitbucket.org, even if the repository is private.
+If the host is not recognized, or you want to customize the value, you can use the `edit_url` key on the content source in the playbook.
+
+The default UI shows an "Edit this Page" link that points to this URL unless the repository is private (i.e., `page.origin.private` is truthy) or `page.fileUri` is set.
+You can force this link to be shown by setting the environment variable `FORCE_SHOW_EDIT_PAGE_LINK` (e.g., `FORCE_SHOW_EDIT_PAGE_LINK=true`) or by customizing the logic in the UI template.
+
+| page.fileUri
+| The local file:// URI to edit the current page if the page originates from the local filesystem (i.e., the worktree).
+
+If this property is set, the default UI shows an "Edit this Page" link that points to this URI (instead of the `page.editUrl` value) unless the `CI` environment variable is set (e.g., `CI=true`).
+When the `CI` environment variable is set, the default UI ignores this property (since linking to a local file:// URI in a published site doesn't make any sense).
+
+| page.origin
+| Information about the content source from which the current page was taken.
+Properties include url, reftype (since 3.1), refname, branch, tag, refhash (since 2.3), startPath, worktree, webUrl, fileUriPattern, editUrlPattern, private.
+
+| page.origin.private
+| This value will be `auth-required` if the git server requests authentication credentials, otherwise `auth-embedded` if credentials are embedded in the content source URL in the playbook, otherwise unset.
+In the default UI, if this value is truthy, the "Edit this Page" link is not shown.
+A quick way to force this property to be truthy (even if the repository is public) is to begin the content source URL in the playbook with empty credentials, as in `\https://@`.
+Then, the "Edit the Page" link will not appear.
+
+| page.home
+| Indicates whether the current page is the start (aka home) page of the site.
+
+| page.layout
+| The page layout for the current page.
+
+| page.next
+| The next reachable page in the navigation tree (skips past text-only and external items).
+
+| page.previous
+| The previous reachable page in the navigation tree (skips past text-only and external items).
+
+| page.parent
+| The parent page in the navigation tree (skips past text-only and external items).
+
+s| env
+| The map of environment variables (sourced from `process.env`).
+
+s| siteRootPath
+| The relative path to the root of the published site.
+If a site start page is defined, the visitor will be redirected from this location to the start page.
+Can be used as a fallback when a site URL is not set.
+This value is _root-relative_ in the 404 page template, which is required for the 404 page to work correctly when served by the web server. 
+
+s| uiRootPath
+| The relative path to the root directory of the UI.
+This value is _root-relative_ in the 404 page template, which is required for the 404 page to work correctly when served by the web server. 
+
+s| antoraVersion
+| The version of Antora used to build the site (specifically the version of the @antora/page-composer package).
+
+s| contentCatalog
+| A proxy object around Antora's virtual content catalog, which provides access to components, component versions, pages, and resource files.
+Exposes the following methods: `findBy`, `getById`, `getComponent`, `getComponentVersion`, `getComponents`, `getComponentsSortedBy`, `getFiles`, `getPages`, `getSiteStartPage`, `resolvePage`, and `resolveResource`.
+*This object should only be used from a UI helper.*
+|===
+
+This model is likely to grow over time.
+
+== Modify a template
+
+Let's consider the case when you want to add a new meta tag inside the HTML head.
+
+First, make sure you have set up the project and created a development branch.
+Next, open the file [.path]_templates/partials/head.hbs_ and add your tag.
+
+[source,html]
+----
+<meta class="swiftype" name="title" data-type="string" content="{{page.title}}">
+----
+
+Each template file has access to the template model, which exposes information about the current page through variable names.
+The variables currently available are listed in <<template-variables-ref>>.
+
+Save the file, commit it to git, push the branch, and allow the approval workflow to play out.
+
+== Using built-in helpers
+
+Antora provides the following built-in template helpers:
+
+relativize:: Converts a root-relative URL to a URL path that is relative to the current page.
+resolvePageURL:: Resolves the specified page from a page reference and returns the root-relative URL of that page.
+resolvePage:: Resolves the specified page from a page reference, converts it to a UI page model (unless `model=false`), and returns it.
+
+These helpers are available in any Antora UI, not just the default UI.
+
+=== relativize
+
+Antora stores the URL of each publishable resource as a root-relative URL (i.e., /component/version/module/page.html).
+The root in this case is the root of the site (the site URL).
+Antora stores URLs in this way so they can be used to create a relative path from the current page to the target resource, independent of the site's configuration.
+That's the purpose of the `relativize` helper in a template.
+
+.Why use relativize?
+****
+By using relative paths for references, the site is not couple to the URL from which it is served.
+That means the site can be moved around without breaking references.
+It also means the site can be previewed locally without a web server.
+****
+
+You can find the `relativize` helper used throughout the templates in the default UI.
+Here's an example that uses the `relativize` helper to create a relative link to the next page in the navigation.
+
+[,html]
+----
+{{#with page.next}}
+<a href="{{{relativize ./url}}}">{{{./content}}}</a>
+{{/with}}
+----
+
+When creating a link to a URL within the site, you should always wrap it in the `relativize` helper.
+
+=== resolvePageURL
+
+If you want to create a link to another page in your template, you can use the `resolvePageURL` helper.
+This helper resolves the specified page and returns the root-relative URL of that page.
+It's the commplement of the xref macro in the AsciiDoc source.
+
+This helper accepts a page reference, just like the target of the xref macro.
+Internally, this helper uses `ContentCatalog#resolvePage` to resolve the reference.
+The reference will be resolved relative to the module of the page being composed unless broadened by an explicit module, version, or component segment.
+However, since a template is often used by every page in the site, you almost always want this reference to be fully-qualified.
+
+For information about the syntax of a page reference, refer to xref:antora:page:resource-id-coordinates.adoc[resource reference] documentation.
+
+Here's an example that creates a link to another page using the `resolvePageURL` helper.
+
+[,html]
+----
+<a href="{{{relativize (resolvePageURL 'about::support.adoc')}}}">Support</a>
+----
+
+This helper also accepts a context object for specifying the module, version, and component, which can be useful when pages share a common naming pattern.
+
+[,html]
+----
+<a href="{{{relativize (resolvePageURL 'support.adoc' component='about')}}}">Support</a>
+----
+
+The disadvantage of the `resolvePageURL` helper is that it only returns the root-relative URL, not the model of the page.
+If you need more information about the page, such as its title, you can use the `resolvePage` instead.
+
+=== resolvePage
+
+If you want to resolve another page in your template, perhaps to create a link to it, or perhaps to show some information from its model, you can use the `resolvePage` helper.
+This helper resolves the specified page and returns the page model for that page.
+//The page model is the same model used for the `page` variable in the template.
+//In other words, this helper allows you to switch the context of the template to that of another page.
+
+This helper accepts a page reference.
+Internally, this helper uses `ContentCatalog#resolvePage` to resolve the reference.
+
+Here's an example of how to use the `resolvePage` helper to make a link to another page, using the title of that page as the link text.
+
+[,html]
+----
+{{#with (resolvePage 'about::support.adoc')}}<a href="{{relativize ./url}}">{{{./title}}}</a>{{/with}}
+----
+
+This helper also accepts a context object for specifying the module, version, and component, which can be useful when pages share a common naming pattern.
+
+[,html]
+----
+{{#with (resolvePage 'support.adoc' component='about')}}<a href="{{relativize ./url}}">{{{./title}}}</a>{{/with}}
+----
+
+The object returned by the `resolvePage` helper is the UI page model, which is the same model used by the `page` variable.
+You can use the `log` helper inspect the object that this helper returns.
+
+[,html]
+----
+{{log (resolvePage 'about::support.adoc')}}
+----
+
+NOTE: The `resolvePage` helper is typically used inside a `with` block to switch the template's context to the resolved object.
+
+If you want the original virtual file as returned by `ContentCatalog#resolvePage`, you must set the `model=false` argument on the helper.
+Among other things, this gives you access to all the document attributes associated with that page, not just the page attributes.
+
+[,html]
+----
+{{#with (resolvePage 'program::policy-a.adoc' model=false)}}
+<a href="{{relativize ./pub.url}}">{{{./asciidoc.xreftext}}}</a> {{./asciidoc.attributes.next-review-date}}
+{{/with}}
+----
+
+If you need to access the virtual file for the current page, you can do so as follows:
+
+[,html]
+----
+{{#with (resolvePage page.relativeSrcPath model=false)}}
+{{log ./asciidoc.attributes}}
+{{/with}}
+----
+
+Currently, there is no equivalent helper for resolving a non-page resource, but that may be added in the future.
+In the meantime, you could develop your own helper to provide that functionality.

@@ -10,5 +10,8 @@
 /test-files/**/*.bad.xml
 docs/node_modules
 docs/build
+docs/ui/node_modules
+docs/ui/build
+docs/ui/public
 share/mrdocs/libcxx/
 share/mrdocs/clang/
