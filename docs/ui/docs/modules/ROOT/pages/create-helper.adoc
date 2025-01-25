@@ -1,0 +1,197 @@
+= Create a UI Helper
+
+This page explains how to create a UI helper for use in a page template (layout or partial).
+A helper is a JavaScript function that's invoked by Handlebars when it comes across a helper call in a template.
+
+== Helper anatomy
+
+A helper must be defined as a JavaScript file in the [.path]_helpers_ directory of the UI bundle.
+The basename of the file without the file extension will be used as the function name.
+For example, if the helper is located at [.path]_helpers/join.js_, the name of the function will be `join`.
+
+You don't have to register the helper as Antora does that for you automatically.
+This automatic behavior replaces this Handlebars API call (which you *don't* have to do):
+
+[,js]
+----
+Handlebars.registerHelper('join', function () { ... })
+----
+
+The helper file should export exactly one default function.
+The name of the function in the file does not matter.
+
+Here's a template of a helper function you can use as a starting point:
+
+.new-helper.js
+[,js]
+----
+'use strict'
+
+module.exports = () => {
+  return true
+}
+----
+
+The return value of the function will be used in the logic in the template.
+If the helper is used in a conditional, it should return a boolean value (as in the previous example).
+If the helper is used to create output, it should return a string.
+If the helper is used in an iteration loop, it should return a collection.
+
+We can now use our conditional helper in a template as follows:
+
+[,hbs]
+----
+{{#if (new-helper)}}
+always true!
+{{/if}}
+----
+
+The round brackets are always required around a helper function call (except in cases when they're implied by Handlebars).
+
+The helper can access top-level variables in the template by accepting the template context as the final parameter.
+The top-level variables are stored in in the `data.root` property of this object.
+
+.new-helper.js
+[,js]
+----
+'use strict'
+
+module.exports = ({ data: { root } }) => {
+  return root.site.url === 'https://docs.example.org'
+}
+----
+
+Now our condition will change:
+
+[,hbs]
+----
+{{#if (new-helper)}}
+Only true if the site URL is https://docs.example.org.
+{{/if}}
+----
+
+A helper can also accept input parameters.
+These parameters get inserted in the parameter list before the context object.
+Handlebars only calls the function with the input parameters passed by the template, so it's important to use a fixed number of them.
+Otherwise, the position of the context object will jump around.
+
+.new-helper.js
+[,js]
+----
+'use strict'
+
+module.exports = (urlToCheck, { data: { root } }) => {
+  return root.site.url === urlToCheck
+}
+----
+
+Now we can accept the URL to check as an input parameter:
+
+[,hbs]
+----
+{{#if (new-helper 'https://docs.example.org')}}
+Only true if the site URL matches the one specified.
+{{/if}}
+----
+
+You can consult the https://handlebarsjs.com/guide/[Handlebars language guide] for more information about creating helpers.
+
+== Use the content catalog in a helper
+
+You can work directly with Antora's content catalog in a helper to work with other pages and resources.
+Let's define a helper that assembles a collection of pages that have a given tag defined in the `page-tags` attribute.
+The helper call will look something like this:
+
+[,hbs]
+----
+{{#each (pages-with-tag 'tutorial')}}
+----
+
+We'll start by defining the helper in a file named [.path]_pages-with-tag.js_.
+In this first iteration, we'll have it return a collection of raw virtual file objects from Antora's content catalog.
+Populate the file with the following contents:
+
+.pages-with-tag.js
+[,js]
+----
+'use strict'
+
+module.exports = (tag, { data }) => {
+  const { contentCatalog } = data.root
+  return contentCatalog.getPages(({ asciidoc, out }) => {
+    if (!out || !asciidoc) return
+    const pageTags = asciidoc.attributes['page-tags']
+    return pageTags && pageTags.split(', ').includes(tag)
+  })
+}
+----
+
+Here we're obtaining a reference to the content catalog, then filtering the pages by our criteria using the `getPage()` method.
+It's always good to check for the presence of the `out` property to ensure the page is publishable.
+
+Here's how this helper is used in the template:
+
+[,hbs]
+----
+{{#each (pages-with-tag 'tutorial')}}
+<a href="{{{relativize ./pub.url}}}">{{{./asciidoc.doctitle}}}</a>
+{{/each}}
+----
+
+You'll notice that the page objects in the collection differ from the typical page UI model.
+We can convert each page to a page UI model before returning the collection.
+Let's write the extension again, this time running each page through Antora's `buildPageUiModel` function:
+
+.pages-with-tag.js
+[,js]
+----
+'use strict'
+
+module.exports = (tag, { data }) => {
+  const { contentCatalog, site } = data.root
+  const pages = contentCatalog.getPages(({ asciidoc, out }) => {
+    if (!out || !asciidoc) return
+    const pageTags = asciidoc.attributes['page-tags']
+    return pageTags && pageTags.split(', ').includes(tag)
+  })
+  const { buildPageUiModel } = require.main.require('@antora/page-composer/build-ui-model')
+  return pages.map((page) => buildPageUiModel(site, page, contentCatalog))
+}
+----
+
+In this case, the usage of the item object is simpler and more familiar:
+
+[,hbs]
+----
+{{#each (pages-with-tag 'tutorial')}}
+<a href="{{{relativize ./url}}}">{{{./doctitle}}}</a>
+{{/each}}
+----
+
+Using this helper as a foundation, you can implement a variety of customizations and custom collections.
+
+CAUTION: Keep in mind that any helper you will use will be called for each page that uses the template.
+This can impact performance.
+If it's called on every page in your site, be sure that the operation is efficient to avoid slowing down site generation.
+
+As an alternative to using a helper, you may want to consider whether writing an Antora extension is a better option.
+
+== Find latest release notes
+
+Here's another example of a helper that finds the latest release notes in a component named `release-notes`.
+
+[,js]
+----
+include::example$latest-release-notes.js[]
+----
+
+Here's how might use it to create a list of release notes.
+
+[,hbs]
+----
+<ul>
+{{#each (latest-release-notes 10)}}
+  <li><a href="{{relativize ./url}}#{{./latestVersionAnchor}}">{{./title}} ({{./revdateWithoutYear}})</a></li>
+{{/each}}
+</ul>
+----

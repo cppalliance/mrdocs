@@ -611,6 +611,18 @@ jobs:
           cp index.html ../../build/website/index.html
           cp styles.css ../../build/website/styles.css
 
+      - name: Generate Antora UI
+        working-directory: docs/ui
+        run: |
+          # This playbook renders the documentation 
+          # content for the website. It includes
+          # master, develop, and tags.
+          GH_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+          export GH_TOKEN
+          npm ci
+          npx gulp lint
+          npx gulp
+
       - name: Generate Remote Documentation
         working-directory: docs
         run: |

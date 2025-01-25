@@ -1,0 +1,59 @@
+= Image Styles
+:navtitle: Images
+
+This page describes how images in the content are styled and how to customize these styles.
+It covers both block and inline images, which are styled differently.
+
+[#size]
+== Image size
+
+If a width is not specified on the image macro, the image will be sized to match its intrinsic width.
+However, if that width exceeds the available width (i.e., the width of the content area), the image's width will be capped to fit the available space (`max-width: 100%`).
+
+If the image is an SVG, and a width is not specified on the image macro or on the root tag in the SVG, the image will use the maximum width available (i.e., the width of the content area).
+
+The image's height is not used when sizing the image.
+However, the aspect ratio of the image is preserved.
+
+[#block-position]
+== Block image position
+
+By default, a block image is centered within the content area of the page.
+If the block has a caption, that caption will also be centered under the image, but the text will be left-aligned.
+The caption may exceed the width of the image.
+
+If you want the image and its caption to be aligned to the left side of the content, add the `text-left` role to the image block.
+
+[,asciidoc]
+----
+[.text-left]
+image::my-image.png[]
+----
+
+If you want the image and its caption to be aligned to the right side of the content, add the `text-right` role to the image block.
+
+[,asciidoc]
+----
+[.text-left]
+image::my-image.png[]
+----
+
+Applying the `text-right` role also flips the text alignment of the caption to right-aligned.
+
+== Float an image
+
+You can float either a block or inline image to the left or right using the `float` attribute.
+When an image is configured to float, the content that follows it will wrap around it (on the opposing side) until that content clears the bottom of the image.
+
+Typically, you use the `float` property with an inline image since you can control when the floating starts relative to the surrounding content.
+
+[,asciidoc]
+----
+image:subject.png[Subject,250,float=right]
+This paragraph can refer to the image on the right.
+----
+
+If you use `float` on a block image, it overrides its default positioning (it will be aligned in the direction of the float).
+
+Using float implies that the image occupies less than the width of the content area.
+If, on the other hand, it extends from margin to margin, than it ceases to function as a float.

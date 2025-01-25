@@ -1,0 +1,96 @@
+= Template Customization
+
+The default UI bundle can be customized using AsciiDoc attributes.
+xref:templates.adoc[] explains how to access such attributes.
+But what are the attributes that actually used by the templates.
+If you're going to use the default UI bundle for your project, you'll want to know.
+
+== page-role attribute
+
+The `page-role` attribute is typically defined per-page.
+This attribute is used to add one or more space-separated classes to the `<body>` tag of that page.
+
+A common use of the `page-role` attribute is to label the home page.
+
+[,asciidoc]
+----
+= Home
+:page-role: home
+
+This is the home page.
+----
+
+////
+Alternately, the role can be set on the document itself.
+
+[,asciidoc]
+----
+[.home]
+= Home
+
+This is the home page.
+----
+////
+
+The resulting HTML will include the following `<body>` start tag:
+
+[,html]
+----
+<body class="article -toc">
+----
+
+The stylesheet can now take advantage of this identity to assign styles to pages that have a given role.
+For example, the home page often requires a different appearance.
+Being able to target that page with CSS allows UI developers to apply that customization.
+
+Note that the UI templates could make use of the page role in other ways.
+The default UI currently only appends the value to the `class` attribute on the `<body>` tag.
+
+=== Hide the TOC sidebar
+
+The one reserved page role that the default UI recognizes is `-toc`.
+This role instructs the site script to remove (i.e., hide) the TOC sidebar.
+Here's how to set it.
+
+[,asciidoc]
+----
+= Page Title
+:page-role: -toc
+
+The TOC sidebar is not displayed even though this page has sections.
+
+== First Section
+
+== Second Section
+----
+
+The AsciiDoc `toc` attribute controls whether the TOC is rendered in the *body* of the article.
+Since the default UI provides an alternate TOC, you most likely don't want to activate the built-in TOC functionality in AsciiDoc when using Antora.
+
+== page-pagination attribute
+
+The `page-pagination` attribute is set in your xref:antora:playbook:asciidoc-attributes.adoc[playbook] in order to enable pagination, if your UI bundle supports it.
+The default UI bundle supports this and you'll get the links to previous and next pages at the bottom of every page, based your navigation.
+
+.Enable pagination
+[,yaml]
+----
+asciidoc:
+  attributes:
+    page-pagination: ''
+----
+
+Antora automatically calculates the appropriate URLs and inserts the correct links.
+
+Since you most likely want this enabled for every page in your site, there's no point setting this attribute per page.
+However, if you do want to be able to override it per page, such as to turn it off, then you need to soft set the value in the playbook.
+
+.Enable pagination, but make it overriddable
+[,yaml]
+----
+asciidoc:
+  attributes:
+    page-pagination: '@'
+----
+
+You can now turn page pagination off by unsetting the `page-pagination` attribute in the document header.
