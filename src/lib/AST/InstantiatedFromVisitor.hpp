@@ -24,16 +24,16 @@ namespace clang::mrdocs {
     and retrieve the original declarations from which they were instantiated.
  */
 class InstantiatedFromVisitor
-    : public DeclVisitor<InstantiatedFromVisitor, Decl*>
+    : public ConstDeclVisitor<InstantiatedFromVisitor, Decl const*>
 {
 public:
-    Decl*
-    VisitDecl(Decl* D)
+    Decl const*
+    VisitDecl(Decl const* D)
     {
         return D;
     }
 
-    FunctionDecl*
+    FunctionDecl const*
     VisitFunctionTemplateDecl(FunctionTemplateDecl const* D)
     {
         while(auto* MT = D->getInstantiatedFromMemberTemplate())
@@ -47,7 +47,7 @@ public:
         return D->getTemplatedDecl();
     }
 
-    CXXRecordDecl*
+    CXXRecordDecl const*
     VisitClassTemplateDecl(ClassTemplateDecl const* D)
     {
         while (auto* MT = D->getInstantiatedFromMemberTemplate())
@@ -61,7 +61,7 @@ public:
         return D->getTemplatedDecl();
     }
 
-    VarDecl*
+    VarDecl const*
     VisitVarTemplateDecl(VarTemplateDecl const* D)
     {
         while(auto* MT = D->getInstantiatedFromMemberTemplate())
@@ -75,7 +75,7 @@ public:
         return D->getTemplatedDecl();
     }
 
-    TypedefNameDecl*
+    TypedefNameDecl const*
     VisitTypeAliasTemplateDecl(TypeAliasTemplateDecl const* D)
     {
         if(auto* MT = D->getInstantiatedFromMemberTemplate())
@@ -89,8 +89,8 @@ public:
         return VisitTypedefNameDecl(D->getTemplatedDecl());
     }
 
-    FunctionDecl*
-    VisitFunctionDecl(FunctionDecl* D)
+    FunctionDecl const*
+    VisitFunctionDecl(FunctionDecl const* D)
     {
         if (FunctionDecl const* DD = nullptr;
             D->isDefined(DD, false))
@@ -117,8 +117,8 @@ public:
         return D;
     }
 
-    CXXRecordDecl*
-    VisitClassTemplatePartialSpecializationDecl(ClassTemplatePartialSpecializationDecl* D)
+    CXXRecordDecl const*
+    VisitClassTemplatePartialSpecializationDecl(ClassTemplatePartialSpecializationDecl const* D)
     {
         while (auto* MT = D->getInstantiatedFromMember())
         {
@@ -131,8 +131,8 @@ public:
         return VisitClassTemplateSpecializationDecl(D);
     }
 
-    CXXRecordDecl*
-    VisitClassTemplateSpecializationDecl(ClassTemplateSpecializationDecl* D)
+    CXXRecordDecl const*
+    VisitClassTemplateSpecializationDecl(ClassTemplateSpecializationDecl const* D)
     {
         if (!D->isExplicitSpecialization())
         {
@@ -152,8 +152,8 @@ public:
         return VisitCXXRecordDecl(D);
     }
 
-    CXXRecordDecl*
-    VisitCXXRecordDecl(CXXRecordDecl* D)
+    CXXRecordDecl const*
+    VisitCXXRecordDecl(CXXRecordDecl const* D)
     {
         while (MemberSpecializationInfo const* MSI =
             D->getMemberSpecializationInfo())
@@ -169,8 +169,8 @@ public:
         return D;
     }
 
-    VarDecl*
-    VisitVarTemplatePartialSpecializationDecl(VarTemplatePartialSpecializationDecl* D)
+    VarDecl const*
+    VisitVarTemplatePartialSpecializationDecl(VarTemplatePartialSpecializationDecl const* D)
     {
         while(auto* MT = D->getInstantiatedFromMember())
         {
@@ -183,8 +183,8 @@ public:
         return VisitVarTemplateSpecializationDecl(D);
     }
 
-    VarDecl*
-    VisitVarTemplateSpecializationDecl(VarTemplateSpecializationDecl* D)
+    VarDecl const*
+    VisitVarTemplateSpecializationDecl(VarTemplateSpecializationDecl const* D)
     {
         if(! D->isExplicitSpecialization())
         {
@@ -205,8 +205,8 @@ public:
         return VisitVarDecl(D);
     }
 
-    VarDecl*
-    VisitVarDecl(VarDecl* D)
+    VarDecl const*
+    VisitVarDecl(VarDecl const* D)
     {
         while(MemberSpecializationInfo* MSI =
             D->getMemberSpecializationInfo())
@@ -220,8 +220,8 @@ public:
         return D;
     }
 
-    EnumDecl*
-    VisitEnumDecl(EnumDecl* D)
+    EnumDecl const*
+    VisitEnumDecl(EnumDecl const* D)
     {
         while(MemberSpecializationInfo* MSI =
             D->getMemberSpecializationInfo())
@@ -235,16 +235,18 @@ public:
         return D;
     }
 
-    TypedefNameDecl*
-    VisitTypedefNameDecl(TypedefNameDecl* D)
+    TypedefNameDecl const*
+    VisitTypedefNameDecl(TypedefNameDecl const* D)
     {
-        DeclContext* Context = D->getNonTransparentDeclContext();
+        DeclContext const* Context = D->getNonTransparentDeclContext();
         if (Context->isFileContext())
         {
             return D;
         }
-        auto const* ContextPattern =
-            cast<DeclContext>(Visit(cast<Decl>(Context)));
+        Decl const* ContextDecl = Decl::castFromDeclContext(Context);
+        Decl const* ContextInstatiationContextDecl = Visit(ContextDecl);
+        DeclContext const* ContextPattern =
+            Decl::castToDeclContext(ContextInstatiationContextDecl);
         if (Context == ContextPattern)
         {
             return D;
@@ -252,7 +254,7 @@ public:
         for (auto lookup = ContextPattern->lookup(D->getDeclName());
              NamedDecl * ND : lookup)
         {
-            if (auto* TND = dyn_cast<TypedefNameDecl>(ND))
+            if (auto const* TND = dyn_cast<TypedefNameDecl>(ND))
             {
                 return TND;
             }
