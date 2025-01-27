@@ -75,7 +75,7 @@ build()
     // traverse the translation unit, only extracting
     // declarations which satisfy all filter conditions.
     // dependencies will be tracked, but not extracted
-    auto* TU = context_.getTranslationUnitDecl();
+    TranslationUnitDecl const* TU = context_.getTranslationUnitDecl();
     traverse(TU);
     MRDOCS_ASSERT(find(SymbolID::global));
 }
@@ -85,7 +85,7 @@ template <
     std::derived_from<Decl> DeclTy>
 Info*
 ASTVisitor::
-traverse(DeclTy* D)
+traverse(DeclTy const* D)
 {
     MRDOCS_ASSERT(D);
     MRDOCS_CHECK_OR(!D->isInvalidDecl(), nullptr);
@@ -142,7 +142,7 @@ traverse(DeclTy* D)
 
 Info*
 ASTVisitor::
-traverse(FunctionTemplateDecl* D)
+traverse(FunctionTemplateDecl const* D)
 {
     // Route the traversal to GuideInfo or FunctionInfo
     if (FunctionDecl* FD = D->getTemplatedDecl();
@@ -155,19 +155,19 @@ traverse(FunctionTemplateDecl* D)
 
 Info*
 ASTVisitor::
-traverse(UsingDirectiveDecl* D)
+traverse(UsingDirectiveDecl const* D)
 {
     // Find the parent namespace
     ScopeExitRestore s1(mode_, TraversalMode::Dependency);
-    Decl* P = getParent(D);
+    Decl const* P = getParent(D);
     MRDOCS_SYMBOL_TRACE(P, context_);
     Info* PI = findOrTraverse(P);
     MRDOCS_CHECK_OR(PI, nullptr);
-    auto PNI = dynamic_cast<NamespaceInfo*>(PI);
+    auto* const PNI = dynamic_cast<NamespaceInfo*>(PI);
     MRDOCS_CHECK_OR(PNI, nullptr);
 
     // Find the nominated namespace
-    Decl* ND = D->getNominatedNamespace();
+    Decl const* ND = D->getNominatedNamespace();
     MRDOCS_SYMBOL_TRACE(ND, context_);
     ScopeExitRestore s2(mode_, TraversalMode::Dependency);
     Info* NDI = findOrTraverse(ND);
@@ -182,7 +182,7 @@ traverse(UsingDirectiveDecl* D)
 
 Info*
 ASTVisitor::
-traverse(IndirectFieldDecl* D)
+traverse(IndirectFieldDecl const* D)
 {
     return traverse(D->getAnonField());
 }
@@ -193,7 +193,7 @@ template <
 requires (!std::derived_from<DeclTy, RedeclarableTemplateDecl>)
 void
 ASTVisitor::
-traverseMembers(InfoTy& I, DeclTy* DC)
+traverseMembers(InfoTy& I, DeclTy const* DC)
 {
     // When a declaration context is a function, we should
     // not traverse its members as function arguments are
@@ -242,7 +242,7 @@ template <
     std::derived_from<RedeclarableTemplateDecl> DeclTy>
 void
 ASTVisitor::
-traverseMembers(InfoTy& I, DeclTy* D)
+traverseMembers(InfoTy& I, DeclTy const* D)
 {
     traverseMembers(I, D->getTemplatedDecl());
 }
@@ -253,10 +253,10 @@ template <
 requires (!std::derived_from<DeclTy, RedeclarableTemplateDecl>)
 void
 ASTVisitor::
-traverseParents(InfoTy& I, DeclTy* DC)
+traverseParents(InfoTy& I, DeclTy const* DC)
 {
     MRDOCS_SYMBOL_TRACE(DC, context_);
-    if (Decl* PD = getParent(DC))
+    if (Decl const* PD = getParent(DC))
     {
         MRDOCS_SYMBOL_TRACE(PD, context_);
 
@@ -288,7 +288,7 @@ template <
     std::derived_from<RedeclarableTemplateDecl> DeclTy>
 void
 ASTVisitor::
-traverseParents(InfoTy& I, DeclTy* D)
+traverseParents(InfoTy& I, DeclTy const* D)
 {
     traverseParents(I, D->getTemplatedDecl());
 }
@@ -525,7 +525,7 @@ isDefinition(DeclTy* D)
 template <std::derived_from<Decl> DeclTy>
 void
 ASTVisitor::
-populate(Info& I, bool const isNew, DeclTy* D)
+populate(Info& I, bool const isNew, DeclTy const* D)
 {
     // Populate the documentation
     bool const isDocumented = generateJavadoc(I.javadoc, D);
@@ -595,7 +595,7 @@ void
 ASTVisitor::
 populate(
     NamespaceInfo& I,
-    NamespaceDecl* D)
+    NamespaceDecl const* D)
 {
     I.IsAnonymous = D->isAnonymousNamespace();
     if (!I.IsAnonymous)
@@ -609,7 +609,7 @@ void
 ASTVisitor::
 populate(
     NamespaceInfo& I,
-    TranslationUnitDecl*)
+    TranslationUnitDecl const*)
 {
     I.id = SymbolID::global;
     I.IsAnonymous = false;
@@ -620,7 +620,7 @@ void
 ASTVisitor::
 populate(
     RecordInfo& I,
-    CXXRecordDecl* D)
+    CXXRecordDecl const* D)
 {
     if (D->getTypedefNameForAnonDecl())
     {
@@ -668,7 +668,7 @@ populate(
 
 void
 ASTVisitor::
-populate(RecordInfo& I, ClassTemplateDecl* D)
+populate(RecordInfo& I, ClassTemplateDecl const* D)
 {
     populate(I.Template, D->getTemplatedDecl(), D);
     populate(I, D->getTemplatedDecl());
@@ -676,7 +676,7 @@ populate(RecordInfo& I, ClassTemplateDecl* D)
 
 void
 ASTVisitor::
-populate(RecordInfo& I, ClassTemplateSpecializationDecl* D)
+populate(RecordInfo& I, ClassTemplateSpecializationDecl const* D)
 {
     populate(I.Template, D, D->getSpecializedTemplate());
     populate(I, cast<CXXRecordDecl>(D));
@@ -686,7 +686,7 @@ void
 ASTVisitor::
 populate(
     FunctionInfo& I,
-    FunctionDecl* D)
+    FunctionDecl const* D)
 {
     MRDOCS_SYMBOL_TRACE(D, context_);
 
@@ -851,18 +851,18 @@ populate(
 
 void
 ASTVisitor::
-populate(FunctionInfo& I, FunctionTemplateDecl* D)
+populate(FunctionInfo& I, FunctionTemplateDecl const* D)
 {
-    FunctionDecl* TD = D->getTemplatedDecl();
+    FunctionDecl const* TD = D->getTemplatedDecl();
     populate(I.Template, TD, D);
     populate(I, TD);
 }
 
 void
 ASTVisitor::
-populate(FunctionInfo& I, CXXMethodDecl* D)
+populate(FunctionInfo& I, CXXMethodDecl const* D)
 {
-    FunctionDecl* FD = D;
+    FunctionDecl const* FD = D;
     populate(I, FD);
     I.IsVirtual |= D->isVirtual();
     I.IsVirtualAsWritten |= D->isVirtualAsWritten();
@@ -875,26 +875,26 @@ populate(FunctionInfo& I, CXXMethodDecl* D)
 
 void
 ASTVisitor::
-populate(FunctionInfo& I, CXXConstructorDecl* D)
+populate(FunctionInfo& I, CXXConstructorDecl const* D)
 {
-    CXXMethodDecl* FD = D;
+    CXXMethodDecl const* FD = D;
     populate(I, FD);
     populate(I.Explicit, D->getExplicitSpecifier());
 }
 
 void
 ASTVisitor::
-populate(FunctionInfo& I, CXXDestructorDecl* D)
+populate(FunctionInfo& I, CXXDestructorDecl const* D)
 {
-    CXXMethodDecl* FD = D;
+    CXXMethodDecl const* FD = D;
     populate(I, FD);
 }
 
 void
 ASTVisitor::
-populate(FunctionInfo& I, CXXConversionDecl* D)
+populate(FunctionInfo& I, CXXConversionDecl const* D)
 {
-    CXXMethodDecl* FD = D;
+    CXXMethodDecl const* FD = D;
     populate(I, FD);
     populate(I.Explicit, D->getExplicitSpecifier());
 }
@@ -904,7 +904,7 @@ void
 ASTVisitor::
 populate(
     EnumInfo& I,
-    EnumDecl* D)
+    EnumDecl const* D)
 {
     I.Scoped = D->isScoped();
     if (D->isFixed())
@@ -917,7 +917,7 @@ void
 ASTVisitor::
 populate(
     EnumConstantInfo& I,
-    EnumConstantDecl* D)
+    EnumConstantDecl const* D)
 {
     I.Name = extractName(D);
     populate(
@@ -928,7 +928,7 @@ populate(
 
 void
 ASTVisitor::
-populate(TypedefInfo& I, TypedefNameDecl* D)
+populate(TypedefInfo& I, TypedefNameDecl const* D)
 {
     QualType const QT = D->getUnderlyingType();
     I.Type = toTypeInfo(QT);
@@ -936,14 +936,14 @@ populate(TypedefInfo& I, TypedefNameDecl* D)
 
 void
 ASTVisitor::
-populate(TypedefInfo& I, TypedefDecl* D)
+populate(TypedefInfo& I, TypedefDecl const* D)
 {
     populate(I, cast<TypedefNameDecl>(D));
 }
 
 void
 ASTVisitor::
-populate(TypedefInfo& I, TypeAliasDecl* D)
+populate(TypedefInfo& I, TypeAliasDecl const* D)
 {
     I.IsUsing = isa<TypeAliasDecl>(D);
     populate(I, cast<TypedefNameDecl>(D));
@@ -951,7 +951,7 @@ populate(TypedefInfo& I, TypeAliasDecl* D)
 
 void
 ASTVisitor::
-populate(TypedefInfo& I, TypeAliasTemplateDecl* D)
+populate(TypedefInfo& I, TypeAliasTemplateDecl const* D)
 {
     populate(I.Template, D->getTemplatedDecl(), D);
     if (auto* TD = D->getTemplatedDecl();
@@ -969,7 +969,7 @@ void
 ASTVisitor::
 populate(
     VariableInfo& I,
-    VarDecl* D)
+    VarDecl const* D)
 {
     // KRYSTIAN FIXME: we need to properly merge storage class
     if (StorageClass const SC = D->getStorageClass())
@@ -1005,9 +1005,25 @@ populate(
 
 void
 ASTVisitor::
+populate(VariableInfo& I, VarTemplateDecl const* D)
+{
+    populate(I.Template, D->getTemplatedDecl(), D);
+    populate(I, D->getTemplatedDecl());
+}
+
+void
+ASTVisitor::
+populate(VariableInfo& I, VarTemplateSpecializationDecl const* D)
+{
+    populate(I.Template, D, D->getSpecializedTemplate());
+    populate(I, cast<VarDecl>(D));
+}
+
+void
+ASTVisitor::
 populate(
     FieldInfo& I,
-    FieldDecl* D)
+    FieldDecl const* D)
 {
     I.Type = toTypeInfo(D->getType());
     I.IsVariant = D->getParent()->isUnion();
@@ -1029,25 +1045,9 @@ populate(
 
 void
 ASTVisitor::
-populate(VariableInfo& I, VarTemplateDecl* D)
-{
-    populate(I.Template, D->getTemplatedDecl(), D);
-    populate(I, D->getTemplatedDecl());
-}
-
-void
-ASTVisitor::
-populate(VariableInfo& I, VarTemplateSpecializationDecl* D)
-{
-    populate(I.Template, D, D->getSpecializedTemplate());
-    populate(I, cast<VarDecl>(D));
-}
-
-void
-ASTVisitor::
 populate(
     SpecializationInfo& I,
-    ClassTemplateSpecializationDecl* D)
+    ClassTemplateSpecializationDecl const* D)
 {
     CXXRecordDecl const* PD = getInstantiatedFrom(D);
     populate(I.Args, D->getTemplateArgs().asArray());
@@ -1058,7 +1058,7 @@ void
 ASTVisitor::
 populate(
     FriendInfo& I,
-    FriendDecl* D)
+    FriendDecl const* D)
 {
     // A NamedDecl nominated by a FriendDecl
     // will be one of the following:
@@ -1092,7 +1092,7 @@ void
 ASTVisitor::
 populate(
     GuideInfo& I,
-    CXXDeductionGuideDecl* D)
+    CXXDeductionGuideDecl const* D)
 {
     I.Deduced = toTypeInfo(D->getReturnType());
     for (const ParmVarDecl* P : D->parameters())
@@ -1110,7 +1110,7 @@ void
 ASTVisitor::
 populate(
     GuideInfo& I,
-    FunctionTemplateDecl* D)
+    FunctionTemplateDecl const* D)
 {
     populate(I.Template, D->getTemplatedDecl(), D);
     populate(I, cast<CXXDeductionGuideDecl>(D->getTemplatedDecl()));
@@ -1120,7 +1120,7 @@ void
 ASTVisitor::
 populate(
     NamespaceAliasInfo& I,
-    NamespaceAliasDecl* D)
+    NamespaceAliasDecl const* D)
 {
     NamedDecl const* Aliased = D->getAliasedNamespace();
     NestedNameSpecifier const* NNS = D->getQualifier();
@@ -1132,7 +1132,7 @@ void
 ASTVisitor::
 populate(
     UsingInfo& I,
-    UsingDecl* D)
+    UsingDecl const* D)
 {
     I.Class = UsingClass::Normal;
     I.Qualifier = toNameInfo(D->getQualifier());
@@ -1151,7 +1151,7 @@ void
 ASTVisitor::
 populate(
     ConceptInfo& I,
-    ConceptDecl* D)
+    ConceptDecl const* D)
 {
     populate(I.Template, D, D);
     populate(I.Constraint, D->getConstraintExpr());
@@ -1165,31 +1165,19 @@ template <
     std::derived_from<TemplateDecl> TemplateDeclTy>
 void
 ASTVisitor::
-populate(TemplateInfo& Template, DeclTy*, TemplateDeclTy* TD)
+populate(TemplateInfo& Template, DeclTy const*, TemplateDeclTy const* TD)
 {
     MRDOCS_ASSERT(TD);
     TemplateParameterList const* TPL = TD->getTemplateParameters();
     populate(Template, TPL);
 }
 
-template<std::derived_from<CXXRecordDecl> CXXRecordDeclTy>
 void
 ASTVisitor::
 populate(
     TemplateInfo& Template,
-    CXXRecordDeclTy*,
-    ClassTemplateDecl* CTD)
-{
-    MRDOCS_ASSERT(CTD);
-    populate(Template, CTD->getTemplateParameters());
-}
-
-void
-ASTVisitor::
-populate(
-    TemplateInfo& Template,
-    ClassTemplateSpecializationDecl* CTSD,
-    ClassTemplateDecl* CTD)
+    ClassTemplateSpecializationDecl const* CTSD,
+    ClassTemplateDecl const* CTD)
 {
     MRDOCS_ASSERT(CTD);
 
@@ -1197,9 +1185,12 @@ populate(
     generateID(getInstantiatedFrom(CTD), Template.Primary);
 
     // Extract the template arguments of the specialization
-    if (const auto* argsAsWritten = CTSD->getTemplateArgsAsWritten()) {
+    if (const auto* argsAsWritten = CTSD->getTemplateArgsAsWritten())
+    {
         populate(Template.Args, argsAsWritten);
-    } else {
+    }
+    else
+    {
         // Implicit specializations do not have template arguments as written
         populate(Template.Args, CTSD->getTemplateArgs().asArray());
     }
@@ -1238,7 +1229,6 @@ populate(
         TemplateParameterList* params = CTPSD->getTemplateParameters();
         populate(Template, params);
     }
-
 }
 
 template<std::derived_from<VarDecl> VarDeclTy>
@@ -1246,8 +1236,8 @@ void
 ASTVisitor::
 populate(
     TemplateInfo& Template,
-    VarDeclTy* D,
-    VarTemplateDecl* VTD)
+    VarDeclTy const* D,
+    VarTemplateDecl const* VTD)
 {
     MRDOCS_ASSERT(VTD);
 
@@ -1258,8 +1248,10 @@ populate(
         // extract the template arguments of the specialization
         populate(Template.Args, VTSD->getTemplateArgsAsWritten());
         // extract the template parameters if this is a partial specialization
-        if(auto* VTPSD = dyn_cast<VarTemplatePartialSpecializationDecl>(D))
+        if (auto* VTPSD = dyn_cast<VarTemplatePartialSpecializationDecl>(D))
+        {
             populate(Template, VTPSD->getTemplateParameters());
+        }
     }
     else
     {
@@ -1268,12 +1260,11 @@ populate(
     }
 }
 
-
 void
 ASTVisitor::
 populate(
     NoexceptInfo& I,
-    const FunctionProtoType* FPT)
+    FunctionProtoType const* FPT)
 {
     MRDOCS_ASSERT(FPT);
     I.Implicit = ! FPT->hasNoexceptExceptionSpec();
@@ -1545,7 +1536,7 @@ populate(
 template <std::derived_from<Info> InfoTy>
 void
 ASTVisitor::
-populateAttributes(InfoTy& I, const Decl* D)
+populateAttributes(InfoTy& I, Decl const* D)
 {
     if constexpr (requires { I.Attributes; })
     {
@@ -2880,7 +2871,7 @@ find(SymbolID const& id)
 
 Info*
 ASTVisitor::
-find(Decl* D)
+find(Decl const* D)
 {
     auto ID = generateID(D);
     MRDOCS_CHECK_OR(ID, nullptr);
@@ -3058,7 +3049,7 @@ Expected<
             InfoTypeFor_t<DeclType>,
             InfoTy>>>
 ASTVisitor::
-upsert(DeclType* D)
+upsert(DeclType const* D)
 {
     ExtractionMode const m = checkFilters(D);
     if (m == ExtractionMode::Dependency)

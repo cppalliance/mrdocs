@@ -313,7 +313,7 @@ private:
         class InfoTy = void,
         std::derived_from<Decl> DeclTy>
     Info*
-    traverse(DeclTy* D);
+    traverse(DeclTy const* D);
 
     /*  Traverse a function template
 
@@ -323,7 +323,7 @@ private:
 
      */
     Info*
-    traverse(FunctionTemplateDecl* D);
+    traverse(FunctionTemplateDecl const* D);
 
     /*  Traverse a using directive
 
@@ -331,10 +331,10 @@ private:
         such as `using namespace std;`.
 
         If the parent declaration is a Namespace, we
-        update its `UsingDirectives` field.
+        update its `UsingDirectives` const field.
     */
     Info*
-    traverse(UsingDirectiveDecl* D);
+    traverse(UsingDirectiveDecl const* D);
 
     /*  Traverse a member of an anonymous union.
 
@@ -342,7 +342,7 @@ private:
         as a regular `FieldDecl`.
      */
     Info*
-    traverse(IndirectFieldDecl*);
+    traverse(IndirectFieldDecl const* D);
 
     // =================================================
     // AST Traversal Helpers
@@ -361,13 +361,13 @@ private:
         std::derived_from<Decl> DeclTy>
     requires (!std::derived_from<DeclTy, RedeclarableTemplateDecl>)
     void
-    traverseMembers(InfoTy& I, DeclTy* DC);
+    traverseMembers(InfoTy& I, DeclTy const* DC);
 
     template <
         std::derived_from<Info> InfoTy,
         std::derived_from<RedeclarableTemplateDecl> DeclTy>
     void
-    traverseMembers(InfoTy& I, DeclTy* DC);
+    traverseMembers(InfoTy& I, DeclTy const* DC);
 
     /*  Traverse the parents of a declaration
 
@@ -388,13 +388,13 @@ private:
         std::derived_from<Decl> DeclTy>
     requires (!std::derived_from<DeclTy, RedeclarableTemplateDecl>)
     void
-    traverseParents(InfoTy& I, DeclTy* DC);
+    traverseParents(InfoTy& I, DeclTy const* DC);
 
     template <
         std::derived_from<Info> InfoTy,
         std::derived_from<RedeclarableTemplateDecl> DeclTy>
     void
-    traverseParents(InfoTy& I, DeclTy* DC);
+    traverseParents(InfoTy& I, DeclTy const* DC);
 
     /*  Generates a Unified Symbol Resolution value for a declaration.
 
@@ -406,7 +406,7 @@ private:
         @returns true if USR generation succeeded.
     */
     Expected<SmallString<128>>
-    generateUSR(const Decl* D) const;
+    generateUSR(Decl const* D) const;
 
     /*  Generate the symbol ID for a declaration.
 
@@ -426,7 +426,7 @@ private:
         @return true if the symbol ID could be extracted.
      */
     bool
-    generateID(const Decl* D, SymbolID& id) const;
+    generateID(Decl const* D, SymbolID& id) const;
 
     /*  Extracts the symbol ID for a declaration.
 
@@ -439,102 +439,102 @@ private:
         @return the symbol ID for the declaration.
      */
     SymbolID
-    generateID(const Decl* D) const;
+    generateID(Decl const* D) const;
 
     // =================================================
     // Populate functions
     // =================================================
     template <std::derived_from<Decl> DeclTy>
     void
-    populate(Info& I, bool isNew, DeclTy* D);
+    populate(Info& I, bool isNew, DeclTy const* D);
 
     void
     populate(SourceInfo& I, clang::SourceLocation loc, bool definition, bool documented);
 
     void
-    populate(NamespaceInfo& I, NamespaceDecl* D);
+    populate(NamespaceInfo& I, NamespaceDecl const* D);
 
     static
     void
-    populate(NamespaceInfo& I, TranslationUnitDecl* D);
+    populate(NamespaceInfo& I, TranslationUnitDecl const* D);
 
     void
-    populate(RecordInfo& I, CXXRecordDecl* D);
+    populate(RecordInfo& I, CXXRecordDecl const* D);
 
     void
-    populate(RecordInfo& I, ClassTemplateDecl* D);
+    populate(RecordInfo& I, ClassTemplateDecl const* D);
 
     void
-    populate(RecordInfo& I, ClassTemplateSpecializationDecl* D);
+    populate(RecordInfo& I, ClassTemplateSpecializationDecl const* D);
 
     void
-    populate(FunctionInfo& I, FunctionDecl* D);
+    populate(FunctionInfo& I, FunctionDecl const* D);
 
     void
-    populate(FunctionInfo& I, FunctionTemplateDecl* D);
+    populate(FunctionInfo& I, FunctionTemplateDecl const* D);
 
     void
-    populate(FunctionInfo& I, CXXMethodDecl* D);
+    populate(FunctionInfo& I, CXXMethodDecl const* D);
 
     void
-    populate(FunctionInfo& I, CXXConstructorDecl* D);
+    populate(FunctionInfo& I, CXXConstructorDecl const* D);
 
     void
-    populate(FunctionInfo& I, CXXDestructorDecl* D);
+    populate(FunctionInfo& I, CXXDestructorDecl const* D);
 
     void
-    populate(FunctionInfo& I, CXXConversionDecl* D);
+    populate(FunctionInfo& I, CXXConversionDecl const* D);
 
     void
-    populate(EnumInfo& I, EnumDecl* D);
+    populate(EnumInfo& I, EnumDecl const* D);
 
     void
-    populate(EnumConstantInfo& I, EnumConstantDecl* D);
+    populate(EnumConstantInfo& I, EnumConstantDecl const* D);
 
     void
-    populate(TypedefInfo& I, TypedefNameDecl* D);
+    populate(TypedefInfo& I, TypedefNameDecl const* D);
 
     void
-    populate(TypedefInfo& I, TypedefDecl* D);
+    populate(TypedefInfo& I, TypedefDecl const* D);
 
     void
-    populate(TypedefInfo& I, TypeAliasDecl* D);
+    populate(TypedefInfo& I, TypeAliasDecl const* D);
 
     void
-    populate(TypedefInfo& I, TypeAliasTemplateDecl* D);
+    populate(TypedefInfo& I, TypeAliasTemplateDecl const* D);
 
     void
-    populate(VariableInfo& I, VarDecl* D);
+    populate(VariableInfo& I, VarDecl const* D);
 
     void
-    populate(VariableInfo& I, VarTemplateDecl* D);
+    populate(VariableInfo& I, VarTemplateDecl const* D);
 
     void
-    populate(VariableInfo& I, VarTemplateSpecializationDecl* D);
+    populate(VariableInfo& I, VarTemplateSpecializationDecl const* D);
 
     void
-    populate(FieldInfo& I, FieldDecl* D);
+    populate(FieldInfo& I, FieldDecl const* D);
 
     void
-    populate(SpecializationInfo& I, ClassTemplateSpecializationDecl* D);
+    populate(SpecializationInfo& I, ClassTemplateSpecializationDecl const* D);
 
     void
-    populate(FriendInfo& I, FriendDecl* D);
+    populate(FriendInfo& I, FriendDecl const* D);
 
     void
-    populate(GuideInfo& I, CXXDeductionGuideDecl* D);
+    populate(GuideInfo& I, CXXDeductionGuideDecl const* D);
 
     void
-    populate(GuideInfo& I, FunctionTemplateDecl* D);
+    populate(GuideInfo& I, FunctionTemplateDecl const* D);
 
     void
-    populate(NamespaceAliasInfo& I, NamespaceAliasDecl* D);
+    populate(NamespaceAliasInfo& I, NamespaceAliasDecl const* D);
 
     void
-    populate(UsingInfo& I, UsingDecl* D);
+    populate(UsingInfo& I, UsingDecl const* D);
 
     void
-    populate(ConceptInfo& I, ConceptDecl* D);
+    populate(ConceptInfo& I, ConceptDecl const* D);
 
     /*  Default function to populate the template information
 
@@ -546,19 +546,10 @@ private:
         std::derived_from<Decl> DeclTy,
         std::derived_from<TemplateDecl> TemplateDeclTy>
     void
-    populate(TemplateInfo& Template, DeclTy* D, TemplateDeclTy* TD);
-
-    /*  Populate the template information for a class template
-
-        The function will populate the template parameters
-        depending on whether the record is a specialization.
-     */
-    template<std::derived_from<CXXRecordDecl> CXXRecordDeclTy>
-    void
-    populate(TemplateInfo& Template, CXXRecordDeclTy*, ClassTemplateDecl* CTD);
+    populate(TemplateInfo& Template, DeclTy const* D, TemplateDeclTy const* TD);
 
     void
-    populate(TemplateInfo& Template, ClassTemplateSpecializationDecl* D, ClassTemplateDecl* CTD);
+    populate(TemplateInfo& Template, ClassTemplateSpecializationDecl const* D, ClassTemplateDecl const* CTD);
 
     /*  Populate the template information for a variable template
 
@@ -567,13 +558,13 @@ private:
     */
     template<std::derived_from<VarDecl> VarDeclTy>
     void
-    populate(TemplateInfo& Template, VarDeclTy* D, VarTemplateDecl* VTD);
+    populate(TemplateInfo& Template, VarDeclTy const* D, VarTemplateDecl const* VTD);
 
     template<
         std::derived_from<Decl> DeclTy,
         std::derived_from<TemplateDecl> TemplateDeclTy>
     void
-    populate(std::optional<TemplateInfo>& Template, DeclTy* D, TemplateDeclTy* VTD)
+    populate(std::optional<TemplateInfo>& Template, DeclTy const* D, TemplateDeclTy const* VTD)
     {
         if (!Template)
         {
@@ -584,27 +575,28 @@ private:
     }
 
     void
-    populate(NoexceptInfo& I, const FunctionProtoType* FPT);
+    populate(NoexceptInfo& I, FunctionProtoType const* FPT);
 
     void
-    populate(ExplicitInfo& I, const ExplicitSpecifier& ES);
+    populate(ExplicitInfo& I, ExplicitSpecifier const& ES);
 
     void
-    populate(ExprInfo& I, const Expr* E);
-
-    template <class T>
-    void
-    populate(ConstantExprInfo<T>& I, const Expr* E);
+    populate(ExprInfo& I, Expr const* E);
 
     template <class T>
     void
-    populate(ConstantExprInfo<T>& I, const Expr* E, const llvm::APInt& V);
+    populate(ConstantExprInfo<T>& I, Expr const* E);
+
+    template <class T>
+    void
+    populate(ConstantExprInfo<T>& I, Expr const* E, llvm::APInt const& V);
 
     void
-    populate(PolymorphicValue<TParam>& I, const NamedDecl* N);
+    populate(PolymorphicValue<TParam>& I, NamedDecl const* N);
 
     void
-    populate(std::optional<TemplateInfo>& TI, const TemplateParameterList* TPL) {
+    populate(std::optional<TemplateInfo>& TI, TemplateParameterList const* TPL)
+    {
         if (!TI)
         {
             TI.emplace();
@@ -613,7 +605,7 @@ private:
     }
 
     void
-    populate(TemplateInfo& TI, const TemplateParameterList* TPL);
+    populate(TemplateInfo& TI, TemplateParameterList const* TPL);
 
     template <range_of<TemplateArgument> Range>
     void
@@ -644,7 +636,7 @@ private:
     void
     populate(
         std::vector<PolymorphicValue<TArg>>& result,
-        const ASTTemplateArgumentListInfo* args);
+        ASTTemplateArgumentListInfo const* args);
 
     template <std::derived_from<Info> InfoTy>
     static
@@ -690,7 +682,7 @@ private:
     toTypeInfo(QualType qt, TraversalMode mode);
 
     PolymorphicValue<TypeInfo>
-    toTypeInfo(QualType qt)
+    toTypeInfo(QualType const qt)
     {
         return toTypeInfo(qt, TraversalMode::Dependency);
     }
@@ -704,29 +696,29 @@ private:
     toNameInfo(
         DeclarationName Name,
         std::optional<TArgRange> TArgs = std::nullopt,
-        const NestedNameSpecifier* NNS = nullptr);
+        NestedNameSpecifier const* NNS = nullptr);
 
     template <class TArgRange = ArrayRef<TemplateArgument>>
     PolymorphicValue<NameInfo>
     toNameInfo(
-        const Decl* D,
+        Decl const* D,
         std::optional<TArgRange> TArgs = std::nullopt,
-        const NestedNameSpecifier* NNS = nullptr);
+        NestedNameSpecifier const* NNS = nullptr);
 
     PolymorphicValue<TArg>
-    toTArg(const TemplateArgument& A);
+    toTArg(TemplateArgument const& A);
 
     // Pretty-print an expression
     std::string
-    toString(const Expr* E);
+    toString(Expr const* E);
 
     // Pretty-print a type
     std::string
-    toString(const Type* T);
+    toString(Type const* T);
 
     template <class Integer>
     Integer
-    toInteger(const llvm::APInt& V);
+    toInteger(llvm::APInt const& V);
 
     /*  Get the original source code in a range
 
@@ -996,7 +988,7 @@ private:
         to get the Info object for the declaration.
      */
     Info*
-    find(Decl* D);
+    find(Decl const* D);
 
     /*  Find or traverse a declaration
 
@@ -1027,7 +1019,7 @@ private:
         @return a pointer to the Info object.
      */
     Info*
-    findOrTraverse(Decl* D)
+    findOrTraverse(Decl const* D)
     {
         MRDOCS_CHECK_OR(D, nullptr);
         if (auto* I = find(D))
@@ -1145,7 +1137,7 @@ private:
                 std::same_as<InfoTy, void>,
                 InfoTypeFor_t<DeclType>,
                 InfoTy>>>
-    upsert(DeclType* D);
+    upsert(DeclType const* D);
 };
 
 } // clang::mrdocs

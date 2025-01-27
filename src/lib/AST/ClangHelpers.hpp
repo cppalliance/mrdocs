@@ -706,15 +706,14 @@ TypeLocToKind()
     user-written `Decl` will be the `std::vector` template.
 */
 template <class DeclTy>
-DeclTy*
-getInstantiatedFrom(DeclTy* D)
+DeclTy const*
+getInstantiatedFrom(DeclTy const* D)
 {
     if (!D)
     {
         return nullptr;
     }
-    auto* decayedD = const_cast<Decl*>(static_cast<const Decl*>(D));
-    Decl* resultDecl = InstantiatedFromVisitor().Visit(decayedD);
+    Decl const* resultDecl = InstantiatedFromVisitor().Visit(D);
     return cast<DeclTy>(resultDecl);
 }
 
@@ -722,8 +721,8 @@ template <class DeclTy>
 requires
     std::derived_from<DeclTy, FunctionDecl> ||
     std::same_as<FunctionTemplateDecl, std::remove_cv_t<DeclTy>>
-FunctionDecl*
-getInstantiatedFrom(DeclTy* D)
+FunctionDecl const*
+getInstantiatedFrom(DeclTy const* D)
 {
     return dyn_cast_if_present<FunctionDecl>(
         getInstantiatedFrom<Decl>(D));
@@ -733,8 +732,8 @@ template <class DeclTy>
 requires
     std::derived_from<DeclTy, CXXRecordDecl> ||
     std::same_as<ClassTemplateDecl, std::remove_cv_t<DeclTy>>
-CXXRecordDecl*
-getInstantiatedFrom(DeclTy* D)
+CXXRecordDecl const*
+getInstantiatedFrom(DeclTy const* D)
 {
     return dyn_cast_if_present<CXXRecordDecl>(
         getInstantiatedFrom<Decl>(D));
@@ -744,8 +743,8 @@ template <class DeclTy>
 requires
     std::derived_from<DeclTy, VarDecl> ||
     std::same_as<VarTemplateDecl, std::remove_cv_t<DeclTy>>
-VarDecl*
-getInstantiatedFrom(DeclTy* D)
+VarDecl const*
+getInstantiatedFrom(DeclTy const* D)
 {
     return dyn_cast_if_present<VarDecl>(
         getInstantiatedFrom<Decl>(D));
@@ -755,8 +754,8 @@ template <class DeclTy>
 requires
     std::derived_from<DeclTy, TypedefNameDecl> ||
     std::same_as<TypeAliasTemplateDecl, std::remove_cv_t<DeclTy>>
-TypedefNameDecl*
-getInstantiatedFrom(DeclTy* D)
+TypedefNameDecl const*
+getInstantiatedFrom(DeclTy const* D)
 {
     return dyn_cast_if_present<TypedefNameDecl>(
         getInstantiatedFrom<Decl>(D));
@@ -769,11 +768,11 @@ getInstantiatedFrom(DeclTy* D)
  */
 MRDOCS_DECL
 AccessSpecifier
-getAccess(const Decl* D);
+getAccess(Decl const* D);
 
 MRDOCS_DECL
 QualType
-getDeclaratorType(const DeclaratorDecl* DD);
+getDeclaratorType(DeclaratorDecl const* DD);
 
 /** Get the NonTypeTemplateParm of an expression
 
@@ -797,19 +796,12 @@ getDeclaratorType(const DeclaratorDecl* DD);
  */
 MRDOCS_DECL
 NonTypeTemplateParmDecl const*
-getNTTPFromExpr(const Expr* E, unsigned Depth);
+getNTTPFromExpr(Expr const* E, unsigned Depth);
 
 // Get the parent declaration of a declaration
 MRDOCS_DECL
-Decl*
-getParent(Decl* D);
-
-// Get the parent declaration of a declaration
-inline
 Decl const*
-getParent(Decl const* D) {
-    return getParent(const_cast<Decl*>(D));
-}
+getParent(Decl const* D);
 
 MRDOCS_DECL
 void
