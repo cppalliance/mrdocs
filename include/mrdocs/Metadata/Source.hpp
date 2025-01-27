@@ -15,7 +15,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Optional.hpp>
-#include <mrdocs/Metadata/Info.hpp>
+#include <mrdocs/Dom.hpp>
 #include <string>
 
 namespace clang::mrdocs {
@@ -118,7 +118,7 @@ struct MRDOCS_DECL
     */
     OptionalLocation DefLoc;
 
-    /** Locations where the entity was declared,
+    /** Locations where the entity was declared.
 
         This does not include the definition.
     */

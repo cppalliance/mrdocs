@@ -22,7 +22,6 @@ namespace clang::mrdocs {
 
 struct EnumInfo final
     : InfoCommonBase<InfoKind::Enum>
-    , SourceInfo
     , ScopeInfo
 {
     // Indicates whether this enum is scoped (e.g. enum class).

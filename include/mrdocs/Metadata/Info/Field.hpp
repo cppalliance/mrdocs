@@ -27,7 +27,6 @@ namespace clang::mrdocs {
 */
 struct FieldInfo final
     : InfoCommonBase<InfoKind::Field>
-    , SourceInfo
 {
     /** Type of the field */
     PolymorphicValue<TypeInfo> Type;

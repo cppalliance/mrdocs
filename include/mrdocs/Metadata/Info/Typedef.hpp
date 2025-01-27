@@ -22,14 +22,21 @@ namespace clang::mrdocs {
 // Info for typedef and using statements.
 struct TypedefInfo final
     : InfoCommonBase<InfoKind::Typedef>
-    , SourceInfo
 {
     PolymorphicValue<TypeInfo> Type;
 
-    // Indicates if this is a new C++ "using"-style typedef:
-    //   using MyVector = std::vector<int>
-    // False means it's a C-style typedef:
-    //   typedef std::vector<int> MyVector;
+    /** Indicates if this is a new C++ "using"-style typedef
+
+        @code
+        using MyVector = std::vector<int>
+        @endcode
+
+        False means it's a C-style typedef:
+
+        @code
+        typedef std::vector<int> MyVector;
+        @endcode
+      */
     bool IsUsing = false;
 
     std::optional<TemplateInfo> Template;

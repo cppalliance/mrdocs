@@ -21,7 +21,6 @@ namespace clang::mrdocs {
 */
 struct EnumConstantInfo final
     : InfoCommonBase<InfoKind::EnumConstant>
-    , SourceInfo
 {
     /** The initializer expression, if any
     */

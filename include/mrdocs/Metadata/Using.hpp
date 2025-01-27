@@ -56,8 +56,7 @@ tag_invoke(
 /** Info for using declarations.
  */
 struct UsingInfo final
-    : InfoCommonBase<InfoKind::Using>,
-    SourceInfo
+    : InfoCommonBase<InfoKind::Using>
 {
     /** The kind of using declaration.
     */

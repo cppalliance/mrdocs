@@ -20,8 +20,10 @@
 #include <mrdocs/Metadata/Javadoc.hpp>
 #include <mrdocs/Metadata/Specifiers.hpp>
 #include <mrdocs/Metadata/Symbols.hpp>
+#include <mrdocs/Metadata/Source.hpp>
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/Visitor.hpp>
+
 
 namespace clang::mrdocs {
 
@@ -59,8 +61,7 @@ tag_invoke(
 
 /** Base class with common properties of all symbols
 */
-struct MRDOCS_VISIBLE
-    Info
+struct MRDOCS_VISIBLE Info : SourceInfo
 {
     /** The unique identifier for this symbol.
     */
