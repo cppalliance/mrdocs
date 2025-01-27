@@ -22,7 +22,6 @@ namespace clang::mrdocs {
 */
 struct ConceptInfo final
     : InfoCommonBase<InfoKind::Concept>
-    , SourceInfo
 {
     /** The concepts template parameters
     */

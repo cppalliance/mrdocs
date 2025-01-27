@@ -112,7 +112,6 @@ traverse(DeclTy* D)
         using R = std::conditional_t<
             std::same_as<InfoTy, void>,
             InfoTypeFor_t<DeclTy>,
-
             InfoTy>;
 
         auto exp = upsert<R>(D);
@@ -122,7 +121,7 @@ traverse(DeclTy* D)
         // Populate the base classes with the necessary information.
         // Even when the object is new, we want to update the source locations
         // and the documentation status.
-        populateInfoBases(I, isNew, D);
+        populate(dynamic_cast<Info&>(I), isNew, D);
 
         // Populate the derived Info object with the necessary information
         // when the object is new. If the object already exists, this
@@ -506,36 +505,42 @@ generateID(const Decl* D) const
     return id;
 }
 
-template <std::derived_from<Info> InfoTy, class DeclTy>
+namespace
+{
+template <class DeclTy>
+bool
+isDefinition(DeclTy* D)
+{
+    if constexpr (requires {D->isThisDeclarationADefinition();})
+    {
+        return D->isThisDeclarationADefinition();
+    }
+    else
+    {
+        return false;
+    }
+}
+}
+
+template <std::derived_from<Decl> DeclTy>
 void
 ASTVisitor::
-populateInfoBases(InfoTy& I, bool const isNew, DeclTy* D)
+populate(Info& I, bool const isNew, DeclTy* D)
 {
     // Populate the documentation
     bool const isDocumented = generateJavadoc(I.javadoc, D);
 
     // Populate the source info
-    if constexpr (std::derived_from<InfoTy, SourceInfo>)
+    clang::SourceLocation Loc = D->getBeginLoc();
+    if (Loc.isInvalid())
     {
-        bool const isDefinition = [&]() {
-            if constexpr (requires {D->isThisDeclarationADefinition();})
-            {
-                return D->isThisDeclarationADefinition();
-            }
-            else
-            {
-                return false;
-            }
-        }();
-        clang::SourceLocation Loc = D->getBeginLoc();
-        if (Loc.isInvalid())
-        {
-            Loc = D->getLocation();
-        }
-        if (Loc.isValid())
-        {
-            populate(I, Loc, isDefinition, isDocumented);
-        }
+        Loc = D->getLocation();
+    }
+    if (Loc.isValid())
+    {
+        populate(
+            dynamic_cast<SourceInfo&>(I),
+            Loc, isDefinition(D), isDocumented);
     }
 
     // All other information is redundant if the symbol is not new
@@ -545,30 +550,7 @@ populateInfoBases(InfoTy& I, bool const isNew, DeclTy* D)
     MRDOCS_ASSERT(I.id);
     MRDOCS_ASSERT(I.Kind != InfoKind::None);
 
-    if constexpr (std::same_as<DeclTy, CXXDeductionGuideDecl>)
-    {
-        I.Name = extractName(D->getDeducedTemplate());
-    }
-    else if constexpr (std::derived_from<DeclTy, FriendDecl>)
-    {
-        if (auto* FD = D->getFriendDecl())
-        {
-            I.Name = extractName(D->getFriendDecl());
-        }
-        else if (TypeSourceInfo const* FT = D->getFriendType())
-        {
-            llvm::raw_string_ostream os(I.Name);
-            FT->getType().print(os, context_.getPrintingPolicy());
-        }
-    }
-    else if constexpr (std::derived_from<DeclTy, UsingDirectiveDecl>)
-    {
-        I.Name = extractName(D->getNominatedNamespace());
-    }
-    else if constexpr (std::derived_from<DeclTy, NamedDecl>)
-    {
-        I.Name = extractName(D);
-    }
+    I.Name = extractName(D);
 }
 
 void
@@ -700,12 +682,11 @@ populate(RecordInfo& I, ClassTemplateSpecializationDecl* D)
     populate(I, cast<CXXRecordDecl>(D));
 }
 
-template <std::derived_from<FunctionDecl> DeclTy>
 void
 ASTVisitor::
 populate(
     FunctionInfo& I,
-    DeclTy* D)
+    FunctionDecl* D)
 {
     MRDOCS_SYMBOL_TRACE(D, context_);
 
@@ -719,8 +700,9 @@ populate(
 
         if (auto* FTSI = D->getTemplateSpecializationInfo())
         {
-            generateID(getInstantiatedFrom(
-                FTSI->getTemplate()), I.Template->Primary);
+            generateID(
+                getInstantiatedFrom(FTSI->getTemplate()),
+                I.Template->Primary);
 
             // TemplateArguments is used instead of TemplateArgumentsAsWritten
             // because explicit specializations of function templates may have
@@ -756,76 +738,30 @@ populate(
         I.HasTrailingReturn |= FPT->hasTrailingReturn();
     }
 
-    //
-    // FunctionDecl
-    //
-    FunctionDecl const* FD = D;
-    I.OverloadedOperator = toOperatorKind(FD->getOverloadedOperator());
-    I.IsVariadic |= FD->isVariadic();
-    I.IsDefaulted |= FD->isDefaulted();
-    I.IsExplicitlyDefaulted |= FD->isExplicitlyDefaulted();
-    I.IsDeleted |= FD->isDeleted();
-    I.IsDeletedAsWritten |= FD->isDeletedAsWritten();
-    I.IsNoReturn |= FD->isNoReturn();
-    I.HasOverrideAttr |= FD->hasAttr<OverrideAttr>();
+    I.OverloadedOperator = toOperatorKind(D->getOverloadedOperator());
+    I.IsVariadic |= D->isVariadic();
+    I.IsDefaulted |= D->isDefaulted();
+    I.IsExplicitlyDefaulted |= D->isExplicitlyDefaulted();
+    I.IsDeleted |= D->isDeleted();
+    I.IsDeletedAsWritten |= D->isDeletedAsWritten();
+    I.IsNoReturn |= D->isNoReturn();
+    I.HasOverrideAttr |= D->hasAttr<OverrideAttr>();
 
-    if (ConstexprSpecKind const CSK = FD->getConstexprKind();
+    if (ConstexprSpecKind const CSK = D->getConstexprKind();
         CSK != ConstexprSpecKind::Unspecified)
     {
         I.Constexpr = toConstexprKind(CSK);
     }
 
-    if (StorageClass const SC = FD->getStorageClass())
+    if (StorageClass const SC = D->getStorageClass())
     {
         I.StorageClass = toStorageClassKind(SC);
     }
 
-    I.IsNodiscard |= FD->hasAttr<WarnUnusedResultAttr>();
-    I.IsExplicitObjectMemberFunction |= FD->hasCXXExplicitFunctionObjectParameter();
+    I.IsNodiscard |= D->hasAttr<WarnUnusedResultAttr>();
+    I.IsExplicitObjectMemberFunction |= D->hasCXXExplicitFunctionObjectParameter();
 
-    //
-    // CXXMethodDecl
-    //
-    if constexpr(std::derived_from<DeclTy, CXXMethodDecl>)
-    {
-        CXXMethodDecl const* MD = D;
-        I.IsVirtual |= MD->isVirtual();
-        I.IsVirtualAsWritten |= MD->isVirtualAsWritten();
-        I.IsPure |= MD->isPureVirtual();
-        I.IsConst |= MD->isConst();
-        I.IsVolatile |= MD->isVolatile();
-        I.RefQualifier = toReferenceKind(MD->getRefQualifier());
-        I.IsFinal |= MD->hasAttr<FinalAttr>();
-        //MD->isCopyAssignmentOperator()
-        //MD->isMoveAssignmentOperator()
-        //MD->isOverloadedOperator();
-        //MD->isStaticOverloadedOperator();
-
-        //
-        // CXXDestructorDecl
-        //
-        // if constexpr(std::derived_from<DeclTy, CXXDestructorDecl>)
-        // {
-        // }
-
-        //
-        // CXXConstructorDecl
-        //
-        if constexpr(std::derived_from<DeclTy, CXXConstructorDecl>)
-        {
-            populate(I.Explicit, D->getExplicitSpecifier());
-        }
-
-        //
-        // CXXConversionDecl
-        //
-        if constexpr(std::derived_from<DeclTy, CXXConversionDecl>)
-        {
-            populate(I.Explicit, D->getExplicitSpecifier());
-        }
-    }
-
-    ArrayRef<ParmVarDecl*> const params = FD->parameters();
+    ArrayRef<ParmVarDecl*> const params = D->parameters();
     I.Params.resize(params.size());
     for (std::size_t i = 0; i < params.size(); ++i)
     {
@@ -858,16 +794,16 @@ populate(
         }
     }
 
-    I.Class = toFunctionClass(FD->getDeclKind());
+    I.Class = toFunctionClass(D->getDeclKind());
 
     // extract the return type in direct dependency mode
     // if it contains a placeholder type which is
     // deduceded as a local class type
-    QualType const RT = FD->getReturnType();
+    QualType const RT = D->getReturnType();
     MRDOCS_SYMBOL_TRACE(RT, context_);
     I.ReturnType = toTypeInfo(RT);
 
-    if (auto* TRC = FD->getTrailingRequiresClause())
+    if (auto* TRC = D->getTrailingRequiresClause())
     {
         populate(I.Requires, TRC);
     }
@@ -924,6 +860,48 @@ populate(FunctionInfo& I, FunctionTemplateDecl* D)
 
 void
 ASTVisitor::
+populate(FunctionInfo& I, CXXMethodDecl* D)
+{
+    FunctionDecl* FD = D;
+    populate(I, FD);
+    I.IsVirtual |= D->isVirtual();
+    I.IsVirtualAsWritten |= D->isVirtualAsWritten();
+    I.IsPure |= D->isPureVirtual();
+    I.IsConst |= D->isConst();
+    I.IsVolatile |= D->isVolatile();
+    I.RefQualifier = toReferenceKind(D->getRefQualifier());
+    I.IsFinal |= D->hasAttr<FinalAttr>();
+}
+
+void
+ASTVisitor::
+populate(FunctionInfo& I, CXXConstructorDecl* D)
+{
+    CXXMethodDecl* FD = D;
+    populate(I, FD);
+    populate(I.Explicit, D->getExplicitSpecifier());
+}
+
+void
+ASTVisitor::
+populate(FunctionInfo& I, CXXDestructorDecl* D)
+{
+    CXXMethodDecl* FD = D;
+    populate(I, FD);
+}
+
+void
+ASTVisitor::
+populate(FunctionInfo& I, CXXConversionDecl* D)
+{
+    CXXMethodDecl* FD = D;
+    populate(I, FD);
+    populate(I.Explicit, D->getExplicitSpecifier());
+}
+
+
+void
+ASTVisitor::
 populate(
     EnumInfo& I,
     EnumDecl* D)
@@ -948,16 +926,27 @@ populate(
         D->getInitVal());
 }
 
-template<std::derived_from<TypedefNameDecl> TypedefNameDeclTy>
 void
 ASTVisitor::
-populate(
-    TypedefInfo& I,
-    TypedefNameDeclTy* D)
+populate(TypedefInfo& I, TypedefNameDecl* D)
 {
-    I.IsUsing = isa<TypeAliasDecl>(D);
     QualType const QT = D->getUnderlyingType();
     I.Type = toTypeInfo(QT);
+}
+
+void
+ASTVisitor::
+populate(TypedefInfo& I, TypedefDecl* D)
+{
+    populate(I, cast<TypedefNameDecl>(D));
+}
+
+void
+ASTVisitor::
+populate(TypedefInfo& I, TypeAliasDecl* D)
+{
+    I.IsUsing = isa<TypeAliasDecl>(D);
+    populate(I, cast<TypedefNameDecl>(D));
 }
 
 void
@@ -965,9 +954,16 @@ ASTVisitor::
 populate(TypedefInfo& I, TypeAliasTemplateDecl* D)
 {
     populate(I.Template, D->getTemplatedDecl(), D);
-    populate(I, D->getTemplatedDecl());
+    if (auto* TD = D->getTemplatedDecl();
+        isa<TypeAliasDecl>(TD))
+    {
+        populate(I, cast<TypeAliasDecl>(TD));
+    }
+    else
+    {
+        populate(I, TD);
+    }
 }
-
 
 void
 ASTVisitor::
@@ -1567,6 +1563,40 @@ populateAttributes(InfoTy& I, const Decl* D)
             }
         }
     }
+}
+
+template <std::derived_from<Decl> DeclTy>
+std::string
+ASTVisitor::
+extractName(DeclTy const* D)
+{
+    if constexpr (std::same_as<DeclTy, CXXDeductionGuideDecl>)
+    {
+        return extractName(D->getDeducedTemplate());
+    }
+    else if constexpr (std::derived_from<DeclTy, FriendDecl>)
+    {
+        if (auto* FD = D->getFriendDecl())
+        {
+            return extractName(D->getFriendDecl());
+        }
+        if (TypeSourceInfo const* FT = D->getFriendType())
+        {
+            std::string Name;
+            llvm::raw_string_ostream os(Name);
+            FT->getType().print(os, context_.getPrintingPolicy());
+            return Name;
+        }
+    }
+    else if constexpr (std::derived_from<DeclTy, UsingDirectiveDecl>)
+    {
+        return extractName(D->getNominatedNamespace());
+    }
+    else if constexpr (std::derived_from<DeclTy, NamedDecl>)
+    {
+        return extractName(cast<NamedDecl>(D));
+    }
+    return {};
 }
 
 std::string

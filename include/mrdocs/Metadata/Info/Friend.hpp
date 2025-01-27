@@ -21,7 +21,6 @@ namespace clang::mrdocs {
 */
 struct FriendInfo final
     : InfoCommonBase<InfoKind::Friend>
-    , SourceInfo
 {
     /** Befriended symbol.
     */

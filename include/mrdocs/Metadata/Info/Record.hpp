@@ -75,7 +75,6 @@ tag_invoke(
 */
 struct RecordInfo final
     : InfoCommonBase<InfoKind::Record>
-    , SourceInfo
     , ScopeInfo
 {
     /** Kind of record this is (class, struct, or union).

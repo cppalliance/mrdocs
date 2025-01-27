@@ -79,8 +79,16 @@ struct InfoTypeFor<TranslationUnitDecl>
 // Extract RecordInfo from anything derived from CXXRecordDecl
 // and ClassTemplateDecl. Decls derived from CXXRecordDecl
 // include class specializations.
-template <std::derived_from<CXXRecordDecl> DeclType>
-struct InfoTypeFor<DeclType>
+template <>
+struct InfoTypeFor<CXXRecordDecl>
+    : std::type_identity<RecordInfo> {};
+
+template <>
+struct InfoTypeFor<ClassTemplateSpecializationDecl>
+    : std::type_identity<RecordInfo> {};
+
+template <>
+struct InfoTypeFor<ClassTemplatePartialSpecializationDecl>
     : std::type_identity<RecordInfo> {};
 
 template <>
@@ -88,9 +96,24 @@ struct InfoTypeFor<ClassTemplateDecl>
     : std::type_identity<RecordInfo> {};
 
 // Extract FunctionInfo from anything derived from FunctionDecl
-template <std::derived_from<FunctionDecl> FunctionTy>
-requires (!std::same_as<FunctionTy, CXXDeductionGuideDecl>)
-struct InfoTypeFor<FunctionTy>
+template <>
+struct InfoTypeFor<FunctionDecl>
+    : std::type_identity<FunctionInfo> {};
+
+template <>
+struct InfoTypeFor<CXXMethodDecl>
+    : std::type_identity<FunctionInfo> {};
+
+template <>
+struct InfoTypeFor<CXXConstructorDecl>
+    : std::type_identity<FunctionInfo> {};
+
+template <>
+struct InfoTypeFor<CXXDestructorDecl>
+    : std::type_identity<FunctionInfo> {};
+
+template <>
+struct InfoTypeFor<CXXConversionDecl>
     : std::type_identity<FunctionInfo> {};
 
 template <>
@@ -108,8 +131,16 @@ struct InfoTypeFor<EnumConstantDecl>
     : std::type_identity<EnumConstantInfo> {};
 
 // Extract TypedefInfo from anything derived from TypedefNameDecl
-template <std::derived_from<TypedefNameDecl> TypedefNameTy>
-struct InfoTypeFor<TypedefNameTy>
+template <>
+struct InfoTypeFor<TypedefDecl>
+    : std::type_identity<TypedefInfo> {};
+
+template <>
+struct InfoTypeFor<TypeAliasDecl>
+    : std::type_identity<TypedefInfo> {};
+
+template <>
+struct InfoTypeFor<TypedefNameDecl>
     : std::type_identity<TypedefInfo> {};
 
 template <>
@@ -118,8 +149,16 @@ struct InfoTypeFor<TypeAliasTemplateDecl>
 
 // Extract VariableInfo from anything derived from VarDecl
 // and VarTemplateDecl.
-template <std::derived_from<VarDecl> VarTy>
-struct InfoTypeFor<VarTy>
+template <>
+struct InfoTypeFor<VarDecl>
+    : std::type_identity<VariableInfo> {};
+
+template <>
+struct InfoTypeFor<VarTemplateSpecializationDecl>
+    : std::type_identity<VariableInfo> {};
+
+template <>
+struct InfoTypeFor<VarTemplatePartialSpecializationDecl>
     : std::type_identity<VariableInfo> {};
 
 template <>
@@ -657,9 +696,14 @@ TypeLocToKind()
 /** Get the user-written `Decl` for a `Decl`
 
     Given a `Decl` `D`, `getInstantiatedFrom` will return the
-    user-written `Decl` corresponding to `D`. For specializations
-    which were implicitly instantiated, this will be whichever `Decl`
-    was used as the pattern for instantiation.
+    user-written `Decl` corresponding to `D`.
+
+    For specializations which were implicitly instantiated,
+    this will be whichever `Decl` was used as the pattern
+    for instantiation.
+
+    For instance, if `D` represents `std::vector<int>`, the
+    user-written `Decl` will be the `std::vector` template.
 */
 template <class DeclTy>
 DeclTy*

@@ -126,7 +126,6 @@ tag_invoke(
 // Info for functions.
 struct FunctionInfo final
     : InfoCommonBase<InfoKind::Function>
-    , SourceInfo
 {
     /// Info about the return type of this function.
     PolymorphicValue<TypeInfo> ReturnType;
@@ -141,15 +140,8 @@ struct FunctionInfo final
     FunctionClass Class = FunctionClass::Normal;
 
     NoexceptInfo Noexcept;
-
-    ExplicitInfo Explicit;
-
     ExprInfo Requires;
-
     bool IsVariadic = false;
-    bool IsVirtual = false;
-    bool IsVirtualAsWritten = false;
-    bool IsPure = false;
     bool IsDefaulted = false;
     bool IsExplicitlyDefaulted = false;
     bool IsDeleted = false;
@@ -157,18 +149,22 @@ struct FunctionInfo final
     bool IsNoReturn = false;
     bool HasOverrideAttr = false;
     bool HasTrailingReturn = false;
-    bool IsConst = false;
-    bool IsVolatile = false;
-    bool IsFinal = false;
     bool IsNodiscard = false;
     bool IsExplicitObjectMemberFunction = false;
-
     ConstexprKind Constexpr = ConstexprKind::None;
     OperatorKind OverloadedOperator = OperatorKind::None;
     StorageClassKind StorageClass = StorageClassKind::None;
-    ReferenceKind RefQualifier = ReferenceKind::None;
-
     std::vector<std::string> Attributes;
+
+    // CXXMethodDecl
+    bool IsVirtual = false;
+    bool IsVirtualAsWritten = false;
+    bool IsPure = false;
+    bool IsConst = false;
+    bool IsVolatile = false;
+    bool IsFinal = false;
+    ReferenceKind RefQualifier = ReferenceKind::None;
+    ExplicitInfo Explicit;
 
     //--------------------------------------------
 

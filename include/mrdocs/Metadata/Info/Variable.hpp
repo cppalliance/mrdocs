@@ -26,7 +26,6 @@ namespace clang::mrdocs {
 */
 struct VariableInfo final
     : InfoCommonBase<InfoKind::Variable>
-    , SourceInfo
 {
     /** The type of the variable */
     PolymorphicValue<TypeInfo> Type;

@@ -23,7 +23,6 @@ namespace clang::mrdocs {
 */
 struct GuideInfo final
     : InfoCommonBase<InfoKind::Guide>
-    , SourceInfo
 {
     /** The pattern for the deduced specialization.
 

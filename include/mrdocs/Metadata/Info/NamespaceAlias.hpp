@@ -20,7 +20,6 @@ namespace clang::mrdocs {
 */
 struct NamespaceAliasInfo final
     : InfoCommonBase<InfoKind::NamespaceAlias>
-    , SourceInfo
 {
     /** The aliased symbol. */
     PolymorphicValue<NameInfo> AliasedSymbol;

@@ -444,9 +444,9 @@ private:
     // =================================================
     // Populate functions
     // =================================================
-    template <std::derived_from<Info> InfoTy, class DeclTy>
+    template <std::derived_from<Decl> DeclTy>
     void
-    populateInfoBases(InfoTy& I, bool isNew, DeclTy* D);
+    populate(Info& I, bool isNew, DeclTy* D);
 
     void
     populate(SourceInfo& I, clang::SourceLocation loc, bool definition, bool documented);
@@ -467,12 +467,23 @@ private:
     void
     populate(RecordInfo& I, ClassTemplateSpecializationDecl* D);
 
-    template <std::derived_from<FunctionDecl> DeclTy>
     void
-    populate(FunctionInfo& I, DeclTy* D);
+    populate(FunctionInfo& I, FunctionDecl* D);
 
     void
     populate(FunctionInfo& I, FunctionTemplateDecl* D);
+
+    void
+    populate(FunctionInfo& I, CXXMethodDecl* D);
+
+    void
+    populate(FunctionInfo& I, CXXConstructorDecl* D);
+
+    void
+    populate(FunctionInfo& I, CXXDestructorDecl* D);
+
+    void
+    populate(FunctionInfo& I, CXXConversionDecl* D);
 
     void
     populate(EnumInfo& I, EnumDecl* D);
@@ -480,9 +491,14 @@ private:
     void
     populate(EnumConstantInfo& I, EnumConstantDecl* D);
 
-    template<std::derived_from<TypedefNameDecl> TypedefNameDeclTy>
     void
-    populate(TypedefInfo& I, TypedefNameDeclTy* D);
+    populate(TypedefInfo& I, TypedefNameDecl* D);
+
+    void
+    populate(TypedefInfo& I, TypedefDecl* D);
+
+    void
+    populate(TypedefInfo& I, TypeAliasDecl* D);
 
     void
     populate(TypedefInfo& I, TypeAliasTemplateDecl* D);
@@ -638,6 +654,10 @@ private:
     // =================================================
     // Populate function helpers
     // =================================================
+    template <std::derived_from<Decl> DeclTy>
+    std::string
+    extractName(DeclTy const* D);
+
     // Extract the name of a declaration
     std::string
     extractName(NamedDecl const* D);
