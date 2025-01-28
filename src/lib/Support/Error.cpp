@@ -186,8 +186,7 @@ print_impl(
 }
 
 void
-setMinimumLevel(
-    Level level) noexcept
+setMinimumLevel(Level const level) noexcept
 {
     level_ = level;
 }
@@ -288,6 +287,9 @@ call_impl(
     }
     switch(level)
     {
+    case Level::trace:
+        ++results.traceCount;
+        break;
     case Level::debug:
         ++results.debugCount;
         break;

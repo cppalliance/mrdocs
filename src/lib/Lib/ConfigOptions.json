@@ -368,7 +368,7 @@
         "type": "unsigned",
         "default": 1,
         "min-value": 0,
-        "max-value": 4
+        "max-value": 5
       },
       {
         "name": "ignore-map-errors",
