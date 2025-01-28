@@ -3,12 +3,12 @@
 MrDocs uses a generator to convert the extracted symbols into documentation.
 MrDocs supports multiple output formats that can be specified via the `generate` option:
 
-The `generate` option can be used to specify the output format:
+The `generator` option can be used to specify the output format:
 
 [source,yaml]
 ----
 # ...
-generate: adoc
+generator: adoc
 # ...
 ----
 

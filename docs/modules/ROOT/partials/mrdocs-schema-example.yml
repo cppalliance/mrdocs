@@ -3,4 +3,4 @@
 
 source-root: ../include
 multipage: false
-generate: adoc
+generator: adoc
