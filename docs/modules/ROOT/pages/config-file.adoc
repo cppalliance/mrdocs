@@ -149,13 +149,13 @@ namespace my_library
 
 === Private Symbols
 
-The `implementation-detail` and `see-below` options can be used to designate symbols as implementation details or "see below" in the documentation.
+The `implementation-defined` and `see-below` options can be used to designate symbols as implementation details or "see below" in the documentation.
 
 [,yaml]
 ----
 include-symbols:
   - 'my_library::**'
-implementation-detail:
+implementation-defined:
   - 'my_library::detail::**'
 see-below:
   - 'my_library::see_below::**'

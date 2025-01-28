@@ -233,7 +233,7 @@ And the user can specify that symbols in the `impl` namespace are implementation
 [source,yaml]
 ----
 # ...
-implementation-detail: impl::**
+implementation-defined: impl::**
 # ...
 ----
 
