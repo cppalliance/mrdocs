@@ -90,6 +90,10 @@ function toDefaultValueStr(value) {
 }
 
 function pushOptionBlocks(options, block, parents = []) {
+    function makeOptionID(option) {
+        return [...parents, option.name].join('_') + "_option"
+    }
+
     block.lines.push('<table class="tableblock frame-all grid-all stretch">')
     block.lines.push('<colgroup>')
     block.lines.push('<col style="width: 23.3333%;">')
@@ -108,7 +112,8 @@ function pushOptionBlocks(options, block, parents = []) {
         let optionName = [...parents, option.name].join('.')
         block.lines.push('<tr>')
         block.lines.push(`<td class="tableblock halign-left valign-top">`)
-        block.lines.push(`<code style="color: darkblue">${optionName}</code>`)
+        const colorStr = option['deprecated'] ? 'red' : 'darkblue'
+        block.lines.push(`<a href="#${makeOptionID(option)}"><code style="color: ${colorStr}">${optionName}</code></a>`)
         block.lines.push(`<br/>`)
         block.lines.push(`<span style="color: darkgreen;">(${toTypeStr(option.type)})</span>`)
         let observations = []
@@ -118,8 +123,11 @@ function pushOptionBlocks(options, block, parents = []) {
         if (option['command-line-only']) {
             observations.push('Command line only')
         }
+        if (option['deprecated']) {
+            observations.push(`Deprecated`)
+        }
         if (observations.length !== 0) {
-            block.lines.push(`<br/><br/>`)
+            block.lines.push(`<br/>`)
             let observationsStr = observations.join(', ')
             block.lines.push(`<span style="color: orangered;">(${observationsStr})</span>`)
         }
@@ -134,7 +142,9 @@ function pushOptionBlocks(options, block, parents = []) {
     // Option details
     for (let option of options) {
         let optionName = [...parents, option.name].join('.')
-        block.lines.push(`<div class="paragraph"><p><b><code style="color: darkblue">${optionName}</code></b></p></div>`)
+        const optionID = optionName.replace(/\./g, '_')
+        const colorStr = option['deprecated'] ? 'red' : 'darkblue'
+        block.lines.push(`<div class="paragraph" id="${makeOptionID(option)}"><p><b><code style="color: ${colorStr}">${optionName}</code></b></p></div>`)
         block.lines.push(`<div class="paragraph"><p><i>${option.brief}</i></p></div>`)
         if (option.details) {
             block.lines.push(`<div class="paragraph"><p>${replaceCodeTags(escapeHtml(option.details))}</p></div>`)
@@ -142,6 +152,9 @@ function pushOptionBlocks(options, block, parents = []) {
         block.lines.push(`<div class="paragraph"><p>`)
         block.lines.push(`<div class="ulist">`)
         block.lines.push(`<ul>`)
+        if (option['deprecated']) {
+            block.lines.push(`<li><span style="color: red;">Deprecated</span>: ${replaceCodeTags(escapeHtml(option['deprecated']))}</li>`)
+        }
         if (option.type) {
             block.lines.push(`<li>Type: ${toTypeStr(option.type)}</li>`)
         } else {
