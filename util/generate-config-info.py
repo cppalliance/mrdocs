@@ -393,6 +393,7 @@ def generate_public_settings_hpp(config):
         contents += f'            {cpp_type}'
     contents += f'> {to_camel_case("default")}Value = std::monostate();\n'
     contents += f'        std::string {to_camel_case("relative-to")} = {{}};\n'
+    contents += f'        std::optional<std::string> {to_camel_case("deprecated")} = std::nullopt;\n'
     contents += '    };\n\n'
 
     contents += '    /** Normalize the configuration values with a visitor\n'
@@ -441,6 +442,8 @@ def generate_public_settings_hpp(config):
                 contents += f'{pad}.{to_camel_case("default")}Value = {cpp_type}({cpp_default_value}),\n'
         if 'relative-to' in option:
             contents += f'{pad}.{to_camel_case("relative-to")} = {escape_as_cpp_string(option["relative-to"])},\n'
+        if 'deprecated' in option:
+            contents += f'{pad}.{to_camel_case("deprecated")} = {escape_as_cpp_string(option["deprecated"])},\n'
         contents += f'        }}));\n'
     contents += '        return {};\n'
     contents += '    }\n\n'
