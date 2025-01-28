@@ -252,11 +252,10 @@ call_impl(
     {
         llvm::raw_string_ostream os(s);
         f(os);
+        using LT = std::underlying_type_t<Level>;
         if(sourceLocationWarnings_ &&
-           loc && (
-              level == Level::warn ||
-              level == Level::error ||
-              level == Level::fatal))
+           loc &&
+           static_cast<LT>(level) >= static_cast<LT>(Level::error))
         {
             os << "\n\n";
             os << "An issue occurred during execution.\n";
