@@ -401,7 +401,7 @@ if (MRDOCS_BUILD_TESTS)
                 "--stdlib-includes=${LIBCXX_DIR}"
                 "--stdlib-includes=${STDLIB_INCLUDE_DIR}"
                 "--libc-includes=${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs"
-                --report=2
+                --report=3
         )
         foreach (action IN ITEMS test create update)
             add_custom_target(
@@ -416,7 +416,7 @@ if (MRDOCS_BUILD_TESTS)
                     "--stdlib-includes=${LIBCXX_DIR}"
                     "--stdlib-includes=${STDLIB_INCLUDE_DIR}"
                     "--libc-includes=${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs"
-                    --report=2
+                    --report=3
                 DEPENDS mrdocs-test
             )
         endforeach ()

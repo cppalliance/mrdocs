@@ -239,7 +239,7 @@
     "report": {
       "default": 1,
       "description": "The reporting level determines the amount of information displayed during the generation of the documentation. The levels are: 0 - no output, 1 - errors only, 2 - errors and warnings, 3 - errors, warnings, and information, 4 - errors, warnings, information, and debug information.",
-      "maximum": 4,
+      "maximum": 5,
       "minimum": 0,
       "title": "The minimum reporting level: 0 to 4",
       "type": "integer"

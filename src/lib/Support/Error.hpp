@@ -20,8 +20,7 @@
 #include <ostream>
 #include <utility>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 namespace report {
 
@@ -129,8 +128,7 @@ call(
 
 } // report
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 template<>
 struct fmt::formatter<llvm::StringRef>

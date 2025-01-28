@@ -972,7 +972,7 @@ namespace detail {
 #define MRDOCS_SYMBOL_TRACE(D, C) \
     SmallString<256> MRDOCS_SYMBOL_TRACE_UNIQUE_NAME;         \
     detail::printTraceName(D, C, MRDOCS_SYMBOL_TRACE_UNIQUE_NAME); \
-    report::debug("{}", std::string_view(MRDOCS_SYMBOL_TRACE_UNIQUE_NAME.str()))
+    report::trace("{}", std::string_view(MRDOCS_SYMBOL_TRACE_UNIQUE_NAME.str()))
 #endif
 
 } // clang::mrdocs

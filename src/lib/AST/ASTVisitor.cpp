@@ -2594,7 +2594,7 @@ checkFileFilters(std::string_view const symbolPath) const
 
 ASTVisitor::ExtractionInfo
 ASTVisitor::
-checkSymbolFilters(Decl const* D, bool AllowParent)
+checkSymbolFilters(Decl const* D, bool const AllowParent)
 {
     // Use the cache
     if (auto const it = extraction_.find(D); it != extraction_.end())

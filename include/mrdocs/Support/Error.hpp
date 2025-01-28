@@ -2665,7 +2665,8 @@ namespace report {
 */
 enum class Level
 {
-    debug = 0,
+    trace = 0,
+    debug,
     info,
     warn,
     error,
@@ -2676,6 +2677,7 @@ enum class Level
 */
 struct Results
 {
+    std::size_t traceCount;
     std::size_t debugCount;
     std::size_t infoCount;
     std::size_t warnCount;
@@ -2699,8 +2701,7 @@ results;
 */
 MRDOCS_DECL
 void
-setMinimumLevel(
-    Level level) noexcept;
+setMinimumLevel(Level level) noexcept;
 
 MRDOCS_DECL
 Level
@@ -2823,6 +2824,17 @@ log(
         level,
         fs,
         std::forward<Args>(args)...);
+}
+
+/** Report a message to the console.
+*/
+template<class... Args>
+void
+trace(
+    Located<std::string_view> format,
+    Args&&... args)
+{
+    return log(Level::trace, format, std::forward<Args>(args)...);
 }
 
 /** Report a message to the console.
