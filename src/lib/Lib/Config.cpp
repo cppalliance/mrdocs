@@ -100,7 +100,7 @@ struct PublicSettingsVisitor {
         }
         else if constexpr (std::same_as<DT, int> || std::same_as<DT, unsigned>)
         {
-            return normalizeInteger(name, value, opts);
+            return normalizeInteger(self, name, value, opts);
         }
         else
         {
@@ -328,15 +328,11 @@ struct PublicSettingsVisitor {
     template <std::integral T>
     Expected<void>
     normalizeInteger(
+        PublicSettings& self,
         std::string_view name,
         T& value,
         PublicSettings::OptionProperties const& opts) const
     {
-        if (name == "concurrency" && std::cmp_equal(value, 0))
-        {
-            value = std::thread::hardware_concurrency();
-            return {};
-        }
         MRDOCS_CHECK(
             !opts.minValue || std::cmp_greater_equal(value, *opts.minValue),
             formatError(
@@ -351,6 +347,30 @@ struct PublicSettingsVisitor {
                 name,
                 value,
                 *opts.maxValue));
+
+        if (name == "concurrency" && std::cmp_equal(value, 0))
+        {
+            value = std::thread::hardware_concurrency();
+            return {};
+        }
+
+        if (name == "report" && std::cmp_not_equal(value, static_cast<unsigned>(-1)))
+        {
+            static_assert(
+                static_cast<unsigned>(PublicSettings::LogLevel::Trace) ==
+                static_cast<unsigned>(report::Level::trace));
+            static_assert(
+                static_cast<unsigned>(PublicSettings::LogLevel::Fatal) ==
+                static_cast<unsigned>(report::Level::fatal));
+            MRDOCS_ASSERT(opts.deprecated);
+            report::warn(
+                "`report` option is deprecated, use `log-level` instead");
+            auto const logLevel = static_cast<PublicSettings::LogLevel>(value);
+            auto logLevelStr = PublicSettings::toString(logLevel);
+            report::warn("`report` option: setting `log-level` to \"{}\"", logLevelStr);
+            self.logLevel = logLevel;
+            return {};
+        }
         return {};
     }
 

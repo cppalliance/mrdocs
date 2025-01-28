@@ -94,10 +94,10 @@ int test_main(int argc, char const** argv)
         return EXIT_FAILURE;
     }
 
-    // Apply reportLevel
-    report::setMinimumLevel(report::getLevel(
-        testArgs.report.getValue()));
-
+    // Apply log-level
+    auto ll = PublicSettings::LogLevel::Info;
+    PublicSettings::fromString(testArgs.logLevel.getValue(), ll);
+    report::setMinimumLevel(static_cast<report::Level>(ll));
     report::setSourceLocationWarnings(false);
 
     if (!testArgs.cmdLineInputs.empty())

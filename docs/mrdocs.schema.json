@@ -190,6 +190,19 @@
       "title": "Standard Library include paths",
       "type": "array"
     },
+    "log-level": {
+      "default": "info",
+      "description": "The reporting level determines the amount of information displayed during the generation of the documentation.",
+      "enum": [
+        "trace",
+        "debug",
+        "info",
+        "warn",
+        "error",
+        "fatal"
+      ],
+      "title": "The minimum reporting level"
+    },
     "multipage": {
       "default": true,
       "description": "Generates a multipage documentation. The output directory must be a directory. This option acts as a hint to the generator to create a multipage documentation. Whether the hint is followed or not depends on the generator.",
@@ -237,11 +250,11 @@
       "type": "boolean"
     },
     "report": {
-      "default": 1,
-      "description": "The reporting level determines the amount of information displayed during the generation of the documentation. The levels are: 0 - no output, 1 - errors only, 2 - errors and warnings, 3 - errors, warnings, and information, 4 - errors, warnings, information, and debug information.",
+      "default": -1,
+      "description": "The reporting level determines the amount of information displayed during the generation of the documentation. The value `-1` delegates the decision to the `log-level` option.",
       "maximum": 5,
-      "minimum": 0,
-      "title": "The minimum reporting level: 0 to 4",
+      "minimum": -1,
+      "title": "The minimum reporting level",
       "type": "integer"
     },
     "see-below": {

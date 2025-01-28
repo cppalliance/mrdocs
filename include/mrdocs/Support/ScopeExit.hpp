@@ -35,6 +35,9 @@ public:
     }
 };
 
+template <class F>
+ScopeExit(F) -> ScopeExit<F>;
+
 template <class T>
 class ScopeExitRestore {
     T prev_;
@@ -65,9 +68,6 @@ public:
         dismissed_ = true;
     }
 };
-
-template <class F>
-ScopeExit(F) -> ScopeExit<F>;
 
 template <class T>
 ScopeExitRestore(T&) -> ScopeExitRestore<T>;
