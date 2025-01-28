@@ -63,7 +63,8 @@ def get_flat_suboptions(option_name, options):
 
 def get_valid_enum_categories():
     valid_enum_cats = {
-        'generator': ["adoc", "html", "xml"]
+        'generator': ["adoc", "html", "xml"],
+        'log-level': ["trace", "debug", "info", "warn", "error", "fatal"]
     }
     return valid_enum_cats
 
@@ -310,6 +311,7 @@ def generate_public_settings_hpp(config):
     contents += '    //--------------------------------------------\n'
     contents += '    // Enums\n'
     contents += '    //--------------------------------------------\n\n'
+
     for [enum_name, enum_values] in get_valid_enum_categories().items():
         options_that_use_it = []
         for category in config:
@@ -330,6 +332,31 @@ def generate_public_settings_hpp(config):
         for enum_value in enum_values:
             contents += f'        {to_pascal_case(enum_value)},\n'
         contents += '    };\n\n'
+
+        contents += f'    static\n'
+        contents += f'    constexpr\n'
+        contents += f'    std::string_view\n'
+        contents += f'    toString({to_pascal_case(enum_name)} const e) {{\n'
+        contents += f'        switch (e) {{\n'
+        for enum_value in enum_values:
+            contents += f'             case {to_pascal_case(enum_name)}::{to_pascal_case(enum_value)}:\n'
+            contents += f'                  return "{enum_value}";\n'
+        contents += f'        }}\n'
+        contents += f'        return "";\n'
+        contents += '    }\n\n'
+
+        contents += f'    static\n'
+        contents += f'    constexpr\n'
+        contents += f'    bool\n'
+        contents += f'    fromString(std::string_view const str, {to_pascal_case(enum_name)}& e) {{\n'
+        for enum_value in enum_values:
+            contents += f'        if (str == "{enum_value}")\n'
+            contents += f'        {{\n'
+            contents += f'            e = {to_pascal_case(enum_name)}::{to_pascal_case(enum_value)};\n'
+            contents += f'            return true;\n'
+            contents += f'        }}\n'
+        contents += f'        return false;\n'
+        contents += '    }\n\n'
 
     for category in config:
         category_name = category['category']
@@ -437,7 +464,7 @@ def generate_public_settings_hpp(config):
             # print the default in cpp
             if cpp_default_value is not None:
                 cpp_type = to_cpp_type(option)
-                if cpp_type in ['bool', 'unsigned', 'int']:
+                if cpp_type in ['bool', 'unsigned', 'int', 'enum']:
                     cpp_type = f'static_cast<{cpp_type}>'
                 contents += f'{pad}.{to_camel_case("default")}Value = {cpp_type}({cpp_default_value}),\n'
         if 'relative-to' in option:
@@ -910,8 +937,7 @@ def generate_public_toolargs_cpp(config):
         contents += f'#include {header}\n'
     contents += '\n'
 
-    contents += 'namespace clang {\n'
-    contents += 'namespace mrdocs {\n\n'
+    contents += 'namespace clang::mrdocs {\n\n'
 
     # Main constructor that initializes all options
     contents += 'PublicToolArgs::\n'
@@ -1020,8 +1046,7 @@ def generate_public_toolargs_cpp(config):
     contents += '    return {};\n'
     contents += '}\n'
 
-    contents += '} // namespace mrdocs\n'
-    contents += '} // namespace clang\n\n'
+    contents += '} // namespace clang::mrdocs\n'
     return contents
 
 

@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -25,8 +26,7 @@
 
 #include <cstdlib>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 namespace {
 
@@ -101,6 +101,7 @@ DoGenerateAction(
     MRDOCS_TRY(Config::Settings::load_file(publicSettings, configPath, dirs));
     MRDOCS_TRY(toolArgs.apply(publicSettings, dirs, argv));
     MRDOCS_TRY(publicSettings.normalize(dirs));
+    report::setMinimumLevel(static_cast<report::Level>(publicSettings.logLevel));
     ThreadPool threadPool(publicSettings.concurrency);
     MRDOCS_TRY(
         std::shared_ptr<ConfigImpl const> config,
@@ -213,5 +214,4 @@ DoGenerateAction(
     return {};
 }
 
-} // mrdocs
-} // clang
+} // clang::mrdocs

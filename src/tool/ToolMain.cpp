@@ -108,10 +108,6 @@ mrdocs_main(int argc, char const** argv)
         return EXIT_FAILURE;
     }
 
-    // Apply report level
-    report::setMinimumLevel(report::getLevel(
-        toolArgs.report.getValue()));
-
     // Set up addons directory
 #ifdef __GNUC__
 #pragma GCC diagnostic push
@@ -124,6 +120,10 @@ mrdocs_main(int argc, char const** argv)
 #endif
     std::string execPath = llvm::sys::fs::getMainExecutable(argv[0], addressOfMain);
 
+    // Before `DoGenerateAction`, we use an error reporting level.
+    // DoGenerateAction will set the level to whatever is specified in
+    // the command line or the configuration file
+    report::setMinimumLevel(report::Level::error);
     auto res = getReferenceDirectories(execPath);
     if (!res)
     {
@@ -141,8 +141,7 @@ mrdocs_main(int argc, char const** argv)
     auto configPath = *std::move(expConfigPath);
 
     // Generate
-    auto exp = DoGenerateAction(configPath, dirs, argv);
-    if (!exp)
+    if (auto exp = DoGenerateAction(configPath, dirs, argv); !exp)
     {
         report::error("Generating reference failed: {}", exp.error());
     }
