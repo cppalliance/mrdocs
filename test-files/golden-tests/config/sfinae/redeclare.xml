@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <template>
+    <tparam name="T" class="type"/>
+    <function name="f" requires="std::is_class_v&lt;T&gt;" id="BLN6H1yQLtKanicO0huYQpQPbnk=">
+      <file short-path="redeclare.cpp" source-path="redeclare.cpp" line="11" class="def"/>
+      <file short-path="redeclare.cpp" source-path="redeclare.cpp" line="5"/>
+      <file short-path="redeclare.cpp" source-path="redeclare.cpp" line="8"/>
+      <param>
+        <type name="void"/>
+      </param>
+    </function>
+  </template>
+</namespace>
+</mrdocs>
