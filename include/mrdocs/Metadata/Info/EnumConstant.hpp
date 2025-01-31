@@ -34,6 +34,40 @@ struct EnumConstantInfo final
     }
 };
 
+MRDOCS_DECL
+void
+merge(EnumConstantInfo& I, EnumConstantInfo&& Other);
+
+/** Map a EnumConstantInfo to a dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    EnumConstantInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Info const&>(I), domCorpus);
+    if (!I.Initializer.Written.empty())
+    {
+        io.map("initializer", I.Initializer.Written);
+    }
+}
+
+/** Map the EnumConstantInfo to a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    EnumConstantInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
+
 } // clang::mrdocs
 
 #endif

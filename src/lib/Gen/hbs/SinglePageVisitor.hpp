@@ -54,8 +54,7 @@ public:
         respective tasks are also pushed to the executor group.
 
     */
-    template <class T>
-    requires std::derived_from<T, Info> || std::same_as<T, OverloadSet>
+    template <std::derived_from<Info> T>
     void operator()(T const& I);
 };
 

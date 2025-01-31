@@ -16,42 +16,23 @@
 
 namespace clang::mrdocs::hbs {
 
-template <class T>
-requires std::derived_from<T, Info> || std::same_as<T, OverloadSet>
+template <std::derived_from<Info> T>
 void
 MultiPageVisitor::
-operator()(T const& I0)
+operator()(T const& I)
 {
-    if constexpr (std::derived_from<T, Info>)
-    {
-        MRDOCS_CHECK_OR(shouldGenerate(I0));
-    }
+    MRDOCS_CHECK_OR(shouldGenerate(I));
 
     // Increment the count
     count_.fetch_add(1, std::memory_order_relaxed);
 
-    // If T is an OverloadSet, we make a copy for the lambda because
-    // these are temporary objects that don't live in the corpus.
-    // Otherwise, the lambda will capture a reference to the corpus Info.
-    auto Ref = [&I0] {
-        if constexpr (std::derived_from<T, Info>)
-        {
-            return std::ref(I0);
-        }
-        else if constexpr (std::same_as<T, OverloadSet>)
-        {
-            return OverloadSet(I0);
-        }
-    }();
-    ex_.async([this, Ref](Builder& builder)
+    ex_.async([this, &I](Builder& builder)
     {
-        T const& I = Ref;
-
         // ===================================
         // Open the output file
         // ===================================
-        std::string path = files::appendPath(outputPath_, builder.domCorpus.getURL(I));
-        std::string dir = files::getParentDir(path);
+        std::string const path = files::appendPath(outputPath_, builder.domCorpus.getURL(I));
+        std::string const dir = files::getParentDir(path);
         if (auto exp = files::createDirectory(dir); !exp)
         {
             exp.error().Throw();
@@ -86,26 +67,11 @@ operator()(T const& I0)
         // ===================================
         // Traverse the symbol members
         // ===================================
-        if constexpr (std::derived_from<T, Info>)
-        {
-            if constexpr(
-                T::isNamespace() ||
-                T::isRecord() ||
-                T::isEnum())
-            {
-                corpus_.traverseOverloads(I, *this);
-            }
-        }
-        else if constexpr (std::same_as<T, OverloadSet>)
-        {
-            corpus_.traverse(I, *this);
-        }
+        corpus_.traverse(I, *this);
     });
 }
 
 #define INFO(T) template void MultiPageVisitor::operator()<T##Info>(T##Info const&);
 #include <mrdocs/Metadata/InfoNodesPascal.inc>
-
-template void MultiPageVisitor::operator()<OverloadSet>(OverloadSet const&);
 
 } // clang::mrdocs::hbs

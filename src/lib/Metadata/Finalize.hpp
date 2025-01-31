@@ -13,12 +13,13 @@
 
 #include "lib/Lib/Info.hpp"
 #include "lib/Lib/Lookup.hpp"
+#include "lib/Lib/CorpusImpl.hpp"
 
 namespace clang::mrdocs {
 
 MRDOCS_DECL
 void
-finalize(InfoSet& Info, SymbolLookup& Lookup);
+finalize(CorpusImpl& corpus);
 
 } // clang::mrdocs
 

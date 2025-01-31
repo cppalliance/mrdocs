@@ -15,8 +15,7 @@
 #include <mrdocs/Support/Error.hpp>
 #include <ranges>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 //------------------------------------------------
 
@@ -54,7 +53,7 @@ globalNamespace() const noexcept
 void
 Corpus::
 qualifiedName(
-    const Info& I,
+    Info const& I,
     std::string& temp) const
 {
     temp.clear();
@@ -104,7 +103,7 @@ qualifiedName(
 }
 
 std::vector<SymbolID>
-getParents(Corpus const& C, const Info& I)
+getParents(Corpus const& C, Info const& I)
 {
     std::vector<SymbolID> parents;
     std::size_t n = 0;
@@ -127,5 +126,4 @@ getParents(Corpus const& C, const Info& I)
     return parents;
 }
 
-} // mrdocs
-} // clang
+} // clang::mrdocs

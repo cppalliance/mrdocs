@@ -15,8 +15,7 @@
 #include <utility>
 #include <tuple>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 /** A visitor for a type
 
@@ -74,8 +73,7 @@ public:
         @tparam Derived The derived type to visit
         @return The result of calling the function object
      */
-    template<std::derived_from<
-        std::remove_cvref_t<Base>> Derived>
+    template <std::derived_from<std::remove_cvref_t<Base>> Derived>
     decltype(auto)
     visit()
     {
@@ -121,7 +119,6 @@ makeVisitor(
         std::forward<ArgsTy>(args)...);
 }
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

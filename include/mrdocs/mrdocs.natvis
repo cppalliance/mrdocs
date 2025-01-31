@@ -25,6 +25,7 @@
 		<AlternativeType Name="clang::mrdocs::NamespaceInfo"/>
 		<AlternativeType Name="clang::mrdocs::RecordInfo"/>
 		<AlternativeType Name="clang::mrdocs::FunctionInfo"/>
+		<AlternativeType Name="clang::mrdocs::OverloadsInfo"/>
 		<AlternativeType Name="clang::mrdocs::EnumInfo"/>
 		<AlternativeType Name="clang::mrdocs::TypedefInfo"/>
 		<AlternativeType Name="clang::mrdocs::VariableInfo"/>
@@ -43,6 +44,7 @@
 			<ExpandedItem Condition="Kind == InfoKind::Namespace">(NamespaceInfo*)this,view(noinherit)</ExpandedItem>
 		    <ExpandedItem Condition="Kind == InfoKind::Record">(RecordInfo*)this,view(noinherit)</ExpandedItem>
 		    <ExpandedItem Condition="Kind == InfoKind::Function">*(FunctionInfo*)this,view(noinherit)</ExpandedItem>
+		    <ExpandedItem Condition="Kind == InfoKind::Overloads">*(OverloadsInfo*)this,view(noinherit)</ExpandedItem>
 		    <ExpandedItem Condition="Kind == InfoKind::Enum">(EnumInfo*)this,view(noinherit)</ExpandedItem>
 		    <ExpandedItem Condition="Kind == InfoKind::Typedef">(TypedefInfo*)this,view(noinherit)</ExpandedItem>
 		    <ExpandedItem Condition="Kind == InfoKind::Variable">(VariableInfo*)this,view(noinherit)</ExpandedItem>

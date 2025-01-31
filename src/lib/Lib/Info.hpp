@@ -18,8 +18,7 @@
 #include <memory>
 #include <unordered_set>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 /** A hash function for Info pointers.
 
@@ -51,7 +50,7 @@ struct InfoPtrHasher
     */
     std::size_t
     operator()(
-        const SymbolID& id) const;
+        SymbolID const& id) const;
 };
 
 /** Equality comparison for Info pointers.
@@ -89,7 +88,7 @@ struct InfoPtrEqual
     bool
     operator()(
         const std::unique_ptr<Info>& a,
-        const SymbolID& b) const;
+        SymbolID const& b) const;
 
     /** Returns `true` if the SymbolID is equal to the id of the Info object.
 
@@ -103,7 +102,7 @@ struct InfoPtrEqual
     */
     bool
     operator()(
-        const SymbolID& a,
+        SymbolID const& a,
         const std::unique_ptr<Info>& b) const;
 };
 
@@ -117,7 +116,6 @@ struct InfoPtrEqual
 using InfoSet = std::unordered_set<
     std::unique_ptr<Info>, InfoPtrHasher, InfoPtrEqual>;
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

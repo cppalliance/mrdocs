@@ -167,7 +167,7 @@ operator==(PolymorphicValue<NameInfo> const& lhs, PolymorphicValue<NameInfo> con
 
 MRDOCS_DECL
 std::string
-toString(const NameInfo& N);
+toString(NameInfo const& N);
 
 MRDOCS_DECL
 void

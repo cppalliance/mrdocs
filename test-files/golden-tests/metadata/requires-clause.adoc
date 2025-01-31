@@ -21,7 +21,7 @@
 | Name 
 
 | <<f,`f`>> 
-| <<g,`g`>> 
+| <<g-0d,`g`>> 
 |===
 
 [#A-0c]
@@ -79,7 +79,7 @@ f()
 requires (sizeof(U) &equals;&equals; 2);
 ----
 
-[#g]
+[#g-0d]
 == g
 
 

@@ -409,7 +409,7 @@ adjustCommandLine(
     // Add additional defines
     // ------------------------------------------------------
     // These are additional defines specified in the config file
-    for(const auto& def : (*config)->defines)
+    for(auto const& def : (*config)->defines)
     {
         new_cmdline.emplace_back(fmt::format("-D{}", def));
     }

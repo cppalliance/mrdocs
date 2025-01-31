@@ -31,8 +31,8 @@
 
 {{> symbol/signatures symbol }}
 {{/unless}}
-{{! Tranches }}
-{{#if symbol.interface}}
+{{! Members }}
+{{! Record interface }}
 {{#if (eq symbol.kind "record")}}
 {{#with symbol.interface}}
 {{>symbol/tranche tranche=public label="" is-namespace=false}}
@@ -42,24 +42,24 @@
 {{>symbol/tranche tranche=private label="Private" is-namespace=false}}
 
 {{/with}}
-{{else}}
-{{>symbol/tranche tranche=symbol.interface label="" is-namespace=true}}
+{{! Namespace members }}
+{{else if (eq symbol.kind "namespace")}}
+{{>symbol/tranche tranche=symbol.members label="" is-namespace=true}}
 
-{{/if}}
-{{else if (and symbol.members (ne symbol.kind "overloads"))}}
-{{! Members }}
+{{! Enum members }}
+{{else if (eq symbol.kind "enum")}}
 {{#> markup/dynamic-level-h }}Members{{/markup/dynamic-level-h}}
 
 [,cols=2]
 |===
 |Name |Description
-{{#each (filter_by symbol.members "isRegular" "isSeeBelow")}}
+{{#each (filter_by symbol.constants "isRegular" "isSeeBelow")}}
 {{#if (ne kind "enum-constant")}}
 |xref:{{{anchor}}}[`{{>symbol/name . nolink=true}}`]
 {{else}}
 |`{{>symbol/name . nolink=true}}`
 {{/if}}
-|{{{~doc.brief}}}
+|{{{~ doc.brief }}}
 {{/each}}
 |===
 

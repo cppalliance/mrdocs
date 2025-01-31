@@ -312,36 +312,28 @@ createContext(
     return ctx;
 }
 
-dom::Object
-Builder::
-createContext(
-    OverloadSet const& I)
-{
-    dom::Object ctx;
-    ctx.set("symbol", domCorpus.construct(I));
-    ctx.set("config", domCorpus->config.object());
-    return ctx;
-}
-
-template<class T>
-requires std::derived_from<T, Info> || std::same_as<T, OverloadSet>
+template <std::derived_from<Info> T>
 Expected<void>
 Builder::
 operator()(std::ostream& os, T const& I)
 {
     std::string const templateFile = fmt::format("index.{}.hbs", domCorpus.fileExtension);
-    dom::Object ctx = createContext(I);
+    dom::Object const ctx = createContext(I);
 
-    auto& config = domCorpus->config;
-    bool isSinglePage = !config->multipage;
-    if (config->embedded ||
-        isSinglePage)
+    if (auto& config = domCorpus->config;
+        config->embedded ||
+        !config->multipage)
     {
+        // Single page or embedded pages render the index template directly
+        // without the wrapper
         return callTemplate(os, templateFile, ctx);
     }
 
+    // Multipage output: render the wrapper template
+    // The context receives the original symbol and the contents from rendering
+    // the index template
     auto const wrapperFile = fmt::format("wrapper.{}.hbs", domCorpus.fileExtension);
-    dom::Object wrapperCtx = createFrame(ctx);
+    dom::Object const wrapperCtx = createFrame(ctx);
     wrapperCtx.set("contents", dom::makeInvocable([this, &I, templateFile, &os](
         dom::Value const&) -> Expected<dom::Value>
         {
@@ -351,6 +343,10 @@ operator()(std::ostream& os, T const& I)
         }));
     return callTemplate(os, wrapperFile, wrapperCtx);
 }
+
+// Compile the Builder::operator() for each Info type
+#define INFO(T) template Expected<void> Builder::operator()<T##Info>(std::ostream&, T##Info const&);
+#include <mrdocs/Metadata/InfoNodesPascal.inc>
 
 Expected<void>
 Builder::
@@ -437,11 +433,6 @@ commonTemplatesDir(std::string_view subdir) const
         subdir);
 }
 
-// Define Builder::operator() for each Info type
-#define INFO(T) template Expected<void> Builder::operator()<T##Info>(std::ostream&, T##Info const&);
-#include <mrdocs/Metadata/InfoNodesPascal.inc>
-
-template Expected<void> Builder::operator()<OverloadSet>(std::ostream&, OverloadSet const&);
 
 } // hbs
 } // mrdocs

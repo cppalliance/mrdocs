@@ -273,6 +273,26 @@
       <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="58"/>
       <type id="3fOXhba/en8Im2gUSThzllitRc0=" name="A&lt;long&gt;::B&lt;double&gt;"/>
     </field>
+    <field name="m10" id="M37GfnOSLu7LdwyWNUKiLSwQU8E=">
+      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="69"/>
+      <type id="rzmzIDLemEwnRqvVCiQsLO9rHE4=" name="A&lt;float&gt;::B&lt;double&gt;::D&lt;bool&gt;"/>
+    </field>
+    <field name="m11" id="zs4yFWypzJvC9fBTuqRIWShHXDI=">
+      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="70"/>
+      <type id="P+rxL5vI4ct+gzn9YkO97Pt7Ras=" name="A&lt;long&gt;::B&lt;double&gt;::D&lt;bool&gt;"/>
+    </field>
+    <field name="m12" id="npnYjIFI4UqRV4lM1m0vGdOXafw=">
+      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="71"/>
+      <type id="NNxnP63PrqW2AkyLFpJx0uaNuTk=" name="A&lt;long&gt;::B&lt;float&gt;::D&lt;bool&gt;"/>
+    </field>
+    <field name="m13" id="m3ZkUTvg5FF0YzKrQCCIMDL4Gjk=">
+      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="72"/>
+      <type id="E3rBDckOC8QkP+2YLNtbMxg69mc=" name="A&lt;unsigned int&gt;::B&lt;float&gt;::D&lt;bool&gt;"/>
+    </field>
+    <field name="m14" id="lvoZQmyEhLRRqpEiNgzPQH1SOJ0=">
+      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="73"/>
+      <type id="eYdoT3vlHlbkG+t3+ckhZAqrnlY=" name="A&lt;short&gt;::B&lt;void&gt;::D&lt;bool&gt;"/>
+    </field>
     <field name="m2" id="QerDxfhCX/VklfvPy6KMWR5/grA=">
       <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="59"/>
       <type id="sJKQ/XsqBeYlnpwi1s54+RRv5NA=" name="A&lt;long&gt;::B&lt;float&gt;"/>
@@ -304,26 +324,6 @@
     <field name="m9" id="HXroC5e+xF7qrqN/j/TCTfZsqRM=">
       <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="67"/>
       <type id="uGKF2n5ovA4i95uQxRmzyMq2uqY=" name="A&lt;short&gt;::B&lt;void&gt;::C"/>
-    </field>
-    <field name="m10" id="M37GfnOSLu7LdwyWNUKiLSwQU8E=">
-      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="69"/>
-      <type id="rzmzIDLemEwnRqvVCiQsLO9rHE4=" name="A&lt;float&gt;::B&lt;double&gt;::D&lt;bool&gt;"/>
-    </field>
-    <field name="m11" id="zs4yFWypzJvC9fBTuqRIWShHXDI=">
-      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="70"/>
-      <type id="P+rxL5vI4ct+gzn9YkO97Pt7Ras=" name="A&lt;long&gt;::B&lt;double&gt;::D&lt;bool&gt;"/>
-    </field>
-    <field name="m12" id="npnYjIFI4UqRV4lM1m0vGdOXafw=">
-      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="71"/>
-      <type id="NNxnP63PrqW2AkyLFpJx0uaNuTk=" name="A&lt;long&gt;::B&lt;float&gt;::D&lt;bool&gt;"/>
-    </field>
-    <field name="m13" id="m3ZkUTvg5FF0YzKrQCCIMDL4Gjk=">
-      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="72"/>
-      <type id="E3rBDckOC8QkP+2YLNtbMxg69mc=" name="A&lt;unsigned int&gt;::B&lt;float&gt;::D&lt;bool&gt;"/>
-    </field>
-    <field name="m14" id="lvoZQmyEhLRRqpEiNgzPQH1SOJ0=">
-      <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="73"/>
-      <type id="eYdoT3vlHlbkG+t3+ckhZAqrnlY=" name="A&lt;short&gt;::B&lt;void&gt;::D&lt;bool&gt;"/>
     </field>
   </struct>
 </namespace>

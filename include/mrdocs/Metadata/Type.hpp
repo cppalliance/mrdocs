@@ -441,7 +441,7 @@ operator==(PolymorphicValue<TypeInfo> const& lhs, PolymorphicValue<TypeInfo> con
 MRDOCS_DECL
 std::string
 toString(
-    const TypeInfo& T,
+    TypeInfo const& T,
     std::string_view Name = "");
 
 } // clang::mrdocs

@@ -118,7 +118,7 @@ struct C
 |===
 | Name 
 
-| <<A-f,`f`>> 
+| <<C-f-082,`f`>> 
 |===
 === Using Declarations
 
@@ -126,13 +126,68 @@ struct C
 |===
 | Name 
 
-| <<C-f-08,`f`>> 
+| <<C-f-081,`f`>> 
 | <<C-f-03,`f`>> 
 |===
 
 
 
-[#C-f-08]
+[#C-f-082]
+== <<C,C>>::f
+
+
+=== Synopsis
+
+
+Declared in `&lt;using&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<A-f,f>>(int);
+----
+
+[.small]#<<A-f,_» more..._>>#
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<B-f,f>>(bool);
+----
+
+[.small]#<<B-f,_» more..._>>#
+
+[#A-f]
+== <<A,A>>::f
+
+
+=== Synopsis
+
+
+Declared in `&lt;using&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(int);
+----
+
+[#B-f]
+== <<B,B>>::f
+
+
+=== Synopsis
+
+
+Declared in `&lt;using&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(bool);
+----
+
+[#C-f-081]
 == <<C,C>>::f
 
 

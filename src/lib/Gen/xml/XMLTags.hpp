@@ -61,7 +61,7 @@ private:
 //------------------------------------------------
 
 // Converters for attributes
-std::string toString(SymbolID const& id);
+std::string toBase64Str(SymbolID const& id);
 
 //------------------------------------------------
 
@@ -86,7 +86,7 @@ struct Attribute
     Attribute(
         SymbolID id)
         : name("id")
-        , value(toString(id))
+        , value(toBase64Str(id))
         , pred(id != SymbolID::invalid)
     {
     }

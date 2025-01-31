@@ -39,6 +39,41 @@ struct ConceptInfo final
     }
 };
 
+MRDOCS_DECL
+void
+merge(ConceptInfo& I, ConceptInfo&& Other);
+
+/** Map a ConceptInfo to a dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    ConceptInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Info const&>(I), domCorpus);
+    io.map("template", I.Template);
+    if (!I.Constraint.Written.empty())
+    {
+        io.map("constraint", I.Constraint.Written);
+    }
+}
+
+/** Map the ConceptInfo to a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    ConceptInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
+
 } // clang::mrdocs
 
 #endif

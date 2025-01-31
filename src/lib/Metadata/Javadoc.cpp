@@ -182,7 +182,7 @@ Javadoc::
 operator==(Javadoc const& other) const noexcept
 {
     return std::ranges::equal(blocks_, other.blocks_,
-        [](const auto& a, const auto& b)
+        [](auto const& a, auto const& b)
         {
             return a->equals(static_cast<const doc::Node&>(*b));
         });

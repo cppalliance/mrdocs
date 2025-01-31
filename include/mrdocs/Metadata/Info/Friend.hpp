@@ -38,6 +38,50 @@ struct FriendInfo final
     }
 };
 
+MRDOCS_DECL
+void
+merge(FriendInfo& I, FriendInfo&& Other);
+
+/** Map a FriendInfo to a dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    FriendInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Info const&>(I), domCorpus);
+    if (I.FriendSymbol)
+    {
+        io.defer("name", [&I, domCorpus]{
+            return dom::ValueFrom(I.FriendSymbol, domCorpus).get("name");
+        });
+        io.map("symbol", I.FriendSymbol);
+    }
+    else if (I.FriendType)
+    {
+        io.defer("name", [&]{
+            return dom::ValueFrom(I.FriendType, domCorpus).get("name");
+        });
+        io.map("type", I.FriendType);
+    }
+}
+
+/** Map the FriendInfo to a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    FriendInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
+
 } // clang::mrdocs
 
 #endif

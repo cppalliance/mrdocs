@@ -57,8 +57,7 @@ public:
         this function renders the wrapper template
         with the index template as the contents.
      */
-    template<class T>
-    requires std::derived_from<T, Info> || std::same_as<T, OverloadSet>
+    template<std::derived_from<Info> T>
     Expected<void>
     operator()(std::ostream& os, T const&);
 
@@ -114,10 +113,6 @@ private:
      */
     dom::Object
     createContext(Info const& I);
-
-    /// @copydoc createContext(Info const&)
-    dom::Object
-    createContext(OverloadSet const& OS);
 
     /** Render a Handlebars template from the templates directory.
      */

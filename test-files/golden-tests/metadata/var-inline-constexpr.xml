@@ -2,28 +2,51 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
-  <variable name="var_inline_constexpr" id="/HfsnrPPmN325zi27Blg78dY0HE=">
-    <file short-path="var-inline-constexpr.cpp" source-path="var-inline-constexpr.cpp" line="1" class="def"/>
-    <attr id="is-inline"/>
-    <attr id="is-constexpr"/>
+  <variable name="var" id="9s8AEcaO/PYLDINeClULQZuqcls=">
+    <file short-path="var-inline-constexpr.cpp" source-path="var-inline-constexpr.cpp" line="9" class="def"/>
     <type name="int"/>
-  </variable>
-  <variable name="var_constexpr" id="fWXHXBdM9s2COMhYT0j3aWad+0I=">
-    <file short-path="var-inline-constexpr.cpp" source-path="var-inline-constexpr.cpp" line="3" class="def"/>
-    <attr id="is-constexpr"/>
-    <type name="int"/>
-  </variable>
-  <variable name="var_inline_const" id="pn99V2QzcOsMfIXOuUkZkX5qPxM=">
-    <file short-path="var-inline-constexpr.cpp" source-path="var-inline-constexpr.cpp" line="5" class="def"/>
-    <attr id="is-inline"/>
-    <type name="int" cv-qualifiers="const"/>
   </variable>
   <variable name="var_const" id="zUgw7RZYhWQ0Wdr483M4dEkcXFU=">
     <file short-path="var-inline-constexpr.cpp" source-path="var-inline-constexpr.cpp" line="7" class="def"/>
     <type name="int" cv-qualifiers="const"/>
   </variable>
-  <variable name="var" id="9s8AEcaO/PYLDINeClULQZuqcls=">
-    <file short-path="var-inline-constexpr.cpp" source-path="var-inline-constexpr.cpp" line="9" class="def"/>
+  <template>
+    <tparam name="T" class="type"/>
+    <variable name="var_const_t" id="23TCuxWNlj84e/NoEZJsI1rADQA=">
+      <file short-path="var-inline-constexpr.cpp" source-path="var-inline-constexpr.cpp" line="20" class="def"/>
+      <type name="T" cv-qualifiers="const"/>
+    </variable>
+  </template>
+  <variable name="var_constexpr" id="fWXHXBdM9s2COMhYT0j3aWad+0I=">
+    <file short-path="var-inline-constexpr.cpp" source-path="var-inline-constexpr.cpp" line="3" class="def"/>
+    <attr id="is-constexpr"/>
+    <type name="int"/>
+  </variable>
+  <template>
+    <tparam name="T" class="type"/>
+    <variable name="var_constexpr_t" id="+c5FvmsSJNn7o5ii4DyReMV38C4=">
+      <file short-path="var-inline-constexpr.cpp" source-path="var-inline-constexpr.cpp" line="14" class="def"/>
+      <attr id="is-constexpr"/>
+      <type name="T"/>
+    </variable>
+  </template>
+  <variable name="var_inline_const" id="pn99V2QzcOsMfIXOuUkZkX5qPxM=">
+    <file short-path="var-inline-constexpr.cpp" source-path="var-inline-constexpr.cpp" line="5" class="def"/>
+    <attr id="is-inline"/>
+    <type name="int" cv-qualifiers="const"/>
+  </variable>
+  <template>
+    <tparam name="T" class="type"/>
+    <variable name="var_inline_const_t" id="eeYDvHDDTr7yHd4hDvbGxxhRsdg=">
+      <file short-path="var-inline-constexpr.cpp" source-path="var-inline-constexpr.cpp" line="17" class="def"/>
+      <attr id="is-inline"/>
+      <type name="T" cv-qualifiers="const"/>
+    </variable>
+  </template>
+  <variable name="var_inline_constexpr" id="/HfsnrPPmN325zi27Blg78dY0HE=">
+    <file short-path="var-inline-constexpr.cpp" source-path="var-inline-constexpr.cpp" line="1" class="def"/>
+    <attr id="is-inline"/>
+    <attr id="is-constexpr"/>
     <type name="int"/>
   </variable>
   <template>
@@ -33,29 +56,6 @@
       <attr id="is-inline"/>
       <attr id="is-constexpr"/>
       <type name="T"/>
-    </variable>
-  </template>
-  <template>
-    <tparam name="T" class="type"/>
-    <variable name="var_constexpr_t" id="+c5FvmsSJNn7o5ii4DyReMV38C4=">
-      <file short-path="var-inline-constexpr.cpp" source-path="var-inline-constexpr.cpp" line="14" class="def"/>
-      <attr id="is-constexpr"/>
-      <type name="T"/>
-    </variable>
-  </template>
-  <template>
-    <tparam name="T" class="type"/>
-    <variable name="var_inline_const_t" id="eeYDvHDDTr7yHd4hDvbGxxhRsdg=">
-      <file short-path="var-inline-constexpr.cpp" source-path="var-inline-constexpr.cpp" line="17" class="def"/>
-      <attr id="is-inline"/>
-      <type name="T" cv-qualifiers="const"/>
-    </variable>
-  </template>
-  <template>
-    <tparam name="T" class="type"/>
-    <variable name="var_const_t" id="23TCuxWNlj84e/NoEZJsI1rADQA=">
-      <file short-path="var-inline-constexpr.cpp" source-path="var-inline-constexpr.cpp" line="20" class="def"/>
-      <type name="T" cv-qualifiers="const"/>
     </variable>
   </template>
   <template>

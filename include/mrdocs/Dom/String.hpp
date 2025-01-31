@@ -31,7 +31,7 @@ concept StringLikeTy =
 class MRDOCS_DECL
     String final
 {
-    const char* ptr_ = nullptr;
+    char const* ptr_ = nullptr;
 
     bool
     is_literal() const noexcept
@@ -52,7 +52,7 @@ class MRDOCS_DECL
     */
     void
     construct(
-        const char* s,
+        char const* s,
         std::size_t n);
 
 public:
@@ -79,7 +79,7 @@ public:
         The newly constructed string acquries shared
         ownership of the string referenced by other.
     */
-    String(const String& other) noexcept;
+    String(String const& other) noexcept;
 
     /** Destructor.
     */
@@ -116,7 +116,7 @@ public:
         @param `len` The length of the string.
     */
     String(
-        const char* str,
+        char const* str,
         std::size_t len)
     {
         // empty strings are stored as nullptr
@@ -159,7 +159,7 @@ public:
     */
     String&
     operator=(
-        const String& other) noexcept
+        String const& other) noexcept
     {
         String temp(other);
         swap(temp);
@@ -223,7 +223,7 @@ public:
         The pointed-to character buffer returned
         by this function is always null-terminated.
     */
-    const char* data() const noexcept;
+    char const* data() const noexcept;
 
     /** Return the string.
 

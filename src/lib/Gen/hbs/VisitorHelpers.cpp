@@ -71,35 +71,48 @@ Info const*
 findPrimarySiblingWithUrl(Corpus const& c, Info const& I, Info const& parent)
 {
     // Look for the primary sibling in the parent scope
-    auto const* parentScope = dynamic_cast<ScopeInfo const*>(&parent);
-    MRDOCS_CHECK_OR(parentScope, nullptr);
-    for (auto& siblingIDs = parentScope->Lookups.at(I.Name);
-         SymbolID const& siblingID: siblingIDs)
+    MRDOCS_CHECK_OR(parent, nullptr);
+    return visit(parent, [&]<typename InfoTy>(InfoTy const& U)
+        -> Info const*
     {
-        Info const* sibling = c.find(siblingID);
-        if (!sibling ||
-            !shouldGenerate(*sibling) ||
-            sibling->Name != I.Name)
+        if constexpr (InfoParent<InfoTy>)
         {
-            continue;
-        }
-        bool const isPrimarySibling = visit(*sibling, [&](auto const& U)
-            {
-                if constexpr (requires { U.Template; })
+            namespace stdv = std::ranges::views;
+            auto sameNameSiblings =
+                allMembers(U) |
+                stdv::transform([&](SymbolID const& siblingID)
                 {
-                    std::optional<TemplateInfo> const& Template = U.Template;
-                    MRDOCS_CHECK_OR(Template, false);
-                    return !Template->Params.empty() && Template->Args.empty();
+                    return c.find(siblingID);
+                }) |
+                stdv::filter([&](Info const* sibling)
+                {
+                    return sibling && sibling->Name == I.Name;
+                });
+            for (Info const* sibling: sameNameSiblings)
+            {
+                if (!sibling ||
+                    !shouldGenerate(*sibling))
+                {
+                    continue;
                 }
-                return false;
-            });
-        if (!isPrimarySibling)
-        {
-            continue;
+                bool const isPrimarySibling = visit(*sibling, [&](auto const& V)
+                {
+                    if constexpr (requires { V.Template; })
+                    {
+                        std::optional<TemplateInfo> const& Template = V.Template;
+                        MRDOCS_CHECK_OR(Template, false);
+                        return !Template->Params.empty() && Template->Args.empty();
+                    }
+                    return false;
+                });
+                if (isPrimarySibling)
+                {
+                    return sibling;
+                }
+            }
         }
-        return sibling;
-    }
-    return nullptr;
+        return nullptr;
+    });
 }
 
 Info const*

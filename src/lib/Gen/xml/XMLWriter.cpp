@@ -26,9 +26,7 @@
 //
 //------------------------------------------------
 
-namespace clang {
-namespace mrdocs {
-namespace xml {
+namespace clang::mrdocs::xml {
 
 struct XMLWriter::XmlKey
 {
@@ -54,9 +52,7 @@ struct XMLWriter::GenKey
     }
 };
 
-} // xml
-} // mrdocs
-} // clang
+} // clang::mrdocs::xml
 
 template<>
 struct llvm::yaml::MappingTraits<
@@ -97,9 +93,7 @@ struct llvm::yaml::MappingTraits<
     }
 };
 
-namespace clang {
-namespace mrdocs {
-namespace xml {
+namespace clang::mrdocs::xml {
 
 //------------------------------------------------
 //
@@ -195,13 +189,11 @@ XMLWriter::
 operator()(
     T const& I)
 {
-    Info const& base = I;
-    if (base.Extraction == ExtractionMode::Dependency)
+    if (Info const& base = I;
+        base.Extraction == ExtractionMode::Dependency)
     {
         return;
     }
-
-
     #define INFO(Type) if constexpr(T::is##Type()) write##Type(I);
     #include <mrdocs/Metadata/InfoNodesPascal.inc>
 }
@@ -220,9 +212,11 @@ writeNamespace(
         { "is-inline", "1", I.IsInline}
     });
     writeJavadoc(I.javadoc);
-    for(const SymbolID& id : I.UsingDirectives)
+    for (SymbolID const& id: I.UsingDirectives)
+    {
         tags_.write("using-directive", {}, { { id } });
-    corpus_.traverse(I, *this);
+    }
+    corpus_.traverse({.ordered=true}, I, *this);
     tags_.close(namespaceTagName);
 }
 
@@ -248,7 +242,7 @@ writeEnum(
 
     writeJavadoc(I.javadoc);
 
-    corpus_.traverse(I, *this);
+    corpus_.traverse({.ordered=true}, I, *this);
 
     tags_.close(enumTagName);
 }
@@ -356,6 +350,14 @@ writeFunction(
     tags_.close(functionTagName);
 
     closeTemplate(I.Template);
+}
+
+void
+XMLWriter::
+writeOverloads(
+    OverloadsInfo const& I)
+{
+    corpus_.traverse({.ordered=true}, I, *this);
 }
 
 void
@@ -511,7 +513,7 @@ writeRecord(
 
     writeJavadoc(I.javadoc);
 
-    corpus_.traverse(I, *this);
+    corpus_.traverse({.ordered=true}, I, *this);
 
     tags_.close(tagName);
 
@@ -550,7 +552,7 @@ writeTypedef(
 void
 XMLWriter::
 writeField(
-    const FieldInfo& I)
+    FieldInfo const& I)
 {
     std::string_view tag_name = dataMemberTagName;
     std::string bit_width;
@@ -668,9 +670,9 @@ openTemplate(
         {I->Primary}
     });
 
-    for(const auto& tparam : I->Params)
+    for(auto const& tparam : I->Params)
         writeTemplateParam(*tparam, tags_);
-    for(const auto& targ : I->Args)
+    for(auto const& targ : I->Args)
         writeTemplateArg(*targ, tags_);
 }
 
@@ -687,17 +689,17 @@ closeTemplate(
 void
 XMLWriter::
 writeSpecialization(
-    const SpecializationInfo& I)
+    SpecializationInfo const& I)
 {
     tags_.open(specializationTagName, {
         {I.id},
-        {"primary", toString(I.Primary) }
+        {"primary", toBase64Str(I.Primary) }
     });
 
-    for(const auto& targ : I.Args)
+    for(auto const& targ : I.Args)
         writeTemplateArg(*targ, tags_);
 
-    corpus_.traverse(I, *this);
+    corpus_.traverse({.ordered=true}, I, *this);
 
     tags_.close(specializationTagName);
 }
@@ -1060,6 +1062,4 @@ writeTParam(
     tags_.close("tparam");
 }
 
-} // xml
-} // mrdocs
-} // clang
+} // clang::mrdocs::xml

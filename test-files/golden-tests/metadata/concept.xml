@@ -4,12 +4,6 @@
 <namespace id="//////////////////////////8=">
   <template>
     <tparam name="T" class="type"/>
-    <concept name="C" id="Bzh2Bz1ZBW0d6sKvxtXunIUU31k=" constraint="sizeof(T) == sizeof(int)">
-      <file short-path="concept.cpp" source-path="concept.cpp" line="1"/>
-    </concept>
-  </template>
-  <template>
-    <tparam name="T" class="type"/>
     <function name="f" id="PmhXjCXUJYVnj/a7NhfjjSesyp0=">
       <file short-path="concept.cpp" source-path="concept.cpp" line="4"/>
     </function>
@@ -19,5 +13,11 @@
     <type class="auto" keyword="auto" constraint="C">
     </type>
   </variable>
+  <template>
+    <tparam name="T" class="type"/>
+    <concept name="C" id="Bzh2Bz1ZBW0d6sKvxtXunIUU31k=" constraint="sizeof(T) == sizeof(int)">
+      <file short-path="concept.cpp" source-path="concept.cpp" line="1"/>
+    </concept>
+  </template>
 </namespace>
 </mrdocs>

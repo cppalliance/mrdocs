@@ -21,8 +21,7 @@
 #include <ranges>
 #include <unordered_map>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 class LookupTable
 {
@@ -31,12 +30,12 @@ class LookupTable
     // (e.g. unscoped enums and inline namespaces) will
     // have their members added to the table as well
     std::unordered_multimap<
-        std::string_view, const Info*> lookups_;
+        std::string_view, Info const*> lookups_;
 
 public:
     LookupTable(
-        const Info& info,
-        const Corpus& corpus);
+        Info const& info,
+        Corpus const& corpus);
 
     auto lookup(std::string_view name) const
     {
@@ -45,48 +44,51 @@ public:
             first, last) | std::views::values;
     }
 
-    void add(std::string_view name, const Info* info)
+    void add(std::string_view name, Info const* info)
     {
         lookups_.emplace(name, info);
     }
 };
 
+/*  A tool for looking up symbols by name
+
+    This class provides a way to look up symbols by name.
+
+    It is mainly used to resolve references in the
+    documentation.
+ */
 class SymbolLookup
 {
-    const Corpus& corpus_;
+    Corpus const& corpus_;
 
     // maps symbol ID to its lookup table, if lookup is supported
     std::unordered_map<
-        const Info*,
+        Info const*,
         LookupTable> lookup_tables_;
 
     struct LookupCallback
     {
         virtual ~LookupCallback() = default;
-        virtual bool operator()(const Info&) = 0;
+        virtual bool operator()(Info const&) = 0;
     };
 
     template<typename Fn>
     auto makeHandler(Fn& fn);
 
-    const Info*
-    adjustLookupContext(const Info* context);
+    Info const*
+    adjustLookupContext(Info const* context);
 
-    const Info*
-    lookThroughTypedefs(const Info* I);
+    Info const*
+    lookThroughTypedefs(Info const* I);
 
-    const Info*
-    getTypeAsTag(
-        const std::unique_ptr<TypeInfo>& T);
-
-    const Info*
+    Info const*
     lookupInContext(
-        const Info* context,
+        Info const* context,
         std::string_view name,
         bool for_nns,
         LookupCallback& callback);
 
-    const Info*
+    Info const*
     lookupUnqualifiedImpl(
         const Info* context,
         std::string_view name,
@@ -155,7 +157,6 @@ makeHandler(Fn& fn)
     return LookupCallbackImpl(fn);
 }
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

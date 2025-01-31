@@ -2,6 +2,9 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
+  <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
+    <file short-path="ns-variables.cpp" source-path="ns-variables.cpp" line="14" class="def"/>
+  </struct>
   <variable name="i" id="X2Wd7fyQ8BJNJ0tn4nnA77ckJM8=">
     <file short-path="ns-variables.cpp" source-path="ns-variables.cpp" line="3" class="def"/>
     <attr id="is-constexpr"/>
@@ -30,9 +33,6 @@
     <file short-path="ns-variables.cpp" source-path="ns-variables.cpp" line="12" class="def"/>
     <type name="double"/>
   </variable>
-  <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
-    <file short-path="ns-variables.cpp" source-path="ns-variables.cpp" line="14" class="def"/>
-  </struct>
   <variable name="t" id="eFAdMVIx9F2Zyx0LmK/nCDOhmhA=">
     <file short-path="ns-variables.cpp" source-path="ns-variables.cpp" line="16"/>
     <attr id="storage-class" name="extern" value="1"/>

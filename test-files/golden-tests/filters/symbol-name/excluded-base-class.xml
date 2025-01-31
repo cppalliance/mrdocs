@@ -8,6 +8,9 @@
       <base>
         <type id="9QgUJNKn+WNP3bawIZL9jzTlEGc=" name="B::C"/>
       </base>
+      <function name="f" id="BcIYmKdVh0f6TsMPCA/M0Cmr9VI=">
+        <file short-path="excluded-base-class.cpp" source-path="excluded-base-class.cpp" line="6"/>
+      </function>
       <function name="g" id="o+85JO3Sv4bIWiG3+bfyUw5gJWI=">
         <file short-path="excluded-base-class.cpp" source-path="excluded-base-class.cpp" line="17"/>
         <attr id="has-override"/>
@@ -25,6 +28,13 @@
       <base>
         <type id="9QgUJNKn+WNP3bawIZL9jzTlEGc=" name="B::C"/>
       </base>
+      <function name="f" id="e7VYD0d5BKg0c6yEn8zt92t304s=">
+        <file short-path="excluded-base-class.cpp" source-path="excluded-base-class.cpp" line="6"/>
+      </function>
+      <function name="g" id="JgPp0cAF/suYYKB1RQalvRP+hjk=">
+        <file short-path="excluded-base-class.cpp" source-path="excluded-base-class.cpp" line="7"/>
+        <attr id="is-virtual-as-written"/>
+      </function>
       <function name="h" id="KiY+7o+uUp3h7bndNOpI2AuCrAE=">
         <file short-path="excluded-base-class.cpp" source-path="excluded-base-class.cpp" line="29"/>
         <attr id="has-override"/>

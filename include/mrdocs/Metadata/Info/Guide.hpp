@@ -11,9 +11,11 @@
 #ifndef MRDOCS_API_METADATA_GUIDE_HPP
 #define MRDOCS_API_METADATA_GUIDE_HPP
 
+#include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Source.hpp>
 #include <mrdocs/Metadata/Template.hpp>
+#include <mrdocs/Metadata/Info/Function.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 #include <vector>
 
@@ -46,9 +48,42 @@ struct GuideInfo final
 
     explicit GuideInfo(SymbolID ID) noexcept
         : InfoCommonBase(ID)
-    {
-    }
+    {}
 };
+
+MRDOCS_DECL
+void
+merge(GuideInfo& I, GuideInfo&& Other);
+
+/** Map a GuideInfo to a dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    GuideInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Info const&>(I), domCorpus);
+    io.map("params", dom::LazyArray(I.Params, domCorpus));
+    io.map("deduced", I.Deduced);
+    io.map("template", I.Template);
+    io.map("explicitSpec", I.Explicit);
+}
+
+/** Map the GuideInfo to a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    GuideInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
 
 } // clang::mrdocs
 

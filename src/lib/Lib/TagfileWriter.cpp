@@ -9,7 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "../Gen/xml/CXXTags.hpp"
+#include "lib/Gen/xml/CXXTags.hpp"
 #include "TagfileWriter.hpp"
 #include "lib/Gen/hbs/VisitorHelpers.hpp"
 #include "lib/Lib/ConfigImpl.hpp"
@@ -137,7 +137,7 @@ writeNamespace(
         tags_.write("filename", generateFilename(I));
 
         // Write the class-like members of this namespace
-        corpus_->orderedTraverse(I, [this]<typename U>(U const& J)
+        corpus_->traverse(I, [this]<typename U>(U const& J)
         {
             if (!hbs::shouldGenerate(J))
             {
@@ -154,7 +154,7 @@ writeNamespace(
         });
 
         // Write the function-like members of this namespace
-        corpus_->orderedTraverse(I, [this]<typename U>(U const& J)
+        corpus_->traverse(I, [this]<typename U>(U const& J)
         {
             if constexpr (U::isFunction())
             {
@@ -166,7 +166,7 @@ writeNamespace(
     }
 
     // Write compound elements for the members of this namespace
-    corpus_->orderedTraverse(I, [this]<typename U>(U const& J)
+    corpus_->traverse(I, [this]<typename U>(U const& J)
         {
             this->operator()(J);
         });
@@ -187,7 +187,7 @@ writeClassLike(
     if constexpr (T::isRecord())
     {
         // Write the function-like members of this record
-        corpus_->orderedTraverse(I, [this]<typename U>(U const& J)
+        corpus_->traverse(I, [this]<typename U>(U const& J)
         {
             if constexpr (U::isFunction())
             {

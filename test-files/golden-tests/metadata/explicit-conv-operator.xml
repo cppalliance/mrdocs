@@ -11,6 +11,18 @@
       </return>
     </function>
   </struct>
+  <template>
+    <tparam name="B" class="non-type" type="bool"/>
+    <struct name="ExplicitExpression" id="ztb0u1Q4SVBUQ0roTOM7MFlUt/o=">
+      <file short-path="explicit-conv-operator.cpp" source-path="explicit-conv-operator.cpp" line="15" class="def"/>
+      <function class="conversion" name="operator bool" explicit-spec="explicit(B)" id="q6N8XkMK9WWWGKNQnlx/o2E1EYc=">
+        <file short-path="explicit-conv-operator.cpp" source-path="explicit-conv-operator.cpp" line="17"/>
+        <return>
+          <type name="bool"/>
+        </return>
+      </function>
+    </struct>
+  </template>
   <struct name="ExplicitFalse" id="Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=">
     <file short-path="explicit-conv-operator.cpp" source-path="explicit-conv-operator.cpp" line="7" class="def"/>
     <function class="conversion" name="operator bool" explicit-spec="explicit(false)" id="hJXOxv26Y9uxUYMMVZRsp3Wps4A=">
@@ -29,17 +41,5 @@
       </return>
     </function>
   </struct>
-  <template>
-    <tparam name="B" class="non-type" type="bool"/>
-    <struct name="ExplicitExpression" id="ztb0u1Q4SVBUQ0roTOM7MFlUt/o=">
-      <file short-path="explicit-conv-operator.cpp" source-path="explicit-conv-operator.cpp" line="15" class="def"/>
-      <function class="conversion" name="operator bool" explicit-spec="explicit(B)" id="q6N8XkMK9WWWGKNQnlx/o2E1EYc=">
-        <file short-path="explicit-conv-operator.cpp" source-path="explicit-conv-operator.cpp" line="17"/>
-        <return>
-          <type name="bool"/>
-        </return>
-      </function>
-    </struct>
-  </template>
 </namespace>
 </mrdocs>

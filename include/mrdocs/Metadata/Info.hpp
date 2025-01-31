@@ -12,18 +12,18 @@
 #ifndef MRDOCS_API_METADATA_INFO_HPP
 #define MRDOCS_API_METADATA_INFO_HPP
 
-#include <memory>
-#include <string>
-#include <mrdocs/ADT/PolymorphicValue.hpp>
+#include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
+#include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/ExtractionMode.hpp>
 #include <mrdocs/Metadata/Javadoc.hpp>
 #include <mrdocs/Metadata/Specifiers.hpp>
 #include <mrdocs/Metadata/Symbols.hpp>
 #include <mrdocs/Metadata/Source.hpp>
-#include <mrdocs/Platform.hpp>
+#include <mrdocs/Metadata/DomCorpus.hpp>
+#include <mrdocs/Support/Concepts.hpp>
 #include <mrdocs/Support/Visitor.hpp>
-
+#include <string>
 
 namespace clang::mrdocs {
 
@@ -54,14 +54,15 @@ void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
-    InfoKind kind)
+    InfoKind const kind)
 {
     v = toString(kind);
 }
 
 /** Base class with common properties of all symbols
 */
-struct MRDOCS_VISIBLE Info : SourceInfo
+struct MRDOCS_VISIBLE Info
+    : SourceInfo
 {
     /** The unique identifier for this symbol.
     */
@@ -113,9 +114,9 @@ struct MRDOCS_VISIBLE Info : SourceInfo
 
     //--------------------------------------------
 
-    virtual ~Info() = default;
+    ~Info() override = default;
 
-    Info(Info const& Other) = delete;
+    Info(Info const& Other) = default;
 
     /** Move constructor.
      */
@@ -128,8 +129,8 @@ struct MRDOCS_VISIBLE Info : SourceInfo
     */
     explicit
     Info(
-        InfoKind kind,
-        SymbolID ID) noexcept
+        InfoKind const kind,
+        SymbolID const& ID) noexcept
         : id(ID)
         , Kind(kind)
     {
@@ -162,7 +163,7 @@ struct InfoCommonBase : Info
     #include <mrdocs/Metadata/InfoNodesPascal.inc>
 
 protected:
-    constexpr explicit InfoCommonBase(SymbolID ID)
+    constexpr explicit InfoCommonBase(SymbolID const& ID)
         : Info(K, ID)
     {
     }
@@ -204,6 +205,44 @@ visit(
     }
 }
 
+/** Merges two Info objects.
+
+    This function is used to merge two Info objects with the same SymbolID.
+    The function assumes that the two Info objects are of the same type.
+    If they are not, the function will fail.
+
+    @param I The Info object to merge into.
+    @param Other The Info object to merge from.
+*/
+MRDOCS_DECL
+void
+merge(Info& I, Info&& Other);
+
+/** Merges two Info objects according to the behavior of the derived class.
+ */
+template <polymorphic_storage_for<Info> InfoTy>
+void
+merge(InfoTy& I, InfoTy&& Other)
+{
+    MRDOCS_ASSERT(I.Kind == Other.Kind);
+    MRDOCS_ASSERT(I.id == Other.id);
+    Info& base = I;
+    visit(base, [&]<typename DerivedInfoTy>(DerivedInfoTy& derived) mutable
+    {
+        DerivedInfoTy& otherDerived = static_cast<DerivedInfoTy&>(Other);
+        merge(derived, std::move(otherDerived));
+    });
+}
+
+inline
+bool
+canMerge(Info const& I, Info const& Other)
+{
+    return
+        I.Kind == Other.Kind &&
+        I.id == Other.id;
+}
+
 /** A concept for types that have `Info` members.
 
     In most cases `T` is another `Info` type that
@@ -213,21 +252,104 @@ visit(
     However, an @ref OverloadSet is also a type that
     contains `Info` members without being `Info` itself.
 */
-template <class T>
-concept InfoParent = requires(T const& t) {
-    { t.Members } -> std::ranges::range;
-    requires std::convertible_to<std::ranges::range_value_t<decltype(t.Members)>, SymbolID const&>;
+template <class InfoTy>
+concept InfoParent = requires(InfoTy const& I)
+{
+    { allMembers(I) } -> range_of<SymbolID>;
 };
 
-/** Return the Info to a @ref dom::Value object.
+/** Map the Info to a @ref dom::Object.
  */
-MRDOCS_DECL
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    IO& io,
+    Info const& I,
+    DomCorpus const* domCorpus)
+{
+    MRDOCS_ASSERT(domCorpus);
+    io.map("id", I.id);
+    if (!I.Name.empty())
+    {
+        io.map("name", I.Name);
+    }
+    io.map("kind", I.Kind);
+    io.map("access", I.Access);
+    io.map("extraction", I.Extraction);
+    io.map("isRegular", I.Extraction == ExtractionMode::Regular);
+    io.map("isSeeBelow", I.Extraction == ExtractionMode::SeeBelow);
+    io.map("isImplementationDefined", I.Extraction == ExtractionMode::ImplementationDefined);
+    io.map("isDependency", I.Extraction == ExtractionMode::Dependency);
+    if (I.Parent)
+    {
+        io.map("parent", I.Parent);
+        io.defer("parents", [&]
+        {
+            return getParents(*domCorpus, I);
+        });
+    }
+    if (I.javadoc)
+    {
+        io.map("doc", *I.javadoc);
+    }
+    io.map("loc", dynamic_cast<SourceInfo const&>(I));
+}
+
+/** Map the Polymorphic Info to a @ref dom::Object.
+ */
+template <class IO, polymorphic_storage_for<Info> PolymorphicInfo>
+requires std::derived_from<PolymorphicInfo, Info>
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    IO& io,
+    PolymorphicInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    visit(*I, [&](auto const& U)
+    {
+        tag_invoke(
+            dom::LazyObjectMapTag{},
+            io,
+            U,
+            domCorpus);
+    });
+}
+
+/** Return the Info as a @ref dom::Value object.
+ */
+inline
 void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
     Info const& I,
-    DomCorpus const* domCorpus);
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
+
+/** Map the Polymorphic Info as a @ref dom::Value object.
+ */
+template <class IO, polymorphic_storage_for<Info> InfoTy>
+requires std::derived_from<InfoTy, Info>
+void
+tag_invoke(
+    dom::ValueFromTag,
+    IO& io,
+    InfoTy const& I,
+    DomCorpus const* domCorpus)
+{
+    visit(*I, [&](auto const& U)
+    {
+        tag_invoke(
+            dom::ValueFromTag{},
+            io,
+            U,
+            domCorpus);
+    });
+}
 
 /** Compare two Info objects
  */

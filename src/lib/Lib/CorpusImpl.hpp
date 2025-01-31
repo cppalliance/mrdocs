@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -22,8 +23,7 @@
 #include <mutex>
 #include <string>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 /** Implements the Corpus.
 
@@ -38,6 +38,9 @@ namespace mrdocs {
 */
 class CorpusImpl : public Corpus
 {
+    friend
+    void
+    finalize(CorpusImpl& corpus);
 public:
     /** Constructor.
     */
@@ -127,7 +130,6 @@ get(
     return *t;
 }
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

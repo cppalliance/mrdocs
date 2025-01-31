@@ -52,7 +52,7 @@ GeneratorsImpl::
 find(
     std::string_view id) const noexcept
 {
-    for (const auto & li : list_)
+    for (auto const& li : list_)
     {
         if(li->id() == id)
         {

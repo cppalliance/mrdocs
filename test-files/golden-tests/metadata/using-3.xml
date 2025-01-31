@@ -28,6 +28,18 @@
     <base>
       <type id="3JsK1DO0O+wZhv+0meptQrbs3fY=" name="B"/>
     </base>
+    <function name="f" id="7Bg4Ruo9NHdsGok6ICFQWW1MBuE=">
+      <file short-path="using-3.cpp" source-path="using-3.cpp" line="3"/>
+      <param>
+        <type name="int"/>
+      </param>
+    </function>
+    <function name="f" id="L8SG5UwdWbdrxlsWfl5qGz09wUw=">
+      <file short-path="using-3.cpp" source-path="using-3.cpp" line="8"/>
+      <param>
+        <type name="bool"/>
+      </param>
+    </function>
     <using id="gYtMTvi6Y8IYub83GUwP4tNrNh8=" class="using" qualifier="A">
       <file short-path="using-3.cpp" source-path="using-3.cpp" line="13"/>
       <named id="7Bg4Ruo9NHdsGok6ICFQWW1MBuE="/>

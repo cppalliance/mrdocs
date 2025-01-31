@@ -10,18 +10,16 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdocs/Metadata/Template.hpp>
-#include <mrdocs/Metadata/Name.hpp>
+#include <mrdocs/Dom/LazyArray.hpp>
+#include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
-#include <lib/Dom/LazyArray.hpp>
-#include <lib/Dom/LazyObject.hpp>
+#include <mrdocs/Metadata/Name.hpp>
+#include <mrdocs/Metadata/Template.hpp>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 std::string_view
-toString(
-    TArgKind kind) noexcept
+toString(TArgKind kind) noexcept
 {
     switch(kind)
     {
@@ -87,10 +85,10 @@ toString(
 
 std::string
 toString(
-    const TArg& arg) noexcept
+    TArg const& arg) noexcept
 {
     return visit(arg, 
-        []<typename T>(const T& t)
+        []<typename T>(T const& t)
     {
         std::string result;
         if constexpr(T::isType())
@@ -123,7 +121,7 @@ tag_invoke(
 {
     io.map("kind", toString(I.Kind));
     io.map("is-pack", I.IsPackExpansion);
-    visit(I, [&io]<typename T>(const T& t) {
+    visit(I, [&io]<typename T>(T const& t) {
         if constexpr(T::isType())
         {
             io.map("type", t.Type);
@@ -162,7 +160,7 @@ tag_invoke(
     io.map("kind", toString(I.Kind));
     io.map("name", dom::stringOrNull(I.Name));
     io.map("is-pack", I.IsParameterPack);
-    visit(I, [domCorpus, &io]<typename T>(const T& t) {
+    visit(I, [domCorpus, &io]<typename T>(T const& t) {
         if(t.Default)
         {
             io.map("default", t.Default);
@@ -223,5 +221,4 @@ tag_invoke(
     v = dom::LazyObject(I, domCorpus);
 }
 
-} // mrdocs
-} // clang
+} // clang::mrdocs

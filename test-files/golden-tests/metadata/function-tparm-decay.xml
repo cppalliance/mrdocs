@@ -29,14 +29,6 @@
       <file short-path="function-tparm-decay.cpp" source-path="function-tparm-decay.cpp" line="27"/>
     </function>
   </template>
-  <namespace-alias name="T" id="PvNOREc+JWxdkVgvSz+jC45IbGQ=">
-    <file short-path="function-tparm-decay.cpp" source-path="function-tparm-decay.cpp" line="30"/>
-    <type name="int"/>
-  </namespace-alias>
-  <namespace-alias name="U" id="h6hupdyuT6SfsCGFl6UUFGtvrcc=">
-    <file short-path="function-tparm-decay.cpp" source-path="function-tparm-decay.cpp" line="31"/>
-    <type name="int" cv-qualifiers="const"/>
-  </namespace-alias>
   <template>
     <tparam class="non-type" type="int"/>
     <function name="i" id="2woLp3PdyOT/I0DFMkY8OAli5YM=">
@@ -46,5 +38,13 @@
       <file short-path="function-tparm-decay.cpp" source-path="function-tparm-decay.cpp" line="39"/>
     </function>
   </template>
+  <namespace-alias name="T" id="PvNOREc+JWxdkVgvSz+jC45IbGQ=">
+    <file short-path="function-tparm-decay.cpp" source-path="function-tparm-decay.cpp" line="30"/>
+    <type name="int"/>
+  </namespace-alias>
+  <namespace-alias name="U" id="h6hupdyuT6SfsCGFl6UUFGtvrcc=">
+    <file short-path="function-tparm-decay.cpp" source-path="function-tparm-decay.cpp" line="31"/>
+    <type name="int" cv-qualifiers="const"/>
+  </namespace-alias>
 </namespace>
 </mrdocs>

@@ -11,8 +11,10 @@
 #ifndef MRDOCS_API_METADATA_NAMESPACEALIAS_HPP
 #define MRDOCS_API_METADATA_NAMESPACEALIAS_HPP
 
+#include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Info.hpp>
-#include <mrdocs/Metadata/Source.hpp>
+#include <mrdocs/Metadata/Name.hpp>
+#include <mrdocs/ADT/PolymorphicValue.hpp>
 
 namespace clang::mrdocs {
 
@@ -31,6 +33,37 @@ struct NamespaceAliasInfo final
     {
     }
 };
+
+MRDOCS_DECL
+void
+merge(NamespaceAliasInfo& I, NamespaceAliasInfo&& Other);
+
+/** Map a NamespaceAliasInfo to a dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    NamespaceAliasInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Info const&>(I), domCorpus);
+    io.map("aliasedSymbol", I.AliasedSymbol);
+}
+
+/** Map the NamespaceAliasInfo to a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    NamespaceAliasInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
 
 } // clang::mrdocs
 

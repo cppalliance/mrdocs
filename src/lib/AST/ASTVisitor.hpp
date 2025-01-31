@@ -388,13 +388,13 @@ private:
         std::derived_from<Decl> DeclTy>
     requires (!std::derived_from<DeclTy, RedeclarableTemplateDecl>)
     void
-    traverseParents(InfoTy& I, DeclTy const* DC);
+    traverseParent(InfoTy& I, DeclTy const* DC);
 
     template <
         std::derived_from<Info> InfoTy,
         std::derived_from<RedeclarableTemplateDecl> DeclTy>
     void
-    traverseParents(InfoTy& I, DeclTy const* DC);
+    traverseParent(InfoTy& I, DeclTy const* DC);
 
     /*  Generates a Unified Symbol Resolution value for a declaration.
 
@@ -641,7 +641,7 @@ private:
     template <std::derived_from<Info> InfoTy>
     static
     void
-    populateAttributes(InfoTy& I, const Decl* D);
+    populateAttributes(InfoTy& I, Decl const* D);
 
     // =================================================
     // Populate function helpers
@@ -663,6 +663,24 @@ private:
 
     SmallString<256>
     qualifiedName(NamedDecl const* ND) const;
+
+    void
+    addMember(NamespaceInfo& I, Info const& Member);
+
+    void
+    addMember(RecordInfo& I, Info const& Member);
+
+    void
+    addMember(RecordTranche& I, Info const& Member);
+
+    void
+    addMember(EnumInfo& I, Info const& Member) const;
+
+    void
+    addMember(OverloadsInfo& I, Info const& Member) const;
+
+    void
+    addMember(std::vector<SymbolID>& container, Info const& Member) const;
 
     /*  Parse the comments above a declaration as Javadoc
 
@@ -979,7 +997,7 @@ private:
     /*  Get Info from ASTVisitor InfoSet
      */
     Info*
-    find(SymbolID const& id);
+    find(SymbolID const& id) const;
 
      /*  Get Info from ASTVisitor InfoSet
 
@@ -988,7 +1006,7 @@ private:
         to get the Info object for the declaration.
      */
     Info*
-    find(Decl const* D);
+    find(Decl const* D) const;
 
     /*  Find or traverse a declaration
 

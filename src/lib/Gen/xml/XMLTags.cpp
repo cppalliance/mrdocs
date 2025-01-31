@@ -72,7 +72,7 @@ write(
 //------------------------------------------------
 
 std::string
-toString(
+toBase64Str(
     SymbolID const& id)
 {
     return toBase64(id);
@@ -103,7 +103,7 @@ Attributes(
 
 void
 Attributes::
-push(const Attribute& attr)
+push(Attribute const& attr)
 {
     attrs_.push_back(attr);
 }

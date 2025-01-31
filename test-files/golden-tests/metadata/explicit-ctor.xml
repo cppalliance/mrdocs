@@ -33,68 +33,6 @@
       </param>
     </function>
   </struct>
-  <struct name="ExplicitTrue" id="htdCGapMsdazR1XkXoanrOCkvDE=">
-    <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="10" class="def"/>
-    <function class="constructor" name="ExplicitTrue" explicit-spec="explicit(true)" id="3sd37ryB4gMx1BgYdDdQzVJFniU=">
-      <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="11"/>
-    </function>
-    <function class="constructor" name="ExplicitTrue" explicit-spec="explicit(true)" id="Tj9uY+jY7QBYQC8IsjplHuoDgQo=">
-      <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="12"/>
-      <param>
-        <type class="lvalue-reference">
-          <pointee-type id="htdCGapMsdazR1XkXoanrOCkvDE=" name="ExplicitTrue" cv-qualifiers="const"/>
-        </type>
-      </param>
-    </function>
-    <function class="constructor" name="ExplicitTrue" exception-spec="noexcept" explicit-spec="explicit(true)" id="iQOO8pEh0iNSnpupVwR9tCVIf8U=">
-      <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="13"/>
-      <param>
-        <type class="rvalue-reference">
-          <pointee-type id="htdCGapMsdazR1XkXoanrOCkvDE=" name="ExplicitTrue"/>
-        </type>
-      </param>
-    </function>
-    <function class="constructor" name="ExplicitTrue" explicit-spec="explicit(true)" id="XCoHYDLlYJYpV6Ut7Ms0GjcQKjM=">
-      <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="14"/>
-      <param>
-        <type name="int"/>
-      </param>
-      <param>
-        <type name="int"/>
-      </param>
-    </function>
-  </struct>
-  <struct name="ExplicitFalse" id="Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=">
-    <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="17" class="def"/>
-    <function class="constructor" name="ExplicitFalse" explicit-spec="explicit(false)" id="GVN7KvqFotNClBLUnxR3nnPlH7Y=">
-      <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="18"/>
-    </function>
-    <function class="constructor" name="ExplicitFalse" explicit-spec="explicit(false)" id="gsl+2i8v8v4Lifq3SZ5sFhSfseQ=">
-      <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="19"/>
-      <param>
-        <type class="lvalue-reference">
-          <pointee-type id="Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=" name="ExplicitFalse" cv-qualifiers="const"/>
-        </type>
-      </param>
-    </function>
-    <function class="constructor" name="ExplicitFalse" exception-spec="noexcept" explicit-spec="explicit(false)" id="qXjKOO0FQ3p2vTehkEQl2kIKpFs=">
-      <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="20"/>
-      <param>
-        <type class="rvalue-reference">
-          <pointee-type id="Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=" name="ExplicitFalse"/>
-        </type>
-      </param>
-    </function>
-    <function class="constructor" name="ExplicitFalse" explicit-spec="explicit(false)" id="T0aRgSzz7xtFbPWKv3q57ueIYlI=">
-      <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="21"/>
-      <param>
-        <type name="int"/>
-      </param>
-      <param>
-        <type name="int"/>
-      </param>
-    </function>
-  </struct>
   <template>
     <tparam name="B" class="non-type" type="bool"/>
     <struct name="ExplicitExpression" id="ztb0u1Q4SVBUQ0roTOM7MFlUt/o=">
@@ -129,5 +67,67 @@
       </function>
     </struct>
   </template>
+  <struct name="ExplicitFalse" id="Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=">
+    <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="17" class="def"/>
+    <function class="constructor" name="ExplicitFalse" explicit-spec="explicit(false)" id="GVN7KvqFotNClBLUnxR3nnPlH7Y=">
+      <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="18"/>
+    </function>
+    <function class="constructor" name="ExplicitFalse" explicit-spec="explicit(false)" id="gsl+2i8v8v4Lifq3SZ5sFhSfseQ=">
+      <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="19"/>
+      <param>
+        <type class="lvalue-reference">
+          <pointee-type id="Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=" name="ExplicitFalse" cv-qualifiers="const"/>
+        </type>
+      </param>
+    </function>
+    <function class="constructor" name="ExplicitFalse" exception-spec="noexcept" explicit-spec="explicit(false)" id="qXjKOO0FQ3p2vTehkEQl2kIKpFs=">
+      <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="20"/>
+      <param>
+        <type class="rvalue-reference">
+          <pointee-type id="Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=" name="ExplicitFalse"/>
+        </type>
+      </param>
+    </function>
+    <function class="constructor" name="ExplicitFalse" explicit-spec="explicit(false)" id="T0aRgSzz7xtFbPWKv3q57ueIYlI=">
+      <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="21"/>
+      <param>
+        <type name="int"/>
+      </param>
+      <param>
+        <type name="int"/>
+      </param>
+    </function>
+  </struct>
+  <struct name="ExplicitTrue" id="htdCGapMsdazR1XkXoanrOCkvDE=">
+    <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="10" class="def"/>
+    <function class="constructor" name="ExplicitTrue" explicit-spec="explicit(true)" id="3sd37ryB4gMx1BgYdDdQzVJFniU=">
+      <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="11"/>
+    </function>
+    <function class="constructor" name="ExplicitTrue" explicit-spec="explicit(true)" id="Tj9uY+jY7QBYQC8IsjplHuoDgQo=">
+      <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="12"/>
+      <param>
+        <type class="lvalue-reference">
+          <pointee-type id="htdCGapMsdazR1XkXoanrOCkvDE=" name="ExplicitTrue" cv-qualifiers="const"/>
+        </type>
+      </param>
+    </function>
+    <function class="constructor" name="ExplicitTrue" exception-spec="noexcept" explicit-spec="explicit(true)" id="iQOO8pEh0iNSnpupVwR9tCVIf8U=">
+      <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="13"/>
+      <param>
+        <type class="rvalue-reference">
+          <pointee-type id="htdCGapMsdazR1XkXoanrOCkvDE=" name="ExplicitTrue"/>
+        </type>
+      </param>
+    </function>
+    <function class="constructor" name="ExplicitTrue" explicit-spec="explicit(true)" id="XCoHYDLlYJYpV6Ut7Ms0GjcQKjM=">
+      <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="14"/>
+      <param>
+        <type name="int"/>
+      </param>
+      <param>
+        <type name="int"/>
+      </param>
+    </function>
+  </struct>
 </namespace>
 </mrdocs>

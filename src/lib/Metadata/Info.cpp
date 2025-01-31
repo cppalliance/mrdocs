@@ -5,23 +5,23 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "lib/Dom/LazyArray.hpp"
-#include "lib/Dom/LazyObject.hpp"
+#include <mrdocs/Dom/LazyArray.hpp>
+#include <mrdocs/Dom/LazyObject.hpp>
 #include "lib/Support/Radix.hpp"
-#include <mrdocs/Metadata/Info/Record.hpp>
 #include <clang/AST/Type.h>
 #include <llvm/ADT/STLExtras.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
+#include <mrdocs/Metadata.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
-#include <mrdocs/Metadata/Info.hpp>
+#include <mrdocs/Metadata/Info/Record.hpp>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 dom::String
 toString(InfoKind kind) noexcept
@@ -36,260 +36,34 @@ toString(InfoKind kind) noexcept
     }
 }
 
-/* Customization to map Info types to DOM objects
-
-   This function maps an Info type to a DOM object.
-   It includes all members of the derived type.
-
-   The traits store a reference to the DomCorpus
-   so that it can resolve symbol IDs to the corresponding
-   Info objects.
-
-   Whenever a member refers to symbol IDs,
-   the mapping trait will automatically resolve the
-   symbol ID to the corresponding Info object.
-
-   This allows all references to be resolved to the
-   corresponding Info object lazily from the templates
-   that use the DOM.
- */
-template <class IO, class InfoTy>
-requires std::derived_from<InfoTy, Info>
 void
-tag_invoke(
-    dom::LazyObjectMapTag,
-    IO& io,
-    InfoTy const& I,
-    DomCorpus const* domCorpus)
+merge(Info& I, Info&& Other)
 {
-    MRDOCS_ASSERT(domCorpus);
-    io.map("id", I.id);
-    if (!I.Name.empty())
+    MRDOCS_ASSERT(I.id);
+    merge(dynamic_cast<SourceInfo&>(I), std::move(dynamic_cast<SourceInfo&>(Other)));
+    if (I.Name == "")
     {
-        io.map("name", I.Name);
+        I.Name = Other.Name;
     }
-    io.map("kind", I.Kind);
-    io.map("access", I.Access);
-    io.map("extraction", I.Extraction);
-    io.map("isRegular", I.Extraction == ExtractionMode::Regular);
-    io.map("isSeeBelow", I.Extraction == ExtractionMode::SeeBelow);
-    io.map("isImplementationDefined", I.Extraction == ExtractionMode::ImplementationDefined);
-    io.map("isDependency", I.Extraction == ExtractionMode::Dependency);
     if (I.Parent)
     {
-        io.map("parent", I.Parent);
-        io.defer("parents", [&]
-        {
-            // A convenient list to iterate over the parents
-            // with resorting to partial template recursion
-            Corpus const& corpus = domCorpus->getCorpus();
-            auto pIds = getParents(corpus, I);
-            dom::Array res;
-            for (auto const& id : pIds)
-            {
-                Info const& PI = corpus.get(id);
-                res.push_back(domCorpus->construct(PI));
-            }
-            return res;
-        });
+        I.Parent = Other.Parent;
     }
-    if (I.javadoc)
+    if (I.Access == AccessKind::None)
     {
-        io.map("doc", *I.javadoc);
+        I.Access = Other.Access;
     }
-    using T = std::remove_cvref_t<InfoTy>;
-    if constexpr(std::derived_from<T, ScopeInfo>)
-    {
-        io.map("members", dom::LazyArray(I.Members, domCorpus));
-        io.defer("overloads", [&]{
-            // Eager array with overloadset or symbol
-            return generateScopeOverloadsArray(I, *domCorpus);
-        });
-    }
-    if constexpr(std::derived_from<T, SourceInfo>)
-    {
-        io.map("loc", static_cast<SourceInfo const&>(I));
-    }
-    if constexpr(T::isNamespace())
-    {
-        io.defer("interface", [&I, domCorpus]{
-            // Eager object with each Info type
-            auto t = std::make_shared<Tranche>(makeTranche(I, **domCorpus));
-            return dom::ValueFrom(t, domCorpus);
-        });
-        io.map("usingDirectives", dom::LazyArray(I.UsingDirectives, domCorpus));
-    }
-    if constexpr (T::isRecord())
-    {
-        io.map("tag", I.KeyKind);
-        io.map("defaultAccess", getDefaultAccessString(I.KeyKind));
-        io.map("isTypedef", I.IsTypeDef);
-        io.map("bases", dom::LazyArray(I.Bases, domCorpus));
-        io.defer("interface", [domCorpus, &I] {
-            // Eager object with each Info type for each access specifier
-            auto sp = std::make_shared<Interface>(makeInterface(I, domCorpus->getCorpus()));
-            return dom::ValueFrom(sp, domCorpus);
-        });
-        io.map("template", I.Template);
-    }
-    if constexpr (T::isEnum())
-    {
-        io.map("type", I.UnderlyingType);
-        io.map("isScoped", I.Scoped);
-    }
-    if constexpr (T::isFunction())
-    {
-        io.map("isVariadic", I.IsVariadic);
-        io.map("isVirtual", I.IsVirtual);
-        io.map("isVirtualAsWritten", I.IsVirtualAsWritten);
-        io.map("isPure", I.IsPure);
-        io.map("isDefaulted", I.IsDefaulted);
-        io.map("isExplicitlyDefaulted", I.IsExplicitlyDefaulted);
-        io.map("isDeleted", I.IsDeleted);
-        io.map("isDeletedAsWritten", I.IsDeletedAsWritten);
-        io.map("isNoReturn", I.IsNoReturn);
-        io.map("hasOverrideAttr", I.HasOverrideAttr);
-        io.map("hasTrailingReturn", I.HasTrailingReturn);
-        io.map("isConst", I.IsConst);
-        io.map("isVolatile", I.IsVolatile);
-        io.map("isFinal", I.IsFinal);
-        io.map("isNodiscard", I.IsNodiscard);
-        io.map("isExplicitObjectMemberFunction", I.IsExplicitObjectMemberFunction);
-        if (I.Constexpr != ConstexprKind::None)
-        {
-            io.map("constexprKind", I.Constexpr);
-        }
-        if (I.StorageClass != StorageClassKind::None)
-        {
-            io.map("storageClass", I.StorageClass);
-        }
-        if (I.RefQualifier != ReferenceKind::None)
-        {
-            io.map("refQualifier", I.RefQualifier);
-        }
-        io.map("class", I.Class);
-        io.map("params", dom::LazyArray(I.Params, domCorpus));
-        io.map("return", I.ReturnType);
-        io.map("template", I.Template);
-        io.map("overloadedOperator", I.OverloadedOperator);
-        io.map("exceptionSpec", I.Noexcept);
-        io.map("explicitSpec", I.Explicit);
-        if (!I.Requires.Written.empty())
-        {
-            io.map("requires", I.Requires.Written);
-        }
-        io.map("attributes", dom::LazyArray(I.Attributes));
-    }
-    if constexpr (T::isTypedef())
-    {
-        io.map("type", I.Type);
-        io.map("template", I.Template);
-        io.map("isUsing", I.IsUsing);
-    }
-    if constexpr (T::isVariable())
-    {
-        auto const& U = static_cast<VariableInfo const&>(I);
-        io.map("type", U.Type);
-        io.map("template", U.Template);
-        if (U.StorageClass != StorageClassKind::None)
-        {
-            io.map("storageClass", U.StorageClass);
-        }
-        io.map("isInline", U.IsInline);
-        io.map("isConstexpr", U.IsConstexpr);
-        io.map("isConstinit", U.IsConstinit);
-        io.map("isThreadLocal", U.IsThreadLocal);
-        if (!U.Initializer.Written.empty())
-        {
-            io.map("initializer", U.Initializer.Written);
-        }
-        io.map("attributes", dom::LazyArray(U.Attributes));
-    }
-    if constexpr (T::isField())
-    {
-        io.map("type", I.Type);
-        if (!I.Default.Written.empty())
-        {
-            io.map("default", I.Default.Written);
-        }
-        io.map("isMaybeUnused", I.IsMaybeUnused);
-        io.map("isDeprecated", I.IsDeprecated);
-        io.map("isVariant", I.IsVariant);
-        io.map("isMutable", I.IsMutable);
-        io.map("isBitfield", I.IsBitfield);
-        io.map("hasNoUniqueAddress", I.HasNoUniqueAddress);
-        if (I.IsBitfield)
-        {
-            io.map("bitfieldWidth", I.BitfieldWidth.Written);
-        }
-        io.map("attributes", dom::LazyArray(I.Attributes));
-    }
-    if constexpr (T::isSpecialization())
-    {}
-    if constexpr (T::isFriend())
-    {
-        if (I.FriendSymbol)
-        {
-            io.defer("name", [&I, domCorpus]{
-                return dom::ValueFrom(I.FriendSymbol, domCorpus).get("name");
-            });
-            io.map("symbol", I.FriendSymbol);
-        }
-        else if (I.FriendType)
-        {
-            io.defer("name", [&]{
-                return dom::ValueFrom(I.FriendType, domCorpus).get("name");
-            });
-            io.map("type", I.FriendType);
-        }
-    }
-    if constexpr (T::isNamespaceAlias())
-    {
-        MRDOCS_ASSERT(I.AliasedSymbol);
-        io.map("aliasedSymbol", I.AliasedSymbol);
-    }
-    if constexpr (T::isUsing())
-    {
-        io.map("class", I.Class);
-        io.map("shadows", dom::LazyArray(I.UsingSymbols, domCorpus));
-        io.map("qualifier", I.Qualifier);
-    }
-    if constexpr (T::isEnumConstant())
-    {
-        if (!I.Initializer.Written.empty())
-        {
-            io.map("initializer", I.Initializer.Written);
-        }
-    }
-    if constexpr (T::isGuide())
-    {
-        io.map("params", dom::LazyArray(I.Params, domCorpus));
-        io.map("deduced", I.Deduced);
-        io.map("template", I.Template);
-        io.map("explicitSpec", I.Explicit);
-    }
-    if constexpr (T::isConcept())
-    {
-        io.map("template", I.Template);
-        if (!I.Constraint.Written.empty())
-        {
-            io.map("constraint", I.Constraint.Written);
-        }
-    }
-}
+    I.Extraction = leastSpecific(I.Extraction, Other.Extraction);
 
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Info const& I,
-    DomCorpus const* domCorpus)
-{
-    return visit(I,
-        [&]<class T>(T const& I)
-        {
-            v = dom::LazyObject(I, domCorpus);
-        });
+    // Append javadocs
+    if (!I.javadoc)
+    {
+        I.javadoc = std::move(Other.javadoc);
+    }
+    else if (Other.javadoc)
+    {
+        merge(*I.javadoc, std::move(*Other.javadoc));
+    }
 }
 
 bool
@@ -339,5 +113,4 @@ operator<(
     return false;
 }
 
-} // mrdocs
-} // clang
+} // clang::mrdocs

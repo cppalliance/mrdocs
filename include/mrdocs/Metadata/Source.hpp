@@ -82,6 +82,8 @@ struct MRDOCS_DECL
         , Documented(documented)
     {
     }
+
+    auto operator<=>(Location const&) const = default;
 };
 
 MRDOCS_DECL
@@ -129,6 +131,14 @@ struct MRDOCS_DECL
 protected:
     SourceInfo() = default;
 };
+
+MRDOCS_DECL
+void
+merge(SourceInfo& I, SourceInfo const& Other);
+
+MRDOCS_DECL
+void
+merge(SourceInfo& I, SourceInfo&& Other);
 
 void
 tag_invoke(

@@ -40,8 +40,8 @@ For later versions of Visual Studio, no setup is required.
     </Expand>
   </Type>
   <Type Name="llvm::SmallString&lt;*&gt;">
-    <DisplayString>{(const char*)BeginX,[Size]s8}</DisplayString>
-    <StringView>(const char*)BeginX,[Size]</StringView>
+    <DisplayString>{(char const*)BeginX,[Size]s8}</DisplayString>
+    <StringView>(char const*)BeginX,[Size]</StringView>
     <Expand>
       <Item Name="[size]">Size</Item>
       <Item Name="[capacity]">Capacity</Item>
@@ -240,7 +240,7 @@ For later versions of Visual Studio, no setup is required.
   </Type>
 
   <Type Name="llvm::StringMapEntry&lt;*&gt;">
-    <Intrinsic Category="Data" Name="key_data" Expression="(const char*)(this + 1)" />
+    <Intrinsic Category="Data" Name="key_data" Expression="(char const*)(this + 1)" />
     <Intrinsic Category="Data" Name="key_size" Expression="(size_t)keyLength" />
     <DisplayString Condition="key_size()">{{ key={key_data(),s8}, value={second,na} }}</DisplayString>
     <DisplayString>empty</DisplayString>

@@ -2,6 +2,24 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
+  <template>
+    <tparam name="A" class="type" default="void(...)"/>
+    <tparam name="B" class="type" default="void(int, ...)"/>
+    <struct name="C" id="8nYw0KA23eAszqSOs0wOXAD1DYQ=">
+      <file short-path="variadic-function.cpp" source-path="variadic-function.cpp" line="9"/>
+    </struct>
+  </template>
+  <function name="f" id="CMaAySU4txrIlGl6edqWDSabBRA=">
+    <file short-path="variadic-function.cpp" source-path="variadic-function.cpp" line="5"/>
+    <attr id="is-variadic"/>
+  </function>
+  <function name="g" id="lldWvRg9y+NwRnDpK3x2NF9+e08=">
+    <file short-path="variadic-function.cpp" source-path="variadic-function.cpp" line="7"/>
+    <attr id="is-variadic"/>
+    <param>
+      <type name="int"/>
+    </param>
+  </function>
   <namespace-alias name="T" id="PvNOREc+JWxdkVgvSz+jC45IbGQ=">
     <file short-path="variadic-function.cpp" source-path="variadic-function.cpp" line="1"/>
     <type class="function" is-variadic="1">
@@ -15,23 +33,5 @@
       <param-type name="int"/>
     </type>
   </namespace-alias>
-  <function name="f" id="CMaAySU4txrIlGl6edqWDSabBRA=">
-    <file short-path="variadic-function.cpp" source-path="variadic-function.cpp" line="5"/>
-    <attr id="is-variadic"/>
-  </function>
-  <function name="g" id="lldWvRg9y+NwRnDpK3x2NF9+e08=">
-    <file short-path="variadic-function.cpp" source-path="variadic-function.cpp" line="7"/>
-    <attr id="is-variadic"/>
-    <param>
-      <type name="int"/>
-    </param>
-  </function>
-  <template>
-    <tparam name="A" class="type" default="void(...)"/>
-    <tparam name="B" class="type" default="void(int, ...)"/>
-    <struct name="C" id="8nYw0KA23eAszqSOs0wOXAD1DYQ=">
-      <file short-path="variadic-function.cpp" source-path="variadic-function.cpp" line="9"/>
-    </struct>
-  </template>
 </namespace>
 </mrdocs>

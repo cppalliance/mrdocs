@@ -15,7 +15,9 @@
 #include <mrdocs/Metadata/Expression.hpp>
 #include <mrdocs/Metadata/Source.hpp>
 #include <mrdocs/Metadata/Template.hpp>
+#include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Type.hpp>
+#include <mrdocs/Dom/LazyArray.hpp>
 
 namespace clang::mrdocs {
 
@@ -53,6 +55,51 @@ struct VariableInfo final
     {
     }
 };
+
+MRDOCS_DECL
+void
+merge(VariableInfo& I, VariableInfo&& Other);
+
+/** Map a VariableInfo to a dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    VariableInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Info const&>(I), domCorpus);
+    io.map("type", I.Type);
+    io.map("template", I.Template);
+    if (I.StorageClass != StorageClassKind::None)
+    {
+        io.map("storageClass", I.StorageClass);
+    }
+    io.map("isInline", I.IsInline);
+    io.map("isConstexpr", I.IsConstexpr);
+    io.map("isConstinit", I.IsConstinit);
+    io.map("isThreadLocal", I.IsThreadLocal);
+    if (!I.Initializer.Written.empty())
+    {
+        io.map("initializer", I.Initializer.Written);
+    }
+    io.map("attributes", dom::LazyArray(I.Attributes));
+}
+
+/** Map the VariableInfo to a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    VariableInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
 
 } // clang::mrdocs
 

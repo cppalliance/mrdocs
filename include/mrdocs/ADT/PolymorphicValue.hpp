@@ -70,7 +70,7 @@ class BadPolymorphicValueConstruction
 {
 public:
     BadPolymorphicValueConstruction() noexcept = default;
-    const char* what() const noexcept override {
+    char const* what() const noexcept override {
         return "bad polymorphic value construction";
     }
 };

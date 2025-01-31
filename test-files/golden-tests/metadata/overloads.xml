@@ -2,32 +2,6 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
-  <function name="operator==" id="pqHl3WkOZfX6m6ltquhjuQtzXp4=">
-    <file short-path="overloads.cpp" source-path="overloads.cpp" line="8"/>
-    <attr id="operator" name="eq" value="30"/>
-    <return>
-      <type name="bool"/>
-    </return>
-    <param>
-      <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-    </param>
-    <param>
-      <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-    </param>
-  </function>
-  <function name="operator==" id="7bqo4XOxyyg5NIOu+8i4lZ3L47c=">
-    <file short-path="overloads.cpp" source-path="overloads.cpp" line="9"/>
-    <attr id="operator" name="eq" value="30"/>
-    <return>
-      <type name="bool"/>
-    </return>
-    <param>
-      <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-    </param>
-    <param>
-      <type name="int"/>
-    </param>
-  </function>
   <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
     <file short-path="overloads.cpp" source-path="overloads.cpp" line="1" class="def"/>
     <function name="f" id="hLXvGC+nOrLQRH9lODKkgi/oUas=">
@@ -65,6 +39,9 @@
       <befriended id="7bqo4XOxyyg5NIOu+8i4lZ3L47c="/>
     </friend>
   </struct>
+  <struct name="B" id="3JsK1DO0O+wZhv+0meptQrbs3fY=">
+    <file short-path="overloads.cpp" source-path="overloads.cpp" line="15" class="def"/>
+  </struct>
   <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
     <file short-path="overloads.cpp" source-path="overloads.cpp" line="12"/>
   </function>
@@ -77,9 +54,32 @@
       <type name="int"/>
     </param>
   </function>
-  <struct name="B" id="3JsK1DO0O+wZhv+0meptQrbs3fY=">
-    <file short-path="overloads.cpp" source-path="overloads.cpp" line="15" class="def"/>
-  </struct>
+  <function name="operator==" id="pqHl3WkOZfX6m6ltquhjuQtzXp4=">
+    <file short-path="overloads.cpp" source-path="overloads.cpp" line="8"/>
+    <attr id="operator" name="eq" value="30"/>
+    <return>
+      <type name="bool"/>
+    </return>
+    <param>
+      <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
+    </param>
+    <param>
+      <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
+    </param>
+  </function>
+  <function name="operator==" id="7bqo4XOxyyg5NIOu+8i4lZ3L47c=">
+    <file short-path="overloads.cpp" source-path="overloads.cpp" line="9"/>
+    <attr id="operator" name="eq" value="30"/>
+    <return>
+      <type name="bool"/>
+    </return>
+    <param>
+      <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
+    </param>
+    <param>
+      <type name="int"/>
+    </param>
+  </function>
   <function name="operator==" id="gddLjn5hKdr6Ei8xKgtcB3bktI4=">
     <file short-path="overloads.cpp" source-path="overloads.cpp" line="17"/>
     <attr id="operator" name="eq" value="30"/>

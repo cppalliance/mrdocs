@@ -32,8 +32,8 @@ namespace mrdocs {
 
     void
     assert_failed(
-        const char* msg,
-        const char* file,
+        char const* msg,
+        char const* file,
         std::uint_least32_t line);
 
     #define MRDOCS_ASSERT(x) static_cast<void>(!! (x) || \

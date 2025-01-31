@@ -120,7 +120,7 @@ writeAttr(
 
 inline
 void
-writeTemplateArg(const TArg& I, XMLTags& tags);
+writeTemplateArg(TArg const& I, XMLTags& tags);
 
 inline
 void
@@ -130,7 +130,7 @@ writeType(
     std::string_view type_tag = "type")
 {
     visit(I, [&]<typename T>(
-        const T& t)
+        T const& t)
         {
             Attributes attrs = {
                 { "class", toString(T::kind_id),
@@ -218,7 +218,7 @@ writeType(
             if constexpr(T::isFunction())
             {
                 writeType(*t.ReturnType, tags, "return-type");
-                for(const auto& p : t.ParamTypes)
+                for(auto const& p : t.ParamTypes)
                     writeType(*p, tags, "param-type");
             }
 
@@ -257,9 +257,9 @@ inline void writeParam(Param const& P, XMLTags& tags)
     tags.close(paramTagName);
 }
 
-inline void writeTemplateParam(const TParam& I, XMLTags& tags)
+inline void writeTemplateParam(TParam const& I, XMLTags& tags)
 {
-    visit(I, [&]<typename T>(const T& P)
+    visit(I, [&]<typename T>(T const& P)
         {
             Attributes attrs = {
                 {"name", P.Name, ! P.Name.empty()},

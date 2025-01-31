@@ -64,7 +64,8 @@ def get_flat_suboptions(option_name, options):
 def get_valid_enum_categories():
     valid_enum_cats = {
         'generator': ["adoc", "html", "xml"],
-        'log-level': ["trace", "debug", "info", "warn", "error", "fatal"]
+        'log-level': ["trace", "debug", "info", "warn", "error", "fatal"],
+        'base-member-inheritance': ["never", "reference", "copy", "copy-dependencies"]
     }
     return valid_enum_cats
 

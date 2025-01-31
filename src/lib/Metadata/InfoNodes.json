@@ -12,6 +12,10 @@
     "brief": "The symbol is a function"
   },
   {
+    "name": "overloads",
+    "brief": "The symbol is a set of function overloads"
+  },
+  {
     "name": "enum",
     "brief": "The symbol is an enum"
   },

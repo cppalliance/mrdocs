@@ -17,13 +17,6 @@
   </template>
   <template>
     <tparam name="T" class="type"/>
-    <namespace-alias name="C" id="f75RIL8qKOwbyH6ffvrv59F0nCA=">
-      <file short-path="alias-template.cpp" source-path="alias-template.cpp" line="7"/>
-      <type id="5tUSuMtQqtYE49jBjSYSWp0DJAM=" name="A&lt;T&gt;"/>
-    </namespace-alias>
-  </template>
-  <template>
-    <tparam name="T" class="type"/>
     <struct name="D" id="i5oK/nki0o3BH2ZAgkGyaGib07g=">
       <file short-path="alias-template.cpp" source-path="alias-template.cpp" line="10" class="def"/>
       <template>
@@ -34,6 +27,13 @@
         </namespace-alias>
       </template>
     </struct>
+  </template>
+  <template>
+    <tparam name="T" class="type"/>
+    <namespace-alias name="C" id="f75RIL8qKOwbyH6ffvrv59F0nCA=">
+      <file short-path="alias-template.cpp" source-path="alias-template.cpp" line="7"/>
+      <type id="5tUSuMtQqtYE49jBjSYSWp0DJAM=" name="A&lt;T&gt;"/>
+    </namespace-alias>
   </template>
 </namespace>
 </mrdocs>

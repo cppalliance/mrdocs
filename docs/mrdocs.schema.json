@@ -158,6 +158,17 @@
       "title": "Include paths",
       "type": "array"
     },
+    "inherit-base-members": {
+      "default": "copy-dependencies",
+      "description": "Determine how derived classes inherit members of base classes. When set to `never`, derived classes do not inherit members of base classes and only the relationship is stored. When set to `reference`, derived classes list members of base classes but references are still linked to the base class. When set to `copy`, a copy is created for each base symbol as if it was declared in the derived class. If the base class is a dependency, the extraction mode is copied from the new parent. When set to `copy-dependencies`, a reference is created by default and a copy is created when the base class is a dependency.",
+      "enum": [
+        "never",
+        "reference",
+        "copy",
+        "copy-dependencies"
+      ],
+      "title": "Determine how derived classes inherit base members"
+    },
     "input": {
       "default": [
         "<source-root>/."
@@ -218,6 +229,16 @@
       "description": "Multipage generators expect a directory. Single page generators expect a file or a directory where the file will be created. If the directory does not exist, it will be created.",
       "title": "Directory or file for generating output",
       "type": "string"
+    },
+    "overloads": {
+      "default": true,
+      "description": "When set to `true`, MrDocs detects function overloads and groups them as a single symbol type.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Detect and group function overloads",
+      "type": "boolean"
     },
     "private-bases": {
       "default": true,

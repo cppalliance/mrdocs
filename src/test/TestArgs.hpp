@@ -43,7 +43,7 @@ public:
     llvm::cl::opt<bool>         unitOption;
 
     // Hide all options that don't belong to us
-    void hideForeignOptions();
+    void hideForeignOptions() const;
 };
 
 /** Command line arguments passed to the tool.
