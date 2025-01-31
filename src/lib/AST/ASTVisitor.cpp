@@ -811,7 +811,7 @@ populate(
     {
         populate(I.Requires, TRC);
     }
-    else
+    else if (I.Requires.Written.empty())
     {
         // Return type SFINAE constraints
         if (I.ReturnType &&
@@ -1200,32 +1200,36 @@ populate(
     }
 
     // Extract requires clause from SFINAE context
-    for (auto it = Template.Args.begin(); it != Template.Args.end();)
+    if (Template.Requires.Written.empty())
     {
-        auto& arg = *it;
-        if (!arg)
+        for (auto it = Template.Args.begin(); it != Template.Args.end();)
         {
-            ++it;
-            continue;
-        }
-        if (auto* T = dynamic_cast<TypeTArg*>(arg.operator->());
-            T &&
-            T->Type &&
-            !T->Type->Constraints.empty())
-        {
-            for (ExprInfo const& constraint: T->Type->Constraints)
+            auto& arg = *it;
+            if (!arg)
             {
-                if (!Template.Requires.Written.empty())
-                {
-                    Template.Requires.Written += " && ";
-                }
-                Template.Requires.Written += constraint.Written;
+                ++it;
+                continue;
             }
-            it = Template.Args.erase(it);
-            continue;
+            if (auto* T = dynamic_cast<TypeTArg*>(arg.operator->());
+                T &&
+                T->Type &&
+                !T->Type->Constraints.empty())
+            {
+                for (ExprInfo const& constraint: T->Type->Constraints)
+                {
+                    if (!Template.Requires.Written.empty())
+                    {
+                        Template.Requires.Written += " && ";
+                    }
+                    Template.Requires.Written += constraint.Written;
+                }
+                it = Template.Args.erase(it);
+                continue;
+            }
+            ++it;
         }
-        ++it;
     }
+
 
     // Extract the template parameters if this is a partial specialization
     if (auto* CTPSD = dyn_cast<ClassTemplatePartialSpecializationDecl>(CTSD))
@@ -1468,7 +1472,7 @@ populate(
     {
         populate(TI.Requires, RC);
     }
-    else
+    else if (TI.Requires.Written.empty())
     {
         // If there's no requires clause, check if the template
         // parameter types we extracted have constraints
