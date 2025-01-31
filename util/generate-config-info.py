@@ -65,7 +65,7 @@ def get_valid_enum_categories():
     valid_enum_cats = {
         'generator': ["adoc", "html", "xml"],
         'log-level': ["trace", "debug", "info", "warn", "error", "fatal"],
-        'base-member-inheritance': ["never", "reference", "copy", "copy-dependencies"]
+        'base-member-inheritance': ["never", "reference", "copy-dependencies", "copy-all"]
     }
     return valid_enum_cats
 

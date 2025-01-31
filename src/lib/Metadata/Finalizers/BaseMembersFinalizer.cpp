@@ -78,6 +78,19 @@ inheritBaseMembers(
     inheritBaseMembers(derivedId, derived.Friends, base.Friends);
 }
 
+namespace {
+bool
+shouldCopy(Config const& config, Info const& M)
+{
+
+    if (config->inheritBaseMembers == PublicSettings::BaseMemberInheritance::CopyDependencies)
+    {
+        return M.Extraction == ExtractionMode::Dependency;
+    }
+    return config->inheritBaseMembers == PublicSettings::BaseMemberInheritance::CopyAll;
+}
+}
+
 void
 BaseMembersFinalizer::
 inheritBaseMembers(
@@ -122,15 +135,19 @@ inheritBaseMembers(
             });
         MRDOCS_CHECK_OR_CONTINUE(shadowIt == derived.end());
 
-        bool const copyMember =
-            config_->inheritBaseMembers == PublicSettings::BaseMemberInheritance::CopyDependencies ?
-                otherInfo.Extraction == ExtractionMode::Dependency :
-                config_->inheritBaseMembers == PublicSettings::BaseMemberInheritance::Copy;
-
         // Not a shadow, so inherit the base member
-        if (!copyMember)
+        if (!shouldCopy(config_, otherInfo))
         {
-            derived.push_back(otherID);
+            // When it's a dependency, we don't create a reference to
+            // the member because the reference would be invalid.
+            // The user can use `copy-dependencies` or `copy` to
+            // copy the dependencies.
+            // There could be another option that forces the symbol
+            // extraction mode to be regular, but that is controversial.
+            if (otherInfo.Extraction != ExtractionMode::Dependency)
+            {
+                derived.push_back(otherID);
+            }
         }
         else
         {

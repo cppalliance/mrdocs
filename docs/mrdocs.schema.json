@@ -160,12 +160,12 @@
     },
     "inherit-base-members": {
       "default": "copy-dependencies",
-      "description": "Determine how derived classes inherit members of base classes. When set to `never`, derived classes do not inherit members of base classes and only the relationship is stored. When set to `reference`, derived classes list members of base classes but references are still linked to the base class. When set to `copy`, a copy is created for each base symbol as if it was declared in the derived class. If the base class is a dependency, the extraction mode is copied from the new parent. When set to `copy-dependencies`, a reference is created by default and a copy is created when the base class is a dependency.",
+      "description": "Determine how derived classes inherit members of base classes. When set to `never`, derived classes do not inherit members of base classes and only the relationship is stored. When set to `reference`, derived classes list members of base classes but references are still linked to the base class. When set to `copy-dependencies`, a reference is created by default and a copy is created when the base class is a dependency. When set to `copy-all`, a copy is created for each base symbol as if it was declared in the derived class. If the base class is a dependency, the extraction mode is copied from the new parent.",
       "enum": [
         "never",
         "reference",
-        "copy",
-        "copy-dependencies"
+        "copy-dependencies",
+        "copy-all"
       ],
       "title": "Determine how derived classes inherit base members"
     },
