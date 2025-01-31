@@ -280,6 +280,7 @@ handleDir(
             auto const& subdir = entry.path();
             Config::Settings subdirSettings = dirSettings;
             subdirSettings.sourceRoot = subdir;
+            subdirSettings.input = {subdir};
             std::string const& configPath = files::appendPath(subdir, "mrdocs.yml");
             if (files::exists(configPath))
             {
@@ -340,6 +341,7 @@ checkPath(
     testArgs.apply(dirSettings, dirs_, argv);
     dirSettings.multipage = false;
     dirSettings.sourceRoot = inputDir;
+    dirSettings.input = {inputDir};
     std::string const& configPath = files::appendPath(inputDir, "mrdocs.yml");
 
     if (files::exists(configPath))
