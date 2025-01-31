@@ -21,7 +21,7 @@
 === Synopsis
 
 
-Declared in `&lt;templates&sol;c&lowbar;mct&lowbar;expl&lowbar;outside&period;cpp&gt;`
+Declared in `&lt;c&lowbar;mct&lowbar;expl&lowbar;outside&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -47,7 +47,7 @@ struct A;
 === Synopsis
 
 
-Declared in `&lt;templates&sol;c&lowbar;mct&lowbar;expl&lowbar;outside&period;cpp&gt;`
+Declared in `&lt;c&lowbar;mct&lowbar;expl&lowbar;outside&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -73,7 +73,7 @@ struct B;
 === Synopsis
 
 
-Declared in `&lt;templates&sol;c&lowbar;mct&lowbar;expl&lowbar;outside&period;cpp&gt;`
+Declared in `&lt;c&lowbar;mct&lowbar;expl&lowbar;outside&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -88,7 +88,7 @@ f();
 === Synopsis
 
 
-Declared in `&lt;templates&sol;c&lowbar;mct&lowbar;expl&lowbar;outside&period;cpp&gt;`
+Declared in `&lt;c&lowbar;mct&lowbar;expl&lowbar;outside&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -114,7 +114,7 @@ struct <<A-B-04,B>>&lt;int&gt;;
 === Synopsis
 
 
-Declared in `&lt;templates&sol;c&lowbar;mct&lowbar;expl&lowbar;outside&period;cpp&gt;`
+Declared in `&lt;c&lowbar;mct&lowbar;expl&lowbar;outside&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----

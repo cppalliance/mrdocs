@@ -277,8 +277,10 @@ handleDir(
             entry.type() == fs::file_type::directory_file)
         {
             // Check for a subdirectory-wide config
+            auto const& subdir = entry.path();
             Config::Settings subdirSettings = dirSettings;
-            std::string const& configPath = files::appendPath(entry.path(), "mrdocs.yml");
+            subdirSettings.sourceRoot = subdir;
+            std::string const& configPath = files::appendPath(subdir, "mrdocs.yml");
             if (files::exists(configPath))
             {
                 if (auto exp = Config::Settings::load_file(subdirSettings, configPath, dirs_); !exp)
@@ -290,7 +292,7 @@ handleDir(
                     return report::error("Failed to normalize config file: {}: \"{}\"", exp.error(), configPath);
                 }
             }
-            handleDir(entry.path(), subdirSettings);
+            handleDir(subdir, subdirSettings);
         }
         else if(
             entry.type() == fs::file_type::regular_file &&
@@ -337,9 +339,9 @@ checkPath(
     Config::Settings dirSettings;
     testArgs.apply(dirSettings, dirs_, argv);
     dirSettings.multipage = false;
-    dirSettings.sourceRoot = files::appendPath(inputPath, ".");
-
+    dirSettings.sourceRoot = inputDir;
     std::string const& configPath = files::appendPath(inputDir, "mrdocs.yml");
+
     if (files::exists(configPath))
     {
         if (auto exp = Config::Settings::load_file(dirSettings, configPath, dirs_); !exp)
