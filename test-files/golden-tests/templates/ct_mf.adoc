@@ -21,7 +21,7 @@
 === Synopsis
 
 
-Declared in `&lt;templates&sol;ct&lowbar;mf&period;cpp&gt;`
+Declared in `&lt;ct&lowbar;mf&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -47,7 +47,7 @@ struct A;
 === Synopsis
 
 
-Declared in `&lt;templates&sol;ct&lowbar;mf&period;cpp&gt;`
+Declared in `&lt;ct&lowbar;mf&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----

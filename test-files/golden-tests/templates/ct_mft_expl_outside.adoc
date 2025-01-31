@@ -22,7 +22,7 @@
 === Synopsis
 
 
-Declared in `&lt;templates&sol;ct&lowbar;mft&lowbar;expl&lowbar;outside&period;cpp&gt;`
+Declared in `&lt;ct&lowbar;mft&lowbar;expl&lowbar;outside&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -48,7 +48,7 @@ struct A;
 === Synopsis
 
 
-Declared in `&lt;templates&sol;ct&lowbar;mft&lowbar;expl&lowbar;outside&period;cpp&gt;`
+Declared in `&lt;ct&lowbar;mft&lowbar;expl&lowbar;outside&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -64,7 +64,7 @@ f();
 === Synopsis
 
 
-Declared in `&lt;templates&sol;ct&lowbar;mft&lowbar;expl&lowbar;outside&period;cpp&gt;`
+Declared in `&lt;ct&lowbar;mft&lowbar;expl&lowbar;outside&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -90,7 +90,7 @@ struct <<A-0e,A>>&lt;int&gt;;
 === Synopsis
 
 
-Declared in `&lt;templates&sol;ct&lowbar;mft&lowbar;expl&lowbar;outside&period;cpp&gt;`
+Declared in `&lt;ct&lowbar;mft&lowbar;expl&lowbar;outside&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -117,7 +117,7 @@ void
 === Synopsis
 
 
-Declared in `&lt;templates&sol;ct&lowbar;mft&lowbar;expl&lowbar;outside&period;cpp&gt;`
+Declared in `&lt;ct&lowbar;mft&lowbar;expl&lowbar;outside&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -133,7 +133,7 @@ f();
 === Synopsis
 
 
-Declared in `&lt;templates&sol;ct&lowbar;mft&lowbar;expl&lowbar;outside&period;cpp&gt;`
+Declared in `&lt;ct&lowbar;mft&lowbar;expl&lowbar;outside&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----

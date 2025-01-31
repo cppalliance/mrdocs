@@ -5,11 +5,11 @@
   <template>
     <tparam name="T" class="type"/>
     <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-      <file short-path="templates/ct_mft_expl_outside.cpp" source-path="templates/ct_mft_expl_outside.cpp" line="1" class="def"/>
+      <file short-path="ct_mft_expl_outside.cpp" source-path="ct_mft_expl_outside.cpp" line="1" class="def"/>
       <template>
         <tparam name="U" class="type"/>
         <function name="f" id="fycIFVnUjGsczEihLemEC7pcV4w=">
-          <file short-path="templates/ct_mft_expl_outside.cpp" source-path="templates/ct_mft_expl_outside.cpp" line="4" class="def"/>
+          <file short-path="ct_mft_expl_outside.cpp" source-path="ct_mft_expl_outside.cpp" line="4" class="def"/>
         </function>
       </template>
     </struct>
@@ -17,17 +17,17 @@
   <template class="explicit" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
     <targ class="type" type="int"/>
     <struct name="A" id="AKwlChAOi+0ttIAPsD7uitS+gk0=">
-      <file short-path="templates/ct_mft_expl_outside.cpp" source-path="templates/ct_mft_expl_outside.cpp" line="2" class="def"/>
+      <file short-path="ct_mft_expl_outside.cpp" source-path="ct_mft_expl_outside.cpp" line="2" class="def"/>
       <template>
         <tparam name="U" class="type"/>
         <function name="f" id="MtpaTgur0M7GGwfDIj9dUJZjaHM=">
-          <file short-path="templates/ct_mft_expl_outside.cpp" source-path="templates/ct_mft_expl_outside.cpp" line="4"/>
+          <file short-path="ct_mft_expl_outside.cpp" source-path="ct_mft_expl_outside.cpp" line="4"/>
         </function>
       </template>
       <template class="explicit" id="fycIFVnUjGsczEihLemEC7pcV4w=">
         <targ class="type" type="int"/>
         <function name="f" id="fjcm9F09lrCrLSgw6Swqw9KOBlM=">
-          <file short-path="templates/ct_mft_expl_outside.cpp" source-path="templates/ct_mft_expl_outside.cpp" line="8" class="def"/>
+          <file short-path="ct_mft_expl_outside.cpp" source-path="ct_mft_expl_outside.cpp" line="8" class="def"/>
         </function>
       </template>
     </struct>

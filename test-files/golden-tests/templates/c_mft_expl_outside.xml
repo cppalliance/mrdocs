@@ -3,17 +3,17 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
-    <file short-path="templates/c_mft_expl_outside.cpp" source-path="templates/c_mft_expl_outside.cpp" line="1" class="def"/>
+    <file short-path="c_mft_expl_outside.cpp" source-path="c_mft_expl_outside.cpp" line="1" class="def"/>
     <template>
       <tparam name="T" class="type"/>
       <function name="f" id="6UIt6/hx1mqXnkk0IbjFZNnVJ2Y=">
-        <file short-path="templates/c_mft_expl_outside.cpp" source-path="templates/c_mft_expl_outside.cpp" line="3" class="def"/>
+        <file short-path="c_mft_expl_outside.cpp" source-path="c_mft_expl_outside.cpp" line="3" class="def"/>
       </function>
     </template>
     <template class="explicit" id="6UIt6/hx1mqXnkk0IbjFZNnVJ2Y=">
       <targ class="type" type="int"/>
       <function name="f" id="veV2posfyuimiNezTTVnomiz6tY=">
-        <file short-path="templates/c_mft_expl_outside.cpp" source-path="templates/c_mft_expl_outside.cpp" line="7" class="def"/>
+        <file short-path="c_mft_expl_outside.cpp" source-path="c_mft_expl_outside.cpp" line="7" class="def"/>
       </function>
     </template>
   </struct>

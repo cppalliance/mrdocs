@@ -21,7 +21,7 @@
 === Synopsis
 
 
-Declared in `&lt;templates&sol;ft&lowbar;expl&period;cpp&gt;`
+Declared in `&lt;ft&lowbar;expl&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -48,7 +48,7 @@ void
 === Synopsis
 
 
-Declared in `&lt;templates&sol;ft&lowbar;expl&period;cpp&gt;`
+Declared in `&lt;ft&lowbar;expl&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -64,7 +64,7 @@ f();
 === Synopsis
 
 
-Declared in `&lt;templates&sol;ft&lowbar;expl&period;cpp&gt;`
+Declared in `&lt;ft&lowbar;expl&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
