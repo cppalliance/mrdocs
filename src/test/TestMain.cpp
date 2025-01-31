@@ -118,6 +118,7 @@ int test_main(int argc, char const** argv)
     return EXIT_SUCCESS;
 }
 
+#ifdef _NDEBUG
 static void reportUnhandledException(
     std::exception const& ex)
 {
@@ -126,12 +127,16 @@ static void reportUnhandledException(
     report::error("Unhandled exception: {}\n", ex.what());
     sys::PrintStackTrace(llvm::errs());
 }
+#endif
 
 } // mrdocs
 } // clang
 
 int main(int argc, char const** argv)
 {
+#ifndef _NDEBUG
+    return clang::mrdocs::test_main(argc, argv);
+#else
     try
     {
         return clang::mrdocs::test_main(argc, argv);
@@ -146,4 +151,5 @@ int main(int argc, char const** argv)
         clang::mrdocs::reportUnhandledException(ex);
     }
     return EXIT_FAILURE;
+#endif
 }
