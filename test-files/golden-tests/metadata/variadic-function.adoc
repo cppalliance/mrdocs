@@ -37,8 +37,8 @@ Declared in `&lt;variadic&hyphen;function&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;
-    typename A = void(...),
-    typename B = void(int, ...)&gt;
+    typename A = void(&period;&period;&period;),
+    typename B = void(int, &period;&period;&period;)&gt;
 struct C;
 ----
 
@@ -57,7 +57,7 @@ Declared in `&lt;variadic&hyphen;function&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f(...);
+f(&period;&period;&period;);
 ----
 
 [#g]
@@ -72,7 +72,7 @@ Declared in `&lt;variadic&hyphen;function&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-g(int, ...);
+g(int, &period;&period;&period;);
 ----
 
 [#T]
@@ -86,7 +86,7 @@ Declared in `&lt;variadic&hyphen;function&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using T = void(...);
+using T = void(&period;&period;&period;);
 ----
 
 [#U]
@@ -100,7 +100,7 @@ Declared in `&lt;variadic&hyphen;function&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using U = void(int, ...);
+using U = void(int, &period;&period;&period;);
 ----
 
 

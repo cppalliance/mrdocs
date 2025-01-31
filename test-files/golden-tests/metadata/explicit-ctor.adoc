@@ -57,7 +57,7 @@ explicit
 <<Explicit-2constructor-02,Explicit>>();
 ----
 
-[.small]#<<Explicit-2constructor-02,_» more..._>>#
+[.small]#<<Explicit-2constructor-02,_» more&period;&period;&period;_>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -65,7 +65,7 @@ explicit
 <<Explicit-2constructor-00,Explicit>>(<<Explicit,Explicit>> const&);
 ----
 
-[.small]#<<Explicit-2constructor-00,_» more..._>>#
+[.small]#<<Explicit-2constructor-00,_» more&period;&period;&period;_>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -73,7 +73,7 @@ explicit
 <<Explicit-2constructor-0b,Explicit>>(<<Explicit,Explicit>>&&) noexcept;
 ----
 
-[.small]#<<Explicit-2constructor-0b,_» more..._>>#
+[.small]#<<Explicit-2constructor-0b,_» more&period;&period;&period;_>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -83,7 +83,7 @@ explicit
     int);
 ----
 
-[.small]#<<Explicit-2constructor-03,_» more..._>>#
+[.small]#<<Explicit-2constructor-03,_» more&period;&period;&period;_>>#
 
 [#Explicit-2constructor-02]
 == <<Explicit,Explicit>>::Explicit
@@ -188,7 +188,7 @@ explicit(B)
 <<ExplicitExpression-2constructor-0b,ExplicitExpression>>();
 ----
 
-[.small]#<<ExplicitExpression-2constructor-0b,_» more..._>>#
+[.small]#<<ExplicitExpression-2constructor-0b,_» more&period;&period;&period;_>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -196,7 +196,7 @@ explicit(B)
 <<ExplicitExpression-2constructor-04,ExplicitExpression>>(<<ExplicitExpression,ExplicitExpression>> const&);
 ----
 
-[.small]#<<ExplicitExpression-2constructor-04,_» more..._>>#
+[.small]#<<ExplicitExpression-2constructor-04,_» more&period;&period;&period;_>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -204,7 +204,7 @@ explicit(B)
 <<ExplicitExpression-2constructor-08,ExplicitExpression>>(<<ExplicitExpression,ExplicitExpression>>&&) noexcept;
 ----
 
-[.small]#<<ExplicitExpression-2constructor-08,_» more..._>>#
+[.small]#<<ExplicitExpression-2constructor-08,_» more&period;&period;&period;_>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -214,7 +214,7 @@ explicit(B)
     int);
 ----
 
-[.small]#<<ExplicitExpression-2constructor-027,_» more..._>>#
+[.small]#<<ExplicitExpression-2constructor-027,_» more&period;&period;&period;_>>#
 
 [#ExplicitExpression-2constructor-0b]
 == <<ExplicitExpression,ExplicitExpression>>::ExplicitExpression
@@ -318,7 +318,7 @@ explicit(false)
 <<ExplicitFalse-2constructor-01,ExplicitFalse>>();
 ----
 
-[.small]#<<ExplicitFalse-2constructor-01,_» more..._>>#
+[.small]#<<ExplicitFalse-2constructor-01,_» more&period;&period;&period;_>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -326,7 +326,7 @@ explicit(false)
 <<ExplicitFalse-2constructor-08,ExplicitFalse>>(<<ExplicitFalse,ExplicitFalse>> const&);
 ----
 
-[.small]#<<ExplicitFalse-2constructor-08,_» more..._>>#
+[.small]#<<ExplicitFalse-2constructor-08,_» more&period;&period;&period;_>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -334,7 +334,7 @@ explicit(false)
 <<ExplicitFalse-2constructor-0a,ExplicitFalse>>(<<ExplicitFalse,ExplicitFalse>>&&) noexcept;
 ----
 
-[.small]#<<ExplicitFalse-2constructor-0a,_» more..._>>#
+[.small]#<<ExplicitFalse-2constructor-0a,_» more&period;&period;&period;_>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -344,7 +344,7 @@ explicit(false)
     int);
 ----
 
-[.small]#<<ExplicitFalse-2constructor-04f,_» more..._>>#
+[.small]#<<ExplicitFalse-2constructor-04f,_» more&period;&period;&period;_>>#
 
 [#ExplicitFalse-2constructor-01]
 == <<ExplicitFalse,ExplicitFalse>>::ExplicitFalse
@@ -448,7 +448,7 @@ explicit(true)
 <<ExplicitTrue-2constructor-0d,ExplicitTrue>>();
 ----
 
-[.small]#<<ExplicitTrue-2constructor-0d,_» more..._>>#
+[.small]#<<ExplicitTrue-2constructor-0d,_» more&period;&period;&period;_>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -456,7 +456,7 @@ explicit(true)
 <<ExplicitTrue-2constructor-04,ExplicitTrue>>(<<ExplicitTrue,ExplicitTrue>> const&);
 ----
 
-[.small]#<<ExplicitTrue-2constructor-04,_» more..._>>#
+[.small]#<<ExplicitTrue-2constructor-04,_» more&period;&period;&period;_>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -464,7 +464,7 @@ explicit(true)
 <<ExplicitTrue-2constructor-08,ExplicitTrue>>(<<ExplicitTrue,ExplicitTrue>>&&) noexcept;
 ----
 
-[.small]#<<ExplicitTrue-2constructor-08,_» more..._>>#
+[.small]#<<ExplicitTrue-2constructor-08,_» more&period;&period;&period;_>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -474,7 +474,7 @@ explicit(true)
     int);
 ----
 
-[.small]#<<ExplicitTrue-2constructor-05,_» more..._>>#
+[.small]#<<ExplicitTrue-2constructor-05,_» more&period;&period;&period;_>>#
 
 [#ExplicitTrue-2constructor-0d]
 == <<ExplicitTrue,ExplicitTrue>>::ExplicitTrue

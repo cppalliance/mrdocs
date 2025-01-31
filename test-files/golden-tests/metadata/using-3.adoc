@@ -147,7 +147,7 @@ void
 <<A-f,f>>(int);
 ----
 
-[.small]#<<A-f,_» more..._>>#
+[.small]#<<A-f,_» more&period;&period;&period;_>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -155,7 +155,7 @@ void
 <<B-f,f>>(bool);
 ----
 
-[.small]#<<B-f,_» more..._>>#
+[.small]#<<B-f,_» more&period;&period;&period;_>>#
 
 [#A-f]
 == <<A,A>>::f

@@ -99,7 +99,7 @@ void
 <<A-00-f-032,f>>();
 ----
 
-[.small]#<<A-00-f-032,_» more..._>>#
+[.small]#<<A-00-f-032,_» more&period;&period;&period;_>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -108,7 +108,7 @@ void
 <<A-00-f-07,f>>&lt;int&gt;();
 ----
 
-[.small]#<<A-00-f-07,_» more..._>>#
+[.small]#<<A-00-f-07,_» more&period;&period;&period;_>>#
 
 [#A-00-f-032]
 == <<A-00,A>>&lt;int&gt;::f

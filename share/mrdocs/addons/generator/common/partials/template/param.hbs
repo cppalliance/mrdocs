@@ -15,14 +15,14 @@
 --}}
 {{#if (eq kind "type")~}}
     {{#if constraint}}{{>symbol/name-info constraint }}{{else}}{{key}}{{/if~}}
-    {{#if is-pack}}...{{/if~}}
+    {{#if is-pack}}{{ str "..." }}{{/if~}}
     {{#if name}} {{name}}{{/if~}}
     {{#if default}} = {{>template/arg default~}}{{/if~}}
 {{else if (eq kind "non-type")~}}
-    {{>type/declarator type decl-name=name}}{{#if is-pack}}...{{/if~}}
+    {{>type/declarator type decl-name=name}}{{#if is-pack}}{{ str "..." }}{{/if~}}
     {{#if default}} = {{>template/arg default~}}{{/if~}}
 {{else if (eq kind "template")~}}
-    {{>template/head}} typename{{#if is-pack}}...{{/if~}}
+    {{>template/head}} typename{{#if is-pack}}{{ str "..." }}{{/if~}}
     {{#if name}} {{name}}{{/if~}}
     {{#if default}} = {{>template/arg default~}}{{/if~}}
 {{/if}}

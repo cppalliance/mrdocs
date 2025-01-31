@@ -56,7 +56,7 @@ auto&&
 <<Optional-value-05,value>>(this Self&& self);
 ----
 
-[.small]#<<Optional-value-05,_» more..._>>#
+[.small]#<<Optional-value-05,_» more&period;&period;&period;_>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -68,7 +68,7 @@ auto&&
     int x);
 ----
 
-[.small]#<<Optional-value-06,_» more..._>>#
+[.small]#<<Optional-value-06,_» more&period;&period;&period;_>>#
 
 [#Optional-value-05]
 == <<Optional,Optional>>::value

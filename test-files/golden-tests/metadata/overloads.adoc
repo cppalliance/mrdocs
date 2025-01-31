@@ -81,7 +81,7 @@ void
 <<A-f-08,f>>();
 ----
 
-[.small]#<<A-f-08,_» more..._>>#
+[.small]#<<A-f-08,_» more&period;&period;&period;_>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -89,7 +89,7 @@ int
 <<A-f-0e,f>>(int);
 ----
 
-[.small]#<<A-f-0e,_» more..._>>#
+[.small]#<<A-f-0e,_» more&period;&period;&period;_>>#
 
 [#A-f-08]
 == <<A,A>>::f
@@ -137,7 +137,7 @@ void
 <<A-g-0a,g>>();
 ----
 
-[.small]#<<A-g-0a,_» more..._>>#
+[.small]#<<A-g-0a,_» more&period;&period;&period;_>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -146,7 +146,7 @@ int
 <<A-g-01,g>>(int);
 ----
 
-[.small]#<<A-g-01,_» more..._>>#
+[.small]#<<A-g-01,_» more&period;&period;&period;_>>#
 
 [#A-g-0a]
 == <<A,A>>::g
@@ -248,7 +248,7 @@ void
 <<f-0b,f>>();
 ----
 
-[.small]#<<f-0b,_» more..._>>#
+[.small]#<<f-0b,_» more&period;&period;&period;_>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -256,7 +256,7 @@ int
 <<f-06,f>>(int);
 ----
 
-[.small]#<<f-06,_» more..._>>#
+[.small]#<<f-06,_» more&period;&period;&period;_>>#
 
 [#f-0b]
 == f
@@ -305,7 +305,7 @@ bool
     <<A,A>>);
 ----
 
-[.small]#<<operator_eq-0a,_» more..._>>#
+[.small]#<<operator_eq-0a,_» more&period;&period;&period;_>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -315,7 +315,7 @@ bool
     int);
 ----
 
-[.small]#<<operator_eq-0e,_» more..._>>#
+[.small]#<<operator_eq-0e,_» more&period;&period;&period;_>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -325,7 +325,7 @@ bool
     <<B,B>>);
 ----
 
-[.small]#<<operator_eq-08,_» more..._>>#
+[.small]#<<operator_eq-08,_» more&period;&period;&period;_>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -335,7 +335,7 @@ bool
     int);
 ----
 
-[.small]#<<operator_eq-07,_» more..._>>#
+[.small]#<<operator_eq-07,_» more&period;&period;&period;_>>#
 
 [#operator_eq-0a]
 == operator&equals;&equals;

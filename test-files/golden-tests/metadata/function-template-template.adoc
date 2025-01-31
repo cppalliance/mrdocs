@@ -25,7 +25,7 @@ Declared in `&lt;function&hyphen;template&hyphen;template&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template&lt;template&lt;class...&gt; typename ListType&gt;
+template&lt;template&lt;class&period;&period;&period;&gt; typename ListType&gt;
 constexpr
 void
 f(ListType&lt;int&gt; param);
