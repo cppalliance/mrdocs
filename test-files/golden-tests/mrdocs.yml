@@ -1,4 +1,3 @@
-#ignore-failures: true
 concurrency: 1
 source-root: .
 single-page: true
