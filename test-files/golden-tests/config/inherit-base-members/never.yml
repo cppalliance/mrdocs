@@ -1,0 +1,3 @@
+inherit-base-members: never
+exclude-symbols:
+  - excluded_base

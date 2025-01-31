@@ -1,0 +1,3 @@
+inherit-base-members: reference
+exclude-symbols:
+  - excluded_base

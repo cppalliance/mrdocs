@@ -1,0 +1,3 @@
+inherit-base-members: copy-dependencies
+exclude-symbols:
+  - excluded_base
