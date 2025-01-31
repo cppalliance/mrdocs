@@ -153,6 +153,7 @@ mrdocs_main(int argc, char const** argv)
     return EXIT_SUCCESS;
 }
 
+#ifdef _NDEBUG
 static
 void
 reportUnhandledException(
@@ -163,24 +164,29 @@ reportUnhandledException(
     report::fatal("Unhandled exception: {}\n", ex.what());
     sys::PrintStackTrace(llvm::errs());
 }
+#endif
 
 } // clang::mrdocs
 
 int
 main(int argc, char const** argv)
 {
-    // try
-    // {
+#ifndef _NDEBUG
+    return clang::mrdocs::mrdocs_main(argc, argv);
+#else
+    try
+    {
         return clang::mrdocs::mrdocs_main(argc, argv);
-    // }
-    // catch(clang::mrdocs::Exception const& ex)
-    // {
+    }
+    catch(clang::mrdocs::Exception const& ex)
+    {
         // Thrown Exception should never get here.
-        // clang::mrdocs::reportUnhandledException(ex);
-    // }
-    // catch(std::exception const& ex)
-    // {
-        // clang::mrdocs::reportUnhandledException(ex);
-    // }
-    // return EXIT_FAILURE;
+        clang::mrdocs::reportUnhandledException(ex);
+    }
+    catch(std::exception const& ex)
+    {
+        clang::mrdocs::reportUnhandledException(ex);
+    }
+    return EXIT_FAILURE;
+#endif
 }
