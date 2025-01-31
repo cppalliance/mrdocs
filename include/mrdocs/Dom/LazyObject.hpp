@@ -11,14 +11,12 @@
 #ifndef MRDOCS_LIB_DOM_LAZY_OBJECT_HPP
 #define MRDOCS_LIB_DOM_LAZY_OBJECT_HPP
 
-#include "mrdocs/Dom.hpp"
-#include "mrdocs/Platform.hpp"
-#include "mrdocs/Support/Error.hpp"
+#include <mrdocs/Dom.hpp>
+#include <mrdocs/Platform.hpp>
+#include <mrdocs/Support/Error.hpp>
 #include <string_view>
 
-namespace clang {
-namespace mrdocs {
-namespace dom {
+namespace clang::mrdocs::dom {
 
 namespace detail
 {
@@ -451,8 +449,6 @@ LazyObject(T const& arr, Context const& context)
     return newObject<LazyObjectImpl<T, Context>>(arr, context);
 }
 
-} // dom
-} // mrdocs
-} // clang
+} // clang::mrdocs::dom
 
 #endif

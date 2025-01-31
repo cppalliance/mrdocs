@@ -14,13 +14,15 @@
 #define MRDOCS_API_DOM_DOMCORPUS_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Corpus.hpp>
 #include <mrdocs/Dom.hpp>
-#include <mrdocs/Metadata.hpp>
-#include <type_traits>
 #include <memory>
 
 namespace clang::mrdocs {
+
+class Corpus;
+struct Info;
+struct Javadoc;
+class SymbolID;
 
 /** Front-end factory for producing Dom nodes.
 
@@ -83,17 +85,6 @@ public:
     dom::Object
     construct(Info const& I) const;
 
-    /** Return a Dom value representing an overload set.
-
-        A @ref Generator should override this member
-        and return suitable @ref dom::Value representing
-        the overload set.
-    */
-    virtual
-    dom::Object
-    construct(
-        OverloadSet const& os) const;
-
     /** Return a Dom object representing the given symbol.
 
         @return A value containing the symbol
@@ -115,6 +106,12 @@ public:
     dom::Value
     getJavadoc(Javadoc const& jd) const;
 };
+
+/** Return a list of the parent symbols of the specified Info.
+ */
+MRDOCS_DECL
+dom::Array
+getParents(DomCorpus const& C, Info const& I);
 
 } // clang::mrdocs
 

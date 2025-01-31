@@ -17,7 +17,6 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Metadata.hpp>
-#include <memory>
 #include <string>
 #include <type_traits>
 #include <utility>
@@ -132,6 +131,163 @@ public:
     NamespaceInfo const&
     globalNamespace() const noexcept;
 
+    /** Visit the specified Symbol IDs
+
+        This function invokes the specified function `f`
+        for each member of the specified range of Symbol IDs.
+
+        For each member of `I` associated with the ID in `range`,
+        the function will invoke the function object `fn` with a
+        type derived from `Info` as the first argument, followed by
+        `args...`.
+
+        The type of the first argument is determined
+        by the `InfoKind` of the `Info` object.
+
+        @param range A range of SymbolID objects.
+        @param f The function to invoke.
+        @param args The arguments to pass to the function.
+    */
+    template <range_of<SymbolID> R, class F, class... Args>
+    void
+    traverseIDs(R&& range, F&& f, Args&&... args) const
+    {
+        for (SymbolID const& id : range)
+        {
+            auto const* I = find(id);
+            MRDOCS_CHECK_OR_CONTINUE(I);
+            visit(*I, std::forward<F>(f), std::forward<Args>(args)...);
+        }
+    }
+
+    /** Options to traverse the members of an Info.
+     */
+    struct TraverseOptions
+    {
+        /// Whether to traverse in a stable order
+        bool ordered = false;
+        /// Whether to skip inherited members whose parent is not the Info
+        bool skipInherited = false;
+        /// Whether to skip inherited members whose parent is not the Info
+        bool recursive = false;
+    };
+
+    /** Visit the members of specified Info.
+
+        This function invokes the specified function `f`
+        for each member of the specified Info `I`.
+
+        For each member of `I`, the function will invoke
+        the function object `fn` with a type derived from
+        `Info` as the first argument, followed by `args...`.
+
+        The type of the first argument is determined
+        by the `InfoKind` of the `Info` object.
+
+        @param opts The options to traverse.
+        @param I The Info to visit.
+        @param f The function to invoke.
+        @param args The arguments to pass to the function.
+    */
+    template <std::derived_from<Info> T, class F, class... Args>
+    void
+    traverse(TraverseOptions const& opts, T const& I, F&& f, Args&&... args) const
+    {
+        if constexpr (InfoParent<T>)
+        {
+            if (!opts.ordered)
+            {
+                if (!opts.skipInherited)
+                {
+                    auto MS = allMembers(I);
+                    traverseIDs(MS,
+                        std::forward<F>(f),
+                        std::forward<Args>(args)...);
+                    for (SymbolID const& id : MS)
+                    {
+                        auto const* MI = find(id);
+                        MRDOCS_CHECK_OR_CONTINUE(MI);
+                        traverse(opts, *MI, std::forward<F>(f), std::forward<Args>(args)...);
+                    }
+                }
+                else
+                {
+                    auto nonInherited =
+                        allMembers(I) |
+                        std::views::filter([this, &I](SymbolID const& id) {
+                            Info const* MI = find(id);
+                            MRDOCS_CHECK_OR(MI, false);
+                            return MI->Parent == I.id;
+                        });
+                    traverseIDs(nonInherited,
+                        std::forward<F>(f),
+                        std::forward<Args>(args)...);
+                    if (opts.recursive)
+                    {
+                        for (SymbolID const& id : nonInherited)
+                        {
+                            auto const* MI = find(id);
+                            MRDOCS_CHECK_OR_CONTINUE(MI);
+                            traverse(opts, *MI, std::forward<F>(f), std::forward<Args>(args)...);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                auto members0 = allMembers(I);
+                static_assert(range_of<decltype(members0), SymbolID>);
+                std::vector<SymbolID> members;
+                members.reserve(std::ranges::distance(members0));
+                std::ranges::copy(members0, std::back_inserter(members));
+                std::stable_sort(members.begin(), members.end(),
+                    [this](SymbolID const& lhs, SymbolID const& rhs)
+                    {
+                        auto const& lhsInfo = get(lhs);
+                        auto const& rhsInfo = get(rhs);
+                        return lhsInfo < rhsInfo;
+                    });
+                if (!opts.skipInherited)
+                {
+                    traverseIDs(members,
+                        std::forward<F>(f),
+                        std::forward<Args>(args)...);
+                    if (opts.recursive)
+                    {
+                        for (SymbolID const& id : members)
+                        {
+                            auto const* MI = find(id);
+                            MRDOCS_CHECK_OR_CONTINUE(MI);
+                            traverse(opts, *MI, std::forward<F>(f), std::forward<Args>(args)...);
+                        }
+                    }
+                }
+                else
+                {
+                    auto nonInherited =
+                        members |
+                        std::views::filter([this, &I](SymbolID const& id) {
+                            Info const* MI = find(id);
+                            MRDOCS_CHECK_OR(MI, false);
+                            return MI->Parent == I.id;
+                        });
+                    traverseIDs(nonInherited,
+                        std::forward<F>(f),
+                        std::forward<Args>(args)...);
+                    if (opts.recursive)
+                    {
+                        for (SymbolID const& id : nonInherited)
+                        {
+                            auto const* MI = find(id);
+                            MRDOCS_CHECK_OR_CONTINUE(MI);
+                            traverse(opts, *MI, std::forward<F>(f), std::forward<Args>(args)...);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     /** Visit the members of specified Info.
 
         This function invokes the specified function `f`
@@ -145,81 +301,15 @@ public:
         by the `InfoKind` of the `Info` object.
 
         @param I The Info to visit.
-        @param info The Info to visit.
         @param f The function to invoke.
         @param args The arguments to pass to the function.
     */
-    template <InfoParent T, class F, class... Args>
+    template <std::derived_from<Info> T, class F, class... Args>
     void
-    traverse(
-        T const& I, F&& f, Args&&... args) const
+    traverse(T const& I, F&& f, Args&&... args) const
     {
-        for (auto const& id : I.Members)
-        {
-            visit(get(id), std::forward<F>(f),
-                  std::forward<Args>(args)...);
-        }
+        traverse({}, I, std::forward<F>(f), std::forward<Args>(args)...);
     }
-
-    /** Visit the members of specified Info in a stable order.
-
-        @param I The Info to visit.
-        @param info The Info to visit.
-        @param f The function to invoke.
-        @param args The arguments to pass to the function.
-    */
-    template <InfoParent T, class F, class... Args>
-    void
-    orderedTraverse(
-        T const& I, F&& f, Args&&... args) const
-    {
-        std::vector<SymbolID> members(I.Members.begin(), I.Members.end());
-        std::stable_sort(members.begin(), members.end(), [this](SymbolID const& lhs, SymbolID const& rhs)
-        {
-            auto const& lhsInfo = get(lhs);
-            auto const& rhsInfo = get(rhs);
-            return lhsInfo < rhsInfo;
-        });
-        for (auto const& id : members)
-        {
-            visit(get(id), std::forward<F>(f),
-                  std::forward<Args>(args)...);
-        }
-    }
-
-    /** Visit the member overloads of specified ScopeInfo.
-
-        This function iterates the members of the
-        specified ScopeInfo `S`.
-
-        For each member in the scope, we check
-        if the member is a function with overloads.
-
-        If the member is a function with overloads,
-        we create an @ref OverloadSet object and invoke
-        the function object `f` with the @ref OverloadSet
-        as the first argument, followed by `args...`.
-
-        If the member is not a function with overloads,
-        we invoke the function object `f` with the @ref Info
-        member as the first argument, followed by `args...`.
-
-    */
-    template <class F, class... Args>
-    void traverseOverloads(
-        ScopeInfo const& S,
-        F&& f,
-        Args&&... args) const;
-
-    /** Visit the member overloads of specified ScopeInfo in stable order
-    */
-    template <class F, class... Args>
-    void orderedTraverseOverloads(
-        ScopeInfo const& S,
-        F&& f,
-        Args&&... args) const;
-
-    //--------------------------------------------
 
     /** Return the fully qualified name of the specified Info.
 
@@ -239,7 +329,7 @@ public:
         std::string& temp) const;
 
     std::string
-    qualifiedName(const Info& I) const
+    qualifiedName(Info const& I) const
     {
         std::string temp;
         qualifiedName(I, temp);
@@ -271,82 +361,11 @@ get(
     }
 }
 
-template <class F, class... Args>
-void
-traverseOverloadsImpl(
-    Corpus const& c,
-    std::vector<SymbolID> const& members0,
-    ScopeInfo const& S,
-    F&& f, Args&&... args)
-{
-    for(const SymbolID& id : members0)
-    {
-        const Info& member = c.get(id);
-        const auto& members = S.Lookups.at(member.Name);
-        auto first_func = std::ranges::find_if(
-            members, [&c](const SymbolID& elem)
-            {
-                return c.get(elem).isFunction();
-            });
-        bool const nonOverloadedFunction = members.size() == 1;
-        bool const notFunction = first_func == members.end();
-        if (nonOverloadedFunction ||
-            notFunction)
-        {
-            visit(member, std::forward<F>(f),
-                std::forward<Args>(args)...);
-        }
-        else if (*first_func == id)
-        {
-            OverloadSet overloads(
-                member.Name,
-                member.Parent,
-                members);
-            visit(overloads, std::forward<F>(f),
-                std::forward<Args>(args)...);
-        }
-    }
-}
-
-template <class F, class... Args>
-void
-Corpus::
-traverseOverloads(
-    ScopeInfo const& S,
-    F&& f, Args&&... args) const
-{
-    MRDOCS_ASSERT(S.Members.empty() == S.Lookups.empty());
-    return traverseOverloadsImpl(
-        *this, S.Members, S, std::forward<F>(f), std::forward<Args>(args)...);
-
-}
-
-template <class F, class... Args>
-void
-Corpus::
-orderedTraverseOverloads(
-    ScopeInfo const& S,
-    F&& f,
-    Args&&... args) const
-{
-    MRDOCS_ASSERT(S.Members.empty() == S.Lookups.empty());
-    std::vector<SymbolID> members(S.Members.begin(), S.Members.end());
-    std::stable_sort(members.begin(), members.end(), [this](SymbolID const& lhs, SymbolID const& rhs)
-    {
-        auto const& lhsInfo = get(lhs);
-        auto const& rhsInfo = get(rhs);
-        return lhsInfo < rhsInfo;
-    });
-    return traverseOverloadsImpl(
-            *this, members, S, std::forward<F>(f), std::forward<Args>(args)...);
-}
-
-
 class Corpus::iterator
 {
-    const Corpus* corpus_;
-    const Info* val_;
-    const Info*(*next_)(const Corpus*, const Info*);
+    Corpus const* corpus_;
+    Info const* val_;
+    Info const*(*next_)(Corpus const*, Info const*);
 
 public:
     using value_type = const Info;
@@ -354,17 +373,17 @@ public:
     using difference_type = std::ptrdiff_t;
     using pointer = value_type*;
     using reference = value_type&;
-    using const_pointer = const value_type*;
-    using const_reference = const value_type&;
+    using const_pointer = value_type const*;
+    using const_reference = value_type const&;
 
     iterator() = default;
-    iterator(const iterator&) = default;
-    iterator& operator=(const iterator&) = default;
+    iterator(iterator const&) = default;
+    iterator& operator=(iterator const&) = default;
 
     iterator(
-        const Corpus* corpus,
-        const Info* val,
-        const Info*(*next)(const Corpus*, const Info*))
+        Corpus const* corpus,
+        Info const* val,
+        Info const*(*next)(Corpus const*, Info const*))
         : corpus_(corpus)
         , val_(val)
         , next_(next)

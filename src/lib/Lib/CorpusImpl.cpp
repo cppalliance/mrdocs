@@ -22,8 +22,7 @@
 #include <mrdocs/Support/ThreadPool.hpp>
 #include <chrono>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 auto
 CorpusImpl::
@@ -35,12 +34,12 @@ begin() const noexcept ->
     // KRYSTIAN NOTE: this is far from ideal, but i'm not sure
     // to what extent implementation detail should be hidden.
     return iterator(this, info_.begin()->get(),
-        [](const Corpus* corpus, const Info* val) ->
-            const Info*
+        [](Corpus const* corpus, Info const* val) ->
+            Info const*
         {
             MRDOCS_ASSERT(val);
-            const CorpusImpl* impl =
-                static_cast<const CorpusImpl*>(corpus);
+            CorpusImpl const* impl =
+                static_cast<CorpusImpl const*>(corpus);
             auto it = impl->info_.find(val->id);
             if(++it == impl->info_.end())
                 return nullptr;
@@ -93,7 +92,7 @@ build(
     // Create empty corpus
     // ------------------------------------------
     // The corpus will keep a reference to Config.
-    std::unique_ptr<CorpusImpl> corpus = std::make_unique<CorpusImpl>(config);
+    auto corpus = std::make_unique<CorpusImpl>(config);
 
     // ------------------------------------------
     // Execution context
@@ -191,10 +190,8 @@ build(
             "Warning: mapping failed because ", err);
     }
 
-    auto results = context.results();
-    if(! results)
-        return Unexpected(results.error());
-    corpus->info_ = std::move(results.value());
+    MRDOCS_TRY(auto results, context.results());
+    corpus->info_ = std::move(results);
 
     report::info(
         "Extracted {} declarations in {}",
@@ -204,11 +201,9 @@ build(
     // ------------------------------------------
     // Finalize corpus
     // ------------------------------------------
-    auto lookup = std::make_unique<SymbolLookup>(*corpus);
-    finalize(corpus->info_, *lookup);
+    finalize(*corpus);
 
     return corpus;
 }
 
-} // mrdocs
-} // clang
+} // clang::mrdocs

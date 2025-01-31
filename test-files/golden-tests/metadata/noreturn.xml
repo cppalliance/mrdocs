@@ -2,10 +2,6 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
-  <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
-    <file short-path="noreturn.cpp" source-path="noreturn.cpp" line="1"/>
-    <attr id="is-no-return"/>
-  </function>
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     <file short-path="noreturn.cpp" source-path="noreturn.cpp" line="3" class="def"/>
     <function name="f2" id="QjsWLydQujVa097RP8f2Lq3nLQ4=">
@@ -22,5 +18,9 @@
       <befriended id="CnO51rIKTzfiVKHkR3TdPa0eo+8="/>
     </friend>
   </struct>
+  <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
+    <file short-path="noreturn.cpp" source-path="noreturn.cpp" line="1"/>
+    <attr id="is-no-return"/>
+  </function>
 </namespace>
 </mrdocs>

@@ -15,6 +15,7 @@
 #include <lib/Support/Radix.hpp>
 #include <climits>
 #include <ranges>
+#include <llvm/Support/SHA1.h>
 
 namespace clang {
 namespace mrdocs {
@@ -22,6 +23,20 @@ namespace mrdocs {
 // Better have 8 bits per byte, otherwise
 // we are going to be having some problems...
 static_assert(CHAR_BIT == 8);
+
+SymbolID
+SymbolID::
+createFromString(std::string_view const input)
+{
+    // Compute the SHA1 hash of the input string
+    llvm::SHA1 sha1;
+    sha1.update(input);
+    auto const result = sha1.final();
+    static_assert(result.size() == 20);
+    SymbolID const id(reinterpret_cast<SymbolID::value_type const *>(result.data()));
+    return id;
+}
+
 
 constexpr
 unsigned char
@@ -32,6 +47,13 @@ tolower(char c) noexcept
         return uc + 32;
     return uc;
 }
+
+std::string
+toBase16Str(SymbolID const& id)
+{
+    return toBase16(id);
+}
+
 
 std::strong_ordering
 compareSymbolNames(

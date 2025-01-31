@@ -21,7 +21,7 @@ class String::impl_view
 
 public:
     constexpr
-    impl_view(const char* ptr)
+    impl_view(char const* ptr)
         : impl_(const_cast<char*>(ptr))
     {
     }
@@ -61,7 +61,7 @@ impl() const noexcept
 void
 String::
 construct(
-    const char* s,
+    char const* s,
     std::size_t n)
 {
     char* ptr = static_cast<char*>(::operator new(
@@ -90,7 +90,7 @@ construct(
 }
 
 String::
-String(const String& other) noexcept
+String(String const& other) noexcept
     : ptr_(other.ptr_)
 {
     if(! empty() && ! is_literal())
@@ -122,7 +122,7 @@ size() const noexcept
     return impl().size();
 }
 
-const char*
+char const*
 String::
 data() const noexcept
 {
@@ -130,7 +130,7 @@ data() const noexcept
     // typically for the pointer is used
     // as a empty null terminated string
     if(empty())
-        return reinterpret_cast<const char*>(&ptr_);
+        return reinterpret_cast<char const*>(&ptr_);
     if(is_literal())
         return ptr_;
     return impl().data();

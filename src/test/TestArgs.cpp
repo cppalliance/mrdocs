@@ -11,8 +11,7 @@
 #include "TestArgs.hpp"
 #include <vector>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 TestArgs TestArgs::instance_;
 
@@ -57,7 +56,7 @@ EXAMPLES:
 
 void
 TestArgs::
-hideForeignOptions()
+hideForeignOptions() const
 {
     // VFALCO When adding an option, it must
     // also be added to this list or else it
@@ -71,15 +70,17 @@ hideForeignOptions()
 
     // Really hide the clang/llvm default
     // options which we didn't ask for.
-    auto optionMap = llvm::cl::getRegisteredOptions();
-    for(auto& opt : optionMap)
+    for (auto optionMap = llvm::cl::getRegisteredOptions();
+         auto& opt : optionMap)
     {
-        if(std::find(ours.begin(), ours.end(), opt.getValue()) != ours.end())
+        if (std::ranges::find(ours, opt.getValue()) != ours.end())
+        {
             opt.getValue()->setHiddenFlag(llvm::cl::NotHidden);
-        else
+        } else
+        {
             opt.getValue()->setHiddenFlag(llvm::cl::ReallyHidden);
+        }
     }
 }
 
-} // mrdocs
-} // clang
+} // clang::mrdocs

@@ -9,11 +9,11 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdocs/Metadata/Name.hpp>
-#include <mrdocs/Metadata/DomCorpus.hpp>
-#include <lib/Dom/LazyArray.hpp>
-#include <lib/Dom/LazyObject.hpp>
 #include <span>
+#include <mrdocs/Dom/LazyArray.hpp>
+#include <mrdocs/Dom/LazyObject.hpp>
+#include <mrdocs/Metadata/DomCorpus.hpp>
+#include <mrdocs/Metadata/Name.hpp>
 
 namespace clang {
 namespace mrdocs {
@@ -44,9 +44,9 @@ std::strong_ordering
 NameInfo::
 operator<=>(NameInfo const& other) const
 {
-    auto const r = std::tie(Kind, id, Name) <=>
-             std::tie(other.Kind, other.id, other.Name);
-    if (!std::is_eq(r))
+    auto const r = std::tie(Kind, id, Name, Prefix) <=>
+             std::tie(other.Kind, other.id, other.Name, other.Prefix);
+    if (!std::is_eq(r) || Kind == NameKind::Identifier)
     {
         return r;
     }
@@ -57,7 +57,7 @@ static
 void
 toStringImpl(
     std::string& result,
-    const NameInfo& N)
+    NameInfo const& N)
 {
     if (N.Prefix)
     {
@@ -77,7 +77,7 @@ toStringImpl(
     if(! targs.empty())
     {
         auto targ_writer =
-            [&]<typename U>(const U& u)
+            [&]<typename U>(U const& u)
             {
                 if constexpr(U::isType())
                 {
@@ -96,7 +96,7 @@ toStringImpl(
                     writeTo(result, "...");
             };
         visit(*targs.front(), targ_writer);
-        for(const auto& arg : targs.subspan(1))
+        for(auto const& arg : targs.subspan(1))
         {
             writeTo(result, ", ");
             visit(*arg, targ_writer);

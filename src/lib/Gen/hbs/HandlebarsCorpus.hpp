@@ -15,11 +15,10 @@
 #include <mrdocs/Platform.hpp>
 #include "lib/Support/LegibleNames.hpp"
 #include <mrdocs/Metadata/DomCorpus.hpp>
-#include <optional>
+#include <mrdocs/Metadata/Javadoc.hpp>
+#include <mrdocs/Corpus.hpp>
 
-namespace clang {
-namespace mrdocs {
-namespace hbs {
+namespace clang::mrdocs::hbs {
 
 /** A specialized DomCorpus for generating Handlebars values.
 
@@ -28,7 +27,7 @@ namespace hbs {
     generation.
 
 */
-class HandlebarsCorpus : public DomCorpus
+class HandlebarsCorpus final : public DomCorpus
 {
 public:
     /** Legible names for the Handlebars corpus. */
@@ -67,24 +66,13 @@ public:
     dom::Object
     construct(Info const& I) const override;
 
-    /** Construct a dom::Object from the given OverloadSet.
-
-        @param os The OverloadSet to get the overloads for.
-        @return A dom::Object representing the overloads.
-    */
-    dom::Object
-    construct(
-        OverloadSet const& os) const override;
-
     /** Get the cross-reference for the given Info.
 
         @param I The Info object to get the cross-reference for.
         @return A string representing the cross-reference.
     */
-    template<class T>
-    requires std::derived_from<T, Info> || std::same_as<T, OverloadSet>
     std::string
-    getURL(T const& I) const;
+    getURL(Info const& I) const;
 
     /** Return a Dom value representing the Javadoc.
 
@@ -95,8 +83,6 @@ public:
     getJavadoc(Javadoc const& jd) const override;
 };
 
-} // hbs
-} // mrdocs
-} // clang
+} // clang::mrdocs::hbs
 
 #endif

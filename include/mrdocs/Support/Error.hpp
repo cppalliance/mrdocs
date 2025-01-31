@@ -289,12 +289,12 @@ class BadExpectedAccess<void> : public std::exception
 protected:
     BadExpectedAccess() noexcept = default;
 
-    BadExpectedAccess(const BadExpectedAccess&) = default;
+    BadExpectedAccess(BadExpectedAccess const&) = default;
 
     BadExpectedAccess(BadExpectedAccess&&) = default;
 
     BadExpectedAccess&
-    operator=(const BadExpectedAccess&) = default;
+    operator=(BadExpectedAccess const&) = default;
 
     BadExpectedAccess&
     operator=(BadExpectedAccess&&) = default;
@@ -302,7 +302,7 @@ protected:
     ~BadExpectedAccess() override = default;
 public:
     [[nodiscard]]
-    const char*
+    char const*
     what() const noexcept override
     {
         return "bad access to Expected without Expected value";
@@ -325,7 +325,7 @@ public:
     }
 
     [[nodiscard]]
-    const E&
+    E const&
     error() const & noexcept
     {
         return unex_;
@@ -339,7 +339,7 @@ public:
     }
 
     [[nodiscard]]
-    const E&&
+    E const&&
     error() const && noexcept
     {
         return std::move(unex_);
@@ -395,7 +395,7 @@ class Unexpected
 
 public:
     constexpr
-    Unexpected(const Unexpected&) = default;
+    Unexpected(Unexpected const&) = default;
 
     constexpr
     Unexpected(Unexpected&&) = default;
@@ -430,11 +430,11 @@ public:
         : unex_(il, std::forward<Args>(args)...)
     {}
 
-    constexpr Unexpected& operator=(const Unexpected&) = default;
+    constexpr Unexpected& operator=(Unexpected const&) = default;
     constexpr Unexpected& operator=(Unexpected&&) = default;
 
     [[nodiscard]]
-    constexpr const E&
+    constexpr E const&
     error() const & noexcept
     {
         return unex_;
@@ -448,7 +448,7 @@ public:
     }
 
     [[nodiscard]]
-    constexpr const E&&
+    constexpr E const&&
     error() const && noexcept
     {
         return std::move(unex_);
@@ -475,7 +475,7 @@ public:
     friend
     constexpr
     bool
-    operator==(const Unexpected& x, const Unexpected<Er>& y)
+    operator==(Unexpected const& x, const Unexpected<Er>& y)
     {
         return x.unex_ == y.error();
     }
@@ -515,6 +515,10 @@ namespace detail
         else if constexpr (std::constructible_from<bool, T>)
         {
             return !t;
+        }
+        else
+        {
+            return false;
         }
     }
 
@@ -599,6 +603,13 @@ namespace detail
 #    define MRDOCS_CHECK_GET_OR_MACRO(_1, _2, NAME, ...) NAME
 #    define MRDOCS_CHECK_OR(...) \
         MRDOCS_CHECK_GET_OR_MACRO(__VA_ARGS__, MRDOCS_CHECK_OR_VALUE, MRDOCS_CHECK_OR_VOID)(__VA_ARGS__)
+
+#    define MRDOCS_CHECK_OR_CONTINUE(var)                  \
+        if (detail::failed(var)) {                         \
+            continue;                                      \
+        }                                                  \
+        void(0)
+
 #endif
 
 
@@ -630,9 +641,9 @@ namespace detail
             }
         }
 
-        ExpectedGuard(const ExpectedGuard&) = delete;
+        ExpectedGuard(ExpectedGuard const&) = delete;
 
-        ExpectedGuard& operator=(const ExpectedGuard&) = delete;
+        ExpectedGuard& operator=(ExpectedGuard const&) = delete;
 
         constexpr T&&
         release() noexcept
@@ -784,15 +795,15 @@ public:
 
     template <class U, class G>
     requires
-        std::is_constructible_v<T, const U&> &&
-        std::is_constructible_v<E, const G&> &&
+        std::is_constructible_v<T, U const&> &&
+        std::is_constructible_v<E, G const&> &&
         (!constructible_from_expected<U, G>)
     constexpr
-    explicit(explicit_conv<const U&, const G&>)
+    explicit(explicit_conv<U const&, G const&>)
     Expected(const Expected<U, G>& x)
     noexcept(
-        std::is_nothrow_constructible_v<T, const U&> &&
-        std::is_nothrow_constructible_v<E, const G&>)
+        std::is_nothrow_constructible_v<T, U const&> &&
+        std::is_nothrow_constructible_v<E, G const&>)
         : has_value_(x.has_value_)
     {
         if (has_value_)
@@ -843,11 +854,11 @@ public:
     { }
 
     template <class G = E>
-    requires std::is_constructible_v<E, const G&>
+    requires std::is_constructible_v<E, G const&>
     constexpr
-    explicit(!std::is_convertible_v<const G&, E>)
+    explicit(!std::is_convertible_v<G const&, E>)
     Expected(const Unexpected<G>& u)
-    noexcept(std::is_nothrow_constructible_v<E, const G&>)
+    noexcept(std::is_nothrow_constructible_v<E, G const&>)
         : unex_(u.error())
         , has_value_(false)
     { }
@@ -1002,7 +1013,7 @@ public:
 
     template <class G>
     requires
-        std::is_constructible_v<E, const G&> &&
+        std::is_constructible_v<E, G const&> &&
         std::is_assignable_v<E&, const G&> &&
         (std::is_nothrow_constructible_v<E, const G&> ||
          std::is_nothrow_move_constructible_v<T> ||

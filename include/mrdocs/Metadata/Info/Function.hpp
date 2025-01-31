@@ -20,6 +20,7 @@
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Source.hpp>
 #include <mrdocs/Metadata/Template.hpp>
+#include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/ADT/PolymorphicValue.hpp>
 #include <memory>
 #include <string>
@@ -110,6 +111,8 @@ struct Param
         , Name(std::move(name))
         , Default(std::move(def_arg))
     {}
+
+    auto operator<=>(const Param&) const = default;
 };
 
 /** Return the Param as a @ref dom::Value object.
@@ -174,7 +177,75 @@ struct FunctionInfo final
     }
 };
 
-//------------------------------------------------
+MRDOCS_DECL
+void
+merge(FunctionInfo& I, FunctionInfo&& Other);
+
+/** Map a FunctionInfo to a dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    FunctionInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Info const&>(I), domCorpus);
+    io.map("isVariadic", I.IsVariadic);
+    io.map("isVirtual", I.IsVirtual);
+    io.map("isVirtualAsWritten", I.IsVirtualAsWritten);
+    io.map("isPure", I.IsPure);
+    io.map("isDefaulted", I.IsDefaulted);
+    io.map("isExplicitlyDefaulted", I.IsExplicitlyDefaulted);
+    io.map("isDeleted", I.IsDeleted);
+    io.map("isDeletedAsWritten", I.IsDeletedAsWritten);
+    io.map("isNoReturn", I.IsNoReturn);
+    io.map("hasOverrideAttr", I.HasOverrideAttr);
+    io.map("hasTrailingReturn", I.HasTrailingReturn);
+    io.map("isConst", I.IsConst);
+    io.map("isVolatile", I.IsVolatile);
+    io.map("isFinal", I.IsFinal);
+    io.map("isNodiscard", I.IsNodiscard);
+    io.map("isExplicitObjectMemberFunction", I.IsExplicitObjectMemberFunction);
+    if (I.Constexpr != ConstexprKind::None)
+    {
+        io.map("constexprKind", I.Constexpr);
+    }
+    if (I.StorageClass != StorageClassKind::None)
+    {
+        io.map("storageClass", I.StorageClass);
+    }
+    if (I.RefQualifier != ReferenceKind::None)
+    {
+        io.map("refQualifier", I.RefQualifier);
+    }
+    io.map("class", I.Class);
+    io.map("params", dom::LazyArray(I.Params, domCorpus));
+    io.map("return", I.ReturnType);
+    io.map("template", I.Template);
+    io.map("overloadedOperator", I.OverloadedOperator);
+    io.map("exceptionSpec", I.Noexcept);
+    io.map("explicitSpec", I.Explicit);
+    if (!I.Requires.Written.empty())
+    {
+        io.map("requires", I.Requires.Written);
+    }
+    io.map("attributes", dom::LazyArray(I.Attributes));
+}
+
+/** Map the FunctionInfo to a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    FunctionInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
 
 } // clang::mrdocs
 

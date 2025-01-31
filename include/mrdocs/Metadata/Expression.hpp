@@ -11,6 +11,7 @@
 #ifndef MRDOCS_API_METADATA_EXPRESSION_HPP
 #define MRDOCS_API_METADATA_EXPRESSION_HPP
 
+#include <mrdocs/Platform.hpp>
 #include <concepts>
 #include <optional>
 #include <string>
@@ -25,6 +26,10 @@ struct ExprInfo
 
     auto operator<=>(ExprInfo const&) const = default;
 };
+
+MRDOCS_DECL
+void
+merge(ExprInfo& I, ExprInfo&& Other);
 
 /** Represents an expression with a (possibly known) value */
 template<typename T>
@@ -46,6 +51,20 @@ struct ConstantExprInfo
     static_assert(std::integral<type>,
         "expression type must be integral");
 };
+
+template <class T>
+static void merge(
+    ConstantExprInfo<T>& I,
+    ConstantExprInfo<T>&& Other)
+{
+    merge(
+        dynamic_cast<ExprInfo&>(I),
+        dynamic_cast<ExprInfo&&>(Other));
+    if (!I.Value)
+    {
+        I.Value = std::move(Other.Value);
+    }
+}
 
 } // clang::mrdocs
 

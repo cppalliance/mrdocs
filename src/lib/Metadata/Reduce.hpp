@@ -12,29 +12,11 @@
 #ifndef MRDOCS_LIB_METADATA_REDUCE_HPP
 #define MRDOCS_LIB_METADATA_REDUCE_HPP
 
-#include <mrdocs/Metadata/Info.hpp>
-#include <mrdocs/MetadataFwd.hpp>
-#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Metadata.hpp>
 #include <memory>
 #include <vector>
 
-namespace clang {
-namespace mrdocs {
-
-void merge(NamespaceInfo& I, NamespaceInfo&& Other);
-void merge(RecordInfo& I, RecordInfo&& Other);
-void merge(FunctionInfo& I, FunctionInfo&& Other);
-void merge(TypedefInfo& I, TypedefInfo&& Other);
-void merge(EnumInfo& I, EnumInfo&& Other);
-void merge(FieldInfo& I, FieldInfo&& Other);
-void merge(VariableInfo& I, VariableInfo&& Other);
-void merge(SpecializationInfo& I, SpecializationInfo&& Other);
-void merge(FriendInfo& I, FriendInfo&& Other);
-void merge(EnumConstantInfo& I, EnumConstantInfo&& Other);
-void merge(GuideInfo& I, GuideInfo&& Other);
-void merge(NamespaceAliasInfo& I, NamespaceAliasInfo&& Other);
-void merge(UsingInfo& I, UsingInfo&& Other);
-void merge(ConceptInfo& I, ConceptInfo&& Other);
+namespace clang::mrdocs {
 
 //
 // This file defines the merging of different types of infos. The data in the
@@ -52,14 +34,15 @@ void merge(ConceptInfo& I, ConceptInfo&& Other);
 
 template<typename T>
 std::unique_ptr<Info>
-reduce(
-    std::vector<std::unique_ptr<Info>>& Values)
+reduce(std::vector<std::unique_ptr<Info>>& Values)
 {
     MRDOCS_ASSERT(! Values.empty() && Values[0]);
     std::unique_ptr<Info> Merged = std::make_unique<T>(Values[0]->id);
     T* Tmp = static_cast<T*>(Merged.get());
-    for (auto& I : Values)
+    for (auto& I: Values)
+    {
         merge(*Tmp, std::move(*static_cast<T*>(I.get())));
+    }
     return Merged;
 }
 
@@ -96,8 +79,7 @@ reduceChildren(
     }
 }
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 
 #endif

@@ -11,11 +11,11 @@
 #ifndef MRDOCS_LIB_DOM_LAZY_ARRAY_HPP
 #define MRDOCS_LIB_DOM_LAZY_ARRAY_HPP
 
-#include "mrdocs/Dom.hpp"
-#include "mrdocs/Platform.hpp"
-#include "mrdocs/Support/Error.hpp"
-#include <string_view>
+#include <mrdocs/Dom.hpp>
+#include <mrdocs/Platform.hpp>
+#include <mrdocs/Support/Error.hpp>
 #include <ranges>
+#include <string_view>
 
 namespace clang {
 namespace mrdocs {

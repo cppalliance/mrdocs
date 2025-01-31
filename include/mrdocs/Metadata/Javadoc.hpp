@@ -198,8 +198,8 @@ struct MRDOCS_DECL
         return ! isBlock();
     }
 
-    bool operator==(const Node&)const noexcept = default;
-    virtual bool equals(const Node& other) const noexcept
+    bool operator==(Node const&)const noexcept = default;
+    virtual bool equals(Node const& other) const noexcept
     {
         return kind == other.kind;
     }
@@ -236,11 +236,11 @@ struct Text : Node
         return false;
     }
 
-    bool operator==(const Text&) const noexcept = default;
-    bool equals(const Node& other) const noexcept override
+    bool operator==(Text const&) const noexcept = default;
+    bool equals(Node const& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == dynamic_cast<const Text&>(other);
+            *this == dynamic_cast<Text const&>(other);
     }
 
 protected:
@@ -273,7 +273,7 @@ struct Styled final : Text
     bool equals(Node const& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == dynamic_cast<const Styled&>(other);
+            *this == dynamic_cast<Styled const&>(other);
     }
 
 };
@@ -295,11 +295,11 @@ struct Link : Text
     {
     }
 
-    bool operator==(const Link&) const noexcept = default;
-    bool equals(const Node& other) const noexcept override
+    bool operator==(Link const&) const noexcept = default;
+    bool equals(Node const& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == dynamic_cast<const Link&>(other);
+            *this == dynamic_cast<Link const&>(other);
     }
 };
 
@@ -318,11 +318,11 @@ struct Reference : Text
     {
     }
 
-    bool operator==(const Reference&) const noexcept = default;
-    bool equals(const Node& other) const noexcept override
+    bool operator==(Reference const&) const noexcept = default;
+    bool equals(Node const& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == dynamic_cast<const Reference&>(other);
+            *this == dynamic_cast<Reference const&>(other);
     }
 
 protected:
@@ -354,7 +354,7 @@ struct Copied : Reference
     bool equals(Node const& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == dynamic_cast<const Copied&>(other);
+            *this == dynamic_cast<Copied const&>(other);
     }
 };
 
@@ -385,7 +385,7 @@ struct MRDOCS_DECL
         return children.empty();
     }
 
-    bool operator==(const Block& other) const noexcept
+    bool operator==(Block const& other) const noexcept
     {
         if (kind != other.kind)
         {
@@ -393,7 +393,7 @@ struct MRDOCS_DECL
         }
         return std::equal(children.begin(), children.end(),
             other.children.begin(), other.children.end(),
-            [](const auto& a, const auto& b)
+            [](auto const& a, auto const& b)
             {
                 return a->equals(*b);
             });
@@ -402,7 +402,7 @@ struct MRDOCS_DECL
     bool equals(Node const& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == dynamic_cast<const Block&>(other);
+            *this == dynamic_cast<Block const&>(other);
     }
 
     template<std::derived_from<Text> T>
@@ -446,10 +446,10 @@ struct Heading : Block
     }
 
     bool operator==(Heading const&) const noexcept = default;
-    bool equals(const Node& other) const noexcept override
+    bool equals(Node const& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == dynamic_cast<const Heading&>(other);
+            *this == dynamic_cast<Heading const&>(other);
     }
 };
 
@@ -464,11 +464,11 @@ struct Paragraph : Block
     {
     }
 
-    bool operator==(const Paragraph&) const noexcept = default;
-    bool equals(const Node& other) const noexcept override
+    bool operator==(Paragraph const&) const noexcept = default;
+    bool equals(Node const& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == dynamic_cast<const Paragraph&>(other);
+            *this == dynamic_cast<Paragraph const&>(other);
     }
 
 protected:
@@ -492,11 +492,11 @@ struct Brief : Paragraph
     {
     }
 
-    bool operator==(const Brief&) const noexcept = default;
-    bool equals(const Node& other) const noexcept override
+    bool operator==(Brief const&) const noexcept = default;
+    bool equals(Node const& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == dynamic_cast<const Brief&>(other);
+            *this == dynamic_cast<Brief const&>(other);
     }
 };
 
@@ -518,11 +518,11 @@ struct Admonition : Paragraph
     {
     }
 
-    bool operator==(const Admonition&) const noexcept = default;
-    bool equals(const Node& other) const noexcept override
+    bool operator==(Admonition const&) const noexcept = default;
+    bool equals(Node const& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == dynamic_cast<const Admonition&>(other);
+            *this == dynamic_cast<Admonition const&>(other);
     }
 };
 
@@ -540,11 +540,11 @@ struct Code : Paragraph
     {
     }
 
-    bool operator==(const Code&) const noexcept = default;
-    bool equals(const Node& other) const noexcept override
+    bool operator==(Code const&) const noexcept = default;
+    bool equals(Node const& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == dynamic_cast<const Code&>(other);
+            *this == dynamic_cast<Code const&>(other);
     }
 };
 
@@ -559,12 +559,12 @@ struct ListItem final : Paragraph
     {}
 
     bool
-    operator==(const ListItem&) const noexcept = default;
+    operator==(ListItem const&) const noexcept = default;
 
     bool
-    equals(const Node& other) const noexcept override
+    equals(Node const& other) const noexcept override
     {
-        auto* p = dynamic_cast<const ListItem*>(&other);
+        auto* p = dynamic_cast<ListItem const*>(&other);
         if (!p)
         {
             return false;
@@ -591,10 +591,10 @@ struct UnorderedList final : Paragraph
     }
 
     bool
-    operator==(const UnorderedList&) const noexcept = default;
+    operator==(UnorderedList const&) const noexcept = default;
 
     bool
-    equals(const Node& other) const noexcept override
+    equals(Node const& other) const noexcept override
     {
         auto* p = dynamic_cast<const UnorderedList*>(&other);
         if (!p)
@@ -1078,6 +1078,21 @@ private:
     std::string
     emplace_back(PolymorphicValue<doc::Block>);
 };
+
+inline
+void merge(Javadoc& I, Javadoc&& other)
+{
+    // FIXME: this doesn't merge parameter information;
+    // parameters with the same name but different direction
+    // or descriptions end up being duplicated
+    if(other != I)
+    {
+        // Unconditionally extend the blocks
+        // since each decl may have a comment.
+        I.append(std::move(other));
+    }
+}
+
 
 /** Return the Javadoc as a @ref dom::Value.
  */

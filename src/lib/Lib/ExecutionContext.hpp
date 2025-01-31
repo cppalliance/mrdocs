@@ -44,7 +44,7 @@ namespace mrdocs {
 class ExecutionContext
 {
 protected:
-    const ConfigImpl& config_;
+    ConfigImpl const& config_;
 
 public:
     virtual ~ExecutionContext() = default;
@@ -57,7 +57,7 @@ public:
         @param config The configuration to use.
     */
     ExecutionContext(
-        const ConfigImpl& config)
+        ConfigImpl const& config)
         : config_(config)
     {
     }

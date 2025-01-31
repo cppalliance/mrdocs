@@ -4,14 +4,6 @@
 <namespace id="//////////////////////////8=">
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     <file short-path="record-1.cpp" source-path="record-1.cpp" line="1" class="def"/>
-    <namespace-alias name="U1" id="6UtddyCJy89K/bZpTmDb5jVXwAY=">
-      <file short-path="record-1.cpp" source-path="record-1.cpp" line="3"/>
-      <type name="int"/>
-    </namespace-alias>
-    <typedef name="U2" id="wwp4SQjMPktMmsnvq1thxjxFHFs=">
-      <file short-path="record-1.cpp" source-path="record-1.cpp" line="4"/>
-      <type name="char"/>
-    </typedef>
     <function name="f1" id="9sznTZ3/SXQNZpCsoMG8KWGLuEc=">
       <file short-path="record-1.cpp" source-path="record-1.cpp" line="6"/>
     </function>
@@ -72,6 +64,14 @@
         </param>
       </doc>
     </function>
+    <namespace-alias name="U1" id="6UtddyCJy89K/bZpTmDb5jVXwAY=">
+      <file short-path="record-1.cpp" source-path="record-1.cpp" line="3"/>
+      <type name="int"/>
+    </namespace-alias>
+    <typedef name="U2" id="wwp4SQjMPktMmsnvq1thxjxFHFs=">
+      <file short-path="record-1.cpp" source-path="record-1.cpp" line="4"/>
+      <type name="char"/>
+    </typedef>
   </struct>
 </namespace>
 </mrdocs>

@@ -2,14 +2,6 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
-  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
-    <file short-path="friend-1.cpp" source-path="friend-1.cpp" line="4"/>
-    <doc>
-      <para>
-        <text>f</text>
-      </para>
-    </doc>
-  </function>
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     <file short-path="friend-1.cpp" source-path="friend-1.cpp" line="1" class="def"/>
     <friend id="MKqBnSfb2qzerVryOyz4f9W1BWM=">
@@ -22,5 +14,13 @@
       <befriended id="s6nsa+zVhpzzrN+yUVPP5rvdXqs="/>
     </friend>
   </struct>
+  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
+    <file short-path="friend-1.cpp" source-path="friend-1.cpp" line="4"/>
+    <doc>
+      <para>
+        <text>f</text>
+      </para>
+    </doc>
+  </function>
 </namespace>
 </mrdocs>

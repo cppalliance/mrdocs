@@ -15,8 +15,9 @@
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Source.hpp>
 #include <mrdocs/Metadata/Type.hpp>
+#include <mrdocs/Metadata/Name.hpp>
+#include <mrdocs/Dom/LazyArray.hpp>
 #include <vector>
-#include <utility>
 
 namespace clang::mrdocs {
 
@@ -77,6 +78,38 @@ struct UsingInfo final
     {
     }
 };
+
+MRDOCS_DECL
+void merge(UsingInfo& I, UsingInfo&& Other);
+
+/** Map a UsingInfo to a dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    UsingInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Info const&>(I), domCorpus);
+    io.map("class", I.Class);
+    io.map("shadows", dom::LazyArray(I.UsingSymbols, domCorpus));
+    io.map("qualifier", I.Qualifier);
+}
+
+/** Map the UsingInfo to a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    UsingInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
 
 } // clang::mrdocs
 

@@ -9,6 +9,9 @@
         <file short-path="dependency-propagation.cpp" source-path="dependency-propagation.cpp" line="3" class="def"/>
       </struct>
     </template>
+    <struct name="D" id="G98ZT3EkUq7z1IE+Cx1EKGrMDxQ=">
+      <file short-path="dependency-propagation.cpp" source-path="dependency-propagation.cpp" line="12" class="def"/>
+    </struct>
     <template>
       <tparam name="T" class="type"/>
       <namespace-alias name="B" id="YZjBn7yW7NyL8yCKqswVvbiptNM=">
@@ -23,9 +26,6 @@
         <type id="YZjBn7yW7NyL8yCKqswVvbiptNM=" name="B&lt;T&gt;"/>
       </namespace-alias>
     </template>
-    <struct name="D" id="G98ZT3EkUq7z1IE+Cx1EKGrMDxQ=">
-      <file short-path="dependency-propagation.cpp" source-path="dependency-propagation.cpp" line="12" class="def"/>
-    </struct>
   </namespace>
   <struct name="E" id="KJWEqOD/QXinlGIqVHqmIlA5Z6E=">
     <file short-path="dependency-propagation.cpp" source-path="dependency-propagation.cpp" line="15" class="def"/>

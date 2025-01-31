@@ -67,8 +67,6 @@ struct MemberRecord;
 struct MemberType;
 struct StaticDataMember;
 
-struct OverloadSet;
-
 } // clang::mrdocs
 
 #endif

@@ -8,10 +8,10 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <mrdocs/Dom/LazyArray.hpp>
+#include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Type.hpp>
-#include <lib/Dom/LazyArray.hpp>
-#include <lib/Dom/LazyObject.hpp>
 
 namespace clang {
 namespace mrdocs {
@@ -106,7 +106,7 @@ struct TypeBeforeWriter
     inline
     void
     operator()(
-        const T& t,
+        T const& t,
         auto& write,
         std::bool_constant<NeedParens>) const;
 
@@ -121,7 +121,7 @@ struct TypeAfterWriter
     inline
     void
     operator()(
-        const T& t,
+        T const& t,
         auto& write,
         std::bool_constant<NeedParens>) const;
 
@@ -130,7 +130,7 @@ struct TypeAfterWriter
 template<typename T>
 void
 writeFullType(
-    const T& t,
+    T const& t,
     auto& write)
 {
     visit(t, writeTypeBefore, write, std::false_type{});
@@ -233,7 +233,7 @@ inline
 void
 TypeAfterWriter::
 operator()(
-    const T& t,
+    T const& t,
     auto& write,
     std::bool_constant<NeedParens>) const
 {

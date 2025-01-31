@@ -19,6 +19,7 @@
 #include <cstring>
 #include <compare>
 #include <string_view>
+#include <string>
 #include <memory>
 
 namespace clang::mrdocs {
@@ -55,7 +56,7 @@ public:
         @param src The string to construct from.
     */
     template <std::convertible_to<value_type> Char>
-    constexpr SymbolID(const Char* src)
+    constexpr SymbolID(Char const* src)
     {
         int i = 0;
         for(value_type& c : data_)
@@ -65,6 +66,12 @@ public:
         }
         MRDOCS_ASSERT(i == 20);
     }
+
+    /** Construct a SymbolID by hashing a string
+     */
+    static
+    SymbolID
+    createFromString(std::string_view input);
 
     /** Return true if this is a valid SymbolID.
      */
@@ -109,13 +116,13 @@ public:
     operator std::string_view() const noexcept
     {
         return {reinterpret_cast<
-            const char*>(data()), size()};
+            char const*>(data()), size()};
     }
 
     /** Compare two SymbolIDs with strong ordering.
      */
     auto operator<=>(
-        const SymbolID& other) const noexcept
+        SymbolID const& other) const noexcept
     {
         return std::memcmp(
             data(),
@@ -126,7 +133,7 @@ public:
     /** Compare two SymbolIDs for equality.
      */
     bool operator==(
-        const SymbolID& other) const noexcept = default;
+        SymbolID const& other) const noexcept = default;
 };
 
 /** The invalid Symbol ID.
@@ -140,6 +147,12 @@ constexpr inline SymbolID SymbolID::invalid = SymbolID();
 constexpr inline SymbolID SymbolID::global =
     "\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF"
     "\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF";
+
+/** Convert a SymbolID to a string
+ */
+MRDOCS_DECL
+std::string
+toBase16Str(SymbolID const& id);
 
 /** Return the result of comparing s0 to s1.
 

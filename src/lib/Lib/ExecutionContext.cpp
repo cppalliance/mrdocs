@@ -45,26 +45,6 @@ mergeInfos(std::vector<std::unique_ptr<Info>>& Values)
 }
 #endif
 
-/** Merges two Info objects.
-
-    This function is used to merge two Info objects with the same SymbolID.
-    The function assumes that the two Info objects are of the same type.
-    If they are not, the function will fail.
-
-    @param I The Info object to merge into.
-    @param Other The Info object to merge from.
-*/
-void
-merge(Info& I, Info&& Other)
-{
-    MRDOCS_ASSERT(I.Kind == Other.Kind);
-    MRDOCS_ASSERT(I.id == Other.id);
-    visit(I, [&]<typename InfoTy>(InfoTy& II) mutable
-        {
-            merge(II, static_cast<InfoTy&&>(Other));
-        });
-}
-
 } // (anon)
 
 // ----------------------------------------------------------------

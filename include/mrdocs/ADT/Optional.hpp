@@ -64,10 +64,9 @@ public:
     using value_type = T;
 
     constexpr Optional() = default;
-    constexpr Optional(
-        Optional const& other) = default;
-    constexpr Optional& operator=(
-        Optional const& other) = default;
+    constexpr Optional(Optional const& other) = default;
+    constexpr Optional& operator=(Optional const& other) = default;
+    constexpr Optional& operator=(Optional&& other) = default;
 
     template<class U>
     requires std::is_constructible_v<T, U>
@@ -94,7 +93,7 @@ public:
         return t_;
     }
 
-    constexpr const value_type& value() const & noexcept
+    constexpr value_type const& value() const & noexcept
     {
         return t_;
     }
@@ -104,7 +103,7 @@ public:
         return std::move(t_);
     }
 
-    constexpr const value_type&& value() const && noexcept
+    constexpr value_type const&& value() const && noexcept
     {
         return std::move(t_);
     }
@@ -138,6 +137,8 @@ public:
     {
         return ! EmptyPredicate()(t_);
     }
+
+    auto operator<=>(Optional const&) const = default;
 };
 
 } // clang::mrdocs

@@ -11,17 +11,16 @@
 #include "NameParser.hpp"
 #include <functional>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 namespace {
 
 class TokenStream
 {
-    const char* first_;
-    const char* part_;
-    const char* ptr_;
-    const char* last_;
+    char const* first_;
+    char const* part_;
+    char const* ptr_;
+    char const* last_;
 
 public:
     TokenStream(std::string_view str)
@@ -481,23 +480,25 @@ public:
 
 Expected<ParseResult>
 parseIdExpression(
-    std::string_view str,
-    bool allow_wildcards)
+    std::string_view const str,
+    bool const allow_wildcards)
 {
     try
     {
         ParseResult result;
-        if(allow_wildcards)
+        if (allow_wildcards)
+        {
             IdExpressionParser<true>(str, result).parse();
-        else
+        } else
+        {
             IdExpressionParser<false>(str, result).parse();
+        }
         return std::move(result);
     }
-    catch(const Exception& ex)
+    catch(Exception const& ex)
     {
         return Unexpected(ex.error());
     }
 }
 
-} // mrdocs
-} // clang
+} // clang::mrdocs

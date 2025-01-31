@@ -18,6 +18,7 @@
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Source.hpp>
 #include <mrdocs/Metadata/Type.hpp>
+#include <mrdocs/Dom/LazyArray.hpp>
 
 namespace clang::mrdocs {
 
@@ -64,6 +65,52 @@ struct FieldInfo final
     {
     }
 };
+
+MRDOCS_DECL
+void
+merge(FieldInfo& I, FieldInfo&& Other);
+
+/** Map a FieldInfo to a dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    FieldInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Info const&>(I), domCorpus);
+    io.map("type", I.Type);
+    if (!I.Default.Written.empty())
+    {
+        io.map("default", I.Default.Written);
+    }
+    io.map("isMaybeUnused", I.IsMaybeUnused);
+    io.map("isDeprecated", I.IsDeprecated);
+    io.map("isVariant", I.IsVariant);
+    io.map("isMutable", I.IsMutable);
+    io.map("isBitfield", I.IsBitfield);
+    io.map("hasNoUniqueAddress", I.HasNoUniqueAddress);
+    if (I.IsBitfield)
+    {
+        io.map("bitfieldWidth", I.BitfieldWidth.Written);
+    }
+    io.map("attributes", dom::LazyArray(I.Attributes));
+}
+
+/** Map the FieldInfo to a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    FieldInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
 
 } // clang::mrdocs
 

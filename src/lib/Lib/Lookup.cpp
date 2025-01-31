@@ -11,25 +11,26 @@
 #include "Lookup.hpp"
 #include <mrdocs/Metadata.hpp>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 namespace {
 
-bool supportsLookup(const Info* info)
+bool
+supportsLookup(Info const* I)
 {
-    return info &&
-        (info->isRecord() ||
-        info->isNamespace() ||
-        info->isEnum() ||
-        info->isSpecialization());
+    MRDOCS_CHECK_OR(I, false);
+    return visit(*I, []<typename InfoTy>(
+        InfoTy const&) -> bool
+    {
+        return InfoParent<InfoTy>;
+    });
 }
 
-bool isTransparent(const Info* info)
+bool isTransparent(Info const* info)
 {
     MRDOCS_ASSERT(info);
     return visit(*info, []<typename InfoTy>(
-        const InfoTy& I) -> bool
+        InfoTy const& I) -> bool
     {
         if constexpr(InfoTy::isNamespace())
             return I.IsInline;
@@ -41,24 +42,23 @@ bool isTransparent(const Info* info)
 
 void
 buildLookups(
-    const Corpus& corpus,
-    const Info& info,
+    Corpus const& corpus,
+    Info const& info,
     LookupTable& lookups)
 {
-    visit(info, [&]<typename InfoTy>(const InfoTy& I)
+    visit(info, [&]<typename InfoTy>(InfoTy const& I)
     {
-        if constexpr(
-            InfoTy::isRecord() ||
-            InfoTy::isNamespace() ||
-            InfoTy::isEnum())
+        if constexpr(InfoParent<InfoTy>)
         {
-            for(const SymbolID& M : I.Members)
+            for (SymbolID const& M : allMembers(I))
             {
-                const Info* child = corpus.find(M);
+                Info const* child = corpus.find(M);
                 // if the member is an inline namespace or
                 // an unscoped enumeration, add its members as well
-                if(isTransparent(child))
+                if (isTransparent(child))
+                {
                     buildLookups(corpus, *child, lookups);
+                }
 
                 // KRYSTIAN TODO: handle inline/anonymous namespaces
                 // KRYSTIAN TODO: injected class names?
@@ -74,27 +74,28 @@ buildLookups(
 
 LookupTable::
 LookupTable(
-    const Info& info,
-    const Corpus& corpus)
+    Info const& info,
+    Corpus const& corpus)
 {
     MRDOCS_ASSERT(supportsLookup(&info));
-
     buildLookups(corpus, info, *this);
 }
 
 SymbolLookup::
-SymbolLookup(const Corpus& corpus)
+SymbolLookup(Corpus const& corpus)
     : corpus_(corpus)
 {
-    for(const Info& I : corpus_)
+    for(Info const& I : corpus_)
     {
-        if(! supportsLookup(&I))
+        if (!supportsLookup(&I))
+        {
             continue;
+        }
         lookup_tables_.emplace(&I, LookupTable(I, corpus_));
     }
 }
 
-const Info*
+Info const*
 SymbolLookup::
 adjustLookupContext(
     Info const* context)
@@ -108,33 +109,42 @@ adjustLookupContext(
     return context;
 }
 
-const Info*
+Info const*
 SymbolLookup::
-lookThroughTypedefs(const Info* I)
+lookThroughTypedefs(Info const* I)
 {
-    if(! I || ! I->isTypedef())
+    if (!I || !I->isTypedef())
+    {
         return I;
-    auto* TI = static_cast<const TypedefInfo*>(I);
+    }
+    auto* TI = static_cast<TypedefInfo const*>(I);
     return lookThroughTypedefs(
         corpus_.find(TI->Type->namedSymbol()));
 }
 
-const Info*
+Info const*
 SymbolLookup::
 lookupInContext(
-    const Info* context,
-    std::string_view name,
-    bool for_nns,
+    Info const* context,
+    std::string_view const name,
+    bool const for_nns,
     LookupCallback& callback)
 {
     // if the lookup context is a typedef, we want to
     // lookup the name in the type it denotes
-    if(! (context = lookThroughTypedefs(context)))
+    if (!((context = lookThroughTypedefs(context))))
+    {
         return nullptr;
+    }
     MRDOCS_ASSERT(supportsLookup(context));
-    LookupTable& table = lookup_tables_.at(context);
     // KRYSTIAN FIXME: disambiguation based on signature
-    for(auto& result : table.lookup(name))
+    auto const it = lookup_tables_.find(context);
+    if (it == lookup_tables_.end())
+    {
+        return nullptr;
+    }
+    for (LookupTable const& table = it->second;
+         auto& result : table.lookup(name))
     {
         if(for_nns)
         {
@@ -144,7 +154,7 @@ lookupInContext(
             // - types, and
             // - templates whose specializations are types
             // KRYSTIAN FIXME: should we if the result is acceptable?
-            if(result->isNamespace() ||
+            if (result->isNamespace() ||
                 result->isRecord() ||
                 result->isEnum() ||
                 result->isTypedef())
@@ -154,8 +164,10 @@ lookupInContext(
         {
             // if we are looking up a terminal name, call the handler
             // to determine whether the result is acceptable
-            if(callback(*result))
+            if (callback(*result))
+            {
                 return result;
+            }
         }
     }
 
@@ -163,27 +175,30 @@ lookupInContext(
     // search base classes for the name
     if(context->isRecord())
     {
-        const auto* RI = static_cast<
-            const RecordInfo*>(context);
+        auto const* RI = static_cast<RecordInfo const*>(context);
         // KRYSTIAN FIXME: resolve ambiguities & report errors
-        for(const auto& B : RI->Bases)
+        for(auto const& B : RI->Bases)
         {
-            if(const Info* result = lookupInContext(
-                corpus_.find(B.Type->namedSymbol()),
-                    name, for_nns, callback))
+            if (Info const* result = lookupInContext(
+                    corpus_.find(B.Type->namedSymbol()),
+                    name,
+                    for_nns,
+                    callback))
+            {
                 return result;
+            }
         }
     }
 
     return nullptr;
 }
 
-const Info*
+Info const*
 SymbolLookup::
 lookupUnqualifiedImpl(
-    const Info* context,
-    std::string_view name,
-    bool for_nns,
+    Info const* context,
+    std::string_view const name,
+    bool const for_nns,
     LookupCallback& callback)
 {
     if (!context)
@@ -206,34 +221,40 @@ lookupUnqualifiedImpl(
     MRDOCS_UNREACHABLE();
 }
 
-const Info*
+Info const*
 SymbolLookup::
 lookupQualifiedImpl(
-    const Info* context,
+    Info const* context,
     std::span<const std::string_view> qualifier,
-    std::string_view terminal,
+    std::string_view const terminal,
     LookupCallback& callback)
 {
-    if(! context)
+    if (!context)
+    {
         return nullptr;
-    if(qualifier.empty())
-        return lookupInContext(
-            context, terminal, false, callback);
+    }
+    if (qualifier.empty())
+    {
+        return lookupInContext(context, terminal, false, callback);
+    }
     context = lookupUnqualifiedImpl(
         context, qualifier.front(), true, callback);
     qualifier = qualifier.subspan(1);
-    if(! context)
+    if (!context)
+    {
         return nullptr;
+    }
     while(! qualifier.empty())
     {
-        if(! (context = lookupInContext(
-            context, qualifier.front(), true, callback)))
+        if (!((context
+               = lookupInContext(context, qualifier.front(), true, callback))))
+        {
             return nullptr;
+        }
         qualifier = qualifier.subspan(1);
     }
     return lookupInContext(
         context, terminal, false, callback);
 }
 
-} // mrdocs
-} // clang
+} // clang::mrdocs

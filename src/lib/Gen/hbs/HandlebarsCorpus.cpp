@@ -18,9 +18,7 @@
 #include <mrdocs/Support/RangeFor.hpp>
 #include <mrdocs/Support/String.hpp>
 
-namespace clang {
-namespace mrdocs {
-namespace hbs {
+namespace clang::mrdocs::hbs {
 
 namespace {
 
@@ -140,35 +138,15 @@ construct(Info const& I) const
     return obj;
 }
 
-dom::Object
-HandlebarsCorpus::
-construct(
-    OverloadSet const& I) const
-{
-    auto obj = this->DomCorpus::construct(I);
-    obj.set("url", getURL(I));
-    obj.set("anchor", names_.getQualified(I, '-'));
-    return obj;
-}
-
-template<class T>
-requires std::derived_from<T, Info> || std::same_as<T, OverloadSet>
 std::string
 HandlebarsCorpus::
-getURL(T const& I) const
+getURL(Info const& I) const
 {
     bool const multipage = getCorpus().config->multipage;
     char const prefix = multipage ? '/' : '#';
     char const delim = multipage ? '/' : '-';
     std::string href(1, prefix);
-    if constexpr (std::derived_from<T, Info>)
-    {
-        href += names_.getQualified(I.id, delim);
-    }
-    else if constexpr (std::same_as<T, OverloadSet>)
-    {
-        href += names_.getQualified(I, delim);
-    }
+    href += names_.getQualified(I.id, delim);
     if (multipage)
     {
         href.append(".");
@@ -176,13 +154,6 @@ getURL(T const& I) const
     }
     return href;
 }
-
-// Define Builder::operator() for each Info type
-#define INFO(T) template std::string HandlebarsCorpus::getURL<T## Info>(T## Info const&) const;
-#include <mrdocs/Metadata/InfoNodesPascal.inc>
-
-template std::string HandlebarsCorpus::getURL<OverloadSet>(OverloadSet const&) const;
-
 
 dom::Value
 HandlebarsCorpus::
@@ -261,6 +232,4 @@ getJavadoc(Javadoc const& jd) const
     return dom::Object(std::move(objKeyValues));
 }
 
-} // hbs
-} // mrdocs
-} // clang
+} // clang::mrdocs::hbs

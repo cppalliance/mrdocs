@@ -37,12 +37,12 @@ struct Explicit;
 |===
 | Name 
 
-| <<Explicit-2constructor,`Explicit`>>         [.small]#[constructor]#
+| <<Explicit-2constructor-08,`Explicit`>>         [.small]#[constructor]#
 |===
 
 
 
-[#Explicit-2constructor]
+[#Explicit-2constructor-08]
 == <<Explicit,Explicit>>::Explicit
 
 
@@ -168,12 +168,12 @@ struct ExplicitExpression;
 |===
 | Name 
 
-| <<ExplicitExpression-2constructor,`ExplicitExpression`>>         [.small]#[constructor]#
+| <<ExplicitExpression-2constructor-026,`ExplicitExpression`>>         [.small]#[constructor]#
 |===
 
 
 
-[#ExplicitExpression-2constructor]
+[#ExplicitExpression-2constructor-026]
 == <<ExplicitExpression,ExplicitExpression>>::ExplicitExpression
 
 
@@ -209,12 +209,12 @@ explicit(B)
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit(B)
-<<ExplicitExpression-2constructor-02,ExplicitExpression>>(
+<<ExplicitExpression-2constructor-027,ExplicitExpression>>(
     int,
     int);
 ----
 
-[.small]#<<ExplicitExpression-2constructor-02,_» more..._>>#
+[.small]#<<ExplicitExpression-2constructor-027,_» more..._>>#
 
 [#ExplicitExpression-2constructor-0b]
 == <<ExplicitExpression,ExplicitExpression>>::ExplicitExpression
@@ -261,7 +261,7 @@ explicit(B)
 ExplicitExpression(<<ExplicitExpression,ExplicitExpression>>&&) noexcept;
 ----
 
-[#ExplicitExpression-2constructor-02]
+[#ExplicitExpression-2constructor-027]
 == <<ExplicitExpression,ExplicitExpression>>::ExplicitExpression
 
 
@@ -298,12 +298,12 @@ struct ExplicitFalse;
 |===
 | Name 
 
-| <<ExplicitFalse-2constructor,`ExplicitFalse`>>         [.small]#[constructor]#
+| <<ExplicitFalse-2constructor-04c,`ExplicitFalse`>>         [.small]#[constructor]#
 |===
 
 
 
-[#ExplicitFalse-2constructor]
+[#ExplicitFalse-2constructor-04c]
 == <<ExplicitFalse,ExplicitFalse>>::ExplicitFalse
 
 
@@ -339,12 +339,12 @@ explicit(false)
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit(false)
-<<ExplicitFalse-2constructor-04,ExplicitFalse>>(
+<<ExplicitFalse-2constructor-04f,ExplicitFalse>>(
     int,
     int);
 ----
 
-[.small]#<<ExplicitFalse-2constructor-04,_» more..._>>#
+[.small]#<<ExplicitFalse-2constructor-04f,_» more..._>>#
 
 [#ExplicitFalse-2constructor-01]
 == <<ExplicitFalse,ExplicitFalse>>::ExplicitFalse
@@ -391,7 +391,7 @@ explicit(false)
 ExplicitFalse(<<ExplicitFalse,ExplicitFalse>>&&) noexcept;
 ----
 
-[#ExplicitFalse-2constructor-04]
+[#ExplicitFalse-2constructor-04f]
 == <<ExplicitFalse,ExplicitFalse>>::ExplicitFalse
 
 
@@ -428,12 +428,12 @@ struct ExplicitTrue;
 |===
 | Name 
 
-| <<ExplicitTrue-2constructor,`ExplicitTrue`>>         [.small]#[constructor]#
+| <<ExplicitTrue-2constructor-0f,`ExplicitTrue`>>         [.small]#[constructor]#
 |===
 
 
 
-[#ExplicitTrue-2constructor]
+[#ExplicitTrue-2constructor-0f]
 == <<ExplicitTrue,ExplicitTrue>>::ExplicitTrue
 
 

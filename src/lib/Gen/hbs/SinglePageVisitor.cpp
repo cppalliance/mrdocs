@@ -16,36 +16,16 @@
 
 namespace clang::mrdocs::hbs {
 
-template<class T>
-requires std::derived_from<T, Info> || std::same_as<T, OverloadSet>
+template <std::derived_from<Info> T>
 void
 SinglePageVisitor::
-operator()(T const& I0)
+operator()(T const& I)
 {
-    if constexpr (std::derived_from<T, Info>)
+    MRDOCS_CHECK_OR(shouldGenerate(I));
+    ex_.async([this, &I, symbolIdx = numSymbols_++](Builder& builder)
     {
-        MRDOCS_CHECK_OR(shouldGenerate(I0));
-    }
-
-    // If T is an OverloadSet, we make a copy for the lambda because
-    // these are temporary objects that don't live in the corpus.
-    // Otherwise, the lambda will capture a reference to the corpus Info.
-    auto Ref = [&I0] {
-        if constexpr (std::derived_from<T, Info>)
-        {
-            return std::ref(I0);
-        }
-        else if constexpr (std::same_as<T, OverloadSet>)
-        {
-            return OverloadSet(I0);
-        }
-    }();
-    ex_.async([this, Ref, symbolIdx = numSymbols_++](Builder& builder)
-    {
-        T const& I = Ref;
-
-        // Output to an independent string first, then write to
-        // the shared stream
+        // Output to an independent string first (async), then write to
+        // the shared stream (sync)
         std::stringstream ss;
         if(auto r = builder(ss, I))
         {
@@ -56,23 +36,14 @@ operator()(T const& I0)
             r.error().Throw();
         }
     });
-
-    if constexpr (std::derived_from<T, Info>)
-    {
-        if constexpr(
-            T::isNamespace() ||
-            T::isRecord() ||
-            T::isEnum())
-        {
-            corpus_.orderedTraverseOverloads(I0, *this);
-        }
-    }
-    else if constexpr (std::same_as<T, OverloadSet>)
-    {
-        corpus_.orderedTraverse(I0, *this);
-    }
-
+    Corpus::TraverseOptions opts = {
+        .ordered = true,
+        .skipInherited = std::same_as<T, RecordInfo>};
+    corpus_.traverse(opts, I, *this);
 }
+
+#define INFO(T) template void SinglePageVisitor::operator()<T##Info>(T##Info const&);
+#include <mrdocs/Metadata/InfoNodesPascal.inc>
 
 // pageNumber is zero-based
 void
@@ -125,10 +96,5 @@ writePage(
         symbols_[symbolIdx].reset();
     }
 }
-
-#define INFO(T) template void SinglePageVisitor::operator()<T##Info>(T##Info const&);
-#include <mrdocs/Metadata/InfoNodesPascal.inc>
-
-template void SinglePageVisitor::operator()<OverloadSet>(OverloadSet const&);
 
 } // clang::mrdocs::hbs

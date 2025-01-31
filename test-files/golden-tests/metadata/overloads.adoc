@@ -20,8 +20,8 @@
 |===
 | Name 
 
-| <<f,`f`>> 
-| <<operator_eq,`operator&equals;&equals;`>> 
+| <<f-0e,`f`>> 
+| <<operator_eq-0d,`operator&equals;&equals;`>> 
 |===
 
 [#A]
@@ -44,7 +44,7 @@ struct A;
 |===
 | Name 
 
-| <<A-f,`f`>> 
+| <<A-f-00,`f`>> 
 |===
 === Static Member Functions
 
@@ -52,7 +52,7 @@ struct A;
 |===
 | Name 
 
-| <<A-g,`g`>> 
+| <<A-g-0e,`g`>> 
 |===
 === Friends
 
@@ -66,7 +66,7 @@ struct A;
 
 
 
-[#A-f]
+[#A-f-00]
 == <<A,A>>::f
 
 
@@ -121,7 +121,7 @@ int
 f(int);
 ----
 
-[#A-g]
+[#A-g-0e]
 == <<A,A>>::g
 
 
@@ -233,7 +233,7 @@ struct B;
 
 
 
-[#f]
+[#f-0e]
 == f
 
 
@@ -288,7 +288,7 @@ int
 f(int);
 ----
 
-[#operator_eq]
+[#operator_eq-0d]
 == operator&equals;&equals;
 
 

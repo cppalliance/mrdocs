@@ -473,7 +473,7 @@ namespace detail {
     // Heterogeneous lookup support
     struct string_hash {
         using is_transparent [[maybe_unused]] = void;
-        size_t operator()(const char *txt) const {
+        size_t operator()(char const*txt) const {
             return std::hash<std::string_view>{}(txt);
         }
         size_t operator()(std::string_view txt) const {

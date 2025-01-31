@@ -7,23 +7,16 @@
 
 === Functions
 
-[cols=2]
+[cols=1]
 |===
-| Name | Description 
+| Name 
 
-| <<f,`f`>> 
-| C string overload&period;
-
-Integer overload&period;
-
-
+| <<f-0e,`f`>> 
 |===
 
-[#f]
+[#f-0e]
 == f
 
-
-Integer overload&period;
 
 === Synopsis
 
@@ -61,13 +54,6 @@ void
 ----
 
 [.small]#<<f-0b,_» more..._>>#
-
-=== Description
-
-
-More info
-
-
 
 [#f-06]
 == f

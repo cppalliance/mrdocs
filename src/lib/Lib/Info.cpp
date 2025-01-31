@@ -17,7 +17,7 @@ operator()(
 std::size_t
 InfoPtrHasher::
 operator()(
-    const SymbolID& id) const
+    SymbolID const& id) const
 {
     return std::hash<SymbolID>()(id);
 }
@@ -40,7 +40,7 @@ bool
 InfoPtrEqual::
 operator()(
     const std::unique_ptr<Info>& a,
-    const SymbolID& b) const
+    SymbolID const& b) const
 {
     MRDOCS_ASSERT(a);
     return a->id == b;
@@ -49,7 +49,7 @@ operator()(
 bool
 InfoPtrEqual::
 operator()(
-    const SymbolID& a,
+    SymbolID const& a,
     const std::unique_ptr<Info>& b) const
 {
     MRDOCS_ASSERT(b);

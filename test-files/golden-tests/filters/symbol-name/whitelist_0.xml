@@ -79,26 +79,6 @@
           <mono>N5::N6::*7</mono>
         </para>
       </doc>
-      <namespace name="N7" id="80mHUKSfQIyK2/8/2Pv7Vx6gUbE=">
-        <doc>
-          <para>
-            <text>This namespace should be included because it matches </text>
-            <mono>N5::N6::*7</mono>
-          </para>
-        </doc>
-        <function name="f2_WL" id="hMy4bR/Pm1VhNdwzbkfuKtLNnL8=">
-          <file short-path="whitelist_0.cpp" source-path="whitelist_0.cpp" line="78"/>
-          <doc>
-            <para>
-              <text>This function should be included because it&apos;s a member of </text>
-              <mono>N7</mono>
-              <text>, which matches</text>
-              <text> </text>
-              <mono>N5::N6::*7</mono>
-            </para>
-          </doc>
-        </function>
-      </namespace>
       <namespace name="M7" id="oQQ87evv0wAHmyyua78i6ilqQiY=">
         <doc>
           <para>
@@ -119,6 +99,26 @@
           </doc>
         </function>
       </namespace>
+      <namespace name="N7" id="80mHUKSfQIyK2/8/2Pv7Vx6gUbE=">
+        <doc>
+          <para>
+            <text>This namespace should be included because it matches </text>
+            <mono>N5::N6::*7</mono>
+          </para>
+        </doc>
+        <function name="f2_WL" id="hMy4bR/Pm1VhNdwzbkfuKtLNnL8=">
+          <file short-path="whitelist_0.cpp" source-path="whitelist_0.cpp" line="78"/>
+          <doc>
+            <para>
+              <text>This function should be included because it&apos;s a member of </text>
+              <mono>N7</mono>
+              <text>, which matches</text>
+              <text> </text>
+              <mono>N5::N6::*7</mono>
+            </para>
+          </doc>
+        </function>
+      </namespace>
     </namespace>
   </namespace>
   <struct name="C" id="BrX2oZup9qgy4SfJloKCuUYZshA=">
@@ -129,15 +129,6 @@
         <mono>C</mono>
       </para>
     </doc>
-    <function name="f0_WL" id="vL6CN4hW4T9Ah0GmoIu9Hx4iaPo=">
-      <file short-path="whitelist_0.cpp" source-path="whitelist_0.cpp" line="109"/>
-      <doc>
-        <para>
-          <text>This function should be included because it&apos;s a member of </text>
-          <mono>C</mono>
-        </para>
-      </doc>
-    </function>
     <struct name="D" id="WRUY2j3O9l2Pd1qDymu1ksSw07c=">
       <file short-path="whitelist_0.cpp" source-path="whitelist_0.cpp" line="113" class="def"/>
       <doc>
@@ -156,6 +147,15 @@
         </doc>
       </function>
     </struct>
+    <function name="f0_WL" id="vL6CN4hW4T9Ah0GmoIu9Hx4iaPo=">
+      <file short-path="whitelist_0.cpp" source-path="whitelist_0.cpp" line="109"/>
+      <doc>
+        <para>
+          <text>This function should be included because it&apos;s a member of </text>
+          <mono>C</mono>
+        </para>
+      </doc>
+    </function>
   </struct>
 </namespace>
 </mrdocs>

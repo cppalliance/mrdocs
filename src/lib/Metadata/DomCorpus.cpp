@@ -10,18 +10,18 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "lib/Support/Radix.hpp"
+#include <mrdocs/Dom/LazyArray.hpp>
+#include <mrdocs/Dom/LazyObject.hpp>
 #include "lib/Support/LegibleNames.hpp"
-#include "lib/Dom/LazyObject.hpp"
-#include "lib/Dom/LazyArray.hpp"
-#include <mrdocs/Metadata.hpp>
-#include <mrdocs/Metadata/DomCorpus.hpp>
+#include "lib/Support/Radix.hpp"
 #include <memory>
 #include <mutex>
 #include <variant>
+#include <mrdocs/Metadata.hpp>
+#include <mrdocs/Corpus.hpp>
+#include <mrdocs/Metadata/DomCorpus.hpp>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 class DomCorpus::Impl
 {
@@ -29,8 +29,6 @@ class DomCorpus::Impl
 
     DomCorpus const& domCorpus_;
     Corpus const& corpus_;
-    std::unordered_map<SymbolID, value_type> cache_;
-    std::mutex mutex_;
 
 public:
     Impl(
@@ -48,34 +46,19 @@ public:
     }
 
     dom::Object
-    create(Info const& I)
+    create(Info const& I) const
     {
         return domCorpus_.construct(I);
     }
 
     dom::Object
-    get(SymbolID const& id)
+    get(SymbolID const& id) const
     {
         // VFALCO Hack to deal with symbol IDs
         // being emitted without the corresponding data.
         const Info* I = corpus_.find(id);
-        if(! I)
-            return {}; // VFALCO Hack
-
-        std::lock_guard<std::mutex> lock(mutex_);
-        auto it = cache_.find(id);
-        if(it == cache_.end())
-        {
-            auto obj = create(*I);
-            cache_.insert(
-                { id, obj.impl() });
-            return obj;
-        }
-        if(auto sp = it->second.lock())
-            return dom::Object(sp);
-        auto obj = create(*I);
-        it->second = obj.impl();
-        return obj;
+        MRDOCS_CHECK_OR(I, {});
+        return create(*I);
     }
 };
 
@@ -101,15 +84,10 @@ dom::Object
 DomCorpus::
 construct(Info const& I) const
 {
-    return dom::ValueFrom(I, this).getObject();
-}
-
-dom::Object
-DomCorpus::
-construct(
-    OverloadSet const& overloads) const
-{
-    return dom::ValueFrom(overloads, this).getObject();
+    return visit(I, [this]<class T>(T const& U) -> dom::Object
+    {
+        return dom::ValueFrom(U, this).getObject();
+    });
 }
 
 dom::Value
@@ -131,5 +109,20 @@ getJavadoc(Javadoc const&) const
     return nullptr;
 }
 
-} // mrdocs
-} // clang
+dom::Array
+getParents(DomCorpus const& C, Info const& I)
+{
+    // A convenient list to iterate over the parents
+    // with resorting to partial template recursion
+    Corpus const& corpus = C.getCorpus();
+    auto const pIds = getParents(corpus, I);
+    dom::Array res;
+    for (SymbolID const& id : pIds)
+    {
+        Info const& PI = corpus.get(id);
+        res.push_back(C.construct(PI));
+    }
+    return res;
+}
+
+} // clang::mrdocs

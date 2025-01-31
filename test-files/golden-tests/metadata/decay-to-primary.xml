@@ -19,10 +19,6 @@
       </template>
     </struct>
   </template>
-  <namespace-alias name="A0" id="ApI0xrWYyA88AQ9a3mi+ochJbJc=">
-    <file short-path="decay-to-primary.cpp" source-path="decay-to-primary.cpp" line="10"/>
-    <type id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=" name="S0&lt;void&gt;"/>
-  </namespace-alias>
   <template class="explicit" id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=">
     <targ class="type" type="short"/>
     <struct name="S0" id="nM49pHyBLj9V6pphxxYAxi4tXXc=">
@@ -57,6 +53,10 @@
       </template>
     </struct>
   </template>
+  <namespace-alias name="A0" id="ApI0xrWYyA88AQ9a3mi+ochJbJc=">
+    <file short-path="decay-to-primary.cpp" source-path="decay-to-primary.cpp" line="10"/>
+    <type id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=" name="S0&lt;void&gt;"/>
+  </namespace-alias>
   <namespace-alias name="A1" id="zbm2FwMgaOYZ1PJI3zAcR9gD1DE=">
     <file short-path="decay-to-primary.cpp" source-path="decay-to-primary.cpp" line="11"/>
     <type id="rd0VksPlzUP2z9uBlAh7QCSvXlc=" name="A0::M1&lt;short&gt;::M0"/>

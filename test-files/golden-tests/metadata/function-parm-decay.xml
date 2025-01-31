@@ -34,14 +34,6 @@
       </type>
     </param>
   </function>
-  <namespace-alias name="T" id="PvNOREc+JWxdkVgvSz+jC45IbGQ=">
-    <file short-path="function-parm-decay.cpp" source-path="function-parm-decay.cpp" line="18"/>
-    <type name="int"/>
-  </namespace-alias>
-  <namespace-alias name="U" id="h6hupdyuT6SfsCGFl6UUFGtvrcc=">
-    <file short-path="function-parm-decay.cpp" source-path="function-parm-decay.cpp" line="19"/>
-    <type name="int" cv-qualifiers="const"/>
-  </namespace-alias>
   <function name="i" id="UTOfie03KjmJww3mduHOqLZB5aI=">
     <file short-path="function-parm-decay.cpp" source-path="function-parm-decay.cpp" line="21"/>
     <file short-path="function-parm-decay.cpp" source-path="function-parm-decay.cpp" line="22"/>
@@ -51,5 +43,13 @@
       <type id="PvNOREc+JWxdkVgvSz+jC45IbGQ=" name="T"/>
     </param>
   </function>
+  <namespace-alias name="T" id="PvNOREc+JWxdkVgvSz+jC45IbGQ=">
+    <file short-path="function-parm-decay.cpp" source-path="function-parm-decay.cpp" line="18"/>
+    <type name="int"/>
+  </namespace-alias>
+  <namespace-alias name="U" id="h6hupdyuT6SfsCGFl6UUFGtvrcc=">
+    <file short-path="function-parm-decay.cpp" source-path="function-parm-decay.cpp" line="19"/>
+    <type name="int" cv-qualifiers="const"/>
+  </namespace-alias>
 </namespace>
 </mrdocs>

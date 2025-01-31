@@ -78,7 +78,7 @@ dom::String toString(NoexceptKind kind) noexcept
 
 dom::String
 toString(
-    const NoexceptInfo& info,
+    NoexceptInfo const& info,
     bool resolved,
     bool implicit)
 {

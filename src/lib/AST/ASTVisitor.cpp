@@ -18,6 +18,7 @@
 #include "lib/AST/TypeInfoBuilder.hpp"
 #include "lib/Support/Path.hpp"
 #include "lib/Support/Debug.hpp"
+#include "lib/Support/Radix.hpp"
 #include "lib/Lib/Diagnostics.hpp"
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Support/ScopeExit.hpp>
@@ -133,7 +134,7 @@ traverse(DeclTy const* D)
         traverseMembers(I, D);
 
         // Traverse the parents of the declaration in dependency mode.
-        traverseParents(I, D);
+        traverseParent(I, D);
 
         return &I;
     }
@@ -253,7 +254,7 @@ template <
 requires (!std::derived_from<DeclTy, RedeclarableTemplateDecl>)
 void
 ASTVisitor::
-traverseParents(InfoTy& I, DeclTy const* DC)
+traverseParent(InfoTy& I, DeclTy const* DC)
 {
     MRDOCS_SYMBOL_TRACE(DC, context_);
     if (Decl const* PD = getParent(DC))
@@ -261,8 +262,7 @@ traverseParents(InfoTy& I, DeclTy const* DC)
         MRDOCS_SYMBOL_TRACE(PD, context_);
 
         // Check if we haven't already extracted or started
-        // to extract the parent scope
-
+        // to extract the parent scope:
         // Traverse the parent scope as a dependency if it
         // hasn't been extracted yet
         Info* PI = nullptr;
@@ -276,10 +276,14 @@ traverseParents(InfoTy& I, DeclTy const* DC)
 
         // If we found the parent scope, set it as the parent
         I.Parent = PI->id;
-        if (auto* SI = dynamic_cast<ScopeInfo*>(PI))
+
+        visit(*PI, [&]<typename ParentInfoTy>(ParentInfoTy& PU) -> void
         {
-            addMember(*SI, I);
-        }
+            if constexpr (InfoParent<ParentInfoTy>)
+            {
+                addMember(PU, I);
+            }
+        });
     }
 }
 
@@ -288,15 +292,15 @@ template <
     std::derived_from<RedeclarableTemplateDecl> DeclTy>
 void
 ASTVisitor::
-traverseParents(InfoTy& I, DeclTy const* D)
+traverseParent(InfoTy& I, DeclTy const* D)
 {
-    traverseParents(I, D->getTemplatedDecl());
+    traverseParent(I, D->getTemplatedDecl());
 }
 
 
 Expected<llvm::SmallString<128>>
 ASTVisitor::
-generateUSR(const Decl* D) const
+generateUSR(Decl const* D) const
 {
     MRDOCS_ASSERT(D);
     llvm::SmallString<128> res;
@@ -315,7 +319,7 @@ generateUSR(const Decl* D) const
     // Handling UsingDecl
     if (auto const* UD = dyn_cast<UsingDecl>(D))
     {
-        for (const auto* shadow : UD->shadows())
+        for (auto const* shadow : UD->shadows())
         {
             if (index::generateUSRForDecl(shadow->getTargetDecl(), res))
             {
@@ -421,8 +425,8 @@ generateUSR(const Decl* D) const
     if (index::generateUSRForDecl(D, res))
         return Unexpected(Error("Failed to generate USR"));
 
-    const auto* Described = dyn_cast_if_present<TemplateDecl>(D);
-    const auto* Templated = D;
+    auto const* Described = dyn_cast_if_present<TemplateDecl>(D);
+    auto const* Templated = D;
     if (auto const* DT = D->getDescribedTemplate())
     {
         Described = DT;
@@ -434,8 +438,8 @@ generateUSR(const Decl* D) const
 
     if(Described)
     {
-        const TemplateParameterList* TPL = Described->getTemplateParameters();
-        if(const auto* RC = TPL->getRequiresClause())
+        TemplateParameterList const* TPL = Described->getTemplateParameters();
+        if(auto const* RC = TPL->getRequiresClause())
         {
             RC = SubstituteConstraintExpressionWithoutSatisfaction(
                 sema_, cast<NamedDecl>(isa<FunctionTemplateDecl>(Described) ? Described : Templated), RC);
@@ -453,7 +457,7 @@ generateUSR(const Decl* D) const
     if(auto* FD = dyn_cast<FunctionDecl>(Templated);
         FD && FD->getTrailingRequiresClause())
     {
-        const Expr* RC = FD->getTrailingRequiresClause();
+        Expr const* RC = FD->getTrailingRequiresClause();
         RC = SubstituteConstraintExpressionWithoutSatisfaction(
             sema_, cast<NamedDecl>(Described ? Described : Templated), RC);
         if (!RC)
@@ -472,7 +476,7 @@ generateUSR(const Decl* D) const
 bool
 ASTVisitor::
 generateID(
-    const Decl* D,
+    Decl const* D,
     SymbolID& id) const
 {
     if (!D)
@@ -498,7 +502,7 @@ generateID(
 
 SymbolID
 ASTVisitor::
-generateID(const Decl* D) const
+generateID(Decl const* D) const
 {
     SymbolID id = SymbolID::invalid;
     generateID(D, id);
@@ -578,7 +582,7 @@ populate(
     {
         auto const existing = std::ranges::
             find_if(I.Loc,
-            [line, file](const Location& l)
+            [line, file](Location const& l)
             {
                 return l.LineNumber == line &&
                     l.FullPath == file->full_path;
@@ -1553,6 +1557,201 @@ populateAttributes(InfoTy& I, Decl const* D)
                 I.Attributes.emplace_back(II->getName());
             }
         }
+    }
+}
+
+void
+ASTVisitor::
+addMember(
+    NamespaceInfo& I,
+    Info const& Member)
+{
+    if (auto const* U = dynamic_cast<NamespaceInfo const*>(&Member))
+    {
+        addMember(I.Members.Namespaces, *U);
+        return;
+    }
+    if (auto const* U = dynamic_cast<NamespaceAliasInfo const*>(&Member))
+    {
+        addMember(I.Members.NamespaceAliases, *U);
+        return;
+    }
+    if (auto const* U = dynamic_cast<TypedefInfo const*>(&Member))
+    {
+        addMember(I.Members.Typedefs, *U);
+        return;
+    }
+    if (auto const* U = dynamic_cast<RecordInfo const*>(&Member))
+    {
+        addMember(I.Members.Records, *U);
+        return;
+    }
+    if (auto const* U = dynamic_cast<EnumInfo const*>(&Member))
+    {
+        addMember(I.Members.Enums, *U);
+        return;
+    }
+    if (auto const* U = dynamic_cast<FunctionInfo const*>(&Member))
+    {
+        addMember(I.Members.Functions, *U);
+        return;
+    }
+    if (auto const* U = dynamic_cast<VariableInfo const*>(&Member))
+    {
+        addMember(I.Members.Variables, *U);
+        return;
+    }
+    if (auto const* U = dynamic_cast<ConceptInfo const*>(&Member))
+    {
+        addMember(I.Members.Concepts, *U);
+        return;
+    }
+    if (auto const* U = dynamic_cast<GuideInfo const*>(&Member))
+    {
+        addMember(I.Members.Guides, *U);
+        return;
+    }
+    if (auto const* U = dynamic_cast<UsingInfo const*>(&Member))
+    {
+        addMember(I.Members.Usings, *U);
+        return;
+    }
+    report::error("Cannot push {} of type {} into members of namespace {}",
+        Member.Name,
+        mrdocs::toString(Member.Kind).c_str(),
+        I.Name);
+}
+
+void
+ASTVisitor::
+addMember(
+    RecordInfo& I,
+    Info const& Member)
+{
+    switch (Member.Access)
+    {
+    case AccessKind::Public:
+        addMember(I.Interface.Public, Member);
+        break;
+    case AccessKind::Private:
+        addMember(I.Interface.Private, Member);
+        break;
+    case AccessKind::Protected:
+        addMember(I.Interface.Protected, Member);
+        break;
+    default:
+        MRDOCS_UNREACHABLE();
+    }
+}
+
+void
+ASTVisitor::
+addMember(RecordTranche& T, Info const& Member)
+{
+    if (auto const* U = dynamic_cast<NamespaceAliasInfo const*>(&Member))
+    {
+        addMember(T.NamespaceAliases, *U);
+        return;
+    }
+    if (auto const* U = dynamic_cast<TypedefInfo const*>(&Member))
+    {
+        addMember(T.Typedefs, *U);
+        return;
+    }
+    if (auto const* U = dynamic_cast<RecordInfo const*>(&Member))
+    {
+        addMember(T.Records, *U);
+        return;
+    }
+    if (auto const* U = dynamic_cast<EnumInfo const*>(&Member))
+    {
+        addMember(T.Enums, *U);
+        return;
+    }
+    if (auto const* U = dynamic_cast<FunctionInfo const*>(&Member))
+    {
+        if (U->StorageClass != StorageClassKind::Static)
+        {
+            addMember(T.Functions, *U);
+        }
+        else
+        {
+            addMember(T.StaticFunctions, *U);
+        }
+        return;
+    }
+    if (auto const* U = dynamic_cast<FieldInfo const*>(&Member))
+    {
+        addMember(T.Variables, *U);
+        return;
+    }
+    if (auto const* U = dynamic_cast<VariableInfo const*>(&Member))
+    {
+        addMember(T.StaticVariables, *U);
+        return;
+    }
+    if (auto const* U = dynamic_cast<ConceptInfo const*>(&Member))
+    {
+        addMember(T.Concepts, *U);
+        return;
+    }
+    if (auto const* U = dynamic_cast<GuideInfo const*>(&Member))
+    {
+        addMember(T.Guides, *U);
+        return;
+    }
+    if (auto const* U = dynamic_cast<FriendInfo const*>(&Member))
+    {
+        addMember(T.Friends, *U);
+        return;
+    }
+    if (auto const* U = dynamic_cast<UsingInfo const*>(&Member))
+    {
+        addMember(T.Usings, *U);
+        return;
+    }
+    report::error("Cannot push {} of type {} into tranche",
+        Member.Name,
+        mrdocs::toString(Member.Kind).c_str());
+}
+
+void
+ASTVisitor::
+addMember(EnumInfo& I, Info const& Member) const
+{
+    if (auto const* U = dynamic_cast<EnumConstantInfo const*>(&Member))
+    {
+        addMember(I.Constants, *U);
+        return;
+    }
+    report::error("Cannot push {} of type {} into members of enum {}",
+        Member.Name,
+        mrdocs::toString(Member.Kind).c_str(),
+        I.Name);
+}
+
+void
+ASTVisitor::
+addMember(OverloadsInfo& I, Info const& Member) const
+{
+    if (Member.isFunction())
+    {
+        addMember(I.Members, Member);
+        return;
+    }
+    report::error("Cannot push {} of type {} into members of enum {}",
+        Member.Name,
+        mrdocs::toString(Member.Kind).c_str(),
+        I.Name);
+}
+
+void
+ASTVisitor::
+addMember(std::vector<SymbolID>& container, Info const& Member) const
+{
+    if (std::ranges::find(container, Member.id) == container.end())
+    {
+        container.push_back(Member.id);
     }
 }
 
@@ -2860,7 +3059,7 @@ checkSymbolFiltersImpl(
 
 Info*
 ASTVisitor::
-find(SymbolID const& id)
+find(SymbolID const& id) const
 {
     if (auto const it = info_.find(id); it != info_.end())
     {
@@ -2871,7 +3070,7 @@ find(SymbolID const& id)
 
 Info*
 ASTVisitor::
-find(Decl const* D)
+find(Decl const* D) const
 {
     auto ID = generateID(D);
     MRDOCS_CHECK_OR(ID, nullptr);

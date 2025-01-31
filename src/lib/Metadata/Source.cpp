@@ -9,12 +9,13 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <mrdocs/Dom/LazyArray.hpp>
+#include <mrdocs/Dom/LazyObject.hpp>
+#include <ranges>
+#include <llvm/ADT/STLExtras.h>
 #include <mrdocs/Metadata/Source.hpp>
-#include "lib/Dom/LazyObject.hpp"
-#include "lib/Dom/LazyArray.hpp"
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 std::string_view
 toString(FileKind kind)
@@ -30,6 +31,53 @@ toString(FileKind kind)
     default:
         MRDOCS_UNREACHABLE();
     };
+}
+
+namespace
+{
+template <bool Move, class SourceInfoTy>
+void
+mergeImpl(SourceInfo& I, SourceInfoTy&& Other)
+{
+    if (!I.DefLoc)
+    {
+        I.DefLoc = Other.DefLoc;
+    }
+    else if (Other.DefLoc)
+    {
+        if (!I.DefLoc->Documented && Other.DefLoc->Documented)
+        {
+            I.DefLoc = Other.DefLoc;
+        }
+        else
+        {
+            I.DefLoc = std::min(I.DefLoc, Other.DefLoc);
+        }
+    }
+    if constexpr (Move)
+    {
+        std::ranges::move(Other.Loc, std::back_inserter(I.Loc));
+    }
+    else
+    {
+        std::ranges::copy(Other.Loc, std::back_inserter(I.Loc));
+    }
+    std::ranges::sort(I.Loc);
+    auto const Last = std::ranges::unique(I.Loc).begin();
+    I.Loc.erase(Last, I.Loc.end());
+}
+}
+
+void
+merge(SourceInfo& I, SourceInfo const& Other)
+{
+    mergeImpl<false>(I, Other);
+}
+
+void
+merge(SourceInfo& I, SourceInfo&& Other)
+{
+    mergeImpl<true>(I, Other);
 }
 
 template <class IO>
@@ -81,5 +129,4 @@ tag_invoke(
     v = dom::LazyObject(I);
 }
 
-} // mrdocs
-} // clang
+} // clang::mrdocs

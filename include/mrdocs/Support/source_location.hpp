@@ -36,8 +36,8 @@
         constexpr
         source_location
         current(
-            const char* const file = __builtin_FILE(),
-            const char* const function = __builtin_FUNCTION(),
+            char const* const file = __builtin_FILE(),
+            char const* const function = __builtin_FUNCTION(),
             const std::uint_least32_t line = __builtin_LINE(),
             const std::uint_least32_t column = __builtin_COLUMN()) noexcept
 
@@ -51,13 +51,13 @@
         }
 
         constexpr
-        const char*
+        char const*
         file_name() const noexcept
         {
             return file_;
         }
         constexpr
-        const char*
+        char const*
         function_name() const noexcept
         {
             return function_;
@@ -77,8 +77,8 @@
         }
 
     private:
-        const char* file_ = "";
-        const char* function_ = "";
+        char const* file_ = "";
+        char const* function_ = "";
         std::uint_least32_t line_ = 0;
         std::uint_least32_t column_ = 0;
     };

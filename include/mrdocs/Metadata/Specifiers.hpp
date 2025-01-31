@@ -245,7 +245,7 @@ tag_invoke(
 MRDOCS_DECL
 dom::String
 toString(
-    const ExplicitInfo& info,
+    ExplicitInfo const& info,
     bool resolved = false,
     bool implicit = false);
 

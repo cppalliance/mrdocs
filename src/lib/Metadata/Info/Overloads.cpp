@@ -9,72 +9,55 @@
 //
 
 #include "lib/Support/Radix.hpp"
-#include <mrdocs/Metadata/Info/Function.hpp>
-#include <mrdocs/Metadata/Info/Namespace.hpp>
-#include <mrdocs/Metadata/Info/Overloads.hpp>
-#include <lib/Dom/LazyArray.hpp>
+#include <mrdocs/Dom/LazyArray.hpp>
 #include <llvm/ADT/STLExtras.h>
 #include <llvm/ADT/StringRef.h>
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
+#include <mrdocs/Metadata/Info/Function.hpp>
+#include <mrdocs/Metadata/Info/Namespace.hpp>
+#include <mrdocs/Metadata/Info/Overloads.hpp>
 
 namespace clang::mrdocs {
 
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    OverloadSet const& overloads,
-    DomCorpus const* domCorpus)
+OverloadsInfo::
+OverloadsInfo(SymbolID const& Parent, std::string_view Name) noexcept
+    : InfoCommonBase(
+        SymbolID::createFromString(
+            fmt::format("{}-{}", toBase16(Parent), Name)))
 {
-    /* Unfortunately, this can't use LazyObject like all other
-     * Corpus types because the overload sets are not directly
-     * available from the corpus.
-     * The `overloads` value is a temporary reference created
-     * by the `Info` tag_invoke.
-     */
-    dom::Object res;
-    res.set("id", fmt::format("{}-{}", toBase16(overloads.Parent), overloads.Name));
-    res.set("kind", "overloads");
-    res.set("name", overloads.Name);
-    res.set("members", dom::LazyArray(overloads.Members, domCorpus));
+    this->Parent = Parent;
+}
 
-    // Copy other redundant fields from the first member
-    if (overloads.Members.size() > 0)
-    {
-        dom::Value const member = domCorpus->get(overloads.Members[0]);
-        if (member.isObject())
-        {
-            for (std::string_view const key:
-                 { "parent",
-                   "parents",
-                   "access",
-                   "extraction",
-                   "isRegular",
-                   "isSeeBelow",
-                   "isImplementationDefined",
-                   "isDependency" })
-            {
-                res.set(key, member.get(key));
-            }
-        }
-    }
+void
+merge(OverloadsInfo& I, OverloadsInfo&& Other)
+{
+    merge(dynamic_cast<Info&>(I), std::move(dynamic_cast<Info&>(Other)));
+    namespace stdr = std::ranges;
+    namespace stdv = std::ranges::views;
+    auto newMembers = stdv::filter(Other.Members, [&](auto const& Member) {
+        return stdr::find(I.Members, Member) == I.Members.end();
+    });
+    I.Members.insert(I.Members.end(), newMembers.begin(), newMembers.end());
+}
 
-    // Copy relevant values from the first member with documentation
-    // that contains it.
-    for (std::string_view const key: {"doc", "loc", "dcl"})
+void
+addMember(OverloadsInfo& I, FunctionInfo const& Member)
+{
+    if (I.Members.empty())
     {
-        for (std::size_t i = 0; i < overloads.Members.size(); ++i)
-        {
-            dom::Value member = domCorpus->get(overloads.Members[i]);
-            if (member.isObject() && member.getObject().exists(key))
-            {
-                res.set(key, member.get(key));
-                break;
-            }
-        }
+        I.Name = Member.Name;
+        I.Access = Member.Access;
+        I.Extraction = Member.Extraction;
+        I.Class = Member.Class;
+        I.OverloadedOperator = Member.OverloadedOperator;
     }
-    v = res;
+    else
+    {
+        I.Extraction = leastSpecific(I.Extraction, Member.Extraction);
+    }
+    merge(dynamic_cast<SourceInfo&>(I), dynamic_cast<SourceInfo const&>(Member));
+    I.Members.push_back(Member.id);
 }
 
 } // clang::mrdocs

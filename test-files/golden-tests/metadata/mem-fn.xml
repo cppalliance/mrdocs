@@ -153,6 +153,23 @@
     <base>
       <type id="FLgkhM3m0U3Lo2o3XLPUizWPH00=" name="U"/>
     </base>
+    <function name="f1" exception-spec="noexcept" id="DBXd564vaQo7GHkh6XCC6HV78/I=">
+      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="24" class="def"/>
+      <attr id="is-variadic"/>
+      <attr id="has-trailing-return"/>
+      <attr id="constexpr-kind" name="constexpr" value="1"/>
+      <attr id="is-const"/>
+      <attr id="is-volatile"/>
+    </function>
+    <function name="f2" exception-spec="noexcept" id="II436kVwM/ZBYOf9q474VxRXK6c=">
+      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="25" class="def"/>
+      <attr id="has-trailing-return"/>
+      <attr id="constexpr-kind" name="constexpr" value="1"/>
+      <attr id="storage-class" name="static" value="2"/>
+      <return>
+        <type name="char"/>
+      </return>
+    </function>
     <function name="f3" exception-spec="noexcept" id="/C2pxLlwRMKnr6YRbVnykUArzEI=">
       <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="31"/>
       <attr id="has-override"/>

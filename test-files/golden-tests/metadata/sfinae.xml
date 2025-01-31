@@ -2,6 +2,76 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
+  <namespace name="B" id="kPgq2AM8TvyGDGm5jEWfqYlOPmY=">
+    <struct name="C" id="r/5vKTgl4cXSK5TnuZ/+P7qmkJ0=">
+      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="15" class="def"/>
+    </struct>
+  </namespace>
+  <template>
+    <tparam name="T" class="type"/>
+    <tparam name="Enable" class="type" default="void"/>
+    <class name="A" id="m/JW900ik2XLYvUdA4MCuWZQd80=">
+      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="68" class="def"/>
+      <doc>
+        <para>
+          <text>The partial specialization of A is enabled via a template parameter</text>
+        </para>
+      </doc>
+    </class>
+  </template>
+  <template class="partial" requires="std::is_integral_v&lt;T&gt;" id="m/JW900ik2XLYvUdA4MCuWZQd80=">
+    <tparam name="T" class="type"/>
+    <targ class="type" type="T"/>
+    <class name="A" id="IiCxqBbybfSkEqtDiLE90hOwXD8=">
+      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="73" class="def"/>
+      <doc>
+        <para>
+          <text>Specialization for floating point types</text>
+        </para>
+      </doc>
+    </class>
+  </template>
+  <template>
+    <tparam name="T" class="type"/>
+    <tparam name="Enable" class="type" default="void"/>
+    <struct name="S" id="IZrmVBMJu1uvsP9zur5JVrwgYmE=">
+      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="76" class="def"/>
+      <doc>
+        <para>
+          <text>SFINAE with std::void_t</text>
+        </para>
+      </doc>
+      <function name="store" id="KmwKarrWHSv7aalrBX18hjPbEfs=">
+        <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="79" class="def"/>
+        <param>
+          <type class="pointer">
+            <pointee-type name="void" cv-qualifiers="const"/>
+          </type>
+        </param>
+      </function>
+    </struct>
+  </template>
+  <template class="partial" id="IZrmVBMJu1uvsP9zur5JVrwgYmE=">
+    <tparam name="T" class="type"/>
+    <targ class="type" type="T"/>
+    <targ class="type" type="std::void_t&lt;T::a::b&gt;"/>
+    <struct name="S" id="g0UNZpdodOU5mGCtcpviXd8o6Vk=">
+      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="84" class="def"/>
+      <doc>
+        <para>
+          <text>SFINAE with std::void_t</text>
+        </para>
+      </doc>
+      <function name="store" id="2KfuSRGlpNo9Lk/lk1bhwZqm/BY=">
+        <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="86" class="def"/>
+        <param>
+          <type class="pointer">
+            <pointee-type name="void" cv-qualifiers="const"/>
+          </type>
+        </param>
+      </function>
+    </struct>
+  </template>
   <template>
     <tparam name="T" class="type"/>
     <function name="f1" requires="std::is_integral_v&lt;T&gt;" id="Bs19YS1cqZhrsbv149xgnjRFUAk=">
@@ -15,6 +85,30 @@
       <doc>
         <para>
           <text>Enabled via return type</text>
+        </para>
+      </doc>
+    </function>
+  </template>
+  <template requires="std::is_integral_v&lt;T&gt;">
+    <tparam name="T" class="type"/>
+    <function name="f10" id="MX3B1GMAk3D0sirBOV2sk9C49uw=">
+      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="64"/>
+      <param name="value">
+        <type name="T"/>
+      </param>
+      <doc>
+        <para>
+          <text>Enabled via type template parameter</text>
+        </para>
+        <para>
+          <text>This pattern should not be used because the function signature is unmodified and therefore only supports one overload.</text>
+        </para>
+        <para>
+          <text>It&apos;s a common mistake is to declare two function templates that differ only in their default template arguments.</text>
+        </para>
+        <para>
+          <text>This does not work because the declarations are treated as redeclarations of the same function template (default template</text>
+          <text> arguments are not accounted for in function template equivalence).</text>
         </para>
       </doc>
     </function>
@@ -36,11 +130,6 @@
       </doc>
     </function>
   </template>
-  <namespace name="B" id="kPgq2AM8TvyGDGm5jEWfqYlOPmY=">
-    <struct name="C" id="r/5vKTgl4cXSK5TnuZ/+P7qmkJ0=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="15" class="def"/>
-    </struct>
-  </namespace>
   <template>
     <tparam name="T" class="type"/>
     <function name="f3" requires="std::is_integral_v&lt;T&gt;" id="HIZ4NeNKvHJFhj0tJIjpjaLL30U=">
@@ -156,95 +245,6 @@
         </para>
       </doc>
     </function>
-  </template>
-  <template requires="std::is_integral_v&lt;T&gt;">
-    <tparam name="T" class="type"/>
-    <function name="f10" id="MX3B1GMAk3D0sirBOV2sk9C49uw=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="64"/>
-      <param name="value">
-        <type name="T"/>
-      </param>
-      <doc>
-        <para>
-          <text>Enabled via type template parameter</text>
-        </para>
-        <para>
-          <text>This pattern should not be used because the function signature is unmodified and therefore only supports one overload.</text>
-        </para>
-        <para>
-          <text>It&apos;s a common mistake is to declare two function templates that differ only in their default template arguments.</text>
-        </para>
-        <para>
-          <text>This does not work because the declarations are treated as redeclarations of the same function template (default template</text>
-          <text> arguments are not accounted for in function template equivalence).</text>
-        </para>
-      </doc>
-    </function>
-  </template>
-  <template>
-    <tparam name="T" class="type"/>
-    <tparam name="Enable" class="type" default="void"/>
-    <class name="A" id="m/JW900ik2XLYvUdA4MCuWZQd80=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="68" class="def"/>
-      <doc>
-        <para>
-          <text>The partial specialization of A is enabled via a template parameter</text>
-        </para>
-      </doc>
-    </class>
-  </template>
-  <template class="partial" requires="std::is_integral_v&lt;T&gt;" id="m/JW900ik2XLYvUdA4MCuWZQd80=">
-    <tparam name="T" class="type"/>
-    <targ class="type" type="T"/>
-    <class name="A" id="IiCxqBbybfSkEqtDiLE90hOwXD8=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="73" class="def"/>
-      <doc>
-        <para>
-          <text>Specialization for floating point types</text>
-        </para>
-      </doc>
-    </class>
-  </template>
-  <template>
-    <tparam name="T" class="type"/>
-    <tparam name="Enable" class="type" default="void"/>
-    <struct name="S" id="IZrmVBMJu1uvsP9zur5JVrwgYmE=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="76" class="def"/>
-      <doc>
-        <para>
-          <text>SFINAE with std::void_t</text>
-        </para>
-      </doc>
-      <function name="store" id="KmwKarrWHSv7aalrBX18hjPbEfs=">
-        <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="79" class="def"/>
-        <param>
-          <type class="pointer">
-            <pointee-type name="void" cv-qualifiers="const"/>
-          </type>
-        </param>
-      </function>
-    </struct>
-  </template>
-  <template class="partial" id="IZrmVBMJu1uvsP9zur5JVrwgYmE=">
-    <tparam name="T" class="type"/>
-    <targ class="type" type="T"/>
-    <targ class="type" type="std::void_t&lt;T::a::b&gt;"/>
-    <struct name="S" id="g0UNZpdodOU5mGCtcpviXd8o6Vk=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="84" class="def"/>
-      <doc>
-        <para>
-          <text>SFINAE with std::void_t</text>
-        </para>
-      </doc>
-      <function name="store" id="2KfuSRGlpNo9Lk/lk1bhwZqm/BY=">
-        <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="86" class="def"/>
-        <param>
-          <type class="pointer">
-            <pointee-type name="void" cv-qualifiers="const"/>
-          </type>
-        </param>
-      </function>
-    </struct>
   </template>
 </namespace>
 </mrdocs>

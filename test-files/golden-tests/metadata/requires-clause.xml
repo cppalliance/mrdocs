@@ -2,6 +2,18 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
+  <template requires="(sizeof(T) == 2)">
+    <tparam name="T" class="type"/>
+    <struct name="A" id="z7MI+IUsfEDLtbTA1tQWSumGLBs=">
+      <file short-path="requires-clause.cpp" source-path="requires-clause.cpp" line="19"/>
+    </struct>
+  </template>
+  <template requires="(sizeof(U) == 2)">
+    <tparam name="U" class="type"/>
+    <struct name="A" id="hE7z0ScEG2siyLDy5uy7WHaROj0=">
+      <file short-path="requires-clause.cpp" source-path="requires-clause.cpp" line="22"/>
+    </struct>
+  </template>
   <template>
     <tparam name="T" class="type"/>
     <function name="f" requires="(sizeof(U) == 2)" id="PmhXjCXUJYVnj/a7NhfjjSesyp0=">
@@ -27,18 +39,6 @@
     <function name="g" id="MBfRSzQTxxU/MHbtcQQLCODsyvE=">
       <file short-path="requires-clause.cpp" source-path="requires-clause.cpp" line="16"/>
     </function>
-  </template>
-  <template requires="(sizeof(T) == 2)">
-    <tparam name="T" class="type"/>
-    <struct name="A" id="z7MI+IUsfEDLtbTA1tQWSumGLBs=">
-      <file short-path="requires-clause.cpp" source-path="requires-clause.cpp" line="19"/>
-    </struct>
-  </template>
-  <template requires="(sizeof(U) == 2)">
-    <tparam name="U" class="type"/>
-    <struct name="A" id="hE7z0ScEG2siyLDy5uy7WHaROj0=">
-      <file short-path="requires-clause.cpp" source-path="requires-clause.cpp" line="22"/>
-    </struct>
   </template>
 </namespace>
 </mrdocs>

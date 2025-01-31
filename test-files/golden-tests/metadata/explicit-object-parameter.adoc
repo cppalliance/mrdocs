@@ -34,12 +34,12 @@ struct Optional;
 |===
 | Name 
 
-| <<Optional-value,`value`>> 
+| <<Optional-value-01,`value`>> 
 |===
 
 
 
-[#Optional-value]
+[#Optional-value-01]
 == <<Optional,Optional>>::value
 
 

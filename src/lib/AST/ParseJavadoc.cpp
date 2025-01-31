@@ -1207,16 +1207,19 @@ visitBlockCommandComment(
     case CommandTraits::KCI_returns:
     case CommandTraits::KCI_result:
     {
-        auto itr = std::ranges::find_if(
-            jd_.getBlocks(),
-            [&](const PolymorphicValue<doc::Block> & b)
-        {
-            return b->kind == doc::Kind::returns;
-        });
-        if (itr != jd_.getBlocks().end())
-        {
-            report::warn("{}: Duplicate @returns statement", C->getBeginLoc().printToString(sm_));
-        }
+        // auto itr = std::ranges::find_if(
+        //     jd_.getBlocks(),
+        //     [&](const PolymorphicValue<doc::Block> & b)
+        // {
+        //     return b->kind == doc::Kind::returns;
+        // });
+        // Duplicate @returns statement is not an error:
+        // https://github.com/microsoft/vscode-cpptools/issues/9316
+        // MrDocs does not support duplicate @returns statements yet.
+        // if (itr != jd_.getBlocks().end())
+        // {
+        //     report::warn("{}: Duplicate @returns statement", C->getBeginLoc().printToString(sm_));
+        // }
 
         doc::Returns returns;
         auto scope = enterScope(returns);

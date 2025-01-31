@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+// Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -16,22 +17,23 @@
 #include <memory>
 #include <string>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
-/** A table mapping symbolIDs to legible names.
+/** A table mapping Info objects to legible names.
 
-    A legible name for a symbol is case-insensitive
-    unique and only contains characters which are
-    valid for both filenames and URL paths. For
-    filenames this includes only the subset of
+    A legible name for a symbol is:
+
+    @li case-insensitive
+    @li unique
+    @li only characters valid for both filenames and URL paths.
+
+    For filenames this includes only the subset of
     characters valid for Windows, OSX, and Linux
     type filesystems.
 */
 class LegibleNames
 {
     class Impl;
-
     std::unique_ptr<Impl> impl_;
 
 public:
@@ -44,28 +46,21 @@ public:
         Corpus const& corpus,
         bool enabled);
 
+    /** Destructor.
+     */
     ~LegibleNames() noexcept;
 
+    /** Return the legible name for a symbol name.
+     */
     std::string
-    getUnqualified(
-        SymbolID const& id) const;
-
-    std::string
-    getUnqualified(
-        OverloadSet const& os) const;
+    getUnqualified(SymbolID const& id) const;
 
     std::string
     getQualified(
         SymbolID const& id,
         char delim = '-') const;
-
-    std::string
-    getQualified(
-        OverloadSet const& os,
-        char delim = '-') const;
 };
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

@@ -39,8 +39,8 @@
 
 </div>
 {{/unless}}
-{{! Tranches }}
-{{#if symbol.interface}}
+{{! Members }}
+{{! Record interface }}
 {{#if (eq symbol.kind "record")}}
 {{#with symbol.interface}}
 {{>symbol/tranche tranche=public label="" is-namespace=false}}
@@ -49,12 +49,11 @@
 
 {{>symbol/tranche tranche=private label="Private" is-namespace=false}}
 {{/with}}
-{{else}}
-{{>symbol/tranche tranche=symbol.interface label="" is-namespace=true}}
-{{/if}}
-{{else if symbol.members}}
-{{! Members }}
-{{#if (and symbol.members (ne symbol.kind "overloads"))}}
+{{! Namespace members }}
+{{else if (eq symbol.kind "namespace")}}
+{{>symbol/tranche tranche=symbol.members label="" is-namespace=true}}
+{{! Enum members }}
+{{else if (eq symbol.kind "enum")}}
 <div>
 {{#> markup/dynamic-level-h level=2 }}Members{{/markup/dynamic-level-h}}
 <table>
@@ -65,7 +64,7 @@
 </tr>
 </thead>
 <tbody>
-{{#each (filter_by symbol.members "isRegular" "isSeeBelow")}}
+{{#each (filter_by symbol.constants "isRegular" "isSeeBelow")}}
 <tr>
 {{#if (ne kind "enum-constant")}}
 <td><a href="#{{anchor}}">{{>symbol/name . nolink=true}}</a></td>
@@ -78,7 +77,6 @@
 </tbody>
 </table>
 </div>
-{{/if}}
 {{/if}}
 {{! Using directives }}
 {{#if symbol.usingDirectives}}

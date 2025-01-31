@@ -2,13 +2,17 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
-  <struct name="S" id="pOYGF6pLJlICuiGO0Xj0daDb/to=">
-    <file short-path="class-template.cpp" source-path="class-template.cpp" line="1" class="def"/>
-  </struct>
   <template>
     <tparam name="T" class="type"/>
     <struct name="C0" id="sv7ww7qclY8KsvAbFHXaKZnSO80=">
       <file short-path="class-template.cpp" source-path="class-template.cpp" line="3" class="def"/>
+      <struct name="N0" id="gx6LdMT9nBMQKB26lZXGWbB7N6c=">
+        <file short-path="class-template.cpp" source-path="class-template.cpp" line="10" class="def"/>
+        <field name="z" id="sdv932bFyf1dJzPblqxQGqsy8G4=">
+          <file short-path="class-template.cpp" source-path="class-template.cpp" line="12"/>
+          <type name="int"/>
+        </field>
+      </struct>
       <field name="w" id="ySFHEWJe6/b1dbtjDC2IAvT2vmU=">
         <file short-path="class-template.cpp" source-path="class-template.cpp" line="6"/>
         <type name="int"/>
@@ -21,21 +25,10 @@
         <file short-path="class-template.cpp" source-path="class-template.cpp" line="8"/>
         <type name="T"/>
       </field>
-      <struct name="N0" id="gx6LdMT9nBMQKB26lZXGWbB7N6c=">
-        <file short-path="class-template.cpp" source-path="class-template.cpp" line="10" class="def"/>
-        <field name="z" id="sdv932bFyf1dJzPblqxQGqsy8G4=">
-          <file short-path="class-template.cpp" source-path="class-template.cpp" line="12"/>
-          <type name="int"/>
-        </field>
-      </struct>
     </struct>
   </template>
   <struct name="C1" id="tm2khHa6qZM0lj1f7IwBdxVxDgE=">
     <file short-path="class-template.cpp" source-path="class-template.cpp" line="16" class="def"/>
-    <field name="w" id="Q0itZUB0O9hts+pFPk9DO415Lo8=">
-      <file short-path="class-template.cpp" source-path="class-template.cpp" line="18"/>
-      <type name="int"/>
-    </field>
     <template>
       <tparam name="T" class="type"/>
       <struct name="N1" id="F1Cyqn/faLYbjTU4RfGsepUiiZw=">
@@ -54,15 +47,15 @@
         </field>
       </struct>
     </template>
+    <field name="w" id="Q0itZUB0O9hts+pFPk9DO415Lo8=">
+      <file short-path="class-template.cpp" source-path="class-template.cpp" line="18"/>
+      <type name="int"/>
+    </field>
   </struct>
   <template>
     <tparam name="T" class="type"/>
     <struct name="C2" id="IIPz8Fm6nqKoYQpeJ/kvZaWvtI8=">
       <file short-path="class-template.cpp" source-path="class-template.cpp" line="29" class="def"/>
-      <field name="v" id="rvAO5HvzEvS8z9PgbRoqkyTi+1c=">
-        <file short-path="class-template.cpp" source-path="class-template.cpp" line="32"/>
-        <type name="int"/>
-      </field>
       <template>
         <tparam name="U" class="type"/>
         <struct name="N2" id="xljI5oOqNOhyyR4QzmKvFB3nEfw=">
@@ -85,6 +78,10 @@
           </field>
         </struct>
       </template>
+      <field name="v" id="rvAO5HvzEvS8z9PgbRoqkyTi+1c=">
+        <file short-path="class-template.cpp" source-path="class-template.cpp" line="32"/>
+        <type name="int"/>
+      </field>
     </struct>
   </template>
   <template>
@@ -98,5 +95,8 @@
       </field>
     </struct>
   </template>
+  <struct name="S" id="pOYGF6pLJlICuiGO0Xj0daDb/to=">
+    <file short-path="class-template.cpp" source-path="class-template.cpp" line="1" class="def"/>
+  </struct>
 </namespace>
 </mrdocs>

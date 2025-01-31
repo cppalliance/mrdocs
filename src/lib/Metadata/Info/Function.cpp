@@ -11,12 +11,11 @@
 //
 
 #include <utility>
+#include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/Info/Function.hpp>
-#include <lib/Dom/LazyObject.hpp>
 #include <mrdocs/Support/TypeTraits.hpp>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 namespace {
 
@@ -172,6 +171,70 @@ tag_invoke(
     v = dom::LazyObject(p, domCorpus);
 }
 
-} // mrdocs
-} // clang
+void
+merge(FunctionInfo& I, FunctionInfo&& Other)
+{
+    MRDOCS_ASSERT(canMerge(I, Other));
+    merge(dynamic_cast<Info&>(I), std::move(dynamic_cast<Info&>(Other)));
+    if (I.Class == FunctionClass::Normal)
+    {
+        I.Class = Other.Class;
+    }
+    if (!I.ReturnType)
+    {
+        I.ReturnType = std::move(Other.ReturnType);
+    }
+    if (I.Params.empty())
+    {
+        I.Params = std::move(Other.Params);
+    }
+    if (!I.Template)
+    {
+        I.Template = std::move(Other.Template);
+    }
+    if (I.Noexcept.Implicit)
+    {
+        I.Noexcept = std::move(Other.Noexcept);
+    }
+    if (I.Explicit.Implicit)
+    {
+        I.Explicit = std::move(Other.Explicit);
+    }
+    merge(I.Requires, std::move(Other.Requires));
+    I.IsVariadic |= Other.IsVariadic;
+    I.IsVirtual |= Other.IsVirtual;
+    I.IsVirtualAsWritten |= Other.IsVirtualAsWritten;
+    I.IsPure |= Other.IsPure;
+    I.IsDefaulted |= Other.IsDefaulted;
+    I.IsExplicitlyDefaulted |= Other.IsExplicitlyDefaulted;
+    I.IsDeleted |= Other.IsDeleted;
+    I.IsDeletedAsWritten |= Other.IsDeletedAsWritten;
+    I.IsNoReturn |= Other.IsNoReturn;
+    I.HasOverrideAttr |= Other.HasOverrideAttr;
+    I.HasTrailingReturn |= Other.HasTrailingReturn;
+    I.IsConst |= Other.IsConst;
+    I.IsVolatile |= Other.IsVolatile;
+    I.IsFinal |= Other.IsFinal;
+    I.IsNodiscard |= Other.IsNodiscard;
+    I.IsExplicitObjectMemberFunction |= Other.IsExplicitObjectMemberFunction;
+    if (I.Constexpr == ConstexprKind::None)
+    {
+        I.Constexpr = Other.Constexpr;
+    }
+    if (I.StorageClass == StorageClassKind::None)
+    {
+        I.StorageClass = Other.StorageClass;
+    }
+    if (I.RefQualifier == ReferenceKind::None)
+    {
+        I.RefQualifier = Other.RefQualifier;
+    }
+    if (I.OverloadedOperator == OperatorKind::None)
+    {
+        I.OverloadedOperator = Other.OverloadedOperator;
+    }
+}
+
+
+} // clang::mrdocs
 

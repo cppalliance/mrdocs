@@ -11,78 +11,78 @@
 #ifndef MRDOCS_API_METADATA_OVERLOADS_HPP
 #define MRDOCS_API_METADATA_OVERLOADS_HPP
 
-#include <span>
 #include <mrdocs/Platform.hpp>
+#include <ranges>
 
 namespace clang::mrdocs {
 
 /** Represents a set of function overloads.
-
-    Each `ScopeInfo`, such as `NamespaceInfo` and `RecordInfo`,
-    contains a list of member IDs that are part of that scope
-    and a lookup map of symbols with the same name that are accessible
-    from that scope.
-
-    By collecting the symbols for a given name from the lookup tables
-    of all scopes in the namespace, we can create an `OverloadSet`.
-
-    Besides the members of that scope, the `OverloadSet` also contains
-    the original namespace and the parent of the overload set. This
-    makes the OverloadSet similar to other `Info` classes, but it
-    is not part of the corpus and is not directly accessible from
-    the corpus: it needs to be constructed from the corpus.
-
  */
-struct OverloadSet
+struct OverloadsInfo final
+    : InfoCommonBase<InfoKind::Overloads>
 {
-    /// The name of the overload set.
-    std::string_view Name;
+    /// The class of the functions.
+    FunctionClass Class = FunctionClass::Normal;
 
-    /// The parent symbol ID.
-    SymbolID Parent;
+    /// The overloaded operator, if any.
+    OperatorKind OverloadedOperator = OperatorKind::None;
 
     /// The members of the overload set.
-    std::span<const SymbolID> Members;
+    std::vector<SymbolID> Members;
 
-    /**
-     * @brief Constructs an OverloadSet.
-     *
-     * @param name The name of the overload set.
-     * @param parent The parent symbol ID.
-     * @param ns The namespace of the overload set.
-     * @param members The members of the overload set.
-     */
-    OverloadSet(
-        std::string_view name,
-        const SymbolID& parent,
-        std::span<const SymbolID> members)
-        : Name(name)
-        , Parent(parent)
-        , Members(members)
+    //--------------------------------------------
+
+    explicit OverloadsInfo(SymbolID const& ID) noexcept
+    : InfoCommonBase(ID)
     {
     }
+
+    explicit
+    OverloadsInfo(SymbolID const& Parent, std::string_view Name) noexcept;
 };
 
-template<
-    class Fn,
-    class... Args>
-decltype(auto)
-visit(
-    const OverloadSet& overloads,
-    Fn&& fn,
-    Args&&... args)
+MRDOCS_DECL
+void merge(OverloadsInfo& I, OverloadsInfo&& Other);
+
+inline
+auto&
+allMembers(OverloadsInfo const& T)
 {
-    return std::forward<Fn>(fn)(overloads,
-        std::forward<Args>(args)...);
+    return T.Members;
 }
 
 MRDOCS_DECL
 void
+addMember(OverloadsInfo& I, FunctionInfo const& Member);
+
+/** Map a OverloadsInfo to a dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    OverloadsInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Info const&>(I), domCorpus);
+    io.map("class", I.Class);
+    io.map("overloadedOperator", I.OverloadedOperator);
+    io.map("members", dom::LazyArray(I.Members, domCorpus));
+}
+
+/** Map the OverloadsInfo to a @ref dom::Value object.
+ */
+inline
+void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
-    OverloadSet const& overloads,
-    DomCorpus const* domCorpus);
+    OverloadsInfo const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
 
 } // clang::mrdocs
 

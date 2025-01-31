@@ -118,10 +118,7 @@ handleFile(
         llvm::StringRef(parentDir), SingleFileDB(filePath), config, defaultIncludePaths);
 
     report::debug("Building Corpus", filePath);
-    auto prev = report::getMinimumLevel();
-    report::setMinimumLevel(report::Level::error);
     auto corpus = CorpusImpl::build(config, compilations);
-    report::setMinimumLevel(prev);
     if (!corpus)
     {
         return report::error("{}: \"{}\"", corpus.error(), filePath);

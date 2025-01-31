@@ -5,6 +5,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+// Copyright (c) 2025 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -15,6 +16,7 @@
 #include "lib/Support/Debug.hpp"
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Metadata.hpp>
+#include <mrdocs/Support/Concepts.hpp>
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/TypeTraits.hpp>
 #include <fmt/format.h>
@@ -23,343 +25,299 @@
 #include <string_view>
 #include <unordered_map>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
+namespace {
+
+std::string_view
+getUnnamedInfoName(Info const& I)
+{
+    // All valid c++ identifiers begin with
+    // an underscore or alphabetic character,
+    // so a numeric prefix ensures no conflicts
+    if (I.isFunction() || I.isOverloads())
+    {
+        static
+        constexpr
+        std::string_view
+        func_reserved[] = {
+            "2function",
+            "2constructor",
+            "2conversion",
+            "2destructor"
+        };
+        std::size_t func_idx = 0;
+        if (auto const* FI = dynamic_cast<FunctionInfo const*>(&I))
+        {
+            // don't use the reserved prefix for overloaded operators
+            if(FI->Class == FunctionClass::Normal &&
+                FI->OverloadedOperator != OperatorKind::None)
+            {
+                return getSafeOperatorName(
+                    FI->OverloadedOperator, true);
+            }
+            func_idx = to_underlying(FI->Class);
+        }
+        if (auto const* FI = dynamic_cast<OverloadsInfo const*>(&I))
+        {
+            // don't use the reserved prefix for overloaded operators
+            if(FI->Class == FunctionClass::Normal &&
+                FI->OverloadedOperator != OperatorKind::None)
+            {
+                return getSafeOperatorName(
+                    FI->OverloadedOperator, true);
+            }
+            func_idx = to_underlying(FI->Class);
+        }
+        MRDOCS_ASSERT(func_idx < std::size(func_reserved));
+        return func_reserved[func_idx];
+    }
+
+    static
+    constexpr
+    std::string_view
+    reserved[] = {
+        "00namespace",
+        "01record",
+        "02function",
+        "03overloads",
+        "04enum",
+        "05enum-constant",
+        "06typedef",
+        "07variable",
+        "08field",
+        "09specialization",
+        "08friend",
+        "12guide",
+        "12namespace-alias",
+        "13using",
+        "14concept"
+    };
+    std::size_t const idx = to_underlying(I.Kind) - 1;
+    MRDOCS_ASSERT(idx < std::size(reserved));
+    return reserved[idx];
+}
+} // namespace
 
 class LegibleNames::Impl
 {
     Corpus const& corpus_;
 
-    // name used for the global namespace
+    /* Name used for the global namespace
+
+       This is typically "index" or "global"
+       if a symbol has the same name as the
+       global namespace, then it needs to be
+       disambiguated
+     */
     std::string global_ns_;
 
-    // store all info required to generate a legible name
+    /* The info related to the legible name for a symbol
+     */
     struct LegibleNameInfo
     {
-        // legible name without disambiguation characters
+        /*  Raw unqualified name for the symbol
+         */
         std::string_view unqualified;
-        // number of characters from the SymbolID string
-        // required to uniquely identify this symbol
+
+        /*  Number of characters from the SymbolID string
+            required to uniquely identify this symbol
+         */
         std::uint8_t disambig_chars;
-        // SymbolID converted to a string
+
+        /*  SymbolID converted to a string
+         */
         std::string id_str;
     };
 
+    /* A map from SymbolID to legible name information
+     */
     std::unordered_map<SymbolID, LegibleNameInfo> map_;
 
-    // maps unqualified names to all symbols
-    // with that name within the current scope
-    std::unordered_multimap<std::string_view,
-        LegibleNameInfo*> disambiguation_map_;
-
-    std::string_view
-    getReserved(const Info& I)
-    {
-        // all valid c++ identifiers begin with
-        // an underscore or alphabetic character,
-        // so a numeric prefix ensures no conflicts
-        static constexpr
-        std::string_view
-        reserved[] = {
-            "00namespace",
-            "01record",
-            "02function",
-            "03enum",
-            "04typedef",
-            "05variable",
-            "06field",
-            "07specialization",
-            "09enum-constant",
-            "08friend",
-            "10guide",
-            "11namespace-alias",
-            "12using",
-            "13concept",
-        };
-        if(I.isFunction())
-        {
-            static
-            std::string_view
-            func_reserved[] = {
-                "2function",
-                "2constructor",
-                "2conversion",
-                "2destructor"
-            };
-            const auto& FI = static_cast<
-                const FunctionInfo&>(I);
-            // don't use the reserved prefix for overloaded operators
-            if(FI.Class == FunctionClass::Normal &&
-                FI.OverloadedOperator != OperatorKind::None)
-            {
-                return getSafeOperatorName(
-                    FI.OverloadedOperator, true);
-            }
-            std::size_t func_idx = to_underlying(FI.Class);
-            MRDOCS_ASSERT(func_idx < std::size(func_reserved));
-            return func_reserved[func_idx];
-        }
-
-        std::size_t idx = to_underlying(I.Kind) - 1;
-        MRDOCS_ASSERT(idx < std::size(reserved));
-        return reserved[idx];
-    }
+    /* Maps unqualified names to all symbols with that name within the current scope
+     */
+    std::unordered_multimap<std::string_view, LegibleNameInfo*> disambiguation_map_;
 
 public:
-    std::string_view
-    getUnqualified(
-        const SymbolID& id)
-    {
-        const Info* I = corpus_.find(id);
-        MRDOCS_ASSERT(I);
-        return getUnqualified(*I);
-    }
-
-    std::string_view
-    getUnqualified(
-        const Info& I)
-    {
-        MRDOCS_ASSERT(I.id && I.id != SymbolID::global);
-        return visit(I, [&]<typename T>(
-            const T& t) -> std::string_view
-            {
-                // namespaces can be unnamed (i.e. anonymous)
-                if constexpr(T::isNamespace())
-                {
-                    if(t.IsAnonymous)
-                        return getReserved(t);
-                    MRDOCS_ASSERT(! t.Name.empty());
-                    return t.Name;
-                }
-                // fields and typedefs cannot be overloaded
-                // or partially/explicitly specialized,
-                // but must have names
-                if constexpr(
-                    T::isField() ||
-                    T::isTypedef())
-                {
-                    MRDOCS_ASSERT(! t.Name.empty());
-                    return t.Name;
-                }
-
-                // variables can be partially/explicitly
-                // specialized, but must have names and
-                // cannot be overloaded
-                if constexpr(T::isVariable())
-                {
-                    MRDOCS_ASSERT(! t.Name.empty());
-                    return t.Name;
-                }
-
-                // enums cannot be overloaded or partially/
-                // explicitly specialized, but can be unnamed
-                if constexpr(T::isEnum())
-                {
-                    /** KRYSTIAN FIXME: [dcl.enum] p12 states (paraphrased):
-
-                        an unnamed enumeration type that has a first enumerator
-                        and does not have a typedef name for linkage purposes
-                        is denoted by its underlying type and its
-                        first enumerator for linkage purposes.
-
-                        should we also take this approach? note that this would not
-                        address unnamed enumeration types without any enumerators.
-                    */
-                    if(t.Name.empty())
-                        return getReserved(t);
-                    return t.Name;
-                }
-
-                // records can be partially/explicitly specialized,
-                // and can be unnamed, but cannot be overloaded
-                if constexpr(T::isRecord())
-                {
-                    if(t.Name.empty())
-                        return getReserved(t);
-                    return t.Name;
-                }
-
-                // functions must have named,
-                // can be explicitly specialized,
-                // and can be overloaded
-                if constexpr(T::isFunction())
-                {
-                    if(t.Class != FunctionClass::Normal ||
-                        t.OverloadedOperator != OperatorKind::None ||
-                        t.Name.empty())
-                        return getReserved(t);
-                    MRDOCS_ASSERT(!t.Name.empty());
-                    return t.Name;
-                }
-
-                if constexpr(T::isSpecialization())
-                {
-                    MRDOCS_ASSERT(! t.Name.empty());
-                    return t.Name;
-                }
-
-                if constexpr(T::isFriend())
-                {
-                    return getReserved(t);
-                }
-
-                if constexpr(T::isNamespaceAlias())
-                {
-                    MRDOCS_ASSERT(! t.Name.empty());
-                    return t.Name;
-                }
-
-                if constexpr(T::isUsing())
-                {
-                    MRDOCS_ASSERT(! t.Name.empty());
-                    return t.Name;
-                }
-
-                if constexpr(T::isEnumConstant())
-                {
-                    MRDOCS_ASSERT(! t.Name.empty());
-                    return t.Name;
-                }
-
-                if constexpr(T::isGuide())
-                {
-                    MRDOCS_ASSERT(! t.Name.empty());
-                    return t.Name;
-                }
-
-                if constexpr(T::isConcept())
-                {
-                    MRDOCS_ASSERT(! t.Name.empty());
-                    return t.Name;
-                }
-
-                MRDOCS_UNREACHABLE();
-            });
-    }
-
-    //--------------------------------------------
-
-    #define MINIMAL_SUFFIX
-
-    void
-    buildLegibleMember(
-        const Info& I,
-        std::string_view name)
-    {
-        // generate the unqualified name and SymbolID string
-        LegibleNameInfo& info = map_.emplace(I.id, LegibleNameInfo(
-            name, 0, toBase16(I.id, true))).first->second;
-        // if there are other symbols with the same name, then disambiguation
-        // is required. iterate over the other symbols with the same unqualified name,
-        // and calculate the minimum number of characters from the SymbolID needed
-        // to uniquely identify each symbol. then, update all symbols with the new value.
-        std::uint8_t max_required = 0;
-        auto [first, last] = disambiguation_map_.equal_range(name);
-        for(const auto& other : std::ranges::subrange(
-            first, last) | std::views::values)
-        {
-            auto mismatch_it = std::ranges::mismatch(
-                info.id_str, other->id_str).in1;
-            std::uint8_t n_required = std::distance(
-                info.id_str.begin(), mismatch_it) + 1;
-            #ifndef MINIMAL_SUFFIX
-                max_required = std::max({max_required,
-                    other->disambig_chars, n_required});
-            #else
-                // update the suffix size for the other symbol
-                other->disambig_chars = std::max(
-                    n_required, other->disambig_chars);
-                // update the suffix size needed for this symbol
-                max_required = std::max(max_required, n_required);
-            #endif
-        }
-
-        #ifndef MINIMAL_SUFFIX
-            if(max_required)
-            {
-                // update the number of disambiguation characters for each symbol
-                for(const auto& other : std::ranges::subrange(
-                    first, last) | std::views::values)
-                    other->disambig_chars = max_required;
-                info.disambig_chars = max_required;
-            }
-        #else
-            // use the longest suffix needed to disambiguate
-            // between all symbols with the same name in this scope
-            info.disambig_chars = max_required;
-        #endif
-        // add this symbol to the disambiguation map
-        disambiguation_map_.emplace(name, &info);
-    }
-
-    //--------------------------------------------
-
-    template<typename InfoTy, typename Fn>
-    void traverse(const InfoTy& I, Fn&& F)
-    {
-        if constexpr(
-            InfoTy::isSpecialization() ||
-            InfoTy::isNamespace() ||
-            InfoTy::isRecord() ||
-            InfoTy::isEnum())
-        {
-            for(const SymbolID& id : I.Members)
-                F(id);
-        }
-    }
-
-    //--------------------------------------------
-
-public:
-    Impl(Corpus const& corpus, std::string_view global_ns)
+    /*  Build the map of legible names for all symbols in the corpus
+     */
+    Impl(Corpus const& corpus, std::string_view const global_ns)
         : corpus_(corpus)
         , global_ns_(global_ns)
     {
-        const NamespaceInfo& global =
-            corpus_.globalNamespace();
-        // treat the global namespace as-if its "name"
+        NamespaceInfo const& global = corpus_.globalNamespace();
+
+        // Treat the global namespace as-if its "name"
         // is in the same scope as its members
         buildLegibleMember(global, global_ns_);
         visit(global, *this);
+
         // after generating legible names for every symbol,
         // set the number of disambiguation characters
         // used for the global namespace to zero
         map_.at(global.id).disambig_chars = 0;
     }
 
-    template<typename InfoTy>
-    void operator()(const InfoTy& I)
+    /*  Visit a symbol and build legible names for its members
+     */
+    template <class InfoTy>
+    void
+    operator()(InfoTy const& I)
     {
-        traverse(I, [this](const SymbolID& id)
+        if constexpr (InfoParent<InfoTy> && !std::same_as<InfoTy, OverloadsInfo>)
+        {
+            // Visit the members of the symbol and build legible names
+            constexpr Corpus::TraverseOptions opts = {.skipInherited = true};
+            corpus_.traverse(opts, I, [this, &I](Info const& M)
+                {
+                    auto const raw = getRawUnqualified(M);
+                    buildLegibleMember(M, raw);
+
+                    // Traverse non inherited function overloads inline
+                    if (M.isOverloads())
+                    {
+                        auto const& O = static_cast<OverloadsInfo const&>(M);
+                        corpus_.traverse(O, [this, &I](Info const& M2)
+                            {
+                                // Not inherited in regard to I
+                                MRDOCS_CHECK_OR(M2.Parent == I.id);
+                                auto const raw2 = getRawUnqualified(M2);
+                                buildLegibleMember(M2, raw2);
+                            });
+                    }
+                });
+
+            // Clear the disambiguation map for this scope
+            disambiguation_map_.clear();
+
+            // Visit the members of the symbol to build legible names
+            // for their members
+            corpus_.traverse(opts, I, [this](Info const& M)
+                {
+                    visit(M, *this);
+                });
+        }
+    }
+
+    /*  Get the raw unqualified name for a symbol
+
+        This function returns a reference to the original symbol
+        name without any disambiguation characters.
+
+        If the symbolhas no name, then a reserved name based
+        on the type is returned instead.
+     */
+    std::string_view
+    getRawUnqualified(SymbolID const& id)
+    {
+        Info const* I = corpus_.find(id);
+        MRDOCS_ASSERT(I);
+        return getRawUnqualified(*I);
+    }
+
+    /* @copydoc getRawUnqualified(SymbolID const&)
+     */
+    std::string_view
+    getRawUnqualified(Info const& I)
+    {
+        MRDOCS_ASSERT(I.id && I.id != SymbolID::global);
+        if (I.Name.empty())
+        {
+            return getUnnamedInfoName(I);
+        }
+
+        return visit(I, [&]<typename T>(T const& t) -> std::string_view
             {
-                if(const Info* M = corpus_.find(id))
-                    buildLegibleMember(*M, getUnqualified(*M));
+                MRDOCS_ASSERT(!t.Name.empty());
+                if constexpr(
+                    T::isFunction() ||
+                    T::isOverloads())
+                {
+                    // functions can be explicitly specialized,
+                    // and can be overloaded
+                    if (t.Class != FunctionClass::Normal ||
+                        t.OverloadedOperator != OperatorKind::None)
+                    {
+                        return getUnnamedInfoName(t);
+                    }
+                }
+                else if constexpr(T::isFriend())
+                {
+                    return getUnnamedInfoName(t);
+                }
+                return t.Name;
             });
-        // clear the disambiguation map after visiting the members,
-        // then build disambiguation information for each member
-        disambiguation_map_.clear();
-        traverse(I, [this](const SymbolID& id)
-            {
-                if(const Info* M = corpus_.find(id))
-                    visit(*M, *this);
-            });
+    }
+
+    /* Take the raw unqualified name for a symbol and build a legible name
+     */
+    void
+    buildLegibleMember(
+        Info const& I,
+        std::string_view rawName)
+    {
+        // Generate the legible name information for this symbol
+        auto const idAsString = toBase16(I.id, true);
+        LegibleNameInfo LI(rawName, 0, idAsString);
+        LegibleNameInfo& info = map_.emplace(I.id, LI).first->second;
+
+        // Look for symbols with the same unqualified name
+        auto [first, last] = disambiguation_map_.equal_range(rawName);
+        auto sameNameInfos = std::ranges::subrange(first, last) | std::views::values;
+        if (std::ranges::empty(sameNameInfos))
+        {
+            // Add this symbol to the disambiguation map
+            disambiguation_map_.emplace(rawName, &info);
+            // If there are no other symbols with the same name, then
+            // disambiguation is not required.
+            return;
+        }
+
+        // Iterate over the other symbols with the same raw unqualified name
+        // and update their legible name information
+        std::uint8_t suffix_size_required = 0;
+        for (LegibleNameInfo* other : sameNameInfos)
+        {
+            // Find the first character that differs between the two symbol IDs
+            auto const mismatch_it = std::ranges::mismatch(
+                info.id_str, other->id_str).in1;
+            // Number of characters required to disambiguate
+            std::uint8_t n_required = std::distance(info.id_str.begin(), mismatch_it) + 1;
+            // Update the suffix size for the other symbol
+            other->disambig_chars = std::max(n_required, other->disambig_chars);
+            // Update the suffix size needed for this symbol
+            suffix_size_required = std::max(suffix_size_required, n_required);
+        }
+
+        // Use the longest suffix needed to disambiguate
+        // between all symbols with the same name in this scope
+        info.disambig_chars = suffix_size_required;
+
+        // Add this symbol to the disambiguation map
+        disambiguation_map_.emplace(rawName, &info);
     }
 
     void
     getLegibleUnqualified(
         std::string& result,
-        const SymbolID& id)
+        SymbolID const& id)
     {
         MRDOCS_ASSERT(corpus_.exists(id));
+
+        // Find the legible name information for this symbol
         auto const it = map_.find(id);
         MRDOCS_ASSERT(it != map_.end());
         auto& [unqualified, n_disambig, id_str] = it->second;
+
+        // Append the unqualified name to the result
+        // The unqualified name has no reserved chars
         result.reserve(
             result.size() +
             unqualified.size() +
             n_disambig ? n_disambig + 2 : 0);
         result.append(unqualified);
-        if(n_disambig)
+
+        // Append a disambiguation suffix from the symbol ID if needed
+        if (n_disambig)
         {
             // KRYSTIAN FIXME: the SymbolID chars must be prefixed with
             // a reserved character, otherwise there could be a
@@ -373,18 +331,16 @@ public:
     void
     getLegibleQualified(
         std::string& result,
-        const SymbolID& id,
+        SymbolID const& id,
         char const delim)
     {
         MRDOCS_ASSERT(corpus_.exists(id));
         auto const& I = corpus_.get(id);
-        for(auto const& parent : getParents(corpus_, I))
+        auto const curParent = I.Parent;
+        if (curParent != SymbolID::invalid &&
+            curParent != SymbolID::global)
         {
-            if (!parent || parent == SymbolID::global)
-            {
-                continue;
-            }
-            getLegibleUnqualified(result, parent);
+            getLegibleQualified(result, curParent, delim);
             result.push_back(delim);
         }
         getLegibleUnqualified(result, id);
@@ -396,10 +352,12 @@ public:
 LegibleNames::
 LegibleNames(
     Corpus const& corpus,
-    bool enabled)
+    bool const enabled)
 {
-    if(enabled)
+    if (enabled)
+    {
         impl_ = std::make_unique<Impl>(corpus, "index");
+    }
 }
 
 LegibleNames::
@@ -410,8 +368,10 @@ LegibleNames::
 getUnqualified(
     SymbolID const& id) const
 {
-    if(! impl_)
+    if (!impl_)
+    {
         return toBase16(id);
+    }
     std::string result;
     impl_->getLegibleUnqualified(result, id);
     return result;
@@ -419,20 +379,9 @@ getUnqualified(
 
 std::string
 LegibleNames::
-getUnqualified(
-    OverloadSet const& os) const
-{
-    std::string result = "overload-";
-    // KRYSTIAN FIXME: the name needs to be hashed
-    result.append(os.Name);
-    return result;
-}
-
-std::string
-LegibleNames::
 getQualified(
     SymbolID const& id,
-    char delim) const
+    char const delim) const
 {
     if (!impl_)
     {
@@ -443,28 +392,4 @@ getQualified(
     return result;
 }
 
-std::string
-LegibleNames::
-getQualified(
-    OverloadSet const& os,
-    char delim) const
-{
-    if(! impl_)
-        return getUnqualified(os);
-    std::string result;
-    if(os.Parent != SymbolID::global)
-    {
-        impl_->getLegibleQualified(result, os.Parent, delim);
-        result.push_back(delim);
-    }
-    // the legible name for an overload set is the unqualified
-    // legible name of its members, without any disambiguation characters.
-    // members of an overload set use the same legible name regardless of
-    // whether they belong to an overload set
-    result.append(impl_->getUnqualified(
-        os.Members.front()));
-    return result;
-}
-
-} // mrdocs
-} // clang
+} // clang::mrdocs

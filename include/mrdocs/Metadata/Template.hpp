@@ -166,7 +166,7 @@ operator==(PolymorphicValue<TArg> const& lhs, PolymorphicValue<TArg> const& rhs)
 
 MRDOCS_DECL
 std::string
-toString(const TArg& arg) noexcept;
+toString(TArg const& arg) noexcept;
 
 MRDOCS_DECL
 void
@@ -434,6 +434,8 @@ struct TemplateInfo
         }
         return TemplateSpecKind::Partial;
     }
+
+    auto operator<=>(TemplateInfo const&) const = default;
 };
 
 MRDOCS_DECL

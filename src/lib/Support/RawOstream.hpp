@@ -37,7 +37,7 @@ public:
 private:
     void
     write_impl(
-        const char *Ptr, size_t Size) override
+        char const*Ptr, size_t Size) override
     {
         os_.write(Ptr, Size);
     }
