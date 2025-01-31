@@ -2821,12 +2821,29 @@ checkSymbolFilters(Decl const* D, bool const AllowParent)
 
     // We should check the exclusion filters first. If a symbol is
     // explicitly excluded, there's nothing else to check.
-    if (!config_->excludeSymbols.empty() &&
-        checkSymbolFiltersImpl<Strict>(config_->excludeSymbols, symbolName))
+    if (!config_->excludeSymbols.empty())
     {
-        ExtractionInfo const res{ExtractionMode::Dependency, ExtractionMatchType::Strict};
-        updateCache(res);
-        return res;
+        if (checkSymbolFiltersImpl<Strict>(config_->excludeSymbols, symbolName))
+        {
+            ExtractionInfo const res{ExtractionMode::Dependency, ExtractionMatchType::Strict};
+            updateCache(res);
+            return res;
+        }
+        // If the parent scope is excluded, the symbol should also be excluded
+        // since it would not be possible to refer to this member.
+        if (AllowParent)
+        {
+            if (Decl const* P = getParent(D))
+            {
+                if (auto const [mode, kind] = checkSymbolFilters(P);
+                    mode == ExtractionMode::Dependency)
+                {
+                    ExtractionInfo const res = {mode, ExtractionMatchType::StrictParent};
+                    updateCache(res);
+                    return res;
+                }
+            }
+        }
     }
 
     // If not excluded, we should check the filters in this order:
@@ -2923,7 +2940,7 @@ checkSymbolFilters(Decl const* D, bool const AllowParent)
                 // prefixes that can potentially include children, but
                 // we have to check if any children actually matches
                 // the pattern strictly.
-                DeclContext const* DC = cast<DeclContext>(D);
+                auto const* DC = cast<DeclContext>(D);
                 auto childrenMode = ExtractionMode::Dependency;
                 for (auto* M : DC->decls())
                 {

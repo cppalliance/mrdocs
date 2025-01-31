@@ -200,7 +200,7 @@ The rules for whitelisting symbols (`include-symbols`, `implementation-defined`,
 4. The symbol is a child of a literal pattern representing a namespace.
 ** For instance, the literal pattern `std` matches `std::filesystem::path::iterator` because `std` is a literal pattern matching a namespace. In other words, these literal patterns represent the namespace and its subnamespaces as if the pattern were `std::**`.
 
-For exclusion rules, the symbol must strictly match the pattern to be excluded.
+For exclusion rules, the symbol must strictly match the pattern to be excluded. If a scope is escaped by a pattern, all symbols in that scope are also excluded.
 
 [#config-options-reference]
 == Reference
