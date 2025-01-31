@@ -96,7 +96,7 @@ void
 <<g-00,g>>();
 ----
 
-[.small]#<<g-00,_» more..._>>#
+[.small]#<<g-00,_» more&period;&period;&period;_>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -106,7 +106,7 @@ void
 <<g-04,g>>();
 ----
 
-[.small]#<<g-04,_» more..._>>#
+[.small]#<<g-04,_» more&period;&period;&period;_>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -116,7 +116,7 @@ void
 <<g-03,g>>();
 ----
 
-[.small]#<<g-03,_» more..._>>#
+[.small]#<<g-03,_» more&period;&period;&period;_>>#
 
 [#g-00]
 == g

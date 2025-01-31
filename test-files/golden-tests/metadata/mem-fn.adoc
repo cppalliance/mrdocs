@@ -470,7 +470,7 @@ Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f(...);
+f(&period;&period;&period;);
 ----
 
 [#T13]
@@ -725,7 +725,7 @@ Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 ----
 constexpr
 void
-f1(...) const volatile noexcept;
+f1(&period;&period;&period;) const volatile noexcept;
 ----
 
 [#U-f2]

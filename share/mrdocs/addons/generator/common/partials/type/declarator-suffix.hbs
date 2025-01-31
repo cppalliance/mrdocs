@@ -35,7 +35,7 @@
         {{~#unless @last}}, {{/unless~}}
     {{/each~}}
     {{! Include final "..." for variadic functions ~}}
-    {{#if is-variadic}}{{#if param-types}}, {{/if}}...{{/if}}){{!~}}
+    {{#if is-variadic}}{{#if param-types}}, {{/if}}{{ str "..." }}{{/if}}){{!~}}
     {{! cv-qualifiers as literal strings ~}}
     {{~#if cv-qualifiers}} {{cv-qualifiers}}{{/if~}}
     {{! Refqualifiers as "&" or "&&" ~}}

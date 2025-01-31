@@ -30,7 +30,7 @@ void
 <<f-03,f>>();
 ----
 
-[.small]#<<f-03,_» more..._>>#
+[.small]#<<f-03,_» more&period;&period;&period;_>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -39,7 +39,7 @@ void
 <<f-0c,f>>&lt;int&gt;();
 ----
 
-[.small]#<<f-0c,_» more..._>>#
+[.small]#<<f-0c,_» more&period;&period;&period;_>>#
 
 [#f-03]
 == f

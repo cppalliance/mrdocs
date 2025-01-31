@@ -56,7 +56,7 @@ void
 <<A-f-07,f>>();
 ----
 
-[.small]#<<A-f-07,_» more..._>>#
+[.small]#<<A-f-07,_» more&period;&period;&period;_>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -65,7 +65,7 @@ void
 <<A-f-04,f>>&lt;int&gt;();
 ----
 
-[.small]#<<A-f-04,_» more..._>>#
+[.small]#<<A-f-04,_» more&period;&period;&period;_>>#
 
 [#A-f-07]
 == <<A,A>>::f

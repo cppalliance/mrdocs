@@ -292,9 +292,9 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template&lt;typename... Ts&gt;
+template&lt;typename&period;&period;&period; Ts&gt;
 struct S6
-    : Ts...;
+    : Ts&period;&period;&period;;
 ----
 
 

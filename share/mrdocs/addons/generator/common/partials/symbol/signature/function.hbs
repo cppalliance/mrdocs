@@ -19,7 +19,7 @@
     {{/unless}}{{>type/declarator type decl-name=name~}}
     {{#if default}} = {{default}}{{/if~}}
     {{#unless @last}},{{/unless~}}
-{{/each~}}{{#if isVariadic}}{{#if params}}, {{/if}}...{{/if}})
+{{/each~}}{{#if isVariadic}}{{#if params}}, {{/if}}{{ str "..." }}{{/if}})
 {{~#if isConst}} const{{/if~}}
 {{#if isVolatile}} volatile{{/if~}}
 {{#if refQualifier}} {{refQualifier}}{{/if~}}
