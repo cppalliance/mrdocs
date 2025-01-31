@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <template>
+    <tparam name="T" class="type"/>
+    <function name="f" requires="std::is_class_v&lt;T&gt;" id="+zl/sg3GXOLbrJGwRx2qkepftDY=">
+      <file short-path="return-based.cpp" source-path="return-based.cpp" line="5"/>
+      <return>
+        <type name="int"/>
+      </return>
+    </function>
+  </template>
+</namespace>
+</mrdocs>
