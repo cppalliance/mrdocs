@@ -50,7 +50,7 @@ resolveTypedef(Corpus const& c, Info const& I)
     if (I.Kind == InfoKind::Typedef)
     {
         auto const& TI = dynamic_cast<TypedefInfo const&>(I);
-        PolymorphicValue<TypeInfo> const& T = TI.Type;
+        Polymorphic<TypeInfo> const& T = TI.Type;
         MRDOCS_CHECK_OR(T && T->Kind == TypeKind::Named, &I);
         auto const& NT = dynamic_cast<NamedTypeInfo const&>(*T);
         MRDOCS_CHECK_OR(NT.Name, &I);
@@ -168,7 +168,7 @@ findResolvedPrimarySiblingWithUrl(Corpus const& c, Info const& I)
         // The symbol is a typedef to a specialization
         if constexpr (std::same_as<InfoTy, TypedefInfo>)
         {
-            PolymorphicValue<TypeInfo> const& T = U.Type;
+            Polymorphic<TypeInfo> const& T = U.Type;
             MRDOCS_CHECK_OR(T && T->Kind == TypeKind::Named, false);
             auto const& NT = dynamic_cast<NamedTypeInfo const&>(*T);
             MRDOCS_CHECK_OR(NT.Name, false);

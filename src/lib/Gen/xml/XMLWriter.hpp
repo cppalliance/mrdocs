@@ -99,7 +99,7 @@ public:
 
     template <class T>
     void
-    writeNodes(std::vector<PolymorphicValue<T>> const& list)
+    writeNodes(std::vector<Polymorphic<T>> const& list)
     {
         for (auto const& node: list)
         {

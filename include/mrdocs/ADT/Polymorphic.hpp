@@ -9,25 +9,25 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_ADT_POLYMORPHICVALUE_HPP
-#define MRDOCS_API_ADT_POLYMORPHICVALUE_HPP
+#ifndef MRDOCS_API_ADT_POLYMORPHIC_HPP
+#define MRDOCS_API_ADT_POLYMORPHIC_HPP
 
-#include <mrdocs/Support/Assert.hpp>
-#include <mrdocs/ADT/detail/PolymorphicValue.hpp>
-#include <type_traits>
-#include <utility>
-#include <exception>
-#include <typeinfo>
 #include <compare>
+#include <exception>
 #include <functional>
+#include <typeinfo>
+#include <utility>
+#include <mrdocs/ADT/detail/Polymorphic.hpp>
+#include <mrdocs/Support/Assert.hpp>
+#include <type_traits>
 
 namespace clang::mrdocs {
 
-/** Default copier for PolymorphicValue.
+/** Default copier for Polymorphic.
 
     This class template is used as the
     default copier for the class
-    template PolymorphicValue.
+    template Polymorphic.
 */
 template <class Base>
 struct DefaultDeleter
@@ -40,11 +40,11 @@ struct DefaultDeleter
     }
 };
 
-/** Default copier for PolymorphicValue.
+/** Default copier for Polymorphic.
 
     This class template is used as the
     default copier for the class
-    template PolymorphicValue.
+    template Polymorphic.
 */
 template <class Base>
 struct DefaultCopier
@@ -65,27 +65,27 @@ struct DefaultCopier
     type `T` is not publicly derived from the
     type of the object being constructed.
 */
-class BadPolymorphicValueConstruction
+class BadPolymorphicConstruction
     : public std::exception
 {
 public:
-    BadPolymorphicValueConstruction() noexcept = default;
+    BadPolymorphicConstruction() noexcept = default;
     char const* what() const noexcept override {
         return "bad polymorphic value construction";
     }
 };
 
 template <class T>
-class PolymorphicValue;
+class Polymorphic;
 
 template <class T>
-struct IsPolymorphicValue : std::false_type {};
+struct IsPolymorphic : std::false_type {};
 
 template <class T>
-struct IsPolymorphicValue<PolymorphicValue<T>> : std::true_type {};
+struct IsPolymorphic<Polymorphic<T>> : std::true_type {};
 
 template <class T>
-inline constexpr bool IsPolymorphicValue_v = IsPolymorphicValue<T>::value;
+inline constexpr bool IsPolymorphic_v = IsPolymorphic<T>::value;
 
 /** A polymorphic value-type.
 
@@ -99,13 +99,13 @@ inline constexpr bool IsPolymorphicValue_v = IsPolymorphicValue<T>::value;
     It also works like std::unique_ptr in the
     sense that it can be used to manage the
     lifetime of a polymorphic object. A
-    PolymorphicValue can be hold an object
+    Polymorphic can be hold an object
     of any class publicly derived from T
-    and copying the PolymorphicValue will
+    and copying the Polymorphic will
     copy the object of the derived class.
 
     This combination also allows for a
-    class that uses PolymorphicValue as
+    class that uses Polymorphic as
     a member to be copyable, movable,
     default constructible, default destructible,
     and comparable.
@@ -152,11 +152,11 @@ inline constexpr bool IsPolymorphicValue_v = IsPolymorphicValue<T>::value;
     useful for cheap default construction and
     for later assignment.
 
-    This implementation is inspired
-    by p0201r5.
+    This implementation is inspired by and
+    adapted from p0201r5 and p3019r11.
 */
 template<class Base>
-class PolymorphicValue
+class Polymorphic
 {
     //
     // Assertions
@@ -179,7 +179,7 @@ class PolymorphicValue
     // Friends
     //
     template <class U>
-    friend class PolymorphicValue;
+    friend class Polymorphic;
 
     template <
         class BaseU,
@@ -188,15 +188,15 @@ class PolymorphicValue
     requires std::constructible_from<Derived, Args...>
     friend
     constexpr
-    PolymorphicValue<BaseU>
-    MakePolymorphicValue(Args&&... args);
+    Polymorphic<BaseU>
+    MakePolymorphic(Args&&... args);
 
     template <class Derived, class BaseU>
     requires std::derived_from<Derived, BaseU>
     friend
     constexpr
-    PolymorphicValue<Derived>
-    DynamicCast(PolymorphicValue<BaseU>&& other);
+    Polymorphic<Derived>
+    DynamicCast(Polymorphic<BaseU>&& other);
 
 public:
     using element_type = Base;
@@ -206,18 +206,18 @@ public:
         Ensures: *this is empty.
      */
     constexpr
-    PolymorphicValue() noexcept = default;
+    Polymorphic() noexcept = default;
 
-    /** Constructs an empty PolymorphicValue.
+    /** Constructs an empty Polymorphic.
 
         Ensures: *this is empty.
      */
     constexpr
-    PolymorphicValue(std::nullptr_t) noexcept {}
+    Polymorphic(std::nullptr_t) noexcept {}
 
-    /** Constructs a PolymorphicValue which owns an object of type V.
+    /** Constructs a Polymorphic which owns an object of type V.
 
-        Constructs a PolymorphicValue which owns an object of type V,
+        Constructs a Polymorphic which owns an object of type V,
         direct-non-list-initialized with std::forward<U>(u), where
         V is remove_cvref_t<U>.
 
@@ -232,14 +232,14 @@ public:
         @throws std::bad_alloc if required storage cannot be obtained.
      */
     template <std::derived_from<Base> Derived>
-    requires (!IsPolymorphicValue_v<Derived>)
+    requires (!IsPolymorphic_v<Derived>)
     explicit constexpr
-    PolymorphicValue(Derived&& other)
-        : PolymorphicValue(
+    Polymorphic(Derived&& other)
+        : Polymorphic(
             std::in_place_type<std::decay_t<Derived>>,
             std::forward<Derived>(other)) {}
 
-    /** Constructs a PolymorphicValue which owns the object pointed to by p.
+    /** Constructs a Polymorphic which owns the object pointed to by p.
 
         If p is null, creates an empty object.
         If p is non-null creates an object that owns the object *p, with
@@ -268,7 +268,7 @@ public:
         @param d The deleter.
 
         @throws std::bad_alloc if required storage cannot be obtained.
-        @throws BadPolymorphicValueConstruction if
+        @throws BadPolymorphicConstruction if
         std::same_as<C, DefaultCopier<U>>, std::same_as<D, DefaultDeleter<U>>
         and typeid(*p)!=typeid(U) are all true.
      */
@@ -285,7 +285,7 @@ public:
         std::is_nothrow_move_constructible_v<Copier> &&
         std::is_nothrow_move_constructible_v<Deleter>
     explicit constexpr
-    PolymorphicValue(Derived* p, Copier c, Deleter d)
+    Polymorphic(Derived* p, Copier c, Deleter d)
     {
         // If p is null, creates an empty object.
         if (!p)
@@ -298,7 +298,7 @@ public:
         {
             if (typeid(*p) != typeid(Derived))
             {
-                throw BadPolymorphicValueConstruction();
+                throw BadPolymorphicConstruction();
             }
         }
 
@@ -308,7 +308,7 @@ public:
         ptr_ = s_->ptr();
     }
 
-    /// @copydoc PolymorphicValue(Derived*, Copier, Deleter)
+    /// @copydoc Polymorphic(Derived*, Copier, Deleter)
     template <
         std::derived_from<Base> Derived,
         class Copier = DefaultCopier<Derived>>
@@ -318,14 +318,14 @@ public:
         std::destructible<Copier> &&
         std::is_nothrow_move_constructible_v<Copier>
     explicit constexpr
-    PolymorphicValue(Derived* p, Copier c)
-        : PolymorphicValue(p, c, DefaultDeleter<Derived>{}) {}
+    Polymorphic(Derived* p, Copier c)
+        : Polymorphic(p, c, DefaultDeleter<Derived>{}) {}
 
-    /// @copydoc PolymorphicValue(Derived*, Copier, Deleter)
+    /// @copydoc Polymorphic(Derived*, Copier, Deleter)
     template <std::derived_from<Base> Derived>
     explicit constexpr
-    PolymorphicValue(Derived* p)
-        : PolymorphicValue(p, DefaultCopier<Derived>{}, DefaultDeleter<Derived>{}) {}
+    Polymorphic(Derived* p)
+        : Polymorphic(p, DefaultCopier<Derived>{}, DefaultDeleter<Derived>{}) {}
 
     /** Copy constructor.
 
@@ -347,12 +347,12 @@ public:
 
         @post bool(*this) == bool(pv).
 
-        @param other The PolymorphicValue to copy from.
+        @param other The Polymorphic to copy from.
 
         @throws std::bad_alloc if required storage cannot be obtained.
      */
     constexpr
-    PolymorphicValue(PolymorphicValue const& other)
+    Polymorphic(Polymorphic const& other)
     {
         if (!other)
         {
@@ -385,14 +385,14 @@ public:
 
         @post bool(*this) == bool(pv).
 
-        @param other The PolymorphicValue to copy from.
+        @param other The Polymorphic to copy from.
 
         @throws std::bad_alloc if required storage cannot be obtained.
      */
     template <std::derived_from<Base> Derived>
     requires (!std::same_as<Derived, Base>)
     explicit constexpr
-    PolymorphicValue(PolymorphicValue<Derived> const& other)
+    Polymorphic(Polymorphic<Derived> const& other)
     {
         if (!other)
         {
@@ -416,10 +416,10 @@ public:
 
         @post *this owns the object previously owned by pv (if any). pv is empty.
 
-        @param other The PolymorphicValue to move from.
+        @param other The Polymorphic to move from.
      */
     constexpr
-    PolymorphicValue(PolymorphicValue&& other) noexcept
+    Polymorphic(Polymorphic&& other) noexcept
     {
         ptr_ = std::exchange(other.ptr_, nullptr);
         s_ = std::exchange(other.s_, nullptr);
@@ -439,12 +439,12 @@ public:
 
         @post *this owns the object previously owned by pv (if any). pv is empty.
 
-        @param other The PolymorphicValue to move from.
+        @param other The Polymorphic to move from.
      */
     template <std::derived_from<Base> Derived>
     requires (!std::same_as<Derived, Base>)
     explicit constexpr
-    PolymorphicValue(PolymorphicValue<Derived>&& other) noexcept
+    Polymorphic(Polymorphic<Derived>&& other) noexcept
     {
         if (!other)
         {
@@ -461,10 +461,10 @@ public:
     template <class Derived, class... Args>
     requires
         std::derived_from<std::decay_t<Derived>, Base> &&
-        (!IsPolymorphicValue_v<std::decay_t<Derived>>) &&
+        (!IsPolymorphic_v<std::decay_t<Derived>>) &&
         std::constructible_from<Derived, Args...>
     explicit constexpr
-    PolymorphicValue(
+    Polymorphic(
         std::in_place_type_t<Derived>,
         Args&&... args)
             : s_(new detail::DirectPolymorphicStorage<Base, Derived>(std::forward<Args>(args)...))
@@ -479,7 +479,7 @@ public:
         Otherwise, destroys the owned object (if any).
      */
     constexpr
-    ~PolymorphicValue()
+    ~Polymorphic()
     {
         delete s_;
         ptr_ = nullptr;
@@ -488,7 +488,7 @@ public:
 
     /** Copy assignment operator.
 
-        Equivalent to `PolymorphicValue(pv).swap(*this)`.
+        Equivalent to `Polymorphic(pv).swap(*this)`.
 
         No effects if an exception is thrown.
 
@@ -496,14 +496,14 @@ public:
 
         @post The state of *this is as if copy constructed from pv.
 
-        @param other The PolymorphicValue to copy from.
+        @param other The Polymorphic to copy from.
         @return Reference to *this.
 
         @throws std::bad_alloc if required storage cannot be obtained.
      */
     constexpr
-    PolymorphicValue&
-    operator=(PolymorphicValue const& other)
+    Polymorphic&
+    operator=(Polymorphic const& other)
     {
         if (&other == this)
         {
@@ -526,18 +526,18 @@ public:
 
     /** Move assignment operator.
 
-        Equivalent to `PolymorphicValue(pv).swap(*this)`.
+        Equivalent to `Polymorphic(pv).swap(*this)`.
 
         @post The state of *this is as if copy constructed from pv.
 
-        @param other The PolymorphicValue to copy from.
+        @param other The Polymorphic to copy from.
         @return Reference to *this.
 
         @throws std::bad_alloc if required storage cannot be obtained.
      */
     constexpr
-    PolymorphicValue&
-    operator=(PolymorphicValue&& other) noexcept
+    Polymorphic&
+    operator=(Polymorphic&& other) noexcept
     {
         if (&other == this)
         {
@@ -553,12 +553,12 @@ public:
 
         Assign directly from a derived object.
 
-        Equivalent to `PolymorphicValue(std::move(other)).swap(*this)`.
+        Equivalent to `Polymorphic(std::move(other)).swap(*this)`.
 
         This is an extension to the standard that
         extremely useful in MrDocs because it allows
         us to construct the object of the derived type
-        on the stack and then assign it to a PolymorphicValue
+        on the stack and then assign it to a Polymorphic
         member of a class.
 
         @post The state of *this is as if copy constructed from other.
@@ -571,10 +571,10 @@ public:
     template <class Derived>
     requires std::derived_from<std::decay_t<Derived>, Base>
     constexpr
-    PolymorphicValue&
+    Polymorphic&
     operator=(Derived&& other) noexcept
     {
-        *this = PolymorphicValue(
+        *this = Polymorphic(
             std::in_place_type<std::decay_t<Derived>>,
             std::forward<Derived>(other));
         return *this;
@@ -582,11 +582,11 @@ public:
 
     /** Exchanges the state of p and *this.
 
-        @param other The PolymorphicValue to swap with.
+        @param other The Polymorphic to swap with.
      */
     constexpr
     void
-    swap(PolymorphicValue& other) noexcept
+    swap(Polymorphic& other) noexcept
     {
         using std::swap;
         swap(ptr_, other.ptr_);
@@ -643,9 +643,9 @@ public:
         return ptr_;
     }
 
-    /** Checks if the PolymorphicValue owns an object.
+    /** Checks if the Polymorphic owns an object.
 
-        @return true if the PolymorphicValue owns an object, otherwise false.
+        @return true if the Polymorphic owns an object, otherwise false.
      */
     explicit
     operator
@@ -655,13 +655,13 @@ public:
     }
 };
 
-/** Creates a PolymorphicValue owning an object of type U.
+/** Creates a Polymorphic owning an object of type U.
 
-    @tparam Base The type of the PolymorphicValue.
+    @tparam Base The type of the Polymorphic.
     @tparam Derived The type of the object to be owned, defaults to T.
     @tparam Args The types of the arguments to forward to the constructor of U.
     @param args The arguments to forward to the constructor of U.
-    @return A PolymorphicValue<T> owning an object of type U direct-non-list-initialized with std::forward<Ts>(ts)...
+    @return A Polymorphic<T> owning an object of type U direct-non-list-initialized with std::forward<Ts>(ts)...
  */
 template <
     class Base,
@@ -669,28 +669,28 @@ template <
     class... Args>
 requires std::constructible_from<Derived, Args...>
 constexpr
-PolymorphicValue<Base>
-MakePolymorphicValue(Args&&... args)
+Polymorphic<Base>
+MakePolymorphic(Args&&... args)
 {
-    PolymorphicValue<Base> p;
+    Polymorphic<Base> p;
     using BCT = detail::DirectPolymorphicStorage<Base, Derived>;
     p.s_ = new BCT(std::forward<Args>(args)...);
     p.ptr_ = p.s_->ptr();
     return p;
 }
 
-/** Dynamically cast the object owned by a PolymorphicValue.
+/** Dynamically cast the object owned by a Polymorphic.
 
     @tparam Derived The type to cast to.
-    @tparam Base The type of the PolymorphicValue.
-    @param other The PolymorphicValue to cast.
+    @tparam Base The type of the Polymorphic.
+    @param other The Polymorphic to cast.
     @return A pointer to the object owned by other cast to Derived, or nullptr if the cast fails.
  */
 template <class Derived, class Base>
 requires std::derived_from<Derived, Base>
 constexpr
-PolymorphicValue<Derived>
-DynamicCast(PolymorphicValue<Base>&& other)
+Polymorphic<Derived>
+DynamicCast(Polymorphic<Base>&& other)
 {
     if (!other)
     {
@@ -698,7 +698,7 @@ DynamicCast(PolymorphicValue<Base>&& other)
     }
     if (auto ptr = dynamic_cast<Derived*>(other.ptr_))
     {
-        PolymorphicValue<Derived> result;
+        Polymorphic<Derived> result;
         using CBT = detail::DelegatingPolymorphicStorage<Derived, Base>;
         result.s_ = new CBT(std::move(other.s_));
         result.ptr_ = result.s_->ptr();
@@ -710,33 +710,33 @@ DynamicCast(PolymorphicValue<Base>&& other)
     return {};
 }
 
-/** Exchanges the state of two PolymorphicValue objects.
+/** Exchanges the state of two Polymorphic objects.
 
-    @tparam Base The type of the PolymorphicValue.
-    @param lhs The first PolymorphicValue to swap.
-    @param rhs The second PolymorphicValue to swap.
+    @tparam Base The type of the Polymorphic.
+    @param lhs The first Polymorphic to swap.
+    @param rhs The second Polymorphic to swap.
 
     Effects: Equivalent to p.swap(u).
  */
 template <class Base>
 constexpr
 void
-swap(PolymorphicValue<Base>& lhs, PolymorphicValue<Base>& rhs) noexcept
+swap(Polymorphic<Base>& lhs, Polymorphic<Base>& rhs) noexcept
 {
     lhs.swap(rhs);
 }
 
-/** Determine if a PolymorphicValue is of a given type.
+/** Determine if a Polymorphic is of a given type.
 
     @tparam Derived The type to check for.
-    @tparam Base The type of the PolymorphicValue.
-    @param pv The PolymorphicValue to check.
+    @tparam Base The type of the Polymorphic.
+    @param pv The Polymorphic to check.
     @return true if pv owns an object of type Derived, otherwise false.
  */
 template <class Derived, class Base>
 requires std::derived_from<Derived, Base>
 bool
-IsA(PolymorphicValue<Base> const& pv)
+IsA(Polymorphic<Base> const& pv)
 {
     if (!pv)
     {
@@ -745,7 +745,7 @@ IsA(PolymorphicValue<Base> const& pv)
     return dynamic_cast<Derived const*>(std::addressof(*pv));
 }
 
-/** Retrieves the value of the PolymorphicValue<Base> as a qualified Derived type.
+/** Retrieves the value of the Polymorphic<Base> as a qualified Derived type.
 
     This function can retrieve the value as a pointer, reference, or type name,
     and can handle const-qualified versions.
@@ -758,9 +758,9 @@ IsA(PolymorphicValue<Base> const& pv)
     `nullptr` and the reference/type name versions throw an exception.
 
     @tparam T The requested type (e.g., DerivedTypeName*, DerivedTypeName&, or DerivedTypeName).
-    @tparam Base The base type of the PolymorphicValue.
-    @param pv The PolymorphicValue to retrieve the value from.
-    @return The value of the PolymorphicValue as the requested type.
+    @tparam Base The base type of the Polymorphic.
+    @param pv The Polymorphic to retrieve the value from.
+    @return The value of the Polymorphic as the requested type.
     @throws std::bad_cast if the requested type is a reference or type name and the object is not of the derived type.
  */
 template <class T, class Base>
@@ -768,7 +768,7 @@ requires
     std::is_pointer_v<T> &&
     std::derived_from<std::remove_pointer_t<T>, Base>
 T
-get(PolymorphicValue<Base>& pv)
+get(Polymorphic<Base>& pv)
 {
     return dynamic_cast<T>(pv.operator->());
 }
@@ -779,7 +779,7 @@ requires
     std::is_reference_v<T> &&
     std::derived_from<std::remove_reference_t<T>, Base>
 T
-get(PolymorphicValue<Base>& pv)
+get(Polymorphic<Base>& pv)
 {
     if (auto* ptr = dynamic_cast<std::remove_reference_t<T>*>(pv.operator->()))
     {
@@ -795,7 +795,7 @@ requires
     (!std::is_reference_v<T>) &&
     std::derived_from<std::remove_pointer_t<T>, Base>
 T&
-get(PolymorphicValue<Base>& pv)
+get(Polymorphic<Base>& pv)
 {
     return get<T&>(pv);
 }
@@ -806,7 +806,7 @@ requires
     std::is_pointer_v<T> &&
     std::derived_from<std::remove_pointer_t<T>, Base>
 std::add_const_t<std::remove_pointer_t<T>>*
-get(PolymorphicValue<Base> const& pv)
+get(Polymorphic<Base> const& pv)
 {
     return dynamic_cast<std::add_const_t<std::remove_pointer_t<T>>*>(pv.operator->());
 }
@@ -817,7 +817,7 @@ requires
     std::is_reference_v<T> &&
     std::derived_from<std::remove_reference_t<T>, Base>
 std::add_const_t<std::remove_reference_t<T>>&
-get(PolymorphicValue<Base> const& pv)
+get(Polymorphic<Base> const& pv)
 {
     if (auto* ptr = dynamic_cast<std::add_const_t<std::remove_reference_t<T>>*>(pv.operator->()))
     {
@@ -833,14 +833,14 @@ requires
     (!std::is_reference_v<T>) &&
     std::derived_from<std::remove_pointer_t<T>, Base>
 std::add_const_t<T>&
-get(PolymorphicValue<Base> const& pv)
+get(Polymorphic<Base> const& pv)
 {
     return get<T const&>(pv);
 }
 
-/** Compares two PolymorphicValue that have visit functions
+/** Compares two Polymorphic that have visit functions
 
-    This function compares two PolymorphicValue objects that
+    This function compares two Polymorphic objects that
     have visit functions for the Base type.
 
     The visit function is used to compare the two objects
@@ -852,17 +852,17 @@ get(PolymorphicValue<Base> const& pv)
     If any of the objects is empty, the comparison is based
     on the emptiness of the objects.
 
-    @tparam Base The type of the PolymorphicValue.
-    @param lhs The first PolymorphicValue to compare.
-    @param rhs The second PolymorphicValue to compare.
-    @return true if the two PolymorphicValue objects are equal, otherwise false.
+    @tparam Base The type of the Polymorphic.
+    @param lhs The first Polymorphic to compare.
+    @param rhs The second Polymorphic to compare.
+    @return true if the two Polymorphic objects are equal, otherwise false.
  */
 template <class Base>
 requires detail::CanVisitCompare<Base>
 auto
 CompareDerived(
-    PolymorphicValue<Base> const& lhs,
-    PolymorphicValue<Base> const& rhs)
+    Polymorphic<Base> const& lhs,
+    Polymorphic<Base> const& rhs)
 {
     if (lhs && rhs)
     {

@@ -40,7 +40,7 @@ class TypeInfoBuilder
        as a polymorphic `TypeInfo` object.
 
      */
-    PolymorphicValue<TypeInfo> Result;
+    Polymorphic<TypeInfo> Result;
 
     /*  A pointer to the inner type of result currently being populated.
 
@@ -61,7 +61,7 @@ class TypeInfoBuilder
         `NamedTypeInfo` object, and the visiting process continues
         populating the `Inner` object.
      */
-    PolymorphicValue<TypeInfo>* Inner = &Result;
+    Polymorphic<TypeInfo>* Inner = &Result;
 
 public:
     using TerminalTypeVisitor::TerminalTypeVisitor;
@@ -73,7 +73,7 @@ public:
 
         @return A unique pointer to the `TypeInfo` object.
      */
-    PolymorphicValue<TypeInfo>
+    Polymorphic<TypeInfo>
     result()
     {
         return std::move(Result);

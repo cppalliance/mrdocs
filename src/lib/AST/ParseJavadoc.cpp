@@ -164,7 +164,7 @@ class JavadocVisitor
     FullComment const* FC_;
     Javadoc jd_;
     Diagnostics& diags_;
-    std::vector<PolymorphicValue<doc::Param>> params_;
+    std::vector<Polymorphic<doc::Param>> params_;
     doc::Block* block_ = nullptr;
     doc::Text* last_child_ = nullptr;
     std::size_t htmlTagNesting_ = 0;
@@ -417,7 +417,7 @@ public:
 
         if(! can_merge)
         {
-            auto new_text = MakePolymorphicValue<TextTy>(std::move(elem));
+            auto new_text = MakePolymorphic<TextTy>(std::move(elem));
             last_child_ = new_text.operator->();
             block_->children.emplace_back(std::move(new_text));
         }
@@ -464,10 +464,10 @@ ensureUTF8(
     escaped by prefixing them with a backslash.
 
  */
-std::vector<PolymorphicValue<doc::Text>>
+std::vector<Polymorphic<doc::Text>>
 parseStyled(StringRef s)
 {
-    std::vector<PolymorphicValue<doc::Text>> result;
+    std::vector<Polymorphic<doc::Text>> result;
     std::string currentText;
     auto currentStyle = doc::Style::none;
     bool escapeNext = false;
@@ -489,7 +489,7 @@ parseStyled(StringRef s)
                 }
                 else
                 {
-                    result.emplace_back(MakePolymorphicValue<doc::Text>(std::move(currentText)));
+                    result.emplace_back(MakePolymorphic<doc::Text>(std::move(currentText)));
                 }
             } else {
                 bool const lastIsSame =
@@ -503,7 +503,7 @@ parseStyled(StringRef s)
                 }
                 else
                 {
-                    result.emplace_back(MakePolymorphicValue<doc::Styled>(std::move(currentText), currentStyle));
+                    result.emplace_back(MakePolymorphic<doc::Styled>(std::move(currentText), currentStyle));
                 }
             }
             currentText.clear();
@@ -663,17 +663,17 @@ build()
             // Move list items to ul.items
             ul.items.reserve(std::distance(it, last));
             for (auto li_it = begin; li_it != last; ++li_it) {
-                PolymorphicValue<doc::Block> block = std::move(*li_it);
+                Polymorphic<doc::Block> block = std::move(*li_it);
                 MRDOCS_ASSERT(IsA<doc::ListItem>(block));
-                PolymorphicValue<doc::ListItem> li = DynamicCast<doc::ListItem>(std::move(block));
+                Polymorphic<doc::ListItem> li = DynamicCast<doc::ListItem>(std::move(block));
                 ul.items.emplace_back(std::move(*li));
             }
             // Remove the list items and insert the ul
             it = blocks.erase(begin, last);
             it = blocks.insert(
                 it,
-                PolymorphicValue<doc::Block>(
-                    MakePolymorphicValue<doc::UnorderedList>(std::move(ul))));
+                Polymorphic<doc::Block>(
+                    MakePolymorphic<doc::UnorderedList>(std::move(ul))));
         }
         ++it;
     }
@@ -1209,7 +1209,7 @@ visitBlockCommandComment(
     {
         // auto itr = std::ranges::find_if(
         //     jd_.getBlocks(),
-        //     [&](const PolymorphicValue<doc::Block> & b)
+        //     [&](const Polymorphic<doc::Block> & b)
         // {
         //     return b->kind == doc::Kind::returns;
         // });
@@ -1567,7 +1567,7 @@ visitParamCommandComment(
 
     auto const itr = std::ranges::find_if(
         jd_.getBlocks(),
-        [&](PolymorphicValue<doc::Block> const& b)
+        [&](Polymorphic<doc::Block> const& b)
     {
         if (b->kind != doc::Kind::param)
         {
@@ -1610,7 +1610,7 @@ visitTParamCommandComment(
 
     auto const itr = std::ranges::find_if(
         jd_.getBlocks(),
-        [&](PolymorphicValue<doc::Block> const& b)
+        [&](Polymorphic<doc::Block> const& b)
     {
         if (b->kind != doc::Kind::tparam)
         {

@@ -21,7 +21,7 @@
 #include <mrdocs/Metadata/Source.hpp>
 #include <mrdocs/Metadata/Template.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
-#include <mrdocs/ADT/PolymorphicValue.hpp>
+#include <mrdocs/ADT/Polymorphic.hpp>
 #include <memory>
 #include <string>
 #include <vector>
@@ -90,7 +90,7 @@ tag_invoke(
 struct Param
 {
     /** The type of this parameter */
-    PolymorphicValue<TypeInfo> Type;
+    Polymorphic<TypeInfo> Type;
 
     /** The parameter name.
 
@@ -104,7 +104,7 @@ struct Param
     Param() = default;
 
     Param(
-        PolymorphicValue<TypeInfo>&& type,
+        Polymorphic<TypeInfo>&& type,
         std::string&& name,
         std::string&& def_arg)
         : Type(std::move(type))
@@ -131,7 +131,7 @@ struct FunctionInfo final
     : InfoCommonBase<InfoKind::Function>
 {
     /// Info about the return type of this function.
-    PolymorphicValue<TypeInfo> ReturnType;
+    Polymorphic<TypeInfo> ReturnType;
 
     /// List of parameters.
     std::vector<Param> Params;

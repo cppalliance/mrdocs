@@ -26,7 +26,7 @@ namespace doc {
 Text&
 Block::
 emplace_back(
-    PolymorphicValue<Text> text)
+    Polymorphic<Text> text)
 {
     MRDOCS_ASSERT(text->isText());
     return *children.emplace_back(std::move(text));
@@ -34,7 +34,7 @@ emplace_back(
 
 void
 Block::
-append(std::vector<PolymorphicValue<Node>>&& blocks)
+append(std::vector<Polymorphic<Node>>&& blocks)
 {
     children.reserve(children.size() + blocks.size());
     for (auto&& block : blocks)
@@ -46,7 +46,7 @@ append(std::vector<PolymorphicValue<Node>>&& blocks)
 
 void
 Block::
-append(std::vector<PolymorphicValue<Text>> const& otherChildren)
+append(std::vector<Polymorphic<Text>> const& otherChildren)
 {
     children.insert(
         children.end(),
@@ -82,7 +82,7 @@ Javadoc() noexcept = default;
 
 Javadoc::
 Javadoc(
-    std::vector<PolymorphicValue<doc::Block>> blocks)
+    std::vector<Polymorphic<doc::Block>> blocks)
     : blocks_(std::move(blocks))
 {
 }
@@ -150,7 +150,7 @@ getBrief(Corpus const& corpus) const noexcept
     return static_cast<const doc::Paragraph*>(brief);
 }
 
-std::vector<PolymorphicValue<doc::Block>> const&
+std::vector<Polymorphic<doc::Block>> const&
 Javadoc::
 getDescription(Corpus const& corpus) const noexcept
 {
@@ -268,7 +268,7 @@ makeOverview(
 std::string
 Javadoc::
 emplace_back(
-    PolymorphicValue<doc::Block> block)
+    Polymorphic<doc::Block> block)
 {
     MRDOCS_ASSERT(block->isBlock());
 
@@ -334,7 +334,7 @@ append(
 
 void
 Javadoc::
-append(std::vector<PolymorphicValue<doc::Node>>&& blocks)
+append(std::vector<Polymorphic<doc::Node>>&& blocks)
 {
     blocks_.reserve(blocks_.size() + blocks.size());
     for(auto&& blockAsNode : blocks)

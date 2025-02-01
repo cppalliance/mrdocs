@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_ADT_DETAIL_POLYMORPHICVALUE_HPP
-#define MRDOCS_API_ADT_DETAIL_POLYMORPHICVALUE_HPP
+#ifndef MRDOCS_API_ADT_DETAIL_POLYMORPHIC_HPP
+#define MRDOCS_API_ADT_DETAIL_POLYMORPHIC_HPP
 
 #include <mrdocs/Support/Assert.hpp>
 #include <type_traits>
@@ -75,7 +75,7 @@ public:
 // Control block that holds the object in a unique_ptr
 // and stores a copier function
 // This is the main control block type used
-// by the PolymorphicValue class
+// by the Polymorphic class
 template <class Base, class Derived, class Copier, class Deleter>
 class PointerPolymorphicStorage final
     : public PolymorphicStorage<Base>

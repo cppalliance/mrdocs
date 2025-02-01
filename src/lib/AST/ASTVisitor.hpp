@@ -592,7 +592,7 @@ private:
     populate(ConstantExprInfo<T>& I, Expr const* E, llvm::APInt const& V);
 
     void
-    populate(PolymorphicValue<TParam>& I, NamedDecl const* N);
+    populate(Polymorphic<TParam>& I, NamedDecl const* N);
 
     void
     populate(std::optional<TemplateInfo>& TI, TemplateParameterList const* TPL)
@@ -610,7 +610,7 @@ private:
     template <range_of<TemplateArgument> Range>
     void
     populate(
-        std::vector<PolymorphicValue<TArg>>& result,
+        std::vector<Polymorphic<TArg>>& result,
         Range&& args)
     {
         for (TemplateArgument const& arg : args)
@@ -635,7 +635,7 @@ private:
 
     void
     populate(
-        std::vector<PolymorphicValue<TArg>>& result,
+        std::vector<Polymorphic<TArg>>& result,
         ASTTemplateArgumentListInfo const* args);
 
     template <std::derived_from<Info> InfoTy>
@@ -696,34 +696,34 @@ private:
         std::optional<Javadoc>& javadoc,
         Decl const* D);
 
-    PolymorphicValue<TypeInfo>
+    Polymorphic<TypeInfo>
     toTypeInfo(QualType qt, TraversalMode mode);
 
-    PolymorphicValue<TypeInfo>
+    Polymorphic<TypeInfo>
     toTypeInfo(QualType const qt)
     {
         return toTypeInfo(qt, TraversalMode::Dependency);
     }
 
-    PolymorphicValue<NameInfo>
+    Polymorphic<NameInfo>
     toNameInfo(
         NestedNameSpecifier const* NNS);
 
     template <class TArgRange = ArrayRef<TemplateArgument>>
-    PolymorphicValue<NameInfo>
+    Polymorphic<NameInfo>
     toNameInfo(
         DeclarationName Name,
         std::optional<TArgRange> TArgs = std::nullopt,
         NestedNameSpecifier const* NNS = nullptr);
 
     template <class TArgRange = ArrayRef<TemplateArgument>>
-    PolymorphicValue<NameInfo>
+    Polymorphic<NameInfo>
     toNameInfo(
         Decl const* D,
         std::optional<TArgRange> TArgs = std::nullopt,
         NestedNameSpecifier const* NNS = nullptr);
 
-    PolymorphicValue<TArg>
+    Polymorphic<TArg>
     toTArg(TemplateArgument const& A);
 
     // Pretty-print an expression

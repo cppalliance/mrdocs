@@ -16,7 +16,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Symbols.hpp>
 #include <mrdocs/Support/Visitor.hpp>
-#include <mrdocs/ADT/PolymorphicValue.hpp>
+#include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Dom/String.hpp>
 #include <memory>
 #include <string>
@@ -373,7 +373,7 @@ struct Copied : Reference
 struct MRDOCS_DECL
     Block : Node
 {
-    std::vector<PolymorphicValue<Text>> children;
+    std::vector<Polymorphic<Text>> children;
 
     bool isBlock() const noexcept final
     {
@@ -412,22 +412,22 @@ struct MRDOCS_DECL
             std::make_unique<T>(std::forward<T>(text))));
     }
 
-    void append(std::vector<PolymorphicValue<Node>>&& blocks);
+    void append(std::vector<Polymorphic<Node>>&& blocks);
 
-    void append(std::vector<PolymorphicValue<Text>> const& otherChildren);
+    void append(std::vector<Polymorphic<Text>> const& otherChildren);
 
 protected:
     explicit
     Block(
         Kind kind_,
-        std::vector<PolymorphicValue<Text>> children_ = {}) noexcept
+        std::vector<Polymorphic<Text>> children_ = {}) noexcept
         : Node(kind_)
         , children(std::move(children_))
     {
     }
 
 private:
-    Text& emplace_back(PolymorphicValue<Text> text);
+    Text& emplace_back(Polymorphic<Text> text);
 };
 
 /** A manually specified section heading.
@@ -475,7 +475,7 @@ protected:
     explicit
     Paragraph(
         Kind kind,
-        std::vector<PolymorphicValue<Text>> children_ = {}) noexcept
+        std::vector<Polymorphic<Text>> children_ = {}) noexcept
         : Block(kind, std::move(children_))
     {
     }
@@ -975,7 +975,7 @@ class Corpus;
 struct MRDOCS_DECL
     Javadoc
 {
-    std::vector<PolymorphicValue<doc::Block>> blocks_;
+    std::vector<Polymorphic<doc::Block>> blocks_;
 
     /** Constructor.
     */
@@ -986,7 +986,7 @@ struct MRDOCS_DECL
     */
     explicit
     Javadoc(
-        std::vector<PolymorphicValue<doc::Block>> blocks);
+        std::vector<Polymorphic<doc::Block>> blocks);
 
     /** Return true if this is empty
     */
@@ -1001,12 +1001,12 @@ struct MRDOCS_DECL
     doc::Paragraph const*
     getBrief(Corpus const& corpus) const noexcept;
 
-    std::vector<PolymorphicValue<doc::Block>> const&
+    std::vector<Polymorphic<doc::Block>> const&
     getDescription(Corpus const& corpus) const noexcept;
 
     /** Return the list of top level blocks.
     */
-    std::vector<PolymorphicValue<doc::Block>> const&
+    std::vector<Polymorphic<doc::Block>> const&
     getBlocks() const noexcept
     {
         return blocks_;
@@ -1014,7 +1014,7 @@ struct MRDOCS_DECL
 
     // VFALCO This is unfortunately necessary for
     //        the deserialization from bitcode...
-    std::vector<PolymorphicValue<doc::Block>>&
+    std::vector<Polymorphic<doc::Block>>&
     getBlocks() noexcept
     {
         return blocks_;
@@ -1062,7 +1062,7 @@ struct MRDOCS_DECL
     std::string
     emplace_back(T&& block)
     {
-        return emplace_back(MakePolymorphicValue<doc::Block, T>(std::forward<T>(block)));
+        return emplace_back(MakePolymorphic<doc::Block, T>(std::forward<T>(block)));
     }
 
     /** Append blocks from another javadoc to this.
@@ -1072,11 +1072,11 @@ struct MRDOCS_DECL
     /** Append blocks from a list to this.
      */
     void
-    append(std::vector<PolymorphicValue<doc::Node>>&& blocks);
+    append(std::vector<Polymorphic<doc::Node>>&& blocks);
 
 private:
     std::string
-    emplace_back(PolymorphicValue<doc::Block>);
+    emplace_back(Polymorphic<doc::Block>);
 };
 
 inline

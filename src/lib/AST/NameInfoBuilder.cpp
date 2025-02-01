@@ -54,17 +54,17 @@ buildTerminal(
 {
     if (TArgs)
     {
-        auto I = MakePolymorphicValue<SpecializationNameInfo>();
+        auto I = MakePolymorphic<SpecializationNameInfo>();
         if (II)
         {
             I->Name = II->getName();
         }
         getASTVisitor().populate(I->TemplateArgs, *TArgs);
-        Result = PolymorphicValue<NameInfo>(std::move(I));
+        Result = Polymorphic<NameInfo>(std::move(I));
     }
     else
     {
-        auto I = MakePolymorphicValue<NameInfo>();
+        auto I = MakePolymorphic<NameInfo>();
         if (II)
         {
             I->Name = II->getName();
@@ -107,7 +107,7 @@ buildTerminal(
         }
     };
 
-    PolymorphicValue<NameInfo> TI;
+    Polymorphic<NameInfo> TI;
     if (!TArgs)
     {
         NameInfo Name;

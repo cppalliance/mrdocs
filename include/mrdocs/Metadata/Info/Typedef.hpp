@@ -23,7 +23,7 @@ namespace clang::mrdocs {
 struct TypedefInfo final
     : InfoCommonBase<InfoKind::Typedef>
 {
-    PolymorphicValue<TypeInfo> Type;
+    Polymorphic<TypeInfo> Type;
 
     /** Indicates if this is a new C++ "using"-style typedef
 

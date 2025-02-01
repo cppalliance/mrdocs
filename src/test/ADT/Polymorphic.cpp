@@ -8,7 +8,7 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdocs/ADT/PolymorphicValue.hpp>
+#include <mrdocs/ADT/Polymorphic.hpp>
 #include <test_suite/test_suite.hpp>
 
 namespace clang::mrdocs {
@@ -27,7 +27,7 @@ struct Z : X {
     int c{44};
 };
 
-struct PolymorphicValue_test
+struct Polymorphic_test
 {
     static
     void
@@ -35,19 +35,19 @@ struct PolymorphicValue_test
     {
         // default constructor
         {
-            PolymorphicValue<X> constexpr v;
+            Polymorphic<X> constexpr v;
             BOOST_TEST_NOT(v);
         }
 
         // nullptr constructor
         {
-            PolymorphicValue<X> constexpr v(nullptr);
+            Polymorphic<X> constexpr v(nullptr);
             BOOST_TEST_NOT(v);
         }
 
         // from derived object
         {
-            PolymorphicValue<X> x(Y{});
+            Polymorphic<X> x(Y{});
             BOOST_TEST(x);
             BOOST_TEST(x->a == 42);
             BOOST_TEST(dynamic_cast<Y*>(&*x)->b == 43);
@@ -55,7 +55,7 @@ struct PolymorphicValue_test
 
         // from pointer
         {
-            PolymorphicValue<X> x(new Y);
+            Polymorphic<X> x(new Y);
             BOOST_TEST(x);
             BOOST_TEST(x->a == 42);
             BOOST_TEST(dynamic_cast<Y*>(&*x)->b == 43);
@@ -64,7 +64,7 @@ struct PolymorphicValue_test
         // from nullptr pointer
         {
             X* p = nullptr;
-            PolymorphicValue<X> const x(p);
+            Polymorphic<X> const x(p);
             BOOST_TEST_NOT(x);
         }
 
@@ -72,18 +72,18 @@ struct PolymorphicValue_test
         {
             Y* p = new Y{};
             X* p2 = p;
-            BOOST_TEST_THROWS(PolymorphicValue<X>(p2), BadPolymorphicValueConstruction);
+            BOOST_TEST_THROWS(Polymorphic<X>(p2), BadPolymorphicConstruction);
         }
 
         // from pointer and copier
         {
             auto copier = [](Y const& y) -> Y* { auto el = new Y(y); el->b = 44; return el; };
-            PolymorphicValue<X> x(new Y, copier);
+            Polymorphic<X> x(new Y, copier);
             BOOST_TEST(x);
             BOOST_TEST(x->a == 42);
             BOOST_TEST(dynamic_cast<Y*>(&*x)->b == 43);
 
-            PolymorphicValue<X> x2(x);
+            Polymorphic<X> x2(x);
             BOOST_TEST(x2);
             BOOST_TEST(x2->a == 42);
             BOOST_TEST(dynamic_cast<Y*>(&*x2)->b == 44);
@@ -93,12 +93,12 @@ struct PolymorphicValue_test
         {
             auto copier = [](Y const& y) -> Y* { auto el = new Y(y); el->b = 44; return el; };
             auto deleter = [](Y const* y) { delete y; };
-            PolymorphicValue<X> x(new Y, copier, deleter);
+            Polymorphic<X> x(new Y, copier, deleter);
             BOOST_TEST(x);
             BOOST_TEST(x->a == 42);
             BOOST_TEST(dynamic_cast<Y*>(&*x)->b == 43);
 
-            PolymorphicValue<X> x2(x);
+            Polymorphic<X> x2(x);
             BOOST_TEST(x2);
             BOOST_TEST(x2->a == 42);
             BOOST_TEST(dynamic_cast<Y*>(&*x2)->b == 44);
@@ -108,16 +108,16 @@ struct PolymorphicValue_test
         {
             // from empty
             {
-                PolymorphicValue<X> x;
-                PolymorphicValue<X> y(x);
+                Polymorphic<X> x;
+                Polymorphic<X> y(x);
                 BOOST_TEST_NOT(y);
             }
 
             // from valid
             {
-                PolymorphicValue<X> x(new Y);
+                Polymorphic<X> x(new Y);
                 x->a = 45;
-                PolymorphicValue<X> y(x);
+                Polymorphic<X> y(x);
                 BOOST_TEST(y);
                 BOOST_TEST(y->a == 45);
                 BOOST_TEST(dynamic_cast<Y*>(&*y)->b == 43);
@@ -126,9 +126,9 @@ struct PolymorphicValue_test
 
         // Move constructor
         {
-            PolymorphicValue<X> x(new Y);
+            Polymorphic<X> x(new Y);
             x->a = 45;
-            PolymorphicValue<X> y(std::move(x));
+            Polymorphic<X> y(std::move(x));
             BOOST_TEST_NOT(x);
             BOOST_TEST(y);
             BOOST_TEST(y->a == 45);
@@ -139,16 +139,16 @@ struct PolymorphicValue_test
         {
             // from empty
             {
-                PolymorphicValue<Y> x;
-                PolymorphicValue<X> y(x);
+                Polymorphic<Y> x;
+                Polymorphic<X> y(x);
                 BOOST_TEST_NOT(y);
             }
 
             // from valid
             {
-                PolymorphicValue<Y> x(new Y);
+                Polymorphic<Y> x(new Y);
                 x->a = 45;
-                PolymorphicValue<X> y(x);
+                Polymorphic<X> y(x);
                 BOOST_TEST(y);
                 BOOST_TEST(y->a == 45);
                 BOOST_TEST(dynamic_cast<Y*>(&*y)->b == 43);
@@ -159,16 +159,16 @@ struct PolymorphicValue_test
         {
             // from empty
             {
-                PolymorphicValue<Y> x;
-                PolymorphicValue<X> y(std::move(x));
+                Polymorphic<Y> x;
+                Polymorphic<X> y(std::move(x));
                 BOOST_TEST_NOT(y);
             }
 
             // from valid
             {
-                PolymorphicValue<Y> x(new Y);
+                Polymorphic<Y> x(new Y);
                 x->a = 45;
-                PolymorphicValue<X> y(std::move(x));
+                Polymorphic<X> y(std::move(x));
                 BOOST_TEST_NOT(x);
                 BOOST_TEST(y);
                 BOOST_TEST(y->a == 45);
@@ -178,7 +178,7 @@ struct PolymorphicValue_test
 
         // In-place constructor
         {
-            PolymorphicValue<X> x(std::in_place_type<Y>);
+            Polymorphic<X> x(std::in_place_type<Y>);
             BOOST_TEST(x);
             BOOST_TEST(x->a == 42);
             BOOST_TEST(dynamic_cast<Y*>(&*x)->b == 43);
@@ -201,7 +201,7 @@ struct PolymorphicValue_test
 #endif
             // from same
             {
-                PolymorphicValue<X> lhs(new Y);
+                Polymorphic<X> lhs(new Y);
                 lhs = lhs;
                 BOOST_TEST(lhs);
                 BOOST_TEST(lhs->a == 42);
@@ -214,17 +214,17 @@ struct PolymorphicValue_test
 #endif
             // from empty
             {
-                PolymorphicValue<X> lhs;
-                PolymorphicValue<X> rhs;
+                Polymorphic<X> lhs;
+                Polymorphic<X> rhs;
                 lhs = rhs;
                 BOOST_TEST_NOT(lhs);
             }
 
             // from valid
             {
-                PolymorphicValue<X> lhs(new Y);
+                Polymorphic<X> lhs(new Y);
                 lhs->a = 45;
-                PolymorphicValue<X> rhs(new Y);
+                Polymorphic<X> rhs(new Y);
                 rhs->a = 46;
                 BOOST_TEST(lhs->a == 45);
                 BOOST_TEST(rhs->a == 46);
@@ -248,7 +248,7 @@ struct PolymorphicValue_test
 #endif
             // from same
             {
-                PolymorphicValue<X> lhs(new Y);
+                Polymorphic<X> lhs(new Y);
                 lhs = std::move(lhs);
                 BOOST_TEST(lhs);
                 BOOST_TEST(lhs->a == 42);
@@ -262,8 +262,8 @@ struct PolymorphicValue_test
 
             // from empty
             {
-                PolymorphicValue<X> lhs;
-                PolymorphicValue<X> rhs;
+                Polymorphic<X> lhs;
+                Polymorphic<X> rhs;
                 lhs = std::move(rhs);
                 BOOST_TEST_NOT(lhs);
                 BOOST_TEST_NOT(rhs);
@@ -271,9 +271,9 @@ struct PolymorphicValue_test
 
             // from valid
             {
-                PolymorphicValue<X> lhs(new Y);
+                Polymorphic<X> lhs(new Y);
                 lhs->a = 45;
-                PolymorphicValue<X> rhs(new Y);
+                Polymorphic<X> rhs(new Y);
                 rhs->a = 46;
                 BOOST_TEST(lhs->a == 45);
                 BOOST_TEST(rhs->a == 46);
@@ -286,7 +286,7 @@ struct PolymorphicValue_test
 
         // copy from derived
         {
-            PolymorphicValue<X> lhs(new Y);
+            Polymorphic<X> lhs(new Y);
             lhs->a = 45;
             Y rhs;
             rhs.a = 46;
@@ -300,7 +300,7 @@ struct PolymorphicValue_test
 
         // copy from derived
         {
-            PolymorphicValue<X> lhs(new Y);
+            Polymorphic<X> lhs(new Y);
             lhs->a = 45;
             Y rhs;
             rhs.a = 46;
@@ -319,14 +319,14 @@ struct PolymorphicValue_test
     {
         // from derived object
         {
-            PolymorphicValue<X> x(Y{});
+            Polymorphic<X> x(Y{});
             BOOST_TEST((*x).a == 42);
             BOOST_TEST(dynamic_cast<Y*>(&*x)->b == 43);
         }
 
         // from pointer
         {
-            PolymorphicValue<X> x(new Y);
+            Polymorphic<X> x(new Y);
             BOOST_TEST((*x).a == 42);
             BOOST_TEST(dynamic_cast<Y*>(&*x)->b == 43);
         }
@@ -336,9 +336,9 @@ struct PolymorphicValue_test
     void
     testMake()
     {
-        // MakePolymorphicValue<Base, Derived>(args...)
+        // MakePolymorphic<Base, Derived>(args...)
         {
-            auto x = MakePolymorphicValue<X, Y>();
+            auto x = MakePolymorphic<X, Y>();
             BOOST_TEST(x);
             BOOST_TEST(x->a == 42);
             BOOST_TEST(dynamic_cast<Y*>(&*x)->b == 43);
@@ -351,7 +351,7 @@ struct PolymorphicValue_test
     {
         // from valid
         {
-            PolymorphicValue<X> x(new Y);
+            Polymorphic<X> x(new Y);
             auto y = DynamicCast<Y>(std::move(x));
             BOOST_TEST(y);
             BOOST_TEST(y->a == 42);
@@ -360,14 +360,14 @@ struct PolymorphicValue_test
 
         // from empty
         {
-            PolymorphicValue<X> x;
+            Polymorphic<X> x;
             auto y = DynamicCast<Y>(std::move(x));
             BOOST_TEST_NOT(y);
         }
 
         // from invalid derived type
         {
-            PolymorphicValue<X> x(new Z);
+            Polymorphic<X> x(new Z);
             auto y = DynamicCast<Y>(std::move(x));
             BOOST_TEST_NOT(y);
         }
@@ -379,8 +379,8 @@ struct PolymorphicValue_test
     {
         // default constructor
         {
-            PolymorphicValue<X> lhs;
-            PolymorphicValue<X> rhs(new Y);
+            Polymorphic<X> lhs;
+            Polymorphic<X> rhs(new Y);
             swap(lhs, rhs);
             BOOST_TEST(lhs);
             BOOST_TEST(lhs->a == 42);
@@ -390,8 +390,8 @@ struct PolymorphicValue_test
 
         // rhs: default constructor
         {
-            PolymorphicValue<X> lhs(new Y);
-            PolymorphicValue<X> rhs;
+            Polymorphic<X> lhs(new Y);
+            Polymorphic<X> rhs;
             swap(lhs, rhs);
             BOOST_TEST_NOT(lhs);
             BOOST_TEST(rhs);
@@ -401,8 +401,8 @@ struct PolymorphicValue_test
 
         // lhs: from derived object
         {
-            PolymorphicValue<X> lhs(Y{});
-            PolymorphicValue<X> rhs(new Y);
+            Polymorphic<X> lhs(Y{});
+            Polymorphic<X> rhs(new Y);
             swap(lhs, rhs);
             BOOST_TEST(rhs);
             BOOST_TEST(rhs->a == 42);
@@ -414,8 +414,8 @@ struct PolymorphicValue_test
 
         // rhs: from derived object
         {
-            PolymorphicValue<X> lhs(new Y);
-            PolymorphicValue<X> rhs(Y{});
+            Polymorphic<X> lhs(new Y);
+            Polymorphic<X> rhs(Y{});
             swap(lhs, rhs);
             BOOST_TEST(lhs);
             BOOST_TEST(lhs->a == 42);
@@ -427,8 +427,8 @@ struct PolymorphicValue_test
 
         // lhs: from pointer
         {
-            PolymorphicValue<X> lhs(new Y);
-            PolymorphicValue<X> rhs(new Y);
+            Polymorphic<X> lhs(new Y);
+            Polymorphic<X> rhs(new Y);
             swap(lhs, rhs);
             BOOST_TEST(rhs);
             BOOST_TEST(rhs->a == 42);
@@ -445,14 +445,14 @@ struct PolymorphicValue_test
     {
         // IsA<Derived>(x)
         {
-            PolymorphicValue<X> const x(new Y);
+            Polymorphic<X> const x(new Y);
             BOOST_TEST(IsA<X>(x));
             BOOST_TEST(IsA<Y>(x));
         }
 
         // Empty state
         {
-            PolymorphicValue<X> const x;
+            Polymorphic<X> const x;
             BOOST_TEST_NOT(IsA<X>(x));
             BOOST_TEST_NOT(IsA<Y>(x));
         }
@@ -464,7 +464,7 @@ struct PolymorphicValue_test
     {
         // from mutable
         {
-            PolymorphicValue<X> x(new Y);
+            Polymorphic<X> x(new Y);
 
             // to mutable derived
             {
@@ -517,7 +517,7 @@ struct PolymorphicValue_test
 
         // from const
         {
-            PolymorphicValue<X> const x(new Y);
+            Polymorphic<X> const x(new Y);
 
             // to mutable derived (returns const anyway)
             {
@@ -578,8 +578,8 @@ struct PolymorphicValue_test
 };
 
 TEST_SUITE(
-    PolymorphicValue_test,
-    "clang.mrdocs.ADT.PolymorphicValue");
+    Polymorphic_test,
+    "clang.mrdocs.ADT.Polymorphic");
 
 } // clang::mrdocs
 

@@ -114,7 +114,7 @@ class ReferenceFinalizer
     }
 
     template<typename T>
-    void finalize(PolymorphicValue<T>& v) requires
+    void finalize(Polymorphic<T>& v) requires
     requires { this->finalize(*v); }
     {
         if (v)

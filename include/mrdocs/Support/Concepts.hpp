@@ -25,7 +25,7 @@ concept range_of = std::ranges::range<Range> && std::same_as<std::ranges::range_
     of a base class.
 
     Examples of such types are std::unique_ptr, std::shared_ptr,
-    PolymorphicValue, etc.
+    Polymorphic, etc.
 
     The `get()` function might not always be available, but
     `operator*` and `operator->` should be available and return

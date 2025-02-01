@@ -69,7 +69,7 @@ struct UsingInfo final
 
     /** The qualifier for a using declaration.
     */
-    PolymorphicValue<NameInfo> Qualifier;
+    Polymorphic<NameInfo> Qualifier;
 
     //--------------------------------------------
 

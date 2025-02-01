@@ -1356,7 +1356,7 @@ populate<std::uint64_t>(
 void
 ASTVisitor::
 populate(
-    PolymorphicValue<TParam>& I,
+    Polymorphic<TParam>& I,
     const NamedDecl* N)
 {
     visit(N, [&]<typename DeclTy>(const DeclTy* P)
@@ -1368,7 +1368,7 @@ populate(
         {
             if (!I)
             {
-                I = MakePolymorphicValue<TParam, TypeTParam>();
+                I = MakePolymorphic<TParam, TypeTParam>();
             }
             auto* R = dynamic_cast<TypeTParam*>(I.operator->());
             if (P->wasDeclaredWithTypename())
@@ -1397,7 +1397,7 @@ populate(
         {
             if (!I)
             {
-                I = MakePolymorphicValue<TParam, NonTypeTParam>();
+                I = MakePolymorphic<TParam, NonTypeTParam>();
             }
             auto* R = dynamic_cast<NonTypeTParam*>(I.operator->());
             R->Type = toTypeInfo(P->getType());
@@ -1412,7 +1412,7 @@ populate(
         {
             if (!I)
             {
-                I = MakePolymorphicValue<TParam, TemplateTParam>();
+                I = MakePolymorphic<TParam, TemplateTParam>();
             }
             auto const* TTPD = cast<TemplateTemplateParmDecl>(P);
             MRDOCS_CHECK_OR(TTPD);
@@ -1478,7 +1478,7 @@ populate(
         // parameter types we extracted have constraints
         for (auto it = TI.Params.begin(); it != TI.Params.end(); )
         {
-            PolymorphicValue<TParam>& param = *it;
+            Polymorphic<TParam>& param = *it;
 
             if (auto const* T = dynamic_cast<NonTypeTParam*>(param.operator->());
                 T &&
@@ -1526,7 +1526,7 @@ populate(
 void
 ASTVisitor::
 populate(
-    std::vector<PolymorphicValue<TArg>>& result,
+    std::vector<Polymorphic<TArg>>& result,
     const ASTTemplateArgumentListInfo* args)
 {
     if (!args)
@@ -1899,7 +1899,7 @@ generateJavadoc(
     return true;
 }
 
-PolymorphicValue<TypeInfo>
+Polymorphic<TypeInfo>
 ASTVisitor::
 toTypeInfo(QualType const qt, TraversalMode const mode)
 {
@@ -1917,7 +1917,7 @@ toTypeInfo(QualType const qt, TraversalMode const mode)
     return Builder.result();
 }
 
-PolymorphicValue<NameInfo>
+Polymorphic<NameInfo>
 ASTVisitor::
 toNameInfo(
     NestedNameSpecifier const* NNS)
@@ -1929,7 +1929,7 @@ toNameInfo(
     MRDOCS_SYMBOL_TRACE(NNS, context_);
 
     ScopeExitRestore scope(mode_, Dependency);
-    PolymorphicValue<NameInfo> I = nullptr;
+    Polymorphic<NameInfo> I = nullptr;
     if (const Type* T = NNS->getAsType())
     {
         NameInfoBuilder Builder(*this, NNS->getPrefix());
@@ -1938,13 +1938,13 @@ toNameInfo(
     }
     else if(const IdentifierInfo* II = NNS->getAsIdentifier())
     {
-        I = MakePolymorphicValue<NameInfo>();
+        I = MakePolymorphic<NameInfo>();
         I->Name = II->getName();
         I->Prefix = toNameInfo(NNS->getPrefix());
     }
     else if(const NamespaceDecl* ND = NNS->getAsNamespace())
     {
-        I = MakePolymorphicValue<NameInfo>();
+        I = MakePolymorphic<NameInfo>();
         I->Name = ND->getIdentifier()->getName();
         I->Prefix = toNameInfo(NNS->getPrefix());
         Decl const* ID = getInstantiatedFrom(ND);
@@ -1955,7 +1955,7 @@ toNameInfo(
     }
     else if(const NamespaceAliasDecl* NAD = NNS->getAsNamespaceAlias())
     {
-        I = MakePolymorphicValue<NameInfo>();
+        I = MakePolymorphic<NameInfo>();
         I->Name = NAD->getIdentifier()->getName();
         I->Prefix = toNameInfo(NNS->getPrefix());
         Decl const* ID = getInstantiatedFrom(NAD);
@@ -1968,7 +1968,7 @@ toNameInfo(
 }
 
 template <class TArgRange>
-PolymorphicValue<NameInfo>
+Polymorphic<NameInfo>
 ASTVisitor::
 toNameInfo(
     DeclarationName const Name,
@@ -1979,16 +1979,16 @@ toNameInfo(
     {
         return nullptr;
     }
-    PolymorphicValue<NameInfo> I = nullptr;
+    Polymorphic<NameInfo> I = nullptr;
     if(TArgs)
     {
-        auto Specialization = MakePolymorphicValue<SpecializationNameInfo>();
+        auto Specialization = MakePolymorphic<SpecializationNameInfo>();
         populate(Specialization->TemplateArgs, *TArgs);
-        I = PolymorphicValue<NameInfo>(std::move(Specialization));
+        I = Polymorphic<NameInfo>(std::move(Specialization));
     }
     else
     {
-        I = MakePolymorphicValue<NameInfo>();
+        I = MakePolymorphic<NameInfo>();
     }
     I->Name = extractName(Name);
     if (NNS)
@@ -1999,7 +1999,7 @@ toNameInfo(
 }
 
 template <class TArgRange>
-PolymorphicValue<NameInfo>
+Polymorphic<NameInfo>
 ASTVisitor::
 toNameInfo(
     Decl const* D,
@@ -2027,14 +2027,14 @@ toNameInfo(
 }
 
 template
-PolymorphicValue<NameInfo>
+Polymorphic<NameInfo>
 ASTVisitor::
 toNameInfo<llvm::ArrayRef<clang::TemplateArgument>>(
     Decl const* D,
     std::optional<llvm::ArrayRef<clang::TemplateArgument>> TArgs,
     NestedNameSpecifier const* NNS);
 
-PolymorphicValue<TArg>
+Polymorphic<TArg>
 ASTVisitor::
 toTArg(const TemplateArgument& A)
 {
@@ -2063,7 +2063,7 @@ toTArg(const TemplateArgument& A)
     // type
     case TemplateArgument::Type:
     {
-        auto R = MakePolymorphicValue<TypeTArg>();
+        auto R = MakePolymorphic<TypeTArg>();
         QualType QT = A.getAsType();
         MRDOCS_ASSERT(! QT.isNull());
         // if the template argument is a pack expansion,
@@ -2076,14 +2076,14 @@ toTArg(const TemplateArgument& A)
             QT = PT->getPattern();
         }
         R->Type = toTypeInfo(QT);
-        return PolymorphicValue<TArg>(R);
+        return Polymorphic<TArg>(R);
     }
     // pack expansion of a template name
     case TemplateArgument::TemplateExpansion:
     // template name
     case TemplateArgument::Template:
     {
-        auto R = MakePolymorphicValue<TemplateTArg>();
+        auto R = MakePolymorphic<TemplateTArg>();
         R->IsPackExpansion = A.isPackExpansion();
 
         // KRYSTIAN FIXME: template template arguments are
@@ -2105,7 +2105,7 @@ toTArg(const TemplateArgument& A)
             TN.print(stream, context_.getPrintingPolicy(),
                 TemplateName::Qualified::AsWritten);
         }
-        return PolymorphicValue<TArg>(R);
+        return Polymorphic<TArg>(R);
     }
     // nullptr value
     case TemplateArgument::NullPtr:
@@ -2116,7 +2116,7 @@ toTArg(const TemplateArgument& A)
     // expression
     case TemplateArgument::Expression:
     {
-        auto R = MakePolymorphicValue<NonTypeTArg>();
+        auto R = MakePolymorphic<NonTypeTArg>();
         R->IsPackExpansion = A.isPackExpansion();
         // if this is a pack expansion, use the template argument
         // expansion pattern in place of the template argument pack
@@ -2127,7 +2127,7 @@ toTArg(const TemplateArgument& A)
         llvm::raw_string_ostream stream(R->Value.Written);
         adjusted.print(context_.getPrintingPolicy(), stream, false);
 
-        return PolymorphicValue<TArg>(R);
+        return Polymorphic<TArg>(R);
     }
     default:
         MRDOCS_UNREACHABLE();
