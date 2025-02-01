@@ -74,7 +74,7 @@ Declared in `&lt;noreturn&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-[[noreturn]]
+&lsqb;&lsqb;noreturn&rsqb;&rsqb;
 static
 void
 f2();
@@ -91,7 +91,7 @@ Declared in `&lt;noreturn&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-[[noreturn]]
+&lsqb;&lsqb;noreturn&rsqb;&rsqb;
 void
 f3();
 ----
@@ -123,7 +123,7 @@ Declared in `&lt;noreturn&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-[[noreturn]]
+&lsqb;&lsqb;noreturn&rsqb;&rsqb;
 void
 f1();
 ----
