@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <function name="f0" id="e1UQQek5v3C9OClW5cGf57XvwQo=">
+    <file short-path="broken-ref.cpp" source-path="broken-ref.cpp" line="1"/>
+  </function>
+  <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
+    <file short-path="broken-ref.cpp" source-path="broken-ref.cpp" line="12"/>
+    <doc>
+      <para>
+        <text>See </text>
+        <reference id="e1UQQek5v3C9OClW5cGf57XvwQo=">f0</reference>
+      </para>
+      <para>
+        <text>See </text>
+        <reference>::f2</reference>
+      </para>
+      <para>
+        <text>Broken should be warned only once</text>
+      </para>
+      <para>
+        <text>See </text>
+        <reference>::f2</reference>
+      </para>
+    </doc>
+  </function>
+</namespace>
+</mrdocs>

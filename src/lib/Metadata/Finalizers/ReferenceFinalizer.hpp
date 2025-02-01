@@ -14,6 +14,8 @@
 
 #include "lib/Lib/Info.hpp"
 #include "lib/Lib/Lookup.hpp"
+#include <set>
+#include <utility>
 
 namespace clang::mrdocs {
 
@@ -30,6 +32,7 @@ class ReferenceFinalizer
     InfoSet& info_;
     SymbolLookup& lookup_;
     Info* current_ = nullptr;
+    std::set<std::pair<std::string, std::string>> warned_;
 
     bool
     resolveReference(doc::Reference& ref) const;

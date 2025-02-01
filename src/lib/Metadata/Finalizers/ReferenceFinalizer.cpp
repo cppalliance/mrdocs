@@ -234,20 +234,14 @@ finalize(doc::Node& node)
 
         if constexpr(std::derived_from<NodeTy, doc::Reference>)
         {
-            if (!resolveReference(N))
+            if (!resolveReference(N) &&
+                !warned_.contains({N.string, current_->Name}))
             {
-                // The warning shouldn't be triggered if the symbol name
-                // has been explicitly marked excluded in mrdocs.yml.
-                // Finalizer needs to be updated to handle this case.
-                // When tagfile support is implemented, we can't
-                // report an error if the reference exists in the tagfile.
-                // if constexpr (false)
-                // {
-                //    report::warn(
-                //        "Failed to resolve reference to '{}' from '{}'",
-                //        N.string,
-                //        current_->Name);
-                // }
+                report::warn(
+                    "Failed to resolve reference to '{}' from '{}'",
+                    N.string,
+                    current_->Name);
+                warned_.insert({N.string, current_->Name});
             }
         }
     });
