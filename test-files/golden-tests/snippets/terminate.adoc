@@ -29,7 +29,7 @@ Declared in `&lt;terminate&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-[[noreturn]]
+&lsqb;&lsqb;noreturn&rsqb;&rsqb;
 void
 terminate() noexcept;
 ----

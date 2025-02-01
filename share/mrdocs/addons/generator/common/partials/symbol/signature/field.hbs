@@ -1,4 +1,4 @@
-{{#if attributes}}[[{{join ", " attributes}}]]
+{{#if attributes}}{{ str "[[" }}{{join ", " attributes}}{{ str "]]" }}
 {{/if}}
 {{#if isMutable}}mutable
 {{/if~}}
