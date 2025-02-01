@@ -96,6 +96,7 @@ public:
 
         @param threadPool The thread pool to use.
     */
+    MRDOCS_DECL
     static
     Expected<std::shared_ptr<ConfigImpl const>>
     load(

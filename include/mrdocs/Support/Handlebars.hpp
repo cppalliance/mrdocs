@@ -633,7 +633,7 @@ namespace detail {
 
     @see https://handlebarsjs.com/
  */
-class Handlebars {
+class MRDOCS_DECL Handlebars {
     using helpers_map = std::unordered_map<
         std::string, dom::Function, detail::string_hash, std::equal_to<>>;
 

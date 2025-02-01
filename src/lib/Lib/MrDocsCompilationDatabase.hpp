@@ -33,7 +33,7 @@ namespace mrdocs {
     - Warnings are disabled
 
 */
-class MrDocsCompilationDatabase
+class MRDOCS_DECL MrDocsCompilationDatabase
     : public tooling::CompilationDatabase
 {
     std::vector<tooling::CompileCommand> AllCommands_;

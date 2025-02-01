@@ -165,6 +165,23 @@ DefaultArrayImpl::
 DefaultArrayImpl() = default;
 
 DefaultArrayImpl::
+DefaultArrayImpl(const DefaultArrayImpl&) = default;
+
+DefaultArrayImpl::
+DefaultArrayImpl(DefaultArrayImpl&&) = default;
+
+DefaultArrayImpl&
+DefaultArrayImpl::
+operator=(const DefaultArrayImpl&) = default;
+
+DefaultArrayImpl&
+DefaultArrayImpl::
+operator=(DefaultArrayImpl&&) = default;
+
+DefaultArrayImpl::
+~DefaultArrayImpl() = default;
+
+DefaultArrayImpl::
 DefaultArrayImpl(
     storage_type elements) noexcept
     : elements_(std::move(elements))

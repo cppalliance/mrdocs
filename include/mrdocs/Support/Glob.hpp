@@ -31,7 +31,7 @@ namespace clang::mrdocs {
 
     Nested brace expansions "{<glob>,"{<glob>,...}",...}" are not supported.
  */
-class GlobPattern {
+class MRDOCS_DECL GlobPattern {
     struct Impl;
     std::unique_ptr<Impl> impl_;
 public:
@@ -120,7 +120,7 @@ public:
     A glob pattern matcher where "*" does not match path separators.
     The pattern "**" can be used to match any number of path separators.
  */
-class PathGlobPattern {
+class MRDOCS_DECL PathGlobPattern {
     GlobPattern glob_;
 public:
     /** Constructs a PathGlobPattern with the given pattern.
@@ -224,7 +224,7 @@ public:
     A glob pattern matcher where "*" does not match "::".
     The pattern "**" can be used to match any number of "::".
  */
-class SymbolGlobPattern {
+class MRDOCS_DECL SymbolGlobPattern {
     GlobPattern glob_;
 public:
     /** Constructs a SymbolGlobPattern with the given pattern.

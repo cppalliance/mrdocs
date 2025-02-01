@@ -61,7 +61,7 @@ tag_invoke(
 
 /** Base class with common properties of all symbols
 */
-struct MRDOCS_VISIBLE Info
+struct MRDOCS_DECL Info
     : SourceInfo
 {
     /** The unique identifier for this symbol.

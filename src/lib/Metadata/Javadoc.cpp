@@ -23,6 +23,22 @@ namespace mrdocs {
 
 namespace doc {
 
+Block::
+Block(Block&&) = default;
+
+Block&
+Block::
+operator=(Block&&) = default;
+
+Block::~Block() = default;
+
+Block::
+Block(const Block&) = default;
+
+Block&
+Block::
+operator=(const Block&) = default;
+
 Text&
 Block::
 emplace_back(
@@ -86,6 +102,20 @@ Javadoc(
     : blocks_(std::move(blocks))
 {
 }
+
+Javadoc::
+Javadoc(Javadoc&&) = default;
+
+Javadoc::
+Javadoc(const Javadoc&) = default;
+
+Javadoc&
+Javadoc::
+operator=(Javadoc&&) = default;
+
+Javadoc&
+Javadoc::
+operator=(const Javadoc&) = default;
 
 doc::Paragraph const*
 Javadoc::

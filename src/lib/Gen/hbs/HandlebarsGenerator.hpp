@@ -41,6 +41,7 @@ public:
 
     /** Build a tagfile for the corpus.
      */
+    MRDOCS_DECL
     Expected<void>
     buildTagfile(
         std::ostream& os,
