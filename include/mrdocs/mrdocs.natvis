@@ -256,7 +256,7 @@
 
 <!-- ADT  -->
 
-    <Type Name="clang::mrdocs::PolymorphicValue&lt;*&gt;">
+    <Type Name="clang::mrdocs::Polymorphic&lt;*&gt;">
         <DisplayString Condition="ptr_ != 0">*{ptr_}</DisplayString>
         <DisplayString Condition="ptr_ == 0">(empty)</DisplayString>
         <Expand>

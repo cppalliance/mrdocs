@@ -94,7 +94,7 @@ public:
 
     static
     std::size_t
-    measureLeftMargin(std::vector<PolymorphicValue<doc::Text>> const& list);
+    measureLeftMargin(std::vector<Polymorphic<doc::Text>> const& list);
 };
 
 } // hbs

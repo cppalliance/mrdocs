@@ -12,7 +12,7 @@
 #ifndef MRDOCS_API_METADATA_RECORD_HPP
 #define MRDOCS_API_METADATA_RECORD_HPP
 
-#include <mrdocs/ADT/PolymorphicValue.hpp>
+#include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Source.hpp>
@@ -220,14 +220,14 @@ allMembers(RecordInterface const& T)
 */
 struct BaseInfo
 {
-    PolymorphicValue<TypeInfo> Type;
+    Polymorphic<TypeInfo> Type;
     AccessKind Access = AccessKind::Public;
     bool IsVirtual = false;
 
     BaseInfo() = default;
 
     BaseInfo(
-        PolymorphicValue<TypeInfo>&& type,
+        Polymorphic<TypeInfo>&& type,
         AccessKind const access,
         bool const is_virtual)
         : Type(std::move(type))

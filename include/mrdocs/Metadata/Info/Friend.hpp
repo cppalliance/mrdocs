@@ -28,7 +28,7 @@ struct FriendInfo final
 
     /** Befriended type.
     */
-    PolymorphicValue<TypeInfo> FriendType;
+    Polymorphic<TypeInfo> FriendType;
 
     //--------------------------------------------
 

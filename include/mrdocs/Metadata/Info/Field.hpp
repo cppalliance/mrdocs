@@ -30,7 +30,7 @@ struct FieldInfo final
     : InfoCommonBase<InfoKind::Field>
 {
     /** Type of the field */
-    PolymorphicValue<TypeInfo> Type;
+    Polymorphic<TypeInfo> Type;
 
     /** The default member initializer, if any.
     */

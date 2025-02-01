@@ -314,7 +314,7 @@ operator()(doc::Throws const& I) const
 
 std::size_t
 DocVisitor::
-measureLeftMargin(std::vector<PolymorphicValue<doc::Text>> const& list)
+measureLeftMargin(std::vector<Polymorphic<doc::Text>> const& list)
 {
     if(list.empty())
     {

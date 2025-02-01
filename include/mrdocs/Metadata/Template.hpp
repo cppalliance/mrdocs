@@ -24,7 +24,7 @@
 namespace clang::mrdocs {
 
 std::strong_ordering
-operator<=>(PolymorphicValue<TParam> const& lhs, PolymorphicValue<TParam> const& rhs);
+operator<=>(Polymorphic<TParam> const& lhs, Polymorphic<TParam> const& rhs);
 
 enum class TArgKind : int
 {
@@ -94,7 +94,7 @@ struct TypeTArg final
     : IsTArg<TArgKind::Type>
 {
     /** Template argument type. */
-    PolymorphicValue<TypeInfo> Type;
+    Polymorphic<TypeInfo> Type;
 
     auto operator<=>(TypeTArg const&) const = default;
 };
@@ -153,14 +153,14 @@ visit(
 
 inline
 std::strong_ordering
-operator<=>(PolymorphicValue<TArg> const& lhs, PolymorphicValue<TArg> const& rhs)
+operator<=>(Polymorphic<TArg> const& lhs, Polymorphic<TArg> const& rhs)
 {
     return CompareDerived(lhs, rhs);
 }
 
 inline
 bool
-operator==(PolymorphicValue<TArg> const& lhs, PolymorphicValue<TArg> const& rhs) {
+operator==(Polymorphic<TArg> const& lhs, Polymorphic<TArg> const& rhs) {
     return lhs <=> rhs == std::strong_ordering::equal;
 }
 
@@ -181,7 +181,7 @@ void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
-    PolymorphicValue<TArg> const& I,
+    Polymorphic<TArg> const& I,
     DomCorpus const* domCorpus)
 {
     if (!I)
@@ -218,7 +218,7 @@ struct TParam
     bool IsParameterPack = false;
 
     /** The default template argument, if any */
-    PolymorphicValue<TArg> Default;
+    Polymorphic<TArg> Default;
 
     constexpr virtual ~TParam() = default;
 
@@ -249,7 +249,7 @@ void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
-    PolymorphicValue<TParam> const& I,
+    Polymorphic<TParam> const& I,
     DomCorpus const* domCorpus)
 {
     if (!I)
@@ -306,7 +306,7 @@ struct TypeTParam final
     TParamKeyKind KeyKind = TParamKeyKind::Class;
 
     /** The type-constraint for the parameter, if any. */
-    PolymorphicValue<NameInfo> Constraint;
+    Polymorphic<NameInfo> Constraint;
 
     auto operator<=>(TypeTParam const&) const = default;
 };
@@ -315,7 +315,7 @@ struct NonTypeTParam final
     : TParamCommonBase<TParamKind::NonType>
 {
     /** Type of the non-type template parameter */
-    PolymorphicValue<TypeInfo> Type;
+    Polymorphic<TypeInfo> Type;
 
     auto operator<=>(NonTypeTParam const&) const = default;
 };
@@ -324,7 +324,7 @@ struct TemplateTParam final
     : TParamCommonBase<TParamKind::Template>
 {
     /** Template parameters for the template-template parameter */
-    std::vector<PolymorphicValue<TParam>> Params;
+    std::vector<Polymorphic<TParam>> Params;
 
     auto operator<=>(TemplateTParam const& other) const
     {
@@ -378,14 +378,14 @@ visit(
 
 inline
 std::strong_ordering
-operator<=>(PolymorphicValue<TParam> const& lhs, PolymorphicValue<TParam> const& rhs)
+operator<=>(Polymorphic<TParam> const& lhs, Polymorphic<TParam> const& rhs)
 {
     return CompareDerived(lhs, rhs);
 }
 
 inline
 bool
-operator==(PolymorphicValue<TParam> const& lhs, PolymorphicValue<TParam> const& rhs) {
+operator==(Polymorphic<TParam> const& lhs, Polymorphic<TParam> const& rhs) {
     return lhs <=> rhs == std::strong_ordering::equal;
 }
 
@@ -407,8 +407,8 @@ toString(TemplateSpecKind kind);
 */
 struct TemplateInfo
 {
-    std::vector<PolymorphicValue<TParam>> Params;
-    std::vector<PolymorphicValue<TArg>> Args;
+    std::vector<Polymorphic<TParam>> Params;
+    std::vector<Polymorphic<TArg>> Args;
 
     /** The requires-clause for the template parameter list, if any.
     */

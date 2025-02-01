@@ -13,7 +13,7 @@
 
 #include <string>
 #include <vector>
-#include <mrdocs/ADT/PolymorphicValue.hpp>
+#include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
 #include <mrdocs/Metadata/Specifiers.hpp>
@@ -25,10 +25,10 @@
 namespace clang::mrdocs {
 
 std::strong_ordering
-operator<=>(PolymorphicValue<NameInfo> const& lhs, PolymorphicValue<NameInfo> const& rhs);
+operator<=>(Polymorphic<NameInfo> const& lhs, Polymorphic<NameInfo> const& rhs);
 
 std::strong_ordering
-operator<=>(PolymorphicValue<TypeInfo> const& lhs, PolymorphicValue<TypeInfo> const& rhs);
+operator<=>(Polymorphic<TypeInfo> const& lhs, Polymorphic<TypeInfo> const& rhs);
 
 enum QualifierKind
 {
@@ -183,7 +183,7 @@ void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
-    PolymorphicValue<TypeInfo> const& I,
+    Polymorphic<TypeInfo> const& I,
     DomCorpus const* domCorpus)
 {
     if (!I)
@@ -223,7 +223,7 @@ struct NamedTypeInfo final
     : TypeInfoCommonBase<TypeKind::Named>
 {
     QualifierKind CVQualifiers = QualifierKind::None;
-    PolymorphicValue<NameInfo> Name;
+    Polymorphic<NameInfo> Name;
 
     std::strong_ordering
     operator<=>(NamedTypeInfo const& other) const;
@@ -243,7 +243,7 @@ struct AutoTypeInfo final
 {
     QualifierKind CVQualifiers = QualifierKind::None;
     AutoKind Keyword = AutoKind::Auto;
-    PolymorphicValue<NameInfo> Constraint;
+    Polymorphic<NameInfo> Constraint;
 
     auto operator<=>(AutoTypeInfo const&) const = default;
 };
@@ -251,7 +251,7 @@ struct AutoTypeInfo final
 struct LValueReferenceTypeInfo final
     : TypeInfoCommonBase<TypeKind::LValueReference>
 {
-    PolymorphicValue<TypeInfo> PointeeType;
+    Polymorphic<TypeInfo> PointeeType;
 
     TypeInfo*
     innerType() noexcept override
@@ -265,7 +265,7 @@ struct LValueReferenceTypeInfo final
 struct RValueReferenceTypeInfo final
     : TypeInfoCommonBase<TypeKind::RValueReference>
 {
-    PolymorphicValue<TypeInfo> PointeeType;
+    Polymorphic<TypeInfo> PointeeType;
 
     TypeInfo*
     innerType() noexcept override
@@ -280,7 +280,7 @@ struct PointerTypeInfo final
     : TypeInfoCommonBase<TypeKind::Pointer>
 {
     QualifierKind CVQualifiers = QualifierKind::None;
-    PolymorphicValue<TypeInfo> PointeeType;
+    Polymorphic<TypeInfo> PointeeType;
 
     TypeInfo*
     innerType() noexcept override
@@ -295,8 +295,8 @@ struct MemberPointerTypeInfo final
     : TypeInfoCommonBase<TypeKind::MemberPointer>
 {
     QualifierKind CVQualifiers = QualifierKind::None;
-    PolymorphicValue<TypeInfo> ParentType;
-    PolymorphicValue<TypeInfo> PointeeType;
+    Polymorphic<TypeInfo> ParentType;
+    Polymorphic<TypeInfo> PointeeType;
 
     TypeInfo*
     innerType() noexcept override
@@ -310,7 +310,7 @@ struct MemberPointerTypeInfo final
 struct ArrayTypeInfo final
     : TypeInfoCommonBase<TypeKind::Array>
 {
-    PolymorphicValue<TypeInfo> ElementType;
+    Polymorphic<TypeInfo> ElementType;
     ConstantExprInfo<std::uint64_t> Bounds;
 
     TypeInfo*
@@ -325,8 +325,8 @@ struct ArrayTypeInfo final
 struct FunctionTypeInfo final
     : TypeInfoCommonBase<TypeKind::Function>
 {
-    PolymorphicValue<TypeInfo> ReturnType;
-    std::vector<PolymorphicValue<TypeInfo>> ParamTypes;
+    Polymorphic<TypeInfo> ReturnType;
+    std::vector<Polymorphic<TypeInfo>> ParamTypes;
     QualifierKind CVQualifiers = QualifierKind::None;
     ReferenceKind RefQualifier = ReferenceKind::None;
     NoexceptInfo ExceptionSpec;
@@ -425,14 +425,14 @@ visit(
 
 inline
 std::strong_ordering
-operator<=>(PolymorphicValue<TypeInfo> const& lhs, PolymorphicValue<TypeInfo> const& rhs)
+operator<=>(Polymorphic<TypeInfo> const& lhs, Polymorphic<TypeInfo> const& rhs)
 {
     return CompareDerived(lhs, rhs);
 }
 
 inline
 bool
-operator==(PolymorphicValue<TypeInfo> const& lhs, PolymorphicValue<TypeInfo> const& rhs) {
+operator==(Polymorphic<TypeInfo> const& lhs, Polymorphic<TypeInfo> const& rhs) {
     return lhs <=> rhs == std::strong_ordering::equal;
 }
 

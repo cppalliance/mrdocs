@@ -14,7 +14,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Template.hpp>
-#include <mrdocs/ADT/PolymorphicValue.hpp>
+#include <mrdocs/ADT/Polymorphic.hpp>
 #include <vector>
 
 namespace clang::mrdocs {
@@ -25,7 +25,7 @@ struct SpecializationInfo final
     : InfoCommonBase<InfoKind::Specialization>
 {
     /** The template arguments the parent template is specialized for */
-    std::vector<PolymorphicValue<TArg>> Args;
+    std::vector<Polymorphic<TArg>> Args;
 
     /** ID of the template to which the arguments pertain */
     SymbolID Primary = SymbolID::invalid;

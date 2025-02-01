@@ -82,7 +82,7 @@ struct NameInfo
         and the template arguments.
 
      */
-    PolymorphicValue<NameInfo> Prefix;
+    Polymorphic<NameInfo> Prefix;
 
     constexpr bool isIdentifier()     const noexcept { return Kind == NameKind::Identifier; }
     constexpr bool isSpecialization() const noexcept { return Kind == NameKind::Specialization; }
@@ -109,7 +109,7 @@ struct SpecializationNameInfo final
 {
     /** The template arguments.
     */
-    std::vector<PolymorphicValue<TArg>> TemplateArgs;
+    std::vector<Polymorphic<TArg>> TemplateArgs;
 
     constexpr
     SpecializationNameInfo() noexcept
@@ -154,14 +154,14 @@ visit(
 
 inline
 std::strong_ordering
-operator<=>(PolymorphicValue<NameInfo> const& lhs, PolymorphicValue<NameInfo> const& rhs)
+operator<=>(Polymorphic<NameInfo> const& lhs, Polymorphic<NameInfo> const& rhs)
 {
     return CompareDerived(lhs, rhs);
 }
 
 inline
 bool
-operator==(PolymorphicValue<NameInfo> const& lhs, PolymorphicValue<NameInfo> const& rhs) {
+operator==(Polymorphic<NameInfo> const& lhs, Polymorphic<NameInfo> const& rhs) {
     return lhs <=> rhs == std::strong_ordering::equal;
 }
 
@@ -182,7 +182,7 @@ void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
-    PolymorphicValue<NameInfo> const& I,
+    Polymorphic<NameInfo> const& I,
     DomCorpus const* domCorpus)
 {
     if(! I)

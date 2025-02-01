@@ -30,7 +30,7 @@ struct GuideInfo final
 
         This is always a SpecializationTypeInfo.
     */
-    PolymorphicValue<TypeInfo> Deduced;
+    Polymorphic<TypeInfo> Deduced;
 
     /** Template head, if any.
     */

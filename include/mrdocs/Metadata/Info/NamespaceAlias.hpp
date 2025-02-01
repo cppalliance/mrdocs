@@ -14,7 +14,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Name.hpp>
-#include <mrdocs/ADT/PolymorphicValue.hpp>
+#include <mrdocs/ADT/Polymorphic.hpp>
 
 namespace clang::mrdocs {
 
@@ -24,7 +24,7 @@ struct NamespaceAliasInfo final
     : InfoCommonBase<InfoKind::NamespaceAlias>
 {
     /** The aliased symbol. */
-    PolymorphicValue<NameInfo> AliasedSymbol;
+    Polymorphic<NameInfo> AliasedSymbol;
 
     //--------------------------------------------
 

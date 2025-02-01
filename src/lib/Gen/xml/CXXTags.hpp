@@ -229,7 +229,7 @@ writeType(
 inline
 void
 writeType(
-    PolymorphicValue<TypeInfo> const& type,
+    Polymorphic<TypeInfo> const& type,
     XMLTags& tags)
 {
     if(! type)

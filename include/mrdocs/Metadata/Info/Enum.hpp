@@ -12,7 +12,7 @@
 #ifndef MRDOCS_API_METADATA_ENUM_HPP
 #define MRDOCS_API_METADATA_ENUM_HPP
 
-#include <mrdocs/ADT/PolymorphicValue.hpp>
+#include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Source.hpp>
 #include <mrdocs/Metadata/Type.hpp>
@@ -30,7 +30,7 @@ struct EnumInfo final
     // Set too nonempty to the type when this is an explicitly typed enum. For
     //   enum Foo : short { ... };
     // this will be "short".
-    PolymorphicValue<TypeInfo> UnderlyingType;
+    Polymorphic<TypeInfo> UnderlyingType;
 
     /** The members of this scope.
 

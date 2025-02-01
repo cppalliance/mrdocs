@@ -150,7 +150,7 @@ buildTerminal(
 {
     NamedTypeInfo TI;
     TI.CVQualifiers = toQualifierKind(quals);
-    TI.Name = MakePolymorphicValue<NameInfo>();
+    TI.Name = MakePolymorphic<NameInfo>();
     TI.Name->Name = getASTVisitor().toString(T);
     TI.Name->Prefix = getASTVisitor().toNameInfo(NNS);
     TI.Constraints = this->Constraints;
