@@ -8,18 +8,6 @@
       <file short-path="explicit-deduct-guide.cpp" source-path="explicit-deduct-guide.cpp" line="3" class="def"/>
     </struct>
   </template>
-  <template>
-    <tparam name="B" class="non-type" type="bool" default="true"/>
-    <guide name="X" explicit-spec="explicit(B)" id="YS/v8XQ/9ShQ2spNAh5EY33PN7s=">
-      <file short-path="explicit-deduct-guide.cpp" source-path="explicit-deduct-guide.cpp" line="12"/>
-      <deduced>
-        <type id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X&lt;0&gt;"/>
-      </deduced>
-      <param>
-        <type name="long"/>
-      </param>
-    </guide>
-  </template>
   <guide name="X" explicit-spec="explicit" id="2IF4pOfGcA57GQDlE3PJgs7yeUs=">
     <file short-path="explicit-deduct-guide.cpp" source-path="explicit-deduct-guide.cpp" line="6"/>
     <deduced>
@@ -47,5 +35,17 @@
       <type name="int"/>
     </param>
   </guide>
+  <template>
+    <tparam name="B" class="non-type" type="bool" default="true"/>
+    <guide name="X" explicit-spec="explicit(B)" id="YS/v8XQ/9ShQ2spNAh5EY33PN7s=">
+      <file short-path="explicit-deduct-guide.cpp" source-path="explicit-deduct-guide.cpp" line="12"/>
+      <deduced>
+        <type id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X&lt;0&gt;"/>
+      </deduced>
+      <param>
+        <type name="long"/>
+      </param>
+    </guide>
+  </template>
 </namespace>
 </mrdocs>

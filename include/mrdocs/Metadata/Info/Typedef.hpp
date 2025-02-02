@@ -16,6 +16,8 @@
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Template.hpp>
 #include <mrdocs/Metadata/Type.hpp>
+#include <mrdocs/Metadata/Name.hpp>
+#include <mrdocs/ADT/Polymorphic.hpp>
 
 namespace clang::mrdocs {
 
@@ -47,6 +49,10 @@ struct TypedefInfo final
         : InfoCommonBase(ID)
     {
     }
+
+    std::strong_ordering
+    operator<=>(TypedefInfo const& other) const;
+
 };
 
 MRDOCS_DECL

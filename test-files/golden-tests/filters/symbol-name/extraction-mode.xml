@@ -217,6 +217,36 @@
       </doc>
     </function>
   </namespace>
+  <namespace-alias name="dependency_ns_alias" id="iz2edsTj1BrHatwuxuBXSOfqpDE=">
+    <file short-path="extraction-mode.cpp" source-path="extraction-mode.cpp" line="233"/>
+    <doc>
+      <para>
+        <text>Namespace alias to form the dependency on dependency_ns</text>
+      </para>
+    </doc>
+    <aliased name="dependency_ns" id="FVHkx2YC1v9lxjwdG5D+M2e5SIA="/>
+  </namespace-alias>
+  <namespace-alias name="implementation_defined_ns_alias" id="CzgfGPX1nw65BdnXgQsTa12LA2Y=">
+    <file short-path="extraction-mode.cpp" source-path="extraction-mode.cpp" line="215"/>
+    <doc>
+      <para>
+        <text>Namespace alias to form a dependency on the implementation-defined namespace</text>
+      </para>
+    </doc>
+    <aliased name="implementation_defined_ns" id="ZYn+worzOdzCMW6yaZC9jAkpVTk="/>
+  </namespace-alias>
+  <namespace-alias name="see_below_ns_alias" id="ZOLXb+PiKO6aTHMnfr3P9Mgop24=">
+    <file short-path="extraction-mode.cpp" source-path="extraction-mode.cpp" line="196"/>
+    <doc>
+      <para>
+        <text>Namespace alias to form a dependency on the see-below namespace</text>
+      </para>
+      <para>
+        <text>The alias should be linked as usual and, because it&apos;s a namespace, the members should be listed on the page.</text>
+      </para>
+    </doc>
+    <aliased name="see_below_ns" id="exW9PGqoF7V7OCpvgUIZOhj7WwI="/>
+  </namespace-alias>
   <struct name="implementation_defined" id="rl76spVysmpVYgBTOlxoh5Z9fk8=">
     <file short-path="extraction-mode.cpp" source-path="extraction-mode.cpp" line="295" class="def"/>
     <doc>
@@ -330,35 +360,5 @@
       </para>
     </doc>
   </function>
-  <namespace-alias name="dependency_ns_alias" id="iz2edsTj1BrHatwuxuBXSOfqpDE=">
-    <file short-path="extraction-mode.cpp" source-path="extraction-mode.cpp" line="233"/>
-    <doc>
-      <para>
-        <text>Namespace alias to form the dependency on dependency_ns</text>
-      </para>
-    </doc>
-    <aliased name="dependency_ns" id="FVHkx2YC1v9lxjwdG5D+M2e5SIA="/>
-  </namespace-alias>
-  <namespace-alias name="implementation_defined_ns_alias" id="CzgfGPX1nw65BdnXgQsTa12LA2Y=">
-    <file short-path="extraction-mode.cpp" source-path="extraction-mode.cpp" line="215"/>
-    <doc>
-      <para>
-        <text>Namespace alias to form a dependency on the implementation-defined namespace</text>
-      </para>
-    </doc>
-    <aliased name="implementation_defined_ns" id="ZYn+worzOdzCMW6yaZC9jAkpVTk="/>
-  </namespace-alias>
-  <namespace-alias name="see_below_ns_alias" id="ZOLXb+PiKO6aTHMnfr3P9Mgop24=">
-    <file short-path="extraction-mode.cpp" source-path="extraction-mode.cpp" line="196"/>
-    <doc>
-      <para>
-        <text>Namespace alias to form a dependency on the see-below namespace</text>
-      </para>
-      <para>
-        <text>The alias should be linked as usual and, because it&apos;s a namespace, the members should be listed on the page.</text>
-      </para>
-    </doc>
-    <aliased name="see_below_ns" id="exW9PGqoF7V7OCpvgUIZOhj7WwI="/>
-  </namespace-alias>
 </namespace>
 </mrdocs>

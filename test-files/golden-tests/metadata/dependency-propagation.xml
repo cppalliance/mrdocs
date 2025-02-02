@@ -5,15 +5,6 @@
   <namespace name="N" id="rjlMNXAaWNMkQYMTJzRA1DR0DiE=">
     <template>
       <tparam name="T" class="type"/>
-      <struct name="A" id="P3wHAbrIf4CGxTZs+lXT5a3t2K0=">
-        <file short-path="dependency-propagation.cpp" source-path="dependency-propagation.cpp" line="3" class="def"/>
-      </struct>
-    </template>
-    <struct name="D" id="G98ZT3EkUq7z1IE+Cx1EKGrMDxQ=">
-      <file short-path="dependency-propagation.cpp" source-path="dependency-propagation.cpp" line="12" class="def"/>
-    </struct>
-    <template>
-      <tparam name="T" class="type"/>
       <namespace-alias name="B" id="YZjBn7yW7NyL8yCKqswVvbiptNM=">
         <file short-path="dependency-propagation.cpp" source-path="dependency-propagation.cpp" line="6"/>
         <type id="P3wHAbrIf4CGxTZs+lXT5a3t2K0=" name="A&lt;T&gt;"/>
@@ -26,6 +17,15 @@
         <type id="YZjBn7yW7NyL8yCKqswVvbiptNM=" name="B&lt;T&gt;"/>
       </namespace-alias>
     </template>
+    <template>
+      <tparam name="T" class="type"/>
+      <struct name="A" id="P3wHAbrIf4CGxTZs+lXT5a3t2K0=">
+        <file short-path="dependency-propagation.cpp" source-path="dependency-propagation.cpp" line="3" class="def"/>
+      </struct>
+    </template>
+    <struct name="D" id="G98ZT3EkUq7z1IE+Cx1EKGrMDxQ=">
+      <file short-path="dependency-propagation.cpp" source-path="dependency-propagation.cpp" line="12" class="def"/>
+    </struct>
   </namespace>
   <struct name="E" id="KJWEqOD/QXinlGIqVHqmIlA5Z6E=">
     <file short-path="dependency-propagation.cpp" source-path="dependency-propagation.cpp" line="15" class="def"/>

@@ -15,6 +15,7 @@
 #include <mrdocs/Metadata/Expression.hpp>
 #include <mrdocs/Metadata/Source.hpp>
 #include <mrdocs/Metadata/Template.hpp>
+#include <mrdocs/ADT/Polymorphic.hpp>
 
 namespace clang::mrdocs {
 
@@ -37,6 +38,9 @@ struct ConceptInfo final
         : InfoCommonBase(ID)
     {
     }
+
+    std::strong_ordering
+    operator<=>(ConceptInfo const& other) const;
 };
 
 MRDOCS_DECL

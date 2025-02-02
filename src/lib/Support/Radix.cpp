@@ -239,12 +239,12 @@ toBaseFN(
     return {dest.data(), n};
 }
 
+#if 0
 std::string_view
 toBase32(
     std::string& dest,
-    std::string_view src)
+    std::string_view)
 {
-#if 0
     std::vector<std::uint8_t> v;
     v.reserve(2 * ((binaryString.size() + 14) / 15));
     while(binaryString.size() >= 15)
@@ -314,9 +314,9 @@ toBase32(
             dest.pop_back();
         else
             break;
-#endif
     return dest;
 }
+#endif
 
 std::string
 toBase16(

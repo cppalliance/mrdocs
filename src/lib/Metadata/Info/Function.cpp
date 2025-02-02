@@ -50,10 +50,7 @@ static constinit Item const Table[] = {
     { "operator&",         "operator_bitand",    "an",  OperatorKind::Amp                 },
     { "operator|",         "operator_bitor",     "or",  OperatorKind::Pipe                },
     { "operator~",         "operator_bitnot",    "co",  OperatorKind::Tilde               },
-    { "operator!",         "operator_not",       "nt",  OperatorKind::Exclaim             },
     { "operator=",         "operator_assign",    "as",  OperatorKind::Equal               },
-    { "operator<",         "operator_lt",        "lt",  OperatorKind::Less                },
-    { "operator>",         "operator_gt",        "gt",  OperatorKind::Greater             },
     { "operator+=",        "operator_plus_eq",   "ple", OperatorKind::PlusEqual           },
     { "operator-=",        "operator_minus_eq",  "mie", OperatorKind::MinusEqual          },
     { "operator*=",        "operator_star_eq",   "mle", OperatorKind::StarEqual           },
@@ -66,11 +63,17 @@ static constinit Item const Table[] = {
     { "operator>>",        "operator_rshift",    "rs",  OperatorKind::GreaterGreater      },
     { "operator<<=",       "operator_lshift_eq", "lse", OperatorKind::LessLessEqual       },
     { "operator>>=",       "operator_rshift_eq", "rse", OperatorKind::GreaterGreaterEqual },
+
+    // relational operators
+    { "operator!",         "operator_not",       "nt",  OperatorKind::Exclaim             },
     { "operator==",        "operator_eq",        "eq",  OperatorKind::EqualEqual          },
     { "operator!=",        "operator_not_eq",    "ne",  OperatorKind::ExclaimEqual        },
+    { "operator<",         "operator_lt",        "lt",  OperatorKind::Less                },
     { "operator<=",        "operator_le",        "le",  OperatorKind::LessEqual           },
+    { "operator>",         "operator_gt",        "gt",  OperatorKind::Greater             },
     { "operator>=",        "operator_ge",        "ge",  OperatorKind::GreaterEqual        },
     { "operator<=>",       "operator_3way",      "ss",  OperatorKind::Spaceship           },
+
     { "operator&&",        "operator_and",       "aa",  OperatorKind::AmpAmp              },
     { "operator||",        "operator_or",        "oo",  OperatorKind::PipePipe            },
     { "operator++",        "operator_inc",       "pp",  OperatorKind::PlusPlus            },
@@ -169,6 +172,59 @@ tag_invoke(
     DomCorpus const* domCorpus)
 {
     v = dom::LazyObject(p, domCorpus);
+}
+
+std::strong_ordering
+FunctionInfo::
+operator<=>(const FunctionInfo& other) const
+{
+    if (auto const cmp = Name <=> other.Name;
+        !std::is_eq(cmp))
+    {
+        return cmp;
+    }
+    if (auto const cmp = Params.size() <=> other.Params.size();
+        !std::is_eq(cmp))
+    {
+        return cmp;
+    }
+    if (auto const cmp = Template.operator bool() <=> other.Template.operator bool();
+        !std::is_eq(cmp))
+    {
+        return cmp;
+    }
+    if (Template && other.Template)
+    {
+        if (auto const cmp = Template->Args.size() <=> other.Template->Args.size();
+            !std::is_eq(cmp))
+        {
+            return cmp;
+        }
+        if (auto const cmp = Template->Params.size() <=> other.Template->Params.size();
+            !std::is_eq(cmp))
+        {
+            return cmp;
+        }
+    }
+    if (auto const cmp = Params <=> other.Params;
+        !std::is_eq(cmp))
+    {
+        return cmp;
+    }
+    if (Template && other.Template)
+    {
+        if (auto const cmp = Template->Args <=> other.Template->Args;
+            !std::is_eq(cmp))
+        {
+            return cmp;
+        }
+        if (auto const cmp = Template->Params <=> other.Template->Params;
+            !std::is_eq(cmp))
+        {
+            return cmp;
+        }
+    }
+    return dynamic_cast<Info const&>(*this) <=> dynamic_cast<Info const&>(other);
 }
 
 void

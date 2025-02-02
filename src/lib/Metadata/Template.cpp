@@ -51,6 +51,10 @@ toString(
     }
 }
 
+std::strong_ordering
+TParam::
+operator<=>(TParam const&) const = default;
+
 std::string_view
 toString(
     TParamKeyKind kind) noexcept
@@ -64,6 +68,21 @@ toString(
     default:
         MRDOCS_UNREACHABLE();
     }
+}
+
+std::strong_ordering
+operator<=>(Polymorphic<TParam> const& lhs, Polymorphic<TParam> const& rhs)
+{
+    if (lhs && rhs)
+    {
+        if (lhs->Kind == rhs->Kind)
+        {
+            return visit(*lhs, detail::VisitCompareFn<TParam>(*rhs));
+        }
+        return lhs->Kind <=> rhs->Kind;
+    }
+    return !lhs ? std::strong_ordering::less
+            : std::strong_ordering::greater;
 }
 
 std::string_view
@@ -81,6 +100,21 @@ toString(
     default:
         MRDOCS_UNREACHABLE();
     }
+}
+
+std::strong_ordering
+operator<=>(Polymorphic<TArg> const& lhs, Polymorphic<TArg> const& rhs)
+{
+    if (lhs && rhs)
+    {
+        if (lhs->Kind == rhs->Kind)
+        {
+            return visit(*lhs, detail::VisitCompareFn<TArg>(*rhs));
+        }
+        return lhs->Kind <=> rhs->Kind;
+    }
+    return !lhs ? std::strong_ordering::less
+            : std::strong_ordering::greater;
 }
 
 std::string
@@ -149,6 +183,34 @@ tag_invoke(
     v = dom::LazyObject(I, domCorpus);
 }
 
+std::strong_ordering
+TypeTParam::
+operator<=>(TypeTParam const&) const = default;
+
+std::strong_ordering
+NonTypeTParam::
+operator<=>(NonTypeTParam const&) const = default;
+
+std::strong_ordering
+TemplateTParam::
+operator<=>(TemplateTParam const& other) const
+{
+    if (auto const r = Params.size() <=> other.Params.size();
+        !std::is_eq(r))
+    {
+        return r;
+    }
+    for (std::size_t i = 0; i < Params.size(); ++i)
+    {
+        if (auto const r = Params[i] <=> other.Params[i];
+            !std::is_eq(r))
+        {
+            return r;
+        }
+    }
+    return std::strong_ordering::equal;
+}
+
 template <class IO>
 void
 tag_invoke(
@@ -192,6 +254,23 @@ tag_invoke(
     DomCorpus const* domCorpus)
 {
     v = dom::LazyObject(I, domCorpus);
+}
+
+std::strong_ordering
+TemplateInfo::
+operator<=>(TemplateInfo const& other) const {
+    if (auto const r = Args.size() <=> other.Args.size();
+        !std::is_eq(r))
+    {
+        return r;
+    }
+    if (auto const r = Params.size() <=> other.Params.size();
+        !std::is_eq(r))
+    {
+        return r;
+    }
+    return std::tie(Args, Params, Requires, Primary) <=>
+        std::tie(Args, Params, other.Requires, other.Primary);
 }
 
 template <class IO>

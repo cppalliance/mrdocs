@@ -15,8 +15,8 @@
 | <<A-00,`A&lt;int&gt;`>> 
 | <<A-0c,`A&lt;long&gt;`>> 
 | <<B-00,`B`>> 
-| <<B-07,`B&lt;T*&gt;`>> 
 | <<B-06,`B&lt;T&&gt;`>> 
+| <<B-07,`B&lt;T*&gt;`>> 
 | <<C-0f,`C`>> 
 | <<C-0a,`C&lt;int, int&gt;`>> 
 | <<C-0e,`C&lt;T*, int&gt;`>> 
@@ -186,47 +186,6 @@ void
 f();
 ----
 
-[#B-07]
-== B&lt;T*&gt;
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;spec&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;typename T&gt;
-struct <<B-00,B>>&lt;T*&gt;;
-----
-
-=== Member Functions
-
-[cols=1]
-|===
-| Name 
-
-| <<B-07-g,`g`>> 
-|===
-
-
-
-[#B-07-g]
-== <<B-07,B>>&lt;T*&gt;::g
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;spec&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-void
-g();
-----
-
 [#B-06]
 == B&lt;T&&gt;
 
@@ -266,6 +225,47 @@ Declared in `&lt;class&hyphen;template&hyphen;spec&period;cpp&gt;`
 ----
 void
 h();
+----
+
+[#B-07]
+== B&lt;T*&gt;
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;spec&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+struct <<B-00,B>>&lt;T*&gt;;
+----
+
+=== Member Functions
+
+[cols=1]
+|===
+| Name 
+
+| <<B-07-g,`g`>> 
+|===
+
+
+
+[#B-07-g]
+== <<B-07,B>>&lt;T*&gt;::g
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;spec&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+g();
 ----
 
 [#C-0f]

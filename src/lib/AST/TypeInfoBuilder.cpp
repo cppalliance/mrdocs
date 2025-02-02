@@ -17,7 +17,7 @@ namespace clang::mrdocs {
 
 void
 TypeInfoBuilder::
-buildPointer(const PointerType* T, unsigned quals)
+buildPointer(const PointerType*, unsigned quals)
 {
     PointerTypeInfo I;
     I.CVQualifiers = toQualifierKind(quals);
@@ -27,7 +27,7 @@ buildPointer(const PointerType* T, unsigned quals)
 
 void
 TypeInfoBuilder::
-buildLValueReference(const LValueReferenceType* T)
+buildLValueReference(const LValueReferenceType*)
 {
     LValueReferenceTypeInfo I;
     *Inner = std::move(I);
@@ -36,7 +36,7 @@ buildLValueReference(const LValueReferenceType* T)
 
 void
 TypeInfoBuilder::
-buildRValueReference(const RValueReferenceType* T)
+buildRValueReference(const RValueReferenceType*)
 {
     RValueReferenceTypeInfo I;
     *Inner = std::move(I);

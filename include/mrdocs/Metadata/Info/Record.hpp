@@ -12,7 +12,6 @@
 #ifndef MRDOCS_API_METADATA_RECORD_HPP
 #define MRDOCS_API_METADATA_RECORD_HPP
 
-#include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Source.hpp>
@@ -20,9 +19,9 @@
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
+#include <mrdocs/ADT/Polymorphic.hpp>
 #include <vector>
 #include <ranges>
-#include <string_view>
 
 namespace clang::mrdocs {
 
@@ -300,6 +299,9 @@ struct RecordInfo final
         : InfoCommonBase(ID)
     {
     }
+
+    std::strong_ordering
+    operator<=>(const RecordInfo& other) const;
 };
 
 constexpr

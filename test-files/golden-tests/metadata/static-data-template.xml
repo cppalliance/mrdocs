@@ -17,6 +17,17 @@
           <type name="T"/>
         </variable>
       </template>
+      <template class="explicit">
+        <targ class="type" type="T"/>
+        <targ class="type" type="long"/>
+        <variable name="x" id="eKdgKT44WwfN7UkQXGEqVJssIPM=">
+          <file short-path="static-data-template.cpp" source-path="static-data-template.cpp" line="10" class="def"/>
+          <attr id="storage-class" name="static" value="2"/>
+          <attr id="is-inline"/>
+          <attr id="is-constexpr"/>
+          <type name="bool"/>
+        </variable>
+      </template>
       <template class="partial">
         <tparam name="U" class="type"/>
         <targ class="type" type="U*"/>
@@ -27,17 +38,6 @@
           <attr id="is-inline"/>
           <attr id="is-constexpr"/>
           <type name="T"/>
-        </variable>
-      </template>
-      <template class="explicit">
-        <targ class="type" type="T"/>
-        <targ class="type" type="long"/>
-        <variable name="x" id="eKdgKT44WwfN7UkQXGEqVJssIPM=">
-          <file short-path="static-data-template.cpp" source-path="static-data-template.cpp" line="10" class="def"/>
-          <attr id="storage-class" name="static" value="2"/>
-          <attr id="is-inline"/>
-          <attr id="is-constexpr"/>
-          <type name="bool"/>
         </variable>
       </template>
     </struct>

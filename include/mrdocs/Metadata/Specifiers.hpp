@@ -78,6 +78,8 @@ struct ExplicitInfo
     /** The operand of the explicit-specifier, if any.
     */
     std::string Operand;
+
+    auto operator<=>(const ExplicitInfo&) const = default;
 };
 
 /** Exception specification kinds
@@ -131,10 +133,7 @@ enum class OperatorKind
     Amp,
     Pipe,
     Tilde,
-    Exclaim,
     Equal,
-    Less,
-    Greater,
     PlusEqual,
     MinusEqual,
     StarEqual,
@@ -147,11 +146,17 @@ enum class OperatorKind
     GreaterGreater,
     LessLessEqual,
     GreaterGreaterEqual,
+
+    // Relational operators
+    Exclaim,
     EqualEqual,
     ExclaimEqual,
+    Less,
     LessEqual,
+    Greater,
     GreaterEqual,
     Spaceship,
+
     AmpAmp,
     PipePipe,
     PlusPlus,

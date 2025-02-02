@@ -49,7 +49,7 @@ std::unique_ptr<clang::ASTConsumer>
 ASTAction::
 CreateASTConsumer(
     clang::CompilerInstance& Compiler,
-    llvm::StringRef InFile)
+    llvm::StringRef)
 {
     return std::make_unique<ASTVisitorConsumer>(
         config_, ex_, Compiler);

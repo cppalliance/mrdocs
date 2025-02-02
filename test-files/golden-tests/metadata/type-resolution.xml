@@ -2,6 +2,21 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
+  <namespace-alias name="C" id="f75RIL8qKOwbyH6ffvrv59F0nCA=">
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="6"/>
+    <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
+  </namespace-alias>
+  <namespace-alias name="D" id="LXTs1uTCF/vevZU29QYVICehLFQ=">
+    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="8"/>
+    <type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;"/>
+  </namespace-alias>
+  <template>
+    <tparam name="T" class="type"/>
+    <namespace-alias name="E" id="ikh/cWe22atB10u7UsOKS5W39CA=">
+      <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="10"/>
+      <type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;T, long&gt;"/>
+    </namespace-alias>
+  </template>
   <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
     <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="1" class="def"/>
   </struct>
@@ -382,20 +397,5 @@
       </type>
     </param>
   </function>
-  <namespace-alias name="C" id="f75RIL8qKOwbyH6ffvrv59F0nCA=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="6"/>
-    <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-  </namespace-alias>
-  <namespace-alias name="D" id="LXTs1uTCF/vevZU29QYVICehLFQ=">
-    <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="8"/>
-    <type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;"/>
-  </namespace-alias>
-  <template>
-    <tparam name="T" class="type"/>
-    <namespace-alias name="E" id="ikh/cWe22atB10u7UsOKS5W39CA=">
-      <file short-path="type-resolution.cpp" source-path="type-resolution.cpp" line="10"/>
-      <type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;T, long&gt;"/>
-    </namespace-alias>
-  </template>
 </namespace>
 </mrdocs>

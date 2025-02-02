@@ -96,7 +96,7 @@ struct Node;
     @see https://www.doxygen.nl/manual/commands.html[Doxygen Special Tags]
 
  */
-enum class Kind
+enum class NodeKind
 {
     // VFALCO Don't forget to update
     // Node::isText() and Node::isBlock()
@@ -182,12 +182,12 @@ enum class Parts
 struct MRDOCS_DECL
     Node
 {
-    Kind kind;
+    NodeKind Kind;
 
     virtual ~Node() = default;
 
-    explicit Node(Kind kind_) noexcept
-        : kind(kind_)
+    explicit Node(NodeKind const kind_) noexcept
+        : Kind(kind_)
     {
     }
 
@@ -198,10 +198,11 @@ struct MRDOCS_DECL
         return ! isBlock();
     }
 
+    auto operator<=>(Node const&) const = default;
     bool operator==(Node const&)const noexcept = default;
     virtual bool equals(Node const& other) const noexcept
     {
-        return kind == other.kind;
+        return Kind == other.Kind;
     }
 };
 
@@ -221,12 +222,12 @@ struct Text : Node
 {
     std::string string;
 
-    static constexpr Kind static_kind = Kind::text;
+    static constexpr NodeKind static_kind = NodeKind::text;
 
     explicit
     Text(
         std::string string_ = std::string()) noexcept
-        : Node(Kind::text)
+        : Node(NodeKind::text)
         , string(std::move(string_))
     {
     }
@@ -236,17 +237,18 @@ struct Text : Node
         return false;
     }
 
+    auto operator<=>(Text const&) const = default;
     bool operator==(Text const&) const noexcept = default;
     bool equals(Node const& other) const noexcept override
     {
-        return kind == other.kind &&
+        return Kind == other.Kind &&
             *this == dynamic_cast<Text const&>(other);
     }
 
 protected:
     Text(
         std::string string_,
-        Kind kind_)
+        NodeKind kind_)
         : Node(kind_)
         , string(std::move(string_))
     {
@@ -259,20 +261,21 @@ struct Styled final : Text
 {
     Style style;
 
-    static constexpr Kind static_kind = Kind::styled;
+    static constexpr auto static_kind = NodeKind::styled;
 
     Styled(
         std::string string_ = std::string(),
         Style style_ = Style::none) noexcept
-        : Text(std::move(string_), Kind::styled)
+        : Text(std::move(string_), NodeKind::styled)
         , style(style_)
     {
     }
 
+    auto operator<=>(Styled const&) const = default;
     bool operator==(Styled const&) const noexcept = default;
     bool equals(Node const& other) const noexcept override
     {
-        return kind == other.kind &&
+        return Kind == other.Kind &&
             *this == dynamic_cast<Styled const&>(other);
     }
 
@@ -280,25 +283,26 @@ struct Styled final : Text
 
 /** A hyperlink.
 */
-struct Link : Text
+struct Link final : Text
 {
     std::string href;
 
-    static constexpr Kind static_kind = Kind::link;
+    static constexpr auto static_kind = NodeKind::link;
 
     explicit
     Link(
         std::string string_ = std::string(),
         std::string href_ = std::string()) noexcept
-        : Text(std::move(string_), Kind::link)
+        : Text(std::move(string_), NodeKind::link)
         , href(std::move(href_))
     {
     }
 
+    auto operator<=>(Link const&) const = default;
     bool operator==(Link const&) const noexcept = default;
     bool equals(Node const& other) const noexcept override
     {
-        return kind == other.kind &&
+        return Kind == other.Kind &&
             *this == dynamic_cast<Link const&>(other);
     }
 };
@@ -309,26 +313,27 @@ struct Reference : Text
 {
     SymbolID id = SymbolID::invalid;
 
-    static constexpr Kind static_kind = Kind::reference;
+    static constexpr auto static_kind = NodeKind::reference;
 
     explicit
     Reference(
         std::string string_ = std::string()) noexcept
-        : Text(std::move(string_), Kind::reference)
+        : Text(std::move(string_), NodeKind::reference)
     {
     }
 
+    auto operator<=>(Reference const&) const = default;
     bool operator==(Reference const&) const noexcept = default;
     bool equals(Node const& other) const noexcept override
     {
-        return kind == other.kind &&
+        return Kind == other.Kind &&
             *this == dynamic_cast<Reference const&>(other);
     }
 
 protected:
     Reference(
         std::string string_,
-        Kind kind_) noexcept
+        NodeKind const kind_) noexcept
         : Text(std::move(string_), kind_)
     {
     }
@@ -336,24 +341,25 @@ protected:
 
 /** Documentation copied from another symbol.
 */
-struct Copied : Reference
+struct Copied final : Reference
 {
     Parts parts;
 
-    static constexpr Kind static_kind = Kind::copied;
+    static constexpr auto static_kind = NodeKind::copied;
 
     Copied(
         std::string string_ = std::string(),
         Parts parts_ = Parts::all) noexcept
-        : Reference(std::move(string_), Kind::copied)
+        : Reference(std::move(string_), NodeKind::copied)
         , parts(parts_)
     {
     }
 
+    auto operator<=>(Copied const&) const = default;
     bool operator==(Copied const&) const noexcept = default;
     bool equals(Node const& other) const noexcept override
     {
-        return kind == other.kind &&
+        return Kind == other.Kind &&
             *this == dynamic_cast<Copied const&>(other);
     }
 };
@@ -385,9 +391,26 @@ struct MRDOCS_DECL
         return children.empty();
     }
 
+    auto operator<=>(Block const& other) const {
+        if (auto const cmp = children.size() <=> other.children.size();
+            !std::is_eq(cmp))
+        {
+            return cmp;
+        }
+        for (std::size_t i = 0; i < children.size(); ++i)
+        {
+            if (auto const cmp = *children[i] <=> *other.children[i];
+                !std::is_eq(cmp))
+            {
+                return cmp;
+            }
+        }
+        return std::strong_ordering::equal;
+    }
+
     bool operator==(Block const& other) const noexcept
     {
-        if (kind != other.kind)
+        if (Kind != other.Kind)
         {
             return false;
         }
@@ -401,7 +424,7 @@ struct MRDOCS_DECL
 
     bool equals(Node const& other) const noexcept override
     {
-        return kind == other.kind &&
+        return Kind == other.Kind &&
             *this == dynamic_cast<Block const&>(other);
     }
 
@@ -419,7 +442,7 @@ struct MRDOCS_DECL
 protected:
     explicit
     Block(
-        Kind kind_,
+        NodeKind const kind_,
         std::vector<Polymorphic<Text>> children_ = {}) noexcept
         : Node(kind_)
         , children(std::move(children_))
@@ -432,23 +455,24 @@ private:
 
 /** A manually specified section heading.
 */
-struct Heading : Block
+struct Heading final : Block
 {
-    static constexpr Kind static_kind = Kind::heading;
+    static constexpr auto static_kind = NodeKind::heading;
 
     std::string string;
 
     Heading(
         std::string string_ = std::string()) noexcept
-        : Block(Kind::heading)
+        : Block(NodeKind::heading)
         , string(std::move(string_))
     {
     }
 
+    auto operator<=>(Heading const&) const = default;
     bool operator==(Heading const&) const noexcept = default;
     bool equals(Node const& other) const noexcept override
     {
-        return kind == other.kind &&
+        return Kind == other.Kind &&
             *this == dynamic_cast<Heading const&>(other);
     }
 };
@@ -457,24 +481,25 @@ struct Heading : Block
 */
 struct Paragraph : Block
 {
-    static constexpr Kind static_kind = Kind::paragraph;
+    static constexpr auto static_kind = NodeKind::paragraph;
 
     Paragraph() noexcept
-        : Block(Kind::paragraph)
+        : Block(NodeKind::paragraph)
     {
     }
 
+    auto operator<=>(Paragraph const&) const = default;
     bool operator==(Paragraph const&) const noexcept = default;
     bool equals(Node const& other) const noexcept override
     {
-        return kind == other.kind &&
+        return Kind == other.Kind &&
             *this == dynamic_cast<Paragraph const&>(other);
     }
 
 protected:
     explicit
     Paragraph(
-        Kind kind,
+        NodeKind const kind,
         std::vector<Polymorphic<Text>> children_ = {}) noexcept
         : Block(kind, std::move(children_))
     {
@@ -483,19 +508,20 @@ protected:
 
 /** The brief description
 */
-struct Brief : Paragraph
+struct Brief final : Paragraph
 {
-    static constexpr Kind static_kind = Kind::brief;
+    static constexpr NodeKind static_kind = NodeKind::brief;
 
     Brief() noexcept
-        : Paragraph(Kind::brief)
+        : Paragraph(NodeKind::brief)
     {
     }
 
+    auto operator<=>(Brief const&) const = default;
     bool operator==(Brief const&) const noexcept = default;
     bool equals(Node const& other) const noexcept override
     {
-        return kind == other.kind &&
+        return Kind == other.Kind &&
             *this == dynamic_cast<Brief const&>(other);
     }
 };
@@ -506,44 +532,46 @@ struct Brief : Paragraph
     a note, tip, important, caution, or warning.
 
 */
-struct Admonition : Paragraph
+struct Admonition final : Paragraph
 {
     Admonish admonish;
 
     explicit
     Admonition(
-        Admonish admonish_ = Admonish::none) noexcept
-        : Paragraph(Kind::admonition)
+        Admonish const admonish_ = Admonish::none) noexcept
+        : Paragraph(NodeKind::admonition)
         , admonish(admonish_)
     {
     }
 
+    auto operator<=>(Admonition const&) const = default;
     bool operator==(Admonition const&) const noexcept = default;
     bool equals(Node const& other) const noexcept override
     {
-        return kind == other.kind &&
+        return Kind == other.Kind &&
             *this == dynamic_cast<Admonition const&>(other);
     }
 };
 
 /** Preformatted source code.
 */
-struct Code : Paragraph
+struct Code final : Paragraph
 {
     // VFALCO we can add a language (e.g., C++),
     //        then emit attributes in the generator.
 
-    static constexpr Kind static_kind = Kind::code;
+    static constexpr auto static_kind = NodeKind::code;
 
     Code() noexcept
-        : Paragraph(Kind::code)
+        : Paragraph(NodeKind::code)
     {
     }
 
+    auto operator<=>(Code const&) const = default;
     bool operator==(Code const&) const noexcept = default;
     bool equals(Node const& other) const noexcept override
     {
-        return kind == other.kind &&
+        return Kind == other.Kind &&
             *this == dynamic_cast<Code const&>(other);
     }
 };
@@ -552,12 +580,13 @@ struct Code : Paragraph
 */
 struct ListItem final : Paragraph
 {
-    static constexpr auto static_kind = Kind::list_item;
+    static constexpr auto static_kind = NodeKind::list_item;
 
     ListItem()
-        : Paragraph(Kind::list_item)
+        : Paragraph(NodeKind::list_item)
     {}
 
+    auto operator<=>(ListItem const&) const = default;
     bool
     operator==(ListItem const&) const noexcept = default;
 
@@ -581,13 +610,30 @@ struct ListItem final : Paragraph
 */
 struct UnorderedList final : Paragraph
 {
-    static constexpr auto static_kind = Kind::unordered_list;
+    static constexpr auto static_kind = NodeKind::unordered_list;
 
     std::vector<ListItem> items;
 
     UnorderedList()
-        : Paragraph(Kind::unordered_list)
+        : Paragraph(NodeKind::unordered_list)
     {
+    }
+
+    auto operator<=>(UnorderedList const& other) const {
+        if (auto const cmp = items.size() <=> other.items.size();
+            !std::is_eq(cmp))
+        {
+            return cmp;
+        }
+        for (std::size_t i = 0; i < items.size(); ++i)
+        {
+            if (auto const cmp = items[i] <=> other.items[i];
+                !std::is_eq(cmp))
+            {
+                return cmp;
+            }
+        }
+        return std::strong_ordering::equal;
     }
 
     bool
@@ -613,11 +659,13 @@ struct UnorderedList final : Paragraph
 */
 struct Details final : Paragraph
 {
-    static constexpr auto static_kind = Kind::details;
+    static constexpr auto static_kind = NodeKind::details;
 
     Details()
-        : Paragraph(Kind::details)
+        : Paragraph(NodeKind::details)
     {}
+
+    auto operator<=>(Details const&) const = default;
 
     bool
     operator==(const Details&) const noexcept = default;
@@ -639,52 +687,56 @@ struct Details final : Paragraph
 
 /** A @see paragraph
 */
-struct See : Paragraph
+struct See final : Paragraph
 {
-    static constexpr Kind static_kind = Kind::see;
+    static constexpr auto static_kind = NodeKind::see;
 
     See()
-        : Paragraph(Kind::see)
+        : Paragraph(NodeKind::see)
     {
     }
+
+    auto operator<=>(See const&) const = default;
 
     bool operator==(const See&)
         const noexcept = default;
 
     bool equals(const Node& other) const noexcept override
     {
-        return kind == other.kind &&
+        return Kind == other.Kind &&
             *this == dynamic_cast<const See&>(other);
     }
 };
 
 /** Documentation for a function parameter
 */
-struct Param : Paragraph
+struct Param final : Paragraph
 {
     std::string name;
     ParamDirection direction;
 
-    static constexpr Kind static_kind = Kind::param;
+    static constexpr auto static_kind = NodeKind::param;
 
     Param(
         std::string name_ = std::string(),
         Paragraph details_ = Paragraph(),
-        ParamDirection direction_ = ParamDirection::none)
+        ParamDirection const direction_ = ParamDirection::none)
         : Paragraph(
-            Kind::param,
+            NodeKind::param,
             std::move(details_.children))
         , name(std::move(name_))
         , direction(direction_)
     {
     }
 
+    auto operator<=>(Param const&) const = default;
+
     bool operator==(const Param&)
         const noexcept = default;
 
     bool equals(const Node& other) const noexcept override
     {
-        return kind == other.kind &&
+        return Kind == other.Kind &&
             *this == dynamic_cast<const Param&>(other);
     }
 };
@@ -692,114 +744,123 @@ struct Param : Paragraph
 
 /** Documentation for a function return type
 */
-struct Returns : Paragraph
+struct Returns final : Paragraph
 {
-    static constexpr Kind static_kind = Kind::returns;
+    static constexpr NodeKind static_kind = NodeKind::returns;
 
     Returns()
-        : Paragraph(Kind::returns)
+        : Paragraph(NodeKind::returns)
     {
     }
+
+    auto operator<=>(Returns const&) const = default;
 
     bool operator==(const Returns&)
         const noexcept = default;
 
     bool equals(const Node& other) const noexcept override
     {
-        return kind == other.kind &&
+        return Kind == other.Kind &&
             *this == dynamic_cast<const Returns&>(other);
     }
 };
 
 /** Documentation for a template parameter
 */
-struct TParam : Paragraph
+struct TParam final : Paragraph
 {
     std::string name;
 
-    static constexpr Kind static_kind = Kind::tparam;
+    static constexpr NodeKind static_kind = NodeKind::tparam;
 
     TParam()
-        : Paragraph(Kind::tparam)
+        : Paragraph(NodeKind::tparam)
     {
     }
 
+    auto operator<=>(TParam const&) const = default;
     bool operator==(const TParam&) const noexcept = default;
     bool equals(const Node& other) const noexcept override
     {
-        return kind == other.kind &&
+        return Kind == other.Kind &&
             *this == dynamic_cast<const TParam&>(other);
     }
 };
 
 /** Documentation for a function parameter
 */
-struct Throws : Paragraph
+struct Throws final : Paragraph
 {
     Reference exception;
 
-    static constexpr Kind static_kind = Kind::throws;
+    static constexpr NodeKind static_kind = NodeKind::throws;
 
     Throws(
         std::string exception_ = std::string(),
         Paragraph details_ = Paragraph())
         : Paragraph(
-            Kind::throws,
+            NodeKind::throws,
             std::move(details_.children))
         , exception(std::move(exception_))
     {
     }
+
+    auto operator<=>(Throws const&) const = default;
 
     bool operator==(const Throws&)
         const noexcept = default;
 
     bool equals(const Node& other) const noexcept override
     {
-        return kind == other.kind &&
+        return Kind == other.Kind &&
             *this == dynamic_cast<const Throws&>(other);
     }
 };
 
-struct Precondition : Paragraph
+struct Precondition final : Paragraph
 {
-    static constexpr Kind static_kind = Kind::precondition;
+    static constexpr NodeKind static_kind = NodeKind::precondition;
 
     Precondition(
         Paragraph details_ = Paragraph())
         : Paragraph(
-            Kind::precondition,
+            NodeKind::precondition,
             std::move(details_.children))
     {
     }
+
+    auto operator<=>(Precondition const&) const = default;
 
     bool operator==(const Precondition&)
         const noexcept = default;
 
     bool equals(const Node& other) const noexcept override
     {
-        return kind == other.kind &&
+        return Kind == other.Kind &&
             *this == dynamic_cast<const Precondition&>(other);
     }
 };
 
 struct Postcondition : Paragraph
 {
-    static constexpr Kind static_kind = Kind::postcondition;
+    static constexpr auto static_kind = NodeKind::postcondition;
 
     Postcondition(
         Paragraph details_ = Paragraph())
         : Paragraph(
-            Kind::postcondition,
+            NodeKind::postcondition,
             std::move(details_.children))
     {
     }
+
+    auto operator<=>(Postcondition const&) const = default;
 
     bool operator==(const Postcondition&)
         const noexcept = default;
 
     bool equals(const Node& other) const noexcept override
     {
-        return kind == other.kind &&
+        return Kind == other.Kind &&
             *this == dynamic_cast<const Postcondition&>(other);
     }
 };
@@ -812,50 +873,50 @@ template<class F, class... Args>
 constexpr
 auto
 visit(
-    Kind kind,
+    NodeKind kind,
     F&& f, Args&&... args)
 {
     switch(kind)
     {
-    case Kind::admonition:
+    case NodeKind::admonition:
         return f.template operator()<Admonition>(std::forward<Args>(args)...);
-    case Kind::brief:
+    case NodeKind::brief:
         return f.template operator()<Brief>(std::forward<Args>(args)...);
-    case Kind::code:
+    case NodeKind::code:
         return f.template operator()<Code>(std::forward<Args>(args)...);
-    case Kind::heading:
+    case NodeKind::heading:
         return f.template operator()<Heading>(std::forward<Args>(args)...);
-    case Kind::link:
+    case NodeKind::link:
         return f.template operator()<Link>(std::forward<Args>(args)...);
-    case Kind::reference:
+    case NodeKind::reference:
         return f.template operator()<Reference>(std::forward<Args>(args)...);
-    case Kind::copied:
+    case NodeKind::copied:
         return f.template operator()<Copied>(std::forward<Args>(args)...);
-    case Kind::list_item:
+    case NodeKind::list_item:
         return f.template operator()<ListItem>(std::forward<Args>(args)...);
-    case Kind::unordered_list:
+    case NodeKind::unordered_list:
         return f.template operator()<UnorderedList>(std::forward<Args>(args)...);
-    case Kind::paragraph:
+    case NodeKind::paragraph:
         return f.template operator()<Paragraph>(std::forward<Args>(args)...);
-    case Kind::param:
+    case NodeKind::param:
         return f.template operator()<Param>(std::forward<Args>(args)...);
-    case Kind::returns:
+    case NodeKind::returns:
         return f.template operator()<Returns>(std::forward<Args>(args)...);
-    case Kind::styled:
+    case NodeKind::styled:
         return f.template operator()<Styled>(std::forward<Args>(args)...);
-    case Kind::text:
+    case NodeKind::text:
         return f.template operator()<Text>(std::forward<Args>(args)...);
-    case Kind::tparam:
+    case NodeKind::tparam:
         return f.template operator()<TParam>(std::forward<Args>(args)...);
-    case Kind::throws:
+    case NodeKind::throws:
         return f.template operator()<Throws>(std::forward<Args>(args)...);
-    case Kind::details:
+    case NodeKind::details:
         return f.template operator()<Details>(std::forward<Args>(args)...);
-    case Kind::see:
+    case NodeKind::see:
         return f.template operator()<See>(std::forward<Args>(args)...);
-    case Kind::precondition:
+    case NodeKind::precondition:
         return f.template operator()<Precondition>(std::forward<Args>(args)...);
-    case Kind::postcondition:
+    case NodeKind::postcondition:
         return f.template operator()<Postcondition>(std::forward<Args>(args)...);
     default:
         return f.template operator()<void>(std::forward<Args>(args)...);
@@ -882,47 +943,47 @@ visit(
     auto visitor = makeVisitor<Node>(
         node, std::forward<Fn>(fn),
         std::forward<Args>(args)...);
-    switch(node.kind)
+    switch(node.Kind)
     {
-    case Kind::admonition:
+    case NodeKind::admonition:
         return visitor.template visit<Admonition>();
-    case Kind::brief:
+    case NodeKind::brief:
         return visitor.template visit<Brief>();
-    case Kind::code:
+    case NodeKind::code:
         return visitor.template visit<Code>();
-    case Kind::heading:
+    case NodeKind::heading:
         return visitor.template visit<Heading>();
-    case Kind::paragraph:
+    case NodeKind::paragraph:
         return visitor.template visit<Paragraph>();
-    case Kind::link:
+    case NodeKind::link:
         return visitor.template visit<Link>();
-    case Kind::reference:
+    case NodeKind::reference:
         return visitor.template visit<Reference>();
-    case Kind::copied:
+    case NodeKind::copied:
         return visitor.template visit<Copied>();
-    case Kind::list_item:
+    case NodeKind::list_item:
         return visitor.template visit<ListItem>();
-    case Kind::unordered_list:
+    case NodeKind::unordered_list:
         return visitor.template visit<UnorderedList>();
-    case Kind::param:
+    case NodeKind::param:
         return visitor.template visit<Param>();
-    case Kind::returns:
+    case NodeKind::returns:
         return visitor.template visit<Returns>();
-    case Kind::styled:
+    case NodeKind::styled:
         return visitor.template visit<Styled>();
-    case Kind::text:
+    case NodeKind::text:
         return visitor.template visit<Text>();
-    case Kind::tparam:
+    case NodeKind::tparam:
         return visitor.template visit<TParam>();
-    case Kind::throws:
+    case NodeKind::throws:
         return visitor.template visit<Throws>();
-    case Kind::details:
+    case NodeKind::details:
         return visitor.template visit<Details>();
-    case Kind::see:
+    case NodeKind::see:
         return visitor.template visit<See>();
-    case Kind::precondition:
+    case NodeKind::precondition:
         return visitor.template visit<Precondition>();
-    case Kind::postcondition:
+    case NodeKind::postcondition:
         return visitor.template visit<Postcondition>();
     default:
         MRDOCS_UNREACHABLE();
@@ -1029,6 +1090,22 @@ struct MRDOCS_DECL
         output format.
     */
     /** @{ */
+    auto operator<=>(Javadoc const& other) const noexcept {
+        if (auto const cmp = blocks_.size() <=> other.blocks_.size();
+            !std::is_eq(cmp))
+        {
+            return cmp;
+        }
+        for (std::size_t i = 0; i < blocks_.size(); ++i)
+        {
+            if (auto cmp = CompareDerived(blocks_[i], other.blocks_[i]);
+                !std::is_eq(cmp))
+            {
+                return cmp;
+            }
+        }
+        return std::strong_ordering::equal;
+    }
     bool operator==(Javadoc const&) const noexcept;
     bool operator!=(Javadoc const&) const noexcept;
     /* @} */

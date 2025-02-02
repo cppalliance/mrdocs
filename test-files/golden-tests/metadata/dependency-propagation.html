@@ -48,11 +48,43 @@
 <tbody>
 <tr>
 <td><a href="#N-A"><code>A</code></a> </td></tr><tr>
+<td><a href="#N-D"><code>D</code></a> </td></tr><tr>
 <td><a href="#N-B"><code>B</code></a> </td></tr><tr>
-<td><a href="#N-C"><code>C</code></a> </td></tr><tr>
-<td><a href="#N-D"><code>D</code></a> </td></tr>
+<td><a href="#N-C"><code>C</code></a> </td></tr>
 </tbody>
 </table>
+</div>
+<div>
+<div>
+<h2 id="N-B"><a href="#N">N</a>::B</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;dependency-propagation.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;typename T&gt;
+using B = <a href="#N-A">A</a>&lt;T&gt;;
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="N-C"><a href="#N">N</a>::C</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;dependency-propagation.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;typename T&gt;
+using C = <a href="#N-B">B</a>&lt;T&gt;;
+</code>
+</pre>
+</div>
 </div>
 <div>
 <div>
@@ -88,38 +120,6 @@ struct D;
 </div>
 
 
-</div>
-<div>
-<div>
-<h2 id="N-B"><a href="#N">N</a>::B</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;dependency-propagation.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-template&lt;typename T&gt;
-using B = <a href="#N-A">A</a>&lt;T&gt;;
-</code>
-</pre>
-</div>
-</div>
-<div>
-<div>
-<h2 id="N-C"><a href="#N">N</a>::C</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;dependency-propagation.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-template&lt;typename T&gt;
-using C = <a href="#N-B">B</a>&lt;T&gt;;
-</code>
-</pre>
-</div>
 </div>
 <div>
 <div>

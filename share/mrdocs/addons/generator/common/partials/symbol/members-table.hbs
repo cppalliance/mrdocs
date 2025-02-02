@@ -22,7 +22,7 @@
 {{/markup/tr}}
 {{/markup/thead}}
 {{#>markup/tbody}}
-{{#each (filter_by (sort_by members "name") "isRegular" "isSeeBelow")}}
+{{#each (filter_by members "isRegular" "isSeeBelow")}}
 {{> symbol/detail/members-table-row . includeBrief=true}}
 {{/each}}
 {{/markup/tbody}}
@@ -35,7 +35,7 @@
 {{/markup/tr}}
 {{/markup/thead}}
 {{#>markup/tbody}}
-{{#each (filter_by (sort_by members "name") "isRegular" "isSeeBelow")}}
+{{#each (filter_by members "isRegular" "isSeeBelow")}}
 {{> symbol/detail/members-table-row . includeBrief=false}}
 {{/each}}
 {{/markup/tbody}}

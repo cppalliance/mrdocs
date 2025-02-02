@@ -150,7 +150,7 @@ public:
     */
     template <range_of<SymbolID> R, class F, class... Args>
     void
-    traverseIDs(R&& range, F&& f, Args&&... args) const
+    visitIDs(R&& range, F&& f, Args&&... args) const
     {
         for (SymbolID const& id : range)
         {
@@ -200,7 +200,7 @@ public:
                 if (!opts.skipInherited)
                 {
                     auto MS = allMembers(I);
-                    traverseIDs(MS,
+                    visitIDs(MS,
                         std::forward<F>(f),
                         std::forward<Args>(args)...);
                     for (SymbolID const& id : MS)
@@ -210,7 +210,7 @@ public:
                         traverse(opts, *MI, std::forward<F>(f), std::forward<Args>(args)...);
                     }
                 }
-                else
+                else /* skipInherited */
                 {
                     auto nonInherited =
                         allMembers(I) |
@@ -219,7 +219,7 @@ public:
                             MRDOCS_CHECK_OR(MI, false);
                             return MI->Parent == I.id;
                         });
-                    traverseIDs(nonInherited,
+                    visitIDs(nonInherited,
                         std::forward<F>(f),
                         std::forward<Args>(args)...);
                     if (opts.recursive)
@@ -233,23 +233,28 @@ public:
                     }
                 }
             }
-            else
+            else /* ordered */
             {
                 auto members0 = allMembers(I);
                 static_assert(range_of<decltype(members0), SymbolID>);
                 std::vector<SymbolID> members;
                 members.reserve(std::ranges::distance(members0));
                 std::ranges::copy(members0, std::back_inserter(members));
-                std::stable_sort(members.begin(), members.end(),
+                std::ranges::sort(members,
                     [this](SymbolID const& lhs, SymbolID const& rhs)
                     {
                         auto const& lhsInfo = get(lhs);
                         auto const& rhsInfo = get(rhs);
-                        return lhsInfo < rhsInfo;
+                        if (auto const cmp = lhsInfo.Name <=> rhsInfo.Name;
+                            !std::is_eq(cmp))
+                        {
+                            return std::is_lt(cmp);
+                        }
+                        return std::is_lt(CompareDerived(lhsInfo, rhsInfo));
                     });
                 if (!opts.skipInherited)
                 {
-                    traverseIDs(members,
+                    visitIDs(members,
                         std::forward<F>(f),
                         std::forward<Args>(args)...);
                     if (opts.recursive)
@@ -262,7 +267,7 @@ public:
                         }
                     }
                 }
-                else
+                else /* skipInherited */
                 {
                     auto nonInherited =
                         members |
@@ -271,7 +276,7 @@ public:
                             MRDOCS_CHECK_OR(MI, false);
                             return MI->Parent == I.id;
                         });
-                    traverseIDs(nonInherited,
+                    visitIDs(nonInherited,
                         std::forward<F>(f),
                         std::forward<Args>(args)...);
                     if (opts.recursive)

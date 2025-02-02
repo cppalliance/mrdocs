@@ -12,6 +12,7 @@
 #include "lib/Metadata/Finalizers/BaseMembersFinalizer.hpp"
 #include "lib/Metadata/Finalizers/OverloadsFinalizer.hpp"
 #include "lib/Metadata/Finalizers/ReferenceFinalizer.hpp"
+#include "lib/Metadata/Finalizers/SortMembersFinalizer.hpp"
 #include "lib/Lib/Info.hpp"
 #include <mrdocs/Metadata.hpp>
 
@@ -39,6 +40,16 @@ finalizeOverloads(InfoSet& Info, Config const& config)
 }
 
 void
+finalizeMemberOrder(InfoSet& Info, Config const& config)
+{
+    MRDOCS_CHECK_OR(config->sortMembers);
+    SortMembersFinalizer sortMembersFinalizer(Info, config);
+    auto const globalIt = Info.find(SymbolID::global);
+    MRDOCS_CHECK_OR(globalIt != Info.end());
+    sortMembersFinalizer(*dynamic_cast<NamespaceInfo*>(globalIt->get()));
+}
+
+void
 finalizeReferences(InfoSet& Info, SymbolLookup& Lookup)
 {
     ReferenceFinalizer visitor(Info, Lookup);
@@ -62,6 +73,7 @@ finalize(CorpusImpl& corpus)
 {
     finalizeBaseMembers(corpus.info_, *corpus.config_);
     finalizeOverloads(corpus.info_, *corpus.config_);
+    finalizeMemberOrder(corpus.info_, *corpus.config_);
     auto const lookup = std::make_unique<SymbolLookup>(corpus);
     finalizeReferences(corpus.info_, *lookup);
 }

@@ -56,7 +56,7 @@
   </function>
   <function name="operator==" id="pqHl3WkOZfX6m6ltquhjuQtzXp4=">
     <file short-path="overloads.cpp" source-path="overloads.cpp" line="8"/>
-    <attr id="operator" name="eq" value="30"/>
+    <attr id="operator" name="eq" value="28"/>
     <return>
       <type name="bool"/>
     </return>
@@ -69,7 +69,7 @@
   </function>
   <function name="operator==" id="7bqo4XOxyyg5NIOu+8i4lZ3L47c=">
     <file short-path="overloads.cpp" source-path="overloads.cpp" line="9"/>
-    <attr id="operator" name="eq" value="30"/>
+    <attr id="operator" name="eq" value="28"/>
     <return>
       <type name="bool"/>
     </return>
@@ -82,7 +82,7 @@
   </function>
   <function name="operator==" id="gddLjn5hKdr6Ei8xKgtcB3bktI4=">
     <file short-path="overloads.cpp" source-path="overloads.cpp" line="17"/>
-    <attr id="operator" name="eq" value="30"/>
+    <attr id="operator" name="eq" value="28"/>
     <return>
       <type name="bool"/>
     </return>
@@ -95,7 +95,7 @@
   </function>
   <function name="operator==" id="cVrZLPSmQHMz47ziL64cElytjh0=">
     <file short-path="overloads.cpp" source-path="overloads.cpp" line="18"/>
-    <attr id="operator" name="eq" value="30"/>
+    <attr id="operator" name="eq" value="28"/>
     <return>
       <type name="bool"/>
     </return>

@@ -4,14 +4,14 @@
 <namespace id="//////////////////////////8=">
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     <file short-path="noreturn.cpp" source-path="noreturn.cpp" line="3" class="def"/>
+    <function name="f3" id="TkBjWwqMDycyUbq+TJZ9qfUhSn0=">
+      <file short-path="noreturn.cpp" source-path="noreturn.cpp" line="7"/>
+      <attr id="is-no-return"/>
+    </function>
     <function name="f2" id="QjsWLydQujVa097RP8f2Lq3nLQ4=">
       <file short-path="noreturn.cpp" source-path="noreturn.cpp" line="5"/>
       <attr id="is-no-return"/>
       <attr id="storage-class" name="static" value="2"/>
-    </function>
-    <function name="f3" id="TkBjWwqMDycyUbq+TJZ9qfUhSn0=">
-      <file short-path="noreturn.cpp" source-path="noreturn.cpp" line="7"/>
-      <attr id="is-no-return"/>
     </function>
     <friend id="vtSOGI1LSo+Nkv4yPvufiluoyko=">
       <file short-path="noreturn.cpp" source-path="noreturn.cpp" line="9"/>

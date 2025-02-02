@@ -32,6 +32,8 @@ struct NamespaceTranche {
     std::vector<SymbolID> Concepts;
     std::vector<SymbolID> Guides;
     std::vector<SymbolID> Usings;
+
+    auto operator<=>(NamespaceTranche const&) const = default;
 };
 
 MRDOCS_DECL
@@ -118,6 +120,8 @@ struct NamespaceInfo final
         : InfoCommonBase(ID)
     {
     }
+
+    auto operator<=>(NamespaceInfo const&) const = default;
 };
 
 MRDOCS_DECL

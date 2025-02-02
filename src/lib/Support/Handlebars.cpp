@@ -142,7 +142,7 @@ public:
     std::size_t size() const override
     {
         std::size_t n = parent_.size() + child_.size();
-        child_.visit([&](dom::String const& key, dom::Value const& value)
+        child_.visit([&](dom::String const& key, dom::Value const&)
         {
             if (parent_.exists(key))
             {
@@ -6311,7 +6311,7 @@ registerContainerHelpers(Handlebars& hbs)
             {
                 res.emplace_back(arr.at(i));
             }
-            std::ranges::sort(res, [](auto const& a, auto const& b) {
+            std::stable_sort(res.begin(), res.end(), [](auto const& a, auto const& b) {
                 return a < b;
             });
             dom::Array res2;

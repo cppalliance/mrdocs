@@ -128,6 +128,8 @@ struct MRDOCS_DECL
 
     constexpr virtual ~SourceInfo() = default;
 
+    auto operator<=>(SourceInfo const&) const = default;
+
 protected:
     SourceInfo() = default;
 };

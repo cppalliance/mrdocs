@@ -15,8 +15,7 @@
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Metadata/Name.hpp>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 dom::String toString(NameKind kind) noexcept
 {
@@ -42,15 +41,21 @@ writeTo(
 
 std::strong_ordering
 NameInfo::
-operator<=>(NameInfo const& other) const
+operator<=>(NameInfo const& other) const = default;
+
+std::strong_ordering
+operator<=>(Polymorphic<NameInfo> const& lhs, Polymorphic<NameInfo> const& rhs)
 {
-    auto const r = std::tie(Kind, id, Name, Prefix) <=>
-             std::tie(other.Kind, other.id, other.Name, other.Prefix);
-    if (!std::is_eq(r) || Kind == NameKind::Identifier)
+    if (lhs && rhs)
     {
-        return r;
+        if (lhs->Kind == rhs->Kind)
+        {
+            return visit(*lhs, detail::VisitCompareFn<NameInfo>(*rhs));
+        }
+        return lhs->Kind <=> rhs->Kind;
     }
-    return visit(other, detail::VisitCompareFn<NameInfo>{other});
+    return !lhs ? std::strong_ordering::less
+            : std::strong_ordering::greater;
 }
 
 static
@@ -144,5 +149,4 @@ tag_invoke(
     v = dom::LazyObject(I, domCorpus);
 }
 
-} // mrdocs
-} // clang
+} // clang::mrdocs

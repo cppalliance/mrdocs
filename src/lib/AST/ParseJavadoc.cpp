@@ -405,12 +405,12 @@ public:
         TextTy elem(std::forward<Args>(args)...);
         bool can_merge = false;
 
-        if(last_child_ && last_child_->kind == elem.kind)
+        if (last_child_ && last_child_->Kind == elem.Kind)
         {
-            if constexpr(TextTy::static_kind == doc::Kind::text)
+            if constexpr(TextTy::static_kind == doc::NodeKind::text)
                 can_merge = true;
 
-            if constexpr(TextTy::static_kind == doc::Kind::styled)
+            if constexpr(TextTy::static_kind == doc::NodeKind::styled)
                 can_merge = dynamic_cast<doc::Styled*>(
                     last_child_)->style == elem.style;
         }
@@ -481,7 +481,7 @@ parseStyled(StringRef s)
             if (currentStyle == doc::Style::none) {
                 bool const lastIsSame =
                     !result.empty() &&
-                    result.back()->kind == doc::Kind::text;
+                    result.back()->Kind == doc::NodeKind::text;
                 if (lastIsSame)
                 {
                     auto& lastText = static_cast<doc::Text&>(*result.back());
@@ -494,7 +494,7 @@ parseStyled(StringRef s)
             } else {
                 bool const lastIsSame =
                     !result.empty() &&
-                    result.back()->kind == doc::Kind::styled &&
+                    result.back()->Kind == doc::NodeKind::styled &&
                     dynamic_cast<doc::Styled&>(*result.back()).style == currentStyle;
                 if (lastIsSame)
                 {
@@ -571,7 +571,7 @@ visitChildren(
         return;
     }
 
-    bool const isVerbatim = block_->kind == doc::Kind::code;
+    bool const isVerbatim = block_->Kind == doc::NodeKind::code;
     if (isVerbatim)
     {
         return;
@@ -582,14 +582,14 @@ visitChildren(
     while(it != block_->children.end())
     {
         if (auto& child = *it;
-            child->kind == doc::Kind::text)
+            child->Kind == doc::NodeKind::text)
         {
             auto* text = dynamic_cast<doc::Text*>(child.operator->());
             MRDOCS_ASSERT(text);
             auto next = std::next(it);
             if(next != block_->children.end())
             {
-                if((*next)->kind == doc::Kind::text)
+                if((*next)->Kind == doc::NodeKind::text)
                 {
                     auto* next_text = dynamic_cast<doc::Text*>(next->operator->());
                     MRDOCS_ASSERT(next_text);
@@ -606,7 +606,7 @@ visitChildren(
     for (auto cIt = block_->children.begin(); cIt != block_->children.end();)
     {
         MRDOCS_ASSERT(cIt->operator->());
-        if ((*cIt)->kind == doc::Kind::text)
+        if ((*cIt)->Kind == doc::NodeKind::text)
         {
             auto* text = dynamic_cast<doc::Text*>(cIt->operator->());
             auto styledText = parseStyled(text->string);
@@ -652,12 +652,12 @@ build()
     // Merge ListItems into UnorderedList
     auto& blocks = jd_.getBlocks();
     for (auto it = blocks.begin(); it != blocks.end(); ) {
-        if ((*it)->kind == doc::Kind::list_item) {
+        if ((*it)->Kind == doc::NodeKind::list_item) {
             doc::UnorderedList ul;
             // Find last list item
             auto const begin = it;
             auto last = it;
-            while (last != blocks.end() && (*last)->kind == doc::Kind::list_item) {
+            while (last != blocks.end() && (*last)->Kind == doc::NodeKind::list_item) {
                 ++last;
             }
             // Move list items to ul.items
@@ -1569,7 +1569,7 @@ visitParamCommandComment(
         jd_.getBlocks(),
         [&](Polymorphic<doc::Block> const& b)
     {
-        if (b->kind != doc::Kind::param)
+        if (b->Kind != doc::NodeKind::param)
         {
             return false;
         }
@@ -1612,7 +1612,7 @@ visitTParamCommandComment(
         jd_.getBlocks(),
         [&](Polymorphic<doc::Block> const& b)
     {
-        if (b->kind != doc::Kind::tparam)
+        if (b->Kind != doc::NodeKind::tparam)
         {
             return false;
         }

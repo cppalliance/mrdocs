@@ -22,8 +22,8 @@
 <td><a href="#A-00"><code>A&lt;int&gt;</code></a> </td></tr><tr>
 <td><a href="#A-0c"><code>A&lt;long&gt;</code></a> </td></tr><tr>
 <td><a href="#B-00"><code>B</code></a> </td></tr><tr>
-<td><a href="#B-07"><code>B&lt;T*&gt;</code></a> </td></tr><tr>
 <td><a href="#B-06"><code>B&lt;T&&gt;</code></a> </td></tr><tr>
+<td><a href="#B-07"><code>B&lt;T*&gt;</code></a> </td></tr><tr>
 <td><a href="#C-0f"><code>C</code></a> </td></tr><tr>
 <td><a href="#C-0a"><code>C&lt;int, int&gt;</code></a> </td></tr><tr>
 <td><a href="#C-0e"><code>C&lt;T*, int&gt;</code></a> </td></tr>
@@ -216,52 +216,6 @@ f();
 </div>
 <div>
 <div>
-<h2 id="B-07">B&lt;T*&gt;</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;class-template-spec.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-template&lt;typename T&gt;
-struct <a href="#B-00">B</a>&lt;T*&gt;;
-</code>
-</pre>
-</div>
-<h2>Member Functions</h2>
-<table style="table-layout: fixed; width: 100%;">
-<thead>
-<tr>
-<th>Name</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="#B-07-g"><code>g</code></a> </td></tr>
-</tbody>
-</table>
-
-
-</div>
-<div>
-<div>
-<h2 id="B-07-g"><a href="#B-07">B</a>&lt;T*&gt;::g</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;class-template-spec.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-void
-g();
-</code>
-</pre>
-</div>
-</div>
-<div>
-<div>
 <h2 id="B-06">B&lt;T&&gt;</h2>
 </div>
 <div>
@@ -302,6 +256,52 @@ Declared in <code>&lt;class-template-spec.cpp&gt;</code></div>
 <code class="source-code cpp">
 void
 h();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="B-07">B&lt;T*&gt;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;class-template-spec.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;typename T&gt;
+struct <a href="#B-00">B</a>&lt;T*&gt;;
+</code>
+</pre>
+</div>
+<h2>Member Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#B-07-g"><code>g</code></a> </td></tr>
+</tbody>
+</table>
+
+
+</div>
+<div>
+<div>
+<h2 id="B-07-g"><a href="#B-07">B</a>&lt;T*&gt;::g</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;class-template-spec.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+g();
 </code>
 </pre>
 </div>

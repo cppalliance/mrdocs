@@ -47,8 +47,8 @@ struct A;
 <tbody>
 <tr>
 <td><a href="#A-x-05"><code>x</code></a> </td></tr><tr>
-<td><a href="#A-x-0a"><code>x&lt;U*, T&gt;</code></a> </td></tr><tr>
-<td><a href="#A-x-07"><code>x&lt;T, long&gt;</code></a> </td></tr>
+<td><a href="#A-x-07"><code>x&lt;T, long&gt;</code></a> </td></tr><tr>
+<td><a href="#A-x-0a"><code>x&lt;U*, T&gt;</code></a> </td></tr>
 </tbody>
 </table>
 
@@ -75,23 +75,6 @@ T x = 0;
 </div>
 <div>
 <div>
-<h2 id="A-x-0a"><a href="#A">A</a>::x&lt;U*, T&gt;</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;static-data-template.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-template&lt;typename U&gt;
-inline constexpr static
-T x&lt;U*, T&gt; = 1;
-</code>
-</pre>
-</div>
-</div>
-<div>
-<div>
 <h2 id="A-x-07"><a href="#A">A</a>::x&lt;T, long&gt;</h2>
 </div>
 <div>
@@ -103,6 +86,23 @@ Declared in <code>&lt;static-data-template.cpp&gt;</code></div>
 template&lt;&gt;
 inline constexpr static
 bool x&lt;T, long&gt; = 2;
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="A-x-0a"><a href="#A">A</a>::x&lt;U*, T&gt;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;static-data-template.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;typename U&gt;
+inline constexpr static
+T x&lt;U*, T&gt; = 1;
 </code>
 </pre>
 </div>

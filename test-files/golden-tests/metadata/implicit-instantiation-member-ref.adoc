@@ -11,11 +11,39 @@
 |===
 | Name 
 
-| <<A5,`A5`>> 
-| <<A9,`A9`>> 
 | <<S0-03,`S0`>> 
 | <<S0-00,`S0&lt;void&gt;`>> 
+| <<A5,`A5`>> 
+| <<A9,`A9`>> 
 |===
+
+[#A5]
+== A5
+
+
+=== Synopsis
+
+
+Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using A5 = <<S0-03,S0>>&lt;void&gt;;
+----
+
+[#A9]
+== A9
+
+
+=== Synopsis
+
+
+Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using A9 = <<A5,A5>>::<<S0-00-S2-0d,S2>>&lt;char&gt;::<<S0-00-S2-02-M3,M3>>&lt;int&gt;::<<S0-00-S2-02-M3,M3>>&lt;unsigned int&gt;::<<S0-00-S2-02-M2,M2>>;
+----
 
 [#S0-03]
 == S0
@@ -198,34 +226,6 @@ Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;c
 ----
 template&lt;typename V&gt;
 using M3 = <<S0-00-S2-0d,S2>>&lt;char&gt;;
-----
-
-[#A5]
-== A5
-
-
-=== Synopsis
-
-
-Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-using A5 = <<S0-03,S0>>&lt;void&gt;;
-----
-
-[#A9]
-== A9
-
-
-=== Synopsis
-
-
-Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-using A9 = <<A5,A5>>::<<S0-00-S2-0d,S2>>&lt;char&gt;::<<S0-00-S2-02-M3,M3>>&lt;int&gt;::<<S0-00-S2-02-M3,M3>>&lt;unsigned int&gt;::<<S0-00-S2-02-M2,M2>>;
 ----
 
 

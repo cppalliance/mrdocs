@@ -214,6 +214,19 @@
         </para>
       </doc>
     </function>
+    <function name="do_derived_shadowed" id="rTSnS8Pv8GoWusQQE42y0pgN4cw=">
+      <file short-path="reference.cpp" source-path="reference.cpp" line="55"/>
+      <return>
+        <type class="lvalue-reference">
+          <pointee-type id="ABxWcxit2TyVLv16ZxoJKAc6LKw=" name="derived"/>
+        </type>
+      </return>
+      <doc>
+        <para>
+          <text>This function should shadow the base class function.</text>
+        </para>
+      </doc>
+    </function>
     <function name="do_base_inherited" access="protected" id="TaKAQiDmx8UXkT9p/momqiOZyHU=">
       <file short-path="reference.cpp" source-path="reference.cpp" line="43"/>
       <return>
@@ -237,19 +250,6 @@
       <doc>
         <para>
           <text>This function should shadow the excluded_base function.</text>
-        </para>
-      </doc>
-    </function>
-    <function name="do_derived_shadowed" id="rTSnS8Pv8GoWusQQE42y0pgN4cw=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="55"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="ABxWcxit2TyVLv16ZxoJKAc6LKw=" name="derived"/>
-        </type>
-      </return>
-      <doc>
-        <para>
-          <text>This function should shadow the base class function.</text>
         </para>
       </doc>
     </function>
@@ -315,6 +315,32 @@
         <text>Should inherit functions as protected.</text>
       </para>
     </doc>
+    <function name="derived_shadowed" id="oVVGDloOS5F7d4VIcKLc0YpnsiE=">
+      <file short-path="reference.cpp" source-path="reference.cpp" line="65"/>
+      <return>
+        <type class="lvalue-reference">
+          <pointee-type id="KpfFXd3FeSffU3rGswegSIkkCrM=" name="protected_derived"/>
+        </type>
+      </return>
+      <doc>
+        <para>
+          <text>This function should shadow the base class function.</text>
+        </para>
+      </doc>
+    </function>
+    <function name="do_derived_shadowed" id="4ZJznHda5QNdk/tsMca4Psswlj0=">
+      <file short-path="reference.cpp" source-path="reference.cpp" line="68"/>
+      <return>
+        <type class="lvalue-reference">
+          <pointee-type id="KpfFXd3FeSffU3rGswegSIkkCrM=" name="protected_derived"/>
+        </type>
+      </return>
+      <doc>
+        <para>
+          <text>This function should shadow the base class function.</text>
+        </para>
+      </doc>
+    </function>
     <function name="base_base_inherited" id="2D7yc6q3buDhuPwzpn4pWzbu8ls=">
       <file short-path="reference.cpp" source-path="reference.cpp" line="21"/>
       <return>
@@ -351,19 +377,6 @@
       <doc>
         <para>
           <text>This function should shadow the excluded_base function.</text>
-        </para>
-      </doc>
-    </function>
-    <function name="derived_shadowed" id="oVVGDloOS5F7d4VIcKLc0YpnsiE=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="65"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="KpfFXd3FeSffU3rGswegSIkkCrM=" name="protected_derived"/>
-        </type>
-      </return>
-      <doc>
-        <para>
-          <text>This function should shadow the base class function.</text>
         </para>
       </doc>
     </function>
@@ -416,19 +429,6 @@
       <doc>
         <para>
           <text>This function should shadow the excluded_base function.</text>
-        </para>
-      </doc>
-    </function>
-    <function name="do_derived_shadowed" id="4ZJznHda5QNdk/tsMca4Psswlj0=">
-      <file short-path="reference.cpp" source-path="reference.cpp" line="68"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="KpfFXd3FeSffU3rGswegSIkkCrM=" name="protected_derived"/>
-        </type>
-      </return>
-      <doc>
-        <para>
-          <text>This function should shadow the base class function.</text>
         </para>
       </doc>
     </function>

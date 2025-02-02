@@ -83,13 +83,9 @@
   </namespace>
   <struct name="F" id="47VHAvq/9ANwJboZT8J8RwBjMLU=">
     <file short-path="ref.cpp" source-path="ref.cpp" line="54" class="def"/>
-    <function name="operator!" id="ZoClmvCX93Yg08gfEaOD38rj0EM=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="93"/>
-      <attr id="operator" name="not" value="14"/>
-    </function>
-    <function name="operator!=" id="+h1YcypZimsCxOl2AOqurQDO6/w=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="94"/>
-      <attr id="operator" name="not_eq" value="31"/>
+    <function name="operator=" id="4kEX5cyrkrbZqQhxb/7zuwJe06c=">
+      <file short-path="ref.cpp" source-path="ref.cpp" line="91"/>
+      <attr id="operator" name="assign" value="14"/>
       <param>
         <type class="lvalue-reference">
           <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
@@ -107,7 +103,7 @@
     </function>
     <function name="operator%=" id="eH/S82KH2Afa//Il8eL+eetP2oY=">
       <file short-path="ref.cpp" source-path="ref.cpp" line="86"/>
-      <attr id="operator" name="mod_eq" value="22"/>
+      <attr id="operator" name="mod_eq" value="19"/>
       <param>
         <type class="lvalue-reference">
           <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
@@ -134,7 +130,7 @@
     </function>
     <function name="operator&amp;=" id="s8Sj0SHvk8ztPnOv7kqTpLOFym0=">
       <file short-path="ref.cpp" source-path="ref.cpp" line="65"/>
-      <attr id="operator" name="and_eq" value="24"/>
+      <attr id="operator" name="and_eq" value="21"/>
       <param>
         <type class="lvalue-reference">
           <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
@@ -161,7 +157,7 @@
     </function>
     <function name="operator*=" id="iRsJO4RJUDxRReCEOEGUr8z2Dog=">
       <file short-path="ref.cpp" source-path="ref.cpp" line="84"/>
-      <attr id="operator" name="star_eq" value="20"/>
+      <attr id="operator" name="star_eq" value="17"/>
       <param>
         <type class="lvalue-reference">
           <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
@@ -183,7 +179,7 @@
     </function>
     <function name="operator+=" id="PJEPb391sh5h9UGcBsg9S+NbbOc=">
       <file short-path="ref.cpp" source-path="ref.cpp" line="62"/>
-      <attr id="operator" name="plus_eq" value="18"/>
+      <attr id="operator" name="plus_eq" value="15"/>
       <param>
         <type class="lvalue-reference">
           <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
@@ -214,7 +210,7 @@
     </function>
     <function name="operator-=" id="KDQr8/lEqgd8pJtSdTnd3fC66vY=">
       <file short-path="ref.cpp" source-path="ref.cpp" line="71"/>
-      <attr id="operator" name="minus_eq" value="19"/>
+      <attr id="operator" name="minus_eq" value="16"/>
       <param>
         <type class="lvalue-reference">
           <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
@@ -245,16 +241,7 @@
     </function>
     <function name="operator/=" id="nlXVuPy3T3MP7qelm3WGXP9sxHs=">
       <file short-path="ref.cpp" source-path="ref.cpp" line="88"/>
-      <attr id="operator" name="slash_eq" value="21"/>
-      <param>
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator&lt;" id="qZqDjtbfsftj0EhxY2cdp4y5r6E=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="74"/>
-      <attr id="operator" name="lt" value="16"/>
+      <attr id="operator" name="slash_eq" value="18"/>
       <param>
         <type class="lvalue-reference">
           <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
@@ -263,7 +250,7 @@
     </function>
     <function name="operator&lt;&lt;" id="1pkl7XGJ2JVw7Xbm/xwSNKmflV4=">
       <file short-path="ref.cpp" source-path="ref.cpp" line="75"/>
-      <attr id="operator" name="lshift" value="26"/>
+      <attr id="operator" name="lshift" value="23"/>
       <param>
         <type class="lvalue-reference">
           <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
@@ -272,61 +259,7 @@
     </function>
     <function name="operator&lt;&lt;=" id="rn2dr+lEU1Y+nZ76RvF705Amt7Y=">
       <file short-path="ref.cpp" source-path="ref.cpp" line="76"/>
-      <attr id="operator" name="lshift_eq" value="28"/>
-      <param>
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator&lt;=" id="0rK5iNi5hwJI0k+ajN7X/jsUDew=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="77"/>
-      <attr id="operator" name="le" value="32"/>
-      <param>
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator&lt;=&gt;" id="cqSDwRFzB3Z6A5z95/VLPQSp5GI=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="78"/>
-      <attr id="operator" name="3way" value="34"/>
-      <param>
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator=" id="4kEX5cyrkrbZqQhxb/7zuwJe06c=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="91"/>
-      <attr id="operator" name="assign" value="15"/>
-      <param>
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator==" id="k1TITJ9F+RdpX68VCHzCVjpumSE=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="92"/>
-      <attr id="operator" name="eq" value="30"/>
-      <param>
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator&gt;" id="im95jlqAf+bFSRJ6laltkGbJj38=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="79"/>
-      <attr id="operator" name="gt" value="17"/>
-      <param>
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
-    <function name="operator&gt;=" id="c1PYDvrte7rUAE4DaiUopjWnAWY=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="82"/>
-      <attr id="operator" name="ge" value="33"/>
+      <attr id="operator" name="lshift_eq" value="25"/>
       <param>
         <type class="lvalue-reference">
           <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
@@ -335,7 +268,7 @@
     </function>
     <function name="operator&gt;&gt;" id="UW/rnK+Cj7mGybqf3Ftz8ov8AAk=">
       <file short-path="ref.cpp" source-path="ref.cpp" line="80"/>
-      <attr id="operator" name="rshift" value="27"/>
+      <attr id="operator" name="rshift" value="24"/>
       <param>
         <type class="lvalue-reference">
           <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
@@ -344,7 +277,7 @@
     </function>
     <function name="operator&gt;&gt;=" id="P2xgjlanIonF9IWlntd4b45qHv8=">
       <file short-path="ref.cpp" source-path="ref.cpp" line="81"/>
-      <attr id="operator" name="rshift_eq" value="29"/>
+      <attr id="operator" name="rshift_eq" value="26"/>
       <param>
         <type class="lvalue-reference">
           <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
@@ -371,7 +304,7 @@
     </function>
     <function name="operator^=" id="PCZOPisEjvPudnFdMOV2Wqc+HDI=">
       <file short-path="ref.cpp" source-path="ref.cpp" line="90"/>
-      <attr id="operator" name="xor_eq" value="23"/>
+      <attr id="operator" name="xor_eq" value="20"/>
       <param>
         <type class="lvalue-reference">
           <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
@@ -389,7 +322,7 @@
     </function>
     <function name="operator|=" id="oSeQzrs59Zd9rcweG2DRZVa6OpQ=">
       <file short-path="ref.cpp" source-path="ref.cpp" line="68"/>
-      <attr id="operator" name="or_eq" value="25"/>
+      <attr id="operator" name="or_eq" value="22"/>
       <param>
         <type class="lvalue-reference">
           <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
@@ -408,6 +341,73 @@
     <function name="operator~" id="i0ULCt5GV/PS0YAGQP2fValTik8=">
       <file short-path="ref.cpp" source-path="ref.cpp" line="56"/>
       <attr id="operator" name="bitnot" value="13"/>
+    </function>
+    <function name="operator!" id="ZoClmvCX93Yg08gfEaOD38rj0EM=">
+      <file short-path="ref.cpp" source-path="ref.cpp" line="93"/>
+      <attr id="operator" name="not" value="27"/>
+    </function>
+    <function name="operator==" id="k1TITJ9F+RdpX68VCHzCVjpumSE=">
+      <file short-path="ref.cpp" source-path="ref.cpp" line="92"/>
+      <attr id="operator" name="eq" value="28"/>
+      <param>
+        <type class="lvalue-reference">
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+        </type>
+      </param>
+    </function>
+    <function name="operator!=" id="+h1YcypZimsCxOl2AOqurQDO6/w=">
+      <file short-path="ref.cpp" source-path="ref.cpp" line="94"/>
+      <attr id="operator" name="not_eq" value="29"/>
+      <param>
+        <type class="lvalue-reference">
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+        </type>
+      </param>
+    </function>
+    <function name="operator&lt;" id="qZqDjtbfsftj0EhxY2cdp4y5r6E=">
+      <file short-path="ref.cpp" source-path="ref.cpp" line="74"/>
+      <attr id="operator" name="lt" value="30"/>
+      <param>
+        <type class="lvalue-reference">
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+        </type>
+      </param>
+    </function>
+    <function name="operator&lt;=" id="0rK5iNi5hwJI0k+ajN7X/jsUDew=">
+      <file short-path="ref.cpp" source-path="ref.cpp" line="77"/>
+      <attr id="operator" name="le" value="31"/>
+      <param>
+        <type class="lvalue-reference">
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+        </type>
+      </param>
+    </function>
+    <function name="operator&gt;" id="im95jlqAf+bFSRJ6laltkGbJj38=">
+      <file short-path="ref.cpp" source-path="ref.cpp" line="79"/>
+      <attr id="operator" name="gt" value="32"/>
+      <param>
+        <type class="lvalue-reference">
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+        </type>
+      </param>
+    </function>
+    <function name="operator&gt;=" id="c1PYDvrte7rUAE4DaiUopjWnAWY=">
+      <file short-path="ref.cpp" source-path="ref.cpp" line="82"/>
+      <attr id="operator" name="ge" value="33"/>
+      <param>
+        <type class="lvalue-reference">
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+        </type>
+      </param>
+    </function>
+    <function name="operator&lt;=&gt;" id="cqSDwRFzB3Z6A5z95/VLPQSp5GI=">
+      <file short-path="ref.cpp" source-path="ref.cpp" line="78"/>
+      <attr id="operator" name="3way" value="34"/>
+      <param>
+        <type class="lvalue-reference">
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+        </type>
+      </param>
     </function>
   </struct>
   <function name="f0" id="e1UQQek5v3C9OClW5cGf57XvwQo=">

@@ -353,6 +353,23 @@ Declared in `&lt;copy&hyphen;dependencies&period;cpp&gt;`
 do&lowbar;derived&lowbar;shadowed();
 ----
 
+[#derived-excluded_inherited]
+== <<derived,derived>>::excluded&lowbar;inherited
+
+
+This function should be inherited by derived classes&period;
+
+=== Synopsis
+
+
+Declared in `&lt;copy&hyphen;dependencies&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+excluded&lowbar;base&
+excluded&lowbar;inherited();
+----
+
 [#derived-do_excluded_inherited]
 == <<derived,derived>>::do&lowbar;excluded&lowbar;inherited
 
@@ -385,23 +402,6 @@ Declared in `&lt;copy&hyphen;dependencies&period;cpp&gt;`
 ----
 excluded&lowbar;base&
 do&lowbar;shadowed();
-----
-
-[#derived-excluded_inherited]
-== <<derived,derived>>::excluded&lowbar;inherited
-
-
-This function should be inherited by derived classes&period;
-
-=== Synopsis
-
-
-Declared in `&lt;copy&hyphen;dependencies&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-excluded&lowbar;base&
-excluded&lowbar;inherited();
 ----
 
 [#private_derived]

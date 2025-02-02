@@ -35,13 +35,13 @@
   </struct>
   <class name="V" id="9kzYwt0WPztMEDUaFxul1Jvqqs8=">
     <file short-path="record-data.cpp" source-path="record-data.cpp" line="19" class="def"/>
-    <field name="i" access="private" id="EWXCzRl9erjnMQFZ8VmHC5cVkLM=">
-      <file short-path="record-data.cpp" source-path="record-data.cpp" line="21"/>
-      <type name="int"/>
-    </field>
     <field name="j" access="protected" id="VKvx+Pci4bUmtjCsXJqKb7SNYqw=">
       <file short-path="record-data.cpp" source-path="record-data.cpp" line="23"/>
       <type name="unsigned long"/>
+    </field>
+    <field name="i" access="private" id="EWXCzRl9erjnMQFZ8VmHC5cVkLM=">
+      <file short-path="record-data.cpp" source-path="record-data.cpp" line="21"/>
+      <type name="int"/>
     </field>
     <field name="k" access="private" id="iKr1oLycejUWY6AnSgoQnbmaCEE=">
       <file short-path="record-data.cpp" source-path="record-data.cpp" line="25"/>

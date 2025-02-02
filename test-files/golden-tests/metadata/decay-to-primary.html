@@ -18,13 +18,43 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="#A0"><code>A0</code></a> </td></tr><tr>
-<td><a href="#A1"><code>A1</code></a> </td></tr><tr>
 <td><a href="#S0-03"><code>S0</code></a> </td></tr><tr>
 <td><a href="#S0-09"><code>S0&lt;short&gt;</code></a> </td></tr><tr>
-<td><a href="#S0-00"><code>S0&lt;void&gt;</code></a> </td></tr>
+<td><a href="#S0-00"><code>S0&lt;void&gt;</code></a> </td></tr><tr>
+<td><a href="#A0"><code>A0</code></a> </td></tr><tr>
+<td><a href="#A1"><code>A1</code></a> </td></tr>
 </tbody>
 </table>
+</div>
+<div>
+<div>
+<h2 id="A0">A0</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;decay-to-primary.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+using A0 = <a href="#S0-03">S0</a>&lt;void&gt;;
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="A1">A1</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;decay-to-primary.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+using A1 = <a href="#A0">A0</a>::<a href="#S0-00-M1">M1</a>&lt;short&gt;::<a href="#S0-09-M0">M0</a>;
+</code>
+</pre>
+</div>
 </div>
 <div>
 <div>
@@ -208,36 +238,6 @@ Declared in <code>&lt;decay-to-primary.cpp&gt;</code></div>
 <code class="source-code cpp">
 template&lt;typename U&gt;
 using M1 = <a href="#S0-03">S0</a>&lt;U&gt;;
-</code>
-</pre>
-</div>
-</div>
-<div>
-<div>
-<h2 id="A0">A0</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;decay-to-primary.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-using A0 = <a href="#S0-03">S0</a>&lt;void&gt;;
-</code>
-</pre>
-</div>
-</div>
-<div>
-<div>
-<h2 id="A1">A1</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;decay-to-primary.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-using A1 = <a href="#A0">A0</a>::<a href="#S0-00-M1">M1</a>&lt;short&gt;::<a href="#S0-09-M0">M0</a>;
 </code>
 </pre>
 </div>

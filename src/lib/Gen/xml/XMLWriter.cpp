@@ -216,7 +216,7 @@ writeNamespace(
     {
         tags_.write("using-directive", {}, { { id } });
     }
-    corpus_.traverse({.ordered=true}, I, *this);
+    corpus_.traverse(I, *this);
     tags_.close(namespaceTagName);
 }
 
@@ -242,7 +242,7 @@ writeEnum(
 
     writeJavadoc(I.javadoc);
 
-    corpus_.traverse({.ordered=true}, I, *this);
+    corpus_.traverse(I, *this);
 
     tags_.close(enumTagName);
 }
@@ -357,7 +357,7 @@ XMLWriter::
 writeOverloads(
     OverloadsInfo const& I)
 {
-    corpus_.traverse({.ordered=true}, I, *this);
+    corpus_.traverse(I, *this);
 }
 
 void
@@ -513,7 +513,7 @@ writeRecord(
 
     writeJavadoc(I.javadoc);
 
-    corpus_.traverse({.ordered=true}, I, *this);
+    corpus_.traverse(I, *this);
 
     tags_.close(tagName);
 
@@ -699,7 +699,7 @@ writeSpecialization(
     for(auto const& targ : I.Args)
         writeTemplateArg(*targ, tags_);
 
-    corpus_.traverse({.ordered=true}, I, *this);
+    corpus_.traverse(I, *this);
 
     tags_.close(specializationTagName);
 }
@@ -725,66 +725,66 @@ void
 XMLWriter::
 writeNode(doc::Node const& node)
 {
-    switch(node.kind)
+    switch(node.Kind)
     {
-    case doc::Kind::text:
+    case doc::NodeKind::text:
         writeText(dynamic_cast<doc::Text const&>(node));
         break;
-    case doc::Kind::styled:
+    case doc::NodeKind::styled:
         writeStyledText(dynamic_cast<doc::Styled const&>(node));
         break;
-    case doc::Kind::heading:
+    case doc::NodeKind::heading:
         writeHeading(dynamic_cast<doc::Heading const&>(node));
         break;
-    case doc::Kind::paragraph:
+    case doc::NodeKind::paragraph:
         writeParagraph(dynamic_cast<doc::Paragraph const&>(node));
         break;
-    case doc::Kind::link:
+    case doc::NodeKind::link:
         writeLink(dynamic_cast<doc::Link const&>(node));
         break;
-    case doc::Kind::list_item:
+    case doc::NodeKind::list_item:
         writeListItem(dynamic_cast<doc::ListItem const&>(node));
         break;
-    case doc::Kind::unordered_list:
+    case doc::NodeKind::unordered_list:
         writeUnorderedList(dynamic_cast<doc::UnorderedList const&>(node));
         break;
-    case doc::Kind::brief:
+    case doc::NodeKind::brief:
         writeBrief(dynamic_cast<doc::Brief const&>(node));
         break;
-    case doc::Kind::admonition:
+    case doc::NodeKind::admonition:
         writeAdmonition(dynamic_cast<doc::Admonition const&>(node));
         break;
-    case doc::Kind::code:
+    case doc::NodeKind::code:
         writeCode(dynamic_cast<doc::Code const&>(node));
         break;
-    case doc::Kind::param:
+    case doc::NodeKind::param:
         writeJParam(dynamic_cast<doc::Param const&>(node));
         break;
-    case doc::Kind::tparam:
+    case doc::NodeKind::tparam:
         writeTParam(dynamic_cast<doc::TParam const&>(node));
         break;
-    case doc::Kind::returns:
+    case doc::NodeKind::returns:
         writeReturns(dynamic_cast<doc::Returns const&>(node));
         break;
-    case doc::Kind::reference:
+    case doc::NodeKind::reference:
         writeReference(dynamic_cast<doc::Reference const&>(node));
         break;
-    case doc::Kind::copied:
+    case doc::NodeKind::copied:
         writeCopied(dynamic_cast<doc::Copied const&>(node));
         break;
-    case doc::Kind::throws:
+    case doc::NodeKind::throws:
         writeThrows(dynamic_cast<doc::Throws const&>(node));
         break;
-    case doc::Kind::details:
+    case doc::NodeKind::details:
         writeDetails(dynamic_cast<doc::Details const&>(node));
         break;
-    case doc::Kind::see:
+    case doc::NodeKind::see:
         writeSee(dynamic_cast<doc::See const&>(node));
         break;
-    case doc::Kind::precondition:
+    case doc::NodeKind::precondition:
         writePrecondition(dynamic_cast<doc::Precondition const&>(node));
         break;
-    case doc::Kind::postcondition:
+    case doc::NodeKind::postcondition:
         writePostcondition(dynamic_cast<doc::Postcondition const&>(node));
         break;
     default:

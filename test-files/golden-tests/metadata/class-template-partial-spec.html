@@ -47,8 +47,8 @@ struct A;
 <tbody>
 <tr>
 <td><a href="#A-B-0a"><code>B</code></a> </td></tr><tr>
-<td><a href="#A-B-06"><code>B&lt;U*, T&gt;</code></a> </td></tr><tr>
-<td><a href="#A-B-04"><code>B&lt;T, long&gt;</code></a> </td></tr>
+<td><a href="#A-B-04"><code>B&lt;T, long&gt;</code></a> </td></tr><tr>
+<td><a href="#A-B-06"><code>B&lt;U*, T&gt;</code></a> </td></tr>
 </tbody>
 </table>
 
@@ -76,24 +76,6 @@ struct B;
 </div>
 <div>
 <div>
-<h2 id="A-B-06"><a href="#A">A</a>::B&lt;U*, T&gt;</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;class-template-partial-spec.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-template&lt;typename U&gt;
-struct <a href="#A-B-0a">B</a>&lt;U*, T&gt;;
-</code>
-</pre>
-</div>
-
-
-</div>
-<div>
-<div>
 <h2 id="A-B-04"><a href="#A">A</a>::B&lt;T, long&gt;</h2>
 </div>
 <div>
@@ -104,6 +86,24 @@ Declared in <code>&lt;class-template-partial-spec.cpp&gt;</code></div>
 <code class="source-code cpp">
 template&lt;&gt;
 struct <a href="#A-B-0a">B</a>&lt;T, long&gt;;
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="A-B-06"><a href="#A">A</a>::B&lt;U*, T&gt;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;class-template-partial-spec.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;typename U&gt;
+struct <a href="#A-B-0a">B</a>&lt;U*, T&gt;;
 </code>
 </pre>
 </div>

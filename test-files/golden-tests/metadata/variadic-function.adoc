@@ -25,6 +25,34 @@
 | <<g,`g`>> 
 |===
 
+[#T]
+== T
+
+
+=== Synopsis
+
+
+Declared in `&lt;variadic&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using T = void(&period;&period;&period;);
+----
+
+[#U]
+== U
+
+
+=== Synopsis
+
+
+Declared in `&lt;variadic&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using U = void(int, &period;&period;&period;);
+----
+
 [#C]
 == C
 
@@ -73,34 +101,6 @@ Declared in `&lt;variadic&hyphen;function&period;cpp&gt;`
 ----
 void
 g(int, &period;&period;&period;);
-----
-
-[#T]
-== T
-
-
-=== Synopsis
-
-
-Declared in `&lt;variadic&hyphen;function&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-using T = void(&period;&period;&period;);
-----
-
-[#U]
-== U
-
-
-=== Synopsis
-
-
-Declared in `&lt;variadic&hyphen;function&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-using U = void(int, &period;&period;&period;);
 ----
 
 

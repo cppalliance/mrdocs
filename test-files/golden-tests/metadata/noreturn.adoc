@@ -63,6 +63,22 @@ struct T;
 
 
 
+[#T-f3]
+== <<T,T>>::f3
+
+
+=== Synopsis
+
+
+Declared in `&lt;noreturn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&lsqb;&lsqb;noreturn&rsqb;&rsqb;
+void
+f3();
+----
+
 [#T-f2]
 == <<T,T>>::f2
 
@@ -78,22 +94,6 @@ Declared in `&lt;noreturn&period;cpp&gt;`
 static
 void
 f2();
-----
-
-[#T-f3]
-== <<T,T>>::f3
-
-
-=== Synopsis
-
-
-Declared in `&lt;noreturn&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-&lsqb;&lsqb;noreturn&rsqb;&rsqb;
-void
-f3();
 ----
 
 [#T-08friend]

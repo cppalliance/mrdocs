@@ -211,6 +211,48 @@
         "details": "Determine whether symbols in anonymous namespaces should be extracted. When set to `always`, symbols in anonymous namespaces are always extracted. When set to `dependency`, symbols in anonymous namespaces are extracted only if they are referenced by the source code. When set to `never`, symbols in anonymous namespaces are never extracted.",
         "type": "bool",
         "default": true
+      },
+      {
+        "name": "sort-members",
+        "brief": "Sort the members of a record or namespace",
+        "details": "When set to `true`, sort the members of a record or namespace by name and parameters. When set to `false`, the members are included in the declaration order they are extracted.",
+        "type": "bool",
+        "default": true
+      },
+      {
+        "name": "sort-members-ctors-1st",
+        "brief": "Sort constructors first",
+        "details": "When set to `true`, constructors are sorted first in the list of members of a record.",
+        "type": "bool",
+        "default": true
+      },
+      {
+        "name": "sort-members-dtors-1st",
+        "brief": "Sort destructors first",
+        "details": "When set to `true`, destructors are sorted first in the list of members of a record.",
+        "type": "bool",
+        "default": true
+      },
+      {
+        "name": "sort-members-assignment-1st",
+        "brief": "Sort assignment operators first",
+        "details": "When set to `true`, assignment operators are sorted first in the list of members of a record.",
+        "type": "bool",
+        "default": true
+      },
+      {
+        "name": "sort-members-conversion-last",
+        "brief": "Sort conversion operators last",
+        "details": "When set to `true`, conversion operators are sorted last in the list of members of a record or namespace.",
+        "type": "bool",
+        "default": true
+      },
+      {
+        "name": "sort-members-relational-last",
+        "brief": "Sort relational operators last",
+        "details": "When set to `true`, relational operators are sorted last in the list of members of a record or namespace.",
+        "type": "bool",
+        "default": true
       }
     ]
   },

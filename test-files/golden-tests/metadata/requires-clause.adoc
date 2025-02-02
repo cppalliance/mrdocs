@@ -91,22 +91,22 @@ Declared in `&lt;requires&hyphen;clause&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-requires (sizeof(T) &equals;&equals; 4)
-void
-<<g-00,g>>();
-----
-
-[.small]#<<g-00,_» more&period;&period;&period;_>>#
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;typename T&gt;
 requires (sizeof(T) &equals;&equals; 2)
 void
 <<g-04,g>>();
 ----
 
 [.small]#<<g-04,_» more&period;&period;&period;_>>#
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+requires (sizeof(T) &equals;&equals; 4)
+void
+<<g-00,g>>();
+----
+
+[.small]#<<g-00,_» more&period;&period;&period;_>>#
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -117,23 +117,6 @@ void
 ----
 
 [.small]#<<g-03,_» more&period;&period;&period;_>>#
-
-[#g-00]
-== g
-
-
-=== Synopsis
-
-
-Declared in `&lt;requires&hyphen;clause&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;typename T&gt;
-requires (sizeof(T) &equals;&equals; 4)
-void
-g();
-----
 
 [#g-04]
 == g
@@ -148,6 +131,23 @@ Declared in `&lt;requires&hyphen;clause&period;cpp&gt;`
 ----
 template&lt;typename T&gt;
 requires (sizeof(T) &equals;&equals; 2)
+void
+g();
+----
+
+[#g-00]
+== g
+
+
+=== Synopsis
+
+
+Declared in `&lt;requires&hyphen;clause&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+requires (sizeof(T) &equals;&equals; 4)
 void
 g();
 ----

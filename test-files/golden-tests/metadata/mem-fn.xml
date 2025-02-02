@@ -128,15 +128,6 @@
       <attr id="is-const"/>
       <attr id="is-volatile"/>
     </function>
-    <function name="f2" exception-spec="noexcept" id="II436kVwM/ZBYOf9q474VxRXK6c=">
-      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="25" class="def"/>
-      <attr id="has-trailing-return"/>
-      <attr id="constexpr-kind" name="constexpr" value="1"/>
-      <attr id="storage-class" name="static" value="2"/>
-      <return>
-        <type name="char"/>
-      </return>
-    </function>
     <function name="f3" exception-spec="noexcept" id="YOkqb7VjZXBs2Rg5gWCOYGX3Tnw=">
       <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="26"/>
       <attr id="is-virtual-as-written"/>
@@ -145,6 +136,15 @@
       <attr id="is-volatile"/>
       <return>
         <type name="int"/>
+      </return>
+    </function>
+    <function name="f2" exception-spec="noexcept" id="II436kVwM/ZBYOf9q474VxRXK6c=">
+      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="25" class="def"/>
+      <attr id="has-trailing-return"/>
+      <attr id="constexpr-kind" name="constexpr" value="1"/>
+      <attr id="storage-class" name="static" value="2"/>
+      <return>
+        <type name="char"/>
       </return>
     </function>
   </struct>
@@ -161,15 +161,6 @@
       <attr id="is-const"/>
       <attr id="is-volatile"/>
     </function>
-    <function name="f2" exception-spec="noexcept" id="II436kVwM/ZBYOf9q474VxRXK6c=">
-      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="25" class="def"/>
-      <attr id="has-trailing-return"/>
-      <attr id="constexpr-kind" name="constexpr" value="1"/>
-      <attr id="storage-class" name="static" value="2"/>
-      <return>
-        <type name="char"/>
-      </return>
-    </function>
     <function name="f3" exception-spec="noexcept" id="/C2pxLlwRMKnr6YRbVnykUArzEI=">
       <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="31"/>
       <attr id="has-override"/>
@@ -177,6 +168,15 @@
       <attr id="is-volatile"/>
       <return>
         <type name="int"/>
+      </return>
+    </function>
+    <function name="f2" exception-spec="noexcept" id="II436kVwM/ZBYOf9q474VxRXK6c=">
+      <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="25" class="def"/>
+      <attr id="has-trailing-return"/>
+      <attr id="constexpr-kind" name="constexpr" value="1"/>
+      <attr id="storage-class" name="static" value="2"/>
+      <return>
+        <type name="char"/>
       </return>
     </function>
   </struct>

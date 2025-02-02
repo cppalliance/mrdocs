@@ -75,8 +75,8 @@ class LazyArrayImpl : public ArrayImpl
 
     const_iterator_t begin_;
     const_sentinel_t end_;
-    [[no_unique_address]] size_type size_;
-    [[no_unique_address]] Context context_;
+    MRDOCS_NO_UNIQUE_ADDRESS size_type size_;
+    MRDOCS_NO_UNIQUE_ADDRESS Context context_;
 
 public:
     explicit

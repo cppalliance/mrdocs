@@ -76,6 +76,14 @@ namespace mrdocs {
 # error mrdocs requires a 64-bit architecture
 #endif
 
+#ifndef MRDOCS_NO_UNIQUE_ADDRESS
+# if defined(__cpp_lib_no_unique_address)
+#  define MRDOCS_NO_UNIQUE_ADDRESS [[no_unique_address]]
+# else
+#  define MRDOCS_NO_UNIQUE_ADDRESS
+# endif
+#endif
+
 } // mrdocs
 } // clang
 

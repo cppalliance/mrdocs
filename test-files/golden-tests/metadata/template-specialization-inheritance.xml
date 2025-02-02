@@ -2,6 +2,18 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
+  <namespace-alias name="U1" id="2DOFhSBPren8Rw+/vSgsbyPjRI0=">
+    <file short-path="template-specialization-inheritance.cpp" source-path="template-specialization-inheritance.cpp" line="27"/>
+    <type id="z/QEAP16LEoD3NlABxA6BOFpYpA=" name="S0&lt;4&gt;"/>
+  </namespace-alias>
+  <namespace-alias name="U2" id="X6KbROPV/IRFOdO2OYUxsKxa1H0=">
+    <file short-path="template-specialization-inheritance.cpp" source-path="template-specialization-inheritance.cpp" line="30"/>
+    <type id="fzQKX2ygXfWjrcDi23o2CnGMkaY=" name="S0&lt;5&gt;::S1"/>
+  </namespace-alias>
+  <namespace-alias name="U3" id="Nut/RWYhsDylzRDvf66d3iJDOR8=">
+    <file short-path="template-specialization-inheritance.cpp" source-path="template-specialization-inheritance.cpp" line="33"/>
+    <type id="flxREiXFL5ObY0xUAxojj+jvR54=" name="S0&lt;6&gt;"/>
+  </namespace-alias>
   <struct name="R0" id="lsUGNSojS1OrjDye4KqyplKnmEY=">
     <file short-path="template-specialization-inheritance.cpp" source-path="template-specialization-inheritance.cpp" line="18" class="def"/>
     <base>
@@ -34,24 +46,18 @@
     </struct>
   </template>
   <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
-    <targ class="non-type" value="3"/>
-    <struct name="S0" id="c7NNZfjOZ8Ztuw0u26xL/h7UKvA=">
-      <file short-path="template-specialization-inheritance.cpp" source-path="template-specialization-inheritance.cpp" line="8" class="def"/>
-    </struct>
-  </template>
-  <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
-    <targ class="non-type" value="6"/>
-    <struct name="S0" id="flxREiXFL5ObY0xUAxojj+jvR54=">
-      <file short-path="template-specialization-inheritance.cpp" source-path="template-specialization-inheritance.cpp" line="13" class="def"/>
-    </struct>
-  </template>
-  <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
     <targ class="non-type" value="2"/>
     <struct name="S0" id="nJGs54s6oYf7fHzIpo0tyaCSH9M=">
       <file short-path="template-specialization-inheritance.cpp" source-path="template-specialization-inheritance.cpp" line="2" class="def"/>
       <struct name="S1" id="yY+X2/Fqu8ENz37/HFEJCBOSfVg=">
         <file short-path="template-specialization-inheritance.cpp" source-path="template-specialization-inheritance.cpp" line="4" class="def"/>
       </struct>
+    </struct>
+  </template>
+  <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
+    <targ class="non-type" value="3"/>
+    <struct name="S0" id="c7NNZfjOZ8Ztuw0u26xL/h7UKvA=">
+      <file short-path="template-specialization-inheritance.cpp" source-path="template-specialization-inheritance.cpp" line="8" class="def"/>
     </struct>
   </template>
   <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
@@ -63,17 +69,11 @@
       </struct>
     </struct>
   </template>
-  <namespace-alias name="U1" id="2DOFhSBPren8Rw+/vSgsbyPjRI0=">
-    <file short-path="template-specialization-inheritance.cpp" source-path="template-specialization-inheritance.cpp" line="27"/>
-    <type id="z/QEAP16LEoD3NlABxA6BOFpYpA=" name="S0&lt;4&gt;"/>
-  </namespace-alias>
-  <namespace-alias name="U2" id="X6KbROPV/IRFOdO2OYUxsKxa1H0=">
-    <file short-path="template-specialization-inheritance.cpp" source-path="template-specialization-inheritance.cpp" line="30"/>
-    <type id="fzQKX2ygXfWjrcDi23o2CnGMkaY=" name="S0&lt;5&gt;::S1"/>
-  </namespace-alias>
-  <namespace-alias name="U3" id="Nut/RWYhsDylzRDvf66d3iJDOR8=">
-    <file short-path="template-specialization-inheritance.cpp" source-path="template-specialization-inheritance.cpp" line="33"/>
-    <type id="flxREiXFL5ObY0xUAxojj+jvR54=" name="S0&lt;6&gt;"/>
-  </namespace-alias>
+  <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
+    <targ class="non-type" value="6"/>
+    <struct name="S0" id="flxREiXFL5ObY0xUAxojj+jvR54=">
+      <file short-path="template-specialization-inheritance.cpp" source-path="template-specialization-inheritance.cpp" line="13" class="def"/>
+    </struct>
+  </template>
 </namespace>
 </mrdocs>

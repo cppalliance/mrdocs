@@ -19,9 +19,9 @@
 <tbody>
 <tr>
 <td><a href="#A-0e"><code>A</code></a> </td></tr><tr>
+<td><a href="#A-0f"><code>A&lt;bool&gt;</code></a> </td></tr><tr>
 <td><a href="#A-000"><code>A&lt;int&gt;</code></a> </td></tr><tr>
 <td><a href="#A-00b"><code>A&lt;short&gt;</code></a> </td></tr><tr>
-<td><a href="#A-0f"><code>A&lt;bool&gt;</code></a> </td></tr><tr>
 <td><a href="#D"><code>D</code></a> </td></tr>
 </tbody>
 </table>
@@ -164,6 +164,195 @@ h();
 <div>
 <div>
 <h2 id="A-0e-f"><a href="#A-0e">A</a>::f</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;spec-mem-implicit-instantiation.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+f();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="A-0f">A&lt;bool&gt;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;spec-mem-implicit-instantiation.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;&gt;
+struct <a href="#A-0e">A</a>&lt;bool&gt;;
+</code>
+</pre>
+</div>
+<h2>Types</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#A-0f-B"><code>B</code></a> </td></tr><tr>
+<td><a href="#A-0f-C-00"><code>C</code></a> </td></tr><tr>
+<td><a href="#A-0f-C-01"><code>C&lt;double*&gt;</code></a> </td></tr><tr>
+<td><a href="#A-0f-C-0c"><code>C&lt;U*&gt;</code></a> </td></tr>
+</tbody>
+</table>
+<h2>Member Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#A-0f-f"><code>f</code></a> </td></tr>
+</tbody>
+</table>
+
+
+</div>
+<div>
+<div>
+<h2 id="A-0f-B"><a href="#A-0f">A</a>&lt;bool&gt;::B</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;spec-mem-implicit-instantiation.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;typename U&gt;
+struct B;
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="A-0f-C-00"><a href="#A-0f">A</a>&lt;bool&gt;::C</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;spec-mem-implicit-instantiation.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;typename U&gt;
+struct C;
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="A-0f-C-01"><a href="#A-0f">A</a>&lt;bool&gt;::C&lt;double*&gt;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;spec-mem-implicit-instantiation.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;&gt;
+struct <a href="#A-0e-C">C</a>&lt;double*&gt;;
+</code>
+</pre>
+</div>
+<h2>Member Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#A-0f-C-01-j"><code>j</code></a> </td></tr>
+</tbody>
+</table>
+
+
+</div>
+<div>
+<div>
+<h2 id="A-0f-C-01-j"><a href="#A-0f">A</a>&lt;bool&gt;::<a href="#A-0f-C-01">C</a>&lt;double*&gt;::j</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;spec-mem-implicit-instantiation.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+j();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="A-0f-C-0c"><a href="#A-0f">A</a>&lt;bool&gt;::C&lt;U*&gt;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;spec-mem-implicit-instantiation.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;typename U&gt;
+struct <a href="#A-0e-C">C</a>&lt;U*&gt;;
+</code>
+</pre>
+</div>
+<h2>Member Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#A-0f-C-0c-j"><code>j</code></a> </td></tr>
+</tbody>
+</table>
+
+
+</div>
+<div>
+<div>
+<h2 id="A-0f-C-0c-j"><a href="#A-0f">A</a>&lt;bool&gt;::<a href="#A-0f-C-0c">C</a>&lt;U*&gt;::j</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;spec-mem-implicit-instantiation.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+j();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="A-0f-f"><a href="#A-0f">A</a>&lt;bool&gt;::f</h2>
 </div>
 <div>
 <h3>Synopsis</h3>
@@ -429,195 +618,6 @@ i();
 <div>
 <div>
 <h2 id="A-00b-f"><a href="#A-00b">A</a>&lt;short&gt;::f</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;spec-mem-implicit-instantiation.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-void
-f();
-</code>
-</pre>
-</div>
-</div>
-<div>
-<div>
-<h2 id="A-0f">A&lt;bool&gt;</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;spec-mem-implicit-instantiation.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-template&lt;&gt;
-struct <a href="#A-0e">A</a>&lt;bool&gt;;
-</code>
-</pre>
-</div>
-<h2>Types</h2>
-<table style="table-layout: fixed; width: 100%;">
-<thead>
-<tr>
-<th>Name</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="#A-0f-B"><code>B</code></a> </td></tr><tr>
-<td><a href="#A-0f-C-00"><code>C</code></a> </td></tr><tr>
-<td><a href="#A-0f-C-0c"><code>C&lt;U*&gt;</code></a> </td></tr><tr>
-<td><a href="#A-0f-C-01"><code>C&lt;double*&gt;</code></a> </td></tr>
-</tbody>
-</table>
-<h2>Member Functions</h2>
-<table style="table-layout: fixed; width: 100%;">
-<thead>
-<tr>
-<th>Name</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="#A-0f-f"><code>f</code></a> </td></tr>
-</tbody>
-</table>
-
-
-</div>
-<div>
-<div>
-<h2 id="A-0f-B"><a href="#A-0f">A</a>&lt;bool&gt;::B</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;spec-mem-implicit-instantiation.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-template&lt;typename U&gt;
-struct B;
-</code>
-</pre>
-</div>
-
-
-</div>
-<div>
-<div>
-<h2 id="A-0f-C-00"><a href="#A-0f">A</a>&lt;bool&gt;::C</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;spec-mem-implicit-instantiation.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-template&lt;typename U&gt;
-struct C;
-</code>
-</pre>
-</div>
-
-
-</div>
-<div>
-<div>
-<h2 id="A-0f-C-0c"><a href="#A-0f">A</a>&lt;bool&gt;::C&lt;U*&gt;</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;spec-mem-implicit-instantiation.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-template&lt;typename U&gt;
-struct <a href="#A-0e-C">C</a>&lt;U*&gt;;
-</code>
-</pre>
-</div>
-<h2>Member Functions</h2>
-<table style="table-layout: fixed; width: 100%;">
-<thead>
-<tr>
-<th>Name</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="#A-0f-C-0c-j"><code>j</code></a> </td></tr>
-</tbody>
-</table>
-
-
-</div>
-<div>
-<div>
-<h2 id="A-0f-C-0c-j"><a href="#A-0f">A</a>&lt;bool&gt;::<a href="#A-0f-C-0c">C</a>&lt;U*&gt;::j</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;spec-mem-implicit-instantiation.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-void
-j();
-</code>
-</pre>
-</div>
-</div>
-<div>
-<div>
-<h2 id="A-0f-C-01"><a href="#A-0f">A</a>&lt;bool&gt;::C&lt;double*&gt;</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;spec-mem-implicit-instantiation.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-template&lt;&gt;
-struct <a href="#A-0e-C">C</a>&lt;double*&gt;;
-</code>
-</pre>
-</div>
-<h2>Member Functions</h2>
-<table style="table-layout: fixed; width: 100%;">
-<thead>
-<tr>
-<th>Name</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="#A-0f-C-01-j"><code>j</code></a> </td></tr>
-</tbody>
-</table>
-
-
-</div>
-<div>
-<div>
-<h2 id="A-0f-C-01-j"><a href="#A-0f">A</a>&lt;bool&gt;::<a href="#A-0f-C-01">C</a>&lt;double*&gt;::j</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;spec-mem-implicit-instantiation.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-void
-j();
-</code>
-</pre>
-</div>
-</div>
-<div>
-<div>
-<h2 id="A-0f-f"><a href="#A-0f">A</a>&lt;bool&gt;::f</h2>
 </div>
 <div>
 <h3>Synopsis</h3>

@@ -26,6 +26,14 @@ Declared in `&lt;brief&hyphen;3&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
+<<f-0f,f>>(double);
+----
+
+[.small]#<<f-0f,_» more&period;&period;&period;_>>#
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
 <<f-06,f>>(int);
 ----
 
@@ -42,18 +50,27 @@ void
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<f-0f,f>>(double);
-----
-
-[.small]#<<f-0f,_» more&period;&period;&period;_>>#
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-void
 <<f-0b,f>>(float const*);
 ----
 
 [.small]#<<f-0b,_» more&period;&period;&period;_>>#
+
+[#f-0f]
+== f
+
+
+Integer overload&period;
+
+=== Synopsis
+
+
+Declared in `&lt;brief&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(double);
+----
 
 [#f-06]
 == f
@@ -102,23 +119,6 @@ f(char const*);
 More info
 
 
-
-[#f-0f]
-== f
-
-
-Integer overload&period;
-
-=== Synopsis
-
-
-Declared in `&lt;brief&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-void
-f(double);
-----
 
 [#f-0b]
 == f

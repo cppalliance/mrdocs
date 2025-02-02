@@ -18,6 +18,7 @@
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
+#include <mrdocs/ADT/Polymorphic.hpp>
 
 namespace clang::mrdocs {
 
@@ -54,6 +55,9 @@ struct VariableInfo final
         : InfoCommonBase(ID)
     {
     }
+
+    std::strong_ordering
+    operator<=>(VariableInfo const& other) const;
 };
 
 MRDOCS_DECL
