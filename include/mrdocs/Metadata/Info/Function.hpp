@@ -22,7 +22,6 @@
 #include <mrdocs/Metadata/Template.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -175,6 +174,9 @@ struct FunctionInfo final
         : InfoCommonBase(ID)
     {
     }
+
+    std::strong_ordering
+    operator<=>(const FunctionInfo& other) const;
 };
 
 MRDOCS_DECL

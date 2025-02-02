@@ -728,6 +728,22 @@ void
 f1(&period;&period;&period;) const volatile noexcept;
 ----
 
+[#U-f3]
+== <<U,U>>::f3
+
+
+=== Synopsis
+
+
+Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+virtual
+int
+f3() const volatile noexcept = 0;
+----
+
 [#U-f2]
 == <<U,U>>::f2
 
@@ -743,22 +759,6 @@ constexpr
 static
 char
 f2() noexcept;
-----
-
-[#U-f3]
-== <<U,U>>::f3
-
-
-=== Synopsis
-
-
-Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-virtual
-int
-f3() const volatile noexcept = 0;
 ----
 
 [#V]

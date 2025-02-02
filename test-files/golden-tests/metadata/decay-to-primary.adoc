@@ -11,12 +11,40 @@
 |===
 | Name 
 
-| <<A0,`A0`>> 
-| <<A1,`A1`>> 
 | <<S0-03,`S0`>> 
 | <<S0-09,`S0&lt;short&gt;`>> 
 | <<S0-00,`S0&lt;void&gt;`>> 
+| <<A0,`A0`>> 
+| <<A1,`A1`>> 
 |===
+
+[#A0]
+== A0
+
+
+=== Synopsis
+
+
+Declared in `&lt;decay&hyphen;to&hyphen;primary&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using A0 = <<S0-03,S0>>&lt;void&gt;;
+----
+
+[#A1]
+== A1
+
+
+=== Synopsis
+
+
+Declared in `&lt;decay&hyphen;to&hyphen;primary&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using A1 = <<A0,A0>>::<<S0-00-M1,M1>>&lt;short&gt;::<<S0-09-M0,M0>>;
+----
 
 [#S0-03]
 == S0
@@ -184,34 +212,6 @@ Declared in `&lt;decay&hyphen;to&hyphen;primary&period;cpp&gt;`
 ----
 template&lt;typename U&gt;
 using M1 = <<S0-03,S0>>&lt;U&gt;;
-----
-
-[#A0]
-== A0
-
-
-=== Synopsis
-
-
-Declared in `&lt;decay&hyphen;to&hyphen;primary&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-using A0 = <<S0-03,S0>>&lt;void&gt;;
-----
-
-[#A1]
-== A1
-
-
-=== Synopsis
-
-
-Declared in `&lt;decay&hyphen;to&hyphen;primary&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-using A1 = <<A0,A0>>::<<S0-00-M1,M1>>&lt;short&gt;::<<S0-09-M0,M0>>;
 ----
 
 

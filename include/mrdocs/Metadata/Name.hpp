@@ -152,12 +152,9 @@ visit(
     }
 }
 
-inline
+MRDOCS_DECL
 std::strong_ordering
-operator<=>(Polymorphic<NameInfo> const& lhs, Polymorphic<NameInfo> const& rhs)
-{
-    return CompareDerived(lhs, rhs);
-}
+operator<=>(Polymorphic<NameInfo> const& lhs, Polymorphic<NameInfo> const& rhs);
 
 inline
 bool

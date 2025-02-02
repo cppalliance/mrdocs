@@ -36,9 +36,7 @@ operator()(T const& I)
             r.error().Throw();
         }
     });
-    Corpus::TraverseOptions opts = {
-        .ordered = true,
-        .skipInherited = std::same_as<T, RecordInfo>};
+    Corpus::TraverseOptions opts = {.skipInherited = std::same_as<T, RecordInfo>};
     corpus_.traverse(opts, I, *this);
 }
 

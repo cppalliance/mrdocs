@@ -1,0 +1,683 @@
+<html lang="en">
+<head>
+<title>Reference</title>
+</head>
+<body>
+<div>
+<h1>Reference</h1>
+<div>
+<div>
+<h2 id="index">Global namespace</h2>
+</div>
+<h2>Types</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#A"><code>A</code></a> </td></tr><tr>
+<td><a href="#B-0b"><code>B</code></a> </td></tr><tr>
+<td><a href="#B-04"><code>B&lt;int, char&gt;</code></a> </td></tr><tr>
+<td><a href="#B-05"><code>B&lt;int, U&gt;</code></a> </td></tr><tr>
+<td><a href="#C-0f"><code>C</code></a> </td></tr><tr>
+<td><a href="#C-03"><code>C&lt;int&gt;</code></a> </td></tr><tr>
+<td><a href="#C-0d"><code>C&lt;int, char&gt;</code></a> </td></tr><tr>
+<td><a href="#D"><code>D</code></a> </td></tr><tr>
+<td><a href="#Z"><code>Z</code></a> </td></tr>
+</tbody>
+</table>
+<h2>Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#f"><code>f</code></a> </td></tr><tr>
+<td><a href="#g-0d"><code>g</code></a> </td></tr><tr>
+<td><a href="#h"><code>h</code></a> </td></tr><tr>
+<td><a href="#operator_not"><code>operator!</code></a> </td></tr><tr>
+<td><a href="#operator_eq"><code>operator&#x3D;&#x3D;</code></a> </td></tr><tr>
+<td><a href="#operator_not_eq"><code>operator!&#x3D;</code></a> </td></tr>
+</tbody>
+</table>
+</div>
+<div>
+<div>
+<h2 id="A">A</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+struct A;
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="B-0b">B</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;
+    class T,
+    class U&gt;
+struct B;
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="B-04">B&lt;int, char&gt;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;&gt;
+struct <a href="#B-0b">B</a>&lt;int, char&gt;;
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="B-05">B&lt;int, U&gt;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;class U&gt;
+struct <a href="#B-0b">B</a>&lt;int, U&gt;;
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="C-0f">C</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;
+    class T,
+    class U = void&gt;
+struct C;
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="C-03">C&lt;int&gt;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;&gt;
+struct <a href="#C-0f">C</a>&lt;int&gt;;
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="C-0d">C&lt;int, char&gt;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;&gt;
+struct <a href="#C-0f">C</a>&lt;int, char&gt;;
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="D">D</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+struct D;
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="Z">Z</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+struct Z;
+</code>
+</pre>
+</div>
+<h2>Member Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#Z-2constructor-00"><code>Z</code></a>         <span class="small">[constructor]</span></td></tr><tr>
+<td><a href="#Z-2destructor"><code>~Z</code></a> <span class="small">[destructor]</span></td></tr><tr>
+<td><a href="#Z-foo"><code>foo</code></a> </td></tr><tr>
+<td><a href="#Z-2conversion"><code>operator bool</code></a> </td></tr><tr>
+<td><a href="#Z-operator_not"><code>operator!</code></a> </td></tr><tr>
+<td><a href="#Z-operator_eq"><code>operator&#x3D;&#x3D;</code></a> </td></tr><tr>
+<td><a href="#Z-operator_not_eq"><code>operator!&#x3D;</code></a> </td></tr><tr>
+<td><a href="#Z-operator_3way"><code>operator&lt;&#x3D;&gt;</code></a> </td></tr>
+</tbody>
+</table>
+
+
+</div>
+<div>
+<div>
+<h2 id="Z-2constructor-00"><a href="#Z">Z</a>::Z</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+<a href="#Z-2constructor-05">Z</a>();
+</code>
+</pre><span class="small"><a href="#Z-2constructor-05"><em>» more...</em></a></span>
+
+<pre>
+<code class="source-code cpp">
+<a href="#Z-2constructor-06">Z</a>(int);
+</code>
+</pre><span class="small"><a href="#Z-2constructor-06"><em>» more...</em></a></span>
+
+
+</div>
+</div>
+<div>
+<div>
+<h2 id="Z-2constructor-05"><a href="#Z">Z</a>::Z</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+Z();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="Z-2constructor-06"><a href="#Z">Z</a>::Z</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+Z(int);
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="Z-2destructor"><a href="#Z">Z</a>::~Z</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+~Z();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="Z-foo"><a href="#Z">Z</a>::foo</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+foo() const;
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="Z-2conversion"><a href="#Z">Z</a>::operator bool</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+operator bool() const;
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="Z-operator_not"><a href="#Z">Z</a>::operator!</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+bool
+operator!() const;
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="Z-operator_eq"><a href="#Z">Z</a>::operator&#x3D;&#x3D;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+bool
+operator&#x3D;&#x3D;(<a href="#Z">Z</a> const&) const;
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="Z-operator_not_eq"><a href="#Z">Z</a>::operator!&#x3D;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+bool
+operator!&#x3D;(<a href="#Z">Z</a> const&) const;
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="Z-operator_3way"><a href="#Z">Z</a>::operator&lt;&#x3D;&gt;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+auto
+operator&lt;&#x3D;&gt;(<a href="#Z">Z</a> const&) const;
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="f">f</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+f();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="g-0d">g</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+<a href="#g-0e3">g</a>();
+</code>
+</pre><span class="small"><a href="#g-0e3"><em>» more...</em></a></span>
+
+<pre>
+<code class="source-code cpp">
+char
+<a href="#g-06">g</a>(double);
+</code>
+</pre><span class="small"><a href="#g-06"><em>» more...</em></a></span>
+
+<pre>
+<code class="source-code cpp">
+char
+<a href="#g-04">g</a>(int);
+</code>
+</pre><span class="small"><a href="#g-04"><em>» more...</em></a></span>
+
+<pre>
+<code class="source-code cpp">
+char
+<a href="#g-03a">g</a>(
+    double,
+    char);
+</code>
+</pre><span class="small"><a href="#g-03a"><em>» more...</em></a></span>
+
+<pre>
+<code class="source-code cpp">
+char
+<a href="#g-0a">g</a>(
+    char,
+    char,
+    char);
+</code>
+</pre><span class="small"><a href="#g-0a"><em>» more...</em></a></span>
+
+<pre>
+<code class="source-code cpp">
+template&lt;class T&gt;
+char
+<a href="#g-03c">g</a>(
+    T,
+    T,
+    T);
+</code>
+</pre><span class="small"><a href="#g-03c"><em>» more...</em></a></span>
+
+<pre>
+<code class="source-code cpp">
+template&lt;&gt;
+char
+<a href="#g-0e4">g</a>&lt;int&gt;(
+    int,
+    int,
+    int);
+</code>
+</pre><span class="small"><a href="#g-0e4"><em>» more...</em></a></span>
+
+
+</div>
+</div>
+<div>
+<div>
+<h2 id="g-0e3">g</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+g();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="g-06">g</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+char
+g(double);
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="g-04">g</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+char
+g(int);
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="g-03a">g</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+char
+g(
+    double,
+    char);
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="g-0a">g</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+char
+g(
+    char,
+    char,
+    char);
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="g-03c">g</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;class T&gt;
+char
+g(
+    T,
+    T,
+    T);
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="g-0e4">g&lt;int&gt;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;&gt;
+char
+<a href="#g-03c">g</a>&lt;int&gt;(
+    int,
+    int,
+    int);
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="h">h</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+h();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="operator_not">operator!</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+bool
+operator!(<a href="#A">A</a> const& v);
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="operator_eq">operator&#x3D;&#x3D;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+bool
+operator&#x3D;&#x3D;(
+    <a href="#A">A</a> const& lhs,
+    <a href="#A">A</a> const& rhs);
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="operator_not_eq">operator!&#x3D;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sort-members.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+bool
+operator!&#x3D;(
+    <a href="#A">A</a> const& lhs,
+    <a href="#A">A</a> const& rhs);
+</code>
+</pre>
+</div>
+</div>
+
+</div>
+<div>
+<h4>Created with <a href="https://www.mrdocs.com">MrDocs</a></h4>
+</div>
+</body>
+</html>

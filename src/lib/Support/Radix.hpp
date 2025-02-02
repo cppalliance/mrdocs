@@ -20,8 +20,7 @@
 #include <string>
 #include <string_view>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 std::string
 toBase64(std::string_view str);
@@ -31,17 +30,18 @@ toBaseFN(
     llvm::SmallVectorImpl<char>& dest,
     llvm::ArrayRef<uint8_t> src);
 
+#if 0
 std::string_view
 toBase32(
     std::string& dest,
     std::string_view src);
+#endif
 
 std::string
 toBase16(
     std::string_view str,
     bool lowercase = false);
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

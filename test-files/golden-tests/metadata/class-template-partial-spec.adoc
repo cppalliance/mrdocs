@@ -36,8 +36,8 @@ struct A;
 | Name 
 
 | <<A-B-0a,`B`>> 
-| <<A-B-06,`B&lt;U*, T&gt;`>> 
 | <<A-B-04,`B&lt;T, long&gt;`>> 
+| <<A-B-06,`B&lt;U*, T&gt;`>> 
 |===
 
 
@@ -62,24 +62,6 @@ struct B;
 
 
 
-[#A-B-06]
-== <<A,A>>::B&lt;U*, T&gt;
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;partial&hyphen;spec&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;typename U&gt;
-struct <<A-B-0a,B>>&lt;U*, T&gt;;
-----
-
-
-
-
 [#A-B-04]
 == <<A,A>>::B&lt;T, long&gt;
 
@@ -93,6 +75,24 @@ Declared in `&lt;class&hyphen;template&hyphen;partial&hyphen;spec&period;cpp&gt;
 ----
 template&lt;&gt;
 struct <<A-B-0a,B>>&lt;T, long&gt;;
+----
+
+
+
+
+[#A-B-06]
+== <<A,A>>::B&lt;U*, T&gt;
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;partial&hyphen;spec&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename U&gt;
+struct <<A-B-0a,B>>&lt;U*, T&gt;;
 ----
 
 

@@ -33,10 +33,40 @@
 | Name 
 
 | <<N-A,`A`>> 
+| <<N-D,`D`>> 
 | <<N-B,`B`>> 
 | <<N-C,`C`>> 
-| <<N-D,`D`>> 
 |===
+
+[#N-B]
+== <<N,N>>::B
+
+
+=== Synopsis
+
+
+Declared in `&lt;dependency&hyphen;propagation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+using B = <<N-A,A>>&lt;T&gt;;
+----
+
+[#N-C]
+== <<N,N>>::C
+
+
+=== Synopsis
+
+
+Declared in `&lt;dependency&hyphen;propagation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+using C = <<N-B,B>>&lt;T&gt;;
+----
 
 [#N-A]
 == <<N,N>>::A
@@ -72,36 +102,6 @@ struct D;
 
 
 
-
-[#N-B]
-== <<N,N>>::B
-
-
-=== Synopsis
-
-
-Declared in `&lt;dependency&hyphen;propagation&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;typename T&gt;
-using B = <<N-A,A>>&lt;T&gt;;
-----
-
-[#N-C]
-== <<N,N>>::C
-
-
-=== Synopsis
-
-
-Declared in `&lt;dependency&hyphen;propagation&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;typename T&gt;
-using C = <<N-B,B>>&lt;T&gt;;
-----
 
 [#E]
 == E

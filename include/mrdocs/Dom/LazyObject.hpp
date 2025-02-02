@@ -11,8 +11,8 @@
 #ifndef MRDOCS_LIB_DOM_LAZY_OBJECT_HPP
 #define MRDOCS_LIB_DOM_LAZY_OBJECT_HPP
 
-#include <mrdocs/Dom.hpp>
 #include <mrdocs/Platform.hpp>
+#include <mrdocs/Dom.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <string_view>
 
@@ -164,7 +164,7 @@ class LazyObjectImpl : public ObjectImpl
 {
     T const* underlying_;
     Object overlay_;
-    [[no_unique_address]] Context context_{};
+    MRDOCS_NO_UNIQUE_ADDRESS Context context_{};
 
 public:
     explicit

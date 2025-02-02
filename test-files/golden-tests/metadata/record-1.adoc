@@ -66,6 +66,34 @@ struct T;
 |===
 
 
+[#T-U1]
+== <<T,T>>::U1
+
+
+=== Synopsis
+
+
+Declared in `&lt;record&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using U1 = int;
+----
+
+[#T-U2]
+== <<T,T>>::U2
+
+
+=== Synopsis
+
+
+Declared in `&lt;record&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+typedef char U2;
+----
+
 [#T-f1]
 == <<T,T>>::f1
 
@@ -194,34 +222,6 @@ the separator
 
 
 |===
-
-[#T-U1]
-== <<T,T>>::U1
-
-
-=== Synopsis
-
-
-Declared in `&lt;record&hyphen;1&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-using U1 = int;
-----
-
-[#T-U2]
-== <<T,T>>::U2
-
-
-=== Synopsis
-
-
-Declared in `&lt;record&hyphen;1&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-typedef char U2;
-----
 
 
 

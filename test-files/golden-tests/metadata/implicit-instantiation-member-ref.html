@@ -18,12 +18,42 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="#A5"><code>A5</code></a> </td></tr><tr>
-<td><a href="#A9"><code>A9</code></a> </td></tr><tr>
 <td><a href="#S0-03"><code>S0</code></a> </td></tr><tr>
-<td><a href="#S0-00"><code>S0&lt;void&gt;</code></a> </td></tr>
+<td><a href="#S0-00"><code>S0&lt;void&gt;</code></a> </td></tr><tr>
+<td><a href="#A5"><code>A5</code></a> </td></tr><tr>
+<td><a href="#A9"><code>A9</code></a> </td></tr>
 </tbody>
 </table>
+</div>
+<div>
+<div>
+<h2 id="A5">A5</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;implicit-instantiation-member-ref.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+using A5 = <a href="#S0-03">S0</a>&lt;void&gt;;
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="A9">A9</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;implicit-instantiation-member-ref.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+using A9 = <a href="#A5">A5</a>::<a href="#S0-00-S2-0d">S2</a>&lt;char&gt;::<a href="#S0-00-S2-02-M3">M3</a>&lt;int&gt;::<a href="#S0-00-S2-02-M3">M3</a>&lt;unsigned int&gt;::<a href="#S0-00-S2-02-M2">M2</a>;
+</code>
+</pre>
+</div>
 </div>
 <div>
 <div>
@@ -224,36 +254,6 @@ Declared in <code>&lt;implicit-instantiation-member-ref.cpp&gt;</code></div>
 <code class="source-code cpp">
 template&lt;typename V&gt;
 using M3 = <a href="#S0-00-S2-0d">S2</a>&lt;char&gt;;
-</code>
-</pre>
-</div>
-</div>
-<div>
-<div>
-<h2 id="A5">A5</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;implicit-instantiation-member-ref.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-using A5 = <a href="#S0-03">S0</a>&lt;void&gt;;
-</code>
-</pre>
-</div>
-</div>
-<div>
-<div>
-<h2 id="A9">A9</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;implicit-instantiation-member-ref.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-using A9 = <a href="#A5">A5</a>::<a href="#S0-00-S2-0d">S2</a>&lt;char&gt;::<a href="#S0-00-S2-02-M3">M3</a>&lt;int&gt;::<a href="#S0-00-S2-02-M3">M3</a>&lt;unsigned int&gt;::<a href="#S0-00-S2-02-M2">M2</a>;
 </code>
 </pre>
 </div>

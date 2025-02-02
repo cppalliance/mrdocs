@@ -67,7 +67,8 @@ operator()(T const& I)
         // ===================================
         // Traverse the symbol members
         // ===================================
-        corpus_.traverse(I, *this);
+        Corpus::TraverseOptions opts = {.skipInherited = std::same_as<T, RecordInfo>};
+        corpus_.traverse(opts, I, *this);
     });
 }
 

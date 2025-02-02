@@ -6,6 +6,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -14,7 +15,7 @@
 #define MRDOCS_API_METADATA_TEMPLATE_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/ADT/Optional.hpp>
+#include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 #include <mrdocs/Support/TypeTraits.hpp>
 #include <optional>
@@ -22,9 +23,6 @@
 #include <vector>
 
 namespace clang::mrdocs {
-
-std::strong_ordering
-operator<=>(Polymorphic<TParam> const& lhs, Polymorphic<TParam> const& rhs);
 
 enum class TArgKind : int
 {
@@ -151,18 +149,9 @@ visit(
     }
 }
 
-inline
+MRDOCS_DECL
 std::strong_ordering
-operator<=>(Polymorphic<TArg> const& lhs, Polymorphic<TArg> const& rhs)
-{
-    return CompareDerived(lhs, rhs);
-}
-
-inline
-bool
-operator==(Polymorphic<TArg> const& lhs, Polymorphic<TArg> const& rhs) {
-    return lhs <=> rhs == std::strong_ordering::equal;
-}
+operator<=>(Polymorphic<TArg> const& lhs, Polymorphic<TArg> const& rhs);
 
 MRDOCS_DECL
 std::string
@@ -226,7 +215,7 @@ struct TParam
     constexpr bool isNonType()  const noexcept { return Kind == TParamKind::NonType; }
     constexpr bool isTemplate() const noexcept { return Kind == TParamKind::Template; }
 
-    auto operator<=>(TParam const&) const = default;
+    std::strong_ordering operator<=>(TParam const&) const;
 
 protected:
     constexpr
@@ -308,7 +297,7 @@ struct TypeTParam final
     /** The type-constraint for the parameter, if any. */
     Polymorphic<NameInfo> Constraint;
 
-    auto operator<=>(TypeTParam const&) const = default;
+    std::strong_ordering operator<=>(TypeTParam const&) const;
 };
 
 struct NonTypeTParam final
@@ -317,7 +306,7 @@ struct NonTypeTParam final
     /** Type of the non-type template parameter */
     Polymorphic<TypeInfo> Type;
 
-    auto operator<=>(NonTypeTParam const&) const = default;
+    std::strong_ordering operator<=>(NonTypeTParam const&) const;
 };
 
 struct TemplateTParam final
@@ -326,23 +315,8 @@ struct TemplateTParam final
     /** Template parameters for the template-template parameter */
     std::vector<Polymorphic<TParam>> Params;
 
-    auto operator<=>(TemplateTParam const& other) const
-    {
-        if (auto const r = Params.size() <=> other.Params.size();
-            !std::is_eq(r))
-        {
-            return r;
-        }
-        for (std::size_t i = 0; i < Params.size(); ++i)
-        {
-            if (auto const r = Params[i] <=> other.Params[i];
-                !std::is_eq(r))
-            {
-                return r;
-            }
-        }
-        return std::strong_ordering::equal;
-    }
+    std::strong_ordering
+    operator<=>(TemplateTParam const& other) const;
 };
 
 template<
@@ -376,12 +350,9 @@ visit(
     }
 }
 
-inline
+MRDOCS_DECL
 std::strong_ordering
-operator<=>(Polymorphic<TParam> const& lhs, Polymorphic<TParam> const& rhs)
-{
-    return CompareDerived(lhs, rhs);
-}
+operator<=>(Polymorphic<TParam> const& lhs, Polymorphic<TParam> const& rhs);
 
 inline
 bool
@@ -435,8 +406,35 @@ struct TemplateInfo
         return TemplateSpecKind::Partial;
     }
 
-    auto operator<=>(TemplateInfo const&) const = default;
+    std::strong_ordering
+    operator<=>(TemplateInfo const& other) const;
 };
+
+inline
+auto
+operator<=>(std::optional<TemplateInfo> const& lhs, std::optional<TemplateInfo> const& rhs)
+{
+    if (!lhs)
+    {
+        if (!rhs)
+        {
+            return std::strong_ordering::equal;
+        }
+        return std::strong_ordering::less;
+    }
+    if (!rhs)
+    {
+        return std::strong_ordering::greater;
+    }
+    return *lhs <=> *rhs;
+}
+
+inline
+bool
+operator==(std::optional<TemplateInfo> const& lhs, std::optional<TemplateInfo> const& rhs)
+{
+    return lhs <=> rhs == std::strong_ordering::equal;
+}
 
 MRDOCS_DECL
 void

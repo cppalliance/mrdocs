@@ -438,6 +438,40 @@ Declared in `&lt;copy&period;cpp&gt;`
 do&lowbar;base&lowbar;base&lowbar;inherited();
 ----
 
+[#derived-do_derived_shadowed-0a]
+== <<derived,derived>>::do&lowbar;derived&lowbar;shadowed
+
+
+This function should shadow the base class function&period;
+
+=== Synopsis
+
+
+Declared in `&lt;copy&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<derived,derived>>&
+do&lowbar;derived&lowbar;shadowed();
+----
+
+[#derived-excluded_inherited]
+== <<derived,derived>>::excluded&lowbar;inherited
+
+
+This function should be inherited by derived classes&period;
+
+=== Synopsis
+
+
+Declared in `&lt;copy&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+excluded&lowbar;base&
+excluded&lowbar;inherited();
+----
+
 [#derived-do_base_inherited]
 == <<derived,derived>>::do&lowbar;base&lowbar;inherited
 
@@ -470,23 +504,6 @@ Declared in `&lt;copy&period;cpp&gt;`
 ----
 <<base,base>>&
 do&lowbar;base&lowbar;shadowed();
-----
-
-[#derived-do_derived_shadowed-0a]
-== <<derived,derived>>::do&lowbar;derived&lowbar;shadowed
-
-
-This function should shadow the base class function&period;
-
-=== Synopsis
-
-
-Declared in `&lt;copy&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-<<derived,derived>>&
-do&lowbar;derived&lowbar;shadowed();
 ----
 
 [#derived-do_derived_shadowed-0d]
@@ -538,23 +555,6 @@ Declared in `&lt;copy&period;cpp&gt;`
 ----
 excluded&lowbar;base&
 do&lowbar;shadowed();
-----
-
-[#derived-excluded_inherited]
-== <<derived,derived>>::excluded&lowbar;inherited
-
-
-This function should be inherited by derived classes&period;
-
-=== Synopsis
-
-
-Declared in `&lt;copy&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-excluded&lowbar;base&
-excluded&lowbar;inherited();
 ----
 
 [#private_derived]
@@ -697,6 +697,40 @@ class protected&lowbar;derived
 |===
 
 
+[#protected_derived-derived_shadowed-0a]
+== <<protected_derived,protected&lowbar;derived>>::derived&lowbar;shadowed
+
+
+This function should shadow the base class function&period;
+
+=== Synopsis
+
+
+Declared in `&lt;copy&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<protected_derived,protected&lowbar;derived>>&
+derived&lowbar;shadowed();
+----
+
+[#protected_derived-do_derived_shadowed-0e]
+== <<protected_derived,protected&lowbar;derived>>::do&lowbar;derived&lowbar;shadowed
+
+
+This function should shadow the base class function&period;
+
+=== Synopsis
+
+
+Declared in `&lt;copy&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<protected_derived,protected&lowbar;derived>>&
+do&lowbar;derived&lowbar;shadowed();
+----
+
 [#protected_derived-base_base_inherited]
 == <<protected_derived,protected&lowbar;derived>>::base&lowbar;base&lowbar;inherited
 
@@ -746,23 +780,6 @@ Declared in `&lt;copy&period;cpp&gt;`
 ----
 <<base,base>>&
 base&lowbar;shadowed();
-----
-
-[#protected_derived-derived_shadowed-0a]
-== <<protected_derived,protected&lowbar;derived>>::derived&lowbar;shadowed
-
-
-This function should shadow the base class function&period;
-
-=== Synopsis
-
-
-Declared in `&lt;copy&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-<<protected_derived,protected&lowbar;derived>>&
-derived&lowbar;shadowed();
 ----
 
 [#protected_derived-derived_shadowed-0f]
@@ -831,23 +848,6 @@ Declared in `&lt;copy&period;cpp&gt;`
 ----
 <<base,base>>&
 do&lowbar;base&lowbar;shadowed();
-----
-
-[#protected_derived-do_derived_shadowed-0e]
-== <<protected_derived,protected&lowbar;derived>>::do&lowbar;derived&lowbar;shadowed
-
-
-This function should shadow the base class function&period;
-
-=== Synopsis
-
-
-Declared in `&lt;copy&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-<<protected_derived,protected&lowbar;derived>>&
-do&lowbar;derived&lowbar;shadowed();
 ----
 
 [#protected_derived-do_derived_shadowed-06]

@@ -26,6 +26,34 @@
 | <<i,`i`>> 
 |===
 
+[#T]
+== T
+
+
+=== Synopsis
+
+
+Declared in `&lt;function&hyphen;tparm&hyphen;decay&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using T = int;
+----
+
+[#U]
+== U
+
+
+=== Synopsis
+
+
+Declared in `&lt;function&hyphen;tparm&hyphen;decay&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using U = int const;
+----
+
 [#f]
 == f
 
@@ -88,34 +116,6 @@ Declared in `&lt;function&hyphen;tparm&hyphen;decay&period;cpp&gt;`
 template&lt;int&gt;
 void
 i();
-----
-
-[#T]
-== T
-
-
-=== Synopsis
-
-
-Declared in `&lt;function&hyphen;tparm&hyphen;decay&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-using T = int;
-----
-
-[#U]
-== U
-
-
-=== Synopsis
-
-
-Declared in `&lt;function&hyphen;tparm&hyphen;decay&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-using U = int const;
 ----
 
 

@@ -245,7 +245,8 @@ struct AutoTypeInfo final
     AutoKind Keyword = AutoKind::Auto;
     Polymorphic<NameInfo> Constraint;
 
-    auto operator<=>(AutoTypeInfo const&) const = default;
+    std::strong_ordering
+    operator<=>(AutoTypeInfo const&) const;
 };
 
 struct LValueReferenceTypeInfo final
@@ -259,7 +260,8 @@ struct LValueReferenceTypeInfo final
         return PointeeType.operator->();
     }
 
-    auto operator<=>(LValueReferenceTypeInfo const&) const = default;
+    std::strong_ordering
+    operator<=>(LValueReferenceTypeInfo const&) const;
 };
 
 struct RValueReferenceTypeInfo final
@@ -273,7 +275,8 @@ struct RValueReferenceTypeInfo final
         return PointeeType.operator->();
     }
 
-    auto operator<=>(RValueReferenceTypeInfo const&) const = default;
+    std::strong_ordering
+    operator<=>(RValueReferenceTypeInfo const&) const;
 };
 
 struct PointerTypeInfo final
@@ -288,7 +291,8 @@ struct PointerTypeInfo final
         return PointeeType.operator->();
     }
 
-    auto operator<=>(PointerTypeInfo const&) const = default;
+    std::strong_ordering
+    operator<=>(PointerTypeInfo const&) const;
 };
 
 struct MemberPointerTypeInfo final
@@ -304,7 +308,9 @@ struct MemberPointerTypeInfo final
         return PointeeType.operator->();
     }
 
-    auto operator<=>(MemberPointerTypeInfo const&) const = default;
+
+    std::strong_ordering
+    operator<=>(MemberPointerTypeInfo const&) const;
 };
 
 struct ArrayTypeInfo final
@@ -319,7 +325,8 @@ struct ArrayTypeInfo final
         return ElementType.operator->();
     }
 
-    auto operator<=>(ArrayTypeInfo const&) const = default;
+    std::strong_ordering
+    operator<=>(ArrayTypeInfo const&) const;
 };
 
 struct FunctionTypeInfo final
@@ -338,35 +345,8 @@ struct FunctionTypeInfo final
         return ReturnType.operator->();
     }
 
-    auto
-    operator<=>(FunctionTypeInfo const& other) const {
-        if (auto const r = dynamic_cast<TypeInfo const&>(*this) <=>
-                 dynamic_cast<TypeInfo const&>(other);
-            !std::is_eq(r))
-        {
-            return r;
-        }
-        if (auto const r = ReturnType <=> other.ReturnType;
-            !std::is_eq(r))
-        {
-            return r;
-        }
-        if (auto const r = ParamTypes.size() <=> other.ParamTypes.size();
-            !std::is_eq(r))
-        {
-            return r;
-        }
-        for (std::size_t i = 0; i < ParamTypes.size(); ++i)
-        {
-            if (auto const r = ParamTypes[i] <=> other.ParamTypes[i];
-                !std::is_eq(r))
-            {
-                return r;
-            }
-        }
-        return std::tie(CVQualifiers, RefQualifier, ExceptionSpec, IsVariadic) <=>
-               std::tie(other.CVQualifiers, other.RefQualifier, other.ExceptionSpec, other.IsVariadic);
-    }
+    std::strong_ordering
+    operator<=>(FunctionTypeInfo const&) const;
 };
 
 template<
@@ -423,12 +403,9 @@ visit(
     }
 }
 
-inline
+MRDOCS_DECL
 std::strong_ordering
-operator<=>(Polymorphic<TypeInfo> const& lhs, Polymorphic<TypeInfo> const& rhs)
-{
-    return CompareDerived(lhs, rhs);
-}
+operator<=>(Polymorphic<TypeInfo> const& lhs, Polymorphic<TypeInfo> const& rhs);
 
 inline
 bool

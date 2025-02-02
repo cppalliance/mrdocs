@@ -40,21 +40,21 @@
   </template>
   <template class="partial" id="Bu/3QcmNOdsc7RSM3OKHnuCxGPU=">
     <tparam name="T" class="type"/>
-    <targ class="type" type="T*"/>
-    <struct name="B" id="dydGCFMdrM4nOwuv3RCXqg2KCUA=">
-      <file short-path="class-template-spec.cpp" source-path="class-template-spec.cpp" line="26" class="def"/>
-      <function name="g" id="YqMF7qPhrCzrLLwscZ76goyLl0k=">
-        <file short-path="class-template-spec.cpp" source-path="class-template-spec.cpp" line="28"/>
-      </function>
-    </struct>
-  </template>
-  <template class="partial" id="Bu/3QcmNOdsc7RSM3OKHnuCxGPU=">
-    <tparam name="T" class="type"/>
     <targ class="type" type="T&amp;"/>
     <struct name="B" id="ZjUaxeOoGJ0Jol9Nmn7cGRE7RCo=">
       <file short-path="class-template-spec.cpp" source-path="class-template-spec.cpp" line="32" class="def"/>
       <function name="h" id="Y1o9DjZarkgpmS4JVrc/XkZMn3k=">
         <file short-path="class-template-spec.cpp" source-path="class-template-spec.cpp" line="34"/>
+      </function>
+    </struct>
+  </template>
+  <template class="partial" id="Bu/3QcmNOdsc7RSM3OKHnuCxGPU=">
+    <tparam name="T" class="type"/>
+    <targ class="type" type="T*"/>
+    <struct name="B" id="dydGCFMdrM4nOwuv3RCXqg2KCUA=">
+      <file short-path="class-template-spec.cpp" source-path="class-template-spec.cpp" line="26" class="def"/>
+      <function name="g" id="YqMF7qPhrCzrLLwscZ76goyLl0k=">
+        <file short-path="class-template-spec.cpp" source-path="class-template-spec.cpp" line="28"/>
       </function>
     </struct>
   </template>

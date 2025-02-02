@@ -70,6 +70,49 @@
 | <<j8,`j8`>> 
 |===
 
+[#C]
+== C
+
+
+=== Synopsis
+
+
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using C = <<A,A>>;
+----
+
+[#D]
+== D
+
+
+=== Synopsis
+
+
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using D = <<B,B>>&lt;short, long&gt;;
+----
+
+[#E]
+== E
+
+
+=== Synopsis
+
+
+Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+using E = <<B,B>>&lt;T, long&gt;;
+----
+
 [#A]
 == A
 
@@ -780,49 +823,6 @@ Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
 ----
 void
 j8(<<E,E>>&lt;short&gt; const const**);
-----
-
-[#C]
-== C
-
-
-=== Synopsis
-
-
-Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-using C = <<A,A>>;
-----
-
-[#D]
-== D
-
-
-=== Synopsis
-
-
-Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-using D = <<B,B>>&lt;short, long&gt;;
-----
-
-[#E]
-== E
-
-
-=== Synopsis
-
-
-Declared in `&lt;type&hyphen;resolution&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;typename T&gt;
-using E = <<B,B>>&lt;T, long&gt;;
 ----
 
 

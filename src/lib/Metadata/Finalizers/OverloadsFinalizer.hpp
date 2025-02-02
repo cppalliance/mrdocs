@@ -49,7 +49,7 @@ public:
     operator()(RecordInfo& I);
 
     void
-    operator()(Info& I) {}
+    operator()(Info&) {}
 };
 
 } // clang::mrdocs

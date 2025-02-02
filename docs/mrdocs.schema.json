@@ -297,6 +297,66 @@
       "title": "Detect and reduce SFINAE expressions",
       "type": "boolean"
     },
+    "sort-members": {
+      "default": true,
+      "description": "When set to `true`, sort the members of a record or namespace by name and parameters. When set to `false`, the members are included in the declaration order they are extracted.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Sort the members of a record or namespace",
+      "type": "boolean"
+    },
+    "sort-members-assignment-1st": {
+      "default": true,
+      "description": "When set to `true`, assignment operators are sorted first in the list of members of a record.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Sort assignment operators first",
+      "type": "boolean"
+    },
+    "sort-members-conversion-last": {
+      "default": true,
+      "description": "When set to `true`, conversion operators are sorted last in the list of members of a record or namespace.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Sort conversion operators last",
+      "type": "boolean"
+    },
+    "sort-members-ctors-1st": {
+      "default": true,
+      "description": "When set to `true`, constructors are sorted first in the list of members of a record.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Sort constructors first",
+      "type": "boolean"
+    },
+    "sort-members-dtors-1st": {
+      "default": true,
+      "description": "When set to `true`, destructors are sorted first in the list of members of a record.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Sort destructors first",
+      "type": "boolean"
+    },
+    "sort-members-relational-last": {
+      "default": true,
+      "description": "When set to `true`, relational operators are sorted last in the list of members of a record or namespace.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Sort relational operators last",
+      "type": "boolean"
+    },
     "source-root": {
       "default": "<config-dir>",
       "description": "Path to the root directory of the source code. This path is used as a default for input files and a base for relative paths formed from absolute paths. This should typically be the root directory of the git project, as relative paths formed from it can be used to create links to these source files in the repository. Templates use the `base-url` option to create links to the source code.",

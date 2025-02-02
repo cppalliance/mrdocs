@@ -2,6 +2,14 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
+  <namespace-alias name="A5" id="1Z8U4eFyt2XClP+7afzwsuyeXAI=">
+    <file short-path="implicit-instantiation-member-ref.cpp" source-path="implicit-instantiation-member-ref.cpp" line="14"/>
+    <type id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=" name="S0&lt;void&gt;"/>
+  </namespace-alias>
+  <namespace-alias name="A9" id="r6hRllvikhxyJUBT7eKH8Z13wfw=">
+    <file short-path="implicit-instantiation-member-ref.cpp" source-path="implicit-instantiation-member-ref.cpp" line="15"/>
+    <type id="KI+cz9NSHQSZN2PnUoAaBtILqNQ=" name="A5::S2&lt;char&gt;::M3&lt;int&gt;::M3&lt;unsigned int&gt;::M2"/>
+  </namespace-alias>
   <template>
     <tparam name="T" class="type"/>
     <struct name="S0" id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=">
@@ -54,13 +62,5 @@
       </template>
     </struct>
   </template>
-  <namespace-alias name="A5" id="1Z8U4eFyt2XClP+7afzwsuyeXAI=">
-    <file short-path="implicit-instantiation-member-ref.cpp" source-path="implicit-instantiation-member-ref.cpp" line="14"/>
-    <type id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=" name="S0&lt;void&gt;"/>
-  </namespace-alias>
-  <namespace-alias name="A9" id="r6hRllvikhxyJUBT7eKH8Z13wfw=">
-    <file short-path="implicit-instantiation-member-ref.cpp" source-path="implicit-instantiation-member-ref.cpp" line="15"/>
-    <type id="KI+cz9NSHQSZN2PnUoAaBtILqNQ=" name="A5::S2&lt;char&gt;::M3&lt;int&gt;::M3&lt;unsigned int&gt;::M2"/>
-  </namespace-alias>
 </namespace>
 </mrdocs>

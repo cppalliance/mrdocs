@@ -741,184 +741,6 @@
     </struct>
   </template>
   <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
-    <targ class="non-type" value="2"/>
-    <struct name="S0" id="nJGs54s6oYf7fHzIpo0tyaCSH9M=">
-      <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="2" class="def"/>
-      <struct name="S1" id="yY+X2/Fqu8ENz37/HFEJCBOSfVg=">
-        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="67" class="def"/>
-        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="6"/>
-      </struct>
-      <template>
-        <tparam name="J" class="non-type" type="int"/>
-        <tparam name="U" class="type" default="void"/>
-        <struct name="S5" id="5pMsyGC09WFCpWuQKcGtioRlb5Y=">
-          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="28"/>
-        </struct>
-      </template>
-      <function name="f0" id="qS0LbdI34V5nviXbrQbdS1lCo1g=">
-        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="4"/>
-      </function>
-    </struct>
-  </template>
-  <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
-    <targ class="non-type" value="3"/>
-    <struct name="S0" id="c7NNZfjOZ8Ztuw0u26xL/h7UKvA=">
-      <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="2" class="def"/>
-      <struct name="S1" id="mAjvoVYFGHUEtQCq4FWGGMMxH1s=">
-        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="6" class="def"/>
-        <template>
-          <tparam name="I" class="non-type" type="int"/>
-          <tparam name="T" class="type" default="void"/>
-          <struct name="S2" id="96AKnFS/OwIoVISFMJoJhA0YXIU=">
-            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="70" class="def"/>
-            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="10"/>
-          </struct>
-        </template>
-        <function name="f1" id="5O/Uisi+wk+iNU2d86KQ78VKmXs=">
-          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="8"/>
-        </function>
-      </struct>
-      <template>
-        <tparam name="J" class="non-type" type="int"/>
-        <tparam name="U" class="type" default="void"/>
-        <struct name="S5" id="ySgtQ6cLT4QxgOy9pXpcRhuRj3A=">
-          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="28"/>
-        </struct>
-      </template>
-      <function name="f0" id="KwtZHhEOKc1Y7x9/3RaMuc0jSAQ=">
-        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="4"/>
-      </function>
-    </struct>
-  </template>
-  <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
-    <targ class="non-type" value="4"/>
-    <struct name="S0" id="oXfsqUlMzPbEZZJ7K+iZYQj3wko=">
-      <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="2" class="def"/>
-      <struct name="S1" id="709lyZwEiIBHmnH6StkYFJ+CdtU=">
-        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="6" class="def"/>
-        <template>
-          <tparam name="J" class="non-type" type="int"/>
-          <tparam name="U" class="type" default="void"/>
-          <struct name="S2" id="Cc0mRYlhWpgycSGkK7WePuPT7hE=">
-            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="10"/>
-          </struct>
-        </template>
-        <template class="explicit" id="oNfOAnUjZE7WlBGdMiNtQ9ePi8g=">
-          <targ class="non-type" value="5"/>
-          <struct name="S2" id="8snJ9gp5ca88/AsWGEnFe6Ln6RQ=">
-            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="75" class="def"/>
-          </struct>
-        </template>
-        <function name="f1" id="+FNNWeksNjExb7Yll0auYGtEtL8=">
-          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="8"/>
-        </function>
-      </struct>
-      <template>
-        <tparam name="J" class="non-type" type="int"/>
-        <tparam name="U" class="type" default="void"/>
-        <struct name="S5" id="Qiu5RA/uiY+Qq/uITWh8gZDl09s=">
-          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="28"/>
-        </struct>
-      </template>
-      <function name="f0" id="WcxbiuS6xk05fAxP3nrYhfXXjOI=">
-        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="4"/>
-      </function>
-    </struct>
-  </template>
-  <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
-    <targ class="non-type" value="6"/>
-    <struct name="S0" id="flxREiXFL5ObY0xUAxojj+jvR54=">
-      <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="2" class="def"/>
-      <struct name="S1" id="OHtykpXPLoa0xO0Dw3P7uAImGWI=">
-        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="6" class="def"/>
-        <template>
-          <tparam name="J" class="non-type" type="int"/>
-          <tparam name="U" class="type" default="void"/>
-          <struct name="S2" id="TIdvQT1/SnDhh51ggGvABG3pR/A=">
-            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="10"/>
-          </struct>
-        </template>
-        <template class="partial" id="oNfOAnUjZE7WlBGdMiNtQ9ePi8g=">
-          <tparam name="T" class="type"/>
-          <targ class="non-type" value="7"/>
-          <targ class="type" type="T*"/>
-          <struct name="S2" id="ZyL4aBHmvCmfq+HyxDSySKwRsdA=">
-            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="79" class="def"/>
-          </struct>
-        </template>
-        <template class="explicit" id="oNfOAnUjZE7WlBGdMiNtQ9ePi8g=">
-          <targ class="non-type" value="7"/>
-          <targ class="type" type="int*"/>
-          <struct name="S2" id="eWg27/kfn86dUmPA26mcOo6kkfs=">
-            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="83" class="def"/>
-          </struct>
-        </template>
-        <function name="f1" id="7KdBX5zEl2LQ4HyUjwS94i+QrTQ=">
-          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="8"/>
-        </function>
-      </struct>
-      <template>
-        <tparam name="J" class="non-type" type="int"/>
-        <tparam name="U" class="type" default="void"/>
-        <struct name="S5" id="XIHF6Im4J5Yw0dYbehnXXQwDdjk=">
-          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="28"/>
-        </struct>
-      </template>
-      <function name="f0" id="Kg0p1xSLyLmWemst8ZeO3wFK56Y=">
-        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="4"/>
-      </function>
-    </struct>
-  </template>
-  <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
-    <targ class="non-type" value="8"/>
-    <struct name="S0" id="o06yQpJHyCkZyFI44/nN8/tpgT8=">
-      <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="2" class="def"/>
-      <struct name="S1" id="uoWeOq9HHkUSZZj7t+ilmBmv3N8=">
-        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="6" class="def"/>
-        <template>
-          <tparam name="J" class="non-type" type="int"/>
-          <tparam name="U" class="type" default="void"/>
-          <struct name="S2" id="vycCuI8tFTO2XzFK982RELdJtik=">
-            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="10"/>
-          </struct>
-        </template>
-        <template class="explicit" id="oNfOAnUjZE7WlBGdMiNtQ9ePi8g=">
-          <targ class="non-type" value="9"/>
-          <struct name="S2" id="zpDyI51RjdguXF8/9KXFrICQwEc=">
-            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="11" class="def"/>
-            <struct name="S3" id="OuyCzwMT3B0xth9oee9dTlGkXVw=">
-              <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="87" class="def"/>
-              <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="15"/>
-            </struct>
-            <template>
-              <tparam name="K" class="non-type" type="int"/>
-              <tparam name="V" class="type" default="void"/>
-              <struct name="S4" id="LWqz4rXaiDuM3Pahx88MykZZO9I=">
-                <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="20"/>
-              </struct>
-            </template>
-            <function name="f2" id="U3UO/3IhQR4/Q8lDNCFrbFAfiYc=">
-              <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="13"/>
-            </function>
-          </struct>
-        </template>
-        <function name="f1" id="7vVh0IOJS0he8/krIfs50SAl0X4=">
-          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="8"/>
-        </function>
-      </struct>
-      <template>
-        <tparam name="J" class="non-type" type="int"/>
-        <tparam name="U" class="type" default="void"/>
-        <struct name="S5" id="dFsG0X1P6Tx3hNcuZ3zkjFvRAjg=">
-          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="28"/>
-        </struct>
-      </template>
-      <function name="f0" id="C2OfmMrOoj9kLOIz4Xl7/jX9SF0=">
-        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="4"/>
-      </function>
-    </struct>
-  </template>
-  <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
     <targ class="non-type" value="10"/>
     <struct name="S0" id="hwWIBHTi29w+6bJar0PyQvwnZWw=">
       <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="2" class="def"/>
@@ -1048,19 +870,19 @@
                 <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="20"/>
               </struct>
             </template>
+            <template class="explicit" id="8UtqZHVItGCqKLwlXny0WJDLkDQ=">
+              <targ class="non-type" value="17"/>
+              <targ class="type" type="int*"/>
+              <struct name="S4" id="J3UZDljdSJ1mGU9Js0JpA3TjVtc=">
+                <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="107" class="def"/>
+              </struct>
+            </template>
             <template class="partial" id="8UtqZHVItGCqKLwlXny0WJDLkDQ=">
               <tparam name="T" class="type"/>
               <targ class="non-type" value="17"/>
               <targ class="type" type="T*"/>
               <struct name="S4" id="cV4O7e/J4xug1ZmsOQKwDVjE99M=">
                 <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="102" class="def"/>
-              </struct>
-            </template>
-            <template class="explicit" id="8UtqZHVItGCqKLwlXny0WJDLkDQ=">
-              <targ class="non-type" value="17"/>
-              <targ class="type" type="int*"/>
-              <struct name="S4" id="J3UZDljdSJ1mGU9Js0JpA3TjVtc=">
-                <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="107" class="def"/>
               </struct>
             </template>
             <function name="f2" id="yEKI9aB0zN7ix7cfYpPWvZMxJnw=">
@@ -1130,6 +952,26 @@
     </struct>
   </template>
   <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
+    <targ class="non-type" value="2"/>
+    <struct name="S0" id="nJGs54s6oYf7fHzIpo0tyaCSH9M=">
+      <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="2" class="def"/>
+      <struct name="S1" id="yY+X2/Fqu8ENz37/HFEJCBOSfVg=">
+        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="67" class="def"/>
+        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="6"/>
+      </struct>
+      <template>
+        <tparam name="J" class="non-type" type="int"/>
+        <tparam name="U" class="type" default="void"/>
+        <struct name="S5" id="5pMsyGC09WFCpWuQKcGtioRlb5Y=">
+          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="28"/>
+        </struct>
+      </template>
+      <function name="f0" id="qS0LbdI34V5nviXbrQbdS1lCo1g=">
+        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="4"/>
+      </function>
+    </struct>
+  </template>
+  <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
     <targ class="non-type" value="21"/>
     <struct name="S0" id="MUilGFE5YvyMgRjHIcQZ38yyl2c=">
       <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="2" class="def"/>
@@ -1143,19 +985,19 @@
           <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="28"/>
         </struct>
       </template>
+      <template class="explicit" id="t/fAg/z+G5QClTBG74e6bR64CDI=">
+        <targ class="non-type" value="22"/>
+        <targ class="type" type="int*"/>
+        <struct name="S5" id="NnzxSBCBz0/s6OkCTTL/yDO06Go=">
+          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="123" class="def"/>
+        </struct>
+      </template>
       <template class="partial" id="t/fAg/z+G5QClTBG74e6bR64CDI=">
         <tparam name="T" class="type"/>
         <targ class="non-type" value="22"/>
         <targ class="type" type="T*"/>
         <struct name="S5" id="umZ8gPZZ+qTWuYY3zYO/hx1XCGI=">
           <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="119" class="def"/>
-        </struct>
-      </template>
-      <template class="explicit" id="t/fAg/z+G5QClTBG74e6bR64CDI=">
-        <targ class="non-type" value="22"/>
-        <targ class="type" type="int*"/>
-        <struct name="S5" id="NnzxSBCBz0/s6OkCTTL/yDO06Go=">
-          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="123" class="def"/>
         </struct>
       </template>
       <function name="f0" id="7Fhe0DKsIelNVuC32GIw7+LNURg=">
@@ -1264,19 +1106,19 @@
                 <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="37"/>
               </struct>
             </template>
+            <template class="explicit" id="3ZrGNdgVY0Bl8pl2wuSUdgLSht4=">
+              <targ class="non-type" value="29"/>
+              <targ class="type" type="int*"/>
+              <struct name="S7" id="3eTbiMMR3GPY7/xRty3EmJ9bdQU=">
+                <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="142" class="def"/>
+              </struct>
+            </template>
             <template class="partial" id="3ZrGNdgVY0Bl8pl2wuSUdgLSht4=">
               <tparam name="T" class="type"/>
               <targ class="non-type" value="29"/>
               <targ class="type" type="T*"/>
               <struct name="S7" id="pbmVOgtPeZtTL7BQG/AM7NVsNdo=">
                 <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="137" class="def"/>
-              </struct>
-            </template>
-            <template class="explicit" id="3ZrGNdgVY0Bl8pl2wuSUdgLSht4=">
-              <targ class="non-type" value="29"/>
-              <targ class="type" type="int*"/>
-              <struct name="S7" id="3eTbiMMR3GPY7/xRty3EmJ9bdQU=">
-                <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="142" class="def"/>
               </struct>
             </template>
             <function name="f6" id="k6XRmHNKFO3DuTbVZ/jakKefbI4=">
@@ -1289,6 +1131,36 @@
         </struct>
       </template>
       <function name="f0" id="WxHie89cv3o9ybAEURwAW/nkF8c=">
+        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="4"/>
+      </function>
+    </struct>
+  </template>
+  <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
+    <targ class="non-type" value="3"/>
+    <struct name="S0" id="c7NNZfjOZ8Ztuw0u26xL/h7UKvA=">
+      <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="2" class="def"/>
+      <struct name="S1" id="mAjvoVYFGHUEtQCq4FWGGMMxH1s=">
+        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="6" class="def"/>
+        <template>
+          <tparam name="I" class="non-type" type="int"/>
+          <tparam name="T" class="type" default="void"/>
+          <struct name="S2" id="96AKnFS/OwIoVISFMJoJhA0YXIU=">
+            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="70" class="def"/>
+            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="10"/>
+          </struct>
+        </template>
+        <function name="f1" id="5O/Uisi+wk+iNU2d86KQ78VKmXs=">
+          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="8"/>
+        </function>
+      </struct>
+      <template>
+        <tparam name="J" class="non-type" type="int"/>
+        <tparam name="U" class="type" default="void"/>
+        <struct name="S5" id="ySgtQ6cLT4QxgOy9pXpcRhuRj3A=">
+          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="28"/>
+        </struct>
+      </template>
+      <function name="f0" id="KwtZHhEOKc1Y7x9/3RaMuc0jSAQ=">
         <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="4"/>
       </function>
     </struct>
@@ -1503,19 +1375,19 @@
                     <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="47"/>
                   </struct>
                 </template>
+                <template class="explicit" id="T91uOH7uarKVQhSHZ7iIV+AOuBQ=">
+                  <targ class="non-type" value="42"/>
+                  <targ class="type" type="int*"/>
+                  <struct name="S9" id="hwfbdkFRNunC/3V+s6HA5BwWiSQ=">
+                    <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="170" class="def"/>
+                  </struct>
+                </template>
                 <template class="partial" id="T91uOH7uarKVQhSHZ7iIV+AOuBQ=">
                   <tparam name="T" class="type"/>
                   <targ class="non-type" value="42"/>
                   <targ class="type" type="T*"/>
                   <struct name="S9" id="CvFJnK9Xu7B2Fbh91NqM0+gKVEU=">
                     <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="164" class="def"/>
-                  </struct>
-                </template>
-                <template class="explicit" id="T91uOH7uarKVQhSHZ7iIV+AOuBQ=">
-                  <targ class="non-type" value="42"/>
-                  <targ class="type" type="int*"/>
-                  <struct name="S9" id="hwfbdkFRNunC/3V+s6HA5BwWiSQ=">
-                    <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="170" class="def"/>
                   </struct>
                 </template>
                 <function name="f7" id="KrK+9nkR4h4eiQEFo/GgzdFR0jE=">
@@ -1533,6 +1405,41 @@
         </struct>
       </template>
       <function name="f0" id="MM35lzfSA81vvD31+lhSPgusPVM=">
+        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="4"/>
+      </function>
+    </struct>
+  </template>
+  <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
+    <targ class="non-type" value="4"/>
+    <struct name="S0" id="oXfsqUlMzPbEZZJ7K+iZYQj3wko=">
+      <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="2" class="def"/>
+      <struct name="S1" id="709lyZwEiIBHmnH6StkYFJ+CdtU=">
+        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="6" class="def"/>
+        <template>
+          <tparam name="J" class="non-type" type="int"/>
+          <tparam name="U" class="type" default="void"/>
+          <struct name="S2" id="Cc0mRYlhWpgycSGkK7WePuPT7hE=">
+            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="10"/>
+          </struct>
+        </template>
+        <template class="explicit" id="oNfOAnUjZE7WlBGdMiNtQ9ePi8g=">
+          <targ class="non-type" value="5"/>
+          <struct name="S2" id="8snJ9gp5ca88/AsWGEnFe6Ln6RQ=">
+            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="75" class="def"/>
+          </struct>
+        </template>
+        <function name="f1" id="+FNNWeksNjExb7Yll0auYGtEtL8=">
+          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="8"/>
+        </function>
+      </struct>
+      <template>
+        <tparam name="J" class="non-type" type="int"/>
+        <tparam name="U" class="type" default="void"/>
+        <struct name="S5" id="Qiu5RA/uiY+Qq/uITWh8gZDl09s=">
+          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="28"/>
+        </struct>
+      </template>
+      <function name="f0" id="WcxbiuS6xk05fAxP3nrYhfXXjOI=">
         <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="4"/>
       </function>
     </struct>
@@ -1603,12 +1510,97 @@
       </function>
     </struct>
   </template>
-  <template class="partial" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
-    <tparam name="T" class="type"/>
-    <targ class="non-type" value="1"/>
-    <targ class="type" type="T*"/>
-    <struct name="S0" id="xONzwxGiMBJrTYA5eosi4pOC0n0=">
-      <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="61" class="def"/>
+  <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
+    <targ class="non-type" value="6"/>
+    <struct name="S0" id="flxREiXFL5ObY0xUAxojj+jvR54=">
+      <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="2" class="def"/>
+      <struct name="S1" id="OHtykpXPLoa0xO0Dw3P7uAImGWI=">
+        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="6" class="def"/>
+        <template>
+          <tparam name="J" class="non-type" type="int"/>
+          <tparam name="U" class="type" default="void"/>
+          <struct name="S2" id="TIdvQT1/SnDhh51ggGvABG3pR/A=">
+            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="10"/>
+          </struct>
+        </template>
+        <template class="explicit" id="oNfOAnUjZE7WlBGdMiNtQ9ePi8g=">
+          <targ class="non-type" value="7"/>
+          <targ class="type" type="int*"/>
+          <struct name="S2" id="eWg27/kfn86dUmPA26mcOo6kkfs=">
+            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="83" class="def"/>
+          </struct>
+        </template>
+        <template class="partial" id="oNfOAnUjZE7WlBGdMiNtQ9ePi8g=">
+          <tparam name="T" class="type"/>
+          <targ class="non-type" value="7"/>
+          <targ class="type" type="T*"/>
+          <struct name="S2" id="ZyL4aBHmvCmfq+HyxDSySKwRsdA=">
+            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="79" class="def"/>
+          </struct>
+        </template>
+        <function name="f1" id="7KdBX5zEl2LQ4HyUjwS94i+QrTQ=">
+          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="8"/>
+        </function>
+      </struct>
+      <template>
+        <tparam name="J" class="non-type" type="int"/>
+        <tparam name="U" class="type" default="void"/>
+        <struct name="S5" id="XIHF6Im4J5Yw0dYbehnXXQwDdjk=">
+          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="28"/>
+        </struct>
+      </template>
+      <function name="f0" id="Kg0p1xSLyLmWemst8ZeO3wFK56Y=">
+        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="4"/>
+      </function>
+    </struct>
+  </template>
+  <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
+    <targ class="non-type" value="8"/>
+    <struct name="S0" id="o06yQpJHyCkZyFI44/nN8/tpgT8=">
+      <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="2" class="def"/>
+      <struct name="S1" id="uoWeOq9HHkUSZZj7t+ilmBmv3N8=">
+        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="6" class="def"/>
+        <template>
+          <tparam name="J" class="non-type" type="int"/>
+          <tparam name="U" class="type" default="void"/>
+          <struct name="S2" id="vycCuI8tFTO2XzFK982RELdJtik=">
+            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="10"/>
+          </struct>
+        </template>
+        <template class="explicit" id="oNfOAnUjZE7WlBGdMiNtQ9ePi8g=">
+          <targ class="non-type" value="9"/>
+          <struct name="S2" id="zpDyI51RjdguXF8/9KXFrICQwEc=">
+            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="11" class="def"/>
+            <struct name="S3" id="OuyCzwMT3B0xth9oee9dTlGkXVw=">
+              <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="87" class="def"/>
+              <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="15"/>
+            </struct>
+            <template>
+              <tparam name="K" class="non-type" type="int"/>
+              <tparam name="V" class="type" default="void"/>
+              <struct name="S4" id="LWqz4rXaiDuM3Pahx88MykZZO9I=">
+                <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="20"/>
+              </struct>
+            </template>
+            <function name="f2" id="U3UO/3IhQR4/Q8lDNCFrbFAfiYc=">
+              <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="13"/>
+            </function>
+          </struct>
+        </template>
+        <function name="f1" id="7vVh0IOJS0he8/krIfs50SAl0X4=">
+          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="8"/>
+        </function>
+      </struct>
+      <template>
+        <tparam name="J" class="non-type" type="int"/>
+        <tparam name="U" class="type" default="void"/>
+        <struct name="S5" id="dFsG0X1P6Tx3hNcuZ3zkjFvRAjg=">
+          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="28"/>
+        </struct>
+      </template>
+      <function name="f0" id="C2OfmMrOoj9kLOIz4Xl7/jX9SF0=">
+        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="4"/>
+      </function>
     </struct>
   </template>
   <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
@@ -1616,179 +1608,6 @@
     <targ class="type" type="int*"/>
     <struct name="S0" id="IKgocAXkFMvNmDD+p5dZpSBSRHI=">
       <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="64" class="def"/>
-    </struct>
-  </template>
-  <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
-    <targ class="non-type" value="2"/>
-    <targ class="type" type="bool"/>
-    <struct name="S0" id="PA+4gdvi0ChhszyGuOL6zlYXHpk=">
-      <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="2" class="def"/>
-      <struct name="S1" id="yiTNiZbPnfj9SDdT8k1YKmjW68g=">
-        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="6" class="def"/>
-        <template>
-          <tparam name="J" class="non-type" type="int"/>
-          <tparam name="U" class="type" default="void"/>
-          <struct name="S2" id="boLQk9sIyBQTBaPhSeSLjkGr51k=">
-            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="10"/>
-          </struct>
-        </template>
-        <function name="f1" id="boc7yC4tWsGrT4a762yRiFkFe3E=">
-          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="8"/>
-        </function>
-      </struct>
-      <template>
-        <tparam name="J" class="non-type" type="int"/>
-        <tparam name="U" class="type" default="void"/>
-        <struct name="S5" id="gL1/NnHh2HYS9OB5keD9fU12dSo=">
-          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="28"/>
-        </struct>
-      </template>
-      <function name="f0" id="4/0nNUnS+aKTLkNic02JvmAYN8w=">
-        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="4"/>
-      </function>
-    </struct>
-  </template>
-  <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
-    <targ class="non-type" value="3"/>
-    <targ class="type" type="bool"/>
-    <struct name="S0" id="kn1OyT1FzAvXXJMp4nKleaEX+5c=">
-      <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="2" class="def"/>
-      <struct name="S1" id="jUAs995uvzET3EsGSOVUwR/Ptzc=">
-        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="6" class="def"/>
-        <template>
-          <tparam name="J" class="non-type" type="int"/>
-          <tparam name="U" class="type" default="void"/>
-          <struct name="S2" id="3Hz31SDA9BZgZc5teheYelVphp0=">
-            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="10"/>
-          </struct>
-        </template>
-        <function name="f1" id="NgX9CxLoQTLVac6OtBsbNcSNcME=">
-          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="8"/>
-        </function>
-      </struct>
-      <template>
-        <tparam name="J" class="non-type" type="int"/>
-        <tparam name="U" class="type" default="void"/>
-        <struct name="S5" id="r2RB8PwDCI61PfLPFsx2brM49Ac=">
-          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="28"/>
-        </struct>
-      </template>
-      <function name="f0" id="AMQ/ByA794GAhRus8AOu07b33Tg=">
-        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="4"/>
-      </function>
-    </struct>
-  </template>
-  <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
-    <targ class="non-type" value="4"/>
-    <targ class="type" type="bool"/>
-    <struct name="S0" id="tuaR3CreZXFWLNOiRe6vUMcdi/0=">
-      <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="2" class="def"/>
-      <struct name="S1" id="AedlkzTQ3XMtklY5JQNTU9Q693U=">
-        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="6" class="def"/>
-        <template>
-          <tparam name="J" class="non-type" type="int"/>
-          <tparam name="U" class="type" default="void"/>
-          <struct name="S2" id="ZVPQu+o+bOETjTeYbQPX3DpZHsI=">
-            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="10"/>
-          </struct>
-        </template>
-        <function name="f1" id="FCas52GV+t9i8WTg9zQMdKw3qy8=">
-          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="8"/>
-        </function>
-      </struct>
-      <template>
-        <tparam name="J" class="non-type" type="int"/>
-        <tparam name="U" class="type" default="void"/>
-        <struct name="S5" id="x4evHZHGuxDX33AZdmaDmPqEUBQ=">
-          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="28"/>
-        </struct>
-      </template>
-      <function name="f0" id="UFIUrTz1AhNVnXp36I2CQg9ixr4=">
-        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="4"/>
-      </function>
-    </struct>
-  </template>
-  <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
-    <targ class="non-type" value="6"/>
-    <targ class="type" type="bool"/>
-    <struct name="S0" id="IxCiCl8tf7r2/CmQWZiWxFHf7+g=">
-      <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="2" class="def"/>
-      <struct name="S1" id="qbJT920zehI9gqkvbe0x/HrzT00=">
-        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="6" class="def"/>
-        <template>
-          <tparam name="J" class="non-type" type="int"/>
-          <tparam name="U" class="type" default="void"/>
-          <struct name="S2" id="9BOS99lqNCS5fAcBO02qQ0Z2st8=">
-            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="10"/>
-          </struct>
-        </template>
-        <function name="f1" id="fAm4hbV0Td9FyKgjfNXd5vBMN9Q=">
-          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="8"/>
-        </function>
-      </struct>
-      <template>
-        <tparam name="J" class="non-type" type="int"/>
-        <tparam name="U" class="type" default="void"/>
-        <struct name="S5" id="YmolZwhgz1SAGaOGoKIE4JAN0KM=">
-          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="28"/>
-        </struct>
-      </template>
-      <function name="f0" id="lsMH3dD3dKbeUC9Ps78rkbjfPs8=">
-        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="4"/>
-      </function>
-    </struct>
-  </template>
-  <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
-    <targ class="non-type" value="8"/>
-    <targ class="type" type="bool"/>
-    <struct name="S0" id="Rh5ZoB5qF98iwmDPqUPnsyKkTcs=">
-      <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="2" class="def"/>
-      <struct name="S1" id="ICgSeUPCz86m25XZTXmGxzgkbhY=">
-        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="6" class="def"/>
-        <template>
-          <tparam name="J" class="non-type" type="int"/>
-          <tparam name="U" class="type" default="void"/>
-          <struct name="S2" id="5nVb5siuVRlsyau36E3FYJlBgdA=">
-            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="10"/>
-          </struct>
-        </template>
-        <template class="explicit" id="oNfOAnUjZE7WlBGdMiNtQ9ePi8g=">
-          <targ class="non-type" value="9"/>
-          <targ class="type" type="bool"/>
-          <struct name="S2" id="p3PhPnVydwdupHBMAXlcrNQuiFo=">
-            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="11" class="def"/>
-            <struct name="S3" id="aOsVfXK2YXy8YzpChV4neMCBUNE=">
-              <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="15" class="def"/>
-              <function name="f3" id="bLNBUo4KpSS0BZPlsnEoRwbgQU0=">
-                <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="17"/>
-              </function>
-            </struct>
-            <template>
-              <tparam name="K" class="non-type" type="int"/>
-              <tparam name="V" class="type" default="void"/>
-              <struct name="S4" id="Vfp4UI1q/WKw9xkfiS/VJGS128A=">
-                <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="20"/>
-              </struct>
-            </template>
-            <function name="f2" id="MALiKbm+kvgFLsUl6NAFGk8/mbk=">
-              <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="13"/>
-            </function>
-          </struct>
-        </template>
-        <function name="f1" id="wPErD4kGY0RQwZPJCHE5l7qe7BU=">
-          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="8"/>
-        </function>
-      </struct>
-      <template>
-        <tparam name="J" class="non-type" type="int"/>
-        <tparam name="U" class="type" default="void"/>
-        <struct name="S5" id="UArBfH6vZIOYsAbmmAKjRN+1EuM=">
-          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="28"/>
-        </struct>
-      </template>
-      <function name="f0" id="3MkimKMLv1YlKrDKDOy2h9rv8dc=">
-        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="4"/>
-      </function>
     </struct>
   </template>
   <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
@@ -1982,6 +1801,36 @@
     </struct>
   </template>
   <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
+    <targ class="non-type" value="2"/>
+    <targ class="type" type="bool"/>
+    <struct name="S0" id="PA+4gdvi0ChhszyGuOL6zlYXHpk=">
+      <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="2" class="def"/>
+      <struct name="S1" id="yiTNiZbPnfj9SDdT8k1YKmjW68g=">
+        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="6" class="def"/>
+        <template>
+          <tparam name="J" class="non-type" type="int"/>
+          <tparam name="U" class="type" default="void"/>
+          <struct name="S2" id="boLQk9sIyBQTBaPhSeSLjkGr51k=">
+            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="10"/>
+          </struct>
+        </template>
+        <function name="f1" id="boc7yC4tWsGrT4a762yRiFkFe3E=">
+          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="8"/>
+        </function>
+      </struct>
+      <template>
+        <tparam name="J" class="non-type" type="int"/>
+        <tparam name="U" class="type" default="void"/>
+        <struct name="S5" id="gL1/NnHh2HYS9OB5keD9fU12dSo=">
+          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="28"/>
+        </struct>
+      </template>
+      <function name="f0" id="4/0nNUnS+aKTLkNic02JvmAYN8w=">
+        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="4"/>
+      </function>
+    </struct>
+  </template>
+  <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
     <targ class="non-type" value="21"/>
     <targ class="type" type="bool"/>
     <struct name="S0" id="A9DWlv0rbuFs3A9eHqZTaJDN7Uk=">
@@ -2126,6 +1975,36 @@
         </struct>
       </template>
       <function name="f0" id="z6YotJ9CmnzyqJ41yK7Ra+fopbM=">
+        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="4"/>
+      </function>
+    </struct>
+  </template>
+  <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
+    <targ class="non-type" value="3"/>
+    <targ class="type" type="bool"/>
+    <struct name="S0" id="kn1OyT1FzAvXXJMp4nKleaEX+5c=">
+      <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="2" class="def"/>
+      <struct name="S1" id="jUAs995uvzET3EsGSOVUwR/Ptzc=">
+        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="6" class="def"/>
+        <template>
+          <tparam name="J" class="non-type" type="int"/>
+          <tparam name="U" class="type" default="void"/>
+          <struct name="S2" id="3Hz31SDA9BZgZc5teheYelVphp0=">
+            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="10"/>
+          </struct>
+        </template>
+        <function name="f1" id="NgX9CxLoQTLVac6OtBsbNcSNcME=">
+          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="8"/>
+        </function>
+      </struct>
+      <template>
+        <tparam name="J" class="non-type" type="int"/>
+        <tparam name="U" class="type" default="void"/>
+        <struct name="S5" id="r2RB8PwDCI61PfLPFsx2brM49Ac=">
+          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="28"/>
+        </struct>
+      </template>
+      <function name="f0" id="AMQ/ByA794GAhRus8AOu07b33Tg=">
         <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="4"/>
       </function>
     </struct>
@@ -2366,6 +2245,36 @@
     </struct>
   </template>
   <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
+    <targ class="non-type" value="4"/>
+    <targ class="type" type="bool"/>
+    <struct name="S0" id="tuaR3CreZXFWLNOiRe6vUMcdi/0=">
+      <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="2" class="def"/>
+      <struct name="S1" id="AedlkzTQ3XMtklY5JQNTU9Q693U=">
+        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="6" class="def"/>
+        <template>
+          <tparam name="J" class="non-type" type="int"/>
+          <tparam name="U" class="type" default="void"/>
+          <struct name="S2" id="ZVPQu+o+bOETjTeYbQPX3DpZHsI=">
+            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="10"/>
+          </struct>
+        </template>
+        <function name="f1" id="FCas52GV+t9i8WTg9zQMdKw3qy8=">
+          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="8"/>
+        </function>
+      </struct>
+      <template>
+        <tparam name="J" class="non-type" type="int"/>
+        <tparam name="U" class="type" default="void"/>
+        <struct name="S5" id="x4evHZHGuxDX33AZdmaDmPqEUBQ=">
+          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="28"/>
+        </struct>
+      </template>
+      <function name="f0" id="UFIUrTz1AhNVnXp36I2CQg9ixr4=">
+        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="4"/>
+      </function>
+    </struct>
+  </template>
+  <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
     <targ class="non-type" value="43"/>
     <targ class="type" type="bool"/>
     <struct name="S0" id="UpHebkkBv0Q2s1ECAoKTf79hJ0Q=">
@@ -2426,6 +2335,97 @@
       <function name="f0" id="LHz/pAtXgUwDFkq91SaD+POSBrQ=">
         <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="4"/>
       </function>
+    </struct>
+  </template>
+  <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
+    <targ class="non-type" value="6"/>
+    <targ class="type" type="bool"/>
+    <struct name="S0" id="IxCiCl8tf7r2/CmQWZiWxFHf7+g=">
+      <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="2" class="def"/>
+      <struct name="S1" id="qbJT920zehI9gqkvbe0x/HrzT00=">
+        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="6" class="def"/>
+        <template>
+          <tparam name="J" class="non-type" type="int"/>
+          <tparam name="U" class="type" default="void"/>
+          <struct name="S2" id="9BOS99lqNCS5fAcBO02qQ0Z2st8=">
+            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="10"/>
+          </struct>
+        </template>
+        <function name="f1" id="fAm4hbV0Td9FyKgjfNXd5vBMN9Q=">
+          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="8"/>
+        </function>
+      </struct>
+      <template>
+        <tparam name="J" class="non-type" type="int"/>
+        <tparam name="U" class="type" default="void"/>
+        <struct name="S5" id="YmolZwhgz1SAGaOGoKIE4JAN0KM=">
+          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="28"/>
+        </struct>
+      </template>
+      <function name="f0" id="lsMH3dD3dKbeUC9Ps78rkbjfPs8=">
+        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="4"/>
+      </function>
+    </struct>
+  </template>
+  <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
+    <targ class="non-type" value="8"/>
+    <targ class="type" type="bool"/>
+    <struct name="S0" id="Rh5ZoB5qF98iwmDPqUPnsyKkTcs=">
+      <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="2" class="def"/>
+      <struct name="S1" id="ICgSeUPCz86m25XZTXmGxzgkbhY=">
+        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="6" class="def"/>
+        <template>
+          <tparam name="J" class="non-type" type="int"/>
+          <tparam name="U" class="type" default="void"/>
+          <struct name="S2" id="5nVb5siuVRlsyau36E3FYJlBgdA=">
+            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="10"/>
+          </struct>
+        </template>
+        <template class="explicit" id="oNfOAnUjZE7WlBGdMiNtQ9ePi8g=">
+          <targ class="non-type" value="9"/>
+          <targ class="type" type="bool"/>
+          <struct name="S2" id="p3PhPnVydwdupHBMAXlcrNQuiFo=">
+            <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="11" class="def"/>
+            <struct name="S3" id="aOsVfXK2YXy8YzpChV4neMCBUNE=">
+              <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="15" class="def"/>
+              <function name="f3" id="bLNBUo4KpSS0BZPlsnEoRwbgQU0=">
+                <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="17"/>
+              </function>
+            </struct>
+            <template>
+              <tparam name="K" class="non-type" type="int"/>
+              <tparam name="V" class="type" default="void"/>
+              <struct name="S4" id="Vfp4UI1q/WKw9xkfiS/VJGS128A=">
+                <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="20"/>
+              </struct>
+            </template>
+            <function name="f2" id="MALiKbm+kvgFLsUl6NAFGk8/mbk=">
+              <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="13"/>
+            </function>
+          </struct>
+        </template>
+        <function name="f1" id="wPErD4kGY0RQwZPJCHE5l7qe7BU=">
+          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="8"/>
+        </function>
+      </struct>
+      <template>
+        <tparam name="J" class="non-type" type="int"/>
+        <tparam name="U" class="type" default="void"/>
+        <struct name="S5" id="UArBfH6vZIOYsAbmmAKjRN+1EuM=">
+          <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="28"/>
+        </struct>
+      </template>
+      <function name="f0" id="3MkimKMLv1YlKrDKDOy2h9rv8dc=">
+        <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="4"/>
+      </function>
+    </struct>
+  </template>
+  <template class="partial" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
+    <tparam name="T" class="type"/>
+    <targ class="non-type" value="1"/>
+    <targ class="type" type="T*"/>
+    <struct name="S0" id="xONzwxGiMBJrTYA5eosi4pOC0n0=">
+      <file short-path="class-template-specializations-1.cpp" source-path="class-template-specializations-1.cpp" line="61" class="def"/>
     </struct>
   </template>
 </namespace>

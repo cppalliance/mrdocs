@@ -30,6 +30,47 @@
     </struct>
   </template>
   <template class="explicit" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
+    <targ class="type" type="bool"/>
+    <struct name="A" id="/vjeowK9rbOfBZNuMjVMRn2iGMo=">
+      <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="2" class="def"/>
+      <template>
+        <tparam name="U" class="type"/>
+        <struct name="B" id="6QY0PJXWe/WbREWJNqGWAxKfjl8=">
+          <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="6"/>
+        </struct>
+      </template>
+      <template>
+        <tparam name="U" class="type"/>
+        <struct name="C" id="CmGU1i/sBhCN4qrHoR7Et/3vN18=">
+          <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="12"/>
+        </struct>
+      </template>
+      <template class="explicit" id="UYi0dO2mWSf0nD8WRfX9JD1eJyw=">
+        <targ class="type" type="double*"/>
+        <struct name="C" id="EyperGIiZ7cSv/PB2BApKjPRQVA=">
+          <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="36" class="def"/>
+          <function name="j" id="4hePn1dLCqLal3xld/sSlBvpu6U=">
+            <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="41" class="def"/>
+            <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="38"/>
+          </function>
+        </struct>
+      </template>
+      <template class="partial" id="UYi0dO2mWSf0nD8WRfX9JD1eJyw=">
+        <tparam name="U" class="type"/>
+        <targ class="type" type="U*"/>
+        <struct name="C" id="xYK8qpEgWzczUMGnNUx+ozeBle0=">
+          <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="36" class="def"/>
+          <function name="j" id="ks7mzzkRLaNXkyZ4CdZPO75g8js=">
+            <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="38" class="def"/>
+          </function>
+        </struct>
+      </template>
+      <function name="f" id="MXnrYOauCPqySxkgtxhqKGFRX5w=">
+        <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="4"/>
+      </function>
+    </struct>
+  </template>
+  <template class="explicit" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
     <targ class="type" type="int"/>
     <struct name="A" id="AKwlChAOi+0ttIAPsD7uitS+gk0=">
       <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="2" class="def"/>
@@ -82,47 +123,6 @@
         </struct>
       </template>
       <function name="f" id="Bkfxhhw3rhTX4AsAahIpOZcNmmo=">
-        <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="4"/>
-      </function>
-    </struct>
-  </template>
-  <template class="explicit" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-    <targ class="type" type="bool"/>
-    <struct name="A" id="/vjeowK9rbOfBZNuMjVMRn2iGMo=">
-      <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="2" class="def"/>
-      <template>
-        <tparam name="U" class="type"/>
-        <struct name="B" id="6QY0PJXWe/WbREWJNqGWAxKfjl8=">
-          <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="6"/>
-        </struct>
-      </template>
-      <template>
-        <tparam name="U" class="type"/>
-        <struct name="C" id="CmGU1i/sBhCN4qrHoR7Et/3vN18=">
-          <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="12"/>
-        </struct>
-      </template>
-      <template class="partial" id="UYi0dO2mWSf0nD8WRfX9JD1eJyw=">
-        <tparam name="U" class="type"/>
-        <targ class="type" type="U*"/>
-        <struct name="C" id="xYK8qpEgWzczUMGnNUx+ozeBle0=">
-          <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="36" class="def"/>
-          <function name="j" id="ks7mzzkRLaNXkyZ4CdZPO75g8js=">
-            <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="38" class="def"/>
-          </function>
-        </struct>
-      </template>
-      <template class="explicit" id="UYi0dO2mWSf0nD8WRfX9JD1eJyw=">
-        <targ class="type" type="double*"/>
-        <struct name="C" id="EyperGIiZ7cSv/PB2BApKjPRQVA=">
-          <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="36" class="def"/>
-          <function name="j" id="4hePn1dLCqLal3xld/sSlBvpu6U=">
-            <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="41" class="def"/>
-            <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="38"/>
-          </function>
-        </struct>
-      </template>
-      <function name="f" id="MXnrYOauCPqySxkgtxhqKGFRX5w=">
         <file short-path="spec-mem-implicit-instantiation.cpp" source-path="spec-mem-implicit-instantiation.cpp" line="4"/>
       </function>
     </struct>

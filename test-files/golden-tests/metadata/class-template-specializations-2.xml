@@ -8,35 +8,6 @@
       <file short-path="class-template-specializations-2.cpp" source-path="class-template-specializations-2.cpp" line="1" class="def"/>
     </struct>
   </template>
-  <template class="partial" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-    <tparam name="T" class="type"/>
-    <targ class="type" type="T*"/>
-    <struct name="A" id="Nkvb8FA0/0YIpaybicEkWLwFOPo=">
-      <file short-path="class-template-specializations-2.cpp" source-path="class-template-specializations-2.cpp" line="5" class="def"/>
-      <template>
-        <tparam name="U" class="type"/>
-        <struct name="B" id="XTiSWRMM5OD8mjz+RJ6oZpKYgCQ=">
-          <file short-path="class-template-specializations-2.cpp" source-path="class-template-specializations-2.cpp" line="7" class="def"/>
-        </struct>
-      </template>
-      <template class="partial" id="XTiSWRMM5OD8mjz+RJ6oZpKYgCQ=">
-        <tparam name="U" class="type"/>
-        <targ class="type" type="U*"/>
-        <struct name="B" id="HP4W/UatJ6BMg+LZKC5cQM4kCzw=">
-          <file short-path="class-template-specializations-2.cpp" source-path="class-template-specializations-2.cpp" line="11" class="def"/>
-          <struct name="C" id="qgS1WVyttKFsoadDE/OO4QyodlM=">
-            <file short-path="class-template-specializations-2.cpp" source-path="class-template-specializations-2.cpp" line="11" class="def"/>
-          </struct>
-        </struct>
-      </template>
-      <template class="explicit" id="XTiSWRMM5OD8mjz+RJ6oZpKYgCQ=">
-        <targ class="type" type="int"/>
-        <struct name="B" id="vuv6bo9spUYsHZ3uwTm6i6UxSNI=">
-          <file short-path="class-template-specializations-2.cpp" source-path="class-template-specializations-2.cpp" line="14" class="def"/>
-        </struct>
-      </template>
-    </struct>
-  </template>
   <template class="explicit" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
     <targ class="type" type="double"/>
     <struct name="A" id="bcCFiKKGBMnWrAf/IBu1R/sC07s=">
@@ -129,6 +100,35 @@
           <struct name="C" id="W4yrcTF+RN1qGXUi97b5Tcm2v60=">
             <file short-path="class-template-specializations-2.cpp" source-path="class-template-specializations-2.cpp" line="43" class="def"/>
             <file short-path="class-template-specializations-2.cpp" source-path="class-template-specializations-2.cpp" line="11"/>
+          </struct>
+        </struct>
+      </template>
+    </struct>
+  </template>
+  <template class="partial" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
+    <tparam name="T" class="type"/>
+    <targ class="type" type="T*"/>
+    <struct name="A" id="Nkvb8FA0/0YIpaybicEkWLwFOPo=">
+      <file short-path="class-template-specializations-2.cpp" source-path="class-template-specializations-2.cpp" line="5" class="def"/>
+      <template>
+        <tparam name="U" class="type"/>
+        <struct name="B" id="XTiSWRMM5OD8mjz+RJ6oZpKYgCQ=">
+          <file short-path="class-template-specializations-2.cpp" source-path="class-template-specializations-2.cpp" line="7" class="def"/>
+        </struct>
+      </template>
+      <template class="explicit" id="XTiSWRMM5OD8mjz+RJ6oZpKYgCQ=">
+        <targ class="type" type="int"/>
+        <struct name="B" id="vuv6bo9spUYsHZ3uwTm6i6UxSNI=">
+          <file short-path="class-template-specializations-2.cpp" source-path="class-template-specializations-2.cpp" line="14" class="def"/>
+        </struct>
+      </template>
+      <template class="partial" id="XTiSWRMM5OD8mjz+RJ6oZpKYgCQ=">
+        <tparam name="U" class="type"/>
+        <targ class="type" type="U*"/>
+        <struct name="B" id="HP4W/UatJ6BMg+LZKC5cQM4kCzw=">
+          <file short-path="class-template-specializations-2.cpp" source-path="class-template-specializations-2.cpp" line="11" class="def"/>
+          <struct name="C" id="qgS1WVyttKFsoadDE/OO4QyodlM=">
+            <file short-path="class-template-specializations-2.cpp" source-path="class-template-specializations-2.cpp" line="11" class="def"/>
           </struct>
         </struct>
       </template>

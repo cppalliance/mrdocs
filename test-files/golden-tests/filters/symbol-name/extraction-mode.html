@@ -539,6 +539,72 @@ get_implementation_defined();
 </div>
 <div>
 <div>
+<h2 id="dependency_ns_alias">dependency_ns_alias</h2>
+<div>
+<span><span>Namespace alias to form the dependency on dependency_ns</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;extraction-mode.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+namespace dependency_ns_alias = dependency_ns;
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="implementation_defined_ns_alias">implementation_defined_ns_alias</h2>
+<div>
+<span><span>Namespace alias to form a dependency on the implementation-defined namespace</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;extraction-mode.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+namespace implementation_defined_ns_alias = /* implementation-defined */;
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="see_below_ns_alias">see_below_ns_alias</h2>
+<div>
+<span><span>Namespace alias to form a dependency on the see-below namespace</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;extraction-mode.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+namespace see_below_ns_alias = <a href="#see_below_ns">see_below_ns</a>;
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>The alias should be linked as usual and, because it&#x27;s a namespace, the members should be listed on the page.</span></p>
+
+
+</div>
+</div>
+<div>
+<div>
 <h2 id="regular">regular</h2>
 <div>
 <span><span>A regular symbol in the global namespace</span></span>
@@ -771,72 +837,6 @@ get_see_below();
 <div>
 <h3>Description</h3>
 <p><span>When used in a function, the symbol name should be shown as usual. The page for this symbol is what should be different because</span><span> the synopsis should say &quot;See below&quot; and the members are not listed unless it&#x27;s a namespace or the symbol has been explicitly</span><span> used as a dependency elsewhere.</span></p>
-
-
-</div>
-</div>
-<div>
-<div>
-<h2 id="dependency_ns_alias">dependency_ns_alias</h2>
-<div>
-<span><span>Namespace alias to form the dependency on dependency_ns</span></span>
-
-
-</div>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;extraction-mode.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-namespace dependency_ns_alias = dependency_ns;
-</code>
-</pre>
-</div>
-</div>
-<div>
-<div>
-<h2 id="implementation_defined_ns_alias">implementation_defined_ns_alias</h2>
-<div>
-<span><span>Namespace alias to form a dependency on the implementation-defined namespace</span></span>
-
-
-</div>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;extraction-mode.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-namespace implementation_defined_ns_alias = /* implementation-defined */;
-</code>
-</pre>
-</div>
-</div>
-<div>
-<div>
-<h2 id="see_below_ns_alias">see_below_ns_alias</h2>
-<div>
-<span><span>Namespace alias to form a dependency on the see-below namespace</span></span>
-
-
-</div>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;extraction-mode.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-namespace see_below_ns_alias = <a href="#see_below_ns">see_below_ns</a>;
-</code>
-</pre>
-</div>
-<div>
-<h3>Description</h3>
-<p><span>The alias should be linked as usual and, because it&#x27;s a namespace, the members should be listed on the page.</span></p>
 
 
 </div>

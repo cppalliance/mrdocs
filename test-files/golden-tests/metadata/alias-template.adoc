@@ -13,9 +13,24 @@
 
 | <<A,`A`>> 
 | <<B,`B`>> 
-| <<C,`C`>> 
 | <<D,`D`>> 
+| <<C,`C`>> 
 |===
+
+[#C]
+== C
+
+
+=== Synopsis
+
+
+Declared in `&lt;alias&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+using C = <<A,A>>&lt;T&gt;;
+----
 
 [#A]
 == A
@@ -94,21 +109,6 @@ Declared in `&lt;alias&hyphen;template&period;cpp&gt;`
 ----
 template&lt;typename U&gt;
 using E = <<B,B>>&lt;T, U&gt;;
-----
-
-[#C]
-== C
-
-
-=== Synopsis
-
-
-Declared in `&lt;alias&hyphen;template&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;typename T&gt;
-using C = <<A,A>>&lt;T&gt;;
 ----
 
 

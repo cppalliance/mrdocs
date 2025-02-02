@@ -99,11 +99,11 @@ getBrief(Corpus const& corpus) const noexcept
     doc::Block const* copied_brief = nullptr;
     for(auto const& block : blocks_)
     {
-        if (!brief && block->kind == doc::Kind::brief)
+        if (!brief && block->Kind == doc::NodeKind::brief)
         {
             brief = block.operator->();
         }
-        if (!promoted_brief && block->kind == doc::Kind::paragraph)
+        if (!promoted_brief && block->Kind == doc::NodeKind::paragraph)
         {
             promoted_brief = block.operator->();
         }
@@ -118,7 +118,7 @@ getBrief(Corpus const& corpus) const noexcept
         // Look for a @copydoc command
         for (auto const& text : block->children)
         {
-            if (text->kind != doc::Kind::copied)
+            if (text->Kind != doc::NodeKind::copied)
             {
                 continue;
             }
@@ -221,35 +221,35 @@ makeOverview(
         it != list.end(); ++it)
     {
         MRDOCS_ASSERT(*it);
-        switch((*it)->kind)
+        switch((*it)->Kind)
         {
-        case doc::Kind::brief:
+        case doc::NodeKind::brief:
             break;
-        case doc::Kind::returns:
+        case doc::NodeKind::returns:
             ov.returns = dynamic_cast<
                 doc::Returns const*>(it->operator->());
             break;
-        case doc::Kind::param:
+        case doc::NodeKind::param:
             ov.params.push_back(dynamic_cast<
                 doc::Param const*>(it->operator->()));
             break;
-        case doc::Kind::tparam:
+        case doc::NodeKind::tparam:
             ov.tparams.push_back(dynamic_cast<
                 doc::TParam const*>(it->operator->()));
             break;
-        case doc::Kind::throws:
+        case doc::NodeKind::throws:
             ov.exceptions.push_back(dynamic_cast<
                 doc::Throws const*>(it->operator->()));
             break;
-        case doc::Kind::see:
+        case doc::NodeKind::see:
             ov.sees.push_back(dynamic_cast<
                 doc::See const*>(it->operator->()));
             break;
-        case doc::Kind::precondition:
+        case doc::NodeKind::precondition:
             ov.preconditions.push_back(dynamic_cast<
                 doc::Precondition const*>(it->operator->()));
             break;
-        case doc::Kind::postcondition:
+        case doc::NodeKind::postcondition:
             ov.postconditions.push_back(dynamic_cast<
                 doc::Postcondition const*>(it->operator->()));
             break;
@@ -273,15 +273,15 @@ emplace_back(
     MRDOCS_ASSERT(block->isBlock());
 
     std::string result;
-    switch(block->kind)
+    switch(block->Kind)
     {
-    case doc::Kind::param:
+    case doc::NodeKind::param:
     {
         // check for duplicate parameter name
         auto t = dynamic_cast<doc::Param const*>(block.operator->());
         for(auto const& q : blocks_)
         {
-            if(q->kind == doc::Kind::param)
+            if(q->Kind == doc::NodeKind::param)
             {
                 auto u = dynamic_cast<doc::Param const*>(q.operator->());
                 if(u->name == t->name)
@@ -294,13 +294,13 @@ emplace_back(
         }
         break;
     }
-    case doc::Kind::tparam:
+    case doc::NodeKind::tparam:
     {
         // check for duplicate template parameter name
         auto t = dynamic_cast<doc::TParam const*>(block.operator->());
         for(auto const& q : blocks_)
         {
-            if(q->kind == doc::Kind::tparam)
+            if(q->Kind == doc::NodeKind::tparam)
             {
                 auto u = dynamic_cast<doc::TParam const*>(q.operator->());
                 if(u->name == t->name)

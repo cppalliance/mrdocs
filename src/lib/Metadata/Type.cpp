@@ -13,8 +13,7 @@
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 dom::String
 toString(
@@ -314,6 +313,62 @@ operator<=>(NamedTypeInfo const& other) const
     return Name <=> other.Name;
 }
 
+std::strong_ordering
+AutoTypeInfo::
+operator<=>(AutoTypeInfo const&) const = default;
+
+std::strong_ordering
+LValueReferenceTypeInfo::
+operator<=>(LValueReferenceTypeInfo const&) const = default;
+
+std::strong_ordering
+RValueReferenceTypeInfo::
+operator<=>(RValueReferenceTypeInfo const&) const = default;
+
+std::strong_ordering
+PointerTypeInfo::
+operator<=>(PointerTypeInfo const&) const = default;
+
+std::strong_ordering
+MemberPointerTypeInfo::
+operator<=>(MemberPointerTypeInfo const&) const = default;
+
+std::strong_ordering
+ArrayTypeInfo::
+operator<=>(ArrayTypeInfo const&) const = default;
+
+std::strong_ordering
+FunctionTypeInfo::
+operator<=>(FunctionTypeInfo const& other) const {
+    if (auto const r = dynamic_cast<TypeInfo const&>(*this) <=>
+             dynamic_cast<TypeInfo const&>(other);
+        !std::is_eq(r))
+    {
+        return r;
+    }
+    if (auto const r = ReturnType <=> other.ReturnType;
+        !std::is_eq(r))
+    {
+        return r;
+    }
+    if (auto const r = ParamTypes.size() <=> other.ParamTypes.size();
+        !std::is_eq(r))
+    {
+        return r;
+    }
+    for (std::size_t i = 0; i < ParamTypes.size(); ++i)
+    {
+        if (auto const r = ParamTypes[i] <=> other.ParamTypes[i];
+            !std::is_eq(r))
+        {
+            return r;
+        }
+    }
+    return std::tie(CVQualifiers, RefQualifier, ExceptionSpec, IsVariadic) <=>
+           std::tie(other.CVQualifiers, other.RefQualifier, other.ExceptionSpec, other.IsVariadic);
+}
+
+
 std::string
 toString(
     const TypeInfo& T,
@@ -404,5 +459,20 @@ tag_invoke(
     v = dom::LazyObject(I, domCorpus);
 }
 
-} // mrdocs
-} // clang
+std::strong_ordering
+operator<=>(Polymorphic<TypeInfo> const& lhs, Polymorphic<TypeInfo> const& rhs)
+{
+    if (lhs && rhs)
+    {
+        if (lhs->Kind == rhs->Kind)
+        {
+            return visit(*lhs, detail::VisitCompareFn<TypeInfo>(*rhs));
+        }
+        return lhs->Kind <=> rhs->Kind;
+    }
+    return !lhs ? std::strong_ordering::less
+            : std::strong_ordering::greater;
+}
+
+
+} // clang::mrdocs

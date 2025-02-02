@@ -17,6 +17,7 @@
 #include <mrdocs/Metadata/Template.hpp>
 #include <mrdocs/Metadata/Info/Function.hpp>
 #include <mrdocs/Metadata/Type.hpp>
+#include <mrdocs/ADT/Polymorphic.hpp>
 #include <vector>
 
 namespace clang::mrdocs {
@@ -49,6 +50,9 @@ struct GuideInfo final
     explicit GuideInfo(SymbolID ID) noexcept
         : InfoCommonBase(ID)
     {}
+
+    std::strong_ordering
+    operator<=>(GuideInfo const& other) const;
 };
 
 MRDOCS_DECL

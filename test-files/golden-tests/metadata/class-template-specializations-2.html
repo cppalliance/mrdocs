@@ -19,9 +19,9 @@
 <tbody>
 <tr>
 <td><a href="#A-0e"><code>A</code></a> </td></tr><tr>
-<td><a href="#A-03"><code>A&lt;T*&gt;</code></a> </td></tr><tr>
 <td><a href="#A-06"><code>A&lt;double&gt;</code></a> </td></tr><tr>
-<td><a href="#A-02"><code>A&lt;long*&gt;</code></a> </td></tr>
+<td><a href="#A-02"><code>A&lt;long*&gt;</code></a> </td></tr><tr>
+<td><a href="#A-03"><code>A&lt;T*&gt;</code></a> </td></tr>
 </tbody>
 </table>
 </div>
@@ -37,121 +37,6 @@ Declared in <code>&lt;class-template-specializations-2.cpp&gt;</code></div>
 <code class="source-code cpp">
 template&lt;typename T&gt;
 struct A;
-</code>
-</pre>
-</div>
-
-
-</div>
-<div>
-<div>
-<h2 id="A-03">A&lt;T*&gt;</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;class-template-specializations-2.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-template&lt;typename T&gt;
-struct <a href="#A-0e">A</a>&lt;T*&gt;;
-</code>
-</pre>
-</div>
-<h2>Types</h2>
-<table style="table-layout: fixed; width: 100%;">
-<thead>
-<tr>
-<th>Name</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="#A-03-B-05"><code>B</code></a> </td></tr><tr>
-<td><a href="#A-03-B-01"><code>B&lt;U*&gt;</code></a> </td></tr><tr>
-<td><a href="#A-03-B-0b"><code>B&lt;int&gt;</code></a> </td></tr>
-</tbody>
-</table>
-
-
-</div>
-<div>
-<div>
-<h2 id="A-03-B-05"><a href="#A-03">A</a>&lt;T*&gt;::B</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;class-template-specializations-2.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-template&lt;typename U&gt;
-struct B;
-</code>
-</pre>
-</div>
-
-
-</div>
-<div>
-<div>
-<h2 id="A-03-B-01"><a href="#A-03">A</a>&lt;T*&gt;::B&lt;U*&gt;</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;class-template-specializations-2.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-template&lt;typename U&gt;
-struct <a href="#A-03-B-05">B</a>&lt;U*&gt;;
-</code>
-</pre>
-</div>
-<h2>Types</h2>
-<table style="table-layout: fixed; width: 100%;">
-<thead>
-<tr>
-<th>Name</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="#A-03-B-01-C"><code>C</code></a> </td></tr>
-</tbody>
-</table>
-
-
-</div>
-<div>
-<div>
-<h2 id="A-03-B-01-C"><a href="#A-03">A</a>&lt;T*&gt;::<a href="#A-03-B-01">B</a>&lt;U*&gt;::C</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;class-template-specializations-2.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-struct C;
-</code>
-</pre>
-</div>
-
-
-</div>
-<div>
-<div>
-<h2 id="A-03-B-0b"><a href="#A-03">A</a>&lt;T*&gt;::B&lt;int&gt;</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;class-template-specializations-2.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-template&lt;&gt;
-struct <a href="#A-03-B-05">B</a>&lt;int&gt;;
 </code>
 </pre>
 </div>
@@ -550,6 +435,121 @@ struct <a href="#A-03-B-05">B</a>&lt;int*&gt;;
 <div>
 <div>
 <h2 id="A-02-B-05-C"><a href="#A-02">A</a>&lt;long*&gt;::<a href="#A-02-B-05">B</a>&lt;int*&gt;::C</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;class-template-specializations-2.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+struct C;
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="A-03">A&lt;T*&gt;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;class-template-specializations-2.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;typename T&gt;
+struct <a href="#A-0e">A</a>&lt;T*&gt;;
+</code>
+</pre>
+</div>
+<h2>Types</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#A-03-B-05"><code>B</code></a> </td></tr><tr>
+<td><a href="#A-03-B-0b"><code>B&lt;int&gt;</code></a> </td></tr><tr>
+<td><a href="#A-03-B-01"><code>B&lt;U*&gt;</code></a> </td></tr>
+</tbody>
+</table>
+
+
+</div>
+<div>
+<div>
+<h2 id="A-03-B-05"><a href="#A-03">A</a>&lt;T*&gt;::B</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;class-template-specializations-2.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;typename U&gt;
+struct B;
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="A-03-B-0b"><a href="#A-03">A</a>&lt;T*&gt;::B&lt;int&gt;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;class-template-specializations-2.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;&gt;
+struct <a href="#A-03-B-05">B</a>&lt;int&gt;;
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="A-03-B-01"><a href="#A-03">A</a>&lt;T*&gt;::B&lt;U*&gt;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;class-template-specializations-2.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;typename U&gt;
+struct <a href="#A-03-B-05">B</a>&lt;U*&gt;;
+</code>
+</pre>
+</div>
+<h2>Types</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#A-03-B-01-C"><code>C</code></a> </td></tr>
+</tbody>
+</table>
+
+
+</div>
+<div>
+<div>
+<h2 id="A-03-B-01-C"><a href="#A-03">A</a>&lt;T*&gt;::<a href="#A-03-B-01">B</a>&lt;U*&gt;::C</h2>
 </div>
 <div>
 <h3>Synopsis</h3>

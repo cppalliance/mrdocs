@@ -1,0 +1,6 @@
+sort-members: false
+sort-members-ctors-1st: false
+sort-members-dtors-1st: false
+sort-members-assignment-1st: false
+sort-members-conversion-last: false
+sort-members-relational-last: false

@@ -41,7 +41,7 @@ resolveReference(doc::Reference& ref) const
     {
         // if we are copying the documentation of the
         // referenced symbol, ignore the current declaration
-        if (ref.kind == doc::Kind::copied)
+        if (ref.Kind == doc::NodeKind::copied)
         {
             return &I != current_;
         }
@@ -80,7 +80,7 @@ resolveReference(doc::Reference& ref) const
     }
 
     // prevent recursive documentation copies
-    if (ref.kind == doc::Kind::copied &&
+    if (ref.Kind == doc::NodeKind::copied &&
         found &&
         found->id == current_->id)
     {

@@ -43,21 +43,6 @@ struct X;
 
 
 
-[#X-06]
-== <<X-0e,X>>&lt;0&gt;
-
-
-=== Synopsis
-
-
-Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;bool B = true&gt;
-<<X-0e,X>>&lt;0&gt;(long) -> <<X-0e,X>>&lt;0&gt;;
-----
-
 [#X-0d]
 == <<X-0e,X>>&lt;0&gt;
 
@@ -98,6 +83,21 @@ Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 <<X-0e,X>>&lt;0&gt;(int) -> <<X-0e,X>>&lt;0&gt;;
+----
+
+[#X-06]
+== <<X-0e,X>>&lt;0&gt;
+
+
+=== Synopsis
+
+
+Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;bool B = true&gt;
+<<X-0e,X>>&lt;0&gt;(long) -> <<X-0e,X>>&lt;0&gt;;
 ----
 
 

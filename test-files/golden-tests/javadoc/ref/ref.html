@@ -350,8 +350,7 @@ struct F;
 </thead>
 <tbody>
 <tr>
-<td><a href="#F-operator_not"><code>operator!</code></a> </td></tr><tr>
-<td><a href="#F-operator_not_eq"><code>operator!&#x3D;</code></a> </td></tr><tr>
+<td><a href="#F-operator_assign"><code>operator&#x3D;</code></a> </td></tr><tr>
 <td><a href="#F-operator_mod"><code>operator%</code></a> </td></tr><tr>
 <td><a href="#F-operator_mod_eq"><code>operator%&#x3D;</code></a> </td></tr><tr>
 <td><a href="#F-operator_bitand"><code>operator&amp;</code></a> </td></tr><tr>
@@ -371,15 +370,8 @@ struct F;
 <td><a href="#F-operator_ptrmem"><code>operator-&gt;*</code></a> </td></tr><tr>
 <td><a href="#F-operator_slash"><code>operator/</code></a> </td></tr><tr>
 <td><a href="#F-operator_slash_eq"><code>operator/&#x3D;</code></a> </td></tr><tr>
-<td><a href="#F-operator_lt"><code>operator&lt;</code></a> </td></tr><tr>
 <td><a href="#F-operator_lshift"><code>operator&lt;&lt;</code></a> </td></tr><tr>
 <td><a href="#F-operator_lshift_eq"><code>operator&lt;&lt;&#x3D;</code></a> </td></tr><tr>
-<td><a href="#F-operator_le"><code>operator&lt;&#x3D;</code></a> </td></tr><tr>
-<td><a href="#F-operator_3way"><code>operator&lt;&#x3D;&gt;</code></a> </td></tr><tr>
-<td><a href="#F-operator_assign"><code>operator&#x3D;</code></a> </td></tr><tr>
-<td><a href="#F-operator_eq"><code>operator&#x3D;&#x3D;</code></a> </td></tr><tr>
-<td><a href="#F-operator_gt"><code>operator&gt;</code></a> </td></tr><tr>
-<td><a href="#F-operator_ge"><code>operator&gt;&#x3D;</code></a> </td></tr><tr>
 <td><a href="#F-operator_rshift"><code>operator&gt;&gt;</code></a> </td></tr><tr>
 <td><a href="#F-operator_rshift_eq"><code>operator&gt;&gt;&#x3D;</code></a> </td></tr><tr>
 <td><a href="#F-operator_subs"><code>operator[]</code></a> </td></tr><tr>
@@ -388,7 +380,15 @@ struct F;
 <td><a href="#F-operator_bitor"><code>operator|</code></a> </td></tr><tr>
 <td><a href="#F-operator_or_eq"><code>operator|&#x3D;</code></a> </td></tr><tr>
 <td><a href="#F-operator_or"><code>operator||</code></a> </td></tr><tr>
-<td><a href="#F-operator_bitnot"><code>operator~</code></a> </td></tr>
+<td><a href="#F-operator_bitnot"><code>operator~</code></a> </td></tr><tr>
+<td><a href="#F-operator_not"><code>operator!</code></a> </td></tr><tr>
+<td><a href="#F-operator_eq"><code>operator&#x3D;&#x3D;</code></a> </td></tr><tr>
+<td><a href="#F-operator_not_eq"><code>operator!&#x3D;</code></a> </td></tr><tr>
+<td><a href="#F-operator_lt"><code>operator&lt;</code></a> </td></tr><tr>
+<td><a href="#F-operator_le"><code>operator&lt;&#x3D;</code></a> </td></tr><tr>
+<td><a href="#F-operator_gt"><code>operator&gt;</code></a> </td></tr><tr>
+<td><a href="#F-operator_ge"><code>operator&gt;&#x3D;</code></a> </td></tr><tr>
+<td><a href="#F-operator_3way"><code>operator&lt;&#x3D;&gt;</code></a> </td></tr>
 </tbody>
 </table>
 
@@ -396,7 +396,7 @@ struct F;
 </div>
 <div>
 <div>
-<h2 id="F-operator_not"><a href="#F">F</a>::operator!</h2>
+<h2 id="F-operator_assign"><a href="#F">F</a>::operator&#x3D;</h2>
 </div>
 <div>
 <h3>Synopsis</h3>
@@ -405,23 +405,7 @@ Declared in <code>&lt;ref.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 void
-operator!();
-</code>
-</pre>
-</div>
-</div>
-<div>
-<div>
-<h2 id="F-operator_not_eq"><a href="#F">F</a>::operator!&#x3D;</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;ref.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-void
-operator!&#x3D;(<a href="#F">F</a>&);
+operator&#x3D;(<a href="#F">F</a>&);
 </code>
 </pre>
 </div>
@@ -732,22 +716,6 @@ operator/&#x3D;(<a href="#F">F</a>&);
 </div>
 <div>
 <div>
-<h2 id="F-operator_lt"><a href="#F">F</a>::operator&lt;</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;ref.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-void
-operator&lt;(<a href="#F">F</a>&);
-</code>
-</pre>
-</div>
-</div>
-<div>
-<div>
 <h2 id="F-operator_lshift"><a href="#F">F</a>::operator&lt;&lt;</h2>
 </div>
 <div>
@@ -774,102 +742,6 @@ Declared in <code>&lt;ref.cpp&gt;</code></div>
 <code class="source-code cpp">
 void
 operator&lt;&lt;&#x3D;(<a href="#F">F</a>&);
-</code>
-</pre>
-</div>
-</div>
-<div>
-<div>
-<h2 id="F-operator_le"><a href="#F">F</a>::operator&lt;&#x3D;</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;ref.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-void
-operator&lt;&#x3D;(<a href="#F">F</a>&);
-</code>
-</pre>
-</div>
-</div>
-<div>
-<div>
-<h2 id="F-operator_3way"><a href="#F">F</a>::operator&lt;&#x3D;&gt;</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;ref.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-void
-operator&lt;&#x3D;&gt;(<a href="#F">F</a>&);
-</code>
-</pre>
-</div>
-</div>
-<div>
-<div>
-<h2 id="F-operator_assign"><a href="#F">F</a>::operator&#x3D;</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;ref.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-void
-operator&#x3D;(<a href="#F">F</a>&);
-</code>
-</pre>
-</div>
-</div>
-<div>
-<div>
-<h2 id="F-operator_eq"><a href="#F">F</a>::operator&#x3D;&#x3D;</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;ref.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-void
-operator&#x3D;&#x3D;(<a href="#F">F</a>&);
-</code>
-</pre>
-</div>
-</div>
-<div>
-<div>
-<h2 id="F-operator_gt"><a href="#F">F</a>::operator&gt;</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;ref.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-void
-operator&gt;(<a href="#F">F</a>&);
-</code>
-</pre>
-</div>
-</div>
-<div>
-<div>
-<h2 id="F-operator_ge"><a href="#F">F</a>::operator&gt;&#x3D;</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;ref.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-void
-operator&gt;&#x3D;(<a href="#F">F</a>&);
 </code>
 </pre>
 </div>
@@ -1014,6 +886,134 @@ Declared in <code>&lt;ref.cpp&gt;</code></div>
 <code class="source-code cpp">
 void
 operator~();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="F-operator_not"><a href="#F">F</a>::operator!</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;ref.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+operator!();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="F-operator_eq"><a href="#F">F</a>::operator&#x3D;&#x3D;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;ref.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+operator&#x3D;&#x3D;(<a href="#F">F</a>&);
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="F-operator_not_eq"><a href="#F">F</a>::operator!&#x3D;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;ref.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+operator!&#x3D;(<a href="#F">F</a>&);
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="F-operator_lt"><a href="#F">F</a>::operator&lt;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;ref.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+operator&lt;(<a href="#F">F</a>&);
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="F-operator_le"><a href="#F">F</a>::operator&lt;&#x3D;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;ref.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+operator&lt;&#x3D;(<a href="#F">F</a>&);
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="F-operator_gt"><a href="#F">F</a>::operator&gt;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;ref.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+operator&gt;(<a href="#F">F</a>&);
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="F-operator_ge"><a href="#F">F</a>::operator&gt;&#x3D;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;ref.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+operator&gt;&#x3D;(<a href="#F">F</a>&);
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="F-operator_3way"><a href="#F">F</a>::operator&lt;&#x3D;&gt;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;ref.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+operator&lt;&#x3D;&gt;(<a href="#F">F</a>&);
 </code>
 </pre>
 </div>

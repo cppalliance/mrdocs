@@ -876,6 +876,41 @@ CompareDerived(
             : std::strong_ordering::greater;
 }
 
+/// @copydoc CompareDerived
+template <class Base>
+requires
+    (!IsPolymorphic_v<Base>) &&
+    detail::CanVisitCompare<Base>
+auto
+CompareDerived(Base const& lhs, Base const& rhs)
+{
+    if (lhs.Kind == rhs.Kind)
+    {
+        return visit(lhs, detail::VisitCompareFn<Base>(rhs));
+    }
+    return lhs.Kind <=> rhs.Kind;
+}
+
+template <class Base>
+requires detail::CanVisitCompare<Base>
+auto
+operator<=>(
+    Polymorphic<Base> const& lhs,
+    Polymorphic<Base> const& rhs)
+{
+    return CompareDerived(lhs, rhs);
+}
+
+template <class Base>
+requires detail::CanVisitCompare<Base>
+bool
+operator==(
+    Polymorphic<Base> const& lhs,
+    Polymorphic<Base> const& rhs)
+{
+    return lhs <=> rhs == std::strong_ordering::equal;
+}
+
 } // clang::mrdocs
 
 #endif

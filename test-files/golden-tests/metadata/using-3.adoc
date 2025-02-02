@@ -144,33 +144,18 @@ Declared in `&lt;using&hyphen;3&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<A-f,f>>(int);
-----
-
-[.small]#<<A-f,_» more&period;&period;&period;_>>#
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-void
 <<B-f,f>>(bool);
 ----
 
 [.small]#<<B-f,_» more&period;&period;&period;_>>#
 
-[#A-f]
-== <<A,A>>::f
-
-
-=== Synopsis
-
-
-Declared in `&lt;using&hyphen;3&period;cpp&gt;`
-
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f(int);
+<<A-f,f>>(int);
 ----
+
+[.small]#<<A-f,_» more&period;&period;&period;_>>#
 
 [#B-f]
 == <<B,B>>::f
@@ -185,6 +170,21 @@ Declared in `&lt;using&hyphen;3&period;cpp&gt;`
 ----
 void
 f(bool);
+----
+
+[#A-f]
+== <<A,A>>::f
+
+
+=== Synopsis
+
+
+Declared in `&lt;using&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(int);
 ----
 
 [#C-f-081]

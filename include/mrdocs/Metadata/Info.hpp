@@ -138,6 +138,8 @@ struct MRDOCS_VISIBLE Info
 
     #define INFO(Type) constexpr bool is##Type() const noexcept { return Kind == InfoKind::Type; }
     #include <mrdocs/Metadata/InfoNodesPascal.inc>
+
+    auto operator<=>(const Info&) const = default;
 };
 
 //------------------------------------------------
@@ -161,6 +163,8 @@ struct InfoCommonBase : Info
     #define INFO(Kind) \
     static constexpr bool is##Kind() noexcept { return K == InfoKind::Kind; }
     #include <mrdocs/Metadata/InfoNodesPascal.inc>
+
+    auto operator<=>(const InfoCommonBase&) const = default;
 
 protected:
     constexpr explicit InfoCommonBase(SymbolID const& ID)
@@ -350,14 +354,6 @@ tag_invoke(
             domCorpus);
     });
 }
-
-/** Compare two Info objects
- */
-MRDOCS_DECL
-bool
-operator<(
-    Info const& lhs,
-    Info const& rhs) noexcept;
 
 } // clang::mrdocs
 

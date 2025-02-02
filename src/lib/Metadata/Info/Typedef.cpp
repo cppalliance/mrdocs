@@ -16,6 +16,49 @@
 
 namespace clang::mrdocs {
 
+std::strong_ordering
+TypedefInfo::
+operator<=>(const TypedefInfo& other) const
+{
+    if (auto const cmp = Name <=> other.Name;
+        !std::is_eq(cmp))
+    {
+        return cmp;
+    }
+    if (auto const cmp = Template.operator bool() <=> other.Template.operator bool();
+        !std::is_eq(cmp))
+    {
+        return cmp;
+    }
+    if (Template && other.Template)
+    {
+        if (auto const cmp = Template->Args.size() <=> other.Template->Args.size();
+            !std::is_eq(cmp))
+        {
+            return cmp;
+        }
+        if (auto const cmp = Template->Params.size() <=> other.Template->Params.size();
+            !std::is_eq(cmp))
+        {
+            return cmp;
+        }
+    }
+    if (Template && other.Template)
+    {
+        if (auto const cmp = Template->Args <=> other.Template->Args;
+            !std::is_eq(cmp))
+        {
+            return cmp;
+        }
+        if (auto const cmp = Template->Params <=> other.Template->Params;
+            !std::is_eq(cmp))
+        {
+            return cmp;
+        }
+    }
+    return dynamic_cast<Info const&>(*this) <=> dynamic_cast<Info const&>(other);
+}
+
 void merge(TypedefInfo& I, TypedefInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));

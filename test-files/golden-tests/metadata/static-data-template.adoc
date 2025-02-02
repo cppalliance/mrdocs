@@ -36,8 +36,8 @@ struct A;
 | Name 
 
 | <<A-x-05,`x`>> 
-| <<A-x-0a,`x&lt;U*, T&gt;`>> 
 | <<A-x-07,`x&lt;T, long&gt;`>> 
+| <<A-x-0a,`x&lt;U*, T&gt;`>> 
 |===
 
 
@@ -60,22 +60,6 @@ inline constexpr static
 T x = 0;
 ----
 
-[#A-x-0a]
-== <<A,A>>::x&lt;U*, T&gt;
-
-
-=== Synopsis
-
-
-Declared in `&lt;static&hyphen;data&hyphen;template&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;typename U&gt;
-inline constexpr static
-T x&lt;U*, T&gt; = 1;
-----
-
 [#A-x-07]
 == <<A,A>>::x&lt;T, long&gt;
 
@@ -90,6 +74,22 @@ Declared in `&lt;static&hyphen;data&hyphen;template&period;cpp&gt;`
 template&lt;&gt;
 inline constexpr static
 bool x&lt;T, long&gt; = 2;
+----
+
+[#A-x-0a]
+== <<A,A>>::x&lt;U*, T&gt;
+
+
+=== Synopsis
+
+
+Declared in `&lt;static&hyphen;data&hyphen;template&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename U&gt;
+inline constexpr static
+T x&lt;U*, T&gt; = 1;
 ----
 
 
