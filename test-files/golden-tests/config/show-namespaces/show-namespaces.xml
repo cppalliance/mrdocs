@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <namespace name="A" id="jQQu/8mLNzRQvGtbkKMwwloVDpw=">
+    <namespace name="B" id="4hr3niqdAlVLoJDRDfOf4nP1zbU=">
+      <function name="c" id="DizZvG68aMTqxVPnK/zif7Uib/g=">
+        <file short-path="show-namespaces.cpp" source-path="show-namespaces.cpp" line="6"/>
+      </function>
+    </namespace>
+    <function name="b" id="mpQAkmTKteaRIVNdMC+lz4NOG1o=">
+      <file short-path="show-namespaces.cpp" source-path="show-namespaces.cpp" line="4"/>
+    </function>
+  </namespace>
+  <function name="a" id="SyGXheCn5nPav+TPUC0PuSZPmIo=">
+    <file short-path="show-namespaces.cpp" source-path="show-namespaces.cpp" line="1"/>
+  </function>
+</namespace>
+</mrdocs>

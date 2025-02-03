@@ -318,6 +318,13 @@
         "details": "Output an embeddable document, which excludes the header, the footer, and everything outside the body of the document. This option is useful for producing documents that can be inserted into an external template.",
         "type": "bool",
         "default": false
+      },
+      {
+        "name": "show-namespaces",
+        "brief": "Show namespace pages in the documentation",
+        "details": "When set to true, MrDocs creates a page for each namespace in the documentation.",
+        "type": "bool",
+        "default": true
       }
     ]
   },

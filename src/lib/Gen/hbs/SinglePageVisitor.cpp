@@ -21,21 +21,24 @@ void
 SinglePageVisitor::
 operator()(T const& I)
 {
-    MRDOCS_CHECK_OR(shouldGenerate(I));
-    ex_.async([this, &I, symbolIdx = numSymbols_++](Builder& builder)
+    if (shouldGenerate(I, corpus_.config))
     {
-        // Output to an independent string first (async), then write to
-        // the shared stream (sync)
-        std::stringstream ss;
-        if(auto r = builder(ss, I))
+        ex_.async([this, &I, symbolIdx = numSymbols_++](Builder& builder)
         {
-            writePage(ss.str(), symbolIdx);
-        }
-        else
-        {
-            r.error().Throw();
-        }
-    });
+
+                // Output to an independent string first (async), then write to
+                // the shared stream (sync)
+                std::stringstream ss;
+                if(auto r = builder(ss, I))
+                {
+                    writePage(ss.str(), symbolIdx);
+                }
+                else
+                {
+                    r.error().Throw();
+                }
+        });
+    }
     Corpus::TraverseOptions opts = {.skipInherited = std::same_as<T, RecordInfo>};
     corpus_.traverse(opts, I, *this);
 }

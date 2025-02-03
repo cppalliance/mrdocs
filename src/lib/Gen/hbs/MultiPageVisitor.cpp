@@ -21,47 +21,47 @@ void
 MultiPageVisitor::
 operator()(T const& I)
 {
-    MRDOCS_CHECK_OR(shouldGenerate(I));
-
-    // Increment the count
-    count_.fetch_add(1, std::memory_order_relaxed);
-
     ex_.async([this, &I](Builder& builder)
     {
-        // ===================================
-        // Open the output file
-        // ===================================
-        std::string const path = files::appendPath(outputPath_, builder.domCorpus.getURL(I));
-        std::string const dir = files::getParentDir(path);
-        if (auto exp = files::createDirectory(dir); !exp)
+        if (shouldGenerate(I, corpus_.config))
         {
-            exp.error().Throw();
-        }
-        std::ofstream os;
-        try
-        {
-            os.open(path,
-                    std::ios_base::binary |
-                        std::ios_base::out |
-                        std::ios_base::trunc // | std::ios_base::noreplace
-            );
-            if (!os.is_open()) {
-                formatError(R"(std::ofstream("{}") failed)", path)
+            // ===================================
+            // Open the output file
+            // ===================================
+            std::string const path = files::appendPath(outputPath_, builder.domCorpus.getURL(I));
+            std::string const dir = files::getParentDir(path);
+            if (auto exp = files::createDirectory(dir); !exp)
+            {
+                exp.error().Throw();
+            }
+            std::ofstream os;
+            try
+            {
+                os.open(path,
+                        std::ios_base::binary |
+                            std::ios_base::out |
+                            std::ios_base::trunc // | std::ios_base::noreplace
+                );
+                if (!os.is_open()) {
+                    formatError(R"(std::ofstream("{}") failed)", path)
+                        .Throw();
+                }
+            }
+            catch (std::exception const& ex)
+            {
+                formatError(R"(std::ofstream("{}") threw "{}")", path, ex.what())
                     .Throw();
             }
-        }
-        catch (std::exception const& ex)
-        {
-            formatError(R"(std::ofstream("{}") threw "{}")", path, ex.what())
-                .Throw();
-        }
 
-        // ===================================
-        // Generate the output
-        // ===================================
-        if (auto exp = builder(os, I); !exp)
-        {
-            exp.error().Throw();
+            // ===================================
+            // Generate the output
+            // ===================================
+            if (auto exp = builder(os, I); !exp)
+            {
+                exp.error().Throw();
+            }
+
+            count_.fetch_add(1, std::memory_order_relaxed);
         }
 
         // ===================================
