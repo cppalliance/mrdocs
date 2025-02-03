@@ -427,7 +427,23 @@ struct PublicSettingsVisitor {
                     std::string_view valueSv(value);
                     if (!value.empty())
                     {
-                        res = files::getParentDir(value);
+                        bool const valueIsDir =
+                            [&value]() {
+                                if (files::exists(value))
+                                {
+                                    return files::isDirectory(value);
+                                }
+                                std::string_view const filename = files::getFileName(value);
+                                return filename.find('.') == std::string::npos;
+                            }();
+                        if (valueIsDir)
+                        {
+                            res = value;
+                        }
+                        else
+                        {
+                            res = files::getParentDir(value);
+                        }
                         found = true;
                         return;
                     }

@@ -170,6 +170,7 @@ def validate_and_normalize_option(option, flat_options):
             # If option is unique directory option of some form
             if flat_option['type'] in ['path', 'dir-path', 'file-path']:
                 reference_directories.append(f'<{flat_option["name"]}>')
+                reference_directories.append(f'<{flat_option["name"]}-dir>')
         if option['relative-to'] not in reference_directories:
             raise ValueError(f'Option "{option["name"]}" has an invalid value for "relative-to"')
         default_paths = option['default']
