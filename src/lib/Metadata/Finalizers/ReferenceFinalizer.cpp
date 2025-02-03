@@ -221,6 +221,36 @@ finalize(NameInfo& name)
     });
 }
 
+namespace {
+void
+qualifiedName(InfoSet& info, Info const& I, std::string& result)
+{
+    if (I.Parent &&
+        I.Parent != SymbolID::global)
+    {
+        Info const& PI = *info.find(I.Parent)->get();
+        qualifiedName(info, PI, result);
+        result += "::";
+    }
+    if (!I.Name.empty())
+    {
+        result += I.Name;
+    }
+    else
+    {
+        result += "<anonymous>";
+    }
+}
+
+std::string
+qualifiedName(InfoSet& info, Info const& I)
+{
+    std::string res;
+    qualifiedName(info, I, res);
+    return res;
+}
+} // (anonymous)
+
 void
 ReferenceFinalizer::
 finalize(doc::Node& node)
@@ -237,10 +267,11 @@ finalize(doc::Node& node)
             if (!resolveReference(N) &&
                 !warned_.contains({N.string, current_->Name}))
             {
+                MRDOCS_ASSERT(current_);
                 report::warn(
-                    "Failed to resolve reference to '{}' from '{}'",
-                    N.string,
-                    current_->Name);
+                    "{}: Failed to resolve reference to '{}'",
+                    qualifiedName(info_, *current_),
+                    N.string);
                 warned_.insert({N.string, current_->Name});
             }
         }
