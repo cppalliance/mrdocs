@@ -300,8 +300,8 @@
         "brief": "Path for the tagfile",
         "details": "Specifies the full path (filename) where the generated tagfile should be saved. If left empty, no tagfile will be generated.",
         "type": "file-path",
-        "default": "<output>/reference.tag.xml",
-        "relative-to": "<output>",
+        "default": "<output-dir>/reference.tag.xml",
+        "relative-to": "<output-dir>",
         "must-exist": false,
         "should-exist": false
       },

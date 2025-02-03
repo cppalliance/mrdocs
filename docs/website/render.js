@@ -67,15 +67,17 @@ target_compile_features(${sourceBasename} PRIVATE cxx_std_23)
     // Run mrdocs to generate documentation
     const mrdocsConfig = path.join(absSnippetsDir, 'mrdocs.yml')
     const mrdocsInput = cmakeListsPath
-    const mrdocsOutput = path.join(absSnippetsDir, 'output')
+    const mrdocsOutput = path.join(absSnippetsDir, 'output', 'reference.html')
     const args = [
         mrdocsExecutable,
         `--config=${mrdocsConfig}`,
         mrdocsInput,
         `--output=${mrdocsOutput}`,
-        '--multipage=true',
+        '--multipage=false',
         '--generator=html',
         '--embedded=true',
+        '--show-namespaces=false',
+        '--tagfile=',
     ];
     const command = args.join(' ');
     console.log(`Running command: ${command}`)
@@ -87,22 +89,19 @@ target_compile_features(${sourceBasename} PRIVATE cxx_std_23)
     }
 
     // Look load symbol page in the output directory
-    const documentationFilename = `${sourceBasename}.html`
-    const documentationPath = path.join(mrdocsOutput, documentationFilename)
-    if (!fs.existsSync(documentationPath)) {
-        console.log(`Documentation file ${documentationFilename} not found in ${mrdocsOutput}`)
+    if (!fs.existsSync(mrdocsOutput)) {
+        console.log(`Documentation file not found in ${mrdocsOutput}`)
         console.log('Failed to generate website panel documentation')
         process.exit(1)
     }
-    panel.documentation = fs.readFileSync(documentationPath, 'utf8');
+    panel.documentation = fs.readFileSync(mrdocsOutput, 'utf8');
 
     // Also inject the contents of the source file as highlighted C++
     const snippetContents = fs.readFileSync(sourcePath, 'utf8');
-    const highlightedSnippet = hljs.highlight(snippetContents, {language: 'cpp'}).value;
-    panel.snippet = highlightedSnippet;
+    panel.snippet = hljs.highlight(snippetContents, {language: 'cpp'}).value;
 
     // Delete these temporary files
-    fs.rmSync(mrdocsOutput, {recursive: true});
+    fs.unlinkSync(mrdocsOutput);
     fs.unlinkSync(cmakeListsPath);
 
     console.log(`Documentation generated successfully for panel ${panel.source}`)

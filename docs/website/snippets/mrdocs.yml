@@ -1,3 +1,5 @@
 source-root: .
 input:
   - .
+show-namespaces: false
+multipage: false
