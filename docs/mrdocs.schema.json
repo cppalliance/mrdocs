@@ -297,6 +297,16 @@
       "title": "Detect and reduce SFINAE expressions",
       "type": "boolean"
     },
+    "show-namespaces": {
+      "default": true,
+      "description": "When set to true, MrDocs creates a page for each namespace in the documentation.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Show namespace pages in the documentation",
+      "type": "boolean"
+    },
     "sort-members": {
       "default": true,
       "description": "When set to `true`, sort the members of a record or namespace by name and parameters. When set to `false`, the members are included in the declaration order they are extracted.",

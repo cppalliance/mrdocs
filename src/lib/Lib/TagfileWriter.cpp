@@ -19,8 +19,7 @@
 
 #include <mrdocs/Support/Path.hpp>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 //------------------------------------------------
 //
@@ -82,7 +81,7 @@ operator()(T const& I)
 {
     if constexpr (std::derived_from<T, Info>)
     {
-        if (!hbs::shouldGenerate(I))
+        if (!hbs::shouldGenerate(I, corpus_.getCorpus().config))
         {
             return;
         }
@@ -113,14 +112,14 @@ writeNamespace(
 {
     // Check if this namespace contains only other namespaces
     bool onlyNamespaces = true;
-    corpus_->traverse(I, [&](Info const& I)
+    corpus_->traverse(I, [&](Info const& U)
     {
-        if (!hbs::shouldGenerate(I))
+        if (!hbs::shouldGenerate(U, corpus_.getCorpus().config))
         {
             return;
         }
 
-        if (I.Kind != InfoKind::Namespace)
+        if (U.Kind != InfoKind::Namespace)
         {
             onlyNamespaces = false;
         }
@@ -139,7 +138,7 @@ writeNamespace(
         // Write the class-like members of this namespace
         corpus_->traverse(I, [this]<typename U>(U const& J)
         {
-            if (!hbs::shouldGenerate(J))
+            if (!hbs::shouldGenerate(J, corpus_.getCorpus().config))
             {
                 return;
             }
@@ -281,5 +280,4 @@ generateFileAndAnchor(T const& I)
     return {url.substr(0, pos), url.substr(pos + 1)};
 }
 
-} // mrdocs
-} // clang
+} // clang::mrdocs

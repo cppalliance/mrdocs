@@ -17,7 +17,7 @@
 namespace clang::mrdocs::hbs {
 
 bool
-shouldGenerate(Info const& I)
+shouldGenerate(Info const& I, Config const& config)
 {
     if (I.isSpecialization())
     {
@@ -36,6 +36,10 @@ shouldGenerate(Info const& I)
         // We don't generate pages for implementation-defined symbols.
         // We do generate pages for see-below symbols.
         // See the requirements in ConfigOptions.json.
+        return false;
+    }
+    if (!config->showNamespaces && I.isNamespace())
+    {
         return false;
     }
     return true;
@@ -91,7 +95,7 @@ findPrimarySiblingWithUrl(Corpus const& c, Info const& I, Info const& parent)
             for (Info const* sibling: sameNameSiblings)
             {
                 if (!sibling ||
-                    !shouldGenerate(*sibling))
+                    !shouldGenerate(*sibling, c.config))
                 {
                     continue;
                 }
@@ -135,7 +139,7 @@ findDirectPrimarySiblingWithUrl(Corpus const& c, Info const& I)
     // in the parent scope for which we want to generate the URL
     Info const* parent = c.find(I.Parent);
     MRDOCS_CHECK_OR(parent, nullptr);
-    if (!shouldGenerate(*parent))
+    if (!shouldGenerate(*parent, c.config))
     {
         parent = findPrimarySiblingWithUrl(c, *parent);
         MRDOCS_CHECK_OR(parent, nullptr);
@@ -198,7 +202,7 @@ findResolvedPrimarySiblingWithUrl(Corpus const& c, Info const& I)
     // a dependency for which there's no URL, we attempt to
     // find the primary sibling for the parent so we take
     // the URL from it.
-    if (!shouldGenerate(*parent))
+    if (!shouldGenerate(*parent, c.config))
     {
         parent = findPrimarySiblingWithUrl(c, *parent);
         MRDOCS_CHECK_OR(parent, nullptr);
@@ -236,7 +240,7 @@ findParentWithUrl(Corpus const& c, Info const& I)
     Info const* parent = c.find(I.Parent);
     MRDOCS_CHECK_OR(parent, nullptr);
     MRDOCS_CHECK_OR(!parent->isNamespace(), nullptr);
-    if (shouldGenerate(*parent))
+    if (shouldGenerate(*parent, c.config))
     {
         return parent;
     }

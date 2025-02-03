@@ -120,7 +120,7 @@ HandlebarsCorpus::
 construct(Info const& I) const
 {
     dom::Object obj = this->DomCorpus::construct(I);
-    if (shouldGenerate(I))
+    if (shouldGenerate(I, getCorpus().config))
     {
         obj.set("url", getURL(I));
         obj.set("anchor", names_.getQualified(I.id, '-'));
@@ -132,6 +132,7 @@ construct(Info const& I) const
     // for the primary template if it's part of the corpus.
     if (Info const* primaryInfo = findAlternativeURLInfo(getCorpus(), I))
     {
+        MRDOCS_ASSERT(shouldGenerate(*primaryInfo, getCorpus().config));
         obj.set("url", getURL(*primaryInfo));
         obj.set("anchor", names_.getQualified(primaryInfo->id, '-'));
     }

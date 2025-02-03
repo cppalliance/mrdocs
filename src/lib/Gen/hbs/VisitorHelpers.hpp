@@ -12,6 +12,7 @@
 #define MRDOCS_LIB_GEN_HBS_VISITORHELPERS_HPP
 
 #include <mrdocs/Metadata/Info.hpp>
+#include <mrdocs/Config.hpp>
 
 namespace clang::mrdocs::hbs {
 
@@ -22,7 +23,7 @@ namespace clang::mrdocs::hbs {
  */
 MRDOCS_DECL
 bool
-shouldGenerate(Info const& I);
+shouldGenerate(Info const& I, Config const& config);
 
 /** Find an Info type whose URL we can use for the specified Info
 

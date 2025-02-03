@@ -1,3 +1,4 @@
 source-root: .
 input:
   - .
+show-namespaces: false
