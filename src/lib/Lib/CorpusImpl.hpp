@@ -38,6 +38,7 @@ namespace clang::mrdocs {
 */
 class CorpusImpl : public Corpus
 {
+    MRDOCS_DECL
     friend
     void
     finalize(CorpusImpl& corpus);
@@ -85,8 +86,8 @@ public:
         @param config A shared pointer to the configuration.
         @param compilations A compilations database for the input files.
     */
-    // MRDOCS_DECL
     [[nodiscard]]
+    MRDOCS_DECL
     static
     mrdocs::Expected<std::unique_ptr<Corpus>>
     build(

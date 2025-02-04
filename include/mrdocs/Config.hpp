@@ -60,7 +60,7 @@ protected:
 public:
     /** Settings values used to generate the Corpus and Docs
      */
-    struct Settings : public PublicSettings
+    struct MRDOCS_DECL Settings : public PublicSettings
     {
         /**
          * @brief Loads the public configuration settings from the specified YAML file.
@@ -157,13 +157,11 @@ public:
 
     /** Destructor.
     */
-    MRDOCS_DECL
     virtual
     ~Config() noexcept = 0;
 
     /** Return a pool of threads for executing work.
     */
-    MRDOCS_DECL
     virtual
     ThreadPool&
     threadPool() const noexcept = 0;

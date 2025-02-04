@@ -11,6 +11,7 @@
 #ifndef MRDOCS_API_SUPPORT_ASSERT_HPP
 #define MRDOCS_API_SUPPORT_ASSERT_HPP
 
+#include <mrdocs/Platform.hpp>
 #include <cstdint>
 
 namespace clang {
@@ -30,6 +31,7 @@ namespace mrdocs {
         #define MRDOCS_UNREACHABLE() static_cast<void>(__debugbreak(), __assume(false))
     #endif
 
+    MRDOCS_DECL
     void
     assert_failed(
         char const* msg,

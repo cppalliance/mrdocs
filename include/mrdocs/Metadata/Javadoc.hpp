@@ -381,6 +381,13 @@ struct MRDOCS_DECL
 {
     std::vector<Polymorphic<Text>> children;
 
+    Block(Block&&);
+    Block(const Block&);
+    ~Block();
+
+    Block &operator=(Block&&);
+    Block &operator=(const Block&);
+
     bool isBlock() const noexcept final
     {
         return true;
@@ -1040,7 +1047,6 @@ struct MRDOCS_DECL
 
     /** Constructor.
     */
-    MRDOCS_DECL
     Javadoc() noexcept;
 
     /** Constructor
@@ -1048,6 +1054,11 @@ struct MRDOCS_DECL
     explicit
     Javadoc(
         std::vector<Polymorphic<doc::Block>> blocks);
+
+    Javadoc(const Javadoc&);
+    Javadoc(Javadoc&&);
+    Javadoc& operator=(const Javadoc&);
+    Javadoc& operator=(Javadoc&&);
 
     /** Return true if this is empty
     */

@@ -11,7 +11,6 @@
 #ifndef MRDOCS_API_PLATFORM_HPP
 #define MRDOCS_API_PLATFORM_HPP
 
-#include <mrdocs/Support/Assert.hpp>
 #include <type_traits>
 
 #if __cplusplus < 202002L
@@ -86,5 +85,7 @@ namespace mrdocs {
 
 } // mrdocs
 } // clang
+
+#include <mrdocs/Support/Assert.hpp>
 
 #endif

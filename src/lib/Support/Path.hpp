@@ -35,6 +35,7 @@ using SmallPathString = llvm::SmallString<340>;
     On Unix, this function is a no-op because backslashes
     are valid path chracters.
 */
+MRDOCS_DECL
 llvm::StringRef
 convert_to_slash(
     llvm::SmallVectorImpl<char> &path,
@@ -43,7 +44,7 @@ convert_to_slash(
 
 /** A temporary file that is deleted when it goes out of scope.
 */
-class ScopedTempFile
+class MRDOCS_DECL ScopedTempFile
 {
     clang::mrdocs::SmallPathString path_;
     bool ok_ = false;
@@ -83,7 +84,7 @@ public:
 
 /** A temporary directory that is deleted when it goes out of scope.
 */
-class ScopedTempDirectory
+class MRDOCS_DECL ScopedTempDirectory
 {
     clang::mrdocs::SmallPathString path_;
     bool ok_ = false;

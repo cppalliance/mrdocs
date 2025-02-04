@@ -298,6 +298,7 @@ public:
     /** Compare two objects for equality.
      */
     friend
+    MRDOCS_DECL
     bool
     operator==(Object const& a, Object const& b) noexcept;
 
@@ -318,7 +319,7 @@ public:
 
     /** Return a diagnostic string.
     */
-    friend std::string toString(Object const&);
+    friend MRDOCS_DECL std::string toString(Object const&);
 };
 
 //------------------------------------------------
@@ -402,6 +403,11 @@ class MRDOCS_DECL
 {
 public:
     DefaultObjectImpl() noexcept;
+    DefaultObjectImpl(const DefaultObjectImpl&);
+    DefaultObjectImpl(DefaultObjectImpl&&);
+    DefaultObjectImpl& operator=(const DefaultObjectImpl&);
+    DefaultObjectImpl& operator=(DefaultObjectImpl&&);
+    ~DefaultObjectImpl();
 
     explicit DefaultObjectImpl(
         storage_type entries) noexcept;
