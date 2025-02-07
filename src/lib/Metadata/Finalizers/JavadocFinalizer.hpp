@@ -159,6 +159,16 @@ private:
                 return corpus_.find(id) != nullptr;
             }));
     }
+
+    template<class... Args>
+    void
+    warn(
+        Located<std::string_view> format,
+        Args&&... args) const
+    {
+        MRDOCS_CHECK_OR(corpus_.config->warnings);
+        return log(report::Level::warn, format, std::forward<Args>(args)...);
+    }
 };
 
 } // clang::mrdocs

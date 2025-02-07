@@ -416,18 +416,9 @@
     ]
   },
   {
-    "category": "Miscellaneous",
-    "brief": "Miscellaneous options",
+    "category": "Warnings",
+    "brief": "Warnings and progress messages",
     "options": [
-      {
-        "name": "concurrency",
-        "command-line-only": true,
-        "brief": "Number of threads to use",
-        "details": "The desired level of concurrency: 0 for hardware-suggested.",
-        "type": "unsigned",
-        "default": 0,
-        "min-value": 0
-      },
       {
         "name": "verbose",
         "brief": "Verbose output",
@@ -459,6 +450,28 @@
           "fatal"
         ],
         "default": "info"
+      },
+      {
+        "name": "warnings",
+        "brief": "Enable warning messages",
+        "details": "When set to `true`, MrDocs outputs warning messages during the generation of the documentation. It is usually recommended to enable warnings while writing the documentation.",
+        "type": "bool",
+        "default": true
+      }
+    ]
+  },
+  {
+    "category": "Miscellaneous",
+    "brief": "Miscellaneous options",
+    "options": [
+      {
+        "name": "concurrency",
+        "command-line-only": true,
+        "brief": "Number of threads to use",
+        "details": "The desired level of concurrency: 0 for hardware-suggested.",
+        "type": "unsigned",
+        "default": 0,
+        "min-value": 0
       },
       {
         "name": "ignore-map-errors",

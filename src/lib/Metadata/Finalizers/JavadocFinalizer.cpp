@@ -128,7 +128,7 @@ finalize(doc::Reference& ref)
         MRDOCS_ASSERT(current_context_);
         if (auto primaryLoc = getPrimaryLocation(*current_context_))
         {
-            report::warn(
+            warn(
                 "{}:{}\n{}: Failed to resolve reference to '{}'",
                 primaryLoc->FullPath,
                 primaryLoc->LineNumber,
@@ -284,7 +284,7 @@ copyBriefAndDetails(Javadoc& javadoc)
             MRDOCS_ASSERT(current_context_);
             if (auto primaryLoc = getPrimaryLocation(*current_context_))
             {
-                report::warn(
+                warn(
                     "{}:{}\n"
                     "{}: Failed to copy documentation from '{}'\n"
                     "    Note: Symbol '{}' not found.",
@@ -306,7 +306,7 @@ copyBriefAndDetails(Javadoc& javadoc)
         {
             auto ctxPrimaryLoc = getPrimaryLocation(*current_context_);
             auto resPrimaryLoc = getPrimaryLocation(*res);
-            report::warn(
+            warn(
                 "{}:{}\n"
                 "{}: Failed to copy documentation from '{}'.\n"
                 "No documentation available.\n"
