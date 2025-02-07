@@ -51,15 +51,12 @@ This function calculates the square root of a    given integral value using bit 
 | `std&colon;&colon;invalid&lowbar;argument`
 | if the input value is negative&period;
 
-
 |===
 
 === Return Value
 
 
 The square root of the input value&period;
-
-
 
 === Template Parameters
 
@@ -69,7 +66,6 @@ The square root of the input value&period;
 
 | *T*
 | The type of the input value&period; Must be an integral type&period;
-
 
 |===
 
@@ -81,7 +77,6 @@ The square root of the input value&period;
 
 | *value*
 | The integral value to compute the square root of&period;
-
 
 |===
 

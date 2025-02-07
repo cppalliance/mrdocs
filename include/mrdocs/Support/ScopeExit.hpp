@@ -49,8 +49,9 @@ public:
         : prev_(ref), ref_(ref)
     {}
 
+    template <std::convertible_to<T> T2>
     explicit
-    ScopeExitRestore(T& ref, T next)
+    ScopeExitRestore(T& ref, T2 next)
         : prev_(ref), ref_(ref)
     {
         ref_ = next;
@@ -72,8 +73,8 @@ public:
 template <class T>
 ScopeExitRestore(T&) -> ScopeExitRestore<T>;
 
-template <class T>
-ScopeExitRestore(T&, T) -> ScopeExitRestore<T>;
+template <class T, std::convertible_to<T> T2>
+ScopeExitRestore(T&, T2) -> ScopeExitRestore<T>;
 
 }
 

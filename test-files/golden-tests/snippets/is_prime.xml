@@ -11,15 +11,15 @@
       <type name="unsigned long long"/>
     </param>
     <doc>
-      <para>
+      <brief>
         <text>Return true if a number is prime.</text>
-      </para>
+      </brief>
       <head>Complexity</head>
       <para>
         <text>Linear in n.</text>
       </para>
       <returns>
-        <text>Whether or not n is prime.    </text>
+        <text>Whether or not n is prime.</text>
       </returns>
       <param name="n">
         <text>The number to test</text>

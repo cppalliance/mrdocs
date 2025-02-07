@@ -33,8 +33,6 @@ Linear in n&period;
 
 Whether or not n is prime&period;
 
-
-
 === Parameters
 
 
@@ -43,7 +41,6 @@ Whether or not n is prime&period;
 
 | *n*
 | The number to test
-
 
 |===
 

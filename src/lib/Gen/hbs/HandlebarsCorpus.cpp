@@ -12,8 +12,10 @@
 
 #include "HandlebarsCorpus.hpp"
 #include "VisitorHelpers.hpp"
+#include <mrdocs/ADT/Polymorphic.hpp>
 #include <iterator>
 #include <fmt/format.h>
+#include <llvm/Support/raw_ostream.h>
 #include <llvm/Support/raw_ostream.h>
 #include <mrdocs/Support/RangeFor.hpp>
 #include <mrdocs/Support/String.hpp>
@@ -24,14 +26,13 @@ namespace {
 
 dom::Value
 domCreate(
-    const doc::Param& I,
-    const HandlebarsCorpus& corpus)
+    doc::Param const& I,
+    HandlebarsCorpus const& corpus)
 {
     dom::Object::storage_type entries = {
         { "name", I.name }
     };
-    std::string s = corpus.toStringFn(corpus, I);
-    if (!s.empty())
+    if (std::string s = corpus.toStringFn(corpus, I); !s.empty())
     {
         entries.emplace_back(
             "description", std::move(s));
@@ -57,8 +58,8 @@ domCreate(
 
 dom::Value
 domCreate(
-    const doc::TParam& I,
-    const HandlebarsCorpus& corpus)
+    doc::TParam const& I,
+    HandlebarsCorpus const& corpus)
 {
     dom::Object::storage_type entries = {
         { "name", I.name }
@@ -74,8 +75,8 @@ domCreate(
 
 dom::Value
 domCreate(
-    const doc::Throws& I,
-    const HandlebarsCorpus& corpus)
+    doc::Throws const& I,
+    HandlebarsCorpus const& corpus)
 {
     dom::Object::storage_type entries = {
         { "exception", I.exception.string }
@@ -91,24 +92,32 @@ domCreate(
 
 dom::Value
 domCreate(
-    const doc::See& I,
-    const HandlebarsCorpus& corpus)
+    doc::See const& I,
+    HandlebarsCorpus const& corpus)
 {
     return corpus.toStringFn(corpus, I);
 }
 
 dom::Value
 domCreate(
-    const doc::Precondition& I,
-    const HandlebarsCorpus& corpus)
+    doc::Precondition const& I,
+    HandlebarsCorpus const& corpus)
 {
     return corpus.toStringFn(corpus, I);
 }
 
 dom::Value
 domCreate(
-    const doc::Postcondition& I,
-    const HandlebarsCorpus& corpus)
+    doc::Postcondition const& I,
+    HandlebarsCorpus const& corpus)
+{
+    return corpus.toStringFn(corpus, I);
+}
+
+dom::Value
+domCreate(
+    doc::Returns const& I,
+    HandlebarsCorpus const& corpus)
 {
     return corpus.toStringFn(corpus, I);
 }
@@ -170,19 +179,32 @@ getJavadoc(Javadoc const& jd) const
        is undefined.
      */
     auto emplaceString = [&]<typename T>(
-        std::string_view key, T const& I)
+        std::string_view key,
+        T const& I)
     {
         std::string s;
         if constexpr (std::derived_from<T, doc::Node>)
         {
-            // doc::visit(*t, visitor);
             s += toStringFn(*this, I);
         }
         else if constexpr (std::ranges::range<T>)
         {
-            // Range value type
-            for(doc::Node const* t : I)
-                s += toStringFn(*this, *t);
+            using value_type = std::ranges::range_value_t<T>;
+            if constexpr (IsPolymorphic_v<value_type>)
+            {
+                for (value_type const& v: I)
+                {
+                    auto const& node = dynamic_cast<doc::Node const&>(*v);
+                    s += toStringFn(*this, node);
+                }
+            }
+            else
+            {
+                for (doc::Node const* t: I)
+                {
+                    s += toStringFn(*this, *t);
+                }
+            }
         }
         if(! s.empty())
         {
@@ -194,20 +216,27 @@ getJavadoc(Javadoc const& jd) const
        represents the properties of the node type,
        such as "name" and "description".
      */
-    auto emplaceObjectArray = [&](
+    auto emplaceObjectArray = [&]<class Range>(
         std::string_view key,
-        /* std::vector<T const*> */ auto const& nodes)
+        Range const& nodes)
     {
+        using value_type = std::ranges::range_value_t<Range>;
         dom::Array::storage_type elements;
         elements.reserve(nodes.size());
-        for(auto const& elem : nodes)
+        for (value_type const& elem : nodes)
         {
-            if (!elem)
+            if constexpr (requires { !elem; })
             {
-                continue;
+                if (!elem)
+                {
+                    continue;
+                }
+                elements.emplace_back(domCreate(*elem, *this));
             }
-            elements.emplace_back(
-                domCreate(*elem, *this));
+            else
+            {
+                elements.emplace_back(domCreate(elem, *this));
+            }
         }
         if (elements.empty())
         {
@@ -217,19 +246,19 @@ getJavadoc(Javadoc const& jd) const
             dom::DefaultArrayImpl>(std::move(elements)));
     };
 
-    auto ov = jd.makeOverview(this->getCorpus());
     // brief
-    if(ov.brief)
-        emplaceString("brief", *ov.brief);
-    emplaceString("description", ov.blocks);
-    if(ov.returns)
-        emplaceString("returns", *ov.returns);
-    emplaceObjectArray("params", ov.params);
-    emplaceObjectArray("tparams", ov.tparams);
-    emplaceObjectArray("exceptions", ov.exceptions);
-    emplaceObjectArray("see", ov.sees);
-    emplaceObjectArray("preconditions", ov.preconditions);
-    emplaceObjectArray("postconditions", ov.postconditions);
+    if (jd.brief)
+    {
+        emplaceString("brief", *jd.brief);
+    }
+    emplaceString("description", jd.blocks);
+    emplaceObjectArray("returns", jd.returns);
+    emplaceObjectArray("params", jd.params);
+    emplaceObjectArray("tparams", jd.tparams);
+    emplaceObjectArray("exceptions", jd.exceptions);
+    emplaceObjectArray("see", jd.sees);
+    emplaceObjectArray("preconditions", jd.preconditions);
+    emplaceObjectArray("postconditions", jd.postconditions);
     return dom::Object(std::move(objKeyValues));
 }
 

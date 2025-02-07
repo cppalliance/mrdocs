@@ -1,0 +1,667 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+=== Functions
+
+[cols=2]
+|===
+| Name | Description 
+
+| <<copyBriefFromCopyBrief,`copyBriefFromCopyBrief`>> 
+| This is the explicit brief&period;
+
+| <<copyBriefFromExplicitBrief,`copyBriefFromExplicitBrief`>> 
+| This is the explicit brief&period;
+
+| <<copyBriefFromFirstSentenceAsBrief,`copyBriefFromFirstSentenceAsBrief`>> 
+| This is the brief&period;
+
+| <<copyBriefFromFirstValid,`copyBriefFromFirstValid`>> 
+| This function has documentation but no brief&period;
+
+| <<copyDetailsFromCopyBrief,`copyDetailsFromCopyBrief`>> 
+| Details will be copied copyDetailsFromExplicitBrief 
+
+| <<copyDetailsFromDocNoBrief,`copyDetailsFromDocNoBrief`>> 
+| Custom brief docNoBriefFunction 
+
+| <<copyDetailsFromExplicitBrief,`copyDetailsFromExplicitBrief`>> 
+| This will not be copied&period;
+
+| <<copyDetailsFromFirstSentenceAsBrief,`copyDetailsFromFirstSentenceAsBrief`>> 
+| This is more documentation&period;
+
+| <<copyDetailsFromNoDoc,`copyDetailsFromNoDoc`>> 
+| Custom brief noDocFunction 
+
+| <<copyDocFromCopyBrief,`copyDocFromCopyBrief`>> 
+| This is the explicit brief&period;
+
+| <<copyDocFromExplicitBrief,`copyDocFromExplicitBrief`>> 
+| This is the explicit brief&period;
+
+| <<copyDocFromFirstSentenceAsBrief,`copyDocFromFirstSentenceAsBrief`>> 
+| This is the brief&period;
+
+| <<docNoBriefFunction,`docNoBriefFunction`>> 
+| This function has documentation but no brief&period;
+
+| <<explicitBriefFunction,`explicitBriefFunction`>> 
+| This is the explicit brief&period;
+
+| <<explicitBriefFunction2,`explicitBriefFunction2`>> 
+| This is the explicit brief&period;
+
+| <<failCircularReferenceCopyFunction,`failCircularReferenceCopyFunction`>> 
+| 
+
+| <<failCircularSourceFunctionA,`failCircularSourceFunctionA`>> 
+| 
+
+| <<failCircularSourceFunctionB,`failCircularSourceFunctionB`>> 
+| 
+
+| <<failCopyBriefFromDocNoBrief,`failCopyBriefFromDocNoBrief`>> 
+| This function has documentation but no brief&period;
+
+| <<failCopyBriefFromInvalidReference,`failCopyBriefFromInvalidReference`>> 
+| 
+
+| <<failCopyBriefFromNoDoc,`failCopyBriefFromNoDoc`>> 
+| 
+
+| <<failCopyDetailsFromInvalidReference,`failCopyDetailsFromInvalidReference`>> 
+| 
+
+| <<failCopyDocFromDocNoBrief,`failCopyDocFromDocNoBrief`>> 
+| This function has documentation but no brief&period;
+
+| <<failCopyDocFromInvalidReference,`failCopyDocFromInvalidReference`>> 
+| 
+
+| <<failCopyDocFromNoDoc,`failCopyDocFromNoDoc`>> 
+| 
+
+| <<failInvalidReferenceCopyFunctions,`failInvalidReferenceCopyFunctions`>> 
+| 
+
+| <<firstSentenceAsBriefFunction,`firstSentenceAsBriefFunction`>> 
+| This is the brief&period;
+
+| <<noDocFunction,`noDocFunction`>> 
+| 
+
+| <<recursiveReferenceCopyFunction,`recursiveReferenceCopyFunction`>> 
+| Final recursive brief
+
+| <<recursiveSourceFunctionA,`recursiveSourceFunctionA`>> 
+| Final recursive brief
+
+| <<recursiveSourceFunctionB,`recursiveSourceFunctionB`>> 
+| Final recursive brief
+
+|===
+
+[#copyBriefFromCopyBrief]
+== copyBriefFromCopyBrief
+
+
+This is the explicit brief&period;
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+copyBriefFromCopyBrief();
+----
+
+[#copyBriefFromExplicitBrief]
+== copyBriefFromExplicitBrief
+
+
+This is the explicit brief&period;
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+copyBriefFromExplicitBrief();
+----
+
+[#copyBriefFromFirstSentenceAsBrief]
+== copyBriefFromFirstSentenceAsBrief
+
+
+This is the brief&period;
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+copyBriefFromFirstSentenceAsBrief();
+----
+
+[#copyBriefFromFirstValid]
+== copyBriefFromFirstValid
+
+
+This function has documentation but no brief&period;
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+copyBriefFromFirstValid();
+----
+
+=== Description
+
+
+explicitBriefFunction
+
+
+
+[#copyDetailsFromCopyBrief]
+== copyDetailsFromCopyBrief
+
+
+Details will be copied copyDetailsFromExplicitBrief 
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+copyDetailsFromCopyBrief();
+----
+
+[#copyDetailsFromDocNoBrief]
+== copyDetailsFromDocNoBrief
+
+
+Custom brief docNoBriefFunction 
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+copyDetailsFromDocNoBrief();
+----
+
+[#copyDetailsFromExplicitBrief]
+== copyDetailsFromExplicitBrief
+
+
+This will not be copied&period;
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+copyDetailsFromExplicitBrief();
+----
+
+[#copyDetailsFromFirstSentenceAsBrief]
+== copyDetailsFromFirstSentenceAsBrief
+
+
+This is more documentation&period;
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+copyDetailsFromFirstSentenceAsBrief();
+----
+
+[#copyDetailsFromNoDoc]
+== copyDetailsFromNoDoc
+
+
+Custom brief noDocFunction 
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+copyDetailsFromNoDoc();
+----
+
+[#copyDocFromCopyBrief]
+== copyDocFromCopyBrief
+
+
+This is the explicit brief&period;
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+copyDocFromCopyBrief();
+----
+
+=== Description
+
+
+This will not be copied&period;
+
+
+
+[#copyDocFromExplicitBrief]
+== copyDocFromExplicitBrief
+
+
+This is the explicit brief&period;
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+copyDocFromExplicitBrief();
+----
+
+=== Description
+
+
+This will not be copied&period;
+
+
+
+[#copyDocFromFirstSentenceAsBrief]
+== copyDocFromFirstSentenceAsBrief
+
+
+This is the brief&period;
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+copyDocFromFirstSentenceAsBrief();
+----
+
+=== Description
+
+
+This is more documentation&period;
+
+
+
+[#docNoBriefFunction]
+== docNoBriefFunction
+
+
+This function has documentation but no brief&period;
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+docNoBriefFunction();
+----
+
+[#explicitBriefFunction]
+== explicitBriefFunction
+
+
+This is the explicit brief&period;
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+explicitBriefFunction();
+----
+
+=== Description
+
+
+This will not be copied&period;
+
+
+
+[#explicitBriefFunction2]
+== explicitBriefFunction2
+
+
+This is the explicit brief&period;
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+explicitBriefFunction2();
+----
+
+=== Description
+
+
+This will not be copied&period;
+
+
+
+[#failCircularReferenceCopyFunction]
+== failCircularReferenceCopyFunction
+
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+failCircularReferenceCopyFunction();
+----
+
+[#failCircularSourceFunctionA]
+== failCircularSourceFunctionA
+
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+failCircularSourceFunctionA();
+----
+
+[#failCircularSourceFunctionB]
+== failCircularSourceFunctionB
+
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+failCircularSourceFunctionB();
+----
+
+[#failCopyBriefFromDocNoBrief]
+== failCopyBriefFromDocNoBrief
+
+
+This function has documentation but no brief&period;
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+failCopyBriefFromDocNoBrief();
+----
+
+[#failCopyBriefFromInvalidReference]
+== failCopyBriefFromInvalidReference
+
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+failCopyBriefFromInvalidReference();
+----
+
+[#failCopyBriefFromNoDoc]
+== failCopyBriefFromNoDoc
+
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+failCopyBriefFromNoDoc();
+----
+
+[#failCopyDetailsFromInvalidReference]
+== failCopyDetailsFromInvalidReference
+
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+failCopyDetailsFromInvalidReference();
+----
+
+[#failCopyDocFromDocNoBrief]
+== failCopyDocFromDocNoBrief
+
+
+This function has documentation but no brief&period;
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+failCopyDocFromDocNoBrief();
+----
+
+[#failCopyDocFromInvalidReference]
+== failCopyDocFromInvalidReference
+
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+failCopyDocFromInvalidReference();
+----
+
+[#failCopyDocFromNoDoc]
+== failCopyDocFromNoDoc
+
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+failCopyDocFromNoDoc();
+----
+
+[#failInvalidReferenceCopyFunctions]
+== failInvalidReferenceCopyFunctions
+
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+failInvalidReferenceCopyFunctions();
+----
+
+[#firstSentenceAsBriefFunction]
+== firstSentenceAsBriefFunction
+
+
+This is the brief&period;
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+firstSentenceAsBriefFunction();
+----
+
+=== Description
+
+
+This is more documentation&period;
+
+
+
+[#noDocFunction]
+== noDocFunction
+
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+noDocFunction();
+----
+
+[#recursiveReferenceCopyFunction]
+== recursiveReferenceCopyFunction
+
+
+Final recursive brief
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+recursiveReferenceCopyFunction();
+----
+
+[#recursiveSourceFunctionA]
+== recursiveSourceFunctionA
+
+
+Final recursive brief
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+recursiveSourceFunctionA();
+----
+
+[#recursiveSourceFunctionB]
+== recursiveSourceFunctionB
+
+
+Final recursive brief
+
+=== Synopsis
+
+
+Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+recursiveSourceFunctionB();
+----
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

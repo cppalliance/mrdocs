@@ -16,9 +16,7 @@
 #include "lib/Gen/hbs/HandlebarsCorpus.hpp"
 #include <optional>
 
-namespace clang {
-namespace mrdocs {
-namespace adoc {
+namespace clang::mrdocs::adoc {
 
 class DocVisitor
 {
@@ -29,7 +27,7 @@ class DocVisitor
     template<typename Fn>
     bool
     write(
-        const doc::Node& node,
+        doc::Node const& node,
         Fn&& fn) const
     {
         const auto n_before = dest_.size();
@@ -58,6 +56,9 @@ public:
 
     void
     operator()(doc::Paragraph const& I) const;
+
+    void
+    operator()(std::vector<Polymorphic<doc::Text>> children) const;
 
     void
     operator()(doc::Brief const& I) const;
@@ -97,8 +98,6 @@ public:
     measureLeftMargin(std::vector<Polymorphic<doc::Text>> const& list);
 };
 
-} // hbs
-} // mrdocs
-} // clang
+} // clang::mrdocs::adoc
 
 #endif

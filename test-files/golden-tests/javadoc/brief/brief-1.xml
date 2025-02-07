@@ -5,19 +5,19 @@
   <function name="f5" id="RnDTZyCZuSqydMEPutN0yG4E/xg=">
     <file short-path="brief-1.cpp" source-path="brief-1.cpp" line="30"/>
     <doc>
-      <para>
+      <brief>
         <text>brief </text>
         <bold>bold</bold>
         <text> it continues to the line.</text>
-      </para>
+      </brief>
     </doc>
   </function>
   <function name="f6" id="NEkWCLiknLGzCD6JnXuBTSAAne8=">
     <file short-path="brief-1.cpp" source-path="brief-1.cpp" line="39"/>
     <doc>
-      <para>
+      <brief>
         <text>brief</text>
-      </para>
+      </brief>
       <para>
         <text>many lined    </text>
         <bold>bold</bold>

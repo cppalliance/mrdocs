@@ -8,10 +8,10 @@
       <struct name="B" id="w1h8sAoo8RqYTF+5WQRakdFasXg=">
         <file short-path="ref.cpp" source-path="ref.cpp" line="20" class="def"/>
         <doc>
-          <para>
+          <brief>
             <text>See </text>
             <reference id="DXEL7gSsX/52beNneRRW463qzLQ=">f1</reference>
-          </para>
+          </brief>
           <para>
             <text>See </text>
             <reference id="DXEL7gSsX/52beNneRRW463qzLQ=">A::f1</reference>
@@ -19,7 +19,6 @@
           <para>
             <text>See </text>
             <reference id="DXEL7gSsX/52beNneRRW463qzLQ=">::A::f1</reference>
-            <text>    </text>
           </para>
         </doc>
         <function name="f2" id="UrNEyy62P/QaY1BkJmO7NDGZSj4=">
@@ -44,10 +43,10 @@
       <struct name="E" id="10qzjzJQhBscbAmic63bnI+Xm4g=">
         <file short-path="ref.cpp" source-path="ref.cpp" line="43" class="def"/>
         <doc>
-          <para>
+          <brief>
             <text>See </text>
             <reference id="zsIKv6vJxoUhHtYtugUJIB9aWMo=">f3</reference>
-          </para>
+          </brief>
           <para>
             <text>See </text>
             <reference id="BJ7/Ds7ODvX+B2GNt69Xylatb0M=">f4</reference>
@@ -55,7 +54,6 @@
           <para>
             <text>See </text>
             <reference id="8ScA2YfwRe5KHsj/rEbtJeXWYz8=">C::f4</reference>
-            <text>        </text>
           </para>
         </doc>
       </struct>
@@ -69,14 +67,13 @@
     <function name="f1" id="DXEL7gSsX/52beNneRRW463qzLQ=">
       <file short-path="ref.cpp" source-path="ref.cpp" line="11"/>
       <doc>
-        <para>
+        <brief>
           <text>See </text>
           <reference id="e1UQQek5v3C9OClW5cGf57XvwQo=">f0</reference>
-        </para>
+        </brief>
         <para>
           <text>See </text>
           <reference id="e1UQQek5v3C9OClW5cGf57XvwQo=">::f0</reference>
-          <text>    </text>
         </para>
       </doc>
     </function>
@@ -416,10 +413,10 @@
   <function name="f5" id="RnDTZyCZuSqydMEPutN0yG4E/xg=">
     <file short-path="ref.cpp" source-path="ref.cpp" line="52"/>
     <doc>
-      <para>
+      <brief>
         <text>See </text>
         <reference id="DXEL7gSsX/52beNneRRW463qzLQ=">A::f1</reference>
-      </para>
+      </brief>
       <para>
         <text>See </text>
         <reference id="DXEL7gSsX/52beNneRRW463qzLQ=">::A::f1</reference>
@@ -429,10 +426,10 @@
   <function name="f6" id="NEkWCLiknLGzCD6JnXuBTSAAne8=">
     <file short-path="ref.cpp" source-path="ref.cpp" line="176"/>
     <doc>
-      <para>
+      <brief>
         <text>See </text>
         <reference id="i0ULCt5GV/PS0YAGQP2fValTik8=">F::operator~</reference>
-      </para>
+      </brief>
       <para>
         <text>See </text>
         <reference id="MdfknCJ8anbDNS7X0ZYzre/aWQQ=">F::operator,</reference>

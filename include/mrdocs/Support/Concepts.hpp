@@ -38,6 +38,13 @@ concept polymorphic_storage_for = requires(T const& t)
     { t.operator->() } -> std::convertible_to<Base const*>;
 };
 
+template <class T>
+concept dereferenceable = requires(T const& t)
+{
+    { static_cast<bool>(t) };
+    { *t };
+};
+
 } // namespace clang::mrdocs
 
 

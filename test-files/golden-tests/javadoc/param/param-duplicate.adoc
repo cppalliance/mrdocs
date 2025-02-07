@@ -40,7 +40,7 @@ f0 brief
 === Synopsis
 
 
-Declared in `&lt;duplicate&hyphen;jdoc&period;cpp&gt;`
+Declared in `&lt;param&hyphen;duplicate&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -51,9 +51,8 @@ f0();
 === Return Value
 
 
-int
-
-
+* int
+* int
 
 [#f1]
 == f1
@@ -64,7 +63,7 @@ f1 brief
 === Synopsis
 
 
-Declared in `&lt;duplicate&hyphen;jdoc&period;cpp&gt;`
+Declared in `&lt;param&hyphen;duplicate&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -75,9 +74,8 @@ f1();
 === Return Value
 
 
-bool
-
-
+* int
+* bool
 
 [#g0]
 == g0
@@ -88,7 +86,7 @@ g0 brief
 === Synopsis
 
 
-Declared in `&lt;duplicate&hyphen;jdoc&period;cpp&gt;`
+Declared in `&lt;param&hyphen;duplicate&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -105,10 +103,8 @@ g0(int a);
 | *a*
 | one
 
-
 | *a*
 | one
-
 
 |===
 
@@ -121,7 +117,7 @@ g1 brief
 === Synopsis
 
 
-Declared in `&lt;duplicate&hyphen;jdoc&period;cpp&gt;`
+Declared in `&lt;param&hyphen;duplicate&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -138,10 +134,8 @@ g1(int a);
 | *a*
 | one
 
-
 | *b*
 | two
-
 
 |===
 
@@ -154,7 +148,7 @@ h0 brief
 === Synopsis
 
 
-Declared in `&lt;duplicate&hyphen;jdoc&period;cpp&gt;`
+Declared in `&lt;param&hyphen;duplicate&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -172,10 +166,8 @@ h0();
 | *T*
 | one
 
-
 | *T*
 | one
-
 
 |===
 
@@ -188,7 +180,7 @@ h1 brief
 === Synopsis
 
 
-Declared in `&lt;duplicate&hyphen;jdoc&period;cpp&gt;`
+Declared in `&lt;param&hyphen;duplicate&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -206,10 +198,8 @@ h1();
 | *T*
 | one
 
-
 | *U*
 | two
-
 
 |===
 

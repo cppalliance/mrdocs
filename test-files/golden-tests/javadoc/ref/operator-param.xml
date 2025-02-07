@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
+    <file short-path="operator-param.cpp" source-path="operator-param.cpp" line="1" class="def"/>
+    <function name="operator()" exception-spec="noexcept" id="+yVVNLbCaXDXfZPFoKE5xv2xPZQ=">
+      <file short-path="operator-param.cpp" source-path="operator-param.cpp" line="15"/>
+      <attr id="constexpr-kind" name="constexpr" value="1"/>
+      <attr id="operator" name="call" value="42"/>
+      <attr id="is-const"/>
+      <return>
+        <type name="bool"/>
+      </return>
+      <param name="ch">
+        <type name="char"/>
+      </param>
+      <doc>
+      </doc>
+    </function>
+    <function name="operator()" exception-spec="noexcept" id="tslXb2aqh8tYThe+A16a9felw5M=">
+      <file short-path="operator-param.cpp" source-path="operator-param.cpp" line="10"/>
+      <attr id="constexpr-kind" name="constexpr" value="1"/>
+      <attr id="operator" name="call" value="42"/>
+      <attr id="is-const"/>
+      <return>
+        <type name="bool"/>
+      </return>
+      <param name="ch">
+        <type name="unsigned char"/>
+      </param>
+      <doc>
+        <brief>
+          <text>Return true if ch is in the character set.</text>
+        </brief>
+        <para>
+          <text>This function returns true if the        character is in the set, otherwise        it returns false.</text>
+        </para>
+        <param name="ch">
+          <text>The character to test.</text>
+        </param>
+      </doc>
+    </function>
+  </struct>
+</namespace>
+</mrdocs>

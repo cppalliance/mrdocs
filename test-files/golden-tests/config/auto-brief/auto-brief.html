@@ -1,0 +1,756 @@
+<html lang="en">
+<head>
+<title>Reference</title>
+</head>
+<body>
+<div>
+<h1>Reference</h1>
+<div>
+<div>
+<h2 id="index">Global namespace</h2>
+</div>
+<h2>Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th><th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#copyBriefFromCopyBrief"><code>copyBriefFromCopyBrief</code></a> </td><td><span><span>This is the explicit brief.</span></span>
+
+</td></tr><tr>
+<td><a href="#copyBriefFromExplicitBrief"><code>copyBriefFromExplicitBrief</code></a> </td><td><span><span>This is the explicit brief.</span></span>
+
+</td></tr><tr>
+<td><a href="#copyBriefFromFirstSentenceAsBrief"><code>copyBriefFromFirstSentenceAsBrief</code></a> </td><td><span><span>This is the brief.</span></span>
+
+</td></tr><tr>
+<td><a href="#copyBriefFromFirstValid"><code>copyBriefFromFirstValid</code></a> </td><td><span><span>This function has documentation but no brief.</span></span>
+
+</td></tr><tr>
+<td><a href="#copyDetailsFromCopyBrief"><code>copyDetailsFromCopyBrief</code></a> </td><td><span><span>Details will be copied </span><span>copyDetailsFromExplicitBrief</span><span> </span></span>
+
+</td></tr><tr>
+<td><a href="#copyDetailsFromDocNoBrief"><code>copyDetailsFromDocNoBrief</code></a> </td><td><span><span>Custom brief </span><span>docNoBriefFunction</span><span> </span></span>
+
+</td></tr><tr>
+<td><a href="#copyDetailsFromExplicitBrief"><code>copyDetailsFromExplicitBrief</code></a> </td><td><span><span>This will not be copied.</span></span>
+
+</td></tr><tr>
+<td><a href="#copyDetailsFromFirstSentenceAsBrief"><code>copyDetailsFromFirstSentenceAsBrief</code></a> </td><td><span><span>This is more documentation.</span></span>
+
+</td></tr><tr>
+<td><a href="#copyDetailsFromNoDoc"><code>copyDetailsFromNoDoc</code></a> </td><td><span><span>Custom brief </span><span>noDocFunction</span><span> </span></span>
+
+</td></tr><tr>
+<td><a href="#copyDocFromCopyBrief"><code>copyDocFromCopyBrief</code></a> </td><td><span><span>This is the explicit brief.</span></span>
+
+</td></tr><tr>
+<td><a href="#copyDocFromExplicitBrief"><code>copyDocFromExplicitBrief</code></a> </td><td><span><span>This is the explicit brief.</span></span>
+
+</td></tr><tr>
+<td><a href="#copyDocFromFirstSentenceAsBrief"><code>copyDocFromFirstSentenceAsBrief</code></a> </td><td><span><span>This is the brief.</span></span>
+
+</td></tr><tr>
+<td><a href="#docNoBriefFunction"><code>docNoBriefFunction</code></a> </td><td><span><span>This function has documentation but no brief.</span></span>
+
+</td></tr><tr>
+<td><a href="#explicitBriefFunction"><code>explicitBriefFunction</code></a> </td><td><span><span>This is the explicit brief.</span></span>
+
+</td></tr><tr>
+<td><a href="#explicitBriefFunction2"><code>explicitBriefFunction2</code></a> </td><td><span><span>This is the explicit brief.</span></span>
+
+</td></tr><tr>
+<td><a href="#failCircularReferenceCopyFunction"><code>failCircularReferenceCopyFunction</code></a> </td><td>
+</td></tr><tr>
+<td><a href="#failCircularSourceFunctionA"><code>failCircularSourceFunctionA</code></a> </td><td>
+</td></tr><tr>
+<td><a href="#failCircularSourceFunctionB"><code>failCircularSourceFunctionB</code></a> </td><td>
+</td></tr><tr>
+<td><a href="#failCopyBriefFromDocNoBrief"><code>failCopyBriefFromDocNoBrief</code></a> </td><td><span><span>This function has documentation but no brief.</span></span>
+
+</td></tr><tr>
+<td><a href="#failCopyBriefFromInvalidReference"><code>failCopyBriefFromInvalidReference</code></a> </td><td>
+</td></tr><tr>
+<td><a href="#failCopyBriefFromNoDoc"><code>failCopyBriefFromNoDoc</code></a> </td><td>
+</td></tr><tr>
+<td><a href="#failCopyDetailsFromInvalidReference"><code>failCopyDetailsFromInvalidReference</code></a> </td><td>
+</td></tr><tr>
+<td><a href="#failCopyDocFromDocNoBrief"><code>failCopyDocFromDocNoBrief</code></a> </td><td><span><span>This function has documentation but no brief.</span></span>
+
+</td></tr><tr>
+<td><a href="#failCopyDocFromInvalidReference"><code>failCopyDocFromInvalidReference</code></a> </td><td>
+</td></tr><tr>
+<td><a href="#failCopyDocFromNoDoc"><code>failCopyDocFromNoDoc</code></a> </td><td>
+</td></tr><tr>
+<td><a href="#failInvalidReferenceCopyFunctions"><code>failInvalidReferenceCopyFunctions</code></a> </td><td>
+</td></tr><tr>
+<td><a href="#firstSentenceAsBriefFunction"><code>firstSentenceAsBriefFunction</code></a> </td><td><span><span>This is the brief.</span></span>
+
+</td></tr><tr>
+<td><a href="#noDocFunction"><code>noDocFunction</code></a> </td><td>
+</td></tr><tr>
+<td><a href="#recursiveReferenceCopyFunction"><code>recursiveReferenceCopyFunction</code></a> </td><td><span><span>Final recursive brief</span></span>
+
+</td></tr><tr>
+<td><a href="#recursiveSourceFunctionA"><code>recursiveSourceFunctionA</code></a> </td><td><span><span>Final recursive brief</span></span>
+
+</td></tr><tr>
+<td><a href="#recursiveSourceFunctionB"><code>recursiveSourceFunctionB</code></a> </td><td><span><span>Final recursive brief</span></span>
+
+</td></tr>
+</tbody>
+</table>
+</div>
+<div>
+<div>
+<h2 id="copyBriefFromCopyBrief">copyBriefFromCopyBrief</h2>
+<div>
+<span><span>This is the explicit brief.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+copyBriefFromCopyBrief();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="copyBriefFromExplicitBrief">copyBriefFromExplicitBrief</h2>
+<div>
+<span><span>This is the explicit brief.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+copyBriefFromExplicitBrief();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="copyBriefFromFirstSentenceAsBrief">copyBriefFromFirstSentenceAsBrief</h2>
+<div>
+<span><span>This is the brief.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+copyBriefFromFirstSentenceAsBrief();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="copyBriefFromFirstValid">copyBriefFromFirstValid</h2>
+<div>
+<span><span>This function has documentation but no brief.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+copyBriefFromFirstValid();
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>explicitBriefFunction</span></p>
+
+
+</div>
+</div>
+<div>
+<div>
+<h2 id="copyDetailsFromCopyBrief">copyDetailsFromCopyBrief</h2>
+<div>
+<span><span>Details will be copied </span><span>copyDetailsFromExplicitBrief</span><span> </span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+copyDetailsFromCopyBrief();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="copyDetailsFromDocNoBrief">copyDetailsFromDocNoBrief</h2>
+<div>
+<span><span>Custom brief </span><span>docNoBriefFunction</span><span> </span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+copyDetailsFromDocNoBrief();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="copyDetailsFromExplicitBrief">copyDetailsFromExplicitBrief</h2>
+<div>
+<span><span>This will not be copied.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+copyDetailsFromExplicitBrief();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="copyDetailsFromFirstSentenceAsBrief">copyDetailsFromFirstSentenceAsBrief</h2>
+<div>
+<span><span>This is more documentation.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+copyDetailsFromFirstSentenceAsBrief();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="copyDetailsFromNoDoc">copyDetailsFromNoDoc</h2>
+<div>
+<span><span>Custom brief </span><span>noDocFunction</span><span> </span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+copyDetailsFromNoDoc();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="copyDocFromCopyBrief">copyDocFromCopyBrief</h2>
+<div>
+<span><span>This is the explicit brief.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+copyDocFromCopyBrief();
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>This will not be copied.</span></p>
+
+
+</div>
+</div>
+<div>
+<div>
+<h2 id="copyDocFromExplicitBrief">copyDocFromExplicitBrief</h2>
+<div>
+<span><span>This is the explicit brief.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+copyDocFromExplicitBrief();
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>This will not be copied.</span></p>
+
+
+</div>
+</div>
+<div>
+<div>
+<h2 id="copyDocFromFirstSentenceAsBrief">copyDocFromFirstSentenceAsBrief</h2>
+<div>
+<span><span>This is the brief.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+copyDocFromFirstSentenceAsBrief();
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>This is more documentation.</span></p>
+
+
+</div>
+</div>
+<div>
+<div>
+<h2 id="docNoBriefFunction">docNoBriefFunction</h2>
+<div>
+<span><span>This function has documentation but no brief.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+docNoBriefFunction();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="explicitBriefFunction">explicitBriefFunction</h2>
+<div>
+<span><span>This is the explicit brief.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+explicitBriefFunction();
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>This will not be copied.</span></p>
+
+
+</div>
+</div>
+<div>
+<div>
+<h2 id="explicitBriefFunction2">explicitBriefFunction2</h2>
+<div>
+<span><span>This is the explicit brief.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+explicitBriefFunction2();
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>This will not be copied.</span></p>
+
+
+</div>
+</div>
+<div>
+<div>
+<h2 id="failCircularReferenceCopyFunction">failCircularReferenceCopyFunction</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+failCircularReferenceCopyFunction();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="failCircularSourceFunctionA">failCircularSourceFunctionA</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+failCircularSourceFunctionA();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="failCircularSourceFunctionB">failCircularSourceFunctionB</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+failCircularSourceFunctionB();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="failCopyBriefFromDocNoBrief">failCopyBriefFromDocNoBrief</h2>
+<div>
+<span><span>This function has documentation but no brief.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+failCopyBriefFromDocNoBrief();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="failCopyBriefFromInvalidReference">failCopyBriefFromInvalidReference</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+failCopyBriefFromInvalidReference();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="failCopyBriefFromNoDoc">failCopyBriefFromNoDoc</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+failCopyBriefFromNoDoc();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="failCopyDetailsFromInvalidReference">failCopyDetailsFromInvalidReference</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+failCopyDetailsFromInvalidReference();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="failCopyDocFromDocNoBrief">failCopyDocFromDocNoBrief</h2>
+<div>
+<span><span>This function has documentation but no brief.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+failCopyDocFromDocNoBrief();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="failCopyDocFromInvalidReference">failCopyDocFromInvalidReference</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+failCopyDocFromInvalidReference();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="failCopyDocFromNoDoc">failCopyDocFromNoDoc</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+failCopyDocFromNoDoc();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="failInvalidReferenceCopyFunctions">failInvalidReferenceCopyFunctions</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+failInvalidReferenceCopyFunctions();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="firstSentenceAsBriefFunction">firstSentenceAsBriefFunction</h2>
+<div>
+<span><span>This is the brief.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+firstSentenceAsBriefFunction();
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>This is more documentation.</span></p>
+
+
+</div>
+</div>
+<div>
+<div>
+<h2 id="noDocFunction">noDocFunction</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+noDocFunction();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="recursiveReferenceCopyFunction">recursiveReferenceCopyFunction</h2>
+<div>
+<span><span>Final recursive brief</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+recursiveReferenceCopyFunction();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="recursiveSourceFunctionA">recursiveSourceFunctionA</h2>
+<div>
+<span><span>Final recursive brief</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+recursiveSourceFunctionA();
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="recursiveSourceFunctionB">recursiveSourceFunctionB</h2>
+<div>
+<span><span>Final recursive brief</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;auto-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+recursiveSourceFunctionB();
+</code>
+</pre>
+</div>
+</div>
+
+</div>
+<div>
+<h4>Created with <a href="https://www.mrdocs.com">MrDocs</a></h4>
+</div>
+</body>
+</html>

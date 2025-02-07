@@ -14,17 +14,17 @@
   <function name="f4" id="5wJFEWD4Ev/Vf3QN/mFlKhtbC6E=">
     <file short-path="para-1.cpp" source-path="para-1.cpp" line="27"/>
     <doc>
-      <para>
+      <brief>
         <text>brief</text>
-      </para>
+      </brief>
       <para>
         <text>a</text>
       </para>
       <para>
-        <text>b </text>
+        <text>b</text>
       </para>
       <para>
-        <text>c </text>
+        <text>c</text>
       </para>
     </doc>
   </function>

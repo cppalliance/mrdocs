@@ -5,9 +5,9 @@
   <enum name="E0" id="pmVtLf5hBBPEGDMBiRb6W7pOgbU=">
     <file short-path="enum.cpp" source-path="enum.cpp" line="5" class="def"/>
     <doc>
-      <para>
+      <brief>
         <text>E0 brief.</text>
-      </para>
+      </brief>
       <para>
         <text>E0 description.</text>
       </para>
@@ -15,9 +15,9 @@
     <enum-constant name="e0" initializer="1" id="PKsKOtl3cLUHJP4nEw+EKQK4fUE=">
       <file short-path="enum.cpp" source-path="enum.cpp" line="11"/>
       <doc>
-        <para>
+        <brief>
           <text>e0 brief.</text>
-        </para>
+        </brief>
         <para>
           <text>e0 description.</text>
         </para>
@@ -26,9 +26,9 @@
     <enum-constant name="e1" initializer="2" id="AXLqFIJBEk7eAdup5AR/wvnrMzc=">
       <file short-path="enum.cpp" source-path="enum.cpp" line="16"/>
       <doc>
-        <para>
+        <brief>
           <text>e1 brief.</text>
-        </para>
+        </brief>
         <para>
           <text>e1 description.</text>
         </para>
@@ -53,9 +53,9 @@
     </base>
     <file short-path="enum.cpp" source-path="enum.cpp" line="29" class="def"/>
     <doc>
-      <para>
+      <brief>
         <text>E2 brief.</text>
-      </para>
+      </brief>
       <para>
         <text>E2 description.</text>
       </para>
@@ -63,9 +63,9 @@
     <enum-constant name="e4" initializer="0" id="RyRlkoU0rHCqW5D5O8YXfJrvfaw=">
       <file short-path="enum.cpp" source-path="enum.cpp" line="35"/>
       <doc>
-        <para>
+        <brief>
           <text>e4 brief.</text>
-        </para>
+        </brief>
         <para>
           <text>e4 description.</text>
         </para>
@@ -74,9 +74,9 @@
     <enum-constant name="e5" initializer="1" id="xFkU6j7yjwyQB2aStQjCIF9O+sQ=">
       <file short-path="enum.cpp" source-path="enum.cpp" line="40"/>
       <doc>
-        <para>
+        <brief>
           <text>e5 brief.</text>
-        </para>
+        </brief>
         <para>
           <text>e5 description.</text>
         </para>

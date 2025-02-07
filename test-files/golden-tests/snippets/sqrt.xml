@@ -13,24 +13,24 @@
         <type name="T"/>
       </param>
       <doc>
-        <para>
+        <brief>
           <text>Computes the square root of an integral value.</text>
-        </para>
+        </brief>
         <para>
           <text>This function calculates the square root of a    given integral value using bit manipulation.</text>
         </para>
-        <throws>
-          <text>if the input value is negative.</text>
-        </throws>
-        <tparam name="T">
-          <text>The type of the input value. Must be an integral type.    </text>
-        </tparam>
-        <param name="value">
-          <text>The integral value to compute the square root of.    </text>
-        </param>
         <returns>
           <text>The square root of the input value.</text>
         </returns>
+        <param name="value">
+          <text>The integral value to compute the square root of.    </text>
+        </param>
+        <tparam name="T">
+          <text>The type of the input value. Must be an integral type.    </text>
+        </tparam>
+        <throws>
+          <text>if the input value is negative.</text>
+        </throws>
       </doc>
     </function>
   </template>

@@ -133,8 +133,10 @@ build()
             "<mrdocs xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
             "       xsi:noNamespaceSchemaLocation=\"https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc\">\n";
 
-    if(options_.index || options_.legible_names)
+    if (options_.index || options_.legible_names)
+    {
         writeIndex();
+    }
 
     visit(corpus_.globalNamespace(), *this);
 
@@ -716,7 +718,18 @@ writeJavadoc(
         return;
     }
     tags_.open(javadocTagName);
+    if (javadoc->brief)
+    {
+        writeNode(*javadoc->brief);
+    }
     writeNodes(javadoc->getBlocks());
+    writeNodes(javadoc->returns);
+    writeNodes(javadoc->params);
+    writeNodes(javadoc->tparams);
+    writeNodes(javadoc->exceptions);
+    writeNodes(javadoc->sees);
+    writeNodes(javadoc->preconditions);
+    writeNodes(javadoc->postconditions);
     tags_.close(javadocTagName);
 }
 

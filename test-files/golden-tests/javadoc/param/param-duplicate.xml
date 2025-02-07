@@ -3,16 +3,16 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <function name="f0" id="e1UQQek5v3C9OClW5cGf57XvwQo=">
-    <file short-path="duplicate-jdoc.cpp" source-path="duplicate-jdoc.cpp" line="5" class="def"/>
+    <file short-path="param-duplicate.cpp" source-path="param-duplicate.cpp" line="5" class="def"/>
     <return>
       <type name="int"/>
     </return>
     <doc>
-      <para>
-        <text>f0 brief    </text>
-      </para>
+      <brief>
+        <text>f0 brief</text>
+      </brief>
       <returns>
-        <text>int    </text>
+        <text>int</text>
       </returns>
       <returns>
         <text>int</text>
@@ -20,16 +20,16 @@
     </doc>
   </function>
   <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
-    <file short-path="duplicate-jdoc.cpp" source-path="duplicate-jdoc.cpp" line="11" class="def"/>
+    <file short-path="param-duplicate.cpp" source-path="param-duplicate.cpp" line="11" class="def"/>
     <return>
       <type name="int"/>
     </return>
     <doc>
-      <para>
-        <text>f1 brief    </text>
-      </para>
+      <brief>
+        <text>f1 brief</text>
+      </brief>
       <returns>
-        <text>int    </text>
+        <text>int</text>
       </returns>
       <returns>
         <text>bool</text>
@@ -37,14 +37,14 @@
     </doc>
   </function>
   <function name="g0" id="Vn88rrW6JgrUc7j/24MUTRnpkRg=">
-    <file short-path="duplicate-jdoc.cpp" source-path="duplicate-jdoc.cpp" line="17" class="def"/>
+    <file short-path="param-duplicate.cpp" source-path="param-duplicate.cpp" line="17" class="def"/>
     <param name="a">
       <type name="int"/>
     </param>
     <doc>
-      <para>
-        <text>g0 brief    </text>
-      </para>
+      <brief>
+        <text>g0 brief</text>
+      </brief>
       <param name="a">
         <text>one    </text>
       </param>
@@ -54,14 +54,14 @@
     </doc>
   </function>
   <function name="g1" id="99zzvQbBwXKh7ewapNRMnAKND3I=">
-    <file short-path="duplicate-jdoc.cpp" source-path="duplicate-jdoc.cpp" line="23" class="def"/>
+    <file short-path="param-duplicate.cpp" source-path="param-duplicate.cpp" line="23" class="def"/>
     <param name="a">
       <type name="int"/>
     </param>
     <doc>
-      <para>
-        <text>g1 brief    </text>
-      </para>
+      <brief>
+        <text>g1 brief</text>
+      </brief>
       <param name="a">
         <text>one    </text>
       </param>
@@ -73,11 +73,11 @@
   <template>
     <tparam name="T" class="type"/>
     <function name="h0" id="GUlieEk6E+t8qLpALj3XrWv0CGw=">
-      <file short-path="duplicate-jdoc.cpp" source-path="duplicate-jdoc.cpp" line="29" class="def"/>
+      <file short-path="param-duplicate.cpp" source-path="param-duplicate.cpp" line="29" class="def"/>
       <doc>
-        <para>
-          <text>h0 brief    </text>
-        </para>
+        <brief>
+          <text>h0 brief</text>
+        </brief>
         <tparam name="T">
           <text>one    </text>
         </tparam>
@@ -90,11 +90,11 @@
   <template>
     <tparam name="T" class="type"/>
     <function name="h1" id="q8fclJU+n2M3XqifIjVL9vT9fKQ=">
-      <file short-path="duplicate-jdoc.cpp" source-path="duplicate-jdoc.cpp" line="36" class="def"/>
+      <file short-path="param-duplicate.cpp" source-path="param-duplicate.cpp" line="36" class="def"/>
       <doc>
-        <para>
-          <text>h1 brief    </text>
-        </para>
+        <brief>
+          <text>h1 brief</text>
+        </brief>
         <tparam name="T">
           <text>one    </text>
         </tparam>

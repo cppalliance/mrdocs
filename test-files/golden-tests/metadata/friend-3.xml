@@ -7,9 +7,9 @@
     <friend id="MKqBnSfb2qzerVryOyz4f9W1BWM=">
       <file short-path="friend-3.cpp" source-path="friend-3.cpp" line="4"/>
       <doc>
-        <para>
+        <brief>
           <text>T::f</text>
-        </para>
+        </brief>
       </doc>
       <befriended id="s6nsa+zVhpzzrN+yUVPP5rvdXqs="/>
     </friend>
@@ -26,9 +26,9 @@
     <file short-path="friend-3.cpp" source-path="friend-3.cpp" line="9"/>
     <file short-path="friend-3.cpp" source-path="friend-3.cpp" line="12"/>
     <doc>
-      <para>
+      <brief>
         <text>T::f</text>
-      </para>
+      </brief>
     </doc>
   </function>
 </namespace>

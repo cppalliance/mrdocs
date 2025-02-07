@@ -102,7 +102,7 @@ struct B;
 
 See xref:#A-f1[A&colon;&colon;f1]
 
-See xref:#A-f1[&colon;&colon;A&colon;&colon;f1] 
+See xref:#A-f1[&colon;&colon;A&colon;&colon;f1]
 
 
 
@@ -238,7 +238,7 @@ struct E;
 
 See xref:#A-D-f4[f4]
 
-See xref:#A-C-f4[C&colon;&colon;f4] 
+See xref:#A-C-f4[C&colon;&colon;f4]
 
 
 
@@ -277,7 +277,7 @@ f1();
 === Description
 
 
-See xref:#f0[&colon;&colon;f0] 
+See xref:#f0[&colon;&colon;f0]
 
 
 

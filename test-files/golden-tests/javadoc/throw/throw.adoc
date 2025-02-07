@@ -42,7 +42,6 @@ f();
 | `std&colon;&colon;length&lowbar;error`
 | `dest&lowbar;size &lt; ipv4&lowbar;address&colon;&colon;max&lowbar;str&lowbar;len`
 
-
 |===
 
 

@@ -20,12 +20,15 @@
       <type name="double"/>
     </param>
     <doc>
-      <para>
+      <brief>
         <text>Return the distance between two points</text>
-      </para>
+      </brief>
       <para>
         <text>This function returns the distance between two points    according to the Euclidean distance formula.</text>
       </para>
+      <returns>
+        <text>The distance between the two points</text>
+      </returns>
       <param name="x0">
         <text>The x-coordinate of the first point    </text>
       </param>
@@ -38,9 +41,6 @@
       <param name="y1">
         <text>The y-coordinate of the second point    </text>
       </param>
-      <returns>
-        <text>The distance between the two points</text>
-      </returns>
     </doc>
   </function>
 </namespace>

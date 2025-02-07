@@ -8,10 +8,10 @@
   <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
     <file short-path="broken-ref.cpp" source-path="broken-ref.cpp" line="12"/>
     <doc>
-      <para>
+      <brief>
         <text>See </text>
         <reference id="e1UQQek5v3C9OClW5cGf57XvwQo=">f0</reference>
-      </para>
+      </brief>
       <para>
         <text>See </text>
         <reference>::f2</reference>

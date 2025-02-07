@@ -21,9 +21,9 @@
     <file short-path="friend-5.cpp" source-path="friend-5.cpp" line="8"/>
     <file short-path="friend-5.cpp" source-path="friend-5.cpp" line="12"/>
     <doc>
-      <para>
+      <brief>
         <text>f</text>
-      </para>
+      </brief>
     </doc>
   </function>
 </namespace>
