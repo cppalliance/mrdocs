@@ -46,6 +46,18 @@ std::string_view
 getShortOperatorName(
     OperatorKind kind) noexcept;
 
+/** Return the short name of an operator as a string.
+*/
+MRDOCS_DECL
+OperatorKind
+getOperatorKind(std::string_view name) noexcept;
+
+/** Return the short name of an operator as a string.
+*/
+MRDOCS_DECL
+OperatorKind
+getOperatorKindFromSuffix(std::string_view suffix) noexcept;
+
 /** Return the safe name of an operator as a string.
 
     @param kind The kind of operator.
