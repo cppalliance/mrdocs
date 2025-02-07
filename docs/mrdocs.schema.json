@@ -17,6 +17,16 @@
       "title": "Extraction policy for anonymous namespaces",
       "type": "boolean"
     },
+    "auto-brief": {
+      "default": true,
+      "description": "When set to `true`, MrDocs uses the first line (until the first dot, question mark, or exclamation mark) of the comment as the brief of the symbol. When set to `false`, a explicit @brief command is required.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Use the first line of the comment as the brief",
+      "type": "boolean"
+    },
     "base-url": {
       "default": "",
       "description": "Base URL for links to source code. The base URL is used to create links to the source code in the documentation. The base URL is combined with the path to the source file to create the link.",
