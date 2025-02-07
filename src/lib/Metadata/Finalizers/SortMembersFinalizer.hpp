@@ -12,7 +12,7 @@
 #define MRDOCS_LIB_METADATA_FINALIZER_SORTMEMBERSFINALIZER_HPP
 
 #include "lib/Lib/Info.hpp"
-#include "lib/Lib/Lookup.hpp"
+#include "lib/Lib/CorpusImpl.hpp"
 
 namespace clang::mrdocs {
 
@@ -26,8 +26,7 @@ namespace clang::mrdocs {
 */
 class SortMembersFinalizer
 {
-    InfoSet& info_;
-    Config const& config_;
+    CorpusImpl& corpus_;
 
     void
     sortMembers(std::vector<SymbolID>& ids);
@@ -51,10 +50,17 @@ class SortMembersFinalizer
     sortOverloadMembers(std::vector<SymbolID>& id);
 
 public:
-    SortMembersFinalizer(InfoSet& Info, Config const& config)
-        : info_(Info)
-        , config_(config)
+    SortMembersFinalizer(CorpusImpl& corpus)
+        : corpus_(corpus)
     {}
+
+    void
+    build()
+    {
+        Info* globalPtr = corpus_.find(SymbolID::global);
+        MRDOCS_CHECK_OR(globalPtr);
+        operator()(*dynamic_cast<NamespaceInfo*>(globalPtr));
+    }
 
     void
     operator()(NamespaceInfo& I);

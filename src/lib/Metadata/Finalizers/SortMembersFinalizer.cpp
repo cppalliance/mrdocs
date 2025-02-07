@@ -9,7 +9,6 @@
 //
 
 #include "SortMembersFinalizer.hpp"
-#include "lib/Support/NameParser.hpp"
 #include <ranges>
 #include <algorithm>
 
@@ -19,8 +18,7 @@ namespace {
 // Comparison function for symbol IDs
 struct SymbolIDCompareFn
 {
-    InfoSet& info_;
-    Config const& config_;
+    CorpusImpl const& corpus_;
 
     template <class InfoTy>
     static
@@ -70,20 +68,16 @@ struct SymbolIDCompareFn
     operator()(SymbolID const& lhsId, SymbolID const& rhsId) const
     {
         // Get Info from SymbolID
-        auto const& lhsInfoIt = info_.find(lhsId);
-        MRDOCS_CHECK_OR(lhsInfoIt != info_.end(), false);
-        auto const& rhsInfoIt = info_.find(rhsId);
-        MRDOCS_CHECK_OR(rhsInfoIt != info_.end(), true);
-        auto& lhsPtr = *lhsInfoIt;
+        Info const* lhsPtr = corpus_.find(lhsId);
         MRDOCS_CHECK_OR(lhsPtr, false);
-        auto& rhsPtr = *rhsInfoIt;
+        Info const* rhsPtr = corpus_.find(rhsId);
         MRDOCS_CHECK_OR(rhsPtr, true);
-        Info const& lhs = **lhsInfoIt;
-        Info const& rhs = **rhsInfoIt;
+        Info const& lhs = *lhsPtr;
+        Info const& rhs = *rhsPtr;
 
         std::optional<FunctionClass> const lhsClass = findFunctionClass(lhs);
         std::optional<FunctionClass> const rhsClass = findFunctionClass(rhs);
-        if (config_->sortMembersCtors1St)
+        if (corpus_.config->sortMembersCtors1St)
         {
             bool const lhsIsCtor = lhsClass && *lhsClass == FunctionClass::Constructor;
             bool const rhsIsCtor = rhsClass && *rhsClass == FunctionClass::Constructor;
@@ -93,7 +87,7 @@ struct SymbolIDCompareFn
             }
         }
 
-        if (config_->sortMembersDtors1St)
+        if (corpus_.config->sortMembersDtors1St)
         {
             bool const lhsIsDtor = lhsClass && *lhsClass == FunctionClass::Destructor;
             bool const rhsIsDtor = rhsClass && *rhsClass == FunctionClass::Destructor;
@@ -105,7 +99,7 @@ struct SymbolIDCompareFn
 
         std::optional<OperatorKind> const lhsOp = findOperatorKind(lhs);
         std::optional<OperatorKind> const rhsOp = findOperatorKind(rhs);
-        if (config_->sortMembersAssignment1St)
+        if (corpus_.config->sortMembersAssignment1St)
         {
             bool const lhsIsAssign = lhsOp && *lhsOp == OperatorKind::Equal;
             bool const rhsIsAssign = rhsOp && *rhsOp == OperatorKind::Equal;
@@ -115,7 +109,7 @@ struct SymbolIDCompareFn
             }
         }
 
-        if (config_->sortMembersRelationalLast)
+        if (corpus_.config->sortMembersRelationalLast)
         {
             bool const lhsIsRel = lhsOp && (
                 *lhsOp == OperatorKind::Exclaim ||
@@ -145,7 +139,7 @@ struct SymbolIDCompareFn
             }
         }
 
-        if (config_->sortMembersConversionLast)
+        if (corpus_.config->sortMembersConversionLast)
         {
             bool const lhsIsConvertion = lhsClass && *lhsClass == FunctionClass::Conversion;
             bool const rhsIsConvertion = rhsClass && *rhsClass == FunctionClass::Conversion;
@@ -169,7 +163,7 @@ void
 SortMembersFinalizer::
 sortMembers(std::vector<SymbolID>& ids)
 {
-    SymbolIDCompareFn const pred{info_, config_};
+    SymbolIDCompareFn const pred{corpus_};
     std::ranges::sort(ids, pred);
 }
 
@@ -222,10 +216,9 @@ sortNamespaceMembers(std::vector<SymbolID>& ids)
 {
     for (SymbolID const& id: ids)
     {
-        auto infoIt = info_.find(id);
-        MRDOCS_CHECK_OR_CONTINUE(infoIt != info_.end());
-        auto& info = *infoIt;
-        auto* ns = dynamic_cast<NamespaceInfo*>(info.get());
+        auto infoPtr = corpus_.find(id);
+        MRDOCS_CHECK_OR_CONTINUE(infoPtr);
+        auto* ns = dynamic_cast<NamespaceInfo*>(infoPtr);
         MRDOCS_CHECK_OR_CONTINUE(ns);
         operator()(*ns);
     }
@@ -237,10 +230,9 @@ sortRecordMembers(std::vector<SymbolID>& ids)
 {
     for (SymbolID const& id: ids)
     {
-        auto infoIt = info_.find(id);
-        MRDOCS_CHECK_OR_CONTINUE(infoIt != info_.end());
-        auto& info = *infoIt;
-        auto* record = dynamic_cast<RecordInfo*>(info.get());
+        auto infoPtr = corpus_.find(id);
+        MRDOCS_CHECK_OR_CONTINUE(infoPtr);
+        auto* record = dynamic_cast<RecordInfo*>(infoPtr);
         MRDOCS_CHECK_OR_CONTINUE(record);
         operator()(*record);
     }
@@ -252,10 +244,9 @@ sortOverloadMembers(std::vector<SymbolID>& ids)
 {
     for (SymbolID const& id: ids)
     {
-        auto infoIt = info_.find(id);
-        MRDOCS_CHECK_OR_CONTINUE(infoIt != info_.end());
-        auto& info = *infoIt;
-        auto* overloads = dynamic_cast<OverloadsInfo*>(info.get());
+        auto infoPtr = corpus_.find(id);
+        MRDOCS_CHECK_OR_CONTINUE(infoPtr);
+        auto* overloads = dynamic_cast<OverloadsInfo*>(infoPtr);
         MRDOCS_CHECK_OR_CONTINUE(overloads);
         operator()(*overloads);
     }

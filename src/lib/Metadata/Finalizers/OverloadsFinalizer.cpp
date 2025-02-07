@@ -9,7 +9,6 @@
 //
 
 #include "OverloadsFinalizer.hpp"
-#include "lib/Support/NameParser.hpp"
 
 namespace clang::mrdocs {
 
@@ -19,10 +18,9 @@ foldRecordMembers(std::vector<SymbolID> const& ids)
 {
     for (SymbolID const& id: ids)
     {
-        auto infoIt = info_.find(id);
-        MRDOCS_CHECK_OR_CONTINUE(infoIt != info_.end());
-        auto& info = *infoIt;
-        auto* record = dynamic_cast<RecordInfo*>(info.get());
+        Info* infoPtr = corpus_.find(id);
+        MRDOCS_CHECK_OR_CONTINUE(infoPtr);
+        auto* record = dynamic_cast<RecordInfo*>(infoPtr);
         MRDOCS_CHECK_OR_CONTINUE(record);
         operator()(*record);
     }
@@ -34,10 +32,9 @@ foldNamespaceMembers(std::vector<SymbolID> const& ids)
 {
     for (SymbolID const& id: ids)
     {
-        auto infoIt = info_.find(id);
-        MRDOCS_CHECK_OR_CONTINUE(infoIt != info_.end());
-        auto& info = *infoIt;
-        auto* ns = dynamic_cast<NamespaceInfo*>(info.get());
+        Info* infoPtr = corpus_.find(id);
+        MRDOCS_CHECK_OR_CONTINUE(infoPtr);
+        auto* ns = dynamic_cast<NamespaceInfo*>(infoPtr);
         MRDOCS_CHECK_OR_CONTINUE(ns);
         operator()(*ns);
     }
@@ -50,10 +47,9 @@ foldOverloads(SymbolID const& parent, std::vector<SymbolID>& ids)
     for (auto it = ids.begin(); it != ids.end(); ++it)
     {
         // Get the FunctionInfo for the current id
-        auto infoIt = info_.find(*it);
-        MRDOCS_CHECK_OR_CONTINUE(infoIt != info_.end());
-        auto& info = *infoIt;
-        auto* function = dynamic_cast<FunctionInfo*>(info.get());
+        auto infoPtr = corpus_.find(*it);
+        MRDOCS_CHECK_OR_CONTINUE(infoPtr);
+        auto* function = dynamic_cast<FunctionInfo*>(infoPtr);
         MRDOCS_CHECK_OR_CONTINUE(function);
 
         // Check if the FunctionInfo is unique
@@ -63,10 +59,10 @@ foldOverloads(SymbolID const& parent, std::vector<SymbolID>& ids)
                 ids.end(),
                 [&](SymbolID const& otherID)
                 {
-                    auto const otherInfoIt = info_.find(otherID);
-                    MRDOCS_CHECK_OR(otherInfoIt != info_.end(), false);
-                    auto& otherInfo = *otherInfoIt;
-                    return function->Name == otherInfo->Name;
+                    auto const otherInfoPtr = corpus_.find(otherID);
+                    MRDOCS_CHECK_OR(otherInfoPtr, false);
+                    Info& otherInfo = *otherInfoPtr;
+                    return function->Name == otherInfo.Name;
                 });
         if (sameNameIt == ids.end())
         {
@@ -81,10 +77,9 @@ foldOverloads(SymbolID const& parent, std::vector<SymbolID>& ids)
         auto const itOffset = it - ids.begin();
         for (auto otherIt = it + 1; otherIt != ids.end(); ++otherIt)
         {
-            auto otherInfoIt = info_.find(*otherIt);
-            MRDOCS_CHECK_OR_CONTINUE(otherInfoIt != info_.end());
-            auto& otherInfo = *otherInfoIt;
-            auto* otherFunction = dynamic_cast<FunctionInfo*>(otherInfo.get());
+            Info* otherInfoPtr = corpus_.find(*otherIt);
+            MRDOCS_CHECK_OR_CONTINUE(otherInfoPtr);
+            auto* otherFunction = dynamic_cast<FunctionInfo*>(otherInfoPtr);
             MRDOCS_CHECK_OR_CONTINUE(otherFunction);
             if (function->Name == otherFunction->Name)
             {
@@ -93,7 +88,7 @@ foldOverloads(SymbolID const& parent, std::vector<SymbolID>& ids)
             }
         }
         it = ids.begin() + itOffset;
-        info_.emplace(std::make_unique<OverloadsInfo>(std::move(O)));
+        corpus_.info_.emplace(std::make_unique<OverloadsInfo>(std::move(O)));
     }
 }
 

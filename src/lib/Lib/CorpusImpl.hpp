@@ -12,16 +12,19 @@
 #ifndef MRDOCS_LIB_CORPUSIMPL_HPP
 #define MRDOCS_LIB_CORPUSIMPL_HPP
 
+#include "lib/AST/ParseRef.hpp"
 #include "lib/Lib/ConfigImpl.hpp"
 #include "lib/Lib/Info.hpp"
 #include "lib/Support/Debug.hpp"
+#include <map>
+#include <mutex>
+#include <string>
+#include <clang/Tooling/CompilationDatabase.h>
+#include <mrdocs/ADT/UnorderedStringMap.hpp>
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/Error.hpp>
-#include <clang/Tooling/CompilationDatabase.h>
-#include <mutex>
-#include <string>
 
 namespace clang::mrdocs {
 
@@ -33,14 +36,26 @@ namespace clang::mrdocs {
     iterator interface.
 
     The CorpusImpl class is not intended to be used directly. Instead,
-    the Corpus interface can used by plugins to access the symbols.
-
+    the Corpus interface can be used by plugins to access the symbols.
 */
-class CorpusImpl : public Corpus
+class CorpusImpl final : public Corpus
 {
-    friend
-    void
-    finalize(CorpusImpl& corpus);
+    std::shared_ptr<ConfigImpl const> config_;
+
+    // Info keyed on Symbol ID.
+    InfoSet info_;
+
+    // Lookup cache
+    // The key represents the context symbol ID.
+    // The value is another map from the name to the Info.
+    std::map<SymbolID, UnorderedStringMap<Info const*>> lookupCache_;
+
+    friend class Corpus;
+    friend class BaseMembersFinalizer;
+    friend class OverloadsFinalizer;
+    friend class SortMembersFinalizer;
+    friend class JavadocFinalizer;
+
 public:
     /** Constructor.
     */
@@ -67,8 +82,16 @@ public:
         If the id does not exist, the behavior is undefined.
     */
     Info*
-    find(
-        SymbolID const& id) noexcept;
+    find(SymbolID const& id) noexcept;
+
+    Info const*
+    find(SymbolID const& id) const noexcept override;
+
+    Info const*
+    lookup(SymbolID const& context, std::string_view name) const override;
+
+    Info const*
+    lookup(SymbolID const& context, std::string_view name);
 
     /** Build metadata for a set of translation units.
 
@@ -93,27 +116,69 @@ public:
         std::shared_ptr<ConfigImpl const> const& config,
         tooling::CompilationDatabase const& compilations);
 
-private:
-    Info const*
-    find(
-        SymbolID const& id) const noexcept override;
+    void
+    qualifiedName(
+        Info const& I,
+        std::string& result) const override;
 
+    /** Finalize the corpus.
+    */
+    void
+    finalize();
+
+private:
     /** Return the Info with the specified symbol ID.
 
         If the id does not exist, the behavior is undefined.
     */
     template<class T>
     T&
-    get(
-        SymbolID const& id) noexcept;
+    get(SymbolID const& id) noexcept;
 
-private:
-    friend class Corpus;
+    template <class Self>
+    static
+    Info const*
+    lookupImpl(
+        Self&& self,
+        SymbolID const& context,
+        std::string_view name);
 
-    std::shared_ptr<ConfigImpl const> config_;
+    template <class Self>
+    static
+    Info const*
+    lookupImpl(
+        Self&& self,
+        SymbolID const& context,
+        ParsedRef const& s,
+        std::string_view name,
+        bool cache);
 
-    // Info keyed on Symbol ID.
-    InfoSet info_;
+    Info const*
+    lookupImpl(
+        SymbolID const& contextId,
+        ParsedRefComponent const& c,
+        ParsedRef const& s,
+        bool checkParameters) const;
+
+    std::pair<Info const*, bool>
+    lookupCacheGet(
+        SymbolID const& context,
+        std::string_view name) const;
+
+    void
+    lookupCacheSet(
+        SymbolID const& context,
+        std::string_view name,
+        Info const* info);
+
+    void
+    lookupCacheSet(
+        SymbolID const&,
+        std::string_view,
+        Info const*) const
+    {
+        // no-op when const
+    }
 };
 
 template<class T>

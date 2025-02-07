@@ -12,7 +12,7 @@
 #define MRDOCS_LIB_METADATA_FINALIZER_OVERLOADSFINALIZER_HPP
 
 #include "lib/Lib/Info.hpp"
-#include "lib/Lib/Lookup.hpp"
+#include "lib/Lib/CorpusImpl.hpp"
 
 namespace clang::mrdocs {
 
@@ -26,7 +26,7 @@ namespace clang::mrdocs {
 */
 class OverloadsFinalizer
 {
-    InfoSet& info_;
+    CorpusImpl& corpus_;
 
     void
     foldRecordMembers(std::vector<SymbolID> const& ids);
@@ -38,9 +38,17 @@ class OverloadsFinalizer
     foldOverloads(SymbolID const& parent, std::vector<SymbolID>& ids);
 
 public:
-    OverloadsFinalizer(InfoSet& Info)
-        : info_(Info)
+    OverloadsFinalizer(CorpusImpl& corpus)
+        : corpus_(corpus)
     {}
+
+    void
+    build()
+    {
+        auto const globalPtr = corpus_.find(SymbolID::global);
+        MRDOCS_CHECK_OR(globalPtr);
+        operator()(*dynamic_cast<NamespaceInfo*>(globalPtr));
+    }
 
     void
     operator()(NamespaceInfo& I);
