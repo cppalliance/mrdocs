@@ -27,7 +27,7 @@ class DocVisitor
     template<typename Fn>
     bool
     write(
-        const doc::Node& node,
+        doc::Node const& node,
         Fn&& fn) const
     {
         const auto n_before = dest_.size();

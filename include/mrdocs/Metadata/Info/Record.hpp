@@ -301,7 +301,7 @@ struct RecordInfo final
     }
 
     std::strong_ordering
-    operator<=>(const RecordInfo& other) const;
+    operator<=>(RecordInfo const& other) const;
 };
 
 constexpr

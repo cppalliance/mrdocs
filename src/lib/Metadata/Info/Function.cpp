@@ -212,7 +212,7 @@ tag_invoke(
 
 std::strong_ordering
 FunctionInfo::
-operator<=>(const FunctionInfo& other) const
+operator<=>(FunctionInfo const& other) const
 {
     if (auto const cmp = Name <=> other.Name;
         !std::is_eq(cmp))

@@ -39,14 +39,14 @@ namespace mrdocs {
 class ASTVisitorConsumer
     : public SemaConsumer
 {
-    const ConfigImpl& config_;
+    ConfigImpl const& config_;
     ExecutionContext& ex_;
     CompilerInstance& compiler_;
     Sema* sema_ = nullptr;
 
 public:
     ASTVisitorConsumer(
-        const ConfigImpl& config,
+        ConfigImpl const& config,
         ExecutionContext& ex,
         CompilerInstance& compiler) noexcept
         : config_(config)
@@ -183,7 +183,7 @@ public:
 
         @param D The declaration of the tag
      */
-    void HandleTagDeclRequiredDefinition(const TagDecl*) override { }
+    void HandleTagDeclRequiredDefinition(TagDecl const*) override { }
 
     /** Handle an interesting declaration.
 

@@ -18,7 +18,7 @@ namespace clang::mrdocs {
 void
 NameInfoBuilder::
 buildDecltype(
-    const DecltypeType*,
+    DecltypeType const*,
     unsigned,
     bool)
 {
@@ -29,8 +29,8 @@ buildDecltype(
 void
 NameInfoBuilder::
 buildTerminal(
-    const NestedNameSpecifier* NNS,
-    const Type* T,
+    NestedNameSpecifier const* NNS,
+    Type const* T,
     unsigned,
     bool)
 {
@@ -46,8 +46,8 @@ buildTerminal(
 void
 NameInfoBuilder::
 buildTerminal(
-    const NestedNameSpecifier* NNS,
-    const IdentifierInfo* II,
+    NestedNameSpecifier const* NNS,
+    IdentifierInfo const* II,
     std::optional<ArrayRef<TemplateArgument>> TArgs,
     unsigned,
     bool)
@@ -80,8 +80,8 @@ buildTerminal(
 void
 NameInfoBuilder::
 buildTerminal(
-    const NestedNameSpecifier* NNS,
-    const NamedDecl* D,
+    NestedNameSpecifier const* NNS,
+    NamedDecl const* D,
     std::optional<ArrayRef<TemplateArgument>> const& TArgs,
     unsigned,
     bool)
@@ -93,7 +93,7 @@ buildTerminal(
 
     auto populateNameInfo = [&](NameInfo& Name, NamedDecl const* DU)
     {
-        if(const IdentifierInfo* II = DU->getIdentifier())
+        if(IdentifierInfo const* II = DU->getIdentifier())
         {
             Name.Name = II->getName();
         }

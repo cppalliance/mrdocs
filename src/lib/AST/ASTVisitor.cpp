@@ -642,7 +642,7 @@ populate(
     // from whichever declaration is the definition (if any)
     if(D->hasDefinition() && I.Bases.empty())
     {
-        for (const CXXBaseSpecifier& B : D->bases())
+        for (CXXBaseSpecifier const& B : D->bases())
         {
             AccessSpecifier const access = B.getAccessSpecifier();
 
@@ -736,7 +736,7 @@ populate(
     if (auto FT = getDeclaratorType(D); !FT.isNull())
     {
         MRDOCS_SYMBOL_TRACE(FT, context_);
-        const auto* FPT = FT->template getAs<FunctionProtoType>();
+        auto const* FPT = FT->template getAs<FunctionProtoType>();
         MRDOCS_SYMBOL_TRACE(FPT, context_);
         populate(I.Noexcept, FPT);
         I.HasTrailingReturn |= FPT->hasTrailingReturn();
@@ -783,7 +783,7 @@ populate(
             param.Type = toTypeInfo(P->getOriginalType());
         }
 
-        const Expr* default_arg = P->hasUninstantiatedDefaultArg() ?
+        Expr const* default_arg = P->hasUninstantiatedDefaultArg() ?
             P->getUninstantiatedDefaultArg() : P->getInit();
         if (param.Default.empty() &&
             default_arg)
@@ -1099,7 +1099,7 @@ populate(
     CXXDeductionGuideDecl const* D)
 {
     I.Deduced = toTypeInfo(D->getReturnType());
-    for (const ParmVarDecl* P : D->parameters())
+    for (ParmVarDecl const* P : D->parameters())
     {
         I.Params.emplace_back(
             toTypeInfo(P->getOriginalType()),
@@ -1189,7 +1189,7 @@ populate(
     generateID(getInstantiatedFrom(CTD), Template.Primary);
 
     // Extract the template arguments of the specialization
-    if (const auto* argsAsWritten = CTSD->getTemplateArgsAsWritten())
+    if (auto const* argsAsWritten = CTSD->getTemplateArgsAsWritten())
     {
         populate(Template.Args, argsAsWritten);
     }
@@ -1289,7 +1289,7 @@ void
 ASTVisitor::
 populate(
     ExplicitInfo& I,
-    const ExplicitSpecifier& ES)
+    ExplicitSpecifier const& ES)
 {
     I.Implicit = ! ES.isSpecified();
     I.Kind = toExplicitKind(ES);
@@ -1305,7 +1305,7 @@ void
 ASTVisitor::
 populate(
     ExprInfo& I,
-    const Expr* E)
+    Expr const* E)
 {
     if (!E)
     {
@@ -1320,7 +1320,7 @@ void
 ASTVisitor::
 populate(
     ConstantExprInfo<T>& I,
-    const Expr* E)
+    Expr const* E)
 {
     populate(static_cast<ExprInfo&>(I), E);
     // if the expression is dependent,
@@ -1337,8 +1337,8 @@ void
 ASTVisitor::
 populate(
     ConstantExprInfo<T>& I,
-    const Expr* E,
-    const llvm::APInt& V)
+    Expr const* E,
+    llvm::APInt const& V)
 {
     populate(I, E);
     I.Value.emplace(toInteger<T>(V));
@@ -1349,17 +1349,17 @@ void
 ASTVisitor::
 populate<std::uint64_t>(
     ConstantExprInfo<std::uint64_t>& I,
-    const Expr* E,
-    const llvm::APInt& V);
+    Expr const* E,
+    llvm::APInt const& V);
 
 
 void
 ASTVisitor::
 populate(
     Polymorphic<TParam>& I,
-    const NamedDecl* N)
+    NamedDecl const* N)
 {
-    visit(N, [&]<typename DeclTy>(const DeclTy* P)
+    visit(N, [&]<typename DeclTy>(DeclTy const* P)
     {
         constexpr Decl::Kind kind =
             DeclToKind<DeclTy>();
@@ -1380,11 +1380,11 @@ populate(
                 R->Default = toTArg(
                     P->getDefaultArgument().getArgument());
             }
-            if(const TypeConstraint* TC = P->getTypeConstraint())
+            if(TypeConstraint const* TC = P->getTypeConstraint())
             {
-                const NestedNameSpecifier* NNS =
+                NestedNameSpecifier const* NNS =
                     TC->getNestedNameSpecifierLoc().getNestedNameSpecifier();
-                std::optional<const ASTTemplateArgumentListInfo*> TArgs;
+                std::optional<ASTTemplateArgumentListInfo const*> TArgs;
                 if (TC->hasExplicitTemplateArgs())
                 {
                     TArgs.emplace(TC->getTemplateArgsAsWritten());
@@ -1527,7 +1527,7 @@ void
 ASTVisitor::
 populate(
     std::vector<Polymorphic<TArg>>& result,
-    const ASTTemplateArgumentListInfo* args)
+    ASTTemplateArgumentListInfo const* args)
 {
     if (!args)
     {
@@ -1930,19 +1930,19 @@ toNameInfo(
 
     ScopeExitRestore scope(mode_, Dependency);
     Polymorphic<NameInfo> I = nullptr;
-    if (const Type* T = NNS->getAsType())
+    if (Type const* T = NNS->getAsType())
     {
         NameInfoBuilder Builder(*this, NNS->getPrefix());
         Builder.Visit(T);
         I = Builder.result();
     }
-    else if(const IdentifierInfo* II = NNS->getAsIdentifier())
+    else if(IdentifierInfo const* II = NNS->getAsIdentifier())
     {
         I = MakePolymorphic<NameInfo>();
         I->Name = II->getName();
         I->Prefix = toNameInfo(NNS->getPrefix());
     }
-    else if(const NamespaceDecl* ND = NNS->getAsNamespace())
+    else if(NamespaceDecl const* ND = NNS->getAsNamespace())
     {
         I = MakePolymorphic<NameInfo>();
         I->Name = ND->getIdentifier()->getName();
@@ -1953,7 +1953,7 @@ toNameInfo(
             I->id = info->id;
         }
     }
-    else if(const NamespaceAliasDecl* NAD = NNS->getAsNamespaceAlias())
+    else if(NamespaceAliasDecl const* NAD = NNS->getAsNamespaceAlias())
     {
         I = MakePolymorphic<NameInfo>();
         I->Name = NAD->getIdentifier()->getName();
@@ -2006,7 +2006,7 @@ toNameInfo(
     std::optional<TArgRange> TArgs,
     NestedNameSpecifier const* NNS)
 {
-    const auto* ND = dyn_cast_if_present<NamedDecl>(D);
+    auto const* ND = dyn_cast_if_present<NamedDecl>(D);
     if (!ND)
     {
         return nullptr;
@@ -2036,7 +2036,7 @@ toNameInfo<llvm::ArrayRef<clang::TemplateArgument>>(
 
 Polymorphic<TArg>
 ASTVisitor::
-toTArg(const TemplateArgument& A)
+toTArg(TemplateArgument const& A)
 {
     // TypePrinter generates an internal placeholder name (e.g. type-parameter-0-0)
     // for template type parameters used as arguments. it also cannonicalizes
@@ -2069,7 +2069,7 @@ toTArg(const TemplateArgument& A)
         // if the template argument is a pack expansion,
         // use the expansion pattern as the type & mark
         // the template argument as a pack expansion
-        if(const Type* T = QT.getTypePtr();
+        if(Type const* T = QT.getTypePtr();
             auto* PT = dyn_cast<PackExpansionType>(T))
         {
             R->IsPackExpansion = true;
@@ -2120,7 +2120,7 @@ toTArg(const TemplateArgument& A)
         R->IsPackExpansion = A.isPackExpansion();
         // if this is a pack expansion, use the template argument
         // expansion pattern in place of the template argument pack
-        const TemplateArgument& adjusted =
+        TemplateArgument const& adjusted =
             R->IsPackExpansion ?
             A.getPackExpansionPattern() : A;
 
@@ -2138,7 +2138,7 @@ toTArg(const TemplateArgument& A)
 
 std::string
 ASTVisitor::
-toString(const Expr* E)
+toString(Expr const* E)
 {
     std::string result;
     llvm::raw_string_ostream stream(result);
@@ -2148,7 +2148,7 @@ toString(const Expr* E)
 
 std::string
 ASTVisitor::
-toString(const Type* T)
+toString(Type const* T)
 {
     if(auto* AT = dyn_cast_if_present<AutoType>(T))
     {
@@ -2178,7 +2178,7 @@ toString(const Type* T)
 template<class Integer>
 Integer
 ASTVisitor::
-toInteger(const llvm::APInt& V)
+toInteger(llvm::APInt const& V)
 {
     if constexpr (std::is_signed_v<Integer>)
     {
@@ -2262,7 +2262,7 @@ getSFINAEControlParams(
     // template arguments of the template declaration.
     auto FindParam = [this](
         ArrayRef<TemplateArgument> Arguments,
-        const TemplateArgument& Arg) -> std::size_t
+        TemplateArgument const& Arg) -> std::size_t
     {
         if (Arg.getKind() != TemplateArgument::Type)
         {
@@ -2270,7 +2270,7 @@ getSFINAEControlParams(
         }
         auto const It = std::ranges::find_if(
             Arguments,
-            [&](const TemplateArgument& Other)
+            [&](TemplateArgument const& Other)
             {
                 if (Other.getKind() != TemplateArgument::Type)
                 {
@@ -2645,7 +2645,7 @@ tryGetTemplateArgument(
 ExtractionMode
 ASTVisitor::
 checkFilters(
-    const Decl* D,
+    Decl const* D,
     AccessSpecifier const access)
 {
     // The translation unit is always extracted as the
@@ -2691,7 +2691,7 @@ checkTypeFilters(Decl const* D, AccessSpecifier access)
     }
 
     // Don't extract anonymous unions
-    const auto* RD = dyn_cast<RecordDecl>(D);
+    auto const* RD = dyn_cast<RecordDecl>(D);
     MRDOCS_CHECK_OR(!RD || !RD->isAnonymousStructOrUnion(), false);
 
     // Don't extract implicitly generated declarations
@@ -2700,7 +2700,7 @@ checkTypeFilters(Decl const* D, AccessSpecifier access)
 
     // Don't extract anonymous namespaces unless configured to do so
     // and the current mode is normal
-    if (const auto* ND = dyn_cast<NamespaceDecl>(D);
+    if (auto const* ND = dyn_cast<NamespaceDecl>(D);
         ND &&
         ND->isAnonymousNamespace() &&
         config_->anonymousNamespaces)
@@ -2811,7 +2811,7 @@ checkSymbolFilters(Decl const* D, bool const AllowParent)
     };
 
     // If not a NamedDecl, then symbol filters don't apply
-    const auto* ND = dyn_cast<NamedDecl>(D);
+    auto const* ND = dyn_cast<NamedDecl>(D);
     if (!ND)
     {
         ExtractionInfo const res{ExtractionMode::Regular, ExtractionMatchType::Strict};
@@ -3112,7 +3112,7 @@ findFileInfo(clang::SourceLocation const loc)
     auto const presumed = source_.getPresumedLoc(loc, false);
     MRDOCS_CHECK_OR(!presumed.isInvalid(), nullptr);
 
-    const FileEntry* entry = source_.getFileEntryForID( presumed.getFileID());
+    FileEntry const* entry = source_.getFileEntryForID( presumed.getFileID());
     MRDOCS_CHECK_OR(entry, nullptr);
 
     // Find in the cache

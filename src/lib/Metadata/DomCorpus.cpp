@@ -56,7 +56,7 @@ public:
     {
         // VFALCO Hack to deal with symbol IDs
         // being emitted without the corresponding data.
-        const Info* I = corpus_.find(id);
+        Info const* I = corpus_.find(id);
         MRDOCS_CHECK_OR(I, {});
         return create(*I);
     }

@@ -224,7 +224,7 @@ Builder(
                 return nullptr;
             }
             // Use whatever declaration had docs.
-            for (const dom::Value& loc : decls.getArray())
+            for (dom::Value const& loc : decls.getArray())
             {
                 if (loc.get("documented"))
                 {

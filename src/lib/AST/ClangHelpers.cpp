@@ -18,7 +18,7 @@
 
 namespace clang::mrdocs {
 
-const Expr*
+Expr const*
 SubstituteConstraintExpressionWithoutSatisfaction(
     Sema &S, const Sema::TemplateCompareNewDeclInfo &DeclInfo,
     const Expr *ConstrExpr)
@@ -85,7 +85,7 @@ SubstituteConstraintExpressionWithoutSatisfaction(
 }
 
 AccessSpecifier
-getAccess(const Decl* D)
+getAccess(Decl const* D)
 {
     // First, get the declaration this was instantiated from
     D = getInstantiatedFrom(D);
@@ -158,7 +158,7 @@ getAccess(const Decl* D)
 }
 
 QualType
-getDeclaratorType(const DeclaratorDecl* DD)
+getDeclaratorType(DeclaratorDecl const* DD)
 {
     if (auto* TSI = DD->getTypeSourceInfo();
         TSI && !TSI->getType().isNull())
@@ -169,26 +169,26 @@ getDeclaratorType(const DeclaratorDecl* DD)
 }
 
 NonTypeTemplateParmDecl const*
-getNTTPFromExpr(const Expr* E, unsigned const Depth)
+getNTTPFromExpr(Expr const* E, unsigned const Depth)
 {
     while(true)
     {
-        if(const auto* ICE = dyn_cast<ImplicitCastExpr>(E))
+        if(auto const* ICE = dyn_cast<ImplicitCastExpr>(E))
         {
             E = ICE->getSubExpr();
             continue;
         }
-        if(const auto* CE = dyn_cast<ConstantExpr>(E))
+        if(auto const* CE = dyn_cast<ConstantExpr>(E))
         {
             E = CE->getSubExpr();
             continue;
         }
-        if(const auto* SNTTPE = dyn_cast<SubstNonTypeTemplateParmExpr>(E))
+        if(auto const* SNTTPE = dyn_cast<SubstNonTypeTemplateParmExpr>(E))
         {
             E = SNTTPE->getReplacement();
             continue;
         }
-        if(const auto* CCE = dyn_cast<CXXConstructExpr>(E);
+        if(auto const* CCE = dyn_cast<CXXConstructExpr>(E);
             CCE && CCE->getParenOrBraceRange().isInvalid())
         {
             // look through implicit copy construction from an lvalue of the same type
@@ -198,13 +198,13 @@ getNTTPFromExpr(const Expr* E, unsigned const Depth)
         break;
     }
 
-    const auto* DRE = dyn_cast<DeclRefExpr>(E);
+    auto const* DRE = dyn_cast<DeclRefExpr>(E);
     if (!DRE)
     {
         return nullptr;
     }
 
-    const auto* NTTPD = dyn_cast<NonTypeTemplateParmDecl>(DRE->getDecl());
+    auto const* NTTPD = dyn_cast<NonTypeTemplateParmDecl>(DRE->getDecl());
     if (!NTTPD || NTTPD->getDepth() != Depth)
     {
         return nullptr;
@@ -249,7 +249,7 @@ getQualifiedName(
     raw_ostream& stream,
     const PrintingPolicy &policy)
 {
-    if (const auto* CTS = dyn_cast<ClassTemplateSpecializationDecl>(ND))
+    if (auto const* CTS = dyn_cast<ClassTemplateSpecializationDecl>(ND))
     {
         CTS->getSpecializedTemplate()->printQualifiedName(stream, policy);
         TemplateArgumentList const& args = CTS->getTemplateArgs();

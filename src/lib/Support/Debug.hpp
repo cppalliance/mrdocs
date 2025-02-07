@@ -27,7 +27,7 @@ struct fmt::formatter<clang::mrdocs::SymbolID>
     : fmt::formatter<std::string>
 {
     fmt::format_context::iterator format(
-        const clang::mrdocs::SymbolID& s,
+        clang::mrdocs::SymbolID const& s,
         fmt::format_context& ctx) const;
 };
 
@@ -54,7 +54,7 @@ struct fmt::formatter<clang::mrdocs::Info>
     : fmt::formatter<std::string>
 {
     fmt::format_context::iterator format(
-        const clang::mrdocs::Info& i,
+        clang::mrdocs::Info const& i,
         fmt::format_context& ctx) const;
 };
 

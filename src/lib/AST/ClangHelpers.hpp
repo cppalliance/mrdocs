@@ -42,7 +42,7 @@ namespace clang::mrdocs {
     @param ConstrExpr The constraint expression to be substituted.
     @return The substituted constraint expression, or nullptr if an error occurs.
  */
-const Expr*
+Expr const*
 SubstituteConstraintExpressionWithoutSatisfaction(
     Sema &S,
     const Sema::TemplateCompareNewDeclInfo &DeclInfo,

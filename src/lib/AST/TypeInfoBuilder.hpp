@@ -87,7 +87,7 @@ public:
         @param T The pointer type to build.
         @param quals The qualifiers for the pointer type.
      */
-    void buildPointer(const PointerType* T, unsigned quals);
+    void buildPointer(PointerType const* T, unsigned quals);
 
     /** Build type information for a lvalue reference type.
 
@@ -96,7 +96,7 @@ public:
 
         @param T The lvalue reference type to build.
      */
-    void buildLValueReference(const LValueReferenceType* T);
+    void buildLValueReference(LValueReferenceType const* T);
 
     /** Build type information for an rvalue reference type.
 
@@ -105,7 +105,7 @@ public:
 
         @param T The rvalue reference type to build.
      */
-    void buildRValueReference(const RValueReferenceType* T);
+    void buildRValueReference(RValueReferenceType const* T);
 
     /** Build type information for a member pointer type.
 
@@ -118,7 +118,7 @@ public:
         @param T The member pointer type to build.
         @param quals The qualifiers for the member pointer type.
      */
-    void buildMemberPointer(const MemberPointerType* T, unsigned quals);
+    void buildMemberPointer(MemberPointerType const* T, unsigned quals);
 
     /** Build type information for an array type.
 
@@ -131,7 +131,7 @@ public:
 
         @param T The array type to build.
      */
-    void buildArray(const ArrayType* T);
+    void buildArray(ArrayType const* T);
 
     /** Populate type information for a function type.
 
@@ -143,7 +143,7 @@ public:
 
         @param T The function type to populate.
      */
-    void populate(const FunctionType* T);
+    void populate(FunctionType const* T);
 
     /** Build type information for a decltype type.
 
@@ -157,7 +157,7 @@ public:
         @param quals The qualifiers for the decltype type.
         @param pack Whether the decltype type is a pack.
      */
-    void buildDecltype(const DecltypeType* T, unsigned quals, bool pack);
+    void buildDecltype(DecltypeType const* T, unsigned quals, bool pack);
 
     /** Build type information for an auto type.
 
@@ -172,7 +172,7 @@ public:
         @param quals The qualifiers for the auto type.
         @param pack Whether the auto type is a pack.
      */
-    void buildAuto(const AutoType* T, unsigned quals, bool pack);
+    void buildAuto(AutoType const* T, unsigned quals, bool pack);
 
     /** Build type information for a terminal type.
 

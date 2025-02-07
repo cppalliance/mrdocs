@@ -139,7 +139,7 @@ struct MRDOCS_VISIBLE Info
     #define INFO(Type) constexpr bool is##Type() const noexcept { return Kind == InfoKind::Type; }
     #include <mrdocs/Metadata/InfoNodesPascal.inc>
 
-    auto operator<=>(const Info&) const = default;
+    auto operator<=>(Info const&) const = default;
 };
 
 //------------------------------------------------
@@ -164,7 +164,7 @@ struct InfoCommonBase : Info
     static constexpr bool is##Kind() noexcept { return K == InfoKind::Kind; }
     #include <mrdocs/Metadata/InfoNodesPascal.inc>
 
-    auto operator<=>(const InfoCommonBase&) const = default;
+    auto operator<=>(InfoCommonBase const&) const = default;
 
 protected:
     constexpr explicit InfoCommonBase(SymbolID const& ID)

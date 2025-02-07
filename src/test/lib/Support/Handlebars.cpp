@@ -5304,7 +5304,7 @@ mustache_compat_spec()
         }
     }
 
-    for (const auto& spec_file: spec_files) {
+    for (auto const& spec_file: spec_files) {
         // Skip mustache extensions (handlebars knowingly deviates from these)
         if (spec_file.starts_with('~'))
         {

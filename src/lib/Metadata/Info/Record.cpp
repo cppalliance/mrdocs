@@ -50,7 +50,7 @@ reduceSymbolIDs(
 
 std::strong_ordering
 RecordInfo::
-operator<=>(const RecordInfo& other) const
+operator<=>(RecordInfo const& other) const
 {
     if (auto const cmp = Name <=> other.Name;
         !std::is_eq(cmp))

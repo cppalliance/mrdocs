@@ -98,7 +98,7 @@ toString(
 
 dom::String
 toString(
-    const ExplicitInfo& info,
+    ExplicitInfo const& info,
     bool resolved,
     bool implicit)
 {

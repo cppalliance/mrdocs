@@ -17,7 +17,7 @@ namespace clang::mrdocs {
 
 void
 TypeInfoBuilder::
-buildPointer(const PointerType*, unsigned quals)
+buildPointer(PointerType const*, unsigned quals)
 {
     PointerTypeInfo I;
     I.CVQualifiers = toQualifierKind(quals);
@@ -27,7 +27,7 @@ buildPointer(const PointerType*, unsigned quals)
 
 void
 TypeInfoBuilder::
-buildLValueReference(const LValueReferenceType*)
+buildLValueReference(LValueReferenceType const*)
 {
     LValueReferenceTypeInfo I;
     *Inner = std::move(I);
@@ -36,7 +36,7 @@ buildLValueReference(const LValueReferenceType*)
 
 void
 TypeInfoBuilder::
-buildRValueReference(const RValueReferenceType*)
+buildRValueReference(RValueReferenceType const*)
 {
     RValueReferenceTypeInfo I;
     *Inner = std::move(I);
@@ -46,7 +46,7 @@ buildRValueReference(const RValueReferenceType*)
 void
 TypeInfoBuilder::
 buildMemberPointer(
-    const MemberPointerType* T,
+    MemberPointerType const* T,
     unsigned const quals)
 {
     MemberPointerTypeInfo I;
@@ -61,7 +61,7 @@ buildMemberPointer(
 
 void
 TypeInfoBuilder::
-buildArray(const ArrayType* T)
+buildArray(ArrayType const* T)
 {
     ArrayTypeInfo I;
     if (auto* CAT = dyn_cast<ConstantArrayType>(T))
@@ -78,7 +78,7 @@ buildArray(const ArrayType* T)
 
 void
 TypeInfoBuilder::
-populate(const FunctionType* T)
+populate(FunctionType const* T)
 {
     auto* FPT = cast<FunctionProtoType>(T);
     FunctionTypeInfo I;
@@ -99,7 +99,7 @@ populate(const FunctionType* T)
 void
 TypeInfoBuilder::
 buildDecltype(
-    const DecltypeType* T,
+    DecltypeType const* T,
     unsigned quals,
     bool pack)
 {
@@ -115,7 +115,7 @@ buildDecltype(
 void
 TypeInfoBuilder::
 buildAuto(
-    const AutoType* T,
+    AutoType const* T,
     unsigned const quals,
     bool const pack)
 {
@@ -143,8 +143,8 @@ buildAuto(
 void
 TypeInfoBuilder::
 buildTerminal(
-    const NestedNameSpecifier* NNS,
-    const Type* T,
+    NestedNameSpecifier const* NNS,
+    Type const* T,
     unsigned quals,
     bool pack)
 {
@@ -162,8 +162,8 @@ buildTerminal(
 void
 TypeInfoBuilder::
 buildTerminal(
-    const NestedNameSpecifier* NNS,
-    const IdentifierInfo* II,
+    NestedNameSpecifier const* NNS,
+    IdentifierInfo const* II,
     std::optional<ArrayRef<TemplateArgument>> TArgs,
     unsigned quals,
     bool pack)
@@ -221,7 +221,7 @@ buildTerminal(
 
     auto populateNameInfo = [&](NameInfo& Name, NamedDecl* D)
     {
-        if(const IdentifierInfo* II = D->getIdentifier())
+        if(IdentifierInfo const* II = D->getIdentifier())
         {
             Name.Name = II->getName();
         }

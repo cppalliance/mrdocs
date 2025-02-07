@@ -111,7 +111,7 @@ toStringImpl(
 }
 
 std::string
-toString(const NameInfo& N)
+toString(NameInfo const& N)
 {
     std::string result;
     toStringImpl(result, N);
@@ -127,7 +127,7 @@ tag_invoke(
     DomCorpus const* domCorpus)
 {
     io.map("kind", I.Kind);
-    visit(I, [domCorpus, &io]<typename T>(const T& t)
+    visit(I, [domCorpus, &io]<typename T>(T const& t)
     {
         io.map("name", t.Name);
         io.map("symbol", t.id);
