@@ -439,6 +439,16 @@
       ],
       "title": "Verbose output",
       "type": "boolean"
+    },
+    "warnings": {
+      "default": true,
+      "description": "When set to `true`, MrDocs outputs warning messages during the generation of the documentation. It is usually recommended to enable warnings while writing the documentation.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Enable warning messages",
+      "type": "boolean"
     }
   },
   "required": [],
