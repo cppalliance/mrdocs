@@ -42,8 +42,6 @@ struct DefaultEmptyPredicate
     {
         return !t;
     }
-
-
 };
 
 /** A compact optional.
@@ -65,8 +63,27 @@ public:
 
     constexpr Optional() = default;
     constexpr Optional(Optional const& other) = default;
+
     constexpr Optional& operator=(Optional const& other) = default;
     constexpr Optional& operator=(Optional&& other) = default;
+    constexpr Optional& operator=(T const& t)
+    {
+        t_ = t;
+        return *this;
+    }
+
+    constexpr Optional& operator=(T&& t)
+    {
+        t_ = std::move(t);
+        return *this;
+    }
+
+    constexpr Optional& operator=(std::nullptr_t)
+    {
+        t_ = T();
+        MRDOCS_ASSERT(!this->operator bool());
+        return *this;
+    }
 
     template<class U>
     requires std::is_constructible_v<T, U>
@@ -79,6 +96,7 @@ public:
     constexpr void reset()
     {
         *this = Optional();
+        MRDOCS_ASSERT(!this->operator bool());
     }
 
     template<typename... Args>
