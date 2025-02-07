@@ -51,7 +51,7 @@ template<typename... Opts>
 static
 bool
 optionMatchesAny(
-    const llvm::opt::Option& opt,
+    llvm::opt::Option const& opt,
     Opts&&... opts)
 {
     return (opt.matches(opts) || ...);
@@ -480,7 +480,7 @@ adjustCommandLine(
     // Clang option. This will discard any options that
     // affect warnings, are ignored, or turn warnings into
     // errors.
-    const llvm::opt::OptTable& opts_table = clang::driver::getDriverOptTable();
+    llvm::opt::OptTable const& opts_table = clang::driver::getDriverOptTable();
     llvm::opt::Visibility visibility(is_clang_cl ?
         driver::options::CLOption : driver::options::ClangOption);
     unsigned idx = 1;

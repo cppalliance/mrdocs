@@ -18,7 +18,7 @@ namespace clang::mrdocs {
 
 std::strong_ordering
 TypedefInfo::
-operator<=>(const TypedefInfo& other) const
+operator<=>(TypedefInfo const& other) const
 {
     if (auto const cmp = Name <=> other.Name;
         !std::is_eq(cmp))

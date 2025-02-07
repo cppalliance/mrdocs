@@ -79,7 +79,7 @@ struct ExplicitInfo
     */
     std::string Operand;
 
-    auto operator<=>(const ExplicitInfo&) const = default;
+    auto operator<=>(ExplicitInfo const&) const = default;
 };
 
 /** Exception specification kinds

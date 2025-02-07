@@ -1014,8 +1014,8 @@ public:
     template <class G>
     requires
         std::is_constructible_v<E, G const&> &&
-        std::is_assignable_v<E&, const G&> &&
-        (std::is_nothrow_constructible_v<E, const G&> ||
+        std::is_assignable_v<E&, G const&> &&
+        (std::is_nothrow_constructible_v<E, G const&> ||
          std::is_nothrow_move_constructible_v<T> ||
          std::is_nothrow_move_constructible_v<E>)
     constexpr
@@ -1213,7 +1213,7 @@ public:
         {
             return val_;
         }
-        const auto& unex = unex_;
+        auto const& unex = unex_;
         throw BadExpectedAccess<E>(unex);
     }
 
@@ -1237,7 +1237,7 @@ public:
         throw BadExpectedAccess<E>(std::move(unex_));
     }
 
-    constexpr const E&
+    constexpr E const&
     error() const & noexcept
     {
         MRDOCS_ASSERT(!has_value_);
@@ -1251,7 +1251,7 @@ public:
         return unex_;
     }
 
-    constexpr const E&&
+    constexpr E const&&
     error() const && noexcept
     {
         MRDOCS_ASSERT(!has_value_);
@@ -1347,12 +1347,12 @@ public:
     }
 
     template <class Fn>
-    requires std::is_constructible_v<E, const E&>
+    requires std::is_constructible_v<E, E const&>
     constexpr
     auto
     and_then(Fn&& f) const &
     {
-        using U = detail::then_result<Fn, const T&>;
+        using U = detail::then_result<Fn, T const&>;
         static_assert(detail::isExpected<U>);
         static_assert(std::is_same_v<class U::error_type, E>);
 
@@ -1393,7 +1393,7 @@ public:
     auto
     and_then(Fn&& f) const &&
     {
-        using U = detail::then_result<Fn, const T&&>;
+        using U = detail::then_result<Fn, T const&&>;
         static_assert(detail::isExpected<U>);
         static_assert(std::is_same_v<class U::error_type, E>);
 
@@ -1428,12 +1428,12 @@ public:
     }
 
     template <class Fn>
-    requires std::is_constructible_v<T, const T&>
+    requires std::is_constructible_v<T, T const&>
     constexpr
     auto
     or_else(Fn&& f) const &
     {
-        using G = detail::then_result<Fn, const E&>;
+        using G = detail::then_result<Fn, E const&>;
         static_assert(detail::isExpected<G>);
         static_assert(std::is_same_v<class G::value_type, T>);
 
@@ -1473,7 +1473,7 @@ public:
     auto
     or_else(Fn&& f) const &&
     {
-        using G = detail::then_result<Fn, const E&&>;
+        using G = detail::then_result<Fn, E const&&>;
         static_assert(detail::isExpected<G>);
         static_assert(std::is_same_v<class G::value_type, T>);
 
@@ -1510,12 +1510,12 @@ public:
     }
 
     template <class Fn>
-    requires std::is_constructible_v<E, const E&>
+    requires std::is_constructible_v<E, E const&>
     constexpr
     auto
     transform(Fn&& f) const &
     {
-        using U = detail::result_transform<Fn, const T&>;
+        using U = detail::result_transform<Fn, T const&>;
         using Res = Expected<U, E>;
 
         if (has_value())
@@ -1598,12 +1598,12 @@ public:
     }
 
     template <class Fn>
-    requires std::is_constructible_v<T, const T&>
+    requires std::is_constructible_v<T, T const&>
     constexpr
     auto
     transform_error(Fn&& f) const &
     {
-        using G = detail::result_transform<Fn, const E&>;
+        using G = detail::result_transform<Fn, E const&>;
         using Res = Expected<T, G>;
 
         if (has_value())
@@ -1647,7 +1647,7 @@ public:
     auto
     transform_error(Fn&& f) const &&
     {
-        using G = detail::result_transform<Fn, const E&&>;
+        using G = detail::result_transform<Fn, E const&&>;
         using Res = Expected<T, G>;
 
         if (has_value())
@@ -1686,7 +1686,7 @@ public:
     friend
     constexpr
     bool
-    operator==(Expected const& x, const U& v)
+    operator==(Expected const& x, U const& v)
     noexcept(noexcept(bool(*x == v)))
     {
         return x.has_value() && bool(*x == v);
@@ -1878,12 +1878,12 @@ public:
     template <class U, class G>
     requires
         std::is_void_v<U> &&
-        std::is_constructible_v<E, const G&> &&
+        std::is_constructible_v<E, G const&> &&
         (!constructible_from_expected<U, G>)
     constexpr
-    explicit(!std::is_convertible_v<const G&, E>)
+    explicit(!std::is_convertible_v<G const&, E>)
     Expected(const Expected<U, G>& x)
-    noexcept(std::is_nothrow_constructible_v<E, const G&>)
+    noexcept(std::is_nothrow_constructible_v<E, G const&>)
         : void_()
         , has_value_(x.has_value_)
     {
@@ -1912,11 +1912,11 @@ public:
     }
 
     template <class G = E>
-    requires std::is_constructible_v<E, const G&>
+    requires std::is_constructible_v<E, G const&>
     constexpr
-    explicit(!std::is_convertible_v<const G&, E>)
+    explicit(!std::is_convertible_v<G const&, E>)
     Expected(const Unexpected<G>& u)
-    noexcept(std::is_nothrow_constructible_v<E, const G&>)
+    noexcept(std::is_nothrow_constructible_v<E, G const&>)
         : unex_(u.error())
         , has_value_(false)
     { }
@@ -2011,8 +2011,8 @@ public:
 
     template <class G>
     requires
-        std::is_constructible_v<E, const G&> &&
-        std::is_assignable_v<E&, const G&>
+        std::is_constructible_v<E, G const&> &&
+        std::is_assignable_v<E&, G const&>
     constexpr
     Expected&
     operator=(const Unexpected<G>& e)
@@ -2128,7 +2128,7 @@ public:
         throw BadExpectedAccess<E>(std::move(unex_));
     }
 
-    constexpr const E&
+    constexpr E const&
     error() const & noexcept
     {
         MRDOCS_ASSERT(!has_value_);
@@ -2142,7 +2142,7 @@ public:
         return unex_;
     }
 
-    constexpr const E&&
+    constexpr E const&&
     error() const && noexcept
     {
         MRDOCS_ASSERT(!has_value_);
@@ -2205,7 +2205,7 @@ public:
     }
 
     template <class Fn>
-    requires std::is_constructible_v<E, const E&>
+    requires std::is_constructible_v<E, E const&>
     constexpr
     auto
     and_then(Fn&& f) const &
@@ -2360,7 +2360,7 @@ public:
     }
 
     template <class Fn>
-    requires std::is_constructible_v<E, const E&>
+    requires std::is_constructible_v<E, E const&>
     constexpr
     auto
     transform(Fn&& f) const &
@@ -2442,7 +2442,7 @@ public:
     auto
     transform_error(Fn&& f) const &
     {
-        using G = detail::result_transform<Fn, const E&>;
+        using G = detail::result_transform<Fn, E const&>;
         using Res = Expected<T, G>;
 
         if (has_value())
@@ -2484,7 +2484,7 @@ public:
     auto
     transform_error(Fn&& f) const &&
     {
-        using G = detail::result_transform<Fn, const E&&>;
+        using G = detail::result_transform<Fn, E const&&>;
         using Res = Expected<T, G>;
 
         if (has_value())

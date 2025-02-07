@@ -204,7 +204,7 @@ template<>
 struct std::hash<clang::mrdocs::SymbolID>
 {
     std::size_t
-    operator()(const clang::mrdocs::SymbolID& id) const noexcept
+    operator()(clang::mrdocs::SymbolID const& id) const noexcept
     {
         return std::hash<std::string_view>()(
             std::string_view(id));

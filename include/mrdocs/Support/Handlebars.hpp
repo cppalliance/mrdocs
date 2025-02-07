@@ -1269,9 +1269,9 @@ not_fn(dom::Array const& arg);
 MRDOCS_DECL
 dom::Value
 select_fn(
-    const dom::Value& condition,
-    const dom::Value& result_true,
-    const dom::Value& result_false);
+    dom::Value const& condition,
+    dom::Value const& result_true,
+    dom::Value const& result_false);
 
 /** "increment" helper function
  *

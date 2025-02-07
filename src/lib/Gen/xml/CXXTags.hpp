@@ -276,7 +276,7 @@ inline void writeTemplateParam(TParam const& I, XMLTags& tags)
             {
                 tags.open(tparamTagName,
                     std::move(attrs));
-                for(const auto& tparam : P.Params)
+                for(auto const& tparam : P.Params)
                     writeTemplateParam(*tparam, tags);
                 tags.close(tparamTagName);
             }
@@ -288,9 +288,9 @@ inline void writeTemplateParam(TParam const& I, XMLTags& tags)
         });
 }
 
-inline void writeTemplateArg(const TArg& I, XMLTags& tags)
+inline void writeTemplateArg(TArg const& I, XMLTags& tags)
 {
-    visit(I, [&]<typename T>(const T& A)
+    visit(I, [&]<typename T>(T const& A)
         {
             Attributes attrs = {
                 {"class", toString(T::kind_id)}

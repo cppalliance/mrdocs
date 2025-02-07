@@ -12,7 +12,7 @@
 #ifndef MRDOCS_LIB_TAGFILEWRITER_HPP
 #define MRDOCS_LIB_TAGFILEWRITER_HPP
 
-#include "../Gen/xml/XMLTags.hpp"
+#include "lib/Gen/xml/XMLTags.hpp"
 #include <mrdocs/Metadata.hpp>
 #include "lib/Gen/hbs/HandlebarsCorpus.hpp"
 #include <mrdocs/Support/Error.hpp>

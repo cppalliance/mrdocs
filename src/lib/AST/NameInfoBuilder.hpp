@@ -36,29 +36,29 @@ public:
 
     void
     buildDecltype(
-        const DecltypeType* T,
+        DecltypeType const* T,
         unsigned quals,
         bool pack);
 
     void
     buildTerminal(
-        const NestedNameSpecifier* NNS,
-        const Type* T,
+        NestedNameSpecifier const* NNS,
+        Type const* T,
         unsigned quals,
         bool pack);
 
     void
     buildTerminal(
-        const NestedNameSpecifier* NNS,
-        const IdentifierInfo* II,
+        NestedNameSpecifier const* NNS,
+        IdentifierInfo const* II,
         std::optional<ArrayRef<TemplateArgument>> TArgs,
         unsigned quals,
         bool pack);
 
     void
     buildTerminal(
-        const NestedNameSpecifier* NNS,
-        const NamedDecl* D,
+        NestedNameSpecifier const* NNS,
+        NamedDecl const* D,
         std::optional<ArrayRef<TemplateArgument>> const& TArgs,
         unsigned quals,
         bool pack);

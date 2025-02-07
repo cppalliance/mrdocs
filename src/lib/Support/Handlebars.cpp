@@ -2065,7 +2065,7 @@ evalExpr(
 
         // Find in parent contexts
         auto parentContexts = std::ranges::views::reverse(state.parentContext);
-        for (const auto& parentContext: parentContexts)
+        for (auto const& parentContext: parentContexts)
         {
             MRDOCS_TRY(std::tie(r, defined), lookupPropertyImpl(parentContext, expression, state, noStrict));
             if (defined)
@@ -6693,7 +6693,7 @@ registerContainerHelpers(Handlebars& hbs)
         // remove duplicates from an array
         dom::Array const& range = rangeV.getArray();
         std::vector<dom::Value> res;
-        for (const auto& el: range)
+        for (auto const& el: range)
         {
             res.push_back(el);
         }

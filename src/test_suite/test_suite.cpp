@@ -235,7 +235,7 @@ test_impl(
 
 void
 throw_failed_impl(
-    const char* expr,
+    char const* expr,
     char const* excep,
     char const* func,
     char const* file,
@@ -253,7 +253,7 @@ throw_failed_impl(
 
 void
 no_throw_failed_impl(
-    const char* expr,
+    char const* expr,
     char const* excep,
     char const* func,
     char const* file,
@@ -271,7 +271,7 @@ no_throw_failed_impl(
 
 void
 no_throw_failed_impl(
-    const char* expr,
+    char const* expr,
     char const* func,
     char const* file,
     int line)

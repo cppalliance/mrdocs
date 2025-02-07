@@ -36,7 +36,7 @@ namespace clang::mrdocs {
         // ...
         void buildTerminal(...) { ... }
         // ...
-        void populate(const FunctionType* T);
+        void populate(FunctionType const* T);
     };
     @endcode
 
@@ -85,7 +85,7 @@ class TerminalTypeVisitor
     bool IsPack_ = false;
 
     // The optional NestedNameSpecifier.
-    const NestedNameSpecifier* NNS_ = nullptr;
+    NestedNameSpecifier const* NNS_ = nullptr;
 
 protected:
     // Constraints associated with the type (e.g., SFINAE)
@@ -103,7 +103,7 @@ public:
     explicit
     TerminalTypeVisitor(
         ASTVisitor& Visitor,
-        const NestedNameSpecifier* NNS = nullptr)
+        NestedNameSpecifier const* NNS = nullptr)
         : Visitor_(Visitor)
         , NNS_(NNS)
     {
@@ -156,7 +156,7 @@ public:
     static
     void
     buildPointer
-        (const PointerType*,
+        (PointerType const*,
         unsigned)
     {
     }
@@ -168,7 +168,7 @@ public:
      */
     void
     buildLValueReference(
-        const LValueReferenceType*)
+        LValueReferenceType const*)
     {
     }
 
@@ -179,7 +179,7 @@ public:
      */
     void
     buildRValueReference(
-        const RValueReferenceType*)
+        RValueReferenceType const*)
     {
     }
 
@@ -190,7 +190,7 @@ public:
      */
     void
     buildMemberPointer(
-        const MemberPointerType*, unsigned)
+        MemberPointerType const*, unsigned)
     {
     }
 
@@ -201,13 +201,13 @@ public:
      */
     void
     buildArray(
-        const ArrayType*)
+        ArrayType const*)
     {
     }
 
     void
     populate(
-        const FunctionType*)
+        FunctionType const*)
     {
     }
 
@@ -218,7 +218,7 @@ public:
      */
     void
     buildDecltype(
-        const DecltypeType*,
+        DecltypeType const*,
         unsigned,
         bool)
     {
@@ -231,7 +231,7 @@ public:
      */
     void
     buildAuto(
-        const AutoType*,
+        AutoType const*,
         unsigned,
         bool)
     {
@@ -304,7 +304,7 @@ private:
         - Unwrapped type: `int`
      */
     bool
-    VisitParenType(const ParenType* T)
+    VisitParenType(ParenType const* T)
     {
         QualType I = T->getInnerType();
         return Visit(I);
@@ -336,7 +336,7 @@ private:
      */
     bool
     VisitAttributedType(
-        const AttributedType* T)
+        AttributedType const* T)
     {
         QualType MT = T->getModifiedType();
         return Visit(MT);
@@ -382,7 +382,7 @@ private:
      */
     bool
     VisitSubstTemplateTypeParmType(
-        const SubstTemplateTypeParmType* T)
+        SubstTemplateTypeParmType const* T)
     {
         QualType RT = T->getReplacementType();
         return Visit(RT);
@@ -404,7 +404,7 @@ private:
      */
     bool
     VisitElaboratedType(
-        const ElaboratedType* T)
+        ElaboratedType const* T)
     {
         MRDOCS_SYMBOL_TRACE(T, Visitor_.context_);
         NNS_ = T->getQualifier();
@@ -424,7 +424,7 @@ private:
      */
     bool
     VisitPackExpansionType(
-        const PackExpansionType* T)
+        PackExpansionType const* T)
     {
         IsPack_ = true;
         QualType PT = T->getPattern();
@@ -443,7 +443,7 @@ private:
      */
     bool
     VisitPointerType(
-        const PointerType* T)
+        PointerType const* T)
     {
         getDerived().buildPointer(T, std::exchange(Quals_, 0));
         QualType PT = T->getPointeeType();
@@ -460,7 +460,7 @@ private:
      */
     bool
     VisitLValueReferenceType(
-        const LValueReferenceType* T)
+        LValueReferenceType const* T)
     {
         getDerived().buildLValueReference(T);
         Quals_ = 0;
@@ -478,7 +478,7 @@ private:
      */
     bool
     VisitRValueReferenceType(
-        const RValueReferenceType* T)
+        RValueReferenceType const* T)
     {
         getDerived().buildRValueReference(T);
         Quals_ = 0;
@@ -496,7 +496,7 @@ private:
      */
     bool
     VisitMemberPointerType(
-        const MemberPointerType* T)
+        MemberPointerType const* T)
     {
         getDerived().buildMemberPointer(T, std::exchange(Quals_, 0));
         QualType PT = T->getPointeeType();
@@ -505,7 +505,7 @@ private:
 
     bool
     VisitFunctionType(
-        const FunctionType* T)
+        FunctionType const* T)
     {
         getDerived().populate(T);
         QualType RT = T->getReturnType();
@@ -522,7 +522,7 @@ private:
      */
     bool
     VisitArrayType(
-        const ArrayType* T)
+        ArrayType const* T)
     {
         getDerived().buildArray(T);
         QualType ET = T->getElementType();
@@ -533,7 +533,7 @@ private:
 
     bool
     VisitDecltypeType(
-        const DecltypeType* T)
+        DecltypeType const* T)
     {
         getDerived().buildDecltype(T, Quals_, IsPack_);
         return true;
@@ -541,7 +541,7 @@ private:
 
     bool
     VisitAutoType(
-        const AutoType* T)
+        AutoType const* T)
     {
         // KRYSTIAN NOTE: we don't use isDeduced because it will
         // return true if the type is dependent
@@ -552,7 +552,7 @@ private:
 
     bool
     VisitDeducedTemplateSpecializationType(
-        const DeducedTemplateSpecializationType* T)
+        DeducedTemplateSpecializationType const* T)
     {
         // KRYSTIAN TODO: we should probably add a TypeInfo
         // to represent deduced types also stores what it
@@ -571,7 +571,7 @@ private:
 
     bool
     VisitDependentNameType(
-        const DependentNameType* T)
+        DependentNameType const* T)
     {
         if (auto SFINAE = getASTVisitor().extractSFINAEInfo(T))
         {
@@ -591,7 +591,7 @@ private:
 
     bool
     VisitDependentTemplateSpecializationType(
-        const DependentTemplateSpecializationType* T)
+        DependentTemplateSpecializationType const* T)
     {
         MRDOCS_SYMBOL_TRACE(T, Visitor_.context_);
         if (auto const* NNS = T->getQualifier())
@@ -655,7 +655,7 @@ private:
 
     bool
     VisitRecordType(
-        const RecordType* T)
+        RecordType const* T)
     {
         RecordDecl* RD = T->getDecl();
         // if this is an instantiation of a class template,
@@ -672,7 +672,7 @@ private:
 
     bool
     VisitInjectedClassNameType(
-        const InjectedClassNameType* T)
+        InjectedClassNameType const* T)
     {
         getDerived().buildTerminal(NNS_, T->getDecl(),
             std::nullopt, Quals_, IsPack_);
@@ -681,7 +681,7 @@ private:
 
     bool
     VisitEnumType(
-        const EnumType* T)
+        EnumType const* T)
     {
         getDerived().buildTerminal(NNS_, T->getDecl(),
             std::nullopt, Quals_, IsPack_);
@@ -690,7 +690,7 @@ private:
 
     bool
     VisitTypedefType(
-        const TypedefType* T)
+        TypedefType const* T)
     {
         getDerived().buildTerminal(NNS_, T->getDecl(),
             std::nullopt, Quals_, IsPack_);
@@ -699,10 +699,10 @@ private:
 
     bool
     VisitTemplateTypeParmType(
-        const TemplateTypeParmType* T)
+        TemplateTypeParmType const* T)
     {
         MRDOCS_SYMBOL_TRACE(T, Visitor_.context_);
-        const IdentifierInfo* II = nullptr;
+        IdentifierInfo const* II = nullptr;
         if (TemplateTypeParmDecl const* D = T->getDecl())
         {
             MRDOCS_SYMBOL_TRACE(D, Visitor_.context_);
@@ -723,7 +723,7 @@ private:
 
     bool
     VisitSubstTemplateTypeParmPackType(
-        const SubstTemplateTypeParmPackType* T)
+        SubstTemplateTypeParmPackType const* T)
     {
         getDerived().buildTerminal(NNS_, T->getIdentifier(),
             std::nullopt, Quals_, IsPack_);
@@ -731,7 +731,7 @@ private:
     }
 
     bool
-    VisitType(const Type* T)
+    VisitType(Type const* T)
     {
         getDerived().buildTerminal(
             NNS_, T, Quals_, IsPack_);

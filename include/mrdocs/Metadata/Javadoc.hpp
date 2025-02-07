@@ -222,7 +222,7 @@ struct Text : Node
 {
     std::string string;
 
-    static constexpr NodeKind static_kind = NodeKind::text;
+    static constexpr auto static_kind = NodeKind::text;
 
     explicit
     Text(
@@ -642,7 +642,7 @@ struct UnorderedList final : Paragraph
     bool
     equals(Node const& other) const noexcept override
     {
-        auto* p = dynamic_cast<const UnorderedList*>(&other);
+        auto* p = dynamic_cast<UnorderedList const*>(&other);
         if (!p)
         {
             return false;
@@ -668,11 +668,11 @@ struct Details final : Paragraph
     auto operator<=>(Details const&) const = default;
 
     bool
-    operator==(const Details&) const noexcept = default;
+    operator==(Details const&) const noexcept = default;
 
-    bool equals(const Node& other) const noexcept override
+    bool equals(Node const& other) const noexcept override
     {
-        auto* p = dynamic_cast<const Details*>(&other);
+        auto* p = dynamic_cast<Details const*>(&other);
         if (!p)
         {
             return false;
@@ -698,13 +698,13 @@ struct See final : Paragraph
 
     auto operator<=>(See const&) const = default;
 
-    bool operator==(const See&)
+    bool operator==(See const&)
         const noexcept = default;
 
-    bool equals(const Node& other) const noexcept override
+    bool equals(Node const& other) const noexcept override
     {
         return Kind == other.Kind &&
-            *this == dynamic_cast<const See&>(other);
+            *this == dynamic_cast<See const&>(other);
     }
 };
 
@@ -755,13 +755,13 @@ struct Returns final : Paragraph
 
     auto operator<=>(Returns const&) const = default;
 
-    bool operator==(const Returns&)
+    bool operator==(Returns const&)
         const noexcept = default;
 
-    bool equals(const Node& other) const noexcept override
+    bool equals(Node const& other) const noexcept override
     {
         return Kind == other.Kind &&
-            *this == dynamic_cast<const Returns&>(other);
+            *this == dynamic_cast<Returns const&>(other);
     }
 };
 
@@ -779,11 +779,11 @@ struct TParam final : Paragraph
     }
 
     auto operator<=>(TParam const&) const = default;
-    bool operator==(const TParam&) const noexcept = default;
-    bool equals(const Node& other) const noexcept override
+    bool operator==(TParam const&) const noexcept = default;
+    bool equals(Node const& other) const noexcept override
     {
         return Kind == other.Kind &&
-            *this == dynamic_cast<const TParam&>(other);
+            *this == dynamic_cast<TParam const&>(other);
     }
 };
 
@@ -807,13 +807,13 @@ struct Throws final : Paragraph
 
     auto operator<=>(Throws const&) const = default;
 
-    bool operator==(const Throws&)
+    bool operator==(Throws const&)
         const noexcept = default;
 
-    bool equals(const Node& other) const noexcept override
+    bool equals(Node const& other) const noexcept override
     {
         return Kind == other.Kind &&
-            *this == dynamic_cast<const Throws&>(other);
+            *this == dynamic_cast<Throws const&>(other);
     }
 };
 
@@ -831,13 +831,13 @@ struct Precondition final : Paragraph
 
     auto operator<=>(Precondition const&) const = default;
 
-    bool operator==(const Precondition&)
+    bool operator==(Precondition const&)
         const noexcept = default;
 
-    bool equals(const Node& other) const noexcept override
+    bool equals(Node const& other) const noexcept override
     {
         return Kind == other.Kind &&
-            *this == dynamic_cast<const Precondition&>(other);
+            *this == dynamic_cast<Precondition const&>(other);
     }
 };
 
@@ -855,13 +855,13 @@ struct Postcondition : Paragraph
 
     auto operator<=>(Postcondition const&) const = default;
 
-    bool operator==(const Postcondition&)
+    bool operator==(Postcondition const&)
         const noexcept = default;
 
-    bool equals(const Node& other) const noexcept override
+    bool equals(Node const& other) const noexcept override
     {
         return Kind == other.Kind &&
-            *this == dynamic_cast<const Postcondition&>(other);
+            *this == dynamic_cast<Postcondition const&>(other);
     }
 };
 

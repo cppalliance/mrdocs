@@ -123,7 +123,7 @@ struct Param
         , Default(std::move(def_arg))
     {}
 
-    auto operator<=>(const Param&) const = default;
+    auto operator<=>(Param const&) const = default;
 };
 
 /** Return the Param as a @ref dom::Value object.
@@ -188,7 +188,7 @@ struct FunctionInfo final
     }
 
     std::strong_ordering
-    operator<=>(const FunctionInfo& other) const;
+    operator<=>(FunctionInfo const& other) const;
 };
 
 MRDOCS_DECL

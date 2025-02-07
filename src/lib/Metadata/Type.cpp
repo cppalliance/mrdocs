@@ -371,7 +371,7 @@ operator<=>(FunctionTypeInfo const& other) const {
 
 std::string
 toString(
-    const TypeInfo& T,
+    TypeInfo const& T,
     std::string_view Name)
 {
     auto write = [result = std::string()](
@@ -399,7 +399,7 @@ tag_invoke(
 {
     io.map("kind", I.Kind);
     io.map("is-pack", I.IsPackExpansion);
-    visit(I, [&io, domCorpus]<typename T>(const T& t)
+    visit(I, [&io, domCorpus]<typename T>(T const& t)
     {
         if constexpr(T::isNamed())
         {

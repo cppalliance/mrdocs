@@ -36,7 +36,7 @@ debugEnableHeapChecking()
 fmt::format_context::iterator
 fmt::formatter<clang::mrdocs::SymbolID>::
 format(
-    const clang::mrdocs::SymbolID& s,
+    clang::mrdocs::SymbolID const& s,
     fmt::format_context& ctx) const
 {
     std::string str = s ?
