@@ -8,9 +8,9 @@
       <type name="double"/>
     </param>
     <doc>
-      <para>
+      <brief>
         <text>Integer overload.</text>
-      </para>
+      </brief>
     </doc>
   </function>
   <function name="f" id="ackjGh57CJQLwtO8PihiSPPKIBY=">
@@ -51,9 +51,9 @@
       </type>
     </param>
     <doc>
-      <para>
+      <brief>
         <text>C string overload.</text>
-      </para>
+      </brief>
     </doc>
   </function>
 </namespace>

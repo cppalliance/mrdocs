@@ -167,7 +167,15 @@
 {{#if symbol.doc.returns}}
 <div>
 {{#> markup/dynamic-level-h level=2 }}Return Value{{/markup/dynamic-level-h}}
-{{{symbol.doc.returns}}}
+{{#if (eq (size symbol.doc.returns) 1)}}
+{{{symbol.doc.returns.[0]}}}
+{{else}}
+<ul>
+{{#each symbol.doc.returns}}
+<li>{{{.}}}</li>
+{{/each}}
+</ul>
+{{/if}}
 </div>
 {{/if}}
 {{! Template Parameters }}

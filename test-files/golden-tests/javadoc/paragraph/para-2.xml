@@ -5,12 +5,11 @@
   <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
     <file short-path="para-2.cpp" source-path="para-2.cpp" line="10"/>
     <doc>
-      <para>
+      <brief>
         <text>brief</text>
-      </para>
+      </brief>
       <para>
-        <text>a b</text>
-        <text>  c   d</text>
+        <text>a b  c   d</text>
       </para>
     </doc>
   </function>

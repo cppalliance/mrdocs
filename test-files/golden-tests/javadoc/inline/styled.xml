@@ -5,9 +5,9 @@
   <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
     <file short-path="styled.cpp" source-path="styled.cpp" line="8" class="def"/>
     <doc>
-      <para>
+      <brief>
         <text>Brief for A</text>
-      </para>
+      </brief>
       <para>
         <text>Paragraph with </text>
         <mono>code</mono>
@@ -33,9 +33,9 @@
         </type>
       </param>
       <doc>
-        <para>
+        <brief>
           <text>Compare function</text>
-        </para>
+        </brief>
         <returns>
           <mono>-1</mono>
           <text> if </text>

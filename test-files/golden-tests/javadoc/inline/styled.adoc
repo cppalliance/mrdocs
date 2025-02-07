@@ -78,6 +78,4 @@ compare(<<A,A>> const& other) const noexcept;
 
 
 
-
-
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

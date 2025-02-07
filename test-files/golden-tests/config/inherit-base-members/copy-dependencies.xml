@@ -15,9 +15,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be indirectly inherited by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="base_inherited" id="v0BroyWjs67MHzc1SyTlXrSxn8M=">
@@ -28,9 +28,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be inherited by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="base_shadowed" id="ECBBLxlaKar55qA0k1BCFn6MdH8=">
@@ -41,9 +41,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should shadow the excluded_base function.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="derived_shadowed" id="aYhSUMJkgCRo3AZmBb/rre04Ghg=">
@@ -54,9 +54,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be shadowed by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="do_base_base_inherited" id="MEPVWyGd8KdZFR1kBYlQMgPyQlo=">
@@ -67,9 +67,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be indirectly inherited by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="do_base_inherited" access="protected" id="TaKAQiDmx8UXkT9p/momqiOZyHU=">
@@ -80,9 +80,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be inherited by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="do_base_shadowed" access="protected" id="eHxe3z0iWUXdcNyXK0PD2+6DRbs=">
@@ -93,9 +93,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should shadow the excluded_base function.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="do_derived_shadowed" access="protected" id="KGOrnDVJV2nPDK1hlkvBm6diYXY=">
@@ -106,9 +106,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be shadowed by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
   </class>
@@ -122,9 +122,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be indirectly inherited by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="do_base_base_inherited" id="MEPVWyGd8KdZFR1kBYlQMgPyQlo=">
@@ -135,9 +135,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be indirectly inherited by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
   </class>
@@ -157,9 +157,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be indirectly inherited by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="base_inherited" id="v0BroyWjs67MHzc1SyTlXrSxn8M=">
@@ -170,9 +170,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be inherited by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="base_shadowed" id="ECBBLxlaKar55qA0k1BCFn6MdH8=">
@@ -183,9 +183,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should shadow the excluded_base function.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="derived_shadowed" id="MGQhB2O6ghdJWit6wao+PsH30Ew=">
@@ -196,9 +196,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should shadow the base class function.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="do_base_base_inherited" id="MEPVWyGd8KdZFR1kBYlQMgPyQlo=">
@@ -209,9 +209,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be indirectly inherited by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="do_derived_shadowed" id="rTSnS8Pv8GoWusQQE42y0pgN4cw=">
@@ -222,9 +222,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should shadow the base class function.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="excluded_inherited" id="P1Eq799RJkNMSTci+0jy+ZejsyU=">
@@ -235,9 +235,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be inherited by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="do_base_inherited" access="protected" id="TaKAQiDmx8UXkT9p/momqiOZyHU=">
@@ -248,9 +248,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be inherited by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="do_base_shadowed" access="protected" id="eHxe3z0iWUXdcNyXK0PD2+6DRbs=">
@@ -261,9 +261,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should shadow the excluded_base function.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="do_derived_shadowed" access="protected" id="KGOrnDVJV2nPDK1hlkvBm6diYXY=">
@@ -274,9 +274,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be shadowed by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="do_excluded_inherited" access="protected" id="oW3pQYXjjv2wrXIwIceF6Xd8nTA=">
@@ -287,9 +287,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be inherited by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="do_shadowed" access="protected" id="IYnrJp6ur6C+AiuhFl5x1YPnxkM=">
@@ -300,9 +300,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be shadowed by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
   </class>
@@ -322,9 +322,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should shadow the base class function.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="do_derived_shadowed" id="NJYWKnKWmizdaSr1ldC7FGh7fD0=">
@@ -335,9 +335,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should shadow the base class function.</text>
-        </para>
+        </brief>
       </doc>
     </function>
   </class>
@@ -350,9 +350,9 @@
       <type id="ZFBKKIr2vNG5u3bxIaTbccBBkvQ=" name="excluded_base"/>
     </base>
     <doc>
-      <para>
+      <brief>
         <text>Should inherit functions as protected.</text>
-      </para>
+      </brief>
     </doc>
     <function name="derived_shadowed" id="oVVGDloOS5F7d4VIcKLc0YpnsiE=">
       <file short-path="copy-dependencies.cpp" source-path="copy-dependencies.cpp" line="65"/>
@@ -362,9 +362,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should shadow the base class function.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="do_derived_shadowed" id="4ZJznHda5QNdk/tsMca4Psswlj0=">
@@ -375,9 +375,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should shadow the base class function.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="base_base_inherited" id="2D7yc6q3buDhuPwzpn4pWzbu8ls=">
@@ -388,9 +388,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be indirectly inherited by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="base_inherited" id="v0BroyWjs67MHzc1SyTlXrSxn8M=">
@@ -401,9 +401,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be inherited by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="base_shadowed" id="ECBBLxlaKar55qA0k1BCFn6MdH8=">
@@ -414,9 +414,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should shadow the excluded_base function.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="derived_shadowed" id="aYhSUMJkgCRo3AZmBb/rre04Ghg=">
@@ -427,9 +427,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be shadowed by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="do_base_base_inherited" id="MEPVWyGd8KdZFR1kBYlQMgPyQlo=">
@@ -440,9 +440,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be indirectly inherited by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="do_base_inherited" access="protected" id="TaKAQiDmx8UXkT9p/momqiOZyHU=">
@@ -453,9 +453,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be inherited by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="do_base_shadowed" access="protected" id="eHxe3z0iWUXdcNyXK0PD2+6DRbs=">
@@ -466,9 +466,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should shadow the excluded_base function.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="do_derived_shadowed" access="protected" id="KGOrnDVJV2nPDK1hlkvBm6diYXY=">
@@ -479,9 +479,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be shadowed by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="do_excluded_inherited" access="protected" id="KdkXQxu2xOfAXegJgCMmLcFq8MM=">
@@ -492,9 +492,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be inherited by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="do_shadowed" access="protected" id="UysvazUbtV39Omg33c9Me+Gri/M=">
@@ -505,9 +505,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be shadowed by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="excluded_inherited" id="H8wEIL8+8s3iNqadfPsH1HWRQU4=">
@@ -518,9 +518,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be inherited by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
   </class>

@@ -5,25 +5,25 @@
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     <file short-path="friend-6.cpp" source-path="friend-6.cpp" line="2" class="def"/>
     <doc>
-      <para>
+      <brief>
         <text>Struct T brief</text>
-      </para>
+      </brief>
     </doc>
     <friend id="TLQbNh0kqPKHKwvF5LteCiWQUaA=">
       <file short-path="friend-6.cpp" source-path="friend-6.cpp" line="8"/>
       <doc>
-        <para>
+        <brief>
           <text>Friend class Z brief</text>
-        </para>
+        </brief>
       </doc>
       <befriended type="Z"/>
     </friend>
     <friend id="TOrWTtN3z97T1vpET2Mp2ltgh8s=">
       <file short-path="friend-6.cpp" source-path="friend-6.cpp" line="5"/>
       <doc>
-        <para>
+        <brief>
           <text>Friend int brief</text>
-        </para>
+        </brief>
       </doc>
       <befriended type="int"/>
     </friend>
@@ -31,16 +31,16 @@
   <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
     <file short-path="friend-6.cpp" source-path="friend-6.cpp" line="12" class="def"/>
     <doc>
-      <para>
+      <brief>
         <text>Struct U brief</text>
-      </para>
+      </brief>
     </doc>
     <friend id="T7nF9IMYV70RWbouk5w3/LkJ6qU=">
       <file short-path="friend-6.cpp" source-path="friend-6.cpp" line="15"/>
       <doc>
-        <para>
+        <brief>
           <text>Friend T brief</text>
-        </para>
+        </brief>
       </doc>
       <befriended type="T"/>
     </friend>
@@ -48,16 +48,16 @@
   <struct name="V" id="9kzYwt0WPztMEDUaFxul1Jvqqs8=">
     <file short-path="friend-6.cpp" source-path="friend-6.cpp" line="19" class="def"/>
     <doc>
-      <para>
+      <brief>
         <text>Struct V brief</text>
-      </para>
+      </brief>
     </doc>
     <friend id="QnW+Cvcvia1JQtcG0VzR5BfLOi0=">
       <file short-path="friend-6.cpp" source-path="friend-6.cpp" line="22"/>
       <doc>
-        <para>
+        <brief>
           <text>Friend struct U brief</text>
-        </para>
+        </brief>
       </doc>
       <befriended type="U"/>
     </friend>

@@ -6,9 +6,9 @@
     <file short-path="terminate.cpp" source-path="terminate.cpp" line="8"/>
     <attr id="is-no-return"/>
     <doc>
-      <para>
+      <brief>
         <text>Exit the program.</text>
-      </para>
+      </brief>
       <para>
         <text>The program will end immediately.</text>
       </para>

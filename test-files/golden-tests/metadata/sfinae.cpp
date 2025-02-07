@@ -76,12 +76,12 @@ class A<T, std::enable_if_t<std::is_integral_v<T>>> {};
 template <class T, class Enable = void>
 struct S
 {
-    void store(const void*) {}
+    void store(void const*) {}
 };
 
 /// SFINAE with std::void_t
 template <class T>
 struct S<T, std::void_t<typename T::a::b>>
 {
-    void store(const void*) {}
+    void store(void const*) {}
 };

@@ -18,18 +18,15 @@
       <file short-path="tparam-1.cpp" source-path="tparam-1.cpp" line="6"/>
       <file short-path="tparam-1.cpp" source-path="tparam-1.cpp" line="15"/>
       <doc>
-        <tparam name="T">
-          <text>type</text>
-        </tparam>
-        <tparam name="T">
-          <text>type</text>
-        </tparam>
-        <para>
+        <brief>
           <text>brief</text>
-        </para>
+        </brief>
         <para>
           <text>desc</text>
         </para>
+        <tparam name="T">
+          <text>type</text>
+        </tparam>
       </doc>
     </function>
   </template>

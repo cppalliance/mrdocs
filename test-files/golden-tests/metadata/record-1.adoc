@@ -185,8 +185,6 @@ g2();
 
 the number 2
 
-
-
 [#T-g3]
 == <<T,T>>::g3
 
@@ -209,8 +207,6 @@ g3(int x);
 
 the separator
 
-
-
 === Parameters
 
 
@@ -219,7 +215,6 @@ the separator
 
 | *x*
 | any old number
-
 
 |===
 

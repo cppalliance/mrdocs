@@ -15,9 +15,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be inherited by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="base_shadowed" id="ECBBLxlaKar55qA0k1BCFn6MdH8=">
@@ -28,9 +28,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should shadow the excluded_base function.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="derived_shadowed" id="aYhSUMJkgCRo3AZmBb/rre04Ghg=">
@@ -41,9 +41,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be shadowed by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="do_base_inherited" access="protected" id="TaKAQiDmx8UXkT9p/momqiOZyHU=">
@@ -54,9 +54,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be inherited by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="do_base_shadowed" access="protected" id="eHxe3z0iWUXdcNyXK0PD2+6DRbs=">
@@ -67,9 +67,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should shadow the excluded_base function.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="do_derived_shadowed" access="protected" id="KGOrnDVJV2nPDK1hlkvBm6diYXY=">
@@ -80,9 +80,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be shadowed by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
   </class>
@@ -96,9 +96,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be indirectly inherited by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="do_base_base_inherited" id="MEPVWyGd8KdZFR1kBYlQMgPyQlo=">
@@ -109,9 +109,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should be indirectly inherited by derived classes.</text>
-        </para>
+        </brief>
       </doc>
     </function>
   </class>
@@ -131,9 +131,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should shadow the base class function.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="do_derived_shadowed" id="rTSnS8Pv8GoWusQQE42y0pgN4cw=">
@@ -144,9 +144,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should shadow the base class function.</text>
-        </para>
+        </brief>
       </doc>
     </function>
   </class>
@@ -166,9 +166,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should shadow the base class function.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="do_derived_shadowed" id="NJYWKnKWmizdaSr1ldC7FGh7fD0=">
@@ -179,9 +179,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should shadow the base class function.</text>
-        </para>
+        </brief>
       </doc>
     </function>
   </class>
@@ -194,9 +194,9 @@
       <type id="ZFBKKIr2vNG5u3bxIaTbccBBkvQ=" name="excluded_base"/>
     </base>
     <doc>
-      <para>
+      <brief>
         <text>Should inherit functions as protected.</text>
-      </para>
+      </brief>
     </doc>
     <function name="derived_shadowed" id="oVVGDloOS5F7d4VIcKLc0YpnsiE=">
       <file short-path="never.cpp" source-path="never.cpp" line="65"/>
@@ -206,9 +206,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should shadow the base class function.</text>
-        </para>
+        </brief>
       </doc>
     </function>
     <function name="do_derived_shadowed" id="4ZJznHda5QNdk/tsMca4Psswlj0=">
@@ -219,9 +219,9 @@
         </type>
       </return>
       <doc>
-        <para>
+        <brief>
           <text>This function should shadow the base class function.</text>
-        </para>
+        </brief>
       </doc>
     </function>
   </class>

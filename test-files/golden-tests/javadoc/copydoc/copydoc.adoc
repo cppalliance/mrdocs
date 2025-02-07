@@ -56,13 +56,6 @@ void
 f2();
 ----
 
-=== Description
-
-
-xref:#f1[f1]
-
-
-
 [#f3]
 == f3
 
@@ -83,7 +76,7 @@ f3();
 === Description
 
 
-xref:#f1[f1] f2
+f2
 
 
 

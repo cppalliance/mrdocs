@@ -5,9 +5,9 @@
   <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
     <file short-path="code.cpp" source-path="code.cpp" line="18"/>
     <doc>
-      <para>
+      <brief>
         <text>brief</text>
-      </para>
+      </brief>
       <para>
         <text>This description contains code:</text>
       </para>

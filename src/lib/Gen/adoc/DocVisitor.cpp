@@ -98,17 +98,26 @@ DocVisitor::
 operator()(
     doc::Paragraph const& I) const
 {
-    if (I.children.empty())
+    operator()(I.children);
+    dest_.push_back('\n');
+    dest_.push_back('\n');
+}
+
+void
+DocVisitor::
+operator()(std::vector<Polymorphic<doc::Text>> children) const
+{
+    if (children.empty())
     {
         return;
     }
 
     std::size_t i = 0;
-    for (auto it = I.children.begin(); it != I.children.end(); ++it)
+    for (auto it = children.begin(); it != children.end(); ++it)
     {
         auto& child = *it;
         if (i != 0 &&
-            i != I.children.size() - 1)
+            i != children.size() - 1)
         {
             write(*child, *this);
         }
@@ -119,7 +128,7 @@ operator()(
             {
                 childCopy->string = ltrim(childCopy->string);
             }
-            if (i == I.children.size() - 1)
+            if (i == children.size() - 1)
             {
                 childCopy->string = rtrim(childCopy->string);
             }
@@ -127,9 +136,6 @@ operator()(
         }
         i = i + 1;
     }
-
-    dest_.push_back('\n');
-    dest_.push_back('\n');
 }
 
 void
@@ -224,14 +230,14 @@ void
 DocVisitor::
 operator()(doc::Param const& I) const
 {
-    this->operator()(static_cast<doc::Paragraph const&>(I));
+    (*this)(I.children);
 }
 
 void
 DocVisitor::
 operator()(doc::Returns const& I) const
 {
-    (*this)(static_cast<doc::Paragraph const&>(I));
+    (*this)(I.children);
 }
 
 void
@@ -274,7 +280,7 @@ void
 DocVisitor::
 operator()(doc::TParam const& I) const
 {
-    this->operator()(static_cast<doc::Paragraph const&>(I));
+    (*this)(I.children);
 }
 
 void
@@ -309,7 +315,7 @@ void
 DocVisitor::
 operator()(doc::Throws const& I) const
 {
-    this->operator()(static_cast<doc::Paragraph const&>(I));
+    (*this)(I.children);
 }
 
 std::size_t

@@ -140,8 +140,7 @@ namespace detail {
 
 */
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 namespace {
 
@@ -164,7 +163,6 @@ class JavadocVisitor
     FullComment const* FC_;
     Javadoc jd_;
     Diagnostics& diags_;
-    std::vector<Polymorphic<doc::Param>> params_;
     doc::Block* block_ = nullptr;
     doc::Text* last_child_ = nullptr;
     std::size_t htmlTagNesting_ = 0;
@@ -415,7 +413,7 @@ public:
                     last_child_)->style == elem.style;
         }
 
-        if(! can_merge)
+        if (!can_merge)
         {
             auto new_text = MakePolymorphic<TextTy>(std::move(elem));
             last_child_ = new_text.operator->();
@@ -426,8 +424,10 @@ public:
             last_child_->string.append(elem.string);
         }
 
-        if(end_with_nl)
+        if (end_with_nl)
+        {
             last_child_ = nullptr;
+        }
     }
 
     /** @} */
@@ -1047,8 +1047,10 @@ visitInlineCommandComment(
     case CommandTraits::KCI_copydetails:
     case CommandTraits::KCI_copydoc:
     {
-        if(! goodArgCount(1, *C))
+        if (!goodArgCount(1, *C))
+        {
             return;
+        }
 
         // the referenced symbol will be resolved during
         // the finalization step once all symbols are extracted
@@ -1071,7 +1073,7 @@ visitInlineCommandComment(
                 {
                     break;
                 }
-                auto const* c = *it_;
+                Comment const* c = *it_;
                 if (c->getCommentKind() == CommentKind::TextComment)
                 {
                     ref += static_cast<TextComment const*>(c)->getText();
@@ -1199,7 +1201,7 @@ visitBlockCommandComment(
         visitChildren(C->getParagraph());
         // Here, we want empty briefs, because
         // the @brief command was explicitly given.
-        jd_.emplace_back(std::move(brief));
+        jd_.brief.emplace(std::move(brief));
         return;
     }
 
@@ -1207,25 +1209,15 @@ visitBlockCommandComment(
     case CommandTraits::KCI_returns:
     case CommandTraits::KCI_result:
     {
-        // auto itr = std::ranges::find_if(
-        //     jd_.getBlocks(),
-        //     [&](const Polymorphic<doc::Block> & b)
-        // {
-        //     return b->kind == doc::Kind::returns;
-        // });
-        // Duplicate @returns statement is not an error:
-        // https://github.com/microsoft/vscode-cpptools/issues/9316
-        // MrDocs does not support duplicate @returns statements yet.
-        // if (itr != jd_.getBlocks().end())
-        // {
-        //     report::warn("{}: Duplicate @returns statement", C->getBeginLoc().printToString(sm_));
-        // }
-
         doc::Returns returns;
         auto scope = enterScope(returns);
-        // Scope scope(returns, block_);
         visitChildren(C->getParagraph());
-        jd_.emplace_back(std::move(returns));
+        if (!returns.children.empty())
+        {
+            returns.children.front()->string = ltrim(returns.children.front()->string);
+            returns.children.back()->string = rtrim(returns.children.back()->string);
+            jd_.returns.push_back(std::move(returns));
+        }
         return;
     }
     case CommandTraits::KCI_throw:
@@ -1243,7 +1235,7 @@ visitBlockCommandComment(
         {
             throws.exception.string = "undefined";
         }
-        jd_.emplace_back(std::move(throws));
+        jd_.exceptions.push_back(std::move(throws));
         return;
     }
     case CommandTraits::KCI_note:
@@ -1319,26 +1311,26 @@ visitBlockCommandComment(
     }
     case CommandTraits::KCI_see:
     {
-        doc::See paragraph;
-        auto scope = enterScope(paragraph);
+        doc::See see;
+        auto scope = enterScope(see);
         visitChildren(C->getParagraph());
-        jd_.emplace_back(std::move(paragraph));
+        jd_.sees.push_back(std::move(see));
         return;
     }
     case CommandTraits::KCI_pre:
     {
-        doc::Precondition paragraph;
-        auto scope = enterScope(paragraph);
+        doc::Precondition pre;
+        auto scope = enterScope(pre);
         visitChildren(C->getParagraph());
-        jd_.emplace_back(std::move(paragraph));
+        jd_.preconditions.push_back(std::move(pre));
         return;
     }
     case CommandTraits::KCI_post:
     {
-        doc::Postcondition paragraph;
-        auto scope = enterScope(paragraph);
+        doc::Postcondition post;
+        auto scope = enterScope(post);
         visitChildren(C->getParagraph());
-        jd_.emplace_back(std::move(paragraph));
+        jd_.postconditions.push_back(std::move(post));
         return;
     }
 
@@ -1573,7 +1565,7 @@ visitParamCommandComment(
         {
             return false;
         }
-        auto p = dynamic_cast<const doc::Param*>(b.operator->());
+        auto p = dynamic_cast<doc::Param const*>(b.operator->());
         MRDOCS_ASSERT(p != nullptr);
         return p->name == param.name;
     });
@@ -1585,7 +1577,7 @@ visitParamCommandComment(
     }
 
     // We want the node even if it is empty
-    jd_.emplace_back(std::move(param));
+    jd_.params.push_back(std::move(param));
 }
 
 void
@@ -1616,7 +1608,7 @@ visitTParamCommandComment(
         {
             return false;
         }
-        auto const tp = dynamic_cast<const doc::TParam*>(b.operator->());
+        auto const tp = dynamic_cast<doc::TParam const*>(b.operator->());
         MRDOCS_ASSERT(tp != nullptr);
         return tp->name == tparam.name;
     });
@@ -1628,7 +1620,7 @@ visitTParamCommandComment(
     }
 
     // We want the node even if it is empty
-    jd_.emplace_back(std::move(tparam));
+    jd_.tparams.push_back(std::move(tparam));
 }
 
 void
@@ -1720,20 +1712,19 @@ parseJavadoc(
     MRDOCS_COMMENT_TRACE(FC, D->getASTContext());
     JavadocVisitor visitor(FC, D, config, diags);
     auto result = visitor.build();
-    if (!jd)
+    if (!result.empty())
     {
-        // Do not create javadocs which have no nodes
-        if (!result.getBlocks().empty())
+        if (!jd)
         {
             jd = std::move(result);
         }
+        else if(*jd != result)
+        {
+            // merge
+            jd->append(std::move(result));
+        }
     }
-    else if(*jd != result)
-    {
-        // merge
-        jd->append(std::move(result));
-    }
+
 }
 
-} // mrdocs
-} // clang
+} // clang::mrdocs

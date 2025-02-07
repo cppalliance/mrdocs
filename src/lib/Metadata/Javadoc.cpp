@@ -83,7 +83,7 @@ Javadoc() noexcept = default;
 Javadoc::
 Javadoc(
     std::vector<Polymorphic<doc::Block>> blocks)
-    : blocks_(std::move(blocks))
+    : blocks(std::move(blocks))
 {
 }
 
@@ -97,7 +97,7 @@ getBrief(Corpus const& corpus) const noexcept
     doc::Block const* promoted_brief = nullptr;
     // A brief copied from another symbol
     doc::Block const* copied_brief = nullptr;
-    for(auto const& block : blocks_)
+    for(auto const& block : blocks)
     {
         if (!brief && block->Kind == doc::NodeKind::brief)
         {
@@ -147,14 +147,14 @@ getBrief(Corpus const& corpus) const noexcept
         // No copied brief: use promoted brief
         brief = promoted_brief;
     }
-    return static_cast<const doc::Paragraph*>(brief);
+    return dynamic_cast<doc::Paragraph const*>(brief);
 }
 
 std::vector<Polymorphic<doc::Block>> const&
 Javadoc::
 getDescription(Corpus const& corpus) const noexcept
 {
-    for (auto const& block : blocks_)
+    for (auto const& block : blocks)
     {
         for(auto const& text : block->children)
         {
@@ -174,18 +174,26 @@ getDescription(Corpus const& corpus) const noexcept
             }
         }
     }
-    return blocks_;
+    return blocks;
 }
 
 bool
 Javadoc::
 operator==(Javadoc const& other) const noexcept
 {
-    return std::ranges::equal(blocks_, other.blocks_,
+    return std::ranges::equal(blocks, other.blocks,
         [](auto const& a, auto const& b)
         {
-            return a->equals(static_cast<const doc::Node&>(*b));
-        });
+            return a->equals(static_cast<doc::Node const&>(*b));
+        }) &&
+        returns == other.returns &&
+        brief == other.brief &&
+        params == other.params &&
+        tparams == other.tparams &&
+        exceptions == other.exceptions &&
+        sees == other.sees &&
+        preconditions == other.preconditions &&
+        postconditions == other.postconditions;
 }
 
 bool
@@ -194,75 +202,6 @@ operator!=(
     Javadoc const& other) const noexcept
 {
     return !(*this == other);
-}
-
-doc::Overview
-Javadoc::
-makeOverview(
-    const Corpus& corpus) const
-{
-    doc::Overview ov;
-    doc::Paragraph const* briefP = getBrief(corpus);
-    if (briefP)
-    {
-        // Brief can be a brief or paragraph (if it was promoted)
-        // Ensure it's always a brief so that they are all
-        // rendered the same way.
-        ov.brief = std::make_shared<doc::Brief>();
-        ov.brief->append(briefP->children);
-    }
-
-    const auto& list = getDescription(corpus);
-    // VFALCO dupes should already be reported as
-    // warnings or errors by now so we don't have
-    // to care about it here.
-
-    for(auto it = list.begin();
-        it != list.end(); ++it)
-    {
-        MRDOCS_ASSERT(*it);
-        switch((*it)->Kind)
-        {
-        case doc::NodeKind::brief:
-            break;
-        case doc::NodeKind::returns:
-            ov.returns = dynamic_cast<
-                doc::Returns const*>(it->operator->());
-            break;
-        case doc::NodeKind::param:
-            ov.params.push_back(dynamic_cast<
-                doc::Param const*>(it->operator->()));
-            break;
-        case doc::NodeKind::tparam:
-            ov.tparams.push_back(dynamic_cast<
-                doc::TParam const*>(it->operator->()));
-            break;
-        case doc::NodeKind::throws:
-            ov.exceptions.push_back(dynamic_cast<
-                doc::Throws const*>(it->operator->()));
-            break;
-        case doc::NodeKind::see:
-            ov.sees.push_back(dynamic_cast<
-                doc::See const*>(it->operator->()));
-            break;
-        case doc::NodeKind::precondition:
-            ov.preconditions.push_back(dynamic_cast<
-                doc::Precondition const*>(it->operator->()));
-            break;
-        case doc::NodeKind::postcondition:
-            ov.postconditions.push_back(dynamic_cast<
-                doc::Postcondition const*>(it->operator->()));
-            break;
-        default:
-            if (briefP == it->operator->())
-            {
-                break;
-            }
-            ov.blocks.push_back(it->operator->());
-        }
-    }
-
-    return ov;
 }
 
 std::string
@@ -279,7 +218,7 @@ emplace_back(
     {
         // check for duplicate parameter name
         auto t = dynamic_cast<doc::Param const*>(block.operator->());
-        for(auto const& q : blocks_)
+        for(auto const& q : blocks)
         {
             if(q->Kind == doc::NodeKind::param)
             {
@@ -298,7 +237,7 @@ emplace_back(
     {
         // check for duplicate template parameter name
         auto t = dynamic_cast<doc::TParam const*>(block.operator->());
-        for(auto const& q : blocks_)
+        for(auto const& q : blocks)
         {
             if(q->Kind == doc::NodeKind::tparam)
             {
@@ -317,7 +256,7 @@ emplace_back(
         break;
     }
 
-    blocks_.emplace_back(std::move(block));
+    blocks.emplace_back(std::move(block));
     return result;
 }
 
@@ -326,17 +265,73 @@ Javadoc::
 append(
     Javadoc&& other)
 {
-    // VFALCO What about the returned strings,
-    // for warnings and errors?
-    for(auto&& block : other.blocks_)
+    using std::ranges::find;
+    using std::ranges::copy_if;
+    using std::views::transform;
+
+    // blocks
+    for (auto&& block: other.blocks)
+    {
         emplace_back(std::move(block));
+    }
+    // returns
+    copy_if(other.returns, std::back_inserter(returns),
+        [&](auto const& r)
+        {
+            return find(returns, r) == returns.end();
+        });
+    // params
+    copy_if(other.params, std::back_inserter(params),
+        [&](auto const& p)
+        {
+            auto namesAndDirection = transform(params, [](auto const& q)
+            {
+                return std::make_pair(std::string_view(q.name), q.direction);
+            });
+            auto el = std::make_pair(std::string_view(p.name), p.direction);
+            return find(namesAndDirection, el) == namesAndDirection.end();
+        });
+    // tparams
+    copy_if(other.tparams, std::back_inserter(tparams),
+        [&](auto const& p)
+        {
+            auto names = transform(tparams, &doc::TParam::name);
+            return find(names, p.name) == names.end();
+        });
+    // exceptions
+    copy_if(other.exceptions, std::back_inserter(exceptions),
+        [&](auto const& e)
+        {
+            // e.exception.string
+            auto exceptionRefs = transform(exceptions, &doc::Throws::exception);
+            auto exceptionStrs = transform(exceptionRefs, &doc::Reference::string);
+            return find(exceptionStrs, e) == exceptionStrs.end();
+        });
+    // sees
+    copy_if(other.sees, std::back_inserter(sees),
+        [&](auto const& s)
+        {
+            return find(sees, s) == sees.end();
+        });
+    // preconditions
+    copy_if(other.preconditions, std::back_inserter(preconditions),
+        [&](auto const& p)
+        {
+            return find(preconditions, p) == preconditions.end();
+        });
+    // postconditions
+    copy_if(other.postconditions, std::back_inserter(postconditions),
+        [&](auto const& p)
+        {
+            return find(postconditions, p) == postconditions.end();
+        });
 }
 
 void
 Javadoc::
 append(std::vector<Polymorphic<doc::Node>>&& blocks)
 {
-    blocks_.reserve(blocks_.size() + blocks.size());
+    blocks.reserve(blocks.size() + blocks.size());
     for(auto&& blockAsNode : blocks)
     {
         if (IsA<doc::Block>(blockAsNode))

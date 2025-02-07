@@ -5,9 +5,9 @@
   <function name="f0" id="e1UQQek5v3C9OClW5cGf57XvwQo=">
     <file short-path="brief-5.cpp" source-path="brief-5.cpp" line="5"/>
     <doc>
-      <para>
+      <brief>
         <text>brief</text>
-      </para>
+      </brief>
     </doc>
   </function>
   <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
@@ -35,9 +35,9 @@
   <function name="f4" id="5wJFEWD4Ev/Vf3QN/mFlKhtbC6E=">
     <file short-path="brief-5.cpp" source-path="brief-5.cpp" line="24"/>
     <doc>
-      <para>
+      <brief>
         <text>brief</text>
-      </para>
+      </brief>
     </doc>
   </function>
   <function name="f5" id="RnDTZyCZuSqydMEPutN0yG4E/xg=">

@@ -13,9 +13,9 @@
     <class name="A" id="m/JW900ik2XLYvUdA4MCuWZQd80=">
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="68" class="def"/>
       <doc>
-        <para>
+        <brief>
           <text>The partial specialization of A is enabled via a template parameter</text>
-        </para>
+        </brief>
       </doc>
     </class>
   </template>
@@ -25,9 +25,9 @@
     <class name="A" id="IiCxqBbybfSkEqtDiLE90hOwXD8=">
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="73" class="def"/>
       <doc>
-        <para>
+        <brief>
           <text>Specialization for floating point types</text>
-        </para>
+        </brief>
       </doc>
     </class>
   </template>
@@ -37,9 +37,9 @@
     <struct name="S" id="IZrmVBMJu1uvsP9zur5JVrwgYmE=">
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="76" class="def"/>
       <doc>
-        <para>
+        <brief>
           <text>SFINAE with std::void_t</text>
-        </para>
+        </brief>
       </doc>
       <function name="store" id="KmwKarrWHSv7aalrBX18hjPbEfs=">
         <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="79" class="def"/>
@@ -58,9 +58,9 @@
     <struct name="S" id="g0UNZpdodOU5mGCtcpviXd8o6Vk=">
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="84" class="def"/>
       <doc>
-        <para>
+        <brief>
           <text>SFINAE with std::void_t</text>
-        </para>
+        </brief>
       </doc>
       <function name="store" id="2KfuSRGlpNo9Lk/lk1bhwZqm/BY=">
         <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="86" class="def"/>
@@ -83,9 +83,9 @@
         <type name="T"/>
       </param>
       <doc>
-        <para>
+        <brief>
           <text>Enabled via return type</text>
-        </para>
+        </brief>
       </doc>
     </function>
   </template>
@@ -97,9 +97,9 @@
         <type name="T"/>
       </param>
       <doc>
-        <para>
+        <brief>
           <text>Enabled via type template parameter</text>
-        </para>
+        </brief>
         <para>
           <text>This pattern should not be used because the function signature is unmodified and therefore only supports one overload.</text>
         </para>
@@ -107,8 +107,7 @@
           <text>It&apos;s a common mistake is to declare two function templates that differ only in their default template arguments.</text>
         </para>
         <para>
-          <text>This does not work because the declarations are treated as redeclarations of the same function template (default template</text>
-          <text> arguments are not accounted for in function template equivalence).</text>
+          <text>This does not work because the declarations are treated as redeclarations of the same function template (default template arguments are not accounted for in function template equivalence).</text>
         </para>
       </doc>
     </function>
@@ -124,9 +123,9 @@
         <type name="T"/>
       </param>
       <doc>
-        <para>
+        <brief>
           <text>Enabling a specified return type</text>
-        </para>
+        </brief>
       </doc>
     </function>
   </template>
@@ -141,9 +140,9 @@
         <type name="T"/>
       </param>
       <doc>
-        <para>
+        <brief>
           <text>Enabling a specified return type in another namespace</text>
-        </para>
+        </brief>
       </doc>
     </function>
   </template>
@@ -158,9 +157,9 @@
         <type name="T"/>
       </param>
       <doc>
-        <para>
+        <brief>
           <text>Enabled via return type with std::enable_if</text>
-        </para>
+        </brief>
       </doc>
     </function>
   </template>
@@ -175,9 +174,9 @@
         <type name="T"/>
       </param>
       <doc>
-        <para>
+        <brief>
           <text>Enabled via a non-type template parameter with helper</text>
-        </para>
+        </brief>
       </doc>
     </function>
   </template>
@@ -192,9 +191,9 @@
         <type name="T"/>
       </param>
       <doc>
-        <para>
+        <brief>
           <text>Enabled via a non-type template parameter without helper</text>
-        </para>
+        </brief>
       </doc>
     </function>
   </template>
@@ -206,9 +205,9 @@
         <type name="T"/>
       </param>
       <doc>
-        <para>
+        <brief>
           <text>Enabled via a non-type template parameter using int instead of bool</text>
-        </para>
+        </brief>
       </doc>
     </function>
   </template>
@@ -223,9 +222,9 @@
         <type name="T"/>
       </param>
       <doc>
-        <para>
+        <brief>
           <text>Enabled via parameter without helper</text>
-        </para>
+        </brief>
       </doc>
     </function>
   </template>
@@ -240,9 +239,9 @@
         <type name="T"/>
       </param>
       <doc>
-        <para>
+        <brief>
           <text>Enabled via parameter with helper</text>
-        </para>
+        </brief>
       </doc>
     </function>
   </template>

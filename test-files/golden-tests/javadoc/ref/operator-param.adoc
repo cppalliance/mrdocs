@@ -1,0 +1,134 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+=== Types
+
+[cols=1]
+|===
+| Name 
+
+| <<A,`A`>> 
+|===
+
+[#A]
+== A
+
+
+=== Synopsis
+
+
+Declared in `&lt;operator&hyphen;param&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct A;
+----
+
+=== Member Functions
+
+[cols=1]
+|===
+| Name 
+
+| <<A-operator_call-0d,`operator()`>> 
+|===
+
+
+
+[#A-operator_call-0d]
+== <<A,A>>::operator()
+
+
+=== Synopsis
+
+
+Declared in `&lt;operator&hyphen;param&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr
+bool
+<<A-operator_call-0f,operator()>>(char ch) const noexcept;
+----
+
+[.small]#<<A-operator_call-0f,_» more&period;&period;&period;_>>#
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr
+bool
+<<A-operator_call-0b,operator()>>(unsigned char ch) const noexcept;
+----
+
+[.small]#<<A-operator_call-0b,_» more&period;&period;&period;_>>#
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *ch*
+| The character to test&period;
+
+|===
+
+[#A-operator_call-0f]
+== <<A,A>>::operator()
+
+
+=== Synopsis
+
+
+Declared in `&lt;operator&hyphen;param&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr
+bool
+operator()(char ch) const noexcept;
+----
+
+[#A-operator_call-0b]
+== <<A,A>>::operator()
+
+
+Return true if ch is in the character set&period;
+
+=== Synopsis
+
+
+Declared in `&lt;operator&hyphen;param&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr
+bool
+operator()(unsigned char ch) const noexcept;
+----
+
+=== Description
+
+
+This function returns true if the        character is in the set, otherwise        it returns false&period;
+
+
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *ch*
+| The character to test&period;
+
+|===
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

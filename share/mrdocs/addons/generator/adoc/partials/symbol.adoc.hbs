@@ -99,6 +99,7 @@
 {{#each symbol.doc.exceptions}}
 | `{{exception}}`
 | {{{description}}}
+
 {{/each}}
 |===
 
@@ -114,6 +115,7 @@
 {{#each allExceptions as |exception|}}
 | `{{exception.exception}}`
 | {{{exception.description}}}
+
 {{/each}}
 |===
 
@@ -124,7 +126,13 @@
 {{#if symbol.doc.returns}}
 {{#> markup/dynamic-level-h }}Return Value{{/markup/dynamic-level-h}}
 
-{{{symbol.doc.returns}}}
+{{#if (eq (size symbol.doc.returns) 1)}}
+{{{symbol.doc.returns.[0]}}}
+{{else}}
+{{#each symbol.doc.returns}}
+* {{{.}}}
+{{/each}}
+{{/if}}
 
 {{/if}}
 {{! Template Parameters }}
@@ -138,6 +146,7 @@
 {{#each symbol.doc.tparams}}
 | *{{name}}*
 | {{{description}}}
+
 {{/each}}
 |===
 
@@ -153,6 +162,7 @@
 {{#each allTParams as |param|}}
 | *{{param.name}}*
 | {{{param.description}}}
+
 {{/each}}
 |===
 
@@ -170,6 +180,7 @@
 {{#each symbol.doc.params}}
 | *{{name}}*{{#if direction}} [{{direction}}]{{/if}}
 | {{{description}}}
+
 {{/each}}
 |===
 
@@ -185,6 +196,7 @@
 {{#each allParams as |param|}}
 | *{{param.name}}*
 | {{{param.description}}}
+
 {{/each}}
 |===
 

@@ -731,13 +731,13 @@ struct Param final : Paragraph
 
     auto operator<=>(Param const&) const = default;
 
-    bool operator==(const Param&)
+    bool operator==(Param const&)
         const noexcept = default;
 
-    bool equals(const Node& other) const noexcept override
+    bool equals(Node const& other) const noexcept override
     {
         return Kind == other.Kind &&
-            *this == dynamic_cast<const Param&>(other);
+            *this == dynamic_cast<Param const&>(other);
     }
 };
 
@@ -1008,19 +1008,6 @@ void traverse(
             std::forward<Args>(args)...);
 }
 
-struct Overview
-{
-    std::shared_ptr<Paragraph> brief = nullptr;
-    std::vector<Block const*> blocks;
-    Returns const* returns = nullptr;
-    std::vector<Param const*> params;
-    std::vector<TParam const*> tparams;
-    std::vector<Throws const*> exceptions;
-    std::vector<See const*> sees;
-    std::vector<Precondition const*> preconditions;
-    std::vector<Postcondition const*> postconditions;
-};
-
 MRDOCS_DECL
 dom::String
 toString(Style style) noexcept;
@@ -1036,7 +1023,41 @@ class Corpus;
 struct MRDOCS_DECL
     Javadoc
 {
-    std::vector<Polymorphic<doc::Block>> blocks_;
+    /// The list of text blocks.
+    std::vector<Polymorphic<doc::Block>> blocks;
+
+    // ----------------------
+    // Symbol Metadata
+
+    /// A brief description of the symbol.
+    std::optional<doc::Brief> brief;
+
+    /** The list of return type descriptions.
+
+        Multiple return descriptions are allowed.
+
+        The results are concatenated in the order
+        they appear in the source code.
+     */
+    std::vector<doc::Returns> returns;
+
+    /// The list of parameters.
+    std::vector<doc::Param> params;
+
+    /// The list of template parameters.
+    std::vector<doc::TParam> tparams;
+
+    /// The list of exceptions.
+    std::vector<doc::Throws> exceptions;
+
+    /// The list of "see also" references.
+    std::vector<doc::See> sees;
+
+    /// The list of preconditions.
+    std::vector<doc::Precondition> preconditions;
+
+    /// The list of postconditions.
+    std::vector<doc::Postcondition> postconditions;
 
     /** Constructor.
     */
@@ -1054,7 +1075,16 @@ struct MRDOCS_DECL
     bool
     empty() const noexcept
     {
-        return blocks_.empty();
+        return
+            blocks.empty() &&
+            !brief &&
+            returns.empty() &&
+            params.empty() &&
+            tparams.empty() &&
+            exceptions.empty() &&
+            sees.empty() &&
+            preconditions.empty() &&
+            postconditions.empty();
     }
 
     /** Return the brief, or nullptr if there is none.
@@ -1070,7 +1100,7 @@ struct MRDOCS_DECL
     std::vector<Polymorphic<doc::Block>> const&
     getBlocks() const noexcept
     {
-        return blocks_;
+        return blocks;
     }
 
     // VFALCO This is unfortunately necessary for
@@ -1078,7 +1108,7 @@ struct MRDOCS_DECL
     std::vector<Polymorphic<doc::Block>>&
     getBlocks() noexcept
     {
-        return blocks_;
+        return blocks;
     }
 
     //--------------------------------------------
@@ -1091,14 +1121,14 @@ struct MRDOCS_DECL
     */
     /** @{ */
     auto operator<=>(Javadoc const& other) const noexcept {
-        if (auto const cmp = blocks_.size() <=> other.blocks_.size();
+        if (auto const cmp = blocks.size() <=> other.blocks.size();
             !std::is_eq(cmp))
         {
             return cmp;
         }
-        for (std::size_t i = 0; i < blocks_.size(); ++i)
+        for (std::size_t i = 0; i < blocks.size(); ++i)
         {
-            if (auto cmp = CompareDerived(blocks_[i], other.blocks_[i]);
+            if (auto cmp = CompareDerived(blocks[i], other.blocks[i]);
                 !std::is_eq(cmp))
             {
                 return cmp;
@@ -1109,22 +1139,6 @@ struct MRDOCS_DECL
     bool operator==(Javadoc const&) const noexcept;
     bool operator!=(Javadoc const&) const noexcept;
     /* @} */
-
-    /** Return an overview of the javadoc.
-
-        The Javadoc is stored as a list of blocks,
-        in the order of appearance in the corresponding
-        source code. This function separates elements
-        according to their semantic content and returns
-        the result as a set of collated lists and
-        individual elements.
-
-        Ownership of the nodes is not transferred;
-        the returend overview is invalidated if the
-        javadoc object is destroyed.
-    */
-    doc::Overview
-    makeOverview(const Corpus& corpus) const;
 
     //--------------------------------------------
 
