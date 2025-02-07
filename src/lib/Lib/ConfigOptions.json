@@ -253,6 +253,13 @@
         "details": "When set to `true`, relational operators are sorted last in the list of members of a record or namespace.",
         "type": "bool",
         "default": true
+      },
+      {
+        "name": "auto-brief",
+        "brief": "Use the first line of the comment as the brief",
+        "details": "When set to `true`, MrDocs uses the first line (until the first dot, question mark, or exclamation mark) of the comment as the brief of the symbol. When set to `false`, a explicit @brief command is required.",
+        "type": "bool",
+        "default": true
       }
     ]
   },
