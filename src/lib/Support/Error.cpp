@@ -240,6 +240,30 @@ getLevel(unsigned level) noexcept
     }
 }
 
+constexpr
+llvm::raw_ostream::Colors
+getLevelColor(Level level)
+{
+    switch(level)
+    {
+    case Level::trace:
+        return llvm::raw_ostream::Colors::CYAN;
+    case Level::debug:
+        return llvm::raw_ostream::Colors::GREEN;
+    case Level::info:
+        return llvm::raw_ostream::Colors::WHITE;
+    case Level::warn:
+        return llvm::raw_ostream::Colors::MAGENTA;
+    case Level::error:
+        return llvm::raw_ostream::Colors::RED;
+    case Level::fatal:
+        return llvm::raw_ostream::Colors::RED;
+    default:
+        MRDOCS_UNREACHABLE();
+    }
+}
+
+
 void
 call_impl(
     Level level,
@@ -282,7 +306,15 @@ call_impl(
     std::lock_guard<llvm::sys::Mutex> lock(mutex_);
     if (!s.empty())
     {
-        llvm::errs() << s;
+        if (level >= Level::error)
+        {
+            llvm::errs() << s;
+        }
+        else
+        {
+            llvm::outs() << getLevelColor(level) << s << llvm::raw_ostream::Colors::RESET;
+            llvm::outs().flush();
+        }
     }
     switch(level)
     {
