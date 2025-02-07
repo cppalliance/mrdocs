@@ -49,59 +49,6 @@ globalNamespace() const noexcept
 //
 //------------------------------------------------
 
-// KRYSTIAN NOTE: temporary
-void
-Corpus::
-qualifiedName(
-    Info const& I,
-    std::string& temp) const
-{
-    temp.clear();
-    if(! I.id || I.id == SymbolID::global)
-    {
-        return;
-    }
-
-    MRDOCS_ASSERT(I.Parent);
-    for(auto const& pID : getParents(*this, I))
-    {
-        if (!pID || pID == SymbolID::global)
-        {
-            continue;
-        }
-        if (Info const* P = find(pID))
-        {
-            if (!P->Name.empty())
-            {
-                temp.append(P->Name);
-            }
-            else
-            {
-                fmt::format_to(
-                    std::back_inserter(temp),
-                    "<unnamed {}>",
-                    toString(P->Kind));
-            }
-        }
-        else
-        {
-            temp.append("<unnamed>");
-        }
-        temp.append("::");
-    }
-    if (I.Name.empty())
-    {
-        fmt::format_to(
-            std::back_inserter(temp),
-            "<unnamed {}>",
-            toString(I.Kind));
-    }
-    else
-    {
-        temp.append(I.Name);
-    }
-}
-
 std::vector<SymbolID>
 getParents(Corpus const& C, Info const& I)
 {

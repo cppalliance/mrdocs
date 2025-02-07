@@ -13,8 +13,10 @@
 
 #include "CorpusImpl.hpp"
 #include "lib/AST/FrontendActionFactory.hpp"
-#include "lib/Metadata/Finalize.hpp"
-#include "lib/Lib/Lookup.hpp"
+#include "lib/Metadata/Finalizers/BaseMembersFinalizer.hpp"
+#include "lib/Metadata/Finalizers/OverloadsFinalizer.hpp"
+#include "lib/Metadata/Finalizers/SortMembersFinalizer.hpp"
+#include "lib/Metadata/Finalizers/JavadocFinalizer.hpp"
 #include "lib/Support/Error.hpp"
 #include "lib/Support/Chrono.hpp"
 #include <mrdocs/Metadata.hpp>
@@ -60,22 +62,353 @@ CorpusImpl::
 find(
     SymbolID const& id) noexcept
 {
-    auto it = info_.find(id);
-    if(it != info_.end())
+    auto const it = info_.find(id);
+    if (it != info_.end())
+    {
         return it->get();
+    }
     return nullptr;
 }
 
 Info const*
 CorpusImpl::
-find(
-    SymbolID const& id) const noexcept
+find(SymbolID const& id) const noexcept
 {
-    auto it = info_.find(id);
-    if(it != info_.end())
+    auto const it = info_.find(id);
+    if (it != info_.end())
+    {
         return it->get();
+    }
     return nullptr;
 }
+
+namespace {
+template <bool checkTemplateArguments, bool checkFunctionParameters>
+Info const*
+memberMatches(
+    InfoSet const& info,
+    SymbolID const& MId,
+    ParsedRefComponent const& c,
+    ParsedRef const& s)
+{
+    auto const memberIt = info.find(MId);
+    MRDOCS_CHECK_OR(memberIt != info.end(), nullptr);
+    Info const* memberPtr = memberIt->get();
+    MRDOCS_CHECK_OR(memberPtr, nullptr);
+    Info const& member = *memberPtr;
+
+    auto isMatch = visit(member, [&]<typename MInfoTy>(MInfoTy const& M)
+    {
+        // Name match
+        if constexpr (requires { { M.OverloadedOperator } -> std::same_as<OperatorKind>; })
+        {
+            if (c.Operator != OperatorKind::None)
+            {
+                MRDOCS_CHECK_OR(M.OverloadedOperator == c.Operator, false);
+            }
+            else
+            {
+                MRDOCS_CHECK_OR(member.Name == c.Name, false);
+            }
+        }
+        else
+        {
+            MRDOCS_CHECK_OR(member.Name == c.Name, false);
+        }
+
+        if constexpr (checkTemplateArguments)
+        {
+            if constexpr (requires { M.Template; })
+            {
+                std::optional<TemplateInfo> const& templateInfo = M.Template;
+                MRDOCS_CHECK_OR(templateInfo.has_value(), false);
+                MRDOCS_CHECK_OR(templateInfo->Params.size() == c.TemplateArguments.size(), false);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        if constexpr (checkFunctionParameters)
+        {
+            if constexpr (MInfoTy::isFunction())
+            {
+                MRDOCS_CHECK_OR(M.Params.size() == s.FunctionParameters.size(), false);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        return true;
+    });
+    if (isMatch)
+    {
+        return memberPtr;
+    }
+    return nullptr;
+}
+
+template <bool checkTemplateArguments, bool checkFunctionParameters>
+Info const*
+findMemberMatch(
+    InfoSet const& info,
+    Info const& context,
+    ParsedRefComponent const& c,
+    ParsedRef const& s)
+{
+    if constexpr (checkTemplateArguments)
+    {
+        MRDOCS_CHECK_OR(c.isSpecialization(), nullptr);
+    }
+    if constexpr (checkFunctionParameters)
+    {
+        MRDOCS_CHECK_OR(!s.FunctionParameters.empty(), nullptr);
+    }
+
+    return visit(context, [&]<typename CInfoTy>(CInfoTy const& C)
+        -> Info const*
+    {
+        if constexpr (InfoParent<CInfoTy>)
+        {
+            for (SymbolID const& MId : allMembers(C))
+            {
+                auto const memberIt = info.find(MId);
+                MRDOCS_CHECK_OR_CONTINUE(memberIt != info.end());
+                Info const* memberPtr = memberIt->get();
+                MRDOCS_CHECK_OR_CONTINUE(memberPtr);
+                Info const& member = *memberPtr;
+                if (member.isOverloads())
+                {
+                    if (Info const* r = findMemberMatch<
+                            checkTemplateArguments,
+                            checkFunctionParameters>(info, member, c, s))
+                    {
+                        return r;
+                    }
+                }
+
+                if (Info const* r = memberMatches<
+                        checkTemplateArguments, checkFunctionParameters>(
+                            info, MId, c, s))
+                {
+                    return r;
+                }
+            }
+        }
+        return nullptr;
+    });
+}
+
+bool
+isTransparent(Info const& info)
+{
+    return visit(info, []<typename InfoTy>(
+        InfoTy const& I) -> bool
+    {
+        if constexpr (InfoTy::isNamespace())
+        {
+            return I.IsInline;
+        }
+        if constexpr (InfoTy::isEnum())
+        {
+            return !I.Scoped;
+        }
+        return false;
+    });
+}
+}
+
+Info const*
+CorpusImpl::
+lookup(SymbolID const& context, std::string_view name) const
+{
+    return lookupImpl(*this, context, name);
+}
+
+Info const*
+CorpusImpl::
+lookup(SymbolID const& context, std::string_view name)
+{
+    return lookupImpl(*this, context, name);
+}
+
+template <class Self>
+Info const*
+CorpusImpl::
+lookupImpl(Self&& self, SymbolID const& context, std::string_view name)
+{
+    if (name.starts_with("::"))
+    {
+        return lookupImpl(self, SymbolID::global, name.substr(2));
+    }
+    if (auto [info, found] = self.lookupCacheGet(context, name); found)
+    {
+        return info;
+    }
+    Expected<ParsedRef> const s = parseRef(name);
+    if (!s)
+    {
+        report::warn("Failed to parse '{}'\n     {}", name, s.error().reason());
+        self.lookupCacheSet(context, name, nullptr);
+        return nullptr;
+    }
+    Info const* res = lookupImpl(self, context, *s, name, false);
+    return res;
+}
+
+template <class Self>
+Info const*
+CorpusImpl::
+lookupImpl(
+    Self&& self,
+    SymbolID const& contextId,
+    ParsedRef const& s,
+    std::string_view name,
+    bool const cache)
+{
+    if (cache)
+    {
+        if (auto [info, found] = self.lookupCacheGet(contextId, name); found)
+        {
+            return info;
+        }
+    }
+
+    Info const* contextPtr = self.find(contextId);
+    MRDOCS_CHECK_OR(contextPtr, nullptr);
+
+    // Check the current contextId
+    Info const* cur = contextPtr;
+    for (std::size_t i = 0; i < s.Components.size(); ++i)
+    {
+        ParsedRefComponent const& c = s.Components[i];
+        cur = self.lookupImpl(cur->id, c, s, i == s.Components.size() - 1);
+        if (!cur)
+        {
+            break;
+        }
+    }
+    if (cur)
+    {
+        self.lookupCacheSet(contextId, name, cur);
+        return cur;
+    }
+
+    // Fallback to parent contextId
+    Info const& contextInfo = *contextPtr;
+    Info const* res = lookupImpl(self, contextInfo.Parent, s, name, true);
+    self.lookupCacheSet(contextId, name, res);
+    return res;
+}
+
+Info const*
+CorpusImpl::
+lookupImpl(
+    SymbolID const& contextId,
+    ParsedRefComponent const& c,
+    ParsedRef const& s,
+    bool const checkParameters) const
+{
+    // Find context
+    auto const contextIt = info_.find(contextId);
+    MRDOCS_CHECK_OR(contextIt != info_.end(), nullptr);
+    Info const* contextPtr = contextIt->get();
+    MRDOCS_CHECK_OR(contextPtr, nullptr);
+    Info const& context = *contextPtr;
+
+    if (checkParameters)
+    {
+        if (Info const* r = findMemberMatch<true, true>(info_, context, c, s))
+        {
+            return r;
+        }
+
+        if (Info const* r = findMemberMatch<false, true>(info_, context, c, s))
+        {
+            return r;
+        }
+    }
+
+    if (Info const* r = findMemberMatch<true, false>(info_, context, c, s))
+    {
+        return r;
+    }
+
+    if (Info const* r = findMemberMatch<false, false>(info_, context, c, s))
+    {
+        return r;
+    }
+
+    // Fallback to members of resolved typedefs
+    if (context.isTypedef())
+    {
+        auto* TI = dynamic_cast<TypedefInfo const*>(&context);
+        return lookupImpl(TI->Type->namedSymbol(), c, s, checkParameters);
+    }
+
+    // Fallback to transparent contexts
+    Info const* r = visit(context, [&]<typename InfoTy>(
+        InfoTy const& I) -> Info const*
+    {
+        if constexpr (InfoParent<InfoTy>)
+        {
+            for (SymbolID const& MId : allMembers(I))
+            {
+                Info const* memberPtr = find(MId);
+                MRDOCS_CHECK_OR(memberPtr, nullptr);
+                Info const& member = *memberPtr;
+                if (isTransparent(member))
+                {
+                    if (auto* r1 = lookupImpl(MId, c, s, checkParameters))
+                    {
+                        return r1;
+                    }
+                }
+            }
+        }
+        return nullptr;
+    });
+    if (r)
+    {
+        return r;
+    }
+
+    return nullptr;
+}
+
+std::pair<Info const*, bool>
+CorpusImpl::
+lookupCacheGet(
+    SymbolID const& context,
+    std::string_view name) const
+{
+    auto contextTableIt = lookupCache_.find(context);
+    if (contextTableIt == lookupCache_.end())
+    {
+        return { nullptr, false };
+    }
+    auto const& contextTable = contextTableIt->second;
+    auto const lookupResIt = contextTable.find(name);
+    if (lookupResIt == contextTable.end())
+    {
+        return { nullptr, false };
+    }
+    return { lookupResIt->second, true };
+}
+
+void
+CorpusImpl::
+lookupCacheSet(
+    SymbolID const& context,
+    std::string_view name,
+    Info const* info)
+{
+    lookupCache_[context][std::string(name)] = info;
+}
+
 
 //------------------------------------------------
 
@@ -201,9 +534,71 @@ build(
     // ------------------------------------------
     // Finalize corpus
     // ------------------------------------------
-    finalize(*corpus);
+    corpus->finalize();
 
     return corpus;
 }
+
+void
+CorpusImpl::
+qualifiedName(Info const& I, std::string& result) const
+{
+    result.clear();
+    if (!I.id || I.id == SymbolID::global)
+    {
+        return;
+    }
+
+    if (I.Parent &&
+        I.Parent != SymbolID::global)
+    {
+        if (Info const* PI = find(I.Parent))
+        {
+            qualifiedName(*PI, result);
+            result += "::";
+        }
+    }
+    if (!I.Name.empty())
+    {
+        result += I.Name;
+    }
+    else
+    {
+        result += "<unnamed ";
+        result += toString(I.Kind);
+        result += ">";
+    }
+}
+
+void
+CorpusImpl::finalize()
+{
+    if (config->inheritBaseMembers != PublicSettings::BaseMemberInheritance::Never)
+    {
+        report::debug("Finalizing base members");
+        BaseMembersFinalizer finalizer(*this);
+        finalizer.build();
+    }
+
+    if (config->overloads)
+    {
+        report::debug("Finalizing overloads");
+        OverloadsFinalizer finalizer(*this);
+        finalizer.build();
+    }
+
+    if (config->sortMembers)
+    {
+        report::debug("Finalizing sorted members");
+        SortMembersFinalizer finalizer(*this);
+        finalizer.build();
+    }
+
+    // Finalize javadoc
+    report::debug("Finalizing javadoc");
+    JavadocFinalizer finalizer(*this);
+    finalizer.build();
+}
+
 
 } // clang::mrdocs

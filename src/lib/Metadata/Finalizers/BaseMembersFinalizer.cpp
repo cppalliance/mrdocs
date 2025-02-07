@@ -9,7 +9,6 @@
 //
 
 #include "BaseMembersFinalizer.hpp"
-#include "lib/Support/NameParser.hpp"
 
 namespace clang::mrdocs {
 
@@ -47,7 +46,7 @@ inheritBaseMembers(
         inheritBaseMembers(derivedId, derived.Protected, base.Public);
         inheritBaseMembers(derivedId, derived.Protected, base.Protected);
     }
-    else if (A == AccessKind::Private && config_->privateMembers)
+    else if (A == AccessKind::Private && corpus_.config->privateMembers)
     {
         // When a class uses private member access specifier to derive from a
         // base, all public and protected members of the base class are
@@ -103,18 +102,18 @@ inheritBaseMembers(
         // Find the info from the base class
         auto idIt = std::ranges::find(derived, otherID);
         MRDOCS_CHECK_OR_CONTINUE(idIt == derived.end());
-        auto otherInfoIt = info_.find(otherID);
-        MRDOCS_CHECK_OR_CONTINUE(otherInfoIt != info_.end());
-        Info& otherInfo = *otherInfoIt->get();
+        Info* otherInfoPtr = corpus_.find(otherID);
+        MRDOCS_CHECK_OR_CONTINUE(otherInfoPtr);
+        Info& otherInfo = *otherInfoPtr;
 
         // Check if derived class has a member that shadows the base member
         auto shadowIt = std::ranges::find_if(
             derived,
             [&](SymbolID const& id)
             {
-                auto infoIt = info_.find(id);
-                MRDOCS_CHECK_OR(infoIt != info_.end(), false);
-                auto& info = *infoIt->get();
+                Info* infoPtr = corpus_.find(id);
+                MRDOCS_CHECK_OR(infoPtr, false);
+                auto& info = *infoPtr;
                 MRDOCS_CHECK_OR(info.Kind == otherInfo.Kind, false);
                 if (info.isFunction())
                 {
@@ -136,7 +135,7 @@ inheritBaseMembers(
         MRDOCS_CHECK_OR_CONTINUE(shadowIt == derived.end());
 
         // Not a shadow, so inherit the base member
-        if (!shouldCopy(config_, otherInfo))
+        if (!shouldCopy(corpus_.config, otherInfo))
         {
             // When it's a dependency, we don't create a reference to
             // the member because the reference would be invalid.
@@ -167,12 +166,12 @@ inheritBaseMembers(
             // Get the extraction mode from the derived class
             if (otherCopy->Extraction == ExtractionMode::Dependency)
             {
-                auto derivedInfoIt = info_.find(derivedId);
-                MRDOCS_CHECK_OR_CONTINUE(derivedInfoIt != info_.end());
-                Info const& derivedInfo = **derivedInfoIt;
+                Info* derivedInfoPtr = corpus_.find(derivedId);
+                MRDOCS_CHECK_OR_CONTINUE(derivedInfoPtr);
+                Info const& derivedInfo = *derivedInfoPtr;
                 otherCopy->Extraction = derivedInfo.Extraction;
             }
-            info_.insert(std::move(otherCopy));
+            corpus_.info_.insert(std::move(otherCopy));
         }
     }
 }
@@ -183,10 +182,9 @@ finalizeRecords(std::vector<SymbolID> const& ids)
 {
     for (SymbolID const& id: ids)
     {
-        auto infoIt = info_.find(id);
-        MRDOCS_CHECK_OR_CONTINUE(infoIt != info_.end());
-        auto& info = *infoIt;
-        auto* record = dynamic_cast<RecordInfo*>(info.get());
+        Info* infoPtr = corpus_.find(id);
+        MRDOCS_CHECK_OR_CONTINUE(infoPtr);
+        auto record = dynamic_cast<RecordInfo*>(infoPtr);
         MRDOCS_CHECK_OR_CONTINUE(record);
         operator()(*record);
     }
@@ -198,10 +196,9 @@ finalizeNamespaces(std::vector<SymbolID> const& ids)
 {
     for (SymbolID const& id: ids)
     {
-        auto infoIt = info_.find(id);
-        MRDOCS_CHECK_OR_CONTINUE(infoIt != info_.end());
-        auto& info = *infoIt;
-        auto* ns = dynamic_cast<NamespaceInfo*>(info.get());
+        Info* infoPtr = corpus_.find(id);
+        MRDOCS_CHECK_OR_CONTINUE(infoPtr);
+        auto* ns = dynamic_cast<NamespaceInfo*>(infoPtr);
         MRDOCS_CHECK_OR_CONTINUE(ns);
         operator()(*ns);
     }
@@ -211,7 +208,9 @@ void
 BaseMembersFinalizer::
 operator()(NamespaceInfo& I)
 {
-    report::trace("Extracting base members for namespace '{}'", I.Name);
+    report::trace(
+        "Extracting base members for namespace '{}'",
+        corpus_.Corpus::qualifiedName(I));
     finalizeRecords(I.Members.Records);
     finalizeNamespaces(I.Members.Namespaces);
 }
@@ -220,7 +219,9 @@ void
 BaseMembersFinalizer::
 operator()(RecordInfo& I)
 {
-    report::trace("Extracting base members for record '{}'", I.Name);
+    report::trace(
+        "Extracting base members for record '{}'",
+        corpus_.Corpus::qualifiedName(I));
     MRDOCS_CHECK_OR(!finalized_.contains(I.id));
     for (BaseInfo const& baseI: I.Bases)
     {
@@ -230,10 +231,9 @@ operator()(RecordInfo& I)
         MRDOCS_CHECK_OR_CONTINUE(baseName);
         SymbolID const baseID = baseName->id;
         MRDOCS_CHECK_OR_CONTINUE(baseID);
-        auto baseIt = info_.find(baseID);
-        MRDOCS_CHECK_OR_CONTINUE(baseIt != info_.end());
-        std::unique_ptr<Info> const& base = *baseIt;
-        auto* baseRecord = dynamic_cast<RecordInfo*>(base.get());
+        auto basePtr = corpus_.find(baseID);
+        MRDOCS_CHECK_OR_CONTINUE(basePtr);
+        auto* baseRecord = dynamic_cast<RecordInfo*>(basePtr);
         MRDOCS_CHECK_OR_CONTINUE(baseRecord);
         operator()(*baseRecord);
         inheritBaseMembers(I, *baseRecord, baseI.Access);

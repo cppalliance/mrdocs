@@ -12,7 +12,7 @@
 #define MRDOCS_LIB_METADATA_FINALIZER_BASEMEMBERSFINALIZER_HPP
 
 #include "lib/Lib/Info.hpp"
-#include "lib/Lib/Lookup.hpp"
+#include "lib/Lib/CorpusImpl.hpp"
 
 namespace clang::mrdocs {
 
@@ -26,8 +26,7 @@ namespace clang::mrdocs {
 */
 class BaseMembersFinalizer
 {
-    InfoSet& info_;
-    Config const& config_;
+    CorpusImpl& corpus_;
     std::unordered_set<SymbolID> finalized_;
 
     void
@@ -60,11 +59,17 @@ class BaseMembersFinalizer
 
 public:
     BaseMembersFinalizer(
-        InfoSet& Info,
-        Config const& config)
-        : info_(Info)
-        , config_(config)
+        CorpusImpl& corpus)
+        : corpus_(corpus)
     {}
+
+    void
+    build()
+    {
+        Info* info = corpus_.find(SymbolID::global);
+        MRDOCS_CHECK_OR(info);
+        operator()(*dynamic_cast<NamespaceInfo*>(info));
+    }
 
     void
     operator()(NamespaceInfo& I);

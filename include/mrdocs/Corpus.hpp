@@ -66,30 +66,40 @@ public:
 
     /** Return the begin iterator for the index of all symbols.
     */
-    MRDOCS_DECL
     virtual
     iterator
     begin() const noexcept = 0;
 
     /** Return the end iterator for the index.
     */
-    MRDOCS_DECL
     virtual
     iterator
     end() const noexcept = 0;
 
     /** Whether the corpus contains any symbols.
     */
-    MRDOCS_DECL
     bool
     empty() const noexcept;
 
     /** Return the Info with the matching ID, or nullptr.
     */
-    MRDOCS_DECL
     virtual
     Info const*
     find(SymbolID const& id) const noexcept = 0;
+
+    /** Return the Info for the matching string in a given context.
+    */
+    virtual
+    Info const*
+    lookup(SymbolID const& context, std::string_view name) const = 0;
+
+    /** Return the Info for the matching string in the global context.
+    */
+    Info const*
+    lookup(std::string_view name) const
+    {
+        return lookup(SymbolID::global, name);
+    }
 
     /** Return true if an Info with the specified symbol ID exists.
 
@@ -127,7 +137,6 @@ public:
         @ref get with the symbol ID for the
         global namespace.
     */
-    MRDOCS_DECL
     NamespaceInfo const&
     globalNamespace() const noexcept;
 
@@ -327,11 +336,11 @@ public:
 
         @return A reference to the string `temp`.
      */
-    MRDOCS_DECL
+    virtual
     void
     qualifiedName(
         Info const& I,
-        std::string& temp) const;
+        std::string& temp) const = 0;
 
     std::string
     qualifiedName(Info const& I) const
