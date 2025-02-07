@@ -106,10 +106,46 @@ getOperatorName(
     // remove "operator"
     full.remove_prefix(8);
     // remove the space, if any
-    if(full.front() == ' ')
+    if (full.front() == ' ')
+    {
         full.remove_prefix(1);
+    }
     return full;
 }
+
+OperatorKind
+getOperatorKind(std::string_view name) noexcept
+{
+    for(auto const& item : Table)
+    {
+        if(name == item.name)
+        {
+            return item.kind;
+        }
+    }
+    return OperatorKind::None;
+}
+
+OperatorKind
+getOperatorKindFromSuffix(std::string_view suffix) noexcept
+{
+    for(auto const& item : Table)
+    {
+        std::string_view itemSuffix = item.name;
+        if (!itemSuffix.starts_with("operator"))
+        {
+            continue;
+        }
+        itemSuffix.remove_prefix(8);
+        itemSuffix = ltrim(itemSuffix);
+        if(suffix == itemSuffix)
+        {
+            return item.kind;
+        }
+    }
+    return OperatorKind::None;
+}
+
 
 std::string_view
 getShortOperatorName(
