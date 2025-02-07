@@ -142,6 +142,10 @@ MRDOCS_DECL
 void
 merge(SourceInfo& I, SourceInfo&& Other);
 
+MRDOCS_DECL
+OptionalLocation
+getPrimaryLocation(SourceInfo const& I);
+
 void
 tag_invoke(
     dom::ValueFromTag,

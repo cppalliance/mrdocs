@@ -80,6 +80,30 @@ merge(SourceInfo& I, SourceInfo&& Other)
     mergeImpl<true>(I, Other);
 }
 
+OptionalLocation
+getPrimaryLocation(SourceInfo const& I)
+{
+    OptionalLocation primaryLoc;
+    if (I.DefLoc)
+    {
+        primaryLoc = *I.DefLoc;
+    }
+    else if (!I.Loc.empty())
+    {
+        auto const documentedIt = std::ranges::find_if(
+            I.Loc, &Location::Documented);
+        if (documentedIt != I.Loc.end())
+        {
+            primaryLoc = *documentedIt;
+        }
+        else
+        {
+            primaryLoc = I.Loc.front();
+        }
+    }
+    return primaryLoc;
+}
+
 template <class IO>
 void
 tag_invoke(
