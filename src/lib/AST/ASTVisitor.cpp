@@ -3271,6 +3271,11 @@ Expected<
 ASTVisitor::
 upsert(DeclType const* D)
 {
+    using R = std::conditional_t<
+        std::same_as<InfoTy, void>,
+        InfoTypeFor_t<DeclType>,
+        InfoTy>;
+
     ExtractionMode const m = checkFilters(D);
     if (m == ExtractionMode::Dependency)
     {
@@ -3286,14 +3291,17 @@ upsert(DeclType const* D)
             return Unexpected(Error("Explicit declaration in dependency mode"));
         }
     }
+    else if (
+        !InfoParent<R> &&
+        mode_ == Regular &&
+        !config_->extractAll &&
+        !D->getASTContext().getRawCommentForDeclNoCache(D))
+    {
+        return Unexpected(formatError("{}: Symbol is undocumented", extractName(D)));
+    }
 
     SymbolID const id = generateID(D);
     MRDOCS_CHECK_MSG(id, "Failed to extract symbol ID");
-
-    using R = std::conditional_t<
-        std::same_as<InfoTy, void>,
-        InfoTypeFor_t<DeclType>,
-        InfoTy>;
     auto [I, isNew] = upsert<R>(id);
 
     // Already populate the extraction mode

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <function name="docFunction" id="5x56dR04az7i0nZ7FnDVQhMFz4w=">
+    <file short-path="no-extract-all.cpp" source-path="no-extract-all.cpp" line="4"/>
+    <doc>
+      <brief>
+        <text>Documented function</text>
+      </brief>
+    </doc>
+  </function>
+  <function name="sometimesDocFunction" id="zfmhYS+B5jkLgBi5x/Ciuh0zH6Y=">
+    <file short-path="no-extract-all.cpp" source-path="no-extract-all.cpp" line="9"/>
+    <doc>
+      <brief>
+        <text>Sometimes documented function</text>
+      </brief>
+    </doc>
+  </function>
+</namespace>
+</mrdocs>

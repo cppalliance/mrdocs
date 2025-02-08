@@ -160,21 +160,42 @@
     ]
   },
   {
+    "category": "Comment Parsing",
+    "brief": "Options to control how comments are parsed",
+    "details": "MrDocs extracts metadata from the comments in the source code. The following options control how comments are parsed.",
+    "options": [
+      {
+        "name": "auto-brief",
+        "brief": "Use the first line of the comment as the brief",
+        "details": "When set to `true`, MrDocs uses the first line (until the first dot, question mark, or exclamation mark) of the comment as the brief of the symbol. When set to `false`, a explicit @brief command is required.",
+        "type": "bool",
+        "default": true
+      }
+    ]
+  },
+  {
     "category": "Metadata Extraction",
     "brief": "Metadata and C++ semantic constructs to extract",
     "details": "MrDocs extracts metadata and C++ semantic constructs from the source code to create the documentation. Semantic constructs are patterns not directly represented in the source code AST but can be inferred from the corpus, such as SFINAE. The following options control the extraction of metadata and C++ semantic constructs.",
     "options": [
       {
-        "name": "sfinae",
-        "brief": "Detect and reduce SFINAE expressions",
-        "details": "When set to true, MrDocs detects SFINAE expressions in the source code and extracts them as part of the documentation. Expressions such as `std::enable_if<...>` are detected, removed, and documented as a requirement. MrDocs uses an algorithm that extracts SFINAE infomation from types by identifying inspecting the primary template and specializations to detect the result type and the controlling expressions in a specialization.",
+        "name": "extract-all",
+        "brief": "Extract all symbols",
+        "details": "When set to `true`, MrDocs extracts all symbols from the source code, even if no documentation is provided. When set to `false`, it's still recommendable to provide file and symbol filters so that only the desired symbols are traversed by MrDocs.",
         "type": "bool",
         "default": true
       },
       {
-        "name": "overloads",
-        "brief": "Detect and group function overloads",
-        "details": "When set to `true`, MrDocs detects function overloads and groups them as a single symbol type.",
+        "name": "private-members",
+        "brief": "Extraction policy for private class members",
+        "details": "Determine whether private class members should be extracted",
+        "type": "bool",
+        "default": false
+      },
+      {
+        "name": "private-bases",
+        "brief": "Extraction policy for private base classes",
+        "details": "Determine whether private base classes should be extracted",
         "type": "bool",
         "default": true
       },
@@ -190,20 +211,6 @@
           "copy-all"
         ],
         "default": "copy-dependencies"
-      },
-      {
-        "name": "private-members",
-        "brief": "Extraction policy for private class members",
-        "details": "Determine whether private class members should be extracted",
-        "type": "bool",
-        "default": false
-      },
-      {
-        "name": "private-bases",
-        "brief": "Extraction policy for private base classes",
-        "details": "Determine whether private base classes should be extracted",
-        "type": "bool",
-        "default": true
       },
       {
         "name": "anonymous-namespaces",
@@ -253,11 +260,25 @@
         "details": "When set to `true`, relational operators are sorted last in the list of members of a record or namespace.",
         "type": "bool",
         "default": true
+      }
+    ]
+  },
+  {
+    "category": "Semantic Constructs",
+    "brief": "C++ semantic constructs to extract",
+    "details": "Semantic constructs are patterns not directly represented in the source code AST but can be inferred from the corpus, such as SFINAE.",
+    "options": [
+      {
+        "name": "sfinae",
+        "brief": "Detect and reduce SFINAE expressions",
+        "details": "When set to true, MrDocs detects SFINAE expressions in the source code and extracts them as part of the documentation. Expressions such as `std::enable_if<...>` are detected, removed, and documented as a requirement. MrDocs uses an algorithm that extracts SFINAE infomation from types by identifying inspecting the primary template and specializations to detect the result type and the controlling expressions in a specialization.",
+        "type": "bool",
+        "default": true
       },
       {
-        "name": "auto-brief",
-        "brief": "Use the first line of the comment as the brief",
-        "details": "When set to `true`, MrDocs uses the first line (until the first dot, question mark, or exclamation mark) of the comment as the brief of the symbol. When set to `false`, a explicit @brief command is required.",
+        "name": "overloads",
+        "brief": "Detect and group function overloads",
+        "details": "When set to `true`, MrDocs detects function overloads and groups them as a single symbol type.",
         "type": "bool",
         "default": true
       }
