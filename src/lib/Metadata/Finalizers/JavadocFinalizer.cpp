@@ -118,6 +118,8 @@ finalize(doc::Reference& ref)
         ref.id = res->id;
     }
     if (res == nullptr &&
+        corpus_.config->warnings &&
+        corpus_.config->warnBrokenRef &&
         // Only warn once per reference
         !warned_.contains({ref.string, current_context_->Name}) &&
         // Ignore std:: references
@@ -128,7 +130,7 @@ finalize(doc::Reference& ref)
         MRDOCS_ASSERT(current_context_);
         if (auto primaryLoc = getPrimaryLocation(*current_context_))
         {
-            warn(
+            this->warn(
                 "{}:{}\n{}: Failed to resolve reference to '{}'",
                 primaryLoc->FullPath,
                 primaryLoc->LineNumber,
@@ -281,10 +283,13 @@ copyBriefAndDetails(Javadoc& javadoc)
         Info const* res = corpus_.lookup(current_context_->id, copied->string);
         if (!res)
         {
-            MRDOCS_ASSERT(current_context_);
-            if (auto primaryLoc = getPrimaryLocation(*current_context_))
+            if (corpus_.config->warnings &&
+                corpus_.config->warnBrokenRef &&
+                !warned_.contains({copied->string, current_context_->Name}))
             {
-                warn(
+                MRDOCS_ASSERT(current_context_);
+                auto primaryLoc = getPrimaryLocation(*current_context_);
+                this->warn(
                     "{}:{}\n"
                     "{}: Failed to copy documentation from '{}'\n"
                     "    Note: Symbol '{}' not found.",
@@ -304,21 +309,26 @@ copyBriefAndDetails(Javadoc& javadoc)
         }
         if (!res->javadoc)
         {
-            auto ctxPrimaryLoc = getPrimaryLocation(*current_context_);
-            auto resPrimaryLoc = getPrimaryLocation(*res);
-            warn(
-                "{}:{}\n"
-                "{}: Failed to copy documentation from '{}'.\n"
-                "No documentation available.\n"
-                "    {}:{}\n"
-                "    Note: No documentation available for '{}'.",
-                ctxPrimaryLoc->FullPath,
-                ctxPrimaryLoc->LineNumber,
-                corpus_.Corpus::qualifiedName(*current_context_),
-                copied->string,
-                resPrimaryLoc->FullPath,
-                resPrimaryLoc->LineNumber,
-                corpus_.Corpus::qualifiedName(*res));
+            if (corpus_.config->warnings &&
+                corpus_.config->warnBrokenRef &&
+                !warned_.contains({copied->string, current_context_->Name}))
+            {
+                auto ctxPrimaryLoc = getPrimaryLocation(*current_context_);
+                auto resPrimaryLoc = getPrimaryLocation(*res);
+                this->warn(
+                    "{}:{}\n"
+                    "{}: Failed to copy documentation from '{}'.\n"
+                    "No documentation available.\n"
+                    "    {}:{}\n"
+                    "    Note: No documentation available for '{}'.",
+                    ctxPrimaryLoc->FullPath,
+                    ctxPrimaryLoc->LineNumber,
+                    corpus_.Corpus::qualifiedName(*current_context_),
+                    copied->string,
+                    resPrimaryLoc->FullPath,
+                    resPrimaryLoc->LineNumber,
+                    corpus_.Corpus::qualifiedName(*res));
+            }
             continue;
         }
 
@@ -531,7 +541,7 @@ warnUndocumented() const
         {
             MRDOCS_CHECK_OR(!I->javadoc || I->Extraction == ExtractionMode::Regular);
         }
-        warn("{}: Symbol is undocumented", name);
+        this->warn("{}: Symbol is undocumented", name);
     }
     corpus_.undocumented_.clear();
 }
@@ -590,7 +600,7 @@ warnParamErrors(FunctionInfo const& I) const
          std::string_view duplicateParamName: uniqueDuplicateParamNames)
     {
         auto primaryLoc = getPrimaryLocation(I);
-        warn(
+        this->warn(
             "{}:{}\n"
             "{}: Duplicate parameter documentation for '{}'",
             primaryLoc->FullPath,
@@ -609,7 +619,7 @@ warnParamErrors(FunctionInfo const& I) const
         if (std::ranges::find(paramNames, javadocParamName) == paramNames.end())
         {
             auto primaryLoc = getPrimaryLocation(I);
-            warn(
+            this->warn(
                 "{}:{}\n"
                 "{}: Documented parameter '{}' does not exist",
                 primaryLoc->FullPath,
@@ -649,7 +659,7 @@ warnNoParamDocs(FunctionInfo const& I) const
         if (std::ranges::find(javadocParamNames, paramName) == javadocParamNames.end())
         {
             auto primaryLoc = getPrimaryLocation(I);
-            warn(
+            this->warn(
                 "{}:{}\n"
                 "{}: Missing documentation for parameter '{}'",
                 primaryLoc->FullPath,
@@ -674,7 +684,7 @@ warnNoParamDocs(FunctionInfo const& I) const
         if (!isVoid(*I.ReturnType))
         {
             auto primaryLoc = getPrimaryLocation(I);
-            warn(
+            this->warn(
                 "{}:{}\n"
                 "{}: Missing documentation for return type",
                 primaryLoc->FullPath,
@@ -695,7 +705,7 @@ warnUndocEnumValues() const
         MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
         MRDOCS_CHECK_OR_CONTINUE(!I->javadoc);
         auto primaryLoc = getPrimaryLocation(*I);
-        warn(
+        this->warn(
             "{}:{}\n"
             "{}: Missing documentation for enum value",
             primaryLoc->FullPath,
