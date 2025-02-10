@@ -5,7 +5,7 @@
   <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
     <file short-path="operator-param.cpp" source-path="operator-param.cpp" line="1" class="def"/>
     <function name="operator()" exception-spec="noexcept" id="+yVVNLbCaXDXfZPFoKE5xv2xPZQ=">
-      <file short-path="operator-param.cpp" source-path="operator-param.cpp" line="19"/>
+      <file short-path="operator-param.cpp" source-path="operator-param.cpp" line="23"/>
       <attr id="constexpr-kind" name="constexpr" value="1"/>
       <attr id="operator" name="call" value="42"/>
       <attr id="is-const"/>
@@ -16,13 +16,16 @@
         <type name="char"/>
       </param>
       <doc>
+        <returns>
+          <text>True if ch is in the set, otherwise false.</text>
+        </returns>
         <param name="ch">
           <text>The signed character to test.</text>
         </param>
       </doc>
     </function>
     <function name="operator()" exception-spec="noexcept" id="tslXb2aqh8tYThe+A16a9felw5M=">
-      <file short-path="operator-param.cpp" source-path="operator-param.cpp" line="10"/>
+      <file short-path="operator-param.cpp" source-path="operator-param.cpp" line="12"/>
       <attr id="constexpr-kind" name="constexpr" value="1"/>
       <attr id="operator" name="call" value="42"/>
       <attr id="is-const"/>
@@ -39,6 +42,9 @@
         <para>
           <text>This function returns true if the        character is in the set, otherwise        it returns false.</text>
         </para>
+        <returns>
+          <text>True if ch is in the set, otherwise false.</text>
+        </returns>
         <param name="ch">
           <text>The unsigned character to test.</text>
         </param>

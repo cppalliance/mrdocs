@@ -181,6 +181,12 @@ private:
 
     void
     warnParamErrors(FunctionInfo const& I) const;
+
+    void
+    warnNoParamDocs() const;
+
+    void
+    warnNoParamDocs(FunctionInfo const& I) const;
 };
 
 } // clang::mrdocs

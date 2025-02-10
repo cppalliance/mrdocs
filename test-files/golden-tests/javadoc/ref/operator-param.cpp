@@ -6,6 +6,8 @@ struct A {
         it returns false.
 
         @param ch The unsigned character to test.
+
+        @return True if ch is in the set, otherwise false.
     */
     constexpr
     bool
@@ -15,6 +17,8 @@ struct A {
         @copydoc A::operator()(unsigned char) const
 
         @param ch The signed character to test.
+
+        @return True if ch is in the set, otherwise false.
      */
     constexpr
     bool
