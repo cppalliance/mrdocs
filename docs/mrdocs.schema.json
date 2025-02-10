@@ -450,6 +450,16 @@
       "title": "Verbose output",
       "type": "boolean"
     },
+    "warn-if-doc-error": {
+      "default": true,
+      "description": "When set to `true`, MrDocs outputs a warning message if the documentation of a symbol has errors such as duplicate parameters and parameters that don't exist.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Warn if documentation has errors",
+      "type": "boolean"
+    },
     "warn-if-undocumented": {
       "default": true,
       "description": "When set to `true`, MrDocs outputs a warning message if a symbol that passes all filters is not documented. This option is only effective when `extract-all` is set to `false`.",

@@ -76,6 +76,17 @@ compare(<<A,A>> const& other) const noexcept;
 
 `&hyphen;1` if `&ast;this &lt; other`, `0` if        `this &equals;&equals; other`, and 1 if `this &gt; other`&period;
 
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *other*
+| The other object to compare against&period;
+
+|===
+
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

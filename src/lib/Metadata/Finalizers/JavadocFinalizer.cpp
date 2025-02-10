@@ -509,4 +509,131 @@ checkExists(SymbolID const& id) const
     MRDOCS_ASSERT(corpus_.info_.contains(id));
 }
 
+void
+JavadocFinalizer::
+emitWarnings() const
+{
+    MRDOCS_CHECK_OR(corpus_.config->warnings);
+    warnUndocumented();
+    warnDocErrors();
+}
+
+void
+JavadocFinalizer::
+warnUndocumented() const
+{
+    MRDOCS_CHECK_OR(!corpus_.config->extractAll);
+    MRDOCS_CHECK_OR(corpus_.config->warnIfUndocumented);
+    for (auto& [id, name] : corpus_.undocumented_)
+    {
+        if (Info const* I = corpus_.find(id))
+        {
+            MRDOCS_CHECK_OR(!I->javadoc || I->Extraction == ExtractionMode::Regular);
+        }
+        warn("{}: Symbol is undocumented", name);
+    }
+    corpus_.undocumented_.clear();
+}
+
+void
+JavadocFinalizer::
+warnDocErrors() const
+{
+    MRDOCS_CHECK_OR(corpus_.config->warnIfDocError);
+    for (auto const& I : corpus_.info_)
+    {
+        MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
+        MRDOCS_CHECK_OR_CONTINUE(I->isFunction());
+        warnParamErrors(dynamic_cast<FunctionInfo const&>(*I));
+    }
+}
+
+namespace {
+/* Get a list of all parameter names in javadoc
+
+    The javadoc parameter names can contain a single parameter or
+    a list of parameters separated by commas. This function
+    returns a list of all parameter names in the javadoc.
+ */
+SmallVector<std::string_view, 32>
+getJavadocParamNames(Javadoc const& javadoc)
+{
+    SmallVector<std::string_view, 32> result;
+    for (auto const& javadocParam: javadoc.params)
+    {
+        auto const& paramNamesStr = javadocParam.name;
+        for (auto paramNames = std::views::split(paramNamesStr, ',');
+             auto const& paramName: paramNames)
+        {
+            result.push_back(trim(std::string_view(paramName.begin(), paramName.end())));
+        }
+    }
+    return result;
+}
+
+}
+
+void
+JavadocFinalizer::
+warnParamErrors(FunctionInfo const& I) const
+{
+    MRDOCS_CHECK_OR(I.javadoc);
+
+    // Check for duplicate javadoc parameters
+    auto javadocParamNames = getJavadocParamNames(*I.javadoc);
+    std::ranges::sort(javadocParamNames);
+    auto [firstDup, lastUnique] = std::ranges::unique(javadocParamNames);
+    auto duplicateParamNames = std::ranges::subrange(firstDup, lastUnique);
+    auto [firstDupDup, _] = std::ranges::unique(duplicateParamNames);
+    for (auto uniqueDuplicateParamNames = std::ranges::subrange(firstDup, firstDupDup);
+         std::string_view duplicateParamName: uniqueDuplicateParamNames)
+    {
+        auto primaryLoc = getPrimaryLocation(I);
+        warn(
+            "{}:{}\n"
+            "{}: Duplicate parameter documentation for '{}'",
+            primaryLoc->FullPath,
+            primaryLoc->LineNumber,
+            corpus_.Corpus::qualifiedName(I),
+            duplicateParamName);
+    }
+    javadocParamNames.erase(lastUnique, javadocParamNames.end());
+
+    // Check for function parameters that are not documented in javadoc
+    auto paramNames =
+        I.Params |
+        std::views::transform(&Param::Name) |
+        std::views::filter([](std::string_view const& name) { return !name.empty(); });
+    for (auto const& paramName: paramNames)
+    {
+        if (std::ranges::find(javadocParamNames, paramName) == javadocParamNames.end())
+        {
+            auto primaryLoc = getPrimaryLocation(I);
+            warn(
+                "{}:{}\n"
+                "{}: Missing documentation for parameter '{}'",
+                primaryLoc->FullPath,
+                primaryLoc->LineNumber,
+                corpus_.Corpus::qualifiedName(I),
+                paramName);
+        }
+    }
+
+    // Check for documented parameters that don't exist in the function
+    for (std::string_view javadocParamName: javadocParamNames)
+    {
+        if (std::ranges::find(paramNames, javadocParamName) == paramNames.end())
+        {
+            auto primaryLoc = getPrimaryLocation(I);
+            warn(
+                "{}:{}\n"
+                "{}: Documented parameter '{}' does not exist",
+                primaryLoc->FullPath,
+                primaryLoc->LineNumber,
+                corpus_.Corpus::qualifiedName(I),
+                javadocParamName);
+        }
+    }
+}
+
 } // clang::mrdocs

@@ -22,7 +22,7 @@
       </para>
     </doc>
     <function name="compare" exception-spec="noexcept" id="CKPqawUTt6FNIN9qEFTMcdnvPkI=">
-      <file short-path="styled.cpp" source-path="styled.cpp" line="14"/>
+      <file short-path="styled.cpp" source-path="styled.cpp" line="16"/>
       <attr id="is-const"/>
       <return>
         <type name="int"/>
@@ -48,6 +48,9 @@
           <mono>this &gt; other</mono>
           <text>.</text>
         </returns>
+        <param name="other">
+          <text>The other object to compare against.</text>
+        </param>
       </doc>
     </function>
   </struct>
