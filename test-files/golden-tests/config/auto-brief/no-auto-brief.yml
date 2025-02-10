@@ -1,2 +1,2 @@
 auto-brief: false
-warnings: false
+warn-broken-ref: false
