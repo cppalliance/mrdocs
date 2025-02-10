@@ -55,7 +55,8 @@ void
 InfoExecutionContext::
 report(
     InfoSet&& results,
-    Diagnostics&& diags)
+    Diagnostics&& diags,
+    UndocumentedInfoSet&& undocumented)
 {
     InfoSet info = std::move(results);
     // KRYSTIAN TODO: read stage will be required to
@@ -67,6 +68,7 @@ report(
     #endif
 
     std::unique_lock<std::shared_mutex> write_lock(mutex_);
+
     // Add all new Info to the existing set.
     info_.merge(info);
 
@@ -80,6 +82,26 @@ report(
 
     // Merge diagnostics and report any new messages.
     diags_.mergeAndReport(std::move(diags));
+
+
+
+    // Merge undocumented symbols and remove any symbols
+    // from undocumented that we can find in info_ with
+    // documentation from other translation units.
+    undocumented_.merge(undocumented);
+    for (auto it = undocumented_.begin(); it != undocumented_.end();)
+    {
+        auto infoIt = info_.find(it->first);
+        if (infoIt != info_.end() &&
+            infoIt->get()->javadoc)
+        {
+            it = undocumented_.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
+    }
 }
 
 void
@@ -89,11 +111,18 @@ reportEnd(report::Level level)
     diags_.reportTotals(level);
 }
 
-mrdocs::Expected<InfoSet>
+Expected<InfoSet>
 InfoExecutionContext::
 results()
 {
     return std::move(info_);
+}
+
+UndocumentedInfoSet
+InfoExecutionContext::
+undocumented()
+{
+    return std::move(undocumented_);
 }
 
 } // mrdocs

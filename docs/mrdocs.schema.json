@@ -93,7 +93,7 @@
     },
     "extract-all": {
       "default": true,
-      "description": "When set to `true`, MrDocs extracts all symbols from the source code, even if no documentation is provided. When set to `false`, it's still recommendable to provide file and symbol filters so that only the desired symbols are traversed by MrDocs.",
+      "description": "When set to `true`, MrDocs extracts all symbols from the source code, even if no documentation is provided. MrDocs can only identify whether a symbol is ultimated documented after extracting information from all translation units. For this reason, when this option is set to `false`, it's still recommendable to provide file and symbol filters so that only the desired symbols are traversed and stored by MrDocs.",
       "enum": [
         true,
         false
@@ -448,6 +448,16 @@
         false
       ],
       "title": "Verbose output",
+      "type": "boolean"
+    },
+    "warn-if-undocumented": {
+      "default": true,
+      "description": "When set to `true`, MrDocs outputs a warning message if a symbol that passes all filters is not documented. This option is only effective when `extract-all` is set to `false`.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Warn if symbols are not documented",
       "type": "boolean"
     },
     "warnings": {
