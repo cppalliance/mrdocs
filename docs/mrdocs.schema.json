@@ -450,6 +450,16 @@
       "title": "Verbose output",
       "type": "boolean"
     },
+    "warn-as-error": {
+      "default": false,
+      "description": "When set to `true`, MrDocs treats warnings as errors and stops the generation of the documentation.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Treat warnings as errors",
+      "type": "boolean"
+    },
     "warn-broken-ref": {
       "default": true,
       "description": "When set to `true`, MrDocs outputs a warning message if a reference in the documentation is broken.",
