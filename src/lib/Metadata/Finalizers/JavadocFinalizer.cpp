@@ -105,7 +105,7 @@ operator()(InfoTy& I)
     }
 }
 
-#define INFO(T) template void JavadocFinalizer::operator()<T##Info>(T##Info&);
+#define INFO(T) template void JavadocFinalizer::operator()<T## Info>(T## Info&);
 #include <mrdocs/Metadata/InfoNodesPascal.inc>
 
 void
@@ -516,13 +516,13 @@ emitWarnings() const
     MRDOCS_CHECK_OR(corpus_.config->warnings);
     warnUndocumented();
     warnDocErrors();
+    warnNoParamDocs();
 }
 
 void
 JavadocFinalizer::
 warnUndocumented() const
 {
-    MRDOCS_CHECK_OR(!corpus_.config->extractAll);
     MRDOCS_CHECK_OR(corpus_.config->warnIfUndocumented);
     for (auto& [id, name] : corpus_.undocumented_)
     {
@@ -599,10 +599,49 @@ warnParamErrors(FunctionInfo const& I) const
     }
     javadocParamNames.erase(lastUnique, javadocParamNames.end());
 
-    // Check for function parameters that are not documented in javadoc
+    // Check for documented parameters that don't exist in the function
     auto paramNames =
-        I.Params |
-        std::views::transform(&Param::Name) |
+        std::views::transform(I.Params, &Param::Name) |
+        std::views::filter([](std::string_view const& name) { return !name.empty(); });
+    for (std::string_view javadocParamName: javadocParamNames)
+    {
+        if (std::ranges::find(paramNames, javadocParamName) == paramNames.end())
+        {
+            auto primaryLoc = getPrimaryLocation(I);
+            warn(
+                "{}:{}\n"
+                "{}: Documented parameter '{}' does not exist",
+                primaryLoc->FullPath,
+                primaryLoc->LineNumber,
+                corpus_.Corpus::qualifiedName(I),
+                javadocParamName);
+        }
+    }
+
+}
+
+void
+JavadocFinalizer::
+warnNoParamDocs() const
+{
+    MRDOCS_CHECK_OR(corpus_.config->warnNoParamdoc);
+    for (auto const& I : corpus_.info_)
+    {
+        MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
+        MRDOCS_CHECK_OR_CONTINUE(I->isFunction());
+        MRDOCS_CHECK_OR_CONTINUE(I->javadoc);
+        warnNoParamDocs(dynamic_cast<FunctionInfo const&>(*I));
+    }
+}
+
+void
+JavadocFinalizer::
+warnNoParamDocs(FunctionInfo const& I) const
+{
+    // Check for function parameters that are not documented in javadoc
+    auto javadocParamNames = getJavadocParamNames(*I.javadoc);
+    auto paramNames =
+        std::views::transform(I.Params, &Param::Name) |
         std::views::filter([](std::string_view const& name) { return !name.empty(); });
     for (auto const& paramName: paramNames)
     {
@@ -619,21 +658,30 @@ warnParamErrors(FunctionInfo const& I) const
         }
     }
 
-    // Check for documented parameters that don't exist in the function
-    for (std::string_view javadocParamName: javadocParamNames)
+    // Check for undocumented return type
+    if (I.javadoc->returns.empty() && I.ReturnType)
     {
-        if (std::ranges::find(paramNames, javadocParamName) == paramNames.end())
+        auto isVoid = [](TypeInfo const& returnType) -> bool
+        {
+            if (returnType.isNamed())
+            {
+                auto const& namedReturnType = dynamic_cast<NamedTypeInfo const&>(returnType);
+                return namedReturnType.Name->Name == "void";
+            }
+            return false;
+        };
+        if (!isVoid(*I.ReturnType))
         {
             auto primaryLoc = getPrimaryLocation(I);
             warn(
                 "{}:{}\n"
-                "{}: Documented parameter '{}' does not exist",
+                "{}: Missing documentation for return type",
                 primaryLoc->FullPath,
                 primaryLoc->LineNumber,
-                corpus_.Corpus::qualifiedName(I),
-                javadocParamName);
+                corpus_.Corpus::qualifiedName(I));
         }
     }
 }
+
 
 } // clang::mrdocs

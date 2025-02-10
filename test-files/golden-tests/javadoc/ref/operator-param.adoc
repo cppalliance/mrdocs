@@ -93,6 +93,11 @@ bool
 operator()(char ch) const noexcept;
 ----
 
+=== Return Value
+
+
+True if ch is in the set, otherwise false&period;
+
 === Parameters
 
 
@@ -128,6 +133,11 @@ operator()(unsigned char ch) const noexcept;
 This function returns true if the        character is in the set, otherwise        it returns false&period;
 
 
+
+=== Return Value
+
+
+True if ch is in the set, otherwise false&period;
 
 === Parameters
 

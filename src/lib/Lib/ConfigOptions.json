@@ -482,7 +482,7 @@
       {
         "name": "warn-if-undocumented",
         "brief": "Warn if symbols are not documented",
-        "details": "When set to `true`, MrDocs outputs a warning message if a symbol that passes all filters is not documented. This option is only effective when `extract-all` is set to `false`.",
+        "details": "When set to `true`, MrDocs outputs a warning message if a symbol that passes all filters is not documented.",
         "type": "bool",
         "default": true
       },
@@ -490,6 +490,13 @@
         "name": "warn-if-doc-error",
         "brief": "Warn if documentation has errors",
         "details": "When set to `true`, MrDocs outputs a warning message if the documentation of a symbol has errors such as duplicate parameters and parameters that don't exist.",
+        "type": "bool",
+        "default": true
+      },
+      {
+        "name": "warn-no-paramdoc",
+        "brief": "Warn if parameters are not documented",
+        "details": "When set to `true`, MrDocs outputs a warning message if a named function parameter is not documented.",
         "type": "bool",
         "default": true
       }

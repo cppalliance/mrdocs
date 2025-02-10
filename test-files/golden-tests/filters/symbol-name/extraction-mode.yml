@@ -29,3 +29,4 @@ implementation-defined:
   - 'excluded_ns::implementation_defined'
   - 'implementation_defined_ns'
   - 'implementation_defined'
+warn-no-paramdoc: false

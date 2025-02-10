@@ -462,12 +462,22 @@
     },
     "warn-if-undocumented": {
       "default": true,
-      "description": "When set to `true`, MrDocs outputs a warning message if a symbol that passes all filters is not documented. This option is only effective when `extract-all` is set to `false`.",
+      "description": "When set to `true`, MrDocs outputs a warning message if a symbol that passes all filters is not documented.",
       "enum": [
         true,
         false
       ],
       "title": "Warn if symbols are not documented",
+      "type": "boolean"
+    },
+    "warn-no-paramdoc": {
+      "default": true,
+      "description": "When set to `true`, MrDocs outputs a warning message if a named function parameter is not documented.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Warn if parameters are not documented",
       "type": "boolean"
     },
     "warnings": {
