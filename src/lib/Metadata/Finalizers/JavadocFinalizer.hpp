@@ -187,6 +187,9 @@ private:
 
     void
     warnNoParamDocs(FunctionInfo const& I) const;
+
+    void
+    warnUndocEnumValues() const;
 };
 
 } // clang::mrdocs

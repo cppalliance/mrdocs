@@ -517,6 +517,7 @@ emitWarnings() const
     warnUndocumented();
     warnDocErrors();
     warnNoParamDocs();
+    warnUndocEnumValues();
 }
 
 void
@@ -683,5 +684,24 @@ warnNoParamDocs(FunctionInfo const& I) const
     }
 }
 
+void
+JavadocFinalizer::
+warnUndocEnumValues() const
+{
+    MRDOCS_CHECK_OR(corpus_.config->warnIfUndocEnumVal);
+    for (auto const& I : corpus_.info_)
+    {
+        MRDOCS_CHECK_OR_CONTINUE(I->isEnumConstant());
+        MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
+        MRDOCS_CHECK_OR_CONTINUE(!I->javadoc);
+        auto primaryLoc = getPrimaryLocation(*I);
+        warn(
+            "{}:{}\n"
+            "{}: Missing documentation for enum value",
+            primaryLoc->FullPath,
+            primaryLoc->LineNumber,
+            corpus_.Corpus::qualifiedName(*I));
+    }
+}
 
 } // clang::mrdocs
