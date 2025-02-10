@@ -16,15 +16,16 @@
 #include "lib/Lib/ConfigImpl.hpp"
 #include "lib/Lib/Info.hpp"
 #include "lib/Support/Debug.hpp"
-#include <map>
-#include <mutex>
-#include <string>
 #include <clang/Tooling/CompilationDatabase.h>
 #include <mrdocs/ADT/UnorderedStringMap.hpp>
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/Error.hpp>
+#include <map>
+#include <mutex>
+#include <string>
+#include <set>
 
 namespace clang::mrdocs {
 
@@ -44,6 +45,9 @@ class CorpusImpl final : public Corpus
 
     // Info keyed on Symbol ID.
     InfoSet info_;
+
+    // Undocumented symbols
+    UndocumentedInfoSet undocumented_;
 
     // Lookup cache
     // The key represents the context symbol ID.

@@ -15,8 +15,7 @@
 #include "lib/AST/ASTVisitor.hpp"
 #include "lib/Support/Path.hpp"
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 void
 ASTVisitorConsumer::
@@ -31,8 +30,7 @@ HandleTranslationUnit(ASTContext& Context)
         Context,
         *sema_);
     visitor.build();
-    ex_.report(std::move(visitor.results()), std::move(diags));
+    ex_.report(std::move(visitor.results()), std::move(diags), std::move(visitor.undocumented()));
 }
 
-} // mrdocs
-} // clang
+} // clang::mrdocs

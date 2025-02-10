@@ -116,6 +116,51 @@ struct InfoPtrEqual
 using InfoSet = std::unordered_set<
     std::unique_ptr<Info>, InfoPtrHasher, InfoPtrEqual>;
 
+struct SymbolIDNameHasher {
+    using is_transparent = void;
+
+    std::size_t
+    operator()(SymbolID const& I) const {
+        return std::hash<SymbolID>()(I);
+    }
+
+    std::size_t
+    operator()(std::pair<SymbolID, std::string> const& I) const {
+        return std::hash<SymbolID>()(I.first);
+    }
+};
+
+struct SymbolIDNameEqual {
+    using is_transparent = void;
+
+    bool
+    operator()(
+        std::pair<SymbolID, std::string> const& a,
+        std::pair<SymbolID, std::string> const& b) const
+    {
+        return a.first == b.first;
+    }
+
+    bool
+    operator()(
+        std::pair<SymbolID, std::string> const& a,
+        SymbolID const& b) const
+    {
+        return a.first == b;
+    }
+
+    bool
+    operator()(
+        SymbolID const& a,
+        std::pair<SymbolID, std::string> const& b) const
+    {
+        return a == b.first;
+    }
+};
+
+using UndocumentedInfoSet = std::unordered_set<
+    std::pair<SymbolID, std::string>, SymbolIDNameHasher, SymbolIDNameEqual>;
+
 } // clang::mrdocs
 
 #endif

@@ -53,6 +53,19 @@ public:
     }
 
     void
+    warnUndocumented() const
+    {
+        for (auto& [id, name] : corpus_.undocumented_)
+        {
+            if (Info const* I = corpus_.find(id))
+            {
+                MRDOCS_CHECK_OR(!I->javadoc || I->Extraction == ExtractionMode::Regular);
+            }
+            warn("{}: Symbol is undocumented", name);
+        }
+    }
+
+    void
     operator()(Info& I)
     {
         visit(I, *this);

@@ -23,8 +23,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 /** A custom execution context for visitation.
 
@@ -81,7 +80,8 @@ public:
     void
     report(
         InfoSet&& info,
-        Diagnostics&& diags) = 0;
+        Diagnostics&& diags,
+        UndocumentedInfoSet&& undocumented) = 0;
 
     /** Called when the execution is complete.
 
@@ -104,6 +104,10 @@ public:
     virtual
     mrdocs::Expected<InfoSet>
     results() = 0;
+
+    virtual
+    UndocumentedInfoSet
+    undocumented() = 0;
 };
 
 // ----------------------------------------------------------------
@@ -120,6 +124,7 @@ class InfoExecutionContext
     std::shared_mutex mutex_;
     Diagnostics diags_;
     InfoSet info_;
+    UndocumentedInfoSet undocumented_;
 
 public:
     using ExecutionContext::ExecutionContext;
@@ -128,7 +133,8 @@ public:
     void
     report(
         InfoSet&& info,
-        Diagnostics&& diags) override;
+        Diagnostics&& diags,
+        UndocumentedInfoSet&& undocumented) override;
 
     /// @copydoc ExecutionContext::reportEnd
     void
@@ -144,11 +150,13 @@ public:
 
         @return The results of the execution.
     */
-    mrdocs::Expected<InfoSet>
+    Expected<InfoSet>
     results() override;
+
+    UndocumentedInfoSet
+    undocumented() override;
 };
 
-} // mrdocs
-} // clang
+} // clang::mrdocs
 
 #endif

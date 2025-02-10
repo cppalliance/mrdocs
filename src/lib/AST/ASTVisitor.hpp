@@ -78,6 +78,29 @@ class ASTVisitor
     // An unordered set of all extracted Info declarations
     InfoSet info_;
 
+    /*  The symbols we would extract if they were documented
+
+        When `extract-all` is false, we only extract symbols
+        that are documented. If a symbol reappears in the
+        translation unit, we only extract the declaration
+        that's documented.
+
+        When `extract-all` is false and `warn-if-undocumented`
+        is true, we also warn if a symbol is not documented.
+        However, because a symbol can appear multiple times
+        in multiple translation units, we cannot be sure
+        a symbol is undocumented until we have processed
+        all translation units.
+
+        For this reason, this set stores the symbols that
+        are not documented but would otherwise have been
+        extracted as regular symbols in the current
+        translation unit. After symbols from all translation
+        units are merged, we will iterate these symbols
+        and warn if they are not documented.
+     */
+    UndocumentedInfoSet undocumented_;
+
     /* Struct to hold pre-processed file information.
 
         This struct stores information about a file, including its full path,
@@ -286,6 +309,19 @@ public:
     results()
     {
         return info_;
+    }
+
+    /** Get the set of extracted Info declarations.
+
+        This function returns a reference to the set of Info
+        declarations that have been extracted by the ASTVisitor.
+
+        @return A reference to the InfoSet containing the extracted Info declarations.
+     */
+    UndocumentedInfoSet&
+    undocumented()
+    {
+        return undocumented_;
     }
 
 private:
@@ -1156,6 +1192,14 @@ private:
                 InfoTypeFor_t<DeclType>,
                 InfoTy>>>
     upsert(DeclType const* D);
+
+    template <
+        std::derived_from<Info> InfoTy,
+        std::derived_from<Decl> DeclTy>
+    Expected<void>
+    checkUndocumented(
+        SymbolID const& id,
+        DeclTy const* D);
 };
 
 } // clang::mrdocs

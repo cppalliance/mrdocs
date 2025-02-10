@@ -73,7 +73,7 @@ void
 ASTVisitor::
 build()
 {
-    // traverse the translation unit, only extracting
+    // Traverse the translation unit, only extracting
     // declarations which satisfy all filter conditions.
     // dependencies will be tracked, but not extracted
     TranslationUnitDecl const* TU = context_.getTranslationUnitDecl();
@@ -3291,16 +3291,10 @@ upsert(DeclType const* D)
             return Unexpected(Error("Explicit declaration in dependency mode"));
         }
     }
-    else if (
-        !InfoParent<R> &&
-        mode_ == Regular &&
-        !config_->extractAll &&
-        !D->getASTContext().getRawCommentForDeclNoCache(D))
-    {
-        return Unexpected(formatError("{}: Symbol is undocumented", extractName(D)));
-    }
 
     SymbolID const id = generateID(D);
+    MRDOCS_TRY(checkUndocumented<R>(id, D));
+
     MRDOCS_CHECK_MSG(id, "Failed to extract symbol ID");
     auto [I, isNew] = upsert<R>(id);
 
@@ -3312,6 +3306,54 @@ upsert(DeclType const* D)
     I.Access = toAccessKind(access);
 
     return upsertResult<R>{std::ref(I), isNew};
+}
+
+template <
+    std::derived_from<Info> InfoTy,
+    std::derived_from<Decl> DeclTy>
+Expected<void>
+ASTVisitor::
+checkUndocumented(
+    SymbolID const& id,
+    DeclTy const* D)
+{
+    // If `extract-all` is enabled, we don't need to
+    // check for undocumented symbols
+    MRDOCS_CHECK_OR(!config_->extractAll, {});
+    // If the symbol is a namespace, the `extract-all`
+    // doesn't apply to it
+    MRDOCS_CHECK_OR((!std::same_as<InfoTy,NamespaceInfo>), {});
+    // If the symbol is not being extracted as a Regular
+    // symbol, we don't need to check for undocumented symbols
+    // These are expected to be potentially undocumented
+    MRDOCS_CHECK_OR(mode_ == Regular, {});
+    // Check if the symbol is documented, ensure this symbol is not in the set
+    // of undocumented symbols in this translation unit and return
+    // without an error if it is
+    if (D->getASTContext().getRawCommentForDeclNoCache(D))
+    {
+        if (config_->warnIfUndocumented)
+        {
+            undocumented_.erase({id, extractName(D)});
+        }
+        return {};
+    }
+    // If the symbol is undocumented, check if we haven't seen a
+    // documented version before.
+    auto const it = info_.find(id);
+    if (it != info_.end() &&
+        it->get()->javadoc)
+    {
+        return {};
+    }
+    // If the symbol is undocumented, and we haven't seen a documented
+    // version before, store this symbol in the set of undocumented
+    // symbols we've seen so far in this translation unit.
+    if (config_->warnIfUndocumented)
+    {
+        undocumented_.insert({id, extractName(D)});
+    }
+    return Unexpected(Error("Undocumented"));
 }
 
 } // clang::mrdocs

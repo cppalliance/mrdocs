@@ -524,7 +524,9 @@ build(
     }
 
     MRDOCS_TRY(auto results, context.results());
+    auto undocumented = context.undocumented();
     corpus->info_ = std::move(results);
+    corpus->undocumented_ = std::move(undocumented);
 
     report::info(
         "Extracted {} declarations in {}",
@@ -598,6 +600,12 @@ CorpusImpl::finalize()
     report::debug("Finalizing javadoc");
     JavadocFinalizer finalizer(*this);
     finalizer.build();
+
+    if (!config->extractAll && config->warnIfUndocumented)
+    {
+        finalizer.warnUndocumented();
+    }
+    undocumented_.clear();
 }
 
 
