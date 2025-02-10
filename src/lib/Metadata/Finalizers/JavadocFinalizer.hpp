@@ -170,7 +170,8 @@ private:
         Args&&... args) const
     {
         MRDOCS_CHECK_OR(corpus_.config->warnings);
-        return log(report::Level::warn, format, std::forward<Args>(args)...);
+        auto const level = !corpus_.config->warnAsError ? report::Level::warn : report::Level::error;
+        return log(level, format, std::forward<Args>(args)...);
     }
 
     void

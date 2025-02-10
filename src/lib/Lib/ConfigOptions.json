@@ -513,6 +513,13 @@
         "details": "When set to `true`, MrDocs outputs a warning message if a reference in the documentation is broken.",
         "type": "bool",
         "default": true
+      },
+      {
+        "name": "warn-as-error",
+        "brief": "Treat warnings as errors",
+        "details": "When set to `true`, MrDocs treats warnings as errors and stops the generation of the documentation.",
+        "type": "bool",
+        "default": false
       }
     ]
   },
