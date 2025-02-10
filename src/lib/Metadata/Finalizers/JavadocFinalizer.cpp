@@ -114,8 +114,18 @@ finalize(doc::Reference& ref, bool const emitWarning)
 {
     if (auto resRef = corpus_.lookup(current_context_->id, ref.string))
     {
-        Info const& res = *resRef;
+        // KRYSTIAN NOTE: we should provide an overload that
+        // returns a non-const reference.
+        auto& res = const_cast<Info&>(resRef->get());
         ref.id = res.id;
+        if(ref.Kind == doc::NodeKind::related)
+        {
+            if(! res.javadoc)
+                res.javadoc.emplace();
+            auto& related = res.javadoc->related;
+            if(std::ranges::find(related, current_context_->id) == related.end())
+                related.emplace_back(current_context_->id);
+        }
     }
     else if (
         emitWarning &&
@@ -150,7 +160,8 @@ finalize(doc::Node& node)
             finalize(N.children);
         }
 
-        if constexpr(std::same_as<NodeTy, doc::Reference>)
+        if constexpr(std::same_as<NodeTy, doc::Reference> ||
+            std::same_as<NodeTy, doc::Related>)
         {
             finalize(dynamic_cast<doc::Reference&>(N), true);
         }

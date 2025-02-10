@@ -100,10 +100,10 @@ domCreate(
 
 dom::Value
 domCreate(
-    doc::Related const& I,
+    SymbolID const& I,
     HandlebarsCorpus const& corpus)
 {
-    return corpus.toStringFn(corpus, I);
+    return corpus.get(I);
 }
 
 dom::Value
@@ -233,7 +233,7 @@ getJavadoc(Javadoc const& jd) const
         elements.reserve(nodes.size());
         for (value_type const& elem : nodes)
         {
-            if constexpr (requires { !elem; })
+            if constexpr (requires { *elem; })
             {
                 if (!elem)
                 {

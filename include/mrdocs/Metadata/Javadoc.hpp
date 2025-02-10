@@ -1031,7 +1031,7 @@ struct MRDOCS_DECL
     std::vector<doc::See> sees;
 
     /// The list of "related" references.
-    std::vector<doc::Related> related;
+    std::vector<SymbolID> related;
 
     /// The list of preconditions.
     std::vector<doc::Precondition> preconditions;
