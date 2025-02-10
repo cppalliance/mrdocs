@@ -600,12 +600,7 @@ CorpusImpl::finalize()
     report::debug("Finalizing javadoc");
     JavadocFinalizer finalizer(*this);
     finalizer.build();
-
-    if (!config->extractAll && config->warnIfUndocumented)
-    {
-        finalizer.warnUndocumented();
-    }
-    undocumented_.clear();
+    finalizer.emitWarnings();
 }
 
 

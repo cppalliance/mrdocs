@@ -3334,7 +3334,8 @@ checkUndocumented(
     {
         if (config_->warnIfUndocumented)
         {
-            undocumented_.erase({id, extractName(D)});
+            auto const it = undocumented_.find(id);
+            undocumented_.erase(it);
         }
         return {};
     }

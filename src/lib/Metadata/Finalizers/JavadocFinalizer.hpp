@@ -53,17 +53,7 @@ public:
     }
 
     void
-    warnUndocumented() const
-    {
-        for (auto& [id, name] : corpus_.undocumented_)
-        {
-            if (Info const* I = corpus_.find(id))
-            {
-                MRDOCS_CHECK_OR(!I->javadoc || I->Extraction == ExtractionMode::Regular);
-            }
-            warn("{}: Symbol is undocumented", name);
-        }
-    }
+    emitWarnings() const;
 
     void
     operator()(Info& I)
@@ -182,6 +172,15 @@ private:
         MRDOCS_CHECK_OR(corpus_.config->warnings);
         return log(report::Level::warn, format, std::forward<Args>(args)...);
     }
+
+    void
+    warnUndocumented() const;
+
+    void
+    warnDocErrors() const;
+
+    void
+    warnParamErrors(FunctionInfo const& I) const;
 };
 
 } // clang::mrdocs

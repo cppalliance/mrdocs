@@ -5,13 +5,17 @@ struct A {
         character is in the set, otherwise
         it returns false.
 
-        @param ch The character to test.
+        @param ch The unsigned character to test.
     */
     constexpr
     bool
     operator()(unsigned char ch) const noexcept;
 
-    /// @copydoc A::operator()(unsigned char) const
+    /**
+        @copydoc A::operator()(unsigned char) const
+
+        @param ch The signed character to test.
+     */
     constexpr
     bool
     operator()(char ch) const noexcept;

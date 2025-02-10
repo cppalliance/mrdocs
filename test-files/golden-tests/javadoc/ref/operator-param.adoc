@@ -73,7 +73,7 @@ bool
 | Name | Description
 
 | *ch*
-| The character to test&period;
+| The signed character to test&period;
 
 |===
 
@@ -92,6 +92,17 @@ constexpr
 bool
 operator()(char ch) const noexcept;
 ----
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *ch*
+| The signed character to test&period;
+
+|===
 
 [#A-operator_call-0b]
 == <<A,A>>::operator()
@@ -125,7 +136,7 @@ This function returns true if the        character is in the set, otherwise     
 | Name | Description
 
 | *ch*
-| The character to test&period;
+| The unsigned character to test&period;
 
 |===
 
