@@ -499,6 +499,13 @@
         "details": "When set to `true`, MrDocs outputs a warning message if a named function parameter is not documented.",
         "type": "bool",
         "default": true
+      },
+      {
+        "name": "warn-if-undoc-enum-val",
+        "brief": "Warn if enum values are not documented",
+        "details": "When set to `true`, MrDocs outputs a warning message if an enum value is not documented.",
+        "type": "bool",
+        "default": true
       }
     ]
   },

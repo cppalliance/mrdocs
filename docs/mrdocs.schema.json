@@ -460,6 +460,16 @@
       "title": "Warn if documentation has errors",
       "type": "boolean"
     },
+    "warn-if-undoc-enum-val": {
+      "default": true,
+      "description": "When set to `true`, MrDocs outputs a warning message if an enum value is not documented.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Warn if enum values are not documented",
+      "type": "boolean"
+    },
     "warn-if-undocumented": {
       "default": true,
       "description": "When set to `true`, MrDocs outputs a warning message if a symbol that passes all filters is not documented.",
