@@ -110,34 +110,34 @@ operator()(InfoTy& I)
 
 void
 JavadocFinalizer::
-finalize(doc::Reference& ref)
+finalize(doc::Reference& ref, bool const emitWarning)
 {
-    Info const* res = corpus_.lookup(current_context_->id, ref.string);
-    if (res)
+    if (Expected<Info const*> res
+        = corpus_.lookup(current_context_->id, ref.string))
     {
-        ref.id = res->id;
+        Info const* resPtr = *res;
+        MRDOCS_ASSERT(resPtr);
+        ref.id = resPtr->id;
     }
-    if (res == nullptr &&
+    else if (
+        emitWarning &&
         corpus_.config->warnings &&
         corpus_.config->warnBrokenRef &&
         // Only warn once per reference
-        !warned_.contains({ref.string, current_context_->Name}) &&
+        !refWarned_.contains({ref.string, current_context_->Name}) &&
         // Ignore std:: references
         !ref.string.starts_with("std::") &&
         // Ignore other reference types that can't be replaced by `...`
         ref.Kind == doc::NodeKind::reference)
     {
         MRDOCS_ASSERT(current_context_);
-        if (auto primaryLoc = getPrimaryLocation(*current_context_))
-        {
-            this->warn(
-                "{}:{}\n{}: Failed to resolve reference to '{}'",
-                primaryLoc->FullPath,
-                primaryLoc->LineNumber,
-                corpus_.Corpus::qualifiedName(*current_context_),
-                ref.string);
-        }
-        warned_.insert({ref.string, current_context_->Name});
+        this->warn(
+            "{}: Failed to resolve reference to '{}'\n"
+            "    {}",
+            corpus_.Corpus::qualifiedName(*current_context_),
+            ref.string,
+            res.error().reason());
+        refWarned_.insert({ref.string, current_context_->Name});
     }
 }
 
@@ -154,11 +154,11 @@ finalize(doc::Node& node)
 
         if constexpr(std::same_as<NodeTy, doc::Reference>)
         {
-            finalize(dynamic_cast<doc::Reference&>(N));
+            finalize(dynamic_cast<doc::Reference&>(N), true);
         }
         else if constexpr (std::same_as<NodeTy, doc::Throws>)
         {
-            finalize(dynamic_cast<doc::Throws&>(N).exception);
+            finalize(dynamic_cast<doc::Throws&>(N).exception, false);
         }
     });
 }
@@ -280,54 +280,47 @@ copyBriefAndDetails(Javadoc& javadoc)
         }
 
         // Find the node to copy from
-        Info const* res = corpus_.lookup(current_context_->id, copied->string);
-        if (!res)
+        Expected<Info const*> res = corpus_.lookup(current_context_->id, copied->string);
+        if (!res || !*res)
         {
             if (corpus_.config->warnings &&
                 corpus_.config->warnBrokenRef &&
-                !warned_.contains({copied->string, current_context_->Name}))
+                !refWarned_.contains({copied->string, current_context_->Name}))
             {
-                MRDOCS_ASSERT(current_context_);
-                auto primaryLoc = getPrimaryLocation(*current_context_);
                 this->warn(
-                    "{}:{}\n"
-                    "{}: Failed to copy documentation from '{}'\n"
-                    "    Note: Symbol '{}' not found.",
-                    primaryLoc->FullPath,
-                    primaryLoc->LineNumber,
+                    "{}: Failed to copy documentation from '{}' (symbol not found)\n"
+                    "    {}",
                     corpus_.Corpus::qualifiedName(*current_context_),
                     copied->string,
-                    copied->string);
+                    res.error().reason());
             }
             continue;
         }
 
         // Ensure the source node is finalized
-        if (!finalized_.contains(res))
+        Info const* resPtr = *res;
+        MRDOCS_ASSERT(resPtr);
+        if (!finalized_.contains(resPtr))
         {
-            operator()(const_cast<Info&>(*res));
+            operator()(const_cast<Info&>(*resPtr));
         }
-        if (!res->javadoc)
+        if (!resPtr->javadoc)
         {
             if (corpus_.config->warnings &&
                 corpus_.config->warnBrokenRef &&
-                !warned_.contains({copied->string, current_context_->Name}))
+                !refWarned_.contains({copied->string, current_context_->Name}))
             {
-                auto ctxPrimaryLoc = getPrimaryLocation(*current_context_);
-                auto resPrimaryLoc = getPrimaryLocation(*res);
+                auto resPrimaryLoc = getPrimaryLocation(*resPtr);
                 this->warn(
-                    "{}:{}\n"
-                    "{}: Failed to copy documentation from '{}'.\n"
-                    "No documentation available.\n"
-                    "    {}:{}\n"
-                    "    Note: No documentation available for '{}'.",
-                    ctxPrimaryLoc->FullPath,
-                    ctxPrimaryLoc->LineNumber,
+                    "{}: Failed to copy documentation from '{}' (no documentation available).\n"
+                    "    No documentation available.\n"
+                    "        {}:{}\n"
+                    "        Note: No documentation available for '{}'.",
                     corpus_.Corpus::qualifiedName(*current_context_),
                     copied->string,
                     resPrimaryLoc->FullPath,
                     resPrimaryLoc->LineNumber,
-                    corpus_.Corpus::qualifiedName(*res));
+                    corpus_.Corpus::qualifiedName(*resPtr));
             }
             continue;
         }
@@ -335,7 +328,7 @@ copyBriefAndDetails(Javadoc& javadoc)
         // Copy brief and details
         bool const copyBrief = copied->parts == doc::Parts::all || copied->parts == doc::Parts::brief;
         bool const copyDetails = copied->parts == doc::Parts::all || copied->parts == doc::Parts::description;
-        Javadoc const& src = *res->javadoc;
+        Javadoc const& src = *resPtr->javadoc;
         if (copyBrief && !javadoc.brief)
         {
             javadoc.brief = src.brief;
@@ -648,34 +641,54 @@ checkExists(SymbolID const& id) const
 
 void
 JavadocFinalizer::
-emitWarnings() const
+emitWarnings()
 {
     MRDOCS_CHECK_OR(corpus_.config->warnings);
     warnUndocumented();
     warnDocErrors();
     warnNoParamDocs();
     warnUndocEnumValues();
+
+    // Print to the console
+    auto const level = !corpus_.config->warnAsError ? report::Level::warn : report::Level::error;
+    for (auto const& [loc, msgs] : warnings_)
+    {
+        std::string locWarning = fmt::format(
+            "{}:{}\n",
+            loc.FullPath,
+            loc.LineNumber);
+        for (auto const& msg : msgs)
+        {
+            locWarning += fmt::format("    {}\n", msg);
+        }
+        report::log(level, locWarning);
+    }
 }
 
 void
 JavadocFinalizer::
-warnUndocumented() const
+warnUndocumented()
 {
     MRDOCS_CHECK_OR(corpus_.config->warnIfUndocumented);
-    for (auto& [id, name] : corpus_.undocumented_)
+    for (auto& undocI : corpus_.undocumented_)
     {
-        if (Info const* I = corpus_.find(id))
+        if (Info const* I = corpus_.find(undocI.id))
         {
-            MRDOCS_CHECK_OR(!I->javadoc || I->Extraction == ExtractionMode::Regular);
+            MRDOCS_CHECK_OR(
+                !I->javadoc || I->Extraction == ExtractionMode::Regular);
         }
-        this->warn("{}: Symbol is undocumented", name);
+        bool const prefer_definition = undocI.kind == InfoKind::Record
+                                 || undocI.kind == InfoKind::Enum;
+        this->warn(
+            *getPrimaryLocation(undocI, prefer_definition),
+            "{}: Symbol is undocumented", undocI.name);
     }
     corpus_.undocumented_.clear();
 }
 
 void
 JavadocFinalizer::
-warnDocErrors() const
+warnDocErrors()
 {
     MRDOCS_CHECK_OR(corpus_.config->warnIfDocError);
     for (auto const& I : corpus_.info_)
@@ -713,7 +726,7 @@ getJavadocParamNames(Javadoc const& javadoc)
 
 void
 JavadocFinalizer::
-warnParamErrors(FunctionInfo const& I) const
+warnParamErrors(FunctionInfo const& I)
 {
     MRDOCS_CHECK_OR(I.javadoc);
 
@@ -723,15 +736,12 @@ warnParamErrors(FunctionInfo const& I) const
     auto [firstDup, lastUnique] = std::ranges::unique(javadocParamNames);
     auto duplicateParamNames = std::ranges::subrange(firstDup, lastUnique);
     auto [firstDupDup, _] = std::ranges::unique(duplicateParamNames);
-    for (auto uniqueDuplicateParamNames = std::ranges::subrange(firstDup, firstDupDup);
+    for (auto const uniqueDuplicateParamNames = std::ranges::subrange(firstDup, firstDupDup);
          std::string_view duplicateParamName: uniqueDuplicateParamNames)
     {
-        auto primaryLoc = getPrimaryLocation(I);
         this->warn(
-            "{}:{}\n"
+            *getPrimaryLocation(I),
             "{}: Duplicate parameter documentation for '{}'",
-            primaryLoc->FullPath,
-            primaryLoc->LineNumber,
             corpus_.Corpus::qualifiedName(I),
             duplicateParamName);
     }
@@ -745,12 +755,9 @@ warnParamErrors(FunctionInfo const& I) const
     {
         if (std::ranges::find(paramNames, javadocParamName) == paramNames.end())
         {
-            auto primaryLoc = getPrimaryLocation(I);
             this->warn(
-                "{}:{}\n"
+                *getPrimaryLocation(I),
                 "{}: Documented parameter '{}' does not exist",
-                primaryLoc->FullPath,
-                primaryLoc->LineNumber,
                 corpus_.Corpus::qualifiedName(I),
                 javadocParamName);
         }
@@ -760,7 +767,7 @@ warnParamErrors(FunctionInfo const& I) const
 
 void
 JavadocFinalizer::
-warnNoParamDocs() const
+warnNoParamDocs()
 {
     MRDOCS_CHECK_OR(corpus_.config->warnNoParamdoc);
     for (auto const& I : corpus_.info_)
@@ -774,8 +781,9 @@ warnNoParamDocs() const
 
 void
 JavadocFinalizer::
-warnNoParamDocs(FunctionInfo const& I) const
+warnNoParamDocs(FunctionInfo const& I)
 {
+    MRDOCS_CHECK_OR(!I.IsDeleted);
     // Check for function parameters that are not documented in javadoc
     auto javadocParamNames = getJavadocParamNames(*I.javadoc);
     auto paramNames =
@@ -785,12 +793,9 @@ warnNoParamDocs(FunctionInfo const& I) const
     {
         if (std::ranges::find(javadocParamNames, paramName) == javadocParamNames.end())
         {
-            auto primaryLoc = getPrimaryLocation(I);
             this->warn(
-                "{}:{}\n"
+                *getPrimaryLocation(I),
                 "{}: Missing documentation for parameter '{}'",
-                primaryLoc->FullPath,
-                primaryLoc->LineNumber,
                 corpus_.Corpus::qualifiedName(I),
                 paramName);
         }
@@ -810,12 +815,9 @@ warnNoParamDocs(FunctionInfo const& I) const
         };
         if (!isVoid(*I.ReturnType))
         {
-            auto primaryLoc = getPrimaryLocation(I);
             this->warn(
-                "{}:{}\n"
+                *getPrimaryLocation(I),
                 "{}: Missing documentation for return type",
-                primaryLoc->FullPath,
-                primaryLoc->LineNumber,
                 corpus_.Corpus::qualifiedName(I));
         }
     }
@@ -823,7 +825,7 @@ warnNoParamDocs(FunctionInfo const& I) const
 
 void
 JavadocFinalizer::
-warnUndocEnumValues() const
+warnUndocEnumValues()
 {
     MRDOCS_CHECK_OR(corpus_.config->warnIfUndocEnumVal);
     for (auto const& I : corpus_.info_)
@@ -831,12 +833,9 @@ warnUndocEnumValues() const
         MRDOCS_CHECK_OR_CONTINUE(I->isEnumConstant());
         MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
         MRDOCS_CHECK_OR_CONTINUE(!I->javadoc);
-        auto primaryLoc = getPrimaryLocation(*I);
         this->warn(
-            "{}:{}\n"
+            *getPrimaryLocation(*I),
             "{}: Missing documentation for enum value",
-            primaryLoc->FullPath,
-            primaryLoc->LineNumber,
             corpus_.Corpus::qualifiedName(*I));
     }
 }

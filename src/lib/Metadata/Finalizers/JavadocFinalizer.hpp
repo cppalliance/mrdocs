@@ -32,8 +32,49 @@ class JavadocFinalizer
 {
     CorpusImpl& corpus_;
     Info* current_context_ = nullptr;
-    std::set<std::pair<std::string, std::string>> warned_;
+
+    /* Broken references for which we have already emitted
+       a warning.
+     */
+    std::set<std::pair<std::string, std::string>> refWarned_;
+
+    /* Info objects that have been finalized
+
+       This is used to avoid allow recursion when
+       finalizing references.
+     */
     std::set<Info const*> finalized_;
+
+    // A comparison function that sorts locations by:
+    // 1) ascending full path
+    // 2) descending line number
+    // This is the most convenient order to fix
+    // warnings in the source code because fixing a problem
+    // at a certain line will invalidate the line numbers
+    // of all subsequent warnings.
+    struct WarningLocationCompare
+    {
+        bool
+        operator()(Location const& lhs, Location const& rhs) const
+        {
+            if (lhs.FullPath != rhs.FullPath)
+            {
+                return lhs.FullPath < rhs.FullPath;
+            }
+            return lhs.LineNumber > rhs.LineNumber;
+        }
+    };
+
+    /*  Warnings that should be emitted after finalization
+
+        The warnings are initially stored in this container
+        where the messages are sorted by location.
+
+        This makes it easier for the user to go through
+        the warnings in the order they appear in the source
+        code and fix them.
+     */
+    std::map<Location, std::vector<std::string>, WarningLocationCompare> warnings_;
 
 public:
     JavadocFinalizer(CorpusImpl& corpus)
@@ -50,10 +91,8 @@ public:
             MRDOCS_CHECK_OR_CONTINUE(I->Extraction != ExtractionMode::Dependency);
             visit(*I, *this);
         }
+        emitWarnings();
     }
-
-    void
-    emitWarnings() const;
 
     void
     operator()(Info& I)
@@ -69,7 +108,7 @@ public:
 private:
     // Look for symbol and set the id of a reference
     void
-    finalize(doc::Reference& ref);
+    finalize(doc::Reference& ref, bool emitWarning = true);
 
     // Recursively finalize references in a javadoc node
     void
@@ -163,34 +202,50 @@ private:
             }));
     }
 
+    void
+    emitWarnings();
+
     template<class... Args>
     void
     warn(
-        Located<std::string_view> format,
-        Args&&... args) const
+        Location const& loc,
+        Located<std::string_view> const format,
+        Args&&... args)
     {
         MRDOCS_CHECK_OR(corpus_.config->warnings);
-        auto const level = !corpus_.config->warnAsError ? report::Level::warn : report::Level::error;
-        return log(level, format, std::forward<Args>(args)...);
+        std::string const str = fmt::vformat(format.value, fmt::make_format_args(args...));
+        warnings_[loc].push_back(str);
+    }
+
+    template<class... Args>
+    void
+    warn(
+        Located<std::string_view> const format,
+        Args&&... args)
+    {
+        MRDOCS_CHECK_OR(corpus_.config->warnings);
+        MRDOCS_ASSERT(current_context_);
+        auto loc = getPrimaryLocation(*current_context_);
+        warn(*loc, format, std::forward<Args>(args)...);
     }
 
     void
-    warnUndocumented() const;
+    warnUndocumented();
 
     void
-    warnDocErrors() const;
+    warnDocErrors();
 
     void
-    warnParamErrors(FunctionInfo const& I) const;
+    warnParamErrors(FunctionInfo const& I);
 
     void
-    warnNoParamDocs() const;
+    warnNoParamDocs();
 
     void
-    warnNoParamDocs(FunctionInfo const& I) const;
+    warnNoParamDocs(FunctionInfo const& I);
 
     void
-    warnUndocEnumValues() const;
+    warnUndocEnumValues();
 };
 
 } // clang::mrdocs
