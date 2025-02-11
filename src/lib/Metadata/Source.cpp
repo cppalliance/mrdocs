@@ -81,27 +81,21 @@ merge(SourceInfo& I, SourceInfo&& Other)
 }
 
 OptionalLocation
-getPrimaryLocation(SourceInfo const& I)
+getPrimaryLocation(SourceInfo const& I, bool const preferDefinition)
 {
-    OptionalLocation primaryLoc;
-    if (I.DefLoc)
+    if (I.Loc.empty() ||
+        (preferDefinition &&
+        I.DefLoc))
     {
-        primaryLoc = *I.DefLoc;
+        return I.DefLoc;
     }
-    else if (!I.Loc.empty())
-    {
-        auto const documentedIt = std::ranges::find_if(
+    auto const documentedIt = std::ranges::find_if(
             I.Loc, &Location::Documented);
-        if (documentedIt != I.Loc.end())
-        {
-            primaryLoc = *documentedIt;
-        }
-        else
-        {
-            primaryLoc = I.Loc.front();
-        }
+    if (documentedIt != I.Loc.end())
+    {
+        return OptionalLocation(*documentedIt);
     }
-    return primaryLoc;
+    return OptionalLocation(I.Loc.front());
 }
 
 template <class IO>

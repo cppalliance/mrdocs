@@ -355,6 +355,15 @@ tag_invoke(
     });
 }
 
+inline
+OptionalLocation
+getPrimaryLocation(Info const& I)
+{
+    return getPrimaryLocation(
+        dynamic_cast<SourceInfo const&>(I),
+        I.isRecord() || I.isEnum());
+}
+
 } // clang::mrdocs
 
 #endif
