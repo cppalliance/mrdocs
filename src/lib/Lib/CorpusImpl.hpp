@@ -91,10 +91,10 @@ public:
     Info const*
     find(SymbolID const& id) const noexcept override;
 
-    Info const*
+    Expected<Info const*>
     lookup(SymbolID const& context, std::string_view name) const override;
 
-    Info const*
+    Expected<Info const*>
     lookup(SymbolID const& context, std::string_view name);
 
     /** Build metadata for a set of translation units.
@@ -141,7 +141,7 @@ private:
 
     template <class Self>
     static
-    Info const*
+    Expected<Info const*>
     lookupImpl(
         Self&& self,
         SymbolID const& context,
