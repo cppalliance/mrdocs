@@ -484,6 +484,24 @@ private:
     void
     populate(Info& I, bool isNew, DeclTy const* D);
 
+    template <std::derived_from<Decl> DeclTy>
+    void
+    populate(SourceInfo& I, DeclTy const* D);
+
+    /*  Parse the comments above a declaration as Javadoc
+
+        This function will parse the comments above a declaration
+        as Javadoc, and store the results in the `javadoc` input
+        parameter.
+
+        @return true if the comments were successfully parsed as
+        Javadoc, and false otherwise.
+     */
+    bool
+    populate(
+        std::optional<Javadoc>& javadoc,
+        Decl const* D);
+
     void
     populate(SourceInfo& I, clang::SourceLocation loc, bool definition, bool documented);
 
@@ -502,6 +520,9 @@ private:
 
     void
     populate(RecordInfo& I, ClassTemplateSpecializationDecl const* D);
+
+    void
+    populate(RecordInfo& I, ClassTemplatePartialSpecializationDecl const* D);
 
     void
     populate(FunctionInfo& I, FunctionDecl const* D);
@@ -547,6 +568,9 @@ private:
 
     void
     populate(VariableInfo& I, VarTemplateSpecializationDecl const* D);
+
+    void
+    populate(VariableInfo& I, VarTemplatePartialSpecializationDecl const* D);
 
     void
     populate(FieldInfo& I, FieldDecl const* D);
@@ -717,20 +741,6 @@ private:
 
     void
     addMember(std::vector<SymbolID>& container, Info const& Member) const;
-
-    /*  Parse the comments above a declaration as Javadoc
-
-        This function will parse the comments above a declaration
-        as Javadoc, and store the results in the `javadoc` input
-        parameter.
-
-        @return true if the comments were successfully parsed as
-        Javadoc, and false otherwise.
-     */
-    bool
-    generateJavadoc(
-        std::optional<Javadoc>& javadoc,
-        Decl const* D);
 
     Polymorphic<TypeInfo>
     toTypeInfo(QualType qt, TraversalMode mode);
