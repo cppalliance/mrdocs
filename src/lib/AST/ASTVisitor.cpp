@@ -531,21 +531,8 @@ void
 ASTVisitor::
 populate(Info& I, bool const isNew, DeclTy const* D)
 {
-    // Populate the documentation
-    bool const isDocumented = generateJavadoc(I.javadoc, D);
-
-    // Populate the source info
-    clang::SourceLocation Loc = D->getBeginLoc();
-    if (Loc.isInvalid())
-    {
-        Loc = D->getLocation();
-    }
-    if (Loc.isValid())
-    {
-        populate(
-            dynamic_cast<SourceInfo&>(I),
-            Loc, isDefinition(D), isDocumented);
-    }
+    populate(I.javadoc, D);
+    populate(dynamic_cast<SourceInfo&>(I), D);
 
     // All other information is redundant if the symbol is not new
     MRDOCS_CHECK_OR(isNew);
@@ -555,6 +542,42 @@ populate(Info& I, bool const isNew, DeclTy const* D)
     MRDOCS_ASSERT(I.Kind != InfoKind::None);
 
     I.Name = extractName(D);
+}
+
+template <std::derived_from<Decl> DeclTy>
+void
+ASTVisitor::
+populate(SourceInfo& I, DeclTy const* D)
+{
+    clang::SourceLocation Loc = D->getBeginLoc();
+    if (Loc.isInvalid())
+    {
+        Loc = D->getLocation();
+    }
+    if (Loc.isValid())
+    {
+        populate(
+            dynamic_cast<SourceInfo&>(I),
+            Loc,
+            isDefinition(D),
+            D->getASTContext().getRawCommentForDeclNoCache(D));
+    }
+}
+
+bool
+ASTVisitor::
+populate(
+    std::optional<Javadoc>& javadoc,
+    Decl const* D)
+{
+    RawComment const* RC =
+        D->getASTContext().getRawCommentForDeclNoCache(D);
+    MRDOCS_CHECK_OR(RC, false);
+    comments::FullComment* FC =
+        RC->parse(D->getASTContext(), &sema_.getPreprocessor(), D);
+    MRDOCS_CHECK_OR(FC, false);
+    parseJavadoc(javadoc, FC, D, config_, diags_);
+    return true;
 }
 
 void
@@ -684,6 +707,13 @@ populate(RecordInfo& I, ClassTemplateSpecializationDecl const* D)
 {
     populate(I.Template, D, D->getSpecializedTemplate());
     populate(I, cast<CXXRecordDecl>(D));
+}
+
+void
+ASTVisitor::
+populate(RecordInfo& I, ClassTemplatePartialSpecializationDecl const* D)
+{
+    populate(I, dynamic_cast<ClassTemplateSpecializationDecl const*>(D));
 }
 
 void
@@ -1021,6 +1051,13 @@ populate(VariableInfo& I, VarTemplateSpecializationDecl const* D)
 {
     populate(I.Template, D, D->getSpecializedTemplate());
     populate(I, cast<VarDecl>(D));
+}
+
+void
+ASTVisitor::
+populate(VariableInfo& I, VarTemplatePartialSpecializationDecl const* D)
+{
+    populate(I, dynamic_cast<VarTemplateSpecializationDecl const*>(D));
 }
 
 void
@@ -1881,22 +1918,6 @@ qualifiedName(NamedDecl const* ND) const
     llvm::raw_svector_ostream stream(name);
     getQualifiedName(ND, stream, context_.getPrintingPolicy());
     return name;
-}
-
-bool
-ASTVisitor::
-generateJavadoc(
-    std::optional<Javadoc>& javadoc,
-    Decl const* D)
-{
-    RawComment const* RC =
-        D->getASTContext().getRawCommentForDeclNoCache(D);
-    MRDOCS_CHECK_OR(RC, false);
-    comments::FullComment* FC =
-        RC->parse(D->getASTContext(), &sema_.getPreprocessor(), D);
-    MRDOCS_CHECK_OR(FC, false);
-    parseJavadoc(javadoc, FC, D, config_, diags_);
-    return true;
 }
 
 Polymorphic<TypeInfo>
