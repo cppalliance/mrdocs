@@ -144,7 +144,7 @@ merge(SourceInfo& I, SourceInfo&& Other);
 
 MRDOCS_DECL
 OptionalLocation
-getPrimaryLocation(SourceInfo const& I);
+getPrimaryLocation(SourceInfo const& I, bool preferDefinition);
 
 void
 tag_invoke(
