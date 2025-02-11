@@ -340,10 +340,137 @@ copyBriefAndDetails(Javadoc& javadoc)
         {
             javadoc.brief = src.brief;
         }
-        if (copyDetails && !src.blocks.empty())
+        if (copyDetails)
         {
-            blockIt = javadoc.blocks.insert(blockIt, src.blocks.begin(), src.blocks.end());
-            blockIt = std::next(blockIt, src.blocks.size());
+            // Copy detail blocks
+            if (!src.blocks.empty())
+            {
+                blockIt = javadoc.blocks.insert(blockIt, src.blocks.begin(), src.blocks.end());
+                blockIt = std::next(blockIt, src.blocks.size());
+            }
+            // Copy returns only if destination is empty
+            if (javadoc.returns.empty())
+            {
+                javadoc.returns.insert(
+                    javadoc.returns.end(),
+                    src.returns.begin(),
+                    src.returns.end());
+            }
+            // Copy only params that don't exist at the destination
+            // documentation but that do exist in the destination
+            // function parameters declaration.
+            if (current_context_->isFunction())
+            {
+                auto const& FI = dynamic_cast<FunctionInfo const&>(*current_context_);
+                for (auto const& srcParam: src.params)
+                {
+                    if (std::ranges::find_if(javadoc.params,
+                        [&srcParam](doc::Param const& destParam)
+                        {
+                            return srcParam.name == destParam.name;
+                        }) != javadoc.params.end())
+                    {
+                        // param already exists at the destination,
+                        // so the user attributed a new meaning to it
+                        continue;
+                    }
+                    if (std::ranges::find_if(FI.Params,
+                        [&srcParam](Param const& destParam)
+                        {
+                            return srcParam.name == destParam.Name;
+                        }) == FI.Params.end())
+                    {
+                        // param does not exist in the destination function
+                        // so it would be an error there
+                        continue;
+                    }
+                    // Push the new param
+                    javadoc.params.push_back(srcParam);
+                }
+            }
+            // Copy only tparams that don't exist at the destination
+            // documentation but that do exist in the destination
+            // template parameters.
+            TemplateInfo const* destTemplate = visit(
+                *current_context_,
+                [](auto& I) -> TemplateInfo const*
+                {
+                    if constexpr (requires { I.Template; })
+                    {
+                        if (I.Template)
+                        {
+                            return &*I.Template;
+                        }
+                    }
+                    return nullptr;
+                });
+            if (destTemplate)
+            {
+                for (auto const& srcTParam: src.tparams)
+                {
+                    if (std::ranges::find_if(javadoc.tparams,
+                        [&srcTParam](doc::TParam const& destTParam)
+                        {
+                            return srcTParam.name == destTParam.name;
+                        }) != javadoc.tparams.end())
+                    {
+                        // tparam already exists at the destination,
+                        // so the user attributed a new meaning to it
+                        continue;
+                    }
+                    if (std::ranges::find_if(destTemplate->Params,
+                        [&srcTParam](Polymorphic<TParam> const& destTParam)
+                        {
+                            return srcTParam.name == destTParam->Name;
+                        }) == destTemplate->Params.end())
+                    {
+                        // TParam does not exist in the destination definition
+                        // so it would be an error there
+                        continue;
+                    }
+                    // Push the new param
+                    javadoc.tparams.push_back(srcTParam);
+                }
+            }
+            // exceptions
+            if (javadoc.exceptions.empty())
+            {
+                bool const isNoExcept =
+                    current_context_->isFunction() ?
+                    dynamic_cast<FunctionInfo const&>(*current_context_).Noexcept.Kind == NoexceptKind::False :
+                    false;
+                if (!isNoExcept)
+                {
+                    javadoc.exceptions.insert(
+                        javadoc.exceptions.end(),
+                        src.exceptions.begin(),
+                        src.exceptions.end());
+                }
+            }
+            // sees
+            if (javadoc.sees.empty())
+            {
+                javadoc.sees.insert(
+                    javadoc.sees.end(),
+                    src.sees.begin(),
+                    src.sees.end());
+            }
+            // preconditions
+            if (javadoc.preconditions.empty())
+            {
+                javadoc.preconditions.insert(
+                    javadoc.preconditions.end(),
+                    src.preconditions.begin(),
+                    src.preconditions.end());
+            }
+            // postconditions
+            if (javadoc.postconditions.empty())
+            {
+                javadoc.postconditions.insert(
+                    javadoc.postconditions.end(),
+                    src.postconditions.begin(),
+                    src.postconditions.end());
+            }
             continue;
         }
         // Erasing the paragraph could make the iterator == end()
