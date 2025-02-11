@@ -221,14 +221,14 @@ isTransparent(Info const& info)
 }
 }
 
-Info const*
+Expected<Info const*>
 CorpusImpl::
-lookup(SymbolID const& context, std::string_view name) const
+lookup(SymbolID const& context, std::string_view const name) const
 {
     return lookupImpl(*this, context, name);
 }
 
-Info const*
+Expected<Info const*>
 CorpusImpl::
 lookup(SymbolID const& context, std::string_view name)
 {
@@ -236,7 +236,7 @@ lookup(SymbolID const& context, std::string_view name)
 }
 
 template <class Self>
-Info const*
+Expected<Info const*>
 CorpusImpl::
 lookupImpl(Self&& self, SymbolID const& context, std::string_view name)
 {
@@ -246,16 +246,33 @@ lookupImpl(Self&& self, SymbolID const& context, std::string_view name)
     }
     if (auto [info, found] = self.lookupCacheGet(context, name); found)
     {
+        if (!info)
+        {
+            return Unexpected(formatError(
+                "Failed to find '{}' from context '{}'",
+                name,
+                self.Corpus::qualifiedName(*self.find(context))));
+        }
         return info;
     }
     Expected<ParsedRef> const s = parseRef(name);
     if (!s)
     {
-        report::warn("Failed to parse '{}'\n     {}", name, s.error().reason());
-        self.lookupCacheSet(context, name, nullptr);
-        return nullptr;
+        return Unexpected(formatError("Failed to parse '{}'\n     {}", name, s.error().reason()));
     }
     Info const* res = lookupImpl(self, context, *s, name, false);
+    if (!res)
+    {
+        auto const contextPtr = self.find(context);
+        if (!contextPtr)
+        {
+            return Unexpected(formatError("Failed to find '{}'", context));
+        }
+        return Unexpected(formatError(
+            "Failed to find '{}' from context '{}'",
+            name,
+            self.Corpus::qualifiedName(*contextPtr)));
+    }
     return res;
 }
 
@@ -600,7 +617,6 @@ CorpusImpl::finalize()
     report::debug("Finalizing javadoc");
     JavadocFinalizer finalizer(*this);
     finalizer.build();
-    finalizer.emitWarnings();
 }
 
 
