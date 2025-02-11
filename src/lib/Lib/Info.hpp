@@ -116,7 +116,25 @@ struct InfoPtrEqual
 using InfoSet = std::unordered_set<
     std::unique_ptr<Info>, InfoPtrHasher, InfoPtrEqual>;
 
-struct SymbolIDNameHasher {
+struct UndocumentedInfo final : SourceInfo {
+    SymbolID id;
+    std::string name;
+    InfoKind kind;
+
+    constexpr
+    UndocumentedInfo(
+        SymbolID id_,
+        std::string name_,
+        InfoKind kind_) noexcept
+        : SourceInfo()
+        , id(id_)
+        , name(std::move(name_))
+        , kind(kind_)
+    {
+    }
+};
+
+struct UndocumentedInfoHasher {
     using is_transparent = void;
 
     std::size_t
@@ -125,41 +143,41 @@ struct SymbolIDNameHasher {
     }
 
     std::size_t
-    operator()(std::pair<SymbolID, std::string> const& I) const {
-        return std::hash<SymbolID>()(I.first);
+    operator()(UndocumentedInfo const& I) const {
+        return std::hash<SymbolID>()(I.id);
     }
 };
 
-struct SymbolIDNameEqual {
+struct UndocumentedInfoEqual {
     using is_transparent = void;
 
     bool
     operator()(
-        std::pair<SymbolID, std::string> const& a,
-        std::pair<SymbolID, std::string> const& b) const
+        UndocumentedInfo const& a,
+        UndocumentedInfo const& b) const
     {
-        return a.first == b.first;
+        return a.id == b.id;
     }
 
     bool
     operator()(
-        std::pair<SymbolID, std::string> const& a,
+        UndocumentedInfo const& a,
         SymbolID const& b) const
     {
-        return a.first == b;
+        return a.id == b;
     }
 
     bool
     operator()(
         SymbolID const& a,
-        std::pair<SymbolID, std::string> const& b) const
+        UndocumentedInfo const& b) const
     {
-        return a == b.first;
+        return a == b.id;
     }
 };
 
 using UndocumentedInfoSet = std::unordered_set<
-    std::pair<SymbolID, std::string>, SymbolIDNameHasher, SymbolIDNameEqual>;
+    UndocumentedInfo, UndocumentedInfoHasher, UndocumentedInfoEqual>;
 
 } // clang::mrdocs
 

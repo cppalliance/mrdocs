@@ -202,7 +202,7 @@ Builder(
                 return nullptr;
             }
             dom::Value decls = sourceInfo.get("decl");
-            if(dom::Value def = sourceInfo.get("def"))
+            if (dom::Value def = sourceInfo.get("def"))
             {
                 // for classes/enums, prefer the definition
                 if (dom::Value const kind = v.get("kind");
@@ -423,7 +423,7 @@ commonTemplatesDir() const
 
 std::string
 Builder::
-commonTemplatesDir(std::string_view subdir) const
+commonTemplatesDir(std::string_view const subdir) const
 {
     Config const& config = domCorpus->config;
     return files::appendPath(
