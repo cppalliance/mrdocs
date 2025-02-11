@@ -59,15 +59,7 @@ report(
     UndocumentedInfoSet&& undocumented)
 {
     InfoSet info = std::move(results);
-    // KRYSTIAN TODO: read stage will be required to
-    // update Info references once we switch to using Info*
-    #if 0
-    {
-        std::shared_lock<std::shared_mutex> read_lock(mutex_);
-    }
-    #endif
-
-    std::unique_lock<std::shared_mutex> write_lock(mutex_);
+    std::unique_lock write_lock(mutex_);
 
     // Add all new Info to the existing set.
     info_.merge(info);
@@ -83,16 +75,14 @@ report(
     // Merge diagnostics and report any new messages.
     diags_.mergeAndReport(std::move(diags));
 
-
-
     // Merge undocumented symbols and remove any symbols
     // from undocumented that we can find in info_ with
     // documentation from other translation units.
     undocumented_.merge(undocumented);
     for (auto it = undocumented_.begin(); it != undocumented_.end();)
     {
-        auto infoIt = info_.find(it->first);
-        if (infoIt != info_.end() &&
+        if (auto infoIt = info_.find(it->id);
+            infoIt != info_.end() &&
             infoIt->get()->javadoc)
         {
             it = undocumented_.erase(it);

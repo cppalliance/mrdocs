@@ -3362,9 +3362,9 @@ checkUndocumented(
     }
     // If the symbol is undocumented, check if we haven't seen a
     // documented version before.
-    auto const it = info_.find(id);
-    if (it != info_.end() &&
-        it->get()->javadoc)
+    if (auto const infoIt = info_.find(id);
+        infoIt != info_.end() &&
+        infoIt->get()->javadoc)
     {
         return {};
     }
@@ -3373,7 +3373,17 @@ checkUndocumented(
     // symbols we've seen so far in this translation unit.
     if (config_->warnIfUndocumented)
     {
-        undocumented_.insert({id, extractName(D)});
+        auto const undocIt = undocumented_.find(id);
+        if (undocIt == undocumented_.end())
+        {
+            InfoKind const kind = InfoTy::kind_id;
+            undocumented_.insert(UndocumentedInfo{id, extractName(D), kind});
+        }
+        // Populate the location
+        auto handle = undocumented_.extract(undocIt);
+        UndocumentedInfo& UI = handle.value();
+        populate(dynamic_cast<SourceInfo&>(UI), D);
+        undocumented_.insert(std::move(handle));
     }
     return Unexpected(Error("Undocumented"));
 }
