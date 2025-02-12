@@ -344,4 +344,37 @@ isAllImplicit(Decl const* D)
     return isAllImplicit(P);
 }
 
+bool
+isVirtualMember(Decl const* D)
+{
+    if (auto const* MD = dyn_cast<CXXMethodDecl>(D))
+    {
+        return MD->isVirtual();
+    }
+    return false;
+}
+
+bool
+isAnonymousNamespace(const Decl *D)
+{
+    if (auto const* ND = dyn_cast<NamespaceDecl>(D))
+    {
+        return ND->isAnonymousNamespace();
+    }
+    return false;
+}
+
+bool
+isStaticFileLevelMember(const Decl *D)
+{
+    if (const auto *VD = dyn_cast<VarDecl>(D)) {
+        return VD->getStorageClass() == SC_Static && VD->getDeclContext()->isFileContext();
+    }
+    if (const auto *FD = dyn_cast<FunctionDecl>(D)) {
+        return FD->getStorageClass() == SC_Static && FD->getDeclContext()->isFileContext();
+    }
+    return false;
+}
+
+
 } // clang::mrdocs

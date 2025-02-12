@@ -2706,8 +2706,7 @@ checkTypeFilters(Decl const* D, AccessSpecifier const access)
     if (access == AS_private)
     {
         // Don't extract private members
-        if (isa<CXXMethodDecl>(D) &&
-            dyn_cast<CXXMethodDecl>(D)->isVirtual())
+        if (isVirtualMember(D))
         {
             // Don't extract private virtual members
             return config_->extractPrivateVirtual || config_->extractPrivate;
@@ -2717,10 +2716,11 @@ checkTypeFilters(Decl const* D, AccessSpecifier const access)
     if (!config_->extractAnonymousNamespaces)
     {
         // Don't extract anonymous namespaces
-        MRDOCS_CHECK_OR(
-            !isa<NamespaceDecl>(D) ||
-            !dyn_cast<NamespaceDecl>(D)->isAnonymousNamespace(),
-            false);
+        MRDOCS_CHECK_OR(!isAnonymousNamespace(D), false);
+    }
+    if (!config_->extractStatic)
+    {
+        MRDOCS_CHECK_OR(!isStaticFileLevelMember(D), false);
     }
 
     // Don't extract anonymous unions
