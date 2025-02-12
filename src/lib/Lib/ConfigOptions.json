@@ -522,6 +522,13 @@
         "default": true
       },
       {
+        "name": "warn-unnamed-param",
+        "brief": "Warn if documented functions have unnamed parameters",
+        "details": "When set to `true`, MrDocs outputs a warning message if a documented function has a parameter that is not named.",
+        "type": "bool",
+        "default": false
+      },
+      {
         "name": "warn-if-undoc-enum-val",
         "brief": "Warn if enum values are not documented",
         "details": "When set to `true`, MrDocs outputs a warning message if an enum value is not documented.",
