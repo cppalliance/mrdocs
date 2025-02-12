@@ -540,6 +540,16 @@
       "title": "Warn if parameters are not documented",
       "type": "boolean"
     },
+    "warn-unnamed-param": {
+      "default": false,
+      "description": "When set to `true`, MrDocs outputs a warning message if a documented function has a parameter that is not named.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Warn if documented functions have unnamed parameters",
+      "type": "boolean"
+    },
     "warnings": {
       "default": true,
       "description": "When set to `true`, MrDocs outputs warning messages during the generation of the documentation. It is usually recommended to enable warnings while writing the documentation.",

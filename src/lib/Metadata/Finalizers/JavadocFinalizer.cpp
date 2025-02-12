@@ -648,6 +648,7 @@ emitWarnings()
     warnDocErrors();
     warnNoParamDocs();
     warnUndocEnumValues();
+    warnUnnamedParams();
 
     // Print to the console
     auto const level = !corpus_.config->warnAsError ? report::Level::warn : report::Level::error;
@@ -837,6 +838,55 @@ warnUndocEnumValues()
             *getPrimaryLocation(*I),
             "{}: Missing documentation for enum value",
             corpus_.Corpus::qualifiedName(*I));
+    }
+}
+
+void
+JavadocFinalizer::
+warnUnnamedParams()
+{
+    MRDOCS_CHECK_OR(corpus_.config->warnUnnamedParam);
+    for (auto const& I : corpus_.info_)
+    {
+        MRDOCS_CHECK_OR_CONTINUE(I->isFunction());
+        MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
+        MRDOCS_CHECK_OR_CONTINUE(I->javadoc);
+        warnUnnamedParams(dynamic_cast<FunctionInfo const&>(*I));
+    }
+}
+
+void
+JavadocFinalizer::
+warnUnnamedParams(FunctionInfo const& I)
+{
+    auto orderSuffix = [](std::size_t const i) -> std::string
+    {
+        if (i == 0)
+        {
+            return "st";
+        }
+        if (i == 1)
+        {
+            return "nd";
+        }
+        if (i == 2)
+        {
+            return "rd";
+        }
+        return "th";
+    };
+
+    for (std::size_t i = 0; i < I.Params.size(); ++i)
+    {
+        if (I.Params[i].Name.empty())
+        {
+            this->warn(
+                *getPrimaryLocation(I),
+                "{}: {}{} parameter is unnamed",
+                corpus_.Corpus::qualifiedName(I),
+                i + 1,
+                orderSuffix(i));
+        }
     }
 }
 

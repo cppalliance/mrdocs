@@ -246,6 +246,12 @@ private:
 
     void
     warnUndocEnumValues();
+
+    void
+    warnUnnamedParams();
+
+    void
+    warnUnnamedParams(FunctionInfo const& I);
 };
 
 } // clang::mrdocs
