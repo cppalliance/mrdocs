@@ -101,6 +101,16 @@
       "title": "Extract all symbols",
       "type": "boolean"
     },
+    "extract-private": {
+      "default": false,
+      "description": "Determine whether private class members should be extracted",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Extraction policy for private class members",
+      "type": "boolean"
+    },
     "file-patterns": {
       "default": [
         "*.hpp",
@@ -268,16 +278,6 @@
         false
       ],
       "title": "Extraction policy for private base classes",
-      "type": "boolean"
-    },
-    "private-members": {
-      "default": false,
-      "description": "Determine whether private class members should be extracted",
-      "enum": [
-        true,
-        false
-      ],
-      "title": "Extraction policy for private class members",
       "type": "boolean"
     },
     "recursive": {

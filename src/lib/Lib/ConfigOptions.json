@@ -186,7 +186,7 @@
         "default": true
       },
       {
-        "name": "private-members",
+        "name": "extract-private",
         "brief": "Extraction policy for private class members",
         "details": "Determine whether private class members should be extracted",
         "type": "bool",

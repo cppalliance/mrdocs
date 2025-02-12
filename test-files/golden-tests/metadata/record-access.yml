@@ -1,1 +1,1 @@
-private-members: true
+extract-private: true
