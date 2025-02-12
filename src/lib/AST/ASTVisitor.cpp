@@ -669,7 +669,7 @@ populate(
         {
             AccessSpecifier const access = B.getAccessSpecifier();
 
-            if (!config_->privateBases &&
+            if (!config_->extractPrivateBases &&
                 access == AS_private)
             {
                 continue;
@@ -2701,7 +2701,7 @@ checkFilters(
 
 bool
 ASTVisitor::
-checkTypeFilters(Decl const* D, AccessSpecifier access)
+checkTypeFilters(Decl const* D, AccessSpecifier const access)
 {
     if (!config_->extractPrivate)
     {

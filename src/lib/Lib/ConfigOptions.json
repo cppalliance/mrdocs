@@ -193,7 +193,7 @@
         "default": false
       },
       {
-        "name": "private-bases",
+        "name": "extract-private-bases",
         "brief": "Extraction policy for private base classes",
         "details": "Determine whether private base classes should be extracted",
         "type": "bool",
