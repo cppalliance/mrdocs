@@ -16,23 +16,23 @@ namespace clang::mrdocs {
 namespace {
 constexpr
 bool
-isDigit(char c)
+isDigit(char const c)
 {
     return c >= '0' && c <= '9';
 }
 
 constexpr
 bool
-isIdentifierStart(char c)
+isIdentifierStart(char const c)
 {
-    return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c == '_' || c == '~';
+    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_' || c == '~';
 }
 
 constexpr
 bool
-isIdentifierContinuation(char c)
+isIdentifierContinuation(char const c)
 {
-    return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c == '_' || isDigit(c);
+    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_' || isDigit(c);
 }
 
 class RefParser
