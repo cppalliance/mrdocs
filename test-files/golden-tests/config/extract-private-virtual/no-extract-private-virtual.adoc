@@ -1,0 +1,60 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+=== Types
+
+[cols=1]
+|===
+| Name 
+
+| <<A,`A`>> 
+|===
+
+[#A]
+== A
+
+
+=== Synopsis
+
+
+Declared in `&lt;no&hyphen;extract&hyphen;private&hyphen;virtual&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class A;
+----
+
+=== Member Functions
+
+[cols=1]
+|===
+| Name 
+
+| <<A-f,`f`>>  [.small]#[virtual]#
+|===
+
+
+
+[#A-f]
+== <<A,A>>::f
+
+
+=== Synopsis
+
+
+Declared in `&lt;no&hyphen;extract&hyphen;private&hyphen;virtual&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+virtual
+void
+f();
+----
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

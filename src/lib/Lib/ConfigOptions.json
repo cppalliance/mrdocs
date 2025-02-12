@@ -193,6 +193,13 @@
         "default": false
       },
       {
+        "name": "extract-private-virtual",
+        "brief": "Extraction policy for private virtual methods of a class",
+        "details": "Determine whether private virtual methods of a class should be extracted",
+        "type": "bool",
+        "default": false
+      },
+      {
         "name": "extract-private-bases",
         "brief": "Extraction policy for private base classes",
         "details": "Determine whether private base classes should be extracted",
