@@ -1109,6 +1109,9 @@ private:
     FileInfo*
     findFileInfo(clang::SourceLocation loc);
 
+    FileInfo*
+    findFileInfo(Decl const* D);
+
     /* Build a FileInfo for a FileEntry
 
         This function will build a FileInfo object for a
