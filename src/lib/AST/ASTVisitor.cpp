@@ -509,23 +509,6 @@ generateID(Decl const* D) const
     return id;
 }
 
-namespace
-{
-template <class DeclTy>
-bool
-isDefinition(DeclTy* D)
-{
-    if constexpr (requires {D->isThisDeclarationADefinition();})
-    {
-        return D->isThisDeclarationADefinition();
-    }
-    else
-    {
-        return false;
-    }
-}
-}
-
 template <std::derived_from<Decl> DeclTy>
 void
 ASTVisitor::
@@ -560,7 +543,7 @@ populate(SourceInfo& I, DeclTy const* D)
             dynamic_cast<SourceInfo&>(I),
             Loc,
             isDefinition(D),
-            D->getASTContext().getRawCommentForDeclNoCache(D));
+            isDocumented(D));
     }
 }
 
@@ -3366,7 +3349,7 @@ checkUndocumented(
     // Check if the symbol is documented, ensure this symbol is not in the set
     // of undocumented symbols in this translation unit and return
     // without an error if it is
-    if (D->getASTContext().getRawCommentForDeclNoCache(D))
+    if (isDocumented(D))
     {
         if (config_->warnIfUndocumented)
         {

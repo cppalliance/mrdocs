@@ -355,7 +355,7 @@ isVirtualMember(Decl const* D)
 }
 
 bool
-isAnonymousNamespace(const Decl *D)
+isAnonymousNamespace(Decl const* D)
 {
     if (auto const* ND = dyn_cast<NamespaceDecl>(D))
     {
@@ -365,7 +365,7 @@ isAnonymousNamespace(const Decl *D)
 }
 
 bool
-isStaticFileLevelMember(const Decl *D)
+isStaticFileLevelMember(Decl const* D)
 {
     if (const auto *VD = dyn_cast<VarDecl>(D)) {
         return VD->getStorageClass() == SC_Static && VD->getDeclContext()->isFileContext();
@@ -374,6 +374,12 @@ isStaticFileLevelMember(const Decl *D)
         return FD->getStorageClass() == SC_Static && FD->getDeclContext()->isFileContext();
     }
     return false;
+}
+
+bool
+isDocumented(Decl const* D)
+{
+    return D->getASTContext().getRawCommentForDeclNoCache(D);
 }
 
 

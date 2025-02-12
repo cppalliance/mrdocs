@@ -844,6 +844,24 @@ MRDOCS_DECL
 bool
 isStaticFileLevelMember(Decl const *D);
 
+MRDOCS_DECL
+bool
+isDocumented(Decl const *D);
+
+template <class DeclTy>
+bool
+isDefinition(DeclTy* D)
+{
+    if constexpr (requires {D->isThisDeclarationADefinition();})
+    {
+        return D->isThisDeclarationADefinition();
+    }
+    else
+    {
+        return false;
+    }
+}
+
 #ifdef NDEBUG
 #define MRDOCS_SYMBOL_TRACE(D, C)
 #else
