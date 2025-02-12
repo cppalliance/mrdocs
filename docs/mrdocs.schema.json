@@ -121,6 +121,16 @@
       "title": "Extraction policy for private base classes",
       "type": "boolean"
     },
+    "extract-private-virtual": {
+      "default": false,
+      "description": "Determine whether private virtual methods of a class should be extracted",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Extraction policy for private virtual methods of a class",
+      "type": "boolean"
+    },
     "file-patterns": {
       "default": [
         "*.hpp",

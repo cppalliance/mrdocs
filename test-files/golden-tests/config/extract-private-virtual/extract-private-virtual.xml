@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <class name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
+    <file short-path="extract-private-virtual.cpp" source-path="extract-private-virtual.cpp" line="1" class="def"/>
+    <function name="f" id="hLXvGC+nOrLQRH9lODKkgi/oUas=">
+      <file short-path="extract-private-virtual.cpp" source-path="extract-private-virtual.cpp" line="3" class="def"/>
+      <attr id="is-virtual-as-written"/>
+    </function>
+    <function name="g" access="private" id="IWP5ktgJAZgjufMQ6EE1eb6mm9g=">
+      <file short-path="extract-private-virtual.cpp" source-path="extract-private-virtual.cpp" line="5" class="def"/>
+      <attr id="is-virtual-as-written"/>
+    </function>
+  </class>
+</namespace>
+</mrdocs>

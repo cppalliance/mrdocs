@@ -2703,12 +2703,20 @@ bool
 ASTVisitor::
 checkTypeFilters(Decl const* D, AccessSpecifier const access)
 {
-    if (!config_->extractPrivate)
+    if (access == AS_private)
     {
-        MRDOCS_CHECK_OR(access != AccessSpecifier::AS_private, false);
+        // Don't extract private members
+        if (isa<CXXMethodDecl>(D) &&
+            dyn_cast<CXXMethodDecl>(D)->isVirtual())
+        {
+            // Don't extract private virtual members
+            return config_->extractPrivateVirtual || config_->extractPrivate;
+        }
+        return config_->extractPrivate;
     }
     if (!config_->extractAnonymousNamespaces)
     {
+        // Don't extract anonymous namespaces
         MRDOCS_CHECK_OR(
             !isa<NamespaceDecl>(D) ||
             !dyn_cast<NamespaceDecl>(D)->isAnonymousNamespace(),
