@@ -2705,10 +2705,14 @@ checkTypeFilters(Decl const* D, AccessSpecifier const access)
 {
     if (!config_->extractPrivate)
     {
-        // KRYSTIAN FIXME: this doesn't handle direct
-        // dependencies on inaccessible declarations
+        MRDOCS_CHECK_OR(access != AccessSpecifier::AS_private, false);
+    }
+    if (!config_->extractAnonymousNamespaces)
+    {
         MRDOCS_CHECK_OR(
-             access != AccessSpecifier::AS_private, false);
+            !isa<NamespaceDecl>(D) ||
+            !dyn_cast<NamespaceDecl>(D)->isAnonymousNamespace(),
+            false);
     }
 
     // Don't extract anonymous unions
@@ -2716,22 +2720,7 @@ checkTypeFilters(Decl const* D, AccessSpecifier const access)
     MRDOCS_CHECK_OR(!RD || !RD->isAnonymousStructOrUnion(), false);
 
     // Don't extract implicitly generated declarations
-    // (except for IndirectFieldDecls)
     MRDOCS_CHECK_OR(!D->isImplicit() || isa<IndirectFieldDecl>(D), false);
-
-    // Don't extract anonymous namespaces unless configured to do so
-    // and the current mode is normal
-    if (auto const* ND = dyn_cast<NamespaceDecl>(D);
-        ND &&
-        ND->isAnonymousNamespace() &&
-        config_->anonymousNamespaces)
-    {
-        // Otherwise, skip extraction if this isn't a dependency
-        // KRYSTIAN FIXME: is this correct? a namespace should not
-        // be extracted as a dependency (until namespace aliases and
-        // using directives are supported)
-        MRDOCS_CHECK_OR(mode_ == TraversalMode::Regular, false);
-    }
 
     return true;
 }
