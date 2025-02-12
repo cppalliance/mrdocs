@@ -832,6 +832,18 @@ MRDOCS_DECL
 bool
 isAllImplicit(Decl const* D);
 
+MRDOCS_DECL
+bool
+isVirtualMember(Decl const* D);
+
+MRDOCS_DECL
+bool
+isAnonymousNamespace(Decl const* D);
+
+MRDOCS_DECL
+bool
+isStaticFileLevelMember(Decl const *D);
+
 #ifdef NDEBUG
 #define MRDOCS_SYMBOL_TRACE(D, C)
 #else

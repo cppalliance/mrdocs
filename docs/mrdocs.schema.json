@@ -131,6 +131,16 @@
       "title": "Extraction policy for private virtual methods of a class",
       "type": "boolean"
     },
+    "extract-static": {
+      "default": false,
+      "description": "Determine whether static members of a file should be extracted. This option does not refer to static members of a class.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Extraction policy for static members of a file",
+      "type": "boolean"
+    },
     "file-patterns": {
       "default": [
         "*.hpp",
