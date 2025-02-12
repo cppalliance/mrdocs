@@ -1,0 +1,77 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+=== Types
+
+[cols=1]
+|===
+| Name 
+
+| <<local_class,`local&lowbar;class`>> 
+| <<local_struct,`local&lowbar;struct`>> 
+|===
+=== Functions
+
+[cols=1]
+|===
+| Name 
+
+| <<local_function,`local&lowbar;function`>> 
+|===
+
+[#local_class]
+== local&lowbar;class
+
+
+=== Synopsis
+
+
+Declared in `&lt;extract&hyphen;local&hyphen;classes&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class local&lowbar;class;
+----
+
+
+
+
+[#local_struct]
+== local&lowbar;struct
+
+
+=== Synopsis
+
+
+Declared in `&lt;extract&hyphen;local&hyphen;classes&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct local&lowbar;struct;
+----
+
+
+
+
+[#local_function]
+== local&lowbar;function
+
+
+=== Synopsis
+
+
+Declared in `&lt;extract&hyphen;local&hyphen;classes&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+local&lowbar;function();
+----
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

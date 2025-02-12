@@ -2722,6 +2722,17 @@ checkTypeFilters(Decl const* D, AccessSpecifier const access)
     {
         MRDOCS_CHECK_OR(!isStaticFileLevelMember(D), false);
     }
+    if (!config_->extractLocalClasses && isa<RecordDecl>(D))
+    {
+        if (auto const* FI = findFileInfo(D);
+            FI->full_path.ends_with(".cpp") ||
+            FI->full_path.ends_with(".cc") ||
+            FI->full_path.ends_with(".cxx") ||
+            FI->full_path.ends_with(".c"))
+        {
+            return false;
+        }
+    }
 
     // Don't extract anonymous unions
     auto const* RD = dyn_cast<RecordDecl>(D);
@@ -2737,12 +2748,7 @@ bool
 ASTVisitor::
 checkFileFilters(Decl const* D)
 {
-    clang::SourceLocation Loc = D->getBeginLoc();
-    if (Loc.isInvalid())
-    {
-        Loc = D->getLocation();
-    }
-    FileInfo* fileInfo = findFileInfo(Loc);
+    FileInfo* fileInfo = findFileInfo(D);
     MRDOCS_CHECK_OR(fileInfo, false);
 
     // Check pre-processed file filters
@@ -3144,6 +3150,18 @@ findFileInfo(clang::SourceLocation const loc)
     MRDOCS_CHECK_OR(FI, nullptr);
     auto [it, inserted] = files_.try_emplace(entry, std::move(*FI));
     return std::addressof(it->second);
+}
+
+ASTVisitor::FileInfo*
+ASTVisitor::
+findFileInfo(Decl const* D)
+{
+    clang::SourceLocation Loc = D->getBeginLoc();
+    if (Loc.isInvalid())
+    {
+        Loc = D->getLocation();
+    }
+    return findFileInfo(Loc);
 }
 
 std::optional<ASTVisitor::FileInfo>

@@ -101,6 +101,16 @@
       "title": "Extraction policy for anonymous namespaces",
       "type": "boolean"
     },
+    "extract-local-classes": {
+      "default": true,
+      "description": "Determine whether records only defined locally in source files should be extracted.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Extraction policy for records defined locally in source files",
+      "type": "boolean"
+    },
     "extract-private": {
       "default": false,
       "description": "Determine whether private class members should be extracted",
