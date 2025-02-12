@@ -46,7 +46,7 @@ inheritBaseMembers(
         inheritBaseMembers(derivedId, derived.Protected, base.Public);
         inheritBaseMembers(derivedId, derived.Protected, base.Protected);
     }
-    else if (A == AccessKind::Private && corpus_.config->privateMembers)
+    else if (A == AccessKind::Private && corpus_.config->extractPrivate)
     {
         // When a class uses private member access specifier to derive from a
         // base, all public and protected members of the base class are

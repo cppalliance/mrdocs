@@ -2703,7 +2703,7 @@ bool
 ASTVisitor::
 checkTypeFilters(Decl const* D, AccessSpecifier access)
 {
-    if (!config_->privateMembers)
+    if (!config_->extractPrivate)
     {
         // KRYSTIAN FIXME: this doesn't handle direct
         // dependencies on inaccessible declarations
