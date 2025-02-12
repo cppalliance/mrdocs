@@ -112,7 +112,7 @@
       "type": "boolean"
     },
     "extract-private-bases": {
-      "default": true,
+      "default": false,
       "description": "Determine whether private base classes should be extracted",
       "enum": [
         true,

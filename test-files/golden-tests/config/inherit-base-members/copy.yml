@@ -1,4 +1,5 @@
 inherit-base-members: copy-all
 exclude-symbols:
   - excluded_base
+extract-private-bases: true
 warn-no-paramdoc: false
