@@ -197,6 +197,13 @@
         "brief": "Extraction policy for private base classes",
         "details": "Determine whether private base classes should be extracted",
         "type": "bool",
+        "default": false
+      },
+      {
+        "name": "anonymous-namespaces",
+        "brief": "Extraction policy for anonymous namespaces",
+        "details": "Determine whether symbols in anonymous namespaces should be extracted. When set to `always`, symbols in anonymous namespaces are always extracted. When set to `dependency`, symbols in anonymous namespaces are extracted only if they are referenced by the source code. When set to `never`, symbols in anonymous namespaces are never extracted.",
+        "type": "bool",
         "default": true
       },
       {
@@ -211,13 +218,6 @@
           "copy-all"
         ],
         "default": "copy-dependencies"
-      },
-      {
-        "name": "anonymous-namespaces",
-        "brief": "Extraction policy for anonymous namespaces",
-        "details": "Determine whether symbols in anonymous namespaces should be extracted. When set to `always`, symbols in anonymous namespaces are always extracted. When set to `dependency`, symbols in anonymous namespaces are extracted only if they are referenced by the source code. When set to `never`, symbols in anonymous namespaces are never extracted.",
-        "type": "bool",
-        "default": true
       },
       {
         "name": "sort-members",
