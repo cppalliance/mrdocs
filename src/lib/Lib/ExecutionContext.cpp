@@ -59,7 +59,7 @@ report(
     UndocumentedInfoSet&& undocumented)
 {
     InfoSet info = std::move(results);
-    std::unique_lock write_lock(mutex_);
+    std::unique_lock<std::shared_mutex> write_lock(mutex_);
 
     // Add all new Info to the existing set.
     info_.merge(info);
