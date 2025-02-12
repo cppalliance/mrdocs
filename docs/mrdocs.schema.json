@@ -111,6 +111,16 @@
       "title": "Extraction policy for private class members",
       "type": "boolean"
     },
+    "extract-private-bases": {
+      "default": true,
+      "description": "Determine whether private base classes should be extracted",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Extraction policy for private base classes",
+      "type": "boolean"
+    },
     "file-patterns": {
       "default": [
         "*.hpp",
@@ -268,16 +278,6 @@
         false
       ],
       "title": "Detect and group function overloads",
-      "type": "boolean"
-    },
-    "private-bases": {
-      "default": true,
-      "description": "Determine whether private base classes should be extracted",
-      "enum": [
-        true,
-        false
-      ],
-      "title": "Extraction policy for private base classes",
       "type": "boolean"
     },
     "recursive": {
