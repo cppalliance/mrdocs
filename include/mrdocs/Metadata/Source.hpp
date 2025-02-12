@@ -69,6 +69,7 @@ struct MRDOCS_DECL
 
     //--------------------------------------------
 
+    constexpr
     Location(
         std::string_view const full_path = {},
         std::string_view const short_path = {},
@@ -131,7 +132,7 @@ struct MRDOCS_DECL
     auto operator<=>(SourceInfo const&) const = default;
 
 protected:
-    SourceInfo() = default;
+    constexpr SourceInfo() = default;
 };
 
 MRDOCS_DECL
