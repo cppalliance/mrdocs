@@ -207,6 +207,8 @@ For exclusion rules, the symbol must strictly match the pattern to be excluded. 
 
 The following options can be defined both in the configuration file and on the command line, where the command line options always take precedence.
 
+Whenever applicable, the command line options attempt to mirror (i) non-abbreviated (ii) kebab-case variants of the equivalent commands in Doxygen. For instance, the Doxygen `EXTRACT_ANON_NSPACES` option is mirrored by the `extract-anonymous-namespaces` command line option.
+
 [config-options-reference,level=3]
 ====
 include::partial$ConfigOptions.json[]
