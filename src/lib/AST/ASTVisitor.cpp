@@ -881,6 +881,7 @@ populate(FunctionInfo& I, CXXMethodDecl const* D)
 {
     FunctionDecl const* FD = D;
     populate(I, FD);
+    I.IsRecordMethod = true;
     I.IsVirtual |= D->isVirtual();
     I.IsVirtualAsWritten |= D->isVirtualAsWritten();
     I.IsPure |= D->isPureVirtual();
