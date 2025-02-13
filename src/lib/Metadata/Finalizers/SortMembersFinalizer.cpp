@@ -119,7 +119,8 @@ struct SymbolIDCompareFn
                 *lhsOp == OperatorKind::Greater ||
                 *lhsOp == OperatorKind::LessEqual ||
                 *lhsOp == OperatorKind::GreaterEqual ||
-                *lhsOp == OperatorKind::Spaceship);
+                *lhsOp == OperatorKind::Spaceship ||
+                *lhsOp == OperatorKind::LessLess);
             bool const rhsIsRel = rhsOp && (
                 *rhsOp == OperatorKind::Exclaim ||
                 *rhsOp == OperatorKind::EqualEqual ||
@@ -128,7 +129,8 @@ struct SymbolIDCompareFn
                 *rhsOp == OperatorKind::Greater ||
                 *rhsOp == OperatorKind::LessEqual ||
                 *rhsOp == OperatorKind::GreaterEqual ||
-                *rhsOp == OperatorKind::Spaceship);
+                *rhsOp == OperatorKind::Spaceship ||
+                *rhsOp == OperatorKind::LessLess);
             if (lhsIsRel != rhsIsRel)
             {
                 return !lhsIsRel;
