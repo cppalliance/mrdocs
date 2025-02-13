@@ -171,6 +171,7 @@ struct FunctionInfo final
     std::vector<std::string> Attributes;
 
     // CXXMethodDecl
+    bool IsRecordMethod = false;
     bool IsVirtual = false;
     bool IsVirtualAsWritten = false;
     bool IsPure = false;
