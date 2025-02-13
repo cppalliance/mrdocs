@@ -112,12 +112,10 @@ void
 JavadocFinalizer::
 finalize(doc::Reference& ref, bool const emitWarning)
 {
-    if (Expected<Info const*> res
-        = corpus_.lookup(current_context_->id, ref.string))
+    if (auto resRef = corpus_.lookup(current_context_->id, ref.string))
     {
-        Info const* resPtr = *res;
-        MRDOCS_ASSERT(resPtr);
-        ref.id = resPtr->id;
+        Info const& res = *resRef;
+        ref.id = res.id;
     }
     else if (
         emitWarning &&
@@ -136,7 +134,7 @@ finalize(doc::Reference& ref, bool const emitWarning)
             "    {}",
             corpus_.Corpus::qualifiedName(*current_context_),
             ref.string,
-            res.error().reason());
+            resRef.error().reason());
         refWarned_.insert({ref.string, current_context_->Name});
     }
 }
@@ -280,8 +278,8 @@ copyBriefAndDetails(Javadoc& javadoc)
         }
 
         // Find the node to copy from
-        Expected<Info const*> res = corpus_.lookup(current_context_->id, copied->string);
-        if (!res || !*res)
+        auto resRef = corpus_.lookup(current_context_->id, copied->string);
+        if (!resRef)
         {
             if (corpus_.config->warnings &&
                 corpus_.config->warnBrokenRef &&
@@ -292,25 +290,24 @@ copyBriefAndDetails(Javadoc& javadoc)
                     "    {}",
                     corpus_.Corpus::qualifiedName(*current_context_),
                     copied->string,
-                    res.error().reason());
+                    resRef.error().reason());
             }
             continue;
         }
 
         // Ensure the source node is finalized
-        Info const* resPtr = *res;
-        MRDOCS_ASSERT(resPtr);
-        if (!finalized_.contains(resPtr))
+        Info const& res = *resRef;
+        if (!finalized_.contains(&res))
         {
-            operator()(const_cast<Info&>(*resPtr));
+            operator()(const_cast<Info&>(res));
         }
-        if (!resPtr->javadoc)
+        if (!res.javadoc)
         {
             if (corpus_.config->warnings &&
                 corpus_.config->warnBrokenRef &&
                 !refWarned_.contains({copied->string, current_context_->Name}))
             {
-                auto resPrimaryLoc = getPrimaryLocation(*resPtr);
+                auto resPrimaryLoc = getPrimaryLocation(res);
                 this->warn(
                     "{}: Failed to copy documentation from '{}' (no documentation available).\n"
                     "    No documentation available.\n"
@@ -320,7 +317,7 @@ copyBriefAndDetails(Javadoc& javadoc)
                     copied->string,
                     resPrimaryLoc->FullPath,
                     resPrimaryLoc->LineNumber,
-                    corpus_.Corpus::qualifiedName(*resPtr));
+                    corpus_.Corpus::qualifiedName(res));
             }
             continue;
         }
@@ -328,7 +325,7 @@ copyBriefAndDetails(Javadoc& javadoc)
         // Copy brief and details
         bool const copyBrief = copied->parts == doc::Parts::all || copied->parts == doc::Parts::brief;
         bool const copyDetails = copied->parts == doc::Parts::all || copied->parts == doc::Parts::description;
-        Javadoc const& src = *resPtr->javadoc;
+        Javadoc const& src = *res.javadoc;
         if (copyBrief && !javadoc.brief)
         {
             javadoc.brief = src.brief;

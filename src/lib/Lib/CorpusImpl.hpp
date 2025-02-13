@@ -26,6 +26,7 @@
 #include <mutex>
 #include <string>
 #include <set>
+#include <functional>
 
 namespace clang::mrdocs {
 
@@ -91,10 +92,10 @@ public:
     Info const*
     find(SymbolID const& id) const noexcept override;
 
-    Expected<Info const*>
+    Expected<std::reference_wrapper<Info const>>
     lookup(SymbolID const& context, std::string_view name) const override;
 
-    Expected<Info const*>
+    Expected<std::reference_wrapper<Info const>>
     lookup(SymbolID const& context, std::string_view name);
 
     /** Build metadata for a set of translation units.
@@ -141,7 +142,7 @@ private:
 
     template <class Self>
     static
-    Expected<Info const*>
+    Expected<std::reference_wrapper<Info const>>
     lookupImpl(
         Self&& self,
         SymbolID const& context,
