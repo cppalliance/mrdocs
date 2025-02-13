@@ -221,14 +221,14 @@ isTransparent(Info const& info)
 }
 }
 
-Expected<Info const*>
+Expected<std::reference_wrapper<Info const>>
 CorpusImpl::
 lookup(SymbolID const& context, std::string_view const name) const
 {
     return lookupImpl(*this, context, name);
 }
 
-Expected<Info const*>
+Expected<std::reference_wrapper<Info const>>
 CorpusImpl::
 lookup(SymbolID const& context, std::string_view name)
 {
@@ -236,7 +236,7 @@ lookup(SymbolID const& context, std::string_view name)
 }
 
 template <class Self>
-Expected<Info const*>
+Expected<std::reference_wrapper<Info const>>
 CorpusImpl::
 lookupImpl(Self&& self, SymbolID const& context, std::string_view name)
 {
@@ -253,7 +253,7 @@ lookupImpl(Self&& self, SymbolID const& context, std::string_view name)
                 name,
                 self.Corpus::qualifiedName(*self.find(context))));
         }
-        return info;
+        return std::cref(*info);
     }
     Expected<ParsedRef> const s = parseRef(name);
     if (!s)
@@ -273,7 +273,7 @@ lookupImpl(Self&& self, SymbolID const& context, std::string_view name)
             name,
             self.Corpus::qualifiedName(*contextPtr)));
     }
-    return res;
+    return std::cref(*res);
 }
 
 template <class Self>

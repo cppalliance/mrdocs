@@ -90,12 +90,12 @@ public:
     /** Return the Info for the matching string in a given context.
     */
     virtual
-    Expected<Info const*>
+    Expected<std::reference_wrapper<Info const>>
     lookup(SymbolID const& context, std::string_view name) const = 0;
 
     /** Return the Info for the matching string in the global context.
     */
-    Expected<Info const*>
+    Expected<std::reference_wrapper<Info const>>
     lookup(std::string_view name) const
     {
         return lookup(SymbolID::global, name);
