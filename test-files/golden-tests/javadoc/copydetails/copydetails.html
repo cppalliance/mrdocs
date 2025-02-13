@@ -1,0 +1,398 @@
+<html lang="en">
+<head>
+<title>Reference</title>
+</head>
+<body>
+<div>
+<h1>Reference</h1>
+<div>
+<div>
+<h2 id="index">Global namespace</h2>
+</div>
+<h2>Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th><th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#dest"><code>dest</code></a> </td><td><span><span>Destination doc function</span></span>
+
+</td></tr><tr>
+<td><a href="#destOverride"><code>destOverride</code></a> </td><td><span><span>Destination doc function</span></span>
+
+</td></tr><tr>
+<td><a href="#source"><code>source</code></a> </td><td><span><span>Source doc function</span></span>
+
+</td></tr>
+</tbody>
+</table>
+</div>
+<div>
+<div>
+<h2 id="dest">dest</h2>
+<div>
+<span><span>Destination doc function</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;copydetails.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;
+    class A,
+    class B&gt;
+int
+dest(
+    int a,
+    int b);
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>Documentation prefix for dest only.</span></p>
+<p><span>This is the documentation from the    source function.</span></p>
+<p><span>Documentation suffix for dest only.</span></p>
+
+
+</div>
+<div>
+<h3>Return Value</h3>
+<p><span>A nice integer</span></p>
+
+</div>
+<div>
+<h3>Template Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A</strong></td>
+<td><p><span>The template parameter A.</span></p>
+</td>
+</tr>
+<tr>
+<td><strong>B</strong></td>
+<td><p><span>The template parameter B.</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>a</strong></td>
+<td><p><span>The parameter a.</span></p>
+</td>
+</tr>
+<tr>
+<td><strong>b</strong></td>
+<td><p><span>The parameter b.</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<h3>Preconditions</h3>
+<ul>
+<li><p><span>a must be greater than 0.</span></p>
+</li>
+</ul>
+</div>
+<div>
+<h3>Postconditions</h3>
+<ul>
+<li><p><span>The return value is greater than 0.</span></p>
+</li>
+</ul>
+</div>
+<div>
+<h3>See Also</h3>
+<p><p><span>dest</span></p>
+</p>
+</div>
+</div>
+<div>
+<div>
+<h2 id="destOverride">destOverride</h2>
+<div>
+<span><span>Destination doc function</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;copydetails.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;
+    class A,
+    class C,
+    class D&gt;
+int
+destOverride(
+    int a,
+    int c,
+    int d);
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>Documentation prefix for dest only.</span></p>
+<p><span>This is the documentation from the    source function.</span></p>
+<p><span>Documentation suffix for dest only.</span></p>
+<p><span>Parameter b is not copied because    it doesn&#x27;t exist in the destination function.</span></p>
+
+
+</div>
+<div>
+<h3>Exceptions</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Thrown on</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::runtime_error</code></td>
+<td><p><span>Overwrites the exception.</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<h3>Return Value</h3>
+<p><span>An integer meaning something else.</span></p>
+
+</div>
+<div>
+<h3>Template Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A</strong></td>
+<td><p><span>Overwrites the template parameter A.</span></p>
+</td>
+</tr>
+<tr>
+<td><strong>C</strong></td>
+<td><p><span>The template parameter C.</span></p>
+</td>
+</tr>
+<tr>
+<td><strong>D</strong></td>
+<td><p><span>The template parameter D.</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>a</strong></td>
+<td><p><span>Overwrites the parameter a.</span></p>
+</td>
+</tr>
+<tr>
+<td><strong>c</strong></td>
+<td><p><span>The parameter c.</span></p>
+</td>
+</tr>
+<tr>
+<td><strong>d</strong></td>
+<td><p><span>The parameter d.</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<h3>Preconditions</h3>
+<ul>
+<li><p><span>overriden precondition</span></p>
+</li>
+</ul>
+</div>
+<div>
+<h3>Postconditions</h3>
+<ul>
+<li><p><span>overriden postcondition</span></p>
+</li>
+</ul>
+</div>
+<div>
+<h3>See Also</h3>
+<p><p><span>source</span></p>
+</p>
+</div>
+</div>
+<div>
+<div>
+<h2 id="source">source</h2>
+<div>
+<span><span>Source doc function</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;copydetails.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;
+    class A,
+    class B&gt;
+int
+source(
+    int a,
+    int b);
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>This is the documentation from the    source function.</span></p>
+
+
+</div>
+<div>
+<h3>Exceptions</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Thrown on</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::runtime_error</code></td>
+<td><p><span>If something goes wrong.</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<h3>Return Value</h3>
+<p><span>A nice integer</span></p>
+
+</div>
+<div>
+<h3>Template Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A</strong></td>
+<td><p><span>The template parameter A.</span></p>
+</td>
+</tr>
+<tr>
+<td><strong>B</strong></td>
+<td><p><span>The template parameter B.</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>a</strong></td>
+<td><p><span>The parameter a.</span></p>
+</td>
+</tr>
+<tr>
+<td><strong>b</strong></td>
+<td><p><span>The parameter b.</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<h3>Preconditions</h3>
+<ul>
+<li><p><span>a must be greater than 0.</span></p>
+</li>
+</ul>
+</div>
+<div>
+<h3>Postconditions</h3>
+<ul>
+<li><p><span>The return value is greater than 0.</span></p>
+</li>
+</ul>
+</div>
+<div>
+<h3>See Also</h3>
+<p><p><span>dest</span></p>
+</p>
+</div>
+</div>
+
+</div>
+<div>
+<h4>Created with <a href="https://www.mrdocs.com">MrDocs</a></h4>
+</div>
+</body>
+</html>
