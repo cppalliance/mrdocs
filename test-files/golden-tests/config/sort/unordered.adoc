@@ -23,16 +23,28 @@
 |===
 === Functions
 
-[cols=1]
+[cols=2]
 |===
-| Name 
+| Name | Description 
 
 | <<operator_not_eq,`operator!&equals;`>> 
+| 
+
 | <<operator_eq,`operator&equals;&equals;`>> 
+| 
+
 | <<operator_not,`operator!`>> 
+| 
+
 | <<h,`h`>> 
+| 
+
 | <<g-0d,`g`>> 
+| 
+
 | <<f,`f`>> 
+| 
+
 |===
 
 [#D]
@@ -197,18 +209,34 @@ struct Z;
 
 === Member Functions
 
-[cols=1]
+[cols=2]
 |===
-| Name 
+| Name | Description 
 
 | <<Z-operator_3way,`operator&lt;&equals;&gt;`>> 
+| 
+
 | <<Z-operator_not_eq,`operator!&equals;`>> 
+| 
+
 | <<Z-operator_eq,`operator&equals;&equals;`>> 
+| 
+
 | <<Z-operator_not,`operator!`>> 
+| 
+
 | <<Z-2conversion,`operator bool`>> 
+| 
+
 | <<Z-foo,`foo`>> 
+| 
+
 | <<Z-2destructor,`&#126;Z`>> [.small]#[destructor]#
+| 
+
 | <<Z-2constructor-00,`Z`>>         [.small]#[constructor]#
+| 
+
 |===
 
 
@@ -320,10 +348,12 @@ Declared in `&lt;unordered&period;cpp&gt;`
 == <<Z,Z>>::Z
 
 
-=== Synopsis
+=== Synopses
 
 
 Declared in `&lt;unordered&period;cpp&gt;`
+
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -331,6 +361,8 @@ Declared in `&lt;unordered&period;cpp&gt;`
 ----
 
 [.small]#<<Z-2constructor-06,_» more&period;&period;&period;_>>#
+
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -435,10 +467,12 @@ h();
 == g
 
 
-=== Synopsis
+=== Synopses
 
 
 Declared in `&lt;unordered&period;cpp&gt;`
+
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -452,6 +486,8 @@ char
 
 [.small]#<<g-03c,_» more&period;&period;&period;_>>#
 
+
+
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
@@ -464,6 +500,8 @@ char
 
 [.small]#<<g-0e4,_» more&period;&period;&period;_>>#
 
+
+
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 char
@@ -475,6 +513,8 @@ char
 
 [.small]#<<g-0a,_» more&period;&period;&period;_>>#
 
+
+
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 char
@@ -485,6 +525,8 @@ char
 
 [.small]#<<g-03a,_» more&period;&period;&period;_>>#
 
+
+
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 char
@@ -493,6 +535,8 @@ char
 
 [.small]#<<g-06,_» more&period;&period;&period;_>>#
 
+
+
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 char
@@ -500,6 +544,8 @@ char
 ----
 
 [.small]#<<g-04,_» more&period;&period;&period;_>>#
+
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----

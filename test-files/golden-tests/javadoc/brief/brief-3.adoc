@@ -7,21 +7,28 @@
 
 === Functions
 
-[cols=1]
+[cols=2]
 |===
-| Name 
+| Name | Description 
 
 | <<f-0e,`f`>> 
+| `f` overloads
+
 |===
 
 [#f-0e]
 == f
 
 
-=== Synopsis
+`f` overloads
+
+=== Synopses
 
 
 Declared in `&lt;brief&hyphen;3&period;cpp&gt;`
+
+Integer overload&period;
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -31,6 +38,9 @@ void
 
 [.small]#<<f-0f,_» more&period;&period;&period;_>>#
 
+Integer overload&period;
+
+
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
@@ -39,6 +49,9 @@ void
 
 [.small]#<<f-06,_» more&period;&period;&period;_>>#
 
+C string overload&period;
+
+
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
@@ -46,6 +59,9 @@ void
 ----
 
 [.small]#<<f-07,_» more&period;&period;&period;_>>#
+
+C string overload&period;
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----

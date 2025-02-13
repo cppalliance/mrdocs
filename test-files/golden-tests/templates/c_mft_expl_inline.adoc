@@ -30,11 +30,13 @@ struct A;
 
 === Member Functions
 
-[cols=1]
+[cols=2]
 |===
-| Name 
+| Name | Description 
 
 | <<A-f-00,`f`>> 
+| 
+
 |===
 
 
@@ -43,10 +45,12 @@ struct A;
 == <<A,A>>::f
 
 
-=== Synopsis
+=== Synopses
 
 
 Declared in `&lt;c&lowbar;mft&lowbar;expl&lowbar;inline&period;cpp&gt;`
+
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -56,6 +60,8 @@ void
 ----
 
 [.small]#<<A-f-0e,_» more&period;&period;&period;_>>#
+
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----

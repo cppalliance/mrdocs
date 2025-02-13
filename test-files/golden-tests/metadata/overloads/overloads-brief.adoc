@@ -1,0 +1,789 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+=== Types
+
+[cols=2]
+|===
+| Name | Description 
+
+| <<A,`A`>> 
+| Overload briefs from function or operator classes
+
+| <<B,`B`>> 
+| Auxiliary class
+
+|===
+=== Functions
+
+[cols=2]
+|===
+| Name | Description 
+
+| <<no_way_to_infer_this_brief-0e,`no&lowbar;way&lowbar;to&lowbar;infer&lowbar;this&lowbar;brief`>> 
+| `no&lowbar;way&lowbar;to&lowbar;infer&lowbar;this&lowbar;brief` overloads
+
+| <<operator_plus-0dd,`operator&plus;`>> 
+| Unary plus operators
+
+| <<sameBrief-08,`sameBrief`>> 
+| Function with same brief
+
+|===
+
+[#A]
+== A
+
+
+Overload briefs from function or operator classes
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct A;
+----
+
+=== Member Functions
+
+[cols=2]
+|===
+| Name | Description 
+
+| <<A-2constructor-08,`A`>>         [.small]#[constructor]#
+| Constructors
+
+| <<A-operator_assign-0d,`operator&equals;`>> 
+| Assignment operators
+
+| <<A-operator_plus-07,`operator&plus;`>> 
+| Addition operators
+
+| <<A-operator_minus-0a,`operator&hyphen;`>> 
+| `operator&hyphen;` overloads
+
+|===
+
+
+
+[#A-2constructor-08]
+== <<A,A>>::A
+
+
+Constructors
+
+=== Synopses
+
+
+Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
+
+First constructor
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A-2constructor-03,A>>();
+----
+
+[.small]#<<A-2constructor-03,_» more&period;&period;&period;_>>#
+
+Second constructor
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A-2constructor-01,A>>(int a);
+----
+
+[.small]#<<A-2constructor-01,_» more&period;&period;&period;_>>#
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Describe a
+
+|===
+
+[#A-2constructor-03]
+== <<A,A>>::A
+
+
+First constructor
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+A();
+----
+
+[#A-2constructor-01]
+== <<A,A>>::A
+
+
+Second constructor
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+A(int a);
+----
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Describe a
+
+|===
+
+[#A-operator_assign-0d]
+== <<A,A>>::operator&equals;
+
+
+Assignment operators
+
+=== Synopses
+
+
+Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
+
+Assign from int
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>>&
+<<A-operator_assign-06,operator&equals;>>(int a);
+----
+
+[.small]#<<A-operator_assign-06,_» more&period;&period;&period;_>>#
+
+Assign from A
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>>&
+<<A-operator_assign-04,operator&equals;>>(<<A,A>> const& a);
+----
+
+[.small]#<<A-operator_assign-04,_» more&period;&period;&period;_>>#
+
+=== Return Value
+
+
+`&ast;this`
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Describe b
+
+|===
+
+[#A-operator_assign-06]
+== <<A,A>>::operator&equals;
+
+
+Assign from int
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>>&
+operator&equals;(int a);
+----
+
+=== Return Value
+
+
+`&ast;this`
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Describe b
+
+|===
+
+[#A-operator_assign-04]
+== <<A,A>>::operator&equals;
+
+
+Assign from A
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>>&
+operator&equals;(<<A,A>> const& a);
+----
+
+=== Return Value
+
+
+`&ast;this`
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Describe a
+
+|===
+
+[#A-operator_plus-07]
+== <<A,A>>::operator&plus;
+
+
+Addition operators
+
+=== Synopses
+
+
+Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
+
+Addition operator for ints
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>>
+<<A-operator_plus-0c,operator&plus;>>(int a);
+----
+
+[.small]#<<A-operator_plus-0c,_» more&period;&period;&period;_>>#
+
+Addition operator for As
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>>
+<<A-operator_plus-0e,operator&plus;>>(<<A,A>> const& a);
+----
+
+[.small]#<<A-operator_plus-0e,_» more&period;&period;&period;_>>#
+
+=== Return Value
+
+
+`&ast;this`
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Describe a
+
+|===
+
+[#A-operator_plus-0c]
+== <<A,A>>::operator&plus;
+
+
+Addition operator for ints
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>>
+operator&plus;(int a);
+----
+
+=== Return Value
+
+
+`&ast;this`
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Describe a
+
+|===
+
+[#A-operator_plus-0e]
+== <<A,A>>::operator&plus;
+
+
+Addition operator for As
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>>
+operator&plus;(<<A,A>> const& a);
+----
+
+=== Return Value
+
+
+`&ast;this`
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Describe a
+
+|===
+
+[#A-operator_minus-0a]
+== <<A,A>>::operator&hyphen;
+
+
+`operator&hyphen;` overloads
+
+=== Synopses
+
+
+Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
+
+Unary operator&hyphen; for A
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>>
+<<A-operator_minus-02,operator&hyphen;>>();
+----
+
+[.small]#<<A-operator_minus-02,_» more&period;&period;&period;_>>#
+
+Binary operator&hyphen; for A
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>>
+<<A-operator_minus-0c,operator&hyphen;>>(<<A,A>> const&);
+----
+
+[.small]#<<A-operator_minus-0c,_» more&period;&period;&period;_>>#
+
+=== Return Value
+
+
+Result
+
+[#A-operator_minus-02]
+== <<A,A>>::operator&hyphen;
+
+
+Unary operator&hyphen; for A
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>>
+operator&hyphen;();
+----
+
+=== Description
+
+
+No way to generate a brief from the        operator kind because there are        unary and binary operators&period;
+
+
+
+=== Return Value
+
+
+Result
+
+[#A-operator_minus-0c]
+== <<A,A>>::operator&hyphen;
+
+
+Binary operator&hyphen; for A
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>>
+operator&hyphen;(<<A,A>> const&);
+----
+
+=== Description
+
+
+No way to generate a brief from the        operator kind&period;
+
+
+
+=== Return Value
+
+
+Result
+
+[#B]
+== B
+
+
+Auxiliary class
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct B;
+----
+
+
+
+
+[#no_way_to_infer_this_brief-0e]
+== no&lowbar;way&lowbar;to&lowbar;infer&lowbar;this&lowbar;brief
+
+
+`no&lowbar;way&lowbar;to&lowbar;infer&lowbar;this&lowbar;brief` overloads
+
+=== Synopses
+
+
+Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
+
+Function with no params
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<no_way_to_infer_this_brief-02,no&lowbar;way&lowbar;to&lowbar;infer&lowbar;this&lowbar;brief>>();
+----
+
+[.small]#<<no_way_to_infer_this_brief-02,_» more&period;&period;&period;_>>#
+
+Function with single param
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<no_way_to_infer_this_brief-01,no&lowbar;way&lowbar;to&lowbar;infer&lowbar;this&lowbar;brief>>(int a);
+----
+
+[.small]#<<no_way_to_infer_this_brief-01,_» more&period;&period;&period;_>>#
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Describe a
+
+|===
+
+[#no_way_to_infer_this_brief-02]
+== no&lowbar;way&lowbar;to&lowbar;infer&lowbar;this&lowbar;brief
+
+
+Function with no params
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+no&lowbar;way&lowbar;to&lowbar;infer&lowbar;this&lowbar;brief();
+----
+
+[#no_way_to_infer_this_brief-01]
+== no&lowbar;way&lowbar;to&lowbar;infer&lowbar;this&lowbar;brief
+
+
+Function with single param
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+no&lowbar;way&lowbar;to&lowbar;infer&lowbar;this&lowbar;brief(int a);
+----
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Describe a
+
+|===
+
+[#operator_plus-0dd]
+== operator&plus;
+
+
+Unary plus operators
+
+=== Synopses
+
+
+Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
+
+Unary operator for A
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+<<operator_plus-0d7,operator&plus;>>(<<A,A>> const&);
+----
+
+[.small]#<<operator_plus-0d7,_» more&period;&period;&period;_>>#
+
+Unary operator for B
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+<<operator_plus-06,operator&plus;>>(<<B,B>> const&);
+----
+
+[.small]#<<operator_plus-06,_» more&period;&period;&period;_>>#
+
+=== Return Value
+
+
+Result
+
+[#operator_plus-0d7]
+== operator&plus;
+
+
+Unary operator for A
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+operator&plus;(<<A,A>> const&);
+----
+
+=== Return Value
+
+
+Result
+
+[#operator_plus-06]
+== operator&plus;
+
+
+Unary operator for B
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+operator&plus;(<<B,B>> const&);
+----
+
+=== Return Value
+
+
+Result
+
+[#sameBrief-08]
+== sameBrief
+
+
+Function with same brief
+
+=== Synopses
+
+
+Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
+
+Function with same brief
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<sameBrief-0a,sameBrief>>(int a);
+----
+
+[.small]#<<sameBrief-0a,_» more&period;&period;&period;_>>#
+
+Function with same brief
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<sameBrief-0e,sameBrief>>(
+    int a,
+    int b);
+----
+
+[.small]#<<sameBrief-0e,_» more&period;&period;&period;_>>#
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Describe a
+
+| *b*
+| Describe b
+
+|===
+
+[#sameBrief-0a]
+== sameBrief
+
+
+Function with same brief
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+sameBrief(int a);
+----
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Describe a
+
+|===
+
+[#sameBrief-0e]
+== sameBrief
+
+
+Function with same brief
+
+=== Synopsis
+
+
+Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+sameBrief(
+    int a,
+    int b);
+----
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Describe a again
+
+| *b*
+| Describe b
+
+|===
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

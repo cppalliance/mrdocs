@@ -19,6 +19,8 @@
 
 {{else}}
 {{#each members as | member |}}
+{{#if member.doc.brief}}{{#> markup/p }}{{{member.doc.brief}}}{{/markup/p}}{{/if}}
+
 {{#> markup/code-block }}
 {{> symbol/signature member link=member}}
 {{/markup/code-block}}

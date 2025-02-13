@@ -299,7 +299,7 @@
       {
         "name": "overloads",
         "brief": "Detect and group function overloads",
-        "details": "When set to `true`, MrDocs detects function overloads and groups them as a single symbol type.",
+        "details": "When set to `true`, MrDocs detects function overloads and groups them as a single symbol type. The documentation for this new symbol comes from the union of non-ambiguous metadata from the functions.",
         "type": "bool",
         "default": true
       }

@@ -23,16 +23,28 @@
 |===
 === Functions
 
-[cols=1]
+[cols=2]
 |===
-| Name 
+| Name | Description 
 
 | <<f,`f`>> 
+| 
+
 | <<g-0d,`g`>> 
+| 
+
 | <<h,`h`>> 
+| 
+
 | <<operator_not,`operator!`>> 
+| 
+
 | <<operator_eq,`operator&equals;&equals;`>> 
+| 
+
 | <<operator_not_eq,`operator!&equals;`>> 
+| 
+
 |===
 
 [#A]
@@ -197,18 +209,34 @@ struct Z;
 
 === Member Functions
 
-[cols=1]
+[cols=2]
 |===
-| Name 
+| Name | Description 
 
 | <<Z-2constructor-00,`Z`>>         [.small]#[constructor]#
+| 
+
 | <<Z-2destructor,`&#126;Z`>> [.small]#[destructor]#
+| 
+
 | <<Z-foo,`foo`>> 
+| 
+
 | <<Z-2conversion,`operator bool`>> 
+| 
+
 | <<Z-operator_not,`operator!`>> 
+| 
+
 | <<Z-operator_eq,`operator&equals;&equals;`>> 
+| 
+
 | <<Z-operator_not_eq,`operator!&equals;`>> 
+| 
+
 | <<Z-operator_3way,`operator&lt;&equals;&gt;`>> 
+| 
+
 |===
 
 
@@ -217,10 +245,12 @@ struct Z;
 == <<Z,Z>>::Z
 
 
-=== Synopsis
+=== Synopses
 
 
 Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
+
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -228,6 +258,8 @@ Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
 ----
 
 [.small]#<<Z-2constructor-05,_» more&period;&period;&period;_>>#
+
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -386,10 +418,12 @@ f();
 == g
 
 
-=== Synopsis
+=== Synopses
 
 
 Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
+
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -399,6 +433,8 @@ void
 
 [.small]#<<g-0e3,_» more&period;&period;&period;_>>#
 
+
+
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 char
@@ -407,6 +443,8 @@ char
 
 [.small]#<<g-06,_» more&period;&period;&period;_>>#
 
+
+
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 char
@@ -414,6 +452,8 @@ char
 ----
 
 [.small]#<<g-04,_» more&period;&period;&period;_>>#
+
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -424,6 +464,8 @@ char
 ----
 
 [.small]#<<g-03a,_» more&period;&period;&period;_>>#
+
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -436,6 +478,8 @@ char
 
 [.small]#<<g-0a,_» more&period;&period;&period;_>>#
 
+
+
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;class T&gt;
@@ -447,6 +491,8 @@ char
 ----
 
 [.small]#<<g-03c,_» more&period;&period;&period;_>>#
+
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----

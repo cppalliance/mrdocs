@@ -255,6 +255,16 @@ protected:
     }
 };
 
+MRDOCS_DECL
+std::strong_ordering
+operator<=>(Polymorphic<Text> const& lhs, Polymorphic<Text> const& rhs);
+
+inline
+bool
+operator==(Polymorphic<Text> const& lhs, Polymorphic<Text> const& rhs) {
+    return std::is_eq(lhs <=> rhs);
+}
+
 /** A piece of styled text.
 */
 struct Styled final : Text
@@ -489,7 +499,7 @@ struct Paragraph : Block
     }
 
     auto operator<=>(Paragraph const&) const = default;
-    bool operator==(Paragraph const&) const noexcept = default;
+
     bool equals(Node const& other) const noexcept override
     {
         return Kind == other.Kind &&
@@ -518,7 +528,7 @@ struct Brief final : Paragraph
     }
 
     auto operator<=>(Brief const&) const = default;
-    bool operator==(Brief const&) const noexcept = default;
+
     bool equals(Node const& other) const noexcept override
     {
         return Kind == other.Kind &&

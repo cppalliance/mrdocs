@@ -16,12 +16,16 @@
 |===
 === Functions
 
-[cols=1]
+[cols=2]
 |===
-| Name 
+| Name | Description 
 
 | <<f,`f`>> 
+| 
+
 | <<g-0d,`g`>> 
+| 
+
 |===
 
 [#A-0c]
@@ -83,10 +87,12 @@ requires (sizeof(U) &equals;&equals; 2);
 == g
 
 
-=== Synopsis
+=== Synopses
 
 
 Declared in `&lt;requires&hyphen;clause&period;cpp&gt;`
+
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -98,6 +104,8 @@ void
 
 [.small]#<<g-04,_» more&period;&period;&period;_>>#
 
+
+
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
@@ -107,6 +115,8 @@ void
 ----
 
 [.small]#<<g-00,_» more&period;&period;&period;_>>#
+
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----

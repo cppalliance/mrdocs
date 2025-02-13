@@ -7,21 +7,25 @@
 
 === Functions
 
-[cols=1]
+[cols=2]
 |===
-| Name 
+| Name | Description 
 
 | <<f-0e,`f`>> 
+| 
+
 |===
 
 [#f-0e]
 == f
 
 
-=== Synopsis
+=== Synopses
 
 
 Declared in `&lt;ft&lowbar;expl&period;cpp&gt;`
+
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -31,6 +35,8 @@ void
 ----
 
 [.small]#<<f-03,_» more&period;&period;&period;_>>#
+
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----

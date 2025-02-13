@@ -31,7 +31,7 @@
 {{! Synopsis }}
 {{#unless (eq symbol.kind "namespace")}}
 <div>
-{{#> markup/dynamic-level-h level=2 }}Synopsis{{/markup/dynamic-level-h}}
+{{#> markup/dynamic-level-h level=2 }}{{#if (ne symbol.kind "overloads")}}Synopsis{{else}}Synopses{{/if}}{{/markup/dynamic-level-h}}
 <div>
 {{>location/source dcl=(primary_location symbol)}}
 </div>
@@ -116,7 +116,6 @@
 
 {{/if}}
 {{! Exceptions }}
-{{#if (ne symbol.kind "overloads")}}
 {{#if symbol.doc.exceptions}}
 <div>
 {{#> markup/dynamic-level-h level=2 }}Exceptions{{/markup/dynamic-level-h}}
@@ -138,31 +137,6 @@
 </table>
 </div>
 {{/if}}
-{{else}}
-{{#with (flattenUnique symbol.members "doc.exceptions" "exception") as |allExceptions|}}
-{{#if (ne (len allExceptions) 0)}}
-<div>
-{{#> markup/dynamic-level-h level=2 }}Exceptions{{/markup/dynamic-level-h}}
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Thrown on</th>
-</tr>
-</thead>
-<tbody>
-{{#each allExceptions as |exception|}}
-<tr>
-<td><code>{{exception}}</code></td>
-<td>{{{description}}}</td>
-</tr>
-{{/each}}
-</tbody>
-</table>
-</div>
-{{/if}}
-{{/with}}
-{{/if}}
 {{! Return value }}
 {{#if symbol.doc.returns}}
 <div>
@@ -179,7 +153,6 @@
 </div>
 {{/if}}
 {{! Template Parameters }}
-{{#if (ne symbol.kind "overloads")}}
 {{#if symbol.doc.tparams}}
 <div>
 {{#> markup/dynamic-level-h level=2 }}Template Parameters{{/markup/dynamic-level-h}}
@@ -201,33 +174,7 @@
 </table>
 </div>
 {{/if}}
-{{else}}
-{{#with (flattenUnique symbol.members "doc.tparams" "name") as |allTParams|}}
-{{#if (ne (len allTParams) 0)}}
-<div>
-{{#> markup/dynamic-level-h level=2 }}Template Parameters{{/markup/dynamic-level-h}}
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-{{#each allTParams as |param|}}
-<tr>
-<td><strong>{{param.name}}</strong></td>
-<td>{{{param.description}}}</td>
-</tr>
-{{/each}}
-</tbody>
-</table>
-</div>
-{{/if}}
-{{/with}}
-{{/if}}
 {{! Parameters }}
-{{#if (ne symbol.kind "overloads")}}
 {{#if symbol.doc.params}}
 <div>
 {{#> markup/dynamic-level-h level=2 }}Parameters{{/markup/dynamic-level-h}}
@@ -248,31 +195,6 @@
 </tbody>
 </table>
 </div>
-{{/if}}
-{{else}}
-{{#with (flattenUnique symbol.members "doc.params" "name") as |allParams|}}
-{{#if (ne (len allParams) 0)}}
-<div>
-{{#> markup/dynamic-level-h level=2 }}Parameters{{/markup/dynamic-level-h}}
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-{{#each allParams as |param|}}
-<tr>
-<td><strong>{{param.name}}</strong></td>
-<td>{{{param.description}}}</td>
-</tr>
-{{/each}}
-</tbody>
-</table>
-</div>
-{{/if}}
-{{/with}}
 {{/if}}
 {{! Preconditions }}
 {{#if symbol.doc.preconditions}}

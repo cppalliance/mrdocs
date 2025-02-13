@@ -638,6 +638,481 @@ checkExists(SymbolID const& id) const
 
 void
 JavadocFinalizer::
+generateOverloadJavadocs()
+{
+    for (auto& I: corpus_.info_)
+    {
+        if (auto* O = dynamic_cast<OverloadsInfo*>(I.get()))
+        {
+            populateOverloadJavadocs(*O);
+        }
+    }
+}
+
+namespace {
+template <class Range>
+bool
+populateOverloadsBriefIfAllSameBrief(OverloadsInfo& I, Range&& functionsWithBrief)
+{
+    auto first = *functionsWithBrief.begin();
+    doc::Brief const& firstBrief = *first.javadoc->brief;
+    if (auto otherFunctions = std::views::drop(functionsWithBrief, 1);
+        std::ranges::all_of(otherFunctions, [&](FunctionInfo const& otherFunction)
+        {
+            doc::Brief const& otherBrief = *otherFunction.javadoc->brief;
+            return otherBrief == firstBrief;
+        }))
+    {
+        I.javadoc->brief = firstBrief;
+        return true;
+    }
+    return false;
+}
+
+void
+setBriefString(std::optional<doc::Brief>& brief, std::string_view str) {
+    brief.emplace();
+    brief->children.emplace_back(MakePolymorphic<doc::Text>(std::string(str)));
+}
+
+bool
+populateOverloadsFromClass(OverloadsInfo& I)
+{
+    switch (I.Class)
+    {
+        case FunctionClass::Normal:
+            return false;
+        case FunctionClass::Constructor:
+        {
+            setBriefString(I.javadoc->brief, "Constructors");
+            return true;
+        }
+        case FunctionClass::Conversion:
+        {
+            setBriefString(I.javadoc->brief, "Conversion operators");
+            return true;
+        }
+        case FunctionClass::Destructor:
+        default:
+        MRDOCS_UNREACHABLE();
+    }
+}
+
+template <class Range>
+bool
+populateOverloadsFromOperator(OverloadsInfo& I, Range&& functions)
+{
+    if (I.OverloadedOperator == OperatorKind::None)
+    {
+        return false;
+    }
+    // An array of pairs describing the operator kind and the
+    // default brief string for that operator kind.
+    struct OperatorBrief {
+        OperatorKind kind = OperatorKind::None;
+        std::string_view brief;
+        std::string_view binaryBrief;
+        constexpr
+        OperatorBrief(
+            OperatorKind kind,
+            std::string_view brief,
+            std::string_view binaryBrief = "")
+            : kind(kind)
+            , brief(brief)
+            , binaryBrief(binaryBrief) {}
+    };
+    static constexpr OperatorBrief operatorBriefs[] = {
+        {OperatorKind::Equal, "Assignment operators"},
+        {OperatorKind::Star, "Dereference operators", "Multiplication operators"},
+        {OperatorKind::Arrow, "Member access operators"},
+        {OperatorKind::Exclaim, "Negation operators"},
+        {OperatorKind::EqualEqual, "Equality operators"},
+        {OperatorKind::ExclaimEqual, "Inequality operators"},
+        {OperatorKind::Less, "Less-than operators"},
+        {OperatorKind::LessEqual, "Less-than-or-equal operators"},
+        {OperatorKind::Greater, "Greater-than operators"},
+        {OperatorKind::GreaterEqual, "Greater-than-or-equal operators"},
+        {OperatorKind::Spaceship, "Three-way comparison operators"},
+        {OperatorKind::AmpAmp, "Conjunction operators"},
+        {OperatorKind::PipePipe, "Disjunction operators"},
+        {OperatorKind::PlusPlus, "Increment operators"},
+        {OperatorKind::MinusMinus, "Decrement operators"},
+        {OperatorKind::Comma, "Comma operators"},
+        {OperatorKind::ArrowStar, "Pointer-to-member operators"},
+        {OperatorKind::Call, "Function call operators"},
+        {OperatorKind::Subscript, "Subscript operators"},
+        {OperatorKind::Conditional, "Ternary operators"},
+        {OperatorKind::Coawait, "Coawait operators"},
+        {OperatorKind::New, "New operators"},
+        {OperatorKind::Delete, "Delete operators"},
+        {OperatorKind::ArrayNew, "New array operators"},
+        {OperatorKind::ArrayDelete, "Delete array operators"},
+        {OperatorKind::Plus, "Unary plus operators", "Addition operators"},
+        {OperatorKind::Minus, "Unary minus operators", "Subtraction operators"},
+        {OperatorKind::Slash, "Division operators"},
+        {OperatorKind::Percent, "Modulus operators"},
+        {OperatorKind::Pipe, "Bitwise disjunction operators"},
+        {OperatorKind::Caret, "Bitwise exclusive-or operators"},
+        {OperatorKind::Tilde, "Bitwise negation operators"},
+        {OperatorKind::PlusEqual, "Addition assignment operators"},
+        {OperatorKind::MinusEqual, "Subtraction assignment operators"},
+        {OperatorKind::StarEqual, "Multiplication assignment operators"},
+        {OperatorKind::SlashEqual, "Division assignment operators"},
+        {OperatorKind::PercentEqual, "Modulus assignment operators"},
+        {OperatorKind::Amp, "Address-of operators", "Bitwise conjunction operators"},
+        {OperatorKind::AmpEqual, "Bitwise conjunction assignment operators"},
+        {OperatorKind::PipeEqual, "Bitwise disjunction assignment operators"},
+        {OperatorKind::CaretEqual, "Bitwise exclusive-or assignment operators"},
+        {OperatorKind::LessLess, "Left shift operators"},
+        {OperatorKind::GreaterGreater, "Right shift operators"},
+        {OperatorKind::LessLessEqual, "Left shift assignment operators"},
+        {OperatorKind::GreaterGreaterEqual, "Right shift assignment operators"}
+    };
+    for (auto const& [kind, brief, binaryBrief]: operatorBriefs)
+    {
+        MRDOCS_CHECK_OR_CONTINUE(I.OverloadedOperator == kind);
+
+        // The name for operator<< depends on the parameter types
+        if (kind == OperatorKind::LessLess)
+        {
+            // Check if all functions are Stream Operators:
+            // 1) Non-member function
+            // 2) First param is mutable reference
+            // 3) Return type is mutable reference of same type as first param
+            if (std::ranges::all_of(functions,
+            [&](FunctionInfo const& function)
+                {
+                    MRDOCS_CHECK_OR(!function.IsRecordMethod, false);
+                    MRDOCS_CHECK_OR(function.Params.size() == 2, false);
+                    // Check first param is mutable left reference
+                    auto& firstParam = function.Params[0];
+                    MRDOCS_CHECK_OR(firstParam, false);
+                    auto& firstQualType = firstParam.Type;
+                    MRDOCS_CHECK_OR(firstQualType, false);
+                    MRDOCS_CHECK_OR(firstQualType->isLValueReference(), false);
+                    auto& firstNamedType = get<LValueReferenceTypeInfo const&>(firstQualType).PointeeType;
+                    MRDOCS_CHECK_OR(firstNamedType, false);
+                    MRDOCS_CHECK_OR(firstNamedType->isNamed(), false);
+                    // Check return type
+                    return firstQualType == function.ReturnType;
+                }))
+            {
+                setBriefString(I.javadoc->brief, "Stream insertion operators");
+            }
+            else
+            {
+                // Regular brief as more generic left shift operator otherwise
+                setBriefString(I.javadoc->brief, brief);
+            }
+            return true;
+        }
+
+        if (binaryBrief.empty())
+        {
+            setBriefString(I.javadoc->brief, brief);
+            return true;
+        }
+
+        if (std::ranges::all_of(functions,
+            [&](FunctionInfo const& function)
+            {
+                return (function.Params.size() + function.IsRecordMethod) == 2;
+            }))
+        {
+            setBriefString(I.javadoc->brief, binaryBrief);
+            return true;
+        }
+
+        if (std::ranges::all_of(functions,
+            [&](FunctionInfo const& function)
+            {
+                return (function.Params.size() + function.IsRecordMethod) == 1;
+            }))
+        {
+            setBriefString(I.javadoc->brief, brief);
+            return true;
+        }
+        return false;
+    }
+    return false;
+}
+
+bool
+populateOverloadsFromFunctionName(OverloadsInfo& I)
+{
+    std::string name = I.Name;
+    if (name.empty() &&
+        I.OverloadedOperator != OperatorKind::None)
+    {
+        name = getOperatorName(I.OverloadedOperator, true);
+    }
+    if (name.empty())
+    {
+        return false;
+    }
+    I.javadoc->brief.emplace();
+    I.javadoc->brief->children.emplace_back(MakePolymorphic<doc::Text, doc::Styled>(std::string(name), doc::Style::mono));
+    I.javadoc->brief->children.emplace_back(MakePolymorphic<doc::Text>(std::string(" overloads")));
+    return true;
+}
+
+template <class Range>
+void
+populateOverloadsBrief(OverloadsInfo& I, Range&& functions)
+{
+    auto functionsWithBrief = std::views::filter(functions,
+        [](FunctionInfo const& function)
+        {
+            return
+                function.javadoc &&
+                function.javadoc->brief &&
+                !function.javadoc->brief->empty();
+        });
+    if (std::ranges::empty(functionsWithBrief))
+    {
+        return;
+    }
+    MRDOCS_CHECK_OR(!populateOverloadsBriefIfAllSameBrief(I, functionsWithBrief));
+    MRDOCS_CHECK_OR(!populateOverloadsFromClass(I));
+    MRDOCS_CHECK_OR(!populateOverloadsFromOperator(I, functions));
+    MRDOCS_CHECK_OR(!populateOverloadsFromFunctionName(I));
+}
+
+template <class Range>
+void
+populateOverloadsReturns(OverloadsInfo& I, Range&& functions) {
+    auto functionReturns = functions |
+        std::views::filter([](FunctionInfo const& function)
+            {
+                return function.javadoc && !function.javadoc->returns.empty();
+            }) |
+        std::views::transform([](FunctionInfo const& function)
+            {
+                return function.javadoc->returns;
+            }) |
+        std::views::join;
+    for (doc::Returns const& functionReturn: functionReturns)
+    {
+        auto sameIt = std::ranges::find_if(
+            I.javadoc->returns,
+            [&functionReturn](doc::Returns const& overloadReturns)
+            {
+                return overloadReturns == functionReturn;
+            });
+        if (sameIt == I.javadoc->returns.end())
+        {
+            I.javadoc->returns.push_back(functionReturn);
+        }
+    }
+}
+
+template <class Range>
+void
+populateOverloadsParams(OverloadsInfo& I, Range& functions) {
+    auto functionParams = functions |
+        std::views::filter([](FunctionInfo const& function)
+            {
+                return function.javadoc && !function.javadoc->params.empty();
+            }) |
+        std::views::transform([](FunctionInfo const& function)
+            {
+                return function.javadoc->params;
+            }) |
+        std::views::join;
+    for (doc::Param const& functionParam: functionParams)
+    {
+        auto sameIt = std::ranges::find_if(
+            I.javadoc->params,
+            [&functionParam](doc::Param const& overloadParam)
+            {
+                return overloadParam.name == functionParam.name;
+            });
+        if (sameIt == I.javadoc->params.end())
+        {
+            I.javadoc->params.push_back(functionParam);
+        }
+    }
+}
+
+template <class Range>
+void
+populateOverloadsTParams(OverloadsInfo& I, Range& functions) {
+    auto functionTParams = functions |
+        std::views::filter([](FunctionInfo const& function)
+            {
+                return function.javadoc && !function.javadoc->tparams.empty();
+            }) |
+        std::views::transform([](FunctionInfo const& function)
+            {
+                return function.javadoc->tparams;
+            }) |
+        std::views::join;
+    for (doc::TParam const& functionTParam: functionTParams)
+    {
+        auto sameIt = std::ranges::find_if(
+            I.javadoc->tparams,
+            [&functionTParam](doc::TParam const& overloadTParam)
+            {
+                return overloadTParam.name == functionTParam.name;
+            });
+        if (sameIt == I.javadoc->tparams.end())
+        {
+            I.javadoc->tparams.push_back(functionTParam);
+        }
+    }
+}
+
+template <class Range>
+void
+populateOverloadsExceptions(OverloadsInfo& I, Range& functions) {
+    auto functionExceptions = functions |
+        std::views::filter([](FunctionInfo const& function)
+            {
+                return function.javadoc && !function.javadoc->exceptions.empty();
+            }) |
+        std::views::transform([](FunctionInfo const& function)
+            {
+                return function.javadoc->exceptions;
+            }) |
+        std::views::join;
+    for (doc::Throws const& functionException: functionExceptions)
+    {
+        auto sameIt = std::ranges::find_if(
+            I.javadoc->exceptions,
+            [&functionException](doc::Throws const& overloadException)
+            {
+                return overloadException.exception.string == functionException.exception.string;
+            });
+        if (sameIt == I.javadoc->exceptions.end())
+        {
+            I.javadoc->exceptions.push_back(functionException);
+        }
+    }
+}
+
+template <class Range>
+void
+populateOverloadsSees(OverloadsInfo& I, Range& functions) {
+    auto functionSees = functions |
+        std::views::filter([](FunctionInfo const& function)
+            {
+                return function.javadoc && !function.javadoc->sees.empty();
+            }) |
+        std::views::transform([](FunctionInfo const& function)
+            {
+                return function.javadoc->sees;
+            }) |
+        std::views::join;
+    for (doc::See const& functionSee: functionSees)
+    {
+        auto sameIt = std::ranges::find_if(
+            I.javadoc->sees,
+            [&functionSee](doc::See const& overloadSee)
+            {
+                return overloadSee.children == functionSee.children;
+            });
+        if (sameIt == I.javadoc->sees.end())
+        {
+            I.javadoc->sees.push_back(functionSee);
+        }
+    }
+}
+
+template <class Range>
+void
+populateOverloadsPreconditions(OverloadsInfo& I, Range& functions) {
+    auto functionsPres = functions |
+        std::views::filter([](FunctionInfo const& function)
+            {
+                return function.javadoc && !function.javadoc->preconditions.empty();
+            }) |
+        std::views::transform([](FunctionInfo const& function)
+            {
+                return function.javadoc->preconditions;
+            }) |
+        std::views::join;
+    for (doc::Precondition const& functionPre: functionsPres)
+    {
+        auto sameIt = std::ranges::find_if(
+            I.javadoc->preconditions,
+            [&functionPre](doc::Precondition const& overloadPre)
+            {
+                return overloadPre.children == functionPre.children;
+            });
+        if (sameIt == I.javadoc->preconditions.end())
+        {
+            I.javadoc->preconditions.push_back(functionPre);
+        }
+    }
+}
+
+template <class Range>
+void
+populateOverloadsPostconditions(OverloadsInfo& I, Range& functions) {
+    auto functionsPosts = functions |
+        std::views::filter([](FunctionInfo const& function)
+            {
+                return function.javadoc && !function.javadoc->postconditions.empty();
+            }) |
+        std::views::transform([](FunctionInfo const& function)
+            {
+                return function.javadoc->postconditions;
+            }) |
+        std::views::join;
+    for (doc::Postcondition const& functionPost: functionsPosts)
+    {
+        auto sameIt = std::ranges::find_if(
+            I.javadoc->postconditions,
+            [&functionPost](doc::Postcondition const& overloadPost)
+            {
+                return overloadPost.children == functionPost.children;
+            });
+        if (sameIt == I.javadoc->postconditions.end())
+        {
+            I.javadoc->postconditions.push_back(functionPost);
+        }
+    }
+}
+} // (anon)
+
+
+void
+JavadocFinalizer::
+populateOverloadJavadocs(OverloadsInfo& I)
+{
+    // Create a view all Info members of I
+    auto functions =
+        I.Members |
+        std::views::transform([&](SymbolID const& id)
+            {
+                return corpus_.find(id);
+            }) |
+        std::views::filter([](Info const* infoPtr)
+            {
+                return infoPtr != nullptr && infoPtr->isFunction();
+            }) |
+        std::views::transform([](Info const* infoPtr) -> FunctionInfo const&
+            {
+                return *dynamic_cast<FunctionInfo const*>(infoPtr);
+            });
+
+    I.javadoc.emplace();
+    // blocks: we do not copy javadoc detail blocks because
+    // it's impossible to guarantee that the details for
+    // any of the functions make sense for all overloads
+    populateOverloadsBrief(I, functions);
+    populateOverloadsReturns(I, functions);
+    populateOverloadsParams(I, functions);
+    populateOverloadsTParams(I, functions);
+    populateOverloadsExceptions(I, functions);
+    populateOverloadsSees(I, functions);
+    populateOverloadsPreconditions(I, functions);
+    populateOverloadsPostconditions(I, functions);
+}
+
+
+void
+JavadocFinalizer::
 emitWarnings()
 {
     MRDOCS_CHECK_OR(corpus_.config->warnings);

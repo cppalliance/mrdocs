@@ -114,11 +114,13 @@ struct C
 
 === Member Functions
 
-[cols=1]
+[cols=2]
 |===
-| Name 
+| Name | Description 
 
 | <<C-f-082,`f`>> 
+| 
+
 |===
 === Using Declarations
 
@@ -136,10 +138,12 @@ struct C
 == <<C,C>>::f
 
 
-=== Synopsis
+=== Synopses
 
 
 Declared in `&lt;using&hyphen;3&period;cpp&gt;`
+
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -148,6 +152,8 @@ void
 ----
 
 [.small]#<<B-f,_» more&period;&period;&period;_>>#
+
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
