@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <template>
+    <tparam name="A" class="type"/>
+    <tparam name="B" class="type"/>
+    <function name="dest" id="fxzw55khD3HmtxJT7y2nk1M9N08=">
+      <file short-path="copydetails.cpp" source-path="copydetails.cpp" line="55"/>
+      <return>
+        <type name="int"/>
+      </return>
+      <param name="a">
+        <type name="int"/>
+      </param>
+      <param name="b">
+        <type name="int"/>
+      </param>
+      <doc>
+        <brief>
+          <text>Destination doc function</text>
+        </brief>
+        <para>
+          <text>Documentation prefix for dest only.</text>
+        </para>
+        <para>
+          <text>This is the documentation from the    source function.</text>
+        </para>
+        <para>
+          <text>Documentation suffix for dest only.</text>
+        </para>
+        <returns>
+          <text>A nice integer</text>
+        </returns>
+        <param name="a">
+          <text>The parameter a.    </text>
+        </param>
+        <param name="b">
+          <text>The parameter b.    </text>
+        </param>
+        <tparam name="A">
+          <text>The template parameter A.    </text>
+        </tparam>
+        <tparam name="B">
+          <text>The template parameter B.    </text>
+        </tparam>
+        <see>
+          <text>dest</text>
+        </see>
+        <pre>
+          <text>a must be greater than 0.    </text>
+        </pre>
+        <post>
+          <text>The return value is greater than 0.</text>
+        </post>
+      </doc>
+    </function>
+  </template>
+  <template>
+    <tparam name="A" class="type"/>
+    <tparam name="C" class="type"/>
+    <tparam name="D" class="type"/>
+    <function name="destOverride" id="Y8nVX1yV+bSlfZbVuMtm6gUnslE=">
+      <file short-path="copydetails.cpp" source-path="copydetails.cpp" line="85"/>
+      <return>
+        <type name="int"/>
+      </return>
+      <param name="a">
+        <type name="int"/>
+      </param>
+      <param name="c">
+        <type name="int"/>
+      </param>
+      <param name="d">
+        <type name="int"/>
+      </param>
+      <doc>
+        <brief>
+          <text>Destination doc function</text>
+        </brief>
+        <para>
+          <text>Documentation prefix for dest only.</text>
+        </para>
+        <para>
+          <text>This is the documentation from the    source function.</text>
+        </para>
+        <para>
+          <text>Documentation suffix for dest only.</text>
+        </para>
+        <para>
+          <text>Parameter b is not copied because    it doesn&apos;t exist in the destination function.</text>
+        </para>
+        <returns>
+          <text>An integer meaning something else.</text>
+        </returns>
+        <param name="a">
+          <text>Overwrites the parameter a.    </text>
+        </param>
+        <param name="c">
+          <text>The parameter c.    </text>
+        </param>
+        <param name="d">
+          <text>The parameter d.    </text>
+        </param>
+        <tparam name="A">
+          <text>Overwrites the template parameter A.    </text>
+        </tparam>
+        <tparam name="C">
+          <text>The template parameter C.    </text>
+        </tparam>
+        <tparam name="D">
+          <text>The template parameter D.    </text>
+        </tparam>
+        <throws>
+          <text>Overwrites the exception.</text>
+        </throws>
+        <see>
+          <text>source</text>
+        </see>
+        <pre>
+          <text>overriden precondition    </text>
+        </pre>
+        <post>
+          <text>overriden postcondition</text>
+        </post>
+      </doc>
+    </function>
+  </template>
+  <template>
+    <tparam name="A" class="type"/>
+    <tparam name="B" class="type"/>
+    <function name="source" id="H3WiIjBO//83NjXtkFDPf3JvDsc=">
+      <file short-path="copydetails.cpp" source-path="copydetails.cpp" line="43"/>
+      <return>
+        <type name="int"/>
+      </return>
+      <param name="a">
+        <type name="int"/>
+      </param>
+      <param name="b">
+        <type name="int"/>
+      </param>
+      <doc>
+        <brief>
+          <text>Source doc function</text>
+        </brief>
+        <para>
+          <text>This is the documentation from the    source function.</text>
+        </para>
+        <returns>
+          <text>A nice integer</text>
+        </returns>
+        <param name="a">
+          <text>The parameter a.    </text>
+        </param>
+        <param name="b">
+          <text>The parameter b.    </text>
+        </param>
+        <tparam name="A">
+          <text>The template parameter A.    </text>
+        </tparam>
+        <tparam name="B">
+          <text>The template parameter B.    </text>
+        </tparam>
+        <throws>
+          <text>If something goes wrong.</text>
+        </throws>
+        <see>
+          <text>dest</text>
+        </see>
+        <pre>
+          <text>a must be greater than 0.    </text>
+        </pre>
+        <post>
+          <text>The return value is greater than 0.</text>
+        </post>
+      </doc>
+    </function>
+  </template>
+</namespace>
+</mrdocs>
