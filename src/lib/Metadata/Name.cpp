@@ -54,6 +54,10 @@ operator<=>(Polymorphic<NameInfo> const& lhs, Polymorphic<NameInfo> const& rhs)
         }
         return lhs->Kind <=> rhs->Kind;
     }
+    if (!lhs && !rhs)
+    {
+        return std::strong_ordering::equal;
+    }
     return !lhs ? std::strong_ordering::less
             : std::strong_ordering::greater;
 }

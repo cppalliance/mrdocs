@@ -30,11 +30,13 @@ struct A;
 
 === Member Functions
 
-[cols=1]
+[cols=2]
 |===
-| Name 
+| Name | Description 
 
 | <<A-operator_call-0d,`operator()`>> 
+| Return true if ch is in the character set&period;
+
 |===
 
 
@@ -43,10 +45,14 @@ struct A;
 == <<A,A>>::operator()
 
 
-=== Synopsis
+Return true if ch is in the character set&period;
+
+=== Synopses
 
 
 Declared in `&lt;operator&hyphen;param&period;cpp&gt;`
+
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -57,6 +63,9 @@ bool
 
 [.small]#<<A-operator_call-0f,_» more&period;&period;&period;_>>#
 
+Return true if ch is in the character set&period;
+
+
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 constexpr
@@ -65,6 +74,11 @@ bool
 ----
 
 [.small]#<<A-operator_call-0b,_» more&period;&period;&period;_>>#
+
+=== Return Value
+
+
+True if ch is in the set, otherwise false&period;
 
 === Parameters
 

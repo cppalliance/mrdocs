@@ -74,11 +74,13 @@ struct <<A-0e,A>>&lt;int&gt;;
 
 === Member Functions
 
-[cols=1]
+[cols=2]
 |===
-| Name 
+| Name | Description 
 
 | <<A-00-f-030,`f`>> 
+| 
+
 |===
 
 
@@ -87,10 +89,12 @@ struct <<A-0e,A>>&lt;int&gt;;
 == <<A-00,A>>&lt;int&gt;::f
 
 
-=== Synopsis
+=== Synopses
 
 
 Declared in `&lt;ct&lowbar;mft&lowbar;expl&lowbar;outside&period;cpp&gt;`
+
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -100,6 +104,8 @@ void
 ----
 
 [.small]#<<A-00-f-032,_» more&period;&period;&period;_>>#
+
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----

@@ -5,15 +5,8 @@
 {{#>markup/a href=url}}{{#>markup/code}}{{>symbol/name . nolink=true}}{{/markup/code}}{{/markup/a}} {{>symbol/special-function-suffix .}}
 {{~/markup/td}}
 {{#if (eq includeBrief true)}}
-{{#>markup/td}}
-{{#if (ne kind "overloads")~}}
+{{#>markup/td~}}
 {{{~doc.brief}}}
-{{else~}}
-{{#each (unique (pluck (pluck members "doc") "brief"))~}}
-{{{.}}}
-
-{{/each~}}
-{{/if~}}
-{{~/markup/td~}}
+{{/markup/td~}}
 {{/if}}
 {{~/markup/tr}}

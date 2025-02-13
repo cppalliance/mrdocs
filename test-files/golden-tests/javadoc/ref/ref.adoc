@@ -321,7 +321,6 @@ struct F;
 | <<F-operator_ptrmem,`operator&hyphen;&gt;&ast;`>> 
 | <<F-operator_slash,`operator&sol;`>> 
 | <<F-operator_slash_eq,`operator&sol;&equals;`>> 
-| <<F-operator_lshift,`operator&lt;&lt;`>> 
 | <<F-operator_lshift_eq,`operator&lt;&lt;&equals;`>> 
 | <<F-operator_rshift,`operator&gt;&gt;`>> 
 | <<F-operator_rshift_eq,`operator&gt;&gt;&equals;`>> 
@@ -332,6 +331,7 @@ struct F;
 | <<F-operator_or_eq,`operator&verbar;&equals;`>> 
 | <<F-operator_or,`operator&verbar;&verbar;`>> 
 | <<F-operator_bitnot,`operator&#126;`>> 
+| <<F-operator_lshift,`operator&lt;&lt;`>> 
 | <<F-operator_not,`operator!`>> 
 | <<F-operator_eq,`operator&equals;&equals;`>> 
 | <<F-operator_not_eq,`operator!&equals;`>> 
@@ -644,21 +644,6 @@ void
 operator&sol;&equals;(<<F,F>>&);
 ----
 
-[#F-operator_lshift]
-== <<F,F>>::operator&lt;&lt;
-
-
-=== Synopsis
-
-
-Declared in `&lt;ref&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-void
-operator&lt;&lt;(<<F,F>>&);
-----
-
 [#F-operator_lshift_eq]
 == <<F,F>>::operator&lt;&lt;&equals;
 
@@ -807,6 +792,21 @@ Declared in `&lt;ref&period;cpp&gt;`
 ----
 void
 operator&#126;();
+----
+
+[#F-operator_lshift]
+== <<F,F>>::operator&lt;&lt;
+
+
+=== Synopsis
+
+
+Declared in `&lt;ref&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+operator&lt;&lt;(<<F,F>>&);
 ----
 
 [#F-operator_not]

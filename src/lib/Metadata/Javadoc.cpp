@@ -73,6 +73,25 @@ toString(
     }
 }
 
+std::strong_ordering
+operator<=>(Polymorphic<Text> const& lhs, Polymorphic<Text> const& rhs)
+{
+    if (lhs && rhs)
+    {
+        if (lhs->Kind == rhs->Kind)
+        {
+            return visit(*lhs, detail::VisitCompareFn<Node>(*rhs));
+        }
+        return lhs->Kind <=> rhs->Kind;
+    }
+    if (!lhs && !rhs)
+    {
+        return std::strong_ordering::equal;
+    }
+    return !lhs ? std::strong_ordering::less
+            : std::strong_ordering::greater;
+}
+
 } // doc
 
 //------------------------------------------------

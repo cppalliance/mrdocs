@@ -245,15 +245,6 @@
         </type>
       </param>
     </function>
-    <function name="operator&lt;&lt;" id="1pkl7XGJ2JVw7Xbm/xwSNKmflV4=">
-      <file short-path="ref.cpp" source-path="ref.cpp" line="75"/>
-      <attr id="operator" name="lshift" value="23"/>
-      <param>
-        <type class="lvalue-reference">
-          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
-        </type>
-      </param>
-    </function>
     <function name="operator&lt;&lt;=" id="rn2dr+lEU1Y+nZ76RvF705Amt7Y=">
       <file short-path="ref.cpp" source-path="ref.cpp" line="76"/>
       <attr id="operator" name="lshift_eq" value="25"/>
@@ -338,6 +329,15 @@
     <function name="operator~" id="i0ULCt5GV/PS0YAGQP2fValTik8=">
       <file short-path="ref.cpp" source-path="ref.cpp" line="56"/>
       <attr id="operator" name="bitnot" value="13"/>
+    </function>
+    <function name="operator&lt;&lt;" id="1pkl7XGJ2JVw7Xbm/xwSNKmflV4=">
+      <file short-path="ref.cpp" source-path="ref.cpp" line="75"/>
+      <attr id="operator" name="lshift" value="23"/>
+      <param>
+        <type class="lvalue-reference">
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+        </type>
+      </param>
     </function>
     <function name="operator!" id="ZoClmvCX93Yg08gfEaOD38rj0EM=">
       <file short-path="ref.cpp" source-path="ref.cpp" line="93"/>

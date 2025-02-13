@@ -24,7 +24,7 @@
 {{/if}}
 {{! Synopsis }}
 {{#unless (eq symbol.kind "namespace")}}
-{{#> markup/dynamic-level-h }}Synopsis{{/markup/dynamic-level-h}}
+{{#> markup/dynamic-level-h }}{{#if (ne symbol.kind "overloads")}}Synopsis{{else}}Synopses{{/if}}{{/markup/dynamic-level-h}}
 
 {{>location/source dcl=(primary_location symbol)}}
 
@@ -89,7 +89,6 @@
 
 {{/if}}
 {{! Exceptions }}
-{{#if (ne symbol.kind "overloads")}}
 {{#if symbol.doc.exceptions}}
 {{#> markup/dynamic-level-h }}Exceptions{{/markup/dynamic-level-h}}
 
@@ -103,24 +102,6 @@
 {{/each}}
 |===
 
-{{/if}}
-{{else}}
-{{#with (flattenUnique symbol.members "doc.exceptions" "exception") as |allExceptions|}}
-{{#if (ne (len allExceptions) 0)}}
-{{#> markup/dynamic-level-h }}Exceptions{{/markup/dynamic-level-h}}
-
-|===
-| Name | Thrown on
-
-{{#each allExceptions as |exception|}}
-| `{{exception.exception}}`
-| {{{exception.description}}}
-
-{{/each}}
-|===
-
-{{/if}}
-{{/with}}
 {{/if}}
 {{! Return value }}
 {{#if symbol.doc.returns}}
@@ -136,7 +117,6 @@
 
 {{/if}}
 {{! Template Parameters }}
-{{#if (ne symbol.kind "overloads")}}
 {{#if symbol.doc.tparams}}
 {{#> markup/dynamic-level-h }}Template Parameters{{/markup/dynamic-level-h}}
 
@@ -151,26 +131,7 @@
 |===
 
 {{/if}}
-{{else}}
-{{#with (flattenUnique symbol.members "doc.tparams" "name") as |allTParams|}}
-{{#if (ne (len allTParams) 0)}}
-{{#> markup/dynamic-level-h }}Template Parameters{{/markup/dynamic-level-h}}
-
-|===
-| Name | Description
-
-{{#each allTParams as |param|}}
-| *{{param.name}}*
-| {{{param.description}}}
-
-{{/each}}
-|===
-
-{{/if}}
-{{/with}}
-{{/if}}
 {{! Parameters }}
-{{#if (ne symbol.kind "overloads")}}
 {{#if symbol.doc.params}}
 {{#> markup/dynamic-level-h }}Parameters{{/markup/dynamic-level-h}}
 
@@ -184,24 +145,6 @@
 {{/each}}
 |===
 
-{{/if}}
-{{else}}
-{{#with (flattenUnique symbol.members "doc.params" "name") as |allParams|}}
-{{#if (ne (len allParams) 0)}}
-{{#> markup/dynamic-level-h }}Parameters{{/markup/dynamic-level-h}}
-
-|===
-| Name | Description
-
-{{#each allParams as |param|}}
-| *{{param.name}}*
-| {{{param.description}}}
-
-{{/each}}
-|===
-
-{{/if}}
-{{/with}}
 {{/if}}
 {{! Preconditions }}
 {{#if symbol.doc.preconditions}}

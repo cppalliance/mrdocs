@@ -33,11 +33,13 @@ struct Explicit;
 
 === Member Functions
 
-[cols=1]
+[cols=2]
 |===
-| Name 
+| Name | Description 
 
 | <<Explicit-2constructor-08,`Explicit`>>         [.small]#[constructor]#
+| 
+
 |===
 
 
@@ -46,10 +48,12 @@ struct Explicit;
 == <<Explicit,Explicit>>::Explicit
 
 
-=== Synopsis
+=== Synopses
 
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -59,6 +63,8 @@ explicit
 
 [.small]#<<Explicit-2constructor-02,_» more&period;&period;&period;_>>#
 
+
+
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit
@@ -67,6 +73,8 @@ explicit
 
 [.small]#<<Explicit-2constructor-00,_» more&period;&period;&period;_>>#
 
+
+
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit
@@ -74,6 +82,8 @@ explicit
 ----
 
 [.small]#<<Explicit-2constructor-0b,_» more&period;&period;&period;_>>#
+
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -164,11 +174,13 @@ struct ExplicitExpression;
 
 === Member Functions
 
-[cols=1]
+[cols=2]
 |===
-| Name 
+| Name | Description 
 
 | <<ExplicitExpression-2constructor-026,`ExplicitExpression`>>         [.small]#[constructor]#
+| 
+
 |===
 
 
@@ -177,10 +189,12 @@ struct ExplicitExpression;
 == <<ExplicitExpression,ExplicitExpression>>::ExplicitExpression
 
 
-=== Synopsis
+=== Synopses
 
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -190,6 +204,8 @@ explicit(B)
 
 [.small]#<<ExplicitExpression-2constructor-0b,_» more&period;&period;&period;_>>#
 
+
+
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit(B)
@@ -198,6 +214,8 @@ explicit(B)
 
 [.small]#<<ExplicitExpression-2constructor-04,_» more&period;&period;&period;_>>#
 
+
+
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit(B)
@@ -205,6 +223,8 @@ explicit(B)
 ----
 
 [.small]#<<ExplicitExpression-2constructor-08,_» more&period;&period;&period;_>>#
+
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -294,11 +314,13 @@ struct ExplicitFalse;
 
 === Member Functions
 
-[cols=1]
+[cols=2]
 |===
-| Name 
+| Name | Description 
 
 | <<ExplicitFalse-2constructor-04c,`ExplicitFalse`>>         [.small]#[constructor]#
+| 
+
 |===
 
 
@@ -307,10 +329,12 @@ struct ExplicitFalse;
 == <<ExplicitFalse,ExplicitFalse>>::ExplicitFalse
 
 
-=== Synopsis
+=== Synopses
 
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -320,6 +344,8 @@ explicit(false)
 
 [.small]#<<ExplicitFalse-2constructor-01,_» more&period;&period;&period;_>>#
 
+
+
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit(false)
@@ -328,6 +354,8 @@ explicit(false)
 
 [.small]#<<ExplicitFalse-2constructor-08,_» more&period;&period;&period;_>>#
 
+
+
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit(false)
@@ -335,6 +363,8 @@ explicit(false)
 ----
 
 [.small]#<<ExplicitFalse-2constructor-0a,_» more&period;&period;&period;_>>#
+
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -424,11 +454,13 @@ struct ExplicitTrue;
 
 === Member Functions
 
-[cols=1]
+[cols=2]
 |===
-| Name 
+| Name | Description 
 
 | <<ExplicitTrue-2constructor-0f,`ExplicitTrue`>>         [.small]#[constructor]#
+| 
+
 |===
 
 
@@ -437,10 +469,12 @@ struct ExplicitTrue;
 == <<ExplicitTrue,ExplicitTrue>>::ExplicitTrue
 
 
-=== Synopsis
+=== Synopses
 
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -450,6 +484,8 @@ explicit(true)
 
 [.small]#<<ExplicitTrue-2constructor-0d,_» more&period;&period;&period;_>>#
 
+
+
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit(true)
@@ -458,6 +494,8 @@ explicit(true)
 
 [.small]#<<ExplicitTrue-2constructor-04,_» more&period;&period;&period;_>>#
 
+
+
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit(true)
@@ -465,6 +503,8 @@ explicit(true)
 ----
 
 [.small]#<<ExplicitTrue-2constructor-08,_» more&period;&period;&period;_>>#
+
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
