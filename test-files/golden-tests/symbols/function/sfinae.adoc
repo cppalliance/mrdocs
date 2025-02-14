@@ -12,12 +12,14 @@
 | Name 
 
 | <<B,`B`>> 
+
 |===
 === Types
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<A-09,`A`>> 
 | The partial specialization of A is enabled via a template parameter
@@ -36,7 +38,8 @@
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<f1,`f1`>> 
 | Enabled via return type
@@ -81,6 +84,7 @@
 | Name 
 
 | <<B-C,`C`>> 
+
 |===
 
 [#B-C]
@@ -169,6 +173,7 @@ struct S;
 | Name 
 
 | <<S-02-store,`store`>> 
+
 |===
 
 
@@ -212,6 +217,7 @@ struct <<S-02,S>>&lt;T, std::void&lowbar;t&lt;T::a::b&gt;&gt;;
 | Name 
 
 | <<S-08-store,`store`>> 
+
 |===
 
 

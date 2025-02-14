@@ -12,6 +12,7 @@
 | Name 
 
 | <<Optional,`Optional`>> 
+
 |===
 
 [#Optional]
@@ -32,7 +33,8 @@ struct Optional;
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<Optional-value-01,`value`>> 
 | 

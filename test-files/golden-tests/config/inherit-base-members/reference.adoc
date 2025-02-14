@@ -9,7 +9,8 @@
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<base,`base`>> 
 | 
@@ -47,7 +48,8 @@ class base
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<base_base-base_base_inherited,`base&lowbar;base&lowbar;inherited`>> 
 | This function should be indirectly inherited by derived classes&period;
@@ -70,7 +72,8 @@ class base
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<base-do_base_inherited,`do&lowbar;base&lowbar;inherited`>> 
 | This function should be inherited by derived classes&period;
@@ -204,7 +207,8 @@ class base&lowbar;base;
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<base_base-base_base_inherited,`base&lowbar;base&lowbar;inherited`>> 
 | This function should be indirectly inherited by derived classes&period;
@@ -270,7 +274,8 @@ class derived
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<base_base-base_base_inherited,`base&lowbar;base&lowbar;inherited`>> 
 | This function should be indirectly inherited by derived classes&period;
@@ -296,7 +301,8 @@ class derived
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<base-do_base_inherited,`do&lowbar;base&lowbar;inherited`>> 
 | This function should be inherited by derived classes&period;
@@ -364,7 +370,8 @@ class private&lowbar;derived
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<private_derived-derived_shadowed,`derived&lowbar;shadowed`>> 
 | This function should shadow the base class function&period;
@@ -432,7 +439,8 @@ class protected&lowbar;derived
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<protected_derived-derived_shadowed,`derived&lowbar;shadowed`>> 
 | This function should shadow the base class function&period;
@@ -446,7 +454,8 @@ class protected&lowbar;derived
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<base_base-base_base_inherited,`base&lowbar;base&lowbar;inherited`>> 
 | This function should be indirectly inherited by derived classes&period;

@@ -12,13 +12,16 @@
 | Name 
 
 | <<A,`A`>> 
+
 | <<B,`B`>> 
+
 |===
 === Functions
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<f-0e,`f`>> 
 | 
@@ -46,7 +49,8 @@ struct A;
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<A-f-00,`f`>> 
 | 
@@ -56,7 +60,8 @@ struct A;
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<A-g-0e,`g`>> 
 | 
@@ -69,7 +74,9 @@ struct A;
 | Name 
 
 | <<A-08friend-0a,`operator&equals;&equals;`>> 
+
 | <<A-08friend-0e,`operator&equals;&equals;`>> 
+
 |===
 
 

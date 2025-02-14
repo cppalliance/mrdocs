@@ -9,7 +9,8 @@
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<A,`A`>> 
 | A brief for A&period;
@@ -22,7 +23,8 @@
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<f,`f`>> 
 | A brief for f&period;
@@ -52,7 +54,8 @@ struct A;
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<f,`f`>> 
 | A brief for f&period;

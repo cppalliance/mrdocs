@@ -12,7 +12,9 @@
 | Name 
 
 | <<local_class,`local&lowbar;class`>> 
+
 | <<local_struct,`local&lowbar;struct`>> 
+
 |===
 === Functions
 
@@ -21,6 +23,7 @@
 | Name 
 
 | <<local_function,`local&lowbar;function`>> 
+
 |===
 
 [#local_class]

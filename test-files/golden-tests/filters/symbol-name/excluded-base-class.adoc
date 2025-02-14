@@ -12,6 +12,7 @@
 | Name 
 
 | <<A,`A`>> 
+
 |===
 
 [#A]
@@ -25,7 +26,9 @@
 | Name 
 
 | <<A-D,`D`>> 
+
 | <<A-E,`E`>> 
+
 |===
 
 [#A-D]
@@ -50,9 +53,13 @@ class D
 | Name 
 
 | <<A-D-f,`f`>> 
+
 | <<A-D-g,`g`>>  [.small]#[virtual]#
+
 | <<A-D-h,`h`>>  [.small]#[virtual]#
+
 | <<A-D-i,`i`>> 
+
 |===
 
 
@@ -141,9 +148,13 @@ class E
 | Name 
 
 | <<A-E-f,`f`>> 
+
 | <<A-E-g,`g`>>  [.small]#[virtual]#
+
 | <<A-E-h,`h`>>  [.small]#[virtual]#
+
 | <<A-E-i,`i`>> 
+
 |===
 
 

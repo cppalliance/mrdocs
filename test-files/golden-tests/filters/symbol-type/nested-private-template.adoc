@@ -12,6 +12,7 @@
 | Name 
 
 | <<range,`range`>> 
+
 |===
 
 [#range]
@@ -38,7 +39,9 @@ class range;
 | Name 
 
 | <<range-impl-0e,`impl`>> 
+
 | <<range-impl-00,`impl&lt;R, false&gt;`>> 
+
 |===
 
 [#range-impl-0e]

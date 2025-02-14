@@ -9,7 +9,8 @@
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<regular_ns,`regular&lowbar;ns`>> 
 | A regular namespace with different filters for members
@@ -22,7 +23,8 @@
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<dependency_ns_alias,`dependency&lowbar;ns&lowbar;alias`>> 
 | Namespace alias to form the dependency on dependency&lowbar;ns
@@ -38,7 +40,8 @@
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<regular,`regular`>> 
 | A regular symbol in the global namespace
@@ -51,7 +54,8 @@
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<get_dependency,`get&lowbar;dependency`>> 
 | A function to get a dependency symbol on the global namespace
@@ -77,7 +81,8 @@ A regular namespace with different filters for members
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<regular_ns-regular,`regular`>> 
 | A symbol that passes the filters
@@ -90,7 +95,8 @@ A regular namespace with different filters for members
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<regular_ns-get_dependency,`get&lowbar;dependency`>> 
 | A function to get an excluded symbol
@@ -126,7 +132,8 @@ struct regular;
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<regular_ns-regular-also_regular,`also&lowbar;regular`>> 
 | Child of a regular symbol extracted as regular
@@ -162,7 +169,8 @@ struct also&lowbar;regular;
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<regular_ns-regular-also_regular-regular_as_well,`regular&lowbar;as&lowbar;well`>> 
 | Grandchild of a regular symbol extracted as regular
@@ -324,7 +332,8 @@ A see&hyphen;below namespace
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<see_below_ns-regular,`regular`>> 
 | Regular symbol in a see&hyphen;below namespace
@@ -337,7 +346,8 @@ A see&hyphen;below namespace
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<see_below_ns-get_dependency,`get&lowbar;dependency`>> 
 | A function to get a dependency symbol in a see&hyphen;below namespace
@@ -535,7 +545,8 @@ struct regular;
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<regular-also_regular,`also&lowbar;regular`>> 
 | Child of a regular symbol&colon; should be traversed as usual
@@ -571,7 +582,8 @@ struct also&lowbar;regular;
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<regular-also_regular-regular_as_well,`regular&lowbar;as&lowbar;well`>> 
 | Grandchild of a regular symbol&colon; should be traversed as usual

@@ -9,7 +9,8 @@
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<N0,`N0`>> 
 | This namespace should extracted because it&apos;s implied by `N0&colon;&colon;f0&lowbar;WL`
@@ -25,7 +26,8 @@
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<C,`C`>> 
 | This namespace should be included because it strictly matches `C`
@@ -42,7 +44,8 @@ This namespace should extracted because it&apos;s implied by `N0&colon;&colon;f0
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<N0-f0_WL,`f0&lowbar;WL`>> 
 | This function should be included because it matches `N0&colon;&colon;f0&lowbar;WL`
@@ -76,7 +79,8 @@ This namespace should extracted because it&apos;s implied by `N1&colon;&colon;N3
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<N1-N3_WL,`N3&lowbar;WL`>> 
 | This namespace should extracted because it&apos;s explicitly included by `N1&colon;&colon;N3&lowbar;WL`
@@ -96,7 +100,8 @@ This namespace should extracted because it&apos;s explicitly included by `N1&col
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<N1-N3_WL-f1_WL,`f1&lowbar;WL`>> 
 | This function should extracted because the namespace `N1&colon;&colon;N3&lowbar;WL` is included as a literal&period;
@@ -130,7 +135,8 @@ This namespace should extracted because it&apos;s implied by `N1&colon;&colon;N4
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<N1-N4-f1_WL,`f1&lowbar;WL`>> 
 | This function should extracted because it matches `N1&colon;&colon;N4&colon;&colon;f1&lowbar;WL`
@@ -164,7 +170,8 @@ This namespace should extracted because it&apos;s implied by `N5&colon;&colon;N6
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<N5-N6,`N6`>> 
 | This namespace should extracted because it&apos;s implied by `N5&colon;&colon;N6&colon;&colon;&ast;7`
@@ -181,7 +188,8 @@ This namespace should extracted because it&apos;s implied by `N5&colon;&colon;N6
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<N5-N6-M7,`M7`>> 
 | This namespace should be included because it matches `N5&colon;&colon;N6&colon;&colon;&ast;7`
@@ -201,7 +209,8 @@ This namespace should be included because it matches `N5&colon;&colon;N6&colon;&
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<N5-N6-M7-f2_WL,`f2&lowbar;WL`>> 
 | This function should be included because it&apos;s a member of `M7`, which matches `N5&colon;&colon;N6&colon;&colon;&ast;7`
@@ -235,7 +244,8 @@ This namespace should be included because it matches `N5&colon;&colon;N6&colon;&
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<N5-N6-N7-f2_WL,`f2&lowbar;WL`>> 
 | This function should be included because it&apos;s a member of `N7`, which matches `N5&colon;&colon;N6&colon;&colon;&ast;7`
@@ -279,7 +289,8 @@ struct C;
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<C-D,`D`>> 
 | This struct should be included because it&apos;s a member of `C`
@@ -289,7 +300,8 @@ struct C;
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<C-f0_WL,`f0&lowbar;WL`>> 
 | This function should be included because it&apos;s a member of `C`
@@ -318,7 +330,8 @@ struct D;
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<C-D-f1_WL,`f1&lowbar;WL`>> 
 | This function should be included because it&apos;s a member of `D`

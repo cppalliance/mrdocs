@@ -12,10 +12,15 @@
 | Name 
 
 | <<A-0e,`A`>> 
+
 | <<A-0f,`A&lt;bool&gt;`>> 
+
 | <<A-000,`A&lt;int&gt;`>> 
+
 | <<A-00b,`A&lt;short&gt;`>> 
+
 | <<D,`D`>> 
+
 |===
 
 [#A-0e]
@@ -40,7 +45,9 @@ struct A;
 | Name 
 
 | <<A-0e-B,`B`>> 
+
 | <<A-0e-C,`C`>> 
+
 |===
 === Member Functions
 
@@ -49,6 +56,7 @@ struct A;
 | Name 
 
 | <<A-0e-f,`f`>> 
+
 |===
 
 
@@ -75,6 +83,7 @@ struct B;
 | Name 
 
 | <<A-0e-B-g,`g`>> 
+
 |===
 
 
@@ -116,6 +125,7 @@ struct C;
 | Name 
 
 | <<A-0e-C-h,`h`>> 
+
 |===
 
 
@@ -172,9 +182,13 @@ struct <<A-0e,A>>&lt;bool&gt;;
 | Name 
 
 | <<A-0f-B,`B`>> 
+
 | <<A-0f-C-00,`C`>> 
+
 | <<A-0f-C-01,`C&lt;double*&gt;`>> 
+
 | <<A-0f-C-0c,`C&lt;U*&gt;`>> 
+
 |===
 === Member Functions
 
@@ -183,6 +197,7 @@ struct <<A-0e,A>>&lt;bool&gt;;
 | Name 
 
 | <<A-0f-f,`f`>> 
+
 |===
 
 
@@ -245,6 +260,7 @@ struct <<A-0e-C,C>>&lt;double*&gt;;
 | Name 
 
 | <<A-0f-C-01-j,`j`>> 
+
 |===
 
 
@@ -286,6 +302,7 @@ struct <<A-0e-C,C>>&lt;U*&gt;;
 | Name 
 
 | <<A-0f-C-0c-j,`j`>> 
+
 |===
 
 
@@ -342,8 +359,11 @@ struct <<A-0e,A>>&lt;int&gt;;
 | Name 
 
 | <<A-000-B-03,`B`>> 
+
 | <<A-000-B-09,`B&lt;long&gt;`>> 
+
 | <<A-000-C,`C`>> 
+
 |===
 === Member Functions
 
@@ -352,6 +372,7 @@ struct <<A-0e,A>>&lt;int&gt;;
 | Name 
 
 | <<A-000-f,`f`>> 
+
 |===
 
 
@@ -396,6 +417,7 @@ struct <<A-0e-B,B>>&lt;long&gt;;
 | Name 
 
 | <<A-000-B-09-g,`g`>> 
+
 |===
 
 
@@ -470,7 +492,9 @@ struct <<A-0e,A>>&lt;short&gt;;
 | Name 
 
 | <<A-00b-B,`B`>> 
+
 | <<A-00b-C,`C`>> 
+
 |===
 === Member Functions
 
@@ -479,6 +503,7 @@ struct <<A-0e,A>>&lt;short&gt;;
 | Name 
 
 | <<A-00b-f,`f`>> 
+
 |===
 
 
@@ -523,6 +548,7 @@ struct C;
 | Name 
 
 | <<A-00b-C-i,`i`>> 
+
 |===
 
 
@@ -578,7 +604,9 @@ struct D;
 | Name 
 
 | <<D-E-0e,`E`>> 
+
 | <<D-E-0d,`E&lt;int&gt;`>> 
+
 |===
 
 
@@ -605,6 +633,7 @@ struct E;
 | Name 
 
 | <<D-E-0e-k,`k`>> 
+
 |===
 
 
@@ -646,6 +675,7 @@ struct <<D-E-0e,E>>&lt;int&gt;;
 | Name 
 
 | <<D-E-0d-k,`k`>> 
+
 |===
 
 

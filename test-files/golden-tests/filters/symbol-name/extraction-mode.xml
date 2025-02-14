@@ -217,7 +217,7 @@
         <text>Namespace alias to form the dependency on dependency_ns</text>
       </brief>
     </doc>
-    <aliased name="dependency_ns" id="FVHkx2YC1v9lxjwdG5D+M2e5SIA="/>
+    <aliased name="dependency_ns"/>
   </namespace-alias>
   <namespace-alias name="implementation_defined_ns_alias" id="CzgfGPX1nw65BdnXgQsTa12LA2Y=">
     <file short-path="extraction-mode.cpp" source-path="extraction-mode.cpp" line="215"/>

@@ -1,0 +1,11 @@
+extract-empty-namespaces: false
+exclude-symbols:
+    - excluded_members_ns::*
+implementation-defined:
+    - implementation_defined_ns::*
+    - mixed_ns::ImplementationDefinedStructB
+    - mixed_regular_ns::ImplementationDefinedStructC
+see-below:
+    - see_below_ns::*
+    - mixed_ns::SeeBelowStructA
+    - mixed_regular_ns::SeeBelowStructB

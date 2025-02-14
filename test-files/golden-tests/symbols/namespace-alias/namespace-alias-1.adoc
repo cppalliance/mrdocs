@@ -12,6 +12,7 @@
 | Name 
 
 | <<LongName,`LongName`>> 
+
 |===
 === Namespace Aliases
 
@@ -20,10 +21,37 @@
 | Name 
 
 | <<A,`A`>> 
+
 |===
 
 [#LongName]
 == LongName
+
+
+=== Types
+
+[cols=1]
+|===
+| Name 
+
+| <<LongName-A,`A`>> 
+
+|===
+
+[#LongName-A]
+== <<LongName,LongName>>::A
+
+
+=== Synopsis
+
+
+Declared in `&lt;namespace&hyphen;alias&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct A;
+----
+
 
 
 

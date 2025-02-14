@@ -12,9 +12,13 @@
 | Name 
 
 | <<Explicit,`Explicit`>> 
+
 | <<ExplicitExpression,`ExplicitExpression`>> 
+
 | <<ExplicitFalse,`ExplicitFalse`>> 
+
 | <<ExplicitTrue,`ExplicitTrue`>> 
+
 |===
 
 [#Explicit]
@@ -35,7 +39,8 @@ struct Explicit;
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<Explicit-2constructor-08,`Explicit`>>         [.small]#[constructor]#
 | 
@@ -176,7 +181,8 @@ struct ExplicitExpression;
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<ExplicitExpression-2constructor-026,`ExplicitExpression`>>         [.small]#[constructor]#
 | 
@@ -316,7 +322,8 @@ struct ExplicitFalse;
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<ExplicitFalse-2constructor-04c,`ExplicitFalse`>>         [.small]#[constructor]#
 | 
@@ -456,7 +463,8 @@ struct ExplicitTrue;
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<ExplicitTrue-2constructor-0f,`ExplicitTrue`>>         [.small]#[constructor]#
 | 

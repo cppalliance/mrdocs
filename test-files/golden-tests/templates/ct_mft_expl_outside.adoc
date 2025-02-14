@@ -12,7 +12,9 @@
 | Name 
 
 | <<A-0e,`A`>> 
+
 | <<A-00,`A&lt;int&gt;`>> 
+
 |===
 
 [#A-0e]
@@ -37,6 +39,7 @@ struct A;
 | Name 
 
 | <<A-0e-f,`f`>> 
+
 |===
 
 
@@ -76,7 +79,8 @@ struct <<A-0e,A>>&lt;int&gt;;
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<A-00-f-030,`f`>> 
 | 
