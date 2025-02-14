@@ -1122,6 +1122,38 @@ visitInlineCommandComment(
         }
         return;
     }
+    // KRYSTIAN FIXME: these need to be made inline commands in clang
+    case CommandTraits::KCI_related:
+    case CommandTraits::KCI_relates:
+    {
+        if(! goodArgCount(1, *C))
+            return;
+        // The parsed reference often includes characters
+        // that are not valid in identifiers, so we need to
+        // clean it up.
+        // Find the first character that is not a valid C++
+        // identifier character, and truncate the string there.
+        // This potentially creates two text nodes.
+        auto const s = C->getArgText(0).str();
+        std::string_view ref = parseQualifiedIdentifier(s);
+        bool const hasExtraText = ref.size() != s.size();
+        if (!ref.empty())
+        {
+            // the referenced symbol will be resolved during
+            // the finalization step once all symbols are extracted
+            emplaceText<doc::Related>(
+                C->hasTrailingNewline() && !hasExtraText,
+                std::string(ref));
+        }
+        // Emplace the rest of the string as doc::Text
+        if(hasExtraText)
+        {
+            emplaceText<doc::Text>(
+                C->hasTrailingNewline(),
+                s.substr(ref.size()));
+        }
+        return;
+    }
 
     default:
         break;

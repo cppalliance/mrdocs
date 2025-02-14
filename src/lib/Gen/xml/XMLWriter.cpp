@@ -785,6 +785,9 @@ writeNode(doc::Node const& node)
     case doc::NodeKind::copied:
         writeCopied(dynamic_cast<doc::Copied const&>(node));
         break;
+    case doc::NodeKind::related:
+        writeRelated(dynamic_cast<doc::Related const&>(node));
+        break;
     case doc::NodeKind::throws:
         writeThrows(dynamic_cast<doc::Throws const&>(node));
         break;
@@ -837,6 +840,16 @@ writeCopied(
         MRDOCS_UNREACHABLE();
     }
     tags_.write(tag_name, node.string, {
+        { node.id }
+        });
+}
+
+void
+XMLWriter::
+writeRelated(
+    doc::Related const& node)
+{
+    tags_.write("relates", node.string, {
         { node.id }
         });
 }

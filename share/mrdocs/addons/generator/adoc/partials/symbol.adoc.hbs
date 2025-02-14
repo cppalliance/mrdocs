@@ -69,6 +69,11 @@
 {{>symbol/members-table members=symbol.usingDirectives title="Using Directives"}}
 
 {{/if}}
+{{! Related symbols }}
+{{#if symbol.doc.related}}
+{{>symbol/members-table members=symbol.doc.related title="Related functions"}}
+
+{{/if}}
 {{! Description }}
 {{#if symbol.doc.description}}
 {{#> markup/dynamic-level-h }}Description{{/markup/dynamic-level-h}}

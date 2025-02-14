@@ -100,6 +100,14 @@ domCreate(
 
 dom::Value
 domCreate(
+    SymbolID const& I,
+    HandlebarsCorpus const& corpus)
+{
+    return corpus.get(I);
+}
+
+dom::Value
+domCreate(
     doc::Precondition const& I,
     HandlebarsCorpus const& corpus)
 {
@@ -225,7 +233,7 @@ getJavadoc(Javadoc const& jd) const
         elements.reserve(nodes.size());
         for (value_type const& elem : nodes)
         {
-            if constexpr (requires { !elem; })
+            if constexpr (requires { *elem; })
             {
                 if (!elem)
                 {
@@ -257,6 +265,7 @@ getJavadoc(Javadoc const& jd) const
     emplaceObjectArray("tparams", jd.tparams);
     emplaceObjectArray("exceptions", jd.exceptions);
     emplaceObjectArray("see", jd.sees);
+    emplaceObjectArray("related", jd.related);
     emplaceObjectArray("preconditions", jd.preconditions);
     emplaceObjectArray("postconditions", jd.postconditions);
     return dom::Object(std::move(objKeyValues));
