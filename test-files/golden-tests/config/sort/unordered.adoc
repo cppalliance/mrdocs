@@ -12,20 +12,30 @@
 | Name 
 
 | <<D,`D`>> 
+
 | <<C-0f,`C`>> 
+
 | <<C-0d,`C&lt;int, char&gt;`>> 
+
 | <<C-03,`C&lt;int&gt;`>> 
+
 | <<B-0b,`B`>> 
+
 | <<B-04,`B&lt;int, char&gt;`>> 
+
 | <<B-05,`B&lt;int, U&gt;`>> 
+
 | <<A,`A`>> 
+
 | <<Z,`Z`>> 
+
 |===
 === Functions
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<operator_not_eq,`operator!&equals;`>> 
 | 
@@ -211,7 +221,8 @@ struct Z;
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<Z-operator_3way,`operator&lt;&equals;&gt;`>> 
 | 

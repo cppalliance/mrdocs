@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <using-directive id="HfpFOdGBlFvzJWV5HwJnyWPM72g="/>
+  <namespace name="documented_ns" id="rYWSTKnSbovxJzFjzhy4tRjQbFU=">
+    <doc>
+      <brief>
+        <text>Namespace documentation</text>
+      </brief>
+    </doc>
+  </namespace>
+  <namespace name="implementation_defined_ns" id="ZYn+worzOdzCMW6yaZC9jAkpVTk=">
+    <doc>
+      <brief>
+        <text>Should decay to implementation-defined</text>
+      </brief>
+    </doc>
+  </namespace>
+  <namespace name="mixed_ns" id="ealcuYmQonFb4GtSSDp117u3riE=">
+    <doc>
+      <brief>
+        <text>Should decay to see-below</text>
+      </brief>
+    </doc>
+    <struct name="ImplementationDefinedStructB" id="Lk6iyOPZKI46hh8WI5xjsTJwx8I=">
+      <file short-path="no-extract-empty-namespaces.cpp" source-path="no-extract-empty-namespaces.cpp" line="32" class="def"/>
+    </struct>
+    <struct name="SeeBelowStructA" id="u8FBT1KsjAgBvS+Nzcrm2Kw/qSA=">
+      <file short-path="no-extract-empty-namespaces.cpp" source-path="no-extract-empty-namespaces.cpp" line="31" class="def"/>
+    </struct>
+  </namespace>
+  <namespace name="mixed_regular_ns" id="IVNsaOJZhF3igZQSxicbn7zZkdY=">
+    <doc>
+      <brief>
+        <text>Should decay to regular</text>
+      </brief>
+    </doc>
+    <struct name="ImplementationDefinedStructC" id="tMUbPbwBrgNgJ53IA/mY/ixVyiM=">
+      <file short-path="no-extract-empty-namespaces.cpp" source-path="no-extract-empty-namespaces.cpp" line="39" class="def"/>
+    </struct>
+    <struct name="RegularStructA" id="sGLLl7RCwa46rBvSojbUrq3KFsk=">
+      <file short-path="no-extract-empty-namespaces.cpp" source-path="no-extract-empty-namespaces.cpp" line="37" class="def"/>
+    </struct>
+    <struct name="SeeBelowStructB" id="dfTMjNUxKdZduX9C3w178BN5JE8=">
+      <file short-path="no-extract-empty-namespaces.cpp" source-path="no-extract-empty-namespaces.cpp" line="38" class="def"/>
+    </struct>
+  </namespace>
+  <namespace name="regular_ns" id="HfpFOdGBlFvzJWV5HwJnyWPM72g=">
+    <doc>
+      <brief>
+        <text>Regular namespace</text>
+      </brief>
+    </doc>
+    <struct name="A" id="i+0rF6rz7UYIPXUcwcMuV9+lHrU=">
+      <file short-path="no-extract-empty-namespaces.cpp" source-path="no-extract-empty-namespaces.cpp" line="11" class="def"/>
+    </struct>
+  </namespace>
+  <namespace name="see_below_ns" id="exW9PGqoF7V7OCpvgUIZOhj7WwI=">
+    <doc>
+      <brief>
+        <text>Should decay to see-below</text>
+      </brief>
+    </doc>
+    <struct name="SeeBelowStructA" id="xjRa7V2UmBgj6fsrvSrjsMfWFZw=">
+      <file short-path="no-extract-empty-namespaces.cpp" source-path="no-extract-empty-namespaces.cpp" line="19" class="def"/>
+    </struct>
+    <struct name="SeeBelowStructB" id="Lf/JEph64Agwf7bSm/+aDe9OknY=">
+      <file short-path="no-extract-empty-namespaces.cpp" source-path="no-extract-empty-namespaces.cpp" line="20" class="def"/>
+    </struct>
+  </namespace>
+  <namespace-alias name="empty_ns_alias" id="KJaKUXr+DfpmlZ42pCbYX9+LCew=">
+    <file short-path="no-extract-empty-namespaces.cpp" source-path="no-extract-empty-namespaces.cpp" line="52"/>
+    <doc>
+      <brief>
+        <text>Should still work</text>
+      </brief>
+    </doc>
+    <aliased name="empty_ns"/>
+  </namespace-alias>
+  <namespace-alias name="regular_ns_alias" id="tM0QAgguO9OBl0Q4P8CpFRrlBFk=">
+    <file short-path="no-extract-empty-namespaces.cpp" source-path="no-extract-empty-namespaces.cpp" line="46"/>
+    <doc>
+      <brief>
+        <text>Should work</text>
+      </brief>
+    </doc>
+    <aliased name="regular_ns" id="HfpFOdGBlFvzJWV5HwJnyWPM72g="/>
+  </namespace-alias>
+</namespace>
+</mrdocs>

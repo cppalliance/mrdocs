@@ -60,6 +60,7 @@ class CorpusImpl final : public Corpus
     friend class OverloadsFinalizer;
     friend class SortMembersFinalizer;
     friend class JavadocFinalizer;
+    friend class NamespacesFinalizer;
 
 public:
     /** Constructor.
@@ -91,6 +92,30 @@ public:
 
     Info const*
     find(SymbolID const& id) const noexcept override;
+
+    /** Return a range of Info objects for the specified Symbol IDs.
+     */
+    template <range_of<SymbolID> R>
+    auto
+    find(R&& range)
+    {
+        return
+            std::views::transform(
+                range,
+                [this](SymbolID const& id) -> Info*
+                {
+                    return this->find(id);
+                }) |
+            std::views::filter([](Info const* info)
+                {
+                    return info != nullptr;
+                }) |
+            std::views::transform([](Info* info) -> Info&
+                {
+                    return *info;
+                }) |
+            std::views::common;
+    }
 
     Expected<std::reference_wrapper<Info const>>
     lookup(SymbolID const& context, std::string_view name) const override;

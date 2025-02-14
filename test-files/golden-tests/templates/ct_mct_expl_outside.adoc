@@ -12,7 +12,9 @@
 | Name 
 
 | <<A-0e,`A`>> 
+
 | <<A-00,`A&lt;int&gt;`>> 
+
 |===
 
 [#A-0e]
@@ -37,6 +39,7 @@ struct A;
 | Name 
 
 | <<A-0e-B,`B`>> 
+
 |===
 
 
@@ -63,6 +66,7 @@ struct B;
 | Name 
 
 | <<A-0e-B-f,`f`>> 
+
 |===
 
 
@@ -104,7 +108,9 @@ struct <<A-0e,A>>&lt;int&gt;;
 | Name 
 
 | <<A-00-B-03,`B`>> 
+
 | <<A-00-B-02,`B&lt;int&gt;`>> 
+
 |===
 
 
@@ -149,6 +155,7 @@ struct <<A-0e-B,B>>&lt;int&gt;;
 | Name 
 
 | <<A-00-B-02-g,`g`>> 
+
 |===
 
 

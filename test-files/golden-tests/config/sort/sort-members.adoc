@@ -12,20 +12,30 @@
 | Name 
 
 | <<A,`A`>> 
+
 | <<B-0b,`B`>> 
+
 | <<B-04,`B&lt;int, char&gt;`>> 
+
 | <<B-05,`B&lt;int, U&gt;`>> 
+
 | <<C-0f,`C`>> 
+
 | <<C-03,`C&lt;int&gt;`>> 
+
 | <<C-0d,`C&lt;int, char&gt;`>> 
+
 | <<D,`D`>> 
+
 | <<Z,`Z`>> 
+
 |===
 === Functions
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<f,`f`>> 
 | 
@@ -211,7 +221,8 @@ struct Z;
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<Z-2constructor-00,`Z`>>         [.small]#[constructor]#
 | 

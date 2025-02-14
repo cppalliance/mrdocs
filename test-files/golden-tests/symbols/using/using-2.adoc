@@ -12,6 +12,7 @@
 | Name 
 
 | <<LongName,`LongName`>> 
+
 |===
 
 [#LongName]
@@ -25,7 +26,9 @@
 | Name 
 
 | <<LongName-S1,`S1`>> 
+
 | <<LongName-S2,`S2`>> 
+
 |===
 
 [#LongName-S1]

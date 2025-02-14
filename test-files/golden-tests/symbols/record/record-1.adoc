@@ -12,6 +12,7 @@
 | Name 
 
 | <<T,`T`>> 
+
 |===
 
 [#T]
@@ -35,7 +36,9 @@ struct T;
 | Name 
 
 | <<T-U1,`U1`>> 
+
 | <<T-U2,`U2`>> 
+
 |===
 === Member Functions
 
@@ -44,15 +47,19 @@ struct T;
 | Name 
 
 | <<T-f1,`f1`>> 
+
 | <<T-f2,`f2`>> 
+
 | <<T-f3,`f3`>> 
+
 |===
 
 === Protected Member Functions
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<T-g1,`g1`>> 
 | brief&hyphen;g1

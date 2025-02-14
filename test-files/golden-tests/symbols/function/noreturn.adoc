@@ -12,6 +12,7 @@
 | Name 
 
 | <<T,`T`>> 
+
 |===
 === Functions
 
@@ -20,6 +21,7 @@
 | Name 
 
 | <<f1,`f1`>> 
+
 |===
 
 [#T]
@@ -43,6 +45,7 @@ struct T;
 | Name 
 
 | <<T-f3,`f3`>> 
+
 |===
 === Static Member Functions
 
@@ -51,6 +54,7 @@ struct T;
 | Name 
 
 | <<T-f2,`f2`>> 
+
 |===
 === Friends
 
@@ -59,6 +63,7 @@ struct T;
 | Name 
 
 | <<T-08friend,`f1`>> 
+
 |===
 
 

@@ -6,7 +6,7 @@
     <namespace name="U" id="X48ZrJbrwHITObLn6vxlcgApA20=">
       <namespace-alias name="E" id="TDj0Rc30uD7P5e+F1gsHzHoaV2U=">
         <file short-path="excluded-namespace-alias.cpp" source-path="excluded-namespace-alias.cpp" line="7"/>
-        <aliased name="B::S::E" id="3Bv76oUtQq1hnBVVkwioGwKa0oU="/>
+        <aliased name="B::S::E"/>
       </namespace-alias>
     </namespace>
   </namespace>

@@ -9,7 +9,8 @@
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<T,`T`>> 
 | Struct T brief
@@ -45,7 +46,8 @@ struct T;
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<T-08friend-04cb,`class Z`>> 
 | Friend class Z brief
@@ -109,7 +111,8 @@ struct U;
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<U-08friend,`T`>> 
 | Friend T brief
@@ -154,7 +157,8 @@ struct V;
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<V-08friend,`struct U`>> 
 | Friend struct U brief

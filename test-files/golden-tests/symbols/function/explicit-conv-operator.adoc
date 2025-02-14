@@ -12,9 +12,13 @@
 | Name 
 
 | <<Explicit,`Explicit`>> 
+
 | <<ExplicitExpression,`ExplicitExpression`>> 
+
 | <<ExplicitFalse,`ExplicitFalse`>> 
+
 | <<ExplicitTrue,`ExplicitTrue`>> 
+
 |===
 
 [#Explicit]
@@ -38,6 +42,7 @@ struct Explicit;
 | Name 
 
 | <<Explicit-2conversion,`operator bool`>> 
+
 |===
 
 
@@ -79,6 +84,7 @@ struct ExplicitExpression;
 | Name 
 
 | <<ExplicitExpression-2conversion,`operator bool`>> 
+
 |===
 
 
@@ -119,6 +125,7 @@ struct ExplicitFalse;
 | Name 
 
 | <<ExplicitFalse-2conversion,`operator bool`>> 
+
 |===
 
 
@@ -159,6 +166,7 @@ struct ExplicitTrue;
 | Name 
 
 | <<ExplicitTrue-2conversion,`operator bool`>> 
+
 |===
 
 

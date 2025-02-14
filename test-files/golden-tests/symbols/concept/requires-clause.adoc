@@ -12,13 +12,16 @@
 | Name 
 
 | <<A-0c,`A`>> 
+
 | <<A-08,`A`>> 
+
 |===
 === Functions
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<f,`f`>> 
 | 

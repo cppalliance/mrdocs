@@ -12,6 +12,7 @@
 | Name 
 
 | <<A,`A`>> 
+
 |===
 === Types
 
@@ -20,12 +21,14 @@
 | Name 
 
 | <<F,`F`>> 
+
 |===
 === Functions
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<f0,`f0`>> 
 | 
@@ -46,7 +49,8 @@
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<A-B,`B`>> 
 | See xref:#A-f1[f1]
@@ -62,7 +66,8 @@
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<A-f1,`f1`>> 
 | See xref:#f0[f0]
@@ -93,6 +98,7 @@ struct B;
 | Name 
 
 | <<A-B-f2,`f2`>> 
+
 |===
 
 
@@ -142,7 +148,9 @@ struct C;
 | Name 
 
 | <<A-C-f3,`f3`>> 
+
 | <<A-C-f4,`f4`>> 
+
 |===
 
 
@@ -196,7 +204,8 @@ struct D
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<A-D-E,`E`>> 
 | See xref:#A-C-f3[f3]
@@ -209,7 +218,9 @@ struct D
 | Name 
 
 | <<A-C-f3,`f3`>> 
+
 | <<A-D-f4,`f4`>> 
+
 |===
 
 
@@ -302,44 +313,83 @@ struct F;
 | Name 
 
 | <<F-operator_assign,`operator&equals;`>> 
+
 | <<F-operator_mod,`operator%`>> 
+
 | <<F-operator_mod_eq,`operator%&equals;`>> 
+
 | <<F-operator_bitand,`operator&amp;`>> 
+
 | <<F-operator_and,`operator&amp;&amp;`>> 
+
 | <<F-operator_and_eq,`operator&amp;&equals;`>> 
+
 | <<F-operator_call,`operator()`>> 
+
 | <<F-operator_star,`operator&ast;`>> 
+
 | <<F-operator_star_eq,`operator&ast;&equals;`>> 
+
 | <<F-operator_plus,`operator&plus;`>> 
+
 | <<F-operator_inc,`operator&plus;&plus;`>> 
+
 | <<F-operator_plus_eq,`operator&plus;&equals;`>> 
+
 | <<F-operator_comma,`operator,`>> 
+
 | <<F-operator_minus,`operator&hyphen;`>> 
+
 | <<F-operator_dec,`operator&hyphen;&hyphen;`>> 
+
 | <<F-operator_minus_eq,`operator&hyphen;&equals;`>> 
+
 | <<F-operator_ptr,`operator&hyphen;&gt;`>> 
+
 | <<F-operator_ptrmem,`operator&hyphen;&gt;&ast;`>> 
+
 | <<F-operator_slash,`operator&sol;`>> 
+
 | <<F-operator_slash_eq,`operator&sol;&equals;`>> 
+
 | <<F-operator_lshift_eq,`operator&lt;&lt;&equals;`>> 
+
 | <<F-operator_rshift,`operator&gt;&gt;`>> 
+
 | <<F-operator_rshift_eq,`operator&gt;&gt;&equals;`>> 
+
 | <<F-operator_subs,`operator&lsqb;&rsqb;`>> 
+
 | <<F-operator_xor,`operator&circ;`>> 
+
 | <<F-operator_xor_eq,`operator&circ;&equals;`>> 
+
 | <<F-operator_bitor,`operator&verbar;`>> 
+
 | <<F-operator_or_eq,`operator&verbar;&equals;`>> 
+
 | <<F-operator_or,`operator&verbar;&verbar;`>> 
+
 | <<F-operator_bitnot,`operator&#126;`>> 
+
 | <<F-operator_lshift,`operator&lt;&lt;`>> 
+
 | <<F-operator_not,`operator!`>> 
+
 | <<F-operator_eq,`operator&equals;&equals;`>> 
+
 | <<F-operator_not_eq,`operator!&equals;`>> 
+
 | <<F-operator_lt,`operator&lt;`>> 
+
 | <<F-operator_le,`operator&lt;&equals;`>> 
+
 | <<F-operator_gt,`operator&gt;`>> 
+
 | <<F-operator_ge,`operator&gt;&equals;`>> 
+
 | <<F-operator_3way,`operator&lt;&equals;&gt;`>> 
+
 |===
 
 

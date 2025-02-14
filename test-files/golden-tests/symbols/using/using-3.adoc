@@ -12,8 +12,11 @@
 | Name 
 
 | <<A,`A`>> 
+
 | <<B,`B`>> 
+
 | <<C,`C`>> 
+
 |===
 
 [#A]
@@ -37,6 +40,7 @@ struct A;
 | Name 
 
 | <<A-f,`f`>> 
+
 |===
 
 
@@ -77,6 +81,7 @@ struct B;
 | Name 
 
 | <<B-f,`f`>> 
+
 |===
 
 
@@ -116,7 +121,8 @@ struct C
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<C-f-082,`f`>> 
 | 
@@ -129,7 +135,9 @@ struct C
 | Name 
 
 | <<C-f-081,`f`>> 
+
 | <<C-f-03,`f`>> 
+
 |===
 
 

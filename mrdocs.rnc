@@ -228,7 +228,7 @@ grammar
             element aliased
             {
                 attribute name { text },
-                attribute id { text }
+                attribute id { text } ?
             }
         }
 

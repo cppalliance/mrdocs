@@ -12,8 +12,11 @@
 | Name 
 
 | <<C0,`C0`>> 
+
 | <<S0,`S0`>> 
+
 | <<U0,`U0`>> 
+
 |===
 
 [#C0]
@@ -37,6 +40,7 @@ class C0;
 | Name 
 
 | <<C0-f2,`f2`>> 
+
 |===
 
 === Protected Member Functions
@@ -46,6 +50,7 @@ class C0;
 | Name 
 
 | <<C0-f1,`f1`>> 
+
 |===
 
 === Private Member Functions
@@ -55,6 +60,7 @@ class C0;
 | Name 
 
 | <<C0-f0,`f0`>> 
+
 |===
 
 [#C0-f2]
@@ -123,6 +129,7 @@ struct S0;
 | Name 
 
 | <<S0-f0,`f0`>> 
+
 |===
 
 === Protected Member Functions
@@ -132,6 +139,7 @@ struct S0;
 | Name 
 
 | <<S0-f1,`f1`>> 
+
 |===
 
 === Private Member Functions
@@ -141,6 +149,7 @@ struct S0;
 | Name 
 
 | <<S0-f2,`f2`>> 
+
 |===
 
 [#S0-f0]
@@ -209,6 +218,7 @@ union U0;
 | Name 
 
 | <<U0-f0,`f0`>> 
+
 |===
 
 === Protected Member Functions
@@ -218,6 +228,7 @@ union U0;
 | Name 
 
 | <<U0-f1,`f1`>> 
+
 |===
 
 === Private Member Functions
@@ -227,6 +238,7 @@ union U0;
 | Name 
 
 | <<U0-f2,`f2`>> 
+
 |===
 
 [#U0-f0]

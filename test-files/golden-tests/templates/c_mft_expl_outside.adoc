@@ -12,6 +12,7 @@
 | Name 
 
 | <<A,`A`>> 
+
 |===
 
 [#A]
@@ -32,7 +33,8 @@ struct A;
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<A-f-00,`f`>> 
 | 

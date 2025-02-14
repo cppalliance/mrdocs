@@ -12,7 +12,9 @@
 | Name 
 
 | <<left_shift,`left&lowbar;shift`>> 
+
 | <<ostream,`ostream`>> 
+
 |===
 
 [#left_shift]
@@ -26,6 +28,7 @@
 | Name 
 
 | <<left_shift-A,`A`>> 
+
 |===
 === Functions
 
@@ -34,6 +37,7 @@
 | Name 
 
 | <<left_shift-operator_lshift,`operator&lt;&lt;`>> 
+
 |===
 
 [#left_shift-A]
@@ -54,7 +58,8 @@ class A;
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<left_shift-A-operator_lshift-06,`operator&lt;&lt;`>> 
 | 
@@ -150,14 +155,18 @@ operator&lt;&lt;(
 | Name 
 
 | <<ostream-B,`B`>> 
+
 | <<ostream-C,`C`>> 
+
 | <<ostream-OStream,`OStream`>> 
+
 |===
 === Functions
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<ostream-operator_lshift-0f,`operator&lt;&lt;`>> 
 | 
@@ -185,6 +194,7 @@ class B;
 | Name 
 
 | <<ostream-B-08friend,`operator&lt;&lt;`>> 
+
 |===
 
 

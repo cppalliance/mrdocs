@@ -12,9 +12,13 @@
 | Name 
 
 | <<00namespace,`&lt;unnamed&gt;`>> 
+
 | <<A,`A`>> 
+
 | <<D,`D`>> 
+
 | <<I,`I`>> 
+
 |===
 
 [#00namespace]
@@ -28,7 +32,9 @@
 | Name 
 
 | <<00namespace-G,`G`>> 
+
 | <<00namespace-H,`H`>> 
+
 |===
 === Functions
 
@@ -37,6 +43,7 @@
 | Name 
 
 | <<00namespace-f10,`f10`>> 
+
 |===
 
 [#00namespace-G]
@@ -50,6 +57,7 @@
 | Name 
 
 | <<00namespace-G-f11,`f11`>> 
+
 |===
 
 [#00namespace-G-f11]
@@ -78,6 +86,7 @@ f11();
 | Name 
 
 | <<00namespace-H-f12,`f12`>> 
+
 |===
 
 [#00namespace-H-f12]
@@ -121,8 +130,11 @@ f10();
 | Name 
 
 | <<A-00namespace,`&lt;unnamed&gt;`>> 
+
 | <<A-B,`B`>> 
+
 | <<A-C,`C`>> 
+
 |===
 === Functions
 
@@ -131,6 +143,7 @@ f10();
 | Name 
 
 | <<A-f0,`f0`>> 
+
 |===
 
 [#A-00namespace]
@@ -144,6 +157,7 @@ f10();
 | Name 
 
 | <<A-00namespace-f3,`f3`>> 
+
 |===
 
 [#A-00namespace-f3]
@@ -172,6 +186,7 @@ f3();
 | Name 
 
 | <<A-B-f1,`f1`>> 
+
 |===
 
 [#A-B-f1]
@@ -200,6 +215,7 @@ f1();
 | Name 
 
 | <<A-C-f2,`f2`>> 
+
 |===
 
 [#A-C-f2]
@@ -243,8 +259,11 @@ f0();
 | Name 
 
 | <<D-00namespace,`&lt;unnamed&gt;`>> 
+
 | <<D-E,`E`>> 
+
 | <<D-F,`F`>> 
+
 |===
 === Functions
 
@@ -253,6 +272,7 @@ f0();
 | Name 
 
 | <<D-f5,`f5`>> 
+
 |===
 
 [#D-00namespace]
@@ -266,6 +286,7 @@ f0();
 | Name 
 
 | <<D-00namespace-f8,`f8`>> 
+
 |===
 
 [#D-00namespace-f8]
@@ -294,6 +315,7 @@ f8();
 | Name 
 
 | <<D-E-f6,`f6`>> 
+
 |===
 
 [#D-E-f6]
@@ -322,6 +344,7 @@ f6();
 | Name 
 
 | <<D-F-f7,`f7`>> 
+
 |===
 
 [#D-F-f7]
@@ -365,6 +388,7 @@ f5();
 | Name 
 
 | <<I-00namespace,`&lt;unnamed&gt;`>> 
+
 |===
 
 [#I-00namespace]
@@ -378,6 +402,7 @@ f5();
 | Name 
 
 | <<I-00namespace-f14,`f14`>> 
+
 |===
 
 [#I-00namespace-f14]

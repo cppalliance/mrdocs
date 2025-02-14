@@ -12,15 +12,25 @@
 | Name 
 
 | <<var,`var`>> 
+
 | <<var_const,`var&lowbar;const`>> 
+
 | <<var_const_t,`var&lowbar;const&lowbar;t`>> 
+
 | <<var_constexpr,`var&lowbar;constexpr`>> 
+
 | <<var_constexpr_t,`var&lowbar;constexpr&lowbar;t`>> 
+
 | <<var_inline_const,`var&lowbar;inline&lowbar;const`>> 
+
 | <<var_inline_const_t,`var&lowbar;inline&lowbar;const&lowbar;t`>> 
+
 | <<var_inline_constexpr,`var&lowbar;inline&lowbar;constexpr`>> 
+
 | <<var_inline_constexpr_t,`var&lowbar;inline&lowbar;constexpr&lowbar;t`>> 
+
 | <<var_t,`var&lowbar;t`>> 
+
 |===
 
 [#var]

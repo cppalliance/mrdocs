@@ -12,19 +12,47 @@
 | Name 
 
 | <<LongName,`LongName`>> 
+
 |===
 
-=== Using Directives
+=== Using Namespace Directives
 
 [cols=1]
 |===
 | Name 
 
-| <<LongName,`LongName`>> 
+| <<LongName,`LongName`>>
+
 |===
 
 [#LongName]
 == LongName
+
+
+=== Types
+
+[cols=1]
+|===
+| Name 
+
+| <<LongName-A,`A`>> 
+
+|===
+
+[#LongName-A]
+== <<LongName,LongName>>::A
+
+
+=== Synopsis
+
+
+Declared in `&lt;using&hyphen;1&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct A;
+----
+
 
 
 

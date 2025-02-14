@@ -17,6 +17,7 @@
 #include "lib/Metadata/Finalizers/OverloadsFinalizer.hpp"
 #include "lib/Metadata/Finalizers/SortMembersFinalizer.hpp"
 #include "lib/Metadata/Finalizers/JavadocFinalizer.hpp"
+#include "lib/Metadata/Finalizers/NamespacesFinalizer.hpp"
 #include "lib/Support/Error.hpp"
 #include "lib/Support/Chrono.hpp"
 #include <mrdocs/Metadata.hpp>
@@ -592,6 +593,12 @@ qualifiedName(Info const& I, std::string& result) const
 void
 CorpusImpl::finalize()
 {
+    {
+        report::debug("Finalizing namespaces");
+        NamespacesFinalizer finalizer(*this);
+        finalizer.build();
+    }
+
     if (config->inheritBaseMembers != PublicSettings::BaseMemberInheritance::Never)
     {
         report::debug("Finalizing base members");

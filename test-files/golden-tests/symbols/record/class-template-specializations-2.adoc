@@ -12,9 +12,13 @@
 | Name 
 
 | <<A-0e,`A`>> 
+
 | <<A-06,`A&lt;double&gt;`>> 
+
 | <<A-02,`A&lt;long*&gt;`>> 
+
 | <<A-03,`A&lt;T*&gt;`>> 
+
 |===
 
 [#A-0e]
@@ -57,8 +61,11 @@ struct <<A-0e,A>>&lt;double&gt;;
 | Name 
 
 | <<A-06-D-0b,`D`>> 
+
 | <<A-06-D-04,`D&lt;float&gt;`>> 
+
 | <<A-06-D-07,`D&lt;short&gt;`>> 
+
 |===
 
 
@@ -85,7 +92,9 @@ struct D;
 | Name 
 
 | <<A-06-D-0b-E-01,`E`>> 
+
 | <<A-06-D-0b-E-04,`E&lt;T*&gt;`>> 
+
 |===
 
 
@@ -130,6 +139,7 @@ struct <<A-06-D-0b-E-01,E>>&lt;T*&gt;;
 | Name 
 
 | <<A-06-D-0b-E-04-F,`F`>> 
+
 |===
 
 
@@ -173,7 +183,9 @@ struct <<A-06-D-0b,D>>&lt;float&gt;;
 | Name 
 
 | <<A-06-D-04-G-06,`G`>> 
+
 | <<A-06-D-04-G-0c,`G&lt;T*&gt;`>> 
+
 |===
 
 
@@ -236,7 +248,9 @@ struct <<A-06-D-0b,D>>&lt;short&gt;;
 | Name 
 
 | <<A-06-D-07-E-07,`E`>> 
+
 | <<A-06-D-07-E-01,`E&lt;int*&gt;`>> 
+
 |===
 
 
@@ -281,6 +295,7 @@ struct <<A-06-D-0b-E-01,E>>&lt;int*&gt;;
 | Name 
 
 | <<A-06-D-07-E-01-F,`F`>> 
+
 |===
 
 
@@ -324,8 +339,11 @@ struct <<A-0e,A>>&lt;long*&gt;;
 | Name 
 
 | <<A-02-B-06,`B`>> 
+
 | <<A-02-B-0d,`B&lt;int&gt;`>> 
+
 | <<A-02-B-05,`B&lt;int*&gt;`>> 
+
 |===
 
 
@@ -388,6 +406,7 @@ struct <<A-03-B-05,B>>&lt;int*&gt;;
 | Name 
 
 | <<A-02-B-05-C,`C`>> 
+
 |===
 
 
@@ -431,8 +450,11 @@ struct <<A-0e,A>>&lt;T*&gt;;
 | Name 
 
 | <<A-03-B-05,`B`>> 
+
 | <<A-03-B-0b,`B&lt;int&gt;`>> 
+
 | <<A-03-B-01,`B&lt;U*&gt;`>> 
+
 |===
 
 
@@ -495,6 +517,7 @@ struct <<A-03-B-05,B>>&lt;U*&gt;;
 | Name 
 
 | <<A-03-B-01-C,`C`>> 
+
 |===
 
 

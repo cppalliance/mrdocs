@@ -12,6 +12,7 @@
 | Name 
 
 | <<B,`B`>> 
+
 |===
 === Variables
 
@@ -20,8 +21,11 @@
 | Name 
 
 | <<A-0c,`A`>> 
+
 | <<A-08,`A&lt;void&gt;`>> 
+
 | <<A-01,`A&lt;T&&gt;`>> 
+
 |===
 
 [#B]
@@ -45,8 +49,11 @@ struct B;
 | Name 
 
 | <<B-C-09,`C`>> 
+
 | <<B-C-05,`C&lt;int&gt;`>> 
+
 | <<B-C-0c,`C&lt;T*&gt;`>> 
+
 |===
 
 

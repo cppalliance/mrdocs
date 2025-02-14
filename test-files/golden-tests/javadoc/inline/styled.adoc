@@ -9,7 +9,8 @@
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<A,`A`>> 
 | Brief for A
@@ -36,7 +37,8 @@ struct A;
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<A-compare,`compare`>> 
 | Compare function

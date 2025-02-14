@@ -12,6 +12,7 @@
 | Name 
 
 | <<A,`A`>> 
+
 |===
 
 [#A]
@@ -35,6 +36,7 @@ class A;
 | Name 
 
 | <<A-f,`f`>>  [.small]#[virtual]#
+
 |===
 
 

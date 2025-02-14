@@ -1,0 +1,331 @@
+<html lang="en">
+<head>
+<title>Reference</title>
+</head>
+<body>
+<div>
+<h1>Reference</h1>
+<div>
+<div>
+<h2 id="index">Global namespace</h2>
+</div>
+<h2>Namespaces</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#documented_ns"><code>documented_ns</code></a> </td><td><span><span>Namespace documentation</span></span>
+</td>
+</tr><tr>
+<td><a href="#mixed_ns"><code>mixed_ns</code></a> </td><td><span><span>Should decay to see-below</span></span>
+</td>
+</tr><tr>
+<td><a href="#mixed_regular_ns"><code>mixed_regular_ns</code></a> </td><td><span><span>Should decay to regular</span></span>
+</td>
+</tr><tr>
+<td><a href="#regular_ns"><code>regular_ns</code></a> </td><td><span><span>Regular namespace</span></span>
+</td>
+</tr><tr>
+<td><a href="#see_below_ns"><code>see_below_ns</code></a> </td><td><span><span>Should decay to see-below</span></span>
+</td>
+</tr>
+</tbody>
+</table>
+<h2>Namespace Aliases</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#empty_ns_alias"><code>empty_ns_alias</code></a> </td><td><span><span>Should still work</span></span>
+</td>
+</tr><tr>
+<td><a href="#regular_ns_alias"><code>regular_ns_alias</code></a> </td><td><span><span>Should work</span></span>
+</td>
+</tr>
+</tbody>
+</table>
+<div>
+<h2>Using Namespace Directives</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#regular_ns"><code>regular_ns</code></a></td>
+</tr><tr>
+<td>empty_ns</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+
+</div>
+<div>
+<div>
+<h2 id="documented_ns">documented_ns</h2>
+<div>
+<span><span>Namespace documentation</span></span>
+
+
+</div>
+</div>
+</div>
+<div>
+<div>
+<h2 id="mixed_ns">mixed_ns</h2>
+<div>
+<span><span>Should decay to see-below</span></span>
+
+
+</div>
+</div>
+<h2>Types</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#mixed_ns-SeeBelowStructA"><code>SeeBelowStructA</code></a> </td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<div>
+<h2 id="mixed_ns-SeeBelowStructA"><a href="#mixed_ns">mixed_ns</a>::SeeBelowStructA</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;no-extract-empty-namespaces.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+struct SeeBelowStructA { /* see-below */ };
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="mixed_regular_ns">mixed_regular_ns</h2>
+<div>
+<span><span>Should decay to regular</span></span>
+
+
+</div>
+</div>
+<h2>Types</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#mixed_regular_ns-RegularStructA"><code>RegularStructA</code></a> </td>
+</tr><tr>
+<td><a href="#mixed_regular_ns-SeeBelowStructB"><code>SeeBelowStructB</code></a> </td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<div>
+<h2 id="mixed_regular_ns-RegularStructA"><a href="#mixed_regular_ns">mixed_regular_ns</a>::RegularStructA</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;no-extract-empty-namespaces.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+struct RegularStructA;
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="mixed_regular_ns-SeeBelowStructB"><a href="#mixed_regular_ns">mixed_regular_ns</a>::SeeBelowStructB</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;no-extract-empty-namespaces.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+struct SeeBelowStructB { /* see-below */ };
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="regular_ns">regular_ns</h2>
+<div>
+<span><span>Regular namespace</span></span>
+
+
+</div>
+</div>
+<h2>Types</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#regular_ns-A"><code>A</code></a> </td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<div>
+<h2 id="regular_ns-A"><a href="#regular_ns">regular_ns</a>::A</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;no-extract-empty-namespaces.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+struct A;
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="see_below_ns">see_below_ns</h2>
+<div>
+<span><span>Should decay to see-below</span></span>
+
+
+</div>
+</div>
+<h2>Types</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#see_below_ns-SeeBelowStructA"><code>SeeBelowStructA</code></a> </td>
+</tr><tr>
+<td><a href="#see_below_ns-SeeBelowStructB"><code>SeeBelowStructB</code></a> </td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<div>
+<h2 id="see_below_ns-SeeBelowStructA"><a href="#see_below_ns">see_below_ns</a>::SeeBelowStructA</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;no-extract-empty-namespaces.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+struct SeeBelowStructA { /* see-below */ };
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="see_below_ns-SeeBelowStructB"><a href="#see_below_ns">see_below_ns</a>::SeeBelowStructB</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;no-extract-empty-namespaces.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+struct SeeBelowStructB { /* see-below */ };
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="empty_ns_alias">empty_ns_alias</h2>
+<div>
+<span><span>Should still work</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;no-extract-empty-namespaces.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+namespace empty_ns_alias = empty_ns;
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="regular_ns_alias">regular_ns_alias</h2>
+<div>
+<span><span>Should work</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;no-extract-empty-namespaces.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+namespace regular_ns_alias = <a href="#regular_ns">regular_ns</a>;
+</code>
+</pre>
+</div>
+</div>
+
+</div>
+<div>
+<h4>Created with <a href="https://www.mrdocs.com">MrDocs</a></h4>
+</div>
+</body>
+</html>

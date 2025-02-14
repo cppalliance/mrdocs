@@ -385,6 +385,11 @@ private:
     bool
     parseFunctionParameters()
     {
+        // https://en.cppreference.com/w/cpp/language/function
+        // parameter-list:
+        // possibly empty, comma-separated list of the function parameters
+        // (see below for details)
+
         char const* start = ptr_;
         if (!parseLiteral('('))
         {
@@ -549,6 +554,21 @@ private:
     bool
     parseMemberFunctionQualifiers()
     {
+        // https://en.cppreference.com/w/cpp/language/function
+
+        // Parse cv:
+        // const/volatile qualification, only allowed in non-static member
+        // function declarations
+
+        // Parse ref:
+        // ref-qualification, only allowed in non-static member function
+        // declarations
+
+        // Parse except:
+        // dynamic exception specification, dynamic exception specification
+        // or noexcept specification, noexcept specification
+
+
         // Parse potential qualifiers at the end of a function
         // to identify the qualifiers to set
         // ReferenceKind Kind = ReferenceKind::None; and

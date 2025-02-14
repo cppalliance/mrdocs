@@ -12,13 +12,16 @@
 | Name 
 
 | <<T,`T`>> 
+
 | <<U,`U`>> 
+
 |===
 === Functions
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<f,`f`>> 
 | T&colon;&colon;f
@@ -43,7 +46,8 @@ struct T;
 
 [cols=2]
 |===
-| Name | Description 
+| Name 
+| Description 
 
 | <<T-08friend,`f`>> 
 | T&colon;&colon;f
@@ -91,6 +95,7 @@ struct U;
 | Name 
 
 | <<U-08friend,`f`>> 
+
 |===
 
 
