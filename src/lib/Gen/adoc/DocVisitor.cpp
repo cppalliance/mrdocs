@@ -287,6 +287,9 @@ void
 DocVisitor::
 operator()(doc::Reference const& I) const
 {
+    if (I.Kind == doc::NodeKind::related)
+        return;
+
     if (I.id == SymbolID::invalid)
     {
         return (*this)(static_cast<doc::Text const&>(I));
