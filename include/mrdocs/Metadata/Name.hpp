@@ -13,10 +13,9 @@
 #define MRDOCS_API_METADATA_NAME_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 #include <mrdocs/Metadata/Template.hpp>
-#include <memory>
+#include <mrdocs/Support/Visitor.hpp>
 
 namespace clang::mrdocs {
 
@@ -100,6 +99,12 @@ struct NameInfo
 
     std::strong_ordering
     operator<=>(NameInfo const& other) const;
+
+    bool
+    operator==(NameInfo const& other) const
+    {
+        return std::is_eq(*this <=> other);
+    }
 };
 
 /** Represents a (possibly qualified) symbol name with template arguments.

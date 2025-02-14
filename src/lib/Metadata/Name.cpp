@@ -50,6 +50,10 @@ operator<=>(Polymorphic<NameInfo> const& lhs, Polymorphic<NameInfo> const& rhs)
     {
         if (lhs->Kind == rhs->Kind)
         {
+            if (lhs->isIdentifier())
+            {
+                return *lhs <=> *rhs;
+            }
             return visit(*lhs, detail::VisitCompareFn<NameInfo>(*rhs));
         }
         return lhs->Kind <=> rhs->Kind;
@@ -130,6 +134,7 @@ tag_invoke(
     NameInfo const& I,
     DomCorpus const* domCorpus)
 {
+    io.map("class", std::string("name"));
     io.map("kind", I.Kind);
     visit(I, [domCorpus, &io]<typename T>(T const& t)
     {

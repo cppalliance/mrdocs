@@ -273,12 +273,13 @@ tag_invoke(
     DomCorpus const* domCorpus)
 {
     MRDOCS_ASSERT(domCorpus);
+    io.map("class", std::string("symbol"));
+    io.map("kind", I.Kind);
     io.map("id", I.id);
     if (!I.Name.empty())
     {
         io.map("name", I.Name);
     }
-    io.map("kind", I.Kind);
     io.map("access", I.Access);
     io.map("extraction", I.Extraction);
     io.map("isRegular", I.Extraction == ExtractionMode::Regular);

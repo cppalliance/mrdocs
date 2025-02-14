@@ -13,6 +13,7 @@
 #define MRDOCS_API_METADATA_NAMESPACE_HPP
 
 #include <mrdocs/Metadata/Info.hpp>
+#include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
 #include <vector>
 #include <ranges>
@@ -110,7 +111,7 @@ struct NamespaceInfo final
 
     /** Namespaces nominated by using-directives.
     */
-    std::vector<SymbolID> UsingDirectives;
+    std::vector<NameInfo> UsingDirectives;
 
     /** The members of this namespace.
     */
@@ -121,7 +122,8 @@ struct NamespaceInfo final
     {
     }
 
-    auto operator<=>(NamespaceInfo const&) const = default;
+    std::strong_ordering
+    operator<=>(NamespaceInfo const&) const;
 };
 
 MRDOCS_DECL

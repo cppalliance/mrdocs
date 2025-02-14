@@ -15,9 +15,9 @@
 {{#if (eq kind "overloads")~}}
     {{>symbol/special-function-suffix (front members)}}
 {{~else if (eq kind "function")~}}
-    {{#if (eq class "constructor")}}
+    {{#if (eq functionClass "constructor")}}
         {{#>markup/span class="small"}}[constructor]{{/markup/span}}
-    {{~else if (eq class "destructor")~}}
+    {{~else if (eq functionClass "destructor")~}}
         {{#>markup/span class="small"}}[destructor]{{/markup/span}}
     {{~/if~}}
     {{~#if isVirtual~}}

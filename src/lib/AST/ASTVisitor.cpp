@@ -158,6 +158,8 @@ Info*
 ASTVisitor::
 traverse(UsingDirectiveDecl const* D)
 {
+    MRDOCS_SYMBOL_TRACE(D, context_);
+
     // Find the parent namespace
     ScopeExitRestore s1(mode_, TraversalMode::Dependency);
     Decl const* P = getParent(D);
@@ -174,9 +176,13 @@ traverse(UsingDirectiveDecl const* D)
     Info* NDI = findOrTraverse(ND);
     MRDOCS_CHECK_OR(NDI, nullptr);
 
-    if (std::ranges::find(PNI->UsingDirectives, NDI->id) == PNI->UsingDirectives.end())
+    auto res = toNameInfo(ND);
+    MRDOCS_ASSERT(res);
+    MRDOCS_ASSERT(res->isIdentifier());
+    if (NameInfo NI = *res;
+        std::ranges::find(PNI->UsingDirectives, NI) == PNI->UsingDirectives.end())
     {
-        PNI->UsingDirectives.emplace_back(NDI->id);
+        PNI->UsingDirectives.push_back(std::move(NI));
     }
     return nullptr;
 }
