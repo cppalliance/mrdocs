@@ -15,7 +15,7 @@
 
     See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
 --}}
-{{#if (and (eq kind "function") (eq class "conversion"))~}}
+{{#if (and (eq kind "function") (eq functionClass "conversion"))~}}
     {{! Conversion operator: "operator" and the type declarator ~}}
     operator {{>type/declarator return nolink=nolink~}}
 {{else if (eq kind "guide")~}}

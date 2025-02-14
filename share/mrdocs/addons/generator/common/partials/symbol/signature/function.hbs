@@ -12,7 +12,7 @@
 {{/if~}}
 {{#if explicitSpec}}{{explicitSpec}}
 {{/if~}}
-{{#if (eq class "normal")}}{{>type/declarator-prefix return}}
+{{#if (eq functionClass "normal")}}{{>type/declarator-prefix return}}
 {{/if~}}
 {{>symbol/name symbol link=(select link link template.primary)}}
 ({{#if isExplicitObjectMemberFunction}}this {{/if}}{{#each params}}{{#unless (and @first @last)}}
@@ -24,7 +24,7 @@
 {{#if isVolatile}} volatile{{/if~}}
 {{#if refQualifier}} {{refQualifier}}{{/if~}}
 {{#if exceptionSpec}} {{exceptionSpec}}{{/if~}}
-{{#if (eq class "normal")}}{{>type/declarator-suffix return}}{{/if~}}
+{{#if (eq functionClass "normal")}}{{>type/declarator-suffix return}}{{/if~}}
 {{#if requires}}
 
 requires {{requires}}{{/if~}}

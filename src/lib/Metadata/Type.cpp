@@ -397,6 +397,7 @@ tag_invoke(
     TypeInfo const& I,
     DomCorpus const* domCorpus)
 {
+    io.map("class", std::string("type"));
     io.map("kind", I.Kind);
     io.map("is-pack", I.IsPackExpansion);
     visit(I, [&io, domCorpus]<typename T>(T const& t)

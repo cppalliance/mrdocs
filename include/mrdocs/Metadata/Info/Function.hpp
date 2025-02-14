@@ -235,7 +235,7 @@ tag_invoke(
     {
         io.map("refQualifier", I.RefQualifier);
     }
-    io.map("class", I.Class);
+    io.map("functionClass", I.Class);
     io.map("params", dom::LazyArray(I.Params, domCorpus));
     io.map("return", I.ReturnType);
     io.map("template", I.Template);

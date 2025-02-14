@@ -1,4 +1,4 @@
-using {{#if (contains (arr "typename" "enum") class)}} {{class}}
+using {{#if (contains (arr "typename" "enum") usingClass)}} {{usingClass}}
 {{~/if~}}
 {{~#if qualifier~}}
     {{>symbol/name-info qualifier }}::

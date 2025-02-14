@@ -15,11 +15,66 @@
 
 namespace clang::mrdocs {
 
+std::strong_ordering
+NamespaceInfo::
+operator<=>(NamespaceInfo const& other) const
+{
+    if (auto const res = dynamic_cast<Info const&>(*this) <=> dynamic_cast<Info const&>(other);
+        std::is_neq(res))
+    {
+        return res;
+    }
+    if (auto const res = IsInline <=> other.IsInline;
+        std::is_neq(res))
+    {
+        return res;
+    }
+    if (auto const res = IsAnonymous <=> other.IsAnonymous;
+        std::is_neq(res))
+    {
+        return res;
+    }
+    if (auto const res = UsingDirectives.size() <=> other.UsingDirectives.size();
+        std::is_neq(res))
+    {
+        return res;
+    }
+    for (auto const& [lhs, rhs] : llvm::zip(UsingDirectives, other.UsingDirectives))
+    {
+        if (auto const res = lhs <=> rhs;
+            std::is_neq(res))
+        {
+            return res;
+        }
+    }
+    if (auto const res = Members <=> other.Members;
+        std::is_neq(res))
+    {
+        return res;
+    }
+    return std::strong_ordering::equal;
+}
+
 namespace {
 void
 reduceSymbolIDs(
     std::vector<SymbolID>& list,
     std::vector<SymbolID>&& otherList)
+{
+    for(auto const& id : otherList)
+    {
+        if (auto it = llvm::find(list, id); it != list.end())
+        {
+            continue;
+        }
+        list.push_back(id);
+    }
+}
+
+void
+reduceNames(
+    std::vector<NameInfo>& list,
+    std::vector<NameInfo>&& otherList)
 {
     for(auto const& id : otherList)
     {
@@ -53,7 +108,7 @@ merge(NamespaceInfo& I, NamespaceInfo&& Other)
     MRDOCS_ASSERT(canMerge(I, Other));
     merge(dynamic_cast<Info&>(I), std::move(dynamic_cast<Info&>(Other)));
     merge(I.Members, std::move(Other.Members));
-    reduceSymbolIDs(I.UsingDirectives, std::move(Other.UsingDirectives));
+    reduceNames(I.UsingDirectives, std::move(Other.UsingDirectives));
     I.IsInline |= Other.IsInline;
     I.IsAnonymous |= Other.IsAnonymous;
 }

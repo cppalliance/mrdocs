@@ -214,9 +214,12 @@ writeNamespace(
         { "is-inline", "1", I.IsInline}
     });
     writeJavadoc(I.javadoc);
-    for (SymbolID const& id: I.UsingDirectives)
+    for (NameInfo const& NI: I.UsingDirectives)
     {
-        tags_.write("using-directive", {}, { { id } });
+        if (auto const& id = NI.id; id != SymbolID::invalid)
+        {
+            tags_.write("using-directive", {}, { { id } });
+        }
     }
     corpus_.traverse(I, *this);
     tags_.close(namespaceTagName);
