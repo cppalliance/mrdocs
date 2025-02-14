@@ -1039,7 +1039,6 @@ struct MRDOCS_DECL
     /// The list of postconditions.
     std::vector<doc::Postcondition> postconditions;
 
-
     /** Constructor.
     */
     MRDOCS_DECL

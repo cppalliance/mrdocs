@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
+    <file short-path="relates.cpp" source-path="relates.cpp" line="3" class="def"/>
+    <doc>
+      <brief>
+        <text>A brief for A.</text>
+      </brief>
+    </doc>
+  </struct>
+  <struct name="B" id="3JsK1DO0O+wZhv+0meptQrbs3fY=">
+    <file short-path="relates.cpp" source-path="relates.cpp" line="7" class="def"/>
+    <doc>
+      <brief>
+        <text>A brief for B</text>
+      </brief>
+    </doc>
+  </struct>
+  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
+    <file short-path="relates.cpp" source-path="relates.cpp" line="13"/>
+    <doc>
+      <brief>
+        <text>A brief for f.</text>
+      </brief>
+      <para>
+        <relates id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</relates>
+      </para>
+    </doc>
+  </function>
+</namespace>
+</mrdocs>

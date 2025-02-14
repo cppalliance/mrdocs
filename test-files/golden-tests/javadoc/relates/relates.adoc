@@ -1,0 +1,107 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+=== Types
+
+[cols=2]
+|===
+| Name | Description 
+
+| <<A,`A`>> 
+| A brief for A&period;
+
+| <<B,`B`>> 
+| A brief for B
+
+|===
+=== Functions
+
+[cols=2]
+|===
+| Name | Description 
+
+| <<f,`f`>> 
+| A brief for f&period;
+
+|===
+
+[#A]
+== A
+
+
+A brief for A&period;
+
+=== Synopsis
+
+
+Declared in `&lt;relates&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct A;
+----
+
+
+
+
+=== Related functions
+
+[cols=2]
+|===
+| Name | Description 
+
+| <<f,`f`>> 
+| A brief for f&period;
+
+|===
+
+[#B]
+== B
+
+
+A brief for B
+
+=== Synopsis
+
+
+Declared in `&lt;relates&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct B;
+----
+
+
+
+
+[#f]
+== f
+
+
+A brief for f&period;
+
+=== Synopsis
+
+
+Declared in `&lt;relates&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f();
+----
+
+=== Description
+
+
+
+
+
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
