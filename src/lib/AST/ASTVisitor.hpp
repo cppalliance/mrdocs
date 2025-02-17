@@ -138,7 +138,7 @@ class ASTVisitor
         if a file should be extracted or to add the
         SourceInfo to an Info object.
     */
-    std::unordered_map<FileEntry const*, FileInfo> files_;
+    llvm::DenseMap<FileID, FileInfo> files_;
 
     /*  Determine how a Decl matched the filters
      */
@@ -1112,26 +1112,6 @@ private:
     FileInfo*
     findFileInfo(Decl const* D);
 
-    /* Build a FileInfo for a FileEntry
-
-        This function will build a FileInfo object for a
-        given Clang FileEntry object.
-
-        The function will extract the full path and short
-        path of the file, and store the information in the
-        FileInfo object.
-
-        This function is used as an auxiliary function to
-        `findFileInfo` when the FileInfo object does not
-        exist in the cache.
-
-        @param file The Clang FileEntry object to build the FileInfo for.
-        @return the FileInfo object.
-
-     */
-    std::optional<FileInfo>
-    buildFileInfo(FileEntry const* entry);
-
     /* Build a FileInfo for a string path
 
         This function will build a FileInfo object for a
@@ -1153,7 +1133,7 @@ private:
         @return the FileInfo object.
      */
     FileInfo
-    buildFileInfo(std::string_view file_path);
+    buildFileInfo(std::string_view path);
 
     /* Result of an upsert operation
 

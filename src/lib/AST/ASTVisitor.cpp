@@ -3120,25 +3120,18 @@ ASTVisitor::
 findFileInfo(clang::SourceLocation const loc)
 {
     MRDOCS_CHECK_OR(!loc.isInvalid(), nullptr);
-
-    // KRYSTIAN FIXME: we really should not be calling getPresumedLoc this often,
-    // it's quite expensive
-    auto const presumed = source_.getPresumedLoc(loc, false);
-    MRDOCS_CHECK_OR(!presumed.isInvalid(), nullptr);
-
-    FileEntry const* entry = source_.getFileEntryForID( presumed.getFileID());
-    MRDOCS_CHECK_OR(entry, nullptr);
+    // Find the presumed location, ignoring #line directives
+    PresumedLoc presumed = source_.getPresumedLoc(loc, false);
+    FileID id = presumed.getFileID();
+    if(id.isInvalid())
+        return nullptr;
 
     // Find in the cache
-    if (auto const it = files_.find(entry); it != files_.end())
-    {
+    if(auto const it = files_.find(id); it != files_.end())
         return std::addressof(it->second);
-    }
 
-    // Build FileInfo
-    auto const FI = buildFileInfo(entry);
-    MRDOCS_CHECK_OR(FI, nullptr);
-    auto [it, inserted] = files_.try_emplace(entry, std::move(*FI));
+    auto [it, inserted] = files_.try_emplace(
+        id, buildFileInfo(presumed.getFilename()));
     return std::addressof(it->second);
 }
 
@@ -3154,25 +3147,19 @@ findFileInfo(Decl const* D)
     return findFileInfo(Loc);
 }
 
-std::optional<ASTVisitor::FileInfo>
-ASTVisitor::
-buildFileInfo(FileEntry const* entry)
-{
-    std::string_view const file_path = entry->tryGetRealPathName();
-    MRDOCS_CHECK_OR(!file_path.empty(), std::nullopt);
-    return buildFileInfo(file_path);
-}
-
 ASTVisitor::FileInfo
 ASTVisitor::
-buildFileInfo(std::string_view const file_path)
+buildFileInfo(std::string_view path)
 {
     FileInfo file_info;
-    file_info.full_path = file_path;
-    if (!files::isPosixStyle(file_info.full_path))
-    {
+    file_info.full_path = path;
+
+    if (! files::isAbsolute(file_info.full_path))
+        file_info.full_path = files::makeAbsolute(
+            file_info.full_path, config_->sourceRoot);
+
+    if (! files::isPosixStyle(file_info.full_path))
         file_info.full_path = files::makePosixStyle(file_info.full_path);
-    }
 
     // Attempts to get a relative path for the prefix
     auto tryGetRelativePosixPath = [&file_info](std::string_view const prefix)

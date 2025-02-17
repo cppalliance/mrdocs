@@ -1,0 +1,3 @@
+# Exclude excluded.hpp
+exclude:
+  - 'excluded.hpp'
