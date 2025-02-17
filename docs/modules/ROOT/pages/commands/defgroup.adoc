@@ -1,0 +1,12 @@
+= defgroup
+
+== Syntax
+@defgroup &lt;name&gt; (group title)
+
+== Description
+Indicates that a comment block contains documentation for a topics of classes, modules, concepts, files or namespaces. This can be used to categorize symbols, and document those categories. You can also use groups as members of other groups, thus building a hierarchy of groups.
+
+The <name> argument should be a single-word identifier.
+
+== See Also
+sections xref:commands/ingroup.adoc[@ingroup], xref:commands/addtogroup.adoc[@addtogroup], and xref:commands/weakgroup.adoc[@weakgroup].

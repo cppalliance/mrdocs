@@ -1,0 +1,7 @@
+= see
+
+== Syntax
+@see { references }
+
+== Description
+Equivalent to xref:commands/sa.adoc[@sa]. Introduced for compatibility with Javadoc.

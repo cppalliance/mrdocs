@@ -1,0 +1,14 @@
+= section
+
+== Syntax
+@section &lt;section-name&gt; (section title)
+
+== Description
+Creates a section with name <section-name>. The title of the section should be specified as the second argument of the `@section` command.
+
+
+
+*Warning:* This command only works inside related page documentation and not in other documentation blocks!
+
+== See Also
+Section xref:commands/page.adoc[@page] for an example of the `@section` command.

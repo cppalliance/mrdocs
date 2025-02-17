@@ -1,0 +1,51 @@
+= overload
+
+== Syntax
+@overload [(function declaration)]
+
+== Description
+This command can be used to generate the following standard text for an overloaded member function:
+
+This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. 
+
+If the documentation for the overloaded member function is not located in front of the function declaration or definition, the optional argument should be used to specify the correct declaration of the overloaded function. Of course when the `@overload` command is directly in front of the overloaded member function and the optional argument is used this should also be the correct declaration of the overloaded function.
+
+Any other documentation that is inside the documentation block will by appended after the generated message.
+
+
+
+*Note:* You are responsible that there is indeed an earlier documented member that is overloaded by this one. To prevent that document reorders the documentation you should set SORT_MEMBER_DOCS to `NO` in this case.
+
+
+*Note:* Only one `@overload` command can be present in a comment block.
+
+== Example
+```
+class Overload_Test 
+{
+  public:
+    void drawRect(int,int,int,int);
+    void drawRect(const Rect &r);
+};
+ 
+void Overload_Test::drawRect(int x,int y,int w,int h) {}
+void Overload_Test::drawRect(const Rect &r) {}
+ 
+/*! @class Overload_Test
+ *  @brief A short description.
+ *   
+ *  More text.
+ */
+ 
+/*! @fn void Overload_Test::drawRect(int x,int y,int w,int h)
+ * This command draws a rectangle with a left upper corner at ( @a x , @a y ),
+ * width @a w and height @a h. 
+ */
+ 
+/*!
+ * @overload void Overload_Test::drawRect(const Rect &r)
+ */
+ 
+
+```
+// [CODE_END]

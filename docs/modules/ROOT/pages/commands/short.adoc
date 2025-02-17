@@ -1,0 +1,7 @@
+= short
+
+== Syntax
+@short { short description }
+
+== Description
+Equivalent to xref:commands/brief.adoc[@brief].

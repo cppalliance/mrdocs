@@ -1,0 +1,7 @@
+= copybrief
+
+== Syntax
+@copybrief &lt;link-object&gt;
+
+== Description
+Works in a similar way as xref:commands/copydoc.adoc[@copydoc] but will only copy the brief description, not the detailed documentation.

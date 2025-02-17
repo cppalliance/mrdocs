@@ -1,0 +1,9 @@
+= emoji
+
+== Syntax
+@emoji "name"
+
+== Description
+You can use the name with or without colons, i.e. `@emoji smile` is the same as writing `@emoji :smile:`. When an emoji is not supported the name with by places in the text with in between colons, i.e. `@emoji unsupported` will produce `:unsupported:` in the output. MrDocs will also give a warning message.
+
+See also the emoji support page for details.

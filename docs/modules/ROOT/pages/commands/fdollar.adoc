@@ -1,0 +1,8 @@
+= f$
+
+== Syntax
+@f$
+
+== Description
+Marks the start and end of an in-text formula.
+

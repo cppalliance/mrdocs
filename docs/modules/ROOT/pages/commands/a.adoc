@@ -1,0 +1,20 @@
+= a
+
+== Syntax
+@a &lt;word&gt;
+
+== Description
+Displays the argument <word> in italics. Use this command to emphasize words. Use this command to refer to member arguments in the running text.
+
+Equivalent to xref:commands/e.adoc[@e] and xref:commands/em.adoc[@em]. To emphasize multiple words use <em>multiple words</em>.
+
+== Example
+```
+  ... the @a x and @a y coordinates are used to ...
+
+```
+// [CODE_END]
+
+
+== Rendering
+\... the _x_ and _y_ coordinates are used to ...

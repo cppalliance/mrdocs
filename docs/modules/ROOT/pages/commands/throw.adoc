@@ -1,0 +1,14 @@
+= throw
+
+== Syntax
+@throw &lt;exception-object&gt; { exception description }
+
+== Description
+Synonymous xref:commands/exception.adoc[@exception].
+
+
+
+*Note:* the command xref:commands/throws.adoc[@throws] is a synonym for this command.
+
+== See Also
+section xref:commands/exception.adoc[@exception]

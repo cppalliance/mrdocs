@@ -1,0 +1,10 @@
+= else
+
+== Syntax
+@else
+
+== Description
+Starts a conditional section if the previous conditional section was not enabled. The previous section should have been started with a xref:commands/if.adoc[@if], xref:commands/ifnot.adoc[@ifnot], or xref:commands/elseif.adoc[@elseif] command.
+
+== See Also
+sections xref:commands/if.adoc[@if], xref:commands/ifnot.adoc[@ifnot], xref:commands/elseif.adoc[@elseif], xref:commands/endif.adoc[@endif.]

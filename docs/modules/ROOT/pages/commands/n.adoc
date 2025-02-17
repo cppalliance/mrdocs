@@ -1,0 +1,7 @@
+= n
+
+== Syntax
+@n
+
+== Description
+Forces a new line. Equivalent to <br> and inspired by the `printf` function.

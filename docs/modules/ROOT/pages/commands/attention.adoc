@@ -1,0 +1,7 @@
+= attention
+
+== Syntax
+@attention { attention text }
+
+== Description
+Starts a paragraph where a message that needs attention may be entered. The paragraph will be indented. The text of the paragraph has no special internal structure. All visual enhancement commands may be used inside the paragraph. Multiple adjacent `@attention` commands will be joined into a single paragraph. The `@attention` command ends when a blank line or some other sectioning command is encountered.

@@ -1,0 +1,14 @@
+= rtfonly
+
+== Syntax
+@rtfonly
+
+== Description
+Starts a block of text that only will be verbatim included in the generated RTF documentation and tagged with `<rtfonly>` in the generated XML output. The block ends with a xref:commands/endrtfonly.adoc[@endrtfonly] command.
+
+This command can be used to include RTF code that is too complex for MrDocs.
+
+Note: environment variables (like $(HOME) ) are resolved inside a RTF-only block.
+
+== See Also
+sections xref:commands/manonly.adoc[@manonly], xref:commands/xmlonly.adoc[@xmlonly], xref:commands/latexonly.adoc[@latexonly], xref:commands/htmlonly.adoc[@htmlonly], xref:commands/docbookonly.adoc[@docbookonly] and xref:commands/rtfinclude.adoc[@rtfinclude].

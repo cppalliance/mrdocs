@@ -1,0 +1,58 @@
+= msc
+
+== Syntax
+@msc ["caption"] [&lt;sizeindication&gt;=&lt;size&gt;]
+
+== Description
+Starts a text fragment which should contain a valid description of a message sequence chart. See https://www.mcternan.me.uk/mscgen/ for examples. The text fragment ends with xref:commands/endmsc.adoc[@endmsc].
+
+The first argument is optional and can be used to specify the caption that is displayed below the image. This argument has to be specified between quotes even if it does not contain any spaces. The quotes are stripped before the caption is displayed.
+
+The second argument is also optional and can be used to specify the width or height of the image. For a description of the possibilities see the paragraph Size indication with the xref:commands/image.adoc[@image] command.
+
+Here is an example of the use of the `@msc` command.
+
+```
+/** Sender class. Can be used to send a command to the server.
+ *  The receiver will acknowledge the command by calling Ack().
+ *  @msc
+ *    Sender,Receiver;
+ *    Sender->Receiver [label="Command()", URL="@ref Receiver::Command()"];
+ *    Sender<-Receiver [label="Ack()", URL="@ref Ack()", ID="1"];
+ *  @endmsc
+ */
+class Sender
+{
+  public:
+    /** Acknowledgment from server */
+    void Ack(bool ok);
+};
+ 
+/** Receiver class. Can be used to receive and execute commands.
+ *  After execution of a command, the receiver will send an acknowledgment
+ *  @msc
+ *    Receiver,Sender;
+ *    Receiver<-Sender [label="Command()", URL="@ref Command()"];
+ *    Receiver->Sender [label="Ack()", URL="@ref Sender::Ack()", ID="1"];
+ *  @endmsc
+ */
+class Receiver
+{
+  public:
+    /** Executable a command on the server */
+    void Command(int commandId);
+};
+
+```
+// [CODE_END]
+
+
+
+*Note:* The text fragment should only include the part of the message sequence chart that is within the `msc {...}` block (this is different from xref:commands/mscfile.adoc[@mscfile]). 
+
+mscgen is now built in into MrDocs 
+
+MrDocs creates a temporary file that is automatically removed unless the DOT_CLEANUP tag is set to `NO`.
+
+== See Also
+section xref:commands/mscfile.adoc[@mscfile].

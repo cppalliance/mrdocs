@@ -1,0 +1,14 @@
+= verbatim
+
+== Syntax
+@verbatim
+
+== Description
+Starts a block of text that will be verbatim included in the documentation. The block should end with a xref:commands/endverbatim.adoc[@endverbatim] command. All commands are disabled in a verbatim block.
+
+
+
+*Warning:* Make sure you include a xref:commands/endverbatim.adoc[@endverbatim] command for each `@verbatim` command or the parser will get confused!
+
+== See Also
+sections xref:commands/code.adoc[@code], xref:commands/endverbatim.adoc[@endverbatim] and xref:commands/verbinclude.adoc[@verbinclude].

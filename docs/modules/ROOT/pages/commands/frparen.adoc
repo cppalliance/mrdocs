@@ -1,0 +1,10 @@
+= f)
+
+== Syntax
+@f)
+
+== Description
+Marks the end of an in-text formula started with xref:commands/flparen.adoc[@f(].
+
+== See Also
+section xref:commands/flparen.adoc[@f(]

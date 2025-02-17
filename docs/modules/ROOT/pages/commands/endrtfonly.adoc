@@ -1,0 +1,10 @@
+= endrtfonly
+
+== Syntax
+@endrtfonly
+
+== Description
+Ends a block of text that was started with a xref:commands/rtfonly.adoc[@rtfonly] command.
+
+== See Also
+section xref:commands/rtfonly.adoc[@rtfonly].

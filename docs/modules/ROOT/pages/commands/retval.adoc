@@ -1,0 +1,7 @@
+= retval
+
+== Syntax
+@retval &lt;return value&gt; { description }
+
+== Description
+Starts a description for a function's return value with name <return value>, followed by a description of the return value. The text of the paragraph that forms the description has no special internal structure. All visual enhancement commands may be used inside the paragraph. Multiple adjacent `@retval` commands will be joined into a single paragraph. Each return value description will start on a new line. The `@retval` description ends when a blank line or some other sectioning command is encountered.

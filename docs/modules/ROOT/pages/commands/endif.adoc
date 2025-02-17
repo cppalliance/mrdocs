@@ -1,0 +1,10 @@
+= endif
+
+== Syntax
+@endif
+
+== Description
+Ends a conditional section that was started by xref:commands/if.adoc[@if] or xref:commands/ifnot.adoc[@ifnot] For each xref:commands/if.adoc[@if] or xref:commands/ifnot.adoc[@ifnot] one and only one matching xref:commands/endif.adoc[@endif] must follow.
+
+== See Also
+sections xref:commands/if.adoc[@if], xref:commands/ifnot.adoc[@ifnot], xref:commands/else.adoc[@else], xref:commands/elseif.adoc[@elseif.]

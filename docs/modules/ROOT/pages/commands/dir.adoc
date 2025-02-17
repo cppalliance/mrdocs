@@ -1,0 +1,7 @@
+= dir
+
+== Syntax
+@dir [&lt;path fragment&gt;]
+
+== Description
+Indicates that a comment block contains documentation for a directory. The "path fragment" argument should include the directory name and enough of the path to be unique with respect to the other directories in the project. The STRIP_FROM_PATH option determines what is stripped from the full path before it appears in the output.

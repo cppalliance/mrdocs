@@ -1,0 +1,11 @@
+= until
+
+== Syntax
+@until ( pattern )
+
+== Description
+This command writes all lines of the example that was last included using xref:commands/include.adoc[@include] or xref:commands/dontinclude.adoc[@dontinclude] to the output, until it finds a line containing the specified pattern. The line containing the pattern will be written as well.
+
+The internal pointer that is used to keep track of the current line in the example, is set to the start of the line following last written line (or to the end of the example if the pattern could not be found).
+
+See section xref:commands/dontinclude.adoc[@dontinclude] for an example.

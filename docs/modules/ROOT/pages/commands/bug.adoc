@@ -1,0 +1,11 @@
+= bug
+
+== Syntax
+@bug { bug description }
+
+== Description
+Starts a paragraph where one or more bugs may be reported. The paragraph will be indented. The text of the paragraph has no special internal structure. All visual enhancement commands may be used inside the paragraph. Multiple adjacent `@bug` commands will be joined into a single paragraph. Each bug description will start on a new line. Alternatively, one `@bug` command may mention several bugs. The `@bug` command ends when a blank line or some other sectioning command is encountered. See section xref:commands/author.adoc[@author] for an example.
+
+The description will also add an item to a separate Bug list and the two instances of the description will be cross-referenced. Each item in the Bug list will be preceded by a header that indicates the origin of the item.
+
+The Bug list and the corresponding entries can be disabled by setting the GENERATE_BUGLIST to `NO`.

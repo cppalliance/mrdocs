@@ -1,0 +1,24 @@
+= class
+
+== Syntax
+@class &lt;name&gt; [&lt;header-file&gt;] [&lt;header-name&gt;]
+
+== Description
+Indicates that a comment block contains documentation for a class with name <name>. Optionally a header file and a header name can be specified. If the header-file is specified, a link to a verbatim copy of the header will be included in the HTML documentation. The <header-name> argument can be used to overwrite the name of the link that is used in the class documentation to something other than <header-file>. This can be useful if the include name is not located on the default include path (like <X11/X.h>). With the <header-name> argument you can also specify how the include statement should look like, by adding either quotes or sharp brackets around the name. Sharp brackets are used if just the name is given. Note that the last two arguments can also be specified using the xref:commands/headerfile.adoc[@headerfile] command.
+
+== Example
+```
+/* A dummy class */
+ 
+class Test
+{
+};
+ 
+/*! @class Test class.h "inc/class.h"
+ *  @brief This is a test class.
+ *
+ * Some details about the Test class.
+ */
+
+```
+// [CODE_END]

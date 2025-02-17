@@ -1,0 +1,36 @@
+= relates
+
+== Syntax
+@relates &lt;name&gt;
+
+== Description
+This command can be used in the documentation of a non-member function <name>. It puts the function inside the 'related function' section of the class documentation. This command is useful for documenting non-friend functions that are nevertheless strongly coupled to a certain class. It prevents the need of having to document a file, but only works for functions.
+
+== Example
+```
+/*! 
+ * A String class.
+ */ 
+  
+class String
+{
+  friend int strcmp(const String &,const String &);
+};
+ 
+/*! 
+ * Compares two strings.
+ */
+ 
+int strcmp(const String &s1,const String &s2)
+{
+}
+ 
+/*! @relates String
+ * A string debug function.
+ */
+void stringDebug()
+{
+}
+
+```
+// [CODE_END]

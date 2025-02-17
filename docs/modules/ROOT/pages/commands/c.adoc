@@ -1,0 +1,20 @@
+= c
+
+== Syntax
+@c &lt;word&gt;
+
+== Description
+Displays the argument <word> using a typewriter font. Use this to refer to a word of code. Equivalent to <tt>word</tt>.
+
+Equivalent to xref:commands/p.adoc[@p]. To have multiple words in typewriter font use <tt>multiple words</tt>.
+
+== Example
+```
+     ... This function returns @c void and not @c int ...
+
+```
+// [CODE_END]
+
+
+== Rendering
+\... This function returns `void` and not `int` ...

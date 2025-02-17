@@ -1,0 +1,11 @@
+= todo
+
+== Syntax
+@todo { paragraph describing what is to be done }
+
+== Description
+Starts a paragraph where one or more todo items are described. The paragraph will be indented. The text of the paragraph has no special internal structure. All visual enhancement commands may be used inside the paragraph. Multiple adjacent `@todo` commands will be joined into a single paragraph. Each todo description will start on a new line. Alternatively, one `@todo` command may mention several todo descriptions. The `@todo` command ends when a blank line or some other sectioning command is encountered.
+
+The description will also add an item to a separate Todo list and the two instances of the description will be cross-referenced. Each item in the Todo list will be preceded by a header that indicates the origin of the item.
+
+The Todo list and the corresponding entries can be disabled by setting the GENERATE_TODOLIST to `NO`.

@@ -1,0 +1,10 @@
+= endhtmlonly
+
+== Syntax
+@endhtmlonly
+
+== Description
+Ends a block of text that was started with a xref:commands/htmlonly.adoc[@htmlonly] command.
+
+== See Also
+section xref:commands/htmlonly.adoc[@htmlonly].

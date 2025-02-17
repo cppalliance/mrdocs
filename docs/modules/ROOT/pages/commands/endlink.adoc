@@ -1,0 +1,10 @@
+= endlink
+
+== Syntax
+@endlink
+
+== Description
+This command ends a link that is started with the xref:commands/link.adoc[@link] command.
+
+== See Also
+section xref:commands/link.adoc[@link].

@@ -1,0 +1,36 @@
+= page
+
+== Syntax
+@page &lt;name&gt; (title)
+
+== Description
+Indicates that a comment block contains a piece of documentation that is not directly related to one specific class, file or member. The HTML generator creates a page containing the documentation. The LaTeX generator starts a new section in the chapter 'Page documentation'.
+
+
+
+*Note:* The &lt;name&gt; argument consists of a combination of letters and number digits. If you wish to use upper case letters (e.g. `MYPAGE1`), or mixed case letters (e.g. `MyPage1`) in the &lt;name&gt; argument, you should set CASE_SENSE_NAMES to `YES`. However, this is advisable only if your file system is case sensitive. Otherwise (and for better portability) you should use all lower case letters (e.g. `mypage1`) for &lt;name&gt; in all references to the page.
+
+== Example
+```
+/*! @page page1 A documentation page
+  @tableofcontents
+  Leading text.
+  @section sec An example section
+  This page contains the subsections @ref subsection1 and @ref subsection2.
+  For more info see page @ref page2.
+  @subsection subsection1 The first subsection
+  Text.
+  @subsection subsection2 The second subsection
+  More text.
+*/
+ 
+/*! @page page2 Another page
+  Even more info.
+*/
+
+```
+// [CODE_END]
+
+
+== See Also
+section xref:commands/section.adoc[@section], section xref:commands/subsection.adoc[@subsection], and section xref:commands/ref.adoc[@ref].

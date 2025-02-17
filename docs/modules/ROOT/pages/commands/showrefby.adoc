@@ -1,0 +1,14 @@
+= showrefby
+
+== Syntax
+@showrefby
+
+== Description
+When this command is put in a comment block of a function, method or variable, then MrDocs will generate an overview for that function, method, variable of the, documented, functions and methods that call / use it. The overview will be generated regardless of the value of REFERENCED_BY_RELATION. 
+
+
+
+*Note:* The completeness (and correctness) of the overview depends on the MrDocs code parser which is not perfect.
+
+== See Also
+section xref:commands/showrefs.adoc[@showrefs], section xref:commands/hiderefby.adoc[@hiderefby], section xref:commands/hiderefs.adoc[@hiderefs] and option REFERENCED_BY_RELATION

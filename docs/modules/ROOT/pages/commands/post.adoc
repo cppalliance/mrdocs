@@ -1,0 +1,7 @@
+= post
+
+== Syntax
+@post { description of the postcondition }
+
+== Description
+Starts a paragraph where the postcondition of an entity can be described. The paragraph will be indented. The text of the paragraph has no special internal structure. All visual enhancement commands may be used inside the paragraph. Multiple adjacent `@post` commands will be joined into a single paragraph. Each postcondition will start on a new line. Alternatively, one `@post` command may mention several postconditions. The `@post` command ends when a blank line or some other sectioning command is encountered.

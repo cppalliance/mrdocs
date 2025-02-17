@@ -1,0 +1,9 @@
+= verbinclude
+
+== Syntax
+@verbinclude &lt;file-name&gt;
+
+== Description
+This command includes the contents of the file <file-name> verbatim in the documentation. The command is equivalent to pasting the contents of the file in the documentation and placing xref:commands/verbatim.adoc[@verbatim] and xref:commands/endverbatim.adoc[@endverbatim] commands around it.
+
+Files or directories that MrDocs should look for can be specified using the EXAMPLE_PATH tag of MrDocs's configuration file.

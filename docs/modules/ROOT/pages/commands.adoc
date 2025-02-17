@@ -56,6 +56,11 @@ The following commands can be used to format the text in the doc comments:
 |
 |===
 
+== Full List of Commands
+
+If you want to see the complete list of available commands and their details,
+please check xref:commands-list.adoc[the Comprehensive Commands List].
+
 // == Documentation at other places
 // @class, @struct, @union, @enum, @fn, @var, @def, @typedef, @file, @namespace...
 

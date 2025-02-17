@@ -1,0 +1,10 @@
+= interface
+
+== Syntax
+@interface &lt;name&gt; [&lt;header-file&gt;] [&lt;header-name&gt;]
+
+== Description
+Indicates that a comment block contains documentation for an interface with name <name>. The arguments are equal to the arguments of the xref:commands/class.adoc[@class] command.
+
+== See Also
+section xref:commands/class.adoc[@class].

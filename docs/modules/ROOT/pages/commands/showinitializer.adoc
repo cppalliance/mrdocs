@@ -1,0 +1,10 @@
+= showinitializer
+
+== Syntax
+@showinitializer
+
+== Description
+By default the value of a define and the initializer of a variable are only displayed if they are less than 30 lines long. By putting this command in a comment block of a define or variable, the initializer is shown unconditionally. The maximum number of initialization lines can be changed by means of the configuration parameter MAX_INITIALIZER_LINES, the default value is 30.
+
+== See Also
+section xref:commands/hideinitializer.adoc[@hideinitializer].

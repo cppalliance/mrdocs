@@ -1,0 +1,34 @@
+= code
+
+== Syntax
+@code['{'&lt;word&gt;'}']
+
+== Description
+Starts a block of code. A code block is treated differently from ordinary text. It is interpreted as source code. The names of classes and members and other documented entities are automatically replaced by links to the documentation.
+
+By default the language is C++ unless the file has a .c extension, in which case it is treated as C. The names of classes and members and other documented entities are automatically replaced by links to the documentation.
+
+If you need to explicitly indicate the language, you can use:
+```
+  @code{.cpp}
+  class Cpp {};
+  @endcode
+
+  @code{.c}
+  void function() {}
+  @endcode
+
+```
+// [CODE_END]
+If the contents of the code block are in a language that MrDocs cannot parse, MrDocs will just show the output as-is. You can make this explicit using .unparsed, or by giving some other extension that MrDocs doesn't support, e.g.
+
+```
+  @code{.unparsed}
+  Show this as-is please
+  @endcode
+
+```
+// [CODE_END]
+
+== See Also
+section xref:commands/endcode.adoc[@endcode] and section xref:commands/verbatim.adoc[@verbatim].

@@ -1,0 +1,40 @@
+= example
+
+== Syntax
+@example['\{lineno\}'] &lt;file-name&gt;
+
+== Description
+Indicates that a comment block contains documentation for a source code example. The name of the source file is <file-name>. The contents of this file will be included in the documentation, just after the documentation contained in the comment block. You can add option `\{lineno\}` to enable line numbers for the example if desired. All examples are placed in a list. The source code is scanned for documented members and classes. If any are found, the names are cross-referenced with the documentation. Source files or directories can be specified using the EXAMPLE_PATH tag of MrDocs's configuration file.
+
+If <file-name> itself is not unique for the set of example files specified by the EXAMPLE_PATH tag, you can include part of the absolute path to disambiguate it.
+
+If more than one source file is needed for the example, the xref:commands/include.adoc[@include] command can be used.
+
+== Example
+```
+/** A Example_Test class.
+ *  More details about this class.
+ */
+ 
+class Example_Test
+{
+  public:
+    /** An example member function.
+     *  More details about this function.
+     */
+    void example();
+};
+ 
+void Example_Test::example() {}
+ 
+/** @example example_test.cpp
+ * This is an example of how to use the Example_Test class.
+ * More details about this example.
+ */
+
+```
+// [CODE_END]
+
+
+== See Also
+section xref:commands/include.adoc[@include].

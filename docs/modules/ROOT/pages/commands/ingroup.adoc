@@ -1,0 +1,10 @@
+= ingroup
+
+== Syntax
+@ingroup (&lt;groupname&gt; [&lt;groupname&gt;]*)
+
+== Description
+If the `@ingroup` command is placed in a comment block of a compound entity (like class, file or namespace), then it will be added to the group(s) identified by the `<groupname>`(s). In case of members (like variable, functions, typedefs and enums) the member will be added only to one group (to avoid ambiguous linking targets in case a member is not documented in the context of its class, namespace or file, but only visible as part of a group).
+
+== See Also
+sections xref:commands/defgroup.adoc[@defgroup], xref:commands/addtogroup.adoc[@addtogroup], and xref:commands/weakgroup.adoc[@weakgroup]

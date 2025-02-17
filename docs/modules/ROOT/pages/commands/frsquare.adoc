@@ -1,0 +1,10 @@
+= f]
+
+== Syntax
+@f]
+
+== Description
+Marks the end of a long formula that is displayed centered on a separate line.
+
+== See Also
+section xref:commands/flsquare.adoc[@f[]

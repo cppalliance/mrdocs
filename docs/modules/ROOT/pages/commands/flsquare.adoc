@@ -1,0 +1,10 @@
+= f[
+
+== Syntax
+@f[
+
+== Description
+Marks the start of a long formula that is displayed centered on a separate line.
+
+== See Also
+section xref:commands/frsquare.adoc[@f]]

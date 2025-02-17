@@ -1,0 +1,9 @@
+= name
+
+== Syntax
+@name [(header)]
+
+== Description
+This command turns a comment block into a header definition of a member group. The comment block should be followed by a `@{` ... `@}` block containing the members of the group.
+
+See section Member Groups for an example.

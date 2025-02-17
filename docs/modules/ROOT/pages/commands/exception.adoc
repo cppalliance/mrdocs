@@ -1,0 +1,7 @@
+= exception
+
+== Syntax
+@exception &lt;exception-object&gt; { exception description }
+
+== Description
+Starts an exception description for an exception object with name <exception-object>. Followed by a description of the exception. The existence of the exception object is not checked. The text of the paragraph has no special internal structure. All visual enhancement commands may be used inside the paragraph. Multiple adjacent `@exception` commands will be joined into a single paragraph. Each exception description will start on a new line. The `@exception` description ends when a blank line or some other sectioning command is encountered. See section xref:commands/fn.adoc[@fn] for an example.

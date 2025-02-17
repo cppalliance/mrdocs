@@ -1,0 +1,26 @@
+= author
+
+== Syntax
+@author { list of authors }
+
+== Description
+Starts a paragraph where one or more author names may be entered. The paragraph will be indented. The text of the paragraph has no special internal structure. All visual enhancement commands may be used inside the paragraph. Multiple adjacent `@author` commands will be joined into a single paragraph. Each author description will start a new line. Alternatively, one `@author` command may mention several authors. The `@author` command ends when a blank line or some other sectioning command is encountered.
+
+== Example
+```
+/*! 
+ *  @brief     Pretty nice class.
+ *  @details   This class is used to demonstrate a number of section commands.
+ *  @author    John Doe
+ *  @author    Jan Doe
+ *  @version   4.1a
+ *  @date      1990-2011
+ *  @pre       First initialize the system.
+ *  @bug       Not all memory is freed when deleting an object of this class.
+ *  @warning   Improper use can crash your application
+ *  @copyright GNU Public License.
+ */
+class SomeNiceClass {};
+
+```
+// [CODE_END]

@@ -1,0 +1,7 @@
+= related
+
+== Syntax
+@related &lt;name&gt;
+
+== Description
+Equivalent to xref:commands/relates.adoc[@relates]

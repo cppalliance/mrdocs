@@ -1,0 +1,7 @@
+= details
+
+== Syntax
+@details { detailed description }
+
+== Description
+Just like xref:commands/brief.adoc[@brief] starts a brief description, `@details` starts the detailed description. You can also start a new paragraph (blank line) then the `@details` command is not needed.

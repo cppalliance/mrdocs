@@ -3,6 +3,7 @@
 * xref:install.adoc[Installation]
 * xref:usage.adoc[Getting Started]
 * xref:commands.adoc[Documenting the Code]
+* xref:commands-list.adoc[Commands List]
 * xref:config-file.adoc[]
 * xref:generators.adoc[]
 * xref:design-notes.adoc[]

@@ -1,0 +1,38 @@
+= param
+
+== Syntax
+@param[&lt;dir&gt;] &lt;parameter-name&gt; { parameter description }
+
+== Description
+Starts a parameter description for a function parameter with name <parameter-name>, followed by a description of the parameter. The existence of the parameter is checked and a warning is given if the documentation of this (or any other) parameter is missing or not present in the function declaration or definition.
+
+The `@param` command has an optional attribute, <dir>, specifying the direction of the parameter. Possible values are "[in]", "[out]", and "[in,out]"; note the [square] brackets in this description. For the bidirecional values, directions "in" and "out" can be specified in any order, and they can either be written altogether, or separated with a comma (`,`) or a space. That means that for example values "[outin]" or "[in out]" are also valid. Note that it is also possible to put whitespace between the command and the <dir>. When a parameter is both input and output, [in,out] is used as attribute. Here is an example for the function `memcpy:`
+
+```
+/*!
+ * Copies bytes from a source memory area to a destination memory area,
+ * where both areas may not overlap.
+ * @param[out] dest The memory area to copy to.
+ * @param[in]  src  The memory area to copy from.
+ * @param[in]  n    The number of bytes to copy
+ */
+void memcpy(void *dest, const void *src, size_t n);
+
+```
+// [CODE_END]
+The parameter description is a paragraph with no special internal structure. All visual enhancement commands may be used inside the paragraph.
+
+Multiple adjacent `@param` commands will be joined into a single paragraph. Each parameter description will start on a new line. The `@param` description ends when a blank line or some other sectioning command is encountered. See section xref:commands/fn.adoc[@fn] for an example.
+
+Note that you can also document multiple parameters with a single `@param` command using a comma separated list. Here is an example:
+
+```
+/** Sets the position.
+ *  @param x,y,z Coordinates of the position in 3D space.
+ */
+void setPosition(double x,double y,double z,double t)
+{
+}
+
+```
+// [CODE_END]

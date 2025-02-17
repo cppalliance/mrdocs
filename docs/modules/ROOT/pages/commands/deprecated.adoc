@@ -1,0 +1,11 @@
+= deprecated
+
+== Syntax
+@deprecated { description }
+
+== Description
+Starts a paragraph indicating that this documentation block belongs to a deprecated entity. Can be used to describe alternatives, expected life span, etc. The paragraph will be indented. The text of the paragraph has no special internal structure. All visual enhancement commands may be used inside the paragraph. Multiple adjacent `@deprecated` commands will be joined into a single paragraph. Each deprecation description will start on a new line. The `@deprecated` command ends when a blank line or some other sectioning command is encountered.
+
+The description will also add an item to a separate Deprecated list and the two instances of the description will be cross-referenced. Each item in the Deprecated list will be preceded by a header that indicates the origin of the item.
+
+The Deprecated list and the corresponding entries can be disabled by setting the GENERATE_DEPRECATEDLIST to `NO`.

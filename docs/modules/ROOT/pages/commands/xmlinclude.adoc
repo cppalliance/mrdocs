@@ -1,0 +1,12 @@
+= xmlinclude
+
+== Syntax
+@xmlinclude &lt;file-name&gt;
+
+== Description
+This command includes contents of the file <file-name> as is in the XML documentation. The command is equivalent to pasting the contents of the file in the documentation and placing xref:commands/xmlonly.adoc[@xmlonly] and xref:commands/endxmlonly.adoc[@endxmlonly] commands around it.
+
+Files or directories that MrDocs should look for can be specified using the EXAMPLE_PATH tag of MrDocs's configuration file.
+
+== See Also
+section xref:commands/xmlonly.adoc[@xmlonly], xref:commands/htmlinclude.adoc[@htmlinclude], xref:commands/latexinclude.adoc[@latexinclude], xref:commands/rtfinclude.adoc[@rtfinclude], xref:commands/maninclude.adoc[@maninclude] and xref:commands/docbookinclude.adoc[@docbookinclude].

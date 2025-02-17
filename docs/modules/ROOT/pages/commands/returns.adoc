@@ -1,0 +1,7 @@
+= returns
+
+== Syntax
+@returns { description of the return value }
+
+== Description
+Equivalent to xref:commands/return.adoc[@return].

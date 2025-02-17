@@ -1,0 +1,11 @@
+= test
+
+== Syntax
+@test { paragraph describing a test case }
+
+== Description
+Starts a paragraph where one or more test cases can be described. The paragraph will be indented. The text of the paragraph has no special internal structure. All visual enhancement commands may be used inside the paragraph. Multiple adjacent `@test` commands will be joined into a single paragraph. Each test case description will start on a new line. Alternatively, one `@test` command may mention several test cases. The `@test` command ends when a blank line or some other sectioning command is encountered.
+
+The description will also add an item to a separate Test list and the two instances of the description will be cross-referenced. Each item in the Test list will be preceded by a header that indicates the origin of the item.
+
+The Test list and the corresponding entries can be disabled by setting the GENERATE_TESTLIST to `NO`.

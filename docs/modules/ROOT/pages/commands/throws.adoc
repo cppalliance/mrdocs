@@ -1,0 +1,7 @@
+= throws
+
+== Syntax
+@throws &lt;exception-object&gt; { exception description }
+
+== Description
+Equivalent to xref:commands/throw.adoc[@throw].

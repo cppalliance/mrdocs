@@ -1,0 +1,7 @@
+= note
+
+== Syntax
+@note { text }
+
+== Description
+Starts a paragraph where a note can be entered. The paragraph will be indented. The text of the paragraph has no special internal structure. All visual enhancement commands may be used inside the paragraph. Multiple adjacent `@note` commands will be joined into a single paragraph. Each note description will start on a new line. Alternatively, one `@note` command may mention several notes. The `@note` command ends when a blank line or some other sectioning command is encountered. See section xref:commands/par.adoc[@par] for an example.

@@ -1,0 +1,7 @@
+= secreflist
+
+== Syntax
+@secreflist
+
+== Description
+Starts an index list of item, created with xref:commands/refitem.adoc[@refitem] that each link to a named section.

@@ -1,0 +1,7 @@
+= return
+
+== Syntax
+@return { description of the return value }
+
+== Description
+Starts a return value description for a function. The text of the paragraph has no special internal structure. All visual enhancement commands may be used inside the paragraph. Multiple adjacent `@return` commands will be joined into a single paragraph. The `@return` description ends when a blank line or some other sectioning command is encountered. See section xref:commands/fn.adoc[@fn] for an example.

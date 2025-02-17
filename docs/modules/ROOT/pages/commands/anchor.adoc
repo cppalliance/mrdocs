@@ -1,0 +1,10 @@
+= anchor
+
+== Syntax
+@anchor &lt;word&gt;
+
+== Description
+This command places an invisible, named anchor into the documentation to which you can refer with the xref:commands/ref.adoc[@ref] command.
+
+== See Also
+section xref:commands/ref.adoc[@ref].

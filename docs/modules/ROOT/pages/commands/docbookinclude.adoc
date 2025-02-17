@@ -1,0 +1,12 @@
+= docbookinclude
+
+== Syntax
+@docbookinclude &lt;file-name&gt;
+
+== Description
+This command includes the contents of the file <file-name> as is in the DocBook documentation and tagged with `<docbookonly>` in the generated XML output. The command is equivalent to pasting the contents of the file in the documentation and placing xref:commands/docbookonly.adoc[@docbookonly] and xref:commands/enddocbookonly.adoc[@enddocbookonly] commands around it.
+
+Files or directories that MrDocs should look for can be specified using the EXAMPLE_PATH tag of MrDocs's configuration file.
+
+== See Also
+section xref:commands/docbookonly.adoc[@docbookonly], xref:commands/htmlinclude.adoc[@htmlinclude], xref:commands/latexinclude.adoc[@latexinclude], xref:commands/rtfinclude.adoc[@rtfinclude], xref:commands/maninclude.adoc[@maninclude] and xref:commands/xmlinclude.adoc[@xmlinclude].

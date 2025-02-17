@@ -1,0 +1,32 @@
+= mainpage
+
+== Syntax
+@mainpage [(title)]
+
+== Description
+If the `@mainpage` command is placed in a comment block the block is used to customize the index page (in HTML) or the first chapter (in LaTeX).
+
+The title argument is optional and replaces the default title that MrDocs normally generates. If you do not want any title you can specify `notitle` as the argument of `@mainpage`.
+
+Here is an example:
+
+```
+/*! @mainpage My Personal Index Page
+ *
+ * @section intro_sec Introduction
+ *
+ * This is the introduction.
+ *
+ * @section install_sec Installation
+ *
+ * @subsection step1 Step 1: Opening the box
+ *
+ * etc...
+ */
+
+```
+// [CODE_END]
+You can refer to the main page using: xref:commands/ref.adoc[@ref] index.
+
+== See Also
+section xref:commands/section.adoc[@section], section xref:commands/subsection.adoc[@subsection], and section xref:commands/page.adoc[@page].

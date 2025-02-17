@@ -1,0 +1,49 @@
+= xrefitem
+
+== Syntax
+@xrefitem &lt;key&gt; "heading" "list title" { text }
+
+== Description
+This command is a generalization of commands such as xref:commands/todo.adoc[@todo] and xref:commands/bug.adoc[@bug]. It can be used to create user-defined text sections which are automatically cross-referenced between the place of occurrence and a related page, which will be generated. On the related page all sections of the same type will be collected.
+
+The first argument <key> is an identifier uniquely representing the type of the section. The second argument is a quoted string representing the heading of the section under which text passed as the fourth argument is put. The third argument (list title) is used as the title for the related page containing all items with the same key. The second and third string argument cannot contain a newline. The keys `"todo"`, `"test"`, `"bug"` and `"deprecated"` are predefined.
+
+To get an idea on how to use the `@xrefitem` command and what its effect is, consider the todo list, which (for English output) can be seen an alias for the command
+
+```
+@xrefitem todo "Todo" "Todo List" 
+```
+// [CODE_END]
+Since it is very tedious and error-prone to repeat the first three parameters of the command for each section, the command is meant to be used in combination with the ALIASES option in the configuration file. To define a new command `@reminder`, for instance, one should add the following line to the configuration file:
+
+```
+ALIASES += "reminder=@xrefitem reminders \"Reminder\" \"Reminders\"" 
+```
+// [CODE_END]
+Note the use of escaped quotes for the second and third argument of the `@xrefitem` command.
+
+In case parameter "(heading)" is the empty string no heading is generated. This can be useful when used in combination with the xref:commands/page.adoc[@page] command e.g.
+
+```
+/** @page my_errors My Errors
+ *  @brief Errors page
+ *
+ *  Errors page contents.
+ */
+
+/** \error ERROR 101: in case a file can not be opened.
+    Check about file system read/write access. */
+#define MY_ERR_CANNOT_OPEN_FILE                   101
+
+/** \error ERROR 102: in case a file can not be closed.
+    Check about file system read/write access. */
+#define MY_ERR_CANNOT_CLOSE_FILE                  102
+
+```
+// [CODE_END]
+with `@error` defined as
+
+```
+ALIASES += "error=@xrefitem my_errors \"\" \"\"" 
+```
+// [CODE_END]

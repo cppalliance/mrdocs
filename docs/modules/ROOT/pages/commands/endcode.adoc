@@ -1,0 +1,10 @@
+= endcode
+
+== Syntax
+@endcode
+
+== Description
+Ends a block of code.
+
+== See Also
+section xref:commands/code.adoc[@code]

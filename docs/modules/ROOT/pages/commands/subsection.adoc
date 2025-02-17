@@ -1,0 +1,14 @@
+= subsection
+
+== Syntax
+@subsection &lt;subsection-name&gt; (subsection title)
+
+== Description
+Creates a subsection with name <subsection-name>. The title of the subsection should be specified as the second argument of the `@subsection` command.
+
+
+
+*Warning:* This command only works inside a section of a related page documentation block and not in other documentation blocks!
+
+== See Also
+Section xref:commands/page.adoc[@page] for an example of the `@subsection` command.

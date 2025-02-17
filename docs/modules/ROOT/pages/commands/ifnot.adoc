@@ -1,0 +1,10 @@
+= ifnot
+
+== Syntax
+@ifnot (section-label)
+
+== Description
+Starts a conditional documentation section. The section ends with a matching xref:commands/endif.adoc[@endif] command. This conditional section is enabled by default. To disable it you must put the section-label after the ENABLED_SECTIONS tag in the configuration file. The section label can be a logical expression build of section names, round brackets, && (AND), || (OR) and ! (NOT).
+
+== See Also
+sections xref:commands/endif.adoc[@endif], xref:commands/if.adoc[@if], xref:commands/else.adoc[@else], and xref:commands/elseif.adoc[@elseif], xref:commands/cond.adoc[@cond], xref:commands/endcond.adoc[@endcond], and ENABLED_SECTIONS.

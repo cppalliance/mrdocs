@@ -1,0 +1,7 @@
+= relatedalso
+
+== Syntax
+@relatedalso &lt;name&gt;
+
+== Description
+Equivalent to xref:commands/relatesalso.adoc[@relatesalso]

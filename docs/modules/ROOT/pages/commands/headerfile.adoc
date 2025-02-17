@@ -1,0 +1,29 @@
+= headerfile
+
+== Syntax
+@headerfile &lt;header-file&gt; [&lt;header-name&gt;]
+
+== Description
+Intended to be used for class, struct, or union documentation, where the documentation is in front of the definition. The arguments of this command are the same as the second and third argument of xref:commands/class.adoc[@class]. The <header-file> name refers to the file that should be included by the application to obtain the definition of the class, struct, or union. The <header-name> argument can be used to overwrite the name of the link that is used in the class documentation to something other than <header-file>. This can be useful if the include name is not located on the default include path (like <X11/X.h>).
+
+With the <header-name> argument you can also specify how the include statement should look like, by adding either double quotes or sharp brackets around the name. By default sharp brackets are used if just the name is given.
+
+If a pair of double quotes is given for either the <header-file> or <header-name> argument, the current file (in which the command was found) will be used but with quotes. So for a comment block with a `@headerfile` command inside a file `test.h`, the following three commands are equivalent:
+
+```
+  @headerfile test.h "test.h"
+  @headerfile test.h ""
+  @headerfile "" 
+```
+// [CODE_END]
+To get sharp brackets you do not need to specify anything, but if you want to be explicit you could use any of the following:
+
+```
+  @headerfile test.h <test.h>
+  @headerfile test.h <>
+  @headerfile <> 
+```
+// [CODE_END]
+To globally reverse the default include representation to local includes you can set FORCE_LOCAL_INCLUDES to `YES`.
+
+To disable the include information altogether set SHOW_HEADERFILE to `NO`.

@@ -1,0 +1,47 @@
+= dontinclude
+
+== Syntax
+@dontinclude['\{lineno\}'] &lt;file-name&gt;
+
+== Description
+This command can be used to parse a source file without actually verbatim including it in the documentation (as the xref:commands/include.adoc[@include] command does). This is useful if you want to divide the source file into smaller pieces and add documentation between the pieces. Source files or directories can be specified using the EXAMPLE_PATH tag of MrDocs's configuration file.
+
+You can add the option `lineno` to enable line numbers for the included code if desired.
+
+You can add the option `strip` that will always hide any special comments from the included code, overruling the STRIP_CODE_COMMENTS setting, or add the option `nostrip` to always show the special comments.
+
+The class and member declarations and definitions inside the code fragment are 'remembered' during the parsing of the comment block that contained the `@dontinclude` command.
+
+For line by line descriptions of source files, one or more lines of the example can be displayed using the xref:commands/line.adoc[@line], xref:commands/skip.adoc[@skip], xref:commands/skipline.adoc[@skipline], and xref:commands/until.adoc[@until] commands. An internal pointer is used for these commands. The `@dontinclude` command sets the pointer to the first line of the example.
+
+== Example
+```
+ 
+/*! A test class. */
+ 
+class Include_Test
+{
+  public:
+    /// a member function
+    void example();
+};
+ 
+/*! @page pag_example
+ *  @dontinclude include_test.cpp
+ *  Our main function starts like this:
+ *  @skip main
+ *  @until {
+ *  First we create an object @c t of the Include_Test class.
+ *  @skipline Include_Test
+ *  Then we call the example member function 
+ *  @line example
+ *  After that our little test routine ends.
+ *  @line }
+ */
+
+```
+// [CODE_END]
+
+
+== See Also
+sections xref:commands/line.adoc[@line], xref:commands/skip.adoc[@skip], xref:commands/skipline.adoc[@skipline], xref:commands/until.adoc[@until], and xref:commands/include.adoc[@include].

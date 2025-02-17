@@ -1,0 +1,7 @@
+= endparblock
+
+== Syntax
+@endparblock
+
+== Description
+This ends a block of paragraphs started with xref:commands/parblock.adoc[@parblock].

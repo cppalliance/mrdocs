@@ -1,0 +1,39 @@
+= copydoc
+
+== Syntax
+@copydoc &lt;link-object&gt;
+
+== Description
+Copies a documentation block from the object specified by <link-object> and pastes it at the location of the command. This command can be useful to avoid cases where a documentation block would otherwise have to be duplicated or it can be used to extend the documentation of an inherited member.
+
+The link object can point to a member (of a class, file or group), a class, a namespace, a group, a page, or a file (checked in that order). Note that if the object pointed to is a member (function, variable, typedef, etc), the compound (class, file, or group) containing it should also be documented for the copying to work.
+
+To copy the documentation for a member of a class one can, for instance, put the following in the documentation:
+
+```
+  /*! @copydoc MyClass::myfunction()
+   *  More documentation.
+   */
+
+```
+// [CODE_END]
+if the member is overloaded, you should specify the argument types explicitly (without spaces!), like in the following:
+
+```
+  //! @copydoc MyClass::myfunction(type1,type2)
+
+```
+// [CODE_END]
+Qualified names are only needed if the context in which the documentation block is found requires them.
+
+The `@copydoc` command can be used recursively, but cycles in the `@copydoc` relation will be broken and flagged as an error.
+
+Note that `@copydoc foo()` is roughly equivalent to doing:
+
+```
+  @brief @copybrief foo()
+  @details @copydetails foo()
+
+```
+// [CODE_END]
+See xref:commands/copybrief.adoc[@copybrief] and xref:commands/copydetails.adoc[@copydetails] for copying only the brief or detailed part of the comment block.

@@ -1,0 +1,14 @@
+= htmlinclude
+
+== Syntax
+@htmlinclude['[block]'] &lt;file-name&gt;
+
+== Description
+This command includes the contents of the file <file-name> as is in the HTML documentation and tagged with `<htmlonly>` in the generated XML output. The command is equivalent to pasting the contents of the file in the documentation and placing xref:commands/htmlonly.adoc[@htmlonly] and xref:commands/endhtmlonly.adoc[@endhtmlonly] commands around it.
+
+Normally the contents of the file indicated by xref:commands/htmlinclude.adoc[@htmlinclude] is inserted as-is. When you want to insert a HTML fragment that has block scope like a table or list which should appear outside <p>..</p>, this can lead to invalid HTML. You can use `@htmlinclude[block]` to make MrDocs end the current paragraph and restart after the file is included.
+
+Files or directories that MrDocs should look for can be specified using the EXAMPLE_PATH tag of MrDocs's configuration file.
+
+== See Also
+section xref:commands/htmlonly.adoc[@htmlonly], xref:commands/latexinclude.adoc[@latexinclude], xref:commands/rtfinclude.adoc[@rtfinclude], xref:commands/maninclude.adoc[@maninclude], xref:commands/docbookinclude.adoc[@docbookinclude] and xref:commands/xmlinclude.adoc[@xmlinclude].

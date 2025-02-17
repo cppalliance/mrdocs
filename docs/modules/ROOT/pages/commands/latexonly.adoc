@@ -1,0 +1,14 @@
+= latexonly
+
+== Syntax
+@latexonly
+
+== Description
+Starts a block of text that only will be verbatim included in the generated LaTeX documentation and tagged with `<latexonly>` in the generated XML output. The block ends with a xref:commands/endlatexonly.adoc[@endlatexonly] command.
+
+This command can be used to include LaTeX code that is too complex for MrDocs (i.e. images, formulas, special characters). You can use the xref:commands/htmlonly.adoc[@htmlonly] and xref:commands/endhtmlonly.adoc[@endhtmlonly] pair to provide a proper HTML alternative.
+
+Note: environment variables (like $(HOME) ) are resolved inside a LaTeX-only block.
+
+== See Also
+sections xref:commands/rtfonly.adoc[@rtfonly], xref:commands/xmlonly.adoc[@xmlonly], xref:commands/manonly.adoc[@manonly], xref:commands/htmlonly.adoc[@htmlonly], xref:commands/docbookonly.adoc[@docbookonly], and xref:commands/latexinclude.adoc[@latexinclude].

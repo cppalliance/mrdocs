@@ -1,0 +1,10 @@
+= docbookonly
+
+== Syntax
+@docbookonly
+
+== Description
+Starts a block of text that only will be verbatim included in the generated DocBook documentation and tagged with `<docbookonly>` in the generated XML output. The block ends with a xref:commands/enddocbookonly.adoc[@enddocbookonly] command.
+
+== See Also
+section xref:commands/manonly.adoc[@manonly], xref:commands/latexonly.adoc[@latexonly], xref:commands/rtfonly.adoc[@rtfonly], xref:commands/xmlonly.adoc[@xmlonly], xref:commands/htmlonly.adoc[@htmlonly] and xref:commands/docbookinclude.adoc[@docbookinclude].

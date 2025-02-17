@@ -1,0 +1,12 @@
+= implements
+
+== Syntax
+@implements &lt;name&gt;
+
+== Description
+This command can be used to manually indicate an inheritance relation, when the programming language does not support this concept natively (e.g. C).
+
+See xref:commands/memberof.adoc[@memberof] to see how to use this command.
+
+== See Also
+section xref:commands/extends.adoc[@extends] and section xref:commands/memberof.adoc[@memberof]

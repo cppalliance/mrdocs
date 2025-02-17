@@ -1,0 +1,37 @@
+= par
+
+== Syntax
+@par [(paragraph title)] { paragraph }
+
+== Description
+If a paragraph title is given this command starts a paragraph with a user defined heading. The heading extends until the end of the line. The paragraph following the command will be indented.
+
+If no paragraph title is given this command will start a new paragraph. This will also work inside other paragraph commands (like xref:commands/param.adoc[@param] or xref:commands/warning.adoc[@warning]) without ending that command.
+
+The text of the paragraph has no special internal structure. All visual enhancement commands may be used inside the paragraph. The `@par` command ends when a blank line or some other sectioning command is encountered.
+
+== Example
+```
+/*! @class Par_Test
+ * Normal text.
+ *
+ * @par User defined paragraph:
+ * Contents of the paragraph.
+ *
+ * @par
+ * New paragraph under the same heading.
+ *
+ * @note
+ * This note consists of two paragraphs.
+ * This is the first paragraph.
+ *
+ * @par
+ * And this is the second paragraph.
+ *
+ * More normal text. 
+ */
+  
+class Par_Test {};
+
+```
+// [CODE_END]
