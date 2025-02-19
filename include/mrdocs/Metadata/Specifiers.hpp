@@ -36,6 +36,17 @@ enum class AccessKind
     Private,
 };
 
+/** Attribute kinds.
+*/
+enum class AttributeKind
+{
+    Deprecated,
+    MaybeUnused,
+    Nodiscard,
+    Noreturn,
+    NoUniqueAddress
+};
+
 /** `constexpr`/`consteval` specifier kinds
 
     [dcl.spec.general] p2: At most one of the `constexpr`, `consteval`,
@@ -209,6 +220,7 @@ enum class StorageClassKind
 };
 
 MRDOCS_DECL dom::String toString(AccessKind kind) noexcept;
+MRDOCS_DECL dom::String toString(AttributeKind kind) noexcept;
 MRDOCS_DECL dom::String toString(ConstexprKind kind) noexcept;
 MRDOCS_DECL dom::String toString(ExplicitKind kind) noexcept;
 MRDOCS_DECL dom::String toString(NoexceptKind kind) noexcept;
@@ -274,6 +286,18 @@ tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
     AccessKind const kind)
+{
+    v = toString(kind);
+}
+
+/** Return the AttributeKind as a @ref dom::Value string.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    AttributeKind kind)
 {
     v = toString(kind);
 }

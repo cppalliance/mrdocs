@@ -333,7 +333,6 @@ writeFunction(
     writeAttr(I.IsExplicitlyDefaulted, "is-explicitly-defaulted", tags_);
     writeAttr(I.IsDeleted,             "is-deleted", tags_);
     writeAttr(I.IsDeletedAsWritten,    "is-deleted-as-written", tags_);
-    writeAttr(I.IsNoReturn,            "is-no-return", tags_);
     writeAttr(I.IsOverride,            "is-override", tags_);
     writeAttr(I.HasTrailingReturn,     "has-trailing-return", tags_);
     writeAttr(I.Constexpr,             "constexpr-kind", tags_);
@@ -342,7 +341,6 @@ writeFunction(
     writeAttr(I.IsConst,               "is-const", tags_);
     writeAttr(I.IsVolatile,            "is-volatile", tags_);
     writeAttr(I.RefQualifier,          "ref-qualifier", tags_);
-    writeAttr(I.IsNodiscard,           "nodiscard", tags_);
     writeAttr(I.IsExplicitObjectMemberFunction, "is-explicit-object-member-function", tags_);
 
     writeReturnType(*I.ReturnType, tags_);
@@ -585,9 +583,6 @@ writeField(
         });
 
     writeAttr(I.IsVariant, "is-variant", tags_);
-    writeAttr(I.IsMaybeUnused, "maybe-unused", tags_);
-    writeAttr(I.IsDeprecated, "deprecated", tags_);
-    writeAttr(I.HasNoUniqueAddress, "no-unique-address", tags_);
 
     writeType(I.Type, tags_);
 

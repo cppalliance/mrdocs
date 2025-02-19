@@ -708,10 +708,11 @@ private:
         std::vector<Polymorphic<TArg>>& result,
         ASTTemplateArgumentListInfo const* args);
 
-    template <std::derived_from<Info> InfoTy>
-    static
     void
-    populateAttributes(InfoTy& I, Decl const* D);
+    populateAttributes(Info& I, Decl const* D);
+
+    void
+    addAttribute(Info& I, AttributeKind kind);
 
     // =================================================
     // Populate function helpers

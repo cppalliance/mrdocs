@@ -1,5 +1,5 @@
-{{#if attributes}}{{ str "[[" }}{{join ", " attributes}}{{ str "]]" }}
-{{/if}}
+{{#if attributes}}{{>symbol/attributes symbol}}
+{{/if~}}
 {{#if isMutable}}mutable
 {{/if~}}
 {{>type/declarator-prefix type}} {{>symbol/name symbol~}}

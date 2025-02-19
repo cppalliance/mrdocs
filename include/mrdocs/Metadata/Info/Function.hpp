@@ -165,10 +165,7 @@ struct FunctionInfo final
     bool IsExplicitlyDefaulted = false;
     bool IsDeleted = false;
     bool IsDeletedAsWritten = false;
-    bool IsNoReturn = false;
-    bool IsOverride = false;
     bool HasTrailingReturn = false;
-    bool IsNodiscard = false;
     bool IsExplicitObjectMemberFunction = false;
     ConstexprKind Constexpr = ConstexprKind::None;
     OperatorKind OverloadedOperator = OperatorKind::None;
@@ -183,6 +180,7 @@ struct FunctionInfo final
     bool IsConst = false;
     bool IsVolatile = false;
     bool IsFinal = false;
+    bool IsOverride = false;
     ReferenceKind RefQualifier = ReferenceKind::None;
     ExplicitInfo Explicit;
 
@@ -220,13 +218,11 @@ tag_invoke(
     io.map("isExplicitlyDefaulted", I.IsExplicitlyDefaulted);
     io.map("isDeleted", I.IsDeleted);
     io.map("isDeletedAsWritten", I.IsDeletedAsWritten);
-    io.map("isNoReturn", I.IsNoReturn);
-    io.map("isOverride", I.IsOverride);
     io.map("hasTrailingReturn", I.HasTrailingReturn);
     io.map("isConst", I.IsConst);
     io.map("isVolatile", I.IsVolatile);
     io.map("isFinal", I.IsFinal);
-    io.map("isNodiscard", I.IsNodiscard);
+    io.map("isOverride", I.IsOverride);
     io.map("isExplicitObjectMemberFunction", I.IsExplicitObjectMemberFunction);
     if (I.Constexpr != ConstexprKind::None)
     {
@@ -251,7 +247,6 @@ tag_invoke(
     {
         io.map("requires", I.Requires.Written);
     }
-    io.map("attributes", dom::LazyArray(I.Attributes));
 }
 
 /** Map the FunctionInfo to a @ref dom::Value object.
