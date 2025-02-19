@@ -330,9 +330,9 @@ When the symbol kind is `function`, the symbol object has the following addition
 | `bool`
 | Whether the function is noreturn.
 
-| `hasOverrideAttr`
+| `isOverride`
 | `bool`
-| Whether the function has the override attribute.
+| Whether the function is override.
 
 | `hasTrailingReturn`
 | `bool`

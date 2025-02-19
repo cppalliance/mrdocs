@@ -166,7 +166,7 @@ struct FunctionInfo final
     bool IsDeleted = false;
     bool IsDeletedAsWritten = false;
     bool IsNoReturn = false;
-    bool HasOverrideAttr = false;
+    bool IsOverride = false;
     bool HasTrailingReturn = false;
     bool IsNodiscard = false;
     bool IsExplicitObjectMemberFunction = false;
@@ -221,7 +221,7 @@ tag_invoke(
     io.map("isDeleted", I.IsDeleted);
     io.map("isDeletedAsWritten", I.IsDeletedAsWritten);
     io.map("isNoReturn", I.IsNoReturn);
-    io.map("hasOverrideAttr", I.HasOverrideAttr);
+    io.map("isOverride", I.IsOverride);
     io.map("hasTrailingReturn", I.HasTrailingReturn);
     io.map("isConst", I.IsConst);
     io.map("isVolatile", I.IsVolatile);

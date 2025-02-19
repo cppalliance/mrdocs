@@ -801,7 +801,6 @@ populate(
     I.IsDeleted |= D->isDeleted();
     I.IsDeletedAsWritten |= D->isDeletedAsWritten();
     I.IsNoReturn |= D->isNoReturn();
-    I.HasOverrideAttr |= D->hasAttr<OverrideAttr>();
 
     if (ConstexprSpecKind const CSK = D->getConstexprKind();
         CSK != ConstexprSpecKind::Unspecified)
@@ -927,6 +926,7 @@ populate(FunctionInfo& I, CXXMethodDecl const* D)
     I.IsVolatile |= D->isVolatile();
     I.RefQualifier = toReferenceKind(D->getRefQualifier());
     I.IsFinal |= D->hasAttr<FinalAttr>();
+    I.IsOverride |= D->hasAttr<OverrideAttr>();
 }
 
 void

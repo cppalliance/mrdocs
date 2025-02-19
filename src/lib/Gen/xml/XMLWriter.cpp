@@ -334,7 +334,7 @@ writeFunction(
     writeAttr(I.IsDeleted,             "is-deleted", tags_);
     writeAttr(I.IsDeletedAsWritten,    "is-deleted-as-written", tags_);
     writeAttr(I.IsNoReturn,            "is-no-return", tags_);
-    writeAttr(I.HasOverrideAttr,       "has-override", tags_);
+    writeAttr(I.IsOverride,            "is-override", tags_);
     writeAttr(I.HasTrailingReturn,     "has-trailing-return", tags_);
     writeAttr(I.Constexpr,             "constexpr-kind", tags_);
     writeAttr(I.OverloadedOperator,    "operator", tags_);
