@@ -20,7 +20,8 @@ TypeInfoBuilder::
 buildPointer(PointerType const*, unsigned quals)
 {
     PointerTypeInfo I;
-    I.CVQualifiers = toQualifierKind(quals);
+    I.IsConst = quals & Qualifiers::Const;
+    I.IsVolatile = quals & Qualifiers::Volatile;
     *Inner = std::move(I);
     Inner = &get<PointerTypeInfo&>(*Inner).PointeeType;
 }
@@ -50,7 +51,8 @@ buildMemberPointer(
     unsigned const quals)
 {
     MemberPointerTypeInfo I;
-    I.CVQualifiers = toQualifierKind(quals);
+    I.IsConst = quals & Qualifiers::Const;
+    I.IsVolatile = quals & Qualifiers::Volatile;
     // do not set NNS because the parent type is *not*
     // a nested-name-specifier which qualifies the pointee type
     I.ParentType = getASTVisitor().toTypeInfo(
@@ -88,8 +90,9 @@ populate(FunctionType const* T)
     }
     I.RefQualifier = toReferenceKind(
         FPT->getRefQualifier());
-    I.CVQualifiers = toQualifierKind(
-        FPT->getMethodQuals().getFastQualifiers());
+    unsigned const quals = FPT->getMethodQuals().getFastQualifiers();
+    I.IsConst = quals & Qualifiers::Const;
+    I.IsVolatile = quals & Qualifiers::Volatile;
     I.IsVariadic = FPT->isVariadic();
     getASTVisitor().populate(I.ExceptionSpec, FPT);
     *Inner = std::move(I);
@@ -106,7 +109,8 @@ buildDecltype(
     DecltypeTypeInfo I;;
     getASTVisitor().populate(
         I.Operand, T->getUnderlyingExpr());
-    I.CVQualifiers = toQualifierKind(quals);
+    I.IsConst = quals & Qualifiers::Const;
+    I.IsVolatile = quals & Qualifiers::Volatile;
     I.Constraints = this->Constraints;
     *Inner = std::move(I);
     Result->IsPackExpansion = pack;
@@ -120,7 +124,8 @@ buildAuto(
     bool const pack)
 {
     AutoTypeInfo I;
-    I.CVQualifiers = toQualifierKind(quals);
+    I.IsConst = quals & Qualifiers::Const;
+    I.IsVolatile = quals & Qualifiers::Volatile;
     I.Keyword = convertToAutoKind(T->getKeyword());
     if(T->isConstrained())
     {
@@ -149,7 +154,8 @@ buildTerminal(
     bool pack)
 {
     NamedTypeInfo TI;
-    TI.CVQualifiers = toQualifierKind(quals);
+    TI.IsConst = quals & Qualifiers::Const;
+    TI.IsVolatile = quals & Qualifiers::Volatile;
     TI.Name = MakePolymorphic<NameInfo>();
     TI.Name->Name = getASTVisitor().toString(T);
     TI.Name->Prefix = getASTVisitor().toNameInfo(NNS);
@@ -169,7 +175,8 @@ buildTerminal(
     bool pack)
 {
     NamedTypeInfo I;
-    I.CVQualifiers = toQualifierKind(quals);
+    I.IsConst = quals & Qualifiers::Const;
+    I.IsVolatile = quals & Qualifiers::Volatile;
 
     if (TArgs)
     {
@@ -217,7 +224,8 @@ buildTerminal(
     MRDOCS_SYMBOL_TRACE(ID, getASTVisitor().context_);
 
     NamedTypeInfo TI;
-    TI.CVQualifiers = toQualifierKind(quals);
+    TI.IsConst = quals & Qualifiers::Const;
+    TI.IsVolatile = quals & Qualifiers::Volatile;
 
     auto populateNameInfo = [&](NameInfo& Name, NamedDecl* D)
     {

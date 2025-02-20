@@ -8,27 +8,44 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_PARSELOOKUPNAME_HPP
-#define MRDOCS_LIB_PARSELOOKUPNAME_HPP
+#ifndef MRDOCS_LIB_PARSEREF_HPP
+#define MRDOCS_LIB_PARSEREF_HPP
 
-#include <optional>
-#include <vector>
 #include <mrdocs/Metadata/Specifiers.hpp>
+#include <mrdocs/Metadata/Type.hpp>
+#include <mrdocs/ADT/Polymorphic.hpp>
 #include <llvm/ADT/SmallVector.h>
 #include <string_view>
 
 namespace clang::mrdocs {
 
 struct ParsedRefComponent {
+    // Component name
     std::string_view Name;
+
+    // If not empty, this is a specialization
+    llvm::SmallVector<Polymorphic<TArg>, 8> TemplateArguments;
+
+    // If not None, this is an operator
+    // Only the last component can be an operator
     OperatorKind Operator;
-    llvm::SmallVector<std::string_view, 20> TemplateArguments;
+
+    // If not empty, this is a conversion operator
+    // Only the last component can be a conversion operator
+    Polymorphic<TypeInfo> ConversionType;
 
     constexpr
     bool
     isOperator() const
     {
         return Operator != OperatorKind::None;
+    }
+
+    constexpr
+    bool
+    isConversion() const
+    {
+        return static_cast<bool>(ConversionType);
     }
 
     bool
@@ -40,10 +57,15 @@ struct ParsedRefComponent {
 
 struct ParsedRef {
     bool IsFullyQualified = false;
-    llvm::SmallVector<ParsedRefComponent, 20> Components;
-    llvm::SmallVector<std::string_view, 20> FunctionParameters;
+    llvm::SmallVector<ParsedRefComponent, 8> Components;
+
+    // The following are populated when the last element is a function
+    llvm::SmallVector<Polymorphic<TypeInfo>, 8> FunctionParameters;
+    bool IsVariadic = false;
+    bool IsExplicitObjectMemberFunction = false;
     ReferenceKind Kind = ReferenceKind::None;
     bool IsConst = false;
+    bool IsVolatile = false;
 };
 
 Expected<ParsedRef>

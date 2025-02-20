@@ -154,10 +154,22 @@ writeType(
                 }
             }
 
-            if constexpr(requires { t.CVQualifiers; })
+            std::string cvQualifiers;
+            if (t.IsConst)
             {
-                if(t.CVQualifiers != QualifierKind::None)
-                    attrs.push({"cv-qualifiers", toString(t.CVQualifiers)});
+                cvQualifiers += "const";
+            }
+            if (t.IsVolatile)
+            {
+                if (!cvQualifiers.empty())
+                {
+                    cvQualifiers += ' ';
+                }
+                cvQualifiers += "volatile";
+            }
+            if (!cvQualifiers.empty())
+            {
+                attrs.push({"cv-qualifiers", cvQualifiers});
             }
 
             if constexpr(T::isArray())
@@ -240,8 +252,10 @@ writeType(
 inline void writeReturnType(TypeInfo const& I, XMLTags& tags)
 {
     // KRYSTIAN NOTE: we don't *have* to do this...
-    if(toString(I) == "void")
+    if (toString(I) == "void")
+    {
         return;
+    }
     tags.open(returnTagName);
     writeType(I, tags);
     tags.close(returnTagName);
@@ -250,8 +264,8 @@ inline void writeReturnType(TypeInfo const& I, XMLTags& tags)
 inline void writeParam(Param const& P, XMLTags& tags)
 {
     tags.open(paramTagName, {
-        { "name", P.Name, ! P.Name.empty() },
-        { "default", P.Default, ! P.Default.empty() },
+        { "name", *P.Name, P.Name.has_value() },
+        { "default", *P.Default, P.Default.has_value() },
         });
     writeType(*P.Type, tags);
     tags.close(paramTagName);

@@ -147,7 +147,7 @@ operator()(
     auto& write,
     std::bool_constant<NeedParens>) const
 {
-    if (TypeInfo const* inner = t.cInnerType())
+    if (TypeInfo const* inner = innerTypePtr(t))
     {
         visit(*inner, *this, write, std::bool_constant<requires {
             t.PointeeType;
@@ -159,8 +159,14 @@ operator()(
 
     if constexpr(T::isNamed())
     {
-        if(t.CVQualifiers != QualifierKind::None)
-            write(toString(t.CVQualifiers), ' ');
+        if (t.IsConst)
+        {
+            write("const", ' ');
+        }
+        if (t.IsVolatile)
+        {
+            write("volatile", ' ');
+        }
     }
 
     if constexpr(requires { t.ParentType; })
@@ -213,10 +219,13 @@ operator()(
             MRDOCS_UNREACHABLE();
         }
 
-        if constexpr(requires { t.CVQualifiers; })
+        if (t.IsConst)
         {
-            if(t.CVQualifiers != QualifierKind::None)
-                write(' ', toString(t.CVQualifiers));
+            write(' ', "const");
+        }
+        if (t.IsVolatile)
+        {
+            write(' ', "volatile");
         }
     }
 
@@ -268,17 +277,27 @@ operator()(
 
         write(')');
 
-        if(t.CVQualifiers != QualifierKind::None)
-            write(' ', toString(t.CVQualifiers));
+        if (t.IsConst)
+        {
+            write(' ', "const");
+        }
+        if (t.IsVolatile)
+        {
+            write(' ', "volatile");
+        }
 
-        if(t.RefQualifier != ReferenceKind::None)
+        if (t.RefQualifier != ReferenceKind::None)
+        {
             write(' ', toString(t.RefQualifier));
+        }
 
-        if(auto spec = toString(t.ExceptionSpec); ! spec.empty())
+        if (auto spec = toString(t.ExceptionSpec); !spec.empty())
+        {
             write(' ', spec);
+        }
     }
 
-    if (TypeInfo const* inner = t.cInnerType())
+    if (TypeInfo const* inner = innerTypePtr(t))
     {
         visit(*inner, *this, write, std::bool_constant<requires {
             t.PointeeType;
@@ -305,7 +324,12 @@ operator<=>(NamedTypeInfo const& other) const
     {
         return br;
     }
-    if (auto const br = CVQualifiers <=> other.CVQualifiers;
+    if (auto const br = IsConst <=> other.IsConst;
+        !std::is_eq(br))
+    {
+        return br;
+    }
+    if (auto const br = IsVolatile <=> other.IsVolatile;
         !std::is_eq(br))
     {
         return br;
@@ -364,8 +388,8 @@ operator<=>(FunctionTypeInfo const& other) const {
             return r;
         }
     }
-    return std::tie(CVQualifiers, RefQualifier, ExceptionSpec, IsVariadic) <=>
-           std::tie(other.CVQualifiers, other.RefQualifier, other.ExceptionSpec, other.IsVariadic);
+    return std::tie(IsConst, IsVolatile, RefQualifier, ExceptionSpec, IsVariadic) <=>
+           std::tie(other.IsConst, IsVolatile, other.RefQualifier, other.ExceptionSpec, other.IsVariadic);
 }
 
 
@@ -418,10 +442,8 @@ tag_invoke(
                 io.map("constraint", t.Constraint);
             }
         }
-        if constexpr(requires { t.CVQualifiers; })
-        {
-            io.map("cv-qualifiers", t.CVQualifiers);
-        }
+        io.map("is-const", t.IsConst);
+        io.map("is-volatile", t.IsVolatile);
         if constexpr(requires { t.ParentType; })
         {
             io.map("parent-type", t.ParentType);
@@ -475,5 +497,118 @@ operator<=>(Polymorphic<TypeInfo> const& lhs, Polymorphic<TypeInfo> const& rhs)
             : std::strong_ordering::greater;
 }
 
+namespace {
+template <
+    class TypeInfoTy,
+    bool isMutable = !std::is_const_v<std::remove_reference_t<TypeInfoTy>>,
+    class Ptr = std::conditional_t<isMutable, Polymorphic<TypeInfo>*, Polymorphic<TypeInfo> const*>,
+    class Ref = std::conditional_t<isMutable, std::reference_wrapper<Polymorphic<TypeInfo>>, std::reference_wrapper<Polymorphic<TypeInfo> const>>>
+requires std::same_as<std::remove_cvref_t<TypeInfoTy>, TypeInfo>
+std::optional<Ref>
+innerTypeImpl(TypeInfoTy&& TI) noexcept
+{
+    // Get a pointer to the inner type
+    Ptr innerPtr = visit(TI, []<typename T>(T& t) -> Ptr
+    {
+        if constexpr(requires { t.PointeeType; })
+        {
+            return &t.PointeeType;
+        }
+        if constexpr(requires { t.ElementType; })
+        {
+            return &t.ElementType;
+        }
+        if constexpr(requires { t.ReturnType; })
+        {
+            return &t.ReturnType;
+        }
+        return nullptr;
+    });
+    // Convert pointer to reference wrapper if possible
+    if (innerPtr)
+    {
+        if constexpr (isMutable)
+        {
+            return std::ref(*innerPtr);
+        }
+        else
+        {
+            return std::cref(*innerPtr);
+        }
+    }
+    return std::nullopt;
+}
+
+template <class TypeInfoTy>
+auto
+innerTypePtrImpl(TypeInfoTy&& TI) noexcept
+{
+    auto res = innerTypeImpl(TI);
+    if (res)
+    {
+        auto& ref = res->get();
+        return &*ref;
+    }
+    return decltype(&*res->get())(nullptr);
+}
+
+template <class TypeInfoTy>
+auto
+innermostTypeImpl(TypeInfoTy&& TI) noexcept
+{
+    auto inner = innerTypeImpl(TI);
+    while (inner)
+    {
+        auto& ref = inner->get();
+        if (!ref)
+        {
+            return inner;
+        }
+        if (ref->isNamed())
+        {
+            return inner;
+        }
+        inner = innerTypeImpl(*ref);
+    }
+    return inner;
+}
+
+}
+
+std::optional<std::reference_wrapper<Polymorphic<TypeInfo> const>>
+innerType(TypeInfo const& TI) noexcept
+{
+    return innerTypeImpl(TI);
+}
+
+std::optional<std::reference_wrapper<Polymorphic<TypeInfo>>>
+innerType(TypeInfo& TI) noexcept
+{
+    return innerTypeImpl(TI);
+}
+
+TypeInfo const*
+innerTypePtr(TypeInfo const& TI) noexcept
+{
+    return innerTypePtrImpl(TI);
+}
+
+TypeInfo*
+innerTypePtr(TypeInfo& TI) noexcept
+{
+    return innerTypePtrImpl(TI);
+}
+
+std::optional<std::reference_wrapper<Polymorphic<TypeInfo> const>>
+innermostType(TypeInfo const& TI) noexcept
+{
+    return innermostTypeImpl(TI);
+}
+
+std::optional<std::reference_wrapper<Polymorphic<TypeInfo>>>
+innermostType(TypeInfo& TI) noexcept
+{
+    return innermostTypeImpl(TI);
+}
 
 } // clang::mrdocs
