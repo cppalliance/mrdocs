@@ -212,7 +212,7 @@ writeFunctionMember(FunctionInfo const& I)
     {
         arglist += toString(*J.Type);
         arglist += " ";
-        arglist += J.Name;
+        arglist += *J.Name;
         arglist += ", ";
     }
     if (arglist.size() > 2) {

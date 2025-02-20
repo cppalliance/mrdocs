@@ -111,6 +111,14 @@ struct TypeInfo
     */
     bool IsPackExpansion = false;
 
+    /** The const qualifier
+     */
+    bool IsConst = false;
+
+    /** The volatile qualifier
+     */
+    bool IsVolatile = false;
+
     /** The constraints associated with the type
 
         This represents the constraints associated with the type,
@@ -134,25 +142,6 @@ struct TypeInfo
     constexpr bool isMemberPointer()   const noexcept { return Kind == TypeKind::MemberPointer; }
     constexpr bool isArray()           const noexcept { return Kind == TypeKind::Array; }
     constexpr bool isFunction()        const noexcept { return Kind == TypeKind::Function; }
-
-    /** Return the inner type.
-
-        The inner type is the type which is modified
-        by a specifier (e.g. "int" in "pointer to int".
-    */
-    virtual
-    TypeInfo*
-    innerType() noexcept
-    {
-        return nullptr;
-    }
-
-    virtual
-    TypeInfo const*
-    cInnerType() const noexcept
-    {
-        return const_cast<TypeInfo*>(this)->innerType();
-    }
 
     /** Return the symbol named by this type.
     */
@@ -222,7 +211,6 @@ protected:
 struct NamedTypeInfo final
     : TypeInfoCommonBase<TypeKind::Named>
 {
-    QualifierKind CVQualifiers = QualifierKind::None;
     Polymorphic<NameInfo> Name;
 
     std::strong_ordering
@@ -232,7 +220,6 @@ struct NamedTypeInfo final
 struct DecltypeTypeInfo final
     : TypeInfoCommonBase<TypeKind::Decltype>
 {
-    QualifierKind CVQualifiers = QualifierKind::None;
     ExprInfo Operand;
 
     auto operator<=>(DecltypeTypeInfo const&) const = default;
@@ -241,7 +228,6 @@ struct DecltypeTypeInfo final
 struct AutoTypeInfo final
     : TypeInfoCommonBase<TypeKind::Auto>
 {
-    QualifierKind CVQualifiers = QualifierKind::None;
     AutoKind Keyword = AutoKind::Auto;
     Polymorphic<NameInfo> Constraint;
 
@@ -254,12 +240,6 @@ struct LValueReferenceTypeInfo final
 {
     Polymorphic<TypeInfo> PointeeType;
 
-    TypeInfo*
-    innerType() noexcept override
-    {
-        return PointeeType.operator->();
-    }
-
     std::strong_ordering
     operator<=>(LValueReferenceTypeInfo const&) const;
 };
@@ -269,12 +249,6 @@ struct RValueReferenceTypeInfo final
 {
     Polymorphic<TypeInfo> PointeeType;
 
-    TypeInfo*
-    innerType() noexcept override
-    {
-        return PointeeType.operator->();
-    }
-
     std::strong_ordering
     operator<=>(RValueReferenceTypeInfo const&) const;
 };
@@ -282,14 +256,7 @@ struct RValueReferenceTypeInfo final
 struct PointerTypeInfo final
     : TypeInfoCommonBase<TypeKind::Pointer>
 {
-    QualifierKind CVQualifiers = QualifierKind::None;
     Polymorphic<TypeInfo> PointeeType;
-
-    TypeInfo*
-    innerType() noexcept override
-    {
-        return PointeeType.operator->();
-    }
 
     std::strong_ordering
     operator<=>(PointerTypeInfo const&) const;
@@ -298,16 +265,8 @@ struct PointerTypeInfo final
 struct MemberPointerTypeInfo final
     : TypeInfoCommonBase<TypeKind::MemberPointer>
 {
-    QualifierKind CVQualifiers = QualifierKind::None;
     Polymorphic<TypeInfo> ParentType;
     Polymorphic<TypeInfo> PointeeType;
-
-    TypeInfo*
-    innerType() noexcept override
-    {
-        return PointeeType.operator->();
-    }
-
 
     std::strong_ordering
     operator<=>(MemberPointerTypeInfo const&) const;
@@ -319,12 +278,6 @@ struct ArrayTypeInfo final
     Polymorphic<TypeInfo> ElementType;
     ConstantExprInfo<std::uint64_t> Bounds;
 
-    TypeInfo*
-    innerType() noexcept override
-    {
-        return ElementType.operator->();
-    }
-
     std::strong_ordering
     operator<=>(ArrayTypeInfo const&) const;
 };
@@ -334,16 +287,9 @@ struct FunctionTypeInfo final
 {
     Polymorphic<TypeInfo> ReturnType;
     std::vector<Polymorphic<TypeInfo>> ParamTypes;
-    QualifierKind CVQualifiers = QualifierKind::None;
     ReferenceKind RefQualifier = ReferenceKind::None;
     NoexceptInfo ExceptionSpec;
     bool IsVariadic = false;
-
-    TypeInfo*
-    innerType() noexcept override
-    {
-        return ReturnType.operator->();
-    }
 
     std::strong_ordering
     operator<=>(FunctionTypeInfo const&) const;
@@ -413,6 +359,44 @@ operator==(Polymorphic<TypeInfo> const& lhs, Polymorphic<TypeInfo> const& rhs) {
     return lhs <=> rhs == std::strong_ordering::equal;
 }
 
+/** Return the inner type.
+
+    The inner type is the type which is modified
+    by a specifier (e.g. "int" in "pointer to int".
+*/
+MRDOCS_DECL
+std::optional<std::reference_wrapper<Polymorphic<TypeInfo> const>>
+innerType(TypeInfo const& TI) noexcept;
+
+/// @copydoc innerType(TypeInfo const&)
+MRDOCS_DECL
+std::optional<std::reference_wrapper<Polymorphic<TypeInfo>>>
+innerType(TypeInfo& TI) noexcept;
+
+/// @copydoc innerType(TypeInfo const&)
+MRDOCS_DECL
+TypeInfo const*
+innerTypePtr(TypeInfo const& TI) noexcept;
+
+/// @copydoc innerTypePtr(TypeInfo const&)
+MRDOCS_DECL
+TypeInfo*
+innerTypePtr(TypeInfo& TI) noexcept;
+
+/** Return the innermost type.
+
+    The innermost type is the type which is not
+    modified by any specifiers (e.g. "int" in
+    "pointer to const int").
+*/
+MRDOCS_DECL
+std::optional<std::reference_wrapper<Polymorphic<TypeInfo> const>>
+innermostType(TypeInfo const& TI) noexcept;
+
+/// @copydoc innermostType(TypeInfo const&)
+MRDOCS_DECL
+std::optional<std::reference_wrapper<Polymorphic<TypeInfo>>>
+innermostType(TypeInfo& TI) noexcept;
 
 // VFALCO maybe we should rename this to `renderType` or something?
 MRDOCS_DECL

@@ -98,19 +98,19 @@ tag_invoke(
 // KRYSTIAN TODO: attributes (nodiscard, deprecated, and carries_dependency)
 // KRYSTIAN TODO: flag to indicate whether this is a function parameter pack
 /** Represents a single function parameter */
-struct Param
+struct Param final
 {
-    /** The type of this parameter */
+    /** The type of this parameter
+     */
     Polymorphic<TypeInfo> Type;
 
     /** The parameter name.
+     */
+    Optional<std::string> Name;
 
-        Unnamed parameters are represented by empty strings.
-    */
-    std::string Name;
-
-    /** The default argument for this parameter, if any */
-    std::string Default;
+    /** The default argument for this parameter, if any
+      */
+    Optional<std::string> Default;
 
     Param() = default;
 
@@ -123,7 +123,8 @@ struct Param
         , Default(std::move(def_arg))
     {}
 
-    auto operator<=>(Param const&) const = default;
+    auto
+    operator<=>(Param const&) const = default;
 };
 
 /** Return the Param as a @ref dom::Value object.

@@ -9,7 +9,10 @@
 //
 
 #include "lib/AST/ParseRef.hpp"
-#include "mrdocs/Metadata/Info/Function.hpp"
+#include <mrdocs/Metadata/Info/Function.hpp>
+#include <mrdocs/Metadata/Name.hpp>
+#include <mrdocs/Support/Algorithm.hpp>
+#include <llvm/ADT/StringExtras.h>
 
 namespace clang::mrdocs {
 
@@ -25,15 +28,34 @@ constexpr
 bool
 isIdentifierStart(char const c)
 {
-    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_' || c == '~';
+    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
 }
 
 constexpr
 bool
 isIdentifierContinuation(char const c)
 {
-    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_' || isDigit(c);
+    return isIdentifierStart(c) || isDigit(c);
 }
+
+struct ParsedFunctionSuffix
+{
+    llvm::SmallVector<Polymorphic<TypeInfo>, 8> Params;
+    bool HasVoid{false};
+    bool IsVariadic{false};
+    NoexceptInfo ExceptionSpec;
+
+    virtual ~ParsedFunctionSuffix() = default;
+};
+
+struct ParsedMemberFunctionSuffix
+    : ParsedFunctionSuffix
+{
+    bool IsConst{false};
+    bool IsVolatile{false};
+    ReferenceKind Kind{ReferenceKind::None};
+    bool IsExplicitObjectMemberFunction{false};
+};
 
 class RefParser
 {
@@ -65,9 +87,17 @@ public:
         skipWhitespace();
         if (peek('('))
         {
-            MRDOCS_CHECK_OR(parseFunctionParameters(), false);
-            parseMemberFunctionQualifiers();
+            ParsedMemberFunctionSuffix functionParameters;
+            MRDOCS_CHECK_OR(parseFunctionSuffix(functionParameters), false);
+            result_.FunctionParameters = std::move(functionParameters.Params);
+            result_.IsVariadic = functionParameters.IsVariadic;
+            result_.IsConst = functionParameters.IsConst;
+            result_.IsVolatile = functionParameters.IsVolatile;
+            result_.Kind = functionParameters.Kind;
+            result_.IsExplicitObjectMemberFunction = functionParameters.IsExplicitObjectMemberFunction;
         }
+        error_.clear();
+        error_pos_ = nullptr;
         return true;
     }
 
@@ -85,15 +115,21 @@ public:
 
 private:
     void
-    setError(std::string_view str)
+    setError(char const* pos, std::string_view str)
     {
         // Only set the error if it's not already set
-        // with a more specified error message
-        if (error_.empty())
+        // with a more specific error message
+        if (!error_pos_ || error_.empty())
         {
             error_ = std::string(str);
-            error_pos_ = ptr_;
+            error_pos_ = pos;
         }
+    }
+
+    void
+    setError(std::string_view str)
+    {
+        setError(ptr_, str);
     }
 
     // Check if [ptr_, last_) starts with the literal `lit`
@@ -128,6 +164,48 @@ private:
     }
 
     bool
+    parseAnyLiteral(std::initializer_list<std::string_view> lits)
+    {
+        for (std::string_view const lit : lits)
+        {
+            if (parseLiteral(lit))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool
+    parseKeyword(std::string_view lit)
+    {
+        char const* start = ptr_;
+        if (!parseLiteral(lit))
+        {
+            return false;
+        }
+        if (peek(isIdentifierContinuation))
+        {
+            ptr_ = start;
+            return false;
+        }
+        return true;
+    }
+
+    bool
+    parseAnyKeyword(std::initializer_list<std::string_view> lits)
+    {
+        for (std::string_view const lit : lits)
+        {
+            if (parseKeyword(lit))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool
     peek(char c)
     {
         return ptr_ != last_ && *ptr_ == c;
@@ -142,18 +220,102 @@ private:
         return std::equal(str.begin(), str.end(), ptr_);
     }
 
+    template <std::invocable<char> F>
+    bool
+    peek(F f)
+    {
+        return ptr_ != last_ && f(*ptr_);
+    }
+
+    bool
+    peek(char c, char skip)
+    {
+        char const* first = ptr_;
+        while (first != last_ && *first == skip)
+        {
+            ++first;
+        }
+        return first != last_ && *first == c;
+    }
+
+    bool
+    peekBack(char c, char skip)
+    {
+        if (ptr_ == first_)
+        {
+            return false;
+        }
+        char const* last = ptr_;
+        last--;
+        while (last != first_ && *last == skip)
+        {
+            --last;
+        }
+        return last != first_ && *last == c;
+    }
+
+    bool
+    peekAny(std::initializer_list<char> chars)
+    {
+        return ptr_ != last_ && contains(chars, *ptr_);
+    }
+
+    bool
+    peekAny(std::initializer_list<char> chars, char skip)
+    {
+        char const* first = ptr_;
+        while (first != last_ && *first == skip)
+        {
+            ++first;
+        }
+        return first != last_ && contains(chars, *first);
+    }
+
+    bool
+    rewindUntil(char c)
+    {
+        while (ptr_ != first_ && *ptr_ != c)
+        {
+            --ptr_;
+        }
+        return *ptr_ == c;
+    }
+
     bool
     parseComponents()
     {
-        while (parseComponent())
+        char const* start = ptr_;
+        while (true)
         {
+            char const* compStart = ptr_;
+            if (!parseComponent())
+            {
+                return false;
+            }
             skipWhitespace();
             if (!parseLiteral("::"))
             {
-                break;
+                return !result_.Components.empty();
+            }
+            // If we have a "::" separator, so this is not
+            // the last component. Check the rules for
+            // nested-name-specifier
+            ParsedRefComponent const& comp = result_.Components.back();
+            if (comp.isOperator())
+            {
+                ptr_ = compStart;
+                setError("operator '::' is not allowed in nested-name-specifier");
+                ptr_ = start;
+                return false;
+            }
+            if (comp.isConversion())
+            {
+                ptr_ = compStart;
+                setError("conversion operator is not allowed in nested-name-specifier");
+                ptr_ = start;
+                return false;
             }
         }
-        return !result_.Components.empty();
     }
 
     bool
@@ -161,16 +323,13 @@ private:
     {
         if (!hasMore())
         {
+            setError("expected component name");
             return false;
         }
         char const *start = ptr_;
-        if (skipWhitespace())
-        {
-            setError("unexpected whitespace");
-            return false;
-        }
+        skipWhitespace();
         result_.Components.emplace_back();
-        if (!parseComponentName())
+        if (!parseUnqualifiedIdentifierExpression())
         {
             setError("expected component name");
             ptr_ = start;
@@ -190,8 +349,18 @@ private:
     }
 
     bool
-    parseComponentName()
+    parseUnqualifiedIdentifierExpression()
     {
+        // https://en.cppreference.com/w/cpp/language/identifiers#Unqualified_identifiers
+        // Besides suitably declared identifiers, the following unqualified identifier
+        // expressions can be used in expressions in the same role:
+        // - an overloaded operator name in function notation, such as operator+ or operator new;
+        // - a user-defined conversion function name, such as operator bool;
+        // - a user-defined literal operator name, such as operator "" _km;
+        // - a template name followed by its argument list, such as MyTemplate<int>;
+        // - the character ~ followed by a class name, such as ~MyClass;
+        // - the character ~ followed by a decltype specifier, such as ~decltype(str).
+        // - the character ~ followed by a pack indexing specifier, such as ~pack...[0].
         char const* start = ptr_;
 
         if (!hasMore())
@@ -206,8 +375,14 @@ private:
             return true;
         }
 
+        // Parse conversion operator
+        if (parseConversionOperator())
+        {
+            return true;
+        }
+
         // Parse as a regular identifier
-        if (!parseIdentifier())
+        if (!parseDestructorOrIdentifier())
         {
             setError("expected component name");
             ptr_ = start;
@@ -219,17 +394,73 @@ private:
     }
 
     bool
-    parseIdentifier()
+    parseConversionOperator()
     {
+        char const* start = ptr_;
+        if (!parseKeyword("operator"))
+        {
+            return false;
+        }
+        skipWhitespace();
+        Polymorphic<TypeInfo> conversionType;
+        if (!parseDeclarationSpecifier(conversionType) ||
+            !conversionType)
+        {
+            ptr_ = start;
+            return false;
+        }
+        currentComponent().ConversionType = std::move(conversionType);
+        return true;
+    }
+
+    bool
+    parseDestructorOrIdentifier()
+    {
+        // A regular identifier or a function name
+        char const* start = ptr_;
+        skipWhitespace();
+        if (parseLiteral("~"))
+        {
+            skipWhitespace();
+        }
+        if (parseKeyword("operator"))
+        {
+            setError("'operator' is an invalid identifier");
+            ptr_ = start;
+            return false;
+        }
+        if (!parseIdentifier(true))
+        {
+            ptr_ = start;
+            return false;
+        }
+        return true;
+    }
+
+    bool
+    parseIdentifier(bool const allowTemplateDisambiguation)
+    {
+        // https://en.cppreference.com/w/cpp/language/identifiers
         char const* start = ptr_;
         skipWhitespace();
         if (!hasMore())
         {
-            setError("expected identifier");
+            setError("end of string: expected identifier");
             ptr_ = start;
             return false;
         }
-        if (!isIdentifierStart(*ptr_))
+        if (allowTemplateDisambiguation)
+        {
+            if (parseAnyKeyword({"template", "typedef"}))
+            {
+                skipWhitespace();
+            }
+        }
+        if (isIdentifierStart(*ptr_))
+        {
+            ++ptr_;
+        }
+        else
         {
             setError("invalid identifier start character");
             ptr_ = start;
@@ -278,7 +509,7 @@ private:
         char const* op_start = ptr_;
         while (hasMore())
         {
-            if (*ptr_ == '<' || *ptr_ == '(' || *ptr_ == '.' || *ptr_ == ':')
+            if (*ptr_ == '<' || *ptr_ == '(' || *ptr_ == '.' || *ptr_ == ':' || *ptr_ == ' ')
             {
                 break;
             }
@@ -305,6 +536,7 @@ private:
     bool
     parseTemplateArguments()
     {
+        // https://en.cppreference.com/w/cpp/language/template_parameters
         char const* start = ptr_;
         if (!parseLiteral('<'))
         {
@@ -337,13 +569,18 @@ private:
     bool
     parseTemplateArgument()
     {
+        return parseTemplateArgument(currentComponent().TemplateArguments.emplace_back());
+    }
+
+    bool
+    parseTemplateArgument(Polymorphic<TArg>& dest)
+    {
         if (!hasMore())
         {
             return false;
         }
         skipWhitespace();
         char const* start = ptr_;
-        currentComponent().TemplateArguments.emplace_back();
         if (!parseTemplateArgumentName())
         {
             ptr_ = start;
@@ -354,14 +591,20 @@ private:
         return true;
     }
 
-    std::string_view&
+    Polymorphic<TArg>&
     currentTemplateArgument()
     {
         return currentComponent().TemplateArguments.back();
     }
 
     bool
-    parseTemplateArgumentName()
+    parseTemplateArgumentName() {
+        auto& dest = currentTemplateArgument();
+        return parseTemplateArgumentName(dest);
+    }
+
+    bool
+    parseTemplateArgumentName(Polymorphic<TArg>& dest)
     {
         char const* start = ptr_;
 
@@ -372,23 +615,36 @@ private:
         }
 
         // Parse as a regular identifier
-        if (!parseIdentifier())
+        if (!parseIdentifier(true))
         {
             setError("expected identifier name");
             ptr_ = start;
             return false;
         }
-        currentTemplateArgument() = std::string_view(start, ptr_ - start);
+        auto const nameStr = std::string_view(start, ptr_ - start);
+        TypeTArg arg;
+        NamedTypeInfo type;
+        NameInfo nameInfo;
+        nameInfo.Name = std::string(nameStr);
+        type.Name = nameInfo;
+        arg.Type = type;
+        dest = arg;
         return true;
     }
 
     bool
-    parseFunctionParameters()
+    parseFunctionSuffix(ParsedFunctionSuffix& dest)
     {
-        // https://en.cppreference.com/w/cpp/language/function
         // parameter-list:
-        // possibly empty, comma-separated list of the function parameters
-        // (see below for details)
+        // https://en.cppreference.com/w/cpp/language/function#Parameter_list
+        // possibly empty, comma-separated list of the function parameters,
+        // where a function parameter is:
+        // "void", or
+        // attr? this? decl-specifier-seq [declarator|abstract-declarator] [= initializer]?
+        //
+        // So, for purposes of a documentation ref, we only need:
+        // "void"
+        // this? decl-specifier-seq
 
         char const* start = ptr_;
         if (!parseLiteral('('))
@@ -397,8 +653,14 @@ private:
             return false;
         }
         skipWhitespace();
-        while (parseFunctionParameter())
+        while (hasMore() && !peek(')'))
         {
+            if (!parseFunctionParameter(dest))
+            {
+                setError("expected function parameter");
+                ptr_ = start;
+                return false;
+            }
             skipWhitespace();
             if (parseLiteral(','))
             {
@@ -416,177 +678,1395 @@ private:
             ptr_ = start;
             return false;
         }
-        return true;
-    }
 
-    bool
-    parseFunctionParameter()
-    {
-        if (!hasMore())
+        if (!parseFunctionQualifiers(dest))
         {
-            return false;
-        }
-        skipWhitespace();
-        char const* start = ptr_;
-        result_.FunctionParameters.emplace_back();
-        if (!parseFunctionParameterName())
-        {
+            setError("invalid function qualifiers");
             ptr_ = start;
-            setError("expected function parameter");
             return false;
         }
-        skipWhitespace();
+
         return true;
     }
 
-    std::string_view&
-    currentFunctionParameter()
-    {
-        return result_.FunctionParameters.back();
-    }
-
     bool
-    parseFunctionParameterName()
+    parseFunctionParameter(ParsedFunctionSuffix& dest)
     {
-        char const* start = ptr_;
         if (!hasMore())
         {
-            setError("expected parameter name");
             return false;
         }
+        char const* start = ptr_;
+
+        // Void parameter: accepted, but doesn't need to be stored
         skipWhitespace();
-
-        // Empty parameter (MrDocs will fall back to a function with the same
-        // number of parameters)
-        if (parseLiteral(","))
+        char const* voidStart = ptr_;
+        if (parseKeyword("void"))
         {
-            currentFunctionParameter() = {};
-            return true;
-        }
-
-        // Variadic parameter
-        if (parseLiteral("..."))
-        {
-            currentFunctionParameter() = trim(std::string_view(start, ptr_ - start));
-            return true;
-        }
-
-        // Parse leading qualifiers
-        while (parseLiteral("const") || parseLiteral("volatile"))
-        {
+            skipWhitespace();
+            if (peekAny({',', ')'}))
+            {
+                if (dest.Params.size() != 0)
+                {
+                    ptr_ = voidStart;
+                    setError("expected 'void' to be the only parameter");
+                    ptr_ = start;
+                    return false;
+                }
+                if (dest.HasVoid)
+                {
+                    ptr_ = voidStart;
+                    setError("multiple 'void' parameters");
+                    ptr_ = start;
+                    return false;
+                }
+                dest.HasVoid = true;
+                skipWhitespace();
+                return true;
+            }
+            ptr_ = start;
             skipWhitespace();
         }
 
-        // Parse as a type, which is a list of regular identifiers
-        if (!parseTypeName())
+        // Variadic parameter: accepted, but doesn't need to be stored
+        // in the parameter list.
+        if (parseLiteral("..."))
         {
-            setError("expected type name");
+            skipWhitespace();
+            dest.IsVariadic = true;
+            return true;
+        }
+
+        // Empty parameter
+        if (peekAny({',', ')'}))
+        {
+            setError("expected parameter type");
             ptr_ = start;
             return false;
         }
 
-        currentFunctionParameter() = std::string_view(start, ptr_ - start);
+        // Parse as a regular parameter
+        // https://en.cppreference.com/w/cpp/language/function#Parameter_list
+        // this? decl-specifier-seq [declarator/abstract-declarator]?
+
+        // "this" parameter: accepted, but doesn't need to be stored
+        // in the parameter list
+        if (auto* destMF = dynamic_cast<ParsedMemberFunctionSuffix*>(&dest);
+            destMF &&
+            parseKeyword("this"))
+        {
+            if (!dest.Params.empty())
+            {
+                setError("expected 'this' to be the first parameter");
+                ptr_ = start;
+                return false;
+            }
+            destMF->IsExplicitObjectMemberFunction = true;
+            skipWhitespace();
+        }
+
+        // https://en.cppreference.com/w/cpp/language/function#Parameter_list
+        // decl-specifier-seq
+        dest.Params.emplace_back();
+        auto& curParam = dest.Params.back();
+        if (!parseDeclarationSpecifiers(curParam))
+        {
+            ptr_ = start;
+            setError("expected parameter qualified type");
+            return false;
+        }
+
+        // If a parameter is not used in the function body, it does
+        // not need to be named (it's sufficient to use an
+        // abstract declarator).
+        // MrDocs refs only use abstract declarators. Any parameter
+        // name is ignored.
+        if (!parseAbstractDeclarator(curParam))
+        {
+            setError("expected abstract declarator");
+            ptr_ = start;
+            return false;
+        }
+
+        // 2. After determining the type of each parameter, any parameter
+        // of type “array of T” or of function type T is adjusted to be
+        // “pointer to T”.
+        // https://en.cppreference.com/w/cpp/language/function#Function_type
+        if (curParam->isArray())
+        {
+            auto& ATI = dynamic_cast<ArrayTypeInfo&>(*curParam);
+            PointerTypeInfo PTI;
+            dynamic_cast<TypeInfo&>(PTI) = dynamic_cast<TypeInfo&>(ATI);
+            PTI.PointeeType = std::move(ATI.ElementType);
+            curParam = std::move(PTI);
+        }
+
+        // 3. After producing the list of parameter types, any top-level
+        // cv-qualifiers modifying a parameter type are deleted when
+        // forming the function type.
+        // https://en.cppreference.com/w/cpp/language/function#Function_type
+        curParam->IsConst = false;
+        curParam->IsVolatile = false;
+
+        skipWhitespace();
         return true;
     }
 
     bool
-    parseTypeName()
+    parseDeclarationSpecifiers(Polymorphic<TypeInfo>& dest)
     {
-        // A list of identifiers separated by "::"
+        // https://en.cppreference.com/w/cpp/language/declarations#Specifiers
+        // decl-specifier-seq is a sequence whitespace-separated decl-specifier's
         char const* start = ptr_;
-        if (!(parseModifiedFundamentalType() || parseIdentifier()))
+        llvm::SmallVector<std::string_view, 8> specifiers;
+        while (true)
         {
+            skipWhitespace();
+            char const* specStart = ptr_;
+            if (peekAny({',', ')', '&'}))
+            {
+                break;
+            }
+            if (!parseDeclarationSpecifier(dest))
+            {
+                // This could be the end of the specifiers, followed
+                // by declarators, or an error. We need to check if
+                // dest was properly set.
+                // If dest was not set, we need to return an error.
+                // If we have one of the "long", "short", "signed", "unsigned"
+                // specifiers, then we don't have an error because
+                // we can later infer the type from these.
+                if (!dest &&
+                    !contains_any(specifiers, {"long", "short", "signed", "unsigned"}))
+                {
+                    setError(specStart, "expected declaration specifier");
+                    ptr_ = start;
+                    return false;
+                }
+                error_.clear();
+                error_pos_ = nullptr;
+                return true;
+            }
+            auto const specifierStr =
+                trim(std::string_view(specStart, ptr_ - specStart));
+            if (!specifiers.empty())
+            {
+                // If we already have a declaration specifier, we need to
+                // check if we have a valid sequence of specifiers:
+                // - In general, only one type specifier is allowed
+                // - "const" and "volatile" can be combined with any type specifier
+                //    except itself
+                if (specifierStr == "const" &&
+                    contains(specifiers, "const"))
+                {
+                    setError(specStart, "multiple 'const' specifiers");
+                    ptr_ = start;
+                    return false;
+                }
+
+                if (specifierStr == "volatile" &&
+                    contains(specifiers, "volatile"))
+                {
+                    setError(specStart, "multiple 'volatile' specifiers");
+                    ptr_ = start;
+                    return false;
+                }
+
+                // - "signed" or "unsigned" can be combined with "char", "long", "short", or "int".
+                if (contains({"signed", "unsigned"}, specifierStr) &&
+                    contains_any(specifiers, {"signed", "unsigned"}))
+                {
+                    setError(specStart, "multiple 'signed' or 'unsigned' specifiers");
+                    ptr_ = start;
+                    return false;
+                }
+
+                // - "short" or "long" can be combined with int.
+                // - "long" can be combined with "double" and "long"
+                // "short" is allowed only once
+                // "long" is allowed twice
+                if (specifierStr == "short")
+                {
+                    if (contains(specifiers, "short"))
+                    {
+                        setError(specStart, "multiple 'short' specifiers");
+                        ptr_ = start;
+                        return false;
+                    }
+                    if (contains(specifiers, "long"))
+                    {
+                        setError(specStart, "cannot combine 'short' with 'long'");
+                        ptr_ = start;
+                        return false;
+                    }
+                }
+
+                if (specifierStr == "long")
+                {
+                    if (contains_n(specifiers, "long", 2))
+                    {
+                        setError(specStart, "too many 'long' specifiers");
+                        ptr_ = start;
+                        return false;
+                    }
+                    if (contains(specifiers, "short"))
+                    {
+                        setError(specStart, "cannot combine 'long' with 'short'");
+                        ptr_ = start;
+                        return false;
+                    }
+                }
+            }
+            specifiers.push_back(specifierStr);
+            if (!skipWhitespace())
+            {
+                break;
+            }
+        }
+        if (specifiers.empty())
+        {
+            // We need at least one declarator specifier
+            ptr_ = start;
             return false;
         }
-        while (parseLiteral("::"))
+
+        // "signed" or "unsigned" can be combined with "char", "long", "short", or "int".
+        if (contains_any(specifiers, {"signed", "unsigned"}))
         {
-            if (!parseIdentifier())
+            bool explicitlySigned = contains(specifiers, "signed");
+            if (!dest)
+            {
+                NamedTypeInfo NTI;
+                NameInfo NI;
+                NI.Name = "int";
+                NTI.Name = NI;
+                dest = NTI;
+            }
+            else
+            {
+                if (!dest->isNamed())
+                {
+                    if (explicitlySigned)
+                    {
+                        setError("expected type for 'signed' specifier");
+                    }
+                    else
+                    {
+                        setError("expected type for 'unsigned' specifier");
+                    }
+                    ptr_ = start;
+                    return false;
+                }
+                if (auto& namedParam = dynamic_cast<NamedTypeInfo&>(*dest);
+                    namedParam.Name->Name != "int" &&
+                    namedParam.Name->Name != "char")
+                {
+                    if (explicitlySigned)
+                    {
+                        setError(start, "expected 'int' or 'char' for 'signed' specifier");
+                    }
+                    else
+                    {
+                        setError(start, "expected 'int' or 'char' for 'unsigned' specifier");
+                    }
+                    ptr_ = start;
+                    return false;
+                }
+            }
+        }
+
+        // - "short" can be combined with int.
+        if (contains(specifiers, "short"))
+        {
+            if (!dest)
+            {
+                NamedTypeInfo NTI;
+                NameInfo NI;
+                NI.Name = "int";
+                NTI.Name = NI;
+                dest = NTI;
+            }
+            else
+            {
+                if (!dest->isNamed())
+                {
+                    setError(start, "expected type for 'short' specifier");
+                    ptr_ = start;
+                    return false;
+                }
+                if (auto& namedParam = dynamic_cast<NamedTypeInfo&>(*dest);
+                    namedParam.Name->Name != "int")
+                {
+                    setError(start, "expected 'int' for 'short' specifier");
+                    ptr_ = start;
+                    return false;
+                }
+            }
+        }
+
+        // - "long" can be combined with "int", "double" and "long"
+        if (contains(specifiers, "long"))
+        {
+            if (!dest)
+            {
+                NamedTypeInfo NTI;
+                NameInfo NI;
+                NI.Name = "int";
+                NTI.Name = NI;
+                dest = NTI;
+            }
+            else
+            {
+                if (!dest->isNamed())
+                {
+                    setError(start, "expected type for 'long' specifier");
+                    ptr_ = start;
+                    return false;
+                }
+                if (auto& namedParam = dynamic_cast<NamedTypeInfo&>(*dest);
+                    namedParam.Name->Name != "int" &&
+                    namedParam.Name->Name != "double" &&
+                    namedParam.Name->Name != "long")
+                {
+                    setError(start, "expected 'int', 'double' or 'long' for 'long' specifier");
+                    ptr_ = start;
+                    return false;
+                }
+            }
+        }
+
+        if (!dest)
+        {
+            ptr_ = start;
+            setError("expected parameter type");
+            return false;
+        }
+
+        dest->IsConst = contains(specifiers, "const");
+        dest->IsVolatile = contains(specifiers, "volatile");
+
+        return true;
+    }
+
+    bool
+    parseDeclarationSpecifier(Polymorphic<TypeInfo>& dest)
+    {
+        char const* start = ptr_;
+
+        // Some rules are only valid if dest was initially empty
+        auto checkDestWasEmpty = [destWasEmpty=!dest, start, this]() {
+            if (!destWasEmpty)
+            {
+                setError(start, "multiple type declaration specifiers");
+                ptr_ = start;
+                return false;
+            }
+            return true;
+        };
+
+        // https://en.cppreference.com/w/cpp/language/declarations#Specifiers
+        // decl-specifier is one of the following specifiers:
+        // - typedef specifier (The typedef specifier may not appear in the declaration of a function parameter)
+        // - "inline", "virtual", "explicit" (only allowed in function declarations)
+        // - "inline" specifier (also allowed in variable declarations)
+        // - "friend" specifier (allowed in class and function declarations)
+        // - "constexpr" specifier (allowed in variable and function declarations)
+        // - "consteval" specifier (allowed in function declarations)
+        // - "constinit" specifier, (allowed in variable declarations)
+        // - "register", "static", "extern", "mutable", "thread_local" (storage-class specifiers)
+        // - Type specifiers (type-specifier-seq) (a sequence of specifiers that names a type):
+        //     - cv qualifier
+        if (parseAnyKeyword({"const", "volatile"}))
+        {
+            return true;
+        }
+
+        // - simple type specifier: "char", "char8_t", "char16_t", "char32_t",
+        // "wchar_t", "bool", "short", "int", "long", "signed", "unsigned",
+        // "float", "double", "void"
+        if (parseAnyKeyword({"signed", "unsigned", "short", "long"}))
+        {
+            // These specifiers are handled in parseDeclarationSpecifiers
+            // because they can represent or modify the type.
+            return true;
+        }
+
+        if (parseAnyKeyword(
+                { "char",
+                  "char8_t",
+                  "char16_t",
+                  "char32_t",
+                  "wchar_t",
+                  "bool",
+                  "int",
+                  "float",
+                  "double",
+                  "void" }))
+        {
+            MRDOCS_CHECK_OR(checkDestWasEmpty(), false);
+            NamedTypeInfo NTI;
+            NameInfo NI;
+            NI.Name = std::string_view(start, ptr_ - start);
+            NTI.Name = NI;
+            dest = NTI;
+            return true;
+        }
+
+        // - "auto"
+        if (parseKeyword("auto"))
+        {
+            MRDOCS_CHECK_OR(checkDestWasEmpty(), false);
+            dest = AutoTypeInfo();
+            return true;
+        }
+
+        if (parseKeyword("decltype"))
+        {
+            skipWhitespace();
+            //     - "decltype(auto)"
+            if (parseLiteral("("))
+            {
+                skipWhitespace();
+                if (parseKeyword("auto"))
+                {
+                    skipWhitespace();
+                    if (parseLiteral(")"))
+                    {
+                        MRDOCS_CHECK_OR(checkDestWasEmpty(), false);
+                        AutoTypeInfo res;
+                        res.Keyword = AutoKind::DecltypeAuto;
+                        dest = std::move(res);
+                        return true;
+                    }
+                }
+                // - "decltype(expression)"
+                if (!hasMore())
+                {
+                    setError("expected expression in decltype");
+                    ptr_ = start;
+                    return false;
+                }
+                // rewind ptr_ to '('
+                --ptr_;
+                while (*ptr_ != '(')
+                {
+                    ptr_--;
+                }
+                char const* exprStart = ptr_;
+                if (parseBalanced("(", ")"))
+                {
+                    std::string_view expr(exprStart + 1, ptr_ - exprStart - 2);
+                    expr = trim(expr);
+                    if (expr.empty())
+                    {
+                        setError("expected expression in decltype");
+                        ptr_ = start;
+                        return false;
+                    }
+                    MRDOCS_CHECK_OR(checkDestWasEmpty(), false);
+                    DecltypeTypeInfo DTI;
+                    DTI.Operand.Written = expr;
+                    dest = DTI;
+                    return true;
+                }
+                setError("expected expression in decltype");
+                ptr_ = start;
+                return false;
+            }
+            ptr_ = start;
+        }
+
+        // - pack indexing specifier (C++26)
+        //   auto f(Ts...[0] arg, type_seq<Ts...>)
+        //   (unsupported)
+
+        // - "class" specifier
+        // - elaborated type specifier
+        //     - "class", "struct" or "union" followed by the identifier
+        //        optionally qualified
+        //     - "class", "struct" or "union" followed by the template
+        //        name with template arguments optionally qualified
+        // - typename specifier
+        if (parseAnyKeyword({"class", "struct", "union", "typename"}))
+        {
+            skipWhitespace();
+            if (parseQualifiedIdentifier(dest, true, true))
+            {
+                return checkDestWasEmpty();
+            }
+            ptr_ = start;
+        }
+
+        // - "enum" specifier
+        // - "enum" followed by the identifier optionally qualified
+        if (parseKeyword("enum"))
+        {
+            skipWhitespace();
+            if (parseQualifiedIdentifier(dest, true, false))
+            {
+                return checkDestWasEmpty();
+            }
+            ptr_ = start;
+        }
+
+        // - previously declared class/enum/typedef name
+        // - template name with template arguments optionally qualified
+        // - template name without template arguments optionally qualified
+        if (parseQualifiedIdentifier(dest, true, true))
+        {
+            return checkDestWasEmpty();
+        }
+
+        ptr_ = start;
+        return false;
+    }
+
+    bool
+    parseBalanced(
+        std::string_view const openTag,
+        std::string_view const closeTag)
+    {
+        char const* start = ptr_;
+        std::size_t depth = 0;
+        while (hasMore())
+        {
+            if (parseLiteral(openTag))
+            {
+                ++depth;
+            }
+            else if (parseLiteral(closeTag))
+            {
+                --depth;
+                if (depth == 0)
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                ++ptr_;
+            }
+        }
+        ptr_ = start;
+        return false;
+    }
+
+    bool
+    parseQualifiedIdentifier(
+        Polymorphic<TypeInfo>& dest,
+        bool const allowTemplateDisambiguation,
+        bool const allowTemplateArguments)
+    {
+        if (dest)
+        {
+            setError("type specifier is already set");
+            return false;
+        }
+        // Identifiers separated by "::"
+        char const* start = ptr_;
+        parseLiteral("::");
+        skipWhitespace();
+        while (true)
+        {
+            char const* idStart = ptr_;
+            if (!parseIdentifier(allowTemplateDisambiguation))
+            {
+                break;
+            }
+
+            // Populate dest
+            auto const idStr = std::string_view(idStart, ptr_ - idStart);
+            if (!dest)
+            {
+                NamedTypeInfo NTI;
+                NameInfo NI;
+                NI.Name = idStr;
+                NTI.Name = NI;
+                dest = NTI;
+            }
+            else
+            {
+                MRDOCS_CHECK_OR(dest->isNamed(), false);
+                NamedTypeInfo NTI;
+                NameInfo NI;
+                NI.Name = idStr;
+                auto& parent = dynamic_cast<NamedTypeInfo&>(*dest);
+                NI.Prefix = std::move(parent.Name);
+                NTI.Name = NI;
+                dest = NTI;
+            }
+
+            // Look for the next "::"
+            char const* compStart = ptr_;
+            skipWhitespace();
+            if (!parseLiteral("::"))
+            {
+                ptr_ = compStart;
+                break;
+            }
+            skipWhitespace();
+        }
+        if (!dest)
+        {
+            ptr_ = start;
+            return false;
+        }
+        if (allowTemplateArguments)
+        {
+            char const* templateStart = ptr_;
+            skipWhitespace();
+            if (peek('<'))
+            {
+                if (!parseTemplateArguments())
+                {
+                    ptr_ = start;
+                    return false;
+                }
+            }
+            else
+            {
+                ptr_ = templateStart;
+            }
+        }
+        return true;
+    }
+
+    enum declarator_property : int {
+        // abstract-declarator - it does not need to be named
+        abstract = 1,
+        // An internal declarator is any declarator other
+        // than a reference declarator (there are no pointers
+        // or references to references).
+        internal_declarator = 2,
+        // noptr-declarator - any valid declarator, but if it begins with *,
+        // &, or &&, it has to be surrounded by parentheses.
+        no_ptr_declarator = 4,
+    };
+
+    bool
+    parseAbstractDeclarator(Polymorphic<TypeInfo>& dest)
+    {
+        return parseDeclarator<abstract>(dest);
+    }
+
+    template <int declarator_type>
+    bool
+    parseDeclarator(Polymorphic<TypeInfo>& dest)
+    {
+        char const *start = ptr_;
+        if (!parseDeclaratorOrNoPtrDeclarator<declarator_type>(dest))
+        {
+            // Maybe a valid declarator is parenthesized
+            if (peek('(', ' '))
+            {
+                skipWhitespace();
+                MRDOCS_ASSERT(parseLiteral('('));
+                if (!parseDeclarator<declarator_type>(dest))
+                {
+                    ptr_ = start;
+                    return false;
+                }
+                skipWhitespace();
+                if (!parseLiteral(')'))
+                {
+                    setError("expected ')'");
+                    ptr_ = start;
+                    return false;
+                }
+                return true;
+            }
+            // We expected a valid declarator either as the
+            // complete declarator or as the noptr-declarator
+            // for an array or function
+            setError("expected declarator");
+            ptr_ = start;
+            return false;
+        }
+        if (!dest)
+        {
+            setError("no type defined by specifiers and declarator");
+            ptr_ = start;
+            return false;
+        }
+        std::size_t suffixLevel = 0;
+        auto isNoPtrDeclarator = [&dest, &suffixLevel, this]() {
+            if (suffixLevel == 0)
+            {
+                if (dest->isLValueReference() || dest->isRValueReference() || dest->isPointer())
+                {
+                    return peekBack(')', ' ');
+                }
+                // Other types don't need to be surrounded by parentheses
+                return true;
+            }
+            // At other levels, we don't need to check for parentheses
+            return true;
+        };
+        while (
+            peekAny({'[', '('}, ' ') &&
+            isNoPtrDeclarator())
+        {
+            // The function return type is the type from the specifiers
+            // For instance, in "int (*)", we have a pointer to int.
+            // But in "int (*)()", where "int (*)" is the noptr-declarator,
+            // the pointer wraps the function type: a pointer to function
+            // and not a function to pointer.
+            // So parsing "int (*)" gives us a pointer to int (the content
+            // of dest), but parsing the function should invert this logic,
+            // the pointer points to the function and the function returns int.
+            // The same logic other elements that have inner types (pointers,
+            // arrays, and references).
+            // The current inner type of dest is the function return type.
+            auto inner = innerType(*dest);
+            // The more suffixes we have, the more levels of inner types
+            // the suffix affects.
+            // For instance, in "int (*)[3][6]", we have a pointer to an
+            // array of 3 arrays of 6 ints.
+            std::size_t curSuffixLevel = suffixLevel;
+            while (curSuffixLevel > 0 && inner && inner->get())
+            {
+                auto& ref = inner->get();
+                inner = innerType(*ref);
+                --curSuffixLevel;
+            }
+            char const* parenStart = ptr_;
+            if (!parseArrayOrFunctionDeclaratorSuffix<declarator_type>(
+                inner ? inner->get() : dest))
+            {
+                setError(parenStart, "expected declarator");
+                ptr_ = start;
+                return false;
+            }
+            ++suffixLevel;
+        }
+        return true;
+    }
+
+    template <int declarator_type>
+    bool
+    parseDeclaratorOrNoPtrDeclarator(Polymorphic<TypeInfo>& dest)
+    {
+        static constexpr bool isAbstractDeclarator = static_cast<bool>(declarator_type & abstract);
+        static constexpr bool isInternalDeclarator = static_cast<bool>(declarator_type & internal_declarator);
+
+        // https://en.cppreference.com/w/cpp/language/declarations#Declarators
+        char const* start = ptr_;
+
+        if (!dest)
+        {
+            setError("expected parameter type for '...'");
+            ptr_ = start;
+            return false;
+        }
+
+        // The declarator cannot be another specifier keyword
+        // that could also be a declarator
+        if (peek(isIdentifierContinuation)
+            && parseAnyKeyword(
+                { "char",
+                  "char8_t",
+                  "char16_t",
+                  "char32_t",
+                  "wchar_t",
+                  "bool",
+                  "int",
+                  "float",
+                  "double",
+                  "void",
+                  "auto",
+                  "decltype" }))
+        {
+            setError("expected declarator, not another specifier");
+            ptr_ = start;
+            return false;
+        }
+
+        // Declarators might be surrounded by an arbitrary
+        // number of parentheses. We need to keep track
+        // of them.
+        skipWhitespace();
+        std::size_t parenDepth = 0;
+        while (parseLiteral("("))
+        {
+            ++parenDepth;
+            skipWhitespace();
+        }
+
+        // At the end, we need to consume the closing parentheses
+        // in reverse order.
+        auto const parseClosingParens = [&]() {
+            while (parenDepth > 0)
+            {
+                skipWhitespace();
+                if (!parseLiteral(")"))
+                {
+                    setError("expected ')'");
+                    ptr_ = start;
+                    return false;
+                }
+                --parenDepth;
+            }
+            return true;
+        };
+
+        // https://en.cppreference.com/w/cpp/language/declarations#Declarators
+        // declarator - one of the following:
+        // (1) The name that is declared:
+        //     unqualified-id attr (optional)
+        // https://en.cppreference.com/w/cpp/language/identifiers#Names
+        char const* idStart = ptr_;
+        if (parseIdentifier(false))
+        {
+            if (parenDepth != 0 &&
+                peek(',', ' '))
+            {
+                // This is a function parameter declaration
+                // and this identifier is actually the type
+                // of the first parameter
+                ptr_ = idStart;
+                MRDOCS_ASSERT(rewindUntil('('));
+                parenDepth--;
+                if (parseFunctionDeclaratorSuffix<declarator_type>(dest))
+                {
+                    return parseClosingParens();
+                }
+            }
+            else if (!peek(':', ' '))
+            {
+                // We ignore the name and just return true
+                // The current parameter type does not change
+                return parseClosingParens();
+            }
+            // id is qualified-id, so fall through to the next cases
+            ptr_ = idStart;
+        }
+
+        // (2) A declarator that uses a qualified identifier (qualified-id)
+        //     defines or redeclares a previously declared namespace member
+        //     or class member.
+        //     qualified-id attr (optional)
+        // We do not implement this case for function parameters.
+
+        // (3) Parameter pack, only appears in parameter declarations.
+        //     ... identifier attr (optional)
+        // https://en.cppreference.com/w/cpp/language/pack
+        if (parseLiteral("..."))
+        {
+            skipWhitespace();
+            parseIdentifier(false);
+            dest->IsPackExpansion = true;
+            return parseClosingParens();
+        }
+
+        // (4) Pointer declarator: the declaration `S * D`; declares declarator
+        //     `D` as a pointer to the type determined by decl-specifier-seq `S`.
+        //     * attr (optional) cv (optional) declarator
+        // https://en.cppreference.com/w/cpp/language/pointer
+        if (parseLiteral("*"))
+        {
+            if (dest->isLValueReference() ||
+                dest->isRValueReference())
+            {
+                setError("pointer to reference not allowed");
+                ptr_ = start;
+                return false;
+            }
+
+            // Change current type to pointer type
+            PointerTypeInfo PTI;
+            PTI.PointeeType = std::move(dest);
+            dest = PTI;
+
+            skipWhitespace();
+            // cv is a sequence of const and volatile qualifiers,
+            // where either qualifier may appear at most once
+            // in the sequence.
+            parseCV(dest->IsConst, dest->IsVolatile);
+            // Parse the next declarator, potentially wrapping
+            // the destination type in another type
+            // If this declarator is abstract, the pointer
+            // declarator is also abstract.
+            if (constexpr int nextDeclaratorType = (declarator_type & abstract)
+                                                   | internal_declarator;
+                !parseDeclarator<nextDeclaratorType>(dest))
+            {
+                setError("expected declarator after pointer");
+                ptr_ = start;
+                return false;
+            }
+            return parseClosingParens();
+        }
+
+        // (5) Pointer to member declaration: the declaration `S C::* D`;
+        //     declares `D` as a pointer to member of `C` of type determined
+        //     by decl-specifier-seq `S`. nested-name-specifier is a
+        //     sequence of names and scope resolution operators ::
+        //     nested-name-specifier * attr (optional) cv (optional) declarator
+        // https://en.cppreference.com/w/cpp/language/pointer
+        if (parseNestedNameSpecifier())
+        {
+            char const* NNSEnd = ptr_;
+            skipWhitespace();
+            if (!parseLiteral("*"))
             {
                 ptr_ = start;
                 return false;
             }
-        }
-        return true;
-    }
 
-    bool
-    parseModifiedFundamentalType()
-    {
-        char const* start = ptr_;
-        bool hasSignModifier = false;
-        bool hasSizeModifier = false;
-        bool hasFundamentalType = false;
-        while (true)
-        {
+            if constexpr (isInternalDeclarator)
+            {
+                setError("pointer to member declarator not allowed in this context");
+                ptr_ = start;
+                return false;
+            }
+
+            // Assemble the parent type for the NNS
+            NamedTypeInfo ParentType;
+            auto NNSString = std::string_view(start, NNSEnd - start);
+            NameInfo NNS;
+            auto const NNSRange = llvm::split(NNSString, "::");
+            MRDOCS_ASSERT(!NNSRange.empty());
+            auto NNSIt = NNSRange.begin();
+            std::string_view unqualID = *NNSIt;
+            NNS.Name = std::string(unqualID);
+            ++NNSIt;
+            while (NNSIt != NNSRange.end())
+            {
+                unqualID = *NNSIt;
+                if (unqualID.empty())
+                {
+                    break;
+                }
+                NameInfo NewNNS;
+                NewNNS.Name = std::string(unqualID);
+                NewNNS.Prefix = std::move(NNS);
+                NNS = NewNNS;
+                ++NNSIt;
+            }
+            ParentType.Name = std::move(NNS);
+
+            // Change current type to member pointer type
+            MemberPointerTypeInfo MPTI;
+            MPTI.PointeeType = std::move(dest);
+            MPTI.ParentType = std::move(ParentType);
+            dest = MPTI;
+
             skipWhitespace();
-            if (!hasSignModifier)
-            {
-                if (parseLiteral("signed") || parseLiteral("unsigned"))
-                {
-                    hasSignModifier = true;
-                    continue;
-                }
-            }
-            if (parseLiteral("short") || parseLiteral("long"))
-            {
-                hasSizeModifier = true;
-                continue;
-            }
-            if (!hasFundamentalType)
-            {
-                if (parseLiteral("int") || parseLiteral("char") || parseLiteral("float") || parseLiteral("double"))
-                {
-                    hasFundamentalType = true;
-                    continue;
-                }
-            }
-            break;
+            // cv is a sequence of const and volatile qualifiers,
+            // where either qualifier may appear at most once
+            // in the sequence.
+            parseCV(dest->IsConst, dest->IsVolatile);
+            parseIdentifier(false);
+            // We ignore the name and just return true
+            return parseClosingParens();
         }
-        if (!hasFundamentalType && !hasSizeModifier && !hasSignModifier)
+
+        // (6) Lvalue reference declarator: the declaration `S & D`; declares
+        //     `D` as an lvalue reference to the type determined by
+        //     decl-specifier-seq `S`.
+        //     & attr (optional) declarator
+        // https://en.cppreference.com/w/cpp/language/reference
+        if (parseLiteral("&"))
         {
+            if constexpr (isInternalDeclarator)
+            {
+                setError("lvalue reference to pointer not allowed");
+                ptr_ = start;
+                return false;
+            }
+
+            skipWhitespace();
+
+            // (7) Rvalue reference declarator: the declaration `S && D`;
+            //     declares D as an rvalue reference to the type determined
+            //     by decl-specifier-seq `S`.
+            //     && attr (optional) declarator
+
+            // Change current type to reference type
+            if (bool const isRValue = parseLiteral("&");
+                !isRValue)
+            {
+                LValueReferenceTypeInfo RTI;
+                RTI.PointeeType = std::move(dest);
+                dest = RTI;
+            }
+            else
+            {
+                RValueReferenceTypeInfo RTI;
+                RTI.PointeeType = std::move(dest);
+                dest = RTI;
+            }
+
+            skipWhitespace();
+
+            // Parse the next declarator, potentially wrapping
+            // the destination type in another type
+            static constexpr int nextDeclaratorType
+                = (declarator_type & abstract) | internal_declarator;
+            if (!parseDeclarator<nextDeclaratorType>(dest))
+            {
+                setError("expected declarator after reference");
+                ptr_ = start;
+                return false;
+            }
+
+            return parseClosingParens();
+        }
+
+        // (8-9) Array and function declarators are handled in a separate
+        // function
+        parenDepth = 0;
+        ptr_ = start;
+        if (parseArrayOrFunctionDeclaratorSuffix<declarator_type>(dest))
+        {
+            return true;
+        }
+
+        // (10) An abstract declarator can also be an empty string, which
+        // is equivalent to unnamed (1) unqualified-id.
+        if constexpr (isAbstractDeclarator)
+        {
+            return parseClosingParens();
+        }
+        else
+        {
+            setError("expected a concrete declarator");
             ptr_ = start;
             return false;
         }
-        // Any of the other combinations are valid
+    }
+
+    // This function assumes the noptr-declarator prefix
+    // already parsed. Otherwise, we assume the noptr-declarator
+    // is empty.
+    template <int declarator_type>
+    bool
+    parseArrayOrFunctionDeclaratorSuffix(Polymorphic<TypeInfo>& dest)
+    {
+        char const* start = ptr_;
+
+        // (8) Array declarator. noptr-declarator any valid declarator, but
+        //     if it begins with *, &, or &&, it has to be surrounded by
+        //     parentheses.
+        // noptr-declarator [expr (optional)] attr (optional)
+        // https://en.cppreference.com/w/cpp/language/array
+        if (parseArrayDeclaratorSuffix<declarator_type>(dest))
+        {
+            return true;
+        }
+        ptr_ = start;
+
+        // (9) Function declarator. noptr-declarator any valid declarator,
+        //     but if it begins with *, &, or &&, it has to be surrounded by
+        //     parentheses. It may end with the optional trailing return type.
+        //     noptr-declarator ( parameter-list ) cv (optional) ref  (optional) except (optional) attr  (optional)
+        // https://en.cppreference.com/w/cpp/language/function
+        // https://en.cppreference.com/w/cpp/language/function#Function_type
+        if (parseFunctionDeclaratorSuffix<declarator_type>(dest))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    template <int declarator_type>
+    bool
+    parseArrayDeclaratorSuffix(Polymorphic<TypeInfo>& dest)
+    {
+        char const* start = ptr_;
+
+        // (8) Array declarator. noptr-declarator any valid declarator, but
+        //     if it begins with *, &, or &&, it has to be surrounded by
+        //     parentheses.
+        // noptr-declarator [expr (optional)] attr (optional)
+        // https://en.cppreference.com/w/cpp/language/array
+        if (parseLiteral("["))
+        {
+            if constexpr (declarator_type & internal_declarator)
+            {
+                setError("pointer to array declarator requires noptr-declarator");
+                ptr_ = start;
+                return false;
+            }
+
+            // Change current type to array type
+            ArrayTypeInfo ATI;
+            ATI.ElementType = std::move(dest);
+
+            // expr (optional)
+            char const* exprStart = ptr_;
+            skipWhitespace();
+
+            if (!parseLiteral("]"))
+            {
+                // Parse the array size
+                // Bounds.Value is an optional integer with the value
+                // Bounds.Written is the original string representation
+                // of the bounds
+                std::optional<std::uint64_t> boundsValue = 0;
+                if (ConstantExprInfo<std::uint64_t> Bounds;
+                    parseInteger(boundsValue) &&
+                    peek(']', ' '))
+                {
+                    Bounds.Value = boundsValue;
+                    Bounds.Written = std::string_view(exprStart, ptr_ - exprStart);
+                    ATI.Bounds = Bounds;
+                    if (!parseLiteral("]"))
+                    {
+                        ptr_ = start;
+                        return false;
+                    }
+                }
+                else
+                {
+                    ptr_ = start;
+                    // Parse everything up to the next
+                    // closing bracket
+                    if (!parseBalanced("[", "]"))
+                    {
+                        setError("expected ']' in array declarator");
+                        ptr_ = start;
+                        return false;
+                    }
+                    auto expr = std::string_view(exprStart, ptr_ - exprStart - 1);
+                    Bounds.Written = trim(expr);
+                    ATI.Bounds = Bounds;
+                }
+            }
+            dest = std::move(ATI);
+            skipWhitespace();
+
+            // We ignore the name and just return true
+            return true;
+        }
+        return false;
+    }
+
+    template <int declarator_type>
+    bool
+    parseFunctionDeclaratorSuffix(Polymorphic<TypeInfo>& dest)
+    {
+        char const* start = ptr_;
+
+        // (9) Function declarator. noptr-declarator any valid declarator,
+        //     but if it begins with *, &, or &&, it has to be surrounded by
+        //     parentheses. It may end with the optional trailing return type.
+        //     noptr-declarator ( parameter-list ) cv (optional) ref  (optional) except (optional) attr  (optional)
+        // https://en.cppreference.com/w/cpp/language/function
+        // https://en.cppreference.com/w/cpp/language/function#Function_type
+        if (peek('(', ' '))
+        {
+            if constexpr (declarator_type & internal_declarator)
+            {
+                setError("pointer to function declarator requires noptr-declarator");
+                ptr_ = start;
+                return false;
+            }
+
+            // Change current type to function type
+            // The function type as a parameter has the following members:
+            // FTI.ReturnType is the return type of the function
+            // FTI.ParamTypes is a list of parameter types
+            // FTI.RefQualifier is the reference qualifier
+            // FTI.ExceptionSpec is the exception specification
+            // FTI.IsVariadic is true if the function is variadic
+            // Parse the function parameters
+            ParsedFunctionSuffix function;
+            if (!parseFunctionSuffix(function))
+            {
+                ptr_ = start;
+                return false;
+            }
+            FunctionTypeInfo FTI;
+            FTI.ReturnType = std::move(dest);
+            FTI.ParamTypes.insert(
+                FTI.ParamTypes.end(),
+                std::make_move_iterator(function.Params.begin()),
+                std::make_move_iterator(function.Params.end()));
+            FTI.ExceptionSpec = std::move(function.ExceptionSpec);
+            FTI.IsVariadic = function.IsVariadic;
+            dest = FTI;
+            return true;
+        }
+
+        return false;
+    }
+
+    bool
+    parseInteger(std::optional<std::uint64_t>& dest)
+    {
+        if (!hasMore())
+        {
+            return false;
+        }
+        if (!isDigit(*ptr_))
+        {
+            return false;
+        }
+        std::uint64_t value = 0;
+        while (isDigit(*ptr_))
+        {
+            value = value * 10 + (*ptr_ - '0');
+            ++ptr_;
+        }
+        dest = value;
         return true;
     }
 
     bool
-    parseMemberFunctionQualifiers()
+    parseCV(bool& isConst, bool& isVolatile) {
+        char const* start = ptr_;
+        while (true)
+        {
+            skipWhitespace();
+            bool matchedAny = false;
+            if (parseKeyword("const"))
+            {
+                if (isConst)
+                {
+                    setError("multiple 'const' qualifiers");
+                    ptr_ = start;
+                    return false;
+                }
+                isConst = true;
+                matchedAny = true;
+            }
+            if (parseKeyword("volatile"))
+            {
+                if (isVolatile)
+                {
+                    setError("multiple 'volatile' qualifiers");
+                    ptr_ = start;
+                    return false;
+                }
+                isVolatile = true;
+                matchedAny = true;
+            }
+            if (!matchedAny)
+            {
+                break;
+            }
+        }
+        return true;
+    }
+
+    bool
+    parseNestedNameSpecifier()
+    {
+        // nested-name-specifier is a sequence of names and
+        // scope resolution operators ::
+        char const* start = ptr_;
+        parseLiteral("::");
+        bool hasAnyIdentifier = false;
+        while (true)
+        {
+            if (parseIdentifier(false))
+            {
+                hasAnyIdentifier = true;
+            }
+            else
+            {
+                if (hasAnyIdentifier)
+                {
+                    return true;
+                }
+                ptr_ = start;
+                return false;
+            }
+            skipWhitespace();
+            if (!parseLiteral("::"))
+            {
+                setError("expected '::' in nested name specifier");
+                ptr_ = start;
+                return false;
+            }
+            skipWhitespace();
+        }
+    }
+
+    bool
+    parseFunctionQualifiers(ParsedFunctionSuffix& dest)
     {
         // https://en.cppreference.com/w/cpp/language/function
+        char const* start = ptr_;
 
-        // Parse cv:
-        // const/volatile qualification, only allowed in non-static member
-        // function declarations
+        if (auto* destMF = dynamic_cast<ParsedMemberFunctionSuffix*>(&dest))
+        {
+            // Parse cv:
+            // const/volatile qualification, only allowed in non-static member
+            // function declarations
+            if (!parseCV(destMF->IsConst, destMF->IsVolatile))
+            {
+                setError("expected cv qualifiers");
+                ptr_ = start;
+                return false;
+            }
+        }
 
         // Parse ref:
         // ref-qualification, only allowed in non-static member function
         // declarations
+        if (auto* destMF = dynamic_cast<ParsedMemberFunctionSuffix*>(&dest))
+        {
+            skipWhitespace();
+            if (parseLiteral("&"))
+            {
+                destMF->Kind = ReferenceKind::LValue;
+                skipWhitespace();
+                if (parseLiteral("&"))
+                {
+                    destMF->Kind = ReferenceKind::RValue;
+                    skipWhitespace();
+                }
+            }
+        }
 
         // Parse except:
         // dynamic exception specification, dynamic exception specification
         // or noexcept specification, noexcept specification
+        // https://en.cppreference.com/w/cpp/language/noexcept_spec
+        if (parseKeyword("noexcept"))
+        {
+            dest.ExceptionSpec.Implicit = false;
+            skipWhitespace();
+            char const *noexceptStart = ptr_;
+            if (parseBalanced("(", ")"))
+            {
+                char const* noexceptEnd = ptr_;
+                std::string_view const expression(
+                    noexceptStart + 1,
+                    noexceptEnd - noexceptStart - 2);
+                dest.ExceptionSpec.Operand = trim(expression);
+                dest.ExceptionSpec.Kind =
+                    dest.ExceptionSpec.Operand == "true" ?
+                        NoexceptKind::True :
+                    dest.ExceptionSpec.Operand == "false" ?
+                        NoexceptKind::False :
+                        NoexceptKind::Dependent;
+            }
+        }
+        else if (parseKeyword("throw"))
+        {
+            skipWhitespace();
+            if (!parseLiteral("("))
+            {
+                setError("expected '(' in 'throw' exception specification");
+                ptr_ = start;
+                return false;
+            }
+            skipWhitespace();
+            if (!parseLiteral(")"))
+            {
+                setError("expected ')' for empty 'throw' exception specification");
+                ptr_ = start;
+                return false;
+            }
+            dest.ExceptionSpec.Implicit = false;
+            dest.ExceptionSpec.Operand = "true";
+            dest.ExceptionSpec.Kind = NoexceptKind::True;
+        }
 
-
-        // Parse potential qualifiers at the end of a function
-        // to identify the qualifiers to set
-        // ReferenceKind Kind = ReferenceKind::None; and
-        // bool IsConst = false;
-        skipWhitespace();
-        if (parseLiteral("const"))
-        {
-            result_.IsConst = true;
-        }
-        skipWhitespace();
-        if (parseLiteral("&&"))
-        {
-            result_.Kind = ReferenceKind::RValue;
-        }
-        else if (parseLiteral("&"))
-        {
-            result_.Kind = ReferenceKind::LValue;
-        }
         return true;
     }
 

@@ -599,6 +599,7 @@ public:
 
         @pre bool(*this) is true.
      */
+    constexpr
     Base const&
     operator*() const noexcept(noexcept(*std::declval<Base*>()))
     {
@@ -612,6 +613,7 @@ public:
 
         @pre bool(*this) is true.
      */
+    constexpr
     Base&
     operator*() noexcept(noexcept(*std::declval<Base*>()))
     {
@@ -625,6 +627,7 @@ public:
 
         @pre bool(*this) is true.
      */
+    constexpr
     Base const*
     operator->() const noexcept
     {
@@ -637,6 +640,7 @@ public:
 
         @pre bool(*this) is true.
      */
+    constexpr
     Base*
     operator->() noexcept
     {
@@ -647,6 +651,7 @@ public:
 
         @return true if the Polymorphic owns an object, otherwise false.
      */
+    constexpr
     explicit
     operator
     bool() const noexcept

@@ -64,33 +64,32 @@ public:
     constexpr Optional() = default;
     constexpr Optional(Optional const& other) = default;
 
-    constexpr Optional& operator=(Optional const& other) = default;
-    constexpr Optional& operator=(Optional&& other) = default;
-    constexpr Optional& operator=(T const& t)
-    {
-        t_ = t;
-        return *this;
-    }
-
-    constexpr Optional& operator=(T&& t)
-    {
-        t_ = std::move(t);
-        return *this;
-    }
-
-    constexpr Optional& operator=(std::nullptr_t)
-    {
-        t_ = T();
-        MRDOCS_ASSERT(!this->operator bool());
-        return *this;
-    }
-
     template<class U>
     requires std::is_constructible_v<T, U>
     constexpr explicit
     Optional(U&& u)
         : t_(std::forward<U>(u))
     {
+    }
+
+    constexpr Optional& operator=(Optional const& other) = default;
+    constexpr Optional& operator=(Optional&& other) = default;
+
+    template <class U>
+    requires std::is_constructible_v<T, U>
+    constexpr
+    Optional& operator=(U&& u)
+    {
+        t_ = std::forward<U>(u);
+        return *this;
+    }
+
+    constexpr
+    Optional& operator=(std::nullptr_t)
+    {
+        t_ = T();
+        MRDOCS_ASSERT(!this->operator bool());
+        return *this;
     }
 
     constexpr void reset()

@@ -792,7 +792,7 @@ populate(
         MRDOCS_SYMBOL_TRACE(P, context_);
         Param& param = I.Params[i];
 
-        if (param.Name.empty())
+        if (!param.Name)
         {
             param.Name = P->getName();
         }
@@ -804,15 +804,15 @@ populate(
 
         Expr const* default_arg = P->hasUninstantiatedDefaultArg() ?
             P->getUninstantiatedDefaultArg() : P->getInit();
-        if (param.Default.empty() &&
+        if (!param.Default &&
             default_arg)
         {
             param.Default = getSourceCode(default_arg->getSourceRange());
-            param.Default = trim(param.Default);
-            if (param.Default.starts_with("= "))
+            param.Default = trim(*param.Default);
+            if (param.Default->starts_with("= "))
             {
-                param.Default.erase(0, 2);
-                param.Default = ltrim(param.Default);
+                param.Default->erase(0, 2);
+                param.Default = ltrim(*param.Default);
             }
         }
     }

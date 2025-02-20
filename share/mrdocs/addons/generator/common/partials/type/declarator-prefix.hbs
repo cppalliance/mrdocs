@@ -40,9 +40,13 @@
         {{>symbol/name-info constraint nolink=nolink }} {{/if~}}
     {{keyword~}}
 {{~/if~}}
-{{#if cv-qualifiers~}}
+{{#if is-const~}}
     {{! cv-qualifiers as literal strings ~}}
-    {{ str ' ' }}{{cv-qualifiers}}
+    {{ str ' ' }}const
+{{~/if~}}
+{{#if is-volatile~}}
+    {{! cv-qualifiers as literal strings ~}}
+    {{ str ' ' }}volatile
 {{~/if~}}
 {{#if (eq kind "lvalue-reference")~}}
     {{! Refqualifiers as "&" or "&&" ~}}

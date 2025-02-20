@@ -378,7 +378,7 @@ copyBriefAndDetails(Javadoc& javadoc)
                     if (std::ranges::find_if(FI.Params,
                         [&srcParam](Param const& destParam)
                         {
-                            return srcParam.name == destParam.Name;
+                            return srcParam.name == *destParam.Name;
                         }) == FI.Params.end())
                     {
                         // param does not exist in the destination function
@@ -604,7 +604,7 @@ void
 JavadocFinalizer::
 finalize(TypeInfo& type)
 {
-    finalize(type.innerType());
+    finalize(innerTypePtr(type));
 
     visit(type, [this]<typename Ty>(Ty& T)
     {
@@ -1234,7 +1234,8 @@ warnParamErrors(FunctionInfo const& I)
     // Check for documented parameters that don't exist in the function
     auto paramNames =
         std::views::transform(I.Params, &Param::Name) |
-        std::views::filter([](std::string_view const& name) { return !name.empty(); });
+        std::views::filter([](Optional<std::string> const& name) { return static_cast<bool>(name); }) |
+        std::views::transform([](Optional<std::string> const& name) -> std::string_view { return *name; });
     for (std::string_view javadocParamName: javadocParamNames)
     {
         if (std::ranges::find(paramNames, javadocParamName) == paramNames.end())
@@ -1272,6 +1273,7 @@ warnNoParamDocs(FunctionInfo const& I)
     auto javadocParamNames = getJavadocParamNames(*I.javadoc);
     auto paramNames =
         std::views::transform(I.Params, &Param::Name) |
+        std::views::transform([](Optional<std::string> const& name) -> std::string_view { return *name; }) |
         std::views::filter([](std::string_view const& name) { return !name.empty(); });
     for (auto const& paramName: paramNames)
     {
@@ -1361,7 +1363,7 @@ warnUnnamedParams(FunctionInfo const& I)
 
     for (std::size_t i = 0; i < I.Params.size(); ++i)
     {
-        if (I.Params[i].Name.empty())
+        if (!I.Params[i].Name)
         {
             this->warn(
                 *getPrimaryLocation(I),
