@@ -60,12 +60,14 @@ struct ParsedRef {
     llvm::SmallVector<ParsedRefComponent, 8> Components;
 
     // The following are populated when the last element is a function
+    bool HasFunctionParameters = false;
     llvm::SmallVector<Polymorphic<TypeInfo>, 8> FunctionParameters;
     bool IsVariadic = false;
     bool IsExplicitObjectMemberFunction = false;
     ReferenceKind Kind = ReferenceKind::None;
     bool IsConst = false;
     bool IsVolatile = false;
+    NoexceptInfo ExceptionSpec;
 };
 
 Expected<ParsedRef>

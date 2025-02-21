@@ -91,7 +91,6 @@ public:
             MRDOCS_CHECK_OR_CONTINUE(I->Extraction != ExtractionMode::Dependency);
             visit(*I, *this);
         }
-        generateOverloadJavadocs();
         emitWarnings();
     }
 
@@ -202,9 +201,6 @@ private:
                 return corpus_.find(id) != nullptr;
             }));
     }
-
-    void
-    generateOverloadJavadocs();
 
     void
     populateOverloadJavadocs(OverloadsInfo&);

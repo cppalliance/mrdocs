@@ -85,12 +85,14 @@ public:
         }
         MRDOCS_CHECK_OR(parseComponents(), false);
         skipWhitespace();
-        if (peek('('))
+        result_.HasFunctionParameters = peek('(', ' ');
+        if (result_.HasFunctionParameters)
         {
             ParsedMemberFunctionSuffix functionParameters;
             MRDOCS_CHECK_OR(parseFunctionSuffix(functionParameters), false);
             result_.FunctionParameters = std::move(functionParameters.Params);
             result_.IsVariadic = functionParameters.IsVariadic;
+            result_.ExceptionSpec = std::move(functionParameters.ExceptionSpec);
             result_.IsConst = functionParameters.IsConst;
             result_.IsVolatile = functionParameters.IsVolatile;
             result_.Kind = functionParameters.Kind;
@@ -647,6 +649,7 @@ private:
         // this? decl-specifier-seq
 
         char const* start = ptr_;
+        skipWhitespace();
         if (!parseLiteral('('))
         {
             ptr_ = start;
@@ -934,6 +937,8 @@ private:
         if (contains_any(specifiers, {"signed", "unsigned"}))
         {
             bool explicitlySigned = contains(specifiers, "signed");
+            std::string_view signStr = explicitlySigned ? "signed" : "unsigned";
+            // Infer basic fundamental type from "signed" or "unsigned"
             if (!dest)
             {
                 NamedTypeInfo NTI;
@@ -942,42 +947,29 @@ private:
                 NTI.Name = NI;
                 dest = NTI;
             }
-            else
+            // Check if the type is named
+            if (!dest->isNamed())
             {
-                if (!dest->isNamed())
-                {
-                    if (explicitlySigned)
-                    {
-                        setError("expected type for 'signed' specifier");
-                    }
-                    else
-                    {
-                        setError("expected type for 'unsigned' specifier");
-                    }
-                    ptr_ = start;
-                    return false;
-                }
-                if (auto& namedParam = dynamic_cast<NamedTypeInfo&>(*dest);
-                    namedParam.Name->Name != "int" &&
-                    namedParam.Name->Name != "char")
-                {
-                    if (explicitlySigned)
-                    {
-                        setError(start, "expected 'int' or 'char' for 'signed' specifier");
-                    }
-                    else
-                    {
-                        setError(start, "expected 'int' or 'char' for 'unsigned' specifier");
-                    }
-                    ptr_ = start;
-                    return false;
-                }
+                setError(fmt::format("expected named type for '{}' specifier", signStr));
+                ptr_ = start;
+                return false;
             }
+            // Check if the type is "int" or "char"
+            auto& namedParam = dynamic_cast<NamedTypeInfo&>(*dest);
+            if (!contains({"int", "char"}, namedParam.Name->Name))
+            {
+                setError(fmt::format("expected 'int' or 'char' for '{}' specifier", signStr));
+                ptr_ = start;
+                return false;
+            }
+            // Add the specifier to the type name
+            namedParam.Name->Name = fmt::format("{} {}", signStr, namedParam.Name->Name);
         }
 
         // - "short" can be combined with int.
         if (contains(specifiers, "short"))
         {
+            // Infer basic fundamental type from "short"
             if (!dest)
             {
                 NamedTypeInfo NTI;
@@ -986,27 +978,29 @@ private:
                 NTI.Name = NI;
                 dest = NTI;
             }
-            else
+            // Check if the type is named
+            if (!dest->isNamed())
             {
-                if (!dest->isNamed())
-                {
-                    setError(start, "expected type for 'short' specifier");
-                    ptr_ = start;
-                    return false;
-                }
-                if (auto& namedParam = dynamic_cast<NamedTypeInfo&>(*dest);
-                    namedParam.Name->Name != "int")
-                {
-                    setError(start, "expected 'int' for 'short' specifier");
-                    ptr_ = start;
-                    return false;
-                }
+                setError(start, "expected named type for 'short' specifier");
+                ptr_ = start;
+                return false;
             }
+            // Check if the type is "int"
+            auto& namedParam = dynamic_cast<NamedTypeInfo&>(*dest);
+            if (!contains({"int", "signed int", "unsigned int"}, namedParam.Name->Name))
+            {
+                setError(start, "expected 'int' for 'short' specifier");
+                ptr_ = start;
+                return false;
+            }
+            // Add the specifier to the type name
+            namedParam.Name->Name = fmt::format("short {}", namedParam.Name->Name);
         }
 
         // - "long" can be combined with "int", "double" and "long"
         if (contains(specifiers, "long"))
         {
+            // Infer basic fundamental type from "long"
             if (!dest)
             {
                 NamedTypeInfo NTI;
@@ -1015,26 +1009,26 @@ private:
                 NTI.Name = NI;
                 dest = NTI;
             }
-            else
+            // Check if the type is named
+            if (!dest->isNamed())
             {
-                if (!dest->isNamed())
-                {
-                    setError(start, "expected type for 'long' specifier");
-                    ptr_ = start;
-                    return false;
-                }
-                if (auto& namedParam = dynamic_cast<NamedTypeInfo&>(*dest);
-                    namedParam.Name->Name != "int" &&
-                    namedParam.Name->Name != "double" &&
-                    namedParam.Name->Name != "long")
-                {
-                    setError(start, "expected 'int', 'double' or 'long' for 'long' specifier");
-                    ptr_ = start;
-                    return false;
-                }
+                setError(start, "expected named type for 'long' specifier");
+                ptr_ = start;
+                return false;
             }
+            auto& namedParam = dynamic_cast<NamedTypeInfo&>(*dest);
+            if (!contains({"int", "signed int", "unsigned int", "double"}, namedParam.Name->Name))
+            {
+                setError(start, "expected 'int' or 'double' for 'long' specifier");
+                ptr_ = start;
+                return false;
+            }
+            // Add the specifier to the type name
+            bool const isLongLong = contains_n(specifiers, "long", 2);
+            namedParam.Name->Name = fmt::format("{} {}", isLongLong ? "long long" : "long", namedParam.Name->Name);
         }
 
+        // Final check: if dest is still empty, we have an error
         if (!dest)
         {
             ptr_ = start;
@@ -1042,6 +1036,7 @@ private:
             return false;
         }
 
+        // Set cv qualifiers
         dest->IsConst = contains(specifiers, "const");
         dest->IsVolatile = contains(specifiers, "volatile");
 

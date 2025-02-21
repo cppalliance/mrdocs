@@ -22,6 +22,14 @@ operator()(InfoTy& I)
     MRDOCS_CHECK_OR(!finalized_.contains(&I));
     finalized_.emplace(&I);
 
+    if constexpr (InfoTy::isOverloads())
+    {
+        if (!I.javadoc)
+        {
+            populateOverloadJavadocs(I);
+        }
+    }
+
     report::trace(
         "Finalizing javadoc for '{}'",
         corpus_.Corpus::qualifiedName(I));
@@ -320,11 +328,12 @@ copyBriefAndDetails(Javadoc& javadoc)
             {
                 auto resPrimaryLoc = getPrimaryLocation(res);
                 this->warn(
-                    "{}: Failed to copy documentation from '{}' (no documentation available).\n"
+                    "{}: Failed to copy documentation from {} '{}' (no documentation available).\n"
                     "    No documentation available.\n"
                     "        {}:{}\n"
                     "        Note: No documentation available for '{}'.",
                     corpus_.Corpus::qualifiedName(*current_context_),
+                    toString(res.Kind),
                     copied->string,
                     resPrimaryLoc->FullPath,
                     resPrimaryLoc->LineNumber,
@@ -645,19 +654,6 @@ JavadocFinalizer::
 checkExists(SymbolID const& id) const
 {
     MRDOCS_ASSERT(corpus_.info_.contains(id));
-}
-
-void
-JavadocFinalizer::
-generateOverloadJavadocs()
-{
-    for (auto& I: corpus_.info_)
-    {
-        if (auto* O = dynamic_cast<OverloadsInfo*>(I.get()))
-        {
-            populateOverloadJavadocs(*O);
-        }
-    }
 }
 
 namespace {
@@ -1106,6 +1102,15 @@ populateOverloadJavadocs(OverloadsInfo& I)
             {
                 return *dynamic_cast<FunctionInfo const*>(infoPtr);
             });
+
+    // Ensure all the members are initialized
+    for (FunctionInfo const& function: functions)
+    {
+        if (!finalized_.contains(&function))
+        {
+            operator()(const_cast<FunctionInfo&>(function));
+        }
+    }
 
     I.javadoc.emplace();
     // blocks: we do not copy javadoc detail blocks because

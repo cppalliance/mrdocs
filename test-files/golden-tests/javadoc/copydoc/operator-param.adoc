@@ -54,6 +54,7 @@ Return true if ch is in the character set&period;
 
 Declared in `&lt;operator&hyphen;param&period;cpp&gt;`
 
+Return true if ch is in the character set&period;
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -97,6 +98,8 @@ True if ch is in the set, otherwise false&period;
 == <<A,A>>::operator()
 
 
+Return true if ch is in the character set&period;
+
 === Synopsis
 
 
@@ -108,6 +111,13 @@ constexpr
 bool
 operator()(char ch) const noexcept;
 ----
+
+=== Description
+
+
+This function returns true if the        character is in the set, otherwise        it returns false&period;
+
+
 
 === Return Value
 
