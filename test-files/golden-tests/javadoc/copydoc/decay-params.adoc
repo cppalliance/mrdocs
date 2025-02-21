@@ -1,0 +1,227 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+=== Functions
+
+[cols=2]
+|===
+| Name 
+| Description 
+
+| <<bar,`bar`>> 
+| Brief from `foo()`
+
+| <<foo-05,`foo`>> 
+| `foo` overloads
+
+|===
+
+[#bar]
+== bar
+
+
+Brief from `foo()`
+
+=== Synopsis
+
+
+Declared in `&lt;decay&hyphen;params&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr
+bool
+bar(int* a);
+----
+
+=== Description
+
+
+This is the function original documentation    for the foo function with an array parameter&period;
+
+
+
+=== Return Value
+
+
+A boolean value&period;
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| An array of integers&period;
+
+|===
+
+[#foo-05]
+== foo
+
+
+`foo` overloads
+
+=== Synopses
+
+
+Declared in `&lt;decay&hyphen;params&period;cpp&gt;`
+
+We should not copy this doc
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<foo-0c,foo>>();
+----
+
+[.small]#<<foo-0c,_» more&period;&period;&period;_>>#
+
+We should not copy this doc
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<foo-01,foo>>(int a);
+----
+
+[.small]#<<foo-01,_» more&period;&period;&period;_>>#
+
+Brief from `foo()`
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr
+bool
+<<foo-0e,foo>>(int a[3]);
+----
+
+[.small]#<<foo-0e,_» more&period;&period;&period;_>>#
+
+=== Return Value
+
+
+A boolean value&period;
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| An integer&period;
+
+|===
+
+[#foo-0c]
+== foo
+
+
+We should not copy this doc
+
+=== Synopsis
+
+
+Declared in `&lt;decay&hyphen;params&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+foo();
+----
+
+=== Description
+
+
+`bar` should not copy this documentation    just because it has the same name and is    simpler&period;
+
+
+
+[#foo-01]
+== foo
+
+
+We should not copy this doc
+
+=== Synopsis
+
+
+Declared in `&lt;decay&hyphen;params&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+foo(int a);
+----
+
+=== Description
+
+
+`bar` should not copy this documentation    just because it has the same number of    parameters&period;
+
+
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| An integer&period;
+
+|===
+
+[#foo-0e]
+== foo
+
+
+Brief from `foo()`
+
+=== Synopsis
+
+
+Declared in `&lt;decay&hyphen;params&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr
+bool
+foo(int a[3]);
+----
+
+=== Description
+
+
+This is the function original documentation    for the foo function with an array parameter&period;
+
+
+
+=== Return Value
+
+
+A boolean value&period;
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| An array of integers&period;
+
+|===
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

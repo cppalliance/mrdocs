@@ -16,6 +16,12 @@
         <type name="char"/>
       </param>
       <doc>
+        <brief>
+          <text>Return true if ch is in the character set.</text>
+        </brief>
+        <para>
+          <text>This function returns true if the        character is in the set, otherwise        it returns false.</text>
+        </para>
         <returns>
           <text>True if ch is in the set, otherwise false.</text>
         </returns>

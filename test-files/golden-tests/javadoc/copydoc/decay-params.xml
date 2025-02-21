@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <function name="bar" id="mHoykrvnCPrloD8rIG6+dIga8dM=">
+    <file short-path="decay-params.cpp" source-path="decay-params.cpp" line="35"/>
+    <attr id="constexpr-kind" name="constexpr" value="1"/>
+    <return>
+      <type name="bool"/>
+    </return>
+    <param name="a">
+      <type class="pointer">
+        <pointee-type name="int"/>
+      </type>
+    </param>
+    <doc>
+      <brief>
+        <text>Brief from </text>
+        <mono>foo()</mono>
+      </brief>
+      <para>
+        <text>This is the function original documentation    for the foo function with an array parameter.</text>
+      </para>
+      <returns>
+        <text>A boolean value.</text>
+      </returns>
+      <param name="a">
+        <text>An array of integers.    </text>
+      </param>
+    </doc>
+  </function>
+  <function name="foo" id="yi6+RKHXbSoVR9R7xtUev7R+tpA=">
+    <file short-path="decay-params.cpp" source-path="decay-params.cpp" line="7"/>
+    <doc>
+      <brief>
+        <text>We should not copy this doc</text>
+      </brief>
+      <para>
+        <mono>bar</mono>
+        <text> should not copy this documentation    just because it has the same name and is    simpler.</text>
+      </para>
+    </doc>
+  </function>
+  <function name="foo" id="HS4sKOwEsAJwIGrfX/wfr/SW0/c=">
+    <file short-path="decay-params.cpp" source-path="decay-params.cpp" line="18"/>
+    <param name="a">
+      <type name="int"/>
+    </param>
+    <doc>
+      <brief>
+        <text>We should not copy this doc</text>
+      </brief>
+      <para>
+        <mono>bar</mono>
+        <text> should not copy this documentation    just because it has the same number of    parameters.</text>
+      </para>
+      <param name="a">
+        <text>An integer.</text>
+      </param>
+    </doc>
+  </function>
+  <function name="foo" id="72bbA46XC/75Vpdubu57UmYSBBk=">
+    <file short-path="decay-params.cpp" source-path="decay-params.cpp" line="29"/>
+    <attr id="constexpr-kind" name="constexpr" value="1"/>
+    <return>
+      <type name="bool"/>
+    </return>
+    <param name="a">
+      <type class="array" bounds="3">
+        <element-type name="int"/>
+      </type>
+    </param>
+    <doc>
+      <brief>
+        <text>Brief from </text>
+        <mono>foo()</mono>
+      </brief>
+      <para>
+        <text>This is the function original documentation    for the foo function with an array parameter.</text>
+      </para>
+      <returns>
+        <text>A boolean value.</text>
+      </returns>
+      <param name="a">
+        <text>An array of integers.    </text>
+      </param>
+    </doc>
+  </function>
+</namespace>
+</mrdocs>

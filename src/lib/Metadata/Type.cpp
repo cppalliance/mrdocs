@@ -324,16 +324,6 @@ operator<=>(NamedTypeInfo const& other) const
     {
         return br;
     }
-    if (auto const br = IsConst <=> other.IsConst;
-        !std::is_eq(br))
-    {
-        return br;
-    }
-    if (auto const br = IsVolatile <=> other.IsVolatile;
-        !std::is_eq(br))
-    {
-        return br;
-    }
     return Name <=> other.Name;
 }
 
@@ -487,11 +477,13 @@ operator<=>(Polymorphic<TypeInfo> const& lhs, Polymorphic<TypeInfo> const& rhs)
 {
     if (lhs && rhs)
     {
-        if (lhs->Kind == rhs->Kind)
+        auto& lhsRef = *lhs;
+        auto& rhsRef = *rhs;
+        if (lhsRef.Kind == rhsRef.Kind)
         {
-            return visit(*lhs, detail::VisitCompareFn<TypeInfo>(*rhs));
+            return visit(lhsRef, detail::VisitCompareFn<TypeInfo>(rhsRef));
         }
-        return lhs->Kind <=> rhs->Kind;
+        return lhsRef.Kind <=> rhsRef.Kind;
     }
     return !lhs ? std::strong_ordering::less
             : std::strong_ordering::greater;

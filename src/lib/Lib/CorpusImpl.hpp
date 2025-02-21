@@ -117,6 +117,30 @@ public:
             std::views::common;
     }
 
+    /** Return a range of constant Info objects for the specified Symbol IDs.
+     */
+    template <range_of<SymbolID> R>
+    auto
+    find(R&& range) const
+    {
+        return
+            std::views::transform(
+                range,
+                [this](SymbolID const& id) -> Info const*
+                {
+                    return this->find(id);
+                }) |
+            std::views::filter([](Info const* info)
+                {
+                    return info != nullptr;
+                }) |
+            std::views::transform([](Info const* info) -> Info const&
+                {
+                    return *info;
+                }) |
+            std::views::common;
+    }
+
     Expected<std::reference_wrapper<Info const>>
     lookup(SymbolID const& context, std::string_view name) const override;
 
@@ -170,7 +194,7 @@ private:
     Expected<std::reference_wrapper<Info const>>
     lookupImpl(
         Self&& self,
-        SymbolID const& context,
+        SymbolID const& contextId,
         std::string_view name);
 
     template <class Self>
@@ -179,15 +203,15 @@ private:
     lookupImpl(
         Self&& self,
         SymbolID const& context,
-        ParsedRef const& s,
+        ParsedRef const& ref,
         std::string_view name,
         bool cache);
 
     Info const*
     lookupImpl(
         SymbolID const& contextId,
-        ParsedRefComponent const& c,
-        ParsedRef const& s,
+        ParsedRefComponent const& component,
+        ParsedRef const& ref,
         bool checkParameters) const;
 
     std::pair<Info const*, bool>

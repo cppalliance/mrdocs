@@ -84,125 +84,6 @@ find(SymbolID const& id) const noexcept
 }
 
 namespace {
-template <bool checkTemplateArguments, bool checkFunctionParameters>
-Info const*
-memberMatches(
-    InfoSet const& info,
-    SymbolID const& MId,
-    ParsedRefComponent const& c,
-    ParsedRef const& s)
-{
-    auto const memberIt = info.find(MId);
-    MRDOCS_CHECK_OR(memberIt != info.end(), nullptr);
-    Info const* memberPtr = memberIt->get();
-    MRDOCS_CHECK_OR(memberPtr, nullptr);
-    Info const& member = *memberPtr;
-
-    auto isMatch = visit(member, [&]<typename MInfoTy>(MInfoTy const& M)
-    {
-        // Name match
-        if constexpr (requires { { M.OverloadedOperator } -> std::same_as<OperatorKind>; })
-        {
-            if (c.Operator != OperatorKind::None)
-            {
-                MRDOCS_CHECK_OR(M.OverloadedOperator == c.Operator, false);
-            }
-            else
-            {
-                MRDOCS_CHECK_OR(member.Name == c.Name, false);
-            }
-        }
-        else
-        {
-            MRDOCS_CHECK_OR(member.Name == c.Name, false);
-        }
-
-        if constexpr (checkTemplateArguments)
-        {
-            if constexpr (requires { M.Template; })
-            {
-                std::optional<TemplateInfo> const& templateInfo = M.Template;
-                MRDOCS_CHECK_OR(templateInfo.has_value(), false);
-                MRDOCS_CHECK_OR(templateInfo->Params.size() == c.TemplateArguments.size(), false);
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        if constexpr (checkFunctionParameters)
-        {
-            if constexpr (MInfoTy::isFunction())
-            {
-                MRDOCS_CHECK_OR(M.Params.size() == s.FunctionParameters.size(), false);
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        return true;
-    });
-    if (isMatch)
-    {
-        return memberPtr;
-    }
-    return nullptr;
-}
-
-template <bool checkTemplateArguments, bool checkFunctionParameters>
-Info const*
-findMemberMatch(
-    InfoSet const& info,
-    Info const& context,
-    ParsedRefComponent const& c,
-    ParsedRef const& s)
-{
-    if constexpr (checkTemplateArguments)
-    {
-        MRDOCS_CHECK_OR(c.isSpecialization(), nullptr);
-    }
-    if constexpr (checkFunctionParameters)
-    {
-        MRDOCS_CHECK_OR(!s.FunctionParameters.empty(), nullptr);
-    }
-
-    return visit(context, [&]<typename CInfoTy>(CInfoTy const& C)
-        -> Info const*
-    {
-        if constexpr (InfoParent<CInfoTy>)
-        {
-            for (SymbolID const& MId : allMembers(C))
-            {
-                auto const memberIt = info.find(MId);
-                MRDOCS_CHECK_OR_CONTINUE(memberIt != info.end());
-                Info const* memberPtr = memberIt->get();
-                MRDOCS_CHECK_OR_CONTINUE(memberPtr);
-                Info const& member = *memberPtr;
-                if (member.isOverloads())
-                {
-                    if (Info const* r = findMemberMatch<
-                            checkTemplateArguments,
-                            checkFunctionParameters>(info, member, c, s))
-                    {
-                        return r;
-                    }
-                }
-
-                if (Info const* r = memberMatches<
-                        checkTemplateArguments, checkFunctionParameters>(
-                            info, MId, c, s))
-                {
-                    return r;
-                }
-            }
-        }
-        return nullptr;
-    });
-}
-
 bool
 isTransparent(Info const& info)
 {
@@ -219,6 +100,80 @@ isTransparent(Info const& info)
         }
         return false;
     });
+}
+
+SymbolID
+findFirstParentInfo(
+    InfoSet const& info,
+    SymbolID const& contextID)
+{
+    SymbolID currentID = contextID;
+
+    while (true)
+    {
+        auto const contextIt = info.find(currentID);
+        MRDOCS_CHECK_OR(contextIt != info.end(), SymbolID::invalid);
+        auto& contextUniquePtr = *contextIt;
+        MRDOCS_CHECK_OR(contextUniquePtr, SymbolID::invalid);
+        auto& context = *contextUniquePtr;
+        bool const isParent = visit(context, []<typename InfoTy>(
+            InfoTy const& I) -> bool
+        {
+            return InfoParent<InfoTy>;
+        });
+        if (isParent)
+        {
+            return context.id;
+        }
+        currentID = context.Parent;
+    }
+}
+
+bool
+isDecayedEqual(
+    Polymorphic<TypeInfo> const& lhs,
+    Polymorphic<TypeInfo> const& rhs)
+{
+    // When comparing two parameters, we need to compare
+    // them as if they are decayed at the top level
+    // the same way function parameters are decayed to
+    // consider if they redefine an overload.
+    if (lhs == rhs)
+    {
+        return true;
+    }
+
+    // const and volatile are ignored at the top level
+    auto lhsDecay = lhs;
+    lhsDecay->IsConst = false;
+    lhsDecay->IsVolatile = false;
+    auto rhsDecay = rhs;
+    rhsDecay->IsConst = false;
+    rhsDecay->IsVolatile = false;
+
+    // Arrays decay to pointer
+    if (lhsDecay->isArray())
+    {
+        auto& lhsAsArray = dynamic_cast<ArrayTypeInfo&>(*lhsDecay);
+        PointerTypeInfo lhsAsPtr;
+        lhsAsPtr.PointeeType = std::move(lhsAsArray.ElementType);
+        // Copy all fields from base type
+        dynamic_cast<TypeInfo&>(lhsAsPtr) = dynamic_cast<TypeInfo&>(lhsAsArray);
+        lhsAsPtr.Kind = TypeKind::Pointer;
+        lhsDecay = std::move(lhsAsPtr);
+    }
+    if (rhsDecay->isArray())
+    {
+        auto& rhsAsArray = dynamic_cast<ArrayTypeInfo&>(*rhsDecay);
+        PointerTypeInfo rhsAsPtr;
+        rhsAsPtr.PointeeType = std::move(rhsAsArray.ElementType);
+        // Copy all fields from base type
+        dynamic_cast<TypeInfo&>(rhsAsPtr) = dynamic_cast<TypeInfo&>(rhsAsArray);
+        rhsAsPtr.Kind = TypeKind::Pointer;
+        rhsDecay = std::move(rhsAsPtr);
+    }
+
+    return lhsDecay == rhsDecay;
 }
 }
 
@@ -239,35 +194,42 @@ lookup(SymbolID const& context, std::string_view name)
 template <class Self>
 Expected<std::reference_wrapper<Info const>>
 CorpusImpl::
-lookupImpl(Self&& self, SymbolID const& context, std::string_view name)
+lookupImpl(Self&& self, SymbolID const& contextId0, std::string_view name)
 {
+    report::trace("Looking up '{}'", name);
     if (name.starts_with("::"))
     {
         return lookupImpl(self, SymbolID::global, name.substr(2));
     }
-    if (auto [info, found] = self.lookupCacheGet(context, name); found)
+    // Skip contexts that can't have members
+    SymbolID const contextId = findFirstParentInfo(self.info_, contextId0);
+    MRDOCS_CHECK(contextId != SymbolID::invalid, formatError("Failed to find '{}'", contextId0));
+    report::trace("    Context: '{}'", contextId);
+    if (auto [info, found] = self.lookupCacheGet(contextId, name);
+        found)
     {
         if (!info)
         {
             return Unexpected(formatError(
                 "Failed to find '{}' from context '{}'",
                 name,
-                self.Corpus::qualifiedName(*self.find(context))));
+                self.Corpus::qualifiedName(*self.find(contextId))));
         }
         return std::cref(*info);
     }
-    Expected<ParsedRef> const s = parseRef(name);
-    if (!s)
+    Expected<ParsedRef> const expRef = parseRef(name);
+    if (!expRef)
     {
-        return Unexpected(formatError("Failed to parse '{}'\n     {}", name, s.error().reason()));
+        return Unexpected(formatError("Failed to parse '{}'\n     {}", name, expRef.error().reason()));
     }
-    Info const* res = lookupImpl(self, context, *s, name, false);
+    ParsedRef const& ref = *expRef;
+    Info const* res = lookupImpl(self, contextId, ref, name, false);
     if (!res)
     {
-        auto const contextPtr = self.find(context);
+        auto const contextPtr = self.find(contextId);
         if (!contextPtr)
         {
-            return Unexpected(formatError("Failed to find '{}'", context));
+            return Unexpected(formatError("Failed to find '{}'", contextId));
         }
         return Unexpected(formatError(
             "Failed to find '{}' from context '{}'",
@@ -283,10 +245,11 @@ CorpusImpl::
 lookupImpl(
     Self&& self,
     SymbolID const& contextId,
-    ParsedRef const& s,
+    ParsedRef const& ref,
     std::string_view name,
     bool const cache)
 {
+    report::trace("Looking up parsed '{}'", name);
     if (cache)
     {
         if (auto [info, found] = self.lookupCacheGet(contextId, name); found)
@@ -297,27 +260,29 @@ lookupImpl(
 
     Info const* contextPtr = self.find(contextId);
     MRDOCS_CHECK_OR(contextPtr, nullptr);
+    report::trace("    Context: '{}'", contextPtr->Name);
 
     // Check the current contextId
-    Info const* cur = contextPtr;
-    for (std::size_t i = 0; i < s.Components.size(); ++i)
+    Info const* curContext = contextPtr;
+    for (std::size_t i = 0; i < ref.Components.size(); ++i)
     {
-        ParsedRefComponent const& c = s.Components[i];
-        cur = self.lookupImpl(cur->id, c, s, i == s.Components.size() - 1);
-        if (!cur)
+        ParsedRefComponent const& component = ref.Components[i];
+        bool const isLast = i == ref.Components.size() - 1;
+        curContext = self.lookupImpl(curContext->id, component, ref, isLast);
+        if (!curContext)
         {
             break;
         }
     }
-    if (cur)
+    if (curContext)
     {
-        self.lookupCacheSet(contextId, name, cur);
-        return cur;
+        self.lookupCacheSet(contextId, name, curContext);
+        return curContext;
     }
 
     // Fallback to parent contextId
     Info const& contextInfo = *contextPtr;
-    Info const* res = lookupImpl(self, contextInfo.Parent, s, name, true);
+    Info const* res = lookupImpl(self, contextInfo.Parent, ref, name, true);
     self.lookupCacheSet(contextId, name, res);
     return res;
 }
@@ -326,74 +291,206 @@ Info const*
 CorpusImpl::
 lookupImpl(
     SymbolID const& contextId,
-    ParsedRefComponent const& c,
-    ParsedRef const& s,
+    ParsedRefComponent const& component,
+    ParsedRef const& ref,
     bool const checkParameters) const
 {
-    // Find context
-    auto const contextIt = info_.find(contextId);
-    MRDOCS_CHECK_OR(contextIt != info_.end(), nullptr);
-    Info const* contextPtr = contextIt->get();
+    report::trace("Looking up component '{}'", component.Name);
+    // 1. Find context
+    Info const* contextPtr = this->find(contextId);
     MRDOCS_CHECK_OR(contextPtr, nullptr);
+    report::trace("    Context: '{}'", contextPtr->Name);
+
+    // If context is a typedef, lookup in the resolved type
+    if (auto* TI = dynamic_cast<TypedefInfo const*>(contextPtr))
+    {
+        MRDOCS_CHECK_OR(TI->Type, nullptr);
+        SymbolID resolvedSymbolID = TI->Type->namedSymbol();
+        contextPtr = this->find(resolvedSymbolID);
+        MRDOCS_CHECK_OR(contextPtr, nullptr);
+    }
     Info const& context = *contextPtr;
 
-    if (checkParameters)
+    // 2. Get a list of members
+    report::trace("    Finding members of context '{}'", contextPtr->Name);
+    SmallVector<SymbolID, 128> memberIDs;
+    auto pushAllMembersOf = [&](Info const& I)
     {
-        if (Info const* r = findMemberMatch<true, true>(info_, context, c, s))
+        visit(I, [&]<typename CInfoTy>(CInfoTy const& C) -> Info const*
         {
-            return r;
-        }
-
-        if (Info const* r = findMemberMatch<false, true>(info_, context, c, s))
-        {
-            return r;
-        }
-    }
-
-    if (Info const* r = findMemberMatch<true, false>(info_, context, c, s))
-    {
-        return r;
-    }
-
-    if (Info const* r = findMemberMatch<false, false>(info_, context, c, s))
-    {
-        return r;
-    }
-
-    // Fallback to members of resolved typedefs
-    if (context.isTypedef())
-    {
-        auto* TI = dynamic_cast<TypedefInfo const*>(&context);
-        return lookupImpl(TI->Type->namedSymbol(), c, s, checkParameters);
-    }
-
-    // Fallback to transparent contexts
-    Info const* r = visit(context, [&]<typename InfoTy>(
-        InfoTy const& I) -> Info const*
-    {
-        if constexpr (InfoParent<InfoTy>)
-        {
-            for (SymbolID const& MId : allMembers(I))
+            if constexpr (InfoParent<CInfoTy>)
             {
-                Info const* memberPtr = find(MId);
-                MRDOCS_CHECK_OR(memberPtr, nullptr);
-                Info const& member = *memberPtr;
-                if (isTransparent(member))
+                for (SymbolID const& MId : allMembers(C))
                 {
-                    if (auto* r1 = lookupImpl(MId, c, s, checkParameters))
-                    {
-                        return r1;
-                    }
+                    memberIDs.push_back(MId);
                 }
             }
-        }
-        return nullptr;
-    });
-    if (r)
+            return nullptr;
+        });
+    };
+    pushAllMembersOf(context);
+    MRDOCS_CHECK_OR(!memberIDs.empty(), nullptr);
+
+    // If a member is overloads, we also push the specific overloads
+    std::size_t const rootMembersSize = memberIDs.size();
+    for (std::size_t i = 0; i < rootMembersSize; ++i)
     {
-        return r;
+        SymbolID const& id = memberIDs[i];
+        Info const* I = find(id);
+        MRDOCS_CHECK_OR_CONTINUE(I);
+        MRDOCS_CHECK_OR_CONTINUE(I->isOverloads());
+        pushAllMembersOf(*I);
     }
 
+    // 3. Find the member that matches the component
+    enum class MatchLevel {
+        None,
+        Name,
+        TemplateArgsSize,
+        TemplateArgs,
+        FunctionParametersSize,
+        FunctionParametersSizeAndDocumented,
+        FunctionParameters,
+        Qualifiers,
+        NoExceptDefinition,
+        NoExceptKind,
+        NoExceptOperand
+    };
+    auto const highestMatchLevel =
+        !checkParameters || !ref.HasFunctionParameters ?
+            MatchLevel::TemplateArgsSize :
+            MatchLevel::Qualifiers;
+    auto matchLevel = MatchLevel::None;
+    Info const* res = nullptr;
+    for (SymbolID const& memberID : memberIDs)
+    {
+        Info const* memberPtr = find(memberID);
+        MRDOCS_CHECK_OR_CONTINUE(memberPtr);
+        Info const& member = *memberPtr;
+        report::trace("    Attempting to match {} '{}'", toString(member.Kind), member.Name);
+        MatchLevel const memberMatchLevel =
+            visit(member, [&]<typename MInfoTy>(MInfoTy const& M)
+                -> MatchLevel
+        {
+            auto matchRes = MatchLevel::None;
+
+            // Name match
+            if constexpr (requires { { M.OverloadedOperator } -> std::same_as<OperatorKind>; })
+            {
+                if (component.Operator != OperatorKind::None)
+                {
+                    MRDOCS_CHECK_OR(M.OverloadedOperator == component.Operator, matchRes);
+                }
+                else
+                {
+                    MRDOCS_CHECK_OR(member.Name == component.Name, matchRes);
+                }
+            }
+            else
+            {
+                MRDOCS_CHECK_OR(member.Name == component.Name, matchRes);
+            }
+            matchRes = MatchLevel::Name;
+
+            // Template arguments match
+            if constexpr (requires { M.Template; })
+            {
+                std::optional<TemplateInfo> const& templateInfo = M.Template;
+                if (component.TemplateArguments.empty())
+                {
+                    MRDOCS_CHECK_OR(
+                        !templateInfo.has_value() ||
+                        templateInfo->Args.empty(), matchRes);
+                }
+                else
+                {
+                    MRDOCS_CHECK_OR(
+                        templateInfo.has_value() &&
+                        templateInfo->Args.size() == component.TemplateArguments.size(), matchRes);
+                }
+            }
+            else
+            {
+                MRDOCS_CHECK_OR(component.TemplateArguments.empty(), matchRes);
+            }
+            matchRes = MatchLevel::TemplateArgsSize;
+
+            // Function parameters size match
+            MRDOCS_CHECK_OR(checkParameters && ref.HasFunctionParameters, matchRes);
+            MRDOCS_CHECK_OR(MInfoTy::isFunction(), matchRes);
+            auto const& F = dynamic_cast<FunctionInfo const&>(M);
+            MRDOCS_CHECK_OR(F.Params.size() == ref.FunctionParameters.size(), matchRes);
+            matchRes = MatchLevel::FunctionParametersSize;
+
+            // Function parameters size and documented match
+            // This is an intermediary level because among choices that
+            // doesn't exactly match the function parameters, we prefer
+            // the one that is documented as the most "natural" choice.
+            if (F.javadoc)
+            {
+                matchRes = MatchLevel::FunctionParametersSizeAndDocumented;
+            }
+
+            // Function parameters match
+            MRDOCS_CHECK_OR(F.IsExplicitObjectMemberFunction == ref.IsExplicitObjectMemberFunction, matchRes);
+            for (std::size_t i = 0; i < F.Params.size(); ++i)
+            {
+                auto& lhsType = F.Params[i].Type;
+                auto& rhsType  = ref.FunctionParameters[i];
+                MRDOCS_CHECK_OR(isDecayedEqual(lhsType, rhsType), matchRes);
+            }
+            MRDOCS_CHECK_OR(F.IsVariadic == ref.IsVariadic, matchRes);
+            matchRes = MatchLevel::FunctionParameters;
+
+            // Qualifiers match
+            MRDOCS_CHECK_OR(F.RefQualifier == ref.Kind, matchRes);
+            MRDOCS_CHECK_OR(F.IsConst == ref.IsConst, matchRes);
+            MRDOCS_CHECK_OR(F.IsVolatile == ref.IsVolatile, matchRes);
+            matchRes = MatchLevel::Qualifiers;
+
+            // Noexcept match
+            MRDOCS_CHECK_OR(F.Noexcept.Implicit == ref.ExceptionSpec.Implicit, matchRes);
+            matchRes = MatchLevel::NoExceptDefinition;
+            MRDOCS_CHECK_OR(F.Noexcept.Kind == ref.ExceptionSpec.Kind, matchRes);
+            matchRes = MatchLevel::NoExceptKind;
+            MRDOCS_CHECK_OR(F.Noexcept.Operand == ref.ExceptionSpec.Operand, matchRes);
+            matchRes = MatchLevel::NoExceptOperand;
+            return matchRes;
+        });
+        if (memberMatchLevel > matchLevel)
+        {
+            res = &member;
+            matchLevel = memberMatchLevel;
+            // Early exit if the matchMatchLevel is the highest possible
+            // for the component and the parsed reference
+            if (matchLevel >= highestMatchLevel)
+            {
+                break;
+            }
+        }
+    }
+
+    // If we found a match, return it
+    if (matchLevel != MatchLevel::None)
+    {
+        return res;
+    }
+
+    // Else, fallback to transparent contexts
+    report::trace("    Looking up in transparent contexts");
+    for (SymbolID const& memberID : memberIDs)
+    {
+        Info const* memberPtr = find(memberID);
+        MRDOCS_CHECK_OR_CONTINUE(memberPtr);
+        Info const& member = *memberPtr;
+        MRDOCS_CHECK_OR_CONTINUE(isTransparent(member));
+        if (Info const* r = lookupImpl(member.id, component, ref, checkParameters))
+        {
+            return r;
+        }
+    }
+
+    // If we didn't find a match, return nullptr
     return nullptr;
 }
 
@@ -420,11 +517,11 @@ lookupCacheGet(
 void
 CorpusImpl::
 lookupCacheSet(
-    SymbolID const& context,
+    SymbolID const& contextId,
     std::string_view name,
     Info const* info)
 {
-    lookupCache_[context][std::string(name)] = info;
+    lookupCache_[contextId][std::string(name)] = info;
 }
 
 

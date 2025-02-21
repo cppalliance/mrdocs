@@ -1,0 +1,212 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+=== Functions
+
+[cols=2]
+|===
+| Name 
+| Description 
+
+| <<copyFromNoParam,`copyFromNoParam`>> 
+| Brief from `foo()`
+
+| <<copyfromOverloads,`copyfromOverloads`>> 
+| Brief from `foo()`
+
+| <<foo-05,`foo`>> 
+| Brief from `foo()`
+
+|===
+
+[#copyFromNoParam]
+== copyFromNoParam
+
+
+Brief from `foo()`
+
+=== Synopsis
+
+
+Declared in `&lt;no&hyphen;param&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr
+bool
+copyFromNoParam();
+----
+
+=== Description
+
+
+This is the function original documentation    for the foo function with no parameters&period;
+
+This documentation is copied from the    page containing the foo overload with    no parameters&period;
+
+
+
+=== Return Value
+
+
+A boolean value&period;
+
+[#copyfromOverloads]
+== copyfromOverloads
+
+
+Brief from `foo()`
+
+=== Synopsis
+
+
+Declared in `&lt;no&hyphen;param&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr
+bool
+copyfromOverloads();
+----
+
+=== Description
+
+
+This documentation is copied from the    page containing all overloads of foo&period;
+
+
+
+=== Return Value
+
+
+A boolean value&period;
+
+[#foo-05]
+== foo
+
+
+Brief from `foo()`
+
+=== Synopses
+
+
+Declared in `&lt;no&hyphen;param&period;cpp&gt;`
+
+Brief from `foo()`
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr
+bool
+<<foo-0c,foo>>();
+----
+
+[.small]#<<foo-0c,_» more&period;&period;&period;_>>#
+
+Brief from `foo()`
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr
+bool
+<<foo-0a,foo>>(char ch);
+----
+
+[.small]#<<foo-0a,_» more&period;&period;&period;_>>#
+
+=== Return Value
+
+
+A boolean value&period;
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *ch*
+| A character&period;
+
+|===
+
+[#foo-0c]
+== foo
+
+
+Brief from `foo()`
+
+=== Synopsis
+
+
+Declared in `&lt;no&hyphen;param&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr
+bool
+foo();
+----
+
+=== Description
+
+
+This is the function original documentation    for the foo function with no parameters&period;
+
+
+
+=== Return Value
+
+
+A boolean value&period;
+
+[#foo-0a]
+== foo
+
+
+Brief from `foo()`
+
+=== Synopsis
+
+
+Declared in `&lt;no&hyphen;param&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr
+bool
+foo(char ch);
+----
+
+=== Description
+
+
+This is the function original documentation    for the foo function with no parameters&period;
+
+
+
+=== Return Value
+
+
+A boolean value&period;
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *ch*
+| A character&period;
+
+|===
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

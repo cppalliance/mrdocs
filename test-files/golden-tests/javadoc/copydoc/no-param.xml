@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <function name="copyFromNoParam" id="w/4YwvbadDuW7Jcd/fzixfCXP54=">
+    <file short-path="no-param.cpp" source-path="no-param.cpp" line="26"/>
+    <attr id="constexpr-kind" name="constexpr" value="1"/>
+    <return>
+      <type name="bool"/>
+    </return>
+    <doc>
+      <brief>
+        <text>Brief from </text>
+        <mono>foo()</mono>
+      </brief>
+      <para>
+        <text>This is the function original documentation    for the foo function with no parameters.</text>
+      </para>
+      <para>
+        <text>This documentation is copied from the    page containing the foo overload with    no parameters.</text>
+      </para>
+      <returns>
+        <text>A boolean value.</text>
+      </returns>
+    </doc>
+  </function>
+  <function name="copyfromOverloads" id="3y+Rt2TVgN8SW9EozffoZoL4lCI=">
+    <file short-path="no-param.cpp" source-path="no-param.cpp" line="36"/>
+    <attr id="constexpr-kind" name="constexpr" value="1"/>
+    <return>
+      <type name="bool"/>
+    </return>
+    <doc>
+      <brief>
+        <text>Brief from </text>
+        <mono>foo()</mono>
+      </brief>
+      <para>
+        <text>This documentation is copied from the    page containing all overloads of foo.</text>
+      </para>
+      <returns>
+        <text>A boolean value.</text>
+      </returns>
+    </doc>
+  </function>
+  <function name="foo" id="yi6+RKHXbSoVR9R7xtUev7R+tpA=">
+    <file short-path="no-param.cpp" source-path="no-param.cpp" line="8"/>
+    <attr id="constexpr-kind" name="constexpr" value="1"/>
+    <return>
+      <type name="bool"/>
+    </return>
+    <doc>
+      <brief>
+        <text>Brief from </text>
+        <mono>foo()</mono>
+      </brief>
+      <para>
+        <text>This is the function original documentation    for the foo function with no parameters.</text>
+      </para>
+      <returns>
+        <text>A boolean value.</text>
+      </returns>
+    </doc>
+  </function>
+  <function name="foo" id="rxxMRI4yLbPZ6gsq6d/+e9IVaeQ=">
+    <file short-path="no-param.cpp" source-path="no-param.cpp" line="16"/>
+    <attr id="constexpr-kind" name="constexpr" value="1"/>
+    <return>
+      <type name="bool"/>
+    </return>
+    <param name="ch">
+      <type name="char"/>
+    </param>
+    <doc>
+      <brief>
+        <text>Brief from </text>
+        <mono>foo()</mono>
+      </brief>
+      <para>
+        <text>This is the function original documentation    for the foo function with no parameters.</text>
+      </para>
+      <returns>
+        <text>A boolean value.</text>
+      </returns>
+      <param name="ch">
+        <text>A character.</text>
+      </param>
+    </doc>
+  </function>
+</namespace>
+</mrdocs>
