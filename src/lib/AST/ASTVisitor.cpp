@@ -1636,6 +1636,7 @@ populateAttributes(Info& I, Decl const* D)
             addAttribute(I, AttributeKind::Nodiscard);
             break;
         case attr::Kind::NoReturn:
+        case attr::Kind::CXX11NoReturn:
             addAttribute(I, AttributeKind::Noreturn);
             break;
         case attr::Kind::NoUniqueAddress:
