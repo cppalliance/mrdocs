@@ -13,6 +13,7 @@
 #include <lib/Lib/ConfigImpl.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Support/Path.hpp>
+#include <mrdocs/Support/Report.hpp>
 #include <llvm/Support/Path.h>
 #include <fmt/format.h>
 #include <filesystem>

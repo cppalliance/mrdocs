@@ -11,10 +11,9 @@
 #ifndef MRDOCS_LIB_SUPPORT_ERROR_HPP
 #define MRDOCS_LIB_SUPPORT_ERROR_HPP
 
-#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/Report.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/StringRef.h>
-#include <llvm/Support/Error.h>
 #include <llvm/Support/raw_ostream.h>
 #include <functional>
 #include <ostream>

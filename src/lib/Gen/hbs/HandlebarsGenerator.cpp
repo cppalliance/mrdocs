@@ -24,6 +24,7 @@
 #include <llvm/Support/Path.h>
 
 #include <mrdocs/Support/Path.hpp>
+#include <mrdocs/Support/Report.hpp>
 
 #include <fstream>
 #include <sstream>

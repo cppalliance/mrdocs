@@ -10,7 +10,7 @@
 
 #include "TestRunner.hpp"
 #include "TestArgs.hpp"
-#include "lib/Support/Error.hpp"
+#include "lib/Support/Report.hpp"
 #include "lib/Support/Path.hpp"
 #include "lib/Lib/ConfigImpl.hpp"
 #include "lib/Lib/CorpusImpl.hpp"

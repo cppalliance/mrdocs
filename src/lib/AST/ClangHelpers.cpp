@@ -12,6 +12,7 @@
 
 #include "lib/AST/ClangHelpers.hpp"
 #include <mrdocs/Support/Assert.hpp>
+#include <mrdocs/Support/Report.hpp>
 #include <clang/Sema/Template.h>
 #include <clang/Index/USRGeneration.h>
 #include <ranges>

@@ -11,7 +11,7 @@
 
 #include "ToolArgs.hpp"
 #include "lib/Support/Debug.hpp"
-#include "lib/Support/Error.hpp"
+#include "lib/Support/Report.hpp"
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Version.hpp>
 #include <llvm/Support/FileSystem.h>

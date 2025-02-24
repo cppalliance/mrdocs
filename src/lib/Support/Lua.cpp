@@ -9,7 +9,7 @@
 //
 
 #include <mrdocs/Support/Lua.hpp>
-#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/Report.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include "../../../third-party/lua/src/lua.hpp"
 #include <fmt/format.h>

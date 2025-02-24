@@ -11,7 +11,7 @@
 #ifndef MRDOCS_API_SUPPORT_GLOBPATTERN_HPP
 #define MRDOCS_API_SUPPORT_GLOBPATTERN_HPP
 
-#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/Expected.hpp>
 #include <memory>
 #include <optional>
 #include <string_view>

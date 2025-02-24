@@ -928,6 +928,7 @@ def generate_public_toolargs_cpp(config):
         '"PublicToolArgs.hpp"',
         # '"Addons.hpp"',
         '<mrdocs/Config/ReferenceDirectories.hpp>',
+        '<lib/Support/Report.hpp>',
         '<lib/Support/Path.hpp>',
         '<cstddef>',
         '<vector>',

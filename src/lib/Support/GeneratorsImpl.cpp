@@ -9,6 +9,7 @@
 //
 
 #include "GeneratorsImpl.hpp"
+#include <mrdocs/Support/Report.hpp>
 #include <llvm/ADT/STLExtras.h>
 
 namespace clang {

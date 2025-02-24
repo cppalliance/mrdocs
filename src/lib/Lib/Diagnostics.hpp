@@ -11,7 +11,7 @@
 #ifndef MRDOCS_LIB_TOOL_DIAGNOSTICS_HPP
 #define MRDOCS_LIB_TOOL_DIAGNOSTICS_HPP
 
-#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/Report.hpp>
 #include <llvm/Support/raw_ostream.h>
 #include <string>
 #include <unordered_map>

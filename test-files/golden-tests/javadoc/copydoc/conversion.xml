@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
+    <file short-path="conversion.cpp" source-path="conversion.cpp" line="4" class="def"/>
+    <function class="conversion" name="operator string_type" id="KpKT2IPgl8pNnQdWRqrAmcPRtV0=">
+      <file short-path="conversion.cpp" source-path="conversion.cpp" line="9"/>
+      <attr id="is-const"/>
+      <return>
+        <type id="aQ5vERa/ROUuSctnkS1VsKSt48E=" name="string_type"/>
+      </return>
+      <doc>
+        <brief>
+          <text>Convert A to a string</text>
+        </brief>
+        <returns>
+          <text>A string representation of A</text>
+        </returns>
+      </doc>
+    </function>
+    <function class="conversion" name="operator string_view_type" id="DKM26GOkLsGMoiNoOqDVjK/yk6A=">
+      <file short-path="conversion.cpp" source-path="conversion.cpp" line="13"/>
+      <attr id="is-const"/>
+      <return>
+        <type id="EulqVl/v48vv9XjENaufduUwZKI=" name="string_view_type"/>
+      </return>
+      <doc>
+        <brief>
+          <text>string_type()</text>
+        </brief>
+      </doc>
+    </function>
+  </struct>
+  <class name="string_type" id="aQ5vERa/ROUuSctnkS1VsKSt48E=">
+    <file short-path="conversion.cpp" source-path="conversion.cpp" line="1"/>
+  </class>
+  <class name="string_view_type" id="EulqVl/v48vv9XjENaufduUwZKI=">
+    <file short-path="conversion.cpp" source-path="conversion.cpp" line="2"/>
+  </class>
+</namespace>
+</mrdocs>

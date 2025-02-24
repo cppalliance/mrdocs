@@ -8,7 +8,7 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "lib/Support/Error.hpp"
+#include "lib/Support/Report.hpp"
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Version.hpp>
 #include <llvm/Support/Mutex.h>
@@ -170,21 +170,6 @@ static bool sourceLocationWarnings_ = true;
 
 constinit Results results{};
 
-static
-void
-print_impl(
-    std::string const& s)
-{
-    llvm::errs() << s << '\n';
-#ifdef _MSC_VER
-    if(::IsDebuggerPresent() != 0)
-    {
-        ::OutputDebugStringA(s.c_str());
-        ::OutputDebugStringA("\n");
-    }
-#endif
-}
-
 void
 setMinimumLevel(Level const level) noexcept
 {
@@ -205,9 +190,16 @@ setSourceLocationWarnings(bool b) noexcept
 
 void
 print(
-    std::string const& text)
+    std::string const& s)
 {
-    print_impl(text);
+    llvm::outs() << s << '\n';
+#ifdef _MSC_VER
+    if(::IsDebuggerPresent() != 0)
+    {
+        ::OutputDebugStringA(s.c_str());
+        ::OutputDebugStringA("\n");
+    }
+#endif
 }
 
 void
@@ -253,7 +245,7 @@ getLevelColor(Level level)
     case Level::info:
         return llvm::raw_ostream::Colors::WHITE;
     case Level::warn:
-        return llvm::raw_ostream::Colors::MAGENTA;
+        return llvm::raw_ostream::Colors::BRIGHT_YELLOW;
     case Level::error:
         return llvm::raw_ostream::Colors::RED;
     case Level::fatal:

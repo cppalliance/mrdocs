@@ -10,6 +10,7 @@
 //
 
 #include "Path.hpp"
+#include <mrdocs/Support/Report.hpp>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
 #include <llvm/Support/MemoryBuffer.h>

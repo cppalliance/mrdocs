@@ -13,7 +13,7 @@
 #define MRDOCS_API_DOM_OBJECT_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/Expected.hpp>
 #include <iterator>
 #include <memory>
 #include <vector>

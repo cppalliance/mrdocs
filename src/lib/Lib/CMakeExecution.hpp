@@ -14,7 +14,7 @@
 #include <string>
 
 #include <llvm/ADT/StringRef.h>
-#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/Expected.hpp>
 
 namespace clang {
 namespace mrdocs {
