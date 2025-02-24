@@ -19,7 +19,7 @@
 #include "lib/Support/Path.hpp"
 #include "llvm/Support/Program.h"
 #include <mrdocs/Generators.hpp>
-#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/Report.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Support/ThreadPool.hpp>
 #include <clang/Tooling/JSONCompilationDatabase.h>

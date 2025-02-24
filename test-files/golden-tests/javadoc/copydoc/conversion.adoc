@@ -1,0 +1,225 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+=== Types
+
+[cols=1]
+|===
+| Name 
+
+| <<A,`A`>> 
+
+| <<string_type,`string&lowbar;type`>> 
+
+| <<string_view_type,`string&lowbar;view&lowbar;type`>> 
+
+|===
+
+[#A]
+== A
+
+
+=== Synopsis
+
+
+Declared in `&lt;conversion&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct A;
+----
+
+=== Member Functions
+
+[cols=2]
+|===
+| Name 
+| Description 
+
+| <<A-operator_assign-0d,`operator&equals;`>> 
+| Convert a string to A
+
+| <<A-2conversion-02,`operator string&lowbar;type`>> 
+| Convert A to a string
+
+| <<A-2conversion-00,`operator string&lowbar;view&lowbar;type`>> 
+| string&lowbar;type()
+
+|===
+
+
+
+[#A-operator_assign-0d]
+== <<A,A>>::operator&equals;
+
+
+Convert a string to A
+
+=== Synopses
+
+
+Declared in `&lt;conversion&period;cpp&gt;`
+
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>>&
+<<A-operator_assign-00,operator&equals;>>(<<string_view_type,string&lowbar;view&lowbar;type>> const& other);
+----
+
+[.small]#<<A-operator_assign-00,_» more&period;&period;&period;_>>#
+
+Convert a string to A
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>>&
+<<A-operator_assign-08,operator&equals;>>(<<string_type,string&lowbar;type>> const& other);
+----
+
+[.small]#<<A-operator_assign-08,_» more&period;&period;&period;_>>#
+
+=== Return Value
+
+
+A representation of the string
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *other*
+| The string to convert
+
+|===
+
+[#A-operator_assign-00]
+== <<A,A>>::operator&equals;
+
+
+=== Synopsis
+
+
+Declared in `&lt;conversion&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>>&
+operator&equals;(<<string_view_type,string&lowbar;view&lowbar;type>> const& other);
+----
+
+[#A-operator_assign-08]
+== <<A,A>>::operator&equals;
+
+
+Convert a string to A
+
+=== Synopsis
+
+
+Declared in `&lt;conversion&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>>&
+operator&equals;(<<string_type,string&lowbar;type>> const& other);
+----
+
+=== Return Value
+
+
+A representation of the string
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *other*
+| The string to convert
+
+|===
+
+[#A-2conversion-02]
+== <<A,A>>::operator <<string_type,string&lowbar;type>>
+
+
+Convert A to a string
+
+=== Synopsis
+
+
+Declared in `&lt;conversion&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+operator <<string_type,string&lowbar;type>>() const;
+----
+
+=== Return Value
+
+
+A string representation of A
+
+[#A-2conversion-00]
+== <<A,A>>::operator <<string_view_type,string&lowbar;view&lowbar;type>>
+
+
+string&lowbar;type()
+
+=== Synopsis
+
+
+Declared in `&lt;conversion&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+operator <<string_view_type,string&lowbar;view&lowbar;type>>() const;
+----
+
+[#string_type]
+== string&lowbar;type
+
+
+=== Synopsis
+
+
+Declared in `&lt;conversion&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class string&lowbar;type;
+----
+
+
+
+
+[#string_view_type]
+== string&lowbar;view&lowbar;type
+
+
+=== Synopsis
+
+
+Declared in `&lt;conversion&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class string&lowbar;view&lowbar;type;
+----
+
+
+
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

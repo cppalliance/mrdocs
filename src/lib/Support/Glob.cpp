@@ -13,6 +13,7 @@
 #include <llvm/ADT/SmallVector.h>
 #include <llvm/Support/GlobPattern.h>
 #include <mrdocs/Support/Glob.hpp>
+#include <mrdocs/Support/Report.hpp>
 #include <llvm/Support/YAMLTraits.h>
 
 namespace clang::mrdocs {

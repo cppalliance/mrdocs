@@ -14,7 +14,8 @@
 
 #include "lib/Lib/CorpusImpl.hpp"
 #include "lib/Lib/Info.hpp"
-#include "mrdocs/Support/ScopeExit.hpp"
+#include <mrdocs/Support/ScopeExit.hpp>
+#include <mrdocs/Support/Report.hpp>
 #include <set>
 #include <utility>
 
@@ -212,7 +213,7 @@ private:
     void
     warn(
         Location const& loc,
-        Located<std::string_view> const format,
+        report::Located<std::string_view> const format,
         Args&&... args)
     {
         MRDOCS_CHECK_OR(corpus_.config->warnings);
@@ -223,7 +224,7 @@ private:
     template<class... Args>
     void
     warn(
-        Located<std::string_view> const format,
+        report::Located<std::string_view> const format,
         Args&&... args)
     {
         MRDOCS_CHECK_OR(corpus_.config->warnings);

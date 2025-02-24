@@ -10,7 +10,7 @@
 //
 
 #include "mrdocs/Config.hpp"
-#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/Report.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <llvm/Support/FileSystem.h>
 #include <ranges>

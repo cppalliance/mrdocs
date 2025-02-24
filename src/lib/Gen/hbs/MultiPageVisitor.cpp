@@ -13,6 +13,7 @@
 #include "VisitorHelpers.hpp"
 #include <fstream>
 #include <mrdocs/Support/Path.hpp>
+#include <mrdocs/Support/Report.hpp>
 
 namespace clang::mrdocs::hbs {
 

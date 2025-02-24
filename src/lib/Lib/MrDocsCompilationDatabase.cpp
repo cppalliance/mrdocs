@@ -13,6 +13,7 @@
 #include "lib/Support/Path.hpp"
 #include "lib/Lib/ConfigImpl.hpp"
 #include "lib/Lib/MrDocsCompilationDatabase.hpp"
+#include <mrdocs/Support/Report.hpp>
 #include <fmt/format.h>
 #include <clang/Basic/LangStandard.h>
 #include <clang/Driver/Driver.h>

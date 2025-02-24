@@ -12,6 +12,8 @@
 #include <mrdocs/Metadata/Info/Function.hpp>
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Support/Algorithm.hpp>
+#include <mrdocs/Support/Expected.hpp>
+#include <mrdocs/Support/Report.hpp>
 #include <llvm/ADT/StringExtras.h>
 
 namespace clang::mrdocs {

@@ -9,7 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "lib/Support/Error.hpp"
+#include "lib/Support/Report.hpp"
 #include "lib/Support/Yaml.hpp"
 
 namespace clang {

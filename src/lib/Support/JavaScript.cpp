@@ -9,7 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "lib/Support/Error.hpp"
+#include "lib/Support/Report.hpp"
 #include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/JavaScript.hpp>
 #include <mrdocs/Support/Handlebars.hpp>

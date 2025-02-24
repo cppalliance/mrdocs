@@ -18,7 +18,7 @@
 #include "lib/Metadata/Finalizers/SortMembersFinalizer.hpp"
 #include "lib/Metadata/Finalizers/JavadocFinalizer.hpp"
 #include "lib/Metadata/Finalizers/NamespacesFinalizer.hpp"
-#include "lib/Support/Error.hpp"
+#include "lib/Support/Report.hpp"
 #include "lib/Support/Chrono.hpp"
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Support/Error.hpp>

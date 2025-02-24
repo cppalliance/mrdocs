@@ -14,7 +14,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom/Kind.hpp>
 #include <mrdocs/Dom/String.hpp>
-#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/Expected.hpp>
 #include <memory>
 
 namespace clang {

@@ -9,6 +9,7 @@
 //
 
 #include "BaseMembersFinalizer.hpp"
+#include <mrdocs/Support/Report.hpp>
 
 namespace clang::mrdocs {
 
