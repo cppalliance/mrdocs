@@ -57,7 +57,7 @@ struct A;
 <td><a href="#A-2conversion-02"><code>operator string_type</code></a> </td><td><span><span>Convert A to a string</span></span>
 </td>
 </tr><tr>
-<td><a href="#A-2conversion-00"><code>operator string_view_type</code></a> </td><td><span><span>string_type()</span></span>
+<td><a href="#A-2conversion-00"><code>operator string_view_type</code></a> </td><td><span><span>Convert A to a string</span></span>
 </td>
 </tr>
 </tbody>
@@ -78,15 +78,6 @@ struct A;
 <h3>Synopses</h3>
 <div>
 Declared in <code>&lt;conversion.cpp&gt;</code></div>
-
-
-<pre>
-<code class="source-code cpp">
-<a href="#A">A</a>&
-<a href="#A-operator_assign-00">operator&#x3D;</a>(<a href="#string_view_type">string_view_type</a> const& other);
-</code>
-</pre><span class="small"><a href="#A-operator_assign-00"><em>» more...</em></a></span>
-
 <p>
     <span><span>Convert a string to A</span></span>
 
@@ -99,6 +90,19 @@ Declared in <code>&lt;conversion.cpp&gt;</code></div>
 <a href="#A-operator_assign-08">operator&#x3D;</a>(<a href="#string_type">string_type</a> const& other);
 </code>
 </pre><span class="small"><a href="#A-operator_assign-08"><em>» more...</em></a></span>
+
+<p>
+    <span><span>Convert a string to A</span></span>
+
+</p>
+
+
+<pre>
+<code class="source-code cpp">
+<a href="#A">A</a>&
+<a href="#A-operator_assign-00">operator&#x3D;</a>(<a href="#string_view_type">string_view_type</a> const& other);
+</code>
+</pre><span class="small"><a href="#A-operator_assign-00"><em>» more...</em></a></span>
 
 
 </div>
@@ -128,22 +132,6 @@ Declared in <code>&lt;conversion.cpp&gt;</code></div>
 </div>
 <div>
 <div>
-<h2 id="A-operator_assign-00"><a href="#A">A</a>::operator&#x3D;</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;conversion.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-<a href="#A">A</a>&
-operator&#x3D;(<a href="#string_view_type">string_view_type</a> const& other);
-</code>
-</pre>
-</div>
-</div>
-<div>
-<div>
 <h2 id="A-operator_assign-08"><a href="#A">A</a>::operator&#x3D;</h2>
 <div>
 <span><span>Convert a string to A</span></span>
@@ -159,6 +147,50 @@ Declared in <code>&lt;conversion.cpp&gt;</code></div>
 <code class="source-code cpp">
 <a href="#A">A</a>&
 operator&#x3D;(<a href="#string_type">string_type</a> const& other);
+</code>
+</pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<p><span>A representation of the string</span></p>
+
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>other</strong></td>
+<td><p><span>The string to convert</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="A-operator_assign-00"><a href="#A">A</a>::operator&#x3D;</h2>
+<div>
+<span><span>Convert a string to A</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;conversion.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+<a href="#A">A</a>&
+operator&#x3D;(<a href="#string_view_type">string_view_type</a> const& other);
 </code>
 </pre>
 </div>
@@ -215,7 +247,7 @@ operator <a href="#string_type">string_type</a>() const;
 <div>
 <h2 id="A-2conversion-00"><a href="#A">A</a>::operator <a href="#string_view_type">string_view_type</a></h2>
 <div>
-<span><span>string_type()</span></span>
+<span><span>Convert A to a string</span></span>
 
 
 </div>
@@ -229,6 +261,11 @@ Declared in <code>&lt;conversion.cpp&gt;</code></div>
 operator <a href="#string_view_type">string_view_type</a>() const;
 </code>
 </pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<p><span>A string representation of A</span></p>
+
 </div>
 </div>
 <div>

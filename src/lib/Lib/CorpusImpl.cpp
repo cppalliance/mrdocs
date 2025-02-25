@@ -222,7 +222,7 @@ lookupImpl(Self&& self, SymbolID const& contextId0, std::string_view name)
     {
         return Unexpected(formatError("Failed to parse '{}'\n     {}", name, expRef.error().reason()));
     }
-    ParsedRef const& ref = *expRef;
+    ParsedRef const& ref = *std::move(expRef);
     Info const* res = lookupImpl(self, contextId, ref, name, false);
     if (!res)
     {
@@ -375,11 +375,18 @@ lookupImpl(
             auto matchRes = MatchLevel::None;
 
             // Name match
-            if constexpr (requires { { M.OverloadedOperator } -> std::same_as<OperatorKind>; })
+            if constexpr (
+                std::same_as<MInfoTy, FunctionInfo> ||
+                std::same_as<MInfoTy, OverloadsInfo>)
             {
-                if (component.Operator != OperatorKind::None)
+                if (component.isOperator())
                 {
                     MRDOCS_CHECK_OR(M.OverloadedOperator == component.Operator, matchRes);
+                }
+                else if (component.isConversion())
+                {
+                    MRDOCS_CHECK_OR(M.Class == FunctionClass::Conversion, matchRes);
+                    MRDOCS_CHECK_OR(component.ConversionType == M.ReturnType, matchRes);
                 }
                 else
                 {

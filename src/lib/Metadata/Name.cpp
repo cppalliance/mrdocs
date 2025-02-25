@@ -41,7 +41,12 @@ writeTo(
 
 std::strong_ordering
 NameInfo::
-operator<=>(NameInfo const& other) const = default;
+operator<=>(NameInfo const& other) const
+{
+    return
+        std::tie(Kind, Name, Prefix) <=>
+        std::tie(other.Kind, other.Name, other.Prefix);
+}
 
 std::strong_ordering
 operator<=>(Polymorphic<NameInfo> const& lhs, Polymorphic<NameInfo> const& rhs)
