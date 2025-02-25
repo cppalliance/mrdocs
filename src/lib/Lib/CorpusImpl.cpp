@@ -129,51 +129,120 @@ findFirstParentInfo(
     }
 }
 
+template <bool isInner>
+bool
+isDecayedEqualImpl(
+    Polymorphic<TypeInfo> const& lhs,
+    Polymorphic<TypeInfo> const& rhs)
+{
+    // Polymorphic
+    MRDOCS_CHECK_OR(static_cast<bool>(lhs) == static_cast<bool>(rhs), false);
+    MRDOCS_CHECK_OR(static_cast<bool>(lhs) && static_cast<bool>(rhs), true);
+    // TypeInfo
+    bool const decayToPointer = !isInner && (lhs->isArray() || rhs->isArray());
+    if (!decayToPointer)
+    {
+        MRDOCS_CHECK_OR(lhs->Kind == rhs->Kind, false);
+    }
+    else
+    {
+        // in root types, arrays are decayed to pointers
+        MRDOCS_CHECK_OR(lhs->isArray() || lhs->isPointer(), false);
+        MRDOCS_CHECK_OR(rhs->isArray() || rhs->isPointer(), false);
+    }
+    MRDOCS_CHECK_OR(lhs->IsPackExpansion == rhs->IsPackExpansion, false);
+    if constexpr (isInner)
+    {
+        // const and volative are ignored from root types
+        // in function parameters
+        MRDOCS_CHECK_OR(lhs->IsConst == rhs->IsConst, false);
+        MRDOCS_CHECK_OR(lhs->IsVolatile == rhs->IsVolatile, false);
+    }
+    MRDOCS_CHECK_OR(lhs->Constraints == rhs->Constraints, false);
+    switch (lhs->Kind)
+    {
+    // Types that never decay are compared directly
+    case TypeKind::Named:
+    {
+        // Compare only the fields of NameInfo, without
+        // TypeInfo, to avoid evaluating TypeInfo::IsConst
+        return dynamic_cast<NamedTypeInfo const&>(*lhs).Name ==
+               dynamic_cast<NamedTypeInfo const&>(*rhs).Name;
+    }
+    case TypeKind::Decltype:
+    {
+        return dynamic_cast<DecltypeTypeInfo const&>(*lhs).Operand ==
+               dynamic_cast<DecltypeTypeInfo const&>(*rhs).Operand;
+    }
+    case TypeKind::Auto:
+    {
+        auto const& lhsAuto = dynamic_cast<AutoTypeInfo const&>(*lhs);
+        auto const& rhsAuto = dynamic_cast<AutoTypeInfo const&>(*rhs);
+        return lhsAuto.Keyword == rhsAuto.Keyword &&
+               lhsAuto.Constraint == rhsAuto.Constraint;
+    }
+    case TypeKind::LValueReference:
+    {
+        return
+            isDecayedEqualImpl<true>(
+                dynamic_cast<LValueReferenceTypeInfo const&>(*lhs).PointeeType,
+                dynamic_cast<LValueReferenceTypeInfo const&>(*rhs).PointeeType);
+    }
+    case TypeKind::RValueReference:
+    {
+        return
+            isDecayedEqualImpl<true>(
+                dynamic_cast<RValueReferenceTypeInfo const&>(*lhs).PointeeType,
+                dynamic_cast<RValueReferenceTypeInfo const&>(*rhs).PointeeType);
+    }
+    case TypeKind::MemberPointer:
+    {
+        auto const& lhsMP = dynamic_cast<MemberPointerTypeInfo const&>(*lhs);
+        auto const& rhsMP = dynamic_cast<MemberPointerTypeInfo const&>(*rhs);
+        return
+            isDecayedEqualImpl<true>(lhsMP.PointeeType, rhsMP.PointeeType) &&
+            isDecayedEqualImpl<true>(lhsMP.ParentType, rhsMP.ParentType);
+    }
+    case TypeKind::Function:
+    {
+        auto const& lhsF = dynamic_cast<FunctionTypeInfo const&>(*lhs);
+        auto const& rhsF = dynamic_cast<FunctionTypeInfo const&>(*rhs);
+        MRDOCS_CHECK_OR(lhsF.RefQualifier == rhsF.RefQualifier, false);
+        MRDOCS_CHECK_OR(lhsF.ExceptionSpec == rhsF.ExceptionSpec, false);
+        MRDOCS_CHECK_OR(lhsF.IsVariadic == rhsF.IsVariadic, false);
+        MRDOCS_CHECK_OR(isDecayedEqualImpl<true>(lhsF.ReturnType, rhsF.ReturnType), false);
+        MRDOCS_CHECK_OR(lhsF.ParamTypes.size() == rhsF.ParamTypes.size(), false);
+        for (std::size_t i = 0; i < lhsF.ParamTypes.size(); ++i)
+        {
+            MRDOCS_CHECK_OR(isDecayedEqualImpl<false>(lhsF.ParamTypes[i], rhsF.ParamTypes[i]), false);
+        }
+        return true;
+    }
+    // Types that should decay
+    case TypeKind::Pointer:
+    case TypeKind::Array:
+    {
+        auto const I1 = innerType(*lhs);
+        auto const I2 = innerType(*rhs);
+        MRDOCS_CHECK_OR(static_cast<bool>(I1) == static_cast<bool>(I2), false);
+        MRDOCS_CHECK_OR(static_cast<bool>(I1) && static_cast<bool>(I2), true);
+        return isDecayedEqualImpl<true>(I1->get(), I2->get());
+    }
+    default:
+        MRDOCS_UNREACHABLE();
+    }
+    return true;
+}
+
+/* Compare two types for equality for the purposes of
+   overload resolution.
+ */
 bool
 isDecayedEqual(
     Polymorphic<TypeInfo> const& lhs,
     Polymorphic<TypeInfo> const& rhs)
 {
-    // When comparing two parameters, we need to compare
-    // them as if they are decayed at the top level
-    // the same way function parameters are decayed to
-    // consider if they redefine an overload.
-    if (lhs == rhs)
-    {
-        return true;
-    }
-
-    // const and volatile are ignored at the top level
-    auto lhsDecay = lhs;
-    lhsDecay->IsConst = false;
-    lhsDecay->IsVolatile = false;
-    auto rhsDecay = rhs;
-    rhsDecay->IsConst = false;
-    rhsDecay->IsVolatile = false;
-
-    // Arrays decay to pointer
-    if (lhsDecay->isArray())
-    {
-        auto& lhsAsArray = dynamic_cast<ArrayTypeInfo&>(*lhsDecay);
-        PointerTypeInfo lhsAsPtr;
-        lhsAsPtr.PointeeType = std::move(lhsAsArray.ElementType);
-        // Copy all fields from base type
-        dynamic_cast<TypeInfo&>(lhsAsPtr) = dynamic_cast<TypeInfo&>(lhsAsArray);
-        lhsAsPtr.Kind = TypeKind::Pointer;
-        lhsDecay = std::move(lhsAsPtr);
-    }
-    if (rhsDecay->isArray())
-    {
-        auto& rhsAsArray = dynamic_cast<ArrayTypeInfo&>(*rhsDecay);
-        PointerTypeInfo rhsAsPtr;
-        rhsAsPtr.PointeeType = std::move(rhsAsArray.ElementType);
-        // Copy all fields from base type
-        dynamic_cast<TypeInfo&>(rhsAsPtr) = dynamic_cast<TypeInfo&>(rhsAsArray);
-        rhsAsPtr.Kind = TypeKind::Pointer;
-        rhsDecay = std::move(rhsAsPtr);
-    }
-
-    return lhsDecay == rhsDecay;
+    return isDecayedEqualImpl<false>(lhs, rhs);
 }
 }
 
