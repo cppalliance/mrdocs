@@ -1,0 +1,423 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+=== Types
+
+[cols=1]
+|===
+| Name 
+
+| <<A,`A`>> 
+
+|===
+
+[#A]
+== A
+
+
+=== Synopsis
+
+
+Declared in `&lt;qualifiers&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct A;
+----
+
+=== Types
+
+[cols=1]
+|===
+| Name 
+
+| <<A-const_iterator,`const&lowbar;iterator`>> 
+
+| <<A-iterator,`iterator`>> 
+
+|===
+=== Member Functions
+
+[cols=2]
+|===
+| Name 
+| Description 
+
+| <<A-begin-05,`begin`>> 
+| `begin` overloads
+
+| <<A-cbegin,`cbegin`>> 
+| Return a const iterator to the beginning
+
+| <<A-crvalue,`crvalue`>> 
+| An const rvalue reference to A
+
+| <<A-ref-0f,`ref`>> 
+| `ref` overloads
+
+| <<A-rvalue,`rvalue`>> 
+| An rvalue reference to A
+
+|===
+
+
+
+[#A-const_iterator]
+== <<A,A>>::const&lowbar;iterator
+
+
+=== Synopsis
+
+
+Declared in `&lt;qualifiers&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class const&lowbar;iterator;
+----
+
+
+
+
+[#A-iterator]
+== <<A,A>>::iterator
+
+
+=== Synopsis
+
+
+Declared in `&lt;qualifiers&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class iterator;
+----
+
+
+
+
+[#A-begin-05]
+== <<A,A>>::begin
+
+
+`begin` overloads
+
+=== Synopses
+
+
+Declared in `&lt;qualifiers&period;cpp&gt;`
+
+Returns an iterator to the beginning
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A-iterator,iterator>>
+<<A-begin-06,begin>>();
+----
+
+[.small]#<<A-begin-06,_» more&period;&period;&period;_>>#
+
+Return a const iterator to the beginning
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A-const_iterator,const&lowbar;iterator>>
+<<A-begin-0c,begin>>() const;
+----
+
+[.small]#<<A-begin-0c,_» more&period;&period;&period;_>>#
+
+=== Return Value
+
+
+* Iterator to the first element&period;
+* Const iterator to the first element&period;
+
+[#A-begin-06]
+== <<A,A>>::begin
+
+
+Returns an iterator to the beginning
+
+=== Synopsis
+
+
+Declared in `&lt;qualifiers&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A-iterator,iterator>>
+begin();
+----
+
+=== Description
+
+
+Returns an iterator to the first element        of the vector&period;
+
+
+
+=== Return Value
+
+
+Iterator to the first element&period;
+
+[#A-begin-0c]
+== <<A,A>>::begin
+
+
+Return a const iterator to the beginning
+
+=== Synopsis
+
+
+Declared in `&lt;qualifiers&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A-const_iterator,const&lowbar;iterator>>
+begin() const;
+----
+
+=== Description
+
+
+Returns a const iterator to the first element        of the vector&period;
+
+
+
+=== Return Value
+
+
+Const iterator to the first element&period;
+
+[#A-cbegin]
+== <<A,A>>::cbegin
+
+
+Return a const iterator to the beginning
+
+=== Synopsis
+
+
+Declared in `&lt;qualifiers&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A-const_iterator,const&lowbar;iterator>>
+cbegin() const;
+----
+
+=== Description
+
+
+Returns a const iterator to the first element        of the vector&period;
+
+
+
+=== Return Value
+
+
+Const iterator to the first element&period;
+
+[#A-crvalue]
+== <<A,A>>::crvalue
+
+
+An const rvalue reference to A
+
+=== Synopsis
+
+
+Declared in `&lt;qualifiers&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>>&&
+crvalue() const &amp;&amp;;
+----
+
+=== Return Value
+
+
+A reference to A
+
+[#A-ref-0f]
+== <<A,A>>::ref
+
+
+`ref` overloads
+
+=== Synopses
+
+
+Declared in `&lt;qualifiers&period;cpp&gt;`
+
+An lvalue reference to A
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>>&
+<<A-ref-05,ref>>() &amp;;
+----
+
+[.small]#<<A-ref-05,_» more&period;&period;&period;_>>#
+
+An rvalue reference to A
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>>&&
+<<A-ref-0e,ref>>() &amp;&amp;;
+----
+
+[.small]#<<A-ref-0e,_» more&period;&period;&period;_>>#
+
+An const lvalue reference to A
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>> const&
+<<A-ref-04,ref>>() const &amp;;
+----
+
+[.small]#<<A-ref-04,_» more&period;&period;&period;_>>#
+
+An const rvalue reference to A
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>> const&&
+<<A-ref-07,ref>>() const &amp;&amp;;
+----
+
+[.small]#<<A-ref-07,_» more&period;&period;&period;_>>#
+
+=== Return Value
+
+
+A reference to A
+
+[#A-ref-05]
+== <<A,A>>::ref
+
+
+An lvalue reference to A
+
+=== Synopsis
+
+
+Declared in `&lt;qualifiers&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>>&
+ref() &amp;;
+----
+
+=== Return Value
+
+
+A reference to A
+
+[#A-ref-0e]
+== <<A,A>>::ref
+
+
+An rvalue reference to A
+
+=== Synopsis
+
+
+Declared in `&lt;qualifiers&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>>&&
+ref() &amp;&amp;;
+----
+
+=== Return Value
+
+
+A reference to A
+
+[#A-ref-04]
+== <<A,A>>::ref
+
+
+An const lvalue reference to A
+
+=== Synopsis
+
+
+Declared in `&lt;qualifiers&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>> const&
+ref() const &amp;;
+----
+
+=== Return Value
+
+
+A reference to A
+
+[#A-ref-07]
+== <<A,A>>::ref
+
+
+An const rvalue reference to A
+
+=== Synopsis
+
+
+Declared in `&lt;qualifiers&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>> const&&
+ref() const &amp;&amp;;
+----
+
+=== Return Value
+
+
+A reference to A
+
+[#A-rvalue]
+== <<A,A>>::rvalue
+
+
+An rvalue reference to A
+
+=== Synopsis
+
+
+Declared in `&lt;qualifiers&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>>&&
+rvalue() &amp;&amp;;
+----
+
+=== Return Value
+
+
+A reference to A
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

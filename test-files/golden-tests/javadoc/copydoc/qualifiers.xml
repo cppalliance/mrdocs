@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
+    <file short-path="qualifiers.cpp" source-path="qualifiers.cpp" line="1" class="def"/>
+    <class name="const_iterator" id="mHefDbLazHBw57+qAsFRfF7H528=">
+      <file short-path="qualifiers.cpp" source-path="qualifiers.cpp" line="3"/>
+    </class>
+    <class name="iterator" id="js4a2N+AFdpGVqiwDoP6CRe5qnw=">
+      <file short-path="qualifiers.cpp" source-path="qualifiers.cpp" line="2"/>
+    </class>
+    <function name="begin" id="bHIVx85/epfX445qui1ES+eXxAE=">
+      <file short-path="qualifiers.cpp" source-path="qualifiers.cpp" line="12"/>
+      <return>
+        <type id="js4a2N+AFdpGVqiwDoP6CRe5qnw=" name="iterator"/>
+      </return>
+      <doc>
+        <brief>
+          <text>Returns an iterator to the beginning</text>
+        </brief>
+        <para>
+          <text>Returns an iterator to the first element        of the vector.</text>
+        </para>
+        <returns>
+          <text>Iterator to the first element.</text>
+        </returns>
+      </doc>
+    </function>
+    <function name="begin" id="wdqJSwTs1MoRjomfd+M0f99GpL0=">
+      <file short-path="qualifiers.cpp" source-path="qualifiers.cpp" line="21"/>
+      <attr id="is-const"/>
+      <return>
+        <type id="mHefDbLazHBw57+qAsFRfF7H528=" name="const_iterator"/>
+      </return>
+      <doc>
+        <brief>
+          <text>Return a const iterator to the beginning</text>
+        </brief>
+        <para>
+          <text>Returns a const iterator to the first element        of the vector.</text>
+        </para>
+        <returns>
+          <text>Const iterator to the first element.</text>
+        </returns>
+      </doc>
+    </function>
+    <function name="cbegin" id="nrGLN7FWjL9EkildFya4MufPTi8=">
+      <file short-path="qualifiers.cpp" source-path="qualifiers.cpp" line="25"/>
+      <attr id="is-const"/>
+      <return>
+        <type id="mHefDbLazHBw57+qAsFRfF7H528=" name="const_iterator"/>
+      </return>
+      <doc>
+        <brief>
+          <text>Return a const iterator to the beginning</text>
+        </brief>
+        <para>
+          <text>Returns a const iterator to the first element        of the vector.</text>
+        </para>
+        <returns>
+          <text>Const iterator to the first element.</text>
+        </returns>
+      </doc>
+    </function>
+    <function name="crvalue" id="up/n+NenUj2VFy/iJnzCQL2/j3E=">
+      <file short-path="qualifiers.cpp" source-path="qualifiers.cpp" line="57"/>
+      <attr id="is-const"/>
+      <attr id="ref-qualifier" name="&amp;&amp;" value="2"/>
+      <return>
+        <type class="rvalue-reference">
+          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
+        </type>
+      </return>
+      <doc>
+        <brief>
+          <text>An const rvalue reference to A</text>
+        </brief>
+        <returns>
+          <text>A reference to A</text>
+        </returns>
+      </doc>
+    </function>
+    <function name="ref" id="UdqSOVfju1IlXGfdLPp3gwh4bQo=">
+      <file short-path="qualifiers.cpp" source-path="qualifiers.cpp" line="31"/>
+      <attr id="ref-qualifier" name="&amp;" value="1"/>
+      <return>
+        <type class="lvalue-reference">
+          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
+        </type>
+      </return>
+      <doc>
+        <brief>
+          <text>An lvalue reference to A</text>
+        </brief>
+        <returns>
+          <text>A reference to A</text>
+        </returns>
+      </doc>
+    </function>
+    <function name="ref" id="51kEb0dyrnHV5CD4f0ndIecmNig=">
+      <file short-path="qualifiers.cpp" source-path="qualifiers.cpp" line="37"/>
+      <attr id="ref-qualifier" name="&amp;&amp;" value="2"/>
+      <return>
+        <type class="rvalue-reference">
+          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
+        </type>
+      </return>
+      <doc>
+        <brief>
+          <text>An rvalue reference to A</text>
+        </brief>
+        <returns>
+          <text>A reference to A</text>
+        </returns>
+      </doc>
+    </function>
+    <function name="ref" id="RPHQosc2m05tKyyFkpodac2CBUU=">
+      <file short-path="qualifiers.cpp" source-path="qualifiers.cpp" line="43"/>
+      <attr id="is-const"/>
+      <attr id="ref-qualifier" name="&amp;" value="1"/>
+      <return>
+        <type class="lvalue-reference">
+          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
+        </type>
+      </return>
+      <doc>
+        <brief>
+          <text>An const lvalue reference to A</text>
+        </brief>
+        <returns>
+          <text>A reference to A</text>
+        </returns>
+      </doc>
+    </function>
+    <function name="ref" id="eQB30nnNgju4ULQ5w/fxpDFoRmI=">
+      <file short-path="qualifiers.cpp" source-path="qualifiers.cpp" line="49"/>
+      <attr id="is-const"/>
+      <attr id="ref-qualifier" name="&amp;&amp;" value="2"/>
+      <return>
+        <type class="rvalue-reference">
+          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
+        </type>
+      </return>
+      <doc>
+        <brief>
+          <text>An const rvalue reference to A</text>
+        </brief>
+        <returns>
+          <text>A reference to A</text>
+        </returns>
+      </doc>
+    </function>
+    <function name="rvalue" id="6KwEPWneBuFYEn0I8T3yYt0yN+k=">
+      <file short-path="qualifiers.cpp" source-path="qualifiers.cpp" line="53"/>
+      <attr id="ref-qualifier" name="&amp;&amp;" value="2"/>
+      <return>
+        <type class="rvalue-reference">
+          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
+        </type>
+      </return>
+      <doc>
+        <brief>
+          <text>An rvalue reference to A</text>
+        </brief>
+        <returns>
+          <text>A reference to A</text>
+        </returns>
+      </doc>
+    </function>
+  </struct>
+</namespace>
+</mrdocs>

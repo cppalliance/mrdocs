@@ -988,7 +988,6 @@ visitInlineCommandComment(
     {
         MRDOCS_CHECK_OR(goodArgCount(1, *C));
         std::string ref = C->getArgText(0).str();
-        std::string originalRef = ref;
         std::string leftOver = fixReference(ref);
         bool const hasExtra = !leftOver.empty();
         emplaceText<doc::Copied>(
@@ -1140,23 +1139,130 @@ fixReference(std::string& ref)
     // a function, and we need to merge the next text comments
     // until we find a balanced ')'.
     bool const isFunction = contains(ref, '(');
-    while (std::ranges::count(ref, '(') != std::ranges::count(ref, ')'))
+    if (isFunction)
     {
-        ++it_;
-        if (it_ == end_)
+        while (std::ranges::count(ref, '(') != std::ranges::count(ref, ')'))
         {
-            break;
+            ++it_;
+            if (it_ == end_)
+            {
+                break;
+            }
+            Comment const* c = *it_;
+            if (c->getCommentKind() == CommentKind::TextComment)
+            {
+                ref += static_cast<TextComment const*>(c)->getText();
+            }
+            else
+            {
+                break;
+            }
         }
-        Comment const* c = *it_;
-        if (c->getCommentKind() == CommentKind::TextComment)
+        if (rtrim(ref).ends_with(')'))
         {
-            ref += static_cast<TextComment const*>(c)->getText();
-        }
-        else
-        {
-            break;
+            static constexpr std::array<std::string_view, 5> qualifiers = {
+                "const",
+                "volatile",
+                "noexcept",
+                "&&",
+                "&",
+            };
+            auto isQualifiersOnly = [](std::string_view str)
+            {
+                // Iterate all words between spaces and check if
+                // they are qualifiers
+                std::size_t pos = 0;
+                while (pos < str.size())
+                {
+                    std::size_t const start = str.find_first_not_of(' ', pos);
+                    if (start == std::string::npos)
+                    {
+                        break;
+                    }
+                    std::size_t const end = str.find_first_of(' ', start);
+                    std::string_view word = str.substr(start, end - start);
+                    if (std::ranges::find(qualifiers, word) == qualifiers.end())
+                    {
+                        return false;
+                    }
+                    pos = end;
+                }
+                return true;
+            };
+            auto isWhitespaceOnly = [](std::string_view str)
+            {
+                return str.empty() || str.find_first_not_of(' ') == std::string::npos;
+            };
+
+            // peek next comment
+            std::string functionContinuation;
+            auto originalIt = it_;
+            ++it_;
+            while (
+                it_ != end_ &&
+                   (isWhitespaceOnly(functionContinuation) ||
+                    isQualifiersOnly(functionContinuation)))
+            {
+                Comment const* c = *it_;
+                if (c->getCommentKind() != CommentKind::TextComment)
+                {
+                    break;
+                }
+                functionContinuation += static_cast<TextComment const*>(c)->getText();
+                ++it_;
+            }
+            if (isWhitespaceOnly(functionContinuation))
+            {
+                it_ = originalIt;
+            }
+            else /* if (!functionContinuation.empty()) */
+            {
+                --it_;
+                std::string_view suffix = functionContinuation;
+                std::string_view leftover = functionContinuation;
+                bool foundAny = false;
+                std::size_t totalRemoved = 0;
+                while (!suffix.empty())
+                {
+                    bool found = false;
+                    std::size_t const initialWhitespace = std::min(
+                        suffix.find_first_not_of(" "), suffix.size());
+                    for (auto const& q : qualifiers)
+                    {
+                        if (suffix.substr(initialWhitespace).starts_with(q))
+                        {
+                            std::size_t const toRemove = initialWhitespace + q.size();
+                            if (
+                                contains(idChars, q.back()) &&
+                                suffix.size() > toRemove &&
+                                contains(idChars, suffix[toRemove]))
+                            {
+                                // This is not a qualifier, but part of
+                                // an identifier
+                                continue;
+                            }
+                            suffix.remove_prefix(toRemove);
+                            totalRemoved += toRemove;
+                            found = true;
+                            foundAny = true;
+                            break;
+                        }
+                    }
+                    if (!found)
+                    {
+                        break;
+                    }
+                }
+                if (foundAny)
+                {
+                    leftover = leftover.substr(0, totalRemoved);
+                    ref += leftover;
+                    return std::string(suffix);
+                }
+            }
         }
     }
+
 
     // Clang refs can also contain invalid characters
     // at the end, especially punctuation. We need to
