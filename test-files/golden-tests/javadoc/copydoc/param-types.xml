@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <namespace name="N" id="rjlMNXAaWNMkQYMTJzRA1DR0DiE=">
+    <doc>
+      <brief>
+        <text>Namespace to test qualified identifier parameters.</text>
+      </brief>
+    </doc>
+    <namespace name="M" id="/zZYK9RwdepvVZXQEMRgSV41SYM=">
+      <doc>
+        <brief>
+          <text>Namespace to test qualified identifier parameters.</text>
+        </brief>
+      </doc>
+      <struct name="Q" id="E7FjuWJfQv+1+p7aLfssrWXRlVU=">
+        <file short-path="param-types.cpp" source-path="param-types.cpp" line="156" class="def"/>
+        <doc>
+          <brief>
+            <text>Struct to test qualified identifier parameters.</text>
+          </brief>
+        </doc>
+      </struct>
+    </namespace>
+  </namespace>
+  <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
+    <file short-path="param-types.cpp" source-path="param-types.cpp" line="64" class="def"/>
+    <doc>
+      <brief>
+        <text>Struct to test explicit object member functions.</text>
+      </brief>
+    </doc>
+    <function name="f" id="ZtNDo4tS35tJKrXxGM1LJZVrCwA=">
+      <file short-path="param-types.cpp" source-path="param-types.cpp" line="80"/>
+      <param name="a">
+        <type id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=" name="paramType&lt;4&gt;"/>
+      </param>
+      <doc>
+        <brief>
+          <text>Reference member function.</text>
+        </brief>
+        <para>
+          <text>Documentation for a function with an        explicit object parameter.</text>
+        </para>
+        <para>
+          <text>This reference uses the </text>
+          <mono>this</mono>
+          <text> keyword.</text>
+        </para>
+        <param name="a">
+          <text>The first parameter of g</text>
+        </param>
+      </doc>
+    </function>
+    <function name="g" id="c2hExG7/ditEkntdYONY88sivsA=">
+      <file short-path="param-types.cpp" source-path="param-types.cpp" line="73"/>
+      <attr id="is-explicit-object-member-function"/>
+      <param name="self">
+        <type class="lvalue-reference">
+          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
+        </type>
+      </param>
+      <param name="a">
+        <type name="int"/>
+      </param>
+      <doc>
+        <brief>
+          <text>Reference member function.</text>
+        </brief>
+        <para>
+          <text>Documentation for a function with an        explicit object parameter.</text>
+        </para>
+        <param name="self">
+          <text>The object to operate on        </text>
+        </param>
+        <param name="a">
+          <text>The first parameter of g</text>
+        </param>
+      </doc>
+    </function>
+  </struct>
+  <template>
+    <tparam name="Idx" class="non-type" type="int"/>
+    <struct name="paramType" id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=">
+      <file short-path="param-types.cpp" source-path="param-types.cpp" line="2" class="def"/>
+      <doc>
+        <brief>
+          <text>Struct used to vary the parameter type.</text>
+        </brief>
+      </doc>
+    </struct>
+  </template>
+  <enum name="testEnum" id="pUJEk/x997P8q+ILVKlwge3u5Ag=">
+    <file short-path="param-types.cpp" source-path="param-types.cpp" line="133" class="def"/>
+  </enum>
+  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
+    <file short-path="param-types.cpp" source-path="param-types.cpp" line="9"/>
+    <doc>
+      <brief>
+        <text>Reference function.</text>
+      </brief>
+      <para>
+        <text>Documentation for the reference function.</text>
+      </para>
+    </doc>
+  </function>
+  <function name="f" id="DU72uK07T2VUA0/zFlSD5xYsNXI=">
+    <file short-path="param-types.cpp" source-path="param-types.cpp" line="19"/>
+    <param name="a">
+      <type id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=" name="paramType&lt;0&gt;"/>
+    </param>
+    <doc>
+      <brief>
+        <text>Reference function.</text>
+      </brief>
+      <para>
+        <text>Documentation for the reference function.</text>
+      </para>
+      <para>
+        <text>This function uses a reference with no    parameters.</text>
+      </para>
+      <param name="a">
+        <text>The first parameter of f</text>
+      </param>
+    </doc>
+  </function>
+  <function name="f" id="jDU+LoIgfrcRan+T7yNnme6xG2g=">
+    <file short-path="param-types.cpp" source-path="param-types.cpp" line="28"/>
+    <param name="a">
+      <type id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=" name="paramType&lt;1&gt;"/>
+    </param>
+    <doc>
+      <brief>
+        <text>Reference function.</text>
+      </brief>
+      <para>
+        <text>Documentation for the reference function.</text>
+      </para>
+      <para>
+        <text>This reference uses the </text>
+        <mono>void</mono>
+        <text> keyword.</text>
+      </para>
+      <param name="a">
+        <text>The first parameter of f</text>
+      </param>
+    </doc>
+  </function>
+  <function name="f" id="EnCYlDIJiAucNZ8lyKbGxiUjKJI=">
+    <file short-path="param-types.cpp" source-path="param-types.cpp" line="53"/>
+    <param name="a">
+      <type id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=" name="paramType&lt;2&gt;"/>
+    </param>
+    <doc>
+      <brief>
+        <text>Variadic function</text>
+      </brief>
+      <para>
+        <text>Documentation for the variadic function.</text>
+      </para>
+      <para>
+        <text>This reference uses the </text>
+        <mono>...</mono>
+        <text> keyword.</text>
+      </para>
+      <param name="a">
+        <text>The first parameter of g</text>
+      </param>
+    </doc>
+  </function>
+  <function name="f" id="wUBitX6O3yYx6++hHwwo2BmUuhY=">
+    <file short-path="param-types.cpp" source-path="param-types.cpp" line="60"/>
+    <param name="a">
+      <type id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=" name="paramType&lt;3&gt;"/>
+    </param>
+    <doc>
+      <brief>
+        <text>Non-variadic function</text>
+      </brief>
+      <para>
+        <text>Documentation for the non-variadic function.</text>
+      </para>
+      <para>
+        <text>This reference uses the </text>
+        <mono>int</mono>
+        <text> keyword.</text>
+      </para>
+      <param name="a">
+        <text>The first parameter of g</text>
+      </param>
+    </doc>
+  </function>
+  <function name="f" id="PfAXYt2bWhT47nnpR0gbsP8sVmM=">
+    <file short-path="param-types.cpp" source-path="param-types.cpp" line="97"/>
+    <param name="a">
+      <type id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=" name="paramType&lt;5&gt;"/>
+    </param>
+    <doc>
+      <brief>
+        <text>struct param function</text>
+      </brief>
+      <para>
+        <text>Documentation for a function with a struct parameter.</text>
+      </para>
+      <para>
+        <text>This reference uses the </text>
+        <mono>auto</mono>
+        <text> keyword.</text>
+      </para>
+      <param name="a">
+        <text>The first parameter of g</text>
+      </param>
+    </doc>
+  </function>
+  <function name="f" id="RQlRhXU+F7TPvDQClE1vHm3vyzo=">
+    <file short-path="param-types.cpp" source-path="param-types.cpp" line="114"/>
+    <param name="a">
+      <type id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=" name="paramType&lt;6&gt;"/>
+    </param>
+    <doc>
+      <brief>
+        <text>Decltype function</text>
+      </brief>
+      <para>
+        <text>Documentation for a function with a </text>
+        <mono>decltype</mono>
+        <text> parameter.</text>
+      </para>
+      <para>
+        <text>This reference uses the </text>
+        <mono>decltype</mono>
+        <text> keyword.</text>
+      </para>
+      <param name="a">
+        <text>The first parameter of g    </text>
+      </param>
+    </doc>
+  </function>
+  <function name="f" id="tQHT08jpEiAKaxbXFhRLIW9Wlcc=">
+    <file short-path="param-types.cpp" source-path="param-types.cpp" line="130"/>
+    <param name="a">
+      <type id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=" name="paramType&lt;7&gt;"/>
+    </param>
+    <doc>
+      <brief>
+        <text>struct param function</text>
+      </brief>
+      <para>
+        <text>Documentation for a function with a struct parameter.</text>
+      </para>
+      <para>
+        <text>This reference uses the </text>
+        <mono>struct</mono>
+        <text> keyword.</text>
+      </para>
+      <param name="a">
+        <text>The first parameter of g</text>
+      </param>
+    </doc>
+  </function>
+  <function name="f" id="EKpcuXzkjOnv8ZyC3Gh0a79SSs4=">
+    <file short-path="param-types.cpp" source-path="param-types.cpp" line="148"/>
+    <param name="a">
+      <type id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=" name="paramType&lt;8&gt;"/>
+    </param>
+    <doc>
+      <brief>
+        <text>Enum param function</text>
+      </brief>
+      <para>
+        <text>Documentation for a function with an enum parameter.</text>
+      </para>
+      <para>
+        <text>This reference uses the </text>
+        <mono>enum</mono>
+        <text> keyword.</text>
+      </para>
+      <param name="a">
+        <text>The first parameter of g</text>
+      </param>
+    </doc>
+  </function>
+  <function name="f" id="gWNKk2me9Z+SnL0juCZ31BSqXZQ=">
+    <file short-path="param-types.cpp" source-path="param-types.cpp" line="173"/>
+    <param name="a">
+      <type id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=" name="paramType&lt;9&gt;"/>
+    </param>
+    <doc>
+      <brief>
+        <text>Qualified identifier param function</text>
+      </brief>
+      <para>
+        <text>Documentation for a function with a qualified identifier parameter.</text>
+      </para>
+      <para>
+        <text>This reference uses the qualified identifier </text>
+        <mono>N::M::Q</mono>
+        <text>.</text>
+      </para>
+      <param name="a">
+        <text>The first parameter of g</text>
+      </param>
+    </doc>
+  </function>
+  <function name="g" id="XTMt2BS2W4VehIStEJr0wkPasWc=">
+    <file short-path="param-types.cpp" source-path="param-types.cpp" line="123"/>
+    <param name="a">
+      <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
+    </param>
+    <doc>
+      <brief>
+        <text>struct param function</text>
+      </brief>
+      <para>
+        <text>Documentation for a function with a struct parameter.</text>
+      </para>
+      <param name="a">
+        <text>The first parameter of g</text>
+      </param>
+    </doc>
+  </function>
+  <function name="g" id="nN+F3xQLxy/ZZP7Qa9KsUTXVDPE=">
+    <file short-path="param-types.cpp" source-path="param-types.cpp" line="166"/>
+    <param name="a">
+      <type id="E7FjuWJfQv+1+p7aLfssrWXRlVU=" name="N::M::Q"/>
+    </param>
+    <doc>
+      <brief>
+        <text>Qualified identifier param function</text>
+      </brief>
+      <para>
+        <text>Documentation for a function with a qualified identifier parameter.</text>
+      </para>
+      <param name="a">
+        <text>The first parameter of g</text>
+      </param>
+    </doc>
+  </function>
+  <function name="g" id="lldWvRg9y+NwRnDpK3x2NF9+e08=">
+    <file short-path="param-types.cpp" source-path="param-types.cpp" line="37"/>
+    <attr id="is-variadic"/>
+    <param name="a">
+      <type name="int"/>
+    </param>
+    <doc>
+      <brief>
+        <text>Variadic function</text>
+      </brief>
+      <para>
+        <text>Documentation for the variadic function.</text>
+      </para>
+      <param name="a">
+        <text>The first parameter of g</text>
+      </param>
+    </doc>
+  </function>
+  <function name="g" id="SvF6a1ZP8sdIXexPrrRDIA1OHus=">
+    <file short-path="param-types.cpp" source-path="param-types.cpp" line="46"/>
+    <param name="a">
+      <type name="int"/>
+    </param>
+    <doc>
+      <brief>
+        <text>Non-variadic function</text>
+      </brief>
+      <para>
+        <text>Documentation for the non-variadic function.</text>
+      </para>
+      <param name="a">
+        <text>The first parameter of g</text>
+      </param>
+    </doc>
+  </function>
+  <function name="g" id="TF0l7iZI1k70e/PY/mnOvc0hoyI=">
+    <file short-path="param-types.cpp" source-path="param-types.cpp" line="141"/>
+    <param name="a">
+      <type id="pUJEk/x997P8q+ILVKlwge3u5Ag=" name="testEnum"/>
+    </param>
+    <doc>
+      <brief>
+        <text>Enum param function</text>
+      </brief>
+      <para>
+        <text>Documentation for a function with an enum parameter.</text>
+      </para>
+      <param name="a">
+        <text>The first parameter of g</text>
+      </param>
+    </doc>
+  </function>
+  <template>
+    <tparam name="a:auto" class="type"/>
+    <function name="g" id="tWSGybFaxNKcropoGJaIH9niqLg=">
+      <file short-path="param-types.cpp" source-path="param-types.cpp" line="91"/>
+      <param name="a">
+        <type name="auto"/>
+      </param>
+    </function>
+  </template>
+  <function name="g" id="wOc7mtwXPodKdeWFmSfib8PaSww=">
+    <file short-path="param-types.cpp" source-path="param-types.cpp" line="107"/>
+    <param name="a">
+      <type name="int"/>
+    </param>
+    <param name="b">
+      <type class="decltype" operand="a">
+      </type>
+    </param>
+    <doc>
+      <brief>
+        <text>Decltype function</text>
+      </brief>
+      <para>
+        <text>Documentation for a function with a </text>
+        <mono>decltype</mono>
+        <text> parameter.</text>
+      </para>
+      <param name="a">
+        <text>The first parameter of g    </text>
+      </param>
+      <param name="b">
+        <text>The second parameter of g</text>
+      </param>
+    </doc>
+  </function>
+</namespace>
+</mrdocs>

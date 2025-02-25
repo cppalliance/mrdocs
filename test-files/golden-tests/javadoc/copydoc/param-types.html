@@ -1,0 +1,1372 @@
+<html lang="en">
+<head>
+<title>Reference</title>
+</head>
+<body>
+<div>
+<h1>Reference</h1>
+<div>
+<div>
+<h2 id="index">Global namespace</h2>
+</div>
+<h2>Namespaces</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#N"><code>N</code></a> </td><td><span><span>Namespace to test qualified identifier parameters.</span></span>
+</td>
+</tr>
+</tbody>
+</table>
+<h2>Types</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#A"><code>A</code></a> </td><td><span><span>Struct to test explicit object member functions.</span></span>
+</td>
+</tr><tr>
+<td><a href="#paramType"><code>paramType</code></a> </td><td><span><span>Struct used to vary the parameter type.</span></span>
+</td>
+</tr>
+</tbody>
+</table>
+<h2>Enums</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#testEnum"><code>testEnum</code></a> </td>
+</tr>
+</tbody>
+</table>
+<h2>Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#f-0e"><code>f</code></a> </td><td><span><code>f</code><span> overloads</span></span>
+</td>
+</tr><tr>
+<td><a href="#g-0d"><code>g</code></a> </td><td><span><code>g</code><span> overloads</span></span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<div>
+<h2 id="N">N</h2>
+<div>
+<span><span>Namespace to test qualified identifier parameters.</span></span>
+
+
+</div>
+</div>
+<h2>Namespaces</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#N-M"><code>M</code></a> </td><td><span><span>Namespace to test qualified identifier parameters.</span></span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<div>
+<h2 id="N-M"><a href="#N">N</a>::M</h2>
+<div>
+<span><span>Namespace to test qualified identifier parameters.</span></span>
+
+
+</div>
+</div>
+<h2>Types</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#N-M-Q"><code>Q</code></a> </td><td><span><span>Struct to test qualified identifier parameters.</span></span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<div>
+<h2 id="N-M-Q"><a href="#N">N</a>::<a href="#N-M">M</a>::Q</h2>
+<div>
+<span><span>Struct to test qualified identifier parameters.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-types.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+struct Q;
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="A">A</h2>
+<div>
+<span><span>Struct to test explicit object member functions.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-types.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+struct A;
+</code>
+</pre>
+</div>
+<h2>Member Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#A-f"><code>f</code></a> </td><td><span><span>Reference member function.</span></span>
+</td>
+</tr><tr>
+<td><a href="#A-g"><code>g</code></a> </td><td><span><span>Reference member function.</span></span>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+<div>
+<div>
+<h2 id="A-f"><a href="#A">A</a>::f</h2>
+<div>
+<span><span>Reference member function.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-types.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+f(<a href="#paramType">paramType</a>&lt;4&gt; a);
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>Documentation for a function with an        explicit object parameter.</span></p>
+<p><span>This reference uses the </span><code>this</code><span> keyword.</span></p>
+
+
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>a</strong></td>
+<td><p><span>The first parameter of g</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="A-g"><a href="#A">A</a>::g</h2>
+<div>
+<span><span>Reference member function.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-types.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+g(this 
+    <a href="#A">A</a>& self,
+    int a);
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>Documentation for a function with an        explicit object parameter.</span></p>
+
+
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>self</strong></td>
+<td><p><span>The object to operate on</span></p>
+</td>
+</tr>
+<tr>
+<td><strong>a</strong></td>
+<td><p><span>The first parameter of g</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="paramType">paramType</h2>
+<div>
+<span><span>Struct used to vary the parameter type.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-types.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;int Idx&gt;
+struct paramType;
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="testEnum">testEnum</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-types.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+enum testEnum;
+</code>
+</pre>
+</div>
+<div>
+<h3>Members</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="f-0e">f</h2>
+<div>
+<span><code>f</code><span> overloads</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopses</h3>
+<div>
+Declared in <code>&lt;param-types.cpp&gt;</code></div>
+<p>
+    <span><span>Reference function.</span></span>
+
+</p>
+
+
+<pre>
+<code class="source-code cpp">
+void
+<a href="#f-0b3">f</a>();
+</code>
+</pre><span class="small"><a href="#f-0b3"><em>» more...</em></a></span>
+
+<p>
+    <span><span>Reference function.</span></span>
+
+</p>
+
+
+<pre>
+<code class="source-code cpp">
+void
+<a href="#f-00">f</a>(<a href="#paramType">paramType</a>&lt;0&gt; a);
+</code>
+</pre><span class="small"><a href="#f-00"><em>» more...</em></a></span>
+
+<p>
+    <span><span>Reference function.</span></span>
+
+</p>
+
+
+<pre>
+<code class="source-code cpp">
+void
+<a href="#f-08c">f</a>(<a href="#paramType">paramType</a>&lt;1&gt; a);
+</code>
+</pre><span class="small"><a href="#f-08c"><em>» more...</em></a></span>
+
+<p>
+    <span><span>Variadic function</span></span>
+
+</p>
+
+
+<pre>
+<code class="source-code cpp">
+void
+<a href="#f-012">f</a>(<a href="#paramType">paramType</a>&lt;2&gt; a);
+</code>
+</pre><span class="small"><a href="#f-012"><em>» more...</em></a></span>
+
+<p>
+    <span><span>Non-variadic function</span></span>
+
+</p>
+
+
+<pre>
+<code class="source-code cpp">
+void
+<a href="#f-0c">f</a>(<a href="#paramType">paramType</a>&lt;3&gt; a);
+</code>
+</pre><span class="small"><a href="#f-0c"><em>» more...</em></a></span>
+
+<p>
+    <span><span>struct param function</span></span>
+
+</p>
+
+
+<pre>
+<code class="source-code cpp">
+void
+<a href="#f-03">f</a>(<a href="#paramType">paramType</a>&lt;5&gt; a);
+</code>
+</pre><span class="small"><a href="#f-03"><em>» more...</em></a></span>
+
+<p>
+    <span><span>Decltype function</span></span>
+
+</p>
+
+
+<pre>
+<code class="source-code cpp">
+void
+<a href="#f-04">f</a>(<a href="#paramType">paramType</a>&lt;6&gt; a);
+</code>
+</pre><span class="small"><a href="#f-04"><em>» more...</em></a></span>
+
+<p>
+    <span><span>struct param function</span></span>
+
+</p>
+
+
+<pre>
+<code class="source-code cpp">
+void
+<a href="#f-0b5">f</a>(<a href="#paramType">paramType</a>&lt;7&gt; a);
+</code>
+</pre><span class="small"><a href="#f-0b5"><em>» more...</em></a></span>
+
+<p>
+    <span><span>Enum param function</span></span>
+
+</p>
+
+
+<pre>
+<code class="source-code cpp">
+void
+<a href="#f-010">f</a>(<a href="#paramType">paramType</a>&lt;8&gt; a);
+</code>
+</pre><span class="small"><a href="#f-010"><em>» more...</em></a></span>
+
+<p>
+    <span><span>Qualified identifier param function</span></span>
+
+</p>
+
+
+<pre>
+<code class="source-code cpp">
+void
+<a href="#f-081">f</a>(<a href="#paramType">paramType</a>&lt;9&gt; a);
+</code>
+</pre><span class="small"><a href="#f-081"><em>» more...</em></a></span>
+
+
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>a</strong></td>
+<td><p><span>The first parameter of f</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="f-0b3">f</h2>
+<div>
+<span><span>Reference function.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-types.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+f();
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>Documentation for the reference function.</span></p>
+
+
+</div>
+</div>
+<div>
+<div>
+<h2 id="f-00">f</h2>
+<div>
+<span><span>Reference function.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-types.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+f(<a href="#paramType">paramType</a>&lt;0&gt; a);
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>Documentation for the reference function.</span></p>
+<p><span>This function uses a reference with no    parameters.</span></p>
+
+
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>a</strong></td>
+<td><p><span>The first parameter of f</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="f-08c">f</h2>
+<div>
+<span><span>Reference function.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-types.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+f(<a href="#paramType">paramType</a>&lt;1&gt; a);
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>Documentation for the reference function.</span></p>
+<p><span>This reference uses the </span><code>void</code><span> keyword.</span></p>
+
+
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>a</strong></td>
+<td><p><span>The first parameter of f</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="f-012">f</h2>
+<div>
+<span><span>Variadic function</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-types.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+f(<a href="#paramType">paramType</a>&lt;2&gt; a);
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>Documentation for the variadic function.</span></p>
+<p><span>This reference uses the </span><code>...</code><span> keyword.</span></p>
+
+
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>a</strong></td>
+<td><p><span>The first parameter of g</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="f-0c">f</h2>
+<div>
+<span><span>Non-variadic function</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-types.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+f(<a href="#paramType">paramType</a>&lt;3&gt; a);
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>Documentation for the non-variadic function.</span></p>
+<p><span>This reference uses the </span><code>int</code><span> keyword.</span></p>
+
+
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>a</strong></td>
+<td><p><span>The first parameter of g</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="f-03">f</h2>
+<div>
+<span><span>struct param function</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-types.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+f(<a href="#paramType">paramType</a>&lt;5&gt; a);
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>Documentation for a function with a struct parameter.</span></p>
+<p><span>This reference uses the </span><code>auto</code><span> keyword.</span></p>
+
+
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>a</strong></td>
+<td><p><span>The first parameter of g</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="f-04">f</h2>
+<div>
+<span><span>Decltype function</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-types.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+f(<a href="#paramType">paramType</a>&lt;6&gt; a);
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>Documentation for a function with a </span><code>decltype</code><span> parameter.</span></p>
+<p><span>This reference uses the </span><code>decltype</code><span> keyword.</span></p>
+
+
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>a</strong></td>
+<td><p><span>The first parameter of g</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="f-0b5">f</h2>
+<div>
+<span><span>struct param function</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-types.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+f(<a href="#paramType">paramType</a>&lt;7&gt; a);
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>Documentation for a function with a struct parameter.</span></p>
+<p><span>This reference uses the </span><code>struct</code><span> keyword.</span></p>
+
+
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>a</strong></td>
+<td><p><span>The first parameter of g</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="f-010">f</h2>
+<div>
+<span><span>Enum param function</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-types.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+f(<a href="#paramType">paramType</a>&lt;8&gt; a);
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>Documentation for a function with an enum parameter.</span></p>
+<p><span>This reference uses the </span><code>enum</code><span> keyword.</span></p>
+
+
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>a</strong></td>
+<td><p><span>The first parameter of g</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="f-081">f</h2>
+<div>
+<span><span>Qualified identifier param function</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-types.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+f(<a href="#paramType">paramType</a>&lt;9&gt; a);
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>Documentation for a function with a qualified identifier parameter.</span></p>
+<p><span>This reference uses the qualified identifier </span><code>N::M::Q</code> <span>.</span></p>
+
+
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>a</strong></td>
+<td><p><span>The first parameter of g</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="g-0d">g</h2>
+<div>
+<span><code>g</code><span> overloads</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopses</h3>
+<div>
+Declared in <code>&lt;param-types.cpp&gt;</code></div>
+<p>
+    <span><span>struct param function</span></span>
+
+</p>
+
+
+<pre>
+<code class="source-code cpp">
+void
+<a href="#g-05">g</a>(<a href="#A">A</a> a);
+</code>
+</pre><span class="small"><a href="#g-05"><em>» more...</em></a></span>
+
+<p>
+    <span><span>Qualified identifier param function</span></span>
+
+</p>
+
+
+<pre>
+<code class="source-code cpp">
+void
+<a href="#g-09c">g</a>(<a href="#N">N</a>::<a href="#N-M">M</a>::<a href="#N-M-Q">Q</a> a);
+</code>
+</pre><span class="small"><a href="#g-09c"><em>» more...</em></a></span>
+
+<p>
+    <span><span>Variadic function</span></span>
+
+</p>
+
+
+<pre>
+<code class="source-code cpp">
+void
+<a href="#g-096">g</a>(int a, ...);
+</code>
+</pre><span class="small"><a href="#g-096"><em>» more...</em></a></span>
+
+<p>
+    <span><span>Non-variadic function</span></span>
+
+</p>
+
+
+<pre>
+<code class="source-code cpp">
+void
+<a href="#g-04a">g</a>(int a);
+</code>
+</pre><span class="small"><a href="#g-04a"><em>» more...</em></a></span>
+
+<p>
+    <span><span>Enum param function</span></span>
+
+</p>
+
+
+<pre>
+<code class="source-code cpp">
+void
+<a href="#g-04c">g</a>(<a href="#testEnum">testEnum</a> a);
+</code>
+</pre><span class="small"><a href="#g-04c"><em>» more...</em></a></span>
+
+
+
+<pre>
+<code class="source-code cpp">
+template&lt;class a:auto&gt;
+void
+<a href="#g-0b">g</a>(auto a);
+</code>
+</pre><span class="small"><a href="#g-0b"><em>» more...</em></a></span>
+
+<p>
+    <span><span>Decltype function</span></span>
+
+</p>
+
+
+<pre>
+<code class="source-code cpp">
+void
+<a href="#g-0c">g</a>(
+    int a,
+    decltype(a) b);
+</code>
+</pre><span class="small"><a href="#g-0c"><em>» more...</em></a></span>
+
+
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>a</strong></td>
+<td><p><span>The first parameter of g</span></p>
+</td>
+</tr>
+<tr>
+<td><strong>b</strong></td>
+<td><p><span>The second parameter of g</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="g-05">g</h2>
+<div>
+<span><span>struct param function</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-types.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+g(<a href="#A">A</a> a);
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>Documentation for a function with a struct parameter.</span></p>
+
+
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>a</strong></td>
+<td><p><span>The first parameter of g</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="g-09c">g</h2>
+<div>
+<span><span>Qualified identifier param function</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-types.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+g(<a href="#N">N</a>::<a href="#N-M">M</a>::<a href="#N-M-Q">Q</a> a);
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>Documentation for a function with a qualified identifier parameter.</span></p>
+
+
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>a</strong></td>
+<td><p><span>The first parameter of g</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="g-096">g</h2>
+<div>
+<span><span>Variadic function</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-types.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+g(int a, ...);
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>Documentation for the variadic function.</span></p>
+
+
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>a</strong></td>
+<td><p><span>The first parameter of g</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="g-04a">g</h2>
+<div>
+<span><span>Non-variadic function</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-types.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+g(int a);
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>Documentation for the non-variadic function.</span></p>
+
+
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>a</strong></td>
+<td><p><span>The first parameter of g</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="g-04c">g</h2>
+<div>
+<span><span>Enum param function</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-types.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+g(<a href="#testEnum">testEnum</a> a);
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>Documentation for a function with an enum parameter.</span></p>
+
+
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>a</strong></td>
+<td><p><span>The first parameter of g</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="g-0b">g</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-types.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;class a:auto&gt;
+void
+g(auto a);
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="g-0c">g</h2>
+<div>
+<span><span>Decltype function</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-types.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+g(
+    int a,
+    decltype(a) b);
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p><span>Documentation for a function with a </span><code>decltype</code><span> parameter.</span></p>
+
+
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>a</strong></td>
+<td><p><span>The first parameter of g</span></p>
+</td>
+</tr>
+<tr>
+<td><strong>b</strong></td>
+<td><p><span>The second parameter of g</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+<div>
+<h4>Created with <a href="https://www.mrdocs.com">MrDocs</a></h4>
+</div>
+</body>
+</html>
