@@ -51,10 +51,15 @@ addMember(OverloadsInfo& I, FunctionInfo const& Member)
         I.Extraction = Member.Extraction;
         I.Class = Member.Class;
         I.OverloadedOperator = Member.OverloadedOperator;
+        I.ReturnType = Member.ReturnType;
     }
     else
     {
         I.Extraction = leastSpecific(I.Extraction, Member.Extraction);
+        if (I.ReturnType != Member.ReturnType)
+        {
+            I.ReturnType = {};
+        }
     }
     merge(dynamic_cast<SourceInfo&>(I), dynamic_cast<SourceInfo const&>(Member));
     I.Members.push_back(Member.id);

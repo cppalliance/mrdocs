@@ -30,6 +30,9 @@ struct OverloadsInfo final
     /// The members of the overload set.
     std::vector<SymbolID> Members;
 
+    /// Info about the return type of this function.
+    Polymorphic<TypeInfo> ReturnType;
+
     //--------------------------------------------
 
     explicit OverloadsInfo(SymbolID const& ID) noexcept
