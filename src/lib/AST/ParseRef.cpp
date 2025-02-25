@@ -1988,7 +1988,8 @@ private:
         // https://en.cppreference.com/w/cpp/language/function
         char const* start = ptr_;
 
-        if (auto* destMF = dynamic_cast<ParsedMemberFunctionSuffix*>(&dest))
+        auto* destMF = dynamic_cast<ParsedMemberFunctionSuffix*>(&dest);
+        if (destMF && !destMF->IsExplicitObjectMemberFunction)
         {
             // Parse cv:
             // const/volatile qualification, only allowed in non-static member
@@ -2004,7 +2005,7 @@ private:
         // Parse ref:
         // ref-qualification, only allowed in non-static member function
         // declarations
-        if (auto* destMF = dynamic_cast<ParsedMemberFunctionSuffix*>(&dest))
+        if (destMF && !destMF->IsExplicitObjectMemberFunction)
         {
             skipWhitespace();
             if (parseLiteral("&"))
