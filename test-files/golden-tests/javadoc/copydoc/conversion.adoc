@@ -47,7 +47,7 @@ struct A;
 | Convert A to a string
 
 | <<A-2conversion-00,`operator string&lowbar;view&lowbar;type`>> 
-| string&lowbar;type()
+| Convert A to a string
 
 |===
 
@@ -64,16 +64,6 @@ Convert a string to A
 
 Declared in `&lt;conversion&period;cpp&gt;`
 
-
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-<<A,A>>&
-<<A-operator_assign-00,operator&equals;>>(<<string_view_type,string&lowbar;view&lowbar;type>> const& other);
-----
-
-[.small]#<<A-operator_assign-00,_» more&period;&period;&period;_>>#
-
 Convert a string to A
 
 
@@ -84,6 +74,50 @@ Convert a string to A
 ----
 
 [.small]#<<A-operator_assign-08,_» more&period;&period;&period;_>>#
+
+Convert a string to A
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>>&
+<<A-operator_assign-00,operator&equals;>>(<<string_view_type,string&lowbar;view&lowbar;type>> const& other);
+----
+
+[.small]#<<A-operator_assign-00,_» more&period;&period;&period;_>>#
+
+=== Return Value
+
+
+A representation of the string
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *other*
+| The string to convert
+
+|===
+
+[#A-operator_assign-08]
+== <<A,A>>::operator&equals;
+
+
+Convert a string to A
+
+=== Synopsis
+
+
+Declared in `&lt;conversion&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>>&
+operator&equals;(<<string_type,string&lowbar;type>> const& other);
+----
 
 === Return Value
 
@@ -105,21 +139,6 @@ A representation of the string
 == <<A,A>>::operator&equals;
 
 
-=== Synopsis
-
-
-Declared in `&lt;conversion&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-<<A,A>>&
-operator&equals;(<<string_view_type,string&lowbar;view&lowbar;type>> const& other);
-----
-
-[#A-operator_assign-08]
-== <<A,A>>::operator&equals;
-
-
 Convert a string to A
 
 === Synopsis
@@ -130,7 +149,7 @@ Declared in `&lt;conversion&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 <<A,A>>&
-operator&equals;(<<string_type,string&lowbar;type>> const& other);
+operator&equals;(<<string_view_type,string&lowbar;view&lowbar;type>> const& other);
 ----
 
 === Return Value
@@ -174,7 +193,7 @@ A string representation of A
 == <<A,A>>::operator <<string_view_type,string&lowbar;view&lowbar;type>>
 
 
-string&lowbar;type()
+Convert A to a string
 
 === Synopsis
 
@@ -185,6 +204,11 @@ Declared in `&lt;conversion&period;cpp&gt;`
 ----
 operator <<string_view_type,string&lowbar;view&lowbar;type>>() const;
 ----
+
+=== Return Value
+
+
+A string representation of A
 
 [#string_type]
 == string&lowbar;type

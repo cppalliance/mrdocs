@@ -4,6 +4,56 @@
 <namespace id="//////////////////////////8=">
   <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
     <file short-path="conversion.cpp" source-path="conversion.cpp" line="4" class="def"/>
+    <function name="operator=" id="gnscUVeCG+RVOHYPi/rKmD4KT3k=">
+      <file short-path="conversion.cpp" source-path="conversion.cpp" line="20"/>
+      <attr id="operator" name="assign" value="14"/>
+      <return>
+        <type class="lvalue-reference">
+          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
+        </type>
+      </return>
+      <param name="other">
+        <type class="lvalue-reference">
+          <pointee-type id="aQ5vERa/ROUuSctnkS1VsKSt48E=" name="string_type" cv-qualifiers="const"/>
+        </type>
+      </param>
+      <doc>
+        <brief>
+          <text>Convert a string to A</text>
+        </brief>
+        <returns>
+          <text>A representation of the string</text>
+        </returns>
+        <param name="other">
+          <text>The string to convert        </text>
+        </param>
+      </doc>
+    </function>
+    <function name="operator=" id="CGrNRU4S73WU6e3HjSzK2ehtLi0=">
+      <file short-path="conversion.cpp" source-path="conversion.cpp" line="24"/>
+      <attr id="operator" name="assign" value="14"/>
+      <return>
+        <type class="lvalue-reference">
+          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
+        </type>
+      </return>
+      <param name="other">
+        <type class="lvalue-reference">
+          <pointee-type id="EulqVl/v48vv9XjENaufduUwZKI=" name="string_view_type" cv-qualifiers="const"/>
+        </type>
+      </param>
+      <doc>
+        <brief>
+          <text>Convert a string to A</text>
+        </brief>
+        <returns>
+          <text>A representation of the string</text>
+        </returns>
+        <param name="other">
+          <text>The string to convert        </text>
+        </param>
+      </doc>
+    </function>
     <function class="conversion" name="operator string_type" id="KpKT2IPgl8pNnQdWRqrAmcPRtV0=">
       <file short-path="conversion.cpp" source-path="conversion.cpp" line="9"/>
       <attr id="is-const"/>
@@ -27,8 +77,11 @@
       </return>
       <doc>
         <brief>
-          <text>string_type()</text>
+          <text>Convert A to a string</text>
         </brief>
+        <returns>
+          <text>A string representation of A</text>
+        </returns>
       </doc>
     </function>
   </struct>
