@@ -1146,9 +1146,10 @@ emitWarnings()
             "{}:{}\n",
             loc.FullPath,
             loc.LineNumber);
+        int i = 1;
         for (auto const& msg : msgs)
         {
-            locWarning += fmt::format("    {}\n", msg);
+            locWarning += fmt::format("    {}) {}\n", i++, msg);
         }
         report::log(level, locWarning);
     }
