@@ -48,6 +48,7 @@
 
 {{! Enum members }}
 {{else if (eq symbol.kind "enum")}}
+{{#if symbol.constants}}
 {{#> markup/dynamic-level-h }}Members{{/markup/dynamic-level-h}}
 
 [,cols=2]
@@ -63,6 +64,7 @@
 {{/each}}
 |===
 
+{{/if}}
 {{/if}}
 {{! Using directives }}
 {{#if symbol.usingDirectives}}
