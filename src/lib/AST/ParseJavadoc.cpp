@@ -17,6 +17,7 @@
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Support/String.hpp>
 #include <mrdocs/Support/ScopeExit.hpp>
+#include <mrdocs/Support/Algorithm.hpp>
 #include <clang/AST/CommentCommandTraits.h>
 #include <clang/AST/ASTContext.h>
 #include <clang/AST/RawCommentList.h>
@@ -33,6 +34,7 @@
 #endif
 #include <clang/Basic/SourceManager.h>
 #include <llvm/Support/JSON.h>
+#include <llvm/ADT/StringExtras.h>
 #include <ranges>
 
 #ifdef NDEBUG
@@ -166,6 +168,9 @@ class JavadocVisitor
     doc::Block* block_ = nullptr;
     doc::Text* last_child_ = nullptr;
     std::size_t htmlTagNesting_ = 0;
+
+    // Used to visit children of a comment
+    Comment const* parent_ = nullptr;
     Comment::child_iterator it_{};
     Comment::child_iterator end_{};
 
@@ -312,6 +317,28 @@ public:
      */
     void
     visitInlineCommandComment(InlineCommandComment const* C);
+
+    /** Fix a reference string
+
+        The clang parser considers all chars up to the first
+        whitespace as part of the reference.
+
+        In some cases, this causes the reference to be incomplete,
+        especially when handling a function signature. In this
+        case, we have to extract the text from the next comments
+        to complete the reference.
+
+        In other cases, the reference may contain characters that
+        are not valid in identifiers. For instance, when the
+        identifier is followed by punctuation. In this case, we
+        have to truncate the reference at the last valid identifier
+        character.
+
+        @param ref The reference string to fix
+        @return Any leftover text that removed from the reference
+     */
+    std::string
+    fixReference(std::string& ref);
 
     /** Visit a single paragraph that contains inline content.
      */
@@ -559,6 +586,7 @@ visitChildren(
     MRDOCS_COMMENT_TRACE(C, ctx_);
     ScopeExitRestore s1(it_, C->child_begin());
     ScopeExitRestore s2(end_, C->child_end());
+    ScopeExitRestore s3(parent_, C);
     while(it_ != end_)
     {
         MRDOCS_COMMENT_TRACE(*it_, ctx_);
@@ -915,94 +943,6 @@ convertDirection(ParamCommandPassDirection kind)
     }
 }
 
-/** Parse first chars of string that represent an identifier
- */
-std::string_view
-parseIdentifier(std::string_view str)
-{
-    static constexpr auto idChars =
-        "abcdefghijklmnopqrstuvwxyz"
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        "0123456789"
-        "_";
-    static constexpr auto operatorChars =
-        "~!%^&*()-+=|[]{};:,.<>?/";
-    if (str.empty())
-    {
-        return {};
-    }
-
-    std::size_t p = str.find_first_not_of(idChars);
-    if (p == std::string_view::npos)
-    {
-        return str;
-    }
-
-    if (str.substr(0, p) == "operator")
-    {
-        p = str.find_first_not_of(operatorChars, p);
-        if (p == std::string_view::npos)
-        {
-            return str;
-        }
-    }
-
-    return str.substr(0, p);
-}
-
-/** Parse first chars of string that represent an identifier
- */
-std::string_view
-parseQualifiedIdentifier(std::string_view str)
-{
-    auto str0 = str;
-    std::size_t off = 0;
-    if (str.starts_with("::"))
-    {
-        off += 2;
-        str.remove_prefix(2);
-    }
-
-    bool atIdentifier = true;
-    while (!str.empty())
-    {
-        if (atIdentifier)
-        {
-            auto idStr = parseIdentifier(str);
-            if (!idStr.empty())
-            {
-                off += idStr.size();
-                str = str.substr(idStr.size());
-                atIdentifier = false;
-            }
-            else
-            {
-                break;
-            }
-        }
-        else
-        {
-            // At delimiter
-            if (str.starts_with("::"))
-            {
-                off += 2;
-                str = str.substr(2);
-                atIdentifier = true;
-            }
-            else
-            {
-                break;
-            }
-        }
-    }
-    std::string_view result = str0.substr(0, off);
-    if (result.ends_with("::"))
-    {
-        result = result.substr(0, result.size() - 2);
-    }
-    return result;
-}
-
 void
 JavadocVisitor::
 visitInlineCommandComment(
@@ -1032,8 +972,7 @@ visitInlineCommandComment(
     case CommandTraits::KCI_e:
     case CommandTraits::KCI_em:
     {
-        if(! goodArgCount(1, *C))
-            return;
+        MRDOCS_CHECK_OR(goodArgCount(1, *C));
         auto style = doc::Style::italic;
         emplaceText<doc::Styled>(
             C->hasTrailingNewline(),
@@ -1047,78 +986,37 @@ visitInlineCommandComment(
     case CommandTraits::KCI_copydetails:
     case CommandTraits::KCI_copydoc:
     {
-        if (!goodArgCount(1, *C))
-        {
-            return;
-        }
-
-        // the referenced symbol will be resolved during
-        // the finalization step once all symbols are extracted
-        std::string const &s = C->getArgText(0).str();
-        bool const copyingFunctionDoc = s.find('(') != std::string::npos;
-        std::string ref = s;
-        if (copyingFunctionDoc)
-        {
-            // Clang parses the copydoc command breaking
-            // before the complete overload information. For instance,
-            // `@copydoc operator()(unsigned char) const` will create
-            // a node with the text `operator()(unsigned` and another
-            // with `char) const`. We need to merge these nodes.
-            std::size_t open = std::ranges::count(s, '(');
-            std::size_t close = std::ranges::count(s, ')');
-            while (open != close)
-            {
-                ++it_;
-                if (it_ == end_)
-                {
-                    break;
-                }
-                Comment const* c = *it_;
-                if (c->getCommentKind() == CommentKind::TextComment)
-                {
-                    ref += static_cast<TextComment const*>(c)->getText();
-                }
-                else
-                {
-                    break;
-                }
-                open = std::ranges::count(ref, '(');
-                close = std::ranges::count(ref, ')');
-            }
-        }
+        MRDOCS_CHECK_OR(goodArgCount(1, *C));
+        std::string ref = C->getArgText(0).str();
+        std::string originalRef = ref;
+        std::string leftOver = fixReference(ref);
+        bool const hasExtra = !leftOver.empty();
         emplaceText<doc::Copied>(
-            C->hasTrailingNewline(),
+            C->hasTrailingNewline() && !hasExtra,
             ref,
             convertCopydoc(ID));
+        if (hasExtra)
+        {
+            emplaceText<doc::Text>(
+                C->hasTrailingNewline(),
+                leftOver);
+        }
         return;
     }
     case CommandTraits::KCI_ref:
     {
-        if(! goodArgCount(1, *C))
-            return;
-        // The parsed reference often includes characters
-        // that are not valid in identifiers, so we need to
-        // clean it up.
-        // Find the first character that is not a valid C++
-        // identifier character, and truncate the string there.
-        // This potentially creates two text nodes.
-        auto const s = C->getArgText(0).str();
-        std::string_view ref = parseQualifiedIdentifier(s);
-        bool const hasExtraText = ref.size() != s.size();
-        if (!ref.empty())
-        {
-            // the referenced symbol will be resolved during
-            // the finalization step once all symbols are extracted
-            emplaceText<doc::Reference>(
-                C->hasTrailingNewline() && !hasExtraText,
-                std::string(ref));
-        }
-        // Emplace the rest of the string as doc::Text
-        if(hasExtraText)
+        MRDOCS_CHECK_OR(goodArgCount(1, *C));
+        std::string ref = C->getArgText(0).str();
+        std::string leftOver = fixReference(ref);
+        bool const hasExtra = !leftOver.empty();
+        emplaceText<doc::Reference>(
+            C->hasTrailingNewline() && !hasExtra,
+            ref);
+        if (hasExtra)
         {
             emplaceText<doc::Text>(
                 C->hasTrailingNewline(),
-                s.substr(ref.size()));
+                leftOver);
         }
         return;
     }
@@ -1126,31 +1024,18 @@ visitInlineCommandComment(
     case CommandTraits::KCI_related:
     case CommandTraits::KCI_relates:
     {
-        if(! goodArgCount(1, *C))
-            return;
-        // The parsed reference often includes characters
-        // that are not valid in identifiers, so we need to
-        // clean it up.
-        // Find the first character that is not a valid C++
-        // identifier character, and truncate the string there.
-        // This potentially creates two text nodes.
-        auto const s = C->getArgText(0).str();
-        std::string_view ref = parseQualifiedIdentifier(s);
-        bool const hasExtraText = ref.size() != s.size();
-        if (!ref.empty())
-        {
-            // the referenced symbol will be resolved during
-            // the finalization step once all symbols are extracted
-            emplaceText<doc::Related>(
-                C->hasTrailingNewline() && !hasExtraText,
-                std::string(ref));
-        }
-        // Emplace the rest of the string as doc::Text
-        if(hasExtraText)
+        MRDOCS_CHECK_OR(goodArgCount(1, *C));
+        std::string ref = C->getArgText(0).str();
+        std::string leftOver = fixReference(ref);
+        bool const hasExtra = !leftOver.empty();
+        emplaceText<doc::Related>(
+            C->hasTrailingNewline() && !hasExtra,
+            ref);
+        if (hasExtra)
         {
             emplaceText<doc::Text>(
-                C->hasTrailingNewline(),
-                s.substr(ref.size()));
+                    C->hasTrailingNewline(),
+                    leftOver);
         }
         return;
     }
@@ -1182,6 +1067,156 @@ visitInlineCommandComment(
     {
         emplaceText<doc::Text>(C->hasTrailingNewline(), std::move(s));
     }
+}
+
+std::string
+JavadocVisitor::
+fixReference(std::string& ref)
+{
+    // If the ref is only "operator", the next text comment
+    // might contain a simple operator name/type, or a
+    // full operator overload.
+    // In this case, we need to include the next text comments
+    // until we find this operator identifier/type or until
+    // we find an unbalanced '('.
+    // Simply including the next text comment is enough
+    // for the next step.
+    std::string_view trimmed = trim(ref);
+    bool const isNoSuffixOperator =
+        trimmed == "operator" ||
+        trimmed.ends_with("::operator");
+    if (isNoSuffixOperator)
+    {
+        ++it_;
+        if (it_ == end_)
+        {
+            return ref;
+        }
+        Comment const* c = *it_;
+        if (c->getCommentKind() == CommentKind::TextComment)
+        {
+            ref += static_cast<TextComment const*>(c)->getText();
+        }
+        else
+        {
+            return ref;
+        }
+    }
+    static constexpr std::string_view idChars =
+        "abcdefghijklmnopqrstuvwxyz"
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        "0123456789"
+        "_:";
+    bool const isNoFunctionOperator =
+        isNoSuffixOperator ||
+        [trimmed]{
+            if (contains_n(trimmed, '(', 1))
+            {
+                return false;
+            }
+            std::size_t pos = trimmed.rfind("::");
+            std::string_view last = trimmed;
+            if (pos != std::string::npos) {
+                last = trimmed.substr(pos + 2);
+            }
+            if (!last.starts_with("operator"))
+            {
+                return false;
+            }
+            last.remove_prefix(8);
+            if (last.empty())
+            {
+                return true;
+            }
+            return !contains(idChars, last.front());
+        }();
+
+    // Clang parses the copydoc command breaking
+    // before the complete overload information. For instance,
+    // `@copydoc operator()(unsigned char) const` will create
+    // a node with the text `operator()(unsigned` and another
+    // with `char) const`. We need to merge these nodes.
+    // If the ref contains an unbalanced '(', then it's
+    // a function, and we need to merge the next text comments
+    // until we find a balanced ')'.
+    bool const isFunction = contains(ref, '(');
+    while (std::ranges::count(ref, '(') != std::ranges::count(ref, ')'))
+    {
+        ++it_;
+        if (it_ == end_)
+        {
+            break;
+        }
+        Comment const* c = *it_;
+        if (c->getCommentKind() == CommentKind::TextComment)
+        {
+            ref += static_cast<TextComment const*>(c)->getText();
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    // Clang refs can also contain invalid characters
+    // at the end, especially punctuation. We need to
+    // truncate the ref at the last valid identifier
+    // character.
+    // The last identifier character depends on the type
+    // of ref.
+    // - If it's an operator but not a function, then
+    //   we also consider operator chars as valid.
+    // - If it's a function, then we also consider ')'
+    //   as valid.
+    // - In all cases, we consider the identifier chars
+    //   as valid.
+    static constexpr std::string_view operatorChars =
+        "~!%^&*()-+=|[]{};:,.<>?/";
+    static constexpr std::string_view parenChars =
+        "()";
+    std::string leftover;
+    bool const isRegularIdentifier = !isFunction && !isNoFunctionOperator;
+    if (isRegularIdentifier)
+    {
+        auto const lastIdChar = ref.find_last_of(idChars);
+        auto const firstLeftoverChar = lastIdChar + 1;
+        if (firstLeftoverChar < ref.size())
+        {
+            leftover = std::string_view(ref).substr(lastIdChar + 1);
+            ref = ref.substr(0, lastIdChar + 1);
+        }
+    }
+    else if (isFunction)
+    {
+        auto reservedCharsets = {idChars, parenChars};
+        auto reservedChars = std::views::join(reservedCharsets);
+        auto const lastIdOrParen = find_last_of(ref, reservedChars);
+        auto const firstLeftoverChar =
+            lastIdOrParen == ref.end() ?
+                ref.end() :
+                std::next(lastIdOrParen);
+        if (firstLeftoverChar != ref.end())
+        {
+            leftover = std::string_view(firstLeftoverChar, ref.end());
+            ref = ref.substr(0, std::distance(ref.begin(), firstLeftoverChar));
+        }
+    }
+    else /* if (isNoFunctionOperator) */
+    {
+        auto reservedCharsets = {idChars, operatorChars};
+        auto reservedChars = std::views::join(reservedCharsets);
+        auto const lastIdOrOperator = find_last_of(ref, reservedChars);
+        auto const firstLeftoverChar =
+            lastIdOrOperator == ref.end() ?
+                ref.end() :
+                std::next(lastIdOrOperator);
+        if (firstLeftoverChar != ref.end())
+        {
+            leftover = std::string_view(firstLeftoverChar, ref.end());
+            ref = ref.substr(0, std::distance(ref.begin(), firstLeftoverChar));
+        }
+    }
+    return leftover;
 }
 
 //------------------------------------------------

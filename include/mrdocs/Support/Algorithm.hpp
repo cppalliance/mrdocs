@@ -90,6 +90,31 @@ contains_n(Range const& range, El const& el, std::size_t n)
     return false;
 }
 
+/** Find the last element in a range that matches an element in the specified range.
+    @param range The range to search.
+    @param els The elements to search for.
+    @return An iterator to the last element found, or range.end() if not found.
+ */
+template <std::ranges::range Range, std::ranges::range Els>
+requires std::equality_comparable_with<std::ranges::range_value_t<Els>, std::ranges::range_value_t<Range>>
+auto
+find_last_of(Range&& range, Els&& els)
+{
+    if (std::ranges::empty(range))
+    {
+        return std::ranges::end(range);
+    }
+    auto it = std::ranges::end(range);
+    do {
+        --it;
+        if (contains(els, *it))
+        {
+            return it;
+        }
+    } while (it != std::ranges::begin(range));
+    return std::ranges::end(range);
+}
+
 } // clang::mrdocs
 
 #endif
