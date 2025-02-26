@@ -79,7 +79,7 @@ namespace detail {
 #define MRDOCS_COMMENT_TRACE(D, C) \
     SmallString<1024> MRDOCS_COMMENT_TRACE_UNIQUE_NAME;                 \
     ::detail::dumpCommentContent(D, C, MRDOCS_COMMENT_TRACE_UNIQUE_NAME);        \
-    report::debug("{}", std::string_view(MRDOCS_COMMENT_TRACE_UNIQUE_NAME.str()))
+    report::trace("{}", std::string_view(MRDOCS_COMMENT_TRACE_UNIQUE_NAME.str()))
 #endif
 
 
