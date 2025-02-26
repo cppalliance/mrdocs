@@ -1,0 +1,743 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+=== Namespaces
+
+[cols=1]
+|===
+| Name 
+
+| <<N,`N`>> 
+
+|===
+=== Types
+
+[cols=2]
+|===
+| Name 
+| Description 
+
+| <<param_t,`param&lowbar;t`>> 
+| Helper class for distinct parameter types
+
+|===
+
+[#N]
+== N
+
+
+=== Types
+
+[cols=1]
+|===
+| Name 
+
+| <<N-A,`A`>> 
+
+|===
+
+[#N-A]
+== <<N,N>>::A
+
+
+=== Synopsis
+
+
+Declared in `&lt;qualified&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct A;
+----
+
+=== Types
+
+[cols=1]
+|===
+| Name 
+
+| <<N-A-B,`B`>> 
+
+|===
+=== Member Functions
+
+[cols=2]
+|===
+| Name 
+| Description 
+
+| <<N-A-f-05,`f`>> 
+| Reference function
+
+| <<N-A-g-0d,`g`>> 
+| `g` overloads
+
+| <<N-A-h-0b,`h`>> 
+| `h` overloads
+
+|===
+
+
+
+[#N-A-B]
+== <<N,N>>::<<N-A,A>>::B
+
+
+=== Synopsis
+
+
+Declared in `&lt;qualified&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct B;
+----
+
+
+
+
+[#N-A-f-05]
+== <<N,N>>::<<N-A,A>>::f
+
+
+Reference function
+
+=== Synopses
+
+
+Declared in `&lt;qualified&period;cpp&gt;`
+
+Reference function
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<N-A-f-0a,f>>(<<param_t,param&lowbar;t>>&lt;0&gt; a);
+----
+
+[.small]#<<N-A-f-0a,_» more&period;&period;&period;_>>#
+
+Reference function
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<N-A-f-0b,f>>(<<param_t,param&lowbar;t>>&lt;1&gt; a);
+----
+
+[.small]#<<N-A-f-0b,_» more&period;&period;&period;_>>#
+
+Reference function
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<N-A-f-0e,f>>(<<param_t,param&lowbar;t>>&lt;2&gt; a);
+----
+
+[.small]#<<N-A-f-0e,_» more&period;&period;&period;_>>#
+
+Reference function
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<N-A-f-00,f>>(<<param_t,param&lowbar;t>>&lt;3&gt; a);
+----
+
+[.small]#<<N-A-f-00,_» more&period;&period;&period;_>>#
+
+Reference function
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<N-A-f-02,f>>(<<param_t,param&lowbar;t>>&lt;4&gt; a);
+----
+
+[.small]#<<N-A-f-02,_» more&period;&period;&period;_>>#
+
+Reference function
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<N-A-f-092,f>>(<<param_t,param&lowbar;t>>&lt;5&gt; a);
+----
+
+[.small]#<<N-A-f-092,_» more&period;&period;&period;_>>#
+
+Reference function
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<N-A-f-097,f>>(<<param_t,param&lowbar;t>>&lt;6&gt; a);
+----
+
+[.small]#<<N-A-f-097,_» more&period;&period;&period;_>>#
+
+Reference function
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<N-A-f-07,f>>(<<param_t,param&lowbar;t>>&lt;7&gt; a);
+----
+
+[.small]#<<N-A-f-07,_» more&period;&period;&period;_>>#
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Qualified param
+
+|===
+
+[#N-A-f-0a]
+== <<N,N>>::<<N-A,A>>::f
+
+
+Reference function
+
+=== Synopsis
+
+
+Declared in `&lt;qualified&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(<<param_t,param&lowbar;t>>&lt;0&gt; a);
+----
+
+=== Description
+
+
+Documentation for the reference function
+
+
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Qualified param
+
+|===
+
+[#N-A-f-0b]
+== <<N,N>>::<<N-A,A>>::f
+
+
+Reference function
+
+=== Synopsis
+
+
+Declared in `&lt;qualified&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(<<param_t,param&lowbar;t>>&lt;1&gt; a);
+----
+
+=== Description
+
+
+Documentation for the reference function
+
+
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Qualified param
+
+|===
+
+[#N-A-f-0e]
+== <<N,N>>::<<N-A,A>>::f
+
+
+Reference function
+
+=== Synopsis
+
+
+Declared in `&lt;qualified&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(<<param_t,param&lowbar;t>>&lt;2&gt; a);
+----
+
+=== Description
+
+
+Documentation for the reference function
+
+
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Qualified param
+
+|===
+
+[#N-A-f-00]
+== <<N,N>>::<<N-A,A>>::f
+
+
+Reference function
+
+=== Synopsis
+
+
+Declared in `&lt;qualified&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(<<param_t,param&lowbar;t>>&lt;3&gt; a);
+----
+
+=== Description
+
+
+Documentation for the reference function
+
+
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Qualified param
+
+|===
+
+[#N-A-f-02]
+== <<N,N>>::<<N-A,A>>::f
+
+
+Reference function
+
+=== Synopsis
+
+
+Declared in `&lt;qualified&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(<<param_t,param&lowbar;t>>&lt;4&gt; a);
+----
+
+=== Description
+
+
+Documentation for the reference function
+
+
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Qualified param
+
+|===
+
+[#N-A-f-092]
+== <<N,N>>::<<N-A,A>>::f
+
+
+Reference function
+
+=== Synopsis
+
+
+Declared in `&lt;qualified&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(<<param_t,param&lowbar;t>>&lt;5&gt; a);
+----
+
+=== Description
+
+
+Documentation for the reference function
+
+
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Qualified param
+
+|===
+
+[#N-A-f-097]
+== <<N,N>>::<<N-A,A>>::f
+
+
+Reference function
+
+=== Synopsis
+
+
+Declared in `&lt;qualified&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(<<param_t,param&lowbar;t>>&lt;6&gt; a);
+----
+
+=== Description
+
+
+Documentation for the reference function
+
+
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Qualified param
+
+|===
+
+[#N-A-f-07]
+== <<N,N>>::<<N-A,A>>::f
+
+
+Reference function
+
+=== Synopsis
+
+
+Declared in `&lt;qualified&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(<<param_t,param&lowbar;t>>&lt;7&gt; a);
+----
+
+=== Description
+
+
+Documentation for the reference function
+
+
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Qualified param
+
+|===
+
+[#N-A-g-0d]
+== <<N,N>>::<<N-A,A>>::g
+
+
+`g` overloads
+
+=== Synopses
+
+
+Declared in `&lt;qualified&period;cpp&gt;`
+
+Reference function
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<N-A-g-0a,g>>(<<N-A-B,B>> a);
+----
+
+[.small]#<<N-A-g-0a,_» more&period;&period;&period;_>>#
+
+Fail
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<N-A-g-06,g>>(int a);
+----
+
+[.small]#<<N-A-g-06,_» more&period;&period;&period;_>>#
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Qualified param
+
+|===
+
+[#N-A-g-0a]
+== <<N,N>>::<<N-A,A>>::g
+
+
+Reference function
+
+=== Synopsis
+
+
+Declared in `&lt;qualified&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+g(<<N-A-B,B>> a);
+----
+
+=== Description
+
+
+Documentation for the reference function
+
+
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Qualified param
+
+|===
+
+[#N-A-g-06]
+== <<N,N>>::<<N-A,A>>::g
+
+
+Fail
+
+=== Synopsis
+
+
+Declared in `&lt;qualified&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+g(int a);
+----
+
+=== Description
+
+
+Function with same number of parameters            but different types&period; This should fail&period;
+
+
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Fundamental type parameter
+
+|===
+
+[#N-A-h-0b]
+== <<N,N>>::<<N-A,A>>::h
+
+
+`h` overloads
+
+=== Synopses
+
+
+Declared in `&lt;qualified&period;cpp&gt;`
+
+Reference function
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<N-A-h-0f,h>>(<<N,N>>::<<N-A,A>>::<<N-A-B,B>> a);
+----
+
+[.small]#<<N-A-h-0f,_» more&period;&period;&period;_>>#
+
+Fail
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<N-A-h-06,h>>(int a);
+----
+
+[.small]#<<N-A-h-06,_» more&period;&period;&period;_>>#
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Qualified param
+
+|===
+
+[#N-A-h-0f]
+== <<N,N>>::<<N-A,A>>::h
+
+
+Reference function
+
+=== Synopsis
+
+
+Declared in `&lt;qualified&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+h(<<N,N>>::<<N-A,A>>::<<N-A-B,B>> a);
+----
+
+=== Description
+
+
+Documentation for the reference function
+
+
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Qualified param
+
+|===
+
+[#N-A-h-06]
+== <<N,N>>::<<N-A,A>>::h
+
+
+Fail
+
+=== Synopsis
+
+
+Declared in `&lt;qualified&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+h(int a);
+----
+
+=== Description
+
+
+Function with same number of parameters            but different types&period; This should fail&period;
+
+
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Fundamental type parameter
+
+|===
+
+[#param_t]
+== param&lowbar;t
+
+
+Helper class for distinct parameter types
+
+=== Synopsis
+
+
+Declared in `&lt;qualified&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;int N&gt;
+class param&lowbar;t;
+----
+
+
+
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

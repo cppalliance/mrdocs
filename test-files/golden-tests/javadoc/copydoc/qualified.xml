@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <namespace name="N" id="rjlMNXAaWNMkQYMTJzRA1DR0DiE=">
+    <struct name="A" id="xFab/Y8fwS0B1mPatfT5Qz3HpRI=">
+      <file short-path="qualified.cpp" source-path="qualified.cpp" line="6" class="def"/>
+      <struct name="B" id="xp72Inw+cnb6GxbVsJgjH7TkgII=">
+        <file short-path="qualified.cpp" source-path="qualified.cpp" line="7" class="def"/>
+      </struct>
+      <function name="f" id="pUFM90f8kBr9AsLuseHTO2tsfaM=">
+        <file short-path="qualified.cpp" source-path="qualified.cpp" line="27"/>
+        <param name="a">
+          <type id="X9R785kQEYyJ0tnnSr0SvdLAZQw=" name="param_t&lt;0&gt;"/>
+        </param>
+        <doc>
+          <brief>
+            <text>Reference function</text>
+          </brief>
+          <para>
+            <text>Documentation for the reference function</text>
+          </para>
+          <param name="a">
+            <text>Qualified param</text>
+          </param>
+        </doc>
+      </function>
+      <function name="f" id="sdXtSkU3z9AnRNxz51/MgSpAzhc=">
+        <file short-path="qualified.cpp" source-path="qualified.cpp" line="30"/>
+        <param name="a">
+          <type id="X9R785kQEYyJ0tnnSr0SvdLAZQw=" name="param_t&lt;1&gt;"/>
+        </param>
+        <doc>
+          <brief>
+            <text>Reference function</text>
+          </brief>
+          <para>
+            <text>Documentation for the reference function</text>
+          </para>
+          <param name="a">
+            <text>Qualified param</text>
+          </param>
+        </doc>
+      </function>
+      <function name="f" id="6IcyV8zPUVI0rQ9Cb7I4fWxuKOw=">
+        <file short-path="qualified.cpp" source-path="qualified.cpp" line="33"/>
+        <param name="a">
+          <type id="X9R785kQEYyJ0tnnSr0SvdLAZQw=" name="param_t&lt;2&gt;"/>
+        </param>
+        <doc>
+          <brief>
+            <text>Reference function</text>
+          </brief>
+          <para>
+            <text>Documentation for the reference function</text>
+          </para>
+          <param name="a">
+            <text>Qualified param</text>
+          </param>
+        </doc>
+      </function>
+      <function name="f" id="D9aUerVEX7T3i7vZrYEez8hDwJQ=">
+        <file short-path="qualified.cpp" source-path="qualified.cpp" line="36"/>
+        <param name="a">
+          <type id="X9R785kQEYyJ0tnnSr0SvdLAZQw=" name="param_t&lt;3&gt;"/>
+        </param>
+        <doc>
+          <brief>
+            <text>Reference function</text>
+          </brief>
+          <para>
+            <text>Documentation for the reference function</text>
+          </para>
+          <param name="a">
+            <text>Qualified param</text>
+          </param>
+        </doc>
+      </function>
+      <function name="f" id="LPZyZzCf0L+0jI1iS+qmDhm0/KM=">
+        <file short-path="qualified.cpp" source-path="qualified.cpp" line="56"/>
+        <param name="a">
+          <type id="X9R785kQEYyJ0tnnSr0SvdLAZQw=" name="param_t&lt;4&gt;"/>
+        </param>
+        <doc>
+          <brief>
+            <text>Reference function</text>
+          </brief>
+          <para>
+            <text>Documentation for the reference function</text>
+          </para>
+          <param name="a">
+            <text>Qualified param</text>
+          </param>
+        </doc>
+      </function>
+      <function name="f" id="ku9bOec7VX6p5+pyDlhlgll7QfY=">
+        <file short-path="qualified.cpp" source-path="qualified.cpp" line="59"/>
+        <param name="a">
+          <type id="X9R785kQEYyJ0tnnSr0SvdLAZQw=" name="param_t&lt;5&gt;"/>
+        </param>
+        <doc>
+          <brief>
+            <text>Reference function</text>
+          </brief>
+          <para>
+            <text>Documentation for the reference function</text>
+          </para>
+          <param name="a">
+            <text>Qualified param</text>
+          </param>
+        </doc>
+      </function>
+      <function name="f" id="l8nlq2W8r0sGfJplanVYEUfvO8o=">
+        <file short-path="qualified.cpp" source-path="qualified.cpp" line="62"/>
+        <param name="a">
+          <type id="X9R785kQEYyJ0tnnSr0SvdLAZQw=" name="param_t&lt;6&gt;"/>
+        </param>
+        <doc>
+          <brief>
+            <text>Reference function</text>
+          </brief>
+          <para>
+            <text>Documentation for the reference function</text>
+          </para>
+          <param name="a">
+            <text>Qualified param</text>
+          </param>
+        </doc>
+      </function>
+      <function name="f" id="c8O1q40UylpJzj8XWv17OnPP6Ow=">
+        <file short-path="qualified.cpp" source-path="qualified.cpp" line="65"/>
+        <param name="a">
+          <type id="X9R785kQEYyJ0tnnSr0SvdLAZQw=" name="param_t&lt;7&gt;"/>
+        </param>
+        <doc>
+          <brief>
+            <text>Reference function</text>
+          </brief>
+          <para>
+            <text>Documentation for the reference function</text>
+          </para>
+          <param name="a">
+            <text>Qualified param</text>
+          </param>
+        </doc>
+      </function>
+      <function name="g" id="pkByPldRuMDs8h9fkQnHTrf/rxM=">
+        <file short-path="qualified.cpp" source-path="qualified.cpp" line="24"/>
+        <param name="a">
+          <type id="xp72Inw+cnb6GxbVsJgjH7TkgII=" name="B"/>
+        </param>
+        <doc>
+          <brief>
+            <text>Reference function</text>
+          </brief>
+          <para>
+            <text>Documentation for the reference function</text>
+          </para>
+          <param name="a">
+            <text>Qualified param</text>
+          </param>
+        </doc>
+      </function>
+      <function name="g" id="bDQUNJ3SHpCjwF8zCqo7Jw8Cjic=">
+        <file short-path="qualified.cpp" source-path="qualified.cpp" line="16"/>
+        <param name="a">
+          <type name="int"/>
+        </param>
+        <doc>
+          <brief>
+            <text>Fail</text>
+          </brief>
+          <para>
+            <text>Function with same number of parameters            but different types. This should fail.</text>
+          </para>
+          <param name="a">
+            <text>Fundamental type parameter</text>
+          </param>
+        </doc>
+      </function>
+      <function name="h" id="8LU2TGwTCTeuAKkMvJpmvMdlTeE=">
+        <file short-path="qualified.cpp" source-path="qualified.cpp" line="53"/>
+        <param name="a">
+          <type id="xp72Inw+cnb6GxbVsJgjH7TkgII=" name="N::A::B"/>
+        </param>
+        <doc>
+          <brief>
+            <text>Reference function</text>
+          </brief>
+          <para>
+            <text>Documentation for the reference function</text>
+          </para>
+          <param name="a">
+            <text>Qualified param</text>
+          </param>
+        </doc>
+      </function>
+      <function name="h" id="aEsACCmKRAV5MPYavFglHXgugn0=">
+        <file short-path="qualified.cpp" source-path="qualified.cpp" line="45"/>
+        <param name="a">
+          <type name="int"/>
+        </param>
+        <doc>
+          <brief>
+            <text>Fail</text>
+          </brief>
+          <para>
+            <text>Function with same number of parameters            but different types. This should fail.</text>
+          </para>
+          <param name="a">
+            <text>Fundamental type parameter</text>
+          </param>
+        </doc>
+      </function>
+    </struct>
+  </namespace>
+  <template>
+    <tparam name="N" class="non-type" type="int"/>
+    <class name="param_t" id="X9R785kQEYyJ0tnnSr0SvdLAZQw=">
+      <file short-path="qualified.cpp" source-path="qualified.cpp" line="2"/>
+      <doc>
+        <brief>
+          <text>Helper class for distinct parameter types</text>
+        </brief>
+      </doc>
+    </class>
+  </template>
+</namespace>
+</mrdocs>
