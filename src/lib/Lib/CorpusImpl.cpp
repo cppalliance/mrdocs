@@ -129,11 +129,71 @@ findFirstParentInfo(
     }
 }
 
+bool
+qualifiedNameCompare(
+    Polymorphic<NameInfo> const& lhs0,
+    Polymorphic<NameInfo> const& rhs0,
+    Info const& context,
+    CorpusImpl const& corpus)
+{
+    MRDOCS_CHECK_OR(lhs0 && rhs0, false);
+    // Compare each component of the qualified name
+    NameInfo const* lhs = &*lhs0;
+    NameInfo const* rhs = &*rhs0;
+    while (lhs && rhs)
+    {
+        if (lhs->Name != rhs->Name)
+        {
+            return false;
+        }
+        lhs = lhs->Prefix ? &*lhs->Prefix : nullptr;
+        rhs = rhs->Prefix ? &*rhs->Prefix : nullptr;
+    }
+    // We consumed all components of both names
+    if (!lhs && !rhs)
+    {
+        return true;
+    }
+    // One name has more components than the other:
+    // these component should match the names from
+    // the context. When we doesn't match the context
+    // we try again with the parent context.
+    NameInfo const* curName0 = lhs ? lhs : rhs;
+    Info const* curContext0 = &context;
+    NameInfo const* curName = curName0;
+    Info const* curContext = curContext0;
+    while (curName && curContext)
+    {
+        if (curName->Name != curContext->Name)
+        {
+            // The name doesn't match the context name
+            // Try again, starting from the parent
+            // context.
+            curName = curName0;
+            curContext0 = curContext0->Parent ? corpus.find(curContext->Parent) : nullptr;
+            // No parent context to try: return false
+            if (!curContext0)
+            {
+                return false;
+            }
+            curContext = curContext0;
+            continue;
+        }
+        // Names matches, match next component
+        curName = curName->Prefix ? &*curName->Prefix : nullptr;
+        curContext = curContext->Parent ? corpus.find(curContext->Parent) : nullptr;
+    }
+    // We should have consumed all components of the name with the context
+    return !curName;
+}
+
 template <bool isInner>
 bool
 isDecayedEqualImpl(
     Polymorphic<TypeInfo> const& lhs,
-    Polymorphic<TypeInfo> const& rhs)
+    Polymorphic<TypeInfo> const& rhs,
+    Info const& context,
+    CorpusImpl const& corpus)
 {
     // Polymorphic
     MRDOCS_CHECK_OR(static_cast<bool>(lhs) == static_cast<bool>(rhs), false);
@@ -161,13 +221,16 @@ isDecayedEqualImpl(
     MRDOCS_CHECK_OR(lhs->Constraints == rhs->Constraints, false);
     switch (lhs->Kind)
     {
-    // Types that never decay are compared directly
+    // Types that never decay are compared directly, but we
+    // only compare the fields of the type, without reevaluating
+    // the fields of TypeInfo.
     case TypeKind::Named:
     {
-        // Compare only the fields of NameInfo, without
-        // TypeInfo, to avoid evaluating TypeInfo::IsConst
-        return dynamic_cast<NamedTypeInfo const&>(*lhs).Name ==
-               dynamic_cast<NamedTypeInfo const&>(*rhs).Name;
+        return
+            qualifiedNameCompare(
+                dynamic_cast<NamedTypeInfo const&>(*lhs).Name,
+                dynamic_cast<NamedTypeInfo const&>(*rhs).Name,
+                context, corpus);
     }
     case TypeKind::Decltype:
     {
@@ -186,22 +249,24 @@ isDecayedEqualImpl(
         return
             isDecayedEqualImpl<true>(
                 dynamic_cast<LValueReferenceTypeInfo const&>(*lhs).PointeeType,
-                dynamic_cast<LValueReferenceTypeInfo const&>(*rhs).PointeeType);
+                dynamic_cast<LValueReferenceTypeInfo const&>(*rhs).PointeeType,
+                context, corpus);
     }
     case TypeKind::RValueReference:
     {
         return
             isDecayedEqualImpl<true>(
                 dynamic_cast<RValueReferenceTypeInfo const&>(*lhs).PointeeType,
-                dynamic_cast<RValueReferenceTypeInfo const&>(*rhs).PointeeType);
+                dynamic_cast<RValueReferenceTypeInfo const&>(*rhs).PointeeType,
+                context, corpus);
     }
     case TypeKind::MemberPointer:
     {
         auto const& lhsMP = dynamic_cast<MemberPointerTypeInfo const&>(*lhs);
         auto const& rhsMP = dynamic_cast<MemberPointerTypeInfo const&>(*rhs);
         return
-            isDecayedEqualImpl<true>(lhsMP.PointeeType, rhsMP.PointeeType) &&
-            isDecayedEqualImpl<true>(lhsMP.ParentType, rhsMP.ParentType);
+            isDecayedEqualImpl<true>(lhsMP.PointeeType, rhsMP.PointeeType, context, corpus) &&
+            isDecayedEqualImpl<true>(lhsMP.ParentType, rhsMP.ParentType, context, corpus);
     }
     case TypeKind::Function:
     {
@@ -210,11 +275,11 @@ isDecayedEqualImpl(
         MRDOCS_CHECK_OR(lhsF.RefQualifier == rhsF.RefQualifier, false);
         MRDOCS_CHECK_OR(lhsF.ExceptionSpec == rhsF.ExceptionSpec, false);
         MRDOCS_CHECK_OR(lhsF.IsVariadic == rhsF.IsVariadic, false);
-        MRDOCS_CHECK_OR(isDecayedEqualImpl<true>(lhsF.ReturnType, rhsF.ReturnType), false);
+        MRDOCS_CHECK_OR(isDecayedEqualImpl<true>(lhsF.ReturnType, rhsF.ReturnType, context, corpus), false);
         MRDOCS_CHECK_OR(lhsF.ParamTypes.size() == rhsF.ParamTypes.size(), false);
         for (std::size_t i = 0; i < lhsF.ParamTypes.size(); ++i)
         {
-            MRDOCS_CHECK_OR(isDecayedEqualImpl<false>(lhsF.ParamTypes[i], rhsF.ParamTypes[i]), false);
+            MRDOCS_CHECK_OR(isDecayedEqualImpl<false>(lhsF.ParamTypes[i], rhsF.ParamTypes[i], context, corpus), false);
         }
         return true;
     }
@@ -226,7 +291,7 @@ isDecayedEqualImpl(
         auto const I2 = innerType(*rhs);
         MRDOCS_CHECK_OR(static_cast<bool>(I1) == static_cast<bool>(I2), false);
         MRDOCS_CHECK_OR(static_cast<bool>(I1) && static_cast<bool>(I2), true);
-        return isDecayedEqualImpl<true>(I1->get(), I2->get());
+        return isDecayedEqualImpl<true>(I1->get(), I2->get(), context, corpus);
     }
     default:
         MRDOCS_UNREACHABLE();
@@ -240,9 +305,11 @@ isDecayedEqualImpl(
 bool
 isDecayedEqual(
     Polymorphic<TypeInfo> const& lhs,
-    Polymorphic<TypeInfo> const& rhs)
+    Polymorphic<TypeInfo> const& rhs,
+    Info const& context,
+    CorpusImpl const& corpus)
 {
-    return isDecayedEqualImpl<false>(lhs, rhs);
+    return isDecayedEqualImpl<false>(lhs, rhs, context, corpus);
 }
 }
 
@@ -513,7 +580,7 @@ lookupImpl(
             {
                 auto& lhsType = F.Params[i].Type;
                 auto& rhsType  = ref.FunctionParameters[i];
-                MRDOCS_CHECK_OR(isDecayedEqual(lhsType, rhsType), matchRes);
+                MRDOCS_CHECK_OR(isDecayedEqual(lhsType, rhsType, context, *this), matchRes);
             }
             MRDOCS_CHECK_OR(F.IsVariadic == ref.IsVariadic, matchRes);
             matchRes = MatchLevel::FunctionParameters;
