@@ -281,7 +281,7 @@ decayToPrimaryTemplate(Decl const* D)
     SmallString<128> symbolName;
     llvm::raw_svector_ostream os(symbolName);
     D->print(os);
-    report::debug("symbolName: ", std::string_view(os.str()));
+    report::trace("symbolName: ", std::string_view(os.str()));
 #endif
 
     Decl const* ID = D;
