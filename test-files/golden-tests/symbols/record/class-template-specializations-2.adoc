@@ -62,9 +62,9 @@ struct <<A-0e,A>>&lt;double&gt;;
 
 | <<A-06-D-0b,`D`>> 
 
-| <<A-06-D-04,`D&lt;float&gt;`>> 
-
 | <<A-06-D-07,`D&lt;short&gt;`>> 
+
+| <<A-06-D-04,`D&lt;float&gt;`>> 
 
 |===
 
@@ -161,71 +161,6 @@ struct F;
 
 
 
-[#A-06-D-04]
-== <<A-06,A>>&lt;double&gt;::D&lt;float&gt;
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;2&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;&gt;
-struct <<A-06-D-0b,D>>&lt;float&gt;;
-----
-
-=== Types
-
-[cols=1]
-|===
-| Name 
-
-| <<A-06-D-04-G-06,`G`>> 
-
-| <<A-06-D-04-G-0c,`G&lt;T*&gt;`>> 
-
-|===
-
-
-
-[#A-06-D-04-G-06]
-== <<A-06,A>>&lt;double&gt;::<<A-06-D-04,D>>&lt;float&gt;::G
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;2&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;typename T&gt;
-struct G;
-----
-
-
-
-
-[#A-06-D-04-G-0c]
-== <<A-06,A>>&lt;double&gt;::<<A-06-D-04,D>>&lt;float&gt;::G&lt;T*&gt;
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;2&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;typename T&gt;
-struct <<A-06-D-04-G-06,G>>&lt;T*&gt;;
-----
-
-
-
-
 [#A-06-D-07]
 == <<A-06,A>>&lt;double&gt;::D&lt;short&gt;
 
@@ -312,6 +247,71 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;2&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct F;
+----
+
+
+
+
+[#A-06-D-04]
+== <<A-06,A>>&lt;double&gt;::D&lt;float&gt;
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;2&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct <<A-06-D-0b,D>>&lt;float&gt;;
+----
+
+=== Types
+
+[cols=1]
+|===
+| Name 
+
+| <<A-06-D-04-G-06,`G`>> 
+
+| <<A-06-D-04-G-0c,`G&lt;T*&gt;`>> 
+
+|===
+
+
+
+[#A-06-D-04-G-06]
+== <<A-06,A>>&lt;double&gt;::<<A-06-D-04,D>>&lt;float&gt;::G
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;2&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+struct G;
+----
+
+
+
+
+[#A-06-D-04-G-0c]
+== <<A-06,A>>&lt;double&gt;::<<A-06-D-04,D>>&lt;float&gt;::G&lt;T*&gt;
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;2&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+struct <<A-06-D-04-G-06,G>>&lt;T*&gt;;
 ----
 
 

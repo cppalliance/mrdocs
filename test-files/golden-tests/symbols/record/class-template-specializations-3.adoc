@@ -13,13 +13,13 @@
 
 | <<A-0e,`A`>> 
 
-| <<A-01,`A&lt;float&gt;`>> 
-
-| <<A-0c,`A&lt;long&gt;`>> 
-
 | <<A-00,`A&lt;short&gt;`>> 
 
 | <<A-07,`A&lt;unsigned int&gt;`>> 
+
+| <<A-0c,`A&lt;long&gt;`>> 
+
+| <<A-01,`A&lt;float&gt;`>> 
 
 | <<E,`E`>> 
 
@@ -222,6 +222,723 @@ struct <<A-0e-B-00-D-09,D>>&lt;bool&gt;;
 
 
 
+[#A-00]
+== A&lt;short&gt;
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct <<A-0e,A>>&lt;short&gt;;
+----
+
+=== Types
+
+[cols=1]
+|===
+| Name 
+
+| <<A-00-B-0e,`B`>> 
+
+| <<A-00-B-00,`B&lt;void&gt;`>> 
+
+| <<A-00-B-07,`B&lt;double&gt;`>> 
+
+|===
+
+
+
+[#A-00-B-0e]
+== <<A-00,A>>&lt;short&gt;::B
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename U&gt;
+struct B;
+----
+
+
+
+
+[#A-00-B-00]
+== <<A-00,A>>&lt;short&gt;::B&lt;void&gt;
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct <<A-0e-B-07,B>>&lt;void&gt;;
+----
+
+=== Types
+
+[cols=1]
+|===
+| Name 
+
+| <<A-00-B-00-C,`C`>> 
+
+| <<A-00-B-00-D-03,`D`>> 
+
+| <<A-00-B-00-D-07,`D&lt;bool&gt;`>> 
+
+|===
+
+
+
+[#A-00-B-00-C]
+== <<A-00,A>>&lt;short&gt;::<<A-00-B-00,B>>&lt;void&gt;::C
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct C;
+----
+
+
+
+
+[#A-00-B-00-D-03]
+== <<A-00,A>>&lt;short&gt;::<<A-00-B-00,B>>&lt;void&gt;::D
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename V&gt;
+struct D;
+----
+
+
+
+
+[#A-00-B-00-D-07]
+== <<A-00,A>>&lt;short&gt;::<<A-00-B-00,B>>&lt;void&gt;::D&lt;bool&gt;
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct <<A-00-B-00-D-03,D>>&lt;bool&gt;;
+----
+
+
+
+
+[#A-00-B-07]
+== <<A-00,A>>&lt;short&gt;::B&lt;double&gt;
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct <<A-0e-B-07,B>>&lt;double&gt;;
+----
+
+=== Types
+
+[cols=1]
+|===
+| Name 
+
+| <<A-00-B-07-C,`C`>> 
+
+| <<A-00-B-07-D-015b,`D`>> 
+
+| <<A-00-B-07-D-0150,`D&lt;bool&gt;`>> 
+
+|===
+
+
+
+[#A-00-B-07-C]
+== <<A-00,A>>&lt;short&gt;::<<A-00-B-07,B>>&lt;double&gt;::C
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct C;
+----
+
+
+
+
+[#A-00-B-07-D-015b]
+== <<A-00,A>>&lt;short&gt;::<<A-00-B-07,B>>&lt;double&gt;::D
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename V&gt;
+struct D;
+----
+
+
+
+
+[#A-00-B-07-D-0150]
+== <<A-00,A>>&lt;short&gt;::<<A-00-B-07,B>>&lt;double&gt;::D&lt;bool&gt;
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct <<A-0e-B-00-D-09,D>>&lt;bool&gt;;
+----
+
+
+
+
+[#A-07]
+== A&lt;unsigned int&gt;
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct <<A-0e,A>>&lt;unsigned int&gt;;
+----
+
+=== Types
+
+[cols=1]
+|===
+| Name 
+
+| <<A-07-B-03a,`B`>> 
+
+| <<A-07-B-05,`B&lt;float&gt;`>> 
+
+| <<A-07-B-03e,`B&lt;double&gt;`>> 
+
+|===
+
+
+
+[#A-07-B-03a]
+== <<A-07,A>>&lt;unsigned int&gt;::B
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename U&gt;
+struct B;
+----
+
+
+
+
+[#A-07-B-05]
+== <<A-07,A>>&lt;unsigned int&gt;::B&lt;float&gt;
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct <<A-0e-B-07,B>>&lt;float&gt;;
+----
+
+=== Types
+
+[cols=1]
+|===
+| Name 
+
+| <<A-07-B-05-C,`C`>> 
+
+| <<A-07-B-05-D-0e,`D`>> 
+
+| <<A-07-B-05-D-01,`D&lt;bool&gt;`>> 
+
+|===
+
+
+
+[#A-07-B-05-C]
+== <<A-07,A>>&lt;unsigned int&gt;::<<A-07-B-05,B>>&lt;float&gt;::C
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct C;
+----
+
+
+
+
+[#A-07-B-05-D-0e]
+== <<A-07,A>>&lt;unsigned int&gt;::<<A-07-B-05,B>>&lt;float&gt;::D
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename V&gt;
+struct D;
+----
+
+
+
+
+[#A-07-B-05-D-01]
+== <<A-07,A>>&lt;unsigned int&gt;::<<A-07-B-05,B>>&lt;float&gt;::D&lt;bool&gt;
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct <<A-0e-B-07-D-09,D>>&lt;bool&gt;;
+----
+
+
+
+
+[#A-07-B-03e]
+== <<A-07,A>>&lt;unsigned int&gt;::B&lt;double&gt;
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct <<A-0e-B-07,B>>&lt;double&gt;;
+----
+
+=== Types
+
+[cols=1]
+|===
+| Name 
+
+| <<A-07-B-03e-C,`C`>> 
+
+| <<A-07-B-03e-D-01,`D`>> 
+
+| <<A-07-B-03e-D-0f,`D&lt;bool&gt;`>> 
+
+|===
+
+
+
+[#A-07-B-03e-C]
+== <<A-07,A>>&lt;unsigned int&gt;::<<A-07-B-03e,B>>&lt;double&gt;::C
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct C;
+----
+
+
+
+
+[#A-07-B-03e-D-01]
+== <<A-07,A>>&lt;unsigned int&gt;::<<A-07-B-03e,B>>&lt;double&gt;::D
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename V&gt;
+struct D;
+----
+
+
+
+
+[#A-07-B-03e-D-0f]
+== <<A-07,A>>&lt;unsigned int&gt;::<<A-07-B-03e,B>>&lt;double&gt;::D&lt;bool&gt;
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct <<A-0e-B-00-D-09,D>>&lt;bool&gt;;
+----
+
+
+
+
+[#A-0c]
+== A&lt;long&gt;
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct <<A-0e,A>>&lt;long&gt;;
+----
+
+=== Types
+
+[cols=1]
+|===
+| Name 
+
+| <<A-0c-B-0b,`B`>> 
+
+| <<A-0c-B-08,`B&lt;float&gt;`>> 
+
+| <<A-0c-B-0d,`B&lt;double&gt;`>> 
+
+|===
+
+
+
+[#A-0c-B-0b]
+== <<A-0c,A>>&lt;long&gt;::B
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename U&gt;
+struct B;
+----
+
+=== Types
+
+[cols=1]
+|===
+| Name 
+
+| <<A-0c-B-0b-C,`C`>> 
+
+| <<A-0c-B-0b-D-00,`D`>> 
+
+| <<A-0c-B-0b-D-0b,`D&lt;bool&gt;`>> 
+
+|===
+
+
+
+[#A-0c-B-0b-C]
+== <<A-0c,A>>&lt;long&gt;::<<A-0c-B-0b,B>>::C
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct C;
+----
+
+
+
+
+[#A-0c-B-0b-D-00]
+== <<A-0c,A>>&lt;long&gt;::<<A-0c-B-0b,B>>::D
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename V&gt;
+struct D;
+----
+
+
+
+
+[#A-0c-B-0b-D-0b]
+== <<A-0c,A>>&lt;long&gt;::<<A-0c-B-0b,B>>::D&lt;bool&gt;
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct <<A-0c-B-0b-D-00,D>>&lt;bool&gt;;
+----
+
+
+
+
+[#A-0c-B-08]
+== <<A-0c,A>>&lt;long&gt;::B&lt;float&gt;
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct <<A-0c-B-0b,B>>&lt;float&gt;;
+----
+
+=== Types
+
+[cols=1]
+|===
+| Name 
+
+| <<A-0c-B-08-C,`C`>> 
+
+| <<A-0c-B-08-D-08,`D`>> 
+
+| <<A-0c-B-08-D-03,`D&lt;bool&gt;`>> 
+
+|===
+
+
+
+[#A-0c-B-08-C]
+== <<A-0c,A>>&lt;long&gt;::<<A-0c-B-08,B>>&lt;float&gt;::C
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct C;
+----
+
+
+
+
+[#A-0c-B-08-D-08]
+== <<A-0c,A>>&lt;long&gt;::<<A-0c-B-08,B>>&lt;float&gt;::D
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename V&gt;
+struct D;
+----
+
+
+
+
+[#A-0c-B-08-D-03]
+== <<A-0c,A>>&lt;long&gt;::<<A-0c-B-08,B>>&lt;float&gt;::D&lt;bool&gt;
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct <<A-0c-B-0b-D-00,D>>&lt;bool&gt;;
+----
+
+
+
+
+[#A-0c-B-0d]
+== <<A-0c,A>>&lt;long&gt;::B&lt;double&gt;
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct <<A-0c-B-0b,B>>&lt;double&gt;;
+----
+
+=== Types
+
+[cols=1]
+|===
+| Name 
+
+| <<A-0c-B-0d-C,`C`>> 
+
+| <<A-0c-B-0d-D-0c,`D`>> 
+
+| <<A-0c-B-0d-D-03,`D&lt;bool&gt;`>> 
+
+|===
+
+
+
+[#A-0c-B-0d-C]
+== <<A-0c,A>>&lt;long&gt;::<<A-0c-B-0d,B>>&lt;double&gt;::C
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct C;
+----
+
+
+
+
+[#A-0c-B-0d-D-0c]
+== <<A-0c,A>>&lt;long&gt;::<<A-0c-B-0d,B>>&lt;double&gt;::D
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename V&gt;
+struct D;
+----
+
+
+
+
+[#A-0c-B-0d-D-03]
+== <<A-0c,A>>&lt;long&gt;::<<A-0c-B-0d,B>>&lt;double&gt;::D&lt;bool&gt;
+
+
+=== Synopsis
+
+
+Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct <<A-0e-B-00-D-09,D>>&lt;bool&gt;;
+----
+
+
+
+
 [#A-01]
 == A&lt;float&gt;
 
@@ -348,723 +1065,6 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 ----
 template&lt;&gt;
 struct <<A-0e-B-00-D-09,D>>&lt;bool, bool&gt;;
-----
-
-
-
-
-[#A-0c]
-== A&lt;long&gt;
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;&gt;
-struct <<A-0e,A>>&lt;long&gt;;
-----
-
-=== Types
-
-[cols=1]
-|===
-| Name 
-
-| <<A-0c-B-0b,`B`>> 
-
-| <<A-0c-B-0d,`B&lt;double&gt;`>> 
-
-| <<A-0c-B-08,`B&lt;float&gt;`>> 
-
-|===
-
-
-
-[#A-0c-B-0b]
-== <<A-0c,A>>&lt;long&gt;::B
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;typename U&gt;
-struct B;
-----
-
-=== Types
-
-[cols=1]
-|===
-| Name 
-
-| <<A-0c-B-0b-C,`C`>> 
-
-| <<A-0c-B-0b-D-00,`D`>> 
-
-| <<A-0c-B-0b-D-0b,`D&lt;bool&gt;`>> 
-
-|===
-
-
-
-[#A-0c-B-0b-C]
-== <<A-0c,A>>&lt;long&gt;::<<A-0c-B-0b,B>>::C
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-struct C;
-----
-
-
-
-
-[#A-0c-B-0b-D-00]
-== <<A-0c,A>>&lt;long&gt;::<<A-0c-B-0b,B>>::D
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;typename V&gt;
-struct D;
-----
-
-
-
-
-[#A-0c-B-0b-D-0b]
-== <<A-0c,A>>&lt;long&gt;::<<A-0c-B-0b,B>>::D&lt;bool&gt;
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;&gt;
-struct <<A-0c-B-0b-D-00,D>>&lt;bool&gt;;
-----
-
-
-
-
-[#A-0c-B-0d]
-== <<A-0c,A>>&lt;long&gt;::B&lt;double&gt;
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;&gt;
-struct <<A-0c-B-0b,B>>&lt;double&gt;;
-----
-
-=== Types
-
-[cols=1]
-|===
-| Name 
-
-| <<A-0c-B-0d-C,`C`>> 
-
-| <<A-0c-B-0d-D-0c,`D`>> 
-
-| <<A-0c-B-0d-D-03,`D&lt;bool&gt;`>> 
-
-|===
-
-
-
-[#A-0c-B-0d-C]
-== <<A-0c,A>>&lt;long&gt;::<<A-0c-B-0d,B>>&lt;double&gt;::C
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-struct C;
-----
-
-
-
-
-[#A-0c-B-0d-D-0c]
-== <<A-0c,A>>&lt;long&gt;::<<A-0c-B-0d,B>>&lt;double&gt;::D
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;typename V&gt;
-struct D;
-----
-
-
-
-
-[#A-0c-B-0d-D-03]
-== <<A-0c,A>>&lt;long&gt;::<<A-0c-B-0d,B>>&lt;double&gt;::D&lt;bool&gt;
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;&gt;
-struct <<A-0e-B-00-D-09,D>>&lt;bool&gt;;
-----
-
-
-
-
-[#A-0c-B-08]
-== <<A-0c,A>>&lt;long&gt;::B&lt;float&gt;
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;&gt;
-struct <<A-0c-B-0b,B>>&lt;float&gt;;
-----
-
-=== Types
-
-[cols=1]
-|===
-| Name 
-
-| <<A-0c-B-08-C,`C`>> 
-
-| <<A-0c-B-08-D-08,`D`>> 
-
-| <<A-0c-B-08-D-03,`D&lt;bool&gt;`>> 
-
-|===
-
-
-
-[#A-0c-B-08-C]
-== <<A-0c,A>>&lt;long&gt;::<<A-0c-B-08,B>>&lt;float&gt;::C
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-struct C;
-----
-
-
-
-
-[#A-0c-B-08-D-08]
-== <<A-0c,A>>&lt;long&gt;::<<A-0c-B-08,B>>&lt;float&gt;::D
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;typename V&gt;
-struct D;
-----
-
-
-
-
-[#A-0c-B-08-D-03]
-== <<A-0c,A>>&lt;long&gt;::<<A-0c-B-08,B>>&lt;float&gt;::D&lt;bool&gt;
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;&gt;
-struct <<A-0c-B-0b-D-00,D>>&lt;bool&gt;;
-----
-
-
-
-
-[#A-00]
-== A&lt;short&gt;
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;&gt;
-struct <<A-0e,A>>&lt;short&gt;;
-----
-
-=== Types
-
-[cols=1]
-|===
-| Name 
-
-| <<A-00-B-0e,`B`>> 
-
-| <<A-00-B-07,`B&lt;double&gt;`>> 
-
-| <<A-00-B-00,`B&lt;void&gt;`>> 
-
-|===
-
-
-
-[#A-00-B-0e]
-== <<A-00,A>>&lt;short&gt;::B
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;typename U&gt;
-struct B;
-----
-
-
-
-
-[#A-00-B-07]
-== <<A-00,A>>&lt;short&gt;::B&lt;double&gt;
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;&gt;
-struct <<A-0e-B-07,B>>&lt;double&gt;;
-----
-
-=== Types
-
-[cols=1]
-|===
-| Name 
-
-| <<A-00-B-07-C,`C`>> 
-
-| <<A-00-B-07-D-015b,`D`>> 
-
-| <<A-00-B-07-D-0150,`D&lt;bool&gt;`>> 
-
-|===
-
-
-
-[#A-00-B-07-C]
-== <<A-00,A>>&lt;short&gt;::<<A-00-B-07,B>>&lt;double&gt;::C
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-struct C;
-----
-
-
-
-
-[#A-00-B-07-D-015b]
-== <<A-00,A>>&lt;short&gt;::<<A-00-B-07,B>>&lt;double&gt;::D
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;typename V&gt;
-struct D;
-----
-
-
-
-
-[#A-00-B-07-D-0150]
-== <<A-00,A>>&lt;short&gt;::<<A-00-B-07,B>>&lt;double&gt;::D&lt;bool&gt;
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;&gt;
-struct <<A-0e-B-00-D-09,D>>&lt;bool&gt;;
-----
-
-
-
-
-[#A-00-B-00]
-== <<A-00,A>>&lt;short&gt;::B&lt;void&gt;
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;&gt;
-struct <<A-0e-B-07,B>>&lt;void&gt;;
-----
-
-=== Types
-
-[cols=1]
-|===
-| Name 
-
-| <<A-00-B-00-C,`C`>> 
-
-| <<A-00-B-00-D-03,`D`>> 
-
-| <<A-00-B-00-D-07,`D&lt;bool&gt;`>> 
-
-|===
-
-
-
-[#A-00-B-00-C]
-== <<A-00,A>>&lt;short&gt;::<<A-00-B-00,B>>&lt;void&gt;::C
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-struct C;
-----
-
-
-
-
-[#A-00-B-00-D-03]
-== <<A-00,A>>&lt;short&gt;::<<A-00-B-00,B>>&lt;void&gt;::D
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;typename V&gt;
-struct D;
-----
-
-
-
-
-[#A-00-B-00-D-07]
-== <<A-00,A>>&lt;short&gt;::<<A-00-B-00,B>>&lt;void&gt;::D&lt;bool&gt;
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;&gt;
-struct <<A-00-B-00-D-03,D>>&lt;bool&gt;;
-----
-
-
-
-
-[#A-07]
-== A&lt;unsigned int&gt;
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;&gt;
-struct <<A-0e,A>>&lt;unsigned int&gt;;
-----
-
-=== Types
-
-[cols=1]
-|===
-| Name 
-
-| <<A-07-B-03a,`B`>> 
-
-| <<A-07-B-03e,`B&lt;double&gt;`>> 
-
-| <<A-07-B-05,`B&lt;float&gt;`>> 
-
-|===
-
-
-
-[#A-07-B-03a]
-== <<A-07,A>>&lt;unsigned int&gt;::B
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;typename U&gt;
-struct B;
-----
-
-
-
-
-[#A-07-B-03e]
-== <<A-07,A>>&lt;unsigned int&gt;::B&lt;double&gt;
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;&gt;
-struct <<A-0e-B-07,B>>&lt;double&gt;;
-----
-
-=== Types
-
-[cols=1]
-|===
-| Name 
-
-| <<A-07-B-03e-C,`C`>> 
-
-| <<A-07-B-03e-D-01,`D`>> 
-
-| <<A-07-B-03e-D-0f,`D&lt;bool&gt;`>> 
-
-|===
-
-
-
-[#A-07-B-03e-C]
-== <<A-07,A>>&lt;unsigned int&gt;::<<A-07-B-03e,B>>&lt;double&gt;::C
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-struct C;
-----
-
-
-
-
-[#A-07-B-03e-D-01]
-== <<A-07,A>>&lt;unsigned int&gt;::<<A-07-B-03e,B>>&lt;double&gt;::D
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;typename V&gt;
-struct D;
-----
-
-
-
-
-[#A-07-B-03e-D-0f]
-== <<A-07,A>>&lt;unsigned int&gt;::<<A-07-B-03e,B>>&lt;double&gt;::D&lt;bool&gt;
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;&gt;
-struct <<A-0e-B-00-D-09,D>>&lt;bool&gt;;
-----
-
-
-
-
-[#A-07-B-05]
-== <<A-07,A>>&lt;unsigned int&gt;::B&lt;float&gt;
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;&gt;
-struct <<A-0e-B-07,B>>&lt;float&gt;;
-----
-
-=== Types
-
-[cols=1]
-|===
-| Name 
-
-| <<A-07-B-05-C,`C`>> 
-
-| <<A-07-B-05-D-0e,`D`>> 
-
-| <<A-07-B-05-D-01,`D&lt;bool&gt;`>> 
-
-|===
-
-
-
-[#A-07-B-05-C]
-== <<A-07,A>>&lt;unsigned int&gt;::<<A-07-B-05,B>>&lt;float&gt;::C
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-struct C;
-----
-
-
-
-
-[#A-07-B-05-D-0e]
-== <<A-07,A>>&lt;unsigned int&gt;::<<A-07-B-05,B>>&lt;float&gt;::D
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;typename V&gt;
-struct D;
-----
-
-
-
-
-[#A-07-B-05-D-01]
-== <<A-07,A>>&lt;unsigned int&gt;::<<A-07-B-05,B>>&lt;float&gt;::D&lt;bool&gt;
-
-
-=== Synopsis
-
-
-Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;&gt;
-struct <<A-0e-B-07-D-09,D>>&lt;bool&gt;;
 ----
 
 

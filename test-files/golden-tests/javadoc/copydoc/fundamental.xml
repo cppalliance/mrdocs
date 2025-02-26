@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <function name="f" id="ackjGh57CJQLwtO8PihiSPPKIBY=">
+    <file short-path="fundamental.cpp" source-path="fundamental.cpp" line="5"/>
+    <param name="a">
+      <type name="int"/>
+    </param>
+    <doc>
+      <brief>
+        <text>Fail</text>
+      </brief>
+      <param name="a">
+        <text>Fail param</text>
+      </param>
+    </doc>
+  </function>
+  <function name="f" id="RX9GLABxvm5/ekXBz4J4QOCw/z0=">
+    <file short-path="fundamental.cpp" source-path="fundamental.cpp" line="13"/>
+    <param name="a">
+      <type name="long"/>
+    </param>
+    <doc>
+      <brief>
+        <text>Brief</text>
+      </brief>
+      <para>
+        <text>Details</text>
+      </para>
+      <param name="a">
+        <text>Param description</text>
+      </param>
+    </doc>
+  </function>
+  <function name="g" id="YeUN6nJ9c4mQKDbDWPlXFODDK1Y=">
+    <file short-path="fundamental.cpp" source-path="fundamental.cpp" line="16"/>
+    <param name="a">
+      <type name="long"/>
+    </param>
+    <doc>
+      <brief>
+        <text>Brief</text>
+      </brief>
+      <para>
+        <text>Details</text>
+      </para>
+      <param name="a">
+        <text>Param description</text>
+      </param>
+    </doc>
+  </function>
+  <function name="h" id="AF4Au7CviDbKZx+hVBlelmlAwJ0=">
+    <file short-path="fundamental.cpp" source-path="fundamental.cpp" line="19"/>
+    <param name="a">
+      <type name="long"/>
+    </param>
+    <doc>
+      <brief>
+        <text>Brief</text>
+      </brief>
+      <para>
+        <text>Details</text>
+      </para>
+      <param name="a">
+        <text>Param description</text>
+      </param>
+    </doc>
+  </function>
+</namespace>
+</mrdocs>

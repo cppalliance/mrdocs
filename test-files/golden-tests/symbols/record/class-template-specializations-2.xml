@@ -35,25 +35,6 @@
         </struct>
       </template>
       <template class="explicit" id="t1k8CaeFknlnAWQfa52he803Mcw=">
-        <targ class="type" type="float"/>
-        <struct name="D" id="RdjbfZA0y514GFSR1pCAjUyfq24=">
-          <file short-path="class-template-specializations-2.cpp" source-path="class-template-specializations-2.cpp" line="34" class="def"/>
-          <template>
-            <tparam name="T" class="type"/>
-            <struct name="G" id="ZbjwxkmALgjx71k6/JAk0jbwrlo=">
-              <file short-path="class-template-specializations-2.cpp" source-path="class-template-specializations-2.cpp" line="36" class="def"/>
-            </struct>
-          </template>
-          <template class="partial" id="ZbjwxkmALgjx71k6/JAk0jbwrlo=">
-            <tparam name="T" class="type"/>
-            <targ class="type" type="T*"/>
-            <struct name="G" id="zPgrcrIOrcVWP7Qpw8x3Zl2fIpI=">
-              <file short-path="class-template-specializations-2.cpp" source-path="class-template-specializations-2.cpp" line="46" class="def"/>
-            </struct>
-          </template>
-        </struct>
-      </template>
-      <template class="explicit" id="t1k8CaeFknlnAWQfa52he803Mcw=">
         <targ class="type" type="short"/>
         <struct name="D" id="flW1A8++hJYAIoinZHMJ/EargvI=">
           <file short-path="class-template-specializations-2.cpp" source-path="class-template-specializations-2.cpp" line="21" class="def"/>
@@ -71,6 +52,25 @@
                 <file short-path="class-template-specializations-2.cpp" source-path="class-template-specializations-2.cpp" line="50" class="def"/>
                 <file short-path="class-template-specializations-2.cpp" source-path="class-template-specializations-2.cpp" line="29"/>
               </struct>
+            </struct>
+          </template>
+        </struct>
+      </template>
+      <template class="explicit" id="t1k8CaeFknlnAWQfa52he803Mcw=">
+        <targ class="type" type="float"/>
+        <struct name="D" id="RdjbfZA0y514GFSR1pCAjUyfq24=">
+          <file short-path="class-template-specializations-2.cpp" source-path="class-template-specializations-2.cpp" line="34" class="def"/>
+          <template>
+            <tparam name="T" class="type"/>
+            <struct name="G" id="ZbjwxkmALgjx71k6/JAk0jbwrlo=">
+              <file short-path="class-template-specializations-2.cpp" source-path="class-template-specializations-2.cpp" line="36" class="def"/>
+            </struct>
+          </template>
+          <template class="partial" id="ZbjwxkmALgjx71k6/JAk0jbwrlo=">
+            <tparam name="T" class="type"/>
+            <targ class="type" type="T*"/>
+            <struct name="G" id="zPgrcrIOrcVWP7Qpw8x3Zl2fIpI=">
+              <file short-path="class-template-specializations-2.cpp" source-path="class-template-specializations-2.cpp" line="46" class="def"/>
             </struct>
           </template>
         </struct>

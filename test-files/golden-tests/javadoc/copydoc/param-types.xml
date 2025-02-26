@@ -337,6 +337,23 @@
       </param>
     </doc>
   </function>
+  <function name="g" id="TF0l7iZI1k70e/PY/mnOvc0hoyI=">
+    <file short-path="param-types.cpp" source-path="param-types.cpp" line="141"/>
+    <param name="a">
+      <type id="pUJEk/x997P8q+ILVKlwge3u5Ag=" name="testEnum"/>
+    </param>
+    <doc>
+      <brief>
+        <text>Enum param function</text>
+      </brief>
+      <para>
+        <text>Documentation for a function with an enum parameter.</text>
+      </para>
+      <param name="a">
+        <text>The first parameter of g</text>
+      </param>
+    </doc>
+  </function>
   <function name="g" id="lldWvRg9y+NwRnDpK3x2NF9+e08=">
     <file short-path="param-types.cpp" source-path="param-types.cpp" line="37"/>
     <attr id="is-variadic"/>
@@ -366,23 +383,6 @@
       </brief>
       <para>
         <text>Documentation for the non-variadic function.</text>
-      </para>
-      <param name="a">
-        <text>The first parameter of g</text>
-      </param>
-    </doc>
-  </function>
-  <function name="g" id="TF0l7iZI1k70e/PY/mnOvc0hoyI=">
-    <file short-path="param-types.cpp" source-path="param-types.cpp" line="141"/>
-    <param name="a">
-      <type id="pUJEk/x997P8q+ILVKlwge3u5Ag=" name="testEnum"/>
-    </param>
-    <doc>
-      <brief>
-        <text>Enum param function</text>
-      </brief>
-      <para>
-        <text>Documentation for a function with an enum parameter.</text>
       </para>
       <param name="a">
         <text>The first parameter of g</text>
