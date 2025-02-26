@@ -26,7 +26,9 @@ requires std::equality_comparable_with<El, std::ranges::range_value_t<Range>>
 bool
 contains(Range const& range, El const& el)
 {
-    return std::find(range.begin(), range.end(), el) != range.end();
+    return std::find(
+        std::ranges::begin(range),
+        std::ranges::end(range), el) != std::ranges::end(range);
 }
 
 // A second overload where the range is an initializer list
@@ -41,7 +43,9 @@ requires std::equality_comparable_with<T, U>
 bool
 contains(std::initializer_list<T> const& range, U const& el)
 {
-    return std::find(range.begin(), range.end(), el) != range.end();
+    return std::find(
+        std::ranges::begin(range),
+        std::ranges::end(range), el) != std::ranges::end(range);
 }
 
 /** Determine if a range contains any of the specified elements.
@@ -54,15 +58,16 @@ requires std::equality_comparable_with<std::ranges::range_value_t<Els>, std::ran
 bool
 contains_any(Range const& range, Els const& els)
 {
-    return std::ranges::find_first_of(range, els) != range.end();
+    return std::ranges::find_first_of(range, els) != std::ranges::end(range);
 }
 
+/// @copydoc contains_any(Range const&, Els const&)
 template <std::ranges::range Range, class El>
 requires std::equality_comparable_with<El, std::ranges::range_value_t<Range>>
 bool
 contains_any(Range const& range, std::initializer_list<El> const& els)
 {
-    return std::ranges::find_first_of(range, els) != range.end();
+    return std::ranges::find_first_of(range, els) != std::ranges::end(range);
 }
 
 /** Determine if a range contains at least N instances of the specified element.
@@ -90,10 +95,55 @@ contains_n(Range const& range, El const& el, std::size_t n)
     return false;
 }
 
+/** Determine if a range contains at least N instances of any of the specified elements.
+    @param range The range to search.
+    @param els The elements to search for.
+    @param n The number of instances to search for.
+    @return True if the element is found, false otherwise.
+ */
+template <std::ranges::range Range, std::ranges::range Els>
+requires std::equality_comparable_with<std::ranges::range_value_t<Els>, std::ranges::range_value_t<Range>>
+bool
+contains_n_any(Range const& range, Els const& els, std::size_t n)
+{
+    for (auto const& item : range)
+    {
+        if (contains(els, item))
+        {
+            --n;
+            if (n == 0)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+/// @copydoc contains_n_any(Range const&, Els const&, std::size_t)
+template <std::ranges::range Range, class El>
+requires std::equality_comparable_with<El, std::ranges::range_value_t<Range>>
+bool
+contains_n_any(Range const& range, std::initializer_list<El> const& els, std::size_t n)
+{
+    for (auto const& item : range)
+    {
+        if (contains(els, item))
+        {
+            --n;
+            if (n == 0)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 /** Find the last element in a range that matches an element in the specified range.
     @param range The range to search.
     @param els The elements to search for.
-    @return An iterator to the last element found, or range.end() if not found.
+    @return An iterator to the last element found, or std::ranges::end(range) if not found.
  */
 template <std::ranges::range Range, std::ranges::range Els>
 requires std::equality_comparable_with<std::ranges::range_value_t<Els>, std::ranges::range_value_t<Range>>

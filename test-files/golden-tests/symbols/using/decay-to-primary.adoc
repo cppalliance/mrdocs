@@ -13,9 +13,9 @@
 
 | <<S0-03,`S0`>> 
 
-| <<S0-09,`S0&lt;short&gt;`>> 
-
 | <<S0-00,`S0&lt;void&gt;`>> 
+
+| <<S0-09,`S0&lt;short&gt;`>> 
 
 | <<A0,`A0`>> 
 
@@ -109,64 +109,6 @@ template&lt;typename U&gt;
 using M1 = <<S0-03,S0>>&lt;U&gt;;
 ----
 
-[#S0-09]
-== S0&lt;short&gt;
-
-
-=== Synopsis
-
-
-Declared in `&lt;decay&hyphen;to&hyphen;primary&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;&gt;
-struct <<S0-03,S0>>&lt;short&gt;;
-----
-
-=== Types
-
-[cols=1]
-|===
-| Name 
-
-| <<S0-09-M0,`M0`>> 
-
-| <<S0-09-M1,`M1`>> 
-
-|===
-
-
-
-[#S0-09-M0]
-== <<S0-09,S0>>&lt;short&gt;::M0
-
-
-=== Synopsis
-
-
-Declared in `&lt;decay&hyphen;to&hyphen;primary&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-using M0 = short;
-----
-
-[#S0-09-M1]
-== <<S0-09,S0>>&lt;short&gt;::M1
-
-
-=== Synopsis
-
-
-Declared in `&lt;decay&hyphen;to&hyphen;primary&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;typename U&gt;
-using M1 = <<S0-03,S0>>&lt;U&gt;;
-----
-
 [#S0-00]
 == S0&lt;void&gt;
 
@@ -212,6 +154,64 @@ using M0 = void;
 
 [#S0-00-M1]
 == <<S0-00,S0>>&lt;void&gt;::M1
+
+
+=== Synopsis
+
+
+Declared in `&lt;decay&hyphen;to&hyphen;primary&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename U&gt;
+using M1 = <<S0-03,S0>>&lt;U&gt;;
+----
+
+[#S0-09]
+== S0&lt;short&gt;
+
+
+=== Synopsis
+
+
+Declared in `&lt;decay&hyphen;to&hyphen;primary&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct <<S0-03,S0>>&lt;short&gt;;
+----
+
+=== Types
+
+[cols=1]
+|===
+| Name 
+
+| <<S0-09-M0,`M0`>> 
+
+| <<S0-09-M1,`M1`>> 
+
+|===
+
+
+
+[#S0-09-M0]
+== <<S0-09,S0>>&lt;short&gt;::M0
+
+
+=== Synopsis
+
+
+Declared in `&lt;decay&hyphen;to&hyphen;primary&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using M0 = short;
+----
+
+[#S0-09-M1]
+== <<S0-09,S0>>&lt;short&gt;::M1
 
 
 === Synopsis

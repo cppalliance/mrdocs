@@ -775,6 +775,17 @@ void
 
 [.small]#<<g-09c,_» more&period;&period;&period;_>>#
 
+Enum param function
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<g-04c,g>>(<<testEnum,testEnum>> a);
+----
+
+[.small]#<<g-04c,_» more&period;&period;&period;_>>#
+
 Variadic function
 
 
@@ -796,17 +807,6 @@ void
 ----
 
 [.small]#<<g-04a,_» more&period;&period;&period;_>>#
-
-Enum param function
-
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-void
-<<g-04c,g>>(<<testEnum,testEnum>> a);
-----
-
-[.small]#<<g-04c,_» more&period;&period;&period;_>>#
 
 
 
@@ -916,6 +916,41 @@ Documentation for a function with a qualified identifier parameter&period;
 
 |===
 
+[#g-04c]
+== g
+
+
+Enum param function
+
+=== Synopsis
+
+
+Declared in `&lt;param&hyphen;types&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+g(<<testEnum,testEnum>> a);
+----
+
+=== Description
+
+
+Documentation for a function with an enum parameter&period;
+
+
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| The first parameter of g
+
+|===
+
 [#g-096]
 == g
 
@@ -972,41 +1007,6 @@ g(int a);
 
 
 Documentation for the non&hyphen;variadic function&period;
-
-
-
-=== Parameters
-
-
-|===
-| Name | Description
-
-| *a*
-| The first parameter of g
-
-|===
-
-[#g-04c]
-== g
-
-
-Enum param function
-
-=== Synopsis
-
-
-Declared in `&lt;param&hyphen;types&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-void
-g(<<testEnum,testEnum>> a);
-----
-
-=== Description
-
-
-Documentation for a function with an enum parameter&period;
 
 
 

@@ -1,0 +1,205 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+=== Functions
+
+[cols=2]
+|===
+| Name 
+| Description 
+
+| <<f-0e,`f`>> 
+| `f` overloads
+
+| <<g,`g`>> 
+| Brief
+
+| <<h,`h`>> 
+| Brief
+
+|===
+
+[#f-0e]
+== f
+
+
+`f` overloads
+
+=== Synopses
+
+
+Declared in `&lt;fundamental&period;cpp&gt;`
+
+Fail
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<f-06,f>>(int a);
+----
+
+[.small]#<<f-06,_» more&period;&period;&period;_>>#
+
+Brief
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<f-04,f>>(long a);
+----
+
+[.small]#<<f-04,_» more&period;&period;&period;_>>#
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Fail param
+
+|===
+
+[#f-06]
+== f
+
+
+Fail
+
+=== Synopsis
+
+
+Declared in `&lt;fundamental&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(int a);
+----
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Fail param
+
+|===
+
+[#f-04]
+== f
+
+
+Brief
+
+=== Synopsis
+
+
+Declared in `&lt;fundamental&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(long a);
+----
+
+=== Description
+
+
+Details
+
+
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Param description
+
+|===
+
+[#g]
+== g
+
+
+Brief
+
+=== Synopsis
+
+
+Declared in `&lt;fundamental&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+g(long a);
+----
+
+=== Description
+
+
+Details
+
+
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Param description
+
+|===
+
+[#h]
+== h
+
+
+Brief
+
+=== Synopsis
+
+
+Declared in `&lt;fundamental&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+h(long a);
+----
+
+=== Description
+
+
+Details
+
+
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| Param description
+
+|===
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -820,6 +820,16 @@ private:
     bool
     parseDeclarationSpecifiers(Polymorphic<TypeInfo>& dest)
     {
+        static constexpr std::string_view typeQualifiers[] = {
+            "const", "volatile"
+        };
+        static constexpr std::string_view typeModifiers[] = {
+            "long", "short", "signed", "unsigned"
+        };
+        static constexpr std::string_view typeSpecifiers[] = {
+            "long", "short", "signed", "unsigned", "const", "volatile"
+        };
+
         // https://en.cppreference.com/w/cpp/language/declarations#Specifiers
         // decl-specifier-seq is a sequence whitespace-separated decl-specifier's
         char const* start = ptr_;
@@ -842,97 +852,90 @@ private:
                 // specifiers, then we don't have an error because
                 // we can later infer the type from these.
                 if (!dest &&
-                    !contains_any(specifiers, {"long", "short", "signed", "unsigned"}))
+                    !contains_any(specifiers, typeModifiers))
                 {
                     setError(specStart, "expected declaration specifier");
                     ptr_ = start;
                     return false;
                 }
+                // Clear the error and let the type modifiers set `dest`
                 error_.clear();
                 error_pos_ = nullptr;
-                return true;
+                break;
             }
             auto const specifierStr =
                 trim(std::string_view(specStart, ptr_ - specStart));
-            if (!specifiers.empty())
+            if (contains(typeSpecifiers, specifierStr))
             {
-                // If we already have a declaration specifier, we need to
-                // check if we have a valid sequence of specifiers:
-                // - In general, only one type specifier is allowed
-                // - "const" and "volatile" can be combined with any type specifier
-                //    except itself
-                if (specifierStr == "const" &&
-                    contains(specifiers, "const"))
-                {
-                    setError(specStart, "multiple 'const' specifiers");
-                    ptr_ = start;
-                    return false;
-                }
-
-                if (specifierStr == "volatile" &&
-                    contains(specifiers, "volatile"))
-                {
-                    setError(specStart, "multiple 'volatile' specifiers");
-                    ptr_ = start;
-                    return false;
-                }
-
-                // - "signed" or "unsigned" can be combined with "char", "long", "short", or "int".
-                if (contains({"signed", "unsigned"}, specifierStr) &&
-                    contains_any(specifiers, {"signed", "unsigned"}))
-                {
-                    setError(specStart, "multiple 'signed' or 'unsigned' specifiers");
-                    ptr_ = start;
-                    return false;
-                }
-
-                // - "short" or "long" can be combined with int.
-                // - "long" can be combined with "double" and "long"
-                // "short" is allowed only once
-                // "long" is allowed twice
-                if (specifierStr == "short")
-                {
-                    if (contains(specifiers, "short"))
-                    {
-                        setError(specStart, "multiple 'short' specifiers");
-                        ptr_ = start;
-                        return false;
-                    }
-                    if (contains(specifiers, "long"))
-                    {
-                        setError(specStart, "cannot combine 'short' with 'long'");
-                        ptr_ = start;
-                        return false;
-                    }
-                }
-
-                if (specifierStr == "long")
-                {
-                    if (contains_n(specifiers, "long", 2))
-                    {
-                        setError(specStart, "too many 'long' specifiers");
-                        ptr_ = start;
-                        return false;
-                    }
-                    if (contains(specifiers, "short"))
-                    {
-                        setError(specStart, "cannot combine 'long' with 'short'");
-                        ptr_ = start;
-                        return false;
-                    }
-                }
+                specifiers.push_back(specifierStr);
             }
-            specifiers.push_back(specifierStr);
             if (!skipWhitespace())
             {
                 break;
             }
         }
-        if (specifiers.empty())
+        if (!dest && specifiers.empty())
         {
-            // We need at least one declarator specifier
+            // We need at least one type declarator or specifier
             ptr_ = start;
             return false;
+        }
+
+        // Look for conflicting specifiers
+        if (specifiers.size() > 1)
+        {
+            // If we already have a declaration specifier, we need to
+            // check if we have a valid sequence of specifiers:
+            // - In general, only one type specifier is allowed
+            // - "const" and "volatile" can be combined with any type specifier
+            //    except itself
+            if (contains_n(specifiers, "const", 2))
+            {
+                setError(start, "multiple 'const' specifiers");
+                ptr_ = start;
+                return false;
+            }
+
+            if (contains_n(specifiers, "volatile", 2))
+            {
+                setError(start, "multiple 'volatile' specifiers");
+                ptr_ = start;
+                return false;
+            }
+
+            // - "signed" or "unsigned" can be combined with "char", "long", "short", or "int".
+            if (contains_n_any(specifiers, {"signed", "unsigned"}, 2))
+            {
+                setError(start, "multiple 'signed' or 'unsigned' specifiers");
+                ptr_ = start;
+                return false;
+            }
+
+            // - "short" or "long" can be combined with int.
+            // - "long" can be combined with "double" and "long"
+            // "short" is allowed only once
+            // "long" is allowed twice
+            if (contains_n(specifiers, "short", 2))
+            {
+                setError(start, "too many 'short' specifiers");
+                ptr_ = start;
+                return false;
+            }
+
+            if (contains(specifiers, "short") &&
+                contains(specifiers, "long"))
+            {
+                setError(start, "cannot combine 'short' with 'long'");
+                ptr_ = start;
+                return false;
+            }
+
+            if (contains_n(specifiers, "long", 3))
+            {
+                setError(start, "too many 'long' specifiers");
+                ptr_ = start;
+                return false;
+            }
         }
 
         // "signed" or "unsigned" can be combined with "char", "long", "short", or "int".
@@ -940,13 +943,15 @@ private:
         {
             bool explicitlySigned = contains(specifiers, "signed");
             std::string_view signStr = explicitlySigned ? "signed" : "unsigned";
-            // Infer basic fundamental type from "signed" or "unsigned"
+            // Infer basic fundamental type from "signed" or "unsigned",
+            // which is "int"
             if (!dest)
             {
                 NamedTypeInfo NTI;
                 NameInfo NI;
                 NI.Name = "int";
                 NTI.Name = NI;
+                NTI.FundamentalType = FundamentalTypeKind::Int;
                 dest = NTI;
             }
             // Check if the type is named
@@ -958,26 +963,37 @@ private:
             }
             // Check if the type is "int" or "char"
             auto& namedParam = dynamic_cast<NamedTypeInfo&>(*dest);
-            if (!contains({"int", "char"}, namedParam.Name->Name))
+            if (!namedParam.FundamentalType)
+            {
+                setError(fmt::format("expected fundamental type for '{}' specifier", signStr));
+                ptr_ = start;
+                return false;
+            }
+            bool promoted =
+                explicitlySigned ?
+                    makeSigned(*namedParam.FundamentalType) :
+                    makeUnsigned(*namedParam.FundamentalType);
+            if (!promoted)
             {
                 setError(fmt::format("expected 'int' or 'char' for '{}' specifier", signStr));
                 ptr_ = start;
                 return false;
             }
             // Add the specifier to the type name
-            namedParam.Name->Name = fmt::format("{} {}", signStr, namedParam.Name->Name);
+            namedParam.Name->Name = toString(*namedParam.FundamentalType);
         }
 
         // - "short" can be combined with int.
         if (contains(specifiers, "short"))
         {
-            // Infer basic fundamental type from "short"
+            // Infer basic fundamental type for "short", which is "int"
             if (!dest)
             {
                 NamedTypeInfo NTI;
                 NameInfo NI;
                 NI.Name = "int";
                 NTI.Name = NI;
+                NTI.FundamentalType = FundamentalTypeKind::Int;
                 dest = NTI;
             }
             // Check if the type is named
@@ -987,28 +1003,37 @@ private:
                 ptr_ = start;
                 return false;
             }
+
             // Check if the type is "int"
             auto& namedParam = dynamic_cast<NamedTypeInfo&>(*dest);
-            if (!contains({"int", "signed int", "unsigned int"}, namedParam.Name->Name))
+            if (!namedParam.FundamentalType)
+            {
+                setError(start, "expected fundamental type for 'short' specifier");
+                ptr_ = start;
+                return false;
+            }
+            if (bool promoted = makeShort(*namedParam.FundamentalType);
+                !promoted)
             {
                 setError(start, "expected 'int' for 'short' specifier");
                 ptr_ = start;
                 return false;
             }
             // Add the specifier to the type name
-            namedParam.Name->Name = fmt::format("short {}", namedParam.Name->Name);
+            namedParam.Name->Name = toString(*namedParam.FundamentalType);
         }
 
         // - "long" can be combined with "int", "double" and "long"
         if (contains(specifiers, "long"))
         {
-            // Infer basic fundamental type from "long"
+            // Infer basic fundamental type for "long", which is "int"
             if (!dest)
             {
                 NamedTypeInfo NTI;
                 NameInfo NI;
                 NI.Name = "int";
                 NTI.Name = NI;
+                NTI.FundamentalType = FundamentalTypeKind::Int;
                 dest = NTI;
             }
             // Check if the type is named
@@ -1019,15 +1044,31 @@ private:
                 return false;
             }
             auto& namedParam = dynamic_cast<NamedTypeInfo&>(*dest);
-            if (!contains({"int", "signed int", "unsigned int", "double"}, namedParam.Name->Name))
+            if (!namedParam.FundamentalType)
+            {
+                setError(start, "expected fundamental type for 'long' specifier");
+                ptr_ = start;
+                return false;
+            }
+            if (bool const promoted = makeLong(*namedParam.FundamentalType);
+                !promoted)
             {
                 setError(start, "expected 'int' or 'double' for 'long' specifier");
                 ptr_ = start;
                 return false;
             }
+            if (contains_n(specifiers, "long", 2))
+            {
+                bool const promoted = makeLong(*namedParam.FundamentalType);
+                if (!promoted)
+                {
+                    setError(start, "expected 'int' or 'double' for 'long long' specifier");
+                    ptr_ = start;
+                    return false;
+                }
+            }
             // Add the specifier to the type name
-            bool const isLongLong = contains_n(specifiers, "long", 2);
-            namedParam.Name->Name = fmt::format("{} {}", isLongLong ? "long long" : "long", namedParam.Name->Name);
+            namedParam.Name->Name = toString(*namedParam.FundamentalType);
         }
 
         // Final check: if dest is still empty, we have an error
@@ -1105,7 +1146,12 @@ private:
             NameInfo NI;
             NI.Name = std::string_view(start, ptr_ - start);
             NTI.Name = NI;
-            dest = NTI;
+            if (FundamentalTypeKind k;
+                fromString(NI.Name, k))
+            {
+                NTI.FundamentalType = k;
+            }
+            dest = std::move(NTI);
             return true;
         }
 

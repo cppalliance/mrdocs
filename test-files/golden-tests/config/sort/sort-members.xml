@@ -130,15 +130,6 @@
   <function name="g" id="43ASI/aC9fCLy8T+1gn7pUdis+g=">
     <file short-path="sort-members.cpp" source-path="sort-members.cpp" line="57"/>
   </function>
-  <function name="g" id="ZYC+YG/hWLHomKHwEAfoO4TO2cw=">
-    <file short-path="sort-members.cpp" source-path="sort-members.cpp" line="51"/>
-    <return>
-      <type name="char"/>
-    </return>
-    <param>
-      <type name="double"/>
-    </param>
-  </function>
   <function name="g" id="SvF6a1ZP8sdIXexPrrRDIA1OHus=">
     <file short-path="sort-members.cpp" source-path="sort-members.cpp" line="53"/>
     <file short-path="sort-members.cpp" source-path="sort-members.cpp" line="55"/>
@@ -147,6 +138,15 @@
     </return>
     <param>
       <type name="int"/>
+    </param>
+  </function>
+  <function name="g" id="ZYC+YG/hWLHomKHwEAfoO4TO2cw=">
+    <file short-path="sort-members.cpp" source-path="sort-members.cpp" line="51"/>
+    <return>
+      <type name="char"/>
+    </return>
+    <param>
+      <type name="double"/>
     </param>
   </function>
   <function name="g" id="OqSPxlq/89fBNIHVGkd2KTtgheY=">

@@ -15,9 +15,9 @@
 
 | <<A-0f,`A&lt;bool&gt;`>> 
 
-| <<A-000,`A&lt;int&gt;`>> 
-
 | <<A-00b,`A&lt;short&gt;`>> 
+
+| <<A-000,`A&lt;int&gt;`>> 
 
 | <<D,`D`>> 
 
@@ -337,6 +337,119 @@ void
 f();
 ----
 
+[#A-00b]
+== A&lt;short&gt;
+
+
+=== Synopsis
+
+
+Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct <<A-0e,A>>&lt;short&gt;;
+----
+
+=== Types
+
+[cols=1]
+|===
+| Name 
+
+| <<A-00b-B,`B`>> 
+
+| <<A-00b-C,`C`>> 
+
+|===
+=== Member Functions
+
+[cols=1]
+|===
+| Name 
+
+| <<A-00b-f,`f`>> 
+
+|===
+
+
+
+[#A-00b-B]
+== <<A-00b,A>>&lt;short&gt;::B
+
+
+=== Synopsis
+
+
+Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename U&gt;
+struct B;
+----
+
+
+
+
+[#A-00b-C]
+== <<A-00b,A>>&lt;short&gt;::C
+
+
+=== Synopsis
+
+
+Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename U&gt;
+struct C;
+----
+
+=== Member Functions
+
+[cols=1]
+|===
+| Name 
+
+| <<A-00b-C-i,`i`>> 
+
+|===
+
+
+
+[#A-00b-C-i]
+== <<A-00b,A>>&lt;short&gt;::<<A-00b-C,C>>::i
+
+
+=== Synopsis
+
+
+Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+i();
+----
+
+[#A-00b-f]
+== <<A-00b,A>>&lt;short&gt;::f
+
+
+=== Synopsis
+
+
+Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f();
+----
+
 [#A-000]
 == A&lt;int&gt;
 
@@ -457,119 +570,6 @@ struct C;
 
 [#A-000-f]
 == <<A-000,A>>&lt;int&gt;::f
-
-
-=== Synopsis
-
-
-Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-void
-f();
-----
-
-[#A-00b]
-== A&lt;short&gt;
-
-
-=== Synopsis
-
-
-Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;&gt;
-struct <<A-0e,A>>&lt;short&gt;;
-----
-
-=== Types
-
-[cols=1]
-|===
-| Name 
-
-| <<A-00b-B,`B`>> 
-
-| <<A-00b-C,`C`>> 
-
-|===
-=== Member Functions
-
-[cols=1]
-|===
-| Name 
-
-| <<A-00b-f,`f`>> 
-
-|===
-
-
-
-[#A-00b-B]
-== <<A-00b,A>>&lt;short&gt;::B
-
-
-=== Synopsis
-
-
-Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;typename U&gt;
-struct B;
-----
-
-
-
-
-[#A-00b-C]
-== <<A-00b,A>>&lt;short&gt;::C
-
-
-=== Synopsis
-
-
-Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;typename U&gt;
-struct C;
-----
-
-=== Member Functions
-
-[cols=1]
-|===
-| Name 
-
-| <<A-00b-C-i,`i`>> 
-
-|===
-
-
-
-[#A-00b-C-i]
-== <<A-00b,A>>&lt;short&gt;::<<A-00b-C,C>>::i
-
-
-=== Synopsis
-
-
-Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-void
-i();
-----
-
-[#A-00b-f]
-== <<A-00b,A>>&lt;short&gt;::f
 
 
 === Synopsis
