@@ -324,6 +324,17 @@ operator<=>(NamedTypeInfo const& other) const
     {
         return br;
     }
+    bool const LhsHoldsFundamentalType = static_cast<bool>(FundamentalType);
+    bool const RhsHoldsFundamentalType = static_cast<bool>(other.FundamentalType);
+    if (auto const r = LhsHoldsFundamentalType <=> RhsHoldsFundamentalType;
+        !std::is_eq(r))
+    {
+        return r;
+    }
+    if (FundamentalType && other.FundamentalType)
+    {
+        return FundamentalType <=> other.FundamentalType;
+    }
     return Name <=> other.Name;
 }
 
@@ -470,6 +481,276 @@ tag_invoke(
     DomCorpus const* domCorpus)
 {
     v = dom::LazyObject(I, domCorpus);
+}
+
+std::string_view
+toString(FundamentalTypeKind const kind) noexcept
+{
+    switch (kind)
+    {
+    case FundamentalTypeKind::Void:
+        return "void";
+    case FundamentalTypeKind::Nullptr:
+        return "std::nullptr_t";
+    case FundamentalTypeKind::Bool:
+        return "bool";
+    case FundamentalTypeKind::Char:
+        return "char";
+    case FundamentalTypeKind::SignedChar:
+        return "signed char";
+    case FundamentalTypeKind::UnsignedChar:
+        return "unsigned char";
+    case FundamentalTypeKind::Char8:
+        return "char8_t";
+    case FundamentalTypeKind::Char16:
+        return "char16_t";
+    case FundamentalTypeKind::Char32:
+        return "char32_t";
+    case FundamentalTypeKind::WChar:
+        return "wchar_t";
+    case FundamentalTypeKind::Short:
+        return "short";
+    case FundamentalTypeKind::UnsignedShort:
+        return "unsigned short";
+    case FundamentalTypeKind::Int:
+        return "int";
+    case FundamentalTypeKind::UnsignedInt:
+        return "unsigned int";
+    case FundamentalTypeKind::Long:
+        return "long";
+    case FundamentalTypeKind::UnsignedLong:
+        return "unsigned long";
+    case FundamentalTypeKind::LongLong:
+        return "long long";
+    case FundamentalTypeKind::UnsignedLongLong:
+        return "unsigned long long";
+    case FundamentalTypeKind::Float:
+        return "float";
+    case FundamentalTypeKind::Double:
+        return "double";
+    case FundamentalTypeKind::LongDouble:
+        return "long double";
+    default:
+        MRDOCS_UNREACHABLE();
+    }
+}
+
+bool
+fromString(std::string_view str, FundamentalTypeKind& kind) noexcept
+{
+    static constexpr std::pair<std::string_view, FundamentalTypeKind> map[] = {
+        {"void", FundamentalTypeKind::Void},
+        {"std::nullptr_t", FundamentalTypeKind::Nullptr},
+        {"bool", FundamentalTypeKind::Bool},
+        {"char", FundamentalTypeKind::Char},
+        {"signed char", FundamentalTypeKind::SignedChar},
+        {"unsigned char", FundamentalTypeKind::UnsignedChar},
+        {"char8_t", FundamentalTypeKind::Char8},
+        {"char16_t", FundamentalTypeKind::Char16},
+        {"char32_t", FundamentalTypeKind::Char32},
+        {"wchar_t", FundamentalTypeKind::WChar},
+        {"short", FundamentalTypeKind::Short},
+        {"short int", FundamentalTypeKind::Short},
+        {"int short", FundamentalTypeKind::Short},
+        {"signed short", FundamentalTypeKind::Short},
+        {"short signed", FundamentalTypeKind::Short},
+        {"signed short int", FundamentalTypeKind::Short},
+        {"signed int short", FundamentalTypeKind::Short},
+        {"short signed int", FundamentalTypeKind::Short},
+        {"short int signed", FundamentalTypeKind::Short},
+        {"int signed short", FundamentalTypeKind::Short},
+        {"int short signed", FundamentalTypeKind::Short},
+        {"unsigned short", FundamentalTypeKind::UnsignedShort},
+        {"short unsigned", FundamentalTypeKind::UnsignedShort},
+        {"unsigned short int", FundamentalTypeKind::UnsignedShort},
+        {"unsigned int short", FundamentalTypeKind::UnsignedShort},
+        {"short unsigned int", FundamentalTypeKind::UnsignedShort},
+        {"short int unsigned", FundamentalTypeKind::UnsignedShort},
+        {"int unsigned short", FundamentalTypeKind::UnsignedShort},
+        {"int short unsigned", FundamentalTypeKind::UnsignedShort},
+        {"int", FundamentalTypeKind::Int},
+        {"signed", FundamentalTypeKind::Int},
+        {"signed int", FundamentalTypeKind::Int},
+        {"int signed", FundamentalTypeKind::Int},
+        {"unsigned", FundamentalTypeKind::UnsignedInt},
+        {"unsigned int", FundamentalTypeKind::UnsignedInt},
+        {"int unsigned", FundamentalTypeKind::UnsignedInt},
+        {"long", FundamentalTypeKind::Long},
+        {"long int", FundamentalTypeKind::Long},
+        {"int long", FundamentalTypeKind::Long},
+        {"signed long", FundamentalTypeKind::Long},
+        {"long signed", FundamentalTypeKind::Long},
+        {"signed long int", FundamentalTypeKind::Long},
+        {"signed int long", FundamentalTypeKind::Long},
+        {"long signed int", FundamentalTypeKind::Long},
+        {"long int signed", FundamentalTypeKind::Long},
+        {"int signed long", FundamentalTypeKind::Long},
+        {"int long signed", FundamentalTypeKind::Long},
+        {"unsigned long", FundamentalTypeKind::UnsignedLong},
+        {"long unsigned", FundamentalTypeKind::UnsignedLong},
+        {"unsigned long int", FundamentalTypeKind::UnsignedLong},
+        {"unsigned int long", FundamentalTypeKind::UnsignedLong},
+        {"long unsigned int", FundamentalTypeKind::UnsignedLong},
+        {"long int unsigned", FundamentalTypeKind::UnsignedLong},
+        {"int unsigned long", FundamentalTypeKind::UnsignedLong},
+        {"int long unsigned", FundamentalTypeKind::UnsignedLong},
+        {"long long", FundamentalTypeKind::LongLong},
+        {"long long int", FundamentalTypeKind::LongLong},
+        {"long int long", FundamentalTypeKind::LongLong},
+        {"int long long", FundamentalTypeKind::LongLong},
+        {"signed long long", FundamentalTypeKind::LongLong},
+        {"long signed long", FundamentalTypeKind::LongLong},
+        {"long long signed", FundamentalTypeKind::LongLong},
+        {"signed long long int", FundamentalTypeKind::LongLong},
+        {"signed int long long", FundamentalTypeKind::LongLong},
+        {"long long signed int", FundamentalTypeKind::LongLong},
+        {"long long int signed", FundamentalTypeKind::LongLong},
+        {"int signed long long", FundamentalTypeKind::LongLong},
+        {"int long long signed", FundamentalTypeKind::LongLong},
+        {"unsigned long long", FundamentalTypeKind::UnsignedLongLong},
+        {"long long unsigned", FundamentalTypeKind::UnsignedLongLong},
+        {"unsigned long long int", FundamentalTypeKind::UnsignedLongLong},
+        {"unsigned int long long", FundamentalTypeKind::UnsignedLongLong},
+        {"long long unsigned int", FundamentalTypeKind::UnsignedLongLong},
+        {"long long int unsigned", FundamentalTypeKind::UnsignedLongLong},
+        {"int unsigned long long", FundamentalTypeKind::UnsignedLongLong},
+        {"int long long unsigned", FundamentalTypeKind::UnsignedLongLong},
+        {"float", FundamentalTypeKind::Float},
+        {"double", FundamentalTypeKind::Double},
+        {"long double", FundamentalTypeKind::LongDouble}
+    };
+    for (auto const& [key, value]: map)
+    {
+        if (key == str)
+        {
+            kind = value;
+            return true;
+        }
+    }
+    return false;
+}
+
+bool
+makeLong(FundamentalTypeKind& kind) noexcept
+{
+    if (kind == FundamentalTypeKind::Int)
+    {
+        kind = FundamentalTypeKind::Long;
+        return true;
+    }
+    if (kind == FundamentalTypeKind::Long)
+    {
+        kind = FundamentalTypeKind::LongLong;
+        return true;
+    }
+    if (kind == FundamentalTypeKind::UnsignedInt)
+    {
+        kind = FundamentalTypeKind::UnsignedLong;
+        return true;
+    }
+    if (kind == FundamentalTypeKind::UnsignedLong)
+    {
+        kind = FundamentalTypeKind::UnsignedLongLong;
+        return true;
+    }
+    if (kind == FundamentalTypeKind::Double)
+    {
+        kind = FundamentalTypeKind::LongDouble;
+        return true;
+    }
+    return false;
+}
+
+bool
+makeShort(FundamentalTypeKind& kind) noexcept
+{
+    if (kind == FundamentalTypeKind::Int)
+    {
+        kind = FundamentalTypeKind::Short;
+        return true;
+    }
+    if (kind == FundamentalTypeKind::UnsignedInt)
+    {
+        kind = FundamentalTypeKind::UnsignedShort;
+        return true;
+    }
+    return false;
+}
+
+bool
+makeSigned(FundamentalTypeKind& kind) noexcept
+{
+    if (kind == FundamentalTypeKind::Char)
+    {
+        kind = FundamentalTypeKind::SignedChar;
+        return true;
+    }
+    if (kind == FundamentalTypeKind::Short ||
+        kind == FundamentalTypeKind::Int ||
+        kind == FundamentalTypeKind::Long ||
+        kind == FundamentalTypeKind::LongLong)
+    {
+        // Already signed, but return true
+        // because applying the signed specifier
+        // is a valid operation
+        return true;
+    }
+    return false;
+}
+
+bool
+makeUnsigned(FundamentalTypeKind& kind) noexcept
+{
+    if (kind == FundamentalTypeKind::Char)
+    {
+        kind = FundamentalTypeKind::UnsignedChar;
+        return true;
+    }
+    // For signed int types, applying the specifier
+    // is valid as long as the type was not already
+    // declared with "signed"
+    if (kind == FundamentalTypeKind::Short)
+    {
+        kind = FundamentalTypeKind::UnsignedShort;
+        return true;
+    }
+    if (kind == FundamentalTypeKind::Int)
+    {
+        kind = FundamentalTypeKind::UnsignedInt;
+        return true;
+    }
+    if (kind == FundamentalTypeKind::Long)
+    {
+        kind = FundamentalTypeKind::UnsignedLong;
+        return true;
+    }
+    if (kind == FundamentalTypeKind::LongLong)
+    {
+        kind = FundamentalTypeKind::UnsignedLongLong;
+        return true;
+    }
+    // For already unsigned types, the operation
+    // is invalid because the type already used the
+    // unsigned specifier.
+    return false;
+}
+
+bool
+makeChar(FundamentalTypeKind& kind) noexcept
+{
+    if (kind == FundamentalTypeKind::Int)
+    {
+        // Assumes "int" was declared with "signed"
+        kind = FundamentalTypeKind::SignedChar;
+        return true;
+    }
+    if (kind == FundamentalTypeKind::UnsignedInt)
+    {
+        // Assumes "unsigned int" was declared with "unsigned"
+        kind = FundamentalTypeKind::UnsignedChar;
+        return true;
+    }
+    return false;
 }
 
 std::strong_ordering
