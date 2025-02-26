@@ -500,7 +500,7 @@ toFunctionClass(Decl::Kind const kind)
  */
 inline
 AutoKind
-convertToAutoKind(AutoTypeKeyword const kind)
+toAutoKind(AutoTypeKeyword const kind)
 {
     switch(kind)
     {
@@ -511,6 +511,63 @@ convertToAutoKind(AutoTypeKeyword const kind)
       return AutoKind::DecltypeAuto;
     default:
         MRDOCS_UNREACHABLE();
+    }
+}
+
+/** Convert a Clang AutoTypeKeyword into a MrDocs AutoKind
+ */
+inline
+std::optional<FundamentalTypeKind>
+toFundamentalTypeKind(BuiltinType::Kind const kind)
+{
+    switch(kind)
+    {
+    case BuiltinType::Kind::Void:
+        return FundamentalTypeKind::Void;
+    case BuiltinType::Kind::NullPtr:
+        return FundamentalTypeKind::Nullptr;
+    case BuiltinType::Kind::Bool:
+        return FundamentalTypeKind::Bool;
+    case BuiltinType::Kind::Char_U:
+    case BuiltinType::Kind::Char_S:
+        return FundamentalTypeKind::Char;
+    case BuiltinType::Kind::SChar:
+        return FundamentalTypeKind::SignedChar;
+    case BuiltinType::Kind::UChar:
+        return FundamentalTypeKind::UnsignedChar;
+    case BuiltinType::Kind::Char8:
+        return FundamentalTypeKind::Char8;
+    case BuiltinType::Kind::Char16:
+        return FundamentalTypeKind::Char16;
+    case BuiltinType::Kind::Char32:
+        return FundamentalTypeKind::Char32;
+    case BuiltinType::Kind::WChar_S:
+    case BuiltinType::Kind::WChar_U:
+        return FundamentalTypeKind::WChar;
+    case BuiltinType::Kind::Short:
+        return FundamentalTypeKind::Short;
+    case BuiltinType::Kind::UShort:
+        return FundamentalTypeKind::UnsignedShort;
+    case BuiltinType::Kind::Int:
+        return FundamentalTypeKind::Int;
+    case BuiltinType::Kind::UInt:
+        return FundamentalTypeKind::UnsignedInt;
+    case BuiltinType::Kind::Long:
+        return FundamentalTypeKind::Long;
+    case BuiltinType::Kind::ULong:
+        return FundamentalTypeKind::UnsignedLong;
+    case BuiltinType::Kind::LongLong:
+        return FundamentalTypeKind::LongLong;
+    case BuiltinType::Kind::ULongLong:
+        return FundamentalTypeKind::UnsignedLongLong;
+    case BuiltinType::Kind::Float:
+        return FundamentalTypeKind::Float;
+    case BuiltinType::Kind::Double:
+        return FundamentalTypeKind::Double;
+    case BuiltinType::Kind::LongDouble:
+        return FundamentalTypeKind::LongDouble;
+    default:
+        return std::nullopt;
     }
 }
 

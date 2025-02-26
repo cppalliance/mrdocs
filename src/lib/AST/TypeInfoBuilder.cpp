@@ -126,7 +126,7 @@ buildAuto(
     AutoTypeInfo I;
     I.IsConst = quals & Qualifiers::Const;
     I.IsVolatile = quals & Qualifiers::Volatile;
-    I.Keyword = convertToAutoKind(T->getKeyword());
+    I.Keyword = toAutoKind(T->getKeyword());
     if(T->isConstrained())
     {
         std::optional<ArrayRef<TemplateArgument>> TArgs;
@@ -153,12 +153,18 @@ buildTerminal(
     unsigned quals,
     bool pack)
 {
+    MRDOCS_SYMBOL_TRACE(T, getASTVisitor().context_);
     NamedTypeInfo TI;
     TI.IsConst = quals & Qualifiers::Const;
     TI.IsVolatile = quals & Qualifiers::Volatile;
     TI.Name = MakePolymorphic<NameInfo>();
     TI.Name->Name = getASTVisitor().toString(T);
     TI.Name->Prefix = getASTVisitor().toNameInfo(NNS);
+    if (isa<BuiltinType>(T))
+    {
+        auto const* FT = cast<BuiltinType>(T);
+        TI.FundamentalType = toFundamentalTypeKind(FT->getKind());
+    }
     TI.Constraints = this->Constraints;
     *Inner = std::move(TI);
     Result->Constraints = this->Constraints;
