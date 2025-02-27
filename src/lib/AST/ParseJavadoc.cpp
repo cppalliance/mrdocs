@@ -23,6 +23,8 @@
 #include <clang/AST/RawCommentList.h>
 #include <clang/Lex/Lexer.h>
 #include <clang/Basic/SourceLocation.h>
+#include "lib/AST/ParseRef.hpp"
+
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable: 5054) // C5054: operator '+': deprecated between enumerations of different types
@@ -1072,6 +1074,21 @@ std::string
 JavadocVisitor::
 fixReference(std::string& ref)
 {
+    auto peekNextIt = [&]() -> std::optional<std::string_view>
+    {
+        ++it_;
+        if (it_ == end_ ||
+            (*it_)->getCommentKind() != CommentKind::TextComment)
+        {
+            --it_;
+            return std::nullopt;
+        }
+        Comment const* c = *it_;
+        std::string_view text = static_cast<TextComment const*>(c)->getText();
+        --it_;
+        return text;
+    };
+
     // If the ref is only "operator", the next text comment
     // might contain a simple operator name/type, or a
     // full operator overload.
@@ -1080,249 +1097,126 @@ fixReference(std::string& ref)
     // we find an unbalanced '('.
     // Simply including the next text comment is enough
     // for the next step.
-    std::string_view trimmed = trim(ref);
-    bool const isNoSuffixOperator =
-        trimmed == "operator" ||
-        trimmed.ends_with("::operator");
-    if (isNoSuffixOperator)
+    ParsedRef v;
+    while (true)
     {
-        ++it_;
-        if (it_ == end_)
+        // Attempt to parse ref
+        char const* first = ref.data();
+        char const* last = first + ref.size();
+        auto const pres = parse(first, last, v);
+        if (!pres)
         {
-            return ref;
-        }
-        Comment const* c = *it_;
-        if (c->getCommentKind() == CommentKind::TextComment)
-        {
-            ref += static_cast<TextComment const*>(c)->getText();
-        }
-        else
-        {
-            return ref;
-        }
-    }
-    static constexpr std::string_view idChars =
-        "abcdefghijklmnopqrstuvwxyz"
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        "0123456789"
-        "_:";
-    bool const isNoFunctionOperator =
-        isNoSuffixOperator ||
-        [trimmed]{
-            if (contains_n(trimmed, '(', 1))
+            // The ref could not be parsed, add content from next
+            // text comment to the ref
+            auto const nextTextOpt = peekNextIt();
+            if (!nextTextOpt)
             {
-                return false;
+                return {};
             }
-            std::size_t pos = trimmed.rfind("::");
-            std::string_view last = trimmed;
-            if (pos != std::string::npos) {
-                last = trimmed.substr(pos + 2);
-            }
-            if (!last.starts_with("operator"))
-            {
-                return false;
-            }
-            last.remove_prefix(8);
-            if (last.empty())
-            {
-                return true;
-            }
-            return !contains(idChars, last.front());
-        }();
-
-    // Clang parses the copydoc command breaking
-    // before the complete overload information. For instance,
-    // `@copydoc operator()(unsigned char) const` will create
-    // a node with the text `operator()(unsigned` and another
-    // with `char) const`. We need to merge these nodes.
-    // If the ref contains an unbalanced '(', then it's
-    // a function, and we need to merge the next text comments
-    // until we find a balanced ')'.
-    bool const isFunction = contains(ref, '(');
-    if (isFunction)
-    {
-        while (std::ranges::count(ref, '(') != std::ranges::count(ref, ')'))
-        {
+            ref += *nextTextOpt;
             ++it_;
-            if (it_ == end_)
+            continue;
+        }
+
+        // The ref is fully parsed
+        if (pres.ptr != last)
+        {
+            // The ref didn't consume all the text, so we need to
+            // remove the leftover text from the ref and return it
+            auto leftover = std::string(pres.ptr, last - pres.ptr);
+            // If leftover is only whitespace, the ref might need
+            // the next text comment to complete it.
+            if (!isWhitespace(leftover))
             {
-                break;
-            }
-            Comment const* c = *it_;
-            if (c->getCommentKind() == CommentKind::TextComment)
-            {
-                ref += static_cast<TextComment const*>(c)->getText();
-            }
-            else
-            {
-                break;
+                ref.erase(pres.ptr - first);
+                return leftover;
             }
         }
-        if (rtrim(ref).ends_with(')'))
-        {
-            static constexpr std::array<std::string_view, 5> qualifiers = {
-                "const",
-                "volatile",
-                "noexcept",
-                "&&",
-                "&",
-            };
-            auto isQualifiersOnly = [](std::string_view str)
-            {
-                // Iterate all words between spaces and check if
-                // they are qualifiers
-                std::size_t pos = 0;
-                while (pos < str.size())
-                {
-                    std::size_t const start = str.find_first_not_of(' ', pos);
-                    if (start == std::string::npos)
-                    {
-                        break;
-                    }
-                    std::size_t const end = str.find_first_of(' ', start);
-                    std::string_view word = str.substr(start, end - start);
-                    if (std::ranges::find(qualifiers, word) == qualifiers.end())
-                    {
-                        return false;
-                    }
-                    pos = end;
-                }
-                return true;
-            };
-            auto isWhitespaceOnly = [](std::string_view str)
-            {
-                return str.empty() || str.find_first_not_of(' ') == std::string::npos;
-            };
 
-            // peek next comment
-            std::string functionContinuation;
-            auto originalIt = it_;
-            ++it_;
-            while (
-                it_ != end_ &&
-                   (isWhitespaceOnly(functionContinuation) ||
-                    isQualifiersOnly(functionContinuation)))
+        // The ref is fully parsed, but we might want to
+        // include the next text comment if it contains
+        // a valid continuation to the ref.
+        bool const mightHaveMoreQualifiers =
+            v.HasFunctionParameters &&
+            v.ExceptionSpec.Implicit &&
+            v.ExceptionSpec.Operand.empty();
+        if (mightHaveMoreQualifiers)
+        {
+            llvm::SmallVector<std::string_view, 4> potentialQualifiers;
+            if (v.Kind == ReferenceKind::None)
             {
-                Comment const* c = *it_;
-                if (c->getCommentKind() != CommentKind::TextComment)
+                // "&&" or "&" not defined yet
+                if (!v.IsConst)
                 {
-                    break;
+                    potentialQualifiers.push_back("const");
                 }
-                functionContinuation += static_cast<TextComment const*>(c)->getText();
+                if (!v.IsVolatile)
+                {
+                    potentialQualifiers.push_back("volatile");
+                }
+                potentialQualifiers.push_back("&");
+            }
+            else if (
+                v.Kind == ReferenceKind::LValue &&
+                ref.ends_with('&'))
+            {
+                // The second "&" might be in the next Text block
+                potentialQualifiers.push_back("&");
+            }
+            potentialQualifiers.push_back("noexcept");
+            auto const nextTextOpt = peekNextIt();
+            if (!nextTextOpt)
+            {
+                auto leftover = std::string(pres.ptr, last - pres.ptr);
+                ref.erase(pres.ptr - first);
+                return leftover;
+            }
+            std::string_view const nextText = *nextTextOpt;
+            std::string_view const trimmed = ltrim(nextText);
+            if (trimmed.empty() ||
+                std::ranges::any_of(
+                    potentialQualifiers,
+                    [&](std::string_view s)
+                    {
+                        return trimmed.starts_with(s);
+                    }))
+            {
+                ref += nextText;
                 ++it_;
-            }
-            if (isWhitespaceOnly(functionContinuation))
-            {
-                it_ = originalIt;
-            }
-            else /* if (!functionContinuation.empty()) */
-            {
-                --it_;
-                std::string_view suffix = functionContinuation;
-                std::string_view leftover = functionContinuation;
-                bool foundAny = false;
-                std::size_t totalRemoved = 0;
-                while (!suffix.empty())
-                {
-                    bool found = false;
-                    std::size_t const initialWhitespace = std::min(
-                        suffix.find_first_not_of(" "), suffix.size());
-                    for (auto const& q : qualifiers)
-                    {
-                        if (suffix.substr(initialWhitespace).starts_with(q))
-                        {
-                            std::size_t const toRemove = initialWhitespace + q.size();
-                            if (
-                                contains(idChars, q.back()) &&
-                                suffix.size() > toRemove &&
-                                contains(idChars, suffix[toRemove]))
-                            {
-                                // This is not a qualifier, but part of
-                                // an identifier
-                                continue;
-                            }
-                            suffix.remove_prefix(toRemove);
-                            totalRemoved += toRemove;
-                            found = true;
-                            foundAny = true;
-                            break;
-                        }
-                    }
-                    if (!found)
-                    {
-                        break;
-                    }
-                }
-                if (foundAny)
-                {
-                    leftover = leftover.substr(0, totalRemoved);
-                    ref += leftover;
-                    return std::string(suffix);
-                }
+                continue;
             }
         }
-    }
 
+        // The ref might have more components
+        bool const mightHaveMoreComponents =
+            !v.HasFunctionParameters;
+        if (mightHaveMoreComponents)
+        {
+            auto const nextTextOpt = peekNextIt();
+            if (!nextTextOpt)
+            {
+                auto leftover = std::string(pres.ptr, last - pres.ptr);
+                ref.erase(pres.ptr - first);
+                return leftover;
+            }
+            std::string_view const nextText = *nextTextOpt;
+            std::string_view const trimmed = ltrim(nextText);
+            static constexpr std::string_view idChars
+                   = "abcdefghijklmnopqrstuvwxyz"
+                     "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                     "0123456789"
+                     "_:";
+            if (trimmed.empty() ||
+                contains(idChars, trimmed.front()))
+            {
+                ref += nextText;
+                ++it_;
+                continue;
+            }
+        }
 
-    // Clang refs can also contain invalid characters
-    // at the end, especially punctuation. We need to
-    // truncate the ref at the last valid identifier
-    // character.
-    // The last identifier character depends on the type
-    // of ref.
-    // - If it's an operator but not a function, then
-    //   we also consider operator chars as valid.
-    // - If it's a function, then we also consider ')'
-    //   as valid.
-    // - In all cases, we consider the identifier chars
-    //   as valid.
-    static constexpr std::string_view operatorChars =
-        "~!%^&*()-+=|[]{};:,.<>?/";
-    static constexpr std::string_view parenChars =
-        "()";
-    std::string leftover;
-    bool const isRegularIdentifier = !isFunction && !isNoFunctionOperator;
-    if (isRegularIdentifier)
-    {
-        auto const lastIdChar = ref.find_last_of(idChars);
-        auto const firstLeftoverChar = lastIdChar + 1;
-        if (firstLeftoverChar < ref.size())
-        {
-            leftover = std::string_view(ref).substr(lastIdChar + 1);
-            ref = ref.substr(0, lastIdChar + 1);
-        }
+        return {};
     }
-    else if (isFunction)
-    {
-        auto reservedCharsets = {idChars, parenChars};
-        auto reservedChars = std::views::join(reservedCharsets);
-        auto const lastIdOrParen = find_last_of(ref, reservedChars);
-        auto const firstLeftoverChar =
-            lastIdOrParen == ref.end() ?
-                ref.end() :
-                std::next(lastIdOrParen);
-        if (firstLeftoverChar != ref.end())
-        {
-            leftover = std::string_view(firstLeftoverChar, ref.end());
-            ref = ref.substr(0, std::distance(ref.begin(), firstLeftoverChar));
-        }
-    }
-    else /* if (isNoFunctionOperator) */
-    {
-        auto reservedCharsets = {idChars, operatorChars};
-        auto reservedChars = std::views::join(reservedCharsets);
-        auto const lastIdOrOperator = find_last_of(ref, reservedChars);
-        auto const firstLeftoverChar =
-            lastIdOrOperator == ref.end() ?
-                ref.end() :
-                std::next(lastIdOrOperator);
-        if (firstLeftoverChar != ref.end())
-        {
-            leftover = std::string_view(firstLeftoverChar, ref.end());
-            ref = ref.substr(0, std::distance(ref.begin(), firstLeftoverChar));
-        }
-    }
-    return leftover;
 }
 
 //------------------------------------------------
