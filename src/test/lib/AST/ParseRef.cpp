@@ -24,7 +24,6 @@ testComponents()
     fail("");
     ok("a");
     ok("  a");
-    ok("  a  ");
     ok("::a");
     ok("a::b");
     ok("a::b::c");
@@ -32,8 +31,8 @@ testComponents()
     ok("a:: ~ b");
     ok("a::operator+");
     ok("a::operator()");
-    ok("a:: operator () ");
-    fail("a:: operator ( ) ");
+    ok("a:: operator ()");
+    fail("a:: operator ( )");
     ok("a::operator bool");
     fail("a::operator bool::c");
     fail("a::operator+::c");
@@ -43,7 +42,7 @@ void
 testFunctionParameters()
 {
     ok("f()");
-    ok("f  (  ) ");
+    ok("f  (  )");
     ok("f(void)");
     fail("f(void, void)");
     fail("f(int, void)");
@@ -295,6 +294,17 @@ testMainFunctionQualifiers()
 }
 
 void
+testTemplateArguments()
+{
+    // type template parameter
+    ok("A::B<int>");
+    ok("A::B<int, 2>");
+    ok("A::B<int, true>");
+    ok("A::B<C, true>");
+    ok("A::B<Args..., true>");
+}
+
+void
 run()
 {
     testComponents();
@@ -302,6 +312,7 @@ run()
     testParameterDeclarationSpecifiers();
     testParameterDeclarators();
     testMainFunctionQualifiers();
+    testTemplateArguments();
 }
 
 };

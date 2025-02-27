@@ -77,6 +77,15 @@ MRDOCS_DECL
 void
 replace(std::string& s, std::string_view from, std::string_view to);
 
+/** Determine if a string is only whitespace.
+ */
+constexpr
+bool
+isWhitespace(std::string_view s) noexcept
+{
+    return s.find_first_not_of(" \t\n\v\f\r") == std::string::npos;
+}
+
 
 } // mrdocs
 } // clang
