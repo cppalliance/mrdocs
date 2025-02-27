@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <namespace name="A" id="jQQu/8mLNzRQvGtbkKMwwloVDpw=">
+    <namespace-alias name="BInt" id="knD7LwHco1Rc3UN13fDrTDK0Fg4=">
+      <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="20"/>
+      <type id="n2ekv7/9IraylJIibujZeExrML4=" name="B&lt;int&gt;"/>
+      <doc>
+        <brief>
+          <text>Specialization of B for int.</text>
+        </brief>
+      </doc>
+    </namespace-alias>
+    <namespace-alias name="BInt2" id="mAmfKzQQ8Mg78wrSV5C5vqhB38M=">
+      <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="28"/>
+      <type id="zWh7HJU4uEOW6SQu1/X6/fBkFq0=" name="B&lt;int, 2&gt;"/>
+      <doc>
+        <brief>
+          <text>Specialization of B for int with value 2.</text>
+        </brief>
+      </doc>
+    </namespace-alias>
+    <template>
+      <tparam name="T" class="type"/>
+      <tparam name="I" class="non-type" type="int"/>
+      <namespace-alias name="B_t" id="40FFJWRtg8LikFmMYkFhi3taM7w=">
+        <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="11"/>
+        <type id="jJtr0x+P2kzEfxAlp7Hjo5akJho=" name="B&lt;T, I&gt;"/>
+        <doc>
+          <brief>
+            <text>Main class template for B.</text>
+          </brief>
+          <tparam name="T">
+            <text>The type parameter.         </text>
+          </tparam>
+        </doc>
+      </namespace-alias>
+    </template>
+    <namespace-alias name="CDTrue" id="EFfBXjCvLk0J5w7aUT/GZ5D4Zww=">
+      <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="60"/>
+      <type id="+AYNfv3bBiQwa6z9A60U/F7dvXE=" name="C&lt;D, true&gt;"/>
+      <doc>
+        <brief>
+          <text>Specialization of C for D with true.</text>
+        </brief>
+      </doc>
+    </namespace-alias>
+    <namespace-alias name="CIntTrue" id="9GvIXSW1TfhlI8qPuV4xPDXT5+A=">
+      <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="48"/>
+      <type id="w5ssdgUOfKNpDbPFUfSYesxFAc8=" name="C&lt;int, true&gt;"/>
+      <doc>
+        <brief>
+          <text>Specialization of C for D with true.</text>
+        </brief>
+      </doc>
+    </namespace-alias>
+    <template>
+      <tparam name="T" class="type"/>
+      <tparam name="B" class="non-type" type="bool"/>
+      <namespace-alias name="C_t" id="N9KZXiVz/IMBW2CcGYh+8cvUeFQ=">
+        <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="39"/>
+        <type id="WjzMcZfRtncsiJEvL1/LzUes/GM=" name="C&lt;T, B&gt;"/>
+        <doc>
+          <brief>
+            <text>Main class template for C.</text>
+          </brief>
+          <tparam name="T">
+            <text>The type parameter.         </text>
+          </tparam>
+        </doc>
+      </namespace-alias>
+    </template>
+    <template>
+      <tparam name="T" class="type"/>
+      <tparam class="non-type" type="int" default="0"/>
+      <struct name="B" id="jJtr0x+P2kzEfxAlp7Hjo5akJho=">
+        <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="7"/>
+        <doc>
+          <brief>
+            <text>Main class template for B.</text>
+          </brief>
+          <tparam name="T">
+            <text>The type parameter.         </text>
+          </tparam>
+          <tparam name="int">
+            <text>The integer parameter with a default value of 0.</text>
+          </tparam>
+        </doc>
+      </struct>
+    </template>
+    <template class="explicit" id="jJtr0x+P2kzEfxAlp7Hjo5akJho=">
+      <targ class="type" type="int"/>
+      <struct name="B" id="n2ekv7/9IraylJIibujZeExrML4=">
+        <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="17" class="def"/>
+        <doc>
+          <brief>
+            <text>Specialization of B for int.</text>
+          </brief>
+        </doc>
+      </struct>
+    </template>
+    <template class="explicit" id="jJtr0x+P2kzEfxAlp7Hjo5akJho=">
+      <targ class="type" type="int"/>
+      <targ class="non-type" value="2"/>
+      <struct name="B" id="zWh7HJU4uEOW6SQu1/X6/fBkFq0=">
+        <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="25" class="def"/>
+        <doc>
+          <brief>
+            <text>Specialization of B for int with value 2.</text>
+          </brief>
+        </doc>
+      </struct>
+    </template>
+    <template>
+      <tparam name="T" class="type"/>
+      <tparam class="non-type" type="bool" default="false"/>
+      <struct name="C" id="WjzMcZfRtncsiJEvL1/LzUes/GM=">
+        <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="35"/>
+        <doc>
+          <brief>
+            <text>Main class template for C.</text>
+          </brief>
+          <tparam name="T">
+            <text>The type parameter.         </text>
+          </tparam>
+          <tparam name="bool">
+            <text>The boolean parameter with a default value of false.</text>
+          </tparam>
+        </doc>
+      </struct>
+    </template>
+    <template class="explicit" id="WjzMcZfRtncsiJEvL1/LzUes/GM=">
+      <targ class="type" type="D"/>
+      <targ class="non-type" value="true"/>
+      <struct name="C" id="+AYNfv3bBiQwa6z9A60U/F7dvXE=">
+        <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="57" class="def"/>
+        <doc>
+          <brief>
+            <text>Specialization of C for D with true.</text>
+          </brief>
+        </doc>
+      </struct>
+    </template>
+    <template class="explicit" id="WjzMcZfRtncsiJEvL1/LzUes/GM=">
+      <targ class="type" type="int"/>
+      <targ class="non-type" value="true"/>
+      <struct name="C" id="w5ssdgUOfKNpDbPFUfSYesxFAc8=">
+        <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="45" class="def"/>
+        <doc>
+          <brief>
+            <text>Specialization of C for int with true.</text>
+          </brief>
+        </doc>
+      </struct>
+    </template>
+    <struct name="D" id="/TldxA72JGXtufh5RbJgxLW2mwU=">
+      <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="52"/>
+      <doc>
+        <brief>
+          <text>Helper struct D.</text>
+        </brief>
+      </doc>
+    </struct>
+  </namespace>
+</namespace>
+</mrdocs>

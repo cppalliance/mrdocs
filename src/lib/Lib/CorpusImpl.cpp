@@ -311,6 +311,33 @@ isDecayedEqual(
 {
     return isDecayedEqualImpl<false>(lhs, rhs, context, corpus);
 }
+
+bool
+isDecayedEqual(
+    Polymorphic<TArg> const& lhs,
+    Polymorphic<TArg> const& rhs,
+    Info const& context,
+    CorpusImpl const& corpus)
+{
+    if (lhs->Kind != rhs->Kind)
+    {
+        return false;
+    }
+    if (lhs->isType())
+    {
+        return isDecayedEqualImpl<true>(
+            get<TypeTArg>(lhs).Type,
+            get<TypeTArg>(rhs).Type,
+            context, corpus);
+    }
+    if (lhs->isNonType())
+    {
+        return
+            trim(get<NonTypeTArg>(lhs).Value.Written) ==
+            trim(get<NonTypeTArg>(rhs).Value.Written);
+    }
+    return false;
+}
 }
 
 Expected<std::reference_wrapper<Info const>>
@@ -353,7 +380,7 @@ lookupImpl(Self&& self, SymbolID const& contextId0, std::string_view name)
         }
         return std::cref(*info);
     }
-    Expected<ParsedRef> const expRef = parseRef(name);
+    auto const expRef = parse<ParsedRef>(name);
     if (!expRef)
     {
         return Unexpected(formatError("Failed to parse '{}'\n     {}", name, expRef.error().reason()));
@@ -494,7 +521,7 @@ lookupImpl(
     };
     auto const highestMatchLevel =
         !checkParameters || !ref.HasFunctionParameters ?
-            MatchLevel::TemplateArgsSize :
+            MatchLevel::TemplateArgs :
             MatchLevel::Qualifiers;
     auto matchLevel = MatchLevel::None;
     Info const* res = nullptr;
@@ -535,28 +562,40 @@ lookupImpl(
             }
             matchRes = MatchLevel::Name;
 
-            // Template arguments match
-            if constexpr (requires { M.Template; })
-            {
-                std::optional<TemplateInfo> const& templateInfo = M.Template;
-                if (component.TemplateArguments.empty())
+            // Template arguments size match
+            TemplateInfo const* templateInfo = [&]() -> TemplateInfo const* {
+                if constexpr (requires { M.Template; })
                 {
-                    MRDOCS_CHECK_OR(
-                        !templateInfo.has_value() ||
-                        templateInfo->Args.empty(), matchRes);
+                    std::optional<TemplateInfo> const& OTI = M.Template;
+                    MRDOCS_CHECK_OR(OTI, nullptr);
+                    TemplateInfo const& TI = *OTI;
+                    return &TI;
                 }
                 else
                 {
-                    MRDOCS_CHECK_OR(
-                        templateInfo.has_value() &&
-                        templateInfo->Args.size() == component.TemplateArguments.size(), matchRes);
+                    return nullptr;
                 }
+            }();
+            if (!templateInfo)
+            {
+                MRDOCS_CHECK_OR(!component.HasTemplateArguments, matchRes);
             }
             else
             {
-                MRDOCS_CHECK_OR(component.TemplateArguments.empty(), matchRes);
+                MRDOCS_CHECK_OR(templateInfo->Args.size() == component.TemplateArguments.size(), matchRes);
             }
             matchRes = MatchLevel::TemplateArgsSize;
+
+            if (templateInfo)
+            {
+                for (std::size_t i = 0; i < templateInfo->Args.size(); ++i)
+                {
+                    auto& lhsType = templateInfo->Args[i];
+                    auto& rhsType  = component.TemplateArguments[i];
+                    MRDOCS_CHECK_OR(isDecayedEqual(lhsType, rhsType, context, *this), matchRes);
+                }
+            }
+            matchRes = MatchLevel::TemplateArgs;
 
             // Function parameters size match
             MRDOCS_CHECK_OR(checkParameters && ref.HasFunctionParameters, matchRes);

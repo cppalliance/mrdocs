@@ -1089,14 +1089,6 @@ fixReference(std::string& ref)
         return text;
     };
 
-    // If the ref is only "operator", the next text comment
-    // might contain a simple operator name/type, or a
-    // full operator overload.
-    // In this case, we need to include the next text comments
-    // until we find this operator identifier/type or until
-    // we find an unbalanced '('.
-    // Simply including the next text comment is enough
-    // for the next step.
     ParsedRef v;
     while (true)
     {
@@ -1118,7 +1110,7 @@ fixReference(std::string& ref)
             continue;
         }
 
-        // The ref is fully parsed
+        // The ref is not fully parsed
         if (pres.ptr != last)
         {
             // The ref didn't consume all the text, so we need to

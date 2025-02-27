@@ -37,7 +37,7 @@ grammar
             attribute is-anonymous { "1" }?,
             Javadoc?,
             element using-directive { ID } *,
-            Scope
+            Scope*
         }
 
     #---------------------------------------------
@@ -153,7 +153,8 @@ grammar
             Name,
             ID,
             Location *,
-            TypeInfo
+            TypeInfo,
+            Javadoc ?
         } |
         element typedef
         {

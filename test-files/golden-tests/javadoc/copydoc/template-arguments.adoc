@@ -1,0 +1,367 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+=== Namespaces
+
+[cols=1]
+|===
+| Name 
+
+| <<A,`A`>> 
+
+|===
+
+[#A]
+== A
+
+
+=== Types
+
+[cols=2]
+|===
+| Name 
+| Description 
+
+| <<A-B-08,`B`>> 
+| Main class template for B&period;
+
+| <<A-B-09,`B&lt;int&gt;`>> 
+| Specialization of B for int&period;
+
+| <<A-B-0c,`B&lt;int, 2&gt;`>> 
+| Specialization of B for int with value 2&period;
+
+| <<A-C-05,`C`>> 
+| Main class template for C&period;
+
+| <<A-C-0f,`C&lt;D, true&gt;`>> 
+| Specialization of C for D with true&period;
+
+| <<A-C-0c,`C&lt;int, true&gt;`>> 
+| Specialization of C for int with true&period;
+
+| <<A-D,`D`>> 
+| Helper struct D&period;
+
+| <<A-BInt,`BInt`>> 
+| Specialization of B for int&period;
+
+| <<A-BInt2,`BInt2`>> 
+| Specialization of B for int with value 2&period;
+
+| <<A-B_t,`B&lowbar;t`>> 
+| Main class template for B&period;
+
+| <<A-CDTrue,`CDTrue`>> 
+| Specialization of C for D with true&period;
+
+| <<A-CIntTrue,`CIntTrue`>> 
+| Specialization of C for D with true&period;
+
+| <<A-C_t,`C&lowbar;t`>> 
+| Main class template for C&period;
+
+|===
+
+[#A-BInt]
+== <<A,A>>::BInt
+
+
+Specialization of B for int&period;
+
+=== Synopsis
+
+
+Declared in `&lt;template&hyphen;arguments&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using BInt = <<A-B-09,B>>&lt;int&gt;;
+----
+
+[#A-BInt2]
+== <<A,A>>::BInt2
+
+
+Specialization of B for int with value 2&period;
+
+=== Synopsis
+
+
+Declared in `&lt;template&hyphen;arguments&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using BInt2 = <<A-B-0c,B>>&lt;int, 2&gt;;
+----
+
+[#A-B_t]
+== <<A,A>>::B&lowbar;t
+
+
+Main class template for B&period;
+
+=== Synopsis
+
+
+Declared in `&lt;template&hyphen;arguments&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;
+    class T,
+    int I&gt;
+using B&lowbar;t = <<A-B-08,B>>&lt;T, I&gt;;
+----
+
+=== Template Parameters
+
+
+|===
+| Name | Description
+
+| *T*
+| The type parameter&period;
+
+|===
+
+[#A-CDTrue]
+== <<A,A>>::CDTrue
+
+
+Specialization of C for D with true&period;
+
+=== Synopsis
+
+
+Declared in `&lt;template&hyphen;arguments&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using CDTrue = <<A-C-0f,C>>&lt;<<A-D,D>>, true&gt;;
+----
+
+[#A-CIntTrue]
+== <<A,A>>::CIntTrue
+
+
+Specialization of C for D with true&period;
+
+=== Synopsis
+
+
+Declared in `&lt;template&hyphen;arguments&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using CIntTrue = <<A-C-0c,C>>&lt;int, true&gt;;
+----
+
+[#A-C_t]
+== <<A,A>>::C&lowbar;t
+
+
+Main class template for C&period;
+
+=== Synopsis
+
+
+Declared in `&lt;template&hyphen;arguments&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;
+    class T,
+    bool B&gt;
+using C&lowbar;t = <<A-C-05,C>>&lt;T, B&gt;;
+----
+
+=== Template Parameters
+
+
+|===
+| Name | Description
+
+| *T*
+| The type parameter&period;
+
+|===
+
+[#A-B-08]
+== <<A,A>>::B
+
+
+Main class template for B&period;
+
+=== Synopsis
+
+
+Declared in `&lt;template&hyphen;arguments&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;
+    class T,
+    int = 0&gt;
+struct B;
+----
+
+
+
+
+=== Template Parameters
+
+
+|===
+| Name | Description
+
+| *T*
+| The type parameter&period;
+
+| *int*
+| The integer parameter with a default value of 0&period;
+
+|===
+
+[#A-B-09]
+== <<A,A>>::B&lt;int&gt;
+
+
+Specialization of B for int&period;
+
+=== Synopsis
+
+
+Declared in `&lt;template&hyphen;arguments&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct <<A-B-08,B>>&lt;int&gt;;
+----
+
+
+
+
+[#A-B-0c]
+== <<A,A>>::B&lt;int, 2&gt;
+
+
+Specialization of B for int with value 2&period;
+
+=== Synopsis
+
+
+Declared in `&lt;template&hyphen;arguments&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct <<A-B-08,B>>&lt;int, 2&gt;;
+----
+
+
+
+
+[#A-C-05]
+== <<A,A>>::C
+
+
+Main class template for C&period;
+
+=== Synopsis
+
+
+Declared in `&lt;template&hyphen;arguments&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;
+    class T,
+    bool = false&gt;
+struct C;
+----
+
+
+
+
+=== Template Parameters
+
+
+|===
+| Name | Description
+
+| *T*
+| The type parameter&period;
+
+| *bool*
+| The boolean parameter with a default value of false&period;
+
+|===
+
+[#A-C-0f]
+== <<A,A>>::C&lt;<<A-D,D>>, true&gt;
+
+
+Specialization of C for D with true&period;
+
+=== Synopsis
+
+
+Declared in `&lt;template&hyphen;arguments&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct <<A-C-05,C>>&lt;<<A-D,D>>, true&gt;;
+----
+
+
+
+
+[#A-C-0c]
+== <<A,A>>::C&lt;int, true&gt;
+
+
+Specialization of C for int with true&period;
+
+=== Synopsis
+
+
+Declared in `&lt;template&hyphen;arguments&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct <<A-C-05,C>>&lt;int, true&gt;;
+----
+
+
+
+
+[#A-D]
+== <<A,A>>::D
+
+
+Helper struct D&period;
+
+=== Synopsis
+
+
+Declared in `&lt;template&hyphen;arguments&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct D;
+----
+
+
+
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

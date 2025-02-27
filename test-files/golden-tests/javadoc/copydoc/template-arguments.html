@@ -1,0 +1,460 @@
+<html lang="en">
+<head>
+<title>Reference</title>
+</head>
+<body>
+<div>
+<h1>Reference</h1>
+<div>
+<div>
+<h2 id="index">Global namespace</h2>
+</div>
+<h2>Namespaces</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#A"><code>A</code></a> </td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<div>
+<h2 id="A">A</h2>
+</div>
+<h2>Types</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#A-B-08"><code>B</code></a> </td><td><span><span>Main class template for B.</span></span>
+</td>
+</tr><tr>
+<td><a href="#A-B-09"><code>B&lt;int&gt;</code></a> </td><td><span><span>Specialization of B for int.</span></span>
+</td>
+</tr><tr>
+<td><a href="#A-B-0c"><code>B&lt;int, 2&gt;</code></a> </td><td><span><span>Specialization of B for int with value 2.</span></span>
+</td>
+</tr><tr>
+<td><a href="#A-C-05"><code>C</code></a> </td><td><span><span>Main class template for C.</span></span>
+</td>
+</tr><tr>
+<td><a href="#A-C-0f"><code>C&lt;D, true&gt;</code></a> </td><td><span><span>Specialization of C for D with true.</span></span>
+</td>
+</tr><tr>
+<td><a href="#A-C-0c"><code>C&lt;int, true&gt;</code></a> </td><td><span><span>Specialization of C for int with true.</span></span>
+</td>
+</tr><tr>
+<td><a href="#A-D"><code>D</code></a> </td><td><span><span>Helper struct D.</span></span>
+</td>
+</tr><tr>
+<td><a href="#A-BInt"><code>BInt</code></a> </td><td><span><span>Specialization of B for int.</span></span>
+</td>
+</tr><tr>
+<td><a href="#A-BInt2"><code>BInt2</code></a> </td><td><span><span>Specialization of B for int with value 2.</span></span>
+</td>
+</tr><tr>
+<td><a href="#A-B_t"><code>B_t</code></a> </td><td><span><span>Main class template for B.</span></span>
+</td>
+</tr><tr>
+<td><a href="#A-CDTrue"><code>CDTrue</code></a> </td><td><span><span>Specialization of C for D with true.</span></span>
+</td>
+</tr><tr>
+<td><a href="#A-CIntTrue"><code>CIntTrue</code></a> </td><td><span><span>Specialization of C for D with true.</span></span>
+</td>
+</tr><tr>
+<td><a href="#A-C_t"><code>C_t</code></a> </td><td><span><span>Main class template for C.</span></span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<div>
+<h2 id="A-BInt"><a href="#A">A</a>::BInt</h2>
+<div>
+<span><span>Specialization of B for int.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+using BInt = <a href="#A-B-09">B</a>&lt;int&gt;;
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="A-BInt2"><a href="#A">A</a>::BInt2</h2>
+<div>
+<span><span>Specialization of B for int with value 2.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+using BInt2 = <a href="#A-B-0c">B</a>&lt;int, 2&gt;;
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="A-B_t"><a href="#A">A</a>::B_t</h2>
+<div>
+<span><span>Main class template for B.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;
+    class T,
+    int I&gt;
+using B_t = <a href="#A-B-08">B</a>&lt;T, I&gt;;
+</code>
+</pre>
+</div>
+<div>
+<h3>Template Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>T</strong></td>
+<td><p><span>The type parameter.</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="A-CDTrue"><a href="#A">A</a>::CDTrue</h2>
+<div>
+<span><span>Specialization of C for D with true.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+using CDTrue = <a href="#A-C-0f">C</a>&lt;<a href="#A-D">D</a>, true&gt;;
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="A-CIntTrue"><a href="#A">A</a>::CIntTrue</h2>
+<div>
+<span><span>Specialization of C for D with true.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+using CIntTrue = <a href="#A-C-0c">C</a>&lt;int, true&gt;;
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="A-C_t"><a href="#A">A</a>::C_t</h2>
+<div>
+<span><span>Main class template for C.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;
+    class T,
+    bool B&gt;
+using C_t = <a href="#A-C-05">C</a>&lt;T, B&gt;;
+</code>
+</pre>
+</div>
+<div>
+<h3>Template Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>T</strong></td>
+<td><p><span>The type parameter.</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="A-B-08"><a href="#A">A</a>::B</h2>
+<div>
+<span><span>Main class template for B.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;
+    class T,
+    int = 0&gt;
+struct B;
+</code>
+</pre>
+</div>
+
+
+<div>
+<h3>Template Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>T</strong></td>
+<td><p><span>The type parameter.</span></p>
+</td>
+</tr>
+<tr>
+<td><strong>int</strong></td>
+<td><p><span>The integer parameter with a default value of 0.</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="A-B-09"><a href="#A">A</a>::B&lt;int&gt;</h2>
+<div>
+<span><span>Specialization of B for int.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;&gt;
+struct <a href="#A-B-08">B</a>&lt;int&gt;;
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="A-B-0c"><a href="#A">A</a>::B&lt;int, 2&gt;</h2>
+<div>
+<span><span>Specialization of B for int with value 2.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;&gt;
+struct <a href="#A-B-08">B</a>&lt;int, 2&gt;;
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="A-C-05"><a href="#A">A</a>::C</h2>
+<div>
+<span><span>Main class template for C.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;
+    class T,
+    bool = false&gt;
+struct C;
+</code>
+</pre>
+</div>
+
+
+<div>
+<h3>Template Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>T</strong></td>
+<td><p><span>The type parameter.</span></p>
+</td>
+</tr>
+<tr>
+<td><strong>bool</strong></td>
+<td><p><span>The boolean parameter with a default value of false.</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="A-C-0f"><a href="#A">A</a>::C&lt;<a href="#A-D">D</a>, true&gt;</h2>
+<div>
+<span><span>Specialization of C for D with true.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;&gt;
+struct <a href="#A-C-05">C</a>&lt;<a href="#A-D">D</a>, true&gt;;
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="A-C-0c"><a href="#A">A</a>::C&lt;int, true&gt;</h2>
+<div>
+<span><span>Specialization of C for int with true.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;&gt;
+struct <a href="#A-C-05">C</a>&lt;int, true&gt;;
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="A-D"><a href="#A">A</a>::D</h2>
+<div>
+<span><span>Helper struct D.</span></span>
+
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+struct D;
+</code>
+</pre>
+</div>
+
+
+</div>
+
+</div>
+<div>
+<h4>Created with <a href="https://www.mrdocs.com">MrDocs</a></h4>
+</div>
+</body>
+</html>
