@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <function name="f0" id="e1UQQek5v3C9OClW5cGf57XvwQo=">
+    <file short-path="punctuation.cpp" source-path="punctuation.cpp" line="1"/>
+  </function>
+  <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
+    <file short-path="punctuation.cpp" source-path="punctuation.cpp" line="3"/>
+  </function>
+  <function name="f2" id="0MJUv5yGFR9nXWFLeYc+rjOY+iM=">
+    <file short-path="punctuation.cpp" source-path="punctuation.cpp" line="8"/>
+    <doc>
+      <brief>
+        <text>See </text>
+        <reference id="e1UQQek5v3C9OClW5cGf57XvwQo=">f0</reference>
+        <text>, </text>
+        <reference id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">f1</reference>
+        <text>.</text>
+      </brief>
+    </doc>
+  </function>
+</namespace>
+</mrdocs>

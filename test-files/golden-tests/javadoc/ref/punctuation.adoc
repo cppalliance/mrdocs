@@ -1,0 +1,75 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+=== Functions
+
+[cols=2]
+|===
+| Name 
+| Description 
+
+| <<f0,`f0`>> 
+| 
+
+| <<f1,`f1`>> 
+| 
+
+| <<f2,`f2`>> 
+| See xref:#f0[f0], xref:#f1[f1]&period;
+
+|===
+
+[#f0]
+== f0
+
+
+=== Synopsis
+
+
+Declared in `&lt;punctuation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f0();
+----
+
+[#f1]
+== f1
+
+
+=== Synopsis
+
+
+Declared in `&lt;punctuation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f1();
+----
+
+[#f2]
+== f2
+
+
+See xref:#f0[f0], xref:#f1[f1]&period;
+
+=== Synopsis
+
+
+Declared in `&lt;punctuation&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f2();
+----
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
