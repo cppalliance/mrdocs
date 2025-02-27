@@ -13,6 +13,7 @@
 
 #include <mrdocs/Metadata/Specifiers.hpp>
 #include <mrdocs/Metadata/Type.hpp>
+#include <mrdocs/Support/Parse.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <llvm/ADT/SmallVector.h>
 #include <string_view>
@@ -70,8 +71,11 @@ struct ParsedRef {
     NoexceptInfo ExceptionSpec;
 };
 
-Expected<ParsedRef>
-parseRef(std::string_view sv);
+ParseResult
+parse(
+    char const* first,
+    char const* last,
+    ParsedRef& value);
 
 } // clang::mrdocs
 

@@ -2139,12 +2139,24 @@ private:
 } // (anon)
 
 // Function to parse a C++ symbol name
-Expected<ParsedRef>
-parseRef(std::string_view sv)
+ParseResult
+parse(
+    char const* first,
+    char const* last,
+    ParsedRef& value)
 {
-    RefParser parser(sv);
-    parser.parse();
-    return parser.result();
+    RefParser parser(first, last, value);
+    ParseResult res;
+    if (parser.parse())
+    {
+        res.ptr = parser.position();
+    }
+    else
+    {
+        res.ec = parser.error();
+        res.ptr = parser.errorPos();
+    }
+    return res;
 }
 
 } // clang::mrdocs
