@@ -53,7 +53,7 @@ public:
         A default constructed error is
         equivalent to success.
     */
-    Error() noexcept = delete;
+    Error() noexcept = default;
 
     /** Constructor.
     */
@@ -122,7 +122,7 @@ public:
     constexpr bool
     failed() const noexcept
     {
-        return ! message_.empty();
+        return !message_.empty();
     }
 
     /** Return true if this holds an error.

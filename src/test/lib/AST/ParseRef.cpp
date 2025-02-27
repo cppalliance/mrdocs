@@ -15,8 +15,8 @@ namespace clang::mrdocs {
 struct ParseRef_test
 {
 
-#define ok(str) BOOST_TEST(parseRef(str).has_value())
-#define fail(str) BOOST_TEST(!parseRef(str).has_value())
+#define ok(str) BOOST_TEST(parse<ParsedRef>(str).has_value())
+#define fail(str) BOOST_TEST(!parse<ParsedRef>(str).has_value())
 
 void
 testComponents()

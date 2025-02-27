@@ -34,7 +34,9 @@ enum class TArgKind : int
     Template
 };
 
-MRDOCS_DECL std::string_view toString(TArgKind kind) noexcept;
+MRDOCS_DECL
+std::string_view
+toString(TArgKind kind) noexcept;
 
 inline
 void
