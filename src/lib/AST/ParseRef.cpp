@@ -64,18 +64,21 @@ class RefParser
     char const* first_;
     char const* ptr_;
     char const* last_;
-    ParsedRef result_;
-    std::string error_;
+    ParsedRef& result_;
+    std::string error_msg_;
     char const* error_pos_{nullptr};
 
 public:
     explicit
-    RefParser(std::string_view const str)
-        : first_(str.data())
-        , ptr_(first_)
-        , last_(first_ + str.size())
-    {
-    }
+    RefParser(
+        char const* first,
+        char const* last,
+        ParsedRef& result) noexcept
+        : first_(first),
+          ptr_(first),
+          last_(last),
+          result_(result)
+    {}
 
     bool
     parse()
@@ -85,8 +88,7 @@ public:
         {
             result_.IsFullyQualified = true;
         }
-        MRDOCS_CHECK_OR(parseComponents(), false);
-        skipWhitespace();
+        MRDOCS_CHECK_OR(parseComponents(result_.Components), false);
         result_.HasFunctionParameters = peek('(', ' ');
         if (result_.HasFunctionParameters)
         {
@@ -100,21 +102,27 @@ public:
             result_.Kind = functionParameters.Kind;
             result_.IsExplicitObjectMemberFunction = functionParameters.IsExplicitObjectMemberFunction;
         }
-        error_.clear();
+        error_msg_.clear();
         error_pos_ = nullptr;
         return true;
     }
 
-    Expected<ParsedRef>
-    result() const
+    Error
+    error() const
     {
-        if (error_pos_ == nullptr)
-        {
-            return result_;
-        }
-        std::string_view str(first_, last_ - first_);
-        std::size_t pos = error_pos_ - first_;
-        return Unexpected(formatError("'{}' at position {}: {}", str, pos, error_));
+        return Error(error_msg_);
+    }
+
+    char const*
+    errorPos() const
+    {
+        return error_pos_;
+    }
+
+    char const*
+    position() const
+    {
+        return ptr_;
     }
 
 private:
@@ -123,9 +131,9 @@ private:
     {
         // Only set the error if it's not already set
         // with a more specific error message
-        if (!error_pos_ || error_.empty())
+        if (!error_pos_ || error_msg_.empty())
         {
-            error_ = std::string(str);
+            error_msg_ = std::string(str);
             error_pos_ = pos;
         }
     }
@@ -243,6 +251,21 @@ private:
     }
 
     bool
+    peek(std::string_view str, char skip)
+    {
+        char const* first = ptr_;
+        while (first != last_ && *first == skip)
+        {
+            ++first;
+        }
+        if (std::cmp_greater(str.size(), last_ - first))
+        {
+            return false;
+        }
+        return std::equal(str.begin(), str.end(), first);
+    }
+
+    bool
     peekBack(char c, char skip)
     {
         if (ptr_ == first_)
@@ -276,8 +299,27 @@ private:
     }
 
     bool
-    rewindUntil(char c)
+    advance(char c)
     {
+        char const* start = ptr_;
+        while (ptr_ != last_ && *ptr_ == c)
+        {
+            ++ptr_;
+        }
+        return ptr_ != start;
+    }
+
+    bool
+    rewindUntil(char const c)
+    {
+        if (first_ == last_)
+        {
+            return false;
+        }
+        if (ptr_ == last_)
+        {
+            --ptr_;
+        }
         while (ptr_ != first_ && *ptr_ != c)
         {
             --ptr_;
@@ -286,25 +328,26 @@ private:
     }
 
     bool
-    parseComponents()
+    parseComponents(llvm::SmallVector<ParsedRefComponent, 8>& components)
     {
         char const* start = ptr_;
         while (true)
         {
             char const* compStart = ptr_;
-            if (!parseComponent())
+            if (!parseComponent(result_.Components.emplace_back()))
             {
                 return false;
             }
-            skipWhitespace();
-            if (!parseLiteral("::"))
+            if (!peek("::", ' '))
             {
-                return !result_.Components.empty();
+                return !components.empty();
             }
+            skipWhitespace();
+            parseLiteral("::");
             // If we have a "::" separator, so this is not
             // the last component. Check the rules for
             // nested-name-specifier
-            ParsedRefComponent const& comp = result_.Components.back();
+            ParsedRefComponent const& comp = components.back();
             if (comp.isOperator())
             {
                 ptr_ = compStart;
@@ -323,7 +366,7 @@ private:
     }
 
     bool
-    parseComponent()
+    parseComponent(ParsedRefComponent& c)
     {
         if (!hasMore())
         {
@@ -332,28 +375,26 @@ private:
         }
         char const *start = ptr_;
         skipWhitespace();
-        result_.Components.emplace_back();
-        if (!parseUnqualifiedIdentifierExpression())
+        if (!parseUnqualifiedId(c))
         {
             setError("expected component name");
             ptr_ = start;
             return false;
         }
-        skipWhitespace();
-        if (peek('<')) {
-            if (!parseTemplateArguments())
+        if (peek('<', ' ')) {
+            skipWhitespace();
+            if (!parseTemplateArguments(c.TemplateArguments))
             {
                 setError("expected template arguments");
                 ptr_ = start;
                 return false;
             }
         }
-
         return true;
     }
 
     bool
-    parseUnqualifiedIdentifierExpression()
+    parseUnqualifiedId(ParsedRefComponent& c)
     {
         // https://en.cppreference.com/w/cpp/language/identifiers#Unqualified_identifiers
         // Besides suitably declared identifiers, the following unqualified identifier
@@ -374,31 +415,30 @@ private:
         }
 
         // Try to parse as an operator
-        if (parseOperator())
+        if (parseOperator(c))
         {
             return true;
         }
 
         // Parse conversion operator
-        if (parseConversionOperator())
+        if (parseConversionOperator(c))
         {
             return true;
         }
 
         // Parse as a regular identifier
-        if (!parseDestructorOrIdentifier())
+        if (!parseDestructorOrIdentifier(c.Name))
         {
             setError("expected component name");
             ptr_ = start;
             return false;
         }
-        currentComponent().Name = std::string_view(start, ptr_ - start);
-        currentComponent().Operator = OperatorKind::None;
+        c.Operator = OperatorKind::None;
         return true;
     }
 
     bool
-    parseConversionOperator()
+    parseConversionOperator(ParsedRefComponent& c)
     {
         char const* start = ptr_;
         if (!parseKeyword("operator"))
@@ -413,12 +453,12 @@ private:
             ptr_ = start;
             return false;
         }
-        currentComponent().ConversionType = std::move(conversionType);
+        c.ConversionType = std::move(conversionType);
         return true;
     }
 
     bool
-    parseDestructorOrIdentifier()
+    parseDestructorOrIdentifier(std::string_view& s)
     {
         // A regular identifier or a function name
         char const* start = ptr_;
@@ -438,6 +478,7 @@ private:
             ptr_ = start;
             return false;
         }
+        s = std::string_view(start, ptr_ - start);
         return true;
     }
 
@@ -477,14 +518,8 @@ private:
         return true;
     }
 
-    ParsedRefComponent&
-    currentComponent()
-    {
-        return result_.Components.back();
-    }
-
     bool
-    parseOperator()
+    parseOperator(ParsedRefComponent& c)
     {
         const char* start = ptr_;
         if (!parseLiteral("operator"))
@@ -501,9 +536,9 @@ private:
         {
             if (parseLiteral(op))
             {
-                currentComponent().Operator = getOperatorKindFromSuffix(op);
-                MRDOCS_ASSERT(currentComponent().Operator != OperatorKind::None);
-                currentComponent().Name = getOperatorName(currentComponent().Operator, true);
+                c.Operator = getOperatorKindFromSuffix(op);
+                MRDOCS_ASSERT(c.Operator != OperatorKind::None);
+                c.Name = getOperatorName(c.Operator, true);
                 return true;
             }
         }
@@ -526,21 +561,21 @@ private:
             return false;
         }
         std::string_view op(op_start, ptr_ - op_start);
-        currentComponent().Operator = getOperatorKindFromSuffix(op);
-        if (currentComponent().Operator == OperatorKind::None)
+        c.Operator = getOperatorKindFromSuffix(op);
+        if (c.Operator == OperatorKind::None)
         {
             // This operator doesn't exist
             ptr_ = start;
             return false;
         }
-        currentComponent().Name = getOperatorName(currentComponent().Operator, true);
+        c.Name = getOperatorName(c.Operator, true);
         return true;
     }
 
     bool
-    parseTemplateArguments()
+    parseTemplateArguments(std::vector<Polymorphic<TArg>>& TemplateArguments)
     {
-        // https://en.cppreference.com/w/cpp/language/template_parameters
+        // https://en.cppreference.com/w/cpp/language/template_parameters#Template_arguments
         char const* start = ptr_;
         if (!parseLiteral('<'))
         {
@@ -548,12 +583,14 @@ private:
             return false;
         }
         skipWhitespace();
-        while (parseTemplateArgument())
+        TemplateArguments.emplace_back();
+        while (parseTemplateArgument(TemplateArguments.back()))
         {
             skipWhitespace();
             if (parseLiteral(','))
             {
                 skipWhitespace();
+                TemplateArguments.emplace_back();
             }
             else
             {
@@ -571,68 +608,48 @@ private:
     }
 
     bool
-    parseTemplateArgument()
-    {
-        return parseTemplateArgument(currentComponent().TemplateArguments.emplace_back());
-    }
-
-    bool
     parseTemplateArgument(Polymorphic<TArg>& dest)
     {
+        // https://en.cppreference.com/w/cpp/language/template_parameters#Template_arguments
+        // If an argument can be interpreted as both a type-id and an
+        // expression, it is always interpreted as a type-id, even if the
+        // corresponding template parameter is non-type:
         if (!hasMore())
         {
             return false;
         }
         skipWhitespace();
         char const* start = ptr_;
-        if (!parseTemplateArgumentName())
+        Polymorphic<TypeInfo> type;
+        if (parseTypeId(type))
         {
-            ptr_ = start;
-            setError("expected template argument name");
-            return false;
-        }
-        skipWhitespace();
-        return true;
-    }
-
-    Polymorphic<TArg>&
-    currentTemplateArgument()
-    {
-        return currentComponent().TemplateArguments.back();
-    }
-
-    bool
-    parseTemplateArgumentName() {
-        auto& dest = currentTemplateArgument();
-        return parseTemplateArgumentName(dest);
-    }
-
-    bool
-    parseTemplateArgumentName(Polymorphic<TArg>& dest)
-    {
-        char const* start = ptr_;
-
-        if (!hasMore())
-        {
-            setError("expected component name");
-            return false;
+            TypeTArg arg;
+            arg.Type = std::move(type);
+            dest = std::move(arg);
+            return true;
         }
 
-        // Parse as a regular identifier
-        if (!parseIdentifier(true))
+        // If the argument is not a type-id, it is an expression
+        // The expression is internally balanced in regards to '<'
+        // and '>' and ends with a comma
+        char const* exprStart = ptr_;
+        while (parseBalanced("<", ">", {",", ">"}))
         {
-            setError("expected identifier name");
+            if (!peekAny({',', '>'}, ' '))
+            {
+                continue;
+            }
+            break;
+        }
+        if (ptr_ == exprStart)
+        {
+            setError("expected template argument");
             ptr_ = start;
             return false;
         }
-        auto const nameStr = std::string_view(start, ptr_ - start);
-        TypeTArg arg;
-        NamedTypeInfo type;
-        NameInfo nameInfo;
-        nameInfo.Name = std::string(nameStr);
-        type.Name = nameInfo;
-        arg.Type = type;
-        dest = arg;
+        NonTypeTArg arg;
+        arg.Value.Written = trim(std::string_view(exprStart, ptr_ - exprStart));
+        dest = std::move(arg);
         return true;
     }
 
@@ -774,22 +791,10 @@ private:
         // decl-specifier-seq
         dest.Params.emplace_back();
         auto& curParam = dest.Params.back();
-        if (!parseDeclarationSpecifiers(curParam))
+        if (!parseTypeId(curParam))
         {
             ptr_ = start;
-            setError("expected parameter qualified type");
-            return false;
-        }
-
-        // If a parameter is not used in the function body, it does
-        // not need to be named (it's sufficient to use an
-        // abstract declarator).
-        // MrDocs refs only use abstract declarators. Any parameter
-        // name is ignored.
-        if (!parseAbstractDeclarator(curParam))
-        {
-            setError("expected abstract declarator");
-            ptr_ = start;
+            setError("expected type-id");
             return false;
         }
 
@@ -814,6 +819,35 @@ private:
         curParam->IsVolatile = false;
 
         skipWhitespace();
+        return true;
+    }
+
+    bool
+    parseTypeId(Polymorphic<TypeInfo>& dest)
+    {
+        char const* start = ptr_;
+
+        // https://en.cppreference.com/w/cpp/language/function#Parameter_list
+        // decl-specifier-seq
+        if (!parseDeclarationSpecifiers(dest))
+        {
+            ptr_ = start;
+            setError("expected parameter qualified type");
+            return false;
+        }
+
+        // If a parameter is not used in the function body, it does
+        // not need to be named (it's sufficient to use an
+        // abstract declarator).
+        // MrDocs refs only use abstract declarators. Any parameter
+        // name is ignored.
+        if (!parseAbstractDeclarator(dest))
+        {
+            setError("expected abstract declarator");
+            ptr_ = start;
+            return false;
+        }
+
         return true;
     }
 
@@ -859,7 +893,7 @@ private:
                     return false;
                 }
                 // Clear the error and let the type modifiers set `dest`
-                error_.clear();
+                error_msg_.clear();
                 error_pos_ = nullptr;
                 break;
             }
@@ -1267,18 +1301,35 @@ private:
     bool
     parseBalanced(
         std::string_view const openTag,
-        std::string_view const closeTag)
+        std::string_view const closeTag,
+        std::initializer_list<std::string_view> const until = {})
     {
         char const* start = ptr_;
         std::size_t depth = 0;
         while (hasMore())
         {
+            if (depth == 0)
+            {
+                for (std::string_view const& untilTag : until)
+                {
+                    if (peek(untilTag))
+                    {
+                        return true;
+                    }
+                }
+            }
             if (parseLiteral(openTag))
             {
                 ++depth;
             }
             else if (parseLiteral(closeTag))
             {
+                if (depth == 0)
+                {
+                    setError("unbalanced expression");
+                    ptr_ = start;
+                    return false;
+                }
                 --depth;
                 if (depth == 0)
                 {
@@ -1360,11 +1411,24 @@ private:
             skipWhitespace();
             if (peek('<'))
             {
-                if (!parseTemplateArguments())
+                if (!dest->isNamed())
+                {
+                    setError("expected named type for template arguments");
+                    ptr_ = start;
+                    return false;
+                }
+                // Replace the nameinfo with a nameinfo with args
+                auto& namedParam = dynamic_cast<NamedTypeInfo&>(*dest);
+                SpecializationNameInfo SNI;
+                SNI.Name = std::move(namedParam.Name->Name);
+                SNI.Prefix = std::move(namedParam.Name->Prefix);
+                SNI.id = namedParam.Name->id;
+                if (!parseTemplateArguments(SNI.TemplateArgs))
                 {
                     ptr_ = start;
                     return false;
                 }
+                namedParam.Name = std::move(SNI);
             }
             else
             {

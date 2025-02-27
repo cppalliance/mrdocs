@@ -25,7 +25,8 @@ struct ParsedRefComponent {
     std::string_view Name;
 
     // If not empty, this is a specialization
-    llvm::SmallVector<Polymorphic<TArg>, 8> TemplateArguments;
+    bool HasTemplateArguments = false;
+    std::vector<Polymorphic<TArg>> TemplateArguments;
 
     // If not None, this is an operator
     // Only the last component can be an operator
