@@ -63,10 +63,14 @@ merge(ConceptInfo& I, ConceptInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
     merge(dynamic_cast<Info&>(I), std::move(dynamic_cast<Info&>(Other)));
-    if(I.Constraint.Written.empty())
+    if (I.Constraint.Written.empty())
+    {
         I.Constraint = std::move(Other.Constraint);
-    if (! I.Template)
+    }
+    if (!I.Template)
+    {
         I.Template = std::move(Other.Template);
+    }
 }
 
 } // clang::mrdocs

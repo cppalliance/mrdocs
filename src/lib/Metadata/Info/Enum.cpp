@@ -39,10 +39,14 @@ merge(EnumInfo& I, EnumInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
     merge(dynamic_cast<Info&>(I), std::move(dynamic_cast<Info&>(Other)));
-    if(! I.Scoped)
+    if (!I.Scoped)
+    {
         I.Scoped = Other.Scoped;
-    if (! I.UnderlyingType)
+    }
+    if (!I.UnderlyingType)
+    {
         I.UnderlyingType = std::move(Other.UnderlyingType);
+    }
     reduceSymbolIDs(I.Constants, std::move(Other.Constants));
 }
 

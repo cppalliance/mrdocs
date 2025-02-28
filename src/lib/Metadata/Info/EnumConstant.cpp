@@ -20,8 +20,10 @@ merge(EnumConstantInfo& I, EnumConstantInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
     merge(dynamic_cast<Info&>(I), std::move(dynamic_cast<Info&>(Other)));
-    if(I.Initializer.Written.empty())
+    if (I.Initializer.Written.empty())
+    {
         I.Initializer = std::move(Other.Initializer);
+    }
 }
 
 } // clang::mrdocs

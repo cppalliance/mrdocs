@@ -132,8 +132,10 @@ merge(RecordInfo& I, RecordInfo&& Other)
         I.Bases = std::move(Other.Bases);
     }
     merge(I.Interface, std::move(Other.Interface));
-    if (! I.Template)
+    if (!I.Template)
+    {
         I.Template = std::move(Other.Template);
+    }
 }
 
 template <class IO>

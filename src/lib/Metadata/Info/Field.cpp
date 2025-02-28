@@ -20,10 +20,14 @@ merge(FieldInfo& I, FieldInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
     merge(dynamic_cast<Info&>(I), std::move(dynamic_cast<Info&>(Other)));
-    if(! I.Type)
+    if (!I.Type)
+    {
         I.Type = std::move(Other.Type);
-    if(I.Default.Written.empty())
+    }
+    if (I.Default.Written.empty())
+    {
         I.Default = std::move(Other.Default);
+    }
     I.IsBitfield |= Other.IsBitfield;
     merge(I.BitfieldWidth, std::move(Other.BitfieldWidth));
     I.IsVariant |= Other.IsVariant;

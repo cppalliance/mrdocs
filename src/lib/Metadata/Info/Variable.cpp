@@ -63,12 +63,18 @@ merge(VariableInfo& I, VariableInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
     merge(dynamic_cast<Info&>(I), std::move(dynamic_cast<Info&>(Other)));
-    if(! I.Type)
+    if (!I.Type)
+    {
         I.Type = std::move(Other.Type);
-    if(! I.Template)
+    }
+    if (!I.Template)
+    {
         I.Template = std::move(Other.Template);
-    if(I.Initializer.Written.empty())
+    }
+    if (I.Initializer.Written.empty())
+    {
         I.Initializer = std::move(Other.Initializer);
+    }
     I.IsConstinit |= Other.IsConstinit;
     I.IsThreadLocal |= Other.IsThreadLocal;
     I.IsConstexpr |= Other.IsConstexpr;

@@ -127,6 +127,10 @@ struct Param final
     operator<=>(Param const&) const = default;
 };
 
+MRDOCS_DECL
+void
+merge(Param& I, Param&& Other);
+
 /** Return the Param as a @ref dom::Value object.
  */
 MRDOCS_DECL

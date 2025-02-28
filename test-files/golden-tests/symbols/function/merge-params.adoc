@@ -1,0 +1,55 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+=== Functions
+
+[cols=2]
+|===
+| Name 
+| Description 
+
+| <<f,`f`>> 
+| Function
+
+|===
+
+[#f]
+== f
+
+
+Function
+
+=== Synopsis
+
+
+Declared in `&lt;merge&hyphen;params&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(
+    int a,
+    int b);
+----
+
+=== Parameters
+
+
+|===
+| Name | Description
+
+| *a*
+| The first parameter&period;
+
+| *b*
+| The second parameter&period;
+
+|===
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -412,6 +412,10 @@ struct TemplateInfo
     operator<=>(TemplateInfo const& other) const;
 };
 
+MRDOCS_DECL
+void
+merge(TemplateInfo& I, TemplateInfo&& Other);
+
 inline
 auto
 operator<=>(std::optional<TemplateInfo> const& lhs, std::optional<TemplateInfo> const& rhs)

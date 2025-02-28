@@ -273,6 +273,63 @@ operator<=>(TemplateInfo const& other) const {
         std::tie(Args, Params, other.Requires, other.Primary);
 }
 
+void
+merge(TemplateInfo& I, TemplateInfo&& Other)
+{
+    std::size_t const pn = std::min(I.Params.size(), Other.Params.size());
+    for (std::size_t i = 0; i < pn; ++i)
+    {
+        if (!I.Params[i] || I.Params[i]->Kind != Other.Params[i]->Kind)
+        {
+            I.Params[i] = std::move(Other.Params[i]);
+        }
+        else
+        {
+            if (I.Params[i]->Name.empty())
+            {
+                I.Params[i]->Name = std::move(Other.Params[i]->Name);
+            }
+            if (!I.Params[i]->Default)
+            {
+                I.Params[i]->Default = std::move(Other.Params[i]->Default);
+            }
+        }
+    }
+    if (Other.Params.size() > pn)
+    {
+        I.Params.insert(
+            I.Params.end(),
+            std::make_move_iterator(Other.Params.begin() + pn),
+            std::make_move_iterator(Other.Params.end()));
+    }
+
+    std::size_t const an = std::min(I.Args.size(), Other.Args.size());
+    for (std::size_t i = 0; i < an; ++i)
+    {
+        if (!I.Args[i] || I.Args[i]->Kind != Other.Args[i]->Kind)
+        {
+            I.Args[i] = std::move(Other.Args[i]);
+        }
+    }
+    if (Other.Args.size() > an)
+    {
+        I.Args.insert(
+            I.Args.end(),
+            std::make_move_iterator(Other.Args.begin() + an),
+            std::make_move_iterator(Other.Args.end()));
+    }
+
+    if (I.Requires.Written.empty())
+    {
+        I.Requires = std::move(Other.Requires);
+    }
+
+    if (I.Primary == SymbolID::invalid)
+    {
+        I.Primary = Other.Primary;
+    }
+}
+
 template <class IO>
 void
 tag_invoke(
