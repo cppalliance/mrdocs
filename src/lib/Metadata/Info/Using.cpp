@@ -41,9 +41,13 @@ merge(UsingInfo& I, UsingInfo&& Other)
     merge(dynamic_cast<Info&>(I), std::move(dynamic_cast<Info&>(Other)));
     reduceSymbolIDs(I.UsingSymbols, std::move(Other.UsingSymbols));
     if (I.Class == UsingClass::Normal)
+    {
         I.Class = Other.Class;
-    if (! I.Qualifier)
+    }
+    if (!I.Qualifier)
+    {
         I.Qualifier = std::move(Other.Qualifier);
+    }
 }
 
 } // clang::mrdocs

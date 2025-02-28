@@ -20,10 +20,14 @@ merge(SpecializationInfo& I, SpecializationInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
     merge(dynamic_cast<Info&>(I), std::move(dynamic_cast<Info&>(Other)));
-    if(! I.Primary)
+    if (!I.Primary)
+    {
         I.Primary = Other.Primary;
-    if(I.Args.empty())
+    }
+    if (I.Args.empty())
+    {
         I.Args = std::move(Other.Args);
+    }
 }
 
 } // clang::mrdocs

@@ -792,7 +792,7 @@ populate(
         MRDOCS_SYMBOL_TRACE(P, context_);
         Param& param = I.Params[i];
 
-        if (!param.Name)
+        if (!param.Name && !P->getName().empty())
         {
             param.Name = P->getName();
         }
@@ -804,8 +804,7 @@ populate(
 
         Expr const* default_arg = P->hasUninstantiatedDefaultArg() ?
             P->getUninstantiatedDefaultArg() : P->getInit();
-        if (!param.Default &&
-            default_arg)
+        if (!param.Default && default_arg)
         {
             param.Default = getSourceCode(default_arg->getSourceRange());
             param.Default = trim(*param.Default);

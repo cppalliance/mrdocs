@@ -64,11 +64,17 @@ void merge(TypedefInfo& I, TypedefInfo&& Other)
     MRDOCS_ASSERT(canMerge(I, Other));
     merge(dynamic_cast<Info&>(I), std::move(dynamic_cast<Info&>(Other)));
     if (!I.IsUsing)
+    {
         I.IsUsing = Other.IsUsing;
-    if (! I.Type)
+    }
+    if (!I.Type)
+    {
         I.Type = std::move(Other.Type);
-    if(! I.Template)
+    }
+    if (!I.Template)
+    {
         I.Template = std::move(Other.Template);
+    }
 }
 
 } // clang::mrdocs

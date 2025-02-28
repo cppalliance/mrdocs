@@ -1,0 +1,56 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+=== Functions
+
+[cols=2]
+|===
+| Name 
+| Description 
+
+| <<f,`f`>> 
+| Function
+
+|===
+
+[#f]
+== f
+
+
+Function
+
+=== Synopsis
+
+
+Declared in `&lt;merge&hyphen;tparams&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;
+    class T,
+    class U&gt;
+void
+f();
+----
+
+=== Template Parameters
+
+
+|===
+| Name | Description
+
+| *T*
+| The first template parameter&period;
+
+| *U*
+| The second template parameter&period;
+
+|===
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

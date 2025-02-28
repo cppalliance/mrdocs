@@ -187,6 +187,23 @@ toString(
     }
 }
 
+void
+merge(Param& I, Param&& Other)
+{
+    if (!I.Type)
+    {
+        I.Type = std::move(Other.Type);
+    }
+    if (!I.Name)
+    {
+        I.Name = std::move(Other.Name);
+    }
+    if (!I.Default)
+    {
+        I.Default = std::move(Other.Default);
+    }
+}
+
 template <class IO>
 void
 tag_invoke(
@@ -276,13 +293,25 @@ merge(FunctionInfo& I, FunctionInfo&& Other)
     {
         I.ReturnType = std::move(Other.ReturnType);
     }
-    if (I.Params.empty())
+    std::size_t const n = std::min(I.Params.size(), Other.Params.size());
+    for (std::size_t i = 0; i < n; ++i)
     {
-        I.Params = std::move(Other.Params);
+        merge(I.Params[i], std::move(Other.Params[i]));
+    }
+    if (Other.Params.size() > n)
+    {
+        I.Params.insert(
+            I.Params.end(),
+            std::make_move_iterator(Other.Params.begin() + n),
+            std::make_move_iterator(Other.Params.end()));
     }
     if (!I.Template)
     {
         I.Template = std::move(Other.Template);
+    }
+    else if (Other.Template)
+    {
+        merge(*I.Template, std::move(*Other.Template));
     }
     if (I.Noexcept.Implicit)
     {

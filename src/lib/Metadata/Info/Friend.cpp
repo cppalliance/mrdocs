@@ -20,10 +20,14 @@ merge(FriendInfo& I, FriendInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
     merge(dynamic_cast<Info&>(I), std::move(dynamic_cast<Info&>(Other)));
-    if(! I.FriendSymbol)
+    if (!I.FriendSymbol)
+    {
         I.FriendSymbol = Other.FriendSymbol;
-    if(! I.FriendType)
+    }
+    if (!I.FriendType)
+    {
         I.FriendType = std::move(Other.FriendType);
+    }
 }
 
 } // clang::mrdocs

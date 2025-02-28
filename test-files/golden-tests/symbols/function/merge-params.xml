@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <function name="f" id="ZZhhuLjYoyt+AyteNWMnqAIFA2g=">
+    <file short-path="merge-params.cpp" source-path="merge-params.cpp" line="6"/>
+    <file short-path="merge-params.cpp" source-path="merge-params.cpp" line="9"/>
+    <file short-path="merge-params.cpp" source-path="merge-params.cpp" line="12"/>
+    <param name="a">
+      <type name="int"/>
+    </param>
+    <param name="b">
+      <type name="int"/>
+    </param>
+    <doc>
+      <brief>
+        <text>Function</text>
+      </brief>
+      <param name="a">
+        <text>The first parameter.    </text>
+      </param>
+      <param name="b">
+        <text>The second parameter.</text>
+      </param>
+    </doc>
+  </function>
+</namespace>
+</mrdocs>
