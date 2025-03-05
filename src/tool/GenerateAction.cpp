@@ -137,7 +137,9 @@ DoGenerateAction(
     MRDOCS_CHECK(
         compilationDatabasePath,
         "The compilation database path argument is missing");
-    ScopedTempDirectory tempDir(config->settings().output, ".temp");
+    ScopedTempDirectory tempDir(
+        config->settings().outputDir(),
+        ".temp");
     if (tempDir.failed())
     {
         report::error("Failed to create temporary directory: {}", tempDir.error());
