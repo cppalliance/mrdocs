@@ -111,8 +111,9 @@ public:
 
         /** Full path to the config file directory
 
-            The working directory is the directory
-            of the mrdocs.yml file.
+            The reference directory for most MrDocs
+            options is the directory of the
+            mrdocs.yml file.
 
             It is used to calculate full paths
             from relative paths.
@@ -122,6 +123,29 @@ public:
         */
         std::string
         configDir() const;
+
+        /** Full path to the output directory
+
+            The reference directory for MrDocs
+            output and temporary files is the
+            output directory.
+
+            This is either the output option
+            (if already a directory) or
+            the parent directory of the output
+            option (if it is a file).
+
+            When the output option is a path
+            that does not exist, we determine
+            if it's a file or directory by
+            checking if the filename contains
+            a period.
+
+            This string will always be native style
+            and have a trailing directory separator.
+        */
+        std::string
+        outputDir() const;
 
         /** Full path to the mrdocs root directory
 

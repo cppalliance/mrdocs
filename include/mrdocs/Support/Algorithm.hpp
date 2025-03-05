@@ -11,8 +11,9 @@
 #ifndef MRDOCS_API_SUPPORT_ALGORITHM_HPP
 #define MRDOCS_API_SUPPORT_ALGORITHM_HPP
 
-#include <cstdint>
 #include <mrdocs/Support/Concepts.hpp>
+#include <cstdint>
+#include <algorithm>
 
 namespace clang::mrdocs {
 

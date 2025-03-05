@@ -10,10 +10,11 @@
 //
 
 #include "Path.hpp"
+#include <mrdocs/Support/Algorithm.hpp>
 #include <mrdocs/Support/Report.hpp>
 #include <llvm/Support/FileSystem.h>
-#include <llvm/Support/Path.h>
 #include <llvm/Support/MemoryBuffer.h>
+#include <llvm/Support/Path.h>
 #include <fstream>
 
 namespace clang {
@@ -378,11 +379,27 @@ isDirectory(
 {
     namespace fs = llvm::sys::fs;
     fs::file_status fileStatus;
-    if(auto ec = fs::status(pathName, fileStatus))
+    if (auto ec = fs::status(pathName, fileStatus))
+    {
         return false;
-    if(fileStatus.type() != fs::file_type::directory_file)
-        return false;
-    return true;
+    }
+    return fileStatus.type() == fs::file_type::directory_file;
+}
+
+bool
+isLexicalDirectory(
+    std::string_view pathName)
+{
+    namespace fs = llvm::sys::fs;
+    fs::file_status fileStatus;
+    if (auto const ec = fs::status(pathName, fileStatus);
+        ec ||
+        fileStatus.type() == fs::file_type::file_not_found)
+    {
+        auto const filename = getFileName(pathName);
+        return !contains(filename, '.');
+    }
+    return fileStatus.type() == fs::file_type::directory_file;
 }
 
 bool

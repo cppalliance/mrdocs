@@ -307,6 +307,21 @@ bool
 isDirectory(
     std::string_view pathName);
 
+/** Determine lexically if a path is a directory.
+
+    This function determines if a path is a directory.
+
+    If the path does not exist, the function
+    determines lexically if the path represents
+    a directory. In this case, the function
+    returns true if the last path segment
+    contains a period, otherwise false.
+*/
+MRDOCS_DECL
+bool
+isLexicalDirectory(
+    std::string_view pathName);
+
 /** Determine if a path is a directory.
 */
 MRDOCS_DECL
