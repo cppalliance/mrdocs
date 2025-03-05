@@ -138,6 +138,11 @@ DoGenerateAction(
         compilationDatabasePath,
         "The compilation database path argument is missing");
     ScopedTempDirectory tempDir(config->settings().output, ".temp");
+    if (tempDir.failed())
+    {
+        report::error("Failed to create temporary directory: {}", tempDir.error());
+        return Unexpected(tempDir.error());
+    }
     std::string buildPath = files::appendPath(tempDir, "build");
     Expected<std::string> const compileCommandsPathExp =
         generateCompileCommandsFile(

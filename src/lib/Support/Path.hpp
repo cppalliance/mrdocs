@@ -85,8 +85,16 @@ public:
 */
 class ScopedTempDirectory
 {
+    // Status of the directory
+    enum class ErrorStatus
+    {
+        None,
+        CannotDeleteExisting,
+        CannotCreateDirectories
+    };
+
     clang::mrdocs::SmallPathString path_;
-    bool ok_ = false;
+    ErrorStatus status_ = ErrorStatus::None;
 public:
     /** Destructor
 
@@ -129,11 +137,26 @@ public:
 
     /** Returns `true` if the directory was created successfully.
     */
-    operator bool() const { return ok_; }
+    operator bool() const
+    {
+        return status_ == ErrorStatus::None;
+    }
+
+    /** Returns `true` if the directory was not created successfully.
+    */
+    bool
+    failed() const
+    {
+        return status_ != ErrorStatus::None;
+    }
 
     /** Returns the path to the temporary directory.
      */
     std::string_view path() const { return static_cast<llvm::StringRef>(path_); }
+
+    /** Returns the error status of the directory.
+     */
+    Error error() const;
 
     /** Convert temp directory to a std::string_view
      */

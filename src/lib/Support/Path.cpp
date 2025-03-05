@@ -487,7 +487,7 @@ ScopedTempFile(
 
 ScopedTempDirectory::
 ~ScopedTempDirectory() {
-    if (ok_)
+    if (*this)
     {
         llvm::sys::fs::remove_directories(path_);
     }
@@ -498,11 +498,12 @@ ScopedTempDirectory(
     llvm::StringRef prefix)
 {
     llvm::SmallString<128> tempPath;
-    ok_ = !llvm::sys::fs::createUniqueDirectory(prefix, tempPath);
-    if (ok_)
+    if (llvm::sys::fs::createUniqueDirectory(prefix, tempPath))
     {
-        path_ = tempPath;
+        status_ = ErrorStatus::CannotCreateDirectories;
+        return;
     }
+    path_ = tempPath;
 }
 
 ScopedTempDirectory::
@@ -513,19 +514,33 @@ ScopedTempDirectory(
     llvm::SmallString<128> tempPath(root);
     llvm::sys::path::append(tempPath, dir);
     bool const exists = llvm::sys::fs::exists(tempPath);
-    if (exists)
+    if (exists &&
+        llvm::sys::fs::remove_directories(tempPath))
     {
-        ok_ = !llvm::sys::fs::remove_directories(tempPath);
-        if (!ok_)
-        {
-            return;
-        }
+        status_ = ErrorStatus::CannotDeleteExisting;
+        return;
     }
-    ok_ = !llvm::sys::fs::create_directory(tempPath);
-    if (ok_)
+    if (llvm::sys::fs::create_directories(tempPath))
     {
-        path_ = tempPath;
+        status_ = ErrorStatus::CannotCreateDirectories;
+        return;
     }
+    path_ = tempPath;
+}
+
+Error
+ScopedTempDirectory::
+error() const
+{
+    if (status_ == ErrorStatus::CannotDeleteExisting)
+    {
+        return Error("Failed to delete existing directory");
+    }
+    if (status_ == ErrorStatus::CannotCreateDirectories)
+    {
+        return Error("Failed to create directories");
+    }
+    return Error();
 }
 
 } // mrdocs
