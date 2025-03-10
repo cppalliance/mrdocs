@@ -17,11 +17,9 @@
 #include <mrdocs/Generator.hpp>
 #include <lib/Gen/hbs/HandlebarsGenerator.hpp>
 
-namespace clang {
-namespace mrdocs {
-namespace html {
+namespace clang::mrdocs::html {
 
-class HTMLGenerator
+class HTMLGenerator final
     : public hbs::HandlebarsGenerator
 {
 public:
@@ -43,17 +41,10 @@ public:
         return "HTML";
     }
 
-    std::string
-    toString(
-        hbs::HandlebarsCorpus const&,
-        doc::Node const&) const override;
-
     void
     escape(OutputRef& os, std::string_view str) const override;
 };
 
-} // html
-} // mrdocs
-} // clang
+} // clang::mrdocs::html
 
 #endif

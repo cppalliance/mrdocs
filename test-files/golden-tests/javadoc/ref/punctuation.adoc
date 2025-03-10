@@ -19,7 +19,7 @@
 | 
 
 | <<f2,`f2`>> 
-| See xref:#f0[f0], xref:#f1[f1]&period;
+| See <<f0,`f0`>>, <<f1,`f1`>>&period;
 
 |===
 
@@ -57,7 +57,7 @@ f1();
 == f2
 
 
-See xref:#f0[f0], xref:#f1[f1]&period;
+See <<f0,`f0`>>, <<f1,`f1`>>&period;
 
 === Synopsis
 

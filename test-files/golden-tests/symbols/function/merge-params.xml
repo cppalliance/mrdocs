@@ -17,7 +17,7 @@
         <text>Function</text>
       </brief>
       <param name="a">
-        <text>The first parameter.    </text>
+        <text>The first parameter.</text>
       </param>
       <param name="b">
         <text>The second parameter.</text>

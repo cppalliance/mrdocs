@@ -36,9 +36,6 @@ public:
     /** File extension for the markup files. */
     std::string fileExtension;
 
-    /** Function to convert a Javadoc node to a string. */
-    std::function<std::string(HandlebarsCorpus const&, doc::Node const&)> toStringFn;
-
     /** Constructor.
 
         Initializes the HandlebarsCorpus with the given corpus and options.
@@ -49,12 +46,10 @@ public:
     */
     HandlebarsCorpus(
         Corpus const& corpus,
-        std::string_view fileExtension,
-        std::function<std::string(HandlebarsCorpus const&, doc::Node const&)> toStringFn)
+        std::string_view fileExtension)
         : DomCorpus(corpus)
         , names_(corpus, corpus.config->legibleNames)
         , fileExtension(fileExtension)
-        , toStringFn(std::move(toStringFn))
     {
     }
 
@@ -73,14 +68,6 @@ public:
     */
     std::string
     getURL(Info const& I) const;
-
-    /** Return a Dom value representing the Javadoc.
-
-        @param jd The Javadoc object to get the Javadoc for.
-        @return A dom::Value representing the Javadoc.
-    */
-    dom::Value
-    getJavadoc(Javadoc const& jd) const override;
 };
 
 } // clang::mrdocs::hbs

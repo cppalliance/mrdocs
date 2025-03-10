@@ -6,14 +6,14 @@
     <file short-path="li.cpp" source-path="li.cpp" line="10"/>
     <doc>
       <brief>
-        <text>A function </text>
+        <text>A function</text>
       </brief>
       <details>
         <text>Description:</text>
       </details>
       <unorderedlist>
         <listitem>
-          <text>Point 1 </text>
+          <text>Point 1</text>
         </listitem>
         <listitem>
           <text>Point 2</text>

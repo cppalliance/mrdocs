@@ -171,7 +171,7 @@
             <text>Fail</text>
           </brief>
           <para>
-            <text>Function with same number of parameters            but different types. This should fail.</text>
+            <text>Function with same number of parameters but different types. This should fail.</text>
           </para>
           <param name="a">
             <text>Fundamental type parameter</text>
@@ -205,7 +205,7 @@
             <text>Fail</text>
           </brief>
           <para>
-            <text>Function with same number of parameters            but different types. This should fail.</text>
+            <text>Function with same number of parameters but different types. This should fail.</text>
           </para>
           <param name="a">
             <text>Fundamental type parameter</text>

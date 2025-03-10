@@ -25,7 +25,7 @@
           <text>A representation of the string</text>
         </returns>
         <param name="other">
-          <text>The string to convert        </text>
+          <text>The string to convert</text>
         </param>
       </doc>
     </function>
@@ -50,7 +50,7 @@
           <text>A representation of the string</text>
         </returns>
         <param name="other">
-          <text>The string to convert        </text>
+          <text>The string to convert</text>
         </param>
       </doc>
     </function>

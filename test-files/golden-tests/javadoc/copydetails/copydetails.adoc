@@ -50,7 +50,7 @@ dest(
 
 Documentation prefix for dest only&period;
 
-This is the documentation from the    source function&period;
+This is the documentation from the source function&period;
 
 Documentation suffix for dest only&period;
 
@@ -140,11 +140,11 @@ destOverride(
 
 Documentation prefix for dest only&period;
 
-This is the documentation from the    source function&period;
+This is the documentation from the source function&period;
 
 Documentation suffix for dest only&period;
 
-Parameter b is not copied because    it doesn&apos;t exist in the destination function&period;
+Parameter b is not copied because it doesn&apos;t exist in the destination function&period;
 
 
 
@@ -245,7 +245,7 @@ source(
 === Description
 
 
-This is the documentation from the    source function&period;
+This is the documentation from the source function&period;
 
 
 

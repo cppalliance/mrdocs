@@ -32,8 +32,6 @@ contains(Range const& range, El const& el)
         std::ranges::end(range), el) != std::ranges::end(range);
 }
 
-// A second overload where the range is an initializer list
-
 /** Determine if a range contains a specific element.
     @param range The range to search.
     @param el The element to search for.
@@ -47,6 +45,29 @@ contains(std::initializer_list<T> const& range, U const& el)
     return std::find(
         std::ranges::begin(range),
         std::ranges::end(range), el) != std::ranges::end(range);
+}
+
+/** Determine if an element is equal to any of the elements in the specified range.
+
+    @param el The element to search for.
+    @param range The range to search.
+    @return True if the element is found, false otherwise.
+ */
+template <class El, std::ranges::range Range>
+requires std::equality_comparable_with<std::ranges::range_value_t<Range>, El>
+bool
+is_one_of(El const& el, Range const& range)
+{
+    return contains(range, el);
+}
+
+/// @copydoc is_one_of(El const&, Range const&)
+template <class U, class T>
+requires std::equality_comparable_with<U, T>
+bool
+is_one_of(U const& el, std::initializer_list<T> const& range)
+{
+    return contains(range, el);
 }
 
 /** Determine if a range contains any of the specified elements.

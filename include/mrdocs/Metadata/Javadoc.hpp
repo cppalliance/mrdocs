@@ -16,8 +16,11 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Symbols.hpp>
 #include <mrdocs/Support/Visitor.hpp>
+#include <mrdocs/Support/Concepts.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Dom/String.hpp>
+#include <mrdocs/Dom/LazyObject.hpp>
+#include <mrdocs/Dom/LazyArray.hpp>
 #include <memory>
 #include <string>
 #include <type_traits>
@@ -125,6 +128,24 @@ enum class NodeKind
     postcondition
 };
 
+/** Return the name of the NodeKind as a string.
+ */
+MRDOCS_DECL
+dom::String
+toString(NodeKind kind) noexcept;
+
+/** Return the NodeKind from a @ref dom::Value string.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    NodeKind const kind)
+{
+    v = toString(kind);
+}
+
 /** A text style.
 */
 enum class Style
@@ -134,6 +155,24 @@ enum class Style
     bold,
     italic
 };
+
+/** Return the name of the @ref Style as a string.
+ */
+MRDOCS_DECL
+dom::String
+toString(Style kind) noexcept;
+
+/** Return the @ref Style from a @ref dom::Value string.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Style const kind)
+{
+    v = toString(kind);
+}
 
 /** An admonishment style.
 */
@@ -147,6 +186,25 @@ enum class Admonish
     warning
 };
 
+/** Return the name of the Admonish as a string.
+ */
+MRDOCS_DECL
+dom::String
+toString(Admonish kind) noexcept;
+
+/** Return the Admonish from a @ref dom::Value string.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Admonish const kind)
+{
+    v = toString(kind);
+}
+
+
 /** Parameter pass direction.
 */
 enum class ParamDirection
@@ -156,6 +214,24 @@ enum class ParamDirection
     out,
     inout
 };
+
+/** Return the name of the ParamDirection as a string.
+ */
+MRDOCS_DECL
+dom::String
+toString(ParamDirection kind) noexcept;
+
+/** Return the ParamDirection from a @ref dom::Value string.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    ParamDirection const kind)
+{
+    v = toString(kind);
+}
 
 /** Which parts of the documentation to copy.
 
@@ -169,6 +245,24 @@ enum class Parts
     brief,
     description
 };
+
+/** Return the name of the Parts as a string.
+ */
+MRDOCS_DECL
+dom::String
+toString(Parts kind) noexcept;
+
+/** Return the Parts from a @ref dom::Value string.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Parts const kind)
+{
+    v = toString(kind);
+}
 
 //--------------------------------------------
 
@@ -206,6 +300,53 @@ struct MRDOCS_DECL
         return Kind == other.Kind;
     }
 };
+
+/** Map the @ref Node to a @ref dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag,
+    IO& io,
+    Node const& I,
+    DomCorpus const* domCorpus)
+{
+    MRDOCS_ASSERT(domCorpus);
+    io.map("kind", I.Kind);
+}
+
+/** Return the @ref Node as a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Node const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
+
+/** Map the Polymorphic Node as a @ref dom::Value object.
+ */
+template <class IO, polymorphic_storage_for<Node> NodeTy>
+void
+tag_invoke(
+    dom::ValueFromTag,
+    IO& io,
+    NodeTy const& I,
+    DomCorpus const* domCorpus)
+{
+    visit(*I, [&](auto const& U)
+    {
+        tag_invoke(
+            dom::ValueFromTag{},
+            io,
+            U,
+            domCorpus);
+    });
+}
 
 //------------------------------------------------
 //
@@ -256,6 +397,33 @@ protected:
     }
 };
 
+/** Map the @ref Text to a @ref dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    Text const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Node const&>(I), domCorpus);
+    io.map("string", I.string);
+}
+
+/** Return the @ref Text as a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Text const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
+
 MRDOCS_DECL
 std::strong_ordering
 operator<=>(Polymorphic<Text> const& lhs, Polymorphic<Text> const& rhs);
@@ -289,8 +457,35 @@ struct Styled final : Text
         return Kind == other.Kind &&
             *this == dynamic_cast<Styled const&>(other);
     }
-
 };
+
+/** Map the @ref Styled to a @ref dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    Styled const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Text const&>(I), domCorpus);
+    io.map("style", I.style);
+}
+
+/** Return the @ref Styled as a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Styled const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
+
 
 /** A hyperlink.
 */
@@ -317,6 +512,33 @@ struct Link final : Text
             *this == dynamic_cast<Link const&>(other);
     }
 };
+
+/** Map the @ref Link to a @ref dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    Link const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Text const&>(I), domCorpus);
+    io.map("href", I.href);
+}
+
+/** Return the @ref Link as a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Link const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
 
 /** A reference to a symbol.
 */
@@ -350,6 +572,33 @@ protected:
     }
 };
 
+/** Map the @ref Reference to a @ref dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    Reference const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Text const&>(I), domCorpus);
+    io.map("symbol", I.id);
+}
+
+/** Return the @ref Reference as a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Reference const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
+
 /** Documentation copied from another symbol.
 */
 struct Copied final : Reference
@@ -375,6 +624,33 @@ struct Copied final : Reference
     }
 };
 
+/** Map the @ref Copied to a @ref dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    Copied const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Reference const&>(I), domCorpus);
+    io.map("parts", I.parts);
+}
+
+/** Return the @ref Copied as a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Copied const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
+
 /** A reference to a related symbol.
 */
 struct Related final : Reference
@@ -394,6 +670,32 @@ struct Related final : Reference
             *this == dynamic_cast<Related const&>(other);
     }
 };
+
+/** Map the @ref Related to a @ref dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    Related const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Reference const&>(I), domCorpus);
+}
+
+/** Return the @ref Related as a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Related const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
 
 //------------------------------------------------
 //
@@ -445,8 +747,8 @@ struct MRDOCS_DECL
         {
             return false;
         }
-        return std::equal(children.begin(), children.end(),
-            other.children.begin(), other.children.end(),
+        return std::ranges::
+            equal(children, other.children,
             [](auto const& a, auto const& b)
             {
                 return a->equals(*b);
@@ -484,6 +786,35 @@ private:
     Text& emplace_back(Polymorphic<Text> text);
 };
 
+/** Map the @ref Block to a @ref dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    Block const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Node const&>(I), domCorpus);
+    io.defer("children", [&I, domCorpus] {
+        return dom::LazyArray(I.children, domCorpus);
+    });
+}
+
+/** Return the @ref Block as a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Block const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
+
 /** A manually specified section heading.
 */
 struct Heading final : Block
@@ -507,6 +838,33 @@ struct Heading final : Block
             *this == dynamic_cast<Heading const&>(other);
     }
 };
+
+/** Map the @ref Heading to a @ref dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    Heading const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Block const&>(I), domCorpus);
+    io.map("string", I.string);
+}
+
+/** Return the @ref Heading as a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Heading const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
 
 /** A sequence of text nodes.
 */
@@ -537,6 +895,33 @@ protected:
     }
 };
 
+/** Map the @ref Paragraph to a @ref dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    Paragraph const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Block const&>(I), domCorpus);
+}
+
+/** Return the @ref Paragraph as a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Paragraph const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
+
+
 /** The brief description
 */
 struct Brief final : Paragraph
@@ -556,6 +941,32 @@ struct Brief final : Paragraph
             *this == dynamic_cast<Brief const&>(other);
     }
 };
+
+/** Map the @ref Brief to a @ref dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    Brief const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Paragraph const&>(I), domCorpus);
+}
+
+/** Return the @ref Brief as a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Brief const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
 
 /** An admonition.
 
@@ -584,6 +995,33 @@ struct Admonition final : Paragraph
     }
 };
 
+/** Map the @ref Admonition to a @ref dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    Admonition const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Paragraph const&>(I), domCorpus);
+    io.map("admonish", I.admonish);
+}
+
+/** Return the @ref Admonition as a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Admonition const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
+
 /** Preformatted source code.
 */
 struct Code final : Paragraph
@@ -607,6 +1045,32 @@ struct Code final : Paragraph
     }
 };
 
+/** Map the @ref Code to a @ref dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    Code const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Paragraph const&>(I), domCorpus);
+}
+
+/** Return the @ref Code as a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Code const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
+
 /** An item in a list
 */
 struct ListItem final : Paragraph
@@ -614,7 +1078,7 @@ struct ListItem final : Paragraph
     static constexpr auto static_kind = NodeKind::list_item;
 
     ListItem()
-        : Paragraph(NodeKind::list_item)
+        : Paragraph(static_kind)
     {}
 
     auto operator<=>(ListItem const&) const = default;
@@ -637,6 +1101,32 @@ struct ListItem final : Paragraph
     }
 };
 
+/** Map the @ref ListItem to a @ref dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    ListItem const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Paragraph const&>(I), domCorpus);
+}
+
+/** Return the @ref ListItem as a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    ListItem const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
+
 /** A list of list items
 */
 struct UnorderedList final : Paragraph
@@ -646,7 +1136,7 @@ struct UnorderedList final : Paragraph
     std::vector<ListItem> items;
 
     UnorderedList()
-        : Paragraph(NodeKind::unordered_list)
+        : Paragraph(static_kind)
     {
     }
 
@@ -686,6 +1176,35 @@ struct UnorderedList final : Paragraph
     }
 };
 
+/** Map the @ref UnorderedList to a @ref dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    UnorderedList const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Paragraph const&>(I), domCorpus);
+    io.defer("items", [&I, domCorpus] {
+        return dom::LazyArray(I.items, domCorpus);
+    });
+}
+
+/** Return the @ref UnorderedList as a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    UnorderedList const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
+
 /** A @details paragraph
 */
 struct Details final : Paragraph
@@ -716,6 +1235,32 @@ struct Details final : Paragraph
     }
 };
 
+/** Map the @ref Details to a @ref dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    Details const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Paragraph const&>(I), domCorpus);
+}
+
+/** Return the @ref Details as a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Details const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
+
 /** A @see paragraph
 */
 struct See final : Paragraph
@@ -738,6 +1283,32 @@ struct See final : Paragraph
             *this == dynamic_cast<See const&>(other);
     }
 };
+
+/** Map the @ref See to a @ref dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    See const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Paragraph const&>(I), domCorpus);
+}
+
+/** Return the @ref See as a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    See const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
 
 /** Documentation for a function parameter
 */
@@ -772,6 +1343,33 @@ struct Param final : Paragraph
     }
 };
 
+/** Map the @ref Param to a @ref dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    Param const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Paragraph const&>(I), domCorpus);
+    io.map("name", I.name);
+    io.map("direction", I.direction);
+}
+
+/** Return the @ref Param as a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Param const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
 
 /** Documentation for a function return type
 */
@@ -796,6 +1394,32 @@ struct Returns final : Paragraph
     }
 };
 
+/** Map the @ref Returns to a @ref dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    Returns const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Paragraph const&>(I), domCorpus);
+}
+
+/** Return the @ref Returns as a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Returns const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
+
 /** Documentation for a template parameter
 */
 struct TParam final : Paragraph
@@ -817,6 +1441,33 @@ struct TParam final : Paragraph
             *this == dynamic_cast<TParam const&>(other);
     }
 };
+
+/** Map the @ref TParam to a @ref dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    TParam const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Paragraph const&>(I), domCorpus);
+    io.map("name", I.name);
+}
+
+/** Return the @ref TParam as a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    TParam const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
 
 /** Documentation for a function parameter
 */
@@ -848,6 +1499,33 @@ struct Throws final : Paragraph
     }
 };
 
+/** Map the @ref Throws to a @ref dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    Throws const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Paragraph const&>(I), domCorpus);
+    io.map("exception", I.exception);
+}
+
+/** Return the @ref Throws as a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Throws const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
+
 struct Precondition final : Paragraph
 {
     static constexpr NodeKind static_kind = NodeKind::precondition;
@@ -872,6 +1550,32 @@ struct Precondition final : Paragraph
     }
 };
 
+/** Map the @ref Precondition to a @ref dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    Precondition const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Paragraph const&>(I), domCorpus);
+}
+
+/** Return the @ref Precondition as a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Precondition const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
+
 struct Postcondition : Paragraph
 {
     static constexpr auto static_kind = NodeKind::postcondition;
@@ -895,6 +1599,32 @@ struct Postcondition : Paragraph
             *this == dynamic_cast<Postcondition const&>(other);
     }
 };
+
+/** Map the @ref Postcondition to a @ref dom::Object.
+ */
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    Postcondition const& I,
+    DomCorpus const* domCorpus)
+{
+    tag_invoke(t, io, dynamic_cast<Paragraph const&>(I), domCorpus);
+}
+
+/** Return the @ref Postcondition as a @ref dom::Value object.
+ */
+inline
+void
+tag_invoke(
+    dom::ValueFromTag,
+    dom::Value& v,
+    Postcondition const& I,
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
 
 //------------------------------------------------
 
@@ -984,10 +1714,6 @@ void traverse(
             std::forward<F>(f),
             std::forward<Args>(args)...);
 }
-
-MRDOCS_DECL
-dom::String
-toString(Style style) noexcept;
 
 } // doc
 
@@ -1165,16 +1891,61 @@ void merge(Javadoc& I, Javadoc&& other)
     }
 }
 
-
-/** Return the Javadoc as a @ref dom::Value.
+/** Map the @ref Javadoc to a @ref dom::Object.
  */
-MRDOCS_DECL
+template <class IO>
+void
+tag_invoke(
+    dom::LazyObjectMapTag t,
+    IO& io,
+    Javadoc const& I,
+    DomCorpus const* domCorpus)
+{
+    io.defer("details", [&I, domCorpus] {
+        return dom::LazyArray(I.blocks, domCorpus);
+    });
+    if (I.brief)
+    {
+        io.map("brief", I.brief);
+    }
+    io.defer("returns", [&I, domCorpus] {
+        return dom::LazyArray(I.returns, domCorpus);
+    });
+    io.defer("params", [&I, domCorpus] {
+        return dom::LazyArray(I.params, domCorpus);
+    });
+    io.defer("tparams", [&I, domCorpus] {
+        return dom::LazyArray(I.tparams, domCorpus);
+    });
+    io.defer("exceptions", [&I, domCorpus] {
+        return dom::LazyArray(I.exceptions, domCorpus);
+    });
+    io.defer("sees", [&I, domCorpus] {
+        return dom::LazyArray(I.sees, domCorpus);
+    });
+    io.defer("related", [&I, domCorpus] {
+        return dom::LazyArray(I.related, domCorpus);
+    });
+    io.defer("preconditions", [&I, domCorpus] {
+        return dom::LazyArray(I.preconditions, domCorpus);
+    });
+    io.defer("postconditions", [&I, domCorpus] {
+        return dom::LazyArray(I.postconditions, domCorpus);
+    });
+}
+
+/** Return the @ref Javadoc as a @ref dom::Value object.
+ */
+inline
 void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
     Javadoc const& I,
-    DomCorpus const* domCorpus);
+    DomCorpus const* domCorpus)
+{
+    v = dom::LazyObject(I, domCorpus);
+}
 
 } // clang::mrdocs
 

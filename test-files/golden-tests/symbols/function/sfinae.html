@@ -32,17 +32,13 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="#A-09"><code>A</code></a> </td><td><span><span>The partial specialization of A is enabled via a template parameter</span></span>
-</td>
+<td><a href="#A-09"><code>A</code></a> </td><td><span>The partial specialization of A is enabled via a template parameter</span></td>
 </tr><tr>
-<td><a href="#A-02"><code>A&lt;T&gt;</code></a> </td><td><span><span>Specialization for floating point types</span></span>
-</td>
+<td><a href="#A-02"><code>A&lt;T&gt;</code></a> </td><td><span>Specialization for floating point types</span></td>
 </tr><tr>
-<td><a href="#S-02"><code>S</code></a> </td><td><span><span>SFINAE with std::void_t</span></span>
-</td>
+<td><a href="#S-02"><code>S</code></a> </td><td><span>SFINAE with std::void_t</span></td>
 </tr><tr>
-<td><a href="#S-08"><code>S&lt;T, std::void_t&lt;T::a::b&gt;&gt;</code></a> </td><td><span><span>SFINAE with std::void_t</span></span>
-</td>
+<td><a href="#S-08"><code>S&lt;T, std::void_t&lt;T::a::b&gt;&gt;</code></a> </td><td><span>SFINAE with std::void_t</span></td>
 </tr>
 </tbody>
 </table>
@@ -56,35 +52,25 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="#f1"><code>f1</code></a> </td><td><span><span>Enabled via return type</span></span>
-</td>
+<td><a href="#f1"><code>f1</code></a> </td><td><span>Enabled via return type</span></td>
 </tr><tr>
-<td><a href="#f10"><code>f10</code></a> </td><td><span><span>Enabled via type template parameter</span></span>
-</td>
+<td><a href="#f10"><code>f10</code></a> </td><td><span>Enabled via type template parameter</span></td>
 </tr><tr>
-<td><a href="#f2"><code>f2</code></a> </td><td><span><span>Enabling a specified return type</span></span>
-</td>
+<td><a href="#f2"><code>f2</code></a> </td><td><span>Enabling a specified return type</span></td>
 </tr><tr>
-<td><a href="#f3"><code>f3</code></a> </td><td><span><span>Enabling a specified return type in another namespace</span></span>
-</td>
+<td><a href="#f3"><code>f3</code></a> </td><td><span>Enabling a specified return type in another namespace</span></td>
 </tr><tr>
-<td><a href="#f4"><code>f4</code></a> </td><td><span><span>Enabled via return type with std::enable_if</span></span>
-</td>
+<td><a href="#f4"><code>f4</code></a> </td><td><span>Enabled via return type with std::enable_if</span></td>
 </tr><tr>
-<td><a href="#f5"><code>f5</code></a> </td><td><span><span>Enabled via a non-type template parameter with helper</span></span>
-</td>
+<td><a href="#f5"><code>f5</code></a> </td><td><span>Enabled via a non-type template parameter with helper</span></td>
 </tr><tr>
-<td><a href="#f6"><code>f6</code></a> </td><td><span><span>Enabled via a non-type template parameter without helper</span></span>
-</td>
+<td><a href="#f6"><code>f6</code></a> </td><td><span>Enabled via a non-type template parameter without helper</span></td>
 </tr><tr>
-<td><a href="#f7"><code>f7</code></a> </td><td><span><span>Enabled via a non-type template parameter using int instead of bool</span></span>
-</td>
+<td><a href="#f7"><code>f7</code></a> </td><td><span>Enabled via a non-type template parameter using int instead of bool</span></td>
 </tr><tr>
-<td><a href="#f8"><code>f8</code></a> </td><td><span><span>Enabled via parameter without helper</span></span>
-</td>
+<td><a href="#f8"><code>f8</code></a> </td><td><span>Enabled via parameter without helper</span></td>
 </tr><tr>
-<td><a href="#f9"><code>f9</code></a> </td><td><span><span>Enabled via parameter with helper</span></span>
-</td>
+<td><a href="#f9"><code>f9</code></a> </td><td><span>Enabled via parameter with helper</span></td>
 </tr>
 </tbody>
 </table>
@@ -128,8 +114,7 @@ struct C;
 <div>
 <h2 id="A-09">A</h2>
 <div>
-<span><span>The partial specialization of A is enabled via a template parameter</span></span>
-
+<span>The partial specialization of A is enabled via a template parameter</span>
 
 </div>
 </div>
@@ -153,8 +138,7 @@ class A;
 <div>
 <h2 id="A-02">A&lt;T&gt;</h2>
 <div>
-<span><span>Specialization for floating point types</span></span>
-
+<span>Specialization for floating point types</span>
 
 </div>
 </div>
@@ -177,8 +161,7 @@ class <a href="#A-09">A</a>&lt;T&gt;;
 <div>
 <h2 id="S-02">S</h2>
 <div>
-<span><span>SFINAE with std::void_t</span></span>
-
+<span>SFINAE with std::void_t</span>
 
 </div>
 </div>
@@ -231,8 +214,7 @@ store(void const*);
 <div>
 <h2 id="S-08">S&lt;T, std::void_t&lt;T::a::b&gt;&gt;</h2>
 <div>
-<span><span>SFINAE with std::void_t</span></span>
-
+<span>SFINAE with std::void_t</span>
 
 </div>
 </div>
@@ -283,8 +265,7 @@ store(void const*);
 <div>
 <h2 id="f1">f1</h2>
 <div>
-<span><span>Enabled via return type</span></span>
-
+<span>Enabled via return type</span>
 
 </div>
 </div>
@@ -306,8 +287,7 @@ requires std::is_integral_v&lt;T&gt;;
 <div>
 <h2 id="f10">f10</h2>
 <div>
-<span><span>Enabled via type template parameter</span></span>
-
+<span>Enabled via type template parameter</span>
 
 </div>
 </div>
@@ -326,19 +306,16 @@ f10(T value);
 </div>
 <div>
 <h3>Description</h3>
-<p><span>This pattern should not be used because the function signature is unmodified and therefore only supports one overload.</span></p>
-<p><span>It&#x27;s a common mistake is to declare two function templates that differ only in their default template arguments.</span></p>
-<p><span>This does not work because the declarations are treated as redeclarations of the same function template (default template arguments are not accounted for in function template equivalence).</span></p>
-
-
+<p>This pattern should not be used because the function signature is unmodified and therefore only supports one overload.</p>
+<p>It&#x27;s a common mistake is to declare two function templates that differ only in their default template arguments.</p>
+<p>This does not work because the declarations are treated as redeclarations of the same function template (default template arguments are not accounted for in function template equivalence).</p>
 </div>
 </div>
 <div>
 <div>
 <h2 id="f2">f2</h2>
 <div>
-<span><span>Enabling a specified return type</span></span>
-
+<span>Enabling a specified return type</span>
 
 </div>
 </div>
@@ -360,8 +337,7 @@ requires std::is_integral_v&lt;T&gt;;
 <div>
 <h2 id="f3">f3</h2>
 <div>
-<span><span>Enabling a specified return type in another namespace</span></span>
-
+<span>Enabling a specified return type in another namespace</span>
 
 </div>
 </div>
@@ -383,8 +359,7 @@ requires std::is_integral_v&lt;T&gt;;
 <div>
 <h2 id="f4">f4</h2>
 <div>
-<span><span>Enabled via return type with std::enable_if</span></span>
-
+<span>Enabled via return type with std::enable_if</span>
 
 </div>
 </div>
@@ -406,8 +381,7 @@ requires std::is_integral_v&lt;T&gt;;
 <div>
 <h2 id="f5">f5</h2>
 <div>
-<span><span>Enabled via a non-type template parameter with helper</span></span>
-
+<span>Enabled via a non-type template parameter with helper</span>
 
 </div>
 </div>
@@ -429,8 +403,7 @@ f5(T value);
 <div>
 <h2 id="f6">f6</h2>
 <div>
-<span><span>Enabled via a non-type template parameter without helper</span></span>
-
+<span>Enabled via a non-type template parameter without helper</span>
 
 </div>
 </div>
@@ -452,8 +425,7 @@ f6(T value);
 <div>
 <h2 id="f7">f7</h2>
 <div>
-<span><span>Enabled via a non-type template parameter using int instead of bool</span></span>
-
+<span>Enabled via a non-type template parameter using int instead of bool</span>
 
 </div>
 </div>
@@ -475,8 +447,7 @@ f7(T value);
 <div>
 <h2 id="f8">f8</h2>
 <div>
-<span><span>Enabled via parameter without helper</span></span>
-
+<span>Enabled via parameter without helper</span>
 
 </div>
 </div>
@@ -498,8 +469,7 @@ requires std::is_integral_v&lt;T&gt;;
 <div>
 <h2 id="f9">f9</h2>
 <div>
-<span><span>Enabled via parameter with helper</span></span>
-
+<span>Enabled via parameter with helper</span>
 
 </div>
 </div>

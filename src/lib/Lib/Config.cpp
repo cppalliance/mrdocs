@@ -11,14 +11,13 @@
 
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Support/Algorithm.hpp>
-#include <ranges>
-#include <thread>
 #include <llvm/Support/FileSystem.h>
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Support/Report.hpp>
+#include <ranges>
+#include <thread>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 Config::
 Config() noexcept
@@ -566,5 +565,4 @@ outputDir() const
     return files::getParentDir(output);
 }
 
-} // mrdocs
-} // clang
+} // clang::mrdocs

@@ -76,7 +76,7 @@ compare(<<A,A>> const& other) const noexcept;
 === Return Value
 
 
-`&hyphen;1` if `&ast;this &lt; other`, `0` if        `this &equals;&equals; other`, and 1 if `this &gt; other`&period;
+`&hyphen;1` if `&ast;this &lt; other`, `0` if `this &equals;&equals; other`, and 1 if `this &gt; other`&period;
 
 === Parameters
 

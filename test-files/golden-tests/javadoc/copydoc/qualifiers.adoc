@@ -159,7 +159,7 @@ begin();
 === Description
 
 
-Returns an iterator to the first element        of the vector&period;
+Returns an iterator to the first element of the vector&period;
 
 
 
@@ -188,7 +188,7 @@ begin() const;
 === Description
 
 
-Returns a const iterator to the first element        of the vector&period;
+Returns a const iterator to the first element of the vector&period;
 
 
 
@@ -217,7 +217,7 @@ cbegin() const;
 === Description
 
 
-Returns a const iterator to the first element        of the vector&period;
+Returns a const iterator to the first element of the vector&period;
 
 
 

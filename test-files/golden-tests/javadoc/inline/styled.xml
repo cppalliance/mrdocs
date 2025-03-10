@@ -42,7 +42,7 @@
           <mono>*this &lt; other</mono>
           <text>, </text>
           <mono>0</mono>
-          <text> if        </text>
+          <text> if </text>
           <mono>this == other</mono>
           <text>, and 1 if </text>
           <mono>this &gt; other</mono>

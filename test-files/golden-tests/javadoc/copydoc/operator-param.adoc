@@ -115,7 +115,7 @@ operator()(char ch) const noexcept;
 === Description
 
 
-This function returns true if the        character is in the set, otherwise        it returns false&period;
+This function returns true if the character is in the set, otherwise it returns false&period;
 
 
 
@@ -156,7 +156,7 @@ operator()(unsigned char ch) const noexcept;
 === Description
 
 
-This function returns true if the        character is in the set, otherwise        it returns false&period;
+This function returns true if the character is in the set, otherwise it returns false&period;
 
 
 

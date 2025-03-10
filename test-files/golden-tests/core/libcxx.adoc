@@ -39,7 +39,7 @@ requires std&colon;&colon;is&lowbar;integral&lowbar;v&lt;T&gt;;
 === Description
 
 
-This function calculates the square root of a    given integral value using bit manipulation&period;
+This function calculates the square root of a given integral value using bit manipulation&period;
 
 
 

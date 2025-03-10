@@ -162,7 +162,7 @@ f(<<paramType,paramType>>&lt;4&gt; a);
 === Description
 
 
-Documentation for a function with an        explicit object parameter&period;
+Documentation for a function with an explicit object parameter&period;
 
 This reference uses the `this` keyword&period;
 
@@ -201,7 +201,7 @@ g(this
 === Description
 
 
-Documentation for a function with an        explicit object parameter&period;
+Documentation for a function with an explicit object parameter&period;
 
 
 
@@ -431,7 +431,7 @@ f(<<paramType,paramType>>&lt;0&gt; a);
 
 Documentation for the reference function&period;
 
-This function uses a reference with no    parameters&period;
+This function uses a reference with no parameters&period;
 
 
 

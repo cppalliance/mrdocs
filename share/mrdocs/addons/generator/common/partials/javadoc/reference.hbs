@@ -1,0 +1,5 @@
+{{#if symbol.url~}}
+{{#>markup/a href=symbol.url}}{{#>markup/code}}{{string}}{{/markup/code}}{{/markup/a}}
+{{~else~}}
+{{#>markup/code}}{{string}}{{/markup/code}}
+{{~/if}}

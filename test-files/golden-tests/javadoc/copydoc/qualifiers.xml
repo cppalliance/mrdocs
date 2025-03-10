@@ -20,7 +20,7 @@
           <text>Returns an iterator to the beginning</text>
         </brief>
         <para>
-          <text>Returns an iterator to the first element        of the vector.</text>
+          <text>Returns an iterator to the first element of the vector.</text>
         </para>
         <returns>
           <text>Iterator to the first element.</text>
@@ -38,7 +38,7 @@
           <text>Return a const iterator to the beginning</text>
         </brief>
         <para>
-          <text>Returns a const iterator to the first element        of the vector.</text>
+          <text>Returns a const iterator to the first element of the vector.</text>
         </para>
         <returns>
           <text>Const iterator to the first element.</text>
@@ -56,7 +56,7 @@
           <text>Return a const iterator to the beginning</text>
         </brief>
         <para>
-          <text>Returns a const iterator to the first element        of the vector.</text>
+          <text>Returns a const iterator to the first element of the vector.</text>
         </para>
         <returns>
           <text>Const iterator to the first element.</text>

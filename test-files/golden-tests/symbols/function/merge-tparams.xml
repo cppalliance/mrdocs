@@ -14,7 +14,7 @@
           <text>Function</text>
         </brief>
         <tparam name="T">
-          <text>The first template parameter.    </text>
+          <text>The first template parameter.</text>
         </tparam>
         <tparam name="U">
           <text>The second template parameter.</text>

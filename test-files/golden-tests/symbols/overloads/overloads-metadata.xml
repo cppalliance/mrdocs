@@ -20,10 +20,10 @@
           <text>The number corresponding to a</text>
         </returns>
         <param name="a">
-          <text>Describe a    </text>
+          <text>Describe a</text>
         </param>
         <tparam name="A">
-          <text>Describe A    </text>
+          <text>Describe A</text>
         </tparam>
         <throws>
           <text>Describe the exception</text>
@@ -32,7 +32,7 @@
           <text>Interesting information 1</text>
         </see>
         <pre>
-          <text>a must be greater than 0    </text>
+          <text>a must be greater than 0</text>
         </pre>
         <post>
           <text>The return value is greater than 0</text>
@@ -61,7 +61,7 @@
         <text>The number corresponding to a</text>
       </returns>
       <param name="a">
-        <text>Describe a again    </text>
+        <text>Describe a again</text>
       </param>
       <see>
         <text>Interesting information 2</text>
@@ -90,25 +90,25 @@
           <text>The number corresponding to a and b</text>
         </returns>
         <param name="a">
-          <text>Describe a again    </text>
+          <text>Describe a again</text>
         </param>
         <param name="b">
-          <text>Describe b    </text>
+          <text>Describe b</text>
         </param>
         <tparam name="A">
-          <text>Describe A again    </text>
+          <text>Describe A again</text>
         </tparam>
         <tparam name="B">
-          <text>Describe B    </text>
+          <text>Describe B</text>
         </tparam>
         <throws>
           <text>Describe the exception</text>
         </throws>
         <pre>
-          <text>a must be greater than 0    </text>
+          <text>a must be greater than 0</text>
         </pre>
         <pre>
-          <text>b must be greater than 0    </text>
+          <text>b must be greater than 0</text>
         </pre>
         <post>
           <text>The return value is greater than 10</text>

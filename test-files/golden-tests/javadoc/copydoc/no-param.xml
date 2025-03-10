@@ -14,10 +14,10 @@
         <mono>foo()</mono>
       </brief>
       <para>
-        <text>This is the function original documentation    for the foo function with no parameters.</text>
+        <text>This is the function original documentation for the foo function with no parameters.</text>
       </para>
       <para>
-        <text>This documentation is copied from the    page containing the foo overload with    no parameters.</text>
+        <text>This documentation is copied from the page containing the foo overload with no parameters.</text>
       </para>
       <returns>
         <text>A boolean value.</text>
@@ -36,7 +36,7 @@
         <mono>foo()</mono>
       </brief>
       <para>
-        <text>This documentation is copied from the    page containing all overloads of foo.</text>
+        <text>This documentation is copied from the page containing all overloads of foo.</text>
       </para>
       <returns>
         <text>A boolean value.</text>
@@ -55,7 +55,7 @@
         <mono>foo()</mono>
       </brief>
       <para>
-        <text>This is the function original documentation    for the foo function with no parameters.</text>
+        <text>This is the function original documentation for the foo function with no parameters.</text>
       </para>
       <returns>
         <text>A boolean value.</text>
@@ -77,7 +77,7 @@
         <mono>foo()</mono>
       </brief>
       <para>
-        <text>This is the function original documentation    for the foo function with no parameters.</text>
+        <text>This is the function original documentation for the foo function with no parameters.</text>
       </para>
       <returns>
         <text>A boolean value.</text>

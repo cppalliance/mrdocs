@@ -38,6 +38,15 @@ concept polymorphic_storage_for = requires(T const& t)
     { t.operator->() } -> std::convertible_to<Base const*>;
 };
 
+/** Determine if a type is dereferenceable
+
+    This concept checks if a type can be dereferenced
+    to a value it represents and converted to a boolean
+    value that represents if the object is in a valid state.
+
+    Examples of such types are std::optional, std::unique_ptr,
+    std::shared_ptr, Polymorphic, pointers, etc.
+ */
 template <class T>
 concept dereferenceable = requires(T const& t)
 {

@@ -11,21 +11,10 @@
 
 #include "AdocGenerator.hpp"
 #include "AdocEscape.hpp"
-#include "DocVisitor.hpp"
 #include <mrdocs/Support/Handlebars.hpp>
 
 namespace clang::mrdocs {
 namespace adoc {
-
-std::string
-AdocGenerator::
-toString(hbs::HandlebarsCorpus const& c, doc::Node const& I) const
-{
-    std::string s;
-    DocVisitor visitor(c, s);
-    doc::visit(I, visitor);
-    return s;
-}
 
 void
 AdocGenerator::

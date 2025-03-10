@@ -24,7 +24,7 @@
           <text>Documentation prefix for dest only.</text>
         </para>
         <para>
-          <text>This is the documentation from the    source function.</text>
+          <text>This is the documentation from the source function.</text>
         </para>
         <para>
           <text>Documentation suffix for dest only.</text>
@@ -33,22 +33,22 @@
           <text>A nice integer</text>
         </returns>
         <param name="a">
-          <text>The parameter a.    </text>
+          <text>The parameter a.</text>
         </param>
         <param name="b">
-          <text>The parameter b.    </text>
+          <text>The parameter b.</text>
         </param>
         <tparam name="A">
-          <text>The template parameter A.    </text>
+          <text>The template parameter A.</text>
         </tparam>
         <tparam name="B">
-          <text>The template parameter B.    </text>
+          <text>The template parameter B.</text>
         </tparam>
         <see>
           <text>dest</text>
         </see>
         <pre>
-          <text>a must be greater than 0.    </text>
+          <text>a must be greater than 0.</text>
         </pre>
         <post>
           <text>The return value is greater than 0.</text>
@@ -82,34 +82,34 @@
           <text>Documentation prefix for dest only.</text>
         </para>
         <para>
-          <text>This is the documentation from the    source function.</text>
+          <text>This is the documentation from the source function.</text>
         </para>
         <para>
           <text>Documentation suffix for dest only.</text>
         </para>
         <para>
-          <text>Parameter b is not copied because    it doesn&apos;t exist in the destination function.</text>
+          <text>Parameter b is not copied because it doesn&apos;t exist in the destination function.</text>
         </para>
         <returns>
           <text>An integer meaning something else.</text>
         </returns>
         <param name="a">
-          <text>Overwrites the parameter a.    </text>
+          <text>Overwrites the parameter a.</text>
         </param>
         <param name="c">
-          <text>The parameter c.    </text>
+          <text>The parameter c.</text>
         </param>
         <param name="d">
-          <text>The parameter d.    </text>
+          <text>The parameter d.</text>
         </param>
         <tparam name="A">
-          <text>Overwrites the template parameter A.    </text>
+          <text>Overwrites the template parameter A.</text>
         </tparam>
         <tparam name="C">
-          <text>The template parameter C.    </text>
+          <text>The template parameter C.</text>
         </tparam>
         <tparam name="D">
-          <text>The template parameter D.    </text>
+          <text>The template parameter D.</text>
         </tparam>
         <throws>
           <text>Overwrites the exception.</text>
@@ -118,7 +118,7 @@
           <text>source</text>
         </see>
         <pre>
-          <text>overriden precondition    </text>
+          <text>overriden precondition</text>
         </pre>
         <post>
           <text>overriden postcondition</text>
@@ -145,22 +145,22 @@
           <text>Source doc function</text>
         </brief>
         <para>
-          <text>This is the documentation from the    source function.</text>
+          <text>This is the documentation from the source function.</text>
         </para>
         <returns>
           <text>A nice integer</text>
         </returns>
         <param name="a">
-          <text>The parameter a.    </text>
+          <text>The parameter a.</text>
         </param>
         <param name="b">
-          <text>The parameter b.    </text>
+          <text>The parameter b.</text>
         </param>
         <tparam name="A">
-          <text>The template parameter A.    </text>
+          <text>The template parameter A.</text>
         </tparam>
         <tparam name="B">
-          <text>The template parameter B.    </text>
+          <text>The template parameter B.</text>
         </tparam>
         <throws>
           <text>If something goes wrong.</text>
@@ -169,7 +169,7 @@
           <text>dest</text>
         </see>
         <pre>
-          <text>a must be greater than 0.    </text>
+          <text>a must be greater than 0.</text>
         </pre>
         <post>
           <text>The return value is greater than 0.</text>

@@ -17,11 +17,9 @@
 #include <mrdocs/Generator.hpp>
 #include <lib/Gen/hbs/HandlebarsGenerator.hpp>
 
-namespace clang {
-namespace mrdocs {
-namespace adoc {
+namespace clang::mrdocs::adoc {
 
-class AdocGenerator
+class AdocGenerator final
     : public hbs::HandlebarsGenerator
 {
 public:
@@ -44,17 +42,10 @@ public:
         return "Asciidoc";
     }
 
-    std::string
-    toString(
-        hbs::HandlebarsCorpus const&,
-        doc::Node const&) const override;
-
     void
     escape(OutputRef& os, std::string_view str) const override;
 };
 
-} // adoc
-} // mrdocs
-} // clang
+} // clang::mrdocs::adoc
 
 #endif

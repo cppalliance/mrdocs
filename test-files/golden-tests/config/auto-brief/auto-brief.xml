@@ -32,18 +32,13 @@
       <brief>
         <text>This function has documentation but no brief.</text>
       </brief>
-      <para>
-        <copybrief>explicitBriefFunction</copybrief>
-      </para>
     </doc>
   </function>
   <function name="copyDetailsFromCopyBrief" id="k3Pi7vFhGs3GvaKAhQeyAgAC5q4=">
     <file short-path="auto-brief.cpp" source-path="auto-brief.cpp" line="103"/>
     <doc>
       <brief>
-        <text>Details will be copied </text>
-        <copydetails>copyDetailsFromExplicitBrief</copydetails>
-        <text> </text>
+        <text>Details will be copied</text>
       </brief>
     </doc>
   </function>
@@ -51,9 +46,7 @@
     <file short-path="auto-brief.cpp" source-path="auto-brief.cpp" line="82"/>
     <doc>
       <brief>
-        <text>Custom brief </text>
-        <copydetails>docNoBriefFunction</copydetails>
-        <text> </text>
+        <text>Custom brief</text>
       </brief>
     </doc>
   </function>
@@ -77,9 +70,7 @@
     <file short-path="auto-brief.cpp" source-path="auto-brief.cpp" line="76"/>
     <doc>
       <brief>
-        <text>Custom brief </text>
-        <copydetails>noDocFunction</copydetails>
-        <text> </text>
+        <text>Custom brief</text>
       </brief>
     </doc>
   </function>

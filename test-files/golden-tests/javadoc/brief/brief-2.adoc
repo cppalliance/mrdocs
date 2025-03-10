@@ -22,7 +22,7 @@
 | brief
 
 | <<f4,`f4`>> 
-| brief                    x
+| brief x
 
 | <<f5,`f5`>> 
 | brief
@@ -87,7 +87,7 @@ f3();
 == f4
 
 
-brief                    x
+brief x
 
 === Synopsis
 

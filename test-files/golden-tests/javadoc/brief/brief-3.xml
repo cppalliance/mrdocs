@@ -9,7 +9,7 @@
     </param>
     <doc>
       <brief>
-        <text>Integer overload. </text>
+        <text>Integer overload.</text>
       </brief>
       <details>
         <text>More info</text>
@@ -36,7 +36,7 @@
     </param>
     <doc>
       <brief>
-        <text>C string overload. </text>
+        <text>C string overload.</text>
       </brief>
       <details>
         <text>More info</text>

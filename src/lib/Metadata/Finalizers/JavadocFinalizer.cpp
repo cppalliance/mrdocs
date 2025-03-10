@@ -11,6 +11,7 @@
 
 #include "JavadocFinalizer.hpp"
 #include <mrdocs/Support/ScopeExit.hpp>
+#include <mrdocs/Support/Algorithm.hpp>
 
 namespace clang::mrdocs {
 
@@ -36,6 +37,20 @@ operator()(InfoTy& I)
 
     ScopeExitRestore s(current_context_, &I);
 
+    // Finalize references in javadoc
+    finalize(I.javadoc);
+
+    finalizeInfoData(I);
+}
+
+#define INFO(T) template void JavadocFinalizer::operator()<T## Info>(T## Info&);
+#include <mrdocs/Metadata/InfoNodesPascal.inc>
+
+template <class InfoTy>
+void
+JavadocFinalizer::
+finalizeInfoData(InfoTy& I)
+{
 #ifndef NDEBUG
     // Check references
     if (I.Parent)
@@ -47,9 +62,6 @@ operator()(InfoTy& I)
         checkExists(allMembers(I));
     }
 #endif
-
-    // Finalize references in javadoc
-    finalize(I.javadoc);
 
     if constexpr (requires { I.UsingDirectives; })
     {
@@ -113,7 +125,7 @@ operator()(InfoTy& I)
     }
 }
 
-#define INFO(T) template void JavadocFinalizer::operator()<T## Info>(T## Info&);
+#define INFO(T) template void JavadocFinalizer::finalizeInfoData<T## Info>(T## Info&);
 #include <mrdocs/Metadata/InfoNodesPascal.inc>
 
 void
@@ -195,6 +207,9 @@ finalize(Javadoc& javadoc)
     finalize(javadoc.postconditions);
     copyBriefAndDetails(javadoc);
     setAutoBrief(javadoc);
+    removeTempTextNodes(javadoc);
+    trimBlocks(javadoc);
+    unindentCodeBlocks(javadoc);
 }
 
 void
@@ -515,14 +530,270 @@ setAutoBrief(Javadoc& javadoc)
             it = javadoc.blocks.erase(it);
             return;
         }
+        ++it;
+    }
+}
+
+void
+JavadocFinalizer::
+trimBlocks(Javadoc& javadoc)
+{
+    trimBlocks(javadoc.blocks);
+    if (javadoc.brief)
+    {
+        trimBlock(*javadoc.brief);
+    }
+    trimBlocks(javadoc.returns);
+    trimBlocks(javadoc.params);
+    trimBlocks(javadoc.tparams);
+    trimBlocks(javadoc.exceptions);
+    trimBlocks(javadoc.sees);
+    trimBlocks(javadoc.preconditions);
+    trimBlocks(javadoc.postconditions);
+}
+
+void
+JavadocFinalizer::
+trimBlocks(std::vector<Polymorphic<doc::Block>>& blocks)
+{
+    for (auto& block: blocks)
+    {
+        bool const isVerbatim = block->Kind == doc::NodeKind::code;
+        MRDOCS_CHECK_OR_CONTINUE(!isVerbatim);
+        trimBlock(*block);
+    }
+}
+
+void
+JavadocFinalizer::
+trimBlock(doc::Block& block)
+{
+    if (block.Kind == doc::NodeKind::unordered_list)
+    {
+        auto& ul = dynamic_cast<doc::UnorderedList&>(block);
+        trimBlocks(ul.items);
+        return;
+    }
+
+    MRDOCS_CHECK_OR(!block.children.empty());
+
+    // Helper functions
+    static constexpr std::string_view whitespace_chars = " \t\n\v\f\r";
+    auto endsWithSpace = [](std::string_view const str) {
+        return endsWithOneOf(str, whitespace_chars);
+    };
+    auto startsWithSpace = [](std::string_view const str) {
+        return startsWithOneOf(str, whitespace_chars);
+    };
+
+    // The first children are ltrimmed as one
+    while (!block.children.empty())
+    {
+        auto& first = block.children.front()->string;
+        if (startsWithSpace(first))
+        {
+            first = ltrim(first);
+        }
+        if (first.empty())
+        {
+            // "pop_front"
+            block.children.erase(block.children.begin());
+        }
         else
         {
-            ++it;
-            continue;
+            break;
+        }
+    }
+
+    // The last children are rtrimmed as one
+    while (!block.children.empty())
+    {
+        auto& last = block.children.back()->string;
+        if (endsWithSpace(last))
+        {
+            last = rtrim(last);
+        }
+        if (last.empty())
+        {
+            block.children.pop_back();
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    // Like in HTML, multiple whitespaces (spaces, tabs, and newlines)
+    // between and within child nodes are collapsed into a single space.
+    for (
+        auto it = block.children.begin() + 1;
+        it != block.children.end();
+        ++it)
+    {
+        auto& child = *it;
+        auto& prev = *std::prev(it);
+        if (endsWithSpace(prev->string) && startsWithSpace(child->string))
+        {
+            // The first visible space character is maintained.
+            // All others are removed.
+            prev->string = rtrim(prev->string);
+            prev->string.push_back(' ');
+            child->string = ltrim(child->string);
+        }
+    }
+
+    // Like in HTML, multiple whitespaces (spaces, tabs, and newlines)
+    // within child nodes are collapsed into a single space.
+    for (auto& child: block.children)
+    {
+        auto& str = child->string;
+        for (std::size_t i = 0; i < str.size();)
+        {
+            if (contains(whitespace_chars, str[i]))
+            {
+                std::size_t const runStart = i;
+                std::size_t runEnd = i + 1;
+                while (
+                    runEnd < str.size() &&
+                    contains(whitespace_chars, str[runEnd]))
+                {
+                    ++runEnd;
+                }
+                if (runEnd > runStart + 1)
+                {
+                    std::size_t const runSize = runEnd - runStart;
+                    str.erase(runStart + 1, runSize - 1);
+                    str[runStart] = ' ';
+                }
+                i = runEnd;
+            }
+            else
+            {
+                ++i;
+            }
         }
     }
 }
 
+void
+JavadocFinalizer::
+removeTempTextNodes(Javadoc& javadoc)
+{
+    removeTempTextNodes(javadoc.blocks);
+    if (javadoc.brief)
+    {
+        removeTempTextNodes(*javadoc.brief);
+    }
+    removeTempTextNodes(javadoc.returns);
+    removeTempTextNodes(javadoc.params);
+    removeTempTextNodes(javadoc.tparams);
+    removeTempTextNodes(javadoc.exceptions);
+    removeTempTextNodes(javadoc.sees);
+    removeTempTextNodes(javadoc.preconditions);
+    removeTempTextNodes(javadoc.postconditions);
+}
+
+void
+JavadocFinalizer::
+removeTempTextNodes(std::vector<Polymorphic<doc::Block>>& blocks)
+{
+    for (auto& block: blocks)
+    {
+        removeTempTextNodes(*block);
+    }
+    // Erase all blocks of zero elements
+    std::erase_if(blocks, [](Polymorphic<doc::Block> const& block) {
+        if (block->Kind == doc::NodeKind::unordered_list)
+        {
+            return get<doc::UnorderedList>(block).items.empty();
+        }
+        if (block->Kind == doc::NodeKind::heading)
+        {
+            return get<doc::Heading>(block).string.empty();
+        }
+        return block->children.empty();
+    });
+}
+
+void
+JavadocFinalizer::
+removeTempTextNodes(doc::Block& block)
+{
+    std::erase_if(block.children, [](Polymorphic<doc::Text> const& child) {
+        return is_one_of(
+            child->Kind,
+            { doc::NodeKind::copied, doc::NodeKind::related });
+    });
+}
+
+void
+JavadocFinalizer::
+unindentCodeBlocks(Javadoc& javadoc)
+{
+    unindentCodeBlocks(javadoc.blocks);
+    if (javadoc.brief)
+    {
+        unindentCodeBlocks(*javadoc.brief);
+    }
+    unindentCodeBlocks(javadoc.returns);
+    unindentCodeBlocks(javadoc.params);
+    unindentCodeBlocks(javadoc.tparams);
+    unindentCodeBlocks(javadoc.exceptions);
+    unindentCodeBlocks(javadoc.sees);
+    unindentCodeBlocks(javadoc.preconditions);
+    unindentCodeBlocks(javadoc.postconditions);
+}
+
+void
+JavadocFinalizer::
+unindentCodeBlocks(std::vector<Polymorphic<doc::Block>>& blocks)
+{
+    for (auto& block: blocks)
+    {
+        if (block->Kind == doc::NodeKind::code)
+        {
+            unindentCodeBlocks(*block);
+        }
+    }
+}
+
+void
+JavadocFinalizer::
+unindentCodeBlocks(doc::Block& block)
+{
+    MRDOCS_CHECK_OR(block.Kind == doc::NodeKind::code);
+    MRDOCS_CHECK_OR(!block.children.empty());
+
+    // Determine the left margin
+    std::size_t leftMargin = std::numeric_limits<std::size_t>::max();
+    for (auto& pText: block.children)
+    {
+        auto& text = dynamic_cast<doc::Text&>(*pText);
+        if (text.string.empty())
+        {
+            continue;
+        }
+        std::size_t const margin = text.string.find_first_not_of(" \t");
+        if (margin == std::string::npos)
+        {
+            continue;
+        }
+        leftMargin = std::min(leftMargin, margin);
+    }
+
+    MRDOCS_CHECK_OR(leftMargin != std::numeric_limits<std::size_t>::max());
+
+    // Remove the left margin
+    for (auto& pText: block.children)
+    {
+        auto& text = dynamic_cast<doc::Text&>(*pText);
+        if (text.string.size() < leftMargin)
+        {
+            continue;
+        }
+        text.string = text.string.substr(leftMargin);
+    }
+}
 
 void
 JavadocFinalizer::

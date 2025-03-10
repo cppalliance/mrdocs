@@ -19,7 +19,8 @@
 
 {{! Brief }}
 {{#if symbol.doc.brief}}
-{{{symbol.doc.brief}}}
+{{> javadoc/brief symbol.doc.brief }}
+
 
 {{/if}}
 {{! Synopsis }}
@@ -60,7 +61,7 @@
 {{else}}
 |`{{>symbol/name . nolink=true}}`
 {{/if}}
-|{{{~ doc.brief }}}
+|{{> javadoc/brief doc.brief }}
 {{/each}}
 |===
 
@@ -77,11 +78,10 @@
 
 {{/if}}
 {{! Description }}
-{{#if symbol.doc.description}}
+{{#if symbol.doc.details}}
 {{#> markup/dynamic-level-h }}Description{{/markup/dynamic-level-h}}
 
-{{{symbol.doc.description}}}
-
+{{> javadoc/detail-blocks symbol.doc.details }}
 {{/if}}
 {{! Using symbols }}
 {{#if symbol.shadows}}
@@ -103,8 +103,8 @@
 | Name | Thrown on
 
 {{#each symbol.doc.exceptions}}
-| `{{exception}}`
-| {{{description}}}
+| {{> javadoc/reference exception}}
+| {{>javadoc/block .}}
 
 {{/each}}
 |===
@@ -115,10 +115,11 @@
 {{#> markup/dynamic-level-h }}Return Value{{/markup/dynamic-level-h}}
 
 {{#if (eq (size symbol.doc.returns) 1)}}
-{{{symbol.doc.returns.[0]}}}
+{{> javadoc/returns symbol.doc.returns.[0]}}
+
 {{else}}
 {{#each symbol.doc.returns}}
-* {{{.}}}
+* {{> javadoc/returns .}}
 {{/each}}
 {{/if}}
 
@@ -132,7 +133,7 @@
 
 {{#each symbol.doc.tparams}}
 | *{{name}}*
-| {{{description}}}
+| {{>javadoc/block .}}
 
 {{/each}}
 |===
@@ -147,7 +148,7 @@
 
 {{#each symbol.doc.params}}
 | *{{name}}*{{#if direction}} [{{direction}}]{{/if}}
-| {{{description}}}
+| {{>javadoc/block .}}
 
 {{/each}}
 |===
@@ -158,8 +159,10 @@
 {{#> markup/dynamic-level-h }}Preconditions{{/markup/dynamic-level-h}}
 
 {{#each symbol.doc.preconditions}}
-* {{{.}}}
+* {{>javadoc/block .}}
 {{/each}}
+
+
 
 {{/if}}
 {{! Postconditions }}
@@ -167,17 +170,22 @@
 {{#> markup/dynamic-level-h }}Postconditions{{/markup/dynamic-level-h}}
 
 {{#each symbol.doc.postconditions}}
-* {{{.}}}
+* {{>javadoc/block .}}
 {{/each}}
+
+
 
 {{/if}}
 {{! See Also }}
-{{#if symbol.doc.see}}
+{{#if symbol.doc.sees}}
 {{#> markup/dynamic-level-h }}See Also{{/markup/dynamic-level-h}}
 
-{{#each symbol.doc.see}}
-{{{.}}}
+{{#each symbol.doc.sees}}
+{{>javadoc/block .}}
 
 {{/each}}
+
+
+
 
 {{/if}}
