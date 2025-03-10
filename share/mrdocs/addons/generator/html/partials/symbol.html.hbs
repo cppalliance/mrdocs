@@ -21,7 +21,8 @@
 {{! Brief }}
 {{#if symbol.doc.brief}}
 <div>
-{{{symbol.doc.brief}}}
+{{> javadoc/brief symbol.doc.brief }}
+
 
 </div>
 {{/if}}
@@ -71,7 +72,7 @@
 {{else}}
 <td>{{>symbol/name . nolink=true}}</td>
 {{/if}}
-<td>{{{doc.brief}}}</td>
+<td>{{> javadoc/brief doc.brief }}</td>
 </tr>
 {{/each}}
 </tbody>
@@ -87,11 +88,10 @@
 
 {{/if}}
 {{! Description }}
-{{#if symbol.doc.description}}
+{{#if symbol.doc.details}}
 <div>
 {{#> markup/dynamic-level-h level=2 }}Description{{/markup/dynamic-level-h}}
-{{{symbol.doc.description}}}
-
+{{> javadoc/detail-blocks symbol.doc.details }}
 </div>
 {{/if}}
 {{! Using symbols }}
@@ -129,8 +129,8 @@
 <tbody>
 {{#each symbol.doc.exceptions}}
 <tr>
-<td><code>{{exception}}</code></td>
-<td>{{{description}}}</td>
+<td>{{> javadoc/reference exception}}</td>
+<td>{{> javadoc/block .}}</td>
 </tr>
 {{/each}}
 </tbody>
@@ -142,11 +142,12 @@
 <div>
 {{#> markup/dynamic-level-h level=2 }}Return Value{{/markup/dynamic-level-h}}
 {{#if (eq (size symbol.doc.returns) 1)}}
-{{{symbol.doc.returns.[0]}}}
+{{> javadoc/returns symbol.doc.returns.[0]}}
+
 {{else}}
 <ul>
 {{#each symbol.doc.returns}}
-<li>{{{.}}}</li>
+<li>{{> javadoc/returns .}}</li>
 {{/each}}
 </ul>
 {{/if}}
@@ -167,7 +168,7 @@
 {{#each symbol.doc.tparams}}
 <tr>
 <td><strong>{{name}}</strong></td>
-<td>{{{description}}}</td>
+<td>{{>javadoc/block .}}</td>
 </tr>
 {{/each}}
 </tbody>
@@ -189,7 +190,7 @@
 {{#each symbol.doc.params}}
 <tr>
 <td><strong>{{name}}</strong>{{#if direction}} [{{direction}}]{{/if}}</td>
-<td>{{{description}}}</td>
+<td>{{>javadoc/block .}}</td>
 </tr>
 {{/each}}
 </tbody>
@@ -202,7 +203,7 @@
 {{#> markup/dynamic-level-h level=2 }}Preconditions{{/markup/dynamic-level-h}}
 <ul>
 {{#each symbol.doc.preconditions}}
-<li>{{{.}}}</li>
+<li>{{>javadoc/block .}}</li>
 {{/each}}
 </ul>
 </div>
@@ -213,17 +214,17 @@
 {{#> markup/dynamic-level-h level=2 }}Postconditions{{/markup/dynamic-level-h}}
 <ul>
 {{#each symbol.doc.postconditions}}
-<li>{{{.}}}</li>
+<li>{{>javadoc/block .}}</li>
 {{/each}}
 </ul>
 </div>
 {{/if}}
 {{! See Also }}
-{{#if symbol.doc.see}}
+{{#if symbol.doc.sees}}
 <div>
 {{#> markup/dynamic-level-h level=2 }}See Also{{/markup/dynamic-level-h}}
-{{#each symbol.doc.see}}
-<p>{{{.}}}</p>
+{{#each symbol.doc.sees}}
+<p>{{>javadoc/block .}}</p>
 {{/each}}
 </div>
 {{/if}}

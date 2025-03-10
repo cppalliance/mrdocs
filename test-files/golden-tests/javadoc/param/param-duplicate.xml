@@ -46,7 +46,7 @@
         <text>g0 brief</text>
       </brief>
       <param name="a">
-        <text>one    </text>
+        <text>one</text>
       </param>
       <param name="a">
         <text>one</text>
@@ -63,7 +63,7 @@
         <text>g1 brief</text>
       </brief>
       <param name="a">
-        <text>one    </text>
+        <text>one</text>
       </param>
       <param name="b">
         <text>two</text>
@@ -79,7 +79,7 @@
           <text>h0 brief</text>
         </brief>
         <tparam name="T">
-          <text>one    </text>
+          <text>one</text>
         </tparam>
         <tparam name="T">
           <text>one</text>
@@ -96,7 +96,7 @@
           <text>h1 brief</text>
         </brief>
         <tparam name="T">
-          <text>one    </text>
+          <text>one</text>
         </tparam>
         <tparam name="U">
           <text>two</text>

@@ -589,7 +589,7 @@ g(int a);
 === Description
 
 
-Function with same number of parameters            but different types&period; This should fail&period;
+Function with same number of parameters but different types&period; This should fail&period;
 
 
 
@@ -703,7 +703,7 @@ h(int a);
 === Description
 
 
-Function with same number of parameters            but different types&period; This should fail&period;
+Function with same number of parameters but different types&period; This should fail&period;
 
 
 

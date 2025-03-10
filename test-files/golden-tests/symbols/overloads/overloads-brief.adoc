@@ -449,7 +449,7 @@ operator&hyphen;();
 === Description
 
 
-No way to generate a brief from the        operator kind because there are        unary and binary operators&period;
+No way to generate a brief from the operator kind because there are unary and binary operators&period;
 
 
 
@@ -478,7 +478,7 @@ operator&hyphen;(<<A,A>> const&);
 === Description
 
 
-No way to generate a brief from the        operator kind&period;
+No way to generate a brief from the operator kind&period;
 
 
 

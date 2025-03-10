@@ -39,7 +39,7 @@ f();
 
 Description&colon;
 
-* Point 1 
+* Point 1
 * Point 2
 
 Another paragraph&period;

@@ -10,22 +10,10 @@
 //
 
 #include "HTMLGenerator.hpp"
-#include "DocVisitor.hpp"
 #include <mrdocs/Support/Handlebars.hpp>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 namespace html {
-
-std::string
-HTMLGenerator::
-toString(hbs::HandlebarsCorpus const& c, doc::Node const& I) const
-{
-    std::string s;
-    DocVisitor visitor(c, s);
-    doc::visit(I, visitor);
-    return s;
-}
 
 void
 HTMLGenerator::
@@ -44,5 +32,4 @@ makeHTMLGenerator()
     return std::make_unique<html::HTMLGenerator>();
 }
 
-} // mrdocs
-} // clang
+} // clang::mrdocs

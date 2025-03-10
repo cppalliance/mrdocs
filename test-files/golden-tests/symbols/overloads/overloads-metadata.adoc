@@ -121,8 +121,6 @@ int
 
 
 * a must be greater than 0
-
-
 * b must be greater than 0
 
 
@@ -131,8 +129,6 @@ int
 
 
 * The return value is greater than 0
-
-
 * The return value is greater than 10
 
 
@@ -141,9 +137,6 @@ int
 
 
 Interesting information 1
-
-
-
 Interesting information 2
 
 
@@ -340,8 +333,6 @@ The number corresponding to a and b
 
 
 * a must be greater than 0
-
-
 * b must be greater than 0
 
 

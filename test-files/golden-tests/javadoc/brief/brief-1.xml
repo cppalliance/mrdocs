@@ -19,9 +19,9 @@
         <text>brief</text>
       </brief>
       <para>
-        <text>many lined    </text>
+        <text>many lined </text>
         <bold>bold</bold>
-        <text>    what will    happen?</text>
+        <text> what will happen?</text>
       </para>
     </doc>
   </function>

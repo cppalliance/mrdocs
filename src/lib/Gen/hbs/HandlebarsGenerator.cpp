@@ -68,10 +68,7 @@ createDomCorpus(
     Corpus const& corpus) {
     return {
         corpus,
-        gen.fileExtension(),
-        [&gen](HandlebarsCorpus const& c, doc::Node const& n) {
-            return gen.toString(c, n);
-        }};
+        gen.fileExtension()};
 }
 } // (anon)
 

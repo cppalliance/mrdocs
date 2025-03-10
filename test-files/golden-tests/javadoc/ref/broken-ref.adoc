@@ -16,7 +16,7 @@
 | 
 
 | <<f1,`f1`>> 
-| See xref:#f0[f0]
+| See <<f0,`f0`>>
 
 |===
 
@@ -39,7 +39,7 @@ f0();
 == f1
 
 
-See xref:#f0[f0]
+See <<f0,`f0`>>
 
 === Synopsis
 
@@ -55,11 +55,11 @@ f1();
 === Description
 
 
-See &colon;&colon;f2
+See `&colon;&colon;f2`
 
 Broken should be warned only once
 
-See &colon;&colon;f2
+See `&colon;&colon;f2`
 
 
 

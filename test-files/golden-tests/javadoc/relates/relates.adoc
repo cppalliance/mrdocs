@@ -98,13 +98,6 @@ void
 f();
 ----
 
-=== Description
-
-
-
-
-
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

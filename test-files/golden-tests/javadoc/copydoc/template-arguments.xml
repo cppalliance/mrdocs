@@ -32,7 +32,7 @@
             <text>Main class template for B.</text>
           </brief>
           <tparam name="T">
-            <text>The type parameter.         </text>
+            <text>The type parameter.</text>
           </tparam>
         </doc>
       </namespace-alias>
@@ -66,7 +66,7 @@
             <text>Main class template for C.</text>
           </brief>
           <tparam name="T">
-            <text>The type parameter.         </text>
+            <text>The type parameter.</text>
           </tparam>
         </doc>
       </namespace-alias>
@@ -81,7 +81,7 @@
             <text>Main class template for B.</text>
           </brief>
           <tparam name="T">
-            <text>The type parameter.         </text>
+            <text>The type parameter.</text>
           </tparam>
           <tparam name="int">
             <text>The integer parameter with a default value of 0.</text>
@@ -122,7 +122,7 @@
             <text>Main class template for C.</text>
           </brief>
           <tparam name="T">
-            <text>The type parameter.         </text>
+            <text>The type parameter.</text>
           </tparam>
           <tparam name="bool">
             <text>The boolean parameter with a default value of false.</text>

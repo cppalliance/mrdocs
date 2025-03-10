@@ -36,8 +36,6 @@ f();
 
 
 * first precondition
-
-
 * second precondition
 
 

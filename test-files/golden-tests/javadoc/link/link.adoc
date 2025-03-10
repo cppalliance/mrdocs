@@ -1,0 +1,46 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+
+=== Functions
+
+[cols=2]
+|===
+| Name 
+| Description 
+
+| <<f,`f`>> 
+| A function with a link
+
+|===
+
+[#f]
+== f
+
+
+A function with a link
+
+=== Synopsis
+
+
+Declared in `&lt;link&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f();
+----
+
+=== Description
+
+
+This is a function with a link to https://www.boost.org[]&period;
+
+
+
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

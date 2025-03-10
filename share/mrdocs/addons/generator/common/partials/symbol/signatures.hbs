@@ -19,7 +19,7 @@
 
 {{else}}
 {{#each members as | member |}}
-{{#if member.doc.brief}}{{#> markup/p }}{{{member.doc.brief}}}{{/markup/p}}{{/if}}
+{{#if member.doc.brief}}{{#> markup/p }}{{> javadoc/brief member.doc.brief }}{{/markup/p}}{{/if}}
 
 {{#> markup/code-block }}
 {{> symbol/signature member link=member}}

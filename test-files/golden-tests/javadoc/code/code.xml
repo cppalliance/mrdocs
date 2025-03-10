@@ -12,15 +12,15 @@
         <text>This description contains code:</text>
       </para>
       <code>
-        <text>    // code comment</text>
-        <text>    // code comment</text>
-        <text>    template &lt; class T &gt;</text>
-        <text>    auto</text>
-        <text>    algorithm( T&amp;&amp; v = {} ) -&gt;</text>
-        <text>        typename T::result_type</text>
-        <text>    {</text>
-        <text>        return v.result();</text>
-        <text>    }</text>
+        <text>// code comment</text>
+        <text>// code comment</text>
+        <text>template &lt; class T &gt;</text>
+        <text>auto</text>
+        <text>algorithm( T&amp;&amp; v = {} ) -&gt;</text>
+        <text>    typename T::result_type</text>
+        <text>{</text>
+        <text>    return v.result();</text>
+        <text>}</text>
       </code>
     </doc>
   </function>

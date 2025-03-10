@@ -50,7 +50,7 @@
           <mono>*this</mono>
         </returns>
         <param name="a">
-          <text>Describe b        </text>
+          <text>Describe b</text>
         </param>
       </doc>
     </function>
@@ -75,7 +75,7 @@
           <mono>*this</mono>
         </returns>
         <param name="a">
-          <text>Describe a        </text>
+          <text>Describe a</text>
         </param>
       </doc>
     </function>
@@ -96,7 +96,7 @@
           <mono>*this</mono>
         </returns>
         <param name="a">
-          <text>Describe a        </text>
+          <text>Describe a</text>
         </param>
       </doc>
     </function>
@@ -119,7 +119,7 @@
           <mono>*this</mono>
         </returns>
         <param name="a">
-          <text>Describe a        </text>
+          <text>Describe a</text>
         </param>
       </doc>
     </function>
@@ -134,7 +134,7 @@
           <text>Unary operator- for A</text>
         </brief>
         <para>
-          <text>No way to generate a brief from the        operator kind because there are        unary and binary operators.</text>
+          <text>No way to generate a brief from the operator kind because there are unary and binary operators.</text>
         </para>
         <returns>
           <text>Result</text>
@@ -157,7 +157,7 @@
           <text>Binary operator- for A</text>
         </brief>
         <para>
-          <text>No way to generate a brief from the        operator kind.</text>
+          <text>No way to generate a brief from the operator kind.</text>
         </para>
         <returns>
           <text>Result</text>
@@ -262,7 +262,7 @@
         <text>Function with same brief</text>
       </brief>
       <param name="a">
-        <text>Describe a again    </text>
+        <text>Describe a again</text>
       </param>
       <param name="b">
         <text>Describe b</text>

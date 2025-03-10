@@ -57,7 +57,7 @@ f6();
 === Description
 
 
-many lined    *bold*    what will    happen?
+many lined *bold* what will happen?
 
 
 

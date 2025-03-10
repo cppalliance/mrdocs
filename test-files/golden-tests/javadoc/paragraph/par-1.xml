@@ -13,7 +13,7 @@
         <text>Paragraph 1</text>
       </para>
       <code>
-        <text>    void f1();</text>
+        <text>void f1();</text>
       </code>
     </doc>
   </function>
@@ -28,7 +28,7 @@
         <text>Paragraph 2</text>
       </para>
       <code>
-        <text>    void f2();</text>
+        <text>void f2();</text>
       </code>
     </doc>
   </function>
@@ -40,7 +40,7 @@
       </brief>
       <head>Custom par</head>
       <code>
-        <text>    void f3();</text>
+        <text>void f3();</text>
       </code>
     </doc>
   </function>
@@ -52,7 +52,7 @@
       </brief>
       <head>Custom par</head>
       <code>
-        <text>    void f4();</text>
+        <text>void f4();</text>
       </code>
     </doc>
   </function>

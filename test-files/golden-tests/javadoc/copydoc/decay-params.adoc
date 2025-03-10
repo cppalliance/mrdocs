@@ -41,7 +41,7 @@ bar(int* a);
 === Description
 
 
-This is the function original documentation    for the foo function with an array parameter&period;
+This is the function original documentation for the foo function with an array parameter&period;
 
 
 
@@ -142,7 +142,7 @@ foo();
 === Description
 
 
-`bar` should not copy this documentation    just because it has the same name and is    simpler&period;
+`bar` should not copy this documentation just because it has the same name and is simpler&period;
 
 
 
@@ -166,7 +166,7 @@ foo(int a);
 === Description
 
 
-`bar` should not copy this documentation    just because it has the same number of    parameters&period;
+`bar` should not copy this documentation just because it has the same number of parameters&period;
 
 
 
@@ -202,7 +202,7 @@ foo(int a[3]);
 === Description
 
 
-This is the function original documentation    for the foo function with an array parameter&period;
+This is the function original documentation for the foo function with an array parameter&period;
 
 
 

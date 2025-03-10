@@ -106,6 +106,11 @@ public:
     void
     operator()(InfoTy& I);
 
+    // Check and finalize data unrelated to javadoc
+    template <class InfoTy>
+    void
+    finalizeInfoData(InfoTy& I);
+
 private:
     // Look for symbol and set the id of a reference
     void
@@ -126,6 +131,83 @@ private:
     // Copy brief from first paragraph
     void
     setAutoBrief(Javadoc& javadoc);
+
+    /* Trim all block childen in the javadoc
+
+       The first child is rtrimmed and the last child is ltrimmed.
+
+       Like in HTML, multiple whitespaces (spaces, tabs, and newlines)
+       between and within child nodes are collapsed into a single space.
+     */
+    void
+    trimBlocks(Javadoc& javadoc);
+
+    // A range of values derived from blocks
+    template <std::ranges::range R>
+    requires std::derived_from<std::ranges::range_value_t<R>, doc::Block>
+    void
+    trimBlocks(R&& blocks)
+    {
+        for (auto& block: blocks)
+        {
+            trimBlock(block);
+        }
+    }
+
+    void
+    trimBlocks(std::vector<Polymorphic<doc::Block>>& blocks);
+
+    void
+    trimBlock(doc::Block& block);
+
+    /* Remove all temporary text nodes from a block
+
+       The temporary nodes (copied, related, etc...) should
+       have been processed by the previous steps and should
+       not be present in the final output.
+     */
+    void
+    removeTempTextNodes(Javadoc& javadoc);
+
+    // A range of values derived from blocks
+    template <std::ranges::range R>
+    requires std::derived_from<std::ranges::range_value_t<R>, doc::Block>
+    void
+    removeTempTextNodes(R&& blocks)
+    {
+        for (auto& block: blocks)
+        {
+            removeTempTextNodes(block);
+        }
+    }
+
+    void
+    removeTempTextNodes(std::vector<Polymorphic<doc::Block>>& blocks);
+
+    void
+    removeTempTextNodes(doc::Block& block);
+
+    /* Unindent all code blocks in the javadoc
+     */
+    void
+    unindentCodeBlocks(Javadoc& javadoc);
+
+    template <std::ranges::range R>
+    requires std::derived_from<std::ranges::range_value_t<R>, doc::Block>
+    void
+    unindentCodeBlocks(R&& blocks)
+    {
+        for (auto& block: blocks)
+        {
+            trimBlock(block);
+        }
+    }
+
+    void
+    unindentCodeBlocks(std::vector<Polymorphic<doc::Block>>& blocks);
+
+    void
+    unindentCodeBlocks(doc::Block& block);
 
     // Set id to invalid if it does not exist
     void

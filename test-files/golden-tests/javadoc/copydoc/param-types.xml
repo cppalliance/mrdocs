@@ -41,7 +41,7 @@
           <text>Reference member function.</text>
         </brief>
         <para>
-          <text>Documentation for a function with an        explicit object parameter.</text>
+          <text>Documentation for a function with an explicit object parameter.</text>
         </para>
         <para>
           <text>This reference uses the </text>
@@ -69,10 +69,10 @@
           <text>Reference member function.</text>
         </brief>
         <para>
-          <text>Documentation for a function with an        explicit object parameter.</text>
+          <text>Documentation for a function with an explicit object parameter.</text>
         </para>
         <param name="self">
-          <text>The object to operate on        </text>
+          <text>The object to operate on</text>
         </param>
         <param name="a">
           <text>The first parameter of g</text>
@@ -118,7 +118,7 @@
         <text>Documentation for the reference function.</text>
       </para>
       <para>
-        <text>This function uses a reference with no    parameters.</text>
+        <text>This function uses a reference with no parameters.</text>
       </para>
       <param name="a">
         <text>The first parameter of f</text>
@@ -233,7 +233,7 @@
         <text> keyword.</text>
       </para>
       <param name="a">
-        <text>The first parameter of g    </text>
+        <text>The first parameter of g</text>
       </param>
     </doc>
   </function>
@@ -417,7 +417,7 @@
         <text> parameter.</text>
       </para>
       <param name="a">
-        <text>The first parameter of g    </text>
+        <text>The first parameter of g</text>
       </param>
       <param name="b">
         <text>The second parameter of g</text>

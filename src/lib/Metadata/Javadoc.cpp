@@ -20,8 +20,133 @@
 
 namespace clang {
 namespace mrdocs {
-
 namespace doc {
+
+dom::String
+toString(NodeKind kind) noexcept
+{
+    switch(kind)
+    {
+        case NodeKind::text:
+            return "text";
+        case NodeKind::admonition:
+            return "admonition";
+        case NodeKind::brief:
+            return "brief";
+        case NodeKind::code:
+            return "code";
+        case NodeKind::heading:
+            return "heading";
+        case NodeKind::link:
+            return "link";
+        case NodeKind::list_item:
+            return "list_item";
+        case NodeKind::unordered_list:
+            return "unordered_list";
+        case NodeKind::paragraph:
+            return "paragraph";
+        case NodeKind::param:
+            return "param";
+        case NodeKind::returns:
+            return "returns";
+        case NodeKind::styled:
+            return "styled";
+        case NodeKind::tparam:
+            return "tparam";
+        case NodeKind::reference:
+            return "reference";
+        case NodeKind::copied:
+            return "copied";
+        case NodeKind::throws:
+            return "throws";
+        case NodeKind::details:
+            return "details";
+        case NodeKind::see:
+            return "see";
+        case NodeKind::related:
+            return "related";
+        case NodeKind::precondition:
+            return "precondition";
+        case NodeKind::postcondition:
+            return "postcondition";
+        default:
+            MRDOCS_UNREACHABLE();
+    }
+}
+
+dom::String
+toString(Style kind) noexcept
+{
+    switch(kind)
+    {
+    case Style::none:
+        return "";
+    case Style::mono:
+        return "mono";
+    case Style::bold:
+        return "bold";
+    case Style::italic:
+        return "italic";
+    default:
+        MRDOCS_UNREACHABLE();
+    }
+}
+
+dom::String
+toString(Admonish kind) noexcept
+{
+    switch(kind)
+    {
+    case Admonish::none:
+        return "";
+    case Admonish::note:
+        return "note";
+    case Admonish::tip:
+        return "tip";
+    case Admonish::important:
+        return "important";
+    case Admonish::caution:
+        return "caution";
+    case Admonish::warning:
+        return "warning";
+    default:
+        MRDOCS_UNREACHABLE();
+    }
+}
+
+dom::String
+toString(ParamDirection kind) noexcept
+{
+    switch(kind)
+    {
+    case ParamDirection::none:
+        return "";
+    case ParamDirection::in:
+        return "in";
+    case ParamDirection::out:
+        return "out";
+    case ParamDirection::inout:
+        return "inout";
+    default:
+        MRDOCS_UNREACHABLE();
+    }
+}
+
+dom::String
+toString(Parts kind) noexcept
+{
+    switch(kind)
+    {
+    case Parts::all:
+        return "all";
+    case Parts::brief:
+        return "brief";
+    case Parts::description:
+        return "description";
+    default:
+        MRDOCS_UNREACHABLE();
+    }
+}
 
 Text&
 Block::
@@ -54,24 +179,6 @@ append(std::vector<Polymorphic<Text>> const& otherChildren)
         otherChildren.end());
 }
 
-dom::String
-toString(
-    doc::Style style) noexcept
-{
-    switch(style)
-    {
-    case doc::Style::bold:   return "bold";
-    case doc::Style::mono:   return "mono";
-    case doc::Style::italic: return "italic";
-
-    // should never get here
-    case doc::Style::none: return "";
-
-    default:
-        // unknown style
-        MRDOCS_UNREACHABLE();
-    }
-}
 
 std::strong_ordering
 operator<=>(Polymorphic<Text> const& lhs, Polymorphic<Text> const& rhs)
@@ -363,18 +470,6 @@ append(std::vector<Polymorphic<doc::Node>>&& blocks)
             blockAsNode = {};
         }
     }
-}
-
-/** Return the Javadoc as a @ref dom::Value.
- */
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Javadoc const& doc,
-    DomCorpus const* domCorpus)
-{
-    v = domCorpus->getJavadoc(doc);
 }
 
 } // mrdocs

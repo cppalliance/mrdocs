@@ -18,8 +18,7 @@
 #include <lib/Gen/hbs/HandlebarsCorpus.hpp>
 #include <utility>
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 class OutputRef;
 
@@ -53,15 +52,6 @@ public:
         std::string_view fileName,
         Corpus const& corpus) const;
 
-    /** Convert a Javadoc node to a string.
-    */
-    virtual
-    std::string
-    toString(HandlebarsCorpus const&, doc::Node const&) const
-    {
-        return {};
-    }
-
     /** Output an escaped string to the output stream.
     */
     virtual
@@ -70,7 +60,7 @@ public:
 };
 
 } // hbs
-} // mrdocs
-} // clang
+
+} // clang::mrdocs
 
 #endif

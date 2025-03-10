@@ -1260,7 +1260,10 @@ visitBlockCommandComment(
         visitChildren(C->getParagraph());
         // Here, we want empty briefs, because
         // the @brief command was explicitly given.
-        jd_.brief.emplace(std::move(brief));
+        if (!brief.children.empty())
+        {
+            jd_.brief.emplace(std::move(brief));
+        }
         return;
     }
 

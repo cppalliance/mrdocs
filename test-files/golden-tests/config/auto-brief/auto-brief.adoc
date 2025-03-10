@@ -25,10 +25,10 @@
 | This function has documentation but no brief&period;
 
 | <<copyDetailsFromCopyBrief,`copyDetailsFromCopyBrief`>> 
-| Details will be copied copyDetailsFromExplicitBrief 
+| Details will be copied
 
 | <<copyDetailsFromDocNoBrief,`copyDetailsFromDocNoBrief`>> 
-| Custom brief docNoBriefFunction 
+| Custom brief
 
 | <<copyDetailsFromExplicitBrief,`copyDetailsFromExplicitBrief`>> 
 | This will not be copied&period;
@@ -37,7 +37,7 @@
 | This is more documentation&period;
 
 | <<copyDetailsFromNoDoc,`copyDetailsFromNoDoc`>> 
-| Custom brief noDocFunction 
+| Custom brief
 
 | <<copyDocFromCopyBrief,`copyDocFromCopyBrief`>> 
 | This is the explicit brief&period;
@@ -175,18 +175,11 @@ void
 copyBriefFromFirstValid();
 ----
 
-=== Description
-
-
-explicitBriefFunction
-
-
-
 [#copyDetailsFromCopyBrief]
 == copyDetailsFromCopyBrief
 
 
-Details will be copied copyDetailsFromExplicitBrief 
+Details will be copied
 
 === Synopsis
 
@@ -203,7 +196,7 @@ copyDetailsFromCopyBrief();
 == copyDetailsFromDocNoBrief
 
 
-Custom brief docNoBriefFunction 
+Custom brief
 
 === Synopsis
 
@@ -254,7 +247,7 @@ copyDetailsFromFirstSentenceAsBrief();
 == copyDetailsFromNoDoc
 
 
-Custom brief noDocFunction 
+Custom brief
 
 === Synopsis
 

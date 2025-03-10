@@ -44,9 +44,9 @@ copyFromNoParam();
 === Description
 
 
-This is the function original documentation    for the foo function with no parameters&period;
+This is the function original documentation for the foo function with no parameters&period;
 
-This documentation is copied from the    page containing the foo overload with    no parameters&period;
+This documentation is copied from the page containing the foo overload with no parameters&period;
 
 
 
@@ -76,7 +76,7 @@ copyfromOverloads();
 === Description
 
 
-This documentation is copied from the    page containing all overloads of foo&period;
+This documentation is copied from the page containing all overloads of foo&period;
 
 
 
@@ -157,7 +157,7 @@ foo();
 === Description
 
 
-This is the function original documentation    for the foo function with no parameters&period;
+This is the function original documentation for the foo function with no parameters&period;
 
 
 
@@ -187,7 +187,7 @@ foo(char ch);
 === Description
 
 
-This is the function original documentation    for the foo function with no parameters&period;
+This is the function original documentation for the foo function with no parameters&period;
 
 
 

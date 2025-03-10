@@ -19,13 +19,13 @@
         <mono>foo()</mono>
       </brief>
       <para>
-        <text>This is the function original documentation    for the foo function with an array parameter.</text>
+        <text>This is the function original documentation for the foo function with an array parameter.</text>
       </para>
       <returns>
         <text>A boolean value.</text>
       </returns>
       <param name="a">
-        <text>An array of integers.    </text>
+        <text>An array of integers.</text>
       </param>
     </doc>
   </function>
@@ -37,7 +37,7 @@
       </brief>
       <para>
         <mono>bar</mono>
-        <text> should not copy this documentation    just because it has the same name and is    simpler.</text>
+        <text> should not copy this documentation just because it has the same name and is simpler.</text>
       </para>
     </doc>
   </function>
@@ -52,7 +52,7 @@
       </brief>
       <para>
         <mono>bar</mono>
-        <text> should not copy this documentation    just because it has the same number of    parameters.</text>
+        <text> should not copy this documentation just because it has the same number of parameters.</text>
       </para>
       <param name="a">
         <text>An integer.</text>
@@ -76,13 +76,13 @@
         <mono>foo()</mono>
       </brief>
       <para>
-        <text>This is the function original documentation    for the foo function with an array parameter.</text>
+        <text>This is the function original documentation for the foo function with an array parameter.</text>
       </para>
       <returns>
         <text>A boolean value.</text>
       </returns>
       <param name="a">
-        <text>An array of integers.    </text>
+        <text>An array of integers.</text>
       </param>
     </doc>
   </function>
