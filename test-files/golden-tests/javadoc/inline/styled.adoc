@@ -4,27 +4,22 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<A,`A`>> 
 | Brief for A
-
 |===
 
 [#A]
 == A
 
-
 Brief for A
 
 === Synopsis
-
 
 Declared in `&lt;styled&period;cpp&gt;`
 
@@ -37,33 +32,24 @@ struct A;
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<A-compare,`compare`>> 
 | Compare function
-
 |===
 
-
-
 === Description
-
 
 Paragraph with `code`, *bold* text, and _italic_ text&period;
 
 We can also escape these markers&colon; &grave;, &ast;, and &lowbar;&period;
 
-
-
 [#A-compare]
 == <<A,A>>::compare
-
 
 Compare function
 
 === Synopsis
-
 
 Declared in `&lt;styled&period;cpp&gt;`
 
@@ -75,20 +61,16 @@ compare(<<A,A>> const& other) const noexcept;
 
 === Return Value
 
-
 `&hyphen;1` if `&ast;this &lt; other`, `0` if `this &equals;&equals; other`, and 1 if `this &gt; other`&period;
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *other*
 | The other object to compare against&period;
-
 |===
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

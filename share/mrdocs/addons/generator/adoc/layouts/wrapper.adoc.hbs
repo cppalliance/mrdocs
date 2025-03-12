@@ -1,47 +1,27 @@
-{{! The wrapper for single page documentation or symbols in a multipage documentation }}
-{{! Title }}
+{{!--
+    Wraps the documentation for a symbol (multipage) or all symbols (single page).
+
+    The {{{contents}}} tag can be used to include the content of the symbol or symbols
+    to be wrapped by this template.
+
+    The multipage mode, the wrapper also receives the symbol object to render the title
+    and the breadcrumbs.
+
+    In the single page mode, the symbol object is not available to the wrapper, but it
+    is available to the symbol template. In this case, the title is simply "Reference".
+
+    As Antora does not support relative links to pages in parent directories, the
+    relfileprefix attribute is set to make all links relative to the root directory.
+    This is only necessary in multipage mode.
+--}}
 {{#if @root.config.multipage }}
-{{! Multipage documentation: symbol is available to the wrapper }}
 [#{{{symbol.anchor}}}]
-{{!
-    This title qualified name does not include links as the Antora
-    UI is not able to render these links in the title.
-
-    Breadcrumbs are included in the symbol template as an alternative.
-}}
 = {{> symbol/qualified-name symbol }}
-{{!
-    Antora does not support relative links to pages in
-    parent directories. Therefore, unlike in HTML templates,
-    links are not relativized.
-
-    However, while Antora interprets xref as relative
-    to the root of the module, these xref are
-    interpreted as relative to the current directory
-    because it has no concept of modules. This means
-    links would be broken with either Antora or Asciidoc.
-
-    Even more, Antora uses the same rule as Asciidoc
-    for breadcrumbs and the page title, where links
-    would also be broken.
-
-    The solution is to set the relfileprefix attribute,
-    which includes the relative location of the root
-    directory and makes all links relative to it.
-
-    This relfileprefix affects Asciidoc links, the
-    Antora title, and the Antora breadcrumbs.
-
-    See https://docs.asciidoctor.org/asciidoc/latest/macros/inter-document-xref/#mapping-references-to-a-different-structure
-}}
 :relfileprefix: {{{ repeat "../" (count (remove_prefix symbol.url '/') '/') }}}
 {{else}}
-{{! Single page documentation: symbol is not available to the wrapper }}
 = Reference
 {{/if}}
 :mrdocs:
 
-{{! Content generated with index.hbs }}
 {{{contents}}}
-
-[.small]#Created with https://www.mrdocs.com[MrDocs]#
+{{#>markup/span class="small"}}Created with https://www.mrdocs.com[MrDocs]{{/markup/span}}

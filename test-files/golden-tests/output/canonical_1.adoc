@@ -4,37 +4,25 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A,`A`>> 
-
 | <<B,`B`>> 
-
 | <<Ba,`Ba`>> 
-
 | <<Bx,`Bx`>> 
-
 | <<a,`a`>> 
-
 | <<b,`b`>> 
-
 | <<bA,`bA`>> 
-
 | <<ba,`ba`>> 
-
 |===
 
 [#A]
 == A
 
-
 === Synopsis
-
 
 Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
 
@@ -43,15 +31,10 @@ Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
 struct A;
 ----
 
-
-
-
 [#B]
 == B
 
-
 === Synopsis
-
 
 Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
 
@@ -60,15 +43,10 @@ Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
 struct B;
 ----
 
-
-
-
 [#Ba]
 == Ba
 
-
 === Synopsis
-
 
 Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
 
@@ -77,15 +55,10 @@ Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
 struct Ba;
 ----
 
-
-
-
 [#Bx]
 == Bx
 
-
 === Synopsis
-
 
 Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
 
@@ -94,15 +67,10 @@ Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
 struct Bx;
 ----
 
-
-
-
 [#a]
 == a
 
-
 === Synopsis
-
 
 Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
 
@@ -111,15 +79,10 @@ Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
 struct a;
 ----
 
-
-
-
 [#b]
 == b
 
-
 === Synopsis
-
 
 Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
 
@@ -128,15 +91,10 @@ Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
 struct b;
 ----
 
-
-
-
 [#bA]
 == bA
 
-
 === Synopsis
-
 
 Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
 
@@ -145,15 +103,10 @@ Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
 struct bA;
 ----
 
-
-
-
 [#ba]
 == ba
 
-
 === Synopsis
-
 
 Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
 
@@ -161,10 +114,6 @@ Declared in `&lt;canonical&lowbar;1&period;cpp&gt;`
 ----
 struct ba;
 ----
-
-
-
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

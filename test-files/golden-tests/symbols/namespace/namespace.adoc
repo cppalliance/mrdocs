@@ -4,68 +4,52 @@
 [#index]
 == Global namespace
 
-
 === Namespaces
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<00namespace,`&lt;unnamed&gt;`>> 
-
 | <<A,`A`>> 
-
 | <<D,`D`>> 
-
 | <<I,`I`>> 
-
 |===
 
 [#00namespace]
 == Unnamed namespace
 
-
 === Namespaces
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<00namespace-G,`G`>> 
-
 | <<00namespace-H,`H`>> 
-
 |===
+
 === Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<00namespace-f10,`f10`>> 
-
 |===
 
 [#00namespace-G]
 == G
 
-
 === Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<00namespace-G-f11,`f11`>> 
-
 |===
 
 [#00namespace-G-f11]
 == <<00namespace-G,G>>::f11
 
-
 === Synopsis
-
 
 Declared in `&lt;namespace&period;cpp&gt;`
 
@@ -78,23 +62,18 @@ f11();
 [#00namespace-H]
 == H
 
-
 === Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<00namespace-H-f12,`f12`>> 
-
 |===
 
 [#00namespace-H-f12]
 == <<00namespace-H,H>>::f12
 
-
 === Synopsis
-
 
 Declared in `&lt;namespace&period;cpp&gt;`
 
@@ -107,9 +86,7 @@ f12();
 [#00namespace-f10]
 == f10
 
-
 === Synopsis
-
 
 Declared in `&lt;namespace&period;cpp&gt;`
 
@@ -122,50 +99,39 @@ f10();
 [#A]
 == A
 
-
 === Namespaces
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A-00namespace,`&lt;unnamed&gt;`>> 
-
 | <<A-B,`B`>> 
-
 | <<A-C,`C`>> 
-
 |===
+
 === Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A-f0,`f0`>> 
-
 |===
 
 [#A-00namespace]
 == Unnamed namespace
 
-
 === Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A-00namespace-f3,`f3`>> 
-
 |===
 
 [#A-00namespace-f3]
 == <<A,A>>::f3
 
-
 === Synopsis
-
 
 Declared in `&lt;namespace&period;cpp&gt;`
 
@@ -178,23 +144,18 @@ f3();
 [#A-B]
 == <<A,A>>::B
 
-
 === Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A-B-f1,`f1`>> 
-
 |===
 
 [#A-B-f1]
 == <<A,A>>::<<A-B,B>>::f1
 
-
 === Synopsis
-
 
 Declared in `&lt;namespace&period;cpp&gt;`
 
@@ -207,23 +168,18 @@ f1();
 [#A-C]
 == <<A,A>>::C
 
-
 === Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A-C-f2,`f2`>> 
-
 |===
 
 [#A-C-f2]
 == <<A,A>>::<<A-C,C>>::f2
 
-
 === Synopsis
-
 
 Declared in `&lt;namespace&period;cpp&gt;`
 
@@ -236,9 +192,7 @@ f2();
 [#A-f0]
 == <<A,A>>::f0
 
-
 === Synopsis
-
 
 Declared in `&lt;namespace&period;cpp&gt;`
 
@@ -251,50 +205,39 @@ f0();
 [#D]
 == D
 
-
 === Namespaces
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<D-00namespace,`&lt;unnamed&gt;`>> 
-
 | <<D-E,`E`>> 
-
 | <<D-F,`F`>> 
-
 |===
+
 === Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<D-f5,`f5`>> 
-
 |===
 
 [#D-00namespace]
 == Unnamed namespace
 
-
 === Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<D-00namespace-f8,`f8`>> 
-
 |===
 
 [#D-00namespace-f8]
 == <<D,D>>::f8
 
-
 === Synopsis
-
 
 Declared in `&lt;namespace&period;cpp&gt;`
 
@@ -307,23 +250,18 @@ f8();
 [#D-E]
 == <<D,D>>::E
 
-
 === Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<D-E-f6,`f6`>> 
-
 |===
 
 [#D-E-f6]
 == <<D,D>>::<<D-E,E>>::f6
 
-
 === Synopsis
-
 
 Declared in `&lt;namespace&period;cpp&gt;`
 
@@ -336,23 +274,18 @@ f6();
 [#D-F]
 == <<D,D>>::F
 
-
 === Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<D-F-f7,`f7`>> 
-
 |===
 
 [#D-F-f7]
 == <<D,D>>::<<D-F,F>>::f7
 
-
 === Synopsis
-
 
 Declared in `&lt;namespace&period;cpp&gt;`
 
@@ -365,9 +298,7 @@ f7();
 [#D-f5]
 == <<D,D>>::f5
 
-
 === Synopsis
-
 
 Declared in `&lt;namespace&period;cpp&gt;`
 
@@ -380,37 +311,29 @@ f5();
 [#I]
 == I
 
-
 === Namespaces
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<I-00namespace,`&lt;unnamed&gt;`>> 
-
 |===
 
 [#I-00namespace]
 == Unnamed namespace
 
-
 === Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<I-00namespace-f14,`f14`>> 
-
 |===
 
 [#I-00namespace-f14]
 == <<I,I>>::f14
 
-
 === Synopsis
-
 
 Declared in `&lt;namespace&period;cpp&gt;`
 
@@ -419,7 +342,6 @@ Declared in `&lt;namespace&period;cpp&gt;`
 void
 f14();
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

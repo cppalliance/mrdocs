@@ -4,47 +4,38 @@
 [#index]
 == Global namespace
 
-
 === Namespaces
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<LongName,`LongName`>> 
-
 |===
 
 === Using Namespace Directives
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<LongName,`LongName`>>
-
 |===
+
 
 [#LongName]
 == LongName
-
 
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<LongName-A,`A`>> 
-
 |===
 
 [#LongName-A]
 == <<LongName,LongName>>::A
 
-
 === Synopsis
-
 
 Declared in `&lt;using&hyphen;1&period;cpp&gt;`
 
@@ -52,10 +43,6 @@ Declared in `&lt;using&hyphen;1&period;cpp&gt;`
 ----
 struct A;
 ----
-
-
-
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

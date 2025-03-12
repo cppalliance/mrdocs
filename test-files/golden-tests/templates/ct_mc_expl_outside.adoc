@@ -4,25 +4,19 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A-0e,`A`>> 
-
 | <<A-00,`A&lt;int&gt;`>> 
-
 |===
 
 [#A-0e]
 == A
 
-
 === Synopsis
-
 
 Declared in `&lt;ct&lowbar;mc&lowbar;expl&lowbar;outside&period;cpp&gt;`
 
@@ -36,20 +30,14 @@ struct A;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A-0e-B,`B`>> 
-
 |===
-
-
 
 [#A-0e-B]
 == <<A-0e,A>>::B
 
-
 === Synopsis
-
 
 Declared in `&lt;ct&lowbar;mc&lowbar;expl&lowbar;outside&period;cpp&gt;`
 
@@ -62,20 +50,14 @@ struct B;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A-0e-B-f,`f`>> 
-
 |===
-
-
 
 [#A-0e-B-f]
 == <<A-0e,A>>::<<A-0e-B,B>>::f
 
-
 === Synopsis
-
 
 Declared in `&lt;ct&lowbar;mc&lowbar;expl&lowbar;outside&period;cpp&gt;`
 
@@ -88,9 +70,7 @@ f();
 [#A-00]
 == A&lt;int&gt;
 
-
 === Synopsis
-
 
 Declared in `&lt;ct&lowbar;mc&lowbar;expl&lowbar;outside&period;cpp&gt;`
 
@@ -104,20 +84,14 @@ struct <<A-0e,A>>&lt;int&gt;;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A-00-B,`B`>> 
-
 |===
-
-
 
 [#A-00-B]
 == <<A-00,A>>&lt;int&gt;::B
 
-
 === Synopsis
-
 
 Declared in `&lt;ct&lowbar;mc&lowbar;expl&lowbar;outside&period;cpp&gt;`
 
@@ -130,20 +104,14 @@ struct B;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A-00-B-g,`g`>> 
-
 |===
-
-
 
 [#A-00-B-g]
 == <<A-00,A>>&lt;int&gt;::<<A-00-B,B>>::g
 
-
 === Synopsis
-
 
 Declared in `&lt;ct&lowbar;mc&lowbar;expl&lowbar;outside&period;cpp&gt;`
 
@@ -152,7 +120,6 @@ Declared in `&lt;ct&lowbar;mc&lowbar;expl&lowbar;outside&period;cpp&gt;`
 void
 g();
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

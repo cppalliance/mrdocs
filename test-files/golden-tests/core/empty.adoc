@@ -5,7 +5,4 @@
 == Global namespace
 
 
-
-
-
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

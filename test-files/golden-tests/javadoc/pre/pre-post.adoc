@@ -4,25 +4,20 @@
 [#index]
 == Global namespace
 
-
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<f,`f`>> 
 | 
-
 |===
 
 [#f]
 == f
 
-
 === Synopsis
-
 
 Declared in `&lt;pre&hyphen;post&period;cpp&gt;`
 
@@ -34,19 +29,12 @@ f();
 
 === Preconditions
 
-
 * first precondition
 * second precondition
 
-
-
 === Postconditions
 
-
 * first postcondition
-
-
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

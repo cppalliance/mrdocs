@@ -4,29 +4,21 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<Explicit,`Explicit`>> 
-
 | <<ExplicitExpression,`ExplicitExpression`>> 
-
 | <<ExplicitFalse,`ExplicitFalse`>> 
-
 | <<ExplicitTrue,`ExplicitTrue`>> 
-
 |===
 
 [#Explicit]
 == Explicit
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;conv&hyphen;operator&period;cpp&gt;`
 
@@ -39,20 +31,14 @@ struct Explicit;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<Explicit-2conversion,`operator bool`>> 
-
 |===
-
-
 
 [#Explicit-2conversion]
 == <<Explicit,Explicit>>::operator bool
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;conv&hyphen;operator&period;cpp&gt;`
 
@@ -65,9 +51,7 @@ operator bool();
 [#ExplicitExpression]
 == ExplicitExpression
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;conv&hyphen;operator&period;cpp&gt;`
 
@@ -81,20 +65,14 @@ struct ExplicitExpression;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<ExplicitExpression-2conversion,`operator bool`>> 
-
 |===
-
-
 
 [#ExplicitExpression-2conversion]
 == <<ExplicitExpression,ExplicitExpression>>::operator bool
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;conv&hyphen;operator&period;cpp&gt;`
 
@@ -107,9 +85,7 @@ operator bool();
 [#ExplicitFalse]
 == ExplicitFalse
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;conv&hyphen;operator&period;cpp&gt;`
 
@@ -122,20 +98,14 @@ struct ExplicitFalse;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<ExplicitFalse-2conversion,`operator bool`>> 
-
 |===
-
-
 
 [#ExplicitFalse-2conversion]
 == <<ExplicitFalse,ExplicitFalse>>::operator bool
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;conv&hyphen;operator&period;cpp&gt;`
 
@@ -148,9 +118,7 @@ operator bool();
 [#ExplicitTrue]
 == ExplicitTrue
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;conv&hyphen;operator&period;cpp&gt;`
 
@@ -163,20 +131,14 @@ struct ExplicitTrue;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<ExplicitTrue-2conversion,`operator bool`>> 
-
 |===
-
-
 
 [#ExplicitTrue-2conversion]
 == <<ExplicitTrue,ExplicitTrue>>::operator bool
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;conv&hyphen;operator&period;cpp&gt;`
 
@@ -185,7 +147,6 @@ Declared in `&lt;explicit&hyphen;conv&hyphen;operator&period;cpp&gt;`
 explicit(true)
 operator bool();
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

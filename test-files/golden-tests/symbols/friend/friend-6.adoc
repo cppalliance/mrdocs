@@ -4,36 +4,28 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<T,`T`>> 
 | Struct T brief
-
 | <<U,`U`>> 
 | Struct U brief
-
 | <<V,`V`>> 
 | Struct V brief
-
 | <<Z,`Z`>> 
 | 
-
 |===
 
 [#T]
 == T
 
-
 Struct T brief
 
 === Synopsis
-
 
 Declared in `&lt;friend&hyphen;6&period;cpp&gt;`
 
@@ -46,27 +38,20 @@ struct T;
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<T-08friend-04cb,`class Z`>> 
 | Friend class Z brief
-
 | <<T-08friend-04ce,`int`>> 
 | Friend int brief
-
 |===
-
-
 
 [#T-08friend-04cb]
 == <<Z,Z>>
 
-
 Friend class Z brief
 
 === Synopsis
-
 
 Declared in `&lt;friend&hyphen;6&period;cpp&gt;`
 
@@ -78,11 +63,9 @@ friend <<Z,Z>>;
 [#T-08friend-04ce]
 == int
 
-
 Friend int brief
 
 === Synopsis
-
 
 Declared in `&lt;friend&hyphen;6&period;cpp&gt;`
 
@@ -94,11 +77,9 @@ friend int;
 [#U]
 == U
 
-
 Struct U brief
 
 === Synopsis
-
 
 Declared in `&lt;friend&hyphen;6&period;cpp&gt;`
 
@@ -111,24 +92,18 @@ struct U;
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<U-08friend,`T`>> 
 | Friend T brief
-
 |===
-
-
 
 [#U-08friend]
 == <<T,T>>
 
-
 Friend T brief
 
 === Synopsis
-
 
 Declared in `&lt;friend&hyphen;6&period;cpp&gt;`
 
@@ -140,11 +115,9 @@ friend <<T,T>>;
 [#V]
 == V
 
-
 Struct V brief
 
 === Synopsis
-
 
 Declared in `&lt;friend&hyphen;6&period;cpp&gt;`
 
@@ -157,24 +130,18 @@ struct V;
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<V-08friend,`struct U`>> 
 | Friend struct U brief
-
 |===
-
-
 
 [#V-08friend]
 == <<U,U>>
 
-
 Friend struct U brief
 
 === Synopsis
-
 
 Declared in `&lt;friend&hyphen;6&period;cpp&gt;`
 
@@ -186,9 +153,7 @@ friend <<U,U>>;
 [#Z]
 == Z
 
-
 === Synopsis
-
 
 Declared in `&lt;friend&hyphen;6&period;cpp&gt;`
 
@@ -196,10 +161,6 @@ Declared in `&lt;friend&hyphen;6&period;cpp&gt;`
 ----
 class Z;
 ----
-
-
-
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

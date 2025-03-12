@@ -4,29 +4,21 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A,`A`>> 
-
 | <<B,`B`>> 
-
 | <<D,`D`>> 
-
 | <<C,`C`>> 
-
 |===
 
 [#C]
 == C
 
-
 === Synopsis
-
 
 Declared in `&lt;alias&hyphen;template&period;cpp&gt;`
 
@@ -39,9 +31,7 @@ using C = <<A,A>>&lt;T&gt;;
 [#A]
 == A
 
-
 === Synopsis
-
 
 Declared in `&lt;alias&hyphen;template&period;cpp&gt;`
 
@@ -51,15 +41,10 @@ template&lt;typename T&gt;
 struct A;
 ----
 
-
-
-
 [#B]
 == B
 
-
 === Synopsis
-
 
 Declared in `&lt;alias&hyphen;template&period;cpp&gt;`
 
@@ -71,15 +56,10 @@ template&lt;
 struct B;
 ----
 
-
-
-
 [#D]
 == D
 
-
 === Synopsis
-
 
 Declared in `&lt;alias&hyphen;template&period;cpp&gt;`
 
@@ -93,20 +73,14 @@ struct D;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<D-E,`E`>> 
-
 |===
-
-
 
 [#D-E]
 == <<D,D>>::E
 
-
 === Synopsis
-
 
 Declared in `&lt;alias&hyphen;template&period;cpp&gt;`
 
@@ -115,7 +89,6 @@ Declared in `&lt;alias&hyphen;template&period;cpp&gt;`
 template&lt;typename U&gt;
 using E = <<B,B>>&lt;T, U&gt;;
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

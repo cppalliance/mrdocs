@@ -4,23 +4,18 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A,`A`>> 
-
 |===
 
 [#A]
 == A
 
-
 === Synopsis
-
 
 Declared in `&lt;class&hyphen;template&hyphen;partial&hyphen;spec&period;cpp&gt;`
 
@@ -34,24 +29,16 @@ struct A;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A-B-0a,`B`>> 
-
 | <<A-B-04,`B&lt;T, long&gt;`>> 
-
 | <<A-B-06,`B&lt;U*, T&gt;`>> 
-
 |===
-
-
 
 [#A-B-0a]
 == <<A,A>>::B
 
-
 === Synopsis
-
 
 Declared in `&lt;class&hyphen;template&hyphen;partial&hyphen;spec&period;cpp&gt;`
 
@@ -63,15 +50,10 @@ template&lt;
 struct B;
 ----
 
-
-
-
 [#A-B-04]
 == <<A,A>>::B&lt;T, long&gt;
 
-
 === Synopsis
-
 
 Declared in `&lt;class&hyphen;template&hyphen;partial&hyphen;spec&period;cpp&gt;`
 
@@ -81,15 +63,10 @@ template&lt;&gt;
 struct <<A-B-0a,B>>&lt;T, long&gt;;
 ----
 
-
-
-
 [#A-B-06]
 == <<A,A>>::B&lt;U*, T&gt;
 
-
 === Synopsis
-
 
 Declared in `&lt;class&hyphen;template&hyphen;partial&hyphen;spec&period;cpp&gt;`
 
@@ -98,10 +75,6 @@ Declared in `&lt;class&hyphen;template&hyphen;partial&hyphen;spec&period;cpp&gt;
 template&lt;typename U&gt;
 struct <<A-B-0a,B>>&lt;U*, T&gt;;
 ----
-
-
-
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

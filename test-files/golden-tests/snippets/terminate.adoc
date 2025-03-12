@@ -4,11 +4,9 @@
 [#terminate]
 == terminate
 
-
 Exit the program&period;
 
 === Synopsis
-
 
 Declared in `&lt;terminate&period;cpp&gt;`
 
@@ -21,14 +19,10 @@ terminate() noexcept;
 
 === Description
 
-
 The program will end immediately&period;
 
 [NOTE]
 This function does not return&period;
-
-
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

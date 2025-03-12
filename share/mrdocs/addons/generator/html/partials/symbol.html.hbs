@@ -88,10 +88,10 @@
 
 {{/if}}
 {{! Description }}
-{{#if symbol.doc.details}}
+{{#if symbol.doc.description}}
 <div>
 {{#> markup/dynamic-level-h level=2 }}Description{{/markup/dynamic-level-h}}
-{{> javadoc/detail-blocks symbol.doc.details }}
+{{> javadoc/description symbol.doc.description }}
 </div>
 {{/if}}
 {{! Using symbols }}

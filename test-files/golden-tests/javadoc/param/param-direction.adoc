@@ -4,52 +4,38 @@
 [#index]
 == Global namespace
 
-
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<f,`f`>> 
 | 
-
 | <<g,`g`>> 
 | 
-
 | <<h,`h`>> 
 | 
-
 | <<i,`i`>> 
 | 
-
 | <<j,`j`>> 
 | 
-
 | <<k,`k`>> 
 | 
-
 | <<l,`l`>> 
 | 
-
 | <<m,`m`>> 
 | 
-
 | <<n,`n`>> 
 | 
-
 | <<o,`o`>> 
 | 
-
 |===
 
 [#f]
 == f
 
-
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
 
@@ -61,21 +47,17 @@ f(int x0);
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *x0*
 | 
-
 |===
 
 [#g]
 == g
 
-
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
 
@@ -89,24 +71,19 @@ g(
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *x1*
 | 
-
 | *y1* [in]
 | 
-
 |===
 
 [#h]
 == h
 
-
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
 
@@ -120,24 +97,19 @@ h(
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *x2*
 | 
-
 | *y2* [out]
 | 
-
 |===
 
 [#i]
 == i
 
-
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
 
@@ -151,24 +123,19 @@ i(
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *x3* [in]
 | 
-
 | *y3* [out]
 | 
-
 |===
 
 [#j]
 == j
 
-
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
 
@@ -182,24 +149,19 @@ j(
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *x4*
 | 
-
 | *y4* [inout]
 | 
-
 |===
 
 [#k]
 == k
 
-
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
 
@@ -214,27 +176,21 @@ k(
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *x5* [out]
 | 
-
 | *y5* [in]
 | 
-
 | *z5*
 | 
-
 |===
 
 [#l]
 == l
 
-
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
 
@@ -250,27 +206,21 @@ l(
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *x6* [out]
 | 
-
 | *y6*
 | 
-
 | *z6* [in]
 | 
-
 |===
 
 [#m]
 == m
 
-
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
 
@@ -284,24 +234,19 @@ m(
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *x7* [in]
 | 
-
 | *y7* [out]
 | 
-
 |===
 
 [#n]
 == n
 
-
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
 
@@ -313,21 +258,17 @@ n(int x8);
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *x8* [in]
 | 
-
 |===
 
 [#o]
 == o
 
-
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;direction&period;cpp&gt;`
 
@@ -339,18 +280,14 @@ o(int x9);
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *x9* [in]
 | 
-
 | *x9* [out]
 | 
-
 |===
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

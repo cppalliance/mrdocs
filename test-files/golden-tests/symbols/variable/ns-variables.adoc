@@ -4,48 +4,34 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<T,`T`>> 
-
 |===
+
 === Variables
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<i,`i`>> 
-
 | <<j,`j`>> 
-
 | <<k,`k`>> 
-
 | <<l,`l`>> 
-
 | <<pi,`pi`>> 
-
 | <<t,`t`>> 
-
 | <<x0,`x0`>> 
-
 | <<x1,`x1`>> 
-
 | <<x2,`x2`>> 
-
 |===
 
 [#T]
 == T
 
-
 === Synopsis
-
 
 Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
 
@@ -54,15 +40,10 @@ Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
 struct T;
 ----
 
-
-
-
 [#i]
 == i
 
-
 === Synopsis
-
 
 Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
 
@@ -74,9 +55,7 @@ constexpr int i = 0;
 [#j]
 == j
 
-
 === Synopsis
-
 
 Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
 
@@ -88,9 +67,7 @@ int j = 0;
 [#k]
 == k
 
-
 === Synopsis
-
 
 Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
 
@@ -103,9 +80,7 @@ int k = 1;
 [#l]
 == l
 
-
 === Synopsis
-
 
 Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
 
@@ -118,9 +93,7 @@ int l = 1;
 [#pi]
 == pi
 
-
 === Synopsis
-
 
 Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
 
@@ -132,9 +105,7 @@ double pi = 3&period;14;
 [#t]
 == t
 
-
 === Synopsis
-
 
 Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
 
@@ -147,9 +118,7 @@ extern
 [#x0]
 == x0
 
-
 === Synopsis
-
 
 Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
 
@@ -162,9 +131,7 @@ int x0 = 0;
 [#x1]
 == x1
 
-
 === Synopsis
-
 
 Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
 
@@ -178,9 +145,7 @@ int x1 = 0;
 [#x2]
 == x2
 
-
 === Synopsis
-
 
 Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
 
@@ -190,7 +155,6 @@ constexpr static
 thread_local
 int x2 = 0;
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

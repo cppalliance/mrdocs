@@ -4,39 +4,31 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A,`A`>> 
-
 | <<B,`B`>> 
-
 |===
+
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<f-0e,`f`>> 
 | 
-
 | <<operator_eq-0d,`operator&equals;&equals;`>> 
 | 
-
 |===
 
 [#A]
 == A
 
-
 === Synopsis
-
 
 Declared in `&lt;overloads&period;cpp&gt;`
 
@@ -49,47 +41,37 @@ struct A;
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<A-f-00,`f`>> 
 | 
-
 |===
+
 === Static Member Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<A-g-0e,`g`>> 
 | 
-
 |===
+
 === Friends
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A-08friend-0a,`operator&equals;&equals;`>> 
-
 | <<A-08friend-0e,`operator&equals;&equals;`>> 
-
 |===
-
-
 
 [#A-f-00]
 == <<A,A>>::f
 
-
 === Synopses
 
-
 Declared in `&lt;overloads&period;cpp&gt;`
-
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -99,7 +81,6 @@ void
 ----
 
 [.small]#<<A-f-08,_» more&period;&period;&period;_>>#
-
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -113,9 +94,7 @@ int
 [#A-f-08]
 == <<A,A>>::f
 
-
 === Synopsis
-
 
 Declared in `&lt;overloads&period;cpp&gt;`
 
@@ -128,9 +107,7 @@ f();
 [#A-f-0e]
 == <<A,A>>::f
 
-
 === Synopsis
-
 
 Declared in `&lt;overloads&period;cpp&gt;`
 
@@ -143,12 +120,9 @@ f(int);
 [#A-g-0e]
 == <<A,A>>::g
 
-
 === Synopses
 
-
 Declared in `&lt;overloads&period;cpp&gt;`
-
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -159,7 +133,6 @@ void
 ----
 
 [.small]#<<A-g-0a,_» more&period;&period;&period;_>>#
-
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -174,9 +147,7 @@ int
 [#A-g-0a]
 == <<A,A>>::g
 
-
 === Synopsis
-
 
 Declared in `&lt;overloads&period;cpp&gt;`
 
@@ -190,9 +161,7 @@ g();
 [#A-g-01]
 == <<A,A>>::g
 
-
 === Synopsis
-
 
 Declared in `&lt;overloads&period;cpp&gt;`
 
@@ -206,9 +175,7 @@ g(int);
 [#A-08friend-0a]
 == operator&equals;&equals;
 
-
 === Synopsis
-
 
 Declared in `&lt;overloads&period;cpp&gt;`
 
@@ -224,9 +191,7 @@ operator&equals;&equals;(
 [#A-08friend-0e]
 == operator&equals;&equals;
 
-
 === Synopsis
-
 
 Declared in `&lt;overloads&period;cpp&gt;`
 
@@ -242,9 +207,7 @@ operator&equals;&equals;(
 [#B]
 == B
 
-
 === Synopsis
-
 
 Declared in `&lt;overloads&period;cpp&gt;`
 
@@ -253,18 +216,12 @@ Declared in `&lt;overloads&period;cpp&gt;`
 struct B;
 ----
 
-
-
-
 [#f-0e]
 == f
 
-
 === Synopses
 
-
 Declared in `&lt;overloads&period;cpp&gt;`
-
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -274,7 +231,6 @@ void
 ----
 
 [.small]#<<f-0b,_» more&period;&period;&period;_>>#
-
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -288,9 +244,7 @@ int
 [#f-0b]
 == f
 
-
 === Synopsis
-
 
 Declared in `&lt;overloads&period;cpp&gt;`
 
@@ -303,9 +257,7 @@ f();
 [#f-06]
 == f
 
-
 === Synopsis
-
 
 Declared in `&lt;overloads&period;cpp&gt;`
 
@@ -318,12 +270,9 @@ f(int);
 [#operator_eq-0d]
 == operator&equals;&equals;
 
-
 === Synopses
 
-
 Declared in `&lt;overloads&period;cpp&gt;`
-
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -337,7 +286,6 @@ bool
 [.small]#<<operator_eq-0a,_» more&period;&period;&period;_>>#
 
 
-
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
@@ -349,7 +297,6 @@ bool
 [.small]#<<operator_eq-0e,_» more&period;&period;&period;_>>#
 
 
-
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
@@ -359,7 +306,6 @@ bool
 ----
 
 [.small]#<<operator_eq-08,_» more&period;&period;&period;_>>#
-
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -375,9 +321,7 @@ bool
 [#operator_eq-0a]
 == operator&equals;&equals;
 
-
 === Synopsis
-
 
 Declared in `&lt;overloads&period;cpp&gt;`
 
@@ -392,9 +336,7 @@ operator&equals;&equals;(
 [#operator_eq-0e]
 == operator&equals;&equals;
 
-
 === Synopsis
-
 
 Declared in `&lt;overloads&period;cpp&gt;`
 
@@ -409,9 +351,7 @@ operator&equals;&equals;(
 [#operator_eq-08]
 == operator&equals;&equals;
 
-
 === Synopsis
-
 
 Declared in `&lt;overloads&period;cpp&gt;`
 
@@ -426,9 +366,7 @@ operator&equals;&equals;(
 [#operator_eq-07]
 == operator&equals;&equals;
 
-
 === Synopsis
-
 
 Declared in `&lt;overloads&period;cpp&gt;`
 
@@ -439,7 +377,6 @@ operator&equals;&equals;(
     <<B,B>>,
     int);
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

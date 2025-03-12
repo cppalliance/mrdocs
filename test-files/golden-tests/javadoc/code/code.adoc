@@ -4,27 +4,22 @@
 [#index]
 == Global namespace
 
-
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<f,`f`>> 
 | brief
-
 |===
 
 [#f]
 == f
 
-
 brief
 
 === Synopsis
-
 
 Declared in `&lt;code&period;cpp&gt;`
 
@@ -35,7 +30,6 @@ f();
 ----
 
 === Description
-
 
 This description contains code&colon;
 
@@ -51,8 +45,5 @@ algorithm( T&& v = {} ) ->
     return v.result();
 }
 ----
-
-
-
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -4,23 +4,18 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A,`A`>> 
-
 |===
 
 [#A]
 == A
 
-
 === Synopsis
-
 
 Declared in `&lt;ct&lowbar;mft&period;cpp&gt;`
 
@@ -34,20 +29,14 @@ struct A;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A-f,`f`>> 
-
 |===
-
-
 
 [#A-f]
 == <<A,A>>::f
 
-
 === Synopsis
-
 
 Declared in `&lt;ct&lowbar;mft&period;cpp&gt;`
 
@@ -57,7 +46,6 @@ template&lt;typename U&gt;
 void
 f();
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

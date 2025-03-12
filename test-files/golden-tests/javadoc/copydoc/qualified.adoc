@@ -4,48 +4,39 @@
 [#index]
 == Global namespace
 
-
 === Namespaces
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<N,`N`>> 
-
 |===
+
 === Types
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<param_t,`param&lowbar;t`>> 
 | Helper class for distinct parameter types
-
 |===
 
 [#N]
 == N
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<N-A,`A`>> 
-
 |===
 
 [#N-A]
 == <<N,N>>::A
 
-
 === Synopsis
-
 
 Declared in `&lt;qualified&period;cpp&gt;`
 
@@ -58,37 +49,28 @@ struct A;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<N-A-B,`B`>> 
-
 |===
+
 === Member Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<N-A-f-05,`f`>> 
 | Reference function
-
 | <<N-A-g-0d,`g`>> 
 | `g` overloads
-
 | <<N-A-h-0b,`h`>> 
 | `h` overloads
-
 |===
-
-
 
 [#N-A-B]
 == <<N,N>>::<<N-A,A>>::B
 
-
 === Synopsis
-
 
 Declared in `&lt;qualified&period;cpp&gt;`
 
@@ -97,17 +79,12 @@ Declared in `&lt;qualified&period;cpp&gt;`
 struct B;
 ----
 
-
-
-
 [#N-A-f-05]
 == <<N,N>>::<<N-A,A>>::f
-
 
 Reference function
 
 === Synopses
-
 
 Declared in `&lt;qualified&period;cpp&gt;`
 
@@ -201,23 +178,19 @@ void
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | Qualified param
-
 |===
 
 [#N-A-f-0a]
 == <<N,N>>::<<N-A,A>>::f
 
-
 Reference function
 
 === Synopsis
-
 
 Declared in `&lt;qualified&period;cpp&gt;`
 
@@ -229,30 +202,23 @@ f(<<param_t,param&lowbar;t>>&lt;0&gt; a);
 
 === Description
 
-
 Documentation for the reference function
-
-
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | Qualified param
-
 |===
 
 [#N-A-f-0b]
 == <<N,N>>::<<N-A,A>>::f
 
-
 Reference function
 
 === Synopsis
-
 
 Declared in `&lt;qualified&period;cpp&gt;`
 
@@ -264,30 +230,23 @@ f(<<param_t,param&lowbar;t>>&lt;1&gt; a);
 
 === Description
 
-
 Documentation for the reference function
-
-
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | Qualified param
-
 |===
 
 [#N-A-f-0e]
 == <<N,N>>::<<N-A,A>>::f
 
-
 Reference function
 
 === Synopsis
-
 
 Declared in `&lt;qualified&period;cpp&gt;`
 
@@ -299,30 +258,23 @@ f(<<param_t,param&lowbar;t>>&lt;2&gt; a);
 
 === Description
 
-
 Documentation for the reference function
-
-
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | Qualified param
-
 |===
 
 [#N-A-f-00]
 == <<N,N>>::<<N-A,A>>::f
 
-
 Reference function
 
 === Synopsis
-
 
 Declared in `&lt;qualified&period;cpp&gt;`
 
@@ -334,30 +286,23 @@ f(<<param_t,param&lowbar;t>>&lt;3&gt; a);
 
 === Description
 
-
 Documentation for the reference function
-
-
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | Qualified param
-
 |===
 
 [#N-A-f-02]
 == <<N,N>>::<<N-A,A>>::f
 
-
 Reference function
 
 === Synopsis
-
 
 Declared in `&lt;qualified&period;cpp&gt;`
 
@@ -369,30 +314,23 @@ f(<<param_t,param&lowbar;t>>&lt;4&gt; a);
 
 === Description
 
-
 Documentation for the reference function
-
-
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | Qualified param
-
 |===
 
 [#N-A-f-092]
 == <<N,N>>::<<N-A,A>>::f
 
-
 Reference function
 
 === Synopsis
-
 
 Declared in `&lt;qualified&period;cpp&gt;`
 
@@ -404,30 +342,23 @@ f(<<param_t,param&lowbar;t>>&lt;5&gt; a);
 
 === Description
 
-
 Documentation for the reference function
-
-
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | Qualified param
-
 |===
 
 [#N-A-f-097]
 == <<N,N>>::<<N-A,A>>::f
 
-
 Reference function
 
 === Synopsis
-
 
 Declared in `&lt;qualified&period;cpp&gt;`
 
@@ -439,30 +370,23 @@ f(<<param_t,param&lowbar;t>>&lt;6&gt; a);
 
 === Description
 
-
 Documentation for the reference function
-
-
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | Qualified param
-
 |===
 
 [#N-A-f-07]
 == <<N,N>>::<<N-A,A>>::f
 
-
 Reference function
 
 === Synopsis
-
 
 Declared in `&lt;qualified&period;cpp&gt;`
 
@@ -474,30 +398,23 @@ f(<<param_t,param&lowbar;t>>&lt;7&gt; a);
 
 === Description
 
-
 Documentation for the reference function
-
-
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | Qualified param
-
 |===
 
 [#N-A-g-0d]
 == <<N,N>>::<<N-A,A>>::g
 
-
 `g` overloads
 
 === Synopses
-
 
 Declared in `&lt;qualified&period;cpp&gt;`
 
@@ -525,23 +442,19 @@ void
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | Qualified param
-
 |===
 
 [#N-A-g-0a]
 == <<N,N>>::<<N-A,A>>::g
 
-
 Reference function
 
 === Synopsis
-
 
 Declared in `&lt;qualified&period;cpp&gt;`
 
@@ -553,30 +466,23 @@ g(<<N-A-B,B>> a);
 
 === Description
 
-
 Documentation for the reference function
-
-
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | Qualified param
-
 |===
 
 [#N-A-g-06]
 == <<N,N>>::<<N-A,A>>::g
 
-
 Fail
 
 === Synopsis
-
 
 Declared in `&lt;qualified&period;cpp&gt;`
 
@@ -588,30 +494,23 @@ g(int a);
 
 === Description
 
-
 Function with same number of parameters but different types&period; This should fail&period;
-
-
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | Fundamental type parameter
-
 |===
 
 [#N-A-h-0b]
 == <<N,N>>::<<N-A,A>>::h
 
-
 `h` overloads
 
 === Synopses
-
 
 Declared in `&lt;qualified&period;cpp&gt;`
 
@@ -639,23 +538,19 @@ void
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | Qualified param
-
 |===
 
 [#N-A-h-0f]
 == <<N,N>>::<<N-A,A>>::h
 
-
 Reference function
 
 === Synopsis
-
 
 Declared in `&lt;qualified&period;cpp&gt;`
 
@@ -667,30 +562,23 @@ h(<<N,N>>::<<N-A,A>>::<<N-A-B,B>> a);
 
 === Description
 
-
 Documentation for the reference function
-
-
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | Qualified param
-
 |===
 
 [#N-A-h-06]
 == <<N,N>>::<<N-A,A>>::h
 
-
 Fail
 
 === Synopsis
-
 
 Declared in `&lt;qualified&period;cpp&gt;`
 
@@ -702,30 +590,23 @@ h(int a);
 
 === Description
 
-
 Function with same number of parameters but different types&period; This should fail&period;
-
-
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | Fundamental type parameter
-
 |===
 
 [#param_t]
 == param&lowbar;t
 
-
 Helper class for distinct parameter types
 
 === Synopsis
-
 
 Declared in `&lt;qualified&period;cpp&gt;`
 
@@ -734,10 +615,6 @@ Declared in `&lt;qualified&period;cpp&gt;`
 template&lt;int N&gt;
 class param&lowbar;t;
 ----
-
-
-
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

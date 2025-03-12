@@ -11,9 +11,9 @@
       <brief>
         <text>Integer overload.</text>
       </brief>
-      <details>
+      <para>
         <text>More info</text>
-      </details>
+      </para>
     </doc>
   </function>
   <function name="f" id="8HikSjplV248Xlimdc3WQFts5g8=">
@@ -38,9 +38,9 @@
       <brief>
         <text>C string overload.</text>
       </brief>
-      <details>
+      <para>
         <text>More info</text>
-      </details>
+      </para>
     </doc>
   </function>
   <function name="f" id="u1t7CFC30SbmMkunoYuyE7paABA=">

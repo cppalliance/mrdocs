@@ -4,38 +4,29 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<X-0e,`X`>> 
-
 |===
+
 === Deduction Guides
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<X-0d,`X&lt;0&gt;`>> 
-
 | <<X-00,`X&lt;0&gt;`>> 
-
 | <<X-0b,`X&lt;0&gt;`>> 
-
 | <<X-06,`X&lt;0&gt;`>> 
-
 |===
 
 [#X-0e]
 == X
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
 
@@ -45,15 +36,10 @@ template&lt;int&gt;
 struct X;
 ----
 
-
-
-
 [#X-0d]
 == <<X-0e,X>>&lt;0&gt;
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
 
@@ -65,9 +51,7 @@ Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
 [#X-00]
 == <<X-0e,X>>&lt;0&gt;
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
 
@@ -79,9 +63,7 @@ Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
 [#X-0b]
 == <<X-0e,X>>&lt;0&gt;
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
 
@@ -93,9 +75,7 @@ Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
 [#X-06]
 == <<X-0e,X>>&lt;0&gt;
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
 
@@ -104,7 +84,6 @@ Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
 template&lt;bool B = true&gt;
 <<X-0e,X>>&lt;0&gt;(long) -> <<X-0e,X>>&lt;0&gt;;
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

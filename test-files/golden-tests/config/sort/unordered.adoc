@@ -4,65 +4,46 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<D,`D`>> 
-
 | <<C-0f,`C`>> 
-
 | <<C-0d,`C&lt;int, char&gt;`>> 
-
 | <<C-03,`C&lt;int&gt;`>> 
-
 | <<B-0b,`B`>> 
-
 | <<B-04,`B&lt;int, char&gt;`>> 
-
 | <<B-05,`B&lt;int, U&gt;`>> 
-
 | <<A,`A`>> 
-
 | <<Z,`Z`>> 
-
 |===
+
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<operator_not_eq,`operator!&equals;`>> 
 | 
-
 | <<operator_eq,`operator&equals;&equals;`>> 
 | 
-
 | <<operator_not,`operator!`>> 
 | 
-
 | <<h,`h`>> 
 | 
-
 | <<g-0d,`g`>> 
 | 
-
 | <<f,`f`>> 
 | 
-
 |===
 
 [#D]
 == D
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -71,15 +52,10 @@ Declared in `&lt;unordered&period;cpp&gt;`
 struct D;
 ----
 
-
-
-
 [#C-0f]
 == C
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -91,15 +67,10 @@ template&lt;
 struct C;
 ----
 
-
-
-
 [#C-0d]
 == C&lt;int, char&gt;
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -109,15 +80,10 @@ template&lt;&gt;
 struct <<C-0f,C>>&lt;int, char&gt;;
 ----
 
-
-
-
 [#C-03]
 == C&lt;int&gt;
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -127,15 +93,10 @@ template&lt;&gt;
 struct <<C-0f,C>>&lt;int&gt;;
 ----
 
-
-
-
 [#B-0b]
 == B
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -147,15 +108,10 @@ template&lt;
 struct B;
 ----
 
-
-
-
 [#B-04]
 == B&lt;int, char&gt;
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -165,15 +121,10 @@ template&lt;&gt;
 struct <<B-0b,B>>&lt;int, char&gt;;
 ----
 
-
-
-
 [#B-05]
 == B&lt;int, U&gt;
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -183,15 +134,10 @@ template&lt;class U&gt;
 struct <<B-0b,B>>&lt;int, U&gt;;
 ----
 
-
-
-
 [#A]
 == A
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -200,15 +146,10 @@ Declared in `&lt;unordered&period;cpp&gt;`
 struct A;
 ----
 
-
-
-
 [#Z]
 == Z
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -221,43 +162,30 @@ struct Z;
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<Z-operator_3way,`operator&lt;&equals;&gt;`>> 
 | 
-
 | <<Z-operator_not_eq,`operator!&equals;`>> 
 | 
-
 | <<Z-operator_eq,`operator&equals;&equals;`>> 
 | 
-
 | <<Z-operator_not,`operator!`>> 
 | 
-
 | <<Z-2conversion,`operator bool`>> 
 | 
-
 | <<Z-foo,`foo`>> 
 | 
-
 | <<Z-2destructor,`&#126;Z`>> [.small]#[destructor]#
 | 
-
 | <<Z-2constructor-00,`Z`>>         [.small]#[constructor]#
 | 
-
 |===
-
-
 
 [#Z-operator_3way]
 == <<Z,Z>>::operator&lt;&equals;&gt;
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -270,9 +198,7 @@ operator&lt;&equals;&gt;(<<Z,Z>> const&) const;
 [#Z-operator_not_eq]
 == <<Z,Z>>::operator!&equals;
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -285,9 +211,7 @@ operator!&equals;(<<Z,Z>> const&) const;
 [#Z-operator_eq]
 == <<Z,Z>>::operator&equals;&equals;
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -300,9 +224,7 @@ operator&equals;&equals;(<<Z,Z>> const&) const;
 [#Z-operator_not]
 == <<Z,Z>>::operator!
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -315,9 +237,7 @@ operator!() const;
 [#Z-2conversion]
 == <<Z,Z>>::operator bool
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -329,9 +249,7 @@ operator bool() const;
 [#Z-foo]
 == <<Z,Z>>::foo
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -344,9 +262,7 @@ foo() const;
 [#Z-2destructor]
 == <<Z,Z>>::&#126;Z
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -358,12 +274,9 @@ Declared in `&lt;unordered&period;cpp&gt;`
 [#Z-2constructor-00]
 == <<Z,Z>>::Z
 
-
 === Synopses
 
-
 Declared in `&lt;unordered&period;cpp&gt;`
-
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -372,7 +285,6 @@ Declared in `&lt;unordered&period;cpp&gt;`
 ----
 
 [.small]#<<Z-2constructor-06,_» more&period;&period;&period;_>>#
-
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -385,9 +297,7 @@ Declared in `&lt;unordered&period;cpp&gt;`
 [#Z-2constructor-06]
 == <<Z,Z>>::Z
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -399,9 +309,7 @@ Z(int);
 [#Z-2constructor-05]
 == <<Z,Z>>::Z
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -413,9 +321,7 @@ Z();
 [#operator_not_eq]
 == operator!&equals;
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -430,9 +336,7 @@ operator!&equals;(
 [#operator_eq]
 == operator&equals;&equals;
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -447,9 +351,7 @@ operator&equals;&equals;(
 [#operator_not]
 == operator!
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -462,9 +364,7 @@ operator!(<<A,A>> const& v);
 [#h]
 == h
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -477,12 +377,9 @@ h();
 [#g-0d]
 == g
 
-
 === Synopses
 
-
 Declared in `&lt;unordered&period;cpp&gt;`
-
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -498,7 +395,6 @@ char
 [.small]#<<g-03c,_» more&period;&period;&period;_>>#
 
 
-
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
@@ -510,7 +406,6 @@ char
 ----
 
 [.small]#<<g-0e4,_» more&period;&period;&period;_>>#
-
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -525,7 +420,6 @@ char
 [.small]#<<g-0a,_» more&period;&period;&period;_>>#
 
 
-
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 char
@@ -537,7 +431,6 @@ char
 [.small]#<<g-03a,_» more&period;&period;&period;_>>#
 
 
-
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 char
@@ -547,7 +440,6 @@ char
 [.small]#<<g-06,_» more&period;&period;&period;_>>#
 
 
-
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 char
@@ -555,7 +447,6 @@ char
 ----
 
 [.small]#<<g-04,_» more&period;&period;&period;_>>#
-
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -569,9 +460,7 @@ void
 [#g-03c]
 == g
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -588,9 +477,7 @@ g(
 [#g-0e4]
 == g&lt;int&gt;
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -607,9 +494,7 @@ char
 [#g-0a]
 == g
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -625,9 +510,7 @@ g(
 [#g-03a]
 == g
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -642,9 +525,7 @@ g(
 [#g-06]
 == g
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -657,9 +538,7 @@ g(double);
 [#g-04]
 == g
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -672,9 +551,7 @@ g(int);
 [#g-0e3]
 == g
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -687,9 +564,7 @@ g();
 [#f]
 == f
 
-
 === Synopsis
-
 
 Declared in `&lt;unordered&period;cpp&gt;`
 
@@ -698,7 +573,6 @@ Declared in `&lt;unordered&period;cpp&gt;`
 void
 f();
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -4,39 +4,30 @@
 [#index]
 == Global namespace
 
-
 === Namespaces
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<LongName,`LongName`>> 
-
 |===
 
 [#LongName]
 == LongName
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<LongName-S1,`S1`>> 
-
 | <<LongName-S2,`S2`>> 
-
 |===
 
 [#LongName-S1]
 == <<LongName,LongName>>::S1
 
-
 === Synopsis
-
 
 Declared in `&lt;using&hyphen;2&period;cpp&gt;`
 
@@ -45,15 +36,10 @@ Declared in `&lt;using&hyphen;2&period;cpp&gt;`
 struct S1;
 ----
 
-
-
-
 [#LongName-S2]
 == <<LongName,LongName>>::S2
 
-
 === Synopsis
-
 
 Declared in `&lt;using&hyphen;2&period;cpp&gt;`
 
@@ -62,15 +48,10 @@ Declared in `&lt;using&hyphen;2&period;cpp&gt;`
 struct S2;
 ----
 
-
-
-
 [#S1]
 == S1
 
-
 === Synopsis
-
 
 Declared in `&lt;using&hyphen;2&period;cpp&gt;`
 
@@ -90,9 +71,7 @@ using <<LongName,LongName>>::S1;
 [#S2]
 == S2
 
-
 === Synopsis
-
 
 Declared in `&lt;using&hyphen;2&period;cpp&gt;`
 
@@ -108,7 +87,6 @@ using <<LongName,LongName>>::S2;
 | Name
 | S2
 |===
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

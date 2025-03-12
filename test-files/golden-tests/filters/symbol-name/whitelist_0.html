@@ -19,14 +19,12 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="#N0"><code>N0</code></a> </td><td><span>This namespace should extracted because it&#x27;s implied by <code>N0::f0_WL</code></span></td>
-</tr><tr>
-<td><a href="#N1"><code>N1</code></a> </td><td><span>This namespace should extracted because it&#x27;s implied by <code>N1::N3_WL</code> and <code>N1::N4::f1_WL</code></span></td>
-</tr><tr>
-<td><a href="#N5"><code>N5</code></a> </td><td><span>This namespace should extracted because it&#x27;s implied by <code>N5::N6::*7</code></span></td>
-</tr>
+<td><a href="#N0"><code>N0</code></a> </td><td><span>This namespace should extracted because it&#x27;s implied by <code>N0::f0_WL</code></span></td></tr><tr>
+<td><a href="#N1"><code>N1</code></a> </td><td><span>This namespace should extracted because it&#x27;s implied by <code>N1::N3_WL</code> and <code>N1::N4::f1_WL</code></span></td></tr><tr>
+<td><a href="#N5"><code>N5</code></a> </td><td><span>This namespace should extracted because it&#x27;s implied by <code>N5::N6::*7</code></span></td></tr>
 </tbody>
 </table>
+
 <h2>Types</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
@@ -37,10 +35,10 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="#C"><code>C</code></a> </td><td><span>This namespace should be included because it strictly matches <code>C</code></span></td>
-</tr>
+<td><a href="#C"><code>C</code></a> </td><td><span>This namespace should be included because it strictly matches <code>C</code></span></td></tr>
 </tbody>
 </table>
+
 </div>
 <div>
 <div>
@@ -60,10 +58,10 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="#N0-f0_WL"><code>f0_WL</code></a> </td><td><span>This function should be included because it matches <code>N0::f0_WL</code></span></td>
-</tr>
+<td><a href="#N0-f0_WL"><code>f0_WL</code></a> </td><td><span>This function should be included because it matches <code>N0::f0_WL</code></span></td></tr>
 </tbody>
 </table>
+
 </div>
 <div>
 <div>
@@ -103,12 +101,11 @@ f0_WL();
 </thead>
 <tbody>
 <tr>
-<td><a href="#N1-N3_WL"><code>N3_WL</code></a> </td><td><span>This namespace should extracted because it&#x27;s explicitly included by <code>N1::N3_WL</code></span></td>
-</tr><tr>
-<td><a href="#N1-N4"><code>N4</code></a> </td><td><span>This namespace should extracted because it&#x27;s implied by <code>N1::N4::f1_WL</code></span></td>
-</tr>
+<td><a href="#N1-N3_WL"><code>N3_WL</code></a> </td><td><span>This namespace should extracted because it&#x27;s explicitly included by <code>N1::N3_WL</code></span></td></tr><tr>
+<td><a href="#N1-N4"><code>N4</code></a> </td><td><span>This namespace should extracted because it&#x27;s implied by <code>N1::N4::f1_WL</code></span></td></tr>
 </tbody>
 </table>
+
 </div>
 <div>
 <div>
@@ -128,10 +125,10 @@ f0_WL();
 </thead>
 <tbody>
 <tr>
-<td><a href="#N1-N3_WL-f1_WL"><code>f1_WL</code></a> </td><td><span>This function should extracted because the namespace <code>N1::N3_WL</code> is included as a literal.</span></td>
-</tr>
+<td><a href="#N1-N3_WL-f1_WL"><code>f1_WL</code></a> </td><td><span>This function should extracted because the namespace <code>N1::N3_WL</code> is included as a literal.</span></td></tr>
 </tbody>
 </table>
+
 </div>
 <div>
 <div>
@@ -171,10 +168,10 @@ f1_WL();
 </thead>
 <tbody>
 <tr>
-<td><a href="#N1-N4-f1_WL"><code>f1_WL</code></a> </td><td><span>This function should extracted because it matches <code>N1::N4::f1_WL</code></span></td>
-</tr>
+<td><a href="#N1-N4-f1_WL"><code>f1_WL</code></a> </td><td><span>This function should extracted because it matches <code>N1::N4::f1_WL</code></span></td></tr>
 </tbody>
 </table>
+
 </div>
 <div>
 <div>
@@ -214,10 +211,10 @@ f1_WL();
 </thead>
 <tbody>
 <tr>
-<td><a href="#N5-N6"><code>N6</code></a> </td><td><span>This namespace should extracted because it&#x27;s implied by <code>N5::N6::*7</code></span></td>
-</tr>
+<td><a href="#N5-N6"><code>N6</code></a> </td><td><span>This namespace should extracted because it&#x27;s implied by <code>N5::N6::*7</code></span></td></tr>
 </tbody>
 </table>
+
 </div>
 <div>
 <div>
@@ -237,12 +234,11 @@ f1_WL();
 </thead>
 <tbody>
 <tr>
-<td><a href="#N5-N6-M7"><code>M7</code></a> </td><td><span>This namespace should be included because it matches <code>N5::N6::*7</code></span></td>
-</tr><tr>
-<td><a href="#N5-N6-N7"><code>N7</code></a> </td><td><span>This namespace should be included because it matches <code>N5::N6::*7</code></span></td>
-</tr>
+<td><a href="#N5-N6-M7"><code>M7</code></a> </td><td><span>This namespace should be included because it matches <code>N5::N6::*7</code></span></td></tr><tr>
+<td><a href="#N5-N6-N7"><code>N7</code></a> </td><td><span>This namespace should be included because it matches <code>N5::N6::*7</code></span></td></tr>
 </tbody>
 </table>
+
 </div>
 <div>
 <div>
@@ -262,10 +258,10 @@ f1_WL();
 </thead>
 <tbody>
 <tr>
-<td><a href="#N5-N6-M7-f2_WL"><code>f2_WL</code></a> </td><td><span>This function should be included because it&#x27;s a member of <code>M7</code>, which matches <code>N5::N6::*7</code></span></td>
-</tr>
+<td><a href="#N5-N6-M7-f2_WL"><code>f2_WL</code></a> </td><td><span>This function should be included because it&#x27;s a member of <code>M7</code>, which matches <code>N5::N6::*7</code></span></td></tr>
 </tbody>
 </table>
+
 </div>
 <div>
 <div>
@@ -305,10 +301,10 @@ f2_WL();
 </thead>
 <tbody>
 <tr>
-<td><a href="#N5-N6-N7-f2_WL"><code>f2_WL</code></a> </td><td><span>This function should be included because it&#x27;s a member of <code>N7</code>, which matches <code>N5::N6::*7</code></span></td>
-</tr>
+<td><a href="#N5-N6-N7-f2_WL"><code>f2_WL</code></a> </td><td><span>This function should be included because it&#x27;s a member of <code>N7</code>, which matches <code>N5::N6::*7</code></span></td></tr>
 </tbody>
 </table>
+
 </div>
 <div>
 <div>
@@ -358,10 +354,10 @@ struct C;
 </thead>
 <tbody>
 <tr>
-<td><a href="#C-D"><code>D</code></a> </td><td><span>This struct should be included because it&#x27;s a member of <code>C</code></span></td>
-</tr>
+<td><a href="#C-D"><code>D</code></a> </td><td><span>This struct should be included because it&#x27;s a member of <code>C</code></span></td></tr>
 </tbody>
 </table>
+
 <h2>Member Functions</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
@@ -372,10 +368,10 @@ struct C;
 </thead>
 <tbody>
 <tr>
-<td><a href="#C-f0_WL"><code>f0_WL</code></a> </td><td><span>This function should be included because it&#x27;s a member of <code>C</code></span></td>
-</tr>
+<td><a href="#C-f0_WL"><code>f0_WL</code></a> </td><td><span>This function should be included because it&#x27;s a member of <code>C</code></span></td></tr>
 </tbody>
 </table>
+
 
 
 </div>
@@ -407,10 +403,10 @@ struct D;
 </thead>
 <tbody>
 <tr>
-<td><a href="#C-D-f1_WL"><code>f1_WL</code></a> </td><td><span>This function should be included because it&#x27;s a member of <code>D</code></span></td>
-</tr>
+<td><a href="#C-D-f1_WL"><code>f1_WL</code></a> </td><td><span>This function should be included because it&#x27;s a member of <code>D</code></span></td></tr>
 </tbody>
 </table>
+
 
 
 </div>

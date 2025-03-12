@@ -4,37 +4,29 @@
 [#index]
 == Global namespace
 
-
 === Namespaces
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<TEST,`TEST`>> 
-
 |===
 
 [#TEST]
 == TEST
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<TEST-SUCCESS,`SUCCESS`>> 
-
 |===
 
 [#TEST-SUCCESS]
 == <<TEST,TEST>>::SUCCESS
 
-
 === Synopsis
-
 
 Declared in `&lt;include&hyphen;self&period;cpp&gt;`
 
@@ -42,10 +34,6 @@ Declared in `&lt;include&hyphen;self&period;cpp&gt;`
 ----
 struct SUCCESS;
 ----
-
-
-
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

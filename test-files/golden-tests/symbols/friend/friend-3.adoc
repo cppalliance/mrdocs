@@ -4,36 +4,29 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<T,`T`>> 
-
 | <<U,`U`>> 
-
 |===
+
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<f,`f`>> 
 | T&colon;&colon;f
-
 |===
 
 [#T]
 == T
 
-
 === Synopsis
-
 
 Declared in `&lt;friend&hyphen;3&period;cpp&gt;`
 
@@ -46,24 +39,18 @@ struct T;
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<T-08friend,`f`>> 
 | T&colon;&colon;f
-
 |===
-
-
 
 [#T-08friend]
 == f
 
-
 T&colon;&colon;f
 
 === Synopsis
-
 
 Declared in `&lt;friend&hyphen;3&period;cpp&gt;`
 
@@ -77,9 +64,7 @@ f();
 [#U]
 == U
 
-
 === Synopsis
-
 
 Declared in `&lt;friend&hyphen;3&period;cpp&gt;`
 
@@ -92,20 +77,14 @@ struct U;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<U-08friend,`f`>> 
-
 |===
-
-
 
 [#U-08friend]
 == f
 
-
 === Synopsis
-
 
 Declared in `&lt;friend&hyphen;3&period;cpp&gt;`
 
@@ -119,11 +98,9 @@ f();
 [#f]
 == f
 
-
 T&colon;&colon;f
 
 === Synopsis
-
 
 Declared in `&lt;friend&hyphen;3&period;cpp&gt;`
 
@@ -132,7 +109,6 @@ Declared in `&lt;friend&hyphen;3&period;cpp&gt;`
 void
 f();
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

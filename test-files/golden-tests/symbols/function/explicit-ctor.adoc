@@ -4,29 +4,21 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<Explicit,`Explicit`>> 
-
 | <<ExplicitExpression,`ExplicitExpression`>> 
-
 | <<ExplicitFalse,`ExplicitFalse`>> 
-
 | <<ExplicitTrue,`ExplicitTrue`>> 
-
 |===
 
 [#Explicit]
 == Explicit
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -39,25 +31,18 @@ struct Explicit;
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<Explicit-2constructor-08,`Explicit`>>         [.small]#[constructor]#
 | 
-
 |===
-
-
 
 [#Explicit-2constructor-08]
 == <<Explicit,Explicit>>::Explicit
 
-
 === Synopses
 
-
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
-
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -69,7 +54,6 @@ explicit
 [.small]#<<Explicit-2constructor-02,_» more&period;&period;&period;_>>#
 
 
-
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit
@@ -79,7 +63,6 @@ explicit
 [.small]#<<Explicit-2constructor-00,_» more&period;&period;&period;_>>#
 
 
-
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit
@@ -87,7 +70,6 @@ explicit
 ----
 
 [.small]#<<Explicit-2constructor-0b,_» more&period;&period;&period;_>>#
-
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -103,9 +85,7 @@ explicit
 [#Explicit-2constructor-02]
 == <<Explicit,Explicit>>::Explicit
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -118,9 +98,7 @@ Explicit();
 [#Explicit-2constructor-00]
 == <<Explicit,Explicit>>::Explicit
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -133,9 +111,7 @@ Explicit(<<Explicit,Explicit>> const&);
 [#Explicit-2constructor-0b]
 == <<Explicit,Explicit>>::Explicit
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -148,9 +124,7 @@ Explicit(<<Explicit,Explicit>>&&) noexcept;
 [#Explicit-2constructor-03]
 == <<Explicit,Explicit>>::Explicit
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -165,9 +139,7 @@ Explicit(
 [#ExplicitExpression]
 == ExplicitExpression
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -181,25 +153,18 @@ struct ExplicitExpression;
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<ExplicitExpression-2constructor-026,`ExplicitExpression`>>         [.small]#[constructor]#
 | 
-
 |===
-
-
 
 [#ExplicitExpression-2constructor-026]
 == <<ExplicitExpression,ExplicitExpression>>::ExplicitExpression
 
-
 === Synopses
 
-
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
-
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -211,7 +176,6 @@ explicit(B)
 [.small]#<<ExplicitExpression-2constructor-0b,_» more&period;&period;&period;_>>#
 
 
-
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit(B)
@@ -221,7 +185,6 @@ explicit(B)
 [.small]#<<ExplicitExpression-2constructor-04,_» more&period;&period;&period;_>>#
 
 
-
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit(B)
@@ -229,7 +192,6 @@ explicit(B)
 ----
 
 [.small]#<<ExplicitExpression-2constructor-08,_» more&period;&period;&period;_>>#
-
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -245,9 +207,7 @@ explicit(B)
 [#ExplicitExpression-2constructor-0b]
 == <<ExplicitExpression,ExplicitExpression>>::ExplicitExpression
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -260,9 +220,7 @@ ExplicitExpression();
 [#ExplicitExpression-2constructor-04]
 == <<ExplicitExpression,ExplicitExpression>>::ExplicitExpression
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -275,9 +233,7 @@ ExplicitExpression(<<ExplicitExpression,ExplicitExpression>> const&);
 [#ExplicitExpression-2constructor-08]
 == <<ExplicitExpression,ExplicitExpression>>::ExplicitExpression
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -290,9 +246,7 @@ ExplicitExpression(<<ExplicitExpression,ExplicitExpression>>&&) noexcept;
 [#ExplicitExpression-2constructor-027]
 == <<ExplicitExpression,ExplicitExpression>>::ExplicitExpression
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -307,9 +261,7 @@ ExplicitExpression(
 [#ExplicitFalse]
 == ExplicitFalse
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -322,25 +274,18 @@ struct ExplicitFalse;
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<ExplicitFalse-2constructor-04c,`ExplicitFalse`>>         [.small]#[constructor]#
 | 
-
 |===
-
-
 
 [#ExplicitFalse-2constructor-04c]
 == <<ExplicitFalse,ExplicitFalse>>::ExplicitFalse
 
-
 === Synopses
 
-
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
-
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -352,7 +297,6 @@ explicit(false)
 [.small]#<<ExplicitFalse-2constructor-01,_» more&period;&period;&period;_>>#
 
 
-
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit(false)
@@ -362,7 +306,6 @@ explicit(false)
 [.small]#<<ExplicitFalse-2constructor-08,_» more&period;&period;&period;_>>#
 
 
-
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit(false)
@@ -370,7 +313,6 @@ explicit(false)
 ----
 
 [.small]#<<ExplicitFalse-2constructor-0a,_» more&period;&period;&period;_>>#
-
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -386,9 +328,7 @@ explicit(false)
 [#ExplicitFalse-2constructor-01]
 == <<ExplicitFalse,ExplicitFalse>>::ExplicitFalse
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -401,9 +341,7 @@ ExplicitFalse();
 [#ExplicitFalse-2constructor-08]
 == <<ExplicitFalse,ExplicitFalse>>::ExplicitFalse
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -416,9 +354,7 @@ ExplicitFalse(<<ExplicitFalse,ExplicitFalse>> const&);
 [#ExplicitFalse-2constructor-0a]
 == <<ExplicitFalse,ExplicitFalse>>::ExplicitFalse
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -431,9 +367,7 @@ ExplicitFalse(<<ExplicitFalse,ExplicitFalse>>&&) noexcept;
 [#ExplicitFalse-2constructor-04f]
 == <<ExplicitFalse,ExplicitFalse>>::ExplicitFalse
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -448,9 +382,7 @@ ExplicitFalse(
 [#ExplicitTrue]
 == ExplicitTrue
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -463,25 +395,18 @@ struct ExplicitTrue;
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<ExplicitTrue-2constructor-0f,`ExplicitTrue`>>         [.small]#[constructor]#
 | 
-
 |===
-
-
 
 [#ExplicitTrue-2constructor-0f]
 == <<ExplicitTrue,ExplicitTrue>>::ExplicitTrue
 
-
 === Synopses
 
-
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
-
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -493,7 +418,6 @@ explicit(true)
 [.small]#<<ExplicitTrue-2constructor-0d,_» more&period;&period;&period;_>>#
 
 
-
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit(true)
@@ -503,7 +427,6 @@ explicit(true)
 [.small]#<<ExplicitTrue-2constructor-04,_» more&period;&period;&period;_>>#
 
 
-
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit(true)
@@ -511,7 +434,6 @@ explicit(true)
 ----
 
 [.small]#<<ExplicitTrue-2constructor-08,_» more&period;&period;&period;_>>#
-
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -527,9 +449,7 @@ explicit(true)
 [#ExplicitTrue-2constructor-0d]
 == <<ExplicitTrue,ExplicitTrue>>::ExplicitTrue
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -542,9 +462,7 @@ ExplicitTrue();
 [#ExplicitTrue-2constructor-04]
 == <<ExplicitTrue,ExplicitTrue>>::ExplicitTrue
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -557,9 +475,7 @@ ExplicitTrue(<<ExplicitTrue,ExplicitTrue>> const&);
 [#ExplicitTrue-2constructor-08]
 == <<ExplicitTrue,ExplicitTrue>>::ExplicitTrue
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -572,9 +488,7 @@ ExplicitTrue(<<ExplicitTrue,ExplicitTrue>>&&) noexcept;
 [#ExplicitTrue-2constructor-05]
 == <<ExplicitTrue,ExplicitTrue>>::ExplicitTrue
 
-
 === Synopsis
-
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 
@@ -585,7 +499,6 @@ ExplicitTrue(
     int,
     int);
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

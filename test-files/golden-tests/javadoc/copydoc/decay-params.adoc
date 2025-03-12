@@ -4,30 +4,24 @@
 [#index]
 == Global namespace
 
-
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<bar,`bar`>> 
 | Brief from `foo()`
-
 | <<foo-05,`foo`>> 
 | `foo` overloads
-
 |===
 
 [#bar]
 == bar
 
-
 Brief from `foo()`
 
 === Synopsis
-
 
 Declared in `&lt;decay&hyphen;params&period;cpp&gt;`
 
@@ -40,35 +34,27 @@ bar(int* a);
 
 === Description
 
-
 This is the function original documentation for the foo function with an array parameter&period;
 
-
-
 === Return Value
-
 
 A boolean value&period;
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | An array of integers&period;
-
 |===
 
 [#foo-05]
 == foo
 
-
 `foo` overloads
 
 === Synopses
-
 
 Declared in `&lt;decay&hyphen;params&period;cpp&gt;`
 
@@ -108,28 +94,23 @@ bool
 
 === Return Value
 
-
 A boolean value&period;
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | An integer&period;
-
 |===
 
 [#foo-0c]
 == foo
 
-
 We should not copy this doc
 
 === Synopsis
-
 
 Declared in `&lt;decay&hyphen;params&period;cpp&gt;`
 
@@ -141,19 +122,14 @@ foo();
 
 === Description
 
-
 `bar` should not copy this documentation just because it has the same name and is simpler&period;
-
-
 
 [#foo-01]
 == foo
 
-
 We should not copy this doc
 
 === Synopsis
-
 
 Declared in `&lt;decay&hyphen;params&period;cpp&gt;`
 
@@ -165,30 +141,23 @@ foo(int a);
 
 === Description
 
-
 `bar` should not copy this documentation just because it has the same number of parameters&period;
-
-
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | An integer&period;
-
 |===
 
 [#foo-0e]
 == foo
 
-
 Brief from `foo()`
 
 === Synopsis
-
 
 Declared in `&lt;decay&hyphen;params&period;cpp&gt;`
 
@@ -201,27 +170,20 @@ foo(int a[3]);
 
 === Description
 
-
 This is the function original documentation for the foo function with an array parameter&period;
 
-
-
 === Return Value
-
 
 A boolean value&period;
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | An array of integers&period;
-
 |===
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

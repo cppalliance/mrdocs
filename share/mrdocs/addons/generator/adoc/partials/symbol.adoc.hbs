@@ -16,17 +16,13 @@
 {{! Include the symbol title at a higher level }}
 {{#> markup/h level=1 id=symbol.anchor }}{{> symbol/qualified-name symbol }}{{/markup/h}}
 {{/unless}}
-
 {{! Brief }}
 {{#if symbol.doc.brief}}
 {{> javadoc/brief symbol.doc.brief }}
-
-
 {{/if}}
 {{! Synopsis }}
 {{#unless (eq symbol.kind "namespace")}}
 {{#> markup/dynamic-level-h }}{{#if (ne symbol.kind "overloads")}}Synopsis{{else}}Synopses{{/if}}{{/markup/dynamic-level-h}}
-
 {{>location/source dcl=(primary_location symbol)}}
 
 
@@ -37,16 +33,12 @@
 {{#if (eq symbol.kind "record")}}
 {{#with symbol.interface}}
 {{>symbol/tranche tranche=public label="" is-namespace=false}}
-
 {{>symbol/tranche tranche=protected label="Protected" is-namespace=false}}
-
 {{>symbol/tranche tranche=private label="Private" is-namespace=false}}
-
 {{/with}}
 {{! Namespace members }}
 {{else if (eq symbol.kind "namespace")}}
 {{>symbol/tranche tranche=symbol.members label="" is-namespace=true}}
-
 {{! Enum members }}
 {{else if (eq symbol.kind "enum")}}
 {{#if symbol.constants}}
@@ -61,7 +53,7 @@
 {{else}}
 |`{{>symbol/name . nolink=true}}`
 {{/if}}
-|{{> javadoc/brief doc.brief }}
+|{{> javadoc/inline-brief doc.brief }}
 {{/each}}
 |===
 
@@ -78,10 +70,9 @@
 
 {{/if}}
 {{! Description }}
-{{#if symbol.doc.details}}
+{{#if symbol.doc.description}}
 {{#> markup/dynamic-level-h }}Description{{/markup/dynamic-level-h}}
-
-{{> javadoc/detail-blocks symbol.doc.details }}
+{{> javadoc/description symbol.doc.description }}
 {{/if}}
 {{! Using symbols }}
 {{#if symbol.shadows}}
@@ -98,14 +89,12 @@
 {{! Exceptions }}
 {{#if symbol.doc.exceptions}}
 {{#> markup/dynamic-level-h }}Exceptions{{/markup/dynamic-level-h}}
-
 |===
-| Name | Thrown on
-
+| Name
+| Thrown on
 {{#each symbol.doc.exceptions}}
 | {{> javadoc/reference exception}}
 | {{>javadoc/block .}}
-
 {{/each}}
 |===
 
@@ -113,28 +102,26 @@
 {{! Return value }}
 {{#if symbol.doc.returns}}
 {{#> markup/dynamic-level-h }}Return Value{{/markup/dynamic-level-h}}
-
 {{#if (eq (size symbol.doc.returns) 1)}}
 {{> javadoc/returns symbol.doc.returns.[0]}}
+
 
 {{else}}
 {{#each symbol.doc.returns}}
 * {{> javadoc/returns .}}
 {{/each}}
-{{/if}}
 
+{{/if}}
 {{/if}}
 {{! Template Parameters }}
 {{#if symbol.doc.tparams}}
 {{#> markup/dynamic-level-h }}Template Parameters{{/markup/dynamic-level-h}}
-
 |===
-| Name | Description
-
+| Name
+| Description
 {{#each symbol.doc.tparams}}
 | *{{name}}*
 | {{>javadoc/block .}}
-
 {{/each}}
 |===
 
@@ -142,14 +129,12 @@
 {{! Parameters }}
 {{#if symbol.doc.params}}
 {{#> markup/dynamic-level-h }}Parameters{{/markup/dynamic-level-h}}
-
 |===
-| Name | Description
-
+| Name
+| Description
 {{#each symbol.doc.params}}
 | *{{name}}*{{#if direction}} [{{direction}}]{{/if}}
 | {{>javadoc/block .}}
-
 {{/each}}
 |===
 
@@ -157,35 +142,21 @@
 {{! Preconditions }}
 {{#if symbol.doc.preconditions}}
 {{#> markup/dynamic-level-h }}Preconditions{{/markup/dynamic-level-h}}
-
-{{#each symbol.doc.preconditions}}
-* {{>javadoc/block .}}
+{{#each symbol.doc.preconditions}}* {{>javadoc/block .}}
 {{/each}}
-
-
 
 {{/if}}
 {{! Postconditions }}
 {{#if symbol.doc.postconditions}}
 {{#> markup/dynamic-level-h }}Postconditions{{/markup/dynamic-level-h}}
-
-{{#each symbol.doc.postconditions}}
-* {{>javadoc/block .}}
+{{#each symbol.doc.postconditions}}* {{>javadoc/block .}}
 {{/each}}
-
-
 
 {{/if}}
 {{! See Also }}
 {{#if symbol.doc.sees}}
 {{#> markup/dynamic-level-h }}See Also{{/markup/dynamic-level-h}}
-
 {{#each symbol.doc.sees}}
-{{>javadoc/block .}}
-
+{{>javadoc/see .}}
 {{/each}}
-
-
-
-
 {{/if}}

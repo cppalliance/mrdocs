@@ -4,27 +4,22 @@
 [#index]
 == Global namespace
 
-
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<f,`f`>> 
 | A brief&period;
-
 |===
 
 [#f]
 == f
 
-
 A brief&period;
 
 === Synopsis
-
 
 Declared in `&lt;included&period;hpp&gt;`
 
@@ -33,7 +28,6 @@ Declared in `&lt;included&period;hpp&gt;`
 void
 f();
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

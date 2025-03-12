@@ -4,23 +4,18 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<T,`T`>> 
-
 |===
 
 [#T]
 == T
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;1&period;cpp&gt;`
 
@@ -33,52 +28,39 @@ struct T;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<T-U1,`U1`>> 
-
 | <<T-U2,`U2`>> 
-
 |===
+
 === Member Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<T-f1,`f1`>> 
-
 | <<T-f2,`f2`>> 
-
 | <<T-f3,`f3`>> 
-
 |===
 
 === Protected Member Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<T-g1,`g1`>> 
 | brief&hyphen;g1
-
 | <<T-g2,`g2`>> 
 | brief&hyphen;g2
-
 | <<T-g3,`g3`>> 
 | brief&hyphen;g3
-
 |===
-
 
 [#T-U1]
 == <<T,T>>::U1
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;1&period;cpp&gt;`
 
@@ -90,9 +72,7 @@ using U1 = int;
 [#T-U2]
 == <<T,T>>::U2
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;1&period;cpp&gt;`
 
@@ -104,9 +84,7 @@ typedef char U2;
 [#T-f1]
 == <<T,T>>::f1
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;1&period;cpp&gt;`
 
@@ -119,9 +97,7 @@ f1();
 [#T-f2]
 == <<T,T>>::f2
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;1&period;cpp&gt;`
 
@@ -134,9 +110,7 @@ f2();
 [#T-f3]
 == <<T,T>>::f3
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;1&period;cpp&gt;`
 
@@ -149,11 +123,9 @@ f3();
 [#T-g1]
 == <<T,T>>::g1
 
-
 brief&hyphen;g1
 
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;1&period;cpp&gt;`
 
@@ -165,19 +137,14 @@ g1();
 
 === Description
 
-
 desc
-
-
 
 [#T-g2]
 == <<T,T>>::g2
 
-
 brief&hyphen;g2
 
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;1&period;cpp&gt;`
 
@@ -189,17 +156,14 @@ g2();
 
 === Return Value
 
-
 the number 2
 
 [#T-g3]
 == <<T,T>>::g3
 
-
 brief&hyphen;g3
 
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;1&period;cpp&gt;`
 
@@ -211,20 +175,16 @@ g3(int x);
 
 === Return Value
 
-
 the separator
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *x*
 | any old number
-
 |===
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

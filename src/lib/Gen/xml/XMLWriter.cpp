@@ -794,9 +794,6 @@ writeNode(doc::Node const& node)
     case doc::NodeKind::throws:
         writeThrows(dynamic_cast<doc::Throws const&>(node));
         break;
-    case doc::NodeKind::details:
-        writeDetails(dynamic_cast<doc::Details const&>(node));
-        break;
     case doc::NodeKind::see:
         writeSee(dynamic_cast<doc::See const&>(node));
         break;
@@ -934,18 +931,6 @@ writeParagraph(
         { "class", tag, ! tag.empty() }});
     writeNodes(para.children);
     tags_.close("para");
-}
-
-void
-XMLWriter::
-writeDetails(
-    doc::Details const& para,
-    llvm::StringRef tag)
-{
-    tags_.open("details", {
-        { "class", tag, ! tag.empty() }});
-    writeNodes(para.children);
-    tags_.close("details");
 }
 
 void

@@ -4,31 +4,22 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<C0,`C0`>> 
-
 | <<C1,`C1`>> 
-
 | <<C2,`C2`>> 
-
 | <<C3,`C3`>> 
-
 | <<S,`S`>> 
-
 |===
 
 [#C0]
 == C0
 
-
 === Synopsis
-
 
 Declared in `&lt;class&hyphen;template&period;cpp&gt;`
 
@@ -42,33 +33,24 @@ struct C0;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<C0-N0,`N0`>> 
-
 |===
+
 === Data Members
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<C0-w,`w`>> 
-
 | <<C0-x,`x`>> 
-
 | <<C0-y,`y`>> 
-
 |===
-
-
 
 [#C0-N0]
 == <<C0,C0>>::N0
 
-
 === Synopsis
-
 
 Declared in `&lt;class&hyphen;template&period;cpp&gt;`
 
@@ -81,20 +63,14 @@ struct N0;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<C0-N0-z,`z`>> 
-
 |===
-
-
 
 [#C0-N0-z]
 == <<C0,C0>>::<<C0-N0,N0>>::z
 
-
 === Synopsis
-
 
 Declared in `&lt;class&hyphen;template&period;cpp&gt;`
 
@@ -106,9 +82,7 @@ int z;
 [#C0-w]
 == <<C0,C0>>::w
 
-
 === Synopsis
-
 
 Declared in `&lt;class&hyphen;template&period;cpp&gt;`
 
@@ -120,9 +94,7 @@ int w;
 [#C0-x]
 == <<C0,C0>>::x
 
-
 === Synopsis
-
 
 Declared in `&lt;class&hyphen;template&period;cpp&gt;`
 
@@ -134,9 +106,7 @@ Declared in `&lt;class&hyphen;template&period;cpp&gt;`
 [#C0-y]
 == <<C0,C0>>::y
 
-
 === Synopsis
-
 
 Declared in `&lt;class&hyphen;template&period;cpp&gt;`
 
@@ -148,9 +118,7 @@ T y;
 [#C1]
 == C1
 
-
 === Synopsis
-
 
 Declared in `&lt;class&hyphen;template&period;cpp&gt;`
 
@@ -163,29 +131,22 @@ struct C1;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<C1-N1,`N1`>> 
-
 |===
+
 === Data Members
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<C1-w,`w`>> 
-
 |===
-
-
 
 [#C1-N1]
 == <<C1,C1>>::N1
 
-
 === Synopsis
-
 
 Declared in `&lt;class&hyphen;template&period;cpp&gt;`
 
@@ -199,24 +160,16 @@ struct N1;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<C1-N1-x,`x`>> 
-
 | <<C1-N1-y,`y`>> 
-
 | <<C1-N1-z,`z`>> 
-
 |===
-
-
 
 [#C1-N1-x]
 == <<C1,C1>>::<<C1-N1,N1>>::x
 
-
 === Synopsis
-
 
 Declared in `&lt;class&hyphen;template&period;cpp&gt;`
 
@@ -228,9 +181,7 @@ Declared in `&lt;class&hyphen;template&period;cpp&gt;`
 [#C1-N1-y]
 == <<C1,C1>>::<<C1-N1,N1>>::y
 
-
 === Synopsis
-
 
 Declared in `&lt;class&hyphen;template&period;cpp&gt;`
 
@@ -242,9 +193,7 @@ T y;
 [#C1-N1-z]
 == <<C1,C1>>::<<C1-N1,N1>>::z
 
-
 === Synopsis
-
 
 Declared in `&lt;class&hyphen;template&period;cpp&gt;`
 
@@ -256,9 +205,7 @@ int z;
 [#C1-w]
 == <<C1,C1>>::w
 
-
 === Synopsis
-
 
 Declared in `&lt;class&hyphen;template&period;cpp&gt;`
 
@@ -270,9 +217,7 @@ int w;
 [#C2]
 == C2
 
-
 === Synopsis
-
 
 Declared in `&lt;class&hyphen;template&period;cpp&gt;`
 
@@ -286,29 +231,22 @@ struct C2;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<C2-N2,`N2`>> 
-
 |===
+
 === Data Members
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<C2-v,`v`>> 
-
 |===
-
-
 
 [#C2-N2]
 == <<C2,C2>>::N2
 
-
 === Synopsis
-
 
 Declared in `&lt;class&hyphen;template&period;cpp&gt;`
 
@@ -322,26 +260,17 @@ struct N2;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<C2-N2-w,`w`>> 
-
 | <<C2-N2-x,`x`>> 
-
 | <<C2-N2-y,`y`>> 
-
 | <<C2-N2-z,`z`>> 
-
 |===
-
-
 
 [#C2-N2-w]
 == <<C2,C2>>::<<C2-N2,N2>>::w
 
-
 === Synopsis
-
 
 Declared in `&lt;class&hyphen;template&period;cpp&gt;`
 
@@ -353,9 +282,7 @@ Declared in `&lt;class&hyphen;template&period;cpp&gt;`
 [#C2-N2-x]
 == <<C2,C2>>::<<C2-N2,N2>>::x
 
-
 === Synopsis
-
 
 Declared in `&lt;class&hyphen;template&period;cpp&gt;`
 
@@ -367,9 +294,7 @@ T x;
 [#C2-N2-y]
 == <<C2,C2>>::<<C2-N2,N2>>::y
 
-
 === Synopsis
-
 
 Declared in `&lt;class&hyphen;template&period;cpp&gt;`
 
@@ -381,9 +306,7 @@ U y;
 [#C2-N2-z]
 == <<C2,C2>>::<<C2-N2,N2>>::z
 
-
 === Synopsis
-
 
 Declared in `&lt;class&hyphen;template&period;cpp&gt;`
 
@@ -395,9 +318,7 @@ int z;
 [#C2-v]
 == <<C2,C2>>::v
 
-
 === Synopsis
-
 
 Declared in `&lt;class&hyphen;template&period;cpp&gt;`
 
@@ -409,9 +330,7 @@ int v;
 [#C3]
 == C3
 
-
 === Synopsis
-
 
 Declared in `&lt;class&hyphen;template&period;cpp&gt;`
 
@@ -425,20 +344,14 @@ struct C3;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<C3-v,`v`>> 
-
 |===
-
-
 
 [#C3-v]
 == <<C3,C3>>::v
 
-
 === Synopsis
-
 
 Declared in `&lt;class&hyphen;template&period;cpp&gt;`
 
@@ -450,9 +363,7 @@ int v;
 [#S]
 == S
 
-
 === Synopsis
-
 
 Declared in `&lt;class&hyphen;template&period;cpp&gt;`
 
@@ -460,10 +371,6 @@ Declared in `&lt;class&hyphen;template&period;cpp&gt;`
 ----
 struct S;
 ----
-
-
-
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

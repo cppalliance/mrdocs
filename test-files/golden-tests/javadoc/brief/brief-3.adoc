@@ -4,27 +4,22 @@
 [#index]
 == Global namespace
 
-
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<f-0e,`f`>> 
 | `f` overloads
-
 |===
 
 [#f-0e]
 == f
 
-
 `f` overloads
 
 === Synopses
-
 
 Declared in `&lt;brief&hyphen;3&period;cpp&gt;`
 
@@ -75,11 +70,9 @@ void
 [#f-06]
 == f
 
-
 Integer overload&period;
 
 === Synopsis
-
 
 Declared in `&lt;brief&hyphen;3&period;cpp&gt;`
 
@@ -91,19 +84,14 @@ f(int);
 
 === Description
 
-
 More info
-
-
 
 [#f-0f]
 == f
 
-
 Integer overload&period;
 
 === Synopsis
-
 
 Declared in `&lt;brief&hyphen;3&period;cpp&gt;`
 
@@ -116,11 +104,9 @@ f(double);
 [#f-07]
 == f
 
-
 C string overload&period;
 
 === Synopsis
-
 
 Declared in `&lt;brief&hyphen;3&period;cpp&gt;`
 
@@ -132,19 +118,14 @@ f(char const*);
 
 === Description
 
-
 More info
-
-
 
 [#f-0b]
 == f
 
-
 C string overload&period;
 
 === Synopsis
-
 
 Declared in `&lt;brief&hyphen;3&period;cpp&gt;`
 
@@ -153,7 +134,6 @@ Declared in `&lt;brief&hyphen;3&period;cpp&gt;`
 void
 f(float const*);
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

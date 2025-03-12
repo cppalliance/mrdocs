@@ -4,27 +4,22 @@
 [#index]
 == Global namespace
 
-
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<f,`f`>> 
 | A function
-
 |===
 
 [#f]
 == f
 
-
 A function
 
 === Synopsis
-
 
 Declared in `&lt;li&period;cpp&gt;`
 
@@ -36,16 +31,12 @@ f();
 
 === Description
 
-
 Description&colon;
 
 * Point 1
 * Point 2
 
 Another paragraph&period;
-
-
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

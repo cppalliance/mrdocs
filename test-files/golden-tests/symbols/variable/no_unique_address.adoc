@@ -4,25 +4,19 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<Empty,`Empty`>> 
-
 | <<T,`T`>> 
-
 |===
 
 [#Empty]
 == Empty
 
-
 === Synopsis
-
 
 Declared in `&lt;no&lowbar;unique&lowbar;address&period;cpp&gt;`
 
@@ -31,15 +25,10 @@ Declared in `&lt;no&lowbar;unique&lowbar;address&period;cpp&gt;`
 struct Empty;
 ----
 
-
-
-
 [#T]
 == T
 
-
 === Synopsis
-
 
 Declared in `&lt;no&lowbar;unique&lowbar;address&period;cpp&gt;`
 
@@ -52,22 +41,15 @@ struct T;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<T-e,`e`>> 
-
 | <<T-i,`i`>> 
-
 |===
-
-
 
 [#T-e]
 == <<T,T>>::e
 
-
 === Synopsis
-
 
 Declared in `&lt;no&lowbar;unique&lowbar;address&period;cpp&gt;`
 
@@ -80,9 +62,7 @@ Declared in `&lt;no&lowbar;unique&lowbar;address&period;cpp&gt;`
 [#T-i]
 == <<T,T>>::i
 
-
 === Synopsis
-
 
 Declared in `&lt;no&lowbar;unique&lowbar;address&period;cpp&gt;`
 
@@ -90,7 +70,6 @@ Declared in `&lt;no&lowbar;unique&lowbar;address&period;cpp&gt;`
 ----
 int i;
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

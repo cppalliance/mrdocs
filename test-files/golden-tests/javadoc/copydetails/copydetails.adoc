@@ -4,33 +4,26 @@
 [#index]
 == Global namespace
 
-
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<dest,`dest`>> 
 | Destination doc function
-
 | <<destOverride,`destOverride`>> 
 | Destination doc function
-
 | <<source,`source`>> 
 | Source doc function
-
 |===
 
 [#dest]
 == dest
 
-
 Destination doc function
 
 === Synopsis
-
 
 Declared in `&lt;copydetails&period;cpp&gt;`
 
@@ -47,78 +40,56 @@ dest(
 
 === Description
 
-
 Documentation prefix for dest only&period;
 
 This is the documentation from the source function&period;
 
 Documentation suffix for dest only&period;
 
-
-
 === Return Value
-
 
 A nice integer
 
 === Template Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *A*
 | The template parameter A&period;
-
 | *B*
 | The template parameter B&period;
-
 |===
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | The parameter a&period;
-
 | *b*
 | The parameter b&period;
-
 |===
 
 === Preconditions
 
-
 * a must be greater than 0&period;
-
-
 
 === Postconditions
 
-
 * The return value is greater than 0&period;
-
-
 
 === See Also
 
-
 dest
-
-
-
 
 [#destOverride]
 == destOverride
 
-
 Destination doc function
 
 === Synopsis
-
 
 Declared in `&lt;copydetails&period;cpp&gt;`
 
@@ -137,7 +108,6 @@ destOverride(
 
 === Description
 
-
 Documentation prefix for dest only&period;
 
 This is the documentation from the source function&period;
@@ -146,88 +116,63 @@ Documentation suffix for dest only&period;
 
 Parameter b is not copied because it doesn&apos;t exist in the destination function&period;
 
-
-
 === Exceptions
 
-
 |===
-| Name | Thrown on
-
+| Name
+| Thrown on
 | `std&colon;&colon;runtime&lowbar;error`
 | Overwrites the exception&period;
-
 |===
 
 === Return Value
-
 
 An integer meaning something else&period;
 
 === Template Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *A*
 | Overwrites the template parameter A&period;
-
 | *C*
 | The template parameter C&period;
-
 | *D*
 | The template parameter D&period;
-
 |===
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | Overwrites the parameter a&period;
-
 | *c*
 | The parameter c&period;
-
 | *d*
 | The parameter d&period;
-
 |===
 
 === Preconditions
 
-
 * overriden precondition
-
-
 
 === Postconditions
 
-
 * overriden postcondition
-
-
 
 === See Also
 
-
 source
-
-
-
 
 [#source]
 == source
 
-
 Source doc function
 
 === Synopsis
-
 
 Declared in `&lt;copydetails&period;cpp&gt;`
 
@@ -244,77 +189,54 @@ source(
 
 === Description
 
-
 This is the documentation from the source function&period;
-
-
 
 === Exceptions
 
-
 |===
-| Name | Thrown on
-
+| Name
+| Thrown on
 | `std&colon;&colon;runtime&lowbar;error`
 | If something goes wrong&period;
-
 |===
 
 === Return Value
-
 
 A nice integer
 
 === Template Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *A*
 | The template parameter A&period;
-
 | *B*
 | The template parameter B&period;
-
 |===
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | The parameter a&period;
-
 | *b*
 | The parameter b&period;
-
 |===
 
 === Preconditions
 
-
 * a must be greater than 0&period;
-
-
 
 === Postconditions
 
-
 * The return value is greater than 0&period;
-
-
 
 === See Also
 
-
 dest
-
-
-
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

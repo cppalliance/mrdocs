@@ -4,36 +4,29 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<T,`T`>> 
-
 | <<U,`U`>> 
-
 |===
+
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<f,`f`>> 
 | f
-
 |===
 
 [#T]
 == T
 
-
 === Synopsis
-
 
 Declared in `&lt;friend&hyphen;5&period;cpp&gt;`
 
@@ -46,20 +39,14 @@ struct T;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<T-08friend,`f`>> 
-
 |===
-
-
 
 [#T-08friend]
 == f
 
-
 === Synopsis
-
 
 Declared in `&lt;friend&hyphen;5&period;cpp&gt;`
 
@@ -73,9 +60,7 @@ f();
 [#U]
 == U
 
-
 === Synopsis
-
 
 Declared in `&lt;friend&hyphen;5&period;cpp&gt;`
 
@@ -88,20 +73,14 @@ struct U;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<U-08friend,`f`>> 
-
 |===
-
-
 
 [#U-08friend]
 == f
 
-
 === Synopsis
-
 
 Declared in `&lt;friend&hyphen;5&period;cpp&gt;`
 
@@ -115,11 +94,9 @@ f();
 [#f]
 == f
 
-
 f
 
 === Synopsis
-
 
 Declared in `&lt;friend&hyphen;5&period;cpp&gt;`
 
@@ -128,7 +105,6 @@ Declared in `&lt;friend&hyphen;5&period;cpp&gt;`
 void
 f();
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

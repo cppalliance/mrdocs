@@ -4,23 +4,18 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<range,`range`>> 
-
 |===
 
 [#range]
 == range
 
-
 === Synopsis
-
 
 Declared in `&lt;nested&hyphen;private&hyphen;template&period;cpp&gt;`
 
@@ -30,26 +25,19 @@ template&lt;class T&gt;
 class range;
 ----
 
-
-
 === Private Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<range-impl-0e,`impl`>> 
-
 | <<range-impl-00,`impl&lt;R, false&gt;`>> 
-
 |===
 
 [#range-impl-0e]
 == <<range,range>>::impl
 
-
 === Synopsis
-
 
 Declared in `&lt;nested&hyphen;private&hyphen;template&period;cpp&gt;`
 
@@ -61,15 +49,10 @@ template&lt;
 struct impl;
 ----
 
-
-
-
 [#range-impl-00]
 == <<range,range>>::impl&lt;R, false&gt;
 
-
 === Synopsis
-
 
 Declared in `&lt;nested&hyphen;private&hyphen;template&period;cpp&gt;`
 
@@ -78,10 +61,6 @@ Declared in `&lt;nested&hyphen;private&hyphen;template&period;cpp&gt;`
 template&lt;class R&gt;
 struct <<range-impl-0e,impl>>&lt;R, false&gt;;
 ----
-
-
-
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

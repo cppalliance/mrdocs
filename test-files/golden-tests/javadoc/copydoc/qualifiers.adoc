@@ -4,23 +4,18 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A,`A`>> 
-
 |===
 
 [#A]
 == A
 
-
 === Synopsis
-
 
 Declared in `&lt;qualifiers&period;cpp&gt;`
 
@@ -33,45 +28,33 @@ struct A;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A-const_iterator,`const&lowbar;iterator`>> 
-
 | <<A-iterator,`iterator`>> 
-
 |===
+
 === Member Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<A-begin-05,`begin`>> 
 | `begin` overloads
-
 | <<A-cbegin,`cbegin`>> 
 | Return a const iterator to the beginning
-
 | <<A-crvalue,`crvalue`>> 
 | An const rvalue reference to A
-
 | <<A-ref-0f,`ref`>> 
 | `ref` overloads
-
 | <<A-rvalue,`rvalue`>> 
 | An rvalue reference to A
-
 |===
-
-
 
 [#A-const_iterator]
 == <<A,A>>::const&lowbar;iterator
 
-
 === Synopsis
-
 
 Declared in `&lt;qualifiers&period;cpp&gt;`
 
@@ -80,15 +63,10 @@ Declared in `&lt;qualifiers&period;cpp&gt;`
 class const&lowbar;iterator;
 ----
 
-
-
-
 [#A-iterator]
 == <<A,A>>::iterator
 
-
 === Synopsis
-
 
 Declared in `&lt;qualifiers&period;cpp&gt;`
 
@@ -97,17 +75,12 @@ Declared in `&lt;qualifiers&period;cpp&gt;`
 class iterator;
 ----
 
-
-
-
 [#A-begin-05]
 == <<A,A>>::begin
-
 
 `begin` overloads
 
 === Synopses
-
 
 Declared in `&lt;qualifiers&period;cpp&gt;`
 
@@ -135,18 +108,15 @@ Return a const iterator to the beginning
 
 === Return Value
 
-
 * Iterator to the first element&period;
 * Const iterator to the first element&period;
 
 [#A-begin-06]
 == <<A,A>>::begin
 
-
 Returns an iterator to the beginning
 
 === Synopsis
-
 
 Declared in `&lt;qualifiers&period;cpp&gt;`
 
@@ -158,24 +128,18 @@ begin();
 
 === Description
 
-
 Returns an iterator to the first element of the vector&period;
 
-
-
 === Return Value
-
 
 Iterator to the first element&period;
 
 [#A-begin-0c]
 == <<A,A>>::begin
 
-
 Return a const iterator to the beginning
 
 === Synopsis
-
 
 Declared in `&lt;qualifiers&period;cpp&gt;`
 
@@ -187,24 +151,18 @@ begin() const;
 
 === Description
 
-
 Returns a const iterator to the first element of the vector&period;
 
-
-
 === Return Value
-
 
 Const iterator to the first element&period;
 
 [#A-cbegin]
 == <<A,A>>::cbegin
 
-
 Return a const iterator to the beginning
 
 === Synopsis
-
 
 Declared in `&lt;qualifiers&period;cpp&gt;`
 
@@ -216,24 +174,18 @@ cbegin() const;
 
 === Description
 
-
 Returns a const iterator to the first element of the vector&period;
 
-
-
 === Return Value
-
 
 Const iterator to the first element&period;
 
 [#A-crvalue]
 == <<A,A>>::crvalue
 
-
 An const rvalue reference to A
 
 === Synopsis
-
 
 Declared in `&lt;qualifiers&period;cpp&gt;`
 
@@ -245,17 +197,14 @@ crvalue() const &amp;&amp;;
 
 === Return Value
 
-
 A reference to A
 
 [#A-ref-0f]
 == <<A,A>>::ref
 
-
 `ref` overloads
 
 === Synopses
-
 
 Declared in `&lt;qualifiers&period;cpp&gt;`
 
@@ -305,17 +254,14 @@ An const rvalue reference to A
 
 === Return Value
 
-
 A reference to A
 
 [#A-ref-05]
 == <<A,A>>::ref
 
-
 An lvalue reference to A
 
 === Synopsis
-
 
 Declared in `&lt;qualifiers&period;cpp&gt;`
 
@@ -327,17 +273,14 @@ ref() &amp;;
 
 === Return Value
 
-
 A reference to A
 
 [#A-ref-0e]
 == <<A,A>>::ref
 
-
 An rvalue reference to A
 
 === Synopsis
-
 
 Declared in `&lt;qualifiers&period;cpp&gt;`
 
@@ -349,17 +292,14 @@ ref() &amp;&amp;;
 
 === Return Value
 
-
 A reference to A
 
 [#A-ref-04]
 == <<A,A>>::ref
 
-
 An const lvalue reference to A
 
 === Synopsis
-
 
 Declared in `&lt;qualifiers&period;cpp&gt;`
 
@@ -371,17 +311,14 @@ ref() const &amp;;
 
 === Return Value
 
-
 A reference to A
 
 [#A-ref-07]
 == <<A,A>>::ref
 
-
 An const rvalue reference to A
 
 === Synopsis
-
 
 Declared in `&lt;qualifiers&period;cpp&gt;`
 
@@ -393,17 +330,14 @@ ref() const &amp;&amp;;
 
 === Return Value
 
-
 A reference to A
 
 [#A-rvalue]
 == <<A,A>>::rvalue
 
-
 An rvalue reference to A
 
 === Synopsis
-
 
 Declared in `&lt;qualifiers&period;cpp&gt;`
 
@@ -415,9 +349,7 @@ rvalue() &amp;&amp;;
 
 === Return Value
 
-
 A reference to A
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

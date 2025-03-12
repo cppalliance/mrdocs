@@ -4,11 +4,9 @@
 [#is_prime]
 == is&lowbar;prime
 
-
 Return true if a number is prime&period;
 
 === Synopsis
-
 
 Declared in `&lt;is&lowbar;prime&period;cpp&gt;`
 
@@ -20,30 +18,21 @@ is&lowbar;prime(unsigned long long n) noexcept;
 
 === Description
 
-
-
 === Complexity
-
 Linear in n&period;
 
-
-
 === Return Value
-
 
 Whether or not n is prime&period;
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *n*
 | The number to test
-
 |===
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

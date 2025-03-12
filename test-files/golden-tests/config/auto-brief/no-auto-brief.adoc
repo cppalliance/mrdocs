@@ -4,117 +4,82 @@
 [#index]
 == Global namespace
 
-
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<copyBriefFromCopyBrief,`copyBriefFromCopyBrief`>> 
 | This is the explicit brief&period;
-
 | <<copyBriefFromExplicitBrief,`copyBriefFromExplicitBrief`>> 
 | This is the explicit brief&period;
-
 | <<copyBriefFromFirstSentenceAsBrief,`copyBriefFromFirstSentenceAsBrief`>> 
 | 
-
 | <<copyBriefFromFirstValid,`copyBriefFromFirstValid`>> 
 | 
-
 | <<copyDetailsFromCopyBrief,`copyDetailsFromCopyBrief`>> 
 | Details will be copied
-
 | <<copyDetailsFromDocNoBrief,`copyDetailsFromDocNoBrief`>> 
 | Custom brief
-
 | <<copyDetailsFromExplicitBrief,`copyDetailsFromExplicitBrief`>> 
 | 
-
 | <<copyDetailsFromFirstSentenceAsBrief,`copyDetailsFromFirstSentenceAsBrief`>> 
 | 
-
 | <<copyDetailsFromNoDoc,`copyDetailsFromNoDoc`>> 
 | Custom brief
-
 | <<copyDocFromCopyBrief,`copyDocFromCopyBrief`>> 
 | This is the explicit brief&period;
-
 | <<copyDocFromExplicitBrief,`copyDocFromExplicitBrief`>> 
 | This is the explicit brief&period;
-
 | <<copyDocFromFirstSentenceAsBrief,`copyDocFromFirstSentenceAsBrief`>> 
 | 
-
 | <<docNoBriefFunction,`docNoBriefFunction`>> 
 | 
-
 | <<explicitBriefFunction,`explicitBriefFunction`>> 
 | This is the explicit brief&period;
-
 | <<explicitBriefFunction2,`explicitBriefFunction2`>> 
 | This is the explicit brief&period;
-
 | <<failCircularReferenceCopyFunction,`failCircularReferenceCopyFunction`>> 
 | 
-
 | <<failCircularSourceFunctionA,`failCircularSourceFunctionA`>> 
 | 
-
 | <<failCircularSourceFunctionB,`failCircularSourceFunctionB`>> 
 | 
-
 | <<failCopyBriefFromDocNoBrief,`failCopyBriefFromDocNoBrief`>> 
 | 
-
 | <<failCopyBriefFromInvalidReference,`failCopyBriefFromInvalidReference`>> 
 | 
-
 | <<failCopyBriefFromNoDoc,`failCopyBriefFromNoDoc`>> 
 | 
-
 | <<failCopyDetailsFromInvalidReference,`failCopyDetailsFromInvalidReference`>> 
 | 
-
 | <<failCopyDocFromDocNoBrief,`failCopyDocFromDocNoBrief`>> 
 | 
-
 | <<failCopyDocFromInvalidReference,`failCopyDocFromInvalidReference`>> 
 | 
-
 | <<failCopyDocFromNoDoc,`failCopyDocFromNoDoc`>> 
 | 
-
 | <<failInvalidReferenceCopyFunctions,`failInvalidReferenceCopyFunctions`>> 
 | 
-
 | <<firstSentenceAsBriefFunction,`firstSentenceAsBriefFunction`>> 
 | 
-
 | <<noDocFunction,`noDocFunction`>> 
 | 
-
 | <<recursiveReferenceCopyFunction,`recursiveReferenceCopyFunction`>> 
 | Final recursive brief
-
 | <<recursiveSourceFunctionA,`recursiveSourceFunctionA`>> 
 | Final recursive brief
-
 | <<recursiveSourceFunctionB,`recursiveSourceFunctionB`>> 
 | Final recursive brief
-
 |===
 
 [#copyBriefFromCopyBrief]
 == copyBriefFromCopyBrief
 
-
 This is the explicit brief&period;
 
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -127,11 +92,9 @@ copyBriefFromCopyBrief();
 [#copyBriefFromExplicitBrief]
 == copyBriefFromExplicitBrief
 
-
 This is the explicit brief&period;
 
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -144,9 +107,7 @@ copyBriefFromExplicitBrief();
 [#copyBriefFromFirstSentenceAsBrief]
 == copyBriefFromFirstSentenceAsBrief
 
-
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -159,9 +120,7 @@ copyBriefFromFirstSentenceAsBrief();
 [#copyBriefFromFirstValid]
 == copyBriefFromFirstValid
 
-
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -174,11 +133,9 @@ copyBriefFromFirstValid();
 [#copyDetailsFromCopyBrief]
 == copyDetailsFromCopyBrief
 
-
 Details will be copied
 
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -191,11 +148,9 @@ copyDetailsFromCopyBrief();
 [#copyDetailsFromDocNoBrief]
 == copyDetailsFromDocNoBrief
 
-
 Custom brief
 
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -208,9 +163,7 @@ copyDetailsFromDocNoBrief();
 [#copyDetailsFromExplicitBrief]
 == copyDetailsFromExplicitBrief
 
-
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -222,17 +175,12 @@ copyDetailsFromExplicitBrief();
 
 === Description
 
-
 This will not be copied&period;
-
-
 
 [#copyDetailsFromFirstSentenceAsBrief]
 == copyDetailsFromFirstSentenceAsBrief
 
-
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -244,21 +192,16 @@ copyDetailsFromFirstSentenceAsBrief();
 
 === Description
 
-
 This is the brief&period;
 
 This is more documentation&period;
 
-
-
 [#copyDetailsFromNoDoc]
 == copyDetailsFromNoDoc
-
 
 Custom brief
 
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -271,11 +214,9 @@ copyDetailsFromNoDoc();
 [#copyDocFromCopyBrief]
 == copyDocFromCopyBrief
 
-
 This is the explicit brief&period;
 
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -287,19 +228,14 @@ copyDocFromCopyBrief();
 
 === Description
 
-
 This will not be copied&period;
-
-
 
 [#copyDocFromExplicitBrief]
 == copyDocFromExplicitBrief
 
-
 This is the explicit brief&period;
 
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -311,17 +247,12 @@ copyDocFromExplicitBrief();
 
 === Description
 
-
 This will not be copied&period;
-
-
 
 [#copyDocFromFirstSentenceAsBrief]
 == copyDocFromFirstSentenceAsBrief
 
-
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -333,19 +264,14 @@ copyDocFromFirstSentenceAsBrief();
 
 === Description
 
-
 This is the brief&period;
 
 This is more documentation&period;
 
-
-
 [#docNoBriefFunction]
 == docNoBriefFunction
 
-
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -357,19 +283,14 @@ docNoBriefFunction();
 
 === Description
 
-
 This function has documentation but no brief&period;
-
-
 
 [#explicitBriefFunction]
 == explicitBriefFunction
 
-
 This is the explicit brief&period;
 
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -381,19 +302,14 @@ explicitBriefFunction();
 
 === Description
 
-
 This will not be copied&period;
-
-
 
 [#explicitBriefFunction2]
 == explicitBriefFunction2
 
-
 This is the explicit brief&period;
 
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -405,17 +321,12 @@ explicitBriefFunction2();
 
 === Description
 
-
 This will not be copied&period;
-
-
 
 [#failCircularReferenceCopyFunction]
 == failCircularReferenceCopyFunction
 
-
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -428,9 +339,7 @@ failCircularReferenceCopyFunction();
 [#failCircularSourceFunctionA]
 == failCircularSourceFunctionA
 
-
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -443,9 +352,7 @@ failCircularSourceFunctionA();
 [#failCircularSourceFunctionB]
 == failCircularSourceFunctionB
 
-
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -458,9 +365,7 @@ failCircularSourceFunctionB();
 [#failCopyBriefFromDocNoBrief]
 == failCopyBriefFromDocNoBrief
 
-
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -473,9 +378,7 @@ failCopyBriefFromDocNoBrief();
 [#failCopyBriefFromInvalidReference]
 == failCopyBriefFromInvalidReference
 
-
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -488,9 +391,7 @@ failCopyBriefFromInvalidReference();
 [#failCopyBriefFromNoDoc]
 == failCopyBriefFromNoDoc
 
-
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -503,9 +404,7 @@ failCopyBriefFromNoDoc();
 [#failCopyDetailsFromInvalidReference]
 == failCopyDetailsFromInvalidReference
 
-
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -518,9 +417,7 @@ failCopyDetailsFromInvalidReference();
 [#failCopyDocFromDocNoBrief]
 == failCopyDocFromDocNoBrief
 
-
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -532,17 +429,12 @@ failCopyDocFromDocNoBrief();
 
 === Description
 
-
 This function has documentation but no brief&period;
-
-
 
 [#failCopyDocFromInvalidReference]
 == failCopyDocFromInvalidReference
 
-
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -555,9 +447,7 @@ failCopyDocFromInvalidReference();
 [#failCopyDocFromNoDoc]
 == failCopyDocFromNoDoc
 
-
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -570,9 +460,7 @@ failCopyDocFromNoDoc();
 [#failInvalidReferenceCopyFunctions]
 == failInvalidReferenceCopyFunctions
 
-
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -585,9 +473,7 @@ failInvalidReferenceCopyFunctions();
 [#firstSentenceAsBriefFunction]
 == firstSentenceAsBriefFunction
 
-
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -599,19 +485,14 @@ firstSentenceAsBriefFunction();
 
 === Description
 
-
 This is the brief&period;
 
 This is more documentation&period;
 
-
-
 [#noDocFunction]
 == noDocFunction
 
-
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -624,11 +505,9 @@ noDocFunction();
 [#recursiveReferenceCopyFunction]
 == recursiveReferenceCopyFunction
 
-
 Final recursive brief
 
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -641,11 +520,9 @@ recursiveReferenceCopyFunction();
 [#recursiveSourceFunctionA]
 == recursiveSourceFunctionA
 
-
 Final recursive brief
 
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -658,11 +535,9 @@ recursiveSourceFunctionA();
 [#recursiveSourceFunctionB]
 == recursiveSourceFunctionB
 
-
 Final recursive brief
 
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 
@@ -671,7 +546,6 @@ Declared in `&lt;no&hyphen;auto&hyphen;brief&period;cpp&gt;`
 void
 recursiveSourceFunctionB();
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

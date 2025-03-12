@@ -4,29 +4,21 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<S0-03,`S0`>> 
-
 | <<S0-00,`S0&lt;void&gt;`>> 
-
 | <<A5,`A5`>> 
-
 | <<A9,`A9`>> 
-
 |===
 
 [#A5]
 == A5
 
-
 === Synopsis
-
 
 Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
 
@@ -38,9 +30,7 @@ using A5 = <<S0-03,S0>>&lt;void&gt;;
 [#A9]
 == A9
 
-
 === Synopsis
-
 
 Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
 
@@ -52,9 +42,7 @@ using A9 = <<A5,A5>>::<<S0-00-S2-0d,S2>>&lt;char&gt;::<<S0-00-S2-02-M3,M3>>&lt;i
 [#S0-03]
 == S0
 
-
 === Synopsis
-
 
 Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
 
@@ -68,20 +56,14 @@ struct S0;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<S0-03-S2,`S2`>> 
-
 |===
-
-
 
 [#S0-03-S2]
 == <<S0-03,S0>>::S2
 
-
 === Synopsis
-
 
 Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
 
@@ -95,22 +77,15 @@ struct S2;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<S0-03-S2-M2,`M2`>> 
-
 | <<S0-03-S2-M3,`M3`>> 
-
 |===
-
-
 
 [#S0-03-S2-M2]
 == <<S0-03,S0>>::<<S0-03-S2,S2>>::M2
 
-
 === Synopsis
-
 
 Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
 
@@ -122,9 +97,7 @@ using M2 = U;
 [#S0-03-S2-M3]
 == <<S0-03,S0>>::<<S0-03-S2,S2>>::M3
 
-
 === Synopsis
-
 
 Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
 
@@ -137,9 +110,7 @@ using M3 = <<S0-03-S2,S2>>&lt;U&gt;;
 [#S0-00]
 == S0&lt;void&gt;
 
-
 === Synopsis
-
 
 Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
 
@@ -153,22 +124,15 @@ struct <<S0-03,S0>>&lt;void&gt;;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<S0-00-S2-0d,`S2`>> 
-
 | <<S0-00-S2-02,`S2&lt;char&gt;`>> 
-
 |===
-
-
 
 [#S0-00-S2-0d]
 == <<S0-00,S0>>&lt;void&gt;::S2
 
-
 === Synopsis
-
 
 Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
 
@@ -178,15 +142,10 @@ template&lt;typename U&gt;
 struct S2;
 ----
 
-
-
-
 [#S0-00-S2-02]
 == <<S0-00,S0>>&lt;void&gt;::S2&lt;char&gt;
 
-
 === Synopsis
-
 
 Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
 
@@ -200,22 +159,15 @@ struct <<S0-03-S2,S2>>&lt;char&gt;;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<S0-00-S2-02-M2,`M2`>> 
-
 | <<S0-00-S2-02-M3,`M3`>> 
-
 |===
-
-
 
 [#S0-00-S2-02-M2]
 == <<S0-00,S0>>&lt;void&gt;::<<S0-00-S2-02,S2>>&lt;char&gt;::M2
 
-
 === Synopsis
-
 
 Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
 
@@ -227,9 +179,7 @@ using M2 = char;
 [#S0-00-S2-02-M3]
 == <<S0-00,S0>>&lt;void&gt;::<<S0-00-S2-02,S2>>&lt;char&gt;::M3
 
-
 === Synopsis
-
 
 Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;cpp&gt;`
 
@@ -238,7 +188,6 @@ Declared in `&lt;implicit&hyphen;instantiation&hyphen;member&hyphen;ref&period;c
 template&lt;typename V&gt;
 using M3 = <<S0-00-S2-0d,S2>>&lt;char&gt;;
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

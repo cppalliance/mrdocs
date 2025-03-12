@@ -4,37 +4,29 @@
 [#index]
 == Global namespace
 
-
 === Namespaces
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<N,`N`>> 
-
 |===
 
 [#N]
 == N
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<N-S,`S`>> 
-
 |===
 
 [#N-S]
 == <<N,N>>::S
 
-
 === Synopsis
-
 
 Declared in `&lt;out&hyphen;of&hyphen;line&hyphen;record&hyphen;def&period;cpp&gt;`
 
@@ -42,10 +34,6 @@ Declared in `&lt;out&hyphen;of&hyphen;line&hyphen;record&hyphen;def&period;cpp&g
 ----
 struct S;
 ----
-
-
-
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

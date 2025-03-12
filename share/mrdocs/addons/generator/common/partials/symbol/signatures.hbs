@@ -16,15 +16,12 @@
 {{#> markup/code-block }}
 {{> symbol/signature }}
 {{/markup/code-block}}
-
 {{else}}
 {{#each members as | member |}}
-{{#if member.doc.brief}}{{#> markup/p }}{{> javadoc/brief member.doc.brief }}{{/markup/p}}{{/if}}
-
+{{#if member.doc.brief}}{{> javadoc/brief member.doc.brief }}{{/if}}
 {{#> markup/code-block }}
 {{> symbol/signature member link=member}}
 {{/markup/code-block}}
-
 {{#> markup/span class="small" }}{{#> markup/a href=member.url }}{{#>markup/em }}» more{{ str "..." }}{{/markup/em}}{{/markup/a}}{{/markup/span}}
 
 {{/each}}
