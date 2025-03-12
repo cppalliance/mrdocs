@@ -72,7 +72,7 @@
 {{else}}
 <td>{{>symbol/name . nolink=true}}</td>
 {{/if}}
-<td>{{> javadoc/brief doc.brief }}</td>
+<td>{{> javadoc/inline-brief doc.brief }}</td>
 </tr>
 {{/each}}
 </tbody>
@@ -86,6 +86,44 @@
 
 </div>
 
+{{/if}}
+{{! Related symbols }}
+{{#if symbol.doc.related}}
+<div>
+{{#> markup/dynamic-level-h }}Non-Member Functions{{/markup/dynamic-level-h}}
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+{{#each symbol.doc.related}}
+<tr><td>{{> javadoc/reference }}</td><td>{{> javadoc/inline-brief symbol.doc.brief }}</td></tr>
+{{/each}}
+</tbody>
+</table>
+</div>
+{{/if}}
+{{! Relates symbols }}
+{{#if symbol.doc.relates }}
+<div>
+{{#> markup/dynamic-level-h }}Non-Member Of{{/markup/dynamic-level-h}}
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+{{#each symbol.doc.relates }}
+<tr><td>{{> javadoc/reference }}</td><td>{{> javadoc/inline-brief symbol.doc.brief }}</td></tr>
+{{/each}}
+</tbody>
+</table>
+</div>
 {{/if}}
 {{! Description }}
 {{#if symbol.doc.description}}

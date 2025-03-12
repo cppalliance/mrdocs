@@ -390,7 +390,8 @@ grammar
     BlockNode = (
         Admonition | Brief | Code | Heading | ListItem |
         UnorderedList | Paragraph | Param | Returns | TParam |
-        Throws | See | Precondition | Postcondition | Details)
+        Throws | See | Precondition | Postcondition | Details |
+        Related | Relates)
 
     Admonition = Paragraph
     Brief = element brief { TextNode * }
@@ -417,7 +418,10 @@ grammar
     Postcondition = element post { TextNode * }
     Details = element details { TextNode * }
 
-    TextNode = ( Link | Styled | Text | Reference | Related | Copied )
+    Related = element related { Reference * }
+    Relates = element relates { Reference * }
+
+    TextNode = ( Link | Styled | Text | Reference | Copied )
 
     Link = element link { attribute href { text }, text }
     Styled = (
@@ -427,7 +431,7 @@ grammar
         element italic { text } )
     Text = element text { text }
     Reference = element reference { ID ?, text }
-    Related = element relates { ID ?, text }
+
     Copied =
         element (
             copydoc |

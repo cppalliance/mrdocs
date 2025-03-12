@@ -124,6 +124,11 @@ private:
     void
     finalize(Javadoc& javadoc);
 
+    // Find the ID of "relates" symbols and populate
+    // the "related" symbol with the inverse.
+    void
+    setRelateIds(Javadoc& javadoc);
+
     // Copy brief and details to the current context
     void
     copyBriefAndDetails(Javadoc& javadoc);

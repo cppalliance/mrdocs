@@ -63,8 +63,6 @@ toString(NodeKind kind) noexcept
             return "details";
         case NodeKind::see:
             return "see";
-        case NodeKind::related:
-            return "related";
         case NodeKind::precondition:
             return "precondition";
         case NodeKind::postcondition:
