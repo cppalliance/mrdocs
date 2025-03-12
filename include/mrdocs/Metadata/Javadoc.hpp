@@ -123,7 +123,6 @@ enum class NodeKind
     throws,
     details,
     see,
-    related,
     precondition,
     postcondition
 };
@@ -646,52 +645,6 @@ tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
     Copied const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
-
-/** A reference to a related symbol.
-*/
-struct Related final : Reference
-{
-    static constexpr auto static_kind = NodeKind::related;
-
-    Related(std::string string_ = std::string()) noexcept
-        : Reference(std::move(string_), NodeKind::related)
-    {
-    }
-
-    auto operator<=>(Related const&) const = default;
-    bool operator==(Related const&) const noexcept = default;
-    bool equals(Node const& other) const noexcept override
-    {
-        return Kind == other.Kind &&
-            *this == dynamic_cast<Related const&>(other);
-    }
-};
-
-/** Map the @ref Related to a @ref dom::Object.
- */
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag t,
-    IO& io,
-    Related const& I,
-    DomCorpus const* domCorpus)
-{
-    tag_invoke(t, io, dynamic_cast<Reference const&>(I), domCorpus);
-}
-
-/** Return the @ref Related as a @ref dom::Value object.
- */
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Related const& I,
     DomCorpus const* domCorpus)
 {
     v = dom::LazyObject(I, domCorpus);
@@ -1632,8 +1585,6 @@ visit(
         return visitor.template visit<Precondition>();
     case NodeKind::postcondition:
         return visitor.template visit<Postcondition>();
-    case NodeKind::related:
-        return visitor.template visit<Related>();
     default:
         MRDOCS_UNREACHABLE();
     }
@@ -1698,14 +1649,25 @@ struct MRDOCS_DECL
     /// The list of "see also" references.
     std::vector<doc::See> sees;
 
-    /// The list of "related" references.
-    std::vector<SymbolID> related;
-
     /// The list of preconditions.
     std::vector<doc::Precondition> preconditions;
 
     /// The list of postconditions.
     std::vector<doc::Postcondition> postconditions;
+
+    /** The list of "relates" references.
+
+        These references are creates with the
+        \\relates command.
+     */
+    std::vector<doc::Reference> relates;
+
+    /** The list of "related" references.
+
+        These references are the inverse of
+        the \\relates command.
+     */
+    std::vector<doc::Reference> related;
 
     /** Constructor.
     */
@@ -1864,6 +1826,9 @@ tag_invoke(
     });
     io.defer("sees", [&I, domCorpus] {
         return dom::LazyArray(I.sees, domCorpus);
+    });
+    io.defer("relates", [&I, domCorpus] {
+        return dom::LazyArray(I.relates, domCorpus);
     });
     io.defer("related", [&I, domCorpus] {
         return dom::LazyArray(I.related, domCorpus);

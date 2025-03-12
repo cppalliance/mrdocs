@@ -46,7 +46,8 @@
 
 [,cols=2]
 |===
-|Name |Description
+| Name
+| Description
 {{#each (filter_by symbol.constants "isRegular" "isSeeBelow")}}
 {{#if (ne kind "enum-constant")}}
 |xref:{{{anchor}}}[`{{>symbol/name . nolink=true}}`]
@@ -66,7 +67,30 @@
 {{/if}}
 {{! Related symbols }}
 {{#if symbol.doc.related}}
-{{>symbol/members-table members=symbol.doc.related title="Related functions"}}
+{{#> markup/dynamic-level-h }}Non-Member Functions{{/markup/dynamic-level-h}}
+[,cols=2]
+|===
+| Name
+| Description
+{{#each symbol.doc.related}}
+| {{> javadoc/reference }}
+| {{> javadoc/inline-brief symbol.doc.brief }}
+{{/each}}
+|===
+
+{{/if}}
+{{! Relates symbols }}
+{{#if symbol.doc.relates }}
+{{#> markup/dynamic-level-h }}Non-Member Of{{/markup/dynamic-level-h}}
+[,cols=2]
+|===
+| Name
+| Description
+{{#each symbol.doc.relates }}
+| {{> javadoc/reference }}
+| {{> javadoc/inline-brief symbol.doc.brief }}
+{{/each}}
+|===
 
 {{/if}}
 {{! Description }}

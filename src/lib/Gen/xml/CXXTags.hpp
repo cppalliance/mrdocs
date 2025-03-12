@@ -48,6 +48,8 @@ constexpr auto templateTagName       = "template";
 constexpr auto tparamTagName         = "tparam";
 constexpr auto unionTagName          = "union";
 constexpr auto varTagName            = "variable";
+constexpr auto relatedTagName        = "related";
+constexpr auto relatesTagName        = "relates";
 
 inline dom::String getNameForValue(...)
 {

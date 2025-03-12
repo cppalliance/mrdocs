@@ -138,14 +138,6 @@ finalize(doc::Reference& ref, bool const emitWarning)
         // returns a non-const reference.
         auto& res = const_cast<Info&>(resRef->get());
         ref.id = res.id;
-        if(ref.Kind == doc::NodeKind::related)
-        {
-            if(! res.javadoc)
-                res.javadoc.emplace();
-            auto& related = res.javadoc->related;
-            if(std::ranges::find(related, current_context_->id) == related.end())
-                related.emplace_back(current_context_->id);
-        }
     }
     else if (
         emitWarning &&
@@ -180,8 +172,7 @@ finalize(doc::Node& node)
             finalize(N.children);
         }
 
-        if constexpr(std::same_as<NodeTy, doc::Reference> ||
-            std::same_as<NodeTy, doc::Related>)
+        if constexpr(std::same_as<NodeTy, doc::Reference>)
         {
             finalize(dynamic_cast<doc::Reference&>(N), true);
         }
@@ -205,11 +196,60 @@ finalize(Javadoc& javadoc)
     finalize(javadoc.sees);
     finalize(javadoc.preconditions);
     finalize(javadoc.postconditions);
+    setRelateIds(javadoc);
     copyBriefAndDetails(javadoc);
     setAutoBrief(javadoc);
     removeTempTextNodes(javadoc);
     trimBlocks(javadoc);
     unindentCodeBlocks(javadoc);
+}
+
+void
+JavadocFinalizer::
+setRelateIds(Javadoc& javadoc)
+{
+    MRDOCS_CHECK_OR(!javadoc.relates.empty());
+
+    Info const* currentPtr = corpus_.find(current_context_->id);
+    MRDOCS_ASSERT(currentPtr);
+    Info const current = *currentPtr;
+
+    if (!current.isFunction())
+    {
+        this->warn(
+            "{}: `@relates` only allowed for functions",
+            corpus_.Corpus::qualifiedName(current));
+        javadoc.relates.clear();
+        return;
+    }
+
+    for (doc::Reference& ref: javadoc.relates)
+    {
+        finalize(ref, true);
+        Info* relatedPtr = corpus_.find(ref.id);
+        MRDOCS_CHECK_OR_CONTINUE(relatedPtr);
+        Info& related = *relatedPtr;
+        if (!related.javadoc)
+        {
+            related.javadoc.emplace();
+        }
+        if (std::ranges::none_of(
+                related.javadoc->related,
+                [this](doc::Reference const& otherRef) {
+            return otherRef.id == current_context_->id;
+        }))
+        {
+            std::string currentName = corpus_.Corpus::qualifiedName(current);
+            doc::Reference relatedRef(std::move(currentName));
+            relatedRef.id = current_context_->id;
+            related.javadoc->related.push_back(std::move(relatedRef));
+        }
+    }
+
+    // Erase anything in the javadoc without a valid id
+    std::erase_if(javadoc.relates, [](doc::Reference const& ref) {
+        return !ref.id;
+    });
 }
 
 void
@@ -722,7 +762,7 @@ removeTempTextNodes(doc::Block& block)
     std::erase_if(block.children, [](Polymorphic<doc::Text> const& child) {
         return is_one_of(
             child->Kind,
-            { doc::NodeKind::copied, doc::NodeKind::related });
+            { doc::NodeKind::copied });
     });
 }
 

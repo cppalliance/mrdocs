@@ -1024,14 +1024,19 @@ visitInlineCommandComment(
     // KRYSTIAN FIXME: these need to be made inline commands in clang
     case CommandTraits::KCI_related:
     case CommandTraits::KCI_relates:
+    // MrDocs doesn't document members inline, so there's no
+    // distinction between "related" and "relatedalso"
+    case CommandTraits::KCI_relatedalso:
+    case CommandTraits::KCI_relatesalso:
+    // Member of is a concept used only in C. MrDocs handles
+    // it as a non-member function is all cases.
+    case CommandTraits::KCI_memberof:
     {
         MRDOCS_CHECK_OR(goodArgCount(1, *C));
         std::string ref = C->getArgText(0).str();
         std::string leftOver = fixReference(ref);
         bool const hasExtra = !leftOver.empty();
-        emplaceText<doc::Related>(
-            C->hasTrailingNewline() && !hasExtra,
-            ref);
+        jd_.relates.emplace_back(std::move(ref));
         if (hasExtra)
         {
             emplaceText<doc::Text>(

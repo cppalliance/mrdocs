@@ -39,7 +39,8 @@ enum E0;
 
 [,cols=2]
 |===
-|Name |Description
+| Name
+| Description
 |`e0`
 |e0 brief&period;
 |`e1`
@@ -67,7 +68,8 @@ enum E1 : char;
 
 [,cols=2]
 |===
-|Name |Description
+| Name
+| Description
 |`e2`
 |
 |`e3`
@@ -93,7 +95,8 @@ enum class E2 : int;
 
 [,cols=2]
 |===
-|Name |Description
+| Name
+| Description
 |`e4`
 |e4 brief&period;
 |`e5`
@@ -121,7 +124,8 @@ enum class E3 : char;
 
 [,cols=2]
 |===
-|Name |Description
+| Name
+| Description
 |`e6`
 |
 |`e7`

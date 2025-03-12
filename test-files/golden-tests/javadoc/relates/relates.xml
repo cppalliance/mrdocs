@@ -8,6 +8,9 @@
       <brief>
         <text>A brief for A.</text>
       </brief>
+      <related>
+        <reference id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">f</reference>
+      </related>
     </doc>
   </struct>
   <struct name="B" id="3JsK1DO0O+wZhv+0meptQrbs3fY=">
@@ -24,6 +27,9 @@
       <brief>
         <text>A brief for f.</text>
       </brief>
+      <relates>
+        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
+      </relates>
     </doc>
   </function>
 </namespace>

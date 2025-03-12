@@ -40,16 +40,15 @@ Declared in `&lt;relates&period;cpp&gt;`
 struct A;
 ----
 
-=== Related functions
+=== Non-Member Functions
 
-[cols=2]
+[,cols=2]
 |===
 | Name
 | Description
-| <<f,`f`>> 
+| <<f,`f`>>
 | A brief for f&period;
 |===
-
 
 [#B]
 == B
@@ -79,6 +78,16 @@ Declared in `&lt;relates&period;cpp&gt;`
 void
 f();
 ----
+
+=== Non-Member Of
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<A,`A`>>
+| A brief for A&period;
+|===
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#
