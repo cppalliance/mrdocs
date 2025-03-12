@@ -4,34 +4,26 @@
 [#index]
 == Global namespace
 
-
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<f,`f`>> 
 | 
-
 | <<g,`g`>> 
 | 
-
 | <<h,`h`>> 
 | 
-
 | <<i,`i`>> 
 | 
-
 |===
 
 [#f]
 == f
 
-
 === Synopsis
-
 
 Declared in `&lt;param&period;cpp&gt;`
 
@@ -43,21 +35,17 @@ f(int x);
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *x*
 | 
-
 |===
 
 [#g]
 == g
 
-
 === Synopsis
-
 
 Declared in `&lt;param&period;cpp&gt;`
 
@@ -71,24 +59,19 @@ g(
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *x*
 | 
-
 | *y*
 | 
-
 |===
 
 [#h]
 == h
 
-
 === Synopsis
-
 
 Declared in `&lt;param&period;cpp&gt;`
 
@@ -103,27 +86,21 @@ h(
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *x*
 | 
-
 | *y*
 | 
-
 | *z*
 | 
-
 |===
 
 [#i]
 == i
 
-
 === Synopsis
-
 
 Declared in `&lt;param&period;cpp&gt;`
 
@@ -139,24 +116,18 @@ i(
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *w*
 | 
-
 | *x*
 | 
-
 | *y*
 | 
-
 | *z*
 | 
-
 |===
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

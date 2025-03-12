@@ -4,9 +4,7 @@
 [#A-B-c]
 == A::B::c
 
-
 === Synopsis
-
 
 Declared in `&lt;show&hyphen;namespaces&period;cpp&gt;`
 
@@ -19,9 +17,7 @@ c();
 [#A-b]
 == A::b
 
-
 === Synopsis
-
 
 Declared in `&lt;show&hyphen;namespaces&period;cpp&gt;`
 
@@ -34,9 +30,7 @@ b();
 [#a]
 == a
 
-
 === Synopsis
-
 
 Declared in `&lt;show&hyphen;namespaces&period;cpp&gt;`
 
@@ -45,7 +39,6 @@ Declared in `&lt;show&hyphen;namespaces&period;cpp&gt;`
 void
 a();
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

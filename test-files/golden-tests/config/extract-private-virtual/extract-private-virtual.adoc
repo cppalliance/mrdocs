@@ -4,23 +4,18 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A,`A`>> 
-
 |===
 
 [#A]
 == A
 
-
 === Synopsis
-
 
 Declared in `&lt;extract&hyphen;private&hyphen;virtual&period;cpp&gt;`
 
@@ -33,29 +28,22 @@ class A;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A-f,`f`>>  [.small]#[virtual]#
-
 |===
-
 
 === Private Member Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A-g,`g`>>  [.small]#[virtual]#
-
 |===
 
 [#A-f]
 == <<A,A>>::f
 
-
 === Synopsis
-
 
 Declared in `&lt;extract&hyphen;private&hyphen;virtual&period;cpp&gt;`
 
@@ -69,9 +57,7 @@ f();
 [#A-g]
 == <<A,A>>::g
 
-
 === Synopsis
-
 
 Declared in `&lt;extract&hyphen;private&hyphen;virtual&period;cpp&gt;`
 
@@ -81,7 +67,6 @@ virtual
 void
 g();
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -4,36 +4,28 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<B,`B`>> 
-
 |===
+
 === Variables
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A-0c,`A`>> 
-
 | <<A-08,`A&lt;void&gt;`>> 
-
 | <<A-01,`A&lt;T&&gt;`>> 
-
 |===
 
 [#B]
 == B
 
-
 === Synopsis
-
 
 Declared in `&lt;var&hyphen;template&period;cpp&gt;`
 
@@ -46,24 +38,16 @@ struct B;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<B-C-09,`C`>> 
-
 | <<B-C-05,`C&lt;int&gt;`>> 
-
 | <<B-C-0c,`C&lt;T*&gt;`>> 
-
 |===
-
-
 
 [#B-C-09]
 == <<B,B>>::C
 
-
 === Synopsis
-
 
 Declared in `&lt;var&hyphen;template&period;cpp&gt;`
 
@@ -77,9 +61,7 @@ unsigned int C = 0;
 [#B-C-05]
 == <<B,B>>::C&lt;int&gt;
 
-
 === Synopsis
-
 
 Declared in `&lt;var&hyphen;template&period;cpp&gt;`
 
@@ -93,9 +75,7 @@ unsigned int C&lt;int&gt; = &hyphen;1;
 [#B-C-0c]
 == <<B,B>>::C&lt;T*&gt;
 
-
 === Synopsis
-
 
 Declared in `&lt;var&hyphen;template&period;cpp&gt;`
 
@@ -109,9 +89,7 @@ unsigned int C&lt;T*&gt; = sizeof(T);
 [#A-0c]
 == A
 
-
 === Synopsis
-
 
 Declared in `&lt;var&hyphen;template&period;cpp&gt;`
 
@@ -124,9 +102,7 @@ unsigned int A = sizeof(T);
 [#A-08]
 == A&lt;void&gt;
 
-
 === Synopsis
-
 
 Declared in `&lt;var&hyphen;template&period;cpp&gt;`
 
@@ -139,9 +115,7 @@ unsigned int A&lt;void&gt; = 0;
 [#A-01]
 == A&lt;T&&gt;
 
-
 === Synopsis
-
 
 Declared in `&lt;var&hyphen;template&period;cpp&gt;`
 
@@ -150,7 +124,6 @@ Declared in `&lt;var&hyphen;template&period;cpp&gt;`
 template&lt;typename T&gt;
 unsigned int A&lt;T&&gt; = sizeof(T);
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -91,7 +91,6 @@ public:
     void writeCopied(doc::Copied const& node);
     void writeRelated(doc::Related const& node);
     void writeThrows(doc::Throws const& node);
-    void writeDetails(doc::Details const& node, llvm::StringRef tag = "");
     void writeSee(doc::See const& node, llvm::StringRef tag = "");
     void writePrecondition(doc::Precondition const& node);
     void writePostcondition(doc::Postcondition const& node);

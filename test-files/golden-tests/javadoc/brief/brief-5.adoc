@@ -4,42 +4,32 @@
 [#index]
 == Global namespace
 
-
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<f0,`f0`>> 
 | brief
-
 | <<f1,`f1`>> 
 | 
-
 | <<f2,`f2`>> 
 | 
-
 | <<f3,`f3`>> 
 | brief
-
 | <<f4,`f4`>> 
 | brief
-
 | <<f5,`f5`>> 
 | brief
-
 |===
 
 [#f0]
 == f0
 
-
 brief
 
 === Synopsis
-
 
 Declared in `&lt;brief&hyphen;5&period;cpp&gt;`
 
@@ -52,9 +42,7 @@ f0();
 [#f1]
 == f1
 
-
 === Synopsis
-
 
 Declared in `&lt;brief&hyphen;5&period;cpp&gt;`
 
@@ -67,9 +55,7 @@ f1();
 [#f2]
 == f2
 
-
 === Synopsis
-
 
 Declared in `&lt;brief&hyphen;5&period;cpp&gt;`
 
@@ -82,11 +68,9 @@ f2();
 [#f3]
 == f3
 
-
 brief
 
 === Synopsis
-
 
 Declared in `&lt;brief&hyphen;5&period;cpp&gt;`
 
@@ -99,11 +83,9 @@ f3();
 [#f4]
 == f4
 
-
 brief
 
 === Synopsis
-
 
 Declared in `&lt;brief&hyphen;5&period;cpp&gt;`
 
@@ -116,11 +98,9 @@ f4();
 [#f5]
 == f5
 
-
 brief
 
 === Synopsis
-
 
 Declared in `&lt;brief&hyphen;5&period;cpp&gt;`
 
@@ -129,7 +109,6 @@ Declared in `&lt;brief&hyphen;5&period;cpp&gt;`
 void
 f5();
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

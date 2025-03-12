@@ -4,67 +4,53 @@
 [#index]
 == Global namespace
 
-
 === Namespaces
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<documented_ns,`documented&lowbar;ns`>> 
 | Namespace documentation
-
 | <<mixed_ns,`mixed&lowbar;ns`>> 
 | Should decay to see&hyphen;below
-
 | <<mixed_regular_ns,`mixed&lowbar;regular&lowbar;ns`>> 
 | Should decay to regular
-
 | <<regular_ns,`regular&lowbar;ns`>> 
 | Regular namespace
-
 | <<see_below_ns,`see&lowbar;below&lowbar;ns`>> 
 | Should decay to see&hyphen;below
-
 |===
+
 === Namespace Aliases
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<empty_ns_alias,`empty&lowbar;ns&lowbar;alias`>> 
 | Should still work
-
 | <<regular_ns_alias,`regular&lowbar;ns&lowbar;alias`>> 
 | Should work
-
 |===
 
 === Using Namespace Directives
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<regular_ns,`regular&lowbar;ns`>>
-
 | empty&lowbar;ns
-
 |===
+
 
 [#documented_ns]
 == documented&lowbar;ns
 
-
 Namespace documentation
-
 
 [#mixed_ns]
 == mixed&lowbar;ns
-
 
 Should decay to see&hyphen;below
 
@@ -72,18 +58,14 @@ Should decay to see&hyphen;below
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<mixed_ns-SeeBelowStructA,`SeeBelowStructA`>> 
-
 |===
 
 [#mixed_ns-SeeBelowStructA]
 == <<mixed_ns,mixed&lowbar;ns>>::SeeBelowStructA
 
-
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;extract&hyphen;empty&hyphen;namespaces&period;cpp&gt;`
 
@@ -92,12 +74,8 @@ Declared in `&lt;no&hyphen;extract&hyphen;empty&hyphen;namespaces&period;cpp&gt;
 struct SeeBelowStructA { /* see-below */ };
 ----
 
-
-
-
 [#mixed_regular_ns]
 == mixed&lowbar;regular&lowbar;ns
-
 
 Should decay to regular
 
@@ -105,20 +83,15 @@ Should decay to regular
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<mixed_regular_ns-RegularStructA,`RegularStructA`>> 
-
 | <<mixed_regular_ns-SeeBelowStructB,`SeeBelowStructB`>> 
-
 |===
 
 [#mixed_regular_ns-RegularStructA]
 == <<mixed_regular_ns,mixed&lowbar;regular&lowbar;ns>>::RegularStructA
 
-
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;extract&hyphen;empty&hyphen;namespaces&period;cpp&gt;`
 
@@ -127,15 +100,10 @@ Declared in `&lt;no&hyphen;extract&hyphen;empty&hyphen;namespaces&period;cpp&gt;
 struct RegularStructA;
 ----
 
-
-
-
 [#mixed_regular_ns-SeeBelowStructB]
 == <<mixed_regular_ns,mixed&lowbar;regular&lowbar;ns>>::SeeBelowStructB
 
-
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;extract&hyphen;empty&hyphen;namespaces&period;cpp&gt;`
 
@@ -144,12 +112,8 @@ Declared in `&lt;no&hyphen;extract&hyphen;empty&hyphen;namespaces&period;cpp&gt;
 struct SeeBelowStructB { /* see-below */ };
 ----
 
-
-
-
 [#regular_ns]
 == regular&lowbar;ns
-
 
 Regular namespace
 
@@ -157,18 +121,14 @@ Regular namespace
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<regular_ns-A,`A`>> 
-
 |===
 
 [#regular_ns-A]
 == <<regular_ns,regular&lowbar;ns>>::A
 
-
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;extract&hyphen;empty&hyphen;namespaces&period;cpp&gt;`
 
@@ -177,12 +137,8 @@ Declared in `&lt;no&hyphen;extract&hyphen;empty&hyphen;namespaces&period;cpp&gt;
 struct A;
 ----
 
-
-
-
 [#see_below_ns]
 == see&lowbar;below&lowbar;ns
-
 
 Should decay to see&hyphen;below
 
@@ -190,20 +146,15 @@ Should decay to see&hyphen;below
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<see_below_ns-SeeBelowStructA,`SeeBelowStructA`>> 
-
 | <<see_below_ns-SeeBelowStructB,`SeeBelowStructB`>> 
-
 |===
 
 [#see_below_ns-SeeBelowStructA]
 == <<see_below_ns,see&lowbar;below&lowbar;ns>>::SeeBelowStructA
 
-
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;extract&hyphen;empty&hyphen;namespaces&period;cpp&gt;`
 
@@ -212,15 +163,10 @@ Declared in `&lt;no&hyphen;extract&hyphen;empty&hyphen;namespaces&period;cpp&gt;
 struct SeeBelowStructA { /* see-below */ };
 ----
 
-
-
-
 [#see_below_ns-SeeBelowStructB]
 == <<see_below_ns,see&lowbar;below&lowbar;ns>>::SeeBelowStructB
 
-
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;extract&hyphen;empty&hyphen;namespaces&period;cpp&gt;`
 
@@ -229,17 +175,12 @@ Declared in `&lt;no&hyphen;extract&hyphen;empty&hyphen;namespaces&period;cpp&gt;
 struct SeeBelowStructB { /* see-below */ };
 ----
 
-
-
-
 [#empty_ns_alias]
 == empty&lowbar;ns&lowbar;alias
-
 
 Should still work
 
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;extract&hyphen;empty&hyphen;namespaces&period;cpp&gt;`
 
@@ -251,11 +192,9 @@ namespace empty&lowbar;ns&lowbar;alias = empty&lowbar;ns;
 [#regular_ns_alias]
 == regular&lowbar;ns&lowbar;alias
 
-
 Should work
 
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;extract&hyphen;empty&hyphen;namespaces&period;cpp&gt;`
 
@@ -263,7 +202,6 @@ Declared in `&lt;no&hyphen;extract&hyphen;empty&hyphen;namespaces&period;cpp&gt;
 ----
 namespace regular&lowbar;ns&lowbar;alias = <<regular_ns,regular&lowbar;ns>>;
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

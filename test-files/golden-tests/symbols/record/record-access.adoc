@@ -4,27 +4,20 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<C0,`C0`>> 
-
 | <<S0,`S0`>> 
-
 | <<U0,`U0`>> 
-
 |===
 
 [#C0]
 == C0
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;access&period;cpp&gt;`
 
@@ -37,38 +30,30 @@ class C0;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<C0-f2,`f2`>> 
-
 |===
 
 === Protected Member Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<C0-f1,`f1`>> 
-
 |===
 
 === Private Member Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<C0-f0,`f0`>> 
-
 |===
 
 [#C0-f2]
 == <<C0,C0>>::f2
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;access&period;cpp&gt;`
 
@@ -81,9 +66,7 @@ f2();
 [#C0-f1]
 == <<C0,C0>>::f1
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;access&period;cpp&gt;`
 
@@ -96,9 +79,7 @@ f1();
 [#C0-f0]
 == <<C0,C0>>::f0
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;access&period;cpp&gt;`
 
@@ -111,9 +92,7 @@ f0();
 [#S0]
 == S0
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;access&period;cpp&gt;`
 
@@ -126,38 +105,30 @@ struct S0;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<S0-f0,`f0`>> 
-
 |===
 
 === Protected Member Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<S0-f1,`f1`>> 
-
 |===
 
 === Private Member Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<S0-f2,`f2`>> 
-
 |===
 
 [#S0-f0]
 == <<S0,S0>>::f0
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;access&period;cpp&gt;`
 
@@ -170,9 +141,7 @@ f0();
 [#S0-f1]
 == <<S0,S0>>::f1
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;access&period;cpp&gt;`
 
@@ -185,9 +154,7 @@ f1();
 [#S0-f2]
 == <<S0,S0>>::f2
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;access&period;cpp&gt;`
 
@@ -200,9 +167,7 @@ f2();
 [#U0]
 == U0
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;access&period;cpp&gt;`
 
@@ -215,38 +180,30 @@ union U0;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<U0-f0,`f0`>> 
-
 |===
 
 === Protected Member Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<U0-f1,`f1`>> 
-
 |===
 
 === Private Member Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<U0-f2,`f2`>> 
-
 |===
 
 [#U0-f0]
 == <<U0,U0>>::f0
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;access&period;cpp&gt;`
 
@@ -259,9 +216,7 @@ f0();
 [#U0-f1]
 == <<U0,U0>>::f1
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;access&period;cpp&gt;`
 
@@ -274,9 +229,7 @@ f1();
 [#U0-f2]
 == <<U0,U0>>::f2
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;access&period;cpp&gt;`
 
@@ -285,7 +238,6 @@ Declared in `&lt;record&hyphen;access&period;cpp&gt;`
 void
 f2();
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -4,23 +4,18 @@
 [#index]
 == Global namespace
 
-
 === Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<local_function,`local&lowbar;function`>> 
-
 |===
 
 [#local_function]
 == local&lowbar;function
 
-
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;extract&hyphen;local&hyphen;classes&period;cpp&gt;`
 
@@ -29,7 +24,6 @@ Declared in `&lt;no&hyphen;extract&hyphen;local&hyphen;classes&period;cpp&gt;`
 void
 local&lowbar;function();
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

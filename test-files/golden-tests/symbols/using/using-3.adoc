@@ -4,27 +4,20 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A,`A`>> 
-
 | <<B,`B`>> 
-
 | <<C,`C`>> 
-
 |===
 
 [#A]
 == A
 
-
 === Synopsis
-
 
 Declared in `&lt;using&hyphen;3&period;cpp&gt;`
 
@@ -37,20 +30,14 @@ struct A;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A-f,`f`>> 
-
 |===
-
-
 
 [#A-f]
 == <<A,A>>::f
 
-
 === Synopsis
-
 
 Declared in `&lt;using&hyphen;3&period;cpp&gt;`
 
@@ -63,9 +50,7 @@ f(int);
 [#B]
 == B
 
-
 === Synopsis
-
 
 Declared in `&lt;using&hyphen;3&period;cpp&gt;`
 
@@ -78,20 +63,14 @@ struct B;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<B-f,`f`>> 
-
 |===
-
-
 
 [#B-f]
 == <<B,B>>::f
 
-
 === Synopsis
-
 
 Declared in `&lt;using&hyphen;3&period;cpp&gt;`
 
@@ -104,9 +83,7 @@ f(bool);
 [#C]
 == C
 
-
 === Synopsis
-
 
 Declared in `&lt;using&hyphen;3&period;cpp&gt;`
 
@@ -121,36 +98,27 @@ struct C
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<C-f-082,`f`>> 
 | 
-
 |===
+
 === Using Declarations
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<C-f-081,`f`>> 
-
 | <<C-f-03,`f`>> 
-
 |===
-
-
 
 [#C-f-082]
 == <<C,C>>::f
 
-
 === Synopses
 
-
 Declared in `&lt;using&hyphen;3&period;cpp&gt;`
-
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -160,7 +128,6 @@ void
 ----
 
 [.small]#<<B-f,_» more&period;&period;&period;_>>#
-
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -174,9 +141,7 @@ void
 [#B-f]
 == <<B,B>>::f
 
-
 === Synopsis
-
 
 Declared in `&lt;using&hyphen;3&period;cpp&gt;`
 
@@ -189,9 +154,7 @@ f(bool);
 [#A-f]
 == <<A,A>>::f
 
-
 === Synopsis
-
 
 Declared in `&lt;using&hyphen;3&period;cpp&gt;`
 
@@ -204,9 +167,7 @@ f(int);
 [#C-f-081]
 == <<C,C>>::f
 
-
 === Synopsis
-
 
 Declared in `&lt;using&hyphen;3&period;cpp&gt;`
 
@@ -226,9 +187,7 @@ using <<A,A>>::f;
 [#C-f-03]
 == <<C,C>>::f
 
-
 === Synopsis
-
 
 Declared in `&lt;using&hyphen;3&period;cpp&gt;`
 
@@ -244,7 +203,6 @@ using <<B,B>>::f;
 | Name
 | f
 |===
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

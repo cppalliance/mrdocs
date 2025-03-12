@@ -4,37 +4,28 @@
 [#index]
 == Global namespace
 
-
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<f0,`f0`>> 
 | 
-
 | <<f1,`f1`>> 
 | 
-
 | <<f2,`f2`>> 
 | 
-
 | <<f3,`f3`>> 
 | 
-
 | <<f4,`f4`>> 
 | 
-
 |===
 
 [#f0]
 == f0
 
-
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;1&period;cpp&gt;`
 
@@ -46,21 +37,17 @@ f0(int i);
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *i*
 | int
-
 |===
 
 [#f1]
 == f1
 
-
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;1&period;cpp&gt;`
 
@@ -72,21 +59,17 @@ f1(int i);
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *i* [in]
 | int
-
 |===
 
 [#f2]
 == f2
 
-
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;1&period;cpp&gt;`
 
@@ -98,21 +81,17 @@ f2(int& i);
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *i* [out]
 | int
-
 |===
 
 [#f3]
 == f3
 
-
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;1&period;cpp&gt;`
 
@@ -124,21 +103,17 @@ f3(int& i);
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *i* [inout]
 | int
-
 |===
 
 [#f4]
 == f4
 
-
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;1&period;cpp&gt;`
 
@@ -152,15 +127,12 @@ f4(
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *i,j*
 | numbers
-
 |===
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

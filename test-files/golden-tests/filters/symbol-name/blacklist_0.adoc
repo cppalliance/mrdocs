@@ -4,41 +4,31 @@
 [#index]
 == Global namespace
 
-
 === Namespaces
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<N0,`N0`>> 
-
 | <<N4,`N4`>> 
-
 | <<N7,`N7`>> 
-
 |===
 
 [#N0]
 == N0
 
-
 === Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<N0-f0,`f0`>> 
-
 |===
 
 [#N0-f0]
 == <<N0,N0>>::f0
 
-
 === Synopsis
-
 
 Declared in `&lt;blacklist&lowbar;0&period;cpp&gt;`
 
@@ -51,39 +41,30 @@ f0();
 [#N4]
 == N4
 
-
 === Namespaces
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<N4-N5,`N5`>> 
-
 | <<N4-N6,`N6`>> 
-
 |===
 
 [#N4-N5]
 == <<N4,N4>>::N5
 
-
 === Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<N4-N5-f1,`f1`>> 
-
 |===
 
 [#N4-N5-f1]
 == <<N4,N4>>::<<N4-N5,N5>>::f1
 
-
 === Synopsis
-
 
 Declared in `&lt;blacklist&lowbar;0&period;cpp&gt;`
 
@@ -96,23 +77,18 @@ f1();
 [#N4-N6]
 == <<N4,N4>>::N6
 
-
 === Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<N4-N6-f1,`f1`>> 
-
 |===
 
 [#N4-N6-f1]
 == <<N4,N4>>::<<N4-N6,N6>>::f1
 
-
 === Synopsis
-
 
 Declared in `&lt;blacklist&lowbar;0&period;cpp&gt;`
 
@@ -125,37 +101,29 @@ f1();
 [#N7]
 == N7
 
-
 === Namespaces
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<N7-N9,`N9`>> 
-
 |===
 
 [#N7-N9]
 == <<N7,N7>>::N9
 
-
 === Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<N7-N9-g0,`g0`>> 
-
 |===
 
 [#N7-N9-g0]
 == <<N7,N7>>::<<N7-N9,N9>>::g0
 
-
 === Synopsis
-
 
 Declared in `&lt;blacklist&lowbar;0&period;cpp&gt;`
 
@@ -164,7 +132,6 @@ Declared in `&lt;blacklist&lowbar;0&period;cpp&gt;`
 void
 g0();
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

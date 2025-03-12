@@ -1365,7 +1365,7 @@ visitBlockCommandComment(
     }
     case CommandTraits::KCI_details:
     {
-        doc::Details paragraph;
+        doc::Paragraph paragraph;
         auto scope = enterScope(paragraph);
         visitChildren(C->getParagraph());
         jd_.emplace_back(std::move(paragraph));

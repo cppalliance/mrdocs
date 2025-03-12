@@ -4,23 +4,18 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A,`A`>> 
-
 |===
 
 [#A]
 == A
 
-
 === Synopsis
-
 
 Declared in `&lt;c&lowbar;mft&lowbar;expl&lowbar;inline&period;cpp&gt;`
 
@@ -33,25 +28,18 @@ struct A;
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<A-f-00,`f`>> 
 | 
-
 |===
-
-
 
 [#A-f-00]
 == <<A,A>>::f
 
-
 === Synopses
 
-
 Declared in `&lt;c&lowbar;mft&lowbar;expl&lowbar;inline&period;cpp&gt;`
-
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -62,7 +50,6 @@ void
 ----
 
 [.small]#<<A-f-0e,_» more&period;&period;&period;_>>#
-
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -77,9 +64,7 @@ void
 [#A-f-0e]
 == <<A,A>>::f
 
-
 === Synopsis
-
 
 Declared in `&lt;c&lowbar;mft&lowbar;expl&lowbar;inline&period;cpp&gt;`
 
@@ -93,9 +78,7 @@ f();
 [#A-f-0b]
 == <<A,A>>::f&lt;int&gt;
 
-
 === Synopsis
-
 
 Declared in `&lt;c&lowbar;mft&lowbar;expl&lowbar;inline&period;cpp&gt;`
 
@@ -105,7 +88,6 @@ template&lt;&gt;
 void
 <<A-f-0e,f>>&lt;int&gt;();
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

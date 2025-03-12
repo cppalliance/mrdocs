@@ -4,77 +4,65 @@
 [#index]
 == Global namespace
 
-
 === Namespaces
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<N,`N`>> 
 | Namespace to test qualified identifier parameters&period;
-
 |===
+
 === Types
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<A,`A`>> 
 | Struct to test explicit object member functions&period;
-
 | <<paramType,`paramType`>> 
 | Struct used to vary the parameter type&period;
-
 |===
+
 === Enums
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<testEnum,`testEnum`>> 
-
 |===
+
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<f-0e,`f`>> 
 | `f` overloads
-
 | <<g-0d,`g`>> 
 | `g` overloads
-
 |===
 
 [#N]
 == N
 
-
 Namespace to test qualified identifier parameters&period;
 
 === Namespaces
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<N-M,`M`>> 
 | Namespace to test qualified identifier parameters&period;
-
 |===
 
 [#N-M]
 == <<N,N>>::M
-
 
 Namespace to test qualified identifier parameters&period;
 
@@ -82,22 +70,18 @@ Namespace to test qualified identifier parameters&period;
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<N-M-Q,`Q`>> 
 | Struct to test qualified identifier parameters&period;
-
 |===
 
 [#N-M-Q]
 == <<N,N>>::<<N-M,M>>::Q
 
-
 Struct to test qualified identifier parameters&period;
 
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;types&period;cpp&gt;`
 
@@ -106,17 +90,12 @@ Declared in `&lt;param&hyphen;types&period;cpp&gt;`
 struct Q;
 ----
 
-
-
-
 [#A]
 == A
-
 
 Struct to test explicit object member functions&period;
 
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;types&period;cpp&gt;`
 
@@ -129,27 +108,20 @@ struct A;
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<A-f,`f`>> 
 | Reference member function&period;
-
 | <<A-g,`g`>> 
 | Reference member function&period;
-
 |===
-
-
 
 [#A-f]
 == <<A,A>>::f
 
-
 Reference member function&period;
 
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;types&period;cpp&gt;`
 
@@ -161,32 +133,25 @@ f(<<paramType,paramType>>&lt;4&gt; a);
 
 === Description
 
-
 Documentation for a function with an explicit object parameter&period;
 
 This reference uses the `this` keyword&period;
 
-
-
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | The first parameter of g
-
 |===
 
 [#A-g]
 == <<A,A>>::g
 
-
 Reference member function&period;
 
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;types&period;cpp&gt;`
 
@@ -200,33 +165,25 @@ g(this
 
 === Description
 
-
 Documentation for a function with an explicit object parameter&period;
-
-
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *self*
 | The object to operate on
-
 | *a*
 | The first parameter of g
-
 |===
 
 [#paramType]
 == paramType
 
-
 Struct used to vary the parameter type&period;
 
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;types&period;cpp&gt;`
 
@@ -236,15 +193,10 @@ template&lt;int Idx&gt;
 struct paramType;
 ----
 
-
-
-
 [#testEnum]
 == testEnum
 
-
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;types&period;cpp&gt;`
 
@@ -256,11 +208,9 @@ enum testEnum;
 [#f-0e]
 == f
 
-
 `f` overloads
 
 === Synopses
-
 
 Declared in `&lt;param&hyphen;types&period;cpp&gt;`
 
@@ -376,23 +326,19 @@ void
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | The first parameter of f
-
 |===
 
 [#f-0b3]
 == f
 
-
 Reference function&period;
 
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;types&period;cpp&gt;`
 
@@ -404,19 +350,14 @@ f();
 
 === Description
 
-
 Documentation for the reference function&period;
-
-
 
 [#f-00]
 == f
 
-
 Reference function&period;
 
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;types&period;cpp&gt;`
 
@@ -428,32 +369,25 @@ f(<<paramType,paramType>>&lt;0&gt; a);
 
 === Description
 
-
 Documentation for the reference function&period;
 
 This function uses a reference with no parameters&period;
 
-
-
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | The first parameter of f
-
 |===
 
 [#f-08c]
 == f
 
-
 Reference function&period;
 
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;types&period;cpp&gt;`
 
@@ -465,32 +399,25 @@ f(<<paramType,paramType>>&lt;1&gt; a);
 
 === Description
 
-
 Documentation for the reference function&period;
 
 This reference uses the `void` keyword&period;
 
-
-
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | The first parameter of f
-
 |===
 
 [#f-012]
 == f
 
-
 Variadic function
 
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;types&period;cpp&gt;`
 
@@ -502,32 +429,25 @@ f(<<paramType,paramType>>&lt;2&gt; a);
 
 === Description
 
-
 Documentation for the variadic function&period;
 
 This reference uses the `&period;&period;&period;` keyword&period;
 
-
-
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | The first parameter of g
-
 |===
 
 [#f-0c]
 == f
 
-
 Non&hyphen;variadic function
 
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;types&period;cpp&gt;`
 
@@ -539,32 +459,25 @@ f(<<paramType,paramType>>&lt;3&gt; a);
 
 === Description
 
-
 Documentation for the non&hyphen;variadic function&period;
 
 This reference uses the `int` keyword&period;
 
-
-
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | The first parameter of g
-
 |===
 
 [#f-03]
 == f
 
-
 struct param function
 
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;types&period;cpp&gt;`
 
@@ -576,32 +489,25 @@ f(<<paramType,paramType>>&lt;5&gt; a);
 
 === Description
 
-
 Documentation for a function with a struct parameter&period;
 
 This reference uses the `auto` keyword&period;
 
-
-
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | The first parameter of g
-
 |===
 
 [#f-04]
 == f
 
-
 Decltype function
 
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;types&period;cpp&gt;`
 
@@ -613,32 +519,25 @@ f(<<paramType,paramType>>&lt;6&gt; a);
 
 === Description
 
-
 Documentation for a function with a `decltype` parameter&period;
 
 This reference uses the `decltype` keyword&period;
 
-
-
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | The first parameter of g
-
 |===
 
 [#f-0b5]
 == f
 
-
 struct param function
 
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;types&period;cpp&gt;`
 
@@ -650,32 +549,25 @@ f(<<paramType,paramType>>&lt;7&gt; a);
 
 === Description
 
-
 Documentation for a function with a struct parameter&period;
 
 This reference uses the `struct` keyword&period;
 
-
-
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | The first parameter of g
-
 |===
 
 [#f-010]
 == f
 
-
 Enum param function
 
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;types&period;cpp&gt;`
 
@@ -687,32 +579,25 @@ f(<<paramType,paramType>>&lt;8&gt; a);
 
 === Description
 
-
 Documentation for a function with an enum parameter&period;
 
 This reference uses the `enum` keyword&period;
 
-
-
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | The first parameter of g
-
 |===
 
 [#f-081]
 == f
 
-
 Qualified identifier param function
 
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;types&period;cpp&gt;`
 
@@ -724,32 +609,25 @@ f(<<paramType,paramType>>&lt;9&gt; a);
 
 === Description
 
-
 Documentation for a function with a qualified identifier parameter&period;
 
 This reference uses the qualified identifier `N&colon;&colon;M&colon;&colon;Q`&period;
 
-
-
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | The first parameter of g
-
 |===
 
 [#g-0d]
 == g
 
-
 `g` overloads
 
 === Synopses
-
 
 Declared in `&lt;param&hyphen;types&period;cpp&gt;`
 
@@ -809,7 +687,6 @@ void
 [.small]#<<g-04a,_» more&period;&period;&period;_>>#
 
 
-
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;class a&colon;auto&gt;
@@ -834,26 +711,21 @@ void
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | The first parameter of g
-
 | *b*
 | The second parameter of g
-
 |===
 
 [#g-05]
 == g
 
-
 struct param function
 
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;types&period;cpp&gt;`
 
@@ -865,30 +737,23 @@ g(<<A,A>> a);
 
 === Description
 
-
 Documentation for a function with a struct parameter&period;
-
-
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | The first parameter of g
-
 |===
 
 [#g-09c]
 == g
 
-
 Qualified identifier param function
 
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;types&period;cpp&gt;`
 
@@ -900,30 +765,23 @@ g(<<N,N>>::<<N-M,M>>::<<N-M-Q,Q>> a);
 
 === Description
 
-
 Documentation for a function with a qualified identifier parameter&period;
-
-
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | The first parameter of g
-
 |===
 
 [#g-04c]
 == g
 
-
 Enum param function
 
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;types&period;cpp&gt;`
 
@@ -935,30 +793,23 @@ g(<<testEnum,testEnum>> a);
 
 === Description
 
-
 Documentation for a function with an enum parameter&period;
-
-
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | The first parameter of g
-
 |===
 
 [#g-096]
 == g
 
-
 Variadic function
 
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;types&period;cpp&gt;`
 
@@ -970,30 +821,23 @@ g(int a, &period;&period;&period;);
 
 === Description
 
-
 Documentation for the variadic function&period;
-
-
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | The first parameter of g
-
 |===
 
 [#g-04a]
 == g
 
-
 Non&hyphen;variadic function
 
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;types&period;cpp&gt;`
 
@@ -1005,28 +849,21 @@ g(int a);
 
 === Description
 
-
 Documentation for the non&hyphen;variadic function&period;
-
-
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | The first parameter of g
-
 |===
 
 [#g-0b]
 == g
 
-
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;types&period;cpp&gt;`
 
@@ -1040,11 +877,9 @@ g(auto a);
 [#g-0c]
 == g
 
-
 Decltype function
 
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;types&period;cpp&gt;`
 
@@ -1058,25 +893,18 @@ g(
 
 === Description
 
-
 Documentation for a function with a `decltype` parameter&period;
-
-
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | The first parameter of g
-
 | *b*
 | The second parameter of g
-
 |===
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -4,27 +4,22 @@
 [#index]
 == Global namespace
 
-
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<my_function,`my&lowbar;function`>> 
 | A function
-
 |===
 
 [#my_function]
 == my&lowbar;function
 
-
 A function
 
 === Synopsis
-
 
 Declared in `&lt;para&hyphen;3&period;cpp&gt;`
 
@@ -36,21 +31,13 @@ my&lowbar;function();
 
 === Description
 
-
-
 === A heading&period; Some text&period;
-
 More text&period;&period;&period;
 
 Another paragraph Next line
 
-
 === Exception safety
-
 No&hyphen;throw guarantee&period;
-
-
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

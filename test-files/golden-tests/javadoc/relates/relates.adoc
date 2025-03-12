@@ -4,41 +4,34 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<A,`A`>> 
 | A brief for A&period;
-
 | <<B,`B`>> 
 | A brief for B
-
 |===
+
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<f,`f`>> 
 | A brief for f&period;
-
 |===
 
 [#A]
 == A
 
-
 A brief for A&period;
 
 === Synopsis
-
 
 Declared in `&lt;relates&period;cpp&gt;`
 
@@ -47,29 +40,23 @@ Declared in `&lt;relates&period;cpp&gt;`
 struct A;
 ----
 
-
-
-
 === Related functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<f,`f`>> 
 | A brief for f&period;
-
 |===
+
 
 [#B]
 == B
 
-
 A brief for B
 
 === Synopsis
-
 
 Declared in `&lt;relates&period;cpp&gt;`
 
@@ -78,17 +65,12 @@ Declared in `&lt;relates&period;cpp&gt;`
 struct B;
 ----
 
-
-
-
 [#f]
 == f
-
 
 A brief for f&period;
 
 === Synopsis
-
 
 Declared in `&lt;relates&period;cpp&gt;`
 
@@ -97,7 +79,6 @@ Declared in `&lt;relates&period;cpp&gt;`
 void
 f();
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

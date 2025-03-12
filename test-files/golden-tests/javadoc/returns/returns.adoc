@@ -1,0 +1,115 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols=1]
+|===
+| Name
+| <<pair,`pair`>> 
+|===
+
+=== Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| <<f,`f`>> 
+| A function with a single return value&period;
+| <<g,`g`>> 
+| A function with multiple return values&period;
+|===
+
+[#pair]
+== pair
+
+=== Synopsis
+
+Declared in `&lt;returns&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;
+    class T,
+    class U&gt;
+struct pair;
+----
+
+=== Data Members
+
+[cols=1]
+|===
+| Name
+| <<pair-first,`first`>> 
+| <<pair-second,`second`>> 
+|===
+
+[#pair-first]
+== <<pair,pair>>::first
+
+=== Synopsis
+
+Declared in `&lt;returns&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+T first;
+----
+
+[#pair-second]
+== <<pair,pair>>::second
+
+=== Synopsis
+
+Declared in `&lt;returns&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+U second;
+----
+
+[#f]
+== f
+
+A function with a single return value&period;
+
+=== Synopsis
+
+Declared in `&lt;returns&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+f();
+----
+
+=== Return Value
+
+The return value of the function&period;
+
+[#g]
+== g
+
+A function with multiple return values&period;
+
+=== Synopsis
+
+Declared in `&lt;returns&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<pair,pair>>&lt;int, int&gt;
+g();
+----
+
+=== Return Value
+
+* The first return value of the function&period;
+* The second return value of the function&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

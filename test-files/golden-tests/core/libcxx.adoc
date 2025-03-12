@@ -4,27 +4,22 @@
 [#index]
 == Global namespace
 
-
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<sqrt,`sqrt`>> 
 | Computes the square root of an integral value&period;
-
 |===
 
 [#sqrt]
 == sqrt
 
-
 Computes the square root of an integral value&period;
 
 === Synopsis
-
 
 Declared in `&lt;libcxx&period;cpp&gt;`
 
@@ -38,49 +33,38 @@ requires std&colon;&colon;is&lowbar;integral&lowbar;v&lt;T&gt;;
 
 === Description
 
-
 This function calculates the square root of a given integral value using bit manipulation&period;
-
-
 
 === Exceptions
 
-
 |===
-| Name | Thrown on
-
+| Name
+| Thrown on
 | `std&colon;&colon;invalid&lowbar;argument`
 | if the input value is negative&period;
-
 |===
 
 === Return Value
-
 
 The square root of the input value&period;
 
 === Template Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *T*
 | The type of the input value&period; Must be an integral type&period;
-
 |===
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *value*
 | The integral value to compute the square root of&period;
-
 |===
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -4,39 +4,30 @@
 [#index]
 == Global namespace
 
-
 === Namespaces
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A,`A`>> 
-
 |===
 
 [#A]
 == A
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A-D,`D`>> 
-
 | <<A-E,`E`>> 
-
 |===
 
 [#A-D]
 == <<A,A>>::D
 
-
 === Synopsis
-
 
 Declared in `&lt;excluded&hyphen;base&hyphen;class&period;cpp&gt;`
 
@@ -50,26 +41,17 @@ class D
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A-D-f,`f`>> 
-
 | <<A-D-g,`g`>>  [.small]#[virtual]#
-
 | <<A-D-h,`h`>>  [.small]#[virtual]#
-
 | <<A-D-i,`i`>> 
-
 |===
-
-
 
 [#A-D-f]
 == <<A,A>>::<<A-D,D>>::f
 
-
 === Synopsis
-
 
 Declared in `&lt;excluded&hyphen;base&hyphen;class&period;cpp&gt;`
 
@@ -82,9 +64,7 @@ f();
 [#A-D-g]
 == <<A,A>>::<<A-D,D>>::g
 
-
 === Synopsis
-
 
 Declared in `&lt;excluded&hyphen;base&hyphen;class&period;cpp&gt;`
 
@@ -98,9 +78,7 @@ g() override;
 [#A-D-h]
 == <<A,A>>::<<A-D,D>>::h
 
-
 === Synopsis
-
 
 Declared in `&lt;excluded&hyphen;base&hyphen;class&period;cpp&gt;`
 
@@ -114,9 +92,7 @@ h() override;
 [#A-D-i]
 == <<A,A>>::<<A-D,D>>::i
 
-
 === Synopsis
-
 
 Declared in `&lt;excluded&hyphen;base&hyphen;class&period;cpp&gt;`
 
@@ -129,9 +105,7 @@ i();
 [#A-E]
 == <<A,A>>::E
 
-
 === Synopsis
-
 
 Declared in `&lt;excluded&hyphen;base&hyphen;class&period;cpp&gt;`
 
@@ -145,26 +119,17 @@ class E
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A-E-f,`f`>> 
-
 | <<A-E-g,`g`>>  [.small]#[virtual]#
-
 | <<A-E-h,`h`>>  [.small]#[virtual]#
-
 | <<A-E-i,`i`>> 
-
 |===
-
-
 
 [#A-E-f]
 == <<A,A>>::<<A-E,E>>::f
 
-
 === Synopsis
-
 
 Declared in `&lt;excluded&hyphen;base&hyphen;class&period;cpp&gt;`
 
@@ -177,9 +142,7 @@ f();
 [#A-E-g]
 == <<A,A>>::<<A-E,E>>::g
 
-
 === Synopsis
-
 
 Declared in `&lt;excluded&hyphen;base&hyphen;class&period;cpp&gt;`
 
@@ -193,9 +156,7 @@ g();
 [#A-E-h]
 == <<A,A>>::<<A-E,E>>::h
 
-
 === Synopsis
-
 
 Declared in `&lt;excluded&hyphen;base&hyphen;class&period;cpp&gt;`
 
@@ -209,9 +170,7 @@ h() override;
 [#A-E-i]
 == <<A,A>>::<<A-E,E>>::i
 
-
 === Synopsis
-
 
 Declared in `&lt;excluded&hyphen;base&hyphen;class&period;cpp&gt;`
 
@@ -220,7 +179,6 @@ Declared in `&lt;excluded&hyphen;base&hyphen;class&period;cpp&gt;`
 void
 i();
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

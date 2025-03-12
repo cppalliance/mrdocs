@@ -4,95 +4,73 @@
 [#index]
 == Global namespace
 
-
 === Namespaces
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<B,`B`>> 
-
 |===
+
 === Types
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<A-09,`A`>> 
 | The partial specialization of A is enabled via a template parameter
-
 | <<A-02,`A&lt;T&gt;`>> 
 | Specialization for floating point types
-
 | <<S-02,`S`>> 
 | SFINAE with std&colon;&colon;void&lowbar;t
-
 | <<S-08,`S&lt;T, std::void&lowbar;t&lt;T::a::b&gt;&gt;`>> 
 | SFINAE with std&colon;&colon;void&lowbar;t
-
 |===
+
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<f1,`f1`>> 
 | Enabled via return type
-
 | <<f10,`f10`>> 
 | Enabled via type template parameter
-
 | <<f2,`f2`>> 
 | Enabling a specified return type
-
 | <<f3,`f3`>> 
 | Enabling a specified return type in another namespace
-
 | <<f4,`f4`>> 
 | Enabled via return type with std&colon;&colon;enable&lowbar;if
-
 | <<f5,`f5`>> 
 | Enabled via a non&hyphen;type template parameter with helper
-
 | <<f6,`f6`>> 
 | Enabled via a non&hyphen;type template parameter without helper
-
 | <<f7,`f7`>> 
 | Enabled via a non&hyphen;type template parameter using int instead of bool
-
 | <<f8,`f8`>> 
 | Enabled via parameter without helper
-
 | <<f9,`f9`>> 
 | Enabled via parameter with helper
-
 |===
 
 [#B]
 == B
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<B-C,`C`>> 
-
 |===
 
 [#B-C]
 == <<B,B>>::C
 
-
 === Synopsis
-
 
 Declared in `&lt;sfinae&period;cpp&gt;`
 
@@ -101,17 +79,12 @@ Declared in `&lt;sfinae&period;cpp&gt;`
 struct C;
 ----
 
-
-
-
 [#A-09]
 == A
-
 
 The partial specialization of A is enabled via a template parameter
 
 === Synopsis
-
 
 Declared in `&lt;sfinae&period;cpp&gt;`
 
@@ -123,17 +96,12 @@ template&lt;
 class A;
 ----
 
-
-
-
 [#A-02]
 == A&lt;T&gt;
-
 
 Specialization for floating point types
 
 === Synopsis
-
 
 Declared in `&lt;sfinae&period;cpp&gt;`
 
@@ -144,17 +112,12 @@ requires std&colon;&colon;is&lowbar;integral&lowbar;v&lt;T&gt;
 class <<A-09,A>>&lt;T&gt;;
 ----
 
-
-
-
 [#S-02]
 == S
-
 
 SFINAE with std&colon;&colon;void&lowbar;t
 
 === Synopsis
-
 
 Declared in `&lt;sfinae&period;cpp&gt;`
 
@@ -170,20 +133,14 @@ struct S;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<S-02-store,`store`>> 
-
 |===
-
-
 
 [#S-02-store]
 == <<S-02,S>>::store
 
-
 === Synopsis
-
 
 Declared in `&lt;sfinae&period;cpp&gt;`
 
@@ -196,11 +153,9 @@ store(void const*);
 [#S-08]
 == S&lt;T, std::void&lowbar;t&lt;T::a::b&gt;&gt;
 
-
 SFINAE with std&colon;&colon;void&lowbar;t
 
 === Synopsis
-
 
 Declared in `&lt;sfinae&period;cpp&gt;`
 
@@ -214,20 +169,14 @@ struct <<S-02,S>>&lt;T, std::void&lowbar;t&lt;T::a::b&gt;&gt;;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<S-08-store,`store`>> 
-
 |===
-
-
 
 [#S-08-store]
 == <<S-08,S>>&lt;T, std::void&lowbar;t&lt;T::a::b&gt;&gt;::store
 
-
 === Synopsis
-
 
 Declared in `&lt;sfinae&period;cpp&gt;`
 
@@ -240,11 +189,9 @@ store(void const*);
 [#f1]
 == f1
 
-
 Enabled via return type
 
 === Synopsis
-
 
 Declared in `&lt;sfinae&period;cpp&gt;`
 
@@ -259,11 +206,9 @@ requires std&colon;&colon;is&lowbar;integral&lowbar;v&lt;T&gt;;
 [#f10]
 == f10
 
-
 Enabled via type template parameter
 
 === Synopsis
-
 
 Declared in `&lt;sfinae&period;cpp&gt;`
 
@@ -277,23 +222,18 @@ f10(T value);
 
 === Description
 
-
 This pattern should not be used because the function signature is unmodified and therefore only supports one overload&period;
 
 It&apos;s a common mistake is to declare two function templates that differ only in their default template arguments&period;
 
 This does not work because the declarations are treated as redeclarations of the same function template (default template arguments are not accounted for in function template equivalence)&period;
 
-
-
 [#f2]
 == f2
-
 
 Enabling a specified return type
 
 === Synopsis
-
 
 Declared in `&lt;sfinae&period;cpp&gt;`
 
@@ -308,11 +248,9 @@ requires std&colon;&colon;is&lowbar;integral&lowbar;v&lt;T&gt;;
 [#f3]
 == f3
 
-
 Enabling a specified return type in another namespace
 
 === Synopsis
-
 
 Declared in `&lt;sfinae&period;cpp&gt;`
 
@@ -327,11 +265,9 @@ requires std&colon;&colon;is&lowbar;integral&lowbar;v&lt;T&gt;;
 [#f4]
 == f4
 
-
 Enabled via return type with std&colon;&colon;enable&lowbar;if
 
 === Synopsis
-
 
 Declared in `&lt;sfinae&period;cpp&gt;`
 
@@ -346,11 +282,9 @@ requires std&colon;&colon;is&lowbar;integral&lowbar;v&lt;T&gt;;
 [#f5]
 == f5
 
-
 Enabled via a non&hyphen;type template parameter with helper
 
 === Synopsis
-
 
 Declared in `&lt;sfinae&period;cpp&gt;`
 
@@ -365,11 +299,9 @@ f5(T value);
 [#f6]
 == f6
 
-
 Enabled via a non&hyphen;type template parameter without helper
 
 === Synopsis
-
 
 Declared in `&lt;sfinae&period;cpp&gt;`
 
@@ -384,11 +316,9 @@ f6(T value);
 [#f7]
 == f7
 
-
 Enabled via a non&hyphen;type template parameter using int instead of bool
 
 === Synopsis
-
 
 Declared in `&lt;sfinae&period;cpp&gt;`
 
@@ -403,11 +333,9 @@ f7(T value);
 [#f8]
 == f8
 
-
 Enabled via parameter without helper
 
 === Synopsis
-
 
 Declared in `&lt;sfinae&period;cpp&gt;`
 
@@ -422,11 +350,9 @@ requires std&colon;&colon;is&lowbar;integral&lowbar;v&lt;T&gt;;
 [#f9]
 == f9
 
-
 Enabled via parameter with helper
 
 === Synopsis
-
 
 Declared in `&lt;sfinae&period;cpp&gt;`
 
@@ -437,7 +363,6 @@ T
 f9(T value)
 requires std&colon;&colon;is&lowbar;integral&lowbar;v&lt;T&gt;;
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

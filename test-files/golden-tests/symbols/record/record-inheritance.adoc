@@ -4,53 +4,33 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<C0,`C0`>> 
-
 | <<C1,`C1`>> 
-
 | <<C2,`C2`>> 
-
 | <<C3,`C3`>> 
-
 | <<C4,`C4`>> 
-
 | <<C5,`C5`>> 
-
 | <<C6,`C6`>> 
-
 | <<C7,`C7`>> 
-
 | <<S0,`S0`>> 
-
 | <<S1,`S1`>> 
-
 | <<S2,`S2`>> 
-
 | <<S3,`S3`>> 
-
 | <<S4,`S4`>> 
-
 | <<S5,`S5`>> 
-
 | <<S6,`S6`>> 
-
 | <<U0,`U0`>> 
-
 |===
 
 [#C0]
 == C0
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -59,15 +39,10 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 class C0;
 ----
 
-
-
-
 [#C1]
 == C1
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -77,15 +52,10 @@ class C1
     : <<C0,C0>>;
 ----
 
-
-
-
 [#C2]
 == C2
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -95,15 +65,10 @@ class C2
     : public <<C0,C0>>;
 ----
 
-
-
-
 [#C3]
 == C3
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -113,15 +78,10 @@ class C3
     : protected <<C0,C0>>;
 ----
 
-
-
-
 [#C4]
 == C4
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -131,15 +91,10 @@ class C4
     : <<C0,C0>>;
 ----
 
-
-
-
 [#C5]
 == C5
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -149,15 +104,10 @@ class C5
     : virtual <<C0,C0>>;
 ----
 
-
-
-
 [#C6]
 == C6
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -167,15 +117,10 @@ class C6
     : virtual <<C1,C1>>;
 ----
 
-
-
-
 [#C7]
 == C7
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -186,15 +131,10 @@ class C7
     , public <<C6,C6>>;
 ----
 
-
-
-
 [#S0]
 == S0
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -203,15 +143,10 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 struct S0;
 ----
 
-
-
-
 [#S1]
 == S1
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -220,15 +155,10 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 struct S1;
 ----
 
-
-
-
 [#S2]
 == S2
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -238,15 +168,10 @@ struct S2
     : <<S0,S0>>;
 ----
 
-
-
-
 [#S3]
 == S3
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -256,15 +181,10 @@ struct S3
     : <<S1,S1>>;
 ----
 
-
-
-
 [#S4]
 == S4
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -275,15 +195,10 @@ struct S4
     , <<S3,S3>>;
 ----
 
-
-
-
 [#S5]
 == S5
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -294,15 +209,10 @@ struct S5
     , protected <<S1,S1>>;
 ----
 
-
-
-
 [#S6]
 == S6
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -313,15 +223,10 @@ struct S6
     : Ts&period;&period;&period;;
 ----
 
-
-
-
 [#U0]
 == U0
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 
@@ -329,10 +234,6 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 ----
 union U0;
 ----
-
-
-
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -4,48 +4,38 @@
 [#index]
 == Global namespace
 
-
 === Namespaces
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<LongName,`LongName`>> 
-
 |===
+
 === Namespace Aliases
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A,`A`>> 
-
 | <<B,`B`>> 
-
 |===
 
 [#LongName]
 == LongName
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<LongName-A,`A`>> 
-
 |===
 
 [#LongName-A]
 == <<LongName,LongName>>::A
 
-
 === Synopsis
-
 
 Declared in `&lt;namespace&hyphen;alias&hyphen;3&period;cpp&gt;`
 
@@ -54,15 +44,10 @@ Declared in `&lt;namespace&hyphen;alias&hyphen;3&period;cpp&gt;`
 struct A;
 ----
 
-
-
-
 [#A]
 == A
 
-
 === Synopsis
-
 
 Declared in `&lt;namespace&hyphen;alias&hyphen;3&period;cpp&gt;`
 
@@ -74,9 +59,7 @@ namespace A = <<LongName,LongName>>;
 [#B]
 == B
 
-
 === Synopsis
-
 
 Declared in `&lt;namespace&hyphen;alias&hyphen;3&period;cpp&gt;`
 
@@ -84,7 +67,6 @@ Declared in `&lt;namespace&hyphen;alias&hyphen;3&period;cpp&gt;`
 ----
 namespace B = <<A,A>>;
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

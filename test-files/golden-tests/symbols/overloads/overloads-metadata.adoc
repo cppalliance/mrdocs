@@ -4,27 +4,22 @@
 [#index]
 == Global namespace
 
-
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<f-0e,`f`>> 
 | Test function
-
 |===
 
 [#f-0e]
 == f
 
-
 Test function
 
 === Synopses
-
 
 Declared in `&lt;overloads&hyphen;metadata&period;cpp&gt;`
 
@@ -71,85 +66,64 @@ int
 
 === Exceptions
 
-
 |===
-| Name | Thrown on
-
+| Name
+| Thrown on
 | `std&colon;&colon;runtime&lowbar;error`
 | Describe the exception
-
 | `std&colon;&colon;logic&lowbar;error`
 | Describe the exception
-
 |===
 
 === Return Value
-
 
 * The number corresponding to a
 * The number corresponding to a and b
 
 === Template Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *A*
 | Describe A
-
 | *B*
 | Describe B
-
 |===
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | Describe a
-
 | *b*
 | Describe b
-
 |===
 
 === Preconditions
 
-
 * a must be greater than 0
 * b must be greater than 0
 
-
-
 === Postconditions
-
 
 * The return value is greater than 0
 * The return value is greater than 10
 
-
-
 === See Also
 
-
 Interesting information 1
+
 Interesting information 2
-
-
-
 
 [#f-08]
 == f
 
-
 Test function
 
 === Synopsis
-
 
 Declared in `&lt;overloads&hyphen;metadata&period;cpp&gt;`
 
@@ -162,72 +136,53 @@ f(int a);
 
 === Exceptions
 
-
 |===
-| Name | Thrown on
-
+| Name
+| Thrown on
 | `std&colon;&colon;runtime&lowbar;error`
 | Describe the exception
-
 |===
 
 === Return Value
-
 
 The number corresponding to a
 
 === Template Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *A*
 | Describe A
-
 |===
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | Describe a
-
 |===
 
 === Preconditions
 
-
 * a must be greater than 0
-
-
 
 === Postconditions
 
-
 * The return value is greater than 0
-
-
 
 === See Also
 
-
 Interesting information 1
-
-
-
 
 [#f-04]
 == f
 
-
 Test function
 
 === Synopsis
-
 
 Declared in `&lt;overloads&hyphen;metadata&period;cpp&gt;`
 
@@ -241,36 +196,27 @@ f(
 
 === Return Value
 
-
 The number corresponding to a
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | Describe a again
-
 |===
 
 === See Also
 
-
 Interesting information 2
-
-
-
 
 [#f-02]
 == f
 
-
 Test function
 
 === Synopsis
-
 
 Declared in `&lt;overloads&hyphen;metadata&period;cpp&gt;`
 
@@ -287,63 +233,47 @@ f(
 
 === Exceptions
 
-
 |===
-| Name | Thrown on
-
+| Name
+| Thrown on
 | `std&colon;&colon;logic&lowbar;error`
 | Describe the exception
-
 |===
 
 === Return Value
-
 
 The number corresponding to a and b
 
 === Template Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *A*
 | Describe A again
-
 | *B*
 | Describe B
-
 |===
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | Describe a again
-
 | *b*
 | Describe b
-
 |===
 
 === Preconditions
 
-
 * a must be greater than 0
 * b must be greater than 0
 
-
-
 === Postconditions
 
-
 * The return value is greater than 10
-
-
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

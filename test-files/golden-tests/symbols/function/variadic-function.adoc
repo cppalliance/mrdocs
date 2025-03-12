@@ -4,38 +4,29 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<C,`C`>> 
-
 | <<T,`T`>> 
-
 | <<U,`U`>> 
-
 |===
+
 === Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<f,`f`>> 
-
 | <<g,`g`>> 
-
 |===
 
 [#T]
 == T
 
-
 === Synopsis
-
 
 Declared in `&lt;variadic&hyphen;function&period;cpp&gt;`
 
@@ -47,9 +38,7 @@ using T = void(&period;&period;&period;);
 [#U]
 == U
 
-
 === Synopsis
-
 
 Declared in `&lt;variadic&hyphen;function&period;cpp&gt;`
 
@@ -61,9 +50,7 @@ using U = void(int, &period;&period;&period;);
 [#C]
 == C
 
-
 === Synopsis
-
 
 Declared in `&lt;variadic&hyphen;function&period;cpp&gt;`
 
@@ -75,15 +62,10 @@ template&lt;
 struct C;
 ----
 
-
-
-
 [#f]
 == f
 
-
 === Synopsis
-
 
 Declared in `&lt;variadic&hyphen;function&period;cpp&gt;`
 
@@ -96,9 +78,7 @@ f(&period;&period;&period;);
 [#g]
 == g
 
-
 === Synopsis
-
 
 Declared in `&lt;variadic&hyphen;function&period;cpp&gt;`
 
@@ -107,7 +87,6 @@ Declared in `&lt;variadic&hyphen;function&period;cpp&gt;`
 void
 g(int, &period;&period;&period;);
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

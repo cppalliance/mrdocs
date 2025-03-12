@@ -4,41 +4,34 @@
 [#index]
 == Global namespace
 
-
 === Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<f,`f`>> 
-
 |===
+
 === Variables
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<x,`x`>> 
-
 |===
+
 === Concepts
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<C,`C`>> 
-
 |===
 
 [#f]
 == f
 
-
 === Synopsis
-
 
 Declared in `&lt;concept&period;cpp&gt;`
 
@@ -52,9 +45,7 @@ f();
 [#x]
 == x
 
-
 === Synopsis
-
 
 Declared in `&lt;concept&period;cpp&gt;`
 
@@ -66,9 +57,7 @@ Declared in `&lt;concept&period;cpp&gt;`
 [#C]
 == C
 
-
 === Synopsis
-
 
 Declared in `&lt;concept&period;cpp&gt;`
 
@@ -77,7 +66,6 @@ Declared in `&lt;concept&period;cpp&gt;`
 template&lt;typename T&gt;
 concept C = sizeof(T) &equals;&equals; sizeof(int);
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

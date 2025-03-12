@@ -4,27 +4,22 @@
 [#index]
 == Global namespace
 
-
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<f0,`f0`>> 
 | brief
-
 |===
 
 [#f0]
 == f0
 
-
 brief
 
 === Synopsis
-
 
 Declared in `&lt;brief&hyphen;6&period;cpp&gt;`
 
@@ -36,11 +31,7 @@ f0();
 
 === Description
 
-
 desc
-
-
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

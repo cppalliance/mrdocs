@@ -4,34 +4,27 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A,`A`>> 
-
 | <<B,`B`>> 
-
 |===
+
 === Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<f,`f`>> 
-
 |===
 
 [#A]
 == A
 
-
 === Synopsis
-
 
 Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
 
@@ -45,34 +38,21 @@ struct A;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A-v0,`v0`>> 
-
 | <<A-v1,`v1`>> 
-
 | <<A-v2,`v2`>> 
-
 | <<A-v3,`v3`>> 
-
 | <<A-v4,`v4`>> 
-
 | <<A-v5,`v5`>> 
-
 | <<A-v6,`v6`>> 
-
 | <<A-v7,`v7`>> 
-
 |===
-
-
 
 [#A-v0]
 == <<A,A>>::v0
 
-
 === Synopsis
-
 
 Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
 
@@ -85,9 +65,7 @@ int v0 = 0;
 [#A-v1]
 == <<A,A>>::v1
 
-
 === Synopsis
-
 
 Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
 
@@ -100,9 +78,7 @@ int v1 = 1;
 [#A-v2]
 == <<A,A>>::v2
 
-
 === Synopsis
-
 
 Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
 
@@ -115,9 +91,7 @@ int v2 = 2;
 [#A-v3]
 == <<A,A>>::v3
 
-
 === Synopsis
-
 
 Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
 
@@ -130,9 +104,7 @@ int const v3 = 3;
 [#A-v4]
 == <<A,A>>::v4
 
-
 === Synopsis
-
 
 Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
 
@@ -145,9 +117,7 @@ int const v4 = 4;
 [#A-v5]
 == <<A,A>>::v5
 
-
 === Synopsis
-
 
 Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
 
@@ -160,9 +130,7 @@ int v5 = 5;
 [#A-v6]
 == <<A,A>>::v6
 
-
 === Synopsis
-
 
 Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
 
@@ -175,9 +143,7 @@ int const v6 = 6;
 [#A-v7]
 == <<A,A>>::v7
 
-
 === Synopsis
-
 
 Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
 
@@ -190,9 +156,7 @@ int v7 = 7;
 [#B]
 == B
 
-
 === Synopsis
-
 
 Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
 
@@ -205,22 +169,15 @@ struct B;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<B-x0,`x0`>> 
-
 | <<B-x1,`x1`>> 
-
 |===
-
-
 
 [#B-x0]
 == <<B,B>>::x0
 
-
 === Synopsis
-
 
 Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
 
@@ -234,9 +191,7 @@ int const x0 = 0;
 [#B-x1]
 == <<B,B>>::x1
 
-
 === Synopsis
-
 
 Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
 
@@ -250,9 +205,7 @@ int x1 = 0;
 [#f]
 == f
 
-
 === Synopsis
-
 
 Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
 
@@ -261,7 +214,6 @@ Declared in `&lt;static&hyphen;data&hyphen;def&period;cpp&gt;`
 auto
 f();
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

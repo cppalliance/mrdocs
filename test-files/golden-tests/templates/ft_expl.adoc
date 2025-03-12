@@ -4,28 +4,22 @@
 [#index]
 == Global namespace
 
-
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<f-0e,`f`>> 
 | 
-
 |===
 
 [#f-0e]
 == f
 
-
 === Synopses
 
-
 Declared in `&lt;ft&lowbar;expl&period;cpp&gt;`
-
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -36,7 +30,6 @@ void
 ----
 
 [.small]#<<f-03,_» more&period;&period;&period;_>>#
-
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -51,9 +44,7 @@ void
 [#f-03]
 == f
 
-
 === Synopsis
-
 
 Declared in `&lt;ft&lowbar;expl&period;cpp&gt;`
 
@@ -67,9 +58,7 @@ f();
 [#f-0c]
 == f&lt;int&gt;
 
-
 === Synopsis
-
 
 Declared in `&lt;ft&lowbar;expl&period;cpp&gt;`
 
@@ -79,7 +68,6 @@ template&lt;&gt;
 void
 <<f-03,f>>&lt;int&gt;();
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -4,28 +4,22 @@
 [#index]
 == Global namespace
 
-
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<f0,`f0`>> 
 | 
-
 | <<f1,`f1`>> 
 | See <<f0,`f0`>>
-
 |===
 
 [#f0]
 == f0
 
-
 === Synopsis
-
 
 Declared in `&lt;broken&hyphen;ref&period;cpp&gt;`
 
@@ -38,11 +32,9 @@ f0();
 [#f1]
 == f1
 
-
 See <<f0,`f0`>>
 
 === Synopsis
-
 
 Declared in `&lt;broken&hyphen;ref&period;cpp&gt;`
 
@@ -54,15 +46,11 @@ f1();
 
 === Description
 
-
 See `&colon;&colon;f2`
 
 Broken should be warned only once
 
 See `&colon;&colon;f2`
-
-
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -4,32 +4,26 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<T,`T`>> 
-
 |===
+
 === Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<f1,`f1`>> 
-
 |===
 
 [#T]
 == T
 
-
 === Synopsis
-
 
 Declared in `&lt;noreturn&period;cpp&gt;`
 
@@ -42,38 +36,30 @@ struct T;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<T-f3,`f3`>> 
-
 |===
+
 === Static Member Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<T-f2,`f2`>> 
-
 |===
+
 === Friends
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<T-08friend,`f1`>> 
-
 |===
-
-
 
 [#T-f3]
 == <<T,T>>::f3
 
-
 === Synopsis
-
 
 Declared in `&lt;noreturn&period;cpp&gt;`
 
@@ -87,9 +73,7 @@ f3();
 [#T-f2]
 == <<T,T>>::f2
 
-
 === Synopsis
-
 
 Declared in `&lt;noreturn&period;cpp&gt;`
 
@@ -104,9 +88,7 @@ f2();
 [#T-08friend]
 == f1
 
-
 === Synopsis
-
 
 Declared in `&lt;noreturn&period;cpp&gt;`
 
@@ -120,9 +102,7 @@ f1();
 [#f1]
 == f1
 
-
 === Synopsis
-
 
 Declared in `&lt;noreturn&period;cpp&gt;`
 
@@ -132,7 +112,6 @@ Declared in `&lt;noreturn&period;cpp&gt;`
 void
 f1();
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

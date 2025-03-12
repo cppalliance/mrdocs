@@ -4,31 +4,22 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<T,`T`>> 
-
 | <<U,`U`>> 
-
 | <<V,`V`>> 
-
 | <<W,`W`>> 
-
 | <<X,`X`>> 
-
 |===
 
 [#T]
 == T
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;data&period;cpp&gt;`
 
@@ -41,28 +32,18 @@ struct T;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<T-i,`i`>> 
-
 | <<T-j,`j`>> 
-
 | <<T-k,`k`>> 
-
 | <<T-l,`l`>> 
-
 | <<T-m,`m`>> 
-
 |===
-
-
 
 [#T-i]
 == <<T,T>>::i
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;data&period;cpp&gt;`
 
@@ -74,9 +55,7 @@ int i;
 [#T-j]
 == <<T,T>>::j
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;data&period;cpp&gt;`
 
@@ -88,9 +67,7 @@ double j;
 [#T-k]
 == <<T,T>>::k
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;data&period;cpp&gt;`
 
@@ -103,9 +80,7 @@ int k;
 [#T-l]
 == <<T,T>>::l
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;data&period;cpp&gt;`
 
@@ -117,9 +92,7 @@ int l : 8;
 [#T-m]
 == <<T,T>>::m
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;data&period;cpp&gt;`
 
@@ -131,9 +104,7 @@ int m : 4 &plus; 4;
 [#U]
 == U
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;data&period;cpp&gt;`
 
@@ -146,20 +117,14 @@ struct U;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<U-t,`t`>> 
-
 |===
-
-
 
 [#U-t]
 == <<U,U>>::t
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;data&period;cpp&gt;`
 
@@ -171,9 +136,7 @@ Declared in `&lt;record&hyphen;data&period;cpp&gt;`
 [#V]
 == V
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;data&period;cpp&gt;`
 
@@ -182,35 +145,27 @@ Declared in `&lt;record&hyphen;data&period;cpp&gt;`
 class V;
 ----
 
-
 === Protected Data Members
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<V-j,`j`>> 
-
 |===
 
 === Private Data Members
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<V-i,`i`>> 
-
 | <<V-k,`k`>> 
-
 |===
 
 [#V-j]
 == <<V,V>>::j
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;data&period;cpp&gt;`
 
@@ -222,9 +177,7 @@ unsigned long j;
 [#V-i]
 == <<V,V>>::i
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;data&period;cpp&gt;`
 
@@ -236,9 +189,7 @@ int i;
 [#V-k]
 == <<V,V>>::k
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;data&period;cpp&gt;`
 
@@ -250,9 +201,7 @@ double k;
 [#W]
 == W
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;data&period;cpp&gt;`
 
@@ -265,20 +214,14 @@ struct W;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<W-buf,`buf`>> 
-
 |===
-
-
 
 [#W-buf]
 == <<W,W>>::buf
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;data&period;cpp&gt;`
 
@@ -290,9 +233,7 @@ char buf[64];
 [#X]
 == X
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;data&period;cpp&gt;`
 
@@ -308,37 +249,26 @@ struct X;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<X-Q,`Q`>> 
-
 |===
+
 === Data Members
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<X-x0,`x0`>> 
-
 | <<X-x1,`x1`>> 
-
 | <<X-x2,`x2`>> 
-
 | <<X-x3,`x3`>> 
-
 | <<X-x4,`x4`>> 
-
 |===
-
-
 
 [#X-Q]
 == <<X,X>>::Q
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;data&period;cpp&gt;`
 
@@ -350,9 +280,7 @@ using Q = P;
 [#X-x0]
 == <<X,X>>::x0
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;data&period;cpp&gt;`
 
@@ -364,9 +292,7 @@ int x0 = 0;
 [#X-x1]
 == <<X,X>>::x1
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;data&period;cpp&gt;`
 
@@ -378,9 +304,7 @@ P x1;
 [#X-x2]
 == <<X,X>>::x2
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;data&period;cpp&gt;`
 
@@ -392,9 +316,7 @@ P const x2[32];
 [#X-x3]
 == <<X,X>>::x3
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;data&period;cpp&gt;`
 
@@ -406,9 +328,7 @@ Declared in `&lt;record&hyphen;data&period;cpp&gt;`
 [#X-x4]
 == <<X,X>>::x4
 
-
 === Synopsis
-
 
 Declared in `&lt;record&hyphen;data&period;cpp&gt;`
 
@@ -416,7 +336,6 @@ Declared in `&lt;record&hyphen;data&period;cpp&gt;`
 ----
 int x4 : I &plus; 4;
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

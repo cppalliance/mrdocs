@@ -4,23 +4,18 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A,`A`>> 
-
 |===
 
 [#A]
 == A
 
-
 === Synopsis
-
 
 Declared in `&lt;static&hyphen;data&hyphen;template&period;cpp&gt;`
 
@@ -34,24 +29,16 @@ struct A;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A-x-05,`x`>> 
-
 | <<A-x-07,`x&lt;T, long&gt;`>> 
-
 | <<A-x-0a,`x&lt;U*, T&gt;`>> 
-
 |===
-
-
 
 [#A-x-05]
 == <<A,A>>::x
 
-
 === Synopsis
-
 
 Declared in `&lt;static&hyphen;data&hyphen;template&period;cpp&gt;`
 
@@ -67,9 +54,7 @@ T x = 0;
 [#A-x-07]
 == <<A,A>>::x&lt;T, long&gt;
 
-
 === Synopsis
-
 
 Declared in `&lt;static&hyphen;data&hyphen;template&period;cpp&gt;`
 
@@ -83,9 +68,7 @@ bool x&lt;T, long&gt; = 2;
 [#A-x-0a]
 == <<A,A>>::x&lt;U*, T&gt;
 
-
 === Synopsis
-
 
 Declared in `&lt;static&hyphen;data&hyphen;template&period;cpp&gt;`
 
@@ -95,7 +78,6 @@ template&lt;typename U&gt;
 inline constexpr static
 T x&lt;U*, T&gt; = 1;
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

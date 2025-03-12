@@ -4,52 +4,40 @@
 [#index]
 == Global namespace
 
-
 === Namespaces
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<N,`N`>> 
-
 |===
+
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<E,`E`>> 
-
 |===
 
 [#N]
 == N
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<N-A,`A`>> 
-
 | <<N-D,`D`>> 
-
 | <<N-B,`B`>> 
-
 | <<N-C,`C`>> 
-
 |===
 
 [#N-B]
 == <<N,N>>::B
 
-
 === Synopsis
-
 
 Declared in `&lt;dependency&hyphen;propagation&period;cpp&gt;`
 
@@ -62,9 +50,7 @@ using B = <<N-A,A>>&lt;T&gt;;
 [#N-C]
 == <<N,N>>::C
 
-
 === Synopsis
-
 
 Declared in `&lt;dependency&hyphen;propagation&period;cpp&gt;`
 
@@ -77,9 +63,7 @@ using C = <<N-B,B>>&lt;T&gt;;
 [#N-A]
 == <<N,N>>::A
 
-
 === Synopsis
-
 
 Declared in `&lt;dependency&hyphen;propagation&period;cpp&gt;`
 
@@ -89,15 +73,10 @@ template&lt;typename T&gt;
 struct A;
 ----
 
-
-
-
 [#N-D]
 == <<N,N>>::D
 
-
 === Synopsis
-
 
 Declared in `&lt;dependency&hyphen;propagation&period;cpp&gt;`
 
@@ -106,15 +85,10 @@ Declared in `&lt;dependency&hyphen;propagation&period;cpp&gt;`
 struct D;
 ----
 
-
-
-
 [#E]
 == E
 
-
 === Synopsis
-
 
 Declared in `&lt;dependency&hyphen;propagation&period;cpp&gt;`
 
@@ -123,10 +97,6 @@ Declared in `&lt;dependency&hyphen;propagation&period;cpp&gt;`
 struct E
     : <<N,N>>::<<N-C,C>>&lt;int&gt;;
 ----
-
-
-
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

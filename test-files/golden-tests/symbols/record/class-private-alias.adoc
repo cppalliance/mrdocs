@@ -4,23 +4,18 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<S,`S`>> 
-
 |===
 
 [#S]
 == S
 
-
 === Synopsis
-
 
 Declared in `&lt;class&hyphen;private&hyphen;alias&period;cpp&gt;`
 
@@ -33,20 +28,14 @@ class S;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<S-f,`f`>> 
-
 |===
-
-
 
 [#S-f]
 == <<S,S>>::f
 
-
 === Synopsis
-
 
 Declared in `&lt;class&hyphen;private&hyphen;alias&period;cpp&gt;`
 
@@ -55,7 +44,6 @@ Declared in `&lt;class&hyphen;private&hyphen;alias&period;cpp&gt;`
 void
 f(<<S,type>>);
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

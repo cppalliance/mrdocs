@@ -4,41 +4,27 @@
 [#index]
 == Global namespace
 
-
 === Variables
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<var,`var`>> 
-
 | <<var_const,`var&lowbar;const`>> 
-
 | <<var_const_t,`var&lowbar;const&lowbar;t`>> 
-
 | <<var_constexpr,`var&lowbar;constexpr`>> 
-
 | <<var_constexpr_t,`var&lowbar;constexpr&lowbar;t`>> 
-
 | <<var_inline_const,`var&lowbar;inline&lowbar;const`>> 
-
 | <<var_inline_const_t,`var&lowbar;inline&lowbar;const&lowbar;t`>> 
-
 | <<var_inline_constexpr,`var&lowbar;inline&lowbar;constexpr`>> 
-
 | <<var_inline_constexpr_t,`var&lowbar;inline&lowbar;constexpr&lowbar;t`>> 
-
 | <<var_t,`var&lowbar;t`>> 
-
 |===
 
 [#var]
 == var
 
-
 === Synopsis
-
 
 Declared in `&lt;var&hyphen;inline&hyphen;constexpr&period;cpp&gt;`
 
@@ -50,9 +36,7 @@ int var = 5;
 [#var_const]
 == var&lowbar;const
 
-
 === Synopsis
-
 
 Declared in `&lt;var&hyphen;inline&hyphen;constexpr&period;cpp&gt;`
 
@@ -64,9 +48,7 @@ int const var&lowbar;const = 4;
 [#var_const_t]
 == var&lowbar;const&lowbar;t
 
-
 === Synopsis
-
 
 Declared in `&lt;var&hyphen;inline&hyphen;constexpr&period;cpp&gt;`
 
@@ -79,9 +61,7 @@ T const var&lowbar;const&lowbar;t;
 [#var_constexpr]
 == var&lowbar;constexpr
 
-
 === Synopsis
-
 
 Declared in `&lt;var&hyphen;inline&hyphen;constexpr&period;cpp&gt;`
 
@@ -93,9 +73,7 @@ constexpr int var&lowbar;constexpr = 2;
 [#var_constexpr_t]
 == var&lowbar;constexpr&lowbar;t
 
-
 === Synopsis
-
 
 Declared in `&lt;var&hyphen;inline&hyphen;constexpr&period;cpp&gt;`
 
@@ -108,9 +86,7 @@ constexpr T var&lowbar;constexpr&lowbar;t;
 [#var_inline_const]
 == var&lowbar;inline&lowbar;const
 
-
 === Synopsis
-
 
 Declared in `&lt;var&hyphen;inline&hyphen;constexpr&period;cpp&gt;`
 
@@ -122,9 +98,7 @@ inline int const var&lowbar;inline&lowbar;const = 3;
 [#var_inline_const_t]
 == var&lowbar;inline&lowbar;const&lowbar;t
 
-
 === Synopsis
-
 
 Declared in `&lt;var&hyphen;inline&hyphen;constexpr&period;cpp&gt;`
 
@@ -137,9 +111,7 @@ inline T const var&lowbar;inline&lowbar;const&lowbar;t;
 [#var_inline_constexpr]
 == var&lowbar;inline&lowbar;constexpr
 
-
 === Synopsis
-
 
 Declared in `&lt;var&hyphen;inline&hyphen;constexpr&period;cpp&gt;`
 
@@ -151,9 +123,7 @@ inline constexpr int var&lowbar;inline&lowbar;constexpr = 1;
 [#var_inline_constexpr_t]
 == var&lowbar;inline&lowbar;constexpr&lowbar;t
 
-
 === Synopsis
-
 
 Declared in `&lt;var&hyphen;inline&hyphen;constexpr&period;cpp&gt;`
 
@@ -166,9 +136,7 @@ inline constexpr T var&lowbar;inline&lowbar;constexpr&lowbar;t;
 [#var_t]
 == var&lowbar;t
 
-
 === Synopsis
-
 
 Declared in `&lt;var&hyphen;inline&hyphen;constexpr&period;cpp&gt;`
 
@@ -177,7 +145,6 @@ Declared in `&lt;var&hyphen;inline&hyphen;constexpr&period;cpp&gt;`
 template&lt;class T&gt;
 T var&lowbar;t;
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

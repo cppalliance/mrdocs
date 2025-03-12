@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <template>
+    <tparam name="T" class="type"/>
+    <tparam name="U" class="type"/>
+    <struct name="pair" id="Hu9BKPbk/tFDZMVcFeVpIqFnAJE=">
+      <file short-path="returns.cpp" source-path="returns.cpp" line="7" class="def"/>
+      <field name="first" id="zYZRwoC/XWBesPi1AQs+kPHibHI=">
+        <file short-path="returns.cpp" source-path="returns.cpp" line="9"/>
+        <type name="T"/>
+      </field>
+      <field name="second" id="AfaC9XI9L85KNgrioXVThVhljqA=">
+        <file short-path="returns.cpp" source-path="returns.cpp" line="10"/>
+        <type name="U"/>
+      </field>
+    </struct>
+  </template>
+  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
+    <file short-path="returns.cpp" source-path="returns.cpp" line="5"/>
+    <return>
+      <type name="int"/>
+    </return>
+    <doc>
+      <brief>
+        <text>A function with a single return value.</text>
+      </brief>
+      <returns>
+        <text>The return value of the function.</text>
+      </returns>
+    </doc>
+  </function>
+  <function name="g" id="43ASI/aC9fCLy8T+1gn7pUdis+g=">
+    <file short-path="returns.cpp" source-path="returns.cpp" line="18"/>
+    <return>
+      <type id="Hu9BKPbk/tFDZMVcFeVpIqFnAJE=" name="pair&lt;int, int&gt;"/>
+    </return>
+    <doc>
+      <brief>
+        <text>A function with multiple return values.</text>
+      </brief>
+      <returns>
+        <text>The first return value of the function.</text>
+      </returns>
+      <returns>
+        <text>The second return value of the function.</text>
+      </returns>
+    </doc>
+  </function>
+</namespace>
+</mrdocs>

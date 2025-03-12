@@ -4,25 +4,19 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A,`A`>> 
-
 | <<B,`B`>> 
-
 |===
 
 [#A]
 == A
 
-
 === Synopsis
-
 
 Declared in `&lt;union&period;cpp&gt;`
 
@@ -35,22 +29,15 @@ union A;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A-x,`x`>> [.small]#[variant member]#
-
 | <<A-y,`y`>> [.small]#[variant member]#
-
 |===
-
-
 
 [#A-x]
 == <<A,A>>::x
 
-
 === Synopsis
-
 
 Declared in `&lt;union&period;cpp&gt;`
 
@@ -62,9 +49,7 @@ int x;
 [#A-y]
 == <<A,A>>::y
 
-
 === Synopsis
-
 
 Declared in `&lt;union&period;cpp&gt;`
 
@@ -76,9 +61,7 @@ bool y;
 [#B]
 == B
 
-
 === Synopsis
-
 
 Declared in `&lt;union&period;cpp&gt;`
 
@@ -91,24 +74,16 @@ struct B;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<B-x,`x`>> [.small]#[variant member]#
-
 | <<B-y,`y`>> [.small]#[variant member]#
-
 | <<B-z,`z`>> 
-
 |===
-
-
 
 [#B-x]
 == <<B,B>>::x
 
-
 === Synopsis
-
 
 Declared in `&lt;union&period;cpp&gt;`
 
@@ -120,9 +95,7 @@ int x;
 [#B-y]
 == <<B,B>>::y
 
-
 === Synopsis
-
 
 Declared in `&lt;union&period;cpp&gt;`
 
@@ -134,9 +107,7 @@ bool y;
 [#B-z]
 == <<B,B>>::z
 
-
 === Synopsis
-
 
 Declared in `&lt;union&period;cpp&gt;`
 
@@ -144,7 +115,6 @@ Declared in `&lt;union&period;cpp&gt;`
 ----
 int z;
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

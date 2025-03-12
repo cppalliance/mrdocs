@@ -4,32 +4,26 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<B,`B`>> 
-
 |===
+
 === Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<f,`f`>> 
-
 |===
 
 [#B]
 == B
 
-
 === Synopsis
-
 
 Declared in `&lt;local&hyphen;class&period;cpp&gt;`
 
@@ -39,15 +33,10 @@ struct B
     : decltype(f());
 ----
 
-
-
-
 [#f]
 == f
 
-
 === Synopsis
-
 
 Declared in `&lt;local&hyphen;class&period;cpp&gt;`
 
@@ -56,7 +45,6 @@ Declared in `&lt;local&hyphen;class&period;cpp&gt;`
 auto
 f();
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

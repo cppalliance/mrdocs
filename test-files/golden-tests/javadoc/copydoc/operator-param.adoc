@@ -4,23 +4,18 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A,`A`>> 
-
 |===
 
 [#A]
 == A
 
-
 === Synopsis
-
 
 Declared in `&lt;operator&hyphen;param&period;cpp&gt;`
 
@@ -33,24 +28,18 @@ struct A;
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<A-operator_call-0d,`operator()`>> 
 | Return true if ch is in the character set&period;
-
 |===
-
-
 
 [#A-operator_call-0d]
 == <<A,A>>::operator()
 
-
 Return true if ch is in the character set&period;
 
 === Synopses
-
 
 Declared in `&lt;operator&hyphen;param&period;cpp&gt;`
 
@@ -80,28 +69,23 @@ bool
 
 === Return Value
 
-
 True if ch is in the set, otherwise false&period;
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *ch*
 | The signed character to test&period;
-
 |===
 
 [#A-operator_call-0f]
 == <<A,A>>::operator()
 
-
 Return true if ch is in the character set&period;
 
 === Synopsis
-
 
 Declared in `&lt;operator&hyphen;param&period;cpp&gt;`
 
@@ -114,35 +98,27 @@ operator()(char ch) const noexcept;
 
 === Description
 
-
 This function returns true if the character is in the set, otherwise it returns false&period;
 
-
-
 === Return Value
-
 
 True if ch is in the set, otherwise false&period;
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *ch*
 | The signed character to test&period;
-
 |===
 
 [#A-operator_call-0b]
 == <<A,A>>::operator()
 
-
 Return true if ch is in the character set&period;
 
 === Synopsis
-
 
 Declared in `&lt;operator&hyphen;param&period;cpp&gt;`
 
@@ -155,27 +131,20 @@ operator()(unsigned char ch) const noexcept;
 
 === Description
 
-
 This function returns true if the character is in the set, otherwise it returns false&period;
 
-
-
 === Return Value
-
 
 True if ch is in the set, otherwise false&period;
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *ch*
 | The unsigned character to test&period;
-
 |===
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

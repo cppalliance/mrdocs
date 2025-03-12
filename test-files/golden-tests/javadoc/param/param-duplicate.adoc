@@ -4,42 +4,32 @@
 [#index]
 == Global namespace
 
-
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<f0,`f0`>> 
 | f0 brief
-
 | <<f1,`f1`>> 
 | f1 brief
-
 | <<g0,`g0`>> 
 | g0 brief
-
 | <<g1,`g1`>> 
 | g1 brief
-
 | <<h0,`h0`>> 
 | h0 brief
-
 | <<h1,`h1`>> 
 | h1 brief
-
 |===
 
 [#f0]
 == f0
 
-
 f0 brief
 
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;duplicate&period;cpp&gt;`
 
@@ -51,18 +41,15 @@ f0();
 
 === Return Value
 
-
 * int
 * int
 
 [#f1]
 == f1
 
-
 f1 brief
 
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;duplicate&period;cpp&gt;`
 
@@ -74,18 +61,15 @@ f1();
 
 === Return Value
 
-
 * int
 * bool
 
 [#g0]
 == g0
 
-
 g0 brief
 
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;duplicate&period;cpp&gt;`
 
@@ -97,26 +81,21 @@ g0(int a);
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | one
-
 | *a*
 | one
-
 |===
 
 [#g1]
 == g1
 
-
 g1 brief
 
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;duplicate&period;cpp&gt;`
 
@@ -128,26 +107,21 @@ g1(int a);
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | one
-
 | *b*
 | two
-
 |===
 
 [#h0]
 == h0
 
-
 h0 brief
 
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;duplicate&period;cpp&gt;`
 
@@ -160,26 +134,21 @@ h0();
 
 === Template Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *T*
 | one
-
 | *T*
 | one
-
 |===
 
 [#h1]
 == h1
 
-
 h1 brief
 
 === Synopsis
-
 
 Declared in `&lt;param&hyphen;duplicate&period;cpp&gt;`
 
@@ -192,18 +161,14 @@ h1();
 
 === Template Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *T*
 | one
-
 | *U*
 | two
-
 |===
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

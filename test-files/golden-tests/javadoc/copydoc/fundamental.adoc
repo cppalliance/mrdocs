@@ -4,33 +4,26 @@
 [#index]
 == Global namespace
 
-
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<f-0e,`f`>> 
 | `f` overloads
-
 | <<g,`g`>> 
 | Brief
-
 | <<h,`h`>> 
 | Brief
-
 |===
 
 [#f-0e]
 == f
 
-
 `f` overloads
 
 === Synopses
-
 
 Declared in `&lt;fundamental&period;cpp&gt;`
 
@@ -58,23 +51,19 @@ void
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | Fail param
-
 |===
 
 [#f-06]
 == f
 
-
 Fail
 
 === Synopsis
-
 
 Declared in `&lt;fundamental&period;cpp&gt;`
 
@@ -86,23 +75,19 @@ f(int a);
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | Fail param
-
 |===
 
 [#f-04]
 == f
 
-
 Brief
 
 === Synopsis
-
 
 Declared in `&lt;fundamental&period;cpp&gt;`
 
@@ -114,30 +99,23 @@ f(long a);
 
 === Description
 
-
 Details
-
-
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | Param description
-
 |===
 
 [#g]
 == g
 
-
 Brief
 
 === Synopsis
-
 
 Declared in `&lt;fundamental&period;cpp&gt;`
 
@@ -149,30 +127,23 @@ g(long a);
 
 === Description
 
-
 Details
-
-
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | Param description
-
 |===
 
 [#h]
 == h
 
-
 Brief
 
 === Synopsis
-
 
 Declared in `&lt;fundamental&period;cpp&gt;`
 
@@ -184,22 +155,16 @@ h(long a);
 
 === Description
 
-
 Details
-
-
 
 === Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *a*
 | Param description
-
 |===
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

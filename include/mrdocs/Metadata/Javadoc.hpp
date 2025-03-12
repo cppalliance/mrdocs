@@ -1205,62 +1205,6 @@ tag_invoke(
     v = dom::LazyObject(I, domCorpus);
 }
 
-/** A @details paragraph
-*/
-struct Details final : Paragraph
-{
-    static constexpr auto static_kind = NodeKind::details;
-
-    Details()
-        : Paragraph(NodeKind::details)
-    {}
-
-    auto operator<=>(Details const&) const = default;
-
-    bool
-    operator==(Details const&) const noexcept = default;
-
-    bool equals(Node const& other) const noexcept override
-    {
-        auto* p = dynamic_cast<Details const*>(&other);
-        if (!p)
-        {
-            return false;
-        }
-        if (this == &other)
-        {
-            return true;
-        }
-        return *this == *p;
-    }
-};
-
-/** Map the @ref Details to a @ref dom::Object.
- */
-template <class IO>
-void
-tag_invoke(
-    dom::LazyObjectMapTag t,
-    IO& io,
-    Details const& I,
-    DomCorpus const* domCorpus)
-{
-    tag_invoke(t, io, dynamic_cast<Paragraph const&>(I), domCorpus);
-}
-
-/** Return the @ref Details as a @ref dom::Value object.
- */
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Details const& I,
-    DomCorpus const* domCorpus)
-{
-    v = dom::LazyObject(I, domCorpus);
-}
-
 /** A @see paragraph
 */
 struct See final : Paragraph
@@ -1268,7 +1212,7 @@ struct See final : Paragraph
     static constexpr auto static_kind = NodeKind::see;
 
     See()
-        : Paragraph(NodeKind::see)
+        : Paragraph(static_kind)
     {
     }
 
@@ -1682,8 +1626,6 @@ visit(
         return visitor.template visit<TParam>();
     case NodeKind::throws:
         return visitor.template visit<Throws>();
-    case NodeKind::details:
-        return visitor.template visit<Details>();
     case NodeKind::see:
         return visitor.template visit<See>();
     case NodeKind::precondition:
@@ -1901,7 +1843,7 @@ tag_invoke(
     Javadoc const& I,
     DomCorpus const* domCorpus)
 {
-    io.defer("details", [&I, domCorpus] {
+    io.defer("description", [&I, domCorpus] {
         return dom::LazyArray(I.blocks, domCorpus);
     });
     if (I.brief)

@@ -4,25 +4,19 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<S,`S`>> 
-
 | <<T,`T`>> 
-
 |===
 
 [#S]
 == S
 
-
 === Synopsis
-
 
 Declared in `&lt;static&hyphen;data&hyphen;def&hyphen;constexpr&period;cpp&gt;`
 
@@ -35,20 +29,14 @@ struct S;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<S-s,`s`>> 
-
 |===
-
-
 
 [#S-s]
 == <<S,S>>::s
 
-
 === Synopsis
-
 
 Declared in `&lt;static&hyphen;data&hyphen;def&hyphen;constexpr&period;cpp&gt;`
 
@@ -61,9 +49,7 @@ inline constexpr static
 [#T]
 == T
 
-
 === Synopsis
-
 
 Declared in `&lt;static&hyphen;data&hyphen;def&hyphen;constexpr&period;cpp&gt;`
 
@@ -76,20 +62,14 @@ struct T;
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<T-t,`t`>> 
-
 |===
-
-
 
 [#T-t]
 == <<T,T>>::t
 
-
 === Synopsis
-
 
 Declared in `&lt;static&hyphen;data&hyphen;def&hyphen;constexpr&period;cpp&gt;`
 
@@ -98,7 +78,6 @@ Declared in `&lt;static&hyphen;data&hyphen;def&hyphen;constexpr&period;cpp&gt;`
 inline constexpr static
 int t = 0;
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

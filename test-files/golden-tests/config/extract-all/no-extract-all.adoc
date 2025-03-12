@@ -4,30 +4,24 @@
 [#index]
 == Global namespace
 
-
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<docFunction,`docFunction`>> 
 | Documented function
-
 | <<sometimesDocFunction,`sometimesDocFunction`>> 
 | Sometimes documented function
-
 |===
 
 [#docFunction]
 == docFunction
 
-
 Documented function
 
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;extract&hyphen;all&period;cpp&gt;`
 
@@ -40,11 +34,9 @@ docFunction();
 [#sometimesDocFunction]
 == sometimesDocFunction
 
-
 Sometimes documented function
 
 === Synopsis
-
 
 Declared in `&lt;no&hyphen;extract&hyphen;all&period;cpp&gt;`
 
@@ -53,7 +45,6 @@ Declared in `&lt;no&hyphen;extract&hyphen;all&period;cpp&gt;`
 void
 sometimesDocFunction();
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

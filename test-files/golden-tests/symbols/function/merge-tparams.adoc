@@ -4,27 +4,22 @@
 [#index]
 == Global namespace
 
-
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<f,`f`>> 
 | Function
-
 |===
 
 [#f]
 == f
 
-
 Function
 
 === Synopsis
-
 
 Declared in `&lt;merge&hyphen;tparams&period;cpp&gt;`
 
@@ -39,18 +34,14 @@ f();
 
 === Template Parameters
 
-
 |===
-| Name | Description
-
+| Name
+| Description
 | *T*
 | The first template parameter&period;
-
 | *U*
 | The second template parameter&period;
-
 |===
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

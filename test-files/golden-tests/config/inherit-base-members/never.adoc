@@ -4,37 +4,28 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<base,`base`>> 
 | 
-
 | <<base_base,`base&lowbar;base`>> 
 | 
-
 | <<derived,`derived`>> 
 | 
-
 | <<private_derived,`private&lowbar;derived`>> 
 | 
-
 | <<protected_derived,`protected&lowbar;derived`>> 
 | Should inherit functions as protected&period;
-
 |===
 
 [#base]
 == base
 
-
 === Synopsis
-
 
 Declared in `&lt;never&period;cpp&gt;`
 
@@ -48,47 +39,36 @@ class base
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<base-base_inherited,`base&lowbar;inherited`>> 
 | This function should be inherited by derived classes&period;
-
 | <<base-base_shadowed,`base&lowbar;shadowed`>> 
 | This function should shadow the excluded&lowbar;base function&period;
-
 | <<base-derived_shadowed,`derived&lowbar;shadowed`>> 
 | This function should be shadowed by derived classes&period;
-
 |===
 
 === Protected Member Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<base-do_base_inherited,`do&lowbar;base&lowbar;inherited`>> 
 | This function should be inherited by derived classes&period;
-
 | <<base-do_base_shadowed,`do&lowbar;base&lowbar;shadowed`>> 
 | This function should shadow the excluded&lowbar;base function&period;
-
 | <<base-do_derived_shadowed,`do&lowbar;derived&lowbar;shadowed`>> 
 | This function should be shadowed by derived classes&period;
-
 |===
-
 
 [#base-base_inherited]
 == <<base,base>>::base&lowbar;inherited
 
-
 This function should be inherited by derived classes&period;
 
 === Synopsis
-
 
 Declared in `&lt;never&period;cpp&gt;`
 
@@ -101,11 +81,9 @@ base&lowbar;inherited();
 [#base-base_shadowed]
 == <<base,base>>::base&lowbar;shadowed
 
-
 This function should shadow the excluded&lowbar;base function&period;
 
 === Synopsis
-
 
 Declared in `&lt;never&period;cpp&gt;`
 
@@ -118,11 +96,9 @@ base&lowbar;shadowed();
 [#base-derived_shadowed]
 == <<base,base>>::derived&lowbar;shadowed
 
-
 This function should be shadowed by derived classes&period;
 
 === Synopsis
-
 
 Declared in `&lt;never&period;cpp&gt;`
 
@@ -135,11 +111,9 @@ derived&lowbar;shadowed();
 [#base-do_base_inherited]
 == <<base,base>>::do&lowbar;base&lowbar;inherited
 
-
 This function should be inherited by derived classes&period;
 
 === Synopsis
-
 
 Declared in `&lt;never&period;cpp&gt;`
 
@@ -152,11 +126,9 @@ do&lowbar;base&lowbar;inherited();
 [#base-do_base_shadowed]
 == <<base,base>>::do&lowbar;base&lowbar;shadowed
 
-
 This function should shadow the excluded&lowbar;base function&period;
 
 === Synopsis
-
 
 Declared in `&lt;never&period;cpp&gt;`
 
@@ -169,11 +141,9 @@ do&lowbar;base&lowbar;shadowed();
 [#base-do_derived_shadowed]
 == <<base,base>>::do&lowbar;derived&lowbar;shadowed
 
-
 This function should be shadowed by derived classes&period;
 
 === Synopsis
-
 
 Declared in `&lt;never&period;cpp&gt;`
 
@@ -186,9 +156,7 @@ do&lowbar;derived&lowbar;shadowed();
 [#base_base]
 == base&lowbar;base
 
-
 === Synopsis
-
 
 Declared in `&lt;never&period;cpp&gt;`
 
@@ -201,27 +169,20 @@ class base&lowbar;base;
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<base_base-base_base_inherited,`base&lowbar;base&lowbar;inherited`>> 
 | This function should be indirectly inherited by derived classes&period;
-
 | <<base_base-do_base_base_inherited,`do&lowbar;base&lowbar;base&lowbar;inherited`>> 
 | This function should be indirectly inherited by derived classes&period;
-
 |===
-
-
 
 [#base_base-base_base_inherited]
 == <<base_base,base&lowbar;base>>::base&lowbar;base&lowbar;inherited
 
-
 This function should be indirectly inherited by derived classes&period;
 
 === Synopsis
-
 
 Declared in `&lt;never&period;cpp&gt;`
 
@@ -234,11 +195,9 @@ base&lowbar;base&lowbar;inherited();
 [#base_base-do_base_base_inherited]
 == <<base_base,base&lowbar;base>>::do&lowbar;base&lowbar;base&lowbar;inherited
 
-
 This function should be indirectly inherited by derived classes&period;
 
 === Synopsis
-
 
 Declared in `&lt;never&period;cpp&gt;`
 
@@ -251,9 +210,7 @@ do&lowbar;base&lowbar;base&lowbar;inherited();
 [#derived]
 == derived
 
-
 === Synopsis
-
 
 Declared in `&lt;never&period;cpp&gt;`
 
@@ -268,27 +225,20 @@ class derived
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<derived-derived_shadowed,`derived&lowbar;shadowed`>> 
 | This function should shadow the base class function&period;
-
 | <<derived-do_derived_shadowed,`do&lowbar;derived&lowbar;shadowed`>> 
 | This function should shadow the base class function&period;
-
 |===
-
-
 
 [#derived-derived_shadowed]
 == <<derived,derived>>::derived&lowbar;shadowed
 
-
 This function should shadow the base class function&period;
 
 === Synopsis
-
 
 Declared in `&lt;never&period;cpp&gt;`
 
@@ -301,11 +251,9 @@ derived&lowbar;shadowed();
 [#derived-do_derived_shadowed]
 == <<derived,derived>>::do&lowbar;derived&lowbar;shadowed
 
-
 This function should shadow the base class function&period;
 
 === Synopsis
-
 
 Declared in `&lt;never&period;cpp&gt;`
 
@@ -318,9 +266,7 @@ do&lowbar;derived&lowbar;shadowed();
 [#private_derived]
 == private&lowbar;derived
 
-
 === Synopsis
-
 
 Declared in `&lt;never&period;cpp&gt;`
 
@@ -335,27 +281,20 @@ class private&lowbar;derived
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<private_derived-derived_shadowed,`derived&lowbar;shadowed`>> 
 | This function should shadow the base class function&period;
-
 | <<private_derived-do_derived_shadowed,`do&lowbar;derived&lowbar;shadowed`>> 
 | This function should shadow the base class function&period;
-
 |===
-
-
 
 [#private_derived-derived_shadowed]
 == <<private_derived,private&lowbar;derived>>::derived&lowbar;shadowed
 
-
 This function should shadow the base class function&period;
 
 === Synopsis
-
 
 Declared in `&lt;never&period;cpp&gt;`
 
@@ -368,11 +307,9 @@ derived&lowbar;shadowed();
 [#private_derived-do_derived_shadowed]
 == <<private_derived,private&lowbar;derived>>::do&lowbar;derived&lowbar;shadowed
 
-
 This function should shadow the base class function&period;
 
 === Synopsis
-
 
 Declared in `&lt;never&period;cpp&gt;`
 
@@ -385,11 +322,9 @@ do&lowbar;derived&lowbar;shadowed();
 [#protected_derived]
 == protected&lowbar;derived
 
-
 Should inherit functions as protected&period;
 
 === Synopsis
-
 
 Declared in `&lt;never&period;cpp&gt;`
 
@@ -404,27 +339,20 @@ class protected&lowbar;derived
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<protected_derived-derived_shadowed,`derived&lowbar;shadowed`>> 
 | This function should shadow the base class function&period;
-
 | <<protected_derived-do_derived_shadowed,`do&lowbar;derived&lowbar;shadowed`>> 
 | This function should shadow the base class function&period;
-
 |===
-
-
 
 [#protected_derived-derived_shadowed]
 == <<protected_derived,protected&lowbar;derived>>::derived&lowbar;shadowed
 
-
 This function should shadow the base class function&period;
 
 === Synopsis
-
 
 Declared in `&lt;never&period;cpp&gt;`
 
@@ -437,11 +365,9 @@ derived&lowbar;shadowed();
 [#protected_derived-do_derived_shadowed]
 == <<protected_derived,protected&lowbar;derived>>::do&lowbar;derived&lowbar;shadowed
 
-
 This function should shadow the base class function&period;
 
 === Synopsis
-
 
 Declared in `&lt;never&period;cpp&gt;`
 
@@ -450,7 +376,6 @@ Declared in `&lt;never&period;cpp&gt;`
 <<protected_derived,protected&lowbar;derived>>&
 do&lowbar;derived&lowbar;shadowed();
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

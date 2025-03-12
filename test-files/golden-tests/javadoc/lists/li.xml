@@ -8,9 +8,9 @@
       <brief>
         <text>A function</text>
       </brief>
-      <details>
+      <para>
         <text>Description:</text>
-      </details>
+      </para>
       <unorderedlist>
         <listitem>
           <text>Point 1</text>

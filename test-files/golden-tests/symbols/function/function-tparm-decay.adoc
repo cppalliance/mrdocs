@@ -4,40 +4,30 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<T,`T`>> 
-
 | <<U,`U`>> 
-
 |===
+
 === Functions
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<f,`f`>> 
-
 | <<g,`g`>> 
-
 | <<h,`h`>> 
-
 | <<i,`i`>> 
-
 |===
 
 [#T]
 == T
 
-
 === Synopsis
-
 
 Declared in `&lt;function&hyphen;tparm&hyphen;decay&period;cpp&gt;`
 
@@ -49,9 +39,7 @@ using T = int;
 [#U]
 == U
 
-
 === Synopsis
-
 
 Declared in `&lt;function&hyphen;tparm&hyphen;decay&period;cpp&gt;`
 
@@ -63,9 +51,7 @@ using U = int const;
 [#f]
 == f
 
-
 === Synopsis
-
 
 Declared in `&lt;function&hyphen;tparm&hyphen;decay&period;cpp&gt;`
 
@@ -79,9 +65,7 @@ f();
 [#g]
 == g
 
-
 === Synopsis
-
 
 Declared in `&lt;function&hyphen;tparm&hyphen;decay&period;cpp&gt;`
 
@@ -95,9 +79,7 @@ g();
 [#h]
 == h
 
-
 === Synopsis
-
 
 Declared in `&lt;function&hyphen;tparm&hyphen;decay&period;cpp&gt;`
 
@@ -111,9 +93,7 @@ h();
 [#i]
 == i
 
-
 === Synopsis
-
 
 Declared in `&lt;function&hyphen;tparm&hyphen;decay&period;cpp&gt;`
 
@@ -123,7 +103,6 @@ template&lt;int&gt;
 void
 i();
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

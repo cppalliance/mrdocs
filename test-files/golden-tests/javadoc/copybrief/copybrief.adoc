@@ -4,33 +4,26 @@
 [#index]
 == Global namespace
 
-
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<f1,`f1`>> 
 | brief1
-
 | <<f2,`f2`>> 
 | brief1
-
 | <<f3,`f3`>> 
 | brief1
-
 |===
 
 [#f1]
 == f1
 
-
 brief1
 
 === Synopsis
-
 
 Declared in `&lt;copybrief&period;cpp&gt;`
 
@@ -43,11 +36,9 @@ f1();
 [#f2]
 == f2
 
-
 brief1
 
 === Synopsis
-
 
 Declared in `&lt;copybrief&period;cpp&gt;`
 
@@ -60,11 +51,9 @@ f2();
 [#f3]
 == f3
 
-
 brief1
 
 === Synopsis
-
 
 Declared in `&lt;copybrief&period;cpp&gt;`
 
@@ -76,11 +65,7 @@ f3();
 
 === Description
 
-
 f2
-
-
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

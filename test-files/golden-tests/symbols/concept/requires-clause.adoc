@@ -4,39 +4,31 @@
 [#index]
 == Global namespace
 
-
 === Types
 
 [cols=1]
 |===
-| Name 
-
+| Name
 | <<A-0c,`A`>> 
-
 | <<A-08,`A`>> 
-
 |===
+
 === Functions
 
 [cols=2]
 |===
-| Name 
-| Description 
-
+| Name
+| Description
 | <<f,`f`>> 
 | 
-
 | <<g-0d,`g`>> 
 | 
-
 |===
 
 [#A-0c]
 == A
 
-
 === Synopsis
-
 
 Declared in `&lt;requires&hyphen;clause&period;cpp&gt;`
 
@@ -47,15 +39,10 @@ requires (sizeof(T) &equals;&equals; 2)
 struct A;
 ----
 
-
-
-
 [#A-08]
 == A
 
-
 === Synopsis
-
 
 Declared in `&lt;requires&hyphen;clause&period;cpp&gt;`
 
@@ -66,15 +53,10 @@ requires (sizeof(U) &equals;&equals; 2)
 struct A;
 ----
 
-
-
-
 [#f]
 == f
 
-
 === Synopsis
-
 
 Declared in `&lt;requires&hyphen;clause&period;cpp&gt;`
 
@@ -89,12 +71,9 @@ requires (sizeof(U) &equals;&equals; 2);
 [#g-0d]
 == g
 
-
 === Synopses
 
-
 Declared in `&lt;requires&hyphen;clause&period;cpp&gt;`
-
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -108,7 +87,6 @@ void
 [.small]#<<g-04,_» more&period;&period;&period;_>>#
 
 
-
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
@@ -118,7 +96,6 @@ void
 ----
 
 [.small]#<<g-00,_» more&period;&period;&period;_>>#
-
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -134,9 +111,7 @@ void
 [#g-04]
 == g
 
-
 === Synopsis
-
 
 Declared in `&lt;requires&hyphen;clause&period;cpp&gt;`
 
@@ -151,9 +126,7 @@ g();
 [#g-00]
 == g
 
-
 === Synopsis
-
 
 Declared in `&lt;requires&hyphen;clause&period;cpp&gt;`
 
@@ -168,9 +141,7 @@ g();
 [#g-03]
 == g
 
-
 === Synopsis
-
 
 Declared in `&lt;requires&hyphen;clause&period;cpp&gt;`
 
@@ -181,7 +152,6 @@ requires (sizeof(U) &equals;&equals; 2)
 void
 g();
 ----
-
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#
