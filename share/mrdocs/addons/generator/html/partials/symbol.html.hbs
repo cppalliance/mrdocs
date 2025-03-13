@@ -106,10 +106,10 @@
 </table>
 </div>
 {{/if}}
-{{! Relates symbols }}
-{{#if symbol.doc.relates }}
+{{! Derived classes }}
+{{#if symbol.derived}}
 <div>
-{{#> markup/dynamic-level-h }}Non-Member Of{{/markup/dynamic-level-h}}
+{{#> markup/dynamic-level-h }}Derived Classes{{/markup/dynamic-level-h}}
 <table>
 <thead>
 <tr>
@@ -118,8 +118,12 @@
 </tr>
 </thead>
 <tbody>
-{{#each symbol.doc.relates }}
-<tr><td>{{> javadoc/reference }}</td><td>{{> javadoc/inline-brief symbol.doc.brief }}</td></tr>
+{{#each symbol.derived}}
+<tr><td>{{#if url~}}
+    {{#>markup/a href=url}}{{#>markup/code}}{{> symbol/name-info . nolink=true}}{{/markup/code}}{{/markup/a}}
+    {{else~}}
+    {{> symbol/name-info . nolink=true}}
+{{/if}}</td><td>{{> javadoc/inline-brief doc.brief }}</td></tr>
 {{/each}}
 </tbody>
 </table>

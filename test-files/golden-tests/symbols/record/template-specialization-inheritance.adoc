@@ -128,6 +128,16 @@ struct S0;
 | <<S0-0c-S1,`S1`>> 
 |===
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R0,`R0`>>
+| 
+|===
+
 [#S0-0c-S1]
 == <<S0-0c,S0>>::S1
 
@@ -173,6 +183,16 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 struct S1;
 ----
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R1,`R1`>>
+| 
+|===
+
 [#S0-073]
 == S0&lt;3&gt;
 
@@ -185,6 +205,16 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 template&lt;&gt;
 struct <<S0-0c,S0>>&lt;3&gt;;
 ----
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R2,`R2`>>
+| 
+|===
 
 [#S0-0e]
 == S0&lt;5&gt;

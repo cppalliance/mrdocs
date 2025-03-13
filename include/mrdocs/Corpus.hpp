@@ -350,6 +350,35 @@ public:
         return temp;
     }
 
+    /** Return a qualified name from the specified context.
+
+        This function returns the qualified name
+        of the specified Info `I` from the context
+        specified by the SymbolID `context`.
+
+        If the context is a parent of `I`, the
+        qualified name is constructed relative to
+        the context. For instance, if `I` is `A::B::C::D`
+        and context is `A::B`, the result is `C::D`.
+
+        If the context is not a parent of `I`, the
+        qualified name is constructed relative to
+        the global namespace with the prefix `::`.
+     */
+    virtual
+    void
+    qualifiedName(
+        Info const& I,
+        SymbolID const& context,
+        std::string& result) const = 0;
+
+    std::string
+    qualifiedName(Info const& I, SymbolID const& context) const
+    {
+        std::string temp;
+        qualifiedName(I, context, temp);
+        return temp;
+    }
 };
 
 //------------------------------------------------

@@ -12,6 +12,7 @@
 #include "JavadocFinalizer.hpp"
 #include <mrdocs/Support/ScopeExit.hpp>
 #include <mrdocs/Support/Algorithm.hpp>
+#include <algorithm>
 
 namespace clang::mrdocs {
 
@@ -132,6 +133,11 @@ void
 JavadocFinalizer::
 finalize(doc::Reference& ref, bool const emitWarning)
 {
+    if (ref.id != SymbolID::invalid)
+    {
+        // Already resolved
+        return;
+    }
     if (auto resRef = corpus_.lookup(current_context_->id, ref.string))
     {
         // KRYSTIAN NOTE: we should provide an overload that
@@ -196,7 +202,7 @@ finalize(Javadoc& javadoc)
     finalize(javadoc.sees);
     finalize(javadoc.preconditions);
     finalize(javadoc.postconditions);
-    setRelateIds(javadoc);
+    processRelates(javadoc);
     copyBriefAndDetails(javadoc);
     setAutoBrief(javadoc);
     removeTempTextNodes(javadoc);
@@ -204,10 +210,40 @@ finalize(Javadoc& javadoc)
     unindentCodeBlocks(javadoc);
 }
 
+namespace {
+bool
+referenceCmp(
+    doc::Reference const& lhs,
+    doc::Reference const& rhs) {
+    bool const lhsIsGlobal = lhs.string.starts_with("::");
+    bool const rhsIsGlobal = rhs.string.starts_with("::");
+    if (lhsIsGlobal != rhsIsGlobal)
+    {
+        return lhsIsGlobal < rhsIsGlobal;
+    }
+    std::size_t const lhsCount = std::ranges::count(lhs.string, ':');
+    std::size_t const rhsCount = std::ranges::count(rhs.string, ':');
+    if (lhsCount != rhsCount)
+    {
+        return lhsCount < rhsCount;
+    }
+    if (lhs.string != rhs.string)
+    {
+        return lhs.string < rhs.string;
+    }
+    return lhs.id < rhs.id;
+}
+}
+
 void
 JavadocFinalizer::
-setRelateIds(Javadoc& javadoc)
+processRelates(Javadoc& javadoc)
 {
+    if (corpus_.config->autoRelates)
+    {
+        setAutoRelates();
+    }
+
     MRDOCS_CHECK_OR(!javadoc.relates.empty());
 
     Info const* currentPtr = corpus_.find(current_context_->id);
@@ -239,10 +275,15 @@ setRelateIds(Javadoc& javadoc)
             return otherRef.id == current_context_->id;
         }))
         {
-            std::string currentName = corpus_.Corpus::qualifiedName(current);
+            std::string currentName = corpus_.Corpus::qualifiedName(current, relatedPtr->Parent);
             doc::Reference relatedRef(std::move(currentName));
             relatedRef.id = current_context_->id;
-            related.javadoc->related.push_back(std::move(relatedRef));
+            // Insert in order by name
+            auto const it = std::ranges::lower_bound(
+                related.javadoc->related,
+                relatedRef,
+                referenceCmp);
+            related.javadoc->related.insert(it, std::move(relatedRef));
         }
     }
 
@@ -250,6 +291,165 @@ setRelateIds(Javadoc& javadoc)
     std::erase_if(javadoc.relates, [](doc::Reference const& ref) {
         return !ref.id;
     });
+}
+
+namespace {
+void
+pushAllDerivedClasses(
+    RecordInfo const* record,
+    SmallVector<Info*, 16>& relatedRecordsOrEnums,
+    CorpusImpl& corpus)
+{
+    for (auto& derivedId : record->Derived)
+    {
+        Info* derivedPtr = corpus.find(derivedId);
+        MRDOCS_CHECK_OR_CONTINUE(derivedPtr);
+        MRDOCS_CHECK_OR_CONTINUE(derivedPtr->Extraction == ExtractionMode::Regular);
+        auto derived = dynamic_cast<RecordInfo*>(derivedPtr);
+        MRDOCS_CHECK_OR_CONTINUE(derived);
+        relatedRecordsOrEnums.push_back(derived);
+        // Recursively get derived classes of the derived class
+        pushAllDerivedClasses(derived, relatedRecordsOrEnums, corpus);
+    }
+}
+}
+
+void
+JavadocFinalizer::
+setAutoRelates()
+{
+    MRDOCS_ASSERT(current_context_);
+    MRDOCS_CHECK_OR(current_context_->Extraction == ExtractionMode::Regular);
+    MRDOCS_CHECK_OR(current_context_->isFunction());
+    MRDOCS_CHECK_OR(current_context_->javadoc);
+    auto& I = dynamic_cast<FunctionInfo&>(*current_context_);
+    MRDOCS_CHECK_OR(!I.IsRecordMethod);
+    auto* parentPtr = corpus_.find(I.Parent);
+    MRDOCS_CHECK_OR(parentPtr);
+    MRDOCS_CHECK_OR(parentPtr->isNamespace());
+
+    auto toRecordOrEnum = [&](Polymorphic<TypeInfo> const& type) -> Info* {
+        MRDOCS_CHECK_OR(type, nullptr);
+        auto& innermost = innermostType(type);
+        MRDOCS_CHECK_OR(innermost, nullptr);
+        MRDOCS_CHECK_OR(innermost->isNamed(), nullptr);
+        auto const& namedType = dynamic_cast<NamedTypeInfo const&>(*innermost);
+        MRDOCS_CHECK_OR(namedType.Name, nullptr);
+        SymbolID const namedSymbolID = namedType.Name->id;
+        MRDOCS_CHECK_OR(namedSymbolID != SymbolID::invalid, nullptr);
+        Info* infoPtr = corpus_.find(namedSymbolID);
+        MRDOCS_CHECK_OR(infoPtr, nullptr);
+        MRDOCS_CHECK_OR(
+            infoPtr->isRecord() ||
+            infoPtr->isEnum(), nullptr);
+        return infoPtr;
+    };
+
+    SmallVector<Info*, 16> relatedRecordsOrEnums;
+
+    // 1) Inner type of the first parameter
+    [&] {
+        MRDOCS_CHECK_OR(!I.Params.empty());
+        auto* firstParamInfo = toRecordOrEnum(I.Params.front().Type);
+        MRDOCS_CHECK_OR(firstParamInfo);
+        if (firstParamInfo->Extraction == ExtractionMode::Regular)
+        {
+            relatedRecordsOrEnums.push_back(firstParamInfo);
+        }
+        // 2) If the type is a reference or a pointer, derived classes
+        // of this inner type are also valid related records
+        MRDOCS_CHECK_OR(firstParamInfo->isRecord());
+        auto const* firstParamRecord = dynamic_cast<RecordInfo*>(firstParamInfo);
+        MRDOCS_CHECK_OR(
+            I.Params.front().Type->isLValueReference() ||
+            I.Params.front().Type->isRValueReference() ||
+            I.Params.front().Type->isPointer());
+        // Get all transitively derived classes of firstParamRecord
+       pushAllDerivedClasses(firstParamRecord, relatedRecordsOrEnums, corpus_);
+    }();
+
+    // 3) The return type of the function
+    if (auto* returnTypeInfo = toRecordOrEnum(I.ReturnType))
+    {
+        if (returnTypeInfo->Extraction == ExtractionMode::Regular)
+        {
+            relatedRecordsOrEnums.push_back(returnTypeInfo);
+        }
+        // 4) If the return type is a template specialization,
+        // and the template parameters are records, then
+        // each template parameter is also a related record
+        [&] {
+            MRDOCS_CHECK_OR(I.ReturnType);
+            MRDOCS_CHECK_OR(I.ReturnType->isNamed());
+            auto& NTI = get<NamedTypeInfo>(I.ReturnType);
+            MRDOCS_CHECK_OR(NTI.Name);
+            MRDOCS_CHECK_OR(NTI.Name->isSpecialization());
+            auto const& NTIS = get<SpecializationNameInfo>(NTI.Name);
+            MRDOCS_CHECK_OR(!NTIS.TemplateArgs.empty());
+            Polymorphic<TArg> const& firstArg = NTIS.TemplateArgs.front();
+            MRDOCS_CHECK_OR(firstArg->isType());
+            auto const& typeArg = get<TypeTArg>(firstArg);
+            if (auto* argInfo = toRecordOrEnum(typeArg.Type))
+            {
+                if (argInfo->Extraction == ExtractionMode::Regular)
+                {
+                    relatedRecordsOrEnums.push_back(argInfo);
+                }
+            }
+        }();
+    }
+
+    // Remove duplicates from relatedRecordsOrEnums
+    std::ranges::sort(relatedRecordsOrEnums);
+    relatedRecordsOrEnums.erase(
+        std::ranges::unique(relatedRecordsOrEnums).begin(),
+        relatedRecordsOrEnums.end());
+
+    // Insert the records with valid ids into the javadoc relates section
+    std::size_t const prevRelatesSize = I.javadoc->relates.size();
+    for (Info const* relatedRecordOrEnumPtr : relatedRecordsOrEnums)
+    {
+        MRDOCS_CHECK_OR_CONTINUE(relatedRecordOrEnumPtr);
+        MRDOCS_ASSERT(I.javadoc);
+        Info const& recordOrEnum = *relatedRecordOrEnumPtr;
+        MRDOCS_CHECK_OR_CONTINUE(recordOrEnum.Extraction == ExtractionMode::Regular);
+        doc::Reference ref(recordOrEnum.Name);
+        ref.id = recordOrEnum.id;
+
+        // Check if already listed as friend
+        if (auto* record = dynamic_cast<RecordInfo const*>(relatedRecordOrEnumPtr))
+        {
+            auto fromFriendIdToTypeID = [&](SymbolID const& id) -> SymbolID {
+                Info* friendInfo = corpus_.find(id);
+                MRDOCS_CHECK_OR(friendInfo, SymbolID::invalid);
+                auto const friendPtr = dynamic_cast<FriendInfo*>(friendInfo);
+                MRDOCS_CHECK_OR(friendPtr, SymbolID::invalid);
+                return friendPtr->FriendSymbol;
+            };
+            using std::views::transform;
+            if (contains(transform(record->Interface.Public.Friends, fromFriendIdToTypeID), I.id))
+            {
+                // Already listed as a public friend
+                continue;
+            }
+        }
+
+        // Ensure no duplicates
+        if (std::ranges::none_of(
+                I.javadoc->relates,
+                [&ref](doc::Reference const& otherRef) {
+            return otherRef.string == ref.string || otherRef.id == ref.id;
+        }))
+        {
+            // Insert in order by name
+            auto const it = std::ranges::lower_bound(
+                I.javadoc->relates.begin() + prevRelatesSize,
+                I.javadoc->relates.end(),
+                ref,
+                referenceCmp);
+            I.javadoc->relates.insert(it, std::move(ref));
+        }
+    }
 }
 
 void

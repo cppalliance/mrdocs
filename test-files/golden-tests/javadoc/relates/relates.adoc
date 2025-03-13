@@ -79,15 +79,5 @@ void
 f();
 ----
 
-=== Non-Member Of
-
-[,cols=2]
-|===
-| Name
-| Description
-| <<A,`A`>>
-| A brief for A&period;
-|===
-
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

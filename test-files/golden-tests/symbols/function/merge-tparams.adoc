@@ -34,6 +34,7 @@ f();
 
 === Template Parameters
 
+[cols=2]
 |===
 | Name
 | Description

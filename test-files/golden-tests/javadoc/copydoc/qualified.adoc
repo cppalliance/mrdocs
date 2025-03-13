@@ -178,6 +178,7 @@ void
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -206,6 +207,7 @@ Documentation for the reference function
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -234,6 +236,7 @@ Documentation for the reference function
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -262,6 +265,7 @@ Documentation for the reference function
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -290,6 +294,7 @@ Documentation for the reference function
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -318,6 +323,7 @@ Documentation for the reference function
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -346,6 +352,7 @@ Documentation for the reference function
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -374,6 +381,7 @@ Documentation for the reference function
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -402,6 +410,7 @@ Documentation for the reference function
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -442,6 +451,7 @@ void
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -470,6 +480,7 @@ Documentation for the reference function
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -498,6 +509,7 @@ Function with same number of parameters but different types&period; This should 
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -538,6 +550,7 @@ void
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -566,6 +579,7 @@ Documentation for the reference function
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -594,6 +608,7 @@ Function with same number of parameters but different types&period; This should 
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description

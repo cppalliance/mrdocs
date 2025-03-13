@@ -1,0 +1,173 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols=2]
+|===
+| Name
+| Description
+| <<A,`A`>> 
+| A class with non&hyphen;member functions
+| <<Result,`Result`>> 
+| Helper result class
+| <<SmallVector,`SmallVector`>> 
+| Helper result class
+|===
+
+=== Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| <<makeA,`makeA`>> 
+| Function that returns A
+| <<makeAs,`makeAs`>> 
+| Function that returns template on A
+| <<tryMakeA,`tryMakeA`>> 
+| Function that returns template on A
+|===
+
+[#A]
+== A
+
+A class with non&hyphen;member functions
+
+=== Synopsis
+
+Declared in `&lt;return&hyphen;type&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class A;
+----
+
+=== Non-Member Functions
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<makeA,`makeA`>>
+| Function that returns A
+| <<makeAs,`makeAs`>>
+| Function that returns template on A
+| <<tryMakeA,`tryMakeA`>>
+| Function that returns template on A
+|===
+
+[#Result]
+== Result
+
+Helper result class
+
+=== Synopsis
+
+Declared in `&lt;return&hyphen;type&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class T&gt;
+class Result;
+----
+
+=== Non-Member Functions
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<tryMakeA,`tryMakeA`>>
+| Function that returns template on A
+|===
+
+[#SmallVector]
+== SmallVector
+
+Helper result class
+
+=== Synopsis
+
+Declared in `&lt;return&hyphen;type&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;
+    class T,
+    unsigned long N&gt;
+class SmallVector;
+----
+
+=== Non-Member Functions
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<makeAs,`makeAs`>>
+| Function that returns template on A
+|===
+
+[#makeA]
+== makeA
+
+Function that returns A
+
+=== Synopsis
+
+Declared in `&lt;return&hyphen;type&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>>
+makeA();
+----
+
+=== Return Value
+
+An instance of A
+
+[#makeAs]
+== makeAs
+
+Function that returns template on A
+
+=== Synopsis
+
+Declared in `&lt;return&hyphen;type&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<SmallVector,SmallVector>>&lt;<<A,A>>, 3&gt;
+makeAs();
+----
+
+=== Return Value
+
+A vector of As
+
+[#tryMakeA]
+== tryMakeA
+
+Function that returns template on A
+
+=== Synopsis
+
+Declared in `&lt;return&hyphen;type&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<Result,Result>>&lt;<<A,A>>&gt;
+tryMakeA();
+----
+
+=== Return Value
+
+An instance of A or an error
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

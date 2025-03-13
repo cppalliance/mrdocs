@@ -1,0 +1,168 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols=2]
+|===
+| Name
+| Description
+| <<A,`A`>> 
+| A record with non&hyphen;member functions
+|===
+
+=== Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| <<to_string,`to&lowbar;string`>> 
+| Non&hyphen;member function of A
+| <<operator_eq,`operator&equals;&equals;`>> 
+| Friend function not listed as non&hyphen;member
+|===
+
+[#A]
+== A
+
+A record with non&hyphen;member functions
+
+=== Synopsis
+
+Declared in `&lt;remove&hyphen;friend&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class A;
+----
+
+=== Friends
+
+[cols=2]
+|===
+| Name
+| Description
+| <<A-08friend,`operator&equals;&equals;`>> 
+| Friend function not listed as non&hyphen;member
+|===
+
+=== Non-Member Functions
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<to_string,`to&lowbar;string`>>
+| Non&hyphen;member function of A
+|===
+
+[#A-08friend]
+== operator&equals;&equals;
+
+Friend function not listed as non&hyphen;member
+
+=== Synopsis
+
+Declared in `&lt;remove&hyphen;friend&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+friend
+bool
+operator&equals;&equals;(
+    <<A,A>> const& lhs,
+    <<A,A>> const& rhs);
+----
+
+=== Description
+
+Friends are already listed in the class definition&period;
+
+=== Return Value
+
+`true` if the objects are equal
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *lhs*
+| The left&hyphen;hand side of the comparison
+| *rhs*
+| The right&hyphen;hand side of the comparison
+|===
+
+[#to_string]
+== to&lowbar;string
+
+Non&hyphen;member function of A
+
+=== Synopsis
+
+Declared in `&lt;remove&hyphen;friend&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+char const*
+to&lowbar;string(<<A,A>> const& a);
+----
+
+=== Return Value
+
+The string representation of the object
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *a*
+| The object to stringify
+|===
+
+[#operator_eq]
+== operator&equals;&equals;
+
+Friend function not listed as non&hyphen;member
+
+=== Synopsis
+
+Declared in `&lt;remove&hyphen;friend&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+operator&equals;&equals;(
+    <<A,A>> const& lhs,
+    <<A,A>> const& rhs);
+----
+
+=== Description
+
+Friends are already listed in the class definition&period;
+
+=== Return Value
+
+`true` if the objects are equal
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *lhs*
+| The left&hyphen;hand side of the comparison
+| *rhs*
+| The right&hyphen;hand side of the comparison
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

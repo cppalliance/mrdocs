@@ -1,0 +1,162 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols=2]
+|===
+| Name
+| Description
+| <<A,`A`>> 
+| A class with non&hyphen;member functions
+|===
+
+=== Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| <<f1,`f1`>> 
+| A non&hyphen;member function of A
+| <<f2,`f2`>> 
+| A non&hyphen;member function of A
+| <<f3,`f3`>> 
+| A non&hyphen;member function of A
+| <<f4,`f4`>> 
+| A non&hyphen;member function of A
+| <<f5,`f5`>> 
+| A non&hyphen;member function of A
+| <<f6,`f6`>> 
+| A non&hyphen;member function of A
+|===
+
+[#A]
+== A
+
+A class with non&hyphen;member functions
+
+=== Synopsis
+
+Declared in `&lt;auto&hyphen;relates&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class A;
+----
+
+=== Non-Member Functions
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<f1,`f1`>>
+| A non&hyphen;member function of A
+| <<f2,`f2`>>
+| A non&hyphen;member function of A
+| <<f3,`f3`>>
+| A non&hyphen;member function of A
+| <<f4,`f4`>>
+| A non&hyphen;member function of A
+| <<f5,`f5`>>
+| A non&hyphen;member function of A
+| <<f6,`f6`>>
+| A non&hyphen;member function of A
+|===
+
+[#f1]
+== f1
+
+A non&hyphen;member function of A
+
+=== Synopsis
+
+Declared in `&lt;auto&hyphen;relates&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f1(<<A,A>>);
+----
+
+[#f2]
+== f2
+
+A non&hyphen;member function of A
+
+=== Synopsis
+
+Declared in `&lt;auto&hyphen;relates&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f2(<<A,A>>&);
+----
+
+[#f3]
+== f3
+
+A non&hyphen;member function of A
+
+=== Synopsis
+
+Declared in `&lt;auto&hyphen;relates&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f3(<<A,A>> const&);
+----
+
+[#f4]
+== f4
+
+A non&hyphen;member function of A
+
+=== Synopsis
+
+Declared in `&lt;auto&hyphen;relates&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f4(<<A,A>>*);
+----
+
+[#f5]
+== f5
+
+A non&hyphen;member function of A
+
+=== Synopsis
+
+Declared in `&lt;auto&hyphen;relates&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f5(<<A,A>> const*);
+----
+
+[#f6]
+== f6
+
+A non&hyphen;member function of A
+
+=== Synopsis
+
+Declared in `&lt;auto&hyphen;relates&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f6(<<A,A>> const*);
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

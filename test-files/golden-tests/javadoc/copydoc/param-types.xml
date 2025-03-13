@@ -20,6 +20,9 @@
           <brief>
             <text>Struct to test qualified identifier parameters.</text>
           </brief>
+          <related>
+            <reference id="nN+F3xQLxy/ZZP7Qa9KsUTXVDPE=">::g</reference>
+          </related>
         </doc>
       </struct>
     </namespace>
@@ -30,6 +33,9 @@
       <brief>
         <text>Struct to test explicit object member functions.</text>
       </brief>
+      <related>
+        <reference id="XTMt2BS2W4VehIStEJr0wkPasWc=">g</reference>
+      </related>
     </doc>
     <function name="f" id="ZtNDo4tS35tJKrXxGM1LJZVrCwA=">
       <file short-path="param-types.cpp" source-path="param-types.cpp" line="80"/>
@@ -88,11 +94,27 @@
         <brief>
           <text>Struct used to vary the parameter type.</text>
         </brief>
+        <related>
+          <reference id="DU72uK07T2VUA0/zFlSD5xYsNXI=">f</reference>
+          <reference id="EKpcuXzkjOnv8ZyC3Gh0a79SSs4=">f</reference>
+          <reference id="EnCYlDIJiAucNZ8lyKbGxiUjKJI=">f</reference>
+          <reference id="PfAXYt2bWhT47nnpR0gbsP8sVmM=">f</reference>
+          <reference id="RQlRhXU+F7TPvDQClE1vHm3vyzo=">f</reference>
+          <reference id="gWNKk2me9Z+SnL0juCZ31BSqXZQ=">f</reference>
+          <reference id="jDU+LoIgfrcRan+T7yNnme6xG2g=">f</reference>
+          <reference id="tQHT08jpEiAKaxbXFhRLIW9Wlcc=">f</reference>
+          <reference id="wUBitX6O3yYx6++hHwwo2BmUuhY=">f</reference>
+        </related>
       </doc>
     </struct>
   </template>
   <enum name="testEnum" id="pUJEk/x997P8q+ILVKlwge3u5Ag=">
     <file short-path="param-types.cpp" source-path="param-types.cpp" line="133" class="def"/>
+    <doc>
+      <related>
+        <reference id="TF0l7iZI1k70e/PY/mnOvc0hoyI=">g</reference>
+      </related>
+    </doc>
   </enum>
   <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
     <file short-path="param-types.cpp" source-path="param-types.cpp" line="9"/>
@@ -123,6 +145,9 @@
       <param name="a">
         <text>The first parameter of f</text>
       </param>
+      <relates>
+        <reference id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=">paramType</reference>
+      </relates>
     </doc>
   </function>
   <function name="f" id="jDU+LoIgfrcRan+T7yNnme6xG2g=">
@@ -145,6 +170,9 @@
       <param name="a">
         <text>The first parameter of f</text>
       </param>
+      <relates>
+        <reference id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=">paramType</reference>
+      </relates>
     </doc>
   </function>
   <function name="f" id="EnCYlDIJiAucNZ8lyKbGxiUjKJI=">
@@ -167,6 +195,9 @@
       <param name="a">
         <text>The first parameter of g</text>
       </param>
+      <relates>
+        <reference id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=">paramType</reference>
+      </relates>
     </doc>
   </function>
   <function name="f" id="wUBitX6O3yYx6++hHwwo2BmUuhY=">
@@ -189,6 +220,9 @@
       <param name="a">
         <text>The first parameter of g</text>
       </param>
+      <relates>
+        <reference id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=">paramType</reference>
+      </relates>
     </doc>
   </function>
   <function name="f" id="PfAXYt2bWhT47nnpR0gbsP8sVmM=">
@@ -211,6 +245,9 @@
       <param name="a">
         <text>The first parameter of g</text>
       </param>
+      <relates>
+        <reference id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=">paramType</reference>
+      </relates>
     </doc>
   </function>
   <function name="f" id="RQlRhXU+F7TPvDQClE1vHm3vyzo=">
@@ -235,6 +272,9 @@
       <param name="a">
         <text>The first parameter of g</text>
       </param>
+      <relates>
+        <reference id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=">paramType</reference>
+      </relates>
     </doc>
   </function>
   <function name="f" id="tQHT08jpEiAKaxbXFhRLIW9Wlcc=">
@@ -257,6 +297,9 @@
       <param name="a">
         <text>The first parameter of g</text>
       </param>
+      <relates>
+        <reference id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=">paramType</reference>
+      </relates>
     </doc>
   </function>
   <function name="f" id="EKpcuXzkjOnv8ZyC3Gh0a79SSs4=">
@@ -279,6 +322,9 @@
       <param name="a">
         <text>The first parameter of g</text>
       </param>
+      <relates>
+        <reference id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=">paramType</reference>
+      </relates>
     </doc>
   </function>
   <function name="f" id="gWNKk2me9Z+SnL0juCZ31BSqXZQ=">
@@ -301,6 +347,9 @@
       <param name="a">
         <text>The first parameter of g</text>
       </param>
+      <relates>
+        <reference id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=">paramType</reference>
+      </relates>
     </doc>
   </function>
   <function name="g" id="XTMt2BS2W4VehIStEJr0wkPasWc=">
@@ -318,6 +367,9 @@
       <param name="a">
         <text>The first parameter of g</text>
       </param>
+      <relates>
+        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
+      </relates>
     </doc>
   </function>
   <function name="g" id="nN+F3xQLxy/ZZP7Qa9KsUTXVDPE=">
@@ -335,6 +387,9 @@
       <param name="a">
         <text>The first parameter of g</text>
       </param>
+      <relates>
+        <reference id="E7FjuWJfQv+1+p7aLfssrWXRlVU=">Q</reference>
+      </relates>
     </doc>
   </function>
   <function name="g" id="TF0l7iZI1k70e/PY/mnOvc0hoyI=">
@@ -352,6 +407,9 @@
       <param name="a">
         <text>The first parameter of g</text>
       </param>
+      <relates>
+        <reference id="pUJEk/x997P8q+ILVKlwge3u5Ag=">testEnum</reference>
+      </relates>
     </doc>
   </function>
   <function name="g" id="lldWvRg9y+NwRnDpK3x2NF9+e08=">

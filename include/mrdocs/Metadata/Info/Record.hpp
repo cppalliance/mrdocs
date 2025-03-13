@@ -291,6 +291,10 @@ struct RecordInfo final
     */
     std::vector<BaseInfo> Bases;
 
+    /** List of derived classes
+     */
+    std::vector<SymbolID> Derived;
+
     RecordInterface Interface;
 
     //--------------------------------------------
@@ -347,6 +351,7 @@ tag_invoke(
     io.map("defaultAccess", getDefaultAccessString(I.KeyKind));
     io.map("isTypedef", I.IsTypeDef);
     io.map("bases", dom::LazyArray(I.Bases, domCorpus));
+    io.map("derived", dom::LazyArray(I.Derived, domCorpus));
     io.map("interface", I.Interface);
     io.map("template", I.Template);
 }

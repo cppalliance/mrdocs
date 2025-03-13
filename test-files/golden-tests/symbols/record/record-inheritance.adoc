@@ -39,6 +39,16 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 class C0;
 ----
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<C2,`C2`>>
+| 
+|===
+
 [#C1]
 == C1
 
@@ -104,6 +114,16 @@ class C5
     : virtual <<C0,C0>>;
 ----
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<C7,`C7`>>
+| 
+|===
+
 [#C6]
 == C6
 
@@ -116,6 +136,16 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 class C6
     : virtual <<C1,C1>>;
 ----
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<C7,`C7`>>
+| 
+|===
 
 [#C7]
 == C7
@@ -143,6 +173,16 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 struct S0;
 ----
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<S2,`S2`>>
+| 
+|===
+
 [#S1]
 == S1
 
@@ -154,6 +194,16 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 ----
 struct S1;
 ----
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<S3,`S3`>>
+| 
+|===
 
 [#S2]
 == S2
@@ -168,6 +218,16 @@ struct S2
     : <<S0,S0>>;
 ----
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<S4,`S4`>>
+| 
+|===
+
 [#S3]
 == S3
 
@@ -180,6 +240,16 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 struct S3
     : <<S1,S1>>;
 ----
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<S4,`S4`>>
+| 
+|===
 
 [#S4]
 == S4

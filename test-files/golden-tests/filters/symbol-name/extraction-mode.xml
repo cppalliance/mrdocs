@@ -38,6 +38,9 @@
         <para>
           <text>The symbol should have a page as usual</text>
         </para>
+        <related>
+          <reference id="GmX35W90ijAwMEpaZZqAbeG5UmU=">get_regular</reference>
+        </related>
       </doc>
       <struct name="also_regular" id="HIH1h4hOIdF5+btaX+gwmErtATY=">
         <file short-path="extraction-mode.cpp" source-path="extraction-mode.cpp" line="18" class="def"/>
@@ -110,6 +113,9 @@
         <para>
           <text>When used in a function, the symbol should be shown as usual with a link to the page.</text>
         </para>
+        <relates>
+          <reference id="uwCvFwfbmTvoEwwfxdL9EV+P8/c=">regular</reference>
+        </relates>
       </doc>
     </function>
     <function name="get_see_below" id="M7TOn0G63CtYGRm2THtNEEEdpLY=">
@@ -260,6 +266,9 @@
       <para>
         <text>This symbol should have a page as usual.</text>
       </para>
+      <related>
+        <reference id="ja9KgZ+gKpeRL1CK/1+wSZ41F18=">get_regular</reference>
+      </related>
     </doc>
     <struct name="also_regular" id="bCLHAM9lOQrXlNa5dlpbk5UpW2k=">
       <file short-path="extraction-mode.cpp" source-path="extraction-mode.cpp" line="253" class="def"/>
@@ -335,6 +344,9 @@
       <para>
         <text>When used in a function, the symbol should be shown as usual with a link to the page.</text>
       </para>
+      <relates>
+        <reference id="cw0xJkxH12xMAqMkCi84zr2R6nQ=">regular</reference>
+      </relates>
     </doc>
   </function>
   <function name="get_see_below" id="eg89BLjqgCjN8fLjTLnl5lhYTE0=">

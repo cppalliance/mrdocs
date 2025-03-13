@@ -1,0 +1,234 @@
+<html lang="en">
+<head>
+<title>Reference</title>
+</head>
+<body>
+<div>
+<h1>Reference</h1>
+<div>
+<div>
+<h2 id="index">Global namespace</h2>
+</div>
+<h2>Types</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#A"><code>A</code></a> </td><td><span>A class with non-member functions</span></td></tr><tr>
+<td><a href="#Result"><code>Result</code></a> </td><td><span>Helper result class</span></td></tr><tr>
+<td><a href="#SmallVector"><code>SmallVector</code></a> </td><td><span>Helper result class</span></td></tr>
+</tbody>
+</table>
+
+<h2>Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#makeA"><code>makeA</code></a> </td><td><span>Function that returns A</span></td></tr><tr>
+<td><a href="#makeAs"><code>makeAs</code></a> </td><td><span>Function that returns template on A</span></td></tr><tr>
+<td><a href="#tryMakeA"><code>tryMakeA</code></a> </td><td><span>Function that returns template on A</span></td></tr>
+</tbody>
+</table>
+
+</div>
+<div>
+<div>
+<h2 id="A">A</h2>
+<div>
+<span>A class with non-member functions</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;return-type.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+class A;
+</code>
+</pre>
+</div>
+
+
+<div>
+<h2>Non-Member Functions</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr><td><a href="#makeA"><code>makeA</code></a></td><td><span>Function that returns A</span></td></tr>
+<tr><td><a href="#makeAs"><code>makeAs</code></a></td><td><span>Function that returns template on A</span></td></tr>
+<tr><td><a href="#tryMakeA"><code>tryMakeA</code></a></td><td><span>Function that returns template on A</span></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="Result">Result</h2>
+<div>
+<span>Helper result class</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;return-type.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;class T&gt;
+class Result;
+</code>
+</pre>
+</div>
+
+
+<div>
+<h2>Non-Member Functions</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr><td><a href="#tryMakeA"><code>tryMakeA</code></a></td><td><span>Function that returns template on A</span></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="SmallVector">SmallVector</h2>
+<div>
+<span>Helper result class</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;return-type.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;
+    class T,
+    unsigned long N&gt;
+class SmallVector;
+</code>
+</pre>
+</div>
+
+
+<div>
+<h2>Non-Member Functions</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr><td><a href="#makeAs"><code>makeAs</code></a></td><td><span>Function that returns template on A</span></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="makeA">makeA</h2>
+<div>
+<span>Function that returns A</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;return-type.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+<a href="#A">A</a>
+makeA();
+</code>
+</pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>An instance of A</span>
+</div>
+</div>
+<div>
+<div>
+<h2 id="makeAs">makeAs</h2>
+<div>
+<span>Function that returns template on A</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;return-type.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+<a href="#SmallVector">SmallVector</a>&lt;<a href="#A">A</a>, 3&gt;
+makeAs();
+</code>
+</pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>A vector of As</span>
+</div>
+</div>
+<div>
+<div>
+<h2 id="tryMakeA">tryMakeA</h2>
+<div>
+<span>Function that returns template on A</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;return-type.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+<a href="#Result">Result</a>&lt;<a href="#A">A</a>&gt;
+tryMakeA();
+</code>
+</pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>An instance of A or an error</span>
+</div>
+</div>
+
+</div>
+<div>
+<h4>Created with <a href="https://www.mrdocs.com">MrDocs</a></h4>
+</div>
+</body>
+</html>

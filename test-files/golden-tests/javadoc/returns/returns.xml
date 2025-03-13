@@ -7,6 +7,11 @@
     <tparam name="U" class="type"/>
     <struct name="pair" id="Hu9BKPbk/tFDZMVcFeVpIqFnAJE=">
       <file short-path="returns.cpp" source-path="returns.cpp" line="7" class="def"/>
+      <doc>
+        <related>
+          <reference id="43ASI/aC9fCLy8T+1gn7pUdis+g=">g</reference>
+        </related>
+      </doc>
       <field name="first" id="zYZRwoC/XWBesPi1AQs+kPHibHI=">
         <file short-path="returns.cpp" source-path="returns.cpp" line="9"/>
         <type name="T"/>
@@ -46,6 +51,9 @@
       <returns>
         <text>The second return value of the function.</text>
       </returns>
+      <relates>
+        <reference id="Hu9BKPbk/tFDZMVcFeVpIqFnAJE=">pair</reference>
+      </relates>
     </doc>
   </function>
 </namespace>

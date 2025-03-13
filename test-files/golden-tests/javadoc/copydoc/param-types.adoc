@@ -28,10 +28,12 @@
 
 === Enums
 
-[cols=1]
+[cols=2]
 |===
 | Name
+| Description
 | <<testEnum,`testEnum`>> 
+| 
 |===
 
 === Functions
@@ -90,6 +92,16 @@ Declared in `&lt;param&hyphen;types&period;cpp&gt;`
 struct Q;
 ----
 
+=== Non-Member Functions
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<g-09c,`&colon;&colon;g`>>
+| Qualified identifier param function
+|===
+
 [#A]
 == A
 
@@ -116,6 +128,16 @@ struct A;
 | Reference member function&period;
 |===
 
+=== Non-Member Functions
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<g-05,`g`>>
+| struct param function
+|===
+
 [#A-f]
 == <<A,A>>::f
 
@@ -139,6 +161,7 @@ This reference uses the `this` keyword&period;
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -169,6 +192,7 @@ Documentation for a function with an explicit object parameter&period;
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -193,6 +217,32 @@ template&lt;int Idx&gt;
 struct paramType;
 ----
 
+=== Non-Member Functions
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<f-00,`f`>>
+| Reference function&period;
+| <<f-010,`f`>>
+| Enum param function
+| <<f-012,`f`>>
+| Variadic function
+| <<f-03,`f`>>
+| struct param function
+| <<f-04,`f`>>
+| Decltype function
+| <<f-081,`f`>>
+| Qualified identifier param function
+| <<f-08c,`f`>>
+| Reference function&period;
+| <<f-0b5,`f`>>
+| struct param function
+| <<f-0c,`f`>>
+| Non&hyphen;variadic function
+|===
+
 [#testEnum]
 == testEnum
 
@@ -204,6 +254,16 @@ Declared in `&lt;param&hyphen;types&period;cpp&gt;`
 ----
 enum testEnum;
 ----
+
+=== Non-Member Functions
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<g-04c,`g`>>
+| Enum param function
+|===
 
 [#f-0e]
 == f
@@ -326,6 +386,7 @@ void
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -375,6 +436,7 @@ This function uses a reference with no parameters&period;
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -405,6 +467,7 @@ This reference uses the `void` keyword&period;
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -435,6 +498,7 @@ This reference uses the `&period;&period;&period;` keyword&period;
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -465,6 +529,7 @@ This reference uses the `int` keyword&period;
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -495,6 +560,7 @@ This reference uses the `auto` keyword&period;
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -525,6 +591,7 @@ This reference uses the `decltype` keyword&period;
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -555,6 +622,7 @@ This reference uses the `struct` keyword&period;
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -585,6 +653,7 @@ This reference uses the `enum` keyword&period;
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -615,6 +684,7 @@ This reference uses the qualified identifier `N&colon;&colon;M&colon;&colon;Q`&p
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -711,6 +781,7 @@ void
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -741,6 +812,7 @@ Documentation for a function with a struct parameter&period;
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -769,6 +841,7 @@ Documentation for a function with a qualified identifier parameter&period;
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -797,6 +870,7 @@ Documentation for a function with an enum parameter&period;
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -825,6 +899,7 @@ Documentation for the variadic function&period;
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -853,6 +928,7 @@ Documentation for the non&hyphen;variadic function&period;
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -897,6 +973,7 @@ Documentation for a function with a `decltype` parameter&period;
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description

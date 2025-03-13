@@ -902,6 +902,22 @@ struct S0;
 | <<S0-0cf-f0,`f0`>> 
 |===
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R0,`R0`>>
+| 
+| <<R2,`R2`>>
+| 
+| <<R28,`R28`>>
+| 
+| <<R29,`R29`>>
+| 
+|===
+
 [#S0-0cf-S1]
 == <<S0-0cf,S0>>::S1
 
@@ -1282,6 +1298,16 @@ template&lt;&gt;
 struct <<S0-0cf,S0>>&lt;0&gt;;
 ----
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R1,`R1`>>
+| 
+|===
+
 [#S0-08]
 == S0&lt;10&gt;
 
@@ -1412,6 +1438,16 @@ template&lt;
     typename T = void&gt;
 struct S4;
 ----
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R10,`R10`>>
+| 
+|===
 
 [#S0-08-S1-S2-08-f2]
 == <<S0-08,S0>>&lt;10&gt;::<<S0-08-S1,S1>>::<<S0-08-S1-S2-08,S2>>&lt;11&gt;::f2
@@ -1612,6 +1648,16 @@ template&lt;&gt;
 struct <<S0-0cf-S1-S2-S4,S4>>&lt;14&gt;;
 ----
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R11,`R11`>>
+| 
+|===
+
 [#S0-0e-S1-S2-02-f2]
 == <<S0-0e,S0>>&lt;12&gt;::<<S0-0e-S1,S1>>::<<S0-0e-S1-S2-02,S2>>&lt;13&gt;::f2
 
@@ -1799,6 +1845,16 @@ template&lt;
 struct S4;
 ----
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R12,`R12`>>
+| 
+|===
+
 [#S0-09e4-S1-S2-02-S4-02]
 == <<S0-09e4,S0>>&lt;15&gt;::<<S0-09e4-S1,S1>>::<<S0-09e4-S1-S2-02,S2>>&lt;16&gt;::S4&lt;17, int*&gt;
 
@@ -1811,6 +1867,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 template&lt;&gt;
 struct <<S0-0cf-S1-S2-S4,S4>>&lt;17, int*&gt;;
 ----
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R13,`R13`>>
+| 
+|===
 
 [#S0-09e4-S1-S2-02-S4-07]
 == <<S0-09e4,S0>>&lt;15&gt;::<<S0-09e4-S1,S1>>::<<S0-09e4-S1-S2-02,S2>>&lt;16&gt;::S4&lt;17, T*&gt;
@@ -1936,6 +2002,16 @@ template&lt;
 struct S5;
 ----
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R14,`R14`>>
+| 
+|===
+
 [#S0-07a-f0]
 == <<S0-07a,S0>>&lt;18&gt;::f0
 
@@ -2020,6 +2096,16 @@ template&lt;&gt;
 struct <<S0-0cf-S5,S5>>&lt;20&gt;;
 ----
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R15,`R15`>>
+| 
+|===
+
 [#S0-0a7-f0]
 == <<S0-0a7,S0>>&lt;19&gt;::f0
 
@@ -2074,6 +2160,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 ----
 struct S1;
 ----
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R4,`R4`>>
+| 
+|===
 
 [#S0-09c-S5]
 == <<S0-09c,S0>>&lt;2&gt;::S5
@@ -2162,6 +2258,16 @@ template&lt;
 struct S5;
 ----
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R16,`R16`>>
+| 
+|===
+
 [#S0-0314-S5-03]
 == <<S0-0314,S0>>&lt;21&gt;::S5&lt;22, int*&gt;
 
@@ -2174,6 +2280,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 template&lt;&gt;
 struct <<S0-0cf-S5,S5>>&lt;22, int*&gt;;
 ----
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R17,`R17`>>
+| 
+|===
 
 [#S0-0314-S5-0b]
 == <<S0-0314,S0>>&lt;21&gt;::S5&lt;22, T*&gt;
@@ -2299,6 +2415,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 ----
 struct S6;
 ----
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R18,`R18`>>
+| 
+|===
 
 [#S0-058-S5-09-f5]
 == <<S0-058,S0>>&lt;23&gt;::<<S0-058-S5-09,S5>>&lt;24&gt;::f5
@@ -2455,6 +2581,16 @@ template&lt;
     typename T = void&gt;
 struct S7;
 ----
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R19,`R19`>>
+| 
+|===
 
 [#S0-0a2-S5-02-S6-f6]
 == <<S0-0a2,S0>>&lt;25&gt;::<<S0-0a2-S5-02,S5>>&lt;26&gt;::<<S0-0a2-S5-02-S6,S6>>::f6
@@ -2627,6 +2763,16 @@ template&lt;
 struct S7;
 ----
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R20,`R20`>>
+| 
+|===
+
 [#S0-09e2-S5-0c-S6-S7-0d]
 == <<S0-09e2,S0>>&lt;27&gt;::<<S0-09e2-S5-0c,S5>>&lt;28&gt;::<<S0-09e2-S5-0c-S6,S6>>::S7&lt;29, int*&gt;
 
@@ -2639,6 +2785,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 template&lt;&gt;
 struct <<S0-0cf-S5-S6-S7,S7>>&lt;29, int*&gt;;
 ----
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R21,`R21`>>
+| 
+|===
 
 [#S0-09e2-S5-0c-S6-S7-0a]
 == <<S0-09e2,S0>>&lt;27&gt;::<<S0-09e2-S5-0c,S5>>&lt;28&gt;::<<S0-09e2-S5-0c-S6,S6>>::S7&lt;29, T*&gt;
@@ -2764,6 +2920,16 @@ template&lt;
     typename T = void&gt;
 struct S2;
 ----
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R5,`R5`>>
+| 
+|===
 
 [#S0-073-S1-f1]
 == <<S0-073,S0>>&lt;3&gt;::<<S0-073-S1,S1>>::f1
@@ -2949,6 +3115,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 template&lt;&gt;
 struct <<S0-0cf-S5-S6-S7,S7>>&lt;32&gt;;
 ----
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R22,`R22`>>
+| 
+|===
 
 [#S0-01-S5-04-S6-f6]
 == <<S0-01,S0>>&lt;30&gt;::<<S0-01-S5-04,S5>>&lt;31&gt;::<<S0-01-S5-04-S6,S6>>::f6
@@ -3161,6 +3337,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 ----
 struct S8;
 ----
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R23,`R23`>>
+| 
+|===
 
 [#S0-09ee-S5-02-S6-S7-03-S9]
 == <<S0-09ee,S0>>&lt;33&gt;::<<S0-09ee-S5-02,S5>>&lt;34&gt;::<<S0-09ee-S5-02-S6,S6>>::<<S0-09ee-S5-02-S6-S7-03,S7>>&lt;35&gt;::S9
@@ -3417,6 +3603,16 @@ template&lt;
 struct S9;
 ----
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R24,`R24`>>
+| 
+|===
+
 [#S0-033-S5-0f-S6-S7-0d-f7]
 == <<S0-033,S0>>&lt;36&gt;::<<S0-033-S5-0f,S5>>&lt;37&gt;::<<S0-033-S5-0f-S6,S6>>::<<S0-033-S5-0f-S6-S7-0d,S7>>&lt;38&gt;::f7
 
@@ -3659,6 +3855,16 @@ template&lt;
 struct S9;
 ----
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R25,`R25`>>
+| 
+|===
+
 [#S0-06-S5-07-S6-S7-0a-S9-08]
 == <<S0-06,S0>>&lt;39&gt;::<<S0-06-S5-07,S5>>&lt;40&gt;::<<S0-06-S5-07-S6,S6>>::<<S0-06-S5-07-S6-S7-0a,S7>>&lt;41&gt;::S9&lt;42, int*&gt;
 
@@ -3671,6 +3877,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 template&lt;&gt;
 struct <<S0-0cf-S5-S6-S7-S9,S9>>&lt;42, int*&gt;;
 ----
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R26,`R26`>>
+| 
+|===
 
 [#S0-06-S5-07-S6-S7-0a-S9-00]
 == <<S0-06,S0>>&lt;39&gt;::<<S0-06-S5-07,S5>>&lt;40&gt;::<<S0-06-S5-07-S6,S6>>::<<S0-06-S5-07-S6-S7-0a,S7>>&lt;41&gt;::S9&lt;42, T*&gt;
@@ -3823,6 +4039,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 template&lt;&gt;
 struct <<S0-0cf-S1-S2,S2>>&lt;5&gt;;
 ----
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R6,`R6`>>
+| 
+|===
 
 [#S0-0a1-S1-f1]
 == <<S0-0a1,S0>>&lt;4&gt;::<<S0-0a1-S1,S1>>::f1
@@ -4067,6 +4293,16 @@ template&lt;&gt;
 struct <<S0-0cf-S5-S6-S7-S9,S9>>&lt;46&gt;;
 ----
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R27,`R27`>>
+| 
+|===
+
 [#S0-0ba-S5-08-S6-S7-02-f7]
 == <<S0-0ba,S0>>&lt;43&gt;::<<S0-0ba-S5-08,S5>>&lt;44&gt;::<<S0-0ba-S5-08-S6,S6>>::<<S0-0ba-S5-08-S6-S7-02,S7>>&lt;45&gt;::f7
 
@@ -4194,6 +4430,16 @@ template&lt;
 struct S2;
 ----
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R7,`R7`>>
+| 
+|===
+
 [#S0-07e-S1-S2-07]
 == <<S0-07e,S0>>&lt;6&gt;::<<S0-07e-S1,S1>>::S2&lt;7, int*&gt;
 
@@ -4206,6 +4452,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 template&lt;&gt;
 struct <<S0-0cf-S1-S2,S2>>&lt;7, int*&gt;;
 ----
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R8,`R8`>>
+| 
+|===
 
 [#S0-07e-S1-S2-06]
 == <<S0-07e,S0>>&lt;6&gt;::<<S0-07e-S1,S1>>::S2&lt;7, T*&gt;
@@ -4377,6 +4633,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 struct S3;
 ----
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R9,`R9`>>
+| 
+|===
+
 [#S0-0a3-S1-S2-0c-S4]
 == <<S0-0a3,S0>>&lt;8&gt;::<<S0-0a3-S1,S1>>::<<S0-0a3-S1-S2-0c,S2>>&lt;9&gt;::S4
 
@@ -4458,6 +4724,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 template&lt;&gt;
 struct <<S0-0cf,S0>>&lt;1, int*&gt;;
 ----
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R3,`R3`>>
+| 
+|===
 
 [#S0-05a]
 == S0&lt;10, bool&gt;
@@ -4589,6 +4865,16 @@ template&lt;
     typename V = void&gt;
 struct S4;
 ----
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R35,`R35`>>
+| 
+|===
 
 [#S0-05a-S1-S2-0b-f2]
 == <<S0-05a,S0>>&lt;10, bool&gt;::<<S0-05a-S1,S1>>::<<S0-05a-S1-S2-0b,S2>>&lt;11, bool&gt;::f2
@@ -4775,6 +5061,16 @@ template&lt;
 struct S4;
 ----
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R36,`R36`>>
+| 
+|===
+
 [#S0-0cd-S1-S2-05-f2]
 == <<S0-0cd,S0>>&lt;12, bool&gt;::<<S0-0cd-S1,S1>>::<<S0-0cd-S1-S2-05,S2>>&lt;13, bool&gt;::f2
 
@@ -4960,6 +5256,16 @@ template&lt;
 struct S4;
 ----
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R37,`R37`>>
+| 
+|===
+
 [#S0-000-S1-S2-03-f2]
 == <<S0-000,S0>>&lt;15, bool&gt;::<<S0-000-S1,S1>>::<<S0-000-S1-S2-03,S2>>&lt;16, bool&gt;::f2
 
@@ -5071,6 +5377,16 @@ template&lt;
 struct S5;
 ----
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R38,`R38`>>
+| 
+|===
+
 [#S0-051-f0]
 == <<S0-051,S0>>&lt;18, bool&gt;::f0
 
@@ -5141,6 +5457,16 @@ template&lt;
 struct S5;
 ----
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R39,`R39`>>
+| 
+|===
+
 [#S0-002-f0]
 == <<S0-002,S0>>&lt;19, bool&gt;::f0
 
@@ -5210,6 +5536,16 @@ struct S1;
 |===
 | Name
 | <<S0-03c-S1-f1,`f1`>> 
+|===
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R30,`R30`>>
+| 
 |===
 
 [#S0-03c-S1-S2]
@@ -5324,6 +5660,16 @@ template&lt;
     typename U = void&gt;
 struct S5;
 ----
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R40,`R40`>>
+| 
+|===
 
 [#S0-003-f0]
 == <<S0-003,S0>>&lt;21, bool&gt;::f0
@@ -5451,6 +5797,16 @@ struct S6;
 |===
 | Name
 | <<S0-0c7-S5-0f-S6-f6,`f6`>> 
+|===
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R41,`R41`>>
+| 
 |===
 
 [#S0-0c7-S5-0f-S6-S7]
@@ -5637,6 +5993,16 @@ template&lt;
 struct S7;
 ----
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R42,`R42`>>
+| 
+|===
+
 [#S0-0529f-S5-05c-S6-f6]
 == <<S0-0529f,S0>>&lt;25, bool&gt;::<<S0-0529f-S5-05c,S5>>&lt;26, bool&gt;::<<S0-0529f-S5-05c-S6,S6>>::f6
 
@@ -5806,6 +6172,16 @@ template&lt;
 struct S7;
 ----
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R43,`R43`>>
+| 
+|===
+
 [#S0-007-S5-0d-S6-f6]
 == <<S0-007,S0>>&lt;27, bool&gt;::<<S0-007-S5-0d,S5>>&lt;28, bool&gt;::<<S0-007-S5-0d-S6,S6>>::f6
 
@@ -5917,6 +6293,16 @@ template&lt;
     typename U = void&gt;
 struct S2;
 ----
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R31,`R31`>>
+| 
+|===
 
 [#S0-092-S1-f1]
 == <<S0-092,S0>>&lt;3, bool&gt;::<<S0-092-S1,S1>>::f1
@@ -6088,6 +6474,16 @@ template&lt;
     typename V = void&gt;
 struct S7;
 ----
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R44,`R44`>>
+| 
+|===
 
 [#S0-021-S5-0b-S6-f6]
 == <<S0-021,S0>>&lt;30, bool&gt;::<<S0-021-S5-0b,S5>>&lt;31, bool&gt;::<<S0-021-S5-0b-S6,S6>>::f6
@@ -6307,6 +6703,16 @@ struct S8;
 |===
 | Name
 | <<S0-0318-S5-0b-S6-S7-05-S8-f8,`f8`>> 
+|===
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R45,`R45`>>
+| 
 |===
 
 [#S0-0318-S5-0b-S6-S7-05-S8-f8]
@@ -6577,6 +6983,16 @@ template&lt;
 struct S9;
 ----
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R46,`R46`>>
+| 
+|===
+
 [#S0-0d-S5-0b-S6-S7-0d-f7]
 == <<S0-0d,S0>>&lt;36, bool&gt;::<<S0-0d-S5-0b,S5>>&lt;37, bool&gt;::<<S0-0d-S5-0b-S6,S6>>::<<S0-0d-S5-0b-S6-S7-0d,S7>>&lt;38, bool&gt;::f7
 
@@ -6817,6 +7233,16 @@ template&lt;
 struct S9;
 ----
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R47,`R47`>>
+| 
+|===
+
 [#S0-0206-S5-08-S6-S7-01-f7]
 == <<S0-0206,S0>>&lt;39, bool&gt;::<<S0-0206-S5-08,S5>>&lt;40, bool&gt;::<<S0-0206-S5-08-S6,S6>>::<<S0-0206-S5-08-S6-S7-01,S7>>&lt;41, bool&gt;::f7
 
@@ -6941,6 +7367,16 @@ template&lt;
     typename U = void&gt;
 struct S2;
 ----
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R32,`R32`>>
+| 
+|===
 
 [#S0-0b6-S1-f1]
 == <<S0-0b6,S0>>&lt;4, bool&gt;::<<S0-0b6-S1,S1>>::f1
@@ -7171,6 +7607,16 @@ template&lt;
 struct S9;
 ----
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R48,`R48`>>
+| 
+|===
+
 [#S0-05291-S5-0e-S6-S7-0f-f7]
 == <<S0-05291,S0>>&lt;43, bool&gt;::<<S0-05291-S5-0e,S5>>&lt;44, bool&gt;::<<S0-05291-S5-0e-S6,S6>>::<<S0-05291-S5-0e-S6-S7-0f,S7>>&lt;45, bool&gt;::f7
 
@@ -7295,6 +7741,16 @@ template&lt;
     typename U = void&gt;
 struct S2;
 ----
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R33,`R33`>>
+| 
+|===
 
 [#S0-023-S1-f1]
 == <<S0-023,S0>>&lt;6, bool&gt;::<<S0-023-S1,S1>>::f1
@@ -7459,6 +7915,16 @@ struct S3;
 |===
 | Name
 | <<S0-04-S1-S2-0a-S3-f3,`f3`>> 
+|===
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<R34,`R34`>>
+| 
 |===
 
 [#S0-04-S1-S2-0a-S3-f3]

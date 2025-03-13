@@ -771,6 +771,7 @@ operator<=>(Polymorphic<TypeInfo> const& lhs, Polymorphic<TypeInfo> const& rhs)
 }
 
 namespace {
+// Get an optional reference to the inner type
 template <
     class TypeInfoTy,
     bool isMutable = !std::is_const_v<std::remove_reference_t<TypeInfoTy>>,
@@ -812,6 +813,7 @@ innerTypeImpl(TypeInfoTy&& TI) noexcept
     return std::nullopt;
 }
 
+// Get a pointer to the inner type
 template <class TypeInfoTy>
 auto
 innerTypePtrImpl(TypeInfoTy&& TI) noexcept
@@ -825,25 +827,34 @@ innerTypePtrImpl(TypeInfoTy&& TI) noexcept
     return decltype(&*res->get())(nullptr);
 }
 
-template <class TypeInfoTy>
-auto
-innermostTypeImpl(TypeInfoTy&& TI) noexcept
+// Get the innermost type
+// If there's an internal type, return it
+// If there's no internal type, return the current type
+template <class PolymorphicTypeInfoTy>
+requires std::same_as<std::remove_cvref_t<PolymorphicTypeInfoTy>, Polymorphic<TypeInfo>>
+auto&
+innermostTypeImpl(PolymorphicTypeInfoTy&& TI) noexcept
 {
-    auto inner = innerTypeImpl(TI);
+    if (!TI)
+    {
+        return TI;
+    }
+    /* optional */ auto inner = innerTypeImpl(*TI);
+    if (!inner)
+    {
+        return TI;
+    }
     while (inner)
     {
-        auto& ref = inner->get();
-        if (!ref)
+        /* polymorphic */ auto& ref = inner->get();
+        if (!ref ||
+            ref->isNamed())
         {
-            return inner;
-        }
-        if (ref->isNamed())
-        {
-            return inner;
+            return ref;
         }
         inner = innerTypeImpl(*ref);
     }
-    return inner;
+    return inner->get();
 }
 
 }
@@ -872,14 +883,14 @@ innerTypePtr(TypeInfo& TI) noexcept
     return innerTypePtrImpl(TI);
 }
 
-std::optional<std::reference_wrapper<Polymorphic<TypeInfo> const>>
-innermostType(TypeInfo const& TI) noexcept
+Polymorphic<TypeInfo> const&
+innermostType(Polymorphic<TypeInfo> const& TI) noexcept
 {
     return innermostTypeImpl(TI);
 }
 
-std::optional<std::reference_wrapper<Polymorphic<TypeInfo>>>
-innermostType(TypeInfo& TI) noexcept
+Polymorphic<TypeInfo>&
+innermostType(Polymorphic<TypeInfo>& TI) noexcept
 {
     return innermostTypeImpl(TI);
 }

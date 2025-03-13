@@ -37,6 +37,7 @@ f0(int i);
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -59,6 +60,7 @@ f1(int i);
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -81,6 +83,7 @@ f2(int& i);
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -103,6 +106,7 @@ f3(int& i);
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -127,6 +131,7 @@ f4(
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description

@@ -65,6 +65,7 @@ compare(<<A,A>> const& other) const noexcept;
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description

@@ -79,16 +79,20 @@
 |===
 
 {{/if}}
-{{! Relates symbols }}
-{{#if symbol.doc.relates }}
-{{#> markup/dynamic-level-h }}Non-Member Of{{/markup/dynamic-level-h}}
+{{! Derived classes }}
+{{#if symbol.derived}}
+{{#> markup/dynamic-level-h }}Derived Classes{{/markup/dynamic-level-h}}
 [,cols=2]
 |===
 | Name
 | Description
-{{#each symbol.doc.relates }}
-| {{> javadoc/reference }}
-| {{> javadoc/inline-brief symbol.doc.brief }}
+{{#each symbol.derived}}
+| {{#if url~}}
+{{#>markup/a href=url}}{{#>markup/code}}{{> symbol/name-info . nolink=true}}{{/markup/code}}{{/markup/a}}
+{{else~}}
+{{> symbol/name-info . nolink=true}}
+{{/if}}
+| {{> javadoc/inline-brief doc.brief }}
 {{/each}}
 |===
 
@@ -101,7 +105,7 @@
 {{! Using symbols }}
 {{#if symbol.shadows}}
 {{#> markup/dynamic-level-h }}Introduced Symbols{{/markup/dynamic-level-h}}
-
+[cols=2]
 |===
 | Name
 {{#each symbol.shadows}}
@@ -113,6 +117,7 @@
 {{! Exceptions }}
 {{#if symbol.doc.exceptions}}
 {{#> markup/dynamic-level-h }}Exceptions{{/markup/dynamic-level-h}}
+[cols=2]
 |===
 | Name
 | Thrown on
@@ -140,6 +145,7 @@
 {{! Template Parameters }}
 {{#if symbol.doc.tparams}}
 {{#> markup/dynamic-level-h }}Template Parameters{{/markup/dynamic-level-h}}
+[cols=2]
 |===
 | Name
 | Description
@@ -153,6 +159,7 @@
 {{! Parameters }}
 {{#if symbol.doc.params}}
 {{#> markup/dynamic-level-h }}Parameters{{/markup/dynamic-level-h}}
+[cols=2]
 |===
 | Name
 | Description

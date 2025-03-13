@@ -61,6 +61,7 @@ class CorpusImpl final : public Corpus
     friend class SortMembersFinalizer;
     friend class JavadocFinalizer;
     friend class NamespacesFinalizer;
+    friend class DerivedFinalizer;
 
 public:
     /** Constructor.
@@ -173,6 +174,12 @@ public:
     void
     qualifiedName(
         Info const& I,
+        std::string& result) const override;
+
+    void
+    qualifiedName(
+        Info const& I,
+        SymbolID const& context,
         std::string& result) const override;
 
     /** Finalize the corpus.

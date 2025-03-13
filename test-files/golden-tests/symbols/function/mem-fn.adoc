@@ -448,6 +448,16 @@ struct T14;
 | <<T14-f,`f`>>  [.small]#[virtual]#
 |===
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<T17,`T17`>>
+| 
+|===
+
 [#T14-f]
 == <<T14,T14>>::f
 
@@ -591,6 +601,16 @@ struct U;
 |===
 | Name
 | <<U-f2,`f2`>> 
+|===
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<V,`V`>>
+| 
 |===
 
 [#U-f1]
