@@ -52,6 +52,7 @@ A nice integer
 
 === Template Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -63,6 +64,7 @@ A nice integer
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -118,6 +120,7 @@ Parameter b is not copied because it doesn&apos;t exist in the destination funct
 
 === Exceptions
 
+[cols=2]
 |===
 | Name
 | Thrown on
@@ -131,6 +134,7 @@ An integer meaning something else&period;
 
 === Template Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -144,6 +148,7 @@ An integer meaning something else&period;
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -193,6 +198,7 @@ This is the documentation from the source function&period;
 
 === Exceptions
 
+[cols=2]
 |===
 | Name
 | Thrown on
@@ -206,6 +212,7 @@ A nice integer
 
 === Template Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -217,6 +224,7 @@ A nice integer
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description

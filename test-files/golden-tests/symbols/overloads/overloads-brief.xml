@@ -8,6 +8,9 @@
       <brief>
         <text>Overload briefs from function or operator classes</text>
       </brief>
+      <related>
+        <reference id="16NjhjbwoK+Vd6t1bcmM8VOHLNA=">operator+</reference>
+      </related>
     </doc>
     <function class="constructor" name="A" id="NsCpw4jurMmwsYzp5jE+NgG1eLE=">
       <file short-path="overloads-brief.cpp" source-path="overloads-brief.cpp" line="18"/>
@@ -171,6 +174,9 @@
       <brief>
         <text>Auxiliary class</text>
       </brief>
+      <related>
+        <reference id="bXeiHBnzzEhdDwJnWuc6kLHjG08=">operator+</reference>
+      </related>
     </doc>
   </struct>
   <function name="no_way_to_infer_this_brief" id="KZjtZopBNIQu6m7CSYtaW15nzVY=">
@@ -213,6 +219,9 @@
       <returns>
         <text>Result</text>
       </returns>
+      <relates>
+        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
+      </relates>
     </doc>
   </function>
   <function name="operator+" id="bXeiHBnzzEhdDwJnWuc6kLHjG08=">
@@ -233,6 +242,9 @@
       <returns>
         <text>Result</text>
       </returns>
+      <relates>
+        <reference id="3JsK1DO0O+wZhv+0meptQrbs3fY=">B</reference>
+      </relates>
     </doc>
   </function>
   <function name="sameBrief" id="o9LYFrNet5gKZmsdnuPL/NS0fA8=">

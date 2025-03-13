@@ -179,6 +179,7 @@ the separator
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description

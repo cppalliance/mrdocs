@@ -27,6 +27,7 @@ Whether or not n is prime&period;
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description

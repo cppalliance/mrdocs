@@ -124,6 +124,16 @@ struct C;
 | <<A-C-f4,`f4`>> 
 |===
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<A-D,`D`>>
+| 
+|===
+
 [#A-C-f3]
 == <<A,A>>::<<A-C,C>>::f3
 

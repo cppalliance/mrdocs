@@ -34,6 +34,16 @@ struct A;
 | <<A-f,`f`>> 
 |===
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<C,`C`>>
+| 
+|===
+
 [#A-f]
 == <<A,A>>::f
 
@@ -65,6 +75,16 @@ struct B;
 |===
 | Name
 | <<B-f,`f`>> 
+|===
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<C,`C`>>
+| 
 |===
 
 [#B-f]
@@ -178,7 +198,7 @@ using <<A,A>>::f;
 
 === Introduced Symbols
 
-
+[cols=2]
 |===
 | Name
 | f
@@ -198,7 +218,7 @@ using <<B,B>>::f;
 
 === Introduced Symbols
 
-
+[cols=2]
 |===
 | Name
 | f

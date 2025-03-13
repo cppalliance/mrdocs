@@ -1,0 +1,244 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Namespaces
+
+[cols=1]
+|===
+| Name
+| <<N,`N`>> 
+| <<O,`O`>> 
+|===
+
+=== Types
+
+[cols=2]
+|===
+| Name
+| Description
+| <<A,`A`>> 
+| A class with non&hyphen;member functions
+|===
+
+=== Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| <<f1,`f1`>> 
+| A non&hyphen;member function of A
+| <<f5,`f5`>> 
+| A non&hyphen;member function of &colon;&colon;N&colon;&colon;B
+|===
+
+[#N]
+== N
+
+=== Namespaces
+
+[cols=1]
+|===
+| Name
+| <<N-M,`M`>> 
+|===
+
+=== Types
+
+[cols=2]
+|===
+| Name
+| Description
+| <<N-B,`B`>> 
+| A nested class with non&hyphen;member functions
+|===
+
+=== Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| <<N-f2,`f2`>> 
+| A non&hyphen;member function of A
+| <<N-f3,`f3`>> 
+| A non&hyphen;member function of B
+|===
+
+[#N-M]
+== <<N,N>>::M
+
+=== Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| <<N-M-f4,`f4`>> 
+| A non&hyphen;member function of &colon;&colon;N&colon;&colon;B
+|===
+
+[#N-M-f4]
+== <<N,N>>::<<N-M,M>>::f4
+
+A non&hyphen;member function of &colon;&colon;N&colon;&colon;B
+
+=== Synopsis
+
+Declared in `&lt;qualified&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f4(<<N,N>>::<<N-B,B>> const&);
+----
+
+[#N-B]
+== <<N,N>>::B
+
+A nested class with non&hyphen;member functions
+
+=== Synopsis
+
+Declared in `&lt;qualified&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct B;
+----
+
+=== Non-Member Functions
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<N-f3,`f3`>>
+| A non&hyphen;member function of B
+| <<N-M-f4,`M&colon;&colon;f4`>>
+| A non&hyphen;member function of &colon;&colon;N&colon;&colon;B
+| <<f5,`&colon;&colon;f5`>>
+| A non&hyphen;member function of &colon;&colon;N&colon;&colon;B
+| <<O-f6,`&colon;&colon;O&colon;&colon;f6`>>
+| A non&hyphen;member function of &colon;&colon;N&colon;&colon;B
+|===
+
+[#N-f2]
+== <<N,N>>::f2
+
+A non&hyphen;member function of A
+
+=== Synopsis
+
+Declared in `&lt;qualified&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f2(<<A,A>>&);
+----
+
+[#N-f3]
+== <<N,N>>::f3
+
+A non&hyphen;member function of B
+
+=== Synopsis
+
+Declared in `&lt;qualified&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f3(<<N,N>>::<<N-B,B>> const&);
+----
+
+[#O]
+== O
+
+=== Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| <<O-f6,`f6`>> 
+| A non&hyphen;member function of &colon;&colon;N&colon;&colon;B
+|===
+
+[#O-f6]
+== <<O,O>>::f6
+
+A non&hyphen;member function of &colon;&colon;N&colon;&colon;B
+
+=== Synopsis
+
+Declared in `&lt;qualified&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f6(<<N,N>>::<<N-B,B>> const&);
+----
+
+[#A]
+== A
+
+A class with non&hyphen;member functions
+
+=== Synopsis
+
+Declared in `&lt;qualified&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct A;
+----
+
+=== Non-Member Functions
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<f1,`f1`>>
+| A non&hyphen;member function of A
+| <<N-f2,`N&colon;&colon;f2`>>
+| A non&hyphen;member function of A
+|===
+
+[#f1]
+== f1
+
+A non&hyphen;member function of A
+
+=== Synopsis
+
+Declared in `&lt;qualified&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f1(<<A,A>> const&);
+----
+
+[#f5]
+== f5
+
+A non&hyphen;member function of &colon;&colon;N&colon;&colon;B
+
+=== Synopsis
+
+Declared in `&lt;qualified&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f5(<<N,N>>::<<N-B,B>> const&);
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

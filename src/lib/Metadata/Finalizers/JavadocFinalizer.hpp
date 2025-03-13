@@ -127,7 +127,11 @@ private:
     // Find the ID of "relates" symbols and populate
     // the "related" symbol with the inverse.
     void
-    setRelateIds(Javadoc& javadoc);
+    processRelates(Javadoc& javadoc);
+
+    // Automatically find related symbols
+    void
+    setAutoRelates();
 
     // Copy brief and details to the current context
     void

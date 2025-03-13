@@ -60,6 +60,16 @@ struct A;
 | `operator&hyphen;` overloads
 |===
 
+=== Non-Member Functions
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<operator_plus-0d7,`operator&plus;`>>
+| Unary operator for A
+|===
+
 [#A-2constructor-08]
 == <<A,A>>::A
 
@@ -91,6 +101,7 @@ Second constructor
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -128,6 +139,7 @@ A(int a);
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -172,6 +184,7 @@ Assign from A
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -200,6 +213,7 @@ operator&equals;(int a);
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -228,6 +242,7 @@ operator&equals;(<<A,A>> const& a);
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -272,6 +287,7 @@ Addition operator for As
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -300,6 +316,7 @@ operator&plus;(int a);
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -328,6 +345,7 @@ operator&plus;(<<A,A>> const& a);
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -430,6 +448,16 @@ Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
 struct B;
 ----
 
+=== Non-Member Functions
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<operator_plus-06,`operator&plus;`>>
+| Unary operator for B
+|===
+
 [#no_way_to_infer_this_brief-0e]
 == no&lowbar;way&lowbar;to&lowbar;infer&lowbar;this&lowbar;brief
 
@@ -463,6 +491,7 @@ void
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -502,6 +531,7 @@ no&lowbar;way&lowbar;to&lowbar;infer&lowbar;this&lowbar;brief(int a);
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -617,6 +647,7 @@ void
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -643,6 +674,7 @@ sameBrief(int a);
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -669,6 +701,7 @@ sameBrief(
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description

@@ -32,6 +32,7 @@ f0();
 
 === Template Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -61,6 +62,7 @@ desc
 
 === Template Parameters
 
+[cols=2]
 |===
 | Name
 | Description

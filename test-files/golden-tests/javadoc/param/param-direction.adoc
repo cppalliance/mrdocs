@@ -47,6 +47,7 @@ f(int x0);
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -71,6 +72,7 @@ g(
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -97,6 +99,7 @@ h(
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -123,6 +126,7 @@ i(
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -149,6 +153,7 @@ j(
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -176,6 +181,7 @@ k(
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -206,6 +212,7 @@ l(
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -234,6 +241,7 @@ m(
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -258,6 +266,7 @@ n(int x8);
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -280,6 +289,7 @@ o(int x9);
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description

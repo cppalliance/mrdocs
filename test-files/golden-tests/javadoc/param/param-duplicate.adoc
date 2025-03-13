@@ -81,6 +81,7 @@ g0(int a);
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -107,6 +108,7 @@ g1(int a);
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -134,6 +136,7 @@ h0();
 
 === Template Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -161,6 +164,7 @@ h1();
 
 === Template Parameters
 
+[cols=2]
 |===
 | Name
 | Description

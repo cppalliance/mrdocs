@@ -115,6 +115,16 @@ struct regular;
 | Child of a regular symbol extracted as regular
 |===
 
+=== Non-Member Functions
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<regular_ns-get_regular,`get&lowbar;regular`>>
+| A function to get a regular symbol
+|===
+
 === Description
 
 The symbol should have a page as usual
@@ -434,6 +444,16 @@ struct regular;
 | Description
 | <<regular-also_regular,`also&lowbar;regular`>> 
 | Child of a regular symbol&colon; should be traversed as usual
+|===
+
+=== Non-Member Functions
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<get_regular,`get&lowbar;regular`>>
+| A function to get a regular symbol in the global namespace
 |===
 
 === Description

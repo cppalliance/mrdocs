@@ -562,15 +562,20 @@ innerTypePtr(TypeInfo& TI) noexcept;
     The innermost type is the type which is not
     modified by any specifiers (e.g. "int" in
     "pointer to const int").
+
+    If the type has an inner type, we recursively
+    call this function until we reach the innermost
+    type. If the type has no inner type, we return
+    the current type.
 */
 MRDOCS_DECL
-std::optional<std::reference_wrapper<Polymorphic<TypeInfo> const>>
-innermostType(TypeInfo const& TI) noexcept;
+Polymorphic<TypeInfo> const&
+innermostType(Polymorphic<TypeInfo> const& TI) noexcept;
 
-/// @copydoc innermostType(TypeInfo const&)
+/// @copydoc innermostType(Polymorphic<TypeInfo> const&)
 MRDOCS_DECL
-std::optional<std::reference_wrapper<Polymorphic<TypeInfo>>>
-innermostType(TypeInfo& TI) noexcept;
+Polymorphic<TypeInfo>&
+innermostType(Polymorphic<TypeInfo>& TI) noexcept;
 
 // VFALCO maybe we should rename this to `renderType` or something?
 MRDOCS_DECL

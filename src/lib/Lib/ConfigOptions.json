@@ -170,6 +170,13 @@
         "details": "When set to `true`, MrDocs uses the first line (until the first dot, question mark, or exclamation mark) of the comment as the brief of the symbol. When set to `false`, a explicit @brief command is required.",
         "type": "bool",
         "default": true
+      },
+      {
+        "name": "auto-relates",
+        "brief": "Automatically find non-member functions",
+        "details": "When set to `true`, MrDocs automatically finds non-member functions that are related to the current class.",
+        "type": "bool",
+        "default": true
       }
     ]
   },

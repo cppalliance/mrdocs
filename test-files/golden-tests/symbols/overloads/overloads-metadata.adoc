@@ -66,6 +66,7 @@ int
 
 === Exceptions
 
+[cols=2]
 |===
 | Name
 | Thrown on
@@ -82,6 +83,7 @@ int
 
 === Template Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -93,6 +95,7 @@ int
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -136,6 +139,7 @@ f(int a);
 
 === Exceptions
 
+[cols=2]
 |===
 | Name
 | Thrown on
@@ -149,6 +153,7 @@ The number corresponding to a
 
 === Template Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -158,6 +163,7 @@ The number corresponding to a
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -200,6 +206,7 @@ The number corresponding to a
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -233,6 +240,7 @@ f(
 
 === Exceptions
 
+[cols=2]
 |===
 | Name
 | Thrown on
@@ -246,6 +254,7 @@ The number corresponding to a and b
 
 === Template Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -257,6 +266,7 @@ The number corresponding to a and b
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description

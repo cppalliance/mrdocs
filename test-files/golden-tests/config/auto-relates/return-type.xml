@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <class name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
+    <file short-path="return-type.cpp" source-path="return-type.cpp" line="3" class="def"/>
+    <doc>
+      <brief>
+        <text>A class with non-member functions</text>
+      </brief>
+      <related>
+        <reference id="96vwDo08vhsTodsCDohrzRb4k0E=">makeA</reference>
+        <reference id="DJ9MDKotawv7puj8iLUdSaaEjGs=">makeAs</reference>
+        <reference id="0vejW1X5a0EoC4gOzq2wzjg0mJg=">tryMakeA</reference>
+      </related>
+    </doc>
+  </class>
+  <template>
+    <tparam name="T" class="type"/>
+    <class name="Result" id="WLbdUmKVwrFg6XIcb9E1rmv/6pg=">
+      <file short-path="return-type.cpp" source-path="return-type.cpp" line="7" class="def"/>
+      <doc>
+        <brief>
+          <text>Helper result class</text>
+        </brief>
+        <related>
+          <reference id="0vejW1X5a0EoC4gOzq2wzjg0mJg=">tryMakeA</reference>
+        </related>
+      </doc>
+    </class>
+  </template>
+  <template>
+    <tparam name="T" class="type"/>
+    <tparam name="N" class="non-type" type="unsigned long"/>
+    <class name="SmallVector" id="Xw0FzsI74YygQXKG0MGYooG1ALg=">
+      <file short-path="return-type.cpp" source-path="return-type.cpp" line="12" class="def"/>
+      <doc>
+        <brief>
+          <text>Helper result class</text>
+        </brief>
+        <related>
+          <reference id="DJ9MDKotawv7puj8iLUdSaaEjGs=">makeAs</reference>
+        </related>
+      </doc>
+    </class>
+  </template>
+  <function name="makeA" id="96vwDo08vhsTodsCDohrzRb4k0E=">
+    <file short-path="return-type.cpp" source-path="return-type.cpp" line="19"/>
+    <return>
+      <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
+    </return>
+    <doc>
+      <brief>
+        <text>Function that returns A</text>
+      </brief>
+      <returns>
+        <text>An instance of A</text>
+      </returns>
+      <relates>
+        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
+      </relates>
+    </doc>
+  </function>
+  <function name="makeAs" id="DJ9MDKotawv7puj8iLUdSaaEjGs=">
+    <file short-path="return-type.cpp" source-path="return-type.cpp" line="31"/>
+    <return>
+      <type id="Xw0FzsI74YygQXKG0MGYooG1ALg=" name="SmallVector&lt;A, 3&gt;"/>
+    </return>
+    <doc>
+      <brief>
+        <text>Function that returns template on A</text>
+      </brief>
+      <returns>
+        <text>A vector of As</text>
+      </returns>
+      <relates>
+        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
+        <reference id="Xw0FzsI74YygQXKG0MGYooG1ALg=">SmallVector</reference>
+      </relates>
+    </doc>
+  </function>
+  <function name="tryMakeA" id="0vejW1X5a0EoC4gOzq2wzjg0mJg=">
+    <file short-path="return-type.cpp" source-path="return-type.cpp" line="25"/>
+    <return>
+      <type id="WLbdUmKVwrFg6XIcb9E1rmv/6pg=" name="Result&lt;A&gt;"/>
+    </return>
+    <doc>
+      <brief>
+        <text>Function that returns template on A</text>
+      </brief>
+      <returns>
+        <text>An instance of A or an error</text>
+      </returns>
+      <relates>
+        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
+        <reference id="WLbdUmKVwrFg6XIcb9E1rmv/6pg=">Result</reference>
+      </relates>
+    </doc>
+  </function>
+</namespace>
+</mrdocs>

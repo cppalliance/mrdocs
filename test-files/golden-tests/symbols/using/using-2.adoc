@@ -62,7 +62,7 @@ using <<LongName,LongName>>::S1;
 
 === Introduced Symbols
 
-
+[cols=2]
 |===
 | Name
 | S1
@@ -82,7 +82,7 @@ using <<LongName,LongName>>::S2;
 
 === Introduced Symbols
 
-
+[cols=2]
 |===
 | Name
 | S2

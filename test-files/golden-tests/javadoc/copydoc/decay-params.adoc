@@ -42,6 +42,7 @@ A boolean value&period;
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -98,6 +99,7 @@ A boolean value&period;
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -145,6 +147,7 @@ foo(int a);
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -178,6 +181,7 @@ A boolean value&period;
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description

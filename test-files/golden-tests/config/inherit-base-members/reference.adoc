@@ -67,6 +67,16 @@ class base
 | This function should be shadowed by derived classes&period;
 |===
 
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<derived,`derived`>>
+| 
+|===
+
 [#base-base_inherited]
 == <<base,base>>::base&lowbar;inherited
 
@@ -179,6 +189,16 @@ class base&lowbar;base;
 | This function should be indirectly inherited by derived classes&period;
 | <<base_base-do_base_base_inherited,`do&lowbar;base&lowbar;base&lowbar;inherited`>> 
 | This function should be indirectly inherited by derived classes&period;
+|===
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<base,`base`>>
+| 
 |===
 
 [#base_base-base_base_inherited]

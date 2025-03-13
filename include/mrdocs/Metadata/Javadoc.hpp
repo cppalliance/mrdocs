@@ -1808,7 +1808,7 @@ tag_invoke(
     io.defer("description", [&I, domCorpus] {
         return dom::LazyArray(I.blocks, domCorpus);
     });
-    if (I.brief)
+    if (I.brief && !I.brief->children.empty())
     {
         io.map("brief", I.brief);
     }

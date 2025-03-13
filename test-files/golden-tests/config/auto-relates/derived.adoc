@@ -1,0 +1,293 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols=2]
+|===
+| Name
+| Description
+| <<A,`A`>> 
+| A concrete implementation for ABase
+| <<ABase,`ABase`>> 
+| A base class for non&hyphen;member functions
+| <<AView,`AView`>> 
+| A view of A
+| <<AView2,`AView2`>> 
+| Another view of A
+|===
+
+=== Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| <<f1,`f1`>> 
+| A non&hyphen;member function of ABase
+| <<f2,`f2`>> 
+| A non&hyphen;member function of ABase
+| <<f3,`f3`>> 
+| A non&hyphen;member function of ABase
+| <<f4,`f4`>> 
+| A non&hyphen;member function of ABase
+| <<f5,`f5`>> 
+| A non&hyphen;member function of ABase
+| <<n,`n`>> 
+| A non&hyphen;member function of ABase only
+|===
+
+[#A]
+== A
+
+A concrete implementation for ABase
+
+=== Synopsis
+
+Declared in `&lt;derived&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct A
+    : <<ABase,ABase>>;
+----
+
+=== Non-Member Functions
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<f1,`f1`>>
+| A non&hyphen;member function of ABase
+| <<f2,`f2`>>
+| A non&hyphen;member function of ABase
+| <<f3,`f3`>>
+| A non&hyphen;member function of ABase
+| <<f4,`f4`>>
+| A non&hyphen;member function of ABase
+| <<f5,`f5`>>
+| A non&hyphen;member function of ABase
+|===
+
+[#ABase]
+== ABase
+
+A base class for non&hyphen;member functions
+
+=== Synopsis
+
+Declared in `&lt;derived&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct ABase;
+----
+
+=== Non-Member Functions
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<f1,`f1`>>
+| A non&hyphen;member function of ABase
+| <<f2,`f2`>>
+| A non&hyphen;member function of ABase
+| <<f3,`f3`>>
+| A non&hyphen;member function of ABase
+| <<f4,`f4`>>
+| A non&hyphen;member function of ABase
+| <<f5,`f5`>>
+| A non&hyphen;member function of ABase
+| <<n,`n`>>
+| A non&hyphen;member function of ABase only
+|===
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<A,`A`>>
+| A concrete implementation for ABase
+| <<AView,`AView`>>
+| A view of A
+|===
+
+[#AView]
+== AView
+
+A view of A
+
+=== Synopsis
+
+Declared in `&lt;derived&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct AView
+    : <<ABase,ABase>>;
+----
+
+=== Non-Member Functions
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<f1,`f1`>>
+| A non&hyphen;member function of ABase
+| <<f2,`f2`>>
+| A non&hyphen;member function of ABase
+| <<f3,`f3`>>
+| A non&hyphen;member function of ABase
+| <<f4,`f4`>>
+| A non&hyphen;member function of ABase
+| <<f5,`f5`>>
+| A non&hyphen;member function of ABase
+|===
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<AView2,`AView2`>>
+| Another view of A
+|===
+
+[#AView2]
+== AView2
+
+Another view of A
+
+=== Synopsis
+
+Declared in `&lt;derived&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct AView2
+    : <<AView,AView>>;
+----
+
+=== Non-Member Functions
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<f1,`f1`>>
+| A non&hyphen;member function of ABase
+| <<f2,`f2`>>
+| A non&hyphen;member function of ABase
+| <<f3,`f3`>>
+| A non&hyphen;member function of ABase
+| <<f4,`f4`>>
+| A non&hyphen;member function of ABase
+| <<f5,`f5`>>
+| A non&hyphen;member function of ABase
+|===
+
+=== Description
+
+Used to test indirect derived classes
+
+[#f1]
+== f1
+
+A non&hyphen;member function of ABase
+
+=== Synopsis
+
+Declared in `&lt;derived&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f1(<<ABase,ABase>> const&);
+----
+
+[#f2]
+== f2
+
+A non&hyphen;member function of ABase
+
+=== Synopsis
+
+Declared in `&lt;derived&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f2(<<ABase,ABase>>&);
+----
+
+[#f3]
+== f3
+
+A non&hyphen;member function of ABase
+
+=== Synopsis
+
+Declared in `&lt;derived&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f3(<<ABase,ABase>> const*);
+----
+
+[#f4]
+== f4
+
+A non&hyphen;member function of ABase
+
+=== Synopsis
+
+Declared in `&lt;derived&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f4(<<ABase,ABase>>*);
+----
+
+[#f5]
+== f5
+
+A non&hyphen;member function of ABase
+
+=== Synopsis
+
+Declared in `&lt;derived&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f5(<<ABase,ABase>> const*);
+----
+
+[#n]
+== n
+
+A non&hyphen;member function of ABase only
+
+=== Synopsis
+
+Declared in `&lt;derived&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+n(<<ABase,ABase>>);
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

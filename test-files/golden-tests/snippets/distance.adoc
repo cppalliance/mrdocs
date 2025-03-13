@@ -30,6 +30,7 @@ The distance between the two points
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description

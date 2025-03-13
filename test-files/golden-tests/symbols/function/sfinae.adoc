@@ -61,10 +61,12 @@
 
 === Types
 
-[cols=1]
+[cols=2]
 |===
 | Name
+| Description
 | <<B-C,`C`>> 
+| 
 |===
 
 [#B-C]
@@ -78,6 +80,16 @@ Declared in `&lt;sfinae&period;cpp&gt;`
 ----
 struct C;
 ----
+
+=== Non-Member Functions
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<f3,`&colon;&colon;f3`>>
+| Enabling a specified return type in another namespace
+|===
 
 [#A-09]
 == A

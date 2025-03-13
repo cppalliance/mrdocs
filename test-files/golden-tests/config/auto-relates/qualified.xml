@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <namespace name="N" id="rjlMNXAaWNMkQYMTJzRA1DR0DiE=">
+    <namespace name="M" id="/zZYK9RwdepvVZXQEMRgSV41SYM=">
+      <function name="f4" id="K6eFImrP3/sRrXj3u/aj81qc8fg=">
+        <file short-path="qualified.cpp" source-path="qualified.cpp" line="25"/>
+        <param>
+          <type class="lvalue-reference">
+            <pointee-type id="OK8gV4cJbIGaWnFVpW0/DO1qdUI=" name="N::B" cv-qualifiers="const"/>
+          </type>
+        </param>
+        <doc>
+          <brief>
+            <text>A non-member function of ::N::B</text>
+          </brief>
+          <relates>
+            <reference id="OK8gV4cJbIGaWnFVpW0/DO1qdUI=">B</reference>
+          </relates>
+        </doc>
+      </function>
+    </namespace>
+    <struct name="B" id="OK8gV4cJbIGaWnFVpW0/DO1qdUI=">
+      <file short-path="qualified.cpp" source-path="qualified.cpp" line="16" class="def"/>
+      <doc>
+        <brief>
+          <text>A nested class with non-member functions</text>
+        </brief>
+        <related>
+          <reference id="WfE0quFJSnvTd7XyO5miuq4hsLw=">f3</reference>
+          <reference id="K6eFImrP3/sRrXj3u/aj81qc8fg=">M::f4</reference>
+          <reference id="UBv8CVemoytxgZG/86OYRQMDZ+c=">::f5</reference>
+          <reference id="GoJprm5LvAWleAmGCo2SRy5pP8w=">::O::f6</reference>
+        </related>
+      </doc>
+    </struct>
+    <function name="f2" id="w5MtPPWGKCR+REkFL4NLEJ1omqk=">
+      <file short-path="qualified.cpp" source-path="qualified.cpp" line="12"/>
+      <param>
+        <type class="lvalue-reference">
+          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
+        </type>
+      </param>
+      <doc>
+        <brief>
+          <text>A non-member function of A</text>
+        </brief>
+        <relates>
+          <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
+        </relates>
+      </doc>
+    </function>
+    <function name="f3" id="WfE0quFJSnvTd7XyO5miuq4hsLw=">
+      <file short-path="qualified.cpp" source-path="qualified.cpp" line="20"/>
+      <param>
+        <type class="lvalue-reference">
+          <pointee-type id="OK8gV4cJbIGaWnFVpW0/DO1qdUI=" name="N::B" cv-qualifiers="const"/>
+        </type>
+      </param>
+      <doc>
+        <brief>
+          <text>A non-member function of B</text>
+        </brief>
+        <relates>
+          <reference id="OK8gV4cJbIGaWnFVpW0/DO1qdUI=">B</reference>
+        </relates>
+      </doc>
+    </function>
+  </namespace>
+  <namespace name="O" id="5bODO+U8fW/dyPrEFRkvas/AZdg=">
+    <function name="f6" id="GoJprm5LvAWleAmGCo2SRy5pP8w=">
+      <file short-path="qualified.cpp" source-path="qualified.cpp" line="36"/>
+      <param>
+        <type class="lvalue-reference">
+          <pointee-type id="OK8gV4cJbIGaWnFVpW0/DO1qdUI=" name="N::B" cv-qualifiers="const"/>
+        </type>
+      </param>
+      <doc>
+        <brief>
+          <text>A non-member function of ::N::B</text>
+        </brief>
+        <relates>
+          <reference id="OK8gV4cJbIGaWnFVpW0/DO1qdUI=">B</reference>
+        </relates>
+      </doc>
+    </function>
+  </namespace>
+  <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
+    <file short-path="qualified.cpp" source-path="qualified.cpp" line="3" class="def"/>
+    <doc>
+      <brief>
+        <text>A class with non-member functions</text>
+      </brief>
+      <related>
+        <reference id="ooHpLirR92IHAREJQjN6yqVVgDc=">f1</reference>
+        <reference id="w5MtPPWGKCR+REkFL4NLEJ1omqk=">N::f2</reference>
+      </related>
+    </doc>
+  </struct>
+  <function name="f1" id="ooHpLirR92IHAREJQjN6yqVVgDc=">
+    <file short-path="qualified.cpp" source-path="qualified.cpp" line="7"/>
+    <param>
+      <type class="lvalue-reference">
+        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
+      </type>
+    </param>
+    <doc>
+      <brief>
+        <text>A non-member function of A</text>
+      </brief>
+      <relates>
+        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
+      </relates>
+    </doc>
+  </function>
+  <function name="f5" id="UBv8CVemoytxgZG/86OYRQMDZ+c=">
+    <file short-path="qualified.cpp" source-path="qualified.cpp" line="31"/>
+    <param>
+      <type class="lvalue-reference">
+        <pointee-type id="OK8gV4cJbIGaWnFVpW0/DO1qdUI=" name="N::B" cv-qualifiers="const"/>
+      </type>
+    </param>
+    <doc>
+      <brief>
+        <text>A non-member function of ::N::B</text>
+      </brief>
+      <relates>
+        <reference id="OK8gV4cJbIGaWnFVpW0/DO1qdUI=">B</reference>
+      </relates>
+    </doc>
+  </function>
+</namespace>
+</mrdocs>

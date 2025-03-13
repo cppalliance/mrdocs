@@ -107,6 +107,7 @@ A boolean value&period;
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -164,6 +165,7 @@ A boolean value&period;
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description

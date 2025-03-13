@@ -5,6 +5,11 @@
   <namespace name="B" id="kPgq2AM8TvyGDGm5jEWfqYlOPmY=">
     <struct name="C" id="r/5vKTgl4cXSK5TnuZ/+P7qmkJ0=">
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="15" class="def"/>
+      <doc>
+        <related>
+          <reference id="HIZ4NeNKvHJFhj0tJIjpjaLL30U=">::f3</reference>
+        </related>
+      </doc>
     </struct>
   </namespace>
   <template>
@@ -143,6 +148,9 @@
         <brief>
           <text>Enabling a specified return type in another namespace</text>
         </brief>
+        <relates>
+          <reference id="r/5vKTgl4cXSK5TnuZ/+P7qmkJ0=">C</reference>
+        </relates>
       </doc>
     </function>
   </template>

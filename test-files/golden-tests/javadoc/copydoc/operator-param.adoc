@@ -73,6 +73,7 @@ True if ch is in the set, otherwise false&period;
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -106,6 +107,7 @@ True if ch is in the set, otherwise false&period;
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -139,6 +141,7 @@ True if ch is in the set, otherwise false&period;
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description

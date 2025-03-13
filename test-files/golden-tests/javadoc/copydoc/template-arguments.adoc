@@ -96,6 +96,7 @@ using B&lowbar;t = <<A-B-08,B>>&lt;T, I&gt;;
 
 === Template Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -150,6 +151,7 @@ using C&lowbar;t = <<A-C-05,C>>&lt;T, B&gt;;
 
 === Template Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -176,6 +178,7 @@ struct B;
 
 === Template Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -234,6 +237,7 @@ struct C;
 
 === Template Parameters
 
+[cols=2]
 |===
 | Name
 | Description

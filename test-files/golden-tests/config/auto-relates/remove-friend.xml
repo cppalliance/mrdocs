@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <class name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
+    <file short-path="remove-friend.cpp" source-path="remove-friend.cpp" line="3" class="def"/>
+    <doc>
+      <brief>
+        <text>A record with non-member functions</text>
+      </brief>
+      <related>
+        <reference id="Cj0rUkOoWSqUDmHfuLvwlZdq9+0=">to_string</reference>
+      </related>
+    </doc>
+    <friend id="yriH4GssyD4l47GDgY121qZZJX8=">
+      <file short-path="remove-friend.cpp" source-path="remove-friend.cpp" line="13"/>
+      <doc>
+        <brief>
+          <text>Friend function not listed as non-member</text>
+        </brief>
+        <para>
+          <text>Friends are already listed in the class definition.</text>
+        </para>
+        <returns>
+          <mono>true</mono>
+          <text> if the objects are equal</text>
+        </returns>
+        <param name="lhs">
+          <text>The left-hand side of the comparison</text>
+        </param>
+        <param name="rhs">
+          <text>The right-hand side of the comparison</text>
+        </param>
+      </doc>
+      <befriended id="kibUx6k1SXB+HsXkRXroJl9f59w="/>
+    </friend>
+  </class>
+  <function name="to_string" id="Cj0rUkOoWSqUDmHfuLvwlZdq9+0=">
+    <file short-path="remove-friend.cpp" source-path="remove-friend.cpp" line="23"/>
+    <return>
+      <type class="pointer">
+        <pointee-type name="char" cv-qualifiers="const"/>
+      </type>
+    </return>
+    <param name="a">
+      <type class="lvalue-reference">
+        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
+      </type>
+    </param>
+    <doc>
+      <brief>
+        <text>Non-member function of A</text>
+      </brief>
+      <returns>
+        <text>The string representation of the object</text>
+      </returns>
+      <param name="a">
+        <text>The object to stringify</text>
+      </param>
+      <relates>
+        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
+      </relates>
+    </doc>
+  </function>
+  <function name="operator==" id="kibUx6k1SXB+HsXkRXroJl9f59w=">
+    <file short-path="remove-friend.cpp" source-path="remove-friend.cpp" line="13"/>
+    <attr id="operator" name="eq" value="28"/>
+    <return>
+      <type name="bool"/>
+    </return>
+    <param name="lhs">
+      <type class="lvalue-reference">
+        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
+      </type>
+    </param>
+    <param name="rhs">
+      <type class="lvalue-reference">
+        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
+      </type>
+    </param>
+    <doc>
+      <brief>
+        <text>Friend function not listed as non-member</text>
+      </brief>
+      <para>
+        <text>Friends are already listed in the class definition.</text>
+      </para>
+      <returns>
+        <mono>true</mono>
+        <text> if the objects are equal</text>
+      </returns>
+      <param name="lhs">
+        <text>The left-hand side of the comparison</text>
+      </param>
+      <param name="rhs">
+        <text>The right-hand side of the comparison</text>
+      </param>
+    </doc>
+  </function>
+</namespace>
+</mrdocs>

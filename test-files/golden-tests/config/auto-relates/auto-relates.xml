@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <class name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
+    <file short-path="auto-relates.cpp" source-path="auto-relates.cpp" line="3" class="def"/>
+    <doc>
+      <brief>
+        <text>A class with non-member functions</text>
+      </brief>
+      <related>
+        <reference id="BaEDPGJuuB/LSgDi3IbZIcI8+hQ=">f1</reference>
+        <reference id="7hoCtaKnV3q0+0LGpIwT05DsCzM=">f2</reference>
+        <reference id="+u77KXnhVCt71fF6pXSP0epFvnk=">f3</reference>
+        <reference id="9T7aRCZADylTGfrzXLBOVh0ozys=">f4</reference>
+        <reference id="qcY9nOFVFk1L3hg1utMHO4NN0EU=">f5</reference>
+        <reference id="JhWYEhLUFLpKn1eAL3mqUhciv0s=">f6</reference>
+      </related>
+    </doc>
+  </class>
+  <function name="f1" id="BaEDPGJuuB/LSgDi3IbZIcI8+hQ=">
+    <file short-path="auto-relates.cpp" source-path="auto-relates.cpp" line="7"/>
+    <param>
+      <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
+    </param>
+    <doc>
+      <brief>
+        <text>A non-member function of A</text>
+      </brief>
+      <relates>
+        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
+      </relates>
+    </doc>
+  </function>
+  <function name="f2" id="7hoCtaKnV3q0+0LGpIwT05DsCzM=">
+    <file short-path="auto-relates.cpp" source-path="auto-relates.cpp" line="11"/>
+    <param>
+      <type class="lvalue-reference">
+        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
+      </type>
+    </param>
+    <doc>
+      <brief>
+        <text>A non-member function of A</text>
+      </brief>
+      <relates>
+        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
+      </relates>
+    </doc>
+  </function>
+  <function name="f3" id="+u77KXnhVCt71fF6pXSP0epFvnk=">
+    <file short-path="auto-relates.cpp" source-path="auto-relates.cpp" line="15"/>
+    <param>
+      <type class="lvalue-reference">
+        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
+      </type>
+    </param>
+    <doc>
+      <brief>
+        <text>A non-member function of A</text>
+      </brief>
+      <relates>
+        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
+      </relates>
+    </doc>
+  </function>
+  <function name="f4" id="9T7aRCZADylTGfrzXLBOVh0ozys=">
+    <file short-path="auto-relates.cpp" source-path="auto-relates.cpp" line="19"/>
+    <param>
+      <type class="pointer">
+        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
+      </type>
+    </param>
+    <doc>
+      <brief>
+        <text>A non-member function of A</text>
+      </brief>
+      <relates>
+        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
+      </relates>
+    </doc>
+  </function>
+  <function name="f5" id="qcY9nOFVFk1L3hg1utMHO4NN0EU=">
+    <file short-path="auto-relates.cpp" source-path="auto-relates.cpp" line="23"/>
+    <param>
+      <type class="pointer" cv-qualifiers="const">
+        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
+      </type>
+    </param>
+    <doc>
+      <brief>
+        <text>A non-member function of A</text>
+      </brief>
+      <relates>
+        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
+      </relates>
+    </doc>
+  </function>
+  <function name="f6" id="JhWYEhLUFLpKn1eAL3mqUhciv0s=">
+    <file short-path="auto-relates.cpp" source-path="auto-relates.cpp" line="27"/>
+    <param>
+      <type class="pointer">
+        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
+      </type>
+    </param>
+    <doc>
+      <brief>
+        <text>A non-member function of A</text>
+      </brief>
+      <relates>
+        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
+      </relates>
+    </doc>
+  </function>
+</namespace>
+</mrdocs>

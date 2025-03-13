@@ -24,6 +24,7 @@ This function calculates the square root of a given integral value using bit man
 
 === Exceptions
 
+[cols=2]
 |===
 | Name
 | Thrown on
@@ -37,6 +38,7 @@ The square root of the input value&period;
 
 === Template Parameters
 
+[cols=2]
 |===
 | Name
 | Description
@@ -46,6 +48,7 @@ The square root of the input value&period;
 
 === Parameters
 
+[cols=2]
 |===
 | Name
 | Description

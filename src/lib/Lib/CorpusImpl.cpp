@@ -18,11 +18,13 @@
 #include "lib/Metadata/Finalizers/SortMembersFinalizer.hpp"
 #include "lib/Metadata/Finalizers/JavadocFinalizer.hpp"
 #include "lib/Metadata/Finalizers/NamespacesFinalizer.hpp"
+#include "lib/Metadata/Finalizers/DerivedFinalizer.hpp"
 #include "lib/Support/Report.hpp"
 #include "lib/Support/Chrono.hpp"
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/ThreadPool.hpp>
+#include <mrdocs/Support/Algorithm.hpp>
 #include <chrono>
 
 namespace clang::mrdocs {
@@ -870,6 +872,57 @@ qualifiedName(Info const& I, std::string& result) const
 }
 
 void
+CorpusImpl::
+qualifiedName(
+    Info const& I,
+    SymbolID const& context,
+    std::string& result) const
+{
+    if (context == SymbolID::global)
+    {
+        qualifiedName(I, result);
+        return;
+    }
+
+    result.clear();
+    if (!I.id || I.id == SymbolID::global)
+    {
+        return;
+    }
+
+    if (I.Parent &&
+        !is_one_of(I.Parent, {SymbolID::global, context}) &&
+        I.id != context)
+    {
+        if (Info const* PI = find(I.Parent))
+        {
+            qualifiedName(*PI, context, result);
+            result += "::";
+        }
+    }
+
+    if (I.id == context)
+    {
+        return;
+    }
+
+    if (I.Parent == SymbolID::global)
+    {
+        result += "::";
+    }
+    if (!I.Name.empty())
+    {
+        result += I.Name;
+    }
+    else
+    {
+        result += "<unnamed ";
+        result += toString(I.Kind);
+        result += ">";
+    }
+}
+
+void
 CorpusImpl::finalize()
 {
     {
@@ -889,6 +942,12 @@ CorpusImpl::finalize()
     {
         report::debug("Finalizing overloads");
         OverloadsFinalizer finalizer(*this);
+        finalizer.build();
+    }
+
+    {
+        report::debug("Finalizing auto-relates");
+        DerivedFinalizer finalizer(*this);
         finalizer.build();
     }
 
