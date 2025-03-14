@@ -10,6 +10,7 @@
 
 #include "BaseMembersFinalizer.hpp"
 #include <mrdocs/Support/Report.hpp>
+#include <mrdocs/Support/Algorithm.hpp>
 
 namespace clang::mrdocs {
 
@@ -101,11 +102,18 @@ inheritBaseMembers(
     for (SymbolID const& otherID: base)
     {
         // Find the info from the base class
-        auto idIt = std::ranges::find(derived, otherID);
-        MRDOCS_CHECK_OR_CONTINUE(idIt == derived.end());
+        MRDOCS_CHECK_OR_CONTINUE(!contains(derived, otherID));
         Info* otherInfoPtr = corpus_.find(otherID);
         MRDOCS_CHECK_OR_CONTINUE(otherInfoPtr);
         Info& otherInfo = *otherInfoPtr;
+
+        // Check if we're not attempt to copy a special member function
+        if (auto const* funcPtr = static_cast<FunctionInfo const*>(otherInfoPtr))
+        {
+            MRDOCS_CHECK_OR_CONTINUE(!is_one_of(
+                funcPtr->Class,
+                { FunctionClass::Constructor, FunctionClass::Destructor }));
+        }
 
         // Check if derived class has a member that shadows the base member
         auto shadowIt = std::ranges::find_if(
@@ -126,12 +134,9 @@ inheritBaseMembers(
                         std::tie(func.Name, func.Params, func.Template) ==
                         std::tie(otherFunc.Name, otherFunc.Params, func.Template);
                 }
-                else
-                {
-                    // For other kinds of members, it's a shadow if the names
-                    // are the same
-                    return info.Name == otherInfo.Name;
-                }
+                // For other kinds of members, it's a shadow if the names
+                // are the same
+                return info.Name == otherInfo.Name;
             });
         MRDOCS_CHECK_OR_CONTINUE(shadowIt == derived.end());
 
