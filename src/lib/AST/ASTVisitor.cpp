@@ -22,6 +22,7 @@
 #include "lib/Lib/Diagnostics.hpp"
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Support/ScopeExit.hpp>
+#include <mrdocs/Support/Algorithm.hpp>
 #include <clang/AST/AST.h>
 #include <clang/AST/Attr.h>
 #include <clang/AST/ODRHash.h>
@@ -180,7 +181,7 @@ traverse(UsingDirectiveDecl const* D)
     MRDOCS_ASSERT(res);
     MRDOCS_ASSERT(res->isIdentifier());
     if (NameInfo NI = *res;
-        std::ranges::find(PNI->UsingDirectives, NI) == PNI->UsingDirectives.end())
+        !contains(PNI->UsingDirectives, NI))
     {
         PNI->UsingDirectives.push_back(std::move(NI));
     }
@@ -1582,7 +1583,7 @@ populateAttributes(InfoTy& I, Decl const* D)
             {
                 continue;
             }
-            if (std::ranges::find(I.Attributes, II->getName()) == I.Attributes.end())
+            if (!contains(I.Attributes, II->getName()))
             {
                 I.Attributes.emplace_back(II->getName());
             }
@@ -1779,7 +1780,7 @@ void
 ASTVisitor::
 addMember(std::vector<SymbolID>& container, Info const& Member) const
 {
-    if (std::ranges::find(container, Member.id) == container.end())
+    if (!contains(container, Member.id))
     {
         container.push_back(Member.id);
     }
@@ -2821,45 +2822,48 @@ checkSymbolFilters(Decl const* D, bool const AllowParent)
     // Update cache
     auto updateCache = [this, D](ExtractionInfo const result) {
         extraction_.emplace(D, result);
+        return result;
     };
 
     // If not a NamedDecl, then symbol filters don't apply
     auto const* ND = dyn_cast<NamedDecl>(D);
     if (!ND)
     {
-        ExtractionInfo const res{ExtractionMode::Regular, ExtractionMatchType::Strict};
-        updateCache(res);
-        return res;
+        constexpr ExtractionInfo res{ExtractionMode::Regular, ExtractionMatchType::Strict};
+        return updateCache(res);
     }
 
     // Get the symbol name
     SmallString<256> const name = qualifiedName(ND);
     auto const symbolName = name.str();
 
-    // We should check the exclusion filters first. If a symbol is
+    // Function to check if parent is of a certain extraction mode
+    auto ParentIs = [&](Decl const* D, ExtractionMode expected) {
+        if (Decl const* P = getParent(D);
+            P &&
+            !isa<TranslationUnitDecl>(P))
+        {
+            auto const [parentMode, kind] = checkSymbolFilters(P);
+            return parentMode == expected;
+        }
+        return false;
+    };
+
+    // 0) We should check the exclusion filters first. If a symbol is
     // explicitly excluded, there's nothing else to check.
     if (!config_->excludeSymbols.empty())
     {
         if (checkSymbolFiltersImpl<Strict>(config_->excludeSymbols, symbolName))
         {
             ExtractionInfo const res{ExtractionMode::Dependency, ExtractionMatchType::Strict};
-            updateCache(res);
-            return res;
+            return updateCache(res);
         }
-        // If the parent scope is excluded, the symbol should also be excluded
-        // since it would not be possible to refer to this member.
-        if (AllowParent)
+
+        // 0a) Check if the parent is excluded
+        if (AllowParent &&
+            ParentIs(D, ExtractionMode::Dependency))
         {
-            if (Decl const* P = getParent(D))
-            {
-                if (auto const [mode, kind] = checkSymbolFilters(P);
-                    mode == ExtractionMode::Dependency)
-                {
-                    ExtractionInfo const res = {mode, ExtractionMatchType::StrictParent};
-                    updateCache(res);
-                    return res;
-                }
-            }
+            return updateCache({ExtractionMode::Dependency, ExtractionMatchType::StrictParent});
         }
     }
 
@@ -2875,14 +2879,47 @@ checkSymbolFilters(Decl const* D, bool const AllowParent)
     };
 
     // 1) The symbol strictly matches one of the patterns
-    for (auto const& [patterns, mode] : patternsAndModes)
+    for (auto const& [patterns, patternsMode] : patternsAndModes)
     {
-        if (!patterns->empty() &&
-            checkSymbolFiltersImpl<Strict>(*patterns, symbolName))
+        if (!patterns->empty())
         {
-            ExtractionInfo res = {mode, ExtractionMatchType::Strict};
-            updateCache(res);
-            return res;
+            if (checkSymbolFiltersImpl<Strict>(*patterns, symbolName))
+            {
+                ExtractionInfo const res = {patternsMode, ExtractionMatchType::Strict};
+                return updateCache(res);
+            }
+
+            // 1a) Check if the parent in the same exclusion category
+            // (see-below or implementation defined).
+            if (AllowParent &&
+                patternsMode != ExtractionMode::Regular &&
+                ParentIs(D, patternsMode))
+            {
+                if (patternsMode == ExtractionMode::ImplementationDefined)
+                {
+                    // A child of implementation defined is also
+                    // implementation defined.
+                    return updateCache(
+                        { ExtractionMode::ImplementationDefined,
+                          ExtractionMatchType::StrictParent });
+                }
+                if (patternsMode == ExtractionMode::SeeBelow)
+                {
+                    // A child of see-below is also see-below (if namespace)
+                    // or dependency (if record)
+                    if (Decl const* P = getParent(D);
+                        P &&
+                        isa<NamespaceDecl>(P))
+                    {
+                        return updateCache(
+                        { ExtractionMode::SeeBelow,
+                          ExtractionMatchType::StrictParent });
+                    }
+                    return updateCache(
+                        { ExtractionMode::Dependency,
+                          ExtractionMatchType::StrictParent });
+                }
+            }
         }
     }
 
@@ -2922,8 +2959,7 @@ checkSymbolFilters(Decl const* D, bool const AllowParent)
                         checkSymbolFiltersImpl<Literal>(*patterns, namespaceName.str()))
                     {
                         ExtractionInfo const res = {mode, ExtractionMatchType::LiteralParent};
-                        updateCache(res);
-                        return res;
+                        return updateCache(res);
                     }
                 }
             }
@@ -2996,9 +3032,8 @@ checkSymbolFilters(Decl const* D, bool const AllowParent)
                 }
                 if (childrenMode != ExtractionMode::Dependency)
                 {
-                    ExtractionInfo const res = {mode, ExtractionMatchType::Prefix};
-                    updateCache(res);
-                    return res;
+                    ExtractionInfo const res = {childrenMode, ExtractionMatchType::Prefix};
+                    return updateCache(res);
                 }
             }
         }
@@ -3028,8 +3063,7 @@ checkSymbolFilters(Decl const* D, bool const AllowParent)
                 // being extracted so that symbols that match
                 // the full pattern are included and not all symbols.
                 ExtractionInfo const res = {mode, ExtractionMatchType::StrictParent};
-                updateCache(res);
-                return res;
+                return updateCache(res);
             }
         }
     }
@@ -3042,14 +3076,12 @@ checkSymbolFilters(Decl const* D, bool const AllowParent)
     if (config_->includeSymbols.empty())
     {
         constexpr ExtractionInfo res = {ExtractionMode::Regular, ExtractionMatchType::Strict};
-        updateCache(res);
-        return res;
+        return updateCache(res);
     }
     // 4b) Otherwise, we don't extract the symbol
     // because it doesn't match any of `include-symbol` filters
     constexpr ExtractionInfo res = {ExtractionMode::Dependency, ExtractionMatchType::Strict};
-    updateCache(res);
-    return res;
+    return updateCache(res);
 }
 
 template <ASTVisitor::SymbolCheckType t>
