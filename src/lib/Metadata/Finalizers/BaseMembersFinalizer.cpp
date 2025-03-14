@@ -220,6 +220,7 @@ void
 BaseMembersFinalizer::
 operator()(RecordInfo& I)
 {
+    MRDOCS_CHECK_OR(I.Extraction == ExtractionMode::Regular);
     report::trace(
         "Extracting base members for record '{}'",
         corpus_.Corpus::qualifiedName(I));
