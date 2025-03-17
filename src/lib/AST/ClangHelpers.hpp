@@ -887,7 +887,28 @@ decayToPrimaryTemplate(Decl const* D);
 // template specializations.
 MRDOCS_DECL
 bool
-isAllImplicit(Decl const* D);
+isAllImplicitSpecialization(Decl const* D);
+
+// Check if any component of D is an implicit specialization
+MRDOCS_DECL
+bool
+isAnyImplicitSpecialization(Decl const* D);
+
+// Check if at least one component of D is explicit
+inline
+bool
+isAnyExplicitSpecialization(Decl const* D)
+{
+    return !isAllImplicitSpecialization(D);
+}
+
+// Check if all components are explicit
+inline
+bool
+isAllExplicitSpecialization(Decl const* D)
+{
+    return !isAnyImplicitSpecialization(D);
+}
 
 MRDOCS_DECL
 bool

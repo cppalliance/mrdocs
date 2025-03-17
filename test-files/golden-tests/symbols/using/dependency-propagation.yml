@@ -3,3 +3,4 @@ filters:
     exclude:
       - 'N'
 referenced-declarations: dependency
+extract-implicit-specializations: false

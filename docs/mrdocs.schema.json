@@ -121,6 +121,16 @@
       "title": "Extraction policy for empty namespaces",
       "type": "boolean"
     },
+    "extract-implicit-specializations": {
+      "default": true,
+      "description": "When set to `true`, MrDocs extracts implicit template specializations used as base classes as dependencies. This allows MrDocs to extract metadata that can later be used to determine the members of the derived class, as specified by the `inherit-base-members` option.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Implicit template specializations used as base classes are extracted as dependencies",
+      "type": "boolean"
+    },
     "extract-local-classes": {
       "default": true,
       "description": "Determine whether records only defined locally in source files should be extracted.",

@@ -83,7 +83,6 @@ namespace {
 bool
 shouldCopy(Config const& config, Info const& M)
 {
-
     if (config->inheritBaseMembers == PublicSettings::BaseMemberInheritance::CopyDependencies)
     {
         return M.Extraction == ExtractionMode::Dependency;
@@ -236,7 +235,14 @@ operator()(RecordInfo& I)
         MRDOCS_CHECK_OR_CONTINUE(baseNameType);
         auto const* baseName = get<NameInfo const*>(baseNameType->Name);
         MRDOCS_CHECK_OR_CONTINUE(baseName);
-        SymbolID const baseID = baseName->id;
+        SymbolID baseID = baseName->id;
+        if (corpus_.config->extractImplicitSpecializations &&
+            baseName->isSpecialization())
+        {
+            auto const* baseSpec = dynamic_cast<SpecializationNameInfo const*>(baseName);
+            MRDOCS_CHECK_OR_CONTINUE(baseSpec);
+            baseID = baseSpec->specializationID;
+        }
         MRDOCS_CHECK_OR_CONTINUE(baseID);
         auto basePtr = corpus_.find(baseID);
         MRDOCS_CHECK_OR_CONTINUE(basePtr);

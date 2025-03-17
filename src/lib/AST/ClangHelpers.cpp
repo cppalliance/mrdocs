@@ -323,7 +323,7 @@ decayToPrimaryTemplate(Decl const* D)
 }
 
 bool
-isAllImplicit(Decl const* D)
+isAllImplicitSpecialization(Decl const* D)
 {
     if (!D)
     {
@@ -342,7 +342,30 @@ isAllImplicit(Decl const* D)
         return false;
     }
     auto const* P = getParent(D);
-    return isAllImplicit(P);
+    return isAllImplicitSpecialization(P);
+}
+
+bool
+isAnyImplicitSpecialization(Decl const* D)
+{
+    if (!D)
+    {
+        return false;
+    }
+    if (auto const* TSD = dynamic_cast<ClassTemplateSpecializationDecl const*>(D);
+        TSD &&
+        !TSD->isExplicitSpecialization())
+    {
+        return true;
+    }
+    if (auto const* TSD = dynamic_cast<VarTemplateSpecializationDecl const*>(D);
+        TSD &&
+        !TSD->isExplicitSpecialization())
+    {
+        return true;
+    }
+    auto const* P = getParent(D);
+    return isAnyImplicitSpecialization(P);
 }
 
 bool

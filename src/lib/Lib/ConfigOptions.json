@@ -255,6 +255,13 @@
         "default": "copy-dependencies"
       },
       {
+        "name": "extract-implicit-specializations",
+        "brief": "Implicit template specializations used as base classes are extracted as dependencies",
+        "details": "When set to `true`, MrDocs extracts implicit template specializations used as base classes as dependencies. This allows MrDocs to extract metadata that can later be used to determine the members of the derived class, as specified by the `inherit-base-members` option.",
+        "type": "bool",
+        "default": true
+      },
+      {
         "name": "sort-members",
         "brief": "Sort the members of a record or namespace",
         "details": "When set to `true`, sort the members of a record or namespace by name and parameters. When set to `false`, the members are included in the declaration order they are extracted.",
