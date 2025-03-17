@@ -116,6 +116,10 @@ struct SpecializationNameInfo final
     */
     std::vector<Polymorphic<TArg>> TemplateArgs;
 
+    /** The SymbolID of the named symbol, if it exists.
+    */
+    SymbolID specializationID = SymbolID::invalid;
+
     constexpr
     SpecializationNameInfo() noexcept
         : NameInfo(NameKind::Specialization)

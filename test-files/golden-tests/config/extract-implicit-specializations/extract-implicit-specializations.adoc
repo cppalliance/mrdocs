@@ -1,0 +1,95 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols=1]
+|===
+| Name
+| <<A,`A`>> 
+| <<B-00,`B`>> 
+|===
+
+[#A]
+== A
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;implicit&hyphen;specializations&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct A
+    : <<B-00,B>>&lt;int&gt;;
+----
+
+=== Member Functions
+
+[cols=1]
+|===
+| Name
+| <<A-value,`value`>> 
+|===
+
+[#A-value]
+== <<A,A>>::value
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;implicit&hyphen;specializations&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int&
+value();
+----
+
+[#B-00]
+== B
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;implicit&hyphen;specializations&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+struct B;
+----
+
+=== Member Functions
+
+[cols=1]
+|===
+| Name
+| <<B-00-value,`value`>> 
+|===
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<A,`A`>>
+| 
+|===
+
+[#B-00-value]
+== <<B-00,B>>::value
+
+=== Synopsis
+
+Declared in `&lt;extract&hyphen;implicit&hyphen;specializations&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+T&
+value();
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

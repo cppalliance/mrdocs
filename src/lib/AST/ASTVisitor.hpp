@@ -199,7 +199,7 @@ class ASTVisitor
 
         /*  All symbols are extracted
 
-            Even excluded symbols are traversed. If a sy bol
+            Even excluded symbols are traversed. If a symbol
             doesn't pass the filters, it is extracted as a
             dependency.
 
