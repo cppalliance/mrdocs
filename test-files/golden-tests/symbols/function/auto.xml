@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <function name="f" id="iw+p9e4sqTWCzDSP2LoIa8mbCQI=">
+    <file short-path="auto.cpp" source-path="auto.cpp" line="7"/>
+    <return>
+      <type name="int"/>
+    </return>
+    <param name="value">
+      <type name="auto"/>
+    </param>
+    <doc>
+      <brief>
+        <text>A function that uses auto</text>
+      </brief>
+      <returns>
+        <text>The result.</text>
+      </returns>
+      <param name="value">
+        <text>The value to use.</text>
+      </param>
+    </doc>
+  </function>
+</namespace>
+</mrdocs>

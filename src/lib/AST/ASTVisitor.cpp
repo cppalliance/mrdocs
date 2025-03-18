@@ -562,8 +562,7 @@ populate(
     std::optional<Javadoc>& javadoc,
     Decl const* D)
 {
-    RawComment const* RC =
-        D->getASTContext().getRawCommentForDeclNoCache(D);
+    RawComment const* RC = getDocumentation(D);
     MRDOCS_CHECK_OR(RC, false);
     comments::FullComment* FC =
         RC->parse(D->getASTContext(), &sema_.getPreprocessor(), D);
@@ -1232,6 +1231,15 @@ ASTVisitor::
 populate(TemplateInfo& Template, DeclTy const*, TemplateDeclTy const* TD)
 {
     MRDOCS_ASSERT(TD);
+    MRDOCS_CHECK_OR(!TD->isImplicit());
+    if (TemplateParameterList const* TPL = TD->getTemplateParameters();
+        !TPL->empty() &&
+        std::ranges::none_of(TPL->asArray(), [](NamedDecl const* ND) {
+            return !ND->isImplicit();
+        }))
+    {
+        return;
+    }
     TemplateParameterList const* TPL = TD->getTemplateParameters();
     populate(Template, TPL);
 }
@@ -1519,14 +1527,29 @@ populate(
     {
         return;
     }
-    if (TPL->size() > TI.Params.size())
+    auto TemplateParameters = TPL->asArray();
+    auto ExplicitTemplateParameters =
+        std::views::filter(
+            TemplateParameters,
+            [](NamedDecl const* P)
+            {
+                return !P->isImplicit();
+            });
+    std::size_t const nExplicit = std::ranges::distance(
+        ExplicitTemplateParameters);
+    MRDOCS_CHECK_OR(nExplicit);
+    if (nExplicit > TI.Params.size())
     {
-        TI.Params.resize(TPL->size());
+        TI.Params.resize(nExplicit);
     }
-    for (std::size_t i = 0; i < TPL->size(); ++i)
+    auto explicitIt = ExplicitTemplateParameters.begin();
+    std::size_t i = 0;
+    while (explicitIt != ExplicitTemplateParameters.end())
     {
         NamedDecl const* P = TPL->getParam(i);
         populate(TI.Params[i], P);
+        ++explicitIt;
+        ++i;
     }
     if (auto* RC = TPL->getRequiresClause())
     {

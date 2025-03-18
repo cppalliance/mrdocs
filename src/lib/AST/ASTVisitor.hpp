@@ -626,6 +626,16 @@ private:
     void
     populate(std::optional<TemplateInfo>& Template, DeclTy const* D, TemplateDeclTy const* VTD)
     {
+        MRDOCS_CHECK_OR(VTD);
+        MRDOCS_CHECK_OR(!VTD->isImplicit());
+        if (TemplateParameterList const* TPL = VTD->getTemplateParameters();
+            !TPL->empty() &&
+            std::ranges::none_of(TPL->asArray(), [](NamedDecl const* ND) {
+                return !ND->isImplicit();
+            }))
+        {
+            return;
+        }
         if (!Template)
         {
             Template.emplace();

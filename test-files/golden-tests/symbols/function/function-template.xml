@@ -55,28 +55,21 @@
       <file short-path="function-template.cpp" source-path="function-template.cpp" line="19" class="def"/>
     </function>
   </template>
-  <template>
-    <tparam name="x:auto" class="type"/>
-    <function name="h0" id="7dJfgpH2aNKlsNFBU9eGpEy7mW8=">
-      <file short-path="function-template.cpp" source-path="function-template.cpp" line="22" class="def"/>
-      <param name="x">
-        <type name="auto"/>
-      </param>
-    </function>
-  </template>
-  <template>
-    <tparam name="x:auto" class="type"/>
-    <tparam name="auto:2" class="type"/>
-    <function name="h1" id="CSSRf8UFPpR/4f+ymxsrA3bG2gs=">
-      <file short-path="function-template.cpp" source-path="function-template.cpp" line="24" class="def"/>
-      <param name="x">
-        <type name="auto"/>
-      </param>
-      <param>
-        <type name="auto"/>
-      </param>
-    </function>
-  </template>
+  <function name="h0" id="7dJfgpH2aNKlsNFBU9eGpEy7mW8=">
+    <file short-path="function-template.cpp" source-path="function-template.cpp" line="22" class="def"/>
+    <param name="x">
+      <type name="auto"/>
+    </param>
+  </function>
+  <function name="h1" id="CSSRf8UFPpR/4f+ymxsrA3bG2gs=">
+    <file short-path="function-template.cpp" source-path="function-template.cpp" line="24" class="def"/>
+    <param name="x">
+      <type name="auto"/>
+    </param>
+    <param>
+      <type name="auto"/>
+    </param>
+  </function>
   <template>
     <tparam name="T" class="type" default="int"/>
     <tparam name="I" class="non-type" type="int" default="1"/>

@@ -723,6 +723,17 @@ void
 
 [.small]#<<g-09c,_» more&period;&period;&period;_>>#
 
+Auto function
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<g-0b,g>>(auto a);
+----
+
+[.small]#<<g-0b,_» more&period;&period;&period;_>>#
+
 Enum param function
 
 
@@ -755,16 +766,6 @@ void
 ----
 
 [.small]#<<g-04a,_» more&period;&period;&period;_>>#
-
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;class a&colon;auto&gt;
-void
-<<g-0b,g>>(auto a);
-----
-
-[.small]#<<g-0b,_» more&period;&period;&period;_>>#
 
 Decltype function
 
@@ -838,6 +839,35 @@ g(<<N,N>>::<<N-M,M>>::<<N-M-Q,Q>> a);
 === Description
 
 Documentation for a function with a qualified identifier parameter&period;
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *a*
+| The first parameter of g
+|===
+
+[#g-0b]
+== g
+
+Auto function
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;types&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+g(auto a);
+----
+
+=== Description
+
+Documentation for a function with an `auto` parameter&period;
 
 === Parameters
 
@@ -935,20 +965,6 @@ Documentation for the non&hyphen;variadic function&period;
 | *a*
 | The first parameter of g
 |===
-
-[#g-0b]
-== g
-
-=== Synopsis
-
-Declared in `&lt;param&hyphen;types&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-template&lt;class a&colon;auto&gt;
-void
-g(auto a);
-----
 
 [#g-0c]
 == g
