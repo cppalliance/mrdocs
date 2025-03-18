@@ -55,6 +55,16 @@ struct A
     : <<ABase,ABase>>;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<ABase,ABase>>`
+| A base class for non&hyphen;member functions
+|===
+
 === Non-Member Functions
 
 [,cols=2]
@@ -134,6 +144,16 @@ struct AView
     : <<ABase,ABase>>;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<ABase,ABase>>`
+| A base class for non&hyphen;member functions
+|===
+
 === Non-Member Functions
 
 [,cols=2]
@@ -176,6 +196,16 @@ Declared in `&lt;derived&period;cpp&gt;`
 struct AView2
     : <<AView,AView>>;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<AView,AView>>`
+| A view of A
+|===
 
 === Non-Member Functions
 

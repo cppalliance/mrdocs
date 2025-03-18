@@ -35,6 +35,16 @@ class base
     : public <<base_base,base&lowbar;base>>;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<base_base,base&lowbar;base>>`
+| 
+|===
+
 === Member Functions
 
 [cols=2]
@@ -244,6 +254,18 @@ class derived
     : public <<base,base>>
     , public excluded&lowbar;base;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<base,base>>`
+| 
+| `excluded&lowbar;base`
+| 
+|===
 
 === Member Functions
 

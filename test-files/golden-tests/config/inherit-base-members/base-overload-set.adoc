@@ -27,6 +27,16 @@ class Base
     : public <<ConstBase,ConstBase>>;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<ConstBase,ConstBase>>`
+| 
+|===
+
 === Member Functions
 
 [cols=2]
@@ -110,6 +120,16 @@ Declared in `&lt;base&hyphen;overload&hyphen;set&period;cpp&gt;`
 class C
     : public <<Base,Base>>;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<Base,Base>>`
+| 
+|===
 
 === Member Functions
 

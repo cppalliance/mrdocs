@@ -147,8 +147,12 @@ tag_invoke(
     DomCorpus const* domCorpus)
 {
     io.map("access", I.Access);
+    io.map("isPublic", I.Access == AccessKind::Public);
+    io.map("isProtected", I.Access == AccessKind::Protected);
+    io.map("isPrivate", I.Access == AccessKind::Private);
     io.map("isVirtual", I.IsVirtual);
     io.map("type", dom::ValueFrom(I.Type, domCorpus));
+    io.map("symbol", I.Type->namedSymbol());
 }
 
 void

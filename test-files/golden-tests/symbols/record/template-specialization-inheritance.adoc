@@ -71,6 +71,16 @@ struct R0
     : <<S0-0c,S0>>&lt;1&gt;;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0c,S0>>&lt;1&gt;`
+| 
+|===
+
 === Types
 
 [cols=1]
@@ -92,6 +102,16 @@ struct R1
     : <<S0-0c,S0>>&lt;2&gt;::<<S0-09-S1,S1>>;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0c,S0>>&lt;2&gt;::<<S0-09-S1,S1>>`
+| 
+|===
+
 [#R2]
 == R2
 
@@ -104,6 +124,16 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 struct R2
     : <<S0-073,S0>>&lt;3&gt;;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-073,S0>>&lt;3&gt;`
+| 
+|===
 
 [#S0-0c]
 == S0

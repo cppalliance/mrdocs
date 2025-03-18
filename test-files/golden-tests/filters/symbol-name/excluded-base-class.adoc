@@ -37,6 +37,16 @@ class D
     : public B::C;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `B::C`
+| 
+|===
+
 === Member Functions
 
 [cols=1]
@@ -114,6 +124,16 @@ Declared in `&lt;excluded&hyphen;base&hyphen;class&period;cpp&gt;`
 class E
     : public B::C;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `B::C`
+| 
+|===
 
 === Member Functions
 

@@ -114,6 +114,18 @@ struct C
     , <<B,B>>;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<A,A>>`
+| 
+| `<<B,B>>`
+| 
+|===
+
 === Member Functions
 
 [cols=2]

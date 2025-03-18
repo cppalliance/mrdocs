@@ -33,6 +33,16 @@ struct B
     : decltype(f());
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `decltype(f())`
+| 
+|===
+
 [#f]
 == f
 

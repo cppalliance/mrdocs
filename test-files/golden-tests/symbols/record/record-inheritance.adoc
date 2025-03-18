@@ -75,6 +75,16 @@ class C2
     : public <<C0,C0>>;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<C0,C0>>`
+| 
+|===
+
 [#C3]
 == C3
 
@@ -161,6 +171,18 @@ class C7
     , public <<C6,C6>>;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<C5,C5>>`
+| 
+| `<<C6,C6>>`
+| 
+|===
+
 [#S0]
 == S0
 
@@ -218,6 +240,16 @@ struct S2
     : <<S0,S0>>;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0,S0>>`
+| 
+|===
+
 === Derived Classes
 
 [,cols=2]
@@ -240,6 +272,16 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 struct S3
     : <<S1,S1>>;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S1,S1>>`
+| 
+|===
 
 === Derived Classes
 
@@ -264,6 +306,18 @@ struct S4
     : <<S2,S2>>
     , <<S3,S3>>;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S2,S2>>`
+| 
+| `<<S3,S3>>`
+| 
+|===
 
 [#S5]
 == S5
@@ -292,6 +346,16 @@ template&lt;typename&period;&period;&period; Ts&gt;
 struct S6
     : Ts&period;&period;&period;;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `Ts&period;&period;&period;`
+| 
+|===
 
 [#U0]
 == U0

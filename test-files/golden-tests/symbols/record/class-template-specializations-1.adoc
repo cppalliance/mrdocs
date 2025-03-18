@@ -115,6 +115,16 @@ struct R0
     : <<S0-0cf,S0>>&lt;&hyphen;1&gt;;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;&hyphen;1&gt;`
+| 
+|===
+
 === Types
 
 [cols=1]
@@ -145,6 +155,16 @@ struct R1
     : <<S0-0be,S0>>&lt;0&gt;;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0be,S0>>&lt;0&gt;`
+| 
+|===
+
 [#R10]
 == R10
 
@@ -157,6 +177,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 struct R10
     : <<S0-0cf,S0>>&lt;10&gt;::<<S0-08-S1,S1>>::<<S0-08-S1-S2-0b,S2>>&lt;11&gt;::<<S0-08-S1-S2-08-S4,S4>>&lt;&hyphen;1&gt;;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;10&gt;::<<S0-08-S1,S1>>::<<S0-08-S1-S2-0b,S2>>&lt;11&gt;::<<S0-08-S1-S2-08-S4,S4>>&lt;&hyphen;1&gt;`
+| 
+|===
 
 [#R11]
 == R11
@@ -171,6 +201,16 @@ struct R11
     : <<S0-0cf,S0>>&lt;12&gt;::<<S0-0e-S1,S1>>::<<S0-0e-S1-S2-09,S2>>&lt;13&gt;::<<S0-0e-S1-S2-02-S4-0c,S4>>&lt;14&gt;;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;12&gt;::<<S0-0e-S1,S1>>::<<S0-0e-S1-S2-09,S2>>&lt;13&gt;::<<S0-0e-S1-S2-02-S4-0c,S4>>&lt;14&gt;`
+| 
+|===
+
 [#R12]
 == R12
 
@@ -183,6 +223,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 struct R12
     : <<S0-0cf,S0>>&lt;15&gt;::<<S0-09e4-S1,S1>>::<<S0-09e4-S1-S2-07,S2>>&lt;16&gt;::<<S0-09e4-S1-S2-02-S4-00,S4>>&lt;17, void*&gt;;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;15&gt;::<<S0-09e4-S1,S1>>::<<S0-09e4-S1-S2-07,S2>>&lt;16&gt;::<<S0-09e4-S1-S2-02-S4-00,S4>>&lt;17, void*&gt;`
+| 
+|===
 
 [#R13]
 == R13
@@ -197,6 +247,16 @@ struct R13
     : <<S0-0cf,S0>>&lt;15&gt;::<<S0-09e4-S1,S1>>::<<S0-09e4-S1-S2-07,S2>>&lt;16&gt;::<<S0-09e4-S1-S2-02-S4-02,S4>>&lt;17, int*&gt;;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;15&gt;::<<S0-09e4-S1,S1>>::<<S0-09e4-S1-S2-07,S2>>&lt;16&gt;::<<S0-09e4-S1-S2-02-S4-02,S4>>&lt;17, int*&gt;`
+| 
+|===
+
 [#R14]
 == R14
 
@@ -209,6 +269,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 struct R14
     : <<S0-0cf,S0>>&lt;18&gt;::<<S0-07a-S5,S5>>&lt;&hyphen;1&gt;;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;18&gt;::<<S0-07a-S5,S5>>&lt;&hyphen;1&gt;`
+| 
+|===
 
 [#R15]
 == R15
@@ -223,6 +293,16 @@ struct R15
     : <<S0-0cf,S0>>&lt;19&gt;::<<S0-0a7-S5-07,S5>>&lt;20&gt;;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;19&gt;::<<S0-0a7-S5-07,S5>>&lt;20&gt;`
+| 
+|===
+
 [#R16]
 == R16
 
@@ -235,6 +315,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 struct R16
     : <<S0-0cf,S0>>&lt;21&gt;::<<S0-0314-S5-07,S5>>&lt;22, void*&gt;;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;21&gt;::<<S0-0314-S5-07,S5>>&lt;22, void*&gt;`
+| 
+|===
 
 [#R17]
 == R17
@@ -249,6 +339,16 @@ struct R17
     : <<S0-0cf,S0>>&lt;21&gt;::<<S0-0314-S5-03,S5>>&lt;22, int*&gt;;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;21&gt;::<<S0-0314-S5-03,S5>>&lt;22, int*&gt;`
+| 
+|===
+
 [#R18]
 == R18
 
@@ -261,6 +361,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 struct R18
     : <<S0-0cf,S0>>&lt;23&gt;::<<S0-058-S5-0b,S5>>&lt;24&gt;::<<S0-058-S5-09-S6,S6>>;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;23&gt;::<<S0-058-S5-0b,S5>>&lt;24&gt;::<<S0-058-S5-09-S6,S6>>`
+| 
+|===
 
 [#R19]
 == R19
@@ -275,6 +385,16 @@ struct R19
     : <<S0-0cf,S0>>&lt;25&gt;::<<S0-0a2-S5-04,S5>>&lt;26&gt;::<<S0-0a2-S5-02-S6,S6>>::<<S0-0a2-S5-02-S6-S7,S7>>&lt;&hyphen;1&gt;;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;25&gt;::<<S0-0a2-S5-04,S5>>&lt;26&gt;::<<S0-0a2-S5-02-S6,S6>>::<<S0-0a2-S5-02-S6-S7,S7>>&lt;&hyphen;1&gt;`
+| 
+|===
+
 [#R2]
 == R2
 
@@ -287,6 +407,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 struct R2
     : <<S0-0cf,S0>>&lt;1, void*&gt;;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;1, void*&gt;`
+| 
+|===
 
 === Types
 
@@ -318,6 +448,16 @@ struct R20
     : <<S0-0cf,S0>>&lt;27&gt;::<<S0-09e2-S5-0b,S5>>&lt;28&gt;::<<S0-09e2-S5-0c-S6,S6>>::<<S0-09e2-S5-0c-S6-S7-0b,S7>>&lt;29, void*&gt;;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;27&gt;::<<S0-09e2-S5-0b,S5>>&lt;28&gt;::<<S0-09e2-S5-0c-S6,S6>>::<<S0-09e2-S5-0c-S6-S7-0b,S7>>&lt;29, void*&gt;`
+| 
+|===
+
 [#R21]
 == R21
 
@@ -330,6 +470,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 struct R21
     : <<S0-0cf,S0>>&lt;27&gt;::<<S0-09e2-S5-0b,S5>>&lt;28&gt;::<<S0-09e2-S5-0c-S6,S6>>::<<S0-09e2-S5-0c-S6-S7-0d,S7>>&lt;29, int*&gt;;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;27&gt;::<<S0-09e2-S5-0b,S5>>&lt;28&gt;::<<S0-09e2-S5-0c-S6,S6>>::<<S0-09e2-S5-0c-S6-S7-0d,S7>>&lt;29, int*&gt;`
+| 
+|===
 
 [#R22]
 == R22
@@ -344,6 +494,16 @@ struct R22
     : <<S0-0cf,S0>>&lt;30&gt;::<<S0-01-S5-07,S5>>&lt;31&gt;::<<S0-01-S5-04-S6,S6>>::<<S0-01-S5-04-S6-S7-05,S7>>&lt;32&gt;;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;30&gt;::<<S0-01-S5-07,S5>>&lt;31&gt;::<<S0-01-S5-04-S6,S6>>::<<S0-01-S5-04-S6-S7-05,S7>>&lt;32&gt;`
+| 
+|===
+
 [#R23]
 == R23
 
@@ -356,6 +516,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 struct R23
     : <<S0-0cf,S0>>&lt;33&gt;::<<S0-09ee-S5-0b,S5>>&lt;34&gt;::<<S0-09ee-S5-02-S6,S6>>::<<S0-09ee-S5-02-S6-S7-09,S7>>&lt;35&gt;::<<S0-09ee-S5-02-S6-S7-03-S8,S8>>;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;33&gt;::<<S0-09ee-S5-0b,S5>>&lt;34&gt;::<<S0-09ee-S5-02-S6,S6>>::<<S0-09ee-S5-02-S6-S7-09,S7>>&lt;35&gt;::<<S0-09ee-S5-02-S6-S7-03-S8,S8>>`
+| 
+|===
 
 [#R24]
 == R24
@@ -370,6 +540,16 @@ struct R24
     : <<S0-0cf,S0>>&lt;36&gt;::<<S0-033-S5-03,S5>>&lt;37&gt;::<<S0-033-S5-0f-S6,S6>>::<<S0-033-S5-0f-S6-S7-05,S7>>&lt;38&gt;::<<S0-033-S5-0f-S6-S7-0d-S9,S9>>&lt;&hyphen;1&gt;;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;36&gt;::<<S0-033-S5-03,S5>>&lt;37&gt;::<<S0-033-S5-0f-S6,S6>>::<<S0-033-S5-0f-S6-S7-05,S7>>&lt;38&gt;::<<S0-033-S5-0f-S6-S7-0d-S9,S9>>&lt;&hyphen;1&gt;`
+| 
+|===
+
 [#R25]
 == R25
 
@@ -382,6 +562,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 struct R25
     : <<S0-0cf,S0>>&lt;39&gt;::<<S0-06-S5-03,S5>>&lt;40&gt;::<<S0-06-S5-07-S6,S6>>::<<S0-06-S5-07-S6-S7-08,S7>>&lt;41&gt;::<<S0-06-S5-07-S6-S7-0a-S9-05,S9>>&lt;42, void*&gt;;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;39&gt;::<<S0-06-S5-03,S5>>&lt;40&gt;::<<S0-06-S5-07-S6,S6>>::<<S0-06-S5-07-S6-S7-08,S7>>&lt;41&gt;::<<S0-06-S5-07-S6-S7-0a-S9-05,S9>>&lt;42, void*&gt;`
+| 
+|===
 
 [#R26]
 == R26
@@ -396,6 +586,16 @@ struct R26
     : <<S0-0cf,S0>>&lt;39&gt;::<<S0-06-S5-03,S5>>&lt;40&gt;::<<S0-06-S5-07-S6,S6>>::<<S0-06-S5-07-S6-S7-08,S7>>&lt;41&gt;::<<S0-06-S5-07-S6-S7-0a-S9-08,S9>>&lt;42, int*&gt;;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;39&gt;::<<S0-06-S5-03,S5>>&lt;40&gt;::<<S0-06-S5-07-S6,S6>>::<<S0-06-S5-07-S6-S7-08,S7>>&lt;41&gt;::<<S0-06-S5-07-S6-S7-0a-S9-08,S9>>&lt;42, int*&gt;`
+| 
+|===
+
 [#R27]
 == R27
 
@@ -409,6 +609,16 @@ struct R27
     : <<S0-0cf,S0>>&lt;43&gt;::<<S0-0ba-S5-0f,S5>>&lt;44&gt;::<<S0-0ba-S5-08-S6,S6>>::<<S0-0ba-S5-08-S6-S7-04,S7>>&lt;45&gt;::<<S0-0ba-S5-08-S6-S7-02-S9-0f,S9>>&lt;46&gt;;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;43&gt;::<<S0-0ba-S5-0f,S5>>&lt;44&gt;::<<S0-0ba-S5-08-S6,S6>>::<<S0-0ba-S5-08-S6-S7-04,S7>>&lt;45&gt;::<<S0-0ba-S5-08-S6-S7-02-S9-0f,S9>>&lt;46&gt;`
+| 
+|===
+
 [#R28]
 == R28
 
@@ -421,6 +631,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 struct R28
     : <<S0-0cf,S0>>&lt;0, bool&gt;;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;0, bool&gt;`
+| 
+|===
 
 === Types
 
@@ -452,6 +672,16 @@ struct R29
     : <<S0-0cf,S0>>&lt;1, int&gt;;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;1, int&gt;`
+| 
+|===
+
 === Types
 
 [cols=1]
@@ -482,6 +712,16 @@ struct R3
     : <<S0-020a,S0>>&lt;1, int*&gt;;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-020a,S0>>&lt;1, int*&gt;`
+| 
+|===
+
 [#R30]
 == R30
 
@@ -494,6 +734,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 struct R30
     : <<S0-0cf,S0>>&lt;2, bool&gt;::<<S0-03c-S1,S1>>;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;2, bool&gt;::<<S0-03c-S1,S1>>`
+| 
+|===
 
 === Types
 
@@ -527,6 +777,16 @@ struct R31
     : <<S0-0cf,S0>>&lt;3, bool&gt;::<<S0-092-S1,S1>>::<<S0-092-S1-S2,S2>>&lt;I, T&gt;;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;3, bool&gt;::<<S0-092-S1,S1>>::<<S0-092-S1-S2,S2>>&lt;I, T&gt;`
+| 
+|===
+
 [#R32]
 == R32
 
@@ -539,6 +799,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 struct R32
     : <<S0-0cf,S0>>&lt;4, bool&gt;::<<S0-0b6-S1,S1>>::<<S0-0b6-S1-S2,S2>>&lt;5, bool&gt;;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;4, bool&gt;::<<S0-0b6-S1,S1>>::<<S0-0b6-S1-S2,S2>>&lt;5, bool&gt;`
+| 
+|===
 
 [#R33]
 == R33
@@ -553,6 +823,16 @@ struct R33
     : <<S0-0cf,S0>>&lt;6, bool&gt;::<<S0-023-S1,S1>>::<<S0-023-S1-S2,S2>>&lt;7, int&gt;;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;6, bool&gt;::<<S0-023-S1,S1>>::<<S0-023-S1-S2,S2>>&lt;7, int&gt;`
+| 
+|===
+
 [#R34]
 == R34
 
@@ -565,6 +845,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 struct R34
     : <<S0-0cf,S0>>&lt;8, bool&gt;::<<S0-04-S1,S1>>::<<S0-04-S1-S2-0e,S2>>&lt;9, bool&gt;::<<S0-04-S1-S2-0a-S3,S3>>;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;8, bool&gt;::<<S0-04-S1,S1>>::<<S0-04-S1-S2-0e,S2>>&lt;9, bool&gt;::<<S0-04-S1-S2-0a-S3,S3>>`
+| 
+|===
 
 === Member Functions
 
@@ -590,6 +880,16 @@ struct R35
     : <<S0-0cf,S0>>&lt;10, bool&gt;::<<S0-05a-S1,S1>>::<<S0-05a-S1-S2-07,S2>>&lt;11, bool&gt;::<<S0-05a-S1-S2-0b-S4,S4>>&lt;I, T&gt;;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;10, bool&gt;::<<S0-05a-S1,S1>>::<<S0-05a-S1-S2-07,S2>>&lt;11, bool&gt;::<<S0-05a-S1-S2-0b-S4,S4>>&lt;I, T&gt;`
+| 
+|===
+
 [#R36]
 == R36
 
@@ -603,6 +903,16 @@ struct R36
     : <<S0-0cf,S0>>&lt;12, bool&gt;::<<S0-0cd-S1,S1>>::<<S0-0cd-S1-S2-0e,S2>>&lt;13, bool&gt;::<<S0-0cd-S1-S2-05-S4,S4>>&lt;14, bool&gt;;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;12, bool&gt;::<<S0-0cd-S1,S1>>::<<S0-0cd-S1-S2-0e,S2>>&lt;13, bool&gt;::<<S0-0cd-S1-S2-05-S4,S4>>&lt;14, bool&gt;`
+| 
+|===
+
 [#R37]
 == R37
 
@@ -615,6 +925,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 struct R37
     : <<S0-0cf,S0>>&lt;15, bool&gt;::<<S0-000-S1,S1>>::<<S0-000-S1-S2-08,S2>>&lt;16, bool&gt;::<<S0-000-S1-S2-03-S4,S4>>&lt;17, int&gt;;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;15, bool&gt;::<<S0-000-S1,S1>>::<<S0-000-S1-S2-08,S2>>&lt;16, bool&gt;::<<S0-000-S1-S2-03-S4,S4>>&lt;17, int&gt;`
+| 
+|===
 
 [#R38]
 == R38
@@ -632,6 +952,16 @@ struct R38
     : <<S0-0cf,S0>>&lt;18, bool&gt;::<<S0-051-S5,S5>>&lt;I, T&gt;;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;18, bool&gt;::<<S0-051-S5,S5>>&lt;I, T&gt;`
+| 
+|===
+
 [#R39]
 == R39
 
@@ -644,6 +974,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 struct R39
     : <<S0-0cf,S0>>&lt;19, bool&gt;::<<S0-002-S5,S5>>&lt;20, bool&gt;;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;19, bool&gt;::<<S0-002-S5,S5>>&lt;20, bool&gt;`
+| 
+|===
 
 [#R4]
 == R4
@@ -658,6 +998,16 @@ struct R4
     : <<S0-0cf,S0>>&lt;2&gt;::<<S0-09c-S1,S1>>;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;2&gt;::<<S0-09c-S1,S1>>`
+| 
+|===
+
 [#R40]
 == R40
 
@@ -671,6 +1021,16 @@ struct R40
     : <<S0-0cf,S0>>&lt;21, bool&gt;::<<S0-003-S5,S5>>&lt;22, int&gt;;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;21, bool&gt;::<<S0-003-S5,S5>>&lt;22, int&gt;`
+| 
+|===
+
 [#R41]
 == R41
 
@@ -683,6 +1043,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 struct R41
     : <<S0-0cf,S0>>&lt;23, bool&gt;::<<S0-0c7-S5-03,S5>>&lt;24, bool&gt;::<<S0-0c7-S5-0f-S6,S6>>;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;23, bool&gt;::<<S0-0c7-S5-03,S5>>&lt;24, bool&gt;::<<S0-0c7-S5-0f-S6,S6>>`
+| 
+|===
 
 === Types
 
@@ -716,6 +1086,16 @@ struct R42
     : <<S0-0cf,S0>>&lt;25, bool&gt;::<<S0-0529f-S5-051,S5>>&lt;26, bool&gt;::<<S0-0529f-S5-05c-S6,S6>>::<<S0-0529f-S5-05c-S6-S7,S7>>&lt;I, T&gt;;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;25, bool&gt;::<<S0-0529f-S5-051,S5>>&lt;26, bool&gt;::<<S0-0529f-S5-05c-S6,S6>>::<<S0-0529f-S5-05c-S6-S7,S7>>&lt;I, T&gt;`
+| 
+|===
+
 [#R43]
 == R43
 
@@ -728,6 +1108,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 struct R43
     : <<S0-0cf,S0>>&lt;27, bool&gt;::<<S0-007-S5-0f,S5>>&lt;28, bool&gt;::<<S0-007-S5-0d-S6,S6>>::<<S0-007-S5-0d-S6-S7,S7>>&lt;29, int&gt;;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;27, bool&gt;::<<S0-007-S5-0f,S5>>&lt;28, bool&gt;::<<S0-007-S5-0d-S6,S6>>::<<S0-007-S5-0d-S6-S7,S7>>&lt;29, int&gt;`
+| 
+|===
 
 [#R44]
 == R44
@@ -742,6 +1132,16 @@ struct R44
     : <<S0-0cf,S0>>&lt;30, bool&gt;::<<S0-021-S5-06,S5>>&lt;31, bool&gt;::<<S0-021-S5-0b-S6,S6>>::<<S0-021-S5-0b-S6-S7,S7>>&lt;32, bool&gt;;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;30, bool&gt;::<<S0-021-S5-06,S5>>&lt;31, bool&gt;::<<S0-021-S5-0b-S6,S6>>::<<S0-021-S5-0b-S6-S7,S7>>&lt;32, bool&gt;`
+| 
+|===
+
 [#R45]
 == R45
 
@@ -754,6 +1154,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 struct R45
     : <<S0-0cf,S0>>&lt;33, bool&gt;::<<S0-0318-S5-0f,S5>>&lt;34, bool&gt;::<<S0-0318-S5-0b-S6,S6>>::<<S0-0318-S5-0b-S6-S7-04,S7>>&lt;35, bool&gt;::<<S0-0318-S5-0b-S6-S7-05-S8,S8>>;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;33, bool&gt;::<<S0-0318-S5-0f,S5>>&lt;34, bool&gt;::<<S0-0318-S5-0b-S6,S6>>::<<S0-0318-S5-0b-S6-S7-04,S7>>&lt;35, bool&gt;::<<S0-0318-S5-0b-S6-S7-05-S8,S8>>`
+| 
+|===
 
 === Member Functions
 
@@ -779,6 +1189,16 @@ struct R46
     : <<S0-0cf,S0>>&lt;36, bool&gt;::<<S0-0d-S5-09,S5>>&lt;37, bool&gt;::<<S0-0d-S5-0b-S6,S6>>::<<S0-0d-S5-0b-S6-S7-08,S7>>&lt;38, bool&gt;::<<S0-0d-S5-0b-S6-S7-0d-S9,S9>>&lt;I, T&gt;;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;36, bool&gt;::<<S0-0d-S5-09,S5>>&lt;37, bool&gt;::<<S0-0d-S5-0b-S6,S6>>::<<S0-0d-S5-0b-S6-S7-08,S7>>&lt;38, bool&gt;::<<S0-0d-S5-0b-S6-S7-0d-S9,S9>>&lt;I, T&gt;`
+| 
+|===
+
 [#R47]
 == R47
 
@@ -791,6 +1211,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 struct R47
     : <<S0-0cf,S0>>&lt;39, bool&gt;::<<S0-0206-S5-06,S5>>&lt;40, bool&gt;::<<S0-0206-S5-08-S6,S6>>::<<S0-0206-S5-08-S6-S7-06,S7>>&lt;41, bool&gt;::<<S0-0206-S5-08-S6-S7-01-S9,S9>>&lt;42, int&gt;;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;39, bool&gt;::<<S0-0206-S5-06,S5>>&lt;40, bool&gt;::<<S0-0206-S5-08-S6,S6>>::<<S0-0206-S5-08-S6-S7-06,S7>>&lt;41, bool&gt;::<<S0-0206-S5-08-S6-S7-01-S9,S9>>&lt;42, int&gt;`
+| 
+|===
 
 [#R48]
 == R48
@@ -805,6 +1235,16 @@ struct R48
     : <<S0-0cf,S0>>&lt;43, bool&gt;::<<S0-05291-S5-02,S5>>&lt;44, bool&gt;::<<S0-05291-S5-0e-S6,S6>>::<<S0-05291-S5-0e-S6-S7-04,S7>>&lt;45, bool&gt;::<<S0-05291-S5-0e-S6-S7-0f-S9,S9>>&lt;46, bool&gt;;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;43, bool&gt;::<<S0-05291-S5-02,S5>>&lt;44, bool&gt;::<<S0-05291-S5-0e-S6,S6>>::<<S0-05291-S5-0e-S6-S7-04,S7>>&lt;45, bool&gt;::<<S0-05291-S5-0e-S6-S7-0f-S9,S9>>&lt;46, bool&gt;`
+| 
+|===
+
 [#R5]
 == R5
 
@@ -817,6 +1257,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 struct R5
     : <<S0-0cf,S0>>&lt;3&gt;::<<S0-073-S1,S1>>::<<S0-073-S1-S2,S2>>&lt;&hyphen;1&gt;;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;3&gt;::<<S0-073-S1,S1>>::<<S0-073-S1-S2,S2>>&lt;&hyphen;1&gt;`
+| 
+|===
 
 [#R6]
 == R6
@@ -831,6 +1281,16 @@ struct R6
     : <<S0-0cf,S0>>&lt;4&gt;::<<S0-0a1-S1,S1>>::<<S0-0a1-S1-S2-0f,S2>>&lt;5&gt;;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;4&gt;::<<S0-0a1-S1,S1>>::<<S0-0a1-S1-S2-0f,S2>>&lt;5&gt;`
+| 
+|===
+
 [#R7]
 == R7
 
@@ -843,6 +1303,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 struct R7
     : <<S0-0cf,S0>>&lt;6&gt;::<<S0-07e-S1,S1>>::<<S0-07e-S1-S2-04,S2>>&lt;7, void*&gt;;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;6&gt;::<<S0-07e-S1,S1>>::<<S0-07e-S1-S2-04,S2>>&lt;7, void*&gt;`
+| 
+|===
 
 [#R8]
 == R8
@@ -857,6 +1327,16 @@ struct R8
     : <<S0-0cf,S0>>&lt;6&gt;::<<S0-07e-S1,S1>>::<<S0-07e-S1-S2-07,S2>>&lt;7, int*&gt;;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;6&gt;::<<S0-07e-S1,S1>>::<<S0-07e-S1-S2-07,S2>>&lt;7, int*&gt;`
+| 
+|===
+
 [#R9]
 == R9
 
@@ -869,6 +1349,16 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 struct R9
     : <<S0-0cf,S0>>&lt;8&gt;::<<S0-0a3-S1,S1>>::<<S0-0a3-S1-S2-0b,S2>>&lt;9&gt;::<<S0-0a3-S1-S2-0c-S3,S3>>;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<S0-0cf,S0>>&lt;8&gt;::<<S0-0a3-S1,S1>>::<<S0-0a3-S1-S2-0b,S2>>&lt;9&gt;::<<S0-0a3-S1-S2-0c-S3,S3>>`
+| 
+|===
 
 [#S0-0cf]
 == S0

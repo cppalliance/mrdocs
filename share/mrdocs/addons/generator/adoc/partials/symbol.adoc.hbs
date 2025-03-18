@@ -28,6 +28,20 @@
 
 {{> symbol/signatures symbol }}
 {{/unless}}
+{{! Base classes }}
+{{#if (any_of_by symbol.bases "isPublic")}}
+{{#> markup/dynamic-level-h }}Base Classes{{/markup/dynamic-level-h}}
+[,cols=2]
+|===
+| Name
+| Description
+{{#each (filter_by symbol.bases "isPublic")}}
+| {{#>markup/code}}{{> type/declarator type }}{{/markup/code}}
+| {{> javadoc/inline-brief symbol.doc.brief }}
+{{/each}}
+|===
+
+{{/if}}
 {{! Members }}
 {{! Record interface }}
 {{#if (eq symbol.kind "record")}}
