@@ -267,6 +267,12 @@ tag_invoke(
     v = dom::LazyObject(I, domCorpus);
 }
 
+/** Determine if one function would override the other
+ */
+MRDOCS_DECL
+bool
+overrides(FunctionInfo const& base, FunctionInfo const& derived);
+
 } // clang::mrdocs
 
 #endif

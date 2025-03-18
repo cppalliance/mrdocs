@@ -356,6 +356,22 @@ merge(FunctionInfo& I, FunctionInfo&& Other)
     }
 }
 
+MRDOCS_DECL
+bool
+overrides(FunctionInfo const& base, FunctionInfo const& derived)
+{
+    auto toOverrideTuple = [](FunctionInfo const& f) {
+        return std::forward_as_tuple(
+            f.Name,
+            f.Params,
+            f.Template,
+            f.IsVariadic,
+            f.IsConst,
+            f.RefQualifier
+        );
+    };
+    return toOverrideTuple(base) == toOverrideTuple(derived);
+}
 
 } // clang::mrdocs
 

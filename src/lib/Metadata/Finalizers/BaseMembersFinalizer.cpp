@@ -129,9 +129,7 @@ inheritBaseMembers(
                     // are the same
                     auto const& otherFunc = static_cast<FunctionInfo const&>(otherInfo);
                     auto const& func = static_cast<FunctionInfo const&>(info);
-                    return
-                        std::tie(func.Name, func.Params, func.Template) ==
-                        std::tie(otherFunc.Name, otherFunc.Params, func.Template);
+                    return overrides(func, otherFunc);
                 }
                 // For other kinds of members, it's a shadow if the names
                 // are the same
