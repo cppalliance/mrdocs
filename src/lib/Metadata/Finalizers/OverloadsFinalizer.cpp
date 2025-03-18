@@ -51,7 +51,6 @@ findBaseClassPermutation(
     MRDOCS_CHECK_OR(info, SymbolID::invalid);
     if (auto* record = dynamic_cast<RecordInfo*>(info))
     {
-        bool overloadsFromBase = false;
         for (auto const& base: record->Bases)
         {
             auto const baseInfo = corpus.find(base.Type->namedSymbol());

@@ -926,6 +926,10 @@ MRDOCS_DECL
 bool
 isDocumented(Decl const *D);
 
+MRDOCS_DECL
+RawComment const*
+getDocumentation(Decl const *D);
+
 template <class DeclTy>
 bool
 isDefinition(DeclTy* D)

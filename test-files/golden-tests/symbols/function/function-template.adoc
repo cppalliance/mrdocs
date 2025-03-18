@@ -134,7 +134,6 @@ Declared in `&lt;function&hyphen;template&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template&lt;class x&colon;auto&gt;
 void
 h0(auto x);
 ----
@@ -148,9 +147,6 @@ Declared in `&lt;function&hyphen;template&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template&lt;
-    class x&colon;auto,
-    class auto&colon;2&gt;
 void
 h1(
     auto x,

@@ -392,6 +392,25 @@
       </relates>
     </doc>
   </function>
+  <function name="g" id="tWSGybFaxNKcropoGJaIH9niqLg=">
+    <file short-path="param-types.cpp" source-path="param-types.cpp" line="91"/>
+    <param name="a">
+      <type name="auto"/>
+    </param>
+    <doc>
+      <brief>
+        <text>Auto function</text>
+      </brief>
+      <para>
+        <text>Documentation for a function with an </text>
+        <mono>auto</mono>
+        <text> parameter.</text>
+      </para>
+      <param name="a">
+        <text>The first parameter of g</text>
+      </param>
+    </doc>
+  </function>
   <function name="g" id="TF0l7iZI1k70e/PY/mnOvc0hoyI=">
     <file short-path="param-types.cpp" source-path="param-types.cpp" line="141"/>
     <param name="a">
@@ -447,15 +466,6 @@
       </param>
     </doc>
   </function>
-  <template>
-    <tparam name="a:auto" class="type"/>
-    <function name="g" id="tWSGybFaxNKcropoGJaIH9niqLg=">
-      <file short-path="param-types.cpp" source-path="param-types.cpp" line="91"/>
-      <param name="a">
-        <type name="auto"/>
-      </param>
-    </function>
-  </template>
   <function name="g" id="wOc7mtwXPodKdeWFmSfib8PaSww=">
     <file short-path="param-types.cpp" source-path="param-types.cpp" line="107"/>
     <param name="a">

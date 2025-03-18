@@ -400,11 +400,26 @@ isStaticFileLevelMember(Decl const* D)
     return false;
 }
 
+RawComment const*
+getDocumentation(Decl const* D)
+{
+    RawComment const* RC =
+        D->getASTContext().getRawCommentForDeclNoCache(D);
+    if (!RC)
+    {
+        auto const* TD = dyn_cast<TemplateDecl>(D);
+        MRDOCS_CHECK_OR(TD, nullptr);
+        NamedDecl const* ND = TD->getTemplatedDecl();
+        MRDOCS_CHECK_OR(ND, nullptr);
+        RC = ND->getASTContext().getRawCommentForDeclNoCache(ND);
+    }
+    return RC;
+}
+
 bool
 isDocumented(Decl const* D)
 {
-    return D->getASTContext().getRawCommentForDeclNoCache(D);
+    return getDocumentation(D) != nullptr;
 }
-
 
 } // clang::mrdocs
