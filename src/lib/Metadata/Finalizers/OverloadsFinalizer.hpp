@@ -27,15 +27,18 @@ namespace clang::mrdocs {
 class OverloadsFinalizer
 {
     CorpusImpl& corpus_;
+    std::set<SymbolID> finalized_;
 
     void
     foldRecordMembers(std::vector<SymbolID> const& ids);
 
     void
-    foldNamespaceMembers(std::vector<SymbolID> const& ids);
+    foldNamespaceMembers(std::vector<SymbolID> const& namespaceIds);
 
     void
-    foldOverloads(SymbolID const& parent, std::vector<SymbolID>& ids);
+    foldOverloads(
+        SymbolID const& contextId,
+        std::vector<SymbolID>& functionIds);
 
 public:
     OverloadsFinalizer(CorpusImpl& corpus)

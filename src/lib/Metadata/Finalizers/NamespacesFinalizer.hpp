@@ -16,13 +16,11 @@
 
 namespace clang::mrdocs {
 
-/** Finalizes a set of Info.
+/** Finalizes the namespaces in corpus.
 
-    This removes any references to SymbolIDs
-    which do not exist.
-
-    References which should always be valid
-    are not checked.
+    Namespaces might be removed or have
+    their extraction mode updated depending
+    on its members.
 */
 class NamespacesFinalizer
 {

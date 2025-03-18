@@ -163,6 +163,7 @@ contains_n_any(Range const& range, std::initializer_list<El> const& els, std::si
 }
 
 /** Find the last element in a range that matches an element in the specified range.
+
     @param range The range to search.
     @param els The elements to search for.
     @return An iterator to the last element found, or std::ranges::end(range) if not found.

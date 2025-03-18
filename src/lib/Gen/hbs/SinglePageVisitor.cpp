@@ -25,18 +25,17 @@ operator()(T const& I)
     {
         ex_.async([this, &I, symbolIdx = numSymbols_++](Builder& builder)
         {
-
-                // Output to an independent string first (async), then write to
-                // the shared stream (sync)
-                std::stringstream ss;
-                if(auto r = builder(ss, I))
-                {
-                    writePage(ss.str(), symbolIdx);
-                }
-                else
-                {
-                    r.error().Throw();
-                }
+            // Output to an independent string first (async), then write to
+            // the shared stream (sync)
+            std::stringstream ss;
+            if(auto r = builder(ss, I))
+            {
+                writePage(ss.str(), symbolIdx);
+            }
+            else
+            {
+                r.error().Throw();
+            }
         });
     }
     Corpus::TraverseOptions opts = {.skipInherited = std::same_as<T, RecordInfo>};
