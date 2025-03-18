@@ -1,0 +1,168 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols=1]
+|===
+| Name
+| <<Base,`Base`>> 
+| <<C,`C`>> 
+| <<ConstBase,`ConstBase`>> 
+|===
+
+[#Base]
+== Base
+
+=== Synopsis
+
+Declared in `&lt;base&hyphen;overload&hyphen;set&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class Base
+    : public <<ConstBase,ConstBase>>;
+----
+
+=== Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| <<Base-foo-04,`foo`>> 
+| 
+|===
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<C,`C`>>
+| 
+|===
+
+[#Base-foo-04]
+== <<Base,Base>>::foo
+
+=== Synopses
+
+Declared in `&lt;base&hyphen;overload&hyphen;set&period;cpp&gt;`
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int&
+<<Base-foo-0a,foo>>();
+----
+
+[.small]#<<Base-foo-0a,_» more&period;&period;&period;_>>#
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int&
+<<Base-foo-08,foo>>() const;
+----
+
+[.small]#<<Base-foo-08,_» more&period;&period;&period;_>>#
+
+[#Base-foo-0a]
+== <<Base,Base>>::foo
+
+=== Synopsis
+
+Declared in `&lt;base&hyphen;overload&hyphen;set&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int&
+foo();
+----
+
+[#Base-foo-08]
+== <<Base,Base>>::foo
+
+=== Synopsis
+
+Declared in `&lt;base&hyphen;overload&hyphen;set&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int&
+foo() const;
+----
+
+[#C]
+== C
+
+=== Synopsis
+
+Declared in `&lt;base&hyphen;overload&hyphen;set&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class C
+    : public <<Base,Base>>;
+----
+
+=== Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| <<Base-foo-04,`foo`>> 
+| 
+|===
+
+[#ConstBase]
+== ConstBase
+
+=== Synopsis
+
+Declared in `&lt;base&hyphen;overload&hyphen;set&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class ConstBase;
+----
+
+=== Member Functions
+
+[cols=1]
+|===
+| Name
+| <<ConstBase-foo,`foo`>> 
+|===
+
+=== Derived Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<Base,`Base`>>
+| 
+|===
+
+[#ConstBase-foo]
+== <<ConstBase,ConstBase>>::foo
+
+=== Synopsis
+
+Declared in `&lt;base&hyphen;overload&hyphen;set&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int&
+foo() const;
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
