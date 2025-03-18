@@ -98,5 +98,15 @@ struct E
     : <<N,N>>::<<N-C,C>>&lt;int&gt;;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<N,N>>::<<N-C,C>>&lt;int&gt;`
+| 
+|===
+
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

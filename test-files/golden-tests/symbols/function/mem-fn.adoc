@@ -552,6 +552,16 @@ struct T17
     : <<T14,T14>>;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<T14,T14>>`
+| 
+|===
+
 === Member Functions
 
 [cols=1]
@@ -668,6 +678,16 @@ Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 struct V
     : <<U,U>>;
 ----
+
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<U,U>>`
+| 
+|===
 
 === Member Functions
 

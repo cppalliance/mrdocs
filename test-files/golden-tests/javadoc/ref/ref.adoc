@@ -173,6 +173,16 @@ struct D
     : <<A-C,C>>;
 ----
 
+=== Base Classes
+
+[,cols=2]
+|===
+| Name
+| Description
+| `<<A-C,C>>`
+| 
+|===
+
 === Types
 
 [cols=2]
