@@ -1,0 +1,89 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols=1]
+|===
+| Name
+| <<C,`C`>> 
+|===
+
+[#C]
+== C
+
+=== Synopsis
+
+Declared in `&lt;const&hyphen;mutable&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class C;
+----
+
+=== Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| <<C-foo-01,`foo`>> 
+| 
+|===
+
+[#C-foo-01]
+== <<C,C>>::foo
+
+=== Synopses
+
+Declared in `&lt;const&hyphen;mutable&period;cpp&gt;`
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int&
+<<C-foo-0b,foo>>();
+----
+
+[.small]#<<C-foo-0b,_» more&period;&period;&period;_>>#
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int&
+<<C-foo-07,foo>>() const;
+----
+
+[.small]#<<C-foo-07,_» more&period;&period;&period;_>>#
+
+[#C-foo-0b]
+== <<C,C>>::foo
+
+=== Synopsis
+
+Declared in `&lt;const&hyphen;mutable&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int&
+foo();
+----
+
+[#C-foo-07]
+== <<C,C>>::foo
+
+=== Synopsis
+
+Declared in `&lt;const&hyphen;mutable&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int&
+foo() const;
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
