@@ -49,9 +49,6 @@
     <targ class="non-type" value="2"/>
     <struct name="S0" id="nJGs54s6oYf7fHzIpo0tyaCSH9M=">
       <file short-path="template-specialization-inheritance.cpp" source-path="template-specialization-inheritance.cpp" line="2" class="def"/>
-      <struct name="S1" id="yY+X2/Fqu8ENz37/HFEJCBOSfVg=">
-        <file short-path="template-specialization-inheritance.cpp" source-path="template-specialization-inheritance.cpp" line="4" class="def"/>
-      </struct>
     </struct>
   </template>
   <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
