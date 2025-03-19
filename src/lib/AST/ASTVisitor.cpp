@@ -2808,6 +2808,8 @@ checkFileFilters(Decl const* D)
 
     // Call the non-cached version of this function
     bool const ok = checkFileFilters(fileInfo->full_path);
+
+    // Add to cache
     fileInfo->passesFilters.emplace(ok);
     return *fileInfo->passesFilters;
 }
@@ -2943,45 +2945,41 @@ checkSymbolFilters(Decl const* D, bool const AllowParent)
     // 1) The symbol strictly matches one of the patterns
     for (auto const& [patterns, patternsMode] : patternsAndModes)
     {
-        if (!patterns->empty())
+        MRDOCS_CHECK_OR_CONTINUE(!patterns->empty());
+        if (checkSymbolFiltersImpl<Strict>(*patterns, symbolName))
         {
-            if (checkSymbolFiltersImpl<Strict>(*patterns, symbolName))
-            {
-                ExtractionInfo const res = {patternsMode, ExtractionMatchType::Strict};
-                return updateCache(res);
-            }
+            ExtractionInfo const res = {patternsMode, ExtractionMatchType::Strict};
+            return updateCache(res);
+        }
 
-            // 1a) Check if the parent in the same exclusion category
-            // (see-below or implementation defined).
-            if (AllowParent &&
-                patternsMode != ExtractionMode::Regular &&
-                ParentIs(D, patternsMode))
+        // 1a) Check if the parent in the same exclusion category
+        // (see-below or implementation defined).
+        MRDOCS_CHECK_OR_CONTINUE(AllowParent);
+        MRDOCS_CHECK_OR_CONTINUE(patternsMode != ExtractionMode::Regular);
+        MRDOCS_CHECK_OR_CONTINUE(ParentIs(D, patternsMode));
+        if (patternsMode == ExtractionMode::ImplementationDefined)
+        {
+            // A child of implementation defined is also
+            // implementation defined.
+            return updateCache(
+                { ExtractionMode::ImplementationDefined,
+                  ExtractionMatchType::StrictParent });
+        }
+        if (patternsMode == ExtractionMode::SeeBelow)
+        {
+            // A child of see-below is also see-below (if namespace)
+            // or dependency (if record)
+            if (Decl const* P = getParent(D);
+                P &&
+                isa<NamespaceDecl>(P))
             {
-                if (patternsMode == ExtractionMode::ImplementationDefined)
-                {
-                    // A child of implementation defined is also
-                    // implementation defined.
-                    return updateCache(
-                        { ExtractionMode::ImplementationDefined,
-                          ExtractionMatchType::StrictParent });
-                }
-                if (patternsMode == ExtractionMode::SeeBelow)
-                {
-                    // A child of see-below is also see-below (if namespace)
-                    // or dependency (if record)
-                    if (Decl const* P = getParent(D);
-                        P &&
-                        isa<NamespaceDecl>(P))
-                    {
-                        return updateCache(
-                        { ExtractionMode::SeeBelow,
-                          ExtractionMatchType::StrictParent });
-                    }
-                    return updateCache(
-                        { ExtractionMode::Dependency,
-                          ExtractionMatchType::StrictParent });
-                }
+                return updateCache(
+                { ExtractionMode::SeeBelow,
+                  ExtractionMatchType::StrictParent });
             }
+            return updateCache(
+                { ExtractionMode::Dependency,
+                  ExtractionMatchType::StrictParent });
         }
     }
 
@@ -3048,55 +3046,56 @@ checkSymbolFilters(Decl const* D, bool const AllowParent)
         symbolAsPrefix += "::";
         for (auto const& [patterns, mode] : std::ranges::views::reverse(patternsAndModes))
         {
-            if (!patterns->empty() &&
-                checkSymbolFiltersImpl<PrefixOnly>(*patterns, symbolAsPrefix.str()))
+            MRDOCS_CHECK_OR_CONTINUE(!patterns->empty());
+            MRDOCS_CHECK_OR_CONTINUE(
+                checkSymbolFiltersImpl<
+                    PrefixOnly>(*patterns, symbolAsPrefix.str()));
+            // We know this namespace matches one of the pattern
+            // prefixes that can potentially include children, but
+            // we have to check if any children actually matches
+            // the pattern strictly.
+            auto const* DC = cast<DeclContext>(D);
+            auto childrenMode = ExtractionMode::Dependency;
+            for (auto* M : DC->decls())
             {
-                // We know this namespace matches one of the pattern
-                // prefixes that can potentially include children, but
-                // we have to check if any children actually matches
-                // the pattern strictly.
-                auto const* DC = cast<DeclContext>(D);
-                auto childrenMode = ExtractionMode::Dependency;
-                for (auto* M : DC->decls())
+                MRDOCS_SYMBOL_TRACE(M, context_);
+                if (M->isImplicit() && !isa<IndirectFieldDecl>(M))
                 {
-                    if (M->isImplicit() && !isa<IndirectFieldDecl>(M))
-                    {
-                        // Ignore implicit members
-                        continue;
-                    }
-                    if (getParent(M) != D)
-                    {
-                        // Not a semantic member
-                        continue;
-                    }
-                    auto const R = checkSymbolFilters(M, false);
-                    if (R.mode == ExtractionMode::Dependency)
-                    {
-                        // The child should not be extracted.
-                        // Go to next child.
-                        continue;
-                    }
-                    if (childrenMode == ExtractionMode::Dependency)
-                    {
-                        // Still a dependency. Initialize it with child mode.
-                        childrenMode = R.mode;
-                    }
-                    else
-                    {
-                        // Children mode already initialized. Get the least specific one.
-                        childrenMode = leastSpecific(childrenMode, R.mode);
-                    }
-                    if (childrenMode == ExtractionMode::Regular)
-                    {
-                        // Already the least specific
-                        break;
-                    }
+                    // Ignore implicit members
+                    continue;
                 }
-                if (childrenMode != ExtractionMode::Dependency)
+                if (getParent(M) != D)
                 {
-                    ExtractionInfo const res = {childrenMode, ExtractionMatchType::Prefix};
-                    return updateCache(res);
+                    // Not a semantic member
+                    continue;
                 }
+                auto const [childMode, childKind] = checkSymbolFilters(M, false);
+                if (childMode == ExtractionMode::Dependency)
+                {
+                    // The child should not be extracted.
+                    // Go to next child.
+                    continue;
+                }
+                if (childrenMode == ExtractionMode::Dependency)
+                {
+                    // Still a dependency. Initialize it with child mode.
+                    childrenMode = childMode;
+                }
+                else
+                {
+                    // Children mode already initialized. Get the least specific one.
+                    childrenMode = leastSpecific(childrenMode, childMode);
+                }
+                if (childrenMode == ExtractionMode::Regular)
+                {
+                    // Already the least specific
+                    break;
+                }
+            }
+            if (childrenMode != ExtractionMode::Dependency)
+            {
+                ExtractionInfo const res = {childrenMode, ExtractionMatchType::Prefix};
+                return updateCache(res);
             }
         }
     }
@@ -3140,6 +3139,7 @@ checkSymbolFilters(Decl const* D, bool const AllowParent)
         constexpr ExtractionInfo res = {ExtractionMode::Regular, ExtractionMatchType::Strict};
         return updateCache(res);
     }
+
     // 4b) Otherwise, we don't extract the symbol
     // because it doesn't match any of `include-symbol` filters
     constexpr ExtractionInfo res = {ExtractionMode::Dependency, ExtractionMatchType::Strict};
@@ -3385,16 +3385,21 @@ upsert(DeclType const* D)
     ExtractionMode const m = checkFilters(D);
     if (m == ExtractionMode::Dependency)
     {
+        // If the extraction mode is dependency, it means we
+        // should extract it as a dependency or that we
+        // should not extract it.
         if (mode_ == Regular)
         {
             return Unexpected(Error("Symbol should not be extracted"));
         }
         if (isAnyExplicitSpecialization(D))
         {
-            // We should not extract explicit declarations in dependency mode.
+            // We should not extract explicit specializations in dependency mode.
+            // As this is a dependency, the corpus only needs to store the main
+            // template.
             // The calling code should handle this case instead of
             // populating the symbol table with instantiations.
-            return Unexpected(Error("Explicit declaration in dependency mode"));
+            return Unexpected(Error("Specialization in dependency mode"));
         }
     }
 
@@ -3405,7 +3410,14 @@ upsert(DeclType const* D)
     auto [I, isNew] = upsert<R>(id);
 
     // Already populate the extraction mode
-    I.Extraction = mostSpecific(I.Extraction, m);
+    if (isNew)
+    {
+        I.Extraction = m;
+    }
+    else
+    {
+        I.Extraction = leastSpecific(I.Extraction, m);
+    }
 
     // Already populate the access specifier
     AccessSpecifier const access = getAccess(D);
