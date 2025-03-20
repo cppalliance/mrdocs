@@ -244,8 +244,8 @@ writeEnum(
     }
 
     writeSourceInfo(I);
-
     writeJavadoc(I.javadoc);
+    writeAttributes(I.Attributes);
 
     corpus_.traverse(I, *this);
 
@@ -269,8 +269,8 @@ writeEnumConstant(
     });
 
     writeSourceInfo(I);
-
     writeJavadoc(I.javadoc);
+    writeAttributes(I.Attributes);
 
     tags_.close(enumConstantTagName);
 }
@@ -286,8 +286,8 @@ writeFriend(
         });
 
     writeSourceInfo(I);
-
     writeJavadoc(I.javadoc);
+    writeAttributes(I.Attributes);
 
     Attributes attrs = {};
     if(I.FriendSymbol)
@@ -325,6 +325,8 @@ writeFunction(
         });
 
     writeSourceInfo(I);
+    writeJavadoc(I.javadoc);
+    writeAttributes(I.Attributes);
 
     writeAttr(I.IsVariadic,            "is-variadic", tags_);
     writeAttr(I.IsVirtualAsWritten,    "is-virtual-as-written", tags_);
@@ -348,7 +350,6 @@ writeFunction(
     for(auto const& J : I.Params)
         writeParam(J, tags_);
 
-    writeJavadoc(I.javadoc);
 
     tags_.close(functionTagName);
 
@@ -381,6 +382,8 @@ writeGuide(
         });
 
     writeSourceInfo(I);
+    writeJavadoc(I.javadoc);
+    writeAttributes(I.Attributes);
 
     tags_.open(deducedTagName);
     writeType(I.Deduced, tags_);
@@ -388,8 +391,6 @@ writeGuide(
 
     for(auto const& J : I.Params)
         writeParam(J, tags_);
-
-    writeJavadoc(I.javadoc);
 
     tags_.close(guideTagName);
 
@@ -411,8 +412,8 @@ writeConcept(
         });
 
     writeSourceInfo(I);
-
     writeJavadoc(I.javadoc);
+    writeAttributes(I.Attributes);
 
     tags_.close(conceptTagName);
 
@@ -431,8 +432,8 @@ writeNamespaceAlias(
         });
 
     writeSourceInfo(I);
-
     writeJavadoc(I.javadoc);
+    writeAttributes(I.Attributes);
 
     tags_.write("aliased", {}, {
         {"name", toString(*I.AliasedSymbol)},
@@ -475,8 +476,8 @@ XMLWriter::
     });
 
     writeSourceInfo(I);
-
     writeJavadoc(I.javadoc);
+    writeAttributes(I.Attributes);
 
     for (auto const& id : I.UsingSymbols)
         tags_.write("named", {}, { id });
@@ -500,6 +501,8 @@ writeRecord(
         });
 
     writeSourceInfo(I);
+    writeJavadoc(I.javadoc);
+    writeAttributes(I.Attributes);
 
     writeAttr(I.IsFinal, "is-final", tags_);
     writeAttr(I.IsFinalDestructor, "is-final-dtor", tags_);
@@ -514,7 +517,6 @@ writeRecord(
         tags_.close(baseTagName);
     }
 
-    writeJavadoc(I.javadoc);
 
     corpus_.traverse(I, *this);
 
@@ -542,10 +544,10 @@ writeTypedef(
         });
 
     writeSourceInfo(I);
+    writeJavadoc(I.javadoc);
+    writeAttributes(I.Attributes);
 
     writeType(I.Type, tags_);
-
-    writeJavadoc(I.javadoc);
 
     tags_.close(tag);
 
@@ -576,6 +578,8 @@ writeField(
     });
 
     writeSourceInfo(I);
+    writeJavadoc(I.javadoc);
+    writeAttributes(I.Attributes);
 
     if(I.IsMutable)
         tags_.write(attributeTagName, {}, {
@@ -586,7 +590,6 @@ writeField(
 
     writeType(I.Type, tags_);
 
-    writeJavadoc(I.javadoc);
 
     tags_.close(tag_name);
 }
@@ -605,6 +608,8 @@ writeVariable(
         });
 
     writeSourceInfo(I);
+    writeJavadoc(I.javadoc);
+    writeAttributes(I.Attributes);
 
     writeAttr(I.StorageClass, "storage-class", tags_);
     writeAttr(I.IsInline, "is-inline", tags_);
@@ -614,7 +619,6 @@ writeVariable(
 
     writeType(I.Type, tags_);
 
-    writeJavadoc(I.javadoc);
 
     tags_.close(varTagName);
 
@@ -622,6 +626,15 @@ writeVariable(
 }
 
 //------------------------------------------------
+
+void
+XMLWriter::
+writeAttributes(
+    std::span<const AttributeKind> attributes)
+{
+    for(auto attr : attributes)
+        tags.write(attributeTagName, {}, { { "id", toString(attr) } });
+}
 
 void
 XMLWriter::
