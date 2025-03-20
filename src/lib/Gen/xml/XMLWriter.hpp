@@ -68,7 +68,7 @@ public:
     void writeSourceInfo(SourceInfo const& I);
     void writeLocation(Location const& loc, bool def = false);
     void writeJavadoc(std::optional<Javadoc> const& javadoc);
-    void writeAttributes(std::span<const AttributeKind> attributes);
+    void writeAttributes(const Info& I);
     void openTemplate(const std::optional<TemplateInfo>& I);
     void closeTemplate(const std::optional<TemplateInfo>& I);
 
