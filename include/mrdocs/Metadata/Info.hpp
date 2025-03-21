@@ -14,6 +14,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
+#include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/ExtractionMode.hpp>
 #include <mrdocs/Metadata/Javadoc.hpp>
@@ -111,6 +112,10 @@ struct MRDOCS_VISIBLE Info
     /** The extracted javadoc for this declaration.
      */
     std::optional<Javadoc> javadoc;
+
+    /** The attributes appertaining to this declaration.
+    */
+    std::vector<AttributeKind> Attributes;
 
     //--------------------------------------------
 
@@ -298,6 +303,8 @@ tag_invoke(
     {
         io.map("doc", *I.javadoc);
     }
+
+    io.map("attributes", dom::LazyArray(I.Attributes));
     io.map("loc", dynamic_cast<SourceInfo const&>(I));
 }
 

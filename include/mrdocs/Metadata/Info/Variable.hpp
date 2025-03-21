@@ -17,7 +17,6 @@
 #include <mrdocs/Metadata/Template.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Type.hpp>
-#include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
 
 namespace clang::mrdocs {
@@ -89,7 +88,6 @@ tag_invoke(
     {
         io.map("initializer", I.Initializer.Written);
     }
-    io.map("attributes", dom::LazyArray(I.Attributes));
 }
 
 /** Map the VariableInfo to a @ref dom::Value object.

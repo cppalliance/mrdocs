@@ -4,7 +4,7 @@
 <namespace id="//////////////////////////8=">
   <function name="terminate" exception-spec="noexcept" id="HJGSj0okQR/JSIlbm5chSNvd9c8=">
     <file short-path="terminate.cpp" source-path="terminate.cpp" line="8"/>
-    <attr id="is-no-return"/>
+    <attr id="noreturn"/>
     <doc>
       <brief>
         <text>Exit the program.</text>

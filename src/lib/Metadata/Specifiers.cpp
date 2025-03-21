@@ -26,6 +26,20 @@ dom::String toString(AccessKind kind) noexcept
     }
 }
 
+dom::String toString(AttributeKind kind) noexcept
+{
+    switch(kind)
+    {
+    case AttributeKind::Deprecated:      return "deprecated";
+    case AttributeKind::MaybeUnused:     return "maybe_unused";
+    case AttributeKind::Nodiscard:       return "nodiscard";
+    case AttributeKind::Noreturn:        return "noreturn";
+    case AttributeKind::NoUniqueAddress: return "no_unique_address";
+    default:
+        MRDOCS_UNREACHABLE();
+    }
+}
+
 dom::String toString(StorageClassKind kind) noexcept
 {
     switch(kind)

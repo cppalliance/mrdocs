@@ -2,7 +2,7 @@
 {{/if~}}
 {{#if isFriend}}friend
 {{/if~}}
-{{#if attributes}}{{#unless isFriend}}{{ str "[[" }}{{join ", " attributes}}{{ str "]]" }}
+{{#if attributes}}{{#unless isFriend}}{{>symbol/attributes symbol}}
 {{/unless}}{{/if~}}
 {{#if constexprKind}}{{constexprKind}}
 {{/if~}}
@@ -28,7 +28,7 @@
 {{#if requires}}
 
 requires {{requires}}{{/if~}}
-{{#if hasOverrideAttr}} override{{/if~}}
+{{#if isOverride}} override{{/if~}}
 {{#if isFinal}} final{{/if~}}
 {{#if isPure}} = 0{{/if~}}
 {{#if isDeleted}} = delete{{/if~}}

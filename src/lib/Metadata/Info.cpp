@@ -64,6 +64,22 @@ merge(Info& I, Info&& Other)
     {
         merge(*I.javadoc, std::move(*Other.javadoc));
     }
+
+    if(I.Attributes.empty())
+    {
+        I.Attributes = std::move(Other.Attributes);
+    }
+    else if(! Other.Attributes.empty())
+    {
+        auto it = std::ranges::remove_if(
+            Other.Attributes, [&](AttributeKind k)
+        {
+            return std::ranges::find(
+                I.Attributes, k) != I.Attributes.end();
+        }).begin();
+        I.Attributes.insert(I.Attributes.end(),
+            Other.Attributes.begin(), it);
+    }
 }
 
 } // clang::mrdocs

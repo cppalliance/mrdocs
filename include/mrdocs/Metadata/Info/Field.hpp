@@ -48,16 +48,6 @@ struct FieldInfo final
     /** The width of the bitfield */
     ConstantExprInfo<std::uint64_t> BitfieldWidth;
 
-    // KRYSTIAN FIXME: nodiscard cannot be applied to fields; this should
-    // instead be IsMaybeUnused. we should also store the spelling
-    bool IsMaybeUnused = false;
-
-    bool IsDeprecated = false;
-
-    bool HasNoUniqueAddress = false;
-
-    std::vector<std::string> Attributes;
-
     //--------------------------------------------
 
     explicit FieldInfo(SymbolID ID) noexcept
@@ -86,17 +76,13 @@ tag_invoke(
     {
         io.map("default", I.Default.Written);
     }
-    io.map("isMaybeUnused", I.IsMaybeUnused);
-    io.map("isDeprecated", I.IsDeprecated);
     io.map("isVariant", I.IsVariant);
     io.map("isMutable", I.IsMutable);
     io.map("isBitfield", I.IsBitfield);
-    io.map("hasNoUniqueAddress", I.HasNoUniqueAddress);
     if (I.IsBitfield)
     {
         io.map("bitfieldWidth", I.BitfieldWidth.Written);
     }
-    io.map("attributes", dom::LazyArray(I.Attributes));
 }
 
 /** Map the FieldInfo to a @ref dom::Value object.

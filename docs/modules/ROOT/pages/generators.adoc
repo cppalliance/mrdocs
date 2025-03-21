@@ -189,6 +189,10 @@ The `Symbol` object represents a symbol extracted from the source code.The symbo
 | `Any`
 | The documentation for the symbol.
 
+| `attributes`
+| `string[]`
+| The attributes of the symbol.
+
 |===
 
 Handlebars generators extend each symbol with the following fields:
@@ -326,13 +330,9 @@ When the symbol kind is `function`, the symbol object has the following addition
 | `bool`
 | Whether the function is deleted as written.
 
-| `isNoReturn`
+| `isOverride`
 | `bool`
-| Whether the function is noreturn.
-
-| `hasOverrideAttr`
-| `bool`
-| Whether the function has the override attribute.
+| Whether the function is override.
 
 | `hasTrailingReturn`
 | `bool`
@@ -349,10 +349,6 @@ When the symbol kind is `function`, the symbol object has the following addition
 | `isFinal`
 | `bool`
 | Whether the function is final.
-
-| `isNodiscard`
-| `bool`
-| Whether the function is nodiscard.
 
 | `isExplicitObjectMemberFunction`
 | `bool`
@@ -401,10 +397,6 @@ When the symbol kind is `function`, the symbol object has the following addition
 | `requires`
 | `string`
 | The `requires` expression of the function.
-
-| `attributes`
-| `string[]`
-| The attributes of the function.
 |===
 
 When the symbol kind is `typedef`, the symbol object has the following additional properties:
@@ -461,10 +453,6 @@ When the symbol kind is `variable`, the symbol object has the following addition
 | `initializer`
 | `string`
 | The initializer of the variable.
-
-| `attributes`
-| `string[]`
-| The attributes of the variable.
 |===
 
 When the symbol kind is `field` (i.e. non-static data members), the symbol object has the following additional properties:
@@ -480,14 +468,6 @@ When the symbol kind is `field` (i.e. non-static data members), the symbol objec
 | `string`
 | The default value of the field.
 
-| `isMaybeUnused`
-| `bool`
-| Whether the field is maybe unused.
-
-| `isDeprecated`
-| `bool`
-| Whether the field is deprecated.
-
 | `isVariant`
 | `bool`
 | Whether the field is a variant.
@@ -500,17 +480,9 @@ When the symbol kind is `field` (i.e. non-static data members), the symbol objec
 | `bool`
 | Whether the field is a bitfield.
 
-| `hasNoUniqueAddress`
-| `string`
-| Whether the field has the `[[no_unique_address]]` attribute.
-
 | `bitfieldWidth`
 | `string`
 | The width of the bitfield.
-
-| `attributes`
-| `string[]`
-| The attributes of the field.
 |===
 
 When the symbol kind is `friend`, the symbol object has the following additional properties:

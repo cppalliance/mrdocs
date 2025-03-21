@@ -6,11 +6,11 @@
     <file short-path="noreturn.cpp" source-path="noreturn.cpp" line="3" class="def"/>
     <function name="f3" id="TkBjWwqMDycyUbq+TJZ9qfUhSn0=">
       <file short-path="noreturn.cpp" source-path="noreturn.cpp" line="7"/>
-      <attr id="is-no-return"/>
+      <attr id="noreturn"/>
     </function>
     <function name="f2" id="QjsWLydQujVa097RP8f2Lq3nLQ4=">
       <file short-path="noreturn.cpp" source-path="noreturn.cpp" line="5"/>
-      <attr id="is-no-return"/>
+      <attr id="noreturn"/>
       <attr id="storage-class" name="static" value="2"/>
     </function>
     <friend id="vtSOGI1LSo+Nkv4yPvufiluoyko=">
@@ -20,7 +20,7 @@
   </struct>
   <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
     <file short-path="noreturn.cpp" source-path="noreturn.cpp" line="1"/>
-    <attr id="is-no-return"/>
+    <attr id="noreturn"/>
   </function>
 </namespace>
 </mrdocs>

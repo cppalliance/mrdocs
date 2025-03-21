@@ -22,7 +22,6 @@ Declared in `&lt;attributes&hyphen;2&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;class T&gt;
-&lsqb;&lsqb;nodiscard&rsqb;&rsqb;
 int
 f();
 ----
