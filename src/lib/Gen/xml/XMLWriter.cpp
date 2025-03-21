@@ -325,7 +325,6 @@ writeFunction(
         });
 
     writeSourceInfo(I);
-    writeJavadoc(I.javadoc);
     writeAttributes(I);
 
     writeAttr(I.IsVariadic,            "is-variadic", tags_);
@@ -350,6 +349,7 @@ writeFunction(
     for(auto const& J : I.Params)
         writeParam(J, tags_);
 
+    writeJavadoc(I.javadoc);
 
     tags_.close(functionTagName);
 
@@ -382,7 +382,6 @@ writeGuide(
         });
 
     writeSourceInfo(I);
-    writeJavadoc(I.javadoc);
     writeAttributes(I);
 
     tags_.open(deducedTagName);
@@ -391,6 +390,8 @@ writeGuide(
 
     for(auto const& J : I.Params)
         writeParam(J, tags_);
+    
+    writeJavadoc(I.javadoc);
 
     tags_.close(guideTagName);
 
@@ -501,7 +502,6 @@ writeRecord(
         });
 
     writeSourceInfo(I);
-    writeJavadoc(I.javadoc);
     writeAttributes(I);
 
     writeAttr(I.IsFinal, "is-final", tags_);
@@ -517,6 +517,7 @@ writeRecord(
         tags_.close(baseTagName);
     }
 
+    writeJavadoc(I.javadoc);
 
     corpus_.traverse(I, *this);
 
@@ -544,10 +545,11 @@ writeTypedef(
         });
 
     writeSourceInfo(I);
-    writeJavadoc(I.javadoc);
     writeAttributes(I);
 
     writeType(I.Type, tags_);
+    
+    writeJavadoc(I.javadoc);
 
     tags_.close(tag);
 
@@ -578,7 +580,6 @@ writeField(
     });
 
     writeSourceInfo(I);
-    writeJavadoc(I.javadoc);
     writeAttributes(I);
 
     if(I.IsMutable)
@@ -590,6 +591,7 @@ writeField(
 
     writeType(I.Type, tags_);
 
+    writeJavadoc(I.javadoc);
 
     tags_.close(tag_name);
 }
@@ -608,7 +610,6 @@ writeVariable(
         });
 
     writeSourceInfo(I);
-    writeJavadoc(I.javadoc);
     writeAttributes(I);
 
     writeAttr(I.StorageClass, "storage-class", tags_);
@@ -619,6 +620,7 @@ writeVariable(
 
     writeType(I.Type, tags_);
 
+    writeJavadoc(I.javadoc);
 
     tags_.close(varTagName);
 
