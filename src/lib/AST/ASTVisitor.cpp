@@ -1622,6 +1622,10 @@ populateAttributes(Info& I, Decl const* D)
 {
     if(! D->hasAttrs())
         return;
+
+    if(const TemplateDecl* TD = D->getDescribedTemplate())
+        populateAttributes(I, TD);
+        
     for(const Attr* AT : D->getAttrs())
     {
         switch(AT->getKind())
