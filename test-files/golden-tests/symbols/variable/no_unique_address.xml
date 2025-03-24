@@ -9,7 +9,7 @@
     <file short-path="no_unique_address.cpp" source-path="no_unique_address.cpp" line="5" class="def"/>
     <field name="e" id="h2j8f921HD+Fyaokcs4ndGM/yNk=" default="Empty{}">
       <file short-path="no_unique_address.cpp" source-path="no_unique_address.cpp" line="8"/>
-      <attr id="maybe-unused"/>
+      <attr id="maybe_unused"/>
       <attr id="deprecated"/>
       <type id="iczIHP1J59EwYw3xxL3w2C3Q43Q=" name="Empty"/>
     </field>
