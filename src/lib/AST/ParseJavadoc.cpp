@@ -992,10 +992,30 @@ visitInlineCommandComment(
         std::string ref = C->getArgText(0).str();
         std::string leftOver = fixReference(ref);
         bool const hasExtra = !leftOver.empty();
-        emplaceText<doc::Copied>(
-            C->hasTrailingNewline() && !hasExtra,
-            ref,
-            convertCopydoc(ID));
+        doc::Parts const parts = convertCopydoc(ID);
+        bool const copyBrief = parts == doc::Parts::brief || parts == doc::Parts::all;
+        bool const copyDetails = parts == doc::Parts::description || parts == doc::Parts::all;
+        MRDOCS_ASSERT(copyBrief || copyDetails);
+        if (copyBrief)
+        {
+            // The brief is metadata associated with the javadoc
+            if (!jd_.brief)
+            {
+                jd_.brief.emplace();
+            }
+            if (!contains(jd_.brief->copiedFrom, ref))
+            {
+                jd_.brief->copiedFrom.emplace_back(ref);
+            }
+        }
+        if (copyDetails)
+        {
+            // The details are in the main body of the javadoc
+            // and are replaced at the same position as the command
+            emplaceText<doc::CopyDetails>(
+                C->hasTrailingNewline() && !hasExtra,
+                ref);
+        }
         if (hasExtra)
         {
             emplaceText<doc::Text>(

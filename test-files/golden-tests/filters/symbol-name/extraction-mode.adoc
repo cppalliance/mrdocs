@@ -225,6 +225,10 @@ When used in a function, the implementation&hyphen;defined comment should replac
 
 It&apos;s the responsibility of the function documentation to explain the implementation&hyphen;defined symbol&period;
 
+=== Return Value
+
+A symbol that passes the implementation&hyphen;defined filter
+
 [#regular_ns-get_regular]
 == <<regular_ns,regular&lowbar;ns>>::get&lowbar;regular
 
@@ -244,6 +248,10 @@ get&lowbar;regular();
 
 When used in a function, the symbol should be shown as usual with a link to the page&period;
 
+=== Return Value
+
+A symbol that passes the filters
+
 [#regular_ns-get_see_below]
 == <<regular_ns,regular&lowbar;ns>>::get&lowbar;see&lowbar;below
 
@@ -262,6 +270,10 @@ get&lowbar;see&lowbar;below();
 === Description
 
 When used in a function, the symbol name should be shown as usual&period; The page for this symbol is what should be different because the synopsis should say &quot;See below&quot; and the members are not listed unless it&apos;s a namespace or the symbol has been explicitly used as a dependency elsewhere&period;
+
+=== Return Value
+
+A symbol that passes the see&hyphen;below filter
 
 [#see_below_ns]
 == see&lowbar;below&lowbar;ns
@@ -375,6 +387,10 @@ get&lowbar;implementation&lowbar;defined();
 When used in a function, the implementation&hyphen;defined comment should replace the real type&period;
 
 It&apos;s the responsibility of the function documentation to explain the implementation&hyphen;defined symbol&period;
+
+=== Return Value
+
+Implementation&hyphen;defined symbol in a see&hyphen;below namespace
 
 [#dependency_ns_alias]
 == dependency&lowbar;ns&lowbar;alias
@@ -558,6 +574,10 @@ When used in a function, the implementation&hyphen;defined comment should replac
 
 It&apos;s the responsibility of the function documentation to explain the implementation&hyphen;defined symbol&period;
 
+=== Return Value
+
+An implementation&hyphen;defined symbol in the global namespace
+
 [#get_regular]
 == get&lowbar;regular
 
@@ -577,6 +597,10 @@ get&lowbar;regular();
 
 When used in a function, the symbol should be shown as usual with a link to the page&period;
 
+=== Return Value
+
+A regular symbol in the global namespace
+
 [#get_see_below]
 == get&lowbar;see&lowbar;below
 
@@ -595,6 +619,10 @@ get&lowbar;see&lowbar;below();
 === Description
 
 When used in a function, the symbol name should be shown as usual&period; The page for this symbol is what should be different because the synopsis should say &quot;See below&quot; and the members are not listed unless it&apos;s a namespace or the symbol has been explicitly used as a dependency elsewhere&period;
+
+=== Return Value
+
+A see&hyphen;below symbol in the global namespace
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

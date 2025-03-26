@@ -854,9 +854,9 @@ private:
     bool
     parseDeclarationSpecifiers(Polymorphic<TypeInfo>& dest)
     {
-        static constexpr std::string_view typeQualifiers[] = {
-            "const", "volatile"
-        };
+        //static constexpr std::string_view typeQualifiers[] = {
+        //    "const", "volatile"
+        //};
         static constexpr std::string_view typeModifiers[] = {
             "long", "short", "signed", "unsigned"
         };

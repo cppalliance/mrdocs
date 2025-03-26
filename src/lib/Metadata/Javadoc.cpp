@@ -55,7 +55,7 @@ toString(NodeKind kind) noexcept
             return "tparam";
         case NodeKind::reference:
             return "reference";
-        case NodeKind::copied:
+        case NodeKind::copy_details:
             return "copied";
         case NodeKind::throws:
             return "throws";
@@ -197,6 +197,15 @@ operator<=>(Polymorphic<Text> const& lhs, Polymorphic<Text> const& rhs)
             : std::strong_ordering::greater;
 }
 
+Paragraph&
+Paragraph::
+operator=(std::string_view str)
+{
+    this->children.clear();
+    this->children.emplace_back(MakePolymorphic<doc::Text>(std::string(str)));
+    return *this;
+}
+
 } // doc
 
 //------------------------------------------------
@@ -209,96 +218,6 @@ Javadoc(
     std::vector<Polymorphic<doc::Block>> blocks)
     : blocks(std::move(blocks))
 {
-}
-
-doc::Paragraph const*
-Javadoc::
-getBrief(Corpus const& corpus) const noexcept
-{
-    // Brief from a @brief tag
-    doc::Block const* brief = nullptr;
-    // The first paragraph promoted to brief
-    doc::Block const* promoted_brief = nullptr;
-    // A brief copied from another symbol
-    doc::Block const* copied_brief = nullptr;
-    for(auto const& block : blocks)
-    {
-        if (!brief && block->Kind == doc::NodeKind::brief)
-        {
-            brief = block.operator->();
-        }
-        if (!promoted_brief && block->Kind == doc::NodeKind::paragraph)
-        {
-            promoted_brief = block.operator->();
-        }
-
-        // if we already have an explicit/copied brief,
-        // don't check for additional copied briefs
-        if (brief || copied_brief)
-        {
-            continue;
-        }
-
-        // Look for a @copydoc command
-        for (auto const& text : block->children)
-        {
-            if (text->Kind != doc::NodeKind::copied)
-            {
-                continue;
-            }
-            if (auto const* copied = dynamic_cast<doc::Copied const*>(text.operator->());
-                copied->id &&
-                (copied->parts == doc::Parts::all ||
-                copied->parts == doc::Parts::brief))
-            {
-                // Look for the symbol to copy from
-                if (auto& jd = corpus.get(copied->id).javadoc)
-                {
-                    copied_brief = jd->getBrief(corpus);
-                }
-            }
-        }
-    }
-    // An explicit brief superceeds a copied brief
-    if (!brief)
-    {
-        // No explicit brief: use copied brief
-        brief = copied_brief;
-    }
-    // A copied brief superceeds a promoted brief
-    if (!brief)
-    {
-        // No copied brief: use promoted brief
-        brief = promoted_brief;
-    }
-    return dynamic_cast<doc::Paragraph const*>(brief);
-}
-
-std::vector<Polymorphic<doc::Block>> const&
-Javadoc::
-getDescription(Corpus const& corpus) const noexcept
-{
-    for (auto const& block : blocks)
-    {
-        for(auto const& text : block->children)
-        {
-            if (!IsA<doc::Copied>(text))
-            {
-                continue;
-            }
-            if (auto const* copied = dynamic_cast<doc::Copied const*>(text.operator->());
-                copied->id &&
-                (copied->parts == doc::Parts::all ||
-                 copied->parts == doc::Parts::description))
-            {
-                if (auto& jd = corpus.get(copied->id).javadoc)
-                {
-                    return jd->getDescription(corpus);
-                }
-            }
-        }
-    }
-    return blocks;
 }
 
 bool

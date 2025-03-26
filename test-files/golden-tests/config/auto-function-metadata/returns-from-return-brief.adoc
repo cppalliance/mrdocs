@@ -1,0 +1,71 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols=2]
+|===
+| Name
+| Description
+| <<R,`R`>> 
+| The return type of the function
+|===
+
+=== Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| <<getR,`getR`>> 
+| Test function
+|===
+
+[#R]
+== R
+
+The return type of the function
+
+=== Synopsis
+
+Declared in `&lt;returns&hyphen;from&hyphen;return&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct R;
+----
+
+=== Non-Member Functions
+
+[,cols=2]
+|===
+| Name
+| Description
+| <<getR,`getR`>>
+| Test function
+|===
+
+[#getR]
+== getR
+
+Test function
+
+=== Synopsis
+
+Declared in `&lt;returns&hyphen;from&hyphen;return&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<R,R>>
+getR();
+----
+
+=== Return Value
+
+The return type of the function
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

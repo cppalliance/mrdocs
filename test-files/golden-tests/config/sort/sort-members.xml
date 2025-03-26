@@ -54,15 +54,34 @@
     <file short-path="sort-members.cpp" source-path="sort-members.cpp" line="23" class="def"/>
     <function class="constructor" name="Z" id="WltomC+2IcmzMN0COGL0OWWmbZk=">
       <file short-path="sort-members.cpp" source-path="sort-members.cpp" line="32"/>
+      <doc>
+        <brief>
+          <text>Default constructor</text>
+        </brief>
+      </doc>
     </function>
     <function class="constructor" name="Z" id="aQWtFVa4Xa+eceLXiLW74q44JRk=">
       <file short-path="sort-members.cpp" source-path="sort-members.cpp" line="31"/>
-      <param>
+      <param name="value">
         <type name="int"/>
       </param>
+      <doc>
+        <brief>
+          <text>Construct from </text>
+          <mono>int</mono>
+        </brief>
+        <param name="value">
+          <text>The value to construct from</text>
+        </param>
+      </doc>
     </function>
     <function class="destructor" name="~Z" id="HMG56OCQ5OpB2E9hu4bG3/hoOho=">
       <file short-path="sort-members.cpp" source-path="sort-members.cpp" line="30"/>
+      <doc>
+        <brief>
+          <text>Destructor</text>
+        </brief>
+      </doc>
     </function>
     <function name="foo" id="lBA1besl9J3wAZAcEn9C+K05hf4=">
       <file short-path="sort-members.cpp" source-path="sort-members.cpp" line="29"/>
@@ -74,6 +93,16 @@
       <return>
         <type name="bool"/>
       </return>
+      <doc>
+        <brief>
+          <text>Conversion to </text>
+          <mono>bool</mono>
+        </brief>
+        <returns>
+          <text>The object converted to </text>
+          <mono>bool</mono>
+        </returns>
+      </doc>
     </function>
     <function name="operator!" id="rjPdhFxUkaC43tWXi+kka78JQxI=">
       <file short-path="sort-members.cpp" source-path="sort-members.cpp" line="27"/>
@@ -82,6 +111,17 @@
       <return>
         <type name="bool"/>
       </return>
+      <doc>
+        <brief>
+          <text>Negation operator</text>
+        </brief>
+        <returns>
+          <mono>true</mono>
+          <text> if the object is falsy, </text>
+          <mono>false</mono>
+          <text> otherwise</text>
+        </returns>
+      </doc>
     </function>
     <function name="operator==" id="atwUGLD+QHVhH3x1+8qzINNxzMY=">
       <file short-path="sort-members.cpp" source-path="sort-members.cpp" line="26"/>
@@ -90,11 +130,25 @@
       <return>
         <type name="bool"/>
       </return>
-      <param>
+      <param name="rhs">
         <type class="lvalue-reference">
           <pointee-type id="NQ8uQgTcafPcttyBMHHLHAXA4MA=" name="Z" cv-qualifiers="const"/>
         </type>
       </param>
+      <doc>
+        <brief>
+          <text>Equality operator</text>
+        </brief>
+        <returns>
+          <mono>true</mono>
+          <text> if the objects are equal, </text>
+          <mono>false</mono>
+          <text> otherwise</text>
+        </returns>
+        <param name="rhs">
+          <text>The right operand</text>
+        </param>
+      </doc>
     </function>
     <function name="operator!=" id="CB0pXrzU8BKZ2LF0BSpclxIfgrs=">
       <file short-path="sort-members.cpp" source-path="sort-members.cpp" line="25"/>
@@ -103,11 +157,25 @@
       <return>
         <type name="bool"/>
       </return>
-      <param>
+      <param name="rhs">
         <type class="lvalue-reference">
           <pointee-type id="NQ8uQgTcafPcttyBMHHLHAXA4MA=" name="Z" cv-qualifiers="const"/>
         </type>
       </param>
+      <doc>
+        <brief>
+          <text>Inequality operator</text>
+        </brief>
+        <returns>
+          <mono>true</mono>
+          <text> if the objects are not equal, </text>
+          <mono>false</mono>
+          <text> otherwise</text>
+        </returns>
+        <param name="rhs">
+          <text>The right operand</text>
+        </param>
+      </doc>
     </function>
     <function name="operator&lt;=&gt;" id="6/NYLeQdPqWrbu5kHnTpE3u6Yg4=">
       <file short-path="sort-members.cpp" source-path="sort-members.cpp" line="24"/>
@@ -117,11 +185,22 @@
         <type class="auto" keyword="auto">
         </type>
       </return>
-      <param>
+      <param name="rhs">
         <type class="lvalue-reference">
           <pointee-type id="NQ8uQgTcafPcttyBMHHLHAXA4MA=" name="Z" cv-qualifiers="const"/>
         </type>
       </param>
+      <doc>
+        <brief>
+          <text>Three-way comparison operator</text>
+        </brief>
+        <returns>
+          <text>The relative order of the objects</text>
+        </returns>
+        <param name="rhs">
+          <text>The right operand</text>
+        </param>
+      </doc>
     </function>
   </struct>
   <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
@@ -226,6 +305,20 @@
         <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
       </type>
     </param>
+    <doc>
+      <brief>
+        <text>Negation operator</text>
+      </brief>
+      <returns>
+        <mono>true</mono>
+        <text> if the object is falsy, </text>
+        <mono>false</mono>
+        <text> otherwise</text>
+      </returns>
+      <param name="v">
+        <text>The operand</text>
+      </param>
+    </doc>
   </function>
   <function name="operator==" id="kibUx6k1SXB+HsXkRXroJl9f59w=">
     <file short-path="sort-members.cpp" source-path="sort-members.cpp" line="36"/>
@@ -243,6 +336,23 @@
         <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
       </type>
     </param>
+    <doc>
+      <brief>
+        <text>Equality operator</text>
+      </brief>
+      <returns>
+        <mono>true</mono>
+        <text> if the objects are equal, </text>
+        <mono>false</mono>
+        <text> otherwise</text>
+      </returns>
+      <param name="lhs">
+        <text>The left operand</text>
+      </param>
+      <param name="rhs">
+        <text>The right operand</text>
+      </param>
+    </doc>
   </function>
   <function name="operator!=" id="4MuN1V3fHVfOMvtg2LT+QVm/XmE=">
     <file short-path="sort-members.cpp" source-path="sort-members.cpp" line="35"/>
@@ -260,6 +370,23 @@
         <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
       </type>
     </param>
+    <doc>
+      <brief>
+        <text>Inequality operator</text>
+      </brief>
+      <returns>
+        <mono>true</mono>
+        <text> if the objects are not equal, </text>
+        <mono>false</mono>
+        <text> otherwise</text>
+      </returns>
+      <param name="lhs">
+        <text>The left operand</text>
+      </param>
+      <param name="rhs">
+        <text>The right operand</text>
+      </param>
+    </doc>
   </function>
 </namespace>
 </mrdocs>

@@ -22,7 +22,7 @@
 | <<f-0e,`f`>> 
 | 
 | <<operator_eq-0d,`operator&equals;&equals;`>> 
-| 
+| Equality operators
 |===
 
 [#A]
@@ -184,8 +184,8 @@ Declared in `&lt;overloads&period;cpp&gt;`
 friend
 bool
 operator&equals;&equals;(
-    <<A,A>>,
-    <<A,A>>);
+    <<A,A>> lhs,
+    <<A,A>> rhs);
 ----
 
 [#A-08friend-0e]
@@ -200,8 +200,8 @@ Declared in `&lt;overloads&period;cpp&gt;`
 friend
 bool
 operator&equals;&equals;(
-    <<A,A>>,
-    int);
+    <<A,A>> lhs,
+    int rhs);
 ----
 
 [#B]
@@ -270,50 +270,60 @@ f(int);
 [#operator_eq-0d]
 == operator&equals;&equals;
 
+Equality operators
+
 === Synopses
 
 Declared in `&lt;overloads&period;cpp&gt;`
+
+Equality operator
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
 <<operator_eq-0a,operator&equals;&equals;>>(
-    <<A,A>>,
-    <<A,A>>);
+    <<A,A>> lhs,
+    <<A,A>> rhs);
 ----
 
 [.small]#<<operator_eq-0a,_» more&period;&period;&period;_>>#
+
+Equality operator
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
 <<operator_eq-0e,operator&equals;&equals;>>(
-    <<A,A>>,
-    int);
+    <<A,A>> lhs,
+    int rhs);
 ----
 
 [.small]#<<operator_eq-0e,_» more&period;&period;&period;_>>#
+
+Equality operator
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
 <<operator_eq-08,operator&equals;&equals;>>(
-    <<B,B>>,
-    <<B,B>>);
+    <<B,B>> lhs,
+    <<B,B>> rhs);
 ----
 
 [.small]#<<operator_eq-08,_» more&period;&period;&period;_>>#
+
+Equality operator
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
 <<operator_eq-07,operator&equals;&equals;>>(
-    <<B,B>>,
-    int);
+    <<B,B>> lhs,
+    int rhs);
 ----
 
 [.small]#<<operator_eq-07,_» more&period;&period;&period;_>>#
@@ -321,6 +331,8 @@ bool
 [#operator_eq-0a]
 == operator&equals;&equals;
 
+Equality operator
+
 === Synopsis
 
 Declared in `&lt;overloads&period;cpp&gt;`
@@ -329,13 +341,31 @@ Declared in `&lt;overloads&period;cpp&gt;`
 ----
 bool
 operator&equals;&equals;(
-    <<A,A>>,
-    <<A,A>>);
+    <<A,A>> lhs,
+    <<A,A>> rhs);
 ----
+
+=== Return Value
+
+`true` if the objects are equal, `false` otherwise
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *lhs*
+| The left operand
+| *rhs*
+| The right operand
+|===
 
 [#operator_eq-0e]
 == operator&equals;&equals;
 
+Equality operator
+
 === Synopsis
 
 Declared in `&lt;overloads&period;cpp&gt;`
@@ -344,13 +374,31 @@ Declared in `&lt;overloads&period;cpp&gt;`
 ----
 bool
 operator&equals;&equals;(
-    <<A,A>>,
-    int);
+    <<A,A>> lhs,
+    int rhs);
 ----
+
+=== Return Value
+
+`true` if the objects are equal, `false` otherwise
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *lhs*
+| The left operand
+| *rhs*
+| The right operand
+|===
 
 [#operator_eq-08]
 == operator&equals;&equals;
 
+Equality operator
+
 === Synopsis
 
 Declared in `&lt;overloads&period;cpp&gt;`
@@ -359,13 +407,31 @@ Declared in `&lt;overloads&period;cpp&gt;`
 ----
 bool
 operator&equals;&equals;(
-    <<B,B>>,
-    <<B,B>>);
+    <<B,B>> lhs,
+    <<B,B>> rhs);
 ----
+
+=== Return Value
+
+`true` if the objects are equal, `false` otherwise
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *lhs*
+| The left operand
+| *rhs*
+| The right operand
+|===
 
 [#operator_eq-07]
 == operator&equals;&equals;
 
+Equality operator
+
 === Synopsis
 
 Declared in `&lt;overloads&period;cpp&gt;`
@@ -374,9 +440,25 @@ Declared in `&lt;overloads&period;cpp&gt;`
 ----
 bool
 operator&equals;&equals;(
-    <<B,B>>,
-    int);
+    <<B,B>> lhs,
+    int rhs);
 ----
+
+=== Return Value
+
+`true` if the objects are equal, `false` otherwise
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *lhs*
+| The left operand
+| *rhs*
+| The right operand
+|===
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

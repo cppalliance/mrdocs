@@ -34,15 +34,19 @@ struct Explicit;
 | Name
 | Description
 | <<Explicit-2constructor-08,`Explicit`>>         [.small]#[constructor]#
-| 
+| Constructors
 |===
 
 [#Explicit-2constructor-08]
 == <<Explicit,Explicit>>::Explicit
 
+Constructors
+
 === Synopses
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+Default constructor
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -53,23 +57,29 @@ explicit
 
 [.small]#<<Explicit-2constructor-02,_» more&period;&period;&period;_>>#
 
+Copy constructor
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit
-<<Explicit-2constructor-00,Explicit>>(<<Explicit,Explicit>> const&);
+<<Explicit-2constructor-00,Explicit>>(<<Explicit,Explicit>> const& other);
 ----
 
 [.small]#<<Explicit-2constructor-00,_» more&period;&period;&period;_>>#
 
+Move constructor
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit
-<<Explicit-2constructor-0b,Explicit>>(<<Explicit,Explicit>>&&) noexcept;
+<<Explicit-2constructor-0b,Explicit>>(<<Explicit,Explicit>>&& other) noexcept;
 ----
 
 [.small]#<<Explicit-2constructor-0b,_» more&period;&period;&period;_>>#
+
+Constructor
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -85,6 +95,8 @@ explicit
 [#Explicit-2constructor-02]
 == <<Explicit,Explicit>>::Explicit
 
+Default constructor
+
 === Synopsis
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
@@ -98,6 +110,8 @@ Explicit();
 [#Explicit-2constructor-00]
 == <<Explicit,Explicit>>::Explicit
 
+Copy constructor
+
 === Synopsis
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
@@ -105,12 +119,24 @@ Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit
-Explicit(<<Explicit,Explicit>> const&);
+Explicit(<<Explicit,Explicit>> const& other);
 ----
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *other*
+| The object to copy construct from
+|===
 
 [#Explicit-2constructor-0b]
 == <<Explicit,Explicit>>::Explicit
 
+Move constructor
+
 === Synopsis
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
@@ -118,11 +144,23 @@ Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit
-Explicit(<<Explicit,Explicit>>&&) noexcept;
+Explicit(<<Explicit,Explicit>>&& other) noexcept;
 ----
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *other*
+| The object to move construct from
+|===
 
 [#Explicit-2constructor-03]
 == <<Explicit,Explicit>>::Explicit
+
+Constructor
 
 === Synopsis
 
@@ -156,15 +194,19 @@ struct ExplicitExpression;
 | Name
 | Description
 | <<ExplicitExpression-2constructor-026,`ExplicitExpression`>>         [.small]#[constructor]#
-| 
+| Constructors
 |===
 
 [#ExplicitExpression-2constructor-026]
 == <<ExplicitExpression,ExplicitExpression>>::ExplicitExpression
 
+Constructors
+
 === Synopses
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+Default constructor
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -175,23 +217,29 @@ explicit(B)
 
 [.small]#<<ExplicitExpression-2constructor-0b,_» more&period;&period;&period;_>>#
 
+Copy constructor
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit(B)
-<<ExplicitExpression-2constructor-04,ExplicitExpression>>(<<ExplicitExpression,ExplicitExpression>> const&);
+<<ExplicitExpression-2constructor-04,ExplicitExpression>>(<<ExplicitExpression,ExplicitExpression>> const& other);
 ----
 
 [.small]#<<ExplicitExpression-2constructor-04,_» more&period;&period;&period;_>>#
 
+Move constructor
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit(B)
-<<ExplicitExpression-2constructor-08,ExplicitExpression>>(<<ExplicitExpression,ExplicitExpression>>&&) noexcept;
+<<ExplicitExpression-2constructor-08,ExplicitExpression>>(<<ExplicitExpression,ExplicitExpression>>&& other) noexcept;
 ----
 
 [.small]#<<ExplicitExpression-2constructor-08,_» more&period;&period;&period;_>>#
+
+Constructor
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -207,6 +255,8 @@ explicit(B)
 [#ExplicitExpression-2constructor-0b]
 == <<ExplicitExpression,ExplicitExpression>>::ExplicitExpression
 
+Default constructor
+
 === Synopsis
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
@@ -220,6 +270,8 @@ ExplicitExpression();
 [#ExplicitExpression-2constructor-04]
 == <<ExplicitExpression,ExplicitExpression>>::ExplicitExpression
 
+Copy constructor
+
 === Synopsis
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
@@ -227,12 +279,24 @@ Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit(B)
-ExplicitExpression(<<ExplicitExpression,ExplicitExpression>> const&);
+ExplicitExpression(<<ExplicitExpression,ExplicitExpression>> const& other);
 ----
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *other*
+| The object to copy construct from
+|===
 
 [#ExplicitExpression-2constructor-08]
 == <<ExplicitExpression,ExplicitExpression>>::ExplicitExpression
 
+Move constructor
+
 === Synopsis
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
@@ -240,11 +304,23 @@ Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit(B)
-ExplicitExpression(<<ExplicitExpression,ExplicitExpression>>&&) noexcept;
+ExplicitExpression(<<ExplicitExpression,ExplicitExpression>>&& other) noexcept;
 ----
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *other*
+| The object to move construct from
+|===
 
 [#ExplicitExpression-2constructor-027]
 == <<ExplicitExpression,ExplicitExpression>>::ExplicitExpression
+
+Constructor
 
 === Synopsis
 
@@ -277,15 +353,19 @@ struct ExplicitFalse;
 | Name
 | Description
 | <<ExplicitFalse-2constructor-04c,`ExplicitFalse`>>         [.small]#[constructor]#
-| 
+| Constructors
 |===
 
 [#ExplicitFalse-2constructor-04c]
 == <<ExplicitFalse,ExplicitFalse>>::ExplicitFalse
 
+Constructors
+
 === Synopses
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+Default constructor
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -296,23 +376,29 @@ explicit(false)
 
 [.small]#<<ExplicitFalse-2constructor-01,_» more&period;&period;&period;_>>#
 
+Copy constructor
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit(false)
-<<ExplicitFalse-2constructor-08,ExplicitFalse>>(<<ExplicitFalse,ExplicitFalse>> const&);
+<<ExplicitFalse-2constructor-08,ExplicitFalse>>(<<ExplicitFalse,ExplicitFalse>> const& other);
 ----
 
 [.small]#<<ExplicitFalse-2constructor-08,_» more&period;&period;&period;_>>#
 
+Move constructor
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit(false)
-<<ExplicitFalse-2constructor-0a,ExplicitFalse>>(<<ExplicitFalse,ExplicitFalse>>&&) noexcept;
+<<ExplicitFalse-2constructor-0a,ExplicitFalse>>(<<ExplicitFalse,ExplicitFalse>>&& other) noexcept;
 ----
 
 [.small]#<<ExplicitFalse-2constructor-0a,_» more&period;&period;&period;_>>#
+
+Constructor
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -328,6 +414,8 @@ explicit(false)
 [#ExplicitFalse-2constructor-01]
 == <<ExplicitFalse,ExplicitFalse>>::ExplicitFalse
 
+Default constructor
+
 === Synopsis
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
@@ -341,6 +429,8 @@ ExplicitFalse();
 [#ExplicitFalse-2constructor-08]
 == <<ExplicitFalse,ExplicitFalse>>::ExplicitFalse
 
+Copy constructor
+
 === Synopsis
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
@@ -348,12 +438,24 @@ Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit(false)
-ExplicitFalse(<<ExplicitFalse,ExplicitFalse>> const&);
+ExplicitFalse(<<ExplicitFalse,ExplicitFalse>> const& other);
 ----
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *other*
+| The object to copy construct from
+|===
 
 [#ExplicitFalse-2constructor-0a]
 == <<ExplicitFalse,ExplicitFalse>>::ExplicitFalse
 
+Move constructor
+
 === Synopsis
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
@@ -361,11 +463,23 @@ Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit(false)
-ExplicitFalse(<<ExplicitFalse,ExplicitFalse>>&&) noexcept;
+ExplicitFalse(<<ExplicitFalse,ExplicitFalse>>&& other) noexcept;
 ----
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *other*
+| The object to move construct from
+|===
 
 [#ExplicitFalse-2constructor-04f]
 == <<ExplicitFalse,ExplicitFalse>>::ExplicitFalse
+
+Constructor
 
 === Synopsis
 
@@ -398,15 +512,19 @@ struct ExplicitTrue;
 | Name
 | Description
 | <<ExplicitTrue-2constructor-0f,`ExplicitTrue`>>         [.small]#[constructor]#
-| 
+| Constructors
 |===
 
 [#ExplicitTrue-2constructor-0f]
 == <<ExplicitTrue,ExplicitTrue>>::ExplicitTrue
 
+Constructors
+
 === Synopses
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
+
+Default constructor
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -417,23 +535,29 @@ explicit(true)
 
 [.small]#<<ExplicitTrue-2constructor-0d,_» more&period;&period;&period;_>>#
 
+Copy constructor
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit(true)
-<<ExplicitTrue-2constructor-04,ExplicitTrue>>(<<ExplicitTrue,ExplicitTrue>> const&);
+<<ExplicitTrue-2constructor-04,ExplicitTrue>>(<<ExplicitTrue,ExplicitTrue>> const& other);
 ----
 
 [.small]#<<ExplicitTrue-2constructor-04,_» more&period;&period;&period;_>>#
 
+Move constructor
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit(true)
-<<ExplicitTrue-2constructor-08,ExplicitTrue>>(<<ExplicitTrue,ExplicitTrue>>&&) noexcept;
+<<ExplicitTrue-2constructor-08,ExplicitTrue>>(<<ExplicitTrue,ExplicitTrue>>&& other) noexcept;
 ----
 
 [.small]#<<ExplicitTrue-2constructor-08,_» more&period;&period;&period;_>>#
+
+Constructor
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -449,6 +573,8 @@ explicit(true)
 [#ExplicitTrue-2constructor-0d]
 == <<ExplicitTrue,ExplicitTrue>>::ExplicitTrue
 
+Default constructor
+
 === Synopsis
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
@@ -462,6 +588,8 @@ ExplicitTrue();
 [#ExplicitTrue-2constructor-04]
 == <<ExplicitTrue,ExplicitTrue>>::ExplicitTrue
 
+Copy constructor
+
 === Synopsis
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
@@ -469,12 +597,24 @@ Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit(true)
-ExplicitTrue(<<ExplicitTrue,ExplicitTrue>> const&);
+ExplicitTrue(<<ExplicitTrue,ExplicitTrue>> const& other);
 ----
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *other*
+| The object to copy construct from
+|===
 
 [#ExplicitTrue-2constructor-08]
 == <<ExplicitTrue,ExplicitTrue>>::ExplicitTrue
 
+Move constructor
+
 === Synopsis
 
 Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
@@ -482,11 +622,23 @@ Declared in `&lt;explicit&hyphen;ctor&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit(true)
-ExplicitTrue(<<ExplicitTrue,ExplicitTrue>>&&) noexcept;
+ExplicitTrue(<<ExplicitTrue,ExplicitTrue>>&& other) noexcept;
 ----
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *other*
+| The object to move construct from
+|===
 
 [#ExplicitTrue-2constructor-05]
 == <<ExplicitTrue,ExplicitTrue>>::ExplicitTrue
+
+Constructor
 
 === Synopsis
 

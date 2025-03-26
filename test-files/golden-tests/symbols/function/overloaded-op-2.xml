@@ -10,9 +10,20 @@
       <return>
         <type id="CgGNdHpW5mG/i5741WPYQDw28OQ=" name="T"/>
       </return>
-      <param>
+      <param name="rhs">
         <type id="CgGNdHpW5mG/i5741WPYQDw28OQ=" name="T"/>
       </param>
+      <doc>
+        <brief>
+          <text>Addition operator</text>
+        </brief>
+        <returns>
+          <text>Another instance of the object</text>
+        </returns>
+        <param name="rhs">
+          <text>The right operand</text>
+        </param>
+      </doc>
     </function>
   </struct>
 </namespace>

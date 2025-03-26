@@ -25,7 +25,7 @@ namespace clang::mrdocs {
 template <std::ranges::range Range, class El>
 requires std::equality_comparable_with<El, std::ranges::range_value_t<Range>>
 bool
-contains(Range const& range, El const& el)
+contains(Range&& range, El const& el)
 {
     return std::find(
         std::ranges::begin(range),

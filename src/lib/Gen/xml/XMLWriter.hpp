@@ -88,7 +88,7 @@ public:
     void writeText(doc::Text const& node);
     void writeTParam(doc::TParam const& node);
     void writeReference(doc::Reference const& node);
-    void writeCopied(doc::Copied const& node);
+    void writeCopied(doc::CopyDetails const& node);
     void writeThrows(doc::Throws const& node);
     void writeSee(doc::See const& node, llvm::StringRef tag = "");
     void writePrecondition(doc::Precondition const& node);

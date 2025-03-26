@@ -9,6 +9,16 @@
       <return>
         <type name="bool"/>
       </return>
+      <doc>
+        <brief>
+          <text>Conversion to </text>
+          <mono>bool</mono>
+        </brief>
+        <returns>
+          <text>The object converted to </text>
+          <mono>bool</mono>
+        </returns>
+      </doc>
     </function>
   </struct>
   <template>
@@ -20,6 +30,16 @@
         <return>
           <type name="bool"/>
         </return>
+        <doc>
+          <brief>
+            <text>Conversion to </text>
+            <mono>bool</mono>
+          </brief>
+          <returns>
+            <text>The object converted to </text>
+            <mono>bool</mono>
+          </returns>
+        </doc>
       </function>
     </struct>
   </template>
@@ -30,6 +50,16 @@
       <return>
         <type name="bool"/>
       </return>
+      <doc>
+        <brief>
+          <text>Conversion to </text>
+          <mono>bool</mono>
+        </brief>
+        <returns>
+          <text>The object converted to </text>
+          <mono>bool</mono>
+        </returns>
+      </doc>
     </function>
   </struct>
   <struct name="ExplicitTrue" id="htdCGapMsdazR1XkXoanrOCkvDE=">
@@ -39,6 +69,16 @@
       <return>
         <type name="bool"/>
       </return>
+      <doc>
+        <brief>
+          <text>Conversion to </text>
+          <mono>bool</mono>
+        </brief>
+        <returns>
+          <text>The object converted to </text>
+          <mono>bool</mono>
+        </returns>
+      </doc>
     </function>
   </struct>
 </namespace>

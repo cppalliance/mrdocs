@@ -1,0 +1,212 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols=2]
+|===
+| Name
+| Description
+| <<A,`A`>> 
+| A helper tag
+| <<X,`X`>> 
+| Test class
+| <<ostream,`ostream`>> 
+| A dumb ostream class
+|===
+
+=== Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| <<operator_minus,`operator&hyphen;`>> 
+| Subtraction operator
+| <<operator_lshift,`operator&lt;&lt;`>> 
+| Stream insertion operator
+| <<operator_not,`operator!`>> 
+| Negation operator
+|===
+
+[#A]
+== A
+
+A helper tag
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;from&hyphen;operator&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct A;
+----
+
+[#X]
+== X
+
+Test class
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;from&hyphen;operator&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct X;
+----
+
+=== Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| <<X-operator_plus,`operator&plus;`>> 
+| Addition operator
+|===
+
+[#X-operator_plus]
+== <<X,X>>::operator&plus;
+
+Addition operator
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;from&hyphen;operator&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<X,X>>
+operator&plus;(<<X,X>> const& x) const;
+----
+
+=== Return Value
+
+Another instance of the object
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *x*
+| The right operand
+|===
+
+[#ostream]
+== ostream
+
+A dumb ostream class
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;from&hyphen;operator&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct ostream;
+----
+
+[#operator_minus]
+== operator&hyphen;
+
+Subtraction operator
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;from&hyphen;operator&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<X,X>>
+operator&hyphen;(
+    <<X,X>> const& x,
+    <<X,X>> const& y);
+----
+
+=== Return Value
+
+Test class
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *x*
+| The left operand
+| *y*
+| The right operand
+|===
+
+[#operator_lshift]
+== operator&lt;&lt;
+
+Stream insertion operator
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;from&hyphen;operator&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<ostream,ostream>>&
+operator&lt;&lt;(
+    <<ostream,ostream>>& os,
+    <<X,X>> const& x);
+----
+
+=== Return Value
+
+Reference to the current output stream
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *os*
+| An output stream
+| *x*
+| The object to output
+|===
+
+[#operator_not]
+== operator!
+
+Negation operator
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;from&hyphen;operator&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<X,X>>
+operator!(<<X,X>> const& x);
+----
+
+=== Return Value
+
+Test class
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *x*
+| The operand
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

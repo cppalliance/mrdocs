@@ -10,42 +10,673 @@
 //
 
 #include "JavadocFinalizer.hpp"
+#include "Javadoc/Overloads.hpp"
+#include "Javadoc/Function.hpp"
 #include <mrdocs/Support/ScopeExit.hpp>
 #include <mrdocs/Support/Algorithm.hpp>
 #include <algorithm>
 
 namespace clang::mrdocs {
 
-template <class InfoTy>
 void
 JavadocFinalizer::
-operator()(InfoTy& I)
+build()
+{
+    // This function finalizes groups of javadoc components in
+    // different loops. This allows us to resolve references
+    // that are only related to that component group without
+    // creating circular dependencies.
+
+    // Finalize briefs:
+    // We do it first because all other steps require accessing
+    // the brief of other functions, these often need to be resolved
+    // with @copybrief or auto-brief, and we need to ensure that
+    // there are no circular dependencies for other metadata.
+    for (auto& infoPtr : corpus_.info_)
+    {
+        MRDOCS_ASSERT(infoPtr);
+        Info& I = *infoPtr;
+        MRDOCS_CHECK_OR_CONTINUE(I.Extraction != ExtractionMode::Dependency);
+        finalizeBrief(I);
+    }
+
+    // Finalize metadata:
+    // A @copydetails command also implies we should copy
+    // other metadata from the referenced symbol.
+    // We do it now because we need the complete metadata
+    // for all objects to generate javadoc for overloads.
+    // For instance, overloads cannot aggregate function
+    // parameters as if the parameters are not resolved.
+    for (auto& infoPtr : corpus_.info_)
+    {
+        MRDOCS_ASSERT(infoPtr);
+        Info& I = *infoPtr;
+        MRDOCS_CHECK_OR_CONTINUE(I.Extraction != ExtractionMode::Dependency);
+        finalizeMetadataCopies(I);
+    }
+
+    // Create javadoc for overloads
+    // - We do it before the references because the overloads
+    //   themselves can be used in the references. For instance,
+    //   `@ref foo` refers to the overload set because it doesn't
+    //   specify the function signature.
+    if (corpus_.config->overloads)
+    {
+        for (auto& infoPtr : corpus_.info_)
+        {
+            MRDOCS_ASSERT(infoPtr);
+            Info& I = *infoPtr;
+            MRDOCS_CHECK_OR_CONTINUE(I.isOverloads());
+            MRDOCS_CHECK_OR_CONTINUE(I.Extraction != ExtractionMode::Dependency);
+            if (!I.javadoc)
+            {
+                I.javadoc.emplace();
+            }
+            populateOverloadJavadoc(dynamic_cast<OverloadsInfo&>(*infoPtr));
+        }
+    }
+
+    // Resolve references in the javadoc
+    for (auto& infoPtr : corpus_.info_)
+    {
+        MRDOCS_ASSERT(infoPtr);
+        Info& I = *infoPtr;
+        MRDOCS_CHECK_OR_CONTINUE(I.Extraction != ExtractionMode::Dependency);
+        finalizeJavadoc(I);
+    }
+
+    // Populate trivial function metadata
+    // - We do it after the overloads because they should not
+    //   rely on metadata inherited from automatic generated javadoc
+    // - We also do it after the references because some metadata
+    //   might be resolved from references with @copydetails
+    if (corpus_.config->autoFunctionMetadata)
+    {
+        for (auto& infoPtr : corpus_.info_)
+        {
+            MRDOCS_ASSERT(infoPtr);
+            Info& I = *infoPtr;
+            MRDOCS_CHECK_OR_CONTINUE(I.isFunction());
+            MRDOCS_CHECK_OR_CONTINUE(I.Extraction != ExtractionMode::Dependency);
+            populateFunctionJavadoc(dynamic_cast<FunctionInfo&>(I));
+        }
+    }
+
+    // Remove invalid references in the Info objects
+    for (auto& infoPtr : corpus_.info_)
+    {
+        MRDOCS_ASSERT(infoPtr);
+        Info& I = *infoPtr;
+        visit(I, [&](auto& U) {
+            finalizeInfoData(U);
+        });
+    }
+
+    // - Emitting param warning require everything to be completely
+    //   processed
+    emitWarnings();
+}
+
+void
+JavadocFinalizer::
+finalizeBrief(Info& I)
+{
+    MRDOCS_CHECK_OR(!finalized_brief_.contains(&I));
+    finalized_brief_.emplace(&I);
+    ScopeExitRestore s(current_context_, &I);
+
+    report::trace(
+            "Finalizing brief for '{}'",
+            corpus_.Corpus::qualifiedName(I));
+
+    if (I.isOverloads())
+    {
+        // Overloads are expected not to have javadoc.
+        // We'll create a javadoc for them if they don't have one.
+        if (!I.javadoc)
+        {
+            I.javadoc.emplace();
+        }
+        // The brief of an overload is always empty
+        auto& OI = dynamic_cast<OverloadsInfo&>(I);
+        for (auto& MemberIDs = OI.Members;
+            auto& memberID : MemberIDs)
+        {
+            Info* member = corpus_.find(memberID);
+            MRDOCS_CHECK_OR_CONTINUE(member);
+            finalizeBrief(*member);
+        }
+        auto functions = overloadFunctionsRange(OI, corpus_);
+        populateOverloadsBrief(OI, functions, corpus_);
+        return;
+    }
+
+    MRDOCS_CHECK_OR(I.javadoc);
+    // Copy brief from other symbols if there's a @copydoc
+    copyBrief(*I.javadoc);
+    // Set auto brief if brief is still empty
+    setAutoBrief(*I.javadoc);
+}
+
+void
+JavadocFinalizer::
+copyBrief(Javadoc& javadoc)
+{
+    MRDOCS_CHECK_OR(javadoc.brief);
+    MRDOCS_CHECK_OR(!javadoc.brief->copiedFrom.empty());
+    MRDOCS_CHECK_OR(javadoc.brief->children.empty());
+
+    for (std::string const& ref: javadoc.brief->copiedFrom)
+    {
+        // Look for source
+        auto resRef =
+            corpus_.lookup(current_context_->id, ref);
+
+        // Check if the source exists
+        if (!resRef)
+        {
+            if (corpus_.config->warnings &&
+                corpus_.config->warnBrokenRef &&
+                !refWarned_.contains({ref, current_context_->Name}))
+            {
+                this->warn(
+                    "{}: Failed to copy brief from '{}' (symbol not found)\n"
+                    "    {}",
+                    corpus_.Corpus::qualifiedName(*current_context_),
+                    ref,
+                    resRef.error().reason());
+            }
+            continue;
+        }
+
+        // Ensure the brief source is finalized
+        Info const& res = *resRef;
+        finalizeBrief(const_cast<Info&>(res));
+
+        // Check if the source has a brief
+        if (!res.javadoc ||
+            !res.javadoc->brief.has_value())
+        {
+            if (corpus_.config->warnings &&
+                corpus_.config->warnBrokenRef &&
+                !refWarned_.contains({ref, current_context_->Name}))
+            {
+                auto resPrimaryLoc = getPrimaryLocation(res);
+                this->warn(
+                    "{}: Failed to copy brief from {} '{}' (no brief available).\n"
+                    "    No brief available.\n"
+                    "        {}:{}\n"
+                    "        Note: No brief available for '{}'.",
+                    corpus_.Corpus::qualifiedName(*current_context_),
+                    toString(res.Kind),
+                    ref,
+                    resPrimaryLoc->FullPath,
+                    resPrimaryLoc->LineNumber,
+                    corpus_.Corpus::qualifiedName(res));
+            }
+            continue;
+        }
+
+        Javadoc const& src = *res.javadoc;
+        javadoc.brief->children = src.brief->children;
+        return;
+    }
+}
+
+void
+JavadocFinalizer::
+setAutoBrief(Javadoc& javadoc) const
+{
+    MRDOCS_CHECK_OR(corpus_.config->autoBrief);
+    MRDOCS_CHECK_OR(!javadoc.brief);
+    MRDOCS_CHECK_OR(!javadoc.blocks.empty());
+
+    auto isInvalidBriefText = [](Polymorphic<doc::Text> const& text) {
+        return !text || text->string.empty()
+               || text->Kind == doc::NodeKind::copy_details
+               || isWhitespace(text->string);
+    };
+
+    for (auto it = javadoc.blocks.begin(); it != javadoc.blocks.end();)
+    {
+        if (auto& block = *it;
+            block->Kind == doc::NodeKind::paragraph ||
+            block->Kind == doc::NodeKind::details)
+        {
+            auto& para = dynamic_cast<doc::Paragraph&>(*block);
+            if (std::ranges::all_of(para.children, isInvalidBriefText))
+            {
+                ++it;
+                continue;
+            }
+            javadoc.brief.emplace();
+            javadoc.brief->children = para.children;
+            it = javadoc.blocks.erase(it);
+            return;
+        }
+        ++it;
+    }
+}
+
+namespace {
+TemplateInfo const*
+getTemplateInfo(Info& I)
+{
+    return visit(I, [](auto& I) -> TemplateInfo const* {
+        if constexpr (requires { I.Template; })
+        {
+            if (I.Template)
+            {
+                return &*I.Template;
+            }
+        }
+        return nullptr;
+    });
+}
+}
+
+void
+JavadocFinalizer::
+finalizeMetadataCopies(Info& I)
+{
+    MRDOCS_CHECK_OR(!finalized_metadata_.contains(&I));
+    finalized_metadata_.emplace(&I);
+    ScopeExitRestore s(current_context_, &I);
+
+    report::trace(
+            "Finalizing metadata for '{}'",
+            corpus_.Corpus::qualifiedName(I));
+
+    MRDOCS_CHECK_OR(I.javadoc);
+    MRDOCS_CHECK_OR(!I.javadoc->blocks.empty());
+    Javadoc& destJavadoc = *I.javadoc;
+
+    SmallVector<doc::CopyDetails, 16> copiedRefs;
+    for (auto& block: destJavadoc.blocks)
+    {
+        MRDOCS_CHECK_OR_CONTINUE(
+            block->Kind == doc::NodeKind::paragraph
+            || block->Kind == doc::NodeKind::details);
+        auto& para = dynamic_cast<doc::Paragraph&>(*block);
+        MRDOCS_CHECK_OR_CONTINUE(!para.children.empty());
+
+        for (auto& text: para.children)
+        {
+            MRDOCS_CHECK_OR_CONTINUE(text->Kind == doc::NodeKind::copy_details);
+            copiedRefs.emplace_back(dynamic_cast<doc::CopyDetails&>(*text));
+        }
+        MRDOCS_CHECK_OR_CONTINUE(!copiedRefs.empty());
+    }
+
+    for (doc::CopyDetails const& copied: copiedRefs)
+    {
+        // Find element
+        auto resRef = corpus_.lookup(current_context_->id, copied.string);
+        if (!resRef)
+        {
+            if (corpus_.config->warnings &&
+                corpus_.config->warnBrokenRef &&
+                !refWarned_.contains({copied.string, current_context_->Name}))
+            {
+                this->warn(
+                    "{}: Failed to copy metadata from '{}' (symbol not found)\n"
+                    "    {}",
+                    corpus_.Corpus::qualifiedName(*current_context_),
+                    copied.string,
+                    resRef.error().reason());
+            }
+            continue;
+        }
+
+        // Function to copy the metadata from a ranges
+        // of source functions. This range might
+        // contain more than one function if the
+        // destination is an overload set.
+        // We can't copy directly from the overload set
+        // because its metadata is not created at this
+        // step yet.
+        auto copyInfoRangeMetadata = [&](ArrayRef<Info const*> srcInfoPtrs)
+        {
+            auto srcInfos = srcInfoPtrs
+                            | std::views::transform(
+                                [](Info const* ptr) -> Info const& {
+                return *ptr;
+            });
+
+            // Ensure the source metadata is finalized
+            for (auto& srcInfo: srcInfos)
+            {
+                auto& mutSrcInfo = const_cast<Info&>(srcInfo);
+                finalizeMetadataCopies(mutSrcInfo);
+            }
+
+            // Copy returns only if destination is empty
+            if (destJavadoc.returns.empty())
+            {
+                for (auto const& srcInfo: srcInfos)
+                {
+                    MRDOCS_CHECK_OR_CONTINUE(srcInfo.javadoc);
+                    for (doc::Returns const& returnsEl: srcInfo.javadoc->returns)
+                    {
+                        MRDOCS_CHECK_OR_CONTINUE(!contains(destJavadoc.returns, returnsEl));
+                        destJavadoc.returns.push_back(returnsEl);
+                    }
+                }
+            }
+
+            // Copy only params that don't exist at the destination
+            // documentation but that do exist in the destination
+            // function parameters declaration.
+            if (I.isFunction())
+            {
+                auto& destF = dynamic_cast<FunctionInfo const&>(I);
+                for (Info const& srcInfo: srcInfos)
+                {
+                    MRDOCS_CHECK_OR_CONTINUE(srcInfo.isFunction());
+                    auto const& srcFunction = dynamic_cast<FunctionInfo const&>(srcInfo);
+                    MRDOCS_CHECK_OR_CONTINUE(srcFunction.javadoc);
+                    for (Javadoc const& srcJavadoc = *srcFunction.javadoc;
+                         auto const& srcDocParam: srcJavadoc.params)
+                    {
+                        // check if param doc doesn't already exist
+                        MRDOCS_CHECK_OR_CONTINUE(
+                            std::ranges::none_of(
+                                destJavadoc.params,
+                                [&srcDocParam](doc::Param const& destDocParam) {
+                            return srcDocParam.name == destDocParam.name;
+                        }));
+
+                        // check if param name exists in the destination function
+                        MRDOCS_CHECK_OR_CONTINUE(
+                            std::ranges::any_of(
+                                destF.Params,
+                                [&srcDocParam](Param const& destParam) {
+                            return srcDocParam.name == *destParam.Name;
+                        }));
+
+                        // Push the new param ot the
+                        destJavadoc.params.push_back(srcDocParam);
+                    }
+                }
+            }
+
+            // Copy only tparams that don't exist at the destination
+            // documentation but that do exist in the destination
+            // template parameters.
+            if (auto const destTemplateInfo = getTemplateInfo(I))
+            {
+                for (Info const& srcInfo: srcInfos)
+                {
+                    MRDOCS_CHECK_OR_CONTINUE(srcInfo.javadoc);
+                    for (Javadoc const& srcJavadoc = *srcInfo.javadoc;
+                         auto const& srcTParam: srcJavadoc.tparams)
+                    {
+                        // tparam doesn't already exist at the destination
+                        MRDOCS_CHECK_OR_CONTINUE(
+                            std::ranges::none_of(
+                                destJavadoc.tparams,
+                                [&srcTParam](doc::TParam const& destTParam) {
+                            return srcTParam.name == destTParam.name;
+                        }));
+
+                        // TParam name exists in the destination definition
+                        MRDOCS_CHECK_OR_CONTINUE(
+                            std::ranges::any_of(
+                                destTemplateInfo->Params,
+                                [&srcTParam](
+                                    Polymorphic<TParam> const& destTParam) {
+                            return srcTParam.name == destTParam->Name;
+                        }));
+
+                        // Push the new param
+                        destJavadoc.tparams.push_back(srcTParam);
+                    }
+                }
+            }
+
+            // Copy exceptions only if destination exceptions are empty
+            // and the destination is not noexcept
+            bool const destIsNoExcept =
+                I.isFunction() ?
+                dynamic_cast<FunctionInfo const&>(I).Noexcept.Kind == NoexceptKind::False :
+                false;
+            if (destJavadoc.exceptions.empty() &&
+                !destIsNoExcept)
+            {
+                for (Info const& srcInfo: srcInfos)
+                {
+                    MRDOCS_CHECK_OR_CONTINUE(srcInfo.javadoc);
+                    for (doc::Throws const& exceptionsEl: srcInfo.javadoc->exceptions)
+                    {
+                        MRDOCS_CHECK_OR_CONTINUE(!contains(destJavadoc.exceptions, exceptionsEl));
+                        destJavadoc.exceptions.push_back(exceptionsEl);
+                    }
+                }
+            }
+
+            // Copy sees only if destination sees are empty
+            if (destJavadoc.sees.empty())
+            {
+                for (Info const& srcInfo: srcInfos)
+                {
+                    MRDOCS_CHECK_OR_CONTINUE(srcInfo.javadoc);
+                    for (doc::See const& seesEl: srcInfo.javadoc->sees)
+                    {
+                        MRDOCS_CHECK_OR_CONTINUE(!contains(destJavadoc.sees, seesEl));
+                        destJavadoc.sees.push_back(seesEl);
+                    }
+                }
+            }
+
+            // Copy preconditions only if destination preconditions is empty
+            if (destJavadoc.preconditions.empty())
+            {
+                for (Info const& srcInfo: srcInfos)
+                {
+                    MRDOCS_CHECK_OR_CONTINUE(srcInfo.javadoc);
+                    for (doc::Precondition const& preconditionsEl: srcInfo.javadoc->preconditions)
+                    {
+                        MRDOCS_CHECK_OR_CONTINUE(!contains(destJavadoc.preconditions, preconditionsEl));
+                        destJavadoc.preconditions.push_back(preconditionsEl);
+                    }
+                }
+            }
+
+            // Copy postconditions only if destination postconditions is empty
+            if (destJavadoc.postconditions.empty())
+            {
+                for (Info const& srcInfo: srcInfos)
+                {
+                    MRDOCS_CHECK_OR_CONTINUE(srcInfo.javadoc);
+                    for (doc::Postcondition const& postconditionsEl:
+                         srcInfo.javadoc->postconditions)
+                    {
+                        MRDOCS_CHECK_OR_CONTINUE(!contains(
+                            destJavadoc.postconditions,
+                            postconditionsEl));
+                        destJavadoc.postconditions.push_back(postconditionsEl);
+                    }
+                }
+            }
+        };
+
+        // Ensure the source metadata is finalized
+        Info const& res = *resRef;
+        if (!res.isOverloads())
+        {
+            // If it's a single element, we check the element javadoc
+            if (!res.javadoc)
+            {
+                if (corpus_.config->warnings &&
+                    corpus_.config->warnBrokenRef &&
+                    !refWarned_.contains({copied.string, current_context_->Name}))
+                {
+                    auto resPrimaryLoc = getPrimaryLocation(res);
+                    this->warn(
+                        "{}: Failed to copy metadata from {} '{}' (no documentation available).\n"
+                        "    No metadata available.\n"
+                        "        {}:{}\n"
+                        "        Note: No documentation available for '{}'.",
+                        corpus_.Corpus::qualifiedName(*current_context_),
+                        toString(res.Kind),
+                        copied.string,
+                        resPrimaryLoc->FullPath,
+                        resPrimaryLoc->LineNumber,
+                        corpus_.Corpus::qualifiedName(res));
+                }
+                continue;
+            }
+            SmallVector<Info const*, 1> srcInfos = { &res };
+            copyInfoRangeMetadata(srcInfos);
+        }
+        else
+        {
+            auto& OI = dynamic_cast<OverloadsInfo const&>(res);
+            SmallVector<Info const*, 16> srcInfos;
+            srcInfos.reserve(OI.Members.size());
+            for (auto& memberID: OI.Members)
+            {
+                Info* member = corpus_.find(memberID);
+                MRDOCS_CHECK_OR_CONTINUE(member);
+                srcInfos.push_back(member);
+            }
+            copyInfoRangeMetadata(srcInfos);
+        }
+    }
+}
+
+void
+JavadocFinalizer::
+populateFunctionJavadoc(FunctionInfo& I) const
+{
+    // For special functions (constructors, destructors, ...),
+    // we create the javadoc if it does not exist because
+    // we can populate all the fields from the function category.
+    // For other types of functions, we'll only populate
+    // the missing fields when the javadoc already exists.
+    bool const isSpecial = isSpecialFunction(I);
+    MRDOCS_CHECK_OR(isSpecial || I.javadoc);
+    bool forceEmplaced = false;
+    if (isSpecial &&
+        !I.javadoc)
+    {
+        I.javadoc.emplace();
+        forceEmplaced = true;
+    }
+
+    // Populate a missing javadoc brief
+    populateFunctionBrief(I, corpus_);
+
+    // Populate a missing javadoc returns
+    populateFunctionReturns(I, corpus_);
+
+    // Populate missing javadoc params
+    populateFunctionParams(I, corpus_);
+
+    // If we forcefully created the javadoc, we need to
+    // check if the function was able to populate all the
+    // fields. If not, we'll remove the javadoc.
+    if (forceEmplaced)
+    {
+        // Check brief and returns
+        if (!I.javadoc->brief)
+        {
+            I.javadoc.reset();
+            return;
+        }
+
+        if (!is_one_of(I.Class, {
+            FunctionClass::Constructor,
+            FunctionClass::Destructor }) &&
+            I.javadoc->returns.empty())
+        {
+            I.javadoc.reset();
+            return;
+        }
+
+        // Check params size
+        std::size_t const nNamedParams = std::ranges::
+            count_if(I.Params, [](Param const& p) -> bool {
+            return p.Name.has_value();
+        });
+        auto const documentedParams = getJavadocParamNames(*I.javadoc);
+        if (nNamedParams != documentedParams.size())
+        {
+            I.javadoc.reset();
+            return;
+        }
+
+        // Check param names
+        if (!std::ranges::all_of(I.Params, [&](Param const& param) {
+            if (param.Name)
+            {
+                return contains(documentedParams, *param.Name);
+            }
+            return true;
+        }))
+        {
+            I.javadoc.reset();
+        }
+    }
+}
+
+void
+JavadocFinalizer::
+populateOverloadJavadoc(OverloadsInfo& I)
+{
+    // Create a view all Info members of I.
+    // The javadoc for these function should already be as
+    // complete as possible
+    auto functions =
+        I.Members |
+        std::views::transform([&](SymbolID const& id)
+            {
+                return corpus_.find(id);
+            }) |
+        std::views::filter([](Info const* infoPtr)
+            {
+                return infoPtr != nullptr && infoPtr->isFunction();
+            }) |
+        std::views::transform([](Info const* infoPtr) -> FunctionInfo const&
+            {
+                return *dynamic_cast<FunctionInfo const*>(infoPtr);
+            });
+    if (!I.javadoc)
+    {
+        I.javadoc.emplace();
+    }
+
+    // briefs: populated in a previous step
+    // blocks: we do not copy javadoc detail blocks because
+    // it's impossible to guarantee that the details for
+    // any of the functions make sense for all overloads.
+    // We can only merge metadata.
+    populateOverloadsReturns(I, functions);
+    populateOverloadsParams(I, functions);
+    populateOverloadsTParams(I, functions);
+    populateOverloadsExceptions(I, functions);
+    populateOverloadsSees(I, functions);
+    populateOverloadsPreconditions(I, functions);
+    populateOverloadsPostconditions(I, functions);
+}
+
+void
+JavadocFinalizer::
+finalizeJavadoc(Info& I)
 {
     MRDOCS_CHECK_OR(!finalized_.contains(&I));
     finalized_.emplace(&I);
-
-    if constexpr (InfoTy::isOverloads())
-    {
-        if (!I.javadoc)
-        {
-            populateOverloadJavadocs(I);
-        }
-    }
+    ScopeExitRestore s(current_context_, &I);
 
     report::trace(
         "Finalizing javadoc for '{}'",
         corpus_.Corpus::qualifiedName(I));
 
-    ScopeExitRestore s(current_context_, &I);
-
-    // Finalize references in javadoc
-    finalize(I.javadoc);
-
-    finalizeInfoData(I);
+    if (I.javadoc)
+    {
+        finalize(*I.javadoc);
+    }
 }
-
-#define INFO(T) template void JavadocFinalizer::operator()<T## Info>(T## Info&);
-#include <mrdocs/Metadata/InfoNodesPascal.inc>
 
 template <class InfoTy>
 void
@@ -203,8 +834,7 @@ finalize(Javadoc& javadoc)
     finalize(javadoc.preconditions);
     finalize(javadoc.postconditions);
     processRelates(javadoc);
-    copyBriefAndDetails(javadoc);
-    setAutoBrief(javadoc);
+    copyDetails(javadoc);
     removeTempTextNodes(javadoc);
     trimBlocks(javadoc);
     unindentCodeBlocks(javadoc);
@@ -291,6 +921,270 @@ processRelates(Javadoc& javadoc)
     std::erase_if(javadoc.relates, [](doc::Reference const& ref) {
         return !ref.id;
     });
+}
+
+void
+JavadocFinalizer::
+removeTempTextNodes(Javadoc& javadoc)
+{
+    removeTempTextNodes(javadoc.blocks);
+    if (javadoc.brief)
+    {
+        removeTempTextNodes(*javadoc.brief);
+    }
+    removeTempTextNodes(javadoc.returns);
+    removeTempTextNodes(javadoc.params);
+    removeTempTextNodes(javadoc.tparams);
+    removeTempTextNodes(javadoc.exceptions);
+    removeTempTextNodes(javadoc.sees);
+    removeTempTextNodes(javadoc.preconditions);
+    removeTempTextNodes(javadoc.postconditions);
+}
+
+void
+JavadocFinalizer::
+removeTempTextNodes(std::vector<Polymorphic<doc::Block>>& blocks)
+{
+    for (auto& block: blocks)
+    {
+        removeTempTextNodes(*block);
+    }
+    // Erase all blocks of zero elements
+    std::erase_if(blocks, [](Polymorphic<doc::Block> const& block) {
+        if (block->Kind == doc::NodeKind::unordered_list)
+        {
+            return get<doc::UnorderedList>(block).items.empty();
+        }
+        if (block->Kind == doc::NodeKind::heading)
+        {
+            return get<doc::Heading>(block).string.empty();
+        }
+        return block->children.empty();
+    });
+}
+
+void
+JavadocFinalizer::
+removeTempTextNodes(doc::Block& block)
+{
+    std::erase_if(block.children, [](Polymorphic<doc::Text> const& child) {
+        return is_one_of(
+            child->Kind,
+            { doc::NodeKind::copy_details });
+    });
+}
+
+void
+JavadocFinalizer::
+trimBlocks(Javadoc& javadoc)
+{
+    trimBlocks(javadoc.blocks);
+    if (javadoc.brief)
+    {
+        trimBlock(*javadoc.brief);
+    }
+    trimBlocks(javadoc.returns);
+    trimBlocks(javadoc.params);
+    trimBlocks(javadoc.tparams);
+    trimBlocks(javadoc.exceptions);
+    trimBlocks(javadoc.sees);
+    trimBlocks(javadoc.preconditions);
+    trimBlocks(javadoc.postconditions);
+}
+
+void
+JavadocFinalizer::
+trimBlocks(std::vector<Polymorphic<doc::Block>>& blocks)
+{
+    for (auto& block: blocks)
+    {
+        bool const isVerbatim = block->Kind == doc::NodeKind::code;
+        MRDOCS_CHECK_OR_CONTINUE(!isVerbatim);
+        trimBlock(*block);
+    }
+}
+
+void
+JavadocFinalizer::
+trimBlock(doc::Block& block)
+{
+    if (block.Kind == doc::NodeKind::unordered_list)
+    {
+        auto& ul = dynamic_cast<doc::UnorderedList&>(block);
+        trimBlocks(ul.items);
+        return;
+    }
+
+    MRDOCS_CHECK_OR(!block.children.empty());
+
+    // Helper functions
+    static constexpr std::string_view whitespace_chars = " \t\n\v\f\r";
+    auto endsWithSpace = [](std::string_view const str) {
+        return endsWithOneOf(str, whitespace_chars);
+    };
+    auto startsWithSpace = [](std::string_view const str) {
+        return startsWithOneOf(str, whitespace_chars);
+    };
+
+    // The first children are ltrimmed as one
+    while (!block.children.empty())
+    {
+        auto& first = block.children.front()->string;
+        if (startsWithSpace(first))
+        {
+            first = ltrim(first);
+        }
+        if (first.empty())
+        {
+            // "pop_front"
+            block.children.erase(block.children.begin());
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    // The last children are rtrimmed as one
+    while (!block.children.empty())
+    {
+        auto& last = block.children.back()->string;
+        if (endsWithSpace(last))
+        {
+            last = rtrim(last);
+        }
+        if (last.empty())
+        {
+            block.children.pop_back();
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    // Like in HTML, multiple whitespaces (spaces, tabs, and newlines)
+    // between and within child nodes are collapsed into a single space.
+    if (!block.children.empty())
+    {
+        for (
+            auto it = block.children.begin() + 1;
+            it != block.children.end();
+            ++it)
+        {
+            auto& child = *it;
+            auto& prev = *std::prev(it);
+            if (endsWithSpace(prev->string) && startsWithSpace(child->string))
+            {
+                // The first visible space character is maintained.
+                // All others are removed.
+                prev->string = rtrim(prev->string);
+                prev->string.push_back(' ');
+                child->string = ltrim(child->string);
+            }
+        }
+    }
+
+    // Like in HTML, multiple whitespaces (spaces, tabs, and newlines)
+    // within child nodes are collapsed into a single space.
+    for (auto& child: block.children)
+    {
+        auto& str = child->string;
+        for (std::size_t i = 0; i < str.size();)
+        {
+            if (contains(whitespace_chars, str[i]))
+            {
+                std::size_t const runStart = i;
+                std::size_t runEnd = i + 1;
+                while (
+                    runEnd < str.size() &&
+                    contains(whitespace_chars, str[runEnd]))
+                {
+                    ++runEnd;
+                }
+                if (runEnd > runStart + 1)
+                {
+                    std::size_t const runSize = runEnd - runStart;
+                    str.erase(runStart + 1, runSize - 1);
+                    str[runStart] = ' ';
+                }
+                i = runEnd;
+            }
+            else
+            {
+                ++i;
+            }
+        }
+    }
+}
+
+void
+JavadocFinalizer::
+unindentCodeBlocks(Javadoc& javadoc)
+{
+    unindentCodeBlocks(javadoc.blocks);
+    if (javadoc.brief)
+    {
+        unindentCodeBlocks(*javadoc.brief);
+    }
+    unindentCodeBlocks(javadoc.returns);
+    unindentCodeBlocks(javadoc.params);
+    unindentCodeBlocks(javadoc.tparams);
+    unindentCodeBlocks(javadoc.exceptions);
+    unindentCodeBlocks(javadoc.sees);
+    unindentCodeBlocks(javadoc.preconditions);
+    unindentCodeBlocks(javadoc.postconditions);
+}
+
+void
+JavadocFinalizer::
+unindentCodeBlocks(std::vector<Polymorphic<doc::Block>>& blocks)
+{
+    for (auto& block: blocks)
+    {
+        if (block->Kind == doc::NodeKind::code)
+        {
+            unindentCodeBlocks(*block);
+        }
+    }
+}
+
+void
+JavadocFinalizer::
+unindentCodeBlocks(doc::Block& block)
+{
+    MRDOCS_CHECK_OR(block.Kind == doc::NodeKind::code);
+    MRDOCS_CHECK_OR(!block.children.empty());
+
+    // Determine the left margin
+    std::size_t leftMargin = std::numeric_limits<std::size_t>::max();
+    for (auto& pText: block.children)
+    {
+        auto& text = dynamic_cast<doc::Text&>(*pText);
+        if (text.string.empty())
+        {
+            continue;
+        }
+        std::size_t const margin = text.string.find_first_not_of(" \t");
+        if (margin == std::string::npos)
+        {
+            continue;
+        }
+        leftMargin = std::min(leftMargin, margin);
+    }
+
+    MRDOCS_CHECK_OR(leftMargin != std::numeric_limits<std::size_t>::max());
+
+    // Remove the left margin
+    for (auto& pText: block.children)
+    {
+        auto& text = dynamic_cast<doc::Text&>(*pText);
+        if (text.string.size() < leftMargin)
+        {
+            continue;
+        }
+        text.string = text.string.substr(leftMargin);
+    }
 }
 
 namespace {
@@ -454,10 +1348,11 @@ setAutoRelates()
 
 void
 JavadocFinalizer::
-copyBriefAndDetails(Javadoc& javadoc)
+copyDetails(Javadoc& javadoc)
 {
     for (auto blockIt = javadoc.blocks.begin(); blockIt != javadoc.blocks.end();)
     {
+        // Get paragraph
         auto& block = *blockIt;
         if (block->Kind != doc::NodeKind::paragraph &&
             block->Kind != doc::NodeKind::details)
@@ -471,24 +1366,26 @@ copyBriefAndDetails(Javadoc& javadoc)
             ++blockIt;
             continue;
         }
-        // Find copydoc command
-        std::optional<doc::Copied> copied;
+
+        // Find copydetails command
+        std::optional<doc::CopyDetails> copied;
         for (auto textIt = para.children.begin(); textIt != para.children.end();)
         {
             // Find copydoc command
             auto& text = *textIt;
-            if (text->Kind != doc::NodeKind::copied)
+            if (text->Kind != doc::NodeKind::copy_details)
             {
                 ++textIt;
                 continue;
             }
             // Copy reference
-            copied = dynamic_cast<doc::Copied&>(*text);
+            copied = dynamic_cast<doc::CopyDetails&>(*text);
 
-            // Remove copied node
+            // Remove copied node from the text
             /* it2 = */ para.children.erase(textIt);
             break;
         }
+
         // Remove leading children from the paragraph that are
         // either empty or only white spaces. We also ltrim
         // the first child with content.
@@ -504,6 +1401,7 @@ copyBriefAndDetails(Javadoc& javadoc)
                 break;
             }
         }
+
         // Remove trailing children from the paragraph that are
         // either empty or only white spaces. We also rtrim
         // the last child with content.
@@ -519,10 +1417,12 @@ copyBriefAndDetails(Javadoc& javadoc)
                 break;
             }
         }
+
         // Remove empty completely empty children from the paragraph
         std::erase_if(para.children, [](Polymorphic<doc::Text> const& child) {
             return child->string.empty();
         });
+
         // Merge consecutive text nodes that have exactly the same terminal kind
         for (auto textIt = para.children.begin(); textIt != para.children.end();)
         {
@@ -539,12 +1439,15 @@ copyBriefAndDetails(Javadoc& javadoc)
             }
             ++textIt;
         }
+
         // Remove the entire paragraph block from the javadoc if it is empty
         if (para.empty())
         {
             blockIt = javadoc.blocks.erase(blockIt);
             MRDOCS_CHECK_OR_CONTINUE(copied);
         }
+
+        // Nothing to copy: continue to the next block
         if (!copied)
         {
             ++blockIt;
@@ -571,10 +1474,9 @@ copyBriefAndDetails(Javadoc& javadoc)
 
         // Ensure the source node is finalized
         Info const& res = *resRef;
-        if (!finalized_.contains(&res))
-        {
-            operator()(const_cast<Info&>(res));
-        }
+        finalizeJavadoc(const_cast<Info&>(res));
+
+        // Check if there's any documentation details to copy
         if (!res.javadoc)
         {
             if (corpus_.config->warnings &&
@@ -597,441 +1499,14 @@ copyBriefAndDetails(Javadoc& javadoc)
             continue;
         }
 
-        // Copy brief and details
-        bool const copyBrief = copied->parts == doc::Parts::all || copied->parts == doc::Parts::brief;
-        bool const copyDetails = copied->parts == doc::Parts::all || copied->parts == doc::Parts::description;
+        // Copy detail blocks from source to destination to
+        // the same position in the destination
         Javadoc const& src = *res.javadoc;
-        if (copyBrief && !javadoc.brief)
+        if (!src.blocks.empty())
         {
-            javadoc.brief = src.brief;
+            blockIt = javadoc.blocks.insert(blockIt, src.blocks.begin(), src.blocks.end());
+            blockIt += src.blocks.size();
         }
-        if (copyDetails)
-        {
-            // Copy detail blocks
-            if (!src.blocks.empty())
-            {
-                blockIt = javadoc.blocks.insert(blockIt, src.blocks.begin(), src.blocks.end());
-                blockIt = std::next(blockIt, src.blocks.size());
-            }
-            // Copy returns only if destination is empty
-            if (javadoc.returns.empty())
-            {
-                javadoc.returns.insert(
-                    javadoc.returns.end(),
-                    src.returns.begin(),
-                    src.returns.end());
-            }
-            // Copy only params that don't exist at the destination
-            // documentation but that do exist in the destination
-            // function parameters declaration.
-            if (current_context_->isFunction())
-            {
-                auto const& FI = dynamic_cast<FunctionInfo const&>(*current_context_);
-                for (auto const& srcParam: src.params)
-                {
-                    if (std::ranges::find_if(javadoc.params,
-                        [&srcParam](doc::Param const& destParam)
-                        {
-                            return srcParam.name == destParam.name;
-                        }) != javadoc.params.end())
-                    {
-                        // param already exists at the destination,
-                        // so the user attributed a new meaning to it
-                        continue;
-                    }
-                    if (std::ranges::find_if(FI.Params,
-                        [&srcParam](Param const& destParam)
-                        {
-                            return srcParam.name == *destParam.Name;
-                        }) == FI.Params.end())
-                    {
-                        // param does not exist in the destination function
-                        // so it would be an error there
-                        continue;
-                    }
-                    // Push the new param
-                    javadoc.params.push_back(srcParam);
-                }
-            }
-            // Copy only tparams that don't exist at the destination
-            // documentation but that do exist in the destination
-            // template parameters.
-            TemplateInfo const* destTemplate = visit(
-                *current_context_,
-                [](auto& I) -> TemplateInfo const*
-                {
-                    if constexpr (requires { I.Template; })
-                    {
-                        if (I.Template)
-                        {
-                            return &*I.Template;
-                        }
-                    }
-                    return nullptr;
-                });
-            if (destTemplate)
-            {
-                for (auto const& srcTParam: src.tparams)
-                {
-                    if (std::ranges::find_if(javadoc.tparams,
-                        [&srcTParam](doc::TParam const& destTParam)
-                        {
-                            return srcTParam.name == destTParam.name;
-                        }) != javadoc.tparams.end())
-                    {
-                        // tparam already exists at the destination,
-                        // so the user attributed a new meaning to it
-                        continue;
-                    }
-                    if (std::ranges::find_if(destTemplate->Params,
-                        [&srcTParam](Polymorphic<TParam> const& destTParam)
-                        {
-                            return srcTParam.name == destTParam->Name;
-                        }) == destTemplate->Params.end())
-                    {
-                        // TParam does not exist in the destination definition
-                        // so it would be an error there
-                        continue;
-                    }
-                    // Push the new param
-                    javadoc.tparams.push_back(srcTParam);
-                }
-            }
-            // exceptions
-            if (javadoc.exceptions.empty())
-            {
-                bool const isNoExcept =
-                    current_context_->isFunction() ?
-                    dynamic_cast<FunctionInfo const&>(*current_context_).Noexcept.Kind == NoexceptKind::False :
-                    false;
-                if (!isNoExcept)
-                {
-                    javadoc.exceptions.insert(
-                        javadoc.exceptions.end(),
-                        src.exceptions.begin(),
-                        src.exceptions.end());
-                }
-            }
-            // sees
-            if (javadoc.sees.empty())
-            {
-                javadoc.sees.insert(
-                    javadoc.sees.end(),
-                    src.sees.begin(),
-                    src.sees.end());
-            }
-            // preconditions
-            if (javadoc.preconditions.empty())
-            {
-                javadoc.preconditions.insert(
-                    javadoc.preconditions.end(),
-                    src.preconditions.begin(),
-                    src.preconditions.end());
-            }
-            // postconditions
-            if (javadoc.postconditions.empty())
-            {
-                javadoc.postconditions.insert(
-                    javadoc.postconditions.end(),
-                    src.postconditions.begin(),
-                    src.postconditions.end());
-            }
-            continue;
-        }
-        // Erasing the paragraph could make the iterator == end()
-        if (blockIt != javadoc.blocks.end())
-        {
-            ++blockIt;
-        }
-    }
-}
-
-void
-JavadocFinalizer::
-setAutoBrief(Javadoc& javadoc)
-{
-    MRDOCS_CHECK_OR(corpus_.config->autoBrief);
-    MRDOCS_CHECK_OR(!javadoc.brief);
-    MRDOCS_CHECK_OR(!javadoc.blocks.empty());
-    for (auto it = javadoc.blocks.begin(); it != javadoc.blocks.end();)
-    {
-        if (auto& block = *it;
-            block->Kind == doc::NodeKind::paragraph ||
-            block->Kind == doc::NodeKind::details)
-        {
-            auto& para = dynamic_cast<doc::Paragraph&>(*block);
-            if (para.children.empty())
-            {
-                ++it;
-                continue;
-            }
-            javadoc.brief.emplace();
-            javadoc.brief->children = para.children;
-            it = javadoc.blocks.erase(it);
-            return;
-        }
-        ++it;
-    }
-}
-
-void
-JavadocFinalizer::
-trimBlocks(Javadoc& javadoc)
-{
-    trimBlocks(javadoc.blocks);
-    if (javadoc.brief)
-    {
-        trimBlock(*javadoc.brief);
-    }
-    trimBlocks(javadoc.returns);
-    trimBlocks(javadoc.params);
-    trimBlocks(javadoc.tparams);
-    trimBlocks(javadoc.exceptions);
-    trimBlocks(javadoc.sees);
-    trimBlocks(javadoc.preconditions);
-    trimBlocks(javadoc.postconditions);
-}
-
-void
-JavadocFinalizer::
-trimBlocks(std::vector<Polymorphic<doc::Block>>& blocks)
-{
-    for (auto& block: blocks)
-    {
-        bool const isVerbatim = block->Kind == doc::NodeKind::code;
-        MRDOCS_CHECK_OR_CONTINUE(!isVerbatim);
-        trimBlock(*block);
-    }
-}
-
-void
-JavadocFinalizer::
-trimBlock(doc::Block& block)
-{
-    if (block.Kind == doc::NodeKind::unordered_list)
-    {
-        auto& ul = dynamic_cast<doc::UnorderedList&>(block);
-        trimBlocks(ul.items);
-        return;
-    }
-
-    MRDOCS_CHECK_OR(!block.children.empty());
-
-    // Helper functions
-    static constexpr std::string_view whitespace_chars = " \t\n\v\f\r";
-    auto endsWithSpace = [](std::string_view const str) {
-        return endsWithOneOf(str, whitespace_chars);
-    };
-    auto startsWithSpace = [](std::string_view const str) {
-        return startsWithOneOf(str, whitespace_chars);
-    };
-
-    // The first children are ltrimmed as one
-    while (!block.children.empty())
-    {
-        auto& first = block.children.front()->string;
-        if (startsWithSpace(first))
-        {
-            first = ltrim(first);
-        }
-        if (first.empty())
-        {
-            // "pop_front"
-            block.children.erase(block.children.begin());
-        }
-        else
-        {
-            break;
-        }
-    }
-
-    // The last children are rtrimmed as one
-    while (!block.children.empty())
-    {
-        auto& last = block.children.back()->string;
-        if (endsWithSpace(last))
-        {
-            last = rtrim(last);
-        }
-        if (last.empty())
-        {
-            block.children.pop_back();
-        }
-        else
-        {
-            break;
-        }
-    }
-
-    // Like in HTML, multiple whitespaces (spaces, tabs, and newlines)
-    // between and within child nodes are collapsed into a single space.
-    for (
-        auto it = block.children.begin() + 1;
-        it != block.children.end();
-        ++it)
-    {
-        auto& child = *it;
-        auto& prev = *std::prev(it);
-        if (endsWithSpace(prev->string) && startsWithSpace(child->string))
-        {
-            // The first visible space character is maintained.
-            // All others are removed.
-            prev->string = rtrim(prev->string);
-            prev->string.push_back(' ');
-            child->string = ltrim(child->string);
-        }
-    }
-
-    // Like in HTML, multiple whitespaces (spaces, tabs, and newlines)
-    // within child nodes are collapsed into a single space.
-    for (auto& child: block.children)
-    {
-        auto& str = child->string;
-        for (std::size_t i = 0; i < str.size();)
-        {
-            if (contains(whitespace_chars, str[i]))
-            {
-                std::size_t const runStart = i;
-                std::size_t runEnd = i + 1;
-                while (
-                    runEnd < str.size() &&
-                    contains(whitespace_chars, str[runEnd]))
-                {
-                    ++runEnd;
-                }
-                if (runEnd > runStart + 1)
-                {
-                    std::size_t const runSize = runEnd - runStart;
-                    str.erase(runStart + 1, runSize - 1);
-                    str[runStart] = ' ';
-                }
-                i = runEnd;
-            }
-            else
-            {
-                ++i;
-            }
-        }
-    }
-}
-
-void
-JavadocFinalizer::
-removeTempTextNodes(Javadoc& javadoc)
-{
-    removeTempTextNodes(javadoc.blocks);
-    if (javadoc.brief)
-    {
-        removeTempTextNodes(*javadoc.brief);
-    }
-    removeTempTextNodes(javadoc.returns);
-    removeTempTextNodes(javadoc.params);
-    removeTempTextNodes(javadoc.tparams);
-    removeTempTextNodes(javadoc.exceptions);
-    removeTempTextNodes(javadoc.sees);
-    removeTempTextNodes(javadoc.preconditions);
-    removeTempTextNodes(javadoc.postconditions);
-}
-
-void
-JavadocFinalizer::
-removeTempTextNodes(std::vector<Polymorphic<doc::Block>>& blocks)
-{
-    for (auto& block: blocks)
-    {
-        removeTempTextNodes(*block);
-    }
-    // Erase all blocks of zero elements
-    std::erase_if(blocks, [](Polymorphic<doc::Block> const& block) {
-        if (block->Kind == doc::NodeKind::unordered_list)
-        {
-            return get<doc::UnorderedList>(block).items.empty();
-        }
-        if (block->Kind == doc::NodeKind::heading)
-        {
-            return get<doc::Heading>(block).string.empty();
-        }
-        return block->children.empty();
-    });
-}
-
-void
-JavadocFinalizer::
-removeTempTextNodes(doc::Block& block)
-{
-    std::erase_if(block.children, [](Polymorphic<doc::Text> const& child) {
-        return is_one_of(
-            child->Kind,
-            { doc::NodeKind::copied });
-    });
-}
-
-void
-JavadocFinalizer::
-unindentCodeBlocks(Javadoc& javadoc)
-{
-    unindentCodeBlocks(javadoc.blocks);
-    if (javadoc.brief)
-    {
-        unindentCodeBlocks(*javadoc.brief);
-    }
-    unindentCodeBlocks(javadoc.returns);
-    unindentCodeBlocks(javadoc.params);
-    unindentCodeBlocks(javadoc.tparams);
-    unindentCodeBlocks(javadoc.exceptions);
-    unindentCodeBlocks(javadoc.sees);
-    unindentCodeBlocks(javadoc.preconditions);
-    unindentCodeBlocks(javadoc.postconditions);
-}
-
-void
-JavadocFinalizer::
-unindentCodeBlocks(std::vector<Polymorphic<doc::Block>>& blocks)
-{
-    for (auto& block: blocks)
-    {
-        if (block->Kind == doc::NodeKind::code)
-        {
-            unindentCodeBlocks(*block);
-        }
-    }
-}
-
-void
-JavadocFinalizer::
-unindentCodeBlocks(doc::Block& block)
-{
-    MRDOCS_CHECK_OR(block.Kind == doc::NodeKind::code);
-    MRDOCS_CHECK_OR(!block.children.empty());
-
-    // Determine the left margin
-    std::size_t leftMargin = std::numeric_limits<std::size_t>::max();
-    for (auto& pText: block.children)
-    {
-        auto& text = dynamic_cast<doc::Text&>(*pText);
-        if (text.string.empty())
-        {
-            continue;
-        }
-        std::size_t const margin = text.string.find_first_not_of(" \t");
-        if (margin == std::string::npos)
-        {
-            continue;
-        }
-        leftMargin = std::min(leftMargin, margin);
-    }
-
-    MRDOCS_CHECK_OR(leftMargin != std::numeric_limits<std::size_t>::max());
-
-    // Remove the left margin
-    for (auto& pText: block.children)
-    {
-        auto& text = dynamic_cast<doc::Text&>(*pText);
-        if (text.string.size() < leftMargin)
-        {
-            continue;
-        }
-        text.string = text.string.substr(leftMargin);
     }
 }
 
@@ -1167,477 +1642,6 @@ checkExists(SymbolID const& id) const
     MRDOCS_ASSERT(corpus_.info_.contains(id));
 }
 
-namespace {
-template <class Range>
-bool
-populateOverloadsBriefIfAllSameBrief(OverloadsInfo& I, Range&& functionsWithBrief)
-{
-    auto first = *functionsWithBrief.begin();
-    doc::Brief const& firstBrief = *first.javadoc->brief;
-    if (auto otherFunctions = std::views::drop(functionsWithBrief, 1);
-        std::ranges::all_of(otherFunctions, [&](FunctionInfo const& otherFunction)
-        {
-            doc::Brief const& otherBrief = *otherFunction.javadoc->brief;
-            return otherBrief == firstBrief;
-        }))
-    {
-        I.javadoc->brief = firstBrief;
-        return true;
-    }
-    return false;
-}
-
-void
-setBriefString(std::optional<doc::Brief>& brief, std::string_view str) {
-    brief.emplace();
-    brief->children.emplace_back(MakePolymorphic<doc::Text>(std::string(str)));
-}
-
-bool
-populateOverloadsFromClass(OverloadsInfo& I)
-{
-    switch (I.Class)
-    {
-        case FunctionClass::Normal:
-            return false;
-        case FunctionClass::Constructor:
-        {
-            setBriefString(I.javadoc->brief, "Constructors");
-            return true;
-        }
-        case FunctionClass::Conversion:
-        {
-            setBriefString(I.javadoc->brief, "Conversion operators");
-            return true;
-        }
-        case FunctionClass::Destructor:
-        default:
-        MRDOCS_UNREACHABLE();
-    }
-}
-
-template <class Range>
-bool
-populateOverloadsFromOperator(OverloadsInfo& I, Range&& functions)
-{
-    if (I.OverloadedOperator == OperatorKind::None)
-    {
-        return false;
-    }
-    // An array of pairs describing the operator kind and the
-    // default brief string for that operator kind.
-    struct OperatorBrief {
-        OperatorKind kind = OperatorKind::None;
-        std::string_view brief;
-        std::string_view binaryBrief;
-        constexpr
-        OperatorBrief(
-            OperatorKind kind,
-            std::string_view brief,
-            std::string_view binaryBrief = "")
-            : kind(kind)
-            , brief(brief)
-            , binaryBrief(binaryBrief) {}
-    };
-    static constexpr OperatorBrief operatorBriefs[] = {
-        {OperatorKind::Equal, "Assignment operators"},
-        {OperatorKind::Star, "Dereference operators", "Multiplication operators"},
-        {OperatorKind::Arrow, "Member access operators"},
-        {OperatorKind::Exclaim, "Negation operators"},
-        {OperatorKind::EqualEqual, "Equality operators"},
-        {OperatorKind::ExclaimEqual, "Inequality operators"},
-        {OperatorKind::Less, "Less-than operators"},
-        {OperatorKind::LessEqual, "Less-than-or-equal operators"},
-        {OperatorKind::Greater, "Greater-than operators"},
-        {OperatorKind::GreaterEqual, "Greater-than-or-equal operators"},
-        {OperatorKind::Spaceship, "Three-way comparison operators"},
-        {OperatorKind::AmpAmp, "Conjunction operators"},
-        {OperatorKind::PipePipe, "Disjunction operators"},
-        {OperatorKind::PlusPlus, "Increment operators"},
-        {OperatorKind::MinusMinus, "Decrement operators"},
-        {OperatorKind::Comma, "Comma operators"},
-        {OperatorKind::ArrowStar, "Pointer-to-member operators"},
-        {OperatorKind::Call, "Function call operators"},
-        {OperatorKind::Subscript, "Subscript operators"},
-        {OperatorKind::Conditional, "Ternary operators"},
-        {OperatorKind::Coawait, "Coawait operators"},
-        {OperatorKind::New, "New operators"},
-        {OperatorKind::Delete, "Delete operators"},
-        {OperatorKind::ArrayNew, "New array operators"},
-        {OperatorKind::ArrayDelete, "Delete array operators"},
-        {OperatorKind::Plus, "Unary plus operators", "Addition operators"},
-        {OperatorKind::Minus, "Unary minus operators", "Subtraction operators"},
-        {OperatorKind::Slash, "Division operators"},
-        {OperatorKind::Percent, "Modulus operators"},
-        {OperatorKind::Pipe, "Bitwise disjunction operators"},
-        {OperatorKind::Caret, "Bitwise exclusive-or operators"},
-        {OperatorKind::Tilde, "Bitwise negation operators"},
-        {OperatorKind::PlusEqual, "Addition assignment operators"},
-        {OperatorKind::MinusEqual, "Subtraction assignment operators"},
-        {OperatorKind::StarEqual, "Multiplication assignment operators"},
-        {OperatorKind::SlashEqual, "Division assignment operators"},
-        {OperatorKind::PercentEqual, "Modulus assignment operators"},
-        {OperatorKind::Amp, "Address-of operators", "Bitwise conjunction operators"},
-        {OperatorKind::AmpEqual, "Bitwise conjunction assignment operators"},
-        {OperatorKind::PipeEqual, "Bitwise disjunction assignment operators"},
-        {OperatorKind::CaretEqual, "Bitwise exclusive-or assignment operators"},
-        {OperatorKind::LessLess, "Left shift operators"},
-        {OperatorKind::GreaterGreater, "Right shift operators"},
-        {OperatorKind::LessLessEqual, "Left shift assignment operators"},
-        {OperatorKind::GreaterGreaterEqual, "Right shift assignment operators"}
-    };
-    for (auto const& [kind, brief, binaryBrief]: operatorBriefs)
-    {
-        MRDOCS_CHECK_OR_CONTINUE(I.OverloadedOperator == kind);
-
-        // The name for operator<< depends on the parameter types
-        if (kind == OperatorKind::LessLess)
-        {
-            // Check if all functions are Stream Operators:
-            // 1) Non-member function
-            // 2) First param is mutable reference
-            // 3) Return type is mutable reference of same type as first param
-            if (std::ranges::all_of(functions,
-            [&](FunctionInfo const& function)
-                {
-                    MRDOCS_CHECK_OR(!function.IsRecordMethod, false);
-                    MRDOCS_CHECK_OR(function.Params.size() == 2, false);
-                    // Check first param is mutable left reference
-                    auto& firstParam = function.Params[0];
-                    MRDOCS_CHECK_OR(firstParam, false);
-                    auto& firstQualType = firstParam.Type;
-                    MRDOCS_CHECK_OR(firstQualType, false);
-                    MRDOCS_CHECK_OR(firstQualType->isLValueReference(), false);
-                    auto& firstNamedType = get<LValueReferenceTypeInfo const&>(firstQualType).PointeeType;
-                    MRDOCS_CHECK_OR(firstNamedType, false);
-                    MRDOCS_CHECK_OR(firstNamedType->isNamed(), false);
-                    // Check return type
-                    return firstQualType == function.ReturnType;
-                }))
-            {
-                setBriefString(I.javadoc->brief, "Stream insertion operators");
-            }
-            else
-            {
-                // Regular brief as more generic left shift operator otherwise
-                setBriefString(I.javadoc->brief, brief);
-            }
-            return true;
-        }
-
-        if (binaryBrief.empty())
-        {
-            setBriefString(I.javadoc->brief, brief);
-            return true;
-        }
-
-        if (std::ranges::all_of(functions,
-            [&](FunctionInfo const& function)
-            {
-                return (function.Params.size() + function.IsRecordMethod) == 2;
-            }))
-        {
-            setBriefString(I.javadoc->brief, binaryBrief);
-            return true;
-        }
-
-        if (std::ranges::all_of(functions,
-            [&](FunctionInfo const& function)
-            {
-                return (function.Params.size() + function.IsRecordMethod) == 1;
-            }))
-        {
-            setBriefString(I.javadoc->brief, brief);
-            return true;
-        }
-        return false;
-    }
-    return false;
-}
-
-bool
-populateOverloadsFromFunctionName(OverloadsInfo& I)
-{
-    std::string name = I.Name;
-    if (name.empty() &&
-        I.OverloadedOperator != OperatorKind::None)
-    {
-        name = getOperatorName(I.OverloadedOperator, true);
-    }
-    if (name.empty())
-    {
-        return false;
-    }
-    I.javadoc->brief.emplace();
-    I.javadoc->brief->children.emplace_back(MakePolymorphic<doc::Text, doc::Styled>(std::string(name), doc::Style::mono));
-    I.javadoc->brief->children.emplace_back(MakePolymorphic<doc::Text>(std::string(" overloads")));
-    return true;
-}
-
-template <class Range>
-void
-populateOverloadsBrief(OverloadsInfo& I, Range&& functions)
-{
-    auto functionsWithBrief = std::views::filter(functions,
-        [](FunctionInfo const& function)
-        {
-            return
-                function.javadoc &&
-                function.javadoc->brief &&
-                !function.javadoc->brief->empty();
-        });
-    if (std::ranges::empty(functionsWithBrief))
-    {
-        return;
-    }
-    MRDOCS_CHECK_OR(!populateOverloadsBriefIfAllSameBrief(I, functionsWithBrief));
-    MRDOCS_CHECK_OR(!populateOverloadsFromClass(I));
-    MRDOCS_CHECK_OR(!populateOverloadsFromOperator(I, functions));
-    MRDOCS_CHECK_OR(!populateOverloadsFromFunctionName(I));
-}
-
-template <class Range>
-void
-populateOverloadsReturns(OverloadsInfo& I, Range&& functions) {
-    auto functionReturns = functions |
-        std::views::filter([](FunctionInfo const& function)
-            {
-                return function.javadoc && !function.javadoc->returns.empty();
-            }) |
-        std::views::transform([](FunctionInfo const& function)
-            {
-                return function.javadoc->returns;
-            }) |
-        std::views::join;
-    for (doc::Returns const& functionReturn: functionReturns)
-    {
-        auto sameIt = std::ranges::find_if(
-            I.javadoc->returns,
-            [&functionReturn](doc::Returns const& overloadReturns)
-            {
-                return overloadReturns == functionReturn;
-            });
-        if (sameIt == I.javadoc->returns.end())
-        {
-            I.javadoc->returns.push_back(functionReturn);
-        }
-    }
-}
-
-template <class Range>
-void
-populateOverloadsParams(OverloadsInfo& I, Range& functions) {
-    auto functionParams = functions |
-        std::views::filter([](FunctionInfo const& function)
-            {
-                return function.javadoc && !function.javadoc->params.empty();
-            }) |
-        std::views::transform([](FunctionInfo const& function)
-            {
-                return function.javadoc->params;
-            }) |
-        std::views::join;
-    for (doc::Param const& functionParam: functionParams)
-    {
-        auto sameIt = std::ranges::find_if(
-            I.javadoc->params,
-            [&functionParam](doc::Param const& overloadParam)
-            {
-                return overloadParam.name == functionParam.name;
-            });
-        if (sameIt == I.javadoc->params.end())
-        {
-            I.javadoc->params.push_back(functionParam);
-        }
-    }
-}
-
-template <class Range>
-void
-populateOverloadsTParams(OverloadsInfo& I, Range& functions) {
-    auto functionTParams = functions |
-        std::views::filter([](FunctionInfo const& function)
-            {
-                return function.javadoc && !function.javadoc->tparams.empty();
-            }) |
-        std::views::transform([](FunctionInfo const& function)
-            {
-                return function.javadoc->tparams;
-            }) |
-        std::views::join;
-    for (doc::TParam const& functionTParam: functionTParams)
-    {
-        auto sameIt = std::ranges::find_if(
-            I.javadoc->tparams,
-            [&functionTParam](doc::TParam const& overloadTParam)
-            {
-                return overloadTParam.name == functionTParam.name;
-            });
-        if (sameIt == I.javadoc->tparams.end())
-        {
-            I.javadoc->tparams.push_back(functionTParam);
-        }
-    }
-}
-
-template <class Range>
-void
-populateOverloadsExceptions(OverloadsInfo& I, Range& functions) {
-    auto functionExceptions = functions |
-        std::views::filter([](FunctionInfo const& function)
-            {
-                return function.javadoc && !function.javadoc->exceptions.empty();
-            }) |
-        std::views::transform([](FunctionInfo const& function)
-            {
-                return function.javadoc->exceptions;
-            }) |
-        std::views::join;
-    for (doc::Throws const& functionException: functionExceptions)
-    {
-        auto sameIt = std::ranges::find_if(
-            I.javadoc->exceptions,
-            [&functionException](doc::Throws const& overloadException)
-            {
-                return overloadException.exception.string == functionException.exception.string;
-            });
-        if (sameIt == I.javadoc->exceptions.end())
-        {
-            I.javadoc->exceptions.push_back(functionException);
-        }
-    }
-}
-
-template <class Range>
-void
-populateOverloadsSees(OverloadsInfo& I, Range& functions) {
-    auto functionSees = functions |
-        std::views::filter([](FunctionInfo const& function)
-            {
-                return function.javadoc && !function.javadoc->sees.empty();
-            }) |
-        std::views::transform([](FunctionInfo const& function)
-            {
-                return function.javadoc->sees;
-            }) |
-        std::views::join;
-    for (doc::See const& functionSee: functionSees)
-    {
-        auto sameIt = std::ranges::find_if(
-            I.javadoc->sees,
-            [&functionSee](doc::See const& overloadSee)
-            {
-                return overloadSee.children == functionSee.children;
-            });
-        if (sameIt == I.javadoc->sees.end())
-        {
-            I.javadoc->sees.push_back(functionSee);
-        }
-    }
-}
-
-template <class Range>
-void
-populateOverloadsPreconditions(OverloadsInfo& I, Range& functions) {
-    auto functionsPres = functions |
-        std::views::filter([](FunctionInfo const& function)
-            {
-                return function.javadoc && !function.javadoc->preconditions.empty();
-            }) |
-        std::views::transform([](FunctionInfo const& function)
-            {
-                return function.javadoc->preconditions;
-            }) |
-        std::views::join;
-    for (doc::Precondition const& functionPre: functionsPres)
-    {
-        auto sameIt = std::ranges::find_if(
-            I.javadoc->preconditions,
-            [&functionPre](doc::Precondition const& overloadPre)
-            {
-                return overloadPre.children == functionPre.children;
-            });
-        if (sameIt == I.javadoc->preconditions.end())
-        {
-            I.javadoc->preconditions.push_back(functionPre);
-        }
-    }
-}
-
-template <class Range>
-void
-populateOverloadsPostconditions(OverloadsInfo& I, Range& functions) {
-    auto functionsPosts = functions |
-        std::views::filter([](FunctionInfo const& function)
-            {
-                return function.javadoc && !function.javadoc->postconditions.empty();
-            }) |
-        std::views::transform([](FunctionInfo const& function)
-            {
-                return function.javadoc->postconditions;
-            }) |
-        std::views::join;
-    for (doc::Postcondition const& functionPost: functionsPosts)
-    {
-        auto sameIt = std::ranges::find_if(
-            I.javadoc->postconditions,
-            [&functionPost](doc::Postcondition const& overloadPost)
-            {
-                return overloadPost.children == functionPost.children;
-            });
-        if (sameIt == I.javadoc->postconditions.end())
-        {
-            I.javadoc->postconditions.push_back(functionPost);
-        }
-    }
-}
-} // (anon)
-
-
-void
-JavadocFinalizer::
-populateOverloadJavadocs(OverloadsInfo& I)
-{
-    // Create a view all Info members of I
-    auto functions =
-        I.Members |
-        std::views::transform([&](SymbolID const& id)
-            {
-                return corpus_.find(id);
-            }) |
-        std::views::filter([](Info const* infoPtr)
-            {
-                return infoPtr != nullptr && infoPtr->isFunction();
-            }) |
-        std::views::transform([](Info const* infoPtr) -> FunctionInfo const&
-            {
-                return *dynamic_cast<FunctionInfo const*>(infoPtr);
-            });
-
-    // Ensure all the members are initialized
-    for (FunctionInfo const& function: functions)
-    {
-        if (!finalized_.contains(&function))
-        {
-            operator()(const_cast<FunctionInfo&>(function));
-        }
-    }
-
-    I.javadoc.emplace();
-    // blocks: we do not copy javadoc detail blocks because
-    // it's impossible to guarantee that the details for
-    // any of the functions make sense for all overloads
-    populateOverloadsBrief(I, functions);
-    populateOverloadsReturns(I, functions);
-    populateOverloadsParams(I, functions);
-    populateOverloadsTParams(I, functions);
-    populateOverloadsExceptions(I, functions);
-    populateOverloadsSees(I, functions);
-    populateOverloadsPreconditions(I, functions);
-    populateOverloadsPostconditions(I, functions);
-}
-
-
 void
 JavadocFinalizer::
 emitWarnings()
@@ -1698,31 +1702,6 @@ warnDocErrors()
         MRDOCS_CHECK_OR_CONTINUE(I->isFunction());
         warnParamErrors(dynamic_cast<FunctionInfo const&>(*I));
     }
-}
-
-namespace {
-/* Get a list of all parameter names in javadoc
-
-    The javadoc parameter names can contain a single parameter or
-    a list of parameters separated by commas. This function
-    returns a list of all parameter names in the javadoc.
- */
-SmallVector<std::string_view, 32>
-getJavadocParamNames(Javadoc const& javadoc)
-{
-    SmallVector<std::string_view, 32> result;
-    for (auto const& javadocParam: javadoc.params)
-    {
-        auto const& paramNamesStr = javadocParam.name;
-        for (auto paramNames = std::views::split(paramNamesStr, ',');
-             auto const& paramName: paramNames)
-        {
-            result.push_back(trim(std::string_view(paramName.begin(), paramName.end())));
-        }
-    }
-    return result;
-}
-
 }
 
 void

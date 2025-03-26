@@ -797,8 +797,8 @@ writeNode(doc::Node const& node)
     case doc::NodeKind::reference:
         writeReference(dynamic_cast<doc::Reference const&>(node));
         break;
-    case doc::NodeKind::copied:
-        writeCopied(dynamic_cast<doc::Copied const&>(node));
+    case doc::NodeKind::copy_details:
+        writeCopied(dynamic_cast<doc::CopyDetails const&>(node));
         break;
     case doc::NodeKind::throws:
         writeThrows(dynamic_cast<doc::Throws const&>(node));
@@ -831,23 +831,9 @@ writeReference(
 void
 XMLWriter::
 writeCopied(
-    doc::Copied const& node)
+    doc::CopyDetails const& node)
 {
-    std::string_view tag_name;
-    switch(node.parts)
-    {
-    case doc::Parts::all:
-        tag_name = "copydoc";
-        break;
-    case doc::Parts::brief:
-        tag_name = "copybrief";
-        break;
-    case doc::Parts::description:
-        tag_name = "copydetails";
-        break;
-    default:
-        MRDOCS_UNREACHABLE();
-    }
+    std::string_view const tag_name = "copydetails";
     tags_.write(tag_name, node.string, {
         { node.id }
         });

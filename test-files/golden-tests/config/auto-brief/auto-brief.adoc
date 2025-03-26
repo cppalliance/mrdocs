@@ -23,9 +23,9 @@
 | <<copyDetailsFromDocNoBrief,`copyDetailsFromDocNoBrief`>> 
 | Custom brief
 | <<copyDetailsFromExplicitBrief,`copyDetailsFromExplicitBrief`>> 
-| This will not be copied&period;
+| 
 | <<copyDetailsFromFirstSentenceAsBrief,`copyDetailsFromFirstSentenceAsBrief`>> 
-| This is more documentation&period;
+| 
 | <<copyDetailsFromNoDoc,`copyDetailsFromNoDoc`>> 
 | Custom brief
 | <<copyDocFromCopyBrief,`copyDocFromCopyBrief`>> 
@@ -167,8 +167,6 @@ copyDetailsFromDocNoBrief();
 [#copyDetailsFromExplicitBrief]
 == copyDetailsFromExplicitBrief
 
-This will not be copied&period;
-
 === Synopsis
 
 Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
@@ -179,10 +177,12 @@ void
 copyDetailsFromExplicitBrief();
 ----
 
+=== Description
+
+This description will never be copied as brief because it is an explicit brief&period;
+
 [#copyDetailsFromFirstSentenceAsBrief]
 == copyDetailsFromFirstSentenceAsBrief
-
-This is more documentation&period;
 
 === Synopsis
 
@@ -193,6 +193,10 @@ Declared in `&lt;auto&hyphen;brief&period;cpp&gt;`
 void
 copyDetailsFromFirstSentenceAsBrief();
 ----
+
+=== Description
+
+This is more documentation&period;
 
 [#copyDetailsFromNoDoc]
 == copyDetailsFromNoDoc
@@ -226,7 +230,7 @@ copyDocFromCopyBrief();
 
 === Description
 
-This will not be copied&period;
+This description will never be copied as brief because it is an explicit brief&period;
 
 [#copyDocFromExplicitBrief]
 == copyDocFromExplicitBrief
@@ -245,7 +249,7 @@ copyDocFromExplicitBrief();
 
 === Description
 
-This will not be copied&period;
+This description will never be copied as brief because it is an explicit brief&period;
 
 [#copyDocFromFirstSentenceAsBrief]
 == copyDocFromFirstSentenceAsBrief
@@ -298,7 +302,7 @@ explicitBriefFunction();
 
 === Description
 
-This will not be copied&period;
+This description will never be copied as brief because it is an explicit brief&period;
 
 [#explicitBriefFunction2]
 == explicitBriefFunction2
@@ -317,7 +321,7 @@ explicitBriefFunction2();
 
 === Description
 
-This will not be copied&period;
+This will not be copied as brief&period;
 
 [#failCircularReferenceCopyFunction]
 == failCircularReferenceCopyFunction

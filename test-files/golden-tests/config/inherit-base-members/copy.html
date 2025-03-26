@@ -19,11 +19,11 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="#base"><code>base</code></a> </td><td><span></span></td></tr><tr>
-<td><a href="#base_base"><code>base_base</code></a> </td><td><span></span></td></tr><tr>
-<td><a href="#derived"><code>derived</code></a> </td><td><span></span></td></tr><tr>
-<td><a href="#private_derived"><code>private_derived</code></a> </td><td><span></span></td></tr><tr>
-<td><a href="#protected_derived"><code>protected_derived</code></a> </td><td><span>Should inherit functions as protected.</span></td></tr>
+<td><a href="#base"><code>base</code></a> </td><td><span>A base class to test inheritance and shadowing</span></td></tr><tr>
+<td><a href="#base_base"><code>base_base</code></a> </td><td><span>A second-order base class to test indirect inheritance</span></td></tr><tr>
+<td><a href="#derived"><code>derived</code></a> </td><td><span>A class that derives from base and excluded_base</span></td></tr><tr>
+<td><a href="#private_derived"><code>private_derived</code></a> </td><td><span>A class that uses private inheritance only</span></td></tr><tr>
+<td><a href="#protected_derived"><code>protected_derived</code></a> </td><td><span>A class that should inherit functions as protected.</span></td></tr>
 </tbody>
 </table>
 
@@ -31,6 +31,10 @@
 <div>
 <div>
 <h2 id="base">base</h2>
+<div>
+<span>A base class to test inheritance and shadowing</span>
+
+</div>
 </div>
 <div>
 <h3>Synopsis</h3>
@@ -53,7 +57,7 @@ class base
 </tr>
 </thead>
 <tbody>
-<tr><td><code><a href="#base_base">base_base</a></code></td><td><span></span></td></tr>
+<tr><td><code><a href="#base_base">base_base</a></code></td><td><span>A second-order base class to test indirect inheritance</span></td></tr>
 </tbody>
 </table>
 </div>
@@ -104,7 +108,7 @@ class base
 </thead>
 <tbody>
 <tr><td><a href="#derived"><code>derived</code></a>
-    </td><td><span></span></td></tr>
+    </td><td><span>A class that derives from base and excluded_base</span></td></tr>
 </tbody>
 </table>
 </div>
@@ -128,6 +132,10 @@ base_base_inherited();
 </code>
 </pre>
 </div>
+<div>
+<h3>Return Value</h3>
+<span>A second-order base class to test indirect inheritance</span>
+</div>
 </div>
 <div>
 <div>
@@ -147,6 +155,10 @@ Declared in <code>&lt;copy.cpp&gt;</code></div>
 base_inherited();
 </code>
 </pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>A base class to test inheritance and shadowing</span>
 </div>
 </div>
 <div>
@@ -168,6 +180,10 @@ base_shadowed();
 </code>
 </pre>
 </div>
+<div>
+<h3>Return Value</h3>
+<span>A base class to test inheritance and shadowing</span>
+</div>
 </div>
 <div>
 <div>
@@ -187,6 +203,10 @@ Declared in <code>&lt;copy.cpp&gt;</code></div>
 derived_shadowed();
 </code>
 </pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>A base class to test inheritance and shadowing</span>
 </div>
 </div>
 <div>
@@ -208,6 +228,10 @@ do_base_base_inherited();
 </code>
 </pre>
 </div>
+<div>
+<h3>Return Value</h3>
+<span>A second-order base class to test indirect inheritance</span>
+</div>
 </div>
 <div>
 <div>
@@ -227,6 +251,10 @@ Declared in <code>&lt;copy.cpp&gt;</code></div>
 do_base_inherited();
 </code>
 </pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>A base class to test inheritance and shadowing</span>
 </div>
 </div>
 <div>
@@ -248,6 +276,10 @@ do_base_shadowed();
 </code>
 </pre>
 </div>
+<div>
+<h3>Return Value</h3>
+<span>A base class to test inheritance and shadowing</span>
+</div>
 </div>
 <div>
 <div>
@@ -268,10 +300,18 @@ do_derived_shadowed();
 </code>
 </pre>
 </div>
+<div>
+<h3>Return Value</h3>
+<span>A base class to test inheritance and shadowing</span>
+</div>
 </div>
 <div>
 <div>
 <h2 id="base_base">base_base</h2>
+<div>
+<span>A second-order base class to test indirect inheritance</span>
+
+</div>
 </div>
 <div>
 <h3>Synopsis</h3>
@@ -311,7 +351,7 @@ class base_base;
 </thead>
 <tbody>
 <tr><td><a href="#base"><code>base</code></a>
-    </td><td><span></span></td></tr>
+    </td><td><span>A base class to test inheritance and shadowing</span></td></tr>
 </tbody>
 </table>
 </div>
@@ -335,6 +375,10 @@ base_base_inherited();
 </code>
 </pre>
 </div>
+<div>
+<h3>Return Value</h3>
+<span>A second-order base class to test indirect inheritance</span>
+</div>
 </div>
 <div>
 <div>
@@ -355,10 +399,18 @@ do_base_base_inherited();
 </code>
 </pre>
 </div>
+<div>
+<h3>Return Value</h3>
+<span>A second-order base class to test indirect inheritance</span>
+</div>
 </div>
 <div>
 <div>
 <h2 id="derived">derived</h2>
+<div>
+<span>A class that derives from base and excluded_base</span>
+
+</div>
 </div>
 <div>
 <h3>Synopsis</h3>
@@ -382,7 +434,7 @@ class derived
 </tr>
 </thead>
 <tbody>
-<tr><td><code><a href="#base">base</a></code></td><td><span></span></td></tr>
+<tr><td><code><a href="#base">base</a></code></td><td><span>A base class to test inheritance and shadowing</span></td></tr>
 <tr><td><code>excluded_base</code></td><td><span></span></td></tr>
 </tbody>
 </table>
@@ -447,6 +499,10 @@ base_base_inherited();
 </code>
 </pre>
 </div>
+<div>
+<h3>Return Value</h3>
+<span>A second-order base class to test indirect inheritance</span>
+</div>
 </div>
 <div>
 <div>
@@ -466,6 +522,10 @@ Declared in <code>&lt;copy.cpp&gt;</code></div>
 base_inherited();
 </code>
 </pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>A base class to test inheritance and shadowing</span>
 </div>
 </div>
 <div>
@@ -487,6 +547,10 @@ base_shadowed();
 </code>
 </pre>
 </div>
+<div>
+<h3>Return Value</h3>
+<span>A base class to test inheritance and shadowing</span>
+</div>
 </div>
 <div>
 <div>
@@ -506,6 +570,10 @@ Declared in <code>&lt;copy.cpp&gt;</code></div>
 derived_shadowed();
 </code>
 </pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>A class that derives from base and excluded_base</span>
 </div>
 </div>
 <div>
@@ -527,6 +595,10 @@ do_base_base_inherited();
 </code>
 </pre>
 </div>
+<div>
+<h3>Return Value</h3>
+<span>A second-order base class to test indirect inheritance</span>
+</div>
 </div>
 <div>
 <div>
@@ -546,6 +618,10 @@ Declared in <code>&lt;copy.cpp&gt;</code></div>
 do_derived_shadowed();
 </code>
 </pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>A class that derives from base and excluded_base</span>
 </div>
 </div>
 <div>
@@ -587,6 +663,10 @@ do_base_inherited();
 </code>
 </pre>
 </div>
+<div>
+<h3>Return Value</h3>
+<span>A base class to test inheritance and shadowing</span>
+</div>
 </div>
 <div>
 <div>
@@ -607,6 +687,10 @@ do_base_shadowed();
 </code>
 </pre>
 </div>
+<div>
+<h3>Return Value</h3>
+<span>A base class to test inheritance and shadowing</span>
+</div>
 </div>
 <div>
 <div>
@@ -626,6 +710,10 @@ Declared in <code>&lt;copy.cpp&gt;</code></div>
 do_derived_shadowed();
 </code>
 </pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>A base class to test inheritance and shadowing</span>
 </div>
 </div>
 <div>
@@ -671,6 +759,10 @@ do_shadowed();
 <div>
 <div>
 <h2 id="private_derived">private_derived</h2>
+<div>
+<span>A class that uses private inheritance only</span>
+
+</div>
 </div>
 <div>
 <h3>Synopsis</h3>
@@ -721,6 +813,10 @@ derived_shadowed();
 </code>
 </pre>
 </div>
+<div>
+<h3>Return Value</h3>
+<span>A class that uses private inheritance only</span>
+</div>
 </div>
 <div>
 <div>
@@ -741,12 +837,16 @@ do_derived_shadowed();
 </code>
 </pre>
 </div>
+<div>
+<h3>Return Value</h3>
+<span>A class that uses private inheritance only</span>
+</div>
 </div>
 <div>
 <div>
 <h2 id="protected_derived">protected_derived</h2>
 <div>
-<span>Should inherit functions as protected.</span>
+<span>A class that should inherit functions as protected.</span>
 
 </div>
 </div>
@@ -823,6 +923,10 @@ derived_shadowed();
 </code>
 </pre>
 </div>
+<div>
+<h3>Return Value</h3>
+<span>A class that should inherit functions as protected.</span>
+</div>
 </div>
 <div>
 <div>
@@ -842,6 +946,10 @@ Declared in <code>&lt;copy.cpp&gt;</code></div>
 do_derived_shadowed();
 </code>
 </pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>A class that should inherit functions as protected.</span>
 </div>
 </div>
 <div>
@@ -863,6 +971,10 @@ base_base_inherited();
 </code>
 </pre>
 </div>
+<div>
+<h3>Return Value</h3>
+<span>A second-order base class to test indirect inheritance</span>
+</div>
 </div>
 <div>
 <div>
@@ -882,6 +994,10 @@ Declared in <code>&lt;copy.cpp&gt;</code></div>
 base_inherited();
 </code>
 </pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>A base class to test inheritance and shadowing</span>
 </div>
 </div>
 <div>
@@ -903,6 +1019,10 @@ base_shadowed();
 </code>
 </pre>
 </div>
+<div>
+<h3>Return Value</h3>
+<span>A base class to test inheritance and shadowing</span>
+</div>
 </div>
 <div>
 <div>
@@ -922,6 +1042,10 @@ Declared in <code>&lt;copy.cpp&gt;</code></div>
 derived_shadowed();
 </code>
 </pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>A base class to test inheritance and shadowing</span>
 </div>
 </div>
 <div>
@@ -943,6 +1067,10 @@ do_base_base_inherited();
 </code>
 </pre>
 </div>
+<div>
+<h3>Return Value</h3>
+<span>A second-order base class to test indirect inheritance</span>
+</div>
 </div>
 <div>
 <div>
@@ -962,6 +1090,10 @@ Declared in <code>&lt;copy.cpp&gt;</code></div>
 do_base_inherited();
 </code>
 </pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>A base class to test inheritance and shadowing</span>
 </div>
 </div>
 <div>
@@ -983,6 +1115,10 @@ do_base_shadowed();
 </code>
 </pre>
 </div>
+<div>
+<h3>Return Value</h3>
+<span>A base class to test inheritance and shadowing</span>
+</div>
 </div>
 <div>
 <div>
@@ -1002,6 +1138,10 @@ Declared in <code>&lt;copy.cpp&gt;</code></div>
 do_derived_shadowed();
 </code>
 </pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>A base class to test inheritance and shadowing</span>
 </div>
 </div>
 <div>

@@ -15,7 +15,7 @@
 namespace clang::mrdocs {
 
 namespace {
-// Comparison function for symbol IDs
+// Comparison function by symbol IDs
 struct SymbolIDCompareFn
 {
     CorpusImpl const& corpus_;
@@ -148,6 +148,62 @@ struct SymbolIDCompareFn
             if (lhsIsConvertion != rhsIsConvertion)
             {
                 return !lhsIsConvertion;
+            }
+        }
+
+        // If both are constructors/assignment with 1 parameter, the copy/move
+        // constructors come first
+        if ((lhsClass && *lhsClass == FunctionClass::Constructor &&
+            rhsClass && *rhsClass == FunctionClass::Constructor) ||
+            (lhsOp && *lhsOp == OperatorKind::Equal &&
+             rhsOp && *rhsOp == OperatorKind::Equal))
+        {
+            auto& lhsF = dynamic_cast<FunctionInfo const&>(lhs);
+            auto& rhsF = dynamic_cast<FunctionInfo const&>(rhs);
+            if (lhsF.Params.size() == 1 && rhsF.Params.size() == 1)
+            {
+                auto isCopyOrMoveConstOrAssign = [](FunctionInfo const& I) {
+                    if (I.Params.size() == 1)
+                    {
+                        auto const& param = I.Params[0];
+                        auto const& paramType = param.Type;
+                        if (!paramType->isLValueReference()
+                            && !paramType->isRValueReference())
+                        {
+                            return false;
+                        }
+                        auto const& paramRefPointee
+                            = paramType->isLValueReference() ?
+                                  get<LValueReferenceTypeInfo const&>(paramType)
+                                      .PointeeType :
+                                  get<RValueReferenceTypeInfo const&>(paramType)
+                                      .PointeeType;
+                        if (!paramRefPointee->isNamed())
+                        {
+                            return false;
+                        }
+                        return paramRefPointee->namedSymbol() == I.Parent;
+                    }
+                    return false;
+                };
+
+                bool const lhsIsCopyOrMove = isCopyOrMoveConstOrAssign(lhsF);
+                bool const rhsIsCopyOrMove = isCopyOrMoveConstOrAssign(rhsF);
+                if (auto const cmp = lhsIsCopyOrMove <=> rhsIsCopyOrMove;
+                    cmp != 0)
+                {
+                    return !std::is_lt(cmp);
+                }
+                // Ensure move comes after copy
+                if (lhsIsCopyOrMove && rhsIsCopyOrMove)
+                {
+                    bool const lhsIsMove = lhsF.Params[0].Type->isRValueReference();
+                    bool const rhsIsMove = rhsF.Params[0].Type->isRValueReference();
+                    if (lhsIsMove != rhsIsMove)
+                    {
+                        return !lhsIsMove;
+                    }
+                }
             }
         }
 

@@ -10,6 +10,14 @@
       <return>
         <type id="CgGNdHpW5mG/i5741WPYQDw28OQ=" name="T"/>
       </return>
+      <doc>
+        <brief>
+          <text>Unary plus operator</text>
+        </brief>
+        <returns>
+          <text>Another instance of the object</text>
+        </returns>
+      </doc>
     </function>
   </struct>
 </namespace>

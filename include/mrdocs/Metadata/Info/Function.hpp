@@ -70,6 +70,13 @@ getSafeOperatorName(
     OperatorKind kind,
     bool include_keyword = false) noexcept;
 
+/** Return the human-readable name of the operator
+ */
+std::optional<std::string_view>
+getOperatorReadableName(
+    OperatorKind kind,
+    int nParams);
+
 /** Function classifications */
 enum class FunctionClass
 {

@@ -33,11 +33,11 @@
 | <<h,`h`>> 
 | 
 | <<operator_not,`operator!`>> 
-| 
+| Negation operator
 | <<operator_eq,`operator&equals;&equals;`>> 
-| 
+| Equality operator
 | <<operator_not_eq,`operator!&equals;`>> 
-| 
+| Inequality operator
 |===
 
 [#A]
@@ -165,29 +165,33 @@ struct Z;
 | Name
 | Description
 | <<Z-2constructor-00,`Z`>>         [.small]#[constructor]#
-| 
+| Constructors
 | <<Z-2destructor,`&#126;Z`>> [.small]#[destructor]#
-| 
+| Destructor
 | <<Z-foo,`foo`>> 
 | 
 | <<Z-2conversion,`operator bool`>> 
-| 
+| Conversion to `bool`
 | <<Z-operator_not,`operator!`>> 
-| 
+| Negation operator
 | <<Z-operator_eq,`operator&equals;&equals;`>> 
-| 
+| Equality operator
 | <<Z-operator_not_eq,`operator!&equals;`>> 
-| 
+| Inequality operator
 | <<Z-operator_3way,`operator&lt;&equals;&gt;`>> 
-| 
+| Three&hyphen;way comparison operator
 |===
 
 [#Z-2constructor-00]
 == <<Z,Z>>::Z
 
+Constructors
+
 === Synopses
 
 Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
+
+Default constructor
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -197,16 +201,20 @@ Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
 
 [.small]#<<Z-2constructor-05,_» more&period;&period;&period;_>>#
 
+Construct from `int`
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<Z-2constructor-06,Z>>(int);
+<<Z-2constructor-06,Z>>(int value);
 ----
 
 [.small]#<<Z-2constructor-06,_» more&period;&period;&period;_>>#
 
 [#Z-2constructor-05]
 == <<Z,Z>>::Z
+
+Default constructor
 
 === Synopsis
 
@@ -220,17 +228,31 @@ Z();
 [#Z-2constructor-06]
 == <<Z,Z>>::Z
 
+Construct from `int`
+
 === Synopsis
 
 Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-Z(int);
+Z(int value);
 ----
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *value*
+| The value to construct from
+|===
 
 [#Z-2destructor]
 == <<Z,Z>>::&#126;Z
+
+Destructor
 
 === Synopsis
 
@@ -257,6 +279,8 @@ foo() const;
 [#Z-2conversion]
 == <<Z,Z>>::operator bool
 
+Conversion to `bool`
+
 === Synopsis
 
 Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
@@ -266,8 +290,14 @@ Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
 operator bool() const;
 ----
 
+=== Return Value
+
+The object converted to `bool`
+
 [#Z-operator_not]
 == <<Z,Z>>::operator!
+
+Negation operator
 
 === Synopsis
 
@@ -279,8 +309,14 @@ bool
 operator!() const;
 ----
 
+=== Return Value
+
+`true` if the object is falsy, `false` otherwise
+
 [#Z-operator_eq]
 == <<Z,Z>>::operator&equals;&equals;
+
+Equality operator
 
 === Synopsis
 
@@ -289,12 +325,28 @@ Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
-operator&equals;&equals;(<<Z,Z>> const&) const;
+operator&equals;&equals;(<<Z,Z>> const& rhs) const;
 ----
+
+=== Return Value
+
+`true` if the objects are equal, `false` otherwise
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *rhs*
+| The right operand
+|===
 
 [#Z-operator_not_eq]
 == <<Z,Z>>::operator!&equals;
 
+Inequality operator
+
 === Synopsis
 
 Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
@@ -302,11 +354,27 @@ Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
-operator!&equals;(<<Z,Z>> const&) const;
+operator!&equals;(<<Z,Z>> const& rhs) const;
 ----
+
+=== Return Value
+
+`true` if the objects are not equal, `false` otherwise
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *rhs*
+| The right operand
+|===
 
 [#Z-operator_3way]
 == <<Z,Z>>::operator&lt;&equals;&gt;
+
+Three&hyphen;way comparison operator
 
 === Synopsis
 
@@ -315,8 +383,22 @@ Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 auto
-operator&lt;&equals;&gt;(<<Z,Z>> const&) const;
+operator&lt;&equals;&gt;(<<Z,Z>> const& rhs) const;
 ----
+
+=== Return Value
+
+The relative order of the objects
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *rhs*
+| The right operand
+|===
 
 [#f]
 == f
@@ -534,6 +616,8 @@ h();
 [#operator_not]
 == operator!
 
+Negation operator
+
 === Synopsis
 
 Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
@@ -544,8 +628,24 @@ bool
 operator!(<<A,A>> const& v);
 ----
 
+=== Return Value
+
+`true` if the object is falsy, `false` otherwise
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *v*
+| The operand
+|===
+
 [#operator_eq]
 == operator&equals;&equals;
+
+Equality operator
 
 === Synopsis
 
@@ -559,8 +659,26 @@ operator&equals;&equals;(
     <<A,A>> const& rhs);
 ----
 
+=== Return Value
+
+`true` if the objects are equal, `false` otherwise
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *lhs*
+| The left operand
+| *rhs*
+| The right operand
+|===
+
 [#operator_not_eq]
 == operator!&equals;
+
+Inequality operator
 
 === Synopsis
 
@@ -573,6 +691,22 @@ operator!&equals;(
     <<A,A>> const& lhs,
     <<A,A>> const& rhs);
 ----
+
+=== Return Value
+
+`true` if the objects are not equal, `false` otherwise
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *lhs*
+| The left operand
+| *rhs*
+| The right operand
+|===
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

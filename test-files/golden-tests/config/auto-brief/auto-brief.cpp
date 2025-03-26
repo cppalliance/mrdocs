@@ -11,12 +11,13 @@ void docNoBriefFunction();
 /**
  * @brief This is the explicit brief.
  *
- * This will not be copied.
+ * This description will never be copied as
+ * brief because it is an explicit brief.
  */
 void explicitBriefFunction();
 
 /**
- * This will not be copied.
+ * This will not be copied as brief.
  *
  * @brief This is the explicit brief.
  */

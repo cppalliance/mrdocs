@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
+    <file short-path="param-from-function-class.cpp" source-path="param-from-function-class.cpp" line="2" class="def"/>
+    <doc>
+      <brief>
+        <text>A helper tag</text>
+      </brief>
+    </doc>
+  </struct>
+  <struct name="X" id="ynx5NXMLXqzSXwgOnIP6CHzNx14=">
+    <file short-path="param-from-function-class.cpp" source-path="param-from-function-class.cpp" line="6" class="def"/>
+    <doc>
+      <brief>
+        <text>Test class</text>
+      </brief>
+    </doc>
+    <function class="constructor" name="X" id="4C2UEs8la3Eghf4mLyeViCJNOwY=">
+      <file short-path="param-from-function-class.cpp" source-path="param-from-function-class.cpp" line="8"/>
+      <param name="other">
+        <type class="lvalue-reference">
+          <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X" cv-qualifiers="const"/>
+        </type>
+      </param>
+      <doc>
+        <brief>
+          <text>Copy constructor</text>
+        </brief>
+        <param name="other">
+          <text>The object to copy construct from</text>
+        </param>
+      </doc>
+    </function>
+    <function class="constructor" name="X" id="ad/AzbLEE6b8dNnnX2OLy1+HxDQ=">
+      <file short-path="param-from-function-class.cpp" source-path="param-from-function-class.cpp" line="10"/>
+      <param name="other">
+        <type class="rvalue-reference">
+          <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X"/>
+        </type>
+      </param>
+      <doc>
+        <brief>
+          <text>Move constructor</text>
+        </brief>
+        <param name="other">
+          <text>The object to move construct from</text>
+        </param>
+      </doc>
+    </function>
+    <function class="constructor" name="X" id="d9h3reyOyp3JT3kwQOTPOI9tmzg=">
+      <file short-path="param-from-function-class.cpp" source-path="param-from-function-class.cpp" line="16"/>
+      <param name="value">
+        <type name="int"/>
+      </param>
+      <doc>
+        <brief>
+          <text>Construct from </text>
+          <mono>int</mono>
+        </brief>
+        <param name="value">
+          <text>The value to construct from</text>
+        </param>
+      </doc>
+    </function>
+    <function class="constructor" name="X" id="vwV8S8Oz6MQV3vNlcR0jdKhSlfc=">
+      <file short-path="param-from-function-class.cpp" source-path="param-from-function-class.cpp" line="12"/>
+      <param name="value">
+        <type class="lvalue-reference">
+          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
+        </type>
+      </param>
+      <doc>
+        <brief>
+          <text>Construct from </text>
+          <mono>A</mono>
+        </brief>
+        <param name="value">
+          <text>The object to copy construct from</text>
+        </param>
+      </doc>
+    </function>
+    <function class="constructor" name="X" id="ALa0jXrxokW17OgDFIUlk/PCxSQ=">
+      <file short-path="param-from-function-class.cpp" source-path="param-from-function-class.cpp" line="14"/>
+      <param name="value">
+        <type class="rvalue-reference">
+          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
+        </type>
+      </param>
+      <doc>
+        <brief>
+          <text>Construct from </text>
+          <mono>A</mono>
+        </brief>
+        <param name="value">
+          <text>The object to move construct from</text>
+        </param>
+      </doc>
+    </function>
+    <function name="operator=" id="YI7e/5S7mfio0SdtBRI7qUu9Q98=">
+      <file short-path="param-from-function-class.cpp" source-path="param-from-function-class.cpp" line="18"/>
+      <attr id="operator" name="assign" value="14"/>
+      <return>
+        <type class="lvalue-reference">
+          <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X"/>
+        </type>
+      </return>
+      <param name="other">
+        <type class="lvalue-reference">
+          <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X" cv-qualifiers="const"/>
+        </type>
+      </param>
+      <doc>
+        <brief>
+          <text>Copy assignment operator</text>
+        </brief>
+        <returns>
+          <text>Reference to the current object</text>
+        </returns>
+        <param name="other">
+          <text>The object to copy assign from</text>
+        </param>
+      </doc>
+    </function>
+    <function name="operator=" id="48zVzrvQYghIK1XcLQx4pbTPMI4=">
+      <file short-path="param-from-function-class.cpp" source-path="param-from-function-class.cpp" line="21"/>
+      <attr id="operator" name="assign" value="14"/>
+      <return>
+        <type class="lvalue-reference">
+          <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X"/>
+        </type>
+      </return>
+      <param name="other">
+        <type class="rvalue-reference">
+          <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X"/>
+        </type>
+      </param>
+      <doc>
+        <brief>
+          <text>Move assignment operator</text>
+        </brief>
+        <returns>
+          <text>Reference to the current object</text>
+        </returns>
+        <param name="other">
+          <text>The object to move assign from</text>
+        </param>
+      </doc>
+    </function>
+    <function name="operator=" id="fxM82tl72Q717PPJyP3nb48HbSQ=">
+      <file short-path="param-from-function-class.cpp" source-path="param-from-function-class.cpp" line="30"/>
+      <attr id="operator" name="assign" value="14"/>
+      <return>
+        <type class="lvalue-reference">
+          <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X"/>
+        </type>
+      </return>
+      <param name="value">
+        <type name="int"/>
+      </param>
+      <doc>
+        <brief>
+          <text>Assignment operator</text>
+        </brief>
+        <returns>
+          <text>Reference to the current object</text>
+        </returns>
+        <param name="value">
+          <text>The value to assign from</text>
+        </param>
+      </doc>
+    </function>
+    <function name="operator=" id="3QxkEc/c2ugz6330u92HdqOoDNk=">
+      <file short-path="param-from-function-class.cpp" source-path="param-from-function-class.cpp" line="24"/>
+      <attr id="operator" name="assign" value="14"/>
+      <return>
+        <type class="lvalue-reference">
+          <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X"/>
+        </type>
+      </return>
+      <param name="value">
+        <type class="lvalue-reference">
+          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
+        </type>
+      </param>
+      <doc>
+        <brief>
+          <text>Assignment operator</text>
+        </brief>
+        <returns>
+          <text>Reference to the current object</text>
+        </returns>
+        <param name="value">
+          <text>The object to copy assign from</text>
+        </param>
+      </doc>
+    </function>
+    <function name="operator=" id="fj22HhjPEq+Xg/+Qrr3suU+8qMs=">
+      <file short-path="param-from-function-class.cpp" source-path="param-from-function-class.cpp" line="27"/>
+      <attr id="operator" name="assign" value="14"/>
+      <return>
+        <type class="lvalue-reference">
+          <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X"/>
+        </type>
+      </return>
+      <param name="value">
+        <type class="rvalue-reference">
+          <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
+        </type>
+      </param>
+      <doc>
+        <brief>
+          <text>Assignment operator</text>
+        </brief>
+        <returns>
+          <text>Reference to the current object</text>
+        </returns>
+        <param name="value">
+          <text>The object to move assign from</text>
+        </param>
+      </doc>
+    </function>
+  </struct>
+</namespace>
+</mrdocs>

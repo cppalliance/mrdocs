@@ -1,0 +1,323 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols=2]
+|===
+| Name
+| Description
+| <<A,`A`>> 
+| A helper tag
+| <<X,`X`>> 
+| Test class
+|===
+
+[#A]
+== A
+
+A helper tag
+
+=== Synopsis
+
+Declared in `&lt;brief&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct A;
+----
+
+[#X]
+== X
+
+Test class
+
+=== Synopsis
+
+Declared in `&lt;brief&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct X;
+----
+
+=== Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| <<X-2constructor-08,`X`>>         [.small]#[constructor]#
+| Constructors
+| <<X-2destructor,`&#126;X`>> [.small]#[destructor]#
+| Destructor
+| <<X-2conversion-00,`operator A`>> 
+| Conversion to `A`
+| <<X-2conversion-0b,`operator int`>> 
+| Conversion to `int`
+|===
+
+[#X-2constructor-08]
+== <<X,X>>::X
+
+Constructors
+
+=== Synopses
+
+Declared in `&lt;brief&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
+
+Default constructor
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr
+<<X-2constructor-0e8,X>>() = default;
+----
+
+[.small]#<<X-2constructor-0e8,_» more&period;&period;&period;_>>#
+
+Copy constructor
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr
+<<X-2constructor-0e0,X>>(<<X,X>> const& other) = default;
+----
+
+[.small]#<<X-2constructor-0e0,_» more&period;&period;&period;_>>#
+
+Move constructor
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr
+<<X-2constructor-06,X>>(<<X,X>>&& other) = default;
+----
+
+[.small]#<<X-2constructor-06,_» more&period;&period;&period;_>>#
+
+Construct from `int`
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<X-2constructor-07,X>>(int value);
+----
+
+[.small]#<<X-2constructor-07,_» more&period;&period;&period;_>>#
+
+Construct from `A`
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<X-2constructor-0b,X>>(<<A,A>> const& value);
+----
+
+[.small]#<<X-2constructor-0b,_» more&period;&period;&period;_>>#
+
+Construct from `A`
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<X-2constructor-00,X>>(<<A,A>>&& value);
+----
+
+[.small]#<<X-2constructor-00,_» more&period;&period;&period;_>>#
+
+[#X-2constructor-0e8]
+== <<X,X>>::X
+
+Default constructor
+
+=== Synopsis
+
+Declared in `&lt;brief&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr
+X() = default;
+----
+
+[#X-2constructor-0e0]
+== <<X,X>>::X
+
+Copy constructor
+
+=== Synopsis
+
+Declared in `&lt;brief&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr
+X(<<X,X>> const& other) = default;
+----
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *other*
+| The object to copy construct from
+|===
+
+[#X-2constructor-06]
+== <<X,X>>::X
+
+Move constructor
+
+=== Synopsis
+
+Declared in `&lt;brief&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr
+X(<<X,X>>&& other) = default;
+----
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *other*
+| The object to move construct from
+|===
+
+[#X-2constructor-07]
+== <<X,X>>::X
+
+Construct from `int`
+
+=== Synopsis
+
+Declared in `&lt;brief&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+X(int value);
+----
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *value*
+| The value to construct from
+|===
+
+[#X-2constructor-0b]
+== <<X,X>>::X
+
+Construct from `A`
+
+=== Synopsis
+
+Declared in `&lt;brief&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+X(<<A,A>> const& value);
+----
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *value*
+| The object to copy construct from
+|===
+
+[#X-2constructor-00]
+== <<X,X>>::X
+
+Construct from `A`
+
+=== Synopsis
+
+Declared in `&lt;brief&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+X(<<A,A>>&& value);
+----
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *value*
+| The object to move construct from
+|===
+
+[#X-2destructor]
+== <<X,X>>::&#126;X
+
+Destructor
+
+=== Synopsis
+
+Declared in `&lt;brief&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&#126;X();
+----
+
+[#X-2conversion-00]
+== <<X,X>>::operator <<A,A>>
+
+Conversion to `A`
+
+=== Synopsis
+
+Declared in `&lt;brief&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+operator <<A,A>>() const;
+----
+
+=== Return Value
+
+A helper tag
+
+[#X-2conversion-0b]
+== <<X,X>>::operator int
+
+Conversion to `int`
+
+=== Synopsis
+
+Declared in `&lt;brief&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+operator int() const;
+----
+
+=== Return Value
+
+The object converted to `int`
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

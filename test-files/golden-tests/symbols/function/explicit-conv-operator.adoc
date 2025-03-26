@@ -29,14 +29,18 @@ struct Explicit;
 
 === Member Functions
 
-[cols=1]
+[cols=2]
 |===
 | Name
+| Description
 | <<Explicit-2conversion,`operator bool`>> 
+| Conversion to `bool`
 |===
 
 [#Explicit-2conversion]
 == <<Explicit,Explicit>>::operator bool
+
+Conversion to `bool`
 
 === Synopsis
 
@@ -47,6 +51,10 @@ Declared in `&lt;explicit&hyphen;conv&hyphen;operator&period;cpp&gt;`
 explicit
 operator bool();
 ----
+
+=== Return Value
+
+The object converted to `bool`
 
 [#ExplicitExpression]
 == ExplicitExpression
@@ -63,14 +71,18 @@ struct ExplicitExpression;
 
 === Member Functions
 
-[cols=1]
+[cols=2]
 |===
 | Name
+| Description
 | <<ExplicitExpression-2conversion,`operator bool`>> 
+| Conversion to `bool`
 |===
 
 [#ExplicitExpression-2conversion]
 == <<ExplicitExpression,ExplicitExpression>>::operator bool
+
+Conversion to `bool`
 
 === Synopsis
 
@@ -81,6 +93,10 @@ Declared in `&lt;explicit&hyphen;conv&hyphen;operator&period;cpp&gt;`
 explicit(B)
 operator bool();
 ----
+
+=== Return Value
+
+The object converted to `bool`
 
 [#ExplicitFalse]
 == ExplicitFalse
@@ -96,14 +112,18 @@ struct ExplicitFalse;
 
 === Member Functions
 
-[cols=1]
+[cols=2]
 |===
 | Name
+| Description
 | <<ExplicitFalse-2conversion,`operator bool`>> 
+| Conversion to `bool`
 |===
 
 [#ExplicitFalse-2conversion]
 == <<ExplicitFalse,ExplicitFalse>>::operator bool
+
+Conversion to `bool`
 
 === Synopsis
 
@@ -114,6 +134,10 @@ Declared in `&lt;explicit&hyphen;conv&hyphen;operator&period;cpp&gt;`
 explicit(false)
 operator bool();
 ----
+
+=== Return Value
+
+The object converted to `bool`
 
 [#ExplicitTrue]
 == ExplicitTrue
@@ -129,14 +153,18 @@ struct ExplicitTrue;
 
 === Member Functions
 
-[cols=1]
+[cols=2]
 |===
 | Name
+| Description
 | <<ExplicitTrue-2conversion,`operator bool`>> 
+| Conversion to `bool`
 |===
 
 [#ExplicitTrue-2conversion]
 == <<ExplicitTrue,ExplicitTrue>>::operator bool
+
+Conversion to `bool`
 
 === Synopsis
 
@@ -147,6 +175,10 @@ Declared in `&lt;explicit&hyphen;conv&hyphen;operator&period;cpp&gt;`
 explicit(true)
 operator bool();
 ----
+
+=== Return Value
+
+The object converted to `bool`
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

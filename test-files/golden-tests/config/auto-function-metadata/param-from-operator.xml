@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
+    <file short-path="param-from-operator.cpp" source-path="param-from-operator.cpp" line="2" class="def"/>
+    <doc>
+      <brief>
+        <text>A helper tag</text>
+      </brief>
+    </doc>
+  </struct>
+  <struct name="X" id="ynx5NXMLXqzSXwgOnIP6CHzNx14=">
+    <file short-path="param-from-operator.cpp" source-path="param-from-operator.cpp" line="9" class="def"/>
+    <doc>
+      <brief>
+        <text>Test class</text>
+      </brief>
+    </doc>
+    <function name="operator+" id="KAGpjhkArISJuf2yO8ueGRkoMRY=">
+      <file short-path="param-from-operator.cpp" source-path="param-from-operator.cpp" line="11"/>
+      <attr id="operator" name="plus" value="5"/>
+      <attr id="is-const"/>
+      <return>
+        <type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X"/>
+      </return>
+      <param name="x">
+        <type class="lvalue-reference">
+          <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X" cv-qualifiers="const"/>
+        </type>
+      </param>
+      <doc>
+        <brief>
+          <text>Addition operator</text>
+        </brief>
+        <returns>
+          <text>Another instance of the object</text>
+        </returns>
+        <param name="x">
+          <text>The right operand</text>
+        </param>
+      </doc>
+    </function>
+  </struct>
+  <struct name="ostream" id="S6h+1uM4q9FLs9aohvL2EV9oRbs=">
+    <file short-path="param-from-operator.cpp" source-path="param-from-operator.cpp" line="6" class="def"/>
+    <doc>
+      <brief>
+        <text>A dumb ostream class</text>
+      </brief>
+    </doc>
+  </struct>
+  <function name="operator-" id="isSEjqdTA5x7DKpSqZK6cD0PZgY=">
+    <file short-path="param-from-operator.cpp" source-path="param-from-operator.cpp" line="15"/>
+    <attr id="operator" name="minus" value="6"/>
+    <return>
+      <type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X"/>
+    </return>
+    <param name="x">
+      <type class="lvalue-reference">
+        <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X" cv-qualifiers="const"/>
+      </type>
+    </param>
+    <param name="y">
+      <type class="lvalue-reference">
+        <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X" cv-qualifiers="const"/>
+      </type>
+    </param>
+    <doc>
+      <brief>
+        <text>Subtraction operator</text>
+      </brief>
+      <returns>
+        <text>Test class</text>
+      </returns>
+      <param name="x">
+        <text>The left operand</text>
+      </param>
+      <param name="y">
+        <text>The right operand</text>
+      </param>
+    </doc>
+  </function>
+  <function name="operator&lt;&lt;" id="G/x48jnXaICOdnZlZThSByV21NY=">
+    <file short-path="param-from-operator.cpp" source-path="param-from-operator.cpp" line="21" class="def"/>
+    <attr id="operator" name="lshift" value="23"/>
+    <return>
+      <type class="lvalue-reference">
+        <pointee-type id="S6h+1uM4q9FLs9aohvL2EV9oRbs=" name="ostream"/>
+      </type>
+    </return>
+    <param name="os">
+      <type class="lvalue-reference">
+        <pointee-type id="S6h+1uM4q9FLs9aohvL2EV9oRbs=" name="ostream"/>
+      </type>
+    </param>
+    <param name="x">
+      <type class="lvalue-reference">
+        <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X" cv-qualifiers="const"/>
+      </type>
+    </param>
+    <doc>
+      <brief>
+        <text>Stream insertion operator</text>
+      </brief>
+      <returns>
+        <text>Reference to the current output stream</text>
+      </returns>
+      <param name="os">
+        <text>An output stream</text>
+      </param>
+      <param name="x">
+        <text>The object to output</text>
+      </param>
+    </doc>
+  </function>
+  <function name="operator!" id="c9Ca2VyG7d8PUZZCax8n0T1PyGA=">
+    <file short-path="param-from-operator.cpp" source-path="param-from-operator.cpp" line="18"/>
+    <attr id="operator" name="not" value="27"/>
+    <return>
+      <type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X"/>
+    </return>
+    <param name="x">
+      <type class="lvalue-reference">
+        <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X" cv-qualifiers="const"/>
+      </type>
+    </param>
+    <doc>
+      <brief>
+        <text>Negation operator</text>
+      </brief>
+      <returns>
+        <text>Test class</text>
+      </returns>
+      <param name="x">
+        <text>The operand</text>
+      </param>
+    </doc>
+  </function>
+</namespace>
+</mrdocs>

@@ -99,6 +99,9 @@
         <para>
           <text>It&apos;s the responsibility of the function documentation to explain the implementation-defined symbol.</text>
         </para>
+        <returns>
+          <text>A symbol that passes the implementation-defined filter</text>
+        </returns>
       </doc>
     </function>
     <function name="get_regular" id="GmX35W90ijAwMEpaZZqAbeG5UmU=">
@@ -113,6 +116,9 @@
         <para>
           <text>When used in a function, the symbol should be shown as usual with a link to the page.</text>
         </para>
+        <returns>
+          <text>A symbol that passes the filters</text>
+        </returns>
         <relates>
           <reference id="uwCvFwfbmTvoEwwfxdL9EV+P8/c=">regular</reference>
         </relates>
@@ -130,6 +136,9 @@
         <para>
           <text>When used in a function, the symbol name should be shown as usual. The page for this symbol is what should be different because the synopsis should say &quot;See below&quot; and the members are not listed unless it&apos;s a namespace or the symbol has been explicitly used as a dependency elsewhere.</text>
         </para>
+        <returns>
+          <text>A symbol that passes the see-below filter</text>
+        </returns>
       </doc>
     </function>
   </namespace>
@@ -213,6 +222,9 @@
         <para>
           <text>It&apos;s the responsibility of the function documentation to explain the implementation-defined symbol.</text>
         </para>
+        <returns>
+          <text>Implementation-defined symbol in a see-below namespace</text>
+        </returns>
       </doc>
     </function>
   </namespace>
@@ -330,6 +342,9 @@
       <para>
         <text>It&apos;s the responsibility of the function documentation to explain the implementation-defined symbol.</text>
       </para>
+      <returns>
+        <text>An implementation-defined symbol in the global namespace</text>
+      </returns>
     </doc>
   </function>
   <function name="get_regular" id="ja9KgZ+gKpeRL1CK/1+wSZ41F18=">
@@ -344,6 +359,9 @@
       <para>
         <text>When used in a function, the symbol should be shown as usual with a link to the page.</text>
       </para>
+      <returns>
+        <text>A regular symbol in the global namespace</text>
+      </returns>
       <relates>
         <reference id="cw0xJkxH12xMAqMkCi84zr2R6nQ=">regular</reference>
       </relates>
@@ -361,6 +379,9 @@
       <para>
         <text>When used in a function, the symbol name should be shown as usual. The page for this symbol is what should be different because the synopsis should say &quot;See below&quot; and the members are not listed unless it&apos;s a namespace or the symbol has been explicitly used as a dependency elsewhere.</text>
       </para>
+      <returns>
+        <text>A see-below symbol in the global namespace</text>
+      </returns>
     </doc>
   </function>
 </namespace>

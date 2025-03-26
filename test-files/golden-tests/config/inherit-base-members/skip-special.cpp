@@ -1,3 +1,8 @@
+/*
+    A version similar to copy.cpp, with special member functions
+    that should not be inherited.
+ */
+
 class excluded_base {
 public:
     /// Constructor should not be inherited
