@@ -51,15 +51,19 @@ class A;
 | Name
 | Description
 | <<left_shift-A-operator_lshift-06,`operator&lt;&lt;`>> 
-| 
+| Left shift operators
 |===
 
 [#left_shift-A-operator_lshift-06]
 == <<left_shift,left&lowbar;shift>>::<<left_shift-A,A>>::operator&lt;&lt;
 
+Left shift operators
+
 === Synopses
 
 Declared in `&lt;overloads&hyphen;ostream&period;cpp&gt;`
+
+Left shift operator
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -69,6 +73,8 @@ Declared in `&lt;overloads&hyphen;ostream&period;cpp&gt;`
 ----
 
 [.small]#<<left_shift-A-operator_lshift-0f,_» more&period;&period;&period;_>>#
+
+Left shift operator
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -82,6 +88,8 @@ Declared in `&lt;overloads&hyphen;ostream&period;cpp&gt;`
 [#left_shift-A-operator_lshift-0f]
 == <<left_shift,left&lowbar;shift>>::<<left_shift-A,A>>::operator&lt;&lt;
 
+Left shift operator
+
 === Synopsis
 
 Declared in `&lt;overloads&hyphen;ostream&period;cpp&gt;`
@@ -92,8 +100,24 @@ Declared in `&lt;overloads&hyphen;ostream&period;cpp&gt;`
 operator&lt;&lt;(unsigned int shift);
 ----
 
+=== Return Value
+
+Reference to the current object
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *shift*
+| The right operand
+|===
+
 [#left_shift-A-operator_lshift-0b]
 == <<left_shift,left&lowbar;shift>>::<<left_shift-A,A>>::operator&lt;&lt;
+
+Left shift operator
 
 === Synopsis
 
@@ -104,6 +128,20 @@ Declared in `&lt;overloads&hyphen;ostream&period;cpp&gt;`
 <<left_shift-A,A>>&
 operator&lt;&lt;(char shift);
 ----
+
+=== Return Value
+
+Reference to the current object
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *shift*
+| The right operand
+|===
 
 [#left_shift-operator_lshift]
 == <<left_shift,left&lowbar;shift>>::operator&lt;&lt;
@@ -140,7 +178,7 @@ operator&lt;&lt;(
 | Name
 | Description
 | <<ostream-operator_lshift-0f,`operator&lt;&lt;`>> 
-| 
+| Stream insertion operators
 |===
 
 [#ostream-B]
@@ -175,8 +213,8 @@ Declared in `&lt;overloads&hyphen;ostream&period;cpp&gt;`
 friend
 <<ostream-OStream,OStream>>&
 operator&lt;&lt;(
-    <<ostream-OStream,OStream>>&,
-    <<ostream-B,B>>);
+    <<ostream-OStream,OStream>>& os,
+    <<ostream-B,B>> value);
 ----
 
 [#ostream-C]
@@ -206,28 +244,34 @@ class OStream;
 [#ostream-operator_lshift-0f]
 == <<ostream,ostream>>::operator&lt;&lt;
 
+Stream insertion operators
+
 === Synopses
 
 Declared in `&lt;overloads&hyphen;ostream&period;cpp&gt;`
+
+Stream insertion operator
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 <<ostream-OStream,OStream>>&
 <<ostream-operator_lshift-0d,operator&lt;&lt;>>(
-    <<ostream-OStream,OStream>>&,
-    <<ostream-B,B>>);
+    <<ostream-OStream,OStream>>& os,
+    <<ostream-B,B>> value);
 ----
 
 [.small]#<<ostream-operator_lshift-0d,_» more&period;&period;&period;_>>#
+
+Stream insertion operator
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 <<ostream-OStream,OStream>>&
 <<ostream-operator_lshift-0a,operator&lt;&lt;>>(
-    <<ostream-OStream,OStream>>&,
-    <<ostream-C,C>>);
+    <<ostream-OStream,OStream>>& os,
+    <<ostream-C,C>> value);
 ----
 
 [.small]#<<ostream-operator_lshift-0a,_» more&period;&period;&period;_>>#
@@ -235,6 +279,8 @@ Declared in `&lt;overloads&hyphen;ostream&period;cpp&gt;`
 [#ostream-operator_lshift-0d]
 == <<ostream,ostream>>::operator&lt;&lt;
 
+Stream insertion operator
+
 === Synopsis
 
 Declared in `&lt;overloads&hyphen;ostream&period;cpp&gt;`
@@ -243,13 +289,31 @@ Declared in `&lt;overloads&hyphen;ostream&period;cpp&gt;`
 ----
 <<ostream-OStream,OStream>>&
 operator&lt;&lt;(
-    <<ostream-OStream,OStream>>&,
-    <<ostream-B,B>>);
+    <<ostream-OStream,OStream>>& os,
+    <<ostream-B,B>> value);
 ----
+
+=== Return Value
+
+Reference to the current output stream
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *os*
+| An output stream
+| *value*
+| The object to output
+|===
 
 [#ostream-operator_lshift-0a]
 == <<ostream,ostream>>::operator&lt;&lt;
 
+Stream insertion operator
+
 === Synopsis
 
 Declared in `&lt;overloads&hyphen;ostream&period;cpp&gt;`
@@ -258,9 +322,25 @@ Declared in `&lt;overloads&hyphen;ostream&period;cpp&gt;`
 ----
 <<ostream-OStream,OStream>>&
 operator&lt;&lt;(
-    <<ostream-OStream,OStream>>&,
-    <<ostream-C,C>>);
+    <<ostream-OStream,OStream>>& os,
+    <<ostream-C,C>> value);
 ----
+
+=== Return Value
+
+Reference to the current output stream
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *os*
+| An output stream
+| *value*
+| The object to output
+|===
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

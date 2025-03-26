@@ -1,0 +1,103 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols=2]
+|===
+| Name
+| Description
+| <<X,`X`>> 
+| Test class
+|===
+
+[#X]
+== X
+
+Test class
+
+=== Synopsis
+
+Declared in `&lt;returns&hyphen;from&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct X;
+----
+
+=== Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| <<X-empty,`empty`>> 
+| Determines whether the range is empty&period;
+| <<X-front,`front`>> 
+| Returns the first element of the range&period;
+| <<X-size,`size`>> 
+| Get the range size&period;
+|===
+
+[#X-empty]
+== <<X,X>>::empty
+
+Determines whether the range is empty&period;
+
+=== Synopsis
+
+Declared in `&lt;returns&hyphen;from&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+empty();
+----
+
+=== Return Value
+
+whether the range is empty&period;
+
+[#X-front]
+== <<X,X>>::front
+
+Returns the first element of the range&period;
+
+=== Synopsis
+
+Declared in `&lt;returns&hyphen;from&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+front() const;
+----
+
+=== Return Value
+
+the first element of the range&period;
+
+[#X-size]
+== <<X,X>>::size
+
+Get the range size&period;
+
+=== Synopsis
+
+Declared in `&lt;returns&hyphen;from&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+size() const;
+----
+
+=== Return Value
+
+the range size&period;
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

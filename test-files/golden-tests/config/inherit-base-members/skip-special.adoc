@@ -671,6 +671,10 @@ Declared in `&lt;skip&hyphen;special&period;cpp&gt;`
 derived&lowbar;shadowed();
 ----
 
+=== Return Value
+
+Should inherit functions as protected&period;
+
 [#protected_derived-do_derived_shadowed]
 == <<protected_derived,protected&lowbar;derived>>::do&lowbar;derived&lowbar;shadowed
 
@@ -685,6 +689,10 @@ Declared in `&lt;skip&hyphen;special&period;cpp&gt;`
 <<protected_derived,protected&lowbar;derived>>&
 do&lowbar;derived&lowbar;shadowed();
 ----
+
+=== Return Value
+
+Should inherit functions as protected&period;
 
 [#protected_derived-do_excluded_inherited]
 == <<protected_derived,protected&lowbar;derived>>::do&lowbar;excluded&lowbar;inherited

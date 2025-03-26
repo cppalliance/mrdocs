@@ -50,7 +50,7 @@ struct Explicit;
 </thead>
 <tbody>
 <tr>
-<td><a href="#Explicit-2constructor-08"><code>Explicit</code></a>         <span class="small">[constructor]</span></td><td><span></span></td></tr>
+<td><a href="#Explicit-2constructor-08"><code>Explicit</code></a>         <span class="small">[constructor]</span></td><td><span>Constructors</span></td></tr>
 </tbody>
 </table>
 
@@ -60,12 +60,16 @@ struct Explicit;
 <div>
 <div>
 <h2 id="Explicit-2constructor-08"><a href="#Explicit">Explicit</a>::Explicit</h2>
+<div>
+<span>Constructors</span>
+
+</div>
 </div>
 <div>
 <h3>Synopses</h3>
 <div>
 Declared in <code>&lt;explicit-ctor.cpp&gt;</code></div>
-
+<span>Default constructor</span>
 <pre>
 <code class="source-code cpp">
 explicit
@@ -73,23 +77,23 @@ explicit
 </code>
 </pre><span class="small"><a href="#Explicit-2constructor-02"><em>» more...</em></a></span>
 
-
+<span>Copy constructor</span>
 <pre>
 <code class="source-code cpp">
 explicit
-<a href="#Explicit-2constructor-00">Explicit</a>(<a href="#Explicit">Explicit</a> const&);
+<a href="#Explicit-2constructor-00">Explicit</a>(<a href="#Explicit">Explicit</a> const& other);
 </code>
 </pre><span class="small"><a href="#Explicit-2constructor-00"><em>» more...</em></a></span>
 
-
+<span>Move constructor</span>
 <pre>
 <code class="source-code cpp">
 explicit
-<a href="#Explicit-2constructor-0b">Explicit</a>(<a href="#Explicit">Explicit</a>&&) noexcept;
+<a href="#Explicit-2constructor-0b">Explicit</a>(<a href="#Explicit">Explicit</a>&& other) noexcept;
 </code>
 </pre><span class="small"><a href="#Explicit-2constructor-0b"><em>» more...</em></a></span>
 
-
+<span>Constructor</span>
 <pre>
 <code class="source-code cpp">
 explicit
@@ -105,6 +109,10 @@ explicit
 <div>
 <div>
 <h2 id="Explicit-2constructor-02"><a href="#Explicit">Explicit</a>::Explicit</h2>
+<div>
+<span>Default constructor</span>
+
+</div>
 </div>
 <div>
 <h3>Synopsis</h3>
@@ -121,6 +129,10 @@ Explicit();
 <div>
 <div>
 <h2 id="Explicit-2constructor-00"><a href="#Explicit">Explicit</a>::Explicit</h2>
+<div>
+<span>Copy constructor</span>
+
+</div>
 </div>
 <div>
 <h3>Synopsis</h3>
@@ -129,14 +141,35 @@ Declared in <code>&lt;explicit-ctor.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 explicit
-Explicit(<a href="#Explicit">Explicit</a> const&);
+Explicit(<a href="#Explicit">Explicit</a> const& other);
 </code>
 </pre>
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>other</strong></td>
+<td><span>The object to copy construct from</span></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div>
 <div>
 <h2 id="Explicit-2constructor-0b"><a href="#Explicit">Explicit</a>::Explicit</h2>
+<div>
+<span>Move constructor</span>
+
+</div>
 </div>
 <div>
 <h3>Synopsis</h3>
@@ -145,14 +178,35 @@ Declared in <code>&lt;explicit-ctor.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 explicit
-Explicit(<a href="#Explicit">Explicit</a>&&) noexcept;
+Explicit(<a href="#Explicit">Explicit</a>&& other) noexcept;
 </code>
 </pre>
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>other</strong></td>
+<td><span>The object to move construct from</span></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div>
 <div>
 <h2 id="Explicit-2constructor-03"><a href="#Explicit">Explicit</a>::Explicit</h2>
+<div>
+<span>Constructor</span>
+
+</div>
 </div>
 <div>
 <h3>Synopsis</h3>
@@ -193,7 +247,7 @@ struct ExplicitExpression;
 </thead>
 <tbody>
 <tr>
-<td><a href="#ExplicitExpression-2constructor-026"><code>ExplicitExpression</code></a>         <span class="small">[constructor]</span></td><td><span></span></td></tr>
+<td><a href="#ExplicitExpression-2constructor-026"><code>ExplicitExpression</code></a>         <span class="small">[constructor]</span></td><td><span>Constructors</span></td></tr>
 </tbody>
 </table>
 
@@ -203,12 +257,16 @@ struct ExplicitExpression;
 <div>
 <div>
 <h2 id="ExplicitExpression-2constructor-026"><a href="#ExplicitExpression">ExplicitExpression</a>::ExplicitExpression</h2>
+<div>
+<span>Constructors</span>
+
+</div>
 </div>
 <div>
 <h3>Synopses</h3>
 <div>
 Declared in <code>&lt;explicit-ctor.cpp&gt;</code></div>
-
+<span>Default constructor</span>
 <pre>
 <code class="source-code cpp">
 explicit(B)
@@ -216,23 +274,23 @@ explicit(B)
 </code>
 </pre><span class="small"><a href="#ExplicitExpression-2constructor-0b"><em>» more...</em></a></span>
 
-
+<span>Copy constructor</span>
 <pre>
 <code class="source-code cpp">
 explicit(B)
-<a href="#ExplicitExpression-2constructor-04">ExplicitExpression</a>(<a href="#ExplicitExpression">ExplicitExpression</a> const&);
+<a href="#ExplicitExpression-2constructor-04">ExplicitExpression</a>(<a href="#ExplicitExpression">ExplicitExpression</a> const& other);
 </code>
 </pre><span class="small"><a href="#ExplicitExpression-2constructor-04"><em>» more...</em></a></span>
 
-
+<span>Move constructor</span>
 <pre>
 <code class="source-code cpp">
 explicit(B)
-<a href="#ExplicitExpression-2constructor-08">ExplicitExpression</a>(<a href="#ExplicitExpression">ExplicitExpression</a>&&) noexcept;
+<a href="#ExplicitExpression-2constructor-08">ExplicitExpression</a>(<a href="#ExplicitExpression">ExplicitExpression</a>&& other) noexcept;
 </code>
 </pre><span class="small"><a href="#ExplicitExpression-2constructor-08"><em>» more...</em></a></span>
 
-
+<span>Constructor</span>
 <pre>
 <code class="source-code cpp">
 explicit(B)
@@ -248,6 +306,10 @@ explicit(B)
 <div>
 <div>
 <h2 id="ExplicitExpression-2constructor-0b"><a href="#ExplicitExpression">ExplicitExpression</a>::ExplicitExpression</h2>
+<div>
+<span>Default constructor</span>
+
+</div>
 </div>
 <div>
 <h3>Synopsis</h3>
@@ -264,6 +326,10 @@ ExplicitExpression();
 <div>
 <div>
 <h2 id="ExplicitExpression-2constructor-04"><a href="#ExplicitExpression">ExplicitExpression</a>::ExplicitExpression</h2>
+<div>
+<span>Copy constructor</span>
+
+</div>
 </div>
 <div>
 <h3>Synopsis</h3>
@@ -272,14 +338,35 @@ Declared in <code>&lt;explicit-ctor.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 explicit(B)
-ExplicitExpression(<a href="#ExplicitExpression">ExplicitExpression</a> const&);
+ExplicitExpression(<a href="#ExplicitExpression">ExplicitExpression</a> const& other);
 </code>
 </pre>
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>other</strong></td>
+<td><span>The object to copy construct from</span></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div>
 <div>
 <h2 id="ExplicitExpression-2constructor-08"><a href="#ExplicitExpression">ExplicitExpression</a>::ExplicitExpression</h2>
+<div>
+<span>Move constructor</span>
+
+</div>
 </div>
 <div>
 <h3>Synopsis</h3>
@@ -288,14 +375,35 @@ Declared in <code>&lt;explicit-ctor.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 explicit(B)
-ExplicitExpression(<a href="#ExplicitExpression">ExplicitExpression</a>&&) noexcept;
+ExplicitExpression(<a href="#ExplicitExpression">ExplicitExpression</a>&& other) noexcept;
 </code>
 </pre>
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>other</strong></td>
+<td><span>The object to move construct from</span></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div>
 <div>
 <h2 id="ExplicitExpression-2constructor-027"><a href="#ExplicitExpression">ExplicitExpression</a>::ExplicitExpression</h2>
+<div>
+<span>Constructor</span>
+
+</div>
 </div>
 <div>
 <h3>Synopsis</h3>
@@ -335,7 +443,7 @@ struct ExplicitFalse;
 </thead>
 <tbody>
 <tr>
-<td><a href="#ExplicitFalse-2constructor-04c"><code>ExplicitFalse</code></a>         <span class="small">[constructor]</span></td><td><span></span></td></tr>
+<td><a href="#ExplicitFalse-2constructor-04c"><code>ExplicitFalse</code></a>         <span class="small">[constructor]</span></td><td><span>Constructors</span></td></tr>
 </tbody>
 </table>
 
@@ -345,12 +453,16 @@ struct ExplicitFalse;
 <div>
 <div>
 <h2 id="ExplicitFalse-2constructor-04c"><a href="#ExplicitFalse">ExplicitFalse</a>::ExplicitFalse</h2>
+<div>
+<span>Constructors</span>
+
+</div>
 </div>
 <div>
 <h3>Synopses</h3>
 <div>
 Declared in <code>&lt;explicit-ctor.cpp&gt;</code></div>
-
+<span>Default constructor</span>
 <pre>
 <code class="source-code cpp">
 explicit(false)
@@ -358,23 +470,23 @@ explicit(false)
 </code>
 </pre><span class="small"><a href="#ExplicitFalse-2constructor-01"><em>» more...</em></a></span>
 
-
+<span>Copy constructor</span>
 <pre>
 <code class="source-code cpp">
 explicit(false)
-<a href="#ExplicitFalse-2constructor-08">ExplicitFalse</a>(<a href="#ExplicitFalse">ExplicitFalse</a> const&);
+<a href="#ExplicitFalse-2constructor-08">ExplicitFalse</a>(<a href="#ExplicitFalse">ExplicitFalse</a> const& other);
 </code>
 </pre><span class="small"><a href="#ExplicitFalse-2constructor-08"><em>» more...</em></a></span>
 
-
+<span>Move constructor</span>
 <pre>
 <code class="source-code cpp">
 explicit(false)
-<a href="#ExplicitFalse-2constructor-0a">ExplicitFalse</a>(<a href="#ExplicitFalse">ExplicitFalse</a>&&) noexcept;
+<a href="#ExplicitFalse-2constructor-0a">ExplicitFalse</a>(<a href="#ExplicitFalse">ExplicitFalse</a>&& other) noexcept;
 </code>
 </pre><span class="small"><a href="#ExplicitFalse-2constructor-0a"><em>» more...</em></a></span>
 
-
+<span>Constructor</span>
 <pre>
 <code class="source-code cpp">
 explicit(false)
@@ -390,6 +502,10 @@ explicit(false)
 <div>
 <div>
 <h2 id="ExplicitFalse-2constructor-01"><a href="#ExplicitFalse">ExplicitFalse</a>::ExplicitFalse</h2>
+<div>
+<span>Default constructor</span>
+
+</div>
 </div>
 <div>
 <h3>Synopsis</h3>
@@ -406,6 +522,10 @@ ExplicitFalse();
 <div>
 <div>
 <h2 id="ExplicitFalse-2constructor-08"><a href="#ExplicitFalse">ExplicitFalse</a>::ExplicitFalse</h2>
+<div>
+<span>Copy constructor</span>
+
+</div>
 </div>
 <div>
 <h3>Synopsis</h3>
@@ -414,14 +534,35 @@ Declared in <code>&lt;explicit-ctor.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 explicit(false)
-ExplicitFalse(<a href="#ExplicitFalse">ExplicitFalse</a> const&);
+ExplicitFalse(<a href="#ExplicitFalse">ExplicitFalse</a> const& other);
 </code>
 </pre>
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>other</strong></td>
+<td><span>The object to copy construct from</span></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div>
 <div>
 <h2 id="ExplicitFalse-2constructor-0a"><a href="#ExplicitFalse">ExplicitFalse</a>::ExplicitFalse</h2>
+<div>
+<span>Move constructor</span>
+
+</div>
 </div>
 <div>
 <h3>Synopsis</h3>
@@ -430,14 +571,35 @@ Declared in <code>&lt;explicit-ctor.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 explicit(false)
-ExplicitFalse(<a href="#ExplicitFalse">ExplicitFalse</a>&&) noexcept;
+ExplicitFalse(<a href="#ExplicitFalse">ExplicitFalse</a>&& other) noexcept;
 </code>
 </pre>
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>other</strong></td>
+<td><span>The object to move construct from</span></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div>
 <div>
 <h2 id="ExplicitFalse-2constructor-04f"><a href="#ExplicitFalse">ExplicitFalse</a>::ExplicitFalse</h2>
+<div>
+<span>Constructor</span>
+
+</div>
 </div>
 <div>
 <h3>Synopsis</h3>
@@ -477,7 +639,7 @@ struct ExplicitTrue;
 </thead>
 <tbody>
 <tr>
-<td><a href="#ExplicitTrue-2constructor-0f"><code>ExplicitTrue</code></a>         <span class="small">[constructor]</span></td><td><span></span></td></tr>
+<td><a href="#ExplicitTrue-2constructor-0f"><code>ExplicitTrue</code></a>         <span class="small">[constructor]</span></td><td><span>Constructors</span></td></tr>
 </tbody>
 </table>
 
@@ -487,12 +649,16 @@ struct ExplicitTrue;
 <div>
 <div>
 <h2 id="ExplicitTrue-2constructor-0f"><a href="#ExplicitTrue">ExplicitTrue</a>::ExplicitTrue</h2>
+<div>
+<span>Constructors</span>
+
+</div>
 </div>
 <div>
 <h3>Synopses</h3>
 <div>
 Declared in <code>&lt;explicit-ctor.cpp&gt;</code></div>
-
+<span>Default constructor</span>
 <pre>
 <code class="source-code cpp">
 explicit(true)
@@ -500,23 +666,23 @@ explicit(true)
 </code>
 </pre><span class="small"><a href="#ExplicitTrue-2constructor-0d"><em>» more...</em></a></span>
 
-
+<span>Copy constructor</span>
 <pre>
 <code class="source-code cpp">
 explicit(true)
-<a href="#ExplicitTrue-2constructor-04">ExplicitTrue</a>(<a href="#ExplicitTrue">ExplicitTrue</a> const&);
+<a href="#ExplicitTrue-2constructor-04">ExplicitTrue</a>(<a href="#ExplicitTrue">ExplicitTrue</a> const& other);
 </code>
 </pre><span class="small"><a href="#ExplicitTrue-2constructor-04"><em>» more...</em></a></span>
 
-
+<span>Move constructor</span>
 <pre>
 <code class="source-code cpp">
 explicit(true)
-<a href="#ExplicitTrue-2constructor-08">ExplicitTrue</a>(<a href="#ExplicitTrue">ExplicitTrue</a>&&) noexcept;
+<a href="#ExplicitTrue-2constructor-08">ExplicitTrue</a>(<a href="#ExplicitTrue">ExplicitTrue</a>&& other) noexcept;
 </code>
 </pre><span class="small"><a href="#ExplicitTrue-2constructor-08"><em>» more...</em></a></span>
 
-
+<span>Constructor</span>
 <pre>
 <code class="source-code cpp">
 explicit(true)
@@ -532,6 +698,10 @@ explicit(true)
 <div>
 <div>
 <h2 id="ExplicitTrue-2constructor-0d"><a href="#ExplicitTrue">ExplicitTrue</a>::ExplicitTrue</h2>
+<div>
+<span>Default constructor</span>
+
+</div>
 </div>
 <div>
 <h3>Synopsis</h3>
@@ -548,6 +718,10 @@ ExplicitTrue();
 <div>
 <div>
 <h2 id="ExplicitTrue-2constructor-04"><a href="#ExplicitTrue">ExplicitTrue</a>::ExplicitTrue</h2>
+<div>
+<span>Copy constructor</span>
+
+</div>
 </div>
 <div>
 <h3>Synopsis</h3>
@@ -556,14 +730,35 @@ Declared in <code>&lt;explicit-ctor.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 explicit(true)
-ExplicitTrue(<a href="#ExplicitTrue">ExplicitTrue</a> const&);
+ExplicitTrue(<a href="#ExplicitTrue">ExplicitTrue</a> const& other);
 </code>
 </pre>
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>other</strong></td>
+<td><span>The object to copy construct from</span></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div>
 <div>
 <h2 id="ExplicitTrue-2constructor-08"><a href="#ExplicitTrue">ExplicitTrue</a>::ExplicitTrue</h2>
+<div>
+<span>Move constructor</span>
+
+</div>
 </div>
 <div>
 <h3>Synopsis</h3>
@@ -572,14 +767,35 @@ Declared in <code>&lt;explicit-ctor.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 explicit(true)
-ExplicitTrue(<a href="#ExplicitTrue">ExplicitTrue</a>&&) noexcept;
+ExplicitTrue(<a href="#ExplicitTrue">ExplicitTrue</a>&& other) noexcept;
 </code>
 </pre>
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>other</strong></td>
+<td><span>The object to move construct from</span></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div>
 <div>
 <h2 id="ExplicitTrue-2constructor-05"><a href="#ExplicitTrue">ExplicitTrue</a>::ExplicitTrue</h2>
+<div>
+<span>Constructor</span>
+
+</div>
 </div>
 <div>
 <h3>Synopsis</h3>

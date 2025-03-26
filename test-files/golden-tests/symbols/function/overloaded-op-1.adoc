@@ -26,14 +26,18 @@ struct T;
 
 === Member Functions
 
-[cols=1]
+[cols=2]
 |===
 | Name
+| Description
 | <<T-operator_plus,`operator&plus;`>> 
+| Unary plus operator
 |===
 
 [#T-operator_plus]
 == <<T,T>>::operator&plus;
+
+Unary plus operator
 
 === Synopsis
 
@@ -44,6 +48,10 @@ Declared in `&lt;overloaded&hyphen;op&hyphen;1&period;cpp&gt;`
 <<T,T>>
 operator&plus;();
 ----
+
+=== Return Value
+
+Another instance of the object
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

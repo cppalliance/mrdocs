@@ -17,7 +17,7 @@
 | <<copyBriefFromFirstSentenceAsBrief,`copyBriefFromFirstSentenceAsBrief`>> 
 | 
 | <<copyBriefFromFirstValid,`copyBriefFromFirstValid`>> 
-| 
+| This is the explicit brief&period;
 | <<copyDetailsFromCopyBrief,`copyDetailsFromCopyBrief`>> 
 | Details will be copied
 | <<copyDetailsFromDocNoBrief,`copyDetailsFromDocNoBrief`>> 
@@ -119,6 +119,8 @@ copyBriefFromFirstSentenceAsBrief();
 
 [#copyBriefFromFirstValid]
 == copyBriefFromFirstValid
+
+This is the explicit brief&period;
 
 === Synopsis
 

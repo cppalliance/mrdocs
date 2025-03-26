@@ -1,0 +1,448 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols=2]
+|===
+| Name
+| Description
+| <<A,`A`>> 
+| A helper tag
+| <<X,`X`>> 
+| Test class
+|===
+
+[#A]
+== A
+
+A helper tag
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct A;
+----
+
+[#X]
+== X
+
+Test class
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct X;
+----
+
+=== Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| <<X-2constructor-08,`X`>>         [.small]#[constructor]#
+| Constructors
+| <<X-operator_assign-0a,`operator&equals;`>> 
+| Assignment operators
+|===
+
+[#X-2constructor-08]
+== <<X,X>>::X
+
+Constructors
+
+=== Synopses
+
+Declared in `&lt;param&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
+
+Copy constructor
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<X-2constructor-0e,X>>(<<X,X>> const& other);
+----
+
+[.small]#<<X-2constructor-0e,_» more&period;&period;&period;_>>#
+
+Move constructor
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<X-2constructor-06,X>>(<<X,X>>&& other);
+----
+
+[.small]#<<X-2constructor-06,_» more&period;&period;&period;_>>#
+
+Construct from `int`
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<X-2constructor-07,X>>(int value);
+----
+
+[.small]#<<X-2constructor-07,_» more&period;&period;&period;_>>#
+
+Construct from `A`
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<X-2constructor-0b,X>>(<<A,A>> const& value);
+----
+
+[.small]#<<X-2constructor-0b,_» more&period;&period;&period;_>>#
+
+Construct from `A`
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<X-2constructor-00,X>>(<<A,A>>&& value);
+----
+
+[.small]#<<X-2constructor-00,_» more&period;&period;&period;_>>#
+
+[#X-2constructor-0e]
+== <<X,X>>::X
+
+Copy constructor
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+X(<<X,X>> const& other);
+----
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *other*
+| The object to copy construct from
+|===
+
+[#X-2constructor-06]
+== <<X,X>>::X
+
+Move constructor
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+X(<<X,X>>&& other);
+----
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *other*
+| The object to move construct from
+|===
+
+[#X-2constructor-07]
+== <<X,X>>::X
+
+Construct from `int`
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+X(int value);
+----
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *value*
+| The value to construct from
+|===
+
+[#X-2constructor-0b]
+== <<X,X>>::X
+
+Construct from `A`
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+X(<<A,A>> const& value);
+----
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *value*
+| The object to copy construct from
+|===
+
+[#X-2constructor-00]
+== <<X,X>>::X
+
+Construct from `A`
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+X(<<A,A>>&& value);
+----
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *value*
+| The object to move construct from
+|===
+
+[#X-operator_assign-0a]
+== <<X,X>>::operator&equals;
+
+Assignment operators
+
+=== Synopses
+
+Declared in `&lt;param&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
+
+Copy assignment operator
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<X,X>>&
+<<X-operator_assign-06,operator&equals;>>(<<X,X>> const& other);
+----
+
+[.small]#<<X-operator_assign-06,_» more&period;&period;&period;_>>#
+
+Move assignment operator
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<X,X>>&
+<<X-operator_assign-0e,operator&equals;>>(<<X,X>>&& other);
+----
+
+[.small]#<<X-operator_assign-0e,_» more&period;&period;&period;_>>#
+
+Assignment operator
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<X,X>>&
+<<X-operator_assign-07f,operator&equals;>>(int value);
+----
+
+[.small]#<<X-operator_assign-07f,_» more&period;&period;&period;_>>#
+
+Assignment operator
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<X,X>>&
+<<X-operator_assign-0d,operator&equals;>>(<<A,A>> const& value);
+----
+
+[.small]#<<X-operator_assign-0d,_» more&period;&period;&period;_>>#
+
+Assignment operator
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<X,X>>&
+<<X-operator_assign-07e,operator&equals;>>(<<A,A>>&& value);
+----
+
+[.small]#<<X-operator_assign-07e,_» more&period;&period;&period;_>>#
+
+[#X-operator_assign-06]
+== <<X,X>>::operator&equals;
+
+Copy assignment operator
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<X,X>>&
+operator&equals;(<<X,X>> const& other);
+----
+
+=== Return Value
+
+Reference to the current object
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *other*
+| The object to copy assign from
+|===
+
+[#X-operator_assign-0e]
+== <<X,X>>::operator&equals;
+
+Move assignment operator
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<X,X>>&
+operator&equals;(<<X,X>>&& other);
+----
+
+=== Return Value
+
+Reference to the current object
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *other*
+| The object to move assign from
+|===
+
+[#X-operator_assign-07f]
+== <<X,X>>::operator&equals;
+
+Assignment operator
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<X,X>>&
+operator&equals;(int value);
+----
+
+=== Return Value
+
+Reference to the current object
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *value*
+| The value to assign from
+|===
+
+[#X-operator_assign-0d]
+== <<X,X>>::operator&equals;
+
+Assignment operator
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<X,X>>&
+operator&equals;(<<A,A>> const& value);
+----
+
+=== Return Value
+
+Reference to the current object
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *value*
+| The object to copy assign from
+|===
+
+[#X-operator_assign-07e]
+== <<X,X>>::operator&equals;
+
+Assignment operator
+
+=== Synopsis
+
+Declared in `&lt;param&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<X,X>>&
+operator&equals;(<<A,A>>&& value);
+----
+
+=== Return Value
+
+Reference to the current object
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *value*
+| The object to move assign from
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -1,0 +1,304 @@
+<html lang="en">
+<head>
+<title>Reference</title>
+</head>
+<body>
+<div>
+<h1>Reference</h1>
+<div>
+<div>
+<h2 id="index">Global namespace</h2>
+</div>
+<h2>Types</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#A"><code>A</code></a> </td><td><span>A helper tag</span></td></tr><tr>
+<td><a href="#X"><code>X</code></a> </td><td><span>Test class</span></td></tr><tr>
+<td><a href="#ostream"><code>ostream</code></a> </td><td><span>A dumb ostream class</span></td></tr>
+</tbody>
+</table>
+
+<h2>Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#operator_minus"><code>operator-</code></a> </td><td><span>Subtraction operator</span></td></tr><tr>
+<td><a href="#operator_lshift"><code>operator&lt;&lt;</code></a> </td><td><span>Stream insertion operator</span></td></tr><tr>
+<td><a href="#operator_not"><code>operator!</code></a> </td><td><span>Negation operator</span></td></tr>
+</tbody>
+</table>
+
+</div>
+<div>
+<div>
+<h2 id="A">A</h2>
+<div>
+<span>A helper tag</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-from-operator.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+struct A;
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="X">X</h2>
+<div>
+<span>Test class</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-from-operator.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+struct X;
+</code>
+</pre>
+</div>
+<h2>Member Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#X-operator_plus"><code>operator+</code></a> </td><td><span>Addition operator</span></td></tr>
+</tbody>
+</table>
+
+
+
+</div>
+<div>
+<div>
+<h2 id="X-operator_plus"><a href="#X">X</a>::operator+</h2>
+<div>
+<span>Addition operator</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-from-operator.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+<a href="#X">X</a>
+operator+(<a href="#X">X</a> const& x) const;
+</code>
+</pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>Another instance of the object</span>
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>x</strong></td>
+<td><span>The right operand</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="ostream">ostream</h2>
+<div>
+<span>A dumb ostream class</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-from-operator.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+struct ostream;
+</code>
+</pre>
+</div>
+
+
+</div>
+<div>
+<div>
+<h2 id="operator_minus">operator-</h2>
+<div>
+<span>Subtraction operator</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-from-operator.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+<a href="#X">X</a>
+operator-(
+    <a href="#X">X</a> const& x,
+    <a href="#X">X</a> const& y);
+</code>
+</pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>Test class</span>
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>x</strong></td>
+<td><span>The left operand</span></td>
+</tr>
+<tr>
+<td><strong>y</strong></td>
+<td><span>The right operand</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="operator_lshift">operator&lt;&lt;</h2>
+<div>
+<span>Stream insertion operator</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-from-operator.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+<a href="#ostream">ostream</a>&
+operator&lt;&lt;(
+    <a href="#ostream">ostream</a>& os,
+    <a href="#X">X</a> const& x);
+</code>
+</pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>Reference to the current output stream</span>
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>os</strong></td>
+<td><span>An output stream</span></td>
+</tr>
+<tr>
+<td><strong>x</strong></td>
+<td><span>The object to output</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="operator_not">operator!</h2>
+<div>
+<span>Negation operator</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-from-operator.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+<a href="#X">X</a>
+operator!(<a href="#X">X</a> const& x);
+</code>
+</pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>Test class</span>
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>x</strong></td>
+<td><span>The operand</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+<div>
+<h4>Created with <a href="https://www.mrdocs.com">MrDocs</a></h4>
+</div>
+</body>
+</html>

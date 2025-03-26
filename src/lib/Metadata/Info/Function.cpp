@@ -168,9 +168,111 @@ getSafeOperatorName(
     return full.substr(9);
 }
 
+std::optional<std::string_view>
+getOperatorReadableName(
+    OperatorKind const kind,
+    int const nParams)
+{
+    switch (kind)
+    {
+        case OperatorKind::Equal:
+            return "Assignment";
+        case OperatorKind::Star:
+            return nParams != 2 ? "Dereference" : "Multiplication";
+        case OperatorKind::Arrow:
+            return "Member access";
+        case OperatorKind::Exclaim:
+            return "Negation";
+        case OperatorKind::EqualEqual:
+            return "Equality";
+        case OperatorKind::ExclaimEqual:
+            return "Inequality";
+        case OperatorKind::Less:
+            return "Less-than";
+        case OperatorKind::LessEqual:
+            return "Less-than-or-equal";
+        case OperatorKind::Greater:
+            return "Greater-than";
+        case OperatorKind::GreaterEqual:
+            return "Greater-than-or-equal";
+        case OperatorKind::Spaceship:
+            return "Three-way comparison";
+        case OperatorKind::AmpAmp:
+            return "Conjunction";
+        case OperatorKind::PipePipe:
+            return "Disjunction";
+        case OperatorKind::PlusPlus:
+            return "Increment";
+        case OperatorKind::MinusMinus:
+            return "Decrement";
+        case OperatorKind::Comma:
+            return "Comma";
+        case OperatorKind::ArrowStar:
+            return "Pointer-to-member";
+        case OperatorKind::Call:
+            return "Function call";
+        case OperatorKind::Subscript:
+            return "Subscript";
+        case OperatorKind::Conditional:
+            return "Ternary";
+        case OperatorKind::Coawait:
+            return "Coawait";
+        case OperatorKind::New:
+            return "New";
+        case OperatorKind::Delete:
+            return "Delete";
+        case OperatorKind::ArrayNew:
+            return "New array";
+        case OperatorKind::ArrayDelete:
+            return "Delete array";
+        case OperatorKind::Plus:
+            return nParams != 2 ? "Unary plus" : "Addition";
+        case OperatorKind::Minus:
+            return nParams != 2 ? "Unary minus" : "Subtraction";
+        case OperatorKind::Slash:
+            return "Division";
+        case OperatorKind::Percent:
+            return "Modulus";
+        case OperatorKind::Pipe:
+            return "Bitwise disjunction";
+        case OperatorKind::Caret:
+            return "Bitwise exclusive-or";
+        case OperatorKind::Tilde:
+            return "Bitwise negation";
+        case OperatorKind::PlusEqual:
+            return "Addition assignment";
+        case OperatorKind::MinusEqual:
+            return "Subtraction assignment";
+        case OperatorKind::StarEqual:
+            return "Multiplication assignment";
+        case OperatorKind::SlashEqual:
+            return "Division assignment";
+        case OperatorKind::PercentEqual:
+            return "Modulus assignment";
+        case OperatorKind::Amp:
+            return nParams != 2 ? "Address-of" : "Bitwise conjunction";
+        case OperatorKind::AmpEqual:
+            return "Bitwise conjunction assignment";
+        case OperatorKind::PipeEqual:
+            return "Bitwise disjunction assignment";
+        case OperatorKind::CaretEqual:
+            return "Bitwise exclusive-or assignment";
+        case OperatorKind::LessLess:
+            return "Left shift";
+        case OperatorKind::GreaterGreater:
+            return "Right shift";
+        case OperatorKind::LessLessEqual:
+            return "Left shift assignment";
+        case OperatorKind::GreaterGreaterEqual:
+            return "Right shift";
+        default:
+            return std::nullopt;
+    }
+    MRDOCS_UNREACHABLE();
+}
+
 dom::String
-toString(
-    FunctionClass kind) noexcept
+toString(FunctionClass const kind) noexcept
 {
     switch(kind)
     {

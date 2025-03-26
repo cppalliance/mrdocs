@@ -46,6 +46,14 @@ class JavadocFinalizer
      */
     std::set<Info const*> finalized_;
 
+    /* Info objects whose brief have been finalized
+     */
+    std::set<Info const*> finalized_brief_;
+
+    /* Info objects whose metadata have been finalized
+     */
+    std::set<Info const*> finalized_metadata_;
+
     // A comparison function that sorts locations by:
     // 1) ascending full path
     // 2) descending line number
@@ -83,102 +91,112 @@ public:
     {
     }
 
-    void
-    build()
-    {
-        for (auto& I : corpus_.info_)
-        {
-            MRDOCS_ASSERT(I);
-            MRDOCS_CHECK_OR_CONTINUE(I->Extraction != ExtractionMode::Dependency);
-            visit(*I, *this);
-        }
-        emitWarnings();
-    }
+    /** Finalize the javadoc for all symbols
 
-    void
-    operator()(Info& I)
-    {
-        visit(I, *this);
-    }
+        The procedure is composed of steps that resolve
+        groups of javadoc components for each symbol.
 
-    // Finalize javadoc for this info object
-    template <class InfoTy>
+        Groups of components processed later might depend
+        on components processed earlier. For example, a
+        function's javadoc might depend on the brief of
+        the return type and the parameters. Or, the
+        javadoc of an overload depends on the complete
+        documentation of the functions it overloads.
+     */
     void
-    operator()(InfoTy& I);
-
-    // Check and finalize data unrelated to javadoc
-    template <class InfoTy>
-    void
-    finalizeInfoData(InfoTy& I);
+    build();
 
 private:
-    // Look for symbol and set the id of a reference
-    void
-    finalize(doc::Reference& ref, bool emitWarning = true);
+    /** Finalize the brief of a symbol
 
-    // Recursively finalize references in a javadoc node
+        The brief is the first paragraph of the documentation
+        and is used in the index and in the documentation
+        summary.
+     */
     void
-    finalize(doc::Node& node);
+    finalizeBrief(Info& I);
 
-    // Recursively finalize references in javadoc members
+    /** Copy the brief from another symbol
+
+        This function copies the brief from another symbol
+        to the current context. The brief is copied only if
+        the brief of the current context is empty and
+        it contains a reference to another symbol created
+        with \@copybrief or \@copydoc.
+     */
+    void
+    copyBrief(Javadoc& javadoc);
+
+    /** Set brief content automatically
+
+        If the brief is empty, this function sets the brief
+        to the first paragraph of the documentation.
+     */
+    void
+    setAutoBrief(Javadoc& javadoc) const;
+
+    /** Finalize the metadata copies
+
+        Copy the metadata from other symbols to the current
+        context whenever the current context contains a
+        reference to another symbol created with \@copydoc.
+     */
+    void
+    finalizeMetadataCopies(Info& I);
+
+    /** Populate function javadoc from with missing fields
+
+        This function populates the function javadoc with
+        missing fields of special functions.
+     */
+    void
+    populateFunctionJavadoc(FunctionInfo&) const;
+
+    /** Populate the metadata of overloads
+
+        This function populates the metadata of overloads
+        with the metadata of the functions it overloads.
+     */
+    void
+    populateOverloadJavadoc(OverloadsInfo&);
+
+    /** Resolve references in the javadoc
+
+        This function resolves references in the javadoc
+        of a symbol. The references are resolved by looking
+        up the symbol in the corpus and setting the id of
+        the reference.
+     */
+    void
+    finalizeJavadoc(Info& I);
+
+    /** Recursively finalize javadoc members
+
+        This function also processes related symbols,
+        merges consecutive blocks, trims blocks, and
+        unindents code blocks.
+     */
     void
     finalize(Javadoc& javadoc);
 
-    // Find the ID of "relates" symbols and populate
-    // the "related" symbol with the inverse.
+    /** Resolve \@relates references
+
+        This function finds the ID of "relates" symbols
+        and populates the "related" symbol with the inverse.
+     */
     void
     processRelates(Javadoc& javadoc);
 
-    // Automatically find related symbols
-    void
-    setAutoRelates();
+    /** Remove all temporary text nodes from a block
 
-    // Copy brief and details to the current context
-    void
-    copyBriefAndDetails(Javadoc& javadoc);
-
-    // Copy brief from first paragraph
-    void
-    setAutoBrief(Javadoc& javadoc);
-
-    /* Trim all block childen in the javadoc
-
-       The first child is rtrimmed and the last child is ltrimmed.
-
-       Like in HTML, multiple whitespaces (spaces, tabs, and newlines)
-       between and within child nodes are collapsed into a single space.
-     */
-    void
-    trimBlocks(Javadoc& javadoc);
-
-    // A range of values derived from blocks
-    template <std::ranges::range R>
-    requires std::derived_from<std::ranges::range_value_t<R>, doc::Block>
-    void
-    trimBlocks(R&& blocks)
-    {
-        for (auto& block: blocks)
-        {
-            trimBlock(block);
-        }
-    }
-
-    void
-    trimBlocks(std::vector<Polymorphic<doc::Block>>& blocks);
-
-    void
-    trimBlock(doc::Block& block);
-
-    /* Remove all temporary text nodes from a block
-
-       The temporary nodes (copied, related, etc...) should
-       have been processed by the previous steps and should
-       not be present in the final output.
+        The temporary nodes (copied, related, etc...) should
+        have been processed by the previous steps and should
+        not be present in the final output.
      */
     void
     removeTempTextNodes(Javadoc& javadoc);
 
-    // A range of values derived from blocks
+    /// A range of values derived from blocks
     template <std::ranges::range R>
     requires std::derived_from<std::ranges::range_value_t<R>, doc::Block>
     void
@@ -190,21 +208,29 @@ private:
         }
     }
 
+    /// Remove temporary text nodes from a block
     void
     removeTempTextNodes(std::vector<Polymorphic<doc::Block>>& blocks);
 
+    /// Remove temporary text nodes from a block
     void
     removeTempTextNodes(doc::Block& block);
 
-    /* Unindent all code blocks in the javadoc
+    /** Trim all block childen in the javadoc
+
+        The first child is rtrimmed and the last child is ltrimmed.
+
+        Like in HTML, multiple whitespaces (spaces, tabs, and newlines)
+        between and within child nodes are collapsed into a single space.
      */
     void
-    unindentCodeBlocks(Javadoc& javadoc);
+    trimBlocks(Javadoc& javadoc);
 
+    /// A range of values derived from blocks
     template <std::ranges::range R>
     requires std::derived_from<std::ranges::range_value_t<R>, doc::Block>
     void
-    unindentCodeBlocks(R&& blocks)
+    trimBlocks(R&& blocks)
     {
         for (auto& block: blocks)
         {
@@ -212,11 +238,67 @@ private:
         }
     }
 
+    /// Trim a block
+    void
+    trimBlocks(std::vector<Polymorphic<doc::Block>>& blocks);
+
+    /// Trim a block
+    void
+    trimBlock(doc::Block& block);
+
+    /// Unindent all code blocks in the javadoc
+    void
+    unindentCodeBlocks(Javadoc& javadoc);
+
+    /// Unindent code blocks in a range
+    template <std::ranges::range R>
+    requires std::derived_from<std::ranges::range_value_t<R>, doc::Block>
+    void
+    unindentCodeBlocks(R&& blocks)
+    {
+        for (auto& block: blocks)
+        {
+            unindentCodeBlocks(block);
+        }
+    }
+
+    /// Unindent code blocks in a vector
     void
     unindentCodeBlocks(std::vector<Polymorphic<doc::Block>>& blocks);
 
+    /// Unindent a code block
     void
     unindentCodeBlocks(doc::Block& block);
+
+    /** Check and finalize data unrelated to javadoc
+
+        This checks if all symbol IDs are valid and
+        removes invalid IDs from the Info data.
+     */
+    template <class InfoTy>
+    void
+    finalizeInfoData(InfoTy& I);
+
+    /** Check the documentation for problems and creates warnings
+     */
+    void
+    emitWarnings();
+
+    // Look for symbol and set the id of a reference
+    void
+    finalize(doc::Reference& ref, bool emitWarning = true);
+
+    // Recursively finalize references in a javadoc node
+    void
+    finalize(doc::Node& node);
+
+    // Automatically find related symbols
+    void
+    setAutoRelates();
+
+    // Copy brief and details to the current context
+    void
+    copyDetails(Javadoc& javadoc);
 
     // Set id to invalid if it does not exist
     void
@@ -238,23 +320,23 @@ private:
     void
     finalize(Param& param);
 
-    // Remove invalid ids from BaseInfo members
+    /// Remove invalid ids from BaseInfo members
     void
     finalize(BaseInfo& info);
 
-    // Remove invalid ids from TemplateInfo members
+    /// Remove invalid ids from TemplateInfo members
     void
     finalize(TemplateInfo& info);
 
-    // Remove invalid ids from TypeInfo members
+    /// Remove invalid ids from TypeInfo members
     void
     finalize(TypeInfo& type);
 
-    // Remove invalid ids from NameInfo members
+    /// Remove invalid ids from NameInfo members
     void
     finalize(NameInfo& name);
 
-    // Finalize optional and pointer-like members
+    /// Finalize optional and pointer-like members
     template <dereferenceable T>
     void
     finalize(T&& val) requires
@@ -266,7 +348,7 @@ private:
         }
     }
 
-    // Finalize a range of elements
+    /// Finalize a range of elements
     template<typename Range>
     requires std::ranges::input_range<Range>
     void
@@ -294,11 +376,7 @@ private:
             }));
     }
 
-    void
-    populateOverloadJavadocs(OverloadsInfo&);
 
-    void
-    emitWarnings();
 
     template<class... Args>
     void

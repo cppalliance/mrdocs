@@ -119,7 +119,7 @@ enum class NodeKind
     styled,
     tparam,
     reference,
-    copied,
+    copy_details,
     throws,
     details,
     see,
@@ -373,7 +373,8 @@ struct Text : Node
     {
     }
 
-    bool isBlock() const noexcept final
+    bool
+    isBlock() const noexcept final
     {
         return false;
     }
@@ -600,26 +601,21 @@ tag_invoke(
 
 /** Documentation copied from another symbol.
 */
-struct Copied final : Reference
+struct CopyDetails final : Reference
 {
-    Parts parts;
+    static constexpr auto static_kind = NodeKind::copy_details;
 
-    static constexpr auto static_kind = NodeKind::copied;
-
-    Copied(
-        std::string string_ = std::string(),
-        Parts parts_ = Parts::all) noexcept
-        : Reference(std::move(string_), NodeKind::copied)
-        , parts(parts_)
+    CopyDetails(std::string string_ = std::string()) noexcept
+        : Reference(std::move(string_), NodeKind::copy_details)
     {
     }
 
-    auto operator<=>(Copied const&) const = default;
-    bool operator==(Copied const&) const noexcept = default;
+    auto operator<=>(CopyDetails const&) const = default;
+    bool operator==(CopyDetails const&) const noexcept = default;
     bool equals(Node const& other) const noexcept override
     {
         return Kind == other.Kind &&
-            *this == dynamic_cast<Copied const&>(other);
+            *this == dynamic_cast<CopyDetails const&>(other);
     }
 };
 
@@ -630,11 +626,10 @@ void
 tag_invoke(
     dom::LazyObjectMapTag t,
     IO& io,
-    Copied const& I,
+    CopyDetails const& I,
     DomCorpus const* domCorpus)
 {
     tag_invoke(t, io, dynamic_cast<Reference const&>(I), domCorpus);
-    io.map("parts", I.parts);
 }
 
 /** Return the @ref Copied as a @ref dom::Value object.
@@ -644,7 +639,7 @@ void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
-    Copied const& I,
+    CopyDetails const& I,
     DomCorpus const* domCorpus)
 {
     v = dom::LazyObject(I, domCorpus);
@@ -825,10 +820,11 @@ struct Paragraph : Block
 {
     static constexpr auto static_kind = NodeKind::paragraph;
 
-    Paragraph() noexcept
-        : Block(NodeKind::paragraph)
-    {
-    }
+    Paragraph() noexcept : Block(NodeKind::paragraph) {}
+
+    virtual
+    Paragraph&
+    operator=(std::string_view str);
 
     auto operator<=>(Paragraph const&) const = default;
 
@@ -881,9 +877,28 @@ struct Brief final : Paragraph
 {
     static constexpr NodeKind static_kind = NodeKind::brief;
 
+    std::vector<std::string> copiedFrom;
+
     Brief() noexcept
         : Paragraph(NodeKind::brief)
     {
+    }
+
+    explicit
+    Brief(std::string_view const text)
+        : Brief()
+    {
+        operator=(text);
+    }
+
+    Brief&
+    operator=(Brief const& other) = default;
+
+    Brief&
+    operator=(std::string_view const text) override
+    {
+        Paragraph::operator=(text);
+        return *this;
     }
 
     auto operator<=>(Brief const&) const = default;
@@ -939,8 +954,12 @@ struct Admonition final : Paragraph
     {
     }
 
+    using Paragraph::operator=;
+
     auto operator<=>(Admonition const&) const = default;
+
     bool operator==(Admonition const&) const noexcept = default;
+
     bool equals(Node const& other) const noexcept override
     {
         return Kind == other.Kind &&
@@ -989,6 +1008,7 @@ struct Code final : Paragraph
     {
     }
 
+    using Paragraph::operator=;
     auto operator<=>(Code const&) const = default;
     bool operator==(Code const&) const noexcept = default;
     bool equals(Node const& other) const noexcept override
@@ -1033,6 +1053,8 @@ struct ListItem final : Paragraph
     ListItem()
         : Paragraph(static_kind)
     {}
+
+    using Paragraph::operator=;
 
     auto operator<=>(ListItem const&) const = default;
     bool
@@ -1092,6 +1114,8 @@ struct UnorderedList final : Paragraph
         : Paragraph(static_kind)
     {
     }
+
+    using Paragraph::operator=;
 
     auto operator<=>(UnorderedList const& other) const {
         if (auto const cmp = items.size() <=> other.items.size();
@@ -1169,6 +1193,8 @@ struct See final : Paragraph
     {
     }
 
+    using Paragraph::operator=;
+
     auto operator<=>(See const&) const = default;
 
     bool operator==(See const&)
@@ -1228,6 +1254,30 @@ struct Param final : Paragraph
     {
     }
 
+    explicit
+    Param(
+        std::string_view const name,
+        std::string_view const text)
+    : Param()
+    {
+        this->name = name;
+        this->operator=(text);
+    }
+
+    explicit
+    Param(Paragraph const& other)
+        : Param()
+    {
+        children = other.children;
+    }
+
+    Param&
+    operator=(std::string_view const text) override
+    {
+        Paragraph::operator=(text);
+        return *this;
+    }
+
     auto operator<=>(Param const&) const = default;
 
     bool operator==(Param const&)
@@ -1277,6 +1327,27 @@ struct Returns final : Paragraph
     Returns()
         : Paragraph(NodeKind::returns)
     {
+    }
+
+    explicit
+    Returns(std::string_view const text)
+        : Returns()
+    {
+        operator=(text);
+    }
+
+    explicit
+    Returns(Paragraph const& other)
+        : Returns()
+    {
+        children = other.children;
+    }
+
+    Returns&
+    operator=(std::string_view const text) override
+    {
+        Paragraph::operator=(text);
+        return *this;
     }
 
     auto operator<=>(Returns const&) const = default;
@@ -1329,6 +1400,8 @@ struct TParam final : Paragraph
         : Paragraph(NodeKind::tparam)
     {
     }
+
+    using Paragraph::operator=;
 
     auto operator<=>(TParam const&) const = default;
     bool operator==(TParam const&) const noexcept = default;
@@ -1384,6 +1457,8 @@ struct Throws final : Paragraph
     {
     }
 
+    using Paragraph::operator=;
+
     auto operator<=>(Throws const&) const = default;
 
     bool operator==(Throws const&)
@@ -1435,6 +1510,8 @@ struct Precondition final : Paragraph
     {
     }
 
+    using Paragraph::operator=;
+
     auto operator<=>(Precondition const&) const = default;
 
     bool operator==(Precondition const&)
@@ -1484,6 +1561,8 @@ struct Postcondition : Paragraph
             std::move(details_.children))
     {
     }
+
+    using Paragraph::operator=;
 
     auto operator<=>(Postcondition const&) const = default;
 
@@ -1561,8 +1640,8 @@ visit(
         return visitor.template visit<Link>();
     case NodeKind::reference:
         return visitor.template visit<Reference>();
-    case NodeKind::copied:
-        return visitor.template visit<Copied>();
+    case NodeKind::copy_details:
+        return visitor.template visit<CopyDetails>();
     case NodeKind::list_item:
         return visitor.template visit<ListItem>();
     case NodeKind::unordered_list:
@@ -1697,14 +1776,6 @@ struct MRDOCS_DECL
             preconditions.empty() &&
             postconditions.empty();
     }
-
-    /** Return the brief, or nullptr if there is none.
-    */
-    doc::Paragraph const*
-    getBrief(Corpus const& corpus) const noexcept;
-
-    std::vector<Polymorphic<doc::Block>> const&
-    getDescription(Corpus const& corpus) const noexcept;
 
     /** Return the list of top level blocks.
     */

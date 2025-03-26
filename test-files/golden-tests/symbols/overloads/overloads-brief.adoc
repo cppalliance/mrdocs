@@ -57,7 +57,7 @@ struct A;
 | <<A-operator_plus-07,`operator&plus;`>> 
 | Addition operators
 | <<A-operator_minus-0a,`operator&hyphen;`>> 
-| `operator&hyphen;` overloads
+| Unary minus operators
 |===
 
 === Non-Member Functions
@@ -156,17 +156,6 @@ Assignment operators
 
 Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
 
-Assign from int
-
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-<<A,A>>&
-<<A-operator_assign-06,operator&equals;>>(int a);
-----
-
-[.small]#<<A-operator_assign-06,_» more&period;&period;&period;_>>#
-
 Assign from A
 
 
@@ -178,34 +167,16 @@ Assign from A
 
 [.small]#<<A-operator_assign-04,_» more&period;&period;&period;_>>#
 
-=== Return Value
-
-`&ast;this`
-
-=== Parameters
-
-[cols=2]
-|===
-| Name
-| Description
-| *a*
-| Describe b
-|===
-
-[#A-operator_assign-06]
-== <<A,A>>::operator&equals;
-
 Assign from int
 
-=== Synopsis
-
-Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 <<A,A>>&
-operator&equals;(int a);
+<<A-operator_assign-06,operator&equals;>>(int a);
 ----
+
+[.small]#<<A-operator_assign-06,_» more&period;&period;&period;_>>#
 
 === Return Value
 
@@ -218,7 +189,7 @@ operator&equals;(int a);
 | Name
 | Description
 | *a*
-| Describe b
+| Describe a
 |===
 
 [#A-operator_assign-04]
@@ -248,6 +219,35 @@ operator&equals;(<<A,A>> const& a);
 | Description
 | *a*
 | Describe a
+|===
+
+[#A-operator_assign-06]
+== <<A,A>>::operator&equals;
+
+Assign from int
+
+=== Synopsis
+
+Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+<<A,A>>&
+operator&equals;(int a);
+----
+
+=== Return Value
+
+`&ast;this`
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *a*
+| Describe b
 |===
 
 [#A-operator_plus-07]
@@ -356,7 +356,7 @@ operator&plus;(<<A,A>> const& a);
 [#A-operator_minus-0a]
 == <<A,A>>::operator&hyphen;
 
-`operator&hyphen;` overloads
+Unary minus operators
 
 === Synopses
 
@@ -379,7 +379,7 @@ Binary operator&hyphen; for A
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 <<A,A>>
-<<A-operator_minus-0c,operator&hyphen;>>(<<A,A>> const&);
+<<A-operator_minus-0c,operator&hyphen;>>(<<A,A>> const& rhs);
 ----
 
 [.small]#<<A-operator_minus-0c,_» more&period;&period;&period;_>>#
@@ -423,7 +423,7 @@ Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 <<A,A>>
-operator&hyphen;(<<A,A>> const&);
+operator&hyphen;(<<A,A>> const& rhs);
 ----
 
 === Description
@@ -433,6 +433,16 @@ No way to generate a brief from the operator kind&period;
 === Return Value
 
 Result
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *rhs*
+| The right operand
+|===
 
 [#B]
 == B
@@ -554,7 +564,7 @@ Unary operator for A
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int
-<<operator_plus-0d7,operator&plus;>>(<<A,A>> const&);
+<<operator_plus-0d7,operator&plus;>>(<<A,A>> const& value);
 ----
 
 [.small]#<<operator_plus-0d7,_» more&period;&period;&period;_>>#
@@ -565,7 +575,7 @@ Unary operator for B
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int
-<<operator_plus-06,operator&plus;>>(<<B,B>> const&);
+<<operator_plus-06,operator&plus;>>(<<B,B>> const& value);
 ----
 
 [.small]#<<operator_plus-06,_» more&period;&period;&period;_>>#
@@ -586,12 +596,22 @@ Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int
-operator&plus;(<<A,A>> const&);
+operator&plus;(<<A,A>> const& value);
 ----
 
 === Return Value
 
 Result
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *value*
+| The operand
+|===
 
 [#operator_plus-06]
 == operator&plus;
@@ -605,12 +625,22 @@ Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int
-operator&plus;(<<B,B>> const&);
+operator&plus;(<<B,B>> const& value);
 ----
 
 === Return Value
 
 Result
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *value*
+| The operand
+|===
 
 [#sameBrief-08]
 == sameBrief

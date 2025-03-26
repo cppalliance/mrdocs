@@ -322,7 +322,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&equals;(<<F,F>>&);
+operator&equals;(<<F,F>>& other);
 ----
 
 [#F-operator_mod]
@@ -335,7 +335,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator%(<<F,F>>&);
+operator%(<<F,F>>& rhs);
 ----
 
 [#F-operator_mod_eq]
@@ -348,7 +348,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator%&equals;(<<F,F>>&);
+operator%&equals;(<<F,F>>& rhs);
 ----
 
 [#F-operator_bitand]
@@ -361,7 +361,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&amp;(<<F,F>>&);
+operator&amp;(<<F,F>>& rhs);
 ----
 
 [#F-operator_and]
@@ -374,7 +374,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&amp;&amp;(<<F,F>>&);
+operator&amp;&amp;(<<F,F>>& rhs);
 ----
 
 [#F-operator_and_eq]
@@ -387,7 +387,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&amp;&equals;(<<F,F>>&);
+operator&amp;&equals;(<<F,F>>& rhs);
 ----
 
 [#F-operator_call]
@@ -400,7 +400,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator()(<<F,F>>&);
+operator()(<<F,F>>& rhs);
 ----
 
 [#F-operator_star]
@@ -413,7 +413,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&ast;(<<F,F>>&);
+operator&ast;(<<F,F>>& rhs);
 ----
 
 [#F-operator_star_eq]
@@ -426,7 +426,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&ast;&equals;(<<F,F>>&);
+operator&ast;&equals;(<<F,F>>& rhs);
 ----
 
 [#F-operator_plus]
@@ -439,7 +439,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&plus;(<<F,F>>&);
+operator&plus;(<<F,F>>& rhs);
 ----
 
 [#F-operator_inc]
@@ -465,7 +465,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&plus;&equals;(<<F,F>>&);
+operator&plus;&equals;(<<F,F>>& rhs);
 ----
 
 [#F-operator_comma]
@@ -478,7 +478,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator,(<<F,F>>&);
+operator,(<<F,F>>& rhs);
 ----
 
 [#F-operator_minus]
@@ -491,7 +491,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&hyphen;(<<F,F>>&);
+operator&hyphen;(<<F,F>>& rhs);
 ----
 
 [#F-operator_dec]
@@ -517,7 +517,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&hyphen;&equals;(<<F,F>>&);
+operator&hyphen;&equals;(<<F,F>>& rhs);
 ----
 
 [#F-operator_ptr]
@@ -543,7 +543,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&hyphen;&gt;&ast;(<<F,F>>&);
+operator&hyphen;&gt;&ast;(<<F,F>>& rhs);
 ----
 
 [#F-operator_slash]
@@ -556,7 +556,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&sol;(<<F,F>>&);
+operator&sol;(<<F,F>>& rhs);
 ----
 
 [#F-operator_slash_eq]
@@ -569,7 +569,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&sol;&equals;(<<F,F>>&);
+operator&sol;&equals;(<<F,F>>& rhs);
 ----
 
 [#F-operator_lshift_eq]
@@ -582,7 +582,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&lt;&lt;&equals;(<<F,F>>&);
+operator&lt;&lt;&equals;(<<F,F>>& rhs);
 ----
 
 [#F-operator_rshift]
@@ -595,7 +595,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&gt;&gt;(<<F,F>>&);
+operator&gt;&gt;(<<F,F>>& rhs);
 ----
 
 [#F-operator_rshift_eq]
@@ -608,7 +608,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&gt;&gt;&equals;(<<F,F>>&);
+operator&gt;&gt;&equals;(<<F,F>>& rhs);
 ----
 
 [#F-operator_subs]
@@ -621,7 +621,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&lsqb;&rsqb;(<<F,F>>&);
+operator&lsqb;&rsqb;(<<F,F>>& rhs);
 ----
 
 [#F-operator_xor]
@@ -634,7 +634,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&circ;(<<F,F>>&);
+operator&circ;(<<F,F>>& rhs);
 ----
 
 [#F-operator_xor_eq]
@@ -647,7 +647,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&circ;&equals;(<<F,F>>&);
+operator&circ;&equals;(<<F,F>>& rhs);
 ----
 
 [#F-operator_bitor]
@@ -660,7 +660,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&verbar;(<<F,F>>&);
+operator&verbar;(<<F,F>>& rhs);
 ----
 
 [#F-operator_or_eq]
@@ -673,7 +673,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&verbar;&equals;(<<F,F>>&);
+operator&verbar;&equals;(<<F,F>>& rhs);
 ----
 
 [#F-operator_or]
@@ -686,7 +686,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&verbar;&verbar;(<<F,F>>&);
+operator&verbar;&verbar;(<<F,F>>& rhs);
 ----
 
 [#F-operator_bitnot]
@@ -712,7 +712,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&lt;&lt;(<<F,F>>&);
+operator&lt;&lt;(<<F,F>>& rhs);
 ----
 
 [#F-operator_not]
@@ -738,7 +738,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&equals;&equals;(<<F,F>>&);
+operator&equals;&equals;(<<F,F>>& rhs);
 ----
 
 [#F-operator_not_eq]
@@ -751,7 +751,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator!&equals;(<<F,F>>&);
+operator!&equals;(<<F,F>>& rhs);
 ----
 
 [#F-operator_lt]
@@ -764,7 +764,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&lt;(<<F,F>>&);
+operator&lt;(<<F,F>>& rhs);
 ----
 
 [#F-operator_le]
@@ -777,7 +777,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&lt;&equals;(<<F,F>>&);
+operator&lt;&equals;(<<F,F>>& rhs);
 ----
 
 [#F-operator_gt]
@@ -790,7 +790,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&gt;(<<F,F>>&);
+operator&gt;(<<F,F>>& rhs);
 ----
 
 [#F-operator_ge]
@@ -803,7 +803,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&gt;&equals;(<<F,F>>&);
+operator&gt;&equals;(<<F,F>>& rhs);
 ----
 
 [#F-operator_3way]
@@ -816,7 +816,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&lt;&equals;&gt;(<<F,F>>&);
+operator&lt;&equals;&gt;(<<F,F>>& rhs);
 ----
 
 [#f0]

@@ -17,6 +17,16 @@
       "title": "Use the first line of the comment as the brief",
       "type": "boolean"
     },
+    "auto-function-metadata": {
+      "default": true,
+      "description": "When set to `true`, MrDocs automatically provides documentation for special functions, such as constructors, destructors, and operators. It also provides documentation for missing documentation metadata, such as known types.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Automatically provide missing documentation for special functions and trivial metadata",
+      "type": "boolean"
+    },
     "auto-relates": {
       "default": true,
       "description": "When set to `true`, MrDocs automatically finds non-member functions that are related to the current class.",

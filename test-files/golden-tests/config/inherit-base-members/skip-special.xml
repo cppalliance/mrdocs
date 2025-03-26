@@ -3,12 +3,12 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <class name="base" id="sk8HTAQHhzXfZej4IJliADonAJQ=">
-    <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="39" class="def"/>
+    <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="44" class="def"/>
     <base>
       <type id="/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=" name="base_base"/>
     </base>
     <function class="constructor" name="base" id="i32Wxo5FwAB92S9eyq4OmJr+PwE=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="44"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="49"/>
       <doc>
         <brief>
           <text>Constructor should not be inherited</text>
@@ -16,7 +16,7 @@
       </doc>
     </function>
     <function class="destructor" name="~base" id="zem/akJ/sAPS+vXkWB/zJ3kqYho=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="47"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="52"/>
       <doc>
         <brief>
           <text>Destructor should not be inherited</text>
@@ -24,7 +24,7 @@
       </doc>
     </function>
     <function name="base_base_inherited" id="2D7yc6q3buDhuPwzpn4pWzbu8ls=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="33"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="38"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=" name="base_base"/>
@@ -37,7 +37,7 @@
       </doc>
     </function>
     <function name="base_inherited" id="v0BroyWjs67MHzc1SyTlXrSxn8M=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="54"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="59"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
@@ -50,7 +50,7 @@
       </doc>
     </function>
     <function name="base_shadowed" id="ECBBLxlaKar55qA0k1BCFn6MdH8=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="52"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="57"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
@@ -63,7 +63,7 @@
       </doc>
     </function>
     <function name="derived_shadowed" id="aYhSUMJkgCRo3AZmBb/rre04Ghg=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="50"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="55"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
@@ -76,7 +76,7 @@
       </doc>
     </function>
     <function name="do_base_base_inherited" id="MEPVWyGd8KdZFR1kBYlQMgPyQlo=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="36"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="41"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=" name="base_base"/>
@@ -89,7 +89,7 @@
       </doc>
     </function>
     <function name="do_base_inherited" access="protected" id="TaKAQiDmx8UXkT9p/momqiOZyHU=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="61"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="66"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
@@ -102,7 +102,7 @@
       </doc>
     </function>
     <function name="do_base_shadowed" access="protected" id="eHxe3z0iWUXdcNyXK0PD2+6DRbs=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="59"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="64"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
@@ -115,7 +115,7 @@
       </doc>
     </function>
     <function name="do_derived_shadowed" access="protected" id="KGOrnDVJV2nPDK1hlkvBm6diYXY=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="57"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="62"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
@@ -129,9 +129,9 @@
     </function>
   </class>
   <class name="base_base" id="/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=">
-    <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="24" class="def"/>
+    <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="29" class="def"/>
     <function class="constructor" name="base_base" id="0hT5zKl+ugygmEuMXhib2MIZLpU=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="27"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="32"/>
       <doc>
         <brief>
           <text>Constructor should not be inherited</text>
@@ -139,7 +139,7 @@
       </doc>
     </function>
     <function class="destructor" name="~base_base" id="pXBvtV7fI6xpBYpqDE+uiFh8oQk=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="30"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="35"/>
       <doc>
         <brief>
           <text>Destructor should not be inherited</text>
@@ -147,7 +147,7 @@
       </doc>
     </function>
     <function name="base_base_inherited" id="2D7yc6q3buDhuPwzpn4pWzbu8ls=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="33"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="38"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=" name="base_base"/>
@@ -160,7 +160,7 @@
       </doc>
     </function>
     <function name="do_base_base_inherited" id="MEPVWyGd8KdZFR1kBYlQMgPyQlo=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="36"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="41"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=" name="base_base"/>
@@ -174,7 +174,7 @@
     </function>
   </class>
   <class name="derived" id="ABxWcxit2TyVLv16ZxoJKAc6LKw=">
-    <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="64" class="def"/>
+    <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="69" class="def"/>
     <base>
       <type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
     </base>
@@ -182,7 +182,7 @@
       <type id="ZFBKKIr2vNG5u3bxIaTbccBBkvQ=" name="excluded_base"/>
     </base>
     <function class="constructor" name="derived" id="Mb8fERE5UxaDv4qmeuyT42BBof8=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="70"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="75"/>
       <doc>
         <brief>
           <text>Constructor should not be inherited</text>
@@ -190,7 +190,7 @@
       </doc>
     </function>
     <function class="destructor" name="~derived" id="6DgPvK2zzHe4kSaF/gWVBDdJ74U=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="73"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="78"/>
       <doc>
         <brief>
           <text>Destructor should not be inherited</text>
@@ -198,7 +198,7 @@
       </doc>
     </function>
     <function name="base_base_inherited" id="2D7yc6q3buDhuPwzpn4pWzbu8ls=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="33"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="38"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=" name="base_base"/>
@@ -211,7 +211,7 @@
       </doc>
     </function>
     <function name="base_inherited" id="v0BroyWjs67MHzc1SyTlXrSxn8M=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="54"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="59"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
@@ -224,7 +224,7 @@
       </doc>
     </function>
     <function name="base_shadowed" id="ECBBLxlaKar55qA0k1BCFn6MdH8=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="52"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="57"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
@@ -237,7 +237,7 @@
       </doc>
     </function>
     <function name="derived_shadowed" id="MGQhB2O6ghdJWit6wao+PsH30Ew=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="76"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="81"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="ABxWcxit2TyVLv16ZxoJKAc6LKw=" name="derived"/>
@@ -250,7 +250,7 @@
       </doc>
     </function>
     <function name="do_base_base_inherited" id="MEPVWyGd8KdZFR1kBYlQMgPyQlo=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="36"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="41"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=" name="base_base"/>
@@ -263,7 +263,7 @@
       </doc>
     </function>
     <function name="do_derived_shadowed" id="rTSnS8Pv8GoWusQQE42y0pgN4cw=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="79"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="84"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="ABxWcxit2TyVLv16ZxoJKAc6LKw=" name="derived"/>
@@ -276,7 +276,7 @@
       </doc>
     </function>
     <function name="excluded_inherited" id="P1Eq799RJkNMSTci+0jy+ZejsyU=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="14"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="19"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="ZFBKKIr2vNG5u3bxIaTbccBBkvQ=" name="excluded_base"/>
@@ -289,7 +289,7 @@
       </doc>
     </function>
     <function name="do_base_inherited" access="protected" id="TaKAQiDmx8UXkT9p/momqiOZyHU=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="61"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="66"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
@@ -302,7 +302,7 @@
       </doc>
     </function>
     <function name="do_base_shadowed" access="protected" id="eHxe3z0iWUXdcNyXK0PD2+6DRbs=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="59"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="64"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
@@ -315,7 +315,7 @@
       </doc>
     </function>
     <function name="do_derived_shadowed" access="protected" id="KGOrnDVJV2nPDK1hlkvBm6diYXY=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="57"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="62"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
@@ -328,7 +328,7 @@
       </doc>
     </function>
     <function name="do_excluded_inherited" access="protected" id="oW3pQYXjjv2wrXIwIceF6Xd8nTA=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="21"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="26"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="ZFBKKIr2vNG5u3bxIaTbccBBkvQ=" name="excluded_base"/>
@@ -341,7 +341,7 @@
       </doc>
     </function>
     <function name="do_shadowed" access="protected" id="IYnrJp6ur6C+AiuhFl5x1YPnxkM=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="17"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="22"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="ZFBKKIr2vNG5u3bxIaTbccBBkvQ=" name="excluded_base"/>
@@ -355,7 +355,7 @@
     </function>
   </class>
   <class name="private_derived" id="aiF6nWGZXbG8UfC75J5tNuoPMRc=">
-    <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="101" class="def"/>
+    <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="106" class="def"/>
     <base access="private">
       <type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
     </base>
@@ -363,7 +363,7 @@
       <type id="ZFBKKIr2vNG5u3bxIaTbccBBkvQ=" name="excluded_base"/>
     </base>
     <function class="constructor" name="private_derived" id="jCqo+0V7MK+reBG7J4tBA/8VGiI=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="107"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="112"/>
       <doc>
         <brief>
           <text>Constructor should not be inherited</text>
@@ -371,7 +371,7 @@
       </doc>
     </function>
     <function class="destructor" name="~private_derived" id="v41bk6Gd1CiDPZueTqvYeEM6DqU=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="110"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="115"/>
       <doc>
         <brief>
           <text>Destructor should not be inherited</text>
@@ -379,7 +379,7 @@
       </doc>
     </function>
     <function name="derived_shadowed" id="9wqRoOH7cwNhkz5vwpTHLeb01BY=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="113"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="118"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="aiF6nWGZXbG8UfC75J5tNuoPMRc=" name="private_derived"/>
@@ -392,7 +392,7 @@
       </doc>
     </function>
     <function name="do_derived_shadowed" id="NJYWKnKWmizdaSr1ldC7FGh7fD0=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="116"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="121"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="aiF6nWGZXbG8UfC75J5tNuoPMRc=" name="private_derived"/>
@@ -406,7 +406,7 @@
     </function>
   </class>
   <class name="protected_derived" id="KpfFXd3FeSffU3rGswegSIkkCrM=">
-    <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="83" class="def"/>
+    <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="88" class="def"/>
     <base access="protected">
       <type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
     </base>
@@ -419,7 +419,7 @@
       </brief>
     </doc>
     <function class="constructor" name="protected_derived" id="P0+PNfj+C0MyzTnJ6ITq8JvjciM=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="89"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="94"/>
       <doc>
         <brief>
           <text>Constructor should not be inherited</text>
@@ -427,7 +427,7 @@
       </doc>
     </function>
     <function class="destructor" name="~protected_derived" id="dhUWdRyTi/gQAcf2yVfnV5Jf1sg=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="92"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="97"/>
       <doc>
         <brief>
           <text>Destructor should not be inherited</text>
@@ -435,7 +435,7 @@
       </doc>
     </function>
     <function name="derived_shadowed" id="oVVGDloOS5F7d4VIcKLc0YpnsiE=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="95"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="100"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="KpfFXd3FeSffU3rGswegSIkkCrM=" name="protected_derived"/>
@@ -445,10 +445,13 @@
         <brief>
           <text>This function should shadow the base class function.</text>
         </brief>
+        <returns>
+          <text>Should inherit functions as protected.</text>
+        </returns>
       </doc>
     </function>
     <function name="do_derived_shadowed" id="4ZJznHda5QNdk/tsMca4Psswlj0=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="98"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="103"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="KpfFXd3FeSffU3rGswegSIkkCrM=" name="protected_derived"/>
@@ -458,10 +461,13 @@
         <brief>
           <text>This function should shadow the base class function.</text>
         </brief>
+        <returns>
+          <text>Should inherit functions as protected.</text>
+        </returns>
       </doc>
     </function>
     <function name="base_base_inherited" id="2D7yc6q3buDhuPwzpn4pWzbu8ls=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="33"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="38"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=" name="base_base"/>
@@ -474,7 +480,7 @@
       </doc>
     </function>
     <function name="base_inherited" id="v0BroyWjs67MHzc1SyTlXrSxn8M=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="54"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="59"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
@@ -487,7 +493,7 @@
       </doc>
     </function>
     <function name="base_shadowed" id="ECBBLxlaKar55qA0k1BCFn6MdH8=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="52"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="57"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
@@ -500,7 +506,7 @@
       </doc>
     </function>
     <function name="derived_shadowed" id="aYhSUMJkgCRo3AZmBb/rre04Ghg=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="50"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="55"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
@@ -513,7 +519,7 @@
       </doc>
     </function>
     <function name="do_base_base_inherited" id="MEPVWyGd8KdZFR1kBYlQMgPyQlo=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="36"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="41"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=" name="base_base"/>
@@ -526,7 +532,7 @@
       </doc>
     </function>
     <function name="do_base_inherited" access="protected" id="TaKAQiDmx8UXkT9p/momqiOZyHU=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="61"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="66"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
@@ -539,7 +545,7 @@
       </doc>
     </function>
     <function name="do_base_shadowed" access="protected" id="eHxe3z0iWUXdcNyXK0PD2+6DRbs=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="59"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="64"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
@@ -552,7 +558,7 @@
       </doc>
     </function>
     <function name="do_derived_shadowed" access="protected" id="KGOrnDVJV2nPDK1hlkvBm6diYXY=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="57"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="62"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
@@ -565,7 +571,7 @@
       </doc>
     </function>
     <function name="do_excluded_inherited" access="protected" id="KdkXQxu2xOfAXegJgCMmLcFq8MM=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="21"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="26"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="ZFBKKIr2vNG5u3bxIaTbccBBkvQ=" name="excluded_base"/>
@@ -578,7 +584,7 @@
       </doc>
     </function>
     <function name="do_shadowed" access="protected" id="UysvazUbtV39Omg33c9Me+Gri/M=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="17"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="22"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="ZFBKKIr2vNG5u3bxIaTbccBBkvQ=" name="excluded_base"/>
@@ -591,7 +597,7 @@
       </doc>
     </function>
     <function name="excluded_inherited" id="H8wEIL8+8s3iNqadfPsH1HWRQU4=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="14"/>
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="19"/>
       <return>
         <type class="lvalue-reference">
           <pointee-type id="ZFBKKIr2vNG5u3bxIaTbccBBkvQ=" name="excluded_base"/>

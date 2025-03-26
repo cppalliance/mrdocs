@@ -11,19 +11,21 @@
 | Name
 | Description
 | <<base,`base`>> 
-| 
+| A base class to test inheritance and shadowing
 | <<base_base,`base&lowbar;base`>> 
-| 
+| A second&hyphen;order base class to test indirect inheritance
 | <<derived,`derived`>> 
-| 
+| A class that derives from base and excluded&lowbar;base
 | <<private_derived,`private&lowbar;derived`>> 
-| 
+| A class that uses private inheritance only
 | <<protected_derived,`protected&lowbar;derived`>> 
-| Should inherit functions as protected&period;
+| A class that should inherit functions as protected&period;
 |===
 
 [#base]
 == base
+
+A base class to test inheritance and shadowing
 
 === Synopsis
 
@@ -42,7 +44,7 @@ class base
 | Name
 | Description
 | `<<base_base,base&lowbar;base>>`
-| 
+| A second&hyphen;order base class to test indirect inheritance
 |===
 
 === Member Functions
@@ -84,7 +86,7 @@ class base
 | Name
 | Description
 | <<derived,`derived`>>
-| 
+| A class that derives from base and excluded&lowbar;base
 |===
 
 [#base-base_inherited]
@@ -102,6 +104,10 @@ Declared in `&lt;reference&period;cpp&gt;`
 base&lowbar;inherited();
 ----
 
+=== Return Value
+
+A base class to test inheritance and shadowing
+
 [#base-base_shadowed]
 == <<base,base>>::base&lowbar;shadowed
 
@@ -116,6 +122,10 @@ Declared in `&lt;reference&period;cpp&gt;`
 <<base,base>>&
 base&lowbar;shadowed();
 ----
+
+=== Return Value
+
+A base class to test inheritance and shadowing
 
 [#base-derived_shadowed]
 == <<base,base>>::derived&lowbar;shadowed
@@ -132,6 +142,10 @@ Declared in `&lt;reference&period;cpp&gt;`
 derived&lowbar;shadowed();
 ----
 
+=== Return Value
+
+A base class to test inheritance and shadowing
+
 [#base-do_base_inherited]
 == <<base,base>>::do&lowbar;base&lowbar;inherited
 
@@ -146,6 +160,10 @@ Declared in `&lt;reference&period;cpp&gt;`
 <<base,base>>&
 do&lowbar;base&lowbar;inherited();
 ----
+
+=== Return Value
+
+A base class to test inheritance and shadowing
 
 [#base-do_base_shadowed]
 == <<base,base>>::do&lowbar;base&lowbar;shadowed
@@ -162,6 +180,10 @@ Declared in `&lt;reference&period;cpp&gt;`
 do&lowbar;base&lowbar;shadowed();
 ----
 
+=== Return Value
+
+A base class to test inheritance and shadowing
+
 [#base-do_derived_shadowed]
 == <<base,base>>::do&lowbar;derived&lowbar;shadowed
 
@@ -177,8 +199,14 @@ Declared in `&lt;reference&period;cpp&gt;`
 do&lowbar;derived&lowbar;shadowed();
 ----
 
+=== Return Value
+
+A base class to test inheritance and shadowing
+
 [#base_base]
 == base&lowbar;base
+
+A second&hyphen;order base class to test indirect inheritance
 
 === Synopsis
 
@@ -208,7 +236,7 @@ class base&lowbar;base;
 | Name
 | Description
 | <<base,`base`>>
-| 
+| A base class to test inheritance and shadowing
 |===
 
 [#base_base-base_base_inherited]
@@ -226,6 +254,10 @@ Declared in `&lt;reference&period;cpp&gt;`
 base&lowbar;base&lowbar;inherited();
 ----
 
+=== Return Value
+
+A second&hyphen;order base class to test indirect inheritance
+
 [#base_base-do_base_base_inherited]
 == <<base_base,base&lowbar;base>>::do&lowbar;base&lowbar;base&lowbar;inherited
 
@@ -241,8 +273,14 @@ Declared in `&lt;reference&period;cpp&gt;`
 do&lowbar;base&lowbar;base&lowbar;inherited();
 ----
 
+=== Return Value
+
+A second&hyphen;order base class to test indirect inheritance
+
 [#derived]
 == derived
+
+A class that derives from base and excluded&lowbar;base
 
 === Synopsis
 
@@ -262,7 +300,7 @@ class derived
 | Name
 | Description
 | `<<base,base>>`
-| 
+| A base class to test inheritance and shadowing
 | `excluded&lowbar;base`
 | 
 |===
@@ -316,6 +354,10 @@ Declared in `&lt;reference&period;cpp&gt;`
 derived&lowbar;shadowed();
 ----
 
+=== Return Value
+
+A class that derives from base and excluded&lowbar;base
+
 [#derived-do_derived_shadowed]
 == <<derived,derived>>::do&lowbar;derived&lowbar;shadowed
 
@@ -331,8 +373,14 @@ Declared in `&lt;reference&period;cpp&gt;`
 do&lowbar;derived&lowbar;shadowed();
 ----
 
+=== Return Value
+
+A class that derives from base and excluded&lowbar;base
+
 [#private_derived]
 == private&lowbar;derived
+
+A class that uses private inheritance only
 
 === Synopsis
 
@@ -372,6 +420,10 @@ Declared in `&lt;reference&period;cpp&gt;`
 derived&lowbar;shadowed();
 ----
 
+=== Return Value
+
+A class that uses private inheritance only
+
 [#private_derived-do_derived_shadowed]
 == <<private_derived,private&lowbar;derived>>::do&lowbar;derived&lowbar;shadowed
 
@@ -387,10 +439,14 @@ Declared in `&lt;reference&period;cpp&gt;`
 do&lowbar;derived&lowbar;shadowed();
 ----
 
+=== Return Value
+
+A class that uses private inheritance only
+
 [#protected_derived]
 == protected&lowbar;derived
 
-Should inherit functions as protected&period;
+A class that should inherit functions as protected&period;
 
 === Synopsis
 
@@ -454,6 +510,10 @@ Declared in `&lt;reference&period;cpp&gt;`
 derived&lowbar;shadowed();
 ----
 
+=== Return Value
+
+A class that should inherit functions as protected&period;
+
 [#protected_derived-do_derived_shadowed]
 == <<protected_derived,protected&lowbar;derived>>::do&lowbar;derived&lowbar;shadowed
 
@@ -468,6 +528,10 @@ Declared in `&lt;reference&period;cpp&gt;`
 <<protected_derived,protected&lowbar;derived>>&
 do&lowbar;derived&lowbar;shadowed();
 ----
+
+=== Return Value
+
+A class that should inherit functions as protected&period;
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

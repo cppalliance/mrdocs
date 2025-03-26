@@ -16,6 +16,17 @@
         <param name="shift">
           <type name="unsigned int"/>
         </param>
+        <doc>
+          <brief>
+            <text>Left shift operator</text>
+          </brief>
+          <returns>
+            <text>Reference to the current object</text>
+          </returns>
+          <param name="shift">
+            <text>The right operand</text>
+          </param>
+        </doc>
       </function>
       <function name="operator&lt;&lt;" id="uV72HdBWsWZ4EwLG0yd905Rczwc=">
         <file short-path="overloads-ostream.cpp" source-path="overloads-ostream.cpp" line="10"/>
@@ -28,6 +39,17 @@
         <param name="shift">
           <type name="char"/>
         </param>
+        <doc>
+          <brief>
+            <text>Left shift operator</text>
+          </brief>
+          <returns>
+            <text>Reference to the current object</text>
+          </returns>
+          <param name="shift">
+            <text>The right operand</text>
+          </param>
+        </doc>
       </function>
     </class>
     <function name="operator&lt;&lt;" id="1FD8aMER9duNWqJoLOsrCr53cJY=">
@@ -68,14 +90,28 @@
           <pointee-type id="A6n++lhHK0l+ailOmBfa/TZCXd8=" name="OStream"/>
         </type>
       </return>
-      <param>
+      <param name="os">
         <type class="lvalue-reference">
           <pointee-type id="A6n++lhHK0l+ailOmBfa/TZCXd8=" name="OStream"/>
         </type>
       </param>
-      <param>
+      <param name="value">
         <type id="VFtzIPiiZVDB77znFM+ODgLmKOw=" name="B"/>
       </param>
+      <doc>
+        <brief>
+          <text>Stream insertion operator</text>
+        </brief>
+        <returns>
+          <text>Reference to the current output stream</text>
+        </returns>
+        <param name="os">
+          <text>An output stream</text>
+        </param>
+        <param name="value">
+          <text>The object to output</text>
+        </param>
+      </doc>
     </function>
     <function name="operator&lt;&lt;" id="ojxr+36qVG3RcL9uyYCrmeMtpKQ=">
       <file short-path="overloads-ostream.cpp" source-path="overloads-ostream.cpp" line="32"/>
@@ -85,14 +121,28 @@
           <pointee-type id="A6n++lhHK0l+ailOmBfa/TZCXd8=" name="OStream"/>
         </type>
       </return>
-      <param>
+      <param name="os">
         <type class="lvalue-reference">
           <pointee-type id="A6n++lhHK0l+ailOmBfa/TZCXd8=" name="OStream"/>
         </type>
       </param>
-      <param>
+      <param name="value">
         <type id="QiJ36sJ5iTYFjV9O2r8TuROMu6Y=" name="C"/>
       </param>
+      <doc>
+        <brief>
+          <text>Stream insertion operator</text>
+        </brief>
+        <returns>
+          <text>Reference to the current output stream</text>
+        </returns>
+        <param name="os">
+          <text>An output stream</text>
+        </param>
+        <param name="value">
+          <text>The object to output</text>
+        </param>
+      </doc>
     </function>
   </namespace>
 </namespace>

@@ -60,12 +60,29 @@
     <return>
       <type name="bool"/>
     </return>
-    <param>
+    <param name="lhs">
       <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
     </param>
-    <param>
+    <param name="rhs">
       <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
     </param>
+    <doc>
+      <brief>
+        <text>Equality operator</text>
+      </brief>
+      <returns>
+        <mono>true</mono>
+        <text> if the objects are equal, </text>
+        <mono>false</mono>
+        <text> otherwise</text>
+      </returns>
+      <param name="lhs">
+        <text>The left operand</text>
+      </param>
+      <param name="rhs">
+        <text>The right operand</text>
+      </param>
+    </doc>
   </function>
   <function name="operator==" id="7bqo4XOxyyg5NIOu+8i4lZ3L47c=">
     <file short-path="overloads.cpp" source-path="overloads.cpp" line="9"/>
@@ -73,12 +90,29 @@
     <return>
       <type name="bool"/>
     </return>
-    <param>
+    <param name="lhs">
       <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
     </param>
-    <param>
+    <param name="rhs">
       <type name="int"/>
     </param>
+    <doc>
+      <brief>
+        <text>Equality operator</text>
+      </brief>
+      <returns>
+        <mono>true</mono>
+        <text> if the objects are equal, </text>
+        <mono>false</mono>
+        <text> otherwise</text>
+      </returns>
+      <param name="lhs">
+        <text>The left operand</text>
+      </param>
+      <param name="rhs">
+        <text>The right operand</text>
+      </param>
+    </doc>
   </function>
   <function name="operator==" id="gddLjn5hKdr6Ei8xKgtcB3bktI4=">
     <file short-path="overloads.cpp" source-path="overloads.cpp" line="17"/>
@@ -86,12 +120,29 @@
     <return>
       <type name="bool"/>
     </return>
-    <param>
+    <param name="lhs">
       <type id="3JsK1DO0O+wZhv+0meptQrbs3fY=" name="B"/>
     </param>
-    <param>
+    <param name="rhs">
       <type id="3JsK1DO0O+wZhv+0meptQrbs3fY=" name="B"/>
     </param>
+    <doc>
+      <brief>
+        <text>Equality operator</text>
+      </brief>
+      <returns>
+        <mono>true</mono>
+        <text> if the objects are equal, </text>
+        <mono>false</mono>
+        <text> otherwise</text>
+      </returns>
+      <param name="lhs">
+        <text>The left operand</text>
+      </param>
+      <param name="rhs">
+        <text>The right operand</text>
+      </param>
+    </doc>
   </function>
   <function name="operator==" id="cVrZLPSmQHMz47ziL64cElytjh0=">
     <file short-path="overloads.cpp" source-path="overloads.cpp" line="18"/>
@@ -99,12 +150,29 @@
     <return>
       <type name="bool"/>
     </return>
-    <param>
+    <param name="lhs">
       <type id="3JsK1DO0O+wZhv+0meptQrbs3fY=" name="B"/>
     </param>
-    <param>
+    <param name="rhs">
       <type name="int"/>
     </param>
+    <doc>
+      <brief>
+        <text>Equality operator</text>
+      </brief>
+      <returns>
+        <mono>true</mono>
+        <text> if the objects are equal, </text>
+        <mono>false</mono>
+        <text> otherwise</text>
+      </returns>
+      <param name="lhs">
+        <text>The left operand</text>
+      </param>
+      <param name="rhs">
+        <text>The right operand</text>
+      </param>
+    </doc>
   </function>
 </namespace>
 </mrdocs>

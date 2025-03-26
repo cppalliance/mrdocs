@@ -8,6 +8,7 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include "mrdocs/Support/Algorithm.hpp"
 #include <mrdocs/Metadata/Specifiers.hpp>
 
 namespace clang {
@@ -127,6 +128,77 @@ dom::String toString(ReferenceKind kind) noexcept
         MRDOCS_UNREACHABLE();
     }
 }
+
+bool
+isUnaryOperator(OperatorKind kind) noexcept
+{
+    switch (kind)
+    {
+    case OperatorKind::Plus:
+    case OperatorKind::Minus:
+    case OperatorKind::Star:
+    case OperatorKind::Amp:
+    case OperatorKind::Tilde:
+    case OperatorKind::Exclaim:
+    case OperatorKind::PlusPlus:
+    case OperatorKind::MinusMinus:
+    case OperatorKind::New:
+    case OperatorKind::Delete:
+    case OperatorKind::ArrayNew:
+    case OperatorKind::ArrayDelete:
+    case OperatorKind::Coawait:
+        return true;
+    default:
+        return false;
+    }
+}
+
+bool
+isBinaryOperator(OperatorKind kind) noexcept
+{
+    switch (kind)
+    {
+    case OperatorKind::Plus:
+    case OperatorKind::Minus:
+    case OperatorKind::Star:
+    case OperatorKind::Slash:
+    case OperatorKind::Percent:
+    case OperatorKind::Caret:
+    case OperatorKind::Amp:
+    case OperatorKind::Pipe:
+    case OperatorKind::LessLess:
+    case OperatorKind::GreaterGreater:
+    case OperatorKind::Equal:
+    case OperatorKind::PlusEqual:
+    case OperatorKind::MinusEqual:
+    case OperatorKind::StarEqual:
+    case OperatorKind::SlashEqual:
+    case OperatorKind::PercentEqual:
+    case OperatorKind::CaretEqual:
+    case OperatorKind::AmpEqual:
+    case OperatorKind::PipeEqual:
+    case OperatorKind::LessLessEqual:
+    case OperatorKind::GreaterGreaterEqual:
+    case OperatorKind::EqualEqual:
+    case OperatorKind::ExclaimEqual:
+    case OperatorKind::Less:
+    case OperatorKind::LessEqual:
+    case OperatorKind::Greater:
+    case OperatorKind::GreaterEqual:
+    case OperatorKind::Spaceship:
+    case OperatorKind::AmpAmp:
+    case OperatorKind::PipePipe:
+    case OperatorKind::ArrowStar:
+    case OperatorKind::Arrow:
+    case OperatorKind::Call:
+    case OperatorKind::Subscript:
+    case OperatorKind::Comma:
+        return true;
+    default:
+        return false;
+    }
+}
+
 
 } // clang
 } // mrdocs

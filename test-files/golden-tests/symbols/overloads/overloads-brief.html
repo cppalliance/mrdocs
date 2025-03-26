@@ -72,7 +72,7 @@ struct A;
 <td><a href="#A-2constructor-08"><code>A</code></a>         <span class="small">[constructor]</span></td><td><span>Constructors</span></td></tr><tr>
 <td><a href="#A-operator_assign-0d"><code>operator&#x3D;</code></a> </td><td><span>Assignment operators</span></td></tr><tr>
 <td><a href="#A-operator_plus-07"><code>operator+</code></a> </td><td><span>Addition operators</span></td></tr><tr>
-<td><a href="#A-operator_minus-0a"><code>operator-</code></a> </td><td><span><code>operator-</code> overloads</span></td></tr>
+<td><a href="#A-operator_minus-0a"><code>operator-</code></a> </td><td><span>Unary minus operators</span></td></tr>
 </tbody>
 </table>
 
@@ -206,14 +206,6 @@ A(int a);
 <h3>Synopses</h3>
 <div>
 Declared in <code>&lt;overloads-brief.cpp&gt;</code></div>
-<span>Assign from int</span>
-<pre>
-<code class="source-code cpp">
-<a href="#A">A</a>&
-<a href="#A-operator_assign-06">operator&#x3D;</a>(int a);
-</code>
-</pre><span class="small"><a href="#A-operator_assign-06"><em>» more...</em></a></span>
-
 <span>Assign from A</span>
 <pre>
 <code class="source-code cpp">
@@ -222,48 +214,15 @@ Declared in <code>&lt;overloads-brief.cpp&gt;</code></div>
 </code>
 </pre><span class="small"><a href="#A-operator_assign-04"><em>» more...</em></a></span>
 
-
-</div>
-<div>
-<h3>Return Value</h3>
-<span><code>*this</code></span>
-</div>
-<div>
-<h3>Parameters</h3>
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>a</strong></td>
-<td><span>Describe b</span></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div>
-<div>
-<h2 id="A-operator_assign-06"><a href="#A">A</a>::operator&#x3D;</h2>
-<div>
 <span>Assign from int</span>
-
-</div>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;overloads-brief.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 <a href="#A">A</a>&
-operator&#x3D;(int a);
+<a href="#A-operator_assign-06">operator&#x3D;</a>(int a);
 </code>
-</pre>
+</pre><span class="small"><a href="#A-operator_assign-06"><em>» more...</em></a></span>
+
+
 </div>
 <div>
 <h3>Return Value</h3>
@@ -281,7 +240,7 @@ operator&#x3D;(int a);
 <tbody>
 <tr>
 <td><strong>a</strong></td>
-<td><span>Describe b</span></td>
+<td><span>Describe a</span></td>
 </tr>
 </tbody>
 </table>
@@ -323,6 +282,47 @@ operator&#x3D;(<a href="#A">A</a> const& a);
 <tr>
 <td><strong>a</strong></td>
 <td><span>Describe a</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="A-operator_assign-06"><a href="#A">A</a>::operator&#x3D;</h2>
+<div>
+<span>Assign from int</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;overloads-brief.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+<a href="#A">A</a>&
+operator&#x3D;(int a);
+</code>
+</pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span><code>*this</code></span>
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>a</strong></td>
+<td><span>Describe b</span></td>
 </tr>
 </tbody>
 </table>
@@ -466,7 +466,7 @@ operator+(<a href="#A">A</a> const& a);
 <div>
 <h2 id="A-operator_minus-0a"><a href="#A">A</a>::operator-</h2>
 <div>
-<span><code>operator-</code> overloads</span>
+<span>Unary minus operators</span>
 
 </div>
 </div>
@@ -486,7 +486,7 @@ Declared in <code>&lt;overloads-brief.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 <a href="#A">A</a>
-<a href="#A-operator_minus-0c">operator-</a>(<a href="#A">A</a> const&);
+<a href="#A-operator_minus-0c">operator-</a>(<a href="#A">A</a> const& rhs);
 </code>
 </pre><span class="small"><a href="#A-operator_minus-0c"><em>» more...</em></a></span>
 
@@ -540,7 +540,7 @@ Declared in <code>&lt;overloads-brief.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 <a href="#A">A</a>
-operator-(<a href="#A">A</a> const&);
+operator-(<a href="#A">A</a> const& rhs);
 </code>
 </pre>
 </div>
@@ -551,6 +551,23 @@ operator-(<a href="#A">A</a> const&);
 <div>
 <h3>Return Value</h3>
 <span>Result</span>
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>rhs</strong></td>
+<td><span>The right operand</span></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div>
@@ -709,7 +726,7 @@ Declared in <code>&lt;overloads-brief.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 int
-<a href="#operator_plus-0d7">operator+</a>(<a href="#A">A</a> const&);
+<a href="#operator_plus-0d7">operator+</a>(<a href="#A">A</a> const& value);
 </code>
 </pre><span class="small"><a href="#operator_plus-0d7"><em>» more...</em></a></span>
 
@@ -717,7 +734,7 @@ int
 <pre>
 <code class="source-code cpp">
 int
-<a href="#operator_plus-06">operator+</a>(<a href="#B">B</a> const&);
+<a href="#operator_plus-06">operator+</a>(<a href="#B">B</a> const& value);
 </code>
 </pre><span class="small"><a href="#operator_plus-06"><em>» more...</em></a></span>
 
@@ -743,13 +760,30 @@ Declared in <code>&lt;overloads-brief.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 int
-operator+(<a href="#A">A</a> const&);
+operator+(<a href="#A">A</a> const& value);
 </code>
 </pre>
 </div>
 <div>
 <h3>Return Value</h3>
 <span>Result</span>
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>value</strong></td>
+<td><span>The operand</span></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div>
@@ -767,13 +801,30 @@ Declared in <code>&lt;overloads-brief.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 int
-operator+(<a href="#B">B</a> const&);
+operator+(<a href="#B">B</a> const& value);
 </code>
 </pre>
 </div>
 <div>
 <h3>Return Value</h3>
 <span>Result</span>
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>value</strong></td>
+<td><span>The operand</span></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div>

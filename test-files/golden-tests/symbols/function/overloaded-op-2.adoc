@@ -26,14 +26,18 @@ struct T;
 
 === Member Functions
 
-[cols=1]
+[cols=2]
 |===
 | Name
+| Description
 | <<T-operator_plus,`operator&plus;`>> 
+| Addition operator
 |===
 
 [#T-operator_plus]
 == <<T,T>>::operator&plus;
+
+Addition operator
 
 === Synopsis
 
@@ -42,8 +46,22 @@ Declared in `&lt;overloaded&hyphen;op&hyphen;2&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 <<T,T>>
-operator&plus;(<<T,T>>);
+operator&plus;(<<T,T>> rhs);
 ----
+
+=== Return Value
+
+Another instance of the object
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *rhs*
+| The right operand
+|===
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

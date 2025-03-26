@@ -25,8 +25,8 @@
 <td><a href="#copyBriefFromFirstValid"><code>copyBriefFromFirstValid</code></a> </td><td><span>This function has documentation but no brief.</span></td></tr><tr>
 <td><a href="#copyDetailsFromCopyBrief"><code>copyDetailsFromCopyBrief</code></a> </td><td><span>Details will be copied</span></td></tr><tr>
 <td><a href="#copyDetailsFromDocNoBrief"><code>copyDetailsFromDocNoBrief</code></a> </td><td><span>Custom brief</span></td></tr><tr>
-<td><a href="#copyDetailsFromExplicitBrief"><code>copyDetailsFromExplicitBrief</code></a> </td><td><span>This will not be copied.</span></td></tr><tr>
-<td><a href="#copyDetailsFromFirstSentenceAsBrief"><code>copyDetailsFromFirstSentenceAsBrief</code></a> </td><td><span>This is more documentation.</span></td></tr><tr>
+<td><a href="#copyDetailsFromExplicitBrief"><code>copyDetailsFromExplicitBrief</code></a> </td><td><span></span></td></tr><tr>
+<td><a href="#copyDetailsFromFirstSentenceAsBrief"><code>copyDetailsFromFirstSentenceAsBrief</code></a> </td><td><span></span></td></tr><tr>
 <td><a href="#copyDetailsFromNoDoc"><code>copyDetailsFromNoDoc</code></a> </td><td><span>Custom brief</span></td></tr><tr>
 <td><a href="#copyDocFromCopyBrief"><code>copyDocFromCopyBrief</code></a> </td><td><span>This is the explicit brief.</span></td></tr><tr>
 <td><a href="#copyDocFromExplicitBrief"><code>copyDocFromExplicitBrief</code></a> </td><td><span>This is the explicit brief.</span></td></tr><tr>
@@ -177,10 +177,6 @@ copyDetailsFromDocNoBrief();
 <div>
 <div>
 <h2 id="copyDetailsFromExplicitBrief">copyDetailsFromExplicitBrief</h2>
-<div>
-<span>This will not be copied.</span>
-
-</div>
 </div>
 <div>
 <h3>Synopsis</h3>
@@ -193,14 +189,14 @@ copyDetailsFromExplicitBrief();
 </code>
 </pre>
 </div>
+<div>
+<h3>Description</h3>
+<p>This description will never be copied as brief because it is an explicit brief.</p>
+</div>
 </div>
 <div>
 <div>
 <h2 id="copyDetailsFromFirstSentenceAsBrief">copyDetailsFromFirstSentenceAsBrief</h2>
-<div>
-<span>This is more documentation.</span>
-
-</div>
 </div>
 <div>
 <h3>Synopsis</h3>
@@ -212,6 +208,10 @@ void
 copyDetailsFromFirstSentenceAsBrief();
 </code>
 </pre>
+</div>
+<div>
+<h3>Description</h3>
+<p>This is more documentation.</p>
 </div>
 </div>
 <div>
@@ -255,7 +255,7 @@ copyDocFromCopyBrief();
 </div>
 <div>
 <h3>Description</h3>
-<p>This will not be copied.</p>
+<p>This description will never be copied as brief because it is an explicit brief.</p>
 </div>
 </div>
 <div>
@@ -279,7 +279,7 @@ copyDocFromExplicitBrief();
 </div>
 <div>
 <h3>Description</h3>
-<p>This will not be copied.</p>
+<p>This description will never be copied as brief because it is an explicit brief.</p>
 </div>
 </div>
 <div>
@@ -347,7 +347,7 @@ explicitBriefFunction();
 </div>
 <div>
 <h3>Description</h3>
-<p>This will not be copied.</p>
+<p>This description will never be copied as brief because it is an explicit brief.</p>
 </div>
 </div>
 <div>
@@ -371,7 +371,7 @@ explicitBriefFunction2();
 </div>
 <div>
 <h3>Description</h3>
-<p>This will not be copied.</p>
+<p>This will not be copied as brief.</p>
 </div>
 </div>
 <div>

@@ -180,6 +180,18 @@ tag_invoke(
     v = static_cast<std::underlying_type_t<OperatorKind>>(kind);
 }
 
+/** Determines whether the operator is potentially unary.
+ */
+MRDOCS_DECL
+bool
+isUnaryOperator(OperatorKind kind) noexcept;
+
+/** Determines whether the operator is potentially binary.
+ */
+MRDOCS_DECL
+bool
+isBinaryOperator(OperatorKind kind) noexcept;
+
 /** Reference type kinds
 */
 enum class ReferenceKind
