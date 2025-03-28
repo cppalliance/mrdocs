@@ -85,12 +85,11 @@ getUnnamedInfoName(Info const& I)
         "06typedef",
         "07variable",
         "08field",
-        "09specialization",
-        "08friend",
-        "12guide",
-        "12namespace-alias",
-        "13using",
-        "14concept"
+        "09friend",
+        "10guide",
+        "11namespace-alias",
+        "12using",
+        "13concept"
     };
     std::size_t const idx = to_underlying(I.Kind) - 1;
     MRDOCS_ASSERT(idx < std::size(reserved));

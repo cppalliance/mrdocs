@@ -576,9 +576,6 @@ private:
     populate(FieldInfo& I, FieldDecl const* D);
 
     void
-    populate(SpecializationInfo& I, ClassTemplateSpecializationDecl const* D);
-
-    void
     populate(FriendInfo& I, FriendDecl const* D);
 
     void

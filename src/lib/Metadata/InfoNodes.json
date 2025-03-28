@@ -36,10 +36,6 @@
     "brief": "The symbol is a field"
   },
   {
-    "name": "specialization",
-    "brief": "The symbol is a template specialization"
-  },
-  {
     "name": "friend",
     "brief": "The symbol is a friend declaration"
   },

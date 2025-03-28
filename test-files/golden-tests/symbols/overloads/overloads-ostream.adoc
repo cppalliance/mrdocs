@@ -198,10 +198,10 @@ class B;
 [cols=1]
 |===
 | Name
-| <<ostream-B-08friend,`operator&lt;&lt;`>> 
+| <<ostream-B-09friend,`operator&lt;&lt;`>> 
 |===
 
-[#ostream-B-08friend]
+[#ostream-B-09friend]
 == <<ostream,ostream>>::operator&lt;&lt;
 
 === Synopsis
