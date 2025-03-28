@@ -1109,17 +1109,6 @@ populate(
 void
 ASTVisitor::
 populate(
-    SpecializationInfo& I,
-    ClassTemplateSpecializationDecl const* D)
-{
-    CXXRecordDecl const* PD = getInstantiatedFrom(D);
-    populate(I.Args, D->getTemplateArgs().asArray());
-    generateID(PD, I.Primary);
-}
-
-void
-ASTVisitor::
-populate(
     FriendInfo& I,
     FriendDecl const* D)
 {

@@ -19,10 +19,6 @@ namespace clang::mrdocs::hbs {
 bool
 shouldGenerate(Info const& I, Config const& config)
 {
-    if (I.isSpecialization())
-    {
-        return false;
-    }
     if (I.isEnumConstant())
     {
         return false;

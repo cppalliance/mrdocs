@@ -691,24 +691,6 @@ closeTemplate(
     tags_.close(templateTagName);
 }
 
-void
-XMLWriter::
-writeSpecialization(
-    SpecializationInfo const& I)
-{
-    tags_.open(specializationTagName, {
-        {I.id},
-        {"primary", toBase64Str(I.Primary) }
-    });
-
-    for(auto const& targ : I.Args)
-        writeTemplateArg(*targ, tags_);
-
-    corpus_.traverse(I, *this);
-
-    tags_.close(specializationTagName);
-}
-
 //------------------------------------------------
 
 void

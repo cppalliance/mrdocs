@@ -40,10 +40,10 @@ struct T;
 [cols=1]
 |===
 | Name
-| <<T-08friend,`f`>> 
+| <<T-09friend,`f`>> 
 |===
 
-[#T-08friend]
+[#T-09friend]
 == f
 
 === Synopsis
@@ -75,11 +75,11 @@ struct U;
 |===
 | Name
 | Description
-| <<U-08friend,`f`>> 
+| <<U-09friend,`f`>> 
 | U&colon;&colon;f
 |===
 
-[#U-08friend]
+[#U-09friend]
 == f
 
 U&colon;&colon;f
