@@ -115,7 +115,7 @@
     </base>
     <function name="f" id="5+yfyWtDpz80IwKT3xugro18Ev0=">
       <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="20"/>
-      <attr id="has-override"/>
+      <attr id="is-override"/>
     </function>
   </struct>
   <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
@@ -163,7 +163,7 @@
     </function>
     <function name="f3" exception-spec="noexcept" id="/C2pxLlwRMKnr6YRbVnykUArzEI=">
       <file short-path="mem-fn.cpp" source-path="mem-fn.cpp" line="31"/>
-      <attr id="has-override"/>
+      <attr id="is-override"/>
       <attr id="is-const"/>
       <attr id="is-volatile"/>
       <return>

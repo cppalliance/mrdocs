@@ -432,13 +432,11 @@ merge(FunctionInfo& I, FunctionInfo&& Other)
     I.IsExplicitlyDefaulted |= Other.IsExplicitlyDefaulted;
     I.IsDeleted |= Other.IsDeleted;
     I.IsDeletedAsWritten |= Other.IsDeletedAsWritten;
-    I.IsNoReturn |= Other.IsNoReturn;
-    I.HasOverrideAttr |= Other.HasOverrideAttr;
     I.HasTrailingReturn |= Other.HasTrailingReturn;
     I.IsConst |= Other.IsConst;
     I.IsVolatile |= Other.IsVolatile;
     I.IsFinal |= Other.IsFinal;
-    I.IsNodiscard |= Other.IsNodiscard;
+    I.IsOverride |= Other.IsOverride;
     I.IsExplicitObjectMemberFunction |= Other.IsExplicitObjectMemberFunction;
     if (I.Constexpr == ConstexprKind::None)
     {

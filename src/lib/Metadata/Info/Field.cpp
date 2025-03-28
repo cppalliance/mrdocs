@@ -32,9 +32,6 @@ merge(FieldInfo& I, FieldInfo&& Other)
     merge(I.BitfieldWidth, std::move(Other.BitfieldWidth));
     I.IsVariant |= Other.IsVariant;
     I.IsMutable |= Other.IsMutable;
-    I.IsMaybeUnused |= Other.IsMaybeUnused;
-    I.IsDeprecated |= Other.IsDeprecated;
-    I.HasNoUniqueAddress |= Other.HasNoUniqueAddress;
 }
 
 } // clang::mrdocs

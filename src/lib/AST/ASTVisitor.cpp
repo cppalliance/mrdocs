@@ -525,6 +525,7 @@ populate(Info& I, bool const isNew, DeclTy const* D)
 {
     populate(I.javadoc, D);
     populate(dynamic_cast<SourceInfo&>(I), D);
+    populateAttributes(I, D);
 
     // All other information is redundant if the symbol is not new
     MRDOCS_CHECK_OR(isNew);
@@ -800,8 +801,6 @@ populate(
     I.IsExplicitlyDefaulted |= D->isExplicitlyDefaulted();
     I.IsDeleted |= D->isDeleted();
     I.IsDeletedAsWritten |= D->isDeletedAsWritten();
-    I.IsNoReturn |= D->isNoReturn();
-    I.HasOverrideAttr |= D->hasAttr<OverrideAttr>();
 
     if (ConstexprSpecKind const CSK = D->getConstexprKind();
         CSK != ConstexprSpecKind::Unspecified)
@@ -814,7 +813,6 @@ populate(
         I.StorageClass = toStorageClassKind(SC);
     }
 
-    I.IsNodiscard |= D->hasAttr<WarnUnusedResultAttr>();
     I.IsExplicitObjectMemberFunction |= D->hasCXXExplicitFunctionObjectParameter();
 
     ArrayRef<ParmVarDecl*> const params = D->parameters();
@@ -900,8 +898,6 @@ populate(
             }
         }
     }
-
-    populateAttributes(I, D);
 }
 
 void
@@ -927,6 +923,7 @@ populate(FunctionInfo& I, CXXMethodDecl const* D)
     I.IsVolatile |= D->isVolatile();
     I.RefQualifier = toReferenceKind(D->getRefQualifier());
     I.IsFinal |= D->hasAttr<FinalAttr>();
+    I.IsOverride |= D->hasAttr<OverrideAttr>();
 }
 
 void
@@ -1056,7 +1053,6 @@ populate(
         QT.removeLocalConst();
     }
     I.Type = toTypeInfo(QT);
-    populateAttributes(I, D);
 }
 
 void
@@ -1100,10 +1096,6 @@ populate(
         I.IsBitfield = true;
         populate(I.BitfieldWidth, D->getBitWidth());
     }
-    I.HasNoUniqueAddress = D->hasAttr<NoUniqueAddressAttr>();
-    I.IsDeprecated = D->hasAttr<DeprecatedAttr>();
-    I.IsMaybeUnused = D->hasAttr<UnusedAttr>();
-    populateAttributes(I, D);
 }
 
 void
@@ -1613,11 +1605,60 @@ populate(
         }));
 }
 
-template <std::derived_from<Info> InfoTy>
 void
 ASTVisitor::
-populateAttributes(InfoTy& I, Decl const* D)
+populateAttributes(Info& I, Decl const* D)
 {
+    if(! D->hasAttrs())
+        return;
+
+    if(const TemplateDecl* TD = D->getDescribedTemplate())
+        populateAttributes(I, TD);
+        
+    for(const Attr* AT : D->getAttrs())
+    {
+        switch(AT->getKind())
+        {
+        case attr::Kind::Deprecated:
+            addAttribute(I, AttributeKind::Deprecated);
+            break;
+        case attr::Kind::Unused:
+            addAttribute(I, AttributeKind::MaybeUnused);
+            break;
+        case attr::Kind::WarnUnusedResult:
+            addAttribute(I, AttributeKind::Nodiscard);
+            break;
+        case attr::Kind::NoReturn:
+        case attr::Kind::CXX11NoReturn:
+            addAttribute(I, AttributeKind::Noreturn);
+            break;
+        case attr::Kind::NoUniqueAddress:
+            addAttribute(I, AttributeKind::NoUniqueAddress);
+            break;
+        default:
+            // KRYSTIAN TODO: handle more attributes types
+            break;
+        }
+    }
+
+#if 0
+    if(D->hasAttr<DeprecatedAttr>())
+        addAttribute(I, AttributeKind::Deprecated);
+
+    if(D->hasAttr<UnusedAttr>())
+        addAttribute(I, AttributeKind::MaybeUnused);
+
+    if(D->hasAttr<WarnUnusedResultAttr>())
+        addAttribute(I, AttributeKind::Nodiscard);
+
+    if(D->hasAttr<NoReturnAttr>())
+        addAttribute(I, AttributeKind::Noreturn);
+
+    if(D->hasAttr<NoUniqueAddressAttr>())
+        addAttribute(I, AttributeKind::NoUniqueAddress);
+    #endif
+
+    #if 0
     if constexpr (requires { I.Attributes; })
     {
         MRDOCS_CHECK_OR(D->hasAttrs());
@@ -1634,6 +1675,18 @@ populateAttributes(InfoTy& I, Decl const* D)
             }
         }
     }
+    #endif
+}
+
+void
+ASTVisitor::
+addAttribute(
+    Info& I,
+    AttributeKind kind)
+{
+    if(std::ranges::find(I.Attributes, kind) != I.Attributes.end())
+        return;
+    I.Attributes.emplace_back(kind);
 }
 
 void

@@ -1,5 +1,7 @@
 {{#if template}}{{>template/head template}}
 {{/if~}}
+{{#if attributes}}{{>symbol/attributes symbol}}
+{{/if~}}
 {{#if isInline}}inline {{/if~}}
 {{#if isConstexpr}}constexpr {{/if~}}
 {{#if storageClass}}{{storageClass}}

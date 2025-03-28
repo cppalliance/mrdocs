@@ -244,8 +244,8 @@ writeEnum(
     }
 
     writeSourceInfo(I);
-
     writeJavadoc(I.javadoc);
+    writeAttributes(I);
 
     corpus_.traverse(I, *this);
 
@@ -269,8 +269,8 @@ writeEnumConstant(
     });
 
     writeSourceInfo(I);
-
     writeJavadoc(I.javadoc);
+    writeAttributes(I);
 
     tags_.close(enumConstantTagName);
 }
@@ -286,8 +286,8 @@ writeFriend(
         });
 
     writeSourceInfo(I);
-
     writeJavadoc(I.javadoc);
+    writeAttributes(I);
 
     Attributes attrs = {};
     if(I.FriendSymbol)
@@ -325,6 +325,7 @@ writeFunction(
         });
 
     writeSourceInfo(I);
+    writeAttributes(I);
 
     writeAttr(I.IsVariadic,            "is-variadic", tags_);
     writeAttr(I.IsVirtualAsWritten,    "is-virtual-as-written", tags_);
@@ -333,8 +334,7 @@ writeFunction(
     writeAttr(I.IsExplicitlyDefaulted, "is-explicitly-defaulted", tags_);
     writeAttr(I.IsDeleted,             "is-deleted", tags_);
     writeAttr(I.IsDeletedAsWritten,    "is-deleted-as-written", tags_);
-    writeAttr(I.IsNoReturn,            "is-no-return", tags_);
-    writeAttr(I.HasOverrideAttr,       "has-override", tags_);
+    writeAttr(I.IsOverride,            "is-override", tags_);
     writeAttr(I.HasTrailingReturn,     "has-trailing-return", tags_);
     writeAttr(I.Constexpr,             "constexpr-kind", tags_);
     writeAttr(I.OverloadedOperator,    "operator", tags_);
@@ -342,7 +342,6 @@ writeFunction(
     writeAttr(I.IsConst,               "is-const", tags_);
     writeAttr(I.IsVolatile,            "is-volatile", tags_);
     writeAttr(I.RefQualifier,          "ref-qualifier", tags_);
-    writeAttr(I.IsNodiscard,           "nodiscard", tags_);
     writeAttr(I.IsExplicitObjectMemberFunction, "is-explicit-object-member-function", tags_);
 
     writeReturnType(*I.ReturnType, tags_);
@@ -383,6 +382,7 @@ writeGuide(
         });
 
     writeSourceInfo(I);
+    writeAttributes(I);
 
     tags_.open(deducedTagName);
     writeType(I.Deduced, tags_);
@@ -390,7 +390,7 @@ writeGuide(
 
     for(auto const& J : I.Params)
         writeParam(J, tags_);
-
+    
     writeJavadoc(I.javadoc);
 
     tags_.close(guideTagName);
@@ -413,8 +413,8 @@ writeConcept(
         });
 
     writeSourceInfo(I);
-
     writeJavadoc(I.javadoc);
+    writeAttributes(I);
 
     tags_.close(conceptTagName);
 
@@ -433,8 +433,8 @@ writeNamespaceAlias(
         });
 
     writeSourceInfo(I);
-
     writeJavadoc(I.javadoc);
+    writeAttributes(I);
 
     tags_.write("aliased", {}, {
         {"name", toString(*I.AliasedSymbol)},
@@ -477,8 +477,8 @@ XMLWriter::
     });
 
     writeSourceInfo(I);
-
     writeJavadoc(I.javadoc);
+    writeAttributes(I);
 
     for (auto const& id : I.UsingSymbols)
         tags_.write("named", {}, { id });
@@ -502,6 +502,7 @@ writeRecord(
         });
 
     writeSourceInfo(I);
+    writeAttributes(I);
 
     writeAttr(I.IsFinal, "is-final", tags_);
     writeAttr(I.IsFinalDestructor, "is-final-dtor", tags_);
@@ -544,9 +545,10 @@ writeTypedef(
         });
 
     writeSourceInfo(I);
+    writeAttributes(I);
 
     writeType(I.Type, tags_);
-
+    
     writeJavadoc(I.javadoc);
 
     tags_.close(tag);
@@ -578,6 +580,7 @@ writeField(
     });
 
     writeSourceInfo(I);
+    writeAttributes(I);
 
     if(I.IsMutable)
         tags_.write(attributeTagName, {}, {
@@ -585,9 +588,6 @@ writeField(
         });
 
     writeAttr(I.IsVariant, "is-variant", tags_);
-    writeAttr(I.IsMaybeUnused, "maybe-unused", tags_);
-    writeAttr(I.IsDeprecated, "deprecated", tags_);
-    writeAttr(I.HasNoUniqueAddress, "no-unique-address", tags_);
 
     writeType(I.Type, tags_);
 
@@ -610,6 +610,7 @@ writeVariable(
         });
 
     writeSourceInfo(I);
+    writeAttributes(I);
 
     writeAttr(I.StorageClass, "storage-class", tags_);
     writeAttr(I.IsInline, "is-inline", tags_);
@@ -627,6 +628,15 @@ writeVariable(
 }
 
 //------------------------------------------------
+
+void
+XMLWriter::
+writeAttributes(
+    const Info& I)
+{
+    for(auto attr : I.Attributes)
+        tags_.write(attributeTagName, {}, { { "id", toString(attr) } });
+}
 
 void
 XMLWriter::

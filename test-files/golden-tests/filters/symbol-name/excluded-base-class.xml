@@ -13,11 +13,11 @@
       </function>
       <function name="g" id="o+85JO3Sv4bIWiG3+bfyUw5gJWI=">
         <file short-path="excluded-base-class.cpp" source-path="excluded-base-class.cpp" line="17"/>
-        <attr id="has-override"/>
+        <attr id="is-override"/>
       </function>
       <function name="h" id="NiHV825xQJhfQDhKCeAex3UuHGY=">
         <file short-path="excluded-base-class.cpp" source-path="excluded-base-class.cpp" line="18"/>
-        <attr id="has-override"/>
+        <attr id="is-override"/>
       </function>
       <function name="i" id="d5/JtPJCrP6OG8ToxUKNR5xqJ4I=">
         <file short-path="excluded-base-class.cpp" source-path="excluded-base-class.cpp" line="19"/>
@@ -37,7 +37,7 @@
       </function>
       <function name="h" id="KiY+7o+uUp3h7bndNOpI2AuCrAE=">
         <file short-path="excluded-base-class.cpp" source-path="excluded-base-class.cpp" line="29"/>
-        <attr id="has-override"/>
+        <attr id="is-override"/>
       </function>
       <function name="i" id="0wO8aZwuOLvF7/RooHUZJ5SyKzk=">
         <file short-path="excluded-base-class.cpp" source-path="excluded-base-class.cpp" line="30"/>
