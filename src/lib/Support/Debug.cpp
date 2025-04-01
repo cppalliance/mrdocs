@@ -14,7 +14,7 @@
 #include <memory>
 #include <mrdocs/Metadata/Info/Record.hpp>
 #include <mrdocs/Metadata/Info.hpp>
-#include <mrdocs/Metadata/Symbols.hpp>
+#include <mrdocs/Metadata/SymbolID.hpp>
 
 namespace clang {
 namespace mrdocs {

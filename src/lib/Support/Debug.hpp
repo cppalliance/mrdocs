@@ -17,10 +17,15 @@
 #include <llvm/Support/ErrorHandling.h>
 #endif
 #include <llvm/Support/raw_ostream.h>
-#include <mrdocs/Metadata/Symbols.hpp>
-#include <mrdocs/MetadataFwd.hpp>
+#include <mrdocs/Metadata/SymbolID.hpp>
 #include <fmt/format.h>
 #include <string>
+
+namespace clang::mrdocs {
+    enum class InfoKind;
+    enum class AccessKind;
+    struct Info;
+}
 
 template<>
 struct fmt::formatter<clang::mrdocs::SymbolID>

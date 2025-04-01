@@ -14,13 +14,10 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Generator.hpp>
-#include <mrdocs/MetadataFwd.hpp>
 #include <mrdocs/Metadata/Javadoc.hpp>
 #include <optional>
 
-namespace clang {
-namespace mrdocs {
-namespace xml {
+namespace clang::mrdocs::xml {
 
 //------------------------------------------------
 
@@ -50,8 +47,6 @@ struct XMLGenerator : Generator
         Corpus const& corpus) const override;
 };
 
-} // xml
-} // mrdocs
-} // clang
+} // clang::mrdocs::xml
 
 #endif

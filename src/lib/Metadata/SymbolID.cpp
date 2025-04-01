@@ -9,7 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdocs/Metadata/Symbols.hpp>
+#include <mrdocs/Metadata/SymbolID.hpp>
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <lib/Support/Radix.hpp>

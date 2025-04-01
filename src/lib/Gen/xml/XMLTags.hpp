@@ -19,7 +19,7 @@
 #include <llvm/Support/raw_ostream.h>
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Metadata/Javadoc.hpp>
-#include <mrdocs/Metadata/Symbols.hpp>
+#include <mrdocs/Metadata/SymbolID.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 
 /*

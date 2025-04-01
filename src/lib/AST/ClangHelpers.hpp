@@ -14,7 +14,7 @@
 #ifndef MRDOCS_LIB_AST_CLANGHELPERS_HPP
 #define MRDOCS_LIB_AST_CLANGHELPERS_HPP
 
-#include <mrdocs/Metadata/Symbols.hpp>
+#include <mrdocs/Metadata/SymbolID.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <lib/AST/InstantiatedFromVisitor.hpp>
 #include <clang/AST/Expr.h>

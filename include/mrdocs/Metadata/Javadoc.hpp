@@ -14,7 +14,7 @@
 #define MRDOCS_API_METADATA_JAVADOC_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Symbols.hpp>
+#include <mrdocs/Metadata/SymbolID.hpp>
 #include <mrdocs/Support/Visitor.hpp>
 #include <mrdocs/Support/Concepts.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>

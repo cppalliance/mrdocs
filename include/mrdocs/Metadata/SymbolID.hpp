@@ -10,8 +10,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_METADATA_SYMBOLS_HPP
-#define MRDOCS_API_METADATA_SYMBOLS_HPP
+#ifndef MRDOCS_API_METADATA_SYMBOLID_HPP
+#define MRDOCS_API_METADATA_SYMBOLID_HPP
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Optional.hpp>

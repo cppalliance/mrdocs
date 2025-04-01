@@ -20,6 +20,8 @@
 
 namespace clang::mrdocs {
 
+struct TArg;
+
 struct ParsedRefComponent {
     // Component name
     std::string_view Name;
