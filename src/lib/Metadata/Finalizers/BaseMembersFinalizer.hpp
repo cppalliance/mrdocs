@@ -68,7 +68,7 @@ public:
     {
         Info* info = corpus_.find(SymbolID::global);
         MRDOCS_CHECK_OR(info);
-        operator()(*dynamic_cast<NamespaceInfo*>(info));
+        operator()(info->asNamespace());
     }
 
     void

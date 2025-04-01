@@ -38,7 +38,8 @@ public:
     {
         Info* info = corpus_.find(SymbolID::global);
         MRDOCS_CHECK_OR(info);
-        operator()(*dynamic_cast<NamespaceInfo*>(info));
+        MRDOCS_ASSERT(info->isNamespace());
+        operator()(info->asNamespace());
     }
 
     enum class FinalizerResult {

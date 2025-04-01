@@ -32,7 +32,7 @@ OverloadsInfo(SymbolID const& Parent, std::string_view Name) noexcept
 void
 merge(OverloadsInfo& I, OverloadsInfo&& Other)
 {
-    merge(dynamic_cast<Info&>(I), std::move(dynamic_cast<Info&>(Other)));
+    merge(I.asInfo(), std::move(Other.asInfo()));
     namespace stdr = std::ranges;
     namespace stdv = std::ranges::views;
     auto newMembers = stdv::filter(Other.Members, [&](auto const& Member) {
@@ -61,7 +61,7 @@ addMember(OverloadsInfo& I, FunctionInfo const& Member)
             I.ReturnType = {};
         }
     }
-    merge(dynamic_cast<SourceInfo&>(I), dynamic_cast<SourceInfo const&>(Member));
+    merge(I.asSourceInfo(), Member.asSourceInfo());
     I.Members.push_back(Member.id);
 }
 

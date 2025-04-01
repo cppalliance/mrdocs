@@ -467,7 +467,7 @@ lookupImpl(
     report::trace("    Context: '{}'", contextPtr->Name);
 
     // If context is a typedef, lookup in the resolved type
-    if (auto* TI = dynamic_cast<TypedefInfo const*>(contextPtr))
+    if (auto* TI = contextPtr->asTypedefPtr())
     {
         MRDOCS_CHECK_OR(TI->Type, nullptr);
         SymbolID resolvedSymbolID = TI->Type->namedSymbol();
@@ -602,7 +602,7 @@ lookupImpl(
             // Function parameters size match
             MRDOCS_CHECK_OR(checkParameters && ref.HasFunctionParameters, matchRes);
             MRDOCS_CHECK_OR(MInfoTy::isFunction(), matchRes);
-            auto const& F = dynamic_cast<FunctionInfo const&>(M);
+            auto const& F = M.asFunction();
             MRDOCS_CHECK_OR(F.Params.size() == ref.FunctionParameters.size(), matchRes);
             matchRes = MatchLevel::FunctionParametersSize;
 

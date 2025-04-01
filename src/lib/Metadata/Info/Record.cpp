@@ -88,7 +88,7 @@ operator<=>(RecordInfo const& other) const
             return cmp;
         }
     }
-    return dynamic_cast<Info const&>(*this) <=> dynamic_cast<Info const&>(other);
+    return this->asInfo() <=> other.asInfo();
 }
 
 void
@@ -118,7 +118,7 @@ merge(RecordInterface& I, RecordInterface&& Other)
 void
 merge(RecordInfo& I, RecordInfo&& Other)
 {
-    merge(dynamic_cast<Info&>(I), std::move(dynamic_cast<Info&>(Other)));
+    merge(I.asInfo(), std::move(Other.asInfo()));
     if (Other.KeyKind != RecordKeyKind::Struct &&
         I.KeyKind != Other.KeyKind)
     {

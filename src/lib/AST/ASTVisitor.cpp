@@ -123,7 +123,7 @@ traverse(DeclTy const* D)
         // Populate the base classes with the necessary information.
         // Even when the object is new, we want to update the source locations
         // and the documentation status.
-        populate(dynamic_cast<Info&>(I), isNew, D);
+        populate(I.asInfo(), isNew, D);
 
         // Populate the derived Info object with the necessary information
         // when the object is new. If the object already exists, this
@@ -167,8 +167,8 @@ traverse(UsingDirectiveDecl const* D)
     MRDOCS_SYMBOL_TRACE(P, context_);
     Info* PI = findOrTraverse(P);
     MRDOCS_CHECK_OR(PI, nullptr);
-    auto* const PNI = dynamic_cast<NamespaceInfo*>(PI);
-    MRDOCS_CHECK_OR(PNI, nullptr);
+    MRDOCS_CHECK_OR(PI->isNamespace(), nullptr);
+    auto& PNI = PI->asNamespace();
 
     // Find the nominated namespace
     Decl const* ND = D->getNominatedNamespace();
@@ -181,9 +181,9 @@ traverse(UsingDirectiveDecl const* D)
     MRDOCS_ASSERT(res);
     MRDOCS_ASSERT(res->isIdentifier());
     if (NameInfo NI = *res;
-        !contains(PNI->UsingDirectives, NI))
+        !contains(PNI.UsingDirectives, NI))
     {
-        PNI->UsingDirectives.push_back(std::move(NI));
+        PNI.UsingDirectives.push_back(std::move(NI));
     }
     return nullptr;
 }
@@ -524,7 +524,7 @@ ASTVisitor::
 populate(Info& I, bool const isNew, DeclTy const* D)
 {
     populate(I.javadoc, D);
-    populate(dynamic_cast<SourceInfo&>(I), D);
+    populate(I.asSourceInfo(), D);
 
     // All other information is redundant if the symbol is not new
     MRDOCS_CHECK_OR(isNew);
@@ -549,7 +549,7 @@ populate(SourceInfo& I, DeclTy const* D)
     if (Loc.isValid())
     {
         populate(
-            dynamic_cast<SourceInfo&>(I),
+            I.asSourceInfo(),
             Loc,
             isDefinition(D),
             isDocumented(D));
@@ -1642,52 +1642,52 @@ addMember(
     NamespaceInfo& I,
     Info const& Member)
 {
-    if (auto const* U = dynamic_cast<NamespaceInfo const*>(&Member))
+    if (auto const* U = Member.asNamespacePtr())
     {
         addMember(I.Members.Namespaces, *U);
         return;
     }
-    if (auto const* U = dynamic_cast<NamespaceAliasInfo const*>(&Member))
+    if (auto const* U = Member.asNamespaceAliasPtr())
     {
         addMember(I.Members.NamespaceAliases, *U);
         return;
     }
-    if (auto const* U = dynamic_cast<TypedefInfo const*>(&Member))
+    if (auto const* U = Member.asTypedefPtr())
     {
         addMember(I.Members.Typedefs, *U);
         return;
     }
-    if (auto const* U = dynamic_cast<RecordInfo const*>(&Member))
+    if (auto const* U = Member.asRecordPtr())
     {
         addMember(I.Members.Records, *U);
         return;
     }
-    if (auto const* U = dynamic_cast<EnumInfo const*>(&Member))
+    if (auto const* U = Member.asEnumPtr())
     {
         addMember(I.Members.Enums, *U);
         return;
     }
-    if (auto const* U = dynamic_cast<FunctionInfo const*>(&Member))
+    if (auto const* U = Member.asFunctionPtr())
     {
         addMember(I.Members.Functions, *U);
         return;
     }
-    if (auto const* U = dynamic_cast<VariableInfo const*>(&Member))
+    if (auto const* U = Member.asVariablePtr())
     {
         addMember(I.Members.Variables, *U);
         return;
     }
-    if (auto const* U = dynamic_cast<ConceptInfo const*>(&Member))
+    if (auto const* U = Member.asConceptPtr())
     {
         addMember(I.Members.Concepts, *U);
         return;
     }
-    if (auto const* U = dynamic_cast<GuideInfo const*>(&Member))
+    if (auto const* U = Member.asGuidePtr())
     {
         addMember(I.Members.Guides, *U);
         return;
     }
-    if (auto const* U = dynamic_cast<UsingInfo const*>(&Member))
+    if (auto const* U = Member.asUsingPtr())
     {
         addMember(I.Members.Usings, *U);
         return;
@@ -1724,27 +1724,27 @@ void
 ASTVisitor::
 addMember(RecordTranche& T, Info const& Member)
 {
-    if (auto const* U = dynamic_cast<NamespaceAliasInfo const*>(&Member))
+    if (auto const* U = Member.asNamespaceAliasPtr())
     {
         addMember(T.NamespaceAliases, *U);
         return;
     }
-    if (auto const* U = dynamic_cast<TypedefInfo const*>(&Member))
+    if (auto const* U = Member.asTypedefPtr())
     {
         addMember(T.Typedefs, *U);
         return;
     }
-    if (auto const* U = dynamic_cast<RecordInfo const*>(&Member))
+    if (auto const* U = Member.asRecordPtr())
     {
         addMember(T.Records, *U);
         return;
     }
-    if (auto const* U = dynamic_cast<EnumInfo const*>(&Member))
+    if (auto const* U = Member.asEnumPtr())
     {
         addMember(T.Enums, *U);
         return;
     }
-    if (auto const* U = dynamic_cast<FunctionInfo const*>(&Member))
+    if (auto const* U = Member.asFunctionPtr())
     {
         if (U->StorageClass != StorageClassKind::Static)
         {
@@ -1756,32 +1756,32 @@ addMember(RecordTranche& T, Info const& Member)
         }
         return;
     }
-    if (auto const* U = dynamic_cast<FieldInfo const*>(&Member))
+    if (auto const* U = Member.asFieldPtr())
     {
         addMember(T.Variables, *U);
         return;
     }
-    if (auto const* U = dynamic_cast<VariableInfo const*>(&Member))
+    if (auto const* U = Member.asVariablePtr())
     {
         addMember(T.StaticVariables, *U);
         return;
     }
-    if (auto const* U = dynamic_cast<ConceptInfo const*>(&Member))
+    if (auto const* U = Member.asConceptPtr())
     {
         addMember(T.Concepts, *U);
         return;
     }
-    if (auto const* U = dynamic_cast<GuideInfo const*>(&Member))
+    if (auto const* U = Member.asGuidePtr())
     {
         addMember(T.Guides, *U);
         return;
     }
-    if (auto const* U = dynamic_cast<FriendInfo const*>(&Member))
+    if (auto const* U = Member.asFriendPtr())
     {
         addMember(T.Friends, *U);
         return;
     }
-    if (auto const* U = dynamic_cast<UsingInfo const*>(&Member))
+    if (auto const* U = Member.asUsingPtr())
     {
         addMember(T.Usings, *U);
         return;
@@ -1795,7 +1795,7 @@ void
 ASTVisitor::
 addMember(EnumInfo& I, Info const& Member) const
 {
-    if (auto const* U = dynamic_cast<EnumConstantInfo const*>(&Member))
+    if (auto const* U = Member.asEnumConstantPtr())
     {
         addMember(I.Constants, *U);
         return;
@@ -3468,7 +3468,7 @@ checkUndocumented(
         // Populate the location
         auto handle = undocumented_.extract(undocIt);
         UndocumentedInfo& UI = handle.value();
-        populate(dynamic_cast<SourceInfo&>(UI), D);
+        populate(UI.asSourceInfo(), D);
         undocumented_.insert(std::move(handle));
     }
     return Unexpected(Error("Undocumented"));

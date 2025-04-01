@@ -40,7 +40,7 @@ void
 merge(Info& I, Info&& Other)
 {
     MRDOCS_ASSERT(I.id);
-    merge(dynamic_cast<SourceInfo&>(I), std::move(dynamic_cast<SourceInfo&>(Other)));
+    merge(I.asSourceInfo(), std::move(Other.asSourceInfo()));
     if (I.Name == "")
     {
         I.Name = Other.Name;

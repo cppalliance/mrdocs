@@ -72,7 +72,7 @@ build()
             {
                 I.javadoc.emplace();
             }
-            populateOverloadJavadoc(dynamic_cast<OverloadsInfo&>(*infoPtr));
+            populateOverloadJavadoc(infoPtr->asOverloads());
         }
     }
 
@@ -98,7 +98,7 @@ build()
             Info& I = *infoPtr;
             MRDOCS_CHECK_OR_CONTINUE(I.isFunction());
             MRDOCS_CHECK_OR_CONTINUE(I.Extraction != ExtractionMode::Dependency);
-            populateFunctionJavadoc(dynamic_cast<FunctionInfo&>(I));
+            populateFunctionJavadoc(I.asFunction());
         }
     }
 
@@ -138,9 +138,9 @@ finalizeBrief(Info& I)
             I.javadoc.emplace();
         }
         // The brief of an overload is always empty
-        auto& OI = dynamic_cast<OverloadsInfo&>(I);
-        for (auto& MemberIDs = OI.Members;
-            auto& memberID : MemberIDs)
+        auto& OI = I.asOverloads();
+        for (auto const& MemberIDs = OI.Members;
+             auto& memberID : MemberIDs)
         {
             Info* member = corpus_.find(memberID);
             MRDOCS_CHECK_OR_CONTINUE(member);
@@ -369,11 +369,11 @@ finalizeMetadataCopies(Info& I)
             // function parameters declaration.
             if (I.isFunction())
             {
-                auto& destF = dynamic_cast<FunctionInfo const&>(I);
+                auto& destF = I.asFunction();
                 for (Info const& srcInfo: srcInfos)
                 {
                     MRDOCS_CHECK_OR_CONTINUE(srcInfo.isFunction());
-                    auto const& srcFunction = dynamic_cast<FunctionInfo const&>(srcInfo);
+                    auto const& srcFunction = srcInfo.asFunction();
                     MRDOCS_CHECK_OR_CONTINUE(srcFunction.javadoc);
                     for (Javadoc const& srcJavadoc = *srcFunction.javadoc;
                          auto const& srcDocParam: srcJavadoc.params)
@@ -438,7 +438,7 @@ finalizeMetadataCopies(Info& I)
             // and the destination is not noexcept
             bool const destIsNoExcept =
                 I.isFunction() ?
-                dynamic_cast<FunctionInfo const&>(I).Noexcept.Kind == NoexceptKind::False :
+                I.asFunction().Noexcept.Kind == NoexceptKind::False :
                 false;
             if (destJavadoc.exceptions.empty() &&
                 !destIsNoExcept)
@@ -531,7 +531,7 @@ finalizeMetadataCopies(Info& I)
         }
         else
         {
-            auto& OI = dynamic_cast<OverloadsInfo const&>(res);
+            auto& OI = res.asOverloads();
             SmallVector<Info const*, 16> srcInfos;
             srcInfos.reserve(OI.Members.size());
             for (auto& memberID: OI.Members)
@@ -639,7 +639,7 @@ populateOverloadJavadoc(OverloadsInfo& I)
             }) |
         std::views::transform([](Info const* infoPtr) -> FunctionInfo const&
             {
-                return *dynamic_cast<FunctionInfo const*>(infoPtr);
+                return infoPtr->asFunction();
             });
     if (!I.javadoc)
     {

@@ -55,14 +55,14 @@ operator<=>(VariableInfo const& other) const
             return cmp;
         }
     }
-    return dynamic_cast<Info const&>(*this) <=> dynamic_cast<Info const&>(other);
+    return this->asInfo() <=> other.asInfo();
 }
 
 void
 merge(VariableInfo& I, VariableInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
-    merge(dynamic_cast<Info&>(I), std::move(dynamic_cast<Info&>(Other)));
+    merge(I.asInfo(), std::move(Other.asInfo()));
     if (!I.Type)
     {
         I.Type = std::move(Other.Type);

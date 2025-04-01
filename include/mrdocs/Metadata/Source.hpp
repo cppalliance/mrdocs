@@ -127,6 +127,16 @@ struct MRDOCS_DECL
     */
     std::vector<Location> Loc;
 
+    constexpr SourceInfo const& asSourceInfo() const noexcept
+    {
+        return *this;
+    }
+
+    constexpr SourceInfo& asSourceInfo() noexcept
+    {
+        return *this;
+    }
+
     constexpr virtual ~SourceInfo() = default;
 
     auto operator<=>(SourceInfo const&) const = default;

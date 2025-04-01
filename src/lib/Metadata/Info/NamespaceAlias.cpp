@@ -19,7 +19,7 @@ void
 merge(NamespaceAliasInfo& I, NamespaceAliasInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
-    merge(dynamic_cast<Info&>(I), std::move(dynamic_cast<Info&>(Other)));
+    merge(I.asInfo(), std::move(Other.asInfo()));
     if (!I.AliasedSymbol)
     {
         I.AliasedSymbol = std::move(Other.AliasedSymbol);

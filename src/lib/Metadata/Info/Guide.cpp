@@ -65,14 +65,14 @@ operator<=>(GuideInfo const& other) const
             return cmp;
         }
     }
-    return dynamic_cast<Info const&>(*this) <=> dynamic_cast<Info const&>(other);
+    return this->asInfo() <=> other.asInfo();
 }
 
 
 void merge(GuideInfo& I, GuideInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
-    merge(dynamic_cast<Info&>(I), std::move(dynamic_cast<Info&>(Other)));
+    merge(I.asInfo(), std::move(Other.asInfo()));
     if (!I.Deduced)
     {
         I.Deduced = std::move(Other.Deduced);

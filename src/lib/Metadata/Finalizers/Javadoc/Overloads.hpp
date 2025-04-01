@@ -34,7 +34,7 @@ overloadFunctionsRange(OverloadsInfo const& O, CorpusImpl& corpus_)
             }) |
         std::views::transform([](Info const* infoPtr) -> FunctionInfo const&
             {
-                return *dynamic_cast<FunctionInfo const*>(infoPtr);
+                return infoPtr->asFunction();
             });
     return functions;
 }
