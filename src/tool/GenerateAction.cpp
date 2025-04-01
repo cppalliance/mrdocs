@@ -209,7 +209,7 @@ DoGenerateAction(
     // --------------------------------------------------------------
     // Normalize outputPath path
     MRDOCS_CHECK(settings.output, "The output path argument is missing");
-    report::info("Generating docs\n");
+    report::info("Generating docs");
     MRDOCS_TRY(generator.build(*corpus));
 
     // --------------------------------------------------------------
