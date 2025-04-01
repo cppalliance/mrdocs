@@ -827,15 +827,34 @@ build(
     corpus->info_ = std::move(results);
     corpus->undocumented_ = std::move(undocumented);
 
-    report::info(
-        "Extracted {} declarations in {}",
-        corpus->info_.size(),
-        format_duration(clock_type::now() - start_time));
-
     // ------------------------------------------
     // Finalize corpus
     // ------------------------------------------
     corpus->finalize();
+
+    report::info(
+        "Extracted {} declarations in {}",
+        corpus->info_.size(),
+        format_duration(clock_type::now() - start_time));
+    if (report::getMinimumLevel() <= report::Level::info)
+    {
+        for (ExtractionMode m:
+             { ExtractionMode::Regular,
+               ExtractionMode::SeeBelow,
+               ExtractionMode::ImplementationDefined,
+               ExtractionMode::Dependency })
+        {
+            std::size_t const count = std::ranges::
+                count_if(corpus->info_, [m](auto const& info) {
+                return info && info->Extraction == m;
+            });
+            MRDOCS_CHECK_OR_CONTINUE(count);
+            report::info(
+                "  - {} symbols: {}",
+                toString(m),
+                count);
+        }
+    }
 
     return corpus;
 }
@@ -925,41 +944,43 @@ qualifiedName(
 void
 CorpusImpl::finalize()
 {
+    report::info("Finalizing corpus");
+
     {
-        report::debug("Finalizing namespaces");
+        report::debug("  - Finalizing namespaces");
         NamespacesFinalizer finalizer(*this);
         finalizer.build();
     }
 
     if (config->inheritBaseMembers != PublicSettings::BaseMemberInheritance::Never)
     {
-        report::debug("Finalizing base members");
+        report::debug("  - Finalizing base members");
         BaseMembersFinalizer finalizer(*this);
         finalizer.build();
     }
 
     if (config->overloads)
     {
-        report::debug("Finalizing overloads");
+        report::debug("  - Finalizing overloads");
         OverloadsFinalizer finalizer(*this);
         finalizer.build();
     }
 
     {
-        report::debug("Finalizing auto-relates");
+        report::debug("  - Finalizing auto-relates");
         DerivedFinalizer finalizer(*this);
         finalizer.build();
     }
 
     if (config->sortMembers)
     {
-        report::debug("Finalizing sorted members");
+        report::debug("  - Finalizing sorted members");
         SortMembersFinalizer finalizer(*this);
         finalizer.build();
     }
 
     // Finalize javadoc
-    report::debug("Finalizing javadoc");
+    report::debug("  - Finalizing javadoc");
     JavadocFinalizer finalizer(*this);
     finalizer.build();
 }
