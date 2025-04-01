@@ -43,7 +43,7 @@ operator()(T const& I)
 }
 
 #define INFO(T) template void SinglePageVisitor::operator()<T##Info>(T##Info const&);
-#include <mrdocs/Metadata/InfoNodesPascal.inc>
+#include <mrdocs/Metadata/Info/InfoNodes.inc>
 
 // pageNumber is zero-based
 void

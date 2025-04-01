@@ -103,7 +103,7 @@ operator()(T const& I)
 }
 
 #define INFO(Type) template void TagfileWriter::operator()<Type##Info>(Type##Info const&);
-#include <mrdocs/Metadata/InfoNodesPascal.inc>
+#include <mrdocs/Metadata/Info/InfoNodes.inc>
 
 void
 TagfileWriter::

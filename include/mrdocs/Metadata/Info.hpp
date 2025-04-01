@@ -30,7 +30,7 @@ namespace clang::mrdocs {
 /* Forward declarations
  */
 #define INFO(Type) struct Type##Info;
-#include <mrdocs/Metadata/InfoNodesPascal.inc>
+#include <mrdocs/Metadata/Info/InfoNodes.inc>
 
 /** Info variant discriminator
 */
@@ -38,7 +38,7 @@ enum class InfoKind
 {
     None = 0,
     #define INFO(Type) Type,
-    #include <mrdocs/Metadata/InfoNodesPascal.inc>
+    #include <mrdocs/Metadata/Info/InfoNodes.inc>
 };
 
 /** Return the name of the InfoKind as a string.
@@ -65,7 +65,7 @@ countInfoKind()
 {
     std::underlying_type_t<InfoKind> count = 0;
 #define INFO(Type) count++;
-#include <mrdocs/Metadata/InfoNodesPascal.inc>
+#include <mrdocs/Metadata/Info/InfoNodes.inc>
     return count;
 }
 
@@ -149,7 +149,7 @@ struct MRDOCS_VISIBLE Info
     #define INFO(Type) constexpr bool is##Type() const noexcept { \
         return Kind == InfoKind::Type; \
     }
-    #include <mrdocs/Metadata/InfoNodesPascal.inc>
+    #include <mrdocs/Metadata/Info/InfoNodes.inc>
 
     constexpr Info const& asInfo() const noexcept
     {
@@ -167,7 +167,7 @@ struct MRDOCS_VISIBLE Info
             return reinterpret_cast<Type##Info const&>(*this); \
         MRDOCS_UNREACHABLE(); \
     }
-    #include <mrdocs/Metadata/InfoNodesPascal.inc>
+    #include <mrdocs/Metadata/Info/InfoNodes.inc>
 
     #define INFO(Type) \
     constexpr Type##Info & as##Type() noexcept { \
@@ -175,21 +175,21 @@ struct MRDOCS_VISIBLE Info
             return reinterpret_cast<Type##Info&>(*this); \
         MRDOCS_UNREACHABLE(); \
     }
-    #include <mrdocs/Metadata/InfoNodesPascal.inc>
+    #include <mrdocs/Metadata/Info/InfoNodes.inc>
 
     #define INFO(Type) \
     constexpr Type##Info const* as##Type##Ptr() const noexcept { \
         if (Kind == InfoKind::Type) { return reinterpret_cast<Type##Info const*>(this); } \
         return nullptr; \
     }
-    #include <mrdocs/Metadata/InfoNodesPascal.inc>
+    #include <mrdocs/Metadata/Info/InfoNodes.inc>
 
     #define INFO(Type) \
     constexpr Type##Info * as##Type##Ptr() noexcept { \
         if (Kind == InfoKind::Type) { return reinterpret_cast<Type##Info *>(this); } \
         return nullptr; \
     }
-    #include <mrdocs/Metadata/InfoNodesPascal.inc>
+    #include <mrdocs/Metadata/Info/InfoNodes.inc>
 
     auto operator<=>(Info const&) const = default;
 };
@@ -214,7 +214,7 @@ struct InfoCommonBase : Info
 
     #define INFO(Kind) \
     static constexpr bool is##Kind() noexcept { return K == InfoKind::Kind; }
-    #include <mrdocs/Metadata/InfoNodesPascal.inc>
+    #include <mrdocs/Metadata/Info/InfoNodes.inc>
 
     auto operator<=>(InfoCommonBase const&) const = default;
 
@@ -255,7 +255,7 @@ visit(
     #define INFO(Type) \
     case InfoKind::Type: \
         return visitor.template visit<Type##Info>();
-    #include <mrdocs/Metadata/InfoNodesPascal.inc>
+    #include <mrdocs/Metadata/Info/InfoNodes.inc>
     default:
         MRDOCS_UNREACHABLE();
     }

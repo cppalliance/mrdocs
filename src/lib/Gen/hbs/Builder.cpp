@@ -347,7 +347,7 @@ operator()(std::ostream& os, T const& I)
 
 // Compile the Builder::operator() for each Info type
 #define INFO(T) template Expected<void> Builder::operator()<T##Info>(std::ostream&, T##Info const&);
-#include <mrdocs/Metadata/InfoNodesPascal.inc>
+#include <mrdocs/Metadata/Info/InfoNodes.inc>
 
 Expected<void>
 Builder::

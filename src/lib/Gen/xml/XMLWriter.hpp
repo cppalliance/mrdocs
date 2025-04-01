@@ -63,7 +63,7 @@ public:
     // Info types
 
 #define INFO(Type) void write##Type(Type##Info const&);
-#include <mrdocs/Metadata/InfoNodesPascal.inc>
+#include <mrdocs/Metadata/Info/InfoNodes.inc>
 
     void writeSourceInfo(SourceInfo const& I);
     void writeLocation(Location const& loc, bool def = false);
