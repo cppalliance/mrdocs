@@ -758,7 +758,7 @@ finalizeInfoData(InfoTy& I)
 }
 
 #define INFO(T) template void JavadocFinalizer::finalizeInfoData<T## Info>(T## Info&);
-#include <mrdocs/Metadata/InfoNodesPascal.inc>
+#include <mrdocs/Metadata/Info/InfoNodes.inc>
 
 void
 JavadocFinalizer::

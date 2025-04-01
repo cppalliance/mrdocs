@@ -74,6 +74,6 @@ operator()(T const& I)
 }
 
 #define INFO(T) template void MultiPageVisitor::operator()<T##Info>(T##Info const&);
-#include <mrdocs/Metadata/InfoNodesPascal.inc>
+#include <mrdocs/Metadata/Info/InfoNodes.inc>
 
 } // clang::mrdocs::hbs

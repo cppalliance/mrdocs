@@ -33,7 +33,7 @@ enum class StorageClassKind;
 
 #define INFO(Type) \
 struct Type##Info;
-#include <mrdocs/Metadata/InfoNodesPascal.inc>
+#include <mrdocs/Metadata/Info/InfoNodes.inc>
 
 struct BaseInfo;
 struct Info;

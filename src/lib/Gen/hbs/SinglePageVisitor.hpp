@@ -20,9 +20,7 @@
 #include <string>
 #include <vector>
 
-namespace clang {
-namespace mrdocs {
-namespace hbs {
+namespace clang::mrdocs::hbs {
 
 /** Visitor which writes everything to a single page.
 */
@@ -58,8 +56,6 @@ public:
     void operator()(T const& I);
 };
 
-} // hbs
-} // mrdocs
-} // clang
+} // clang::mrdocs::hbs
 
 #endif

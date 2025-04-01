@@ -20,17 +20,18 @@
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Metadata/Info/Record.hpp>
+#include <mrdocs/Support/String.hpp>
 
 namespace clang::mrdocs {
 
 dom::String
-toString(InfoKind kind) noexcept
+toString(InfoKind const kind) noexcept
 {
     switch(kind)
     {
-#define INFO(PascalName, LowerName) \
-    case InfoKind::PascalName: return #LowerName;
-#include <mrdocs/Metadata/InfoNodesPascalAndLower.inc>
+#define INFO(Type) \
+    case InfoKind::Type: return toKebabCase(#Type);
+#include <mrdocs/Metadata/Info/InfoNodes.inc>
     default:
         MRDOCS_UNREACHABLE();
     }

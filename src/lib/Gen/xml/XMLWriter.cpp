@@ -197,7 +197,7 @@ operator()(
         return;
     }
     #define INFO(Type) if constexpr(T::is##Type()) write##Type(I);
-    #include <mrdocs/Metadata/InfoNodesPascal.inc>
+    #include <mrdocs/Metadata/Info/InfoNodes.inc>
 }
 
 //------------------------------------------------
@@ -207,6 +207,7 @@ XMLWriter::
 writeNamespace(
     NamespaceInfo const& I)
 {
+    constexpr std::string_view namespaceTagName = "namespace";
     tags_.open(namespaceTagName, {
         { "name", I.Name, ! I.Name.empty() },
         { I.id },
@@ -230,6 +231,7 @@ XMLWriter::
 writeEnum(
     EnumInfo const& I)
 {
+    constexpr std::string_view enumTagName = "enum";
     tags_.open(enumTagName, {
         { "name", I.Name },
         { "class", "scoped", I.Scoped },
@@ -261,6 +263,7 @@ writeEnumConstant(
         std::to_string(*I.Initializer.Value) :
         I.Initializer.Written;
 
+    constexpr std::string_view enumConstantTagName = "enum-constant";
     tags_.open(enumConstantTagName, {
         { "name", I.Name },
         { "initializer", val },
@@ -280,6 +283,7 @@ XMLWriter::
 writeFriend(
     FriendInfo const& I)
 {
+    constexpr std::string_view friendTagName = "friend";
     tags_.open(friendTagName, {
         { I.Access },
         { I.id }
@@ -310,6 +314,7 @@ writeFunction(
     auto except_spec = toString(I.Noexcept);
     auto explicit_spec = toString(I.Explicit);
 
+    constexpr std::string_view functionTagName = "function";
     tags_.open(functionTagName, {
         { "class", toString(I.Class),
             I.Class != FunctionClass::Normal },
@@ -374,6 +379,7 @@ writeGuide(
 
     auto explicit_spec = toString(I.Explicit);
 
+    constexpr std::string_view guideTagName = "guide";
     tags_.open(guideTagName, {
         { "name", I.Name },
         { I.Access },
@@ -405,6 +411,7 @@ writeConcept(
 {
     openTemplate(I.Template);
 
+    constexpr std::string_view conceptTagName = "concept";
     tags_.open(conceptTagName, {
         { "name", I.Name },
         { I.Access },
@@ -426,6 +433,7 @@ XMLWriter::
 writeNamespaceAlias(
     NamespaceAliasInfo const& I)
 {
+    constexpr std::string_view namespaceAliasTagName = "namespace-alias";
     tags_.open(namespaceAliasTagName, {
         { "name", I.Name },
         { I.Access },
@@ -469,6 +477,7 @@ XMLWriter::
         qualifierStr = toString(*I.Qualifier);
     }
 
+    constexpr std::string_view usingTagName = "using";
     tags_.open(usingTagName, {
         { I.Access },
         { I.id },
@@ -532,11 +541,16 @@ writeTypedef(
 {
     openTemplate(I.Template);
 
+    constexpr std::string_view namespaceAliasTagName = "namespace-alias";
+    constexpr std::string_view typedefTagName = "typedef";
     llvm::StringRef tag;
-    if(I.IsUsing)
+    if (I.IsUsing)
+    {
         tag = namespaceAliasTagName;
-    else
+    } else
+    {
         tag = typedefTagName;
+    }
     tags_.open(tag, {
         { "name", I.Name },
         { I.Access },
@@ -793,7 +807,7 @@ XMLWriter::
 writeCopied(
     doc::CopyDetails const& node)
 {
-    std::string_view const tag_name = "copydetails";
+    std::string_view constexpr tag_name = "copydetails";
     tags_.write(tag_name, node.string, {
         { node.id }
         });

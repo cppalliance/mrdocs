@@ -24,13 +24,7 @@
     in the MRDOCS DTD XML schema.
 */
 
-namespace clang {
-namespace mrdocs {
-namespace xml {
-
-#define INFO(camelName, LowerName) \
-constexpr auto camelName##TagName = #LowerName;
-#include <mrdocs/Metadata/InfoNodesCamelAndLower.inc>
+namespace clang::mrdocs::xml {
 
 constexpr auto accessTagName         = "access";
 constexpr auto attributeTagName      = "attr";
@@ -333,11 +327,9 @@ inline void writeTemplateArg(TArg const& I, XMLTags& tags)
 
 /** Return the xml tag name for the Info.
 */
-llvm::StringRef
+std::string
 getTagName(Info const& I) noexcept;
 
-} // xml
-} // mrdocs
-} // clang
+} // clang::mrdocs::xml
 
 #endif

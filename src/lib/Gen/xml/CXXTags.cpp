@@ -12,18 +12,19 @@
 #include "CXXTags.hpp"
 #include <mrdocs/Metadata/Info/Typedef.hpp>
 #include <mrdocs/Metadata/Info/Record.hpp>
+#include <mrdocs/Support/String.hpp>
 
 namespace clang::mrdocs::xml {
 
-llvm::StringRef
+std::string
 getDefaultTagName(Info const& I) noexcept
 {
     switch(I.Kind)
     {
-#define INFO(PascalName, LowerName) \
-    case InfoKind::PascalName: \
-        return LowerName##TagName;
-#include <mrdocs/Metadata/InfoNodesPascalAndCamel.inc>
+#define INFO(Type) \
+    case InfoKind::Type: \
+        return toKebabCase(#Type) + "TagName";
+#include <mrdocs/Metadata/Info/InfoNodes.inc>
     default:
         break;
     }
@@ -31,7 +32,7 @@ getDefaultTagName(Info const& I) noexcept
 }
 
 
-llvm::StringRef
+std::string
 getTagName(Info const& I) noexcept
 {
     switch(I.Kind)
@@ -47,10 +48,14 @@ getTagName(Info const& I) noexcept
         }
         break;
     case InfoKind::Typedef:
-        if(static_cast<TypedefInfo const&>(I).IsUsing)
-            return namespaceAliasTagName;
+        if (static_cast<TypedefInfo const&>(I).IsUsing)
+        {
+            return "namespace";
+        }
         else
-            return typedefTagName;
+        {
+            return "typedef";
+        }
     default:
         return getDefaultTagName(I);
     }

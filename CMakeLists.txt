@@ -192,26 +192,6 @@ add_custom_command(
     COMMENT "Generating Config Source Files"
 )
 
-add_custom_command(
-    COMMAND
-        ${PYTHON_EXECUTABLE}
-        ${CMAKE_CURRENT_SOURCE_DIR}/util/generate-info-files.py
-        src/lib/Metadata/InfoNodes.json
-        ${CMAKE_CURRENT_BINARY_DIR}
-    VERBATIM
-    DEPENDS
-        ${CMAKE_CURRENT_SOURCE_DIR}/util/generate-info-files.py
-        src/lib/Metadata/InfoNodes.json
-    OUTPUT
-        ${CMAKE_CURRENT_BINARY_DIR}/include/mrdocs/Metadata/InfoNodesLower.inc
-        ${CMAKE_CURRENT_BINARY_DIR}/include/mrdocs/Metadata/InfoNodesPascal.inc
-        ${CMAKE_CURRENT_BINARY_DIR}/include/mrdocs/Metadata/InfoNodesPascalAndLower.inc
-        ${CMAKE_CURRENT_BINARY_DIR}/include/mrdocs/Metadata/InfoNodesPascalPlural.inc
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    COMMENT "Generating Info Include Files"
-)
-
-
 # Main library
 file(
     GLOB_RECURSE LIB_SOURCES  CONFIGURE_DEPENDS
@@ -232,10 +212,6 @@ list(APPEND LIB_SOURCES
     ${CMAKE_CURRENT_BINARY_DIR}/include/mrdocs/Version.hpp
     ${CMAKE_CURRENT_BINARY_DIR}/include/mrdocs/PublicSettings.hpp
     ${CMAKE_CURRENT_BINARY_DIR}/src/lib/Lib/PublicSettings.cpp
-    ${CMAKE_CURRENT_BINARY_DIR}/include/mrdocs/Metadata/InfoNodesLower.inc
-    ${CMAKE_CURRENT_BINARY_DIR}/include/mrdocs/Metadata/InfoNodesPascal.inc
-    ${CMAKE_CURRENT_BINARY_DIR}/include/mrdocs/Metadata/InfoNodesPascalAndLower.inc
-    ${CMAKE_CURRENT_BINARY_DIR}/include/mrdocs/Metadata/InfoNodesPascalPlural.inc
 )
 add_library(mrdocs-core ${LIB_SOURCES})
 target_compile_features(mrdocs-core PUBLIC cxx_std_20)
