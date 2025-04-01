@@ -17,12 +17,14 @@
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
 #include <mrdocs/Metadata/Specifiers.hpp>
-#include <mrdocs/Metadata/Symbols.hpp>
-#include <mrdocs/MetadataFwd.hpp>
+#include <mrdocs/Metadata/SymbolID.hpp>
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/TypeTraits.hpp>
 
 namespace clang::mrdocs {
+
+struct NameInfo;
+struct TypeInfo;
 
 std::strong_ordering
 operator<=>(Polymorphic<NameInfo> const& lhs, Polymorphic<NameInfo> const& rhs);

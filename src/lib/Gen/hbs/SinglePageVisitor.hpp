@@ -13,7 +13,6 @@
 #define MRDOCS_LIB_GEN_HBS_SINGLEPAGEVISITOR_HPP
 
 #include "Builder.hpp"
-#include <mrdocs/MetadataFwd.hpp>
 #include <mrdocs/Support/ExecutorGroup.hpp>
 #include <mutex>
 #include <ostream>
