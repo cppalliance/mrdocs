@@ -19,7 +19,7 @@ std::strong_ordering
 NamespaceInfo::
 operator<=>(NamespaceInfo const& other) const
 {
-    if (auto const res = dynamic_cast<Info const&>(*this) <=> dynamic_cast<Info const&>(other);
+    if (auto const res = this->asInfo() <=> other.asInfo();
         std::is_neq(res))
     {
         return res;
@@ -106,7 +106,7 @@ void
 merge(NamespaceInfo& I, NamespaceInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
-    merge(dynamic_cast<Info&>(I), std::move(dynamic_cast<Info&>(Other)));
+    merge(I.asInfo(), std::move(Other.asInfo()));
     merge(I.Members, std::move(Other.Members));
     reduceNames(I.UsingDirectives, std::move(Other.UsingDirectives));
     I.IsInline |= Other.IsInline;

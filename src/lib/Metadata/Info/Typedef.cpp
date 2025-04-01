@@ -56,13 +56,13 @@ operator<=>(TypedefInfo const& other) const
             return cmp;
         }
     }
-    return dynamic_cast<Info const&>(*this) <=> dynamic_cast<Info const&>(other);
+    return this->asInfo() <=> other.asInfo();
 }
 
 void merge(TypedefInfo& I, TypedefInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
-    merge(dynamic_cast<Info&>(I), std::move(dynamic_cast<Info&>(Other)));
+    merge(I.asInfo(), std::move(Other.asInfo()));
     if (!I.IsUsing)
     {
         I.IsUsing = Other.IsUsing;

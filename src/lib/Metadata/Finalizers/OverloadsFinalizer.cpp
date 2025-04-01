@@ -20,9 +20,8 @@ foldRecordMembers(std::vector<SymbolID> const& ids)
     {
         Info* infoPtr = corpus_.find(id);
         MRDOCS_CHECK_OR_CONTINUE(infoPtr);
-        auto* record = dynamic_cast<RecordInfo*>(infoPtr);
-        MRDOCS_CHECK_OR_CONTINUE(record);
-        operator()(*record);
+        MRDOCS_CHECK_OR_CONTINUE(infoPtr->isRecord());
+        operator()(infoPtr->asRecord());
     }
 }
 
@@ -34,9 +33,8 @@ foldNamespaceMembers(std::vector<SymbolID> const& namespaceIds)
     {
         Info* namespaceInfoPtr = corpus_.find(namespaceId);
         MRDOCS_CHECK_OR_CONTINUE(namespaceInfoPtr);
-        auto* ns = dynamic_cast<NamespaceInfo*>(namespaceInfoPtr);
-        MRDOCS_CHECK_OR_CONTINUE(ns);
-        operator()(*ns);
+        MRDOCS_CHECK_OR_CONTINUE(namespaceInfoPtr->isNamespace());
+        operator()(namespaceInfoPtr->asNamespace());
     }
 }
 
@@ -49,13 +47,13 @@ findBaseClassPermutation(
 {
     Info* info = corpus.find(contextId);
     MRDOCS_CHECK_OR(info, SymbolID::invalid);
-    if (auto* record = dynamic_cast<RecordInfo*>(info))
+    if (auto const* record = info->asRecordPtr())
     {
         for (auto const& base: record->Bases)
         {
             auto const baseInfo = corpus.find(base.Type->namedSymbol());
             MRDOCS_CHECK_OR_CONTINUE(baseInfo);
-            auto const baseRecord = dynamic_cast<RecordInfo*>(baseInfo);
+            auto const baseRecord = baseInfo->asRecordPtr();
             MRDOCS_CHECK_OR_CONTINUE(baseRecord);
             RecordTranche* tranchesPtrs[] = {
                 &baseRecord->Interface.Public,
@@ -76,7 +74,7 @@ findBaseClassPermutation(
                         Info* baseFuncMember = corpus.find(baseID);
                         MRDOCS_CHECK_OR_CONTINUE(baseFuncMember);
                         MRDOCS_CHECK_OR_CONTINUE(baseFuncMember->isOverloads());
-                        auto* overloads = dynamic_cast<OverloadsInfo*>(baseFuncMember);
+                        auto* overloads = baseFuncMember->asOverloadsPtr();
                         MRDOCS_CHECK_OR_CONTINUE(overloads);
                         // Does this overload set have the same functions
                         MRDOCS_CHECK_OR_CONTINUE(
@@ -104,7 +102,7 @@ foldOverloads(SymbolID const& contextId, std::vector<SymbolID>& functionIds)
         // Get the FunctionInfo for the current id
         auto recordInfoPtr = corpus_.find(*functionIdIt);
         MRDOCS_CHECK_OR_CONTINUE(recordInfoPtr);
-        auto* function = dynamic_cast<FunctionInfo*>(recordInfoPtr);
+        auto* function = recordInfoPtr->asFunctionPtr();
         MRDOCS_CHECK_OR_CONTINUE(function);
 
         // Check if the FunctionInfo is unique
@@ -163,7 +161,7 @@ foldOverloads(SymbolID const& contextId, std::vector<SymbolID>& functionIds)
         {
             Info* otherInfoPtr = corpus_.find(*otherIt);
             MRDOCS_CHECK_OR_CONTINUE(otherInfoPtr);
-            auto* otherFunction = dynamic_cast<FunctionInfo*>(otherInfoPtr);
+            auto* otherFunction = otherInfoPtr->asFunctionPtr();
             MRDOCS_CHECK_OR_CONTINUE(otherFunction);
             if (function->Name == otherFunction->Name)
             {
@@ -201,7 +199,7 @@ operator()(RecordInfo& I)
         MRDOCS_CHECK_OR(NI.id);
         Info* baseInfo = corpus_.find(NI.id);
         MRDOCS_CHECK_OR(baseInfo);
-        auto* baseRecord = dynamic_cast<RecordInfo*>(baseInfo);
+        auto* baseRecord = baseInfo->asRecordPtr();
         MRDOCS_CHECK_OR(baseRecord);
         operator()(*baseRecord);
     }

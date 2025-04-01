@@ -59,7 +59,8 @@ public:
     {
         Info* globalPtr = corpus_.find(SymbolID::global);
         MRDOCS_CHECK_OR(globalPtr);
-        operator()(*dynamic_cast<NamespaceInfo*>(globalPtr));
+        MRDOCS_ASSERT(globalPtr->isNamespace());
+        operator()(globalPtr->asNamespace());
     }
 
     void

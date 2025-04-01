@@ -47,9 +47,9 @@ namespace {
 Info const*
 resolveTypedef(Corpus const& c, Info const& I)
 {
-    if (I.Kind == InfoKind::Typedef)
+    if (I.isTypedef())
     {
-        auto const& TI = dynamic_cast<TypedefInfo const&>(I);
+        auto const& TI = I.asTypedef();
         Polymorphic<TypeInfo> const& T = TI.Type;
         MRDOCS_CHECK_OR(T && T->Kind == TypeKind::Named, &I);
         auto const& NT = dynamic_cast<NamedTypeInfo const&>(*T);

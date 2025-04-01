@@ -38,7 +38,7 @@ void
 merge(UsingInfo& I, UsingInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
-    merge(dynamic_cast<Info&>(I), std::move(dynamic_cast<Info&>(Other)));
+    merge(I.asInfo(), std::move(Other.asInfo()));
     reduceSymbolIDs(I.UsingSymbols, std::move(Other.UsingSymbols));
     if (I.Class == UsingClass::Normal)
     {

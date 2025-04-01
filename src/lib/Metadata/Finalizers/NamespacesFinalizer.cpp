@@ -28,7 +28,7 @@ operator()(NamespaceInfo& I)
     {
         MRDOCS_ASSERT(info.isNamespace());
         SymbolID memberID = info.id;
-        auto& member = dynamic_cast<NamespaceInfo&>(info);
+        auto& member = info.asNamespace();
         if (auto const res = (*this)(member);
             res == FinalizerResult::Removed)
         {

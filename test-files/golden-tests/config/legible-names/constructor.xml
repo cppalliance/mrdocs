@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <struct name="X" id="ynx5NXMLXqzSXwgOnIP6CHzNx14=">
+    <file short-path="constructor.cpp" source-path="constructor.cpp" line="3" class="def"/>
+    <function class="constructor" name="X" id="6Jx2eK9l4C46QIRucTvox+6PH2k=">
+      <file short-path="constructor.cpp" source-path="constructor.cpp" line="4"/>
+      <doc>
+        <brief>
+          <text>Default constructor</text>
+        </brief>
+      </doc>
+    </function>
+    <function class="constructor" name="X" id="4C2UEs8la3Eghf4mLyeViCJNOwY=">
+      <file short-path="constructor.cpp" source-path="constructor.cpp" line="5"/>
+      <param name="other">
+        <type class="lvalue-reference">
+          <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X" cv-qualifiers="const"/>
+        </type>
+      </param>
+      <doc>
+        <brief>
+          <text>Copy constructor</text>
+        </brief>
+        <param name="other">
+          <text>The object to copy construct from</text>
+        </param>
+      </doc>
+    </function>
+    <function class="constructor" name="X" id="ad/AzbLEE6b8dNnnX2OLy1+HxDQ=">
+      <file short-path="constructor.cpp" source-path="constructor.cpp" line="6"/>
+      <param name="other">
+        <type class="rvalue-reference">
+          <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X"/>
+        </type>
+      </param>
+      <doc>
+        <brief>
+          <text>Move constructor</text>
+        </brief>
+        <param name="other">
+          <text>The object to move construct from</text>
+        </param>
+      </doc>
+    </function>
+    <function class="constructor" name="X" id="d9h3reyOyp3JT3kwQOTPOI9tmzg=">
+      <file short-path="constructor.cpp" source-path="constructor.cpp" line="7"/>
+      <param name="value">
+        <type name="int"/>
+      </param>
+      <doc>
+        <brief>
+          <text>Construct from </text>
+          <mono>int</mono>
+        </brief>
+        <param name="value">
+          <text>The value to construct from</text>
+        </param>
+      </doc>
+    </function>
+    <function class="constructor" name="X" id="bzCqmNJXWfd3zGOkytPkJL6K6VQ=">
+      <file short-path="constructor.cpp" source-path="constructor.cpp" line="8"/>
+      <param name="value">
+        <type name="double"/>
+      </param>
+      <doc>
+        <brief>
+          <text>Construct from </text>
+          <mono>double</mono>
+        </brief>
+        <param name="value">
+          <text>The value to construct from</text>
+        </param>
+      </doc>
+    </function>
+  </struct>
+</namespace>
+</mrdocs>

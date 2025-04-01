@@ -379,14 +379,14 @@ operator<=>(FunctionInfo const& other) const
             return cmp;
         }
     }
-    return dynamic_cast<Info const&>(*this) <=> dynamic_cast<Info const&>(other);
+    return this->asInfo() <=> other.asInfo();
 }
 
 void
 merge(FunctionInfo& I, FunctionInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
-    merge(dynamic_cast<Info&>(I), std::move(dynamic_cast<Info&>(Other)));
+    merge(I.asInfo(), std::move(Other.asInfo()));
     if (I.Class == FunctionClass::Normal)
     {
         I.Class = Other.Class;

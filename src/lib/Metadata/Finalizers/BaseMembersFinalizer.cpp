@@ -187,7 +187,7 @@ finalizeRecords(std::vector<SymbolID> const& ids)
     {
         Info* infoPtr = corpus_.find(id);
         MRDOCS_CHECK_OR_CONTINUE(infoPtr);
-        auto record = dynamic_cast<RecordInfo*>(infoPtr);
+        auto* record = infoPtr->asRecordPtr();
         MRDOCS_CHECK_OR_CONTINUE(record);
         operator()(*record);
     }
@@ -201,7 +201,7 @@ finalizeNamespaces(std::vector<SymbolID> const& ids)
     {
         Info* infoPtr = corpus_.find(id);
         MRDOCS_CHECK_OR_CONTINUE(infoPtr);
-        auto* ns = dynamic_cast<NamespaceInfo*>(infoPtr);
+        auto* ns = infoPtr->asNamespacePtr();
         MRDOCS_CHECK_OR_CONTINUE(ns);
         operator()(*ns);
     }
@@ -244,7 +244,7 @@ operator()(RecordInfo& I)
         MRDOCS_CHECK_OR_CONTINUE(baseID);
         auto basePtr = corpus_.find(baseID);
         MRDOCS_CHECK_OR_CONTINUE(basePtr);
-        auto* baseRecord = dynamic_cast<RecordInfo*>(basePtr);
+        auto* baseRecord = basePtr->asRecordPtr();
         MRDOCS_CHECK_OR_CONTINUE(baseRecord);
         operator()(*baseRecord);
         inheritBaseMembers(I, *baseRecord, baseI.Access);

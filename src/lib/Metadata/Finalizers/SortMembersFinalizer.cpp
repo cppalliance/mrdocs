@@ -158,8 +158,8 @@ struct SymbolIDCompareFn
             (lhsOp && *lhsOp == OperatorKind::Equal &&
              rhsOp && *rhsOp == OperatorKind::Equal))
         {
-            auto& lhsF = dynamic_cast<FunctionInfo const&>(lhs);
-            auto& rhsF = dynamic_cast<FunctionInfo const&>(rhs);
+            auto& lhsF = lhs.asFunction();
+            auto& rhsF = rhs.asFunction();
             if (lhsF.Params.size() == 1 && rhsF.Params.size() == 1)
             {
                 auto isCopyOrMoveConstOrAssign = [](FunctionInfo const& I) {
@@ -276,7 +276,7 @@ sortNamespaceMembers(std::vector<SymbolID>& ids)
     {
         auto infoPtr = corpus_.find(id);
         MRDOCS_CHECK_OR_CONTINUE(infoPtr);
-        auto* ns = dynamic_cast<NamespaceInfo*>(infoPtr);
+        auto* ns = infoPtr->asNamespacePtr();
         MRDOCS_CHECK_OR_CONTINUE(ns);
         operator()(*ns);
     }
@@ -290,7 +290,7 @@ sortRecordMembers(std::vector<SymbolID>& ids)
     {
         auto infoPtr = corpus_.find(id);
         MRDOCS_CHECK_OR_CONTINUE(infoPtr);
-        auto* record = dynamic_cast<RecordInfo*>(infoPtr);
+        auto* record = infoPtr->asRecordPtr();
         MRDOCS_CHECK_OR_CONTINUE(record);
         operator()(*record);
     }
@@ -304,7 +304,7 @@ sortOverloadMembers(std::vector<SymbolID>& ids)
     {
         auto infoPtr = corpus_.find(id);
         MRDOCS_CHECK_OR_CONTINUE(infoPtr);
-        auto* overloads = dynamic_cast<OverloadsInfo*>(infoPtr);
+        auto* overloads = infoPtr->asOverloadsPtr();
         MRDOCS_CHECK_OR_CONTINUE(overloads);
         operator()(*overloads);
     }

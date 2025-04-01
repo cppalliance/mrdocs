@@ -17,7 +17,7 @@
 
 namespace clang::mrdocs {
 
-struct string_hash
+struct StringHash
 {
     using hash_type = std::hash<std::string_view>;
     using is_transparent = void;
@@ -27,7 +27,10 @@ struct string_hash
 };
 
 template <class T>
-using UnorderedStringMap = std::unordered_map<std::string, T, string_hash, std::equal_to<>>;
+using UnorderedStringMap = std::unordered_map<std::string, T, StringHash, std::equal_to<>>;
+
+template <class T>
+using UnorderedStringMultiMap = std::unordered_multimap<std::string, T, StringHash, std::equal_to<>>;
 
 } // clang::mrdocs
 

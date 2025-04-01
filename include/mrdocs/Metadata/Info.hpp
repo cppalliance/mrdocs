@@ -59,6 +59,16 @@ tag_invoke(
     v = toString(kind);
 }
 
+consteval
+std::underlying_type_t<InfoKind>
+countInfoKind()
+{
+    std::underlying_type_t<InfoKind> count = 0;
+#define INFO(Type) count++;
+#include <mrdocs/Metadata/InfoNodesPascal.inc>
+    return count;
+}
+
 /** Base class with common properties of all symbols
 */
 struct MRDOCS_VISIBLE Info
@@ -136,7 +146,49 @@ struct MRDOCS_VISIBLE Info
     {
     }
 
-    #define INFO(Type) constexpr bool is##Type() const noexcept { return Kind == InfoKind::Type; }
+    #define INFO(Type) constexpr bool is##Type() const noexcept { \
+        return Kind == InfoKind::Type; \
+    }
+    #include <mrdocs/Metadata/InfoNodesPascal.inc>
+
+    constexpr Info const& asInfo() const noexcept
+    {
+        return *this;
+    }
+
+    constexpr Info& asInfo() noexcept
+    {
+        return *this;
+    }
+
+    #define INFO(Type) \
+    constexpr Type##Info const& as##Type() const noexcept { \
+        if (Kind == InfoKind::Type) \
+            return reinterpret_cast<Type##Info const&>(*this); \
+        MRDOCS_UNREACHABLE(); \
+    }
+    #include <mrdocs/Metadata/InfoNodesPascal.inc>
+
+    #define INFO(Type) \
+    constexpr Type##Info & as##Type() noexcept { \
+        if (Kind == InfoKind::Type) \
+            return reinterpret_cast<Type##Info&>(*this); \
+        MRDOCS_UNREACHABLE(); \
+    }
+    #include <mrdocs/Metadata/InfoNodesPascal.inc>
+
+    #define INFO(Type) \
+    constexpr Type##Info const* as##Type##Ptr() const noexcept { \
+        if (Kind == InfoKind::Type) { return reinterpret_cast<Type##Info const*>(this); } \
+        return nullptr; \
+    }
+    #include <mrdocs/Metadata/InfoNodesPascal.inc>
+
+    #define INFO(Type) \
+    constexpr Type##Info * as##Type##Ptr() noexcept { \
+        if (Kind == InfoKind::Type) { return reinterpret_cast<Type##Info *>(this); } \
+        return nullptr; \
+    }
     #include <mrdocs/Metadata/InfoNodesPascal.inc>
 
     auto operator<=>(Info const&) const = default;

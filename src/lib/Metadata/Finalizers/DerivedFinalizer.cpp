@@ -24,7 +24,7 @@ build()
         MRDOCS_ASSERT(I);
         MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
         MRDOCS_CHECK_OR_CONTINUE(I->isRecord());
-        auto& record = dynamic_cast<RecordInfo&>(*I);
+        auto& record = I->asRecord();
         MRDOCS_CHECK_OR_CONTINUE(!record.Bases.empty());
         for (BaseInfo& base: record.Bases)
         {
@@ -39,7 +39,7 @@ build()
             MRDOCS_CHECK_OR_CONTINUE(baseInfoPtr);
             MRDOCS_CHECK_OR_CONTINUE(baseInfoPtr->isRecord());
             MRDOCS_CHECK_OR_CONTINUE(baseInfoPtr->Extraction == ExtractionMode::Regular);
-            if (auto& baseRecord = dynamic_cast<RecordInfo&>(*baseInfoPtr);
+            if (auto& baseRecord = baseInfoPtr->asRecord();
                 !contains(baseRecord.Derived, record.id))
             {
                 // Insert in order by name

@@ -118,6 +118,283 @@ endsWithOneOf(std::string_view s, std::string_view chars) noexcept
     return !s.empty() && chars.find(s.back()) != std::string_view::npos;
 }
 
+constexpr
+bool
+isLowerCase(char const c) noexcept
+{
+    return c >= 'a' && c <= 'z';
+}
+
+constexpr
+bool
+isLowerCase(std::string_view const s) noexcept
+{
+    for (char const c : s)
+    {
+        if (!isLowerCase(c))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+constexpr
+bool
+isUpperCase(char const c) noexcept
+{
+    return c >= 'A' && c <= 'Z';
+}
+
+constexpr
+bool
+isUpperCase(std::string_view const s) noexcept
+{
+    for (char const c : s)
+    {
+        if (!isUpperCase(c))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+constexpr
+char
+toLowerCase(char const c) noexcept
+{
+    return isUpperCase(c) ? c + ('a' - 'A') : c;
+}
+
+constexpr
+std::string
+toLowerCase(std::string_view const s) noexcept
+{
+    std::string result;
+    result.reserve(s.size());
+    for (char const c : s)
+    {
+        result.push_back(toLowerCase(c));
+    }
+    return result;
+}
+
+constexpr
+char
+toUpperCase(char const c) noexcept
+{
+    return isLowerCase(c) ? c - ('a' - 'A') : c;
+}
+
+constexpr
+std::string
+toUpperCase(std::string_view const s) noexcept
+{
+    std::string result;
+    result.reserve(s.size());
+    for (char const c : s)
+    {
+        result.push_back(toUpperCase(c));
+    }
+    return result;
+}
+
+constexpr
+bool
+isDigit(char const c) noexcept
+{
+    return c >= '0' && c <= '9';
+}
+
+constexpr
+bool
+isDigit(std::string_view const s) noexcept
+{
+    for (char const c : s)
+    {
+        if (!isDigit(c))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+constexpr
+bool
+isAlphabetic(char const c) noexcept
+{
+    return isLowerCase(c) || isUpperCase(c);
+}
+
+constexpr
+bool
+isAlphabetic(std::string_view const s) noexcept
+{
+    for (char const c : s)
+    {
+        if (!isAlphabetic(c))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+constexpr
+bool
+isAlphaNumeric(char const c) noexcept
+{
+    return isAlphabetic(c) || isDigit(c);
+}
+
+constexpr
+bool
+isAlphaNumeric(std::string_view const s) noexcept
+{
+    for (char const c : s)
+    {
+        if (!isAlphaNumeric(c))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+constexpr
+std::string
+toKebabCase(std::string_view const input)
+{
+    std::string result;
+    size_t extraSizeCount = 0;
+    for (std::size_t i = 1; i < input.size(); ++i) {
+        if (isUpperCase(input[i])) {
+            ++extraSizeCount;
+        }
+    }
+    result.reserve(input.size() + extraSizeCount);
+    for (size_t i = 0; i < input.size(); ++i) {
+        if (char const c = input[i];
+            isUpperCase(c))
+        {
+            if (i != 0) {
+                result.push_back('-');
+            }
+            result.push_back(toLowerCase(c));
+        }
+        else if (isLowerCase(c) || isDigit(c))
+        {
+            result.push_back(c);
+        }
+        else
+        {
+            result.push_back('-');
+        }
+    }
+    return result;
+}
+
+constexpr
+std::string
+toSnakeCase(std::string_view const input)
+{
+    std::string result;
+    size_t extraSizeCount = 0;
+    for (std::size_t i = 1; i < input.size(); ++i) {
+        if (isUpperCase(input[i]))
+        {
+            ++extraSizeCount;
+        }
+    }
+    result.reserve(input.size() + extraSizeCount);
+    for (size_t i = 0; i < input.size(); ++i) {
+        if (char const c = input[i];
+            isUpperCase(c))
+        {
+            if (i != 0)
+            {
+                result.push_back('_');
+            }
+            result.push_back(toLowerCase(c));
+        }
+        else if (isLowerCase(c) || isDigit(c))
+        {
+            result.push_back(c);
+        }
+        else
+        {
+            result.push_back('_');
+        }
+    }
+    return result;
+}
+
+constexpr
+std::string
+toCamelCase(std::string_view const input)
+{
+    std::string result;
+    result.reserve(input.size());
+    bool forceUppercaseNext = false;
+    for (char const c : input)
+    {
+        if (isAlphaNumeric(c))
+        {
+            if (result.empty())
+            {
+                result.push_back(toLowerCase(c));
+                forceUppercaseNext = false;
+            }
+            else if (forceUppercaseNext)
+            {
+                result.push_back(toUpperCase(c));
+                forceUppercaseNext = false;
+            }
+            else
+            {
+                result.push_back(c);
+            }
+        }
+        else
+        {
+            forceUppercaseNext = true;
+        }
+    }
+    return result;
+}
+
+constexpr
+std::string
+toPascalCase(std::string_view const input)
+{
+    std::string result;
+    result.reserve(input.size());
+    bool forceUppercaseNext = true;
+    for (char const c : input)
+    {
+        if (isAlphaNumeric(c))
+        {
+            if (forceUppercaseNext)
+            {
+                result.push_back(toUpperCase(c));
+                forceUppercaseNext = false;
+            }
+            else
+            {
+                result.push_back(c);
+            }
+        }
+        else
+        {
+            forceUppercaseNext = true;
+        }
+    }
+    return result;
+}
+
+
 } // clang::mrdocs
 
 #endif

@@ -19,7 +19,7 @@ void
 merge(FieldInfo& I, FieldInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
-    merge(dynamic_cast<Info&>(I), std::move(dynamic_cast<Info&>(Other)));
+    merge(I.asInfo(), std::move(Other.asInfo()));
     if (!I.Type)
     {
         I.Type = std::move(Other.Type);
