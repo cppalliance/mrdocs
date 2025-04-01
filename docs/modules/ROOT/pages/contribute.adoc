@@ -75,22 +75,6 @@ For each compilation command:
 ==== Info Nodes
 
 MrDocs represents each C++ symbol or construct as an `Info` node (`mrdocs/Metadata/Info.hpp`).
-MrDocs currently defines the following `Info` nodes:
-
-[c-preprocessor]
-====
-
-[cols="1,3,2"]
-|===
-| Name | Description | Declaration
-
-#define INFO_PASCAL_AND_DESC(Type, Desc) | `pass:[Type]pass:[Info]` | Desc | `mrdocs/Metadata/pass:[Type].hpp`
-
-include::partial$InfoNodes.inc[]
-
-|===
-====
-
 `Info` can not only represent direct AST symbols but also {cpp} constructs that need to be inferred from these symbols.
 Nodes in the first category will typically be created in the initial extraction step, and nodes in the second category will be created in the finalization step.
 

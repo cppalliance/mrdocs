@@ -50,5 +50,4 @@ asciidoc:
     - '@asciidoctor/tabs'
     - ./extensions/mrdocs-demos.js
     - ./extensions/mrdocs-releases.js
-    - ./extensions/c-preprocessor.js
     - ./extensions/config-options-reference.js
