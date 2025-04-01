@@ -25,7 +25,7 @@ namespace clang::mrdocs {
 /** A variable.
 
     This includes variables at namespace
-    scope, and static variables at class scope.
+    or record scope.
 */
 struct VariableInfo final
     : InfoCommonBase<InfoKind::Variable>
@@ -35,6 +35,8 @@ struct VariableInfo final
 
     std::optional<TemplateInfo> Template;
 
+    /** The default member initializer, if any.
+     */
     ExprInfo Initializer;
 
     StorageClassKind StorageClass = StorageClassKind::None;
@@ -48,6 +50,28 @@ struct VariableInfo final
     bool IsThreadLocal = false;
 
     std::vector<std::string> Attributes;
+
+    bool IsMaybeUnused = false;
+
+    bool IsDeprecated = false;
+
+    bool HasNoUniqueAddress = false;
+
+    //--------------------------------------------
+    // Record fields
+    bool IsRecordField = false;
+
+    /** Whether the field is declared mutable */
+    bool IsMutable = false;
+
+    /** Whether the field is a variant member */
+    bool IsVariant = false;
+
+    /** Whether the field is a bitfield */
+    bool IsBitfield = false;
+
+    /** The width of the bitfield */
+    ConstantExprInfo<std::uint64_t> BitfieldWidth;
 
     //--------------------------------------------
 
@@ -89,6 +113,18 @@ tag_invoke(
     {
         io.map("initializer", I.Initializer.Written);
     }
+    io.map("attributes", dom::LazyArray(I.Attributes));
+    io.map("isRecordField", I.IsRecordField);
+    io.map("isMaybeUnused", I.IsMaybeUnused);
+    io.map("isDeprecated", I.IsDeprecated);
+    io.map("isVariant", I.IsVariant);
+    io.map("isMutable", I.IsMutable);
+    io.map("isBitfield", I.IsBitfield);
+    if (I.IsBitfield)
+    {
+        io.map("bitfieldWidth", I.BitfieldWidth.Written);
+    }
+    io.map("hasNoUniqueAddress", I.HasNoUniqueAddress);
     io.map("attributes", dom::LazyArray(I.Attributes));
 }
 

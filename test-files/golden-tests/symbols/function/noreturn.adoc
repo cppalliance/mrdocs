@@ -53,7 +53,7 @@ struct T;
 [cols=1]
 |===
 | Name
-| <<T-09friend,`f1`>> 
+| <<T-08friend,`f1`>> 
 |===
 
 [#T-f3]
@@ -85,7 +85,7 @@ void
 f2();
 ----
 
-[#T-09friend]
+[#T-08friend]
 == f1
 
 === Synopsis

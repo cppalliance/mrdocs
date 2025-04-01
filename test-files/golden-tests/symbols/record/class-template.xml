@@ -8,23 +8,23 @@
       <file short-path="class-template.cpp" source-path="class-template.cpp" line="3" class="def"/>
       <struct name="N0" id="gx6LdMT9nBMQKB26lZXGWbB7N6c=">
         <file short-path="class-template.cpp" source-path="class-template.cpp" line="10" class="def"/>
-        <field name="z" id="sdv932bFyf1dJzPblqxQGqsy8G4=">
+        <variable name="z" id="sdv932bFyf1dJzPblqxQGqsy8G4=">
           <file short-path="class-template.cpp" source-path="class-template.cpp" line="12"/>
           <type name="int"/>
-        </field>
+        </variable>
       </struct>
-      <field name="w" id="ySFHEWJe6/b1dbtjDC2IAvT2vmU=">
+      <variable name="w" id="ySFHEWJe6/b1dbtjDC2IAvT2vmU=">
         <file short-path="class-template.cpp" source-path="class-template.cpp" line="6"/>
         <type name="int"/>
-      </field>
-      <field name="x" id="81imwKxfuTfd7lfVGnF+fKx46lY=">
+      </variable>
+      <variable name="x" id="81imwKxfuTfd7lfVGnF+fKx46lY=">
         <file short-path="class-template.cpp" source-path="class-template.cpp" line="7"/>
         <type id="pOYGF6pLJlICuiGO0Xj0daDb/to=" name="S"/>
-      </field>
-      <field name="y" id="UKBRhwzQ0PeL6ZwfxmreRBoDQSY=">
+      </variable>
+      <variable name="y" id="UKBRhwzQ0PeL6ZwfxmreRBoDQSY=">
         <file short-path="class-template.cpp" source-path="class-template.cpp" line="8"/>
         <type name="T"/>
-      </field>
+      </variable>
     </struct>
   </template>
   <struct name="C1" id="tm2khHa6qZM0lj1f7IwBdxVxDgE=">
@@ -33,24 +33,24 @@
       <tparam name="T" class="type"/>
       <struct name="N1" id="F1Cyqn/faLYbjTU4RfGsepUiiZw=">
         <file short-path="class-template.cpp" source-path="class-template.cpp" line="20" class="def"/>
-        <field name="x" id="bQCgblScrSKOxQMVJxT7vFw9W4I=">
+        <variable name="x" id="bQCgblScrSKOxQMVJxT7vFw9W4I=">
           <file short-path="class-template.cpp" source-path="class-template.cpp" line="23"/>
           <type id="pOYGF6pLJlICuiGO0Xj0daDb/to=" name="S"/>
-        </field>
-        <field name="y" id="phg6+zMhjV0SJ7vav871OGqoPPQ=">
+        </variable>
+        <variable name="y" id="phg6+zMhjV0SJ7vav871OGqoPPQ=">
           <file short-path="class-template.cpp" source-path="class-template.cpp" line="24"/>
           <type name="T"/>
-        </field>
-        <field name="z" id="53ijFg2EUlLuOP8qvufgjwZDNoI=">
+        </variable>
+        <variable name="z" id="53ijFg2EUlLuOP8qvufgjwZDNoI=">
           <file short-path="class-template.cpp" source-path="class-template.cpp" line="25"/>
           <type name="int"/>
-        </field>
+        </variable>
       </struct>
     </template>
-    <field name="w" id="Q0itZUB0O9hts+pFPk9DO415Lo8=">
+    <variable name="w" id="Q0itZUB0O9hts+pFPk9DO415Lo8=">
       <file short-path="class-template.cpp" source-path="class-template.cpp" line="18"/>
       <type name="int"/>
-    </field>
+    </variable>
   </struct>
   <template>
     <tparam name="T" class="type"/>
@@ -60,28 +60,28 @@
         <tparam name="U" class="type"/>
         <struct name="N2" id="xljI5oOqNOhyyR4QzmKvFB3nEfw=">
           <file short-path="class-template.cpp" source-path="class-template.cpp" line="34" class="def"/>
-          <field name="w" id="bLX5mthqXMHAtLNEc87RKLQSUyU=">
+          <variable name="w" id="bLX5mthqXMHAtLNEc87RKLQSUyU=">
             <file short-path="class-template.cpp" source-path="class-template.cpp" line="37"/>
             <type id="pOYGF6pLJlICuiGO0Xj0daDb/to=" name="S"/>
-          </field>
-          <field name="x" id="qSNOAAxaet7aBxvD7WvFqJOpm3A=">
+          </variable>
+          <variable name="x" id="qSNOAAxaet7aBxvD7WvFqJOpm3A=">
             <file short-path="class-template.cpp" source-path="class-template.cpp" line="38"/>
             <type name="T"/>
-          </field>
-          <field name="y" id="P9x8qHxDv7huDL0MyNORJ/enU0Q=">
+          </variable>
+          <variable name="y" id="P9x8qHxDv7huDL0MyNORJ/enU0Q=">
             <file short-path="class-template.cpp" source-path="class-template.cpp" line="39"/>
             <type name="U"/>
-          </field>
-          <field name="z" id="pRO2j7I5aEQI+ktDwT1fLJPqy28=">
+          </variable>
+          <variable name="z" id="pRO2j7I5aEQI+ktDwT1fLJPqy28=">
             <file short-path="class-template.cpp" source-path="class-template.cpp" line="40"/>
             <type name="int"/>
-          </field>
+          </variable>
         </struct>
       </template>
-      <field name="v" id="rvAO5HvzEvS8z9PgbRoqkyTi+1c=">
+      <variable name="v" id="rvAO5HvzEvS8z9PgbRoqkyTi+1c=">
         <file short-path="class-template.cpp" source-path="class-template.cpp" line="32"/>
         <type name="int"/>
-      </field>
+      </variable>
     </struct>
   </template>
   <template>
@@ -89,10 +89,10 @@
     <struct name="C3" id="x60FzYL65XgZZRrxrZuC5jemrwQ=">
       <file short-path="class-template.cpp" source-path="class-template.cpp" line="47" class="def"/>
       <file short-path="class-template.cpp" source-path="class-template.cpp" line="44"/>
-      <field name="v" id="28J+g16kE2M7qwnrP4yzW4hHlIg=">
+      <variable name="v" id="28J+g16kE2M7qwnrP4yzW4hHlIg=">
         <file short-path="class-template.cpp" source-path="class-template.cpp" line="50"/>
         <type name="int"/>
-      </field>
+      </variable>
     </struct>
   </template>
   <struct name="S" id="pOYGF6pLJlICuiGO0Xj0daDb/to=">

@@ -32,10 +32,6 @@
     "brief": "The symbol is a variable"
   },
   {
-    "name": "field",
-    "brief": "The symbol is a field"
-  },
-  {
     "name": "friend",
     "brief": "The symbol is a friend declaration"
   },

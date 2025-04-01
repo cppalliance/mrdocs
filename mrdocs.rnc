@@ -166,30 +166,14 @@ grammar
 
     #---------------------------------------------
 
-    Field =
-        element (field|bitfield)
-        {
-            Name,
-            Access ?,
-            ID,
-            attribute width { text } ?,
-            attribute default { text } ?,
-            Location,
-            (
-                Attr * &
-                TypeInfo &
-                Javadoc ?
-            )
-        }
-
-    #---------------------------------------------
-
     Variable =
         element variable
         {
             Name,
             Access ?,
             ID,
+            attribute width { text } ?,
+            attribute default { text } ?,
             Location *,
             (
                 Attr * &
@@ -367,7 +351,6 @@ grammar
             Function       |
             Typedef        |
             Enum           |
-            Field          |
             Variable       |
             Guide          |
             Template       |

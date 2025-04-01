@@ -14,16 +14,10 @@
 
 #include <mrdocs/Platform.hpp>
 
-// All headers related to
-// metadata extracted from AST
-
-#include <mrdocs/Metadata/Info/Using.hpp>
-#include <mrdocs/Metadata/Expression.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Info/Concept.hpp>
 #include <mrdocs/Metadata/Info/Enum.hpp>
 #include <mrdocs/Metadata/Info/EnumConstant.hpp>
-#include <mrdocs/Metadata/Info/Field.hpp>
 #include <mrdocs/Metadata/Info/Friend.hpp>
 #include <mrdocs/Metadata/Info/Function.hpp>
 #include <mrdocs/Metadata/Info/Guide.hpp>
@@ -33,6 +27,9 @@
 #include <mrdocs/Metadata/Info/Record.hpp>
 #include <mrdocs/Metadata/Info/Typedef.hpp>
 #include <mrdocs/Metadata/Info/Variable.hpp>
+#include <mrdocs/Metadata/Info/Using.hpp>
+
+#include <mrdocs/Metadata/Expression.hpp>
 #include <mrdocs/Metadata/Javadoc.hpp>
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Source.hpp>

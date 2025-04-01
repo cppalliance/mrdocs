@@ -11,7 +11,7 @@
 #ifndef MRDOCS_LIB_METADATA_FINALIZER_BASEMEMBERSFINALIZER_HPP
 #define MRDOCS_LIB_METADATA_FINALIZER_BASEMEMBERSFINALIZER_HPP
 
-#include "lib/Lib/Info.hpp"
+#include "lib/Lib/InfoSet.hpp"
 #include "lib/Lib/CorpusImpl.hpp"
 
 namespace clang::mrdocs {

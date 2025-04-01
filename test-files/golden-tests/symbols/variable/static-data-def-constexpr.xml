@@ -4,7 +4,7 @@
 <namespace id="//////////////////////////8=">
   <struct name="S" id="pOYGF6pLJlICuiGO0Xj0daDb/to=">
     <file short-path="static-data-def-constexpr.cpp" source-path="static-data-def-constexpr.cpp" line="1" class="def"/>
-    <variable name="s" id="Sugb8cWjf0PRq2dN0pOEbkKY9C4=">
+    <variable name="s" id="Sugb8cWjf0PRq2dN0pOEbkKY9C4=" default="S{}">
       <file short-path="static-data-def-constexpr.cpp" source-path="static-data-def-constexpr.cpp" line="5" class="def"/>
       <file short-path="static-data-def-constexpr.cpp" source-path="static-data-def-constexpr.cpp" line="3"/>
       <attr id="storage-class" name="static" value="2"/>
@@ -15,7 +15,7 @@
   </struct>
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     <file short-path="static-data-def-constexpr.cpp" source-path="static-data-def-constexpr.cpp" line="7" class="def"/>
-    <variable name="t" id="+nDx93NmBRbrBZ8RlBwzPk8rp8I=">
+    <variable name="t" id="+nDx93NmBRbrBZ8RlBwzPk8rp8I=" default="0">
       <file short-path="static-data-def-constexpr.cpp" source-path="static-data-def-constexpr.cpp" line="12" class="def"/>
       <file short-path="static-data-def-constexpr.cpp" source-path="static-data-def-constexpr.cpp" line="9"/>
       <attr id="storage-class" name="static" value="2"/>

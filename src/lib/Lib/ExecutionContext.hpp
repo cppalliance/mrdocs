@@ -15,7 +15,7 @@
 
 #include "ConfigImpl.hpp"
 #include "Diagnostics.hpp"
-#include "Info.hpp"
+#include "InfoSet.hpp"
 #include <mrdocs/Support/Error.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <mutex>

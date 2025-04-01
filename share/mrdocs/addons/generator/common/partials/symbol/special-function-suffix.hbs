@@ -26,7 +26,7 @@
     {{~#if isDeleted~}}
         {{str ' '}}{{#>markup/span class="small"}}[deleted]{{/markup/span}}
     {{~/if~}}
-{{else if (eq kind "field")~}}
+{{else if (eq kind "variable")~}}
     {{~#if isVariant~}}
         {{#>markup/span class="small"}}[variant member]{{/markup/span}}
     {{~/if~}}

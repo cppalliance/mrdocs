@@ -14,7 +14,7 @@
 
 #include "lib/AST/ParseRef.hpp"
 #include "lib/Lib/ConfigImpl.hpp"
-#include "lib/Lib/Info.hpp"
+#include "lib/Lib/InfoSet.hpp"
 #include "lib/Support/Debug.hpp"
 #include <clang/Tooling/CompilationDatabase.h>
 #include <mrdocs/ADT/UnorderedStringMap.hpp>

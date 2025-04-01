@@ -12,14 +12,14 @@
           <reference id="43ASI/aC9fCLy8T+1gn7pUdis+g=">g</reference>
         </related>
       </doc>
-      <field name="first" id="zYZRwoC/XWBesPi1AQs+kPHibHI=">
+      <variable name="first" id="zYZRwoC/XWBesPi1AQs+kPHibHI=">
         <file short-path="returns.cpp" source-path="returns.cpp" line="9"/>
         <type name="T"/>
-      </field>
-      <field name="second" id="AfaC9XI9L85KNgrioXVThVhljqA=">
+      </variable>
+      <variable name="second" id="AfaC9XI9L85KNgrioXVThVhljqA=">
         <file short-path="returns.cpp" source-path="returns.cpp" line="10"/>
         <type name="U"/>
-      </field>
+      </variable>
     </struct>
   </template>
   <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
