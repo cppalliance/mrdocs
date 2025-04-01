@@ -1,8 +1,0 @@
-{{#if attributes}}{{ str "[[" }}{{join ", " attributes}}{{ str "]]" }}
-{{/if}}
-{{#if isMutable}}mutable
-{{/if~}}
-{{>type/declarator-prefix type}} {{>symbol/name symbol~}}
-{{#if isBitfield}} : {{bitfieldWidth}}{{/if~}}
-{{#if default}} = {{default}}{{/if~}}
-{{>type/declarator-suffix type}};

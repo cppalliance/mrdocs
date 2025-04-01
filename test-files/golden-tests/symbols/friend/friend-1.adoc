@@ -40,11 +40,11 @@ struct T;
 |===
 | Name
 | Description
-| <<T-09friend,`f`>> 
+| <<T-08friend,`f`>> 
 | f
 |===
 
-[#T-09friend]
+[#T-08friend]
 == f
 
 f

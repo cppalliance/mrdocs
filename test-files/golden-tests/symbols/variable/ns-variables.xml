@@ -5,31 +5,31 @@
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     <file short-path="ns-variables.cpp" source-path="ns-variables.cpp" line="14" class="def"/>
   </struct>
-  <variable name="i" id="X2Wd7fyQ8BJNJ0tn4nnA77ckJM8=">
+  <variable name="i" id="X2Wd7fyQ8BJNJ0tn4nnA77ckJM8=" default="0">
     <file short-path="ns-variables.cpp" source-path="ns-variables.cpp" line="3" class="def"/>
     <attr id="is-constexpr"/>
     <type name="int"/>
   </variable>
-  <variable name="j" id="pKvK/kHXdM/1/pu86JcSrLqVypE=">
+  <variable name="j" id="pKvK/kHXdM/1/pu86JcSrLqVypE=" default="0">
     <file short-path="ns-variables.cpp" source-path="ns-variables.cpp" line="4" class="def"/>
     <attr id="is-constinit"/>
     <type name="int"/>
   </variable>
-  <variable name="k" id="Fr1KYTKmyLHGW9rPSpCZK82iRqQ=">
+  <variable name="k" id="Fr1KYTKmyLHGW9rPSpCZK82iRqQ=" default="1">
     <file short-path="ns-variables.cpp" source-path="ns-variables.cpp" line="9" class="def"/>
     <file short-path="ns-variables.cpp" source-path="ns-variables.cpp" line="6"/>
     <attr id="storage-class" name="extern" value="1"/>
     <attr id="is-constexpr"/>
     <type name="int"/>
   </variable>
-  <variable name="l" id="h5r4fNloVAMKqMyVJI+iWTxRjhM=">
+  <variable name="l" id="h5r4fNloVAMKqMyVJI+iWTxRjhM=" default="1">
     <file short-path="ns-variables.cpp" source-path="ns-variables.cpp" line="10" class="def"/>
     <file short-path="ns-variables.cpp" source-path="ns-variables.cpp" line="7"/>
     <attr id="storage-class" name="extern" value="1"/>
     <attr id="is-constinit"/>
     <type name="int"/>
   </variable>
-  <variable name="pi" id="EgqLVTs3FIJjFIODa5OOP2hmEI0=">
+  <variable name="pi" id="EgqLVTs3FIJjFIODa5OOP2hmEI0=" default="3.14">
     <file short-path="ns-variables.cpp" source-path="ns-variables.cpp" line="12" class="def"/>
     <type name="double"/>
   </variable>
@@ -38,18 +38,18 @@
     <attr id="storage-class" name="extern" value="1"/>
     <type id="CgGNdHpW5mG/i5741WPYQDw28OQ=" name="T"/>
   </variable>
-  <variable name="x0" id="LESPWJfwRpePfANf2Vm0O/W1Lfw=">
+  <variable name="x0" id="LESPWJfwRpePfANf2Vm0O/W1Lfw=" default="0">
     <file short-path="ns-variables.cpp" source-path="ns-variables.cpp" line="18" class="def"/>
     <attr id="is-thread-local"/>
     <type name="int"/>
   </variable>
-  <variable name="x1" id="bMKl4XYJf8MQ48jSHwRmFHM3MiA=">
+  <variable name="x1" id="bMKl4XYJf8MQ48jSHwRmFHM3MiA=" default="0">
     <file short-path="ns-variables.cpp" source-path="ns-variables.cpp" line="19" class="def"/>
     <attr id="storage-class" name="static" value="2"/>
     <attr id="is-thread-local"/>
     <type name="int"/>
   </variable>
-  <variable name="x2" id="EpcDWput1W/SJ3IYEINS0W815Zw=">
+  <variable name="x2" id="EpcDWput1W/SJ3IYEINS0W815Zw=" default="0">
     <file short-path="ns-variables.cpp" source-path="ns-variables.cpp" line="20" class="def"/>
     <attr id="storage-class" name="static" value="2"/>
     <attr id="is-constexpr"/>

@@ -985,5 +985,4 @@ CorpusImpl::finalize()
     finalizer.build();
 }
 
-
 } // clang::mrdocs

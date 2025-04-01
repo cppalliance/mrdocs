@@ -6,7 +6,7 @@
     <file short-path="var-template.cpp" source-path="var-template.cpp" line="10" class="def"/>
     <template>
       <tparam name="T" class="type"/>
-      <variable name="C" id="kMNXdSEDYBD+T4RYbkq3ekR+jUU=">
+      <variable name="C" id="kMNXdSEDYBD+T4RYbkq3ekR+jUU=" default="0">
         <file short-path="var-template.cpp" source-path="var-template.cpp" line="12" class="def"/>
         <attr id="storage-class" name="static" value="2"/>
         <attr id="is-inline"/>
@@ -15,7 +15,7 @@
     </template>
     <template class="explicit">
       <targ class="type" type="int"/>
-      <variable name="C" id="Wtlw7VEK38lEEBeqNoDOjTkJE+U=">
+      <variable name="C" id="Wtlw7VEK38lEEBeqNoDOjTkJE+U=" default="-1">
         <file short-path="var-template.cpp" source-path="var-template.cpp" line="15" class="def"/>
         <attr id="storage-class" name="static" value="2"/>
         <attr id="is-inline"/>
@@ -25,7 +25,7 @@
     <template class="partial">
       <tparam name="T" class="type"/>
       <targ class="type" type="T*"/>
-      <variable name="C" id="wvoZkG3eTMaiFAf971AFdvmHCDE=">
+      <variable name="C" id="wvoZkG3eTMaiFAf971AFdvmHCDE=" default="sizeof(T)">
         <file short-path="var-template.cpp" source-path="var-template.cpp" line="18" class="def"/>
         <attr id="storage-class" name="static" value="2"/>
         <attr id="is-inline"/>
@@ -35,14 +35,14 @@
   </struct>
   <template>
     <tparam name="T" class="type"/>
-    <variable name="A" id="z3eMoJQlHlg0acXVyn1pwg9Ktys=">
+    <variable name="A" id="z3eMoJQlHlg0acXVyn1pwg9Ktys=" default="sizeof(T)">
       <file short-path="var-template.cpp" source-path="var-template.cpp" line="1" class="def"/>
       <type name="unsigned int"/>
     </variable>
   </template>
   <template class="explicit">
     <targ class="type" type="void"/>
-    <variable name="A" id="jrW9aLj8cqTteNoZmH97vOW7csQ=">
+    <variable name="A" id="jrW9aLj8cqTteNoZmH97vOW7csQ=" default="0">
       <file short-path="var-template.cpp" source-path="var-template.cpp" line="4" class="def"/>
       <type name="unsigned int"/>
     </variable>
@@ -50,7 +50,7 @@
   <template class="partial">
     <tparam name="T" class="type"/>
     <targ class="type" type="T&amp;"/>
-    <variable name="A" id="FsEwA9OFNGH4A/cxXIoOOa+ZQg8=">
+    <variable name="A" id="FsEwA9OFNGH4A/cxXIoOOa+ZQg8=" default="sizeof(T)">
       <file short-path="var-template.cpp" source-path="var-template.cpp" line="7" class="def"/>
       <type name="unsigned int"/>
     </variable>

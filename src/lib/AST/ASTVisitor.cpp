@@ -1085,16 +1085,17 @@ populate(VariableInfo& I, VarTemplatePartialSpecializationDecl const* D)
 void
 ASTVisitor::
 populate(
-    FieldInfo& I,
+    VariableInfo& I,
     FieldDecl const* D)
 {
+    I.IsRecordField = true;
     I.Type = toTypeInfo(D->getType());
-    I.IsVariant = D->getParent()->isUnion();
-    I.IsMutable = D->isMutable();
     if (Expr const* E = D->getInClassInitializer())
     {
-        populate(I.Default, E);
+        populate(I.Initializer, E);
     }
+    I.IsVariant = D->getParent()->isUnion();
+    I.IsMutable = D->isMutable();
     if(D->isBitField())
     {
         I.IsBitfield = true;
@@ -1756,14 +1757,16 @@ addMember(RecordTranche& T, Info const& Member)
         }
         return;
     }
-    if (auto const* U = Member.asFieldPtr())
-    {
-        addMember(T.Variables, *U);
-        return;
-    }
     if (auto const* U = Member.asVariablePtr())
     {
-        addMember(T.StaticVariables, *U);
+        if (U->StorageClass != StorageClassKind::Static)
+        {
+            addMember(T.Variables, *U);
+        }
+        else
+        {
+            addMember(T.StaticVariables, *U);
+        }
         return;
     }
     if (auto const* U = Member.asConceptPtr())

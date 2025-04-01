@@ -573,7 +573,7 @@ private:
     populate(VariableInfo& I, VarTemplatePartialSpecializationDecl const* D);
 
     void
-    populate(FieldInfo& I, FieldDecl const* D);
+    populate(VariableInfo& I, FieldDecl const* D);
 
     void
     populate(FriendInfo& I, FriendDecl const* D);

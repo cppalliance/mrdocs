@@ -90,6 +90,13 @@ merge(VariableInfo& I, VariableInfo&& Other)
             I.Attributes.push_back(otherAttr);
         }
     }
+    I.IsBitfield |= Other.IsBitfield;
+    merge(I.BitfieldWidth, std::move(Other.BitfieldWidth));
+    I.IsVariant |= Other.IsVariant;
+    I.IsMutable |= Other.IsMutable;
+    I.IsMaybeUnused |= Other.IsMaybeUnused;
+    I.IsDeprecated |= Other.IsDeprecated;
+    I.HasNoUniqueAddress |= Other.HasNoUniqueAddress;
 }
 
 } // clang::mrdocs

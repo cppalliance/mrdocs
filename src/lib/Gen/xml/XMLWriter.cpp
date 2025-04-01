@@ -556,26 +556,26 @@ writeTypedef(
 
 void
 XMLWriter::
-writeField(
-    FieldInfo const& I)
+writeVariable(
+    VariableInfo const& I)
 {
-    std::string_view tag_name = dataMemberTagName;
+    openTemplate(I.Template);
+
     std::string bit_width;
     if(I.IsBitfield)
     {
-        tag_name = bitfieldTagName;
         bit_width = I.BitfieldWidth.Value ?
             std::to_string(*I.BitfieldWidth.Value) :
             I.BitfieldWidth.Written;
     }
 
-    tags_.open(tag_name, {
+    tags_.open(varTagName, {
         { "name", I.Name },
         { I.Access },
         { I.id },
-        { "width", bit_width, I.IsBitfield },
-        { "default", I.Default.Written, ! I.Default.Written.empty() }
-    });
+           { "width", bit_width, I.IsBitfield },
+        { "default", I.Initializer.Written, ! I.Initializer.Written.empty() }
+        });
 
     writeSourceInfo(I);
 
@@ -584,38 +584,16 @@ writeField(
             {"id", "is-mutable"}
         });
 
-    writeAttr(I.IsVariant, "is-variant", tags_);
-    writeAttr(I.IsMaybeUnused, "maybe-unused", tags_);
-    writeAttr(I.IsDeprecated, "deprecated", tags_);
-    writeAttr(I.HasNoUniqueAddress, "no-unique-address", tags_);
-
-    writeType(I.Type, tags_);
-
-    writeJavadoc(I.javadoc);
-
-    tags_.close(tag_name);
-}
-
-void
-XMLWriter::
-writeVariable(
-    VariableInfo const& I)
-{
-    openTemplate(I.Template);
-
-    tags_.open(varTagName, {
-        { "name", I.Name },
-        { I.Access },
-        { I.id }
-        });
-
-    writeSourceInfo(I);
-
     writeAttr(I.StorageClass, "storage-class", tags_);
     writeAttr(I.IsInline, "is-inline", tags_);
     writeAttr(I.IsConstexpr, "is-constexpr", tags_);
     writeAttr(I.IsConstinit, "is-constinit", tags_);
     writeAttr(I.IsThreadLocal, "is-thread-local", tags_);
+
+    // writeAttr(I.IsVariant, "is-variant", tags_);
+    // writeAttr(I.IsMaybeUnused, "maybe-unused", tags_);
+    // writeAttr(I.IsDeprecated, "deprecated", tags_);
+    // writeAttr(I.HasNoUniqueAddress, "no-unique-address", tags_);
 
     writeType(I.Type, tags_);
 

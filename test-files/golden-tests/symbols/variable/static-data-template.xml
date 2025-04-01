@@ -9,7 +9,7 @@
       <template>
         <tparam name="U" class="type"/>
         <tparam name="V" class="type"/>
-        <variable name="x" id="XzfcXqh7M7tQVHWKvlB891KIC/0=">
+        <variable name="x" id="XzfcXqh7M7tQVHWKvlB891KIC/0=" default="0">
           <file short-path="static-data-template.cpp" source-path="static-data-template.cpp" line="4" class="def"/>
           <attr id="storage-class" name="static" value="2"/>
           <attr id="is-inline"/>
@@ -20,7 +20,7 @@
       <template class="explicit">
         <targ class="type" type="T"/>
         <targ class="type" type="long"/>
-        <variable name="x" id="eKdgKT44WwfN7UkQXGEqVJssIPM=">
+        <variable name="x" id="eKdgKT44WwfN7UkQXGEqVJssIPM=" default="2">
           <file short-path="static-data-template.cpp" source-path="static-data-template.cpp" line="10" class="def"/>
           <attr id="storage-class" name="static" value="2"/>
           <attr id="is-inline"/>
@@ -32,7 +32,7 @@
         <tparam name="U" class="type"/>
         <targ class="type" type="U*"/>
         <targ class="type" type="T"/>
-        <variable name="x" id="odTOUblgmooUozrBqW3qKzPWSO4=">
+        <variable name="x" id="odTOUblgmooUozrBqW3qKzPWSO4=" default="1">
           <file short-path="static-data-template.cpp" source-path="static-data-template.cpp" line="7" class="def"/>
           <attr id="storage-class" name="static" value="2"/>
           <attr id="is-inline"/>

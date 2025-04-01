@@ -13,7 +13,7 @@
 #define MRDOCS_LIB_METADATA_FINALIZER_DERIVEDFINALIZER_HPP
 
 #include "lib/Lib/CorpusImpl.hpp"
-#include "lib/Lib/Info.hpp"
+#include "lib/Lib/InfoSet.hpp"
 #include <utility>
 
 namespace clang::mrdocs {

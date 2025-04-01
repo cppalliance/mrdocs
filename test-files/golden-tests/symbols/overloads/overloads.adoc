@@ -62,8 +62,8 @@ struct A;
 [cols=1]
 |===
 | Name
-| <<A-09friend-0a,`operator&equals;&equals;`>> 
-| <<A-09friend-0e,`operator&equals;&equals;`>> 
+| <<A-08friend-0a,`operator&equals;&equals;`>> 
+| <<A-08friend-0e,`operator&equals;&equals;`>> 
 |===
 
 [#A-f-00]
@@ -172,7 +172,7 @@ int
 g(int);
 ----
 
-[#A-09friend-0a]
+[#A-08friend-0a]
 == operator&equals;&equals;
 
 === Synopsis
@@ -188,7 +188,7 @@ operator&equals;&equals;(
     <<A,A>> rhs);
 ----
 
-[#A-09friend-0e]
+[#A-08friend-0e]
 == operator&equals;&equals;
 
 === Synopsis

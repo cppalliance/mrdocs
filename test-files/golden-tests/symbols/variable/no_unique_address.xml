@@ -7,16 +7,14 @@
   </struct>
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     <file short-path="no_unique_address.cpp" source-path="no_unique_address.cpp" line="5" class="def"/>
-    <field name="e" id="h2j8f921HD+Fyaokcs4ndGM/yNk=" default="Empty{}">
+    <variable name="e" id="h2j8f921HD+Fyaokcs4ndGM/yNk=" default="Empty{}">
       <file short-path="no_unique_address.cpp" source-path="no_unique_address.cpp" line="8"/>
-      <attr id="maybe-unused"/>
-      <attr id="deprecated"/>
       <type id="iczIHP1J59EwYw3xxL3w2C3Q43Q=" name="Empty"/>
-    </field>
-    <field name="i" id="91xV6rCFObgi6i1/U2uZ/GnD3WM=">
+    </variable>
+    <variable name="i" id="91xV6rCFObgi6i1/U2uZ/GnD3WM=">
       <file short-path="no_unique_address.cpp" source-path="no_unique_address.cpp" line="7"/>
       <type name="int"/>
-    </field>
+    </variable>
   </struct>
 </namespace>
 </mrdocs>

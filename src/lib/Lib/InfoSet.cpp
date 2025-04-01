@@ -1,8 +1,7 @@
 
-#include "Info.hpp"
+#include "InfoSet.hpp"
 
-namespace clang {
-namespace mrdocs {
+namespace clang::mrdocs {
 
 std::size_t
 InfoPtrHasher::
@@ -56,5 +55,4 @@ operator()(
     return b->id == a;
 }
 
-} // mrdocs
-} // clang
+} // clang::mrdocs

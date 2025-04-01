@@ -4,33 +4,29 @@
 <namespace id="//////////////////////////8=">
   <union name="A" id="rOga+mYntM7ytFb7bhJSklZ0r34=">
     <file short-path="union.cpp" source-path="union.cpp" line="1" class="def"/>
-    <field name="x" id="Be23kXXQRAQHfKNTp2HOM2jouJo=">
+    <variable name="x" id="Be23kXXQRAQHfKNTp2HOM2jouJo=">
       <file short-path="union.cpp" source-path="union.cpp" line="3"/>
-      <attr id="is-variant"/>
       <type name="int"/>
-    </field>
-    <field name="y" id="HqUCV+CnE+akUirdwlf8maZxw40=">
+    </variable>
+    <variable name="y" id="HqUCV+CnE+akUirdwlf8maZxw40=">
       <file short-path="union.cpp" source-path="union.cpp" line="4"/>
-      <attr id="is-variant"/>
       <type name="bool"/>
-    </field>
+    </variable>
   </union>
   <struct name="B" id="3JsK1DO0O+wZhv+0meptQrbs3fY=">
     <file short-path="union.cpp" source-path="union.cpp" line="7" class="def"/>
-    <field name="x" id="QtOrWpj/+5ytPBCEoNlbW+uW/oA=">
+    <variable name="x" id="QtOrWpj/+5ytPBCEoNlbW+uW/oA=">
       <file short-path="union.cpp" source-path="union.cpp" line="11"/>
-      <attr id="is-variant"/>
       <type name="int"/>
-    </field>
-    <field name="y" id="8o+2/UVx4hIiDLQRYohp688sXmI=">
+    </variable>
+    <variable name="y" id="8o+2/UVx4hIiDLQRYohp688sXmI=">
       <file short-path="union.cpp" source-path="union.cpp" line="12"/>
-      <attr id="is-variant"/>
       <type name="bool"/>
-    </field>
-    <field name="z" id="zTVqdWL2ShJziu85kaeOk2wfYFs=">
+    </variable>
+    <variable name="z" id="zTVqdWL2ShJziu85kaeOk2wfYFs=">
       <file short-path="union.cpp" source-path="union.cpp" line="15"/>
       <type name="int"/>
-    </field>
+    </variable>
   </struct>
 </namespace>
 </mrdocs>

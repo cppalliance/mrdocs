@@ -10,8 +10,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_TOOL_INFO_HPP
-#define MRDOCS_LIB_TOOL_INFO_HPP
+#ifndef MRDOCS_LIB_TOOL_INFOSET_HPP
+#define MRDOCS_LIB_TOOL_INFOSET_HPP
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Info.hpp>
