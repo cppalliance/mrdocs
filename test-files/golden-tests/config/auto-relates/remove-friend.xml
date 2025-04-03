@@ -4,6 +4,9 @@
 <namespace id="//////////////////////////8=">
   <class name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
     <file short-path="remove-friend.cpp" source-path="remove-friend.cpp" line="3" class="def"/>
+    <friend id="kibUx6k1SXB+HsXkRXroJl9f59w=">
+      <befriended id="kibUx6k1SXB+HsXkRXroJl9f59w="/>
+    </friend>
     <doc>
       <brief>
         <text>A record with non-member functions</text>
@@ -12,28 +15,6 @@
         <reference id="Cj0rUkOoWSqUDmHfuLvwlZdq9+0=">to_string</reference>
       </related>
     </doc>
-    <friend id="yriH4GssyD4l47GDgY121qZZJX8=">
-      <file short-path="remove-friend.cpp" source-path="remove-friend.cpp" line="13"/>
-      <doc>
-        <brief>
-          <text>Friend function not listed as non-member</text>
-        </brief>
-        <para>
-          <text>Friends are already listed in the class definition.</text>
-        </para>
-        <returns>
-          <mono>true</mono>
-          <text> if the objects are equal</text>
-        </returns>
-        <param name="lhs">
-          <text>The left-hand side of the comparison</text>
-        </param>
-        <param name="rhs">
-          <text>The right-hand side of the comparison</text>
-        </param>
-      </doc>
-      <befriended id="kibUx6k1SXB+HsXkRXroJl9f59w="/>
-    </friend>
   </class>
   <function name="to_string" id="Cj0rUkOoWSqUDmHfuLvwlZdq9+0=">
     <file short-path="remove-friend.cpp" source-path="remove-friend.cpp" line="23"/>

@@ -37,7 +37,7 @@ enum E0;
 === Members
 
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -66,7 +66,7 @@ enum E1 : char;
 === Members
 
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -93,7 +93,7 @@ enum class E2 : int;
 === Members
 
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -122,7 +122,7 @@ enum class E3 : char;
 === Members
 
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description

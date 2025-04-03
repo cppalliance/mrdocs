@@ -40,25 +40,9 @@ struct T;
 |===
 | Name
 | Description
-| <<T-08friend,`f`>> 
+| `<<f,f>>`
 | f
 |===
-
-[#T-08friend]
-== f
-
-f
-
-=== Synopsis
-
-Declared in `&lt;friend&hyphen;2&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-friend
-void
-f();
-----
 
 [#f]
 == f

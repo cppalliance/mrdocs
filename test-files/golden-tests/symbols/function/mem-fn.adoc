@@ -450,7 +450,7 @@ struct T14;
 
 === Derived Classes
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -554,7 +554,7 @@ struct T17
 
 === Base Classes
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -615,7 +615,7 @@ struct U;
 
 === Derived Classes
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -681,7 +681,7 @@ struct V
 
 === Base Classes
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description

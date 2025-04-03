@@ -255,7 +255,6 @@ sortMembers(RecordTranche& T)
     sortMembers(T.StaticVariables);
     sortMembers(T.Concepts);
     sortMembers(T.Guides);
-    sortMembers(T.Friends);
     sortMembers(T.Usings);
 }
 

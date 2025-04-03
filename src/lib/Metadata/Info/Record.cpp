@@ -9,8 +9,8 @@
 //
 
 #include <mrdocs/Dom/LazyObject.hpp>
-#include <llvm/ADT/STLExtras.h>
 #include <mrdocs/Metadata/Info/Record.hpp>
+#include <ranges>
 
 namespace clang::mrdocs {
 
@@ -39,11 +39,29 @@ reduceSymbolIDs(
 {
     for(auto const& id : otherList)
     {
-        if (auto it = llvm::find(list, id); it != list.end())
+        if (auto it = std::ranges::find(list, id); it != list.end())
         {
             continue;
         }
         list.push_back(id);
+    }
+}
+
+void
+reduceSymbolIDs(
+    std::vector<FriendInfo>& list,
+    std::vector<FriendInfo>&& otherList)
+{
+    for(auto const& F : otherList)
+    {
+        auto it = std::ranges::find_if(list, [&F](auto const& other) {
+            return F.id == other.id;
+        });
+        if (it != list.end())
+        {
+            continue;
+        }
+        list.push_back(F);
     }
 }
 } // (anon)
@@ -104,7 +122,6 @@ merge(RecordTranche& I, RecordTranche&& Other)
     reduceSymbolIDs(I.StaticVariables, std::move(Other.StaticVariables));
     reduceSymbolIDs(I.Concepts, std::move(Other.Concepts));
     reduceSymbolIDs(I.Guides, std::move(Other.Guides));
-    reduceSymbolIDs(I.Friends, std::move(Other.Friends));
 }
 
 void
@@ -136,6 +153,7 @@ merge(RecordInfo& I, RecordInfo&& Other)
     {
         I.Template = std::move(Other.Template);
     }
+    reduceSymbolIDs(I.Friends, std::move(Other.Friends));
 }
 
 template <class IO>

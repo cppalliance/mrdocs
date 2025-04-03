@@ -17,7 +17,7 @@
 | <<V,`V`>> 
 | Struct V brief
 | <<Z,`Z`>> 
-| 
+| Friend class Z brief
 |===
 
 [#T]
@@ -40,39 +40,9 @@ struct T;
 |===
 | Name
 | Description
-| <<T-08friend-04cb,`class Z`>> 
+| `<<Z,Z>>`
 | Friend class Z brief
-| <<T-08friend-04ce,`int`>> 
-| Friend int brief
 |===
-
-[#T-08friend-04cb]
-== <<Z,Z>>
-
-Friend class Z brief
-
-=== Synopsis
-
-Declared in `&lt;friend&hyphen;6&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-friend <<Z,Z>>;
-----
-
-[#T-08friend-04ce]
-== int
-
-Friend int brief
-
-=== Synopsis
-
-Declared in `&lt;friend&hyphen;6&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-friend int;
-----
 
 [#U]
 == U
@@ -94,23 +64,9 @@ struct U;
 |===
 | Name
 | Description
-| <<U-08friend,`T`>> 
-| Friend T brief
+| `<<T,T>>`
+| Struct T brief
 |===
-
-[#U-08friend]
-== <<T,T>>
-
-Friend T brief
-
-=== Synopsis
-
-Declared in `&lt;friend&hyphen;6&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-friend <<T,T>>;
-----
 
 [#V]
 == V
@@ -132,26 +88,14 @@ struct V;
 |===
 | Name
 | Description
-| <<V-08friend,`struct U`>> 
-| Friend struct U brief
+| `<<U,U>>`
+| Struct U brief
 |===
-
-[#V-08friend]
-== <<U,U>>
-
-Friend struct U brief
-
-=== Synopsis
-
-Declared in `&lt;friend&hyphen;6&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-friend <<U,U>>;
-----
 
 [#Z]
 == Z
+
+Friend class Z brief
 
 === Synopsis
 

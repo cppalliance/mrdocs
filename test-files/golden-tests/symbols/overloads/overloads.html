@@ -81,22 +81,30 @@ struct A;
 </tbody>
 </table>
 
+
+
+<div>
 <h2>Friends</h2>
-<table style="table-layout: fixed; width: 100%;">
+<table>
 <thead>
 <tr>
 <th>Name</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><a href="#A-08friend-0a"><code>operator&#x3D;&#x3D;</code></a> </td></tr><tr>
-<td><a href="#A-08friend-0e"><code>operator&#x3D;&#x3D;</code></a> </td></tr>
+<td><code><a href="#operator_eq-0e">operator&#x3D;&#x3D;</a></code></td>
+<td><span>Equality operator</span></td>
+</tr>
+<tr>
+<td><code><a href="#operator_eq-0a">operator&#x3D;&#x3D;</a></code></td>
+<td><span>Equality operator</span></td>
+</tr>
+|===
 </tbody>
 </table>
-
-
-
+</div>
 </div>
 <div>
 <div>
@@ -222,44 +230,6 @@ g(int);
 </div>
 <div>
 <div>
-<h2 id="A-08friend-0a">operator&#x3D;&#x3D;</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;overloads.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-friend
-bool
-operator&#x3D;&#x3D;(
-    <a href="#A">A</a> lhs,
-    <a href="#A">A</a> rhs);
-</code>
-</pre>
-</div>
-</div>
-<div>
-<div>
-<h2 id="A-08friend-0e">operator&#x3D;&#x3D;</h2>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;overloads.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-friend
-bool
-operator&#x3D;&#x3D;(
-    <a href="#A">A</a> lhs,
-    int rhs);
-</code>
-</pre>
-</div>
-</div>
-<div>
-<div>
 <h2 id="B">B</h2>
 </div>
 <div>
@@ -350,21 +320,21 @@ Declared in <code>&lt;overloads.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 bool
-<a href="#operator_eq-0a">operator&#x3D;&#x3D;</a>(
-    <a href="#A">A</a> lhs,
-    <a href="#A">A</a> rhs);
-</code>
-</pre><span class="small"><a href="#operator_eq-0a"><em>» more...</em></a></span>
-
-<span>Equality operator</span>
-<pre>
-<code class="source-code cpp">
-bool
 <a href="#operator_eq-0e">operator&#x3D;&#x3D;</a>(
     <a href="#A">A</a> lhs,
     int rhs);
 </code>
 </pre><span class="small"><a href="#operator_eq-0e"><em>» more...</em></a></span>
+
+<span>Equality operator</span>
+<pre>
+<code class="source-code cpp">
+bool
+<a href="#operator_eq-0a">operator&#x3D;&#x3D;</a>(
+    <a href="#A">A</a> lhs,
+    <a href="#A">A</a> rhs);
+</code>
+</pre><span class="small"><a href="#operator_eq-0a"><em>» more...</em></a></span>
 
 <span>Equality operator</span>
 <pre>
@@ -391,7 +361,7 @@ bool
 </div>
 <div>
 <div>
-<h2 id="operator_eq-0a">operator&#x3D;&#x3D;</h2>
+<h2 id="operator_eq-0e">operator&#x3D;&#x3D;</h2>
 <div>
 <span>Equality operator</span>
 
@@ -406,7 +376,7 @@ Declared in <code>&lt;overloads.cpp&gt;</code></div>
 bool
 operator&#x3D;&#x3D;(
     <a href="#A">A</a> lhs,
-    <a href="#A">A</a> rhs);
+    int rhs);
 </code>
 </pre>
 </div>
@@ -438,7 +408,7 @@ operator&#x3D;&#x3D;(
 </div>
 <div>
 <div>
-<h2 id="operator_eq-0e">operator&#x3D;&#x3D;</h2>
+<h2 id="operator_eq-0a">operator&#x3D;&#x3D;</h2>
 <div>
 <span>Equality operator</span>
 
@@ -453,7 +423,7 @@ Declared in <code>&lt;overloads.cpp&gt;</code></div>
 bool
 operator&#x3D;&#x3D;(
     <a href="#A">A</a> lhs,
-    int rhs);
+    <a href="#A">A</a> rhs);
 </code>
 </pre>
 </div>

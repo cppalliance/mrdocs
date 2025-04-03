@@ -18,15 +18,13 @@ namespace clang::mrdocs {
 void
 merge(FriendInfo& I, FriendInfo&& Other)
 {
-    MRDOCS_ASSERT(canMerge(I, Other));
-    merge(I.asInfo(), std::move(Other.asInfo()));
-    if (!I.FriendSymbol)
+    if (!I.id)
     {
-        I.FriendSymbol = Other.FriendSymbol;
+        I.id = Other.id;
     }
-    if (!I.FriendType)
+    if (!I.Type)
     {
-        I.FriendType = std::move(Other.FriendType);
+        I.Type = std::move(Other.Type);
     }
 }
 

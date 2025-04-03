@@ -83,7 +83,7 @@ struct C;
 
 === Non-Member Functions
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description

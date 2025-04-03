@@ -59,11 +59,14 @@ struct A;
 
 === Friends
 
-[cols=1]
+[cols=2]
 |===
 | Name
-| <<A-08friend-0a,`operator&equals;&equals;`>> 
-| <<A-08friend-0e,`operator&equals;&equals;`>> 
+| Description
+| `<<operator_eq-0e,operator&equals;&equals;>>`
+| Equality operator
+| `<<operator_eq-0a,operator&equals;&equals;>>`
+| Equality operator
 |===
 
 [#A-f-00]
@@ -172,38 +175,6 @@ int
 g(int);
 ----
 
-[#A-08friend-0a]
-== operator&equals;&equals;
-
-=== Synopsis
-
-Declared in `&lt;overloads&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-friend
-bool
-operator&equals;&equals;(
-    <<A,A>> lhs,
-    <<A,A>> rhs);
-----
-
-[#A-08friend-0e]
-== operator&equals;&equals;
-
-=== Synopsis
-
-Declared in `&lt;overloads&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-friend
-bool
-operator&equals;&equals;(
-    <<A,A>> lhs,
-    int rhs);
-----
-
 [#B]
 == B
 
@@ -282,12 +253,12 @@ Equality operator
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
-<<operator_eq-0a,operator&equals;&equals;>>(
+<<operator_eq-0e,operator&equals;&equals;>>(
     <<A,A>> lhs,
-    <<A,A>> rhs);
+    int rhs);
 ----
 
-[.small]#<<operator_eq-0a,_» more&period;&period;&period;_>>#
+[.small]#<<operator_eq-0e,_» more&period;&period;&period;_>>#
 
 Equality operator
 
@@ -295,12 +266,12 @@ Equality operator
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
-<<operator_eq-0e,operator&equals;&equals;>>(
+<<operator_eq-0a,operator&equals;&equals;>>(
     <<A,A>> lhs,
-    int rhs);
+    <<A,A>> rhs);
 ----
 
-[.small]#<<operator_eq-0e,_» more&period;&period;&period;_>>#
+[.small]#<<operator_eq-0a,_» more&period;&period;&period;_>>#
 
 Equality operator
 
@@ -328,7 +299,7 @@ bool
 
 [.small]#<<operator_eq-07,_» more&period;&period;&period;_>>#
 
-[#operator_eq-0a]
+[#operator_eq-0e]
 == operator&equals;&equals;
 
 Equality operator
@@ -342,7 +313,7 @@ Declared in `&lt;overloads&period;cpp&gt;`
 bool
 operator&equals;&equals;(
     <<A,A>> lhs,
-    <<A,A>> rhs);
+    int rhs);
 ----
 
 === Return Value
@@ -361,7 +332,7 @@ operator&equals;&equals;(
 | The right operand
 |===
 
-[#operator_eq-0e]
+[#operator_eq-0a]
 == operator&equals;&equals;
 
 Equality operator
@@ -375,7 +346,7 @@ Declared in `&lt;overloads&period;cpp&gt;`
 bool
 operator&equals;&equals;(
     <<A,A>> lhs,
-    int rhs);
+    <<A,A>> rhs);
 ----
 
 === Return Value

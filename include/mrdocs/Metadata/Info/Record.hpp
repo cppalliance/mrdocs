@@ -16,6 +16,7 @@
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Source.hpp>
 #include <mrdocs/Metadata/Template.hpp>
+#include <mrdocs/Metadata/Info/Friend.hpp>
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
@@ -46,7 +47,6 @@ struct RecordTranche
     std::vector<SymbolID> StaticVariables;
     std::vector<SymbolID> Concepts;
     std::vector<SymbolID> Guides;
-    std::vector<SymbolID> Friends;
     std::vector<SymbolID> Usings;
 };
 
@@ -60,7 +60,7 @@ allMembers(RecordTranche const& T)
 {
     // This is a trick to emulate views::concat in C++20
     return std::views::transform(
-        std::views::iota(0, 12),
+        std::views::iota(0, 11),
         [&T](int const i) -> auto const&
         {
             switch (i) {
@@ -74,8 +74,7 @@ allMembers(RecordTranche const& T)
                 case 7: return T.StaticVariables;
                 case 8: return T.Concepts;
                 case 9: return T.Guides;
-                case 10: return T.Friends;
-                case 11: return T.Usings;
+                case 10: return T.Usings;
                 default: throw std::out_of_range("Invalid index");
             }
         }
@@ -102,7 +101,6 @@ tag_invoke(
     io.map("staticVariables", dom::LazyArray(I.StaticVariables, domCorpus));
     io.map("concepts", dom::LazyArray(I.Concepts, domCorpus));
     io.map("guides", dom::LazyArray(I.Guides, domCorpus));
-    io.map("friends", dom::LazyArray(I.Friends, domCorpus));
     io.map("usings", dom::LazyArray(I.Usings, domCorpus));
 }
 
@@ -295,7 +293,13 @@ struct RecordInfo final
      */
     std::vector<SymbolID> Derived;
 
+    /** Lists of members.
+     */
     RecordInterface Interface;
+
+    /** List of friends.
+    */
+    std::vector<FriendInfo> Friends;
 
     //--------------------------------------------
 
@@ -354,6 +358,7 @@ tag_invoke(
     io.map("derived", dom::LazyArray(I.Derived, domCorpus));
     io.map("interface", I.Interface);
     io.map("template", I.Template);
+    io.map("friends", dom::LazyArray(I.Friends, domCorpus));
 }
 
 /** Map the RecordInfo to a @ref dom::Value object.

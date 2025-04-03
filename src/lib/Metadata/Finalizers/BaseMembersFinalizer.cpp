@@ -76,7 +76,6 @@ inheritBaseMembers(
     inheritBaseMembers(derivedId, derived.StaticVariables, base.StaticVariables);
     inheritBaseMembers(derivedId, derived.Concepts, base.Concepts);
     inheritBaseMembers(derivedId, derived.Guides, base.Guides);
-    inheritBaseMembers(derivedId, derived.Friends, base.Friends);
 }
 
 namespace {

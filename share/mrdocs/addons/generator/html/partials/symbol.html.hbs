@@ -98,6 +98,34 @@
 </table>
 </div>
 {{/if}}
+{{! Friends }}
+{{#if symbol.friends}}
+<div>
+{{#> markup/dynamic-level-h }}Friends{{/markup/dynamic-level-h}}
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+{{#each symbol.friends }}
+<tr>
+{{#if symbol}}
+<td>{{#>markup/code}}{{> symbol/name symbol link=symbol }}{{/markup/code}}</td>
+<td>{{> javadoc/inline-brief symbol.doc.brief }}</td>
+{{else}}
+<td>{{#>markup/code}}{{> type/declarator type }}{{/markup/code}}</td>
+<td></td>
+{{/if}}
+</tr>
+{{/each}}
+|===
+</tbody>
+</table>
+</div>
+{{/if}}
 {{! Using directives }}
 {{#if symbol.usingDirectives}}
 <div>

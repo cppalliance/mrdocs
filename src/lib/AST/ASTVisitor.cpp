@@ -713,6 +713,26 @@ populate(
                 B.isVirtual());
         }
     }
+
+    // Iterate over the friends of the class
+    if (D->hasDefinition() && D->hasFriends())
+    {
+        for (FriendDecl const* FD : D->friends())
+        {
+            // Check if the friend is a fundamental type
+            // Declaring a fundamental type like `int` as a friend of a
+            // class or struct does not have any practical effect. Thus,
+            // it's not considered part of the public API.
+            if (TypeSourceInfo const* TSI = FD->getFriendType())
+            {
+                Type const* T = TSI->getType().getTypePtrOrNull();
+                MRDOCS_CHECK_OR_CONTINUE(!T || !T->isBuiltinType());
+            }
+            FriendInfo F;
+            populate(F, FD);
+            I.Friends.push_back(std::move(F));
+        }
+    }
 }
 
 void
@@ -1113,32 +1133,31 @@ populate(
     FriendInfo& I,
     FriendDecl const* D)
 {
-    // A NamedDecl nominated by a FriendDecl
-    // will be one of the following:
-    // - FunctionDecl
-    // - FunctionTemplateDecl
-    // - ClassTemplateDecl
-    if (NamedDecl* ND = D->getFriendDecl())
-    {
-        generateID(ND, I.FriendSymbol);
-        // If this is a friend function declaration naming
-        // a previously undeclared function, traverse it.
-        // in addition to this, traverse the declaration if
-        // it's a class templates first declared as a friend
-        if((ND->isFunctionOrFunctionTemplate() &&
-            ND->getFriendObjectKind() == Decl::FOK_Undeclared) ||
-            (isa<ClassTemplateDecl>(ND) && ND->isFirstDecl()))
-        {
-            traverse(cast<Decl>(ND));
-        }
-    }
-    // Since a friend declaration which name non-class types
-    // will be ignored, a type nominated by a FriendDecl can
-    // essentially be anything
     if (TypeSourceInfo const* TSI = D->getFriendType())
     {
-        I.FriendType = toTypeInfo(TSI->getType());
+        I.Type = toTypeInfo(TSI->getType());
+        MRDOCS_CHECK_OR(I.Type->isNamed());
+        auto const& NTI = dynamic_cast<NamedTypeInfo&>(*I.Type);
+        MRDOCS_CHECK_OR(NTI.Name);
+        I.id = NTI.Name->id;
     }
+    else if (NamedDecl const* ND = D->getFriendDecl())
+    {
+        // ND can be a function or a class
+        ScopeExitRestore s(mode_, Dependency);
+        if (Info const* SI = traverse(dyn_cast<Decl>(ND)))
+        {
+            I.id = SI->id;
+        }
+    }
+    // The newly traversed info might need to inherit the
+    // documentation from the FriendDecl when the friend
+    // is the only declaration.
+    MRDOCS_CHECK_OR(isDocumented(D));
+    Info* TI = find(I.id);
+    MRDOCS_CHECK_OR(TI);
+    MRDOCS_CHECK_OR(!TI->javadoc);
+    populate(TI->javadoc, D);
 }
 
 void
@@ -1777,11 +1796,6 @@ addMember(RecordTranche& T, Info const& Member)
     if (auto const* U = Member.asGuidePtr())
     {
         addMember(T.Guides, *U);
-        return;
-    }
-    if (auto const* U = Member.asFriendPtr())
-    {
-        addMember(T.Friends, *U);
         return;
     }
     if (auto const* U = Member.asUsingPtr())

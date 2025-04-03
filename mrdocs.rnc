@@ -187,10 +187,7 @@ grammar
     Friend =
         element friend
         {
-            Access ?,
             ID,
-            Location *,
-            Javadoc ?,
             (
                 element befriended
                 {

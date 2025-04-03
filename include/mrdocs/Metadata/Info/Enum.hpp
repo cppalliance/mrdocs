@@ -17,7 +17,6 @@
 #include <mrdocs/Metadata/Source.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
-#include <ranges>
 
 namespace clang::mrdocs {
 

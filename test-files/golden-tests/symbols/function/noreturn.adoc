@@ -50,10 +50,12 @@ struct T;
 
 === Friends
 
-[cols=1]
+[cols=2]
 |===
 | Name
-| <<T-08friend,`f1`>> 
+| Description
+| `<<f1,f1>>`
+| 
 |===
 
 [#T-f3]
@@ -83,20 +85,6 @@ Declared in `&lt;noreturn&period;cpp&gt;`
 static
 void
 f2();
-----
-
-[#T-08friend]
-== f1
-
-=== Synopsis
-
-Declared in `&lt;noreturn&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-friend
-void
-f1();
 ----
 
 [#f1]

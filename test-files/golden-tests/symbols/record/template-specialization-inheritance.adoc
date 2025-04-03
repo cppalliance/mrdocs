@@ -73,7 +73,7 @@ struct R0
 
 === Base Classes
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -104,7 +104,7 @@ struct R1
 
 === Base Classes
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -127,7 +127,7 @@ struct R2
 
 === Base Classes
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -160,7 +160,7 @@ struct S0;
 
 === Derived Classes
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -208,7 +208,7 @@ struct <<S0-0c,S0>>&lt;3&gt;;
 
 === Derived Classes
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description

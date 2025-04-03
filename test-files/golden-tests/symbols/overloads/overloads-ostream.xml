@@ -71,8 +71,7 @@
   <namespace name="ostream" id="S5XtDqY96X0u1hXzl3cx6YoVW8A=">
     <class name="B" id="VFtzIPiiZVDB77znFM+ODgLmKOw=">
       <file short-path="overloads-ostream.cpp" source-path="overloads-ostream.cpp" line="23" class="def"/>
-      <friend id="Cf/Ug8b0F0qlSqZE8UkNkrFgu/Q=">
-        <file short-path="overloads-ostream.cpp" source-path="overloads-ostream.cpp" line="25"/>
+      <friend id="1fuMcZHDrARpZPSclbAk4IYVnps=">
         <befriended id="1fuMcZHDrARpZPSclbAk4IYVnps="/>
       </friend>
     </class>

@@ -1313,15 +1313,8 @@ setAutoRelates()
         // Check if already listed as friend
         if (auto* record = dynamic_cast<RecordInfo const*>(relatedRecordOrEnumPtr))
         {
-            auto fromFriendIdToTypeID = [&](SymbolID const& id) -> SymbolID {
-                Info* friendInfo = corpus_.find(id);
-                MRDOCS_CHECK_OR(friendInfo, SymbolID::invalid);
-                auto const friendPtr = dynamic_cast<FriendInfo*>(friendInfo);
-                MRDOCS_CHECK_OR(friendPtr, SymbolID::invalid);
-                return friendPtr->FriendSymbol;
-            };
             using std::views::transform;
-            if (contains(transform(record->Interface.Public.Friends, fromFriendIdToTypeID), I.id))
+            if (contains(transform(record->Friends, &FriendInfo::id), I.id))
             {
                 // Already listed as a public friend
                 continue;
