@@ -57,7 +57,7 @@ struct A
 
 === Base Classes
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -67,7 +67,7 @@ struct A
 
 === Non-Member Functions
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -99,7 +99,7 @@ struct ABase;
 
 === Non-Member Functions
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -119,7 +119,7 @@ struct ABase;
 
 === Derived Classes
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -146,7 +146,7 @@ struct AView
 
 === Base Classes
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -156,7 +156,7 @@ struct AView
 
 === Non-Member Functions
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -174,7 +174,7 @@ struct AView
 
 === Derived Classes
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -199,7 +199,7 @@ struct AView2
 
 === Base Classes
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -209,7 +209,7 @@ struct AView2
 
 === Non-Member Functions
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description

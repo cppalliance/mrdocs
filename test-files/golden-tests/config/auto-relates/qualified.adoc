@@ -112,7 +112,7 @@ struct B;
 
 === Non-Member Functions
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -200,7 +200,7 @@ struct A;
 
 === Non-Member Functions
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description

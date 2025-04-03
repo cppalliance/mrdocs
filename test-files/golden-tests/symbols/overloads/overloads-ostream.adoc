@@ -195,27 +195,13 @@ class B;
 
 === Friends
 
-[cols=1]
+[cols=2]
 |===
 | Name
-| <<ostream-B-08friend,`operator&lt;&lt;`>> 
+| Description
+| `<<ostream-operator_lshift-0d,operator&lt;&lt;>>`
+| Stream insertion operator
 |===
-
-[#ostream-B-08friend]
-== <<ostream,ostream>>::operator&lt;&lt;
-
-=== Synopsis
-
-Declared in `&lt;overloads&hyphen;ostream&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-friend
-<<ostream-OStream,OStream>>&
-operator&lt;&lt;(
-    <<ostream-OStream,OStream>>& os,
-    <<ostream-B,B>> value);
-----
 
 [#ostream-C]
 == <<ostream,ostream>>::C

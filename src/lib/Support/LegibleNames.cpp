@@ -226,10 +226,6 @@ public:
                         return getUnnamedInfoName(t);
                     }
                 }
-                else if constexpr(T::isFriend())
-                {
-                    return getUnnamedInfoName(t);
-                }
                 return t.Name;
             });
     }

@@ -35,7 +35,7 @@ struct B
 
 === Base Classes
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description

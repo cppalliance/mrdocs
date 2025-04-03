@@ -94,7 +94,7 @@ struct Q;
 
 === Non-Member Functions
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -130,7 +130,7 @@ struct A;
 
 === Non-Member Functions
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -219,7 +219,7 @@ struct paramType;
 
 === Non-Member Functions
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -257,7 +257,7 @@ enum testEnum;
 
 === Non-Member Functions
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description

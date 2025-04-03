@@ -39,7 +39,7 @@ class base
 
 === Base Classes
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -77,7 +77,7 @@ class base
 
 === Derived Classes
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -227,7 +227,7 @@ class base&lowbar;base;
 
 === Derived Classes
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -291,7 +291,7 @@ class derived
 
 === Base Classes
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description

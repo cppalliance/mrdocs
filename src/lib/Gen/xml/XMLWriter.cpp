@@ -285,19 +285,18 @@ writeFriend(
 {
     constexpr std::string_view friendTagName = "friend";
     tags_.open(friendTagName, {
-        { I.Access },
         { I.id }
         });
 
-    writeSourceInfo(I);
-
-    writeJavadoc(I.javadoc);
-
     Attributes attrs = {};
-    if(I.FriendSymbol)
-        attrs.push({I.FriendSymbol});
-    else if(I.FriendType)
-        attrs.push({"type", toString(*I.FriendType)});
+    if (I.id)
+    {
+        attrs.push({ I.id });
+    }
+    else if (I.Type)
+    {
+        attrs.push({ "type", toString(*I.Type) });
+    }
 
     tags_.write("befriended", {}, attrs);
 
@@ -515,7 +514,7 @@ writeRecord(
     writeAttr(I.IsFinal, "is-final", tags_);
     writeAttr(I.IsFinalDestructor, "is-final-dtor", tags_);
 
-    for(auto const& B : I.Bases)
+    for (auto const& B : I.Bases)
     {
         tags_.open(baseTagName, {
             { B.Access },
@@ -523,6 +522,11 @@ writeRecord(
         });
         writeType(B.Type, tags_);
         tags_.close(baseTagName);
+    }
+
+    for (FriendInfo const& F : I.Friends)
+    {
+        writeFriend(F);
     }
 
     writeJavadoc(I.javadoc);

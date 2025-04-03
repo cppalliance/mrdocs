@@ -28,7 +28,7 @@ struct A
 
 === Base Classes
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -67,7 +67,7 @@ struct B;
 
 === Derived Classes
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description

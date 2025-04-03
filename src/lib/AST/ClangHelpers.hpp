@@ -169,11 +169,6 @@ template <>
 struct InfoTypeFor<FieldDecl>
     : std::type_identity<VariableInfo> {};
 
-// Extract FriendInfo from FriendDecl
-template <>
-struct InfoTypeFor<FriendDecl>
-    : std::type_identity<FriendInfo> {};
-
 // Extract GuideInfo from CXXDeductionGuideDecl
 template <>
 struct InfoTypeFor<CXXDeductionGuideDecl>

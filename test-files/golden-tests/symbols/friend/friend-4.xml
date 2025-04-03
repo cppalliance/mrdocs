@@ -4,20 +4,13 @@
 <namespace id="//////////////////////////8=">
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     <file short-path="friend-4.cpp" source-path="friend-4.cpp" line="1" class="def"/>
-    <friend id="MKqBnSfb2qzerVryOyz4f9W1BWM=">
-      <file short-path="friend-4.cpp" source-path="friend-4.cpp" line="3"/>
+    <friend id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
       <befriended id="s6nsa+zVhpzzrN+yUVPP5rvdXqs="/>
     </friend>
   </struct>
   <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
     <file short-path="friend-4.cpp" source-path="friend-4.cpp" line="6" class="def"/>
-    <friend id="Yz4fKLBfAghLfXF5KYrKPRlwXMA=">
-      <file short-path="friend-4.cpp" source-path="friend-4.cpp" line="9"/>
-      <doc>
-        <brief>
-          <text>U::f</text>
-        </brief>
-      </doc>
+    <friend id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
       <befriended id="s6nsa+zVhpzzrN+yUVPP5rvdXqs="/>
     </friend>
   </struct>

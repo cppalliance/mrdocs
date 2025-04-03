@@ -4,6 +4,12 @@
 <namespace id="//////////////////////////8=">
   <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
     <file short-path="overloads.cpp" source-path="overloads.cpp" line="1" class="def"/>
+    <friend id="7bqo4XOxyyg5NIOu+8i4lZ3L47c=">
+      <befriended id="7bqo4XOxyyg5NIOu+8i4lZ3L47c="/>
+    </friend>
+    <friend id="pqHl3WkOZfX6m6ltquhjuQtzXp4=">
+      <befriended id="pqHl3WkOZfX6m6ltquhjuQtzXp4="/>
+    </friend>
     <function name="f" id="hLXvGC+nOrLQRH9lODKkgi/oUas=">
       <file short-path="overloads.cpp" source-path="overloads.cpp" line="2"/>
     </function>
@@ -30,14 +36,6 @@
         <type name="int"/>
       </param>
     </function>
-    <friend id="oIHRrgqp8DWHsLP+W6GIG30sf4w=">
-      <file short-path="overloads.cpp" source-path="overloads.cpp" line="8"/>
-      <befriended id="pqHl3WkOZfX6m6ltquhjuQtzXp4="/>
-    </friend>
-    <friend id="4ajaf5Te8WqGTnGDFq9hJqMofac=">
-      <file short-path="overloads.cpp" source-path="overloads.cpp" line="9"/>
-      <befriended id="7bqo4XOxyyg5NIOu+8i4lZ3L47c="/>
-    </friend>
   </struct>
   <struct name="B" id="3JsK1DO0O+wZhv+0meptQrbs3fY=">
     <file short-path="overloads.cpp" source-path="overloads.cpp" line="15" class="def"/>
@@ -54,8 +52,8 @@
       <type name="int"/>
     </param>
   </function>
-  <function name="operator==" id="pqHl3WkOZfX6m6ltquhjuQtzXp4=">
-    <file short-path="overloads.cpp" source-path="overloads.cpp" line="8"/>
+  <function name="operator==" id="7bqo4XOxyyg5NIOu+8i4lZ3L47c=">
+    <file short-path="overloads.cpp" source-path="overloads.cpp" line="9"/>
     <attr id="operator" name="eq" value="28"/>
     <return>
       <type name="bool"/>
@@ -64,7 +62,7 @@
       <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
     </param>
     <param name="rhs">
-      <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
+      <type name="int"/>
     </param>
     <doc>
       <brief>
@@ -84,8 +82,8 @@
       </param>
     </doc>
   </function>
-  <function name="operator==" id="7bqo4XOxyyg5NIOu+8i4lZ3L47c=">
-    <file short-path="overloads.cpp" source-path="overloads.cpp" line="9"/>
+  <function name="operator==" id="pqHl3WkOZfX6m6ltquhjuQtzXp4=">
+    <file short-path="overloads.cpp" source-path="overloads.cpp" line="8"/>
     <attr id="operator" name="eq" value="28"/>
     <return>
       <type name="bool"/>
@@ -94,7 +92,7 @@
       <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
     </param>
     <param name="rhs">
-      <type name="int"/>
+      <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
     </param>
     <doc>
       <brief>

@@ -117,7 +117,7 @@ struct regular;
 
 === Non-Member Functions
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -464,7 +464,7 @@ struct regular;
 
 === Non-Member Functions
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description

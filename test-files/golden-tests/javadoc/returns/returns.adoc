@@ -52,7 +52,7 @@ struct pair;
 
 === Non-Member Functions
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description

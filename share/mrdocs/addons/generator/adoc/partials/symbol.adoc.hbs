@@ -31,7 +31,7 @@
 {{! Base classes }}
 {{#if (any_of_by symbol.bases "isPublic")}}
 {{#> markup/dynamic-level-h }}Base Classes{{/markup/dynamic-level-h}}
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -58,7 +58,7 @@
 {{#if symbol.constants}}
 {{#> markup/dynamic-level-h }}Members{{/markup/dynamic-level-h}}
 
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -74,6 +74,25 @@
 
 {{/if}}
 {{/if}}
+{{! Friends }}
+{{#if symbol.friends}}
+{{#> markup/dynamic-level-h }}Friends{{/markup/dynamic-level-h}}
+[cols=2]
+|===
+| Name
+| Description
+{{#each symbol.friends }}
+{{#if symbol}}
+| {{#>markup/code}}{{> symbol/name symbol link=symbol }}{{/markup/code}}
+| {{> javadoc/inline-brief symbol.doc.brief }}
+{{else}}
+| {{#>markup/code}}{{> type/declarator type }}{{/markup/code}}
+|
+{{/if}}
+{{/each}}
+|===
+
+{{/if}}
 {{! Using directives }}
 {{#if symbol.usingDirectives}}
 {{>symbol/members-table members=symbol.usingDirectives title="Using Namespace Directives"}}
@@ -82,7 +101,7 @@
 {{! Related symbols }}
 {{#if symbol.doc.related}}
 {{#> markup/dynamic-level-h }}Non-Member Functions{{/markup/dynamic-level-h}}
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description
@@ -96,7 +115,7 @@
 {{! Derived classes }}
 {{#if symbol.derived}}
 {{#> markup/dynamic-level-h }}Derived Classes{{/markup/dynamic-level-h}}
-[,cols=2]
+[cols=2]
 |===
 | Name
 | Description

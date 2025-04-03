@@ -57,8 +57,11 @@ class A;
 </code>
 </pre>
 </div>
+
+
+<div>
 <h2>Friends</h2>
-<table style="table-layout: fixed; width: 100%;">
+<table>
 <thead>
 <tr>
 <th>Name</th>
@@ -67,12 +70,13 @@ class A;
 </thead>
 <tbody>
 <tr>
-<td><a href="#A-08friend"><code>operator&#x3D;&#x3D;</code></a> </td><td><span>Friend function not listed as non-member</span></td></tr>
+<td><code><a href="#operator_eq">operator&#x3D;&#x3D;</a></code></td>
+<td><span>Friend function not listed as non-member</span></td>
+</tr>
+|===
 </tbody>
 </table>
-
-
-
+</div>
 <div>
 <h2>Non-Member Functions</h2>
 <table>
@@ -84,58 +88,6 @@ class A;
 </thead>
 <tbody>
 <tr><td><a href="#to_string"><code>to_string</code></a></td><td><span>Non-member function of A</span></td></tr>
-</tbody>
-</table>
-</div>
-</div>
-<div>
-<div>
-<h2 id="A-08friend">operator&#x3D;&#x3D;</h2>
-<div>
-<span>Friend function not listed as non-member</span>
-
-</div>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;remove-friend.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">
-friend
-bool
-operator&#x3D;&#x3D;(
-    <a href="#A">A</a> const& lhs,
-    <a href="#A">A</a> const& rhs);
-</code>
-</pre>
-</div>
-<div>
-<h3>Description</h3>
-<p>Friends are already listed in the class definition.</p>
-</div>
-<div>
-<h3>Return Value</h3>
-<span><code>true</code> if the objects are equal</span>
-</div>
-<div>
-<h3>Parameters</h3>
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>lhs</strong></td>
-<td><span>The left-hand side of the comparison</span></td>
-</tr>
-<tr>
-<td><strong>rhs</strong></td>
-<td><span>The right-hand side of the comparison</span></td>
-</tr>
 </tbody>
 </table>
 </div>

@@ -37,25 +37,13 @@ struct T;
 
 === Friends
 
-[cols=1]
+[cols=2]
 |===
 | Name
-| <<T-08friend,`f`>> 
+| Description
+| `<<f,f>>`
+| f
 |===
-
-[#T-08friend]
-== f
-
-=== Synopsis
-
-Declared in `&lt;friend&hyphen;5&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-friend
-void
-f();
-----
 
 [#U]
 == U
@@ -71,25 +59,13 @@ struct U;
 
 === Friends
 
-[cols=1]
+[cols=2]
 |===
 | Name
-| <<U-08friend,`f`>> 
+| Description
+| `<<f,f>>`
+| f
 |===
-
-[#U-08friend]
-== f
-
-=== Synopsis
-
-Declared in `&lt;friend&hyphen;5&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-friend
-void
-f();
-----
 
 [#f]
 == f

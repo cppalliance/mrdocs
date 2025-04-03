@@ -252,6 +252,10 @@ class ASTVisitor
      */
     TraversalMode mode_ = Regular;
 
+    /* A map which stores the Info types created by each decl.
+     */
+    std::unordered_map<FriendDecl const*, Info const*> friendDecls_;
+
 public:
     /** Constructor for ASTVisitor.
 

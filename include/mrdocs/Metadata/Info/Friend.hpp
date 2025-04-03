@@ -18,24 +18,20 @@
 namespace clang::mrdocs {
 
 /** Info for friend declarations.
+
+    - Friendship is not transitive
+    - Friendship is not inherited
+    - Access specifiers have no effect on the meaning of friend declarations
 */
 struct FriendInfo final
-    : InfoCommonBase<InfoKind::Friend>
 {
     /** Befriended symbol.
     */
-    SymbolID FriendSymbol = SymbolID::invalid;
+    SymbolID id = SymbolID::invalid;
 
     /** Befriended type.
     */
-    Polymorphic<TypeInfo> FriendType;
-
-    //--------------------------------------------
-
-    explicit FriendInfo(SymbolID ID) noexcept
-        : InfoCommonBase(ID)
-    {
-    }
+    Polymorphic<TypeInfo> Type;
 };
 
 MRDOCS_DECL
@@ -52,20 +48,19 @@ tag_invoke(
     FriendInfo const& I,
     DomCorpus const* domCorpus)
 {
-    tag_invoke(t, io, dynamic_cast<Info const&>(I), domCorpus);
-    if (I.FriendSymbol)
+    if (I.id)
     {
         io.defer("name", [&I, domCorpus]{
-            return dom::ValueFrom(I.FriendSymbol, domCorpus).get("name");
+            return dom::ValueFrom(I.id, domCorpus).get("name");
         });
-        io.map("symbol", I.FriendSymbol);
+        io.map("symbol", I.id);
     }
-    else if (I.FriendType)
+    else if (I.Type)
     {
         io.defer("name", [&]{
-            return dom::ValueFrom(I.FriendType, domCorpus).get("name");
+            return dom::ValueFrom(I.Type, domCorpus).get("name");
         });
-        io.map("type", I.FriendType);
+        io.map("type", I.Type);
     }
 }
 
