@@ -10,6 +10,7 @@
 |===
 | Name
 | <<T,`T`>> 
+| <<U,`U`>> 
 |===
 
 === Functions
@@ -27,11 +28,33 @@
 
 === Synopsis
 
-Declared in `&lt;friend&hyphen;1&period;cpp&gt;`
+Declared in `&lt;friend&hyphen;fn&hyphen;multi&hyphen;free&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct T;
+----
+
+=== Friends
+
+[cols=2]
+|===
+| Name
+| Description
+| `<<f,f>>`
+| f
+|===
+
+[#U]
+== U
+
+=== Synopsis
+
+Declared in `&lt;friend&hyphen;fn&hyphen;multi&hyphen;free&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct U;
 ----
 
 === Friends
@@ -51,7 +74,7 @@ f
 
 === Synopsis
 
-Declared in `&lt;friend&hyphen;1&period;cpp&gt;`
+Declared in `&lt;friend&hyphen;fn&hyphen;multi&hyphen;free&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----

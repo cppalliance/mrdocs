@@ -18,30 +18,20 @@
     See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
 --}}
 {{! We remove whitespace between all tag so the result is in a single line ~}}
-{{~#if (ne kind "friend")~}}
-    {{~#if name~}}
-        {{! General case: linked parent symbols followed by the symbol name ~}}
-        {{#each parents~}}
-            {{#if name~}}
-                {{>symbol/name . link=. nolink=../nolink}}::
-            {{~/if}}
-        {{~/each}}{{>symbol/name .}}
-    {{~else~}}
-        {{! Unnamed symbol: use the symbol type in the title ~}}
-        {{~#if parent~}}
-            {{! Symbol with no name but with a parent ~}}
-            Unnamed
-        {{~else~}}
-            {{! Symbol with no name and no parent: Global symbol ~}}
-            Global
-        {{~/if}} {{or tag kind~}}
-    {{~/if~}}
+{{~#if name~}}
+    {{! General case: linked parent symbols followed by the symbol name ~}}
+    {{#each parents~}}
+        {{#if name~}}
+            {{>symbol/name . link=. nolink=../nolink}}::
+        {{~/if}}
+    {{~/each}}{{>symbol/name .}}
 {{~else~}}
-    {{~#if symbol~}}
-        {{! Friend symbol: use the befriended symbol ~}}
-        {{>symbol/qualified-name symbol nolink=nolink ~}}
+    {{! Unnamed symbol: use the symbol type in the title ~}}
+    {{~#if parent~}}
+        {{! Symbol with no name but with a parent ~}}
+        Unnamed
     {{~else~}}
-        {{! Friend type: use the type name ~}}
-        {{~>type/declarator type ~}}
-    {{~/if~}}
+        {{! Symbol with no name and no parent: Global symbol ~}}
+        Global
+    {{~/if}} {{or tag kind~}}
 {{~/if~}}

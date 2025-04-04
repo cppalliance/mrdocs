@@ -83,7 +83,7 @@
 | Description
 {{#each symbol.friends }}
 {{#if symbol}}
-| {{#>markup/code}}{{> symbol/name symbol link=symbol }}{{/markup/code}}
+| {{#>markup/code}}{{> symbol/qualified-name symbol link=symbol }}{{/markup/code}}
 | {{> javadoc/inline-brief symbol.doc.brief }}
 {{else}}
 | {{#>markup/code}}{{> type/declarator type }}{{/markup/code}}
