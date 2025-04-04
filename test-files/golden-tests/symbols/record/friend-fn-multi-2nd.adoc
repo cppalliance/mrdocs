@@ -28,7 +28,7 @@
 
 === Synopsis
 
-Declared in `&lt;friend&hyphen;4&period;cpp&gt;`
+Declared in `&lt;friend&hyphen;fn&hyphen;multi&hyphen;2nd&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -50,7 +50,7 @@ struct T;
 
 === Synopsis
 
-Declared in `&lt;friend&hyphen;4&period;cpp&gt;`
+Declared in `&lt;friend&hyphen;fn&hyphen;multi&hyphen;2nd&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -74,7 +74,7 @@ U&colon;&colon;f
 
 === Synopsis
 
-Declared in `&lt;friend&hyphen;4&period;cpp&gt;`
+Declared in `&lt;friend&hyphen;fn&hyphen;multi&hyphen;2nd&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
