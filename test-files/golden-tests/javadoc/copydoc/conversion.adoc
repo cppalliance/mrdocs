@@ -32,7 +32,7 @@ struct A;
 |===
 | Name
 | Description
-| <<A-operator_assign-0d,`operator&equals;`>> 
+| <<A-operator_assign-04,`operator&equals;`>> 
 | Convert a string to A
 | <<A-2conversion-02,`operator string&lowbar;type`>> 
 | Convert A to a string
@@ -40,7 +40,7 @@ struct A;
 | Convert A to a string
 |===
 
-[#A-operator_assign-0d]
+[#A-operator_assign-04]
 == <<A,A>>::operator&equals;
 
 Convert a string to A

@@ -12,7 +12,7 @@
 | Description
 | <<bar,`bar`>> 
 | Brief from `foo()`
-| <<foo-05,`foo`>> 
+| <<foo-02,`foo`>> 
 | `foo` overloads
 |===
 
@@ -50,7 +50,7 @@ A boolean value&period;
 | An array of integers&period;
 |===
 
-[#foo-05]
+[#foo-02]
 == foo
 
 `foo` overloads

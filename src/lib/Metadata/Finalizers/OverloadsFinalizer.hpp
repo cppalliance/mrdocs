@@ -38,7 +38,8 @@ class OverloadsFinalizer
     void
     foldOverloads(
         SymbolID const& contextId,
-        std::vector<SymbolID>& functionIds);
+        std::vector<SymbolID>& functionIds,
+        bool isStatic);
 
 public:
     OverloadsFinalizer(CorpusImpl& corpus)

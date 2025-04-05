@@ -61,9 +61,9 @@ struct A;
 | Description
 | <<N-A-f-05,`f`>> 
 | Reference function
-| <<N-A-g-0d,`g`>> 
+| <<N-A-g-06e,`g`>> 
 | `g` overloads
-| <<N-A-h-0b,`h`>> 
+| <<N-A-h-05,`h`>> 
 | `h` overloads
 |===
 
@@ -418,7 +418,7 @@ Documentation for the reference function
 | Qualified param
 |===
 
-[#N-A-g-0d]
+[#N-A-g-06e]
 == <<N,N>>::<<N-A,A>>::g
 
 `g` overloads
@@ -444,10 +444,10 @@ Fail
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<N-A-g-06,g>>(int a);
+<<N-A-g-06c,g>>(int a);
 ----
 
-[.small]#<<N-A-g-06,_» more&period;&period;&period;_>>#
+[.small]#<<N-A-g-06c,_» more&period;&period;&period;_>>#
 
 === Parameters
 
@@ -488,7 +488,7 @@ Documentation for the reference function
 | Qualified param
 |===
 
-[#N-A-g-06]
+[#N-A-g-06c]
 == <<N,N>>::<<N-A,A>>::g
 
 Fail
@@ -517,7 +517,7 @@ Function with same number of parameters but different types&period; This should 
 | Fundamental type parameter
 |===
 
-[#N-A-h-0b]
+[#N-A-h-05]
 == <<N,N>>::<<N-A,A>>::h
 
 `h` overloads

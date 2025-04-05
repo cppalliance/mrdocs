@@ -30,11 +30,11 @@ class C;
 |===
 | Name
 | Description
-| <<C-foo-01,`foo`>> 
+| <<C-foo-0e,`foo`>> 
 | 
 |===
 
-[#C-foo-01]
+[#C-foo-0e]
 == <<C,C>>::foo
 
 === Synopses

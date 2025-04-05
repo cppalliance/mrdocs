@@ -19,9 +19,9 @@
 |===
 | Name
 | Description
-| <<f-0e,`f`>> 
+| <<f-0c,`f`>> 
 | 
-| <<operator_eq-0d,`operator&equals;&equals;`>> 
+| <<operator_eq-073,`operator&equals;&equals;`>> 
 | Equality operators
 |===
 
@@ -43,7 +43,7 @@ struct A;
 |===
 | Name
 | Description
-| <<A-f-00,`f`>> 
+| <<A-f-07,`f`>> 
 | 
 |===
 
@@ -53,7 +53,7 @@ struct A;
 |===
 | Name
 | Description
-| <<A-g-0e,`g`>> 
+| <<A-g-0d,`g`>> 
 | 
 |===
 
@@ -69,7 +69,7 @@ struct A;
 | Equality operator
 |===
 
-[#A-f-00]
+[#A-f-07]
 == <<A,A>>::f
 
 === Synopses
@@ -120,7 +120,7 @@ int
 f(int);
 ----
 
-[#A-g-0e]
+[#A-g-0d]
 == <<A,A>>::g
 
 === Synopses
@@ -187,7 +187,7 @@ Declared in `&lt;overloads&period;cpp&gt;`
 struct B;
 ----
 
-[#f-0e]
+[#f-0c]
 == f
 
 === Synopses
@@ -238,7 +238,7 @@ int
 f(int);
 ----
 
-[#operator_eq-0d]
+[#operator_eq-073]
 == operator&equals;&equals;
 
 Equality operators
@@ -292,12 +292,12 @@ Equality operator
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
-<<operator_eq-07,operator&equals;&equals;>>(
+<<operator_eq-071,operator&equals;&equals;>>(
     <<B,B>> lhs,
     int rhs);
 ----
 
-[.small]#<<operator_eq-07,_» more&period;&period;&period;_>>#
+[.small]#<<operator_eq-071,_» more&period;&period;&period;_>>#
 
 [#operator_eq-0e]
 == operator&equals;&equals;
@@ -398,7 +398,7 @@ operator&equals;&equals;(
 | The right operand
 |===
 
-[#operator_eq-07]
+[#operator_eq-071]
 == operator&equals;&equals;
 
 Equality operator

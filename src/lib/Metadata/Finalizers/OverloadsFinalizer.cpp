@@ -9,6 +9,7 @@
 //
 
 #include "OverloadsFinalizer.hpp"
+#include <mrdocs/Support/Assert.hpp>
 
 namespace clang::mrdocs {
 
@@ -93,7 +94,7 @@ findBaseClassPermutation(
 
 void
 OverloadsFinalizer::
-foldOverloads(SymbolID const& contextId, std::vector<SymbolID>& functionIds)
+foldOverloads(SymbolID const& contextId, std::vector<SymbolID>& functionIds, bool isStatic)
 {
     for (auto functionIdIt = functionIds.begin();
          functionIdIt != functionIds.end();
@@ -153,7 +154,7 @@ foldOverloads(SymbolID const& contextId, std::vector<SymbolID>& functionIds)
         // FunctionInfo is not unique and there's no equivalent
         // overload set in base classes, so we merge it with the
         // other FunctionInfos into a new OverloadsInfo
-        OverloadsInfo O(contextId, function->Name);
+        OverloadsInfo O(contextId, function->Name, function->Access, isStatic);
         addMember(O, *function);
         *functionIdIt = O.id;
         auto const itOffset = functionIdIt - functionIds.begin();
@@ -170,7 +171,7 @@ foldOverloads(SymbolID const& contextId, std::vector<SymbolID>& functionIds)
             }
         }
         functionIdIt = functionIds.begin() + itOffset;
-        corpus_.info_.emplace(std::make_unique<OverloadsInfo>(std::move(O)));
+        MRDOCS_ASSERT(corpus_.info_.emplace(std::make_unique<OverloadsInfo>(std::move(O))).second);
     }
 }
 
@@ -178,7 +179,7 @@ void
 OverloadsFinalizer::
 operator()(NamespaceInfo& I)
 {
-    foldOverloads(I.id, I.Members.Functions);
+    foldOverloads(I.id, I.Members.Functions, true);
     foldRecordMembers(I.Members.Records);
     foldNamespaceMembers(I.Members.Namespaces);
 }
@@ -203,12 +204,12 @@ operator()(RecordInfo& I)
         MRDOCS_CHECK_OR(baseRecord);
         operator()(*baseRecord);
     }
-    foldOverloads(I.id, I.Interface.Public.Functions);
-    foldOverloads(I.id, I.Interface.Protected.Functions);
-    foldOverloads(I.id, I.Interface.Private.Functions);
-    foldOverloads(I.id, I.Interface.Public.StaticFunctions);
-    foldOverloads(I.id, I.Interface.Protected.StaticFunctions);
-    foldOverloads(I.id, I.Interface.Private.StaticFunctions);
+    foldOverloads(I.id, I.Interface.Public.Functions, false);
+    foldOverloads(I.id, I.Interface.Protected.Functions, false);
+    foldOverloads(I.id, I.Interface.Private.Functions, false);
+    foldOverloads(I.id, I.Interface.Public.StaticFunctions, true);
+    foldOverloads(I.id, I.Interface.Protected.StaticFunctions, true);
+    foldOverloads(I.id, I.Interface.Private.StaticFunctions, true);
     foldRecordMembers(I.Interface.Public.Records);
     foldRecordMembers(I.Interface.Protected.Records);
     foldRecordMembers(I.Interface.Private.Records);

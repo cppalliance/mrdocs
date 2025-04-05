@@ -30,11 +30,11 @@ struct A;
 |===
 | Name
 | Description
-| <<A-operator_call-0d,`operator()`>> 
+| <<A-operator_call-08,`operator()`>> 
 | Return true if ch is in the character set&period;
 |===
 
-[#A-operator_call-0d]
+[#A-operator_call-08]
 == <<A,A>>::operator()
 
 Return true if ch is in the character set&period;

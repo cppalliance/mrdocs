@@ -30,11 +30,11 @@ struct A;
 |===
 | Name
 | Description
-| <<A-f-00,`f`>> 
+| <<A-f-07,`f`>> 
 | 
 |===
 
-[#A-f-00]
+[#A-f-07]
 == <<A,A>>::f
 
 === Synopses

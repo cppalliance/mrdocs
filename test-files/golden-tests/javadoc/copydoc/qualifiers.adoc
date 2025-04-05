@@ -39,13 +39,13 @@ struct A;
 |===
 | Name
 | Description
-| <<A-begin-05,`begin`>> 
+| <<A-begin-03,`begin`>> 
 | `begin` overloads
 | <<A-cbegin,`cbegin`>> 
 | Return a const iterator to the beginning
 | <<A-crvalue,`crvalue`>> 
 | An const rvalue reference to A
-| <<A-ref-0f,`ref`>> 
+| <<A-ref-05f,`ref`>> 
 | `ref` overloads
 | <<A-rvalue,`rvalue`>> 
 | An rvalue reference to A
@@ -75,7 +75,7 @@ Declared in `&lt;qualifiers&period;cpp&gt;`
 class iterator;
 ----
 
-[#A-begin-05]
+[#A-begin-03]
 == <<A,A>>::begin
 
 `begin` overloads
@@ -199,7 +199,7 @@ crvalue() const &amp;&amp;;
 
 A reference to A
 
-[#A-ref-0f]
+[#A-ref-05f]
 == <<A,A>>::ref
 
 `ref` overloads
@@ -214,10 +214,10 @@ An lvalue reference to A
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 <<A,A>>&
-<<A-ref-05,ref>>() &amp;;
+<<A-ref-051,ref>>() &amp;;
 ----
 
-[.small]#<<A-ref-05,_» more&period;&period;&period;_>>#
+[.small]#<<A-ref-051,_» more&period;&period;&period;_>>#
 
 An rvalue reference to A
 
@@ -256,7 +256,7 @@ An const rvalue reference to A
 
 A reference to A
 
-[#A-ref-05]
+[#A-ref-051]
 == <<A,A>>::ref
 
 An lvalue reference to A
