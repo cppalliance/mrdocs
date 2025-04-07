@@ -13,7 +13,9 @@
 
 #include "ExecutionContext.hpp"
 #include "lib/Metadata/Reduce.hpp"
+#include "mrdocs/Support/Assert.hpp"
 #include <mrdocs/Metadata.hpp>
+#include <mrdocs/Metadata/Info/Namespace.hpp>
 #include <ranges>
 
 namespace clang {
@@ -69,7 +71,11 @@ report(
     {
         auto it = info_.find(other->id);
         MRDOCS_ASSERT(it != info_.end());
-        merge(**it, std::move(*other));
+        visit(**it, [&]<typename T>(T& target) {
+            auto *source = dynamic_cast<T*>(other.get());
+            MRDOCS_ASSERT(source);
+            merge(target, std::move(*source));
+        });
     }
 
     // Merge diagnostics and report any new messages.
