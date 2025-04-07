@@ -132,7 +132,7 @@ struct C
 |===
 | Name
 | Description
-| <<C-f-082,`f`>> 
+| <<C-f-0e,`f`>> 
 | 
 |===
 
@@ -141,11 +141,11 @@ struct C
 [cols=1]
 |===
 | Name
-| <<C-f-081,`f`>> 
+| <<C-f-08,`f`>> 
 | <<C-f-03,`f`>> 
 |===
 
-[#C-f-082]
+[#C-f-0e]
 == <<C,C>>::f
 
 === Synopses
@@ -196,7 +196,7 @@ void
 f(int);
 ----
 
-[#C-f-081]
+[#C-f-08]
 == <<C,C>>::f
 
 === Synopsis

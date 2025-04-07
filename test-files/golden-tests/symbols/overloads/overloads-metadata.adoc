@@ -10,11 +10,11 @@
 |===
 | Name
 | Description
-| <<f-0e,`f`>> 
+| <<f-0c,`f`>> 
 | Test function
 |===
 
-[#f-0e]
+[#f-0c]
 == f
 
 Test function

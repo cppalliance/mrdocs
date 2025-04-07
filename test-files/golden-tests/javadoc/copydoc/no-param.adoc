@@ -14,7 +14,7 @@
 | Brief from `foo()`
 | <<copyfromOverloads,`copyfromOverloads`>> 
 | Brief from `foo()`
-| <<foo-05,`foo`>> 
+| <<foo-02,`foo`>> 
 | Brief from `foo()`
 |===
 
@@ -68,7 +68,7 @@ This documentation is copied from the page containing all overloads of foo&perio
 
 A boolean value&period;
 
-[#foo-05]
+[#foo-02]
 == foo
 
 Brief from `foo()`

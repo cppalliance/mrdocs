@@ -12,7 +12,8 @@
 #define MRDOCS_API_METADATA_OVERLOADS_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <ranges>
+#include <mrdocs/Metadata/Info.hpp>
+#include <mrdocs/Metadata/Info/Function.hpp>
 
 namespace clang::mrdocs {
 
@@ -41,7 +42,7 @@ struct OverloadsInfo final
     }
 
     explicit
-    OverloadsInfo(SymbolID const& Parent, std::string_view Name) noexcept;
+    OverloadsInfo(SymbolID const& Parent, std::string_view Name, AccessKind Access, bool isStatic) noexcept;
 };
 
 MRDOCS_DECL

@@ -10,11 +10,11 @@
 |===
 | Name
 | Description
-| <<f-0e,`f`>> 
+| <<f-0c7,`f`>> 
 | 
 |===
 
-[#f-0e]
+[#f-0c7]
 == f
 
 === Synopses
@@ -36,10 +36,10 @@ void
 ----
 template&lt;&gt;
 void
-<<f-0c,f>>&lt;int&gt;();
+<<f-0ca,f>>&lt;int&gt;();
 ----
 
-[.small]#<<f-0c,_» more&period;&period;&period;_>>#
+[.small]#<<f-0ca,_» more&period;&period;&period;_>>#
 
 [#f-03]
 == f
@@ -55,7 +55,7 @@ void
 f();
 ----
 
-[#f-0c]
+[#f-0ca]
 == f&lt;int&gt;
 
 === Synopsis

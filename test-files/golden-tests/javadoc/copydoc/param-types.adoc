@@ -42,9 +42,9 @@
 |===
 | Name
 | Description
-| <<f-0e,`f`>> 
+| <<f-0c7,`f`>> 
 | `f` overloads
-| <<g-0d,`g`>> 
+| <<g-0f,`g`>> 
 | `g` overloads
 |===
 
@@ -239,7 +239,7 @@ struct paramType;
 | Reference function&period;
 | <<f-0b5,`f`>>
 | struct param function
-| <<f-0c,`f`>>
+| <<f-0c1,`f`>>
 | Non&hyphen;variadic function
 |===
 
@@ -265,7 +265,7 @@ enum testEnum;
 | Enum param function
 |===
 
-[#f-0e]
+[#f-0c7]
 == f
 
 `f` overloads
@@ -324,10 +324,10 @@ Non&hyphen;variadic function
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<f-0c,f>>(<<paramType,paramType>>&lt;3&gt; a);
+<<f-0c1,f>>(<<paramType,paramType>>&lt;3&gt; a);
 ----
 
-[.small]#<<f-0c,_» more&period;&period;&period;_>>#
+[.small]#<<f-0c1,_» more&period;&period;&period;_>>#
 
 struct param function
 
@@ -506,7 +506,7 @@ This reference uses the `&period;&period;&period;` keyword&period;
 | The first parameter of g
 |===
 
-[#f-0c]
+[#f-0c1]
 == f
 
 Non&hyphen;variadic function
@@ -692,7 +692,7 @@ This reference uses the qualified identifier `N&colon;&colon;M&colon;&colon;Q`&p
 | The first parameter of g
 |===
 
-[#g-0d]
+[#g-0f]
 == g
 
 `g` overloads

@@ -891,6 +891,8 @@ struct Brief final : Paragraph
         operator=(text);
     }
 
+    Brief(Brief const& other) = default;
+
     Brief&
     operator=(Brief const& other) = default;
 

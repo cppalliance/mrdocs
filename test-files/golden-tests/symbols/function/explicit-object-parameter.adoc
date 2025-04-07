@@ -30,11 +30,11 @@ struct Optional;
 |===
 | Name
 | Description
-| <<Optional-value-01,`value`>> 
+| <<Optional-value-0c,`value`>> 
 | 
 |===
 
-[#Optional-value-01]
+[#Optional-value-0c]
 == <<Optional,Optional>>::value
 
 === Synopses

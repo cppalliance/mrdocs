@@ -22,11 +22,11 @@
 |===
 | Name
 | Description
-| <<no_way_to_infer_this_brief-0e,`no&lowbar;way&lowbar;to&lowbar;infer&lowbar;this&lowbar;brief`>> 
+| <<no_way_to_infer_this_brief-04,`no&lowbar;way&lowbar;to&lowbar;infer&lowbar;this&lowbar;brief`>> 
 | `no&lowbar;way&lowbar;to&lowbar;infer&lowbar;this&lowbar;brief` overloads
-| <<operator_plus-0dd,`operator&plus;`>> 
+| <<operator_plus-09,`operator&plus;`>> 
 | Unary plus operators
-| <<sameBrief-08,`sameBrief`>> 
+| <<sameBrief-07,`sameBrief`>> 
 | Function with same brief
 |===
 
@@ -50,13 +50,13 @@ struct A;
 |===
 | Name
 | Description
-| <<A-2constructor-08,`A`>>         [.small]#[constructor]#
+| <<A-2constructor-0f,`A`>>         [.small]#[constructor]#
 | Constructors
-| <<A-operator_assign-0d,`operator&equals;`>> 
+| <<A-operator_assign-04c,`operator&equals;`>> 
 | Assignment operators
-| <<A-operator_plus-07,`operator&plus;`>> 
+| <<A-operator_plus-00,`operator&plus;`>> 
 | Addition operators
-| <<A-operator_minus-0a,`operator&hyphen;`>> 
+| <<A-operator_minus-09,`operator&hyphen;`>> 
 | Unary minus operators
 |===
 
@@ -66,11 +66,11 @@ struct A;
 |===
 | Name
 | Description
-| <<operator_plus-0d7,`operator&plus;`>>
+| <<operator_plus-0d,`operator&plus;`>>
 | Unary operator for A
 |===
 
-[#A-2constructor-08]
+[#A-2constructor-0f]
 == <<A,A>>::A
 
 Constructors
@@ -147,7 +147,7 @@ A(int a);
 | Describe a
 |===
 
-[#A-operator_assign-0d]
+[#A-operator_assign-04c]
 == <<A,A>>::operator&equals;
 
 Assignment operators
@@ -162,10 +162,10 @@ Assign from A
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 <<A,A>>&
-<<A-operator_assign-04,operator&equals;>>(<<A,A>> const& a);
+<<A-operator_assign-045,operator&equals;>>(<<A,A>> const& a);
 ----
 
-[.small]#<<A-operator_assign-04,_» more&period;&period;&period;_>>#
+[.small]#<<A-operator_assign-045,_» more&period;&period;&period;_>>#
 
 Assign from int
 
@@ -192,7 +192,7 @@ Assign from int
 | Describe a
 |===
 
-[#A-operator_assign-04]
+[#A-operator_assign-045]
 == <<A,A>>::operator&equals;
 
 Assign from A
@@ -250,7 +250,7 @@ operator&equals;(int a);
 | Describe b
 |===
 
-[#A-operator_plus-07]
+[#A-operator_plus-00]
 == <<A,A>>::operator&plus;
 
 Addition operators
@@ -353,7 +353,7 @@ operator&plus;(<<A,A>> const& a);
 | Describe a
 |===
 
-[#A-operator_minus-0a]
+[#A-operator_minus-09]
 == <<A,A>>::operator&hyphen;
 
 Unary minus operators
@@ -468,7 +468,7 @@ struct B;
 | Unary operator for B
 |===
 
-[#no_way_to_infer_this_brief-0e]
+[#no_way_to_infer_this_brief-04]
 == no&lowbar;way&lowbar;to&lowbar;infer&lowbar;this&lowbar;brief
 
 `no&lowbar;way&lowbar;to&lowbar;infer&lowbar;this&lowbar;brief` overloads
@@ -549,7 +549,7 @@ no&lowbar;way&lowbar;to&lowbar;infer&lowbar;this&lowbar;brief(int a);
 | Describe a
 |===
 
-[#operator_plus-0dd]
+[#operator_plus-09]
 == operator&plus;
 
 Unary plus operators
@@ -564,10 +564,10 @@ Unary operator for A
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int
-<<operator_plus-0d7,operator&plus;>>(<<A,A>> const& value);
+<<operator_plus-0d,operator&plus;>>(<<A,A>> const& value);
 ----
 
-[.small]#<<operator_plus-0d7,_» more&period;&period;&period;_>>#
+[.small]#<<operator_plus-0d,_» more&period;&period;&period;_>>#
 
 Unary operator for B
 
@@ -584,7 +584,7 @@ int
 
 Result
 
-[#operator_plus-0d7]
+[#operator_plus-0d]
 == operator&plus;
 
 Unary operator for A
@@ -642,7 +642,7 @@ Result
 | The operand
 |===
 
-[#sameBrief-08]
+[#sameBrief-07]
 == sameBrief
 
 Function with same brief

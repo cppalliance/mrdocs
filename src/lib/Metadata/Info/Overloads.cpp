@@ -21,10 +21,10 @@
 namespace clang::mrdocs {
 
 OverloadsInfo::
-OverloadsInfo(SymbolID const& Parent, std::string_view Name) noexcept
+OverloadsInfo(SymbolID const& Parent, std::string_view Name, AccessKind access, bool isStatic) noexcept
     : InfoCommonBase(
         SymbolID::createFromString(
-            fmt::format("{}-{}", toBase16(Parent), Name)))
+            fmt::format("{}-{}-{}-{}", toBase16(Parent), Name, toString(access), isStatic)))
 {
     this->Parent = Parent;
 }

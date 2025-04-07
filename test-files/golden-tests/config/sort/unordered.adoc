@@ -34,7 +34,7 @@
 | Negation operator
 | <<h,`h`>> 
 | 
-| <<g-0d,`g`>> 
+| <<g-0f,`g`>> 
 | 
 | <<f,`f`>> 
 | 
@@ -508,7 +508,7 @@ void
 h();
 ----
 
-[#g-0d]
+[#g-0f]
 == g
 
 === Synopses

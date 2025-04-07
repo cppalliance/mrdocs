@@ -10,7 +10,7 @@
 |===
 | Name
 | Description
-| <<f-0e,`f`>> 
+| <<f-0c,`f`>> 
 | `f` overloads
 | <<g,`g`>> 
 | Brief
@@ -18,7 +18,7 @@
 | Brief
 |===
 
-[#f-0e]
+[#f-0c]
 == f
 
 `f` overloads

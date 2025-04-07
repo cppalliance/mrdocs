@@ -33,11 +33,11 @@ struct Explicit;
 |===
 | Name
 | Description
-| <<Explicit-2constructor-08,`Explicit`>>         [.small]#[constructor]#
+| <<Explicit-2constructor-04,`Explicit`>>         [.small]#[constructor]#
 | Constructors
 |===
 
-[#Explicit-2constructor-08]
+[#Explicit-2constructor-04]
 == <<Explicit,Explicit>>::Explicit
 
 Constructors
@@ -193,11 +193,11 @@ struct ExplicitExpression;
 |===
 | Name
 | Description
-| <<ExplicitExpression-2constructor-026,`ExplicitExpression`>>         [.small]#[constructor]#
+| <<ExplicitExpression-2constructor-07,`ExplicitExpression`>>         [.small]#[constructor]#
 | Constructors
 |===
 
-[#ExplicitExpression-2constructor-026]
+[#ExplicitExpression-2constructor-07]
 == <<ExplicitExpression,ExplicitExpression>>::ExplicitExpression
 
 Constructors
@@ -245,12 +245,12 @@ Constructor
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit(B)
-<<ExplicitExpression-2constructor-027,ExplicitExpression>>(
+<<ExplicitExpression-2constructor-02,ExplicitExpression>>(
     int,
     int);
 ----
 
-[.small]#<<ExplicitExpression-2constructor-027,_» more&period;&period;&period;_>>#
+[.small]#<<ExplicitExpression-2constructor-02,_» more&period;&period;&period;_>>#
 
 [#ExplicitExpression-2constructor-0b]
 == <<ExplicitExpression,ExplicitExpression>>::ExplicitExpression
@@ -317,7 +317,7 @@ ExplicitExpression(<<ExplicitExpression,ExplicitExpression>>&& other) noexcept;
 | The object to move construct from
 |===
 
-[#ExplicitExpression-2constructor-027]
+[#ExplicitExpression-2constructor-02]
 == <<ExplicitExpression,ExplicitExpression>>::ExplicitExpression
 
 Constructor
@@ -352,11 +352,11 @@ struct ExplicitFalse;
 |===
 | Name
 | Description
-| <<ExplicitFalse-2constructor-04c,`ExplicitFalse`>>         [.small]#[constructor]#
+| <<ExplicitFalse-2constructor-07,`ExplicitFalse`>>         [.small]#[constructor]#
 | Constructors
 |===
 
-[#ExplicitFalse-2constructor-04c]
+[#ExplicitFalse-2constructor-07]
 == <<ExplicitFalse,ExplicitFalse>>::ExplicitFalse
 
 Constructors
@@ -404,12 +404,12 @@ Constructor
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 explicit(false)
-<<ExplicitFalse-2constructor-04f,ExplicitFalse>>(
+<<ExplicitFalse-2constructor-04,ExplicitFalse>>(
     int,
     int);
 ----
 
-[.small]#<<ExplicitFalse-2constructor-04f,_» more&period;&period;&period;_>>#
+[.small]#<<ExplicitFalse-2constructor-04,_» more&period;&period;&period;_>>#
 
 [#ExplicitFalse-2constructor-01]
 == <<ExplicitFalse,ExplicitFalse>>::ExplicitFalse
@@ -476,7 +476,7 @@ ExplicitFalse(<<ExplicitFalse,ExplicitFalse>>&& other) noexcept;
 | The object to move construct from
 |===
 
-[#ExplicitFalse-2constructor-04f]
+[#ExplicitFalse-2constructor-04]
 == <<ExplicitFalse,ExplicitFalse>>::ExplicitFalse
 
 Constructor
@@ -511,11 +511,11 @@ struct ExplicitTrue;
 |===
 | Name
 | Description
-| <<ExplicitTrue-2constructor-0f,`ExplicitTrue`>>         [.small]#[constructor]#
+| <<ExplicitTrue-2constructor-01,`ExplicitTrue`>>         [.small]#[constructor]#
 | Constructors
 |===
 
-[#ExplicitTrue-2constructor-0f]
+[#ExplicitTrue-2constructor-01]
 == <<ExplicitTrue,ExplicitTrue>>::ExplicitTrue
 
 Constructors

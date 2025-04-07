@@ -21,7 +21,7 @@
 | Description
 | <<f,`f`>> 
 | 
-| <<g-0d,`g`>> 
+| <<g-0f,`g`>> 
 | 
 |===
 
@@ -68,7 +68,7 @@ f()
 requires (sizeof(U) &equals;&equals; 2);
 ----
 
-[#g-0d]
+[#g-0f]
 == g
 
 === Synopses

@@ -1,0 +1,308 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols=1]
+|===
+| Name
+| <<C,`C`>> 
+|===
+
+[#C]
+== C
+
+=== Synopsis
+
+Declared in `&lt;visibility&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class C;
+----
+
+=== Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| <<C-foo-0e,`foo`>> 
+| 
+|===
+
+=== Static Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| <<C-foo-03,`foo`>> 
+| 
+|===
+
+=== Protected Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| <<C-foo-04c,`foo`>> 
+| 
+|===
+
+=== Protected Static Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| <<C-foo-048,`foo`>> 
+| 
+|===
+
+[#C-foo-0e]
+== <<C,C>>::foo
+
+=== Synopses
+
+Declared in `&lt;visibility&period;cpp&gt;`
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+<<C-foo-0b,foo>>();
+----
+
+[.small]#<<C-foo-0b,_» more&period;&period;&period;_>>#
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+<<C-foo-06,foo>>(bool);
+----
+
+[.small]#<<C-foo-06,_» more&period;&period;&period;_>>#
+
+[#C-foo-0b]
+== <<C,C>>::foo
+
+=== Synopsis
+
+Declared in `&lt;visibility&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+foo();
+----
+
+[#C-foo-06]
+== <<C,C>>::foo
+
+=== Synopsis
+
+Declared in `&lt;visibility&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+foo(bool);
+----
+
+[#C-foo-03]
+== <<C,C>>::foo
+
+=== Synopses
+
+Declared in `&lt;visibility&period;cpp&gt;`
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+static
+int
+<<C-foo-0fc,foo>>(int);
+----
+
+[.small]#<<C-foo-0fc,_» more&period;&period;&period;_>>#
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+static
+int
+<<C-foo-05,foo>>(
+    int,
+    bool);
+----
+
+[.small]#<<C-foo-05,_» more&period;&period;&period;_>>#
+
+[#C-foo-0fc]
+== <<C,C>>::foo
+
+=== Synopsis
+
+Declared in `&lt;visibility&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+static
+int
+foo(int);
+----
+
+[#C-foo-05]
+== <<C,C>>::foo
+
+=== Synopsis
+
+Declared in `&lt;visibility&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+static
+int
+foo(
+    int,
+    bool);
+----
+
+[#C-foo-04c]
+== <<C,C>>::foo
+
+=== Synopses
+
+Declared in `&lt;visibility&period;cpp&gt;`
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+<<C-foo-0a,foo>>(
+    int,
+    int);
+----
+
+[.small]#<<C-foo-0a,_» more&period;&period;&period;_>>#
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+<<C-foo-0c,foo>>(
+    int,
+    int,
+    bool);
+----
+
+[.small]#<<C-foo-0c,_» more&period;&period;&period;_>>#
+
+[#C-foo-0a]
+== <<C,C>>::foo
+
+=== Synopsis
+
+Declared in `&lt;visibility&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+foo(
+    int,
+    int);
+----
+
+[#C-foo-0c]
+== <<C,C>>::foo
+
+=== Synopsis
+
+Declared in `&lt;visibility&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int
+foo(
+    int,
+    int,
+    bool);
+----
+
+[#C-foo-048]
+== <<C,C>>::foo
+
+=== Synopses
+
+Declared in `&lt;visibility&period;cpp&gt;`
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+static
+int
+<<C-foo-00,foo>>(
+    int,
+    int,
+    int);
+----
+
+[.small]#<<C-foo-00,_» more&period;&period;&period;_>>#
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+static
+int
+<<C-foo-0f5,foo>>(
+    int,
+    int,
+    int,
+    bool);
+----
+
+[.small]#<<C-foo-0f5,_» more&period;&period;&period;_>>#
+
+[#C-foo-00]
+== <<C,C>>::foo
+
+=== Synopsis
+
+Declared in `&lt;visibility&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+static
+int
+foo(
+    int,
+    int,
+    int);
+----
+
+[#C-foo-0f5]
+== <<C,C>>::foo
+
+=== Synopsis
+
+Declared in `&lt;visibility&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+static
+int
+foo(
+    int,
+    int,
+    int,
+    bool);
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
