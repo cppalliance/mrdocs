@@ -188,7 +188,8 @@ void
 OverloadsFinalizer::
 operator()(RecordInfo& I)
 {
-    MRDOCS_CHECK_OR(!finalized_.contains(I.id));
+    MRDOCS_CHECK_OR(finalized_.emplace(I.id).second);
+
     for (auto& b: I.Bases)
     {
         auto& BT = b.Type;
@@ -213,7 +214,6 @@ operator()(RecordInfo& I)
     foldRecordMembers(I.Interface.Public.Records);
     foldRecordMembers(I.Interface.Protected.Records);
     foldRecordMembers(I.Interface.Private.Records);
-    finalized_.emplace(I.id);
 }
 
 } // clang::mrdocs
