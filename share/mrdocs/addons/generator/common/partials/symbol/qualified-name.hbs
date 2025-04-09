@@ -11,7 +11,7 @@
 
     See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
 --}}
-{{~#if (and url (not nolink))~}}
+{{~#if url~}}
 {{#>markup/a href=url}}{{>symbol/qualified-name-text}}{{/markup/a~}}
 {{~else~}}
 {{~>symbol/qualified-name-text~}}

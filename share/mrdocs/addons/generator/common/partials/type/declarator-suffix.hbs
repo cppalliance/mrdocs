@@ -1,14 +1,11 @@
 {{!--
-    Renders declaration suffix of a Type Info Object.
+    Renders declaration suffix of a Type Info Object with links to any named components.
 
     The suffix is the part of the declaration that comes after the type name.
     It might include the suffix for pointee types, array element types,
     or function parameters with specifiers.
 
     Expected Context: {Type Info}
-
-    Optional parameters:
-        nolink: If true, types and symbols will not be linked.
 
     Example:
         {{> declarator-suffix type }}
@@ -23,15 +20,15 @@
         )
     {{~/if~}}
     {{! Declarator suffix of the pointee type ~}}
-    {{~>type/declarator-suffix pointee-type nolink=nolink~}}
+    {{~>type/declarator-suffix pointee-type link-components-impl=link-components-impl~}}
 {{else if (eq kind "array")~}}
     {{! Array declarator suffix includes bounds and array element suffix ~}}
     [{{bounds-value}}]
-    {{~>type/declarator-suffix element-type nolink=nolink~}}
+    {{~>type/declarator-suffix element-type link-components-impl=link-components-impl~}}
 {{else if (eq kind "function")~}}
     {{! Function declarator suffix includes parameter types and cv-qualifiers ~}}
     ({{#each param-types~}}
-        {{~>type/declarator nolink=../nolink~}}
+        {{~>type/declarator link-components-impl=link-components-impl~}}
         {{~#unless @last}}, {{/unless~}}
     {{/each~}}
     {{! Include final "..." for variadic functions ~}}
@@ -43,5 +40,5 @@
     {{! Exception spec as literal string ~}}
     {{#if exception-spec}} {{exception-spec}}{{/if~}}
     {{! Declarator suffix of the return type ~}}
-    {{~>type/declarator-suffix return-type nolink=nolink~}}
+    {{~>type/declarator-suffix return-type link-components-impl=link-components-impl~}}
 {{/if}}

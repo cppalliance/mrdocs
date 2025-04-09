@@ -2,12 +2,14 @@
 {{#>markup/tr}}
 {{#>markup/td~}}
 {{~#if isName~}}
+{{!~ The first row is a name-info ~}}
 {{~#if symbol.url~}}
-{{~#>markup/a href=symbol.url}}{{#>markup/code}}{{> symbol/name-info . nolink=true}}{{/markup/code}}{{/markup/a~}}
+{{~#>markup/a href=symbol.url}}{{#>markup/code}}{{> type/name-info-text . }}{{/markup/code}}{{/markup/a~}}
 {{~else~}}
-{{~> symbol/name-info . nolink=true~}}
+{{~> type/name-info-text . ~}}
 {{~/if~}}
 {{~else~}}
+{{!~ The first row is a name-info ~}}
 {{~#>markup/a href=url}}{{#>markup/code}}{{>symbol/name-text .}}{{/markup/code}}{{/markup/a}} {{>symbol/special-function-suffix .~}}
 {{~/if~}}
 {{~/markup/td}}

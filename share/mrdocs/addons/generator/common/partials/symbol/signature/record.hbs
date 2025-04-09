@@ -2,7 +2,7 @@
 {{/if~}}
 {{#if isFriend}}friend {{/if~}}
 {{~tag}} {{#if (contains (arr "explicit" "partial") template.kind)~}}
-    {{>symbol/name template.primary ~}}{{>template/args args=template.args nolink=nolink~}}
+    {{>symbol/name template.primary ~}}{{>template/args args=template.args ~}}
 {{~else~}}
     {{>symbol/name-text symbol ~}}
 {{~/if}}

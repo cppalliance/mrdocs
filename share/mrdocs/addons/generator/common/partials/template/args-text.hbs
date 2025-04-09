@@ -1,5 +1,5 @@
 {{!--
-    Renders all template arguments with links to any named component.
+    Renders all template arguments as text.
 
     This partial renders all template arguments for a template instantiation.
 
@@ -10,7 +10,4 @@
 
     See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
 --}}
-{{ str '<' }}{{~#each args~}}
-{{~>template/arg link-components-impl=../link-components-impl~}}
-{{~#if (not @last)}}, {{/if~}}
-{{~/each~}}{{ str '>' }}
+{{~>template/args link-components-impl=false~}}
