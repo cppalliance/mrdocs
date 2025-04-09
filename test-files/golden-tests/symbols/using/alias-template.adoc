@@ -25,7 +25,7 @@ Declared in `&lt;alias&hyphen;template&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-using C = link:#A[A]&lt;T&gt;;
+using C = link:#A[A&lt;T&gt;];
 ----
 
 [#A]
@@ -87,7 +87,7 @@ Declared in `&lt;alias&hyphen;template&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename U&gt;
-using E = link:#B[B]&lt;T, U&gt;;
+using E = link:#B[B&lt;T, U&gt;];
 ----
 
 

@@ -65,7 +65,7 @@ Declared in `&lt;impl&hyphen;defined&hyphen;member&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-constexpr link:#regular[regular]::link:#regular-absolute_uri_rule_t[absolute&lowbar;uri&lowbar;rule&lowbar;t] regular&lowbar;absolute&lowbar;uri&lowbar;rule = &lcub;&rcub;;
+constexpr link:#regular-absolute_uri_rule_t[regular::absolute&lowbar;uri&lowbar;rule&lowbar;t] regular&lowbar;absolute&lowbar;uri&lowbar;rule = &lcub;&rcub;;
 ----
 
 

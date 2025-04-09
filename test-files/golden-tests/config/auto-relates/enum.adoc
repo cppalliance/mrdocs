@@ -150,7 +150,7 @@ Declared in `&lt;enum&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#SmallVector[SmallVector]&lt;link:#E[E], 3&gt;
+link:#SmallVector[SmallVector&lt;E, 3&gt;]
 makeEs();
 ----
 
@@ -169,7 +169,7 @@ Declared in `&lt;enum&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#Result[Result]&lt;link:#E[E]&gt;
+link:#Result[Result&lt;E&gt;]
 tryMakeE();
 ----
 

@@ -269,7 +269,7 @@ Declared in `&lt;sfinae&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;class T&gt;
-link:#B[B]::link:#B-C[C]
+link:#B-C[B::C]
 f3(T value)
 requires std&colon;&colon;is&lowbar;integral&lowbar;v&lt;T&gt;;
 ----

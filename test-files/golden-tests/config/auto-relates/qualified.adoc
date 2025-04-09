@@ -93,7 +93,7 @@ Declared in `&lt;qualified&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f4(link:#N[N]::link:#N-B[B] const&);
+f4(link:#N-B[N::B] const&);
 ----
 
 [#N-B]
@@ -153,7 +153,7 @@ Declared in `&lt;qualified&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f3(link:#N[N]::link:#N-B[B] const&);
+f3(link:#N-B[N::B] const&);
 ----
 
 [#O]
@@ -181,7 +181,7 @@ Declared in `&lt;qualified&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f6(link:#N[N]::link:#N-B[B] const&);
+f6(link:#N-B[N::B] const&);
 ----
 
 [#A]
@@ -237,7 +237,7 @@ Declared in `&lt;qualified&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f5(link:#N[N]::link:#N-B[B] const&);
+f5(link:#N-B[N::B] const&);
 ----
 
 

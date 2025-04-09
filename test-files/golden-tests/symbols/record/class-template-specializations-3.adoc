@@ -822,7 +822,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#A-0e[A]&lt;float&gt;::link:#A-01-B-08[B]&lt;double&gt; m0;
+link:#A-01-B-08[A&lt;float&gt;::B&lt;double&gt;] m0;
 ----
 
 [#E-m1]
@@ -834,7 +834,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#A-0e[A]&lt;long&gt;::link:#A-0c-B-0d[B]&lt;double&gt; m1;
+link:#A-0c-B-0d[A&lt;long&gt;::B&lt;double&gt;] m1;
 ----
 
 [#E-m10]
@@ -846,7 +846,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#A-0e[A]&lt;float&gt;::link:#A-01-B-08[B]&lt;double&gt;::link:#A-01-B-08-D-0af[D]&lt;bool&gt; m10;
+link:#A-01-B-08-D-0af[A&lt;float&gt;::B&lt;double&gt;::D&lt;bool&gt;] m10;
 ----
 
 [#E-m11]
@@ -858,7 +858,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#A-0e[A]&lt;long&gt;::link:#A-0c-B-0d[B]&lt;double&gt;::link:#A-0c-B-0d-D-03[D]&lt;bool&gt; m11;
+link:#A-0c-B-0d-D-03[A&lt;long&gt;::B&lt;double&gt;::D&lt;bool&gt;] m11;
 ----
 
 [#E-m12]
@@ -870,7 +870,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#A-0e[A]&lt;long&gt;::link:#A-0c-B-0b[B]&lt;float&gt;::link:#A-0c-B-08-D-03[D]&lt;bool&gt; m12;
+link:#A-0c-B-08-D-03[A&lt;long&gt;::B&lt;float&gt;::D&lt;bool&gt;] m12;
 ----
 
 [#E-m13]
@@ -882,7 +882,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#A-0e[A]&lt;unsigned int&gt;::link:#A-07-B-03a[B]&lt;float&gt;::link:#A-07-B-05-D-01[D]&lt;bool&gt; m13;
+link:#A-07-B-05-D-01[A&lt;unsigned int&gt;::B&lt;float&gt;::D&lt;bool&gt;] m13;
 ----
 
 [#E-m14]
@@ -894,7 +894,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#A-0e[A]&lt;short&gt;::link:#A-00-B-00[B]&lt;void&gt;::link:#A-00-B-00-D-07[D]&lt;bool&gt; m14;
+link:#A-00-B-00-D-07[A&lt;short&gt;::B&lt;void&gt;::D&lt;bool&gt;] m14;
 ----
 
 [#E-m2]
@@ -906,7 +906,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#A-0e[A]&lt;long&gt;::link:#A-0c-B-0b[B]&lt;float&gt; m2;
+link:#A-0c-B-0b[A&lt;long&gt;::B&lt;float&gt;] m2;
 ----
 
 [#E-m3]
@@ -918,7 +918,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#A-0e[A]&lt;unsigned int&gt;::link:#A-07-B-03a[B]&lt;float&gt; m3;
+link:#A-07-B-03a[A&lt;unsigned int&gt;::B&lt;float&gt;] m3;
 ----
 
 [#E-m4]
@@ -930,7 +930,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#A-0e[A]&lt;short&gt;::link:#A-00-B-00[B]&lt;void&gt; m4;
+link:#A-00-B-00[A&lt;short&gt;::B&lt;void&gt;] m4;
 ----
 
 [#E-m5]
@@ -942,7 +942,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#A-0e[A]&lt;float&gt;::link:#A-01-B-08[B]&lt;double&gt;::link:#A-01-B-08-C[C] m5;
+link:#A-01-B-08-C[A&lt;float&gt;::B&lt;double&gt;::C] m5;
 ----
 
 [#E-m6]
@@ -954,7 +954,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#A-0e[A]&lt;long&gt;::link:#A-0c-B-0d[B]&lt;double&gt;::link:#A-0c-B-0d-C[C] m6;
+link:#A-0c-B-0d-C[A&lt;long&gt;::B&lt;double&gt;::C] m6;
 ----
 
 [#E-m7]
@@ -966,7 +966,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#A-0e[A]&lt;long&gt;::link:#A-0c-B-0b[B]&lt;float&gt;::link:#A-0c-B-08-C[C] m7;
+link:#A-0c-B-08-C[A&lt;long&gt;::B&lt;float&gt;::C] m7;
 ----
 
 [#E-m8]
@@ -978,7 +978,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#A-0e[A]&lt;unsigned int&gt;::link:#A-07-B-03a[B]&lt;float&gt;::link:#A-07-B-05-C[C] m8;
+link:#A-07-B-05-C[A&lt;unsigned int&gt;::B&lt;float&gt;::C] m8;
 ----
 
 [#E-m9]
@@ -990,7 +990,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#A-0e[A]&lt;short&gt;::link:#A-00-B-00[B]&lt;void&gt;::link:#A-00-B-00-C[C] m9;
+link:#A-00-B-00-C[A&lt;short&gt;::B&lt;void&gt;::C] m9;
 ----
 
 

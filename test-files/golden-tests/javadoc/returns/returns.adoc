@@ -114,7 +114,7 @@ Declared in `&lt;returns&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#pair[pair]&lt;int, int&gt;
+link:#pair[pair&lt;int, int&gt;]
 g();
 ----
 
