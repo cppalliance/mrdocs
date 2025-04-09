@@ -31,11 +31,11 @@
         {{~> symbol/name . ~}}
     {{~/if~}}
 {{~else if (eq kind "guide")~}}
-    {{>type/declarator deduced nolink=false~}}
+    {{>type/declarator deduced ~}}
 {{~else if (contains (arr "explicit" "partial") template.kind)~}}
     {{!~ If the last part is a template specialization, we include links to primary template and the arguments. ~}}
     {{!~ If the primary template wasn't correctly extracted for some reason, we just print the name as usual. ~}}
-    {{#if template.primary }}{{~>symbol/name template.primary ~}}{{else}}{{ name }}{{/if}}{{>template/args args=template.args nolink=false~}}
+    {{#if template.primary }}{{~>symbol/name template.primary ~}}{{else}}{{ name }}{{/if}}{{>template/args args=template.args ~}}
 {{~else~}}
     {{~> symbol/name-text . ~}}
 {{~/if~}}

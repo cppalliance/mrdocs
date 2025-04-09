@@ -63,11 +63,7 @@
 | Name
 | Description
 {{#each (filter_by symbol.constants "isRegular" "isSeeBelow")}}
-{{#if (ne kind "enum-constant")}}
-|xref:{{{anchor}}}[`{{>symbol/name . nolink=true}}`]
-{{else}}
-|`{{>symbol/name . nolink=true}}`
-{{/if}}
+|`{{>symbol/name-text .}}`
 |{{> javadoc/inline-brief doc.brief }}
 {{/each}}
 |===
@@ -121,9 +117,9 @@
 | Description
 {{#each symbol.derived}}
 | {{#if url~}}
-{{#>markup/a href=url}}{{#>markup/code}}{{> symbol/name-info . nolink=true}}{{/markup/code}}{{/markup/a}}
+{{#>markup/a href=url}}{{#>markup/code}}{{> type/name-info-text . }}{{/markup/code}}{{/markup/a}}
 {{else~}}
-{{> symbol/name-info . nolink=true}}
+{{> type/name-info-text . }}
 {{/if}}
 | {{> javadoc/inline-brief doc.brief }}
 {{/each}}

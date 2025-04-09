@@ -6,9 +6,6 @@
 
     Expected Context: {Symbol Object}
 
-    Optional parameters:
-        nolink: If true, types and symbols will not be linked.
-
     Example:
         {{> declarator symbol }}
 
@@ -16,11 +13,11 @@
 --}}
 {{~#if (and (eq kind "function") (eq functionClass "conversion"))~}}
     {{! Conversion operator: "operator" and the type declarator ~}}
-    operator {{>type/declarator return nolink=false~}}
+    operator {{>type/declarator return ~}}
 {{~else if (eq kind "guide")~}}
     {{! Deduction guide: "deduced" type declarator ~}}
-    {{>type/declarator deduced nolink=false~}}
-{{~else if (and url (not nolink))~}}
+    {{>type/declarator deduced ~}}
+{{~else if url~}}
     {{#>markup/a href=url}}{{>symbol/name-text}}{{/markup/a~}}
 {{~else~}}
     {{~>symbol/name-text~}}

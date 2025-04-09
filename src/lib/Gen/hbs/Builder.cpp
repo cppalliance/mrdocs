@@ -242,6 +242,7 @@ Builder(
     helpers::registerLogicalHelpers(hbs_);
     helpers::registerMathHelpers(hbs_);
     helpers::registerContainerHelpers(hbs_);
+    helpers::registerTypeHelpers(hbs_);
     hbs_.registerHelper("relativize", dom::makeInvocable(relativize_fn));
 
     // Load layout templates

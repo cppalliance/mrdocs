@@ -1221,6 +1221,17 @@ MRDOCS_DECL
 void
 registerContainerHelpers(Handlebars& hbs);
 
+/** Register type helpers into a Handlebars instance
+
+    This function registers a number of common helpers that operate on
+    types, such as identity, type checking, and type conversion.
+
+    @param hbs The Handlebars instance to register the helpers into
+ */
+MRDOCS_DECL
+void
+registerTypeHelpers(Handlebars& hbs);
+
 /** "and" helper function
  *
  *  The "and" helper returns true if all of the values are truthy.

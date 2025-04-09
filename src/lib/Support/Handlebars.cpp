@@ -6897,6 +6897,51 @@ registerMathHelpers(Handlebars& hbs)
     }));
 }
 
+void
+registerTypeHelpers(Handlebars& hbs)
+{
+    hbs.registerHelper("is_string", dom::makeInvocable([](
+        dom::Value const& val) -> dom::Value
+    {
+        return val.isString();
+    }));
+
+    hbs.registerHelper("is_array", dom::makeInvocable([](
+        dom::Value const& val) -> dom::Value
+    {
+        return val.isArray();
+    }));
+
+    hbs.registerHelper("is_object", dom::makeInvocable([](
+        dom::Value const& val) -> dom::Value
+    {
+        return val.isObject();
+    }));
+
+    hbs.registerHelper("is_number", dom::makeInvocable([](
+        dom::Value const& val) -> dom::Value
+    {
+        return val.isInteger();
+    }));
+
+    hbs.registerHelper("is_boolean", dom::makeInvocable([](
+        dom::Value const& val) -> dom::Value
+    {
+        return val.isBoolean();
+    }));
+
+    hbs.registerHelper("is_null", dom::makeInvocable([](
+        dom::Value const& val) -> dom::Value
+    {
+        return val.isNull();
+    }));
+
+    hbs.registerHelper("is_undefined", dom::makeInvocable([](
+        dom::Value const& val) -> dom::Value
+    {
+        return val.isUndefined();
+    }));
+}
 
 } // helpers
 

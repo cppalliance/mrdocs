@@ -19,7 +19,7 @@
 {{~else if (eq functionClass "conversion")~}}
 {{>symbol/name symbol }}
 {{~else if (contains (arr "explicit" "partial") template.kind)~}}
-{{>symbol/name template.primary ~}}{{>template/args args=template.args nolink=true~}}
+{{>symbol/name template.primary ~}}{{>template/args-text args=template.args ~}}
 {{~else~}}
 {{>symbol/name-text symbol }}
 {{~/if~}}
