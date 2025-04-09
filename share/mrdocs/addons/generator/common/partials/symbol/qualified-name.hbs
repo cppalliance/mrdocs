@@ -1,14 +1,8 @@
 {{!--
-    Renders the qualified symbol name in an appropriate format for section titles.
+    Renders the qualified symbol with a link to the symbol's documentation.
 
-    This partial renders the symbol name in a format where all parent namespaces
-    are linked to their documentation. The symbol name is then appended to the
-    linked namespaces.
-
-    It also includes exceptions for unnamed symbols and friend declarations.
-    Unnamed symbols need to be handled differently as they have no name to display.
-    Friend declarations need to be handled differently as they are not part of the
-    symbol hierarchy and need to be linked to the befriended symbol or type.
+    This partial renders the symbol name in a format where the whole qualified name
+    is linked to the documentation of the main symbol.
 
     Expected Context: {Symbol Object}
 
@@ -17,21 +11,8 @@
 
     See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
 --}}
-{{! We remove whitespace between all tag so the result is in a single line ~}}
-{{~#if name~}}
-    {{! General case: linked parent symbols followed by the symbol name ~}}
-    {{#each parents~}}
-        {{#if name~}}
-            {{>symbol/name . link=. nolink=../nolink}}::
-        {{~/if}}
-    {{~/each}}{{>symbol/name .}}
+{{~#if (and url (not nolink))~}}
+{{#>markup/a href=url}}{{>symbol/qualified-name-text}}{{/markup/a~}}
 {{~else~}}
-    {{! Unnamed symbol: use the symbol type in the title ~}}
-    {{~#if parent~}}
-        {{! Symbol with no name but with a parent ~}}
-        Unnamed
-    {{~else~}}
-        {{! Symbol with no name and no parent: Global symbol ~}}
-        Global
-    {{~/if}} {{or tag kind~}}
+{{~>symbol/qualified-name-text~}}
 {{~/if~}}

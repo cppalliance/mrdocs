@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<00namespace,`&lt;unnamed&gt;`>> 
+| <<00namespace,`Unnamed namespace`>> 
 | <<A,`A`>> 
 | <<D,`D`>> 
 | <<I,`I`>> 
@@ -104,7 +104,7 @@ f10();
 [cols=1]
 |===
 | Name
-| <<A-00namespace,`&lt;unnamed&gt;`>> 
+| <<A-00namespace,`Unnamed namespace`>> 
 | <<A-B,`B`>> 
 | <<A-C,`C`>> 
 |===
@@ -118,7 +118,7 @@ f10();
 |===
 
 [#A-00namespace]
-== Unnamed namespace
+== <<A,A>>::Unnamed namespace
 
 === Functions
 
@@ -210,7 +210,7 @@ f0();
 [cols=1]
 |===
 | Name
-| <<D-00namespace,`&lt;unnamed&gt;`>> 
+| <<D-00namespace,`Unnamed namespace`>> 
 | <<D-E,`E`>> 
 | <<D-F,`F`>> 
 |===
@@ -224,7 +224,7 @@ f0();
 |===
 
 [#D-00namespace]
-== Unnamed namespace
+== <<D,D>>::Unnamed namespace
 
 === Functions
 
@@ -316,11 +316,11 @@ f5();
 [cols=1]
 |===
 | Name
-| <<I-00namespace,`&lt;unnamed&gt;`>> 
+| <<I-00namespace,`Unnamed namespace`>> 
 |===
 
 [#I-00namespace]
-== Unnamed namespace
+== <<I,I>>::Unnamed namespace
 
 === Functions
 

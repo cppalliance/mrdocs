@@ -31,7 +31,7 @@
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="73" class="def"/>
       <doc>
         <brief>
-          <text>Specialization for floating point types</text>
+          <text>Specialization for integral types</text>
         </brief>
       </doc>
     </class>

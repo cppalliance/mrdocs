@@ -14,7 +14,15 @@
 {{/if~}}
 {{#if (eq functionClass "normal")}}{{>type/declarator-prefix return}}
 {{/if~}}
-{{>symbol/name symbol link=(select link link template.primary)}}
+{{~#if force-link~}}
+{{>symbol/name symbol }}
+{{~else if (eq functionClass "conversion")~}}
+{{>symbol/name symbol }}
+{{~else if (contains (arr "explicit" "partial") template.kind)~}}
+{{>symbol/name template.primary ~}}{{>template/args args=template.args nolink=true~}}
+{{~else~}}
+{{>symbol/name-text symbol }}
+{{~/if~}}
 ({{#if isExplicitObjectMemberFunction}}this {{/if}}{{#each params}}{{#unless (and @first @last)}}
     {{/unless}}{{>type/declarator type decl-name=name~}}
     {{#if default}} = {{default}}{{/if~}}

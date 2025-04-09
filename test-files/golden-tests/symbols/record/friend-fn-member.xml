@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
+    <file short-path="friend-fn-member.cpp" source-path="friend-fn-member.cpp" line="11" class="def"/>
+    <friend id="wZtQh+QR5vgNZmk34MnRmnKO5MI=">
+      <befriended id="wZtQh+QR5vgNZmk34MnRmnKO5MI="/>
+    </friend>
+    <friend id="HK6hbp0kJrHWxbYoHddN1v/GCWc=">
+      <befriended id="HK6hbp0kJrHWxbYoHddN1v/GCWc="/>
+    </friend>
+    <friend id="6Jx2eK9l4C46QIRucTvox+6PH2k=">
+      <befriended id="6Jx2eK9l4C46QIRucTvox+6PH2k="/>
+    </friend>
+  </struct>
+  <struct name="X" id="ynx5NXMLXqzSXwgOnIP6CHzNx14=">
+    <file short-path="friend-fn-member.cpp" source-path="friend-fn-member.cpp" line="1" class="def"/>
+    <function class="constructor" name="X" id="6Jx2eK9l4C46QIRucTvox+6PH2k=">
+      <file short-path="friend-fn-member.cpp" source-path="friend-fn-member.cpp" line="3"/>
+      <file short-path="friend-fn-member.cpp" source-path="friend-fn-member.cpp" line="13"/>
+      <doc>
+        <brief>
+          <text>Default constructor</text>
+        </brief>
+      </doc>
+    </function>
+    <function class="destructor" name="~X" id="HK6hbp0kJrHWxbYoHddN1v/GCWc=">
+      <file short-path="friend-fn-member.cpp" source-path="friend-fn-member.cpp" line="4"/>
+      <file short-path="friend-fn-member.cpp" source-path="friend-fn-member.cpp" line="14"/>
+      <doc>
+        <brief>
+          <text>Destructor</text>
+        </brief>
+      </doc>
+    </function>
+    <function name="foo" id="wZtQh+QR5vgNZmk34MnRmnKO5MI=">
+      <file short-path="friend-fn-member.cpp" source-path="friend-fn-member.cpp" line="8"/>
+      <file short-path="friend-fn-member.cpp" source-path="friend-fn-member.cpp" line="15"/>
+      <return>
+        <type class="pointer">
+          <pointee-type name="char"/>
+        </type>
+      </return>
+      <param name="i">
+        <type name="int"/>
+      </param>
+      <doc>
+        <brief>
+          <text>Friend member-function</text>
+        </brief>
+        <returns>
+          <text>char*</text>
+        </returns>
+        <param name="i">
+        </param>
+      </doc>
+    </function>
+  </struct>
+</namespace>
+</mrdocs>

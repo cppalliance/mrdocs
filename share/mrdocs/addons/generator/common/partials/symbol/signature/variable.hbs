@@ -10,7 +10,7 @@
 {{/if~}}
 {{#if isThreadLocal}}thread_local
 {{/if~}}
-{{>type/declarator-prefix type}} {{>symbol/name symbol link=(select link link template.primary)~}}
+{{>type/declarator-prefix type}} {{>symbol/name-text symbol ~}}
 {{#if isBitfield}} : {{bitfieldWidth}}{{/if~}}
 {{#if default}} = {{default}}{{/if~}}
 {{>type/declarator-suffix type~}}

@@ -1,6 +1,11 @@
 {{#if template}}{{>template/head template}}
 {{/if~}}
-{{#if isFriend}}friend {{/if}}{{tag}} {{>symbol/name symbol link=(select link link template.primary)~}}
+{{#if isFriend}}friend {{/if~}}
+{{~tag}} {{#if (contains (arr "explicit" "partial") template.kind)~}}
+    {{>symbol/name template.primary ~}}{{>template/args args=template.args nolink=nolink~}}
+{{~else~}}
+    {{>symbol/name-text symbol ~}}
+{{~/if}}
 {{#unless bases~}}
 {{else if isFriend~}}
 {{else}}

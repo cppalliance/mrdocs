@@ -199,7 +199,7 @@ class B;
 |===
 | Name
 | Description
-| `<<ostream,ostream>>::<<ostream-operator_lshift-0d,operator&lt;&lt;>>`
+| `<<ostream-operator_lshift-0d,ostream::operator&lt;&lt;>>`
 | Stream insertion operator
 |===
 

@@ -68,7 +68,7 @@ struct C;
 ----
 
 [#C-0d]
-== C&lt;int, char&gt;
+== <<C-0f,C>>&lt;int, char&gt;
 
 === Synopsis
 
@@ -81,7 +81,7 @@ struct <<C-0f,C>>&lt;int, char&gt;;
 ----
 
 [#C-03]
-== C&lt;int&gt;
+== <<C-0f,C>>&lt;int&gt;
 
 === Synopsis
 
@@ -109,7 +109,7 @@ struct B;
 ----
 
 [#B-04]
-== B&lt;int, char&gt;
+== <<B-0b,B>>&lt;int, char&gt;
 
 === Synopsis
 
@@ -122,7 +122,7 @@ struct <<B-0b,B>>&lt;int, char&gt;;
 ----
 
 [#B-05]
-== B&lt;int, U&gt;
+== <<B-0b,B>>&lt;int, U&gt;
 
 === Synopsis
 
@@ -533,7 +533,7 @@ char
 ----
 template&lt;&gt;
 char
-<<g-0e4,g>>&lt;int&gt;(
+<<g-0e4,g&lt;int&gt;>>(
     int,
     int,
     int);
@@ -609,7 +609,7 @@ g(
 ----
 
 [#g-0e4]
-== g&lt;int&gt;
+== <<g-03c,g>>&lt;int&gt;
 
 === Synopsis
 

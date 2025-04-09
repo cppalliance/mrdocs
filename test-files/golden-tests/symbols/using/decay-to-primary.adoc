@@ -88,7 +88,7 @@ using M1 = <<S0-03,S0>>&lt;U&gt;;
 ----
 
 [#S0-00]
-== S0&lt;void&gt;
+== <<S0-03,S0>>&lt;void&gt;
 
 === Synopsis
 
@@ -110,7 +110,7 @@ struct <<S0-03,S0>>&lt;void&gt;;
 |===
 
 [#S0-00-M0]
-== <<S0-00,S0>>&lt;void&gt;::M0
+== <<S0-00,S0&lt;void&gt;>>::M0
 
 === Synopsis
 
@@ -122,7 +122,7 @@ using M0 = void;
 ----
 
 [#S0-00-M1]
-== <<S0-00,S0>>&lt;void&gt;::M1
+== <<S0-00,S0&lt;void&gt;>>::M1
 
 === Synopsis
 
@@ -135,7 +135,7 @@ using M1 = <<S0-03,S0>>&lt;U&gt;;
 ----
 
 [#S0-09]
-== S0&lt;short&gt;
+== <<S0-03,S0>>&lt;short&gt;
 
 === Synopsis
 
@@ -157,7 +157,7 @@ struct <<S0-03,S0>>&lt;short&gt;;
 |===
 
 [#S0-09-M0]
-== <<S0-09,S0>>&lt;short&gt;::M0
+== <<S0-09,S0&lt;short&gt;>>::M0
 
 === Synopsis
 
@@ -169,7 +169,7 @@ using M0 = short;
 ----
 
 [#S0-09-M1]
-== <<S0-09,S0>>&lt;short&gt;::M1
+== <<S0-09,S0&lt;short&gt;>>::M1
 
 === Synopsis
 

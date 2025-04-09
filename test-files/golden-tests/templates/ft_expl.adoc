@@ -36,7 +36,7 @@ void
 ----
 template&lt;&gt;
 void
-<<f-0ca,f>>&lt;int&gt;();
+<<f-0ca,f&lt;int&gt;>>();
 ----
 
 [.small]#<<f-0ca,_» more&period;&period;&period;_>>#
@@ -56,7 +56,7 @@ f();
 ----
 
 [#f-0ca]
-== f&lt;int&gt;
+== <<f-03,f>>&lt;int&gt;
 
 === Synopsis
 

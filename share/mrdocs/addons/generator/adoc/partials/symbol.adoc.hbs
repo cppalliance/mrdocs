@@ -14,7 +14,7 @@
 {{#unless @root.config.multipage }}
 {{! Single page documentation: symbol is not available to the wrapper but it's available here }}
 {{! Include the symbol title at a higher level }}
-{{#> markup/h level=1 id=symbol.anchor }}{{> symbol/qualified-name symbol }}{{/markup/h}}
+{{#> markup/h level=1 id=symbol.anchor }}{{> symbol/qualified-name-title symbol }}{{/markup/h}}
 {{/unless}}
 {{! Brief }}
 {{#if symbol.doc.brief}}
@@ -83,7 +83,7 @@
 | Description
 {{#each symbol.friends }}
 {{#if symbol}}
-| {{#>markup/code}}{{> symbol/qualified-name symbol link=symbol }}{{/markup/code}}
+| {{#>markup/code}}{{> symbol/qualified-name symbol }}{{/markup/code}}
 | {{> javadoc/inline-brief symbol.doc.brief }}
 {{else}}
 | {{#>markup/code}}{{> type/declarator type }}{{/markup/code}}

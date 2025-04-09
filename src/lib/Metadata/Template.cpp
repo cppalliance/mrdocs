@@ -341,7 +341,10 @@ tag_invoke(
     io.defer("kind", [&] {
         return toString(I.specializationKind());
     });
-    io.map("primary", I.Primary);
+    if (I.Primary != SymbolID::invalid)
+    {
+        io.map("primary", I.Primary);
+    }
     io.map("params", dom::LazyArray(I.Params, domCorpus));
     io.map("args", dom::LazyArray(I.Args, domCorpus));
     io.map("requires", dom::stringOrNull(I.Requires.Written));

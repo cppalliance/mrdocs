@@ -189,7 +189,7 @@ struct B;
 |===
 
 [#A-B-09]
-== <<A,A>>::B&lt;int&gt;
+== <<A,A>>::<<A-B-08,B>>&lt;int&gt;
 
 Specialization of B for int&period;
 
@@ -204,7 +204,7 @@ struct <<A-B-08,B>>&lt;int&gt;;
 ----
 
 [#A-B-0c]
-== <<A,A>>::B&lt;int, 2&gt;
+== <<A,A>>::<<A-B-08,B>>&lt;int, 2&gt;
 
 Specialization of B for int with value 2&period;
 
@@ -248,7 +248,7 @@ struct C;
 |===
 
 [#A-C-0f]
-== <<A,A>>::C&lt;<<A-D,D>>, true&gt;
+== <<A,A>>::<<A-C-05,C>>&lt;<<A-D,D>>, true&gt;
 
 Specialization of C for D with true&period;
 
@@ -263,7 +263,7 @@ struct <<A-C-05,C>>&lt;<<A-D,D>>, true&gt;;
 ----
 
 [#A-C-0c]
-== <<A,A>>::C&lt;int, true&gt;
+== <<A,A>>::<<A-C-05,C>>&lt;int, true&gt;
 
 Specialization of C for int with true&period;
 

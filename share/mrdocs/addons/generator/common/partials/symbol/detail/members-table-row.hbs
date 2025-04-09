@@ -8,7 +8,7 @@
 {{~> symbol/name-info . nolink=true~}}
 {{~/if~}}
 {{~else~}}
-{{~#>markup/a href=url}}{{#>markup/code}}{{>symbol/name . nolink=true}}{{/markup/code}}{{/markup/a}} {{>symbol/special-function-suffix .~}}
+{{~#>markup/a href=url}}{{#>markup/code}}{{>symbol/name-text .}}{{/markup/code}}{{/markup/a}} {{>symbol/special-function-suffix .~}}
 {{~/if~}}
 {{~/markup/td}}
 {{#if includeBrief~}}

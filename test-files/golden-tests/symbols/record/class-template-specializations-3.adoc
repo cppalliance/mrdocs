@@ -88,7 +88,7 @@ struct D;
 ----
 
 [#A-0e-B-07-D-0f]
-== <<A-0e,A>>::<<A-0e-B-07,B>>::D&lt;bool&gt;
+== <<A-0e,A>>::<<A-0e-B-07,B>>::<<A-0e-B-07-D-09,D>>&lt;bool&gt;
 
 === Synopsis
 
@@ -101,7 +101,7 @@ struct <<A-0e-B-07-D-09,D>>&lt;bool&gt;;
 ----
 
 [#A-0e-B-00]
-== <<A-0e,A>>::B&lt;double&gt;
+== <<A-0e,A>>::<<A-0e-B-07,B>>&lt;double&gt;
 
 === Synopsis
 
@@ -124,7 +124,7 @@ struct <<A-0e-B-07,B>>&lt;double&gt;;
 |===
 
 [#A-0e-B-00-C]
-== <<A-0e,A>>::<<A-0e-B-00,B>>&lt;double&gt;::C
+== <<A-0e,A>>::<<A-0e-B-00,B&lt;double&gt;>>::C
 
 === Synopsis
 
@@ -136,7 +136,7 @@ struct C;
 ----
 
 [#A-0e-B-00-D-09]
-== <<A-0e,A>>::<<A-0e-B-00,B>>&lt;double&gt;::D
+== <<A-0e,A>>::<<A-0e-B-00,B&lt;double&gt;>>::D
 
 === Synopsis
 
@@ -149,7 +149,7 @@ struct D;
 ----
 
 [#A-0e-B-00-D-0d]
-== <<A-0e,A>>::<<A-0e-B-00,B>>&lt;double&gt;::D&lt;bool&gt;
+== <<A-0e,A>>::<<A-0e-B-00,B&lt;double&gt;>>::<<A-0e-B-00-D-09,D>>&lt;bool&gt;
 
 === Synopsis
 
@@ -162,7 +162,7 @@ struct <<A-0e-B-00-D-09,D>>&lt;bool&gt;;
 ----
 
 [#A-00]
-== A&lt;short&gt;
+== <<A-0e,A>>&lt;short&gt;
 
 === Synopsis
 
@@ -185,7 +185,7 @@ struct <<A-0e,A>>&lt;short&gt;;
 |===
 
 [#A-00-B-0e]
-== <<A-00,A>>&lt;short&gt;::B
+== <<A-00,A&lt;short&gt;>>::B
 
 === Synopsis
 
@@ -198,7 +198,7 @@ struct B;
 ----
 
 [#A-00-B-00]
-== <<A-00,A>>&lt;short&gt;::B&lt;void&gt;
+== <<A-00,A&lt;short&gt;>>::<<A-0e-B-07,B>>&lt;void&gt;
 
 === Synopsis
 
@@ -221,7 +221,7 @@ struct <<A-0e-B-07,B>>&lt;void&gt;;
 |===
 
 [#A-00-B-00-C]
-== <<A-00,A>>&lt;short&gt;::<<A-00-B-00,B>>&lt;void&gt;::C
+== <<A-00,A&lt;short&gt;>>::<<A-00-B-00,B&lt;void&gt;>>::C
 
 === Synopsis
 
@@ -233,7 +233,7 @@ struct C;
 ----
 
 [#A-00-B-00-D-03]
-== <<A-00,A>>&lt;short&gt;::<<A-00-B-00,B>>&lt;void&gt;::D
+== <<A-00,A&lt;short&gt;>>::<<A-00-B-00,B&lt;void&gt;>>::D
 
 === Synopsis
 
@@ -246,7 +246,7 @@ struct D;
 ----
 
 [#A-00-B-00-D-07]
-== <<A-00,A>>&lt;short&gt;::<<A-00-B-00,B>>&lt;void&gt;::D&lt;bool&gt;
+== <<A-00,A&lt;short&gt;>>::<<A-00-B-00,B&lt;void&gt;>>::<<A-00-B-00-D-03,D>>&lt;bool&gt;
 
 === Synopsis
 
@@ -259,7 +259,7 @@ struct <<A-00-B-00-D-03,D>>&lt;bool&gt;;
 ----
 
 [#A-00-B-07]
-== <<A-00,A>>&lt;short&gt;::B&lt;double&gt;
+== <<A-00,A&lt;short&gt;>>::<<A-0e-B-07,B>>&lt;double&gt;
 
 === Synopsis
 
@@ -282,7 +282,7 @@ struct <<A-0e-B-07,B>>&lt;double&gt;;
 |===
 
 [#A-00-B-07-C]
-== <<A-00,A>>&lt;short&gt;::<<A-00-B-07,B>>&lt;double&gt;::C
+== <<A-00,A&lt;short&gt;>>::<<A-00-B-07,B&lt;double&gt;>>::C
 
 === Synopsis
 
@@ -294,7 +294,7 @@ struct C;
 ----
 
 [#A-00-B-07-D-015b]
-== <<A-00,A>>&lt;short&gt;::<<A-00-B-07,B>>&lt;double&gt;::D
+== <<A-00,A&lt;short&gt;>>::<<A-00-B-07,B&lt;double&gt;>>::D
 
 === Synopsis
 
@@ -307,7 +307,7 @@ struct D;
 ----
 
 [#A-00-B-07-D-0150]
-== <<A-00,A>>&lt;short&gt;::<<A-00-B-07,B>>&lt;double&gt;::D&lt;bool&gt;
+== <<A-00,A&lt;short&gt;>>::<<A-00-B-07,B&lt;double&gt;>>::<<A-0e-B-00-D-09,D>>&lt;bool&gt;
 
 === Synopsis
 
@@ -320,7 +320,7 @@ struct <<A-0e-B-00-D-09,D>>&lt;bool&gt;;
 ----
 
 [#A-07]
-== A&lt;unsigned int&gt;
+== <<A-0e,A>>&lt;unsigned int&gt;
 
 === Synopsis
 
@@ -343,7 +343,7 @@ struct <<A-0e,A>>&lt;unsigned int&gt;;
 |===
 
 [#A-07-B-03a]
-== <<A-07,A>>&lt;unsigned int&gt;::B
+== <<A-07,A&lt;unsigned int&gt;>>::B
 
 === Synopsis
 
@@ -356,7 +356,7 @@ struct B;
 ----
 
 [#A-07-B-05]
-== <<A-07,A>>&lt;unsigned int&gt;::B&lt;float&gt;
+== <<A-07,A&lt;unsigned int&gt;>>::<<A-0e-B-07,B>>&lt;float&gt;
 
 === Synopsis
 
@@ -379,7 +379,7 @@ struct <<A-0e-B-07,B>>&lt;float&gt;;
 |===
 
 [#A-07-B-05-C]
-== <<A-07,A>>&lt;unsigned int&gt;::<<A-07-B-05,B>>&lt;float&gt;::C
+== <<A-07,A&lt;unsigned int&gt;>>::<<A-07-B-05,B&lt;float&gt;>>::C
 
 === Synopsis
 
@@ -391,7 +391,7 @@ struct C;
 ----
 
 [#A-07-B-05-D-0e]
-== <<A-07,A>>&lt;unsigned int&gt;::<<A-07-B-05,B>>&lt;float&gt;::D
+== <<A-07,A&lt;unsigned int&gt;>>::<<A-07-B-05,B&lt;float&gt;>>::D
 
 === Synopsis
 
@@ -404,7 +404,7 @@ struct D;
 ----
 
 [#A-07-B-05-D-01]
-== <<A-07,A>>&lt;unsigned int&gt;::<<A-07-B-05,B>>&lt;float&gt;::D&lt;bool&gt;
+== <<A-07,A&lt;unsigned int&gt;>>::<<A-07-B-05,B&lt;float&gt;>>::<<A-0e-B-07-D-09,D>>&lt;bool&gt;
 
 === Synopsis
 
@@ -417,7 +417,7 @@ struct <<A-0e-B-07-D-09,D>>&lt;bool&gt;;
 ----
 
 [#A-07-B-03e]
-== <<A-07,A>>&lt;unsigned int&gt;::B&lt;double&gt;
+== <<A-07,A&lt;unsigned int&gt;>>::<<A-0e-B-07,B>>&lt;double&gt;
 
 === Synopsis
 
@@ -440,7 +440,7 @@ struct <<A-0e-B-07,B>>&lt;double&gt;;
 |===
 
 [#A-07-B-03e-C]
-== <<A-07,A>>&lt;unsigned int&gt;::<<A-07-B-03e,B>>&lt;double&gt;::C
+== <<A-07,A&lt;unsigned int&gt;>>::<<A-07-B-03e,B&lt;double&gt;>>::C
 
 === Synopsis
 
@@ -452,7 +452,7 @@ struct C;
 ----
 
 [#A-07-B-03e-D-01]
-== <<A-07,A>>&lt;unsigned int&gt;::<<A-07-B-03e,B>>&lt;double&gt;::D
+== <<A-07,A&lt;unsigned int&gt;>>::<<A-07-B-03e,B&lt;double&gt;>>::D
 
 === Synopsis
 
@@ -465,7 +465,7 @@ struct D;
 ----
 
 [#A-07-B-03e-D-0f]
-== <<A-07,A>>&lt;unsigned int&gt;::<<A-07-B-03e,B>>&lt;double&gt;::D&lt;bool&gt;
+== <<A-07,A&lt;unsigned int&gt;>>::<<A-07-B-03e,B&lt;double&gt;>>::<<A-0e-B-00-D-09,D>>&lt;bool&gt;
 
 === Synopsis
 
@@ -478,7 +478,7 @@ struct <<A-0e-B-00-D-09,D>>&lt;bool&gt;;
 ----
 
 [#A-0c]
-== A&lt;long&gt;
+== <<A-0e,A>>&lt;long&gt;
 
 === Synopsis
 
@@ -501,7 +501,7 @@ struct <<A-0e,A>>&lt;long&gt;;
 |===
 
 [#A-0c-B-0b]
-== <<A-0c,A>>&lt;long&gt;::B
+== <<A-0c,A&lt;long&gt;>>::B
 
 === Synopsis
 
@@ -524,7 +524,7 @@ struct B;
 |===
 
 [#A-0c-B-0b-C]
-== <<A-0c,A>>&lt;long&gt;::<<A-0c-B-0b,B>>::C
+== <<A-0c,A&lt;long&gt;>>::<<A-0c-B-0b,B>>::C
 
 === Synopsis
 
@@ -536,7 +536,7 @@ struct C;
 ----
 
 [#A-0c-B-0b-D-00]
-== <<A-0c,A>>&lt;long&gt;::<<A-0c-B-0b,B>>::D
+== <<A-0c,A&lt;long&gt;>>::<<A-0c-B-0b,B>>::D
 
 === Synopsis
 
@@ -549,7 +549,7 @@ struct D;
 ----
 
 [#A-0c-B-0b-D-0b]
-== <<A-0c,A>>&lt;long&gt;::<<A-0c-B-0b,B>>::D&lt;bool&gt;
+== <<A-0c,A&lt;long&gt;>>::<<A-0c-B-0b,B>>::<<A-0c-B-0b-D-00,D>>&lt;bool&gt;
 
 === Synopsis
 
@@ -562,7 +562,7 @@ struct <<A-0c-B-0b-D-00,D>>&lt;bool&gt;;
 ----
 
 [#A-0c-B-08]
-== <<A-0c,A>>&lt;long&gt;::B&lt;float&gt;
+== <<A-0c,A&lt;long&gt;>>::<<A-0c-B-0b,B>>&lt;float&gt;
 
 === Synopsis
 
@@ -585,7 +585,7 @@ struct <<A-0c-B-0b,B>>&lt;float&gt;;
 |===
 
 [#A-0c-B-08-C]
-== <<A-0c,A>>&lt;long&gt;::<<A-0c-B-08,B>>&lt;float&gt;::C
+== <<A-0c,A&lt;long&gt;>>::<<A-0c-B-08,B&lt;float&gt;>>::C
 
 === Synopsis
 
@@ -597,7 +597,7 @@ struct C;
 ----
 
 [#A-0c-B-08-D-08]
-== <<A-0c,A>>&lt;long&gt;::<<A-0c-B-08,B>>&lt;float&gt;::D
+== <<A-0c,A&lt;long&gt;>>::<<A-0c-B-08,B&lt;float&gt;>>::D
 
 === Synopsis
 
@@ -610,7 +610,7 @@ struct D;
 ----
 
 [#A-0c-B-08-D-03]
-== <<A-0c,A>>&lt;long&gt;::<<A-0c-B-08,B>>&lt;float&gt;::D&lt;bool&gt;
+== <<A-0c,A&lt;long&gt;>>::<<A-0c-B-08,B&lt;float&gt;>>::<<A-0c-B-0b-D-00,D>>&lt;bool&gt;
 
 === Synopsis
 
@@ -623,7 +623,7 @@ struct <<A-0c-B-0b-D-00,D>>&lt;bool&gt;;
 ----
 
 [#A-0c-B-0d]
-== <<A-0c,A>>&lt;long&gt;::B&lt;double&gt;
+== <<A-0c,A&lt;long&gt;>>::<<A-0c-B-0b,B>>&lt;double&gt;
 
 === Synopsis
 
@@ -646,7 +646,7 @@ struct <<A-0c-B-0b,B>>&lt;double&gt;;
 |===
 
 [#A-0c-B-0d-C]
-== <<A-0c,A>>&lt;long&gt;::<<A-0c-B-0d,B>>&lt;double&gt;::C
+== <<A-0c,A&lt;long&gt;>>::<<A-0c-B-0d,B&lt;double&gt;>>::C
 
 === Synopsis
 
@@ -658,7 +658,7 @@ struct C;
 ----
 
 [#A-0c-B-0d-D-0c]
-== <<A-0c,A>>&lt;long&gt;::<<A-0c-B-0d,B>>&lt;double&gt;::D
+== <<A-0c,A&lt;long&gt;>>::<<A-0c-B-0d,B&lt;double&gt;>>::D
 
 === Synopsis
 
@@ -671,7 +671,7 @@ struct D;
 ----
 
 [#A-0c-B-0d-D-03]
-== <<A-0c,A>>&lt;long&gt;::<<A-0c-B-0d,B>>&lt;double&gt;::D&lt;bool&gt;
+== <<A-0c,A&lt;long&gt;>>::<<A-0c-B-0d,B&lt;double&gt;>>::<<A-0e-B-00-D-09,D>>&lt;bool&gt;
 
 === Synopsis
 
@@ -684,7 +684,7 @@ struct <<A-0e-B-00-D-09,D>>&lt;bool&gt;;
 ----
 
 [#A-01]
-== A&lt;float&gt;
+== <<A-0e,A>>&lt;float&gt;
 
 === Synopsis
 
@@ -706,7 +706,7 @@ struct <<A-0e,A>>&lt;float&gt;;
 |===
 
 [#A-01-B-07]
-== <<A-01,A>>&lt;float&gt;::B
+== <<A-01,A&lt;float&gt;>>::B
 
 === Synopsis
 
@@ -719,7 +719,7 @@ struct B;
 ----
 
 [#A-01-B-08]
-== <<A-01,A>>&lt;float&gt;::B&lt;double, double&gt;
+== <<A-01,A&lt;float&gt;>>::<<A-0e-B-07,B>>&lt;double, double&gt;
 
 === Synopsis
 
@@ -742,7 +742,7 @@ struct <<A-0e-B-07,B>>&lt;double, double&gt;;
 |===
 
 [#A-01-B-08-C]
-== <<A-01,A>>&lt;float&gt;::<<A-01-B-08,B>>&lt;double, double&gt;::C
+== <<A-01,A&lt;float&gt;>>::<<A-01-B-08,B&lt;double, double&gt;>>::C
 
 === Synopsis
 
@@ -754,7 +754,7 @@ struct C;
 ----
 
 [#A-01-B-08-D-0ae]
-== <<A-01,A>>&lt;float&gt;::<<A-01-B-08,B>>&lt;double, double&gt;::D
+== <<A-01,A&lt;float&gt;>>::<<A-01-B-08,B&lt;double, double&gt;>>::D
 
 === Synopsis
 
@@ -767,7 +767,7 @@ struct D;
 ----
 
 [#A-01-B-08-D-0af]
-== <<A-01,A>>&lt;float&gt;::<<A-01-B-08,B>>&lt;double, double&gt;::D&lt;bool, bool&gt;
+== <<A-01,A&lt;float&gt;>>::<<A-01-B-08,B&lt;double, double&gt;>>::<<A-0e-B-00-D-09,D>>&lt;bool, bool&gt;
 
 === Synopsis
 

@@ -68,7 +68,7 @@ void f10(T value);
 template<class T, class Enable = void>
 class A {};
 
-/// Specialization for floating point types
+/// Specialization for integral types
 template<class T>
 class A<T, std::enable_if_t<std::is_integral_v<T>>> {};
 
