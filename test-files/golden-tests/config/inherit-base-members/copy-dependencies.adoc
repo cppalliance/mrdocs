@@ -10,15 +10,15 @@
 |===
 | Name
 | Description
-| <<base,`base`>> 
+| link:#base[`base`] 
 | A base class to test inheritance and shadowing
-| <<base_base,`base&lowbar;base`>> 
+| link:#base_base[`base&lowbar;base`] 
 | A second&hyphen;order base class to test indirect inheritance
-| <<derived,`derived`>> 
+| link:#derived[`derived`] 
 | A class that derives from base and excluded&lowbar;base
-| <<private_derived,`private&lowbar;derived`>> 
+| link:#private_derived[`private&lowbar;derived`] 
 | A class that uses private inheritance only
-| <<protected_derived,`protected&lowbar;derived`>> 
+| link:#protected_derived[`protected&lowbar;derived`] 
 | A class that should inherit functions as protected&period;
 |===
 
@@ -34,7 +34,7 @@ Declared in `&lt;copy&hyphen;dependencies&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 class base
-    : public <<base_base,base&lowbar;base>>;
+    : public link:#base_base[base&lowbar;base];
 ----
 
 === Base Classes
@@ -43,7 +43,7 @@ class base
 |===
 | Name
 | Description
-| `<<base_base,base&lowbar;base>>`
+| `link:#base_base[base&lowbar;base]`
 | A second&hyphen;order base class to test indirect inheritance
 |===
 
@@ -53,15 +53,15 @@ class base
 |===
 | Name
 | Description
-| <<base_base-base_base_inherited,`base&lowbar;base&lowbar;inherited`>> 
+| link:#base_base-base_base_inherited[`base&lowbar;base&lowbar;inherited`] 
 | This function should be indirectly inherited by derived classes&period;
-| <<base-base_inherited,`base&lowbar;inherited`>> 
+| link:#base-base_inherited[`base&lowbar;inherited`] 
 | This function should be inherited by derived classes&period;
-| <<base-base_shadowed,`base&lowbar;shadowed`>> 
+| link:#base-base_shadowed[`base&lowbar;shadowed`] 
 | This function should shadow the excluded&lowbar;base function&period;
-| <<base-derived_shadowed,`derived&lowbar;shadowed`>> 
+| link:#base-derived_shadowed[`derived&lowbar;shadowed`] 
 | This function should be shadowed by derived classes&period;
-| <<base_base-do_base_base_inherited,`do&lowbar;base&lowbar;base&lowbar;inherited`>> 
+| link:#base_base-do_base_base_inherited[`do&lowbar;base&lowbar;base&lowbar;inherited`] 
 | This function should be indirectly inherited by derived classes&period;
 |===
 
@@ -71,11 +71,11 @@ class base
 |===
 | Name
 | Description
-| <<base-do_base_inherited,`do&lowbar;base&lowbar;inherited`>> 
+| link:#base-do_base_inherited[`do&lowbar;base&lowbar;inherited`] 
 | This function should be inherited by derived classes&period;
-| <<base-do_base_shadowed,`do&lowbar;base&lowbar;shadowed`>> 
+| link:#base-do_base_shadowed[`do&lowbar;base&lowbar;shadowed`] 
 | This function should shadow the excluded&lowbar;base function&period;
-| <<base-do_derived_shadowed,`do&lowbar;derived&lowbar;shadowed`>> 
+| link:#base-do_derived_shadowed[`do&lowbar;derived&lowbar;shadowed`] 
 | This function should be shadowed by derived classes&period;
 |===
 
@@ -85,12 +85,12 @@ class base
 |===
 | Name
 | Description
-| <<derived,`derived`>>
+| link:#derived[`derived`]
 | A class that derives from base and excluded&lowbar;base
 |===
 
 [#base-base_inherited]
-== <<base,base>>::base&lowbar;inherited
+== link:#base[base]::base&lowbar;inherited
 
 This function should be inherited by derived classes&period;
 
@@ -100,7 +100,7 @@ Declared in `&lt;copy&hyphen;dependencies&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<base,base>>&
+link:#base[base]&
 base&lowbar;inherited();
 ----
 
@@ -109,7 +109,7 @@ base&lowbar;inherited();
 A base class to test inheritance and shadowing
 
 [#base-base_shadowed]
-== <<base,base>>::base&lowbar;shadowed
+== link:#base[base]::base&lowbar;shadowed
 
 This function should shadow the excluded&lowbar;base function&period;
 
@@ -119,7 +119,7 @@ Declared in `&lt;copy&hyphen;dependencies&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<base,base>>&
+link:#base[base]&
 base&lowbar;shadowed();
 ----
 
@@ -128,7 +128,7 @@ base&lowbar;shadowed();
 A base class to test inheritance and shadowing
 
 [#base-derived_shadowed]
-== <<base,base>>::derived&lowbar;shadowed
+== link:#base[base]::derived&lowbar;shadowed
 
 This function should be shadowed by derived classes&period;
 
@@ -138,7 +138,7 @@ Declared in `&lt;copy&hyphen;dependencies&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<base,base>>&
+link:#base[base]&
 derived&lowbar;shadowed();
 ----
 
@@ -147,7 +147,7 @@ derived&lowbar;shadowed();
 A base class to test inheritance and shadowing
 
 [#base-do_base_inherited]
-== <<base,base>>::do&lowbar;base&lowbar;inherited
+== link:#base[base]::do&lowbar;base&lowbar;inherited
 
 This function should be inherited by derived classes&period;
 
@@ -157,7 +157,7 @@ Declared in `&lt;copy&hyphen;dependencies&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<base,base>>&
+link:#base[base]&
 do&lowbar;base&lowbar;inherited();
 ----
 
@@ -166,7 +166,7 @@ do&lowbar;base&lowbar;inherited();
 A base class to test inheritance and shadowing
 
 [#base-do_base_shadowed]
-== <<base,base>>::do&lowbar;base&lowbar;shadowed
+== link:#base[base]::do&lowbar;base&lowbar;shadowed
 
 This function should shadow the excluded&lowbar;base function&period;
 
@@ -176,7 +176,7 @@ Declared in `&lt;copy&hyphen;dependencies&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<base,base>>&
+link:#base[base]&
 do&lowbar;base&lowbar;shadowed();
 ----
 
@@ -185,7 +185,7 @@ do&lowbar;base&lowbar;shadowed();
 A base class to test inheritance and shadowing
 
 [#base-do_derived_shadowed]
-== <<base,base>>::do&lowbar;derived&lowbar;shadowed
+== link:#base[base]::do&lowbar;derived&lowbar;shadowed
 
 This function should be shadowed by derived classes&period;
 
@@ -195,7 +195,7 @@ Declared in `&lt;copy&hyphen;dependencies&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<base,base>>&
+link:#base[base]&
 do&lowbar;derived&lowbar;shadowed();
 ----
 
@@ -223,9 +223,9 @@ class base&lowbar;base;
 |===
 | Name
 | Description
-| <<base_base-base_base_inherited,`base&lowbar;base&lowbar;inherited`>> 
+| link:#base_base-base_base_inherited[`base&lowbar;base&lowbar;inherited`] 
 | This function should be indirectly inherited by derived classes&period;
-| <<base_base-do_base_base_inherited,`do&lowbar;base&lowbar;base&lowbar;inherited`>> 
+| link:#base_base-do_base_base_inherited[`do&lowbar;base&lowbar;base&lowbar;inherited`] 
 | This function should be indirectly inherited by derived classes&period;
 |===
 
@@ -235,12 +235,12 @@ class base&lowbar;base;
 |===
 | Name
 | Description
-| <<base,`base`>>
+| link:#base[`base`]
 | A base class to test inheritance and shadowing
 |===
 
 [#base_base-base_base_inherited]
-== <<base_base,base&lowbar;base>>::base&lowbar;base&lowbar;inherited
+== link:#base_base[base&lowbar;base]::base&lowbar;base&lowbar;inherited
 
 This function should be indirectly inherited by derived classes&period;
 
@@ -250,7 +250,7 @@ Declared in `&lt;copy&hyphen;dependencies&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<base_base,base&lowbar;base>>&
+link:#base_base[base&lowbar;base]&
 base&lowbar;base&lowbar;inherited();
 ----
 
@@ -259,7 +259,7 @@ base&lowbar;base&lowbar;inherited();
 A second&hyphen;order base class to test indirect inheritance
 
 [#base_base-do_base_base_inherited]
-== <<base_base,base&lowbar;base>>::do&lowbar;base&lowbar;base&lowbar;inherited
+== link:#base_base[base&lowbar;base]::do&lowbar;base&lowbar;base&lowbar;inherited
 
 This function should be indirectly inherited by derived classes&period;
 
@@ -269,7 +269,7 @@ Declared in `&lt;copy&hyphen;dependencies&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<base_base,base&lowbar;base>>&
+link:#base_base[base&lowbar;base]&
 do&lowbar;base&lowbar;base&lowbar;inherited();
 ----
 
@@ -289,7 +289,7 @@ Declared in `&lt;copy&hyphen;dependencies&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 class derived
-    : public <<base,base>>
+    : public link:#base[base]
     , public excluded&lowbar;base;
 ----
 
@@ -299,7 +299,7 @@ class derived
 |===
 | Name
 | Description
-| `<<base,base>>`
+| `link:#base[base]`
 | A base class to test inheritance and shadowing
 | `excluded&lowbar;base`
 | 
@@ -311,19 +311,19 @@ class derived
 |===
 | Name
 | Description
-| <<base_base-base_base_inherited,`base&lowbar;base&lowbar;inherited`>> 
+| link:#base_base-base_base_inherited[`base&lowbar;base&lowbar;inherited`] 
 | This function should be indirectly inherited by derived classes&period;
-| <<base-base_inherited,`base&lowbar;inherited`>> 
+| link:#base-base_inherited[`base&lowbar;inherited`] 
 | This function should be inherited by derived classes&period;
-| <<base-base_shadowed,`base&lowbar;shadowed`>> 
+| link:#base-base_shadowed[`base&lowbar;shadowed`] 
 | This function should shadow the excluded&lowbar;base function&period;
-| <<derived-derived_shadowed,`derived&lowbar;shadowed`>> 
+| link:#derived-derived_shadowed[`derived&lowbar;shadowed`] 
 | This function should shadow the base class function&period;
-| <<base_base-do_base_base_inherited,`do&lowbar;base&lowbar;base&lowbar;inherited`>> 
+| link:#base_base-do_base_base_inherited[`do&lowbar;base&lowbar;base&lowbar;inherited`] 
 | This function should be indirectly inherited by derived classes&period;
-| <<derived-do_derived_shadowed,`do&lowbar;derived&lowbar;shadowed`>> 
+| link:#derived-do_derived_shadowed[`do&lowbar;derived&lowbar;shadowed`] 
 | This function should shadow the base class function&period;
-| <<derived-excluded_inherited,`excluded&lowbar;inherited`>> 
+| link:#derived-excluded_inherited[`excluded&lowbar;inherited`] 
 | This function should be inherited by derived classes&period;
 |===
 
@@ -333,20 +333,20 @@ class derived
 |===
 | Name
 | Description
-| <<base-do_base_inherited,`do&lowbar;base&lowbar;inherited`>> 
+| link:#base-do_base_inherited[`do&lowbar;base&lowbar;inherited`] 
 | This function should be inherited by derived classes&period;
-| <<base-do_base_shadowed,`do&lowbar;base&lowbar;shadowed`>> 
+| link:#base-do_base_shadowed[`do&lowbar;base&lowbar;shadowed`] 
 | This function should shadow the excluded&lowbar;base function&period;
-| <<base-do_derived_shadowed,`do&lowbar;derived&lowbar;shadowed`>> 
+| link:#base-do_derived_shadowed[`do&lowbar;derived&lowbar;shadowed`] 
 | This function should be shadowed by derived classes&period;
-| <<derived-do_excluded_inherited,`do&lowbar;excluded&lowbar;inherited`>> 
+| link:#derived-do_excluded_inherited[`do&lowbar;excluded&lowbar;inherited`] 
 | This function should be inherited by derived classes&period;
-| <<derived-do_shadowed,`do&lowbar;shadowed`>> 
+| link:#derived-do_shadowed[`do&lowbar;shadowed`] 
 | This function should be shadowed by derived classes&period;
 |===
 
 [#derived-derived_shadowed]
-== <<derived,derived>>::derived&lowbar;shadowed
+== link:#derived[derived]::derived&lowbar;shadowed
 
 This function should shadow the base class function&period;
 
@@ -356,7 +356,7 @@ Declared in `&lt;copy&hyphen;dependencies&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<derived,derived>>&
+link:#derived[derived]&
 derived&lowbar;shadowed();
 ----
 
@@ -365,7 +365,7 @@ derived&lowbar;shadowed();
 A class that derives from base and excluded&lowbar;base
 
 [#derived-do_derived_shadowed]
-== <<derived,derived>>::do&lowbar;derived&lowbar;shadowed
+== link:#derived[derived]::do&lowbar;derived&lowbar;shadowed
 
 This function should shadow the base class function&period;
 
@@ -375,7 +375,7 @@ Declared in `&lt;copy&hyphen;dependencies&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<derived,derived>>&
+link:#derived[derived]&
 do&lowbar;derived&lowbar;shadowed();
 ----
 
@@ -384,7 +384,7 @@ do&lowbar;derived&lowbar;shadowed();
 A class that derives from base and excluded&lowbar;base
 
 [#derived-excluded_inherited]
-== <<derived,derived>>::excluded&lowbar;inherited
+== link:#derived[derived]::excluded&lowbar;inherited
 
 This function should be inherited by derived classes&period;
 
@@ -399,7 +399,7 @@ excluded&lowbar;inherited();
 ----
 
 [#derived-do_excluded_inherited]
-== <<derived,derived>>::do&lowbar;excluded&lowbar;inherited
+== link:#derived[derived]::do&lowbar;excluded&lowbar;inherited
 
 This function should be inherited by derived classes&period;
 
@@ -414,7 +414,7 @@ do&lowbar;excluded&lowbar;inherited();
 ----
 
 [#derived-do_shadowed]
-== <<derived,derived>>::do&lowbar;shadowed
+== link:#derived[derived]::do&lowbar;shadowed
 
 This function should be shadowed by derived classes&period;
 
@@ -440,7 +440,7 @@ Declared in `&lt;copy&hyphen;dependencies&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 class private&lowbar;derived
-    : <<base,base>>
+    : link:#base[base]
     , excluded&lowbar;base;
 ----
 
@@ -450,14 +450,14 @@ class private&lowbar;derived
 |===
 | Name
 | Description
-| <<private_derived-derived_shadowed,`derived&lowbar;shadowed`>> 
+| link:#private_derived-derived_shadowed[`derived&lowbar;shadowed`] 
 | This function should shadow the base class function&period;
-| <<private_derived-do_derived_shadowed,`do&lowbar;derived&lowbar;shadowed`>> 
+| link:#private_derived-do_derived_shadowed[`do&lowbar;derived&lowbar;shadowed`] 
 | This function should shadow the base class function&period;
 |===
 
 [#private_derived-derived_shadowed]
-== <<private_derived,private&lowbar;derived>>::derived&lowbar;shadowed
+== link:#private_derived[private&lowbar;derived]::derived&lowbar;shadowed
 
 This function should shadow the base class function&period;
 
@@ -467,7 +467,7 @@ Declared in `&lt;copy&hyphen;dependencies&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<private_derived,private&lowbar;derived>>&
+link:#private_derived[private&lowbar;derived]&
 derived&lowbar;shadowed();
 ----
 
@@ -476,7 +476,7 @@ derived&lowbar;shadowed();
 A class that uses private inheritance only
 
 [#private_derived-do_derived_shadowed]
-== <<private_derived,private&lowbar;derived>>::do&lowbar;derived&lowbar;shadowed
+== link:#private_derived[private&lowbar;derived]::do&lowbar;derived&lowbar;shadowed
 
 This function should shadow the base class function&period;
 
@@ -486,7 +486,7 @@ Declared in `&lt;copy&hyphen;dependencies&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<private_derived,private&lowbar;derived>>&
+link:#private_derived[private&lowbar;derived]&
 do&lowbar;derived&lowbar;shadowed();
 ----
 
@@ -506,7 +506,7 @@ Declared in `&lt;copy&hyphen;dependencies&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 class protected&lowbar;derived
-    : protected <<base,base>>
+    : protected link:#base[base]
     , protected excluded&lowbar;base;
 ----
 
@@ -516,9 +516,9 @@ class protected&lowbar;derived
 |===
 | Name
 | Description
-| <<protected_derived-derived_shadowed,`derived&lowbar;shadowed`>> 
+| link:#protected_derived-derived_shadowed[`derived&lowbar;shadowed`] 
 | This function should shadow the base class function&period;
-| <<protected_derived-do_derived_shadowed,`do&lowbar;derived&lowbar;shadowed`>> 
+| link:#protected_derived-do_derived_shadowed[`do&lowbar;derived&lowbar;shadowed`] 
 | This function should shadow the base class function&period;
 |===
 
@@ -528,32 +528,32 @@ class protected&lowbar;derived
 |===
 | Name
 | Description
-| <<base_base-base_base_inherited,`base&lowbar;base&lowbar;inherited`>> 
+| link:#base_base-base_base_inherited[`base&lowbar;base&lowbar;inherited`] 
 | This function should be indirectly inherited by derived classes&period;
-| <<base-base_inherited,`base&lowbar;inherited`>> 
+| link:#base-base_inherited[`base&lowbar;inherited`] 
 | This function should be inherited by derived classes&period;
-| <<base-base_shadowed,`base&lowbar;shadowed`>> 
+| link:#base-base_shadowed[`base&lowbar;shadowed`] 
 | This function should shadow the excluded&lowbar;base function&period;
-| <<base-derived_shadowed,`derived&lowbar;shadowed`>> 
+| link:#base-derived_shadowed[`derived&lowbar;shadowed`] 
 | This function should be shadowed by derived classes&period;
-| <<base_base-do_base_base_inherited,`do&lowbar;base&lowbar;base&lowbar;inherited`>> 
+| link:#base_base-do_base_base_inherited[`do&lowbar;base&lowbar;base&lowbar;inherited`] 
 | This function should be indirectly inherited by derived classes&period;
-| <<base-do_base_inherited,`do&lowbar;base&lowbar;inherited`>> 
+| link:#base-do_base_inherited[`do&lowbar;base&lowbar;inherited`] 
 | This function should be inherited by derived classes&period;
-| <<base-do_base_shadowed,`do&lowbar;base&lowbar;shadowed`>> 
+| link:#base-do_base_shadowed[`do&lowbar;base&lowbar;shadowed`] 
 | This function should shadow the excluded&lowbar;base function&period;
-| <<base-do_derived_shadowed,`do&lowbar;derived&lowbar;shadowed`>> 
+| link:#base-do_derived_shadowed[`do&lowbar;derived&lowbar;shadowed`] 
 | This function should be shadowed by derived classes&period;
-| <<protected_derived-do_excluded_inherited,`do&lowbar;excluded&lowbar;inherited`>> 
+| link:#protected_derived-do_excluded_inherited[`do&lowbar;excluded&lowbar;inherited`] 
 | This function should be inherited by derived classes&period;
-| <<protected_derived-do_shadowed,`do&lowbar;shadowed`>> 
+| link:#protected_derived-do_shadowed[`do&lowbar;shadowed`] 
 | This function should be shadowed by derived classes&period;
-| <<protected_derived-excluded_inherited,`excluded&lowbar;inherited`>> 
+| link:#protected_derived-excluded_inherited[`excluded&lowbar;inherited`] 
 | This function should be inherited by derived classes&period;
 |===
 
 [#protected_derived-derived_shadowed]
-== <<protected_derived,protected&lowbar;derived>>::derived&lowbar;shadowed
+== link:#protected_derived[protected&lowbar;derived]::derived&lowbar;shadowed
 
 This function should shadow the base class function&period;
 
@@ -563,7 +563,7 @@ Declared in `&lt;copy&hyphen;dependencies&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<protected_derived,protected&lowbar;derived>>&
+link:#protected_derived[protected&lowbar;derived]&
 derived&lowbar;shadowed();
 ----
 
@@ -572,7 +572,7 @@ derived&lowbar;shadowed();
 A class that should inherit functions as protected&period;
 
 [#protected_derived-do_derived_shadowed]
-== <<protected_derived,protected&lowbar;derived>>::do&lowbar;derived&lowbar;shadowed
+== link:#protected_derived[protected&lowbar;derived]::do&lowbar;derived&lowbar;shadowed
 
 This function should shadow the base class function&period;
 
@@ -582,7 +582,7 @@ Declared in `&lt;copy&hyphen;dependencies&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<protected_derived,protected&lowbar;derived>>&
+link:#protected_derived[protected&lowbar;derived]&
 do&lowbar;derived&lowbar;shadowed();
 ----
 
@@ -591,7 +591,7 @@ do&lowbar;derived&lowbar;shadowed();
 A class that should inherit functions as protected&period;
 
 [#protected_derived-do_excluded_inherited]
-== <<protected_derived,protected&lowbar;derived>>::do&lowbar;excluded&lowbar;inherited
+== link:#protected_derived[protected&lowbar;derived]::do&lowbar;excluded&lowbar;inherited
 
 This function should be inherited by derived classes&period;
 
@@ -606,7 +606,7 @@ do&lowbar;excluded&lowbar;inherited();
 ----
 
 [#protected_derived-do_shadowed]
-== <<protected_derived,protected&lowbar;derived>>::do&lowbar;shadowed
+== link:#protected_derived[protected&lowbar;derived]::do&lowbar;shadowed
 
 This function should be shadowed by derived classes&period;
 
@@ -621,7 +621,7 @@ do&lowbar;shadowed();
 ----
 
 [#protected_derived-excluded_inherited]
-== <<protected_derived,protected&lowbar;derived>>::excluded&lowbar;inherited
+== link:#protected_derived[protected&lowbar;derived]::excluded&lowbar;inherited
 
 This function should be inherited by derived classes&period;
 

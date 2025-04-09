@@ -10,11 +10,11 @@
 |===
 | Name
 | Description
-| <<copyFromNoParam,`copyFromNoParam`>> 
+| link:#copyFromNoParam[`copyFromNoParam`] 
 | Brief from `foo()`
-| <<copyfromOverloads,`copyfromOverloads`>> 
+| link:#copyfromOverloads[`copyfromOverloads`] 
 | Brief from `foo()`
-| <<foo-02,`foo`>> 
+| link:#foo-02[`foo`] 
 | Brief from `foo()`
 |===
 
@@ -84,10 +84,10 @@ Brief from `foo()`
 ----
 constexpr
 bool
-<<foo-0c,foo>>();
+link:#foo-0c[foo]();
 ----
 
-[.small]#<<foo-0c,_» more&period;&period;&period;_>>#
+[.small]#link:#foo-0c[_» more&period;&period;&period;_]#
 
 Brief from `foo()`
 
@@ -96,10 +96,10 @@ Brief from `foo()`
 ----
 constexpr
 bool
-<<foo-0a,foo>>(char ch);
+link:#foo-0a[foo](char ch);
 ----
 
-[.small]#<<foo-0a,_» more&period;&period;&period;_>>#
+[.small]#link:#foo-0a[_» more&period;&period;&period;_]#
 
 === Return Value
 

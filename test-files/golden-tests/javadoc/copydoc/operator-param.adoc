@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<A,`A`>> 
+| link:#A[`A`] 
 |===
 
 [#A]
@@ -30,12 +30,12 @@ struct A;
 |===
 | Name
 | Description
-| <<A-operator_call-08,`operator()`>> 
+| link:#A-operator_call-08[`operator()`] 
 | Return true if ch is in the character set&period;
 |===
 
 [#A-operator_call-08]
-== <<A,A>>::operator()
+== link:#A[A]::operator()
 
 Return true if ch is in the character set&period;
 
@@ -50,10 +50,10 @@ Return true if ch is in the character set&period;
 ----
 constexpr
 bool
-<<A-operator_call-0f,operator()>>(char ch) const noexcept;
+link:#A-operator_call-0f[operator()](char ch) const noexcept;
 ----
 
-[.small]#<<A-operator_call-0f,_» more&period;&period;&period;_>>#
+[.small]#link:#A-operator_call-0f[_» more&period;&period;&period;_]#
 
 Return true if ch is in the character set&period;
 
@@ -62,10 +62,10 @@ Return true if ch is in the character set&period;
 ----
 constexpr
 bool
-<<A-operator_call-0b,operator()>>(unsigned char ch) const noexcept;
+link:#A-operator_call-0b[operator()](unsigned char ch) const noexcept;
 ----
 
-[.small]#<<A-operator_call-0b,_» more&period;&period;&period;_>>#
+[.small]#link:#A-operator_call-0b[_» more&period;&period;&period;_]#
 
 === Return Value
 
@@ -82,7 +82,7 @@ True if ch is in the set, otherwise false&period;
 |===
 
 [#A-operator_call-0f]
-== <<A,A>>::operator()
+== link:#A[A]::operator()
 
 Return true if ch is in the character set&period;
 
@@ -116,7 +116,7 @@ True if ch is in the set, otherwise false&period;
 |===
 
 [#A-operator_call-0b]
-== <<A,A>>::operator()
+== link:#A[A]::operator()
 
 Return true if ch is in the character set&period;
 

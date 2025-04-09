@@ -9,9 +9,9 @@
 [cols=1]
 |===
 | Name
-| <<Base,`Base`>> 
-| <<C,`C`>> 
-| <<ConstBase,`ConstBase`>> 
+| link:#Base[`Base`] 
+| link:#C[`C`] 
+| link:#ConstBase[`ConstBase`] 
 |===
 
 [#Base]
@@ -24,7 +24,7 @@ Declared in `&lt;base&hyphen;overload&hyphen;set&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 class Base
-    : public <<ConstBase,ConstBase>>;
+    : public link:#ConstBase[ConstBase];
 ----
 
 === Base Classes
@@ -33,7 +33,7 @@ class Base
 |===
 | Name
 | Description
-| `<<ConstBase,ConstBase>>`
+| `link:#ConstBase[ConstBase]`
 | 
 |===
 
@@ -43,7 +43,7 @@ class Base
 |===
 | Name
 | Description
-| <<Base-foo-04,`foo`>> 
+| link:#Base-foo-04[`foo`] 
 | 
 |===
 
@@ -53,12 +53,12 @@ class Base
 |===
 | Name
 | Description
-| <<C,`C`>>
+| link:#C[`C`]
 | 
 |===
 
 [#Base-foo-04]
-== <<Base,Base>>::foo
+== link:#Base[Base]::foo
 
 === Synopses
 
@@ -68,22 +68,22 @@ Declared in `&lt;base&hyphen;overload&hyphen;set&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int&
-<<Base-foo-0a,foo>>();
+link:#Base-foo-0a[foo]();
 ----
 
-[.small]#<<Base-foo-0a,_» more&period;&period;&period;_>>#
+[.small]#link:#Base-foo-0a[_» more&period;&period;&period;_]#
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int&
-<<Base-foo-08,foo>>() const;
+link:#Base-foo-08[foo]() const;
 ----
 
-[.small]#<<Base-foo-08,_» more&period;&period;&period;_>>#
+[.small]#link:#Base-foo-08[_» more&period;&period;&period;_]#
 
 [#Base-foo-0a]
-== <<Base,Base>>::foo
+== link:#Base[Base]::foo
 
 === Synopsis
 
@@ -96,7 +96,7 @@ foo();
 ----
 
 [#Base-foo-08]
-== <<Base,Base>>::foo
+== link:#Base[Base]::foo
 
 === Synopsis
 
@@ -118,7 +118,7 @@ Declared in `&lt;base&hyphen;overload&hyphen;set&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 class C
-    : public <<Base,Base>>;
+    : public link:#Base[Base];
 ----
 
 === Base Classes
@@ -127,7 +127,7 @@ class C
 |===
 | Name
 | Description
-| `<<Base,Base>>`
+| `link:#Base[Base]`
 | 
 |===
 
@@ -137,7 +137,7 @@ class C
 |===
 | Name
 | Description
-| <<Base-foo-04,`foo`>> 
+| link:#Base-foo-04[`foo`] 
 | 
 |===
 
@@ -158,7 +158,7 @@ class ConstBase;
 [cols=1]
 |===
 | Name
-| <<ConstBase-foo,`foo`>> 
+| link:#ConstBase-foo[`foo`] 
 |===
 
 === Derived Classes
@@ -167,12 +167,12 @@ class ConstBase;
 |===
 | Name
 | Description
-| <<Base,`Base`>>
+| link:#Base[`Base`]
 | 
 |===
 
 [#ConstBase-foo]
-== <<ConstBase,ConstBase>>::foo
+== link:#ConstBase[ConstBase]::foo
 
 === Synopsis
 

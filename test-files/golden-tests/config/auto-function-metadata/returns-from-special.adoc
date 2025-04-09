@@ -10,13 +10,13 @@
 |===
 | Name
 | Description
-| <<A,`A`>> 
+| link:#A[`A`] 
 | A helper class
-| <<Undoc,`Undoc`>> 
+| link:#Undoc[`Undoc`] 
 | 
-| <<X,`X`>> 
+| link:#X[`X`] 
 | Test class
-| <<ostream,`ostream`>> 
+| link:#ostream[`ostream`] 
 | A fake output stream
 |===
 
@@ -26,23 +26,23 @@
 |===
 | Name
 | Description
-| <<operator_lshift,`operator&lt;&lt;`>> 
+| link:#operator_lshift[`operator&lt;&lt;`] 
 | Stream insertion operator
-| <<operator_not,`operator!`>> 
+| link:#operator_not[`operator!`] 
 | Negation operator
-| <<operator_eq,`operator&equals;&equals;`>> 
+| link:#operator_eq[`operator&equals;&equals;`] 
 | Equality operator
-| <<operator_not_eq,`operator!&equals;`>> 
+| link:#operator_not_eq[`operator!&equals;`] 
 | Inequality operator
-| <<operator_lt,`operator&lt;`>> 
+| link:#operator_lt[`operator&lt;`] 
 | Less&hyphen;than operator
-| <<operator_le,`operator&lt;&equals;`>> 
+| link:#operator_le[`operator&lt;&equals;`] 
 | Less&hyphen;than&hyphen;or&hyphen;equal operator
-| <<operator_gt,`operator&gt;`>> 
+| link:#operator_gt[`operator&gt;`] 
 | Greater&hyphen;than operator
-| <<operator_ge,`operator&gt;&equals;`>> 
+| link:#operator_ge[`operator&gt;&equals;`] 
 | Greater&hyphen;than&hyphen;or&hyphen;equal operator
-| <<operator_3way,`operator&lt;&equals;&gt;`>> 
+| link:#operator_3way[`operator&lt;&equals;&gt;`] 
 | Three&hyphen;way comparison operator
 |===
 
@@ -92,36 +92,36 @@ struct X;
 |===
 | Name
 | Description
-| <<X-operator_assign-0a,`operator&equals;`>> 
+| link:#X-operator_assign-0a[`operator&equals;`] 
 | Assignment operators
-| <<X-operator_plus,`operator&plus;`>> 
+| link:#X-operator_plus[`operator&plus;`] 
 | Addition operator
-| <<X-operator_ptr,`operator&hyphen;&gt;`>> 
+| link:#X-operator_ptr[`operator&hyphen;&gt;`] 
 | Member access operator
-| <<X-2conversion-00,`operator A`>> 
+| link:#X-2conversion-00[`operator A`] 
 | Conversion to `A`
-| <<X-2conversion-03,`operator Undoc`>> 
+| link:#X-2conversion-03[`operator Undoc`] 
 | Conversion to `Undoc`
-| <<X-operator_not,`operator!`>> 
+| link:#X-operator_not[`operator!`] 
 | Negation operator
-| <<X-operator_eq,`operator&equals;&equals;`>> 
+| link:#X-operator_eq[`operator&equals;&equals;`] 
 | Equality operator
-| <<X-operator_not_eq,`operator!&equals;`>> 
+| link:#X-operator_not_eq[`operator!&equals;`] 
 | Inequality operator
-| <<X-operator_lt,`operator&lt;`>> 
+| link:#X-operator_lt[`operator&lt;`] 
 | Less&hyphen;than operator
-| <<X-operator_le,`operator&lt;&equals;`>> 
+| link:#X-operator_le[`operator&lt;&equals;`] 
 | Less&hyphen;than&hyphen;or&hyphen;equal operator
-| <<X-operator_gt,`operator&gt;`>> 
+| link:#X-operator_gt[`operator&gt;`] 
 | Greater&hyphen;than operator
-| <<X-operator_ge,`operator&gt;&equals;`>> 
+| link:#X-operator_ge[`operator&gt;&equals;`] 
 | Greater&hyphen;than&hyphen;or&hyphen;equal operator
-| <<X-operator_3way,`operator&lt;&equals;&gt;`>> 
+| link:#X-operator_3way[`operator&lt;&equals;&gt;`] 
 | Three&hyphen;way comparison operator
 |===
 
 [#X-operator_assign-0a]
-== <<X,X>>::operator&equals;
+== link:#X[X]::operator&equals;
 
 Assignment operators
 
@@ -134,25 +134,25 @@ Assignment operator
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X,X>>&
-<<X-operator_assign-0d,operator&equals;>>(<<A,A>> const& value);
+link:#X[X]&
+link:#X-operator_assign-0d[operator&equals;](link:#A[A] const& value);
 ----
 
-[.small]#<<X-operator_assign-0d,_» more&period;&period;&period;_>>#
+[.small]#link:#X-operator_assign-0d[_» more&period;&period;&period;_]#
 
 Assignment operator
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X,X>>&&
-<<X-operator_assign-07,operator&equals;>>(<<A,A>>&& value);
+link:#X[X]&&
+link:#X-operator_assign-07[operator&equals;](link:#A[A]&& value);
 ----
 
-[.small]#<<X-operator_assign-07,_» more&period;&period;&period;_>>#
+[.small]#link:#X-operator_assign-07[_» more&period;&period;&period;_]#
 
 [#X-operator_assign-0d]
-== <<X,X>>::operator&equals;
+== link:#X[X]::operator&equals;
 
 Assignment operator
 
@@ -162,8 +162,8 @@ Declared in `&lt;returns&hyphen;from&hyphen;special&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X,X>>&
-operator&equals;(<<A,A>> const& value);
+link:#X[X]&
+operator&equals;(link:#A[A] const& value);
 ----
 
 === Return Value
@@ -181,7 +181,7 @@ Reference to the current object
 |===
 
 [#X-operator_assign-07]
-== <<X,X>>::operator&equals;
+== link:#X[X]::operator&equals;
 
 Assignment operator
 
@@ -191,8 +191,8 @@ Declared in `&lt;returns&hyphen;from&hyphen;special&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X,X>>&&
-operator&equals;(<<A,A>>&& value);
+link:#X[X]&&
+operator&equals;(link:#A[A]&& value);
 ----
 
 === Return Value
@@ -210,7 +210,7 @@ Rvalue reference to the current object
 |===
 
 [#X-operator_plus]
-== <<X,X>>::operator&plus;
+== link:#X[X]::operator&plus;
 
 Addition operator
 
@@ -220,8 +220,8 @@ Declared in `&lt;returns&hyphen;from&hyphen;special&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X,X>>
-operator&plus;(<<X,X>> const& rhs) const;
+link:#X[X]
+operator&plus;(link:#X[X] const& rhs) const;
 ----
 
 === Return Value
@@ -239,7 +239,7 @@ Another instance of the object
 |===
 
 [#X-operator_ptr]
-== <<X,X>>::operator&hyphen;&gt;
+== link:#X[X]::operator&hyphen;&gt;
 
 Member access operator
 
@@ -249,7 +249,7 @@ Declared in `&lt;returns&hyphen;from&hyphen;special&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X,X>>*
+link:#X[X]*
 operator&hyphen;&gt;();
 ----
 
@@ -258,7 +258,7 @@ operator&hyphen;&gt;();
 Pointer to the current object
 
 [#X-2conversion-00]
-== <<X,X>>::operator <<A,A>>
+== link:#X[X]::operator link:#A[A]
 
 Conversion to `A`
 
@@ -268,7 +268,7 @@ Declared in `&lt;returns&hyphen;from&hyphen;special&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-operator <<A,A>>() const;
+operator link:#A[A]() const;
 ----
 
 === Return Value
@@ -276,7 +276,7 @@ operator <<A,A>>() const;
 A helper class
 
 [#X-2conversion-03]
-== <<X,X>>::operator <<Undoc,Undoc>>
+== link:#X[X]::operator link:#Undoc[Undoc]
 
 Conversion to `Undoc`
 
@@ -286,7 +286,7 @@ Declared in `&lt;returns&hyphen;from&hyphen;special&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-operator <<Undoc,Undoc>>() const;
+operator link:#Undoc[Undoc]() const;
 ----
 
 === Return Value
@@ -294,7 +294,7 @@ operator <<Undoc,Undoc>>() const;
 The object converted to `Undoc`
 
 [#X-operator_not]
-== <<X,X>>::operator!
+== link:#X[X]::operator!
 
 Negation operator
 
@@ -313,7 +313,7 @@ operator!() const;
 `true` if the object is falsy, `false` otherwise
 
 [#X-operator_eq]
-== <<X,X>>::operator&equals;&equals;
+== link:#X[X]::operator&equals;&equals;
 
 Equality operator
 
@@ -324,7 +324,7 @@ Declared in `&lt;returns&hyphen;from&hyphen;special&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
-operator&equals;&equals;(<<X,X>> const& rhs) const;
+operator&equals;&equals;(link:#X[X] const& rhs) const;
 ----
 
 === Return Value
@@ -342,7 +342,7 @@ operator&equals;&equals;(<<X,X>> const& rhs) const;
 |===
 
 [#X-operator_not_eq]
-== <<X,X>>::operator!&equals;
+== link:#X[X]::operator!&equals;
 
 Inequality operator
 
@@ -353,7 +353,7 @@ Declared in `&lt;returns&hyphen;from&hyphen;special&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
-operator!&equals;(<<X,X>> const& rhs) const;
+operator!&equals;(link:#X[X] const& rhs) const;
 ----
 
 === Return Value
@@ -371,7 +371,7 @@ operator!&equals;(<<X,X>> const& rhs) const;
 |===
 
 [#X-operator_lt]
-== <<X,X>>::operator&lt;
+== link:#X[X]::operator&lt;
 
 Less&hyphen;than operator
 
@@ -382,7 +382,7 @@ Declared in `&lt;returns&hyphen;from&hyphen;special&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
-operator&lt;(<<X,X>> const& rhs) const;
+operator&lt;(link:#X[X] const& rhs) const;
 ----
 
 === Return Value
@@ -400,7 +400,7 @@ operator&lt;(<<X,X>> const& rhs) const;
 |===
 
 [#X-operator_le]
-== <<X,X>>::operator&lt;&equals;
+== link:#X[X]::operator&lt;&equals;
 
 Less&hyphen;than&hyphen;or&hyphen;equal operator
 
@@ -411,7 +411,7 @@ Declared in `&lt;returns&hyphen;from&hyphen;special&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
-operator&lt;&equals;(<<X,X>> const& rhs) const;
+operator&lt;&equals;(link:#X[X] const& rhs) const;
 ----
 
 === Return Value
@@ -429,7 +429,7 @@ operator&lt;&equals;(<<X,X>> const& rhs) const;
 |===
 
 [#X-operator_gt]
-== <<X,X>>::operator&gt;
+== link:#X[X]::operator&gt;
 
 Greater&hyphen;than operator
 
@@ -440,7 +440,7 @@ Declared in `&lt;returns&hyphen;from&hyphen;special&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
-operator&gt;(<<X,X>> const& rhs) const;
+operator&gt;(link:#X[X] const& rhs) const;
 ----
 
 === Return Value
@@ -458,7 +458,7 @@ operator&gt;(<<X,X>> const& rhs) const;
 |===
 
 [#X-operator_ge]
-== <<X,X>>::operator&gt;&equals;
+== link:#X[X]::operator&gt;&equals;
 
 Greater&hyphen;than&hyphen;or&hyphen;equal operator
 
@@ -469,7 +469,7 @@ Declared in `&lt;returns&hyphen;from&hyphen;special&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
-operator&gt;&equals;(<<X,X>> const& rhs) const;
+operator&gt;&equals;(link:#X[X] const& rhs) const;
 ----
 
 === Return Value
@@ -487,7 +487,7 @@ operator&gt;&equals;(<<X,X>> const& rhs) const;
 |===
 
 [#X-operator_3way]
-== <<X,X>>::operator&lt;&equals;&gt;
+== link:#X[X]::operator&lt;&equals;&gt;
 
 Three&hyphen;way comparison operator
 
@@ -498,7 +498,7 @@ Declared in `&lt;returns&hyphen;from&hyphen;special&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 auto
-operator&lt;&equals;&gt;(<<X,X>> const& rhs) const;
+operator&lt;&equals;&gt;(link:#X[X] const& rhs) const;
 ----
 
 === Return Value
@@ -540,10 +540,10 @@ Declared in `&lt;returns&hyphen;from&hyphen;special&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<ostream,ostream>>&
+link:#ostream[ostream]&
 operator&lt;&lt;(
-    <<ostream,ostream>>& os,
-    <<A,A>> const& value);
+    link:#ostream[ostream]& os,
+    link:#A[A] const& value);
 ----
 
 === Return Value
@@ -574,7 +574,7 @@ Declared in `&lt;returns&hyphen;from&hyphen;special&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
-operator!(<<A,A>> const& value);
+operator!(link:#A[A] const& value);
 ----
 
 === Return Value
@@ -604,8 +604,8 @@ Declared in `&lt;returns&hyphen;from&hyphen;special&period;cpp&gt;`
 ----
 bool
 operator&equals;&equals;(
-    <<A,A>> const& lhs,
-    <<A,A>> const& rhs);
+    link:#A[A] const& lhs,
+    link:#A[A] const& rhs);
 ----
 
 === Return Value
@@ -637,8 +637,8 @@ Declared in `&lt;returns&hyphen;from&hyphen;special&period;cpp&gt;`
 ----
 bool
 operator!&equals;(
-    <<A,A>> const& lhs,
-    <<A,A>> const& rhs);
+    link:#A[A] const& lhs,
+    link:#A[A] const& rhs);
 ----
 
 === Return Value
@@ -670,8 +670,8 @@ Declared in `&lt;returns&hyphen;from&hyphen;special&period;cpp&gt;`
 ----
 bool
 operator&lt;(
-    <<A,A>> const& lhs,
-    <<A,A>> const& rhs);
+    link:#A[A] const& lhs,
+    link:#A[A] const& rhs);
 ----
 
 === Return Value
@@ -703,8 +703,8 @@ Declared in `&lt;returns&hyphen;from&hyphen;special&period;cpp&gt;`
 ----
 bool
 operator&lt;&equals;(
-    <<A,A>> const& lhs,
-    <<A,A>> const& rhs);
+    link:#A[A] const& lhs,
+    link:#A[A] const& rhs);
 ----
 
 === Return Value
@@ -736,8 +736,8 @@ Declared in `&lt;returns&hyphen;from&hyphen;special&period;cpp&gt;`
 ----
 bool
 operator&gt;(
-    <<A,A>> const& lhs,
-    <<A,A>> const& rhs);
+    link:#A[A] const& lhs,
+    link:#A[A] const& rhs);
 ----
 
 === Return Value
@@ -769,8 +769,8 @@ Declared in `&lt;returns&hyphen;from&hyphen;special&period;cpp&gt;`
 ----
 bool
 operator&gt;&equals;(
-    <<A,A>> const& lhs,
-    <<A,A>> const& rhs);
+    link:#A[A] const& lhs,
+    link:#A[A] const& rhs);
 ----
 
 === Return Value
@@ -802,8 +802,8 @@ Declared in `&lt;returns&hyphen;from&hyphen;special&period;cpp&gt;`
 ----
 auto
 operator&lt;&equals;&gt;(
-    <<A,A>> const& lhs,
-    <<A,A>> const& rhs);
+    link:#A[A] const& lhs,
+    link:#A[A] const& rhs);
 ----
 
 === Return Value

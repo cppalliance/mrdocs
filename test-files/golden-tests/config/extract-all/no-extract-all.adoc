@@ -10,9 +10,9 @@
 |===
 | Name
 | Description
-| <<docFunction,`docFunction`>> 
+| link:#docFunction[`docFunction`] 
 | Documented function
-| <<sometimesDocFunction,`sometimesDocFunction`>> 
+| link:#sometimesDocFunction[`sometimesDocFunction`] 
 | Sometimes documented function
 |===
 

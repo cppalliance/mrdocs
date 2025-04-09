@@ -9,9 +9,9 @@
 [cols=1]
 |===
 | Name
-| <<C,`C`>> 
-| <<T,`T`>> 
-| <<U,`U`>> 
+| link:#C[`C`] 
+| link:#T[`T`] 
+| link:#U[`U`] 
 |===
 
 === Functions
@@ -19,8 +19,8 @@
 [cols=1]
 |===
 | Name
-| <<f,`f`>> 
-| <<g,`g`>> 
+| link:#f[`f`] 
+| link:#g[`g`] 
 |===
 
 [#T]

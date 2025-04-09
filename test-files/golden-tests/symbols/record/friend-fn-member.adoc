@@ -9,8 +9,8 @@
 [cols=1]
 |===
 | Name
-| <<U,`U`>> 
-| <<X,`X`>> 
+| link:#U[`U`] 
+| link:#X[`X`] 
 |===
 
 [#U]
@@ -31,11 +31,11 @@ struct U;
 |===
 | Name
 | Description
-| `<<X-foo,X::foo>>`
+| `link:#X-foo[X::foo]`
 | Friend member&hyphen;function
-| `<<X-2destructor,X::&#126;X>>`
+| `link:#X-2destructor[X::&#126;X]`
 | Destructor
-| `<<X-2constructor,X::X>>`
+| `link:#X-2constructor[X::X]`
 | Default constructor
 |===
 
@@ -57,16 +57,16 @@ struct X;
 |===
 | Name
 | Description
-| <<X-2constructor,`X`>>         [.small]#[constructor]#
+| link:#X-2constructor[`X`]         [.small]#[constructor]#
 | Default constructor
-| <<X-2destructor,`&#126;X`>> [.small]#[destructor]#
+| link:#X-2destructor[`&#126;X`] [.small]#[destructor]#
 | Destructor
-| <<X-foo,`foo`>> 
+| link:#X-foo[`foo`] 
 | Friend member&hyphen;function
 |===
 
 [#X-2constructor]
-== <<X,X>>::X
+== link:#X[X]::X
 
 Default constructor
 
@@ -80,7 +80,7 @@ X();
 ----
 
 [#X-2destructor]
-== <<X,X>>::&#126;X
+== link:#X[X]::&#126;X
 
 Destructor
 
@@ -94,7 +94,7 @@ Declared in `&lt;friend&hyphen;fn&hyphen;member&period;cpp&gt;`
 ----
 
 [#X-foo]
-== <<X,X>>::foo
+== link:#X[X]::foo
 
 Friend member&hyphen;function
 

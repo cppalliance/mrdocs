@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<T,`T`>> 
+| link:#T[`T`] 
 |===
 
 === Variables
@@ -17,15 +17,15 @@
 [cols=1]
 |===
 | Name
-| <<i,`i`>> 
-| <<j,`j`>> 
-| <<k,`k`>> 
-| <<l,`l`>> 
-| <<pi,`pi`>> 
-| <<t,`t`>> 
-| <<x0,`x0`>> 
-| <<x1,`x1`>> 
-| <<x2,`x2`>> 
+| link:#i[`i`] 
+| link:#j[`j`] 
+| link:#k[`k`] 
+| link:#l[`l`] 
+| link:#pi[`pi`] 
+| link:#t[`t`] 
+| link:#x0[`x0`] 
+| link:#x1[`x1`] 
+| link:#x2[`x2`] 
 |===
 
 [#T]
@@ -112,7 +112,7 @@ Declared in `&lt;ns&hyphen;variables&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 extern
-<<T,T>> t;
+link:#T[T] t;
 ----
 
 [#x0]

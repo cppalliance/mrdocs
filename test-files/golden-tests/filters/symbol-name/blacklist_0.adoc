@@ -9,9 +9,9 @@
 [cols=1]
 |===
 | Name
-| <<N0,`N0`>> 
-| <<N4,`N4`>> 
-| <<N7,`N7`>> 
+| link:#N0[`N0`] 
+| link:#N4[`N4`] 
+| link:#N7[`N7`] 
 |===
 
 [#N0]
@@ -22,11 +22,11 @@
 [cols=1]
 |===
 | Name
-| <<N0-f0,`f0`>> 
+| link:#N0-f0[`f0`] 
 |===
 
 [#N0-f0]
-== <<N0,N0>>::f0
+== link:#N0[N0]::f0
 
 === Synopsis
 
@@ -46,23 +46,23 @@ f0();
 [cols=1]
 |===
 | Name
-| <<N4-N5,`N5`>> 
-| <<N4-N6,`N6`>> 
+| link:#N4-N5[`N5`] 
+| link:#N4-N6[`N6`] 
 |===
 
 [#N4-N5]
-== <<N4,N4>>::N5
+== link:#N4[N4]::N5
 
 === Functions
 
 [cols=1]
 |===
 | Name
-| <<N4-N5-f1,`f1`>> 
+| link:#N4-N5-f1[`f1`] 
 |===
 
 [#N4-N5-f1]
-== <<N4,N4>>::<<N4-N5,N5>>::f1
+== link:#N4[N4]::link:#N4-N5[N5]::f1
 
 === Synopsis
 
@@ -75,18 +75,18 @@ f1();
 ----
 
 [#N4-N6]
-== <<N4,N4>>::N6
+== link:#N4[N4]::N6
 
 === Functions
 
 [cols=1]
 |===
 | Name
-| <<N4-N6-f1,`f1`>> 
+| link:#N4-N6-f1[`f1`] 
 |===
 
 [#N4-N6-f1]
-== <<N4,N4>>::<<N4-N6,N6>>::f1
+== link:#N4[N4]::link:#N4-N6[N6]::f1
 
 === Synopsis
 
@@ -106,22 +106,22 @@ f1();
 [cols=1]
 |===
 | Name
-| <<N7-N9,`N9`>> 
+| link:#N7-N9[`N9`] 
 |===
 
 [#N7-N9]
-== <<N7,N7>>::N9
+== link:#N7[N7]::N9
 
 === Functions
 
 [cols=1]
 |===
 | Name
-| <<N7-N9-g0,`g0`>> 
+| link:#N7-N9-g0[`g0`] 
 |===
 
 [#N7-N9-g0]
-== <<N7,N7>>::<<N7-N9,N9>>::g0
+== link:#N7[N7]::link:#N7-N9[N9]::g0
 
 === Synopsis
 

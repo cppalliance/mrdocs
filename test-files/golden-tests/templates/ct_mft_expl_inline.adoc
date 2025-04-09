@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<A,`A`>> 
+| link:#A[`A`] 
 |===
 
 [#A]
@@ -31,12 +31,12 @@ struct A;
 |===
 | Name
 | Description
-| <<A-f-00,`f`>> 
+| link:#A-f-00[`f`] 
 | 
 |===
 
 [#A-f-00]
-== <<A,A>>::f
+== link:#A[A]::f
 
 === Synopses
 
@@ -47,23 +47,23 @@ Declared in `&lt;ct&lowbar;mft&lowbar;expl&lowbar;inline&period;cpp&gt;`
 ----
 template&lt;typename U&gt;
 void
-<<A-f-07,f>>();
+link:#A-f-07[f]();
 ----
 
-[.small]#<<A-f-07,_» more&period;&period;&period;_>>#
+[.small]#link:#A-f-07[_» more&period;&period;&period;_]#
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
 void
-<<A-f-04,f&lt;int&gt;>>();
+link:#A-f-04[f&lt;int&gt;]();
 ----
 
-[.small]#<<A-f-04,_» more&period;&period;&period;_>>#
+[.small]#link:#A-f-04[_» more&period;&period;&period;_]#
 
 [#A-f-07]
-== <<A,A>>::f
+== link:#A[A]::f
 
 === Synopsis
 
@@ -77,7 +77,7 @@ f();
 ----
 
 [#A-f-04]
-== <<A,A>>::<<A-f-07,f>>&lt;int&gt;
+== link:#A[A]::link:#A-f-07[f]&lt;int&gt;
 
 === Synopsis
 
@@ -87,7 +87,7 @@ Declared in `&lt;ct&lowbar;mft&lowbar;expl&lowbar;inline&period;cpp&gt;`
 ----
 template&lt;&gt;
 void
-<<A-f-07,f>>&lt;int&gt;();
+link:#A-f-07[f]&lt;int&gt;();
 ----
 
 

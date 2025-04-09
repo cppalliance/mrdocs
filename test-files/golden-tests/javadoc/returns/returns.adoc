@@ -10,7 +10,7 @@
 |===
 | Name
 | Description
-| <<pair,`pair`>> 
+| link:#pair[`pair`] 
 | 
 |===
 
@@ -20,9 +20,9 @@
 |===
 | Name
 | Description
-| <<f,`f`>> 
+| link:#f[`f`] 
 | A function with a single return value&period;
-| <<g,`g`>> 
+| link:#g[`g`] 
 | A function with multiple return values&period;
 |===
 
@@ -46,8 +46,8 @@ struct pair;
 [cols=1]
 |===
 | Name
-| <<pair-first,`first`>> 
-| <<pair-second,`second`>> 
+| link:#pair-first[`first`] 
+| link:#pair-second[`second`] 
 |===
 
 === Non-Member Functions
@@ -56,12 +56,12 @@ struct pair;
 |===
 | Name
 | Description
-| <<g,`g`>>
+| link:#g[`g`]
 | A function with multiple return values&period;
 |===
 
 [#pair-first]
-== <<pair,pair>>::first
+== link:#pair[pair]::first
 
 === Synopsis
 
@@ -73,7 +73,7 @@ T first;
 ----
 
 [#pair-second]
-== <<pair,pair>>::second
+== link:#pair[pair]::second
 
 === Synopsis
 
@@ -114,7 +114,7 @@ Declared in `&lt;returns&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<pair,pair>>&lt;int, int&gt;
+link:#pair[pair]&lt;int, int&gt;
 g();
 ----
 

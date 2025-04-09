@@ -10,7 +10,7 @@
 |===
 | Name
 | Description
-| <<f-0c,`f`>> 
+| link:#f-0c[`f`] 
 | `f` overloads
 |===
 
@@ -29,10 +29,10 @@ Integer overload&period;
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<f-06,f>>(int);
+link:#f-06[f](int);
 ----
 
-[.small]#<<f-06,_» more&period;&period;&period;_>>#
+[.small]#link:#f-06[_» more&period;&period;&period;_]#
 
 Integer overload&period;
 
@@ -40,10 +40,10 @@ Integer overload&period;
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<f-0f,f>>(double);
+link:#f-0f[f](double);
 ----
 
-[.small]#<<f-0f,_» more&period;&period;&period;_>>#
+[.small]#link:#f-0f[_» more&period;&period;&period;_]#
 
 C string overload&period;
 
@@ -51,10 +51,10 @@ C string overload&period;
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<f-07,f>>(char const*);
+link:#f-07[f](char const*);
 ----
 
-[.small]#<<f-07,_» more&period;&period;&period;_>>#
+[.small]#link:#f-07[_» more&period;&period;&period;_]#
 
 C string overload&period;
 
@@ -62,10 +62,10 @@ C string overload&period;
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<f-0b,f>>(float const*);
+link:#f-0b[f](float const*);
 ----
 
-[.small]#<<f-0b,_» more&period;&period;&period;_>>#
+[.small]#link:#f-0b[_» more&period;&period;&period;_]#
 
 [#f-06]
 == f

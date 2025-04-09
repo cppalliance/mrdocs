@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<N,`N`>> 
+| link:#N[`N`] 
 |===
 
 === Types
@@ -17,7 +17,7 @@
 [cols=1]
 |===
 | Name
-| <<E,`E`>> 
+| link:#E[`E`] 
 |===
 
 [#N]
@@ -28,14 +28,14 @@
 [cols=1]
 |===
 | Name
-| <<N-A,`A`>> 
-| <<N-D,`D`>> 
-| <<N-B,`B`>> 
-| <<N-C,`C`>> 
+| link:#N-A[`A`] 
+| link:#N-D[`D`] 
+| link:#N-B[`B`] 
+| link:#N-C[`C`] 
 |===
 
 [#N-B]
-== <<N,N>>::B
+== link:#N[N]::B
 
 === Synopsis
 
@@ -44,11 +44,11 @@ Declared in `&lt;dependency&hyphen;propagation&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-using B = <<N-A,A>>&lt;T&gt;;
+using B = link:#N-A[A]&lt;T&gt;;
 ----
 
 [#N-C]
-== <<N,N>>::C
+== link:#N[N]::C
 
 === Synopsis
 
@@ -57,11 +57,11 @@ Declared in `&lt;dependency&hyphen;propagation&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-using C = <<N-B,B>>&lt;T&gt;;
+using C = link:#N-B[B]&lt;T&gt;;
 ----
 
 [#N-A]
-== <<N,N>>::A
+== link:#N[N]::A
 
 === Synopsis
 
@@ -74,7 +74,7 @@ struct A;
 ----
 
 [#N-D]
-== <<N,N>>::D
+== link:#N[N]::D
 
 === Synopsis
 
@@ -95,7 +95,7 @@ Declared in `&lt;dependency&hyphen;propagation&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct E
-    : <<N,N>>::<<N-C,C>>&lt;int&gt;;
+    : link:#N[N]::link:#N-C[C]&lt;int&gt;;
 ----
 
 === Base Classes
@@ -104,7 +104,7 @@ struct E
 |===
 | Name
 | Description
-| `<<N,N>>::<<N-C,C>>&lt;int&gt;`
+| `link:#N[N]::link:#N-C[C]&lt;int&gt;`
 | 
 |===
 

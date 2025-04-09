@@ -9,10 +9,10 @@
 [cols=1]
 |===
 | Name
-| <<_00namespace,`Unnamed namespace`>> 
-| <<A,`A`>> 
-| <<D,`D`>> 
-| <<I,`I`>> 
+| link:#_00namespace[`Unnamed namespace`] 
+| link:#A[`A`] 
+| link:#D[`D`] 
+| link:#I[`I`] 
 |===
 
 [#_00namespace]
@@ -23,8 +23,8 @@
 [cols=1]
 |===
 | Name
-| <<_00namespace-G,`G`>> 
-| <<_00namespace-H,`H`>> 
+| link:#_00namespace-G[`G`] 
+| link:#_00namespace-H[`H`] 
 |===
 
 === Functions
@@ -32,7 +32,7 @@
 [cols=1]
 |===
 | Name
-| <<_00namespace-f10,`f10`>> 
+| link:#_00namespace-f10[`f10`] 
 |===
 
 [#_00namespace-G]
@@ -43,11 +43,11 @@
 [cols=1]
 |===
 | Name
-| <<_00namespace-G-f11,`f11`>> 
+| link:#_00namespace-G-f11[`f11`] 
 |===
 
 [#_00namespace-G-f11]
-== <<_00namespace-G,G>>::f11
+== link:#_00namespace-G[G]::f11
 
 === Synopsis
 
@@ -67,11 +67,11 @@ f11();
 [cols=1]
 |===
 | Name
-| <<_00namespace-H-f12,`f12`>> 
+| link:#_00namespace-H-f12[`f12`] 
 |===
 
 [#_00namespace-H-f12]
-== <<_00namespace-H,H>>::f12
+== link:#_00namespace-H[H]::f12
 
 === Synopsis
 
@@ -104,9 +104,9 @@ f10();
 [cols=1]
 |===
 | Name
-| <<A-_00namespace,`Unnamed namespace`>> 
-| <<A-B,`B`>> 
-| <<A-C,`C`>> 
+| link:#A-_00namespace[`Unnamed namespace`] 
+| link:#A-B[`B`] 
+| link:#A-C[`C`] 
 |===
 
 === Functions
@@ -114,22 +114,22 @@ f10();
 [cols=1]
 |===
 | Name
-| <<A-f0,`f0`>> 
+| link:#A-f0[`f0`] 
 |===
 
 [#A-_00namespace]
-== <<A,A>>::Unnamed namespace
+== link:#A[A]::Unnamed namespace
 
 === Functions
 
 [cols=1]
 |===
 | Name
-| <<A-_00namespace-f3,`f3`>> 
+| link:#A-_00namespace-f3[`f3`] 
 |===
 
 [#A-_00namespace-f3]
-== <<A,A>>::f3
+== link:#A[A]::f3
 
 === Synopsis
 
@@ -142,18 +142,18 @@ f3();
 ----
 
 [#A-B]
-== <<A,A>>::B
+== link:#A[A]::B
 
 === Functions
 
 [cols=1]
 |===
 | Name
-| <<A-B-f1,`f1`>> 
+| link:#A-B-f1[`f1`] 
 |===
 
 [#A-B-f1]
-== <<A,A>>::<<A-B,B>>::f1
+== link:#A[A]::link:#A-B[B]::f1
 
 === Synopsis
 
@@ -166,18 +166,18 @@ f1();
 ----
 
 [#A-C]
-== <<A,A>>::C
+== link:#A[A]::C
 
 === Functions
 
 [cols=1]
 |===
 | Name
-| <<A-C-f2,`f2`>> 
+| link:#A-C-f2[`f2`] 
 |===
 
 [#A-C-f2]
-== <<A,A>>::<<A-C,C>>::f2
+== link:#A[A]::link:#A-C[C]::f2
 
 === Synopsis
 
@@ -190,7 +190,7 @@ f2();
 ----
 
 [#A-f0]
-== <<A,A>>::f0
+== link:#A[A]::f0
 
 === Synopsis
 
@@ -210,9 +210,9 @@ f0();
 [cols=1]
 |===
 | Name
-| <<D-_00namespace,`Unnamed namespace`>> 
-| <<D-E,`E`>> 
-| <<D-F,`F`>> 
+| link:#D-_00namespace[`Unnamed namespace`] 
+| link:#D-E[`E`] 
+| link:#D-F[`F`] 
 |===
 
 === Functions
@@ -220,22 +220,22 @@ f0();
 [cols=1]
 |===
 | Name
-| <<D-f5,`f5`>> 
+| link:#D-f5[`f5`] 
 |===
 
 [#D-_00namespace]
-== <<D,D>>::Unnamed namespace
+== link:#D[D]::Unnamed namespace
 
 === Functions
 
 [cols=1]
 |===
 | Name
-| <<D-_00namespace-f8,`f8`>> 
+| link:#D-_00namespace-f8[`f8`] 
 |===
 
 [#D-_00namespace-f8]
-== <<D,D>>::f8
+== link:#D[D]::f8
 
 === Synopsis
 
@@ -248,18 +248,18 @@ f8();
 ----
 
 [#D-E]
-== <<D,D>>::E
+== link:#D[D]::E
 
 === Functions
 
 [cols=1]
 |===
 | Name
-| <<D-E-f6,`f6`>> 
+| link:#D-E-f6[`f6`] 
 |===
 
 [#D-E-f6]
-== <<D,D>>::<<D-E,E>>::f6
+== link:#D[D]::link:#D-E[E]::f6
 
 === Synopsis
 
@@ -272,18 +272,18 @@ f6();
 ----
 
 [#D-F]
-== <<D,D>>::F
+== link:#D[D]::F
 
 === Functions
 
 [cols=1]
 |===
 | Name
-| <<D-F-f7,`f7`>> 
+| link:#D-F-f7[`f7`] 
 |===
 
 [#D-F-f7]
-== <<D,D>>::<<D-F,F>>::f7
+== link:#D[D]::link:#D-F[F]::f7
 
 === Synopsis
 
@@ -296,7 +296,7 @@ f7();
 ----
 
 [#D-f5]
-== <<D,D>>::f5
+== link:#D[D]::f5
 
 === Synopsis
 
@@ -316,22 +316,22 @@ f5();
 [cols=1]
 |===
 | Name
-| <<I-_00namespace,`Unnamed namespace`>> 
+| link:#I-_00namespace[`Unnamed namespace`] 
 |===
 
 [#I-_00namespace]
-== <<I,I>>::Unnamed namespace
+== link:#I[I]::Unnamed namespace
 
 === Functions
 
 [cols=1]
 |===
 | Name
-| <<I-_00namespace-f14,`f14`>> 
+| link:#I-_00namespace-f14[`f14`] 
 |===
 
 [#I-_00namespace-f14]
-== <<I,I>>::f14
+== link:#I[I]::f14
 
 === Synopsis
 

@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<local_function,`local&lowbar;function`>> 
+| link:#local_function[`local&lowbar;function`] 
 |===
 
 [#local_function]

@@ -10,7 +10,7 @@
 |===
 | Name
 | Description
-| <<A,`A`>> 
+| link:#A[`A`] 
 | A class with non&hyphen;member functions
 |===
 
@@ -20,17 +20,17 @@
 |===
 | Name
 | Description
-| <<f1,`f1`>> 
+| link:#f1[`f1`] 
 | A non&hyphen;member function of A
-| <<f2,`f2`>> 
+| link:#f2[`f2`] 
 | A non&hyphen;member function of A
-| <<f3,`f3`>> 
+| link:#f3[`f3`] 
 | A non&hyphen;member function of A
-| <<f4,`f4`>> 
+| link:#f4[`f4`] 
 | A non&hyphen;member function of A
-| <<f5,`f5`>> 
+| link:#f5[`f5`] 
 | A non&hyphen;member function of A
-| <<f6,`f6`>> 
+| link:#f6[`f6`] 
 | A non&hyphen;member function of A
 |===
 
@@ -54,17 +54,17 @@ class A;
 |===
 | Name
 | Description
-| <<f1,`f1`>>
+| link:#f1[`f1`]
 | A non&hyphen;member function of A
-| <<f2,`f2`>>
+| link:#f2[`f2`]
 | A non&hyphen;member function of A
-| <<f3,`f3`>>
+| link:#f3[`f3`]
 | A non&hyphen;member function of A
-| <<f4,`f4`>>
+| link:#f4[`f4`]
 | A non&hyphen;member function of A
-| <<f5,`f5`>>
+| link:#f5[`f5`]
 | A non&hyphen;member function of A
-| <<f6,`f6`>>
+| link:#f6[`f6`]
 | A non&hyphen;member function of A
 |===
 
@@ -80,7 +80,7 @@ Declared in `&lt;auto&hyphen;relates&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f1(<<A,A>>);
+f1(link:#A[A]);
 ----
 
 [#f2]
@@ -95,7 +95,7 @@ Declared in `&lt;auto&hyphen;relates&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f2(<<A,A>>&);
+f2(link:#A[A]&);
 ----
 
 [#f3]
@@ -110,7 +110,7 @@ Declared in `&lt;auto&hyphen;relates&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f3(<<A,A>> const&);
+f3(link:#A[A] const&);
 ----
 
 [#f4]
@@ -125,7 +125,7 @@ Declared in `&lt;auto&hyphen;relates&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f4(<<A,A>>*);
+f4(link:#A[A]*);
 ----
 
 [#f5]
@@ -140,7 +140,7 @@ Declared in `&lt;auto&hyphen;relates&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f5(<<A,A>> const*);
+f5(link:#A[A] const*);
 ----
 
 [#f6]
@@ -155,7 +155,7 @@ Declared in `&lt;auto&hyphen;relates&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f6(<<A,A>> const*);
+f6(link:#A[A] const*);
 ----
 
 

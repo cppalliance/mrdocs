@@ -10,25 +10,25 @@
 |===
 | Name
 | Description
-| <<f,`f`>> 
+| link:#f[`f`] 
 | 
-| <<g,`g`>> 
+| link:#g[`g`] 
 | 
-| <<h,`h`>> 
+| link:#h[`h`] 
 | 
-| <<i,`i`>> 
+| link:#i[`i`] 
 | 
-| <<j,`j`>> 
+| link:#j[`j`] 
 | 
-| <<k,`k`>> 
+| link:#k[`k`] 
 | 
-| <<l,`l`>> 
+| link:#l[`l`] 
 | 
-| <<m,`m`>> 
+| link:#m[`m`] 
 | 
-| <<n,`n`>> 
+| link:#n[`n`] 
 | 
-| <<o,`o`>> 
+| link:#o[`o`] 
 | 
 |===
 

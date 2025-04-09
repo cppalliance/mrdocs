@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<TEST,`TEST`>> 
+| link:#TEST[`TEST`] 
 |===
 
 [#TEST]
@@ -20,11 +20,11 @@
 [cols=1]
 |===
 | Name
-| <<TEST-SUCCESS,`SUCCESS`>> 
+| link:#TEST-SUCCESS[`SUCCESS`] 
 |===
 
 [#TEST-SUCCESS]
-== <<TEST,TEST>>::SUCCESS
+== link:#TEST[TEST]::SUCCESS
 
 === Synopsis
 

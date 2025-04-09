@@ -9,15 +9,15 @@
 [cols=1]
 |===
 | Name
-| <<A,`A`>> 
-| <<B-0b,`B`>> 
-| <<B-04,`B&lt;int, char&gt;`>> 
-| <<B-05,`B&lt;int, U&gt;`>> 
-| <<C-0f,`C`>> 
-| <<C-03,`C&lt;int&gt;`>> 
-| <<C-0d,`C&lt;int, char&gt;`>> 
-| <<D,`D`>> 
-| <<Z,`Z`>> 
+| link:#A[`A`] 
+| link:#B-0b[`B`] 
+| link:#B-04[`B&lt;int, char&gt;`] 
+| link:#B-05[`B&lt;int, U&gt;`] 
+| link:#C-0f[`C`] 
+| link:#C-03[`C&lt;int&gt;`] 
+| link:#C-0d[`C&lt;int, char&gt;`] 
+| link:#D[`D`] 
+| link:#Z[`Z`] 
 |===
 
 === Functions
@@ -26,17 +26,17 @@
 |===
 | Name
 | Description
-| <<f,`f`>> 
+| link:#f[`f`] 
 | 
-| <<g-0f,`g`>> 
+| link:#g-0f[`g`] 
 | 
-| <<h,`h`>> 
+| link:#h[`h`] 
 | 
-| <<operator_not,`operator!`>> 
+| link:#operator_not[`operator!`] 
 | Negation operator
-| <<operator_eq,`operator&equals;&equals;`>> 
+| link:#operator_eq[`operator&equals;&equals;`] 
 | Equality operator
-| <<operator_not_eq,`operator!&equals;`>> 
+| link:#operator_not_eq[`operator!&equals;`] 
 | Inequality operator
 |===
 
@@ -68,7 +68,7 @@ struct B;
 ----
 
 [#B-04]
-== <<B-0b,B>>&lt;int, char&gt;
+== link:#B-0b[B]&lt;int, char&gt;
 
 === Synopsis
 
@@ -77,11 +77,11 @@ Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<B-0b,B>>&lt;int, char&gt;;
+struct link:#B-0b[B]&lt;int, char&gt;;
 ----
 
 [#B-05]
-== <<B-0b,B>>&lt;int, U&gt;
+== link:#B-0b[B]&lt;int, U&gt;
 
 === Synopsis
 
@@ -90,7 +90,7 @@ Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;class U&gt;
-struct <<B-0b,B>>&lt;int, U&gt;;
+struct link:#B-0b[B]&lt;int, U&gt;;
 ----
 
 [#C-0f]
@@ -109,7 +109,7 @@ struct C;
 ----
 
 [#C-03]
-== <<C-0f,C>>&lt;int&gt;
+== link:#C-0f[C]&lt;int&gt;
 
 === Synopsis
 
@@ -118,11 +118,11 @@ Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<C-0f,C>>&lt;int&gt;;
+struct link:#C-0f[C]&lt;int&gt;;
 ----
 
 [#C-0d]
-== <<C-0f,C>>&lt;int, char&gt;
+== link:#C-0f[C]&lt;int, char&gt;
 
 === Synopsis
 
@@ -131,7 +131,7 @@ Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<C-0f,C>>&lt;int, char&gt;;
+struct link:#C-0f[C]&lt;int, char&gt;;
 ----
 
 [#D]
@@ -164,26 +164,26 @@ struct Z;
 |===
 | Name
 | Description
-| <<Z-2constructor-00,`Z`>>         [.small]#[constructor]#
+| link:#Z-2constructor-00[`Z`]         [.small]#[constructor]#
 | Constructors
-| <<Z-2destructor,`&#126;Z`>> [.small]#[destructor]#
+| link:#Z-2destructor[`&#126;Z`] [.small]#[destructor]#
 | Destructor
-| <<Z-foo,`foo`>> 
+| link:#Z-foo[`foo`] 
 | 
-| <<Z-2conversion,`operator bool`>> 
+| link:#Z-2conversion[`operator bool`] 
 | Conversion to `bool`
-| <<Z-operator_not,`operator!`>> 
+| link:#Z-operator_not[`operator!`] 
 | Negation operator
-| <<Z-operator_eq,`operator&equals;&equals;`>> 
+| link:#Z-operator_eq[`operator&equals;&equals;`] 
 | Equality operator
-| <<Z-operator_not_eq,`operator!&equals;`>> 
+| link:#Z-operator_not_eq[`operator!&equals;`] 
 | Inequality operator
-| <<Z-operator_3way,`operator&lt;&equals;&gt;`>> 
+| link:#Z-operator_3way[`operator&lt;&equals;&gt;`] 
 | Three&hyphen;way comparison operator
 |===
 
 [#Z-2constructor-00]
-== <<Z,Z>>::Z
+== link:#Z[Z]::Z
 
 Constructors
 
@@ -196,23 +196,23 @@ Default constructor
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<Z-2constructor-05,Z>>();
+link:#Z-2constructor-05[Z]();
 ----
 
-[.small]#<<Z-2constructor-05,_» more&period;&period;&period;_>>#
+[.small]#link:#Z-2constructor-05[_» more&period;&period;&period;_]#
 
 Construct from `int`
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<Z-2constructor-06,Z>>(int value);
+link:#Z-2constructor-06[Z](int value);
 ----
 
-[.small]#<<Z-2constructor-06,_» more&period;&period;&period;_>>#
+[.small]#link:#Z-2constructor-06[_» more&period;&period;&period;_]#
 
 [#Z-2constructor-05]
-== <<Z,Z>>::Z
+== link:#Z[Z]::Z
 
 Default constructor
 
@@ -226,7 +226,7 @@ Z();
 ----
 
 [#Z-2constructor-06]
-== <<Z,Z>>::Z
+== link:#Z[Z]::Z
 
 Construct from `int`
 
@@ -250,7 +250,7 @@ Z(int value);
 |===
 
 [#Z-2destructor]
-== <<Z,Z>>::&#126;Z
+== link:#Z[Z]::&#126;Z
 
 Destructor
 
@@ -264,7 +264,7 @@ Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
 ----
 
 [#Z-foo]
-== <<Z,Z>>::foo
+== link:#Z[Z]::foo
 
 === Synopsis
 
@@ -277,7 +277,7 @@ foo() const;
 ----
 
 [#Z-2conversion]
-== <<Z,Z>>::operator bool
+== link:#Z[Z]::operator bool
 
 Conversion to `bool`
 
@@ -295,7 +295,7 @@ operator bool() const;
 The object converted to `bool`
 
 [#Z-operator_not]
-== <<Z,Z>>::operator!
+== link:#Z[Z]::operator!
 
 Negation operator
 
@@ -314,7 +314,7 @@ operator!() const;
 `true` if the object is falsy, `false` otherwise
 
 [#Z-operator_eq]
-== <<Z,Z>>::operator&equals;&equals;
+== link:#Z[Z]::operator&equals;&equals;
 
 Equality operator
 
@@ -325,7 +325,7 @@ Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
-operator&equals;&equals;(<<Z,Z>> const& rhs) const;
+operator&equals;&equals;(link:#Z[Z] const& rhs) const;
 ----
 
 === Return Value
@@ -343,7 +343,7 @@ operator&equals;&equals;(<<Z,Z>> const& rhs) const;
 |===
 
 [#Z-operator_not_eq]
-== <<Z,Z>>::operator!&equals;
+== link:#Z[Z]::operator!&equals;
 
 Inequality operator
 
@@ -354,7 +354,7 @@ Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
-operator!&equals;(<<Z,Z>> const& rhs) const;
+operator!&equals;(link:#Z[Z] const& rhs) const;
 ----
 
 === Return Value
@@ -372,7 +372,7 @@ operator!&equals;(<<Z,Z>> const& rhs) const;
 |===
 
 [#Z-operator_3way]
-== <<Z,Z>>::operator&lt;&equals;&gt;
+== link:#Z[Z]::operator&lt;&equals;&gt;
 
 Three&hyphen;way comparison operator
 
@@ -383,7 +383,7 @@ Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 auto
-operator&lt;&equals;&gt;(<<Z,Z>> const& rhs) const;
+operator&lt;&equals;&gt;(link:#Z[Z] const& rhs) const;
 ----
 
 === Return Value
@@ -424,77 +424,77 @@ Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<g-0e3,g>>();
+link:#g-0e3[g]();
 ----
 
-[.small]#<<g-0e3,_» more&period;&period;&period;_>>#
+[.small]#link:#g-0e3[_» more&period;&period;&period;_]#
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 char
-<<g-04,g>>(int);
+link:#g-04[g](int);
 ----
 
-[.small]#<<g-04,_» more&period;&period;&period;_>>#
+[.small]#link:#g-04[_» more&period;&period;&period;_]#
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 char
-<<g-06,g>>(double);
+link:#g-06[g](double);
 ----
 
-[.small]#<<g-06,_» more&period;&period;&period;_>>#
+[.small]#link:#g-06[_» more&period;&period;&period;_]#
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 char
-<<g-03a,g>>(
+link:#g-03a[g](
     double,
     char);
 ----
 
-[.small]#<<g-03a,_» more&period;&period;&period;_>>#
+[.small]#link:#g-03a[_» more&period;&period;&period;_]#
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 char
-<<g-0a,g>>(
+link:#g-0a[g](
     char,
     char,
     char);
 ----
 
-[.small]#<<g-0a,_» more&period;&period;&period;_>>#
+[.small]#link:#g-0a[_» more&period;&period;&period;_]#
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;class T&gt;
 char
-<<g-03c,g>>(
+link:#g-03c[g](
     T,
     T,
     T);
 ----
 
-[.small]#<<g-03c,_» more&period;&period;&period;_>>#
+[.small]#link:#g-03c[_» more&period;&period;&period;_]#
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
 char
-<<g-0e4,g&lt;int&gt;>>(
+link:#g-0e4[g&lt;int&gt;](
     int,
     int,
     int);
 ----
 
-[.small]#<<g-0e4,_» more&period;&period;&period;_>>#
+[.small]#link:#g-0e4[_» more&period;&period;&period;_]#
 
 [#g-0e3]
 == g
@@ -584,7 +584,7 @@ g(
 ----
 
 [#g-0e4]
-== <<g-03c,g>>&lt;int&gt;
+== link:#g-03c[g]&lt;int&gt;
 
 === Synopsis
 
@@ -594,7 +594,7 @@ Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
 ----
 template&lt;&gt;
 char
-<<g-03c,g>>&lt;int&gt;(
+link:#g-03c[g]&lt;int&gt;(
     int,
     int,
     int);
@@ -625,7 +625,7 @@ Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
-operator!(<<A,A>> const& v);
+operator!(link:#A[A] const& v);
 ----
 
 === Return Value
@@ -655,8 +655,8 @@ Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
 ----
 bool
 operator&equals;&equals;(
-    <<A,A>> const& lhs,
-    <<A,A>> const& rhs);
+    link:#A[A] const& lhs,
+    link:#A[A] const& rhs);
 ----
 
 === Return Value
@@ -688,8 +688,8 @@ Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
 ----
 bool
 operator!&equals;(
-    <<A,A>> const& lhs,
-    <<A,A>> const& rhs);
+    link:#A[A] const& lhs,
+    link:#A[A] const& rhs);
 ----
 
 === Return Value

@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<T,`T`>> 
+| link:#T[`T`] 
 |===
 
 [#T]
@@ -29,8 +29,8 @@ struct T;
 [cols=1]
 |===
 | Name
-| <<T-U1,`U1`>> 
-| <<T-U2,`U2`>> 
+| link:#T-U1[`U1`] 
+| link:#T-U2[`U2`] 
 |===
 
 === Member Functions
@@ -38,9 +38,9 @@ struct T;
 [cols=1]
 |===
 | Name
-| <<T-f1,`f1`>> 
-| <<T-f2,`f2`>> 
-| <<T-f3,`f3`>> 
+| link:#T-f1[`f1`] 
+| link:#T-f2[`f2`] 
+| link:#T-f3[`f3`] 
 |===
 
 === Protected Member Functions
@@ -49,16 +49,16 @@ struct T;
 |===
 | Name
 | Description
-| <<T-g1,`g1`>> 
+| link:#T-g1[`g1`] 
 | brief&hyphen;g1
-| <<T-g2,`g2`>> 
+| link:#T-g2[`g2`] 
 | brief&hyphen;g2
-| <<T-g3,`g3`>> 
+| link:#T-g3[`g3`] 
 | brief&hyphen;g3
 |===
 
 [#T-U1]
-== <<T,T>>::U1
+== link:#T[T]::U1
 
 === Synopsis
 
@@ -70,7 +70,7 @@ using U1 = int;
 ----
 
 [#T-U2]
-== <<T,T>>::U2
+== link:#T[T]::U2
 
 === Synopsis
 
@@ -82,7 +82,7 @@ typedef char U2;
 ----
 
 [#T-f1]
-== <<T,T>>::f1
+== link:#T[T]::f1
 
 === Synopsis
 
@@ -95,7 +95,7 @@ f1();
 ----
 
 [#T-f2]
-== <<T,T>>::f2
+== link:#T[T]::f2
 
 === Synopsis
 
@@ -108,7 +108,7 @@ f2();
 ----
 
 [#T-f3]
-== <<T,T>>::f3
+== link:#T[T]::f3
 
 === Synopsis
 
@@ -121,7 +121,7 @@ f3();
 ----
 
 [#T-g1]
-== <<T,T>>::g1
+== link:#T[T]::g1
 
 brief&hyphen;g1
 
@@ -140,7 +140,7 @@ g1();
 desc
 
 [#T-g2]
-== <<T,T>>::g2
+== link:#T[T]::g2
 
 brief&hyphen;g2
 
@@ -159,7 +159,7 @@ g2();
 the number 2
 
 [#T-g3]
-== <<T,T>>::g3
+== link:#T[T]::g3
 
 brief&hyphen;g3
 

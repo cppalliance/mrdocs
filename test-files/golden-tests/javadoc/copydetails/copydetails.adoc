@@ -10,11 +10,11 @@
 |===
 | Name
 | Description
-| <<dest,`dest`>> 
+| link:#dest[`dest`] 
 | Destination doc function
-| <<destOverride,`destOverride`>> 
+| link:#destOverride[`destOverride`] 
 | Destination doc function
-| <<source,`source`>> 
+| link:#source[`source`] 
 | Source doc function
 |===
 

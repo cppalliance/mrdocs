@@ -9,97 +9,97 @@
 [cols=1]
 |===
 | Name
-| <<R0,`R0`>> 
-| <<R1,`R1`>> 
-| <<R10,`R10`>> 
-| <<R11,`R11`>> 
-| <<R12,`R12`>> 
-| <<R13,`R13`>> 
-| <<R14,`R14`>> 
-| <<R15,`R15`>> 
-| <<R16,`R16`>> 
-| <<R17,`R17`>> 
-| <<R18,`R18`>> 
-| <<R19,`R19`>> 
-| <<R2,`R2`>> 
-| <<R20,`R20`>> 
-| <<R21,`R21`>> 
-| <<R22,`R22`>> 
-| <<R23,`R23`>> 
-| <<R24,`R24`>> 
-| <<R25,`R25`>> 
-| <<R26,`R26`>> 
-| <<R27,`R27`>> 
-| <<R28,`R28`>> 
-| <<R29,`R29`>> 
-| <<R3,`R3`>> 
-| <<R30,`R30`>> 
-| <<R31,`R31`>> 
-| <<R32,`R32`>> 
-| <<R33,`R33`>> 
-| <<R34,`R34`>> 
-| <<R35,`R35`>> 
-| <<R36,`R36`>> 
-| <<R37,`R37`>> 
-| <<R38,`R38`>> 
-| <<R39,`R39`>> 
-| <<R4,`R4`>> 
-| <<R40,`R40`>> 
-| <<R41,`R41`>> 
-| <<R42,`R42`>> 
-| <<R43,`R43`>> 
-| <<R44,`R44`>> 
-| <<R45,`R45`>> 
-| <<R46,`R46`>> 
-| <<R47,`R47`>> 
-| <<R48,`R48`>> 
-| <<R5,`R5`>> 
-| <<R6,`R6`>> 
-| <<R7,`R7`>> 
-| <<R8,`R8`>> 
-| <<R9,`R9`>> 
-| <<S0-0cf,`S0`>> 
-| <<S0-0be,`S0&lt;0&gt;`>> 
-| <<S0-08,`S0&lt;10&gt;`>> 
-| <<S0-0e,`S0&lt;12&gt;`>> 
-| <<S0-09e4,`S0&lt;15&gt;`>> 
-| <<S0-07a,`S0&lt;18&gt;`>> 
-| <<S0-0a7,`S0&lt;19&gt;`>> 
-| <<S0-09c,`S0&lt;2&gt;`>> 
-| <<S0-0314,`S0&lt;21&gt;`>> 
-| <<S0-058,`S0&lt;23&gt;`>> 
-| <<S0-0a2,`S0&lt;25&gt;`>> 
-| <<S0-09e2,`S0&lt;27&gt;`>> 
-| <<S0-073,`S0&lt;3&gt;`>> 
-| <<S0-01,`S0&lt;30&gt;`>> 
-| <<S0-09ee,`S0&lt;33&gt;`>> 
-| <<S0-033,`S0&lt;36&gt;`>> 
-| <<S0-06,`S0&lt;39&gt;`>> 
-| <<S0-0a1,`S0&lt;4&gt;`>> 
-| <<S0-0ba,`S0&lt;43&gt;`>> 
-| <<S0-07e,`S0&lt;6&gt;`>> 
-| <<S0-0a3,`S0&lt;8&gt;`>> 
-| <<S0-020a,`S0&lt;1, int*&gt;`>> 
-| <<S0-05a,`S0&lt;10, bool&gt;`>> 
-| <<S0-0cd,`S0&lt;12, bool&gt;`>> 
-| <<S0-000,`S0&lt;15, bool&gt;`>> 
-| <<S0-051,`S0&lt;18, bool&gt;`>> 
-| <<S0-002,`S0&lt;19, bool&gt;`>> 
-| <<S0-03c,`S0&lt;2, bool&gt;`>> 
-| <<S0-003,`S0&lt;21, bool&gt;`>> 
-| <<S0-0c7,`S0&lt;23, bool&gt;`>> 
-| <<S0-0529f,`S0&lt;25, bool&gt;`>> 
-| <<S0-007,`S0&lt;27, bool&gt;`>> 
-| <<S0-092,`S0&lt;3, bool&gt;`>> 
-| <<S0-021,`S0&lt;30, bool&gt;`>> 
-| <<S0-0318,`S0&lt;33, bool&gt;`>> 
-| <<S0-0d,`S0&lt;36, bool&gt;`>> 
-| <<S0-0206,`S0&lt;39, bool&gt;`>> 
-| <<S0-0b6,`S0&lt;4, bool&gt;`>> 
-| <<S0-05291,`S0&lt;43, bool&gt;`>> 
-| <<S0-023,`S0&lt;6, bool&gt;`>> 
-| <<S0-04,`S0&lt;8, bool&gt;`>> 
-| <<S0-0c4,`S0&lt;1, T*&gt;`>> 
+| link:#R0[`R0`] 
+| link:#R1[`R1`] 
+| link:#R10[`R10`] 
+| link:#R11[`R11`] 
+| link:#R12[`R12`] 
+| link:#R13[`R13`] 
+| link:#R14[`R14`] 
+| link:#R15[`R15`] 
+| link:#R16[`R16`] 
+| link:#R17[`R17`] 
+| link:#R18[`R18`] 
+| link:#R19[`R19`] 
+| link:#R2[`R2`] 
+| link:#R20[`R20`] 
+| link:#R21[`R21`] 
+| link:#R22[`R22`] 
+| link:#R23[`R23`] 
+| link:#R24[`R24`] 
+| link:#R25[`R25`] 
+| link:#R26[`R26`] 
+| link:#R27[`R27`] 
+| link:#R28[`R28`] 
+| link:#R29[`R29`] 
+| link:#R3[`R3`] 
+| link:#R30[`R30`] 
+| link:#R31[`R31`] 
+| link:#R32[`R32`] 
+| link:#R33[`R33`] 
+| link:#R34[`R34`] 
+| link:#R35[`R35`] 
+| link:#R36[`R36`] 
+| link:#R37[`R37`] 
+| link:#R38[`R38`] 
+| link:#R39[`R39`] 
+| link:#R4[`R4`] 
+| link:#R40[`R40`] 
+| link:#R41[`R41`] 
+| link:#R42[`R42`] 
+| link:#R43[`R43`] 
+| link:#R44[`R44`] 
+| link:#R45[`R45`] 
+| link:#R46[`R46`] 
+| link:#R47[`R47`] 
+| link:#R48[`R48`] 
+| link:#R5[`R5`] 
+| link:#R6[`R6`] 
+| link:#R7[`R7`] 
+| link:#R8[`R8`] 
+| link:#R9[`R9`] 
+| link:#S0-0cf[`S0`] 
+| link:#S0-0be[`S0&lt;0&gt;`] 
+| link:#S0-08[`S0&lt;10&gt;`] 
+| link:#S0-0e[`S0&lt;12&gt;`] 
+| link:#S0-09e4[`S0&lt;15&gt;`] 
+| link:#S0-07a[`S0&lt;18&gt;`] 
+| link:#S0-0a7[`S0&lt;19&gt;`] 
+| link:#S0-09c[`S0&lt;2&gt;`] 
+| link:#S0-0314[`S0&lt;21&gt;`] 
+| link:#S0-058[`S0&lt;23&gt;`] 
+| link:#S0-0a2[`S0&lt;25&gt;`] 
+| link:#S0-09e2[`S0&lt;27&gt;`] 
+| link:#S0-073[`S0&lt;3&gt;`] 
+| link:#S0-01[`S0&lt;30&gt;`] 
+| link:#S0-09ee[`S0&lt;33&gt;`] 
+| link:#S0-033[`S0&lt;36&gt;`] 
+| link:#S0-06[`S0&lt;39&gt;`] 
+| link:#S0-0a1[`S0&lt;4&gt;`] 
+| link:#S0-0ba[`S0&lt;43&gt;`] 
+| link:#S0-07e[`S0&lt;6&gt;`] 
+| link:#S0-0a3[`S0&lt;8&gt;`] 
+| link:#S0-020a[`S0&lt;1, int*&gt;`] 
+| link:#S0-05a[`S0&lt;10, bool&gt;`] 
+| link:#S0-0cd[`S0&lt;12, bool&gt;`] 
+| link:#S0-000[`S0&lt;15, bool&gt;`] 
+| link:#S0-051[`S0&lt;18, bool&gt;`] 
+| link:#S0-002[`S0&lt;19, bool&gt;`] 
+| link:#S0-03c[`S0&lt;2, bool&gt;`] 
+| link:#S0-003[`S0&lt;21, bool&gt;`] 
+| link:#S0-0c7[`S0&lt;23, bool&gt;`] 
+| link:#S0-0529f[`S0&lt;25, bool&gt;`] 
+| link:#S0-007[`S0&lt;27, bool&gt;`] 
+| link:#S0-092[`S0&lt;3, bool&gt;`] 
+| link:#S0-021[`S0&lt;30, bool&gt;`] 
+| link:#S0-0318[`S0&lt;33, bool&gt;`] 
+| link:#S0-0d[`S0&lt;36, bool&gt;`] 
+| link:#S0-0206[`S0&lt;39, bool&gt;`] 
+| link:#S0-0b6[`S0&lt;4, bool&gt;`] 
+| link:#S0-05291[`S0&lt;43, bool&gt;`] 
+| link:#S0-023[`S0&lt;6, bool&gt;`] 
+| link:#S0-04[`S0&lt;8, bool&gt;`] 
+| link:#S0-0c4[`S0&lt;1, T*&gt;`] 
 |===
 
 [#R0]
@@ -112,7 +112,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R0
-    : <<S0-0cf,S0>>&lt;&hyphen;1&gt;;
+    : link:#S0-0cf[S0]&lt;&hyphen;1&gt;;
 ----
 
 === Base Classes
@@ -121,7 +121,7 @@ struct R0
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;&hyphen;1&gt;`
+| `link:#S0-0cf[S0]&lt;&hyphen;1&gt;`
 | 
 |===
 
@@ -130,8 +130,8 @@ struct R0
 [cols=1]
 |===
 | Name
-| <<S0-0cf-S1,`S1`>> 
-| <<S0-0cf-S5,`S5`>> 
+| link:#S0-0cf-S1[`S1`] 
+| link:#S0-0cf-S5[`S5`] 
 |===
 
 === Member Functions
@@ -139,7 +139,7 @@ struct R0
 [cols=1]
 |===
 | Name
-| <<S0-0cf-f0,`f0`>> 
+| link:#S0-0cf-f0[`f0`] 
 |===
 
 [#R1]
@@ -152,7 +152,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R1
-    : <<S0-0be,S0>>&lt;0&gt;;
+    : link:#S0-0be[S0]&lt;0&gt;;
 ----
 
 === Base Classes
@@ -161,7 +161,7 @@ struct R1
 |===
 | Name
 | Description
-| `<<S0-0be,S0>>&lt;0&gt;`
+| `link:#S0-0be[S0]&lt;0&gt;`
 | 
 |===
 
@@ -175,7 +175,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R10
-    : <<S0-0cf,S0>>&lt;10&gt;::<<S0-08-S1,S1>>::<<S0-08-S1-S2-0b,S2>>&lt;11&gt;::<<S0-08-S1-S2-08-S4,S4>>&lt;&hyphen;1&gt;;
+    : link:#S0-0cf[S0]&lt;10&gt;::link:#S0-08-S1[S1]::link:#S0-08-S1-S2-0b[S2]&lt;11&gt;::link:#S0-08-S1-S2-08-S4[S4]&lt;&hyphen;1&gt;;
 ----
 
 === Base Classes
@@ -184,7 +184,7 @@ struct R10
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;10&gt;::<<S0-08-S1,S1>>::<<S0-08-S1-S2-0b,S2>>&lt;11&gt;::<<S0-08-S1-S2-08-S4,S4>>&lt;&hyphen;1&gt;`
+| `link:#S0-0cf[S0]&lt;10&gt;::link:#S0-08-S1[S1]::link:#S0-08-S1-S2-0b[S2]&lt;11&gt;::link:#S0-08-S1-S2-08-S4[S4]&lt;&hyphen;1&gt;`
 | 
 |===
 
@@ -198,7 +198,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R11
-    : <<S0-0cf,S0>>&lt;12&gt;::<<S0-0e-S1,S1>>::<<S0-0e-S1-S2-09,S2>>&lt;13&gt;::<<S0-0e-S1-S2-02-S4-0c,S4>>&lt;14&gt;;
+    : link:#S0-0cf[S0]&lt;12&gt;::link:#S0-0e-S1[S1]::link:#S0-0e-S1-S2-09[S2]&lt;13&gt;::link:#S0-0e-S1-S2-02-S4-0c[S4]&lt;14&gt;;
 ----
 
 === Base Classes
@@ -207,7 +207,7 @@ struct R11
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;12&gt;::<<S0-0e-S1,S1>>::<<S0-0e-S1-S2-09,S2>>&lt;13&gt;::<<S0-0e-S1-S2-02-S4-0c,S4>>&lt;14&gt;`
+| `link:#S0-0cf[S0]&lt;12&gt;::link:#S0-0e-S1[S1]::link:#S0-0e-S1-S2-09[S2]&lt;13&gt;::link:#S0-0e-S1-S2-02-S4-0c[S4]&lt;14&gt;`
 | 
 |===
 
@@ -221,7 +221,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R12
-    : <<S0-0cf,S0>>&lt;15&gt;::<<S0-09e4-S1,S1>>::<<S0-09e4-S1-S2-07,S2>>&lt;16&gt;::<<S0-09e4-S1-S2-02-S4-00,S4>>&lt;17, void*&gt;;
+    : link:#S0-0cf[S0]&lt;15&gt;::link:#S0-09e4-S1[S1]::link:#S0-09e4-S1-S2-07[S2]&lt;16&gt;::link:#S0-09e4-S1-S2-02-S4-00[S4]&lt;17, void*&gt;;
 ----
 
 === Base Classes
@@ -230,7 +230,7 @@ struct R12
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;15&gt;::<<S0-09e4-S1,S1>>::<<S0-09e4-S1-S2-07,S2>>&lt;16&gt;::<<S0-09e4-S1-S2-02-S4-00,S4>>&lt;17, void*&gt;`
+| `link:#S0-0cf[S0]&lt;15&gt;::link:#S0-09e4-S1[S1]::link:#S0-09e4-S1-S2-07[S2]&lt;16&gt;::link:#S0-09e4-S1-S2-02-S4-00[S4]&lt;17, void*&gt;`
 | 
 |===
 
@@ -244,7 +244,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R13
-    : <<S0-0cf,S0>>&lt;15&gt;::<<S0-09e4-S1,S1>>::<<S0-09e4-S1-S2-07,S2>>&lt;16&gt;::<<S0-09e4-S1-S2-02-S4-02,S4>>&lt;17, int*&gt;;
+    : link:#S0-0cf[S0]&lt;15&gt;::link:#S0-09e4-S1[S1]::link:#S0-09e4-S1-S2-07[S2]&lt;16&gt;::link:#S0-09e4-S1-S2-02-S4-02[S4]&lt;17, int*&gt;;
 ----
 
 === Base Classes
@@ -253,7 +253,7 @@ struct R13
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;15&gt;::<<S0-09e4-S1,S1>>::<<S0-09e4-S1-S2-07,S2>>&lt;16&gt;::<<S0-09e4-S1-S2-02-S4-02,S4>>&lt;17, int*&gt;`
+| `link:#S0-0cf[S0]&lt;15&gt;::link:#S0-09e4-S1[S1]::link:#S0-09e4-S1-S2-07[S2]&lt;16&gt;::link:#S0-09e4-S1-S2-02-S4-02[S4]&lt;17, int*&gt;`
 | 
 |===
 
@@ -267,7 +267,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R14
-    : <<S0-0cf,S0>>&lt;18&gt;::<<S0-07a-S5,S5>>&lt;&hyphen;1&gt;;
+    : link:#S0-0cf[S0]&lt;18&gt;::link:#S0-07a-S5[S5]&lt;&hyphen;1&gt;;
 ----
 
 === Base Classes
@@ -276,7 +276,7 @@ struct R14
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;18&gt;::<<S0-07a-S5,S5>>&lt;&hyphen;1&gt;`
+| `link:#S0-0cf[S0]&lt;18&gt;::link:#S0-07a-S5[S5]&lt;&hyphen;1&gt;`
 | 
 |===
 
@@ -290,7 +290,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R15
-    : <<S0-0cf,S0>>&lt;19&gt;::<<S0-0a7-S5-07,S5>>&lt;20&gt;;
+    : link:#S0-0cf[S0]&lt;19&gt;::link:#S0-0a7-S5-07[S5]&lt;20&gt;;
 ----
 
 === Base Classes
@@ -299,7 +299,7 @@ struct R15
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;19&gt;::<<S0-0a7-S5-07,S5>>&lt;20&gt;`
+| `link:#S0-0cf[S0]&lt;19&gt;::link:#S0-0a7-S5-07[S5]&lt;20&gt;`
 | 
 |===
 
@@ -313,7 +313,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R16
-    : <<S0-0cf,S0>>&lt;21&gt;::<<S0-0314-S5-07,S5>>&lt;22, void*&gt;;
+    : link:#S0-0cf[S0]&lt;21&gt;::link:#S0-0314-S5-07[S5]&lt;22, void*&gt;;
 ----
 
 === Base Classes
@@ -322,7 +322,7 @@ struct R16
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;21&gt;::<<S0-0314-S5-07,S5>>&lt;22, void*&gt;`
+| `link:#S0-0cf[S0]&lt;21&gt;::link:#S0-0314-S5-07[S5]&lt;22, void*&gt;`
 | 
 |===
 
@@ -336,7 +336,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R17
-    : <<S0-0cf,S0>>&lt;21&gt;::<<S0-0314-S5-03,S5>>&lt;22, int*&gt;;
+    : link:#S0-0cf[S0]&lt;21&gt;::link:#S0-0314-S5-03[S5]&lt;22, int*&gt;;
 ----
 
 === Base Classes
@@ -345,7 +345,7 @@ struct R17
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;21&gt;::<<S0-0314-S5-03,S5>>&lt;22, int*&gt;`
+| `link:#S0-0cf[S0]&lt;21&gt;::link:#S0-0314-S5-03[S5]&lt;22, int*&gt;`
 | 
 |===
 
@@ -359,7 +359,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R18
-    : <<S0-0cf,S0>>&lt;23&gt;::<<S0-058-S5-0b,S5>>&lt;24&gt;::<<S0-058-S5-09-S6,S6>>;
+    : link:#S0-0cf[S0]&lt;23&gt;::link:#S0-058-S5-0b[S5]&lt;24&gt;::link:#S0-058-S5-09-S6[S6];
 ----
 
 === Base Classes
@@ -368,7 +368,7 @@ struct R18
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;23&gt;::<<S0-058-S5-0b,S5>>&lt;24&gt;::<<S0-058-S5-09-S6,S6>>`
+| `link:#S0-0cf[S0]&lt;23&gt;::link:#S0-058-S5-0b[S5]&lt;24&gt;::link:#S0-058-S5-09-S6[S6]`
 | 
 |===
 
@@ -382,7 +382,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R19
-    : <<S0-0cf,S0>>&lt;25&gt;::<<S0-0a2-S5-04,S5>>&lt;26&gt;::<<S0-0a2-S5-02-S6,S6>>::<<S0-0a2-S5-02-S6-S7,S7>>&lt;&hyphen;1&gt;;
+    : link:#S0-0cf[S0]&lt;25&gt;::link:#S0-0a2-S5-04[S5]&lt;26&gt;::link:#S0-0a2-S5-02-S6[S6]::link:#S0-0a2-S5-02-S6-S7[S7]&lt;&hyphen;1&gt;;
 ----
 
 === Base Classes
@@ -391,7 +391,7 @@ struct R19
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;25&gt;::<<S0-0a2-S5-04,S5>>&lt;26&gt;::<<S0-0a2-S5-02-S6,S6>>::<<S0-0a2-S5-02-S6-S7,S7>>&lt;&hyphen;1&gt;`
+| `link:#S0-0cf[S0]&lt;25&gt;::link:#S0-0a2-S5-04[S5]&lt;26&gt;::link:#S0-0a2-S5-02-S6[S6]::link:#S0-0a2-S5-02-S6-S7[S7]&lt;&hyphen;1&gt;`
 | 
 |===
 
@@ -405,7 +405,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R2
-    : <<S0-0cf,S0>>&lt;1, void*&gt;;
+    : link:#S0-0cf[S0]&lt;1, void*&gt;;
 ----
 
 === Base Classes
@@ -414,7 +414,7 @@ struct R2
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;1, void*&gt;`
+| `link:#S0-0cf[S0]&lt;1, void*&gt;`
 | 
 |===
 
@@ -423,8 +423,8 @@ struct R2
 [cols=1]
 |===
 | Name
-| <<S0-0cf-S1,`S1`>> 
-| <<S0-0cf-S5,`S5`>> 
+| link:#S0-0cf-S1[`S1`] 
+| link:#S0-0cf-S5[`S5`] 
 |===
 
 === Member Functions
@@ -432,7 +432,7 @@ struct R2
 [cols=1]
 |===
 | Name
-| <<S0-0cf-f0,`f0`>> 
+| link:#S0-0cf-f0[`f0`] 
 |===
 
 [#R20]
@@ -445,7 +445,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R20
-    : <<S0-0cf,S0>>&lt;27&gt;::<<S0-09e2-S5-0b,S5>>&lt;28&gt;::<<S0-09e2-S5-0c-S6,S6>>::<<S0-09e2-S5-0c-S6-S7-0b,S7>>&lt;29, void*&gt;;
+    : link:#S0-0cf[S0]&lt;27&gt;::link:#S0-09e2-S5-0b[S5]&lt;28&gt;::link:#S0-09e2-S5-0c-S6[S6]::link:#S0-09e2-S5-0c-S6-S7-0b[S7]&lt;29, void*&gt;;
 ----
 
 === Base Classes
@@ -454,7 +454,7 @@ struct R20
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;27&gt;::<<S0-09e2-S5-0b,S5>>&lt;28&gt;::<<S0-09e2-S5-0c-S6,S6>>::<<S0-09e2-S5-0c-S6-S7-0b,S7>>&lt;29, void*&gt;`
+| `link:#S0-0cf[S0]&lt;27&gt;::link:#S0-09e2-S5-0b[S5]&lt;28&gt;::link:#S0-09e2-S5-0c-S6[S6]::link:#S0-09e2-S5-0c-S6-S7-0b[S7]&lt;29, void*&gt;`
 | 
 |===
 
@@ -468,7 +468,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R21
-    : <<S0-0cf,S0>>&lt;27&gt;::<<S0-09e2-S5-0b,S5>>&lt;28&gt;::<<S0-09e2-S5-0c-S6,S6>>::<<S0-09e2-S5-0c-S6-S7-0d,S7>>&lt;29, int*&gt;;
+    : link:#S0-0cf[S0]&lt;27&gt;::link:#S0-09e2-S5-0b[S5]&lt;28&gt;::link:#S0-09e2-S5-0c-S6[S6]::link:#S0-09e2-S5-0c-S6-S7-0d[S7]&lt;29, int*&gt;;
 ----
 
 === Base Classes
@@ -477,7 +477,7 @@ struct R21
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;27&gt;::<<S0-09e2-S5-0b,S5>>&lt;28&gt;::<<S0-09e2-S5-0c-S6,S6>>::<<S0-09e2-S5-0c-S6-S7-0d,S7>>&lt;29, int*&gt;`
+| `link:#S0-0cf[S0]&lt;27&gt;::link:#S0-09e2-S5-0b[S5]&lt;28&gt;::link:#S0-09e2-S5-0c-S6[S6]::link:#S0-09e2-S5-0c-S6-S7-0d[S7]&lt;29, int*&gt;`
 | 
 |===
 
@@ -491,7 +491,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R22
-    : <<S0-0cf,S0>>&lt;30&gt;::<<S0-01-S5-07,S5>>&lt;31&gt;::<<S0-01-S5-04-S6,S6>>::<<S0-01-S5-04-S6-S7-05,S7>>&lt;32&gt;;
+    : link:#S0-0cf[S0]&lt;30&gt;::link:#S0-01-S5-07[S5]&lt;31&gt;::link:#S0-01-S5-04-S6[S6]::link:#S0-01-S5-04-S6-S7-05[S7]&lt;32&gt;;
 ----
 
 === Base Classes
@@ -500,7 +500,7 @@ struct R22
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;30&gt;::<<S0-01-S5-07,S5>>&lt;31&gt;::<<S0-01-S5-04-S6,S6>>::<<S0-01-S5-04-S6-S7-05,S7>>&lt;32&gt;`
+| `link:#S0-0cf[S0]&lt;30&gt;::link:#S0-01-S5-07[S5]&lt;31&gt;::link:#S0-01-S5-04-S6[S6]::link:#S0-01-S5-04-S6-S7-05[S7]&lt;32&gt;`
 | 
 |===
 
@@ -514,7 +514,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R23
-    : <<S0-0cf,S0>>&lt;33&gt;::<<S0-09ee-S5-0b,S5>>&lt;34&gt;::<<S0-09ee-S5-02-S6,S6>>::<<S0-09ee-S5-02-S6-S7-09,S7>>&lt;35&gt;::<<S0-09ee-S5-02-S6-S7-03-S8,S8>>;
+    : link:#S0-0cf[S0]&lt;33&gt;::link:#S0-09ee-S5-0b[S5]&lt;34&gt;::link:#S0-09ee-S5-02-S6[S6]::link:#S0-09ee-S5-02-S6-S7-09[S7]&lt;35&gt;::link:#S0-09ee-S5-02-S6-S7-03-S8[S8];
 ----
 
 === Base Classes
@@ -523,7 +523,7 @@ struct R23
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;33&gt;::<<S0-09ee-S5-0b,S5>>&lt;34&gt;::<<S0-09ee-S5-02-S6,S6>>::<<S0-09ee-S5-02-S6-S7-09,S7>>&lt;35&gt;::<<S0-09ee-S5-02-S6-S7-03-S8,S8>>`
+| `link:#S0-0cf[S0]&lt;33&gt;::link:#S0-09ee-S5-0b[S5]&lt;34&gt;::link:#S0-09ee-S5-02-S6[S6]::link:#S0-09ee-S5-02-S6-S7-09[S7]&lt;35&gt;::link:#S0-09ee-S5-02-S6-S7-03-S8[S8]`
 | 
 |===
 
@@ -537,7 +537,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R24
-    : <<S0-0cf,S0>>&lt;36&gt;::<<S0-033-S5-03,S5>>&lt;37&gt;::<<S0-033-S5-0f-S6,S6>>::<<S0-033-S5-0f-S6-S7-05,S7>>&lt;38&gt;::<<S0-033-S5-0f-S6-S7-0d-S9,S9>>&lt;&hyphen;1&gt;;
+    : link:#S0-0cf[S0]&lt;36&gt;::link:#S0-033-S5-03[S5]&lt;37&gt;::link:#S0-033-S5-0f-S6[S6]::link:#S0-033-S5-0f-S6-S7-05[S7]&lt;38&gt;::link:#S0-033-S5-0f-S6-S7-0d-S9[S9]&lt;&hyphen;1&gt;;
 ----
 
 === Base Classes
@@ -546,7 +546,7 @@ struct R24
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;36&gt;::<<S0-033-S5-03,S5>>&lt;37&gt;::<<S0-033-S5-0f-S6,S6>>::<<S0-033-S5-0f-S6-S7-05,S7>>&lt;38&gt;::<<S0-033-S5-0f-S6-S7-0d-S9,S9>>&lt;&hyphen;1&gt;`
+| `link:#S0-0cf[S0]&lt;36&gt;::link:#S0-033-S5-03[S5]&lt;37&gt;::link:#S0-033-S5-0f-S6[S6]::link:#S0-033-S5-0f-S6-S7-05[S7]&lt;38&gt;::link:#S0-033-S5-0f-S6-S7-0d-S9[S9]&lt;&hyphen;1&gt;`
 | 
 |===
 
@@ -560,7 +560,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R25
-    : <<S0-0cf,S0>>&lt;39&gt;::<<S0-06-S5-03,S5>>&lt;40&gt;::<<S0-06-S5-07-S6,S6>>::<<S0-06-S5-07-S6-S7-08,S7>>&lt;41&gt;::<<S0-06-S5-07-S6-S7-0a-S9-05,S9>>&lt;42, void*&gt;;
+    : link:#S0-0cf[S0]&lt;39&gt;::link:#S0-06-S5-03[S5]&lt;40&gt;::link:#S0-06-S5-07-S6[S6]::link:#S0-06-S5-07-S6-S7-08[S7]&lt;41&gt;::link:#S0-06-S5-07-S6-S7-0a-S9-05[S9]&lt;42, void*&gt;;
 ----
 
 === Base Classes
@@ -569,7 +569,7 @@ struct R25
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;39&gt;::<<S0-06-S5-03,S5>>&lt;40&gt;::<<S0-06-S5-07-S6,S6>>::<<S0-06-S5-07-S6-S7-08,S7>>&lt;41&gt;::<<S0-06-S5-07-S6-S7-0a-S9-05,S9>>&lt;42, void*&gt;`
+| `link:#S0-0cf[S0]&lt;39&gt;::link:#S0-06-S5-03[S5]&lt;40&gt;::link:#S0-06-S5-07-S6[S6]::link:#S0-06-S5-07-S6-S7-08[S7]&lt;41&gt;::link:#S0-06-S5-07-S6-S7-0a-S9-05[S9]&lt;42, void*&gt;`
 | 
 |===
 
@@ -583,7 +583,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R26
-    : <<S0-0cf,S0>>&lt;39&gt;::<<S0-06-S5-03,S5>>&lt;40&gt;::<<S0-06-S5-07-S6,S6>>::<<S0-06-S5-07-S6-S7-08,S7>>&lt;41&gt;::<<S0-06-S5-07-S6-S7-0a-S9-08,S9>>&lt;42, int*&gt;;
+    : link:#S0-0cf[S0]&lt;39&gt;::link:#S0-06-S5-03[S5]&lt;40&gt;::link:#S0-06-S5-07-S6[S6]::link:#S0-06-S5-07-S6-S7-08[S7]&lt;41&gt;::link:#S0-06-S5-07-S6-S7-0a-S9-08[S9]&lt;42, int*&gt;;
 ----
 
 === Base Classes
@@ -592,7 +592,7 @@ struct R26
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;39&gt;::<<S0-06-S5-03,S5>>&lt;40&gt;::<<S0-06-S5-07-S6,S6>>::<<S0-06-S5-07-S6-S7-08,S7>>&lt;41&gt;::<<S0-06-S5-07-S6-S7-0a-S9-08,S9>>&lt;42, int*&gt;`
+| `link:#S0-0cf[S0]&lt;39&gt;::link:#S0-06-S5-03[S5]&lt;40&gt;::link:#S0-06-S5-07-S6[S6]::link:#S0-06-S5-07-S6-S7-08[S7]&lt;41&gt;::link:#S0-06-S5-07-S6-S7-0a-S9-08[S9]&lt;42, int*&gt;`
 | 
 |===
 
@@ -606,7 +606,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R27
-    : <<S0-0cf,S0>>&lt;43&gt;::<<S0-0ba-S5-0f,S5>>&lt;44&gt;::<<S0-0ba-S5-08-S6,S6>>::<<S0-0ba-S5-08-S6-S7-04,S7>>&lt;45&gt;::<<S0-0ba-S5-08-S6-S7-02-S9-0f,S9>>&lt;46&gt;;
+    : link:#S0-0cf[S0]&lt;43&gt;::link:#S0-0ba-S5-0f[S5]&lt;44&gt;::link:#S0-0ba-S5-08-S6[S6]::link:#S0-0ba-S5-08-S6-S7-04[S7]&lt;45&gt;::link:#S0-0ba-S5-08-S6-S7-02-S9-0f[S9]&lt;46&gt;;
 ----
 
 === Base Classes
@@ -615,7 +615,7 @@ struct R27
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;43&gt;::<<S0-0ba-S5-0f,S5>>&lt;44&gt;::<<S0-0ba-S5-08-S6,S6>>::<<S0-0ba-S5-08-S6-S7-04,S7>>&lt;45&gt;::<<S0-0ba-S5-08-S6-S7-02-S9-0f,S9>>&lt;46&gt;`
+| `link:#S0-0cf[S0]&lt;43&gt;::link:#S0-0ba-S5-0f[S5]&lt;44&gt;::link:#S0-0ba-S5-08-S6[S6]::link:#S0-0ba-S5-08-S6-S7-04[S7]&lt;45&gt;::link:#S0-0ba-S5-08-S6-S7-02-S9-0f[S9]&lt;46&gt;`
 | 
 |===
 
@@ -629,7 +629,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R28
-    : <<S0-0cf,S0>>&lt;0, bool&gt;;
+    : link:#S0-0cf[S0]&lt;0, bool&gt;;
 ----
 
 === Base Classes
@@ -638,7 +638,7 @@ struct R28
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;0, bool&gt;`
+| `link:#S0-0cf[S0]&lt;0, bool&gt;`
 | 
 |===
 
@@ -647,8 +647,8 @@ struct R28
 [cols=1]
 |===
 | Name
-| <<S0-0cf-S1,`S1`>> 
-| <<S0-0cf-S5,`S5`>> 
+| link:#S0-0cf-S1[`S1`] 
+| link:#S0-0cf-S5[`S5`] 
 |===
 
 === Member Functions
@@ -656,7 +656,7 @@ struct R28
 [cols=1]
 |===
 | Name
-| <<S0-0cf-f0,`f0`>> 
+| link:#S0-0cf-f0[`f0`] 
 |===
 
 [#R29]
@@ -669,7 +669,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R29
-    : <<S0-0cf,S0>>&lt;1, int&gt;;
+    : link:#S0-0cf[S0]&lt;1, int&gt;;
 ----
 
 === Base Classes
@@ -678,7 +678,7 @@ struct R29
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;1, int&gt;`
+| `link:#S0-0cf[S0]&lt;1, int&gt;`
 | 
 |===
 
@@ -687,8 +687,8 @@ struct R29
 [cols=1]
 |===
 | Name
-| <<S0-0cf-S1,`S1`>> 
-| <<S0-0cf-S5,`S5`>> 
+| link:#S0-0cf-S1[`S1`] 
+| link:#S0-0cf-S5[`S5`] 
 |===
 
 === Member Functions
@@ -696,7 +696,7 @@ struct R29
 [cols=1]
 |===
 | Name
-| <<S0-0cf-f0,`f0`>> 
+| link:#S0-0cf-f0[`f0`] 
 |===
 
 [#R3]
@@ -709,7 +709,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R3
-    : <<S0-020a,S0>>&lt;1, int*&gt;;
+    : link:#S0-020a[S0]&lt;1, int*&gt;;
 ----
 
 === Base Classes
@@ -718,7 +718,7 @@ struct R3
 |===
 | Name
 | Description
-| `<<S0-020a,S0>>&lt;1, int*&gt;`
+| `link:#S0-020a[S0]&lt;1, int*&gt;`
 | 
 |===
 
@@ -732,7 +732,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R30
-    : <<S0-0cf,S0>>&lt;2, bool&gt;::<<S0-03c,S1>>;
+    : link:#S0-0cf[S0]&lt;2, bool&gt;::link:#S0-03c[S1];
 ----
 
 === Base Classes
@@ -741,7 +741,7 @@ struct R30
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;2, bool&gt;::<<S0-03c,S1>>`
+| `link:#S0-0cf[S0]&lt;2, bool&gt;::link:#S0-03c[S1]`
 | 
 |===
 
@@ -750,7 +750,7 @@ struct R30
 [cols=1]
 |===
 | Name
-| <<R30-S2,`S2`>> 
+| link:#R30-S2[`S2`] 
 |===
 
 === Member Functions
@@ -758,11 +758,11 @@ struct R30
 [cols=1]
 |===
 | Name
-| <<R30-f1,`f1`>> 
+| link:#R30-f1[`f1`] 
 |===
 
 [#R30-S2]
-== <<R30,R30>>::S2
+== link:#R30[R30]::S2
 
 === Synopsis
 
@@ -777,7 +777,7 @@ struct S2;
 ----
 
 [#R30-f1]
-== <<R30,R30>>::f1
+== link:#R30[R30]::f1
 
 === Synopsis
 
@@ -802,7 +802,7 @@ template&lt;
     int I,
     typename T&gt;
 struct R31
-    : <<S0-0cf,S0>>&lt;3, bool&gt;::<<S0-092-S1,S1>>::<<S0-092-S1,S2>>&lt;I, T&gt;;
+    : link:#S0-0cf[S0]&lt;3, bool&gt;::link:#S0-092-S1[S1]::link:#S0-092-S1[S2]&lt;I, T&gt;;
 ----
 
 === Base Classes
@@ -811,7 +811,7 @@ struct R31
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;3, bool&gt;::<<S0-092-S1,S1>>::<<S0-092-S1,S2>>&lt;I, T&gt;`
+| `link:#S0-0cf[S0]&lt;3, bool&gt;::link:#S0-092-S1[S1]::link:#S0-092-S1[S2]&lt;I, T&gt;`
 | 
 |===
 
@@ -825,7 +825,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R32
-    : <<S0-0cf,S0>>&lt;4, bool&gt;::<<S0-0b6-S1,S1>>::<<S0-0b6-S1,S2>>&lt;5, bool&gt;;
+    : link:#S0-0cf[S0]&lt;4, bool&gt;::link:#S0-0b6-S1[S1]::link:#S0-0b6-S1[S2]&lt;5, bool&gt;;
 ----
 
 === Base Classes
@@ -834,7 +834,7 @@ struct R32
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;4, bool&gt;::<<S0-0b6-S1,S1>>::<<S0-0b6-S1,S2>>&lt;5, bool&gt;`
+| `link:#S0-0cf[S0]&lt;4, bool&gt;::link:#S0-0b6-S1[S1]::link:#S0-0b6-S1[S2]&lt;5, bool&gt;`
 | 
 |===
 
@@ -848,7 +848,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R33
-    : <<S0-0cf,S0>>&lt;6, bool&gt;::<<S0-023-S1,S1>>::<<S0-023-S1,S2>>&lt;7, int&gt;;
+    : link:#S0-0cf[S0]&lt;6, bool&gt;::link:#S0-023-S1[S1]::link:#S0-023-S1[S2]&lt;7, int&gt;;
 ----
 
 === Base Classes
@@ -857,7 +857,7 @@ struct R33
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;6, bool&gt;::<<S0-023-S1,S1>>::<<S0-023-S1,S2>>&lt;7, int&gt;`
+| `link:#S0-0cf[S0]&lt;6, bool&gt;::link:#S0-023-S1[S1]::link:#S0-023-S1[S2]&lt;7, int&gt;`
 | 
 |===
 
@@ -871,7 +871,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R34
-    : <<S0-0cf,S0>>&lt;8, bool&gt;::<<S0-04-S1,S1>>::<<S0-04-S1-S2-0e,S2>>&lt;9, bool&gt;::<<S0-04-S1-S2-0a,S3>>;
+    : link:#S0-0cf[S0]&lt;8, bool&gt;::link:#S0-04-S1[S1]::link:#S0-04-S1-S2-0e[S2]&lt;9, bool&gt;::link:#S0-04-S1-S2-0a[S3];
 ----
 
 === Base Classes
@@ -880,7 +880,7 @@ struct R34
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;8, bool&gt;::<<S0-04-S1,S1>>::<<S0-04-S1-S2-0e,S2>>&lt;9, bool&gt;::<<S0-04-S1-S2-0a,S3>>`
+| `link:#S0-0cf[S0]&lt;8, bool&gt;::link:#S0-04-S1[S1]::link:#S0-04-S1-S2-0e[S2]&lt;9, bool&gt;::link:#S0-04-S1-S2-0a[S3]`
 | 
 |===
 
@@ -889,11 +889,11 @@ struct R34
 [cols=1]
 |===
 | Name
-| <<R34-f3,`f3`>> 
+| link:#R34-f3[`f3`] 
 |===
 
 [#R34-f3]
-== <<R34,R34>>::f3
+== link:#R34[R34]::f3
 
 === Synopsis
 
@@ -918,7 +918,7 @@ template&lt;
     int I,
     typename T&gt;
 struct R35
-    : <<S0-0cf,S0>>&lt;10, bool&gt;::<<S0-05a-S1,S1>>::<<S0-05a-S1-S2-07,S2>>&lt;11, bool&gt;::<<S0-05a-S1-S2-0b,S4>>&lt;I, T&gt;;
+    : link:#S0-0cf[S0]&lt;10, bool&gt;::link:#S0-05a-S1[S1]::link:#S0-05a-S1-S2-07[S2]&lt;11, bool&gt;::link:#S0-05a-S1-S2-0b[S4]&lt;I, T&gt;;
 ----
 
 === Base Classes
@@ -927,7 +927,7 @@ struct R35
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;10, bool&gt;::<<S0-05a-S1,S1>>::<<S0-05a-S1-S2-07,S2>>&lt;11, bool&gt;::<<S0-05a-S1-S2-0b,S4>>&lt;I, T&gt;`
+| `link:#S0-0cf[S0]&lt;10, bool&gt;::link:#S0-05a-S1[S1]::link:#S0-05a-S1-S2-07[S2]&lt;11, bool&gt;::link:#S0-05a-S1-S2-0b[S4]&lt;I, T&gt;`
 | 
 |===
 
@@ -941,7 +941,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R36
-    : <<S0-0cf,S0>>&lt;12, bool&gt;::<<S0-0cd-S1,S1>>::<<S0-0cd-S1-S2-0e,S2>>&lt;13, bool&gt;::<<S0-0cd-S1-S2-05,S4>>&lt;14, bool&gt;;
+    : link:#S0-0cf[S0]&lt;12, bool&gt;::link:#S0-0cd-S1[S1]::link:#S0-0cd-S1-S2-0e[S2]&lt;13, bool&gt;::link:#S0-0cd-S1-S2-05[S4]&lt;14, bool&gt;;
 ----
 
 === Base Classes
@@ -950,7 +950,7 @@ struct R36
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;12, bool&gt;::<<S0-0cd-S1,S1>>::<<S0-0cd-S1-S2-0e,S2>>&lt;13, bool&gt;::<<S0-0cd-S1-S2-05,S4>>&lt;14, bool&gt;`
+| `link:#S0-0cf[S0]&lt;12, bool&gt;::link:#S0-0cd-S1[S1]::link:#S0-0cd-S1-S2-0e[S2]&lt;13, bool&gt;::link:#S0-0cd-S1-S2-05[S4]&lt;14, bool&gt;`
 | 
 |===
 
@@ -964,7 +964,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R37
-    : <<S0-0cf,S0>>&lt;15, bool&gt;::<<S0-000-S1,S1>>::<<S0-000-S1-S2-08,S2>>&lt;16, bool&gt;::<<S0-000-S1-S2-03,S4>>&lt;17, int&gt;;
+    : link:#S0-0cf[S0]&lt;15, bool&gt;::link:#S0-000-S1[S1]::link:#S0-000-S1-S2-08[S2]&lt;16, bool&gt;::link:#S0-000-S1-S2-03[S4]&lt;17, int&gt;;
 ----
 
 === Base Classes
@@ -973,7 +973,7 @@ struct R37
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;15, bool&gt;::<<S0-000-S1,S1>>::<<S0-000-S1-S2-08,S2>>&lt;16, bool&gt;::<<S0-000-S1-S2-03,S4>>&lt;17, int&gt;`
+| `link:#S0-0cf[S0]&lt;15, bool&gt;::link:#S0-000-S1[S1]::link:#S0-000-S1-S2-08[S2]&lt;16, bool&gt;::link:#S0-000-S1-S2-03[S4]&lt;17, int&gt;`
 | 
 |===
 
@@ -990,7 +990,7 @@ template&lt;
     int I,
     typename T&gt;
 struct R38
-    : <<S0-0cf,S0>>&lt;18, bool&gt;::<<S0-051,S5>>&lt;I, T&gt;;
+    : link:#S0-0cf[S0]&lt;18, bool&gt;::link:#S0-051[S5]&lt;I, T&gt;;
 ----
 
 === Base Classes
@@ -999,7 +999,7 @@ struct R38
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;18, bool&gt;::<<S0-051,S5>>&lt;I, T&gt;`
+| `link:#S0-0cf[S0]&lt;18, bool&gt;::link:#S0-051[S5]&lt;I, T&gt;`
 | 
 |===
 
@@ -1013,7 +1013,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R39
-    : <<S0-0cf,S0>>&lt;19, bool&gt;::<<S0-002,S5>>&lt;20, bool&gt;;
+    : link:#S0-0cf[S0]&lt;19, bool&gt;::link:#S0-002[S5]&lt;20, bool&gt;;
 ----
 
 === Base Classes
@@ -1022,7 +1022,7 @@ struct R39
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;19, bool&gt;::<<S0-002,S5>>&lt;20, bool&gt;`
+| `link:#S0-0cf[S0]&lt;19, bool&gt;::link:#S0-002[S5]&lt;20, bool&gt;`
 | 
 |===
 
@@ -1036,7 +1036,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R4
-    : <<S0-0cf,S0>>&lt;2&gt;::<<S0-09c-S1,S1>>;
+    : link:#S0-0cf[S0]&lt;2&gt;::link:#S0-09c-S1[S1];
 ----
 
 === Base Classes
@@ -1045,7 +1045,7 @@ struct R4
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;2&gt;::<<S0-09c-S1,S1>>`
+| `link:#S0-0cf[S0]&lt;2&gt;::link:#S0-09c-S1[S1]`
 | 
 |===
 
@@ -1059,7 +1059,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R40
-    : <<S0-0cf,S0>>&lt;21, bool&gt;::<<S0-003,S5>>&lt;22, int&gt;;
+    : link:#S0-0cf[S0]&lt;21, bool&gt;::link:#S0-003[S5]&lt;22, int&gt;;
 ----
 
 === Base Classes
@@ -1068,7 +1068,7 @@ struct R40
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;21, bool&gt;::<<S0-003,S5>>&lt;22, int&gt;`
+| `link:#S0-0cf[S0]&lt;21, bool&gt;::link:#S0-003[S5]&lt;22, int&gt;`
 | 
 |===
 
@@ -1082,7 +1082,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R41
-    : <<S0-0cf,S0>>&lt;23, bool&gt;::<<S0-0c7-S5-03,S5>>&lt;24, bool&gt;::<<S0-0c7-S5-0f,S6>>;
+    : link:#S0-0cf[S0]&lt;23, bool&gt;::link:#S0-0c7-S5-03[S5]&lt;24, bool&gt;::link:#S0-0c7-S5-0f[S6];
 ----
 
 === Base Classes
@@ -1091,7 +1091,7 @@ struct R41
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;23, bool&gt;::<<S0-0c7-S5-03,S5>>&lt;24, bool&gt;::<<S0-0c7-S5-0f,S6>>`
+| `link:#S0-0cf[S0]&lt;23, bool&gt;::link:#S0-0c7-S5-03[S5]&lt;24, bool&gt;::link:#S0-0c7-S5-0f[S6]`
 | 
 |===
 
@@ -1100,7 +1100,7 @@ struct R41
 [cols=1]
 |===
 | Name
-| <<R41-S7,`S7`>> 
+| link:#R41-S7[`S7`] 
 |===
 
 === Member Functions
@@ -1108,11 +1108,11 @@ struct R41
 [cols=1]
 |===
 | Name
-| <<R41-f6,`f6`>> 
+| link:#R41-f6[`f6`] 
 |===
 
 [#R41-S7]
-== <<R41,R41>>::S7
+== link:#R41[R41]::S7
 
 === Synopsis
 
@@ -1127,7 +1127,7 @@ struct S7;
 ----
 
 [#R41-f6]
-== <<R41,R41>>::f6
+== link:#R41[R41]::f6
 
 === Synopsis
 
@@ -1152,7 +1152,7 @@ template&lt;
     int I,
     typename T&gt;
 struct R42
-    : <<S0-0cf,S0>>&lt;25, bool&gt;::<<S0-0529f-S5-051,S5>>&lt;26, bool&gt;::<<S0-0529f-S5-05c-S6,S6>>::<<S0-0529f-S5-05c-S6,S7>>&lt;I, T&gt;;
+    : link:#S0-0cf[S0]&lt;25, bool&gt;::link:#S0-0529f-S5-051[S5]&lt;26, bool&gt;::link:#S0-0529f-S5-05c-S6[S6]::link:#S0-0529f-S5-05c-S6[S7]&lt;I, T&gt;;
 ----
 
 === Base Classes
@@ -1161,7 +1161,7 @@ struct R42
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;25, bool&gt;::<<S0-0529f-S5-051,S5>>&lt;26, bool&gt;::<<S0-0529f-S5-05c-S6,S6>>::<<S0-0529f-S5-05c-S6,S7>>&lt;I, T&gt;`
+| `link:#S0-0cf[S0]&lt;25, bool&gt;::link:#S0-0529f-S5-051[S5]&lt;26, bool&gt;::link:#S0-0529f-S5-05c-S6[S6]::link:#S0-0529f-S5-05c-S6[S7]&lt;I, T&gt;`
 | 
 |===
 
@@ -1175,7 +1175,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R43
-    : <<S0-0cf,S0>>&lt;27, bool&gt;::<<S0-007-S5-0f,S5>>&lt;28, bool&gt;::<<S0-007-S5-0d-S6,S6>>::<<S0-007-S5-0d-S6,S7>>&lt;29, int&gt;;
+    : link:#S0-0cf[S0]&lt;27, bool&gt;::link:#S0-007-S5-0f[S5]&lt;28, bool&gt;::link:#S0-007-S5-0d-S6[S6]::link:#S0-007-S5-0d-S6[S7]&lt;29, int&gt;;
 ----
 
 === Base Classes
@@ -1184,7 +1184,7 @@ struct R43
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;27, bool&gt;::<<S0-007-S5-0f,S5>>&lt;28, bool&gt;::<<S0-007-S5-0d-S6,S6>>::<<S0-007-S5-0d-S6,S7>>&lt;29, int&gt;`
+| `link:#S0-0cf[S0]&lt;27, bool&gt;::link:#S0-007-S5-0f[S5]&lt;28, bool&gt;::link:#S0-007-S5-0d-S6[S6]::link:#S0-007-S5-0d-S6[S7]&lt;29, int&gt;`
 | 
 |===
 
@@ -1198,7 +1198,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R44
-    : <<S0-0cf,S0>>&lt;30, bool&gt;::<<S0-021-S5-06,S5>>&lt;31, bool&gt;::<<S0-021-S5-0b-S6,S6>>::<<S0-021-S5-0b-S6,S7>>&lt;32, bool&gt;;
+    : link:#S0-0cf[S0]&lt;30, bool&gt;::link:#S0-021-S5-06[S5]&lt;31, bool&gt;::link:#S0-021-S5-0b-S6[S6]::link:#S0-021-S5-0b-S6[S7]&lt;32, bool&gt;;
 ----
 
 === Base Classes
@@ -1207,7 +1207,7 @@ struct R44
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;30, bool&gt;::<<S0-021-S5-06,S5>>&lt;31, bool&gt;::<<S0-021-S5-0b-S6,S6>>::<<S0-021-S5-0b-S6,S7>>&lt;32, bool&gt;`
+| `link:#S0-0cf[S0]&lt;30, bool&gt;::link:#S0-021-S5-06[S5]&lt;31, bool&gt;::link:#S0-021-S5-0b-S6[S6]::link:#S0-021-S5-0b-S6[S7]&lt;32, bool&gt;`
 | 
 |===
 
@@ -1221,7 +1221,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R45
-    : <<S0-0cf,S0>>&lt;33, bool&gt;::<<S0-0318-S5-0f,S5>>&lt;34, bool&gt;::<<S0-0318-S5-0b-S6,S6>>::<<S0-0318-S5-0b-S6-S7-04,S7>>&lt;35, bool&gt;::<<S0-0318-S5-0b-S6-S7-05,S8>>;
+    : link:#S0-0cf[S0]&lt;33, bool&gt;::link:#S0-0318-S5-0f[S5]&lt;34, bool&gt;::link:#S0-0318-S5-0b-S6[S6]::link:#S0-0318-S5-0b-S6-S7-04[S7]&lt;35, bool&gt;::link:#S0-0318-S5-0b-S6-S7-05[S8];
 ----
 
 === Base Classes
@@ -1230,7 +1230,7 @@ struct R45
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;33, bool&gt;::<<S0-0318-S5-0f,S5>>&lt;34, bool&gt;::<<S0-0318-S5-0b-S6,S6>>::<<S0-0318-S5-0b-S6-S7-04,S7>>&lt;35, bool&gt;::<<S0-0318-S5-0b-S6-S7-05,S8>>`
+| `link:#S0-0cf[S0]&lt;33, bool&gt;::link:#S0-0318-S5-0f[S5]&lt;34, bool&gt;::link:#S0-0318-S5-0b-S6[S6]::link:#S0-0318-S5-0b-S6-S7-04[S7]&lt;35, bool&gt;::link:#S0-0318-S5-0b-S6-S7-05[S8]`
 | 
 |===
 
@@ -1239,11 +1239,11 @@ struct R45
 [cols=1]
 |===
 | Name
-| <<R45-f8,`f8`>> 
+| link:#R45-f8[`f8`] 
 |===
 
 [#R45-f8]
-== <<R45,R45>>::f8
+== link:#R45[R45]::f8
 
 === Synopsis
 
@@ -1268,7 +1268,7 @@ template&lt;
     int I,
     typename T&gt;
 struct R46
-    : <<S0-0cf,S0>>&lt;36, bool&gt;::<<S0-0d-S5-09,S5>>&lt;37, bool&gt;::<<S0-0d-S5-0b-S6,S6>>::<<S0-0d-S5-0b-S6-S7-08,S7>>&lt;38, bool&gt;::<<S0-0d-S5-0b-S6-S7-0d,S9>>&lt;I, T&gt;;
+    : link:#S0-0cf[S0]&lt;36, bool&gt;::link:#S0-0d-S5-09[S5]&lt;37, bool&gt;::link:#S0-0d-S5-0b-S6[S6]::link:#S0-0d-S5-0b-S6-S7-08[S7]&lt;38, bool&gt;::link:#S0-0d-S5-0b-S6-S7-0d[S9]&lt;I, T&gt;;
 ----
 
 === Base Classes
@@ -1277,7 +1277,7 @@ struct R46
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;36, bool&gt;::<<S0-0d-S5-09,S5>>&lt;37, bool&gt;::<<S0-0d-S5-0b-S6,S6>>::<<S0-0d-S5-0b-S6-S7-08,S7>>&lt;38, bool&gt;::<<S0-0d-S5-0b-S6-S7-0d,S9>>&lt;I, T&gt;`
+| `link:#S0-0cf[S0]&lt;36, bool&gt;::link:#S0-0d-S5-09[S5]&lt;37, bool&gt;::link:#S0-0d-S5-0b-S6[S6]::link:#S0-0d-S5-0b-S6-S7-08[S7]&lt;38, bool&gt;::link:#S0-0d-S5-0b-S6-S7-0d[S9]&lt;I, T&gt;`
 | 
 |===
 
@@ -1291,7 +1291,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R47
-    : <<S0-0cf,S0>>&lt;39, bool&gt;::<<S0-0206-S5-06,S5>>&lt;40, bool&gt;::<<S0-0206-S5-08-S6,S6>>::<<S0-0206-S5-08-S6-S7-06,S7>>&lt;41, bool&gt;::<<S0-0206-S5-08-S6-S7-01,S9>>&lt;42, int&gt;;
+    : link:#S0-0cf[S0]&lt;39, bool&gt;::link:#S0-0206-S5-06[S5]&lt;40, bool&gt;::link:#S0-0206-S5-08-S6[S6]::link:#S0-0206-S5-08-S6-S7-06[S7]&lt;41, bool&gt;::link:#S0-0206-S5-08-S6-S7-01[S9]&lt;42, int&gt;;
 ----
 
 === Base Classes
@@ -1300,7 +1300,7 @@ struct R47
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;39, bool&gt;::<<S0-0206-S5-06,S5>>&lt;40, bool&gt;::<<S0-0206-S5-08-S6,S6>>::<<S0-0206-S5-08-S6-S7-06,S7>>&lt;41, bool&gt;::<<S0-0206-S5-08-S6-S7-01,S9>>&lt;42, int&gt;`
+| `link:#S0-0cf[S0]&lt;39, bool&gt;::link:#S0-0206-S5-06[S5]&lt;40, bool&gt;::link:#S0-0206-S5-08-S6[S6]::link:#S0-0206-S5-08-S6-S7-06[S7]&lt;41, bool&gt;::link:#S0-0206-S5-08-S6-S7-01[S9]&lt;42, int&gt;`
 | 
 |===
 
@@ -1314,7 +1314,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R48
-    : <<S0-0cf,S0>>&lt;43, bool&gt;::<<S0-05291-S5-02,S5>>&lt;44, bool&gt;::<<S0-05291-S5-0e-S6,S6>>::<<S0-05291-S5-0e-S6-S7-04,S7>>&lt;45, bool&gt;::<<S0-05291-S5-0e-S6-S7-0f,S9>>&lt;46, bool&gt;;
+    : link:#S0-0cf[S0]&lt;43, bool&gt;::link:#S0-05291-S5-02[S5]&lt;44, bool&gt;::link:#S0-05291-S5-0e-S6[S6]::link:#S0-05291-S5-0e-S6-S7-04[S7]&lt;45, bool&gt;::link:#S0-05291-S5-0e-S6-S7-0f[S9]&lt;46, bool&gt;;
 ----
 
 === Base Classes
@@ -1323,7 +1323,7 @@ struct R48
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;43, bool&gt;::<<S0-05291-S5-02,S5>>&lt;44, bool&gt;::<<S0-05291-S5-0e-S6,S6>>::<<S0-05291-S5-0e-S6-S7-04,S7>>&lt;45, bool&gt;::<<S0-05291-S5-0e-S6-S7-0f,S9>>&lt;46, bool&gt;`
+| `link:#S0-0cf[S0]&lt;43, bool&gt;::link:#S0-05291-S5-02[S5]&lt;44, bool&gt;::link:#S0-05291-S5-0e-S6[S6]::link:#S0-05291-S5-0e-S6-S7-04[S7]&lt;45, bool&gt;::link:#S0-05291-S5-0e-S6-S7-0f[S9]&lt;46, bool&gt;`
 | 
 |===
 
@@ -1337,7 +1337,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R5
-    : <<S0-0cf,S0>>&lt;3&gt;::<<S0-073-S1,S1>>::<<S0-073-S1-S2,S2>>&lt;&hyphen;1&gt;;
+    : link:#S0-0cf[S0]&lt;3&gt;::link:#S0-073-S1[S1]::link:#S0-073-S1-S2[S2]&lt;&hyphen;1&gt;;
 ----
 
 === Base Classes
@@ -1346,7 +1346,7 @@ struct R5
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;3&gt;::<<S0-073-S1,S1>>::<<S0-073-S1-S2,S2>>&lt;&hyphen;1&gt;`
+| `link:#S0-0cf[S0]&lt;3&gt;::link:#S0-073-S1[S1]::link:#S0-073-S1-S2[S2]&lt;&hyphen;1&gt;`
 | 
 |===
 
@@ -1360,7 +1360,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R6
-    : <<S0-0cf,S0>>&lt;4&gt;::<<S0-0a1-S1,S1>>::<<S0-0a1-S1-S2-0f,S2>>&lt;5&gt;;
+    : link:#S0-0cf[S0]&lt;4&gt;::link:#S0-0a1-S1[S1]::link:#S0-0a1-S1-S2-0f[S2]&lt;5&gt;;
 ----
 
 === Base Classes
@@ -1369,7 +1369,7 @@ struct R6
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;4&gt;::<<S0-0a1-S1,S1>>::<<S0-0a1-S1-S2-0f,S2>>&lt;5&gt;`
+| `link:#S0-0cf[S0]&lt;4&gt;::link:#S0-0a1-S1[S1]::link:#S0-0a1-S1-S2-0f[S2]&lt;5&gt;`
 | 
 |===
 
@@ -1383,7 +1383,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R7
-    : <<S0-0cf,S0>>&lt;6&gt;::<<S0-07e-S1,S1>>::<<S0-07e-S1-S2-04,S2>>&lt;7, void*&gt;;
+    : link:#S0-0cf[S0]&lt;6&gt;::link:#S0-07e-S1[S1]::link:#S0-07e-S1-S2-04[S2]&lt;7, void*&gt;;
 ----
 
 === Base Classes
@@ -1392,7 +1392,7 @@ struct R7
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;6&gt;::<<S0-07e-S1,S1>>::<<S0-07e-S1-S2-04,S2>>&lt;7, void*&gt;`
+| `link:#S0-0cf[S0]&lt;6&gt;::link:#S0-07e-S1[S1]::link:#S0-07e-S1-S2-04[S2]&lt;7, void*&gt;`
 | 
 |===
 
@@ -1406,7 +1406,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R8
-    : <<S0-0cf,S0>>&lt;6&gt;::<<S0-07e-S1,S1>>::<<S0-07e-S1-S2-07,S2>>&lt;7, int*&gt;;
+    : link:#S0-0cf[S0]&lt;6&gt;::link:#S0-07e-S1[S1]::link:#S0-07e-S1-S2-07[S2]&lt;7, int*&gt;;
 ----
 
 === Base Classes
@@ -1415,7 +1415,7 @@ struct R8
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;6&gt;::<<S0-07e-S1,S1>>::<<S0-07e-S1-S2-07,S2>>&lt;7, int*&gt;`
+| `link:#S0-0cf[S0]&lt;6&gt;::link:#S0-07e-S1[S1]::link:#S0-07e-S1-S2-07[S2]&lt;7, int*&gt;`
 | 
 |===
 
@@ -1429,7 +1429,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R9
-    : <<S0-0cf,S0>>&lt;8&gt;::<<S0-0a3-S1,S1>>::<<S0-0a3-S1-S2-0b,S2>>&lt;9&gt;::<<S0-0a3-S1-S2-0c-S3,S3>>;
+    : link:#S0-0cf[S0]&lt;8&gt;::link:#S0-0a3-S1[S1]::link:#S0-0a3-S1-S2-0b[S2]&lt;9&gt;::link:#S0-0a3-S1-S2-0c-S3[S3];
 ----
 
 === Base Classes
@@ -1438,7 +1438,7 @@ struct R9
 |===
 | Name
 | Description
-| `<<S0-0cf,S0>>&lt;8&gt;::<<S0-0a3-S1,S1>>::<<S0-0a3-S1-S2-0b,S2>>&lt;9&gt;::<<S0-0a3-S1-S2-0c-S3,S3>>`
+| `link:#S0-0cf[S0]&lt;8&gt;::link:#S0-0a3-S1[S1]::link:#S0-0a3-S1-S2-0b[S2]&lt;9&gt;::link:#S0-0a3-S1-S2-0c-S3[S3]`
 | 
 |===
 
@@ -1462,8 +1462,8 @@ struct S0;
 [cols=1]
 |===
 | Name
-| <<S0-0cf-S1,`S1`>> 
-| <<S0-0cf-S5,`S5`>> 
+| link:#S0-0cf-S1[`S1`] 
+| link:#S0-0cf-S5[`S5`] 
 |===
 
 === Member Functions
@@ -1471,7 +1471,7 @@ struct S0;
 [cols=1]
 |===
 | Name
-| <<S0-0cf-f0,`f0`>> 
+| link:#S0-0cf-f0[`f0`] 
 |===
 
 === Derived Classes
@@ -1480,18 +1480,18 @@ struct S0;
 |===
 | Name
 | Description
-| <<R0,`R0`>>
+| link:#R0[`R0`]
 | 
-| <<R2,`R2`>>
+| link:#R2[`R2`]
 | 
-| <<R28,`R28`>>
+| link:#R28[`R28`]
 | 
-| <<R29,`R29`>>
+| link:#R29[`R29`]
 | 
 |===
 
 [#S0-0cf-S1]
-== <<S0-0cf,S0>>::S1
+== link:#S0-0cf[S0]::S1
 
 === Synopsis
 
@@ -1507,7 +1507,7 @@ struct S1;
 [cols=1]
 |===
 | Name
-| <<S0-0cf-S1-S2,`S2`>> 
+| link:#S0-0cf-S1-S2[`S2`] 
 |===
 
 === Member Functions
@@ -1515,11 +1515,11 @@ struct S1;
 [cols=1]
 |===
 | Name
-| <<S0-0cf-S1-f1,`f1`>> 
+| link:#S0-0cf-S1-f1[`f1`] 
 |===
 
 [#S0-0cf-S1-S2]
-== <<S0-0cf,S0>>::<<S0-0cf-S1,S1>>::S2
+== link:#S0-0cf[S0]::link:#S0-0cf-S1[S1]::S2
 
 === Synopsis
 
@@ -1538,8 +1538,8 @@ struct S2;
 [cols=1]
 |===
 | Name
-| <<S0-0cf-S1-S2-S3,`S3`>> 
-| <<S0-0cf-S1-S2-S4,`S4`>> 
+| link:#S0-0cf-S1-S2-S3[`S3`] 
+| link:#S0-0cf-S1-S2-S4[`S4`] 
 |===
 
 === Member Functions
@@ -1547,11 +1547,11 @@ struct S2;
 [cols=1]
 |===
 | Name
-| <<S0-0cf-S1-S2-f2,`f2`>> 
+| link:#S0-0cf-S1-S2-f2[`f2`] 
 |===
 
 [#S0-0cf-S1-S2-S3]
-== <<S0-0cf,S0>>::<<S0-0cf-S1,S1>>::<<S0-0cf-S1-S2,S2>>::S3
+== link:#S0-0cf[S0]::link:#S0-0cf-S1[S1]::link:#S0-0cf-S1-S2[S2]::S3
 
 === Synopsis
 
@@ -1567,11 +1567,11 @@ struct S3;
 [cols=1]
 |===
 | Name
-| <<S0-0cf-S1-S2-S3-f3,`f3`>> 
+| link:#S0-0cf-S1-S2-S3-f3[`f3`] 
 |===
 
 [#S0-0cf-S1-S2-S3-f3]
-== <<S0-0cf,S0>>::<<S0-0cf-S1,S1>>::<<S0-0cf-S1-S2,S2>>::<<S0-0cf-S1-S2-S3,S3>>::f3
+== link:#S0-0cf[S0]::link:#S0-0cf-S1[S1]::link:#S0-0cf-S1-S2[S2]::link:#S0-0cf-S1-S2-S3[S3]::f3
 
 === Synopsis
 
@@ -1584,7 +1584,7 @@ f3();
 ----
 
 [#S0-0cf-S1-S2-S4]
-== <<S0-0cf,S0>>::<<S0-0cf-S1,S1>>::<<S0-0cf-S1-S2,S2>>::S4
+== link:#S0-0cf[S0]::link:#S0-0cf-S1[S1]::link:#S0-0cf-S1-S2[S2]::S4
 
 === Synopsis
 
@@ -1603,11 +1603,11 @@ struct S4;
 [cols=1]
 |===
 | Name
-| <<S0-0cf-S1-S2-S4-f4,`f4`>> 
+| link:#S0-0cf-S1-S2-S4-f4[`f4`] 
 |===
 
 [#S0-0cf-S1-S2-S4-f4]
-== <<S0-0cf,S0>>::<<S0-0cf-S1,S1>>::<<S0-0cf-S1-S2,S2>>::<<S0-0cf-S1-S2-S4,S4>>::f4
+== link:#S0-0cf[S0]::link:#S0-0cf-S1[S1]::link:#S0-0cf-S1-S2[S2]::link:#S0-0cf-S1-S2-S4[S4]::f4
 
 === Synopsis
 
@@ -1620,7 +1620,7 @@ f4();
 ----
 
 [#S0-0cf-S1-S2-f2]
-== <<S0-0cf,S0>>::<<S0-0cf-S1,S1>>::<<S0-0cf-S1-S2,S2>>::f2
+== link:#S0-0cf[S0]::link:#S0-0cf-S1[S1]::link:#S0-0cf-S1-S2[S2]::f2
 
 === Synopsis
 
@@ -1633,7 +1633,7 @@ f2();
 ----
 
 [#S0-0cf-S1-f1]
-== <<S0-0cf,S0>>::<<S0-0cf-S1,S1>>::f1
+== link:#S0-0cf[S0]::link:#S0-0cf-S1[S1]::f1
 
 === Synopsis
 
@@ -1646,7 +1646,7 @@ f1();
 ----
 
 [#S0-0cf-S5]
-== <<S0-0cf,S0>>::S5
+== link:#S0-0cf[S0]::S5
 
 === Synopsis
 
@@ -1665,7 +1665,7 @@ struct S5;
 [cols=1]
 |===
 | Name
-| <<S0-0cf-S5-S6,`S6`>> 
+| link:#S0-0cf-S5-S6[`S6`] 
 |===
 
 === Member Functions
@@ -1673,11 +1673,11 @@ struct S5;
 [cols=1]
 |===
 | Name
-| <<S0-0cf-S5-f5,`f5`>> 
+| link:#S0-0cf-S5-f5[`f5`] 
 |===
 
 [#S0-0cf-S5-S6]
-== <<S0-0cf,S0>>::<<S0-0cf-S5,S5>>::S6
+== link:#S0-0cf[S0]::link:#S0-0cf-S5[S5]::S6
 
 === Synopsis
 
@@ -1693,7 +1693,7 @@ struct S6;
 [cols=1]
 |===
 | Name
-| <<S0-0cf-S5-S6-S7,`S7`>> 
+| link:#S0-0cf-S5-S6-S7[`S7`] 
 |===
 
 === Member Functions
@@ -1701,11 +1701,11 @@ struct S6;
 [cols=1]
 |===
 | Name
-| <<S0-0cf-S5-S6-f6,`f6`>> 
+| link:#S0-0cf-S5-S6-f6[`f6`] 
 |===
 
 [#S0-0cf-S5-S6-S7]
-== <<S0-0cf,S0>>::<<S0-0cf-S5,S5>>::<<S0-0cf-S5-S6,S6>>::S7
+== link:#S0-0cf[S0]::link:#S0-0cf-S5[S5]::link:#S0-0cf-S5-S6[S6]::S7
 
 === Synopsis
 
@@ -1724,8 +1724,8 @@ struct S7;
 [cols=1]
 |===
 | Name
-| <<S0-0cf-S5-S6-S7-S8,`S8`>> 
-| <<S0-0cf-S5-S6-S7-S9,`S9`>> 
+| link:#S0-0cf-S5-S6-S7-S8[`S8`] 
+| link:#S0-0cf-S5-S6-S7-S9[`S9`] 
 |===
 
 === Member Functions
@@ -1733,11 +1733,11 @@ struct S7;
 [cols=1]
 |===
 | Name
-| <<S0-0cf-S5-S6-S7-f7,`f7`>> 
+| link:#S0-0cf-S5-S6-S7-f7[`f7`] 
 |===
 
 [#S0-0cf-S5-S6-S7-S8]
-== <<S0-0cf,S0>>::<<S0-0cf-S5,S5>>::<<S0-0cf-S5-S6,S6>>::<<S0-0cf-S5-S6-S7,S7>>::S8
+== link:#S0-0cf[S0]::link:#S0-0cf-S5[S5]::link:#S0-0cf-S5-S6[S6]::link:#S0-0cf-S5-S6-S7[S7]::S8
 
 === Synopsis
 
@@ -1753,11 +1753,11 @@ struct S8;
 [cols=1]
 |===
 | Name
-| <<S0-0cf-S5-S6-S7-S8-f8,`f8`>> 
+| link:#S0-0cf-S5-S6-S7-S8-f8[`f8`] 
 |===
 
 [#S0-0cf-S5-S6-S7-S8-f8]
-== <<S0-0cf,S0>>::<<S0-0cf-S5,S5>>::<<S0-0cf-S5-S6,S6>>::<<S0-0cf-S5-S6-S7,S7>>::<<S0-0cf-S5-S6-S7-S8,S8>>::f8
+== link:#S0-0cf[S0]::link:#S0-0cf-S5[S5]::link:#S0-0cf-S5-S6[S6]::link:#S0-0cf-S5-S6-S7[S7]::link:#S0-0cf-S5-S6-S7-S8[S8]::f8
 
 === Synopsis
 
@@ -1770,7 +1770,7 @@ f8();
 ----
 
 [#S0-0cf-S5-S6-S7-S9]
-== <<S0-0cf,S0>>::<<S0-0cf-S5,S5>>::<<S0-0cf-S5-S6,S6>>::<<S0-0cf-S5-S6-S7,S7>>::S9
+== link:#S0-0cf[S0]::link:#S0-0cf-S5[S5]::link:#S0-0cf-S5-S6[S6]::link:#S0-0cf-S5-S6-S7[S7]::S9
 
 === Synopsis
 
@@ -1789,11 +1789,11 @@ struct S9;
 [cols=1]
 |===
 | Name
-| <<S0-0cf-S5-S6-S7-S9-f9,`f9`>> 
+| link:#S0-0cf-S5-S6-S7-S9-f9[`f9`] 
 |===
 
 [#S0-0cf-S5-S6-S7-S9-f9]
-== <<S0-0cf,S0>>::<<S0-0cf-S5,S5>>::<<S0-0cf-S5-S6,S6>>::<<S0-0cf-S5-S6-S7,S7>>::<<S0-0cf-S5-S6-S7-S9,S9>>::f9
+== link:#S0-0cf[S0]::link:#S0-0cf-S5[S5]::link:#S0-0cf-S5-S6[S6]::link:#S0-0cf-S5-S6-S7[S7]::link:#S0-0cf-S5-S6-S7-S9[S9]::f9
 
 === Synopsis
 
@@ -1806,7 +1806,7 @@ f9();
 ----
 
 [#S0-0cf-S5-S6-S7-f7]
-== <<S0-0cf,S0>>::<<S0-0cf-S5,S5>>::<<S0-0cf-S5-S6,S6>>::<<S0-0cf-S5-S6-S7,S7>>::f7
+== link:#S0-0cf[S0]::link:#S0-0cf-S5[S5]::link:#S0-0cf-S5-S6[S6]::link:#S0-0cf-S5-S6-S7[S7]::f7
 
 === Synopsis
 
@@ -1819,7 +1819,7 @@ f7();
 ----
 
 [#S0-0cf-S5-S6-f6]
-== <<S0-0cf,S0>>::<<S0-0cf-S5,S5>>::<<S0-0cf-S5-S6,S6>>::f6
+== link:#S0-0cf[S0]::link:#S0-0cf-S5[S5]::link:#S0-0cf-S5-S6[S6]::f6
 
 === Synopsis
 
@@ -1832,7 +1832,7 @@ f6();
 ----
 
 [#S0-0cf-S5-f5]
-== <<S0-0cf,S0>>::<<S0-0cf-S5,S5>>::f5
+== link:#S0-0cf[S0]::link:#S0-0cf-S5[S5]::f5
 
 === Synopsis
 
@@ -1845,7 +1845,7 @@ f5();
 ----
 
 [#S0-0cf-f0]
-== <<S0-0cf,S0>>::f0
+== link:#S0-0cf[S0]::f0
 
 === Synopsis
 
@@ -1858,7 +1858,7 @@ f0();
 ----
 
 [#S0-0be]
-== <<S0-0cf,S0>>&lt;0&gt;
+== link:#S0-0cf[S0]&lt;0&gt;
 
 === Synopsis
 
@@ -1867,7 +1867,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;0&gt;;
+struct link:#S0-0cf[S0]&lt;0&gt;;
 ----
 
 === Derived Classes
@@ -1876,12 +1876,12 @@ struct <<S0-0cf,S0>>&lt;0&gt;;
 |===
 | Name
 | Description
-| <<R1,`R1`>>
+| link:#R1[`R1`]
 | 
 |===
 
 [#S0-08]
-== <<S0-0cf,S0>>&lt;10&gt;
+== link:#S0-0cf[S0]&lt;10&gt;
 
 === Synopsis
 
@@ -1890,7 +1890,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;10&gt;;
+struct link:#S0-0cf[S0]&lt;10&gt;;
 ----
 
 === Types
@@ -1898,8 +1898,8 @@ struct <<S0-0cf,S0>>&lt;10&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-08-S1,`S1`>> 
-| <<S0-08-S5,`S5`>> 
+| link:#S0-08-S1[`S1`] 
+| link:#S0-08-S5[`S5`] 
 |===
 
 === Member Functions
@@ -1907,11 +1907,11 @@ struct <<S0-0cf,S0>>&lt;10&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-08-f0,`f0`>> 
+| link:#S0-08-f0[`f0`] 
 |===
 
 [#S0-08-S1]
-== <<S0-08,S0&lt;10&gt;>>::S1
+== link:#S0-08[S0&lt;10&gt;]::S1
 
 === Synopsis
 
@@ -1927,8 +1927,8 @@ struct S1;
 [cols=1]
 |===
 | Name
-| <<S0-08-S1-S2-0b,`S2`>> 
-| <<S0-08-S1-S2-08,`S2&lt;11&gt;`>> 
+| link:#S0-08-S1-S2-0b[`S2`] 
+| link:#S0-08-S1-S2-08[`S2&lt;11&gt;`] 
 |===
 
 === Member Functions
@@ -1936,11 +1936,11 @@ struct S1;
 [cols=1]
 |===
 | Name
-| <<S0-08-S1-f1,`f1`>> 
+| link:#S0-08-S1-f1[`f1`] 
 |===
 
 [#S0-08-S1-S2-0b]
-== <<S0-08,S0&lt;10&gt;>>::<<S0-08-S1,S1>>::S2
+== link:#S0-08[S0&lt;10&gt;]::link:#S0-08-S1[S1]::S2
 
 === Synopsis
 
@@ -1955,7 +1955,7 @@ struct S2;
 ----
 
 [#S0-08-S1-S2-08]
-== <<S0-08,S0&lt;10&gt;>>::<<S0-08-S1,S1>>::<<S0-0cf-S1-S2,S2>>&lt;11&gt;
+== link:#S0-08[S0&lt;10&gt;]::link:#S0-08-S1[S1]::link:#S0-0cf-S1-S2[S2]&lt;11&gt;
 
 === Synopsis
 
@@ -1964,7 +1964,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S1-S2,S2>>&lt;11&gt;;
+struct link:#S0-0cf-S1-S2[S2]&lt;11&gt;;
 ----
 
 === Types
@@ -1972,8 +1972,8 @@ struct <<S0-0cf-S1-S2,S2>>&lt;11&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-08-S1-S2-08-S3,`S3`>> 
-| <<S0-08-S1-S2-08-S4,`S4`>> 
+| link:#S0-08-S1-S2-08-S3[`S3`] 
+| link:#S0-08-S1-S2-08-S4[`S4`] 
 |===
 
 === Member Functions
@@ -1981,11 +1981,11 @@ struct <<S0-0cf-S1-S2,S2>>&lt;11&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-08-S1-S2-08-f2,`f2`>> 
+| link:#S0-08-S1-S2-08-f2[`f2`] 
 |===
 
 [#S0-08-S1-S2-08-S3]
-== <<S0-08,S0&lt;10&gt;>>::<<S0-08-S1,S1>>::<<S0-08-S1-S2-08,S2&lt;11&gt;>>::S3
+== link:#S0-08[S0&lt;10&gt;]::link:#S0-08-S1[S1]::link:#S0-08-S1-S2-08[S2&lt;11&gt;]::S3
 
 === Synopsis
 
@@ -1997,7 +1997,7 @@ struct S3;
 ----
 
 [#S0-08-S1-S2-08-S4]
-== <<S0-08,S0&lt;10&gt;>>::<<S0-08-S1,S1>>::<<S0-08-S1-S2-08,S2&lt;11&gt;>>::S4
+== link:#S0-08[S0&lt;10&gt;]::link:#S0-08-S1[S1]::link:#S0-08-S1-S2-08[S2&lt;11&gt;]::S4
 
 === Synopsis
 
@@ -2017,12 +2017,12 @@ struct S4;
 |===
 | Name
 | Description
-| <<R10,`R10`>>
+| link:#R10[`R10`]
 | 
 |===
 
 [#S0-08-S1-S2-08-f2]
-== <<S0-08,S0&lt;10&gt;>>::<<S0-08-S1,S1>>::<<S0-08-S1-S2-08,S2&lt;11&gt;>>::f2
+== link:#S0-08[S0&lt;10&gt;]::link:#S0-08-S1[S1]::link:#S0-08-S1-S2-08[S2&lt;11&gt;]::f2
 
 === Synopsis
 
@@ -2035,7 +2035,7 @@ f2();
 ----
 
 [#S0-08-S1-f1]
-== <<S0-08,S0&lt;10&gt;>>::<<S0-08-S1,S1>>::f1
+== link:#S0-08[S0&lt;10&gt;]::link:#S0-08-S1[S1]::f1
 
 === Synopsis
 
@@ -2048,7 +2048,7 @@ f1();
 ----
 
 [#S0-08-S5]
-== <<S0-08,S0&lt;10&gt;>>::S5
+== link:#S0-08[S0&lt;10&gt;]::S5
 
 === Synopsis
 
@@ -2063,7 +2063,7 @@ struct S5;
 ----
 
 [#S0-08-f0]
-== <<S0-08,S0&lt;10&gt;>>::f0
+== link:#S0-08[S0&lt;10&gt;]::f0
 
 === Synopsis
 
@@ -2076,7 +2076,7 @@ f0();
 ----
 
 [#S0-0e]
-== <<S0-0cf,S0>>&lt;12&gt;
+== link:#S0-0cf[S0]&lt;12&gt;
 
 === Synopsis
 
@@ -2085,7 +2085,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;12&gt;;
+struct link:#S0-0cf[S0]&lt;12&gt;;
 ----
 
 === Types
@@ -2093,8 +2093,8 @@ struct <<S0-0cf,S0>>&lt;12&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0e-S1,`S1`>> 
-| <<S0-0e-S5,`S5`>> 
+| link:#S0-0e-S1[`S1`] 
+| link:#S0-0e-S5[`S5`] 
 |===
 
 === Member Functions
@@ -2102,11 +2102,11 @@ struct <<S0-0cf,S0>>&lt;12&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0e-f0,`f0`>> 
+| link:#S0-0e-f0[`f0`] 
 |===
 
 [#S0-0e-S1]
-== <<S0-0e,S0&lt;12&gt;>>::S1
+== link:#S0-0e[S0&lt;12&gt;]::S1
 
 === Synopsis
 
@@ -2122,8 +2122,8 @@ struct S1;
 [cols=1]
 |===
 | Name
-| <<S0-0e-S1-S2-09,`S2`>> 
-| <<S0-0e-S1-S2-02,`S2&lt;13&gt;`>> 
+| link:#S0-0e-S1-S2-09[`S2`] 
+| link:#S0-0e-S1-S2-02[`S2&lt;13&gt;`] 
 |===
 
 === Member Functions
@@ -2131,11 +2131,11 @@ struct S1;
 [cols=1]
 |===
 | Name
-| <<S0-0e-S1-f1,`f1`>> 
+| link:#S0-0e-S1-f1[`f1`] 
 |===
 
 [#S0-0e-S1-S2-09]
-== <<S0-0e,S0&lt;12&gt;>>::<<S0-0e-S1,S1>>::S2
+== link:#S0-0e[S0&lt;12&gt;]::link:#S0-0e-S1[S1]::S2
 
 === Synopsis
 
@@ -2150,7 +2150,7 @@ struct S2;
 ----
 
 [#S0-0e-S1-S2-02]
-== <<S0-0e,S0&lt;12&gt;>>::<<S0-0e-S1,S1>>::<<S0-0cf-S1-S2,S2>>&lt;13&gt;
+== link:#S0-0e[S0&lt;12&gt;]::link:#S0-0e-S1[S1]::link:#S0-0cf-S1-S2[S2]&lt;13&gt;
 
 === Synopsis
 
@@ -2159,7 +2159,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S1-S2,S2>>&lt;13&gt;;
+struct link:#S0-0cf-S1-S2[S2]&lt;13&gt;;
 ----
 
 === Types
@@ -2167,9 +2167,9 @@ struct <<S0-0cf-S1-S2,S2>>&lt;13&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0e-S1-S2-02-S3,`S3`>> 
-| <<S0-0e-S1-S2-02-S4-00,`S4`>> 
-| <<S0-0e-S1-S2-02-S4-0c,`S4&lt;14&gt;`>> 
+| link:#S0-0e-S1-S2-02-S3[`S3`] 
+| link:#S0-0e-S1-S2-02-S4-00[`S4`] 
+| link:#S0-0e-S1-S2-02-S4-0c[`S4&lt;14&gt;`] 
 |===
 
 === Member Functions
@@ -2177,11 +2177,11 @@ struct <<S0-0cf-S1-S2,S2>>&lt;13&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0e-S1-S2-02-f2,`f2`>> 
+| link:#S0-0e-S1-S2-02-f2[`f2`] 
 |===
 
 [#S0-0e-S1-S2-02-S3]
-== <<S0-0e,S0&lt;12&gt;>>::<<S0-0e-S1,S1>>::<<S0-0e-S1-S2-02,S2&lt;13&gt;>>::S3
+== link:#S0-0e[S0&lt;12&gt;]::link:#S0-0e-S1[S1]::link:#S0-0e-S1-S2-02[S2&lt;13&gt;]::S3
 
 === Synopsis
 
@@ -2193,7 +2193,7 @@ struct S3;
 ----
 
 [#S0-0e-S1-S2-02-S4-00]
-== <<S0-0e,S0&lt;12&gt;>>::<<S0-0e-S1,S1>>::<<S0-0e-S1-S2-02,S2&lt;13&gt;>>::S4
+== link:#S0-0e[S0&lt;12&gt;]::link:#S0-0e-S1[S1]::link:#S0-0e-S1-S2-02[S2&lt;13&gt;]::S4
 
 === Synopsis
 
@@ -2208,7 +2208,7 @@ struct S4;
 ----
 
 [#S0-0e-S1-S2-02-S4-0c]
-== <<S0-0e,S0&lt;12&gt;>>::<<S0-0e-S1,S1>>::<<S0-0e-S1-S2-02,S2&lt;13&gt;>>::<<S0-0cf-S1-S2-S4,S4>>&lt;14&gt;
+== link:#S0-0e[S0&lt;12&gt;]::link:#S0-0e-S1[S1]::link:#S0-0e-S1-S2-02[S2&lt;13&gt;]::link:#S0-0cf-S1-S2-S4[S4]&lt;14&gt;
 
 === Synopsis
 
@@ -2217,7 +2217,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S1-S2-S4,S4>>&lt;14&gt;;
+struct link:#S0-0cf-S1-S2-S4[S4]&lt;14&gt;;
 ----
 
 === Derived Classes
@@ -2226,12 +2226,12 @@ struct <<S0-0cf-S1-S2-S4,S4>>&lt;14&gt;;
 |===
 | Name
 | Description
-| <<R11,`R11`>>
+| link:#R11[`R11`]
 | 
 |===
 
 [#S0-0e-S1-S2-02-f2]
-== <<S0-0e,S0&lt;12&gt;>>::<<S0-0e-S1,S1>>::<<S0-0e-S1-S2-02,S2&lt;13&gt;>>::f2
+== link:#S0-0e[S0&lt;12&gt;]::link:#S0-0e-S1[S1]::link:#S0-0e-S1-S2-02[S2&lt;13&gt;]::f2
 
 === Synopsis
 
@@ -2244,7 +2244,7 @@ f2();
 ----
 
 [#S0-0e-S1-f1]
-== <<S0-0e,S0&lt;12&gt;>>::<<S0-0e-S1,S1>>::f1
+== link:#S0-0e[S0&lt;12&gt;]::link:#S0-0e-S1[S1]::f1
 
 === Synopsis
 
@@ -2257,7 +2257,7 @@ f1();
 ----
 
 [#S0-0e-S5]
-== <<S0-0e,S0&lt;12&gt;>>::S5
+== link:#S0-0e[S0&lt;12&gt;]::S5
 
 === Synopsis
 
@@ -2272,7 +2272,7 @@ struct S5;
 ----
 
 [#S0-0e-f0]
-== <<S0-0e,S0&lt;12&gt;>>::f0
+== link:#S0-0e[S0&lt;12&gt;]::f0
 
 === Synopsis
 
@@ -2285,7 +2285,7 @@ f0();
 ----
 
 [#S0-09e4]
-== <<S0-0cf,S0>>&lt;15&gt;
+== link:#S0-0cf[S0]&lt;15&gt;
 
 === Synopsis
 
@@ -2294,7 +2294,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;15&gt;;
+struct link:#S0-0cf[S0]&lt;15&gt;;
 ----
 
 === Types
@@ -2302,8 +2302,8 @@ struct <<S0-0cf,S0>>&lt;15&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-09e4-S1,`S1`>> 
-| <<S0-09e4-S5,`S5`>> 
+| link:#S0-09e4-S1[`S1`] 
+| link:#S0-09e4-S5[`S5`] 
 |===
 
 === Member Functions
@@ -2311,11 +2311,11 @@ struct <<S0-0cf,S0>>&lt;15&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-09e4-f0,`f0`>> 
+| link:#S0-09e4-f0[`f0`] 
 |===
 
 [#S0-09e4-S1]
-== <<S0-09e4,S0&lt;15&gt;>>::S1
+== link:#S0-09e4[S0&lt;15&gt;]::S1
 
 === Synopsis
 
@@ -2331,8 +2331,8 @@ struct S1;
 [cols=1]
 |===
 | Name
-| <<S0-09e4-S1-S2-07,`S2`>> 
-| <<S0-09e4-S1-S2-02,`S2&lt;16&gt;`>> 
+| link:#S0-09e4-S1-S2-07[`S2`] 
+| link:#S0-09e4-S1-S2-02[`S2&lt;16&gt;`] 
 |===
 
 === Member Functions
@@ -2340,11 +2340,11 @@ struct S1;
 [cols=1]
 |===
 | Name
-| <<S0-09e4-S1-f1,`f1`>> 
+| link:#S0-09e4-S1-f1[`f1`] 
 |===
 
 [#S0-09e4-S1-S2-07]
-== <<S0-09e4,S0&lt;15&gt;>>::<<S0-09e4-S1,S1>>::S2
+== link:#S0-09e4[S0&lt;15&gt;]::link:#S0-09e4-S1[S1]::S2
 
 === Synopsis
 
@@ -2359,7 +2359,7 @@ struct S2;
 ----
 
 [#S0-09e4-S1-S2-02]
-== <<S0-09e4,S0&lt;15&gt;>>::<<S0-09e4-S1,S1>>::<<S0-0cf-S1-S2,S2>>&lt;16&gt;
+== link:#S0-09e4[S0&lt;15&gt;]::link:#S0-09e4-S1[S1]::link:#S0-0cf-S1-S2[S2]&lt;16&gt;
 
 === Synopsis
 
@@ -2368,7 +2368,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S1-S2,S2>>&lt;16&gt;;
+struct link:#S0-0cf-S1-S2[S2]&lt;16&gt;;
 ----
 
 === Types
@@ -2376,10 +2376,10 @@ struct <<S0-0cf-S1-S2,S2>>&lt;16&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-09e4-S1-S2-02-S3,`S3`>> 
-| <<S0-09e4-S1-S2-02-S4-00,`S4`>> 
-| <<S0-09e4-S1-S2-02-S4-02,`S4&lt;17, int*&gt;`>> 
-| <<S0-09e4-S1-S2-02-S4-07,`S4&lt;17, T*&gt;`>> 
+| link:#S0-09e4-S1-S2-02-S3[`S3`] 
+| link:#S0-09e4-S1-S2-02-S4-00[`S4`] 
+| link:#S0-09e4-S1-S2-02-S4-02[`S4&lt;17, int*&gt;`] 
+| link:#S0-09e4-S1-S2-02-S4-07[`S4&lt;17, T*&gt;`] 
 |===
 
 === Member Functions
@@ -2387,11 +2387,11 @@ struct <<S0-0cf-S1-S2,S2>>&lt;16&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-09e4-S1-S2-02-f2,`f2`>> 
+| link:#S0-09e4-S1-S2-02-f2[`f2`] 
 |===
 
 [#S0-09e4-S1-S2-02-S3]
-== <<S0-09e4,S0&lt;15&gt;>>::<<S0-09e4-S1,S1>>::<<S0-09e4-S1-S2-02,S2&lt;16&gt;>>::S3
+== link:#S0-09e4[S0&lt;15&gt;]::link:#S0-09e4-S1[S1]::link:#S0-09e4-S1-S2-02[S2&lt;16&gt;]::S3
 
 === Synopsis
 
@@ -2403,7 +2403,7 @@ struct S3;
 ----
 
 [#S0-09e4-S1-S2-02-S4-00]
-== <<S0-09e4,S0&lt;15&gt;>>::<<S0-09e4-S1,S1>>::<<S0-09e4-S1-S2-02,S2&lt;16&gt;>>::S4
+== link:#S0-09e4[S0&lt;15&gt;]::link:#S0-09e4-S1[S1]::link:#S0-09e4-S1-S2-02[S2&lt;16&gt;]::S4
 
 === Synopsis
 
@@ -2423,12 +2423,12 @@ struct S4;
 |===
 | Name
 | Description
-| <<R12,`R12`>>
+| link:#R12[`R12`]
 | 
 |===
 
 [#S0-09e4-S1-S2-02-S4-02]
-== <<S0-09e4,S0&lt;15&gt;>>::<<S0-09e4-S1,S1>>::<<S0-09e4-S1-S2-02,S2&lt;16&gt;>>::<<S0-0cf-S1-S2-S4,S4>>&lt;17, int*&gt;
+== link:#S0-09e4[S0&lt;15&gt;]::link:#S0-09e4-S1[S1]::link:#S0-09e4-S1-S2-02[S2&lt;16&gt;]::link:#S0-0cf-S1-S2-S4[S4]&lt;17, int*&gt;
 
 === Synopsis
 
@@ -2437,7 +2437,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S1-S2-S4,S4>>&lt;17, int*&gt;;
+struct link:#S0-0cf-S1-S2-S4[S4]&lt;17, int*&gt;;
 ----
 
 === Derived Classes
@@ -2446,12 +2446,12 @@ struct <<S0-0cf-S1-S2-S4,S4>>&lt;17, int*&gt;;
 |===
 | Name
 | Description
-| <<R13,`R13`>>
+| link:#R13[`R13`]
 | 
 |===
 
 [#S0-09e4-S1-S2-02-S4-07]
-== <<S0-09e4,S0&lt;15&gt;>>::<<S0-09e4-S1,S1>>::<<S0-09e4-S1-S2-02,S2&lt;16&gt;>>::<<S0-0cf-S1-S2-S4,S4>>&lt;17, T*&gt;
+== link:#S0-09e4[S0&lt;15&gt;]::link:#S0-09e4-S1[S1]::link:#S0-09e4-S1-S2-02[S2&lt;16&gt;]::link:#S0-0cf-S1-S2-S4[S4]&lt;17, T*&gt;
 
 === Synopsis
 
@@ -2460,11 +2460,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-struct <<S0-0cf-S1-S2-S4,S4>>&lt;17, T*&gt;;
+struct link:#S0-0cf-S1-S2-S4[S4]&lt;17, T*&gt;;
 ----
 
 [#S0-09e4-S1-S2-02-f2]
-== <<S0-09e4,S0&lt;15&gt;>>::<<S0-09e4-S1,S1>>::<<S0-09e4-S1-S2-02,S2&lt;16&gt;>>::f2
+== link:#S0-09e4[S0&lt;15&gt;]::link:#S0-09e4-S1[S1]::link:#S0-09e4-S1-S2-02[S2&lt;16&gt;]::f2
 
 === Synopsis
 
@@ -2477,7 +2477,7 @@ f2();
 ----
 
 [#S0-09e4-S1-f1]
-== <<S0-09e4,S0&lt;15&gt;>>::<<S0-09e4-S1,S1>>::f1
+== link:#S0-09e4[S0&lt;15&gt;]::link:#S0-09e4-S1[S1]::f1
 
 === Synopsis
 
@@ -2490,7 +2490,7 @@ f1();
 ----
 
 [#S0-09e4-S5]
-== <<S0-09e4,S0&lt;15&gt;>>::S5
+== link:#S0-09e4[S0&lt;15&gt;]::S5
 
 === Synopsis
 
@@ -2505,7 +2505,7 @@ struct S5;
 ----
 
 [#S0-09e4-f0]
-== <<S0-09e4,S0&lt;15&gt;>>::f0
+== link:#S0-09e4[S0&lt;15&gt;]::f0
 
 === Synopsis
 
@@ -2518,7 +2518,7 @@ f0();
 ----
 
 [#S0-07a]
-== <<S0-0cf,S0>>&lt;18&gt;
+== link:#S0-0cf[S0]&lt;18&gt;
 
 === Synopsis
 
@@ -2527,7 +2527,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;18&gt;;
+struct link:#S0-0cf[S0]&lt;18&gt;;
 ----
 
 === Types
@@ -2535,8 +2535,8 @@ struct <<S0-0cf,S0>>&lt;18&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-07a-S1,`S1`>> 
-| <<S0-07a-S5,`S5`>> 
+| link:#S0-07a-S1[`S1`] 
+| link:#S0-07a-S5[`S5`] 
 |===
 
 === Member Functions
@@ -2544,11 +2544,11 @@ struct <<S0-0cf,S0>>&lt;18&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-07a-f0,`f0`>> 
+| link:#S0-07a-f0[`f0`] 
 |===
 
 [#S0-07a-S1]
-== <<S0-07a,S0&lt;18&gt;>>::S1
+== link:#S0-07a[S0&lt;18&gt;]::S1
 
 === Synopsis
 
@@ -2560,7 +2560,7 @@ struct S1;
 ----
 
 [#S0-07a-S5]
-== <<S0-07a,S0&lt;18&gt;>>::S5
+== link:#S0-07a[S0&lt;18&gt;]::S5
 
 === Synopsis
 
@@ -2580,12 +2580,12 @@ struct S5;
 |===
 | Name
 | Description
-| <<R14,`R14`>>
+| link:#R14[`R14`]
 | 
 |===
 
 [#S0-07a-f0]
-== <<S0-07a,S0&lt;18&gt;>>::f0
+== link:#S0-07a[S0&lt;18&gt;]::f0
 
 === Synopsis
 
@@ -2598,7 +2598,7 @@ f0();
 ----
 
 [#S0-0a7]
-== <<S0-0cf,S0>>&lt;19&gt;
+== link:#S0-0cf[S0]&lt;19&gt;
 
 === Synopsis
 
@@ -2607,7 +2607,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;19&gt;;
+struct link:#S0-0cf[S0]&lt;19&gt;;
 ----
 
 === Types
@@ -2615,9 +2615,9 @@ struct <<S0-0cf,S0>>&lt;19&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0a7-S1,`S1`>> 
-| <<S0-0a7-S5-03,`S5`>> 
-| <<S0-0a7-S5-07,`S5&lt;20&gt;`>> 
+| link:#S0-0a7-S1[`S1`] 
+| link:#S0-0a7-S5-03[`S5`] 
+| link:#S0-0a7-S5-07[`S5&lt;20&gt;`] 
 |===
 
 === Member Functions
@@ -2625,11 +2625,11 @@ struct <<S0-0cf,S0>>&lt;19&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0a7-f0,`f0`>> 
+| link:#S0-0a7-f0[`f0`] 
 |===
 
 [#S0-0a7-S1]
-== <<S0-0a7,S0&lt;19&gt;>>::S1
+== link:#S0-0a7[S0&lt;19&gt;]::S1
 
 === Synopsis
 
@@ -2641,7 +2641,7 @@ struct S1;
 ----
 
 [#S0-0a7-S5-03]
-== <<S0-0a7,S0&lt;19&gt;>>::S5
+== link:#S0-0a7[S0&lt;19&gt;]::S5
 
 === Synopsis
 
@@ -2656,7 +2656,7 @@ struct S5;
 ----
 
 [#S0-0a7-S5-07]
-== <<S0-0a7,S0&lt;19&gt;>>::<<S0-0cf-S5,S5>>&lt;20&gt;
+== link:#S0-0a7[S0&lt;19&gt;]::link:#S0-0cf-S5[S5]&lt;20&gt;
 
 === Synopsis
 
@@ -2665,7 +2665,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5,S5>>&lt;20&gt;;
+struct link:#S0-0cf-S5[S5]&lt;20&gt;;
 ----
 
 === Derived Classes
@@ -2674,12 +2674,12 @@ struct <<S0-0cf-S5,S5>>&lt;20&gt;;
 |===
 | Name
 | Description
-| <<R15,`R15`>>
+| link:#R15[`R15`]
 | 
 |===
 
 [#S0-0a7-f0]
-== <<S0-0a7,S0&lt;19&gt;>>::f0
+== link:#S0-0a7[S0&lt;19&gt;]::f0
 
 === Synopsis
 
@@ -2692,7 +2692,7 @@ f0();
 ----
 
 [#S0-09c]
-== <<S0-0cf,S0>>&lt;2&gt;
+== link:#S0-0cf[S0]&lt;2&gt;
 
 === Synopsis
 
@@ -2701,7 +2701,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;2&gt;;
+struct link:#S0-0cf[S0]&lt;2&gt;;
 ----
 
 === Types
@@ -2709,8 +2709,8 @@ struct <<S0-0cf,S0>>&lt;2&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-09c-S1,`S1`>> 
-| <<S0-09c-S5,`S5`>> 
+| link:#S0-09c-S1[`S1`] 
+| link:#S0-09c-S5[`S5`] 
 |===
 
 === Member Functions
@@ -2718,11 +2718,11 @@ struct <<S0-0cf,S0>>&lt;2&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-09c-f0,`f0`>> 
+| link:#S0-09c-f0[`f0`] 
 |===
 
 [#S0-09c-S1]
-== <<S0-09c,S0&lt;2&gt;>>::S1
+== link:#S0-09c[S0&lt;2&gt;]::S1
 
 === Synopsis
 
@@ -2739,12 +2739,12 @@ struct S1;
 |===
 | Name
 | Description
-| <<R4,`R4`>>
+| link:#R4[`R4`]
 | 
 |===
 
 [#S0-09c-S5]
-== <<S0-09c,S0&lt;2&gt;>>::S5
+== link:#S0-09c[S0&lt;2&gt;]::S5
 
 === Synopsis
 
@@ -2759,7 +2759,7 @@ struct S5;
 ----
 
 [#S0-09c-f0]
-== <<S0-09c,S0&lt;2&gt;>>::f0
+== link:#S0-09c[S0&lt;2&gt;]::f0
 
 === Synopsis
 
@@ -2772,7 +2772,7 @@ f0();
 ----
 
 [#S0-0314]
-== <<S0-0cf,S0>>&lt;21&gt;
+== link:#S0-0cf[S0]&lt;21&gt;
 
 === Synopsis
 
@@ -2781,7 +2781,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;21&gt;;
+struct link:#S0-0cf[S0]&lt;21&gt;;
 ----
 
 === Types
@@ -2789,10 +2789,10 @@ struct <<S0-0cf,S0>>&lt;21&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0314-S1,`S1`>> 
-| <<S0-0314-S5-07,`S5`>> 
-| <<S0-0314-S5-03,`S5&lt;22, int*&gt;`>> 
-| <<S0-0314-S5-0b,`S5&lt;22, T*&gt;`>> 
+| link:#S0-0314-S1[`S1`] 
+| link:#S0-0314-S5-07[`S5`] 
+| link:#S0-0314-S5-03[`S5&lt;22, int*&gt;`] 
+| link:#S0-0314-S5-0b[`S5&lt;22, T*&gt;`] 
 |===
 
 === Member Functions
@@ -2800,11 +2800,11 @@ struct <<S0-0cf,S0>>&lt;21&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0314-f0,`f0`>> 
+| link:#S0-0314-f0[`f0`] 
 |===
 
 [#S0-0314-S1]
-== <<S0-0314,S0&lt;21&gt;>>::S1
+== link:#S0-0314[S0&lt;21&gt;]::S1
 
 === Synopsis
 
@@ -2816,7 +2816,7 @@ struct S1;
 ----
 
 [#S0-0314-S5-07]
-== <<S0-0314,S0&lt;21&gt;>>::S5
+== link:#S0-0314[S0&lt;21&gt;]::S5
 
 === Synopsis
 
@@ -2836,12 +2836,12 @@ struct S5;
 |===
 | Name
 | Description
-| <<R16,`R16`>>
+| link:#R16[`R16`]
 | 
 |===
 
 [#S0-0314-S5-03]
-== <<S0-0314,S0&lt;21&gt;>>::<<S0-0cf-S5,S5>>&lt;22, int*&gt;
+== link:#S0-0314[S0&lt;21&gt;]::link:#S0-0cf-S5[S5]&lt;22, int*&gt;
 
 === Synopsis
 
@@ -2850,7 +2850,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5,S5>>&lt;22, int*&gt;;
+struct link:#S0-0cf-S5[S5]&lt;22, int*&gt;;
 ----
 
 === Derived Classes
@@ -2859,12 +2859,12 @@ struct <<S0-0cf-S5,S5>>&lt;22, int*&gt;;
 |===
 | Name
 | Description
-| <<R17,`R17`>>
+| link:#R17[`R17`]
 | 
 |===
 
 [#S0-0314-S5-0b]
-== <<S0-0314,S0&lt;21&gt;>>::<<S0-0cf-S5,S5>>&lt;22, T*&gt;
+== link:#S0-0314[S0&lt;21&gt;]::link:#S0-0cf-S5[S5]&lt;22, T*&gt;
 
 === Synopsis
 
@@ -2873,11 +2873,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-struct <<S0-0cf-S5,S5>>&lt;22, T*&gt;;
+struct link:#S0-0cf-S5[S5]&lt;22, T*&gt;;
 ----
 
 [#S0-0314-f0]
-== <<S0-0314,S0&lt;21&gt;>>::f0
+== link:#S0-0314[S0&lt;21&gt;]::f0
 
 === Synopsis
 
@@ -2890,7 +2890,7 @@ f0();
 ----
 
 [#S0-058]
-== <<S0-0cf,S0>>&lt;23&gt;
+== link:#S0-0cf[S0]&lt;23&gt;
 
 === Synopsis
 
@@ -2899,7 +2899,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;23&gt;;
+struct link:#S0-0cf[S0]&lt;23&gt;;
 ----
 
 === Types
@@ -2907,9 +2907,9 @@ struct <<S0-0cf,S0>>&lt;23&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-058-S1,`S1`>> 
-| <<S0-058-S5-0b,`S5`>> 
-| <<S0-058-S5-09,`S5&lt;24&gt;`>> 
+| link:#S0-058-S1[`S1`] 
+| link:#S0-058-S5-0b[`S5`] 
+| link:#S0-058-S5-09[`S5&lt;24&gt;`] 
 |===
 
 === Member Functions
@@ -2917,11 +2917,11 @@ struct <<S0-0cf,S0>>&lt;23&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-058-f0,`f0`>> 
+| link:#S0-058-f0[`f0`] 
 |===
 
 [#S0-058-S1]
-== <<S0-058,S0&lt;23&gt;>>::S1
+== link:#S0-058[S0&lt;23&gt;]::S1
 
 === Synopsis
 
@@ -2933,7 +2933,7 @@ struct S1;
 ----
 
 [#S0-058-S5-0b]
-== <<S0-058,S0&lt;23&gt;>>::S5
+== link:#S0-058[S0&lt;23&gt;]::S5
 
 === Synopsis
 
@@ -2948,7 +2948,7 @@ struct S5;
 ----
 
 [#S0-058-S5-09]
-== <<S0-058,S0&lt;23&gt;>>::<<S0-0cf-S5,S5>>&lt;24&gt;
+== link:#S0-058[S0&lt;23&gt;]::link:#S0-0cf-S5[S5]&lt;24&gt;
 
 === Synopsis
 
@@ -2957,7 +2957,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5,S5>>&lt;24&gt;;
+struct link:#S0-0cf-S5[S5]&lt;24&gt;;
 ----
 
 === Types
@@ -2965,7 +2965,7 @@ struct <<S0-0cf-S5,S5>>&lt;24&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-058-S5-09-S6,`S6`>> 
+| link:#S0-058-S5-09-S6[`S6`] 
 |===
 
 === Member Functions
@@ -2973,11 +2973,11 @@ struct <<S0-0cf-S5,S5>>&lt;24&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-058-S5-09-f5,`f5`>> 
+| link:#S0-058-S5-09-f5[`f5`] 
 |===
 
 [#S0-058-S5-09-S6]
-== <<S0-058,S0&lt;23&gt;>>::<<S0-058-S5-09,S5&lt;24&gt;>>::S6
+== link:#S0-058[S0&lt;23&gt;]::link:#S0-058-S5-09[S5&lt;24&gt;]::S6
 
 === Synopsis
 
@@ -2994,12 +2994,12 @@ struct S6;
 |===
 | Name
 | Description
-| <<R18,`R18`>>
+| link:#R18[`R18`]
 | 
 |===
 
 [#S0-058-S5-09-f5]
-== <<S0-058,S0&lt;23&gt;>>::<<S0-058-S5-09,S5&lt;24&gt;>>::f5
+== link:#S0-058[S0&lt;23&gt;]::link:#S0-058-S5-09[S5&lt;24&gt;]::f5
 
 === Synopsis
 
@@ -3012,7 +3012,7 @@ f5();
 ----
 
 [#S0-058-f0]
-== <<S0-058,S0&lt;23&gt;>>::f0
+== link:#S0-058[S0&lt;23&gt;]::f0
 
 === Synopsis
 
@@ -3025,7 +3025,7 @@ f0();
 ----
 
 [#S0-0a2]
-== <<S0-0cf,S0>>&lt;25&gt;
+== link:#S0-0cf[S0]&lt;25&gt;
 
 === Synopsis
 
@@ -3034,7 +3034,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;25&gt;;
+struct link:#S0-0cf[S0]&lt;25&gt;;
 ----
 
 === Types
@@ -3042,9 +3042,9 @@ struct <<S0-0cf,S0>>&lt;25&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0a2-S1,`S1`>> 
-| <<S0-0a2-S5-04,`S5`>> 
-| <<S0-0a2-S5-02,`S5&lt;26&gt;`>> 
+| link:#S0-0a2-S1[`S1`] 
+| link:#S0-0a2-S5-04[`S5`] 
+| link:#S0-0a2-S5-02[`S5&lt;26&gt;`] 
 |===
 
 === Member Functions
@@ -3052,11 +3052,11 @@ struct <<S0-0cf,S0>>&lt;25&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0a2-f0,`f0`>> 
+| link:#S0-0a2-f0[`f0`] 
 |===
 
 [#S0-0a2-S1]
-== <<S0-0a2,S0&lt;25&gt;>>::S1
+== link:#S0-0a2[S0&lt;25&gt;]::S1
 
 === Synopsis
 
@@ -3068,7 +3068,7 @@ struct S1;
 ----
 
 [#S0-0a2-S5-04]
-== <<S0-0a2,S0&lt;25&gt;>>::S5
+== link:#S0-0a2[S0&lt;25&gt;]::S5
 
 === Synopsis
 
@@ -3083,7 +3083,7 @@ struct S5;
 ----
 
 [#S0-0a2-S5-02]
-== <<S0-0a2,S0&lt;25&gt;>>::<<S0-0cf-S5,S5>>&lt;26&gt;
+== link:#S0-0a2[S0&lt;25&gt;]::link:#S0-0cf-S5[S5]&lt;26&gt;
 
 === Synopsis
 
@@ -3092,7 +3092,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5,S5>>&lt;26&gt;;
+struct link:#S0-0cf-S5[S5]&lt;26&gt;;
 ----
 
 === Types
@@ -3100,7 +3100,7 @@ struct <<S0-0cf-S5,S5>>&lt;26&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0a2-S5-02-S6,`S6`>> 
+| link:#S0-0a2-S5-02-S6[`S6`] 
 |===
 
 === Member Functions
@@ -3108,11 +3108,11 @@ struct <<S0-0cf-S5,S5>>&lt;26&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0a2-S5-02-f5,`f5`>> 
+| link:#S0-0a2-S5-02-f5[`f5`] 
 |===
 
 [#S0-0a2-S5-02-S6]
-== <<S0-0a2,S0&lt;25&gt;>>::<<S0-0a2-S5-02,S5&lt;26&gt;>>::S6
+== link:#S0-0a2[S0&lt;25&gt;]::link:#S0-0a2-S5-02[S5&lt;26&gt;]::S6
 
 === Synopsis
 
@@ -3128,7 +3128,7 @@ struct S6;
 [cols=1]
 |===
 | Name
-| <<S0-0a2-S5-02-S6-S7,`S7`>> 
+| link:#S0-0a2-S5-02-S6-S7[`S7`] 
 |===
 
 === Member Functions
@@ -3136,11 +3136,11 @@ struct S6;
 [cols=1]
 |===
 | Name
-| <<S0-0a2-S5-02-S6-f6,`f6`>> 
+| link:#S0-0a2-S5-02-S6-f6[`f6`] 
 |===
 
 [#S0-0a2-S5-02-S6-S7]
-== <<S0-0a2,S0&lt;25&gt;>>::<<S0-0a2-S5-02,S5&lt;26&gt;>>::<<S0-0a2-S5-02-S6,S6>>::S7
+== link:#S0-0a2[S0&lt;25&gt;]::link:#S0-0a2-S5-02[S5&lt;26&gt;]::link:#S0-0a2-S5-02-S6[S6]::S7
 
 === Synopsis
 
@@ -3160,12 +3160,12 @@ struct S7;
 |===
 | Name
 | Description
-| <<R19,`R19`>>
+| link:#R19[`R19`]
 | 
 |===
 
 [#S0-0a2-S5-02-S6-f6]
-== <<S0-0a2,S0&lt;25&gt;>>::<<S0-0a2-S5-02,S5&lt;26&gt;>>::<<S0-0a2-S5-02-S6,S6>>::f6
+== link:#S0-0a2[S0&lt;25&gt;]::link:#S0-0a2-S5-02[S5&lt;26&gt;]::link:#S0-0a2-S5-02-S6[S6]::f6
 
 === Synopsis
 
@@ -3178,7 +3178,7 @@ f6();
 ----
 
 [#S0-0a2-S5-02-f5]
-== <<S0-0a2,S0&lt;25&gt;>>::<<S0-0a2-S5-02,S5&lt;26&gt;>>::f5
+== link:#S0-0a2[S0&lt;25&gt;]::link:#S0-0a2-S5-02[S5&lt;26&gt;]::f5
 
 === Synopsis
 
@@ -3191,7 +3191,7 @@ f5();
 ----
 
 [#S0-0a2-f0]
-== <<S0-0a2,S0&lt;25&gt;>>::f0
+== link:#S0-0a2[S0&lt;25&gt;]::f0
 
 === Synopsis
 
@@ -3204,7 +3204,7 @@ f0();
 ----
 
 [#S0-09e2]
-== <<S0-0cf,S0>>&lt;27&gt;
+== link:#S0-0cf[S0]&lt;27&gt;
 
 === Synopsis
 
@@ -3213,7 +3213,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;27&gt;;
+struct link:#S0-0cf[S0]&lt;27&gt;;
 ----
 
 === Types
@@ -3221,9 +3221,9 @@ struct <<S0-0cf,S0>>&lt;27&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-09e2-S1,`S1`>> 
-| <<S0-09e2-S5-0b,`S5`>> 
-| <<S0-09e2-S5-0c,`S5&lt;28&gt;`>> 
+| link:#S0-09e2-S1[`S1`] 
+| link:#S0-09e2-S5-0b[`S5`] 
+| link:#S0-09e2-S5-0c[`S5&lt;28&gt;`] 
 |===
 
 === Member Functions
@@ -3231,11 +3231,11 @@ struct <<S0-0cf,S0>>&lt;27&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-09e2-f0,`f0`>> 
+| link:#S0-09e2-f0[`f0`] 
 |===
 
 [#S0-09e2-S1]
-== <<S0-09e2,S0&lt;27&gt;>>::S1
+== link:#S0-09e2[S0&lt;27&gt;]::S1
 
 === Synopsis
 
@@ -3247,7 +3247,7 @@ struct S1;
 ----
 
 [#S0-09e2-S5-0b]
-== <<S0-09e2,S0&lt;27&gt;>>::S5
+== link:#S0-09e2[S0&lt;27&gt;]::S5
 
 === Synopsis
 
@@ -3262,7 +3262,7 @@ struct S5;
 ----
 
 [#S0-09e2-S5-0c]
-== <<S0-09e2,S0&lt;27&gt;>>::<<S0-0cf-S5,S5>>&lt;28&gt;
+== link:#S0-09e2[S0&lt;27&gt;]::link:#S0-0cf-S5[S5]&lt;28&gt;
 
 === Synopsis
 
@@ -3271,7 +3271,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5,S5>>&lt;28&gt;;
+struct link:#S0-0cf-S5[S5]&lt;28&gt;;
 ----
 
 === Types
@@ -3279,7 +3279,7 @@ struct <<S0-0cf-S5,S5>>&lt;28&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-09e2-S5-0c-S6,`S6`>> 
+| link:#S0-09e2-S5-0c-S6[`S6`] 
 |===
 
 === Member Functions
@@ -3287,11 +3287,11 @@ struct <<S0-0cf-S5,S5>>&lt;28&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-09e2-S5-0c-f5,`f5`>> 
+| link:#S0-09e2-S5-0c-f5[`f5`] 
 |===
 
 [#S0-09e2-S5-0c-S6]
-== <<S0-09e2,S0&lt;27&gt;>>::<<S0-09e2-S5-0c,S5&lt;28&gt;>>::S6
+== link:#S0-09e2[S0&lt;27&gt;]::link:#S0-09e2-S5-0c[S5&lt;28&gt;]::S6
 
 === Synopsis
 
@@ -3307,9 +3307,9 @@ struct S6;
 [cols=1]
 |===
 | Name
-| <<S0-09e2-S5-0c-S6-S7-0b,`S7`>> 
-| <<S0-09e2-S5-0c-S6-S7-0d,`S7&lt;29, int*&gt;`>> 
-| <<S0-09e2-S5-0c-S6-S7-0a,`S7&lt;29, T*&gt;`>> 
+| link:#S0-09e2-S5-0c-S6-S7-0b[`S7`] 
+| link:#S0-09e2-S5-0c-S6-S7-0d[`S7&lt;29, int*&gt;`] 
+| link:#S0-09e2-S5-0c-S6-S7-0a[`S7&lt;29, T*&gt;`] 
 |===
 
 === Member Functions
@@ -3317,11 +3317,11 @@ struct S6;
 [cols=1]
 |===
 | Name
-| <<S0-09e2-S5-0c-S6-f6,`f6`>> 
+| link:#S0-09e2-S5-0c-S6-f6[`f6`] 
 |===
 
 [#S0-09e2-S5-0c-S6-S7-0b]
-== <<S0-09e2,S0&lt;27&gt;>>::<<S0-09e2-S5-0c,S5&lt;28&gt;>>::<<S0-09e2-S5-0c-S6,S6>>::S7
+== link:#S0-09e2[S0&lt;27&gt;]::link:#S0-09e2-S5-0c[S5&lt;28&gt;]::link:#S0-09e2-S5-0c-S6[S6]::S7
 
 === Synopsis
 
@@ -3341,12 +3341,12 @@ struct S7;
 |===
 | Name
 | Description
-| <<R20,`R20`>>
+| link:#R20[`R20`]
 | 
 |===
 
 [#S0-09e2-S5-0c-S6-S7-0d]
-== <<S0-09e2,S0&lt;27&gt;>>::<<S0-09e2-S5-0c,S5&lt;28&gt;>>::<<S0-09e2-S5-0c-S6,S6>>::<<S0-0cf-S5-S6-S7,S7>>&lt;29, int*&gt;
+== link:#S0-09e2[S0&lt;27&gt;]::link:#S0-09e2-S5-0c[S5&lt;28&gt;]::link:#S0-09e2-S5-0c-S6[S6]::link:#S0-0cf-S5-S6-S7[S7]&lt;29, int*&gt;
 
 === Synopsis
 
@@ -3355,7 +3355,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5-S6-S7,S7>>&lt;29, int*&gt;;
+struct link:#S0-0cf-S5-S6-S7[S7]&lt;29, int*&gt;;
 ----
 
 === Derived Classes
@@ -3364,12 +3364,12 @@ struct <<S0-0cf-S5-S6-S7,S7>>&lt;29, int*&gt;;
 |===
 | Name
 | Description
-| <<R21,`R21`>>
+| link:#R21[`R21`]
 | 
 |===
 
 [#S0-09e2-S5-0c-S6-S7-0a]
-== <<S0-09e2,S0&lt;27&gt;>>::<<S0-09e2-S5-0c,S5&lt;28&gt;>>::<<S0-09e2-S5-0c-S6,S6>>::<<S0-0cf-S5-S6-S7,S7>>&lt;29, T*&gt;
+== link:#S0-09e2[S0&lt;27&gt;]::link:#S0-09e2-S5-0c[S5&lt;28&gt;]::link:#S0-09e2-S5-0c-S6[S6]::link:#S0-0cf-S5-S6-S7[S7]&lt;29, T*&gt;
 
 === Synopsis
 
@@ -3378,11 +3378,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-struct <<S0-0cf-S5-S6-S7,S7>>&lt;29, T*&gt;;
+struct link:#S0-0cf-S5-S6-S7[S7]&lt;29, T*&gt;;
 ----
 
 [#S0-09e2-S5-0c-S6-f6]
-== <<S0-09e2,S0&lt;27&gt;>>::<<S0-09e2-S5-0c,S5&lt;28&gt;>>::<<S0-09e2-S5-0c-S6,S6>>::f6
+== link:#S0-09e2[S0&lt;27&gt;]::link:#S0-09e2-S5-0c[S5&lt;28&gt;]::link:#S0-09e2-S5-0c-S6[S6]::f6
 
 === Synopsis
 
@@ -3395,7 +3395,7 @@ f6();
 ----
 
 [#S0-09e2-S5-0c-f5]
-== <<S0-09e2,S0&lt;27&gt;>>::<<S0-09e2-S5-0c,S5&lt;28&gt;>>::f5
+== link:#S0-09e2[S0&lt;27&gt;]::link:#S0-09e2-S5-0c[S5&lt;28&gt;]::f5
 
 === Synopsis
 
@@ -3408,7 +3408,7 @@ f5();
 ----
 
 [#S0-09e2-f0]
-== <<S0-09e2,S0&lt;27&gt;>>::f0
+== link:#S0-09e2[S0&lt;27&gt;]::f0
 
 === Synopsis
 
@@ -3421,7 +3421,7 @@ f0();
 ----
 
 [#S0-073]
-== <<S0-0cf,S0>>&lt;3&gt;
+== link:#S0-0cf[S0]&lt;3&gt;
 
 === Synopsis
 
@@ -3430,7 +3430,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;3&gt;;
+struct link:#S0-0cf[S0]&lt;3&gt;;
 ----
 
 === Types
@@ -3438,8 +3438,8 @@ struct <<S0-0cf,S0>>&lt;3&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-073-S1,`S1`>> 
-| <<S0-073-S5,`S5`>> 
+| link:#S0-073-S1[`S1`] 
+| link:#S0-073-S5[`S5`] 
 |===
 
 === Member Functions
@@ -3447,11 +3447,11 @@ struct <<S0-0cf,S0>>&lt;3&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-073-f0,`f0`>> 
+| link:#S0-073-f0[`f0`] 
 |===
 
 [#S0-073-S1]
-== <<S0-073,S0&lt;3&gt;>>::S1
+== link:#S0-073[S0&lt;3&gt;]::S1
 
 === Synopsis
 
@@ -3467,7 +3467,7 @@ struct S1;
 [cols=1]
 |===
 | Name
-| <<S0-073-S1-S2,`S2`>> 
+| link:#S0-073-S1-S2[`S2`] 
 |===
 
 === Member Functions
@@ -3475,11 +3475,11 @@ struct S1;
 [cols=1]
 |===
 | Name
-| <<S0-073-S1-f1,`f1`>> 
+| link:#S0-073-S1-f1[`f1`] 
 |===
 
 [#S0-073-S1-S2]
-== <<S0-073,S0&lt;3&gt;>>::<<S0-073-S1,S1>>::S2
+== link:#S0-073[S0&lt;3&gt;]::link:#S0-073-S1[S1]::S2
 
 === Synopsis
 
@@ -3499,12 +3499,12 @@ struct S2;
 |===
 | Name
 | Description
-| <<R5,`R5`>>
+| link:#R5[`R5`]
 | 
 |===
 
 [#S0-073-S1-f1]
-== <<S0-073,S0&lt;3&gt;>>::<<S0-073-S1,S1>>::f1
+== link:#S0-073[S0&lt;3&gt;]::link:#S0-073-S1[S1]::f1
 
 === Synopsis
 
@@ -3517,7 +3517,7 @@ f1();
 ----
 
 [#S0-073-S5]
-== <<S0-073,S0&lt;3&gt;>>::S5
+== link:#S0-073[S0&lt;3&gt;]::S5
 
 === Synopsis
 
@@ -3532,7 +3532,7 @@ struct S5;
 ----
 
 [#S0-073-f0]
-== <<S0-073,S0&lt;3&gt;>>::f0
+== link:#S0-073[S0&lt;3&gt;]::f0
 
 === Synopsis
 
@@ -3545,7 +3545,7 @@ f0();
 ----
 
 [#S0-01]
-== <<S0-0cf,S0>>&lt;30&gt;
+== link:#S0-0cf[S0]&lt;30&gt;
 
 === Synopsis
 
@@ -3554,7 +3554,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;30&gt;;
+struct link:#S0-0cf[S0]&lt;30&gt;;
 ----
 
 === Types
@@ -3562,9 +3562,9 @@ struct <<S0-0cf,S0>>&lt;30&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-01-S1,`S1`>> 
-| <<S0-01-S5-07,`S5`>> 
-| <<S0-01-S5-04,`S5&lt;31&gt;`>> 
+| link:#S0-01-S1[`S1`] 
+| link:#S0-01-S5-07[`S5`] 
+| link:#S0-01-S5-04[`S5&lt;31&gt;`] 
 |===
 
 === Member Functions
@@ -3572,11 +3572,11 @@ struct <<S0-0cf,S0>>&lt;30&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-01-f0,`f0`>> 
+| link:#S0-01-f0[`f0`] 
 |===
 
 [#S0-01-S1]
-== <<S0-01,S0&lt;30&gt;>>::S1
+== link:#S0-01[S0&lt;30&gt;]::S1
 
 === Synopsis
 
@@ -3588,7 +3588,7 @@ struct S1;
 ----
 
 [#S0-01-S5-07]
-== <<S0-01,S0&lt;30&gt;>>::S5
+== link:#S0-01[S0&lt;30&gt;]::S5
 
 === Synopsis
 
@@ -3603,7 +3603,7 @@ struct S5;
 ----
 
 [#S0-01-S5-04]
-== <<S0-01,S0&lt;30&gt;>>::<<S0-0cf-S5,S5>>&lt;31&gt;
+== link:#S0-01[S0&lt;30&gt;]::link:#S0-0cf-S5[S5]&lt;31&gt;
 
 === Synopsis
 
@@ -3612,7 +3612,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5,S5>>&lt;31&gt;;
+struct link:#S0-0cf-S5[S5]&lt;31&gt;;
 ----
 
 === Types
@@ -3620,7 +3620,7 @@ struct <<S0-0cf-S5,S5>>&lt;31&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-01-S5-04-S6,`S6`>> 
+| link:#S0-01-S5-04-S6[`S6`] 
 |===
 
 === Member Functions
@@ -3628,11 +3628,11 @@ struct <<S0-0cf-S5,S5>>&lt;31&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-01-S5-04-f5,`f5`>> 
+| link:#S0-01-S5-04-f5[`f5`] 
 |===
 
 [#S0-01-S5-04-S6]
-== <<S0-01,S0&lt;30&gt;>>::<<S0-01-S5-04,S5&lt;31&gt;>>::S6
+== link:#S0-01[S0&lt;30&gt;]::link:#S0-01-S5-04[S5&lt;31&gt;]::S6
 
 === Synopsis
 
@@ -3648,8 +3648,8 @@ struct S6;
 [cols=1]
 |===
 | Name
-| <<S0-01-S5-04-S6-S7-0c,`S7`>> 
-| <<S0-01-S5-04-S6-S7-05,`S7&lt;32&gt;`>> 
+| link:#S0-01-S5-04-S6-S7-0c[`S7`] 
+| link:#S0-01-S5-04-S6-S7-05[`S7&lt;32&gt;`] 
 |===
 
 === Member Functions
@@ -3657,11 +3657,11 @@ struct S6;
 [cols=1]
 |===
 | Name
-| <<S0-01-S5-04-S6-f6,`f6`>> 
+| link:#S0-01-S5-04-S6-f6[`f6`] 
 |===
 
 [#S0-01-S5-04-S6-S7-0c]
-== <<S0-01,S0&lt;30&gt;>>::<<S0-01-S5-04,S5&lt;31&gt;>>::<<S0-01-S5-04-S6,S6>>::S7
+== link:#S0-01[S0&lt;30&gt;]::link:#S0-01-S5-04[S5&lt;31&gt;]::link:#S0-01-S5-04-S6[S6]::S7
 
 === Synopsis
 
@@ -3676,7 +3676,7 @@ struct S7;
 ----
 
 [#S0-01-S5-04-S6-S7-05]
-== <<S0-01,S0&lt;30&gt;>>::<<S0-01-S5-04,S5&lt;31&gt;>>::<<S0-01-S5-04-S6,S6>>::<<S0-0cf-S5-S6-S7,S7>>&lt;32&gt;
+== link:#S0-01[S0&lt;30&gt;]::link:#S0-01-S5-04[S5&lt;31&gt;]::link:#S0-01-S5-04-S6[S6]::link:#S0-0cf-S5-S6-S7[S7]&lt;32&gt;
 
 === Synopsis
 
@@ -3685,7 +3685,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5-S6-S7,S7>>&lt;32&gt;;
+struct link:#S0-0cf-S5-S6-S7[S7]&lt;32&gt;;
 ----
 
 === Derived Classes
@@ -3694,12 +3694,12 @@ struct <<S0-0cf-S5-S6-S7,S7>>&lt;32&gt;;
 |===
 | Name
 | Description
-| <<R22,`R22`>>
+| link:#R22[`R22`]
 | 
 |===
 
 [#S0-01-S5-04-S6-f6]
-== <<S0-01,S0&lt;30&gt;>>::<<S0-01-S5-04,S5&lt;31&gt;>>::<<S0-01-S5-04-S6,S6>>::f6
+== link:#S0-01[S0&lt;30&gt;]::link:#S0-01-S5-04[S5&lt;31&gt;]::link:#S0-01-S5-04-S6[S6]::f6
 
 === Synopsis
 
@@ -3712,7 +3712,7 @@ f6();
 ----
 
 [#S0-01-S5-04-f5]
-== <<S0-01,S0&lt;30&gt;>>::<<S0-01-S5-04,S5&lt;31&gt;>>::f5
+== link:#S0-01[S0&lt;30&gt;]::link:#S0-01-S5-04[S5&lt;31&gt;]::f5
 
 === Synopsis
 
@@ -3725,7 +3725,7 @@ f5();
 ----
 
 [#S0-01-f0]
-== <<S0-01,S0&lt;30&gt;>>::f0
+== link:#S0-01[S0&lt;30&gt;]::f0
 
 === Synopsis
 
@@ -3738,7 +3738,7 @@ f0();
 ----
 
 [#S0-09ee]
-== <<S0-0cf,S0>>&lt;33&gt;
+== link:#S0-0cf[S0]&lt;33&gt;
 
 === Synopsis
 
@@ -3747,7 +3747,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;33&gt;;
+struct link:#S0-0cf[S0]&lt;33&gt;;
 ----
 
 === Types
@@ -3755,9 +3755,9 @@ struct <<S0-0cf,S0>>&lt;33&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-09ee-S1,`S1`>> 
-| <<S0-09ee-S5-0b,`S5`>> 
-| <<S0-09ee-S5-02,`S5&lt;34&gt;`>> 
+| link:#S0-09ee-S1[`S1`] 
+| link:#S0-09ee-S5-0b[`S5`] 
+| link:#S0-09ee-S5-02[`S5&lt;34&gt;`] 
 |===
 
 === Member Functions
@@ -3765,11 +3765,11 @@ struct <<S0-0cf,S0>>&lt;33&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-09ee-f0,`f0`>> 
+| link:#S0-09ee-f0[`f0`] 
 |===
 
 [#S0-09ee-S1]
-== <<S0-09ee,S0&lt;33&gt;>>::S1
+== link:#S0-09ee[S0&lt;33&gt;]::S1
 
 === Synopsis
 
@@ -3781,7 +3781,7 @@ struct S1;
 ----
 
 [#S0-09ee-S5-0b]
-== <<S0-09ee,S0&lt;33&gt;>>::S5
+== link:#S0-09ee[S0&lt;33&gt;]::S5
 
 === Synopsis
 
@@ -3796,7 +3796,7 @@ struct S5;
 ----
 
 [#S0-09ee-S5-02]
-== <<S0-09ee,S0&lt;33&gt;>>::<<S0-0cf-S5,S5>>&lt;34&gt;
+== link:#S0-09ee[S0&lt;33&gt;]::link:#S0-0cf-S5[S5]&lt;34&gt;
 
 === Synopsis
 
@@ -3805,7 +3805,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5,S5>>&lt;34&gt;;
+struct link:#S0-0cf-S5[S5]&lt;34&gt;;
 ----
 
 === Types
@@ -3813,7 +3813,7 @@ struct <<S0-0cf-S5,S5>>&lt;34&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-09ee-S5-02-S6,`S6`>> 
+| link:#S0-09ee-S5-02-S6[`S6`] 
 |===
 
 === Member Functions
@@ -3821,11 +3821,11 @@ struct <<S0-0cf-S5,S5>>&lt;34&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-09ee-S5-02-f5,`f5`>> 
+| link:#S0-09ee-S5-02-f5[`f5`] 
 |===
 
 [#S0-09ee-S5-02-S6]
-== <<S0-09ee,S0&lt;33&gt;>>::<<S0-09ee-S5-02,S5&lt;34&gt;>>::S6
+== link:#S0-09ee[S0&lt;33&gt;]::link:#S0-09ee-S5-02[S5&lt;34&gt;]::S6
 
 === Synopsis
 
@@ -3841,8 +3841,8 @@ struct S6;
 [cols=1]
 |===
 | Name
-| <<S0-09ee-S5-02-S6-S7-09,`S7`>> 
-| <<S0-09ee-S5-02-S6-S7-03,`S7&lt;35&gt;`>> 
+| link:#S0-09ee-S5-02-S6-S7-09[`S7`] 
+| link:#S0-09ee-S5-02-S6-S7-03[`S7&lt;35&gt;`] 
 |===
 
 === Member Functions
@@ -3850,11 +3850,11 @@ struct S6;
 [cols=1]
 |===
 | Name
-| <<S0-09ee-S5-02-S6-f6,`f6`>> 
+| link:#S0-09ee-S5-02-S6-f6[`f6`] 
 |===
 
 [#S0-09ee-S5-02-S6-S7-09]
-== <<S0-09ee,S0&lt;33&gt;>>::<<S0-09ee-S5-02,S5&lt;34&gt;>>::<<S0-09ee-S5-02-S6,S6>>::S7
+== link:#S0-09ee[S0&lt;33&gt;]::link:#S0-09ee-S5-02[S5&lt;34&gt;]::link:#S0-09ee-S5-02-S6[S6]::S7
 
 === Synopsis
 
@@ -3869,7 +3869,7 @@ struct S7;
 ----
 
 [#S0-09ee-S5-02-S6-S7-03]
-== <<S0-09ee,S0&lt;33&gt;>>::<<S0-09ee-S5-02,S5&lt;34&gt;>>::<<S0-09ee-S5-02-S6,S6>>::<<S0-0cf-S5-S6-S7,S7>>&lt;35&gt;
+== link:#S0-09ee[S0&lt;33&gt;]::link:#S0-09ee-S5-02[S5&lt;34&gt;]::link:#S0-09ee-S5-02-S6[S6]::link:#S0-0cf-S5-S6-S7[S7]&lt;35&gt;
 
 === Synopsis
 
@@ -3878,7 +3878,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5-S6-S7,S7>>&lt;35&gt;;
+struct link:#S0-0cf-S5-S6-S7[S7]&lt;35&gt;;
 ----
 
 === Types
@@ -3886,8 +3886,8 @@ struct <<S0-0cf-S5-S6-S7,S7>>&lt;35&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-09ee-S5-02-S6-S7-03-S8,`S8`>> 
-| <<S0-09ee-S5-02-S6-S7-03-S9,`S9`>> 
+| link:#S0-09ee-S5-02-S6-S7-03-S8[`S8`] 
+| link:#S0-09ee-S5-02-S6-S7-03-S9[`S9`] 
 |===
 
 === Member Functions
@@ -3895,11 +3895,11 @@ struct <<S0-0cf-S5-S6-S7,S7>>&lt;35&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-09ee-S5-02-S6-S7-03-f7,`f7`>> 
+| link:#S0-09ee-S5-02-S6-S7-03-f7[`f7`] 
 |===
 
 [#S0-09ee-S5-02-S6-S7-03-S8]
-== <<S0-09ee,S0&lt;33&gt;>>::<<S0-09ee-S5-02,S5&lt;34&gt;>>::<<S0-09ee-S5-02-S6,S6>>::<<S0-09ee-S5-02-S6-S7-03,S7&lt;35&gt;>>::S8
+== link:#S0-09ee[S0&lt;33&gt;]::link:#S0-09ee-S5-02[S5&lt;34&gt;]::link:#S0-09ee-S5-02-S6[S6]::link:#S0-09ee-S5-02-S6-S7-03[S7&lt;35&gt;]::S8
 
 === Synopsis
 
@@ -3916,12 +3916,12 @@ struct S8;
 |===
 | Name
 | Description
-| <<R23,`R23`>>
+| link:#R23[`R23`]
 | 
 |===
 
 [#S0-09ee-S5-02-S6-S7-03-S9]
-== <<S0-09ee,S0&lt;33&gt;>>::<<S0-09ee-S5-02,S5&lt;34&gt;>>::<<S0-09ee-S5-02-S6,S6>>::<<S0-09ee-S5-02-S6-S7-03,S7&lt;35&gt;>>::S9
+== link:#S0-09ee[S0&lt;33&gt;]::link:#S0-09ee-S5-02[S5&lt;34&gt;]::link:#S0-09ee-S5-02-S6[S6]::link:#S0-09ee-S5-02-S6-S7-03[S7&lt;35&gt;]::S9
 
 === Synopsis
 
@@ -3936,7 +3936,7 @@ struct S9;
 ----
 
 [#S0-09ee-S5-02-S6-S7-03-f7]
-== <<S0-09ee,S0&lt;33&gt;>>::<<S0-09ee-S5-02,S5&lt;34&gt;>>::<<S0-09ee-S5-02-S6,S6>>::<<S0-09ee-S5-02-S6-S7-03,S7&lt;35&gt;>>::f7
+== link:#S0-09ee[S0&lt;33&gt;]::link:#S0-09ee-S5-02[S5&lt;34&gt;]::link:#S0-09ee-S5-02-S6[S6]::link:#S0-09ee-S5-02-S6-S7-03[S7&lt;35&gt;]::f7
 
 === Synopsis
 
@@ -3949,7 +3949,7 @@ f7();
 ----
 
 [#S0-09ee-S5-02-S6-f6]
-== <<S0-09ee,S0&lt;33&gt;>>::<<S0-09ee-S5-02,S5&lt;34&gt;>>::<<S0-09ee-S5-02-S6,S6>>::f6
+== link:#S0-09ee[S0&lt;33&gt;]::link:#S0-09ee-S5-02[S5&lt;34&gt;]::link:#S0-09ee-S5-02-S6[S6]::f6
 
 === Synopsis
 
@@ -3962,7 +3962,7 @@ f6();
 ----
 
 [#S0-09ee-S5-02-f5]
-== <<S0-09ee,S0&lt;33&gt;>>::<<S0-09ee-S5-02,S5&lt;34&gt;>>::f5
+== link:#S0-09ee[S0&lt;33&gt;]::link:#S0-09ee-S5-02[S5&lt;34&gt;]::f5
 
 === Synopsis
 
@@ -3975,7 +3975,7 @@ f5();
 ----
 
 [#S0-09ee-f0]
-== <<S0-09ee,S0&lt;33&gt;>>::f0
+== link:#S0-09ee[S0&lt;33&gt;]::f0
 
 === Synopsis
 
@@ -3988,7 +3988,7 @@ f0();
 ----
 
 [#S0-033]
-== <<S0-0cf,S0>>&lt;36&gt;
+== link:#S0-0cf[S0]&lt;36&gt;
 
 === Synopsis
 
@@ -3997,7 +3997,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;36&gt;;
+struct link:#S0-0cf[S0]&lt;36&gt;;
 ----
 
 === Types
@@ -4005,9 +4005,9 @@ struct <<S0-0cf,S0>>&lt;36&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-033-S1,`S1`>> 
-| <<S0-033-S5-03,`S5`>> 
-| <<S0-033-S5-0f,`S5&lt;37&gt;`>> 
+| link:#S0-033-S1[`S1`] 
+| link:#S0-033-S5-03[`S5`] 
+| link:#S0-033-S5-0f[`S5&lt;37&gt;`] 
 |===
 
 === Member Functions
@@ -4015,11 +4015,11 @@ struct <<S0-0cf,S0>>&lt;36&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-033-f0,`f0`>> 
+| link:#S0-033-f0[`f0`] 
 |===
 
 [#S0-033-S1]
-== <<S0-033,S0&lt;36&gt;>>::S1
+== link:#S0-033[S0&lt;36&gt;]::S1
 
 === Synopsis
 
@@ -4031,7 +4031,7 @@ struct S1;
 ----
 
 [#S0-033-S5-03]
-== <<S0-033,S0&lt;36&gt;>>::S5
+== link:#S0-033[S0&lt;36&gt;]::S5
 
 === Synopsis
 
@@ -4046,7 +4046,7 @@ struct S5;
 ----
 
 [#S0-033-S5-0f]
-== <<S0-033,S0&lt;36&gt;>>::<<S0-0cf-S5,S5>>&lt;37&gt;
+== link:#S0-033[S0&lt;36&gt;]::link:#S0-0cf-S5[S5]&lt;37&gt;
 
 === Synopsis
 
@@ -4055,7 +4055,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5,S5>>&lt;37&gt;;
+struct link:#S0-0cf-S5[S5]&lt;37&gt;;
 ----
 
 === Types
@@ -4063,7 +4063,7 @@ struct <<S0-0cf-S5,S5>>&lt;37&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-033-S5-0f-S6,`S6`>> 
+| link:#S0-033-S5-0f-S6[`S6`] 
 |===
 
 === Member Functions
@@ -4071,11 +4071,11 @@ struct <<S0-0cf-S5,S5>>&lt;37&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-033-S5-0f-f5,`f5`>> 
+| link:#S0-033-S5-0f-f5[`f5`] 
 |===
 
 [#S0-033-S5-0f-S6]
-== <<S0-033,S0&lt;36&gt;>>::<<S0-033-S5-0f,S5&lt;37&gt;>>::S6
+== link:#S0-033[S0&lt;36&gt;]::link:#S0-033-S5-0f[S5&lt;37&gt;]::S6
 
 === Synopsis
 
@@ -4091,8 +4091,8 @@ struct S6;
 [cols=1]
 |===
 | Name
-| <<S0-033-S5-0f-S6-S7-05,`S7`>> 
-| <<S0-033-S5-0f-S6-S7-0d,`S7&lt;38&gt;`>> 
+| link:#S0-033-S5-0f-S6-S7-05[`S7`] 
+| link:#S0-033-S5-0f-S6-S7-0d[`S7&lt;38&gt;`] 
 |===
 
 === Member Functions
@@ -4100,11 +4100,11 @@ struct S6;
 [cols=1]
 |===
 | Name
-| <<S0-033-S5-0f-S6-f6,`f6`>> 
+| link:#S0-033-S5-0f-S6-f6[`f6`] 
 |===
 
 [#S0-033-S5-0f-S6-S7-05]
-== <<S0-033,S0&lt;36&gt;>>::<<S0-033-S5-0f,S5&lt;37&gt;>>::<<S0-033-S5-0f-S6,S6>>::S7
+== link:#S0-033[S0&lt;36&gt;]::link:#S0-033-S5-0f[S5&lt;37&gt;]::link:#S0-033-S5-0f-S6[S6]::S7
 
 === Synopsis
 
@@ -4119,7 +4119,7 @@ struct S7;
 ----
 
 [#S0-033-S5-0f-S6-S7-0d]
-== <<S0-033,S0&lt;36&gt;>>::<<S0-033-S5-0f,S5&lt;37&gt;>>::<<S0-033-S5-0f-S6,S6>>::<<S0-0cf-S5-S6-S7,S7>>&lt;38&gt;
+== link:#S0-033[S0&lt;36&gt;]::link:#S0-033-S5-0f[S5&lt;37&gt;]::link:#S0-033-S5-0f-S6[S6]::link:#S0-0cf-S5-S6-S7[S7]&lt;38&gt;
 
 === Synopsis
 
@@ -4128,7 +4128,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5-S6-S7,S7>>&lt;38&gt;;
+struct link:#S0-0cf-S5-S6-S7[S7]&lt;38&gt;;
 ----
 
 === Types
@@ -4136,8 +4136,8 @@ struct <<S0-0cf-S5-S6-S7,S7>>&lt;38&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-033-S5-0f-S6-S7-0d-S8,`S8`>> 
-| <<S0-033-S5-0f-S6-S7-0d-S9,`S9`>> 
+| link:#S0-033-S5-0f-S6-S7-0d-S8[`S8`] 
+| link:#S0-033-S5-0f-S6-S7-0d-S9[`S9`] 
 |===
 
 === Member Functions
@@ -4145,11 +4145,11 @@ struct <<S0-0cf-S5-S6-S7,S7>>&lt;38&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-033-S5-0f-S6-S7-0d-f7,`f7`>> 
+| link:#S0-033-S5-0f-S6-S7-0d-f7[`f7`] 
 |===
 
 [#S0-033-S5-0f-S6-S7-0d-S8]
-== <<S0-033,S0&lt;36&gt;>>::<<S0-033-S5-0f,S5&lt;37&gt;>>::<<S0-033-S5-0f-S6,S6>>::<<S0-033-S5-0f-S6-S7-0d,S7&lt;38&gt;>>::S8
+== link:#S0-033[S0&lt;36&gt;]::link:#S0-033-S5-0f[S5&lt;37&gt;]::link:#S0-033-S5-0f-S6[S6]::link:#S0-033-S5-0f-S6-S7-0d[S7&lt;38&gt;]::S8
 
 === Synopsis
 
@@ -4161,7 +4161,7 @@ struct S8;
 ----
 
 [#S0-033-S5-0f-S6-S7-0d-S9]
-== <<S0-033,S0&lt;36&gt;>>::<<S0-033-S5-0f,S5&lt;37&gt;>>::<<S0-033-S5-0f-S6,S6>>::<<S0-033-S5-0f-S6-S7-0d,S7&lt;38&gt;>>::S9
+== link:#S0-033[S0&lt;36&gt;]::link:#S0-033-S5-0f[S5&lt;37&gt;]::link:#S0-033-S5-0f-S6[S6]::link:#S0-033-S5-0f-S6-S7-0d[S7&lt;38&gt;]::S9
 
 === Synopsis
 
@@ -4181,12 +4181,12 @@ struct S9;
 |===
 | Name
 | Description
-| <<R24,`R24`>>
+| link:#R24[`R24`]
 | 
 |===
 
 [#S0-033-S5-0f-S6-S7-0d-f7]
-== <<S0-033,S0&lt;36&gt;>>::<<S0-033-S5-0f,S5&lt;37&gt;>>::<<S0-033-S5-0f-S6,S6>>::<<S0-033-S5-0f-S6-S7-0d,S7&lt;38&gt;>>::f7
+== link:#S0-033[S0&lt;36&gt;]::link:#S0-033-S5-0f[S5&lt;37&gt;]::link:#S0-033-S5-0f-S6[S6]::link:#S0-033-S5-0f-S6-S7-0d[S7&lt;38&gt;]::f7
 
 === Synopsis
 
@@ -4199,7 +4199,7 @@ f7();
 ----
 
 [#S0-033-S5-0f-S6-f6]
-== <<S0-033,S0&lt;36&gt;>>::<<S0-033-S5-0f,S5&lt;37&gt;>>::<<S0-033-S5-0f-S6,S6>>::f6
+== link:#S0-033[S0&lt;36&gt;]::link:#S0-033-S5-0f[S5&lt;37&gt;]::link:#S0-033-S5-0f-S6[S6]::f6
 
 === Synopsis
 
@@ -4212,7 +4212,7 @@ f6();
 ----
 
 [#S0-033-S5-0f-f5]
-== <<S0-033,S0&lt;36&gt;>>::<<S0-033-S5-0f,S5&lt;37&gt;>>::f5
+== link:#S0-033[S0&lt;36&gt;]::link:#S0-033-S5-0f[S5&lt;37&gt;]::f5
 
 === Synopsis
 
@@ -4225,7 +4225,7 @@ f5();
 ----
 
 [#S0-033-f0]
-== <<S0-033,S0&lt;36&gt;>>::f0
+== link:#S0-033[S0&lt;36&gt;]::f0
 
 === Synopsis
 
@@ -4238,7 +4238,7 @@ f0();
 ----
 
 [#S0-06]
-== <<S0-0cf,S0>>&lt;39&gt;
+== link:#S0-0cf[S0]&lt;39&gt;
 
 === Synopsis
 
@@ -4247,7 +4247,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;39&gt;;
+struct link:#S0-0cf[S0]&lt;39&gt;;
 ----
 
 === Types
@@ -4255,9 +4255,9 @@ struct <<S0-0cf,S0>>&lt;39&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-06-S1,`S1`>> 
-| <<S0-06-S5-03,`S5`>> 
-| <<S0-06-S5-07,`S5&lt;40&gt;`>> 
+| link:#S0-06-S1[`S1`] 
+| link:#S0-06-S5-03[`S5`] 
+| link:#S0-06-S5-07[`S5&lt;40&gt;`] 
 |===
 
 === Member Functions
@@ -4265,11 +4265,11 @@ struct <<S0-0cf,S0>>&lt;39&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-06-f0,`f0`>> 
+| link:#S0-06-f0[`f0`] 
 |===
 
 [#S0-06-S1]
-== <<S0-06,S0&lt;39&gt;>>::S1
+== link:#S0-06[S0&lt;39&gt;]::S1
 
 === Synopsis
 
@@ -4281,7 +4281,7 @@ struct S1;
 ----
 
 [#S0-06-S5-03]
-== <<S0-06,S0&lt;39&gt;>>::S5
+== link:#S0-06[S0&lt;39&gt;]::S5
 
 === Synopsis
 
@@ -4296,7 +4296,7 @@ struct S5;
 ----
 
 [#S0-06-S5-07]
-== <<S0-06,S0&lt;39&gt;>>::<<S0-0cf-S5,S5>>&lt;40&gt;
+== link:#S0-06[S0&lt;39&gt;]::link:#S0-0cf-S5[S5]&lt;40&gt;
 
 === Synopsis
 
@@ -4305,7 +4305,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5,S5>>&lt;40&gt;;
+struct link:#S0-0cf-S5[S5]&lt;40&gt;;
 ----
 
 === Types
@@ -4313,7 +4313,7 @@ struct <<S0-0cf-S5,S5>>&lt;40&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-06-S5-07-S6,`S6`>> 
+| link:#S0-06-S5-07-S6[`S6`] 
 |===
 
 === Member Functions
@@ -4321,11 +4321,11 @@ struct <<S0-0cf-S5,S5>>&lt;40&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-06-S5-07-f5,`f5`>> 
+| link:#S0-06-S5-07-f5[`f5`] 
 |===
 
 [#S0-06-S5-07-S6]
-== <<S0-06,S0&lt;39&gt;>>::<<S0-06-S5-07,S5&lt;40&gt;>>::S6
+== link:#S0-06[S0&lt;39&gt;]::link:#S0-06-S5-07[S5&lt;40&gt;]::S6
 
 === Synopsis
 
@@ -4341,8 +4341,8 @@ struct S6;
 [cols=1]
 |===
 | Name
-| <<S0-06-S5-07-S6-S7-08,`S7`>> 
-| <<S0-06-S5-07-S6-S7-0a,`S7&lt;41&gt;`>> 
+| link:#S0-06-S5-07-S6-S7-08[`S7`] 
+| link:#S0-06-S5-07-S6-S7-0a[`S7&lt;41&gt;`] 
 |===
 
 === Member Functions
@@ -4350,11 +4350,11 @@ struct S6;
 [cols=1]
 |===
 | Name
-| <<S0-06-S5-07-S6-f6,`f6`>> 
+| link:#S0-06-S5-07-S6-f6[`f6`] 
 |===
 
 [#S0-06-S5-07-S6-S7-08]
-== <<S0-06,S0&lt;39&gt;>>::<<S0-06-S5-07,S5&lt;40&gt;>>::<<S0-06-S5-07-S6,S6>>::S7
+== link:#S0-06[S0&lt;39&gt;]::link:#S0-06-S5-07[S5&lt;40&gt;]::link:#S0-06-S5-07-S6[S6]::S7
 
 === Synopsis
 
@@ -4369,7 +4369,7 @@ struct S7;
 ----
 
 [#S0-06-S5-07-S6-S7-0a]
-== <<S0-06,S0&lt;39&gt;>>::<<S0-06-S5-07,S5&lt;40&gt;>>::<<S0-06-S5-07-S6,S6>>::<<S0-0cf-S5-S6-S7,S7>>&lt;41&gt;
+== link:#S0-06[S0&lt;39&gt;]::link:#S0-06-S5-07[S5&lt;40&gt;]::link:#S0-06-S5-07-S6[S6]::link:#S0-0cf-S5-S6-S7[S7]&lt;41&gt;
 
 === Synopsis
 
@@ -4378,7 +4378,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5-S6-S7,S7>>&lt;41&gt;;
+struct link:#S0-0cf-S5-S6-S7[S7]&lt;41&gt;;
 ----
 
 === Types
@@ -4386,10 +4386,10 @@ struct <<S0-0cf-S5-S6-S7,S7>>&lt;41&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-06-S5-07-S6-S7-0a-S8,`S8`>> 
-| <<S0-06-S5-07-S6-S7-0a-S9-05,`S9`>> 
-| <<S0-06-S5-07-S6-S7-0a-S9-08,`S9&lt;42, int*&gt;`>> 
-| <<S0-06-S5-07-S6-S7-0a-S9-00,`S9&lt;42, T*&gt;`>> 
+| link:#S0-06-S5-07-S6-S7-0a-S8[`S8`] 
+| link:#S0-06-S5-07-S6-S7-0a-S9-05[`S9`] 
+| link:#S0-06-S5-07-S6-S7-0a-S9-08[`S9&lt;42, int*&gt;`] 
+| link:#S0-06-S5-07-S6-S7-0a-S9-00[`S9&lt;42, T*&gt;`] 
 |===
 
 === Member Functions
@@ -4397,11 +4397,11 @@ struct <<S0-0cf-S5-S6-S7,S7>>&lt;41&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-06-S5-07-S6-S7-0a-f7,`f7`>> 
+| link:#S0-06-S5-07-S6-S7-0a-f7[`f7`] 
 |===
 
 [#S0-06-S5-07-S6-S7-0a-S8]
-== <<S0-06,S0&lt;39&gt;>>::<<S0-06-S5-07,S5&lt;40&gt;>>::<<S0-06-S5-07-S6,S6>>::<<S0-06-S5-07-S6-S7-0a,S7&lt;41&gt;>>::S8
+== link:#S0-06[S0&lt;39&gt;]::link:#S0-06-S5-07[S5&lt;40&gt;]::link:#S0-06-S5-07-S6[S6]::link:#S0-06-S5-07-S6-S7-0a[S7&lt;41&gt;]::S8
 
 === Synopsis
 
@@ -4413,7 +4413,7 @@ struct S8;
 ----
 
 [#S0-06-S5-07-S6-S7-0a-S9-05]
-== <<S0-06,S0&lt;39&gt;>>::<<S0-06-S5-07,S5&lt;40&gt;>>::<<S0-06-S5-07-S6,S6>>::<<S0-06-S5-07-S6-S7-0a,S7&lt;41&gt;>>::S9
+== link:#S0-06[S0&lt;39&gt;]::link:#S0-06-S5-07[S5&lt;40&gt;]::link:#S0-06-S5-07-S6[S6]::link:#S0-06-S5-07-S6-S7-0a[S7&lt;41&gt;]::S9
 
 === Synopsis
 
@@ -4433,12 +4433,12 @@ struct S9;
 |===
 | Name
 | Description
-| <<R25,`R25`>>
+| link:#R25[`R25`]
 | 
 |===
 
 [#S0-06-S5-07-S6-S7-0a-S9-08]
-== <<S0-06,S0&lt;39&gt;>>::<<S0-06-S5-07,S5&lt;40&gt;>>::<<S0-06-S5-07-S6,S6>>::<<S0-06-S5-07-S6-S7-0a,S7&lt;41&gt;>>::<<S0-0cf-S5-S6-S7-S9,S9>>&lt;42, int*&gt;
+== link:#S0-06[S0&lt;39&gt;]::link:#S0-06-S5-07[S5&lt;40&gt;]::link:#S0-06-S5-07-S6[S6]::link:#S0-06-S5-07-S6-S7-0a[S7&lt;41&gt;]::link:#S0-0cf-S5-S6-S7-S9[S9]&lt;42, int*&gt;
 
 === Synopsis
 
@@ -4447,7 +4447,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5-S6-S7-S9,S9>>&lt;42, int*&gt;;
+struct link:#S0-0cf-S5-S6-S7-S9[S9]&lt;42, int*&gt;;
 ----
 
 === Derived Classes
@@ -4456,12 +4456,12 @@ struct <<S0-0cf-S5-S6-S7-S9,S9>>&lt;42, int*&gt;;
 |===
 | Name
 | Description
-| <<R26,`R26`>>
+| link:#R26[`R26`]
 | 
 |===
 
 [#S0-06-S5-07-S6-S7-0a-S9-00]
-== <<S0-06,S0&lt;39&gt;>>::<<S0-06-S5-07,S5&lt;40&gt;>>::<<S0-06-S5-07-S6,S6>>::<<S0-06-S5-07-S6-S7-0a,S7&lt;41&gt;>>::<<S0-0cf-S5-S6-S7-S9,S9>>&lt;42, T*&gt;
+== link:#S0-06[S0&lt;39&gt;]::link:#S0-06-S5-07[S5&lt;40&gt;]::link:#S0-06-S5-07-S6[S6]::link:#S0-06-S5-07-S6-S7-0a[S7&lt;41&gt;]::link:#S0-0cf-S5-S6-S7-S9[S9]&lt;42, T*&gt;
 
 === Synopsis
 
@@ -4470,11 +4470,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-struct <<S0-0cf-S5-S6-S7-S9,S9>>&lt;42, T*&gt;;
+struct link:#S0-0cf-S5-S6-S7-S9[S9]&lt;42, T*&gt;;
 ----
 
 [#S0-06-S5-07-S6-S7-0a-f7]
-== <<S0-06,S0&lt;39&gt;>>::<<S0-06-S5-07,S5&lt;40&gt;>>::<<S0-06-S5-07-S6,S6>>::<<S0-06-S5-07-S6-S7-0a,S7&lt;41&gt;>>::f7
+== link:#S0-06[S0&lt;39&gt;]::link:#S0-06-S5-07[S5&lt;40&gt;]::link:#S0-06-S5-07-S6[S6]::link:#S0-06-S5-07-S6-S7-0a[S7&lt;41&gt;]::f7
 
 === Synopsis
 
@@ -4487,7 +4487,7 @@ f7();
 ----
 
 [#S0-06-S5-07-S6-f6]
-== <<S0-06,S0&lt;39&gt;>>::<<S0-06-S5-07,S5&lt;40&gt;>>::<<S0-06-S5-07-S6,S6>>::f6
+== link:#S0-06[S0&lt;39&gt;]::link:#S0-06-S5-07[S5&lt;40&gt;]::link:#S0-06-S5-07-S6[S6]::f6
 
 === Synopsis
 
@@ -4500,7 +4500,7 @@ f6();
 ----
 
 [#S0-06-S5-07-f5]
-== <<S0-06,S0&lt;39&gt;>>::<<S0-06-S5-07,S5&lt;40&gt;>>::f5
+== link:#S0-06[S0&lt;39&gt;]::link:#S0-06-S5-07[S5&lt;40&gt;]::f5
 
 === Synopsis
 
@@ -4513,7 +4513,7 @@ f5();
 ----
 
 [#S0-06-f0]
-== <<S0-06,S0&lt;39&gt;>>::f0
+== link:#S0-06[S0&lt;39&gt;]::f0
 
 === Synopsis
 
@@ -4526,7 +4526,7 @@ f0();
 ----
 
 [#S0-0a1]
-== <<S0-0cf,S0>>&lt;4&gt;
+== link:#S0-0cf[S0]&lt;4&gt;
 
 === Synopsis
 
@@ -4535,7 +4535,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;4&gt;;
+struct link:#S0-0cf[S0]&lt;4&gt;;
 ----
 
 === Types
@@ -4543,8 +4543,8 @@ struct <<S0-0cf,S0>>&lt;4&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0a1-S1,`S1`>> 
-| <<S0-0a1-S5,`S5`>> 
+| link:#S0-0a1-S1[`S1`] 
+| link:#S0-0a1-S5[`S5`] 
 |===
 
 === Member Functions
@@ -4552,11 +4552,11 @@ struct <<S0-0cf,S0>>&lt;4&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0a1-f0,`f0`>> 
+| link:#S0-0a1-f0[`f0`] 
 |===
 
 [#S0-0a1-S1]
-== <<S0-0a1,S0&lt;4&gt;>>::S1
+== link:#S0-0a1[S0&lt;4&gt;]::S1
 
 === Synopsis
 
@@ -4572,8 +4572,8 @@ struct S1;
 [cols=1]
 |===
 | Name
-| <<S0-0a1-S1-S2-00,`S2`>> 
-| <<S0-0a1-S1-S2-0f,`S2&lt;5&gt;`>> 
+| link:#S0-0a1-S1-S2-00[`S2`] 
+| link:#S0-0a1-S1-S2-0f[`S2&lt;5&gt;`] 
 |===
 
 === Member Functions
@@ -4581,11 +4581,11 @@ struct S1;
 [cols=1]
 |===
 | Name
-| <<S0-0a1-S1-f1,`f1`>> 
+| link:#S0-0a1-S1-f1[`f1`] 
 |===
 
 [#S0-0a1-S1-S2-00]
-== <<S0-0a1,S0&lt;4&gt;>>::<<S0-0a1-S1,S1>>::S2
+== link:#S0-0a1[S0&lt;4&gt;]::link:#S0-0a1-S1[S1]::S2
 
 === Synopsis
 
@@ -4600,7 +4600,7 @@ struct S2;
 ----
 
 [#S0-0a1-S1-S2-0f]
-== <<S0-0a1,S0&lt;4&gt;>>::<<S0-0a1-S1,S1>>::<<S0-0cf-S1-S2,S2>>&lt;5&gt;
+== link:#S0-0a1[S0&lt;4&gt;]::link:#S0-0a1-S1[S1]::link:#S0-0cf-S1-S2[S2]&lt;5&gt;
 
 === Synopsis
 
@@ -4609,7 +4609,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S1-S2,S2>>&lt;5&gt;;
+struct link:#S0-0cf-S1-S2[S2]&lt;5&gt;;
 ----
 
 === Derived Classes
@@ -4618,12 +4618,12 @@ struct <<S0-0cf-S1-S2,S2>>&lt;5&gt;;
 |===
 | Name
 | Description
-| <<R6,`R6`>>
+| link:#R6[`R6`]
 | 
 |===
 
 [#S0-0a1-S1-f1]
-== <<S0-0a1,S0&lt;4&gt;>>::<<S0-0a1-S1,S1>>::f1
+== link:#S0-0a1[S0&lt;4&gt;]::link:#S0-0a1-S1[S1]::f1
 
 === Synopsis
 
@@ -4636,7 +4636,7 @@ f1();
 ----
 
 [#S0-0a1-S5]
-== <<S0-0a1,S0&lt;4&gt;>>::S5
+== link:#S0-0a1[S0&lt;4&gt;]::S5
 
 === Synopsis
 
@@ -4651,7 +4651,7 @@ struct S5;
 ----
 
 [#S0-0a1-f0]
-== <<S0-0a1,S0&lt;4&gt;>>::f0
+== link:#S0-0a1[S0&lt;4&gt;]::f0
 
 === Synopsis
 
@@ -4664,7 +4664,7 @@ f0();
 ----
 
 [#S0-0ba]
-== <<S0-0cf,S0>>&lt;43&gt;
+== link:#S0-0cf[S0]&lt;43&gt;
 
 === Synopsis
 
@@ -4673,7 +4673,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;43&gt;;
+struct link:#S0-0cf[S0]&lt;43&gt;;
 ----
 
 === Types
@@ -4681,9 +4681,9 @@ struct <<S0-0cf,S0>>&lt;43&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0ba-S1,`S1`>> 
-| <<S0-0ba-S5-0f,`S5`>> 
-| <<S0-0ba-S5-08,`S5&lt;44&gt;`>> 
+| link:#S0-0ba-S1[`S1`] 
+| link:#S0-0ba-S5-0f[`S5`] 
+| link:#S0-0ba-S5-08[`S5&lt;44&gt;`] 
 |===
 
 === Member Functions
@@ -4691,11 +4691,11 @@ struct <<S0-0cf,S0>>&lt;43&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0ba-f0,`f0`>> 
+| link:#S0-0ba-f0[`f0`] 
 |===
 
 [#S0-0ba-S1]
-== <<S0-0ba,S0&lt;43&gt;>>::S1
+== link:#S0-0ba[S0&lt;43&gt;]::S1
 
 === Synopsis
 
@@ -4707,7 +4707,7 @@ struct S1;
 ----
 
 [#S0-0ba-S5-0f]
-== <<S0-0ba,S0&lt;43&gt;>>::S5
+== link:#S0-0ba[S0&lt;43&gt;]::S5
 
 === Synopsis
 
@@ -4722,7 +4722,7 @@ struct S5;
 ----
 
 [#S0-0ba-S5-08]
-== <<S0-0ba,S0&lt;43&gt;>>::<<S0-0cf-S5,S5>>&lt;44&gt;
+== link:#S0-0ba[S0&lt;43&gt;]::link:#S0-0cf-S5[S5]&lt;44&gt;
 
 === Synopsis
 
@@ -4731,7 +4731,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5,S5>>&lt;44&gt;;
+struct link:#S0-0cf-S5[S5]&lt;44&gt;;
 ----
 
 === Types
@@ -4739,7 +4739,7 @@ struct <<S0-0cf-S5,S5>>&lt;44&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0ba-S5-08-S6,`S6`>> 
+| link:#S0-0ba-S5-08-S6[`S6`] 
 |===
 
 === Member Functions
@@ -4747,11 +4747,11 @@ struct <<S0-0cf-S5,S5>>&lt;44&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0ba-S5-08-f5,`f5`>> 
+| link:#S0-0ba-S5-08-f5[`f5`] 
 |===
 
 [#S0-0ba-S5-08-S6]
-== <<S0-0ba,S0&lt;43&gt;>>::<<S0-0ba-S5-08,S5&lt;44&gt;>>::S6
+== link:#S0-0ba[S0&lt;43&gt;]::link:#S0-0ba-S5-08[S5&lt;44&gt;]::S6
 
 === Synopsis
 
@@ -4767,8 +4767,8 @@ struct S6;
 [cols=1]
 |===
 | Name
-| <<S0-0ba-S5-08-S6-S7-04,`S7`>> 
-| <<S0-0ba-S5-08-S6-S7-02,`S7&lt;45&gt;`>> 
+| link:#S0-0ba-S5-08-S6-S7-04[`S7`] 
+| link:#S0-0ba-S5-08-S6-S7-02[`S7&lt;45&gt;`] 
 |===
 
 === Member Functions
@@ -4776,11 +4776,11 @@ struct S6;
 [cols=1]
 |===
 | Name
-| <<S0-0ba-S5-08-S6-f6,`f6`>> 
+| link:#S0-0ba-S5-08-S6-f6[`f6`] 
 |===
 
 [#S0-0ba-S5-08-S6-S7-04]
-== <<S0-0ba,S0&lt;43&gt;>>::<<S0-0ba-S5-08,S5&lt;44&gt;>>::<<S0-0ba-S5-08-S6,S6>>::S7
+== link:#S0-0ba[S0&lt;43&gt;]::link:#S0-0ba-S5-08[S5&lt;44&gt;]::link:#S0-0ba-S5-08-S6[S6]::S7
 
 === Synopsis
 
@@ -4795,7 +4795,7 @@ struct S7;
 ----
 
 [#S0-0ba-S5-08-S6-S7-02]
-== <<S0-0ba,S0&lt;43&gt;>>::<<S0-0ba-S5-08,S5&lt;44&gt;>>::<<S0-0ba-S5-08-S6,S6>>::<<S0-0cf-S5-S6-S7,S7>>&lt;45&gt;
+== link:#S0-0ba[S0&lt;43&gt;]::link:#S0-0ba-S5-08[S5&lt;44&gt;]::link:#S0-0ba-S5-08-S6[S6]::link:#S0-0cf-S5-S6-S7[S7]&lt;45&gt;
 
 === Synopsis
 
@@ -4804,7 +4804,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5-S6-S7,S7>>&lt;45&gt;;
+struct link:#S0-0cf-S5-S6-S7[S7]&lt;45&gt;;
 ----
 
 === Types
@@ -4812,9 +4812,9 @@ struct <<S0-0cf-S5-S6-S7,S7>>&lt;45&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0ba-S5-08-S6-S7-02-S8,`S8`>> 
-| <<S0-0ba-S5-08-S6-S7-02-S9-0b,`S9`>> 
-| <<S0-0ba-S5-08-S6-S7-02-S9-0f,`S9&lt;46&gt;`>> 
+| link:#S0-0ba-S5-08-S6-S7-02-S8[`S8`] 
+| link:#S0-0ba-S5-08-S6-S7-02-S9-0b[`S9`] 
+| link:#S0-0ba-S5-08-S6-S7-02-S9-0f[`S9&lt;46&gt;`] 
 |===
 
 === Member Functions
@@ -4822,11 +4822,11 @@ struct <<S0-0cf-S5-S6-S7,S7>>&lt;45&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0ba-S5-08-S6-S7-02-f7,`f7`>> 
+| link:#S0-0ba-S5-08-S6-S7-02-f7[`f7`] 
 |===
 
 [#S0-0ba-S5-08-S6-S7-02-S8]
-== <<S0-0ba,S0&lt;43&gt;>>::<<S0-0ba-S5-08,S5&lt;44&gt;>>::<<S0-0ba-S5-08-S6,S6>>::<<S0-0ba-S5-08-S6-S7-02,S7&lt;45&gt;>>::S8
+== link:#S0-0ba[S0&lt;43&gt;]::link:#S0-0ba-S5-08[S5&lt;44&gt;]::link:#S0-0ba-S5-08-S6[S6]::link:#S0-0ba-S5-08-S6-S7-02[S7&lt;45&gt;]::S8
 
 === Synopsis
 
@@ -4838,7 +4838,7 @@ struct S8;
 ----
 
 [#S0-0ba-S5-08-S6-S7-02-S9-0b]
-== <<S0-0ba,S0&lt;43&gt;>>::<<S0-0ba-S5-08,S5&lt;44&gt;>>::<<S0-0ba-S5-08-S6,S6>>::<<S0-0ba-S5-08-S6-S7-02,S7&lt;45&gt;>>::S9
+== link:#S0-0ba[S0&lt;43&gt;]::link:#S0-0ba-S5-08[S5&lt;44&gt;]::link:#S0-0ba-S5-08-S6[S6]::link:#S0-0ba-S5-08-S6-S7-02[S7&lt;45&gt;]::S9
 
 === Synopsis
 
@@ -4853,7 +4853,7 @@ struct S9;
 ----
 
 [#S0-0ba-S5-08-S6-S7-02-S9-0f]
-== <<S0-0ba,S0&lt;43&gt;>>::<<S0-0ba-S5-08,S5&lt;44&gt;>>::<<S0-0ba-S5-08-S6,S6>>::<<S0-0ba-S5-08-S6-S7-02,S7&lt;45&gt;>>::<<S0-0cf-S5-S6-S7-S9,S9>>&lt;46&gt;
+== link:#S0-0ba[S0&lt;43&gt;]::link:#S0-0ba-S5-08[S5&lt;44&gt;]::link:#S0-0ba-S5-08-S6[S6]::link:#S0-0ba-S5-08-S6-S7-02[S7&lt;45&gt;]::link:#S0-0cf-S5-S6-S7-S9[S9]&lt;46&gt;
 
 === Synopsis
 
@@ -4862,7 +4862,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5-S6-S7-S9,S9>>&lt;46&gt;;
+struct link:#S0-0cf-S5-S6-S7-S9[S9]&lt;46&gt;;
 ----
 
 === Derived Classes
@@ -4871,12 +4871,12 @@ struct <<S0-0cf-S5-S6-S7-S9,S9>>&lt;46&gt;;
 |===
 | Name
 | Description
-| <<R27,`R27`>>
+| link:#R27[`R27`]
 | 
 |===
 
 [#S0-0ba-S5-08-S6-S7-02-f7]
-== <<S0-0ba,S0&lt;43&gt;>>::<<S0-0ba-S5-08,S5&lt;44&gt;>>::<<S0-0ba-S5-08-S6,S6>>::<<S0-0ba-S5-08-S6-S7-02,S7&lt;45&gt;>>::f7
+== link:#S0-0ba[S0&lt;43&gt;]::link:#S0-0ba-S5-08[S5&lt;44&gt;]::link:#S0-0ba-S5-08-S6[S6]::link:#S0-0ba-S5-08-S6-S7-02[S7&lt;45&gt;]::f7
 
 === Synopsis
 
@@ -4889,7 +4889,7 @@ f7();
 ----
 
 [#S0-0ba-S5-08-S6-f6]
-== <<S0-0ba,S0&lt;43&gt;>>::<<S0-0ba-S5-08,S5&lt;44&gt;>>::<<S0-0ba-S5-08-S6,S6>>::f6
+== link:#S0-0ba[S0&lt;43&gt;]::link:#S0-0ba-S5-08[S5&lt;44&gt;]::link:#S0-0ba-S5-08-S6[S6]::f6
 
 === Synopsis
 
@@ -4902,7 +4902,7 @@ f6();
 ----
 
 [#S0-0ba-S5-08-f5]
-== <<S0-0ba,S0&lt;43&gt;>>::<<S0-0ba-S5-08,S5&lt;44&gt;>>::f5
+== link:#S0-0ba[S0&lt;43&gt;]::link:#S0-0ba-S5-08[S5&lt;44&gt;]::f5
 
 === Synopsis
 
@@ -4915,7 +4915,7 @@ f5();
 ----
 
 [#S0-0ba-f0]
-== <<S0-0ba,S0&lt;43&gt;>>::f0
+== link:#S0-0ba[S0&lt;43&gt;]::f0
 
 === Synopsis
 
@@ -4928,7 +4928,7 @@ f0();
 ----
 
 [#S0-07e]
-== <<S0-0cf,S0>>&lt;6&gt;
+== link:#S0-0cf[S0]&lt;6&gt;
 
 === Synopsis
 
@@ -4937,7 +4937,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;6&gt;;
+struct link:#S0-0cf[S0]&lt;6&gt;;
 ----
 
 === Types
@@ -4945,8 +4945,8 @@ struct <<S0-0cf,S0>>&lt;6&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-07e-S1,`S1`>> 
-| <<S0-07e-S5,`S5`>> 
+| link:#S0-07e-S1[`S1`] 
+| link:#S0-07e-S5[`S5`] 
 |===
 
 === Member Functions
@@ -4954,11 +4954,11 @@ struct <<S0-0cf,S0>>&lt;6&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-07e-f0,`f0`>> 
+| link:#S0-07e-f0[`f0`] 
 |===
 
 [#S0-07e-S1]
-== <<S0-07e,S0&lt;6&gt;>>::S1
+== link:#S0-07e[S0&lt;6&gt;]::S1
 
 === Synopsis
 
@@ -4974,9 +4974,9 @@ struct S1;
 [cols=1]
 |===
 | Name
-| <<S0-07e-S1-S2-04,`S2`>> 
-| <<S0-07e-S1-S2-07,`S2&lt;7, int*&gt;`>> 
-| <<S0-07e-S1-S2-06,`S2&lt;7, T*&gt;`>> 
+| link:#S0-07e-S1-S2-04[`S2`] 
+| link:#S0-07e-S1-S2-07[`S2&lt;7, int*&gt;`] 
+| link:#S0-07e-S1-S2-06[`S2&lt;7, T*&gt;`] 
 |===
 
 === Member Functions
@@ -4984,11 +4984,11 @@ struct S1;
 [cols=1]
 |===
 | Name
-| <<S0-07e-S1-f1,`f1`>> 
+| link:#S0-07e-S1-f1[`f1`] 
 |===
 
 [#S0-07e-S1-S2-04]
-== <<S0-07e,S0&lt;6&gt;>>::<<S0-07e-S1,S1>>::S2
+== link:#S0-07e[S0&lt;6&gt;]::link:#S0-07e-S1[S1]::S2
 
 === Synopsis
 
@@ -5008,12 +5008,12 @@ struct S2;
 |===
 | Name
 | Description
-| <<R7,`R7`>>
+| link:#R7[`R7`]
 | 
 |===
 
 [#S0-07e-S1-S2-07]
-== <<S0-07e,S0&lt;6&gt;>>::<<S0-07e-S1,S1>>::<<S0-0cf-S1-S2,S2>>&lt;7, int*&gt;
+== link:#S0-07e[S0&lt;6&gt;]::link:#S0-07e-S1[S1]::link:#S0-0cf-S1-S2[S2]&lt;7, int*&gt;
 
 === Synopsis
 
@@ -5022,7 +5022,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S1-S2,S2>>&lt;7, int*&gt;;
+struct link:#S0-0cf-S1-S2[S2]&lt;7, int*&gt;;
 ----
 
 === Derived Classes
@@ -5031,12 +5031,12 @@ struct <<S0-0cf-S1-S2,S2>>&lt;7, int*&gt;;
 |===
 | Name
 | Description
-| <<R8,`R8`>>
+| link:#R8[`R8`]
 | 
 |===
 
 [#S0-07e-S1-S2-06]
-== <<S0-07e,S0&lt;6&gt;>>::<<S0-07e-S1,S1>>::<<S0-0cf-S1-S2,S2>>&lt;7, T*&gt;
+== link:#S0-07e[S0&lt;6&gt;]::link:#S0-07e-S1[S1]::link:#S0-0cf-S1-S2[S2]&lt;7, T*&gt;
 
 === Synopsis
 
@@ -5045,11 +5045,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-struct <<S0-0cf-S1-S2,S2>>&lt;7, T*&gt;;
+struct link:#S0-0cf-S1-S2[S2]&lt;7, T*&gt;;
 ----
 
 [#S0-07e-S1-f1]
-== <<S0-07e,S0&lt;6&gt;>>::<<S0-07e-S1,S1>>::f1
+== link:#S0-07e[S0&lt;6&gt;]::link:#S0-07e-S1[S1]::f1
 
 === Synopsis
 
@@ -5062,7 +5062,7 @@ f1();
 ----
 
 [#S0-07e-S5]
-== <<S0-07e,S0&lt;6&gt;>>::S5
+== link:#S0-07e[S0&lt;6&gt;]::S5
 
 === Synopsis
 
@@ -5077,7 +5077,7 @@ struct S5;
 ----
 
 [#S0-07e-f0]
-== <<S0-07e,S0&lt;6&gt;>>::f0
+== link:#S0-07e[S0&lt;6&gt;]::f0
 
 === Synopsis
 
@@ -5090,7 +5090,7 @@ f0();
 ----
 
 [#S0-0a3]
-== <<S0-0cf,S0>>&lt;8&gt;
+== link:#S0-0cf[S0]&lt;8&gt;
 
 === Synopsis
 
@@ -5099,7 +5099,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;8&gt;;
+struct link:#S0-0cf[S0]&lt;8&gt;;
 ----
 
 === Types
@@ -5107,8 +5107,8 @@ struct <<S0-0cf,S0>>&lt;8&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0a3-S1,`S1`>> 
-| <<S0-0a3-S5,`S5`>> 
+| link:#S0-0a3-S1[`S1`] 
+| link:#S0-0a3-S5[`S5`] 
 |===
 
 === Member Functions
@@ -5116,11 +5116,11 @@ struct <<S0-0cf,S0>>&lt;8&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0a3-f0,`f0`>> 
+| link:#S0-0a3-f0[`f0`] 
 |===
 
 [#S0-0a3-S1]
-== <<S0-0a3,S0&lt;8&gt;>>::S1
+== link:#S0-0a3[S0&lt;8&gt;]::S1
 
 === Synopsis
 
@@ -5136,8 +5136,8 @@ struct S1;
 [cols=1]
 |===
 | Name
-| <<S0-0a3-S1-S2-0b,`S2`>> 
-| <<S0-0a3-S1-S2-0c,`S2&lt;9&gt;`>> 
+| link:#S0-0a3-S1-S2-0b[`S2`] 
+| link:#S0-0a3-S1-S2-0c[`S2&lt;9&gt;`] 
 |===
 
 === Member Functions
@@ -5145,11 +5145,11 @@ struct S1;
 [cols=1]
 |===
 | Name
-| <<S0-0a3-S1-f1,`f1`>> 
+| link:#S0-0a3-S1-f1[`f1`] 
 |===
 
 [#S0-0a3-S1-S2-0b]
-== <<S0-0a3,S0&lt;8&gt;>>::<<S0-0a3-S1,S1>>::S2
+== link:#S0-0a3[S0&lt;8&gt;]::link:#S0-0a3-S1[S1]::S2
 
 === Synopsis
 
@@ -5164,7 +5164,7 @@ struct S2;
 ----
 
 [#S0-0a3-S1-S2-0c]
-== <<S0-0a3,S0&lt;8&gt;>>::<<S0-0a3-S1,S1>>::<<S0-0cf-S1-S2,S2>>&lt;9&gt;
+== link:#S0-0a3[S0&lt;8&gt;]::link:#S0-0a3-S1[S1]::link:#S0-0cf-S1-S2[S2]&lt;9&gt;
 
 === Synopsis
 
@@ -5173,7 +5173,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S1-S2,S2>>&lt;9&gt;;
+struct link:#S0-0cf-S1-S2[S2]&lt;9&gt;;
 ----
 
 === Types
@@ -5181,8 +5181,8 @@ struct <<S0-0cf-S1-S2,S2>>&lt;9&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0a3-S1-S2-0c-S3,`S3`>> 
-| <<S0-0a3-S1-S2-0c-S4,`S4`>> 
+| link:#S0-0a3-S1-S2-0c-S3[`S3`] 
+| link:#S0-0a3-S1-S2-0c-S4[`S4`] 
 |===
 
 === Member Functions
@@ -5190,11 +5190,11 @@ struct <<S0-0cf-S1-S2,S2>>&lt;9&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0a3-S1-S2-0c-f2,`f2`>> 
+| link:#S0-0a3-S1-S2-0c-f2[`f2`] 
 |===
 
 [#S0-0a3-S1-S2-0c-S3]
-== <<S0-0a3,S0&lt;8&gt;>>::<<S0-0a3-S1,S1>>::<<S0-0a3-S1-S2-0c,S2&lt;9&gt;>>::S3
+== link:#S0-0a3[S0&lt;8&gt;]::link:#S0-0a3-S1[S1]::link:#S0-0a3-S1-S2-0c[S2&lt;9&gt;]::S3
 
 === Synopsis
 
@@ -5211,12 +5211,12 @@ struct S3;
 |===
 | Name
 | Description
-| <<R9,`R9`>>
+| link:#R9[`R9`]
 | 
 |===
 
 [#S0-0a3-S1-S2-0c-S4]
-== <<S0-0a3,S0&lt;8&gt;>>::<<S0-0a3-S1,S1>>::<<S0-0a3-S1-S2-0c,S2&lt;9&gt;>>::S4
+== link:#S0-0a3[S0&lt;8&gt;]::link:#S0-0a3-S1[S1]::link:#S0-0a3-S1-S2-0c[S2&lt;9&gt;]::S4
 
 === Synopsis
 
@@ -5231,7 +5231,7 @@ struct S4;
 ----
 
 [#S0-0a3-S1-S2-0c-f2]
-== <<S0-0a3,S0&lt;8&gt;>>::<<S0-0a3-S1,S1>>::<<S0-0a3-S1-S2-0c,S2&lt;9&gt;>>::f2
+== link:#S0-0a3[S0&lt;8&gt;]::link:#S0-0a3-S1[S1]::link:#S0-0a3-S1-S2-0c[S2&lt;9&gt;]::f2
 
 === Synopsis
 
@@ -5244,7 +5244,7 @@ f2();
 ----
 
 [#S0-0a3-S1-f1]
-== <<S0-0a3,S0&lt;8&gt;>>::<<S0-0a3-S1,S1>>::f1
+== link:#S0-0a3[S0&lt;8&gt;]::link:#S0-0a3-S1[S1]::f1
 
 === Synopsis
 
@@ -5257,7 +5257,7 @@ f1();
 ----
 
 [#S0-0a3-S5]
-== <<S0-0a3,S0&lt;8&gt;>>::S5
+== link:#S0-0a3[S0&lt;8&gt;]::S5
 
 === Synopsis
 
@@ -5272,7 +5272,7 @@ struct S5;
 ----
 
 [#S0-0a3-f0]
-== <<S0-0a3,S0&lt;8&gt;>>::f0
+== link:#S0-0a3[S0&lt;8&gt;]::f0
 
 === Synopsis
 
@@ -5285,7 +5285,7 @@ f0();
 ----
 
 [#S0-020a]
-== <<S0-0cf,S0>>&lt;1, int*&gt;
+== link:#S0-0cf[S0]&lt;1, int*&gt;
 
 === Synopsis
 
@@ -5294,7 +5294,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;1, int*&gt;;
+struct link:#S0-0cf[S0]&lt;1, int*&gt;;
 ----
 
 === Derived Classes
@@ -5303,12 +5303,12 @@ struct <<S0-0cf,S0>>&lt;1, int*&gt;;
 |===
 | Name
 | Description
-| <<R3,`R3`>>
+| link:#R3[`R3`]
 | 
 |===
 
 [#S0-05a]
-== <<S0-0cf,S0>>&lt;10, bool&gt;
+== link:#S0-0cf[S0]&lt;10, bool&gt;
 
 === Synopsis
 
@@ -5317,7 +5317,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;10, bool&gt;;
+struct link:#S0-0cf[S0]&lt;10, bool&gt;;
 ----
 
 === Types
@@ -5325,8 +5325,8 @@ struct <<S0-0cf,S0>>&lt;10, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-05a-S1,`S1`>> 
-| <<S0-05a-S5,`S5`>> 
+| link:#S0-05a-S1[`S1`] 
+| link:#S0-05a-S5[`S5`] 
 |===
 
 === Member Functions
@@ -5334,11 +5334,11 @@ struct <<S0-0cf,S0>>&lt;10, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-05a-f0,`f0`>> 
+| link:#S0-05a-f0[`f0`] 
 |===
 
 [#S0-05a-S1]
-== <<S0-05a,S0&lt;10, bool&gt;>>::S1
+== link:#S0-05a[S0&lt;10, bool&gt;]::S1
 
 === Synopsis
 
@@ -5354,8 +5354,8 @@ struct S1;
 [cols=1]
 |===
 | Name
-| <<S0-05a-S1-S2-07,`S2`>> 
-| <<S0-05a-S1-S2-0b,`S2&lt;11, bool&gt;`>> 
+| link:#S0-05a-S1-S2-07[`S2`] 
+| link:#S0-05a-S1-S2-0b[`S2&lt;11, bool&gt;`] 
 |===
 
 === Member Functions
@@ -5363,11 +5363,11 @@ struct S1;
 [cols=1]
 |===
 | Name
-| <<S0-05a-S1-f1,`f1`>> 
+| link:#S0-05a-S1-f1[`f1`] 
 |===
 
 [#S0-05a-S1-S2-07]
-== <<S0-05a,S0&lt;10, bool&gt;>>::<<S0-05a-S1,S1>>::S2
+== link:#S0-05a[S0&lt;10, bool&gt;]::link:#S0-05a-S1[S1]::S2
 
 === Synopsis
 
@@ -5382,7 +5382,7 @@ struct S2;
 ----
 
 [#S0-05a-S1-S2-0b]
-== <<S0-05a,S0&lt;10, bool&gt;>>::<<S0-05a-S1,S1>>::<<S0-0cf-S1-S2,S2>>&lt;11, bool&gt;
+== link:#S0-05a[S0&lt;10, bool&gt;]::link:#S0-05a-S1[S1]::link:#S0-0cf-S1-S2[S2]&lt;11, bool&gt;
 
 === Synopsis
 
@@ -5391,7 +5391,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S1-S2,S2>>&lt;11, bool&gt;;
+struct link:#S0-0cf-S1-S2[S2]&lt;11, bool&gt;;
 ----
 
 === Types
@@ -5399,7 +5399,7 @@ struct <<S0-0cf-S1-S2,S2>>&lt;11, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-05a-S1-S2-0b-S3,`S3`>> 
+| link:#S0-05a-S1-S2-0b-S3[`S3`] 
 |===
 
 === Member Functions
@@ -5407,11 +5407,11 @@ struct <<S0-0cf-S1-S2,S2>>&lt;11, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-05a-S1-S2-0b-f2,`f2`>> 
+| link:#S0-05a-S1-S2-0b-f2[`f2`] 
 |===
 
 [#S0-05a-S1-S2-0b-S3]
-== <<S0-05a,S0&lt;10, bool&gt;>>::<<S0-05a-S1,S1>>::<<S0-05a-S1-S2-0b,S2&lt;11, bool&gt;>>::S3
+== link:#S0-05a[S0&lt;10, bool&gt;]::link:#S0-05a-S1[S1]::link:#S0-05a-S1-S2-0b[S2&lt;11, bool&gt;]::S3
 
 === Synopsis
 
@@ -5423,7 +5423,7 @@ struct S3;
 ----
 
 [#S0-05a-S1-S2-0b-f2]
-== <<S0-05a,S0&lt;10, bool&gt;>>::<<S0-05a-S1,S1>>::<<S0-05a-S1-S2-0b,S2&lt;11, bool&gt;>>::f2
+== link:#S0-05a[S0&lt;10, bool&gt;]::link:#S0-05a-S1[S1]::link:#S0-05a-S1-S2-0b[S2&lt;11, bool&gt;]::f2
 
 === Synopsis
 
@@ -5436,7 +5436,7 @@ f2();
 ----
 
 [#S0-05a-S1-f1]
-== <<S0-05a,S0&lt;10, bool&gt;>>::<<S0-05a-S1,S1>>::f1
+== link:#S0-05a[S0&lt;10, bool&gt;]::link:#S0-05a-S1[S1]::f1
 
 === Synopsis
 
@@ -5449,7 +5449,7 @@ f1();
 ----
 
 [#S0-05a-S5]
-== <<S0-05a,S0&lt;10, bool&gt;>>::S5
+== link:#S0-05a[S0&lt;10, bool&gt;]::S5
 
 === Synopsis
 
@@ -5464,7 +5464,7 @@ struct S5;
 ----
 
 [#S0-05a-f0]
-== <<S0-05a,S0&lt;10, bool&gt;>>::f0
+== link:#S0-05a[S0&lt;10, bool&gt;]::f0
 
 === Synopsis
 
@@ -5477,7 +5477,7 @@ f0();
 ----
 
 [#S0-0cd]
-== <<S0-0cf,S0>>&lt;12, bool&gt;
+== link:#S0-0cf[S0]&lt;12, bool&gt;
 
 === Synopsis
 
@@ -5486,7 +5486,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;12, bool&gt;;
+struct link:#S0-0cf[S0]&lt;12, bool&gt;;
 ----
 
 === Types
@@ -5494,8 +5494,8 @@ struct <<S0-0cf,S0>>&lt;12, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0cd-S1,`S1`>> 
-| <<S0-0cd-S5,`S5`>> 
+| link:#S0-0cd-S1[`S1`] 
+| link:#S0-0cd-S5[`S5`] 
 |===
 
 === Member Functions
@@ -5503,11 +5503,11 @@ struct <<S0-0cf,S0>>&lt;12, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0cd-f0,`f0`>> 
+| link:#S0-0cd-f0[`f0`] 
 |===
 
 [#S0-0cd-S1]
-== <<S0-0cd,S0&lt;12, bool&gt;>>::S1
+== link:#S0-0cd[S0&lt;12, bool&gt;]::S1
 
 === Synopsis
 
@@ -5523,8 +5523,8 @@ struct S1;
 [cols=1]
 |===
 | Name
-| <<S0-0cd-S1-S2-0e,`S2`>> 
-| <<S0-0cd-S1-S2-05,`S2&lt;13, bool&gt;`>> 
+| link:#S0-0cd-S1-S2-0e[`S2`] 
+| link:#S0-0cd-S1-S2-05[`S2&lt;13, bool&gt;`] 
 |===
 
 === Member Functions
@@ -5532,11 +5532,11 @@ struct S1;
 [cols=1]
 |===
 | Name
-| <<S0-0cd-S1-f1,`f1`>> 
+| link:#S0-0cd-S1-f1[`f1`] 
 |===
 
 [#S0-0cd-S1-S2-0e]
-== <<S0-0cd,S0&lt;12, bool&gt;>>::<<S0-0cd-S1,S1>>::S2
+== link:#S0-0cd[S0&lt;12, bool&gt;]::link:#S0-0cd-S1[S1]::S2
 
 === Synopsis
 
@@ -5551,7 +5551,7 @@ struct S2;
 ----
 
 [#S0-0cd-S1-S2-05]
-== <<S0-0cd,S0&lt;12, bool&gt;>>::<<S0-0cd-S1,S1>>::<<S0-0cf-S1-S2,S2>>&lt;13, bool&gt;
+== link:#S0-0cd[S0&lt;12, bool&gt;]::link:#S0-0cd-S1[S1]::link:#S0-0cf-S1-S2[S2]&lt;13, bool&gt;
 
 === Synopsis
 
@@ -5560,7 +5560,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S1-S2,S2>>&lt;13, bool&gt;;
+struct link:#S0-0cf-S1-S2[S2]&lt;13, bool&gt;;
 ----
 
 === Types
@@ -5568,7 +5568,7 @@ struct <<S0-0cf-S1-S2,S2>>&lt;13, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0cd-S1-S2-05-S3,`S3`>> 
+| link:#S0-0cd-S1-S2-05-S3[`S3`] 
 |===
 
 === Member Functions
@@ -5576,11 +5576,11 @@ struct <<S0-0cf-S1-S2,S2>>&lt;13, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0cd-S1-S2-05-f2,`f2`>> 
+| link:#S0-0cd-S1-S2-05-f2[`f2`] 
 |===
 
 [#S0-0cd-S1-S2-05-S3]
-== <<S0-0cd,S0&lt;12, bool&gt;>>::<<S0-0cd-S1,S1>>::<<S0-0cd-S1-S2-05,S2&lt;13, bool&gt;>>::S3
+== link:#S0-0cd[S0&lt;12, bool&gt;]::link:#S0-0cd-S1[S1]::link:#S0-0cd-S1-S2-05[S2&lt;13, bool&gt;]::S3
 
 === Synopsis
 
@@ -5592,7 +5592,7 @@ struct S3;
 ----
 
 [#S0-0cd-S1-S2-05-f2]
-== <<S0-0cd,S0&lt;12, bool&gt;>>::<<S0-0cd-S1,S1>>::<<S0-0cd-S1-S2-05,S2&lt;13, bool&gt;>>::f2
+== link:#S0-0cd[S0&lt;12, bool&gt;]::link:#S0-0cd-S1[S1]::link:#S0-0cd-S1-S2-05[S2&lt;13, bool&gt;]::f2
 
 === Synopsis
 
@@ -5605,7 +5605,7 @@ f2();
 ----
 
 [#S0-0cd-S1-f1]
-== <<S0-0cd,S0&lt;12, bool&gt;>>::<<S0-0cd-S1,S1>>::f1
+== link:#S0-0cd[S0&lt;12, bool&gt;]::link:#S0-0cd-S1[S1]::f1
 
 === Synopsis
 
@@ -5618,7 +5618,7 @@ f1();
 ----
 
 [#S0-0cd-S5]
-== <<S0-0cd,S0&lt;12, bool&gt;>>::S5
+== link:#S0-0cd[S0&lt;12, bool&gt;]::S5
 
 === Synopsis
 
@@ -5633,7 +5633,7 @@ struct S5;
 ----
 
 [#S0-0cd-f0]
-== <<S0-0cd,S0&lt;12, bool&gt;>>::f0
+== link:#S0-0cd[S0&lt;12, bool&gt;]::f0
 
 === Synopsis
 
@@ -5646,7 +5646,7 @@ f0();
 ----
 
 [#S0-000]
-== <<S0-0cf,S0>>&lt;15, bool&gt;
+== link:#S0-0cf[S0]&lt;15, bool&gt;
 
 === Synopsis
 
@@ -5655,7 +5655,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;15, bool&gt;;
+struct link:#S0-0cf[S0]&lt;15, bool&gt;;
 ----
 
 === Types
@@ -5663,8 +5663,8 @@ struct <<S0-0cf,S0>>&lt;15, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-000-S1,`S1`>> 
-| <<S0-000-S5,`S5`>> 
+| link:#S0-000-S1[`S1`] 
+| link:#S0-000-S5[`S5`] 
 |===
 
 === Member Functions
@@ -5672,11 +5672,11 @@ struct <<S0-0cf,S0>>&lt;15, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-000-f0,`f0`>> 
+| link:#S0-000-f0[`f0`] 
 |===
 
 [#S0-000-S1]
-== <<S0-000,S0&lt;15, bool&gt;>>::S1
+== link:#S0-000[S0&lt;15, bool&gt;]::S1
 
 === Synopsis
 
@@ -5692,8 +5692,8 @@ struct S1;
 [cols=1]
 |===
 | Name
-| <<S0-000-S1-S2-08,`S2`>> 
-| <<S0-000-S1-S2-03,`S2&lt;16, bool&gt;`>> 
+| link:#S0-000-S1-S2-08[`S2`] 
+| link:#S0-000-S1-S2-03[`S2&lt;16, bool&gt;`] 
 |===
 
 === Member Functions
@@ -5701,11 +5701,11 @@ struct S1;
 [cols=1]
 |===
 | Name
-| <<S0-000-S1-f1,`f1`>> 
+| link:#S0-000-S1-f1[`f1`] 
 |===
 
 [#S0-000-S1-S2-08]
-== <<S0-000,S0&lt;15, bool&gt;>>::<<S0-000-S1,S1>>::S2
+== link:#S0-000[S0&lt;15, bool&gt;]::link:#S0-000-S1[S1]::S2
 
 === Synopsis
 
@@ -5720,7 +5720,7 @@ struct S2;
 ----
 
 [#S0-000-S1-S2-03]
-== <<S0-000,S0&lt;15, bool&gt;>>::<<S0-000-S1,S1>>::<<S0-0cf-S1-S2,S2>>&lt;16, bool&gt;
+== link:#S0-000[S0&lt;15, bool&gt;]::link:#S0-000-S1[S1]::link:#S0-0cf-S1-S2[S2]&lt;16, bool&gt;
 
 === Synopsis
 
@@ -5729,7 +5729,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S1-S2,S2>>&lt;16, bool&gt;;
+struct link:#S0-0cf-S1-S2[S2]&lt;16, bool&gt;;
 ----
 
 === Types
@@ -5737,7 +5737,7 @@ struct <<S0-0cf-S1-S2,S2>>&lt;16, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-000-S1-S2-03-S3,`S3`>> 
+| link:#S0-000-S1-S2-03-S3[`S3`] 
 |===
 
 === Member Functions
@@ -5745,11 +5745,11 @@ struct <<S0-0cf-S1-S2,S2>>&lt;16, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-000-S1-S2-03-f2,`f2`>> 
+| link:#S0-000-S1-S2-03-f2[`f2`] 
 |===
 
 [#S0-000-S1-S2-03-S3]
-== <<S0-000,S0&lt;15, bool&gt;>>::<<S0-000-S1,S1>>::<<S0-000-S1-S2-03,S2&lt;16, bool&gt;>>::S3
+== link:#S0-000[S0&lt;15, bool&gt;]::link:#S0-000-S1[S1]::link:#S0-000-S1-S2-03[S2&lt;16, bool&gt;]::S3
 
 === Synopsis
 
@@ -5761,7 +5761,7 @@ struct S3;
 ----
 
 [#S0-000-S1-S2-03-f2]
-== <<S0-000,S0&lt;15, bool&gt;>>::<<S0-000-S1,S1>>::<<S0-000-S1-S2-03,S2&lt;16, bool&gt;>>::f2
+== link:#S0-000[S0&lt;15, bool&gt;]::link:#S0-000-S1[S1]::link:#S0-000-S1-S2-03[S2&lt;16, bool&gt;]::f2
 
 === Synopsis
 
@@ -5774,7 +5774,7 @@ f2();
 ----
 
 [#S0-000-S1-f1]
-== <<S0-000,S0&lt;15, bool&gt;>>::<<S0-000-S1,S1>>::f1
+== link:#S0-000[S0&lt;15, bool&gt;]::link:#S0-000-S1[S1]::f1
 
 === Synopsis
 
@@ -5787,7 +5787,7 @@ f1();
 ----
 
 [#S0-000-S5]
-== <<S0-000,S0&lt;15, bool&gt;>>::S5
+== link:#S0-000[S0&lt;15, bool&gt;]::S5
 
 === Synopsis
 
@@ -5802,7 +5802,7 @@ struct S5;
 ----
 
 [#S0-000-f0]
-== <<S0-000,S0&lt;15, bool&gt;>>::f0
+== link:#S0-000[S0&lt;15, bool&gt;]::f0
 
 === Synopsis
 
@@ -5815,7 +5815,7 @@ f0();
 ----
 
 [#S0-051]
-== <<S0-0cf,S0>>&lt;18, bool&gt;
+== link:#S0-0cf[S0]&lt;18, bool&gt;
 
 === Synopsis
 
@@ -5824,7 +5824,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;18, bool&gt;;
+struct link:#S0-0cf[S0]&lt;18, bool&gt;;
 ----
 
 === Types
@@ -5832,7 +5832,7 @@ struct <<S0-0cf,S0>>&lt;18, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-051-S1,`S1`>> 
+| link:#S0-051-S1[`S1`] 
 |===
 
 === Member Functions
@@ -5840,11 +5840,11 @@ struct <<S0-0cf,S0>>&lt;18, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-051-f0,`f0`>> 
+| link:#S0-051-f0[`f0`] 
 |===
 
 [#S0-051-S1]
-== <<S0-051,S0&lt;18, bool&gt;>>::S1
+== link:#S0-051[S0&lt;18, bool&gt;]::S1
 
 === Synopsis
 
@@ -5856,7 +5856,7 @@ struct S1;
 ----
 
 [#S0-051-f0]
-== <<S0-051,S0&lt;18, bool&gt;>>::f0
+== link:#S0-051[S0&lt;18, bool&gt;]::f0
 
 === Synopsis
 
@@ -5869,7 +5869,7 @@ f0();
 ----
 
 [#S0-002]
-== <<S0-0cf,S0>>&lt;19, bool&gt;
+== link:#S0-0cf[S0]&lt;19, bool&gt;
 
 === Synopsis
 
@@ -5878,7 +5878,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;19, bool&gt;;
+struct link:#S0-0cf[S0]&lt;19, bool&gt;;
 ----
 
 === Types
@@ -5886,7 +5886,7 @@ struct <<S0-0cf,S0>>&lt;19, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-002-S1,`S1`>> 
+| link:#S0-002-S1[`S1`] 
 |===
 
 === Member Functions
@@ -5894,11 +5894,11 @@ struct <<S0-0cf,S0>>&lt;19, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-002-f0,`f0`>> 
+| link:#S0-002-f0[`f0`] 
 |===
 
 [#S0-002-S1]
-== <<S0-002,S0&lt;19, bool&gt;>>::S1
+== link:#S0-002[S0&lt;19, bool&gt;]::S1
 
 === Synopsis
 
@@ -5910,7 +5910,7 @@ struct S1;
 ----
 
 [#S0-002-f0]
-== <<S0-002,S0&lt;19, bool&gt;>>::f0
+== link:#S0-002[S0&lt;19, bool&gt;]::f0
 
 === Synopsis
 
@@ -5923,7 +5923,7 @@ f0();
 ----
 
 [#S0-03c]
-== <<S0-0cf,S0>>&lt;2, bool&gt;
+== link:#S0-0cf[S0]&lt;2, bool&gt;
 
 === Synopsis
 
@@ -5932,7 +5932,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;2, bool&gt;;
+struct link:#S0-0cf[S0]&lt;2, bool&gt;;
 ----
 
 === Types
@@ -5940,7 +5940,7 @@ struct <<S0-0cf,S0>>&lt;2, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-03c-S5,`S5`>> 
+| link:#S0-03c-S5[`S5`] 
 |===
 
 === Member Functions
@@ -5948,11 +5948,11 @@ struct <<S0-0cf,S0>>&lt;2, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-03c-f0,`f0`>> 
+| link:#S0-03c-f0[`f0`] 
 |===
 
 [#S0-03c-S5]
-== <<S0-03c,S0&lt;2, bool&gt;>>::S5
+== link:#S0-03c[S0&lt;2, bool&gt;]::S5
 
 === Synopsis
 
@@ -5967,7 +5967,7 @@ struct S5;
 ----
 
 [#S0-03c-f0]
-== <<S0-03c,S0&lt;2, bool&gt;>>::f0
+== link:#S0-03c[S0&lt;2, bool&gt;]::f0
 
 === Synopsis
 
@@ -5980,7 +5980,7 @@ f0();
 ----
 
 [#S0-003]
-== <<S0-0cf,S0>>&lt;21, bool&gt;
+== link:#S0-0cf[S0]&lt;21, bool&gt;
 
 === Synopsis
 
@@ -5989,7 +5989,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;21, bool&gt;;
+struct link:#S0-0cf[S0]&lt;21, bool&gt;;
 ----
 
 === Types
@@ -5997,7 +5997,7 @@ struct <<S0-0cf,S0>>&lt;21, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-003-S1,`S1`>> 
+| link:#S0-003-S1[`S1`] 
 |===
 
 === Member Functions
@@ -6005,11 +6005,11 @@ struct <<S0-0cf,S0>>&lt;21, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-003-f0,`f0`>> 
+| link:#S0-003-f0[`f0`] 
 |===
 
 [#S0-003-S1]
-== <<S0-003,S0&lt;21, bool&gt;>>::S1
+== link:#S0-003[S0&lt;21, bool&gt;]::S1
 
 === Synopsis
 
@@ -6021,7 +6021,7 @@ struct S1;
 ----
 
 [#S0-003-f0]
-== <<S0-003,S0&lt;21, bool&gt;>>::f0
+== link:#S0-003[S0&lt;21, bool&gt;]::f0
 
 === Synopsis
 
@@ -6034,7 +6034,7 @@ f0();
 ----
 
 [#S0-0c7]
-== <<S0-0cf,S0>>&lt;23, bool&gt;
+== link:#S0-0cf[S0]&lt;23, bool&gt;
 
 === Synopsis
 
@@ -6043,7 +6043,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;23, bool&gt;;
+struct link:#S0-0cf[S0]&lt;23, bool&gt;;
 ----
 
 === Types
@@ -6051,9 +6051,9 @@ struct <<S0-0cf,S0>>&lt;23, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0c7-S1,`S1`>> 
-| <<S0-0c7-S5-03,`S5`>> 
-| <<S0-0c7-S5-0f,`S5&lt;24, bool&gt;`>> 
+| link:#S0-0c7-S1[`S1`] 
+| link:#S0-0c7-S5-03[`S5`] 
+| link:#S0-0c7-S5-0f[`S5&lt;24, bool&gt;`] 
 |===
 
 === Member Functions
@@ -6061,11 +6061,11 @@ struct <<S0-0cf,S0>>&lt;23, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0c7-f0,`f0`>> 
+| link:#S0-0c7-f0[`f0`] 
 |===
 
 [#S0-0c7-S1]
-== <<S0-0c7,S0&lt;23, bool&gt;>>::S1
+== link:#S0-0c7[S0&lt;23, bool&gt;]::S1
 
 === Synopsis
 
@@ -6077,7 +6077,7 @@ struct S1;
 ----
 
 [#S0-0c7-S5-03]
-== <<S0-0c7,S0&lt;23, bool&gt;>>::S5
+== link:#S0-0c7[S0&lt;23, bool&gt;]::S5
 
 === Synopsis
 
@@ -6092,7 +6092,7 @@ struct S5;
 ----
 
 [#S0-0c7-S5-0f]
-== <<S0-0c7,S0&lt;23, bool&gt;>>::<<S0-0cf-S5,S5>>&lt;24, bool&gt;
+== link:#S0-0c7[S0&lt;23, bool&gt;]::link:#S0-0cf-S5[S5]&lt;24, bool&gt;
 
 === Synopsis
 
@@ -6101,7 +6101,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5,S5>>&lt;24, bool&gt;;
+struct link:#S0-0cf-S5[S5]&lt;24, bool&gt;;
 ----
 
 === Member Functions
@@ -6109,11 +6109,11 @@ struct <<S0-0cf-S5,S5>>&lt;24, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0c7-S5-0f-f5,`f5`>> 
+| link:#S0-0c7-S5-0f-f5[`f5`] 
 |===
 
 [#S0-0c7-S5-0f-f5]
-== <<S0-0c7,S0&lt;23, bool&gt;>>::<<S0-0c7-S5-0f,S5&lt;24, bool&gt;>>::f5
+== link:#S0-0c7[S0&lt;23, bool&gt;]::link:#S0-0c7-S5-0f[S5&lt;24, bool&gt;]::f5
 
 === Synopsis
 
@@ -6126,7 +6126,7 @@ f5();
 ----
 
 [#S0-0c7-f0]
-== <<S0-0c7,S0&lt;23, bool&gt;>>::f0
+== link:#S0-0c7[S0&lt;23, bool&gt;]::f0
 
 === Synopsis
 
@@ -6139,7 +6139,7 @@ f0();
 ----
 
 [#S0-0529f]
-== <<S0-0cf,S0>>&lt;25, bool&gt;
+== link:#S0-0cf[S0]&lt;25, bool&gt;
 
 === Synopsis
 
@@ -6148,7 +6148,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;25, bool&gt;;
+struct link:#S0-0cf[S0]&lt;25, bool&gt;;
 ----
 
 === Types
@@ -6156,9 +6156,9 @@ struct <<S0-0cf,S0>>&lt;25, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0529f-S1,`S1`>> 
-| <<S0-0529f-S5-051,`S5`>> 
-| <<S0-0529f-S5-05c,`S5&lt;26, bool&gt;`>> 
+| link:#S0-0529f-S1[`S1`] 
+| link:#S0-0529f-S5-051[`S5`] 
+| link:#S0-0529f-S5-05c[`S5&lt;26, bool&gt;`] 
 |===
 
 === Member Functions
@@ -6166,11 +6166,11 @@ struct <<S0-0cf,S0>>&lt;25, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0529f-f0,`f0`>> 
+| link:#S0-0529f-f0[`f0`] 
 |===
 
 [#S0-0529f-S1]
-== <<S0-0529f,S0&lt;25, bool&gt;>>::S1
+== link:#S0-0529f[S0&lt;25, bool&gt;]::S1
 
 === Synopsis
 
@@ -6182,7 +6182,7 @@ struct S1;
 ----
 
 [#S0-0529f-S5-051]
-== <<S0-0529f,S0&lt;25, bool&gt;>>::S5
+== link:#S0-0529f[S0&lt;25, bool&gt;]::S5
 
 === Synopsis
 
@@ -6197,7 +6197,7 @@ struct S5;
 ----
 
 [#S0-0529f-S5-05c]
-== <<S0-0529f,S0&lt;25, bool&gt;>>::<<S0-0cf-S5,S5>>&lt;26, bool&gt;
+== link:#S0-0529f[S0&lt;25, bool&gt;]::link:#S0-0cf-S5[S5]&lt;26, bool&gt;
 
 === Synopsis
 
@@ -6206,7 +6206,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5,S5>>&lt;26, bool&gt;;
+struct link:#S0-0cf-S5[S5]&lt;26, bool&gt;;
 ----
 
 === Types
@@ -6214,7 +6214,7 @@ struct <<S0-0cf-S5,S5>>&lt;26, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0529f-S5-05c-S6,`S6`>> 
+| link:#S0-0529f-S5-05c-S6[`S6`] 
 |===
 
 === Member Functions
@@ -6222,11 +6222,11 @@ struct <<S0-0cf-S5,S5>>&lt;26, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0529f-S5-05c-f5,`f5`>> 
+| link:#S0-0529f-S5-05c-f5[`f5`] 
 |===
 
 [#S0-0529f-S5-05c-S6]
-== <<S0-0529f,S0&lt;25, bool&gt;>>::<<S0-0529f-S5-05c,S5&lt;26, bool&gt;>>::S6
+== link:#S0-0529f[S0&lt;25, bool&gt;]::link:#S0-0529f-S5-05c[S5&lt;26, bool&gt;]::S6
 
 === Synopsis
 
@@ -6242,11 +6242,11 @@ struct S6;
 [cols=1]
 |===
 | Name
-| <<S0-0529f-S5-05c-S6-f6,`f6`>> 
+| link:#S0-0529f-S5-05c-S6-f6[`f6`] 
 |===
 
 [#S0-0529f-S5-05c-S6-f6]
-== <<S0-0529f,S0&lt;25, bool&gt;>>::<<S0-0529f-S5-05c,S5&lt;26, bool&gt;>>::<<S0-0529f-S5-05c-S6,S6>>::f6
+== link:#S0-0529f[S0&lt;25, bool&gt;]::link:#S0-0529f-S5-05c[S5&lt;26, bool&gt;]::link:#S0-0529f-S5-05c-S6[S6]::f6
 
 === Synopsis
 
@@ -6259,7 +6259,7 @@ f6();
 ----
 
 [#S0-0529f-S5-05c-f5]
-== <<S0-0529f,S0&lt;25, bool&gt;>>::<<S0-0529f-S5-05c,S5&lt;26, bool&gt;>>::f5
+== link:#S0-0529f[S0&lt;25, bool&gt;]::link:#S0-0529f-S5-05c[S5&lt;26, bool&gt;]::f5
 
 === Synopsis
 
@@ -6272,7 +6272,7 @@ f5();
 ----
 
 [#S0-0529f-f0]
-== <<S0-0529f,S0&lt;25, bool&gt;>>::f0
+== link:#S0-0529f[S0&lt;25, bool&gt;]::f0
 
 === Synopsis
 
@@ -6285,7 +6285,7 @@ f0();
 ----
 
 [#S0-007]
-== <<S0-0cf,S0>>&lt;27, bool&gt;
+== link:#S0-0cf[S0]&lt;27, bool&gt;
 
 === Synopsis
 
@@ -6294,7 +6294,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;27, bool&gt;;
+struct link:#S0-0cf[S0]&lt;27, bool&gt;;
 ----
 
 === Types
@@ -6302,9 +6302,9 @@ struct <<S0-0cf,S0>>&lt;27, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-007-S1,`S1`>> 
-| <<S0-007-S5-0f,`S5`>> 
-| <<S0-007-S5-0d,`S5&lt;28, bool&gt;`>> 
+| link:#S0-007-S1[`S1`] 
+| link:#S0-007-S5-0f[`S5`] 
+| link:#S0-007-S5-0d[`S5&lt;28, bool&gt;`] 
 |===
 
 === Member Functions
@@ -6312,11 +6312,11 @@ struct <<S0-0cf,S0>>&lt;27, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-007-f0,`f0`>> 
+| link:#S0-007-f0[`f0`] 
 |===
 
 [#S0-007-S1]
-== <<S0-007,S0&lt;27, bool&gt;>>::S1
+== link:#S0-007[S0&lt;27, bool&gt;]::S1
 
 === Synopsis
 
@@ -6328,7 +6328,7 @@ struct S1;
 ----
 
 [#S0-007-S5-0f]
-== <<S0-007,S0&lt;27, bool&gt;>>::S5
+== link:#S0-007[S0&lt;27, bool&gt;]::S5
 
 === Synopsis
 
@@ -6343,7 +6343,7 @@ struct S5;
 ----
 
 [#S0-007-S5-0d]
-== <<S0-007,S0&lt;27, bool&gt;>>::<<S0-0cf-S5,S5>>&lt;28, bool&gt;
+== link:#S0-007[S0&lt;27, bool&gt;]::link:#S0-0cf-S5[S5]&lt;28, bool&gt;
 
 === Synopsis
 
@@ -6352,7 +6352,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5,S5>>&lt;28, bool&gt;;
+struct link:#S0-0cf-S5[S5]&lt;28, bool&gt;;
 ----
 
 === Types
@@ -6360,7 +6360,7 @@ struct <<S0-0cf-S5,S5>>&lt;28, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-007-S5-0d-S6,`S6`>> 
+| link:#S0-007-S5-0d-S6[`S6`] 
 |===
 
 === Member Functions
@@ -6368,11 +6368,11 @@ struct <<S0-0cf-S5,S5>>&lt;28, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-007-S5-0d-f5,`f5`>> 
+| link:#S0-007-S5-0d-f5[`f5`] 
 |===
 
 [#S0-007-S5-0d-S6]
-== <<S0-007,S0&lt;27, bool&gt;>>::<<S0-007-S5-0d,S5&lt;28, bool&gt;>>::S6
+== link:#S0-007[S0&lt;27, bool&gt;]::link:#S0-007-S5-0d[S5&lt;28, bool&gt;]::S6
 
 === Synopsis
 
@@ -6388,11 +6388,11 @@ struct S6;
 [cols=1]
 |===
 | Name
-| <<S0-007-S5-0d-S6-f6,`f6`>> 
+| link:#S0-007-S5-0d-S6-f6[`f6`] 
 |===
 
 [#S0-007-S5-0d-S6-f6]
-== <<S0-007,S0&lt;27, bool&gt;>>::<<S0-007-S5-0d,S5&lt;28, bool&gt;>>::<<S0-007-S5-0d-S6,S6>>::f6
+== link:#S0-007[S0&lt;27, bool&gt;]::link:#S0-007-S5-0d[S5&lt;28, bool&gt;]::link:#S0-007-S5-0d-S6[S6]::f6
 
 === Synopsis
 
@@ -6405,7 +6405,7 @@ f6();
 ----
 
 [#S0-007-S5-0d-f5]
-== <<S0-007,S0&lt;27, bool&gt;>>::<<S0-007-S5-0d,S5&lt;28, bool&gt;>>::f5
+== link:#S0-007[S0&lt;27, bool&gt;]::link:#S0-007-S5-0d[S5&lt;28, bool&gt;]::f5
 
 === Synopsis
 
@@ -6418,7 +6418,7 @@ f5();
 ----
 
 [#S0-007-f0]
-== <<S0-007,S0&lt;27, bool&gt;>>::f0
+== link:#S0-007[S0&lt;27, bool&gt;]::f0
 
 === Synopsis
 
@@ -6431,7 +6431,7 @@ f0();
 ----
 
 [#S0-092]
-== <<S0-0cf,S0>>&lt;3, bool&gt;
+== link:#S0-0cf[S0]&lt;3, bool&gt;
 
 === Synopsis
 
@@ -6440,7 +6440,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;3, bool&gt;;
+struct link:#S0-0cf[S0]&lt;3, bool&gt;;
 ----
 
 === Types
@@ -6448,8 +6448,8 @@ struct <<S0-0cf,S0>>&lt;3, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-092-S1,`S1`>> 
-| <<S0-092-S5,`S5`>> 
+| link:#S0-092-S1[`S1`] 
+| link:#S0-092-S5[`S5`] 
 |===
 
 === Member Functions
@@ -6457,11 +6457,11 @@ struct <<S0-0cf,S0>>&lt;3, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-092-f0,`f0`>> 
+| link:#S0-092-f0[`f0`] 
 |===
 
 [#S0-092-S1]
-== <<S0-092,S0&lt;3, bool&gt;>>::S1
+== link:#S0-092[S0&lt;3, bool&gt;]::S1
 
 === Synopsis
 
@@ -6477,11 +6477,11 @@ struct S1;
 [cols=1]
 |===
 | Name
-| <<S0-092-S1-f1,`f1`>> 
+| link:#S0-092-S1-f1[`f1`] 
 |===
 
 [#S0-092-S1-f1]
-== <<S0-092,S0&lt;3, bool&gt;>>::<<S0-092-S1,S1>>::f1
+== link:#S0-092[S0&lt;3, bool&gt;]::link:#S0-092-S1[S1]::f1
 
 === Synopsis
 
@@ -6494,7 +6494,7 @@ f1();
 ----
 
 [#S0-092-S5]
-== <<S0-092,S0&lt;3, bool&gt;>>::S5
+== link:#S0-092[S0&lt;3, bool&gt;]::S5
 
 === Synopsis
 
@@ -6509,7 +6509,7 @@ struct S5;
 ----
 
 [#S0-092-f0]
-== <<S0-092,S0&lt;3, bool&gt;>>::f0
+== link:#S0-092[S0&lt;3, bool&gt;]::f0
 
 === Synopsis
 
@@ -6522,7 +6522,7 @@ f0();
 ----
 
 [#S0-021]
-== <<S0-0cf,S0>>&lt;30, bool&gt;
+== link:#S0-0cf[S0]&lt;30, bool&gt;
 
 === Synopsis
 
@@ -6531,7 +6531,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;30, bool&gt;;
+struct link:#S0-0cf[S0]&lt;30, bool&gt;;
 ----
 
 === Types
@@ -6539,9 +6539,9 @@ struct <<S0-0cf,S0>>&lt;30, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-021-S1,`S1`>> 
-| <<S0-021-S5-06,`S5`>> 
-| <<S0-021-S5-0b,`S5&lt;31, bool&gt;`>> 
+| link:#S0-021-S1[`S1`] 
+| link:#S0-021-S5-06[`S5`] 
+| link:#S0-021-S5-0b[`S5&lt;31, bool&gt;`] 
 |===
 
 === Member Functions
@@ -6549,11 +6549,11 @@ struct <<S0-0cf,S0>>&lt;30, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-021-f0,`f0`>> 
+| link:#S0-021-f0[`f0`] 
 |===
 
 [#S0-021-S1]
-== <<S0-021,S0&lt;30, bool&gt;>>::S1
+== link:#S0-021[S0&lt;30, bool&gt;]::S1
 
 === Synopsis
 
@@ -6565,7 +6565,7 @@ struct S1;
 ----
 
 [#S0-021-S5-06]
-== <<S0-021,S0&lt;30, bool&gt;>>::S5
+== link:#S0-021[S0&lt;30, bool&gt;]::S5
 
 === Synopsis
 
@@ -6580,7 +6580,7 @@ struct S5;
 ----
 
 [#S0-021-S5-0b]
-== <<S0-021,S0&lt;30, bool&gt;>>::<<S0-0cf-S5,S5>>&lt;31, bool&gt;
+== link:#S0-021[S0&lt;30, bool&gt;]::link:#S0-0cf-S5[S5]&lt;31, bool&gt;
 
 === Synopsis
 
@@ -6589,7 +6589,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5,S5>>&lt;31, bool&gt;;
+struct link:#S0-0cf-S5[S5]&lt;31, bool&gt;;
 ----
 
 === Types
@@ -6597,7 +6597,7 @@ struct <<S0-0cf-S5,S5>>&lt;31, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-021-S5-0b-S6,`S6`>> 
+| link:#S0-021-S5-0b-S6[`S6`] 
 |===
 
 === Member Functions
@@ -6605,11 +6605,11 @@ struct <<S0-0cf-S5,S5>>&lt;31, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-021-S5-0b-f5,`f5`>> 
+| link:#S0-021-S5-0b-f5[`f5`] 
 |===
 
 [#S0-021-S5-0b-S6]
-== <<S0-021,S0&lt;30, bool&gt;>>::<<S0-021-S5-0b,S5&lt;31, bool&gt;>>::S6
+== link:#S0-021[S0&lt;30, bool&gt;]::link:#S0-021-S5-0b[S5&lt;31, bool&gt;]::S6
 
 === Synopsis
 
@@ -6625,11 +6625,11 @@ struct S6;
 [cols=1]
 |===
 | Name
-| <<S0-021-S5-0b-S6-f6,`f6`>> 
+| link:#S0-021-S5-0b-S6-f6[`f6`] 
 |===
 
 [#S0-021-S5-0b-S6-f6]
-== <<S0-021,S0&lt;30, bool&gt;>>::<<S0-021-S5-0b,S5&lt;31, bool&gt;>>::<<S0-021-S5-0b-S6,S6>>::f6
+== link:#S0-021[S0&lt;30, bool&gt;]::link:#S0-021-S5-0b[S5&lt;31, bool&gt;]::link:#S0-021-S5-0b-S6[S6]::f6
 
 === Synopsis
 
@@ -6642,7 +6642,7 @@ f6();
 ----
 
 [#S0-021-S5-0b-f5]
-== <<S0-021,S0&lt;30, bool&gt;>>::<<S0-021-S5-0b,S5&lt;31, bool&gt;>>::f5
+== link:#S0-021[S0&lt;30, bool&gt;]::link:#S0-021-S5-0b[S5&lt;31, bool&gt;]::f5
 
 === Synopsis
 
@@ -6655,7 +6655,7 @@ f5();
 ----
 
 [#S0-021-f0]
-== <<S0-021,S0&lt;30, bool&gt;>>::f0
+== link:#S0-021[S0&lt;30, bool&gt;]::f0
 
 === Synopsis
 
@@ -6668,7 +6668,7 @@ f0();
 ----
 
 [#S0-0318]
-== <<S0-0cf,S0>>&lt;33, bool&gt;
+== link:#S0-0cf[S0]&lt;33, bool&gt;
 
 === Synopsis
 
@@ -6677,7 +6677,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;33, bool&gt;;
+struct link:#S0-0cf[S0]&lt;33, bool&gt;;
 ----
 
 === Types
@@ -6685,9 +6685,9 @@ struct <<S0-0cf,S0>>&lt;33, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0318-S1,`S1`>> 
-| <<S0-0318-S5-0f,`S5`>> 
-| <<S0-0318-S5-0b,`S5&lt;34, bool&gt;`>> 
+| link:#S0-0318-S1[`S1`] 
+| link:#S0-0318-S5-0f[`S5`] 
+| link:#S0-0318-S5-0b[`S5&lt;34, bool&gt;`] 
 |===
 
 === Member Functions
@@ -6695,11 +6695,11 @@ struct <<S0-0cf,S0>>&lt;33, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0318-f0,`f0`>> 
+| link:#S0-0318-f0[`f0`] 
 |===
 
 [#S0-0318-S1]
-== <<S0-0318,S0&lt;33, bool&gt;>>::S1
+== link:#S0-0318[S0&lt;33, bool&gt;]::S1
 
 === Synopsis
 
@@ -6711,7 +6711,7 @@ struct S1;
 ----
 
 [#S0-0318-S5-0f]
-== <<S0-0318,S0&lt;33, bool&gt;>>::S5
+== link:#S0-0318[S0&lt;33, bool&gt;]::S5
 
 === Synopsis
 
@@ -6726,7 +6726,7 @@ struct S5;
 ----
 
 [#S0-0318-S5-0b]
-== <<S0-0318,S0&lt;33, bool&gt;>>::<<S0-0cf-S5,S5>>&lt;34, bool&gt;
+== link:#S0-0318[S0&lt;33, bool&gt;]::link:#S0-0cf-S5[S5]&lt;34, bool&gt;
 
 === Synopsis
 
@@ -6735,7 +6735,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5,S5>>&lt;34, bool&gt;;
+struct link:#S0-0cf-S5[S5]&lt;34, bool&gt;;
 ----
 
 === Types
@@ -6743,7 +6743,7 @@ struct <<S0-0cf-S5,S5>>&lt;34, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0318-S5-0b-S6,`S6`>> 
+| link:#S0-0318-S5-0b-S6[`S6`] 
 |===
 
 === Member Functions
@@ -6751,11 +6751,11 @@ struct <<S0-0cf-S5,S5>>&lt;34, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0318-S5-0b-f5,`f5`>> 
+| link:#S0-0318-S5-0b-f5[`f5`] 
 |===
 
 [#S0-0318-S5-0b-S6]
-== <<S0-0318,S0&lt;33, bool&gt;>>::<<S0-0318-S5-0b,S5&lt;34, bool&gt;>>::S6
+== link:#S0-0318[S0&lt;33, bool&gt;]::link:#S0-0318-S5-0b[S5&lt;34, bool&gt;]::S6
 
 === Synopsis
 
@@ -6771,8 +6771,8 @@ struct S6;
 [cols=1]
 |===
 | Name
-| <<S0-0318-S5-0b-S6-S7-04,`S7`>> 
-| <<S0-0318-S5-0b-S6-S7-05,`S7&lt;35, bool&gt;`>> 
+| link:#S0-0318-S5-0b-S6-S7-04[`S7`] 
+| link:#S0-0318-S5-0b-S6-S7-05[`S7&lt;35, bool&gt;`] 
 |===
 
 === Member Functions
@@ -6780,11 +6780,11 @@ struct S6;
 [cols=1]
 |===
 | Name
-| <<S0-0318-S5-0b-S6-f6,`f6`>> 
+| link:#S0-0318-S5-0b-S6-f6[`f6`] 
 |===
 
 [#S0-0318-S5-0b-S6-S7-04]
-== <<S0-0318,S0&lt;33, bool&gt;>>::<<S0-0318-S5-0b,S5&lt;34, bool&gt;>>::<<S0-0318-S5-0b-S6,S6>>::S7
+== link:#S0-0318[S0&lt;33, bool&gt;]::link:#S0-0318-S5-0b[S5&lt;34, bool&gt;]::link:#S0-0318-S5-0b-S6[S6]::S7
 
 === Synopsis
 
@@ -6799,7 +6799,7 @@ struct S7;
 ----
 
 [#S0-0318-S5-0b-S6-S7-05]
-== <<S0-0318,S0&lt;33, bool&gt;>>::<<S0-0318-S5-0b,S5&lt;34, bool&gt;>>::<<S0-0318-S5-0b-S6,S6>>::<<S0-0cf-S5-S6-S7,S7>>&lt;35, bool&gt;
+== link:#S0-0318[S0&lt;33, bool&gt;]::link:#S0-0318-S5-0b[S5&lt;34, bool&gt;]::link:#S0-0318-S5-0b-S6[S6]::link:#S0-0cf-S5-S6-S7[S7]&lt;35, bool&gt;
 
 === Synopsis
 
@@ -6808,7 +6808,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5-S6-S7,S7>>&lt;35, bool&gt;;
+struct link:#S0-0cf-S5-S6-S7[S7]&lt;35, bool&gt;;
 ----
 
 === Types
@@ -6816,7 +6816,7 @@ struct <<S0-0cf-S5-S6-S7,S7>>&lt;35, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0318-S5-0b-S6-S7-05-S9,`S9`>> 
+| link:#S0-0318-S5-0b-S6-S7-05-S9[`S9`] 
 |===
 
 === Member Functions
@@ -6824,11 +6824,11 @@ struct <<S0-0cf-S5-S6-S7,S7>>&lt;35, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0318-S5-0b-S6-S7-05-f7,`f7`>> 
+| link:#S0-0318-S5-0b-S6-S7-05-f7[`f7`] 
 |===
 
 [#S0-0318-S5-0b-S6-S7-05-S9]
-== <<S0-0318,S0&lt;33, bool&gt;>>::<<S0-0318-S5-0b,S5&lt;34, bool&gt;>>::<<S0-0318-S5-0b-S6,S6>>::<<S0-0318-S5-0b-S6-S7-05,S7&lt;35, bool&gt;>>::S9
+== link:#S0-0318[S0&lt;33, bool&gt;]::link:#S0-0318-S5-0b[S5&lt;34, bool&gt;]::link:#S0-0318-S5-0b-S6[S6]::link:#S0-0318-S5-0b-S6-S7-05[S7&lt;35, bool&gt;]::S9
 
 === Synopsis
 
@@ -6843,7 +6843,7 @@ struct S9;
 ----
 
 [#S0-0318-S5-0b-S6-S7-05-f7]
-== <<S0-0318,S0&lt;33, bool&gt;>>::<<S0-0318-S5-0b,S5&lt;34, bool&gt;>>::<<S0-0318-S5-0b-S6,S6>>::<<S0-0318-S5-0b-S6-S7-05,S7&lt;35, bool&gt;>>::f7
+== link:#S0-0318[S0&lt;33, bool&gt;]::link:#S0-0318-S5-0b[S5&lt;34, bool&gt;]::link:#S0-0318-S5-0b-S6[S6]::link:#S0-0318-S5-0b-S6-S7-05[S7&lt;35, bool&gt;]::f7
 
 === Synopsis
 
@@ -6856,7 +6856,7 @@ f7();
 ----
 
 [#S0-0318-S5-0b-S6-f6]
-== <<S0-0318,S0&lt;33, bool&gt;>>::<<S0-0318-S5-0b,S5&lt;34, bool&gt;>>::<<S0-0318-S5-0b-S6,S6>>::f6
+== link:#S0-0318[S0&lt;33, bool&gt;]::link:#S0-0318-S5-0b[S5&lt;34, bool&gt;]::link:#S0-0318-S5-0b-S6[S6]::f6
 
 === Synopsis
 
@@ -6869,7 +6869,7 @@ f6();
 ----
 
 [#S0-0318-S5-0b-f5]
-== <<S0-0318,S0&lt;33, bool&gt;>>::<<S0-0318-S5-0b,S5&lt;34, bool&gt;>>::f5
+== link:#S0-0318[S0&lt;33, bool&gt;]::link:#S0-0318-S5-0b[S5&lt;34, bool&gt;]::f5
 
 === Synopsis
 
@@ -6882,7 +6882,7 @@ f5();
 ----
 
 [#S0-0318-f0]
-== <<S0-0318,S0&lt;33, bool&gt;>>::f0
+== link:#S0-0318[S0&lt;33, bool&gt;]::f0
 
 === Synopsis
 
@@ -6895,7 +6895,7 @@ f0();
 ----
 
 [#S0-0d]
-== <<S0-0cf,S0>>&lt;36, bool&gt;
+== link:#S0-0cf[S0]&lt;36, bool&gt;
 
 === Synopsis
 
@@ -6904,7 +6904,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;36, bool&gt;;
+struct link:#S0-0cf[S0]&lt;36, bool&gt;;
 ----
 
 === Types
@@ -6912,9 +6912,9 @@ struct <<S0-0cf,S0>>&lt;36, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0d-S1,`S1`>> 
-| <<S0-0d-S5-09,`S5`>> 
-| <<S0-0d-S5-0b,`S5&lt;37, bool&gt;`>> 
+| link:#S0-0d-S1[`S1`] 
+| link:#S0-0d-S5-09[`S5`] 
+| link:#S0-0d-S5-0b[`S5&lt;37, bool&gt;`] 
 |===
 
 === Member Functions
@@ -6922,11 +6922,11 @@ struct <<S0-0cf,S0>>&lt;36, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0d-f0,`f0`>> 
+| link:#S0-0d-f0[`f0`] 
 |===
 
 [#S0-0d-S1]
-== <<S0-0d,S0&lt;36, bool&gt;>>::S1
+== link:#S0-0d[S0&lt;36, bool&gt;]::S1
 
 === Synopsis
 
@@ -6938,7 +6938,7 @@ struct S1;
 ----
 
 [#S0-0d-S5-09]
-== <<S0-0d,S0&lt;36, bool&gt;>>::S5
+== link:#S0-0d[S0&lt;36, bool&gt;]::S5
 
 === Synopsis
 
@@ -6953,7 +6953,7 @@ struct S5;
 ----
 
 [#S0-0d-S5-0b]
-== <<S0-0d,S0&lt;36, bool&gt;>>::<<S0-0cf-S5,S5>>&lt;37, bool&gt;
+== link:#S0-0d[S0&lt;36, bool&gt;]::link:#S0-0cf-S5[S5]&lt;37, bool&gt;
 
 === Synopsis
 
@@ -6962,7 +6962,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5,S5>>&lt;37, bool&gt;;
+struct link:#S0-0cf-S5[S5]&lt;37, bool&gt;;
 ----
 
 === Types
@@ -6970,7 +6970,7 @@ struct <<S0-0cf-S5,S5>>&lt;37, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0d-S5-0b-S6,`S6`>> 
+| link:#S0-0d-S5-0b-S6[`S6`] 
 |===
 
 === Member Functions
@@ -6978,11 +6978,11 @@ struct <<S0-0cf-S5,S5>>&lt;37, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0d-S5-0b-f5,`f5`>> 
+| link:#S0-0d-S5-0b-f5[`f5`] 
 |===
 
 [#S0-0d-S5-0b-S6]
-== <<S0-0d,S0&lt;36, bool&gt;>>::<<S0-0d-S5-0b,S5&lt;37, bool&gt;>>::S6
+== link:#S0-0d[S0&lt;36, bool&gt;]::link:#S0-0d-S5-0b[S5&lt;37, bool&gt;]::S6
 
 === Synopsis
 
@@ -6998,8 +6998,8 @@ struct S6;
 [cols=1]
 |===
 | Name
-| <<S0-0d-S5-0b-S6-S7-08,`S7`>> 
-| <<S0-0d-S5-0b-S6-S7-0d,`S7&lt;38, bool&gt;`>> 
+| link:#S0-0d-S5-0b-S6-S7-08[`S7`] 
+| link:#S0-0d-S5-0b-S6-S7-0d[`S7&lt;38, bool&gt;`] 
 |===
 
 === Member Functions
@@ -7007,11 +7007,11 @@ struct S6;
 [cols=1]
 |===
 | Name
-| <<S0-0d-S5-0b-S6-f6,`f6`>> 
+| link:#S0-0d-S5-0b-S6-f6[`f6`] 
 |===
 
 [#S0-0d-S5-0b-S6-S7-08]
-== <<S0-0d,S0&lt;36, bool&gt;>>::<<S0-0d-S5-0b,S5&lt;37, bool&gt;>>::<<S0-0d-S5-0b-S6,S6>>::S7
+== link:#S0-0d[S0&lt;36, bool&gt;]::link:#S0-0d-S5-0b[S5&lt;37, bool&gt;]::link:#S0-0d-S5-0b-S6[S6]::S7
 
 === Synopsis
 
@@ -7026,7 +7026,7 @@ struct S7;
 ----
 
 [#S0-0d-S5-0b-S6-S7-0d]
-== <<S0-0d,S0&lt;36, bool&gt;>>::<<S0-0d-S5-0b,S5&lt;37, bool&gt;>>::<<S0-0d-S5-0b-S6,S6>>::<<S0-0cf-S5-S6-S7,S7>>&lt;38, bool&gt;
+== link:#S0-0d[S0&lt;36, bool&gt;]::link:#S0-0d-S5-0b[S5&lt;37, bool&gt;]::link:#S0-0d-S5-0b-S6[S6]::link:#S0-0cf-S5-S6-S7[S7]&lt;38, bool&gt;
 
 === Synopsis
 
@@ -7035,7 +7035,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5-S6-S7,S7>>&lt;38, bool&gt;;
+struct link:#S0-0cf-S5-S6-S7[S7]&lt;38, bool&gt;;
 ----
 
 === Types
@@ -7043,7 +7043,7 @@ struct <<S0-0cf-S5-S6-S7,S7>>&lt;38, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0d-S5-0b-S6-S7-0d-S8,`S8`>> 
+| link:#S0-0d-S5-0b-S6-S7-0d-S8[`S8`] 
 |===
 
 === Member Functions
@@ -7051,11 +7051,11 @@ struct <<S0-0cf-S5-S6-S7,S7>>&lt;38, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0d-S5-0b-S6-S7-0d-f7,`f7`>> 
+| link:#S0-0d-S5-0b-S6-S7-0d-f7[`f7`] 
 |===
 
 [#S0-0d-S5-0b-S6-S7-0d-S8]
-== <<S0-0d,S0&lt;36, bool&gt;>>::<<S0-0d-S5-0b,S5&lt;37, bool&gt;>>::<<S0-0d-S5-0b-S6,S6>>::<<S0-0d-S5-0b-S6-S7-0d,S7&lt;38, bool&gt;>>::S8
+== link:#S0-0d[S0&lt;36, bool&gt;]::link:#S0-0d-S5-0b[S5&lt;37, bool&gt;]::link:#S0-0d-S5-0b-S6[S6]::link:#S0-0d-S5-0b-S6-S7-0d[S7&lt;38, bool&gt;]::S8
 
 === Synopsis
 
@@ -7067,7 +7067,7 @@ struct S8;
 ----
 
 [#S0-0d-S5-0b-S6-S7-0d-f7]
-== <<S0-0d,S0&lt;36, bool&gt;>>::<<S0-0d-S5-0b,S5&lt;37, bool&gt;>>::<<S0-0d-S5-0b-S6,S6>>::<<S0-0d-S5-0b-S6-S7-0d,S7&lt;38, bool&gt;>>::f7
+== link:#S0-0d[S0&lt;36, bool&gt;]::link:#S0-0d-S5-0b[S5&lt;37, bool&gt;]::link:#S0-0d-S5-0b-S6[S6]::link:#S0-0d-S5-0b-S6-S7-0d[S7&lt;38, bool&gt;]::f7
 
 === Synopsis
 
@@ -7080,7 +7080,7 @@ f7();
 ----
 
 [#S0-0d-S5-0b-S6-f6]
-== <<S0-0d,S0&lt;36, bool&gt;>>::<<S0-0d-S5-0b,S5&lt;37, bool&gt;>>::<<S0-0d-S5-0b-S6,S6>>::f6
+== link:#S0-0d[S0&lt;36, bool&gt;]::link:#S0-0d-S5-0b[S5&lt;37, bool&gt;]::link:#S0-0d-S5-0b-S6[S6]::f6
 
 === Synopsis
 
@@ -7093,7 +7093,7 @@ f6();
 ----
 
 [#S0-0d-S5-0b-f5]
-== <<S0-0d,S0&lt;36, bool&gt;>>::<<S0-0d-S5-0b,S5&lt;37, bool&gt;>>::f5
+== link:#S0-0d[S0&lt;36, bool&gt;]::link:#S0-0d-S5-0b[S5&lt;37, bool&gt;]::f5
 
 === Synopsis
 
@@ -7106,7 +7106,7 @@ f5();
 ----
 
 [#S0-0d-f0]
-== <<S0-0d,S0&lt;36, bool&gt;>>::f0
+== link:#S0-0d[S0&lt;36, bool&gt;]::f0
 
 === Synopsis
 
@@ -7119,7 +7119,7 @@ f0();
 ----
 
 [#S0-0206]
-== <<S0-0cf,S0>>&lt;39, bool&gt;
+== link:#S0-0cf[S0]&lt;39, bool&gt;
 
 === Synopsis
 
@@ -7128,7 +7128,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;39, bool&gt;;
+struct link:#S0-0cf[S0]&lt;39, bool&gt;;
 ----
 
 === Types
@@ -7136,9 +7136,9 @@ struct <<S0-0cf,S0>>&lt;39, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0206-S1,`S1`>> 
-| <<S0-0206-S5-06,`S5`>> 
-| <<S0-0206-S5-08,`S5&lt;40, bool&gt;`>> 
+| link:#S0-0206-S1[`S1`] 
+| link:#S0-0206-S5-06[`S5`] 
+| link:#S0-0206-S5-08[`S5&lt;40, bool&gt;`] 
 |===
 
 === Member Functions
@@ -7146,11 +7146,11 @@ struct <<S0-0cf,S0>>&lt;39, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0206-f0,`f0`>> 
+| link:#S0-0206-f0[`f0`] 
 |===
 
 [#S0-0206-S1]
-== <<S0-0206,S0&lt;39, bool&gt;>>::S1
+== link:#S0-0206[S0&lt;39, bool&gt;]::S1
 
 === Synopsis
 
@@ -7162,7 +7162,7 @@ struct S1;
 ----
 
 [#S0-0206-S5-06]
-== <<S0-0206,S0&lt;39, bool&gt;>>::S5
+== link:#S0-0206[S0&lt;39, bool&gt;]::S5
 
 === Synopsis
 
@@ -7177,7 +7177,7 @@ struct S5;
 ----
 
 [#S0-0206-S5-08]
-== <<S0-0206,S0&lt;39, bool&gt;>>::<<S0-0cf-S5,S5>>&lt;40, bool&gt;
+== link:#S0-0206[S0&lt;39, bool&gt;]::link:#S0-0cf-S5[S5]&lt;40, bool&gt;
 
 === Synopsis
 
@@ -7186,7 +7186,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5,S5>>&lt;40, bool&gt;;
+struct link:#S0-0cf-S5[S5]&lt;40, bool&gt;;
 ----
 
 === Types
@@ -7194,7 +7194,7 @@ struct <<S0-0cf-S5,S5>>&lt;40, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0206-S5-08-S6,`S6`>> 
+| link:#S0-0206-S5-08-S6[`S6`] 
 |===
 
 === Member Functions
@@ -7202,11 +7202,11 @@ struct <<S0-0cf-S5,S5>>&lt;40, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0206-S5-08-f5,`f5`>> 
+| link:#S0-0206-S5-08-f5[`f5`] 
 |===
 
 [#S0-0206-S5-08-S6]
-== <<S0-0206,S0&lt;39, bool&gt;>>::<<S0-0206-S5-08,S5&lt;40, bool&gt;>>::S6
+== link:#S0-0206[S0&lt;39, bool&gt;]::link:#S0-0206-S5-08[S5&lt;40, bool&gt;]::S6
 
 === Synopsis
 
@@ -7222,8 +7222,8 @@ struct S6;
 [cols=1]
 |===
 | Name
-| <<S0-0206-S5-08-S6-S7-06,`S7`>> 
-| <<S0-0206-S5-08-S6-S7-01,`S7&lt;41, bool&gt;`>> 
+| link:#S0-0206-S5-08-S6-S7-06[`S7`] 
+| link:#S0-0206-S5-08-S6-S7-01[`S7&lt;41, bool&gt;`] 
 |===
 
 === Member Functions
@@ -7231,11 +7231,11 @@ struct S6;
 [cols=1]
 |===
 | Name
-| <<S0-0206-S5-08-S6-f6,`f6`>> 
+| link:#S0-0206-S5-08-S6-f6[`f6`] 
 |===
 
 [#S0-0206-S5-08-S6-S7-06]
-== <<S0-0206,S0&lt;39, bool&gt;>>::<<S0-0206-S5-08,S5&lt;40, bool&gt;>>::<<S0-0206-S5-08-S6,S6>>::S7
+== link:#S0-0206[S0&lt;39, bool&gt;]::link:#S0-0206-S5-08[S5&lt;40, bool&gt;]::link:#S0-0206-S5-08-S6[S6]::S7
 
 === Synopsis
 
@@ -7250,7 +7250,7 @@ struct S7;
 ----
 
 [#S0-0206-S5-08-S6-S7-01]
-== <<S0-0206,S0&lt;39, bool&gt;>>::<<S0-0206-S5-08,S5&lt;40, bool&gt;>>::<<S0-0206-S5-08-S6,S6>>::<<S0-0cf-S5-S6-S7,S7>>&lt;41, bool&gt;
+== link:#S0-0206[S0&lt;39, bool&gt;]::link:#S0-0206-S5-08[S5&lt;40, bool&gt;]::link:#S0-0206-S5-08-S6[S6]::link:#S0-0cf-S5-S6-S7[S7]&lt;41, bool&gt;
 
 === Synopsis
 
@@ -7259,7 +7259,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5-S6-S7,S7>>&lt;41, bool&gt;;
+struct link:#S0-0cf-S5-S6-S7[S7]&lt;41, bool&gt;;
 ----
 
 === Types
@@ -7267,7 +7267,7 @@ struct <<S0-0cf-S5-S6-S7,S7>>&lt;41, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0206-S5-08-S6-S7-01-S8,`S8`>> 
+| link:#S0-0206-S5-08-S6-S7-01-S8[`S8`] 
 |===
 
 === Member Functions
@@ -7275,11 +7275,11 @@ struct <<S0-0cf-S5-S6-S7,S7>>&lt;41, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0206-S5-08-S6-S7-01-f7,`f7`>> 
+| link:#S0-0206-S5-08-S6-S7-01-f7[`f7`] 
 |===
 
 [#S0-0206-S5-08-S6-S7-01-S8]
-== <<S0-0206,S0&lt;39, bool&gt;>>::<<S0-0206-S5-08,S5&lt;40, bool&gt;>>::<<S0-0206-S5-08-S6,S6>>::<<S0-0206-S5-08-S6-S7-01,S7&lt;41, bool&gt;>>::S8
+== link:#S0-0206[S0&lt;39, bool&gt;]::link:#S0-0206-S5-08[S5&lt;40, bool&gt;]::link:#S0-0206-S5-08-S6[S6]::link:#S0-0206-S5-08-S6-S7-01[S7&lt;41, bool&gt;]::S8
 
 === Synopsis
 
@@ -7291,7 +7291,7 @@ struct S8;
 ----
 
 [#S0-0206-S5-08-S6-S7-01-f7]
-== <<S0-0206,S0&lt;39, bool&gt;>>::<<S0-0206-S5-08,S5&lt;40, bool&gt;>>::<<S0-0206-S5-08-S6,S6>>::<<S0-0206-S5-08-S6-S7-01,S7&lt;41, bool&gt;>>::f7
+== link:#S0-0206[S0&lt;39, bool&gt;]::link:#S0-0206-S5-08[S5&lt;40, bool&gt;]::link:#S0-0206-S5-08-S6[S6]::link:#S0-0206-S5-08-S6-S7-01[S7&lt;41, bool&gt;]::f7
 
 === Synopsis
 
@@ -7304,7 +7304,7 @@ f7();
 ----
 
 [#S0-0206-S5-08-S6-f6]
-== <<S0-0206,S0&lt;39, bool&gt;>>::<<S0-0206-S5-08,S5&lt;40, bool&gt;>>::<<S0-0206-S5-08-S6,S6>>::f6
+== link:#S0-0206[S0&lt;39, bool&gt;]::link:#S0-0206-S5-08[S5&lt;40, bool&gt;]::link:#S0-0206-S5-08-S6[S6]::f6
 
 === Synopsis
 
@@ -7317,7 +7317,7 @@ f6();
 ----
 
 [#S0-0206-S5-08-f5]
-== <<S0-0206,S0&lt;39, bool&gt;>>::<<S0-0206-S5-08,S5&lt;40, bool&gt;>>::f5
+== link:#S0-0206[S0&lt;39, bool&gt;]::link:#S0-0206-S5-08[S5&lt;40, bool&gt;]::f5
 
 === Synopsis
 
@@ -7330,7 +7330,7 @@ f5();
 ----
 
 [#S0-0206-f0]
-== <<S0-0206,S0&lt;39, bool&gt;>>::f0
+== link:#S0-0206[S0&lt;39, bool&gt;]::f0
 
 === Synopsis
 
@@ -7343,7 +7343,7 @@ f0();
 ----
 
 [#S0-0b6]
-== <<S0-0cf,S0>>&lt;4, bool&gt;
+== link:#S0-0cf[S0]&lt;4, bool&gt;
 
 === Synopsis
 
@@ -7352,7 +7352,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;4, bool&gt;;
+struct link:#S0-0cf[S0]&lt;4, bool&gt;;
 ----
 
 === Types
@@ -7360,8 +7360,8 @@ struct <<S0-0cf,S0>>&lt;4, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0b6-S1,`S1`>> 
-| <<S0-0b6-S5,`S5`>> 
+| link:#S0-0b6-S1[`S1`] 
+| link:#S0-0b6-S5[`S5`] 
 |===
 
 === Member Functions
@@ -7369,11 +7369,11 @@ struct <<S0-0cf,S0>>&lt;4, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0b6-f0,`f0`>> 
+| link:#S0-0b6-f0[`f0`] 
 |===
 
 [#S0-0b6-S1]
-== <<S0-0b6,S0&lt;4, bool&gt;>>::S1
+== link:#S0-0b6[S0&lt;4, bool&gt;]::S1
 
 === Synopsis
 
@@ -7389,11 +7389,11 @@ struct S1;
 [cols=1]
 |===
 | Name
-| <<S0-0b6-S1-f1,`f1`>> 
+| link:#S0-0b6-S1-f1[`f1`] 
 |===
 
 [#S0-0b6-S1-f1]
-== <<S0-0b6,S0&lt;4, bool&gt;>>::<<S0-0b6-S1,S1>>::f1
+== link:#S0-0b6[S0&lt;4, bool&gt;]::link:#S0-0b6-S1[S1]::f1
 
 === Synopsis
 
@@ -7406,7 +7406,7 @@ f1();
 ----
 
 [#S0-0b6-S5]
-== <<S0-0b6,S0&lt;4, bool&gt;>>::S5
+== link:#S0-0b6[S0&lt;4, bool&gt;]::S5
 
 === Synopsis
 
@@ -7421,7 +7421,7 @@ struct S5;
 ----
 
 [#S0-0b6-f0]
-== <<S0-0b6,S0&lt;4, bool&gt;>>::f0
+== link:#S0-0b6[S0&lt;4, bool&gt;]::f0
 
 === Synopsis
 
@@ -7434,7 +7434,7 @@ f0();
 ----
 
 [#S0-05291]
-== <<S0-0cf,S0>>&lt;43, bool&gt;
+== link:#S0-0cf[S0]&lt;43, bool&gt;
 
 === Synopsis
 
@@ -7443,7 +7443,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;43, bool&gt;;
+struct link:#S0-0cf[S0]&lt;43, bool&gt;;
 ----
 
 === Types
@@ -7451,9 +7451,9 @@ struct <<S0-0cf,S0>>&lt;43, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-05291-S1,`S1`>> 
-| <<S0-05291-S5-02,`S5`>> 
-| <<S0-05291-S5-0e,`S5&lt;44, bool&gt;`>> 
+| link:#S0-05291-S1[`S1`] 
+| link:#S0-05291-S5-02[`S5`] 
+| link:#S0-05291-S5-0e[`S5&lt;44, bool&gt;`] 
 |===
 
 === Member Functions
@@ -7461,11 +7461,11 @@ struct <<S0-0cf,S0>>&lt;43, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-05291-f0,`f0`>> 
+| link:#S0-05291-f0[`f0`] 
 |===
 
 [#S0-05291-S1]
-== <<S0-05291,S0&lt;43, bool&gt;>>::S1
+== link:#S0-05291[S0&lt;43, bool&gt;]::S1
 
 === Synopsis
 
@@ -7477,7 +7477,7 @@ struct S1;
 ----
 
 [#S0-05291-S5-02]
-== <<S0-05291,S0&lt;43, bool&gt;>>::S5
+== link:#S0-05291[S0&lt;43, bool&gt;]::S5
 
 === Synopsis
 
@@ -7492,7 +7492,7 @@ struct S5;
 ----
 
 [#S0-05291-S5-0e]
-== <<S0-05291,S0&lt;43, bool&gt;>>::<<S0-0cf-S5,S5>>&lt;44, bool&gt;
+== link:#S0-05291[S0&lt;43, bool&gt;]::link:#S0-0cf-S5[S5]&lt;44, bool&gt;
 
 === Synopsis
 
@@ -7501,7 +7501,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5,S5>>&lt;44, bool&gt;;
+struct link:#S0-0cf-S5[S5]&lt;44, bool&gt;;
 ----
 
 === Types
@@ -7509,7 +7509,7 @@ struct <<S0-0cf-S5,S5>>&lt;44, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-05291-S5-0e-S6,`S6`>> 
+| link:#S0-05291-S5-0e-S6[`S6`] 
 |===
 
 === Member Functions
@@ -7517,11 +7517,11 @@ struct <<S0-0cf-S5,S5>>&lt;44, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-05291-S5-0e-f5,`f5`>> 
+| link:#S0-05291-S5-0e-f5[`f5`] 
 |===
 
 [#S0-05291-S5-0e-S6]
-== <<S0-05291,S0&lt;43, bool&gt;>>::<<S0-05291-S5-0e,S5&lt;44, bool&gt;>>::S6
+== link:#S0-05291[S0&lt;43, bool&gt;]::link:#S0-05291-S5-0e[S5&lt;44, bool&gt;]::S6
 
 === Synopsis
 
@@ -7537,8 +7537,8 @@ struct S6;
 [cols=1]
 |===
 | Name
-| <<S0-05291-S5-0e-S6-S7-04,`S7`>> 
-| <<S0-05291-S5-0e-S6-S7-0f,`S7&lt;45, bool&gt;`>> 
+| link:#S0-05291-S5-0e-S6-S7-04[`S7`] 
+| link:#S0-05291-S5-0e-S6-S7-0f[`S7&lt;45, bool&gt;`] 
 |===
 
 === Member Functions
@@ -7546,11 +7546,11 @@ struct S6;
 [cols=1]
 |===
 | Name
-| <<S0-05291-S5-0e-S6-f6,`f6`>> 
+| link:#S0-05291-S5-0e-S6-f6[`f6`] 
 |===
 
 [#S0-05291-S5-0e-S6-S7-04]
-== <<S0-05291,S0&lt;43, bool&gt;>>::<<S0-05291-S5-0e,S5&lt;44, bool&gt;>>::<<S0-05291-S5-0e-S6,S6>>::S7
+== link:#S0-05291[S0&lt;43, bool&gt;]::link:#S0-05291-S5-0e[S5&lt;44, bool&gt;]::link:#S0-05291-S5-0e-S6[S6]::S7
 
 === Synopsis
 
@@ -7565,7 +7565,7 @@ struct S7;
 ----
 
 [#S0-05291-S5-0e-S6-S7-0f]
-== <<S0-05291,S0&lt;43, bool&gt;>>::<<S0-05291-S5-0e,S5&lt;44, bool&gt;>>::<<S0-05291-S5-0e-S6,S6>>::<<S0-0cf-S5-S6-S7,S7>>&lt;45, bool&gt;
+== link:#S0-05291[S0&lt;43, bool&gt;]::link:#S0-05291-S5-0e[S5&lt;44, bool&gt;]::link:#S0-05291-S5-0e-S6[S6]::link:#S0-0cf-S5-S6-S7[S7]&lt;45, bool&gt;
 
 === Synopsis
 
@@ -7574,7 +7574,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S5-S6-S7,S7>>&lt;45, bool&gt;;
+struct link:#S0-0cf-S5-S6-S7[S7]&lt;45, bool&gt;;
 ----
 
 === Types
@@ -7582,7 +7582,7 @@ struct <<S0-0cf-S5-S6-S7,S7>>&lt;45, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-05291-S5-0e-S6-S7-0f-S8,`S8`>> 
+| link:#S0-05291-S5-0e-S6-S7-0f-S8[`S8`] 
 |===
 
 === Member Functions
@@ -7590,11 +7590,11 @@ struct <<S0-0cf-S5-S6-S7,S7>>&lt;45, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-05291-S5-0e-S6-S7-0f-f7,`f7`>> 
+| link:#S0-05291-S5-0e-S6-S7-0f-f7[`f7`] 
 |===
 
 [#S0-05291-S5-0e-S6-S7-0f-S8]
-== <<S0-05291,S0&lt;43, bool&gt;>>::<<S0-05291-S5-0e,S5&lt;44, bool&gt;>>::<<S0-05291-S5-0e-S6,S6>>::<<S0-05291-S5-0e-S6-S7-0f,S7&lt;45, bool&gt;>>::S8
+== link:#S0-05291[S0&lt;43, bool&gt;]::link:#S0-05291-S5-0e[S5&lt;44, bool&gt;]::link:#S0-05291-S5-0e-S6[S6]::link:#S0-05291-S5-0e-S6-S7-0f[S7&lt;45, bool&gt;]::S8
 
 === Synopsis
 
@@ -7606,7 +7606,7 @@ struct S8;
 ----
 
 [#S0-05291-S5-0e-S6-S7-0f-f7]
-== <<S0-05291,S0&lt;43, bool&gt;>>::<<S0-05291-S5-0e,S5&lt;44, bool&gt;>>::<<S0-05291-S5-0e-S6,S6>>::<<S0-05291-S5-0e-S6-S7-0f,S7&lt;45, bool&gt;>>::f7
+== link:#S0-05291[S0&lt;43, bool&gt;]::link:#S0-05291-S5-0e[S5&lt;44, bool&gt;]::link:#S0-05291-S5-0e-S6[S6]::link:#S0-05291-S5-0e-S6-S7-0f[S7&lt;45, bool&gt;]::f7
 
 === Synopsis
 
@@ -7619,7 +7619,7 @@ f7();
 ----
 
 [#S0-05291-S5-0e-S6-f6]
-== <<S0-05291,S0&lt;43, bool&gt;>>::<<S0-05291-S5-0e,S5&lt;44, bool&gt;>>::<<S0-05291-S5-0e-S6,S6>>::f6
+== link:#S0-05291[S0&lt;43, bool&gt;]::link:#S0-05291-S5-0e[S5&lt;44, bool&gt;]::link:#S0-05291-S5-0e-S6[S6]::f6
 
 === Synopsis
 
@@ -7632,7 +7632,7 @@ f6();
 ----
 
 [#S0-05291-S5-0e-f5]
-== <<S0-05291,S0&lt;43, bool&gt;>>::<<S0-05291-S5-0e,S5&lt;44, bool&gt;>>::f5
+== link:#S0-05291[S0&lt;43, bool&gt;]::link:#S0-05291-S5-0e[S5&lt;44, bool&gt;]::f5
 
 === Synopsis
 
@@ -7645,7 +7645,7 @@ f5();
 ----
 
 [#S0-05291-f0]
-== <<S0-05291,S0&lt;43, bool&gt;>>::f0
+== link:#S0-05291[S0&lt;43, bool&gt;]::f0
 
 === Synopsis
 
@@ -7658,7 +7658,7 @@ f0();
 ----
 
 [#S0-023]
-== <<S0-0cf,S0>>&lt;6, bool&gt;
+== link:#S0-0cf[S0]&lt;6, bool&gt;
 
 === Synopsis
 
@@ -7667,7 +7667,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;6, bool&gt;;
+struct link:#S0-0cf[S0]&lt;6, bool&gt;;
 ----
 
 === Types
@@ -7675,8 +7675,8 @@ struct <<S0-0cf,S0>>&lt;6, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-023-S1,`S1`>> 
-| <<S0-023-S5,`S5`>> 
+| link:#S0-023-S1[`S1`] 
+| link:#S0-023-S5[`S5`] 
 |===
 
 === Member Functions
@@ -7684,11 +7684,11 @@ struct <<S0-0cf,S0>>&lt;6, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-023-f0,`f0`>> 
+| link:#S0-023-f0[`f0`] 
 |===
 
 [#S0-023-S1]
-== <<S0-023,S0&lt;6, bool&gt;>>::S1
+== link:#S0-023[S0&lt;6, bool&gt;]::S1
 
 === Synopsis
 
@@ -7704,11 +7704,11 @@ struct S1;
 [cols=1]
 |===
 | Name
-| <<S0-023-S1-f1,`f1`>> 
+| link:#S0-023-S1-f1[`f1`] 
 |===
 
 [#S0-023-S1-f1]
-== <<S0-023,S0&lt;6, bool&gt;>>::<<S0-023-S1,S1>>::f1
+== link:#S0-023[S0&lt;6, bool&gt;]::link:#S0-023-S1[S1]::f1
 
 === Synopsis
 
@@ -7721,7 +7721,7 @@ f1();
 ----
 
 [#S0-023-S5]
-== <<S0-023,S0&lt;6, bool&gt;>>::S5
+== link:#S0-023[S0&lt;6, bool&gt;]::S5
 
 === Synopsis
 
@@ -7736,7 +7736,7 @@ struct S5;
 ----
 
 [#S0-023-f0]
-== <<S0-023,S0&lt;6, bool&gt;>>::f0
+== link:#S0-023[S0&lt;6, bool&gt;]::f0
 
 === Synopsis
 
@@ -7749,7 +7749,7 @@ f0();
 ----
 
 [#S0-04]
-== <<S0-0cf,S0>>&lt;8, bool&gt;
+== link:#S0-0cf[S0]&lt;8, bool&gt;
 
 === Synopsis
 
@@ -7758,7 +7758,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf,S0>>&lt;8, bool&gt;;
+struct link:#S0-0cf[S0]&lt;8, bool&gt;;
 ----
 
 === Types
@@ -7766,8 +7766,8 @@ struct <<S0-0cf,S0>>&lt;8, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-04-S1,`S1`>> 
-| <<S0-04-S5,`S5`>> 
+| link:#S0-04-S1[`S1`] 
+| link:#S0-04-S5[`S5`] 
 |===
 
 === Member Functions
@@ -7775,11 +7775,11 @@ struct <<S0-0cf,S0>>&lt;8, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-04-f0,`f0`>> 
+| link:#S0-04-f0[`f0`] 
 |===
 
 [#S0-04-S1]
-== <<S0-04,S0&lt;8, bool&gt;>>::S1
+== link:#S0-04[S0&lt;8, bool&gt;]::S1
 
 === Synopsis
 
@@ -7795,8 +7795,8 @@ struct S1;
 [cols=1]
 |===
 | Name
-| <<S0-04-S1-S2-0e,`S2`>> 
-| <<S0-04-S1-S2-0a,`S2&lt;9, bool&gt;`>> 
+| link:#S0-04-S1-S2-0e[`S2`] 
+| link:#S0-04-S1-S2-0a[`S2&lt;9, bool&gt;`] 
 |===
 
 === Member Functions
@@ -7804,11 +7804,11 @@ struct S1;
 [cols=1]
 |===
 | Name
-| <<S0-04-S1-f1,`f1`>> 
+| link:#S0-04-S1-f1[`f1`] 
 |===
 
 [#S0-04-S1-S2-0e]
-== <<S0-04,S0&lt;8, bool&gt;>>::<<S0-04-S1,S1>>::S2
+== link:#S0-04[S0&lt;8, bool&gt;]::link:#S0-04-S1[S1]::S2
 
 === Synopsis
 
@@ -7823,7 +7823,7 @@ struct S2;
 ----
 
 [#S0-04-S1-S2-0a]
-== <<S0-04,S0&lt;8, bool&gt;>>::<<S0-04-S1,S1>>::<<S0-0cf-S1-S2,S2>>&lt;9, bool&gt;
+== link:#S0-04[S0&lt;8, bool&gt;]::link:#S0-04-S1[S1]::link:#S0-0cf-S1-S2[S2]&lt;9, bool&gt;
 
 === Synopsis
 
@@ -7832,7 +7832,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0cf-S1-S2,S2>>&lt;9, bool&gt;;
+struct link:#S0-0cf-S1-S2[S2]&lt;9, bool&gt;;
 ----
 
 === Types
@@ -7840,7 +7840,7 @@ struct <<S0-0cf-S1-S2,S2>>&lt;9, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-04-S1-S2-0a-S4,`S4`>> 
+| link:#S0-04-S1-S2-0a-S4[`S4`] 
 |===
 
 === Member Functions
@@ -7848,11 +7848,11 @@ struct <<S0-0cf-S1-S2,S2>>&lt;9, bool&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-04-S1-S2-0a-f2,`f2`>> 
+| link:#S0-04-S1-S2-0a-f2[`f2`] 
 |===
 
 [#S0-04-S1-S2-0a-S4]
-== <<S0-04,S0&lt;8, bool&gt;>>::<<S0-04-S1,S1>>::<<S0-04-S1-S2-0a,S2&lt;9, bool&gt;>>::S4
+== link:#S0-04[S0&lt;8, bool&gt;]::link:#S0-04-S1[S1]::link:#S0-04-S1-S2-0a[S2&lt;9, bool&gt;]::S4
 
 === Synopsis
 
@@ -7867,7 +7867,7 @@ struct S4;
 ----
 
 [#S0-04-S1-S2-0a-f2]
-== <<S0-04,S0&lt;8, bool&gt;>>::<<S0-04-S1,S1>>::<<S0-04-S1-S2-0a,S2&lt;9, bool&gt;>>::f2
+== link:#S0-04[S0&lt;8, bool&gt;]::link:#S0-04-S1[S1]::link:#S0-04-S1-S2-0a[S2&lt;9, bool&gt;]::f2
 
 === Synopsis
 
@@ -7880,7 +7880,7 @@ f2();
 ----
 
 [#S0-04-S1-f1]
-== <<S0-04,S0&lt;8, bool&gt;>>::<<S0-04-S1,S1>>::f1
+== link:#S0-04[S0&lt;8, bool&gt;]::link:#S0-04-S1[S1]::f1
 
 === Synopsis
 
@@ -7893,7 +7893,7 @@ f1();
 ----
 
 [#S0-04-S5]
-== <<S0-04,S0&lt;8, bool&gt;>>::S5
+== link:#S0-04[S0&lt;8, bool&gt;]::S5
 
 === Synopsis
 
@@ -7908,7 +7908,7 @@ struct S5;
 ----
 
 [#S0-04-f0]
-== <<S0-04,S0&lt;8, bool&gt;>>::f0
+== link:#S0-04[S0&lt;8, bool&gt;]::f0
 
 === Synopsis
 
@@ -7921,7 +7921,7 @@ f0();
 ----
 
 [#S0-0c4]
-== <<S0-0cf,S0>>&lt;1, T*&gt;
+== link:#S0-0cf[S0]&lt;1, T*&gt;
 
 === Synopsis
 
@@ -7930,7 +7930,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-struct <<S0-0cf,S0>>&lt;1, T*&gt;;
+struct link:#S0-0cf[S0]&lt;1, T*&gt;;
 ----
 
 

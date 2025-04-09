@@ -10,10 +10,10 @@
 |===
 | Name
 | Description
-| <<f0,`f0`>> 
+| link:#f0[`f0`] 
 | 
-| <<f1,`f1`>> 
-| See <<f0,`f0`>>
+| link:#f1[`f1`] 
+| See link:#f0[`f0`]
 |===
 
 [#f0]
@@ -32,7 +32,7 @@ f0();
 [#f1]
 == f1
 
-See <<f0,`f0`>>
+See link:#f0[`f0`]
 
 === Synopsis
 

@@ -10,9 +10,9 @@
 |===
 | Name
 | Description
-| <<f0,`f0`>> 
+| link:#f0[`f0`] 
 | 
-| <<f1,`f1`>> 
+| link:#f1[`f1`] 
 | brief
 |===
 

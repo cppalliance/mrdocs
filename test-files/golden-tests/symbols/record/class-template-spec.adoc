@@ -9,15 +9,15 @@
 [cols=1]
 |===
 | Name
-| <<A-0e,`A`>> 
-| <<A-00,`A&lt;int&gt;`>> 
-| <<A-0c,`A&lt;long&gt;`>> 
-| <<B-00,`B`>> 
-| <<B-06,`B&lt;T&&gt;`>> 
-| <<B-07,`B&lt;T*&gt;`>> 
-| <<C-0f,`C`>> 
-| <<C-0a,`C&lt;int, int&gt;`>> 
-| <<C-0e,`C&lt;T*, int&gt;`>> 
+| link:#A-0e[`A`] 
+| link:#A-00[`A&lt;int&gt;`] 
+| link:#A-0c[`A&lt;long&gt;`] 
+| link:#B-00[`B`] 
+| link:#B-06[`B&lt;T&&gt;`] 
+| link:#B-07[`B&lt;T*&gt;`] 
+| link:#C-0f[`C`] 
+| link:#C-0a[`C&lt;int, int&gt;`] 
+| link:#C-0e[`C&lt;T*, int&gt;`] 
 |===
 
 [#A-0e]
@@ -38,11 +38,11 @@ struct A;
 [cols=1]
 |===
 | Name
-| <<A-0e-f,`f`>> 
+| link:#A-0e-f[`f`] 
 |===
 
 [#A-0e-f]
-== <<A-0e,A>>::f
+== link:#A-0e[A]::f
 
 === Synopsis
 
@@ -55,7 +55,7 @@ f();
 ----
 
 [#A-00]
-== <<A-0e,A>>&lt;int&gt;
+== link:#A-0e[A]&lt;int&gt;
 
 === Synopsis
 
@@ -64,7 +64,7 @@ Declared in `&lt;class&hyphen;template&hyphen;spec&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0e,A>>&lt;int&gt;;
+struct link:#A-0e[A]&lt;int&gt;;
 ----
 
 === Member Functions
@@ -72,11 +72,11 @@ struct <<A-0e,A>>&lt;int&gt;;
 [cols=1]
 |===
 | Name
-| <<A-00-g,`g`>> 
+| link:#A-00-g[`g`] 
 |===
 
 [#A-00-g]
-== <<A-00,A&lt;int&gt;>>::g
+== link:#A-00[A&lt;int&gt;]::g
 
 === Synopsis
 
@@ -89,7 +89,7 @@ g();
 ----
 
 [#A-0c]
-== <<A-0e,A>>&lt;long&gt;
+== link:#A-0e[A]&lt;long&gt;
 
 === Synopsis
 
@@ -98,7 +98,7 @@ Declared in `&lt;class&hyphen;template&hyphen;spec&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0e,A>>&lt;long&gt;;
+struct link:#A-0e[A]&lt;long&gt;;
 ----
 
 === Member Functions
@@ -106,11 +106,11 @@ struct <<A-0e,A>>&lt;long&gt;;
 [cols=1]
 |===
 | Name
-| <<A-0c-h,`h`>> 
+| link:#A-0c-h[`h`] 
 |===
 
 [#A-0c-h]
-== <<A-0c,A&lt;long&gt;>>::h
+== link:#A-0c[A&lt;long&gt;]::h
 
 === Synopsis
 
@@ -140,11 +140,11 @@ struct B;
 [cols=1]
 |===
 | Name
-| <<B-00-f,`f`>> 
+| link:#B-00-f[`f`] 
 |===
 
 [#B-00-f]
-== <<B-00,B>>::f
+== link:#B-00[B]::f
 
 === Synopsis
 
@@ -157,7 +157,7 @@ f();
 ----
 
 [#B-06]
-== <<B-00,B>>&lt;T&&gt;
+== link:#B-00[B]&lt;T&&gt;
 
 === Synopsis
 
@@ -166,7 +166,7 @@ Declared in `&lt;class&hyphen;template&hyphen;spec&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-struct <<B-00,B>>&lt;T&&gt;;
+struct link:#B-00[B]&lt;T&&gt;;
 ----
 
 === Member Functions
@@ -174,11 +174,11 @@ struct <<B-00,B>>&lt;T&&gt;;
 [cols=1]
 |===
 | Name
-| <<B-06-h,`h`>> 
+| link:#B-06-h[`h`] 
 |===
 
 [#B-06-h]
-== <<B-06,B&lt;T&&gt;>>::h
+== link:#B-06[B&lt;T&&gt;]::h
 
 === Synopsis
 
@@ -191,7 +191,7 @@ h();
 ----
 
 [#B-07]
-== <<B-00,B>>&lt;T*&gt;
+== link:#B-00[B]&lt;T*&gt;
 
 === Synopsis
 
@@ -200,7 +200,7 @@ Declared in `&lt;class&hyphen;template&hyphen;spec&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-struct <<B-00,B>>&lt;T*&gt;;
+struct link:#B-00[B]&lt;T*&gt;;
 ----
 
 === Member Functions
@@ -208,11 +208,11 @@ struct <<B-00,B>>&lt;T*&gt;;
 [cols=1]
 |===
 | Name
-| <<B-07-g,`g`>> 
+| link:#B-07-g[`g`] 
 |===
 
 [#B-07-g]
-== <<B-07,B&lt;T*&gt;>>::g
+== link:#B-07[B&lt;T*&gt;]::g
 
 === Synopsis
 
@@ -244,11 +244,11 @@ struct C;
 [cols=1]
 |===
 | Name
-| <<C-0f-f,`f`>> 
+| link:#C-0f-f[`f`] 
 |===
 
 [#C-0f-f]
-== <<C-0f,C>>::f
+== link:#C-0f[C]::f
 
 === Synopsis
 
@@ -261,7 +261,7 @@ f();
 ----
 
 [#C-0a]
-== <<C-0f,C>>&lt;int, int&gt;
+== link:#C-0f[C]&lt;int, int&gt;
 
 === Synopsis
 
@@ -270,7 +270,7 @@ Declared in `&lt;class&hyphen;template&hyphen;spec&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<C-0f,C>>&lt;int, int&gt;;
+struct link:#C-0f[C]&lt;int, int&gt;;
 ----
 
 === Member Functions
@@ -278,11 +278,11 @@ struct <<C-0f,C>>&lt;int, int&gt;;
 [cols=1]
 |===
 | Name
-| <<C-0a-g,`g`>> 
+| link:#C-0a-g[`g`] 
 |===
 
 [#C-0a-g]
-== <<C-0a,C&lt;int, int&gt;>>::g
+== link:#C-0a[C&lt;int, int&gt;]::g
 
 === Synopsis
 
@@ -295,7 +295,7 @@ g();
 ----
 
 [#C-0e]
-== <<C-0f,C>>&lt;T*, int&gt;
+== link:#C-0f[C]&lt;T*, int&gt;
 
 === Synopsis
 
@@ -304,7 +304,7 @@ Declared in `&lt;class&hyphen;template&hyphen;spec&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-struct <<C-0f,C>>&lt;T*, int&gt;;
+struct link:#C-0f[C]&lt;T*, int&gt;;
 ----
 
 === Member Functions
@@ -312,11 +312,11 @@ struct <<C-0f,C>>&lt;T*, int&gt;;
 [cols=1]
 |===
 | Name
-| <<C-0e-h,`h`>> 
+| link:#C-0e-h[`h`] 
 |===
 
 [#C-0e-h]
-== <<C-0e,C&lt;T*, int&gt;>>::h
+== link:#C-0e[C&lt;T*, int&gt;]::h
 
 === Synopsis
 

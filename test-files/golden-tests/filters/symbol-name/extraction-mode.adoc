@@ -10,9 +10,9 @@
 |===
 | Name
 | Description
-| <<regular_ns,`regular&lowbar;ns`>> 
+| link:#regular_ns[`regular&lowbar;ns`] 
 | A regular namespace with different filters for members
-| <<see_below_ns,`see&lowbar;below&lowbar;ns`>> 
+| link:#see_below_ns[`see&lowbar;below&lowbar;ns`] 
 | A see&hyphen;below namespace
 |===
 
@@ -22,11 +22,11 @@
 |===
 | Name
 | Description
-| <<dependency_ns_alias,`dependency&lowbar;ns&lowbar;alias`>> 
+| link:#dependency_ns_alias[`dependency&lowbar;ns&lowbar;alias`] 
 | Namespace alias to form the dependency on dependency&lowbar;ns
-| <<implementation_defined_ns_alias,`implementation&lowbar;defined&lowbar;ns&lowbar;alias`>> 
+| link:#implementation_defined_ns_alias[`implementation&lowbar;defined&lowbar;ns&lowbar;alias`] 
 | Namespace alias to form a dependency on the implementation&hyphen;defined namespace
-| <<see_below_ns_alias,`see&lowbar;below&lowbar;ns&lowbar;alias`>> 
+| link:#see_below_ns_alias[`see&lowbar;below&lowbar;ns&lowbar;alias`] 
 | Namespace alias to form a dependency on the see&hyphen;below namespace
 |===
 
@@ -36,9 +36,9 @@
 |===
 | Name
 | Description
-| <<regular,`regular`>> 
+| link:#regular[`regular`] 
 | A regular symbol in the global namespace
-| <<see_below,`see&lowbar;below`>> 
+| link:#see_below[`see&lowbar;below`] 
 | A see&hyphen;below symbol in the global namespace
 |===
 
@@ -48,13 +48,13 @@
 |===
 | Name
 | Description
-| <<get_dependency,`get&lowbar;dependency`>> 
+| link:#get_dependency[`get&lowbar;dependency`] 
 | A function to get a dependency symbol on the global namespace
-| <<get_implementation_defined,`get&lowbar;implementation&lowbar;defined`>> 
+| link:#get_implementation_defined[`get&lowbar;implementation&lowbar;defined`] 
 | A function to get an implementation&hyphen;defined symbol in the global namespace
-| <<get_regular,`get&lowbar;regular`>> 
+| link:#get_regular[`get&lowbar;regular`] 
 | A function to get a regular symbol in the global namespace
-| <<get_see_below,`get&lowbar;see&lowbar;below`>> 
+| link:#get_see_below[`get&lowbar;see&lowbar;below`] 
 | A function to get a see&hyphen;below symbol in the global namespace
 |===
 
@@ -69,9 +69,9 @@ A regular namespace with different filters for members
 |===
 | Name
 | Description
-| <<regular_ns-regular,`regular`>> 
+| link:#regular_ns-regular[`regular`] 
 | A symbol that passes the filters
-| <<regular_ns-see_below,`see&lowbar;below`>> 
+| link:#regular_ns-see_below[`see&lowbar;below`] 
 | A symbol that passes the see&hyphen;below filter
 |===
 
@@ -81,18 +81,18 @@ A regular namespace with different filters for members
 |===
 | Name
 | Description
-| <<regular_ns-get_dependency,`get&lowbar;dependency`>> 
+| link:#regular_ns-get_dependency[`get&lowbar;dependency`] 
 | A function to get an excluded symbol
-| <<regular_ns-get_implementation_defined,`get&lowbar;implementation&lowbar;defined`>> 
+| link:#regular_ns-get_implementation_defined[`get&lowbar;implementation&lowbar;defined`] 
 | A function to get an implementation&hyphen;defined symbol
-| <<regular_ns-get_regular,`get&lowbar;regular`>> 
+| link:#regular_ns-get_regular[`get&lowbar;regular`] 
 | A function to get a regular symbol
-| <<regular_ns-get_see_below,`get&lowbar;see&lowbar;below`>> 
+| link:#regular_ns-get_see_below[`get&lowbar;see&lowbar;below`] 
 | A function to get a see&hyphen;below symbol
 |===
 
 [#regular_ns-regular]
-== <<regular_ns,regular&lowbar;ns>>::regular
+== link:#regular_ns[regular&lowbar;ns]::regular
 
 A symbol that passes the filters
 
@@ -111,7 +111,7 @@ struct regular;
 |===
 | Name
 | Description
-| <<regular_ns-regular-also_regular,`also&lowbar;regular`>> 
+| link:#regular_ns-regular-also_regular[`also&lowbar;regular`] 
 | Child of a regular symbol extracted as regular
 |===
 
@@ -121,7 +121,7 @@ struct regular;
 |===
 | Name
 | Description
-| <<regular_ns-get_regular,`get&lowbar;regular`>>
+| link:#regular_ns-get_regular[`get&lowbar;regular`]
 | A function to get a regular symbol
 |===
 
@@ -130,7 +130,7 @@ struct regular;
 The symbol should have a page as usual
 
 [#regular_ns-regular-also_regular]
-== <<regular_ns,regular&lowbar;ns>>::<<regular_ns-regular,regular>>::also&lowbar;regular
+== link:#regular_ns[regular&lowbar;ns]::link:#regular_ns-regular[regular]::also&lowbar;regular
 
 Child of a regular symbol extracted as regular
 
@@ -149,12 +149,12 @@ struct also&lowbar;regular;
 |===
 | Name
 | Description
-| <<regular_ns-regular-also_regular-regular_as_well,`regular&lowbar;as&lowbar;well`>> 
+| link:#regular_ns-regular-also_regular-regular_as_well[`regular&lowbar;as&lowbar;well`] 
 | Grandchild of a regular symbol extracted as regular
 |===
 
 [#regular_ns-regular-also_regular-regular_as_well]
-== <<regular_ns,regular&lowbar;ns>>::<<regular_ns-regular,regular>>::<<regular_ns-regular-also_regular,also&lowbar;regular>>::regular&lowbar;as&lowbar;well
+== link:#regular_ns[regular&lowbar;ns]::link:#regular_ns-regular[regular]::link:#regular_ns-regular-also_regular[also&lowbar;regular]::regular&lowbar;as&lowbar;well
 
 Grandchild of a regular symbol extracted as regular
 
@@ -168,7 +168,7 @@ struct regular&lowbar;as&lowbar;well;
 ----
 
 [#regular_ns-see_below]
-== <<regular_ns,regular&lowbar;ns>>::see&lowbar;below
+== link:#regular_ns[regular&lowbar;ns]::see&lowbar;below
 
 A symbol that passes the see&hyphen;below filter
 
@@ -186,7 +186,7 @@ struct see&lowbar;below { /* see-below */ };
 A symbol that passes the filters and the see&hyphen;below filter&period; The symbol should have a page as usual but, because it&apos;s a scope and not a namespace, the members should not be listed on that page&period;
 
 [#regular_ns-get_dependency]
-== <<regular_ns,regular&lowbar;ns>>::get&lowbar;dependency
+== link:#regular_ns[regular&lowbar;ns]::get&lowbar;dependency
 
 A function to get an excluded symbol
 
@@ -205,7 +205,7 @@ get&lowbar;dependency();
 When used in a function, only the symbol name should be shown&period; No links should be generated for this symbol&period;
 
 [#regular_ns-get_implementation_defined]
-== <<regular_ns,regular&lowbar;ns>>::get&lowbar;implementation&lowbar;defined
+== link:#regular_ns[regular&lowbar;ns]::get&lowbar;implementation&lowbar;defined
 
 A function to get an implementation&hyphen;defined symbol
 
@@ -230,7 +230,7 @@ It&apos;s the responsibility of the function documentation to explain the implem
 A symbol that passes the implementation&hyphen;defined filter
 
 [#regular_ns-get_regular]
-== <<regular_ns,regular&lowbar;ns>>::get&lowbar;regular
+== link:#regular_ns[regular&lowbar;ns]::get&lowbar;regular
 
 A function to get a regular symbol
 
@@ -240,7 +240,7 @@ Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<regular_ns-regular,regular>>
+link:#regular_ns-regular[regular]
 get&lowbar;regular();
 ----
 
@@ -253,7 +253,7 @@ When used in a function, the symbol should be shown as usual with a link to the 
 A symbol that passes the filters
 
 [#regular_ns-get_see_below]
-== <<regular_ns,regular&lowbar;ns>>::get&lowbar;see&lowbar;below
+== link:#regular_ns[regular&lowbar;ns]::get&lowbar;see&lowbar;below
 
 A function to get a see&hyphen;below symbol
 
@@ -263,7 +263,7 @@ Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<regular_ns-see_below,see&lowbar;below>>
+link:#regular_ns-see_below[see&lowbar;below]
 get&lowbar;see&lowbar;below();
 ----
 
@@ -286,9 +286,9 @@ A see&hyphen;below namespace
 |===
 | Name
 | Description
-| <<see_below_ns-regular,`regular`>> 
+| link:#see_below_ns-regular[`regular`] 
 | Regular symbol in a see&hyphen;below namespace
-| <<see_below_ns-see_below,`see&lowbar;below`>> 
+| link:#see_below_ns-see_below[`see&lowbar;below`] 
 | See&hyphen;below symbol in a see&hyphen;below namespace
 |===
 
@@ -298,9 +298,9 @@ A see&hyphen;below namespace
 |===
 | Name
 | Description
-| <<see_below_ns-get_dependency,`get&lowbar;dependency`>> 
+| link:#see_below_ns-get_dependency[`get&lowbar;dependency`] 
 | A function to get a dependency symbol in a see&hyphen;below namespace
-| <<see_below_ns-get_implementation_defined,`get&lowbar;implementation&lowbar;defined`>> 
+| link:#see_below_ns-get_implementation_defined[`get&lowbar;implementation&lowbar;defined`] 
 | A function to get an implementation&hyphen;defined symbol in a see&hyphen;below namespace
 |===
 
@@ -311,7 +311,7 @@ All member symbols should become see&hyphen;below&period; All members are traver
 The documentation page for these symbols should include the see&hyphen;below comment&period;
 
 [#see_below_ns-regular]
-== <<see_below_ns,see&lowbar;below&lowbar;ns>>::regular
+== link:#see_below_ns[see&lowbar;below&lowbar;ns]::regular
 
 Regular symbol in a see&hyphen;below namespace
 
@@ -329,7 +329,7 @@ struct regular { /* see-below */ };
 The symbol becomes see&hyphen;below because the whole namespace is see&hyphen;below&period;
 
 [#see_below_ns-see_below]
-== <<see_below_ns,see&lowbar;below&lowbar;ns>>::see&lowbar;below
+== link:#see_below_ns[see&lowbar;below&lowbar;ns]::see&lowbar;below
 
 See&hyphen;below symbol in a see&hyphen;below namespace
 
@@ -347,7 +347,7 @@ struct see&lowbar;below { /* see-below */ };
 The symbol becomes see&hyphen;below because the whole namespace is see&hyphen;below and because it&apos;s explicitly marked as see&hyphen;below&period;
 
 [#see_below_ns-get_dependency]
-== <<see_below_ns,see&lowbar;below&lowbar;ns>>::get&lowbar;dependency
+== link:#see_below_ns[see&lowbar;below&lowbar;ns]::get&lowbar;dependency
 
 A function to get a dependency symbol in a see&hyphen;below namespace
 
@@ -368,7 +368,7 @@ The symbol should be extracted as a dependency because the exclude filter has pr
 It&apos;s the responsibility of the function documentation to explain the dependency&period;
 
 [#see_below_ns-get_implementation_defined]
-== <<see_below_ns,see&lowbar;below&lowbar;ns>>::get&lowbar;implementation&lowbar;defined
+== link:#see_below_ns[see&lowbar;below&lowbar;ns]::get&lowbar;implementation&lowbar;defined
 
 A function to get an implementation&hyphen;defined symbol in a see&hyphen;below namespace
 
@@ -431,7 +431,7 @@ Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-namespace see&lowbar;below&lowbar;ns&lowbar;alias = <<see_below_ns,see&lowbar;below&lowbar;ns>>;
+namespace see&lowbar;below&lowbar;ns&lowbar;alias = link:#see_below_ns[see&lowbar;below&lowbar;ns];
 ----
 
 === Description
@@ -458,7 +458,7 @@ struct regular;
 |===
 | Name
 | Description
-| <<regular-also_regular,`also&lowbar;regular`>> 
+| link:#regular-also_regular[`also&lowbar;regular`] 
 | Child of a regular symbol&colon; should be traversed as usual
 |===
 
@@ -468,7 +468,7 @@ struct regular;
 |===
 | Name
 | Description
-| <<get_regular,`get&lowbar;regular`>>
+| link:#get_regular[`get&lowbar;regular`]
 | A function to get a regular symbol in the global namespace
 |===
 
@@ -477,7 +477,7 @@ struct regular;
 This symbol should have a page as usual&period;
 
 [#regular-also_regular]
-== <<regular,regular>>::also&lowbar;regular
+== link:#regular[regular]::also&lowbar;regular
 
 Child of a regular symbol&colon; should be traversed as usual
 
@@ -496,12 +496,12 @@ struct also&lowbar;regular;
 |===
 | Name
 | Description
-| <<regular-also_regular-regular_as_well,`regular&lowbar;as&lowbar;well`>> 
+| link:#regular-also_regular-regular_as_well[`regular&lowbar;as&lowbar;well`] 
 | Grandchild of a regular symbol&colon; should be traversed as usual
 |===
 
 [#regular-also_regular-regular_as_well]
-== <<regular,regular>>::<<regular-also_regular,also&lowbar;regular>>::regular&lowbar;as&lowbar;well
+== link:#regular[regular]::link:#regular-also_regular[also&lowbar;regular]::regular&lowbar;as&lowbar;well
 
 Grandchild of a regular symbol&colon; should be traversed as usual
 
@@ -589,7 +589,7 @@ Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<regular,regular>>
+link:#regular[regular]
 get&lowbar;regular();
 ----
 
@@ -612,7 +612,7 @@ Declared in `&lt;extraction&hyphen;mode&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<see_below,see&lowbar;below>>
+link:#see_below[see&lowbar;below]
 get&lowbar;see&lowbar;below();
 ----
 

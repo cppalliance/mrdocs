@@ -9,8 +9,8 @@
 [cols=1]
 |===
 | Name
-| <<A-0c,`A`>> 
-| <<A-08,`A`>> 
+| link:#A-0c[`A`] 
+| link:#A-08[`A`] 
 |===
 
 === Functions
@@ -19,9 +19,9 @@
 |===
 | Name
 | Description
-| <<f,`f`>> 
+| link:#f[`f`] 
 | 
-| <<g-0f,`g`>> 
+| link:#g-0f[`g`] 
 | 
 |===
 
@@ -81,10 +81,10 @@ Declared in `&lt;requires&hyphen;clause&period;cpp&gt;`
 template&lt;typename T&gt;
 requires (sizeof(T) &equals;&equals; 2)
 void
-<<g-04,g>>();
+link:#g-04[g]();
 ----
 
-[.small]#<<g-04,_» more&period;&period;&period;_>>#
+[.small]#link:#g-04[_» more&period;&period;&period;_]#
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -92,10 +92,10 @@ void
 template&lt;typename T&gt;
 requires (sizeof(T) &equals;&equals; 4)
 void
-<<g-00,g>>();
+link:#g-00[g]();
 ----
 
-[.small]#<<g-00,_» more&period;&period;&period;_>>#
+[.small]#link:#g-00[_» more&period;&period;&period;_]#
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -103,10 +103,10 @@ void
 template&lt;typename U&gt;
 requires (sizeof(U) &equals;&equals; 2)
 void
-<<g-03,g>>();
+link:#g-03[g]();
 ----
 
-[.small]#<<g-03,_» more&period;&period;&period;_>>#
+[.small]#link:#g-03[_» more&period;&period;&period;_]#
 
 [#g-04]
 == g

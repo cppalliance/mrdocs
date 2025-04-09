@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<A,`A`>> 
+| link:#A[`A`] 
 |===
 
 === Types
@@ -17,7 +17,7 @@
 [cols=1]
 |===
 | Name
-| <<F,`F`>> 
+| link:#F[`F`] 
 |===
 
 === Functions
@@ -26,12 +26,12 @@
 |===
 | Name
 | Description
-| <<f0,`f0`>> 
+| link:#f0[`f0`] 
 | 
-| <<f5,`f5`>> 
-| See <<A-f1,`A&colon;&colon;f1`>>
-| <<f6,`f6`>> 
-| See <<F-operator_bitnot,`F&colon;&colon;operator&#126;`>>
+| link:#f5[`f5`] 
+| See link:#A-f1[`A&colon;&colon;f1`]
+| link:#f6[`f6`] 
+| See link:#F-operator_bitnot[`F&colon;&colon;operator&#126;`]
 |===
 
 [#A]
@@ -43,11 +43,11 @@
 |===
 | Name
 | Description
-| <<A-B,`B`>> 
-| See <<A-f1,`f1`>>
-| <<A-C,`C`>> 
+| link:#A-B[`B`] 
+| See link:#A-f1[`f1`]
+| link:#A-C[`C`] 
 | 
-| <<A-D,`D`>> 
+| link:#A-D[`D`] 
 | 
 |===
 
@@ -57,14 +57,14 @@
 |===
 | Name
 | Description
-| <<A-f1,`f1`>> 
-| See <<f0,`f0`>>
+| link:#A-f1[`f1`] 
+| See link:#f0[`f0`]
 |===
 
 [#A-B]
-== <<A,A>>::B
+== link:#A[A]::B
 
-See <<A-f1,`f1`>>
+See link:#A-f1[`f1`]
 
 === Synopsis
 
@@ -81,17 +81,17 @@ struct B;
 [cols=1]
 |===
 | Name
-| <<A-B-f2,`f2`>> 
+| link:#A-B-f2[`f2`] 
 |===
 
 === Description
 
-See <<A-f1,`A&colon;&colon;f1`>>
+See link:#A-f1[`A&colon;&colon;f1`]
 
-See <<A-f1,`&colon;&colon;A&colon;&colon;f1`>>
+See link:#A-f1[`&colon;&colon;A&colon;&colon;f1`]
 
 [#A-B-f2]
-== <<A,A>>::<<A-B,B>>::f2
+== link:#A[A]::link:#A-B[B]::f2
 
 === Synopsis
 
@@ -104,7 +104,7 @@ f2();
 ----
 
 [#A-C]
-== <<A,A>>::C
+== link:#A[A]::C
 
 === Synopsis
 
@@ -120,8 +120,8 @@ struct C;
 [cols=1]
 |===
 | Name
-| <<A-C-f3,`f3`>> 
-| <<A-C-f4,`f4`>> 
+| link:#A-C-f3[`f3`] 
+| link:#A-C-f4[`f4`] 
 |===
 
 === Derived Classes
@@ -130,12 +130,12 @@ struct C;
 |===
 | Name
 | Description
-| <<A-D,`D`>>
+| link:#A-D[`D`]
 | 
 |===
 
 [#A-C-f3]
-== <<A,A>>::<<A-C,C>>::f3
+== link:#A[A]::link:#A-C[C]::f3
 
 === Synopsis
 
@@ -148,7 +148,7 @@ f3();
 ----
 
 [#A-C-f4]
-== <<A,A>>::<<A-C,C>>::f4
+== link:#A[A]::link:#A-C[C]::f4
 
 === Synopsis
 
@@ -161,7 +161,7 @@ f4();
 ----
 
 [#A-D]
-== <<A,A>>::D
+== link:#A[A]::D
 
 === Synopsis
 
@@ -170,7 +170,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct D
-    : <<A-C,C>>;
+    : link:#A-C[C];
 ----
 
 === Base Classes
@@ -179,7 +179,7 @@ struct D
 |===
 | Name
 | Description
-| `<<A-C,C>>`
+| `link:#A-C[C]`
 | 
 |===
 
@@ -189,8 +189,8 @@ struct D
 |===
 | Name
 | Description
-| <<A-D-E,`E`>> 
-| See <<A-C-f3,`f3`>>
+| link:#A-D-E[`E`] 
+| See link:#A-C-f3[`f3`]
 |===
 
 === Member Functions
@@ -198,14 +198,14 @@ struct D
 [cols=1]
 |===
 | Name
-| <<A-C-f3,`f3`>> 
-| <<A-D-f4,`f4`>> 
+| link:#A-C-f3[`f3`] 
+| link:#A-D-f4[`f4`] 
 |===
 
 [#A-D-E]
-== <<A,A>>::<<A-D,D>>::E
+== link:#A[A]::link:#A-D[D]::E
 
-See <<A-C-f3,`f3`>>
+See link:#A-C-f3[`f3`]
 
 === Synopsis
 
@@ -218,12 +218,12 @@ struct E;
 
 === Description
 
-See <<A-D-f4,`f4`>>
+See link:#A-D-f4[`f4`]
 
-See <<A-C-f4,`C&colon;&colon;f4`>>
+See link:#A-C-f4[`C&colon;&colon;f4`]
 
 [#A-D-f4]
-== <<A,A>>::<<A-D,D>>::f4
+== link:#A[A]::link:#A-D[D]::f4
 
 === Synopsis
 
@@ -236,9 +236,9 @@ f4();
 ----
 
 [#A-f1]
-== <<A,A>>::f1
+== link:#A[A]::f1
 
-See <<f0,`f0`>>
+See link:#f0[`f0`]
 
 === Synopsis
 
@@ -252,7 +252,7 @@ f1();
 
 === Description
 
-See <<f0,`&colon;&colon;f0`>>
+See link:#f0[`&colon;&colon;f0`]
 
 [#F]
 == F
@@ -271,49 +271,49 @@ struct F;
 [cols=1]
 |===
 | Name
-| <<F-operator_assign,`operator&equals;`>> 
-| <<F-operator_mod,`operator%`>> 
-| <<F-operator_mod_eq,`operator%&equals;`>> 
-| <<F-operator_bitand,`operator&amp;`>> 
-| <<F-operator_and,`operator&amp;&amp;`>> 
-| <<F-operator_and_eq,`operator&amp;&equals;`>> 
-| <<F-operator_call,`operator()`>> 
-| <<F-operator_star,`operator&ast;`>> 
-| <<F-operator_star_eq,`operator&ast;&equals;`>> 
-| <<F-operator_plus,`operator&plus;`>> 
-| <<F-operator_inc,`operator&plus;&plus;`>> 
-| <<F-operator_plus_eq,`operator&plus;&equals;`>> 
-| <<F-operator_comma,`operator,`>> 
-| <<F-operator_minus,`operator&hyphen;`>> 
-| <<F-operator_dec,`operator&hyphen;&hyphen;`>> 
-| <<F-operator_minus_eq,`operator&hyphen;&equals;`>> 
-| <<F-operator_ptr,`operator&hyphen;&gt;`>> 
-| <<F-operator_ptrmem,`operator&hyphen;&gt;&ast;`>> 
-| <<F-operator_slash,`operator&sol;`>> 
-| <<F-operator_slash_eq,`operator&sol;&equals;`>> 
-| <<F-operator_lshift_eq,`operator&lt;&lt;&equals;`>> 
-| <<F-operator_rshift,`operator&gt;&gt;`>> 
-| <<F-operator_rshift_eq,`operator&gt;&gt;&equals;`>> 
-| <<F-operator_subs,`operator&lsqb;&rsqb;`>> 
-| <<F-operator_xor,`operator&circ;`>> 
-| <<F-operator_xor_eq,`operator&circ;&equals;`>> 
-| <<F-operator_bitor,`operator&verbar;`>> 
-| <<F-operator_or_eq,`operator&verbar;&equals;`>> 
-| <<F-operator_or,`operator&verbar;&verbar;`>> 
-| <<F-operator_bitnot,`operator&#126;`>> 
-| <<F-operator_lshift,`operator&lt;&lt;`>> 
-| <<F-operator_not,`operator!`>> 
-| <<F-operator_eq,`operator&equals;&equals;`>> 
-| <<F-operator_not_eq,`operator!&equals;`>> 
-| <<F-operator_lt,`operator&lt;`>> 
-| <<F-operator_le,`operator&lt;&equals;`>> 
-| <<F-operator_gt,`operator&gt;`>> 
-| <<F-operator_ge,`operator&gt;&equals;`>> 
-| <<F-operator_3way,`operator&lt;&equals;&gt;`>> 
+| link:#F-operator_assign[`operator&equals;`] 
+| link:#F-operator_mod[`operator%`] 
+| link:#F-operator_mod_eq[`operator%&equals;`] 
+| link:#F-operator_bitand[`operator&amp;`] 
+| link:#F-operator_and[`operator&amp;&amp;`] 
+| link:#F-operator_and_eq[`operator&amp;&equals;`] 
+| link:#F-operator_call[`operator()`] 
+| link:#F-operator_star[`operator&ast;`] 
+| link:#F-operator_star_eq[`operator&ast;&equals;`] 
+| link:#F-operator_plus[`operator&plus;`] 
+| link:#F-operator_inc[`operator&plus;&plus;`] 
+| link:#F-operator_plus_eq[`operator&plus;&equals;`] 
+| link:#F-operator_comma[`operator,`] 
+| link:#F-operator_minus[`operator&hyphen;`] 
+| link:#F-operator_dec[`operator&hyphen;&hyphen;`] 
+| link:#F-operator_minus_eq[`operator&hyphen;&equals;`] 
+| link:#F-operator_ptr[`operator&hyphen;&gt;`] 
+| link:#F-operator_ptrmem[`operator&hyphen;&gt;&ast;`] 
+| link:#F-operator_slash[`operator&sol;`] 
+| link:#F-operator_slash_eq[`operator&sol;&equals;`] 
+| link:#F-operator_lshift_eq[`operator&lt;&lt;&equals;`] 
+| link:#F-operator_rshift[`operator&gt;&gt;`] 
+| link:#F-operator_rshift_eq[`operator&gt;&gt;&equals;`] 
+| link:#F-operator_subs[`operator&lsqb;&rsqb;`] 
+| link:#F-operator_xor[`operator&circ;`] 
+| link:#F-operator_xor_eq[`operator&circ;&equals;`] 
+| link:#F-operator_bitor[`operator&verbar;`] 
+| link:#F-operator_or_eq[`operator&verbar;&equals;`] 
+| link:#F-operator_or[`operator&verbar;&verbar;`] 
+| link:#F-operator_bitnot[`operator&#126;`] 
+| link:#F-operator_lshift[`operator&lt;&lt;`] 
+| link:#F-operator_not[`operator!`] 
+| link:#F-operator_eq[`operator&equals;&equals;`] 
+| link:#F-operator_not_eq[`operator!&equals;`] 
+| link:#F-operator_lt[`operator&lt;`] 
+| link:#F-operator_le[`operator&lt;&equals;`] 
+| link:#F-operator_gt[`operator&gt;`] 
+| link:#F-operator_ge[`operator&gt;&equals;`] 
+| link:#F-operator_3way[`operator&lt;&equals;&gt;`] 
 |===
 
 [#F-operator_assign]
-== <<F,F>>::operator&equals;
+== link:#F[F]::operator&equals;
 
 === Synopsis
 
@@ -322,11 +322,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&equals;(<<F,F>>& other);
+operator&equals;(link:#F[F]& other);
 ----
 
 [#F-operator_mod]
-== <<F,F>>::operator%
+== link:#F[F]::operator%
 
 === Synopsis
 
@@ -335,11 +335,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator%(<<F,F>>& rhs);
+operator%(link:#F[F]& rhs);
 ----
 
 [#F-operator_mod_eq]
-== <<F,F>>::operator%&equals;
+== link:#F[F]::operator%&equals;
 
 === Synopsis
 
@@ -348,11 +348,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator%&equals;(<<F,F>>& rhs);
+operator%&equals;(link:#F[F]& rhs);
 ----
 
 [#F-operator_bitand]
-== <<F,F>>::operator&amp;
+== link:#F[F]::operator&amp;
 
 === Synopsis
 
@@ -361,11 +361,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&amp;(<<F,F>>& rhs);
+operator&amp;(link:#F[F]& rhs);
 ----
 
 [#F-operator_and]
-== <<F,F>>::operator&amp;&amp;
+== link:#F[F]::operator&amp;&amp;
 
 === Synopsis
 
@@ -374,11 +374,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&amp;&amp;(<<F,F>>& rhs);
+operator&amp;&amp;(link:#F[F]& rhs);
 ----
 
 [#F-operator_and_eq]
-== <<F,F>>::operator&amp;&equals;
+== link:#F[F]::operator&amp;&equals;
 
 === Synopsis
 
@@ -387,11 +387,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&amp;&equals;(<<F,F>>& rhs);
+operator&amp;&equals;(link:#F[F]& rhs);
 ----
 
 [#F-operator_call]
-== <<F,F>>::operator()
+== link:#F[F]::operator()
 
 === Synopsis
 
@@ -400,11 +400,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator()(<<F,F>>& rhs);
+operator()(link:#F[F]& rhs);
 ----
 
 [#F-operator_star]
-== <<F,F>>::operator&ast;
+== link:#F[F]::operator&ast;
 
 === Synopsis
 
@@ -413,11 +413,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&ast;(<<F,F>>& rhs);
+operator&ast;(link:#F[F]& rhs);
 ----
 
 [#F-operator_star_eq]
-== <<F,F>>::operator&ast;&equals;
+== link:#F[F]::operator&ast;&equals;
 
 === Synopsis
 
@@ -426,11 +426,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&ast;&equals;(<<F,F>>& rhs);
+operator&ast;&equals;(link:#F[F]& rhs);
 ----
 
 [#F-operator_plus]
-== <<F,F>>::operator&plus;
+== link:#F[F]::operator&plus;
 
 === Synopsis
 
@@ -439,11 +439,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&plus;(<<F,F>>& rhs);
+operator&plus;(link:#F[F]& rhs);
 ----
 
 [#F-operator_inc]
-== <<F,F>>::operator&plus;&plus;
+== link:#F[F]::operator&plus;&plus;
 
 === Synopsis
 
@@ -456,7 +456,7 @@ operator&plus;&plus;();
 ----
 
 [#F-operator_plus_eq]
-== <<F,F>>::operator&plus;&equals;
+== link:#F[F]::operator&plus;&equals;
 
 === Synopsis
 
@@ -465,11 +465,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&plus;&equals;(<<F,F>>& rhs);
+operator&plus;&equals;(link:#F[F]& rhs);
 ----
 
 [#F-operator_comma]
-== <<F,F>>::operator,
+== link:#F[F]::operator,
 
 === Synopsis
 
@@ -478,11 +478,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator,(<<F,F>>& rhs);
+operator,(link:#F[F]& rhs);
 ----
 
 [#F-operator_minus]
-== <<F,F>>::operator&hyphen;
+== link:#F[F]::operator&hyphen;
 
 === Synopsis
 
@@ -491,11 +491,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&hyphen;(<<F,F>>& rhs);
+operator&hyphen;(link:#F[F]& rhs);
 ----
 
 [#F-operator_dec]
-== <<F,F>>::operator&hyphen;&hyphen;
+== link:#F[F]::operator&hyphen;&hyphen;
 
 === Synopsis
 
@@ -508,7 +508,7 @@ operator&hyphen;&hyphen;();
 ----
 
 [#F-operator_minus_eq]
-== <<F,F>>::operator&hyphen;&equals;
+== link:#F[F]::operator&hyphen;&equals;
 
 === Synopsis
 
@@ -517,11 +517,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&hyphen;&equals;(<<F,F>>& rhs);
+operator&hyphen;&equals;(link:#F[F]& rhs);
 ----
 
 [#F-operator_ptr]
-== <<F,F>>::operator&hyphen;&gt;
+== link:#F[F]::operator&hyphen;&gt;
 
 === Synopsis
 
@@ -534,7 +534,7 @@ operator&hyphen;&gt;();
 ----
 
 [#F-operator_ptrmem]
-== <<F,F>>::operator&hyphen;&gt;&ast;
+== link:#F[F]::operator&hyphen;&gt;&ast;
 
 === Synopsis
 
@@ -543,11 +543,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&hyphen;&gt;&ast;(<<F,F>>& rhs);
+operator&hyphen;&gt;&ast;(link:#F[F]& rhs);
 ----
 
 [#F-operator_slash]
-== <<F,F>>::operator&sol;
+== link:#F[F]::operator&sol;
 
 === Synopsis
 
@@ -556,11 +556,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&sol;(<<F,F>>& rhs);
+operator&sol;(link:#F[F]& rhs);
 ----
 
 [#F-operator_slash_eq]
-== <<F,F>>::operator&sol;&equals;
+== link:#F[F]::operator&sol;&equals;
 
 === Synopsis
 
@@ -569,11 +569,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&sol;&equals;(<<F,F>>& rhs);
+operator&sol;&equals;(link:#F[F]& rhs);
 ----
 
 [#F-operator_lshift_eq]
-== <<F,F>>::operator&lt;&lt;&equals;
+== link:#F[F]::operator&lt;&lt;&equals;
 
 === Synopsis
 
@@ -582,11 +582,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&lt;&lt;&equals;(<<F,F>>& rhs);
+operator&lt;&lt;&equals;(link:#F[F]& rhs);
 ----
 
 [#F-operator_rshift]
-== <<F,F>>::operator&gt;&gt;
+== link:#F[F]::operator&gt;&gt;
 
 === Synopsis
 
@@ -595,11 +595,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&gt;&gt;(<<F,F>>& rhs);
+operator&gt;&gt;(link:#F[F]& rhs);
 ----
 
 [#F-operator_rshift_eq]
-== <<F,F>>::operator&gt;&gt;&equals;
+== link:#F[F]::operator&gt;&gt;&equals;
 
 === Synopsis
 
@@ -608,11 +608,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&gt;&gt;&equals;(<<F,F>>& rhs);
+operator&gt;&gt;&equals;(link:#F[F]& rhs);
 ----
 
 [#F-operator_subs]
-== <<F,F>>::operator&lsqb;&rsqb;
+== link:#F[F]::operator&lsqb;&rsqb;
 
 === Synopsis
 
@@ -621,11 +621,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&lsqb;&rsqb;(<<F,F>>& rhs);
+operator&lsqb;&rsqb;(link:#F[F]& rhs);
 ----
 
 [#F-operator_xor]
-== <<F,F>>::operator&circ;
+== link:#F[F]::operator&circ;
 
 === Synopsis
 
@@ -634,11 +634,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&circ;(<<F,F>>& rhs);
+operator&circ;(link:#F[F]& rhs);
 ----
 
 [#F-operator_xor_eq]
-== <<F,F>>::operator&circ;&equals;
+== link:#F[F]::operator&circ;&equals;
 
 === Synopsis
 
@@ -647,11 +647,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&circ;&equals;(<<F,F>>& rhs);
+operator&circ;&equals;(link:#F[F]& rhs);
 ----
 
 [#F-operator_bitor]
-== <<F,F>>::operator&verbar;
+== link:#F[F]::operator&verbar;
 
 === Synopsis
 
@@ -660,11 +660,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&verbar;(<<F,F>>& rhs);
+operator&verbar;(link:#F[F]& rhs);
 ----
 
 [#F-operator_or_eq]
-== <<F,F>>::operator&verbar;&equals;
+== link:#F[F]::operator&verbar;&equals;
 
 === Synopsis
 
@@ -673,11 +673,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&verbar;&equals;(<<F,F>>& rhs);
+operator&verbar;&equals;(link:#F[F]& rhs);
 ----
 
 [#F-operator_or]
-== <<F,F>>::operator&verbar;&verbar;
+== link:#F[F]::operator&verbar;&verbar;
 
 === Synopsis
 
@@ -686,11 +686,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&verbar;&verbar;(<<F,F>>& rhs);
+operator&verbar;&verbar;(link:#F[F]& rhs);
 ----
 
 [#F-operator_bitnot]
-== <<F,F>>::operator&#126;
+== link:#F[F]::operator&#126;
 
 === Synopsis
 
@@ -703,7 +703,7 @@ operator&#126;();
 ----
 
 [#F-operator_lshift]
-== <<F,F>>::operator&lt;&lt;
+== link:#F[F]::operator&lt;&lt;
 
 === Synopsis
 
@@ -712,11 +712,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&lt;&lt;(<<F,F>>& rhs);
+operator&lt;&lt;(link:#F[F]& rhs);
 ----
 
 [#F-operator_not]
-== <<F,F>>::operator!
+== link:#F[F]::operator!
 
 === Synopsis
 
@@ -729,7 +729,7 @@ operator!();
 ----
 
 [#F-operator_eq]
-== <<F,F>>::operator&equals;&equals;
+== link:#F[F]::operator&equals;&equals;
 
 === Synopsis
 
@@ -738,11 +738,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&equals;&equals;(<<F,F>>& rhs);
+operator&equals;&equals;(link:#F[F]& rhs);
 ----
 
 [#F-operator_not_eq]
-== <<F,F>>::operator!&equals;
+== link:#F[F]::operator!&equals;
 
 === Synopsis
 
@@ -751,11 +751,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator!&equals;(<<F,F>>& rhs);
+operator!&equals;(link:#F[F]& rhs);
 ----
 
 [#F-operator_lt]
-== <<F,F>>::operator&lt;
+== link:#F[F]::operator&lt;
 
 === Synopsis
 
@@ -764,11 +764,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&lt;(<<F,F>>& rhs);
+operator&lt;(link:#F[F]& rhs);
 ----
 
 [#F-operator_le]
-== <<F,F>>::operator&lt;&equals;
+== link:#F[F]::operator&lt;&equals;
 
 === Synopsis
 
@@ -777,11 +777,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&lt;&equals;(<<F,F>>& rhs);
+operator&lt;&equals;(link:#F[F]& rhs);
 ----
 
 [#F-operator_gt]
-== <<F,F>>::operator&gt;
+== link:#F[F]::operator&gt;
 
 === Synopsis
 
@@ -790,11 +790,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&gt;(<<F,F>>& rhs);
+operator&gt;(link:#F[F]& rhs);
 ----
 
 [#F-operator_ge]
-== <<F,F>>::operator&gt;&equals;
+== link:#F[F]::operator&gt;&equals;
 
 === Synopsis
 
@@ -803,11 +803,11 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&gt;&equals;(<<F,F>>& rhs);
+operator&gt;&equals;(link:#F[F]& rhs);
 ----
 
 [#F-operator_3way]
-== <<F,F>>::operator&lt;&equals;&gt;
+== link:#F[F]::operator&lt;&equals;&gt;
 
 === Synopsis
 
@@ -816,7 +816,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-operator&lt;&equals;&gt;(<<F,F>>& rhs);
+operator&lt;&equals;&gt;(link:#F[F]& rhs);
 ----
 
 [#f0]
@@ -835,7 +835,7 @@ f0();
 [#f5]
 == f5
 
-See <<A-f1,`A&colon;&colon;f1`>>
+See link:#A-f1[`A&colon;&colon;f1`]
 
 === Synopsis
 
@@ -849,12 +849,12 @@ f5();
 
 === Description
 
-See <<A-f1,`&colon;&colon;A&colon;&colon;f1`>>
+See link:#A-f1[`&colon;&colon;A&colon;&colon;f1`]
 
 [#f6]
 == f6
 
-See <<F-operator_bitnot,`F&colon;&colon;operator&#126;`>>
+See link:#F-operator_bitnot[`F&colon;&colon;operator&#126;`]
 
 === Synopsis
 
@@ -868,81 +868,81 @@ f6();
 
 === Description
 
-See <<F-operator_comma,`F&colon;&colon;operator,`>>
+See link:#F-operator_comma[`F&colon;&colon;operator,`]
 
-See <<F-operator_call,`F&colon;&colon;operator()`>>
+See link:#F-operator_call[`F&colon;&colon;operator()`]
 
-See <<F-operator_subs,`F&colon;&colon;operator&lsqb;&rsqb;`>>
+See link:#F-operator_subs[`F&colon;&colon;operator&lsqb;&rsqb;`]
 
-See <<F-operator_plus,`F&colon;&colon;operator&plus;`>>
+See link:#F-operator_plus[`F&colon;&colon;operator&plus;`]
 
-See <<F-operator_inc,`F&colon;&colon;operator&plus;&plus;`>>
+See link:#F-operator_inc[`F&colon;&colon;operator&plus;&plus;`]
 
-See <<F-operator_plus_eq,`F&colon;&colon;operator&plus;&equals;`>>
+See link:#F-operator_plus_eq[`F&colon;&colon;operator&plus;&equals;`]
 
-See <<F-operator_bitand,`F&colon;&colon;operator&amp;`>>
+See link:#F-operator_bitand[`F&colon;&colon;operator&amp;`]
 
-See <<F-operator_and,`F&colon;&colon;operator&amp;&amp;`>>
+See link:#F-operator_and[`F&colon;&colon;operator&amp;&amp;`]
 
-See <<F-operator_and_eq,`F&colon;&colon;operator&amp;&equals;`>>
+See link:#F-operator_and_eq[`F&colon;&colon;operator&amp;&equals;`]
 
-See <<F-operator_bitor,`F&colon;&colon;operator&verbar;`>>
+See link:#F-operator_bitor[`F&colon;&colon;operator&verbar;`]
 
-See <<F-operator_or,`F&colon;&colon;operator&verbar;&verbar;`>>
+See link:#F-operator_or[`F&colon;&colon;operator&verbar;&verbar;`]
 
-See <<F-operator_or_eq,`F&colon;&colon;operator&verbar;&equals;`>>
+See link:#F-operator_or_eq[`F&colon;&colon;operator&verbar;&equals;`]
 
-See <<F-operator_minus,`F&colon;&colon;operator&hyphen;`>>
+See link:#F-operator_minus[`F&colon;&colon;operator&hyphen;`]
 
-See <<F-operator_dec,`F&colon;&colon;operator&hyphen;&hyphen;`>>
+See link:#F-operator_dec[`F&colon;&colon;operator&hyphen;&hyphen;`]
 
-See <<F-operator_minus_eq,`F&colon;&colon;operator&hyphen;&equals;`>>
+See link:#F-operator_minus_eq[`F&colon;&colon;operator&hyphen;&equals;`]
 
-See <<F-operator_ptr,`F&colon;&colon;operator&hyphen;&gt;`>>
+See link:#F-operator_ptr[`F&colon;&colon;operator&hyphen;&gt;`]
 
-See <<F-operator_ptrmem,`F&colon;&colon;operator&hyphen;&gt;&ast;`>>
+See link:#F-operator_ptrmem[`F&colon;&colon;operator&hyphen;&gt;&ast;`]
 
-See <<F-operator_lt,`F&colon;&colon;operator&lt;`>>
+See link:#F-operator_lt[`F&colon;&colon;operator&lt;`]
 
-See <<F-operator_lshift,`F&colon;&colon;operator&lt;&lt;`>>
+See link:#F-operator_lshift[`F&colon;&colon;operator&lt;&lt;`]
 
-See <<F-operator_lshift_eq,`F&colon;&colon;operator&lt;&lt;&equals;`>>
+See link:#F-operator_lshift_eq[`F&colon;&colon;operator&lt;&lt;&equals;`]
 
-See <<F-operator_le,`F&colon;&colon;operator&lt;&equals;`>>
+See link:#F-operator_le[`F&colon;&colon;operator&lt;&equals;`]
 
-See <<F-operator_3way,`F&colon;&colon;operator&lt;&equals;&gt;`>>
+See link:#F-operator_3way[`F&colon;&colon;operator&lt;&equals;&gt;`]
 
-See <<F-operator_gt,`F&colon;&colon;operator&gt;`>>
+See link:#F-operator_gt[`F&colon;&colon;operator&gt;`]
 
-See <<F-operator_rshift,`F&colon;&colon;operator&gt;&gt;`>>
+See link:#F-operator_rshift[`F&colon;&colon;operator&gt;&gt;`]
 
-See <<F-operator_rshift_eq,`F&colon;&colon;operator&gt;&gt;&equals;`>>
+See link:#F-operator_rshift_eq[`F&colon;&colon;operator&gt;&gt;&equals;`]
 
-See <<F-operator_ge,`F&colon;&colon;operator&gt;&equals;`>>
+See link:#F-operator_ge[`F&colon;&colon;operator&gt;&equals;`]
 
-See <<F-operator_star,`F&colon;&colon;operator&ast;`>>
+See link:#F-operator_star[`F&colon;&colon;operator&ast;`]
 
-See <<F-operator_star_eq,`F&colon;&colon;operator&ast;&equals;`>>
+See link:#F-operator_star_eq[`F&colon;&colon;operator&ast;&equals;`]
 
-See <<F-operator_mod,`F&colon;&colon;operator%`>>
+See link:#F-operator_mod[`F&colon;&colon;operator%`]
 
-See <<F-operator_mod_eq,`F&colon;&colon;operator%&equals;`>>
+See link:#F-operator_mod_eq[`F&colon;&colon;operator%&equals;`]
 
-See <<F-operator_slash,`F&colon;&colon;operator&sol;`>>
+See link:#F-operator_slash[`F&colon;&colon;operator&sol;`]
 
-See <<F-operator_slash_eq,`F&colon;&colon;operator&sol;&equals;`>>
+See link:#F-operator_slash_eq[`F&colon;&colon;operator&sol;&equals;`]
 
-See <<F-operator_xor,`F&colon;&colon;operator&circ;`>>
+See link:#F-operator_xor[`F&colon;&colon;operator&circ;`]
 
-See <<F-operator_xor_eq,`F&colon;&colon;operator&circ;&equals;`>>
+See link:#F-operator_xor_eq[`F&colon;&colon;operator&circ;&equals;`]
 
-See <<F-operator_assign,`F&colon;&colon;operator&equals;`>>
+See link:#F-operator_assign[`F&colon;&colon;operator&equals;`]
 
-See <<F-operator_eq,`F&colon;&colon;operator&equals;&equals;`>>
+See link:#F-operator_eq[`F&colon;&colon;operator&equals;&equals;`]
 
-See <<F-operator_not,`F&colon;&colon;operator!`>>
+See link:#F-operator_not[`F&colon;&colon;operator!`]
 
-See <<F-operator_not_eq,`F&colon;&colon;operator!&equals;`>>
+See link:#F-operator_not_eq[`F&colon;&colon;operator!&equals;`]
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<S,`S`>> 
+| link:#S[`S`] 
 |===
 
 [#S]
@@ -29,11 +29,11 @@ class S;
 [cols=1]
 |===
 | Name
-| <<S-f,`f`>> 
+| link:#S-f[`f`] 
 |===
 
 [#S-f]
-== <<S,S>>::f
+== link:#S[S]::f
 
 === Synopsis
 
@@ -42,7 +42,7 @@ Declared in `&lt;class&hyphen;private&hyphen;alias&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f(<<S,type>>);
+f(link:#S[type]);
 ----
 
 

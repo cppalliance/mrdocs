@@ -9,11 +9,11 @@
 [cols=1]
 |===
 | Name
-| <<A-0e,`A`>> 
-| <<A-0f,`A&lt;bool&gt;`>> 
-| <<A-00b,`A&lt;short&gt;`>> 
-| <<A-000,`A&lt;int&gt;`>> 
-| <<D,`D`>> 
+| link:#A-0e[`A`] 
+| link:#A-0f[`A&lt;bool&gt;`] 
+| link:#A-00b[`A&lt;short&gt;`] 
+| link:#A-000[`A&lt;int&gt;`] 
+| link:#D[`D`] 
 |===
 
 [#A-0e]
@@ -34,8 +34,8 @@ struct A;
 [cols=1]
 |===
 | Name
-| <<A-0e-B,`B`>> 
-| <<A-0e-C,`C`>> 
+| link:#A-0e-B[`B`] 
+| link:#A-0e-C[`C`] 
 |===
 
 === Member Functions
@@ -43,11 +43,11 @@ struct A;
 [cols=1]
 |===
 | Name
-| <<A-0e-f,`f`>> 
+| link:#A-0e-f[`f`] 
 |===
 
 [#A-0e-B]
-== <<A-0e,A>>::B
+== link:#A-0e[A]::B
 
 === Synopsis
 
@@ -64,11 +64,11 @@ struct B;
 [cols=1]
 |===
 | Name
-| <<A-0e-B-g,`g`>> 
+| link:#A-0e-B-g[`g`] 
 |===
 
 [#A-0e-B-g]
-== <<A-0e,A>>::<<A-0e-B,B>>::g
+== link:#A-0e[A]::link:#A-0e-B[B]::g
 
 === Synopsis
 
@@ -81,7 +81,7 @@ g();
 ----
 
 [#A-0e-C]
-== <<A-0e,A>>::C
+== link:#A-0e[A]::C
 
 === Synopsis
 
@@ -98,11 +98,11 @@ struct C;
 [cols=1]
 |===
 | Name
-| <<A-0e-C-h,`h`>> 
+| link:#A-0e-C-h[`h`] 
 |===
 
 [#A-0e-C-h]
-== <<A-0e,A>>::<<A-0e-C,C>>::h
+== link:#A-0e[A]::link:#A-0e-C[C]::h
 
 === Synopsis
 
@@ -115,7 +115,7 @@ h();
 ----
 
 [#A-0e-f]
-== <<A-0e,A>>::f
+== link:#A-0e[A]::f
 
 === Synopsis
 
@@ -128,7 +128,7 @@ f();
 ----
 
 [#A-0f]
-== <<A-0e,A>>&lt;bool&gt;
+== link:#A-0e[A]&lt;bool&gt;
 
 === Synopsis
 
@@ -137,7 +137,7 @@ Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0e,A>>&lt;bool&gt;;
+struct link:#A-0e[A]&lt;bool&gt;;
 ----
 
 === Types
@@ -145,10 +145,10 @@ struct <<A-0e,A>>&lt;bool&gt;;
 [cols=1]
 |===
 | Name
-| <<A-0f-B,`B`>> 
-| <<A-0f-C-00,`C`>> 
-| <<A-0f-C-01,`C&lt;double*&gt;`>> 
-| <<A-0f-C-0c,`C&lt;U*&gt;`>> 
+| link:#A-0f-B[`B`] 
+| link:#A-0f-C-00[`C`] 
+| link:#A-0f-C-01[`C&lt;double*&gt;`] 
+| link:#A-0f-C-0c[`C&lt;U*&gt;`] 
 |===
 
 === Member Functions
@@ -156,11 +156,11 @@ struct <<A-0e,A>>&lt;bool&gt;;
 [cols=1]
 |===
 | Name
-| <<A-0f-f,`f`>> 
+| link:#A-0f-f[`f`] 
 |===
 
 [#A-0f-B]
-== <<A-0f,A&lt;bool&gt;>>::B
+== link:#A-0f[A&lt;bool&gt;]::B
 
 === Synopsis
 
@@ -173,7 +173,7 @@ struct B;
 ----
 
 [#A-0f-C-00]
-== <<A-0f,A&lt;bool&gt;>>::C
+== link:#A-0f[A&lt;bool&gt;]::C
 
 === Synopsis
 
@@ -186,7 +186,7 @@ struct C;
 ----
 
 [#A-0f-C-01]
-== <<A-0f,A&lt;bool&gt;>>::<<A-0e-C,C>>&lt;double*&gt;
+== link:#A-0f[A&lt;bool&gt;]::link:#A-0e-C[C]&lt;double*&gt;
 
 === Synopsis
 
@@ -195,7 +195,7 @@ Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0e-C,C>>&lt;double*&gt;;
+struct link:#A-0e-C[C]&lt;double*&gt;;
 ----
 
 === Member Functions
@@ -203,11 +203,11 @@ struct <<A-0e-C,C>>&lt;double*&gt;;
 [cols=1]
 |===
 | Name
-| <<A-0f-C-01-j,`j`>> 
+| link:#A-0f-C-01-j[`j`] 
 |===
 
 [#A-0f-C-01-j]
-== <<A-0f,A&lt;bool&gt;>>::<<A-0f-C-01,C&lt;double*&gt;>>::j
+== link:#A-0f[A&lt;bool&gt;]::link:#A-0f-C-01[C&lt;double*&gt;]::j
 
 === Synopsis
 
@@ -220,7 +220,7 @@ j();
 ----
 
 [#A-0f-C-0c]
-== <<A-0f,A&lt;bool&gt;>>::<<A-0e-C,C>>&lt;U*&gt;
+== link:#A-0f[A&lt;bool&gt;]::link:#A-0e-C[C]&lt;U*&gt;
 
 === Synopsis
 
@@ -229,7 +229,7 @@ Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename U&gt;
-struct <<A-0e-C,C>>&lt;U*&gt;;
+struct link:#A-0e-C[C]&lt;U*&gt;;
 ----
 
 === Member Functions
@@ -237,11 +237,11 @@ struct <<A-0e-C,C>>&lt;U*&gt;;
 [cols=1]
 |===
 | Name
-| <<A-0f-C-0c-j,`j`>> 
+| link:#A-0f-C-0c-j[`j`] 
 |===
 
 [#A-0f-C-0c-j]
-== <<A-0f,A&lt;bool&gt;>>::<<A-0f-C-0c,C&lt;U*&gt;>>::j
+== link:#A-0f[A&lt;bool&gt;]::link:#A-0f-C-0c[C&lt;U*&gt;]::j
 
 === Synopsis
 
@@ -254,7 +254,7 @@ j();
 ----
 
 [#A-0f-f]
-== <<A-0f,A&lt;bool&gt;>>::f
+== link:#A-0f[A&lt;bool&gt;]::f
 
 === Synopsis
 
@@ -267,7 +267,7 @@ f();
 ----
 
 [#A-00b]
-== <<A-0e,A>>&lt;short&gt;
+== link:#A-0e[A]&lt;short&gt;
 
 === Synopsis
 
@@ -276,7 +276,7 @@ Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0e,A>>&lt;short&gt;;
+struct link:#A-0e[A]&lt;short&gt;;
 ----
 
 === Types
@@ -284,8 +284,8 @@ struct <<A-0e,A>>&lt;short&gt;;
 [cols=1]
 |===
 | Name
-| <<A-00b-B,`B`>> 
-| <<A-00b-C,`C`>> 
+| link:#A-00b-B[`B`] 
+| link:#A-00b-C[`C`] 
 |===
 
 === Member Functions
@@ -293,11 +293,11 @@ struct <<A-0e,A>>&lt;short&gt;;
 [cols=1]
 |===
 | Name
-| <<A-00b-f,`f`>> 
+| link:#A-00b-f[`f`] 
 |===
 
 [#A-00b-B]
-== <<A-00b,A&lt;short&gt;>>::B
+== link:#A-00b[A&lt;short&gt;]::B
 
 === Synopsis
 
@@ -310,7 +310,7 @@ struct B;
 ----
 
 [#A-00b-C]
-== <<A-00b,A&lt;short&gt;>>::C
+== link:#A-00b[A&lt;short&gt;]::C
 
 === Synopsis
 
@@ -327,11 +327,11 @@ struct C;
 [cols=1]
 |===
 | Name
-| <<A-00b-C-i,`i`>> 
+| link:#A-00b-C-i[`i`] 
 |===
 
 [#A-00b-C-i]
-== <<A-00b,A&lt;short&gt;>>::<<A-00b-C,C>>::i
+== link:#A-00b[A&lt;short&gt;]::link:#A-00b-C[C]::i
 
 === Synopsis
 
@@ -344,7 +344,7 @@ i();
 ----
 
 [#A-00b-f]
-== <<A-00b,A&lt;short&gt;>>::f
+== link:#A-00b[A&lt;short&gt;]::f
 
 === Synopsis
 
@@ -357,7 +357,7 @@ f();
 ----
 
 [#A-000]
-== <<A-0e,A>>&lt;int&gt;
+== link:#A-0e[A]&lt;int&gt;
 
 === Synopsis
 
@@ -366,7 +366,7 @@ Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0e,A>>&lt;int&gt;;
+struct link:#A-0e[A]&lt;int&gt;;
 ----
 
 === Types
@@ -374,9 +374,9 @@ struct <<A-0e,A>>&lt;int&gt;;
 [cols=1]
 |===
 | Name
-| <<A-000-B-03,`B`>> 
-| <<A-000-B-09,`B&lt;long&gt;`>> 
-| <<A-000-C,`C`>> 
+| link:#A-000-B-03[`B`] 
+| link:#A-000-B-09[`B&lt;long&gt;`] 
+| link:#A-000-C[`C`] 
 |===
 
 === Member Functions
@@ -384,11 +384,11 @@ struct <<A-0e,A>>&lt;int&gt;;
 [cols=1]
 |===
 | Name
-| <<A-000-f,`f`>> 
+| link:#A-000-f[`f`] 
 |===
 
 [#A-000-B-03]
-== <<A-000,A&lt;int&gt;>>::B
+== link:#A-000[A&lt;int&gt;]::B
 
 === Synopsis
 
@@ -401,7 +401,7 @@ struct B;
 ----
 
 [#A-000-B-09]
-== <<A-000,A&lt;int&gt;>>::<<A-0e-B,B>>&lt;long&gt;
+== link:#A-000[A&lt;int&gt;]::link:#A-0e-B[B]&lt;long&gt;
 
 === Synopsis
 
@@ -410,7 +410,7 @@ Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0e-B,B>>&lt;long&gt;;
+struct link:#A-0e-B[B]&lt;long&gt;;
 ----
 
 === Member Functions
@@ -418,11 +418,11 @@ struct <<A-0e-B,B>>&lt;long&gt;;
 [cols=1]
 |===
 | Name
-| <<A-000-B-09-g,`g`>> 
+| link:#A-000-B-09-g[`g`] 
 |===
 
 [#A-000-B-09-g]
-== <<A-000,A&lt;int&gt;>>::<<A-000-B-09,B&lt;long&gt;>>::g
+== link:#A-000[A&lt;int&gt;]::link:#A-000-B-09[B&lt;long&gt;]::g
 
 === Synopsis
 
@@ -435,7 +435,7 @@ g();
 ----
 
 [#A-000-C]
-== <<A-000,A&lt;int&gt;>>::C
+== link:#A-000[A&lt;int&gt;]::C
 
 === Synopsis
 
@@ -448,7 +448,7 @@ struct C;
 ----
 
 [#A-000-f]
-== <<A-000,A&lt;int&gt;>>::f
+== link:#A-000[A&lt;int&gt;]::f
 
 === Synopsis
 
@@ -477,12 +477,12 @@ struct D;
 [cols=1]
 |===
 | Name
-| <<D-E-0e,`E`>> 
-| <<D-E-0d,`E&lt;int&gt;`>> 
+| link:#D-E-0e[`E`] 
+| link:#D-E-0d[`E&lt;int&gt;`] 
 |===
 
 [#D-E-0e]
-== <<D,D>>::E
+== link:#D[D]::E
 
 === Synopsis
 
@@ -499,11 +499,11 @@ struct E;
 [cols=1]
 |===
 | Name
-| <<D-E-0e-k,`k`>> 
+| link:#D-E-0e-k[`k`] 
 |===
 
 [#D-E-0e-k]
-== <<D,D>>::<<D-E-0e,E>>::k
+== link:#D[D]::link:#D-E-0e[E]::k
 
 === Synopsis
 
@@ -516,7 +516,7 @@ k();
 ----
 
 [#D-E-0d]
-== <<D,D>>::<<D-E-0e,E>>&lt;int&gt;
+== link:#D[D]::link:#D-E-0e[E]&lt;int&gt;
 
 === Synopsis
 
@@ -525,7 +525,7 @@ Declared in `&lt;spec&hyphen;mem&hyphen;implicit&hyphen;instantiation&period;cpp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<D-E-0e,E>>&lt;int&gt;;
+struct link:#D-E-0e[E]&lt;int&gt;;
 ----
 
 === Member Functions
@@ -533,11 +533,11 @@ struct <<D-E-0e,E>>&lt;int&gt;;
 [cols=1]
 |===
 | Name
-| <<D-E-0d-k,`k`>> 
+| link:#D-E-0d-k[`k`] 
 |===
 
 [#D-E-0d-k]
-== <<D,D>>::<<D-E-0d,E&lt;int&gt;>>::k
+== link:#D[D]::link:#D-E-0d[E&lt;int&gt;]::k
 
 === Synopsis
 

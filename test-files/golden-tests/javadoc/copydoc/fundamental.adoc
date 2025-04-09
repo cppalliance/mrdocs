@@ -10,11 +10,11 @@
 |===
 | Name
 | Description
-| <<f-0c,`f`>> 
+| link:#f-0c[`f`] 
 | `f` overloads
-| <<g,`g`>> 
+| link:#g[`g`] 
 | Brief
-| <<h,`h`>> 
+| link:#h[`h`] 
 | Brief
 |===
 
@@ -33,10 +33,10 @@ Fail
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<f-06,f>>(int a);
+link:#f-06[f](int a);
 ----
 
-[.small]#<<f-06,_» more&period;&period;&period;_>>#
+[.small]#link:#f-06[_» more&period;&period;&period;_]#
 
 Brief
 
@@ -44,10 +44,10 @@ Brief
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<f-04,f>>(long a);
+link:#f-04[f](long a);
 ----
 
-[.small]#<<f-04,_» more&period;&period;&period;_>>#
+[.small]#link:#f-04[_» more&period;&period;&period;_]#
 
 === Parameters
 

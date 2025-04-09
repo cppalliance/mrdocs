@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<A,`A`>> 
+| link:#A[`A`] 
 |===
 
 [#A]
@@ -21,36 +21,36 @@
 |===
 | Name
 | Description
-| <<A-B-08,`B`>> 
+| link:#A-B-08[`B`] 
 | Main class template for B&period;
-| <<A-B-09,`B&lt;int&gt;`>> 
+| link:#A-B-09[`B&lt;int&gt;`] 
 | Specialization of B for int&period;
-| <<A-B-0c,`B&lt;int, 2&gt;`>> 
+| link:#A-B-0c[`B&lt;int, 2&gt;`] 
 | Specialization of B for int with value 2&period;
-| <<A-C-05,`C`>> 
+| link:#A-C-05[`C`] 
 | Main class template for C&period;
-| <<A-C-0f,`C&lt;D, true&gt;`>> 
+| link:#A-C-0f[`C&lt;D, true&gt;`] 
 | Specialization of C for D with true&period;
-| <<A-C-0c,`C&lt;int, true&gt;`>> 
+| link:#A-C-0c[`C&lt;int, true&gt;`] 
 | Specialization of C for int with true&period;
-| <<A-D,`D`>> 
+| link:#A-D[`D`] 
 | Helper struct D&period;
-| <<A-BInt,`BInt`>> 
+| link:#A-BInt[`BInt`] 
 | Specialization of B for int&period;
-| <<A-BInt2,`BInt2`>> 
+| link:#A-BInt2[`BInt2`] 
 | Specialization of B for int with value 2&period;
-| <<A-B_t,`B&lowbar;t`>> 
+| link:#A-B_t[`B&lowbar;t`] 
 | Main class template for B&period;
-| <<A-CDTrue,`CDTrue`>> 
+| link:#A-CDTrue[`CDTrue`] 
 | Specialization of C for D with true&period;
-| <<A-CIntTrue,`CIntTrue`>> 
+| link:#A-CIntTrue[`CIntTrue`] 
 | Specialization of C for D with true&period;
-| <<A-C_t,`C&lowbar;t`>> 
+| link:#A-C_t[`C&lowbar;t`] 
 | Main class template for C&period;
 |===
 
 [#A-BInt]
-== <<A,A>>::BInt
+== link:#A[A]::BInt
 
 Specialization of B for int&period;
 
@@ -60,11 +60,11 @@ Declared in `&lt;template&hyphen;arguments&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using BInt = <<A-B-09,B>>&lt;int&gt;;
+using BInt = link:#A-B-09[B]&lt;int&gt;;
 ----
 
 [#A-BInt2]
-== <<A,A>>::BInt2
+== link:#A[A]::BInt2
 
 Specialization of B for int with value 2&period;
 
@@ -74,11 +74,11 @@ Declared in `&lt;template&hyphen;arguments&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using BInt2 = <<A-B-0c,B>>&lt;int, 2&gt;;
+using BInt2 = link:#A-B-0c[B]&lt;int, 2&gt;;
 ----
 
 [#A-B_t]
-== <<A,A>>::B&lowbar;t
+== link:#A[A]::B&lowbar;t
 
 Main class template for B&period;
 
@@ -91,7 +91,7 @@ Declared in `&lt;template&hyphen;arguments&period;cpp&gt;`
 template&lt;
     class T,
     int I&gt;
-using B&lowbar;t = <<A-B-08,B>>&lt;T, I&gt;;
+using B&lowbar;t = link:#A-B-08[B]&lt;T, I&gt;;
 ----
 
 === Template Parameters
@@ -105,7 +105,7 @@ using B&lowbar;t = <<A-B-08,B>>&lt;T, I&gt;;
 |===
 
 [#A-CDTrue]
-== <<A,A>>::CDTrue
+== link:#A[A]::CDTrue
 
 Specialization of C for D with true&period;
 
@@ -115,11 +115,11 @@ Declared in `&lt;template&hyphen;arguments&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using CDTrue = <<A-C-0f,C>>&lt;<<A-D,D>>, true&gt;;
+using CDTrue = link:#A-C-0f[C]&lt;link:#A-D[D], true&gt;;
 ----
 
 [#A-CIntTrue]
-== <<A,A>>::CIntTrue
+== link:#A[A]::CIntTrue
 
 Specialization of C for D with true&period;
 
@@ -129,11 +129,11 @@ Declared in `&lt;template&hyphen;arguments&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using CIntTrue = <<A-C-0c,C>>&lt;int, true&gt;;
+using CIntTrue = link:#A-C-0c[C]&lt;int, true&gt;;
 ----
 
 [#A-C_t]
-== <<A,A>>::C&lowbar;t
+== link:#A[A]::C&lowbar;t
 
 Main class template for C&period;
 
@@ -146,7 +146,7 @@ Declared in `&lt;template&hyphen;arguments&period;cpp&gt;`
 template&lt;
     class T,
     bool B&gt;
-using C&lowbar;t = <<A-C-05,C>>&lt;T, B&gt;;
+using C&lowbar;t = link:#A-C-05[C]&lt;T, B&gt;;
 ----
 
 === Template Parameters
@@ -160,7 +160,7 @@ using C&lowbar;t = <<A-C-05,C>>&lt;T, B&gt;;
 |===
 
 [#A-B-08]
-== <<A,A>>::B
+== link:#A[A]::B
 
 Main class template for B&period;
 
@@ -189,7 +189,7 @@ struct B;
 |===
 
 [#A-B-09]
-== <<A,A>>::<<A-B-08,B>>&lt;int&gt;
+== link:#A[A]::link:#A-B-08[B]&lt;int&gt;
 
 Specialization of B for int&period;
 
@@ -200,11 +200,11 @@ Declared in `&lt;template&hyphen;arguments&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-B-08,B>>&lt;int&gt;;
+struct link:#A-B-08[B]&lt;int&gt;;
 ----
 
 [#A-B-0c]
-== <<A,A>>::<<A-B-08,B>>&lt;int, 2&gt;
+== link:#A[A]::link:#A-B-08[B]&lt;int, 2&gt;
 
 Specialization of B for int with value 2&period;
 
@@ -215,11 +215,11 @@ Declared in `&lt;template&hyphen;arguments&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-B-08,B>>&lt;int, 2&gt;;
+struct link:#A-B-08[B]&lt;int, 2&gt;;
 ----
 
 [#A-C-05]
-== <<A,A>>::C
+== link:#A[A]::C
 
 Main class template for C&period;
 
@@ -248,7 +248,7 @@ struct C;
 |===
 
 [#A-C-0f]
-== <<A,A>>::<<A-C-05,C>>&lt;<<A-D,D>>, true&gt;
+== link:#A[A]::link:#A-C-05[C]&lt;link:#A-D[D], true&gt;
 
 Specialization of C for D with true&period;
 
@@ -259,11 +259,11 @@ Declared in `&lt;template&hyphen;arguments&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-C-05,C>>&lt;<<A-D,D>>, true&gt;;
+struct link:#A-C-05[C]&lt;link:#A-D[D], true&gt;;
 ----
 
 [#A-C-0c]
-== <<A,A>>::<<A-C-05,C>>&lt;int, true&gt;
+== link:#A[A]::link:#A-C-05[C]&lt;int, true&gt;
 
 Specialization of C for int with true&period;
 
@@ -274,11 +274,11 @@ Declared in `&lt;template&hyphen;arguments&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-C-05,C>>&lt;int, true&gt;;
+struct link:#A-C-05[C]&lt;int, true&gt;;
 ----
 
 [#A-D]
-== <<A,A>>::D
+== link:#A[A]::D
 
 Helper struct D&period;
 

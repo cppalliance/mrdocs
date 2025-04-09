@@ -10,11 +10,11 @@
 |===
 | Name
 | Description
-| <<A,`A`>> 
+| link:#A[`A`] 
 | A helper tag
-| <<X,`X`>> 
+| link:#X[`X`] 
 | Test class
-| <<ostream,`ostream`>> 
+| link:#ostream[`ostream`] 
 | A dumb ostream class
 |===
 
@@ -24,7 +24,7 @@
 |===
 | Name
 | Description
-| <<operator_lshift,`operator&lt;&lt;`>> 
+| link:#operator_lshift[`operator&lt;&lt;`] 
 | Stream insertion operator
 |===
 
@@ -62,14 +62,14 @@ struct X;
 |===
 | Name
 | Description
-| <<X-operator_assign-0a,`operator&equals;`>> 
+| link:#X-operator_assign-0a[`operator&equals;`] 
 | Assignment operators
-| <<X-operator_plus_eq,`operator&plus;&equals;`>> 
+| link:#X-operator_plus_eq[`operator&plus;&equals;`] 
 | Addition assignment operator
 |===
 
 [#X-operator_assign-0a]
-== <<X,X>>::operator&equals;
+== link:#X[X]::operator&equals;
 
 Assignment operators
 
@@ -82,36 +82,36 @@ Copy assignment operator
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X,X>>&
-<<X-operator_assign-06,operator&equals;>>(<<X,X>> const& other);
+link:#X[X]&
+link:#X-operator_assign-06[operator&equals;](link:#X[X] const& other);
 ----
 
-[.small]#<<X-operator_assign-06,_» more&period;&period;&period;_>>#
+[.small]#link:#X-operator_assign-06[_» more&period;&period;&period;_]#
 
 Move assignment operator
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X,X>>&
-<<X-operator_assign-0e,operator&equals;>>(<<X,X>>&& other);
+link:#X[X]&
+link:#X-operator_assign-0e[operator&equals;](link:#X[X]&& other);
 ----
 
-[.small]#<<X-operator_assign-0e,_» more&period;&period;&period;_>>#
+[.small]#link:#X-operator_assign-0e[_» more&period;&period;&period;_]#
 
 Assignment operator
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X,X>>&
-<<X-operator_assign-0d,operator&equals;>>(<<A,A>> const& value);
+link:#X[X]&
+link:#X-operator_assign-0d[operator&equals;](link:#A[A] const& value);
 ----
 
-[.small]#<<X-operator_assign-0d,_» more&period;&period;&period;_>>#
+[.small]#link:#X-operator_assign-0d[_» more&period;&period;&period;_]#
 
 [#X-operator_assign-06]
-== <<X,X>>::operator&equals;
+== link:#X[X]::operator&equals;
 
 Copy assignment operator
 
@@ -121,8 +121,8 @@ Declared in `&lt;brief&hyphen;from&hyphen;operator&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X,X>>&
-operator&equals;(<<X,X>> const& other);
+link:#X[X]&
+operator&equals;(link:#X[X] const& other);
 ----
 
 === Return Value
@@ -140,7 +140,7 @@ Reference to the current object
 |===
 
 [#X-operator_assign-0e]
-== <<X,X>>::operator&equals;
+== link:#X[X]::operator&equals;
 
 Move assignment operator
 
@@ -150,8 +150,8 @@ Declared in `&lt;brief&hyphen;from&hyphen;operator&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X,X>>&
-operator&equals;(<<X,X>>&& other);
+link:#X[X]&
+operator&equals;(link:#X[X]&& other);
 ----
 
 === Return Value
@@ -169,7 +169,7 @@ Reference to the current object
 |===
 
 [#X-operator_assign-0d]
-== <<X,X>>::operator&equals;
+== link:#X[X]::operator&equals;
 
 Assignment operator
 
@@ -179,8 +179,8 @@ Declared in `&lt;brief&hyphen;from&hyphen;operator&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X,X>>&
-operator&equals;(<<A,A>> const& value);
+link:#X[X]&
+operator&equals;(link:#A[A] const& value);
 ----
 
 === Return Value
@@ -198,7 +198,7 @@ Reference to the current object
 |===
 
 [#X-operator_plus_eq]
-== <<X,X>>::operator&plus;&equals;
+== link:#X[X]::operator&plus;&equals;
 
 Addition assignment operator
 
@@ -208,8 +208,8 @@ Declared in `&lt;brief&hyphen;from&hyphen;operator&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X,X>>&
-operator&plus;&equals;(<<X,X>> const& rhs);
+link:#X[X]&
+operator&plus;&equals;(link:#X[X] const& rhs);
 ----
 
 === Return Value
@@ -251,10 +251,10 @@ Declared in `&lt;brief&hyphen;from&hyphen;operator&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<ostream,ostream>>&
+link:#ostream[ostream]&
 operator&lt;&lt;(
-    <<ostream,ostream>>& os,
-    <<X,X>> const& x);
+    link:#ostream[ostream]& os,
+    link:#X[X] const& x);
 ----
 
 === Return Value

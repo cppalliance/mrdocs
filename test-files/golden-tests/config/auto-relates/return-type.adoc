@@ -10,11 +10,11 @@
 |===
 | Name
 | Description
-| <<A,`A`>> 
+| link:#A[`A`] 
 | A class with non&hyphen;member functions
-| <<Result,`Result`>> 
+| link:#Result[`Result`] 
 | Helper result class
-| <<SmallVector,`SmallVector`>> 
+| link:#SmallVector[`SmallVector`] 
 | Helper result class
 |===
 
@@ -24,11 +24,11 @@
 |===
 | Name
 | Description
-| <<makeA,`makeA`>> 
+| link:#makeA[`makeA`] 
 | Function that returns A
-| <<makeAs,`makeAs`>> 
+| link:#makeAs[`makeAs`] 
 | Function that returns template on A
-| <<tryMakeA,`tryMakeA`>> 
+| link:#tryMakeA[`tryMakeA`] 
 | Function that returns template on A
 |===
 
@@ -52,11 +52,11 @@ class A;
 |===
 | Name
 | Description
-| <<makeA,`makeA`>>
+| link:#makeA[`makeA`]
 | Function that returns A
-| <<makeAs,`makeAs`>>
+| link:#makeAs[`makeAs`]
 | Function that returns template on A
-| <<tryMakeA,`tryMakeA`>>
+| link:#tryMakeA[`tryMakeA`]
 | Function that returns template on A
 |===
 
@@ -81,7 +81,7 @@ class Result;
 |===
 | Name
 | Description
-| <<tryMakeA,`tryMakeA`>>
+| link:#tryMakeA[`tryMakeA`]
 | Function that returns template on A
 |===
 
@@ -108,7 +108,7 @@ class SmallVector;
 |===
 | Name
 | Description
-| <<makeAs,`makeAs`>>
+| link:#makeAs[`makeAs`]
 | Function that returns template on A
 |===
 
@@ -123,7 +123,7 @@ Declared in `&lt;return&hyphen;type&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A,A>>
+link:#A[A]
 makeA();
 ----
 
@@ -142,7 +142,7 @@ Declared in `&lt;return&hyphen;type&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<SmallVector,SmallVector>>&lt;<<A,A>>, 3&gt;
+link:#SmallVector[SmallVector]&lt;link:#A[A], 3&gt;
 makeAs();
 ----
 
@@ -161,7 +161,7 @@ Declared in `&lt;return&hyphen;type&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<Result,Result>>&lt;<<A,A>>&gt;
+link:#Result[Result]&lt;link:#A[A]&gt;
 tryMakeA();
 ----
 

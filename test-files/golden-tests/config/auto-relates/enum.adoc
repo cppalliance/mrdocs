@@ -10,9 +10,9 @@
 |===
 | Name
 | Description
-| <<Result,`Result`>> 
+| link:#Result[`Result`] 
 | Helper result class
-| <<SmallVector,`SmallVector`>> 
+| link:#SmallVector[`SmallVector`] 
 | Helper result class
 |===
 
@@ -22,7 +22,7 @@
 |===
 | Name
 | Description
-| <<E,`E`>> 
+| link:#E[`E`] 
 | An enum with non&hyphen;member functions
 |===
 
@@ -32,11 +32,11 @@
 |===
 | Name
 | Description
-| <<makeE,`makeE`>> 
+| link:#makeE[`makeE`] 
 | Function that returns A
-| <<makeEs,`makeEs`>> 
+| link:#makeEs[`makeEs`] 
 | Function that returns template on A
-| <<tryMakeE,`tryMakeE`>> 
+| link:#tryMakeE[`tryMakeE`] 
 | Function that returns template on A
 |===
 
@@ -61,7 +61,7 @@ class Result;
 |===
 | Name
 | Description
-| <<tryMakeE,`tryMakeE`>>
+| link:#tryMakeE[`tryMakeE`]
 | Function that returns template on A
 |===
 
@@ -88,7 +88,7 @@ class SmallVector;
 |===
 | Name
 | Description
-| <<makeEs,`makeEs`>>
+| link:#makeEs[`makeEs`]
 | Function that returns template on A
 |===
 
@@ -112,11 +112,11 @@ enum class E : int;
 |===
 | Name
 | Description
-| <<makeE,`makeE`>>
+| link:#makeE[`makeE`]
 | Function that returns A
-| <<makeEs,`makeEs`>>
+| link:#makeEs[`makeEs`]
 | Function that returns template on A
-| <<tryMakeE,`tryMakeE`>>
+| link:#tryMakeE[`tryMakeE`]
 | Function that returns template on A
 |===
 
@@ -131,7 +131,7 @@ Declared in `&lt;enum&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<E,E>>
+link:#E[E]
 makeE();
 ----
 
@@ -150,7 +150,7 @@ Declared in `&lt;enum&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<SmallVector,SmallVector>>&lt;<<E,E>>, 3&gt;
+link:#SmallVector[SmallVector]&lt;link:#E[E], 3&gt;
 makeEs();
 ----
 
@@ -169,7 +169,7 @@ Declared in `&lt;enum&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<Result,Result>>&lt;<<E,E>>&gt;
+link:#Result[Result]&lt;link:#E[E]&gt;
 tryMakeE();
 ----
 

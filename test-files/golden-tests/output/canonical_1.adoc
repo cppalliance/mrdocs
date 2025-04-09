@@ -9,14 +9,14 @@
 [cols=1]
 |===
 | Name
-| <<A,`A`>> 
-| <<B,`B`>> 
-| <<Ba,`Ba`>> 
-| <<Bx,`Bx`>> 
-| <<a,`a`>> 
-| <<b,`b`>> 
-| <<bA,`bA`>> 
-| <<ba,`ba`>> 
+| link:#A[`A`] 
+| link:#B[`B`] 
+| link:#Ba[`Ba`] 
+| link:#Bx[`Bx`] 
+| link:#a[`a`] 
+| link:#b[`b`] 
+| link:#bA[`bA`] 
+| link:#ba[`ba`] 
 |===
 
 [#A]

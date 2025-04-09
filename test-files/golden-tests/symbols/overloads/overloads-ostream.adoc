@@ -9,8 +9,8 @@
 [cols=1]
 |===
 | Name
-| <<left_shift,`left&lowbar;shift`>> 
-| <<ostream,`ostream`>> 
+| link:#left_shift[`left&lowbar;shift`] 
+| link:#ostream[`ostream`] 
 |===
 
 [#left_shift]
@@ -21,7 +21,7 @@
 [cols=1]
 |===
 | Name
-| <<left_shift-A,`A`>> 
+| link:#left_shift-A[`A`] 
 |===
 
 === Functions
@@ -29,11 +29,11 @@
 [cols=1]
 |===
 | Name
-| <<left_shift-operator_lshift,`operator&lt;&lt;`>> 
+| link:#left_shift-operator_lshift[`operator&lt;&lt;`] 
 |===
 
 [#left_shift-A]
-== <<left_shift,left&lowbar;shift>>::A
+== link:#left_shift[left&lowbar;shift]::A
 
 === Synopsis
 
@@ -50,12 +50,12 @@ class A;
 |===
 | Name
 | Description
-| <<left_shift-A-operator_lshift-00,`operator&lt;&lt;`>> 
+| link:#left_shift-A-operator_lshift-00[`operator&lt;&lt;`] 
 | Left shift operators
 |===
 
 [#left_shift-A-operator_lshift-00]
-== <<left_shift,left&lowbar;shift>>::<<left_shift-A,A>>::operator&lt;&lt;
+== link:#left_shift[left&lowbar;shift]::link:#left_shift-A[A]::operator&lt;&lt;
 
 Left shift operators
 
@@ -68,25 +68,25 @@ Left shift operator
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<left_shift-A,A>>&
-<<left_shift-A-operator_lshift-0f,operator&lt;&lt;>>(unsigned int shift);
+link:#left_shift-A[A]&
+link:#left_shift-A-operator_lshift-0f[operator&lt;&lt;](unsigned int shift);
 ----
 
-[.small]#<<left_shift-A-operator_lshift-0f,_» more&period;&period;&period;_>>#
+[.small]#link:#left_shift-A-operator_lshift-0f[_» more&period;&period;&period;_]#
 
 Left shift operator
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<left_shift-A,A>>&
-<<left_shift-A-operator_lshift-0b,operator&lt;&lt;>>(char shift);
+link:#left_shift-A[A]&
+link:#left_shift-A-operator_lshift-0b[operator&lt;&lt;](char shift);
 ----
 
-[.small]#<<left_shift-A-operator_lshift-0b,_» more&period;&period;&period;_>>#
+[.small]#link:#left_shift-A-operator_lshift-0b[_» more&period;&period;&period;_]#
 
 [#left_shift-A-operator_lshift-0f]
-== <<left_shift,left&lowbar;shift>>::<<left_shift-A,A>>::operator&lt;&lt;
+== link:#left_shift[left&lowbar;shift]::link:#left_shift-A[A]::operator&lt;&lt;
 
 Left shift operator
 
@@ -96,7 +96,7 @@ Declared in `&lt;overloads&hyphen;ostream&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<left_shift-A,A>>&
+link:#left_shift-A[A]&
 operator&lt;&lt;(unsigned int shift);
 ----
 
@@ -115,7 +115,7 @@ Reference to the current object
 |===
 
 [#left_shift-A-operator_lshift-0b]
-== <<left_shift,left&lowbar;shift>>::<<left_shift-A,A>>::operator&lt;&lt;
+== link:#left_shift[left&lowbar;shift]::link:#left_shift-A[A]::operator&lt;&lt;
 
 Left shift operator
 
@@ -125,7 +125,7 @@ Declared in `&lt;overloads&hyphen;ostream&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<left_shift-A,A>>&
+link:#left_shift-A[A]&
 operator&lt;&lt;(char shift);
 ----
 
@@ -144,7 +144,7 @@ Reference to the current object
 |===
 
 [#left_shift-operator_lshift]
-== <<left_shift,left&lowbar;shift>>::operator&lt;&lt;
+== link:#left_shift[left&lowbar;shift]::operator&lt;&lt;
 
 === Synopsis
 
@@ -152,9 +152,9 @@ Declared in `&lt;overloads&hyphen;ostream&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<left_shift-A,A>>
+link:#left_shift-A[A]
 operator&lt;&lt;(
-    <<left_shift-A,A>> const& obj,
+    link:#left_shift-A[A] const& obj,
     double shift);
 ----
 
@@ -166,9 +166,9 @@ operator&lt;&lt;(
 [cols=1]
 |===
 | Name
-| <<ostream-B,`B`>> 
-| <<ostream-C,`C`>> 
-| <<ostream-OStream,`OStream`>> 
+| link:#ostream-B[`B`] 
+| link:#ostream-C[`C`] 
+| link:#ostream-OStream[`OStream`] 
 |===
 
 === Functions
@@ -177,12 +177,12 @@ operator&lt;&lt;(
 |===
 | Name
 | Description
-| <<ostream-operator_lshift-0f,`operator&lt;&lt;`>> 
+| link:#ostream-operator_lshift-0f[`operator&lt;&lt;`] 
 | Stream insertion operators
 |===
 
 [#ostream-B]
-== <<ostream,ostream>>::B
+== link:#ostream[ostream]::B
 
 === Synopsis
 
@@ -199,12 +199,12 @@ class B;
 |===
 | Name
 | Description
-| `<<ostream-operator_lshift-0d,ostream::operator&lt;&lt;>>`
+| `link:#ostream-operator_lshift-0d[ostream::operator&lt;&lt;]`
 | Stream insertion operator
 |===
 
 [#ostream-C]
-== <<ostream,ostream>>::C
+== link:#ostream[ostream]::C
 
 === Synopsis
 
@@ -216,7 +216,7 @@ class C;
 ----
 
 [#ostream-OStream]
-== <<ostream,ostream>>::OStream
+== link:#ostream[ostream]::OStream
 
 === Synopsis
 
@@ -228,7 +228,7 @@ class OStream;
 ----
 
 [#ostream-operator_lshift-0f]
-== <<ostream,ostream>>::operator&lt;&lt;
+== link:#ostream[ostream]::operator&lt;&lt;
 
 Stream insertion operators
 
@@ -241,29 +241,29 @@ Stream insertion operator
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<ostream-OStream,OStream>>&
-<<ostream-operator_lshift-0d,operator&lt;&lt;>>(
-    <<ostream-OStream,OStream>>& os,
-    <<ostream-B,B>> value);
+link:#ostream-OStream[OStream]&
+link:#ostream-operator_lshift-0d[operator&lt;&lt;](
+    link:#ostream-OStream[OStream]& os,
+    link:#ostream-B[B] value);
 ----
 
-[.small]#<<ostream-operator_lshift-0d,_» more&period;&period;&period;_>>#
+[.small]#link:#ostream-operator_lshift-0d[_» more&period;&period;&period;_]#
 
 Stream insertion operator
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<ostream-OStream,OStream>>&
-<<ostream-operator_lshift-0a,operator&lt;&lt;>>(
-    <<ostream-OStream,OStream>>& os,
-    <<ostream-C,C>> value);
+link:#ostream-OStream[OStream]&
+link:#ostream-operator_lshift-0a[operator&lt;&lt;](
+    link:#ostream-OStream[OStream]& os,
+    link:#ostream-C[C] value);
 ----
 
-[.small]#<<ostream-operator_lshift-0a,_» more&period;&period;&period;_>>#
+[.small]#link:#ostream-operator_lshift-0a[_» more&period;&period;&period;_]#
 
 [#ostream-operator_lshift-0d]
-== <<ostream,ostream>>::operator&lt;&lt;
+== link:#ostream[ostream]::operator&lt;&lt;
 
 Stream insertion operator
 
@@ -273,10 +273,10 @@ Declared in `&lt;overloads&hyphen;ostream&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<ostream-OStream,OStream>>&
+link:#ostream-OStream[OStream]&
 operator&lt;&lt;(
-    <<ostream-OStream,OStream>>& os,
-    <<ostream-B,B>> value);
+    link:#ostream-OStream[OStream]& os,
+    link:#ostream-B[B] value);
 ----
 
 === Return Value
@@ -296,7 +296,7 @@ Reference to the current output stream
 |===
 
 [#ostream-operator_lshift-0a]
-== <<ostream,ostream>>::operator&lt;&lt;
+== link:#ostream[ostream]::operator&lt;&lt;
 
 Stream insertion operator
 
@@ -306,10 +306,10 @@ Declared in `&lt;overloads&hyphen;ostream&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<ostream-OStream,OStream>>&
+link:#ostream-OStream[OStream]&
 operator&lt;&lt;(
-    <<ostream-OStream,OStream>>& os,
-    <<ostream-C,C>> value);
+    link:#ostream-OStream[OStream]& os,
+    link:#ostream-C[C] value);
 ----
 
 === Return Value

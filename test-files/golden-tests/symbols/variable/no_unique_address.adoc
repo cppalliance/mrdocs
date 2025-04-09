@@ -9,8 +9,8 @@
 [cols=1]
 |===
 | Name
-| <<Empty,`Empty`>> 
-| <<T,`T`>> 
+| link:#Empty[`Empty`] 
+| link:#T[`T`] 
 |===
 
 [#Empty]
@@ -42,12 +42,12 @@ struct T;
 [cols=1]
 |===
 | Name
-| <<T-e,`e`>> 
-| <<T-i,`i`>> 
+| link:#T-e[`e`] 
+| link:#T-i[`i`] 
 |===
 
 [#T-e]
-== <<T,T>>::e
+== link:#T[T]::e
 
 === Synopsis
 
@@ -56,11 +56,11 @@ Declared in `&lt;no&lowbar;unique&lowbar;address&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 &lsqb;&lsqb;deprecated, maybe&lowbar;unused&rsqb;&rsqb;
-<<Empty,Empty>> e = Empty&lcub;&rcub;;
+link:#Empty[Empty] e = Empty&lcub;&rcub;;
 ----
 
 [#T-i]
-== <<T,T>>::i
+== link:#T[T]::i
 
 === Synopsis
 

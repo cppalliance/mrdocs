@@ -10,7 +10,7 @@
 |===
 | Name
 | Description
-| <<sqrt,`sqrt`>> 
+| link:#sqrt[`sqrt`] 
 | Computes the square root of an integral value&period;
 |===
 

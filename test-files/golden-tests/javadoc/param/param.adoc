@@ -10,13 +10,13 @@
 |===
 | Name
 | Description
-| <<f,`f`>> 
+| link:#f[`f`] 
 | 
-| <<g,`g`>> 
+| link:#g[`g`] 
 | 
-| <<h,`h`>> 
+| link:#h[`h`] 
 | 
-| <<i,`i`>> 
+| link:#i[`i`] 
 | 
 |===
 

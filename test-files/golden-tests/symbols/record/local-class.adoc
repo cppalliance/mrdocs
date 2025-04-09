@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<B,`B`>> 
+| link:#B[`B`] 
 |===
 
 === Functions
@@ -17,7 +17,7 @@
 [cols=1]
 |===
 | Name
-| <<f,`f`>> 
+| link:#f[`f`] 
 |===
 
 [#B]

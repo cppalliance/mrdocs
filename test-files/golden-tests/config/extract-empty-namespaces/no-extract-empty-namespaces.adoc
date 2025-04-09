@@ -10,15 +10,15 @@
 |===
 | Name
 | Description
-| <<documented_ns,`documented&lowbar;ns`>> 
+| link:#documented_ns[`documented&lowbar;ns`] 
 | Namespace documentation
-| <<mixed_ns,`mixed&lowbar;ns`>> 
+| link:#mixed_ns[`mixed&lowbar;ns`] 
 | Should decay to see&hyphen;below
-| <<mixed_regular_ns,`mixed&lowbar;regular&lowbar;ns`>> 
+| link:#mixed_regular_ns[`mixed&lowbar;regular&lowbar;ns`] 
 | Should decay to regular
-| <<regular_ns,`regular&lowbar;ns`>> 
+| link:#regular_ns[`regular&lowbar;ns`] 
 | Regular namespace
-| <<see_below_ns,`see&lowbar;below&lowbar;ns`>> 
+| link:#see_below_ns[`see&lowbar;below&lowbar;ns`] 
 | Should decay to see&hyphen;below
 |===
 
@@ -28,9 +28,9 @@
 |===
 | Name
 | Description
-| <<empty_ns_alias,`empty&lowbar;ns&lowbar;alias`>> 
+| link:#empty_ns_alias[`empty&lowbar;ns&lowbar;alias`] 
 | Should still work
-| <<regular_ns_alias,`regular&lowbar;ns&lowbar;alias`>> 
+| link:#regular_ns_alias[`regular&lowbar;ns&lowbar;alias`] 
 | Should work
 |===
 
@@ -39,7 +39,7 @@
 [cols=1]
 |===
 | Name
-| <<regular_ns,`regular&lowbar;ns`>>
+| link:#regular_ns[`regular&lowbar;ns`]
 | empty&lowbar;ns
 |===
 
@@ -59,11 +59,11 @@ Should decay to see&hyphen;below
 [cols=1]
 |===
 | Name
-| <<mixed_ns-SeeBelowStructA,`SeeBelowStructA`>> 
+| link:#mixed_ns-SeeBelowStructA[`SeeBelowStructA`] 
 |===
 
 [#mixed_ns-SeeBelowStructA]
-== <<mixed_ns,mixed&lowbar;ns>>::SeeBelowStructA
+== link:#mixed_ns[mixed&lowbar;ns]::SeeBelowStructA
 
 === Synopsis
 
@@ -84,12 +84,12 @@ Should decay to regular
 [cols=1]
 |===
 | Name
-| <<mixed_regular_ns-RegularStructA,`RegularStructA`>> 
-| <<mixed_regular_ns-SeeBelowStructB,`SeeBelowStructB`>> 
+| link:#mixed_regular_ns-RegularStructA[`RegularStructA`] 
+| link:#mixed_regular_ns-SeeBelowStructB[`SeeBelowStructB`] 
 |===
 
 [#mixed_regular_ns-RegularStructA]
-== <<mixed_regular_ns,mixed&lowbar;regular&lowbar;ns>>::RegularStructA
+== link:#mixed_regular_ns[mixed&lowbar;regular&lowbar;ns]::RegularStructA
 
 === Synopsis
 
@@ -101,7 +101,7 @@ struct RegularStructA;
 ----
 
 [#mixed_regular_ns-SeeBelowStructB]
-== <<mixed_regular_ns,mixed&lowbar;regular&lowbar;ns>>::SeeBelowStructB
+== link:#mixed_regular_ns[mixed&lowbar;regular&lowbar;ns]::SeeBelowStructB
 
 === Synopsis
 
@@ -122,11 +122,11 @@ Regular namespace
 [cols=1]
 |===
 | Name
-| <<regular_ns-A,`A`>> 
+| link:#regular_ns-A[`A`] 
 |===
 
 [#regular_ns-A]
-== <<regular_ns,regular&lowbar;ns>>::A
+== link:#regular_ns[regular&lowbar;ns]::A
 
 === Synopsis
 
@@ -147,12 +147,12 @@ Should decay to see&hyphen;below
 [cols=1]
 |===
 | Name
-| <<see_below_ns-SeeBelowStructA,`SeeBelowStructA`>> 
-| <<see_below_ns-SeeBelowStructB,`SeeBelowStructB`>> 
+| link:#see_below_ns-SeeBelowStructA[`SeeBelowStructA`] 
+| link:#see_below_ns-SeeBelowStructB[`SeeBelowStructB`] 
 |===
 
 [#see_below_ns-SeeBelowStructA]
-== <<see_below_ns,see&lowbar;below&lowbar;ns>>::SeeBelowStructA
+== link:#see_below_ns[see&lowbar;below&lowbar;ns]::SeeBelowStructA
 
 === Synopsis
 
@@ -164,7 +164,7 @@ struct SeeBelowStructA { /* see-below */ };
 ----
 
 [#see_below_ns-SeeBelowStructB]
-== <<see_below_ns,see&lowbar;below&lowbar;ns>>::SeeBelowStructB
+== link:#see_below_ns[see&lowbar;below&lowbar;ns]::SeeBelowStructB
 
 === Synopsis
 
@@ -200,7 +200,7 @@ Declared in `&lt;no&hyphen;extract&hyphen;empty&hyphen;namespaces&period;cpp&gt;
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-namespace regular&lowbar;ns&lowbar;alias = <<regular_ns,regular&lowbar;ns>>;
+namespace regular&lowbar;ns&lowbar;alias = link:#regular_ns[regular&lowbar;ns];
 ----
 
 

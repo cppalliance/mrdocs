@@ -9,8 +9,8 @@
 [cols=1]
 |===
 | Name
-| <<A,`A`>> 
-| <<B-00,`B`>> 
+| link:#A[`A`] 
+| link:#B-00[`B`] 
 |===
 
 [#A]
@@ -23,7 +23,7 @@ Declared in `&lt;extract&hyphen;implicit&hyphen;specializations&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct A
-    : <<B-00,B>>&lt;int&gt;;
+    : link:#B-00[B]&lt;int&gt;;
 ----
 
 === Base Classes
@@ -32,7 +32,7 @@ struct A
 |===
 | Name
 | Description
-| `<<B-00,B>>&lt;int&gt;`
+| `link:#B-00[B]&lt;int&gt;`
 | 
 |===
 
@@ -41,11 +41,11 @@ struct A
 [cols=1]
 |===
 | Name
-| <<A-value,`value`>> 
+| link:#A-value[`value`] 
 |===
 
 [#A-value]
-== <<A,A>>::value
+== link:#A[A]::value
 
 === Synopsis
 
@@ -75,7 +75,7 @@ struct B;
 [cols=1]
 |===
 | Name
-| <<B-00-value,`value`>> 
+| link:#B-00-value[`value`] 
 |===
 
 === Derived Classes
@@ -84,12 +84,12 @@ struct B;
 |===
 | Name
 | Description
-| <<A,`A`>>
+| link:#A[`A`]
 | 
 |===
 
 [#B-00-value]
-== <<B-00,B>>::value
+== link:#B-00[B]::value
 
 === Synopsis
 

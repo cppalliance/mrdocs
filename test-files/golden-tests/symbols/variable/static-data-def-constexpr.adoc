@@ -9,8 +9,8 @@
 [cols=1]
 |===
 | Name
-| <<S,`S`>> 
-| <<T,`T`>> 
+| link:#S[`S`] 
+| link:#T[`T`] 
 |===
 
 [#S]
@@ -30,11 +30,11 @@ struct S;
 [cols=1]
 |===
 | Name
-| <<S-s,`s`>> 
+| link:#S-s[`s`] 
 |===
 
 [#S-s]
-== <<S,S>>::s
+== link:#S[S]::s
 
 === Synopsis
 
@@ -43,7 +43,7 @@ Declared in `&lt;static&hyphen;data&hyphen;def&hyphen;constexpr&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 inline constexpr static
-<<S,S>> s = S&lcub;&rcub;;
+link:#S[S] s = S&lcub;&rcub;;
 ----
 
 [#T]
@@ -63,11 +63,11 @@ struct T;
 [cols=1]
 |===
 | Name
-| <<T-t,`t`>> 
+| link:#T-t[`t`] 
 |===
 
 [#T-t]
-== <<T,T>>::t
+== link:#T[T]::t
 
 === Synopsis
 

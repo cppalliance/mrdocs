@@ -10,9 +10,9 @@
 |===
 | Name
 | Description
-| <<A,`A`>> 
+| link:#A[`A`] 
 | A brief for A&period;
-| <<B,`B`>> 
+| link:#B[`B`] 
 | A brief for B
 |===
 
@@ -22,7 +22,7 @@
 |===
 | Name
 | Description
-| <<f,`f`>> 
+| link:#f[`f`] 
 | A brief for f&period;
 |===
 
@@ -46,7 +46,7 @@ struct A;
 |===
 | Name
 | Description
-| <<f,`f`>>
+| link:#f[`f`]
 | A brief for f&period;
 |===
 

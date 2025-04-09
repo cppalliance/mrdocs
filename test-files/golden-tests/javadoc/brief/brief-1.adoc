@@ -10,9 +10,9 @@
 |===
 | Name
 | Description
-| <<f5,`f5`>> 
+| link:#f5[`f5`] 
 | brief *bold* it continues to the line&period;
-| <<f6,`f6`>> 
+| link:#f6[`f6`] 
 | brief
 |===
 

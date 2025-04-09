@@ -10,9 +10,9 @@
 |===
 | Name
 | Description
-| <<bar,`bar`>> 
+| link:#bar[`bar`] 
 | Brief from `foo()`
-| <<foo-02,`foo`>> 
+| link:#foo-02[`foo`] 
 | `foo` overloads
 |===
 
@@ -65,10 +65,10 @@ We should not copy this doc
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<foo-0c,foo>>();
+link:#foo-0c[foo]();
 ----
 
-[.small]#<<foo-0c,_» more&period;&period;&period;_>>#
+[.small]#link:#foo-0c[_» more&period;&period;&period;_]#
 
 We should not copy this doc
 
@@ -76,10 +76,10 @@ We should not copy this doc
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<foo-01,foo>>(int a);
+link:#foo-01[foo](int a);
 ----
 
-[.small]#<<foo-01,_» more&period;&period;&period;_>>#
+[.small]#link:#foo-01[_» more&period;&period;&period;_]#
 
 Brief from `foo()`
 
@@ -88,10 +88,10 @@ Brief from `foo()`
 ----
 constexpr
 bool
-<<foo-0e,foo>>(int a[3]);
+link:#foo-0e[foo](int a[3]);
 ----
 
-[.small]#<<foo-0e,_» more&period;&period;&period;_>>#
+[.small]#link:#foo-0e[_» more&period;&period;&period;_]#
 
 === Return Value
 
