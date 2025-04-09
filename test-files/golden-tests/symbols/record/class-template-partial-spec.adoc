@@ -51,7 +51,7 @@ struct B;
 ----
 
 [#A-B-04]
-== <<A,A>>::B&lt;T, long&gt;
+== <<A,A>>::<<A-B-0a,B>>&lt;T, long&gt;
 
 === Synopsis
 
@@ -64,7 +64,7 @@ struct <<A-B-0a,B>>&lt;T, long&gt;;
 ----
 
 [#A-B-06]
-== <<A,A>>::B&lt;U*, T&gt;
+== <<A,A>>::<<A-B-0a,B>>&lt;U*, T&gt;
 
 === Synopsis
 

@@ -68,7 +68,7 @@ f();
 ----
 
 [#A-B-01]
-== <<A,A>>::B&lt;int&gt;
+== <<A,A>>::<<A-B-04,B>>&lt;int&gt;
 
 === Synopsis
 
@@ -89,7 +89,7 @@ struct <<A-B-04,B>>&lt;int&gt;;
 |===
 
 [#A-B-01-g]
-== <<A,A>>::<<A-B-01,B>>&lt;int&gt;::g
+== <<A,A>>::<<A-B-01,B&lt;int&gt;>>::g
 
 === Synopsis
 

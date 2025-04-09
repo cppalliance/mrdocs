@@ -181,7 +181,7 @@ struct S1;
 ----
 
 [#S0-09]
-== S0&lt;2&gt;
+== <<S0-0c,S0>>&lt;2&gt;
 
 === Synopsis
 
@@ -194,7 +194,7 @@ struct <<S0-0c,S0>>&lt;2&gt;;
 ----
 
 [#S0-073]
-== S0&lt;3&gt;
+== <<S0-0c,S0>>&lt;3&gt;
 
 === Synopsis
 
@@ -217,7 +217,7 @@ struct <<S0-0c,S0>>&lt;3&gt;;
 |===
 
 [#S0-0e]
-== S0&lt;5&gt;
+== <<S0-0c,S0>>&lt;5&gt;
 
 === Synopsis
 
@@ -238,7 +238,7 @@ struct <<S0-0c,S0>>&lt;5&gt;;
 |===
 
 [#S0-0e-S1]
-== <<S0-0e,S0>>&lt;5&gt;::S1
+== <<S0-0e,S0&lt;5&gt;>>::S1
 
 === Synopsis
 
@@ -250,7 +250,7 @@ struct S1;
 ----
 
 [#S0-07e]
-== S0&lt;6&gt;
+== <<S0-0c,S0>>&lt;6&gt;
 
 === Synopsis
 

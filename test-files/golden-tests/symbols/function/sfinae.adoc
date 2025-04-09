@@ -21,7 +21,7 @@
 | <<A-09,`A`>> 
 | The partial specialization of A is enabled via a template parameter
 | <<A-02,`A&lt;T&gt;`>> 
-| Specialization for floating point types
+| Specialization for integral types
 | <<S-02,`S`>> 
 | SFINAE with std&colon;&colon;void&lowbar;t
 | <<S-08,`S&lt;T, std::void&lowbar;t&lt;T::a::b&gt;&gt;`>> 
@@ -109,9 +109,9 @@ class A;
 ----
 
 [#A-02]
-== A&lt;T&gt;
+== <<A-09,A>>&lt;T&gt;
 
-Specialization for floating point types
+Specialization for integral types
 
 === Synopsis
 
@@ -163,7 +163,7 @@ store(void const*);
 ----
 
 [#S-08]
-== S&lt;T, std::void&lowbar;t&lt;T::a::b&gt;&gt;
+== <<S-02,S>>&lt;T, std::void&lowbar;t&lt;T::a::b&gt;&gt;
 
 SFINAE with std&colon;&colon;void&lowbar;t
 
@@ -186,7 +186,7 @@ struct <<S-02,S>>&lt;T, std::void&lowbar;t&lt;T::a::b&gt;&gt;;
 |===
 
 [#S-08-store]
-== <<S-08,S>>&lt;T, std::void&lowbar;t&lt;T::a::b&gt;&gt;::store
+== <<S-08,S&lt;T, std::void&lowbar;t&lt;T::a::b&gt;&gt;>>::store
 
 === Synopsis
 

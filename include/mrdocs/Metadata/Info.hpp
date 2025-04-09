@@ -341,10 +341,6 @@ tag_invoke(
     if (I.Parent)
     {
         io.map("parent", I.Parent);
-        io.defer("parents", [&]
-        {
-            return getParents(*domCorpus, I);
-        });
     }
     if (I.javadoc)
     {

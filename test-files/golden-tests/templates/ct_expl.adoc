@@ -48,7 +48,7 @@ f();
 ----
 
 [#A-00]
-== A&lt;int&gt;
+== <<A-0e,A>>&lt;int&gt;
 
 === Synopsis
 
@@ -69,7 +69,7 @@ struct <<A-0e,A>>&lt;int&gt;;
 |===
 
 [#A-00-g]
-== <<A-00,A>>&lt;int&gt;::g
+== <<A-00,A&lt;int&gt;>>::g
 
 === Synopsis
 

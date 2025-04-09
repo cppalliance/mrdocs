@@ -3,7 +3,7 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
-    <file short-path="friend-6.cpp" source-path="friend-6.cpp" line="2" class="def"/>
+    <file short-path="friend-type.cpp" source-path="friend-type.cpp" line="2" class="def"/>
     <friend id="NQ8uQgTcafPcttyBMHHLHAXA4MA=">
       <befriended id="NQ8uQgTcafPcttyBMHHLHAXA4MA="/>
     </friend>
@@ -14,7 +14,7 @@
     </doc>
   </struct>
   <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
-    <file short-path="friend-6.cpp" source-path="friend-6.cpp" line="12" class="def"/>
+    <file short-path="friend-type.cpp" source-path="friend-type.cpp" line="12" class="def"/>
     <friend id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
       <befriended id="CgGNdHpW5mG/i5741WPYQDw28OQ="/>
     </friend>
@@ -25,7 +25,7 @@
     </doc>
   </struct>
   <struct name="V" id="9kzYwt0WPztMEDUaFxul1Jvqqs8=">
-    <file short-path="friend-6.cpp" source-path="friend-6.cpp" line="19" class="def"/>
+    <file short-path="friend-type.cpp" source-path="friend-type.cpp" line="19" class="def"/>
     <friend id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
       <befriended id="FLgkhM3m0U3Lo2o3XLPUizWPH00="/>
     </friend>
@@ -36,7 +36,7 @@
     </doc>
   </struct>
   <class name="Z" id="NQ8uQgTcafPcttyBMHHLHAXA4MA=">
-    <file short-path="friend-6.cpp" source-path="friend-6.cpp" line="8"/>
+    <file short-path="friend-type.cpp" source-path="friend-type.cpp" line="8"/>
     <doc>
       <brief>
         <text>Friend class Z brief</text>

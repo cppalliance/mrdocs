@@ -50,7 +50,7 @@ struct impl;
 ----
 
 [#range-impl-00]
-== <<range,range>>::impl&lt;R, false&gt;
+== <<range,range>>::<<range-impl-0e,impl>>&lt;R, false&gt;
 
 === Synopsis
 

@@ -8,29 +8,20 @@
 
     Optional parameters:
         nolink: If true, types and symbols will not be linked.
-        link: Symbol that should be linked to, regardless of the original symbol.
 
     Example:
         {{> declarator symbol }}
 
     See: https://mrdocs.com/docs/mrdocs/develop/generators.html#dom_reference
 --}}
-{{#if (and (eq kind "function") (eq functionClass "conversion"))~}}
+{{~#if (and (eq kind "function") (eq functionClass "conversion"))~}}
     {{! Conversion operator: "operator" and the type declarator ~}}
-    operator {{>type/declarator return nolink=nolink~}}
-{{else if (eq kind "guide")~}}
+    operator {{>type/declarator return nolink=false~}}
+{{~else if (eq kind "guide")~}}
     {{! Deduction guide: "deduced" type declarator ~}}
-    {{>type/declarator deduced nolink=nolink~}}
-{{else~}}
-    {{#if (and link.url (not nolink))~}}
-        {{! Symbol with URL: link to the symbol documentation ~}}
-        {{#>markup/a href=link.url}}{{or name "<unnamed>"}}{{/markup/a~}}
-    {{else~}}
-        {{! Symbol without URL: plain text ~}}
-        {{or name "<unnamed>"~}}
-    {{/if~}}
-    {{#if (contains (arr "explicit" "partial") template.kind)~}}
-        {{! Explicit or partial template: render the template arguments ~}}
-        {{>template/args args=template.args nolink=nolink~}}
-    {{/if~}}
-{{/if}}
+    {{>type/declarator deduced nolink=false~}}
+{{~else if (and url (not nolink))~}}
+    {{#>markup/a href=url}}{{>symbol/name-text}}{{/markup/a~}}
+{{~else~}}
+    {{~>symbol/name-text~}}
+{{~/if~}}

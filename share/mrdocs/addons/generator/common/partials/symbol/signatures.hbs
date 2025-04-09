@@ -20,7 +20,7 @@
 {{#each members as | member |}}
 {{#if member.doc.brief}}{{> javadoc/brief member.doc.brief }}{{/if}}
 {{#> markup/code-block }}
-{{> symbol/signature member link=member}}
+{{> symbol/signature/function member force-link=true }}
 {{/markup/code-block}}
 {{#> markup/span class="small" }}{{#> markup/a href=member.url }}{{#>markup/em }}» more{{ str "..." }}{{/markup/em}}{{/markup/a}}{{/markup/span}}
 

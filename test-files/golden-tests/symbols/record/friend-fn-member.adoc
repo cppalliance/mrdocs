@@ -1,0 +1,126 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols=1]
+|===
+| Name
+| <<U,`U`>> 
+| <<X,`X`>> 
+|===
+
+[#U]
+== U
+
+=== Synopsis
+
+Declared in `&lt;friend&hyphen;fn&hyphen;member&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct U;
+----
+
+=== Friends
+
+[cols=2]
+|===
+| Name
+| Description
+| `<<X-foo,X::foo>>`
+| Friend member&hyphen;function
+| `<<X-2destructor,X::&#126;X>>`
+| Destructor
+| `<<X-2constructor,X::X>>`
+| Default constructor
+|===
+
+[#X]
+== X
+
+=== Synopsis
+
+Declared in `&lt;friend&hyphen;fn&hyphen;member&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct X;
+----
+
+=== Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| <<X-2constructor,`X`>>         [.small]#[constructor]#
+| Default constructor
+| <<X-2destructor,`&#126;X`>> [.small]#[destructor]#
+| Destructor
+| <<X-foo,`foo`>> 
+| Friend member&hyphen;function
+|===
+
+[#X-2constructor]
+== <<X,X>>::X
+
+Default constructor
+
+=== Synopsis
+
+Declared in `&lt;friend&hyphen;fn&hyphen;member&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+X();
+----
+
+[#X-2destructor]
+== <<X,X>>::&#126;X
+
+Destructor
+
+=== Synopsis
+
+Declared in `&lt;friend&hyphen;fn&hyphen;member&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&#126;X();
+----
+
+[#X-foo]
+== <<X,X>>::foo
+
+Friend member&hyphen;function
+
+=== Synopsis
+
+Declared in `&lt;friend&hyphen;fn&hyphen;member&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+char*
+foo(int i);
+----
+
+=== Return Value
+
+char&ast;
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *i*
+| 
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -29,7 +29,7 @@ struct A;
 ----
 
 [#A-06]
-== A&lt;double&gt;
+== <<A-0e,A>>&lt;double&gt;
 
 === Synopsis
 
@@ -52,7 +52,7 @@ struct <<A-0e,A>>&lt;double&gt;;
 |===
 
 [#A-06-D-0b]
-== <<A-06,A>>&lt;double&gt;::D
+== <<A-06,A&lt;double&gt;>>::D
 
 === Synopsis
 
@@ -74,7 +74,7 @@ struct D;
 |===
 
 [#A-06-D-0b-E-01]
-== <<A-06,A>>&lt;double&gt;::<<A-06-D-0b,D>>::E
+== <<A-06,A&lt;double&gt;>>::<<A-06-D-0b,D>>::E
 
 === Synopsis
 
@@ -87,7 +87,7 @@ struct E;
 ----
 
 [#A-06-D-0b-E-04]
-== <<A-06,A>>&lt;double&gt;::<<A-06-D-0b,D>>::E&lt;T*&gt;
+== <<A-06,A&lt;double&gt;>>::<<A-06-D-0b,D>>::<<A-06-D-0b-E-01,E>>&lt;T*&gt;
 
 === Synopsis
 
@@ -108,7 +108,7 @@ struct <<A-06-D-0b-E-01,E>>&lt;T*&gt;;
 |===
 
 [#A-06-D-0b-E-04-F]
-== <<A-06,A>>&lt;double&gt;::<<A-06-D-0b,D>>::<<A-06-D-0b-E-04,E>>&lt;T*&gt;::F
+== <<A-06,A&lt;double&gt;>>::<<A-06-D-0b,D>>::<<A-06-D-0b-E-04,E&lt;T*&gt;>>::F
 
 === Synopsis
 
@@ -120,7 +120,7 @@ struct F;
 ----
 
 [#A-06-D-07]
-== <<A-06,A>>&lt;double&gt;::D&lt;short&gt;
+== <<A-06,A&lt;double&gt;>>::<<A-06-D-0b,D>>&lt;short&gt;
 
 === Synopsis
 
@@ -142,7 +142,7 @@ struct <<A-06-D-0b,D>>&lt;short&gt;;
 |===
 
 [#A-06-D-07-E-07]
-== <<A-06,A>>&lt;double&gt;::<<A-06-D-07,D>>&lt;short&gt;::E
+== <<A-06,A&lt;double&gt;>>::<<A-06-D-07,D&lt;short&gt;>>::E
 
 === Synopsis
 
@@ -155,7 +155,7 @@ struct E;
 ----
 
 [#A-06-D-07-E-01]
-== <<A-06,A>>&lt;double&gt;::<<A-06-D-07,D>>&lt;short&gt;::E&lt;int*&gt;
+== <<A-06,A&lt;double&gt;>>::<<A-06-D-07,D&lt;short&gt;>>::<<A-06-D-0b-E-01,E>>&lt;int*&gt;
 
 === Synopsis
 
@@ -176,7 +176,7 @@ struct <<A-06-D-0b-E-01,E>>&lt;int*&gt;;
 |===
 
 [#A-06-D-07-E-01-F]
-== <<A-06,A>>&lt;double&gt;::<<A-06-D-07,D>>&lt;short&gt;::<<A-06-D-07-E-01,E>>&lt;int*&gt;::F
+== <<A-06,A&lt;double&gt;>>::<<A-06-D-07,D&lt;short&gt;>>::<<A-06-D-07-E-01,E&lt;int*&gt;>>::F
 
 === Synopsis
 
@@ -188,7 +188,7 @@ struct F;
 ----
 
 [#A-06-D-04]
-== <<A-06,A>>&lt;double&gt;::D&lt;float&gt;
+== <<A-06,A&lt;double&gt;>>::<<A-06-D-0b,D>>&lt;float&gt;
 
 === Synopsis
 
@@ -210,7 +210,7 @@ struct <<A-06-D-0b,D>>&lt;float&gt;;
 |===
 
 [#A-06-D-04-G-06]
-== <<A-06,A>>&lt;double&gt;::<<A-06-D-04,D>>&lt;float&gt;::G
+== <<A-06,A&lt;double&gt;>>::<<A-06-D-04,D&lt;float&gt;>>::G
 
 === Synopsis
 
@@ -223,7 +223,7 @@ struct G;
 ----
 
 [#A-06-D-04-G-0c]
-== <<A-06,A>>&lt;double&gt;::<<A-06-D-04,D>>&lt;float&gt;::G&lt;T*&gt;
+== <<A-06,A&lt;double&gt;>>::<<A-06-D-04,D&lt;float&gt;>>::<<A-06-D-04-G-06,G>>&lt;T*&gt;
 
 === Synopsis
 
@@ -236,7 +236,7 @@ struct <<A-06-D-04-G-06,G>>&lt;T*&gt;;
 ----
 
 [#A-02]
-== A&lt;long*&gt;
+== <<A-0e,A>>&lt;long*&gt;
 
 === Synopsis
 
@@ -259,7 +259,7 @@ struct <<A-0e,A>>&lt;long*&gt;;
 |===
 
 [#A-02-B-06]
-== <<A-02,A>>&lt;long*&gt;::B
+== <<A-02,A&lt;long*&gt;>>::B
 
 === Synopsis
 
@@ -272,7 +272,7 @@ struct B;
 ----
 
 [#A-02-B-0d]
-== <<A-02,A>>&lt;long*&gt;::B&lt;int&gt;
+== <<A-02,A&lt;long*&gt;>>::<<A-03-B-05,B>>&lt;int&gt;
 
 === Synopsis
 
@@ -285,7 +285,7 @@ struct <<A-03-B-05,B>>&lt;int&gt;;
 ----
 
 [#A-02-B-05]
-== <<A-02,A>>&lt;long*&gt;::B&lt;int*&gt;
+== <<A-02,A&lt;long*&gt;>>::<<A-03-B-05,B>>&lt;int*&gt;
 
 === Synopsis
 
@@ -306,7 +306,7 @@ struct <<A-03-B-05,B>>&lt;int*&gt;;
 |===
 
 [#A-02-B-05-C]
-== <<A-02,A>>&lt;long*&gt;::<<A-02-B-05,B>>&lt;int*&gt;::C
+== <<A-02,A&lt;long*&gt;>>::<<A-02-B-05,B&lt;int*&gt;>>::C
 
 === Synopsis
 
@@ -318,7 +318,7 @@ struct C;
 ----
 
 [#A-03]
-== A&lt;T*&gt;
+== <<A-0e,A>>&lt;T*&gt;
 
 === Synopsis
 
@@ -341,7 +341,7 @@ struct <<A-0e,A>>&lt;T*&gt;;
 |===
 
 [#A-03-B-05]
-== <<A-03,A>>&lt;T*&gt;::B
+== <<A-03,A&lt;T*&gt;>>::B
 
 === Synopsis
 
@@ -354,7 +354,7 @@ struct B;
 ----
 
 [#A-03-B-0b]
-== <<A-03,A>>&lt;T*&gt;::B&lt;int&gt;
+== <<A-03,A&lt;T*&gt;>>::<<A-03-B-05,B>>&lt;int&gt;
 
 === Synopsis
 
@@ -367,7 +367,7 @@ struct <<A-03-B-05,B>>&lt;int&gt;;
 ----
 
 [#A-03-B-01]
-== <<A-03,A>>&lt;T*&gt;::B&lt;U*&gt;
+== <<A-03,A&lt;T*&gt;>>::<<A-03-B-05,B>>&lt;U*&gt;
 
 === Synopsis
 
@@ -388,7 +388,7 @@ struct <<A-03-B-05,B>>&lt;U*&gt;;
 |===
 
 [#A-03-B-01-C]
-== <<A-03,A>>&lt;T*&gt;::<<A-03-B-01,B>>&lt;U*&gt;::C
+== <<A-03,A&lt;T*&gt;>>::<<A-03-B-01,B&lt;U*&gt;>>::C
 
 === Synopsis
 

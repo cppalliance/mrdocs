@@ -113,7 +113,7 @@
 {{#each symbol.friends }}
 <tr>
 {{#if symbol}}
-<td>{{#>markup/code}}{{> symbol/name symbol link=symbol }}{{/markup/code}}</td>
+<td>{{#>markup/code}}{{> symbol/name symbol }}{{/markup/code}}</td>
 <td>{{> javadoc/inline-brief symbol.doc.brief }}</td>
 {{else}}
 <td>{{#>markup/code}}{{> type/declarator type }}{{/markup/code}}</td>

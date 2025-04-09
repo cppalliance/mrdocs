@@ -108,7 +108,7 @@ using M3 = <<S0-03-S2,S2>>&lt;U&gt;;
 ----
 
 [#S0-00]
-== S0&lt;void&gt;
+== <<S0-03,S0>>&lt;void&gt;
 
 === Synopsis
 
@@ -130,7 +130,7 @@ struct <<S0-03,S0>>&lt;void&gt;;
 |===
 
 [#S0-00-S2-0d]
-== <<S0-00,S0>>&lt;void&gt;::S2
+== <<S0-00,S0&lt;void&gt;>>::S2
 
 === Synopsis
 
@@ -143,7 +143,7 @@ struct S2;
 ----
 
 [#S0-00-S2-02]
-== <<S0-00,S0>>&lt;void&gt;::S2&lt;char&gt;
+== <<S0-00,S0&lt;void&gt;>>::<<S0-03-S2,S2>>&lt;char&gt;
 
 === Synopsis
 
@@ -165,7 +165,7 @@ struct <<S0-03-S2,S2>>&lt;char&gt;;
 |===
 
 [#S0-00-S2-02-M2]
-== <<S0-00,S0>>&lt;void&gt;::<<S0-00-S2-02,S2>>&lt;char&gt;::M2
+== <<S0-00,S0&lt;void&gt;>>::<<S0-00-S2-02,S2&lt;char&gt;>>::M2
 
 === Synopsis
 
@@ -177,7 +177,7 @@ using M2 = char;
 ----
 
 [#S0-00-S2-02-M3]
-== <<S0-00,S0>>&lt;void&gt;::<<S0-00-S2-02,S2>>&lt;char&gt;::M3
+== <<S0-00,S0&lt;void&gt;>>::<<S0-00-S2-02,S2&lt;char&gt;>>::M3
 
 === Synopsis
 
