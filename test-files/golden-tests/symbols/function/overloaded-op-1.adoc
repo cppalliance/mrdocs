@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<T,`T`>> 
+| link:#T[`T`] 
 |===
 
 [#T]
@@ -30,12 +30,12 @@ struct T;
 |===
 | Name
 | Description
-| <<T-operator_plus,`operator&plus;`>> 
+| link:#T-operator_plus[`operator&plus;`] 
 | Unary plus operator
 |===
 
 [#T-operator_plus]
-== <<T,T>>::operator&plus;
+== link:#T[T]::operator&plus;
 
 Unary plus operator
 
@@ -45,7 +45,7 @@ Declared in `&lt;overloaded&hyphen;op&hyphen;1&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<T,T>>
+link:#T[T]
 operator&plus;();
 ----
 

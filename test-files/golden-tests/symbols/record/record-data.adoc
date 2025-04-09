@@ -9,11 +9,11 @@
 [cols=1]
 |===
 | Name
-| <<T,`T`>> 
-| <<U,`U`>> 
-| <<V,`V`>> 
-| <<W,`W`>> 
-| <<X,`X`>> 
+| link:#T[`T`] 
+| link:#U[`U`] 
+| link:#V[`V`] 
+| link:#W[`W`] 
+| link:#X[`X`] 
 |===
 
 [#T]
@@ -33,15 +33,15 @@ struct T;
 [cols=1]
 |===
 | Name
-| <<T-i,`i`>> 
-| <<T-j,`j`>> 
-| <<T-k,`k`>> 
-| <<T-l,`l`>> 
-| <<T-m,`m`>> 
+| link:#T-i[`i`] 
+| link:#T-j[`j`] 
+| link:#T-k[`k`] 
+| link:#T-l[`l`] 
+| link:#T-m[`m`] 
 |===
 
 [#T-i]
-== <<T,T>>::i
+== link:#T[T]::i
 
 === Synopsis
 
@@ -53,7 +53,7 @@ int i;
 ----
 
 [#T-j]
-== <<T,T>>::j
+== link:#T[T]::j
 
 === Synopsis
 
@@ -65,7 +65,7 @@ double j;
 ----
 
 [#T-k]
-== <<T,T>>::k
+== link:#T[T]::k
 
 === Synopsis
 
@@ -78,7 +78,7 @@ int k;
 ----
 
 [#T-l]
-== <<T,T>>::l
+== link:#T[T]::l
 
 === Synopsis
 
@@ -90,7 +90,7 @@ int l : 8;
 ----
 
 [#T-m]
-== <<T,T>>::m
+== link:#T[T]::m
 
 === Synopsis
 
@@ -118,11 +118,11 @@ struct U;
 [cols=1]
 |===
 | Name
-| <<U-t,`t`>> 
+| link:#U-t[`t`] 
 |===
 
 [#U-t]
-== <<U,U>>::t
+== link:#U[U]::t
 
 === Synopsis
 
@@ -130,7 +130,7 @@ Declared in `&lt;record&hyphen;data&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<T,T>> t;
+link:#T[T] t;
 ----
 
 [#V]
@@ -150,7 +150,7 @@ class V;
 [cols=1]
 |===
 | Name
-| <<V-j,`j`>> 
+| link:#V-j[`j`] 
 |===
 
 === Private Data Members
@@ -158,12 +158,12 @@ class V;
 [cols=1]
 |===
 | Name
-| <<V-i,`i`>> 
-| <<V-k,`k`>> 
+| link:#V-i[`i`] 
+| link:#V-k[`k`] 
 |===
 
 [#V-j]
-== <<V,V>>::j
+== link:#V[V]::j
 
 === Synopsis
 
@@ -175,7 +175,7 @@ unsigned long j;
 ----
 
 [#V-i]
-== <<V,V>>::i
+== link:#V[V]::i
 
 === Synopsis
 
@@ -187,7 +187,7 @@ int i;
 ----
 
 [#V-k]
-== <<V,V>>::k
+== link:#V[V]::k
 
 === Synopsis
 
@@ -215,11 +215,11 @@ struct W;
 [cols=1]
 |===
 | Name
-| <<W-buf,`buf`>> 
+| link:#W-buf[`buf`] 
 |===
 
 [#W-buf]
-== <<W,W>>::buf
+== link:#W[W]::buf
 
 === Synopsis
 
@@ -250,7 +250,7 @@ struct X;
 [cols=1]
 |===
 | Name
-| <<X-Q,`Q`>> 
+| link:#X-Q[`Q`] 
 |===
 
 === Data Members
@@ -258,15 +258,15 @@ struct X;
 [cols=1]
 |===
 | Name
-| <<X-x0,`x0`>> 
-| <<X-x1,`x1`>> 
-| <<X-x2,`x2`>> 
-| <<X-x3,`x3`>> 
-| <<X-x4,`x4`>> 
+| link:#X-x0[`x0`] 
+| link:#X-x1[`x1`] 
+| link:#X-x2[`x2`] 
+| link:#X-x3[`x3`] 
+| link:#X-x4[`x4`] 
 |===
 
 [#X-Q]
-== <<X,X>>::Q
+== link:#X[X]::Q
 
 === Synopsis
 
@@ -278,7 +278,7 @@ using Q = P;
 ----
 
 [#X-x0]
-== <<X,X>>::x0
+== link:#X[X]::x0
 
 === Synopsis
 
@@ -290,7 +290,7 @@ int x0 = 0;
 ----
 
 [#X-x1]
-== <<X,X>>::x1
+== link:#X[X]::x1
 
 === Synopsis
 
@@ -302,7 +302,7 @@ P x1;
 ----
 
 [#X-x2]
-== <<X,X>>::x2
+== link:#X[X]::x2
 
 === Synopsis
 
@@ -314,7 +314,7 @@ P const x2[32];
 ----
 
 [#X-x3]
-== <<X,X>>::x3
+== link:#X[X]::x3
 
 === Synopsis
 
@@ -322,11 +322,11 @@ Declared in `&lt;record&hyphen;data&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X-Q,Q>> x3;
+link:#X-Q[Q] x3;
 ----
 
 [#X-x4]
-== <<X,X>>::x4
+== link:#X[X]::x4
 
 === Synopsis
 

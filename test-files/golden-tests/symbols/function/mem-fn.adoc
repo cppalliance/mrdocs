@@ -9,24 +9,24 @@
 [cols=1]
 |===
 | Name
-| <<T01,`T01`>> 
-| <<T02,`T02`>> 
-| <<T03,`T03`>> 
-| <<T04,`T04`>> 
-| <<T05,`T05`>> 
-| <<T06,`T06`>> 
-| <<T08,`T08`>> 
-| <<T09,`T09`>> 
-| <<T10,`T10`>> 
-| <<T11,`T11`>> 
-| <<T12,`T12`>> 
-| <<T13,`T13`>> 
-| <<T14,`T14`>> 
-| <<T15,`T15`>> 
-| <<T16,`T16`>> 
-| <<T17,`T17`>> 
-| <<U,`U`>> 
-| <<V,`V`>> 
+| link:#T01[`T01`] 
+| link:#T02[`T02`] 
+| link:#T03[`T03`] 
+| link:#T04[`T04`] 
+| link:#T05[`T05`] 
+| link:#T06[`T06`] 
+| link:#T08[`T08`] 
+| link:#T09[`T09`] 
+| link:#T10[`T10`] 
+| link:#T11[`T11`] 
+| link:#T12[`T12`] 
+| link:#T13[`T13`] 
+| link:#T14[`T14`] 
+| link:#T15[`T15`] 
+| link:#T16[`T16`] 
+| link:#T17[`T17`] 
+| link:#U[`U`] 
+| link:#V[`V`] 
 |===
 
 [#T01]
@@ -46,11 +46,11 @@ struct T01;
 [cols=1]
 |===
 | Name
-| <<T01-f,`f`>> 
+| link:#T01-f[`f`] 
 |===
 
 [#T01-f]
-== <<T01,T01>>::f
+== link:#T01[T01]::f
 
 === Synopsis
 
@@ -79,11 +79,11 @@ struct T02;
 [cols=1]
 |===
 | Name
-| <<T02-f,`f`>> 
+| link:#T02-f[`f`] 
 |===
 
 [#T02-f]
-== <<T02,T02>>::f
+== link:#T02[T02]::f
 
 === Synopsis
 
@@ -113,11 +113,11 @@ struct T03;
 [cols=1]
 |===
 | Name
-| <<T03-f,`f`>> 
+| link:#T03-f[`f`] 
 |===
 
 [#T03-f]
-== <<T03,T03>>::f
+== link:#T03[T03]::f
 
 === Synopsis
 
@@ -146,11 +146,11 @@ struct T04;
 [cols=1]
 |===
 | Name
-| <<T04-f,`f`>> 
+| link:#T04-f[`f`] 
 |===
 
 [#T04-f]
-== <<T04,T04>>::f
+== link:#T04[T04]::f
 
 === Synopsis
 
@@ -179,11 +179,11 @@ struct T05;
 [cols=1]
 |===
 | Name
-| <<T05-f,`f`>> 
+| link:#T05-f[`f`] 
 |===
 
 [#T05-f]
-== <<T05,T05>>::f
+== link:#T05[T05]::f
 
 === Synopsis
 
@@ -212,11 +212,11 @@ struct T06;
 [cols=1]
 |===
 | Name
-| <<T06-f,`f`>> 
+| link:#T06-f[`f`] 
 |===
 
 [#T06-f]
-== <<T06,T06>>::f
+== link:#T06[T06]::f
 
 === Synopsis
 
@@ -246,11 +246,11 @@ struct T08;
 [cols=1]
 |===
 | Name
-| <<T08-f,`f`>> 
+| link:#T08-f[`f`] 
 |===
 
 [#T08-f]
-== <<T08,T08>>::f
+== link:#T08[T08]::f
 
 === Synopsis
 
@@ -279,11 +279,11 @@ struct T09;
 [cols=1]
 |===
 | Name
-| <<T09-f,`f`>> 
+| link:#T09-f[`f`] 
 |===
 
 [#T09-f]
-== <<T09,T09>>::f
+== link:#T09[T09]::f
 
 === Synopsis
 
@@ -312,11 +312,11 @@ struct T10;
 [cols=1]
 |===
 | Name
-| <<T10-f,`f`>> 
+| link:#T10-f[`f`] 
 |===
 
 [#T10-f]
-== <<T10,T10>>::f
+== link:#T10[T10]::f
 
 === Synopsis
 
@@ -345,11 +345,11 @@ struct T11;
 [cols=1]
 |===
 | Name
-| <<T11-f,`f`>> 
+| link:#T11-f[`f`] 
 |===
 
 [#T11-f]
-== <<T11,T11>>::f
+== link:#T11[T11]::f
 
 === Synopsis
 
@@ -378,11 +378,11 @@ struct T12;
 [cols=1]
 |===
 | Name
-| <<T12-f,`f`>> 
+| link:#T12-f[`f`] 
 |===
 
 [#T12-f]
-== <<T12,T12>>::f
+== link:#T12[T12]::f
 
 === Synopsis
 
@@ -411,11 +411,11 @@ struct T13;
 [cols=1]
 |===
 | Name
-| <<T13-f,`f`>>  [.small]#[virtual]#
+| link:#T13-f[`f`]  [.small]#[virtual]#
 |===
 
 [#T13-f]
-== <<T13,T13>>::f
+== link:#T13[T13]::f
 
 === Synopsis
 
@@ -445,7 +445,7 @@ struct T14;
 [cols=1]
 |===
 | Name
-| <<T14-f,`f`>>  [.small]#[virtual]#
+| link:#T14-f[`f`]  [.small]#[virtual]#
 |===
 
 === Derived Classes
@@ -454,12 +454,12 @@ struct T14;
 |===
 | Name
 | Description
-| <<T17,`T17`>>
+| link:#T17[`T17`]
 | 
 |===
 
 [#T14-f]
-== <<T14,T14>>::f
+== link:#T14[T14]::f
 
 === Synopsis
 
@@ -489,11 +489,11 @@ struct T15;
 [cols=1]
 |===
 | Name
-| <<T15-f,`f`>> 
+| link:#T15-f[`f`] 
 |===
 
 [#T15-f]
-== <<T15,T15>>::f
+== link:#T15[T15]::f
 
 === Synopsis
 
@@ -522,11 +522,11 @@ struct T16;
 [cols=1]
 |===
 | Name
-| <<T16-f,`f`>> 
+| link:#T16-f[`f`] 
 |===
 
 [#T16-f]
-== <<T16,T16>>::f
+== link:#T16[T16]::f
 
 === Synopsis
 
@@ -549,7 +549,7 @@ Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct T17
-    : <<T14,T14>>;
+    : link:#T14[T14];
 ----
 
 === Base Classes
@@ -558,7 +558,7 @@ struct T17
 |===
 | Name
 | Description
-| `<<T14,T14>>`
+| `link:#T14[T14]`
 | 
 |===
 
@@ -567,11 +567,11 @@ struct T17
 [cols=1]
 |===
 | Name
-| <<T17-f,`f`>>  [.small]#[virtual]#
+| link:#T17-f[`f`]  [.small]#[virtual]#
 |===
 
 [#T17-f]
-== <<T17,T17>>::f
+== link:#T17[T17]::f
 
 === Synopsis
 
@@ -601,8 +601,8 @@ struct U;
 [cols=1]
 |===
 | Name
-| <<U-f1,`f1`>> 
-| <<U-f3,`f3`>>  [.small]#[virtual]#
+| link:#U-f1[`f1`] 
+| link:#U-f3[`f3`]  [.small]#[virtual]#
 |===
 
 === Static Member Functions
@@ -610,7 +610,7 @@ struct U;
 [cols=1]
 |===
 | Name
-| <<U-f2,`f2`>> 
+| link:#U-f2[`f2`] 
 |===
 
 === Derived Classes
@@ -619,12 +619,12 @@ struct U;
 |===
 | Name
 | Description
-| <<V,`V`>>
+| link:#V[`V`]
 | 
 |===
 
 [#U-f1]
-== <<U,U>>::f1
+== link:#U[U]::f1
 
 === Synopsis
 
@@ -638,7 +638,7 @@ f1(&period;&period;&period;) const volatile noexcept;
 ----
 
 [#U-f3]
-== <<U,U>>::f3
+== link:#U[U]::f3
 
 === Synopsis
 
@@ -652,7 +652,7 @@ f3() const volatile noexcept = 0;
 ----
 
 [#U-f2]
-== <<U,U>>::f2
+== link:#U[U]::f2
 
 === Synopsis
 
@@ -676,7 +676,7 @@ Declared in `&lt;mem&hyphen;fn&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct V
-    : <<U,U>>;
+    : link:#U[U];
 ----
 
 === Base Classes
@@ -685,7 +685,7 @@ struct V
 |===
 | Name
 | Description
-| `<<U,U>>`
+| `link:#U[U]`
 | 
 |===
 
@@ -694,8 +694,8 @@ struct V
 [cols=1]
 |===
 | Name
-| <<U-f1,`f1`>> 
-| <<V-f3,`f3`>>  [.small]#[virtual]#
+| link:#U-f1[`f1`] 
+| link:#V-f3[`f3`]  [.small]#[virtual]#
 |===
 
 === Static Member Functions
@@ -703,11 +703,11 @@ struct V
 [cols=1]
 |===
 | Name
-| <<U-f2,`f2`>> 
+| link:#U-f2[`f2`] 
 |===
 
 [#V-f3]
-== <<V,V>>::f3
+== link:#V[V]::f3
 
 === Synopsis
 

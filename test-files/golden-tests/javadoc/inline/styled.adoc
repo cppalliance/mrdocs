@@ -10,7 +10,7 @@
 |===
 | Name
 | Description
-| <<A,`A`>> 
+| link:#A[`A`] 
 | Brief for A
 |===
 
@@ -34,7 +34,7 @@ struct A;
 |===
 | Name
 | Description
-| <<A-compare,`compare`>> 
+| link:#A-compare[`compare`] 
 | Compare function
 |===
 
@@ -45,7 +45,7 @@ Paragraph with `code`, *bold* text, and _italic_ text&period;
 We can also escape these markers&colon; &grave;, &ast;, and &lowbar;&period;
 
 [#A-compare]
-== <<A,A>>::compare
+== link:#A[A]::compare
 
 Compare function
 
@@ -56,7 +56,7 @@ Declared in `&lt;styled&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int
-compare(<<A,A>> const& other) const noexcept;
+compare(link:#A[A] const& other) const noexcept;
 ----
 
 === Return Value

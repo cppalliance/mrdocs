@@ -9,17 +9,17 @@
 [cols=1]
 |===
 | Name
-| <<R0,`R0`>> 
-| <<R1,`R1`>> 
-| <<R2,`R2`>> 
-| <<S0-0c,`S0`>> 
-| <<S0-09,`S0&lt;2&gt;`>> 
-| <<S0-073,`S0&lt;3&gt;`>> 
-| <<S0-0e,`S0&lt;5&gt;`>> 
-| <<S0-07e,`S0&lt;6&gt;`>> 
-| <<U1,`U1`>> 
-| <<U2,`U2`>> 
-| <<U3,`U3`>> 
+| link:#R0[`R0`] 
+| link:#R1[`R1`] 
+| link:#R2[`R2`] 
+| link:#S0-0c[`S0`] 
+| link:#S0-09[`S0&lt;2&gt;`] 
+| link:#S0-073[`S0&lt;3&gt;`] 
+| link:#S0-0e[`S0&lt;5&gt;`] 
+| link:#S0-07e[`S0&lt;6&gt;`] 
+| link:#U1[`U1`] 
+| link:#U2[`U2`] 
+| link:#U3[`U3`] 
 |===
 
 [#U1]
@@ -31,7 +31,7 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using U1 = <<S0-0c,S0>>&lt;4&gt;;
+using U1 = link:#S0-0c[S0]&lt;4&gt;;
 ----
 
 [#U2]
@@ -43,7 +43,7 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using U2 = <<S0-0c,S0>>&lt;5&gt;::<<S0-0e-S1,S1>>;
+using U2 = link:#S0-0c[S0]&lt;5&gt;::link:#S0-0e-S1[S1];
 ----
 
 [#U3]
@@ -55,7 +55,7 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using U3 = <<S0-07e,S0>>&lt;6&gt;;
+using U3 = link:#S0-07e[S0]&lt;6&gt;;
 ----
 
 [#R0]
@@ -68,7 +68,7 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R0
-    : <<S0-0c,S0>>&lt;1&gt;;
+    : link:#S0-0c[S0]&lt;1&gt;;
 ----
 
 === Base Classes
@@ -77,7 +77,7 @@ struct R0
 |===
 | Name
 | Description
-| `<<S0-0c,S0>>&lt;1&gt;`
+| `link:#S0-0c[S0]&lt;1&gt;`
 | 
 |===
 
@@ -86,7 +86,7 @@ struct R0
 [cols=1]
 |===
 | Name
-| <<S0-0c-S1,`S1`>> 
+| link:#S0-0c-S1[`S1`] 
 |===
 
 [#R1]
@@ -99,7 +99,7 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R1
-    : <<S0-0c,S0>>&lt;2&gt;::<<S0-09,S1>>;
+    : link:#S0-0c[S0]&lt;2&gt;::link:#S0-09[S1];
 ----
 
 === Base Classes
@@ -108,7 +108,7 @@ struct R1
 |===
 | Name
 | Description
-| `<<S0-0c,S0>>&lt;2&gt;::<<S0-09,S1>>`
+| `link:#S0-0c[S0]&lt;2&gt;::link:#S0-09[S1]`
 | 
 |===
 
@@ -122,7 +122,7 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R2
-    : <<S0-073,S0>>&lt;3&gt;;
+    : link:#S0-073[S0]&lt;3&gt;;
 ----
 
 === Base Classes
@@ -131,7 +131,7 @@ struct R2
 |===
 | Name
 | Description
-| `<<S0-073,S0>>&lt;3&gt;`
+| `link:#S0-073[S0]&lt;3&gt;`
 | 
 |===
 
@@ -155,7 +155,7 @@ struct S0;
 [cols=1]
 |===
 | Name
-| <<S0-0c-S1,`S1`>> 
+| link:#S0-0c-S1[`S1`] 
 |===
 
 === Derived Classes
@@ -164,12 +164,12 @@ struct S0;
 |===
 | Name
 | Description
-| <<R0,`R0`>>
+| link:#R0[`R0`]
 | 
 |===
 
 [#S0-0c-S1]
-== <<S0-0c,S0>>::S1
+== link:#S0-0c[S0]::S1
 
 === Synopsis
 
@@ -181,7 +181,7 @@ struct S1;
 ----
 
 [#S0-09]
-== <<S0-0c,S0>>&lt;2&gt;
+== link:#S0-0c[S0]&lt;2&gt;
 
 === Synopsis
 
@@ -190,11 +190,11 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0c,S0>>&lt;2&gt;;
+struct link:#S0-0c[S0]&lt;2&gt;;
 ----
 
 [#S0-073]
-== <<S0-0c,S0>>&lt;3&gt;
+== link:#S0-0c[S0]&lt;3&gt;
 
 === Synopsis
 
@@ -203,7 +203,7 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0c,S0>>&lt;3&gt;;
+struct link:#S0-0c[S0]&lt;3&gt;;
 ----
 
 === Derived Classes
@@ -212,12 +212,12 @@ struct <<S0-0c,S0>>&lt;3&gt;;
 |===
 | Name
 | Description
-| <<R2,`R2`>>
+| link:#R2[`R2`]
 | 
 |===
 
 [#S0-0e]
-== <<S0-0c,S0>>&lt;5&gt;
+== link:#S0-0c[S0]&lt;5&gt;
 
 === Synopsis
 
@@ -226,7 +226,7 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0c,S0>>&lt;5&gt;;
+struct link:#S0-0c[S0]&lt;5&gt;;
 ----
 
 === Types
@@ -234,11 +234,11 @@ struct <<S0-0c,S0>>&lt;5&gt;;
 [cols=1]
 |===
 | Name
-| <<S0-0e-S1,`S1`>> 
+| link:#S0-0e-S1[`S1`] 
 |===
 
 [#S0-0e-S1]
-== <<S0-0e,S0&lt;5&gt;>>::S1
+== link:#S0-0e[S0&lt;5&gt;]::S1
 
 === Synopsis
 
@@ -250,7 +250,7 @@ struct S1;
 ----
 
 [#S0-07e]
-== <<S0-0c,S0>>&lt;6&gt;
+== link:#S0-0c[S0]&lt;6&gt;
 
 === Synopsis
 
@@ -259,7 +259,7 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<S0-0c,S0>>&lt;6&gt;;
+struct link:#S0-0c[S0]&lt;6&gt;;
 ----
 
 

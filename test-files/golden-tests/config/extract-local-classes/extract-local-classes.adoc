@@ -9,8 +9,8 @@
 [cols=1]
 |===
 | Name
-| <<local_class,`local&lowbar;class`>> 
-| <<local_struct,`local&lowbar;struct`>> 
+| link:#local_class[`local&lowbar;class`] 
+| link:#local_struct[`local&lowbar;struct`] 
 |===
 
 === Functions
@@ -18,7 +18,7 @@
 [cols=1]
 |===
 | Name
-| <<local_function,`local&lowbar;function`>> 
+| link:#local_function[`local&lowbar;function`] 
 |===
 
 [#local_class]

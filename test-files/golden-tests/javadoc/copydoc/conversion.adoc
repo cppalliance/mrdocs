@@ -9,9 +9,9 @@
 [cols=1]
 |===
 | Name
-| <<A,`A`>> 
-| <<string_type,`string&lowbar;type`>> 
-| <<string_view_type,`string&lowbar;view&lowbar;type`>> 
+| link:#A[`A`] 
+| link:#string_type[`string&lowbar;type`] 
+| link:#string_view_type[`string&lowbar;view&lowbar;type`] 
 |===
 
 [#A]
@@ -32,16 +32,16 @@ struct A;
 |===
 | Name
 | Description
-| <<A-operator_assign-04,`operator&equals;`>> 
+| link:#A-operator_assign-04[`operator&equals;`] 
 | Convert a string to A
-| <<A-2conversion-02,`operator string&lowbar;type`>> 
+| link:#A-2conversion-02[`operator string&lowbar;type`] 
 | Convert A to a string
-| <<A-2conversion-00,`operator string&lowbar;view&lowbar;type`>> 
+| link:#A-2conversion-00[`operator string&lowbar;view&lowbar;type`] 
 | Convert A to a string
 |===
 
 [#A-operator_assign-04]
-== <<A,A>>::operator&equals;
+== link:#A[A]::operator&equals;
 
 Convert a string to A
 
@@ -54,22 +54,22 @@ Convert a string to A
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A,A>>&
-<<A-operator_assign-08,operator&equals;>>(<<string_type,string&lowbar;type>> const& other);
+link:#A[A]&
+link:#A-operator_assign-08[operator&equals;](link:#string_type[string&lowbar;type] const& other);
 ----
 
-[.small]#<<A-operator_assign-08,_» more&period;&period;&period;_>>#
+[.small]#link:#A-operator_assign-08[_» more&period;&period;&period;_]#
 
 Convert a string to A
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A,A>>&
-<<A-operator_assign-00,operator&equals;>>(<<string_view_type,string&lowbar;view&lowbar;type>> const& other);
+link:#A[A]&
+link:#A-operator_assign-00[operator&equals;](link:#string_view_type[string&lowbar;view&lowbar;type] const& other);
 ----
 
-[.small]#<<A-operator_assign-00,_» more&period;&period;&period;_>>#
+[.small]#link:#A-operator_assign-00[_» more&period;&period;&period;_]#
 
 === Return Value
 
@@ -86,7 +86,7 @@ A representation of the string
 |===
 
 [#A-operator_assign-08]
-== <<A,A>>::operator&equals;
+== link:#A[A]::operator&equals;
 
 Convert a string to A
 
@@ -96,8 +96,8 @@ Declared in `&lt;conversion&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A,A>>&
-operator&equals;(<<string_type,string&lowbar;type>> const& other);
+link:#A[A]&
+operator&equals;(link:#string_type[string&lowbar;type] const& other);
 ----
 
 === Return Value
@@ -115,7 +115,7 @@ A representation of the string
 |===
 
 [#A-operator_assign-00]
-== <<A,A>>::operator&equals;
+== link:#A[A]::operator&equals;
 
 Convert a string to A
 
@@ -125,8 +125,8 @@ Declared in `&lt;conversion&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A,A>>&
-operator&equals;(<<string_view_type,string&lowbar;view&lowbar;type>> const& other);
+link:#A[A]&
+operator&equals;(link:#string_view_type[string&lowbar;view&lowbar;type] const& other);
 ----
 
 === Return Value
@@ -144,7 +144,7 @@ A representation of the string
 |===
 
 [#A-2conversion-02]
-== <<A,A>>::operator <<string_type,string&lowbar;type>>
+== link:#A[A]::operator link:#string_type[string&lowbar;type]
 
 Convert A to a string
 
@@ -154,7 +154,7 @@ Declared in `&lt;conversion&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-operator <<string_type,string&lowbar;type>>() const;
+operator link:#string_type[string&lowbar;type]() const;
 ----
 
 === Return Value
@@ -162,7 +162,7 @@ operator <<string_type,string&lowbar;type>>() const;
 A string representation of A
 
 [#A-2conversion-00]
-== <<A,A>>::operator <<string_view_type,string&lowbar;view&lowbar;type>>
+== link:#A[A]::operator link:#string_view_type[string&lowbar;view&lowbar;type]
 
 Convert A to a string
 
@@ -172,7 +172,7 @@ Declared in `&lt;conversion&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-operator <<string_view_type,string&lowbar;view&lowbar;type>>() const;
+operator link:#string_view_type[string&lowbar;view&lowbar;type]() const;
 ----
 
 === Return Value

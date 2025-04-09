@@ -9,10 +9,10 @@
 [cols=1]
 |===
 | Name
-| <<A,`A`>> 
-| <<B,`B`>> 
-| <<D,`D`>> 
-| <<C,`C`>> 
+| link:#A[`A`] 
+| link:#B[`B`] 
+| link:#D[`D`] 
+| link:#C[`C`] 
 |===
 
 [#C]
@@ -25,7 +25,7 @@ Declared in `&lt;alias&hyphen;template&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-using C = <<A,A>>&lt;T&gt;;
+using C = link:#A[A]&lt;T&gt;;
 ----
 
 [#A]
@@ -74,11 +74,11 @@ struct D;
 [cols=1]
 |===
 | Name
-| <<D-E,`E`>> 
+| link:#D-E[`E`] 
 |===
 
 [#D-E]
-== <<D,D>>::E
+== link:#D[D]::E
 
 === Synopsis
 
@@ -87,7 +87,7 @@ Declared in `&lt;alias&hyphen;template&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename U&gt;
-using E = <<B,B>>&lt;T, U&gt;;
+using E = link:#B[B]&lt;T, U&gt;;
 ----
 
 

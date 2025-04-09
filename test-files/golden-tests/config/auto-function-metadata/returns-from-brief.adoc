@@ -10,7 +10,7 @@
 |===
 | Name
 | Description
-| <<X,`X`>> 
+| link:#X[`X`] 
 | Test class
 |===
 
@@ -34,16 +34,16 @@ struct X;
 |===
 | Name
 | Description
-| <<X-empty,`empty`>> 
+| link:#X-empty[`empty`] 
 | Determines whether the range is empty&period;
-| <<X-front,`front`>> 
+| link:#X-front[`front`] 
 | Returns the first element of the range&period;
-| <<X-size,`size`>> 
+| link:#X-size[`size`] 
 | Get the range size&period;
 |===
 
 [#X-empty]
-== <<X,X>>::empty
+== link:#X[X]::empty
 
 Determines whether the range is empty&period;
 
@@ -62,7 +62,7 @@ empty();
 whether the range is empty&period;
 
 [#X-front]
-== <<X,X>>::front
+== link:#X[X]::front
 
 Returns the first element of the range&period;
 
@@ -81,7 +81,7 @@ front() const;
 the first element of the range&period;
 
 [#X-size]
-== <<X,X>>::size
+== link:#X[X]::size
 
 Get the range size&period;
 

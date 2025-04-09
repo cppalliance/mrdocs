@@ -9,8 +9,8 @@
 [cols=1]
 |===
 | Name
-| <<T,`T`>> 
-| <<U,`U`>> 
+| link:#T[`T`] 
+| link:#U[`U`] 
 |===
 
 === Functions
@@ -18,10 +18,10 @@
 [cols=1]
 |===
 | Name
-| <<f,`f`>> 
-| <<g,`g`>> 
-| <<h,`h`>> 
-| <<i,`i`>> 
+| link:#f[`f`] 
+| link:#g[`g`] 
+| link:#h[`h`] 
+| link:#i[`i`] 
 |===
 
 [#T]
@@ -97,7 +97,7 @@ Declared in `&lt;function&hyphen;parm&hyphen;decay&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-i(<<T,T>>);
+i(link:#T[T]);
 ----
 
 

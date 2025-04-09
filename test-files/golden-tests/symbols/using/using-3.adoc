@@ -9,9 +9,9 @@
 [cols=1]
 |===
 | Name
-| <<A,`A`>> 
-| <<B,`B`>> 
-| <<C,`C`>> 
+| link:#A[`A`] 
+| link:#B[`B`] 
+| link:#C[`C`] 
 |===
 
 [#A]
@@ -31,7 +31,7 @@ struct A;
 [cols=1]
 |===
 | Name
-| <<A-f,`f`>> 
+| link:#A-f[`f`] 
 |===
 
 === Derived Classes
@@ -40,12 +40,12 @@ struct A;
 |===
 | Name
 | Description
-| <<C,`C`>>
+| link:#C[`C`]
 | 
 |===
 
 [#A-f]
-== <<A,A>>::f
+== link:#A[A]::f
 
 === Synopsis
 
@@ -74,7 +74,7 @@ struct B;
 [cols=1]
 |===
 | Name
-| <<B-f,`f`>> 
+| link:#B-f[`f`] 
 |===
 
 === Derived Classes
@@ -83,12 +83,12 @@ struct B;
 |===
 | Name
 | Description
-| <<C,`C`>>
+| link:#C[`C`]
 | 
 |===
 
 [#B-f]
-== <<B,B>>::f
+== link:#B[B]::f
 
 === Synopsis
 
@@ -110,8 +110,8 @@ Declared in `&lt;using&hyphen;3&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct C
-    : <<A,A>>
-    , <<B,B>>;
+    : link:#A[A]
+    , link:#B[B];
 ----
 
 === Base Classes
@@ -120,9 +120,9 @@ struct C
 |===
 | Name
 | Description
-| `<<A,A>>`
+| `link:#A[A]`
 | 
-| `<<B,B>>`
+| `link:#B[B]`
 | 
 |===
 
@@ -132,7 +132,7 @@ struct C
 |===
 | Name
 | Description
-| <<C-f-0e,`f`>> 
+| link:#C-f-0e[`f`] 
 | 
 |===
 
@@ -141,12 +141,12 @@ struct C
 [cols=1]
 |===
 | Name
-| <<C-f-08,`f`>> 
-| <<C-f-03,`f`>> 
+| link:#C-f-08[`f`] 
+| link:#C-f-03[`f`] 
 |===
 
 [#C-f-0e]
-== <<C,C>>::f
+== link:#C[C]::f
 
 === Synopses
 
@@ -156,22 +156,22 @@ Declared in `&lt;using&hyphen;3&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<B-f,f>>(bool);
+link:#B-f[f](bool);
 ----
 
-[.small]#<<B-f,_» more&period;&period;&period;_>>#
+[.small]#link:#B-f[_» more&period;&period;&period;_]#
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<A-f,f>>(int);
+link:#A-f[f](int);
 ----
 
-[.small]#<<A-f,_» more&period;&period;&period;_>>#
+[.small]#link:#A-f[_» more&period;&period;&period;_]#
 
 [#B-f]
-== <<B,B>>::f
+== link:#B[B]::f
 
 === Synopsis
 
@@ -184,7 +184,7 @@ f(bool);
 ----
 
 [#A-f]
-== <<A,A>>::f
+== link:#A[A]::f
 
 === Synopsis
 
@@ -197,7 +197,7 @@ f(int);
 ----
 
 [#C-f-08]
-== <<C,C>>::f
+== link:#C[C]::f
 
 === Synopsis
 
@@ -205,7 +205,7 @@ Declared in `&lt;using&hyphen;3&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using <<A,A>>::f;
+using link:#A[A]::f;
 ----
 
 === Introduced Symbols
@@ -217,7 +217,7 @@ using <<A,A>>::f;
 |===
 
 [#C-f-03]
-== <<C,C>>::f
+== link:#C[C]::f
 
 === Synopsis
 
@@ -225,7 +225,7 @@ Declared in `&lt;using&hyphen;3&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using <<B,B>>::f;
+using link:#B[B]::f;
 ----
 
 === Introduced Symbols

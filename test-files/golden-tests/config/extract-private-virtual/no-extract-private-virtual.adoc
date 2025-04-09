@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<A,`A`>> 
+| link:#A[`A`] 
 |===
 
 [#A]
@@ -29,11 +29,11 @@ class A;
 [cols=1]
 |===
 | Name
-| <<A-f,`f`>>  [.small]#[virtual]#
+| link:#A-f[`f`]  [.small]#[virtual]#
 |===
 
 [#A-f]
-== <<A,A>>::f
+== link:#A[A]::f
 
 === Synopsis
 

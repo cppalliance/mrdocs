@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<A,`A`>> 
+| link:#A[`A`] 
 |===
 
 [#A]
@@ -30,11 +30,11 @@ struct A;
 [cols=1]
 |===
 | Name
-| <<A-B,`B`>> 
+| link:#A-B[`B`] 
 |===
 
 [#A-B]
-== <<A,A>>::B
+== link:#A[A]::B
 
 === Synopsis
 
@@ -51,11 +51,11 @@ struct B;
 [cols=1]
 |===
 | Name
-| <<A-B-f,`f`>> 
+| link:#A-B-f[`f`] 
 |===
 
 [#A-B-f]
-== <<A,A>>::<<A-B,B>>::f
+== link:#A[A]::link:#A-B[B]::f
 
 === Synopsis
 

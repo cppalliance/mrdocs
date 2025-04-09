@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<N,`N`>> 
+| link:#N[`N`] 
 |===
 
 [#N]
@@ -20,11 +20,11 @@
 [cols=1]
 |===
 | Name
-| <<N-S,`S`>> 
+| link:#N-S[`S`] 
 |===
 
 [#N-S]
-== <<N,N>>::S
+== link:#N[N]::S
 
 === Synopsis
 

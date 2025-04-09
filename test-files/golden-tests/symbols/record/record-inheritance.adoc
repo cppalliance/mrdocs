@@ -9,22 +9,22 @@
 [cols=1]
 |===
 | Name
-| <<C0,`C0`>> 
-| <<C1,`C1`>> 
-| <<C2,`C2`>> 
-| <<C3,`C3`>> 
-| <<C4,`C4`>> 
-| <<C5,`C5`>> 
-| <<C6,`C6`>> 
-| <<C7,`C7`>> 
-| <<S0,`S0`>> 
-| <<S1,`S1`>> 
-| <<S2,`S2`>> 
-| <<S3,`S3`>> 
-| <<S4,`S4`>> 
-| <<S5,`S5`>> 
-| <<S6,`S6`>> 
-| <<U0,`U0`>> 
+| link:#C0[`C0`] 
+| link:#C1[`C1`] 
+| link:#C2[`C2`] 
+| link:#C3[`C3`] 
+| link:#C4[`C4`] 
+| link:#C5[`C5`] 
+| link:#C6[`C6`] 
+| link:#C7[`C7`] 
+| link:#S0[`S0`] 
+| link:#S1[`S1`] 
+| link:#S2[`S2`] 
+| link:#S3[`S3`] 
+| link:#S4[`S4`] 
+| link:#S5[`S5`] 
+| link:#S6[`S6`] 
+| link:#U0[`U0`] 
 |===
 
 [#C0]
@@ -45,7 +45,7 @@ class C0;
 |===
 | Name
 | Description
-| <<C2,`C2`>>
+| link:#C2[`C2`]
 | 
 |===
 
@@ -59,7 +59,7 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 class C1
-    : <<C0,C0>>;
+    : link:#C0[C0];
 ----
 
 [#C2]
@@ -72,7 +72,7 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 class C2
-    : public <<C0,C0>>;
+    : public link:#C0[C0];
 ----
 
 === Base Classes
@@ -81,7 +81,7 @@ class C2
 |===
 | Name
 | Description
-| `<<C0,C0>>`
+| `link:#C0[C0]`
 | 
 |===
 
@@ -95,7 +95,7 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 class C3
-    : protected <<C0,C0>>;
+    : protected link:#C0[C0];
 ----
 
 [#C4]
@@ -108,7 +108,7 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 class C4
-    : <<C0,C0>>;
+    : link:#C0[C0];
 ----
 
 [#C5]
@@ -121,7 +121,7 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 class C5
-    : virtual <<C0,C0>>;
+    : virtual link:#C0[C0];
 ----
 
 === Derived Classes
@@ -130,7 +130,7 @@ class C5
 |===
 | Name
 | Description
-| <<C7,`C7`>>
+| link:#C7[`C7`]
 | 
 |===
 
@@ -144,7 +144,7 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 class C6
-    : virtual <<C1,C1>>;
+    : virtual link:#C1[C1];
 ----
 
 === Derived Classes
@@ -153,7 +153,7 @@ class C6
 |===
 | Name
 | Description
-| <<C7,`C7`>>
+| link:#C7[`C7`]
 | 
 |===
 
@@ -167,8 +167,8 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 class C7
-    : public <<C5,C5>>
-    , public <<C6,C6>>;
+    : public link:#C5[C5]
+    , public link:#C6[C6];
 ----
 
 === Base Classes
@@ -177,9 +177,9 @@ class C7
 |===
 | Name
 | Description
-| `<<C5,C5>>`
+| `link:#C5[C5]`
 | 
-| `<<C6,C6>>`
+| `link:#C6[C6]`
 | 
 |===
 
@@ -201,7 +201,7 @@ struct S0;
 |===
 | Name
 | Description
-| <<S2,`S2`>>
+| link:#S2[`S2`]
 | 
 |===
 
@@ -223,7 +223,7 @@ struct S1;
 |===
 | Name
 | Description
-| <<S3,`S3`>>
+| link:#S3[`S3`]
 | 
 |===
 
@@ -237,7 +237,7 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct S2
-    : <<S0,S0>>;
+    : link:#S0[S0];
 ----
 
 === Base Classes
@@ -246,7 +246,7 @@ struct S2
 |===
 | Name
 | Description
-| `<<S0,S0>>`
+| `link:#S0[S0]`
 | 
 |===
 
@@ -256,7 +256,7 @@ struct S2
 |===
 | Name
 | Description
-| <<S4,`S4`>>
+| link:#S4[`S4`]
 | 
 |===
 
@@ -270,7 +270,7 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct S3
-    : <<S1,S1>>;
+    : link:#S1[S1];
 ----
 
 === Base Classes
@@ -279,7 +279,7 @@ struct S3
 |===
 | Name
 | Description
-| `<<S1,S1>>`
+| `link:#S1[S1]`
 | 
 |===
 
@@ -289,7 +289,7 @@ struct S3
 |===
 | Name
 | Description
-| <<S4,`S4`>>
+| link:#S4[`S4`]
 | 
 |===
 
@@ -303,8 +303,8 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct S4
-    : <<S2,S2>>
-    , <<S3,S3>>;
+    : link:#S2[S2]
+    , link:#S3[S3];
 ----
 
 === Base Classes
@@ -313,9 +313,9 @@ struct S4
 |===
 | Name
 | Description
-| `<<S2,S2>>`
+| `link:#S2[S2]`
 | 
-| `<<S3,S3>>`
+| `link:#S3[S3]`
 | 
 |===
 
@@ -329,8 +329,8 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct S5
-    : private <<S0,S0>>
-    , protected <<S1,S1>>;
+    : private link:#S0[S0]
+    , protected link:#S1[S1];
 ----
 
 [#S6]

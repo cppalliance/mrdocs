@@ -10,13 +10,13 @@
 |===
 | Name
 | Description
-| <<A,`A`>> 
+| link:#A[`A`] 
 | A concrete implementation for ABase
-| <<ABase,`ABase`>> 
+| link:#ABase[`ABase`] 
 | A base class for non&hyphen;member functions
-| <<AView,`AView`>> 
+| link:#AView[`AView`] 
 | A view of A
-| <<AView2,`AView2`>> 
+| link:#AView2[`AView2`] 
 | Another view of A
 |===
 
@@ -26,17 +26,17 @@
 |===
 | Name
 | Description
-| <<f1,`f1`>> 
+| link:#f1[`f1`] 
 | A non&hyphen;member function of ABase
-| <<f2,`f2`>> 
+| link:#f2[`f2`] 
 | A non&hyphen;member function of ABase
-| <<f3,`f3`>> 
+| link:#f3[`f3`] 
 | A non&hyphen;member function of ABase
-| <<f4,`f4`>> 
+| link:#f4[`f4`] 
 | A non&hyphen;member function of ABase
-| <<f5,`f5`>> 
+| link:#f5[`f5`] 
 | A non&hyphen;member function of ABase
-| <<n,`n`>> 
+| link:#n[`n`] 
 | A non&hyphen;member function of ABase only
 |===
 
@@ -52,7 +52,7 @@ Declared in `&lt;derived&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct A
-    : <<ABase,ABase>>;
+    : link:#ABase[ABase];
 ----
 
 === Base Classes
@@ -61,7 +61,7 @@ struct A
 |===
 | Name
 | Description
-| `<<ABase,ABase>>`
+| `link:#ABase[ABase]`
 | A base class for non&hyphen;member functions
 |===
 
@@ -71,15 +71,15 @@ struct A
 |===
 | Name
 | Description
-| <<f1,`f1`>>
+| link:#f1[`f1`]
 | A non&hyphen;member function of ABase
-| <<f2,`f2`>>
+| link:#f2[`f2`]
 | A non&hyphen;member function of ABase
-| <<f3,`f3`>>
+| link:#f3[`f3`]
 | A non&hyphen;member function of ABase
-| <<f4,`f4`>>
+| link:#f4[`f4`]
 | A non&hyphen;member function of ABase
-| <<f5,`f5`>>
+| link:#f5[`f5`]
 | A non&hyphen;member function of ABase
 |===
 
@@ -103,17 +103,17 @@ struct ABase;
 |===
 | Name
 | Description
-| <<f1,`f1`>>
+| link:#f1[`f1`]
 | A non&hyphen;member function of ABase
-| <<f2,`f2`>>
+| link:#f2[`f2`]
 | A non&hyphen;member function of ABase
-| <<f3,`f3`>>
+| link:#f3[`f3`]
 | A non&hyphen;member function of ABase
-| <<f4,`f4`>>
+| link:#f4[`f4`]
 | A non&hyphen;member function of ABase
-| <<f5,`f5`>>
+| link:#f5[`f5`]
 | A non&hyphen;member function of ABase
-| <<n,`n`>>
+| link:#n[`n`]
 | A non&hyphen;member function of ABase only
 |===
 
@@ -123,9 +123,9 @@ struct ABase;
 |===
 | Name
 | Description
-| <<A,`A`>>
+| link:#A[`A`]
 | A concrete implementation for ABase
-| <<AView,`AView`>>
+| link:#AView[`AView`]
 | A view of A
 |===
 
@@ -141,7 +141,7 @@ Declared in `&lt;derived&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct AView
-    : <<ABase,ABase>>;
+    : link:#ABase[ABase];
 ----
 
 === Base Classes
@@ -150,7 +150,7 @@ struct AView
 |===
 | Name
 | Description
-| `<<ABase,ABase>>`
+| `link:#ABase[ABase]`
 | A base class for non&hyphen;member functions
 |===
 
@@ -160,15 +160,15 @@ struct AView
 |===
 | Name
 | Description
-| <<f1,`f1`>>
+| link:#f1[`f1`]
 | A non&hyphen;member function of ABase
-| <<f2,`f2`>>
+| link:#f2[`f2`]
 | A non&hyphen;member function of ABase
-| <<f3,`f3`>>
+| link:#f3[`f3`]
 | A non&hyphen;member function of ABase
-| <<f4,`f4`>>
+| link:#f4[`f4`]
 | A non&hyphen;member function of ABase
-| <<f5,`f5`>>
+| link:#f5[`f5`]
 | A non&hyphen;member function of ABase
 |===
 
@@ -178,7 +178,7 @@ struct AView
 |===
 | Name
 | Description
-| <<AView2,`AView2`>>
+| link:#AView2[`AView2`]
 | Another view of A
 |===
 
@@ -194,7 +194,7 @@ Declared in `&lt;derived&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct AView2
-    : <<AView,AView>>;
+    : link:#AView[AView];
 ----
 
 === Base Classes
@@ -203,7 +203,7 @@ struct AView2
 |===
 | Name
 | Description
-| `<<AView,AView>>`
+| `link:#AView[AView]`
 | A view of A
 |===
 
@@ -213,15 +213,15 @@ struct AView2
 |===
 | Name
 | Description
-| <<f1,`f1`>>
+| link:#f1[`f1`]
 | A non&hyphen;member function of ABase
-| <<f2,`f2`>>
+| link:#f2[`f2`]
 | A non&hyphen;member function of ABase
-| <<f3,`f3`>>
+| link:#f3[`f3`]
 | A non&hyphen;member function of ABase
-| <<f4,`f4`>>
+| link:#f4[`f4`]
 | A non&hyphen;member function of ABase
-| <<f5,`f5`>>
+| link:#f5[`f5`]
 | A non&hyphen;member function of ABase
 |===
 
@@ -241,7 +241,7 @@ Declared in `&lt;derived&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f1(<<ABase,ABase>> const&);
+f1(link:#ABase[ABase] const&);
 ----
 
 [#f2]
@@ -256,7 +256,7 @@ Declared in `&lt;derived&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f2(<<ABase,ABase>>&);
+f2(link:#ABase[ABase]&);
 ----
 
 [#f3]
@@ -271,7 +271,7 @@ Declared in `&lt;derived&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f3(<<ABase,ABase>> const*);
+f3(link:#ABase[ABase] const*);
 ----
 
 [#f4]
@@ -286,7 +286,7 @@ Declared in `&lt;derived&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f4(<<ABase,ABase>>*);
+f4(link:#ABase[ABase]*);
 ----
 
 [#f5]
@@ -301,7 +301,7 @@ Declared in `&lt;derived&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f5(<<ABase,ABase>> const*);
+f5(link:#ABase[ABase] const*);
 ----
 
 [#n]
@@ -316,7 +316,7 @@ Declared in `&lt;derived&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-n(<<ABase,ABase>>);
+n(link:#ABase[ABase]);
 ----
 
 

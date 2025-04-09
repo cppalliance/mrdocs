@@ -10,13 +10,13 @@
 |===
 | Name
 | Description
-| <<f1,`f1`>> 
+| link:#f1[`f1`] 
 | Brief
-| <<f2,`f2`>> 
+| link:#f2[`f2`] 
 | Brief
-| <<f3,`f3`>> 
+| link:#f3[`f3`] 
 | Brief
-| <<f4,`f4`>> 
+| link:#f4[`f4`] 
 | Brief
 |===
 

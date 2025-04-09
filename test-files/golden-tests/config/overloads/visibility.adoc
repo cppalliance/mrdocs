@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<C,`C`>> 
+| link:#C[`C`] 
 |===
 
 [#C]
@@ -30,7 +30,7 @@ class C;
 |===
 | Name
 | Description
-| <<C-foo-0e,`foo`>> 
+| link:#C-foo-0e[`foo`] 
 | 
 |===
 
@@ -40,7 +40,7 @@ class C;
 |===
 | Name
 | Description
-| <<C-foo-03,`foo`>> 
+| link:#C-foo-03[`foo`] 
 | 
 |===
 
@@ -50,7 +50,7 @@ class C;
 |===
 | Name
 | Description
-| <<C-foo-04c,`foo`>> 
+| link:#C-foo-04c[`foo`] 
 | 
 |===
 
@@ -60,12 +60,12 @@ class C;
 |===
 | Name
 | Description
-| <<C-foo-048,`foo`>> 
+| link:#C-foo-048[`foo`] 
 | 
 |===
 
 [#C-foo-0e]
-== <<C,C>>::foo
+== link:#C[C]::foo
 
 === Synopses
 
@@ -75,22 +75,22 @@ Declared in `&lt;visibility&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int
-<<C-foo-0b,foo>>();
+link:#C-foo-0b[foo]();
 ----
 
-[.small]#<<C-foo-0b,_» more&period;&period;&period;_>>#
+[.small]#link:#C-foo-0b[_» more&period;&period;&period;_]#
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int
-<<C-foo-06,foo>>(bool);
+link:#C-foo-06[foo](bool);
 ----
 
-[.small]#<<C-foo-06,_» more&period;&period;&period;_>>#
+[.small]#link:#C-foo-06[_» more&period;&period;&period;_]#
 
 [#C-foo-0b]
-== <<C,C>>::foo
+== link:#C[C]::foo
 
 === Synopsis
 
@@ -103,7 +103,7 @@ foo();
 ----
 
 [#C-foo-06]
-== <<C,C>>::foo
+== link:#C[C]::foo
 
 === Synopsis
 
@@ -116,7 +116,7 @@ foo(bool);
 ----
 
 [#C-foo-03]
-== <<C,C>>::foo
+== link:#C[C]::foo
 
 === Synopses
 
@@ -127,25 +127,25 @@ Declared in `&lt;visibility&period;cpp&gt;`
 ----
 static
 int
-<<C-foo-0fc,foo>>(int);
+link:#C-foo-0fc[foo](int);
 ----
 
-[.small]#<<C-foo-0fc,_» more&period;&period;&period;_>>#
+[.small]#link:#C-foo-0fc[_» more&period;&period;&period;_]#
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 static
 int
-<<C-foo-05,foo>>(
+link:#C-foo-05[foo](
     int,
     bool);
 ----
 
-[.small]#<<C-foo-05,_» more&period;&period;&period;_>>#
+[.small]#link:#C-foo-05[_» more&period;&period;&period;_]#
 
 [#C-foo-0fc]
-== <<C,C>>::foo
+== link:#C[C]::foo
 
 === Synopsis
 
@@ -159,7 +159,7 @@ foo(int);
 ----
 
 [#C-foo-05]
-== <<C,C>>::foo
+== link:#C[C]::foo
 
 === Synopsis
 
@@ -175,7 +175,7 @@ foo(
 ----
 
 [#C-foo-04c]
-== <<C,C>>::foo
+== link:#C[C]::foo
 
 === Synopses
 
@@ -185,27 +185,27 @@ Declared in `&lt;visibility&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int
-<<C-foo-0a,foo>>(
+link:#C-foo-0a[foo](
     int,
     int);
 ----
 
-[.small]#<<C-foo-0a,_» more&period;&period;&period;_>>#
+[.small]#link:#C-foo-0a[_» more&period;&period;&period;_]#
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int
-<<C-foo-0c,foo>>(
+link:#C-foo-0c[foo](
     int,
     int,
     bool);
 ----
 
-[.small]#<<C-foo-0c,_» more&period;&period;&period;_>>#
+[.small]#link:#C-foo-0c[_» more&period;&period;&period;_]#
 
 [#C-foo-0a]
-== <<C,C>>::foo
+== link:#C[C]::foo
 
 === Synopsis
 
@@ -220,7 +220,7 @@ foo(
 ----
 
 [#C-foo-0c]
-== <<C,C>>::foo
+== link:#C[C]::foo
 
 === Synopsis
 
@@ -236,7 +236,7 @@ foo(
 ----
 
 [#C-foo-048]
-== <<C,C>>::foo
+== link:#C[C]::foo
 
 === Synopses
 
@@ -247,30 +247,30 @@ Declared in `&lt;visibility&period;cpp&gt;`
 ----
 static
 int
-<<C-foo-00,foo>>(
+link:#C-foo-00[foo](
     int,
     int,
     int);
 ----
 
-[.small]#<<C-foo-00,_» more&period;&period;&period;_>>#
+[.small]#link:#C-foo-00[_» more&period;&period;&period;_]#
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 static
 int
-<<C-foo-0f5,foo>>(
+link:#C-foo-0f5[foo](
     int,
     int,
     int,
     bool);
 ----
 
-[.small]#<<C-foo-0f5,_» more&period;&period;&period;_>>#
+[.small]#link:#C-foo-0f5[_» more&period;&period;&period;_]#
 
 [#C-foo-00]
-== <<C,C>>::foo
+== link:#C[C]::foo
 
 === Synopsis
 
@@ -287,7 +287,7 @@ foo(
 ----
 
 [#C-foo-0f5]
-== <<C,C>>::foo
+== link:#C[C]::foo
 
 === Synopsis
 

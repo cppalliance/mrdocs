@@ -10,9 +10,9 @@
 |===
 | Name
 | Description
-| <<A,`A`>> 
+| link:#A[`A`] 
 | A helper tag
-| <<X,`X`>> 
+| link:#X[`X`] 
 | Test class
 |===
 
@@ -50,14 +50,14 @@ struct X;
 |===
 | Name
 | Description
-| <<X-2constructor-08,`X`>>         [.small]#[constructor]#
+| link:#X-2constructor-08[`X`]         [.small]#[constructor]#
 | Constructors
-| <<X-operator_assign-0a,`operator&equals;`>> 
+| link:#X-operator_assign-0a[`operator&equals;`] 
 | Assignment operators
 |===
 
 [#X-2constructor-08]
-== <<X,X>>::X
+== link:#X[X]::X
 
 Constructors
 
@@ -70,53 +70,53 @@ Copy constructor
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X-2constructor-0e,X>>(<<X,X>> const& other);
+link:#X-2constructor-0e[X](link:#X[X] const& other);
 ----
 
-[.small]#<<X-2constructor-0e,_» more&period;&period;&period;_>>#
+[.small]#link:#X-2constructor-0e[_» more&period;&period;&period;_]#
 
 Move constructor
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X-2constructor-06,X>>(<<X,X>>&& other);
+link:#X-2constructor-06[X](link:#X[X]&& other);
 ----
 
-[.small]#<<X-2constructor-06,_» more&period;&period;&period;_>>#
+[.small]#link:#X-2constructor-06[_» more&period;&period;&period;_]#
 
 Construct from `int`
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X-2constructor-07,X>>(int value);
+link:#X-2constructor-07[X](int value);
 ----
 
-[.small]#<<X-2constructor-07,_» more&period;&period;&period;_>>#
+[.small]#link:#X-2constructor-07[_» more&period;&period;&period;_]#
 
 Construct from `A`
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X-2constructor-0b,X>>(<<A,A>> const& value);
+link:#X-2constructor-0b[X](link:#A[A] const& value);
 ----
 
-[.small]#<<X-2constructor-0b,_» more&period;&period;&period;_>>#
+[.small]#link:#X-2constructor-0b[_» more&period;&period;&period;_]#
 
 Construct from `A`
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X-2constructor-00,X>>(<<A,A>>&& value);
+link:#X-2constructor-00[X](link:#A[A]&& value);
 ----
 
-[.small]#<<X-2constructor-00,_» more&period;&period;&period;_>>#
+[.small]#link:#X-2constructor-00[_» more&period;&period;&period;_]#
 
 [#X-2constructor-0e]
-== <<X,X>>::X
+== link:#X[X]::X
 
 Copy constructor
 
@@ -126,7 +126,7 @@ Declared in `&lt;param&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-X(<<X,X>> const& other);
+X(link:#X[X] const& other);
 ----
 
 === Parameters
@@ -140,7 +140,7 @@ X(<<X,X>> const& other);
 |===
 
 [#X-2constructor-06]
-== <<X,X>>::X
+== link:#X[X]::X
 
 Move constructor
 
@@ -150,7 +150,7 @@ Declared in `&lt;param&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-X(<<X,X>>&& other);
+X(link:#X[X]&& other);
 ----
 
 === Parameters
@@ -164,7 +164,7 @@ X(<<X,X>>&& other);
 |===
 
 [#X-2constructor-07]
-== <<X,X>>::X
+== link:#X[X]::X
 
 Construct from `int`
 
@@ -188,7 +188,7 @@ X(int value);
 |===
 
 [#X-2constructor-0b]
-== <<X,X>>::X
+== link:#X[X]::X
 
 Construct from `A`
 
@@ -198,7 +198,7 @@ Declared in `&lt;param&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-X(<<A,A>> const& value);
+X(link:#A[A] const& value);
 ----
 
 === Parameters
@@ -212,7 +212,7 @@ X(<<A,A>> const& value);
 |===
 
 [#X-2constructor-00]
-== <<X,X>>::X
+== link:#X[X]::X
 
 Construct from `A`
 
@@ -222,7 +222,7 @@ Declared in `&lt;param&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-X(<<A,A>>&& value);
+X(link:#A[A]&& value);
 ----
 
 === Parameters
@@ -236,7 +236,7 @@ X(<<A,A>>&& value);
 |===
 
 [#X-operator_assign-0a]
-== <<X,X>>::operator&equals;
+== link:#X[X]::operator&equals;
 
 Assignment operators
 
@@ -249,58 +249,58 @@ Copy assignment operator
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X,X>>&
-<<X-operator_assign-06,operator&equals;>>(<<X,X>> const& other);
+link:#X[X]&
+link:#X-operator_assign-06[operator&equals;](link:#X[X] const& other);
 ----
 
-[.small]#<<X-operator_assign-06,_» more&period;&period;&period;_>>#
+[.small]#link:#X-operator_assign-06[_» more&period;&period;&period;_]#
 
 Move assignment operator
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X,X>>&
-<<X-operator_assign-0e,operator&equals;>>(<<X,X>>&& other);
+link:#X[X]&
+link:#X-operator_assign-0e[operator&equals;](link:#X[X]&& other);
 ----
 
-[.small]#<<X-operator_assign-0e,_» more&period;&period;&period;_>>#
+[.small]#link:#X-operator_assign-0e[_» more&period;&period;&period;_]#
 
 Assignment operator
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X,X>>&
-<<X-operator_assign-07f,operator&equals;>>(int value);
+link:#X[X]&
+link:#X-operator_assign-07f[operator&equals;](int value);
 ----
 
-[.small]#<<X-operator_assign-07f,_» more&period;&period;&period;_>>#
+[.small]#link:#X-operator_assign-07f[_» more&period;&period;&period;_]#
 
 Assignment operator
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X,X>>&
-<<X-operator_assign-0d,operator&equals;>>(<<A,A>> const& value);
+link:#X[X]&
+link:#X-operator_assign-0d[operator&equals;](link:#A[A] const& value);
 ----
 
-[.small]#<<X-operator_assign-0d,_» more&period;&period;&period;_>>#
+[.small]#link:#X-operator_assign-0d[_» more&period;&period;&period;_]#
 
 Assignment operator
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X,X>>&
-<<X-operator_assign-07e,operator&equals;>>(<<A,A>>&& value);
+link:#X[X]&
+link:#X-operator_assign-07e[operator&equals;](link:#A[A]&& value);
 ----
 
-[.small]#<<X-operator_assign-07e,_» more&period;&period;&period;_>>#
+[.small]#link:#X-operator_assign-07e[_» more&period;&period;&period;_]#
 
 [#X-operator_assign-06]
-== <<X,X>>::operator&equals;
+== link:#X[X]::operator&equals;
 
 Copy assignment operator
 
@@ -310,8 +310,8 @@ Declared in `&lt;param&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X,X>>&
-operator&equals;(<<X,X>> const& other);
+link:#X[X]&
+operator&equals;(link:#X[X] const& other);
 ----
 
 === Return Value
@@ -329,7 +329,7 @@ Reference to the current object
 |===
 
 [#X-operator_assign-0e]
-== <<X,X>>::operator&equals;
+== link:#X[X]::operator&equals;
 
 Move assignment operator
 
@@ -339,8 +339,8 @@ Declared in `&lt;param&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X,X>>&
-operator&equals;(<<X,X>>&& other);
+link:#X[X]&
+operator&equals;(link:#X[X]&& other);
 ----
 
 === Return Value
@@ -358,7 +358,7 @@ Reference to the current object
 |===
 
 [#X-operator_assign-07f]
-== <<X,X>>::operator&equals;
+== link:#X[X]::operator&equals;
 
 Assignment operator
 
@@ -368,7 +368,7 @@ Declared in `&lt;param&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X,X>>&
+link:#X[X]&
 operator&equals;(int value);
 ----
 
@@ -387,7 +387,7 @@ Reference to the current object
 |===
 
 [#X-operator_assign-0d]
-== <<X,X>>::operator&equals;
+== link:#X[X]::operator&equals;
 
 Assignment operator
 
@@ -397,8 +397,8 @@ Declared in `&lt;param&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X,X>>&
-operator&equals;(<<A,A>> const& value);
+link:#X[X]&
+operator&equals;(link:#A[A] const& value);
 ----
 
 === Return Value
@@ -416,7 +416,7 @@ Reference to the current object
 |===
 
 [#X-operator_assign-07e]
-== <<X,X>>::operator&equals;
+== link:#X[X]::operator&equals;
 
 Assignment operator
 
@@ -426,8 +426,8 @@ Declared in `&lt;param&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X,X>>&
-operator&equals;(<<A,A>>&& value);
+link:#X[X]&
+operator&equals;(link:#A[A]&& value);
 ----
 
 === Return Value

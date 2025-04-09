@@ -10,13 +10,13 @@
 |===
 | Name
 | Description
-| <<E0,`E0`>> 
+| link:#E0[`E0`] 
 | E0 brief&period;
-| <<E1,`E1`>> 
+| link:#E1[`E1`] 
 | 
-| <<E2,`E2`>> 
+| link:#E2[`E2`] 
 | E2 brief&period;
-| <<E3,`E3`>> 
+| link:#E3[`E3`] 
 | 
 |===
 

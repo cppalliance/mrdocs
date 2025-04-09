@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<N,`N`>> 
+| link:#N[`N`] 
 |===
 
 === Types
@@ -18,7 +18,7 @@
 |===
 | Name
 | Description
-| <<param_t,`param&lowbar;t`>> 
+| link:#param_t[`param&lowbar;t`] 
 | Helper class for distinct parameter types
 |===
 
@@ -30,11 +30,11 @@
 [cols=1]
 |===
 | Name
-| <<N-A,`A`>> 
+| link:#N-A[`A`] 
 |===
 
 [#N-A]
-== <<N,N>>::A
+== link:#N[N]::A
 
 === Synopsis
 
@@ -50,7 +50,7 @@ struct A;
 [cols=1]
 |===
 | Name
-| <<N-A-B,`B`>> 
+| link:#N-A-B[`B`] 
 |===
 
 === Member Functions
@@ -59,16 +59,16 @@ struct A;
 |===
 | Name
 | Description
-| <<N-A-f-05,`f`>> 
+| link:#N-A-f-05[`f`] 
 | Reference function
-| <<N-A-g-06e,`g`>> 
+| link:#N-A-g-06e[`g`] 
 | `g` overloads
-| <<N-A-h-05,`h`>> 
+| link:#N-A-h-05[`h`] 
 | `h` overloads
 |===
 
 [#N-A-B]
-== <<N,N>>::<<N-A,A>>::B
+== link:#N[N]::link:#N-A[A]::B
 
 === Synopsis
 
@@ -80,7 +80,7 @@ struct B;
 ----
 
 [#N-A-f-05]
-== <<N,N>>::<<N-A,A>>::f
+== link:#N[N]::link:#N-A[A]::f
 
 Reference function
 
@@ -94,10 +94,10 @@ Reference function
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<N-A-f-0a,f>>(<<param_t,param&lowbar;t>>&lt;0&gt; a);
+link:#N-A-f-0a[f](link:#param_t[param&lowbar;t]&lt;0&gt; a);
 ----
 
-[.small]#<<N-A-f-0a,_» more&period;&period;&period;_>>#
+[.small]#link:#N-A-f-0a[_» more&period;&period;&period;_]#
 
 Reference function
 
@@ -105,10 +105,10 @@ Reference function
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<N-A-f-0b,f>>(<<param_t,param&lowbar;t>>&lt;1&gt; a);
+link:#N-A-f-0b[f](link:#param_t[param&lowbar;t]&lt;1&gt; a);
 ----
 
-[.small]#<<N-A-f-0b,_» more&period;&period;&period;_>>#
+[.small]#link:#N-A-f-0b[_» more&period;&period;&period;_]#
 
 Reference function
 
@@ -116,10 +116,10 @@ Reference function
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<N-A-f-0e,f>>(<<param_t,param&lowbar;t>>&lt;2&gt; a);
+link:#N-A-f-0e[f](link:#param_t[param&lowbar;t]&lt;2&gt; a);
 ----
 
-[.small]#<<N-A-f-0e,_» more&period;&period;&period;_>>#
+[.small]#link:#N-A-f-0e[_» more&period;&period;&period;_]#
 
 Reference function
 
@@ -127,10 +127,10 @@ Reference function
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<N-A-f-00,f>>(<<param_t,param&lowbar;t>>&lt;3&gt; a);
+link:#N-A-f-00[f](link:#param_t[param&lowbar;t]&lt;3&gt; a);
 ----
 
-[.small]#<<N-A-f-00,_» more&period;&period;&period;_>>#
+[.small]#link:#N-A-f-00[_» more&period;&period;&period;_]#
 
 Reference function
 
@@ -138,10 +138,10 @@ Reference function
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<N-A-f-02,f>>(<<param_t,param&lowbar;t>>&lt;4&gt; a);
+link:#N-A-f-02[f](link:#param_t[param&lowbar;t]&lt;4&gt; a);
 ----
 
-[.small]#<<N-A-f-02,_» more&period;&period;&period;_>>#
+[.small]#link:#N-A-f-02[_» more&period;&period;&period;_]#
 
 Reference function
 
@@ -149,10 +149,10 @@ Reference function
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<N-A-f-092,f>>(<<param_t,param&lowbar;t>>&lt;5&gt; a);
+link:#N-A-f-092[f](link:#param_t[param&lowbar;t]&lt;5&gt; a);
 ----
 
-[.small]#<<N-A-f-092,_» more&period;&period;&period;_>>#
+[.small]#link:#N-A-f-092[_» more&period;&period;&period;_]#
 
 Reference function
 
@@ -160,10 +160,10 @@ Reference function
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<N-A-f-097,f>>(<<param_t,param&lowbar;t>>&lt;6&gt; a);
+link:#N-A-f-097[f](link:#param_t[param&lowbar;t]&lt;6&gt; a);
 ----
 
-[.small]#<<N-A-f-097,_» more&period;&period;&period;_>>#
+[.small]#link:#N-A-f-097[_» more&period;&period;&period;_]#
 
 Reference function
 
@@ -171,10 +171,10 @@ Reference function
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<N-A-f-07,f>>(<<param_t,param&lowbar;t>>&lt;7&gt; a);
+link:#N-A-f-07[f](link:#param_t[param&lowbar;t]&lt;7&gt; a);
 ----
 
-[.small]#<<N-A-f-07,_» more&period;&period;&period;_>>#
+[.small]#link:#N-A-f-07[_» more&period;&period;&period;_]#
 
 === Parameters
 
@@ -187,7 +187,7 @@ void
 |===
 
 [#N-A-f-0a]
-== <<N,N>>::<<N-A,A>>::f
+== link:#N[N]::link:#N-A[A]::f
 
 Reference function
 
@@ -198,7 +198,7 @@ Declared in `&lt;qualified&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f(<<param_t,param&lowbar;t>>&lt;0&gt; a);
+f(link:#param_t[param&lowbar;t]&lt;0&gt; a);
 ----
 
 === Description
@@ -216,7 +216,7 @@ Documentation for the reference function
 |===
 
 [#N-A-f-0b]
-== <<N,N>>::<<N-A,A>>::f
+== link:#N[N]::link:#N-A[A]::f
 
 Reference function
 
@@ -227,7 +227,7 @@ Declared in `&lt;qualified&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f(<<param_t,param&lowbar;t>>&lt;1&gt; a);
+f(link:#param_t[param&lowbar;t]&lt;1&gt; a);
 ----
 
 === Description
@@ -245,7 +245,7 @@ Documentation for the reference function
 |===
 
 [#N-A-f-0e]
-== <<N,N>>::<<N-A,A>>::f
+== link:#N[N]::link:#N-A[A]::f
 
 Reference function
 
@@ -256,7 +256,7 @@ Declared in `&lt;qualified&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f(<<param_t,param&lowbar;t>>&lt;2&gt; a);
+f(link:#param_t[param&lowbar;t]&lt;2&gt; a);
 ----
 
 === Description
@@ -274,7 +274,7 @@ Documentation for the reference function
 |===
 
 [#N-A-f-00]
-== <<N,N>>::<<N-A,A>>::f
+== link:#N[N]::link:#N-A[A]::f
 
 Reference function
 
@@ -285,7 +285,7 @@ Declared in `&lt;qualified&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f(<<param_t,param&lowbar;t>>&lt;3&gt; a);
+f(link:#param_t[param&lowbar;t]&lt;3&gt; a);
 ----
 
 === Description
@@ -303,7 +303,7 @@ Documentation for the reference function
 |===
 
 [#N-A-f-02]
-== <<N,N>>::<<N-A,A>>::f
+== link:#N[N]::link:#N-A[A]::f
 
 Reference function
 
@@ -314,7 +314,7 @@ Declared in `&lt;qualified&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f(<<param_t,param&lowbar;t>>&lt;4&gt; a);
+f(link:#param_t[param&lowbar;t]&lt;4&gt; a);
 ----
 
 === Description
@@ -332,7 +332,7 @@ Documentation for the reference function
 |===
 
 [#N-A-f-092]
-== <<N,N>>::<<N-A,A>>::f
+== link:#N[N]::link:#N-A[A]::f
 
 Reference function
 
@@ -343,7 +343,7 @@ Declared in `&lt;qualified&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f(<<param_t,param&lowbar;t>>&lt;5&gt; a);
+f(link:#param_t[param&lowbar;t]&lt;5&gt; a);
 ----
 
 === Description
@@ -361,7 +361,7 @@ Documentation for the reference function
 |===
 
 [#N-A-f-097]
-== <<N,N>>::<<N-A,A>>::f
+== link:#N[N]::link:#N-A[A]::f
 
 Reference function
 
@@ -372,7 +372,7 @@ Declared in `&lt;qualified&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f(<<param_t,param&lowbar;t>>&lt;6&gt; a);
+f(link:#param_t[param&lowbar;t]&lt;6&gt; a);
 ----
 
 === Description
@@ -390,7 +390,7 @@ Documentation for the reference function
 |===
 
 [#N-A-f-07]
-== <<N,N>>::<<N-A,A>>::f
+== link:#N[N]::link:#N-A[A]::f
 
 Reference function
 
@@ -401,7 +401,7 @@ Declared in `&lt;qualified&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f(<<param_t,param&lowbar;t>>&lt;7&gt; a);
+f(link:#param_t[param&lowbar;t]&lt;7&gt; a);
 ----
 
 === Description
@@ -419,7 +419,7 @@ Documentation for the reference function
 |===
 
 [#N-A-g-06e]
-== <<N,N>>::<<N-A,A>>::g
+== link:#N[N]::link:#N-A[A]::g
 
 `g` overloads
 
@@ -433,10 +433,10 @@ Reference function
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<N-A-g-0a,g>>(<<N-A-B,B>> a);
+link:#N-A-g-0a[g](link:#N-A-B[B] a);
 ----
 
-[.small]#<<N-A-g-0a,_» more&period;&period;&period;_>>#
+[.small]#link:#N-A-g-0a[_» more&period;&period;&period;_]#
 
 Fail
 
@@ -444,10 +444,10 @@ Fail
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<N-A-g-06c,g>>(int a);
+link:#N-A-g-06c[g](int a);
 ----
 
-[.small]#<<N-A-g-06c,_» more&period;&period;&period;_>>#
+[.small]#link:#N-A-g-06c[_» more&period;&period;&period;_]#
 
 === Parameters
 
@@ -460,7 +460,7 @@ void
 |===
 
 [#N-A-g-0a]
-== <<N,N>>::<<N-A,A>>::g
+== link:#N[N]::link:#N-A[A]::g
 
 Reference function
 
@@ -471,7 +471,7 @@ Declared in `&lt;qualified&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-g(<<N-A-B,B>> a);
+g(link:#N-A-B[B] a);
 ----
 
 === Description
@@ -489,7 +489,7 @@ Documentation for the reference function
 |===
 
 [#N-A-g-06c]
-== <<N,N>>::<<N-A,A>>::g
+== link:#N[N]::link:#N-A[A]::g
 
 Fail
 
@@ -518,7 +518,7 @@ Function with same number of parameters but different types&period; This should 
 |===
 
 [#N-A-h-05]
-== <<N,N>>::<<N-A,A>>::h
+== link:#N[N]::link:#N-A[A]::h
 
 `h` overloads
 
@@ -532,10 +532,10 @@ Reference function
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<N-A-h-0f,h>>(<<N,N>>::<<N-A,A>>::<<N-A-B,B>> a);
+link:#N-A-h-0f[h](link:#N[N]::link:#N-A[A]::link:#N-A-B[B] a);
 ----
 
-[.small]#<<N-A-h-0f,_» more&period;&period;&period;_>>#
+[.small]#link:#N-A-h-0f[_» more&period;&period;&period;_]#
 
 Fail
 
@@ -543,10 +543,10 @@ Fail
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<N-A-h-06,h>>(int a);
+link:#N-A-h-06[h](int a);
 ----
 
-[.small]#<<N-A-h-06,_» more&period;&period;&period;_>>#
+[.small]#link:#N-A-h-06[_» more&period;&period;&period;_]#
 
 === Parameters
 
@@ -559,7 +559,7 @@ void
 |===
 
 [#N-A-h-0f]
-== <<N,N>>::<<N-A,A>>::h
+== link:#N[N]::link:#N-A[A]::h
 
 Reference function
 
@@ -570,7 +570,7 @@ Declared in `&lt;qualified&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-h(<<N,N>>::<<N-A,A>>::<<N-A-B,B>> a);
+h(link:#N[N]::link:#N-A[A]::link:#N-A-B[B] a);
 ----
 
 === Description
@@ -588,7 +588,7 @@ Documentation for the reference function
 |===
 
 [#N-A-h-06]
-== <<N,N>>::<<N-A,A>>::h
+== link:#N[N]::link:#N-A[A]::h
 
 Fail
 

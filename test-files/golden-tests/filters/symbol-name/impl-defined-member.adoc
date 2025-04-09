@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<regular,`regular`>> 
+| link:#regular[`regular`] 
 |===
 
 === Variables
@@ -17,8 +17,8 @@
 [cols=1]
 |===
 | Name
-| <<absolute_uri_rule,`absolute&lowbar;uri&lowbar;rule`>> 
-| <<regular_absolute_uri_rule,`regular&lowbar;absolute&lowbar;uri&lowbar;rule`>> 
+| link:#absolute_uri_rule[`absolute&lowbar;uri&lowbar;rule`] 
+| link:#regular_absolute_uri_rule[`regular&lowbar;absolute&lowbar;uri&lowbar;rule`] 
 |===
 
 [#regular]
@@ -29,11 +29,11 @@
 [cols=1]
 |===
 | Name
-| <<regular-absolute_uri_rule_t,`absolute&lowbar;uri&lowbar;rule&lowbar;t`>> 
+| link:#regular-absolute_uri_rule_t[`absolute&lowbar;uri&lowbar;rule&lowbar;t`] 
 |===
 
 [#regular-absolute_uri_rule_t]
-== <<regular,regular>>::absolute&lowbar;uri&lowbar;rule&lowbar;t
+== link:#regular[regular]::absolute&lowbar;uri&lowbar;rule&lowbar;t
 
 === Synopsis
 
@@ -65,7 +65,7 @@ Declared in `&lt;impl&hyphen;defined&hyphen;member&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-constexpr <<regular,regular>>::<<regular-absolute_uri_rule_t,absolute&lowbar;uri&lowbar;rule&lowbar;t>> regular&lowbar;absolute&lowbar;uri&lowbar;rule = &lcub;&rcub;;
+constexpr link:#regular[regular]::link:#regular-absolute_uri_rule_t[absolute&lowbar;uri&lowbar;rule&lowbar;t] regular&lowbar;absolute&lowbar;uri&lowbar;rule = &lcub;&rcub;;
 ----
 
 

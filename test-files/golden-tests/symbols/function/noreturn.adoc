@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<T,`T`>> 
+| link:#T[`T`] 
 |===
 
 === Functions
@@ -17,7 +17,7 @@
 [cols=1]
 |===
 | Name
-| <<f1,`f1`>> 
+| link:#f1[`f1`] 
 |===
 
 [#T]
@@ -37,7 +37,7 @@ struct T;
 [cols=1]
 |===
 | Name
-| <<T-f3,`f3`>> 
+| link:#T-f3[`f3`] 
 |===
 
 === Static Member Functions
@@ -45,7 +45,7 @@ struct T;
 [cols=1]
 |===
 | Name
-| <<T-f2,`f2`>> 
+| link:#T-f2[`f2`] 
 |===
 
 === Friends
@@ -54,12 +54,12 @@ struct T;
 |===
 | Name
 | Description
-| `<<f1,f1>>`
+| `link:#f1[f1]`
 | 
 |===
 
 [#T-f3]
-== <<T,T>>::f3
+== link:#T[T]::f3
 
 === Synopsis
 
@@ -73,7 +73,7 @@ f3();
 ----
 
 [#T-f2]
-== <<T,T>>::f2
+== link:#T[T]::f2
 
 === Synopsis
 

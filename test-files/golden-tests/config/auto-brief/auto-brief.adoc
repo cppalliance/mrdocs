@@ -10,67 +10,67 @@
 |===
 | Name
 | Description
-| <<copyBriefFromCopyBrief,`copyBriefFromCopyBrief`>> 
+| link:#copyBriefFromCopyBrief[`copyBriefFromCopyBrief`] 
 | This is the explicit brief&period;
-| <<copyBriefFromExplicitBrief,`copyBriefFromExplicitBrief`>> 
+| link:#copyBriefFromExplicitBrief[`copyBriefFromExplicitBrief`] 
 | This is the explicit brief&period;
-| <<copyBriefFromFirstSentenceAsBrief,`copyBriefFromFirstSentenceAsBrief`>> 
+| link:#copyBriefFromFirstSentenceAsBrief[`copyBriefFromFirstSentenceAsBrief`] 
 | This is the brief&period;
-| <<copyBriefFromFirstValid,`copyBriefFromFirstValid`>> 
+| link:#copyBriefFromFirstValid[`copyBriefFromFirstValid`] 
 | This function has documentation but no brief&period;
-| <<copyDetailsFromCopyBrief,`copyDetailsFromCopyBrief`>> 
+| link:#copyDetailsFromCopyBrief[`copyDetailsFromCopyBrief`] 
 | Details will be copied
-| <<copyDetailsFromDocNoBrief,`copyDetailsFromDocNoBrief`>> 
+| link:#copyDetailsFromDocNoBrief[`copyDetailsFromDocNoBrief`] 
 | Custom brief
-| <<copyDetailsFromExplicitBrief,`copyDetailsFromExplicitBrief`>> 
+| link:#copyDetailsFromExplicitBrief[`copyDetailsFromExplicitBrief`] 
 | 
-| <<copyDetailsFromFirstSentenceAsBrief,`copyDetailsFromFirstSentenceAsBrief`>> 
+| link:#copyDetailsFromFirstSentenceAsBrief[`copyDetailsFromFirstSentenceAsBrief`] 
 | 
-| <<copyDetailsFromNoDoc,`copyDetailsFromNoDoc`>> 
+| link:#copyDetailsFromNoDoc[`copyDetailsFromNoDoc`] 
 | Custom brief
-| <<copyDocFromCopyBrief,`copyDocFromCopyBrief`>> 
+| link:#copyDocFromCopyBrief[`copyDocFromCopyBrief`] 
 | This is the explicit brief&period;
-| <<copyDocFromExplicitBrief,`copyDocFromExplicitBrief`>> 
+| link:#copyDocFromExplicitBrief[`copyDocFromExplicitBrief`] 
 | This is the explicit brief&period;
-| <<copyDocFromFirstSentenceAsBrief,`copyDocFromFirstSentenceAsBrief`>> 
+| link:#copyDocFromFirstSentenceAsBrief[`copyDocFromFirstSentenceAsBrief`] 
 | This is the brief&period;
-| <<docNoBriefFunction,`docNoBriefFunction`>> 
+| link:#docNoBriefFunction[`docNoBriefFunction`] 
 | This function has documentation but no brief&period;
-| <<explicitBriefFunction,`explicitBriefFunction`>> 
+| link:#explicitBriefFunction[`explicitBriefFunction`] 
 | This is the explicit brief&period;
-| <<explicitBriefFunction2,`explicitBriefFunction2`>> 
+| link:#explicitBriefFunction2[`explicitBriefFunction2`] 
 | This is the explicit brief&period;
-| <<failCircularReferenceCopyFunction,`failCircularReferenceCopyFunction`>> 
+| link:#failCircularReferenceCopyFunction[`failCircularReferenceCopyFunction`] 
 | 
-| <<failCircularSourceFunctionA,`failCircularSourceFunctionA`>> 
+| link:#failCircularSourceFunctionA[`failCircularSourceFunctionA`] 
 | 
-| <<failCircularSourceFunctionB,`failCircularSourceFunctionB`>> 
+| link:#failCircularSourceFunctionB[`failCircularSourceFunctionB`] 
 | 
-| <<failCopyBriefFromDocNoBrief,`failCopyBriefFromDocNoBrief`>> 
+| link:#failCopyBriefFromDocNoBrief[`failCopyBriefFromDocNoBrief`] 
 | This function has documentation but no brief&period;
-| <<failCopyBriefFromInvalidReference,`failCopyBriefFromInvalidReference`>> 
+| link:#failCopyBriefFromInvalidReference[`failCopyBriefFromInvalidReference`] 
 | 
-| <<failCopyBriefFromNoDoc,`failCopyBriefFromNoDoc`>> 
+| link:#failCopyBriefFromNoDoc[`failCopyBriefFromNoDoc`] 
 | 
-| <<failCopyDetailsFromInvalidReference,`failCopyDetailsFromInvalidReference`>> 
+| link:#failCopyDetailsFromInvalidReference[`failCopyDetailsFromInvalidReference`] 
 | 
-| <<failCopyDocFromDocNoBrief,`failCopyDocFromDocNoBrief`>> 
+| link:#failCopyDocFromDocNoBrief[`failCopyDocFromDocNoBrief`] 
 | This function has documentation but no brief&period;
-| <<failCopyDocFromInvalidReference,`failCopyDocFromInvalidReference`>> 
+| link:#failCopyDocFromInvalidReference[`failCopyDocFromInvalidReference`] 
 | 
-| <<failCopyDocFromNoDoc,`failCopyDocFromNoDoc`>> 
+| link:#failCopyDocFromNoDoc[`failCopyDocFromNoDoc`] 
 | 
-| <<failInvalidReferenceCopyFunctions,`failInvalidReferenceCopyFunctions`>> 
+| link:#failInvalidReferenceCopyFunctions[`failInvalidReferenceCopyFunctions`] 
 | 
-| <<firstSentenceAsBriefFunction,`firstSentenceAsBriefFunction`>> 
+| link:#firstSentenceAsBriefFunction[`firstSentenceAsBriefFunction`] 
 | This is the brief&period;
-| <<noDocFunction,`noDocFunction`>> 
+| link:#noDocFunction[`noDocFunction`] 
 | 
-| <<recursiveReferenceCopyFunction,`recursiveReferenceCopyFunction`>> 
+| link:#recursiveReferenceCopyFunction[`recursiveReferenceCopyFunction`] 
 | Final recursive brief
-| <<recursiveSourceFunctionA,`recursiveSourceFunctionA`>> 
+| link:#recursiveSourceFunctionA[`recursiveSourceFunctionA`] 
 | Final recursive brief
-| <<recursiveSourceFunctionB,`recursiveSourceFunctionB`>> 
+| link:#recursiveSourceFunctionB[`recursiveSourceFunctionB`] 
 | Final recursive brief
 |===
 

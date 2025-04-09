@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<LongName,`LongName`>> 
+| link:#LongName[`LongName`] 
 |===
 
 === Namespace Aliases
@@ -17,8 +17,8 @@
 [cols=1]
 |===
 | Name
-| <<A,`A`>> 
-| <<B,`B`>> 
+| link:#A[`A`] 
+| link:#B[`B`] 
 |===
 
 [#LongName]
@@ -29,11 +29,11 @@
 [cols=1]
 |===
 | Name
-| <<LongName-A,`A`>> 
+| link:#LongName-A[`A`] 
 |===
 
 [#LongName-A]
-== <<LongName,LongName>>::A
+== link:#LongName[LongName]::A
 
 === Synopsis
 
@@ -53,7 +53,7 @@ Declared in `&lt;namespace&hyphen;alias&hyphen;2&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-namespace A = <<LongName,LongName>>;
+namespace A = link:#LongName[LongName];
 ----
 
 [#B]
@@ -65,7 +65,7 @@ Declared in `&lt;namespace&hyphen;alias&hyphen;2&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-namespace B = <<LongName,LongName>>;
+namespace B = link:#LongName[LongName];
 ----
 
 

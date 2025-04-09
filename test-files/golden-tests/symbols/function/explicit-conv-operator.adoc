@@ -9,10 +9,10 @@
 [cols=1]
 |===
 | Name
-| <<Explicit,`Explicit`>> 
-| <<ExplicitExpression,`ExplicitExpression`>> 
-| <<ExplicitFalse,`ExplicitFalse`>> 
-| <<ExplicitTrue,`ExplicitTrue`>> 
+| link:#Explicit[`Explicit`] 
+| link:#ExplicitExpression[`ExplicitExpression`] 
+| link:#ExplicitFalse[`ExplicitFalse`] 
+| link:#ExplicitTrue[`ExplicitTrue`] 
 |===
 
 [#Explicit]
@@ -33,12 +33,12 @@ struct Explicit;
 |===
 | Name
 | Description
-| <<Explicit-2conversion,`operator bool`>> 
+| link:#Explicit-2conversion[`operator bool`] 
 | Conversion to `bool`
 |===
 
 [#Explicit-2conversion]
-== <<Explicit,Explicit>>::operator bool
+== link:#Explicit[Explicit]::operator bool
 
 Conversion to `bool`
 
@@ -75,12 +75,12 @@ struct ExplicitExpression;
 |===
 | Name
 | Description
-| <<ExplicitExpression-2conversion,`operator bool`>> 
+| link:#ExplicitExpression-2conversion[`operator bool`] 
 | Conversion to `bool`
 |===
 
 [#ExplicitExpression-2conversion]
-== <<ExplicitExpression,ExplicitExpression>>::operator bool
+== link:#ExplicitExpression[ExplicitExpression]::operator bool
 
 Conversion to `bool`
 
@@ -116,12 +116,12 @@ struct ExplicitFalse;
 |===
 | Name
 | Description
-| <<ExplicitFalse-2conversion,`operator bool`>> 
+| link:#ExplicitFalse-2conversion[`operator bool`] 
 | Conversion to `bool`
 |===
 
 [#ExplicitFalse-2conversion]
-== <<ExplicitFalse,ExplicitFalse>>::operator bool
+== link:#ExplicitFalse[ExplicitFalse]::operator bool
 
 Conversion to `bool`
 
@@ -157,12 +157,12 @@ struct ExplicitTrue;
 |===
 | Name
 | Description
-| <<ExplicitTrue-2conversion,`operator bool`>> 
+| link:#ExplicitTrue-2conversion[`operator bool`] 
 | Conversion to `bool`
 |===
 
 [#ExplicitTrue-2conversion]
-== <<ExplicitTrue,ExplicitTrue>>::operator bool
+== link:#ExplicitTrue[ExplicitTrue]::operator bool
 
 Conversion to `bool`
 

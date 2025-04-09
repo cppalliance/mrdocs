@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<LongName,`LongName`>> 
+| link:#LongName[`LongName`] 
 |===
 
 === Using Namespace Directives
@@ -17,7 +17,7 @@
 [cols=1]
 |===
 | Name
-| <<LongName,`LongName`>>
+| link:#LongName[`LongName`]
 |===
 
 
@@ -29,11 +29,11 @@
 [cols=1]
 |===
 | Name
-| <<LongName-A,`A`>> 
+| link:#LongName-A[`A`] 
 |===
 
 [#LongName-A]
-== <<LongName,LongName>>::A
+== link:#LongName[LongName]::A
 
 === Synopsis
 

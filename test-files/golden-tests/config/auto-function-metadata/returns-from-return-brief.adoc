@@ -10,7 +10,7 @@
 |===
 | Name
 | Description
-| <<R,`R`>> 
+| link:#R[`R`] 
 | The return type of the function
 |===
 
@@ -20,7 +20,7 @@
 |===
 | Name
 | Description
-| <<getR,`getR`>> 
+| link:#getR[`getR`] 
 | Test function
 |===
 
@@ -44,7 +44,7 @@ struct R;
 |===
 | Name
 | Description
-| <<getR,`getR`>>
+| link:#getR[`getR`]
 | Test function
 |===
 
@@ -59,7 +59,7 @@ Declared in `&lt;returns&hyphen;from&hyphen;return&hyphen;brief&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<R,R>>
+link:#R[R]
 getR();
 ----
 

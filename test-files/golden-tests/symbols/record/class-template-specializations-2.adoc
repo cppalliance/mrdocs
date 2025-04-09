@@ -9,10 +9,10 @@
 [cols=1]
 |===
 | Name
-| <<A-0e,`A`>> 
-| <<A-06,`A&lt;double&gt;`>> 
-| <<A-02,`A&lt;long*&gt;`>> 
-| <<A-03,`A&lt;T*&gt;`>> 
+| link:#A-0e[`A`] 
+| link:#A-06[`A&lt;double&gt;`] 
+| link:#A-02[`A&lt;long*&gt;`] 
+| link:#A-03[`A&lt;T*&gt;`] 
 |===
 
 [#A-0e]
@@ -29,7 +29,7 @@ struct A;
 ----
 
 [#A-06]
-== <<A-0e,A>>&lt;double&gt;
+== link:#A-0e[A]&lt;double&gt;
 
 === Synopsis
 
@@ -38,7 +38,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;2&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0e,A>>&lt;double&gt;;
+struct link:#A-0e[A]&lt;double&gt;;
 ----
 
 === Types
@@ -46,13 +46,13 @@ struct <<A-0e,A>>&lt;double&gt;;
 [cols=1]
 |===
 | Name
-| <<A-06-D-0b,`D`>> 
-| <<A-06-D-07,`D&lt;short&gt;`>> 
-| <<A-06-D-04,`D&lt;float&gt;`>> 
+| link:#A-06-D-0b[`D`] 
+| link:#A-06-D-07[`D&lt;short&gt;`] 
+| link:#A-06-D-04[`D&lt;float&gt;`] 
 |===
 
 [#A-06-D-0b]
-== <<A-06,A&lt;double&gt;>>::D
+== link:#A-06[A&lt;double&gt;]::D
 
 === Synopsis
 
@@ -69,12 +69,12 @@ struct D;
 [cols=1]
 |===
 | Name
-| <<A-06-D-0b-E-01,`E`>> 
-| <<A-06-D-0b-E-04,`E&lt;T*&gt;`>> 
+| link:#A-06-D-0b-E-01[`E`] 
+| link:#A-06-D-0b-E-04[`E&lt;T*&gt;`] 
 |===
 
 [#A-06-D-0b-E-01]
-== <<A-06,A&lt;double&gt;>>::<<A-06-D-0b,D>>::E
+== link:#A-06[A&lt;double&gt;]::link:#A-06-D-0b[D]::E
 
 === Synopsis
 
@@ -87,7 +87,7 @@ struct E;
 ----
 
 [#A-06-D-0b-E-04]
-== <<A-06,A&lt;double&gt;>>::<<A-06-D-0b,D>>::<<A-06-D-0b-E-01,E>>&lt;T*&gt;
+== link:#A-06[A&lt;double&gt;]::link:#A-06-D-0b[D]::link:#A-06-D-0b-E-01[E]&lt;T*&gt;
 
 === Synopsis
 
@@ -96,7 +96,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;2&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-struct <<A-06-D-0b-E-01,E>>&lt;T*&gt;;
+struct link:#A-06-D-0b-E-01[E]&lt;T*&gt;;
 ----
 
 === Types
@@ -104,11 +104,11 @@ struct <<A-06-D-0b-E-01,E>>&lt;T*&gt;;
 [cols=1]
 |===
 | Name
-| <<A-06-D-0b-E-04-F,`F`>> 
+| link:#A-06-D-0b-E-04-F[`F`] 
 |===
 
 [#A-06-D-0b-E-04-F]
-== <<A-06,A&lt;double&gt;>>::<<A-06-D-0b,D>>::<<A-06-D-0b-E-04,E&lt;T*&gt;>>::F
+== link:#A-06[A&lt;double&gt;]::link:#A-06-D-0b[D]::link:#A-06-D-0b-E-04[E&lt;T*&gt;]::F
 
 === Synopsis
 
@@ -120,7 +120,7 @@ struct F;
 ----
 
 [#A-06-D-07]
-== <<A-06,A&lt;double&gt;>>::<<A-06-D-0b,D>>&lt;short&gt;
+== link:#A-06[A&lt;double&gt;]::link:#A-06-D-0b[D]&lt;short&gt;
 
 === Synopsis
 
@@ -129,7 +129,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;2&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-06-D-0b,D>>&lt;short&gt;;
+struct link:#A-06-D-0b[D]&lt;short&gt;;
 ----
 
 === Types
@@ -137,12 +137,12 @@ struct <<A-06-D-0b,D>>&lt;short&gt;;
 [cols=1]
 |===
 | Name
-| <<A-06-D-07-E-07,`E`>> 
-| <<A-06-D-07-E-01,`E&lt;int*&gt;`>> 
+| link:#A-06-D-07-E-07[`E`] 
+| link:#A-06-D-07-E-01[`E&lt;int*&gt;`] 
 |===
 
 [#A-06-D-07-E-07]
-== <<A-06,A&lt;double&gt;>>::<<A-06-D-07,D&lt;short&gt;>>::E
+== link:#A-06[A&lt;double&gt;]::link:#A-06-D-07[D&lt;short&gt;]::E
 
 === Synopsis
 
@@ -155,7 +155,7 @@ struct E;
 ----
 
 [#A-06-D-07-E-01]
-== <<A-06,A&lt;double&gt;>>::<<A-06-D-07,D&lt;short&gt;>>::<<A-06-D-0b-E-01,E>>&lt;int*&gt;
+== link:#A-06[A&lt;double&gt;]::link:#A-06-D-07[D&lt;short&gt;]::link:#A-06-D-0b-E-01[E]&lt;int*&gt;
 
 === Synopsis
 
@@ -164,7 +164,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;2&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-06-D-0b-E-01,E>>&lt;int*&gt;;
+struct link:#A-06-D-0b-E-01[E]&lt;int*&gt;;
 ----
 
 === Types
@@ -172,11 +172,11 @@ struct <<A-06-D-0b-E-01,E>>&lt;int*&gt;;
 [cols=1]
 |===
 | Name
-| <<A-06-D-07-E-01-F,`F`>> 
+| link:#A-06-D-07-E-01-F[`F`] 
 |===
 
 [#A-06-D-07-E-01-F]
-== <<A-06,A&lt;double&gt;>>::<<A-06-D-07,D&lt;short&gt;>>::<<A-06-D-07-E-01,E&lt;int*&gt;>>::F
+== link:#A-06[A&lt;double&gt;]::link:#A-06-D-07[D&lt;short&gt;]::link:#A-06-D-07-E-01[E&lt;int*&gt;]::F
 
 === Synopsis
 
@@ -188,7 +188,7 @@ struct F;
 ----
 
 [#A-06-D-04]
-== <<A-06,A&lt;double&gt;>>::<<A-06-D-0b,D>>&lt;float&gt;
+== link:#A-06[A&lt;double&gt;]::link:#A-06-D-0b[D]&lt;float&gt;
 
 === Synopsis
 
@@ -197,7 +197,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;2&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-06-D-0b,D>>&lt;float&gt;;
+struct link:#A-06-D-0b[D]&lt;float&gt;;
 ----
 
 === Types
@@ -205,12 +205,12 @@ struct <<A-06-D-0b,D>>&lt;float&gt;;
 [cols=1]
 |===
 | Name
-| <<A-06-D-04-G-06,`G`>> 
-| <<A-06-D-04-G-0c,`G&lt;T*&gt;`>> 
+| link:#A-06-D-04-G-06[`G`] 
+| link:#A-06-D-04-G-0c[`G&lt;T*&gt;`] 
 |===
 
 [#A-06-D-04-G-06]
-== <<A-06,A&lt;double&gt;>>::<<A-06-D-04,D&lt;float&gt;>>::G
+== link:#A-06[A&lt;double&gt;]::link:#A-06-D-04[D&lt;float&gt;]::G
 
 === Synopsis
 
@@ -223,7 +223,7 @@ struct G;
 ----
 
 [#A-06-D-04-G-0c]
-== <<A-06,A&lt;double&gt;>>::<<A-06-D-04,D&lt;float&gt;>>::<<A-06-D-04-G-06,G>>&lt;T*&gt;
+== link:#A-06[A&lt;double&gt;]::link:#A-06-D-04[D&lt;float&gt;]::link:#A-06-D-04-G-06[G]&lt;T*&gt;
 
 === Synopsis
 
@@ -232,11 +232,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;2&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-struct <<A-06-D-04-G-06,G>>&lt;T*&gt;;
+struct link:#A-06-D-04-G-06[G]&lt;T*&gt;;
 ----
 
 [#A-02]
-== <<A-0e,A>>&lt;long*&gt;
+== link:#A-0e[A]&lt;long*&gt;
 
 === Synopsis
 
@@ -245,7 +245,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;2&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0e,A>>&lt;long*&gt;;
+struct link:#A-0e[A]&lt;long*&gt;;
 ----
 
 === Types
@@ -253,13 +253,13 @@ struct <<A-0e,A>>&lt;long*&gt;;
 [cols=1]
 |===
 | Name
-| <<A-02-B-06,`B`>> 
-| <<A-02-B-0d,`B&lt;int&gt;`>> 
-| <<A-02-B-05,`B&lt;int*&gt;`>> 
+| link:#A-02-B-06[`B`] 
+| link:#A-02-B-0d[`B&lt;int&gt;`] 
+| link:#A-02-B-05[`B&lt;int*&gt;`] 
 |===
 
 [#A-02-B-06]
-== <<A-02,A&lt;long*&gt;>>::B
+== link:#A-02[A&lt;long*&gt;]::B
 
 === Synopsis
 
@@ -272,7 +272,7 @@ struct B;
 ----
 
 [#A-02-B-0d]
-== <<A-02,A&lt;long*&gt;>>::<<A-03-B-05,B>>&lt;int&gt;
+== link:#A-02[A&lt;long*&gt;]::link:#A-03-B-05[B]&lt;int&gt;
 
 === Synopsis
 
@@ -281,11 +281,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;2&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-03-B-05,B>>&lt;int&gt;;
+struct link:#A-03-B-05[B]&lt;int&gt;;
 ----
 
 [#A-02-B-05]
-== <<A-02,A&lt;long*&gt;>>::<<A-03-B-05,B>>&lt;int*&gt;
+== link:#A-02[A&lt;long*&gt;]::link:#A-03-B-05[B]&lt;int*&gt;
 
 === Synopsis
 
@@ -294,7 +294,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;2&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-03-B-05,B>>&lt;int*&gt;;
+struct link:#A-03-B-05[B]&lt;int*&gt;;
 ----
 
 === Types
@@ -302,11 +302,11 @@ struct <<A-03-B-05,B>>&lt;int*&gt;;
 [cols=1]
 |===
 | Name
-| <<A-02-B-05-C,`C`>> 
+| link:#A-02-B-05-C[`C`] 
 |===
 
 [#A-02-B-05-C]
-== <<A-02,A&lt;long*&gt;>>::<<A-02-B-05,B&lt;int*&gt;>>::C
+== link:#A-02[A&lt;long*&gt;]::link:#A-02-B-05[B&lt;int*&gt;]::C
 
 === Synopsis
 
@@ -318,7 +318,7 @@ struct C;
 ----
 
 [#A-03]
-== <<A-0e,A>>&lt;T*&gt;
+== link:#A-0e[A]&lt;T*&gt;
 
 === Synopsis
 
@@ -327,7 +327,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;2&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-struct <<A-0e,A>>&lt;T*&gt;;
+struct link:#A-0e[A]&lt;T*&gt;;
 ----
 
 === Types
@@ -335,13 +335,13 @@ struct <<A-0e,A>>&lt;T*&gt;;
 [cols=1]
 |===
 | Name
-| <<A-03-B-05,`B`>> 
-| <<A-03-B-0b,`B&lt;int&gt;`>> 
-| <<A-03-B-01,`B&lt;U*&gt;`>> 
+| link:#A-03-B-05[`B`] 
+| link:#A-03-B-0b[`B&lt;int&gt;`] 
+| link:#A-03-B-01[`B&lt;U*&gt;`] 
 |===
 
 [#A-03-B-05]
-== <<A-03,A&lt;T*&gt;>>::B
+== link:#A-03[A&lt;T*&gt;]::B
 
 === Synopsis
 
@@ -354,7 +354,7 @@ struct B;
 ----
 
 [#A-03-B-0b]
-== <<A-03,A&lt;T*&gt;>>::<<A-03-B-05,B>>&lt;int&gt;
+== link:#A-03[A&lt;T*&gt;]::link:#A-03-B-05[B]&lt;int&gt;
 
 === Synopsis
 
@@ -363,11 +363,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;2&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-03-B-05,B>>&lt;int&gt;;
+struct link:#A-03-B-05[B]&lt;int&gt;;
 ----
 
 [#A-03-B-01]
-== <<A-03,A&lt;T*&gt;>>::<<A-03-B-05,B>>&lt;U*&gt;
+== link:#A-03[A&lt;T*&gt;]::link:#A-03-B-05[B]&lt;U*&gt;
 
 === Synopsis
 
@@ -376,7 +376,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;2&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename U&gt;
-struct <<A-03-B-05,B>>&lt;U*&gt;;
+struct link:#A-03-B-05[B]&lt;U*&gt;;
 ----
 
 === Types
@@ -384,11 +384,11 @@ struct <<A-03-B-05,B>>&lt;U*&gt;;
 [cols=1]
 |===
 | Name
-| <<A-03-B-01-C,`C`>> 
+| link:#A-03-B-01-C[`C`] 
 |===
 
 [#A-03-B-01-C]
-== <<A-03,A&lt;T*&gt;>>::<<A-03-B-01,B&lt;U*&gt;>>::C
+== link:#A-03[A&lt;T*&gt;]::link:#A-03-B-01[B&lt;U*&gt;]::C
 
 === Synopsis
 

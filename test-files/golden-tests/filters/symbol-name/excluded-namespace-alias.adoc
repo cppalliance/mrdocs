@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<B,`B`>> 
+| link:#B[`B`] 
 |===
 
 [#B]
@@ -20,22 +20,22 @@
 [cols=1]
 |===
 | Name
-| <<B-U,`U`>> 
+| link:#B-U[`U`] 
 |===
 
 [#B-U]
-== <<B,B>>::U
+== link:#B[B]::U
 
 === Namespace Aliases
 
 [cols=1]
 |===
 | Name
-| <<B-U-E,`E`>> 
+| link:#B-U-E[`E`] 
 |===
 
 [#B-U-E]
-== <<B,B>>::<<B-U,U>>::E
+== link:#B[B]::link:#B-U[U]::E
 
 === Synopsis
 
@@ -43,7 +43,7 @@ Declared in `&lt;excluded&hyphen;namespace&hyphen;alias&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-namespace E = <<B,B>>::S::E;
+namespace E = link:#B[B]::S::E;
 ----
 
 

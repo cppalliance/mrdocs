@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<A,`A`>> 
+| link:#A[`A`] 
 |===
 
 [#A]
@@ -29,8 +29,8 @@ struct A;
 [cols=1]
 |===
 | Name
-| <<A-const_iterator,`const&lowbar;iterator`>> 
-| <<A-iterator,`iterator`>> 
+| link:#A-const_iterator[`const&lowbar;iterator`] 
+| link:#A-iterator[`iterator`] 
 |===
 
 === Member Functions
@@ -39,20 +39,20 @@ struct A;
 |===
 | Name
 | Description
-| <<A-begin-03,`begin`>> 
+| link:#A-begin-03[`begin`] 
 | `begin` overloads
-| <<A-cbegin,`cbegin`>> 
+| link:#A-cbegin[`cbegin`] 
 | Return a const iterator to the beginning
-| <<A-crvalue,`crvalue`>> 
+| link:#A-crvalue[`crvalue`] 
 | An const rvalue reference to A
-| <<A-ref-05f,`ref`>> 
+| link:#A-ref-05f[`ref`] 
 | `ref` overloads
-| <<A-rvalue,`rvalue`>> 
+| link:#A-rvalue[`rvalue`] 
 | An rvalue reference to A
 |===
 
 [#A-const_iterator]
-== <<A,A>>::const&lowbar;iterator
+== link:#A[A]::const&lowbar;iterator
 
 === Synopsis
 
@@ -64,7 +64,7 @@ class const&lowbar;iterator;
 ----
 
 [#A-iterator]
-== <<A,A>>::iterator
+== link:#A[A]::iterator
 
 === Synopsis
 
@@ -76,7 +76,7 @@ class iterator;
 ----
 
 [#A-begin-03]
-== <<A,A>>::begin
+== link:#A[A]::begin
 
 `begin` overloads
 
@@ -89,22 +89,22 @@ Returns an iterator to the beginning
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A-iterator,iterator>>
-<<A-begin-06,begin>>();
+link:#A-iterator[iterator]
+link:#A-begin-06[begin]();
 ----
 
-[.small]#<<A-begin-06,_» more&period;&period;&period;_>>#
+[.small]#link:#A-begin-06[_» more&period;&period;&period;_]#
 
 Return a const iterator to the beginning
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A-const_iterator,const&lowbar;iterator>>
-<<A-begin-0c,begin>>() const;
+link:#A-const_iterator[const&lowbar;iterator]
+link:#A-begin-0c[begin]() const;
 ----
 
-[.small]#<<A-begin-0c,_» more&period;&period;&period;_>>#
+[.small]#link:#A-begin-0c[_» more&period;&period;&period;_]#
 
 === Return Value
 
@@ -112,7 +112,7 @@ Return a const iterator to the beginning
 * Const iterator to the first element&period;
 
 [#A-begin-06]
-== <<A,A>>::begin
+== link:#A[A]::begin
 
 Returns an iterator to the beginning
 
@@ -122,7 +122,7 @@ Declared in `&lt;qualifiers&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A-iterator,iterator>>
+link:#A-iterator[iterator]
 begin();
 ----
 
@@ -135,7 +135,7 @@ Returns an iterator to the first element of the vector&period;
 Iterator to the first element&period;
 
 [#A-begin-0c]
-== <<A,A>>::begin
+== link:#A[A]::begin
 
 Return a const iterator to the beginning
 
@@ -145,7 +145,7 @@ Declared in `&lt;qualifiers&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A-const_iterator,const&lowbar;iterator>>
+link:#A-const_iterator[const&lowbar;iterator]
 begin() const;
 ----
 
@@ -158,7 +158,7 @@ Returns a const iterator to the first element of the vector&period;
 Const iterator to the first element&period;
 
 [#A-cbegin]
-== <<A,A>>::cbegin
+== link:#A[A]::cbegin
 
 Return a const iterator to the beginning
 
@@ -168,7 +168,7 @@ Declared in `&lt;qualifiers&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A-const_iterator,const&lowbar;iterator>>
+link:#A-const_iterator[const&lowbar;iterator]
 cbegin() const;
 ----
 
@@ -181,7 +181,7 @@ Returns a const iterator to the first element of the vector&period;
 Const iterator to the first element&period;
 
 [#A-crvalue]
-== <<A,A>>::crvalue
+== link:#A[A]::crvalue
 
 An const rvalue reference to A
 
@@ -191,7 +191,7 @@ Declared in `&lt;qualifiers&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A,A>>&&
+link:#A[A]&&
 crvalue() const &amp;&amp;;
 ----
 
@@ -200,7 +200,7 @@ crvalue() const &amp;&amp;;
 A reference to A
 
 [#A-ref-05f]
-== <<A,A>>::ref
+== link:#A[A]::ref
 
 `ref` overloads
 
@@ -213,51 +213,51 @@ An lvalue reference to A
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A,A>>&
-<<A-ref-051,ref>>() &amp;;
+link:#A[A]&
+link:#A-ref-051[ref]() &amp;;
 ----
 
-[.small]#<<A-ref-051,_» more&period;&period;&period;_>>#
+[.small]#link:#A-ref-051[_» more&period;&period;&period;_]#
 
 An rvalue reference to A
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A,A>>&&
-<<A-ref-0e,ref>>() &amp;&amp;;
+link:#A[A]&&
+link:#A-ref-0e[ref]() &amp;&amp;;
 ----
 
-[.small]#<<A-ref-0e,_» more&period;&period;&period;_>>#
+[.small]#link:#A-ref-0e[_» more&period;&period;&period;_]#
 
 An const lvalue reference to A
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A,A>> const&
-<<A-ref-04,ref>>() const &amp;;
+link:#A[A] const&
+link:#A-ref-04[ref]() const &amp;;
 ----
 
-[.small]#<<A-ref-04,_» more&period;&period;&period;_>>#
+[.small]#link:#A-ref-04[_» more&period;&period;&period;_]#
 
 An const rvalue reference to A
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A,A>> const&&
-<<A-ref-07,ref>>() const &amp;&amp;;
+link:#A[A] const&&
+link:#A-ref-07[ref]() const &amp;&amp;;
 ----
 
-[.small]#<<A-ref-07,_» more&period;&period;&period;_>>#
+[.small]#link:#A-ref-07[_» more&period;&period;&period;_]#
 
 === Return Value
 
 A reference to A
 
 [#A-ref-051]
-== <<A,A>>::ref
+== link:#A[A]::ref
 
 An lvalue reference to A
 
@@ -267,7 +267,7 @@ Declared in `&lt;qualifiers&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A,A>>&
+link:#A[A]&
 ref() &amp;;
 ----
 
@@ -276,7 +276,7 @@ ref() &amp;;
 A reference to A
 
 [#A-ref-0e]
-== <<A,A>>::ref
+== link:#A[A]::ref
 
 An rvalue reference to A
 
@@ -286,7 +286,7 @@ Declared in `&lt;qualifiers&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A,A>>&&
+link:#A[A]&&
 ref() &amp;&amp;;
 ----
 
@@ -295,7 +295,7 @@ ref() &amp;&amp;;
 A reference to A
 
 [#A-ref-04]
-== <<A,A>>::ref
+== link:#A[A]::ref
 
 An const lvalue reference to A
 
@@ -305,7 +305,7 @@ Declared in `&lt;qualifiers&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A,A>> const&
+link:#A[A] const&
 ref() const &amp;;
 ----
 
@@ -314,7 +314,7 @@ ref() const &amp;;
 A reference to A
 
 [#A-ref-07]
-== <<A,A>>::ref
+== link:#A[A]::ref
 
 An const rvalue reference to A
 
@@ -324,7 +324,7 @@ Declared in `&lt;qualifiers&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A,A>> const&&
+link:#A[A] const&&
 ref() const &amp;&amp;;
 ----
 
@@ -333,7 +333,7 @@ ref() const &amp;&amp;;
 A reference to A
 
 [#A-rvalue]
-== <<A,A>>::rvalue
+== link:#A[A]::rvalue
 
 An rvalue reference to A
 
@@ -343,7 +343,7 @@ Declared in `&lt;qualifiers&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A,A>>&&
+link:#A[A]&&
 rvalue() &amp;&amp;;
 ----
 

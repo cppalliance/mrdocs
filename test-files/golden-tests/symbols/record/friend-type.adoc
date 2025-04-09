@@ -10,13 +10,13 @@
 |===
 | Name
 | Description
-| <<T,`T`>> 
+| link:#T[`T`] 
 | Struct T brief
-| <<U,`U`>> 
+| link:#U[`U`] 
 | Struct U brief
-| <<V,`V`>> 
+| link:#V[`V`] 
 | Struct V brief
-| <<Z,`Z`>> 
+| link:#Z[`Z`] 
 | Friend class Z brief
 |===
 
@@ -40,7 +40,7 @@ struct T;
 |===
 | Name
 | Description
-| `<<Z,Z>>`
+| `link:#Z[Z]`
 | Friend class Z brief
 |===
 
@@ -64,7 +64,7 @@ struct U;
 |===
 | Name
 | Description
-| `<<T,T>>`
+| `link:#T[T]`
 | Struct T brief
 |===
 
@@ -88,7 +88,7 @@ struct V;
 |===
 | Name
 | Description
-| `<<U,U>>`
+| `link:#U[U]`
 | Struct U brief
 |===
 

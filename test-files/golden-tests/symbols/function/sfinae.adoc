@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<B,`B`>> 
+| link:#B[`B`] 
 |===
 
 === Types
@@ -18,13 +18,13 @@
 |===
 | Name
 | Description
-| <<A-09,`A`>> 
+| link:#A-09[`A`] 
 | The partial specialization of A is enabled via a template parameter
-| <<A-02,`A&lt;T&gt;`>> 
+| link:#A-02[`A&lt;T&gt;`] 
 | Specialization for integral types
-| <<S-02,`S`>> 
+| link:#S-02[`S`] 
 | SFINAE with std&colon;&colon;void&lowbar;t
-| <<S-08,`S&lt;T, std::void&lowbar;t&lt;T::a::b&gt;&gt;`>> 
+| link:#S-08[`S&lt;T, std::void&lowbar;t&lt;T::a::b&gt;&gt;`] 
 | SFINAE with std&colon;&colon;void&lowbar;t
 |===
 
@@ -34,25 +34,25 @@
 |===
 | Name
 | Description
-| <<f1,`f1`>> 
+| link:#f1[`f1`] 
 | Enabled via return type
-| <<f10,`f10`>> 
+| link:#f10[`f10`] 
 | Enabled via type template parameter
-| <<f2,`f2`>> 
+| link:#f2[`f2`] 
 | Enabling a specified return type
-| <<f3,`f3`>> 
+| link:#f3[`f3`] 
 | Enabling a specified return type in another namespace
-| <<f4,`f4`>> 
+| link:#f4[`f4`] 
 | Enabled via return type with std&colon;&colon;enable&lowbar;if
-| <<f5,`f5`>> 
+| link:#f5[`f5`] 
 | Enabled via a non&hyphen;type template parameter with helper
-| <<f6,`f6`>> 
+| link:#f6[`f6`] 
 | Enabled via a non&hyphen;type template parameter without helper
-| <<f7,`f7`>> 
+| link:#f7[`f7`] 
 | Enabled via a non&hyphen;type template parameter using int instead of bool
-| <<f8,`f8`>> 
+| link:#f8[`f8`] 
 | Enabled via parameter without helper
-| <<f9,`f9`>> 
+| link:#f9[`f9`] 
 | Enabled via parameter with helper
 |===
 
@@ -65,12 +65,12 @@
 |===
 | Name
 | Description
-| <<B-C,`C`>> 
+| link:#B-C[`C`] 
 | 
 |===
 
 [#B-C]
-== <<B,B>>::C
+== link:#B[B]::C
 
 === Synopsis
 
@@ -87,7 +87,7 @@ struct C;
 |===
 | Name
 | Description
-| <<f3,`&colon;&colon;f3`>>
+| link:#f3[`&colon;&colon;f3`]
 | Enabling a specified return type in another namespace
 |===
 
@@ -109,7 +109,7 @@ class A;
 ----
 
 [#A-02]
-== <<A-09,A>>&lt;T&gt;
+== link:#A-09[A]&lt;T&gt;
 
 Specialization for integral types
 
@@ -121,7 +121,7 @@ Declared in `&lt;sfinae&period;cpp&gt;`
 ----
 template&lt;class T&gt;
 requires std&colon;&colon;is&lowbar;integral&lowbar;v&lt;T&gt;
-class <<A-09,A>>&lt;T&gt;;
+class link:#A-09[A]&lt;T&gt;;
 ----
 
 [#S-02]
@@ -146,11 +146,11 @@ struct S;
 [cols=1]
 |===
 | Name
-| <<S-02-store,`store`>> 
+| link:#S-02-store[`store`] 
 |===
 
 [#S-02-store]
-== <<S-02,S>>::store
+== link:#S-02[S]::store
 
 === Synopsis
 
@@ -163,7 +163,7 @@ store(void const*);
 ----
 
 [#S-08]
-== <<S-02,S>>&lt;T, std::void&lowbar;t&lt;T::a::b&gt;&gt;
+== link:#S-02[S]&lt;T, std::void&lowbar;t&lt;T::a::b&gt;&gt;
 
 SFINAE with std&colon;&colon;void&lowbar;t
 
@@ -174,7 +174,7 @@ Declared in `&lt;sfinae&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;class T&gt;
-struct <<S-02,S>>&lt;T, std::void&lowbar;t&lt;T::a::b&gt;&gt;;
+struct link:#S-02[S]&lt;T, std::void&lowbar;t&lt;T::a::b&gt;&gt;;
 ----
 
 === Member Functions
@@ -182,11 +182,11 @@ struct <<S-02,S>>&lt;T, std::void&lowbar;t&lt;T::a::b&gt;&gt;;
 [cols=1]
 |===
 | Name
-| <<S-08-store,`store`>> 
+| link:#S-08-store[`store`] 
 |===
 
 [#S-08-store]
-== <<S-08,S&lt;T, std::void&lowbar;t&lt;T::a::b&gt;&gt;>>::store
+== link:#S-08[S&lt;T, std::void&lowbar;t&lt;T::a::b&gt;&gt;]::store
 
 === Synopsis
 
@@ -269,7 +269,7 @@ Declared in `&lt;sfinae&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;class T&gt;
-<<B,B>>::<<B-C,C>>
+link:#B[B]::link:#B-C[C]
 f3(T value)
 requires std&colon;&colon;is&lowbar;integral&lowbar;v&lt;T&gt;;
 ----

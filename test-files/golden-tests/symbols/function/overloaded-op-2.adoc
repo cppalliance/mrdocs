@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<T,`T`>> 
+| link:#T[`T`] 
 |===
 
 [#T]
@@ -30,12 +30,12 @@ struct T;
 |===
 | Name
 | Description
-| <<T-operator_plus,`operator&plus;`>> 
+| link:#T-operator_plus[`operator&plus;`] 
 | Addition operator
 |===
 
 [#T-operator_plus]
-== <<T,T>>::operator&plus;
+== link:#T[T]::operator&plus;
 
 Addition operator
 
@@ -45,8 +45,8 @@ Declared in `&lt;overloaded&hyphen;op&hyphen;2&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<T,T>>
-operator&plus;(<<T,T>> rhs);
+link:#T[T]
+operator&plus;(link:#T[T] rhs);
 ----
 
 === Return Value

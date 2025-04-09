@@ -9,16 +9,16 @@
 [cols=1]
 |===
 | Name
-| <<var,`var`>> 
-| <<var_const,`var&lowbar;const`>> 
-| <<var_const_t,`var&lowbar;const&lowbar;t`>> 
-| <<var_constexpr,`var&lowbar;constexpr`>> 
-| <<var_constexpr_t,`var&lowbar;constexpr&lowbar;t`>> 
-| <<var_inline_const,`var&lowbar;inline&lowbar;const`>> 
-| <<var_inline_const_t,`var&lowbar;inline&lowbar;const&lowbar;t`>> 
-| <<var_inline_constexpr,`var&lowbar;inline&lowbar;constexpr`>> 
-| <<var_inline_constexpr_t,`var&lowbar;inline&lowbar;constexpr&lowbar;t`>> 
-| <<var_t,`var&lowbar;t`>> 
+| link:#var[`var`] 
+| link:#var_const[`var&lowbar;const`] 
+| link:#var_const_t[`var&lowbar;const&lowbar;t`] 
+| link:#var_constexpr[`var&lowbar;constexpr`] 
+| link:#var_constexpr_t[`var&lowbar;constexpr&lowbar;t`] 
+| link:#var_inline_const[`var&lowbar;inline&lowbar;const`] 
+| link:#var_inline_const_t[`var&lowbar;inline&lowbar;const&lowbar;t`] 
+| link:#var_inline_constexpr[`var&lowbar;inline&lowbar;constexpr`] 
+| link:#var_inline_constexpr_t[`var&lowbar;inline&lowbar;constexpr&lowbar;t`] 
+| link:#var_t[`var&lowbar;t`] 
 |===
 
 [#var]

@@ -10,11 +10,11 @@
 |===
 | Name
 | Description
-| <<A,`A`>> 
+| link:#A[`A`] 
 | A helper tag
-| <<X,`X`>> 
+| link:#X[`X`] 
 | Test class
-| <<ostream,`ostream`>> 
+| link:#ostream[`ostream`] 
 | A dumb ostream class
 |===
 
@@ -24,11 +24,11 @@
 |===
 | Name
 | Description
-| <<operator_minus,`operator&hyphen;`>> 
+| link:#operator_minus[`operator&hyphen;`] 
 | Subtraction operator
-| <<operator_lshift,`operator&lt;&lt;`>> 
+| link:#operator_lshift[`operator&lt;&lt;`] 
 | Stream insertion operator
-| <<operator_not,`operator!`>> 
+| link:#operator_not[`operator!`] 
 | Negation operator
 |===
 
@@ -66,12 +66,12 @@ struct X;
 |===
 | Name
 | Description
-| <<X-operator_plus,`operator&plus;`>> 
+| link:#X-operator_plus[`operator&plus;`] 
 | Addition operator
 |===
 
 [#X-operator_plus]
-== <<X,X>>::operator&plus;
+== link:#X[X]::operator&plus;
 
 Addition operator
 
@@ -81,8 +81,8 @@ Declared in `&lt;param&hyphen;from&hyphen;operator&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X,X>>
-operator&plus;(<<X,X>> const& x) const;
+link:#X[X]
+operator&plus;(link:#X[X] const& x) const;
 ----
 
 === Return Value
@@ -124,10 +124,10 @@ Declared in `&lt;param&hyphen;from&hyphen;operator&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X,X>>
+link:#X[X]
 operator&hyphen;(
-    <<X,X>> const& x,
-    <<X,X>> const& y);
+    link:#X[X] const& x,
+    link:#X[X] const& y);
 ----
 
 === Return Value
@@ -157,10 +157,10 @@ Declared in `&lt;param&hyphen;from&hyphen;operator&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<ostream,ostream>>&
+link:#ostream[ostream]&
 operator&lt;&lt;(
-    <<ostream,ostream>>& os,
-    <<X,X>> const& x);
+    link:#ostream[ostream]& os,
+    link:#X[X] const& x);
 ----
 
 === Return Value
@@ -190,8 +190,8 @@ Declared in `&lt;param&hyphen;from&hyphen;operator&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X,X>>
-operator!(<<X,X>> const& x);
+link:#X[X]
+operator!(link:#X[X] const& x);
 ----
 
 === Return Value

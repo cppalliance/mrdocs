@@ -9,8 +9,8 @@
 [cols=1]
 |===
 | Name
-| <<A,`A`>> 
-| <<B,`B`>> 
+| link:#A[`A`] 
+| link:#B[`B`] 
 |===
 
 === Functions
@@ -19,9 +19,9 @@
 |===
 | Name
 | Description
-| <<f-0c,`f`>> 
+| link:#f-0c[`f`] 
 | 
-| <<operator_eq-073,`operator&equals;&equals;`>> 
+| link:#operator_eq-073[`operator&equals;&equals;`] 
 | Equality operators
 |===
 
@@ -43,7 +43,7 @@ struct A;
 |===
 | Name
 | Description
-| <<A-f-07,`f`>> 
+| link:#A-f-07[`f`] 
 | 
 |===
 
@@ -53,7 +53,7 @@ struct A;
 |===
 | Name
 | Description
-| <<A-g-0d,`g`>> 
+| link:#A-g-0d[`g`] 
 | 
 |===
 
@@ -63,14 +63,14 @@ struct A;
 |===
 | Name
 | Description
-| `<<operator_eq-0e,operator&equals;&equals;>>`
+| `link:#operator_eq-0e[operator&equals;&equals;]`
 | Equality operator
-| `<<operator_eq-0a,operator&equals;&equals;>>`
+| `link:#operator_eq-0a[operator&equals;&equals;]`
 | Equality operator
 |===
 
 [#A-f-07]
-== <<A,A>>::f
+== link:#A[A]::f
 
 === Synopses
 
@@ -80,22 +80,22 @@ Declared in `&lt;overloads&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<A-f-08,f>>();
+link:#A-f-08[f]();
 ----
 
-[.small]#<<A-f-08,_» more&period;&period;&period;_>>#
+[.small]#link:#A-f-08[_» more&period;&period;&period;_]#
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int
-<<A-f-0e,f>>(int);
+link:#A-f-0e[f](int);
 ----
 
-[.small]#<<A-f-0e,_» more&period;&period;&period;_>>#
+[.small]#link:#A-f-0e[_» more&period;&period;&period;_]#
 
 [#A-f-08]
-== <<A,A>>::f
+== link:#A[A]::f
 
 === Synopsis
 
@@ -108,7 +108,7 @@ f();
 ----
 
 [#A-f-0e]
-== <<A,A>>::f
+== link:#A[A]::f
 
 === Synopsis
 
@@ -121,7 +121,7 @@ f(int);
 ----
 
 [#A-g-0d]
-== <<A,A>>::g
+== link:#A[A]::g
 
 === Synopses
 
@@ -132,23 +132,23 @@ Declared in `&lt;overloads&period;cpp&gt;`
 ----
 static
 void
-<<A-g-0a,g>>();
+link:#A-g-0a[g]();
 ----
 
-[.small]#<<A-g-0a,_» more&period;&period;&period;_>>#
+[.small]#link:#A-g-0a[_» more&period;&period;&period;_]#
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 static
 int
-<<A-g-01,g>>(int);
+link:#A-g-01[g](int);
 ----
 
-[.small]#<<A-g-01,_» more&period;&period;&period;_>>#
+[.small]#link:#A-g-01[_» more&period;&period;&period;_]#
 
 [#A-g-0a]
-== <<A,A>>::g
+== link:#A[A]::g
 
 === Synopsis
 
@@ -162,7 +162,7 @@ g();
 ----
 
 [#A-g-01]
-== <<A,A>>::g
+== link:#A[A]::g
 
 === Synopsis
 
@@ -198,19 +198,19 @@ Declared in `&lt;overloads&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<f-0b,f>>();
+link:#f-0b[f]();
 ----
 
-[.small]#<<f-0b,_» more&period;&period;&period;_>>#
+[.small]#link:#f-0b[_» more&period;&period;&period;_]#
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int
-<<f-06,f>>(int);
+link:#f-06[f](int);
 ----
 
-[.small]#<<f-06,_» more&period;&period;&period;_>>#
+[.small]#link:#f-06[_» more&period;&period;&period;_]#
 
 [#f-0b]
 == f
@@ -253,12 +253,12 @@ Equality operator
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
-<<operator_eq-0e,operator&equals;&equals;>>(
-    <<A,A>> lhs,
+link:#operator_eq-0e[operator&equals;&equals;](
+    link:#A[A] lhs,
     int rhs);
 ----
 
-[.small]#<<operator_eq-0e,_» more&period;&period;&period;_>>#
+[.small]#link:#operator_eq-0e[_» more&period;&period;&period;_]#
 
 Equality operator
 
@@ -266,12 +266,12 @@ Equality operator
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
-<<operator_eq-0a,operator&equals;&equals;>>(
-    <<A,A>> lhs,
-    <<A,A>> rhs);
+link:#operator_eq-0a[operator&equals;&equals;](
+    link:#A[A] lhs,
+    link:#A[A] rhs);
 ----
 
-[.small]#<<operator_eq-0a,_» more&period;&period;&period;_>>#
+[.small]#link:#operator_eq-0a[_» more&period;&period;&period;_]#
 
 Equality operator
 
@@ -279,12 +279,12 @@ Equality operator
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
-<<operator_eq-08,operator&equals;&equals;>>(
-    <<B,B>> lhs,
-    <<B,B>> rhs);
+link:#operator_eq-08[operator&equals;&equals;](
+    link:#B[B] lhs,
+    link:#B[B] rhs);
 ----
 
-[.small]#<<operator_eq-08,_» more&period;&period;&period;_>>#
+[.small]#link:#operator_eq-08[_» more&period;&period;&period;_]#
 
 Equality operator
 
@@ -292,12 +292,12 @@ Equality operator
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 bool
-<<operator_eq-071,operator&equals;&equals;>>(
-    <<B,B>> lhs,
+link:#operator_eq-071[operator&equals;&equals;](
+    link:#B[B] lhs,
     int rhs);
 ----
 
-[.small]#<<operator_eq-071,_» more&period;&period;&period;_>>#
+[.small]#link:#operator_eq-071[_» more&period;&period;&period;_]#
 
 [#operator_eq-0e]
 == operator&equals;&equals;
@@ -312,7 +312,7 @@ Declared in `&lt;overloads&period;cpp&gt;`
 ----
 bool
 operator&equals;&equals;(
-    <<A,A>> lhs,
+    link:#A[A] lhs,
     int rhs);
 ----
 
@@ -345,8 +345,8 @@ Declared in `&lt;overloads&period;cpp&gt;`
 ----
 bool
 operator&equals;&equals;(
-    <<A,A>> lhs,
-    <<A,A>> rhs);
+    link:#A[A] lhs,
+    link:#A[A] rhs);
 ----
 
 === Return Value
@@ -378,8 +378,8 @@ Declared in `&lt;overloads&period;cpp&gt;`
 ----
 bool
 operator&equals;&equals;(
-    <<B,B>> lhs,
-    <<B,B>> rhs);
+    link:#B[B] lhs,
+    link:#B[B] rhs);
 ----
 
 === Return Value
@@ -411,7 +411,7 @@ Declared in `&lt;overloads&period;cpp&gt;`
 ----
 bool
 operator&equals;&equals;(
-    <<B,B>> lhs,
+    link:#B[B] lhs,
     int rhs);
 ----
 

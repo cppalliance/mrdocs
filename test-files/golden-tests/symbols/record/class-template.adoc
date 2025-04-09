@@ -9,11 +9,11 @@
 [cols=1]
 |===
 | Name
-| <<C0,`C0`>> 
-| <<C1,`C1`>> 
-| <<C2,`C2`>> 
-| <<C3,`C3`>> 
-| <<S,`S`>> 
+| link:#C0[`C0`] 
+| link:#C1[`C1`] 
+| link:#C2[`C2`] 
+| link:#C3[`C3`] 
+| link:#S[`S`] 
 |===
 
 [#C0]
@@ -34,7 +34,7 @@ struct C0;
 [cols=1]
 |===
 | Name
-| <<C0-N0,`N0`>> 
+| link:#C0-N0[`N0`] 
 |===
 
 === Data Members
@@ -42,13 +42,13 @@ struct C0;
 [cols=1]
 |===
 | Name
-| <<C0-w,`w`>> 
-| <<C0-x,`x`>> 
-| <<C0-y,`y`>> 
+| link:#C0-w[`w`] 
+| link:#C0-x[`x`] 
+| link:#C0-y[`y`] 
 |===
 
 [#C0-N0]
-== <<C0,C0>>::N0
+== link:#C0[C0]::N0
 
 === Synopsis
 
@@ -64,11 +64,11 @@ struct N0;
 [cols=1]
 |===
 | Name
-| <<C0-N0-z,`z`>> 
+| link:#C0-N0-z[`z`] 
 |===
 
 [#C0-N0-z]
-== <<C0,C0>>::<<C0-N0,N0>>::z
+== link:#C0[C0]::link:#C0-N0[N0]::z
 
 === Synopsis
 
@@ -80,7 +80,7 @@ int z;
 ----
 
 [#C0-w]
-== <<C0,C0>>::w
+== link:#C0[C0]::w
 
 === Synopsis
 
@@ -92,7 +92,7 @@ int w;
 ----
 
 [#C0-x]
-== <<C0,C0>>::x
+== link:#C0[C0]::x
 
 === Synopsis
 
@@ -100,11 +100,11 @@ Declared in `&lt;class&hyphen;template&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<S,S>> x;
+link:#S[S] x;
 ----
 
 [#C0-y]
-== <<C0,C0>>::y
+== link:#C0[C0]::y
 
 === Synopsis
 
@@ -132,7 +132,7 @@ struct C1;
 [cols=1]
 |===
 | Name
-| <<C1-N1,`N1`>> 
+| link:#C1-N1[`N1`] 
 |===
 
 === Data Members
@@ -140,11 +140,11 @@ struct C1;
 [cols=1]
 |===
 | Name
-| <<C1-w,`w`>> 
+| link:#C1-w[`w`] 
 |===
 
 [#C1-N1]
-== <<C1,C1>>::N1
+== link:#C1[C1]::N1
 
 === Synopsis
 
@@ -161,13 +161,13 @@ struct N1;
 [cols=1]
 |===
 | Name
-| <<C1-N1-x,`x`>> 
-| <<C1-N1-y,`y`>> 
-| <<C1-N1-z,`z`>> 
+| link:#C1-N1-x[`x`] 
+| link:#C1-N1-y[`y`] 
+| link:#C1-N1-z[`z`] 
 |===
 
 [#C1-N1-x]
-== <<C1,C1>>::<<C1-N1,N1>>::x
+== link:#C1[C1]::link:#C1-N1[N1]::x
 
 === Synopsis
 
@@ -175,11 +175,11 @@ Declared in `&lt;class&hyphen;template&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<S,S>> x;
+link:#S[S] x;
 ----
 
 [#C1-N1-y]
-== <<C1,C1>>::<<C1-N1,N1>>::y
+== link:#C1[C1]::link:#C1-N1[N1]::y
 
 === Synopsis
 
@@ -191,7 +191,7 @@ T y;
 ----
 
 [#C1-N1-z]
-== <<C1,C1>>::<<C1-N1,N1>>::z
+== link:#C1[C1]::link:#C1-N1[N1]::z
 
 === Synopsis
 
@@ -203,7 +203,7 @@ int z;
 ----
 
 [#C1-w]
-== <<C1,C1>>::w
+== link:#C1[C1]::w
 
 === Synopsis
 
@@ -232,7 +232,7 @@ struct C2;
 [cols=1]
 |===
 | Name
-| <<C2-N2,`N2`>> 
+| link:#C2-N2[`N2`] 
 |===
 
 === Data Members
@@ -240,11 +240,11 @@ struct C2;
 [cols=1]
 |===
 | Name
-| <<C2-v,`v`>> 
+| link:#C2-v[`v`] 
 |===
 
 [#C2-N2]
-== <<C2,C2>>::N2
+== link:#C2[C2]::N2
 
 === Synopsis
 
@@ -261,14 +261,14 @@ struct N2;
 [cols=1]
 |===
 | Name
-| <<C2-N2-w,`w`>> 
-| <<C2-N2-x,`x`>> 
-| <<C2-N2-y,`y`>> 
-| <<C2-N2-z,`z`>> 
+| link:#C2-N2-w[`w`] 
+| link:#C2-N2-x[`x`] 
+| link:#C2-N2-y[`y`] 
+| link:#C2-N2-z[`z`] 
 |===
 
 [#C2-N2-w]
-== <<C2,C2>>::<<C2-N2,N2>>::w
+== link:#C2[C2]::link:#C2-N2[N2]::w
 
 === Synopsis
 
@@ -276,11 +276,11 @@ Declared in `&lt;class&hyphen;template&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<S,S>> w;
+link:#S[S] w;
 ----
 
 [#C2-N2-x]
-== <<C2,C2>>::<<C2-N2,N2>>::x
+== link:#C2[C2]::link:#C2-N2[N2]::x
 
 === Synopsis
 
@@ -292,7 +292,7 @@ T x;
 ----
 
 [#C2-N2-y]
-== <<C2,C2>>::<<C2-N2,N2>>::y
+== link:#C2[C2]::link:#C2-N2[N2]::y
 
 === Synopsis
 
@@ -304,7 +304,7 @@ U y;
 ----
 
 [#C2-N2-z]
-== <<C2,C2>>::<<C2-N2,N2>>::z
+== link:#C2[C2]::link:#C2-N2[N2]::z
 
 === Synopsis
 
@@ -316,7 +316,7 @@ int z;
 ----
 
 [#C2-v]
-== <<C2,C2>>::v
+== link:#C2[C2]::v
 
 === Synopsis
 
@@ -345,11 +345,11 @@ struct C3;
 [cols=1]
 |===
 | Name
-| <<C3-v,`v`>> 
+| link:#C3-v[`v`] 
 |===
 
 [#C3-v]
-== <<C3,C3>>::v
+== link:#C3[C3]::v
 
 === Synopsis
 

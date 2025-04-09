@@ -9,12 +9,12 @@
 [cols=1]
 |===
 | Name
-| <<A-0e,`A`>> 
-| <<A-00,`A&lt;short&gt;`>> 
-| <<A-07,`A&lt;unsigned int&gt;`>> 
-| <<A-0c,`A&lt;long&gt;`>> 
-| <<A-01,`A&lt;float&gt;`>> 
-| <<E,`E`>> 
+| link:#A-0e[`A`] 
+| link:#A-00[`A&lt;short&gt;`] 
+| link:#A-07[`A&lt;unsigned int&gt;`] 
+| link:#A-0c[`A&lt;long&gt;`] 
+| link:#A-01[`A&lt;float&gt;`] 
+| link:#E[`E`] 
 |===
 
 [#A-0e]
@@ -35,12 +35,12 @@ struct A;
 [cols=1]
 |===
 | Name
-| <<A-0e-B-07,`B`>> 
-| <<A-0e-B-00,`B&lt;double&gt;`>> 
+| link:#A-0e-B-07[`B`] 
+| link:#A-0e-B-00[`B&lt;double&gt;`] 
 |===
 
 [#A-0e-B-07]
-== <<A-0e,A>>::B
+== link:#A-0e[A]::B
 
 === Synopsis
 
@@ -57,13 +57,13 @@ struct B;
 [cols=1]
 |===
 | Name
-| <<A-0e-B-07-C,`C`>> 
-| <<A-0e-B-07-D-09,`D`>> 
-| <<A-0e-B-07-D-0f,`D&lt;bool&gt;`>> 
+| link:#A-0e-B-07-C[`C`] 
+| link:#A-0e-B-07-D-09[`D`] 
+| link:#A-0e-B-07-D-0f[`D&lt;bool&gt;`] 
 |===
 
 [#A-0e-B-07-C]
-== <<A-0e,A>>::<<A-0e-B-07,B>>::C
+== link:#A-0e[A]::link:#A-0e-B-07[B]::C
 
 === Synopsis
 
@@ -75,7 +75,7 @@ struct C;
 ----
 
 [#A-0e-B-07-D-09]
-== <<A-0e,A>>::<<A-0e-B-07,B>>::D
+== link:#A-0e[A]::link:#A-0e-B-07[B]::D
 
 === Synopsis
 
@@ -88,7 +88,7 @@ struct D;
 ----
 
 [#A-0e-B-07-D-0f]
-== <<A-0e,A>>::<<A-0e-B-07,B>>::<<A-0e-B-07-D-09,D>>&lt;bool&gt;
+== link:#A-0e[A]::link:#A-0e-B-07[B]::link:#A-0e-B-07-D-09[D]&lt;bool&gt;
 
 === Synopsis
 
@@ -97,11 +97,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0e-B-07-D-09,D>>&lt;bool&gt;;
+struct link:#A-0e-B-07-D-09[D]&lt;bool&gt;;
 ----
 
 [#A-0e-B-00]
-== <<A-0e,A>>::<<A-0e-B-07,B>>&lt;double&gt;
+== link:#A-0e[A]::link:#A-0e-B-07[B]&lt;double&gt;
 
 === Synopsis
 
@@ -110,7 +110,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0e-B-07,B>>&lt;double&gt;;
+struct link:#A-0e-B-07[B]&lt;double&gt;;
 ----
 
 === Types
@@ -118,13 +118,13 @@ struct <<A-0e-B-07,B>>&lt;double&gt;;
 [cols=1]
 |===
 | Name
-| <<A-0e-B-00-C,`C`>> 
-| <<A-0e-B-00-D-09,`D`>> 
-| <<A-0e-B-00-D-0d,`D&lt;bool&gt;`>> 
+| link:#A-0e-B-00-C[`C`] 
+| link:#A-0e-B-00-D-09[`D`] 
+| link:#A-0e-B-00-D-0d[`D&lt;bool&gt;`] 
 |===
 
 [#A-0e-B-00-C]
-== <<A-0e,A>>::<<A-0e-B-00,B&lt;double&gt;>>::C
+== link:#A-0e[A]::link:#A-0e-B-00[B&lt;double&gt;]::C
 
 === Synopsis
 
@@ -136,7 +136,7 @@ struct C;
 ----
 
 [#A-0e-B-00-D-09]
-== <<A-0e,A>>::<<A-0e-B-00,B&lt;double&gt;>>::D
+== link:#A-0e[A]::link:#A-0e-B-00[B&lt;double&gt;]::D
 
 === Synopsis
 
@@ -149,7 +149,7 @@ struct D;
 ----
 
 [#A-0e-B-00-D-0d]
-== <<A-0e,A>>::<<A-0e-B-00,B&lt;double&gt;>>::<<A-0e-B-00-D-09,D>>&lt;bool&gt;
+== link:#A-0e[A]::link:#A-0e-B-00[B&lt;double&gt;]::link:#A-0e-B-00-D-09[D]&lt;bool&gt;
 
 === Synopsis
 
@@ -158,11 +158,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0e-B-00-D-09,D>>&lt;bool&gt;;
+struct link:#A-0e-B-00-D-09[D]&lt;bool&gt;;
 ----
 
 [#A-00]
-== <<A-0e,A>>&lt;short&gt;
+== link:#A-0e[A]&lt;short&gt;
 
 === Synopsis
 
@@ -171,7 +171,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0e,A>>&lt;short&gt;;
+struct link:#A-0e[A]&lt;short&gt;;
 ----
 
 === Types
@@ -179,13 +179,13 @@ struct <<A-0e,A>>&lt;short&gt;;
 [cols=1]
 |===
 | Name
-| <<A-00-B-0e,`B`>> 
-| <<A-00-B-00,`B&lt;void&gt;`>> 
-| <<A-00-B-07,`B&lt;double&gt;`>> 
+| link:#A-00-B-0e[`B`] 
+| link:#A-00-B-00[`B&lt;void&gt;`] 
+| link:#A-00-B-07[`B&lt;double&gt;`] 
 |===
 
 [#A-00-B-0e]
-== <<A-00,A&lt;short&gt;>>::B
+== link:#A-00[A&lt;short&gt;]::B
 
 === Synopsis
 
@@ -198,7 +198,7 @@ struct B;
 ----
 
 [#A-00-B-00]
-== <<A-00,A&lt;short&gt;>>::<<A-0e-B-07,B>>&lt;void&gt;
+== link:#A-00[A&lt;short&gt;]::link:#A-0e-B-07[B]&lt;void&gt;
 
 === Synopsis
 
@@ -207,7 +207,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0e-B-07,B>>&lt;void&gt;;
+struct link:#A-0e-B-07[B]&lt;void&gt;;
 ----
 
 === Types
@@ -215,13 +215,13 @@ struct <<A-0e-B-07,B>>&lt;void&gt;;
 [cols=1]
 |===
 | Name
-| <<A-00-B-00-C,`C`>> 
-| <<A-00-B-00-D-03,`D`>> 
-| <<A-00-B-00-D-07,`D&lt;bool&gt;`>> 
+| link:#A-00-B-00-C[`C`] 
+| link:#A-00-B-00-D-03[`D`] 
+| link:#A-00-B-00-D-07[`D&lt;bool&gt;`] 
 |===
 
 [#A-00-B-00-C]
-== <<A-00,A&lt;short&gt;>>::<<A-00-B-00,B&lt;void&gt;>>::C
+== link:#A-00[A&lt;short&gt;]::link:#A-00-B-00[B&lt;void&gt;]::C
 
 === Synopsis
 
@@ -233,7 +233,7 @@ struct C;
 ----
 
 [#A-00-B-00-D-03]
-== <<A-00,A&lt;short&gt;>>::<<A-00-B-00,B&lt;void&gt;>>::D
+== link:#A-00[A&lt;short&gt;]::link:#A-00-B-00[B&lt;void&gt;]::D
 
 === Synopsis
 
@@ -246,7 +246,7 @@ struct D;
 ----
 
 [#A-00-B-00-D-07]
-== <<A-00,A&lt;short&gt;>>::<<A-00-B-00,B&lt;void&gt;>>::<<A-00-B-00-D-03,D>>&lt;bool&gt;
+== link:#A-00[A&lt;short&gt;]::link:#A-00-B-00[B&lt;void&gt;]::link:#A-00-B-00-D-03[D]&lt;bool&gt;
 
 === Synopsis
 
@@ -255,11 +255,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-00-B-00-D-03,D>>&lt;bool&gt;;
+struct link:#A-00-B-00-D-03[D]&lt;bool&gt;;
 ----
 
 [#A-00-B-07]
-== <<A-00,A&lt;short&gt;>>::<<A-0e-B-07,B>>&lt;double&gt;
+== link:#A-00[A&lt;short&gt;]::link:#A-0e-B-07[B]&lt;double&gt;
 
 === Synopsis
 
@@ -268,7 +268,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0e-B-07,B>>&lt;double&gt;;
+struct link:#A-0e-B-07[B]&lt;double&gt;;
 ----
 
 === Types
@@ -276,13 +276,13 @@ struct <<A-0e-B-07,B>>&lt;double&gt;;
 [cols=1]
 |===
 | Name
-| <<A-00-B-07-C,`C`>> 
-| <<A-00-B-07-D-015b,`D`>> 
-| <<A-00-B-07-D-0150,`D&lt;bool&gt;`>> 
+| link:#A-00-B-07-C[`C`] 
+| link:#A-00-B-07-D-015b[`D`] 
+| link:#A-00-B-07-D-0150[`D&lt;bool&gt;`] 
 |===
 
 [#A-00-B-07-C]
-== <<A-00,A&lt;short&gt;>>::<<A-00-B-07,B&lt;double&gt;>>::C
+== link:#A-00[A&lt;short&gt;]::link:#A-00-B-07[B&lt;double&gt;]::C
 
 === Synopsis
 
@@ -294,7 +294,7 @@ struct C;
 ----
 
 [#A-00-B-07-D-015b]
-== <<A-00,A&lt;short&gt;>>::<<A-00-B-07,B&lt;double&gt;>>::D
+== link:#A-00[A&lt;short&gt;]::link:#A-00-B-07[B&lt;double&gt;]::D
 
 === Synopsis
 
@@ -307,7 +307,7 @@ struct D;
 ----
 
 [#A-00-B-07-D-0150]
-== <<A-00,A&lt;short&gt;>>::<<A-00-B-07,B&lt;double&gt;>>::<<A-0e-B-00-D-09,D>>&lt;bool&gt;
+== link:#A-00[A&lt;short&gt;]::link:#A-00-B-07[B&lt;double&gt;]::link:#A-0e-B-00-D-09[D]&lt;bool&gt;
 
 === Synopsis
 
@@ -316,11 +316,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0e-B-00-D-09,D>>&lt;bool&gt;;
+struct link:#A-0e-B-00-D-09[D]&lt;bool&gt;;
 ----
 
 [#A-07]
-== <<A-0e,A>>&lt;unsigned int&gt;
+== link:#A-0e[A]&lt;unsigned int&gt;
 
 === Synopsis
 
@@ -329,7 +329,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0e,A>>&lt;unsigned int&gt;;
+struct link:#A-0e[A]&lt;unsigned int&gt;;
 ----
 
 === Types
@@ -337,13 +337,13 @@ struct <<A-0e,A>>&lt;unsigned int&gt;;
 [cols=1]
 |===
 | Name
-| <<A-07-B-03a,`B`>> 
-| <<A-07-B-05,`B&lt;float&gt;`>> 
-| <<A-07-B-03e,`B&lt;double&gt;`>> 
+| link:#A-07-B-03a[`B`] 
+| link:#A-07-B-05[`B&lt;float&gt;`] 
+| link:#A-07-B-03e[`B&lt;double&gt;`] 
 |===
 
 [#A-07-B-03a]
-== <<A-07,A&lt;unsigned int&gt;>>::B
+== link:#A-07[A&lt;unsigned int&gt;]::B
 
 === Synopsis
 
@@ -356,7 +356,7 @@ struct B;
 ----
 
 [#A-07-B-05]
-== <<A-07,A&lt;unsigned int&gt;>>::<<A-0e-B-07,B>>&lt;float&gt;
+== link:#A-07[A&lt;unsigned int&gt;]::link:#A-0e-B-07[B]&lt;float&gt;
 
 === Synopsis
 
@@ -365,7 +365,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0e-B-07,B>>&lt;float&gt;;
+struct link:#A-0e-B-07[B]&lt;float&gt;;
 ----
 
 === Types
@@ -373,13 +373,13 @@ struct <<A-0e-B-07,B>>&lt;float&gt;;
 [cols=1]
 |===
 | Name
-| <<A-07-B-05-C,`C`>> 
-| <<A-07-B-05-D-0e,`D`>> 
-| <<A-07-B-05-D-01,`D&lt;bool&gt;`>> 
+| link:#A-07-B-05-C[`C`] 
+| link:#A-07-B-05-D-0e[`D`] 
+| link:#A-07-B-05-D-01[`D&lt;bool&gt;`] 
 |===
 
 [#A-07-B-05-C]
-== <<A-07,A&lt;unsigned int&gt;>>::<<A-07-B-05,B&lt;float&gt;>>::C
+== link:#A-07[A&lt;unsigned int&gt;]::link:#A-07-B-05[B&lt;float&gt;]::C
 
 === Synopsis
 
@@ -391,7 +391,7 @@ struct C;
 ----
 
 [#A-07-B-05-D-0e]
-== <<A-07,A&lt;unsigned int&gt;>>::<<A-07-B-05,B&lt;float&gt;>>::D
+== link:#A-07[A&lt;unsigned int&gt;]::link:#A-07-B-05[B&lt;float&gt;]::D
 
 === Synopsis
 
@@ -404,7 +404,7 @@ struct D;
 ----
 
 [#A-07-B-05-D-01]
-== <<A-07,A&lt;unsigned int&gt;>>::<<A-07-B-05,B&lt;float&gt;>>::<<A-0e-B-07-D-09,D>>&lt;bool&gt;
+== link:#A-07[A&lt;unsigned int&gt;]::link:#A-07-B-05[B&lt;float&gt;]::link:#A-0e-B-07-D-09[D]&lt;bool&gt;
 
 === Synopsis
 
@@ -413,11 +413,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0e-B-07-D-09,D>>&lt;bool&gt;;
+struct link:#A-0e-B-07-D-09[D]&lt;bool&gt;;
 ----
 
 [#A-07-B-03e]
-== <<A-07,A&lt;unsigned int&gt;>>::<<A-0e-B-07,B>>&lt;double&gt;
+== link:#A-07[A&lt;unsigned int&gt;]::link:#A-0e-B-07[B]&lt;double&gt;
 
 === Synopsis
 
@@ -426,7 +426,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0e-B-07,B>>&lt;double&gt;;
+struct link:#A-0e-B-07[B]&lt;double&gt;;
 ----
 
 === Types
@@ -434,13 +434,13 @@ struct <<A-0e-B-07,B>>&lt;double&gt;;
 [cols=1]
 |===
 | Name
-| <<A-07-B-03e-C,`C`>> 
-| <<A-07-B-03e-D-01,`D`>> 
-| <<A-07-B-03e-D-0f,`D&lt;bool&gt;`>> 
+| link:#A-07-B-03e-C[`C`] 
+| link:#A-07-B-03e-D-01[`D`] 
+| link:#A-07-B-03e-D-0f[`D&lt;bool&gt;`] 
 |===
 
 [#A-07-B-03e-C]
-== <<A-07,A&lt;unsigned int&gt;>>::<<A-07-B-03e,B&lt;double&gt;>>::C
+== link:#A-07[A&lt;unsigned int&gt;]::link:#A-07-B-03e[B&lt;double&gt;]::C
 
 === Synopsis
 
@@ -452,7 +452,7 @@ struct C;
 ----
 
 [#A-07-B-03e-D-01]
-== <<A-07,A&lt;unsigned int&gt;>>::<<A-07-B-03e,B&lt;double&gt;>>::D
+== link:#A-07[A&lt;unsigned int&gt;]::link:#A-07-B-03e[B&lt;double&gt;]::D
 
 === Synopsis
 
@@ -465,7 +465,7 @@ struct D;
 ----
 
 [#A-07-B-03e-D-0f]
-== <<A-07,A&lt;unsigned int&gt;>>::<<A-07-B-03e,B&lt;double&gt;>>::<<A-0e-B-00-D-09,D>>&lt;bool&gt;
+== link:#A-07[A&lt;unsigned int&gt;]::link:#A-07-B-03e[B&lt;double&gt;]::link:#A-0e-B-00-D-09[D]&lt;bool&gt;
 
 === Synopsis
 
@@ -474,11 +474,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0e-B-00-D-09,D>>&lt;bool&gt;;
+struct link:#A-0e-B-00-D-09[D]&lt;bool&gt;;
 ----
 
 [#A-0c]
-== <<A-0e,A>>&lt;long&gt;
+== link:#A-0e[A]&lt;long&gt;
 
 === Synopsis
 
@@ -487,7 +487,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0e,A>>&lt;long&gt;;
+struct link:#A-0e[A]&lt;long&gt;;
 ----
 
 === Types
@@ -495,13 +495,13 @@ struct <<A-0e,A>>&lt;long&gt;;
 [cols=1]
 |===
 | Name
-| <<A-0c-B-0b,`B`>> 
-| <<A-0c-B-08,`B&lt;float&gt;`>> 
-| <<A-0c-B-0d,`B&lt;double&gt;`>> 
+| link:#A-0c-B-0b[`B`] 
+| link:#A-0c-B-08[`B&lt;float&gt;`] 
+| link:#A-0c-B-0d[`B&lt;double&gt;`] 
 |===
 
 [#A-0c-B-0b]
-== <<A-0c,A&lt;long&gt;>>::B
+== link:#A-0c[A&lt;long&gt;]::B
 
 === Synopsis
 
@@ -518,13 +518,13 @@ struct B;
 [cols=1]
 |===
 | Name
-| <<A-0c-B-0b-C,`C`>> 
-| <<A-0c-B-0b-D-00,`D`>> 
-| <<A-0c-B-0b-D-0b,`D&lt;bool&gt;`>> 
+| link:#A-0c-B-0b-C[`C`] 
+| link:#A-0c-B-0b-D-00[`D`] 
+| link:#A-0c-B-0b-D-0b[`D&lt;bool&gt;`] 
 |===
 
 [#A-0c-B-0b-C]
-== <<A-0c,A&lt;long&gt;>>::<<A-0c-B-0b,B>>::C
+== link:#A-0c[A&lt;long&gt;]::link:#A-0c-B-0b[B]::C
 
 === Synopsis
 
@@ -536,7 +536,7 @@ struct C;
 ----
 
 [#A-0c-B-0b-D-00]
-== <<A-0c,A&lt;long&gt;>>::<<A-0c-B-0b,B>>::D
+== link:#A-0c[A&lt;long&gt;]::link:#A-0c-B-0b[B]::D
 
 === Synopsis
 
@@ -549,7 +549,7 @@ struct D;
 ----
 
 [#A-0c-B-0b-D-0b]
-== <<A-0c,A&lt;long&gt;>>::<<A-0c-B-0b,B>>::<<A-0c-B-0b-D-00,D>>&lt;bool&gt;
+== link:#A-0c[A&lt;long&gt;]::link:#A-0c-B-0b[B]::link:#A-0c-B-0b-D-00[D]&lt;bool&gt;
 
 === Synopsis
 
@@ -558,11 +558,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0c-B-0b-D-00,D>>&lt;bool&gt;;
+struct link:#A-0c-B-0b-D-00[D]&lt;bool&gt;;
 ----
 
 [#A-0c-B-08]
-== <<A-0c,A&lt;long&gt;>>::<<A-0c-B-0b,B>>&lt;float&gt;
+== link:#A-0c[A&lt;long&gt;]::link:#A-0c-B-0b[B]&lt;float&gt;
 
 === Synopsis
 
@@ -571,7 +571,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0c-B-0b,B>>&lt;float&gt;;
+struct link:#A-0c-B-0b[B]&lt;float&gt;;
 ----
 
 === Types
@@ -579,13 +579,13 @@ struct <<A-0c-B-0b,B>>&lt;float&gt;;
 [cols=1]
 |===
 | Name
-| <<A-0c-B-08-C,`C`>> 
-| <<A-0c-B-08-D-08,`D`>> 
-| <<A-0c-B-08-D-03,`D&lt;bool&gt;`>> 
+| link:#A-0c-B-08-C[`C`] 
+| link:#A-0c-B-08-D-08[`D`] 
+| link:#A-0c-B-08-D-03[`D&lt;bool&gt;`] 
 |===
 
 [#A-0c-B-08-C]
-== <<A-0c,A&lt;long&gt;>>::<<A-0c-B-08,B&lt;float&gt;>>::C
+== link:#A-0c[A&lt;long&gt;]::link:#A-0c-B-08[B&lt;float&gt;]::C
 
 === Synopsis
 
@@ -597,7 +597,7 @@ struct C;
 ----
 
 [#A-0c-B-08-D-08]
-== <<A-0c,A&lt;long&gt;>>::<<A-0c-B-08,B&lt;float&gt;>>::D
+== link:#A-0c[A&lt;long&gt;]::link:#A-0c-B-08[B&lt;float&gt;]::D
 
 === Synopsis
 
@@ -610,7 +610,7 @@ struct D;
 ----
 
 [#A-0c-B-08-D-03]
-== <<A-0c,A&lt;long&gt;>>::<<A-0c-B-08,B&lt;float&gt;>>::<<A-0c-B-0b-D-00,D>>&lt;bool&gt;
+== link:#A-0c[A&lt;long&gt;]::link:#A-0c-B-08[B&lt;float&gt;]::link:#A-0c-B-0b-D-00[D]&lt;bool&gt;
 
 === Synopsis
 
@@ -619,11 +619,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0c-B-0b-D-00,D>>&lt;bool&gt;;
+struct link:#A-0c-B-0b-D-00[D]&lt;bool&gt;;
 ----
 
 [#A-0c-B-0d]
-== <<A-0c,A&lt;long&gt;>>::<<A-0c-B-0b,B>>&lt;double&gt;
+== link:#A-0c[A&lt;long&gt;]::link:#A-0c-B-0b[B]&lt;double&gt;
 
 === Synopsis
 
@@ -632,7 +632,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0c-B-0b,B>>&lt;double&gt;;
+struct link:#A-0c-B-0b[B]&lt;double&gt;;
 ----
 
 === Types
@@ -640,13 +640,13 @@ struct <<A-0c-B-0b,B>>&lt;double&gt;;
 [cols=1]
 |===
 | Name
-| <<A-0c-B-0d-C,`C`>> 
-| <<A-0c-B-0d-D-0c,`D`>> 
-| <<A-0c-B-0d-D-03,`D&lt;bool&gt;`>> 
+| link:#A-0c-B-0d-C[`C`] 
+| link:#A-0c-B-0d-D-0c[`D`] 
+| link:#A-0c-B-0d-D-03[`D&lt;bool&gt;`] 
 |===
 
 [#A-0c-B-0d-C]
-== <<A-0c,A&lt;long&gt;>>::<<A-0c-B-0d,B&lt;double&gt;>>::C
+== link:#A-0c[A&lt;long&gt;]::link:#A-0c-B-0d[B&lt;double&gt;]::C
 
 === Synopsis
 
@@ -658,7 +658,7 @@ struct C;
 ----
 
 [#A-0c-B-0d-D-0c]
-== <<A-0c,A&lt;long&gt;>>::<<A-0c-B-0d,B&lt;double&gt;>>::D
+== link:#A-0c[A&lt;long&gt;]::link:#A-0c-B-0d[B&lt;double&gt;]::D
 
 === Synopsis
 
@@ -671,7 +671,7 @@ struct D;
 ----
 
 [#A-0c-B-0d-D-03]
-== <<A-0c,A&lt;long&gt;>>::<<A-0c-B-0d,B&lt;double&gt;>>::<<A-0e-B-00-D-09,D>>&lt;bool&gt;
+== link:#A-0c[A&lt;long&gt;]::link:#A-0c-B-0d[B&lt;double&gt;]::link:#A-0e-B-00-D-09[D]&lt;bool&gt;
 
 === Synopsis
 
@@ -680,11 +680,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0e-B-00-D-09,D>>&lt;bool&gt;;
+struct link:#A-0e-B-00-D-09[D]&lt;bool&gt;;
 ----
 
 [#A-01]
-== <<A-0e,A>>&lt;float&gt;
+== link:#A-0e[A]&lt;float&gt;
 
 === Synopsis
 
@@ -693,7 +693,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0e,A>>&lt;float&gt;;
+struct link:#A-0e[A]&lt;float&gt;;
 ----
 
 === Types
@@ -701,12 +701,12 @@ struct <<A-0e,A>>&lt;float&gt;;
 [cols=1]
 |===
 | Name
-| <<A-01-B-07,`B`>> 
-| <<A-01-B-08,`B&lt;double, double&gt;`>> 
+| link:#A-01-B-07[`B`] 
+| link:#A-01-B-08[`B&lt;double, double&gt;`] 
 |===
 
 [#A-01-B-07]
-== <<A-01,A&lt;float&gt;>>::B
+== link:#A-01[A&lt;float&gt;]::B
 
 === Synopsis
 
@@ -719,7 +719,7 @@ struct B;
 ----
 
 [#A-01-B-08]
-== <<A-01,A&lt;float&gt;>>::<<A-0e-B-07,B>>&lt;double, double&gt;
+== link:#A-01[A&lt;float&gt;]::link:#A-0e-B-07[B]&lt;double, double&gt;
 
 === Synopsis
 
@@ -728,7 +728,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0e-B-07,B>>&lt;double, double&gt;;
+struct link:#A-0e-B-07[B]&lt;double, double&gt;;
 ----
 
 === Types
@@ -736,13 +736,13 @@ struct <<A-0e-B-07,B>>&lt;double, double&gt;;
 [cols=1]
 |===
 | Name
-| <<A-01-B-08-C,`C`>> 
-| <<A-01-B-08-D-0ae,`D`>> 
-| <<A-01-B-08-D-0af,`D&lt;bool, bool&gt;`>> 
+| link:#A-01-B-08-C[`C`] 
+| link:#A-01-B-08-D-0ae[`D`] 
+| link:#A-01-B-08-D-0af[`D&lt;bool, bool&gt;`] 
 |===
 
 [#A-01-B-08-C]
-== <<A-01,A&lt;float&gt;>>::<<A-01-B-08,B&lt;double, double&gt;>>::C
+== link:#A-01[A&lt;float&gt;]::link:#A-01-B-08[B&lt;double, double&gt;]::C
 
 === Synopsis
 
@@ -754,7 +754,7 @@ struct C;
 ----
 
 [#A-01-B-08-D-0ae]
-== <<A-01,A&lt;float&gt;>>::<<A-01-B-08,B&lt;double, double&gt;>>::D
+== link:#A-01[A&lt;float&gt;]::link:#A-01-B-08[B&lt;double, double&gt;]::D
 
 === Synopsis
 
@@ -767,7 +767,7 @@ struct D;
 ----
 
 [#A-01-B-08-D-0af]
-== <<A-01,A&lt;float&gt;>>::<<A-01-B-08,B&lt;double, double&gt;>>::<<A-0e-B-00-D-09,D>>&lt;bool, bool&gt;
+== link:#A-01[A&lt;float&gt;]::link:#A-01-B-08[B&lt;double, double&gt;]::link:#A-0e-B-00-D-09[D]&lt;bool, bool&gt;
 
 === Synopsis
 
@@ -776,7 +776,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
-struct <<A-0e-B-00-D-09,D>>&lt;bool, bool&gt;;
+struct link:#A-0e-B-00-D-09[D]&lt;bool, bool&gt;;
 ----
 
 [#E]
@@ -796,25 +796,25 @@ struct E;
 [cols=1]
 |===
 | Name
-| <<E-m0,`m0`>> 
-| <<E-m1,`m1`>> 
-| <<E-m10,`m10`>> 
-| <<E-m11,`m11`>> 
-| <<E-m12,`m12`>> 
-| <<E-m13,`m13`>> 
-| <<E-m14,`m14`>> 
-| <<E-m2,`m2`>> 
-| <<E-m3,`m3`>> 
-| <<E-m4,`m4`>> 
-| <<E-m5,`m5`>> 
-| <<E-m6,`m6`>> 
-| <<E-m7,`m7`>> 
-| <<E-m8,`m8`>> 
-| <<E-m9,`m9`>> 
+| link:#E-m0[`m0`] 
+| link:#E-m1[`m1`] 
+| link:#E-m10[`m10`] 
+| link:#E-m11[`m11`] 
+| link:#E-m12[`m12`] 
+| link:#E-m13[`m13`] 
+| link:#E-m14[`m14`] 
+| link:#E-m2[`m2`] 
+| link:#E-m3[`m3`] 
+| link:#E-m4[`m4`] 
+| link:#E-m5[`m5`] 
+| link:#E-m6[`m6`] 
+| link:#E-m7[`m7`] 
+| link:#E-m8[`m8`] 
+| link:#E-m9[`m9`] 
 |===
 
 [#E-m0]
-== <<E,E>>::m0
+== link:#E[E]::m0
 
 === Synopsis
 
@@ -822,11 +822,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A-0e,A>>&lt;float&gt;::<<A-01-B-08,B>>&lt;double&gt; m0;
+link:#A-0e[A]&lt;float&gt;::link:#A-01-B-08[B]&lt;double&gt; m0;
 ----
 
 [#E-m1]
-== <<E,E>>::m1
+== link:#E[E]::m1
 
 === Synopsis
 
@@ -834,11 +834,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A-0e,A>>&lt;long&gt;::<<A-0c-B-0d,B>>&lt;double&gt; m1;
+link:#A-0e[A]&lt;long&gt;::link:#A-0c-B-0d[B]&lt;double&gt; m1;
 ----
 
 [#E-m10]
-== <<E,E>>::m10
+== link:#E[E]::m10
 
 === Synopsis
 
@@ -846,11 +846,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A-0e,A>>&lt;float&gt;::<<A-01-B-08,B>>&lt;double&gt;::<<A-01-B-08-D-0af,D>>&lt;bool&gt; m10;
+link:#A-0e[A]&lt;float&gt;::link:#A-01-B-08[B]&lt;double&gt;::link:#A-01-B-08-D-0af[D]&lt;bool&gt; m10;
 ----
 
 [#E-m11]
-== <<E,E>>::m11
+== link:#E[E]::m11
 
 === Synopsis
 
@@ -858,11 +858,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A-0e,A>>&lt;long&gt;::<<A-0c-B-0d,B>>&lt;double&gt;::<<A-0c-B-0d-D-03,D>>&lt;bool&gt; m11;
+link:#A-0e[A]&lt;long&gt;::link:#A-0c-B-0d[B]&lt;double&gt;::link:#A-0c-B-0d-D-03[D]&lt;bool&gt; m11;
 ----
 
 [#E-m12]
-== <<E,E>>::m12
+== link:#E[E]::m12
 
 === Synopsis
 
@@ -870,11 +870,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A-0e,A>>&lt;long&gt;::<<A-0c-B-0b,B>>&lt;float&gt;::<<A-0c-B-08-D-03,D>>&lt;bool&gt; m12;
+link:#A-0e[A]&lt;long&gt;::link:#A-0c-B-0b[B]&lt;float&gt;::link:#A-0c-B-08-D-03[D]&lt;bool&gt; m12;
 ----
 
 [#E-m13]
-== <<E,E>>::m13
+== link:#E[E]::m13
 
 === Synopsis
 
@@ -882,11 +882,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A-0e,A>>&lt;unsigned int&gt;::<<A-07-B-03a,B>>&lt;float&gt;::<<A-07-B-05-D-01,D>>&lt;bool&gt; m13;
+link:#A-0e[A]&lt;unsigned int&gt;::link:#A-07-B-03a[B]&lt;float&gt;::link:#A-07-B-05-D-01[D]&lt;bool&gt; m13;
 ----
 
 [#E-m14]
-== <<E,E>>::m14
+== link:#E[E]::m14
 
 === Synopsis
 
@@ -894,11 +894,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A-0e,A>>&lt;short&gt;::<<A-00-B-00,B>>&lt;void&gt;::<<A-00-B-00-D-07,D>>&lt;bool&gt; m14;
+link:#A-0e[A]&lt;short&gt;::link:#A-00-B-00[B]&lt;void&gt;::link:#A-00-B-00-D-07[D]&lt;bool&gt; m14;
 ----
 
 [#E-m2]
-== <<E,E>>::m2
+== link:#E[E]::m2
 
 === Synopsis
 
@@ -906,11 +906,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A-0e,A>>&lt;long&gt;::<<A-0c-B-0b,B>>&lt;float&gt; m2;
+link:#A-0e[A]&lt;long&gt;::link:#A-0c-B-0b[B]&lt;float&gt; m2;
 ----
 
 [#E-m3]
-== <<E,E>>::m3
+== link:#E[E]::m3
 
 === Synopsis
 
@@ -918,11 +918,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A-0e,A>>&lt;unsigned int&gt;::<<A-07-B-03a,B>>&lt;float&gt; m3;
+link:#A-0e[A]&lt;unsigned int&gt;::link:#A-07-B-03a[B]&lt;float&gt; m3;
 ----
 
 [#E-m4]
-== <<E,E>>::m4
+== link:#E[E]::m4
 
 === Synopsis
 
@@ -930,11 +930,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A-0e,A>>&lt;short&gt;::<<A-00-B-00,B>>&lt;void&gt; m4;
+link:#A-0e[A]&lt;short&gt;::link:#A-00-B-00[B]&lt;void&gt; m4;
 ----
 
 [#E-m5]
-== <<E,E>>::m5
+== link:#E[E]::m5
 
 === Synopsis
 
@@ -942,11 +942,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A-0e,A>>&lt;float&gt;::<<A-01-B-08,B>>&lt;double&gt;::<<A-01-B-08-C,C>> m5;
+link:#A-0e[A]&lt;float&gt;::link:#A-01-B-08[B]&lt;double&gt;::link:#A-01-B-08-C[C] m5;
 ----
 
 [#E-m6]
-== <<E,E>>::m6
+== link:#E[E]::m6
 
 === Synopsis
 
@@ -954,11 +954,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A-0e,A>>&lt;long&gt;::<<A-0c-B-0d,B>>&lt;double&gt;::<<A-0c-B-0d-C,C>> m6;
+link:#A-0e[A]&lt;long&gt;::link:#A-0c-B-0d[B]&lt;double&gt;::link:#A-0c-B-0d-C[C] m6;
 ----
 
 [#E-m7]
-== <<E,E>>::m7
+== link:#E[E]::m7
 
 === Synopsis
 
@@ -966,11 +966,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A-0e,A>>&lt;long&gt;::<<A-0c-B-0b,B>>&lt;float&gt;::<<A-0c-B-08-C,C>> m7;
+link:#A-0e[A]&lt;long&gt;::link:#A-0c-B-0b[B]&lt;float&gt;::link:#A-0c-B-08-C[C] m7;
 ----
 
 [#E-m8]
-== <<E,E>>::m8
+== link:#E[E]::m8
 
 === Synopsis
 
@@ -978,11 +978,11 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A-0e,A>>&lt;unsigned int&gt;::<<A-07-B-03a,B>>&lt;float&gt;::<<A-07-B-05-C,C>> m8;
+link:#A-0e[A]&lt;unsigned int&gt;::link:#A-07-B-03a[B]&lt;float&gt;::link:#A-07-B-05-C[C] m8;
 ----
 
 [#E-m9]
-== <<E,E>>::m9
+== link:#E[E]::m9
 
 === Synopsis
 
@@ -990,7 +990,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;3&period;cp
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A-0e,A>>&lt;short&gt;::<<A-00-B-00,B>>&lt;void&gt;::<<A-00-B-00-C,C>> m9;
+link:#A-0e[A]&lt;short&gt;::link:#A-00-B-00[B]&lt;void&gt;::link:#A-00-B-00-C[C] m9;
 ----
 
 

@@ -10,9 +10,9 @@
 |===
 | Name
 | Description
-| <<A,`A`>> 
+| link:#A[`A`] 
 | Overload briefs from function or operator classes
-| <<B,`B`>> 
+| link:#B[`B`] 
 | Auxiliary class
 |===
 
@@ -22,11 +22,11 @@
 |===
 | Name
 | Description
-| <<no_way_to_infer_this_brief-04,`no&lowbar;way&lowbar;to&lowbar;infer&lowbar;this&lowbar;brief`>> 
+| link:#no_way_to_infer_this_brief-04[`no&lowbar;way&lowbar;to&lowbar;infer&lowbar;this&lowbar;brief`] 
 | `no&lowbar;way&lowbar;to&lowbar;infer&lowbar;this&lowbar;brief` overloads
-| <<operator_plus-09,`operator&plus;`>> 
+| link:#operator_plus-09[`operator&plus;`] 
 | Unary plus operators
-| <<sameBrief-07,`sameBrief`>> 
+| link:#sameBrief-07[`sameBrief`] 
 | Function with same brief
 |===
 
@@ -50,13 +50,13 @@ struct A;
 |===
 | Name
 | Description
-| <<A-2constructor-0f,`A`>>         [.small]#[constructor]#
+| link:#A-2constructor-0f[`A`]         [.small]#[constructor]#
 | Constructors
-| <<A-operator_assign-04c,`operator&equals;`>> 
+| link:#A-operator_assign-04c[`operator&equals;`] 
 | Assignment operators
-| <<A-operator_plus-00,`operator&plus;`>> 
+| link:#A-operator_plus-00[`operator&plus;`] 
 | Addition operators
-| <<A-operator_minus-09,`operator&hyphen;`>> 
+| link:#A-operator_minus-09[`operator&hyphen;`] 
 | Unary minus operators
 |===
 
@@ -66,12 +66,12 @@ struct A;
 |===
 | Name
 | Description
-| <<operator_plus-0d,`operator&plus;`>>
+| link:#operator_plus-0d[`operator&plus;`]
 | Unary operator for A
 |===
 
 [#A-2constructor-0f]
-== <<A,A>>::A
+== link:#A[A]::A
 
 Constructors
 
@@ -84,20 +84,20 @@ First constructor
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A-2constructor-03,A>>();
+link:#A-2constructor-03[A]();
 ----
 
-[.small]#<<A-2constructor-03,_» more&period;&period;&period;_>>#
+[.small]#link:#A-2constructor-03[_» more&period;&period;&period;_]#
 
 Second constructor
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A-2constructor-01,A>>(int a);
+link:#A-2constructor-01[A](int a);
 ----
 
-[.small]#<<A-2constructor-01,_» more&period;&period;&period;_>>#
+[.small]#link:#A-2constructor-01[_» more&period;&period;&period;_]#
 
 === Parameters
 
@@ -110,7 +110,7 @@ Second constructor
 |===
 
 [#A-2constructor-03]
-== <<A,A>>::A
+== link:#A[A]::A
 
 First constructor
 
@@ -124,7 +124,7 @@ A();
 ----
 
 [#A-2constructor-01]
-== <<A,A>>::A
+== link:#A[A]::A
 
 Second constructor
 
@@ -148,7 +148,7 @@ A(int a);
 |===
 
 [#A-operator_assign-04c]
-== <<A,A>>::operator&equals;
+== link:#A[A]::operator&equals;
 
 Assignment operators
 
@@ -161,22 +161,22 @@ Assign from A
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A,A>>&
-<<A-operator_assign-045,operator&equals;>>(<<A,A>> const& a);
+link:#A[A]&
+link:#A-operator_assign-045[operator&equals;](link:#A[A] const& a);
 ----
 
-[.small]#<<A-operator_assign-045,_» more&period;&period;&period;_>>#
+[.small]#link:#A-operator_assign-045[_» more&period;&period;&period;_]#
 
 Assign from int
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A,A>>&
-<<A-operator_assign-06,operator&equals;>>(int a);
+link:#A[A]&
+link:#A-operator_assign-06[operator&equals;](int a);
 ----
 
-[.small]#<<A-operator_assign-06,_» more&period;&period;&period;_>>#
+[.small]#link:#A-operator_assign-06[_» more&period;&period;&period;_]#
 
 === Return Value
 
@@ -193,7 +193,7 @@ Assign from int
 |===
 
 [#A-operator_assign-045]
-== <<A,A>>::operator&equals;
+== link:#A[A]::operator&equals;
 
 Assign from A
 
@@ -203,8 +203,8 @@ Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A,A>>&
-operator&equals;(<<A,A>> const& a);
+link:#A[A]&
+operator&equals;(link:#A[A] const& a);
 ----
 
 === Return Value
@@ -222,7 +222,7 @@ operator&equals;(<<A,A>> const& a);
 |===
 
 [#A-operator_assign-06]
-== <<A,A>>::operator&equals;
+== link:#A[A]::operator&equals;
 
 Assign from int
 
@@ -232,7 +232,7 @@ Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A,A>>&
+link:#A[A]&
 operator&equals;(int a);
 ----
 
@@ -251,7 +251,7 @@ operator&equals;(int a);
 |===
 
 [#A-operator_plus-00]
-== <<A,A>>::operator&plus;
+== link:#A[A]::operator&plus;
 
 Addition operators
 
@@ -264,22 +264,22 @@ Addition operator for ints
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A,A>>
-<<A-operator_plus-0c,operator&plus;>>(int a);
+link:#A[A]
+link:#A-operator_plus-0c[operator&plus;](int a);
 ----
 
-[.small]#<<A-operator_plus-0c,_» more&period;&period;&period;_>>#
+[.small]#link:#A-operator_plus-0c[_» more&period;&period;&period;_]#
 
 Addition operator for As
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A,A>>
-<<A-operator_plus-0e,operator&plus;>>(<<A,A>> const& a);
+link:#A[A]
+link:#A-operator_plus-0e[operator&plus;](link:#A[A] const& a);
 ----
 
-[.small]#<<A-operator_plus-0e,_» more&period;&period;&period;_>>#
+[.small]#link:#A-operator_plus-0e[_» more&period;&period;&period;_]#
 
 === Return Value
 
@@ -296,7 +296,7 @@ Addition operator for As
 |===
 
 [#A-operator_plus-0c]
-== <<A,A>>::operator&plus;
+== link:#A[A]::operator&plus;
 
 Addition operator for ints
 
@@ -306,7 +306,7 @@ Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A,A>>
+link:#A[A]
 operator&plus;(int a);
 ----
 
@@ -325,7 +325,7 @@ operator&plus;(int a);
 |===
 
 [#A-operator_plus-0e]
-== <<A,A>>::operator&plus;
+== link:#A[A]::operator&plus;
 
 Addition operator for As
 
@@ -335,8 +335,8 @@ Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A,A>>
-operator&plus;(<<A,A>> const& a);
+link:#A[A]
+operator&plus;(link:#A[A] const& a);
 ----
 
 === Return Value
@@ -354,7 +354,7 @@ operator&plus;(<<A,A>> const& a);
 |===
 
 [#A-operator_minus-09]
-== <<A,A>>::operator&hyphen;
+== link:#A[A]::operator&hyphen;
 
 Unary minus operators
 
@@ -367,29 +367,29 @@ Unary operator&hyphen; for A
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A,A>>
-<<A-operator_minus-02,operator&hyphen;>>();
+link:#A[A]
+link:#A-operator_minus-02[operator&hyphen;]();
 ----
 
-[.small]#<<A-operator_minus-02,_» more&period;&period;&period;_>>#
+[.small]#link:#A-operator_minus-02[_» more&period;&period;&period;_]#
 
 Binary operator&hyphen; for A
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A,A>>
-<<A-operator_minus-0c,operator&hyphen;>>(<<A,A>> const& rhs);
+link:#A[A]
+link:#A-operator_minus-0c[operator&hyphen;](link:#A[A] const& rhs);
 ----
 
-[.small]#<<A-operator_minus-0c,_» more&period;&period;&period;_>>#
+[.small]#link:#A-operator_minus-0c[_» more&period;&period;&period;_]#
 
 === Return Value
 
 Result
 
 [#A-operator_minus-02]
-== <<A,A>>::operator&hyphen;
+== link:#A[A]::operator&hyphen;
 
 Unary operator&hyphen; for A
 
@@ -399,7 +399,7 @@ Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A,A>>
+link:#A[A]
 operator&hyphen;();
 ----
 
@@ -412,7 +412,7 @@ No way to generate a brief from the operator kind because there are unary and bi
 Result
 
 [#A-operator_minus-0c]
-== <<A,A>>::operator&hyphen;
+== link:#A[A]::operator&hyphen;
 
 Binary operator&hyphen; for A
 
@@ -422,8 +422,8 @@ Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<A,A>>
-operator&hyphen;(<<A,A>> const& rhs);
+link:#A[A]
+operator&hyphen;(link:#A[A] const& rhs);
 ----
 
 === Description
@@ -464,7 +464,7 @@ struct B;
 |===
 | Name
 | Description
-| <<operator_plus-06,`operator&plus;`>>
+| link:#operator_plus-06[`operator&plus;`]
 | Unary operator for B
 |===
 
@@ -483,10 +483,10 @@ Function with no params
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<no_way_to_infer_this_brief-02,no&lowbar;way&lowbar;to&lowbar;infer&lowbar;this&lowbar;brief>>();
+link:#no_way_to_infer_this_brief-02[no&lowbar;way&lowbar;to&lowbar;infer&lowbar;this&lowbar;brief]();
 ----
 
-[.small]#<<no_way_to_infer_this_brief-02,_» more&period;&period;&period;_>>#
+[.small]#link:#no_way_to_infer_this_brief-02[_» more&period;&period;&period;_]#
 
 Function with single param
 
@@ -494,10 +494,10 @@ Function with single param
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<no_way_to_infer_this_brief-01,no&lowbar;way&lowbar;to&lowbar;infer&lowbar;this&lowbar;brief>>(int a);
+link:#no_way_to_infer_this_brief-01[no&lowbar;way&lowbar;to&lowbar;infer&lowbar;this&lowbar;brief](int a);
 ----
 
-[.small]#<<no_way_to_infer_this_brief-01,_» more&period;&period;&period;_>>#
+[.small]#link:#no_way_to_infer_this_brief-01[_» more&period;&period;&period;_]#
 
 === Parameters
 
@@ -564,10 +564,10 @@ Unary operator for A
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int
-<<operator_plus-0d,operator&plus;>>(<<A,A>> const& value);
+link:#operator_plus-0d[operator&plus;](link:#A[A] const& value);
 ----
 
-[.small]#<<operator_plus-0d,_» more&period;&period;&period;_>>#
+[.small]#link:#operator_plus-0d[_» more&period;&period;&period;_]#
 
 Unary operator for B
 
@@ -575,10 +575,10 @@ Unary operator for B
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int
-<<operator_plus-06,operator&plus;>>(<<B,B>> const& value);
+link:#operator_plus-06[operator&plus;](link:#B[B] const& value);
 ----
 
-[.small]#<<operator_plus-06,_» more&period;&period;&period;_>>#
+[.small]#link:#operator_plus-06[_» more&period;&period;&period;_]#
 
 === Return Value
 
@@ -596,7 +596,7 @@ Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int
-operator&plus;(<<A,A>> const& value);
+operator&plus;(link:#A[A] const& value);
 ----
 
 === Return Value
@@ -625,7 +625,7 @@ Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int
-operator&plus;(<<B,B>> const& value);
+operator&plus;(link:#B[B] const& value);
 ----
 
 === Return Value
@@ -657,10 +657,10 @@ Function with same brief
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<sameBrief-0a,sameBrief>>(int a);
+link:#sameBrief-0a[sameBrief](int a);
 ----
 
-[.small]#<<sameBrief-0a,_» more&period;&period;&period;_>>#
+[.small]#link:#sameBrief-0a[_» more&period;&period;&period;_]#
 
 Function with same brief
 
@@ -668,12 +668,12 @@ Function with same brief
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-<<sameBrief-0e,sameBrief>>(
+link:#sameBrief-0e[sameBrief](
     int a,
     int b);
 ----
 
-[.small]#<<sameBrief-0e,_» more&period;&period;&period;_>>#
+[.small]#link:#sameBrief-0e[_» more&period;&period;&period;_]#
 
 === Parameters
 

@@ -10,7 +10,7 @@
 |===
 | Name
 | Description
-| <<A,`A`>> 
+| link:#A[`A`] 
 | A record with non&hyphen;member functions
 |===
 
@@ -20,9 +20,9 @@
 |===
 | Name
 | Description
-| <<to_string,`to&lowbar;string`>> 
+| link:#to_string[`to&lowbar;string`] 
 | Non&hyphen;member function of A
-| <<operator_eq,`operator&equals;&equals;`>> 
+| link:#operator_eq[`operator&equals;&equals;`] 
 | Friend function not listed as non&hyphen;member
 |===
 
@@ -46,7 +46,7 @@ class A;
 |===
 | Name
 | Description
-| `<<operator_eq,operator&equals;&equals;>>`
+| `link:#operator_eq[operator&equals;&equals;]`
 | Friend function not listed as non&hyphen;member
 |===
 
@@ -56,7 +56,7 @@ class A;
 |===
 | Name
 | Description
-| <<to_string,`to&lowbar;string`>>
+| link:#to_string[`to&lowbar;string`]
 | Non&hyphen;member function of A
 |===
 
@@ -72,7 +72,7 @@ Declared in `&lt;remove&hyphen;friend&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 char const*
-to&lowbar;string(<<A,A>> const& a);
+to&lowbar;string(link:#A[A] const& a);
 ----
 
 === Return Value
@@ -102,8 +102,8 @@ Declared in `&lt;remove&hyphen;friend&period;cpp&gt;`
 ----
 bool
 operator&equals;&equals;(
-    <<A,A>> const& lhs,
-    <<A,A>> const& rhs);
+    link:#A[A] const& lhs,
+    link:#A[A] const& rhs);
 ----
 
 === Description

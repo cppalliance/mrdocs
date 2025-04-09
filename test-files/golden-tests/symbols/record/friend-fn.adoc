@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<T,`T`>> 
+| link:#T[`T`] 
 |===
 
 === Functions
@@ -18,7 +18,7 @@
 |===
 | Name
 | Description
-| <<f,`f`>> 
+| link:#f[`f`] 
 | f
 |===
 
@@ -40,7 +40,7 @@ struct T;
 |===
 | Name
 | Description
-| `<<f,f>>`
+| `link:#f[f]`
 | f
 |===
 

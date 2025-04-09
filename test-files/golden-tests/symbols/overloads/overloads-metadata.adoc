@@ -10,7 +10,7 @@
 |===
 | Name
 | Description
-| <<f-0c,`f`>> 
+| link:#f-0c[`f`] 
 | Test function
 |===
 
@@ -30,10 +30,10 @@ Test function
 ----
 template&lt;class A&gt;
 int
-<<f-08,f>>(int a);
+link:#f-08[f](int a);
 ----
 
-[.small]#<<f-08,_» more&period;&period;&period;_>>#
+[.small]#link:#f-08[_» more&period;&period;&period;_]#
 
 Test function
 
@@ -41,12 +41,12 @@ Test function
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int
-<<f-04,f>>(
+link:#f-04[f](
     int a,
     void*);
 ----
 
-[.small]#<<f-04,_» more&period;&period;&period;_>>#
+[.small]#link:#f-04[_» more&period;&period;&period;_]#
 
 Test function
 
@@ -57,12 +57,12 @@ template&lt;
     class A,
     class B&gt;
 int
-<<f-02,f>>(
+link:#f-02[f](
     int a,
     int b);
 ----
 
-[.small]#<<f-02,_» more&period;&period;&period;_>>#
+[.small]#link:#f-02[_» more&period;&period;&period;_]#
 
 === Exceptions
 

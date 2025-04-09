@@ -9,8 +9,8 @@
 [cols=1]
 |===
 | Name
-| <<A,`A`>> 
-| <<B,`B`>> 
+| link:#A[`A`] 
+| link:#B[`B`] 
 |===
 
 [#A]
@@ -30,12 +30,12 @@ union A;
 [cols=1]
 |===
 | Name
-| <<A-x,`x`>> [.small]#[variant member]#
-| <<A-y,`y`>> [.small]#[variant member]#
+| link:#A-x[`x`] [.small]#[variant member]#
+| link:#A-y[`y`] [.small]#[variant member]#
 |===
 
 [#A-x]
-== <<A,A>>::x
+== link:#A[A]::x
 
 === Synopsis
 
@@ -47,7 +47,7 @@ int x;
 ----
 
 [#A-y]
-== <<A,A>>::y
+== link:#A[A]::y
 
 === Synopsis
 
@@ -75,13 +75,13 @@ struct B;
 [cols=1]
 |===
 | Name
-| <<B-x,`x`>> [.small]#[variant member]#
-| <<B-y,`y`>> [.small]#[variant member]#
-| <<B-z,`z`>> 
+| link:#B-x[`x`] [.small]#[variant member]#
+| link:#B-y[`y`] [.small]#[variant member]#
+| link:#B-z[`z`] 
 |===
 
 [#B-x]
-== <<B,B>>::x
+== link:#B[B]::x
 
 === Synopsis
 
@@ -93,7 +93,7 @@ int x;
 ----
 
 [#B-y]
-== <<B,B>>::y
+== link:#B[B]::y
 
 === Synopsis
 
@@ -105,7 +105,7 @@ bool y;
 ----
 
 [#B-z]
-== <<B,B>>::z
+== link:#B[B]::z
 
 === Synopsis
 

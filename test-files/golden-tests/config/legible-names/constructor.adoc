@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<X,`X`>> 
+| link:#X[`X`] 
 |===
 
 [#X]
@@ -30,12 +30,12 @@ struct X;
 |===
 | Name
 | Description
-| <<X-2constructor-08,`X`>>         [.small]#[constructor]#
+| link:#X-2constructor-08[`X`]         [.small]#[constructor]#
 | Constructors
 |===
 
 [#X-2constructor-08]
-== <<X,X>>::X
+== link:#X[X]::X
 
 Constructors
 
@@ -48,53 +48,53 @@ Default constructor
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X-2constructor-0e8,X>>();
+link:#X-2constructor-0e8[X]();
 ----
 
-[.small]#<<X-2constructor-0e8,_» more&period;&period;&period;_>>#
+[.small]#link:#X-2constructor-0e8[_» more&period;&period;&period;_]#
 
 Copy constructor
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X-2constructor-0e0,X>>(<<X,X>> const& other);
+link:#X-2constructor-0e0[X](link:#X[X] const& other);
 ----
 
-[.small]#<<X-2constructor-0e0,_» more&period;&period;&period;_>>#
+[.small]#link:#X-2constructor-0e0[_» more&period;&period;&period;_]#
 
 Move constructor
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X-2constructor-069,X>>(<<X,X>>&& other);
+link:#X-2constructor-069[X](link:#X[X]&& other);
 ----
 
-[.small]#<<X-2constructor-069,_» more&period;&period;&period;_>>#
+[.small]#link:#X-2constructor-069[_» more&period;&period;&period;_]#
 
 Construct from `int`
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X-2constructor-07,X>>(int value);
+link:#X-2constructor-07[X](int value);
 ----
 
-[.small]#<<X-2constructor-07,_» more&period;&period;&period;_>>#
+[.small]#link:#X-2constructor-07[_» more&period;&period;&period;_]#
 
 Construct from `double`
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<X-2constructor-06f,X>>(double value);
+link:#X-2constructor-06f[X](double value);
 ----
 
-[.small]#<<X-2constructor-06f,_» more&period;&period;&period;_>>#
+[.small]#link:#X-2constructor-06f[_» more&period;&period;&period;_]#
 
 [#X-2constructor-0e8]
-== <<X,X>>::X
+== link:#X[X]::X
 
 Default constructor
 
@@ -108,7 +108,7 @@ X();
 ----
 
 [#X-2constructor-0e0]
-== <<X,X>>::X
+== link:#X[X]::X
 
 Copy constructor
 
@@ -118,7 +118,7 @@ Declared in `&lt;constructor&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-X(<<X,X>> const& other);
+X(link:#X[X] const& other);
 ----
 
 === Parameters
@@ -132,7 +132,7 @@ X(<<X,X>> const& other);
 |===
 
 [#X-2constructor-069]
-== <<X,X>>::X
+== link:#X[X]::X
 
 Move constructor
 
@@ -142,7 +142,7 @@ Declared in `&lt;constructor&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-X(<<X,X>>&& other);
+X(link:#X[X]&& other);
 ----
 
 === Parameters
@@ -156,7 +156,7 @@ X(<<X,X>>&& other);
 |===
 
 [#X-2constructor-07]
-== <<X,X>>::X
+== link:#X[X]::X
 
 Construct from `int`
 
@@ -180,7 +180,7 @@ X(int value);
 |===
 
 [#X-2constructor-06f]
-== <<X,X>>::X
+== link:#X[X]::X
 
 Construct from `double`
 

@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<C,`C`>> 
+| link:#C[`C`] 
 |===
 
 [#C]
@@ -30,12 +30,12 @@ class C;
 |===
 | Name
 | Description
-| <<C-foo-0e,`foo`>> 
+| link:#C-foo-0e[`foo`] 
 | 
 |===
 
 [#C-foo-0e]
-== <<C,C>>::foo
+== link:#C[C]::foo
 
 === Synopses
 
@@ -45,22 +45,22 @@ Declared in `&lt;const&hyphen;mutable&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int&
-<<C-foo-0b,foo>>();
+link:#C-foo-0b[foo]();
 ----
 
-[.small]#<<C-foo-0b,_» more&period;&period;&period;_>>#
+[.small]#link:#C-foo-0b[_» more&period;&period;&period;_]#
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 int&
-<<C-foo-07,foo>>() const;
+link:#C-foo-07[foo]() const;
 ----
 
-[.small]#<<C-foo-07,_» more&period;&period;&period;_>>#
+[.small]#link:#C-foo-07[_» more&period;&period;&period;_]#
 
 [#C-foo-0b]
-== <<C,C>>::foo
+== link:#C[C]::foo
 
 === Synopsis
 
@@ -73,7 +73,7 @@ foo();
 ----
 
 [#C-foo-07]
-== <<C,C>>::foo
+== link:#C[C]::foo
 
 === Synopsis
 

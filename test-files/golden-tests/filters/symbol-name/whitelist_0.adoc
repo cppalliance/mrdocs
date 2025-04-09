@@ -10,11 +10,11 @@
 |===
 | Name
 | Description
-| <<N0,`N0`>> 
+| link:#N0[`N0`] 
 | This namespace should extracted because it&apos;s implied by `N0&colon;&colon;f0&lowbar;WL`
-| <<N1,`N1`>> 
+| link:#N1[`N1`] 
 | This namespace should extracted because it&apos;s implied by `N1&colon;&colon;N3&lowbar;WL` and `N1&colon;&colon;N4&colon;&colon;f1&lowbar;WL`
-| <<N5,`N5`>> 
+| link:#N5[`N5`] 
 | This namespace should extracted because it&apos;s implied by `N5&colon;&colon;N6&colon;&colon;&ast;7`
 |===
 
@@ -24,7 +24,7 @@
 |===
 | Name
 | Description
-| <<C,`C`>> 
+| link:#C[`C`] 
 | This namespace should be included because it strictly matches `C`
 |===
 
@@ -39,12 +39,12 @@ This namespace should extracted because it&apos;s implied by `N0&colon;&colon;f0
 |===
 | Name
 | Description
-| <<N0-f0_WL,`f0&lowbar;WL`>> 
+| link:#N0-f0_WL[`f0&lowbar;WL`] 
 | This function should be included because it matches `N0&colon;&colon;f0&lowbar;WL`
 |===
 
 [#N0-f0_WL]
-== <<N0,N0>>::f0&lowbar;WL
+== link:#N0[N0]::f0&lowbar;WL
 
 This function should be included because it matches `N0&colon;&colon;f0&lowbar;WL`
 
@@ -69,14 +69,14 @@ This namespace should extracted because it&apos;s implied by `N1&colon;&colon;N3
 |===
 | Name
 | Description
-| <<N1-N3_WL,`N3&lowbar;WL`>> 
+| link:#N1-N3_WL[`N3&lowbar;WL`] 
 | This namespace should extracted because it&apos;s explicitly included by `N1&colon;&colon;N3&lowbar;WL`
-| <<N1-N4,`N4`>> 
+| link:#N1-N4[`N4`] 
 | This namespace should extracted because it&apos;s implied by `N1&colon;&colon;N4&colon;&colon;f1&lowbar;WL`
 |===
 
 [#N1-N3_WL]
-== <<N1,N1>>::N3&lowbar;WL
+== link:#N1[N1]::N3&lowbar;WL
 
 This namespace should extracted because it&apos;s explicitly included by `N1&colon;&colon;N3&lowbar;WL`
 
@@ -86,12 +86,12 @@ This namespace should extracted because it&apos;s explicitly included by `N1&col
 |===
 | Name
 | Description
-| <<N1-N3_WL-f1_WL,`f1&lowbar;WL`>> 
+| link:#N1-N3_WL-f1_WL[`f1&lowbar;WL`] 
 | This function should extracted because the namespace `N1&colon;&colon;N3&lowbar;WL` is included as a literal&period;
 |===
 
 [#N1-N3_WL-f1_WL]
-== <<N1,N1>>::<<N1-N3_WL,N3&lowbar;WL>>::f1&lowbar;WL
+== link:#N1[N1]::link:#N1-N3_WL[N3&lowbar;WL]::f1&lowbar;WL
 
 This function should extracted because the namespace `N1&colon;&colon;N3&lowbar;WL` is included as a literal&period;
 
@@ -106,7 +106,7 @@ f1&lowbar;WL();
 ----
 
 [#N1-N4]
-== <<N1,N1>>::N4
+== link:#N1[N1]::N4
 
 This namespace should extracted because it&apos;s implied by `N1&colon;&colon;N4&colon;&colon;f1&lowbar;WL`
 
@@ -116,12 +116,12 @@ This namespace should extracted because it&apos;s implied by `N1&colon;&colon;N4
 |===
 | Name
 | Description
-| <<N1-N4-f1_WL,`f1&lowbar;WL`>> 
+| link:#N1-N4-f1_WL[`f1&lowbar;WL`] 
 | This function should extracted because it matches `N1&colon;&colon;N4&colon;&colon;f1&lowbar;WL`
 |===
 
 [#N1-N4-f1_WL]
-== <<N1,N1>>::<<N1-N4,N4>>::f1&lowbar;WL
+== link:#N1[N1]::link:#N1-N4[N4]::f1&lowbar;WL
 
 This function should extracted because it matches `N1&colon;&colon;N4&colon;&colon;f1&lowbar;WL`
 
@@ -146,12 +146,12 @@ This namespace should extracted because it&apos;s implied by `N5&colon;&colon;N6
 |===
 | Name
 | Description
-| <<N5-N6,`N6`>> 
+| link:#N5-N6[`N6`] 
 | This namespace should extracted because it&apos;s implied by `N5&colon;&colon;N6&colon;&colon;&ast;7`
 |===
 
 [#N5-N6]
-== <<N5,N5>>::N6
+== link:#N5[N5]::N6
 
 This namespace should extracted because it&apos;s implied by `N5&colon;&colon;N6&colon;&colon;&ast;7`
 
@@ -161,14 +161,14 @@ This namespace should extracted because it&apos;s implied by `N5&colon;&colon;N6
 |===
 | Name
 | Description
-| <<N5-N6-M7,`M7`>> 
+| link:#N5-N6-M7[`M7`] 
 | This namespace should be included because it matches `N5&colon;&colon;N6&colon;&colon;&ast;7`
-| <<N5-N6-N7,`N7`>> 
+| link:#N5-N6-N7[`N7`] 
 | This namespace should be included because it matches `N5&colon;&colon;N6&colon;&colon;&ast;7`
 |===
 
 [#N5-N6-M7]
-== <<N5,N5>>::<<N5-N6,N6>>::M7
+== link:#N5[N5]::link:#N5-N6[N6]::M7
 
 This namespace should be included because it matches `N5&colon;&colon;N6&colon;&colon;&ast;7`
 
@@ -178,12 +178,12 @@ This namespace should be included because it matches `N5&colon;&colon;N6&colon;&
 |===
 | Name
 | Description
-| <<N5-N6-M7-f2_WL,`f2&lowbar;WL`>> 
+| link:#N5-N6-M7-f2_WL[`f2&lowbar;WL`] 
 | This function should be included because it&apos;s a member of `M7`, which matches `N5&colon;&colon;N6&colon;&colon;&ast;7`
 |===
 
 [#N5-N6-M7-f2_WL]
-== <<N5,N5>>::<<N5-N6,N6>>::<<N5-N6-M7,M7>>::f2&lowbar;WL
+== link:#N5[N5]::link:#N5-N6[N6]::link:#N5-N6-M7[M7]::f2&lowbar;WL
 
 This function should be included because it&apos;s a member of `M7`, which matches `N5&colon;&colon;N6&colon;&colon;&ast;7`
 
@@ -198,7 +198,7 @@ f2&lowbar;WL();
 ----
 
 [#N5-N6-N7]
-== <<N5,N5>>::<<N5-N6,N6>>::N7
+== link:#N5[N5]::link:#N5-N6[N6]::N7
 
 This namespace should be included because it matches `N5&colon;&colon;N6&colon;&colon;&ast;7`
 
@@ -208,12 +208,12 @@ This namespace should be included because it matches `N5&colon;&colon;N6&colon;&
 |===
 | Name
 | Description
-| <<N5-N6-N7-f2_WL,`f2&lowbar;WL`>> 
+| link:#N5-N6-N7-f2_WL[`f2&lowbar;WL`] 
 | This function should be included because it&apos;s a member of `N7`, which matches `N5&colon;&colon;N6&colon;&colon;&ast;7`
 |===
 
 [#N5-N6-N7-f2_WL]
-== <<N5,N5>>::<<N5-N6,N6>>::<<N5-N6-N7,N7>>::f2&lowbar;WL
+== link:#N5[N5]::link:#N5-N6[N6]::link:#N5-N6-N7[N7]::f2&lowbar;WL
 
 This function should be included because it&apos;s a member of `N7`, which matches `N5&colon;&colon;N6&colon;&colon;&ast;7`
 
@@ -247,7 +247,7 @@ struct C;
 |===
 | Name
 | Description
-| <<C-D,`D`>> 
+| link:#C-D[`D`] 
 | This struct should be included because it&apos;s a member of `C`
 |===
 
@@ -257,12 +257,12 @@ struct C;
 |===
 | Name
 | Description
-| <<C-f0_WL,`f0&lowbar;WL`>> 
+| link:#C-f0_WL[`f0&lowbar;WL`] 
 | This function should be included because it&apos;s a member of `C`
 |===
 
 [#C-D]
-== <<C,C>>::D
+== link:#C[C]::D
 
 This struct should be included because it&apos;s a member of `C`
 
@@ -281,12 +281,12 @@ struct D;
 |===
 | Name
 | Description
-| <<C-D-f1_WL,`f1&lowbar;WL`>> 
+| link:#C-D-f1_WL[`f1&lowbar;WL`] 
 | This function should be included because it&apos;s a member of `D`
 |===
 
 [#C-D-f1_WL]
-== <<C,C>>::<<C-D,D>>::f1&lowbar;WL
+== link:#C[C]::link:#C-D[D]::f1&lowbar;WL
 
 This function should be included because it&apos;s a member of `D`
 
@@ -301,7 +301,7 @@ f1&lowbar;WL();
 ----
 
 [#C-f0_WL]
-== <<C,C>>::f0&lowbar;WL
+== link:#C[C]::f0&lowbar;WL
 
 This function should be included because it&apos;s a member of `C`
 

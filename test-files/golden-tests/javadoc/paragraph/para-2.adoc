@@ -10,7 +10,7 @@
 |===
 | Name
 | Description
-| <<f1,`f1`>> 
+| link:#f1[`f1`] 
 | brief
 |===
 

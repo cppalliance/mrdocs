@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<f,`f`>> 
+| link:#f[`f`] 
 |===
 
 === Variables
@@ -17,7 +17,7 @@
 [cols=1]
 |===
 | Name
-| <<x,`x`>> 
+| link:#x[`x`] 
 |===
 
 === Concepts
@@ -25,7 +25,7 @@
 [cols=1]
 |===
 | Name
-| <<C,`C`>> 
+| link:#C[`C`] 
 |===
 
 [#f]
@@ -37,7 +37,7 @@ Declared in `&lt;concept&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-template&lt;<<C,C>> T&gt;
+template&lt;link:#C[C] T&gt;
 void
 f();
 ----
@@ -51,7 +51,7 @@ Declared in `&lt;concept&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-<<C,C>> auto x = 0;
+link:#C[C] auto x = 0;
 ----
 
 [#C]

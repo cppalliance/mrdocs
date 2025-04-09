@@ -10,7 +10,7 @@
 |===
 | Name
 | Description
-| <<f-0c7,`f`>> 
+| link:#f-0c7[`f`] 
 | 
 |===
 
@@ -26,20 +26,20 @@ Declared in `&lt;ft&lowbar;expl&period;cpp&gt;`
 ----
 template&lt;typename T&gt;
 void
-<<f-03,f>>();
+link:#f-03[f]();
 ----
 
-[.small]#<<f-03,_» more&period;&period;&period;_>>#
+[.small]#link:#f-03[_» more&period;&period;&period;_]#
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;&gt;
 void
-<<f-0ca,f&lt;int&gt;>>();
+link:#f-0ca[f&lt;int&gt;]();
 ----
 
-[.small]#<<f-0ca,_» more&period;&period;&period;_>>#
+[.small]#link:#f-0ca[_» more&period;&period;&period;_]#
 
 [#f-03]
 == f
@@ -56,7 +56,7 @@ f();
 ----
 
 [#f-0ca]
-== <<f-03,f>>&lt;int&gt;
+== link:#f-03[f]&lt;int&gt;
 
 === Synopsis
 
@@ -66,7 +66,7 @@ Declared in `&lt;ft&lowbar;expl&period;cpp&gt;`
 ----
 template&lt;&gt;
 void
-<<f-03,f>>&lt;int&gt;();
+link:#f-03[f]&lt;int&gt;();
 ----
 
 

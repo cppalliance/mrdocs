@@ -9,7 +9,7 @@
 [cols=1]
 |===
 | Name
-| <<A,`A`>> 
+| link:#A[`A`] 
 |===
 
 [#A]
@@ -30,13 +30,13 @@ struct A;
 [cols=1]
 |===
 | Name
-| <<A-x-05,`x`>> 
-| <<A-x-07,`x&lt;T, long&gt;`>> 
-| <<A-x-0a,`x&lt;U*, T&gt;`>> 
+| link:#A-x-05[`x`] 
+| link:#A-x-07[`x&lt;T, long&gt;`] 
+| link:#A-x-0a[`x&lt;U*, T&gt;`] 
 |===
 
 [#A-x-05]
-== <<A,A>>::x
+== link:#A[A]::x
 
 === Synopsis
 
@@ -52,7 +52,7 @@ T x = 0;
 ----
 
 [#A-x-07]
-== <<A,A>>::x&lt;T, long&gt;
+== link:#A[A]::x&lt;T, long&gt;
 
 === Synopsis
 
@@ -66,7 +66,7 @@ bool x&lt;T, long&gt; = 2;
 ----
 
 [#A-x-0a]
-== <<A,A>>::x&lt;U*, T&gt;
+== link:#A[A]::x&lt;U*, T&gt;
 
 === Synopsis
 

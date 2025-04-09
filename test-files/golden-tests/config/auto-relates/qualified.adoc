@@ -9,8 +9,8 @@
 [cols=1]
 |===
 | Name
-| <<N,`N`>> 
-| <<O,`O`>> 
+| link:#N[`N`] 
+| link:#O[`O`] 
 |===
 
 === Types
@@ -19,7 +19,7 @@
 |===
 | Name
 | Description
-| <<A,`A`>> 
+| link:#A[`A`] 
 | A class with non&hyphen;member functions
 |===
 
@@ -29,9 +29,9 @@
 |===
 | Name
 | Description
-| <<f1,`f1`>> 
+| link:#f1[`f1`] 
 | A non&hyphen;member function of A
-| <<f5,`f5`>> 
+| link:#f5[`f5`] 
 | A non&hyphen;member function of &colon;&colon;N&colon;&colon;B
 |===
 
@@ -43,7 +43,7 @@
 [cols=1]
 |===
 | Name
-| <<N-M,`M`>> 
+| link:#N-M[`M`] 
 |===
 
 === Types
@@ -52,7 +52,7 @@
 |===
 | Name
 | Description
-| <<N-B,`B`>> 
+| link:#N-B[`B`] 
 | A nested class with non&hyphen;member functions
 |===
 
@@ -62,14 +62,14 @@
 |===
 | Name
 | Description
-| <<N-f2,`f2`>> 
+| link:#N-f2[`f2`] 
 | A non&hyphen;member function of A
-| <<N-f3,`f3`>> 
+| link:#N-f3[`f3`] 
 | A non&hyphen;member function of B
 |===
 
 [#N-M]
-== <<N,N>>::M
+== link:#N[N]::M
 
 === Functions
 
@@ -77,12 +77,12 @@
 |===
 | Name
 | Description
-| <<N-M-f4,`f4`>> 
+| link:#N-M-f4[`f4`] 
 | A non&hyphen;member function of &colon;&colon;N&colon;&colon;B
 |===
 
 [#N-M-f4]
-== <<N,N>>::<<N-M,M>>::f4
+== link:#N[N]::link:#N-M[M]::f4
 
 A non&hyphen;member function of &colon;&colon;N&colon;&colon;B
 
@@ -93,11 +93,11 @@ Declared in `&lt;qualified&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f4(<<N,N>>::<<N-B,B>> const&);
+f4(link:#N[N]::link:#N-B[B] const&);
 ----
 
 [#N-B]
-== <<N,N>>::B
+== link:#N[N]::B
 
 A nested class with non&hyphen;member functions
 
@@ -116,18 +116,18 @@ struct B;
 |===
 | Name
 | Description
-| <<N-f3,`f3`>>
+| link:#N-f3[`f3`]
 | A non&hyphen;member function of B
-| <<N-M-f4,`M&colon;&colon;f4`>>
+| link:#N-M-f4[`M&colon;&colon;f4`]
 | A non&hyphen;member function of &colon;&colon;N&colon;&colon;B
-| <<f5,`&colon;&colon;f5`>>
+| link:#f5[`&colon;&colon;f5`]
 | A non&hyphen;member function of &colon;&colon;N&colon;&colon;B
-| <<O-f6,`&colon;&colon;O&colon;&colon;f6`>>
+| link:#O-f6[`&colon;&colon;O&colon;&colon;f6`]
 | A non&hyphen;member function of &colon;&colon;N&colon;&colon;B
 |===
 
 [#N-f2]
-== <<N,N>>::f2
+== link:#N[N]::f2
 
 A non&hyphen;member function of A
 
@@ -138,11 +138,11 @@ Declared in `&lt;qualified&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f2(<<A,A>>&);
+f2(link:#A[A]&);
 ----
 
 [#N-f3]
-== <<N,N>>::f3
+== link:#N[N]::f3
 
 A non&hyphen;member function of B
 
@@ -153,7 +153,7 @@ Declared in `&lt;qualified&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f3(<<N,N>>::<<N-B,B>> const&);
+f3(link:#N[N]::link:#N-B[B] const&);
 ----
 
 [#O]
@@ -165,12 +165,12 @@ f3(<<N,N>>::<<N-B,B>> const&);
 |===
 | Name
 | Description
-| <<O-f6,`f6`>> 
+| link:#O-f6[`f6`] 
 | A non&hyphen;member function of &colon;&colon;N&colon;&colon;B
 |===
 
 [#O-f6]
-== <<O,O>>::f6
+== link:#O[O]::f6
 
 A non&hyphen;member function of &colon;&colon;N&colon;&colon;B
 
@@ -181,7 +181,7 @@ Declared in `&lt;qualified&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f6(<<N,N>>::<<N-B,B>> const&);
+f6(link:#N[N]::link:#N-B[B] const&);
 ----
 
 [#A]
@@ -204,9 +204,9 @@ struct A;
 |===
 | Name
 | Description
-| <<f1,`f1`>>
+| link:#f1[`f1`]
 | A non&hyphen;member function of A
-| <<N-f2,`N&colon;&colon;f2`>>
+| link:#N-f2[`N&colon;&colon;f2`]
 | A non&hyphen;member function of A
 |===
 
@@ -222,7 +222,7 @@ Declared in `&lt;qualified&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f1(<<A,A>> const&);
+f1(link:#A[A] const&);
 ----
 
 [#f5]
@@ -237,7 +237,7 @@ Declared in `&lt;qualified&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f5(<<N,N>>::<<N-B,B>> const&);
+f5(link:#N[N]::link:#N-B[B] const&);
 ----
 
 
