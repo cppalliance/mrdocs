@@ -109,7 +109,7 @@ using C = <a href="#A">A</a>;
 Declared in <code>&lt;type-resolution.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
-using D = <a href="#B">B</a>&lt;short, long&gt;;
+using D = <a href="#B">B&lt;short, long&gt;</a>;
 </code>
 </pre>
 </div>
@@ -125,7 +125,7 @@ Declared in <code>&lt;type-resolution.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 template&lt;typename T&gt;
-using E = <a href="#B">B</a>&lt;T, long&gt;;
+using E = <a href="#B">B&lt;T, long&gt;</a>;
 </code>
 </pre>
 </div>
@@ -466,7 +466,7 @@ Declared in <code>&lt;type-resolution.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 void
-h0(<a href="#B">B</a>&lt;short, long&gt;);
+h0(<a href="#B">B&lt;short, long&gt;</a>);
 </code>
 </pre>
 </div>
@@ -482,7 +482,7 @@ Declared in <code>&lt;type-resolution.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 void
-h1(<a href="#B">B</a>&lt;short, long&gt; const);
+h1(<a href="#B">B&lt;short, long&gt;</a> const);
 </code>
 </pre>
 </div>
@@ -498,7 +498,7 @@ Declared in <code>&lt;type-resolution.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 void
-h2(<a href="#B">B</a>&lt;short, long&gt;&);
+h2(<a href="#B">B&lt;short, long&gt;</a>&);
 </code>
 </pre>
 </div>
@@ -514,7 +514,7 @@ Declared in <code>&lt;type-resolution.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 void
-h3(<a href="#B">B</a>&lt;short, long&gt; const&);
+h3(<a href="#B">B&lt;short, long&gt;</a> const&);
 </code>
 </pre>
 </div>
@@ -530,7 +530,7 @@ Declared in <code>&lt;type-resolution.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 void
-h4(<a href="#B">B</a>&lt;short, long&gt;*);
+h4(<a href="#B">B&lt;short, long&gt;</a>*);
 </code>
 </pre>
 </div>
@@ -546,7 +546,7 @@ Declared in <code>&lt;type-resolution.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 void
-h5(<a href="#B">B</a>&lt;short, long&gt; const*);
+h5(<a href="#B">B&lt;short, long&gt;</a> const*);
 </code>
 </pre>
 </div>
@@ -562,7 +562,7 @@ Declared in <code>&lt;type-resolution.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 void
-h6(<a href="#B">B</a>&lt;short, long&gt;**);
+h6(<a href="#B">B&lt;short, long&gt;</a>**);
 </code>
 </pre>
 </div>
@@ -578,7 +578,7 @@ Declared in <code>&lt;type-resolution.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 void
-h7(<a href="#B">B</a>&lt;short, long&gt; const**);
+h7(<a href="#B">B&lt;short, long&gt;</a> const**);
 </code>
 </pre>
 </div>
@@ -594,7 +594,7 @@ Declared in <code>&lt;type-resolution.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 void
-h8(<a href="#B">B</a>&lt;short, long&gt; const const**);
+h8(<a href="#B">B&lt;short, long&gt;</a> const const**);
 </code>
 </pre>
 </div>
@@ -754,7 +754,7 @@ Declared in <code>&lt;type-resolution.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 void
-j0(<a href="#E">E</a>&lt;short&gt;);
+j0(<a href="#E">E&lt;short&gt;</a>);
 </code>
 </pre>
 </div>
@@ -770,7 +770,7 @@ Declared in <code>&lt;type-resolution.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 void
-j1(<a href="#E">E</a>&lt;short&gt; const);
+j1(<a href="#E">E&lt;short&gt;</a> const);
 </code>
 </pre>
 </div>
@@ -786,7 +786,7 @@ Declared in <code>&lt;type-resolution.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 void
-j2(<a href="#E">E</a>&lt;short&gt;&);
+j2(<a href="#E">E&lt;short&gt;</a>&);
 </code>
 </pre>
 </div>
@@ -802,7 +802,7 @@ Declared in <code>&lt;type-resolution.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 void
-j3(<a href="#E">E</a>&lt;short&gt; const&);
+j3(<a href="#E">E&lt;short&gt;</a> const&);
 </code>
 </pre>
 </div>
@@ -818,7 +818,7 @@ Declared in <code>&lt;type-resolution.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 void
-j4(<a href="#E">E</a>&lt;short&gt;*);
+j4(<a href="#E">E&lt;short&gt;</a>*);
 </code>
 </pre>
 </div>
@@ -834,7 +834,7 @@ Declared in <code>&lt;type-resolution.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 void
-j5(<a href="#E">E</a>&lt;short&gt; const*);
+j5(<a href="#E">E&lt;short&gt;</a> const*);
 </code>
 </pre>
 </div>
@@ -850,7 +850,7 @@ Declared in <code>&lt;type-resolution.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 void
-j6(<a href="#E">E</a>&lt;short&gt;**);
+j6(<a href="#E">E&lt;short&gt;</a>**);
 </code>
 </pre>
 </div>
@@ -866,7 +866,7 @@ Declared in <code>&lt;type-resolution.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 void
-j7(<a href="#E">E</a>&lt;short&gt; const**);
+j7(<a href="#E">E&lt;short&gt;</a> const**);
 </code>
 </pre>
 </div>
@@ -882,7 +882,7 @@ Declared in <code>&lt;type-resolution.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
 void
-j8(<a href="#E">E</a>&lt;short&gt; const const**);
+j8(<a href="#E">E&lt;short&gt;</a> const const**);
 </code>
 </pre>
 </div>

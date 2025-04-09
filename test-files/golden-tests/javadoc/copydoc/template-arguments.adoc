@@ -60,7 +60,7 @@ Declared in `&lt;template&hyphen;arguments&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using BInt = link:#A-B-09[B]&lt;int&gt;;
+using BInt = link:#A-B-09[B&lt;int&gt;];
 ----
 
 [#A-BInt2]
@@ -74,7 +74,7 @@ Declared in `&lt;template&hyphen;arguments&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using BInt2 = link:#A-B-0c[B]&lt;int, 2&gt;;
+using BInt2 = link:#A-B-0c[B&lt;int, 2&gt;];
 ----
 
 [#A-B_t]
@@ -91,7 +91,7 @@ Declared in `&lt;template&hyphen;arguments&period;cpp&gt;`
 template&lt;
     class T,
     int I&gt;
-using B&lowbar;t = link:#A-B-08[B]&lt;T, I&gt;;
+using B&lowbar;t = link:#A-B-08[B&lt;T, I&gt;];
 ----
 
 === Template Parameters
@@ -115,7 +115,7 @@ Declared in `&lt;template&hyphen;arguments&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using CDTrue = link:#A-C-0f[C]&lt;link:#A-D[D], true&gt;;
+using CDTrue = link:#A-C-0f[C&lt;D, true&gt;];
 ----
 
 [#A-CIntTrue]
@@ -129,7 +129,7 @@ Declared in `&lt;template&hyphen;arguments&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using CIntTrue = link:#A-C-0c[C]&lt;int, true&gt;;
+using CIntTrue = link:#A-C-0c[C&lt;int, true&gt;];
 ----
 
 [#A-C_t]
@@ -146,7 +146,7 @@ Declared in `&lt;template&hyphen;arguments&period;cpp&gt;`
 template&lt;
     class T,
     bool B&gt;
-using C&lowbar;t = link:#A-C-05[C]&lt;T, B&gt;;
+using C&lowbar;t = link:#A-C-05[C&lt;T, B&gt;];
 ----
 
 === Template Parameters

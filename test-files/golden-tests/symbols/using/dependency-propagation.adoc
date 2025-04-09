@@ -44,7 +44,7 @@ Declared in `&lt;dependency&hyphen;propagation&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-using B = link:#N-A[A]&lt;T&gt;;
+using B = link:#N-A[A&lt;T&gt;];
 ----
 
 [#N-C]
@@ -57,7 +57,7 @@ Declared in `&lt;dependency&hyphen;propagation&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename T&gt;
-using C = link:#N-B[B]&lt;T&gt;;
+using C = link:#N-B[B&lt;T&gt;];
 ----
 
 [#N-A]
@@ -95,7 +95,7 @@ Declared in `&lt;dependency&hyphen;propagation&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct E
-    : link:#N[N]::link:#N-C[C]&lt;int&gt;;
+    : link:#N-C[N::C&lt;int&gt;];
 ----
 
 === Base Classes
@@ -104,7 +104,7 @@ struct E
 |===
 | Name
 | Description
-| `link:#N[N]::link:#N-C[C]&lt;int&gt;`
+| `link:#N-C[N::C&lt;int&gt;]`
 | 
 |===
 

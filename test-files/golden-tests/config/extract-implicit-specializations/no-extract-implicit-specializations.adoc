@@ -23,7 +23,7 @@ Declared in `&lt;no&hyphen;extract&hyphen;implicit&hyphen;specializations&period
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct A
-    : link:#B[B]&lt;int&gt;;
+    : link:#B[B&lt;int&gt;];
 ----
 
 === Base Classes
@@ -32,7 +32,7 @@ struct A
 |===
 | Name
 | Description
-| `link:#B[B]&lt;int&gt;`
+| `link:#B[B&lt;int&gt;]`
 | 
 |===
 

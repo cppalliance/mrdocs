@@ -31,7 +31,7 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using U1 = link:#S0-0c[S0]&lt;4&gt;;
+using U1 = link:#S0-0c[S0&lt;4&gt;];
 ----
 
 [#U2]
@@ -43,7 +43,7 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using U2 = link:#S0-0c[S0]&lt;5&gt;::link:#S0-0e-S1[S1];
+using U2 = link:#S0-0e-S1[S0&lt;5&gt;::S1];
 ----
 
 [#U3]
@@ -55,7 +55,7 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using U3 = link:#S0-07e[S0]&lt;6&gt;;
+using U3 = link:#S0-07e[S0&lt;6&gt;];
 ----
 
 [#R0]
@@ -68,7 +68,7 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R0
-    : link:#S0-0c[S0]&lt;1&gt;;
+    : link:#S0-0c[S0&lt;1&gt;];
 ----
 
 === Base Classes
@@ -77,7 +77,7 @@ struct R0
 |===
 | Name
 | Description
-| `link:#S0-0c[S0]&lt;1&gt;`
+| `link:#S0-0c[S0&lt;1&gt;]`
 | 
 |===
 
@@ -99,7 +99,7 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R1
-    : link:#S0-0c[S0]&lt;2&gt;::link:#S0-09[S1];
+    : link:#S0-09[S0&lt;2&gt;::S1];
 ----
 
 === Base Classes
@@ -108,7 +108,7 @@ struct R1
 |===
 | Name
 | Description
-| `link:#S0-0c[S0]&lt;2&gt;::link:#S0-09[S1]`
+| `link:#S0-09[S0&lt;2&gt;::S1]`
 | 
 |===
 
@@ -122,7 +122,7 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R2
-    : link:#S0-073[S0]&lt;3&gt;;
+    : link:#S0-073[S0&lt;3&gt;];
 ----
 
 === Base Classes
@@ -131,7 +131,7 @@ struct R2
 |===
 | Name
 | Description
-| `link:#S0-073[S0]&lt;3&gt;`
+| `link:#S0-073[S0&lt;3&gt;]`
 | 
 |===
 

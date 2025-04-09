@@ -142,7 +142,7 @@ Declared in `&lt;return&hyphen;type&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#SmallVector[SmallVector]&lt;link:#A[A], 3&gt;
+link:#SmallVector[SmallVector&lt;A, 3&gt;]
 makeAs();
 ----
 
@@ -161,7 +161,7 @@ Declared in `&lt;return&hyphen;type&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#Result[Result]&lt;link:#A[A]&gt;
+link:#Result[Result&lt;A&gt;]
 tryMakeA();
 ----
 

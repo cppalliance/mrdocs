@@ -43,7 +43,7 @@ Declared in `&lt;excluded&hyphen;namespace&hyphen;alias&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-namespace E = link:#B[B]::S::E;
+namespace E = B::S::E;
 ----
 
 

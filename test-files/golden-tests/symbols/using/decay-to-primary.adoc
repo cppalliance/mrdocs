@@ -25,7 +25,7 @@ Declared in `&lt;decay&hyphen;to&hyphen;primary&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using A0 = link:#S0-03[S0]&lt;void&gt;;
+using A0 = link:#S0-03[S0&lt;void&gt;];
 ----
 
 [#A1]
@@ -37,7 +37,7 @@ Declared in `&lt;decay&hyphen;to&hyphen;primary&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using A1 = link:#A0[A0]::link:#S0-00-M1[M1]&lt;short&gt;::link:#S0-09-M0[M0];
+using A1 = link:#S0-09-M0[A0::M1&lt;short&gt;::M0];
 ----
 
 [#S0-03]
@@ -84,7 +84,7 @@ Declared in `&lt;decay&hyphen;to&hyphen;primary&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename U&gt;
-using M1 = link:#S0-03[S0]&lt;U&gt;;
+using M1 = link:#S0-03[S0&lt;U&gt;];
 ----
 
 [#S0-00]
@@ -131,7 +131,7 @@ Declared in `&lt;decay&hyphen;to&hyphen;primary&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename U&gt;
-using M1 = link:#S0-03[S0]&lt;U&gt;;
+using M1 = link:#S0-03[S0&lt;U&gt;];
 ----
 
 [#S0-09]
@@ -178,7 +178,7 @@ Declared in `&lt;decay&hyphen;to&hyphen;primary&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;typename U&gt;
-using M1 = link:#S0-03[S0]&lt;U&gt;;
+using M1 = link:#S0-03[S0&lt;U&gt;];
 ----
 
 

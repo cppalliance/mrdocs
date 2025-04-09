@@ -37,7 +37,7 @@ struct X;
 ----
 
 [#X-0d]
-== link:#X-0e[X]&lt;0&gt;
+== link:#X-0e[X&lt;0&gt;]
 
 === Synopsis
 
@@ -45,11 +45,11 @@ Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#X-0e[X]&lt;0&gt;(bool) -> link:#X-0e[X]&lt;0&gt;;
+link:#X-0e[X&lt;0&gt;](bool) -> link:#X-0e[X&lt;0&gt;];
 ----
 
 [#X-00]
-== link:#X-0e[X]&lt;0&gt;
+== link:#X-0e[X&lt;0&gt;]
 
 === Synopsis
 
@@ -57,11 +57,11 @@ Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#X-0e[X]&lt;0&gt;(char) -> link:#X-0e[X]&lt;0&gt;;
+link:#X-0e[X&lt;0&gt;](char) -> link:#X-0e[X&lt;0&gt;];
 ----
 
 [#X-0b]
-== link:#X-0e[X]&lt;0&gt;
+== link:#X-0e[X&lt;0&gt;]
 
 === Synopsis
 
@@ -69,11 +69,11 @@ Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#X-0e[X]&lt;0&gt;(int) -> link:#X-0e[X]&lt;0&gt;;
+link:#X-0e[X&lt;0&gt;](int) -> link:#X-0e[X&lt;0&gt;];
 ----
 
 [#X-06]
-== link:#X-0e[X]&lt;0&gt;
+== link:#X-0e[X&lt;0&gt;]
 
 === Synopsis
 
@@ -82,7 +82,7 @@ Declared in `&lt;explicit&hyphen;deduct&hyphen;guide&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 template&lt;bool B = true&gt;
-link:#X-0e[X]&lt;0&gt;(long) -> link:#X-0e[X]&lt;0&gt;;
+link:#X-0e[X&lt;0&gt;](long) -> link:#X-0e[X&lt;0&gt;];
 ----
 
 

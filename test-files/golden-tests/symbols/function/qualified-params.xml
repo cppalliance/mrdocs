@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <namespace name="M" id="vrRDfj1fg+DIOkYAYqIPDg6Jfwc=">
+    <class name="D" id="/uhjNgA3CZWDrUG93dNxJ8AXNlA=">
+      <file short-path="qualified-params.cpp" source-path="qualified-params.cpp" line="6" class="def"/>
+    </class>
+  </namespace>
+  <namespace name="N" id="rjlMNXAaWNMkQYMTJzRA1DR0DiE=">
+    <class name="C" id="sNQWmhyaDchz7lnkqvq3y7z1HVU=">
+      <file short-path="qualified-params.cpp" source-path="qualified-params.cpp" line="2" class="def"/>
+    </class>
+  </namespace>
+  <function name="foo" id="qLZTlCC88VV9/1zxsDYwuIzL/OQ=">
+    <file short-path="qualified-params.cpp" source-path="qualified-params.cpp" line="9"/>
+    <return>
+      <type id="sNQWmhyaDchz7lnkqvq3y7z1HVU=" name="N::C"/>
+    </return>
+    <param name="v">
+      <type id="/uhjNgA3CZWDrUG93dNxJ8AXNlA=" name="M::D"/>
+    </param>
+  </function>
+</namespace>
+</mrdocs>
