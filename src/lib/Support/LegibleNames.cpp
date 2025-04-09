@@ -74,7 +74,7 @@ getUnnamedInfoName(Info const& I)
     }
 
     std::size_t const idx = to_underlying(I.Kind) - 1;
-    std::string res;
+    std::string res = "_";
     // push idx as two digits
     res.push_back(static_cast<char>('0' + (idx / 10)));
     res.push_back(static_cast<char>('0' + (idx % 10)));

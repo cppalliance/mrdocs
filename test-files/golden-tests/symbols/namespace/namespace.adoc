@@ -9,13 +9,13 @@
 [cols=1]
 |===
 | Name
-| <<00namespace,`Unnamed namespace`>> 
+| <<_00namespace,`Unnamed namespace`>> 
 | <<A,`A`>> 
 | <<D,`D`>> 
 | <<I,`I`>> 
 |===
 
-[#00namespace]
+[#_00namespace]
 == Unnamed namespace
 
 === Namespaces
@@ -23,8 +23,8 @@
 [cols=1]
 |===
 | Name
-| <<00namespace-G,`G`>> 
-| <<00namespace-H,`H`>> 
+| <<_00namespace-G,`G`>> 
+| <<_00namespace-H,`H`>> 
 |===
 
 === Functions
@@ -32,10 +32,10 @@
 [cols=1]
 |===
 | Name
-| <<00namespace-f10,`f10`>> 
+| <<_00namespace-f10,`f10`>> 
 |===
 
-[#00namespace-G]
+[#_00namespace-G]
 == G
 
 === Functions
@@ -43,11 +43,11 @@
 [cols=1]
 |===
 | Name
-| <<00namespace-G-f11,`f11`>> 
+| <<_00namespace-G-f11,`f11`>> 
 |===
 
-[#00namespace-G-f11]
-== <<00namespace-G,G>>::f11
+[#_00namespace-G-f11]
+== <<_00namespace-G,G>>::f11
 
 === Synopsis
 
@@ -59,7 +59,7 @@ void
 f11();
 ----
 
-[#00namespace-H]
+[#_00namespace-H]
 == H
 
 === Functions
@@ -67,11 +67,11 @@ f11();
 [cols=1]
 |===
 | Name
-| <<00namespace-H-f12,`f12`>> 
+| <<_00namespace-H-f12,`f12`>> 
 |===
 
-[#00namespace-H-f12]
-== <<00namespace-H,H>>::f12
+[#_00namespace-H-f12]
+== <<_00namespace-H,H>>::f12
 
 === Synopsis
 
@@ -83,7 +83,7 @@ void
 f12();
 ----
 
-[#00namespace-f10]
+[#_00namespace-f10]
 == f10
 
 === Synopsis
@@ -104,7 +104,7 @@ f10();
 [cols=1]
 |===
 | Name
-| <<A-00namespace,`Unnamed namespace`>> 
+| <<A-_00namespace,`Unnamed namespace`>> 
 | <<A-B,`B`>> 
 | <<A-C,`C`>> 
 |===
@@ -117,7 +117,7 @@ f10();
 | <<A-f0,`f0`>> 
 |===
 
-[#A-00namespace]
+[#A-_00namespace]
 == <<A,A>>::Unnamed namespace
 
 === Functions
@@ -125,10 +125,10 @@ f10();
 [cols=1]
 |===
 | Name
-| <<A-00namespace-f3,`f3`>> 
+| <<A-_00namespace-f3,`f3`>> 
 |===
 
-[#A-00namespace-f3]
+[#A-_00namespace-f3]
 == <<A,A>>::f3
 
 === Synopsis
@@ -210,7 +210,7 @@ f0();
 [cols=1]
 |===
 | Name
-| <<D-00namespace,`Unnamed namespace`>> 
+| <<D-_00namespace,`Unnamed namespace`>> 
 | <<D-E,`E`>> 
 | <<D-F,`F`>> 
 |===
@@ -223,7 +223,7 @@ f0();
 | <<D-f5,`f5`>> 
 |===
 
-[#D-00namespace]
+[#D-_00namespace]
 == <<D,D>>::Unnamed namespace
 
 === Functions
@@ -231,10 +231,10 @@ f0();
 [cols=1]
 |===
 | Name
-| <<D-00namespace-f8,`f8`>> 
+| <<D-_00namespace-f8,`f8`>> 
 |===
 
-[#D-00namespace-f8]
+[#D-_00namespace-f8]
 == <<D,D>>::f8
 
 === Synopsis
@@ -316,10 +316,10 @@ f5();
 [cols=1]
 |===
 | Name
-| <<I-00namespace,`Unnamed namespace`>> 
+| <<I-_00namespace,`Unnamed namespace`>> 
 |===
 
-[#I-00namespace]
+[#I-_00namespace]
 == <<I,I>>::Unnamed namespace
 
 === Functions
@@ -327,10 +327,10 @@ f5();
 [cols=1]
 |===
 | Name
-| <<I-00namespace-f14,`f14`>> 
+| <<I-_00namespace-f14,`f14`>> 
 |===
 
-[#I-00namespace-f14]
+[#I-_00namespace-f14]
 == <<I,I>>::f14
 
 === Synopsis
