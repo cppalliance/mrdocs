@@ -241,8 +241,8 @@ struct Polymorphic_test
 #if defined(__clang__)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wself-assign-overloaded"
-#endif
-#if defined(__GNUC__)
+#pragma clang diagnostic ignored "-Wself-move"
+#elif defined(__GNUC__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wself-move"
 #endif
@@ -255,8 +255,7 @@ struct Polymorphic_test
             }
 #if defined(__clang__)
 #pragma clang diagnostic pop
-#endif
-#if defined(__GNUC__)
+#elif defined(__GNUC__)
 #pragma GCC diagnostic pop
 #endif
 
