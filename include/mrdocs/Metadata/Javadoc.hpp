@@ -1873,7 +1873,7 @@ void merge(Javadoc& I, Javadoc&& other)
 template <class IO>
 void
 tag_invoke(
-    dom::LazyObjectMapTag t,
+    dom::LazyObjectMapTag,
     IO& io,
     Javadoc const& I,
     DomCorpus const* domCorpus)

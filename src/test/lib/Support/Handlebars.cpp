@@ -3863,7 +3863,7 @@ helpers()
     // pathed lambas with parameters
     {
         dom::Object hash;
-        dom::Function helper = dom::makeInvocable([](dom::Value const& arg) {
+        dom::Function helper = dom::makeInvocable([](dom::Value const&) {
             return dom::Value("winning");
         });
         hash.set("helper", helper);
@@ -4457,7 +4457,7 @@ helpers()
         // should take precedence over helper values
         {
             std::string string = "{{#goodbyes as |value|}}{{value}}{{/goodbyes}}{{value}}";
-            hbs.registerHelper("value", [](dom::Value const& options) {
+            hbs.registerHelper("value", [](dom::Value const&) {
                 return "foo";
             });
             hbs.registerHelper("goodbyes", [](dom::Value const& options) {
@@ -4668,8 +4668,8 @@ track_ids()
         hbs.registerHelper("wycats", [](
             dom::Value const& passiveVoice,
             dom::Value const& noun,
-            dom::Value const& thiz,
-            dom::Value const& thiz2,
+            dom::Value const&,
+            dom::Value const&,
             dom::Value const& options) {
             BOOST_TEST(options.get("ids").get(0) == "is.a");
             BOOST_TEST(options.get("ids").get(1) == "../slave.driver");
@@ -4768,7 +4768,7 @@ track_ids()
         hbs.registerHelper("wycats", [](
             dom::Value const& passiveVoice,
             dom::Value const& noun,
-            dom::Value const& blah,
+            dom::Value const&,
             dom::Value const& options)
         {
             BOOST_TEST(options.get("ids").get(0) == "zomg.a");

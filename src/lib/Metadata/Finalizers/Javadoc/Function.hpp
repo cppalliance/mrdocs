@@ -107,7 +107,7 @@ innermostTypenameString(Polymorphic<TypeInfo> const& T)
 }
 
 bool
-populateFunctionBriefFromClass(FunctionInfo& I, CorpusImpl const& corpus)
+populateFunctionBriefFromClass(FunctionInfo& I)
 {
     switch (I.Class)
     {
@@ -237,10 +237,10 @@ populateFunctionBriefFromOperator(FunctionInfo& I)
 }
 
 void
-populateFunctionBrief(FunctionInfo& I, CorpusImpl const& corpus)
+populateFunctionBrief(FunctionInfo& I)
 {
     MRDOCS_CHECK_OR(!I.javadoc->brief);
-    MRDOCS_CHECK_OR(!populateFunctionBriefFromClass(I, corpus));
+    MRDOCS_CHECK_OR(!populateFunctionBriefFromClass(I));
     MRDOCS_CHECK_OR(!populateFunctionBriefFromOperator(I));
 }
 
