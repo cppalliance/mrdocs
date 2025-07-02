@@ -38,7 +38,7 @@ cd third-party
 [NOTE]
 ====
 These instructions assume all dependencies are installed in the `third-party` directory for simplicity.
-Fell free to install them anywhere you want and adjust the main MrDocs configuration command later.
+Feel free to install them anywhere you want and adjust the main MrDocs configuration command later.
 ====
 
 [#install-fmt]
