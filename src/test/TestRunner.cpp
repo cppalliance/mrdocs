@@ -14,6 +14,7 @@
 #include "lib/Support/Path.hpp"
 #include "lib/Lib/ConfigImpl.hpp"
 #include "lib/Lib/CorpusImpl.hpp"
+#include "lib/Lib/ExecuteAndWaitWithLogging.hpp"
 #include "lib/Lib/MrDocsCompilationDatabase.hpp"
 #include "lib/Lib/SingleFileDB.hpp"
 #include "lib/Gen/hbs/HandlebarsGenerator.hpp"
@@ -232,7 +233,7 @@ handleFile(
                 path::replace_extension(badPath, gen_->fileExtension());
                 std::array<llvm::StringRef, 5u> args {
                     diffCmdPath_.get(), "-u", "--color", expectedPath, badPath };
-                llvm::sys::ExecuteAndWait(diffCmdPath_.get(), args);
+                ExecuteAndWaitWithLogging(diffCmdPath_.get(), args);
             }
         }
     }

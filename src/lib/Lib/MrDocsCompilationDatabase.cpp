@@ -12,6 +12,7 @@
 #include "lib/Support/Debug.hpp"
 #include "lib/Support/Path.hpp"
 #include "lib/Lib/ConfigImpl.hpp"
+#include "lib/Lib/ExecuteAndWaitWithLogging.hpp"
 #include "lib/Lib/MrDocsCompilationDatabase.hpp"
 #include <mrdocs/Support/Report.hpp>
 #include <fmt/format.h>
@@ -322,7 +323,7 @@ adjustCommandLine(
                 outputPath.path(),
                 llvm::StringRef()
             };
-            int const result = llvm::sys::ExecuteAndWait(
+            int const result = ExecuteAndWaitWithLogging(
                 progName, args, std::nullopt, redirects);
             if (result != 0)
             {
