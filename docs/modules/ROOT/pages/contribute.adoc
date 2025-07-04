@@ -19,7 +19,7 @@ They are parsed from the command line and configuration file.
 
 The main entry point of MrDocs is the `DoGenerateAction` function in `src/tool/GenerateAction.cpp`.
 It loads the options, creates the compilation database, and runs the extraction and generation steps.
-The options formed from a combination of command line arguments and configuration file settings.
+The options are formed from a combination of command line arguments and configuration file settings.
 
 ==== Command Line Options
 
@@ -97,7 +97,7 @@ return Tool.run(actionFactory.get());
 ----
 
 The `clang::tooling::ClangTool::run` method takes a `clang::tooling::ToolAction` object that defines how to process the AST.
-The action object that usually comes from a `clang::tooling::FrontendActionFactory`.
+The action object usually comes from a `clang::tooling::FrontendActionFactory`.
 In the example above, the `SyntaxOnlyAction` is used to parse the source code and generate the AST without any further processing.
 
 In MrDocs, this process happens in `clang::mrdocs::CorpusImpl::build` (`src/lib/Lib/CorpusImpl.cpp`), where we call `Tool.run` for each object in the database with our custom `ASTAction` action and `ASTActionFactory` factory (`src/lib/AST/ASTVisitor.cpp`).
@@ -131,7 +131,7 @@ At this step, the doc comments are also finalized.
 Each `Info` object has a pointer to its `Javadoc`  object (`mrdocs/Metadata/Javadoc.hpp`), which is a representation of the documentation comments.
 
 After AST traversal and `Info` merging, the result is stored as a map of `Info` objects indexed by their respective `SymbolID`.
-A second finalization step is then performed in `clang::mrdocs::finalize` (`src/lib/Metadata/Finalize.cpp`), where any references to `SymbolID` objects that don't exist are removed.
+A second finalization step is then performed in `clang::mrdocs::finalize`, where any references to `SymbolID` objects that don't exist are removed.
 This is necessary because the AST traversal will generate references to entities that should be filtered and are not present in the corpus.
 
 At this point, the `Corpus` object contains representations of all entities in the code base and further semantic {cpp} constructs that are not directly represented in the AST can be inferred.
@@ -223,7 +223,7 @@ The `mrdocs-test` target is used to run the test suites.
 This target has its entry point in `src/test/TestMain.cpp`, which can take two paths:
 
 * Golden testing: When input paths are provided to the test executable via the command line, the test suite will run the `DoTestAction()` that iterates all files in `test-files` comparing the input source files with the expected XML output files.
-* Unit testing: When no input paths are provided, all unit tests will be run via `unit_test_main()`, defined by the our test-suite library in `src/test_suite/test_suite.cpp`.
+* Unit testing: When no input paths are provided, all unit tests will be run via `unit_test_main()`, defined by our test-suite library in `src/test_suite/test_suite.cpp`.
 
 The fixtures for golden testing are defined in `test-files/golden-tests`, where files in each directory have the following format:
 

@@ -131,7 +131,7 @@ Not only this simplifies the usage but also ensures that the stable compilation 
 NOTE: MrDocs does not bundle CMake.
 If you want to use this feature, you need to have CMake installed on your system and available in PATH.
 
-Parameters for cmake, such as `-D BUILDING_TEST=OFF -D MRDOCS_BUILD=ON` can also be specified with the `cmake` option in configuration file.
+Parameters for cmake, such as `-D BUILDING_TEST=OFF -D MRDOCS_BUILD=ON` can also be specified with the `cmake` option in the configuration file.
 MrDocs will always append the `CMAKE_EXPORT_COMPILE_COMMANDS=ON` flag to the cmake command.
 
 [NOTE]
@@ -147,7 +147,7 @@ When the `cmake` option is provided, MrDocs will still adjust the CMake configur
 
 In many projects, a common pattern is to define a special build configuration for the documentation generation such that:
 
-1. Tests, examples, and auxiliary targets excluded
+1. Tests, examples, and auxiliary targets are excluded
 2. All header-only files are included in targets
 3. Unnecessary sources files are excluded from targets
 
@@ -221,7 +221,7 @@ However, this ill-formed pattern is problematic:
 * the developer has to effectively maintain two versions of the code
 * the original source code becomes more and more unreadable
 
-Instead, when using MrDocs, while the `\\&lowbar;&lowbar;MRDOCS&lowbar;&lowbar;` macro is still available for conditional compilation, the same function could be directly documented as:
+Instead, when using MrDocs, while the `&lowbar;&lowbar;MRDOCS&lowbar;&lowbar;` macro is still available for conditional compilation, the same function could be directly documented as:
 
 [source,c++]
 ----
@@ -239,7 +239,7 @@ implementation-defined: impl::**
 
 The xref:commands.adoc[] and xref:config-file.adoc[] pages contain a list of all available commands and options to identify and extract the relevant information as intended by the user.
 
-MrDocs provides multiple mechanisms are provided to specify special {cpp} patterns, such as the example above.
+MrDocs provides multiple mechanisms to specify special {cpp} patterns, such as the example above.
 For each common {cpp} construct that would require macros and two versions of the code, MrDocs provides commands to identify the construct and extract the relevant information as intented by the user.
 
 [#dependencies]
