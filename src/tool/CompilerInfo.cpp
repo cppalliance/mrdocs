@@ -10,7 +10,7 @@
 //
 
 #include "CompilerInfo.hpp"
-
+#include "lib/Lib/ExecuteAndWaitWithLogging.hpp"
 #include <mrdocs/Support/Error.hpp>
 
 #include <llvm/Support/Program.h>
@@ -35,7 +35,7 @@ getCompilerVerboseOutput(llvm::StringRef compilerPath)
     std::optional<llvm::StringRef> const redirects[] = {llvm::StringRef(), llvm::StringRef(), outputPath.str()};
     std::vector<llvm::StringRef> const args = {compilerPath, "-v", "-E", "-x", "c++", "-"};
     llvm::ArrayRef<llvm::StringRef> emptyEnv;
-    int const result = llvm::sys::ExecuteAndWait(compilerPath, args, emptyEnv, redirects);
+    int const result = ExecuteAndWaitWithLogging(compilerPath, args, emptyEnv, redirects);
     if (result != 0) 
     {
         llvm::sys::fs::remove(outputPath);

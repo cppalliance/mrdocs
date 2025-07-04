@@ -9,6 +9,7 @@
 //
 
 #include "lib/Lib/CMakeExecution.hpp"
+#include "lib/Lib/ExecuteAndWaitWithLogging.hpp"
 #include "lib/Support/Path.hpp"
 
 #include <llvm/Support/FileSystem.h>
@@ -37,7 +38,7 @@ getCmakePath()
     MRDOCS_CHECK(path, "CMake executable not found");
     std::optional<llvm::StringRef> const redirects[] = {llvm::StringRef(), llvm::StringRef(), llvm::StringRef()};
     std::vector<llvm::StringRef> const args = {*path, "--version"};
-    int const result = llvm::sys::ExecuteAndWait(*path, args, std::nullopt, redirects);
+    int const result = ExecuteAndWaitWithLogging(*path, args, std::nullopt, redirects);
     MRDOCS_CHECK(result == 0, "CMake execution failed when checking version");
     return *path;
 }
@@ -51,7 +52,7 @@ executeCmakeHelp(llvm::StringRef cmakePath)
     MRDOCS_CHECK(errOutputPath, "Failed to create temporary file");
     std::optional<llvm::StringRef> const redirects[] = {llvm::StringRef(), outputPath.path(), errOutputPath.path()};
     std::vector<llvm::StringRef> const args = {cmakePath, "--help"};
-    int const result = llvm::sys::ExecuteAndWait(cmakePath, args, std::nullopt, redirects);
+    int const result = ExecuteAndWaitWithLogging(cmakePath, args, std::nullopt, redirects);
     if (result != 0)
     {
         auto const bufferOrError = llvm::MemoryBuffer::getFile(errOutputPath.path());
@@ -89,7 +90,7 @@ executeCmakeSystemInformation(llvm::StringRef cmakePath)
     MRDOCS_CHECK(errOutputPath, "Failed to create temporary file");
     std::optional<llvm::StringRef> const redirects[] = {llvm::StringRef(), outputPath.path(), errOutputPath.path()};
     std::vector<llvm::StringRef> const args = {cmakePath, "--system-information"};
-    int const result = llvm::sys::ExecuteAndWait(cmakePath, args, std::nullopt, redirects);
+    int const result = ExecuteAndWaitWithLogging(cmakePath, args, std::nullopt, redirects);
     if (result != 0)
     {
         auto const bufferOrError = llvm::MemoryBuffer::getFile(errOutputPath.path());
@@ -518,7 +519,7 @@ executeCmakeExportCompileCommands(llvm::StringRef projectPath, llvm::StringRef c
     MRDOCS_TRY(auto args, generateCMakeArgs(cmakePath, cmakeArgs, projectPath, buildDir));
     std::vector<llvm::StringRef> argsRef(args.begin(), args.end());
 
-    int const result = llvm::sys::ExecuteAndWait(cmakePath, argsRef, std::nullopt, redirects);
+    int const result = ExecuteAndWaitWithLogging(cmakePath, argsRef, std::nullopt, redirects);
     if (result != 0) {
         return Unexpected(Error("CMake execution failed"));
     }
