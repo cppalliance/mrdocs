@@ -192,7 +192,7 @@ public:
         If the symbolhas no name, then a reserved name based
         on the type is returned instead.
      */
-    std::string_view
+    std::string
     getRawUnqualified(SymbolID const& id)
     {
         Info const* I = corpus_.find(id);
