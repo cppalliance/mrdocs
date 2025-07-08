@@ -44,6 +44,8 @@ merge(OverloadsInfo& I, OverloadsInfo&& Other)
 void
 addMember(OverloadsInfo& I, FunctionInfo const& Member)
 {
+    MRDOCS_ASSERT(Member.Class != FunctionClass::Destructor);
+
     if (I.Members.empty())
     {
         I.Name = Member.Name;
