@@ -1792,7 +1792,7 @@ warnNoParamDocs(FunctionInfo const& I)
         {
             this->warn(
                 *getPrimaryLocation(I),
-                "{}: Missing documentation for return type",
+                "{}: Missing documentation for return value",
                 corpus_.Corpus::qualifiedName(I));
         }
     }
