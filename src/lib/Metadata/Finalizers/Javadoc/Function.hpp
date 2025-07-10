@@ -60,9 +60,11 @@ isCopyOrMoveConstructorOrAssignment(FunctionInfo const& I)
     auto const& paramRefType = get<RefType const&>(paramType);
     auto const& paramRefPointee = paramRefType.PointeeType;
     MRDOCS_CHECK_OR(paramRefPointee, false);
-    auto const& paramRefPointeeNamed = get<NamedTypeInfo const&>(paramRefPointee);
-    MRDOCS_CHECK_OR(paramRefPointeeNamed.Name, false);
-    auto const& paramName = paramRefPointeeNamed.Name;
+    auto const* paramRefPointeeNamed = get<NamedTypeInfo const*>(paramRefPointee);
+    if (!paramRefPointeeNamed)
+      return false;
+    MRDOCS_CHECK_OR(paramRefPointeeNamed->Name, false);
+    auto const& paramName = paramRefPointeeNamed->Name;
     MRDOCS_CHECK_OR(paramName, false);
     auto const& paramRefPointeeNamedName = paramName->Name;
     MRDOCS_CHECK_OR(!paramRefPointeeNamedName.empty(), false);
