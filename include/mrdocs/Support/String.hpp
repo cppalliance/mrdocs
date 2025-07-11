@@ -13,7 +13,6 @@
 #define MRDOCS_API_SUPPORT_STRING_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <cctype>
 #include <string>
 #include <string_view>
 
