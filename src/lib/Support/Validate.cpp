@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2025 Gennaro Prota (gennaro.prota@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -29,7 +30,7 @@ validAdocSectionID(
     return
         s[0] == '_' ||
         s[0] == ':' ||
-        std::isalpha(s[0]);
+        std::isalpha(static_cast<unsigned char>(s[0]));
 }
 
 } // mrdocs
