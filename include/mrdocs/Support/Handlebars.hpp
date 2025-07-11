@@ -218,13 +218,10 @@ public:
         @return A reference to this object
      */
     template <class T>
-    requires fmt::has_formatter<T, fmt::format_context>::value
-    friend
-    OutputRef&
-    operator<<( OutputRef& os, T v )
-    {
-        std::string s = fmt::format( "{}", v );
-        return os.write_impl( s );
+      requires fmt::is_formattable<T>::value
+    friend OutputRef &operator<<(OutputRef &os, T v) {
+      std::string s = fmt::format("{}", v);
+      return os.write_impl(s);
     }
 
     void
