@@ -25,6 +25,7 @@
 #include <clang/Lex/Lexer.h>
 #include <clang/Basic/SourceLocation.h>
 #include "lib/AST/ParseRef.hpp"
+#include <cctype>
 
 #ifdef _MSC_VER
 #pragma warning(push)
