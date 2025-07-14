@@ -13,15 +13,16 @@
 #ifndef MRDOCS_API_METADATA_JAVADOC_HPP
 #define MRDOCS_API_METADATA_JAVADOC_HPP
 
-#include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/SymbolID.hpp>
-#include <mrdocs/Support/Visitor.hpp>
-#include <mrdocs/Support/Concepts.hpp>
-#include <mrdocs/ADT/Polymorphic.hpp>
-#include <mrdocs/Dom/String.hpp>
-#include <mrdocs/Dom/LazyObject.hpp>
-#include <mrdocs/Dom/LazyArray.hpp>
+#include <algorithm>
 #include <memory>
+#include <mrdocs/ADT/Polymorphic.hpp>
+#include <mrdocs/Dom/LazyArray.hpp>
+#include <mrdocs/Dom/LazyObject.hpp>
+#include <mrdocs/Dom/String.hpp>
+#include <mrdocs/Metadata/SymbolID.hpp>
+#include <mrdocs/Platform.hpp>
+#include <mrdocs/Support/Concepts.hpp>
+#include <mrdocs/Support/Visitor.hpp>
 #include <string>
 #include <type_traits>
 #include <utility>

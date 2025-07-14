@@ -8,6 +8,7 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <format>
 #include <mrdocs/Dom.hpp>
 #include <test_suite/test_suite.hpp>
 
@@ -226,10 +227,10 @@ struct Dom_test
             BOOST_TEST(s3 == "helloworld");
         }
 
-        // fmt::formatter<clang::mrdocs::dom::String>
+        // std::formatter<clang::mrdocs::dom::String>
         {
             String s("hello");
-            BOOST_TEST(fmt::format("{}", s) == "hello");
+            BOOST_TEST(std::format("{}", s) == "hello");
         }
     }
 

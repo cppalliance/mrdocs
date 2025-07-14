@@ -14,8 +14,8 @@
 #define MRDOCS_LIB_SUPPORT_CHRONO_HPP
 
 #include <chrono>
+#include <format>
 #include <string>
-#include <fmt/format.h>
 
 namespace clang {
 namespace mrdocs {
@@ -37,14 +37,14 @@ format_duration(
     auto delta_ms = std::chrono::duration_cast<std::chrono::milliseconds>(delta);
     if (delta < std::chrono::seconds(1))
     {
-        return fmt::format("{}ms", delta_ms.count());
+      return std::format("{}ms", delta_ms.count());
     }
 
     auto delta_s = std::chrono::duration_cast<std::chrono::seconds>(delta);
     if (delta < std::chrono::minutes(1))
     {
         delta_ms -= delta_s;
-        return fmt::format("{}s {}ms", delta_s.count(), delta_ms.count());
+        return std::format("{}s {}ms", delta_s.count(), delta_ms.count());
     }
 
     auto delta_min = std::chrono::duration_cast<std::chrono::minutes>(delta);
@@ -52,14 +52,16 @@ format_duration(
     {
         delta_ms -= delta_s;
         delta_s -= delta_min;
-        return fmt::format("{}min {}s {}ms", delta_min.count(), delta_s.count(), delta_ms.count());
+        return std::format("{}min {}s {}ms", delta_min.count(), delta_s.count(),
+                           delta_ms.count());
     }
 
     auto delta_h = std::chrono::duration_cast<std::chrono::hours>(delta);
     delta_ms -= delta_s;
     delta_s -= delta_min;
     delta_min -= delta_h;
-    return fmt::format("{}h {}min {}s {}ms", delta_h.count(), delta_min.count(), delta_s.count(), delta_ms.count());
+    return std::format("{}h {}min {}s {}ms", delta_h.count(), delta_min.count(),
+                       delta_s.count(), delta_ms.count());
 }
 
 } // mrdocs

@@ -8,10 +8,10 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <format>
+#include <llvm/Support/raw_ostream.h>
 #include <mrdocs/Support/Assert.hpp>
 #include <mrdocs/Support/Path.hpp>
-#include <fmt/format.h>
-#include <llvm/Support/raw_ostream.h>
 
 namespace SourceFileNames {
 extern char const* getFileName(char const*) noexcept;
@@ -26,9 +26,8 @@ assert_failed(
     char const* file,
     std::uint_least32_t line)
 {
-    llvm::errs() << fmt::format(
-        "assertion failed: {} on line {} in {}\n",
-        msg, line, ::SourceFileNames::getFileName(file));
+  llvm::errs() << std::format("assertion failed: {} on line {} in {}\n", msg,
+                              line, ::SourceFileNames::getFileName(file));
 }
 
 } // mrdocs

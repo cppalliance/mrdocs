@@ -8,15 +8,16 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <algorithm>
+#include <array>
+#include <charconv>
+#include <chrono>
+#include <filesystem>
+#include <format>
 #include <mrdocs/Support/Handlebars.hpp>
 #include <mrdocs/Support/Path.hpp>
-#include <fmt/format.h>
+#include <print>
 #include <ranges>
-#include <charconv>
-#include <array>
-#include <filesystem>
-#include <chrono>
-#include <algorithm>
 #include <unordered_set>
 #include <utility>
 
@@ -809,13 +810,13 @@ lookupPropertyImpl(
     {
         if (opt.strict || (opt.assumeObjects && !path.empty()))
         {
-            std::string msg = fmt::format(
-                "\"{}\" not defined in {}", literalSegment, toString(context));
-            auto res = find_position_in_text(state.rootTemplateText, literalSegment);
-            if (res)
-            {
-                throw HandlebarsError(msg, res.line, res.column, res.pos);
-            }
+          std::string msg = std::format("\"{}\" not defined in {}",
+                                        literalSegment, toString(context));
+          auto res =
+              find_position_in_text(state.rootTemplateText, literalSegment);
+          if (res) {
+            throw HandlebarsError(msg, res.line, res.column, res.pos);
+          }
             throw HandlebarsError(msg);
         }
         else
@@ -848,13 +849,13 @@ lookupPropertyImpl(
             {
                 if (opt.strict)
                 {
-                    std::string msg = fmt::format(
-                        "\"{}\" not defined in {}", literalSegment, toString(cur));
-                    auto res = find_position_in_text(state.rootTemplateText, literalSegment);
-                    if (res)
-                    {
-                        throw HandlebarsError(msg, res.line, res.column, res.pos);
-                    }
+                  std::string msg = std::format("\"{}\" not defined in {}",
+                                                literalSegment, toString(cur));
+                  auto res = find_position_in_text(state.rootTemplateText,
+                                                   literalSegment);
+                  if (res) {
+                    throw HandlebarsError(msg, res.line, res.column, res.pos);
+                  }
                     throw HandlebarsError(msg);
                 }
                 else
@@ -923,12 +924,13 @@ lookupPropertyImpl(
     if (context.kind() != dom::Kind::Object) {
         if (opt.strict || opt.assumeObjects)
         {
-            std::string msg = fmt::format("\"{}\" not defined in {}", path, context);
-            auto res = find_position_in_text(state.rootTemplateText, path);
-            if (res)
-            {
-                return Unexpected(HandlebarsError(msg, res.line, res.column, res.pos));
-            }
+          std::string msg =
+              std::format("\"{}\" not defined in {}", path, context);
+          auto res = find_position_in_text(state.rootTemplateText, path);
+          if (res) {
+            return Unexpected(
+                HandlebarsError(msg, res.line, res.column, res.pos));
+          }
             return Unexpected(HandlebarsError(msg));
         }
         return Res{nullptr, false};
@@ -1009,7 +1011,7 @@ struct defaultLogger {
             format_to(os, args.at(i), opt);
             os << " ";
         }
-        fmt::println("{}", out);
+        std::println("{}", out);
     }
 
     dom::Value
@@ -2077,8 +2079,8 @@ evalExpr(
 
     if (opt.strict)
     {
-        std::string msg = fmt::format("\"{}\" not defined", expression);
-        return Unexpected(HandlebarsError(msg));
+      std::string msg = std::format("\"{}\" not defined", expression);
+      return Unexpected(HandlebarsError(msg));
     }
     return Res{dom::Kind::Undefined, false, false};
 }
@@ -2496,8 +2498,9 @@ renderExpression(
     }
     else if (opt.strict)
     {
-        std::string msg = fmt::format("\"{}\" not defined in {}", helper_expr, toString(context));
-        return Unexpected(HandlebarsError(msg));
+      std::string msg = std::format("\"{}\" not defined in {}", helper_expr,
+                                    toString(context));
+      return Unexpected(HandlebarsError(msg));
     }
 
     // ==============================================================
@@ -2600,13 +2603,13 @@ setupArgs(
         expression = expression.substr(exprEndPos);
         if (!expression.empty() && expression.front() != ' ')
         {
-            std::string msg = fmt::format(
-                "Parse error. Invalid helper expression. {}{}", expr, expression);
-            auto res = find_position_in_text(expression, state.rootTemplateText);
-            if (res)
-            {
-                return Unexpected(HandlebarsError(msg, res.line, res.column, res.pos));
-            }
+          std::string msg = std::format(
+              "Parse error. Invalid helper expression. {}{}", expr, expression);
+          auto res = find_position_in_text(expression, state.rootTemplateText);
+          if (res) {
+            return Unexpected(
+                HandlebarsError(msg, res.line, res.column, res.pos));
+          }
             return Unexpected(HandlebarsError(msg));
         }
         expression = trim_ldelimiters(expression, " ");
@@ -2699,8 +2702,9 @@ renderDecorator(
     // ==============================================================
     if (tag.helper != "inline")
     {
-        out << fmt::format(R"([undefined decorator "{}" in "{}"])", tag.helper, tag.buffer);
-        return {};
+      out << std::format(R"([undefined decorator "{}" in "{}"])", tag.helper,
+                         tag.buffer);
+      return {};
     }
 
     // ==============================================================
@@ -2711,8 +2715,9 @@ renderDecorator(
     MRDOCS_TRY(auto res, evalExpr(context, expr, state, opt, true));
     if (!res.value.isString())
     {
-        out << fmt::format(R"([invalid decorator expression "{}" in "{}"])", tag.arguments, tag.buffer);
-        return {};
+      out << std::format(R"([invalid decorator expression "{}" in "{}"])",
+                         tag.arguments, tag.buffer);
+      return {};
     }
     std::string_view partial_name = res.value.getString();
 
@@ -2796,8 +2801,8 @@ renderPartial(
         }
         else
         {
-            return Unexpected(HandlebarsError(fmt::format(
-                "The partial {} could not be found", partialName)));
+          return Unexpected(HandlebarsError(
+              std::format("The partial {} could not be found", partialName)));
         }
     }
 
@@ -2876,7 +2881,7 @@ renderPartial(
                         }
                         ++n;
                     }
-                    std::string msg = fmt::format(
+                    std::string msg = std::format(
                         "Unsupported number of partial arguments: {}", n);
                     auto res = find_position_in_text(state.rootTemplateText, tag.buffer);
                     if (res)
@@ -3081,8 +3086,8 @@ renderBlock(
         // ============================================
         // Strict mode: throw when helper is not found
         // ============================================
-        std::string msg = fmt::format(
-            "\"{}\" not defined in {}", tag.helper, toString(context));
+        std::string msg = std::format("\"{}\" not defined in {}", tag.helper,
+                                      toString(context));
         auto res = find_position_in_text(state.rootTemplateText, tag.helper);
         if (res)
         {
@@ -3738,9 +3743,8 @@ helper_missing_fn(dom::Array const& arguments)
         return {};
     }
 
-    return Unexpected(Error(fmt::format(
-        R"(Missing helper: "{}")",
-        arguments.back().get("name"))));
+    return Unexpected(Error(
+        std::format(R"(Missing helper: "{}")", arguments.back().get("name"))));
 }
 
 Expected<void>

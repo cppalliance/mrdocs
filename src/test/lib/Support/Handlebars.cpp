@@ -5,17 +5,17 @@
 // https://www.boost.org/LICENSE_1_0.txt
 //
 
-#include <test_suite/detail/decomposer.hpp>
-#include <test_suite/diff.hpp>
-#include <test_suite/test_suite.hpp>
-#include <fmt/format.h>
+#include <filesystem>
+#include <format>
+#include <llvm/Support/JSON.h>
+#include <llvm/Support/MemoryBuffer.h>
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Support/Handlebars.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Support/String.hpp>
-#include <llvm/Support/JSON.h>
-#include <llvm/Support/MemoryBuffer.h>
-#include <filesystem>
+#include <test_suite/detail/decomposer.hpp>
+#include <test_suite/diff.hpp>
+#include <test_suite/test_suite.hpp>
 #include <utility>
 
 namespace clang {
@@ -329,27 +329,27 @@ setup_helpers()
         std::size_t const n = arguments.size();
         if (n < 4)
         {
-            return fmt::format(
-                "progress helper requires 3 arguments: {} provided",
-                arguments.size());
+          return std::format(
+              "progress helper requires 3 arguments: {} provided",
+              arguments.size());
         }
         if (!arguments.get(0).isString())
         {
-            return fmt::format(
-                "progress helper requires string argument: {} received",
-                arguments.get(0));
+          return std::format(
+              "progress helper requires string argument: {} received",
+              arguments.get(0));
         }
         if (!arguments.get(1).isInteger())
         {
-            return fmt::format(
-                "progress helper requires number argument: {} received",
-                arguments.get(1));
+          return std::format(
+              "progress helper requires number argument: {} received",
+              arguments.get(1));
         }
         if (!arguments.get(2).isBoolean())
         {
-            return fmt::format(
-                "progress helper requires boolean argument: {} received",
-                arguments.get(2));
+          return std::format(
+              "progress helper requires boolean argument: {} received",
+              arguments.get(2));
         }
         dom::Value nameV = arguments.get(0);
         std::string_view name = nameV.getString();
@@ -381,7 +381,7 @@ setup_helpers()
         }
         if (arguments.size() > 1)
         {
-            return fmt::format(R"(Missing helper: "{}")", options.get("name"));
+          return std::format(R"(Missing helper: "{}")", options.get("name"));
         }
         return {};
     });
@@ -400,7 +400,9 @@ setup_helpers()
         {
             if (!args.get(i).isString())
             {
-                return fmt::format("link helper requires string arguments: {} provided", args.size());
+              return std::format(
+                  "link helper requires string arguments: {} provided",
+                  args.size());
             }
         }
 
@@ -416,7 +418,9 @@ setup_helpers()
         {
             if (!args.get(1).isString())
             {
-                return fmt::format("link helper requires string argument: {} provided", toString(args.get(1).kind()));
+              return std::format(
+                  "link helper requires string argument: {} provided",
+                  toString(args.get(1).kind()));
             }
             auto href = args.get(1);
             out += href.getString();
@@ -470,7 +474,9 @@ setup_helpers()
             dom::Array::value_type const& firstArg = args.get(0);
             if (!firstArg.isString())
             {
-                return fmt::format("loud helper requires string argument: {} provided", toString(firstArg.kind()));
+              return std::format(
+                  "loud helper requires string argument: {} provided",
+                  toString(firstArg.kind()));
             }
             res = firstArg.getString();
         }
@@ -490,7 +496,8 @@ setup_helpers()
     master.hbs.registerHelper("bold", dom::makeVariadicInvocable([](
         dom::Array const& args) {
         dom::Value options = args.back();
-        return fmt::format(R"(<div class="mybold">{}</div>)", options.get("fn")());
+        return std::format(R"(<div class="mybold">{}</div>)",
+                           options.get("fn")());
     }));
 
     master.hbs.registerHelper("list", dom::makeVariadicInvocable([](
@@ -498,11 +505,13 @@ setup_helpers()
         // Built-in helper to change the context for each object in args
         if (args.size() < 2)
         {
-            return fmt::format("list helper requires 1 argument: {} provided", args.size() - 1);
+          return std::format("list helper requires 1 argument: {} provided",
+                             args.size() - 1);
         }
         if (!args.get(0).isArray())
         {
-            return fmt::format("list helper requires array argument: {} provided", toString(args.get(0).kind()));
+          return std::format("list helper requires array argument: {} provided",
+                             toString(args.get(0).kind()));
         }
 
         dom::Value options = args.back();
@@ -588,7 +597,7 @@ setup_logger()
         dom::Array const& args)
     {
         dom::Value level = args.get(0);
-        master.log += fmt::format("[{}] ", level);
+        master.log += std::format("[{}] ", level);
         for (std::size_t i = 1; i < args.size(); ++i)
         {
             if (i != 1)
@@ -670,7 +679,7 @@ safe_string()
         if (!str) {
             return "bold helper requires at least one argument";
         }
-        return fmt::format("<b>{}</b>", str);
+        return std::format("<b>{}</b>", str);
     });
     std::string templ = "{{bold 'text'}}";
     std::string res = hbs.render(templ, {});
@@ -687,7 +696,7 @@ safe_string()
         if (!str) {
             return safeString("bold helper requires at least one argument");
         }
-        return safeString(fmt::format("<b>{}</b>", str));
+        return safeString(std::format("<b>{}</b>", str));
     });
     res = hbs.render(templ, {});
     BOOST_TEST(res == "<b>text</b>");

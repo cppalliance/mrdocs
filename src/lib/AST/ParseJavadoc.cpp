@@ -13,19 +13,20 @@
 //
 
 #include "ParseJavadoc.hpp"
-#include <mrdocs/Metadata/Javadoc.hpp>
-#include <mrdocs/Support/Error.hpp>
-#include <mrdocs/Support/Path.hpp>
-#include <mrdocs/Support/String.hpp>
-#include <mrdocs/Support/ScopeExit.hpp>
-#include <mrdocs/Support/Algorithm.hpp>
-#include <clang/AST/CommentCommandTraits.h>
-#include <clang/AST/ASTContext.h>
-#include <clang/AST/RawCommentList.h>
-#include <clang/Lex/Lexer.h>
-#include <clang/Basic/SourceLocation.h>
 #include "lib/AST/ParseRef.hpp"
 #include <cctype>
+#include <clang/AST/ASTContext.h>
+#include <clang/AST/CommentCommandTraits.h>
+#include <clang/AST/RawCommentList.h>
+#include <clang/Basic/SourceLocation.h>
+#include <clang/Lex/Lexer.h>
+#include <format>
+#include <mrdocs/Metadata/Javadoc.hpp>
+#include <mrdocs/Support/Algorithm.hpp>
+#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/Path.hpp>
+#include <mrdocs/Support/ScopeExit.hpp>
+#include <mrdocs/Support/String.hpp>
 
 #ifdef _MSC_VER
 #pragma warning(push)
@@ -466,14 +467,10 @@ public:
 
 //------------------------------------------------
 
-std::string&
-JavadocVisitor::
-ensureUTF8(
-    std::string&& s)
-{
-    if (!llvm::json::isUTF8(s))
-        s = llvm::json::fixUTF8(s);
-    return s;
+std::string &JavadocVisitor::ensureUTF8(std::string &&s) {
+  if (!llvm::json::isUTF8(s))
+    s = llvm::json::fixUTF8(s);
+  return static_cast<std::string &>(s);
 }
 
 /*  Parse the inline content of a text
@@ -785,7 +782,9 @@ parseHTMLTag(HTMLStartTagComment const* C)
         *static_cast<HTMLEndTagComment const*>(*tagEndIt);
     if(cEndTag.getTagName() != res.tag)
     {
-        return Unexpected(Error(fmt::format("warning: HTML <{}> tag not followed by same end tag (</{}> found)", res.tag, cEndTag.getTagName().str())));
+      return Unexpected(Error(std::format(
+          "warning: HTML <{}> tag not followed by same end tag (</{}> found)",
+          res.tag, cEndTag.getTagName().str())));
     }
 
     // Check if all the siblings are text nodes
@@ -795,7 +794,8 @@ parseHTMLTag(HTMLStartTagComment const* C)
     });
     if (!areAllText)
     {
-        return Unexpected(Error(fmt::format("warning: HTML <{}> tag not followed by text", res.tag)));
+      return Unexpected(Error(
+          std::format("warning: HTML <{}> tag not followed by text", res.tag)));
     }
 
     // Extract text from all the siblings
@@ -829,7 +829,9 @@ visitHTMLStartTagComment(
         });
         if (attr_it == idxs.end())
         {
-            return Unexpected(Error(fmt::format("warning: HTML <{}> tag has no {} attribute", C->getTagName().str(), name.str())));
+          return Unexpected(
+              Error(std::format("warning: HTML <{}> tag has no {} attribute",
+                                C->getTagName().str(), name.str())));
         }
         return C->getAttr(*attr_it).Value.str();
     };
@@ -870,7 +872,9 @@ visitHTMLStartTagComment(
     }
     else
     {
-        report::warn(fmt::format("warning: unsupported HTML tag <{}>", tagComponents.tag), filename, loc.getLine());
+      report::warn(
+          std::format("warning: unsupported HTML tag <{}>", tagComponents.tag),
+          filename, loc.getLine());
     }
     // Skip the children we consumed in parseHTMLTag
     it_ += tagComponents.n_siblings;
@@ -1756,13 +1760,10 @@ goodArgCount(std::size_t n,
     {
         auto loc = sm_.getPresumedLoc(C.getBeginLoc());
 
-        diags_.error(fmt::format(
-            "Expected {} but got {} args\n"
-            "File: {}, line {}, col {}\n",
-            n, C.getNumArgs(),
-            loc.getFilename(),
-            loc.getLine(),
-            loc.getColumn()));
+        diags_.error(std::format("Expected {} but got {} args\n"
+                                 "File: {}, line {}, col {}\n",
+                                 n, C.getNumArgs(), loc.getFilename(),
+                                 loc.getLine(), loc.getColumn()));
 
         return false;
     }

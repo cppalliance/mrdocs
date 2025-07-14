@@ -11,18 +11,19 @@
 #ifndef MRDOCS_API_DOM_VALUE_HPP
 #define MRDOCS_API_DOM_VALUE_HPP
 
-#include <mrdocs/Platform.hpp>
+#include <charconv>
+#include <compare>
+#include <format>
+#include <mrdocs/ADT/Optional.hpp>
 #include <mrdocs/Dom/Array.hpp>
-#include <mrdocs/Dom/Kind.hpp>
 #include <mrdocs/Dom/Function.hpp>
+#include <mrdocs/Dom/Kind.hpp>
 #include <mrdocs/Dom/Object.hpp>
 #include <mrdocs/Dom/String.hpp>
-#include <mrdocs/ADT/Optional.hpp>
+#include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <optional> // BAD
 #include <string>
-#include <charconv>
-#include <compare>
 
 namespace clang {
 namespace mrdocs {
@@ -849,17 +850,13 @@ safeString(SV const& str) {
 
 //------------------------------------------------
 
-template<>
-struct fmt::formatter<clang::mrdocs::dom::Value>
-    : public fmt::formatter<std::string>
-{
-    auto format(
-        clang::mrdocs::dom::Value const& value,
-        fmt::format_context& ctx) const
-    {
-        return fmt::formatter<std::string>::format(
-            toString(value), ctx);
-    }
+template <>
+struct std::formatter<clang::mrdocs::dom::Value>
+    : public std::formatter<std::string> {
+  template <class FmtContext>
+  auto format(clang::mrdocs::dom::Value const &value, FmtContext &ctx) const {
+    return std::formatter<std::string>::format(toString(value), ctx);
+  }
 };
 
 #endif

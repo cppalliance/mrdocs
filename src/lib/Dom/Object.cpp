@@ -8,10 +8,10 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <atomic>
+#include <format>
 #include <mrdocs/Dom/Object.hpp>
 #include <mrdocs/Support/RangeFor.hpp>
-#include <fmt/format.h>
-#include <atomic>
 #include <ranges>
 
 namespace clang {
@@ -90,8 +90,7 @@ operator==(Object const& a, Object const& b) noexcept
 std::string
 toString(Object const& obj)
 {
-    return fmt::format(
-        "[object {}]", obj.type_key());
+  return std::format("[object {}]", obj.type_key());
 }
 
 //------------------------------------------------

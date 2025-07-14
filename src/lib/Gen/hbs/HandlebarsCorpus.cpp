@@ -12,11 +12,9 @@
 
 #include "HandlebarsCorpus.hpp"
 #include "VisitorHelpers.hpp"
-#include <mrdocs/ADT/Polymorphic.hpp>
 #include <iterator>
-#include <fmt/format.h>
 #include <llvm/Support/raw_ostream.h>
-#include <llvm/Support/raw_ostream.h>
+#include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Support/RangeFor.hpp>
 #include <mrdocs/Support/String.hpp>
 

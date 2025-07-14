@@ -288,26 +288,6 @@ jobs:
           run-tests: false
           trace-commands: true
 
-      - name: Install Fmt
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.10
-        with:
-          source-dir: ../third-party/fmt
-          git-repository: https://github.com/fmtlib/fmt
-          git-tag: 10.2.1
-          build-dir: ${sourceDir}/build
-          cc: ${{ steps.setup-cpp.outputs.cc }}
-          cxx: ${{ steps.setup-cpp.outputs.cxx }}
-          ccflags: ${{ matrix.ccflags }}
-          cxxflags: ${{ matrix.cxxflags }}
-          build-type: ${{ matrix.build-type }}
-          extra-args: |
-            -D FMT_DOC=OFF
-            -D FMT_TEST=OFF
-          install: true
-          install-prefix: ${sourceDir}/install
-          run-tests: false
-          trace-commands: true
-
       - name: Install Libxml2
         uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.10
         if: matrix.compiler == 'msvc'
@@ -385,7 +365,6 @@ jobs:
             -D Clang_ROOT=../third-party/llvm-project/install
             -D duktape_ROOT=../third-party/duktape/install
             -D Duktape_ROOT=../third-party/duktape/install
-            -D fmt_ROOT=../third-party/fmt/install
             ${{ runner.os == 'Windows' && '-D libxml2_ROOT=../third-party/libxml2/install' || '' }}
             ${{ runner.os == 'Windows' && '-D LibXml2_ROOT=../third-party/libxml2/install' || '' }}
           export-compile-commands: true

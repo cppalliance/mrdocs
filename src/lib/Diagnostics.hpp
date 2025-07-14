@@ -11,8 +11,9 @@
 #ifndef MRDOCS_LIB_TOOL_DIAGNOSTICS_HPP
 #define MRDOCS_LIB_TOOL_DIAGNOSTICS_HPP
 
-#include <mrdocs/Support/Report.hpp>
+#include <format>
 #include <llvm/Support/raw_ostream.h>
+#include <mrdocs/Support/Report.hpp>
 #include <string>
 #include <unordered_map>
 
@@ -86,23 +87,19 @@ public:
         auto const warnCount = messages_.size() - errorCount_;
         if (errorCount_ > 0)
         {
-            fmt::format_to(
-                std::back_inserter(s),
-                "{} error{}", errorCount_,
-                errorCount_ > 1 ? "s" : "");
+          std::format_to(std::back_inserter(s), "{} error{}", errorCount_,
+                         errorCount_ > 1 ? "s" : "");
         }
         if (warnCount > 0)
         {
             if(errorCount_ > 0)
             {
-                fmt::format_to(std::back_inserter(s), " and " );
+              std::format_to(std::back_inserter(s), " and ");
             }
-            fmt::format_to(
-                std::back_inserter(s),
-                "{} warning{}.\n", warnCount,
-                warnCount > 1 ? "s" : "");
+            std::format_to(std::back_inserter(s), "{} warning{}.\n", warnCount,
+                           warnCount > 1 ? "s" : "");
         }
-        fmt::format_to(std::back_inserter(s), " total.");
+        std::format_to(std::back_inserter(s), " total.");
         report::print(level, s);
     }
 

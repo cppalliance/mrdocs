@@ -13,6 +13,7 @@
 
 #include "lib/CorpusImpl.hpp"
 #include "lib/Metadata/InfoSet.hpp"
+#include <format>
 #include <mrdocs/Support/Algorithm.hpp>
 #include <utility>
 
@@ -101,9 +102,9 @@ std::optional<std::string_view>
 innermostTypenameString(Polymorphic<TypeInfo> const& T)
 {
     auto& R = innermostType(T);
-    MRDOCS_CHECK_OR(R->isNamed(), nullptr);
-    MRDOCS_CHECK_OR(get<NamedTypeInfo>(R).Name, nullptr);
-    MRDOCS_CHECK_OR(!get<NamedTypeInfo>(R).Name->Name.empty(), nullptr);
+    MRDOCS_CHECK_OR(R->isNamed(), {});
+    MRDOCS_CHECK_OR(get<NamedTypeInfo>(R).Name, {});
+    MRDOCS_CHECK_OR(!get<NamedTypeInfo>(R).Name->Name.empty(), {});
     auto& RStr = get<NamedTypeInfo>(R).Name->Name;
     return RStr;
 }
@@ -652,8 +653,8 @@ setCntrOrAssignParamDoc(
         }
         return !isAssign ? "construct" : "assign";
     }();
-    I.javadoc->params.emplace_back(*param.Name, fmt::format(
-        "The {} to {} from", paramNoun, functionVerb));
+    I.javadoc->params.emplace_back(
+        *param.Name, std::format("The {} to {} from", paramNoun, functionVerb));
     return true;
 }
 
@@ -671,8 +672,8 @@ setBinaryOpParamDoc(
 
     // Set the parameter description if we can
     std::string_view const paramAdj = indexFree == 0 ? "left" : "right";
-    I.javadoc->params.emplace_back(*param.Name, fmt::format(
-        "The {} operand", paramAdj));
+    I.javadoc->params.emplace_back(*param.Name,
+                                   std::format("The {} operand", paramAdj));
     return true;
 }
 

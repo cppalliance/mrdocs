@@ -12,17 +12,18 @@
 #ifndef MRDOCS_API_SUPPORT_ERROR_HPP
 #define MRDOCS_API_SUPPORT_ERROR_HPP
 
+#include <exception>
+#include <format>
+#include <functional>
+#include <memory>
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/source_location.hpp>
-#include <fmt/format.h>
-#include <exception>
-#include <memory>
 #include <string>
 #include <string_view>
+#include <system_error>
 #include <type_traits>
 #include <utility>
 #include <vector>
-#include <functional>
 
 namespace clang::mrdocs {
 
@@ -256,28 +257,20 @@ struct std::hash<::clang::mrdocs::Error>
     }
 };
 
-template<>
-struct fmt::formatter<clang::mrdocs::Error>
-    : fmt::formatter<std::string_view>
-{
-    auto format(
-        clang::mrdocs::Error const& err,
-        fmt::format_context& ctx) const
-    {
-        return fmt::formatter<std::string_view>::format(err.message(), ctx);
-    }
+template <>
+struct std::formatter<clang::mrdocs::Error> : std::formatter<std::string_view> {
+  template <class FmtContext>
+  auto format(clang::mrdocs::Error const &err, FmtContext &ctx) const {
+    return std::formatter<std::string_view>::format(err.message(), ctx);
+  }
 };
 
-template<>
-struct fmt::formatter<std::error_code>
-    : fmt::formatter<std::string_view>
-{
-    auto format(
-        std::error_code const& ec,
-        fmt::format_context& ctx) const
-    {
-        return fmt::formatter<std::string_view>::format(ec.message(), ctx);
-    }
+template <>
+struct std::formatter<std::error_code> : std::formatter<std::string_view> {
+  template <class FmtContext>
+  auto format(std::error_code const &ec, FmtContext &ctx) const {
+    return std::formatter<std::string_view>::format(ec.message(), ctx);
+  }
 };
 
 namespace clang::mrdocs {
@@ -353,9 +346,8 @@ formatError(
     Args&&... args)
 {
     std::string s;
-    fmt::vformat_to(
-        std::back_inserter(s),
-        fs.fs, fmt::make_format_args(args...));
+    std::vformat_to(std::back_inserter(s), fs.fs,
+                    std::make_format_args(args...));
     return Error(std::move(s), fs.loc);
 }
 

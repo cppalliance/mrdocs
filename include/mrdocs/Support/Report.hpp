@@ -12,19 +12,19 @@
 #ifndef MRDOCS_API_SUPPORT_REPORT_HPP
 #define MRDOCS_API_SUPPORT_REPORT_HPP
 
-#include <mrdocs/Platform.hpp>
-#include <mrdocs/Support/source_location.hpp>
-#include <mrdocs/Support/Error.hpp>
-#include <fmt/format.h>
 #include <exception>
+#include <format>
+#include <functional>
 #include <iterator>
 #include <memory>
+#include <mrdocs/Platform.hpp>
+#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/source_location.hpp>
 #include <string>
 #include <string_view>
 #include <type_traits>
 #include <utility>
 #include <vector>
-#include <functional>
 
 namespace clang::mrdocs::report {
 
@@ -142,13 +142,9 @@ log_impl(
     Arg0&& arg0,
     Args&&... args)
 {
-    std::string str = fmt::vformat(
-        fs.value,
-        fmt::make_format_args(arg0, args...));
-    return print(
-        level,
-        str,
-        &fs.where);
+  std::string str =
+      std::vformat(fs.value, std::make_format_args(arg0, args...));
+  return print(level, str, &fs.where);
 }
 
 template<class... Args>
@@ -163,9 +159,8 @@ log_impl(
     // the information relevant to the user from
     // the information relevant for bug tracking
     // so that users can understand the message.
-    std::string str = fmt::vformat(
-        fs.value,
-        fmt::make_format_args(e.reason(), args...));
+    std::string str =
+        std::vformat(fs.value, std::make_format_args(e.reason(), args...));
     return print(
         level,
         str,
@@ -179,12 +174,8 @@ log_impl(
     Level level,
     Located<std::string_view> fs)
 {
-    std::string str = fmt::vformat(
-        fs.value, fmt::make_format_args());
-    return print(
-        level,
-        str,
-        &fs.where);
+  std::string str = std::vformat(fs.value, std::make_format_args());
+  return print(level, str, &fs.where);
 }
 }
 

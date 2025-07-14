@@ -10,18 +10,17 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "lib/Support/Radix.hpp"
 #include "lib/Support/LegibleNames.hpp"
-#include "lib/Support/Validate.hpp"
 #include "lib/Support/Debug.hpp"
+#include "lib/Support/Radix.hpp"
+#include "lib/Support/Validate.hpp"
+#include <algorithm>
+#include <mrdocs/ADT/UnorderedStringMap.hpp>
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Metadata.hpp>
-#include <mrdocs/Support/Concepts.hpp>
 #include <mrdocs/Platform.hpp>
+#include <mrdocs/Support/Concepts.hpp>
 #include <mrdocs/Support/TypeTraits.hpp>
-#include <mrdocs/ADT/UnorderedStringMap.hpp>
-#include <fmt/format.h>
-#include <algorithm>
 #include <ranges>
 #include <string_view>
 #include <unordered_map>

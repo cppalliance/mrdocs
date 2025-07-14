@@ -16,6 +16,8 @@
 #include <mrdocs/Support/Report.hpp>
 #include <llvm/ADT/StringExtras.h>
 
+#include <format>
+
 namespace clang::mrdocs {
 
 namespace {
@@ -991,17 +993,19 @@ private:
             // Check if the type is named
             if (!dest->isNamed())
             {
-                setError(fmt::format("expected named type for '{}' specifier", signStr));
-                ptr_ = start;
-                return false;
+              setError(std::format("expected named type for '{}' specifier",
+                                   signStr));
+              ptr_ = start;
+              return false;
             }
             // Check if the type is "int" or "char"
             auto& namedParam = dynamic_cast<NamedTypeInfo&>(*dest);
             if (!namedParam.FundamentalType)
             {
-                setError(fmt::format("expected fundamental type for '{}' specifier", signStr));
-                ptr_ = start;
-                return false;
+              setError(std::format(
+                  "expected fundamental type for '{}' specifier", signStr));
+              ptr_ = start;
+              return false;
             }
             bool promoted =
                 explicitlySigned ?
@@ -1009,9 +1013,10 @@ private:
                     makeUnsigned(*namedParam.FundamentalType);
             if (!promoted)
             {
-                setError(fmt::format("expected 'int' or 'char' for '{}' specifier", signStr));
-                ptr_ = start;
-                return false;
+              setError(std::format(
+                  "expected 'int' or 'char' for '{}' specifier", signStr));
+              ptr_ = start;
+              return false;
             }
             // Add the specifier to the type name
             namedParam.Name->Name = toString(*namedParam.FundamentalType);

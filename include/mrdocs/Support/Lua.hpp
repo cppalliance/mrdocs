@@ -11,13 +11,12 @@
 #ifndef MRDOCS_SUPPORT_LUA_HPP
 #define MRDOCS_SUPPORT_LUA_HPP
 
-#include <mrdocs/Platform.hpp>
-#include <mrdocs/Dom.hpp>
-#include <mrdocs/Support/Error.hpp>
-#include <mrdocs/Support/source_location.hpp>
-#include <fmt/format.h>
 #include <cstdlib>
 #include <memory>
+#include <mrdocs/Dom.hpp>
+#include <mrdocs/Platform.hpp>
+#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/source_location.hpp>
 #include <string>
 #include <string_view>
 
@@ -470,17 +469,12 @@ public:
 
 //------------------------------------------------
 
-template<>
-struct fmt::formatter<clang::mrdocs::lua::Value>
-    : fmt::formatter<std::string>
-{
-    auto format(
-        clang::mrdocs::lua::Value const& value,
-        fmt::format_context& ctx) const
-    {
-        return fmt::formatter<std::string>::format(
-            value.displayString(), ctx);
-    }
+template <>
+struct std::formatter<clang::mrdocs::lua::Value> : std::formatter<std::string> {
+  template <class FmtContext>
+  auto format(clang::mrdocs::lua::Value const &value, FmtContext &ctx) const {
+    return std::formatter<std::string>::format(value.displayString(), ctx);
+  }
 };
 
 #endif

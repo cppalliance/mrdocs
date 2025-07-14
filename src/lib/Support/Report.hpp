@@ -11,11 +11,12 @@
 #ifndef MRDOCS_LIB_SUPPORT_ERROR_HPP
 #define MRDOCS_LIB_SUPPORT_ERROR_HPP
 
-#include <mrdocs/Support/Report.hpp>
+#include <format>
+#include <functional>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/raw_ostream.h>
-#include <functional>
+#include <mrdocs/Support/Report.hpp>
 #include <ostream>
 #include <utility>
 
@@ -129,30 +130,23 @@ call(
 
 } // clang::mrdocs
 
-template<>
-struct fmt::formatter<llvm::StringRef>
-    : fmt::formatter<std::string_view>
-{
-    auto format(
-        llvm::StringRef s,
-        fmt::format_context& ctx) const
-    {
-        return fmt::formatter<std::string_view>::format(
-            std::string_view(s.data(), s.size()), ctx);
-    }
+template <>
+struct std::formatter<llvm::StringRef> : std::formatter<std::string_view> {
+  template <class FmtContext>
+  auto format(llvm::StringRef s, FmtContext &ctx) const {
+    return std::formatter<std::string_view>::format(
+        std::string_view(s.data(), s.size()), ctx);
+  }
 };
 
-template<unsigned InternalLen>
-struct fmt::formatter<llvm::SmallString<InternalLen>>
-    : fmt::formatter<std::string_view>
-{
-    auto format(
-        llvm::SmallString<InternalLen> const& s,
-        fmt::format_context& ctx) const
-    {
-        return fmt::formatter<std::string_view>::format(
-            std::string_view(s.data(), s.size()), ctx);
-    }
+template <unsigned InternalLen>
+struct std::formatter<llvm::SmallString<InternalLen>>
+    : std::formatter<std::string_view> {
+  template <class FmtContext>
+  auto format(llvm::SmallString<InternalLen> const &s, FmtContext &ctx) const {
+    return std::formatter<std::string_view>::format(
+        std::string_view(s.data(), s.size()), ctx);
+  }
 };
 
 #endif

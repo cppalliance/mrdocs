@@ -10,11 +10,12 @@
 //
 
 #include "JavadocFinalizer.hpp"
-#include "Javadoc/Overloads.hpp"
 #include "Javadoc/Function.hpp"
-#include <mrdocs/Support/ScopeExit.hpp>
-#include <mrdocs/Support/Algorithm.hpp>
+#include "Javadoc/Overloads.hpp"
 #include <algorithm>
+#include <format>
+#include <mrdocs/Support/Algorithm.hpp>
+#include <mrdocs/Support/ScopeExit.hpp>
 
 namespace clang::mrdocs {
 
@@ -1650,15 +1651,12 @@ emitWarnings()
     auto const level = !corpus_.config->warnAsError ? report::Level::warn : report::Level::error;
     for (auto const& [loc, msgs] : warnings_)
     {
-        std::string locWarning = fmt::format(
-            "{}:{}\n",
-            loc.FullPath,
-            loc.LineNumber);
-        int i = 1;
-        for (auto const& msg : msgs)
-        {
-            locWarning += fmt::format("    {}) {}\n", i++, msg);
-        }
+      std::string locWarning =
+          std::format("{}:{}\n", loc.FullPath, loc.LineNumber);
+      int i = 1;
+      for (auto const &msg : msgs) {
+        locWarning += std::format("    {}) {}\n", i++, msg);
+      }
         report::log(level, locWarning);
     }
 }
