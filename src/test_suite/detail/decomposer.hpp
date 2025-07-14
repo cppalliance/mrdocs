@@ -53,7 +53,7 @@ namespace test_suite::detail
             out += '\"';
         }
 #ifdef MRDOCS_TEST_HAS_FMT
-        if constexpr (fmt::has_formatter<T, fmt::format_context>::value) {
+        if constexpr (fmt::is_formattable<T>::value) {
             out += fmt::format("{}", value);
         } else
 #endif
