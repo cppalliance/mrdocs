@@ -115,26 +115,26 @@ kbd {
 :root:not([data-theme=dark]), [data-theme=light] {
     color-scheme: light;
     --background-color: #fff;
-    --color: hsl(205deg, 20%, 32%);
-    --h1-color: hsl(205deg, 30%, 15%);
-    --h2-color: #24333e;
-    --h3-color: hsl(205deg, 25%, 23%);
-    --h4-color: #374956;
-    --h5-color: hsl(205deg, 20%, 32%);
-    --h6-color: #4d606d;
-    --muted-color: hsl(205deg, 10%, 50%);
-    --muted-border-color: hsl(205deg, 20%, 94%);
-    --primary: hsl(195deg, 85%, 41%);
-    --primary-hover: hsl(195deg, 90%, 32%);
+    --color: rgba(0, 0, 0, 0.8);
+    --h1-color: rgba(0, 0, 0, 0.95);
+    --h2-color: rgba(0, 0, 0, 0.9);
+    --h3-color: rgba(0, 0, 0, 0.85);
+    --h4-color: rgba(0, 0, 0, 0.8);
+    --h5-color: rgba(0, 0, 0, 0.75);
+    --h6-color: rgba(0, 0, 0, 0.7);
+    --muted-color: rgba(0, 0, 0, 0.5);
+    --muted-border-color: rgba(0, 0, 0, 0.1);
+    --primary: rgba(16, 149, 193, 1);
+    --primary-hover: rgba(6, 125, 166, 1);
     --primary-focus: rgba(16, 149, 193, 0.125);
     --primary-inverse: #fff;
-    --secondary: hsl(205deg, 15%, 41%);
-    --secondary-hover: hsl(205deg, 20%, 32%);
-    --secondary-focus: rgba(89, 107, 120, 0.125);
+    --secondary: rgba(0, 0, 0, 0.4);
+    --secondary-hover: rgba(0, 0, 0, 0.6);
+    --secondary-focus: rgba(0, 0, 0, 0.125);
     --secondary-inverse: #fff;
-    --contrast: hsl(205deg, 30%, 15%);
-    --contrast-hover: #000;
-    --contrast-focus: rgba(89, 107, 120, 0.125);
+    --contrast: rgba(0, 0, 0, 0.9);
+    --contrast-hover: rgba(0, 0, 0, 1);
+    --contrast-focus: rgba(0, 0, 0, 0.125);
     --contrast-inverse: #fff;
     --mark-background-color: #fff2ca;
     --mark-color: #543a26;
@@ -213,28 +213,28 @@ kbd {
 @media only screen and (prefers-color-scheme: dark) {
     :root:not([data-theme=light]) {
         color-scheme: dark;
-        --background-color: #11191f;
-        --color: hsl(205deg, 16%, 77%);
-        --h1-color: hsl(205deg, 20%, 94%);
-        --h2-color: #e1e6eb;
-        --h3-color: hsl(205deg, 18%, 86%);
-        --h4-color: #c8d1d8;
-        --h5-color: hsl(205deg, 16%, 77%);
-        --h6-color: #afbbc4;
-        --muted-color: hsl(205deg, 10%, 50%);
-        --muted-border-color: #1f2d38;
-        --primary: hsl(195deg, 85%, 41%);
-        --primary-hover: hsl(195deg, 80%, 50%);
-        --primary-focus: rgba(16, 149, 193, 0.25);
-        --primary-inverse: #fff;
-        --secondary: hsl(205deg, 15%, 41%);
-        --secondary-hover: hsl(205deg, 10%, 50%);
-        --secondary-focus: rgba(115, 130, 140, 0.25);
-        --secondary-inverse: #fff;
-        --contrast: hsl(205deg, 20%, 94%);
-        --contrast-hover: #fff;
-        --contrast-focus: rgba(115, 130, 140, 0.25);
-        --contrast-inverse: #000;
+        --background-color: rgba(0, 0, 0, 0.3);
+        --color: rgba(255, 255, 255, 0.9);
+        --h1-color: rgba(255, 255, 255, 0.98);
+        --h2-color: rgba(255, 255, 255, 0.95);
+        --h3-color: rgba(255, 255, 255, 0.92);
+        --h4-color: rgba(255, 255, 255, 0.88);
+        --h5-color: rgba(255, 255, 255, 0.85);
+        --h6-color: rgba(255, 255, 255, 0.82);
+        --muted-color: rgba(255, 255, 255, 0.6);
+        --muted-border-color: rgba(255, 255, 255, 0.1);
+        --primary: rgba(120, 200, 255, 0.9);
+        --primary-hover: rgba(140, 210, 255, 0.95);
+        --primary-focus: rgba(120, 200, 255, 0.2);
+        --primary-inverse: rgba(0, 0, 0, 0.9);
+        --secondary: rgba(255, 255, 255, 0.4);
+        --secondary-hover: rgba(255, 255, 255, 0.6);
+        --secondary-focus: rgba(255, 255, 255, 0.2);
+        --secondary-inverse: rgba(0, 0, 0, 0.9);
+        --contrast: rgba(255, 255, 255, 0.95);
+        --contrast-hover: rgba(255, 255, 255, 1);
+        --contrast-focus: rgba(255, 255, 255, 0.2);
+        --contrast-inverse: rgba(0, 0, 0, 0.9);
         --mark-background-color: #d1c284;
         --mark-color: #11191f;
         --ins-color: #388e3c;
@@ -313,28 +313,28 @@ kbd {
 
 [data-theme=dark] {
     color-scheme: dark;
-    --background-color: #11191f;
-    --color: hsl(205deg, 16%, 77%);
-    --h1-color: hsl(205deg, 20%, 94%);
-    --h2-color: #e1e6eb;
-    --h3-color: hsl(205deg, 18%, 86%);
-    --h4-color: #c8d1d8;
-    --h5-color: hsl(205deg, 16%, 77%);
-    --h6-color: #afbbc4;
-    --muted-color: hsl(205deg, 10%, 50%);
-    --muted-border-color: #1f2d38;
-    --primary: hsl(195deg, 85%, 41%);
-    --primary-hover: hsl(195deg, 80%, 50%);
-    --primary-focus: rgba(16, 149, 193, 0.25);
-    --primary-inverse: #fff;
-    --secondary: hsl(205deg, 15%, 41%);
-    --secondary-hover: hsl(205deg, 10%, 50%);
-    --secondary-focus: rgba(115, 130, 140, 0.25);
-    --secondary-inverse: #fff;
-    --contrast: hsl(205deg, 20%, 94%);
-    --contrast-hover: #fff;
-    --contrast-focus: rgba(115, 130, 140, 0.25);
-    --contrast-inverse: #000;
+    --background-color: rgba(0, 0, 0, 0.3);
+    --color: rgba(255, 255, 255, 0.9);
+    --h1-color: rgba(255, 255, 255, 0.98);
+    --h2-color: rgba(255, 255, 255, 0.95);
+    --h3-color: rgba(255, 255, 255, 0.92);
+    --h4-color: rgba(255, 255, 255, 0.88);
+    --h5-color: rgba(255, 255, 255, 0.85);
+    --h6-color: rgba(255, 255, 255, 0.82);
+    --muted-color: rgba(255, 255, 255, 0.6);
+    --muted-border-color: rgba(255, 255, 255, 0.1);
+    --primary: rgba(120, 200, 255, 0.9);
+    --primary-hover: rgba(140, 210, 255, 0.95);
+    --primary-focus: rgba(120, 200, 255, 0.2);
+    --primary-inverse: rgba(0, 0, 0, 0.9);
+    --secondary: rgba(255, 255, 255, 0.4);
+    --secondary-hover: rgba(255, 255, 255, 0.6);
+    --secondary-focus: rgba(255, 255, 255, 0.2);
+    --secondary-inverse: rgba(0, 0, 0, 0.9);
+    --contrast: rgba(255, 255, 255, 0.95);
+    --contrast-hover: rgba(255, 255, 255, 1);
+    --contrast-focus: rgba(255, 255, 255, 0.2);
+    --contrast-inverse: rgba(0, 0, 0, 0.9);
     --mark-background-color: #d1c284;
     --mark-color: #11191f;
     --ins-color: #388e3c;
@@ -2710,10 +2710,12 @@ section#demo {
 }
 
 .documentation-panel {
-    background-color: #213544;
+    background-color: rgba(0, 0, 0, 0.3);
     border-radius: 20px;
     flex: 1;
     padding: 30px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .snippet-documentation-panel {
@@ -2740,4 +2742,64 @@ section#demo {
 
 .hljs-meta .hljs-string {
     color: green;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    background:
+        radial-gradient(circle at var(--x1, 25%) var(--y1, 75%), rgba(130, 0, 255, 0.4), transparent 40%),
+        radial-gradient(circle at var(--x2, 75%) var(--y2, 25%), rgba(0, 98, 255, 0.5), transparent 45%),
+        radial-gradient(circle at var(--x3, 50%) var(--y3, 50%), rgba(72, 0, 120, 0.6), transparent 60%),
+        radial-gradient(circle at var(--x4, 60%) var(--y4, 80%), rgba(200, 0, 255, 0.3), transparent 50%),
+        linear-gradient(135deg, #3a0ca3, #4361ee, #7209b7);
+    background-blend-mode: screen;
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: sans-serif;
+    color: white;
+    transition: background-position 0.2s ease;
+}
+
+main {
+  padding: 4rem 2rem;
+  max-width: 800px;
+  margin: auto;
+}
+
+
+@keyframes gradientGlow {
+  0% {
+    --x1: 30%;
+    --y1: 70%;
+    --x2: 70%;
+    --y2: 30%;
+    --x3: 50%;
+    --y3: 50%;
+  }
+
+  50% {
+    --x1: 40%;
+    --y1: 60%;
+    --x2: 60%;
+    --y2: 40%;
+    --x3: 48%;
+    --y3: 52%;
+  }
+
+  100% {
+    --x1: 35%;
+    --y1: 65%;
+    --x2: 65%;
+    --y2: 35%;
+    --x3: 52%;
+    --y3: 48%;
+  }
+}
+
+nav {
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
 }
