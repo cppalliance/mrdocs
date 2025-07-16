@@ -1,0 +1,508 @@
+<html lang="en" data-theme="dark" data-webp="true">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#11191f">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="msapplication-TileColor" content="#11191f">
+    <meta name="application-name" content="MrDocs">
+    <title>MrDocs</title>
+    <meta name="description" content="MrDocs is a C++ documentation generator for your projects.">
+    <link rel="canonical" href="https://www.mrdocs.com">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="MrDocs">
+    <meta property="og:description" content="MrDocs is a C++ documentation generator for your projects.">
+    <meta property="og:url" content="https://www.mrdocs.com">
+    <meta property="og:site_name" content="MrDocs">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="https://www.mrdocs.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <nav class="container-fluid">
+        <ul>
+            <li><strong style="margin-left: 10px">MrDocs</strong></li>
+        </ul>
+        <ul>
+            <li><a href="#examples" class="secondary">Examples</a></li>
+            <li><a href="#features" class="secondary">Features</a></li>
+            <li><a href="./docs/" class="secondary">Docs</a></li>
+            <li>
+                <a href="https://www.github.com/cppalliance/mrdocs" class="contrast" aria-label=" GitHub repository">
+                    <svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 496 512" height="16px">
+                        <path fill="currentColor"
+                            d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z">
+                        </path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <header>
+        <div class="container">
+            <h1>MrDocs</h1>
+            <p>MrDocs is a C++ documentation generator for your projects.</p>
+            <p>
+                <a href="docs/" role="button" class="secondary" aria-label="Documentation">
+                    Get started
+                </a>
+                <a href="docs/mrdocs/install.html" role="button" class="contrast outline" aria-label="Download">
+                    Download
+                </a>
+            </p>
+            <p><code><small>No workarounds: A tool that fully understands C++</small></code></p>
+        </div>
+    </header>
+    <main>
+        <!-- <section id="demo" aria-label="Demo">
+      <div class="container">
+        <article data-theme="light" aria-label="Rendered demo" style="--height:264px;">
+          <div id="render">
+            <form onsubmit="event.preventDefault()"><input type="date" placeholder="First name" class="fadeIn"><button class="fadeIn demo-last-child" type="button">Next</button></form>
+          </div>
+          <pre><code id="code" data-typeit-id="9870177">&lt;<b>form</b>&gt;<br>  &lt;<b>i</b><b>n</b><b>p</b><b>u</b><b>t</b> <i>type</i>=<u>"date<span class="ti-cursor disabled" style="display: inline; color: rgb(115, 130, 140); font: 14px / 21px Menlo, Consolas, &quot;Roboto Mono&quot;, &quot;Ubuntu Monospace&quot;, &quot;Noto Mono&quot;, &quot;Oxygen Mono&quot;, &quot;Liberation Mono&quot;, monospace, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; margin: 0px -6.21484px 0px -2.21484px;">|</span>"</u>&gt;<br>  &lt;<b>b</b><b>u</b><b>t</b><b>t</b><b>o</b><b>n</b> <i>type</i>=<u>"submit"</u>&gt;Next&lt;/<b>b</b><b>u</b><b>t</b><b>t</b><b>o</b><b>n</b>&gt;<br>&lt;/<b>form</b>&gt;</code></pre>
+        </article>
+      </div>
+    </section> -->
+        <section id="principles">
+            <div class="container">
+                <hgroup>
+                    <h2>Simple code, simple documentation</h2>
+                    <h3>MrDocs understands C++ so you can focus on keeping the code simple.</h3>
+                </hgroup>
+                <div class="grid">
+                    <div>
+                        <svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 640 512" height="16px">
+                            <path fill="currentColor"
+                                d="M278.9 511.5l-61-17.7c-6.4-1.8-10-8.5-8.2-14.9L346.2 8.7c1.8-6.4 8.5-10 14.9-8.2l61 17.7c6.4 1.8 10 8.5 8.2 14.9L293.8 503.3c-1.9 6.4-8.5 10.1-14.9 8.2zm-114-112.2l43.5-46.4c4.6-4.9 4.3-12.7-.8-17.2L117 256l90.6-79.7c5.1-4.5 5.5-12.3.8-17.2l-43.5-46.4c-4.5-4.8-12.1-5.1-17-.5L3.8 247.2c-5.1 4.7-5.1 12.8 0 17.5l144.1 135.1c4.9 4.6 12.5 4.4 17-.5zm327.2.6l144.1-135.1c5.1-4.7 5.1-12.8 0-17.5L492.1 112.1c-4.8-4.5-12.4-4.3-17 .5L431.6 159c-4.6 4.9-4.3 12.7.8 17.2L523 256l-90.6 79.7c-5.1 4.5-5.5 12.3-.8 17.2l43.5 46.4c4.5 4.9 12.1 5.1 17 .6z">
+                            </path>
+                        </svg>
+                        <h4>Single Source of Truth</h4>
+                        <p>Mr. Docs takes a specially formatted comment, called a Javadoc, which precedes a C++ declaration and renders it to form a reference as part of documentation.</p>
+                    </div>
+                    <div>
+                        <svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 640 512" height="16px">
+                            <path fill="currentColor"
+                                d="M278.9 511.5l-61-17.7c-6.4-1.8-10-8.5-8.2-14.9L346.2 8.7c1.8-6.4 8.5-10 14.9-8.2l61 17.7c6.4 1.8 10 8.5 8.2 14.9L293.8 503.3c-1.9 6.4-8.5 10.1-14.9 8.2zm-114-112.2l43.5-46.4c4.6-4.9 4.3-12.7-.8-17.2L117 256l90.6-79.7c5.1-4.5 5.5-12.3.8-17.2l-43.5-46.4c-4.5-4.8-12.1-5.1-17-.5L3.8 247.2c-5.1 4.7-5.1 12.8 0 17.5l144.1 135.1c4.9 4.6 12.5 4.4 17-.5zm327.2.6l144.1-135.1c5.1-4.7 5.1-12.8 0-17.5L492.1 112.1c-4.8-4.5-12.4-4.3-17 .5L431.6 159c-4.6 4.9-4.3 12.7.8 17.2L523 256l-90.6 79.7c-5.1 4.5-5.5 12.3-.8 17.2l43.5 46.4c4.5 4.9 12.1 5.1 17 .6z">
+                            </path>
+                        </svg>
+                        <h4>It understands C++</h4>
+                        <p>Mr. Docs understands C++: Overload sets, private APIs, Concepts and constraints, unspecified return types, aliases, constants, SFINAE, hidden base classes, niebloids, and coroutines.</p>
+                    </div>
+                    <div>
+                        <svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 640 512" height="16px">
+                            <path fill="currentColor"
+                                d="M278.9 511.5l-61-17.7c-6.4-1.8-10-8.5-8.2-14.9L346.2 8.7c1.8-6.4 8.5-10 14.9-8.2l61 17.7c6.4 1.8 10 8.5 8.2 14.9L293.8 503.3c-1.9 6.4-8.5 10.1-14.9 8.2zm-114-112.2l43.5-46.4c4.6-4.9 4.3-12.7-.8-17.2L117 256l90.6-79.7c5.1-4.5 5.5-12.3.8-17.2l-43.5-46.4c-4.5-4.8-12.1-5.1-17-.5L3.8 247.2c-5.1 4.7-5.1 12.8 0 17.5l144.1 135.1c4.9 4.6 12.5 4.4 17-.5zm327.2.6l144.1-135.1c5.1-4.7 5.1-12.8 0-17.5L492.1 112.1c-4.8-4.5-12.4-4.3-17 .5L431.6 159c-4.6 4.9-4.3 12.7.8 17.2L523 256l-90.6 79.7c-5.1 4.5-5.5 12.3-.8 17.2l43.5 46.4c4.5 4.9 12.1 5.1 17 .6z">
+                            </path>
+                        </svg>
+                        <h4>Multiple output formats</h4>
+                        <p>Choose from multiple output formats: Asciidoc, HTML, or XML.</p>
+                    </div>
+                    <div>
+                        <svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 640 512" height="16px">
+                            <path fill="currentColor"
+                                d="M278.9 511.5l-61-17.7c-6.4-1.8-10-8.5-8.2-14.9L346.2 8.7c1.8-6.4 8.5-10 14.9-8.2l61 17.7c6.4 1.8 10 8.5 8.2 14.9L293.8 503.3c-1.9 6.4-8.5 10.1-14.9 8.2zm-114-112.2l43.5-46.4c4.6-4.9 4.3-12.7-.8-17.2L117 256l90.6-79.7c5.1-4.5 5.5-12.3.8-17.2l-43.5-46.4c-4.5-4.8-12.1-5.1-17-.5L3.8 247.2c-5.1 4.7-5.1 12.8 0 17.5l144.1 135.1c4.9 4.6 12.5 4.4 17-.5zm327.2.6l144.1-135.1c5.1-4.7 5.1-12.8 0-17.5L492.1 112.1c-4.8-4.5-12.4-4.3-17 .5L431.6 159c-4.6 4.9-4.3 12.7.8 17.2L523 256l-90.6 79.7c-5.1 4.5-5.5 12.3-.8 17.2l43.5 46.4c4.5 4.9 12.1 5.1 17 .6z">
+                            </path>
+                        </svg>
+                        <h4>Customizable</h4>
+                        <p>Mr. Docs is highly customizable. You can change the output format, the theme, and even the way the documentation is generated.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="features">
+            <div class="container">
+                <hgroup>
+                    <h2>More Code, Fewer Workarounds</h2>
+                    <h3>MrDocs let's you keep the code simple and maintainable.</h3>
+                </hgroup>
+                <div class="snippet-documentation-panel">
+                    <ul class="check">
+                        <li>MrDocs understands C++ features such as attributes and noexcept functions.</li>
+                    </ul>
+                    <div class="panel-container">
+                        <div class="snippet-panel">
+                            <pre><code><span class="hljs-comment">/** Exit the program.
+
+    The program will end immediately.
+
+    @note This function does not return.
+*/</span>
+[[noreturn]]
+<span class="hljs-function"><span class="hljs-type">void</span>
+<span class="hljs-title">terminate</span><span class="hljs-params">()</span> <span class="hljs-keyword">noexcept</span></span>;</code></pre>
+                        </div>
+                        <div class="documentation-panel">
+                            <div>
+<div>
+<h2 id="terminate"><a href="#terminate">terminate</a></h2>
+<div>
+<span>Exit the program.</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;terminate.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+[[noreturn]]
+void
+terminate() noexcept;
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p>The program will end immediately.</p>
+<div class="admonition">
+<h4>NOTE</h4>
+<p>This function does not return.</p>
+</div>
+</div>
+</div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="snippet-documentation-panel">
+                    <ul class="check">
+                        <li>Specially formatted comments are rendered to form a reference as part of documentation.</li>
+                    </ul>
+                    <div class="panel-container">
+                        <div class="snippet-panel">
+                            <pre><code><span class="hljs-comment">/** Return the distance between two points
+
+    This function returns the distance between two points
+    according to the Euclidean distance formula.
+
+    @param x0 The x-coordinate of the first point
+    @param y0 The y-coordinate of the first point
+    @param x1 The x-coordinate of the second point
+    @param y1 The y-coordinate of the second point
+    @return The distance between the two points
+*/</span>
+<span class="hljs-function"><span class="hljs-type">double</span>
+<span class="hljs-title">distance</span><span class="hljs-params">(<span class="hljs-type">double</span> x0, <span class="hljs-type">double</span> y0, <span class="hljs-type">double</span> x1, <span class="hljs-type">double</span> y1)</span></span>;</code></pre>
+                        </div>
+                        <div class="documentation-panel">
+                            <div>
+<div>
+<h2 id="distance"><a href="#distance">distance</a></h2>
+<div>
+<span>Return the distance between two points</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;distance.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+double
+distance(
+    double x0,
+    double y0,
+    double x1,
+    double y1);
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p>This function returns the distance between two points according to the Euclidean distance formula.</p>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>The distance between the two points</span>
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>x0</strong></td>
+<td><span>The x-coordinate of the first point</span></td>
+</tr>
+<tr>
+<td><strong>y0</strong></td>
+<td><span>The y-coordinate of the first point</span></td>
+</tr>
+<tr>
+<td><strong>x1</strong></td>
+<td><span>The x-coordinate of the second point</span></td>
+</tr>
+<tr>
+<td><strong>y1</strong></td>
+<td><span>The y-coordinate of the second point</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="snippet-documentation-panel">
+                    <ul class="check">
+                        <li>Special directives are used to describe details about the symbols.</li>
+                    </ul>
+                    <div class="panel-container">
+                        <div class="snippet-panel">
+                            <pre><code><span class="hljs-comment">/** Return true if a number is prime.
+
+    @par Complexity
+
+    Linear in n.
+
+    @return Whether or not n is prime.
+    @param n The number to test
+
+*/</span>
+<span class="hljs-function"><span class="hljs-type">bool</span>
+<span class="hljs-title">is_prime</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> n)</span> <span class="hljs-keyword">noexcept</span></span>;</code></pre>
+                        </div>
+                        <div class="documentation-panel">
+                            <div>
+<div>
+<h2 id="is_prime"><a href="#is_prime">is_prime</a></h2>
+<div>
+<span>Return true if a number is prime.</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;is_prime.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+bool
+is_prime(unsigned long long n) noexcept;
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<h3>Complexity</h3>
+<p>Linear in n.</p>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>Whether or not n is prime.</span>
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>n</strong></td>
+<td><span>The number to test</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="snippet-documentation-panel">
+                    <ul class="check">
+                        <li>It understands concepts, constraints and SFINAE.</li>
+                    </ul>
+                    <div class="panel-container">
+                        <div class="snippet-panel">
+                            <pre><code><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;type_traits&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdexcept&gt;</span></span>
+
+<span class="hljs-comment">/** Computes the square root of an integral value.
+
+    This function calculates the square root of a
+    given integral value using bit manipulation.
+
+    @throws std::invalid_argument if the input value is negative.
+
+    @tparam T The type of the input value. Must be an integral type.
+    @param value The integral value to compute the square root of.
+    @return The square root of the input value.
+ */</span>
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;
+std::<span class="hljs-type">enable_if_t</span>&lt;std::is_integral_v&lt;T&gt;, T&gt; <span class="hljs-built_in">sqrt</span>(T value) {
+    <span class="hljs-keyword">if</span> (value &lt; <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">throw</span> std::<span class="hljs-built_in">invalid_argument</span>(
+            <span class="hljs-string">&quot;Cannot compute square root of a negative number&quot;</span>);
+    }
+    T result = <span class="hljs-number">0</span>;
+    <span class="hljs-comment">// The second-to-top bit is set</span>
+    T bit = <span class="hljs-number">1</span> &lt;&lt; (<span class="hljs-built_in">sizeof</span>(T) * <span class="hljs-number">8</span> - <span class="hljs-number">2</span>);
+    <span class="hljs-keyword">while</span> (bit &gt; value) bit &gt;&gt;= <span class="hljs-number">2</span>;
+    <span class="hljs-keyword">while</span> (bit != <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">if</span> (value &gt;= result + bit) {
+            value -= result + bit;
+            result += bit &lt;&lt; <span class="hljs-number">1</span>;
+        }
+        result &gt;&gt;= <span class="hljs-number">1</span>;
+        bit &gt;&gt;= <span class="hljs-number">2</span>;
+    }
+    <span class="hljs-keyword">return</span> result;
+}
+</code></pre>
+                        </div>
+                        <div class="documentation-panel">
+                            <div>
+<div>
+<h2 id="sqrt"><a href="#sqrt">sqrt</a></h2>
+<div>
+<span>Computes the square root of an integral value.</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;sqrt.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;typename T&gt;
+T
+sqrt(T value)
+requires std::is_integral_v&lt;T&gt;;
+</code>
+</pre>
+</div>
+<div>
+<h3>Description</h3>
+<p>This function calculates the square root of a given integral value using bit manipulation.</p>
+</div>
+<div>
+<h3>Exceptions</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Thrown on</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::invalid_argument</code></td>
+<td><span>if the input value is negative.</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>The square root of the input value.</span>
+</div>
+<div>
+<h3>Template Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>T</strong></td>
+<td><span>The type of the input value. Must be an integral type.</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>value</strong></td>
+<td><span>The integral value to compute the square root of.</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="star" data-theme="light" aria-label="Star MrDocs on GitHub">
+            <div class="container">
+                <p>Give us a Star on GitHub:
+                    <iframe
+                        src="https://ghbtns.com/github-btn.html?user=cppalliance&amp;repo=mrdocs&amp;type=star&amp;count=true&amp;size=large"
+                        frameborder="0" scrolling="0" width="160" height="30" title="GitHub"></iframe>
+                </p>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="container">
+            <ul>
+                <li><a href="#examples" class="contrast">Examples</a></li>
+                <li><a href="#features" class="contrast">Features</a></li>
+                <li><a href="./docs/" class="contrast">Docs</a></li>
+                <li><a href="https://github.com/cppalliance/mrdocs" class="contrast">GitHub</a></li>
+            </ul>
+        </div>
+    </footer>
+    <script>
+        window.addEventListener("scroll", () => {
+            const scrollY = window.scrollY;
+            const maxScroll = document.body.scrollHeight - window.innerHeight;
+            const t = scrollY / maxScroll;
+
+            // Update each blob's position based on scroll
+            document.documentElement.style.setProperty('--x1', `${25 + 10 * Math.sin(t * 2 * Math.PI)}%`);
+            document.documentElement.style.setProperty('--y1', `${75 - 20 * t}%`);
+
+            document.documentElement.style.setProperty('--x2', `${75 - 10 * Math.cos(t * 2 * Math.PI)}%`);
+            document.documentElement.style.setProperty('--y2', `${25 + 10 * t}%`);
+
+            document.documentElement.style.setProperty('--x3', `${50 + 5 * Math.sin(t * Math.PI)}%`);
+            document.documentElement.style.setProperty('--y3', `${50 + 5 * Math.cos(t * Math.PI)}%`);
+
+            document.documentElement.style.setProperty('--x4', `${60 - 10 * t}%`);
+            document.documentElement.style.setProperty('--y4', `${80 - 30 * t}%`);
+        });
+    </script>
+</body>
+
+</html>
