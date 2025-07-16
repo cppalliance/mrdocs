@@ -8,8 +8,8 @@
   "configurePresets": [
     {
       "name": "debug",
-      "displayName": "Debug-Base",
-      "description": "Debug Config including tests.",
+      "description": "Debug configuration with the default system compiler, including tests. The path to dependencies is set via environment variables.",
+      "displayName": "Debug",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
@@ -17,8 +17,15 @@
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
         "LLVM_ROOT": "$env{LLVM_ROOT}",
         "Clang_ROOT": "$env{LLVM_ROOT}",
+        "duktape_ROOT": "$env{DUKTAPE_ROOT}",
+        "Duktape_ROOT": "$env{DUKTAPE_ROOT}",
+        "fmt_ROOT": "$env{FMT_ROOT}",
+        "libxml2_ROOT": "$env{LIBXML2_ROOT}",
+        "LibXml2_ROOT": "$env{LIBXML2_ROOT}",
         "MRDOCS_BUILD_TESTS": "ON",
-        "VCPKG_MANIFEST_FEATURES": "tests"
+        "MRDOCS_BUILD_DOCS": "OFF",
+        "MRDOCS_GENERATE_REFERENCE": "OFF",
+        "MRDOCS_GENERATE_ANTORA_REFERENCE": "OFF"
       },
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
@@ -32,9 +39,9 @@
     },
     {
       "name": "release",
+      "description": "Release configuration with the default system compiler, including tests. The path to dependencies is set via environment variables. This is used in CI to generate the default release.",
       "inherits": "debug",
-      "displayName": "Release-Base",
-      "description": "Release Config including tests.",
+      "displayName": "Release",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
@@ -42,9 +49,9 @@
     },
     {
       "name": "relwithdebinfo",
+      "displayName": "RelWithDebInfo",
+      "description": "RelWithDebInfo configuration with the default system compiler, including tests. The path to dependencies is set via environment variables. This is used in CI to generate the default release on Windows.",
       "inherits": "release",
-      "displayName": "RelWithDebInfo-Base",
-      "description": "RelWithDebInfo Config including tests.",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "RelWithDebInfo"
@@ -52,13 +59,12 @@
     },
     {
       "name": "dist",
-      "inherits": "release",
       "displayName": "Distribution-Base",
-      "description": "Release Config without Tests.",
+      "description": "Distribution base configuration with the default system compiler, not including tests. The path to dependencies is set via environment variables. This can be used by users to generate a distribution bypassing the CMake test step.",
+      "inherits": "release",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
-        "MRDOCS_BUILD_TESTS": "OFF",
-        "VCPKG_MANIFEST_FEATURES": ""
+        "MRDOCS_BUILD_TESTS": "OFF"
       }
     }
   ]
