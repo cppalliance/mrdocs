@@ -189,6 +189,14 @@ class MrDocsInstaller:
         : param default: The default value to use if the user does not provide input.
         :return:
         """
+        prompt = prompt.strip()
+        if prompt.endswith('.'):
+            prompt = prompt[:-1]
+            prompt = prompt.strip()
+        BLUE = "\033[94m"
+        RESET = "\033[0m"
+        if self.supports_ansi():
+            prompt = f"{BLUE}{prompt}{RESET}"
         inp = input(f"{prompt} ({default}): ")
         result = inp.strip() or default
         return result
@@ -201,6 +209,14 @@ class MrDocsInstaller:
         :param default: The default value to return if the user does not provide input.
         :return: bool: True if the user answers yes, False otherwise.
         """
+        prompt = prompt.strip()
+        if prompt.endswith('.'):
+            prompt = prompt[:-1]
+            prompt = prompt.strip()
+        BLUE = "\033[94m"
+        RESET = "\033[0m"
+        if self.supports_ansi():
+            prompt = f"{BLUE}{prompt}{RESET}"
         while True:
             answer = input(f"{prompt} ({'y/n' if default is None else 'yes' if default else 'no'}): ").strip().lower()
             if answer in ('y', 'yes'):
@@ -338,17 +354,10 @@ class MrDocsInstaller:
         """
         BLUE = "\033[94m"
         RESET = "\033[0m"
-        def supports_ansi():
-            if os.name == "posix":
-                return True
-            if os.name == "nt":
-                return "WT_SESSION" in os.environ or sys.stdout.isatty()
-            return False
-
         if cwd is None:
             cwd = os.getcwd()
-        color = BLUE if supports_ansi() else ""
-        reset = RESET if supports_ansi() else ""
+        color = BLUE if self.supports_ansi() else ""
+        reset = RESET if self.supports_ansi() else ""
         if isinstance(cmd, list):
             print(f"{color}{cwd}> {' '.join(cmd)}{reset}")
         else:
