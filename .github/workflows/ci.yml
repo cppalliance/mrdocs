@@ -30,12 +30,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Generate Test Matrix
-        uses: alandefreitas/cpp-actions/cpp-matrix@v1.8.8
+        uses: alandefreitas/cpp-actions/cpp-matrix@v1.8.10
         id: cpp-matrix
         with:
           compilers: |
-            gcc 14
-            clang 18
+            gcc >=14
+            clang >=18
             msvc >=14.40
             apple-clang *
           standards: '20'
@@ -60,7 +60,7 @@ jobs:
           install: |
             gcc: git build-essential pkg-config python3 curl openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev
             gcc Coverage: git build-essential pkg-config python3 curl openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev lcov
-            clang: git build-essential pkg-config python3 curl openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev
+            clang: git build-essential pkg-config python3 curl openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev g++-14=14.2.0-4ubuntu2~24.04
             msvc: ''
           extra-values: |
             llvm-hash: dd7a3d4d798e30dfe53b5bbbbcd9a23c24ea1af9
@@ -125,7 +125,7 @@ jobs:
 
     steps:
       - name: Install Git
-        uses: alandefreitas/cpp-actions/package-install@v1.8.8
+        uses: alandefreitas/cpp-actions/package-install@v1.8.10
         if: matrix.container != ''
         env:
           DEBIAN_FRONTEND: 'noninteractive'
@@ -141,7 +141,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Git
-        uses: alandefreitas/cpp-actions/package-install@v1.8.8
+        uses: alandefreitas/cpp-actions/package-install@v1.8.10
         if: matrix.container != ''
         env:
           DEBIAN_FRONTEND: 'noninteractive'
@@ -162,11 +162,20 @@ jobs:
         uses: seanmiddleditch/gha-setup-ninja@v5
 
       - name: Setup C++
-        uses: alandefreitas/cpp-actions/setup-cpp@v1.8.8
+        uses: alandefreitas/cpp-actions/setup-cpp@v1.8.10
         id: setup-cpp
         with:
           compiler: ${{ matrix.compiler }}
           version: ${{ matrix.version }}
+
+      # If apple-clang on macos, select the newest Xcode.
+      - name: Select Xcode 16.4
+        if: matrix.compiler == 'apple-clang'
+        run: |
+          sudo ls -1 /Applications | grep Xcode
+          xcode-select --version
+          sudo xcode-select -s /Applications/Xcode_16.4.app/Contents/Developer
+          ${{ steps.setup-cpp.outputs.cxx }} -v
 
       # If apple-clang on macos, we run `clang -print-targets` to
       # get the list of targets supported by the compiler.
@@ -178,7 +187,7 @@ jobs:
           ${{ steps.setup-cpp.outputs.cxx }} --print-target-triple
 
       - name: Install System Packages
-        uses: alandefreitas/cpp-actions/package-install@v1.8.8
+        uses: alandefreitas/cpp-actions/package-install@v1.8.10
         if: matrix.compiler != 'msvc'
         id: package-install
         env:
@@ -238,7 +247,7 @@ jobs:
           fi
 
       - name: Install LLVM
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.8
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.10
         if: steps.llvm-cache.outputs.cache-hit != 'true' && steps.llvm-download.outputs.found != 'true'
         with:
           cmake-version: '>=3.26'
@@ -263,7 +272,7 @@ jobs:
           trace-commands: true
 
       - name: Install Duktape
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.8
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.10
         with:
           source-dir: ../third-party/duktape
           url: https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz
@@ -283,7 +292,7 @@ jobs:
           trace-commands: true
 
       - name: Install Fmt
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.8
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.10
         with:
           source-dir: ../third-party/fmt
           git-repository: https://github.com/fmtlib/fmt
@@ -303,7 +312,7 @@ jobs:
           trace-commands: true
 
       - name: Install Libxml2
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.8
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.10
         if: matrix.compiler == 'msvc'
         with:
           source-dir: ../third-party/libxml2
@@ -360,7 +369,7 @@ jobs:
           node-version: '20'
 
       - name: CMake Workflow
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.8
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.10
         with:
           cmake-version: '>=3.26'
           cxxstd: ${{ matrix.cxxstd }}
@@ -409,7 +418,7 @@ jobs:
           retention-days: 1
 
       - name: FlameGraph
-        uses: alandefreitas/cpp-actions/flamegraph@v1.8.8
+        uses: alandefreitas/cpp-actions/flamegraph@v1.8.10
         if: matrix.time-trace
         with:
           build-dir: build
@@ -479,7 +488,7 @@ jobs:
 
     steps:
       - name: Install packages
-        uses: alandefreitas/cpp-actions/package-install@v1.8.8
+        uses: alandefreitas/cpp-actions/package-install@v1.8.10
         id: package-install
         with:
           apt-get: build-essential asciidoctor cmake bzip2 git
@@ -538,7 +547,7 @@ jobs:
           $MRDOCS_ROOT/bin/mrdocs --version
 
       - name: Clone Boost.URL
-        uses: alandefreitas/cpp-actions/boost-clone@v1.8.8
+        uses: alandefreitas/cpp-actions/boost-clone@v1.8.10
         id: boost-url-clone
         with:
           branch: develop
@@ -803,7 +812,7 @@ jobs:
           scp -o StrictHostKeyChecking=no -r $(pwd)/demos/* ubuntu@dev-websites.cpp.al:$demo_dir/
 
       - name: Create changelog
-        uses: alandefreitas/cpp-actions/create-changelog@v1.8.8
+        uses: alandefreitas/cpp-actions/create-changelog@v1.8.10
         with:
           output-path: CHANGELOG.md
           thank-non-regular: ${{ startsWith(github.ref, 'refs/tags/') }}
@@ -845,7 +854,7 @@ jobs:
 
     steps:
       - name: Install packages
-        uses: alandefreitas/cpp-actions/package-install@v1.8.8
+        uses: alandefreitas/cpp-actions/package-install@v1.8.10
         id: package-install
         with:
           apt-get: ${{ matrix.install }}
