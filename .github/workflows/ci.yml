@@ -124,6 +124,10 @@ jobs:
       contents: write
 
     steps:
+      # We install git if we are using a container because
+      # containers don't always include git.
+      # We need git to ensure actions/checkout@v4 will use git and
+      # for the next steps that need to clone repositories
       - name: Install Git
         uses: alandefreitas/cpp-actions/package-install@v1.8.10
         if: matrix.container != ''
@@ -133,21 +137,13 @@ jobs:
         with:
           apt-get: git
 
+      # Set up the repository ownership to avoid issues with git commands
       - name: Configure Git Safe Directory
         if: matrix.container != ''
         run: git config --global --add safe.directory "$(pwd)"
 
       - name: Clone MrDocs
         uses: actions/checkout@v4
-
-      - name: Install Git
-        uses: alandefreitas/cpp-actions/package-install@v1.8.10
-        if: matrix.container != ''
-        env:
-          DEBIAN_FRONTEND: 'noninteractive'
-          TZ: 'Etc/UTC'
-        with:
-          apt-get: git
 
       - name: Setup CMake
         uses: alandefreitas/cpp-actions/setup-cmake@v1.8.7
