@@ -441,10 +441,8 @@ class MrDocsInstaller:
             if build_type_is_debwithopt:
                 if self.is_windows():
                     config_args.extend(["-DCMAKE_CXX_FLAGS=/DWIN32 /D_WINDOWS /Ob1 /O2 /Zi", "-DCMAKE_C_FLAGS=/DWIN32 /D_WINDOWS /Ob1 /O2 /Zi"])
-                    config_args.extend(["-DCMAKE_CXX_FLAGS=/Ob1 /O2 /Zi", "-DCMAKE_C_FLAGS=/Ob1 /O2 /Zi"])
                 else:
                     config_args.extend(["-DCMAKE_CXX_FLAGS=-Og -g", "-DCMAKE_C_FLAGS=-Og -g"])
-                    config_args.extend(["-DCMAKE_CXX_FLAGS_DEBUG=-Og -g", "-DCMAKE_C_FLAGS_DEBUG=-Og -g"])
         if isinstance(extra_args, str):
             config_args.extend(extra_args.split())
         elif isinstance(extra_args, list):
