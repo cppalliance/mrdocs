@@ -798,8 +798,8 @@ class MrDocsInstaller:
             ctest_path = os.path.join(os.path.dirname(self.options.cmake_path), "ctest")
             if not os.path.exists(ctest_path):
                 raise FileNotFoundError(f"ctest executable not found at {ctest_path}. Please ensure CMake is installed correctly.")
-            # --parallel 4 --no-tests=error --progress --output-on-failure
-            test_args = [ctest_path, "--test-dir", self.options.mrdocs_build_dir, "--output-on-failure", "--progress", "--no-tests=error", "--output-on-failure"]
+            test_args = [ctest_path, "--test-dir", self.options.mrdocs_build_dir, "--output-on-failure", "--progress",
+                         "--no-tests=error", "--output-on-failure", "--parallel", str(os.cpu_count() or 1)]
             self.run_cmd(test_args)
 
         print(f"\nMrDocs has been successfully installed in {self.options.mrdocs_install_dir}.\n")
