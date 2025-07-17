@@ -21,6 +21,34 @@ import tarfile
 import json
 import re
 
+def get_default_mrdocs_src_dir():
+    """
+    Returns the default source directory for MrDocs based on the current working directory.
+
+    If the current working directory is the same as the script directory, it
+    means we're working on development. The script is being called from a location
+    that's already a MrDocs repository. So the user wants the current directory
+    to be used as the source directory, not to create a new source directory
+    every time the script is run.
+
+    If the current working directory is different from the script directory,
+    it means we're running the script from a different location, likely a
+    pre-existing MrDocs repository. In this case, we assume the user wants to
+    create a new source directory for MrDocs in the current working directory
+    under the name "mrdocs" or anywhere else in order to avoid conflicts
+    and we assume the user is running this whole procedure to bootstrap,
+    build, and install MrDocs from scratch.
+
+    :return: str: The default source directory for MrDocs.
+    """
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    cwd = os.getcwd()
+    if cwd == script_dir:
+        return cwd
+    else:
+        return os.path.join(cwd, "mrdocs")
+
+
 @dataclass
 class InstallOptions:
     """
@@ -39,7 +67,7 @@ class InstallOptions:
     cmake_path: str = ''
 
     # MrDocs
-    mrdocs_src_dir: str = field(default_factory=lambda: os.getcwd())
+    mrdocs_src_dir: str = field(default_factory=get_default_mrdocs_src_dir)
     mrdocs_build_type: str = "Release"
     mrdocs_repo: str = "https://github.com/cppalliance/mrdocs"
     mrdocs_branch: str = "develop"
