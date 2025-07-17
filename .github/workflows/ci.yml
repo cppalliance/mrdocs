@@ -320,6 +320,7 @@ jobs:
           ccflags: ${{ matrix.ccflags }}
           cxxflags: ${{ matrix.cxxflags }}
           build-type: Release
+          shared: false
           extra-args: |
             -D LIBXML2_WITH_PROGRAMS=ON
             -D LIBXML2_WITH_FTP=OFF 
