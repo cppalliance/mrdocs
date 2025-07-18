@@ -41,7 +41,8 @@ jobs:
           standards: '20'
           latest-factors: |
             msvc Optimized-Debug
-            gcc Coverage
+            gcc UBSan Coverage
+            clang UBSan
           factors: ''
           runs-on: |
             apple-clang: macos-15
@@ -65,21 +66,21 @@ jobs:
             msvc: ''
           extra-values: |
             llvm-hash: dd7a3d4d798e30dfe53b5bbbbcd9a23c24ea1af9
-            llvm-id: {{ substr llvm-hash 0 7 }}
-            llvm-build-preset-prefix: {{#if optimized-debug}}debwithopt{{else}}{{lowercase build-type}}{{/if}}
-            llvm-build-preset-suffix: {{#if (ieq os 'windows') }}win{{else}}unix{{/if}}
-            llvm-build-preset: {{ llvm-build-preset-prefix }}-{{ llvm-build-preset-suffix }}
-            llvm-compiler-key: {{ compiler }}-{{ version }}
-            llvm-cache-key: llvm-libcxx-{{ lowercase os }}-{{ llvm-compiler-key }}-{{ llvm-build-preset-prefix }}-{{ llvm-hash }}
+            llvm-build-preset-prefix: {{#if optimized-debug}}debwithopt{{else}}{{{lowercase build-type}}}{{/if}}
+            llvm-build-preset-os: {{#if (ieq os 'windows') }}win{{else}}unix{{/if}}
+            llvm-sanitizer: {{#if ubsan}}-UBSan{{else if asan}}-ASan{{else if msan}}-MSan{{/if}}
+            llvm-build-preset: {{{ llvm-build-preset-prefix }}}-{{{ llvm-build-preset-os }}}
+            llvm-compiler-version: {{#if (or (contains version '*') (contains version '^'))}}{{else}}-{{{ version }}}{{/if}}
+            llvm-archive-basename: llvm-{{{ lowercase os }}}-{{{ compiler }}}{{{ llvm-compiler-version }}}-{{{ llvm-build-preset-prefix }}}{{{ sanitizer }}}-{{{ substr llvm-hash 0 7 }}}
             llvm-root: ../third-party/llvm-project/install
-            llvm-archive-basename: llvm-{{ os }}-{{ llvm-build-preset-prefix }}-{{ llvm-id }}
             llvm-archive-extension: {{#if (ieq os 'windows') }}7z{{else}}tar.bz2{{/if}}
-            llvm-archive-filename: {{ llvm-archive-basename }}.{{ llvm-archive-extension }}
-            mrdocs-ccflags: {{ ccflags }} {{#if (eq compiler 'gcc') }}-static{{/if}} {{#if asan }}-static-libasan{{/if}} {{#if tsan }}-static-libtsan{{/if}}
-            mrdocs-cxxflags: {{ cxxflags }} {{#if (eq compiler 'gcc') }}-static{{/if}} {{#if asan }}-static-libasan{{/if}} {{#if tsan }}-static-libtsan{{/if}}
+            llvm-archive-filename: {{{ llvm-archive-basename }}}.{{{ llvm-archive-extension }}}
+            mrdocs-ccflags: {{{ ccflags }}} {{#if (and (eq compiler 'gcc') (not asan)) }}-static{{/if}}
+            mrdocs-cxxflags: {{{ cxxflags }}} {{#if (and (eq compiler 'gcc') (not asan)) }}-static{{/if}}
             mrdocs-package-generators: {{#if (ieq os 'windows') }}7Z ZIP WIX{{else}}TGZ TXZ{{/if}}
-            mrdocs-release-package-artifact: release-packages-{{ lowercase os }}
+            mrdocs-release-package-artifact: release-packages-{{{ lowercase os }}}
           output-file: matrix.json
+          trace-commands: true
 
       # Set up the version as expected by the LLVM matrix script and @actions/core
       - name: Setup Node.js
@@ -211,7 +212,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ steps.resolve-llvm-root.outputs.llvm-root }}
-          key: ${{ matrix.llvm-cache-key }}
+          key: ${{ matrix.llvm-archive-basename }}
 
       - name: Download LLVM Binaries
         id: llvm-download
@@ -260,6 +261,10 @@ jobs:
           build-type: ${{ matrix.build-type }}
           extra-args: |
             ${{ runner.os == 'Windows' && '-DLLVM_ENABLE_RUNTIMES=libcxx' || '-DLLVM_ENABLE_RUNTIMES=libcxx;libcxxabi;libunwind' }}
+            # The UBSan vptr sanitizer needs RTTI.
+            ${{ matrix.ubsan && '-DLLVM_ENABLE_RTTI=ON' }}
+            # The LLVM_USE_SANITIZER option doesn't support GCC.
+            ${{ !matrix.compiler == 'gcc' && matrix.ubsan && '-DLLVM_USE_SANITIZER=Undefined' }}
           cc: ${{ steps.setup-cpp.outputs.cc }}
           cxx: ${{ steps.setup-cpp.outputs.cxx }}
           generator: Ninja
@@ -868,7 +873,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ steps.resolve-llvm-root.outputs.llvm-root }}
-          key: ${{ matrix.llvm-cache-key }}
+          key: ${{ matrix.llvm-archive-basename }}
 
       - name: Compress LLVM
         id: llvm-upload

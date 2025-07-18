@@ -21,16 +21,12 @@ namespace mrdocs {
 class MRDOCS_DECL
     YamlReporter
 {
-    void diag(llvm::SMDiagnostic const&);
-    static void diagFnImpl(llvm::SMDiagnostic const&, void*);
+  static void diag(llvm::SMDiagnostic const &, void *);
 
 public:
     typedef void (*diagFn)(llvm::SMDiagnostic const&, void*);
 
-    operator diagFn() const noexcept
-    {
-        return &diagFnImpl;
-    }
+    operator diagFn() const noexcept { return &diag; }
 };
 
 } // mrdocs
