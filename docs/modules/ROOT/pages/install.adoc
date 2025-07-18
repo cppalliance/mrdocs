@@ -1,4 +1,5 @@
 = Install
+:tabs-sync-option:
 
 [#mrdocs-binaries]
 == Binary Packages
@@ -8,10 +9,10 @@ Most users should use these packages.
 
 mrdocs-releases::[]
 
-[#mrdocs-source-script]
-== Python Bootstrap Script
+[#mrdocs-bootstrap-script]
+== Bootstrap Script
 
-The Python bootstrap script available in the repository provides an alternative way to install MrDocs and its
+The bootstrap script available in the repository provides an alternative way to install MrDocs and its
 dependencies from source. Just run the script from the root of the MrDocs repository:
 
 [source,bash]
@@ -34,16 +35,7 @@ python -c "$(Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/cppallian
 ----
 --
 
-Linux::
-+
---
-[source,bash]
-----
-python3 -c "$(curl -fsSL https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/bootstrap.py)"
-----
---
-
-macOS::
+Unix Variants::
 +
 --
 [source,bash]
@@ -52,6 +44,7 @@ python -c "$(curl -fsSL https://raw.githubusercontent.com/cppalliance/mrdocs/ref
 ----
 --
 ====
+
 
 This method automates the download, configuration, and build steps for MrDocs and all required third-party libraries.
 It is especially useful for developers and for users who prefer a streamlined, interactive setup or need to install
@@ -75,16 +68,7 @@ python -c "$(Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/cppallian
 ----
 --
 
-Linux::
-+
---
-[source,bash]
-----
-python3 -c "$(curl -fsSL https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/bootstrap.py)" --non-interactive
-----
---
-
-macOS::
+Unix Variants::
 +
 --
 [source,bash]
@@ -100,7 +84,7 @@ This approach is recommended for developers, advanced users, or those integratin
 into larger projects.
 
 [#mrdocs-source]
-== Install from Source
+== Manually Install from Source
 
 The following instructions assume we are at a parent directory that's going to contain both the MrDocs and the third-party dependencies directories.
 
