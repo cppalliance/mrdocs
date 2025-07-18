@@ -2144,7 +2144,7 @@ parseBlock(
     HandlebarsOptions const& opt,
     detail::RenderState const& state,
     std::string_view &templateText,
-    OutputRef &out,
+    OutputRef &,
     std::string_view &fnBlock,
     std::string_view &inverseBlocks,
     Handlebars::Tag &inverseTag,
@@ -3664,7 +3664,7 @@ each_fn(dom::Value context, dom::Value const& options)
         {
             dom::Value priorKey;
             auto exp = context.getObject().visit([&](
-                dom::String const& key, dom::Value const& value) -> Expected<void>
+                dom::String const& key, dom::Value const&) -> Expected<void>
             {
                 if (!priorKey.isUndefined())
                 {

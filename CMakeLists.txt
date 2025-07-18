@@ -276,11 +276,12 @@ if (WIN32)
         target_compile_options(
             mrdocs-core
             PUBLIC
-            /permissive-    # strict C++
-            /W4             # enable all warnings
-            /MP             # multi-processor compilation
-            /EHs            # C++ Exception handling
-            $<$<CONFIG:Debug>:/Oy-> # Disable frame pointer omission
+            /permissive-                    # strict C++
+            /W4                             # enable all warnings
+            $<$<CXX_COMPILER_ID:MSVC>:/MP>  # multi-processor compilation
+            /EHs                            # C++ Exception handling
+            $<$<CONFIG:Debug>:/Oy->         # Disable frame pointer omission
+            $<$<CXX_COMPILER_ID:Clang>:-Wno-unused-parameter>  # ClangCL warning enabled with /W4
         )
     endif()
 endif ()

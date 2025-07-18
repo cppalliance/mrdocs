@@ -210,7 +210,7 @@ static
 void
 luaM_report(
     Error const& err,
-    source_location loc =
+    source_location =
         source_location::current())
 {
     SourceLocation Loc(err.location());
@@ -605,7 +605,7 @@ domValue_push(
 static
 char const*
 Reader(
-    lua_State *L,
+    lua_State *,
     void* data,
     size_t* size)
 {
@@ -675,7 +675,7 @@ Expected<Value>
 Scope::
 getGlobal(
     std::string_view key,
-    source_location loc)
+    source_location)
 {
     Access A(*this);
     lua_pushglobaltable(A);

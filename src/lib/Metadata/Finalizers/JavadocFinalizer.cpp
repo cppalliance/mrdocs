@@ -565,7 +565,7 @@ populateFunctionJavadoc(FunctionInfo& I) const
     }
 
     // Populate a missing javadoc brief
-    populateFunctionBrief(I, corpus_);
+    populateFunctionBrief(I);
 
     // Populate a missing javadoc returns
     populateFunctionReturns(I, corpus_);

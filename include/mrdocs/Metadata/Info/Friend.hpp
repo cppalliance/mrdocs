@@ -43,7 +43,7 @@ merge(FriendInfo& I, FriendInfo&& Other);
 template <class IO>
 void
 tag_invoke(
-    dom::LazyObjectMapTag t,
+    dom::LazyObjectMapTag,
     IO& io,
     FriendInfo const& I,
     DomCorpus const* domCorpus)
