@@ -107,11 +107,11 @@ inheritBaseMembers(
         Info& otherInfo = *otherInfoPtr;
 
         // Check if we're not attempt to copy a special member function
-        if (auto const* funcPtr = static_cast<FunctionInfo const*>(otherInfoPtr))
-        {
-            MRDOCS_CHECK_OR_CONTINUE(!is_one_of(
-                funcPtr->Class,
-                { FunctionClass::Constructor, FunctionClass::Destructor }));
+        if (auto const *funcPtr =
+                dynamic_cast<FunctionInfo const *>(otherInfoPtr)) {
+          MRDOCS_CHECK_OR_CONTINUE(
+              !is_one_of(funcPtr->Class, {FunctionClass::Constructor,
+                                          FunctionClass::Destructor}));
         }
 
         // Check if derived class has a member that shadows the base member
