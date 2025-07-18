@@ -20,34 +20,17 @@ import urllib.request
 import tarfile
 import json
 import re
+from functools import lru_cache
 
-def get_default_mrdocs_src_dir():
+@lru_cache(maxsize=1)
+def running_from_mrdocs_source_dir():
     """
-    Returns the default source directory for MrDocs based on the current working directory.
-
-    If the current working directory is the same as the script directory, it
-    means we're working on development. The script is being called from a location
-    that's already a MrDocs repository. So the user wants the current directory
-    to be used as the source directory, not to create a new source directory
-    every time the script is run.
-
-    If the current working directory is different from the script directory,
-    it means we're running the script from a different location, likely a
-    pre-existing MrDocs repository. In this case, we assume the user wants to
-    create a new source directory for MrDocs in the current working directory
-    under the name "mrdocs" or anywhere else in order to avoid conflicts
-    and we assume the user is running this whole procedure to bootstrap,
-    build, and install MrDocs from scratch.
-
-    :return: str: The default source directory for MrDocs.
+    Checks if the current working directory is the same as the script directory.
+    :return:
     """
     script_dir = os.path.dirname(os.path.abspath(__file__))
     cwd = os.getcwd()
-    if cwd == script_dir:
-        return cwd
-    else:
-        return os.path.join(cwd, "mrdocs")
-
+    return cwd == script_dir
 
 @dataclass
 class InstallOptions:
@@ -67,7 +50,7 @@ class InstallOptions:
     cmake_path: str = ''
 
     # MrDocs
-    mrdocs_src_dir: str = field(default_factory=get_default_mrdocs_src_dir)
+    mrdocs_src_dir: str = field(default_factory=lambda: os.getcwd() if running_from_mrdocs_source_dir() else os.path.join(os.getcwd(), "mrdocs"))
     mrdocs_build_type: str = "Release"
     mrdocs_repo: str = "https://github.com/cppalliance/mrdocs"
     mrdocs_branch: str = "develop"
@@ -75,8 +58,8 @@ class InstallOptions:
     mrdocs_preset_name: str = "<mrdocs-build-type:lower>-<os:lower>"
     mrdocs_build_dir: str = "<mrdocs-src-dir>/build/<mrdocs-build-type:lower>-<os:lower>"
     mrdocs_build_tests: bool = True
-    mrdocs_install_dir: str = "<mrdocs-src-dir>/install/<mrdocs-build-type:lower>-<os:lower>"
-    mrdocs_system_install: bool = False
+    mrdocs_system_install: bool = field(default_factory=lambda: not running_from_mrdocs_source_dir())
+    mrdocs_install_dir: str = field(default_factory=lambda: "<mrdocs-src-dir>/install/<mrdocs-build-type:lower>-<os:lower>" if running_from_mrdocs_source_dir() else "")
     mrdocs_run_tests: bool = True
 
     # Third-party dependencies
@@ -771,8 +754,9 @@ class MrDocsInstaller:
             self.prompt_option("mrdocs_install_dir")
 
         extra_args = []
-        if self.options.mrdocs_system_install and self.options.mrdocs_install_dir:
+        if not self.options.mrdocs_system_install and self.options.mrdocs_install_dir:
             extra_args.extend(["-D", f"CMAKE_INSTALL_PREFIX={self.options.mrdocs_install_dir}"])
+
         if self.options.mrdocs_use_user_presets:
             extra_args.append(f"--preset={self.options.mrdocs_preset_name}")
         else:
@@ -802,7 +786,12 @@ class MrDocsInstaller:
                          "--no-tests=error", "--output-on-failure", "--parallel", str(os.cpu_count() or 1)]
             self.run_cmd(test_args)
 
-        print(f"\nMrDocs has been successfully installed in {self.options.mrdocs_install_dir}.\n")
+        YELLOW = "\033[93m"
+        RESET = "\033[0m"
+        if self.supports_ansi():
+            print(f"{YELLOW}MrDocs has been successfully installed in {self.options.mrdocs_install_dir}.{RESET}")
+        else:
+            print(f"\nMrDocs has been successfully installed in {self.options.mrdocs_install_dir}.\n")
 
     def install_all(self):
         self.check_tools()
