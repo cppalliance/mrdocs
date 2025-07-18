@@ -11,15 +11,47 @@ mrdocs-releases::[]
 [#mrdocs-source-script]
 == Python Bootstrap Script
 
-The Python bootstrap script available in the repository provides an alternative way to install MrDocs and its dependencies
-from source. Just run the script from the root of the MrDocs repository:
+The Python bootstrap script available in the repository provides an alternative way to install MrDocs and its
+dependencies from source. Just run the script from the root of the MrDocs repository:
 
 [source,bash]
 ----
 git clone https://www.github.com/cppalliance/mrdocs.git
 cd mrdocs
-python3 bootstrap.py
+python bootstrap.py
 ----
+
+Or if you just want to install MrDocs without cloning the repository, you can run the script directly from the web:
+
+[tabs]
+====
+Windows::
++
+--
+[source,powershell]
+----
+python -c "$(Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/bootstrap.py' -UseBasicParsing | Select-Object -ExpandProperty Content)"
+----
+--
+
+Linux::
++
+--
+[source,bash]
+----
+python3 -c "$(curl -fsSL https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/bootstrap.py)"
+----
+--
+
+macOS::
++
+--
+[source,bash]
+----
+python -c "$(curl -fsSL https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/bootstrap.py)"
+----
+--
+====
 
 This method automates the download, configuration, and build steps for MrDocs and all required third-party libraries.
 It is especially useful for developers and for users who prefer a streamlined, interactive setup or need to install
@@ -30,7 +62,37 @@ Every option can be defined in the command line directly instead of being prompt
 All options can be listed with the `--help` option.
 
 The `--non-interactive` option allows you to run the script without any prompts, using
-values specified in the command line and default values for other options.
+values specified in the command line and default values for other options. In the default case, the script will download the source code to the current directory and install MrDocs system-wide.
+
+[tabs]
+====
+Windows PowerShell::
++
+--
+[source,powershell]
+----
+python -c "$(Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/bootstrap.py' -UseBasicParsing)" --non-interactive
+----
+--
+
+Linux::
++
+--
+[source,bash]
+----
+python3 -c "$(curl -fsSL https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/bootstrap.py)" --non-interactive
+----
+--
+
+macOS::
++
+--
+[source,bash]
+----
+python -c "$(curl -fsSL https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/bootstrap.py)" --non-interactive
+----
+--
+====
 
 The script handles tool checks, repository cloning, patching, and CMake configuration, reducing
 manual intervention and potential errors.
