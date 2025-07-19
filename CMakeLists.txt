@@ -122,11 +122,11 @@ string(REGEX REPLACE " /W[0-4]" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 find_package(fmt REQUIRED CONFIG)
 
 # Duktape
-find_package(Duktape CONFIG)
+find_package(duktape CONFIG)
 if (NOT DUKTAPE_FOUND)
-    # Duktape doesn't nativelly support CMake.
+    # Duktape doesn't natively support CMake.
     # Some config script patches use the capitalized version.
-    find_package(duktape REQUIRED CONFIG)
+    find_package(Duktape REQUIRED CONFIG)
 endif()
 
 # python
