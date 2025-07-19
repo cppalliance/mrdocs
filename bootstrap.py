@@ -723,6 +723,9 @@ class MrDocsInstaller:
                 "MRDOCS_GENERATE_REFERENCE": False,
                 "MRDOCS_GENERATE_ANTORA_REFERENCE": False
             },
+            "warnings": {
+                "unusedCli": False
+            },
             "condition": {
                 "type": "equals",
                 "lhs": "${hostSystemName}",
