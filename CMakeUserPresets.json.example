@@ -1,153 +1,260 @@
 {
-  "version": 3,
-  "cmakeMinimumRequired": {
-    "major": 3,
-    "minor": 10,
-    "patch": 0
-  },
-  "configurePresets": [
-    {
-      "name": "Debug-MSVC",
-      "inherits": "debug",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build/debug-msvc",
-      "toolchainFile": "C:\\Users\\$env{USERNAME}\\Libraries\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake",
-      "cacheVariables": {
-        "LLVM_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm-project\\llvm\\install\\MSVC\\Debug",
-        "Clang_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm-project\\llvm\\install\\MSVC\\Debug",
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-        "CMAKE_CXX_FLAGS": "/W4",
-        "CMAKE_C_FLAGS": "/W4"
-      },
-      "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Windows"
-      },
-      "vendor": {
-        "microsoft.com/VisualStudioSettings/CMake/1.0": {
-          "hostOS": [
-            "Windows"
-          ],
-          "intelliSenseMode": "windows-msvc-x64"
-        }
-      }
+    "version": 3,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 10,
+        "patch": 0
     },
-    {
-      "name": "DebWithOpt-MSVC",
-      "inherits": "Debug-MSVC",
-      "binaryDir": "${sourceDir}/build/debwithopt-msvc",
-      "cacheVariables": {
-        "LLVM_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm-project\\llvm\\install\\MSVC\\DebWithOpt",
-        "Clang_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm-project\\llvm\\install\\MSVC\\DebWithOpt"
-      }
-    },
-    {
-      "name": "Release-MSVC",
-      "inherits": "Debug-MSVC",
-      "binaryDir": "${sourceDir}/build/release-msvc",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release",
-        "LLVM_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm-project\\llvm\\install\\MSVC\\Release",
-        "Clang_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm-project\\llvm\\install\\MSVC\\Release"
-      }
-    },
-    {
-      "name": "RelWithDebInfo-MSVC",
-      "inherits": "Debug-MSVC",
-      "binaryDir": "${sourceDir}/build/relwithdebinfo-msvc",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
-        "LLVM_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm-project\\llvm\\install\\MSVC\\RelWithDebInfo",
-        "Clang_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm-project\\llvm\\install\\MSVC\\RelWithDebInfo"
-      }
-    },
-    {
-      "name": "DebWithOpt-ClangCL",
-      "inherits": "DebWithOpt-MSVC",
-      "binaryDir": "${sourceDir}/build/${presetName}",
-      "cacheVariables": {
-        "CMAKE_C_COMPILER": "clang-cl.exe",
-        "CMAKE_CXX_COMPILER": "clang-cl.exe"
-      }
-    },
-    {
-      "name": "Debug-GCC",
-      "inherits": "debug",
-      "binaryDir": "${sourceDir}/build/debug-gcc",
-      "toolchainFile": "/home/$env{USER}/libraries/vcpkg/scripts/buildsystems/vcpkg.cmake",
-      "cacheVariables": {
-        "CMAKE_CXX_COMPILER": "/usr/bin/g++-13",
-        "CMAKE_C_COMPILER": "/usr/bin/gcc-13",
-        "LLVM_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release",
-        "Clang_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release",
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-        "CMAKE_CXX_FLAGS": "-Wall -Wextra -Wpedantic -Werror",
-        "CMAKE_C_FLAGS": "-Wall -Wextra -Wpedantic -Werror"
-      },
-      "vendor": {
-        "microsoft.com/VisualStudioSettings/CMake/1.0": {
-          "hostOS": [
-            "Linux"
-          ],
-          "intelliSenseMode": "windows-msvc-x64"
+    "configurePresets": [
+        {
+            "name": "debug-msvc",
+            "displayName": "Debug MSVC",
+            "description": "Build on Windows + MSVC natively (Debug)",
+            "inherits": "debug",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "LLVM_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm\\install\\MSVC\\DebWithOpt",
+                "Clang_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm\\install\\MSVC\\DebWithOpt",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_CXX_FLAGS": "/W4",
+                "CMAKE_C_FLAGS": "/W4"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            },
+            "vendor": {
+                "microsoft.com/VisualStudioSettings/CMake/1.0": {
+                    "hostOS": [
+                        "Windows"
+                    ],
+                    "intelliSenseMode": "windows-msvc-x64"
+                }
+            }
         },
-        "jetbrains.com/clion": {
-          "toolchain": "WSL GCC"
+        {
+            "name": "debwithopt-msvc",
+            "displayName": "Debug with Optimizations MSVC",
+            "description": "Build on Windows + MSVC natively (Debug with optimizations). This is the preset typically used for development. CI tests it and generates LLVM binaries for it.",
+            "inherits": "debug-msvc",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "LLVM_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm\\DebWithOpt",
+                "Clang_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm\\DebWithOpt"
+            }
+        },
+        {
+            "name": "release-msvc",
+            "displayName": "Release MSVC",
+            "description": "Build on Windows + MSVC natively (Release)",
+            "inherits": "debug-msvc",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "LLVM_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm\\Release",
+                "Clang_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm\\Release"
+            }
+        },
+        {
+            "name": "relwithdebinfo-msvc",
+            "displayName": "RelWithDebInfo MSVC",
+            "description": "Build on Windows + MSVC natively (RelWithDebInfo). This is the preset used for the release builds.",
+            "inherits": "debug-msvc",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+                "LLVM_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm\\Release",
+                "Clang_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm\\Release"
+            }
+        },
+        {
+            "name": "debwithopt-clang-cl",
+            "displayName": "Debug with Optimizations Clang-CL",
+            "description": "Build on Windows + Clang natively. Windows developers can use this preset to catch Clang-specific issues natively.",
+            "inherits": "debwithopt-msvc",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "clang-cl.exe",
+                "CMAKE_CXX_COMPILER": "clang-cl.exe"
+            }
+        },
+        {
+            "name": "debug-wsl-gcc",
+            "displayName": "Debug WSL GCC",
+            "description": "Build on WSL + GCC (Debug). Windows developers can use this preset to catch GCC-specific issues with WSL. WSL tends to be very slow, so this is not recommended for interactive development.",
+            "inherits": "debug",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_CXX_COMPILER": "/usr/bin/g++",
+                "CMAKE_C_COMPILER": "/usr/bin/gcc",
+                "LLVM_ROOT": "/home/$env{USER}/libraries/llvm",
+                "Clang_ROOT": "/home/$env{USER}/libraries/llvm",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_CXX_FLAGS": "-Wall -Wextra -Werror",
+                "CMAKE_C_FLAGS": "-Wall -Wextra -Werror"
+            },
+            "vendor": {
+                "microsoft.com/VisualStudioSettings/CMake/1.0": {
+                    "hostOS": [
+                        "Linux"
+                    ],
+                    "intelliSenseMode": "windows-msvc-x64"
+                },
+                "jetbrains.com/clion": {
+                    "toolchain": "WSL GCC"
+                }
+            }
+        },
+        {
+            "name": "debug-wsl-gcc-asan",
+            "displayName": "Debug WSL GCC AddressSanitizer",
+            "description": "Build on WSL + GCC with AddressSanitizer (Debug). This is useful for catching memory issues.",
+            "inherits": "debug-wsl-gcc",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_CXX_FLAGS": "-fsanitize=address -fno-omit-frame-pointer -g -O0 -fno-inline-functions"
+            }
+        },
+        {
+            "name": "debwithopt-wsl-gcc",
+            "displayName": "Debug with Optimizations WSL GCC",
+            "description": "Build on WSL + GCC (Debug with optimizations). Windows developers can use this preset to catch GCC-specific issues with WSL. WSL tends to be very slow, so this is not recommended for interactive development.",
+            "inherits": "debug-wsl-gcc",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "LLVM_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release",
+                "Clang_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release"
+            }
+        },
+        {
+            "name": "release-wsl-gcc",
+            "displayName": "Release WSL GCC",
+            "description": "Build on WSL + GCC (Release). Windows developers can use this preset to catch GCC-specific issues with WSL. WSL tends to be very slow, so this is not recommended for interactive development.",
+            "inherits": "debug-wsl-gcc",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "LLVM_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release",
+                "Clang_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release"
+            }
+        },
+        {
+            "name": "relwithdebinfo-wsl-gcc",
+            "displayName": "RelWithDebInfo WSL GCC",
+            "description": "Build on WSL + GCC (RelWithDebInfo). Windows developers can use this preset to catch GCC-specific issues with WSL. WSL tends to be very slow, so this is not recommended for interactive development.",
+            "inherits": "debug-wsl-gcc",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+                "LLVM_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release",
+                "Clang_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release"
+            }
+        },
+        {
+            "name": "debug-wsl-clang",
+            "displayName": "Debug WSL Clang",
+            "description": "Build on WSL + Clang (Debug). Windows developers can use this preset to catch Clang-specific issues with WSL. WSL tends to be very slow, so this is not recommended for interactive development.",
+            "inherits": "debug-wsl-gcc",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_CXX_COMPILER": "/usr/bin/clang++-16",
+                "CMAKE_C_COMPILER": "/usr/bin/clang-16"
+            },
+            "vendor": {
+                "jetbrains.com/clion": {
+                    "toolchain": "WSL Clang"
+                }
+            }
+        },
+        {
+            "name": "debug-macos",
+            "displayName": "Debug macOS",
+            "description": "Preset for building MrDocs in Debug mode with the default compiler in macOS.",
+            "inherits": "debug",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "LLVM_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/debug",
+                "Clang_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/debug",
+                "duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/debug",
+                "Duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/debug",
+                "fmt_ROOT": "$env{HOME}/Developer/cpp-libs/fmt/install/debug",
+                "libxml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release",
+                "LibXml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release",
+                "MRDOCS_BUILD_TESTS": true,
+                "MRDOCS_BUILD_DOCS": false,
+                "MRDOCS_GENERATE_REFERENCE": false,
+                "MRDOCS_GENERATE_ANTORA_REFERENCE": false
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "warnings": {
+                "unusedCli": false
+            }
+        },
+        {
+            "name": "debwithopt-macos",
+            "displayName": "DebWithOpt macOS",
+            "description": "Preset for building MrDocs in DebWithOpt mode with the default compiler in macOS.",
+            "inherits": "debug",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "LLVM_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/debwithopt",
+                "Clang_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/debwithopt",
+                "duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/debwithopt",
+                "Duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/debwithopt",
+                "fmt_ROOT": "$env{HOME}/Developer/cpp-libs/fmt/install/debwithopt",
+                "libxml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release",
+                "LibXml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release",
+                "MRDOCS_BUILD_TESTS": true,
+                "MRDOCS_BUILD_DOCS": false,
+                "MRDOCS_GENERATE_REFERENCE": false,
+                "MRDOCS_GENERATE_ANTORA_REFERENCE": false
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "warnings": {
+                "unusedCli": false
+            }
+        },
+        {
+            "name": "release-macos",
+            "displayName": "Release macOS",
+            "description": "Preset for building MrDocs in Release mode with the default compiler in macOS.",
+            "inherits": "release",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "LLVM_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/release",
+                "Clang_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/release",
+                "duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/release",
+                "Duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/release",
+                "fmt_ROOT": "$env{HOME}/Developer/cpp-libs/fmt/install/release",
+                "libxml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release",
+                "LibXml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release",
+                "MRDOCS_BUILD_TESTS": true,
+                "MRDOCS_BUILD_DOCS": false,
+                "MRDOCS_GENERATE_REFERENCE": false,
+                "MRDOCS_GENERATE_ANTORA_REFERENCE": false
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "warnings": {
+                "unusedCli": false
+            }
         }
-      }
-    },
-    {
-      "name": "Debug-GCC-Asan",
-      "inherits": "Debug-GCC",
-      "binaryDir": "${sourceDir}/build/debug-gcc-asan",
-      "cacheVariables": {
-        "CMAKE_CXX_FLAGS": "-fsanitize=address -fno-omit-frame-pointer -g -O0 -fno-inline-functions"
-      }
-    },
-    {
-      "name": "DebWithOpt-GCC",
-      "inherits": "Debug-GCC",
-      "binaryDir": "${sourceDir}/build/debwithopt-gcc",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "LLVM_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release",
-        "Clang_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release"
-      }
-    },
-    {
-      "name": "Release-GCC",
-      "inherits": "Debug-GCC",
-      "binaryDir": "${sourceDir}/build/release-gcc",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release",
-        "LLVM_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release",
-        "Clang_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release"
-      }
-    },
-    {
-      "name": "RelWithDebInfo-GCC",
-      "inherits": "Debug-GCC",
-      "binaryDir": "${sourceDir}/build/relwithdebinfo-gcc",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
-        "LLVM_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release",
-        "Clang_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release"
-      }
-    },
-    {
-      "name": "Debug-Clang",
-      "inherits": "Debug-GCC",
-      "binaryDir": "${sourceDir}/build/debug-clang",
-      "cacheVariables": {
-        "CMAKE_CXX_COMPILER": "/usr/bin/clang++-16",
-        "CMAKE_C_COMPILER": "/usr/bin/clang-16"
-      },
-      "vendor": {
-        "jetbrains.com/clion": {
-          "toolchain": "WSL Clang"
-        }
-      }
-    }
-  ]
+    ]
 }
