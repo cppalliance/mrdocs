@@ -45,7 +45,6 @@ python -c "$(curl -fsSL https://raw.githubusercontent.com/cppalliance/mrdocs/ref
 --
 ====
 
-
 This method automates the download, configuration, and build steps for MrDocs and all required third-party libraries.
 It is especially useful for developers and for users who prefer a streamlined, interactive setup or need to install
 MrDocs in custom environments.
@@ -55,7 +54,17 @@ Every option can be defined in the command line directly instead of being prompt
 All options can be listed with the `--help` option.
 
 The `--non-interactive` option allows you to run the script without any prompts, using
-values specified in the command line and default values for other options. In the default case, the script will download the source code to the current directory and install MrDocs system-wide.
+values specified in the command line and default values for other options. This allows you
+to only customize the most common options and leave the others to their defaults. This
+is handy for developers to refresh dependencies:
+
+[source,bash]
+----
+python bootstrap.py --non-interactive --mrdocs-build-type=Release --third-party-src-dir=/path/to/dependencies
+----
+
+In the default case, the script will download the source code to the current directory
+and install MrDocs system-wide.
 
 [tabs]
 ====

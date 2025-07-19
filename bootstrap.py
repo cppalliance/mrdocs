@@ -172,6 +172,8 @@ class MrDocsInstaller:
         : param default: The default value to use if the user does not provide input.
         :return:
         """
+        if self.options.non_interactive and default is not None:
+            return default
         prompt = prompt.strip()
         if prompt.endswith('.'):
             prompt = prompt[:-1]
@@ -192,6 +194,8 @@ class MrDocsInstaller:
         :param default: The default value to return if the user does not provide input.
         :return: bool: True if the user answers yes, False otherwise.
         """
+        if self.options.non_interactive and default is not None:
+            return default
         prompt = prompt.strip()
         if prompt.endswith('.'):
             prompt = prompt[:-1]
