@@ -27,6 +27,9 @@
         "MRDOCS_GENERATE_REFERENCE": "OFF",
         "MRDOCS_GENERATE_ANTORA_REFERENCE": "OFF"
       },
+      "warnings": {
+        "unusedCli": false
+      },
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
           "hostOS": [

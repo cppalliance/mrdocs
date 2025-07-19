@@ -51,6 +51,9 @@
         "CLANG_INCLUDE_TESTS": false,
         "CLANG_INCLUDE_DOCS": false,
         "CLANG_BUILD_EXAMPLES": false
+      },
+      "warnings": {
+        "unusedCli": false
       }
     },
     {
