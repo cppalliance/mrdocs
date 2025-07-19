@@ -10,11 +10,8 @@
 //
 
 #include <mrdocs/Config.hpp>
-#include <mrdocs/Support/Algorithm.hpp>
-#include <llvm/Support/FileSystem.h>
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Support/Report.hpp>
-#include <ranges>
 #include <thread>
 
 namespace clang::mrdocs {

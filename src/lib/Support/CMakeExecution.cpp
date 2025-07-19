@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "lib/Lib/CMakeExecution.hpp"
-#include "lib/Lib/ExecuteAndWaitWithLogging.hpp"
+#include "CMakeExecution.hpp"
+#include "ExecuteAndWaitWithLogging.hpp"
 #include "lib/Support/Path.hpp"
 
 #include <llvm/Support/FileSystem.h>

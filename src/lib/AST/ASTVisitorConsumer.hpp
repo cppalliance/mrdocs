@@ -14,8 +14,8 @@
 #ifndef MRDOCS_LIB_AST_ASTVISITORCONSUMER_HPP
 #define MRDOCS_LIB_AST_ASTVISITORCONSUMER_HPP
 
-#include "lib/Lib/ConfigImpl.hpp"
-#include "lib/Lib/ExecutionContext.hpp"
+#include "lib/ConfigImpl.hpp"
+#include "lib/Support/ExecutionContext.hpp"
 #include <mrdocs/Platform.hpp>
 #include <clang/Tooling/Tooling.h>
 #include <clang/Sema/SemaConsumer.h>

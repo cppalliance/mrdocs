@@ -14,8 +14,8 @@
 #ifndef MRDOCS_LIB_AST_FRONTENDACTIONFACTORY_HPP
 #define MRDOCS_LIB_AST_FRONTENDACTIONFACTORY_HPP
 
-#include "lib/Lib/ConfigImpl.hpp"
-#include "lib/Lib/ExecutionContext.hpp"
+#include "lib/ConfigImpl.hpp"
+#include "lib/Support/ExecutionContext.hpp"
 #include <clang/Tooling/Tooling.h>
 
 namespace clang {

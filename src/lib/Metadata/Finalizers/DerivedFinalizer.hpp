@@ -12,8 +12,8 @@
 #ifndef MRDOCS_LIB_METADATA_FINALIZER_DERIVEDFINALIZER_HPP
 #define MRDOCS_LIB_METADATA_FINALIZER_DERIVEDFINALIZER_HPP
 
-#include "lib/Lib/CorpusImpl.hpp"
-#include "lib/Lib/InfoSet.hpp"
+#include "lib/CorpusImpl.hpp"
+#include "lib/Metadata/InfoSet.hpp"
 #include <utility>
 
 namespace clang::mrdocs {

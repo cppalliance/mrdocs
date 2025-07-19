@@ -174,7 +174,7 @@ add_custom_command(
     COMMAND
         ${PYTHON_EXECUTABLE}
         ${CMAKE_CURRENT_SOURCE_DIR}/util/generate-config-info.py
-        src/lib/Lib/ConfigOptions.json
+        src/lib/ConfigOptions.json
         ${CMAKE_CURRENT_BINARY_DIR}
     COMMAND
         ${PYTHON_EXECUTABLE}
@@ -182,7 +182,7 @@ add_custom_command(
     VERBATIM
     DEPENDS
         ${CMAKE_CURRENT_SOURCE_DIR}/util/generate-config-info.py
-        src/lib/Lib/ConfigOptions.json
+        src/lib/ConfigOptions.json
     OUTPUT
         ${CMAKE_CURRENT_BINARY_DIR}/include/mrdocs/PublicSettings.hpp
         ${CMAKE_CURRENT_BINARY_DIR}/src/lib/Lib/PublicSettings.cpp

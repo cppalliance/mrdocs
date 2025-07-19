@@ -11,10 +11,9 @@
 #ifndef MRDOCS_LIB_TOOL_CMAKE_EXECUTION_HPP
 #define MRDOCS_LIB_TOOL_CMAKE_EXECUTION_HPP
 
-#include <string>
-
-#include <llvm/ADT/StringRef.h>
 #include <mrdocs/Support/Expected.hpp>
+#include <llvm/ADT/StringRef.h>
+#include <string>
 
 namespace clang {
 namespace mrdocs {

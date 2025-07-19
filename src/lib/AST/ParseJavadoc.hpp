@@ -12,7 +12,7 @@
 #ifndef MRDOCS_LIB_AST_PARSEJAVADOC_HPP
 #define MRDOCS_LIB_AST_PARSEJAVADOC_HPP
 
-#include "lib/Lib/Diagnostics.hpp"
+#include "lib/Diagnostics.hpp"
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Metadata/Javadoc.hpp>

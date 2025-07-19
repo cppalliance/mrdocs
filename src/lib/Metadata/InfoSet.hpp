@@ -13,8 +13,8 @@
 #ifndef MRDOCS_LIB_TOOL_INFOSET_HPP
 #define MRDOCS_LIB_TOOL_INFOSET_HPP
 
-#include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Info.hpp>
+#include "mrdocs/Platform.hpp"
+#include "mrdocs/Metadata/Info.hpp"
 #include <memory>
 #include <unordered_set>
 

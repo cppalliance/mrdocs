@@ -13,9 +13,9 @@
 #ifndef MRDOCS_LIB_TOOL_EXECUTIONCONTEXT_HPP
 #define MRDOCS_LIB_TOOL_EXECUTIONCONTEXT_HPP
 
-#include "ConfigImpl.hpp"
-#include "Diagnostics.hpp"
-#include "InfoSet.hpp"
+#include "lib/ConfigImpl.hpp"
+#include "lib/Diagnostics.hpp"
+#include "lib/Metadata/InfoSet.hpp"
 #include <mrdocs/Support/Error.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <mutex>

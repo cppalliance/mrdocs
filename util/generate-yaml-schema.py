@@ -148,7 +148,7 @@ def main():
         mrdocs_schema_path = os.path.abspath(os.path.join(mrdocs_root_dir, mrdocs_schema_path))
 
     # Generate the schema
-    mrdocs_config_path = os.path.join(mrdocs_root_dir, 'src', 'lib', 'Lib', 'ConfigOptions.json')
+    mrdocs_config_path = os.path.join(mrdocs_root_dir, 'src', 'lib', 'ConfigOptions.json')
     with open(mrdocs_config_path, 'r') as f:
         config = json.loads(f.read())
     yaml_schema = generate_yaml_schema(config)

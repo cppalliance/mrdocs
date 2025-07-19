@@ -10,7 +10,7 @@
 //
 
 #include "CompilerInfo.hpp"
-#include "lib/Lib/ExecuteAndWaitWithLogging.hpp"
+#include "lib/Support/ExecuteAndWaitWithLogging.hpp"
 #include <mrdocs/Support/Error.hpp>
 
 #include <llvm/Support/Program.h>

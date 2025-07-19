@@ -10,20 +10,17 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "lib/Lib/ConfigImpl.hpp"
-#include "lib/Support/Debug.hpp"
-#include "lib/Support/Report.hpp"
-#include "lib/Support/Path.hpp"
-#include "lib/Support/Yaml.hpp"
+#include "ConfigImpl.hpp"
 #include "lib/Support/Glob.hpp"
+#include "lib/Support/Path.hpp"
 #include <mrdocs/Support/Path.hpp>
-#include <utility>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
 #include <llvm/Support/SourceMgr.h>
 #include <llvm/Support/YAMLParser.h>
 #include <llvm/Support/YAMLTraits.h>
+#include <utility>
 
 namespace clang {
 namespace mrdocs {
