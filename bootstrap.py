@@ -92,7 +92,7 @@ class InstallOptions:
     # LLVM
     llvm_src_dir: str = "<third-party-src-dir>/llvm-project"
     llvm_build_type: str = "<mrdocs-build-type>"
-    llvm_build_dir: str = "<llvm-src-dir>/llvm/build/<llvm-build-type:lower>"
+    llvm_build_dir: str = "<llvm-src-dir>/build/<llvm-build-type:lower>"
     llvm_install_dir: str = "<llvm-src-dir>/install/<llvm-build-type:lower>"
     llvm_repo: str = "https://github.com/llvm/llvm-project.git"
     llvm_commit: str = "dd7a3d4d798e30dfe53b5bbbbcd9a23c24ea1af9"
