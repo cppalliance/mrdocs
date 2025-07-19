@@ -16,7 +16,7 @@
 #include "MultiPageVisitor.hpp"
 #include "SinglePageVisitor.hpp"
 
-#include "lib/Lib/TagfileWriter.hpp"
+#include "TagfileWriter.hpp"
 #include "lib/Support/RawOstream.hpp"
 
 #include <llvm/ADT/SmallString.h>

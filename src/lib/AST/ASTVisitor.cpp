@@ -19,7 +19,7 @@
 #include "lib/Support/Path.hpp"
 #include "lib/Support/Debug.hpp"
 #include "lib/Support/Radix.hpp"
-#include "lib/Lib/Diagnostics.hpp"
+#include "lib/Diagnostics.hpp"
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Support/ScopeExit.hpp>
 #include <mrdocs/Support/Algorithm.hpp>

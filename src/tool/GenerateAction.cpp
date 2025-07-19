@@ -12,10 +12,10 @@
 
 #include "CompilerInfo.hpp"
 #include "ToolArgs.hpp"
-#include <lib/Lib/CMakeExecution.hpp>
-#include "lib/Lib/ConfigImpl.hpp"
-#include "lib/Lib/CorpusImpl.hpp"
-#include "lib/Lib/MrDocsCompilationDatabase.hpp"
+#include "lib/Support/CMakeExecution.hpp"
+#include "lib/ConfigImpl.hpp"
+#include "lib/CorpusImpl.hpp"
+#include "lib/MrDocsCompilationDatabase.hpp"
 #include "lib/Support/Path.hpp"
 #include "llvm/Support/Program.h"
 #include <mrdocs/Generators.hpp>

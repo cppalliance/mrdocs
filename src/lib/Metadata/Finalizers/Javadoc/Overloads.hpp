@@ -11,8 +11,8 @@
 #ifndef MRDOCS_LIB_METADATA_FINALIZER_JAVADOCFINALIZER_OVERLOADS_HPP
 #define MRDOCS_LIB_METADATA_FINALIZER_JAVADOCFINALIZER_OVERLOADS_HPP
 
-#include "lib/Lib/CorpusImpl.hpp"
-#include "lib/Lib/InfoSet.hpp"
+#include "lib/CorpusImpl.hpp"
+#include "lib/Metadata/InfoSet.hpp"
 #include "Function.hpp"
 #include <utility>
 

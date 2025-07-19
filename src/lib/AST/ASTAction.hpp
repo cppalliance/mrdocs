@@ -14,10 +14,10 @@
 #ifndef MRDOCS_LIB_AST_ASTACTION_HPP
 #define MRDOCS_LIB_AST_ASTACTION_HPP
 
-#include "lib/Lib/ConfigImpl.hpp"
-#include "lib/Lib/ExecutionContext.hpp"
-#include <mrdocs/Platform.hpp>
+#include "lib/ConfigImpl.hpp"
+#include "lib/Support/ExecutionContext.hpp"
 #include <clang/Tooling/Tooling.h>
+#include <mrdocs/Platform.hpp>
 
 namespace clang {
 namespace mrdocs {

@@ -8,7 +8,7 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "lib/Lib/ExecuteAndWaitWithLogging.hpp"
+#include "ExecuteAndWaitWithLogging.hpp"
 #include "lib/Support/Report.hpp"
 #include "mrdocs/Support/Assert.hpp"
 

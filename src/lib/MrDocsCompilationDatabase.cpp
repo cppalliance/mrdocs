@@ -11,11 +11,10 @@
 
 #include "lib/Support/Debug.hpp"
 #include "lib/Support/Path.hpp"
-#include "lib/Lib/ConfigImpl.hpp"
-#include "lib/Lib/ExecuteAndWaitWithLogging.hpp"
-#include "lib/Lib/MrDocsCompilationDatabase.hpp"
+#include "lib/ConfigImpl.hpp"
+#include "lib/Support/ExecuteAndWaitWithLogging.hpp"
+#include "MrDocsCompilationDatabase.hpp"
 #include <mrdocs/Support/Report.hpp>
-#include <fmt/format.h>
 #include <clang/Basic/LangStandard.h>
 #include <clang/Driver/Driver.h>
 #include <clang/Driver/Options.h>
@@ -25,6 +24,7 @@
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Program.h>
 #include <llvm/TargetParser/Host.h>
+#include <fmt/format.h>
 #include <ranges>
 
 namespace clang {

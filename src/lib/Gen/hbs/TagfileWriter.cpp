@@ -12,7 +12,7 @@
 #include "lib/Gen/xml/CXXTags.hpp"
 #include "TagfileWriter.hpp"
 #include "lib/Gen/hbs/VisitorHelpers.hpp"
-#include "lib/Lib/ConfigImpl.hpp"
+#include "lib/ConfigImpl.hpp"
 #include "lib/Support/RawOstream.hpp"
 
 #include <llvm/Support/FileSystem.h>

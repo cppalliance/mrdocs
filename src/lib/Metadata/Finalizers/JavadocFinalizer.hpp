@@ -12,10 +12,10 @@
 #ifndef MRDOCS_LIB_METADATA_FINALIZER_JAVADOCFINALIZER_HPP
 #define MRDOCS_LIB_METADATA_FINALIZER_JAVADOCFINALIZER_HPP
 
-#include "lib/Lib/CorpusImpl.hpp"
-#include "lib/Lib/InfoSet.hpp"
-#include <mrdocs/Support/ScopeExit.hpp>
+#include "lib/CorpusImpl.hpp"
+#include "lib/Metadata/InfoSet.hpp"
 #include <mrdocs/Support/Report.hpp>
+#include <mrdocs/Support/ScopeExit.hpp>
 #include <set>
 #include <utility>
 

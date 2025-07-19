@@ -12,10 +12,10 @@
 
 #include "CXXTags.hpp"
 #include "XMLWriter.hpp"
-#include "lib/Lib/ConfigImpl.hpp"
+#include "lib/ConfigImpl.hpp"
 #include "lib/Support/Yaml.hpp"
-#include "lib/Support/Radix.hpp"
 #include "lib/Support/LegibleNames.hpp"
+#include "lib/Support/Radix.hpp"
 #include <mrdocs/Platform.hpp>
 #include <llvm/Support/YAMLParser.h>
 #include <llvm/Support/YAMLTraits.h>

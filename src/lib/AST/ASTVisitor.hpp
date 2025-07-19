@@ -14,8 +14,8 @@
 #ifndef MRDOCS_LIB_AST_ASTVISITOR_HPP
 #define MRDOCS_LIB_AST_ASTVISITOR_HPP
 
-#include "lib/Lib/ConfigImpl.hpp"
-#include "lib/Lib/ExecutionContext.hpp"
+#include "lib/ConfigImpl.hpp"
+#include "lib/Support/ExecutionContext.hpp"
 #include "lib/AST/ClangHelpers.hpp"
 #include <mrdocs/Metadata/ExtractionMode.hpp>
 #include <mrdocs/Metadata/Source.hpp>

@@ -13,8 +13,8 @@
 #define MRDOCS_LIB_CORPUSIMPL_HPP
 
 #include "lib/AST/ParseRef.hpp"
-#include "lib/Lib/ConfigImpl.hpp"
-#include "lib/Lib/InfoSet.hpp"
+#include "ConfigImpl.hpp"
+#include "lib/Metadata/InfoSet.hpp"
 #include "lib/Support/Debug.hpp"
 #include <clang/Tooling/CompilationDatabase.h>
 #include <mrdocs/ADT/UnorderedStringMap.hpp>
