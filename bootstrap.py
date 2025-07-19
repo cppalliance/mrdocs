@@ -733,6 +733,30 @@ class MrDocsInstaller:
             }
         }
 
+        # Iterate the cacheVariables and,
+        # 1) If any starts with the value of the parent of mrdocs-src-dir, we replace it with ${sourceParentDir} to make it relative
+        # 2) If any starts with the value of mrdocs-src-dir, we replace it with ${sourceDir} to make it relative
+        # 3) if any starts with the value of $HOME, we replace it with $env{HOME} to make it relative
+        mrdocs_src_dir_parent = os.path.dirname(self.options.mrdocs_src_dir)
+        if mrdocs_src_dir_parent == self.options.mrdocs_src_dir:
+            mrdocs_src_dir_parent = ''
+        mrdocs_home_dir = os.path.expanduser("~")
+        for key, value in new_preset["cacheVariables"].items():
+            if not isinstance(value, str):
+                continue
+            # Replace mrdocs-src-dir parent with ${sourceParentDir}
+            if mrdocs_src_dir_parent and value.startswith(mrdocs_src_dir_parent):
+                new_value = "${sourceParentDir}" + value[len(mrdocs_src_dir_parent):]
+                new_preset["cacheVariables"][key] = new_value
+            # Replace mrdocs-src-dir with ${sourceDir}
+            elif self.options.mrdocs_src_dir and value.startswith(self.options.mrdocs_src_dir):
+                new_value = "${sourceDir}" + value[len(self.options.mrdocs_src_dir):]
+                new_preset["cacheVariables"][key] = new_value
+            # Replace $HOME with $env{HOME}
+            elif mrdocs_home_dir and value.startswith(mrdocs_home_dir):
+                new_value = "$env{HOME}" + value[len(mrdocs_home_dir):]
+                new_preset["cacheVariables"][key] = new_value
+
         preset_exists = False
         for preset in user_presets.get("configurePresets", []):
             if preset.get("name") == self.options.mrdocs_preset_name:
