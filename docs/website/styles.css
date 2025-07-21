@@ -2807,3 +2807,23 @@ nav {
   background-color: rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(10px);
 }
+
+.header-cta {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin: 1.5rem 0 0 0;
+}
+
+.banner-snippet {
+  display: flex;
+  justify-content: center;
+  border-radius: 0.25rem;
+  margin: 0.5em 0 0 0;
+}
+
+.banner-snippet code {
+  margin-top: 0.5rem;
+  background-color: rgba(34, 34, 34, 0.5);
+  color: inherit;
+}
