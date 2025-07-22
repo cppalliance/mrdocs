@@ -684,6 +684,7 @@ private:
         std::vector<Polymorphic<TArg>>& result,
         Range&& args)
     {
+        std::size_t i = 0;
         for (TemplateArgument const& arg : args)
         {
             if (arg.getIsDefaulted())
@@ -699,8 +700,13 @@ private:
             }
             else
             {
-                result.emplace_back(toTArg(arg));
+                if (i + 1 > result.size())
+                {
+                    result.emplace_back();
+                }
+                result[i] = toTArg(arg);
             }
+            ++i;
         }
     }
 
