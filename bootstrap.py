@@ -89,6 +89,11 @@ class InstallOptions:
     llvm_repo: str = "https://github.com/llvm/llvm-project.git"
     llvm_commit: str = "dd7a3d4d798e30dfe53b5bbbbcd9a23c24ea1af9"
 
+    # Information to create run configurations
+    generate_run_configs: bool = field(default_factory=lambda: running_from_mrdocs_source_dir())
+    jetbrains_run_config_dir: str = "<mrdocs-src-dir>/.run"
+    boost_src_dir: str = "<mrdocs-src-dir>/../boost"
+
     # Meta
     non_interactive: bool = False
 
@@ -125,6 +130,9 @@ INSTALL_OPTION_DESCRIPTIONS = {
     "llvm_install_dir": "Directory where LLVM will be installed.",
     "llvm_repo": "URL of the LLVM project repository to clone.",
     "llvm_commit": "Specific commit hash of LLVM to checkout.",
+    "generate_run_configs": "Whether to generate run configurations for IDEs.",
+    "jetbrains_run_config_dir": "Directory where JetBrains run configurations will be stored.",
+    "boost_src_dir": "Directory where the source files of the Boost libraries are located.",
     "non_interactive": "Whether to use all default options without interactive prompts."
 }
 
@@ -797,16 +805,161 @@ class MrDocsInstaller:
         else:
             print(f"\nMrDocs has been successfully installed in {self.options.mrdocs_install_dir}.\n")
 
+
+    def generate_clion_run_configs(self, configs):
+        import xml.etree.ElementTree as ET
+
+        # Generate CLion run configurations for MrDocs
+        # For each configuration, we create an XML file in <mrdocs-src-dir>/.run
+        # named <config-name>.run.xml
+        run_dir = os.path.join(self.options.mrdocs_src_dir, ".run")
+        os.makedirs(run_dir, exist_ok=True)
+        for config in configs:
+            config_name = config["name"]
+            run_config_path = os.path.join(run_dir, f"{config_name}.run.xml")
+            root = ET.Element("component", name="ProjectRunConfigurationManager")
+            config = ET.SubElement(root, "configuration", {
+                "default": "false",
+                "name": config["name"],
+                "type": "CMakeRunConfiguration",
+                "factoryName": "Application",
+                "PROGRAM_PARAMS": " ".join(config["args"]),
+                "REDIRECT_INPUT": "false",
+                "ELEVATE": "false",
+                "USE_EXTERNAL_CONSOLE": "false",
+                "EMULATE_TERMINAL": "false",
+                "PASS_PARENT_ENVS_2": "true",
+                "PROJECT_NAME": "MrDocs",
+                "TARGET_NAME": config["target"],
+                "CONFIG_NAME": self.options.mrdocs_preset_name or "debug",
+                "RUN_TARGET_PROJECT_NAME": "MrDocs",
+                "RUN_TARGET_NAME": config["target"]
+            })
+            method = ET.SubElement(config, "method", v="2")
+            ET.SubElement(method, "option", name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask", enabled="true")
+            tree = ET.ElementTree(root)
+            tree.write(run_config_path, encoding="utf-8", xml_declaration=False)
+
+    def generate_visual_studio_run_configs(self, configs):
+        # Visual Studio launch configs are stored in .vs/launch.vs.json
+        vs_dir = os.path.join(self.options.mrdocs_src_dir, ".vs")
+        os.makedirs(vs_dir, exist_ok=True)
+        launch_path = os.path.join(vs_dir, "launch.vs.json")
+
+        # Load existing configs if present
+        if os.path.exists(launch_path):
+            with open(launch_path, "r") as f:
+                launch_data = json.load(f)
+        else:
+            launch_data = {"version": "0.2.1", "configurations": []}
+
+        # Build a dict for quick lookup by name
+        configs_by_name = {cfg.get("name"): cfg for cfg in launch_data.get("configurations", [])}
+
+        for config in configs:
+            new_cfg = {
+                "name": config["name"],
+                "type": "default",
+                "project": "MrDocs",
+                "projectTarget": config["target"],
+                "args": config["args"],
+                "cwd": self.options.mrdocs_build_dir,
+                "env": {},
+                "stopAtEntry": False
+            }
+            # Replace or add
+            configs_by_name[config["name"]] = new_cfg
+
+        # Write back all configs
+        launch_data["configurations"] = list(configs_by_name.values())
+        with open(launch_path, "w") as f:
+            json.dump(launch_data, f, indent=4)
+
+    def generate_run_configs(self):
+        # Configurations using MrDocs executable
+        configs = [{
+            "name": "MrDocs Version",
+            "target": "mrdocs",
+            "args": ["--version"]
+        }, {
+            "name": "MrDocs Help",
+            "target": "mrdocs",
+            "args": ["--help"]
+        }]
+
+        # Configuration to run unit tests
+        if self.options.mrdocs_build_tests:
+            configs.append({
+                "name": "MrDocs Unit Tests",
+                "target": "mrdocs-test",
+                "args": [
+                    '--unit=true'
+                ]
+            })
+
+        # Configurations to Update/Test/Create test fixtures
+        for verb in ["update", "test", "create"]:
+            for generator in ["adoc", "html", "xml"]:
+                configs.append({
+                    "name": f"MrDocs {verb.title()} Test Fixtures ({generator.upper()})",
+                    "target": "mrdocs-test",
+                    "args": [
+                        f'"{self.options.mrdocs_src_dir}/test-files/golden-tests"',
+                        '--unit=false',
+                        f'--action={verb}',
+                        f'--generator={generator}',
+                        f'--addons="{self.options.mrdocs_src_dir}/share/mrdocs/addons"',
+                        f'--stdlib-includes="{self.options.llvm_install_dir}/include/c++/v1"',
+                        f'--stdlib-includes="{self.options.llvm_install_dir}/lib/clang/20/include"',
+                        f'--libc-includes="{self.options.mrdocs_src_dir}/share/mrdocs/headers/libc-stubs"',
+                        '--log-level=warn'
+                    ]
+                })
+
+        self.prompt_option("boost_src_dir")
+        if self.options.boost_src_dir and os.path.exists(self.options.boost_src_dir):
+            boost_libs = os.path.join(self.options.boost_src_dir, 'libs')
+            if os.path.exists(boost_libs):
+                for lib in os.listdir(boost_libs):
+                    mrdocs_config = os.path.join(boost_libs, lib, 'doc', 'mrdocs.yml')
+                    if os.path.exists(mrdocs_config):
+                        print(f"Generating run configuration for Boost library '{lib}'")
+                        configs.append({
+                            "name": f"Boost.{lib.title()} Documentation",
+                            "target": "mrdocs",
+                            "args": [
+                                '"../CMakeLists.txt"',
+                                f'--config="{self.options.boost_src_dir}/libs/{lib}/doc/mrdocs.yml"',
+                                f'--output="{self.options.boost_src_dir}/libs/{lib}/doc/modules/reference/pages"',
+                                f'--generator=adoc',
+                                f'--addons="{self.options.mrdocs_src_dir}/share/mrdocs/addons"',
+                                f'--stdlib-includes="{self.options.llvm_install_dir}/include/c++/v1"',
+                                f'--stdlib-includes="{self.options.llvm_install_dir}/lib/clang/20/include"',
+                                f'--libc-includes="{self.options.mrdocs_src_dir}/share/mrdocs/headers/libc-stubs"',
+                                f'--tagfile=reference.tag.xml',
+                                '--multipage=true',
+                                '--concurrency=32',
+                                '--log-level=debug'
+                            ]
+                        })
+            else:
+                print(f"Warning: Boost source directory '{self.options.boost_src_dir}' does not contain 'libs' directory. Skipping Boost documentation target generation.")
+
+        self.generate_clion_run_configs(configs)
+        self.generate_visual_studio_run_configs(configs)
+
     def install_all(self):
         self.check_tools()
         self.setup_mrdocs_dir()
         self.setup_third_party_dir()
         self.install_duktape()
-        if self.options.mrdocs_build_tests:
+        if self.prompt_option("mrdocs_build_tests"):
             self.install_libxml2()
         self.install_llvm()
         self.create_cmake_presets()
         self.install_mrdocs()
+        if self.prompt_option("generate_run_configs"):
+            self.generate_run_configs()
 
 def get_command_line_args():
     """
