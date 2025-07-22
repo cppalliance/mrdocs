@@ -65,14 +65,6 @@ class InstallOptions:
     # Third-party dependencies
     third_party_src_dir: str = "<mrdocs-src-dir>/../third-party"
 
-    # Fmt
-    fmt_src_dir: str = "<third-party-src-dir>/fmt"
-    fmt_build_type: str = "<mrdocs-build-type>"
-    fmt_build_dir: str = "<fmt-src-dir>/build/<fmt-build-type:lower>"
-    fmt_install_dir: str = "<fmt-src-dir>/install/<fmt-build-type:lower>"
-    fmt_repo: str = "https://github.com/fmtlib/fmt"
-    fmt_branch: str = "10.2.1"
-
     # Duktape
     duktape_src_dir: str = "<third-party-src-dir>/duktape"
     duktape_url: str = "https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz"
@@ -116,12 +108,6 @@ INSTALL_OPTION_DESCRIPTIONS = {
     "mrdocs_system_install": "Whether to install MrDocs to the system directories instead of a custom install directory.",
     "mrdocs_run_tests": "Whether to run tests after building MrDocs.",
     "third_party_src_dir": "Directory for all third-party source dependencies.",
-    "fmt_src_dir": "Directory for the fmt library source code.",
-    "fmt_build_type": "CMake build type for the fmt library. (Release, Debug, RelWithDebInfo, MilRelSize, DebWithOpt)",
-    "fmt_build_dir": "Directory where the fmt library will be built.",
-    "fmt_install_dir": "Directory where the fmt library will be installed.",
-    "fmt_repo": "URL of the fmt library repository to clone.",
-    "fmt_branch": "Branch or tag of the fmt library to use.",
     "duktape_src_dir": "Directory for the Duktape source code.",
     "duktape_url": "Download URL for the Duktape source archive.",
     "duktape_build_type": "CMake build type for Duktape. (Release, Debug, RelWithDebInfo, MilRelSize, DebWithOpt)",
@@ -259,7 +245,7 @@ class MrDocsInstaller:
                     key = match.group(1)
                     has_dir_key = has_dir_key or key.endswith("-dir")
                     key = key.replace("-", "_")
-                    fmt = match.group(2)
+                    transform_fn = match.group(2)
                     if key == 'os':
                         if self.is_windows():
                             val = "windows"
@@ -271,10 +257,10 @@ class MrDocsInstaller:
                             raise ValueError("Unsupported operating system.")
                     else:
                         val = getattr(self.options, key, None)
-                    if fmt:
-                        if fmt == "lower":
+                    if transform_fn:
+                        if transform_fn == "lower":
                             val = val.lower()
-                        elif fmt == "upper":
+                        elif transform_fn == "upper":
                             val = val.upper()
                         # Add more formats as needed
                     return val
@@ -539,17 +525,6 @@ class MrDocsInstaller:
         self.prompt_dependency_path_option("third_party_src_dir")
         os.makedirs(self.options.third_party_src_dir, exist_ok=True)
 
-    def install_fmt(self):
-        self.prompt_dependency_path_option("fmt_src_dir")
-        if not os.path.exists(self.options.fmt_src_dir):
-            self.prompt_option("fmt_repo")
-            self.prompt_option("fmt_branch")
-            self.clone_repo(self.options.fmt_repo, self.options.fmt_src_dir, branch=self.options.fmt_branch, depth=1)
-        self.prompt_build_type_option("fmt_build_type")
-        self.prompt_dependency_path_option("fmt_build_dir")
-        self.prompt_dependency_path_option("fmt_install_dir")
-        self.cmake_workflow(self.options.fmt_src_dir, self.options.fmt_build_type, self.options.fmt_build_dir, self.options.fmt_install_dir, ["-D", "FMT_DOC=OFF", "-D", "FMT_TEST=OFF"])
-
     def install_duktape(self):
         self.prompt_dependency_path_option("duktape_src_dir")
         if not os.path.exists(self.options.duktape_src_dir):
@@ -715,7 +690,6 @@ class MrDocsInstaller:
                 "Clang_ROOT": self.options.llvm_install_dir,
                 "duktape_ROOT": self.options.duktape_install_dir,
                 "Duktape_ROOT": self.options.duktape_install_dir,
-                "fmt_ROOT": self.options.fmt_install_dir,
                 "libxml2_ROOT": self.options.libxml2_install_dir,
                 "LibXml2_ROOT": self.options.libxml2_install_dir,
                 "MRDOCS_BUILD_TESTS": self.options.mrdocs_build_tests,
@@ -797,7 +771,6 @@ class MrDocsInstaller:
                 "-D", f"Clang_ROOT={self.options.llvm_install_dir}",
                 "-D", f"duktape_ROOT={self.options.duktape_install_dir}",
                 "-D", f"Duktape_ROOT={self.options.duktape_install_dir}",
-                "-D", f"fmt_ROOT={self.options.fmt_install_dir}"
             ])
             if self.options.mrdocs_build_tests:
                 extra_args.extend([
@@ -828,7 +801,6 @@ class MrDocsInstaller:
         self.check_tools()
         self.setup_mrdocs_dir()
         self.setup_third_party_dir()
-        self.install_fmt()
         self.install_duktape()
         if self.options.mrdocs_build_tests:
             self.install_libxml2()

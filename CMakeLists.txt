@@ -16,11 +16,6 @@
 #-------------------------------------------------
 
 cmake_minimum_required(VERSION 3.13)
-if (GENERATOR_IS_MULTI_CONFIG AND NOT CMAKE_CONFIGURATION_TYPES)
-    set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Configurations" FORCE)
-elseif(NOT GENERATOR_IS_MULTI_CONFIG AND NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build." FORCE)
-endif()
 project(
     MrDocs
     VERSION 0.0.3
@@ -256,7 +251,6 @@ if (WIN32)
         -D_WIN32_WINNT=0x0601
         -D_CRT_SECURE_NO_WARNINGS
         -D_SILENCE_CXX20_CISO646_REMOVED_WARNING
-        -DFMT_HEADER_ONLY # because of _ITERATOR_DEBUG_LEVEL
     )
     if(MSVC)
         get_target_property(LLVM_CONFIGURATION_TYPE LLVMCore IMPORTED_CONFIGURATIONS)
