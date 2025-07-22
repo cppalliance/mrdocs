@@ -1,0 +1,95 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Namespaces
+
+[cols=1]
+|===
+| Name
+| link:#std[`std`] 
+|===
+
+=== Types
+
+[cols=1]
+|===
+| Name
+| link:#A[`A`] 
+|===
+
+[#std]
+== std
+
+=== Types
+
+[cols=1]
+|===
+| Name
+| link:#std-hash-03[`hash`] 
+| link:#std-hash-08[`hash&lt;A&gt;`] 
+|===
+
+[#std-hash-03]
+== link:#std[std]::hash
+
+=== Synopsis
+
+Declared in `&lt;no&hyphen;extract&hyphen;friends&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class T&gt;
+class hash;
+----
+
+[#std-hash-08]
+== link:#std[std]::link:#std-hash-03[hash]&lt;link:#A[A]&gt;
+
+=== Synopsis
+
+Declared in `&lt;no&hyphen;extract&hyphen;friends&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+class link:#std-hash-03[hash]&lt;link:#A[A]&gt;;
+----
+
+=== Member Functions
+
+[cols=1]
+|===
+| Name
+| link:#std-hash-08-operator_call[`operator()`] 
+|===
+
+[#std-hash-08-operator_call]
+== link:#std[std]::link:#std-hash-08[hash&lt;A&gt;]::operator()
+
+=== Synopsis
+
+Declared in `&lt;no&hyphen;extract&hyphen;friends&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+unsigned long long
+operator()(link:#A[A] const& rhs) const noexcept;
+----
+
+[#A]
+== A
+
+=== Synopsis
+
+Declared in `&lt;no&hyphen;extract&hyphen;friends&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class A;
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

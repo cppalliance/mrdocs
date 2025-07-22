@@ -131,6 +131,16 @@
       "title": "Extraction policy for empty namespaces",
       "type": "boolean"
     },
+    "extract-friends": {
+      "default": true,
+      "description": "Determine whether friend functions and classes should be extracted. When set to `true`, MrDocs extracts friend functions and classes. When set to `false`, friend functions and classes are not extracted.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Extraction policy for friend functions and classes",
+      "type": "boolean"
+    },
     "extract-implicit-specializations": {
       "default": true,
       "description": "When set to `true`, MrDocs extracts implicit template specializations used as base classes as dependencies. This allows MrDocs to extract metadata that can later be used to determine the members of the derived class, as specified by the `inherit-base-members` option.",
