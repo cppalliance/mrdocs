@@ -240,7 +240,6 @@
       </template>
       <template class="explicit" id="dKDSVrZun8skBV/NUCmJyCUOvJA=">
         <targ class="type" type="double"/>
-        <targ class="type" type="double"/>
         <struct name="B" id="gNJJgsCrBHI+de6/WxRWfc6QUSQ=">
           <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="17" class="def"/>
           <struct name="C" id="B/thZ5I0G7tgrSCTq/QPdxvZ7mk=">
@@ -253,7 +252,6 @@
             </struct>
           </template>
           <template class="explicit" id="mlI5CyZeYMi0hLKKprnY2lkWYuI=">
-            <targ class="type" type="bool"/>
             <targ class="type" type="bool"/>
             <struct name="D" id="rzmzIDLemEwnRqvVCiQsLO9rHE4=">
               <file short-path="class-template-specializations-3.cpp" source-path="class-template-specializations-3.cpp" line="25" class="def"/>
