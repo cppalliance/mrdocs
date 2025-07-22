@@ -269,6 +269,13 @@
         "default": true
       },
       {
+        "name": "extract-friends",
+        "brief": "Extraction policy for friend functions and classes",
+        "details": "Determine whether friend functions and classes should be extracted. When set to `true`, MrDocs extracts friend functions and classes. When set to `false`, friend functions and classes are not extracted.",
+        "type": "bool",
+        "default": true
+      },
+      {
         "name": "sort-members",
         "brief": "Sort the members of a record or namespace",
         "details": "When set to `true`, sort the members of a record or namespace by name and parameters. When set to `false`, the members are included in the declaration order they are extracted.",

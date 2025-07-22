@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <namespace name="std" id="eIvg7iueGIPcE8p1NVfngsp2ojw=">
+    <template>
+      <tparam name="T" class="type"/>
+      <class name="hash" id="PJd7qch01fTpaC83fxeMwg+clc0=">
+        <file short-path="extract-friends.cpp" source-path="extract-friends.cpp" line="2"/>
+      </class>
+    </template>
+    <template class="explicit" id="PJd7qch01fTpaC83fxeMwg+clc0=">
+      <targ class="type" type="A"/>
+      <class name="hash" id="jTCZUvygQOxo6L+VfFZcAI6KU0Y=">
+        <file short-path="extract-friends.cpp" source-path="extract-friends.cpp" line="12" class="def"/>
+        <function name="operator()" exception-spec="noexcept" id="oizNQDy8La+BwcGOBpMPC63TA5U=">
+          <file short-path="extract-friends.cpp" source-path="extract-friends.cpp" line="14" class="def"/>
+          <attr id="operator" name="call" value="42"/>
+          <attr id="is-const"/>
+          <return>
+            <type name="unsigned long long"/>
+          </return>
+          <param name="rhs">
+            <type class="lvalue-reference">
+              <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
+            </type>
+          </param>
+        </function>
+      </class>
+    </template>
+  </namespace>
+  <class name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
+    <file short-path="extract-friends.cpp" source-path="extract-friends.cpp" line="6" class="def"/>
+    <friend id="jTCZUvygQOxo6L+VfFZcAI6KU0Y=">
+      <befriended id="jTCZUvygQOxo6L+VfFZcAI6KU0Y="/>
+    </friend>
+  </class>
+</namespace>
+</mrdocs>

@@ -715,7 +715,9 @@ populate(
     }
 
     // Iterate over the friends of the class
-    if (D->hasDefinition() && D->hasFriends())
+    if (config_->extractFriends &&
+        D->hasDefinition() &&
+        D->hasFriends())
     {
         for (FriendDecl const* FD : D->friends())
         {
