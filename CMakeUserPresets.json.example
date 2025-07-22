@@ -210,7 +210,6 @@
                 "Clang_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/debwithopt",
                 "duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/debwithopt",
                 "Duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/debwithopt",
-                "fmt_ROOT": "$env{HOME}/Developer/cpp-libs/fmt/install/debwithopt",
                 "libxml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release",
                 "LibXml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release",
                 "MRDOCS_BUILD_TESTS": true,
