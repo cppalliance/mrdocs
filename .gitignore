@@ -1,6 +1,7 @@
 /.idea
 /.vs
 /.vscode
+/.run
 /CMakeUserPresets.json
 /CMakeSettings.json
 /build
