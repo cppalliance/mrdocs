@@ -9,12 +9,13 @@
 //
 
 #include "lib/Support/Report.hpp"
+#include <cstdlib>
+#include <format>
+#include <llvm/Support/Mutex.h>
+#include <llvm/Support/Signals.h>
+#include <llvm/Support/raw_ostream.h>
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Version.hpp>
-#include <llvm/Support/Mutex.h>
-#include <llvm/Support/raw_ostream.h>
-#include <llvm/Support/Signals.h>
-#include <cstdlib>
 #include <mutex>
 
 #ifdef _MSC_VER
@@ -43,12 +44,10 @@ Error::
 formatWhere(
     source_location const& loc)
 {
-    return fmt::format("{}:{}",
-        ::SourceFileNames::getFileName(
-            loc.file_name()),
-        loc.line());
+  return std::format("{}:{}", ::SourceFileNames::getFileName(loc.file_name()),
+                     loc.line());
 #if 0
-    return fmt::format(
+    return std::format(
         "{}@{}({})",
         loc.function_name(),
         ::SourceFileNames::getFileName(
@@ -120,8 +119,7 @@ Error(
     }
 
     where_ = formatWhere(loc);
-    reason_ = fmt::format(
-        "{} errors occurred:\n", errors.size());
+    reason_ = std::format("{} errors occurred:\n", errors.size());
     for(auto const& err : errors)
     {
         reason_.append("    ");
@@ -277,18 +275,18 @@ call_impl(
             os << "An issue occurred during execution.\n";
             os << "If you believe this is a bug, please report it at https://github.com/cppalliance/mrdocs/issues\n"
                   "with the following details:\n";
-            os << fmt::format("    MrDocs Version: {} (Build: {})\n", project_version, project_version_build);
+            os << std::format("    MrDocs Version: {} (Build: {})\n",
+                              project_version, project_version_build);
             if (e)
             {
-                os << fmt::format(
-                    "    Error Location: `{}` at line {}\n",
-                    ::SourceFileNames::getFileName(e->location().file_name()),
-                    e->location().line());
+              os << std::format(
+                  "    Error Location: `{}` at line {}\n",
+                  ::SourceFileNames::getFileName(e->location().file_name()),
+                  e->location().line());
             }
-            os << fmt::format(
-                "    Reported From: `{}` at line {}\n",
-                ::SourceFileNames::getFileName(loc->file_name()),
-                loc->line());
+            os << std::format("    Reported From: `{}` at line {}\n",
+                              ::SourceFileNames::getFileName(loc->file_name()),
+                              loc->line());
             // VFALCO attach a stack trace for Level::fatal
         }
         os << '\n';

@@ -9,22 +9,22 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "lib/Support/Debug.hpp"
-#include "lib/Support/Path.hpp"
-#include "lib/ConfigImpl.hpp"
-#include "lib/Support/ExecuteAndWaitWithLogging.hpp"
 #include "MrDocsCompilationDatabase.hpp"
-#include <mrdocs/Support/Report.hpp>
+#include "lib/ConfigImpl.hpp"
+#include "lib/Support/Debug.hpp"
+#include "lib/Support/ExecuteAndWaitWithLogging.hpp"
+#include "lib/Support/Path.hpp"
 #include <clang/Basic/LangStandard.h>
 #include <clang/Driver/Driver.h>
 #include <clang/Driver/Options.h>
 #include <clang/Driver/Types.h>
+#include <format>
 #include <llvm/Option/ArgList.h>
 #include <llvm/Option/OptTable.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Program.h>
 #include <llvm/TargetParser/Host.h>
-#include <fmt/format.h>
+#include <mrdocs/Support/Report.hpp>
 #include <ranges>
 
 namespace clang {
@@ -413,7 +413,7 @@ adjustCommandLine(
     // These are additional defines specified in the config file
     for(auto const& def : (*config)->defines)
     {
-        new_cmdline.emplace_back(fmt::format("-D{}", def));
+      new_cmdline.emplace_back(std::format("-D{}", def));
     }
     new_cmdline.emplace_back("-D__MRDOCS__");
 
@@ -430,7 +430,7 @@ adjustCommandLine(
             it != implicitIncludeDirectories.end()) {
             for (auto const& inc : it->second)
             {
-                new_cmdline.emplace_back(fmt::format("-isystem{}", inc));
+              new_cmdline.emplace_back(std::format("-isystem{}", inc));
             }          
         }
     }
@@ -449,7 +449,7 @@ adjustCommandLine(
         new_cmdline.emplace_back("-nostdlib++");
         for (auto const& inc : (*config)->stdlibIncludes)
         {
-            new_cmdline.emplace_back(fmt::format("-isystem{}", inc));
+          new_cmdline.emplace_back(std::format("-isystem{}", inc));
         }
     }
 
@@ -458,7 +458,7 @@ adjustCommandLine(
         new_cmdline.emplace_back("-nostdinc");
         for (auto const& inc : (*config)->libcIncludes)
         {
-            new_cmdline.emplace_back(fmt::format("-isystem{}", inc));
+          new_cmdline.emplace_back(std::format("-isystem{}", inc));
         }
     }
 
@@ -467,11 +467,11 @@ adjustCommandLine(
     // ------------------------------------------------------
     for (auto const& inc : (*config)->systemIncludes)
     {
-        new_cmdline.emplace_back(fmt::format("-isystem{}", inc));
+      new_cmdline.emplace_back(std::format("-isystem{}", inc));
     }
     for (auto const& inc : (*config)->includes)
     {
-        new_cmdline.emplace_back(fmt::format("-I{}", inc));
+      new_cmdline.emplace_back(std::format("-I{}", inc));
     }
 
     // ------------------------------------------------------
@@ -564,7 +564,7 @@ MrDocsCompilationDatabase(
         }
         else
         {
-            report::info(fmt::format("Skipping non-C++ file: {}", cmd.Filename));
+          report::info(std::format("Skipping non-C++ file: {}", cmd.Filename));
         }
     }
 }

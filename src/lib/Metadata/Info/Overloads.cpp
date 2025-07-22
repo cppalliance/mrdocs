@@ -9,10 +9,11 @@
 //
 
 #include "lib/Support/Radix.hpp"
-#include <mrdocs/Dom/LazyArray.hpp>
+#include <format>
 #include <llvm/ADT/STLExtras.h>
 #include <llvm/ADT/StringRef.h>
 #include <mrdocs/Corpus.hpp>
+#include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Metadata/Info/Function.hpp>
 #include <mrdocs/Metadata/Info/Namespace.hpp>
@@ -20,13 +21,11 @@
 
 namespace clang::mrdocs {
 
-OverloadsInfo::
-OverloadsInfo(SymbolID const& Parent, std::string_view Name, AccessKind access, bool isStatic) noexcept
-    : InfoCommonBase(
-        SymbolID::createFromString(
-            fmt::format("{}-{}-{}-{}", toBase16(Parent), Name, toString(access), isStatic)))
-{
-    this->Parent = Parent;
+OverloadsInfo::OverloadsInfo(SymbolID const &Parent, std::string_view Name,
+                             AccessKind access, bool isStatic) noexcept
+    : InfoCommonBase(SymbolID::createFromString(std::format(
+          "{}-{}-{}-{}", toBase16(Parent), Name, toString(access), isStatic))) {
+  this->Parent = Parent;
 }
 
 void

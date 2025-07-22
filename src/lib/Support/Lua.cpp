@@ -8,11 +8,12 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdocs/Support/Lua.hpp>
-#include <mrdocs/Support/Report.hpp>
-#include <mrdocs/Support/Path.hpp>
 #include "../../../third-party/lua/src/lua.hpp"
-#include <fmt/format.h>
+#include <format>
+#include <mrdocs/Support/Lua.hpp>
+#include <mrdocs/Support/Path.hpp>
+#include <mrdocs/Support/Report.hpp>
+#include <print>
 
 #include <llvm/Support/raw_ostream.h>
 #include "lib/Support/LuaHandlebars.hpp"
@@ -214,13 +215,12 @@ luaM_report(
         source_location::current())
 {
     SourceLocation Loc(err.location());
-    fmt::print(
-        "{}\n"
-        //"    at {}({})\n",
-        ,err.message()
-        ,Loc.file_name()
-        //,Loc.line()
-        );
+    std::print("{}\n"
+               //"    at {}({})\n",
+               ,
+               err.message(), Loc.file_name()
+               //,Loc.line()
+    );
 }
 
 // Pop the Lua error off the stack
@@ -644,12 +644,8 @@ loadChunk(
     source_location loc)
 {
     SourceLocation Loc(loc);
-    return loadChunk(
-        luaChunk,
-        fmt::format("{}({})", 
-            Loc.file_name(),
-            Loc.line()),
-        loc);
+    return loadChunk(luaChunk,
+                     std::format("{}({})", Loc.file_name(), Loc.line()), loc);
 }
 
 Expected<Function>
@@ -1205,7 +1201,7 @@ lua_main()
             { "x", "0" },
             { "y", "1" }
             });
-    fmt::println("{}", testFunc(obj));
+    std::println("{}", testFunc(obj));
 }
 
 } // lua

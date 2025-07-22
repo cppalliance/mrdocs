@@ -11,12 +11,12 @@
 //
 
 #include "lib/Support/Debug.hpp"
-#include <mrdocs/Corpus.hpp>
-#include <mrdocs/Metadata/Javadoc.hpp>
-#include <mrdocs/Metadata/DomCorpus.hpp>
+#include <format>
 #include <llvm/Support/Error.h>
 #include <llvm/Support/Path.h>
-#include <fmt/format.h>
+#include <mrdocs/Corpus.hpp>
+#include <mrdocs/Metadata/DomCorpus.hpp>
+#include <mrdocs/Metadata/Javadoc.hpp>
 
 namespace clang {
 namespace mrdocs {
@@ -269,9 +269,8 @@ emplace_back(
                 auto u = dynamic_cast<doc::Param const*>(q.operator->());
                 if(u->name == t->name)
                 {
-                    result = fmt::format(
-                        "duplicate param {}", t->name);
-                    break;
+                  result = std::format("duplicate param {}", t->name);
+                  break;
                 }
             }
         }
@@ -288,9 +287,8 @@ emplace_back(
                 auto u = dynamic_cast<doc::TParam const*>(q.operator->());
                 if(u->name == t->name)
                 {
-                    result = fmt::format(
-                        "duplicate tparam {}", t->name);
-                    break;
+                  result = std::format("duplicate tparam {}", t->name);
+                  break;
                 }
             }
         }

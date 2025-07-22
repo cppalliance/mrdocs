@@ -14,6 +14,7 @@
 
 #include "lib/CorpusImpl.hpp"
 #include "lib/Metadata/InfoSet.hpp"
+#include <format>
 #include <mrdocs/Support/Report.hpp>
 #include <mrdocs/Support/ScopeExit.hpp>
 #include <set>
@@ -386,7 +387,8 @@ private:
         Args&&... args)
     {
         MRDOCS_CHECK_OR(corpus_.config->warnings);
-        std::string const str = fmt::vformat(format.value, fmt::make_format_args(args...));
+        std::string const str =
+            std::vformat(format.value, std::make_format_args(args...));
         warnings_[loc].push_back(str);
     }
 

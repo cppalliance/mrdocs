@@ -10,13 +10,14 @@
 //
 
 #include "lib/Support/Report.hpp"
-#include <mrdocs/Support/Error.hpp>
-#include <mrdocs/Support/JavaScript.hpp>
-#include <mrdocs/Support/Handlebars.hpp>
 #include <duktape.h>
+#include <format>
+#include <llvm/Support/raw_ostream.h>
+#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/Handlebars.hpp>
+#include <mrdocs/Support/JavaScript.hpp>
 #include <utility>
 #include <variant>
-#include <llvm/Support/raw_ostream.h>
 
 namespace clang {
 namespace mrdocs {
@@ -1904,8 +1905,8 @@ registerHelper(
         MRDOCS_TRY(Value JSFn, s.compile_function(script));
         if (!JSFn.isFunction())
         {
-            return Unexpected(Error(fmt::format(
-                    "helper \"{}\" is not a function", name)));
+          return Unexpected(
+              Error(std::format("helper \"{}\" is not a function", name)));
         }
         helpers.set(name, JSFn);
     }

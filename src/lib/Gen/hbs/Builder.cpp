@@ -11,11 +11,11 @@
 
 #include "Builder.hpp"
 #include "lib/ConfigImpl.hpp"
+#include <filesystem>
+#include <format>
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Support/Report.hpp>
-#include <fmt/format.h>
-#include <filesystem>
 
 namespace clang {
 namespace mrdocs {
@@ -245,8 +245,10 @@ Builder(
     hbs_.registerHelper("relativize", dom::makeInvocable(relativize_fn));
 
     // Load layout templates
-    std::string indexTemplateFilename = fmt::format("index.{}.hbs", domCorpus.fileExtension);
-    std::string wrapperTemplateFilename = fmt::format("wrapper.{}.hbs", domCorpus.fileExtension);
+    std::string indexTemplateFilename =
+        std::format("index.{}.hbs", domCorpus.fileExtension);
+    std::string wrapperTemplateFilename =
+        std::format("wrapper.{}.hbs", domCorpus.fileExtension);
     for (std::string const& filename : {indexTemplateFilename, wrapperTemplateFilename})
     {
         std::string pathName = files::appendPath(layoutDir(), filename);
@@ -318,22 +320,22 @@ Expected<void>
 Builder::
 operator()(std::ostream& os, T const& I)
 {
-    std::string const templateFile = fmt::format("index.{}.hbs", domCorpus.fileExtension);
-    dom::Object const ctx = createContext(I);
+  std::string const templateFile =
+      std::format("index.{}.hbs", domCorpus.fileExtension);
+  dom::Object const ctx = createContext(I);
 
-    if (auto& config = domCorpus->config;
-        config->embedded ||
-        !config->multipage)
-    {
-        // Single page or embedded pages render the index template directly
-        // without the wrapper
-        return callTemplate(os, templateFile, ctx);
-    }
+  if (auto &config = domCorpus->config;
+      config->embedded || !config->multipage) {
+    // Single page or embedded pages render the index template directly
+    // without the wrapper
+    return callTemplate(os, templateFile, ctx);
+  }
 
     // Multipage output: render the wrapper template
     // The context receives the original symbol and the contents from rendering
     // the index template
-    auto const wrapperFile = fmt::format("wrapper.{}.hbs", domCorpus.fileExtension);
+    auto const wrapperFile =
+        std::format("wrapper.{}.hbs", domCorpus.fileExtension);
     dom::Object const wrapperCtx = createFrame(ctx);
     wrapperCtx.set("contents", dom::makeInvocable([this, &I, templateFile, &os](
         dom::Value const&) -> Expected<dom::Value>
@@ -355,29 +357,26 @@ renderWrapped(
     std::ostream& os,
     std::function<Expected<void>()> contentsCb)
 {
-    auto const wrapperFile = fmt::format(
-        "wrapper.{}.hbs", domCorpus.fileExtension);
-    dom::Object ctx;
-    ctx.set("contents", dom::makeInvocable([&](
-        dom::Value const&) -> Expected<dom::Value>
-    {
-        MRDOCS_TRY(contentsCb());
-        return {};
-    }));
+  auto const wrapperFile =
+      std::format("wrapper.{}.hbs", domCorpus.fileExtension);
+  dom::Object ctx;
+  ctx.set("contents",
+          dom::makeInvocable([&](dom::Value const &) -> Expected<dom::Value> {
+            MRDOCS_TRY(contentsCb());
+            return {};
+          }));
 
-    // Render the wrapper directly to ostream
-    auto pathName = files::appendPath(layoutDir(), wrapperFile);
-    MRDOCS_TRY(auto fileText, files::getFileText(pathName));
-    HandlebarsOptions options;
-    options.escapeFunction = escapeFn_;
-    OutputRef outRef(os);
-    Expected<void, HandlebarsError> exp =
-        hbs_.try_render_to(
-            outRef, fileText, ctx, options);
-    if (!exp)
-    {
-        Error(exp.error().what()).Throw();
-    }
+  // Render the wrapper directly to ostream
+  auto pathName = files::appendPath(layoutDir(), wrapperFile);
+  MRDOCS_TRY(auto fileText, files::getFileText(pathName));
+  HandlebarsOptions options;
+  options.escapeFunction = escapeFn_;
+  OutputRef outRef(os);
+  Expected<void, HandlebarsError> exp =
+      hbs_.try_render_to(outRef, fileText, ctx, options);
+  if (!exp) {
+    Error(exp.error().what()).Throw();
+  }
     return {};
 }
 

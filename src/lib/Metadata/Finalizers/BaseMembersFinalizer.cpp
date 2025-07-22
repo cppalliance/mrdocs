@@ -9,8 +9,9 @@
 //
 
 #include "BaseMembersFinalizer.hpp"
-#include <mrdocs/Support/Report.hpp>
+#include <format>
 #include <mrdocs/Support/Algorithm.hpp>
+#include <mrdocs/Support/Report.hpp>
 
 namespace clang::mrdocs {
 
@@ -160,10 +161,8 @@ inheritBaseMembers(
                 });
             otherCopy->Parent = derivedId;
             otherCopy->id = SymbolID::createFromString(
-                fmt::format(
-                    "{}-{}",
-                    toBase16Str(otherCopy->Parent),
-                    toBase16Str(otherInfo.id)));
+                std::format("{}-{}", toBase16Str(otherCopy->Parent),
+                            toBase16Str(otherInfo.id)));
             derived.push_back(otherCopy->id);
             // Get the extraction mode from the derived class
             if (otherCopy->Extraction == ExtractionMode::Dependency)

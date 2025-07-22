@@ -9,6 +9,7 @@
 //
 
 #include "mrdocs/Support/Algorithm.hpp"
+#include <format>
 #include <mrdocs/Metadata/Specifiers.hpp>
 
 namespace clang {
@@ -94,7 +95,7 @@ toString(
     if(info.Kind == NoexceptKind::True &&
         (resolved || info.Operand.empty()))
         return "noexcept";
-    return fmt::format("noexcept({})", info.Operand);
+    return std::format("noexcept({})", info.Operand);
 }
 
 dom::String
@@ -114,7 +115,7 @@ toString(
     if(info.Kind == ExplicitKind::True &&
         (resolved || info.Operand.empty()))
         return "explicit";
-    return fmt::format("explicit({})", info.Operand);
+    return std::format("explicit({})", info.Operand);
 }
 
 dom::String toString(ReferenceKind kind) noexcept

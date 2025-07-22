@@ -149,14 +149,15 @@ Object::visit(F&& fn) const
 //------------------------------------------------
 
 template<>
-struct fmt::formatter<clang::mrdocs::dom::Object>
-    : fmt::formatter<std::string>
+struct std::formatter<clang::mrdocs::dom::Object>
+    : std::formatter<std::string>
 {
+    template <class FmtContext>
     auto format(
         clang::mrdocs::dom::Object const& value,
-        fmt::format_context& ctx) const
+        FmtContext& ctx) const
     {
-        return fmt::formatter<std::string>::format(
+        return std::formatter<std::string>::format(
             toString(value), ctx);
     }
 };

@@ -2,10 +2,6 @@
   "name": "mrdocs",
   "version": "0.1.0",
   "dependencies": [
-    {
-      "name": "fmt",
-      "version>=": "10.0.0"
-    },
     "duktape"
   ],
   "features": {

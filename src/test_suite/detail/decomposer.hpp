@@ -8,16 +8,11 @@
 #ifndef MRDOCS_TEST_DECOMPOSER_HPP
 #define MRDOCS_TEST_DECOMPOSER_HPP
 
-#include <type_traits>
-#include <string_view>
+#include <format>
 #include <sstream>
+#include <string_view>
+#include <type_traits>
 #include <utility>
-
-#if defined(__has_include) && __has_include(<fmt/format.h>)
-#include <fmt/format.h>
-#include <fmt/ostream.h>
-#define MRDOCS_TEST_HAS_FMT
-#endif
 
 // These are test macros we can use to test our code without having to
 // integrate a test framework for now.
@@ -52,17 +47,14 @@ namespace test_suite::detail
         {
             out += '\"';
         }
-#ifdef MRDOCS_TEST_HAS_FMT
-        if constexpr (fmt::is_formattable<T>::value) {
-            out += fmt::format("{}", value);
-        } else
-#endif
-        if constexpr (has_ostream_op<T>::value) {
-            std::stringstream ss;
-            ss << value;
-            out += ss.str();
+        if constexpr (std::formattable<T, char>) {
+          out += std::format("{}", value);
+        } else if constexpr (has_ostream_op<T>::value) {
+          std::stringstream ss;
+          ss << value;
+          out += ss.str();
         } else {
-            out += demangle<T>();
+          out += demangle<T>();
         }
         if constexpr (std::is_convertible_v<std::decay_t<T>, std::string_view>)
         {

@@ -125,27 +125,6 @@ These instructions assume all dependencies are installed in the `third-party` di
 Feel free to install them anywhere you want and adjust the main MrDocs configuration command later.
 ====
 
-[#install-fmt]
-=== Fmt
-
-MrDocs uses the `fmt` library for formatting strings.
-From the `third-party` directory, you can clone the `fmt` repository and install it with the following commands:
-
-[source,bash]
-----
-git clone https://github.com/fmtlib/fmt --branch 10.2.1 --depth 1 <.>
-cd fmt
-cmake -S . -B ./build -DCMAKE_BUILD_TYPE=Release -D FMT_DOC=OFF -D FMT_TEST=OFF <.>
-cmake --build ./build --config Release <.>
-cmake --install ./build --prefix ./install <.>
-cd ..
-----
-
-<.> Shallow clones the fmt repository.
-<.> Configure the fmt library with CMake, excluding the documentation and tests.
-<.> Builds the fmt library in the `build` directory.
-<.> Installs the fmt library in the `install` directory.
-
 [IMPORTANT]
 ====
 All instructions in this document assume you are using a CMake version above 3.26.
@@ -385,7 +364,7 @@ cd ../..
 
 The MrDocs repository also includes a `CMakePresets.json` file that contains the parameters to configure MrDocs with CMake.
 
-To specify the installation directories, you can use the `LLVM_ROOT`, `DUKTAPE_ROOT`, `FMT_ROOT`, and `LIBXML2_ROOT` environment variables.
+To specify the installation directories, you can use the `LLVM_ROOT`, `DUKTAPE_ROOT`, and `LIBXML2_ROOT` environment variables.
 To specify a generator (`-G`) and platform name (`-A`), you can use the `CMAKE_GENERATOR` and `CMAKE_GENERATOR_PLATFORM` environment variables.
 
 You can also customize the presets by duplicating and editing the `CMakeUserPresets.json.example` file in the `mrdocs` directory.

@@ -11,9 +11,10 @@
 
 #include "lib/Support/Debug.hpp"
 #include "lib/Support/Radix.hpp"
+#include <format>
 #include <memory>
-#include <mrdocs/Metadata/Info/Record.hpp>
 #include <mrdocs/Metadata/Info.hpp>
+#include <mrdocs/Metadata/Info/Record.hpp>
 #include <mrdocs/Metadata/SymbolID.hpp>
 
 namespace clang {
@@ -33,62 +34,24 @@ debugEnableHeapChecking()
 } // mrdocs
 } // clang
 
-fmt::format_context::iterator
-fmt::formatter<clang::mrdocs::SymbolID>::
-format(
-    clang::mrdocs::SymbolID const& s,
-    fmt::format_context& ctx) const
-{
-    std::string str = s ?
-        "<invalid SymbolID>" :
-        clang::mrdocs::toBase64(s);
-    return fmt::formatter<std::string>::format(std::move(str), ctx);
-}
-
-fmt::format_context::iterator
-fmt::formatter<clang::mrdocs::InfoKind>::
-format(
-    clang::mrdocs::InfoKind t,
-    fmt::format_context& ctx) const
-{
-    return fmt::formatter<std::string>::format(toString(t).str(), ctx);
-}
-
-fmt::format_context::iterator
-fmt::formatter<clang::mrdocs::AccessKind>::
-format(
-    clang::mrdocs::AccessKind a,
-    fmt::format_context& ctx) const
-{
-    return fmt::formatter<std::string>::format(toString(a).str(), ctx);
-}
-
-fmt::format_context::iterator
-fmt::formatter<clang::mrdocs::Info>::
-format(
-    clang::mrdocs::Info const& i,
-    fmt::format_context& ctx) const
-{
-    std::string str = fmt::format("Info: kind = {}", i.Kind);
-    if (!i.Name.empty())
-    {
-        str += fmt::format(", name = '{}'", i.Name);
+std::string
+std::formatter<clang::mrdocs::Info>::toString(clang::mrdocs::Info const &i) {
+  std::string str = std::format("Info: kind = {}", i.Kind);
+  if (!i.Name.empty()) {
+    str += std::format(", name = '{}'", i.Name);
+  }
+  str += std::format(", ID = {}", i.id);
+  clang::mrdocs::SymbolID curParent = i.Parent;
+  std::string namespaces;
+  while (curParent) {
+    namespaces += std::format("{}", curParent);
+    curParent = i.Parent;
+    if (curParent) {
+      namespaces += "::";
     }
-    str += fmt::format(", ID = {}", i.id);
-    clang::mrdocs::SymbolID curParent = i.Parent;
-    std::string namespaces;
-    while (curParent)
-    {
-        namespaces += fmt::format("{}", curParent);
-        curParent = i.Parent;
-        if (curParent)
-        {
-            namespaces += "::";
-        }
-    }
-    if (!namespaces.empty())
-    {
-        str += fmt::format(", namespace = {}", namespaces);
-    }
-    return fmt::formatter<std::string>::format(std::move(str), ctx);
+  }
+  if (!namespaces.empty()) {
+    str += std::format(", namespace = {}", namespaces);
+  }
+  return str;
 }

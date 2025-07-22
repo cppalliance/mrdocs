@@ -118,9 +118,6 @@ llvm_map_components_to_libnames(llvm_libs all)
 string(REGEX REPLACE " /W[0-4]" "" CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
 string(REGEX REPLACE " /W[0-4]" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
-# fmt
-find_package(fmt REQUIRED CONFIG)
-
 # Duktape
 find_package(duktape CONFIG)
 if (NOT DUKTAPE_FOUND)
@@ -213,7 +210,7 @@ list(APPEND LIB_SOURCES
     ${CMAKE_CURRENT_BINARY_DIR}/src/lib/Lib/PublicSettings.cpp
 )
 add_library(mrdocs-core ${LIB_SOURCES})
-target_compile_features(mrdocs-core PUBLIC cxx_std_20)
+target_compile_features(mrdocs-core PUBLIC cxx_std_23)
 target_include_directories(mrdocs-core
     PUBLIC
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>"
@@ -233,7 +230,6 @@ target_compile_definitions(
 # Dependencies
 target_include_directories(mrdocs-core SYSTEM PUBLIC ${LLVM_INCLUDE_DIRS})
 target_include_directories(mrdocs-core SYSTEM PUBLIC ${CLANG_INCLUDE_DIRS})
-target_link_libraries(mrdocs-core PUBLIC fmt::fmt)
 target_include_directories(mrdocs-core SYSTEM PRIVATE ${DUKTAPE_INCLUDE_DIRS})
 target_link_libraries(mrdocs-core PRIVATE ${DUKTAPE_LIBRARY})
 

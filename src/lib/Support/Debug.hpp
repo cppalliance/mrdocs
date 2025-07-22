@@ -16,51 +16,51 @@
 #if ! defined(NDEBUG)
 #include <llvm/Support/ErrorHandling.h>
 #endif
+#include "lib/Support/Radix.hpp"
+#include <format>
 #include <llvm/Support/raw_ostream.h>
+#include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/SymbolID.hpp>
-#include <fmt/format.h>
 #include <string>
 
-namespace clang::mrdocs {
-    enum class InfoKind;
-    enum class AccessKind;
-    struct Info;
-}
-
-template<>
-struct fmt::formatter<clang::mrdocs::SymbolID>
-    : fmt::formatter<std::string>
-{
-    fmt::format_context::iterator format(
-        clang::mrdocs::SymbolID const& s,
-        fmt::format_context& ctx) const;
+template <>
+struct std::formatter<clang::mrdocs::SymbolID> : std::formatter<std::string> {
+  template <class FmtContext>
+  std::format_context::iterator format(clang::mrdocs::SymbolID const &s,
+                                       FmtContext &ctx) const {
+    std::string str = s ? "<invalid SymbolID>" : clang::mrdocs::toBase64(s);
+    return std::formatter<std::string>::format(std::move(str), ctx);
+  }
 };
 
-template<>
-struct fmt::formatter<clang::mrdocs::InfoKind>
-    : fmt::formatter<std::string>
-{
-    fmt::format_context::iterator format(
-        clang::mrdocs::InfoKind t,
-        fmt::format_context& ctx) const;
+template <>
+struct std::formatter<clang::mrdocs::InfoKind> : std::formatter<std::string> {
+  template <class FmtContext>
+  std::format_context::iterator format(clang::mrdocs::InfoKind t,
+                                       FmtContext &ctx) const {
+    return std::formatter<std::string>::format(toString(t).str(), ctx);
+  }
 };
 
-template<>
-struct fmt::formatter<clang::mrdocs::AccessKind>
-    : fmt::formatter<std::string>
-{
-    fmt::format_context::iterator format(
-        clang::mrdocs::AccessKind a,
-        fmt::format_context& ctx) const;
+template <>
+struct std::formatter<clang::mrdocs::AccessKind> : std::formatter<std::string> {
+  template <class FmtContext>
+  std::format_context::iterator format(clang::mrdocs::AccessKind a,
+                                       FmtContext &ctx) const {
+    return std::formatter<std::string>::format(toString(a).str(), ctx);
+  }
 };
 
-template<>
-struct fmt::formatter<clang::mrdocs::Info>
-    : fmt::formatter<std::string>
-{
-    fmt::format_context::iterator format(
-        clang::mrdocs::Info const& i,
-        fmt::format_context& ctx) const;
+template <>
+struct std::formatter<clang::mrdocs::Info> : std::formatter<std::string> {
+  template <class FmtContext>
+  std::format_context::iterator format(clang::mrdocs::Info const &i,
+                                       FmtContext &ctx) const {
+    return std::formatter<std::string>::format(toString(i), ctx);
+  }
+
+private:
+  static std::string toString(clang::mrdocs::Info const &i);
 };
 
 // Some nice odds and ends such as leak checking

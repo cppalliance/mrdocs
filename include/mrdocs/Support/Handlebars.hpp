@@ -11,14 +11,15 @@
 #ifndef MRDOCS_TOOL_SUPPORT_PATH_HPP
 #define MRDOCS_TOOL_SUPPORT_PATH_HPP
 
-#include <mrdocs/Support/String.hpp>
-#include <mrdocs/Dom.hpp>
-#include <string_view>
-#include <unordered_map>
+#include <format>
 #include <functional>
+#include <mrdocs/Dom.hpp>
+#include <mrdocs/Support/String.hpp>
+#include <string_view>
 #include <type_traits>
-#include <vector>
+#include <unordered_map>
 #include <variant>
+#include <vector>
 
 namespace clang {
 namespace mrdocs {
@@ -45,15 +46,10 @@ struct HandlebarsError
     HandlebarsError(std::string_view msg)
         : std::runtime_error(std::string(msg)) {}
 
-    HandlebarsError(
-        std::string_view msg,
-        std::size_t line_,
-        std::size_t column_,
-        std::size_t pos_)
-        : std::runtime_error(fmt::format("{} - {}:{}", msg, line_, column_))
-        , line(line_)
-        , column(column_)
-        , pos(pos_) {}
+    HandlebarsError(std::string_view msg, std::size_t line_,
+                    std::size_t column_, std::size_t pos_)
+        : std::runtime_error(std::format("{} - {}:{}", msg, line_, column_)),
+          line(line_), column(column_), pos(pos_) {}
 };
 
 namespace detail {
@@ -218,9 +214,9 @@ public:
         @return A reference to this object
      */
     template <class T>
-      requires fmt::is_formattable<T>::value
+      requires std::formattable<T, char>
     friend OutputRef &operator<<(OutputRef &os, T v) {
-      std::string s = fmt::format("{}", v);
+      std::string s = std::format("{}", v);
       return os.write_impl(s);
     }
 

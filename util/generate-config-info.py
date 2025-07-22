@@ -940,6 +940,17 @@ def generate_public_toolargs_cpp(config):
         contents += f'#include {header}\n'
     contents += '\n'
 
+    contents += '''
+template <class T>
+struct std::formatter<llvm::cl::opt<T>>
+    : std::formatter<T> {
+  template <class FmtContext>
+  auto format(llvm::cl::opt<T> const &value, FmtContext &ctx) const {
+    return std::formatter<T>::format(value.getValue(), ctx);
+  }
+};
+    '''
+
     contents += 'namespace clang::mrdocs {\n\n'
 
     # Main constructor that initializes all options

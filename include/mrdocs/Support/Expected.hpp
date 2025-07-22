@@ -12,19 +12,18 @@
 #ifndef MRDOCS_API_SUPPORT_EXPECTED_HPP
 #define MRDOCS_API_SUPPORT_EXPECTED_HPP
 
-#include <mrdocs/Platform.hpp>
-#include <mrdocs/Support/source_location.hpp>
-#include <mrdocs/Support/Error.hpp>
-#include <fmt/format.h>
 #include <exception>
+#include <functional>
 #include <iterator>
 #include <memory>
+#include <mrdocs/Platform.hpp>
+#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/source_location.hpp>
 #include <string>
 #include <string_view>
 #include <type_traits>
 #include <utility>
 #include <vector>
-#include <functional>
 
 namespace clang::mrdocs {
 

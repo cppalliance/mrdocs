@@ -11,9 +11,9 @@
 #ifndef MRDOCS_API_DOM_STRING_HPP
 #define MRDOCS_API_DOM_STRING_HPP
 
+#include <format>
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/String.hpp>
-#include <fmt/format.h>
 
 namespace clang {
 namespace mrdocs {
@@ -341,17 +341,13 @@ public:
 
 //------------------------------------------------
 
-template<>
-struct fmt::formatter<clang::mrdocs::dom::String>
-    : fmt::formatter<std::string_view>
-{
-    auto format(
-        clang::mrdocs::dom::String const& value,
-        fmt::format_context& ctx) const
-    {
-        return fmt::formatter<std::string_view>::format(
-            value.get(), ctx);
-    }
+template <>
+struct std::formatter<clang::mrdocs::dom::String>
+    : std::formatter<std::string_view> {
+  template <class FmtContext>
+  auto format(clang::mrdocs::dom::String const &value, FmtContext &ctx) const {
+    return std::formatter<std::string_view>::format(value.get(), ctx);
+  }
 };
 
 #endif
