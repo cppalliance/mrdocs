@@ -23,10 +23,10 @@
 
 namespace clang::mrdocs {
 
-/** Default copier for Polymorphic.
+/** Default deleter for Polymorphic.
 
     This class template is used as the
-    default copier for the class
+    default deleter for the class
     template Polymorphic.
 */
 template <class Base>
