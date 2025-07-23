@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <namespace name="detail" id="aMJtdgJFybRcdkRG712j3iC7JeM=">
+    <class name="impl" id="oDJSYurEZnLafSdjUM2eeeIQ3CI=">
+      <file short-path="friend-excluded.cpp" source-path="friend-excluded.cpp" line="2"/>
+    </class>
+  </namespace>
+  <class name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
+    <file short-path="friend-excluded.cpp" source-path="friend-excluded.cpp" line="9" class="def"/>
+    <friend id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
+      <befriended id="s6nsa+zVhpzzrN+yUVPP5rvdXqs="/>
+    </friend>
+    <friend id="3JsK1DO0O+wZhv+0meptQrbs3fY=">
+      <befriended id="3JsK1DO0O+wZhv+0meptQrbs3fY="/>
+    </friend>
+  </class>
+  <class name="B" id="3JsK1DO0O+wZhv+0meptQrbs3fY=">
+    <file short-path="friend-excluded.cpp" source-path="friend-excluded.cpp" line="5" class="def"/>
+  </class>
+  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
+    <file short-path="friend-excluded.cpp" source-path="friend-excluded.cpp" line="7"/>
+    <file short-path="friend-excluded.cpp" source-path="friend-excluded.cpp" line="13"/>
+  </function>
+</namespace>
+</mrdocs>

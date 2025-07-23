@@ -732,6 +732,12 @@ populate(
             }
             FriendInfo F;
             populate(F, FD);
+            if (F.id != SymbolID::invalid)
+            {
+                Info* FI = this->find(F.id);
+                MRDOCS_CHECK_OR_CONTINUE(FI);
+                MRDOCS_CHECK_OR_CONTINUE(FI->Extraction != ExtractionMode::ImplementationDefined);
+            }
             auto it = std::ranges::find_if(I.Friends, [&](FriendInfo const& FI)
             {
                 return FI.id == F.id;
