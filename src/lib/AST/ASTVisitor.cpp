@@ -732,7 +732,18 @@ populate(
             }
             FriendInfo F;
             populate(F, FD);
-            I.Friends.push_back(std::move(F));
+            auto it = std::ranges::find_if(I.Friends, [&](FriendInfo const& FI)
+            {
+                return FI.id == F.id;
+            });
+            if (it != I.Friends.end())
+            {
+                merge(*it, std::move(F));
+            }
+            else
+            {
+                I.Friends.push_back(std::move(F));
+            }
         }
     }
 }
