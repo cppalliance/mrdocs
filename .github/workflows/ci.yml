@@ -43,6 +43,7 @@ jobs:
             msvc Optimized-Debug
             gcc UBSan Coverage
             clang UBSan
+            apple-clang UBSan ASan
           factors: ''
           runs-on: |
             apple-clang: macos-15
@@ -68,13 +69,14 @@ jobs:
             llvm-hash: dd7a3d4d798e30dfe53b5bbbbcd9a23c24ea1af9
             llvm-build-preset-prefix: {{#if optimized-debug}}debwithopt{{else}}{{{lowercase build-type}}}{{/if}}
             llvm-build-preset-os: {{#if (ieq os 'windows') }}win{{else}}unix{{/if}}
-            llvm-sanitizer: {{#if ubsan}}-UBSan{{else if asan}}-ASan{{else if msan}}-MSan{{/if}}
+            llvm-sanitizer: {{#if (eq compiler 'gcc')}}{{else if ubsan}}-UBSan{{else if asan}}-ASan{{else if msan}}-MSan{{/if}}
             llvm-build-preset: {{{ llvm-build-preset-prefix }}}-{{{ llvm-build-preset-os }}}
             llvm-compiler-version: {{#if (or (contains version '*') (contains version '^'))}}{{else}}-{{{ version }}}{{/if}}
-            llvm-archive-basename: llvm-{{{ lowercase os }}}-{{{ compiler }}}{{{ llvm-compiler-version }}}-{{{ llvm-build-preset-prefix }}}{{{ sanitizer }}}-{{{ substr llvm-hash 0 7 }}}
+            llvm-archive-basename: llvm-{{{ lowercase os }}}-{{{ compiler }}}{{{ llvm-compiler-version }}}-{{{ llvm-build-preset-prefix }}}{{{ llvm-sanitizer }}}-{{{ substr llvm-hash 0 7 }}}
             llvm-root: ../third-party/llvm-project/install
             llvm-archive-extension: {{#if (ieq os 'windows') }}7z{{else}}tar.bz2{{/if}}
             llvm-archive-filename: {{{ llvm-archive-basename }}}.{{{ llvm-archive-extension }}}
+            llvm-sanizizer-config: {{#if (or (ne compiler 'clang') (ne compiler 'apple-clang'))}}{{else if ubsan}}Undefined{{else if asan}}Address{{/if}}
             mrdocs-ccflags: {{{ ccflags }}} {{#if (and (eq compiler 'gcc') (not asan)) }}-static{{/if}}
             mrdocs-cxxflags: {{{ cxxflags }}} {{#if (and (eq compiler 'gcc') (not asan)) }}-static{{/if}}
             mrdocs-package-generators: {{#if (ieq os 'windows') }}7Z ZIP WIX{{else}}TGZ TXZ{{/if}}
@@ -261,10 +263,7 @@ jobs:
           build-type: ${{ matrix.build-type }}
           extra-args: |
             ${{ runner.os == 'Windows' && '-DLLVM_ENABLE_RUNTIMES=libcxx' || '-DLLVM_ENABLE_RUNTIMES=libcxx;libcxxabi;libunwind' }}
-            # The UBSan vptr sanitizer needs RTTI.
-            ${{ matrix.ubsan && '-DLLVM_ENABLE_RTTI=ON' }}
-            # The LLVM_USE_SANITIZER option doesn't support GCC.
-            ${{ !matrix.compiler == 'gcc' && matrix.ubsan && '-DLLVM_USE_SANITIZER=Undefined' }}
+            -DLLVM_USE_SANITIZER=${{ matrix.llvm-sanitizer-config }}
           cc: ${{ steps.setup-cpp.outputs.cc }}
           cxx: ${{ steps.setup-cpp.outputs.cxx }}
           generator: Ninja
