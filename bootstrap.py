@@ -9,7 +9,6 @@
 #
 
 import argparse
-import platform
 import subprocess
 import os
 import sys
@@ -19,8 +18,10 @@ import dataclasses
 import urllib.request
 import tarfile
 import json
+import shlex
 import re
 from functools import lru_cache
+
 
 @lru_cache(maxsize=1)
 def running_from_mrdocs_source_dir():
@@ -31,6 +32,7 @@ def running_from_mrdocs_source_dir():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     cwd = os.getcwd()
     return cwd == script_dir
+
 
 @dataclass
 class InstallOptions:
@@ -50,7 +52,9 @@ class InstallOptions:
     cmake_path: str = ''
 
     # MrDocs
-    mrdocs_src_dir: str = field(default_factory=lambda: os.getcwd() if running_from_mrdocs_source_dir() else os.path.join(os.getcwd(), "mrdocs"))
+    mrdocs_src_dir: str = field(
+        default_factory=lambda: os.getcwd() if running_from_mrdocs_source_dir() else os.path.join(os.getcwd(),
+                                                                                                  "mrdocs"))
     mrdocs_build_type: str = "Release"
     mrdocs_repo: str = "https://github.com/cppalliance/mrdocs"
     mrdocs_branch: str = "develop"
@@ -59,7 +63,8 @@ class InstallOptions:
     mrdocs_build_dir: str = "<mrdocs-src-dir>/build/<mrdocs-build-type:lower>-<os:lower>"
     mrdocs_build_tests: bool = True
     mrdocs_system_install: bool = field(default_factory=lambda: not running_from_mrdocs_source_dir())
-    mrdocs_install_dir: str = field(default_factory=lambda: "<mrdocs-src-dir>/install/<mrdocs-build-type:lower>-<os:lower>" if running_from_mrdocs_source_dir() else "")
+    mrdocs_install_dir: str = field(
+        default_factory=lambda: "<mrdocs-src-dir>/install/<mrdocs-build-type:lower>-<os:lower>" if running_from_mrdocs_source_dir() else "")
     mrdocs_run_tests: bool = True
 
     # Third-party dependencies
@@ -96,6 +101,7 @@ class InstallOptions:
 
     # Meta
     non_interactive: bool = False
+
 
 # Constant for option descriptions
 INSTALL_OPTION_DESCRIPTIONS = {
@@ -135,6 +141,7 @@ INSTALL_OPTION_DESCRIPTIONS = {
     "boost_src_dir": "Directory where the source files of the Boost libraries are located.",
     "non_interactive": "Whether to use all default options without interactive prompts."
 }
+
 
 class MrDocsInstaller:
     """
@@ -180,7 +187,7 @@ class MrDocsInstaller:
         result = inp.strip() or default
         return result
 
-    def prompt_boolean(self, prompt, default = None):
+    def prompt_boolean(self, prompt, default=None):
         """
         Prompts the user for a boolean value (yes/no).
 
@@ -248,6 +255,7 @@ class MrDocsInstaller:
             constains_placeholder = "<" in default_value and ">" in default_value
             if constains_placeholder:
                 has_dir_key = False
+
                 def repl(match):
                     nonlocal has_dir_key
                     key = match.group(1)
@@ -340,12 +348,14 @@ class MrDocsInstaller:
         color = BLUE if self.supports_ansi() else ""
         reset = RESET if self.supports_ansi() else ""
         if isinstance(cmd, list):
-            print(f"{color}{cwd}> {' '.join(cmd)}{reset}")
+            cmd_str = ' '.join(shlex.quote(arg) for arg in cmd)
+            print(f"{color}{cwd}> {cmd_str}{reset}")
         else:
             print(f"{color}{cwd}> {cmd}{reset}")
         r = subprocess.run(cmd, shell=isinstance(cmd, str), check=True, cwd=cwd)
         if r.returncode != 0:
             raise RuntimeError(f"Command '{cmd}' failed with return code {r.returncode}.")
+
     def clone_repo(self, repo, dest, branch=None, depth=None):
         """
         Clones a Git repository into the specified destination directory.
@@ -379,25 +389,25 @@ class MrDocsInstaller:
         urllib.request.urlretrieve(url, dest)
 
     def is_windows(self):
-            """
-            Checks if the current operating system is Windows.
-            :return: bool: True if the OS is Windows, False otherwise.
-            """
-            return os.name == "nt"
+        """
+        Checks if the current operating system is Windows.
+        :return: bool: True if the OS is Windows, False otherwise.
+        """
+        return os.name == "nt"
 
     def is_linux(self):
-            """
-            Checks if the current operating system is Linux.
-            :return: bool: True if the OS is Linux, False otherwise.
-            """
-            return os.name == "posix" and sys.platform.startswith("linux")
+        """
+        Checks if the current operating system is Linux.
+        :return: bool: True if the OS is Linux, False otherwise.
+        """
+        return os.name == "posix" and sys.platform.startswith("linux")
 
     def is_macos(self):
-            """
-            Checks if the current operating system is macOS.
-            :return: bool: True if the OS is macOS, False otherwise.
-            """
-            return os.name == "posix" and sys.platform.startswith("darwin")
+        """
+        Checks if the current operating system is macOS.
+        :return: bool: True if the OS is macOS, False otherwise.
+        """
+        return os.name == "posix" and sys.platform.startswith("darwin")
 
     def cmake_workflow(self, src_dir, build_type, build_dir, install_dir, extra_args=None):
         """
@@ -416,12 +426,13 @@ class MrDocsInstaller:
         build_type_is_debwithopt = build_type.lower() == 'debwithopt'
         cmake_build_type = build_type if not build_type_is_debwithopt else "Debug"
         if build_dir:
-            config_args.extend(["-B",  build_dir])
+            config_args.extend(["-B", build_dir])
         if build_type:
             config_args.extend([f"-DCMAKE_BUILD_TYPE={cmake_build_type}"])
             if build_type_is_debwithopt:
                 if self.is_windows():
-                    config_args.extend(["-DCMAKE_CXX_FLAGS=/DWIN32 /D_WINDOWS /Ob1 /O2 /Zi", "-DCMAKE_C_FLAGS=/DWIN32 /D_WINDOWS /Ob1 /O2 /Zi"])
+                    config_args.extend(["-DCMAKE_CXX_FLAGS=/DWIN32 /D_WINDOWS /Ob1 /O2 /Zi",
+                                        "-DCMAKE_C_FLAGS=/DWIN32 /D_WINDOWS /Ob1 /O2 /Zi"])
                 else:
                     config_args.extend(["-DCMAKE_CXX_FLAGS=-Og -g", "-DCMAKE_C_FLAGS=-Og -g"])
         if isinstance(extra_args, str):
@@ -432,7 +443,7 @@ class MrDocsInstaller:
 
         build_args = [self.options.cmake_path, "--build", build_dir, "--config", cmake_build_type]
         num_cores = os.cpu_count() or 1
-        max_safe_parallel = 4 # Ideally 4GB per job
+        max_safe_parallel = 4  # Ideally 4GB per job
         build_args.extend(["--parallel", str(min(num_cores, max_safe_parallel))])
         self.run_cmd(build_args)
 
@@ -484,7 +495,9 @@ class MrDocsInstaller:
         if not os.path.isabs(self.options.mrdocs_src_dir):
             self.options.mrdocs_src_dir = os.path.abspath(self.options.mrdocs_src_dir)
         if not os.path.exists(self.options.mrdocs_src_dir):
-            if not self.prompt_boolean(f"Source directory '{self.options.mrdocs_src_dir}' does not exist. Create and clone MrDocs there?", True):
+            if not self.prompt_boolean(
+                    f"Source directory '{self.options.mrdocs_src_dir}' does not exist. Create and clone MrDocs there?",
+                    True):
                 print("Installation aborted by user.")
                 return
             self.prompt_option("mrdocs_branch")
@@ -492,7 +505,8 @@ class MrDocsInstaller:
             self.clone_repo(self.options.mrdocs_repo, self.options.mrdocs_src_dir, branch=self.options.mrdocs_branch)
         else:
             if not os.path.isdir(self.options.mrdocs_src_dir):
-                raise NotADirectoryError(f"Specified mrdocs_src_dir '{self.options.mrdocs_src_dir}' is not a directory.")
+                raise NotADirectoryError(
+                    f"Specified mrdocs_src_dir '{self.options.mrdocs_src_dir}' is not a directory.")
 
         # MrDocs build type
         self.prompt_build_type_option("mrdocs_build_type")
@@ -567,14 +581,16 @@ class MrDocsInstaller:
         self.prompt_build_type_option("duktape_build_type")
         self.prompt_dependency_path_option("duktape_build_dir")
         self.prompt_dependency_path_option("duktape_install_dir")
-        self.cmake_workflow(self.options.duktape_src_dir, self.options.duktape_build_type, self.options.duktape_build_dir, self.options.duktape_install_dir)
+        self.cmake_workflow(self.options.duktape_src_dir, self.options.duktape_build_type,
+                            self.options.duktape_build_dir, self.options.duktape_install_dir)
 
     def install_libxml2(self):
         self.prompt_dependency_path_option("libxml2_src_dir")
         if not os.path.exists(self.options.libxml2_src_dir):
             self.prompt_option("libxml2_repo")
             self.prompt_option("libxml2_branch")
-            self.clone_repo(self.options.libxml2_repo, self.options.libxml2_src_dir, branch=self.options.libxml2_branch, depth=1)
+            self.clone_repo(self.options.libxml2_repo, self.options.libxml2_src_dir, branch=self.options.libxml2_branch,
+                            depth=1)
         self.prompt_build_type_option("libxml2_build_type")
         self.prompt_dependency_path_option("libxml2_build_dir")
         self.prompt_dependency_path_option("libxml2_install_dir")
@@ -614,7 +630,8 @@ class MrDocsInstaller:
             "-DLIBXML2_WITH_XPATH=ON",
             "-DLIBXML2_WITH_XPTR=ON"
         ]
-        self.cmake_workflow(self.options.libxml2_src_dir, self.options.libxml2_build_type, self.options.libxml2_build_dir, self.options.libxml2_install_dir, extra_args)
+        self.cmake_workflow(self.options.libxml2_src_dir, self.options.libxml2_build_type,
+                            self.options.libxml2_build_dir, self.options.libxml2_install_dir, extra_args)
 
     def install_llvm(self):
         self.prompt_dependency_path_option("llvm_src_dir")
@@ -642,7 +659,8 @@ class MrDocsInstaller:
             cmake_extra_args.append("-DLLVM_ENABLE_RUNTIMES=libcxx")
         else:
             cmake_extra_args.append("-DLLVM_ENABLE_RUNTIMES=libcxx;libcxxabi;libunwind")
-        self.cmake_workflow(llvm_subproject_dir, self.options.llvm_build_type, self.options.llvm_build_dir, self.options.llvm_install_dir, cmake_extra_args)
+        self.cmake_workflow(llvm_subproject_dir, self.options.llvm_build_type, self.options.llvm_build_dir,
+                            self.options.llvm_install_dir, cmake_extra_args)
 
     def create_cmake_presets(self):
         # Ask the user if they want to create CMake User presets referencing the installed dependencies
@@ -759,7 +777,9 @@ class MrDocsInstaller:
             # Build directory specified in the preset
             self.prompt_option("mrdocs_build_dir")
         else:
-            self.options.mrdocs_build_dir = os.path.join(self.options.mrdocs_src_dir, "build", self.options.mrdocs_preset_name)
+            self.options.mrdocs_build_dir = os.path.join(self.options.mrdocs_src_dir, "build",
+                                                         self.options.mrdocs_preset_name)
+            self.default_options.mrdocs_build_dir = self.options.mrdocs_build_dir
 
         if not self.prompt_option("mrdocs_system_install"):
             # Build directory specified in the preset
@@ -786,14 +806,17 @@ class MrDocsInstaller:
                     "-D", f"LibXml2_ROOT={self.options.libxml2_install_dir}"
                 ])
                 extra_args.extend(["-D", "MRDOCS_BUILD_TESTS=ON"])
-            extra_args.extend(["-DMRDOCS_BUILD_DOCS=OFF", "-DMRDOCS_GENERATE_REFERENCE=OFF", "-DMRDOCS_GENERATE_ANTORA_REFERENCE=OFF"])
+            extra_args.extend(["-DMRDOCS_BUILD_DOCS=OFF", "-DMRDOCS_GENERATE_REFERENCE=OFF",
+                               "-DMRDOCS_GENERATE_ANTORA_REFERENCE=OFF"])
 
-        self.cmake_workflow(self.options.mrdocs_src_dir, self.options.mrdocs_build_type, self.options.mrdocs_build_dir, self.options.mrdocs_install_dir, extra_args)
+        self.cmake_workflow(self.options.mrdocs_src_dir, self.options.mrdocs_build_type, self.options.mrdocs_build_dir,
+                            self.options.mrdocs_install_dir, extra_args)
         if self.options.mrdocs_build_dir and self.prompt_option("mrdocs_run_tests"):
             # Look for ctest path relative to the cmake path
             ctest_path = os.path.join(os.path.dirname(self.options.cmake_path), "ctest")
             if not os.path.exists(ctest_path):
-                raise FileNotFoundError(f"ctest executable not found at {ctest_path}. Please ensure CMake is installed correctly.")
+                raise FileNotFoundError(
+                    f"ctest executable not found at {ctest_path}. Please ensure CMake is installed correctly.")
             test_args = [ctest_path, "--test-dir", self.options.mrdocs_build_dir, "--output-on-failure", "--progress",
                          "--no-tests=error", "--output-on-failure", "--parallel", str(os.cpu_count() or 1)]
             self.run_cmd(test_args)
@@ -804,7 +827,6 @@ class MrDocsInstaller:
             print(f"{YELLOW}MrDocs has been successfully installed in {self.options.mrdocs_install_dir}.{RESET}")
         else:
             print(f"\nMrDocs has been successfully installed in {self.options.mrdocs_install_dir}.\n")
-
 
     def generate_clion_run_configs(self, configs):
         import xml.etree.ElementTree as ET
@@ -818,25 +840,56 @@ class MrDocsInstaller:
             config_name = config["name"]
             run_config_path = os.path.join(run_dir, f"{config_name}.run.xml")
             root = ET.Element("component", name="ProjectRunConfigurationManager")
-            config = ET.SubElement(root, "configuration", {
-                "default": "false",
-                "name": config["name"],
-                "type": "CMakeRunConfiguration",
-                "factoryName": "Application",
-                "PROGRAM_PARAMS": " ".join(config["args"]),
-                "REDIRECT_INPUT": "false",
-                "ELEVATE": "false",
-                "USE_EXTERNAL_CONSOLE": "false",
-                "EMULATE_TERMINAL": "false",
-                "PASS_PARENT_ENVS_2": "true",
-                "PROJECT_NAME": "MrDocs",
-                "TARGET_NAME": config["target"],
-                "CONFIG_NAME": self.options.mrdocs_preset_name or "debug",
-                "RUN_TARGET_PROJECT_NAME": "MrDocs",
-                "RUN_TARGET_NAME": config["target"]
-            })
-            method = ET.SubElement(config, "method", v="2")
-            ET.SubElement(method, "option", name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask", enabled="true")
+            if 'target' in config:
+                clion_config = ET.SubElement(root, "configuration", {
+                    "default": "false",
+                    "name": config["name"],
+                    "type": "CMakeRunConfiguration",
+                    "factoryName": "Application",
+                    "PROGRAM_PARAMS": ' '.join(shlex.quote(arg) for arg in config["args"]),
+                    "REDIRECT_INPUT": "false",
+                    "ELEVATE": "false",
+                    "USE_EXTERNAL_CONSOLE": "false",
+                    "EMULATE_TERMINAL": "false",
+                    "PASS_PARENT_ENVS_2": "true",
+                    "PROJECT_NAME": "MrDocs",
+                    "TARGET_NAME": config["target"],
+                    "CONFIG_NAME": self.options.mrdocs_preset_name or "debug",
+                    "RUN_TARGET_PROJECT_NAME": "MrDocs",
+                    "RUN_TARGET_NAME": config["target"]
+                })
+                method = ET.SubElement(clion_config, "method", v="2")
+                ET.SubElement(method, "option",
+                              name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask",
+                              enabled="true")
+            elif 'script' in config:
+                clion_config = ET.SubElement(root, "configuration", {
+                    "default": "false",
+                    "name": config["name"],
+                    "type": "PythonConfigurationType",
+                    "factoryName": "Python",
+                    "nameIsGenerated": "false"
+                })
+                ET.SubElement(clion_config, "module", name="mrdocs")
+                ET.SubElement(clion_config, "option", name="ENV_FILES", value="")
+                ET.SubElement(clion_config, "option", name="INTERPRETER_OPTIONS", value="")
+                ET.SubElement(clion_config, "option", name="PARENT_ENVS", value="true")
+                envs = ET.SubElement(clion_config, "envs")
+                ET.SubElement(envs, "env", name="PYTHONUNBUFFERED", value="1")
+                ET.SubElement(clion_config, "option", name="SDK_HOME", value="")
+                ET.SubElement(clion_config, "option", name="WORKING_DIRECTORY", value="$PROJECT_DIR$")
+                ET.SubElement(clion_config, "option", name="IS_MODULE_SDK", value="true")
+                ET.SubElement(clion_config, "option", name="ADD_CONTENT_ROOTS", value="true")
+                ET.SubElement(clion_config, "option", name="ADD_SOURCE_ROOTS", value="true")
+                ET.SubElement(clion_config, "option", name="SCRIPT_NAME", value=config["script"])
+                ET.SubElement(clion_config, "option", name="PARAMETERS",
+                              value=' '.join(shlex.quote(arg) for arg in config["args"]))
+                ET.SubElement(clion_config, "option", name="SHOW_COMMAND_LINE", value="false")
+                ET.SubElement(clion_config, "option", name="EMULATE_TERMINAL", value="false")
+                ET.SubElement(clion_config, "option", name="MODULE_MODE", value="false")
+                ET.SubElement(clion_config, "option", name="REDIRECT_INPUT", value="false")
+                ET.SubElement(clion_config, "option", name="INPUT_FILE", value="")
+                ET.SubElement(clion_config, "method", v="2")
             tree = ET.ElementTree(root)
             tree.write(run_config_path, encoding="utf-8", xml_declaration=False)
 
@@ -854,24 +907,30 @@ class MrDocsInstaller:
             launch_data = {"version": "0.2.1", "configurations": []}
 
         # Build a dict for quick lookup by name
-        configs_by_name = {cfg.get("name"): cfg for cfg in launch_data.get("configurations", [])}
+        vs_configs_by_name = {cfg.get("name"): cfg for cfg in launch_data.get("configurations", [])}
 
         for config in configs:
             new_cfg = {
                 "name": config["name"],
                 "type": "default",
                 "project": "MrDocs",
-                "projectTarget": config["target"],
                 "args": config["args"],
                 "cwd": self.options.mrdocs_build_dir,
                 "env": {},
-                "stopAtEntry": False
+                "stopAtEntry": False,
+                "console": "integratedTerminal"
             }
+
+            if 'target' in config:
+                new_cfg["projectTarget"] = config["target"]
+            if 'script' in config:
+                new_cfg["program"] = config["script"]
+
             # Replace or add
-            configs_by_name[config["name"]] = new_cfg
+            vs_configs_by_name[config["name"]] = new_cfg
 
         # Write back all configs
-        launch_data["configurations"] = list(configs_by_name.values())
+        launch_data["configurations"] = list(vs_configs_by_name.values())
         with open(launch_path, "w") as f:
             json.dump(launch_data, f, indent=4)
 
@@ -943,9 +1002,71 @@ class MrDocsInstaller:
                             ]
                         })
             else:
-                print(f"Warning: Boost source directory '{self.options.boost_src_dir}' does not contain 'libs' directory. Skipping Boost documentation target generation.")
+                print(
+                    f"Warning: Boost source directory '{self.options.boost_src_dir}' does not contain 'libs' directory. Skipping Boost documentation target generation.")
 
+        # bootstrap.py targets
+        configs.append({
+            "name": f"MrDocs Bootstrap Help",
+            "script": os.path.join(self.options.mrdocs_src_dir, "bootstrap.py"),
+            "args": ["--help"],
+            "cwd": self.options.mrdocs_src_dir
+        })
+
+        bootstrap_args = []
+        for field in dataclasses.fields(InstallOptions):
+            value = getattr(self.options, field.name)
+            default_value = getattr(self.default_options, field.name, None)
+            if value is not None and (value != default_value or field.name == 'mrdocs_build_type'):
+                if field.name == 'non_interactive':
+                    # Skip non_interactive as it is handled separately,
+                    continue
+                if field.type is bool:
+                    if value:
+                        bootstrap_args.append(f"--{field.name.replace('_', '-')}")
+                    else:
+                        bootstrap_args.append(f"--no-{field.name.replace('_', '-')}")
+                elif field.type is str:
+                    if value != '' and default_value != '':
+                        bootstrap_args.append(f"--{field.name.replace('_', '-')}")
+                        bootstrap_args.append(value)
+                else:
+                    raise TypeError(f"Unsupported type {field.type} for field '{field.name}' in InstallOptions.")
+        bootstrap_refresh_config_name = self.options.mrdocs_preset_name or self.options.mrdocs_build_type or "debug"
+        configs.append({
+            "name": f"MrDocs Bootstrap Update ({bootstrap_refresh_config_name})",
+            "script": os.path.join(self.options.mrdocs_src_dir, "bootstrap.py"),
+            "args": bootstrap_args,
+            "cwd": self.options.mrdocs_src_dir
+        })
+        # make a copy of the args for the refresh config
+        bootstrap_refresh_args = bootstrap_args.copy()
+        bootstrap_refresh_args.append("--non-interactive")
+        configs.append({
+            "name": f"MrDocs Bootstrap Refresh ({bootstrap_refresh_config_name})",
+            "script": os.path.join(self.options.mrdocs_src_dir, "bootstrap.py"),
+            "args": bootstrap_refresh_args,
+            "cwd": self.options.mrdocs_src_dir
+        })
+
+        configs.append({
+            "name": f"MrDocs Generate Config Info ({bootstrap_refresh_config_name})",
+            "script": os.path.join(self.options.mrdocs_src_dir, 'util', 'generate-config-info.py'),
+            "args": [os.path.join(self.options.mrdocs_src_dir, 'src', 'lib', 'ConfigOptions.json'),
+                     os.path.join(self.options.mrdocs_build_dir)],
+            "cwd": self.options.mrdocs_src_dir
+        })
+
+        configs.append({
+            "name": f"MrDocs Generate YAML Schema",
+            "script": os.path.join(self.options.mrdocs_src_dir, 'util', 'generate-yaml-schema.py'),
+            "args": [],
+            "cwd": self.options.mrdocs_src_dir
+        })
+
+        print("Generating CLion run configurations for MrDocs...")
         self.generate_clion_run_configs(configs)
+        print("Generating Visual Studio run configurations for MrDocs...")
         self.generate_visual_studio_run_configs(configs)
 
     def install_all(self):
@@ -960,6 +1081,9 @@ class MrDocsInstaller:
         self.install_mrdocs()
         if self.prompt_option("generate_run_configs"):
             self.generate_run_configs()
+        else:
+            print("Skipping run configurations generation as per user preference.")
+
 
 def get_command_line_args():
     """
@@ -970,25 +1094,41 @@ def get_command_line_args():
 
     :return: dict: Dictionary of command line arguments.
     """
-    parser = argparse.ArgumentParser(description="Download and install MrDocs from source.")
+    parser = argparse.ArgumentParser(
+        description="Download and install MrDocs from source.",
+        formatter_class=argparse.RawTextHelpFormatter
+    )
     for field in dataclasses.fields(InstallOptions):
         arg_name = f"--{field.name.replace('_', '-')}"
         help_text = INSTALL_OPTION_DESCRIPTIONS.get(field.name)
         if help_text is None:
             raise ValueError(f"Missing description for option '{field.name}' in INSTALL_OPTION_DESCRIPTIONS.")
-        help_text += f" (default: {field.default})" if (field.default is not dataclasses.MISSING and field.default is not None) else ""
+        if field.default is not dataclasses.MISSING and field.default is not None:
+            # if string
+            if isinstance(field.default, str) and field.default:
+                help_text += f" (default: '{field.default}')"
+            elif field.default is True:
+                help_text += " (default: true)"
+            elif field.default is False:
+                help_text += " (default: false)"
+            else:
+                help_text += f" (default: {field.default})"
         if field.type is bool:
-            parser.add_argument(arg_name, action="store_const", const=True, default=None, help=help_text)
+            parser.add_argument(arg_name, dest=field.name, action='store_true', help=help_text, default=None)
+            parser.add_argument(f"--no-{field.name.replace('_', '-')}", dest=field.name, action='store_false',
+                                help=f'Set {arg_name} to false', default=None)
         elif field.type is str:
             parser.add_argument(arg_name, type=field.type, help=help_text, default=None)
         else:
             raise TypeError(f"Unsupported type {field.type} for field '{field.name}' in InstallOptions.")
     return {k: v for k, v in vars(parser.parse_args()).items() if v is not None}
 
+
 def main():
     args = get_command_line_args()
     installer = MrDocsInstaller(args)
     installer.install_all()
+
 
 if __name__ == "__main__":
     main()
