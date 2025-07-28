@@ -841,7 +841,7 @@ class MrDocsInstaller:
             run_config_path = os.path.join(run_dir, f"{config_name}.run.xml")
             root = ET.Element("component", name="ProjectRunConfigurationManager")
             if 'target' in config:
-                clion_config = ET.SubElement(root, "configuration", {
+                attrib = {
                     "default": "false",
                     "name": config["name"],
                     "type": "CMakeRunConfiguration",
@@ -857,20 +857,26 @@ class MrDocsInstaller:
                     "CONFIG_NAME": self.options.mrdocs_preset_name or "debug",
                     "RUN_TARGET_PROJECT_NAME": "MrDocs",
                     "RUN_TARGET_NAME": config["target"]
-                })
+                }
+                if 'folder' in config:
+                    attrib["folderName"] = config["folder"]
+                clion_config = ET.SubElement(root, "configuration", attrib)
                 method = ET.SubElement(clion_config, "method", v="2")
                 ET.SubElement(method, "option",
                               name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask",
                               enabled="true")
             elif 'script' in config:
                 if config["script"].endswith(".py"):
-                    clion_config = ET.SubElement(root, "configuration", {
+                    attrib = {
                         "default": "false",
                         "name": config["name"],
                         "type": "PythonConfigurationType",
                         "factoryName": "Python",
                         "nameIsGenerated": "false"
-                    })
+                    }
+                    if 'folder' in config:
+                        attrib["folderName"] = config["folder"]
+                    clion_config = ET.SubElement(root, "configuration", attrib)
                     ET.SubElement(clion_config, "module", name="mrdocs")
                     ET.SubElement(clion_config, "option", name="ENV_FILES", value="")
                     ET.SubElement(clion_config, "option", name="INTERPRETER_OPTIONS", value="")
@@ -895,11 +901,14 @@ class MrDocsInstaller:
                     ET.SubElement(clion_config, "option", name="INPUT_FILE", value="")
                     ET.SubElement(clion_config, "method", v="2")
                 elif config["script"].endswith(".sh"):
-                    clion_config = ET.SubElement(root, "configuration", {
+                    attrib = {
                         "default": "false",
                         "name": config["name"],
                         "type": "ShConfigurationType"
-                    })
+                    }
+                    if 'folder' in config:
+                        attrib["folderName"] = config["folder"]
+                    clion_config = ET.SubElement(root, "configuration", attrib)
                     ET.SubElement(clion_config, "option", name="SCRIPT_TEXT", value=f"bash {shlex.quote(config['script'])}")
                     ET.SubElement(clion_config, "option", name="INDEPENDENT_SCRIPT_PATH", value="true")
                     ET.SubElement(clion_config, "option", name="SCRIPT_PATH", value=config["script"])
@@ -913,9 +922,43 @@ class MrDocsInstaller:
                     ET.SubElement(clion_config, "option", name="INTERPRETER_PATH", value="")
                     ET.SubElement(clion_config, "option", name="INTERPRETER_OPTIONS", value="")
                     ET.SubElement(clion_config, "option", name="EXECUTE_IN_TERMINAL", value="true")
-                    ET.SubElement(clion_config, "option", name="EXECUTE_SCRIPT_FILE", value="true")
+                    ET.SubElement(clion_config, "option", name="EXECUTE_SCRIPT_FILE", value="false")
                     ET.SubElement(clion_config, "envs")
                     ET.SubElement(clion_config, "method", v="2")
+                elif config["script"].endswith(".js"):
+                    attrb = {
+                        "default": "false",
+                        "name": config["name"],
+                        "type": "NodeJSConfigurationType",
+                        "path-to-js-file": config["script"],
+                        "working-dir": config.get("cwd", "$PROJECT_DIR$")
+                    }
+                    if 'folder' in config:
+                        attrb["folderName"] = config["folder"]
+                    clion_config = ET.SubElement(root, "configuration", attrb)
+                    envs = ET.SubElement(clion_config, "envs")
+                    if 'env' in config:
+                        for key, value in config['env'].items():
+                            ET.SubElement(envs, "env", name=key, value=value)
+                    ET.SubElement(clion_config, "method", v="2")
+                elif config["script"] == "npm":
+                    attrib = {
+                        "default": "false",
+                        "name": config["name"],
+                        "type": "js.build_tools.npm"
+                    }
+                    if 'folder' in config:
+                        attrib["folderName"] = config["folder"]
+                    clion_config = ET.SubElement(root, "configuration", attrib)
+                    ET.SubElement(clion_config, "package-json", value=os.path.join(config["cwd"], "package.json"))
+                    ET.SubElement(clion_config, "command", value=config["args"][0] if config["args"] else "ci")
+                    ET.SubElement(clion_config, "node-interpreter", value="project")
+                    envs = ET.SubElement(clion_config, "envs")
+                    if 'env' in config:
+                        for key, value in config['env'].items():
+                            ET.SubElement(envs, "env", name=key, value=value)
+                    ET.SubElement(clion_config, "method", v="2")
+
             tree = ET.ElementTree(root)
             tree.write(run_config_path, encoding="utf-8", xml_declaration=False)
 
@@ -988,6 +1031,7 @@ class MrDocsInstaller:
                 configs.append({
                     "name": f"MrDocs {verb.title()} Test Fixtures ({generator.upper()})",
                     "target": "mrdocs-test",
+                    "folder": "MrDocs Test Fixtures",
                     "args": [
                         f'"{self.options.mrdocs_src_dir}/test-files/golden-tests"',
                         '--unit=false',
@@ -1062,6 +1106,7 @@ class MrDocsInstaller:
         configs.append({
             "name": f"MrDocs Bootstrap Update ({bootstrap_refresh_config_name})",
             "script": os.path.join(self.options.mrdocs_src_dir, "bootstrap.py"),
+            "folder": "MrDocs Bootstrap Update",
             "args": bootstrap_args,
             "cwd": self.options.mrdocs_src_dir
         })
@@ -1070,6 +1115,7 @@ class MrDocsInstaller:
         configs.append({
             "name": f"MrDocs Bootstrap Refresh ({bootstrap_refresh_config_name})",
             "script": os.path.join(self.options.mrdocs_src_dir, "bootstrap.py"),
+            "folder": "MrDocs Bootstrap Refresh",
             "args": bootstrap_refresh_args,
             "cwd": self.options.mrdocs_src_dir
         })
@@ -1078,6 +1124,7 @@ class MrDocsInstaller:
         configs.append({
             "name": f"MrDocs Generate Config Info ({bootstrap_refresh_config_name})",
             "script": os.path.join(self.options.mrdocs_src_dir, 'util', 'generate-config-info.py'),
+            "folder": "MrDocs Generate Config Info",
             "args": [os.path.join(self.options.mrdocs_src_dir, 'src', 'lib', 'ConfigOptions.json'),
                      os.path.join(self.options.mrdocs_build_dir)],
             "cwd": self.options.mrdocs_src_dir
@@ -1119,6 +1166,32 @@ class MrDocsInstaller:
             "script": os.path.join(test_files_dir, f"remove_bad_files.{mrdocs_docs_script_ext}"),
             "args": [],
             "cwd": test_files_dir
+        })
+
+        # Render landing page
+        mrdocs_website_dir = os.path.join(mrdocs_docs_dir, "website")
+        configs.append({
+            "name": f"MrDocs Render Landing Page ({bootstrap_refresh_config_name})",
+            "script": os.path.join(mrdocs_website_dir, "render.js"),
+            "folder": "MrDocs Render Landing Page",
+            "args": [],
+            "cwd": mrdocs_website_dir,
+            "env": {
+                "NODE_ENV": "production",
+                "MRDOCS_ROOT": self.options.mrdocs_install_dir
+            }
+        })
+        configs.append({
+            "name": f"MrDocs Clean Install Website Dependencies",
+            "script": "npm",
+            "args": ["ci"],
+            "cwd": mrdocs_website_dir
+        })
+        configs.append({
+            "name": f"MrDocs Install Website Dependencies",
+            "script": "npm",
+            "args": ["install"],
+            "cwd": mrdocs_website_dir
         })
 
         print("Generating CLion run configurations for MrDocs...")
