@@ -9,6 +9,17 @@ html {
   font-size: var(--body-font-size);
   height: 100%;
   scroll-behavior: smooth;
+  /* Add static gradient background */
+  background:
+    radial-gradient(circle at 25% 75%, rgba(130, 0, 255, 0.4), transparent 40%),
+    radial-gradient(circle at 75% 25%, rgba(0, 98, 255, 0.5), transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(72, 0, 120, 0.6), transparent 60%),
+    radial-gradient(circle at 60% 80%, rgba(200, 0, 255, 0.3), transparent 50%),  
+    linear-gradient(135deg, #3a0ca3, #4361ee, #7209b7);
+  background-attachment: fixed;
+  background-blend-mode: screen;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 @media screen and (min-width: 1024px) {
@@ -18,13 +29,14 @@ html {
 }
 
 body {
-  background: var(--body-background);
+  /* Remove the solid background since we're using gradient on html */
+  /* background: var(--body-background); */
   color: var(--body-font-color);
   font-family: var(--body-font-family);
   line-height: var(--body-line-height);
   margin: 0;
   tab-size: 4;
-  word-wrap: anywhere; /* aka overflow-wrap; used when hyphens are disabled or aren't sufficient */
+  word-wrap: anywhere;
 }
 
 a {
