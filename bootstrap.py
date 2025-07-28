@@ -861,6 +861,10 @@ class MrDocsInstaller:
                 if 'folder' in config:
                     attrib["folderName"] = config["folder"]
                 clion_config = ET.SubElement(root, "configuration", attrib)
+                if 'env' in config:
+                    envs = ET.SubElement(clion_config, "envs")
+                    for key, value in config['env'].items():
+                        ET.SubElement(envs, "env", name=key, value=value)
                 method = ET.SubElement(clion_config, "method", v="2")
                 ET.SubElement(method, "option",
                               name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask",
@@ -1045,6 +1049,7 @@ class MrDocsInstaller:
                     ]
                 })
 
+        num_cores = os.cpu_count() or 1
         self.prompt_option("boost_src_dir")
         if self.options.boost_src_dir and os.path.exists(self.options.boost_src_dir):
             boost_libs = os.path.join(self.options.boost_src_dir, 'libs')
@@ -1057,23 +1062,51 @@ class MrDocsInstaller:
                             "name": f"Boost.{lib.title()} Documentation",
                             "target": "mrdocs",
                             "args": [
-                                '"../CMakeLists.txt"',
-                                f'--config="{self.options.boost_src_dir}/libs/{lib}/doc/mrdocs.yml"',
-                                f'--output="{self.options.boost_src_dir}/libs/{lib}/doc/modules/reference/pages"',
+                                '../CMakeLists.txt',
+                                f'--config={self.options.boost_src_dir}/libs/{lib}/doc/mrdocs.yml',
+                                f'--output={self.options.boost_src_dir}/libs/{lib}/doc/modules/reference/pages',
                                 f'--generator=adoc',
-                                f'--addons="{self.options.mrdocs_src_dir}/share/mrdocs/addons"',
-                                f'--stdlib-includes="{self.options.llvm_install_dir}/include/c++/v1"',
-                                f'--stdlib-includes="{self.options.llvm_install_dir}/lib/clang/20/include"',
-                                f'--libc-includes="{self.options.mrdocs_src_dir}/share/mrdocs/headers/libc-stubs"',
+                                f'--addons={self.options.mrdocs_src_dir}/share/mrdocs/addons',
+                                f'--stdlib-includes={self.options.llvm_install_dir}/include/c++/v1',
+                                f'--stdlib-includes={self.options.llvm_install_dir}/lib/clang/20/include',
+                                f'--libc-includes={self.options.mrdocs_src_dir}/share/mrdocs/headers/libc-stubs',
                                 f'--tagfile=reference.tag.xml',
                                 '--multipage=true',
-                                '--concurrency=32',
+                                f'--concurrency={num_cores}',
                                 '--log-level=debug'
                             ]
                         })
             else:
                 print(
                     f"Warning: Boost source directory '{self.options.boost_src_dir}' does not contain 'libs' directory. Skipping Boost documentation target generation.")
+
+        # Target to generate the documentation for MrDocs itself
+        configs.append({
+            "name": f"MrDocs Self-Reference",
+            "target": "mrdocs",
+            "args": [
+                '../CMakeLists.txt',
+                f'--config={self.options.mrdocs_src_dir}/docs/mrdocs.yml',
+                f'--output={self.options.mrdocs_src_dir}/docs/modules/reference/pages',
+                f'--generator=adoc',
+                f'--addons={self.options.mrdocs_src_dir}/share/mrdocs/addons',
+                f'--stdlib-includes={self.options.llvm_install_dir}/include/c++/v1',
+                f'--stdlib-includes={self.options.llvm_install_dir}/lib/clang/20/include',
+                f'--libc-includes={self.options.mrdocs_src_dir}/share/mrdocs/headers/libc-stubs',
+                f'--tagfile=reference.tag.xml',
+                '--multipage=true',
+                f'--concurrency={num_cores}',
+                '--log-level=debug'
+            ],
+            "env": {
+                "LLVM_ROOT": self.options.llvm_install_dir,
+                "Clang_ROOT": self.options.llvm_install_dir,
+                "duktape_ROOT": self.options.duktape_install_dir,
+                "Duktape_ROOT": self.options.duktape_install_dir,
+                "libxml2_ROOT": self.options.libxml2_install_dir,
+                "LibXml2_ROOT": self.options.libxml2_install_dir
+            }
+        })
 
         # bootstrap.py targets
         configs.append({
