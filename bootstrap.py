@@ -863,33 +863,59 @@ class MrDocsInstaller:
                               name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask",
                               enabled="true")
             elif 'script' in config:
-                clion_config = ET.SubElement(root, "configuration", {
-                    "default": "false",
-                    "name": config["name"],
-                    "type": "PythonConfigurationType",
-                    "factoryName": "Python",
-                    "nameIsGenerated": "false"
-                })
-                ET.SubElement(clion_config, "module", name="mrdocs")
-                ET.SubElement(clion_config, "option", name="ENV_FILES", value="")
-                ET.SubElement(clion_config, "option", name="INTERPRETER_OPTIONS", value="")
-                ET.SubElement(clion_config, "option", name="PARENT_ENVS", value="true")
-                envs = ET.SubElement(clion_config, "envs")
-                ET.SubElement(envs, "env", name="PYTHONUNBUFFERED", value="1")
-                ET.SubElement(clion_config, "option", name="SDK_HOME", value="")
-                ET.SubElement(clion_config, "option", name="WORKING_DIRECTORY", value="$PROJECT_DIR$")
-                ET.SubElement(clion_config, "option", name="IS_MODULE_SDK", value="true")
-                ET.SubElement(clion_config, "option", name="ADD_CONTENT_ROOTS", value="true")
-                ET.SubElement(clion_config, "option", name="ADD_SOURCE_ROOTS", value="true")
-                ET.SubElement(clion_config, "option", name="SCRIPT_NAME", value=config["script"])
-                ET.SubElement(clion_config, "option", name="PARAMETERS",
-                              value=' '.join(shlex.quote(arg) for arg in config["args"]))
-                ET.SubElement(clion_config, "option", name="SHOW_COMMAND_LINE", value="false")
-                ET.SubElement(clion_config, "option", name="EMULATE_TERMINAL", value="false")
-                ET.SubElement(clion_config, "option", name="MODULE_MODE", value="false")
-                ET.SubElement(clion_config, "option", name="REDIRECT_INPUT", value="false")
-                ET.SubElement(clion_config, "option", name="INPUT_FILE", value="")
-                ET.SubElement(clion_config, "method", v="2")
+                if config["script"].endswith(".py"):
+                    clion_config = ET.SubElement(root, "configuration", {
+                        "default": "false",
+                        "name": config["name"],
+                        "type": "PythonConfigurationType",
+                        "factoryName": "Python",
+                        "nameIsGenerated": "false"
+                    })
+                    ET.SubElement(clion_config, "module", name="mrdocs")
+                    ET.SubElement(clion_config, "option", name="ENV_FILES", value="")
+                    ET.SubElement(clion_config, "option", name="INTERPRETER_OPTIONS", value="")
+                    ET.SubElement(clion_config, "option", name="PARENT_ENVS", value="true")
+                    envs = ET.SubElement(clion_config, "envs")
+                    ET.SubElement(envs, "env", name="PYTHONUNBUFFERED", value="1")
+                    ET.SubElement(clion_config, "option", name="SDK_HOME", value="")
+                    if 'cwd' in config and config["cwd"] != self.options.mrdocs_src_dir:
+                        ET.SubElement(clion_config, "option", name="WORKING_DIRECTORY", value=config["cwd"])
+                    else:
+                        ET.SubElement(clion_config, "option", name="WORKING_DIRECTORY", value="$PROJECT_DIR$")
+                    ET.SubElement(clion_config, "option", name="IS_MODULE_SDK", value="true")
+                    ET.SubElement(clion_config, "option", name="ADD_CONTENT_ROOTS", value="true")
+                    ET.SubElement(clion_config, "option", name="ADD_SOURCE_ROOTS", value="true")
+                    ET.SubElement(clion_config, "option", name="SCRIPT_NAME", value=config["script"])
+                    ET.SubElement(clion_config, "option", name="PARAMETERS",
+                                  value=' '.join(shlex.quote(arg) for arg in config["args"]))
+                    ET.SubElement(clion_config, "option", name="SHOW_COMMAND_LINE", value="false")
+                    ET.SubElement(clion_config, "option", name="EMULATE_TERMINAL", value="false")
+                    ET.SubElement(clion_config, "option", name="MODULE_MODE", value="false")
+                    ET.SubElement(clion_config, "option", name="REDIRECT_INPUT", value="false")
+                    ET.SubElement(clion_config, "option", name="INPUT_FILE", value="")
+                    ET.SubElement(clion_config, "method", v="2")
+                elif config["script"].endswith(".sh"):
+                    clion_config = ET.SubElement(root, "configuration", {
+                        "default": "false",
+                        "name": config["name"],
+                        "type": "ShConfigurationType"
+                    })
+                    ET.SubElement(clion_config, "option", name="SCRIPT_TEXT", value=f"bash {shlex.quote(config['script'])}")
+                    ET.SubElement(clion_config, "option", name="INDEPENDENT_SCRIPT_PATH", value="true")
+                    ET.SubElement(clion_config, "option", name="SCRIPT_PATH", value=config["script"])
+                    ET.SubElement(clion_config, "option", name="SCRIPT_OPTIONS", value="")
+                    ET.SubElement(clion_config, "option", name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY", value="true")
+                    if 'cwd' in config and config["cwd"] != self.options.mrdocs_src_dir:
+                        ET.SubElement(clion_config, "option", name="SCRIPT_WORKING_DIRECTORY", value=config["cwd"])
+                    else:
+                        ET.SubElement(clion_config, "option", name="SCRIPT_WORKING_DIRECTORY", value="$PROJECT_DIR$")
+                    ET.SubElement(clion_config, "option", name="INDEPENDENT_INTERPRETER_PATH", value="true")
+                    ET.SubElement(clion_config, "option", name="INTERPRETER_PATH", value="")
+                    ET.SubElement(clion_config, "option", name="INTERPRETER_OPTIONS", value="")
+                    ET.SubElement(clion_config, "option", name="EXECUTE_IN_TERMINAL", value="true")
+                    ET.SubElement(clion_config, "option", name="EXECUTE_SCRIPT_FILE", value="true")
+                    ET.SubElement(clion_config, "envs")
+                    ET.SubElement(clion_config, "method", v="2")
             tree = ET.ElementTree(root)
             tree.write(run_config_path, encoding="utf-8", xml_declaration=False)
 
@@ -1039,7 +1065,6 @@ class MrDocsInstaller:
             "args": bootstrap_args,
             "cwd": self.options.mrdocs_src_dir
         })
-        # make a copy of the args for the refresh config
         bootstrap_refresh_args = bootstrap_args.copy()
         bootstrap_refresh_args.append("--non-interactive")
         configs.append({
@@ -1049,6 +1074,7 @@ class MrDocsInstaller:
             "cwd": self.options.mrdocs_src_dir
         })
 
+        # Targets for the pre-build steps
         configs.append({
             "name": f"MrDocs Generate Config Info ({bootstrap_refresh_config_name})",
             "script": os.path.join(self.options.mrdocs_src_dir, 'util', 'generate-config-info.py'),
@@ -1056,12 +1082,34 @@ class MrDocsInstaller:
                      os.path.join(self.options.mrdocs_build_dir)],
             "cwd": self.options.mrdocs_src_dir
         })
-
         configs.append({
             "name": f"MrDocs Generate YAML Schema",
             "script": os.path.join(self.options.mrdocs_src_dir, 'util', 'generate-yaml-schema.py'),
             "args": [],
             "cwd": self.options.mrdocs_src_dir
+        })
+
+        # Documentation generation targets
+        mrdocs_docs_dir = os.path.join(self.options.mrdocs_src_dir, "docs")
+        mrdocs_docs_ui_dir = os.path.join(mrdocs_docs_dir, "ui")
+        mrdocs_docs_script_ext = "bat" if self.is_windows() else "sh"
+        configs.append({
+            "name": "MrDocs Build Local Docs",
+            "script": os.path.join(mrdocs_docs_dir, f"build_local_docs.{mrdocs_docs_script_ext}"),
+            "args": [],
+            "cwd": mrdocs_docs_dir
+        })
+        configs.append({
+            "name": "MrDocs Build Docs",
+            "script": os.path.join(mrdocs_docs_dir, f"build_docs.{mrdocs_docs_script_ext}"),
+            "args": [],
+            "cwd": mrdocs_docs_dir
+        })
+        configs.append({
+            "name": "MrDocs Build UI Bundle",
+            "script": os.path.join(mrdocs_docs_ui_dir, f"build.{mrdocs_docs_script_ext}"),
+            "args": [],
+            "cwd": mrdocs_docs_ui_dir
         })
 
         print("Generating CLion run configurations for MrDocs...")
