@@ -89,21 +89,22 @@ endif()
 find_package(LLVM REQUIRED CONFIG)
 find_package(Clang REQUIRED CONFIG)
 
-if (LLVM_ROOT)
-    set(LIBCXX_DIR "${LLVM_ROOT}/include/c++/v1/")
-    message(STATUS "LIBCXX_DIR: ${LIBCXX_DIR}")
-    if (NOT EXISTS "${LIBCXX_DIR}")
-        message(FATAL_ERROR
-                "LIBCXX_DIR (${LIBCXX_DIR}) does not exist.\n"
-                "LLVM_ROOT is set, but LIBCXX_DIR (/include/c++/v1) does not exist.\n")
-    endif()
-    set(STDLIB_INCLUDE_DIR "${LLVM_ROOT}/lib/clang/${Clang_VERSION_MAJOR}/include/")
-    message(STATUS "STDLIB_INCLUDE_DIR: ${STDLIB_INCLUDE_DIR}")
-    if (NOT EXISTS "${STDLIB_INCLUDE_DIR}")
-        message(FATAL_ERROR
-                "STDLIB_INCLUDE_DIR (${STDLIB_INCLUDE_DIR}) does not exist.\n"
-                "LLVM_ROOT is set, but STDLIB_INCLUDE_DIR (/lib/clang/${Clang_VERSION_MAJOR}/include) does not exist.\n")
-    endif()
+set(LIBCXX_DIR "${LLVM_INCLUDE_DIR}/c++/v1" CACHE PATH
+               "Path to libc++ include directory")
+message(STATUS "LIBCXX_DIR: ${LIBCXX_DIR}")
+if (NOT EXISTS "${LIBCXX_DIR}")
+    message(FATAL_ERROR
+            "LIBCXX_DIR (${LIBCXX_DIR}) does not exist.\n"
+            "Please provide a LLVM with libc++ enabled\n")
+endif()
+
+set(STDLIB_INCLUDE_DIR "${LLVM_BINARY_DIR}/lib/clang/${Clang_VERSION_MAJOR}/include"
+                       CACHE PATH "Path to the clang headers include directory")
+message(STATUS "STDLIB_INCLUDE_DIR: ${STDLIB_INCLUDE_DIR}")
+if (NOT EXISTS "${STDLIB_INCLUDE_DIR}")
+    message(FATAL_ERROR
+            "STDLIB_INCLUDE_DIR (${STDLIB_INCLUDE_DIR}) does not exist.\n"
+            "Missing clang headers\n")
 endif()
 
 list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
@@ -528,10 +529,10 @@ if (MRDOCS_INSTALL)
     #-------------------------------------------------
     # share
     #-------------------------------------------------
-    install(DIRECTORY ${LIBCXX_DIR}
+    install(DIRECTORY ${LIBCXX_DIR}/
             DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs/headers/libcxx
             FILES_MATCHING PATTERN "*")
-    install(DIRECTORY ${STDLIB_INCLUDE_DIR}
+    install(DIRECTORY ${STDLIB_INCLUDE_DIR}/
             DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs/headers/clang
             FILES_MATCHING PATTERN "*")
     install(DIRECTORY ${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs/
