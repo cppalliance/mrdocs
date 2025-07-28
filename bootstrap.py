@@ -1112,6 +1112,15 @@ class MrDocsInstaller:
             "cwd": mrdocs_docs_ui_dir
         })
 
+        # Remove bad test files
+        test_files_dir = os.path.join(self.options.mrdocs_src_dir, "test-files", "golden-tests")
+        configs.append({
+            "name": "MrDocs Remove Bad Test Files",
+            "script": os.path.join(test_files_dir, f"remove_bad_files.{mrdocs_docs_script_ext}"),
+            "args": [],
+            "cwd": test_files_dir
+        })
+
         print("Generating CLion run configurations for MrDocs...")
         self.generate_clion_run_configs(configs)
         print("Generating Visual Studio run configurations for MrDocs...")
