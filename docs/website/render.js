@@ -7,7 +7,6 @@ const assert = require('assert');
 const path = require('path');
 const {execSync} = require('child_process');
 
-
 // Read the template file
 const templateFile = 'index.html.hbs';
 const templateSource = fs.readFileSync(templateFile, 'utf8');
