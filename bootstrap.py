@@ -47,6 +47,10 @@ class InstallOptions:
         In InstallOptions, it allows easy initialization and management of
         configuration options with default values and type hints.
     """
+    # Compiler
+    cc: str = ''
+    cxx: str = ''
+
     # Tools
     git_path: str = ''
     cmake_path: str = ''
@@ -60,12 +64,12 @@ class InstallOptions:
     mrdocs_repo: str = "https://github.com/cppalliance/mrdocs"
     mrdocs_branch: str = "develop"
     mrdocs_use_user_presets: bool = True
-    mrdocs_preset_name: str = "<mrdocs-build-type:lower>-<os:lower>"
-    mrdocs_build_dir: str = "<mrdocs-src-dir>/build/<mrdocs-build-type:lower>-<os:lower>"
+    mrdocs_preset_name: str = "<mrdocs-build-type:lower>-<os:lower><\"-\":if(cc)><cc:basename>"
+    mrdocs_build_dir: str = "<mrdocs-src-dir>/build/<mrdocs-build-type:lower>-<os:lower><\"-\":if(cc)><cc:basename>"
     mrdocs_build_tests: bool = True
     mrdocs_system_install: bool = field(default_factory=lambda: not running_from_mrdocs_source_dir())
     mrdocs_install_dir: str = field(
-        default_factory=lambda: "<mrdocs-src-dir>/install/<mrdocs-build-type:lower>-<os:lower>" if running_from_mrdocs_source_dir() else "")
+        default_factory=lambda: "<mrdocs-src-dir>/install/<mrdocs-build-type:lower>-<os:lower>-<cc:basename>" if running_from_mrdocs_source_dir() else "")
     mrdocs_run_tests: bool = True
 
     # Third-party dependencies
@@ -75,23 +79,23 @@ class InstallOptions:
     duktape_src_dir: str = "<third-party-src-dir>/duktape"
     duktape_url: str = "https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz"
     duktape_build_type: str = "<mrdocs-build-type>"
-    duktape_build_dir: str = "<duktape-src-dir>/build/<duktape-build-type:lower>"
-    duktape_install_dir: str = "<duktape-src-dir>/install/<duktape-build-type:lower>"
+    duktape_build_dir: str = "<duktape-src-dir>/build/<duktape-build-type:lower><\"-\":if(cc)><cc:basename>"
+    duktape_install_dir: str = "<duktape-src-dir>/install/<duktape-build-type:lower><\"-\":if(cc)><cc:basename>"
 
     # Libxml2
     libxml2_src_dir: str = "<third-party-src-dir>/libxml2"
     # purposefully does not depend on mrdocs-build-type because we only need the executable
     libxml2_build_type: str = "Release"
-    libxml2_build_dir: str = "<libxml2-src-dir>/build/<libxml2-build-type:lower>"
-    libxml2_install_dir: str = "<libxml2-src-dir>/install/<libxml2-build-type:lower>"
+    libxml2_build_dir: str = "<libxml2-src-dir>/build/<libxml2-build-type:lower><\"-\":if(cc)><cc:basename>"
+    libxml2_install_dir: str = "<libxml2-src-dir>/install/<libxml2-build-type:lower><\"-\":if(cc)><cc:basename>"
     libxml2_repo: str = "https://github.com/GNOME/libxml2"
     libxml2_branch: str = "v2.12.6"
 
     # LLVM
     llvm_src_dir: str = "<third-party-src-dir>/llvm-project"
     llvm_build_type: str = "<mrdocs-build-type>"
-    llvm_build_dir: str = "<llvm-src-dir>/build/<llvm-build-type:lower>"
-    llvm_install_dir: str = "<llvm-src-dir>/install/<llvm-build-type:lower>"
+    llvm_build_dir: str = "<llvm-src-dir>/build/<llvm-build-type:lower><\"-\":if(cc)><cc:basename>"
+    llvm_install_dir: str = "<llvm-src-dir>/install/<llvm-build-type:lower><\"-\":if(cc)><cc:basename>"
     llvm_repo: str = "https://github.com/llvm/llvm-project.git"
     llvm_commit: str = "dd7a3d4d798e30dfe53b5bbbbcd9a23c24ea1af9"
 
@@ -103,9 +107,10 @@ class InstallOptions:
     # Meta
     non_interactive: bool = False
 
-
 # Constant for option descriptions
 INSTALL_OPTION_DESCRIPTIONS = {
+    "cc": "Path to the C compiler executable. Leave empty for default.",
+    "cxx": "Path to the C++ compiler executable. Leave empty for default.",
     "git_path": "Path to the git executable, if not in system PATH.",
     "cmake_path": "Path to the cmake executable, if not in system PATH.",
     "java_path": "Path to the java executable, if not in system PATH.",
@@ -261,30 +266,41 @@ class MrDocsInstaller:
                 def repl(match):
                     nonlocal has_dir_key
                     key = match.group(1)
-                    has_dir_key = has_dir_key or key.endswith("-dir")
-                    key = key.replace("-", "_")
                     transform_fn = match.group(2)
-                    if key == 'os':
-                        if self.is_windows():
-                            val = "windows"
-                        elif self.is_linux():
-                            val = "linux"
-                        elif self.is_macos():
-                            val = "macos"
-                        else:
-                            raise ValueError("Unsupported operating system.")
+                    has_dir_key = has_dir_key or key.endswith("-dir")
+                    key_surrounded_by_quotes = key.startswith('"') and key.endswith('"')
+                    if key_surrounded_by_quotes:
+                        val = key[1:-1]
                     else:
-                        val = getattr(self.options, key, None)
+                        if key == 'os':
+                            if self.is_windows():
+                                val = "windows"
+                            elif self.is_linux():
+                                val = "linux"
+                            elif self.is_macos():
+                                val = "macos"
+                            else:
+                                raise ValueError("Unsupported operating system.")
+                        else:
+                            key = key.replace("-", "_")
+                            val = getattr(self.options, key, None)
+
                     if transform_fn:
                         if transform_fn == "lower":
                             val = val.lower()
                         elif transform_fn == "upper":
                             val = val.upper()
-                        # Add more formats as needed
+                        elif transform_fn == "basename":
+                            val = os.path.basename(val)
+                        elif transform_fn == "if(cc)":
+                            if self.options.cc:
+                                val = val.lower()
+                            else:
+                                val = ""
                     return val
 
                 # Regex: <key> or <key:format>
-                pattern = r"<([a-zA-Z0-9_\-]+)(?::([a-zA-Z0-9_\-]+))?>"
+                pattern = r"<([\"a-zA-Z0-9_\-]+)(?::([a-zA-Z0-9_\-\(\)]+))?>"
                 default_value = re.sub(pattern, repl, default_value)
                 if has_dir_key:
                     default_value = os.path.abspath(default_value)
@@ -421,6 +437,10 @@ class MrDocsInstaller:
         """
         config_args = [self.options.cmake_path, "-S", src_dir]
 
+        if self.options.cc and self.options.cxx:
+            config_args.extend(["-DCMAKE_C_COMPILER=" + self.options.cc,
+                                "-DCMAKE_CXX_COMPILER=" + self.options.cxx])
+
         # "DebWithOpt" is not a valid type. However, we interpret it as a special case
         # where the build type is Debug and optimizations are enabled.
         # This is not very different from RelWithDebInfo on Unix, but ensures
@@ -486,6 +506,18 @@ class MrDocsInstaller:
         tool_path = self.prompt_option(f"{tool}_path")
         if not self.is_executable(tool_path):
             raise FileNotFoundError(f"{tool} executable not found at {tool_path}.")
+
+    def check_compilers(self):
+        for option in ["cc", "cxx"]:
+            self.prompt_option(option)
+            if getattr(self.options, option):
+                if not os.path.isabs(getattr(self.options, option)):
+                    exec = shutil.which(getattr(self.options, option))
+                    if exec is None:
+                        raise FileNotFoundError(f"{option} executable '{getattr(self.options, option)}' not found in PATH.")
+                    setattr(self.options, option, exec)
+                if not self.is_executable(getattr(self.options, option)):
+                    raise FileNotFoundError(f"{option} executable not found at {getattr(self.options, option)}.")
 
     def check_tools(self):
         tools = ["git", "cmake"]
@@ -707,10 +739,13 @@ class MrDocsInstaller:
             parent_preset_name = "relwithdebinfo"
         build_type_is_debwithopt = self.options.mrdocs_build_type.lower() == 'debwithopt'
         cmake_build_type = self.options.mrdocs_build_type if not build_type_is_debwithopt else "Debug"
+        display_name = f"{self.options.mrdocs_build_type} {OSDisplayName}"
+        if self.options.cc:
+            display_name += f" ({os.path.basename(self.options.cc)})"
         new_preset = {
             "name": self.options.mrdocs_preset_name,
-            "displayName": f"{self.options.mrdocs_build_type} {OSDisplayName}",
-            "description": f"Preset for building MrDocs in {self.options.mrdocs_build_type} mode with the default compiler in {OSDisplayName}.",
+            "displayName": display_name,
+            "description": f"Preset for building MrDocs in {self.options.mrdocs_build_type} mode with the {os.path.basename(self.options.cc) if self.options.cc else 'default'} compiler in {OSDisplayName}.",
             "inherits": parent_preset_name,
             "binaryDir": "${sourceDir}/build/${presetName}",
             "cacheVariables": {
@@ -1158,7 +1193,7 @@ class MrDocsInstaller:
                     else:
                         bootstrap_args.append(f"--no-{field.name.replace('_', '-')}")
                 elif field.type is str:
-                    if value != '' and default_value != '':
+                    if value != '':
                         bootstrap_args.append(f"--{field.name.replace('_', '-')}")
                         bootstrap_args.append(value)
                 else:
@@ -1312,6 +1347,7 @@ class MrDocsInstaller:
         self.generate_visual_studio_run_configs(configs)
 
     def install_all(self):
+        self.check_compilers()
         self.check_tools()
         self.setup_mrdocs_dir()
         self.setup_third_party_dir()
