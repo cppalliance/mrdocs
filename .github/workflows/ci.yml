@@ -158,6 +158,7 @@ jobs:
 
       - name: Setup Ninja
         uses: seanmiddleditch/gha-setup-ninja@v5
+        if: ${{ runner.os == 'Windows' }}
 
       - name: Setup C++
         uses: alandefreitas/cpp-actions/setup-cpp@v1.8.10
