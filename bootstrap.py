@@ -50,6 +50,7 @@ class InstallOptions:
     # Tools
     git_path: str = ''
     cmake_path: str = ''
+    java_path: str = ''
 
     # MrDocs
     mrdocs_src_dir: str = field(
@@ -107,6 +108,7 @@ class InstallOptions:
 INSTALL_OPTION_DESCRIPTIONS = {
     "git_path": "Path to the git executable, if not in system PATH.",
     "cmake_path": "Path to the cmake executable, if not in system PATH.",
+    "java_path": "Path to the java executable, if not in system PATH.",
     "mrdocs_src_dir": "MrDocs source directory.",
     "mrdocs_repo": "URL of the MrDocs repository to clone.",
     "mrdocs_branch": "Branch or tag of the MrDocs repository to use.",
@@ -510,7 +512,8 @@ class MrDocsInstaller:
 
         # MrDocs build type
         self.prompt_build_type_option("mrdocs_build_type")
-        self.prompt_option("mrdocs_build_tests")
+        if self.prompt_option("mrdocs_build_tests"):
+            self.check_tool("java")
 
     def is_inside_mrdocs_dir(self, path):
         """
@@ -962,6 +965,31 @@ class MrDocsInstaller:
                         for key, value in config['env'].items():
                             ET.SubElement(envs, "env", name=key, value=value)
                     ET.SubElement(clion_config, "method", v="2")
+                else:
+                    attrib = {
+                        "default": "false",
+                        "name": config["name"],
+                        "type": "ShConfigurationType"
+                    }
+                    if 'folder' in config:
+                        attrib["folderName"] = config["folder"]
+                    clion_config = ET.SubElement(root, "configuration", attrib)
+                    ET.SubElement(clion_config, "option", name="SCRIPT_TEXT", value=f"{shlex.quote(config['script'])} {' '.join(shlex.quote(arg) for arg in config['args'])}")
+                    ET.SubElement(clion_config, "option", name="INDEPENDENT_SCRIPT_PATH", value="true")
+                    ET.SubElement(clion_config, "option", name="SCRIPT_PATH", value=config["script"])
+                    ET.SubElement(clion_config, "option", name="SCRIPT_OPTIONS", value="")
+                    ET.SubElement(clion_config, "option", name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY", value="true")
+                    if 'cwd' in config and config["cwd"] != self.options.mrdocs_src_dir:
+                        ET.SubElement(clion_config, "option", name="SCRIPT_WORKING_DIRECTORY", value=config["cwd"])
+                    else:
+                        ET.SubElement(clion_config, "option", name="SCRIPT_WORKING_DIRECTORY", value="$PROJECT_DIR$")
+                    ET.SubElement(clion_config, "option", name="INDEPENDENT_INTERPRETER_PATH", value="true")
+                    ET.SubElement(clion_config, "option", name="INTERPRETER_PATH", value="")
+                    ET.SubElement(clion_config, "option", name="INTERPRETER_OPTIONS", value="")
+                    ET.SubElement(clion_config, "option", name="EXECUTE_IN_TERMINAL", value="true")
+                    ET.SubElement(clion_config, "option", name="EXECUTE_SCRIPT_FILE", value="false")
+                    ET.SubElement(clion_config, "envs")
+                    ET.SubElement(clion_config, "method", v="2")
 
             tree = ET.ElementTree(root)
             tree.write(run_config_path, encoding="utf-8", xml_declaration=False)
@@ -988,7 +1016,7 @@ class MrDocsInstaller:
                 "type": "default",
                 "project": "MrDocs",
                 "args": config["args"],
-                "cwd": self.options.mrdocs_build_dir,
+                "cwd": config.get('cwd', self.options.mrdocs_build_dir),
                 "env": {},
                 "stopAtEntry": False,
                 "console": "integratedTerminal"
@@ -1226,6 +1254,57 @@ class MrDocsInstaller:
             "args": ["install"],
             "cwd": mrdocs_website_dir
         })
+
+        # XML schema tests
+        if self.options.java_path:
+            configs.append({
+                "name": "MrDocs Generate RelaxNG Schema",
+                "script": self.options.java_path,
+                "args": [
+                    "-jar",
+                    os.path.join(self.options.mrdocs_src_dir, "util", "trang.jar"),
+                    os.path.join(self.options.mrdocs_src_dir, "mrdocs.rnc"),
+                    os.path.join(self.options.mrdocs_build_dir, "mrdocs.rng")
+                ],
+                "cwd": self.options.mrdocs_src_dir
+            })
+
+            libxml2_xmllint_executable = os.path.join(self.options.libxml2_install_dir, "bin", "xmllint")
+            xml_sources_dir = os.path.join(self.options.mrdocs_src_dir, "test-files", "golden-tests")
+
+            if self.is_windows():
+                xml_sources = []
+                for root, _, files in os.walk(xml_sources_dir):
+                    for file in files:
+                        if file.endswith(".xml") and not file.endswith(".bad.xml"):
+                            xml_sources.append(os.path.join(root, file))
+                configs.append({
+                    "name": "MrDocs XML Lint with RelaxNG Schema",
+                    "script": libxml2_xmllint_executable,
+                    "args": [
+                        "--dropdtd",
+                        "--noout",
+                        "--relaxng",
+                        os.path.join(self.options.mrdocs_build_dir, "mrdocs.rng")
+                    ].extend(xml_sources),
+                    "cwd": self.options.mrdocs_src_dir
+                })
+            else:
+                configs.append({
+                    "name": "MrDocs XML Lint with RelaxNG Schema",
+                    "script": "find",
+                    "args": [
+                        xml_sources_dir,
+                        "-type", "f",
+                        "-name", "*.xml",
+                        "!", "-name", "*.bad.xml",
+                        "-exec", libxml2_xmllint_executable,
+                        "--dropdtd", "--noout",
+                        "--relaxng", os.path.join(self.options.mrdocs_build_dir, "mrdocs.rng"),
+                        "{}", "+"
+                    ],
+                    "cwd": self.options.mrdocs_src_dir
+                })
 
         print("Generating CLion run configurations for MrDocs...")
         self.generate_clion_run_configs(configs)
