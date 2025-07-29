@@ -2059,7 +2059,12 @@ ul.check li::before {
 
 body {
     width: 100%;
-    margin: 0
+    margin: 0;
+    transition: padding-top 0.3s ease-in-out;
+}
+
+body.nav-visible {
+    padding-top: 60px; /* Adjust based on nav height */
 }
 
 footer, header, main > section {
@@ -2140,37 +2145,6 @@ body > nav ul:first-of-type {
 
 body > nav ul:first-of-type li {
     padding: 0
-}
-
-body > nav ul:first-of-type li:first-of-type a {
-    display: block;
-    margin: 0;
-    padding: 0;
-    background: var(--h1-color);
-    color: var(--nav-logo-color)
-}
-
-body > nav ul:first-of-type li:first-of-type a svg {
-    display: block;
-    width: 3.5rem;
-    height: 3.5rem
-}
-
-body > nav ul:first-of-type li:nth-of-type(2) {
-    display: none;
-    margin-left: calc(var(--spacing) * 1.5);
-    color: var(--h1-color);
-    font-weight: 200
-}
-
-body > nav ul:first-of-type li:nth-of-type(2) strong {
-    font-weight: 400
-}
-
-@media (min-width: 992px) {
-    body > nav ul:first-of-type li:nth-of-type(2) {
-        display: inline
-    }
 }
 
 header h1, header p {
@@ -2838,7 +2812,7 @@ nav {
   position: fixed;
   left: 0;
   opacity: .1;
-  top: 58px;
+  top: 0;
   z-index: 1;
   pointer-events: none;
 }
@@ -2854,8 +2828,212 @@ nav {
   position: fixed;
   right: 0;
   opacity: .1;
-  top: 58px;
+  top: 0;
   z-index: 1;
   pointer-events: none;
 }
 
+/* ===========================
+   Navigation Styles
+=========================== */
+
+.nav {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 0.25rem 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    right: 0;
+    transform: translateY(-100%);
+    transition: transform 0.3s ease-in-out;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.nav.nav-visible {
+    transform: translateY(0);
+}
+
+.nav .logo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.nav ul {
+    gap: 1rem;
+}
+
+.nav-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.nav-section>div {
+    margin-right: .5rem;
+}
+
+.nav-section:last-child {
+
+    color: #ffffff99;
+}
+
+.nav-section:last-child div:hover {
+    color: #ffffffff;
+}
+
+.nav-section:last-child div {
+    margin-right: 1.5rem;
+}
+
+.nav ul li {
+    list-style: none;
+    font-weight: bold;
+}
+
+.nav .logo-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #ffffff;
+}
+
+.nav .nav-section:last-child a[role="menuitem"] {
+    font-size: 1rem;
+}
+
+/* ===========================
+   Cutout Styles
+=========================== */
+
+.boxicon {
+    width: 50px;
+    height: 50px;
+}
+
+.boxicon .inner-box {
+    position: relative;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 126%;
+}
+
+/***** cutout box sizing *****/
+
+.box1 {
+    width: 300px;
+    height: 300px;
+    margin: 0rem 2rem;
+}
+
+.box2 {
+    width: 150px;
+    height: 150px;
+    margin: 0rem 1rem;
+}
+
+.box3 {
+    width: 450px;
+    height: 450px;
+    margin: 0rem 2rem;
+}
+
+/***** cutout box shapes *****/
+
+.box-shape1 {
+    background-image: url("./assets/image-box.svg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: stretch;
+}
+
+.box-shape2 {
+    background-image: url("./assets/image-box2.svg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: stretch;
+}
+
+.box-shape3 {
+    background-image: url("./assets/image-box3.svg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: stretch;
+}
+
+/***** cutout box rotations *****/
+.box0 {
+    position: relative;
+    filter: drop-shadow(7px 10px 0px rgba(0, 0, 0, .7));
+}
+
+.box90 {
+    transform: rotate(90deg);
+    filter: drop-shadow(7px -10px 0px rgba(0, 0, 0, .7));
+}
+
+.box90 .inner-box {
+    transform: rotate(270deg);
+    background-size: contain;
+}
+
+.box180 {
+    transform: rotate(180deg);
+    filter: drop-shadow(-7px -10px 0px rgba(0, 0, 0, .7));
+}
+
+.box180 .inner-box {
+    transform: rotate(-180deg);
+    background-size: contain;
+}
+
+.box270 {
+    transform: rotate(270deg);
+    filter: drop-shadow(-7px 10px 0px rgba(0, 0, 0, .7));
+}
+
+.box270 .inner-box {
+    transform: rotate(90deg);
+    background-size: contain;
+}
+
+/***** cutout box inner content and images *****/
+.inner-box {
+    height: 58%;
+    width: 58%;
+    position: absolute;
+    top: 21%;
+    left: 21%;
+    color: black;
+
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.cards {
+    background-image: url("./assets/cards1.jpg");
+}
+
+.shouting {
+    background-image: url("./assets/man1.webp");
+}
+
+.thinking {
+    background-image: url("./assets/think1.png");
+}
+
+.mrdocs {
+    background-image: url("./assets/mrdocs.svg");
+}
