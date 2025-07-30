@@ -239,7 +239,7 @@ public:
      */
     void
     buildTerminal(
-        NestedNameSpecifier const*,
+        NestedNameSpecifier,
         Type const*,
         unsigned,
         bool)
@@ -253,7 +253,7 @@ public:
      */
     void
     buildTerminal(
-        NestedNameSpecifier const*,
+        NestedNameSpecifier,
         IdentifierInfo const*,
         std::optional<ArrayRef<TemplateArgument>>,
         unsigned,
@@ -268,7 +268,7 @@ public:
      */
     void
     buildTerminal(
-        NestedNameSpecifier const*,
+        NestedNameSpecifier,
         NamedDecl*,
         std::optional<ArrayRef<TemplateArgument>>,
         unsigned,
