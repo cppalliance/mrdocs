@@ -55,14 +55,21 @@
     </nav>
     <header>
         <div class="container">
-            <h1>{{ title }}</h1>
-            <p>{{ description }}</p>
-            <div class="header-cta">
-                <a href="docs/" class="secondary" role="button" aria-label="Documentation">Get started</a>
-                <a href="docs/mrdocs/install.html" class="contrast outline" role="button" aria-label="Download">Download</a>
+            <div class="header-content">
+                <h1>{{ title }}</h1>
+                <p>{{ description }}</p>
+                <div class="header-cta">
+                    <a href="docs/" class="secondary" role="button" aria-label="Documentation">Get started</a>
+                    <a href="docs/mrdocs/install.html" class="contrast outline" role="button" aria-label="Download">Download</a>
+                </div>
+                <div class="banner-snippet">
+                    <small><code>{{ banner.description }}</code></small>
+                </div>
             </div>
-            <div class="banner-snippet">
-                <small><code>{{ banner.description }}</code></small>
+            <div class="header-image">
+                <div class="box1 box-shape2 box270">
+                    <div class="inner-box thinking"></div>
+                </div>
             </div>
         </div>
     </header>
