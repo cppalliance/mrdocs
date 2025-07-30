@@ -280,6 +280,34 @@
                 "lhs": "${hostSystemName}",
                 "rhs": "Darwin"
             }
+        },
+        {
+            "name": "debug-macos-fast",
+            "displayName": "Debug with Optimized Dependencies (macOS)",
+            "description": "Preset for building MrDocs in Debug mode with the default compiler in macOS.",
+            "inherits": "debug",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "LLVM_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/release",
+                "Clang_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/release",
+                "duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/release",
+                "Duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/release",
+                "libxml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release",
+                "LibXml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release",
+                "MRDOCS_BUILD_TESTS": true,
+                "MRDOCS_BUILD_DOCS": false,
+                "MRDOCS_GENERATE_REFERENCE": false,
+                "MRDOCS_GENERATE_ANTORA_REFERENCE": false
+            },
+            "warnings": {
+                "unusedCli": false
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            }
         }
     ]
 }
