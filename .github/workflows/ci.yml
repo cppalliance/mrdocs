@@ -42,7 +42,7 @@ jobs:
           latest-factors: |
             msvc Optimized-Debug
             gcc UBSan Coverage
-            clang UBSan
+            clang UBSan ASan
             apple-clang UBSan ASan
           factors: ''
           runs-on: |
@@ -76,9 +76,11 @@ jobs:
             llvm-root: ../third-party/llvm-project/install
             llvm-archive-extension: {{#if (ieq os 'windows') }}7z{{else}}tar.bz2{{/if}}
             llvm-archive-filename: {{{ llvm-archive-basename }}}.{{{ llvm-archive-extension }}}
-            llvm-sanitizer-config: {{#if (or (ne compiler 'clang') (ne compiler 'apple-clang'))}}{{else if ubsan}}Undefined{{else if asan}}Address{{/if}}
-            mrdocs-ccflags: {{{ ccflags }}} {{#if (and (eq compiler 'gcc') (not asan)) }}-static{{/if}}
-            mrdocs-cxxflags: {{{ cxxflags }}} {{#if (and (eq compiler 'gcc') (not asan)) }}-static{{/if}}
+            llvm-sanitizer-config: {{#if (and (ne compiler 'clang') (ne compiler 'apple-clang'))}}{{else if ubsan}}Undefined{{else if asan}}Address{{else if msan}}MemoryWithOrigins{{/if}}
+            mrdocs-flags: {{#if (and (eq compiler 'gcc') (not asan)) }}-static{{/if}}{{#if (and (eq compiler 'clang') msan) }}-fsanitize-memory-track-origins{{/if}}
+            mrdocs-ccflags: {{{ ccflags }}} {{{ mrdocs-flags }}}
+            mrdocs-cxxflags: {{{ cxxflags }}} {{{ mrdocs-flags }}}
+            mrdocs-linkflags: {{#if asan }}-fsanitize=address{{/if}}
             mrdocs-package-generators: {{#if (ieq os 'windows') }}7Z ZIP WIX{{else}}TGZ TXZ{{/if}}
             mrdocs-release-package-artifact: release-packages-{{{ lowercase os }}}
           output-file: matrix.json
@@ -279,6 +281,8 @@ jobs:
             -DLLVM_USE_SANITIZER=${{ matrix.llvm-sanitizer-config }}
           cc: ${{ steps.setup-cpp.outputs.cc }}
           cxx: ${{ steps.setup-cpp.outputs.cxx }}
+          ccflags: -gz=zstd
+          cxxflags: -gz=zstd
           generator: Ninja
           install: true
           install-prefix: ${sourceDir}/../install
@@ -378,6 +382,7 @@ jobs:
           install-prefix: .local
           extra-args: |
             -D MRDOCS_BUILD_DOCS=OFF
+            -D CMAKE_EXE_LINKER_FLAGS=${{ matrix.mrdocs-linkflags }}
             -D LLVM_ROOT=${{ steps.resolve-third-party-dir.outputs.third-party-dir }}/llvm-project/install
             -D Clang_ROOT=${{ steps.resolve-third-party-dir.outputs.third-party-dir }}/llvm-project/install
             -D duktape_ROOT=${{ steps.resolve-third-party-dir.outputs.third-party-dir }}/duktape/install
