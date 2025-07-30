@@ -690,10 +690,6 @@ class MrDocsInstaller:
         self.prompt_dependency_path_option("llvm_install_dir")
         cmake_preset = f"{self.options.llvm_build_type.lower()}-win" if self.is_windows() else f"{self.options.llvm_build_type.lower()}-unix"
         cmake_extra_args = [f"--preset={cmake_preset}"]
-        if self.is_windows():
-            cmake_extra_args.append("-DLLVM_ENABLE_RUNTIMES=libcxx")
-        else:
-            cmake_extra_args.append("-DLLVM_ENABLE_RUNTIMES=libcxx;libcxxabi;libunwind")
         self.cmake_workflow(llvm_subproject_dir, self.options.llvm_build_type, self.options.llvm_build_dir,
                             self.options.llvm_install_dir, cmake_extra_args)
 
