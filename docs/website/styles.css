@@ -473,6 +473,25 @@ kbd {
     }
 }
 
+/** * Grid * Minimal grid system with auto-layout columns */ 
+
+.grid {
+	grid-column-gap: var(--pico-grid-column-gap);
+	grid-row-gap: var(--pico-grid-row-gap);
+	display: grid;
+	grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+	.grid {
+		grid-template-columns: repeat(auto-fit, minmax(0%, 1fr));
+	}
+}
+
+.grid>* {
+	min-width: 0;
+}
+
 b, strong {
     font-weight: bolder
 }
@@ -584,7 +603,7 @@ h6 {
     margin-top: var(--typography-spacing-vertical)
 }
 
-.headings, hgroup {
+.headings {
     margin-bottom: var(--typography-spacing-vertical)
 }
 
@@ -2018,24 +2037,6 @@ h2 {
     }
 }
 
-hgroup {
-    margin-bottom: var(--block-spacing-vertical)
-}
-
-hgroup:after {
-    display: block;
-    max-width: 100px;
-    margin-top: 1rem;
-    border-bottom: .125rem solid var(--primary);
-    content: ""
-}
-
-#principles hgroup, header h1, header p {
-    max-width: 60ch;
-    margin-left: auto;
-    margin-right: auto
-}
-
 ul.check {
     padding: 0
 }
@@ -2098,7 +2099,7 @@ footer, header, main > section {
 
 @media (min-width: 1200px) {
     footer, header, main > section {
-        --block-spacing-vertical: 7rem;
+        --block-spacing-vertical: 4rem;
         --demo-height: calc(10.5rem + 540px)
     }
 }
@@ -2361,54 +2362,39 @@ input:not([type=submit]):not([type=button]):not([type=reset]):not([type=range]):
     transform: scale(1.25)
 }
 
-#principles .grid {
-    grid-gap: 2rem;
-    display: grid;
-    grid-template-columns:1fr;
-    margin: 0
-}
 
-@media (min-width: 768px) {
-    #principles .grid {
-        grid-template-columns:1fr 1fr
-    }
-}
 
-@media (min-width: 1200px) {
-    #principles .grid {
-        grid-template-columns:1fr 1fr 1fr 1fr
-    }
-}
 
-#principles hgroup {
+
+hgroup {
     text-align: center
 }
 
-#principles hgroup h2 {
+hgroup h2 {
     margin-bottom: var(--spacing)
 }
 
-#principles hgroup:after {
+hgroup:after {
     display: none
 }
 
-#principles h3 {
+h3 {
     --font-weight: 400
 }
 
-#principles svg {
+svg {
     color: var(--primary);
     width: auto;
     height: 1.25rem
 }
 
-#principles h4 {
+ h4 {
     --font-size: 1rem;
     --font-weight: 400;
     margin-bottom: .5rem
 }
 
-#principles p {
+p {
     --color: var(--muted-color)
 }
 
@@ -3084,8 +3070,55 @@ header .header-image {
 	flex-direction: column;
 	align-items: center;
 }
+
 .header-cta a[aria-label="Documentation"] {
     color: #fff;
     background-color: rgba(255, 255, 255, 0.25);
 }
 
+/* ===========================
+   Principles Styles
+=========================== */
+
+.principles-banner {
+	align-items: center;
+	justify-items: center;
+}
+
+.principles-content {
+	text-align: center;
+	order: 1
+}
+
+.principles-image {
+	order: 2;
+}
+
+@media (min-width: 768px) {
+  .principles-image {
+    justify-self: end;
+    align-self: center;
+		order: 1;
+  }
+}
+
+@media (min-width: 768px) {
+	.principles .container {
+		display: flex;
+		flex-direction: column;
+		gap: 2.5rem;
+	}
+
+  .principles-banner {
+    grid-template-columns: 35% 65%;
+		align-items: center;
+		justify-items: center;
+  }
+
+	.principles-features {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 5rem;
+		row-gap: 1rem;
+	}
+}
