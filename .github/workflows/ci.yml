@@ -262,7 +262,6 @@ jobs:
           preset: ${{ matrix.llvm-build-preset }}
           build-type: ${{ matrix.build-type }}
           extra-args: |
-            ${{ runner.os == 'Windows' && '-DLLVM_ENABLE_RUNTIMES=libcxx' || '-DLLVM_ENABLE_RUNTIMES=libcxx;libcxxabi;libunwind' }}
             -DLLVM_USE_SANITIZER=${{ matrix.llvm-sanitizer-config }}
           cc: ${{ steps.setup-cpp.outputs.cc }}
           cxx: ${{ steps.setup-cpp.outputs.cxx }}

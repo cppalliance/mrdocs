@@ -99,7 +99,8 @@
         "CMAKE_C_FLAGS_MINSIZEREL": "/MD /O1 /Ob1 /DNDEBUG",
         "CMAKE_CXX_FLAGS_MINSIZEREL": "/MD /O1 /Ob1 /DNDEBUG",
         "CMAKE_C_FLAGS_RELWITHDEBINFO": "/MD /Zi /O2 /Ob1",
-        "CMAKE_CXX_FLAGS_RELWITHDEBINFO": "/MD /Zi /O2 /Ob1"
+        "CMAKE_CXX_FLAGS_RELWITHDEBINFO": "/MD /Zi /O2 /Ob1",
+        "LLVM_ENABLE_RUNTIMES": "libcxx"
       }
     },
     {
@@ -145,7 +146,8 @@
       "displayName": "Debug-Base-Unix",
       "description": "Debug Config  without any extras and windows flags",
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug"
+        "CMAKE_BUILD_TYPE": "Debug",
+        "LLVM_ENABLE_RUNTIMES": "libcxx;libcxxabi;libunwind"
       }
     },
     {
