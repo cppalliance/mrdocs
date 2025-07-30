@@ -2675,7 +2675,15 @@ section#demo {
 
 .panel-container {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .panel-container {
+        flex-direction: row;
+        gap: 2.5rem;
+    }
 }
 
 .snippet-panel {
@@ -2812,7 +2820,7 @@ nav {
   left: 0;
   opacity: .1;
   top: 0;
-  z-index: 1;
+	z-index: -5;
   pointer-events: none;
 }
 
@@ -2828,8 +2836,21 @@ nav {
   right: 0;
   opacity: .1;
   top: 0;
-  z-index: 1;
+	z-index: -5;
   pointer-events: none;
+}
+
+@media (max-width: 576px) {
+	.dotted, .dotted-right {
+		opacity: 0.05;
+	}
+
+  .dotted {
+    left: -80px;
+  }
+  .dotted-right {
+    right: -80px;
+  }
 }
 
 /* ===========================
