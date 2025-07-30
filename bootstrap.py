@@ -69,7 +69,7 @@ class InstallOptions:
     mrdocs_build_tests: bool = True
     mrdocs_system_install: bool = field(default_factory=lambda: not running_from_mrdocs_source_dir())
     mrdocs_install_dir: str = field(
-        default_factory=lambda: "<mrdocs-src-dir>/install/<mrdocs-build-type:lower>-<os:lower>-<cc:basename>" if running_from_mrdocs_source_dir() else "")
+        default_factory=lambda: "<mrdocs-src-dir>/install/<mrdocs-build-type:lower>-<os:lower><\"-\":if(cc)><cc:basename>" if running_from_mrdocs_source_dir() else "")
     mrdocs_run_tests: bool = True
 
     # Third-party dependencies
@@ -82,15 +82,6 @@ class InstallOptions:
     duktape_build_dir: str = "<duktape-src-dir>/build/<duktape-build-type:lower><\"-\":if(cc)><cc:basename>"
     duktape_install_dir: str = "<duktape-src-dir>/install/<duktape-build-type:lower><\"-\":if(cc)><cc:basename>"
 
-    # Libxml2
-    libxml2_src_dir: str = "<third-party-src-dir>/libxml2"
-    # purposefully does not depend on mrdocs-build-type because we only need the executable
-    libxml2_build_type: str = "Release"
-    libxml2_build_dir: str = "<libxml2-src-dir>/build/<libxml2-build-type:lower><\"-\":if(cc)><cc:basename>"
-    libxml2_install_dir: str = "<libxml2-src-dir>/install/<libxml2-build-type:lower><\"-\":if(cc)><cc:basename>"
-    libxml2_repo: str = "https://github.com/GNOME/libxml2"
-    libxml2_branch: str = "v2.12.6"
-
     # LLVM
     llvm_src_dir: str = "<third-party-src-dir>/llvm-project"
     llvm_build_type: str = "<mrdocs-build-type>"
@@ -99,6 +90,14 @@ class InstallOptions:
     llvm_repo: str = "https://github.com/llvm/llvm-project.git"
     llvm_commit: str = "dd7a3d4d798e30dfe53b5bbbbcd9a23c24ea1af9"
 
+    # Libxml2
+    libxml2_src_dir: str = "<third-party-src-dir>/libxml2"
+    libxml2_build_type: str = "Release"  # purposefully does not depend on mrdocs-build-type because we only need the executable
+    libxml2_build_dir: str = "<libxml2-src-dir>/build/<libxml2-build-type:lower><\"-\":if(cc)><cc:basename>"
+    libxml2_install_dir: str = "<libxml2-src-dir>/install/<libxml2-build-type:lower><\"-\":if(cc)><cc:basename>"
+    libxml2_repo: str = "https://github.com/GNOME/libxml2"
+    libxml2_branch: str = "v2.12.6"
+
     # Information to create run configurations
     generate_run_configs: bool = field(default_factory=lambda: running_from_mrdocs_source_dir())
     jetbrains_run_config_dir: str = "<mrdocs-src-dir>/.run"
@@ -106,6 +105,7 @@ class InstallOptions:
 
     # Meta
     non_interactive: bool = False
+
 
 # Constant for option descriptions
 INSTALL_OPTION_DESCRIPTIONS = {
@@ -117,7 +117,7 @@ INSTALL_OPTION_DESCRIPTIONS = {
     "mrdocs_src_dir": "MrDocs source directory.",
     "mrdocs_repo": "URL of the MrDocs repository to clone.",
     "mrdocs_branch": "Branch or tag of the MrDocs repository to use.",
-    "mrdocs_build_type": "CMake build type for MrDocs (Release, Debug, RelWithDebInfo, MilRelSize, DebWithOpt).",
+    "mrdocs_build_type": "CMake build type for MrDocs (Release, Debug, RelWithDebInfo, MilRelSize).",
     "mrdocs_use_user_presets": "Whether to use CMake User Presets for building MrDocs.",
     "mrdocs_preset_name": "Name of the CMake User Preset to use for MrDocs.",
     "mrdocs_build_dir": "Directory where MrDocs will be built.",
@@ -128,17 +128,17 @@ INSTALL_OPTION_DESCRIPTIONS = {
     "third_party_src_dir": "Directory for all third-party source dependencies.",
     "duktape_src_dir": "Directory for the Duktape source code.",
     "duktape_url": "Download URL for the Duktape source archive.",
-    "duktape_build_type": "CMake build type for Duktape. (Release, Debug, RelWithDebInfo, MilRelSize, DebWithOpt)",
+    "duktape_build_type": "CMake build type for Duktape. (Release, Debug, RelWithDebInfo, MilRelSize)",
     "duktape_build_dir": "Directory where Duktape will be built.",
     "duktape_install_dir": "Directory where Duktape will be installed.",
     "libxml2_src_dir": "Directory for the libxml2 source code.",
-    "libxml2_build_type": "CMake build type for libxml2. (Release, Debug, RelWithDebInfo, MilRelSize, DebWithOpt)",
+    "libxml2_build_type": "CMake build type for libxml2: Release always recommended. (Release, Debug, RelWithDebInfo, MilRelSize)",
     "libxml2_build_dir": "Directory where libxml2 will be built.",
     "libxml2_install_dir": "Directory where libxml2 will be installed.",
     "libxml2_repo": "URL of the libxml2 repository to clone.",
     "libxml2_branch": "Branch or tag of libxml2 to use.",
     "llvm_src_dir": "Directory for the LLVM project source code.",
-    "llvm_build_type": "CMake build type for LLVM. (Release, Debug, RelWithDebInfo, MilRelSize, DebWithOpt)",
+    "llvm_build_type": "CMake build type for LLVM. (Release, Debug, RelWithDebInfo, MilRelSize)",
     "llvm_build_dir": "Directory where LLVM will be built.",
     "llvm_install_dir": "Directory where LLVM will be installed.",
     "llvm_repo": "URL of the LLVM project repository to clone.",
@@ -177,7 +177,7 @@ class MrDocsInstaller:
         Prompts the user for a string input with a default value.
 
         :param prompt: The prompt message to display to the user.
-        : param default: The default value to use if the user does not provide input.
+        :param default: The default value to use if the user does not provide input.
         :return:
         """
         if self.options.non_interactive and default is not None:
@@ -190,7 +190,10 @@ class MrDocsInstaller:
         RESET = "\033[0m"
         if self.supports_ansi():
             prompt = f"{BLUE}{prompt}{RESET}"
-        inp = input(f"{prompt} ({default}): ")
+        if default:
+            prompt += f" ({default})"
+        prompt += f": "
+        inp = input(prompt)
         result = inp.strip() or default
         return result
 
@@ -333,7 +336,7 @@ class MrDocsInstaller:
 
     def prompt_build_type_option(self, name):
         value = self.prompt_option(name)
-        valid_build_types = ["Debug", "Release", "RelWithDebInfo", "DebWithOpt", "MinSizeRel"]
+        valid_build_types = ["Debug", "Release", "RelWithDebInfo", "MinSizeRel"]
         for t in valid_build_types:
             if t.lower() == value.lower():
                 setattr(self.options, name, t)
@@ -430,10 +433,6 @@ class MrDocsInstaller:
     def cmake_workflow(self, src_dir, build_type, build_dir, install_dir, extra_args=None):
         """
         Configures and builds a CMake project.
-        :param src: The source directory containing the CMakeLists.txt file.
-        :param build: The build directory where the project will be built.
-        :param extra_args: Additional arguments to pass to the CMake configuration command.
-        :return: None
         """
         config_args = [self.options.cmake_path, "-S", src_dir]
 
@@ -441,17 +440,17 @@ class MrDocsInstaller:
             config_args.extend(["-DCMAKE_C_COMPILER=" + self.options.cc,
                                 "-DCMAKE_CXX_COMPILER=" + self.options.cxx])
 
-        # "DebWithOpt" is not a valid type. However, we interpret it as a special case
+        # "OptimizedDebug" is not a valid build type. We interpret it as a special case
         # where the build type is Debug and optimizations are enabled.
-        # This is not very different from RelWithDebInfo on Unix, but ensures
-        # Debug flags are used on Windows.
-        build_type_is_debwithopt = build_type.lower() == 'debwithopt'
-        cmake_build_type = build_type if not build_type_is_debwithopt else "Debug"
+        # This is equivalent to RelWithDebInfo on Unix, but ensures
+        # Debug flags and the Debug ABI are used on Windows.
+        build_type_is_optimizeddebug = build_type.lower() == 'optimizeddebug'
+        cmake_build_type = build_type if not build_type_is_optimizeddebug else "Debug"
         if build_dir:
             config_args.extend(["-B", build_dir])
         if build_type:
             config_args.extend([f"-DCMAKE_BUILD_TYPE={cmake_build_type}"])
-            if build_type_is_debwithopt:
+            if build_type_is_optimizeddebug:
                 if self.is_windows():
                     config_args.extend(["-DCMAKE_CXX_FLAGS=/DWIN32 /D_WINDOWS /Ob1 /O2 /Zi",
                                         "-DCMAKE_C_FLAGS=/DWIN32 /D_WINDOWS /Ob1 /O2 /Zi"])
@@ -514,7 +513,8 @@ class MrDocsInstaller:
                 if not os.path.isabs(getattr(self.options, option)):
                     exec = shutil.which(getattr(self.options, option))
                     if exec is None:
-                        raise FileNotFoundError(f"{option} executable '{getattr(self.options, option)}' not found in PATH.")
+                        raise FileNotFoundError(
+                            f"{option} executable '{getattr(self.options, option)}' not found in PATH.")
                     setattr(self.options, option, exec)
                 if not self.is_executable(getattr(self.options, option)):
                     raise FileNotFoundError(f"{option} executable not found at {getattr(self.options, option)}.")
@@ -524,7 +524,7 @@ class MrDocsInstaller:
         for tool in tools:
             self.check_tool(tool)
 
-    def setup_mrdocs_dir(self):
+    def setup_mrdocs_src_dir(self):
         self.prompt_option("mrdocs_src_dir")
         if not os.path.isabs(self.options.mrdocs_src_dir):
             self.options.mrdocs_src_dir = os.path.abspath(self.options.mrdocs_src_dir)
@@ -582,6 +582,14 @@ class MrDocsInstaller:
         self.prompt_dependency_path_option("third_party_src_dir")
         os.makedirs(self.options.third_party_src_dir, exist_ok=True)
 
+    def is_abi_compatible(self, build_type_a, build_type_b):
+        if not self.is_windows():
+            return True
+        # On Windows, Debug and Release builds are not ABI compatible
+        build_type_a_is_debug = build_type_a.lower() == "debug"
+        build_type_b_is_debug = build_type_b.lower() == "debug"
+        return build_type_a_is_debug == build_type_b_is_debug
+
     def install_duktape(self):
         self.prompt_dependency_path_option("duktape_src_dir")
         if not os.path.exists(self.options.duktape_src_dir):
@@ -614,6 +622,16 @@ class MrDocsInstaller:
         else:
             print(f"Warning: {duk_config_path} does not exist. Skipping patch.")
         self.prompt_build_type_option("duktape_build_type")
+        if not self.is_abi_compatible(self.options.mrdocs_build_type, self.options.duktape_build_type):
+            if self.options.mrdocs_build_type.lower() == "debug":
+                # User asked for Release dependency, so we do the best we can and change it to
+                # an optimized debug build.
+                self.options.duktape_build_type = "OptimizedDebug"
+            else:
+                # User asked for a Debug dependency with Release build type for MrDocs.
+                # The dependency should just copy the release type here. Other options wouldn't make sense
+                # because we can't even debug it.
+                self.options.duktape_build_type = self.options.mrdocs_build_type
         self.prompt_dependency_path_option("duktape_build_dir")
         self.prompt_dependency_path_option("duktape_install_dir")
         self.cmake_workflow(self.options.duktape_src_dir, self.options.duktape_build_type,
@@ -686,6 +704,12 @@ class MrDocsInstaller:
                 patch_path = os.path.join(llvm_patches, patch_file)
                 shutil.copy(patch_path, llvm_subproject_dir)
         self.prompt_build_type_option("llvm_build_type")
+        # Same logic as for Duktape
+        if not self.is_abi_compatible(self.options.mrdocs_build_type, self.options.llvm_build_type):
+            if self.options.mrdocs_build_type.lower() == "debug":
+                self.options.llvm_build_type = "OptimizedDebug"
+            else:
+                self.options.llvm_build_type = self.options.mrdocs_build_type
         self.prompt_dependency_path_option("llvm_build_dir")
         self.prompt_dependency_path_option("llvm_install_dir")
         cmake_preset = f"{self.options.llvm_build_type.lower()}-win" if self.is_windows() else f"{self.options.llvm_build_type.lower()}-unix"
@@ -714,6 +738,9 @@ class MrDocsInstaller:
             user_presets = json.load(f)
 
         # Come up with a nice user preset name
+        is_debug_fast = self.options.mrdocs_build_type.lower() == "debug" and self.options.llvm_build_type != self.options.mrdocs_build_type
+        if is_debug_fast:
+            self.default_options.mrdocs_preset_name += "-fast"
         self.prompt_option("mrdocs_preset_name")
 
         # Upsert the preset in the "configurePresets" array of objects
@@ -728,16 +755,22 @@ class MrDocsInstaller:
         OSDisplayName = hostSystemName
         if OSDisplayName == "Darwin":
             OSDisplayName = "macOS"
+
+        # Preset inherits from the parent preset based on the build type
         parent_preset_name = "debug"
-        if self.options.mrdocs_build_type.lower() == "release":
+        if self.options.mrdocs_build_type.lower() != "debug":
             parent_preset_name = "release"
-        elif self.options.mrdocs_build_type.lower() == "relwithdebinfo":
-            parent_preset_name = "relwithdebinfo"
-        build_type_is_debwithopt = self.options.mrdocs_build_type.lower() == 'debwithopt'
-        cmake_build_type = self.options.mrdocs_build_type if not build_type_is_debwithopt else "Debug"
-        display_name = f"{self.options.mrdocs_build_type} {OSDisplayName}"
+            if self.options.mrdocs_build_type.lower() == "relwithdebinfo":
+                parent_preset_name = "relwithdebinfo"
+
+        # Nice display name for the preset
+        display_name = f"{self.options.mrdocs_build_type}"
+        if self.options.mrdocs_build_type.lower() == "debug" and self.options.llvm_build_type != self.options.mrdocs_build_type:
+            display_name += " with Optimized Dependencies"
+        display_name += f" ({OSDisplayName})"
         if self.options.cc:
             display_name += f" ({os.path.basename(self.options.cc)})"
+
         new_preset = {
             "name": self.options.mrdocs_preset_name,
             "displayName": display_name,
@@ -745,7 +778,7 @@ class MrDocsInstaller:
             "inherits": parent_preset_name,
             "binaryDir": "${sourceDir}/build/${presetName}",
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": cmake_build_type,
+                "CMAKE_BUILD_TYPE": self.options.mrdocs_build_type,
                 "LLVM_ROOT": self.options.llvm_install_dir,
                 "Clang_ROOT": self.options.llvm_install_dir,
                 "duktape_ROOT": self.options.duktape_install_dir,
@@ -808,7 +841,6 @@ class MrDocsInstaller:
 
     def install_mrdocs(self):
         if not self.options.mrdocs_use_user_presets:
-            # Build directory specified in the preset
             self.prompt_option("mrdocs_build_dir")
         else:
             self.options.mrdocs_build_dir = os.path.join(self.options.mrdocs_src_dir, "build",
@@ -816,8 +848,9 @@ class MrDocsInstaller:
             self.default_options.mrdocs_build_dir = self.options.mrdocs_build_dir
 
         if not self.prompt_option("mrdocs_system_install"):
-            # Build directory specified in the preset
-            # self.prompt_option("mrdocs_build_dir")
+            if self.options.mrdocs_use_user_presets:
+                self.default_options.mrdocs_install_dir = os.path.join(self.options.mrdocs_src_dir, "install",
+                                                                       self.options.mrdocs_preset_name)
             self.prompt_option("mrdocs_install_dir")
 
         extra_args = []
@@ -947,7 +980,8 @@ class MrDocsInstaller:
                     if 'folder' in config:
                         attrib["folderName"] = config["folder"]
                     clion_config = ET.SubElement(root, "configuration", attrib)
-                    ET.SubElement(clion_config, "option", name="SCRIPT_TEXT", value=f"bash {shlex.quote(config['script'])}")
+                    ET.SubElement(clion_config, "option", name="SCRIPT_TEXT",
+                                  value=f"bash {shlex.quote(config['script'])}")
                     ET.SubElement(clion_config, "option", name="INDEPENDENT_SCRIPT_PATH", value="true")
                     ET.SubElement(clion_config, "option", name="SCRIPT_PATH", value=config["script"])
                     ET.SubElement(clion_config, "option", name="SCRIPT_OPTIONS", value="")
@@ -1005,7 +1039,8 @@ class MrDocsInstaller:
                     if 'folder' in config:
                         attrib["folderName"] = config["folder"]
                     clion_config = ET.SubElement(root, "configuration", attrib)
-                    ET.SubElement(clion_config, "option", name="SCRIPT_TEXT", value=f"{shlex.quote(config['script'])} {' '.join(shlex.quote(arg) for arg in config['args'])}")
+                    ET.SubElement(clion_config, "option", name="SCRIPT_TEXT",
+                                  value=f"{shlex.quote(config['script'])} {' '.join(shlex.quote(arg) for arg in config['args'])}")
                     ET.SubElement(clion_config, "option", name="INDEPENDENT_SCRIPT_PATH", value="true")
                     ET.SubElement(clion_config, "option", name="SCRIPT_PATH", value=config["script"])
                     ET.SubElement(clion_config, "option", name="SCRIPT_OPTIONS", value="")
@@ -1345,12 +1380,12 @@ class MrDocsInstaller:
     def install_all(self):
         self.check_compilers()
         self.check_tools()
-        self.setup_mrdocs_dir()
+        self.setup_mrdocs_src_dir()
         self.setup_third_party_dir()
         self.install_duktape()
+        self.install_llvm()
         if self.prompt_option("mrdocs_build_tests"):
             self.install_libxml2()
-        self.install_llvm()
         self.create_cmake_presets()
         self.install_mrdocs()
         if self.prompt_option("generate_run_configs"):
