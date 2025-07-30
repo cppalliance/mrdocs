@@ -76,7 +76,7 @@ jobs:
             llvm-root: ../third-party/llvm-project/install
             llvm-archive-extension: {{#if (ieq os 'windows') }}7z{{else}}tar.bz2{{/if}}
             llvm-archive-filename: {{{ llvm-archive-basename }}}.{{{ llvm-archive-extension }}}
-            llvm-sanizizer-config: {{#if (or (ne compiler 'clang') (ne compiler 'apple-clang'))}}{{else if ubsan}}Undefined{{else if asan}}Address{{/if}}
+            llvm-sanitizer-config: {{#if (or (ne compiler 'clang') (ne compiler 'apple-clang'))}}{{else if ubsan}}Undefined{{else if asan}}Address{{/if}}
             mrdocs-ccflags: {{{ ccflags }}} {{#if (and (eq compiler 'gcc') (not asan)) }}-static{{/if}}
             mrdocs-cxxflags: {{{ cxxflags }}} {{#if (and (eq compiler 'gcc') (not asan)) }}-static{{/if}}
             mrdocs-package-generators: {{#if (ieq os 'windows') }}7Z ZIP WIX{{else}}TGZ TXZ{{/if}}
@@ -261,6 +261,7 @@ jobs:
           build-dir: ${sourceDir}/llvm/build
           preset: ${{ matrix.llvm-build-preset }}
           build-type: ${{ matrix.build-type }}
+          # The LLVM_USE_SANITIZER option doesn't support GCC.
           extra-args: |
             -DLLVM_USE_SANITIZER=${{ matrix.llvm-sanitizer-config }}
           cc: ${{ steps.setup-cpp.outputs.cc }}
