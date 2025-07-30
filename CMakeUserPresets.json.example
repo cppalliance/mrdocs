@@ -14,8 +14,8 @@
             "generator": "Ninja",
             "binaryDir": "${sourceDir}/build/${presetName}",
             "cacheVariables": {
-                "LLVM_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm\\install\\MSVC\\DebWithOpt",
-                "Clang_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm\\install\\MSVC\\DebWithOpt",
+                "LLVM_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm\\install\\MSVC\\Debug",
+                "Clang_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm\\install\\MSVC\\Debug",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
                 "CMAKE_CXX_FLAGS": "/W4",
                 "CMAKE_C_FLAGS": "/W4"
@@ -35,17 +35,6 @@
             }
         },
         {
-            "name": "debwithopt-msvc",
-            "displayName": "Debug with Optimizations MSVC",
-            "description": "Build on Windows + MSVC natively (Debug with optimizations). This is the preset typically used for development. CI tests it and generates LLVM binaries for it.",
-            "inherits": "debug-msvc",
-            "binaryDir": "${sourceDir}/build/${presetName}",
-            "cacheVariables": {
-                "LLVM_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm\\DebWithOpt",
-                "Clang_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm\\DebWithOpt"
-            }
-        },
-        {
             "name": "release-msvc",
             "displayName": "Release MSVC",
             "description": "Build on Windows + MSVC natively (Release)",
@@ -55,29 +44,6 @@
                 "CMAKE_BUILD_TYPE": "Release",
                 "LLVM_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm\\Release",
                 "Clang_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm\\Release"
-            }
-        },
-        {
-            "name": "relwithdebinfo-msvc",
-            "displayName": "RelWithDebInfo MSVC",
-            "description": "Build on Windows + MSVC natively (RelWithDebInfo). This is the preset used for the release builds.",
-            "inherits": "debug-msvc",
-            "binaryDir": "${sourceDir}/build/${presetName}",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "RelWithDebInfo",
-                "LLVM_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm\\Release",
-                "Clang_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm\\Release"
-            }
-        },
-        {
-            "name": "debwithopt-clang-cl",
-            "displayName": "Debug with Optimizations Clang-CL",
-            "description": "Build on Windows + Clang natively. Windows developers can use this preset to catch Clang-specific issues natively.",
-            "inherits": "debwithopt-msvc",
-            "binaryDir": "${sourceDir}/build/${presetName}",
-            "cacheVariables": {
-                "CMAKE_C_COMPILER": "clang-cl.exe",
-                "CMAKE_CXX_COMPILER": "clang-cl.exe"
             }
         },
         {
@@ -115,18 +81,6 @@
             "binaryDir": "${sourceDir}/build/${presetName}",
             "cacheVariables": {
                 "CMAKE_CXX_FLAGS": "-fsanitize=address -fno-omit-frame-pointer -g -O0 -fno-inline-functions"
-            }
-        },
-        {
-            "name": "debwithopt-wsl-gcc",
-            "displayName": "Debug with Optimizations WSL GCC",
-            "description": "Build on WSL + GCC (Debug with optimizations). Windows developers can use this preset to catch GCC-specific issues with WSL. WSL tends to be very slow, so this is not recommended for interactive development.",
-            "inherits": "debug-wsl-gcc",
-            "binaryDir": "${sourceDir}/build/${presetName}",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug",
-                "LLVM_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release",
-                "Clang_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release"
             }
         },
         {
@@ -171,7 +125,7 @@
         },
         {
             "name": "debug-macos",
-            "displayName": "Debug macOS",
+            "displayName": "Debug (macOS)",
             "description": "Preset for building MrDocs in Debug mode with the default compiler in macOS.",
             "inherits": "debug",
             "binaryDir": "${sourceDir}/build/${presetName}",
@@ -186,7 +140,8 @@
                 "MRDOCS_BUILD_TESTS": true,
                 "MRDOCS_BUILD_DOCS": false,
                 "MRDOCS_GENERATE_REFERENCE": false,
-                "MRDOCS_GENERATE_ANTORA_REFERENCE": false
+                "MRDOCS_GENERATE_ANTORA_REFERENCE": false,
+                "CMAKE_MAKE_PROGRAM": "$env{HOME}/Developer/cpp-libs/ninja/ninja"
             },
             "condition": {
                 "type": "equals",
@@ -195,91 +150,8 @@
             },
             "warnings": {
                 "unusedCli": false
-            }
-        },
-        {
-            "name": "debwithopt-macos",
-            "displayName": "DebWithOpt macOS",
-            "description": "Preset for building MrDocs in DebWithOpt mode with the default compiler in macOS.",
-            "inherits": "debug",
-            "binaryDir": "${sourceDir}/build/${presetName}",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug",
-                "LLVM_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/debwithopt",
-                "Clang_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/debwithopt",
-                "duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/debwithopt",
-                "Duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/debwithopt",
-                "libxml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release",
-                "LibXml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release",
-                "MRDOCS_BUILD_TESTS": true,
-                "MRDOCS_BUILD_DOCS": false,
-                "MRDOCS_GENERATE_REFERENCE": false,
-                "MRDOCS_GENERATE_ANTORA_REFERENCE": false
             },
-            "condition": {
-                "type": "equals",
-                "lhs": "${hostSystemName}",
-                "rhs": "Darwin"
-            },
-            "warnings": {
-                "unusedCli": false
-            }
-        },
-        {
-            "name": "release-macos",
-            "displayName": "Release macOS",
-            "description": "Preset for building MrDocs in Release mode with the default compiler in macOS.",
-            "inherits": "release",
-            "binaryDir": "${sourceDir}/build/${presetName}",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Release",
-                "LLVM_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/release",
-                "Clang_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/release",
-                "duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/release",
-                "Duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/release",
-                "libxml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release",
-                "LibXml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release",
-                "MRDOCS_BUILD_TESTS": true,
-                "MRDOCS_BUILD_DOCS": false,
-                "MRDOCS_GENERATE_REFERENCE": false,
-                "MRDOCS_GENERATE_ANTORA_REFERENCE": false
-            },
-            "condition": {
-                "type": "equals",
-                "lhs": "${hostSystemName}",
-                "rhs": "Darwin"
-            },
-            "warnings": {
-                "unusedCli": false
-            }
-        },
-        {
-            "name": "release-macos-gcc",
-            "displayName": "Release macOS (gcc)",
-            "description": "Preset for building MrDocs in Release mode with the gcc compiler in macOS.",
-            "inherits": "release",
-            "binaryDir": "${sourceDir}/build/${presetName}",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Release",
-                "LLVM_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/release-gcc",
-                "Clang_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/release-gcc",
-                "duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/release-gcc",
-                "Duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/release-gcc",
-                "libxml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release-gcc",
-                "LibXml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release-gcc",
-                "MRDOCS_BUILD_TESTS": true,
-                "MRDOCS_BUILD_DOCS": false,
-                "MRDOCS_GENERATE_REFERENCE": false,
-                "MRDOCS_GENERATE_ANTORA_REFERENCE": false
-            },
-            "warnings": {
-                "unusedCli": false
-            },
-            "condition": {
-                "type": "equals",
-                "lhs": "${hostSystemName}",
-                "rhs": "Darwin"
-            }
+            "generator": "Ninja"
         },
         {
             "name": "debug-macos-fast",
@@ -298,7 +170,8 @@
                 "MRDOCS_BUILD_TESTS": true,
                 "MRDOCS_BUILD_DOCS": false,
                 "MRDOCS_GENERATE_REFERENCE": false,
-                "MRDOCS_GENERATE_ANTORA_REFERENCE": false
+                "MRDOCS_GENERATE_ANTORA_REFERENCE": false,
+                "CMAKE_MAKE_PROGRAM": "$env{HOME}/Developer/cpp-libs/ninja/ninja"
             },
             "warnings": {
                 "unusedCli": false
@@ -307,7 +180,70 @@
                 "type": "equals",
                 "lhs": "${hostSystemName}",
                 "rhs": "Darwin"
-            }
+            },
+            "generator": "Ninja"
+        },
+        {
+            "name": "release-macos",
+            "displayName": "Release (macOS)",
+            "description": "Preset for building MrDocs in Release mode with the default compiler in macOS.",
+            "inherits": "release",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "LLVM_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/release",
+                "Clang_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/release",
+                "duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/release",
+                "Duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/release",
+                "libxml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release",
+                "LibXml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release",
+                "MRDOCS_BUILD_TESTS": true,
+                "MRDOCS_BUILD_DOCS": false,
+                "MRDOCS_GENERATE_REFERENCE": false,
+                "MRDOCS_GENERATE_ANTORA_REFERENCE": false,
+                "CMAKE_MAKE_PROGRAM": "$env{HOME}/Developer/cpp-libs/ninja/ninja"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "warnings": {
+                "unusedCli": false
+            },
+            "generator": "Ninja"
+        },
+        {
+            "name": "release-macos-gcc",
+            "displayName": "Release (macOS) (gcc)",
+            "description": "Preset for building MrDocs in Release mode with the gcc compiler in macOS.",
+            "inherits": "release",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "LLVM_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/release-gcc",
+                "Clang_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/release-gcc",
+                "duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/release-gcc",
+                "Duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/release-gcc",
+                "libxml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release-gcc",
+                "LibXml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release-gcc",
+                "MRDOCS_BUILD_TESTS": true,
+                "MRDOCS_BUILD_DOCS": false,
+                "MRDOCS_GENERATE_REFERENCE": false,
+                "MRDOCS_GENERATE_ANTORA_REFERENCE": false,
+                "CMAKE_C_COMPILER": "/usr/bin/gcc",
+                "CMAKE_CXX_COMPILER": "/usr/bin/g++",
+                "CMAKE_MAKE_PROGRAM": "$env{HOME}/Developer/cpp-libs/ninja/ninja"
+            },
+            "warnings": {
+                "unusedCli": false
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "generator": "Ninja"
         }
     ]
 }
