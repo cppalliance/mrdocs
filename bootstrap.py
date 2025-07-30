@@ -12,6 +12,7 @@ import argparse
 import subprocess
 import os
 import sys
+import platform
 import shutil
 from dataclasses import dataclass, field
 import dataclasses
@@ -20,6 +21,7 @@ import tarfile
 import json
 import shlex
 import re
+import zipfile
 from functools import lru_cache
 
 
@@ -51,10 +53,13 @@ class InstallOptions:
     cc: str = ''
     cxx: str = ''
 
-    # Tools
+    # Required tools
     git_path: str = ''
     cmake_path: str = ''
     java_path: str = ''
+
+    # Optional tools
+    ninja_path: str = ''
 
     # MrDocs
     mrdocs_src_dir: str = field(
@@ -114,6 +119,7 @@ INSTALL_OPTION_DESCRIPTIONS = {
     "git_path": "Path to the git executable, if not in system PATH.",
     "cmake_path": "Path to the cmake executable, if not in system PATH.",
     "java_path": "Path to the java executable, if not in system PATH.",
+    "ninja_path": "Path to the ninja executable. Leave empty to download it automatically.",
     "mrdocs_src_dir": "MrDocs source directory.",
     "mrdocs_repo": "URL of the MrDocs repository to clone.",
     "mrdocs_branch": "Branch or tag of the MrDocs repository to use.",
@@ -448,6 +454,8 @@ class MrDocsInstaller:
         cmake_build_type = build_type if not build_type_is_optimizeddebug else "Debug"
         if build_dir:
             config_args.extend(["-B", build_dir])
+        if self.options.ninja_path:
+            config_args.extend(["-G", "Ninja", f"-DCMAKE_MAKE_PROGRAM={self.options.ninja_path}"])
         if build_type:
             config_args.extend([f"-DCMAKE_BUILD_TYPE={cmake_build_type}"])
             if build_type_is_optimizeddebug:
@@ -582,6 +590,82 @@ class MrDocsInstaller:
         self.prompt_dependency_path_option("third_party_src_dir")
         os.makedirs(self.options.third_party_src_dir, exist_ok=True)
 
+    def install_ninja(self):
+        # 1. Check if the user has set a ninja_path option
+        if self.prompt_option("ninja_path"):
+            if not os.path.isabs(self.options.ninja_path):
+                self.options.ninja_path = shutil.which(self.options.ninja_path)
+            if not self.is_executable(self.options.ninja_path):
+                raise FileNotFoundError(f"Ninja executable not found at {self.options.ninja_path}.")
+            return
+
+        # 2. If ninja_path is not set, but does the user have it available in PATH?
+        ninja_path = shutil.which("ninja")
+        if ninja_path:
+            print(f"Ninja found in PATH at {ninja_path}. Using it.")
+            self.options.ninja_path = ninja_path
+            return
+
+        # 3. Ninja path isn't set and not available in PATH, so we download it
+        destination_dir = self.options.third_party_src_dir
+        ninja_dir = os.path.join(destination_dir, "ninja")
+        exe_name = 'ninja.exe' if platform.system().lower() == 'windows' else 'ninja'
+        ninja_path = os.path.join(ninja_dir, exe_name)
+        if os.path.exists(ninja_path) and self.is_executable(ninja_path):
+            print(f"Ninja already exists at {ninja_path}. Using it.")
+            self.options.ninja_path = ninja_path
+            return
+
+        # 3a. Determine the ninja asset name based on the platform and architecture
+        system = platform.system().lower()
+        arch = platform.machine().lower()
+        if system == 'linux':
+            if arch in ('aarch64', 'arm64'):
+                asset_name = 'ninja-linux-aarch64.zip'
+            else:
+                asset_name = 'ninja-linux.zip'
+        elif system == 'darwin':
+            asset_name = 'ninja-mac.zip'
+        elif system == 'windows':
+            if arch in ('arm64', 'aarch64'):
+                asset_name = 'ninja-winarm64.zip'
+            else:
+                asset_name = 'ninja-win.zip'
+        else:
+            return
+
+        # 3b. Find the download URL for the latest Ninja release asset
+        api_url = 'https://api.github.com/repos/ninja-build/ninja/releases/latest'
+        with urllib.request.urlopen(api_url) as resp:
+            data = json.load(resp)
+        release_assets = data.get('assets', [])
+        download_url = None
+        for a in release_assets:
+            if a.get('name') == asset_name:
+                download_url = a.get('browser_download_url')
+                break
+        if not download_url:
+            # Could not find release asset named asset_name
+            return
+
+        # 3c. Download the asset to the third-party source directory
+        tmpzip = os.path.join(destination_dir, asset_name)
+        os.makedirs(destination_dir, exist_ok=True)
+        print(f'Downloading {asset_name} …')
+        urllib.request.urlretrieve(download_url, tmpzip)
+
+        # 3d. Extract the downloaded zip file into the ninja dir
+        print('Extracting…')
+        os.makedirs(ninja_dir, exist_ok=True)
+        with zipfile.ZipFile(tmpzip, 'r') as z:
+            z.extractall(ninja_dir)
+        os.remove(tmpzip)
+
+        # 3e. Set the ninja_path option to the extracted ninja executable
+        if platform.system().lower() != 'windows':
+            os.chmod(ninja_path, 0o755)
+        self.options.ninja_path = ninja_path
+
     def is_abi_compatible(self, build_type_a, build_type_b):
         if not self.is_windows():
             return True
@@ -606,6 +690,7 @@ class MrDocsInstaller:
                         continue
                     member.name = member_path
                     tar.extract(member, path=self.options.duktape_src_dir)
+            os.remove(archive_path)
         duktape_patches = os.path.join(self.options.mrdocs_src_dir, 'third-party', 'duktape')
         if os.path.exists(duktape_patches):
             for patch_file in os.listdir(duktape_patches):
@@ -800,14 +885,19 @@ class MrDocsInstaller:
             }
         }
 
-        # Iterate the cacheVariables and,
-        # 1) If any starts with the value of the parent of mrdocs-src-dir, we replace it with ${sourceParentDir} to make it relative
-        # 2) If any starts with the value of mrdocs-src-dir, we replace it with ${sourceDir} to make it relative
-        # 3) if any starts with the value of $HOME, we replace it with $env{HOME} to make it relative
+        if self.options.cc:
+            new_preset["cacheVariables"]["CMAKE_C_COMPILER"] = self.options.cc
+        if self.options.cxx:
+            new_preset["cacheVariables"]["CMAKE_CXX_COMPILER"] = self.options.cxx
+        if self.options.ninja_path:
+            new_preset["generator"] = "Ninja"
+            new_preset["cacheVariables"]["CMAKE_MAKE_PROGRAM"] = self.options.ninja_path
+
+        # Update cache variables path prefixes with their relative equivalents
         mrdocs_src_dir_parent = os.path.dirname(self.options.mrdocs_src_dir)
         if mrdocs_src_dir_parent == self.options.mrdocs_src_dir:
             mrdocs_src_dir_parent = ''
-        mrdocs_home_dir = os.path.expanduser("~")
+        home_dir = os.path.expanduser("~")
         for key, value in new_preset["cacheVariables"].items():
             if not isinstance(value, str):
                 continue
@@ -820,10 +910,11 @@ class MrDocsInstaller:
                 new_value = "${sourceDir}" + value[len(self.options.mrdocs_src_dir):]
                 new_preset["cacheVariables"][key] = new_value
             # Replace $HOME with $env{HOME}
-            elif mrdocs_home_dir and value.startswith(mrdocs_home_dir):
-                new_value = "$env{HOME}" + value[len(mrdocs_home_dir):]
+            elif home_dir and value.startswith(home_dir):
+                new_value = "$env{HOME}" + value[len(home_dir):]
                 new_preset["cacheVariables"][key] = new_value
 
+        # Upsert preset
         preset_exists = False
         for preset in user_presets.get("configurePresets", []):
             if preset.get("name") == self.options.mrdocs_preset_name:
@@ -1382,6 +1473,7 @@ class MrDocsInstaller:
         self.check_tools()
         self.setup_mrdocs_src_dir()
         self.setup_third_party_dir()
+        self.install_ninja()
         self.install_duktape()
         self.install_llvm()
         if self.prompt_option("mrdocs_build_tests"):
