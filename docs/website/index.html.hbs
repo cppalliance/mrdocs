@@ -68,7 +68,7 @@
             </div>
             <div class="header-image">
                 <div class="box1 box-shape2 box270">
-                    <div class="inner-box thinking"></div>
+                    <div class="inner-box mrdocs"></div>
                 </div>
             </div>
         </div>
@@ -76,13 +76,23 @@
     <main>
         <div class="dotted"></div>
         <div class="dotted-right"></div>
-        <section id="principles">
+        <section class="principles">
             <div class="container">
-                <hgroup>
-                    <h2>{{ banner.header }}</h2>
-                    <h3>{{ banner.subheader }}</h3>
-                </hgroup>
-                <div class="grid">
+                <div class="grid principles-banner">
+                    <div class="principles-image">
+                        <div class="box1 box-shape2 box270">
+                        <div class="inner-box thinking"></div>
+                        </div>
+                    </div>
+                    <div class="principles-content">
+                        <hgroup>
+                            <h2>{{ banner.header }}</h2>
+                            <h3>{{ banner.subheader }}</h3>
+                        </hgroup>        
+                    </div>
+                </div>
+                
+                <div class="grid principles-features">
                     {{#each features}}
                     <div>
                         <svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg"
@@ -189,7 +199,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const nav = document.querySelector('.nav');
             const body = document.body;
-            const scrollThreshold = 100; // Show nav after 100px scroll
+            const scrollThreshold = 300; 
             
             function handleScroll() {
                 const currentScrollY = window.scrollY;
