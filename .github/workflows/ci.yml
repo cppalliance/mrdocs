@@ -30,7 +30,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Generate Test Matrix
-        uses: alandefreitas/cpp-actions/cpp-matrix@v1.8.10
+        uses: alandefreitas/cpp-actions/cpp-matrix@v1.8.12
         id: cpp-matrix
         with:
           compilers: |
@@ -42,7 +42,7 @@ jobs:
           latest-factors: |
             msvc Optimized-Debug
             gcc UBSan Coverage
-            clang UBSan ASan
+            clang UBSan ASan MSan
             apple-clang UBSan ASan
           factors: ''
           runs-on: |
@@ -66,21 +66,24 @@ jobs:
             clang: git build-essential pkg-config python3 curl openjdk-11-jdk pkg-config libncurses-dev libxml2-utils libxml2-dev g++-14=14.2.0-4ubuntu2~24.04
             msvc: ''
           extra-values: |
-            llvm-hash: a1b6e7ff393533a5c4f3bdfd4efe5da106e2de2b
-            llvm-build-preset-prefix: {{#if optimized-debug}}debwithopt{{else}}{{{lowercase build-type}}}{{/if}}
+            use-libcxx: {{#if (and (ieq compiler 'clang') (ge major 19)) }}true{{else}}false{{/if}}
+            libcxx-runtimes: libcxx{{#if (ne compiler 'msvc')}};libcxxabi{{/if}}
+            llvm-runtimes: {{#if (ine use-libcxx 'true') }}{{{ libcxx-runtimes }}}{{/if}}
+            llvm-hash: 3f797a8342c3dbe4a260b26f948d8776ff490431
+            llvm-build-preset-prefix: {{#if optimized-debug}}optimizeddebug{{else}}{{{lowercase build-type}}}{{/if}}
             llvm-build-preset-os: {{#if (ieq os 'windows') }}win{{else}}unix{{/if}}
             llvm-sanitizer: {{#if (eq compiler 'gcc')}}{{else if ubsan}}-UBSan{{else if asan}}-ASan{{else if msan}}-MSan{{/if}}
             llvm-build-preset: {{{ llvm-build-preset-prefix }}}-{{{ llvm-build-preset-os }}}
             llvm-compiler-version: {{#if (or (contains version '*') (contains version '^'))}}{{else}}-{{{ version }}}{{/if}}
             llvm-archive-basename: llvm-{{{ lowercase os }}}-{{{ compiler }}}{{{ llvm-compiler-version }}}-{{{ llvm-build-preset-prefix }}}{{{ llvm-sanitizer }}}-{{{ substr llvm-hash 0 7 }}}
-            llvm-root: ../third-party/llvm-project/install
             llvm-archive-extension: {{#if (ieq os 'windows') }}7z{{else}}tar.bz2{{/if}}
             llvm-archive-filename: {{{ llvm-archive-basename }}}.{{{ llvm-archive-extension }}}
             llvm-sanitizer-config: {{#if (and (ne compiler 'clang') (ne compiler 'apple-clang'))}}{{else if ubsan}}Undefined{{else if asan}}Address{{else if msan}}MemoryWithOrigins{{/if}}
-            mrdocs-flags: {{#if (and (eq compiler 'gcc') (not asan)) }}-static{{/if}}{{#if (and (eq compiler 'clang') msan) }}-fsanitize-memory-track-origins{{/if}}
-            mrdocs-ccflags: {{{ ccflags }}} {{{ mrdocs-flags }}}
-            mrdocs-cxxflags: {{{ cxxflags }}} {{{ mrdocs-flags }}}
-            mrdocs-linkflags: {{#if asan }}-fsanitize=address{{/if}}
+            common-flags-base: {{#if (ieq compiler 'clang')}}-gz=zstd {{/if}}
+            common-flags: {{{ common-flags-base }}}{{#if msan }}-fsanitize-memory-track-origins {{/if}}
+            common-ccflags: {{{ ccflags }}} {{{ common-flags }}}
+            mrdocs-flags: {{#if (and (eq compiler 'gcc') (not asan)) }}-static{{/if}}
+            mrdocs-ccflags: {{{ common-ccflags }}} {{{ mrdocs-flags }}}
             mrdocs-package-generators: {{#if (ieq os 'windows') }}7Z ZIP WIX{{else}}TGZ TXZ{{/if}}
             mrdocs-release-package-artifact: release-packages-{{{ lowercase os }}}
           output-file: matrix.json
@@ -135,7 +138,7 @@ jobs:
       # We need git to ensure actions/checkout@v4 will use git and
       # for the next steps that need to clone repositories
       - name: Install Git
-        uses: alandefreitas/cpp-actions/package-install@v1.8.10
+        uses: alandefreitas/cpp-actions/package-install@v1.8.12
         if: matrix.container != ''
         env:
           DEBIAN_FRONTEND: 'noninteractive'
@@ -164,7 +167,7 @@ jobs:
         uses: seanmiddleditch/gha-setup-ninja@v5
 
       - name: Setup C++
-        uses: alandefreitas/cpp-actions/setup-cpp@v1.8.10
+        uses: alandefreitas/cpp-actions/setup-cpp@v1.8.12
         id: setup-cpp
         with:
           compiler: ${{ matrix.compiler }}
@@ -189,7 +192,7 @@ jobs:
           ${{ steps.setup-cpp.outputs.cxx }} --print-target-triple
 
       - name: Install System Packages
-        uses: alandefreitas/cpp-actions/package-install@v1.8.10
+        uses: alandefreitas/cpp-actions/package-install@v1.8.12
         if: matrix.compiler != 'msvc'
         id: package-install
         env:
@@ -198,37 +201,63 @@ jobs:
         with:
           apt-get: ${{ matrix.install }}
 
-      - name: Resolve LLVM Root
-        id: resolve-llvm-root
+      - name: Install LLVM packages
+        if: matrix.compiler == 'clang'
+        env:
+          DEBIAN_FRONTEND: 'noninteractive'
+          TZ: 'Etc/UTC'
         run: |
-          set -x
-          cd ..
-          llvm_root=$(pwd)/third-party/llvm-project/install
-          if [[ ${{ runner.os }} == 'Windows' ]]; then
-              llvm_root=$(echo "$llvm_root" | sed 's/\\/\//g')
-              llvm_root=$(echo $llvm_root | sed 's|^/d/|D:/|')
-              echo "$llvm_root"
-          fi
-          echo -E "llvm-root=$llvm_root" >> $GITHUB_OUTPUT
+          echo "deb http://apt.llvm.org/noble/ llvm-toolchain-noble-21 main" >> /etc/apt/sources.list
+          apt-get update
+          apt-get install -y libclang-${{ matrix.major }}-dev
 
-      - name: Resolve Third-Party Directory
-        id: resolve-third-party-dir
+      # This calculates a bunch of variables, which would normally go in to the regular matrix extra-values
+      # section, but which depend on paths not known at that point.
+      - name: Resolved Matrix
+        id: rmatrix
         run: |          
-          set -x
-          cd ..
-          third_party_dir=$(pwd)/third-party
-          if [[ ${{ runner.os }} == 'Windows' ]]; then
-              third_party_dir=$(echo "$third_party_dir" | sed 's/\\/\//g')
-              third_party_dir=$(echo $third_party_dir | sed 's|^/d/|D:/|')
-              echo "$third_party_dir"
+          set -euvx
+
+          third_party_dir="$(realpath $(pwd)/..)/third-party"
+          if [[ "${{ runner.os }}" == 'Windows' ]]; then
+              third_party_dir="$(echo "$third_party_dir" | sed 's/\\/\//g; s|^/d/|D:/|')"
           fi
-          echo -E "third-party-dir=$third_party_dir" >> $GITHUB_OUTPUT
+          echo "third-party-dir=$third_party_dir" >> $GITHUB_OUTPUT
+
+          llvm_path="$third_party_dir/llvm"
+          echo "llvm-path=$llvm_path" >> $GITHUB_OUTPUT
+
+          common_cxxflags_base=""
+          if [[ "${{ matrix.use-libcxx }}" == 'true' ]]; then
+            common_cxxflags_base="-nostdinc++ -nostdlib++ -isystem$llvm_path/include/c++/v1"
+          fi
+          echo "common-cxxflags-base=$common_cxxflags_base" >> $GITHUB_OUTPUT
+
+          common_cxxflags="$common_cxxflags_base ${{ matrix.cxxflags }} ${{ matrix.common-flags }}"
+          echo "common-cxxflags=$common_cxxflags" >> $GITHUB_OUTPUT
+
+          echo "mrdocs-cxxflags=$common_cxxflags ${{ matrix.mrdocs-flags }}" >> $GITHUB_OUTPUT
+
+          common_ldflags="${{ matrix.ldflags }}"
+          if [[ "${{ matrix.use-libcxx }}" == 'true' ]]; then
+            common_ldflags="$common_ldflags -L$llvm_path/lib -lc++abi -lc++ -Wl,-rpath,$llvm_path/lib"
+          fi
+          if [[ "${{ matrix.ubsan }}" == 'true' ]]; then
+            common_ldflags="$common_ldflags -fsanitize=undefined"
+          fi
+          if [[ "${{ matrix.asan }}" == 'true' ]]; then
+            common_ldflags="$common_ldflags -fsanitize=address"
+          fi
+          if [[ "${{ matrix.msan }}" == 'true' ]]; then
+            common_ldflags="$common_ldflags -fsanitize=memory"
+          fi
+          echo "common-ldflags=$common_ldflags" >> $GITHUB_OUTPUT
 
       - name: Cached LLVM Binaries
         id: llvm-cache
         uses: actions/cache@v4
         with:
-          path: ${{ steps.resolve-llvm-root.outputs.llvm-root }}
+          path: ${{ steps.rmatrix.outputs.llvm-path }}
           key: ${{ matrix.llvm-archive-basename }}
 
       - name: Download LLVM Binaries
@@ -242,7 +271,7 @@ jobs:
               found="true"
               echo "found=$found" >> $GITHUB_OUTPUT
               curl -L -o ${{ matrix.llvm-archive-filename }} "$url"
-              install_prefix=$(pwd)/../third-party/llvm-project/install
+              install_prefix=${{ steps.rmatrix.outputs.llvm-path }}
               mkdir -p $install_prefix
               if [[ ${{ matrix.llvm-archive-extension }} == '7z' ]]; then
                   7z x ${{ matrix.llvm-archive-filename }} -o$install_prefix
@@ -261,9 +290,59 @@ jobs:
               echo "found=$found" >> $GITHUB_OUTPUT
           fi
 
+      # Installs libc++ separately, using the LLVM standalone runtimes build.
+      # The libc++ built here will be built using the host compiler, so this is
+      # limited by what libc++ at the current LLVM revision supports.
+      # This will be only built for configurations where 'use-libcxx' is true,
+      # and in which case libc++ will **not** be built again later using the
+      # bootstrapping runtimes build.
+      # This should be built at least for all of the sanitizer builds, as it
+      # is required for some, and increases their effectiveness otherwise.
+      # This should not be built for any of the release builds, as they wouldn't
+      # otherwise be independent of this particular libc++.
+      # FIXME: Build this for the GCC and MacOS sanitizer jobs.
+      # Currently GCC fails linking it, and for MacOS there are compiler-rt
+      # requirements not satisfied.
+      - name: Install libc++
+        id: install_libcxx
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.12
+        if: matrix.use-libcxx == 'true' && steps.llvm-cache.outputs.cache-hit != 'true' && steps.llvm-download.outputs.found != 'true'
+        with:
+          cmake-version: '>=3.26'
+          source-dir: ../third-party/llvm-project/runtimes
+          git-repository: https://github.com/llvm/llvm-project.git
+          git-tag: ${{ matrix.llvm-hash }}
+          download-dir: ../third-party/llvm-project
+          build-dir: ${sourceDir}/build
+          build-type: ${{ matrix.build-type }}
+          extra-args: |
+            -D LLVM_USE_SANITIZER=${{ matrix.llvm-sanitizer-config }}
+            -D LLVM_OPTIMIZED_TABLEGEN=ON
+            -D LLVM_ENABLE_LIBCXX=OFF
+            -D LLVM_ENABLE_PROJECT=""
+            -D LLVM_ENABLE_RUNTIMES="${{ matrix.libcxx-runtimes }}"
+            -D LIBCXXABI_USE_LLVM_UNWINDER=OFF
+            -D CMAKE_C_FLAGS="${{ matrix.common-flags-base }}"
+            -D CMAKE_CXX_FLAGS="${{ matrix.common-flags-base }}"
+
+          cc: ${{ steps.setup-cpp.outputs.cc }}
+          cxx: ${{ steps.setup-cpp.outputs.cxx }}
+          generator: Ninja
+          install: true
+          install-prefix: ${{ steps.rmatrix.outputs.llvm-path }}
+          run-tests: false
+          trace-commands: true
+
+      - name: Remove libcxx build-dir
+        if: steps.install_libcxx.outcome == 'success'
+        run: |
+          rm -r ../third-party/llvm-project/runtimes/build
+
+      # If libc++ was built in the steps above, we won't build it again here.
+      # This is controlled by the llvm-runtimes matrix variable.
       - name: Install LLVM
         id: install_llvm
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.10
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.12
         if: steps.llvm-cache.outputs.cache-hit != 'true' && steps.llvm-download.outputs.found != 'true'
         with:
           cmake-version: '>=3.26'
@@ -274,29 +353,37 @@ jobs:
           patches: |
             ./third-party/llvm/CMakePresets.json
             ./third-party/llvm/CMakeUserPresets.json
-          build-dir: ${sourceDir}/llvm/build
+          build-dir: ${sourceDir}/build
           preset: ${{ matrix.llvm-build-preset }}
           build-type: ${{ matrix.build-type }}
-          # The LLVM_USE_SANITIZER option doesn't support GCC.
           extra-args: |
-            -DLLVM_USE_SANITIZER=${{ matrix.llvm-sanitizer-config }}
+            -D LLVM_ENABLE_ASSERTIONS=ON
+            -D LLVM_USE_SANITIZER="${{ matrix.llvm-sanitizer-config }}"
+            -D LLVM_OPTIMIZED_TABLEGEN=ON
+            -D LLVM_COMPILER_CHECKED=ON
+            -D LLVM_BUILD_TOOLS=OFF
+            -D CLANG_BUILD_TOOLS=OFF
+            -D LLVM_ENABLE_RUNTIMES="${{ matrix.llvm-runtimes }}"
+            -D LIBCXXABI_USE_LLVM_UNWINDER=OFF
+            -D CMAKE_C_FLAGS="${{ matrix.common-flags-base }}"
+            -D CMAKE_CXX_FLAGS="${{ matrix.common-flags-base }} ${{ steps.rmatrix.outputs.common-cxxflags-base }}"
+            -D CMAKE_SHARED_LINKER_FLAGS="${{ steps.rmatrix.outputs.common-ldflags }}"
+            -D CMAKE_EXE_LINKER_FLAGS="${{ steps.rmatrix.outputs.common-ldflags }}"
           cc: ${{ steps.setup-cpp.outputs.cc }}
           cxx: ${{ steps.setup-cpp.outputs.cxx }}
-          ccflags: -gz=zstd
-          cxxflags: -gz=zstd
           generator: Ninja
           install: true
-          install-prefix: ${sourceDir}/../install
+          install-prefix: ${{ steps.rmatrix.outputs.llvm-path }}
           run-tests: false
           trace-commands: true
 
       - name: Remove LLVM build-dir
         if: steps.install_llvm.outcome == 'success'
         run: |
-          rm -r ../third-party/llvm-project/llvm/llvm/build
+          rm -r ../third-party/llvm-project
 
       - name: Install Duktape
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.10
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.12
         with:
           source-dir: ../third-party/duktape
           url: https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz
@@ -306,8 +393,8 @@ jobs:
           build-dir: ${sourceDir}/build
           cc: ${{ steps.setup-cpp.outputs.cc }}
           cxx: ${{ steps.setup-cpp.outputs.cxx }}
-          ccflags: ${{ matrix.ccflags }}
-          cxxflags: ${{ matrix.cxxflags }}
+          ccflags: ${{ matrix.common-ccflags }}
+          cxxflags: ${{ steps.rmatrix.outputs.common-cxxflags }}
           build-type: ${{ matrix.build-type }}
           shared: false
           install: true
@@ -316,7 +403,7 @@ jobs:
           trace-commands: true
 
       - name: Install Libxml2
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.10
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.12
         if: matrix.compiler == 'msvc'
         with:
           source-dir: ../third-party/libxml2
@@ -325,11 +412,12 @@ jobs:
           build-dir: ${sourceDir}/build
           cc: ${{ steps.setup-cpp.outputs.cc }}
           cxx: ${{ steps.setup-cpp.outputs.cxx }}
-          ccflags: ${{ matrix.ccflags }}
-          cxxflags: ${{ matrix.cxxflags }}
+          ccflags: ${{ matrix.common-ccflags }}
+          cxxflags: ${{ steps.rmatrix.outputs.common-cxxflags }}
           build-type: Release
           shared: false
           extra-args: |
+            -D CMAKE_SHARED_LINKER_FLAGS="${{ steps.rmatrix.outputs.common-ldflags }}"
             -D LIBXML2_WITH_PROGRAMS=ON
             -D LIBXML2_WITH_FTP=OFF 
             -D LIBXML2_WITH_HTTP=OFF
@@ -374,26 +462,23 @@ jobs:
           node-version: '20'
 
       - name: CMake Workflow
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.10
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.12
         with:
           cmake-version: '>=3.26'
           cxxstd: ${{ matrix.cxxstd }}
           cc: ${{ steps.setup-cpp.outputs.cc || matrix.cc }}
           ccflags: ${{ matrix.mrdocs-ccflags }}
           cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
-          cxxflags: ${{ matrix.mrdocs-cxxflags }}
+          cxxflags: ${{ steps.rmatrix.outputs.mrdocs-cxxflags }}
           generator: Ninja
           toolchain: ${{ steps.package-install.outputs.vcpkg_toolchain || steps.package-install.outputs.vcpkg-toolchain }}
           build-type: ${{ matrix.build-type }}
           install-prefix: .local
           extra-args: |
             -D MRDOCS_BUILD_DOCS=OFF
-            -D CMAKE_EXE_LINKER_FLAGS=${{ matrix.mrdocs-linkflags }}
-            -D LLVM_ROOT=${{ steps.resolve-third-party-dir.outputs.third-party-dir }}/llvm-project/install
-            -D Clang_ROOT=${{ steps.resolve-third-party-dir.outputs.third-party-dir }}/llvm-project/install
-            -D duktape_ROOT=${{ steps.resolve-third-party-dir.outputs.third-party-dir }}/duktape/install
-            -D Duktape_ROOT=${{ steps.resolve-third-party-dir.outputs.third-party-dir }}/duktape/install
-            ${{ runner.os == 'Windows' && '-D libxml2_ROOT=../third-party/libxml2/install' || '' }}
+            -D CMAKE_EXE_LINKER_FLAGS="${{ steps.rmatrix.outputs.common-ldflags }}"
+            -D LLVM_ROOT="${{ steps.rmatrix.outputs.llvm-path }}"
+            -D duktape_ROOT="${{ steps.rmatrix.outputs.third-party-dir }}/duktape/install"
             ${{ runner.os == 'Windows' && '-D LibXml2_ROOT=../third-party/libxml2/install' || '' }}
           export-compile-commands: true
           run-tests: true
@@ -423,7 +508,7 @@ jobs:
           retention-days: 1
 
       - name: FlameGraph
-        uses: alandefreitas/cpp-actions/flamegraph@v1.8.10
+        uses: alandefreitas/cpp-actions/flamegraph@v1.8.12
         if: matrix.time-trace
         with:
           build-dir: build
@@ -493,7 +578,7 @@ jobs:
 
     steps:
       - name: Install packages
-        uses: alandefreitas/cpp-actions/package-install@v1.8.10
+        uses: alandefreitas/cpp-actions/package-install@v1.8.12
         id: package-install
         with:
           apt-get: build-essential asciidoctor cmake bzip2 git
@@ -555,7 +640,7 @@ jobs:
           $MRDOCS_ROOT/bin/mrdocs --version
 
       - name: Clone Boost.URL
-        uses: alandefreitas/cpp-actions/boost-clone@v1.8.10
+        uses: alandefreitas/cpp-actions/boost-clone@v1.8.12
         id: boost-url-clone
         with:
           branch: develop
@@ -900,7 +985,7 @@ jobs:
           scp -o StrictHostKeyChecking=no -r $(pwd)/demos/* ubuntu@dev-websites.cpp.al:$demo_dir/
 
       - name: Create changelog
-        uses: alandefreitas/cpp-actions/create-changelog@v1.8.10
+        uses: alandefreitas/cpp-actions/create-changelog@v1.8.12
         with:
           output-path: CHANGELOG.md
           thank-non-regular: ${{ startsWith(github.ref, 'refs/tags/') }}
@@ -941,8 +1026,24 @@ jobs:
       contents: write
 
     steps:
+      # This calculates a couple of variables, which would normally go in to the regular matrix extra-values
+      # section, but which depend on paths not known at that point.
+      - name: Resolved Matrix
+        id: rmatrix
+        run: |
+          set -euvx
+
+          third_party_dir=$(realpath $(pwd)/..)/third-party
+          if [[ "${{ runner.os }}" == 'Windows' ]]; then
+              third_party_dir=$(echo "$third_party_dir" | sed 's/\\/\//g; s|^/d/|D:/|')
+          fi
+          echo "third-party-dir=$third_party_dir" >> $GITHUB_OUTPUT
+
+          llvm_path=$third_party_dir/llvm
+          echo "llvm-path=$llvm_path" >> $GITHUB_OUTPUT
+
       - name: Install packages
-        uses: alandefreitas/cpp-actions/package-install@v1.8.10
+        uses: alandefreitas/cpp-actions/package-install@v1.8.12
         id: package-install
         with:
           apt-get: ${{ matrix.install }}
@@ -960,25 +1061,12 @@ jobs:
           fi
           echo "exists=$exists" >> $GITHUB_OUTPUT
 
-      - name: Resolve LLVM Root
-        id: resolve-llvm-root
-        run: |
-          set -x
-          cd ..
-          llvm_root=$(pwd)/third-party/llvm-project/install
-          if [[ ${{ runner.os }} == 'Windows' ]]; then
-              llvm_root=$(echo "$llvm_root" | sed 's/\\/\//g')
-              llvm_root=$(echo $llvm_root | sed 's|^/d/|D:/|')
-              echo "$llvm_root"
-          fi
-          echo -E "llvm-root=$llvm_root" >> $GITHUB_OUTPUT
-
       - name: LLVM Binaries
         id: llvm-cache
         if: steps.website-releases.outputs.exists != 'true'
         uses: actions/cache@v4
         with:
-          path: ${{ steps.resolve-llvm-root.outputs.llvm-root }}
+          path: ${{ steps.rmatrix.outputs.llvm-path }}
           key: ${{ matrix.llvm-archive-basename }}
 
       - name: Compress LLVM
@@ -988,20 +1076,16 @@ jobs:
         run: |
           # LLVM is be installed with the default compiler
           set -x
-          
-          # Compress the LLVM installation
-          cd ../third-party/llvm-project
-          
+
           # Use 7z on windows
           if [[ ${{ runner.os }} == 'Windows' ]]; then
-              7z a -t7z -m0=lzma2 -mx=9 -mfb=64 -md=32m -ms=on ${{ matrix.llvm-archive-filename }} install
+              7z a -t7z -m0=lzma2 -mx=9 -mfb=64 -md=32m -ms=on "${{ matrix.llvm-archive-filename }}" "${{ steps.rmatrix.outputs.llvm-path }}"
           else
-              tar -cjf ${{ matrix.llvm-archive-filename }} -C install .
+              tar -cjf "${{ matrix.llvm-archive-filename }}" -C "${{ steps.rmatrix.outputs.llvm-path }}/.." llvm
           fi
 
       - name: Website LLVM Releases
         if: steps.llvm-cache.outputs.cache-hit == 'true' && github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/'))
-        working-directory: ../third-party/llvm-project
         run: |
           set -x
           
