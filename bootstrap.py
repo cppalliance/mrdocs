@@ -52,6 +52,7 @@ class InstallOptions:
     # Compiler
     cc: str = ''
     cxx: str = ''
+    sanitizer: str = ''
 
     # Required tools
     git_path: str = ''
@@ -69,12 +70,12 @@ class InstallOptions:
     mrdocs_repo: str = "https://github.com/cppalliance/mrdocs"
     mrdocs_branch: str = "develop"
     mrdocs_use_user_presets: bool = True
-    mrdocs_preset_name: str = "<mrdocs-build-type:lower>-<os:lower><\"-\":if(cc)><cc:basename>"
-    mrdocs_build_dir: str = "<mrdocs-src-dir>/build/<mrdocs-build-type:lower>-<os:lower><\"-\":if(cc)><cc:basename>"
+    mrdocs_preset_name: str = "<mrdocs-build-type:lower>-<os:lower><\"-\":if(cc)><cc:basename><\"-\":if(sanitizer)><sanitizer:lower>"
+    mrdocs_build_dir: str = "<mrdocs-src-dir>/build/<mrdocs-build-type:lower>-<os:lower><\"-\":if(cc)><cc:basename><\"-\":if(sanitizer)><sanitizer:lower><\"-\":if(sanitizer)><sanitizer:lower>"
     mrdocs_build_tests: bool = True
     mrdocs_system_install: bool = field(default_factory=lambda: not running_from_mrdocs_source_dir())
     mrdocs_install_dir: str = field(
-        default_factory=lambda: "<mrdocs-src-dir>/install/<mrdocs-build-type:lower>-<os:lower><\"-\":if(cc)><cc:basename>" if running_from_mrdocs_source_dir() else "")
+        default_factory=lambda: "<mrdocs-src-dir>/install/<mrdocs-build-type:lower>-<os:lower><\"-\":if(cc)><cc:basename><\"-\":if(sanitizer)><sanitizer:lower>" if running_from_mrdocs_source_dir() else "")
     mrdocs_run_tests: bool = True
 
     # Third-party dependencies
@@ -84,14 +85,14 @@ class InstallOptions:
     duktape_src_dir: str = "<third-party-src-dir>/duktape"
     duktape_url: str = "https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz"
     duktape_build_type: str = "<mrdocs-build-type>"
-    duktape_build_dir: str = "<duktape-src-dir>/build/<duktape-build-type:lower><\"-\":if(cc)><cc:basename>"
-    duktape_install_dir: str = "<duktape-src-dir>/install/<duktape-build-type:lower><\"-\":if(cc)><cc:basename>"
+    duktape_build_dir: str = "<duktape-src-dir>/build/<duktape-build-type:lower><\"-\":if(cc)><cc:basename><\"-\":if(sanitizer)><sanitizer:lower>"
+    duktape_install_dir: str = "<duktape-src-dir>/install/<duktape-build-type:lower><\"-\":if(cc)><cc:basename><\"-\":if(sanitizer)><sanitizer:lower>"
 
     # LLVM
     llvm_src_dir: str = "<third-party-src-dir>/llvm-project"
     llvm_build_type: str = "<mrdocs-build-type>"
-    llvm_build_dir: str = "<llvm-src-dir>/build/<llvm-build-type:lower><\"-\":if(cc)><cc:basename>"
-    llvm_install_dir: str = "<llvm-src-dir>/install/<llvm-build-type:lower><\"-\":if(cc)><cc:basename>"
+    llvm_build_dir: str = "<llvm-src-dir>/build/<llvm-build-type:lower><\"-\":if(cc)><cc:basename><\"-\":if(sanitizer)><sanitizer:lower>"
+    llvm_install_dir: str = "<llvm-src-dir>/install/<llvm-build-type:lower><\"-\":if(cc)><cc:basename><\"-\":if(sanitizer)><sanitizer:lower>"
     llvm_repo: str = "https://github.com/llvm/llvm-project.git"
     llvm_commit: str = "dd7a3d4d798e30dfe53b5bbbbcd9a23c24ea1af9"
 
@@ -116,6 +117,7 @@ class InstallOptions:
 INSTALL_OPTION_DESCRIPTIONS = {
     "cc": "Path to the C compiler executable. Leave empty for default.",
     "cxx": "Path to the C++ compiler executable. Leave empty for default.",
+    "sanitizer": "Sanitizer to use for the build. Leave empty for no sanitizer. (ASan, UBSan, MSan, TSan)",
     "git_path": "Path to the git executable, if not in system PATH.",
     "cmake_path": "Path to the cmake executable, if not in system PATH.",
     "java_path": "Path to the java executable, if not in system PATH.",
@@ -301,8 +303,9 @@ class MrDocsInstaller:
                             val = val.upper()
                         elif transform_fn == "basename":
                             val = os.path.basename(val)
-                        elif transform_fn == "if(cc)":
-                            if self.options.cc:
+                        elif transform_fn.startswith("if(") and transform_fn.endswith(")"):
+                            var_name = transform_fn[3:-1]
+                            if getattr(self.options, var_name, None):
                                 val = val.lower()
                             else:
                                 val = ""
@@ -355,6 +358,25 @@ class MrDocsInstaller:
                 return value
         print(f"Invalid build type '{value}'. Must be one of: {', '.join(valid_build_types)}.")
         raise ValueError(f"Invalid build type '{value}'. Must be one of: {', '.join(valid_build_types)}.")
+
+    def prompt_sanitizer_option(self, name):
+        value = self.prompt_option(name)
+        if not value:
+            value = ''
+            return value
+        valid_sanitizers = ["ASan", "UBSan", "MSan", "TSan"]
+        for t in valid_sanitizers:
+            if t.lower() == value.lower():
+                setattr(self.options, name, t)
+                return value
+        print(f"Invalid sanitizer '{value}'. Must be one of: {', '.join(valid_sanitizers)}.")
+        value = self.reprompt_option(name)
+        for t in valid_sanitizers:
+            if t.lower() == value.lower():
+                setattr(self.options, name, t)
+                return value
+        print(f"Invalid sanitizer '{value}'. Must be one of: {', '.join(valid_sanitizers)}.")
+        raise ValueError(f"Invalid sanitizer '{value}'. Must be one of: {', '.join(valid_sanitizers)}.")
 
     def supports_ansi(self):
         if os.name == "posix":
@@ -552,8 +574,11 @@ class MrDocsInstaller:
 
         # MrDocs build type
         self.prompt_build_type_option("mrdocs_build_type")
+        self.prompt_sanitizer_option("sanitizer")
         if self.prompt_option("mrdocs_build_tests"):
             self.check_tool("java")
+
+
 
     def is_inside_mrdocs_dir(self, path):
         """
@@ -666,6 +691,23 @@ class MrDocsInstaller:
             os.chmod(ninja_path, 0o755)
         self.options.ninja_path = ninja_path
 
+    def sanitizer_flag_name(self, sanitizer):
+        """
+        Returns the flag name for the given sanitizer.
+        :param sanitizer: The sanitizer name (ASan, UBSan, MSan, TSan).
+        :return: str: The flag name for the sanitizer.
+        """
+        if sanitizer.lower() == "asan":
+            return "address"
+        elif sanitizer.lower() == "ubsan":
+            return "undefined"
+        elif sanitizer.lower() == "msan":
+            return "memory"
+        elif sanitizer.lower() == "tsan":
+            return "thread"
+        else:
+            raise ValueError(f"Unknown sanitizer '{sanitizer}'.")
+
     def is_abi_compatible(self, build_type_a, build_type_b):
         if not self.is_windows():
             return True
@@ -719,8 +761,17 @@ class MrDocsInstaller:
                 self.options.duktape_build_type = self.options.mrdocs_build_type
         self.prompt_dependency_path_option("duktape_build_dir")
         self.prompt_dependency_path_option("duktape_install_dir")
-        self.cmake_workflow(self.options.duktape_src_dir, self.options.duktape_build_type,
-                            self.options.duktape_build_dir, self.options.duktape_install_dir)
+        extra_args = []
+        if self.options.sanitizer:
+            flag_name = self.sanitizer_flag_name(self.options.sanitizer)
+            for arg in ["CMAKE_C_FLAGS", "CMAKE_CXX_FLAGS"]:
+                extra_args.append(f"-D{arg}=-fsanitize={flag_name} -fno-sanitize-recover={flag_name} -fno-omit-frame-pointer")
+
+        self.cmake_workflow(
+            self.options.duktape_src_dir,
+            self.options.duktape_build_type,
+            self.options.duktape_build_dir,
+            self.options.duktape_install_dir, extra_args)
 
     def install_libxml2(self):
         self.prompt_dependency_path_option("libxml2_src_dir")
@@ -799,8 +850,23 @@ class MrDocsInstaller:
         self.prompt_dependency_path_option("llvm_install_dir")
         cmake_preset = f"{self.options.llvm_build_type.lower()}-win" if self.is_windows() else f"{self.options.llvm_build_type.lower()}-unix"
         cmake_extra_args = [f"--preset={cmake_preset}"]
-        self.cmake_workflow(llvm_subproject_dir, self.options.llvm_build_type, self.options.llvm_build_dir,
-                            self.options.llvm_install_dir, cmake_extra_args)
+        if self.options.sanitizer:
+            if self.options.sanitizer.lower() == "asan":
+                cmake_extra_args.append("-DLLVM_USE_SANITIZER=Address")
+            elif self.options.sanitizer.lower() == "ubsan":
+                cmake_extra_args.append("-DLLVM_USE_SANITIZER=Undefined")
+            elif self.options.sanitizer.lower() == "msan":
+                cmake_extra_args.append("-DLLVM_USE_SANITIZER=Memory")
+            elif self.options.sanitizer.lower() == "tsan":
+                cmake_extra_args.append("-DLLVM_USE_SANITIZER=Thread")
+            else:
+                raise ValueError(f"Unknown LLVM sanitizer '{self.options.sanitizer}'.")
+        self.cmake_workflow(
+            llvm_subproject_dir,
+            self.options.llvm_build_type,
+            self.options.llvm_build_dir,
+            self.options.llvm_install_dir,
+            cmake_extra_args)
 
     def create_cmake_presets(self):
         # Ask the user if they want to create CMake User presets referencing the installed dependencies
@@ -852,9 +918,13 @@ class MrDocsInstaller:
         display_name = f"{self.options.mrdocs_build_type}"
         if self.options.mrdocs_build_type.lower() == "debug" and self.options.llvm_build_type != self.options.mrdocs_build_type:
             display_name += " with Optimized Dependencies"
-        display_name += f" ({OSDisplayName})"
+        display_name += f" ({OSDisplayName}"
         if self.options.cc:
-            display_name += f" ({os.path.basename(self.options.cc)})"
+            display_name += f": {os.path.basename(self.options.cc)}"
+        display_name += ")"
+
+        if self.options.sanitizer:
+            display_name += f" with {self.options.sanitizer}"
 
         new_preset = {
             "name": self.options.mrdocs_preset_name,
@@ -892,6 +962,10 @@ class MrDocsInstaller:
         if self.options.ninja_path:
             new_preset["generator"] = "Ninja"
             new_preset["cacheVariables"]["CMAKE_MAKE_PROGRAM"] = self.options.ninja_path
+        if self.options.sanitizer:
+            flag_name = self.sanitizer_flag_name(self.options.sanitizer)
+            for arg in ["CMAKE_C_FLAGS", "CMAKE_CXX_FLAGS"]:
+                new_preset["cacheVariables"][arg] = f"-fsanitize={flag_name} -fno-sanitize-recover={flag_name} -fno-omit-frame-pointer"
 
         # Update cache variables path prefixes with their relative equivalents
         mrdocs_src_dir_parent = os.path.dirname(self.options.mrdocs_src_dir)
@@ -967,8 +1041,14 @@ class MrDocsInstaller:
             extra_args.extend(["-DMRDOCS_BUILD_DOCS=OFF", "-DMRDOCS_GENERATE_REFERENCE=OFF",
                                "-DMRDOCS_GENERATE_ANTORA_REFERENCE=OFF"])
 
+            if self.options.sanitizer:
+                flag_name = self.sanitizer_flag_name(self.options.sanitizer)
+                for arg in ["CMAKE_C_FLAGS", "CMAKE_CXX_FLAGS"]:
+                    extra_args.append(f"-D{arg}=-fsanitize={flag_name} -fno-sanitize-recover={flag_name} -fno-omit-frame-pointer")
+
         self.cmake_workflow(self.options.mrdocs_src_dir, self.options.mrdocs_build_type, self.options.mrdocs_build_dir,
                             self.options.mrdocs_install_dir, extra_args)
+
         if self.options.mrdocs_build_dir and self.prompt_option("mrdocs_run_tests"):
             # Look for ctest path relative to the cmake path
             ctest_path = os.path.join(os.path.dirname(self.options.cmake_path), "ctest")
