@@ -1455,7 +1455,6 @@ pre {
 
 code, kbd, pre {
     border-radius: var(--border-radius);
-    background: var(--code-background-color);
     color: var(--code-color);
     font-weight: var(--font-weight);
     line-height: initial
@@ -1475,7 +1474,7 @@ pre {
 pre > code {
     display: block;
     padding: var(--spacing);
-    background: 0 0;
+		background-color: rgba(0, 0, 0, 0.55);
     font-size: 14px;
     line-height: var(--line-height)
 }
@@ -2137,7 +2136,8 @@ body > nav a {
 
 body > nav a svg {
     vertical-align: text-bottom;
-    height: 1rem
+    height: 1rem;
+		color: initial;
 }
 
 body > nav ul:first-of-type {
@@ -2678,7 +2678,7 @@ section#demo {
 }
 
 .documentation-panel {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(255, 255, 255, 0.10);
     border-radius: 20px;
     flex: 1;
     padding: 30px;
@@ -2905,7 +2905,6 @@ nav {
 
 .nav ul li {
     list-style: none;
-    font-weight: bold;
 }
 
 .nav .logo-link {
