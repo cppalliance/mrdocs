@@ -244,6 +244,74 @@
                 "rhs": "Darwin"
             },
             "generator": "Ninja"
+        },
+        {
+            "name": "debug-macos-gcc-asan",
+            "displayName": "Debug (macOS: gcc) with ASan",
+            "description": "Preset for building MrDocs in Debug mode with the gcc compiler in macOS.",
+            "inherits": "debug",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "LLVM_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/debug-gcc-asan",
+                "Clang_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/debug-gcc-asan",
+                "duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/debug-gcc-asan",
+                "Duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/debug-gcc-asan",
+                "libxml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release-gcc",
+                "LibXml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release-gcc",
+                "MRDOCS_BUILD_TESTS": true,
+                "MRDOCS_BUILD_DOCS": false,
+                "MRDOCS_GENERATE_REFERENCE": false,
+                "MRDOCS_GENERATE_ANTORA_REFERENCE": false,
+                "CMAKE_C_COMPILER": "/usr/bin/gcc",
+                "CMAKE_CXX_COMPILER": "/usr/bin/g++",
+                "CMAKE_MAKE_PROGRAM": "$env{HOME}/Developer/cpp-libs/ninja/ninja",
+                "CMAKE_C_FLAGS": "-fsanitize=address -fno-sanitize-recover=address -fno-omit-frame-pointer",
+                "CMAKE_CXX_FLAGS": "-fsanitize=address -fno-sanitize-recover=address -fno-omit-frame-pointer"
+            },
+            "warnings": {
+                "unusedCli": false
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "generator": "Ninja"
+        },
+        {
+            "name": "debug-macos-gcc-ubsan",
+            "displayName": "Debug (macOS: gcc) with UBSan",
+            "description": "Preset for building MrDocs in Debug mode with the gcc compiler in macOS.",
+            "inherits": "debug",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "LLVM_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/debug-gcc-ubsan",
+                "Clang_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/debug-gcc-ubsan",
+                "duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/debug-gcc-ubsan",
+                "Duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/debug-gcc-ubsan",
+                "libxml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release-gcc",
+                "LibXml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release-gcc",
+                "MRDOCS_BUILD_TESTS": true,
+                "MRDOCS_BUILD_DOCS": false,
+                "MRDOCS_GENERATE_REFERENCE": false,
+                "MRDOCS_GENERATE_ANTORA_REFERENCE": false,
+                "CMAKE_C_COMPILER": "/usr/bin/gcc",
+                "CMAKE_CXX_COMPILER": "/usr/bin/g++",
+                "CMAKE_MAKE_PROGRAM": "$env{HOME}/Developer/cpp-libs/ninja/ninja",
+                "CMAKE_C_FLAGS": "-fsanitize=undefined -fno-sanitize-recover=undefined -fno-omit-frame-pointer",
+                "CMAKE_CXX_FLAGS": "-fsanitize=undefined -fno-sanitize-recover=undefined -fno-omit-frame-pointer"
+            },
+            "warnings": {
+                "unusedCli": false
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "generator": "Ninja"
         }
     ]
 }
