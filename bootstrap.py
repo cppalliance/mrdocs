@@ -179,6 +179,7 @@ class MrDocsInstaller:
                 raise TypeError(f"Unsupported type {field.type} for field {field.name} in InstallOptions.")
         self.options.non_interactive = self.cmd_line_args.get("non_interactive", False)
         self.prompted_options = set()
+        self.compiler_info = {}
 
     def prompt_string(self, prompt, default):
         """
@@ -458,11 +459,43 @@ class MrDocsInstaller:
         """
         return os.name == "posix" and sys.platform.startswith("darwin")
 
-    def cmake_workflow(self, src_dir, build_type, build_dir, install_dir, extra_args=None):
+    def cmake_workflow(self, src_dir, build_type, build_dir, install_dir, extra_args=None, cc_flags=None, cxx_flags=None):
         """
         Configures and builds a CMake project.
         """
+
+        # Adjust any potential CMake flags from extra_args
+        if cc_flags is None:
+            cc_flags = ""
+        if cxx_flags is None:
+            cxx_flags = ""
+        extra_args_remove_idx = []
+        for i in range(0, len(extra_args or [])):
+            extra_arg = extra_args[i]
+            if extra_arg.startswith('-DCMAKE_C_FLAGS='):
+                cc_flags += ' ' + extra_arg.split('=', 1)[1]
+                extra_args_remove_idx.append(i)
+            elif extra_arg.startswith('-DCMAKE_CXX_FLAGS='):
+                cxx_flags += ' ' + extra_arg.split('=', 1)[1]
+                extra_args_remove_idx.append(i)
+            elif i != 0 and extra_args[i-1].strip() == '-D':
+                if extra_arg.startswith('CMAKE_C_FLAGS='):
+                    cc_flags += ' ' + extra_arg.split('=', 1)[1]
+                    extra_args_remove_idx.append(i - 1)
+                    extra_args_remove_idx.append(i)
+                elif extra_arg.startswith('CMAKE_CXX_FLAGS='):
+                    cxx_flags += ' ' + extra_arg.split('=', 1)[1]
+                    extra_args_remove_idx.append(i - 1)
+                    extra_args_remove_idx.append(i)
+        if extra_args_remove_idx:
+            extra_args = [arg for i, arg in enumerate(extra_args or []) if i not in extra_args_remove_idx]
+
         config_args = [self.options.cmake_path, "-S", src_dir]
+
+        if build_dir:
+            config_args.extend(["-B", build_dir])
+        if self.options.ninja_path:
+            config_args.extend(["-G", "Ninja", f"-DCMAKE_MAKE_PROGRAM={self.options.ninja_path}"])
 
         if self.options.cc and self.options.cxx:
             config_args.extend(["-DCMAKE_C_COMPILER=" + self.options.cc,
@@ -474,22 +507,62 @@ class MrDocsInstaller:
         # Debug flags and the Debug ABI are used on Windows.
         build_type_is_optimizeddebug = build_type.lower() == 'optimizeddebug'
         cmake_build_type = build_type if not build_type_is_optimizeddebug else "Debug"
-        if build_dir:
-            config_args.extend(["-B", build_dir])
-        if self.options.ninja_path:
-            config_args.extend(["-G", "Ninja", f"-DCMAKE_MAKE_PROGRAM={self.options.ninja_path}"])
         if build_type:
             config_args.extend([f"-DCMAKE_BUILD_TYPE={cmake_build_type}"])
             if build_type_is_optimizeddebug:
                 if self.is_windows():
-                    config_args.extend(["-DCMAKE_CXX_FLAGS=/DWIN32 /D_WINDOWS /Ob1 /O2 /Zi",
-                                        "-DCMAKE_C_FLAGS=/DWIN32 /D_WINDOWS /Ob1 /O2 /Zi"])
+                    cxx_flags += " /DWIN32 /D_WINDOWS /Ob1 /O2 /Zi"
+                    cc_flags += " /DWIN32 /D_WINDOWS /Ob1 /O2 /Zi"
                 else:
-                    config_args.extend(["-DCMAKE_CXX_FLAGS=-Og -g", "-DCMAKE_C_FLAGS=-Og -g"])
-        if isinstance(extra_args, str):
-            config_args.extend(extra_args.split())
-        elif isinstance(extra_args, list):
+                    cxx_flags += " -Og -g"
+                    cc_flags += " -Og -g"
+
+        if isinstance(extra_args, list):
             config_args.extend(extra_args)
+        else:
+            raise TypeError(f"extra_args must be a list, got {type(extra_args)}.")
+
+        if self.is_homebrew_clang():
+            homebrew_clang_root = os.path.dirname(os.path.dirname(self.options.cxx))
+            ar_path = os.path.join(homebrew_clang_root, "bin", "llvm-ar")
+            if self.is_executable(ar_path):
+                for cxx_flag_var in [
+                    "CMAKE_AR",
+                    "CMAKE_CXX_COMPILER_AR",
+                    "CMAKE_C_COMPILER_AR"
+                ]:
+                    config_args.append(f"-D{cxx_flag_var}={ar_path}")
+            runlib_path = os.path.join(homebrew_clang_root, "bin", "llvm-ranlib")
+            if self.is_executable(runlib_path):
+                config_args.append(f"-DCMAKE_RANLIB={runlib_path}")
+            ld_path = os.path.join(homebrew_clang_root, "bin", "ld.lld")
+            if self.is_executable(ld_path):
+                config_args.append(f"-DCMAKE_C_COMPILER_LINKER={ld_path}")
+                config_args.append(f"-DCMAKE_CXX_COMPILER_LINKER={ld_path}")
+            else:
+                ld_path = '/opt/homebrew/bin/ld.lld'
+                if self.is_executable(ld_path):
+                    config_args.append(f"-DCMAKE_C_COMPILER_LINKER={ld_path}")
+                    config_args.append(f"-DCMAKE_CXX_COMPILER_LINKER={ld_path}")
+            libcxx_include = os.path.join(homebrew_clang_root, "include", "c++", "v1")
+            libcxx_lib = os.path.join(homebrew_clang_root, "lib", "c++")
+            libunwind = os.path.join(homebrew_clang_root, "lib", "unwind")
+            if os.path.exists(libcxx_include) and os.path.exists(libcxx_lib) and os.path.exists(libunwind):
+                cxx_flags += f' -stdlib=libc++ -I{libcxx_include}'
+                ld_flags = f'-L{libcxx_lib} -L{libunwind} -lunwind'
+                if self.options.sanitizer:
+                    ld_flags += f' -fsanitize={self.sanitizer_flag_name(self.options.sanitizer)}'
+                for cxx_linker_flag_var in [
+                    "CMAKE_EXE_LINKER_FLAGS",
+                    "CMAKE_SHARED_LINKER_FLAGS",
+                    "CMAKE_MODULE_LINKER_FLAGS"
+                ]:
+                    config_args.append(f"-D{cxx_linker_flag_var}={ld_flags}")
+
+        if cc_flags:
+            config_args.append(f"-DCMAKE_C_FLAGS={cc_flags.strip()}")
+        if cxx_flags:
+            config_args.append(f"-DCMAKE_CXX_FLAGS={cxx_flags.strip()}")
         self.run_cmd(config_args)
 
         build_args = [self.options.cmake_path, "--build", build_dir, "--config", cmake_build_type]
@@ -506,6 +579,8 @@ class MrDocsInstaller:
         self.run_cmd(install_args)
 
     def is_executable(self, path):
+        if not os.path.exists(path):
+            return False
         if not os.path.isfile(path):
             return False
         if os.name == "nt":
@@ -578,8 +653,6 @@ class MrDocsInstaller:
         if self.prompt_option("mrdocs_build_tests"):
             self.check_tool("java")
 
-
-
     def is_inside_mrdocs_dir(self, path):
         """
         Checks if the given path is inside the MrDocs source directory.
@@ -614,6 +687,72 @@ class MrDocsInstaller:
     def setup_third_party_dir(self):
         self.prompt_dependency_path_option("third_party_src_dir")
         os.makedirs(self.options.third_party_src_dir, exist_ok=True)
+
+    @lru_cache(maxsize=1)
+    def probe_compilers(self):
+        variables = []
+        for lang in ["C", "CXX"]:
+            for suffix in ["COMPILER", "COMPILER_ID", "COMPILER_VERSION", "COMPILER_AR", "COMPILER_LINKER",
+                           "COMPILER_LINKER_ID", "COMPILER_ABI"]:
+                variables.append(f"CMAKE_{lang}_{suffix}")
+        variables.append("CMAKE_GENERATOR")
+
+        probe_dir = os.path.join(self.options.third_party_src_dir, "cmake-probe")
+        if os.path.exists(probe_dir):
+            shutil.rmtree(probe_dir)
+        os.makedirs(probe_dir, exist_ok=True)
+
+        # Create minimal CMakeLists.txt
+        cmake_lists = [
+            "cmake_minimum_required(VERSION 3.10)",
+            "project(probe C CXX)"
+        ]
+        for var in variables:
+            cmake_lists.append(f'message(STATUS "{var}=${{{var}}}")')
+        with open(os.path.join(probe_dir, "CMakeLists.txt"), "w") as f:
+            f.write("\n".join(cmake_lists))
+
+        # Build command
+        cmd = ["cmake", "-S", probe_dir]
+        env = os.environ.copy()
+        if self.options.cc:
+            cmd += ["-DCMAKE_C_COMPILER=" + self.options.cc]
+        if self.options.cxx:
+            cmd += ["-DCMAKE_CXX_COMPILER=" + self.options.cxx]
+        cmd += ["-B", os.path.join(probe_dir, "build")]
+
+        # Run cmake and capture output
+        result = subprocess.run(cmd, env=env, text=True, capture_output=True)
+        if result.returncode != 0:
+            raise RuntimeError(f"CMake failed:\n{result.stdout}\n{result.stderr}")
+
+        # Parse values from lines like: "-- VAR=value"
+        values = {}
+        for line in result.stdout.splitlines():
+            if line.startswith("-- "):
+                for var in variables:
+                    prefix = f"{var}="
+                    if prefix in line:
+                        values[var] = line.split(prefix, 1)[1].strip()
+
+        # Store this map in self for later use
+        self.compiler_info = values
+
+        # Clean up probe directory
+        shutil.rmtree(probe_dir)
+
+    @lru_cache(maxsize=1)
+    def is_homebrew_clang(self):
+        self.probe_compilers()
+        if not self.is_macos():
+            return False
+        if not self.compiler_info:
+            return False
+        if self.compiler_info["CMAKE_CXX_COMPILER_ID"].lower() != "clang":
+            return False
+        out = subprocess.run([self.options.cxx, "--version"], capture_output=True, text=True)
+        version = out.stdout.strip()
+        return "Homebrew clang" in version
 
     def install_ninja(self):
         # 1. Check if the user has set a ninja_path option
@@ -765,13 +904,15 @@ class MrDocsInstaller:
         if self.options.sanitizer:
             flag_name = self.sanitizer_flag_name(self.options.sanitizer)
             for arg in ["CMAKE_C_FLAGS", "CMAKE_CXX_FLAGS"]:
-                extra_args.append(f"-D{arg}=-fsanitize={flag_name} -fno-sanitize-recover={flag_name} -fno-omit-frame-pointer")
+                extra_args.append(
+                    f"-D{arg}=-fsanitize={flag_name} -fno-sanitize-recover={flag_name} -fno-omit-frame-pointer")
 
         self.cmake_workflow(
             self.options.duktape_src_dir,
             self.options.duktape_build_type,
             self.options.duktape_build_dir,
-            self.options.duktape_install_dir, extra_args)
+            self.options.duktape_install_dir,
+            extra_args)
 
     def install_libxml2(self):
         self.prompt_dependency_path_option("libxml2_src_dir")
@@ -926,8 +1067,15 @@ class MrDocsInstaller:
         if self.options.sanitizer:
             display_name += f" with {self.options.sanitizer}"
 
+        generator = "Unix Makefiles" if not self.is_windows() else "Visual Studio 17 2022"
+        if self.options.ninja_path:
+            generator = "Ninja"
+        elif "CMAKE_GENERATOR" in self.compiler_info:
+            generator = self.compiler_info["CMAKE_GENERATOR"]
+
         new_preset = {
             "name": self.options.mrdocs_preset_name,
+            "generator": generator,
             "displayName": display_name,
             "description": f"Preset for building MrDocs in {self.options.mrdocs_build_type} mode with the {os.path.basename(self.options.cc) if self.options.cc else 'default'} compiler in {OSDisplayName}.",
             "inherits": parent_preset_name,
@@ -960,12 +1108,57 @@ class MrDocsInstaller:
         if self.options.cxx:
             new_preset["cacheVariables"]["CMAKE_CXX_COMPILER"] = self.options.cxx
         if self.options.ninja_path:
-            new_preset["generator"] = "Ninja"
             new_preset["cacheVariables"]["CMAKE_MAKE_PROGRAM"] = self.options.ninja_path
+
+        cc_flags = ''
+        cxx_flags = ''
         if self.options.sanitizer:
             flag_name = self.sanitizer_flag_name(self.options.sanitizer)
-            for arg in ["CMAKE_C_FLAGS", "CMAKE_CXX_FLAGS"]:
-                new_preset["cacheVariables"][arg] = f"-fsanitize={flag_name} -fno-sanitize-recover={flag_name} -fno-omit-frame-pointer"
+            cc_flags = f"-fsanitize={flag_name} -fno-sanitize-recover={flag_name} -fno-omit-frame-pointer"
+            cxx_flags = f"-fsanitize={flag_name} -fno-sanitize-recover={flag_name} -fno-omit-frame-pointer"
+
+        if self.is_homebrew_clang():
+            homebrew_clang_root = os.path.dirname(os.path.dirname(self.options.cxx))
+            ar_path = os.path.join(homebrew_clang_root, "bin", "llvm-ar")
+            if self.is_executable(ar_path):
+                for cxx_flag_var in [
+                    "CMAKE_AR",
+                    "CMAKE_CXX_COMPILER_AR",
+                    "CMAKE_C_COMPILER_AR"
+                ]:
+                    new_preset["cacheVariables"][cxx_flag_var] = ar_path
+            runlib_path = os.path.join(homebrew_clang_root, "bin", "llvm-ranlib")
+            if self.is_executable(runlib_path):
+                new_preset["cacheVariables"]['CMAKE_RANLIB'] = runlib_path
+            ld_path = os.path.join(homebrew_clang_root, "bin", "ld.lld")
+            if self.is_executable(ld_path):
+                new_preset["cacheVariables"]['CMAKE_C_COMPILER_LINKER'] = ld_path
+                new_preset["cacheVariables"]['CMAKE_CXX_COMPILER_LINKER'] = ld_path
+            else:
+                ld_path = '/opt/homebrew/bin/ld.lld'
+                if self.is_executable(ld_path):
+                    new_preset["cacheVariables"]['CMAKE_C_COMPILER_LINKER'] = ld_path
+                    new_preset["cacheVariables"]['CMAKE_CXX_COMPILER_LINKER'] = ld_path
+            libcxx_include = os.path.join(homebrew_clang_root, "include", "c++", "v1")
+            libcxx_lib = os.path.join(homebrew_clang_root, "lib", "c++")
+            libunwind = os.path.join(homebrew_clang_root, "lib", "unwind")
+            if os.path.exists(libcxx_include) and os.path.exists(libcxx_lib) and os.path.exists(libunwind):
+                cxx_flags += f' -stdlib=libc++ -I{libcxx_include}'
+                ld_flags = f'-L{libcxx_lib} -L{libunwind} -lunwind'
+                if self.options.sanitizer:
+                    ld_flags += f' -fsanitize={self.sanitizer_flag_name(self.options.sanitizer)}'
+                for cxx_linker_flag_var in [
+                    "CMAKE_EXE_LINKER_FLAGS",
+                    "CMAKE_SHARED_LINKER_FLAGS",
+                    "CMAKE_MODULE_LINKER_FLAGS"
+                ]:
+                    new_preset["cacheVariables"][cxx_linker_flag_var] = ld_flags
+
+        if cc_flags:
+            new_preset["cacheVariables"]['CMAKE_C_FLAGS'] = cc_flags.strip()
+        if cxx_flags:
+            new_preset["cacheVariables"]['CMAKE_CXX_FLAGS'] = cxx_flags.strip()
+
 
         # Update cache variables path prefixes with their relative equivalents
         mrdocs_src_dir_parent = os.path.dirname(self.options.mrdocs_src_dir)
@@ -1044,7 +1237,8 @@ class MrDocsInstaller:
             if self.options.sanitizer:
                 flag_name = self.sanitizer_flag_name(self.options.sanitizer)
                 for arg in ["CMAKE_C_FLAGS", "CMAKE_CXX_FLAGS"]:
-                    extra_args.append(f"-D{arg}=-fsanitize={flag_name} -fno-sanitize-recover={flag_name} -fno-omit-frame-pointer")
+                    extra_args.append(
+                        f"-D{arg}=-fsanitize={flag_name} -fno-sanitize-recover={flag_name} -fno-omit-frame-pointer")
 
         self.cmake_workflow(self.options.mrdocs_src_dir, self.options.mrdocs_build_type, self.options.mrdocs_build_dir,
                             self.options.mrdocs_install_dir, extra_args)
@@ -1553,6 +1747,7 @@ class MrDocsInstaller:
         self.check_tools()
         self.setup_mrdocs_src_dir()
         self.setup_third_party_dir()
+        self.probe_compilers()
         self.install_ninja()
         self.install_duktape()
         self.install_llvm()

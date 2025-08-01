@@ -312,6 +312,91 @@
                 "rhs": "Darwin"
             },
             "generator": "Ninja"
+        },
+        {
+            "name": "debug-macos-clang",
+            "displayName": "Debug (macOS: clang)",
+            "description": "Preset for building MrDocs in Debug mode with the clang compiler in macOS.",
+            "inherits": "debug",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "LLVM_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/debug-clang",
+                "Clang_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/debug-clang",
+                "duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/debug-clang",
+                "Duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/debug-clang",
+                "libxml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release-clang",
+                "LibXml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release-clang",
+                "MRDOCS_BUILD_TESTS": true,
+                "MRDOCS_BUILD_DOCS": false,
+                "MRDOCS_GENERATE_REFERENCE": false,
+                "MRDOCS_GENERATE_ANTORA_REFERENCE": false,
+                "CMAKE_C_COMPILER": "/opt/homebrew/opt/llvm/bin/clang",
+                "CMAKE_CXX_COMPILER": "/opt/homebrew/opt/llvm/bin/clang++",
+                "CMAKE_MAKE_PROGRAM": "$env{HOME}/Developer/cpp-libs/ninja/ninja",
+                "CMAKE_AR": "/opt/homebrew/opt/llvm/bin/llvm-ar",
+                "CMAKE_CXX_COMPILER_AR": "/opt/homebrew/opt/llvm/bin/llvm-ar",
+                "CMAKE_C_COMPILER_AR": "/opt/homebrew/opt/llvm/bin/llvm-ar",
+                "CMAKE_RANLIB": "/opt/homebrew/opt/llvm/bin/llvm-ranlib",
+                "CMAKE_C_COMPILER_LINKER": "/opt/homebrew/bin/ld.lld",
+                "CMAKE_CXX_COMPILER_LINKER": "/opt/homebrew/bin/ld.lld",
+                "CMAKE_EXE_LINKER_FLAGS": "-L/opt/homebrew/opt/llvm/lib/c++ -L/opt/homebrew/opt/llvm/lib/unwind -lunwind",
+                "CMAKE_SHARED_LINKER_FLAGS": "-L/opt/homebrew/opt/llvm/lib/c++ -L/opt/homebrew/opt/llvm/lib/unwind -lunwind",
+                "CMAKE_MODULE_LINKER_FLAGS": "-L/opt/homebrew/opt/llvm/lib/c++ -L/opt/homebrew/opt/llvm/lib/unwind -lunwind",
+                "CMAKE_CXX_FLAGS": "-stdlib=libc++ -I/opt/homebrew/opt/llvm/include/c++/v1"
+            },
+            "warnings": {
+                "unusedCli": false
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "generator": "Ninja"
+        },
+        {
+            "name": "debug-macos-clang-asan",
+            "generator": "Ninja",
+            "displayName": "Debug (macOS: clang) with ASan",
+            "description": "Preset for building MrDocs in Debug mode with the clang compiler in macOS.",
+            "inherits": "debug",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "LLVM_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/debug-clang-asan",
+                "Clang_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/debug-clang-asan",
+                "duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/debug-clang-asan",
+                "Duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/debug-clang-asan",
+                "libxml2_ROOT": "",
+                "LibXml2_ROOT": "",
+                "MRDOCS_BUILD_TESTS": false,
+                "MRDOCS_BUILD_DOCS": false,
+                "MRDOCS_GENERATE_REFERENCE": false,
+                "MRDOCS_GENERATE_ANTORA_REFERENCE": false,
+                "CMAKE_C_COMPILER": "/opt/homebrew/opt/llvm/bin/clang",
+                "CMAKE_CXX_COMPILER": "/opt/homebrew/opt/llvm/bin/clang++",
+                "CMAKE_MAKE_PROGRAM": "$env{HOME}/Developer/cpp-libs/ninja/ninja",
+                "CMAKE_AR": "/opt/homebrew/opt/llvm/bin/llvm-ar",
+                "CMAKE_CXX_COMPILER_AR": "/opt/homebrew/opt/llvm/bin/llvm-ar",
+                "CMAKE_C_COMPILER_AR": "/opt/homebrew/opt/llvm/bin/llvm-ar",
+                "CMAKE_RANLIB": "/opt/homebrew/opt/llvm/bin/llvm-ranlib",
+                "CMAKE_C_COMPILER_LINKER": "/opt/homebrew/bin/ld.lld",
+                "CMAKE_CXX_COMPILER_LINKER": "/opt/homebrew/bin/ld.lld",
+                "CMAKE_EXE_LINKER_FLAGS": "-L/opt/homebrew/opt/llvm/lib/c++ -L/opt/homebrew/opt/llvm/lib/unwind -lunwind -fsanitize=address",
+                "CMAKE_SHARED_LINKER_FLAGS": "-L/opt/homebrew/opt/llvm/lib/c++ -L/opt/homebrew/opt/llvm/lib/unwind -lunwind -fsanitize=address",
+                "CMAKE_MODULE_LINKER_FLAGS": "-L/opt/homebrew/opt/llvm/lib/c++ -L/opt/homebrew/opt/llvm/lib/unwind -lunwind -fsanitize=address",
+                "CMAKE_C_FLAGS": "-fsanitize=address -fno-sanitize-recover=address -fno-omit-frame-pointer",
+                "CMAKE_CXX_FLAGS": "-fsanitize=address -fno-sanitize-recover=address -fno-omit-frame-pointer -stdlib=libc++ -I/opt/homebrew/opt/llvm/include/c++/v1"
+            },
+            "warnings": {
+                "unusedCli": false
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            }
         }
     ]
 }
