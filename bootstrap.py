@@ -79,7 +79,7 @@ class InstallOptions:
     mrdocs_run_tests: bool = True
 
     # Third-party dependencies
-    third_party_src_dir: str = "<mrdocs-src-dir>/../third-party"
+    third_party_src_dir: str = "<mrdocs-src-dir>/build/third-party"
 
     # Duktape
     duktape_src_dir: str = "<third-party-src-dir>/duktape"
@@ -638,7 +638,7 @@ class MrDocsInstaller:
                     f"Source directory '{self.options.mrdocs_src_dir}' does not exist. Create and clone MrDocs there?",
                     True):
                 print("Installation aborted by user.")
-                return
+                exit(1)
             self.prompt_option("mrdocs_branch")
             self.prompt_option("mrdocs_repo")
             self.clone_repo(self.options.mrdocs_repo, self.options.mrdocs_src_dir, branch=self.options.mrdocs_branch)
@@ -671,14 +671,6 @@ class MrDocsInstaller:
         value = getattr(self.options, name)
         value = os.path.abspath(value)
         setattr(self.options, name, value)
-        while self.is_inside_mrdocs_dir(value):
-            print(f"Error: {name} '{value}' cannot be inside mrdocs_src_dir '{self.options.mrdocs_src_dir}'.")
-            if not self.prompt_boolean(f"Would you like to specify a different {name} directory."):
-                print("Installation aborted by user.")
-                return
-            value = self.reprompt_option(name)
-            setattr(self.options, name, value)
-
         if not os.path.exists(value):
             if not self.prompt_boolean(f"'{value}' does not exist. Create it?", True):
                 raise FileNotFoundError(f"'{value}' does not exist and user chose not to create it.")
@@ -1168,13 +1160,13 @@ class MrDocsInstaller:
         for key, value in new_preset["cacheVariables"].items():
             if not isinstance(value, str):
                 continue
-            # Replace mrdocs-src-dir parent with ${sourceParentDir}
-            if mrdocs_src_dir_parent and value.startswith(mrdocs_src_dir_parent):
-                new_value = "${sourceParentDir}" + value[len(mrdocs_src_dir_parent):]
-                new_preset["cacheVariables"][key] = new_value
             # Replace mrdocs-src-dir with ${sourceDir}
-            elif self.options.mrdocs_src_dir and value.startswith(self.options.mrdocs_src_dir):
+            if self.options.mrdocs_src_dir and value.startswith(self.options.mrdocs_src_dir):
                 new_value = "${sourceDir}" + value[len(self.options.mrdocs_src_dir):]
+                new_preset["cacheVariables"][key] = new_value
+            # Replace mrdocs-src-dir parent with ${sourceParentDir}
+            elif mrdocs_src_dir_parent and value.startswith(mrdocs_src_dir_parent):
+                new_value = "${sourceParentDir}" + value[len(mrdocs_src_dir_parent):]
                 new_preset["cacheVariables"][key] = new_value
             # Replace $HOME with $env{HOME}
             elif home_dir and value.startswith(home_dir):
@@ -1246,6 +1238,8 @@ class MrDocsInstaller:
         if self.options.mrdocs_build_dir and self.prompt_option("mrdocs_run_tests"):
             # Look for ctest path relative to the cmake path
             ctest_path = os.path.join(os.path.dirname(self.options.cmake_path), "ctest")
+            if self.is_windows():
+                ctest_path += ".exe"
             if not os.path.exists(ctest_path):
                 raise FileNotFoundError(
                     f"ctest executable not found at {ctest_path}. Please ensure CMake is installed correctly.")

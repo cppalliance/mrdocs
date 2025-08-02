@@ -55,8 +55,8 @@
             "cacheVariables": {
                 "CMAKE_CXX_COMPILER": "/usr/bin/g++",
                 "CMAKE_C_COMPILER": "/usr/bin/gcc",
-                "LLVM_ROOT": "/home/$env{USER}/libraries/llvm",
-                "Clang_ROOT": "/home/$env{USER}/libraries/llvm",
+                "LLVM_ROOT": "${sourceDir}/build/third-party/llvm",
+                "Clang_ROOT": "${sourceDir}/build/third-party/llvm",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
                 "CMAKE_CXX_FLAGS": "-Wall -Wextra -Werror",
                 "CMAKE_C_FLAGS": "-Wall -Wextra -Werror"
@@ -91,8 +91,8 @@
             "binaryDir": "${sourceDir}/build/${presetName}",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
-                "LLVM_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release",
-                "Clang_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release"
+                "LLVM_ROOT": "${sourceDir}/build/third-party/llvm-project/llvm/install/Linux/Release",
+                "Clang_ROOT": "${sourceDir}/build/third-party/llvm-project/llvm/install/Linux/Release"
             }
         },
         {
@@ -103,8 +103,8 @@
             "binaryDir": "${sourceDir}/build/${presetName}",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "RelWithDebInfo",
-                "LLVM_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release",
-                "Clang_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release"
+                "LLVM_ROOT": "${sourceDir}/build/third-party/llvm-project/llvm/install/Linux/Release",
+                "Clang_ROOT": "${sourceDir}/build/third-party/llvm-project/llvm/install/Linux/Release"
             }
         },
         {
@@ -131,17 +131,17 @@
             "binaryDir": "${sourceDir}/build/${presetName}",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
-                "LLVM_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/debug",
-                "Clang_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/debug",
-                "duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/debug",
-                "Duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/debug",
-                "libxml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release",
-                "LibXml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release",
+                "LLVM_ROOT": "${sourceDir}/build/third-party/llvm-project/install/debug",
+                "Clang_ROOT": "${sourceDir}/build/third-party/llvm-project/install/debug",
+                "duktape_ROOT": "${sourceDir}/build/third-party/duktape/install/debug",
+                "Duktape_ROOT": "${sourceDir}/build/third-party/duktape/install/debug",
+                "libxml2_ROOT": "${sourceDir}/build/third-party/libxml2/install/release",
+                "LibXml2_ROOT": "${sourceDir}/build/third-party/libxml2/install/release",
                 "MRDOCS_BUILD_TESTS": true,
                 "MRDOCS_BUILD_DOCS": false,
                 "MRDOCS_GENERATE_REFERENCE": false,
                 "MRDOCS_GENERATE_ANTORA_REFERENCE": false,
-                "CMAKE_MAKE_PROGRAM": "$env{HOME}/Developer/cpp-libs/ninja/ninja"
+                "CMAKE_MAKE_PROGRAM": "${sourceDir}/build/third-party/ninja/ninja"
             },
             "condition": {
                 "type": "equals",
@@ -161,17 +161,17 @@
             "binaryDir": "${sourceDir}/build/${presetName}",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
-                "LLVM_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/release",
-                "Clang_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/release",
-                "duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/release",
-                "Duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/release",
-                "libxml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release",
-                "LibXml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release",
+                "LLVM_ROOT": "${sourceDir}/build/third-party/llvm-project/install/release",
+                "Clang_ROOT": "${sourceDir}/build/third-party/llvm-project/install/release",
+                "duktape_ROOT": "${sourceDir}/build/third-party/duktape/install/release",
+                "Duktape_ROOT": "${sourceDir}/build/third-party/duktape/install/release",
+                "libxml2_ROOT": "${sourceDir}/build/third-party/libxml2/install/release",
+                "LibXml2_ROOT": "${sourceDir}/build/third-party/libxml2/install/release",
                 "MRDOCS_BUILD_TESTS": true,
                 "MRDOCS_BUILD_DOCS": false,
                 "MRDOCS_GENERATE_REFERENCE": false,
                 "MRDOCS_GENERATE_ANTORA_REFERENCE": false,
-                "CMAKE_MAKE_PROGRAM": "$env{HOME}/Developer/cpp-libs/ninja/ninja"
+                "CMAKE_MAKE_PROGRAM": "${sourceDir}/build/third-party/ninja/ninja"
             },
             "warnings": {
                 "unusedCli": false
@@ -191,17 +191,17 @@
             "binaryDir": "${sourceDir}/build/${presetName}",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
-                "LLVM_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/release",
-                "Clang_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/release",
-                "duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/release",
-                "Duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/release",
-                "libxml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release",
-                "LibXml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release",
+                "LLVM_ROOT": "${sourceDir}/build/third-party/llvm-project/install/release",
+                "Clang_ROOT": "${sourceDir}/build/third-party/llvm-project/install/release",
+                "duktape_ROOT": "${sourceDir}/build/third-party/duktape/install/release",
+                "Duktape_ROOT": "${sourceDir}/build/third-party/duktape/install/release",
+                "libxml2_ROOT": "${sourceDir}/build/third-party/libxml2/install/release",
+                "LibXml2_ROOT": "${sourceDir}/build/third-party/libxml2/install/release",
                 "MRDOCS_BUILD_TESTS": true,
                 "MRDOCS_BUILD_DOCS": false,
                 "MRDOCS_GENERATE_REFERENCE": false,
                 "MRDOCS_GENERATE_ANTORA_REFERENCE": false,
-                "CMAKE_MAKE_PROGRAM": "$env{HOME}/Developer/cpp-libs/ninja/ninja"
+                "CMAKE_MAKE_PROGRAM": "${sourceDir}/build/third-party/ninja/ninja"
             },
             "condition": {
                 "type": "equals",
@@ -221,19 +221,19 @@
             "binaryDir": "${sourceDir}/build/${presetName}",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
-                "LLVM_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/release-gcc",
-                "Clang_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/release-gcc",
-                "duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/release-gcc",
-                "Duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/release-gcc",
-                "libxml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release-gcc",
-                "LibXml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release-gcc",
+                "LLVM_ROOT": "${sourceDir}/build/third-party/llvm-project/install/release-gcc",
+                "Clang_ROOT": "${sourceDir}/build/third-party/llvm-project/install/release-gcc",
+                "duktape_ROOT": "${sourceDir}/build/third-party/duktape/install/release-gcc",
+                "Duktape_ROOT": "${sourceDir}/build/third-party/duktape/install/release-gcc",
+                "libxml2_ROOT": "${sourceDir}/build/third-party/libxml2/install/release-gcc",
+                "LibXml2_ROOT": "${sourceDir}/build/third-party/libxml2/install/release-gcc",
                 "MRDOCS_BUILD_TESTS": true,
                 "MRDOCS_BUILD_DOCS": false,
                 "MRDOCS_GENERATE_REFERENCE": false,
                 "MRDOCS_GENERATE_ANTORA_REFERENCE": false,
                 "CMAKE_C_COMPILER": "/usr/bin/gcc",
                 "CMAKE_CXX_COMPILER": "/usr/bin/g++",
-                "CMAKE_MAKE_PROGRAM": "$env{HOME}/Developer/cpp-libs/ninja/ninja"
+                "CMAKE_MAKE_PROGRAM": "${sourceDir}/build/third-party/ninja/ninja"
             },
             "warnings": {
                 "unusedCli": false
@@ -253,19 +253,19 @@
             "binaryDir": "${sourceDir}/build/${presetName}",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
-                "LLVM_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/debug-gcc-asan",
-                "Clang_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/debug-gcc-asan",
-                "duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/debug-gcc-asan",
-                "Duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/debug-gcc-asan",
-                "libxml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release-gcc",
-                "LibXml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release-gcc",
+                "LLVM_ROOT": "${sourceDir}/build/third-party/llvm-project/install/debug-gcc-asan",
+                "Clang_ROOT": "${sourceDir}/build/third-party/llvm-project/install/debug-gcc-asan",
+                "duktape_ROOT": "${sourceDir}/build/third-party/duktape/install/debug-gcc-asan",
+                "Duktape_ROOT": "${sourceDir}/build/third-party/duktape/install/debug-gcc-asan",
+                "libxml2_ROOT": "${sourceDir}/build/third-party/libxml2/install/release-gcc",
+                "LibXml2_ROOT": "${sourceDir}/build/third-party/libxml2/install/release-gcc",
                 "MRDOCS_BUILD_TESTS": true,
                 "MRDOCS_BUILD_DOCS": false,
                 "MRDOCS_GENERATE_REFERENCE": false,
                 "MRDOCS_GENERATE_ANTORA_REFERENCE": false,
                 "CMAKE_C_COMPILER": "/usr/bin/gcc",
                 "CMAKE_CXX_COMPILER": "/usr/bin/g++",
-                "CMAKE_MAKE_PROGRAM": "$env{HOME}/Developer/cpp-libs/ninja/ninja",
+                "CMAKE_MAKE_PROGRAM": "${sourceDir}/build/third-party/ninja/ninja",
                 "CMAKE_C_FLAGS": "-fsanitize=address -fno-sanitize-recover=address -fno-omit-frame-pointer",
                 "CMAKE_CXX_FLAGS": "-fsanitize=address -fno-sanitize-recover=address -fno-omit-frame-pointer"
             },
@@ -287,19 +287,19 @@
             "binaryDir": "${sourceDir}/build/${presetName}",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
-                "LLVM_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/debug-gcc-ubsan",
-                "Clang_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/debug-gcc-ubsan",
-                "duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/debug-gcc-ubsan",
-                "Duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/debug-gcc-ubsan",
-                "libxml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release-gcc",
-                "LibXml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release-gcc",
+                "LLVM_ROOT": "${sourceDir}/build/third-party/llvm-project/install/debug-gcc-ubsan",
+                "Clang_ROOT": "${sourceDir}/build/third-party/llvm-project/install/debug-gcc-ubsan",
+                "duktape_ROOT": "${sourceDir}/build/third-party/duktape/install/debug-gcc-ubsan",
+                "Duktape_ROOT": "${sourceDir}/build/third-party/duktape/install/debug-gcc-ubsan",
+                "libxml2_ROOT": "${sourceDir}/build/third-party/libxml2/install/release-gcc",
+                "LibXml2_ROOT": "${sourceDir}/build/third-party/libxml2/install/release-gcc",
                 "MRDOCS_BUILD_TESTS": true,
                 "MRDOCS_BUILD_DOCS": false,
                 "MRDOCS_GENERATE_REFERENCE": false,
                 "MRDOCS_GENERATE_ANTORA_REFERENCE": false,
                 "CMAKE_C_COMPILER": "/usr/bin/gcc",
                 "CMAKE_CXX_COMPILER": "/usr/bin/g++",
-                "CMAKE_MAKE_PROGRAM": "$env{HOME}/Developer/cpp-libs/ninja/ninja",
+                "CMAKE_MAKE_PROGRAM": "${sourceDir}/build/third-party/ninja/ninja",
                 "CMAKE_C_FLAGS": "-fsanitize=undefined -fno-sanitize-recover=undefined -fno-omit-frame-pointer",
                 "CMAKE_CXX_FLAGS": "-fsanitize=undefined -fno-sanitize-recover=undefined -fno-omit-frame-pointer"
             },
@@ -321,19 +321,19 @@
             "binaryDir": "${sourceDir}/build/${presetName}",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
-                "LLVM_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/debug-clang",
-                "Clang_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/debug-clang",
-                "duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/debug-clang",
-                "Duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/debug-clang",
-                "libxml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release-clang",
-                "LibXml2_ROOT": "$env{HOME}/Developer/cpp-libs/libxml2/install/release-clang",
+                "LLVM_ROOT": "${sourceDir}/build/third-party/llvm-project/install/debug-clang",
+                "Clang_ROOT": "${sourceDir}/build/third-party/llvm-project/install/debug-clang",
+                "duktape_ROOT": "${sourceDir}/build/third-party/duktape/install/debug-clang",
+                "Duktape_ROOT": "${sourceDir}/build/third-party/duktape/install/debug-clang",
+                "libxml2_ROOT": "${sourceDir}/build/third-party/libxml2/install/release-clang",
+                "LibXml2_ROOT": "${sourceDir}/build/third-party/libxml2/install/release-clang",
                 "MRDOCS_BUILD_TESTS": true,
                 "MRDOCS_BUILD_DOCS": false,
                 "MRDOCS_GENERATE_REFERENCE": false,
                 "MRDOCS_GENERATE_ANTORA_REFERENCE": false,
                 "CMAKE_C_COMPILER": "/opt/homebrew/opt/llvm/bin/clang",
                 "CMAKE_CXX_COMPILER": "/opt/homebrew/opt/llvm/bin/clang++",
-                "CMAKE_MAKE_PROGRAM": "$env{HOME}/Developer/cpp-libs/ninja/ninja",
+                "CMAKE_MAKE_PROGRAM": "${sourceDir}/build/third-party/ninja/ninja",
                 "CMAKE_AR": "/opt/homebrew/opt/llvm/bin/llvm-ar",
                 "CMAKE_CXX_COMPILER_AR": "/opt/homebrew/opt/llvm/bin/llvm-ar",
                 "CMAKE_C_COMPILER_AR": "/opt/homebrew/opt/llvm/bin/llvm-ar",
@@ -364,10 +364,10 @@
             "binaryDir": "${sourceDir}/build/${presetName}",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
-                "LLVM_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/debug-clang-asan",
-                "Clang_ROOT": "$env{HOME}/Developer/cpp-libs/llvm-project/install/debug-clang-asan",
-                "duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/debug-clang-asan",
-                "Duktape_ROOT": "$env{HOME}/Developer/cpp-libs/duktape/install/debug-clang-asan",
+                "LLVM_ROOT": "${sourceDir}/build/third-party/llvm-project/install/debug-clang-asan",
+                "Clang_ROOT": "${sourceDir}/build/third-party/llvm-project/install/debug-clang-asan",
+                "duktape_ROOT": "${sourceDir}/build/third-party/duktape/install/debug-clang-asan",
+                "Duktape_ROOT": "${sourceDir}/build/third-party/duktape/install/debug-clang-asan",
                 "libxml2_ROOT": "",
                 "LibXml2_ROOT": "",
                 "MRDOCS_BUILD_TESTS": false,
@@ -376,7 +376,7 @@
                 "MRDOCS_GENERATE_ANTORA_REFERENCE": false,
                 "CMAKE_C_COMPILER": "/opt/homebrew/opt/llvm/bin/clang",
                 "CMAKE_CXX_COMPILER": "/opt/homebrew/opt/llvm/bin/clang++",
-                "CMAKE_MAKE_PROGRAM": "$env{HOME}/Developer/cpp-libs/ninja/ninja",
+                "CMAKE_MAKE_PROGRAM": "${sourceDir}/build/third-party/ninja/ninja",
                 "CMAKE_AR": "/opt/homebrew/opt/llvm/bin/llvm-ar",
                 "CMAKE_CXX_COMPILER_AR": "/opt/homebrew/opt/llvm/bin/llvm-ar",
                 "CMAKE_C_COMPILER_AR": "/opt/homebrew/opt/llvm/bin/llvm-ar",
@@ -388,6 +388,48 @@
                 "CMAKE_MODULE_LINKER_FLAGS": "-L/opt/homebrew/opt/llvm/lib/c++ -L/opt/homebrew/opt/llvm/lib/unwind -lunwind -fsanitize=address",
                 "CMAKE_C_FLAGS": "-fsanitize=address -fno-sanitize-recover=address -fno-omit-frame-pointer",
                 "CMAKE_CXX_FLAGS": "-fsanitize=address -fno-sanitize-recover=address -fno-omit-frame-pointer -stdlib=libc++ -I/opt/homebrew/opt/llvm/include/c++/v1"
+            },
+            "warnings": {
+                "unusedCli": false
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            }
+        },
+        {
+            "name": "release-macos-clang",
+            "generator": "Ninja",
+            "displayName": "Release (macOS: clang)",
+            "description": "Preset for building MrDocs in Release mode with the clang compiler in macOS.",
+            "inherits": "release",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "LLVM_ROOT": "${sourceDir}/build/third-party/llvm-project/install/release-clang",
+                "Clang_ROOT": "${sourceDir}/build/third-party/llvm-project/install/release-clang",
+                "duktape_ROOT": "${sourceDir}/build/third-party/duktape/install/release-clang",
+                "Duktape_ROOT": "${sourceDir}/build/third-party/duktape/install/release-clang",
+                "libxml2_ROOT": "${sourceDir}/build/third-party/libxml2/install/release-clang",
+                "LibXml2_ROOT": "${sourceDir}/build/third-party/libxml2/install/release-clang",
+                "MRDOCS_BUILD_TESTS": true,
+                "MRDOCS_BUILD_DOCS": false,
+                "MRDOCS_GENERATE_REFERENCE": false,
+                "MRDOCS_GENERATE_ANTORA_REFERENCE": false,
+                "CMAKE_C_COMPILER": "/opt/homebrew/opt/llvm/bin/clang",
+                "CMAKE_CXX_COMPILER": "/opt/homebrew/opt/llvm/bin/clang++",
+                "CMAKE_MAKE_PROGRAM": "${sourceDir}/build/third-party/ninja/ninja",
+                "CMAKE_AR": "/opt/homebrew/opt/llvm/bin/llvm-ar",
+                "CMAKE_CXX_COMPILER_AR": "/opt/homebrew/opt/llvm/bin/llvm-ar",
+                "CMAKE_C_COMPILER_AR": "/opt/homebrew/opt/llvm/bin/llvm-ar",
+                "CMAKE_RANLIB": "/opt/homebrew/opt/llvm/bin/llvm-ranlib",
+                "CMAKE_C_COMPILER_LINKER": "/opt/homebrew/bin/ld.lld",
+                "CMAKE_CXX_COMPILER_LINKER": "/opt/homebrew/bin/ld.lld",
+                "CMAKE_EXE_LINKER_FLAGS": "-L/opt/homebrew/opt/llvm/lib/c++ -L/opt/homebrew/opt/llvm/lib/unwind -lunwind",
+                "CMAKE_SHARED_LINKER_FLAGS": "-L/opt/homebrew/opt/llvm/lib/c++ -L/opt/homebrew/opt/llvm/lib/unwind -lunwind",
+                "CMAKE_MODULE_LINKER_FLAGS": "-L/opt/homebrew/opt/llvm/lib/c++ -L/opt/homebrew/opt/llvm/lib/unwind -lunwind",
+                "CMAKE_CXX_FLAGS": "-stdlib=libc++ -I/opt/homebrew/opt/llvm/include/c++/v1"
             },
             "warnings": {
                 "unusedCli": false
