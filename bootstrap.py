@@ -126,7 +126,7 @@ INSTALL_OPTION_DESCRIPTIONS = {
     "cmake_path": "Path to the cmake executable, if not in system PATH.",
     "python_path": "Path to the python executable, if not in system PATH.",
     "java_path": "Path to the java executable, if not in system PATH.",
-    "ninja_path": "Path to the ninja executable. Leave empty to download it automatically.",
+    "ninja_path": "Path to the ninja executable. Leave empty to look for ninja in PATH or to download it automatically.",
     "mrdocs_src_dir": "MrDocs source directory.",
     "mrdocs_repo": "URL of the MrDocs repository to clone.",
     "mrdocs_branch": "Branch or tag of the MrDocs repository to use.",
@@ -602,6 +602,93 @@ class MrDocsInstaller:
         else:
             return os.access(path, os.X_OK)
 
+    @lru_cache(maxsize=1)
+    def get_vs_install_locations(self):
+        p = os.environ.get('ProgramFiles(x86)', r"C:\Program Files (x86)")
+        path_vswhere = os.path.join(p,
+                                    "Microsoft Visual Studio", "Installer", "vswhere.exe")
+        if not self.is_executable(path_vswhere):
+            return None
+        cmd = [path_vswhere,
+               "-latest", "-products", "*",
+               "-requires", "Microsoft.Component.MSBuild",
+               "-format", "json"]
+        data = subprocess.check_output(cmd, universal_newlines=True)
+        info = json.loads(data)
+        if not info:
+            return None
+        return [inst.get("installationPath") for inst in info]
+
+    def find_vs_tool(self, tool):
+        vs_tools = ["cmake", "ninja", "git", "python"]
+        if tool not in vs_tools:
+            return None
+        vs_roots = self.get_vs_install_locations()
+        for vs_root in vs_roots or []:
+            ms_cext_path = os.path.join(vs_root, "Common7", "IDE", "CommonExtensions", "Microsoft")
+            toolpaths = {
+                'cmake': os.path.join(ms_cext_path, "CMake", "CMake", "bin", "cmake.exe"),
+                'git': os.path.join(ms_cext_path, "TeamFoundation", "Team Explorer", "Git", "cmd", "git.exe"),
+                'ninja': os.path.join(ms_cext_path, "CMake", "Ninja", "ninja.exe")
+            }
+            path = toolpaths.get(tool)
+            if path and self.is_executable(path):
+                return path
+        return None
+
+    def find_java(self):
+        # 1. check JAVA_HOME env variable
+        java_home = os.environ.get("JAVA_HOME")
+        if java_home:
+            exe = os.path.join(java_home, "bin", "java.exe")
+            if os.path.isfile(exe):
+                return exe
+
+        # 2. check registry (64+32-bit)
+        import winreg
+        def reg_lookup(base, subkey):
+            try:
+                with winreg.OpenKey(base, subkey) as key:
+                    ver, _ = winreg.QueryValueEx(key, "CurrentVersion")
+                    key2 = winreg.OpenKey(base, subkey + "\\" + ver)
+                    path, _ = winreg.QueryValueEx(key2, "JavaHome")
+                    exe = os.path.join(path, "bin", "java.exe")
+                    if os.path.isfile(exe):
+                        return exe
+            except OSError:
+                return None
+
+        for hive, sub in [
+            (winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\JavaSoft\Java Runtime Environment"),
+            (winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\Wow6432Node\JavaSoft\Java Runtime Environment")
+        ]:
+            result = reg_lookup(hive, sub)
+            if result:
+                return result
+
+        # 3. check common folders under Program Files
+        for base in [os.environ.get("ProgramFiles"), os.environ.get("ProgramFiles(x86)")]:
+            if not base:
+                continue
+            jroot = os.path.join(base, "Java")
+            if os.path.isdir(jroot):
+                for entry in os.listdir(jroot):
+                    candidate = os.path.join(jroot, entry, "bin", "java.exe")
+                    if os.path.isfile(candidate):
+                        return candidate
+
+        return None
+
+    def find_tool(self, tool):
+        tool_path = shutil.which(tool)
+        if not tool_path and self.is_windows():
+            tool_path = self.find_vs_tool(tool)
+            if not tool_path and tool == "java":
+                tool_path = self.find_java()
+        if not tool_path and tool == "python":
+            tool_path = sys.executable
+        return tool_path
+
     def check_tool(self, tool):
         """
         Checks if the required tools are available as a command line argument or
@@ -617,7 +704,9 @@ class MrDocsInstaller:
 
         :return: None
         """
-        default_value = shutil.which(tool)
+        default_value = self.find_tool(tool)
+        if not default_value:
+            default_value = tool
         setattr(self.default_options, f"{tool}_path", default_value)
         tool_path = self.prompt_option(f"{tool}_path")
         if not self.is_executable(tool_path):
@@ -717,7 +806,7 @@ class MrDocsInstaller:
             f.write("\n".join(cmake_lists))
 
         # Build command
-        cmd = ["cmake", "-S", probe_dir]
+        cmd = [self.options.cmake_path, "-S", probe_dir]
         env = os.environ.copy()
         if self.options.cc:
             cmd += ["-DCMAKE_C_COMPILER=" + self.options.cc]
@@ -762,13 +851,13 @@ class MrDocsInstaller:
         # 1. Check if the user has set a ninja_path option
         if self.prompt_option("ninja_path"):
             if not os.path.isabs(self.options.ninja_path):
-                self.options.ninja_path = shutil.which(self.options.ninja_path)
+                self.options.ninja_path = self.find_tool(self.options.ninja_path)
             if not self.is_executable(self.options.ninja_path):
                 raise FileNotFoundError(f"Ninja executable not found at {self.options.ninja_path}.")
             return
 
         # 2. If ninja_path is not set, but does the user have it available in PATH?
-        ninja_path = shutil.which("ninja")
+        ninja_path = self.find_tool("ninja")
         if ninja_path:
             print(f"Ninja found in PATH at {ninja_path}. Using it.")
             self.options.ninja_path = ninja_path
@@ -973,10 +1062,10 @@ class MrDocsInstaller:
             self.prompt_option("llvm_repo")
             self.prompt_option("llvm_commit")
             os.makedirs(self.options.llvm_src_dir, exist_ok=True)
-            self.run_cmd("git init", self.options.llvm_src_dir)
-            self.run_cmd(f"git remote add origin {self.options.llvm_repo}", self.options.llvm_src_dir)
-            self.run_cmd(f"git fetch --depth 1 origin {self.options.llvm_commit}", self.options.llvm_src_dir)
-            self.run_cmd("git checkout FETCH_HEAD", self.options.llvm_src_dir)
+            self.run_cmd([self.options.git_path, "init"], self.options.llvm_src_dir)
+            self.run_cmd([self.options.git_path, "remote", "add", "origin", self.options.llvm_repo], self.options.llvm_src_dir)
+            self.run_cmd([self.options.git_path, "fetch", "--depth", "1", "origin", self.options.llvm_commit], self.options.llvm_src_dir)
+            self.run_cmd([self.options.git_path, "checkout", "FETCH_HEAD"], self.options.llvm_src_dir)
 
         llvm_subproject_dir = os.path.join(self.options.llvm_src_dir, "llvm")
         llvm_patches = os.path.join(self.options.mrdocs_src_dir, 'third-party', 'llvm')
