@@ -501,6 +501,8 @@ class MrDocsInstaller:
             config_args.extend(["-DCMAKE_C_COMPILER=" + self.options.cc,
                                 "-DCMAKE_CXX_COMPILER=" + self.options.cxx])
 
+        if self.is_windows():
+            config_args.extend(["-DPYTHON_EXECUTABLE=" + sys.executable])
         # "OptimizedDebug" is not a valid build type. We interpret it as a special case
         # where the build type is Debug and optimizations are enabled.
         # This is equivalent to RelWithDebInfo on Unix, but ensures
@@ -1151,6 +1153,7 @@ class MrDocsInstaller:
         if cxx_flags:
             new_preset["cacheVariables"]['CMAKE_CXX_FLAGS'] = cxx_flags.strip()
 
+        new_preset["cacheVariables"]["PYTHON_EXECUTABLE"] = sys.executable
 
         # Update cache variables path prefixes with their relative equivalents
         mrdocs_src_dir_parent = os.path.dirname(self.options.mrdocs_src_dir)
@@ -1398,8 +1401,9 @@ class MrDocsInstaller:
                     if 'folder' in config:
                         attrib["folderName"] = config["folder"]
                     clion_config = ET.SubElement(root, "configuration", attrib)
+                    args = config.get("args") or []
                     ET.SubElement(clion_config, "option", name="SCRIPT_TEXT",
-                                  value=f"{shlex.quote(config['script'])} {' '.join(shlex.quote(arg) for arg in config['args'])}")
+                                  value=f"{shlex.quote(config['script'])} {' '.join(shlex.quote(arg) for arg in args)}")
                     ET.SubElement(clion_config, "option", name="INDEPENDENT_SCRIPT_PATH", value="true")
                     ET.SubElement(clion_config, "option", name="SCRIPT_PATH", value=config["script"])
                     ET.SubElement(clion_config, "option", name="SCRIPT_OPTIONS", value="")
