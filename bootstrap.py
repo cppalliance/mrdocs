@@ -98,7 +98,7 @@ class InstallOptions:
 
     # Libxml2
     libxml2_src_dir: str = "<third-party-src-dir>/libxml2"
-    libxml2_build_type: str = "Release"  # purposefully does not depend on mrdocs-build-type because we only need the executable
+    libxml2_build_type: str = "Release" # purposefully does not depend on mrdocs-build-type because we only need the executable
     libxml2_build_dir: str = "<libxml2-src-dir>/build/<libxml2-build-type:lower><\"-\":if(cc)><cc:basename>"
     libxml2_install_dir: str = "<libxml2-src-dir>/install/<libxml2-build-type:lower><\"-\":if(cc)><cc:basename>"
     libxml2_repo: str = "https://github.com/GNOME/libxml2"
@@ -109,8 +109,9 @@ class InstallOptions:
     jetbrains_run_config_dir: str = "<mrdocs-src-dir>/.run"
     boost_src_dir: str = "<mrdocs-src-dir>/../boost"
 
-    # Meta
+    # Command line arguments
     non_interactive: bool = False
+    refresh_all: bool = False
 
 
 # Constant for option descriptions
@@ -154,7 +155,8 @@ INSTALL_OPTION_DESCRIPTIONS = {
     "generate_run_configs": "Whether to generate run configurations for IDEs.",
     "jetbrains_run_config_dir": "Directory where JetBrains run configurations will be stored.",
     "boost_src_dir": "Directory where the source files of the Boost libraries are located.",
-    "non_interactive": "Whether to use all default options without interactive prompts."
+    "non_interactive": "Whether to use all default options without interactive prompts.",
+    "refresh_all": "Call the command to refresh dependencies for all configurations"
 }
 
 
@@ -178,6 +180,7 @@ class MrDocsInstaller:
             else:
                 raise TypeError(f"Unsupported type {field.type} for field {field.name} in InstallOptions.")
         self.options.non_interactive = self.cmd_line_args.get("non_interactive", False)
+        self.options.refresh_all = self.cmd_line_args.get("refresh_all", False)
         self.prompted_options = set()
         self.compiler_info = {}
 
@@ -1805,6 +1808,13 @@ class MrDocsInstaller:
             "args": bootstrap_refresh_args,
             "cwd": self.options.mrdocs_src_dir
         })
+        configs.append({
+            "name": f"MrDocs Bootstrap Refresh All",
+            "script": os.path.join(self.options.mrdocs_src_dir, "bootstrap.py"),
+            "folder": "MrDocs Bootstrap Refresh",
+            "args": ["--refresh-all"],
+            "cwd": self.options.mrdocs_src_dir
+        })
 
         # Targets for the pre-build steps
         configs.append({
@@ -1956,6 +1966,33 @@ class MrDocsInstaller:
         else:
             print("Skipping run configurations generation as per user preference.")
 
+    def refresh_all(self):
+        # 1. Read all configurations in .vscode/launch.json
+        current_python_interpreter_path = sys.executable
+        this_script_path = os.path.abspath(__file__)
+        mrdocs_src_dir = os.path.dirname(this_script_path)
+        vscode_launch_path = os.path.join(mrdocs_src_dir, ".vscode", "launch.json")
+        if not os.path.exists(vscode_launch_path):
+            print("No existing Visual Studio Code launch configurations found.")
+            return
+        with open(vscode_launch_path, "r") as f:
+            vscode_launch_data = json.load(f)
+        vscode_configs = vscode_launch_data.get("configurations", [])
+
+        # 2. Filter configurations whose name starts with "MrDocs Bootstrap Refresh ("
+        bootstrap_refresh_configs = [
+            cfg for cfg in vscode_configs if cfg.get("name", "").startswith("MrDocs Bootstrap Refresh (")
+        ]
+        if not bootstrap_refresh_configs:
+            print("No bootstrap refresh configurations found in Visual Studio Code launch configurations.")
+            return
+
+        # 3. For each configuration, run this very same bootstrap.py script with the same arguments
+        for config in bootstrap_refresh_configs:
+            args = [current_python_interpreter_path, this_script_path] + [
+                arg.replace("${workspaceFolder}", mrdocs_src_dir) for arg in config.get("args", [])]
+            print(f"Running bootstrap refresh with arguments: {args}")
+            subprocess.run(args, check=True)
 
 def get_command_line_args():
     """
@@ -1999,6 +2036,9 @@ def get_command_line_args():
 def main():
     args = get_command_line_args()
     installer = MrDocsInstaller(args)
+    if installer.options.refresh_all:
+        installer.refresh_all()
+        exit(0)
     installer.install_all()
 
 
