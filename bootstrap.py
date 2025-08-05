@@ -57,6 +57,9 @@ class InstallOptions:
     # Required tools
     git_path: str = ''
     cmake_path: str = ''
+    python_path: str = ''
+
+    # Test tools
     java_path: str = ''
 
     # Optional tools
@@ -121,6 +124,7 @@ INSTALL_OPTION_DESCRIPTIONS = {
     "sanitizer": "Sanitizer to use for the build. Leave empty for no sanitizer. (ASan, UBSan, MSan, TSan)",
     "git_path": "Path to the git executable, if not in system PATH.",
     "cmake_path": "Path to the cmake executable, if not in system PATH.",
+    "python_path": "Path to the python executable, if not in system PATH.",
     "java_path": "Path to the java executable, if not in system PATH.",
     "ninja_path": "Path to the ninja executable. Leave empty to download it automatically.",
     "mrdocs_src_dir": "MrDocs source directory.",
@@ -504,8 +508,11 @@ class MrDocsInstaller:
             config_args.extend(["-DCMAKE_C_COMPILER=" + self.options.cc,
                                 "-DCMAKE_CXX_COMPILER=" + self.options.cxx])
 
-        if self.is_windows():
-            config_args.extend(["-DPYTHON_EXECUTABLE=" + sys.executable])
+        # If the cmake script happens to look for the python executable, we
+        # already provide it on windows because it's often not in PATH.
+        if self.is_windows() and self.options.python_path:
+            config_args.extend(["-DPYTHON_EXECUTABLE=" + self.options.python_path])
+
         # "OptimizedDebug" is not a valid build type. We interpret it as a special case
         # where the build type is Debug and optimizations are enabled.
         # This is equivalent to RelWithDebInfo on Unix, but ensures
@@ -630,7 +637,7 @@ class MrDocsInstaller:
                     raise FileNotFoundError(f"{option} executable not found at {getattr(self.options, option)}.")
 
     def check_tools(self):
-        tools = ["git", "cmake"]
+        tools = ["git", "cmake", "python"]
         for tool in tools:
             self.check_tool(tool)
 
@@ -1156,7 +1163,8 @@ class MrDocsInstaller:
         if cxx_flags:
             new_preset["cacheVariables"]['CMAKE_CXX_FLAGS'] = cxx_flags.strip()
 
-        new_preset["cacheVariables"]["PYTHON_EXECUTABLE"] = sys.executable
+        if self.is_windows() and self.options.python_path:
+            new_preset["cacheVariables"]["PYTHON_EXECUTABLE"] = self.options.python_path
 
         # Update cache variables path prefixes with their relative equivalents
         mrdocs_src_dir_parent = os.path.dirname(self.options.mrdocs_src_dir)
