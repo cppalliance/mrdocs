@@ -1460,15 +1460,207 @@ class MrDocsInstaller:
         with open(launch_path, "w") as f:
             json.dump(launch_data, f, indent=4)
 
+    def generate_vscode_run_configs(self, configs):
+        # Visual Studio launch configs are stored in .vs/launch.vs.json
+        vscode_dir = os.path.join(self.options.mrdocs_src_dir, ".vscode")
+        os.makedirs(vscode_dir, exist_ok=True)
+        launch_path = os.path.join(vscode_dir, "launch.json")
+        tasks_path = os.path.join(vscode_dir, "tasks.json")
+
+        # Load existing configs if present
+        if os.path.exists(launch_path):
+            with open(launch_path, "r") as f:
+                launch_data = json.load(f)
+        else:
+            launch_data = {"version": "0.2.0", "configurations": []}
+
+        if os.path.exists(tasks_path):
+            with open(tasks_path, "r") as f:
+                tasks_data = json.load(f)
+        else:
+            tasks_data = {"version": "2.0.0", "tasks": []}
+
+        # Build a dict for quick lookup by name
+        vs_configs_by_name = {cfg.get("name"): cfg for cfg in launch_data.get("configurations", [])}
+        vs_tasks_by_name = {task.get("label"): task for task in tasks_data.get("tasks", [])}
+
+        # Replace with config placeholders
+        def replace_with_placeholders(new_config):
+            for key, value in new_config.items():
+                if isinstance(value, str):
+                    new_config[key] = value.replace(self.options.mrdocs_src_dir, "${workspaceFolder}")
+                elif isinstance(value, list):
+                    for i in range(len(value)):
+                        if isinstance(value[i], str):
+                            value[i] = value[i].replace(self.options.mrdocs_src_dir, "${workspaceFolder}")
+                elif isinstance(value, dict):
+                    for sub_key, sub_value in value.items():
+                        if isinstance(sub_value, str):
+                            value[sub_key] = sub_value.replace(self.options.mrdocs_src_dir, "${workspaceFolder}")
+
+        bootstrap_refresh_config_name = self.options.mrdocs_preset_name or self.options.mrdocs_build_type or "debug"
+        for config in configs:
+            is_python_script = 'script' in config and config['script'].endswith('.py')
+            is_js_script = 'script' in config and config['script'].endswith('.js')
+            is_config = 'target' in config or is_python_script or is_js_script
+            if is_config:
+                new_cfg = {
+                    "name": config["name"],
+                    "type": None,
+                    "request": "launch",
+                    "program": config.get("script", "") or config.get("target", ""),
+                    "args": config["args"],
+                    "cwd": config.get('cwd', self.options.mrdocs_build_dir)
+                }
+
+                if 'target' in config:
+                    # new_cfg["projectTarget"] = config["target"]
+                    new_cfg["name"] += f" ({bootstrap_refresh_config_name})"
+                    new_cfg["type"] = "cppdbg"
+                    if 'program' in config:
+                        new_cfg["program"] = config["program"]
+                    else:
+                        new_cfg["program"] = os.path.join(self.options.mrdocs_build_dir, config["target"])
+                    new_cfg["environment"] = []
+                    new_cfg["stopAtEntry"] = False
+                    new_cfg["externalConsole"] = False
+                    new_cfg["preLaunchTask"] = f"CMake Build {config['target']} ({bootstrap_refresh_config_name})"
+                    if self.compiler_info["CMAKE_CXX_COMPILER_ID"].lower() != "clang":
+                        lldb_path = shutil.which("lldb")
+                        if lldb_path:
+                            new_cfg["MIMode"] = "lldb"
+                        else:
+                            clang_path = self.compiler_info["CMAKE_CXX_COMPILER"]
+                            if clang_path and os.path.exists(clang_path):
+                                lldb_path = os.path.join(os.path.dirname(clang_path), "lldb")
+                                if os.path.exists(lldb_path):
+                                    new_cfg["MIMode"] = "lldb"
+                    elif self.compiler_info["CMAKE_CXX_COMPILER_ID"].lower() == "gcc":
+                        gdb_path = shutil.which("gdb")
+                        if gdb_path:
+                            new_cfg["MIMode"] = "gdb"
+                        else:
+                            gcc_path = self.compiler_info["CMAKE_CXX_COMPILER"]
+                            if gcc_path and os.path.exists(gcc_path):
+                                gdb_path = os.path.join(os.path.dirname(gcc_path), "gdb")
+                                if os.path.exists(gdb_path):
+                                    new_cfg["MIMode"] = "gdb"
+                if 'script' in config:
+                    new_cfg["program"] = config["script"]
+                    # set type
+                    if config["script"].endswith(".py"):
+                        new_cfg["type"] = "debugpy"
+                        new_cfg["console"] = "integratedTerminal"
+                        new_cfg["stopOnEntry"] = False
+                        new_cfg["justMyCode"] = True
+                        new_cfg["env"] = {}
+                    elif config["script"].endswith(".js"):
+                        new_cfg["type"] = "node"
+                        new_cfg["console"] = "integratedTerminal"
+                        new_cfg["internalConsoleOptions"] = "neverOpen"
+                        new_cfg["skipFiles"] = [
+                            "<node_internals>/**"
+                        ]
+                        new_cfg["sourceMaps"] = True
+                        new_cfg["env"] = {}
+                        for key, value in config.get("env", {}).items():
+                            new_cfg["env"][key] = value
+                    else:
+                        raise ValueError(
+                            f"Unsupported script type for configuration '{config['name']}': {config['script']}. "
+                            "Only Python (.py) and JavaScript (.js) scripts are supported."
+                        )
+
+                # Any property that begins with the value of mrdocs_src_dir is replaced with ${workspaceFolder}
+                replace_with_placeholders(new_cfg)
+
+                # Replace or add
+                vs_configs_by_name[new_cfg["name"]] = new_cfg
+            else:
+                # This is a script configuration, we will create a task for it
+                new_task = {
+                    "label": config["name"],
+                    "type": "shell",
+                    "command": config["script"],
+                    "args": config["args"],
+                    "options": {},
+                    "problemMatcher": [],
+                }
+                if 'cwd' in config and config["cwd"] != self.options.mrdocs_src_dir:
+                    new_task["options"]["cwd"] = config["cwd"]
+
+                # Any property that begins with the value of mrdocs_src_dir is replaced with ${workspaceFolder}
+                replace_with_placeholders(new_task)
+
+                # Replace or add
+                vs_tasks_by_name[new_task["label"]] = new_task
+
+        # Create tasks for the cmake config and build steps
+        cmake_config_args = [
+            "-S", "${workspaceFolder}"
+        ]
+        if self.options.mrdocs_preset_name:
+            cmake_config_args.extend(["--preset", self.options.mrdocs_preset_name])
+        else:
+            cmake_config_args.extend(["-B", self.options.mrdocs_build_dir])
+            if self.options.ninja_path:
+                cmake_config_args.extend(["-G", "Ninja"])
+        cmake_config_task = {
+            "label": f"CMake Configure ({bootstrap_refresh_config_name})",
+            "type": "shell",
+            "command": "cmake",
+            "args": cmake_config_args,
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        }
+        replace_with_placeholders(cmake_config_task)
+        vs_tasks_by_name[cmake_config_task["label"]] = cmake_config_task
+
+        unique_targets = set()
+        for config in configs:
+            if 'target' in config:
+                unique_targets.add(config['target'])
+        for target in unique_targets:
+            build_args = [
+                "--build", self.options.mrdocs_build_dir,
+                "--target", target
+            ]
+            cmake_build_task = {
+                "label": f"CMake Build {target} ({bootstrap_refresh_config_name})",
+                "type": "shell",
+                "command": "cmake",
+                "args": build_args,
+                "options": {
+                    "cwd": "${workspaceFolder}"
+                },
+                "dependsOn": f"CMake Configure ({bootstrap_refresh_config_name})",
+                "dependsOrder": "sequence",
+                "group": "build"
+            }
+            replace_with_placeholders(cmake_build_task)
+            vs_tasks_by_name[cmake_build_task["label"]] = cmake_build_task
+
+        # Write back all configs
+        launch_data["configurations"] = list(vs_configs_by_name.values())
+        with open(launch_path, "w") as f:
+            json.dump(launch_data, f, indent=4)
+
+        tasks_data["tasks"] = list(vs_tasks_by_name.values())
+        with open(tasks_path, "w") as f:
+            json.dump(tasks_data, f, indent=4)
+
     def generate_run_configs(self):
         # Configurations using MrDocs executable
         configs = [{
             "name": "MrDocs Version",
             "target": "mrdocs",
+            "program": os.path.join(self.options.mrdocs_build_dir, "mrdocs"),
             "args": ["--version"]
         }, {
             "name": "MrDocs Help",
             "target": "mrdocs",
+            "program": os.path.join(self.options.mrdocs_build_dir, "mrdocs"),
             "args": ["--help"]
         }]
 
@@ -1477,6 +1669,7 @@ class MrDocsInstaller:
             configs.append({
                 "name": "MrDocs Unit Tests",
                 "target": "mrdocs-test",
+                "program": os.path.join(self.options.mrdocs_build_dir, "mrdocs-test"),
                 "args": [
                     '--unit=true'
                 ]
@@ -1488,6 +1681,7 @@ class MrDocsInstaller:
                 configs.append({
                     "name": f"MrDocs {verb.title()} Test Fixtures ({generator.upper()})",
                     "target": "mrdocs-test",
+                    "program": os.path.join(self.options.mrdocs_build_dir, "mrdocs-test"),
                     "folder": "MrDocs Test Fixtures",
                     "args": [
                         f'"{self.options.mrdocs_src_dir}/test-files/golden-tests"',
@@ -1514,6 +1708,7 @@ class MrDocsInstaller:
                         configs.append({
                             "name": f"Boost.{lib.title()} Documentation",
                             "target": "mrdocs",
+                            "program": os.path.join(self.options.mrdocs_build_dir, "mrdocs"),
                             "args": [
                                 '../CMakeLists.txt',
                                 f'--config={self.options.boost_src_dir}/libs/{lib}/doc/mrdocs.yml',
@@ -1537,6 +1732,7 @@ class MrDocsInstaller:
         configs.append({
             "name": f"MrDocs Self-Reference",
             "target": "mrdocs",
+            "program": os.path.join(self.options.mrdocs_build_dir, "mrdocs"),
             "args": [
                 '../CMakeLists.txt',
                 f'--config={self.options.mrdocs_src_dir}/docs/mrdocs.yml',
@@ -1733,6 +1929,8 @@ class MrDocsInstaller:
 
         print("Generating CLion run configurations for MrDocs...")
         self.generate_clion_run_configs(configs)
+        print("Generating Visual Studio Code run configurations for MrDocs...")
+        self.generate_vscode_run_configs(configs)
         print("Generating Visual Studio run configurations for MrDocs...")
         self.generate_visual_studio_run_configs(configs)
 
