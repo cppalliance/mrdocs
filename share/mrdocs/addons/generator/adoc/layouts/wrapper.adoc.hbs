@@ -16,7 +16,7 @@
 --}}
 {{#if @root.config.multipage }}
 [#{{{symbol.anchor}}}]
-= {{> symbol/qualified-name symbol }}
+= {{> symbol/qualified-name-title symbol }}
 :relfileprefix: {{{ repeat "../" (count (remove_prefix symbol.url '/') '/') }}}
 {{else}}
 = Reference
