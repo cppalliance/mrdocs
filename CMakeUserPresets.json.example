@@ -215,7 +215,7 @@
         },
         {
             "name": "release-macos-gcc",
-            "displayName": "Release (macOS) (gcc)",
+            "displayName": "Release (macOS: gcc)",
             "description": "Preset for building MrDocs in Release mode with the gcc compiler in macOS.",
             "inherits": "release",
             "binaryDir": "${sourceDir}/build/${presetName}",
