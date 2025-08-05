@@ -510,8 +510,12 @@ class MrDocsInstaller:
 
         # If the cmake script happens to look for the python executable, we
         # already provide it on windows because it's often not in PATH.
-        if self.is_windows() and self.options.python_path:
-            config_args.extend(["-DPYTHON_EXECUTABLE=" + self.options.python_path])
+        if self.is_windows():
+            if self.options.python_path:
+                config_args.extend(["-DPYTHON_EXECUTABLE=" + self.options.python_path])
+            if self.options.git_path:
+                config_args.extend(["-DGIT_EXECUTABLE=" + self.options.git_path])
+                config_args.extend(["-DGIT_ROOT=" + os.path.dirname(self.options.git_path)])
 
         # "OptimizedDebug" is not a valid build type. We interpret it as a special case
         # where the build type is Debug and optimizations are enabled.
@@ -1252,8 +1256,13 @@ class MrDocsInstaller:
         if cxx_flags:
             new_preset["cacheVariables"]['CMAKE_CXX_FLAGS'] = cxx_flags.strip()
 
-        if self.is_windows() and self.options.python_path:
-            new_preset["cacheVariables"]["PYTHON_EXECUTABLE"] = self.options.python_path
+        if self.is_windows():
+            if self.options.python_path:
+                new_preset["cacheVariables"]["PYTHON_EXECUTABLE"] = self.options.python_path
+            if self.options.git_path:
+                new_preset["cacheVariables"]["GIT_EXECUTABLE"] = self.options.git_path
+                new_preset["cacheVariables"]["GIT_ROOT"] = os.path.dirname(self.options.git_path)
+
 
         # Update cache variables path prefixes with their relative equivalents
         mrdocs_src_dir_parent = os.path.dirname(self.options.mrdocs_src_dir)
