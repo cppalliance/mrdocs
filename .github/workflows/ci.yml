@@ -635,7 +635,7 @@ jobs:
           GH_TOKEN="${{ secrets.GITHUB_TOKEN }}"
           export GH_TOKEN
           npm ci
-          npx antora antora-playbook.yml
+          npx antora --clean --fetch antora-playbook.yml
           mkdir -p ../build/website/docs
           cp -r build/site/* ../build/website/docs
 
