@@ -210,7 +210,7 @@ MacOS::
 --
 [source,bash]
 ----
-sed -i '' 's/#define DUK_F_DLL_BUILD/#undef DUK_F_DLL_BUILD/g' src/duk_config.h
+sed -i '' 's/#define DUK_F_DLL_BUILD/#undef DUK_F_DLL_BUILD/g' src/duk_config.h <.>
 ----
 
 <.> Disables the `DUK_F_DLL_BUILD` macro in the `duk_config.h` file to indicate we are statically building duktape.
