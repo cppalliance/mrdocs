@@ -227,15 +227,18 @@ operator()(RecordInfo& I)
     MRDOCS_CHECK_OR(!finalized_.contains(I.id));
     for (BaseInfo const& baseI: I.Bases)
     {
-        auto const* baseNameType = get<NamedTypeInfo const*>(baseI.Type);
+        auto const *baseNameType =
+            dynamic_cast<NamedTypeInfo const *>(&*baseI.Type);
         MRDOCS_CHECK_OR_CONTINUE(baseNameType);
-        auto const* baseName = get<NameInfo const*>(baseNameType->Name);
+        auto const *baseName =
+            dynamic_cast<NameInfo const *>(&*baseNameType->Name);
         MRDOCS_CHECK_OR_CONTINUE(baseName);
         SymbolID baseID = baseName->id;
-        if (corpus_.config->extractImplicitSpecializations &&
+        if (corpus_.config->extractImplicitSpecializations && 
             baseName->isSpecialization())
         {
-            auto const* baseSpec = dynamic_cast<SpecializationNameInfo const*>(baseName);
+            auto const *baseSpec =
+                dynamic_cast<SpecializationNameInfo const *>(baseName);
             MRDOCS_CHECK_OR_CONTINUE(baseSpec);
             baseID = baseSpec->specializationID;
         }

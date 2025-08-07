@@ -259,7 +259,9 @@ public:
                         {
                             return std::is_lt(cmp);
                         }
-                        return std::is_lt(CompareDerived(lhsInfo, rhsInfo));
+                        return std::is_lt(
+                            CompareDerived(Polymorphic<Info>(lhsInfo),
+                                           Polymorphic<Info>(rhsInfo)));
                     });
                 if (!opts.skipInherited)
                 {

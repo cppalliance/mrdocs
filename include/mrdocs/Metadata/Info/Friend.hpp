@@ -31,7 +31,7 @@ struct FriendInfo final
 
     /** Befriended type.
     */
-    Polymorphic<TypeInfo> Type;
+    Polymorphic<TypeInfo> Type = std::nullopt;
 };
 
 MRDOCS_DECL

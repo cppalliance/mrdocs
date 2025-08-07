@@ -447,9 +447,8 @@ public:
 
         if (!can_merge)
         {
-            auto new_text = MakePolymorphic<TextTy>(std::move(elem));
-            last_child_ = new_text.operator->();
-            block_->children.emplace_back(std::move(new_text));
+            last_child_ = &*block_->children.emplace_back(
+                std::in_place_type<TextTy>, std::move(elem));
         }
         else
         {
@@ -517,7 +516,8 @@ parseStyled(StringRef s)
                 }
                 else
                 {
-                    result.emplace_back(MakePolymorphic<doc::Text>(std::move(currentText)));
+                    result.emplace_back(std::in_place_type<doc::Text>,
+                                        std::move(currentText));
                 }
             } else {
                 bool const lastIsSame =
@@ -531,7 +531,8 @@ parseStyled(StringRef s)
                 }
                 else
                 {
-                    result.emplace_back(MakePolymorphic<doc::Styled>(std::move(currentText), currentStyle));
+                    result.emplace_back(std::in_place_type<doc::Styled>,
+                                        std::move(currentText), currentStyle);
                 }
             }
             currentText.clear();
@@ -692,17 +693,16 @@ build()
             // Move list items to ul.items
             ul.items.reserve(std::distance(it, last));
             for (auto li_it = begin; li_it != last; ++li_it) {
-                Polymorphic<doc::Block> block = std::move(*li_it);
-                MRDOCS_ASSERT(IsA<doc::ListItem>(block));
-                Polymorphic<doc::ListItem> li = DynamicCast<doc::ListItem>(std::move(block));
+                auto *li = dynamic_cast<doc::ListItem *>(&**li_it);
+                MRDOCS_ASSERT(li != nullptr);
                 ul.items.emplace_back(std::move(*li));
             }
             // Remove the list items and insert the ul
             it = blocks.erase(begin, last);
-            it = blocks.insert(
+            it = blocks.emplace(
                 it,
-                Polymorphic<doc::Block>(
-                    MakePolymorphic<doc::UnorderedList>(std::move(ul))));
+                std::in_place_type<doc::UnorderedList>,
+                std::move(ul));
         }
         ++it;
     }

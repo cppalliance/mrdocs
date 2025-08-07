@@ -58,10 +58,11 @@ isCopyOrMoveConstructorOrAssignment(FunctionInfo const& I)
         MRDOCS_CHECK_OR(paramType->isRValueReference(), false);
     }
     using RefType = std::conditional_t<move, RValueReferenceTypeInfo, LValueReferenceTypeInfo>;
-    auto const& paramRefType = get<RefType const&>(paramType);
+    auto const& paramRefType = static_cast<RefType const &>(*paramType);
     auto const& paramRefPointee = paramRefType.PointeeType;
     MRDOCS_CHECK_OR(paramRefPointee, false);
-    auto const* paramRefPointeeNamed = get<NamedTypeInfo const*>(paramRefPointee);
+    auto const *paramRefPointeeNamed =
+        static_cast<NamedTypeInfo const *>(&*paramRefPointee);
     if (!paramRefPointeeNamed)
       return false;
     MRDOCS_CHECK_OR(paramRefPointeeNamed->Name, false);
@@ -103,9 +104,10 @@ innermostTypenameString(Polymorphic<TypeInfo> const& T)
 {
     auto& R = innermostType(T);
     MRDOCS_CHECK_OR(R->isNamed(), {});
-    MRDOCS_CHECK_OR(get<NamedTypeInfo>(R).Name, {});
-    MRDOCS_CHECK_OR(!get<NamedTypeInfo>(R).Name->Name.empty(), {});
-    auto& RStr = get<NamedTypeInfo>(R).Name->Name;
+    MRDOCS_CHECK_OR(static_cast<NamedTypeInfo const &>(*R).Name, {});
+    MRDOCS_CHECK_OR(!static_cast<NamedTypeInfo const &>(*R).Name->Name.empty(),
+                    {});
+    auto& RStr = static_cast<const NamedTypeInfo &>(*R).Name->Name;
     return RStr;
 }
 
@@ -144,11 +146,12 @@ populateFunctionBriefFromClass(FunctionInfo& I, CorpusImpl const& corpus)
                     }
                     I.javadoc->brief->children.clear();
                     I.javadoc->brief->children.emplace_back(
-                        MakePolymorphic<doc::Text>(std::string("Construct from ")));
+                        Polymorphic<doc::Text>(std::in_place_type<doc::Text>,
+                                               std::string("Construct from ")));
                     I.javadoc->brief->children.emplace_back(
-                        MakePolymorphic<doc::Text, doc::Styled>(
-                            std::string(*res),
-                            doc::Style::mono));
+                        Polymorphic<doc::Text>(std::in_place_type<doc::Styled>,
+                                               std::string(*res),
+                                               doc::Style::mono));
                     return true;
                 }
             }
@@ -167,11 +170,11 @@ populateFunctionBriefFromClass(FunctionInfo& I, CorpusImpl const& corpus)
                 auto const RStr = *R;
                 I.javadoc->brief.emplace();
                 I.javadoc->brief->children.emplace_back(
-                    MakePolymorphic<doc::Text>(std::string("Conversion to ")));
-                I.javadoc->brief->children.emplace_back(
-                    MakePolymorphic<doc::Text, doc::Styled>(
-                        std::string(RStr),
-                        doc::Style::mono));
+                    Polymorphic<doc::Text>(std::in_place_type<doc::Text>,
+                                           std::string("Conversion to ")));
+                I.javadoc->brief->children.emplace_back(Polymorphic<doc::Text>(
+                    std::in_place_type<doc::Styled>, std::string(RStr),
+                    doc::Style::mono));
             }
             else
             {
@@ -196,7 +199,9 @@ isStreamInsertion(FunctionInfo const& function)
     auto& firstQualType = firstParam.Type;
     MRDOCS_CHECK_OR(firstQualType, false);
     MRDOCS_CHECK_OR(firstQualType->isLValueReference(), false);
-    auto& firstNamedType = get<LValueReferenceTypeInfo const&>(firstQualType).PointeeType;
+    auto& firstNamedType =
+        static_cast<LValueReferenceTypeInfo const &>(*firstQualType)
+            .PointeeType;
     MRDOCS_CHECK_OR(firstNamedType, false);
     MRDOCS_CHECK_OR(firstNamedType->isNamed(), false);
     // Check return type
@@ -319,10 +324,12 @@ populateFunctionReturnsForSpecial(
         auto const exp = innermostTypenameString(innerR);
         MRDOCS_CHECK_OR(exp, false);
         doc::Returns r;
-        r.children.emplace_back(MakePolymorphic<doc::Text>(std::string("The object converted to ")));
-        r.children.emplace_back(MakePolymorphic<doc::Text, doc::Styled>(
-            std::string(*exp),
-            doc::Style::mono));
+        r.children.emplace_back(
+            Polymorphic<doc::Text>(std::in_place_type<doc::Text>,
+                                   std::string("The object converted to ")));
+        r.children.emplace_back(
+            Polymorphic<doc::Text>(std::in_place_type<doc::Styled>,
+                                   std::string(*exp), doc::Style::mono));
         I.javadoc->returns.emplace_back(std::move(r));
         return true;
     }
@@ -368,13 +375,13 @@ populateFunctionReturnsForSpecial(
     {
         MRDOCS_CHECK_OR(I.ReturnType->isNamed(), false);
         MRDOCS_CHECK_OR(
-            get<NamedTypeInfo>(I.ReturnType).FundamentalType
-                == FundamentalTypeKind::Bool,
+            static_cast<NamedTypeInfo &>(*I.ReturnType).FundamentalType ==
+                FundamentalTypeKind::Bool,
             false);
         doc::Returns r;
-        r.children.emplace_back(MakePolymorphic<doc::Text, doc::Styled>(
-            std::string("true"),
-            doc::Style::mono));
+        r.children.emplace_back(
+            Polymorphic<doc::Text>(std::in_place_type<doc::Styled>,
+                                   std::string("true"), doc::Style::mono));
         std::string_view midText;
         switch (I.OverloadedOperator)
         {
@@ -402,11 +409,13 @@ populateFunctionReturnsForSpecial(
             default:
                 MRDOCS_UNREACHABLE();
         }
-        r.children.emplace_back(MakePolymorphic<doc::Text>(std::string(midText)));
-        r.children.emplace_back(MakePolymorphic<doc::Text, doc::Styled>(
-            std::string("false"),
-            doc::Style::mono));
-        r.children.emplace_back(MakePolymorphic<doc::Text>(std::string(" otherwise")));
+        r.children.emplace_back(Polymorphic<doc::Text>(
+            std::in_place_type<doc::Text>, std::string(midText)));
+        r.children.emplace_back(
+            Polymorphic<doc::Text>(std::in_place_type<doc::Styled>,
+                                   std::string("false"), doc::Style::mono));
+        r.children.emplace_back(Polymorphic<doc::Text>(
+            std::in_place_type<doc::Text>, std::string(" otherwise")));
         I.javadoc->returns.emplace_back(std::move(r));
         return false;
     }
@@ -419,11 +428,10 @@ populateFunctionReturnsForSpecial(
     }
 
     // Special function that return the same type as the parent
-    if (I.IsRecordMethod &&
-        innerR->isNamed() &&
-        get<NamedTypeInfo>(innerR).Name &&
-        get<NamedTypeInfo>(innerR).Name->id &&
-        get<NamedTypeInfo>(innerR).Name->id == I.Parent)
+    if (I.IsRecordMethod && innerR->isNamed() &&
+        static_cast<NamedTypeInfo const &>(*innerR).Name &&
+        static_cast<NamedTypeInfo const &>(*innerR).Name->id &&
+        static_cast<NamedTypeInfo const &>(*innerR).Name->id == I.Parent)
     {
         if (I.ReturnType->isLValueReference())
         {
@@ -431,7 +439,8 @@ populateFunctionReturnsForSpecial(
         }
         else if (I.ReturnType->isRValueReference())
         {
-            I.javadoc->returns.emplace_back("Rvalue reference to the current object");
+            I.javadoc->returns.emplace_back(
+                "Rvalue reference to the current object");
         }
         else if (I.ReturnType->isPointer())
         {
@@ -476,7 +485,7 @@ populateFunctionReturns(FunctionInfo& I, CorpusImpl const& corpus)
     MRDOCS_CHECK_OR(inner);
     if (inner->isNamed())
     {
-        auto& Ninner = get<NamedTypeInfo>(inner);
+        auto& Ninner = static_cast<NamedTypeInfo const &>(*inner);
         MRDOCS_CHECK_OR(Ninner.Name);
         MRDOCS_CHECK_OR(!Ninner.Name->Name.empty());
         MRDOCS_CHECK_OR(Ninner.FundamentalType != FundamentalTypeKind::Void);
@@ -634,12 +643,11 @@ setCntrOrAssignParamDoc(
     MRDOCS_CHECK_OR(innerParam, false);
     MRDOCS_CHECK_OR(innerParam->isNamed(), false);
     std::string_view const paramNoun
-        = get<NamedTypeInfo>(innerParam).FundamentalType ?
-              "value" :
-              "object";
+        = static_cast<NamedTypeInfo &>(*innerParam).FundamentalType ? "value"
+                                                                    : "object";
     std::string_view const functionVerb = [&]() {
         bool const isAssign = I.OverloadedOperator == OperatorKind::Equal;
-        if (get<NamedTypeInfo>(innerParam).FundamentalType)
+        if (static_cast<NamedTypeInfo &>(*innerParam).FundamentalType)
         {
             return !isAssign ? "construct" : "assign";
         }

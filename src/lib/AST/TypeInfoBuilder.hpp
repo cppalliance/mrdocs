@@ -40,7 +40,7 @@ class TypeInfoBuilder
        as a polymorphic `TypeInfo` object.
 
      */
-    Polymorphic<TypeInfo> Result;
+    Polymorphic<TypeInfo> Result = std::nullopt;
 
     /*  A pointer to the inner type of result currently being populated.
 

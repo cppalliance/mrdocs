@@ -327,16 +327,14 @@ isDecayedEqual(
     }
     if (lhs->isType())
     {
-        return isDecayedEqualImpl<true>(
-            get<TypeTArg>(lhs).Type,
-            get<TypeTArg>(rhs).Type,
-            context, corpus);
+        return isDecayedEqualImpl<true>(static_cast<const TypeTArg &>(*lhs).Type,
+                                        static_cast<const TypeTArg &>(*rhs).Type,
+                                        context, corpus);
     }
     if (lhs->isNonType())
     {
-        return
-            trim(get<NonTypeTArg>(lhs).Value.Written) ==
-            trim(get<NonTypeTArg>(rhs).Value.Written);
+        return trim(static_cast<const NonTypeTArg &>(*lhs).Value.Written) ==
+               trim(static_cast<const NonTypeTArg &>(*rhs).Value.Written);
     }
     return false;
 }

@@ -448,7 +448,7 @@ private:
             return false;
         }
         skipWhitespace();
-        Polymorphic<TypeInfo> conversionType;
+        Polymorphic<TypeInfo> conversionType = std::nullopt;
         if (!parseDeclarationSpecifier(conversionType) ||
             !conversionType)
         {
@@ -585,14 +585,14 @@ private:
             return false;
         }
         skipWhitespace();
-        TemplateArguments.emplace_back();
+        TemplateArguments.emplace_back(std::nullopt);
         while (parseTemplateArgument(TemplateArguments.back()))
         {
             skipWhitespace();
             if (parseLiteral(','))
             {
                 skipWhitespace();
-                TemplateArguments.emplace_back();
+                TemplateArguments.emplace_back(std::nullopt);
             }
             else
             {
@@ -622,12 +622,11 @@ private:
         }
         skipWhitespace();
         char const* start = ptr_;
-        Polymorphic<TypeInfo> type;
+        Polymorphic<TypeInfo> type = std::nullopt;
         if (parseTypeId(type))
         {
-            TypeTArg arg;
-            arg.Type = std::move(type);
-            dest = std::move(arg);
+            dest = Polymorphic<TArg>(std::in_place_type<TypeTArg>);
+            static_cast<TypeTArg &>(*dest).Type = std::move(type);
             return true;
         }
 
@@ -649,9 +648,9 @@ private:
             ptr_ = start;
             return false;
         }
-        NonTypeTArg arg;
-        arg.Value.Written = trim(std::string_view(exprStart, ptr_ - exprStart));
-        dest = std::move(arg);
+        dest = Polymorphic<TArg>(std::in_place_type<NonTypeTArg>);
+        static_cast<NonTypeTArg &>(*dest).Value.Written =
+            trim(std::string_view(exprStart, ptr_ - exprStart));
         return true;
     }
 
@@ -791,8 +790,7 @@ private:
 
         // https://en.cppreference.com/w/cpp/language/function#Parameter_list
         // decl-specifier-seq
-        dest.Params.emplace_back();
-        auto& curParam = dest.Params.back();
+        auto &curParam = dest.Params.emplace_back(std::nullopt);
         if (!parseTypeId(curParam))
         {
             ptr_ = start;
@@ -806,11 +804,11 @@ private:
         // https://en.cppreference.com/w/cpp/language/function#Function_type
         if (curParam->isArray())
         {
-            auto& ATI = dynamic_cast<ArrayTypeInfo&>(*curParam);
-            PointerTypeInfo PTI;
-            dynamic_cast<TypeInfo&>(PTI) = dynamic_cast<TypeInfo&>(ATI);
-            PTI.PointeeType = std::move(ATI.ElementType);
-            curParam = std::move(PTI);
+            auto ATI = dynamic_cast<ArrayTypeInfo &>(*curParam);
+            curParam = Polymorphic<TypeInfo>(std::in_place_type<PointerTypeInfo>);
+            *curParam = ATI;
+            static_cast<PointerTypeInfo &>(*curParam).PointeeType =
+                std::move(ATI.ElementType);
         }
 
         // 3. After producing the list of parameter types, any top-level
@@ -983,12 +981,11 @@ private:
             // which is "int"
             if (!dest)
             {
-                NamedTypeInfo NTI;
-                NameInfo NI;
-                NI.Name = "int";
-                NTI.Name = NI;
+                dest = Polymorphic<TypeInfo>(std::in_place_type<NamedTypeInfo>);
+                auto &NTI = static_cast<NamedTypeInfo &>(*dest);
+                NTI.Name = Polymorphic<NameInfo>();
+                NTI.Name->Name = "int";
                 NTI.FundamentalType = FundamentalTypeKind::Int;
-                dest = NTI;
             }
             // Check if the type is named
             if (!dest->isNamed())
@@ -1028,12 +1025,11 @@ private:
             // Infer basic fundamental type for "short", which is "int"
             if (!dest)
             {
-                NamedTypeInfo NTI;
-                NameInfo NI;
-                NI.Name = "int";
-                NTI.Name = NI;
+                dest = Polymorphic<TypeInfo>(std::in_place_type<NamedTypeInfo>);
+                auto &NTI = static_cast<NamedTypeInfo &>(*dest);
+                NTI.Name = Polymorphic<NameInfo>();
+                NTI.Name->Name = "int";
                 NTI.FundamentalType = FundamentalTypeKind::Int;
-                dest = NTI;
             }
             // Check if the type is named
             if (!dest->isNamed())
@@ -1068,12 +1064,11 @@ private:
             // Infer basic fundamental type for "long", which is "int"
             if (!dest)
             {
-                NamedTypeInfo NTI;
-                NameInfo NI;
-                NI.Name = "int";
-                NTI.Name = NI;
+                dest = Polymorphic<TypeInfo>(std::in_place_type<NamedTypeInfo>);
+                auto &NTI = static_cast<NamedTypeInfo &>(*dest);
+                NTI.Name = Polymorphic<NameInfo>();
+                NTI.Name->Name = "int";
                 NTI.FundamentalType = FundamentalTypeKind::Int;
-                dest = NTI;
             }
             // Check if the type is named
             if (!dest->isNamed())
@@ -1181,16 +1176,16 @@ private:
                   "void" }))
         {
             MRDOCS_CHECK_OR(checkDestWasEmpty(), false);
-            NamedTypeInfo NTI;
-            NameInfo NI;
-            NI.Name = std::string_view(start, ptr_ - start);
-            NTI.Name = NI;
+
+            dest = Polymorphic<TypeInfo>(std::in_place_type<NamedTypeInfo>);
+            auto &NTI = static_cast<NamedTypeInfo &>(*dest);
+            NTI.Name = Polymorphic<NameInfo>();
+            NTI.Name->Name = std::string_view(start, ptr_ - start);
             if (FundamentalTypeKind k;
-                fromString(NI.Name, k))
+                fromString(NTI.Name->Name, k))
             {
                 NTI.FundamentalType = k;
             }
-            dest = std::move(NTI);
             return true;
         }
 
@@ -1198,7 +1193,7 @@ private:
         if (parseKeyword("auto"))
         {
             MRDOCS_CHECK_OR(checkDestWasEmpty(), false);
-            dest = AutoTypeInfo();
+            dest = Polymorphic<TypeInfo>(std::in_place_type<AutoTypeInfo>);
             return true;
         }
 
@@ -1214,11 +1209,12 @@ private:
                     skipWhitespace();
                     if (parseLiteral(")"))
                     {
-                        MRDOCS_CHECK_OR(checkDestWasEmpty(), false);
-                        AutoTypeInfo res;
-                        res.Keyword = AutoKind::DecltypeAuto;
-                        dest = std::move(res);
-                        return true;
+                      MRDOCS_CHECK_OR(checkDestWasEmpty(), false);
+                      dest = Polymorphic<TypeInfo>(
+                          std::in_place_type<AutoTypeInfo>);
+                      static_cast<AutoTypeInfo &>(*dest).Keyword =
+                          AutoKind::DecltypeAuto;
+                      return true;
                     }
                 }
                 // - "decltype(expression)"
@@ -1246,9 +1242,10 @@ private:
                         return false;
                     }
                     MRDOCS_CHECK_OR(checkDestWasEmpty(), false);
-                    DecltypeTypeInfo DTI;
-                    DTI.Operand.Written = expr;
-                    dest = DTI;
+                    dest = Polymorphic<TypeInfo>(
+                        std::in_place_type<DecltypeTypeInfo>);
+                    static_cast<DecltypeTypeInfo &>(*dest).Operand.Written =
+                        expr;
                     return true;
                 }
                 setError("expected expression in decltype");
@@ -1375,25 +1372,14 @@ private:
 
             // Populate dest
             auto const idStr = std::string_view(idStart, ptr_ - idStart);
-            if (!dest)
-            {
-                NamedTypeInfo NTI;
-                NameInfo NI;
-                NI.Name = idStr;
-                NTI.Name = NI;
-                dest = NTI;
-            }
-            else
-            {
-                MRDOCS_CHECK_OR(dest->isNamed(), false);
-                NamedTypeInfo NTI;
-                NameInfo NI;
-                NI.Name = idStr;
-                auto& parent = dynamic_cast<NamedTypeInfo&>(*dest);
-                NI.Prefix = std::move(parent.Name);
-                NTI.Name = NI;
-                dest = NTI;
-            }
+            Polymorphic<NameInfo> ParentName =
+                dest ? dynamic_cast<NamedTypeInfo *>(&*dest)->Name
+                     : std::nullopt;
+            dest = Polymorphic<TypeInfo>(std::in_place_type<NamedTypeInfo>);
+            auto &NTI = static_cast<NamedTypeInfo &>(*dest);
+            NTI.Name = Polymorphic<NameInfo>();
+            NTI.Name->Name = idStr;
+            NTI.Name->Prefix = std::move(ParentName);
 
             // Look for the next "::"
             char const* compStart = ptr_;
@@ -1433,7 +1419,8 @@ private:
                     ptr_ = start;
                     return false;
                 }
-                namedParam.Name = std::move(SNI);
+                namedParam.Name = Polymorphic<NameInfo>(
+                    std::in_place_type<SpecializationNameInfo>, std::move(SNI));
             }
             else
             {
@@ -1687,7 +1674,7 @@ private:
             // Change current type to pointer type
             PointerTypeInfo PTI;
             PTI.PointeeType = std::move(dest);
-            dest = PTI;
+            dest = Polymorphic<TypeInfo>(std::move(PTI));
 
             skipWhitespace();
             // cv is a sequence of const and volatile qualifiers,
@@ -1751,17 +1738,17 @@ private:
                 }
                 NameInfo NewNNS;
                 NewNNS.Name = std::string(unqualID);
-                NewNNS.Prefix = std::move(NNS);
+                NewNNS.Prefix = Polymorphic<NameInfo>(std::move(NNS));
                 NNS = NewNNS;
                 ++NNSIt;
             }
-            ParentType.Name = std::move(NNS);
+            ParentType.Name = Polymorphic<NameInfo>(std::move(NNS));
 
             // Change current type to member pointer type
             MemberPointerTypeInfo MPTI;
-            MPTI.PointeeType = std::move(dest);
-            MPTI.ParentType = std::move(ParentType);
-            dest = MPTI;
+            MPTI.PointeeType = Polymorphic<TypeInfo>(std::move(dest));
+            MPTI.ParentType = Polymorphic<TypeInfo>(std::move(ParentType));
+            dest = Polymorphic<TypeInfo>(std::move(MPTI));
 
             skipWhitespace();
             // cv is a sequence of const and volatile qualifiers,
@@ -1800,13 +1787,13 @@ private:
             {
                 LValueReferenceTypeInfo RTI;
                 RTI.PointeeType = std::move(dest);
-                dest = RTI;
+                dest = Polymorphic<TypeInfo>(std::move(RTI));
             }
             else
             {
                 RValueReferenceTypeInfo RTI;
                 RTI.PointeeType = std::move(dest);
-                dest = RTI;
+                dest = Polymorphic<TypeInfo>(std::move(RTI));
             }
 
             skipWhitespace();
@@ -1946,7 +1933,7 @@ private:
                     ATI.Bounds = Bounds;
                 }
             }
-            dest = std::move(ATI);
+            dest = Polymorphic<TypeInfo>(std::move(ATI));
             skipWhitespace();
 
             // We ignore the name and just return true
@@ -1998,7 +1985,7 @@ private:
                 std::make_move_iterator(function.Params.end()));
             FTI.ExceptionSpec = std::move(function.ExceptionSpec);
             FTI.IsVariadic = function.IsVariadic;
-            dest = FTI;
+            dest = Polymorphic<TypeInfo>(std::move(FTI));
             return true;
         }
 

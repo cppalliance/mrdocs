@@ -385,7 +385,7 @@ makeChar(FundamentalTypeKind& kind) noexcept;
 struct NamedTypeInfo final
     : TypeInfoCommonBase<TypeKind::Named>
 {
-    Polymorphic<NameInfo> Name;
+    Polymorphic<NameInfo> Name = std::nullopt;
 
     std::optional<FundamentalTypeKind> FundamentalType;
 
@@ -405,7 +405,7 @@ struct AutoTypeInfo final
     : TypeInfoCommonBase<TypeKind::Auto>
 {
     AutoKind Keyword = AutoKind::Auto;
-    Polymorphic<NameInfo> Constraint;
+    Polymorphic<NameInfo> Constraint = std::nullopt;
 
     std::strong_ordering
     operator<=>(AutoTypeInfo const&) const;
@@ -414,7 +414,7 @@ struct AutoTypeInfo final
 struct LValueReferenceTypeInfo final
     : TypeInfoCommonBase<TypeKind::LValueReference>
 {
-    Polymorphic<TypeInfo> PointeeType;
+    Polymorphic<TypeInfo> PointeeType = std::nullopt;
 
     std::strong_ordering
     operator<=>(LValueReferenceTypeInfo const&) const;
@@ -423,7 +423,7 @@ struct LValueReferenceTypeInfo final
 struct RValueReferenceTypeInfo final
     : TypeInfoCommonBase<TypeKind::RValueReference>
 {
-    Polymorphic<TypeInfo> PointeeType;
+    Polymorphic<TypeInfo> PointeeType = std::nullopt;
 
     std::strong_ordering
     operator<=>(RValueReferenceTypeInfo const&) const;
@@ -432,7 +432,7 @@ struct RValueReferenceTypeInfo final
 struct PointerTypeInfo final
     : TypeInfoCommonBase<TypeKind::Pointer>
 {
-    Polymorphic<TypeInfo> PointeeType;
+    Polymorphic<TypeInfo> PointeeType = std::nullopt;
 
     std::strong_ordering
     operator<=>(PointerTypeInfo const&) const;
@@ -441,8 +441,8 @@ struct PointerTypeInfo final
 struct MemberPointerTypeInfo final
     : TypeInfoCommonBase<TypeKind::MemberPointer>
 {
-    Polymorphic<TypeInfo> ParentType;
-    Polymorphic<TypeInfo> PointeeType;
+    Polymorphic<TypeInfo> ParentType = std::nullopt;
+    Polymorphic<TypeInfo> PointeeType = std::nullopt;
 
     std::strong_ordering
     operator<=>(MemberPointerTypeInfo const&) const;
@@ -451,7 +451,7 @@ struct MemberPointerTypeInfo final
 struct ArrayTypeInfo final
     : TypeInfoCommonBase<TypeKind::Array>
 {
-    Polymorphic<TypeInfo> ElementType;
+    Polymorphic<TypeInfo> ElementType = std::nullopt;
     ConstantExprInfo<std::uint64_t> Bounds;
 
     std::strong_ordering
@@ -461,7 +461,7 @@ struct ArrayTypeInfo final
 struct FunctionTypeInfo final
     : TypeInfoCommonBase<TypeKind::Function>
 {
-    Polymorphic<TypeInfo> ReturnType;
+    Polymorphic<TypeInfo> ReturnType = std::nullopt;
     std::vector<Polymorphic<TypeInfo>> ParamTypes;
     ReferenceKind RefQualifier = ReferenceKind::None;
     NoexceptInfo ExceptionSpec;

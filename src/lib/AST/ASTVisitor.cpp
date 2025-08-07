@@ -1464,7 +1464,7 @@ populate(
         {
             if (!I)
             {
-                I = MakePolymorphic<TParam, TypeTParam>();
+                I = Polymorphic<TParam>(std::in_place_type<TypeTParam>);
             }
             auto* R = dynamic_cast<TypeTParam*>(I.operator->());
             if (P->wasDeclaredWithTypename())
@@ -1493,7 +1493,7 @@ populate(
         {
             if (!I)
             {
-                I = MakePolymorphic<TParam, NonTypeTParam>();
+                I = Polymorphic<TParam>(std::in_place_type<NonTypeTParam>);
             }
             auto* R = dynamic_cast<NonTypeTParam*>(I.operator->());
             R->Type = toTypeInfo(P->getType());
@@ -1508,21 +1508,21 @@ populate(
         {
             if (!I)
             {
-                I = MakePolymorphic<TParam, TemplateTParam>();
+                I = Polymorphic<TParam>(std::in_place_type<TemplateTParam>);
             }
             auto const* TTPD = cast<TemplateTemplateParmDecl>(P);
             MRDOCS_CHECK_OR(TTPD);
             TemplateParameterList const* TPL = TTPD->getTemplateParameters();
             MRDOCS_CHECK_OR(TPL);
             auto* Result = dynamic_cast<TemplateTParam*>(I.operator->());
-            if (Result->Params.size() < TPL->size())
-            {
-                Result->Params.resize(TPL->size());
-            }
+            Result->Params.reserve(TPL->size());
             for (std::size_t i = 0; i < TPL->size(); ++i)
             {
                 NamedDecl const* TP = TPL->getParam(i);
-                populate(Result->Params[i], TP);
+                auto &Param = i < Result->Params.size()
+                                  ? Result->Params[i]
+                                  : Result->Params.emplace_back(std::nullopt);
+                populate(Param, TP);
             }
             if (TTPD->hasDefaultArgument() && !Result->Default)
             {
@@ -1566,16 +1566,16 @@ populate(
     std::size_t const nExplicit = std::ranges::distance(
         ExplicitTemplateParameters);
     MRDOCS_CHECK_OR(nExplicit);
-    if (nExplicit > TI.Params.size())
-    {
-        TI.Params.resize(nExplicit);
-    }
+    TI.Params.reserve(nExplicit);
     auto explicitIt = ExplicitTemplateParameters.begin();
     std::size_t i = 0;
     while (explicitIt != ExplicitTemplateParameters.end())
     {
         NamedDecl const* P = TPL->getParam(i);
-        populate(TI.Params[i], P);
+        auto &Param = i < TI.Params.size()
+                          ? TI.Params[i]
+                          : TI.Params.emplace_back(std::nullopt);
+        populate(Param, P);
         ++explicitIt;
         ++i;
     }
@@ -2016,12 +2016,12 @@ toNameInfo(
 {
     if (!NNS)
     {
-        return nullptr;
+        return std::nullopt;
     }
     MRDOCS_SYMBOL_TRACE(NNS, context_);
 
     ScopeExitRestore scope(mode_, Dependency);
-    Polymorphic<NameInfo> I = nullptr;
+    Polymorphic<NameInfo> I = std::nullopt;
     if (Type const* T = NNS->getAsType())
     {
         NameInfoBuilder Builder(*this, NNS->getPrefix());
@@ -2030,13 +2030,13 @@ toNameInfo(
     }
     else if(IdentifierInfo const* II = NNS->getAsIdentifier())
     {
-        I = MakePolymorphic<NameInfo>();
+        I = Polymorphic<NameInfo>();
         I->Name = II->getName();
         I->Prefix = toNameInfo(NNS->getPrefix());
     }
     else if(NamespaceDecl const* ND = NNS->getAsNamespace())
     {
-        I = MakePolymorphic<NameInfo>();
+        I = Polymorphic<NameInfo>();
         I->Name = ND->getIdentifier()->getName();
         I->Prefix = toNameInfo(NNS->getPrefix());
         Decl const* ID = getInstantiatedFrom(ND);
@@ -2047,7 +2047,7 @@ toNameInfo(
     }
     else if(NamespaceAliasDecl const* NAD = NNS->getAsNamespaceAlias())
     {
-        I = MakePolymorphic<NameInfo>();
+        I = Polymorphic<NameInfo>();
         I->Name = NAD->getIdentifier()->getName();
         I->Prefix = toNameInfo(NNS->getPrefix());
         Decl const* ID = getInstantiatedFrom(NAD);
@@ -2069,18 +2069,17 @@ toNameInfo(
 {
     if (Name.isEmpty())
     {
-        return nullptr;
+        return std::nullopt;
     }
-    Polymorphic<NameInfo> I = nullptr;
+    Polymorphic<NameInfo> I = std::nullopt;
     if(TArgs)
     {
-        auto Specialization = MakePolymorphic<SpecializationNameInfo>();
-        populate(Specialization->TemplateArgs, *TArgs);
-        I = Polymorphic<NameInfo>(std::move(Specialization));
+        I = Polymorphic<NameInfo>(std::in_place_type<SpecializationNameInfo>);
+        populate(static_cast<SpecializationNameInfo &>(*I).TemplateArgs, *TArgs);
     }
     else
     {
-        I = MakePolymorphic<NameInfo>();
+        I = Polymorphic<NameInfo>();
     }
     I->Name = extractName(Name);
     if (NNS)
@@ -2101,13 +2100,13 @@ toNameInfo(
     auto const* ND = dyn_cast_if_present<NamedDecl>(D);
     if (!ND)
     {
-        return nullptr;
+        return std::nullopt;
     }
     auto I = toNameInfo(
         ND->getDeclName(), std::move(TArgs), NNS);
     if (!I)
     {
-        return nullptr;
+        return std::nullopt;
     }
     ScopeExitRestore scope(mode_, Dependency);
     auto* ID = getInstantiatedFrom(D);
@@ -2155,7 +2154,7 @@ toTArg(TemplateArgument const& A)
     // type
     case TemplateArgument::Type:
     {
-        auto R = MakePolymorphic<TypeTArg>();
+        auto R = Polymorphic<TArg>(std::in_place_type<TypeTArg>);
         QualType QT = A.getAsType();
         MRDOCS_ASSERT(! QT.isNull());
         // if the template argument is a pack expansion,
@@ -2167,16 +2166,17 @@ toTArg(TemplateArgument const& A)
             R->IsPackExpansion = true;
             QT = PT->getPattern();
         }
-        R->Type = toTypeInfo(QT);
-        return Polymorphic<TArg>(R);
+        static_cast<TypeTArg &>(*R).Type = toTypeInfo(QT);
+        return R;
     }
     // pack expansion of a template name
     case TemplateArgument::TemplateExpansion:
     // template name
     case TemplateArgument::Template:
     {
-        auto R = MakePolymorphic<TemplateTArg>();
+        auto R = Polymorphic<TArg>(std::in_place_type<TemplateTArg>);
         R->IsPackExpansion = A.isPackExpansion();
+        std::string &Name = static_cast<TemplateTArg &>(*R).Name;
 
         // KRYSTIAN FIXME: template template arguments are
         // id-expression, so we don't properly support them yet.
@@ -2188,16 +2188,16 @@ toTArg(TemplateArgument const& A)
         {
             if (auto* II = TD->getIdentifier())
             {
-                R->Name = II->getName();
+                Name = II->getName();
             }
         }
         else
         {
-            llvm::raw_string_ostream stream(R->Name);
+            llvm::raw_string_ostream stream(Name);
             TN.print(stream, context_.getPrintingPolicy(),
                 TemplateName::Qualified::AsWritten);
         }
-        return Polymorphic<TArg>(R);
+        return R;
     }
     // nullptr value
     case TemplateArgument::NullPtr:
@@ -2208,7 +2208,7 @@ toTArg(TemplateArgument const& A)
     // expression
     case TemplateArgument::Expression:
     {
-        auto R = MakePolymorphic<NonTypeTArg>();
+        auto R = Polymorphic<TArg>(std::in_place_type<NonTypeTArg>);
         R->IsPackExpansion = A.isPackExpansion();
         // if this is a pack expansion, use the template argument
         // expansion pattern in place of the template argument pack
@@ -2216,7 +2216,8 @@ toTArg(TemplateArgument const& A)
             R->IsPackExpansion ?
             A.getPackExpansionPattern() : A;
 
-        llvm::raw_string_ostream stream(R->Value.Written);
+        llvm::raw_string_ostream stream(
+            static_cast<NonTypeTArg &>(*R).Value.Written);
         adjusted.print(context_.getPrintingPolicy(), stream, false);
 
         return Polymorphic<TArg>(R);
@@ -2224,7 +2225,7 @@ toTArg(TemplateArgument const& A)
     default:
         MRDOCS_UNREACHABLE();
     }
-    return nullptr;
+    return std::nullopt;
 }
 
 

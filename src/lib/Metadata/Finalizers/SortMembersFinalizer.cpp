@@ -172,12 +172,12 @@ struct SymbolIDCompareFn
                         {
                             return false;
                         }
-                        auto const& paramRefPointee
-                            = paramType->isLValueReference() ?
-                                  get<LValueReferenceTypeInfo const&>(paramType)
-                                      .PointeeType :
-                                  get<RValueReferenceTypeInfo const&>(paramType)
-                                      .PointeeType;
+                        auto const &paramRefPointee =
+                            paramType->isLValueReference()
+                                ? static_cast<LValueReferenceTypeInfo const &>(*paramType)
+                                    .PointeeType
+                                : static_cast<RValueReferenceTypeInfo const &>(*paramType)
+                                    .PointeeType;
                         if (!paramRefPointee->isNamed())
                         {
                             return false;

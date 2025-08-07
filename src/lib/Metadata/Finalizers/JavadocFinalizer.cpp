@@ -954,11 +954,11 @@ removeTempTextNodes(std::vector<Polymorphic<doc::Block>>& blocks)
     std::erase_if(blocks, [](Polymorphic<doc::Block> const& block) {
         if (block->Kind == doc::NodeKind::unordered_list)
         {
-            return get<doc::UnorderedList>(block).items.empty();
+            return static_cast<doc::UnorderedList const &>(*block).items.empty();
         }
         if (block->Kind == doc::NodeKind::heading)
         {
-            return get<doc::Heading>(block).string.empty();
+            return static_cast<doc::Heading const &>(*block).string.empty();
         }
         return block->children.empty();
     });
@@ -1276,14 +1276,14 @@ setAutoRelates()
         [&] {
             MRDOCS_CHECK_OR(I.ReturnType);
             MRDOCS_CHECK_OR(I.ReturnType->isNamed());
-            auto& NTI = get<NamedTypeInfo>(I.ReturnType);
+            auto& NTI = static_cast<NamedTypeInfo &>(*I.ReturnType);
             MRDOCS_CHECK_OR(NTI.Name);
             MRDOCS_CHECK_OR(NTI.Name->isSpecialization());
-            auto const& NTIS = get<SpecializationNameInfo>(NTI.Name);
+            auto const& NTIS = static_cast<SpecializationNameInfo &>(*NTI.Name);
             MRDOCS_CHECK_OR(!NTIS.TemplateArgs.empty());
             Polymorphic<TArg> const& firstArg = NTIS.TemplateArgs.front();
             MRDOCS_CHECK_OR(firstArg->isType());
-            auto const& typeArg = get<TypeTArg>(firstArg);
+            auto const& typeArg = static_cast<TypeTArg const &>(*firstArg);
             if (auto* argInfo = toRecordOrEnum(typeArg.Type))
             {
                 if (argInfo->Extraction == ExtractionMode::Regular)

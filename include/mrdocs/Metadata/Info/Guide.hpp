@@ -31,7 +31,7 @@ struct GuideInfo final
 
         This is always a SpecializationTypeInfo.
     */
-    Polymorphic<TypeInfo> Deduced;
+    Polymorphic<TypeInfo> Deduced = std::nullopt;
 
     /** Template head, if any.
     */
