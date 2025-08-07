@@ -3,6 +3,7 @@
     --font-family: system-ui, -apple-system, "Segoe UI", "Roboto", "Ubuntu", "Cantarell", "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --line-height: 1.5;
     --font-weight: 400;
+    --font-weight-bold: 700;
     --font-size: 16px;
     --border-radius: 0.25rem;
     --border-width: 1px;
@@ -20,7 +21,9 @@
     --nav-link-spacing-vertical: 0.5rem;
     --nav-link-spacing-horizontal: 0.5rem;
     --form-label-font-weight: var(--font-weight);
-    --transition: 0.2s ease-in-out
+    --transition: 0.2s ease-in-out;
+    --function-name-color: #1de9b6;
+    --function-name-color-hover: #0091ea;
 }
 
 @media (min-width: 576px) {
@@ -923,6 +926,8 @@ input, select, textarea {
     box-shadow: var(--box-shadow);
     color: var(--color);
     font-weight: var(--font-weight);
+    font-size: 1rem;
+    line-height: var(--line-height);
     transition: background-color var(--transition), border-color var(--transition), color var(--transition), box-shadow var(--transition)
 }
 
@@ -1476,7 +1481,8 @@ pre > code {
     padding: var(--spacing);
 		background-color: rgba(0, 0, 0, 0.55);
     font-size: 14px;
-    line-height: var(--line-height)
+    line-height: var(--line-height);
+    overflow-x: auto;
 }
 
 code b {
@@ -2370,16 +2376,9 @@ hgroup {
     text-align: center
 }
 
-hgroup h2 {
-    margin-bottom: var(--spacing)
-}
 
 hgroup:after {
     display: none
-}
-
-h3 {
-    --font-weight: 400
 }
 
 svg {
@@ -2662,37 +2661,89 @@ section#demo {
 .panel-container {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
 }
 
 @media (min-width: 768px) {
     .panel-container {
         flex-direction: row;
-        gap: 2.5rem;
     }
 }
 
 .snippet-panel {
     flex: 1;
-    margin-right: 10px; /* adjust as needed */
 }
 
-.documentation-panel {
-    background-color: rgba(255, 255, 255, 0.10);
-    border-radius: 20px;
-    flex: 1;
-    padding: 30px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+@media (min-width: 768px) {
+    .snippet-panel {
+        width: 50%;
+    }
 }
 
 .snippet-documentation-panel {
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin: var(--block-spacing-vertical) 0;
 }
 
 .snippet-documentation-panel h2 {
     font-size: 2.0rem;
+}
+
+.documentation-panel {
+    background-color: rgba(255, 255, 255, 0.10);
+    border-radius: var(--border-radius);
+    flex: 1;
+    height: 100%;
+    padding: 1rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.documentation-panel > div:first-child {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.documentation-panel h2 {
+    margin-bottom: var(--spacing);
+}
+
+.documentation-panel h2, .documentation-panel h2 a {
+	color: var(--function-name-color);
+}
+
+.documentation-panel h3 {
+    font-size: 1.25rem;
+    color: #fff;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.documentation-panel p {
+    font-size: 1rem;
+    color: #e0e6ed;
+    margin-bottom: 1em;
+}
+
+.documentation-panel div pre {
+    margin-bottom: 0;
+}
+
+.documentation-panel .admonition {
+    background: rgba(126, 224, 255, 0.10);
+    border: 2px solid rgba(126, 224, 255, 0.10);
+    border-radius: var(--border-radius);
+    padding: 0.5rem 0.75rem;
+    backdrop-filter: blur(10px);
+    /* margin: 1em 0; */
+}
+
+.documentation-panel .admonition h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #7ee0ff;
+    margin-bottom: 0.2em;
+    letter-spacing: 0.01em;
 }
 
 .halign-left {
@@ -2791,6 +2842,7 @@ nav {
 }
 
 .banner-snippet code {
+  color: #fff;
   margin-top: 0.5rem;
   background-color:rgba(255, 255, 255, 0.10);
 }
@@ -3120,4 +3172,27 @@ header .header-image {
 		gap: 5rem;
 		row-gap: 1rem;
 	}
+}
+
+.features hgroup {
+    margin-bottom: var(--block-spacing-vertical);
+}
+
+/* Alignment helpers for flex/grid children */
+.align-left   { justify-self: start !important; align-self: start !important; }
+.align-center { justify-self: center !important; align-self: center !important; }
+.align-right  { justify-self: end !important; align-self: end !important; }
+
+.align-top    { align-self: start !important; }
+.align-middle { align-self: center !important; }
+.align-bottom { align-self: end !important; }
+
+/* For flex containers (if needed) */
+.flex-align-left   { margin-right: auto !important; }
+.flex-align-center { margin-left: auto !important; margin-right: auto !important; }
+.flex-align-right  { margin-left: auto !important; }
+
+.snippet-image {
+	display: flex;
+	height: 100%;
 }
