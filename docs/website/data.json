@@ -94,19 +94,19 @@
       "description": "Specially formatted comments are rendered to form a reference as part of documentation.",
       "source": "distance.cpp",
       "imageClass": "cards",
-      "boxClass": "box1 box-shape1 box0"
+      "boxClass": "box3 box-shape3 box0"
     },
     {
       "description": "Special directives are used to describe details about the symbols.",
       "source": "is_prime.cpp",
       "imageClass": "shouting",
-      "boxClass": "box1 box-shape2 box90"
+      "boxClass": "box3 box-shape3 box90"
     },
     {
       "description": "It understands concepts, constraints and SFINAE.",
       "source": "sqrt.cpp",
       "imageClass": "thinking",
-      "boxClass": "box1 box-shape1 box180"
+      "boxClass": "box3 box-shape3 box180"
     }
   ]
 }
