@@ -36,7 +36,7 @@ struct ParsedRefComponent {
 
     // If not empty, this is a conversion operator
     // Only the last component can be a conversion operator
-    Polymorphic<TypeInfo> ConversionType;
+    Polymorphic<TypeInfo> ConversionType = std::nullopt;
 
     constexpr
     bool

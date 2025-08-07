@@ -94,7 +94,7 @@ struct TypeTArg final
     : IsTArg<TArgKind::Type>
 {
     /** Template argument type. */
-    Polymorphic<TypeInfo> Type;
+    Polymorphic<TypeInfo> Type = std::nullopt;
 
     auto operator<=>(TypeTArg const&) const = default;
 };
@@ -209,7 +209,7 @@ struct TParam
     bool IsParameterPack = false;
 
     /** The default template argument, if any */
-    Polymorphic<TArg> Default;
+    Polymorphic<TArg> Default = std::nullopt;
 
     constexpr virtual ~TParam() = default;
 
@@ -297,7 +297,7 @@ struct TypeTParam final
     TParamKeyKind KeyKind = TParamKeyKind::Class;
 
     /** The type-constraint for the parameter, if any. */
-    Polymorphic<NameInfo> Constraint;
+    Polymorphic<NameInfo> Constraint = std::nullopt;
 
     std::strong_ordering operator<=>(TypeTParam const&) const;
 };
@@ -306,7 +306,7 @@ struct NonTypeTParam final
     : TParamCommonBase<TParamKind::NonType>
 {
     /** Type of the non-type template parameter */
-    Polymorphic<TypeInfo> Type;
+    Polymorphic<TypeInfo> Type = std::nullopt;
 
     std::strong_ordering operator<=>(NonTypeTParam const&) const;
 };

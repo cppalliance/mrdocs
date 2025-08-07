@@ -702,9 +702,12 @@ private:
             {
                 if (i + 1 > result.size())
                 {
-                    result.emplace_back();
+                    result.emplace_back(toTArg(arg));
                 }
-                result[i] = toTArg(arg);
+                else
+                {
+                    result[i] = toTArg(arg);
+                }
             }
             ++i;
         }

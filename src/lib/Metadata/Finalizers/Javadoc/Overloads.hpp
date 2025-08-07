@@ -123,8 +123,10 @@ populateOverloadsFromFunctionName(OverloadsInfo& I)
         return false;
     }
     I.javadoc->brief.emplace();
-    I.javadoc->brief->children.emplace_back(MakePolymorphic<doc::Text, doc::Styled>(std::string(name), doc::Style::mono));
-    I.javadoc->brief->children.emplace_back(MakePolymorphic<doc::Text>(std::string(" overloads")));
+    I.javadoc->brief->children.emplace_back(Polymorphic<doc::Text>(
+        std::in_place_type<doc::Styled>, std::string(name), doc::Style::mono));
+    I.javadoc->brief->children.emplace_back(Polymorphic<doc::Text>(
+        std::in_place_type<doc::Text>, std::string(" overloads")));
     return true;
 }
 

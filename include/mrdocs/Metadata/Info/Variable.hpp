@@ -31,7 +31,7 @@ struct VariableInfo final
     : InfoCommonBase<InfoKind::Variable>
 {
     /** The type of the variable */
-    Polymorphic<TypeInfo> Type;
+    Polymorphic<TypeInfo> Type = std::nullopt;
 
     std::optional<TemplateInfo> Template;
 

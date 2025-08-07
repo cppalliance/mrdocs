@@ -34,9 +34,8 @@ buildTerminal(
     unsigned,
     bool)
 {
-    NameInfo I;
-    I.Name = getASTVisitor().toString(T);
-    Result = std::move(I);
+    Result = Polymorphic<NameInfo>();
+    Result->Name = getASTVisitor().toString(T);
     if (NNS)
     {
         Result->Prefix = getASTVisitor().toNameInfo(NNS);
@@ -54,22 +53,22 @@ buildTerminal(
 {
     if (TArgs)
     {
-        auto I = MakePolymorphic<SpecializationNameInfo>();
+        Result =
+            Polymorphic<NameInfo>(std::in_place_type<SpecializationNameInfo>);
         if (II)
         {
-            I->Name = II->getName();
+            Result->Name = II->getName();
         }
-        getASTVisitor().populate(I->TemplateArgs, *TArgs);
-        Result = Polymorphic<NameInfo>(std::move(I));
+        getASTVisitor().populate(
+            static_cast<SpecializationNameInfo &>(*Result).TemplateArgs, *TArgs);
     }
     else
     {
-        auto I = MakePolymorphic<NameInfo>();
+        Result = Polymorphic<NameInfo>();
         if (II)
         {
-            I->Name = II->getName();
+            Result->Name = II->getName();
         }
-        Result = std::move(I);
     }
     if (NNS)
     {
@@ -107,21 +106,19 @@ buildTerminal(
         }
     };
 
-    Polymorphic<NameInfo> TI;
     if (!TArgs)
     {
-        NameInfo Name;
-        populateNameInfo(Name, D);
-        TI = std::move(Name);
+        Result = Polymorphic<NameInfo>();
+        populateNameInfo(*Result, D);
     }
     else
     {
-        SpecializationNameInfo Name;
-        populateNameInfo(Name, D);
-        getASTVisitor().populate(Name.TemplateArgs, *TArgs);
-        TI = std::move(Name);
+        Result =
+            Polymorphic<NameInfo>(std::in_place_type<SpecializationNameInfo>);
+        populateNameInfo(*Result, D);
+        getASTVisitor().populate(
+            static_cast<SpecializationNameInfo &>(*Result).TemplateArgs, *TArgs);
     }
-    Result = std::move(TI);
 }
 
 } // clang::mrdocs

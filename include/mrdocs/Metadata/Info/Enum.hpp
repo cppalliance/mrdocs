@@ -29,7 +29,7 @@ struct EnumInfo final
     // Set too nonempty to the type when this is an explicitly typed enum. For
     //   enum Foo : short { ... };
     // this will be "short".
-    Polymorphic<TypeInfo> UnderlyingType;
+    Polymorphic<TypeInfo> UnderlyingType = std::nullopt;
 
     /** The members of this scope.
 

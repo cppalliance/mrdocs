@@ -163,7 +163,8 @@ append(std::vector<Polymorphic<Node>>&& blocks)
     for (auto&& block : blocks)
     {
         MRDOCS_ASSERT(block->isText());
-        emplace_back(DynamicCast<Text>(std::move(block)));
+        emplace_back(Polymorphic<Text>(std::in_place_type<Text>,
+                                       dynamic_cast<Text &&>(*block)));
     }
 }
 
@@ -202,7 +203,8 @@ Paragraph::
 operator=(std::string_view str)
 {
     this->children.clear();
-    this->children.emplace_back(MakePolymorphic<doc::Text>(std::string(str)));
+    this->children.emplace_back(Polymorphic<doc::Text>(
+        std::in_place_type<doc::Text>, std::string(str)));
     return *this;
 }
 
@@ -376,13 +378,13 @@ append(std::vector<Polymorphic<doc::Node>>&& blocks)
     blocks.reserve(blocks.size() + blocks.size());
     for(auto&& blockAsNode : blocks)
     {
-        if (IsA<doc::Block>(blockAsNode))
+        if (auto *Block = dynamic_cast<doc::Block *>(&*blockAsNode))
         {
-            emplace_back(DynamicCast<doc::Block>(std::move(blockAsNode)));
+            emplace_back(std::move(*Block));
         }
         else
         {
-            blockAsNode = {};
+            blockAsNode = std::nullopt;
         }
     }
 }

@@ -59,7 +59,7 @@ addMember(OverloadsInfo& I, FunctionInfo const& Member)
         I.Extraction = leastSpecific(I.Extraction, Member.Extraction);
         if (I.ReturnType != Member.ReturnType)
         {
-            I.ReturnType = {};
+            I.ReturnType = std::nullopt;
         }
     }
     merge(I.asSourceInfo(), Member.asSourceInfo());

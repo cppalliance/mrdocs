@@ -32,7 +32,7 @@ struct OverloadsInfo final
     std::vector<SymbolID> Members;
 
     /// Info about the return type of this function.
-    Polymorphic<TypeInfo> ReturnType;
+    Polymorphic<TypeInfo> ReturnType = std::nullopt;
 
     //--------------------------------------------
 

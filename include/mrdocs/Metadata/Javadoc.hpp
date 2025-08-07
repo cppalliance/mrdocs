@@ -1838,7 +1838,8 @@ struct MRDOCS_DECL
     std::string
     emplace_back(T&& block)
     {
-        return emplace_back(MakePolymorphic<doc::Block, T>(std::forward<T>(block)));
+        return emplace_back(Polymorphic<doc::Block>(std::in_place_type<T>,
+                                                    std::forward<T>(block)));
     }
 
     /** Append blocks from another javadoc to this.

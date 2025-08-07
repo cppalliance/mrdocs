@@ -81,7 +81,7 @@ struct NameInfo
         and the template arguments.
 
      */
-    Polymorphic<NameInfo> Prefix;
+    Polymorphic<NameInfo> Prefix = std::nullopt;
 
     constexpr bool isIdentifier()     const noexcept { return Kind == NameKind::Identifier; }
     constexpr bool isSpecialization() const noexcept { return Kind == NameKind::Specialization; }

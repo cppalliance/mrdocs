@@ -109,7 +109,7 @@ struct Param final
 {
     /** The type of this parameter
      */
-    Polymorphic<TypeInfo> Type;
+    Polymorphic<TypeInfo> Type = std::nullopt;
 
     /** The parameter name.
      */
@@ -154,7 +154,7 @@ struct FunctionInfo final
     : InfoCommonBase<InfoKind::Function>
 {
     /// Info about the return type of this function.
-    Polymorphic<TypeInfo> ReturnType;
+    Polymorphic<TypeInfo> ReturnType = std::nullopt;
 
     /// List of parameters.
     std::vector<Param> Params;
