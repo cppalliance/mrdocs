@@ -684,6 +684,26 @@ class MrDocsInstaller:
         return None
 
     def find_tool(self, tool):
+        # Environment variable {tool}_ROOT and {tool}_DIR
+        env_suffixes = ["ROOT", "DIR", "PATH", "HOME", "INSTALL_DIR", "EXECUTABLE"]
+        env_prefixes = [tool.upper(), tool.lower(), tool.title()]
+        for env_prefix in env_prefixes:
+            for env_suffix in env_suffixes:
+                env_var = f"{env_prefix}_{env_suffix}"
+                env_path = os.environ.get(env_var)
+                if env_path and os.path.exists(env_path):
+                    if self.is_executable(env_path):
+                        return env_path
+                    if os.path.isdir(env_path):
+                        tool_filename = tool if tool.endswith(".exe") else tool + ".exe"
+                        tool_path = os.path.join(env_path, tool_filename)
+                        if self.is_executable(tool_path):
+                            return tool_path
+                        tool_bin_path = os.path.join(env_path, 'bin', tool_filename)
+                        if self.is_executable(tool_bin_path):
+                            return tool_bin_path
+
+        # Look for the tool in the system PATH and special cases for Windows
         tool_path = shutil.which(tool)
         if not tool_path and self.is_windows():
             tool_path = self.find_vs_tool(tool)
