@@ -115,6 +115,8 @@ class InstallOptions:
     # Command line arguments
     non_interactive: bool = False
     refresh_all: bool = False
+    force_rebuild: bool = False
+    remove_build_dir: bool = True
 
 
 # Constant for option descriptions
@@ -160,7 +162,9 @@ INSTALL_OPTION_DESCRIPTIONS = {
     "jetbrains_run_config_dir": "Directory where JetBrains run configurations will be stored.",
     "boost_src_dir": "Directory where the source files of the Boost libraries are located.",
     "non_interactive": "Whether to use all default options without interactive prompts.",
-    "refresh_all": "Call the command to refresh dependencies for all configurations"
+    "refresh_all": "Call the command to refresh dependencies for all configurations",
+    "force_rebuild": "Whether to force a rebuild of all dependencies, even if they are already built.",
+    "remove_build_dir": "Whether to remove the build directory of dependencies after installation.",
 }
 
 
@@ -466,10 +470,27 @@ class MrDocsInstaller:
         """
         return os.name == "posix" and sys.platform.startswith("darwin")
 
-    def cmake_workflow(self, src_dir, build_type, build_dir, install_dir, extra_args=None, cc_flags=None, cxx_flags=None):
+    def cmake_workflow(self, src_dir, build_type, build_dir, install_dir, extra_args=None, cc_flags=None,
+                       cxx_flags=None, force_rebuild=False, remove_build_dir=True):
         """
         Configures and builds a CMake project.
         """
+
+        # Check if we can skip the build
+        if self.is_non_empty_dir(install_dir):
+            if force_rebuild or self.prompt_option("force_rebuild"):
+                print(f"Force rebuild requested. Removing existing install directory {install_dir}.")
+                shutil.rmtree(install_dir, ignore_errors=True)
+                if self.is_non_empty_dir(build_dir):
+                    print(f"Removing existing build directory {build_dir}.")
+                    shutil.rmtree(build_dir, ignore_errors=True)
+            else:
+                print(f"Install directory {install_dir} already exists and is not empty. Skipping build.")
+                return
+        if self.is_non_empty_dir(build_dir):
+            shutil.rmtree(build_dir, ignore_errors=True)
+        if self.is_non_empty_dir(install_dir):
+            shutil.rmtree(install_dir, ignore_errors=True)
 
         # Adjust any potential CMake flags from extra_args
         if cc_flags is None:
@@ -593,6 +614,8 @@ class MrDocsInstaller:
         if cmake_build_type:
             install_args.extend(["--config", cmake_build_type])
         self.run_cmd(install_args)
+        if remove_build_dir and self.prompt_option('remove_build_dir'):
+            shutil.rmtree(build_dir, ignore_errors=True)
 
     def is_executable(self, path):
         if not os.path.exists(path):
@@ -605,6 +628,14 @@ class MrDocsInstaller:
             return ext.lower() in [".exe", ".bat", ".cmd", ".com"]
         else:
             return os.access(path, os.X_OK)
+
+    def is_non_empty_dir(self, path):
+        """
+        Checks if the given path is a non-empty directory.
+        :param path: The path to check.
+        :return: bool: True if the path is a non-empty directory, False otherwise.
+        """
+        return os.path.exists(path) and os.path.isdir(path) and len(os.listdir(path)) > 0
 
     @lru_cache(maxsize=1)
     def get_vs_install_locations(self):
@@ -1087,8 +1118,10 @@ class MrDocsInstaller:
             self.prompt_option("llvm_commit")
             os.makedirs(self.options.llvm_src_dir, exist_ok=True)
             self.run_cmd([self.options.git_path, "init"], self.options.llvm_src_dir)
-            self.run_cmd([self.options.git_path, "remote", "add", "origin", self.options.llvm_repo], self.options.llvm_src_dir)
-            self.run_cmd([self.options.git_path, "fetch", "--depth", "1", "origin", self.options.llvm_commit], self.options.llvm_src_dir)
+            self.run_cmd([self.options.git_path, "remote", "add", "origin", self.options.llvm_repo],
+                         self.options.llvm_src_dir)
+            self.run_cmd([self.options.git_path, "fetch", "--depth", "1", "origin", self.options.llvm_commit],
+                         self.options.llvm_src_dir)
             self.run_cmd([self.options.git_path, "checkout", "FETCH_HEAD"], self.options.llvm_src_dir)
 
         llvm_subproject_dir = os.path.join(self.options.llvm_src_dir, "llvm")
@@ -1283,7 +1316,6 @@ class MrDocsInstaller:
                 new_preset["cacheVariables"]["GIT_EXECUTABLE"] = self.options.git_path
                 new_preset["cacheVariables"]["GIT_ROOT"] = os.path.dirname(self.options.git_path)
 
-
         # Update cache variables path prefixes with their relative equivalents
         mrdocs_src_dir_parent = os.path.dirname(self.options.mrdocs_src_dir)
         if mrdocs_src_dir_parent == self.options.mrdocs_src_dir:
@@ -1365,7 +1397,7 @@ class MrDocsInstaller:
                         f"-D{arg}=-fsanitize={flag_name} -fno-sanitize-recover={flag_name} -fno-omit-frame-pointer")
 
         self.cmake_workflow(self.options.mrdocs_src_dir, self.options.mrdocs_build_type, self.options.mrdocs_build_dir,
-                            self.options.mrdocs_install_dir, extra_args)
+                            self.options.mrdocs_install_dir, extra_args, force_rebuild=True, remove_build_dir=False)
 
         if self.options.mrdocs_build_dir and self.prompt_option("mrdocs_run_tests"):
             # Look for ctest path relative to the cmake path
@@ -2119,6 +2151,7 @@ class MrDocsInstaller:
                 arg.replace("${workspaceFolder}", mrdocs_src_dir) for arg in config.get("args", [])]
             print(f"Running bootstrap refresh with arguments: {args}")
             subprocess.run(args, check=True)
+
 
 def get_command_line_args():
     """

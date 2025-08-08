@@ -19,7 +19,6 @@
         "Clang_ROOT": "$env{LLVM_ROOT}",
         "duktape_ROOT": "$env{DUKTAPE_ROOT}",
         "Duktape_ROOT": "$env{DUKTAPE_ROOT}",
-        "fmt_ROOT": "$env{FMT_ROOT}",
         "libxml2_ROOT": "$env{LIBXML2_ROOT}",
         "LibXml2_ROOT": "$env{LIBXML2_ROOT}",
         "MRDOCS_BUILD_TESTS": "ON",
