@@ -79,7 +79,7 @@ class InstallOptions:
     mrdocs_system_install: bool = field(default_factory=lambda: not running_from_mrdocs_source_dir())
     mrdocs_install_dir: str = field(
         default_factory=lambda: "<mrdocs-src-dir>/install/<mrdocs-build-type:lower>-<os:lower><\"-\":if(cc)><cc:basename><\"-\":if(sanitizer)><sanitizer:lower>" if running_from_mrdocs_source_dir() else "")
-    mrdocs_run_tests: bool = True
+    mrdocs_run_tests: bool = False
 
     # Third-party dependencies
     third_party_src_dir: str = "<mrdocs-src-dir>/build/third-party"
@@ -111,6 +111,9 @@ class InstallOptions:
     generate_run_configs: bool = field(default_factory=lambda: running_from_mrdocs_source_dir())
     jetbrains_run_config_dir: str = "<mrdocs-src-dir>/.run"
     boost_src_dir: str = "<mrdocs-src-dir>/../boost"
+    generate_clion_run_configs: bool = True
+    generate_vscode_run_configs: bool = field(default_factory=lambda: os.name != "nt")
+    generate_vs_run_configs: bool = field(default_factory=lambda: os.name == "nt")
 
     # Command line arguments
     non_interactive: bool = False
@@ -161,6 +164,9 @@ INSTALL_OPTION_DESCRIPTIONS = {
     "generate_run_configs": "Whether to generate run configurations for IDEs.",
     "jetbrains_run_config_dir": "Directory where JetBrains run configurations will be stored.",
     "boost_src_dir": "Directory where the source files of the Boost libraries are located.",
+    "generate_clion_run_configs": "Whether to generate run configurations for CLion.",
+    "generate_vscode_run_configs": "Whether to generate run configurations for Visual Studio Code.",
+    "generate_vs_run_configs": "Whether to generate run configurations for Visual Studio.",
     "non_interactive": "Whether to use all default options without interactive prompts.",
     "refresh_all": "Call the command to refresh dependencies for all configurations",
     "force_rebuild": "Whether to force a rebuild of all dependencies, even if they are already built.",
@@ -357,7 +363,7 @@ class MrDocsInstaller:
 
     def prompt_build_type_option(self, name):
         value = self.prompt_option(name)
-        valid_build_types = ["Debug", "Release", "RelWithDebInfo", "MinSizeRel"]
+        valid_build_types = ["Debug", "Release", "RelWithDebInfo", "MinSizeRel", "OptimizedDebug"]
         for t in valid_build_types:
             if t.lower() == value.lower():
                 setattr(self.options, name, t)
@@ -481,13 +487,14 @@ class MrDocsInstaller:
             if force_rebuild or self.prompt_option("force_rebuild"):
                 print(f"Force rebuild requested. Removing existing install directory {install_dir}.")
                 shutil.rmtree(install_dir, ignore_errors=True)
-                if self.is_non_empty_dir(build_dir):
+                if remove_build_dir and self.is_non_empty_dir(build_dir):
                     print(f"Removing existing build directory {build_dir}.")
                     shutil.rmtree(build_dir, ignore_errors=True)
             else:
                 print(f"Install directory {install_dir} already exists and is not empty. Skipping build.")
                 return
-        if self.is_non_empty_dir(build_dir):
+
+        if remove_build_dir and force_rebuild and self.is_non_empty_dir(build_dir):
             shutil.rmtree(build_dir, ignore_errors=True)
         if self.is_non_empty_dir(install_dir):
             shutil.rmtree(install_dir, ignore_errors=True)
@@ -524,6 +531,10 @@ class MrDocsInstaller:
             config_args.extend(["-B", build_dir])
         if self.options.ninja_path:
             config_args.extend(["-G", "Ninja", f"-DCMAKE_MAKE_PROGRAM={self.options.ninja_path}"])
+        elif self.is_windows():
+            generator = self.compiler_info.get("CMAKE_GENERATOR", "")
+            if generator.startswith("Visual Studio"):
+                config_args.extend(["-A", "x64"])
 
         if self.options.cc and self.options.cxx:
             config_args.extend(["-DCMAKE_C_COMPILER=" + self.options.cc,
@@ -537,6 +548,22 @@ class MrDocsInstaller:
             if self.options.git_path:
                 config_args.extend(["-DGIT_EXECUTABLE=" + self.options.git_path])
                 config_args.extend(["-DGIT_ROOT=" + os.path.dirname(self.options.git_path)])
+                config_args.extend(["-DGit_ROOT=" + os.path.dirname(self.options.git_path)])
+
+        # Maybe adjust build type based on the options for the main project
+        if not self.is_abi_compatible(self.options.mrdocs_build_type, build_type):
+            print(f"Warning: The build type '{build_type}' is not ABI compatible with the MrDocs build type '{self.options.mrdocs_build_type}'.")
+            if self.options.mrdocs_build_type.lower() == "debug":
+                # User asked for Release dependency, so we do the best we can and change it to
+                # an optimized debug build.
+                print("Changing build type to 'OptimizedDebug' for ABI compatibility.")
+                build_type = "OptimizedDebug"
+            else:
+                # User asked for a Debug dependency with Release build type for MrDocs.
+                # The dependency should just copy the release type here. Other options wouldn't make sense
+                # because we can't even debug it.
+                print(f"Changing build type to '{self.options.mrdocs_build_type}' for ABI compatibility.")
+                build_type = self.options.mrdocs_build_type
 
         # "OptimizedDebug" is not a valid build type. We interpret it as a special case
         # where the build type is Debug and optimizations are enabled.
@@ -600,13 +627,14 @@ class MrDocsInstaller:
             config_args.append(f"-DCMAKE_C_FLAGS={cc_flags.strip()}")
         if cxx_flags:
             config_args.append(f"-DCMAKE_CXX_FLAGS={cxx_flags.strip()}")
-        self.run_cmd(config_args)
+        if not self.is_non_empty_dir(build_dir) or force_rebuild:
+            self.run_cmd(config_args)
 
-        build_args = [self.options.cmake_path, "--build", build_dir, "--config", cmake_build_type]
-        num_cores = os.cpu_count() or 1
-        max_safe_parallel = 4  # Ideally 4GB per job
-        build_args.extend(["--parallel", str(min(num_cores, max_safe_parallel))])
-        self.run_cmd(build_args)
+            build_args = [self.options.cmake_path, "--build", build_dir, "--config", cmake_build_type]
+            num_cores = os.cpu_count() or 1
+            max_safe_parallel = 4  # Ideally 4GB per job
+            build_args.extend(["--parallel", str(min(num_cores, max_safe_parallel))])
+            self.run_cmd(build_args)
 
         install_args = [self.options.cmake_path, "--install", build_dir]
         if install_dir:
@@ -615,6 +643,7 @@ class MrDocsInstaller:
             install_args.extend(["--config", cmake_build_type])
         self.run_cmd(install_args)
         if remove_build_dir and self.prompt_option('remove_build_dir'):
+            print(f"Installation complete. Removing build directory {build_dir}.")
             shutil.rmtree(build_dir, ignore_errors=True)
 
     def is_executable(self, path):
@@ -838,6 +867,7 @@ class MrDocsInstaller:
 
     @lru_cache(maxsize=1)
     def probe_compilers(self):
+        print("Probing default system compilers...")
         variables = []
         for lang in ["C", "CXX"]:
             for suffix in ["COMPILER", "COMPILER_ID", "COMPILER_VERSION", "COMPILER_AR", "COMPILER_LINKER",
@@ -888,6 +918,11 @@ class MrDocsInstaller:
 
         # Clean up probe directory
         shutil.rmtree(probe_dir)
+
+        # Print default C++ compiler path
+        print(f"Default C++ compiler: {self.compiler_info.get('CMAKE_CXX_COMPILER_ID', 'unknown')} ({self.compiler_info.get('CMAKE_CXX_COMPILER', 'unknown')})")
+        print(f"Default C++ build system: {self.compiler_info.get('CMAKE_GENERATOR', 'unknown')}")
+
 
     @lru_cache(maxsize=1)
     def is_homebrew_clang(self):
@@ -1253,6 +1288,9 @@ class MrDocsInstaller:
             }
         }
 
+        if generator.startswith("Visual Studio"):
+            new_preset["architecture"] = "x64"
+
         if self.options.cc:
             new_preset["cacheVariables"]["CMAKE_C_COMPILER"] = self.options.cc
         if self.options.cxx:
@@ -1315,6 +1353,15 @@ class MrDocsInstaller:
             if self.options.git_path:
                 new_preset["cacheVariables"]["GIT_EXECUTABLE"] = self.options.git_path
                 new_preset["cacheVariables"]["GIT_ROOT"] = os.path.dirname(self.options.git_path)
+
+        # Add vendor information for Visual Studio settings if on Windows
+        if self.is_windows():
+            new_preset["vendor"] = {
+                "microsoft.com/VisualStudioSettings/CMake/1.0": {
+                    "hostOS": ["Windows"],
+                    "intelliSenseMode": "windows-msvc-x64"
+                }
+            }
 
         # Update cache variables path prefixes with their relative equivalents
         mrdocs_src_dir_parent = os.path.dirname(self.options.mrdocs_src_dir)
@@ -1397,7 +1444,7 @@ class MrDocsInstaller:
                         f"-D{arg}=-fsanitize={flag_name} -fno-sanitize-recover={flag_name} -fno-omit-frame-pointer")
 
         self.cmake_workflow(self.options.mrdocs_src_dir, self.options.mrdocs_build_type, self.options.mrdocs_build_dir,
-                            self.options.mrdocs_install_dir, extra_args, force_rebuild=True, remove_build_dir=False)
+                            self.options.mrdocs_install_dir, extra_args, force_rebuild=False, remove_build_dir=False)
 
         if self.options.mrdocs_build_dir and self.prompt_option("mrdocs_run_tests"):
             # Look for ctest path relative to the cmake path
@@ -1585,47 +1632,136 @@ class MrDocsInstaller:
             tree.write(run_config_path, encoding="utf-8", xml_declaration=False)
 
     def generate_visual_studio_run_configs(self, configs):
+        # https://learn.microsoft.com/en-us/visualstudio/ide/customize-build-and-debug-tasks-in-visual-studio?view=vs-2022
+        # https://learn.microsoft.com/en-us/cpp/build/launch-vs-schema-reference-cpp?view=msvc-170
+        # https://learn.microsoft.com/en-us/cpp/build/tasks-vs-json-schema-reference-cpp?view=msvc-170
         # Visual Studio launch configs are stored in .vs/launch.vs.json
         vs_dir = os.path.join(self.options.mrdocs_src_dir, ".vs")
         os.makedirs(vs_dir, exist_ok=True)
         launch_path = os.path.join(vs_dir, "launch.vs.json")
+        tasks_path = os.path.join(vs_dir, "tasks.vs.json")
 
         # Load existing configs if present
         if os.path.exists(launch_path):
             with open(launch_path, "r") as f:
                 launch_data = json.load(f)
         else:
-            launch_data = {"version": "0.2.1", "configurations": []}
+            launch_data = {"version": "0.2.1", "defaults": {}, "configurations": []}
+
+        if os.path.exists(tasks_path):
+            with open(tasks_path, "r") as f:
+                tasks_data = json.load(f)
+        else:
+            tasks_data = {"version": "0.2.1", "tasks": []}
 
         # Build a dict for quick lookup by name
         vs_configs_by_name = {cfg.get("name"): cfg for cfg in launch_data.get("configurations", [])}
+        vs_tasks_by_name = {task.get("label"): task for task in tasks_data.get("taskLabel", [])}
+
+        def vs_config_type(config):
+            if "script" in config:
+                if config["script"].endswith(".py"):
+                    return "python"
+                elif config["script"].endswith(".js"):
+                    return "nodejs"
+                else:
+                    return "shell"
+            elif "target" in config:
+                return "default"
+
+        def rel_to_mrdocs_dir(script_path):
+            is_subdir_of_mrdocs_src_dir = script_path.replace('\\', '/').rstrip('/').startswith(self.options.mrdocs_src_dir.replace('\\', '/').rstrip('/'))
+            if is_subdir_of_mrdocs_src_dir:
+                return os.path.relpath(script_path, self.options.mrdocs_src_dir)
+            return script_path
+
+        def vs_config_project(config):
+            if "target" in config:
+                return "CMakeLists.txt"
+            elif "script" in config:
+                return rel_to_mrdocs_dir(config["script"])
+            return None
+
+        def vs_config_project_target(config):
+            if "target" in config:
+                return config["target"] + ".exe"
+            return ""
 
         for config in configs:
-            new_cfg = {
-                "name": config["name"],
-                "type": "default",
-                "project": "MrDocs",
-                "args": config["args"],
-                "cwd": config.get('cwd', self.options.mrdocs_build_dir),
-                "env": {},
-                "stopAtEntry": False,
-                "console": "integratedTerminal"
-            }
+            is_python_script = 'script' in config and config['script'].endswith('.py')
+            is_config = 'target' in config or is_python_script
+            if is_config:
+                new_cfg = {
+                    "name": config["name"],
+                    "type": vs_config_type(config),
+                    "project": vs_config_project(config),
+                    "projectTarget": vs_config_project_target(config)
+                }
 
-            if 'target' in config:
-                new_cfg["projectTarget"] = config["target"]
-            if 'script' in config:
-                new_cfg["program"] = config["script"]
+                if "cwd" in config:
+                    new_cfg["cwd"] = config["cwd"]
+                if "env" in config:
+                    new_cfg["env"] = config["env"]
 
-            # Replace or add
-            vs_configs_by_name[config["name"]] = new_cfg
+                if 'target' in config:
+                    if "args" in config:
+                        new_cfg["args"] = config["args"]
+                if 'script' in config:
+                    new_cfg["interpreter"] = "(default)"
+                    new_cfg["interpreterArguments"] = ''
+                    if "args" in config and isinstance(config["args"], list):
+                        new_cfg["scriptArguments"] = subprocess.list2cmdline(config["args"])
+                    else:
+                        new_cfg["scriptArguments"] = ""
+                    new_cfg["nativeDebug"] = False
+                    new_cfg["webBrowserUrl"] = ""
+
+                # Replace or add
+                vs_configs_by_name[new_cfg["name"]] = new_cfg
+            else:
+                new_task = {
+                    "taskLabel": config["name"],
+                    # appliesTo script meaning we'll see the tasks as an option
+                    # when right-clicking on the script in Visual Studio
+                    "appliesTo": vs_config_project(config),
+                    "type": "launch",
+                    "command": config.get("script", ""),
+                    "args": config.get("args", []),
+                }
+
+                if 'env' in config:
+                    new_task["env"] = config["env"]
+
+                if 'cwd' in config:
+                    new_task["workingDirectory"] = config["cwd"]
+
+                if new_task["command"].endswith(".js"):
+                    new_task["args"] = [new_task["command"]] + new_task["args"]
+                    new_task["command"] = "node"
+                elif new_task["command"] == "npm" and "workingDirectory" in new_task:
+                    new_task["appliesTo"] = os.path.join(new_task["workingDirectory"], "package.json")
+                    new_task["appliesTo"] = rel_to_mrdocs_dir(new_task["appliesTo"])
+                elif new_task["taskLabel"] == "MrDocs Generate RelaxNG Schema":
+                    new_task["appliesTo"] = "mrdocs.rnc"
+                elif new_task["taskLabel"] == "MrDocs XML Lint with RelaxNG Schema":
+                    new_task["appliesTo"] = "mrdocs.rng"
+
+                vs_tasks_by_name[new_task["taskLabel"]] = new_task
 
         # Write back all configs
         launch_data["configurations"] = list(vs_configs_by_name.values())
         with open(launch_path, "w") as f:
             json.dump(launch_data, f, indent=4)
 
+        tasks_data["tasks"] = list(vs_tasks_by_name.values())
+        with open(tasks_path, "w") as f:
+            json.dump(tasks_data, f, indent=4)
+
+
     def generate_vscode_run_configs(self, configs):
+        if not self.prompt_option("generate_run_configs"):
+            return
+
         # Visual Studio launch configs are stored in .vs/launch.vs.json
         vscode_dir = os.path.join(self.options.mrdocs_src_dir, ".vscode")
         os.makedirs(vscode_dir, exist_ok=True)
@@ -1674,7 +1810,7 @@ class MrDocsInstaller:
                     "type": None,
                     "request": "launch",
                     "program": config.get("script", "") or config.get("target", ""),
-                    "args": config["args"],
+                    "args": config["args"].copy(),
                     "cwd": config.get('cwd', self.options.mrdocs_build_dir)
                 }
 
@@ -1742,12 +1878,18 @@ class MrDocsInstaller:
                 # Replace or add
                 vs_configs_by_name[new_cfg["name"]] = new_cfg
             else:
+                def to_task_args(config):
+                    if 'args' in config:
+                        if isinstance(config['args'], list):
+                            return config['args'].copy()
+                    return []
+
                 # This is a script configuration, we will create a task for it
                 new_task = {
                     "label": config["name"],
                     "type": "shell",
                     "command": config["script"],
-                    "args": config["args"],
+                    "args": to_task_args(config),
                     "options": {},
                     "problemMatcher": [],
                 }
@@ -2071,7 +2213,7 @@ class MrDocsInstaller:
                     for file in files:
                         if file.endswith(".xml") and not file.endswith(".bad.xml"):
                             xml_sources.append(os.path.join(root, file))
-                configs.append({
+                new_config = {
                     "name": "MrDocs XML Lint with RelaxNG Schema",
                     "script": libxml2_xmllint_executable,
                     "args": [
@@ -2079,9 +2221,11 @@ class MrDocsInstaller:
                         "--noout",
                         "--relaxng",
                         os.path.join(self.options.mrdocs_build_dir, "mrdocs.rng")
-                    ].extend(xml_sources),
+                    ],
                     "cwd": self.options.mrdocs_src_dir
-                })
+                }
+                new_config["args"] += xml_sources
+                configs.append(new_config)
             else:
                 configs.append({
                     "name": "MrDocs XML Lint with RelaxNG Schema",
@@ -2099,12 +2243,15 @@ class MrDocsInstaller:
                     "cwd": self.options.mrdocs_src_dir
                 })
 
-        print("Generating CLion run configurations for MrDocs...")
-        self.generate_clion_run_configs(configs)
-        print("Generating Visual Studio Code run configurations for MrDocs...")
-        self.generate_vscode_run_configs(configs)
-        print("Generating Visual Studio run configurations for MrDocs...")
-        self.generate_visual_studio_run_configs(configs)
+        if self.prompt_option("generate_clion_run_configs"):
+            print("Generating CLion run configurations for MrDocs...")
+            self.generate_clion_run_configs(configs)
+        if self.prompt_option("generate_vscode_run_configs"):
+            print("Generating Visual Studio Code run configurations for MrDocs...")
+            self.generate_vscode_run_configs(configs)
+        if self.prompt_option("generate_vs_run_configs"):
+            print("Generating Visual Studio run configurations for MrDocs...")
+            self.generate_visual_studio_run_configs(configs)
 
     def install_all(self):
         self.check_compilers()
@@ -2130,16 +2277,24 @@ class MrDocsInstaller:
         this_script_path = os.path.abspath(__file__)
         mrdocs_src_dir = os.path.dirname(this_script_path)
         vscode_launch_path = os.path.join(mrdocs_src_dir, ".vscode", "launch.json")
-        if not os.path.exists(vscode_launch_path):
-            print("No existing Visual Studio Code launch configurations found.")
+        vs_launch_path = os.path.join(mrdocs_src_dir, ".vs", "launch.vs.json")
+        use_vscode = os.path.exists(vscode_launch_path)
+        use_vs = os.path.exists(vs_launch_path)
+        if not use_vscode and not use_vs:
+            print("No existing Refresh launch configurations found.")
             return
-        with open(vscode_launch_path, "r") as f:
-            vscode_launch_data = json.load(f)
-        vscode_configs = vscode_launch_data.get("configurations", [])
+        if use_vscode:
+            with open(vscode_launch_path, "r") as f:
+                vscode_launch_data = json.load(f)
+            configs = vscode_launch_data.get("configurations", [])
+        else:
+            with open(vs_launch_path, "r") as f:
+                vs_launch_data = json.load(f)
+            configs = vs_launch_data.get("configurations", [])
 
         # 2. Filter configurations whose name starts with "MrDocs Bootstrap Refresh ("
         bootstrap_refresh_configs = [
-            cfg for cfg in vscode_configs if cfg.get("name", "").startswith("MrDocs Bootstrap Refresh (")
+            cfg for cfg in configs if cfg.get("name", "").startswith("MrDocs Bootstrap Refresh (") and cfg.get("name", "").endswith(")")
         ]
         if not bootstrap_refresh_configs:
             print("No bootstrap refresh configurations found in Visual Studio Code launch configurations.")
@@ -2147,10 +2302,16 @@ class MrDocsInstaller:
 
         # 3. For each configuration, run this very same bootstrap.py script with the same arguments
         for config in bootstrap_refresh_configs:
-            args = [current_python_interpreter_path, this_script_path] + [
-                arg.replace("${workspaceFolder}", mrdocs_src_dir) for arg in config.get("args", [])]
-            print(f"Running bootstrap refresh with arguments: {args}")
-            subprocess.run(args, check=True)
+            config_name = config['name']
+            if use_vscode:
+                args = [arg.replace("${workspaceFolder}", mrdocs_src_dir) for arg in config.get("args", [])]
+            else:
+                args = shlex.split(config.get("scriptArguments", ""))
+
+            print(f"Refreshing configuration '{config_name}':")
+            for arg in args:
+                print(f"  * {arg}")
+            subprocess.run([current_python_interpreter_path, this_script_path] + args, check=True)
 
 
 def get_command_line_args():
@@ -2172,12 +2333,11 @@ def get_command_line_args():
         if help_text is None:
             raise ValueError(f"Missing description for option '{field.name}' in INSTALL_OPTION_DESCRIPTIONS.")
         if field.default is not dataclasses.MISSING and field.default is not None:
-            # if string
             if isinstance(field.default, str) and field.default:
                 help_text += f" (default: '{field.default}')"
-            elif field.default is True:
+            elif field.default:
                 help_text += " (default: true)"
-            elif field.default is False:
+            elif not field.default:
                 help_text += " (default: false)"
             else:
                 help_text += f" (default: {field.default})"
