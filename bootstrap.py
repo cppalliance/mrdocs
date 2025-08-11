@@ -433,7 +433,7 @@ class MrDocsInstaller:
         :param depth: The depth of the clone. Defaults to 1 (shallow clone).
         :return: None
         """
-        cmd = [self.options.git_path, "clone"]
+        cmd = [self.options.git_path, "-c", "core.symlinks=true", "clone"]
         if branch:
             cmd.extend(["--branch", branch])
         if depth:
@@ -1460,7 +1460,160 @@ class MrDocsInstaller:
         with open(user_presets_path, "w") as f:
             json.dump(user_presets, f, indent=4)
 
+    def _git_symlink_entries(self, repo_dir):
+        """
+        Returns a list of (worktree_path, intended_target_string) for all git-tracked symlinks (mode 120000).
+        """
+        out = subprocess.check_output(
+            [self.options.git_path, "-C", repo_dir, "ls-files", "-s"],
+            text=True, encoding="utf-8", errors="replace"
+        )
+        entries = []
+        for line in out.splitlines():
+            # "<mode> <object> <stage>\t<path>"
+            # Example for symlink: "120000 e69de29... 0\tpath/to/link"
+            try:
+                head, path = line.split("\t", 1)
+                mode, obj, _stage = head.split()[:3]
+            except ValueError:
+                continue
+            if mode != "120000":
+                continue
+            target = subprocess.check_output(
+                [self.options.git_path, "-C", repo_dir, "cat-file", "-p", obj],
+                text=True, encoding="utf-8", errors="replace"
+            ).rstrip("\n")
+            entries.append((path, target))
+        return entries
+
+    def _same_link_target(self, link_path, intended):
+        """Return True if link_path is a symlink pointing to intended (normalized)."""
+        try:
+            current = os.readlink(link_path)
+        except OSError:
+            return False
+
+        def norm(p):
+            return os.path.normpath(p.replace("/", os.sep))
+
+        return norm(current) == norm(intended)
+
+    def _make_symlink_or_fallback(self, file_path, intended_target, repo_dir):
+        """
+        Create a symlink at file_path pointing to intended_target (POSIX path from git).
+        Falls back to hardlink/copy on Windows if symlinks aren’t permitted.
+        Returns: 'symlink' | 'hardlink' | 'copy'
+        """
+        parent = os.path.dirname(file_path)
+        if parent and not os.path.isdir(parent):
+            os.makedirs(parent, exist_ok=True)
+
+        # Remove existing non-symlink file
+        if os.path.exists(file_path) and not os.path.islink(file_path):
+            os.remove(file_path)
+
+        # Git stores POSIX-style link text; translate to native separators for the OS call
+        native_target = intended_target.replace("/", os.sep)
+
+        # Detect if the final target (as it would resolve in the WT) is a directory (Windows needs this)
+        resolved_target = os.path.normpath(os.path.join(parent, native_target))
+        target_is_dir = os.path.isdir(resolved_target)
+
+        # Try real symlink first
+        try:
+            # On Windows, target_is_directory must be correct for directory links
+            if os.name == "nt":
+                os.symlink(native_target, file_path, target_is_directory=target_is_dir)
+            else:
+                os.symlink(native_target, file_path)
+            return "symlink"
+        except (NotImplementedError, OSError, PermissionError):
+            pass
+
+        # Fallback: hardlink (files only, same volume)
+        try:
+            if os.path.isfile(resolved_target):
+                os.link(resolved_target, file_path)
+                return "hardlink"
+        except OSError:
+            pass
+
+        # Last resort: copy the file contents if it exists
+        if os.path.isfile(resolved_target):
+            shutil.copyfile(resolved_target, file_path)
+            return "copy"
+
+        # If the target doesn’t exist in WT, write the intended link text so state is explicit
+        with open(file_path, "w", encoding="utf-8") as f:
+            f.write(intended_target)
+        return "copy"
+
+    def _is_git_repo(self, repo_dir):
+        """Return True if repo_dir looks like a Git work tree."""
+        if os.path.isdir(os.path.join(repo_dir, ".git")):
+            return True
+        try:
+            out = subprocess.check_output(
+                [self.options.git_path, "-C", repo_dir, "rev-parse", "--is-inside-work-tree"],
+                stderr=subprocess.DEVNULL, text=True
+            )
+            return out.strip() == "true"
+        except Exception:
+            return False
+
+    def check_git_symlinks(self, repo_dir):
+        """
+        Ensure all Git-tracked symlinks in repo_dir are correct in the working tree.
+        Fixes text-file placeholders produced when core.symlinks=false.
+        """
+        repo_dir = os.path.abspath(repo_dir)
+        if not self._is_git_repo(repo_dir):
+            return
+
+        symlinks = self._git_symlink_entries(repo_dir)
+        if not symlinks:
+            return
+
+        fixed = {"symlink": 0, "hardlink": 0, "copy": 0, "already_ok": 0}
+
+        for rel_path, intended in symlinks:
+            link_path = os.path.join(repo_dir, rel_path)
+
+            # Already OK?
+            if os.path.islink(link_path) and self._same_link_target(link_path, intended):
+                fixed["already_ok"] += 1
+                continue
+
+            # If it's a regular file that merely contains the target text, replace it anyway
+            if os.path.exists(link_path) and not os.path.islink(link_path):
+                try:
+                    with open(link_path, "r", encoding="utf-8") as f:
+                        content = f.read().strip()
+                    # no-op: we still replace below if content == intended (or even if not)
+                except Exception:
+                    # unreadable is fine; we’ll still replace
+                    pass
+
+            kind = self._make_symlink_or_fallback(link_path, intended, repo_dir)
+            fixed[kind] += 1
+
+        # Summary + Windows hint
+        if (fixed["symlink"] + fixed["hardlink"] + fixed["copy"]) > 0:
+            print(
+                f"Repaired Git symlinks in {repo_dir} "
+                f"(created: {fixed['symlink']} symlink(s), {fixed['hardlink']} hardlink(s), "
+                f"{fixed['copy']} copy/copies; {fixed['already_ok']} already OK)."
+            )
+            if fixed["hardlink"] or fixed["copy"]:
+                print(
+                    "Warning: Some symlinks could not be created. On Windows, enable Developer Mode "
+                    "or run with privileges that allow creating symlinks. Also ensure "
+                    "`git config core.symlinks true` before checkout."
+                )
+
     def install_mrdocs(self):
+        self.check_git_symlinks(self.options.mrdocs_src_dir)
+
         if not self.options.mrdocs_use_user_presets:
             self.prompt_option("mrdocs_build_dir")
         else:
