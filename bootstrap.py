@@ -197,6 +197,7 @@ class MrDocsInstaller:
         self.options.refresh_all = self.cmd_line_args.get("refresh_all", False)
         self.prompted_options = set()
         self.compiler_info = {}
+        self.env = None
 
     def prompt_string(self, prompt, default):
         """
@@ -419,7 +420,7 @@ class MrDocsInstaller:
             print(f"{color}{cwd}> {cmd_str}{reset}")
         else:
             print(f"{color}{cwd}> {cmd}{reset}")
-        r = subprocess.run(cmd, shell=isinstance(cmd, str), check=True, cwd=cwd)
+        r = subprocess.run(cmd, shell=isinstance(cmd, str), check=True, cwd=cwd, env=self.env)
         if r.returncode != 0:
             raise RuntimeError(f"Command '{cmd}' failed with return code {r.returncode}.")
 
@@ -668,6 +669,8 @@ class MrDocsInstaller:
 
     @lru_cache(maxsize=1)
     def get_vs_install_locations(self):
+        if not self.is_windows():
+            return []
         p = os.environ.get('ProgramFiles(x86)', r"C:\Program Files (x86)")
         path_vswhere = os.path.join(p,
                                     "Microsoft Visual Studio", "Installer", "vswhere.exe")
@@ -684,6 +687,8 @@ class MrDocsInstaller:
         return [inst.get("installationPath") for inst in info]
 
     def find_vs_tool(self, tool):
+        if not self.is_windows():
+            return None
         vs_tools = ["cmake", "ninja", "git", "python"]
         if tool not in vs_tools:
             return None
@@ -922,6 +927,61 @@ class MrDocsInstaller:
         # Print default C++ compiler path
         print(f"Default C++ compiler: {self.compiler_info.get('CMAKE_CXX_COMPILER_ID', 'unknown')} ({self.compiler_info.get('CMAKE_CXX_COMPILER', 'unknown')})")
         print(f"Default C++ build system: {self.compiler_info.get('CMAKE_GENERATOR', 'unknown')}")
+
+    @lru_cache(maxsize=1)
+    def probe_msvc_dev_env(self):
+        if not self.is_windows():
+            return
+        print("Probing MSVC development environment variables...")
+        vs_roots = self.get_vs_install_locations()
+        vcvarsall_path = None
+        for vs_root in vs_roots or []:
+            vcvarsall_path_candidate = os.path.join(vs_root, "VC", "Auxiliary", "Build", "vcvarsall.bat")
+            if os.path.exists(vcvarsall_path_candidate):
+                vcvarsall_path = vcvarsall_path_candidate
+                print(f"Found vcvarsall.bat at {vcvarsall_path}.")
+                break
+        if not vcvarsall_path:
+            print("No vcvarsall.bat found. MSVC development environment variables will not be set.")
+            return
+        # Run it with x64 argument and VSCMD_DEBUG=2 set and get the output
+        cmd = [vcvarsall_path, "x64"]
+        env = os.environ.copy()
+        env["VSCMD_DEBUG"] = "2"
+        result = subprocess.run(cmd, env=env, text=True, capture_output=True, shell=True)
+        # print the output
+        if result.returncode != 0:
+            raise RuntimeError(f"vcvarsall.bat failed:\n{result.stdout}\n{result.stderr}")
+
+        # Get the lines in the output between the two lines that among other things say
+        post_env = {}
+        in_post_init_header = False
+        for line in result.stdout.splitlines():
+            contains_post_init_header = "--------------------- VS Developer Command Prompt Environment [post-init] ---------------------" in line
+            if contains_post_init_header:
+                if in_post_init_header:
+                    break
+                in_post_init_header = True
+                continue
+            if not in_post_init_header:
+                continue
+            if '=' in line:
+                key, value = line.split('=', 1)
+                post_env[key.strip()] = value.strip()
+        if not in_post_init_header or not post_env:
+            print("No post-init environment variables found in vcvarsall.bat output.")
+            return
+
+        # Populate the environment with anything that changed, and later use it
+        # for any other commands.
+        self.env = os.environ.copy()
+        for key, value in post_env.items():
+            if key not in self.env:
+                print(f"* Inserting {key}={value}")
+            elif value != self.env[key]:
+                print(f"* Updating {key}={value}")
+            self.env[key] = value
+        print("MSVC development environment variables extracted successfully.")
 
 
     @lru_cache(maxsize=1)
@@ -2255,6 +2315,7 @@ class MrDocsInstaller:
 
     def install_all(self):
         self.check_compilers()
+        self.probe_msvc_dev_env()
         self.check_tools()
         self.setup_mrdocs_src_dir()
         self.setup_third_party_dir()
