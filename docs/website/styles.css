@@ -117,7 +117,7 @@ kbd {
 
 :root:not([data-theme=dark]), [data-theme=light] {
     color-scheme: light;
-    --background-color: #fff;
+    --background-color: #fef7e1;
     --color: rgba(0, 0, 0, 0.8);
     --h1-color: rgba(0, 0, 0, 0.95);
     --h2-color: rgba(0, 0, 0, 0.9);
@@ -3029,6 +3029,7 @@ nav {
     background-size: stretch;
 }
 
+
 /***** cutout box rotations *****/
 .box0 {
     position: relative;
@@ -3074,25 +3075,42 @@ nav {
     left: 21%;
     color: black;
 
-    background-size: cover;
+    background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
 }
 
-.cards {
-    background-image: url("./assets/cards1.jpg");
+
+.investigate {
+    background-image: url("./assets/investigate.png");
 }
 
 .shouting {
-    background-image: url("./assets/man1.webp");
+    background-image: url("./assets/shout.png");
 }
 
 .thinking {
-    background-image: url("./assets/think1.png");
+    background-image: url("./assets/thinking.png");
 }
 
 .mrdocs {
+    background-image: url("./assets/mrdocs.png");
+}
+
+.logo {
     background-image: url("./assets/mrdocs.svg");
+}
+
+.pointing {
+    background-image: url("./assets/pointing.png");
+}
+
+.glasses {
+    background-image: url("./assets/glasses.png");
+}
+
+.writing {
+    background-image: url("./assets/writing.png");
 }
 
 /* ===========================

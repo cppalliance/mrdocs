@@ -89,26 +89,26 @@
     {
       "description": "MrDocs understands C++ features such as attributes and noexcept functions.",
       "source": "terminate.cpp",
-      "imageClass": "mrdocs",
+      "imageClass": "pointing",
       "boxClass": "box3 box-shape3 box270",
       "alignClass": "align-center"
     },
     {
       "description": "Specially formatted comments are rendered to form a reference as part of documentation.",
       "source": "distance.cpp",
-      "imageClass": "cards",
+      "imageClass": "shouting",
       "boxClass": "box3 box-shape3 box0"
     },
     {
       "description": "Special directives are used to describe details about the symbols.",
       "source": "is_prime.cpp",
-      "imageClass": "shouting",
+      "imageClass": "glasses",
       "boxClass": "box3 box-shape3 box90"
     },
     {
       "description": "It understands concepts, constraints and SFINAE.",
       "source": "sqrt.cpp",
-      "imageClass": "thinking",
+      "imageClass": "writing",
       "boxClass": "box3 box-shape3 box180"
     }
   ]
