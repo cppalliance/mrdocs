@@ -68,7 +68,7 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R0
-    : link:#S0-0c[S0&lt;1&gt;];
+    : link:#S0-0c[S0&lt;1&gt;]
 ----
 
 === Base Classes
@@ -99,7 +99,7 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R1
-    : link:#S0-09[S0&lt;2&gt;::S1];
+    : link:#S0-09[S0&lt;2&gt;::S1]
 ----
 
 === Base Classes
@@ -122,7 +122,7 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R2
-    : link:#S0-073[S0&lt;3&gt;];
+    : link:#S0-073[S0&lt;3&gt;]
 ----
 
 === Base Classes
