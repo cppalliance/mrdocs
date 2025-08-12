@@ -231,6 +231,16 @@
       ],
       "title": "Generator used to create the documentation"
     },
+    "global-namespace-index": {
+      "default": true,
+      "description": "When set to true, the page for the global namespace will recursively list all symbols in the documentation, not just those in the global namespace. This makes the global namespace page act as an index for the entire project.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Use the global namespace page as an index for all symbols",
+      "type": "boolean"
+    },
     "ignore-failures": {
       "default": false,
       "description": "When set to true, MrDocs continues to generate the documentation even if there are AST visitation failures. AST visitation failures occur when the source code contains constructs that are not supported by MrDocs.",
