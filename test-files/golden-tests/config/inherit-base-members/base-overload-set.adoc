@@ -24,7 +24,7 @@ Declared in `&lt;base&hyphen;overload&hyphen;set&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 class Base
-    : public link:#ConstBase[ConstBase];
+    : public link:#ConstBase[ConstBase]
 ----
 
 === Base Classes
@@ -118,7 +118,7 @@ Declared in `&lt;base&hyphen;overload&hyphen;set&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 class C
-    : public link:#Base[Base];
+    : public link:#Base[Base]
 ----
 
 === Base Classes

@@ -111,7 +111,7 @@ Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
 ----
 struct C
     : link:#A[A]
-    , link:#B[B];
+    , link:#B[B]
 ----
 
 === Base Classes
