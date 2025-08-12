@@ -119,7 +119,42 @@ load(
 
     // Config strings
     c->configObj_ = toDomObject(s.configYaml);
-
+    c->settings_.visit([&c]<class T>(std::string_view name, T& value) {
+        if (!c->configObj_.exists(name))
+        {
+            if constexpr (std::convertible_to<T, std::string_view>)
+            {
+                c->configObj_.set(name, std::string(value));
+            }
+            else if constexpr (std::ranges::range<T>)
+            {
+                using ValueType = std::ranges::range_value_t<T>;
+                dom::Array arr;
+                for (auto const& v : value)
+                {
+                    if constexpr (
+                        std::is_same_v<ValueType, PathGlobPattern> ||
+                        std::is_same_v<ValueType, SymbolGlobPattern>)
+                    {
+                        arr.emplace_back(v.pattern());
+                    }
+                    else
+                    {
+                        arr.emplace_back(v);
+                    }
+                }
+                c->configObj_.set(name, std::move(arr));
+            }
+            else if constexpr (std::is_enum_v<T>)
+            {
+                c->configObj_.set(name, to_string(value));
+            }
+            else
+            {
+                c->configObj_.set(name, value);
+            }
+        }
+    });
     return c;
 }
 
