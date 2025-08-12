@@ -59,7 +59,7 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 class C1
-    : link:#C0[C0];
+    : link:#C0[C0]
 ----
 
 [#C2]
@@ -72,7 +72,7 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 class C2
-    : public link:#C0[C0];
+    : public link:#C0[C0]
 ----
 
 === Base Classes
@@ -95,7 +95,7 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 class C3
-    : protected link:#C0[C0];
+    : protected link:#C0[C0]
 ----
 
 [#C4]
@@ -108,7 +108,7 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 class C4
-    : link:#C0[C0];
+    : link:#C0[C0]
 ----
 
 [#C5]
@@ -121,7 +121,7 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 class C5
-    : virtual link:#C0[C0];
+    : virtual link:#C0[C0]
 ----
 
 === Derived Classes
@@ -144,7 +144,7 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 class C6
-    : virtual link:#C1[C1];
+    : virtual link:#C1[C1]
 ----
 
 === Derived Classes
@@ -168,7 +168,7 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 ----
 class C7
     : public link:#C5[C5]
-    , public link:#C6[C6];
+    , public link:#C6[C6]
 ----
 
 === Base Classes
@@ -237,7 +237,7 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct S2
-    : link:#S0[S0];
+    : link:#S0[S0]
 ----
 
 === Base Classes
@@ -270,7 +270,7 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct S3
-    : link:#S1[S1];
+    : link:#S1[S1]
 ----
 
 === Base Classes
@@ -304,7 +304,7 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 ----
 struct S4
     : link:#S2[S2]
-    , link:#S3[S3];
+    , link:#S3[S3]
 ----
 
 === Base Classes
@@ -330,7 +330,7 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 ----
 struct S5
     : private link:#S0[S0]
-    , protected link:#S1[S1];
+    , protected link:#S1[S1]
 ----
 
 [#S6]
@@ -344,7 +344,7 @@ Declared in `&lt;record&hyphen;inheritance&period;cpp&gt;`
 ----
 template&lt;typename&period;&period;&period; Ts&gt;
 struct S6
-    : Ts&period;&period;&period;;
+    : Ts&period;&period;&period;
 ----
 
 === Base Classes

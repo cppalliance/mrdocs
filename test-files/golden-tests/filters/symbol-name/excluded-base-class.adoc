@@ -34,7 +34,7 @@ Declared in `&lt;excluded&hyphen;base&hyphen;class&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 class D
-    : public B::C;
+    : public B::C
 ----
 
 === Base Classes
@@ -122,7 +122,7 @@ Declared in `&lt;excluded&hyphen;base&hyphen;class&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 class E
-    : public B::C;
+    : public B::C
 ----
 
 === Base Classes

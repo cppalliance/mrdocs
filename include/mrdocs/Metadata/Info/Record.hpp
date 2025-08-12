@@ -353,6 +353,7 @@ tag_invoke(
     tag_invoke(t, io, dynamic_cast<Info const&>(I), domCorpus);
     io.map("tag", I.KeyKind);
     io.map("defaultAccess", getDefaultAccessString(I.KeyKind));
+    io.map("isFinal", I.IsFinal);
     io.map("isTypedef", I.IsTypeDef);
     io.map("bases", dom::LazyArray(I.Bases, domCorpus));
     io.map("derived", dom::LazyArray(I.Derived, domCorpus));
