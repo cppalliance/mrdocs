@@ -189,65 +189,47 @@
         </div>
     </footer>
     <script>
+        // Initialize positions to match CSS exactly
+        document.addEventListener('DOMContentLoaded', function() {
+            const root = document.documentElement;
+            
+            // Set initial positions to exactly match CSS defaults
+            root.style.setProperty('--x1', '20%');
+            root.style.setProperty('--y1', '20%');
+            root.style.setProperty('--x2', '75%');
+            root.style.setProperty('--y2', '25%');
+            root.style.setProperty('--x3', '50%');
+            root.style.setProperty('--y3', '50%');
+        });
+
         window.addEventListener("scroll", () => {
             const t = window.scrollY / (document.body.scrollHeight - window.innerHeight);
             const root = document.documentElement;
 
-            const ease = (x) => 0.5 - Math.cos(x * Math.PI) / 2; // smooth easing
-
-            // Update positions and radii
+            // Original animation formula but adjusted to start from CSS positions
             for (let i = 1; i <= 3; i++) {
                 const angle = t * Math.PI * 2 + i;
-                const radius = 15 + 5 * (i % 2); // motion amplitude
-                const blobSize = 25 + 10 * Math.sin(t * Math.PI * 2 + i); // animated radius %
-                const cx = 50 + radius * Math.cos(angle + i);
-                const cy = 50 + radius * Math.sin(angle + i * 0.5);
+                const radius = 15 + 5 * (i % 2); // original motion amplitude
+                
+                // Calculate what the original formula produces at t=0
+                const angle0 = 0 * Math.PI * 2 + i; // t=0
+                const baseX = 50 + radius * Math.cos(angle0 + i);
+                const baseY = 50 + radius * Math.sin(angle0 + i * 0.5);
+                
+                // Calculate current animation position
+                const animX = 50 + radius * Math.cos(angle + i);
+                const animY = 50 + radius * Math.sin(angle + i * 0.5);
+                
+                // Apply offset to match CSS starting positions
+                const offsetX = (i === 1) ? 20 - baseX : (i === 2) ? 75 - baseX : 50 - baseX;
+                const offsetY = (i === 1) ? 20 - baseY : (i === 2) ? 25 - baseY : 50 - baseY;
+                
+                const cx = animX + offsetX;
+                const cy = animY + offsetY;
 
                 root.style.setProperty(`--x${i}`, `${cx}%`);
                 root.style.setProperty(`--y${i}`, `${cy}%`);
-                root.style.setProperty(`--r${i}`, `${blobSize}%`);
             }
-        });
-
-        // Navigation scroll behavior
-        document.addEventListener('DOMContentLoaded', function() {
-            const nav = document.querySelector('.nav');
-            const body = document.body;
-            const scrollThreshold = 300; 
-            
-            function handleScroll() {
-                const currentScrollY = window.scrollY;
-                
-                if (currentScrollY > scrollThreshold) {
-                    nav.classList.add('nav-visible');
-                    body.classList.add('nav-visible');
-                } else {
-                    nav.classList.remove('nav-visible');
-                    body.classList.remove('nav-visible');
-                }
-            }
-            
-            // Throttle scroll events for performance
-            let ticking = false;
-            function updateNav() {
-                handleScroll();
-                ticking = false;
-            }
-            
-            window.addEventListener('scroll', function() {
-                if (!ticking) {
-                    requestAnimationFrame(updateNav);
-                    ticking = true;
-                }
-            });
-            
-            // Handle keyboard accessibility
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    nav.classList.remove('nav-visible');
-                    body.classList.remove('nav-visible');
-                }
-            });
         });
     </script>
 </body>

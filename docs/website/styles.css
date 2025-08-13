@@ -1860,7 +1860,15 @@ a[aria-busy=true], button[aria-busy=true], input[type=button][aria-busy=true], i
 :root {
     --icon-external: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(115, 130, 140, 0.999)' opacity='0.66' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'%3E%3C/path%3E%3Cpolyline points='15 3 21 3 21 9'%3E%3C/polyline%3E%3Cline x1='10' y1='14' x2='21' y2='3'%3E%3C/line%3E%3C/svg%3E");
     --icon-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23FFF' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
-    --icon-check-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(0, 0, 0, 0.75)' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E")
+    --icon-check-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(0, 0, 0, 0.75)' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+
+    /* Background animation variables */
+    --x1: 20%;
+    --y1: 20%;
+    --x2: 75%;
+    --y2: 25%;
+    --x3: 50%;
+    --y3: 50%;
 }
 
 :root:not([data-theme=dark]), [data-theme=light] {
@@ -2768,9 +2776,9 @@ html {
     padding: 0;
     min-height: 100%;
     background:
-        radial-gradient(ellipse 100% 100% at 20% 20%, rgba(89, 36, 99, 0.8), transparent 50%),
-        radial-gradient(ellipse 80% 120% at 75% 25%, rgba(138, 214, 236, 0.5), transparent 55%),
-        radial-gradient(ellipse 150% 90% at 50% 50%, rgba(40, 98, 114, 0.6), transparent 65%),
+        radial-gradient(ellipse 100% 100% at var(--x1) var(--y1), rgba(89, 36, 99, 0.8), transparent 50%),
+        radial-gradient(ellipse 80% 120% at var(--x2) var(--y2), rgba(138, 214, 236, 0.5), transparent 55%),
+        radial-gradient(ellipse 150% 90% at var(--x3) var(--y3), rgba(40, 98, 114, 0.6), transparent 65%),
         radial-gradient(ellipse 100% 100% at 80% 100%, rgba(89, 36, 99, 0.8), transparent 60%),
         linear-gradient(135deg, #124B83, #124B83, #124B83);
     background-blend-mode: normal;
@@ -2867,14 +2875,8 @@ nav {
     top: 0;
     left: 0;
     right: 0;
-    transform: translateY(-100%);
-    transition: transform 0.3s ease-in-out;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-}
-
-.nav.nav-visible {
-    transform: translateY(0);
 }
 
 .nav .logo {
