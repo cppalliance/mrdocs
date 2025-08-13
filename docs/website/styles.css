@@ -2763,34 +2763,21 @@ section#demo {
     color: green;
 }
 
-html{
+html {
     margin: 0;
     padding: 0;
     min-height: 100%;
     background:
-        radial-gradient(circle at var(--x1, 25%) var(--y1, 75%), rgba(130, 0, 255, 0.4), transparent 40%),
-        radial-gradient(circle at var(--x2, 75%) var(--y2, 25%), rgba(0, 98, 255, 0.5), transparent 45%),
-        radial-gradient(circle at var(--x3, 50%) var(--y3, 50%), rgba(72, 0, 120, 0.6), transparent 60%),
-        radial-gradient(circle at var(--x4, 60%) var(--y4, 80%), rgba(200, 0, 255, 0.3), transparent 50%),
-        linear-gradient(135deg, #3a0ca3, #4361ee, #7209b7);
+        radial-gradient(circle at var(--x1, 25%) var(--y1, 75%), rgba(79, 72, 181, 0.4), transparent 40%),
+        radial-gradient(circle at var(--x2, 75%) var(--y2, 25%), rgba(18, 75, 131, 0.5), transparent 45%),
+        radial-gradient(circle at var(--x3, 50%) var(--y3, 50%), rgba(40, 98, 114, 0.6), transparent 60%),
+        radial-gradient(circle at var(--x4, 60%) var(--y4, 80%), rgba(138, 214, 236, 0.3), transparent 50%),
+        linear-gradient(135deg, #4F48B5, #124B83, #286272);
     background-blend-mode: screen;
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
     transition: background-position 0.2s ease;
-}
-
-html {
-    min-height: 100%;
-    background:
-        radial-gradient(circle at var(--x1, 25%) var(--y1, 75%), rgba(130, 0, 255, 0.4), transparent 40%),
-        radial-gradient(circle at var(--x2, 75%) var(--y2, 25%), rgba(0, 98, 255, 0.5), transparent 45%),
-        radial-gradient(circle at var(--x3, 50%) var(--y3, 50%), rgba(72, 0, 120, 0.6), transparent 60%),
-        radial-gradient(circle at var(--x4, 60%) var(--y4, 80%), rgba(200, 0, 255, 0.3), transparent 50%),
-        linear-gradient(135deg, #3a0ca3, #4361ee, #7209b7);
-    background-attachment: fixed;
-    background-blend-mode: screen;  
-    background-size: cover;
 }
 
 @keyframes gradientGlow {
