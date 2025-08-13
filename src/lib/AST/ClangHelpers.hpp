@@ -985,17 +985,17 @@ namespace detail {
     template <class T>
     requires (!std::is_pointer_v<T>)
     void
-    printTraceName(T const& D, ASTContext const& C, SmallString<256>& symbol_name);
+    printTraceName(T const& D, ASTContext const& C, std::string& symbol_name);
 
     template <class T>
     void
-    printTraceName(T const* D, ASTContext const& C, SmallString<256>& symbol_name)
+    printTraceName(T const* D, ASTContext const& C, std::string& symbol_name)
     {
         if (!D)
         {
             return;
         }
-        llvm::raw_svector_ostream os(symbol_name);
+        llvm::raw_string_ostream os(symbol_name);
         if constexpr (std::derived_from<T, Decl>)
         {
             if (NamedDecl const* ND = dyn_cast<NamedDecl>(D))
@@ -1052,14 +1052,14 @@ namespace detail {
     template <class T>
     requires (!std::is_pointer_v<T>)
     void
-    printTraceName(T const& D, ASTContext const& C, SmallString<256>& symbol_name)
+    printTraceName(T const& D, ASTContext const& C, std::string& symbol_name)
     {
         printTraceName(&D, C, symbol_name);
     }
 
     template <class T>
     void
-    printTraceName(std::optional<T> const& D, ASTContext const& C, SmallString<256>& symbol_name)
+    printTraceName(std::optional<T> const& D, ASTContext const& C, std::string& symbol_name)
     {
         if (D)
         {
@@ -1076,9 +1076,9 @@ namespace detail {
 #    define MRDOCS_SYMBOL_TRACE_LABEL_(a)    MRDOCS_SYMBOL_TRACE_MERGE_(symbol_name_, a)
 #    define MRDOCS_SYMBOL_TRACE_UNIQUE_NAME  MRDOCS_SYMBOL_TRACE_LABEL_(__LINE__)
 #define MRDOCS_SYMBOL_TRACE(D, C) \
-    SmallString<256> MRDOCS_SYMBOL_TRACE_UNIQUE_NAME;         \
+    std::string MRDOCS_SYMBOL_TRACE_UNIQUE_NAME;         \
     detail::printTraceName(D, C, MRDOCS_SYMBOL_TRACE_UNIQUE_NAME); \
-    report::trace("{}", std::string_view(MRDOCS_SYMBOL_TRACE_UNIQUE_NAME.str()))
+    report::trace("{}", MRDOCS_SYMBOL_TRACE_UNIQUE_NAME)
 #endif
 
 } // clang::mrdocs
