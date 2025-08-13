@@ -2768,46 +2768,17 @@ html {
     padding: 0;
     min-height: 100%;
     background:
-        radial-gradient(circle at var(--x1, 25%) var(--y1, 75%), rgba(79, 72, 181, 0.4), transparent 40%),
-        radial-gradient(circle at var(--x2, 75%) var(--y2, 25%), rgba(18, 75, 131, 0.5), transparent 45%),
-        radial-gradient(circle at var(--x3, 50%) var(--y3, 50%), rgba(40, 98, 114, 0.6), transparent 60%),
-        radial-gradient(circle at var(--x4, 60%) var(--y4, 80%), rgba(138, 214, 236, 0.3), transparent 50%),
-        linear-gradient(135deg, #4F48B5, #124B83, #286272);
-    background-blend-mode: screen;
+        radial-gradient(ellipse 100% 100% at 20% 20%, rgba(89, 36, 99, 0.8), transparent 50%),
+        radial-gradient(ellipse 80% 120% at 75% 25%, rgba(138, 214, 236, 0.5), transparent 55%),
+        radial-gradient(ellipse 150% 90% at 50% 50%, rgba(40, 98, 114, 0.6), transparent 65%),
+        radial-gradient(ellipse 100% 100% at 80% 100%, rgba(89, 36, 99, 0.8), transparent 60%),
+        linear-gradient(135deg, #124B83, #124B83, #124B83);
+    background-blend-mode: normal;
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
-    transition: background-position 0.2s ease;
 }
 
-@keyframes gradientGlow {
-  0% {
-    --x1: 30%;
-    --y1: 70%;
-    --x2: 70%;
-    --y2: 30%;
-    --x3: 50%;
-    --y3: 50%;
-  }
-
-  50% {
-    --x1: 40%;
-    --y1: 60%;
-    --x2: 60%;
-    --y2: 40%;
-    --x3: 48%;
-    --y3: 52%;
-  }
-
-  100% {
-    --x1: 35%;
-    --y1: 65%;
-    --x2: 65%;
-    --y2: 35%;
-    --x3: 52%;
-    --y3: 48%;
-  }
-}
 
 nav {
   background-color: rgba(0, 0, 0, 0.2);
