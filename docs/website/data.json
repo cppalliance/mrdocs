@@ -13,10 +13,6 @@
   },
   "navbar": [
     {
-      "title": "Examples",
-      "href": "#examples"
-    },
-    {
       "title": "Features",
       "href": "#features"
     },
