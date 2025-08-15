@@ -1,4 +1,3 @@
-
 @import "typeface-roboto.css";
 @import "typeface-roboto-mono.css";
 @import "vars.css";
@@ -16,5 +15,4 @@
 @import "footer.css";
 @import "highlight.css";
 @import "print.css";
-
-/* Inherits styles from landing page */
+@import "custom.css";

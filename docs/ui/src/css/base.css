@@ -10,11 +10,11 @@ html {
   height: 100%;
   scroll-behavior: smooth;
   background:
-    radial-gradient(ellipse 100% 100% at 20% 20%, #582363CC, transparent 50%),
-    radial-gradient(ellipse 80% 120% at 75% 25%, rgba(138, 214, 236, 0.5), transparent 55%),
-    radial-gradient(ellipse 150% 90% at 50% 50%, rgba(40, 98, 114, 0.6), transparent 65%),
-    radial-gradient(ellipse 100% 100% at 80% 100%, #582363CC, transparent 60%),
-    linear-gradient(135deg, #124B83, #124B83, #124B83);
+    radial-gradient(ellipse 100% 100% at var(--x1) var(--y1), rgba(89, 36, 99, 0.8), transparent 50%),
+    radial-gradient(ellipse 80% 120% at var(--x2) var(--y2), rgba(138, 214, 236, 0.5), transparent 55%),
+    radial-gradient(ellipse 150% 90% at var(--x3) var(--y3), rgba(40, 98, 114, 0.6), transparent 65%),
+    radial-gradient(ellipse 100% 100% at 80% 100%, rgba(89, 36, 99, 0.8), transparent 60%),
+    linear-gradient(135deg, #124b83, #124b83, #124b83);
   background-attachment: fixed;
   background-blend-mode: screen;
   background-size: cover;
