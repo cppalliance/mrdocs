@@ -28,7 +28,7 @@ struct std::formatter<clang::mrdocs::SymbolID> : std::formatter<std::string> {
   template <class FmtContext>
   std::format_context::iterator format(clang::mrdocs::SymbolID const &s,
                                        FmtContext &ctx) const {
-    std::string str = s ? "<invalid SymbolID>" : clang::mrdocs::toBase64(s);
+    std::string str = s ? clang::mrdocs::toBase64(s) : "<invalid SymbolID>";
     return std::formatter<std::string>::format(std::move(str), ctx);
   }
 };
