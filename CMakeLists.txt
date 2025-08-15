@@ -226,14 +226,14 @@ target_compile_definitions(
 # Dependencies
 target_include_directories(mrdocs-core
         SYSTEM PUBLIC
-        $<BUILD_INTERFACE:${LLVM_INCLUDE_DIRS}>
-        $<BUILD_INTERFACE:${CLANG_INCLUDE_DIRS}>
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+        "$<BUILD_INTERFACE:${LLVM_INCLUDE_DIRS}>"
+        "$<BUILD_INTERFACE:${CLANG_INCLUDE_DIRS}>"
+        "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
 )
 target_include_directories(mrdocs-core
         SYSTEM PRIVATE
-        $<BUILD_INTERFACE:${DUKTAPE_INCLUDE_DIRS}>
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+        "$<BUILD_INTERFACE:${DUKTAPE_INCLUDE_DIRS}>"
+        "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
 )
 target_link_libraries(mrdocs-core PRIVATE ${DUKTAPE_LIBRARY})
 
