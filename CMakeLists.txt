@@ -89,14 +89,15 @@ endif()
 find_package(LLVM REQUIRED CONFIG)
 find_package(Clang REQUIRED CONFIG)
 
-set(LIBCXX_DIR "${LLVM_INCLUDE_DIR}/c++/v1" CACHE PATH
-               "Path to libc++ include directory")
-message(STATUS "LIBCXX_DIR: ${LIBCXX_DIR}")
-if (NOT EXISTS "${LIBCXX_DIR}")
-    message(FATAL_ERROR
-            "LIBCXX_DIR (${LIBCXX_DIR}) does not exist.\n"
-            "Please provide a LLVM with libc++ enabled\n")
-endif()
+set(LIBCXX_DIRS "${LLVM_INCLUDE_DIR}/c++/v1" CACHE STRING
+               "Paths to libc++ include directories")
+message(STATUS "LIBCXX_DIRS: ${LIBCXX_DIRS}")
+
+foreach(I IN LISTS LIBCXX_DIRS)
+    if (NOT EXISTS "${I}")
+        message(SEND_ERROR "LIBCXX_DIRS (${I}) does not exist.\n")
+    endif()
+endforeach()
 
 set(STDLIB_INCLUDE_DIR "${LLVM_BINARY_DIR}/lib/clang/${Clang_VERSION_MAJOR}/include"
                        CACHE PATH "Path to the clang headers include directory")
@@ -363,35 +364,34 @@ if (MRDOCS_BUILD_TESTS)
     endif ()
     target_compile_definitions(mrdocs-test PRIVATE -DMRDOCS_TEST_FILES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/test-files")
     add_test(NAME mrdocs-unit-tests COMMAND mrdocs-test --unit=true)
+
+    set(COMMON_TEST_COMMAND
+        mrdocs-test
+        --unit=false
+        "${PROJECT_SOURCE_DIR}/test-files/golden-tests"
+        "--addons=${CMAKE_SOURCE_DIR}/share/mrdocs/addons")
+    foreach(I IN LISTS LIBCXX_DIRS)
+        list(APPEND COMMON_TEST_COMMAND "--stdlib-includes=${I}")
+    endforeach()
+    list(APPEND COMMON_TEST_COMMAND
+        "--stdlib-includes=${STDLIB_INCLUDE_DIR}"
+        "--libc-includes=${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs"
+        --log-level=warn)
+
     foreach (testgenerator IN ITEMS xml adoc html)
         add_test(NAME mrdocs-golden-tests-${testgenerator}
             COMMAND
-                mrdocs-test
-                --unit=false
+                ${COMMON_TEST_COMMAND}
                 --action=test
-                "${PROJECT_SOURCE_DIR}/test-files/golden-tests"
-                "--addons=${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
                 --generator=${testgenerator}
-                "--stdlib-includes=${LIBCXX_DIR}"
-                "--stdlib-includes=${STDLIB_INCLUDE_DIR}"
-                "--libc-includes=${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs"
-                --log-level=warn
         )
         foreach (action IN ITEMS test create update)
             add_custom_target(
                 mrdocs-${action}-test-fixtures-${testgenerator}
                 COMMAND
-                    mrdocs-test
-                    --unit=false
+                    ${COMMON_TEST_COMMAND}
                     --action=${action}
-                    "${PROJECT_SOURCE_DIR}/test-files/golden-tests"
-                    "--addons=${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
                     --generator=${testgenerator}
-                    "--stdlib-includes=${LIBCXX_DIR}"
-                    "--stdlib-includes=${STDLIB_INCLUDE_DIR}"
-                    "--libc-includes=${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs"
-                    --log-level=warn
-                DEPENDS mrdocs-test
             )
         endforeach ()
     endforeach()
@@ -537,9 +537,11 @@ if (MRDOCS_INSTALL)
     #-------------------------------------------------
     # share
     #-------------------------------------------------
-    install(DIRECTORY ${LIBCXX_DIR}/
-            DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs/headers/libcxx
-            FILES_MATCHING PATTERN "*")
+    foreach(I IN LISTS LIBCXX_DIRS)
+        install(DIRECTORY ${I}/
+                DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs/headers/libcxx
+                FILES_MATCHING PATTERN "*")
+    endforeach()
     install(DIRECTORY ${STDLIB_INCLUDE_DIR}/
             DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs/headers/clang
             FILES_MATCHING PATTERN "*")
