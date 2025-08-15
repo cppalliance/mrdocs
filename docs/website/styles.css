@@ -3174,3 +3174,27 @@ header .header-image {
 	display: flex;
 	height: 100%;
 }
+
+table {
+    border-collapse: collapse;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+table > * > tr > * {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-width: 1px;
+    border-style: solid;
+    padding: 0;
+}
+
+table td, table th  {
+    padding: .5rem;
+}
+
+table th {
+    text-align: left;
+}
+
+table code {
+    padding: 0;
+}
