@@ -1,0 +1,115 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols=1]
+|===
+| Name
+| link:#A1[`A1`] 
+| link:#A2[`A2`] 
+| link:#A3[`A3`] 
+| link:#B1[`B1`] 
+| link:#B2[`B2`] 
+|===
+
+[#A1]
+== A1
+
+=== Synopsis
+
+Declared in `&lt;final&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class A1 final
+----
+
+[#A2]
+== A2
+
+=== Synopsis
+
+Declared in `&lt;final&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+class A2 final
+----
+
+[#A3]
+== A3
+
+=== Synopsis
+
+Declared in `&lt;final&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class A3 final
+    : public link:#B1[B1]
+    , public link:#B2[B2]
+----
+
+=== Base Classes
+
+[cols=2]
+|===
+| Name
+| Description
+| `link:#B1[B1]`
+| 
+| `link:#B2[B2]`
+| 
+|===
+
+[#B1]
+== B1
+
+=== Synopsis
+
+Declared in `&lt;final&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class B1;
+----
+
+=== Derived Classes
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#A3[`A3`]
+| 
+|===
+
+[#B2]
+== B2
+
+=== Synopsis
+
+Declared in `&lt;final&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class B2;
+----
+
+=== Derived Classes
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#A3[`A3`]
+| 
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

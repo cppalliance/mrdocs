@@ -30,7 +30,7 @@ Declared in `&lt;local&hyphen;class&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct B
-    : decltype(f());
+    : decltype(f())
 ----
 
 === Base Classes
