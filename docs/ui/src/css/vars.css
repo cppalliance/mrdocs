@@ -1,6 +1,7 @@
 :root {
   /* colors */
   --color-white: rgba(255, 255, 255, 1);
+  --color-white-50: rgba(255, 255, 255, 0.5);
   --color-smoke-10: rgba(254, 254, 254, 0.95);
   --color-smoke-30: rgba(250, 250, 250, 0.9);
   --color-smoke-50: rgba(245, 245, 245, 0.85);
@@ -148,4 +149,12 @@
   --z-index-toolbar: 2;
   --z-index-page-version-menu: 3;
   --z-index-navbar: 4;
+
+  /* Background gradient position variables */
+  --x1: 20%;
+  --y1: 20%;
+  --x2: 75%;
+  --y2: 25%;
+  --x3: 50%;
+  --y3: 50%;
 }
