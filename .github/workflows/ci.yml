@@ -42,7 +42,7 @@ jobs:
           latest-factors: |
             msvc Optimized-Debug
             gcc UBSan Coverage
-            clang UBSan
+            clang UBSan MSan
             apple-clang UBSan ASan
           factors: ''
           runs-on: |
@@ -76,9 +76,10 @@ jobs:
             llvm-root: ../third-party/llvm-project/install
             llvm-archive-extension: {{#if (ieq os 'windows') }}7z{{else}}tar.bz2{{/if}}
             llvm-archive-filename: {{{ llvm-archive-basename }}}.{{{ llvm-archive-extension }}}
-            llvm-sanitizer-config: {{#if (or (ne compiler 'clang') (ne compiler 'apple-clang'))}}{{else if ubsan}}Undefined{{else if asan}}Address{{/if}}
-            mrdocs-ccflags: {{{ ccflags }}} {{#if (and (eq compiler 'gcc') (not asan)) }}-static{{/if}}
-            mrdocs-cxxflags: {{{ cxxflags }}} {{#if (and (eq compiler 'gcc') (not asan)) }}-static{{/if}}
+            llvm-sanitizer-config: {{#if (and (ne compiler 'clang') (ne compiler 'apple-clang'))}}{{else if ubsan}}Undefined{{else if asan}}Address{{else if msan}}MemoryWithOrigins{{/if}}
+            mrdocs-flags: {{#if (and (eq compiler 'gcc') (not asan)) }}-static{{/if}}{{#if (and (eq compiler 'clang') msan) }}-fsanitize-memory-track-origins{{/if}}
+            mrdocs-ccflags: {{{ ccflags }}} {{{ mrdocs-flags }}}
+            mrdocs-cxxflags: {{{ cxxflags }}} {{{ mrdocs-flags }}}
             mrdocs-package-generators: {{#if (ieq os 'windows') }}7Z ZIP WIX{{else}}TGZ TXZ{{/if}}
             mrdocs-release-package-artifact: release-packages-{{{ lowercase os }}}
           output-file: matrix.json
