@@ -20,7 +20,7 @@
 | Description
 | link:#A-09[`A`] 
 | The partial specialization of A is enabled via a template parameter
-| link:#A-02[`A&lt;T&gt;`] 
+| link:#A-07[`A&lt;T&gt;`] 
 | Specialization for integral types
 | link:#S-02[`S`] 
 | SFINAE with std&colon;&colon;void&lowbar;t
@@ -108,7 +108,7 @@ template&lt;
 class A;
 ----
 
-[#A-02]
+[#A-07]
 == link:#A-09[A]&lt;T&gt;
 
 Specialization for integral types

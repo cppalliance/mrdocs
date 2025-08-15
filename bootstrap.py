@@ -97,7 +97,7 @@ class InstallOptions:
     llvm_build_dir: str = "<llvm-src-dir>/build/<llvm-build-type:lower><\"-\":if(cc)><cc:basename><\"-\":if(sanitizer)><sanitizer:lower>"
     llvm_install_dir: str = "<llvm-src-dir>/install/<llvm-build-type:lower><\"-\":if(cc)><cc:basename><\"-\":if(sanitizer)><sanitizer:lower>"
     llvm_repo: str = "https://github.com/llvm/llvm-project.git"
-    llvm_commit: str = "dd7a3d4d798e30dfe53b5bbbbcd9a23c24ea1af9"
+    llvm_commit: str = "a1b6e7ff393533a5c4f3bdfd4efe5da106e2de2b"
 
     # Libxml2
     libxml2_src_dir: str = "<third-party-src-dir>/libxml2"
