@@ -54,7 +54,8 @@ buildMemberPointer(
     I.IsVolatile = quals & Qualifiers::Volatile;
     // do not set NNS because the parent type is *not*
     // a nested-name-specifier which qualifies the pointee type
-    I.ParentType = getASTVisitor().toTypeInfo(QualType(T->getClass(), 0));
+    I.ParentType =
+        getASTVisitor().toTypeInfo(QualType(T->getQualifier().getAsType(), 0));
     Inner = &I.PointeeType;
 }
 
@@ -151,7 +152,6 @@ buildAuto(
 void
 TypeInfoBuilder::
 buildTerminal(
-    NestedNameSpecifier const* NNS,
     Type const* T,
     unsigned quals,
     bool pack)
@@ -166,7 +166,6 @@ buildTerminal(
     TI.IsVolatile = quals & Qualifiers::Volatile;
     TI.Name = Polymorphic<NameInfo>();
     TI.Name->Name = getASTVisitor().toString(T);
-    TI.Name->Prefix = getASTVisitor().toNameInfo(NNS);
     if (isa<BuiltinType>(T))
     {
         auto const* FT = cast<BuiltinType>(T);
@@ -179,7 +178,7 @@ buildTerminal(
 void
 TypeInfoBuilder::
 buildTerminal(
-    NestedNameSpecifier const* NNS,
+    NestedNameSpecifier NNS,
     IdentifierInfo const* II,
     std::optional<ArrayRef<TemplateArgument>> TArgs,
     unsigned quals,
@@ -221,7 +220,7 @@ buildTerminal(
 void
 TypeInfoBuilder::
 buildTerminal(
-    NestedNameSpecifier const* NNS,
+    NestedNameSpecifier NNS,
     NamedDecl* D,
     std::optional<ArrayRef<TemplateArgument>> TArgs,
     unsigned quals,

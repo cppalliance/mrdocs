@@ -259,7 +259,7 @@ cd ..
 === LLVM
 
 MrDocs uses LLVM to parse C++ code and extract documentation from it.
-It depends on a recent version of LLVM: https://github.com/llvm/llvm-project/tree/dd7a3d4d798e30dfe53b5bbbbcd9a23c24ea1af9[dd7a3d4]
+It depends on a recent version of LLVM: https://github.com/llvm/llvm-project/tree/a1b6e7ff393533a5c4f3bdfd4efe5da106e2de2b[a1b6e7f]
 
 **Download**:
 
@@ -272,7 +272,7 @@ mkdir -p llvm-project <.>
 cd llvm-project
 git init <.>
 git remote add origin https://github.com/llvm/llvm-project.git <.>
-git fetch --depth 1 origin dd7a3d4d798e30dfe53b5bbbbcd9a23c24ea1af9 <.>
+git fetch --depth 1 origin a1b6e7ff393533a5c4f3bdfd4efe5da106e2de2b <.>
 git checkout FETCH_HEAD <.>
 ----
 

@@ -84,9 +84,6 @@ class TerminalTypeVisitor
     // Whether the type is a pack expansion.
     bool IsPack_ = false;
 
-    // The optional NestedNameSpecifier.
-    NestedNameSpecifier const* NNS_ = nullptr;
-
 protected:
     // Constraints associated with the type (e.g., SFINAE)
     std::vector<ExprInfo> Constraints;
@@ -102,10 +99,8 @@ public:
      */
     explicit
     TerminalTypeVisitor(
-        ASTVisitor& Visitor,
-        NestedNameSpecifier const* NNS = nullptr)
+        ASTVisitor& Visitor)
         : Visitor_(Visitor)
-        , NNS_(NNS)
     {
     }
 
@@ -368,7 +363,7 @@ private:
     bool
     VisitUsingType(UsingType const* T)
     {
-        QualType UT = T->getUnderlyingType();
+        QualType UT = T->desugar();
         return Visit(UT);
     }
 
@@ -389,30 +384,6 @@ private:
     }
 
     // ----------------------------------------------------------------
-
-
-
-    /** Visit an elaborated type.
-
-        This function unwraps the named type from the elaborated type:
-        a type that was referred to using an elaborated type keyword,
-        e.g., `struct S`, or via a qualified name, e.g., `N::M::type`.
-
-        Example:
-        - Wrapped type: `struct S`
-        - Unwrapped type: `S`
-     */
-    bool
-    VisitElaboratedType(
-        ElaboratedType const* T)
-    {
-        MRDOCS_SYMBOL_TRACE(T, Visitor_.context_);
-        NNS_ = T->getQualifier();
-        MRDOCS_SYMBOL_TRACE(NNS_, Visitor_.context_);
-        QualType NT = T->getNamedType();
-        MRDOCS_SYMBOL_TRACE(NT, Visitor_.context_);
-        return Visit(NT);
-    }
 
     /** Visit a pack expansion type.
 
@@ -564,7 +535,7 @@ private:
         TemplateName const TN = T->getTemplateName();
         MRDOCS_ASSERT(! TN.isNull());
         NamedDecl* ND = TN.getAsTemplateDecl();
-        getDerived().buildTerminal(NNS_, ND,
+        getDerived().buildTerminal(TN.getQualifier(), ND,
             std::nullopt, Quals_, IsPack_);
         return true;
     }
@@ -575,16 +546,11 @@ private:
     {
         if (auto SFINAE = getASTVisitor().extractSFINAEInfo(T))
         {
-            NNS_ = nullptr;
             Constraints = SFINAE->Constraints;
             return getDerived().Visit(SFINAE->Type);
         }
 
-        if (auto const* NNS = T->getQualifier())
-        {
-            NNS_ = NNS;
-        }
-        getDerived().buildTerminal(NNS_, T->getIdentifier(),
+        getDerived().buildTerminal(T->getQualifier(), T->getIdentifier(),
             std::nullopt, Quals_, IsPack_);
         return true;
     }
@@ -594,12 +560,9 @@ private:
         DependentTemplateSpecializationType const* T)
     {
         MRDOCS_SYMBOL_TRACE(T, Visitor_.context_);
-        if (auto const* NNS = T->getQualifier())
-        {
-            NNS_ = NNS;
-        }
-        getDerived().buildTerminal(NNS_, T->getIdentifier(),
-            T->template_arguments(), Quals_, IsPack_);
+        const DependentTemplateStorage &S = T->getDependentTemplateName();
+        getDerived().buildTerminal(S.getQualifier(), S.getName().getIdentifier(),
+                                   T->template_arguments(), Quals_, IsPack_);
         return true;
     }
 
@@ -611,7 +574,6 @@ private:
         MRDOCS_SYMBOL_TRACE(T, Visitor_.context_);
         if (auto SFINAE = getASTVisitor().extractSFINAEInfo(T))
         {
-            NNS_ = nullptr;
             Constraints = SFINAE->Constraints;
             return getDerived().Visit(SFINAE->Type);
         }
@@ -632,22 +594,16 @@ private:
 
         if (!T->isTypeAlias())
         {
-            auto* CT = T->getCanonicalTypeInternal().getTypePtrOrNull();
-            MRDOCS_SYMBOL_TRACE(CT, Visitor_.context_);
-            if (auto* ICT = dyn_cast_or_null<InjectedClassNameType>(CT))
+            if (auto* CT = dyn_cast<TagType>(T->getCanonicalTypeInternal()))
             {
-                D = ICT->getDecl();
-                MRDOCS_SYMBOL_TRACE(D, Visitor_.context_);
-            }
-            else if (auto* RT = dyn_cast_or_null<RecordType>(CT))
-            {
-                D = RT->getDecl();
+                MRDOCS_SYMBOL_TRACE(CT, Visitor_.context_);
+                D = CT->getOriginalDecl()->getDefinitionOrSelf();
                 MRDOCS_SYMBOL_TRACE(D, Visitor_.context_);
             }
         }
 
         getDerived().buildTerminal(
-            NNS_, D,
+            TN.getQualifier(), D,
             T->template_arguments(),
             Quals_, IsPack_);
         return true;
@@ -657,7 +613,7 @@ private:
     VisitRecordType(
         RecordType const* T)
     {
-        RecordDecl* RD = T->getDecl();
+        RecordDecl* RD = T->getOriginalDecl()->getDefinitionOrSelf();
         // if this is an instantiation of a class template,
         // create a SpecializationTypeInfo & extract the template arguments
         std::optional<ArrayRef<TemplateArgument>> TArgs = std::nullopt;
@@ -665,8 +621,8 @@ private:
         {
             TArgs = CTSD->getTemplateArgs().asArray();
         }
-        getDerived().buildTerminal(NNS_, RD,
-            TArgs, Quals_, IsPack_);
+        getDerived().buildTerminal(T->getQualifier(), RD, TArgs, Quals_,
+                                   IsPack_);
         return true;
     }
 
@@ -674,7 +630,7 @@ private:
     VisitInjectedClassNameType(
         InjectedClassNameType const* T)
     {
-        getDerived().buildTerminal(NNS_, T->getDecl(),
+        getDerived().buildTerminal(T->getQualifier(), T->getOriginalDecl()->getDefinitionOrSelf(),
             std::nullopt, Quals_, IsPack_);
         return true;
     }
@@ -683,7 +639,7 @@ private:
     VisitEnumType(
         EnumType const* T)
     {
-        getDerived().buildTerminal(NNS_, T->getDecl(),
+        getDerived().buildTerminal(T->getQualifier(), T->getOriginalDecl()->getDefinitionOrSelf(),
             std::nullopt, Quals_, IsPack_);
         return true;
     }
@@ -692,7 +648,7 @@ private:
     VisitTypedefType(
         TypedefType const* T)
     {
-        getDerived().buildTerminal(NNS_, T->getDecl(),
+        getDerived().buildTerminal(T->getQualifier(), T->getDecl(),
             std::nullopt, Quals_, IsPack_);
         return true;
     }
@@ -711,12 +667,12 @@ private:
                 // special case for implicit template parameters
                 // resulting from abbreviated function templates
                 getDerived().buildTerminal(
-                    NNS_, T, Quals_, IsPack_);
+                    T, Quals_, IsPack_);
                 return true;
             }
             II = D->getIdentifier();
         }
-        getDerived().buildTerminal(NNS_, II,
+        getDerived().buildTerminal(std::nullopt, II,
             std::nullopt, Quals_, IsPack_);
         return true;
     }
@@ -725,7 +681,7 @@ private:
     VisitSubstTemplateTypeParmPackType(
         SubstTemplateTypeParmPackType const* T)
     {
-        getDerived().buildTerminal(NNS_, T->getIdentifier(),
+        getDerived().buildTerminal(std::nullopt, T->getIdentifier(),
             std::nullopt, Quals_, IsPack_);
         return true;
     }
@@ -734,7 +690,7 @@ private:
     VisitType(Type const* T)
     {
         getDerived().buildTerminal(
-            NNS_, T, Quals_, IsPack_);
+            T, Quals_, IsPack_);
         return true;
     }
 };

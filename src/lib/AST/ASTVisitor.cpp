@@ -67,7 +67,7 @@ ASTVisitor(
     // ASTContext::setTraversalScope is being (erroneously)
     // used somewhere
     MRDOCS_ASSERT(context_.getTraversalScope() ==
-        std::vector<Decl*>{context_.getTranslationUnitDecl()});
+                  ArrayRef<Decl *>{context_.getTranslationUnitDecl()});
 }
 
 void
@@ -466,7 +466,7 @@ generateUSR(Decl const* D) const
     if(auto* FD = dyn_cast<FunctionDecl>(Templated);
         FD && FD->getTrailingRequiresClause())
     {
-        Expr const* RC = FD->getTrailingRequiresClause();
+        Expr const* RC = FD->getTrailingRequiresClause().ConstraintExpr;
         RC = SubstituteConstraintExpressionWithoutSatisfaction(
             sema_, cast<NamedDecl>(Described ? Described : Templated), RC);
         if (!RC)
@@ -897,7 +897,7 @@ populate(
     MRDOCS_SYMBOL_TRACE(RT, context_);
     I.ReturnType = toTypeInfo(RT);
 
-    if (auto* TRC = D->getTrailingRequiresClause())
+    if (auto* TRC = D->getTrailingRequiresClause().ConstraintExpr)
     {
         populate(I.Requires, TRC);
     }
@@ -1214,7 +1214,7 @@ populate(
     NamespaceAliasDecl const* D)
 {
     NamedDecl const* Aliased = D->getAliasedNamespace();
-    NestedNameSpecifier const* NNS = D->getQualifier();
+    NestedNameSpecifier NNS = D->getQualifier();
     I.AliasedSymbol = toNameInfo(Aliased, {}, NNS);
 }
 
@@ -1478,7 +1478,7 @@ populate(
             }
             if(TypeConstraint const* TC = P->getTypeConstraint())
             {
-                NestedNameSpecifier const* NNS =
+                NestedNameSpecifier NNS =
                     TC->getNestedNameSpecifierLoc().getNestedNameSpecifier();
                 std::optional<ASTTemplateArgumentListInfo const*> TArgs;
                 if (TC->hasExplicitTemplateArgs())
@@ -2009,63 +2009,45 @@ toTypeInfo(QualType const qt, TraversalMode const mode)
     return Builder.result();
 }
 
-Polymorphic<NameInfo>
-ASTVisitor::
-toNameInfo(
-    NestedNameSpecifier const* NNS)
+Polymorphic<NameInfo> ASTVisitor::toNameInfo(NestedNameSpecifier NNS)
 {
-    if (!NNS)
-    {
-        return std::nullopt;
-    }
     MRDOCS_SYMBOL_TRACE(NNS, context_);
-
     ScopeExitRestore scope(mode_, Dependency);
-    Polymorphic<NameInfo> I = std::nullopt;
-    if (Type const* T = NNS->getAsType())
-    {
-        NameInfoBuilder Builder(*this, NNS->getPrefix());
+    switch(NNS.getKind()) {
+    case NestedNameSpecifier::Kind::Null:
+        return std::nullopt;
+    case NestedNameSpecifier::Kind::Type: {
+        const Type *T = NNS.getAsType();
+        NameInfoBuilder Builder(*this);
         Builder.Visit(T);
-        I = Builder.result();
+        return Builder.result();
     }
-    else if(IdentifierInfo const* II = NNS->getAsIdentifier())
-    {
-        I = Polymorphic<NameInfo>();
-        I->Name = II->getName();
-        I->Prefix = toNameInfo(NNS->getPrefix());
-    }
-    else if(NamespaceDecl const* ND = NNS->getAsNamespace())
-    {
-        I = Polymorphic<NameInfo>();
+    case NestedNameSpecifier::Kind::Namespace: {
+        auto I = Polymorphic<NameInfo>();
+        auto [ND, Prefix] = NNS.getAsNamespaceAndPrefix();
         I->Name = ND->getIdentifier()->getName();
-        I->Prefix = toNameInfo(NNS->getPrefix());
+        I->Prefix = toNameInfo(Prefix);
         Decl const* ID = getInstantiatedFrom(ND);
         if (Info* info = findOrTraverse(const_cast<Decl*>(ID)))
         {
             I->id = info->id;
         }
+        return I;
     }
-    else if(NamespaceAliasDecl const* NAD = NNS->getAsNamespaceAlias())
-    {
-        I = Polymorphic<NameInfo>();
-        I->Name = NAD->getIdentifier()->getName();
-        I->Prefix = toNameInfo(NNS->getPrefix());
-        Decl const* ID = getInstantiatedFrom(NAD);
-        if (Info* info = findOrTraverse(const_cast<Decl*>(ID)))
-        {
-            I->id = info->id;
-        }
+    case NestedNameSpecifier::Kind::Global:
+    case NestedNameSpecifier::Kind::MicrosoftSuper:
+        // FIXME: Unimplemented.
+        return std::nullopt;
     }
-    return I;
+    MRDOCS_UNREACHABLE();
 }
 
 template <class TArgRange>
 Polymorphic<NameInfo>
 ASTVisitor::
-toNameInfo(
-    DeclarationName const Name,
+toNameInfo(DeclarationName const Name,
     std::optional<TArgRange> TArgs,
-    NestedNameSpecifier const* NNS)
+    NestedNameSpecifier NNS)
 {
     if (Name.isEmpty())
     {
@@ -2082,10 +2064,7 @@ toNameInfo(
         I = Polymorphic<NameInfo>();
     }
     I->Name = extractName(Name);
-    if (NNS)
-    {
-        I->Prefix = toNameInfo(NNS);
-    }
+    I->Prefix = toNameInfo(NNS);
     return I;
 }
 
@@ -2095,7 +2074,7 @@ ASTVisitor::
 toNameInfo(
     Decl const* D,
     std::optional<TArgRange> TArgs,
-    NestedNameSpecifier const* NNS)
+    NestedNameSpecifier NNS)
 {
     auto const* ND = dyn_cast_if_present<NamedDecl>(D);
     if (!ND)
@@ -2123,7 +2102,7 @@ ASTVisitor::
 toNameInfo<llvm::ArrayRef<clang::TemplateArgument>>(
     Decl const* D,
     std::optional<llvm::ArrayRef<clang::TemplateArgument>> TArgs,
-    NestedNameSpecifier const* NNS);
+    NestedNameSpecifier NNS);
 
 Polymorphic<TArg>
 ASTVisitor::
@@ -2659,12 +2638,6 @@ ASTVisitor::getSFINAETemplateInfo(QualType T, bool const AllowDependentNames) co
     MRDOCS_SYMBOL_TRACE(T, context_);
     MRDOCS_ASSERT(!T.isNull());
 
-    // If the type is an elaborated type, get the named type
-    if (auto* ET = T->getAs<ElaboratedType>())
-    {
-        T = ET->getNamedType();
-    }
-
     // If the type is a dependent name type and dependent names are allowed,
     // extract the identifier and the qualifier's type
     SFINAETemplateInfo SFINAE;
@@ -2673,7 +2646,7 @@ ASTVisitor::getSFINAETemplateInfo(QualType T, bool const AllowDependentNames) co
     {
         SFINAE.Member = DNT->getIdentifier();
         MRDOCS_SYMBOL_TRACE(SFINAE.Member, context_);
-        T = QualType(DNT->getQualifier()->getAsType(), 0);
+        T = QualType(DNT->getQualifier().getAsType(), 0);
         MRDOCS_SYMBOL_TRACE(T, context_);
     }
     if (!T.getTypePtrOrNull())

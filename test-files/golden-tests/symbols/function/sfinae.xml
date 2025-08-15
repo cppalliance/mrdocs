@@ -7,7 +7,7 @@
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="15" class="def"/>
       <doc>
         <related>
-          <reference id="HIZ4NeNKvHJFhj0tJIjpjaLL30U=">::f3</reference>
+          <reference id="OiYqKxV5vNAeh0jqRKIygSwyW4o=">::f3</reference>
         </related>
       </doc>
     </struct>
@@ -27,7 +27,7 @@
   <template class="partial" requires="std::is_integral_v&lt;T&gt;" id="m/JW900ik2XLYvUdA4MCuWZQd80=">
     <tparam name="T" class="type"/>
     <targ class="type" type="T"/>
-    <class name="A" id="IiCxqBbybfSkEqtDiLE90hOwXD8=">
+    <class name="A" id="f80OzcD5UlgQ2KOvUj+MvoJcAFE=">
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="73" class="def"/>
       <doc>
         <brief>
@@ -79,7 +79,7 @@
   </template>
   <template>
     <tparam name="T" class="type"/>
-    <function name="f1" requires="std::is_integral_v&lt;T&gt;" id="Bs19YS1cqZhrsbv149xgnjRFUAk=">
+    <function name="f1" requires="std::is_integral_v&lt;T&gt;" id="1VN+nmJkLcjg6wK0C6XNq8dG1Ro=">
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="5"/>
       <return>
         <type name="T"/>
@@ -119,7 +119,7 @@
   </template>
   <template>
     <tparam name="T" class="type"/>
-    <function name="f2" requires="std::is_integral_v&lt;T&gt;" id="uckUKgu5WdbIitoodkl2kXQ7RWI=">
+    <function name="f2" requires="std::is_integral_v&lt;T&gt;" id="7RxfINQ5PQyMFT7lVKhcQZiocmU=">
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="10"/>
       <return>
         <type name="int"/>
@@ -136,7 +136,7 @@
   </template>
   <template>
     <tparam name="T" class="type"/>
-    <function name="f3" requires="std::is_integral_v&lt;T&gt;" id="HIZ4NeNKvHJFhj0tJIjpjaLL30U=">
+    <function name="f3" requires="std::is_integral_v&lt;T&gt;" id="OiYqKxV5vNAeh0jqRKIygSwyW4o=">
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="19"/>
       <return>
         <type id="r/5vKTgl4cXSK5TnuZ/+P7qmkJ0=" name="B::C"/>
@@ -156,7 +156,7 @@
   </template>
   <template>
     <tparam name="T" class="type"/>
-    <function name="f4" requires="std::is_integral_v&lt;T&gt;" id="45LJB0/nCsN3KRlVtnRqNrJG818=">
+    <function name="f4" requires="std::is_integral_v&lt;T&gt;" id="oQV00j0v7EfuVl9bWFumA28DNZM=">
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="24"/>
       <return>
         <type name="T"/>
@@ -173,7 +173,7 @@
   </template>
   <template requires="std::is_integral_v&lt;T&gt;">
     <tparam name="T" class="type"/>
-    <function name="f5" id="a+UWurTVrgCdwaj2WmRbGzoFaPE=">
+    <function name="f5" id="4Z8f2LwbeJzKuu95VpPC5b3UKZQ=">
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="29"/>
       <return>
         <type name="T"/>
@@ -190,7 +190,7 @@
   </template>
   <template requires="std::is_integral_v&lt;T&gt;">
     <tparam name="T" class="type"/>
-    <function name="f6" id="/yE6fwRwAIxETBjA2qovg6HKvcI=">
+    <function name="f6" id="QQ+RfmlXmyvRCoT+N6iLEixOE3w=">
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="34"/>
       <return>
         <type name="T"/>
@@ -207,7 +207,7 @@
   </template>
   <template requires="std::is_integral_v&lt;T&gt;">
     <tparam name="T" class="type"/>
-    <function name="f7" id="1hZIKbRpnfaQN31DmwXQdyOuadA=">
+    <function name="f7" id="5j4YKg9GCIyC/kpDPExDouNRI8E=">
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="39"/>
       <param name="value">
         <type name="T"/>
@@ -221,7 +221,7 @@
   </template>
   <template>
     <tparam name="T" class="type"/>
-    <function name="f8" requires="std::is_integral_v&lt;T&gt;" id="Gf4cp25Ok5ZDmOsaPZYkV1j/6kM=">
+    <function name="f8" requires="std::is_integral_v&lt;T&gt;" id="N7SAlDvKDvPlACsckMXASo+muPE=">
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="43"/>
       <return>
         <type name="T"/>
@@ -238,7 +238,7 @@
   </template>
   <template>
     <tparam name="T" class="type"/>
-    <function name="f9" requires="std::is_integral_v&lt;T&gt;" id="nt7dkGV/+Wo4uvfBAeMzChGggJs=">
+    <function name="f9" requires="std::is_integral_v&lt;T&gt;" id="njCzIgSzvUpYyI1eg28pJ1dPwcM=">
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="48"/>
       <return>
         <type name="T"/>

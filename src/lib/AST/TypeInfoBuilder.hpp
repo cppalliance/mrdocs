@@ -189,7 +189,6 @@ public:
         @param pack Whether the terminal type is a pack.
      */
     void buildTerminal(
-        NestedNameSpecifier const* NNS,
         Type const* T,
         unsigned quals,
         bool pack);
@@ -210,7 +209,7 @@ public:
         @param pack Whether the terminal type is a pack.
      */
     void buildTerminal(
-        NestedNameSpecifier const* NNS,
+        NestedNameSpecifier NNS,
         IdentifierInfo const* II,
         std::optional<ArrayRef<TemplateArgument>> TArgs,
         unsigned quals,
@@ -232,7 +231,7 @@ public:
         @param pack Whether the terminal type is a pack.
      */
     void buildTerminal(
-        NestedNameSpecifier const* NNS,
+        NestedNameSpecifier NNS,
         NamedDecl* D,
         std::optional<ArrayRef<TemplateArgument>> TArgs,
         unsigned quals,

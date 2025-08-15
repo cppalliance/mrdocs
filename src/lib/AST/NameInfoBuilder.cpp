@@ -29,23 +29,18 @@ buildDecltype(
 void
 NameInfoBuilder::
 buildTerminal(
-    NestedNameSpecifier const* NNS,
     Type const* T,
     unsigned,
     bool)
 {
     Result = Polymorphic<NameInfo>();
     Result->Name = getASTVisitor().toString(T);
-    if (NNS)
-    {
-        Result->Prefix = getASTVisitor().toNameInfo(NNS);
-    }
 }
 
 void
 NameInfoBuilder::
 buildTerminal(
-    NestedNameSpecifier const* NNS,
+    NestedNameSpecifier NNS,
     IdentifierInfo const* II,
     std::optional<ArrayRef<TemplateArgument>> TArgs,
     unsigned,
@@ -79,7 +74,7 @@ buildTerminal(
 void
 NameInfoBuilder::
 buildTerminal(
-    NestedNameSpecifier const* NNS,
+    NestedNameSpecifier NNS,
     NamedDecl const* D,
     std::optional<ArrayRef<TemplateArgument>> const& TArgs,
     unsigned,
