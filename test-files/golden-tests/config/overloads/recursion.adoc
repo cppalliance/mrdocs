@@ -1,0 +1,180 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols=1]
+|===
+| Name
+| <<Bar-0a,`Bar`>> 
+| <<Bar-01,`Bar&lt;T, Foo&lt;Args&period;&period;&period;&gt;&gt;`>> 
+| <<Foo-02,`Foo`>> 
+| <<Foo-0c,`Foo&lt;T[]&gt;`>> 
+|===
+
+[#Bar-0a]
+== Bar
+
+=== Synopsis
+
+Declared in `&lt;recursion&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;
+    typename T,
+    typename List&gt;
+struct Bar
+    : <<Bar-0a,Bar>>&lt;T, <<Foo-02,Foo>>&lt;List&gt;&gt;;
+----
+
+=== Base Classes
+
+[cols=2]
+|===
+| Name
+| Description
+| `<<Bar-0a,Bar>>&lt;T, <<Foo-02,Foo>>&lt;List&gt;&gt;`
+| 
+|===
+
+=== Member Functions
+
+[cols=1]
+|===
+| Name
+| <<Bar-0a-baz,`baz`>> 
+|===
+
+=== Derived Classes
+
+[cols=2]
+|===
+| Name
+| Description
+| <<Bar-0a,`Bar`>>
+| 
+|===
+
+[#Bar-0a-baz]
+== <<Bar-0a,Bar>>::baz
+
+=== Synopsis
+
+Declared in `&lt;recursion&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+baz(bool);
+----
+
+[#Bar-01]
+== Bar&lt;T, <<Foo-02,Foo>>&lt;Args&period;&period;&period;&gt;&gt;
+
+=== Synopsis
+
+Declared in `&lt;recursion&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;
+    typename T,
+    typename&period;&period;&period; Args&gt;
+struct <<Bar-0a,Bar>>&lt;T, <<Foo-02,Foo>>&lt;Args&period;&period;&period;&gt;&gt;;
+----
+
+=== Member Functions
+
+[cols=1]
+|===
+| Name
+| <<Bar-01-baz,`baz`>> 
+|===
+
+[#Bar-01-baz]
+== <<Bar-01,Bar>>&lt;T, <<Foo-02,Foo>>&lt;Args&period;&period;&period;&gt;&gt;::baz
+
+=== Synopsis
+
+Declared in `&lt;recursion&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+baz(Args&period;&period;&period;);
+----
+
+[#Foo-02]
+== Foo
+
+=== Synopsis
+
+Declared in `&lt;recursion&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+struct Foo;
+----
+
+=== Types
+
+[cols=1]
+|===
+| Name
+| <<Foo-02-Type,`Type`>> 
+|===
+
+[#Foo-02-Type]
+== <<Foo-02,Foo>>::Type
+
+=== Synopsis
+
+Declared in `&lt;recursion&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using Type = T;
+----
+
+[#Foo-0c]
+== Foo&lt;T[]&gt;
+
+=== Synopsis
+
+Declared in `&lt;recursion&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;
+    typename T,
+    int N&gt;
+struct <<Foo-02,Foo>>&lt;T[]&gt;;
+----
+
+=== Types
+
+[cols=1]
+|===
+| Name
+| <<Foo-0c-Type,`Type`>> 
+|===
+
+[#Foo-0c-Type]
+== <<Foo-0c,Foo>>&lt;T[]&gt;::Type
+
+=== Synopsis
+
+Declared in `&lt;recursion&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using Type = <<Foo-02,Foo>>&lt;T&gt;;
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

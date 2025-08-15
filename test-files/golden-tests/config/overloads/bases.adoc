@@ -1,0 +1,342 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols=1]
+|===
+| Name
+| <<Base1,`Base1`>> 
+| <<Base2,`Base2`>> 
+| <<BaseBase1,`BaseBase1`>> 
+| <<BaseBase2,`BaseBase2`>> 
+| <<User,`User`>> 
+|===
+
+[#Base1]
+== Base1
+
+=== Synopsis
+
+Declared in `&lt;bases&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Base1
+    : <<BaseBase1,BaseBase1>>;
+----
+
+=== Base Classes
+
+[cols=2]
+|===
+| Name
+| Description
+| `<<BaseBase1,BaseBase1>>`
+| 
+|===
+
+=== Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| <<Base1-foo-0b,`foo`>> 
+| 
+|===
+
+=== Derived Classes
+
+[cols=2]
+|===
+| Name
+| Description
+| <<User,`User`>>
+| 
+|===
+
+[#Base1-foo-0b]
+== <<Base1,Base1>>::foo
+
+=== Synopses
+
+Declared in `&lt;bases&period;cpp&gt;`
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<BaseBase1-foo,foo>>(bool);
+----
+
+[.small]#<<BaseBase1-foo,_» more&period;&period;&period;_>>#
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<Base1-foo-0a,foo>>(int);
+----
+
+[.small]#<<Base1-foo-0a,_» more&period;&period;&period;_>>#
+
+[#BaseBase1-foo]
+== <<BaseBase1,BaseBase1>>::foo
+
+=== Synopsis
+
+Declared in `&lt;bases&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+foo(bool);
+----
+
+[#Base1-foo-0a]
+== <<Base1,Base1>>::foo
+
+=== Synopsis
+
+Declared in `&lt;bases&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+foo(int);
+----
+
+[#Base2]
+== Base2
+
+=== Synopsis
+
+Declared in `&lt;bases&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Base2;
+----
+
+=== Member Functions
+
+[cols=1]
+|===
+| Name
+| <<Base2-foo,`foo`>> 
+|===
+
+=== Derived Classes
+
+[cols=2]
+|===
+| Name
+| Description
+| <<User,`User`>>
+| 
+|===
+
+[#Base2-foo]
+== <<Base2,Base2>>::foo
+
+=== Synopsis
+
+Declared in `&lt;bases&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+foo(double);
+----
+
+[#BaseBase1]
+== BaseBase1
+
+=== Synopsis
+
+Declared in `&lt;bases&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct BaseBase1;
+----
+
+=== Member Functions
+
+[cols=1]
+|===
+| Name
+| <<BaseBase1-foo,`foo`>> 
+|===
+
+=== Derived Classes
+
+[cols=2]
+|===
+| Name
+| Description
+| <<Base1,`Base1`>>
+| 
+|===
+
+[#BaseBase1-foo]
+== <<BaseBase1,BaseBase1>>::foo
+
+=== Synopsis
+
+Declared in `&lt;bases&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+foo(bool);
+----
+
+[#BaseBase2]
+== BaseBase2
+
+=== Synopsis
+
+Declared in `&lt;bases&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct BaseBase2;
+----
+
+=== Member Functions
+
+[cols=1]
+|===
+| Name
+| <<BaseBase2-foo,`foo`>> 
+|===
+
+[#BaseBase2-foo]
+== <<BaseBase2,BaseBase2>>::foo
+
+=== Synopsis
+
+Declared in `&lt;bases&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+foo(bool);
+----
+
+[#User]
+== User
+
+=== Synopsis
+
+Declared in `&lt;bases&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct User
+    : <<Base1,Base1>>
+    , <<Base2,Base2>>;
+----
+
+=== Base Classes
+
+[cols=2]
+|===
+| Name
+| Description
+| `<<Base1,Base1>>`
+| 
+| `<<Base2,Base2>>`
+| 
+|===
+
+=== Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| <<User-foo-0a,`foo`>> 
+| 
+|===
+
+[#User-foo-0a]
+== <<User,User>>::foo
+
+=== Synopses
+
+Declared in `&lt;bases&period;cpp&gt;`
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<BaseBase1-foo,foo>>(bool);
+----
+
+[.small]#<<BaseBase1-foo,_» more&period;&period;&period;_>>#
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<User-foo-0e,foo>>(int);
+----
+
+[.small]#<<User-foo-0e,_» more&period;&period;&period;_>>#
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+<<Base2-foo,foo>>(double);
+----
+
+[.small]#<<Base2-foo,_» more&period;&period;&period;_>>#
+
+[#BaseBase1-foo]
+== <<BaseBase1,BaseBase1>>::foo
+
+=== Synopsis
+
+Declared in `&lt;bases&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+foo(bool);
+----
+
+[#User-foo-0e]
+== <<User,User>>::foo
+
+=== Synopsis
+
+Declared in `&lt;bases&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+foo(int);
+----
+
+[#Base2-foo]
+== <<Base2,Base2>>::foo
+
+=== Synopsis
+
+Declared in `&lt;bases&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+foo(double);
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

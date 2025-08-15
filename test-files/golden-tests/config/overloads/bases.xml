@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <struct name="Base1" id="fPqJJd+3NXTlHHqKqhTMPfKXPhk=">
+    <file short-path="bases.cpp" source-path="bases.cpp" line="9" class="def"/>
+    <base>
+      <type id="WNoskSPtB/EjkTOC1fE2588OsIQ=" name="BaseBase1"/>
+    </base>
+    <function name="foo" id="kI8W/dQwFJOgtU9vfRbr0/kyFw8=">
+      <file short-path="bases.cpp" source-path="bases.cpp" line="2"/>
+      <param>
+        <type name="bool"/>
+      </param>
+    </function>
+    <function name="foo" id="pettg1q43gpnhKsMuQBvtJmJ4i0=">
+      <file short-path="bases.cpp" source-path="bases.cpp" line="10"/>
+      <param>
+        <type name="int"/>
+      </param>
+    </function>
+  </struct>
+  <struct name="Base2" id="aGuVLIfHL9M3lQss11/ePeZLwjI=">
+    <file short-path="bases.cpp" source-path="bases.cpp" line="13" class="def"/>
+    <function name="foo" id="DEUAxX1KbLLKE+6GfEA05ZDkSqA=">
+      <file short-path="bases.cpp" source-path="bases.cpp" line="14"/>
+      <param>
+        <type name="double"/>
+      </param>
+    </function>
+  </struct>
+  <struct name="BaseBase1" id="WNoskSPtB/EjkTOC1fE2588OsIQ=">
+    <file short-path="bases.cpp" source-path="bases.cpp" line="1" class="def"/>
+    <function name="foo" id="kI8W/dQwFJOgtU9vfRbr0/kyFw8=">
+      <file short-path="bases.cpp" source-path="bases.cpp" line="2"/>
+      <param>
+        <type name="bool"/>
+      </param>
+    </function>
+  </struct>
+  <struct name="BaseBase2" id="s/EWfEpXdF6RR1ThDQR/Znta2MY=">
+    <file short-path="bases.cpp" source-path="bases.cpp" line="5" class="def"/>
+    <function name="foo" id="tvmIVdxYnbBqwN0T6kaiQw32jEw=">
+      <file short-path="bases.cpp" source-path="bases.cpp" line="6"/>
+      <param>
+        <type name="bool"/>
+      </param>
+    </function>
+  </struct>
+  <struct name="User" id="58L4g3hYK4jqMumS0ZVZ318awvI=">
+    <file short-path="bases.cpp" source-path="bases.cpp" line="17" class="def"/>
+    <base>
+      <type id="fPqJJd+3NXTlHHqKqhTMPfKXPhk=" name="Base1"/>
+    </base>
+    <base>
+      <type id="aGuVLIfHL9M3lQss11/ePeZLwjI=" name="Base2"/>
+    </base>
+    <function name="foo" id="kI8W/dQwFJOgtU9vfRbr0/kyFw8=">
+      <file short-path="bases.cpp" source-path="bases.cpp" line="2"/>
+      <param>
+        <type name="bool"/>
+      </param>
+    </function>
+    <function name="foo" id="4FhRxjj+xNF4cJKPmgXi0HEIISo=">
+      <file short-path="bases.cpp" source-path="bases.cpp" line="18"/>
+      <param>
+        <type name="int"/>
+      </param>
+    </function>
+    <function name="foo" id="DEUAxX1KbLLKE+6GfEA05ZDkSqA=">
+      <file short-path="bases.cpp" source-path="bases.cpp" line="14"/>
+      <param>
+        <type name="double"/>
+      </param>
+    </function>
+  </struct>
+</namespace>
+</mrdocs>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <template>
+    <tparam name="T" class="type"/>
+    <tparam name="List" class="type"/>
+    <struct name="Bar" id="oiOZHFM9L3UNuv/ZP1KO/X/WFxk=">
+      <file short-path="recursion.cpp" source-path="recursion.cpp" line="11" class="def"/>
+      <base>
+        <type id="oiOZHFM9L3UNuv/ZP1KO/X/WFxk=" name="Bar&lt;T, Foo&lt;List&gt;&gt;"/>
+      </base>
+      <function name="baz" id="R+zZ+Qah/EEoHYHzeEv480dDn+E=">
+        <file short-path="recursion.cpp" source-path="recursion.cpp" line="13" class="def"/>
+        <param>
+          <type name="bool"/>
+        </param>
+      </function>
+    </struct>
+  </template>
+  <template class="partial" id="oiOZHFM9L3UNuv/ZP1KO/X/WFxk=">
+    <tparam name="T" class="type"/>
+    <tparam name="Args" class="type"/>
+    <targ class="type" type="T"/>
+    <targ class="type" type="Foo&lt;Args...&gt;"/>
+    <struct name="Bar" id="HZthCSegUxsxRDWrS4n44NYpUrw=">
+      <file short-path="recursion.cpp" source-path="recursion.cpp" line="17" class="def"/>
+      <function name="baz" id="8J4PEz0jtGpOCKo9m4JZyM0RsI0=">
+        <file short-path="recursion.cpp" source-path="recursion.cpp" line="18" class="def"/>
+        <param>
+          <type is-pack="1" name="Args"/>
+        </param>
+      </function>
+    </struct>
+  </template>
+  <template>
+    <tparam name="T" class="type"/>
+    <struct name="Foo" id="K9gGykwd7KRRGNi+R55g4t5hn7k=">
+      <file short-path="recursion.cpp" source-path="recursion.cpp" line="1" class="def"/>
+      <namespace-alias name="Type" id="Y9myx0jdUOQGNZJ1dpRZFOglUEk=">
+        <file short-path="recursion.cpp" source-path="recursion.cpp" line="3"/>
+        <type name="T"/>
+      </namespace-alias>
+    </struct>
+  </template>
+  <template class="partial" id="K9gGykwd7KRRGNi+R55g4t5hn7k=">
+    <tparam name="T" class="type"/>
+    <tparam name="N" class="non-type" type="int"/>
+    <targ class="type" type="T[N]"/>
+    <struct name="Foo" id="z6D6n01NNtYGa5S6Dbc0F0J+0A0=">
+      <file short-path="recursion.cpp" source-path="recursion.cpp" line="7" class="def"/>
+      <namespace-alias name="Type" id="seBsc+T9MsfquzqHM8pPzHndzDI=">
+        <file short-path="recursion.cpp" source-path="recursion.cpp" line="8"/>
+        <type id="K9gGykwd7KRRGNi+R55g4t5hn7k=" name="Foo&lt;T&gt;"/>
+      </namespace-alias>
+    </struct>
+  </template>
+</namespace>
+</mrdocs>
