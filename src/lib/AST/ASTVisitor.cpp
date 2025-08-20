@@ -1218,7 +1218,6 @@ populate(
     I.AliasedSymbol = toNameInfo(Aliased, {}, NNS);
 }
 
-
 void
 ASTVisitor::
 populate(
@@ -1226,14 +1225,16 @@ populate(
     UsingDecl const* D)
 {
     I.Class = UsingClass::Normal;
-    I.Qualifier = toNameInfo(D->getQualifier());
+    DeclarationName const& Name = D->getNameInfo().getName();
+    NestedNameSpecifier const& NNS = D->getQualifier();
+    I.IntroducedName = toNameInfo(Name, {}, NNS);
     for (UsingShadowDecl const* UDS: D->shadows())
     {
         ScopeExitRestore s(mode_, Dependency);
         Decl* S = UDS->getTargetDecl();
         if (Info* SI = findOrTraverse(S))
         {
-            I.UsingSymbols.emplace_back(SI->id);
+            I.ShadowDeclarations.emplace_back(SI->id);
         }
     }
 }
