@@ -471,9 +471,9 @@ XMLWriter::
     }
 
     std::string qualifierStr;
-    if (I.Qualifier)
+    if (I.IntroducedName)
     {
-        qualifierStr = toString(*I.Qualifier);
+        qualifierStr = toString(*I.IntroducedName);
     }
 
     constexpr std::string_view usingTagName = "using";
@@ -488,7 +488,7 @@ XMLWriter::
 
     writeJavadoc(I.javadoc);
 
-    for (auto const& id : I.UsingSymbols)
+    for (auto const& id : I.ShadowDeclarations)
         tags_.write("named", {}, { id });
 
     tags_.close(usingTagName);

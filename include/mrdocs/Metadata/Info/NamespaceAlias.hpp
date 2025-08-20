@@ -23,7 +23,11 @@ namespace clang::mrdocs {
 struct NamespaceAliasInfo final
     : InfoCommonBase<InfoKind::NamespaceAlias>
 {
-    /** The aliased symbol. */
+    /** The aliased symbol.
+
+        This is another namespace that might or might
+        not be in the same project.
+     */
     Polymorphic<NameInfo> AliasedSymbol;
 
     //--------------------------------------------

@@ -744,13 +744,13 @@ finalizeInfoData(InfoTy& I)
     {
         finalize(I.AliasedSymbol);
     }
-    if constexpr (requires { I.Qualifier; })
+    if constexpr (requires { I.IntroducedName; })
     {
-        finalize(I.Qualifier);
+        finalize(I.IntroducedName);
     }
-    if constexpr (requires { I.UsingSymbols; })
+    if constexpr (requires { I.ShadowDeclarations; })
     {
-        finalize(I.UsingSymbols);
+        finalize(I.ShadowDeclarations);
     }
     if constexpr (requires { I.Deduced; })
     {
