@@ -23,6 +23,7 @@
 {{>symbol/members-table members=tranche.variables title="Variables"}}
 {{>symbol/members-table members=tranche.concepts title="Concepts"}}
 {{>symbol/members-table members=tranche.guides title=(concat (select label (concat label " ") "") "Deduction Guides")}}
+{{>symbol/members-table members=tranche.usings title=(concat (select label (concat label " ") "") "Using Declarations")}}
 {{else}}
 {{>symbol/members-table members=tranche.namespaceAliases title="Namespace Aliases"}}
 {{>symbol/members-table members=(concat tranche.records tranche.typedefs) title=(concat (select label (concat label " ") "") "Types")}}
