@@ -395,6 +395,14 @@ if (MRDOCS_BUILD_TESTS)
             )
         endforeach ()
     endforeach()
+    foreach (action IN ITEMS test create update)
+        add_custom_target(mrdocs-${action}-test-fixtures-all
+            DEPENDS
+                mrdocs-${action}-test-fixtures-xml
+                mrdocs-${action}-test-fixtures-adoc
+                mrdocs-${action}-test-fixtures-html
+        )
+    endforeach ()
 
     #-------------------------------------------------
     # XML lint
