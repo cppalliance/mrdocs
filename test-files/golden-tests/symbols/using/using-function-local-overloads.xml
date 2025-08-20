@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <namespace name="A" id="jQQu/8mLNzRQvGtbkKMwwloVDpw=">
+    <function name="f" id="OdPJWl984rpJN717Abrgnrwq2Kw=">
+      <file short-path="using-function-local-overloads.cpp" source-path="using-function-local-overloads.cpp" line="4"/>
+    </function>
+    <function name="f" id="FuaTgMW0VtO+b4uzr/DCmx9vlb0=">
+      <file short-path="using-function-local-overloads.cpp" source-path="using-function-local-overloads.cpp" line="3"/>
+      <param>
+        <type name="int"/>
+      </param>
+    </function>
+    <function name="f" id="N0+WoYktWiHOeI6T/zCKyjtVjUU=">
+      <file short-path="using-function-local-overloads.cpp" source-path="using-function-local-overloads.cpp" line="5"/>
+      <param>
+        <type name="char"/>
+      </param>
+      <param>
+        <type name="char"/>
+      </param>
+    </function>
+  </namespace>
+  <function name="f" id="8HikSjplV248Xlimdc3WQFts5g8=">
+    <file short-path="using-function-local-overloads.cpp" source-path="using-function-local-overloads.cpp" line="8"/>
+    <param name="i">
+      <type name="double"/>
+    </param>
+  </function>
+  <using id="IuDUO+ZKmtIXi1gNBEIaZu4+a/E=" class="using" qualifier="A::f">
+    <file short-path="using-function-local-overloads.cpp" source-path="using-function-local-overloads.cpp" line="12"/>
+    <named id="N0+WoYktWiHOeI6T/zCKyjtVjUU="/>
+    <named id="OdPJWl984rpJN717Abrgnrwq2Kw="/>
+    <named id="FuaTgMW0VtO+b4uzr/DCmx9vlb0="/>
+  </using>
+</namespace>
+</mrdocs>

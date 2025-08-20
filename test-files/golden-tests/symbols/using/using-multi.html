@@ -18,16 +18,11 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="#LongName"><code>LongName</code></a> </td></tr>
+<td><a href="#A"><code>A</code></a> </td></tr>
 </tbody>
 </table>
 
-</div>
-<div>
-<div>
-<h2 id="LongName"><a href="#LongName">LongName</a></h2>
-</div>
-<h2>Types</h2>
+<h2>Using Declarations</h2>
 <table style="table-layout: fixed; width: 100%;">
 <thead>
 <tr>
@@ -36,57 +31,74 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="#LongName-S1"><code>S1</code></a> </td></tr><tr>
-<td><a href="#LongName-S2"><code>S2</code></a> </td></tr>
+<td><a href="#f"><code>f</code></a> </td></tr><tr>
+<td><a href="#g"><code>g</code></a> </td></tr>
 </tbody>
 </table>
 
 </div>
 <div>
 <div>
-<h2 id="LongName-S1"><a href="#LongName-S1">LongName::S1</a></h2>
+<h2 id="A"><a href="#A">A</a></h2>
+</div>
+<h2>Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#A-f"><code>f</code></a> </td></tr><tr>
+<td><a href="#A-g"><code>g</code></a> </td></tr>
+</tbody>
+</table>
+
+</div>
+<div>
+<div>
+<h2 id="A-f"><a href="#A-f">A::f</a></h2>
 </div>
 <div>
 <h3>Synopsis</h3>
 <div>
-Declared in <code>&lt;using-2.cpp&gt;</code></div>
+Declared in <code>&lt;using-multi.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
-struct S1;
+void
+f(int);
 </code>
 </pre>
 </div>
-
-
 </div>
 <div>
 <div>
-<h2 id="LongName-S2"><a href="#LongName-S2">LongName::S2</a></h2>
+<h2 id="A-g"><a href="#A-g">A::g</a></h2>
 </div>
 <div>
 <h3>Synopsis</h3>
 <div>
-Declared in <code>&lt;using-2.cpp&gt;</code></div>
+Declared in <code>&lt;using-multi.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
-struct S2;
+void
+g(int);
 </code>
 </pre>
 </div>
-
-
 </div>
 <div>
 <div>
-<h2 id="S1"><a href="#S1">S1</a></h2>
+<h2 id="f"><a href="#f">f</a></h2>
 </div>
 <div>
 <h3>Synopsis</h3>
 <div>
-Declared in <code>&lt;using-2.cpp&gt;</code></div>
+Declared in <code>&lt;using-multi.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
-using <a href="#LongName">LongName</a>::S1;
+using A::f;
 </code>
 </pre>
 </div>
@@ -100,7 +112,7 @@ using <a href="#LongName">LongName</a>::S1;
 </thead>
 <tbody>
 <tr>
-<td>S1</td>
+<td>f</td>
 </tr>
 </tbody>
 </table>
@@ -109,15 +121,15 @@ using <a href="#LongName">LongName</a>::S1;
 </div>
 <div>
 <div>
-<h2 id="S2"><a href="#S2">S2</a></h2>
+<h2 id="g"><a href="#g">g</a></h2>
 </div>
 <div>
 <h3>Synopsis</h3>
 <div>
-Declared in <code>&lt;using-2.cpp&gt;</code></div>
+Declared in <code>&lt;using-multi.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">
-using <a href="#LongName">LongName</a>::S2;
+using A::g;
 </code>
 </pre>
 </div>
@@ -131,7 +143,7 @@ using <a href="#LongName">LongName</a>::S2;
 </thead>
 <tbody>
 <tr>
-<td>S2</td>
+<td>g</td>
 </tr>
 </tbody>
 </table>

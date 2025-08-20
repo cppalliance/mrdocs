@@ -1,0 +1,72 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Namespaces
+
+[cols=1]
+|===
+| Name
+| link:#A[`A`] 
+|===
+
+=== Using Declarations
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#f[`f`] 
+| f is also available in the global namespace
+|===
+
+[#A]
+== A
+
+=== Functions
+
+[cols=1]
+|===
+| Name
+| link:#A-f[`f`] 
+|===
+
+[#A-f]
+== link:#A[A]::f
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(int);
+----
+
+[#f]
+== f
+
+f is also available in the global namespace
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using A::f;
+----
+
+=== Introduced Symbols
+
+[cols=1]
+|===
+| Name
+| f
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

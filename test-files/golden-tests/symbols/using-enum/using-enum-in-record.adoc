@@ -1,0 +1,91 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Namespaces
+
+[cols=1]
+|===
+| Name
+| link:#A[`A`] 
+|===
+
+=== Types
+
+[cols=1]
+|===
+| Name
+| link:#B[`B`] 
+|===
+
+=== Functions
+
+[cols=1]
+|===
+| Name
+| link:#g[`g`] 
+|===
+
+[#A]
+== A
+
+=== Enums
+
+[cols=1]
+|===
+| Name
+| link:#A-E[`E`] 
+|===
+
+[#A-E]
+== link:#A[A]::E
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;enum&hyphen;in&hyphen;record&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+enum class E : int;
+----
+
+=== Members
+
+
+[cols=2]
+|===
+| Name
+| Description
+|`e1`
+|The constant to be introduced
+|===
+
+[#B]
+== B
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;enum&hyphen;in&hyphen;record&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+class B;
+----
+
+[#g]
+== g
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;enum&hyphen;in&hyphen;record&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+g();
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

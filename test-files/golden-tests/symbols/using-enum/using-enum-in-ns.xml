@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <namespace name="A" id="jQQu/8mLNzRQvGtbkKMwwloVDpw=">
+    <enum name="E" class="scoped" id="a5uhL/8g9ACd/JSUdADFNrjlrmA=">
+      <base>
+        <type name="int"/>
+      </base>
+      <file short-path="using-enum-in-ns.cpp" source-path="using-enum-in-ns.cpp" line="3" class="def"/>
+      <enum-constant name="e1" initializer="0" id="wwbsykALj7y7OWYYyP6gTbo876U=">
+        <file short-path="using-enum-in-ns.cpp" source-path="using-enum-in-ns.cpp" line="5"/>
+        <doc>
+          <brief>
+            <text>The constant to be introduced</text>
+          </brief>
+        </doc>
+      </enum-constant>
+    </enum>
+  </namespace>
+  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
+    <file short-path="using-enum-in-ns.cpp" source-path="using-enum-in-ns.cpp" line="11" class="def"/>
+  </function>
+</namespace>
+</mrdocs>
