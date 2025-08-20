@@ -39,14 +39,14 @@ merge(UsingInfo& I, UsingInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
     merge(I.asInfo(), std::move(Other.asInfo()));
-    reduceSymbolIDs(I.UsingSymbols, std::move(Other.UsingSymbols));
+    reduceSymbolIDs(I.ShadowDeclarations, std::move(Other.ShadowDeclarations));
     if (I.Class == UsingClass::Normal)
     {
         I.Class = Other.Class;
     }
-    if (!I.Qualifier)
+    if (!I.IntroducedName)
     {
-        I.Qualifier = std::move(Other.Qualifier);
+        I.IntroducedName = std::move(Other.IntroducedName);
     }
 }
 
