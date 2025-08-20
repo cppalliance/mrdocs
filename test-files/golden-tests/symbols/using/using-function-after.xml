@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <namespace name="A" id="jQQu/8mLNzRQvGtbkKMwwloVDpw=">
+    <function name="f" id="Bt/dVoQvE7M4sJbKQH+g/hiv0Os=">
+      <file short-path="using-function-after.cpp" source-path="using-function-after.cpp" line="10"/>
+      <param>
+        <type name="char"/>
+      </param>
+    </function>
+    <function name="f" id="FuaTgMW0VtO+b4uzr/DCmx9vlb0=">
+      <file short-path="using-function-after.cpp" source-path="using-function-after.cpp" line="3"/>
+      <param>
+        <type name="int"/>
+      </param>
+    </function>
+  </namespace>
+  <using id="FhSdC4kR2+KOxLCiCUQ9mu1WNoY=" class="using" qualifier="A::f">
+    <file short-path="using-function-after.cpp" source-path="using-function-after.cpp" line="6"/>
+    <named id="FuaTgMW0VtO+b4uzr/DCmx9vlb0="/>
+  </using>
+</namespace>
+</mrdocs>

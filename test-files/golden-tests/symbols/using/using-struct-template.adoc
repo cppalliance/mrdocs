@@ -12,6 +12,15 @@
 | link:#LongName[`LongName`] 
 |===
 
+=== Using Declarations
+
+[cols=1]
+|===
+| Name
+| link:#S1[`S1`] 
+| link:#S2[`S2`] 
+|===
+
 [#LongName]
 == LongName
 
@@ -29,7 +38,7 @@
 
 === Synopsis
 
-Declared in `&lt;using&hyphen;2&period;cpp&gt;`
+Declared in `&lt;using&hyphen;struct&hyphen;template&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -41,7 +50,7 @@ struct S1;
 
 === Synopsis
 
-Declared in `&lt;using&hyphen;2&period;cpp&gt;`
+Declared in `&lt;using&hyphen;struct&hyphen;template&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -53,16 +62,16 @@ struct S2;
 
 === Synopsis
 
-Declared in `&lt;using&hyphen;2&period;cpp&gt;`
+Declared in `&lt;using&hyphen;struct&hyphen;template&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using link:#LongName[LongName]::S1;
+using LongName::S1;
 ----
 
 === Introduced Symbols
 
-[cols=2]
+[cols=1]
 |===
 | Name
 | S1
@@ -73,16 +82,16 @@ using link:#LongName[LongName]::S1;
 
 === Synopsis
 
-Declared in `&lt;using&hyphen;2&period;cpp&gt;`
+Declared in `&lt;using&hyphen;struct&hyphen;template&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using link:#LongName[LongName]::S2;
+using LongName::S2;
 ----
 
 === Introduced Symbols
 
-[cols=2]
+[cols=1]
 |===
 | Name
 | S2

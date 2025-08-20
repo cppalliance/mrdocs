@@ -19,7 +19,7 @@
 
 === Synopsis
 
-Declared in `&lt;using&hyphen;3&period;cpp&gt;`
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -49,7 +49,7 @@ struct A;
 
 === Synopsis
 
-Declared in `&lt;using&hyphen;3&period;cpp&gt;`
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -62,7 +62,7 @@ f(int);
 
 === Synopsis
 
-Declared in `&lt;using&hyphen;3&period;cpp&gt;`
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -92,7 +92,7 @@ struct B;
 
 === Synopsis
 
-Declared in `&lt;using&hyphen;3&period;cpp&gt;`
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -105,7 +105,7 @@ f(bool);
 
 === Synopsis
 
-Declared in `&lt;using&hyphen;3&period;cpp&gt;`
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -150,7 +150,7 @@ struct C
 
 === Synopses
 
-Declared in `&lt;using&hyphen;3&period;cpp&gt;`
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -175,7 +175,7 @@ link:#A-f[f](int);
 
 === Synopsis
 
-Declared in `&lt;using&hyphen;3&period;cpp&gt;`
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -188,7 +188,7 @@ f(bool);
 
 === Synopsis
 
-Declared in `&lt;using&hyphen;3&period;cpp&gt;`
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -201,16 +201,16 @@ f(int);
 
 === Synopsis
 
-Declared in `&lt;using&hyphen;3&period;cpp&gt;`
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using link:#A[A]::f;
+using A::f;
 ----
 
 === Introduced Symbols
 
-[cols=2]
+[cols=1]
 |===
 | Name
 | f
@@ -221,16 +221,16 @@ using link:#A[A]::f;
 
 === Synopsis
 
-Declared in `&lt;using&hyphen;3&period;cpp&gt;`
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-using link:#B[B]::f;
+using B::f;
 ----
 
 === Introduced Symbols
 
-[cols=2]
+[cols=1]
 |===
 | Name
 | f

@@ -1,0 +1,130 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Namespaces
+
+[cols=1]
+|===
+| Name
+| link:#A[`A`] 
+|===
+
+=== Functions
+
+[cols=1]
+|===
+| Name
+| link:#g[`g`] 
+|===
+
+=== Variables
+
+[cols=1]
+|===
+| Name
+| link:#a[`a`] 
+|===
+
+=== Using Declarations
+
+[cols=1]
+|===
+| Name
+| link:#f[`f`] 
+|===
+
+[#A]
+== A
+
+=== Types
+
+[cols=1]
+|===
+| Name
+| link:#A-f-05[`f`] 
+|===
+
+=== Functions
+
+[cols=1]
+|===
+| Name
+| link:#A-f-01[`f`] 
+|===
+
+[#A-f-05]
+== link:#A[A]::f
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;function&hyphen;and&hyphen;type&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct f;
+----
+
+[#A-f-01]
+== link:#A[A]::f
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;function&hyphen;and&hyphen;type&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(int);
+----
+
+[#g]
+== g
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;function&hyphen;and&hyphen;type&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+g();
+----
+
+[#a]
+== a
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;function&hyphen;and&hyphen;type&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#A-f-05[f] a = a;
+----
+
+[#f]
+== f
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;function&hyphen;and&hyphen;type&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using A::f;
+----
+
+=== Introduced Symbols
+
+[cols=1]
+|===
+| Name
+| f
+| f
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

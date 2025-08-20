@@ -1,0 +1,63 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols=1]
+|===
+| Name
+| link:#Base[`Base`] 
+| link:#Derived[`Derived`] 
+|===
+
+[#Base]
+== Base
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;typename&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class T&gt;
+class Base;
+----
+
+=== Types
+
+[cols=1]
+|===
+| Name
+| link:#Base-V[`V`] 
+|===
+
+[#Base-V]
+== link:#Base[Base]::V
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;typename&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using V = T;
+----
+
+[#Derived]
+== Derived
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;typename&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class T&gt;
+class Derived;
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
