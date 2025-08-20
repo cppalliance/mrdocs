@@ -500,6 +500,9 @@ jobs:
 
       - name: Clone MrDocs
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
 
       - name: Set Repository Ownership
         run: |
