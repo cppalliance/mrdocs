@@ -3,7 +3,7 @@
 == Why automate documentation?
 
 {cpp} API design is challenging.
-When you write a function signature, or declare a class, it is at that moment when you are likely to have as much information as you will ever have about what it is supposed to do.
+When you write a function signature or declare a class, it is at that moment that you are likely to have as much information as you will ever have about what it is supposed to do.
 The more time passes before you write the documentation, the less likely you are to remember all the details of what motivated the API in the first place.
 
 In other words, because best and worst engineers are naturally lazy, the *temporal adjacency* of the {cpp} declaration to the documentation improves outcomes.
@@ -17,11 +17,11 @@ In summary, the automated extraction of reference documentation from {cpp} decla
 * And causally connected documentation is more accurate
 
 From the perspective of engineers, however, the biggest advantage of automated documentation is that it implies a single source of truth for the API at a low cost.
-However, {cpp} codebases are notoriously difficult to document automatically because of constructs where the code needs to diverge from the intended API that represents the contract with the user.
+However, {cpp} codebases are notoriously challenging to document automatically because of constructs where the code needs to diverge from the intended API that represents the contract with the user.
 
-Tools like Doxygen typically require workarounds and manual intervention via preprocessor macros to get the documentation right.
-These workarounds are problematic because they effectively mean that there are two versions of the code: the well-formed and the ill-formed versions.
-This subverts the single sources of truth for the code.
+Tools like Doxygen typically require workarounds and manual intervention via preprocessor macros to produce accurate documentation.
+These workarounds are problematic because they result in two versions of the code: the well-formed and the ill-formed versions.
+This subverts the single source of truth for the code.
 
 |===
 |  | Mr. Docs | Automatic | Manual | No Reference
@@ -38,34 +38,38 @@ This is a problem because header files are not always the best source of truth f
 Developers familiar with https://cppreference.com[cppreference.com,window=_blank] will know that the documentation there is often more informative than the header files.
 * A common alternative is to provide a manual reference to the API.
 Developers duplicate the signatures, which requires extra work.
-This strategy tends to work well for small libraries and allows the developer to directly express the contract with the user.
+This strategy tends to work well for small libraries and allows the developer to express the contract with the user directly.
 However, as the single source of truth is lost, it becomes unmanageable as the codebase grows.
 When the declaration changes, they forget to edit the docs, and the reference becomes out of date.
 * In this case, it looks like the best solution is to automate the documentation.
 The causal connection between the declaration and the generated documentation improves outcomes.
-That's when developers face difficulties with existing tools like Doxygen, which require workarounds and manual intervention to get the documentation right.
+That's when developers face difficulties with existing tools like Doxygen, which require workarounds and manual intervention to produce accurate documentation.
 The workarounds mean that there are two versions of the code: the well-formed and the ill-formed versions.
-* The philosophy behind MrDocs is to provide solutions to these workarounds so that the single source of truth can be maintained with minimal effort by developers.
+* The philosophy behind Mr.Docs is to provide solutions to these workarounds so that the single source of truth can be maintained with minimal effort by developers.
 With Mr.Docs, the documented {cpp} code should be the same as the code that is compiled.
 
 == Customization
 
 Once the documentation is extracted from the code, it is necessary to format it in a way that is useful to the user.
-This usually involves generating output files that match the content of the documentation to the user's needs.
+This usually involves generating output files that match the documentation's content to the user's needs.
 
 A limitation of existing tools like Doxygen is that their output formats are not very customizable.
 It supports minor customization in the output style and, for custom content formats, it requires much more complex workflows, like generating XML files and writing secondary applications to process them.
 
-MrDocs attempts to support multiple output formats and customization options.
+MrDocs supports multiple output formats and customization options.
 In practice, MrDocs attempts to provide three levels of customization:
 
 * At the first level, the user can use an existing generator and customize its templates and helper functions.
 * The user can write a MrDocs plugin at a second level that defines a new generator.
 * At a third level, it can use a generator for a structured file format and consume the output in a more uncomplicated secondary application or script.
 
-These multiple levels of complexity mean developers can worry only about the documentation content.
+These multiple levels of complexity mean developers can focus solely on the documentation content.
 In practice, developers rarely need new generators and are usually only interested in changing how an existing generator formats the output.
 Removing the necessity of writing and maintaining a secondary application only to customize the output via XML files can save these developers an immense amount of time.
+
+=== Custom Main Pages
+
+This customized design means MrDocs does not need to support custom main pages directly. Instead, you can create your own by writing your markup files. These pages are authored entirely by the user and can be seamlessly combined with the MrDocs output, since the output is designed to be customized to your needs.
 
 == {cpp} Constructs
 

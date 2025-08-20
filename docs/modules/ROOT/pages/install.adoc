@@ -12,8 +12,8 @@ mrdocs-releases::[]
 [#mrdocs-bootstrap-script]
 == Bootstrap Script
 
-The bootstrap script available in the repository provides an alternative way to install MrDocs and its
-dependencies from source. Just run the script from the root of the MrDocs repository:
+The bootstrap script available in the repository provides an alternative way to install Mr.Docs and its
+dependencies from source. Just run the script from the root of the Mr.Docs repository:
 
 [source,bash]
 ----
@@ -22,7 +22,7 @@ cd mrdocs
 python bootstrap.py
 ----
 
-Or if you just want to install MrDocs without cloning the repository, you can run the script directly from the web:
+Or if you just want to install Mr.Docs without cloning the repository, you can run the script directly from the web:
 
 [tabs]
 ====
@@ -45,9 +45,9 @@ python -c "$(curl -fsSL https://raw.githubusercontent.com/cppalliance/mrdocs/ref
 --
 ====
 
-This method automates the download, configuration, and build steps for MrDocs and all required third-party libraries.
+This method automates the download, configuration, and build steps for Mr.Docs and all required third-party libraries.
 It is especially useful for developers and for users who prefer a streamlined, interactive setup or need to install
-MrDocs in custom environments.
+Mr.Docs in custom environments.
 
 The script will prompt you for the installation directory and all other options.
 Every option can be defined in the command line directly instead of being prompted.
@@ -64,7 +64,7 @@ python bootstrap.py --non-interactive --mrdocs-build-type=Release --third-party-
 ----
 
 In the default case, the script will download the source code to the current directory
-and install MrDocs system-wide.
+and install Mr.Docs system-wide.
 
 [tabs]
 ====
@@ -89,13 +89,13 @@ python -c "$(curl -fsSL https://raw.githubusercontent.com/cppalliance/mrdocs/ref
 
 The script handles tool checks, repository cloning, patching, and CMake configuration, reducing
 manual intervention and potential errors.
-This approach is recommended for developers, advanced users, or those integrating MrDocs
+This approach is recommended for developers, advanced users, or those integrating Mr.Docs
 into larger projects.
 
 [#mrdocs-source]
 == Manually Install from Source
 
-The following instructions assume we are at a parent directory that's going to contain both the MrDocs and the third-party dependencies directories.
+The following instructions assume we are at a parent directory that's going to contain both the Mr.Docs and the third-party dependencies directories.
 
 [source]
 ----
@@ -104,7 +104,7 @@ The following instructions assume we are at a parent directory that's going to c
   + third-party
 ----
 
-Clone the MrDocs repository with:
+Clone the Mr.Docs repository with:
 
 [source,bash]
 ----
@@ -122,7 +122,7 @@ cd third-party
 [NOTE]
 ====
 These instructions assume all dependencies are installed in the `third-party` directory for simplicity.
-Feel free to install them anywhere you want and adjust the main MrDocs configuration command later.
+Feel free to install them anywhere you want and adjust the main Mr.Docs configuration command later.
 ====
 
 [IMPORTANT]
@@ -133,7 +133,7 @@ Binaries are available at https://cmake.org/download/[CMake's official website,w
 
 === Duktape
 
-MrDocs uses the `duktape` library for JavaScript parsing.
+Mr.Docs uses the `duktape` library for JavaScript parsing.
 From the `third-party` directory, you can download the `duktape` source code from the official release:
 
 [tabs]

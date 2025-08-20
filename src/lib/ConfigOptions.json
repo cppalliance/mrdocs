@@ -3,7 +3,7 @@
     "category": "Command Line Options",
     "command-line-only": true,
     "brief": "Options that can only be provided via the command line",
-    "details": "The following options can be used to control the general behavior of MrDocs and can only be provided via the command line. These include options to specify inputs and the configuration file, which cannot be set on the configuration file itself.",
+    "details": "The following options can be used to control the general behavior of Mr.Docs and can only be provided via the command line. These include options to specify inputs and the configuration file, which cannot be set on the configuration file itself.",
     "options": [
       {
         "name": "cmd-line-inputs",
@@ -25,7 +25,7 @@
       {
         "name": "config",
         "command-line-only": true,
-        "brief": "MrDocs configuration file",
+        "brief": "Mr.Docs configuration file",
         "details": "The configuration file is a YAML file that contains the options used to generate the documentation. The configuration file is read and the options are used to generate the documentation. The configuration file can be used to specify the source code, the output directory, the compilation database, the generator, and the filters.",
         "type": "file-path",
         "default": "<cwd>/mrdocs.yml",
@@ -61,7 +61,7 @@
       {
         "name": "compilation-database",
         "brief": "Path to the compilation database",
-        "details": "Path to the compilation database or a build script to generate it. The compilation database is a JSON file that contains the compiler commands used to build the source code. The compilation database is used to extract the compiler flags and the source files used to build the source code and extract symbols. This option also accepts the path to a build script such as CMakeLists.txt to be used to generate the compilation database. In this case, MrDocs will look for CMake in `PATH` or in `CMAKE_ROOT` and run the script to generate the compilation database file.",
+        "details": "Path to the compilation database or a build script to generate it. The compilation database is a JSON file that contains the compiler commands used to build the source code. The compilation database is used to extract the compiler flags and the source files used to build the source code and extract symbols. This option also accepts the path to a build script such as CMakeLists.txt to be used to generate the compilation database. In this case, Mr.Docs will look for CMake in `PATH` or in `CMAKE_ROOT` and run the script to generate the compilation database file.",
         "type": "file-path",
         "default": "",
         "relative-to": "<config-dir>",
@@ -88,7 +88,7 @@
       {
         "name": "recursive",
         "brief": "Recursively include files from \"input\" paths",
-        "details": "Recursively include files. When set to true, MrDocs includes files in subdirectories of the input directories. When set to false, MrDocs includes only the files in the input directories.",
+        "details": "Recursively include files. When set to true, Mr.Docs includes files in subdirectories of the input directories. When set to false, Mr.Docs includes only the files in the input directories.",
         "type": "bool",
         "default": true
       },
@@ -162,26 +162,26 @@
   {
     "category": "Comment Parsing",
     "brief": "Options to control how comments are parsed",
-    "details": "MrDocs extracts metadata from the comments in the source code. The following options control how comments are parsed.",
+    "details": "Mr.Docs extracts metadata from the comments in the source code. The following options control how comments are parsed.",
     "options": [
       {
         "name": "auto-brief",
         "brief": "Use the first line of the comment as the brief",
-        "details": "When set to `true`, MrDocs uses the first line (until the first dot, question mark, or exclamation mark) of the comment as the brief of the symbol. When set to `false`, a explicit @brief command is required.",
+        "details": "When set to `true`, Mr.Docs uses the first line (until the first dot, question mark, or exclamation mark) of the comment as the brief of the symbol. When set to `false`, a explicit @brief command is required.",
         "type": "bool",
         "default": true
       },
       {
         "name": "auto-relates",
         "brief": "Automatically find non-member functions",
-        "details": "When set to `true`, MrDocs automatically finds non-member functions that are related to the current class.",
+        "details": "When set to `true`, Mr.Docs automatically finds non-member functions that are related to the current class.",
         "type": "bool",
         "default": true
       },
       {
         "name": "auto-function-metadata",
         "brief": "Automatically provide missing documentation for special functions and trivial metadata",
-        "details": "When set to `true`, MrDocs automatically provides documentation for special functions, such as constructors, destructors, and operators. It also provides documentation for missing documentation metadata, such as known types.",
+        "details": "When set to `true`, Mr.Docs automatically provides documentation for special functions, such as constructors, destructors, and operators. It also provides documentation for missing documentation metadata, such as known types.",
         "type": "bool",
         "default": true
       }

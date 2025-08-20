@@ -9,7 +9,7 @@
     },
     "auto-brief": {
       "default": true,
-      "description": "When set to `true`, MrDocs uses the first line (until the first dot, question mark, or exclamation mark) of the comment as the brief of the symbol. When set to `false`, a explicit @brief command is required.",
+      "description": "When set to `true`, Mr.Docs uses the first line (until the first dot, question mark, or exclamation mark) of the comment as the brief of the symbol. When set to `false`, a explicit @brief command is required.",
       "enum": [
         true,
         false
@@ -19,7 +19,7 @@
     },
     "auto-function-metadata": {
       "default": true,
-      "description": "When set to `true`, MrDocs automatically provides documentation for special functions, such as constructors, destructors, and operators. It also provides documentation for missing documentation metadata, such as known types.",
+      "description": "When set to `true`, Mr.Docs automatically provides documentation for special functions, such as constructors, destructors, and operators. It also provides documentation for missing documentation metadata, such as known types.",
       "enum": [
         true,
         false
@@ -29,7 +29,7 @@
     },
     "auto-relates": {
       "default": true,
-      "description": "When set to `true`, MrDocs automatically finds non-member functions that are related to the current class.",
+      "description": "When set to `true`, Mr.Docs automatically finds non-member functions that are related to the current class.",
       "enum": [
         true,
         false
@@ -51,7 +51,7 @@
     },
     "compilation-database": {
       "default": "",
-      "description": "Path to the compilation database or a build script to generate it. The compilation database is a JSON file that contains the compiler commands used to build the source code. The compilation database is used to extract the compiler flags and the source files used to build the source code and extract symbols. This option also accepts the path to a build script such as CMakeLists.txt to be used to generate the compilation database. In this case, MrDocs will look for CMake in `PATH` or in `CMAKE_ROOT` and run the script to generate the compilation database file.",
+      "description": "Path to the compilation database or a build script to generate it. The compilation database is a JSON file that contains the compiler commands used to build the source code. The compilation database is used to extract the compiler flags and the source files used to build the source code and extract symbols. This option also accepts the path to a build script such as CMakeLists.txt to be used to generate the compilation database. In this case, Mr.Docs will look for CMake in `PATH` or in `CMAKE_ROOT` and run the script to generate the compilation database file.",
       "title": "Path to the compilation database",
       "type": "string"
     },
@@ -372,7 +372,7 @@
     },
     "recursive": {
       "default": true,
-      "description": "Recursively include files. When set to true, MrDocs includes files in subdirectories of the input directories. When set to false, MrDocs includes only the files in the input directories.",
+      "description": "Recursively include files. When set to true, Mr.Docs includes files in subdirectories of the input directories. When set to false, Mr.Docs includes only the files in the input directories.",
       "enum": [
         true,
         false

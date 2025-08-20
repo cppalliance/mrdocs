@@ -1,7 +1,7 @@
 {
   "name": "mrdocs-website",
   "version": "1.0.0",
-  "description": "Website for MrDocs",
+  "description": "Website for Mr.Docs",
   "main": "render.js",
   "scripts": {
     "start": "node render.js"

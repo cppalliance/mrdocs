@@ -1,9 +1,9 @@
 {
-  "title": "MrDocs",
-  "description": "MrDocs is a C++ documentation generator for your projects.",
+  "title": "Mr.Docs",
+  "description": "Mr.Docs is a C++ documentation generator for your projects.",
   "page": {
-    "title": "MrDocs",
-    "description": "MrDocs is a C++ documentation generator for your projects."
+    "title": "Mr.Docs",
+    "description": "Mr.Docs is a C++ documentation generator for your projects."
   },
   "site": {
     "url": "https://www.mrdocs.com",
@@ -28,7 +28,7 @@
   "banner": {
     "description": "No workarounds: A tool that fully understands C++",
     "header": "Simple code, simple documentation",
-    "subheader": "MrDocs understands C++ so you can focus on keeping the code simple."
+    "subheader": "Mr.Docs understands C++ so you can focus on keeping the code simple."
   },
   "features": [
     {
@@ -87,7 +87,7 @@
   ],
   "panels": [
     {
-      "description": "MrDocs understands C++ features such as attributes and noexcept functions.",
+      "description": "Mr.Docs understands C++ features such as attributes and noexcept functions.",
       "source": "terminate.cpp"
     },
     {
