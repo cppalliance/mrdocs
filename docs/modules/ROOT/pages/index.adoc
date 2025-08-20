@@ -1,6 +1,6 @@
-= MrDocs
+= Mr.Docs
 Alan Freitas <alandefreitas@gmail.com>
-:description: MrDocs: A Clang/LLVM tool for building reference documentation from C++ code and javadoc comments.
+:description: Mr.Docs: A Clang/LLVM tool for building reference documentation from C++ code and javadoc comments.
 :sectanchors:
 :url-repo: https://github.com/cppalliance/mrdocs
 :page-tags: mrdocs
@@ -12,7 +12,7 @@ image::MrDocsBanner.jpg[link=https://www.mrdocs.com]
 - However, documenting {cpp} poses significant challenges due to discrepancies between the codebase and the public API. Doxygen remains a popular tool, yet it is suboptimal for {cpp} as it fails to fully comprehend {cpp} constructs and requires many transformation steps, including the incorporation of many macros within the {cpp} code. These macros maintain well-formed and ill-formed versions of the code, undermining the goal of unifying the source of truth.
 - Existing solutions frequently need better maintenance or usability issues, prompting users to revert to Doxygen.
 - An ideal solution would inherently understand {cpp} constructs, be actively maintained, and offer diverse options for customizing the output format.
-- MrDocs embodies these qualities. Supported by full-time developers from the {cpp} Alliance, MrDocs inherently comprehends {cpp} constructs without the need for macros and provides various output formats, customizable templates, and plugin support, ensuring it meets the demands of comprehensive and efficient documentation.
+- Mr.Docs embodies these qualities. Supported by full-time developers from the {cpp} Alliance, Mr.Docs inherently comprehends {cpp} constructs without the need for macros and provides various output formats, customizable templates, and plugin support, ensuring it meets the demands of comprehensive and efficient documentation.
 
 image::https://github.com/cppalliance/mrdocs/actions/workflows/ci.yml/badge.svg[]
 

@@ -1,7 +1,7 @@
 = Generators
 
-MrDocs uses a generator to convert the extracted symbols into documentation.
-MrDocs supports multiple output formats that can be specified via the `generate` option:
+Mr.Docs uses a generator to convert the extracted symbols into documentation.
+Mr.Docs supports multiple output formats that can be specified via the `generate` option:
 
 The `generator` option can be used to specify the output format:
 
@@ -42,7 +42,7 @@ HTML can be generated directly with the `html` format.
 
 == Choosing the Right Generator
 
-The scatter plot below illustrates the available output formats for MrDocs, along with hypothetical solutions, in terms of **redundancy** and **convenience**.
+The scatter plot below illustrates the available output formats for Mr.Docs, along with hypothetical solutions, in terms of **redundancy** and **convenience**.
 
 image::generator_front.svg[Output Formats Scatter Plot,width=600]
 
@@ -56,7 +56,7 @@ Although Clang can generate and print an Abstract Syntax Tree (AST) directly for
 - Equivalent symbols can be redeclared multiple times in the same translation unit and across translation units.
 - The documentation for equivalent symbols also needs to be unified.
 
-The scatter plot shows the following output formats supported by MrDocs:
+The scatter plot shows the following output formats supported by Mr.Docs:
 
 1. **XML**: Aggregates all symbols and their documentation in a format that is straightforward to process.
 It's suitable for advanced use cases involving custom post-processing tools.
@@ -73,7 +73,7 @@ Dots in the background represent other potential formats that do not lie on the 
 [#generator-templates]
 == Generator Templates
 
-MrDocs attempts to support various alternatives for customizing the output format and style without complex workflows to post-process XML output.
+Mr.Docs attempts to support various alternatives for customizing the output format and style without complex workflows to post-process XML output.
 The `adoc` and `html` generators use https://handlebarsjs.com/[Handlebars,window=_blank] templates.
 These templates can be customized to change the output format and style of the documentation.
 

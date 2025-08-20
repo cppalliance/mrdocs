@@ -1,6 +1,6 @@
 = Demos
 
-A few examples of reference documentation generated with MrDocs are available in https://mrdocs.com/demos/:
+A few examples of reference documentation generated with Mr.Docs are available in https://mrdocs.com/demos/:
 
 mrdocs-demos::[]
 

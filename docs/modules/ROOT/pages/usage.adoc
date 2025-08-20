@@ -1,6 +1,6 @@
 = Basic Usage
 
-The diagram below illustrates the workflow of the MrDocs documentation tool.
+The diagram below illustrates the workflow of the Mr.Docs documentation tool.
 It shows how inputs are transformed step by step into the final documentation output.
 Each component in the diagram represents a distinct type of entity:
 
@@ -22,7 +22,7 @@ All symbols are extracted with Clang to generate a unified corpus of symbols wit
 For more details on each component, refer to the corresponding sections of this guide.
 
 [#config-file]
-== MrDocs configuration file
+== Mr.Docs configuration file
 
 The `mrdocs.yml` configuration file contains information about the project.
 If you're used to Doxygen, this file is similar to the `Doxyfile` configuration file.
@@ -53,13 +53,13 @@ The most important information is the `source-root` option, which determines the
 The list of all available options can be found in the xref:config-file.adoc[] page.
 
 [#cli]
-== MrDocs invocation
+== Mr.Docs invocation
 
 NOTE: For consistency, these instructions assume you have the `mrdocs` executable in PATH.
 
 === Basic invocation
 
-You can invoke MrDocs from the command line with the following command:
+You can invoke Mr.Docs from the command line with the following command:
 
 [source,bash]
 ----
@@ -73,7 +73,7 @@ If you are at the path of the `mrdocs.yml` file, you can simply run:
 mrdocs
 ----
 
-You can also specify other commands to MrDocs directly from the command line to set or override options from the `mrdocs.yml` file (See all options in xref:config-file.adoc[] page).
+You can also specify other commands to Mr.Docs directly from the command line to set or override options from the `mrdocs.yml` file (See all options in xref:config-file.adoc[] page).
 
 [source,bash]
 ----
@@ -158,7 +158,7 @@ This can usually be achieved by defining a custom target in the `CMakeLists.txt`
 if (MY_PROJECT_MRDOCS_BUILD)
     # Glob all header files
     set(INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include")
-    file(GLOB_RECURSE HEADER_FILES "${INCLUDE_DIR}/*.hpp")
+    file(GLOB_RECURSE HEADER_FILES_LIST "${INCLUDE_DIR}/*.hpp")
 
     # Create a temporary source file that includes all header files
     set(TEMP_CPP_FILE "${CMAKE_CURRENT_BINARY_DIR}/all_headers.cpp")

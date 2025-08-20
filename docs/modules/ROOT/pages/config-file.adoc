@@ -1,6 +1,6 @@
 = The Configuration File
 
-MrDocs uses a configuration file to control how the documentation is generated.
+Mr.Docs uses a configuration file to control how the documentation is generated.
 The file is used to specify options such as the generator to use, additional compilation options, and filters.
 
 Here's an example of a configuration file:
@@ -36,7 +36,7 @@ include::partial$mrdocs-schema-example.yml[]
 
 == Build Options
 
-A number of options can be used to specify with which compile options MrDocs should be run.
+A number of options can be used to specify with which compile options Mr.Docs should be run.
 
 [source,yaml]
 ----
@@ -55,7 +55,7 @@ These definitions are included in all targets of the compilation database.
 == Filters
 
 Not all symbols in a project may be relevant to the documentation.
-MrDocs provides a way to filter out symbols based on their location and names.
+Mr.Docs provides a way to filter out symbols based on their location and names.
 
 === File Filters
 

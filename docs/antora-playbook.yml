@@ -1,7 +1,7 @@
 # npm install
 # npx antora --fetch antora-playbook.yml
 site:
-  title: MrDocs
+  title: Mr.Docs
   url: https://www.mrdocs.com/
   start_page: mrdocs::index.adoc
   robots: allow
