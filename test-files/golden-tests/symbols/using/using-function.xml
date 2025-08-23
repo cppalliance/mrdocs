@@ -4,14 +4,19 @@
 <namespace id="//////////////////////////8=">
   <namespace name="A" id="jQQu/8mLNzRQvGtbkKMwwloVDpw=">
     <function name="f" id="FuaTgMW0VtO+b4uzr/DCmx9vlb0=">
-      <file short-path="using-function.cpp" source-path="using-function.cpp" line="3"/>
+      <file short-path="using-function.cpp" source-path="using-function.cpp" line="4"/>
       <param>
         <type name="int"/>
       </param>
+      <doc>
+        <brief>
+          <text>Function being used</text>
+        </brief>
+      </doc>
     </function>
   </namespace>
   <using id="FhSdC4kR2+KOxLCiCUQ9mu1WNoY=" class="using" qualifier="A::f">
-    <file short-path="using-function.cpp" source-path="using-function.cpp" line="7"/>
+    <file short-path="using-function.cpp" source-path="using-function.cpp" line="8"/>
     <doc>
       <brief>
         <text>f is also available in the global namespace</text>

@@ -101,8 +101,7 @@ using A::f;
 [cols=1]
 |===
 | Name
-| f
+| link:#A-f-01[A::f]
 |===
-
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -213,9 +213,8 @@ using A::f;
 [cols=1]
 |===
 | Name
-| f
+| link:#A-f[A::f]
 |===
-
 [#C-f-03]
 == link:#C[C]::f
 
@@ -233,8 +232,7 @@ using B::f;
 [cols=1]
 |===
 | Name
-| f
+| link:#B-f[B::f]
 |===
-
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

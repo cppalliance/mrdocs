@@ -1,5 +1,6 @@
 namespace A
 {
+    /// Function being used
     void f(int);
 }
 
