@@ -76,9 +76,8 @@ using A::f;
 [cols=1]
 |===
 | Name
-| f
+| link:#A-f[A::f]
 |===
-
 [#g]
 == g
 
@@ -96,8 +95,7 @@ using A::g;
 [cols=1]
 |===
 | Name
-| g
+| link:#A-g[A::g]
 |===
-
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

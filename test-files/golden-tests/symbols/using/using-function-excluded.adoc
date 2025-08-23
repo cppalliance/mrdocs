@@ -61,8 +61,7 @@ using A::f;
 [cols=1]
 |===
 | Name
-| f
+| link:#A-f[A::f]
 |===
-
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -183,6 +183,24 @@
 {{#if symbol.shadows}}
 <div>
 {{#> markup/dynamic-level-h level=2 }}Introduced Symbols{{/markup/dynamic-level-h}}
+{{#if (any_of_by symbol.shadows "doc")}}
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+{{#each symbol.shadows}}
+<tr>
+<td>{{> symbol/qualified-name . }}</td>
+<td>{{> javadoc/inline-brief doc.brief }}</td>
+</tr>
+{{/each}}
+</tbody>
+</table>
+{{else}}
 <table>
 <thead>
 <tr>
@@ -192,11 +210,12 @@
 <tbody>
 {{#each symbol.shadows}}
 <tr>
-<td>{{name}}</td>
+<td>{{> symbol/qualified-name . }}</td>
 </tr>
 {{/each}}
 </tbody>
 </table>
+{{/if}}
 </div>
 
 {{/if}}

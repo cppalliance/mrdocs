@@ -27,14 +27,18 @@
 
 === Functions
 
-[cols=1]
+[cols=2]
 |===
 | Name
+| Description
 | link:#A-f[`f`] 
+| Function being used
 |===
 
 [#A-f]
 == link:#A[A]::f
+
+Function being used
 
 === Synopsis
 
@@ -62,11 +66,12 @@ using A::f;
 
 === Introduced Symbols
 
-[cols=1]
+[cols=2]
 |===
 | Name
-| f
+| Description
+| link:#A-f[A::f]
+| Function being used
 |===
-
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

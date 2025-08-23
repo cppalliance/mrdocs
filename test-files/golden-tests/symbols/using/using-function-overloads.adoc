@@ -127,10 +127,9 @@ using A::f;
 [cols=1]
 |===
 | Name
-| f
-| f
-| f
+| link:#A-f-037[A::f]
+| link:#A-f-039[A::f]
+| link:#A-f-01[A::f]
 |===
-
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

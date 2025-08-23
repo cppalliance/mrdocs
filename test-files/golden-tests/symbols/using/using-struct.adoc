@@ -74,9 +74,8 @@ using LongName::S1;
 [cols=1]
 |===
 | Name
-| S1
+| link:#LongName-S1[LongName::S1]
 |===
-
 [#S2]
 == S2
 
@@ -94,8 +93,7 @@ using LongName::S2;
 [cols=1]
 |===
 | Name
-| S2
+| link:#LongName-S2[LongName::S2]
 |===
-
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#
