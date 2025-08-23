@@ -1,4 +1,5 @@
 .toolbar {
+  background-color: rgba(255, 255, 255, 0.1);
   color: var(--toolbar-font-color);
   align-items: center;
   display: flex;
@@ -62,5 +63,5 @@
 }
 
 .toolbar .edit-this-page a {
-  color: var(--toolbar-muted-color);
+  color: var(--color-white);
 }

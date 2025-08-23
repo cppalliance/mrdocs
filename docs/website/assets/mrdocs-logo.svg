@@ -5,9 +5,12 @@
     <style>
       .st0 {
         fill: #fff;
+        stroke: #fff;
+        stroke-width: 2;
       }
     </style>
   </defs>
+  <rect x="2" y="2" width="1076" height="1076" fill="none" stroke="#fff" stroke-width="4"/>
   <g id="Layer_3">
     <g id="white-fill">
       <g>

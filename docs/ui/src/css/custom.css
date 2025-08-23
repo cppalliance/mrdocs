@@ -50,10 +50,6 @@
   color: var(--navbar-font-color);
 }
 
-.doc .content {
-  backdrop-filter: blur(10px);
-}
-
 .body .article {
   backdrop-filter: blur(10px);
   background-color: rgba(255, 255, 255, 0.1);

@@ -1,0 +1,38 @@
+/* =========================== 
+   Shared Logo Styles
+=========================== */
+
+/* Logo Styles */
+.nav .logo-link, .navbar-brand .navbar-item:first-child {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    text-decoration: none;
+}
+
+.nav .logo-link:hover {
+    opacity: 0.8;
+    text-decoration: none;
+}
+
+.nav .logo-link svg, .navbar-brand .navbar-item:first-child svg {
+    height: 48px;
+    width: auto;
+    flex-shrink: 0;
+}
+
+.nav .logo-text, .navbar-brand .navbar-item:first-child .logo-text {
+    font-weight: 700;
+    color: #fff;
+    white-space: nowrap;
+}
+
+@media (max-width: 576px) {
+    .nav .logo-link svg {
+        height: 28px;
+    }
+    
+    .nav .logo-link {
+        gap: 0.5rem;
+    }
+}

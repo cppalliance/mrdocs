@@ -66,6 +66,7 @@
   display: flex;
   flex-direction: column;
   height: inherit;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .nav-panel-menu {
@@ -185,7 +186,7 @@
 }
 
 .nav-panel-explore {
-  background: var(--nav-background);
+  background: rgba(255, 255, 255, 0.3);
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -203,7 +204,7 @@
 .nav-panel-explore .context {
   font-size: calc(15 / var(--rem-base) * 1rem);
   flex-shrink: 0;
-  color: var(--nav-muted-color);
+  color: var(--color-white);
   box-shadow: 0 -1px 0 var(--nav-panel-divider-color);
   padding: 0 0.5rem;
   display: flex;

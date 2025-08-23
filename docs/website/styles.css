@@ -1,4 +1,6 @@
 @charset "UTF-8";
+@import "../shared/logo.css";
+
 :root {
     --font-family: system-ui, -apple-system, "Segoe UI", "Roboto", "Ubuntu", "Cantarell", "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --line-height: 1.5;
@@ -2870,21 +2872,12 @@ nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: fixed;
-    z-index: 1000;
-    top: 0;
-    left: 0;
-    right: 0;
+    position: static;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+    overflow: hidden;
 }
 
-.nav .logo {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.5rem;
-}
 
 .nav ul {
     gap: 1rem;
@@ -2919,12 +2912,7 @@ nav {
     list-style: none;
 }
 
-.nav .logo-link {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #ffffff;
-}
+
 
 .nav .nav-section:last-child a[role="menuitem"] {
     font-size: 1rem;
