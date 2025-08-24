@@ -9,10 +9,9 @@ const {execSync} = require('child_process');
 
 // Read the template file
 const templateFile = 'index.html.hbs';
-const templateSource = fs.readFileSync(templateFile, 'utf8');
+let templateSource = fs.readFileSync(templateFile, 'utf8');
 
 // Compile the template
-const template = Handlebars.compile(templateSource);
 
 // Register helpers
 const helpersDir = path.join(__dirname, 'helpers');
@@ -106,6 +105,14 @@ target_compile_features(${sourceBasename} PRIVATE cxx_std_23)
     console.log(`Documentation generated successfully for panel ${panel.source}`)
     console.log(`====================================`)
 }
+
+// Replace the logo partial with actual content
+let logoPath = path.join(__dirname, '..', 'ui', 'src', 'partials', 'logo.hbs');
+let logoContent = fs.readFileSync(logoPath, 'utf8');
+templateSource = templateSource.replace(/\s*\{\{>\s*logo\s*\}\}\s*/g, logoContent);
+
+// Compile the template AFTER replacement
+let template = Handlebars.compile(templateSource);
 
 // Render the template with the data containing the snippet data
 const result = template(data);

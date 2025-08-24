@@ -1,7 +1,7 @@
 antoraVersion: '1.0.0'
 site:
   url: http://localhost:5252
-  title: Brand Docs
+  title: MrDocs
   homeUrl: &home_url /xyz/5.2/index.html
   components:
   - name: abc

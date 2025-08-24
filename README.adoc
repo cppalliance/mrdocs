@@ -1,6 +1,6 @@
 = MrDocs
 
-image::docs/modules/ROOT/images/MrDocsBanner.jpg[Mr. Docs Documentation,link=https://www.mrdocs.com]
+image::docs/modules/ROOT/images/MrDocsBanner.png[Mr. Docs Documentation,link=https://www.mrdocs.com]
 
 Visit the Mr. Docs Documentation website at https://www.mrdocs.com.
 

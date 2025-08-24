@@ -9,6 +9,16 @@ html {
   font-size: var(--body-font-size);
   height: 100%;
   scroll-behavior: smooth;
+  background:
+    radial-gradient(ellipse 100% 100% at var(--x1) var(--y1), rgba(89, 36, 99, 0.8), transparent 50%),
+    radial-gradient(ellipse 80% 120% at var(--x2) var(--y2), rgba(138, 214, 236, 0.5), transparent 55%),
+    radial-gradient(ellipse 150% 90% at var(--x3) var(--y3), rgba(40, 98, 114, 0.6), transparent 65%),
+    radial-gradient(ellipse 100% 100% at 80% 100%, rgba(89, 36, 99, 0.8), transparent 60%),
+    linear-gradient(135deg, #124b83, #124b83, #124b83);
+  background-attachment: fixed;
+  background-blend-mode: screen;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 @media screen and (min-width: 1024px) {
@@ -18,13 +28,14 @@ html {
 }
 
 body {
-  background: var(--body-background);
+  /* Remove the solid background since we're using gradient on html */
+  /* background: var(--body-background); */
   color: var(--body-font-color);
   font-family: var(--body-font-family);
   line-height: var(--body-line-height);
   margin: 0;
   tab-size: 4;
-  word-wrap: anywhere; /* aka overflow-wrap; used when hyphens are disabled or aren't sufficient */
+  word-wrap: anywhere;
 }
 
 a {
