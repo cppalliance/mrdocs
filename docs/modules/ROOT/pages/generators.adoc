@@ -258,6 +258,10 @@ When the symbol kind is `record` (e.g., `class`, `struct`, `union`), the symbol 
 | `string`
 | The default access level of the record members (e.g., `public`, `private`).
 
+| `isFinal`
+| `bool`
+| Whether the record is final.
+
 | `isTypedef`
 | `bool`
 | Whether the record is a typedef.
