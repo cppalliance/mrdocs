@@ -84,7 +84,9 @@
   "panels": [
     {
       "description": "Mr.Docs understands C++ features such as attributes and noexcept functions.",
-      "source": "terminate.cpp"
+      "source": "terminate.cpp",
+      "imageClass": "pointing",
+      "boxClass": "box3 box-shape3 box270"
     },
     {
       "description": "Specially formatted comments are rendered to form a reference as part of documentation.",

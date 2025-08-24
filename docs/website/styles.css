@@ -3093,6 +3093,16 @@ header .header-image {
     background-color: rgba(255, 255, 255, 0.25);
 }
 
+.header-cta a[aria-label="Documentation"]:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-1px);
+}
+
+.header-cta a[aria-label="Download"]:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+}
+
 /* ===========================
    Principles Styles
 =========================== */
