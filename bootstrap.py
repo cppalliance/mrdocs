@@ -2210,7 +2210,7 @@ class MrDocsInstaller:
                         f'--generator={generator}',
                         f'--addons={os.path.join(self.options.mrdocs_src_dir, "share", "mrdocs", "addons")}',
                         f'--stdlib-includes={os.path.join(self.options.llvm_install_dir, "include", "c++", "v1")}',
-                        f'--stdlib-includes={os.path.join(self.options.llvm_install_dir, "lib", "clang", "20", "include")}',
+                        f'--stdlib-includes={os.path.join(self.options.llvm_install_dir, "lib", "clang", "22", "include")}',
                         f'--libc-includes={os.path.join(self.options.mrdocs_src_dir, "share", "mrdocs", "headers", "libc-stubs")}',
                         '--log-level=warn'
                     ]
@@ -2236,7 +2236,7 @@ class MrDocsInstaller:
                                 f'--generator=adoc',
                                 f'--addons={os.path.join(self.options.mrdocs_src_dir, "share", "mrdocs", "addons")}',
                                 f'--stdlib-includes={os.path.join(self.options.llvm_install_dir, "include", "c++", "v1")}',
-                                f'--stdlib-includes={os.path.join(self.options.llvm_install_dir, "lib", "clang", "20", "include")}',
+                                f'--stdlib-includes={os.path.join(self.options.llvm_install_dir, "lib", "clang", "22", "include")}',
                                 f'--libc-includes={os.path.join(self.options.mrdocs_src_dir, "share", "mrdocs", "headers", "libc-stubs")}',
                                 f'--tagfile=reference.tag.xml',
                                 '--multipage=true',
@@ -2260,7 +2260,7 @@ class MrDocsInstaller:
                 f'--generator=adoc',
                 f'--addons={os.path.join(self.options.mrdocs_src_dir, "share", "mrdocs", "addons")}',
                 f'--stdlib-includes={os.path.join(self.options.llvm_install_dir, "include", "c++", "v1")}',
-                f'--stdlib-includes={os.path.join(self.options.llvm_install_dir, "lib", "clang", "20", "include")}',
+                f'--stdlib-includes={os.path.join(self.options.llvm_install_dir, "lib", "clang", "22", "include")}',
                 f'--libc-includes={os.path.join(self.options.mrdocs_src_dir, "share", "mrdocs", "headers", "libc-stubs")}',
                 f'--tagfile=reference.tag.xml',
                 '--multipage=true',
