@@ -41,7 +41,7 @@ jobs:
           standards: '20'
           latest-factors: |
             msvc Optimized-Debug
-            gcc UBSan Coverage
+            gcc UBSan ASan Coverage
             clang UBSan ASan
             apple-clang UBSan ASan
           factors: ''
@@ -69,14 +69,14 @@ jobs:
             llvm-hash: a1b6e7ff393533a5c4f3bdfd4efe5da106e2de2b
             llvm-build-preset-prefix: {{#if optimized-debug}}debwithopt{{else}}{{{lowercase build-type}}}{{/if}}
             llvm-build-preset-os: {{#if (ieq os 'windows') }}win{{else}}unix{{/if}}
-            llvm-sanitizer: {{#if (eq compiler 'gcc')}}{{else if ubsan}}-UBSan{{else if asan}}-ASan{{else if msan}}-MSan{{/if}}
+            llvm-sanitizer: {{#if ubsan}}-UBSan{{else if asan}}-ASan{{else if msan}}-MSan{{/if}}
             llvm-build-preset: {{{ llvm-build-preset-prefix }}}-{{{ llvm-build-preset-os }}}
             llvm-compiler-version: {{#if (or (contains version '*') (contains version '^'))}}{{else}}-{{{ version }}}{{/if}}
             llvm-archive-basename: llvm-{{{ lowercase os }}}-{{{ compiler }}}{{{ llvm-compiler-version }}}-{{{ llvm-build-preset-prefix }}}{{{ llvm-sanitizer }}}-{{{ substr llvm-hash 0 7 }}}
             llvm-root: ../third-party/llvm-project/install
             llvm-archive-extension: {{#if (ieq os 'windows') }}7z{{else}}tar.bz2{{/if}}
             llvm-archive-filename: {{{ llvm-archive-basename }}}.{{{ llvm-archive-extension }}}
-            llvm-sanitizer-config: {{#if (and (ne compiler 'clang') (ne compiler 'apple-clang'))}}{{else if ubsan}}Undefined{{else if asan}}Address{{else if msan}}MemoryWithOrigins{{/if}}
+            llvm-sanitizer-config: {{#if ubsan}}Undefined{{else if asan}}Address{{else if msan}}MemoryWithOrigins{{/if}}
             mrdocs-flags: {{#if (and (eq compiler 'gcc') (not asan)) }}-static{{/if}}{{#if (and (eq compiler 'clang') msan) }}-fsanitize-memory-track-origins{{/if}}
             mrdocs-ccflags: {{{ ccflags }}} {{{ mrdocs-flags }}}
             mrdocs-cxxflags: {{{ cxxflags }}} {{{ mrdocs-flags }}}
