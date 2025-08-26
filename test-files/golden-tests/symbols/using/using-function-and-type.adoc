@@ -12,28 +12,14 @@
 | link:#A[`A`] 
 |===
 
-=== Functions
-
-[cols=1]
-|===
-| Name
-| link:#g[`g`] 
-|===
-
-=== Variables
-
-[cols=1]
-|===
-| Name
-| link:#a[`a`] 
-|===
-
 === Using Declarations
 
-[cols=1]
+[cols=2]
 |===
 | Name
+| Description
 | link:#f[`f`] 
+| A using declaration that shadows a function and the record&period;
 |===
 
 [#A]
@@ -41,22 +27,28 @@
 
 === Types
 
-[cols=1]
+[cols=2]
 |===
 | Name
+| Description
 | link:#A-f-05[`f`] 
+| A record
 |===
 
 === Functions
 
-[cols=1]
+[cols=2]
 |===
 | Name
+| Description
 | link:#A-f-01[`f`] 
+| A function
 |===
 
 [#A-f-05]
 == link:#A[A]::f
+
+A record
 
 === Synopsis
 
@@ -70,6 +62,8 @@ struct f;
 [#A-f-01]
 == link:#A[A]::f
 
+A function
+
 === Synopsis
 
 Declared in `&lt;using&hyphen;function&hyphen;and&hyphen;type&period;cpp&gt;`
@@ -80,33 +74,10 @@ void
 f(int);
 ----
 
-[#g]
-== g
-
-=== Synopsis
-
-Declared in `&lt;using&hyphen;function&hyphen;and&hyphen;type&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-void
-g();
-----
-
-[#a]
-== a
-
-=== Synopsis
-
-Declared in `&lt;using&hyphen;function&hyphen;and&hyphen;type&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-link:#A-f-05[f] a = a;
-----
-
 [#f]
 == f
+
+A using declaration that shadows a function and the record&period;
 
 === Synopsis
 
@@ -119,11 +90,14 @@ using A::f;
 
 === Introduced Symbols
 
-[cols=1]
+[cols=2]
 |===
 | Name
+| Description
 | link:#A-f-05[A::f]
+| A record
 | link:#A-f-01[A::f]
+| A function
 |===
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#
