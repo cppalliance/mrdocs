@@ -4,20 +4,41 @@
 <namespace id="//////////////////////////8=">
   <namespace name="A" id="jQQu/8mLNzRQvGtbkKMwwloVDpw=">
     <function name="f" id="Bt/dVoQvE7M4sJbKQH+g/hiv0Os=">
-      <file short-path="using-function-after.cpp" source-path="using-function-after.cpp" line="10"/>
+      <file short-path="using-function-after.cpp" source-path="using-function-after.cpp" line="24"/>
       <param>
         <type name="char"/>
       </param>
+      <doc>
+        <brief>
+          <text>A non-shadowing declaration</text>
+        </brief>
+        <para>
+          <text>This declaration is not part of the shadow declarations of the using directive because it comes after it.</text>
+        </para>
+        <para>
+          <text>Only the declarations at the point of the using directive are considered for shadowing in the documentation.</text>
+        </para>
+      </doc>
     </function>
     <function name="f" id="FuaTgMW0VtO+b4uzr/DCmx9vlb0=">
-      <file short-path="using-function-after.cpp" source-path="using-function-after.cpp" line="3"/>
+      <file short-path="using-function-after.cpp" source-path="using-function-after.cpp" line="4"/>
       <param>
         <type name="int"/>
       </param>
+      <doc>
+        <brief>
+          <text>A shadow declaration</text>
+        </brief>
+      </doc>
     </function>
   </namespace>
   <using id="FhSdC4kR2+KOxLCiCUQ9mu1WNoY=" class="using" qualifier="A::f">
-    <file short-path="using-function-after.cpp" source-path="using-function-after.cpp" line="6"/>
+    <file short-path="using-function-after.cpp" source-path="using-function-after.cpp" line="8"/>
+    <doc>
+      <brief>
+        <text>f overloads are also available in the global namespace</text>
+      </brief>
+    </doc>
     <named id="FuaTgMW0VtO+b4uzr/DCmx9vlb0="/>
   </using>
 </namespace>

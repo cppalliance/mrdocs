@@ -14,10 +14,12 @@
 
 === Using Declarations
 
-[cols=1]
+[cols=2]
 |===
 | Name
+| Description
 | link:#f[`f`] 
+| f overloads are also available in the global namespace
 |===
 
 [#A]
@@ -30,15 +32,19 @@
 | Name
 | Description
 | link:#A-f-08[`f`] 
-| 
+| `f` overloads
 |===
 
 [#A-f-08]
 == link:#A[A]::f
 
+`f` overloads
+
 === Synopses
 
 Declared in `&lt;using&hyphen;function&hyphen;after&period;cpp&gt;`
+
+A non&hyphen;shadowing declaration
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -48,6 +54,8 @@ link:#A-f-00[f](char);
 ----
 
 [.small]#link:#A-f-00[_» more&period;&period;&period;_]#
+
+A shadow declaration
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -61,6 +69,8 @@ link:#A-f-01[f](int);
 [#A-f-00]
 == link:#A[A]::f
 
+A non&hyphen;shadowing declaration
+
 === Synopsis
 
 Declared in `&lt;using&hyphen;function&hyphen;after&period;cpp&gt;`
@@ -71,8 +81,16 @@ void
 f(char);
 ----
 
+=== Description
+
+This declaration is not part of the shadow declarations of the using directive because it comes after it&period;
+
+Only the declarations at the point of the using directive are considered for shadowing in the documentation&period;
+
 [#A-f-01]
 == link:#A[A]::f
+
+A shadow declaration
 
 === Synopsis
 
@@ -87,6 +105,8 @@ f(int);
 [#f]
 == f
 
+f overloads are also available in the global namespace
+
 === Synopsis
 
 Declared in `&lt;using&hyphen;function&hyphen;after&period;cpp&gt;`
@@ -98,10 +118,12 @@ using A::f;
 
 === Introduced Symbols
 
-[cols=1]
+[cols=2]
 |===
 | Name
+| Description
 | link:#A-f-01[A::f]
+| A shadow declaration
 |===
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#
