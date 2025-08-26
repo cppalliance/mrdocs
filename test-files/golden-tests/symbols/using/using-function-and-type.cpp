@@ -1,18 +1,11 @@
 namespace A
 {
+    /// A function
     void f(int);
+
+    /// A record
     struct f {};
 }
 
-// This using declaration will shadow both the function and the type.
+/// A using declaration that shadows a function and the record.
 using A::f;
-
-struct f a;
-
-void
-g()
-{
-    f(2);
-}
-
-

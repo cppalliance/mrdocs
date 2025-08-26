@@ -4,24 +4,32 @@
 <namespace id="//////////////////////////8=">
   <namespace name="A" id="jQQu/8mLNzRQvGtbkKMwwloVDpw=">
     <struct name="f" id="Wr+xSXa6fgvTvu1KeVe+kywbb6w=">
-      <file short-path="using-function-and-type.cpp" source-path="using-function-and-type.cpp" line="4" class="def"/>
+      <file short-path="using-function-and-type.cpp" source-path="using-function-and-type.cpp" line="7" class="def"/>
+      <doc>
+        <brief>
+          <text>A record</text>
+        </brief>
+      </doc>
     </struct>
     <function name="f" id="FuaTgMW0VtO+b4uzr/DCmx9vlb0=">
-      <file short-path="using-function-and-type.cpp" source-path="using-function-and-type.cpp" line="3"/>
+      <file short-path="using-function-and-type.cpp" source-path="using-function-and-type.cpp" line="4"/>
       <param>
         <type name="int"/>
       </param>
+      <doc>
+        <brief>
+          <text>A function</text>
+        </brief>
+      </doc>
     </function>
   </namespace>
-  <function name="g" id="43ASI/aC9fCLy8T+1gn7pUdis+g=">
-    <file short-path="using-function-and-type.cpp" source-path="using-function-and-type.cpp" line="12" class="def"/>
-  </function>
-  <variable name="a" id="0T4A1DYp6ALL6QIozlBbzBKouxM=" default="a">
-    <file short-path="using-function-and-type.cpp" source-path="using-function-and-type.cpp" line="10" class="def"/>
-    <type id="Wr+xSXa6fgvTvu1KeVe+kywbb6w=" name="f"/>
-  </variable>
   <using id="bxhJVeOdx2X1I5zWLcdGW41DCTs=" class="using" qualifier="A::f">
-    <file short-path="using-function-and-type.cpp" source-path="using-function-and-type.cpp" line="8"/>
+    <file short-path="using-function-and-type.cpp" source-path="using-function-and-type.cpp" line="11"/>
+    <doc>
+      <brief>
+        <text>A using declaration that shadows a function and the record.</text>
+      </brief>
+    </doc>
     <named id="Wr+xSXa6fgvTvu1KeVe+kywbb6w="/>
     <named id="FuaTgMW0VtO+b4uzr/DCmx9vlb0="/>
   </using>
