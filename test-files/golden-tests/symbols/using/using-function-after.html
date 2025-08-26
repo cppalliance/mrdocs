@@ -27,11 +27,12 @@
 <thead>
 <tr>
 <th>Name</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><a href="#f"><code>f</code></a> </td></tr>
+<td><a href="#f"><code>f</code></a> </td><td><span>f overloads are also available in the global namespace</span></td></tr>
 </tbody>
 </table>
 
@@ -50,7 +51,7 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="#A-f-08"><code>f</code></a> </td><td><span></span></td></tr>
+<td><a href="#A-f-08"><code>f</code></a> </td><td><span><code>f</code> overloads</span></td></tr>
 </tbody>
 </table>
 
@@ -58,12 +59,16 @@
 <div>
 <div>
 <h2 id="A-f-08"><a href="#A-f-08">A::f</a></h2>
+<div>
+<span><code>f</code> overloads</span>
+
+</div>
 </div>
 <div>
 <h3>Synopses</h3>
 <div>
 Declared in <code>&lt;using-function-after.cpp&gt;</code></div>
-
+<span>A non-shadowing declaration</span>
 <pre>
 <code class="source-code cpp">
 void
@@ -71,7 +76,7 @@ void
 </code>
 </pre><span class="small"><a href="#A-f-00"><em>» more...</em></a></span>
 
-
+<span>A shadow declaration</span>
 <pre>
 <code class="source-code cpp">
 void
@@ -85,6 +90,10 @@ void
 <div>
 <div>
 <h2 id="A-f-00"><a href="#A-f-00">A::f</a></h2>
+<div>
+<span>A non-shadowing declaration</span>
+
+</div>
 </div>
 <div>
 <h3>Synopsis</h3>
@@ -97,10 +106,19 @@ f(char);
 </code>
 </pre>
 </div>
+<div>
+<h3>Description</h3>
+<p>This declaration is not part of the shadow declarations of the using directive because it comes after it.</p>
+<p>Only the declarations at the point of the using directive are considered for shadowing in the documentation.</p>
+</div>
 </div>
 <div>
 <div>
 <h2 id="A-f-01"><a href="#A-f-01">A::f</a></h2>
+<div>
+<span>A shadow declaration</span>
+
+</div>
 </div>
 <div>
 <h3>Synopsis</h3>
@@ -117,6 +135,10 @@ f(int);
 <div>
 <div>
 <h2 id="f"><a href="#f">f</a></h2>
+<div>
+<span>f overloads are also available in the global namespace</span>
+
+</div>
 </div>
 <div>
 <h3>Synopsis</h3>
@@ -134,11 +156,13 @@ using A::f;
 <thead>
 <tr>
 <th>Name</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><a href="#A-f-01">A::f</a></td>
+<td><span>A shadow declaration</span></td>
 </tr>
 </tbody>
 </table>
