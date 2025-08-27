@@ -627,6 +627,7 @@ jobs:
           mkdir -p ../../build/website
           cp index.html ../../build/website/index.html
           cp styles.css ../../build/website/styles.css
+          cp -r assets ../../build/website/assets
 
       - name: Generate Antora UI
         working-directory: docs/ui
