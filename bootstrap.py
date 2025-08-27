@@ -1678,6 +1678,7 @@ class MrDocsInstaller:
         else:
             print(f"\nMrDocs has been successfully installed in {self.options.mrdocs_install_dir}.\n")
 
+    @lru_cache(maxsize=1)
     def find_latest_clang_include_dir(self):
         parent = os.path.join(self.options.llvm_install_dir, "lib", "clang")
         subdirs = [d for d in os.listdir(parent) if os.path.isdir(os.path.join(parent, d))]
