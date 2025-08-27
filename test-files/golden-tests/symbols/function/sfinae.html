@@ -91,8 +91,8 @@
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-struct C;
+<code class="source-code cpp">struct C;
+
 </code>
 </pre>
 </div>
@@ -126,11 +126,11 @@ struct C;
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;
+<code class="source-code cpp">template&lt;
     class T,
     class Enable = void&gt;
 class A;
+
 </code>
 </pre>
 </div>
@@ -150,10 +150,10 @@ class A;
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;class T&gt;
+<code class="source-code cpp">template&lt;class T&gt;
 requires std::is_integral_v&lt;T&gt;
 class <a href="#A-09">A</a>&lt;T&gt;;
+
 </code>
 </pre>
 </div>
@@ -173,11 +173,11 @@ class <a href="#A-09">A</a>&lt;T&gt;;
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;
+<code class="source-code cpp">template&lt;
     class T,
     class Enable = void&gt;
 struct S;
+
 </code>
 </pre>
 </div>
@@ -206,9 +206,9 @@ struct S;
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-void
+<code class="source-code cpp">void
 store(void const*);
+
 </code>
 </pre>
 </div>
@@ -226,9 +226,9 @@ store(void const*);
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;class T&gt;
+<code class="source-code cpp">template&lt;class T&gt;
 struct <a href="#S-02">S</a>&lt;T, std::void_t&lt;T::a::b&gt;&gt;;
+
 </code>
 </pre>
 </div>
@@ -257,9 +257,9 @@ struct <a href="#S-02">S</a>&lt;T, std::void_t&lt;T::a::b&gt;&gt;;
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-void
+<code class="source-code cpp">void
 store(void const*);
+
 </code>
 </pre>
 </div>
@@ -277,11 +277,11 @@ store(void const*);
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;class T&gt;
+<code class="source-code cpp">template&lt;class T&gt;
 T
 f1(T value)
 requires std::is_integral_v&lt;T&gt;;
+
 </code>
 </pre>
 </div>
@@ -299,11 +299,11 @@ requires std::is_integral_v&lt;T&gt;;
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;class T&gt;
+<code class="source-code cpp">template&lt;class T&gt;
 requires std::is_integral_v&lt;T&gt;
 void
 f10(T value);
+
 </code>
 </pre>
 </div>
@@ -327,11 +327,11 @@ f10(T value);
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;class T&gt;
+<code class="source-code cpp">template&lt;class T&gt;
 int
 f2(T value)
 requires std::is_integral_v&lt;T&gt;;
+
 </code>
 </pre>
 </div>
@@ -349,11 +349,11 @@ requires std::is_integral_v&lt;T&gt;;
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;class T&gt;
+<code class="source-code cpp">template&lt;class T&gt;
 <a href="#B-C">B::C</a>
 f3(T value)
 requires std::is_integral_v&lt;T&gt;;
+
 </code>
 </pre>
 </div>
@@ -371,11 +371,11 @@ requires std::is_integral_v&lt;T&gt;;
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;class T&gt;
+<code class="source-code cpp">template&lt;class T&gt;
 T
 f4(T value)
 requires std::is_integral_v&lt;T&gt;;
+
 </code>
 </pre>
 </div>
@@ -393,11 +393,11 @@ requires std::is_integral_v&lt;T&gt;;
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;class T&gt;
+<code class="source-code cpp">template&lt;class T&gt;
 requires std::is_integral_v&lt;T&gt;
 T
 f5(T value);
+
 </code>
 </pre>
 </div>
@@ -415,11 +415,11 @@ f5(T value);
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;class T&gt;
+<code class="source-code cpp">template&lt;class T&gt;
 requires std::is_integral_v&lt;T&gt;
 T
 f6(T value);
+
 </code>
 </pre>
 </div>
@@ -437,11 +437,11 @@ f6(T value);
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;class T&gt;
+<code class="source-code cpp">template&lt;class T&gt;
 requires std::is_integral_v&lt;T&gt;
 void
 f7(T value);
+
 </code>
 </pre>
 </div>
@@ -459,11 +459,11 @@ f7(T value);
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;class T&gt;
+<code class="source-code cpp">template&lt;class T&gt;
 T
 f8(T value)
 requires std::is_integral_v&lt;T&gt;;
+
 </code>
 </pre>
 </div>
@@ -481,11 +481,11 @@ requires std::is_integral_v&lt;T&gt;;
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;class T&gt;
+<code class="source-code cpp">template&lt;class T&gt;
 T
 f9(T value)
 requires std::is_integral_v&lt;T&gt;;
+
 </code>
 </pre>
 </div>

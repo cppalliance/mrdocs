@@ -43,10 +43,10 @@
 <div>
 Declared in <code>&lt;function-template.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;typename T&gt;
+<code class="source-code cpp">template&lt;typename T&gt;
 void
 f0(int x);
+
 </code>
 </pre>
 </div>
@@ -60,10 +60,10 @@ f0(int x);
 <div>
 Declared in <code>&lt;function-template.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;typename T&gt;
+<code class="source-code cpp">template&lt;typename T&gt;
 void
 f1(T t);
+
 </code>
 </pre>
 </div>
@@ -77,10 +77,10 @@ f1(T t);
 <div>
 Declared in <code>&lt;function-template.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;typename T = int&gt;
+<code class="source-code cpp">template&lt;typename T = int&gt;
 void
 f2();
+
 </code>
 </pre>
 </div>
@@ -94,12 +94,12 @@ f2();
 <div>
 Declared in <code>&lt;function-template.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;
+<code class="source-code cpp">template&lt;
     typename T,
     class U = int&gt;
 void
 f3();
+
 </code>
 </pre>
 </div>
@@ -113,10 +113,10 @@ f3();
 <div>
 Declared in <code>&lt;function-template.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;int I&gt;
+<code class="source-code cpp">template&lt;int I&gt;
 void
 g0(int x);
+
 </code>
 </pre>
 </div>
@@ -130,10 +130,10 @@ g0(int x);
 <div>
 Declared in <code>&lt;function-template.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;int I = 1&gt;
+<code class="source-code cpp">template&lt;int I = 1&gt;
 void
 g1();
+
 </code>
 </pre>
 </div>
@@ -147,12 +147,12 @@ g1();
 <div>
 Declared in <code>&lt;function-template.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;
+<code class="source-code cpp">template&lt;
     int J,
     int I = 1&gt;
 void
 g2();
+
 </code>
 </pre>
 </div>
@@ -166,9 +166,9 @@ g2();
 <div>
 Declared in <code>&lt;function-template.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-void
+<code class="source-code cpp">void
 h0(auto x);
+
 </code>
 </pre>
 </div>
@@ -182,11 +182,11 @@ h0(auto x);
 <div>
 Declared in <code>&lt;function-template.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-void
+<code class="source-code cpp">void
 h1(
     auto x,
     auto);
+
 </code>
 </pre>
 </div>
@@ -200,12 +200,12 @@ h1(
 <div>
 Declared in <code>&lt;function-template.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;
+<code class="source-code cpp">template&lt;
     typename T = int,
     int I = 1&gt;
 void
 i();
+
 </code>
 </pre>
 </div>
@@ -219,10 +219,10 @@ i();
 <div>
 Declared in <code>&lt;function-template.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;template&lt;typename U&gt; typename T&gt;
+<code class="source-code cpp">template&lt;template&lt;typename U&gt; typename T&gt;
 void
 j0();
+
 </code>
 </pre>
 </div>
@@ -236,12 +236,12 @@ j0();
 <div>
 Declared in <code>&lt;function-template.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;
+<code class="source-code cpp">template&lt;
     template&lt;typename W&gt; typename X,
     template&lt;typename Y&gt; typename Z&gt;
 void
 j1();
+
 </code>
 </pre>
 </div>

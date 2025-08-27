@@ -32,9 +32,9 @@
 <div>
 Declared in <code>&lt;static-data-template.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;typename T&gt;
+<code class="source-code cpp">template&lt;typename T&gt;
 struct A;
+
 </code>
 </pre>
 </div>
@@ -65,12 +65,12 @@ struct A;
 <div>
 Declared in <code>&lt;static-data-template.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;
+<code class="source-code cpp">template&lt;
     typename U,
     typename V&gt;
 inline constexpr static
 T x = 0;
+
 </code>
 </pre>
 </div>
@@ -84,10 +84,10 @@ T x = 0;
 <div>
 Declared in <code>&lt;static-data-template.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;&gt;
+<code class="source-code cpp">template&lt;&gt;
 inline constexpr static
 bool x&lt;T, long&gt; = 2;
+
 </code>
 </pre>
 </div>
@@ -101,10 +101,10 @@ bool x&lt;T, long&gt; = 2;
 <div>
 Declared in <code>&lt;static-data-template.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;typename U&gt;
+<code class="source-code cpp">template&lt;typename U&gt;
 inline constexpr static
 T x&lt;U*, T&gt; = 1;
+
 </code>
 </pre>
 </div>

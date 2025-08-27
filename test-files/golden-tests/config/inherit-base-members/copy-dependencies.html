@@ -41,9 +41,9 @@
 <div>
 Declared in <code>&lt;copy-dependencies.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-class base
+<code class="source-code cpp">class base
     : public <a href="#base_base">base_base</a>;
+
 </code>
 </pre>
 </div>
@@ -126,9 +126,9 @@ class base
 <div>
 Declared in <code>&lt;copy-dependencies.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-<a href="#base">base</a>&
+<code class="source-code cpp"><a href="#base">base</a>&
 base_inherited();
+
 </code>
 </pre>
 </div>
@@ -150,9 +150,9 @@ base_inherited();
 <div>
 Declared in <code>&lt;copy-dependencies.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-<a href="#base">base</a>&
+<code class="source-code cpp"><a href="#base">base</a>&
 base_shadowed();
+
 </code>
 </pre>
 </div>
@@ -174,9 +174,9 @@ base_shadowed();
 <div>
 Declared in <code>&lt;copy-dependencies.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-<a href="#base">base</a>&
+<code class="source-code cpp"><a href="#base">base</a>&
 derived_shadowed();
+
 </code>
 </pre>
 </div>
@@ -198,9 +198,9 @@ derived_shadowed();
 <div>
 Declared in <code>&lt;copy-dependencies.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-<a href="#base">base</a>&
+<code class="source-code cpp"><a href="#base">base</a>&
 do_base_inherited();
+
 </code>
 </pre>
 </div>
@@ -222,9 +222,9 @@ do_base_inherited();
 <div>
 Declared in <code>&lt;copy-dependencies.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-<a href="#base">base</a>&
+<code class="source-code cpp"><a href="#base">base</a>&
 do_base_shadowed();
+
 </code>
 </pre>
 </div>
@@ -246,9 +246,9 @@ do_base_shadowed();
 <div>
 Declared in <code>&lt;copy-dependencies.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-<a href="#base">base</a>&
+<code class="source-code cpp"><a href="#base">base</a>&
 do_derived_shadowed();
+
 </code>
 </pre>
 </div>
@@ -270,8 +270,8 @@ do_derived_shadowed();
 <div>
 Declared in <code>&lt;copy-dependencies.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-class base_base;
+<code class="source-code cpp">class base_base;
+
 </code>
 </pre>
 </div>
@@ -321,9 +321,9 @@ class base_base;
 <div>
 Declared in <code>&lt;copy-dependencies.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-<a href="#base_base">base_base</a>&
+<code class="source-code cpp"><a href="#base_base">base_base</a>&
 base_base_inherited();
+
 </code>
 </pre>
 </div>
@@ -345,9 +345,9 @@ base_base_inherited();
 <div>
 Declared in <code>&lt;copy-dependencies.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-<a href="#base_base">base_base</a>&
+<code class="source-code cpp"><a href="#base_base">base_base</a>&
 do_base_base_inherited();
+
 </code>
 </pre>
 </div>
@@ -369,10 +369,10 @@ do_base_base_inherited();
 <div>
 Declared in <code>&lt;copy-dependencies.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-class derived
+<code class="source-code cpp">class derived
     : public <a href="#base">base</a>
     , public excluded_base;
+
 </code>
 </pre>
 </div>
@@ -445,9 +445,9 @@ class derived
 <div>
 Declared in <code>&lt;copy-dependencies.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-<a href="#derived">derived</a>&
+<code class="source-code cpp"><a href="#derived">derived</a>&
 derived_shadowed();
+
 </code>
 </pre>
 </div>
@@ -469,9 +469,9 @@ derived_shadowed();
 <div>
 Declared in <code>&lt;copy-dependencies.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-<a href="#derived">derived</a>&
+<code class="source-code cpp"><a href="#derived">derived</a>&
 do_derived_shadowed();
+
 </code>
 </pre>
 </div>
@@ -493,9 +493,9 @@ do_derived_shadowed();
 <div>
 Declared in <code>&lt;copy-dependencies.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-excluded_base&
+<code class="source-code cpp">excluded_base&
 excluded_inherited();
+
 </code>
 </pre>
 </div>
@@ -513,9 +513,9 @@ excluded_inherited();
 <div>
 Declared in <code>&lt;copy-dependencies.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-excluded_base&
+<code class="source-code cpp">excluded_base&
 do_excluded_inherited();
+
 </code>
 </pre>
 </div>
@@ -533,9 +533,9 @@ do_excluded_inherited();
 <div>
 Declared in <code>&lt;copy-dependencies.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-excluded_base&
+<code class="source-code cpp">excluded_base&
 do_shadowed();
+
 </code>
 </pre>
 </div>
@@ -553,10 +553,10 @@ do_shadowed();
 <div>
 Declared in <code>&lt;copy-dependencies.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-class private_derived
+<code class="source-code cpp">class private_derived
     : <a href="#base">base</a>
     , excluded_base;
+
 </code>
 </pre>
 </div>
@@ -591,9 +591,9 @@ class private_derived
 <div>
 Declared in <code>&lt;copy-dependencies.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-<a href="#private_derived">private_derived</a>&
+<code class="source-code cpp"><a href="#private_derived">private_derived</a>&
 derived_shadowed();
+
 </code>
 </pre>
 </div>
@@ -615,9 +615,9 @@ derived_shadowed();
 <div>
 Declared in <code>&lt;copy-dependencies.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-<a href="#private_derived">private_derived</a>&
+<code class="source-code cpp"><a href="#private_derived">private_derived</a>&
 do_derived_shadowed();
+
 </code>
 </pre>
 </div>
@@ -639,10 +639,10 @@ do_derived_shadowed();
 <div>
 Declared in <code>&lt;copy-dependencies.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-class protected_derived
+<code class="source-code cpp">class protected_derived
     : protected <a href="#base">base</a>
     , protected excluded_base;
+
 </code>
 </pre>
 </div>
@@ -701,9 +701,9 @@ class protected_derived
 <div>
 Declared in <code>&lt;copy-dependencies.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-<a href="#protected_derived">protected_derived</a>&
+<code class="source-code cpp"><a href="#protected_derived">protected_derived</a>&
 derived_shadowed();
+
 </code>
 </pre>
 </div>
@@ -725,9 +725,9 @@ derived_shadowed();
 <div>
 Declared in <code>&lt;copy-dependencies.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-<a href="#protected_derived">protected_derived</a>&
+<code class="source-code cpp"><a href="#protected_derived">protected_derived</a>&
 do_derived_shadowed();
+
 </code>
 </pre>
 </div>
@@ -749,9 +749,9 @@ do_derived_shadowed();
 <div>
 Declared in <code>&lt;copy-dependencies.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-excluded_base&
+<code class="source-code cpp">excluded_base&
 do_excluded_inherited();
+
 </code>
 </pre>
 </div>
@@ -769,9 +769,9 @@ do_excluded_inherited();
 <div>
 Declared in <code>&lt;copy-dependencies.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-excluded_base&
+<code class="source-code cpp">excluded_base&
 do_shadowed();
+
 </code>
 </pre>
 </div>
@@ -789,9 +789,9 @@ do_shadowed();
 <div>
 Declared in <code>&lt;copy-dependencies.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-excluded_base&
+<code class="source-code cpp">excluded_base&
 excluded_inherited();
+
 </code>
 </pre>
 </div>
