@@ -66,9 +66,9 @@
 <div>
 Declared in <code>&lt;dependency-propagation.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;typename T&gt;
+<code class="source-code cpp">template&lt;typename T&gt;
 using B = <a href="#N-A">A&lt;T&gt;</a>;
+
 </code>
 </pre>
 </div>
@@ -82,9 +82,9 @@ using B = <a href="#N-A">A&lt;T&gt;</a>;
 <div>
 Declared in <code>&lt;dependency-propagation.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;typename T&gt;
+<code class="source-code cpp">template&lt;typename T&gt;
 using C = <a href="#N-B">B&lt;T&gt;</a>;
+
 </code>
 </pre>
 </div>
@@ -98,9 +98,9 @@ using C = <a href="#N-B">B&lt;T&gt;</a>;
 <div>
 Declared in <code>&lt;dependency-propagation.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;typename T&gt;
+<code class="source-code cpp">template&lt;typename T&gt;
 struct A;
+
 </code>
 </pre>
 </div>
@@ -116,8 +116,8 @@ struct A;
 <div>
 Declared in <code>&lt;dependency-propagation.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-struct D;
+<code class="source-code cpp">struct D;
+
 </code>
 </pre>
 </div>
@@ -133,9 +133,9 @@ struct D;
 <div>
 Declared in <code>&lt;dependency-propagation.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-struct E
+<code class="source-code cpp">struct E
     : <a href="#N-C">N::C&lt;int&gt;</a>;
+
 </code>
 </pre>
 </div>

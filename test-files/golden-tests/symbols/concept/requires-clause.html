@@ -48,10 +48,10 @@
 <div>
 Declared in <code>&lt;requires-clause.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;typename T&gt;
+<code class="source-code cpp">template&lt;typename T&gt;
 requires (sizeof(T) &#x3D;&#x3D; 2)
 struct A;
+
 </code>
 </pre>
 </div>
@@ -67,10 +67,10 @@ struct A;
 <div>
 Declared in <code>&lt;requires-clause.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;typename U&gt;
+<code class="source-code cpp">template&lt;typename U&gt;
 requires (sizeof(U) &#x3D;&#x3D; 2)
 struct A;
+
 </code>
 </pre>
 </div>
@@ -86,11 +86,11 @@ struct A;
 <div>
 Declared in <code>&lt;requires-clause.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;typename T&gt;
+<code class="source-code cpp">template&lt;typename T&gt;
 void
 f()
 requires (sizeof(U) &#x3D;&#x3D; 2);
+
 </code>
 </pre>
 </div>
@@ -105,31 +105,31 @@ requires (sizeof(U) &#x3D;&#x3D; 2);
 Declared in <code>&lt;requires-clause.cpp&gt;</code></div>
 
 <pre>
-<code class="source-code cpp">
-template&lt;typename T&gt;
+<code class="source-code cpp">template&lt;typename T&gt;
 requires (sizeof(T) &#x3D;&#x3D; 2)
 void
 <a href="#g-0e">g</a>();
+
 </code>
 </pre><span class="small"><a href="#g-0e"><em>» more...</em></a></span>
 
 
 <pre>
-<code class="source-code cpp">
-template&lt;typename T&gt;
+<code class="source-code cpp">template&lt;typename T&gt;
 requires (sizeof(T) &#x3D;&#x3D; 4)
 void
 <a href="#g-02">g</a>();
+
 </code>
 </pre><span class="small"><a href="#g-02"><em>» more...</em></a></span>
 
 
 <pre>
-<code class="source-code cpp">
-template&lt;typename U&gt;
+<code class="source-code cpp">template&lt;typename U&gt;
 requires (sizeof(U) &#x3D;&#x3D; 2)
 void
 <a href="#g-08">g</a>();
+
 </code>
 </pre><span class="small"><a href="#g-08"><em>» more...</em></a></span>
 
@@ -145,11 +145,11 @@ void
 <div>
 Declared in <code>&lt;requires-clause.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;typename T&gt;
+<code class="source-code cpp">template&lt;typename T&gt;
 requires (sizeof(T) &#x3D;&#x3D; 2)
 void
 g();
+
 </code>
 </pre>
 </div>
@@ -163,11 +163,11 @@ g();
 <div>
 Declared in <code>&lt;requires-clause.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;typename T&gt;
+<code class="source-code cpp">template&lt;typename T&gt;
 requires (sizeof(T) &#x3D;&#x3D; 4)
 void
 g();
+
 </code>
 </pre>
 </div>
@@ -181,11 +181,11 @@ g();
 <div>
 Declared in <code>&lt;requires-clause.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;typename U&gt;
+<code class="source-code cpp">template&lt;typename U&gt;
 requires (sizeof(U) &#x3D;&#x3D; 2)
 void
 g();
+
 </code>
 </pre>
 </div>

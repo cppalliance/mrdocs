@@ -47,8 +47,8 @@
 <div>
 Declared in <code>&lt;record-inheritance.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-class C0;
+<code class="source-code cpp">class C0;
+
 </code>
 </pre>
 </div>
@@ -79,9 +79,9 @@ class C0;
 <div>
 Declared in <code>&lt;record-inheritance.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-class C1
+<code class="source-code cpp">class C1
     : <a href="#C0">C0</a>;
+
 </code>
 </pre>
 </div>
@@ -97,9 +97,9 @@ class C1
 <div>
 Declared in <code>&lt;record-inheritance.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-class C2
+<code class="source-code cpp">class C2
     : public <a href="#C0">C0</a>;
+
 </code>
 </pre>
 </div>
@@ -129,9 +129,9 @@ class C2
 <div>
 Declared in <code>&lt;record-inheritance.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-class C3
+<code class="source-code cpp">class C3
     : protected <a href="#C0">C0</a>;
+
 </code>
 </pre>
 </div>
@@ -147,9 +147,9 @@ class C3
 <div>
 Declared in <code>&lt;record-inheritance.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-class C4
+<code class="source-code cpp">class C4
     : <a href="#C0">C0</a>;
+
 </code>
 </pre>
 </div>
@@ -165,9 +165,9 @@ class C4
 <div>
 Declared in <code>&lt;record-inheritance.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-class C5
+<code class="source-code cpp">class C5
     : virtual <a href="#C0">C0</a>;
+
 </code>
 </pre>
 </div>
@@ -198,9 +198,9 @@ class C5
 <div>
 Declared in <code>&lt;record-inheritance.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-class C6
+<code class="source-code cpp">class C6
     : virtual <a href="#C1">C1</a>;
+
 </code>
 </pre>
 </div>
@@ -231,10 +231,10 @@ class C6
 <div>
 Declared in <code>&lt;record-inheritance.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-class C7
+<code class="source-code cpp">class C7
     : public <a href="#C5">C5</a>
     , public <a href="#C6">C6</a>;
+
 </code>
 </pre>
 </div>
@@ -265,8 +265,8 @@ class C7
 <div>
 Declared in <code>&lt;record-inheritance.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-struct S0;
+<code class="source-code cpp">struct S0;
+
 </code>
 </pre>
 </div>
@@ -297,8 +297,8 @@ struct S0;
 <div>
 Declared in <code>&lt;record-inheritance.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-struct S1;
+<code class="source-code cpp">struct S1;
+
 </code>
 </pre>
 </div>
@@ -329,9 +329,9 @@ struct S1;
 <div>
 Declared in <code>&lt;record-inheritance.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-struct S2
+<code class="source-code cpp">struct S2
     : <a href="#S0">S0</a>;
+
 </code>
 </pre>
 </div>
@@ -376,9 +376,9 @@ struct S2
 <div>
 Declared in <code>&lt;record-inheritance.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-struct S3
+<code class="source-code cpp">struct S3
     : <a href="#S1">S1</a>;
+
 </code>
 </pre>
 </div>
@@ -423,10 +423,10 @@ struct S3
 <div>
 Declared in <code>&lt;record-inheritance.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-struct S4
+<code class="source-code cpp">struct S4
     : <a href="#S2">S2</a>
     , <a href="#S3">S3</a>;
+
 </code>
 </pre>
 </div>
@@ -457,10 +457,10 @@ struct S4
 <div>
 Declared in <code>&lt;record-inheritance.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-struct S5
+<code class="source-code cpp">struct S5
     : private <a href="#S0">S0</a>
     , protected <a href="#S1">S1</a>;
+
 </code>
 </pre>
 </div>
@@ -476,10 +476,10 @@ struct S5
 <div>
 Declared in <code>&lt;record-inheritance.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-template&lt;typename... Ts&gt;
+<code class="source-code cpp">template&lt;typename... Ts&gt;
 struct S6
     : Ts...;
+
 </code>
 </pre>
 </div>
@@ -509,8 +509,8 @@ struct S6
 <div>
 Declared in <code>&lt;record-inheritance.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">
-union U0;
+<code class="source-code cpp">union U0;
+
 </code>
 </pre>
 </div>
