@@ -1678,6 +1678,17 @@ class MrDocsInstaller:
         else:
             print(f"\nMrDocs has been successfully installed in {self.options.mrdocs_install_dir}.\n")
 
+    @lru_cache(maxsize=1)
+    def find_latest_clang_include_dir(self):
+        parent = os.path.join(self.options.llvm_install_dir, "lib", "clang")
+        subdirs = [d for d in os.listdir(parent) if os.path.isdir(os.path.join(parent, d))]
+        numeric_subdirs = [d for d in subdirs if d.isdigit()]
+        if not numeric_subdirs:
+            raise RuntimeError(f"No numeric directories found in {parent}")
+        latest_numeric_subdir = max(numeric_subdirs, key=lambda d: int(d))
+
+        return os.path.join(parent, latest_numeric_subdir, "include")
+
     def generate_clion_run_configs(self, configs):
         import xml.etree.ElementTree as ET
 
@@ -2210,7 +2221,7 @@ class MrDocsInstaller:
                         f'--generator={generator}',
                         f'--addons={os.path.join(self.options.mrdocs_src_dir, "share", "mrdocs", "addons")}',
                         f'--stdlib-includes={os.path.join(self.options.llvm_install_dir, "include", "c++", "v1")}',
-                        f'--stdlib-includes={os.path.join(self.options.llvm_install_dir, "lib", "clang", "20", "include")}',
+                        f'--stdlib-includes={self.find_latest_clang_include_dir()}',
                         f'--libc-includes={os.path.join(self.options.mrdocs_src_dir, "share", "mrdocs", "headers", "libc-stubs")}',
                         '--log-level=warn'
                     ]
@@ -2236,7 +2247,7 @@ class MrDocsInstaller:
                                 f'--generator=adoc',
                                 f'--addons={os.path.join(self.options.mrdocs_src_dir, "share", "mrdocs", "addons")}',
                                 f'--stdlib-includes={os.path.join(self.options.llvm_install_dir, "include", "c++", "v1")}',
-                                f'--stdlib-includes={os.path.join(self.options.llvm_install_dir, "lib", "clang", "20", "include")}',
+                                f'--stdlib-includes={self.find_latest_clang_include_dir()}',
                                 f'--libc-includes={os.path.join(self.options.mrdocs_src_dir, "share", "mrdocs", "headers", "libc-stubs")}',
                                 f'--tagfile=reference.tag.xml',
                                 '--multipage=true',
@@ -2260,7 +2271,7 @@ class MrDocsInstaller:
                 f'--generator=adoc',
                 f'--addons={os.path.join(self.options.mrdocs_src_dir, "share", "mrdocs", "addons")}',
                 f'--stdlib-includes={os.path.join(self.options.llvm_install_dir, "include", "c++", "v1")}',
-                f'--stdlib-includes={os.path.join(self.options.llvm_install_dir, "lib", "clang", "20", "include")}',
+                f'--stdlib-includes={self.find_latest_clang_include_dir()}',
                 f'--libc-includes={os.path.join(self.options.mrdocs_src_dir, "share", "mrdocs", "headers", "libc-stubs")}',
                 f'--tagfile=reference.tag.xml',
                 '--multipage=true',
