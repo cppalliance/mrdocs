@@ -6,6 +6,7 @@
 {{~else~}}
     {{>symbol/name-text symbol ~}}
 {{~/if}}
+{{~#if isFinal}} final{{/if~}}
 {{#unless bases~}}
 {{else if isFriend~}}
 {{else}}
@@ -17,4 +18,11 @@
     {{#unless (eq access ../defaultAccess)}} {{access}}{{/unless~}}
     {{#if isVirtual}} virtual{{/if}} {{>type/declarator type~}}
 {{/each~}}
-{{/unless}}{{#isSeeBelow}} { /* see-below */ }{{/isSeeBelow}};
+{{/unless}}
+{{!-- Unless we are going to show a class body ("{ ... }"), don't add a
+      semicolon if the record is final, because something like `class A
+      final;` is ill-formed (`final` can't be used on a non-defining
+      declaration). Similarly, don't show a semicolon if there are base
+      classes. --}}
+{{~#isSeeBelow}} { /* see-below */ }{{/isSeeBelow~}}
+{{#if (or isSeeBelow (and (not isFinal) (eq (len bases) 0)))}};{{/if}}

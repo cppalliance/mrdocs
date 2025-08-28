@@ -95,7 +95,7 @@ Declared in `&lt;dependency&hyphen;propagation&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct E
-    : link:#N-C[N::C&lt;int&gt;];
+    : link:#N-C[N::C&lt;int&gt;]
 ----
 
 === Base Classes

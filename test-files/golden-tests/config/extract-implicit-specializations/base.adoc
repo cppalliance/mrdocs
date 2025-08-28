@@ -23,7 +23,7 @@ Declared in `&lt;base&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct A
-    : link:#B[B];
+    : link:#B[B]
 ----
 
 === Base Classes

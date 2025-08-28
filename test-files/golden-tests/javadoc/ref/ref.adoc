@@ -170,7 +170,7 @@ Declared in `&lt;ref&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct D
-    : link:#A-C[C];
+    : link:#A-C[C]
 ----
 
 === Base Classes

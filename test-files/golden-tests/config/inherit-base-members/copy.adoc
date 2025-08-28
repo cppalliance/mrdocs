@@ -34,7 +34,7 @@ Declared in `&lt;copy&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 class base
-    : public link:#base_base[base&lowbar;base];
+    : public link:#base_base[base&lowbar;base]
 ----
 
 === Base Classes
@@ -328,7 +328,7 @@ Declared in `&lt;copy&period;cpp&gt;`
 ----
 class derived
     : public link:#base[base]
-    , public excluded&lowbar;base;
+    , public excluded&lowbar;base
 ----
 
 === Base Classes
@@ -612,7 +612,7 @@ Declared in `&lt;copy&period;cpp&gt;`
 ----
 class private&lowbar;derived
     : link:#base[base]
-    , excluded&lowbar;base;
+    , excluded&lowbar;base
 ----
 
 === Member Functions
@@ -678,7 +678,7 @@ Declared in `&lt;copy&period;cpp&gt;`
 ----
 class protected&lowbar;derived
     : protected link:#base[base]
-    , protected excluded&lowbar;base;
+    , protected excluded&lowbar;base
 ----
 
 === Member Functions

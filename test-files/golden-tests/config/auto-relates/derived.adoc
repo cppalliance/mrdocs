@@ -52,7 +52,7 @@ Declared in `&lt;derived&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct A
-    : link:#ABase[ABase];
+    : link:#ABase[ABase]
 ----
 
 === Base Classes
@@ -141,7 +141,7 @@ Declared in `&lt;derived&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct AView
-    : link:#ABase[ABase];
+    : link:#ABase[ABase]
 ----
 
 === Base Classes
@@ -194,7 +194,7 @@ Declared in `&lt;derived&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct AView2
-    : link:#AView[AView];
+    : link:#AView[AView]
 ----
 
 === Base Classes

@@ -112,7 +112,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R0
-    : link:#S0-0cf[S0&lt;&hyphen;1&gt;];
+    : link:#S0-0cf[S0&lt;&hyphen;1&gt;]
 ----
 
 === Base Classes
@@ -152,7 +152,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R1
-    : link:#S0-0be[S0&lt;0&gt;];
+    : link:#S0-0be[S0&lt;0&gt;]
 ----
 
 === Base Classes
@@ -175,7 +175,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R10
-    : link:#S0-08-S1-S2-08-S4[S0&lt;10&gt;::S1::S2&lt;11&gt;::S4&lt;&hyphen;1&gt;];
+    : link:#S0-08-S1-S2-08-S4[S0&lt;10&gt;::S1::S2&lt;11&gt;::S4&lt;&hyphen;1&gt;]
 ----
 
 === Base Classes
@@ -198,7 +198,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R11
-    : link:#S0-0e-S1-S2-02-S4-0c[S0&lt;12&gt;::S1::S2&lt;13&gt;::S4&lt;14&gt;];
+    : link:#S0-0e-S1-S2-02-S4-0c[S0&lt;12&gt;::S1::S2&lt;13&gt;::S4&lt;14&gt;]
 ----
 
 === Base Classes
@@ -221,7 +221,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R12
-    : link:#S0-09e4-S1-S2-02-S4-00[S0&lt;15&gt;::S1::S2&lt;16&gt;::S4&lt;17, void*&gt;];
+    : link:#S0-09e4-S1-S2-02-S4-00[S0&lt;15&gt;::S1::S2&lt;16&gt;::S4&lt;17, void*&gt;]
 ----
 
 === Base Classes
@@ -244,7 +244,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R13
-    : link:#S0-09e4-S1-S2-02-S4-02[S0&lt;15&gt;::S1::S2&lt;16&gt;::S4&lt;17, int*&gt;];
+    : link:#S0-09e4-S1-S2-02-S4-02[S0&lt;15&gt;::S1::S2&lt;16&gt;::S4&lt;17, int*&gt;]
 ----
 
 === Base Classes
@@ -267,7 +267,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R14
-    : link:#S0-07a-S5[S0&lt;18&gt;::S5&lt;&hyphen;1&gt;];
+    : link:#S0-07a-S5[S0&lt;18&gt;::S5&lt;&hyphen;1&gt;]
 ----
 
 === Base Classes
@@ -290,7 +290,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R15
-    : link:#S0-0a7-S5-07[S0&lt;19&gt;::S5&lt;20&gt;];
+    : link:#S0-0a7-S5-07[S0&lt;19&gt;::S5&lt;20&gt;]
 ----
 
 === Base Classes
@@ -313,7 +313,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R16
-    : link:#S0-0314-S5-07[S0&lt;21&gt;::S5&lt;22, void*&gt;];
+    : link:#S0-0314-S5-07[S0&lt;21&gt;::S5&lt;22, void*&gt;]
 ----
 
 === Base Classes
@@ -336,7 +336,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R17
-    : link:#S0-0314-S5-03[S0&lt;21&gt;::S5&lt;22, int*&gt;];
+    : link:#S0-0314-S5-03[S0&lt;21&gt;::S5&lt;22, int*&gt;]
 ----
 
 === Base Classes
@@ -359,7 +359,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R18
-    : link:#S0-058-S5-09-S6[S0&lt;23&gt;::S5&lt;24&gt;::S6];
+    : link:#S0-058-S5-09-S6[S0&lt;23&gt;::S5&lt;24&gt;::S6]
 ----
 
 === Base Classes
@@ -382,7 +382,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R19
-    : link:#S0-0a2-S5-02-S6-S7[S0&lt;25&gt;::S5&lt;26&gt;::S6::S7&lt;&hyphen;1&gt;];
+    : link:#S0-0a2-S5-02-S6-S7[S0&lt;25&gt;::S5&lt;26&gt;::S6::S7&lt;&hyphen;1&gt;]
 ----
 
 === Base Classes
@@ -405,7 +405,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R2
-    : link:#S0-0cf[S0&lt;1, void*&gt;];
+    : link:#S0-0cf[S0&lt;1, void*&gt;]
 ----
 
 === Base Classes
@@ -445,7 +445,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R20
-    : link:#S0-09e2-S5-0c-S6-S7-0b[S0&lt;27&gt;::S5&lt;28&gt;::S6::S7&lt;29, void*&gt;];
+    : link:#S0-09e2-S5-0c-S6-S7-0b[S0&lt;27&gt;::S5&lt;28&gt;::S6::S7&lt;29, void*&gt;]
 ----
 
 === Base Classes
@@ -468,7 +468,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R21
-    : link:#S0-09e2-S5-0c-S6-S7-0d[S0&lt;27&gt;::S5&lt;28&gt;::S6::S7&lt;29, int*&gt;];
+    : link:#S0-09e2-S5-0c-S6-S7-0d[S0&lt;27&gt;::S5&lt;28&gt;::S6::S7&lt;29, int*&gt;]
 ----
 
 === Base Classes
@@ -491,7 +491,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R22
-    : link:#S0-01-S5-04-S6-S7-05[S0&lt;30&gt;::S5&lt;31&gt;::S6::S7&lt;32&gt;];
+    : link:#S0-01-S5-04-S6-S7-05[S0&lt;30&gt;::S5&lt;31&gt;::S6::S7&lt;32&gt;]
 ----
 
 === Base Classes
@@ -514,7 +514,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R23
-    : link:#S0-09ee-S5-02-S6-S7-03-S8[S0&lt;33&gt;::S5&lt;34&gt;::S6::S7&lt;35&gt;::S8];
+    : link:#S0-09ee-S5-02-S6-S7-03-S8[S0&lt;33&gt;::S5&lt;34&gt;::S6::S7&lt;35&gt;::S8]
 ----
 
 === Base Classes
@@ -537,7 +537,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R24
-    : link:#S0-033-S5-0f-S6-S7-0d-S9[S0&lt;36&gt;::S5&lt;37&gt;::S6::S7&lt;38&gt;::S9&lt;&hyphen;1&gt;];
+    : link:#S0-033-S5-0f-S6-S7-0d-S9[S0&lt;36&gt;::S5&lt;37&gt;::S6::S7&lt;38&gt;::S9&lt;&hyphen;1&gt;]
 ----
 
 === Base Classes
@@ -560,7 +560,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R25
-    : link:#S0-06-S5-07-S6-S7-0a-S9-05[S0&lt;39&gt;::S5&lt;40&gt;::S6::S7&lt;41&gt;::S9&lt;42, void*&gt;];
+    : link:#S0-06-S5-07-S6-S7-0a-S9-05[S0&lt;39&gt;::S5&lt;40&gt;::S6::S7&lt;41&gt;::S9&lt;42, void*&gt;]
 ----
 
 === Base Classes
@@ -583,7 +583,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R26
-    : link:#S0-06-S5-07-S6-S7-0a-S9-08[S0&lt;39&gt;::S5&lt;40&gt;::S6::S7&lt;41&gt;::S9&lt;42, int*&gt;];
+    : link:#S0-06-S5-07-S6-S7-0a-S9-08[S0&lt;39&gt;::S5&lt;40&gt;::S6::S7&lt;41&gt;::S9&lt;42, int*&gt;]
 ----
 
 === Base Classes
@@ -606,7 +606,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R27
-    : link:#S0-0ba-S5-08-S6-S7-02-S9-0f[S0&lt;43&gt;::S5&lt;44&gt;::S6::S7&lt;45&gt;::S9&lt;46&gt;];
+    : link:#S0-0ba-S5-08-S6-S7-02-S9-0f[S0&lt;43&gt;::S5&lt;44&gt;::S6::S7&lt;45&gt;::S9&lt;46&gt;]
 ----
 
 === Base Classes
@@ -629,7 +629,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R28
-    : link:#S0-0cf[S0&lt;0, bool&gt;];
+    : link:#S0-0cf[S0&lt;0, bool&gt;]
 ----
 
 === Base Classes
@@ -669,7 +669,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R29
-    : link:#S0-0cf[S0&lt;1, int&gt;];
+    : link:#S0-0cf[S0&lt;1, int&gt;]
 ----
 
 === Base Classes
@@ -709,7 +709,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R3
-    : link:#S0-020a[S0&lt;1, int*&gt;];
+    : link:#S0-020a[S0&lt;1, int*&gt;]
 ----
 
 === Base Classes
@@ -732,7 +732,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R30
-    : link:#S0-03c[S0&lt;2, bool&gt;::S1];
+    : link:#S0-03c[S0&lt;2, bool&gt;::S1]
 ----
 
 === Base Classes
@@ -802,7 +802,7 @@ template&lt;
     int I,
     typename T&gt;
 struct R31
-    : link:#S0-092-S1[S0&lt;3, bool&gt;::S1::S2&lt;I, T&gt;];
+    : link:#S0-092-S1[S0&lt;3, bool&gt;::S1::S2&lt;I, T&gt;]
 ----
 
 === Base Classes
@@ -825,7 +825,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R32
-    : link:#S0-0b6-S1[S0&lt;4, bool&gt;::S1::S2&lt;5, bool&gt;];
+    : link:#S0-0b6-S1[S0&lt;4, bool&gt;::S1::S2&lt;5, bool&gt;]
 ----
 
 === Base Classes
@@ -848,7 +848,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R33
-    : link:#S0-023-S1[S0&lt;6, bool&gt;::S1::S2&lt;7, int&gt;];
+    : link:#S0-023-S1[S0&lt;6, bool&gt;::S1::S2&lt;7, int&gt;]
 ----
 
 === Base Classes
@@ -871,7 +871,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R34
-    : link:#S0-04-S1-S2-0a[S0&lt;8, bool&gt;::S1::S2&lt;9, bool&gt;::S3];
+    : link:#S0-04-S1-S2-0a[S0&lt;8, bool&gt;::S1::S2&lt;9, bool&gt;::S3]
 ----
 
 === Base Classes
@@ -918,7 +918,7 @@ template&lt;
     int I,
     typename T&gt;
 struct R35
-    : link:#S0-05a-S1-S2-0b[S0&lt;10, bool&gt;::S1::S2&lt;11, bool&gt;::S4&lt;I, T&gt;];
+    : link:#S0-05a-S1-S2-0b[S0&lt;10, bool&gt;::S1::S2&lt;11, bool&gt;::S4&lt;I, T&gt;]
 ----
 
 === Base Classes
@@ -941,7 +941,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R36
-    : link:#S0-0cd-S1-S2-05[S0&lt;12, bool&gt;::S1::S2&lt;13, bool&gt;::S4&lt;14, bool&gt;];
+    : link:#S0-0cd-S1-S2-05[S0&lt;12, bool&gt;::S1::S2&lt;13, bool&gt;::S4&lt;14, bool&gt;]
 ----
 
 === Base Classes
@@ -964,7 +964,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R37
-    : link:#S0-000-S1-S2-03[S0&lt;15, bool&gt;::S1::S2&lt;16, bool&gt;::S4&lt;17, int&gt;];
+    : link:#S0-000-S1-S2-03[S0&lt;15, bool&gt;::S1::S2&lt;16, bool&gt;::S4&lt;17, int&gt;]
 ----
 
 === Base Classes
@@ -990,7 +990,7 @@ template&lt;
     int I,
     typename T&gt;
 struct R38
-    : link:#S0-051[S0&lt;18, bool&gt;::S5&lt;I, T&gt;];
+    : link:#S0-051[S0&lt;18, bool&gt;::S5&lt;I, T&gt;]
 ----
 
 === Base Classes
@@ -1013,7 +1013,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R39
-    : link:#S0-002[S0&lt;19, bool&gt;::S5&lt;20, bool&gt;];
+    : link:#S0-002[S0&lt;19, bool&gt;::S5&lt;20, bool&gt;]
 ----
 
 === Base Classes
@@ -1036,7 +1036,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R4
-    : link:#S0-09c-S1[S0&lt;2&gt;::S1];
+    : link:#S0-09c-S1[S0&lt;2&gt;::S1]
 ----
 
 === Base Classes
@@ -1059,7 +1059,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R40
-    : link:#S0-003[S0&lt;21, bool&gt;::S5&lt;22, int&gt;];
+    : link:#S0-003[S0&lt;21, bool&gt;::S5&lt;22, int&gt;]
 ----
 
 === Base Classes
@@ -1082,7 +1082,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R41
-    : link:#S0-0c7-S5-0f[S0&lt;23, bool&gt;::S5&lt;24, bool&gt;::S6];
+    : link:#S0-0c7-S5-0f[S0&lt;23, bool&gt;::S5&lt;24, bool&gt;::S6]
 ----
 
 === Base Classes
@@ -1152,7 +1152,7 @@ template&lt;
     int I,
     typename T&gt;
 struct R42
-    : link:#S0-0529f-S5-05c-S6[S0&lt;25, bool&gt;::S5&lt;26, bool&gt;::S6::S7&lt;I, T&gt;];
+    : link:#S0-0529f-S5-05c-S6[S0&lt;25, bool&gt;::S5&lt;26, bool&gt;::S6::S7&lt;I, T&gt;]
 ----
 
 === Base Classes
@@ -1175,7 +1175,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R43
-    : link:#S0-007-S5-0d-S6[S0&lt;27, bool&gt;::S5&lt;28, bool&gt;::S6::S7&lt;29, int&gt;];
+    : link:#S0-007-S5-0d-S6[S0&lt;27, bool&gt;::S5&lt;28, bool&gt;::S6::S7&lt;29, int&gt;]
 ----
 
 === Base Classes
@@ -1198,7 +1198,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R44
-    : link:#S0-021-S5-0b-S6[S0&lt;30, bool&gt;::S5&lt;31, bool&gt;::S6::S7&lt;32, bool&gt;];
+    : link:#S0-021-S5-0b-S6[S0&lt;30, bool&gt;::S5&lt;31, bool&gt;::S6::S7&lt;32, bool&gt;]
 ----
 
 === Base Classes
@@ -1221,7 +1221,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R45
-    : link:#S0-0318-S5-0b-S6-S7-05[S0&lt;33, bool&gt;::S5&lt;34, bool&gt;::S6::S7&lt;35, bool&gt;::S8];
+    : link:#S0-0318-S5-0b-S6-S7-05[S0&lt;33, bool&gt;::S5&lt;34, bool&gt;::S6::S7&lt;35, bool&gt;::S8]
 ----
 
 === Base Classes
@@ -1268,7 +1268,7 @@ template&lt;
     int I,
     typename T&gt;
 struct R46
-    : link:#S0-0d-S5-0b-S6-S7-0d[S0&lt;36, bool&gt;::S5&lt;37, bool&gt;::S6::S7&lt;38, bool&gt;::S9&lt;I, T&gt;];
+    : link:#S0-0d-S5-0b-S6-S7-0d[S0&lt;36, bool&gt;::S5&lt;37, bool&gt;::S6::S7&lt;38, bool&gt;::S9&lt;I, T&gt;]
 ----
 
 === Base Classes
@@ -1291,7 +1291,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R47
-    : link:#S0-0206-S5-08-S6-S7-01[S0&lt;39, bool&gt;::S5&lt;40, bool&gt;::S6::S7&lt;41, bool&gt;::S9&lt;42, int&gt;];
+    : link:#S0-0206-S5-08-S6-S7-01[S0&lt;39, bool&gt;::S5&lt;40, bool&gt;::S6::S7&lt;41, bool&gt;::S9&lt;42, int&gt;]
 ----
 
 === Base Classes
@@ -1314,7 +1314,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R48
-    : link:#S0-05291-S5-0e-S6-S7-0f[S0&lt;43, bool&gt;::S5&lt;44, bool&gt;::S6::S7&lt;45, bool&gt;::S9&lt;46, bool&gt;];
+    : link:#S0-05291-S5-0e-S6-S7-0f[S0&lt;43, bool&gt;::S5&lt;44, bool&gt;::S6::S7&lt;45, bool&gt;::S9&lt;46, bool&gt;]
 ----
 
 === Base Classes
@@ -1337,7 +1337,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R5
-    : link:#S0-073-S1-S2[S0&lt;3&gt;::S1::S2&lt;&hyphen;1&gt;];
+    : link:#S0-073-S1-S2[S0&lt;3&gt;::S1::S2&lt;&hyphen;1&gt;]
 ----
 
 === Base Classes
@@ -1360,7 +1360,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R6
-    : link:#S0-0a1-S1-S2-0f[S0&lt;4&gt;::S1::S2&lt;5&gt;];
+    : link:#S0-0a1-S1-S2-0f[S0&lt;4&gt;::S1::S2&lt;5&gt;]
 ----
 
 === Base Classes
@@ -1383,7 +1383,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R7
-    : link:#S0-07e-S1-S2-04[S0&lt;6&gt;::S1::S2&lt;7, void*&gt;];
+    : link:#S0-07e-S1-S2-04[S0&lt;6&gt;::S1::S2&lt;7, void*&gt;]
 ----
 
 === Base Classes
@@ -1406,7 +1406,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R8
-    : link:#S0-07e-S1-S2-07[S0&lt;6&gt;::S1::S2&lt;7, int*&gt;];
+    : link:#S0-07e-S1-S2-07[S0&lt;6&gt;::S1::S2&lt;7, int*&gt;]
 ----
 
 === Base Classes
@@ -1429,7 +1429,7 @@ Declared in `&lt;class&hyphen;template&hyphen;specializations&hyphen;1&period;cp
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R9
-    : link:#S0-0a3-S1-S2-0c-S3[S0&lt;8&gt;::S1::S2&lt;9&gt;::S3];
+    : link:#S0-0a3-S1-S2-0c-S3[S0&lt;8&gt;::S1::S2&lt;9&gt;::S3]
 ----
 
 === Base Classes
