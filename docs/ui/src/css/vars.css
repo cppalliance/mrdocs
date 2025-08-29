@@ -2,6 +2,7 @@
   /* colors */
   --color-white: rgba(255, 255, 255, 1);
   --color-white-50: rgba(255, 255, 255, 0.5);
+  --color-white-75: rgba(255, 255, 255, 0.75);
   --color-white-15: rgba(255, 255, 255, 0.15);
   --color-smoke-10: rgba(254, 254, 254, 0.95);
   --color-smoke-30: rgba(250, 250, 250, 0.9);
