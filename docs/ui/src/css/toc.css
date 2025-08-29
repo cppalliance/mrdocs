@@ -72,7 +72,7 @@
 }
 
 .toc .toc-menu a {
-  color: inherit;
+  color: var(--color-white-50);
   border-left: 2px solid var(--toc-border-color);
   display: inline-block;
   padding: 0.25rem 0 0.25rem 0.5rem;
@@ -85,14 +85,14 @@
 }
 
 .toc .toc-menu a:hover {
-  color: var(--link-font-color);
+  color: var(--color-white);
 }
 
 .toc .toc-menu a.is-active {
-  border-left-color: var(--link-font-color);
+  border-left-color: var(--color-white);
   color: var(--doc-font-color);
 }
 
 .sidebar.toc .toc-menu a:focus {
-  background: var(--panel-background);
+  background: var(--color-black-20);
 }

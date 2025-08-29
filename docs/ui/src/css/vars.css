@@ -2,6 +2,7 @@
   /* colors */
   --color-white: rgba(255, 255, 255, 1);
   --color-white-50: rgba(255, 255, 255, 0.5);
+  --color-white-15: rgba(255, 255, 255, 0.15);
   --color-smoke-10: rgba(254, 254, 254, 0.95);
   --color-smoke-30: rgba(250, 250, 250, 0.9);
   --color-smoke-50: rgba(245, 245, 245, 0.85);
@@ -18,6 +19,8 @@
   --color-jet-70: rgba(34, 34, 34, 0.3);
   --color-jet-80: rgba(25, 25, 25, 0.25);
   --color-black: rgba(0, 0, 0, 0.2);
+  --color-black-75: rgba(0, 0, 0, 0.75);
+  --color-black-15: rgba(0, 0, 0, 0.15);
   /* fonts */
   --rem-base: 18; /* used to compute rem value from desired pixel value (e.g., calc(18 / var(--rem-base) * 1rem) = 18px) */
   --body-font-size: 1.0625em; /* 17px */
@@ -31,7 +34,7 @@
   --monospace-font-weight-bold: 600;
   /* base */
   --body-background: var(--color-white);
-  --panel-background: var(--color-smoke-30);
+  --panel-background: var(--color-black-75);
   --panel-border-color: var(--color-smoke-90);
   --scrollbar-track-color: var(--color-smoke-30);
   --scrollbar-thumb-color: var(--color-gray-10);
@@ -84,42 +87,42 @@
   --heading-font-weight: normal;
   --alt-heading-font-weight: var(--body-font-weight-bold);
   --section-divider-color: var(--panel-border-color);
-  --link-font-color: #ffffcc;
+  --link-font-color: #ffc;
   --link_hover-font-color: #fff5b3;
   --link_unresolved-font-color: var(--important-color);
   --abstract-background: var(--color-smoke-70);
   --abstract-font-color: var(--color-jet-20);
   --abstract-border-color: var(--panel-border-color);
-  --admonition-background: var(--panel-background);
+  --admonition-background: var(--color-white-15);
   --admonition-label-font-weight: var(--body-font-weight-bold);
-  --caption-font-color: var(--color-gray-70);
+  --caption-font-color: var(--color-white-50);
   --caption-font-style: italic;
   --caption-font-weight: var(--body-font-weight-bold);
-  --code-background: var(--panel-background);
-  --code-font-color: var(--body-font-color);
+  --code-background: var(--color-black-15);
+  --code-font-color: var(--color-white);
   --example-background: var(--color-white);
   --example-border-color: var(--color-gray-70);
   --kbd-background: var(--panel-background);
   --kbd-border-color: var(--color-gray-10);
-  --pre-background: var(--panel-background);
+  --pre-background: rgb(40, 44, 52);
   --pre-border-color: var(--panel-border-color);
   --pre-annotation-font-color: var(--color-gray-50);
   --quote-background: var(--panel-background);
   --quote-border-color: var(--color-gray-70);
-  --quote-font-color: var(--color-gray-70);
+  --quote-font-color: var(--color-white-50);
   --quote-attribution-font-color: var(--color-gray-40);
-  --sidebar-background: var(--color-smoke-90);
+  --sidebar-background: var(--color-black-15);
   --table-border-color: var(--panel-border-color);
   --table-stripe-background: var(--panel-background);
   --table-footer-background:
     linear-gradient(
       to bottom,
-      var(--color-smoke-70) 0%,
-      var(--color-white) 100%
+      var(--color-black-15) 0%,
+      var(--color-black-15) 100%
     );
   /* toc */
   --toc-font-color: var(--nav-muted-color);
-  --toc-heading-font-color: var(--doc-font-color);
+  --toc-heading-font-color: var(--color-white);
   --toc-border-color: var(--panel-border-color);
   --toc-line-height: 1.2;
   /* footer */
