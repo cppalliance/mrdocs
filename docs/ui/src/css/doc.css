@@ -753,7 +753,7 @@
 
 .doc .exampleblock > .content,
 .doc details.result > .content {
-  background: var(--example-background);
+  background: var(--pre-background);
   border: 0.25rem solid var(--example-border-color);
   border-radius: 0.5rem;
   padding: 0.75rem;

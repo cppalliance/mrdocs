@@ -99,12 +99,12 @@
      transform="translate(0,-952.36218)"
      id="g4">
     <path
-       style="fill:none;fill-rule:evenodd;stroke:#222;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;fill-opacity:1"
+       style="fill:none;fill-rule:evenodd;stroke:#fff;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;fill-opacity:1"
        d="M 50.019531 13.576172 L 21.439453 39.115234 L 21.419922 86.460938 L 42.925781 86.460938 L 42.951172 61.294922 L 57.048828 61.294922 L 57.074219 86.460938 L 78.619141 86.460938 L 78.638672 39.150391 L 50.019531 13.576172 z "
        id="path4175"
        transform="translate(0,952.36218)" />
     <path
-       style="fill:none;fill-rule:evenodd;stroke:#222;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;fill-rule:evenodd;stroke:#fff;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 63.815035,25.903568 0,-9.217018 8.656932,0 -2e-6,16.95383 z"
        id="path4193"
        transform="translate(0,952.36218)"
@@ -112,12 +112,12 @@
        sodipodi:nodetypes="ccccc" />
     <path
        inkscape:connector-curvature="0"
-       style="fill:none;fill-rule:evenodd;stroke:#222;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;fill-rule:evenodd;stroke:#fff;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 21.43888,991.47783 -9.98234,8.92037"
        id="path4177" />
     <path
        inkscape:connector-curvature="0"
-       style="fill:none;fill-rule:evenodd;stroke:#222;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;fill-rule:evenodd;stroke:#fff;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 88.58189,1000.3982 -9.94315,-8.88535"
        id="path4170" />
   </g>

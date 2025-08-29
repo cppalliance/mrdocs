@@ -1,80 +1,75 @@
-/*! Adapted from the GitHub style by Vasily Polovnyov <vast@whiteants.net> */
+/* atom one dark theme */
+pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1em;
+}
+
+code.hljs {
+  padding: 3px 5px;
+}
+
+.hljs {
+  color: #abb2bf;
+  background: #282c34;
+}
+
 .hljs-comment,
 .hljs-quote {
-  color: #998;
+  color: #5c6370;
   font-style: italic;
 }
 
-.hljs-keyword,
+.hljs-doctag,
+.hljs-formula,
+.hljs-keyword {
+  color: #c678dd;
+}
+
+.hljs-deletion,
+.hljs-name,
+.hljs-section,
 .hljs-selector-tag,
 .hljs-subst {
-  color: #333;
-  font-weight: var(--monospace-font-weight-bold);
+  color: #e06c75;
 }
 
-.hljs-number,
-.hljs-literal,
-.hljs-variable,
-.hljs-template-variable,
-.hljs-tag .hljs-attr {
-  color: #008080;
+.hljs-literal {
+  color: #56b6c2;
 }
 
-.hljs-string,
-.hljs-doctag {
-  color: #d14;
-}
-
-.hljs-title,
-.hljs-section,
-.hljs-selector-id {
-  color: #900;
-  font-weight: var(--monospace-font-weight-bold);
-}
-
-.hljs-subst {
-  font-weight: normal;
-}
-
-.hljs-type,
-.hljs-class .hljs-title {
-  color: #458;
-  font-weight: var(--monospace-font-weight-bold);
-}
-
-.hljs-tag,
-.hljs-name,
-.hljs-attribute {
-  color: #000080;
-  font-weight: normal;
-}
-
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta .hljs-string,
 .hljs-regexp,
-.hljs-link {
-  color: #009926;
+.hljs-string {
+  color: #98c379;
 }
 
+.hljs-attr,
+.hljs-number,
+.hljs-selector-attr,
+.hljs-selector-class,
+.hljs-selector-pseudo,
+.hljs-template-variable,
+.hljs-type,
+.hljs-variable {
+  color: #d19a66;
+}
+
+.hljs-bullet,
+.hljs-link,
+.hljs-meta,
+.hljs-selector-id,
 .hljs-symbol,
-.hljs-bullet {
-  color: #990073;
+.hljs-title {
+  color: #61aeee;
 }
 
 .hljs-built_in,
-.hljs-builtin-name {
-  color: #0086b3;
-}
-
-.hljs-meta {
-  color: #999;
-  font-weight: var(--monospace-font-weight-bold);
-}
-
-.hljs-deletion {
-  background: #fdd;
-}
-
-.hljs-addition {
-  background: #dfd;
+.hljs-class .hljs-title,
+.hljs-title.class_ {
+  color: #e6c07b;
 }
 
 .hljs-emphasis {
@@ -82,5 +77,9 @@
 }
 
 .hljs-strong {
-  font-weight: var(--monospace-font-weight-bold);
+  font-weight: 700;
+}
+
+.hljs-link {
+  text-decoration: underline;
 }

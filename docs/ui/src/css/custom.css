@@ -68,10 +68,6 @@
   color: var(--navbar-font-color);
 }
 
-.toc.sidebar .toc-menu h3 {
-  color: var(--navbar-font-color);
-}
-
 .breadcrumbs li {
   color: var(--color-white-50);
 }
