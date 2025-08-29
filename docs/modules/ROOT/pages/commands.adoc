@@ -40,21 +40,22 @@ static constexpr int hours_in_day = 24;
 Both the class and the function above have doc comments with a brief sentence and a detailed description.
 Most doc comments will contain these two sections, which could also be explicitly marked with `@brief` and `@details` commands.
 
-Doc comments can also contain a number of special commands such as `@param` that are used to document the parameters of a function.
+Doc comments can also contain many special commands, such as `@param`, that are used to document the parameters of a function.
+Mr. Docs supports most commands commonly used in Javadoc and Doxygen comments.
 
-== Style
-
-The following commands can be used to format the text in the doc comments:
-
-|===
-| Command | Description
-| `@a`    | Formats the text in italics
-| `@e`    | Formats the text in italics
-| `@em`    | Formats the text in italics
-| `@b`    | Formats the text in bold
-| `@strong`    | Formats the text in bold
-|
-|===
+// == Style
+//
+// The following commands can be used to format the text in the doc comments:
+//
+// |===
+// | Command | Description
+// | `@a`    | Formats the text in italics
+// | `@e`    | Formats the text in italics
+// | `@em`    | Formats the text in italics
+// | `@b`    | Formats the text in bold
+// | `@strong`    | Formats the text in bold
+// |
+// |===
 
 // == Documentation at other places
 // @class, @struct, @union, @enum, @fn, @var, @def, @typedef, @file, @namespace...
@@ -96,4 +97,3 @@ The following commands can be used to format the text in the doc comments:
 // (<className>"::")n<functionName>
 // === Links to external documentation
 // Tagfiles + @ref
-
