@@ -2,17 +2,19 @@
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
-  <namespace name="A" id="jQQu/8mLNzRQvGtbkKMwwloVDpw=">
-    <function name="f" id="FuaTgMW0VtO+b4uzr/DCmx9vlb0=">
-      <file short-path="using-function-excluded.cpp" source-path="using-function-excluded.cpp" line="3"/>
-      <param>
-        <type name="int"/>
-      </param>
-    </function>
-  </namespace>
   <using id="FhSdC4kR2+KOxLCiCUQ9mu1WNoY=" class="using" qualifier="A::f">
-    <file short-path="using-function-excluded.cpp" source-path="using-function-excluded.cpp" line="6"/>
-    <named id="FuaTgMW0VtO+b4uzr/DCmx9vlb0="/>
+    <file short-path="using-function-excluded.cpp" source-path="using-function-excluded.cpp" line="13"/>
+    <doc>
+      <brief>
+        <text>Using excluded function f</text>
+      </brief>
+      <para>
+        <text>No shadow should be listed because A::f is excluded.</text>
+      </para>
+      <para>
+        <text>Only included symbols are listed in the shadow list.</text>
+      </para>
+    </doc>
   </using>
 </namespace>
 </mrdocs>

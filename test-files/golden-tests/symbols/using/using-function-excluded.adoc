@@ -4,48 +4,20 @@
 [#index]
 == Global namespace
 
-=== Namespaces
-
-[cols=1]
-|===
-| Name
-| link:#A[`A`] 
-|===
-
 === Using Declarations
 
-[cols=1]
+[cols=2]
 |===
 | Name
+| Description
 | link:#f[`f`] 
+| Using excluded function f
 |===
-
-[#A]
-== A
-
-=== Functions
-
-[cols=1]
-|===
-| Name
-| link:#A-f[`f`] 
-|===
-
-[#A-f]
-== link:#A[A]::f
-
-=== Synopsis
-
-Declared in `&lt;using&hyphen;function&hyphen;excluded&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-void
-f(int);
-----
 
 [#f]
 == f
+
+Using excluded function f
 
 === Synopsis
 
@@ -56,12 +28,11 @@ Declared in `&lt;using&hyphen;function&hyphen;excluded&period;cpp&gt;`
 using A::f;
 ----
 
-=== Introduced Symbols
+=== Description
 
-[cols=1]
-|===
-| Name
-| link:#A-f[A::f]
-|===
+No shadow should be listed because A&colon;&colon;f is excluded&period;
+
+Only included symbols are listed in the shadow list&period;
+
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

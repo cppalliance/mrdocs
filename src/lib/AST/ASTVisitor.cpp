@@ -1232,7 +1232,10 @@ populate(
     {
         ScopeExitRestore s(mode_, Dependency);
         Decl* S = UDS->getTargetDecl();
-        if (Info* SI = findOrTraverse(S))
+        using enum ExtractionMode;
+        if (Info* SI = findOrTraverse(S);
+            SI &&
+            !is_one_of(SI->Extraction,{Dependency, ImplementationDefined}))
         {
             I.ShadowDeclarations.emplace_back(SI->id);
         }
