@@ -278,9 +278,32 @@ Decl const*
 decayToPrimaryTemplate(Decl const* D)
 {
 #ifndef NDEBUG
+    // Print only the class header (name and template args if specialization)
     SmallString<128> symbolName;
+    if (const auto* ND = dyn_cast<NamedDecl>(D))
+    {
+        if (const auto* CTS = dyn_cast<ClassTemplateSpecializationDecl>(ND)) {
+            llvm::raw_svector_ostream os(symbolName);
+            CTS->getSpecializedTemplate()->printQualifiedName(os, CTS->getASTContext().getPrintingPolicy());
+            const TemplateArgumentList& args = CTS->getTemplateArgs();
+            os << '<';
+            for (unsigned i = 0, e = args.size(); i != e; ++i)
+            {
+                if (i) os << ", ";
+                args[i].print(CTS->getASTContext().getPrintingPolicy(), os, true);
+            }
+            os << '>';
+        } else if (ND) {
+            llvm::raw_svector_ostream os(symbolName);
+            ND->printQualifiedName(os, ND->getASTContext().getPrintingPolicy());
+        }
+    }
+    else
+    {
+        llvm::raw_svector_ostream os(symbolName);
+        os << "<unnamed " << D->Decl::getDeclKindName() << ">";
+    }
     llvm::raw_svector_ostream os(symbolName);
-    D->print(os);
     report::trace("symbolName: ", std::string_view(os.str()));
 #endif
 
