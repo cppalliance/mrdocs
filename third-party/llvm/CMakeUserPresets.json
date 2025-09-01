@@ -10,11 +10,11 @@
       }
     },
     {
-      "name": "debwithopt-msvc",
-      "inherits": "debwithopt-win",
-      "binaryDir": "${sourceDir}/build/MSVC/DebWithOpt",
+      "name": "optimizeddebug-msvc",
+      "inherits": "optimizeddebug-win",
+      "binaryDir": "${sourceDir}/build/MSVC/OptimizedDebug",
       "cacheVariables": {
-        "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/MSVC/DebWithOpt"
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/MSVC/OptimizedDebug"
       },
       "architecture": {
         "value": "x64",
@@ -67,14 +67,14 @@
       }
     },
     {
-      "name": "debwithopt-linux",
+      "name": "optimizeddebug-linux",
       "inherits": [
-        "debwithopt-unix",
+        "optimizeddebug-unix",
         "debug-linux"
       ],
-      "binaryDir": "${sourceDir}/build/Linux/DebWithOpt",
+      "binaryDir": "${sourceDir}/build/Linux/OptimizedDebug",
       "cacheVariables": {
-        "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/Linux/DebWithOpt"
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/Linux/OptimizedDebug"
       }
     },
     {

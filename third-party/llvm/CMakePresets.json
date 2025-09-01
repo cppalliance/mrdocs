@@ -57,9 +57,9 @@
       }
     },
     {
-      "name": "debwithopt",
+      "name": "optimizeddebug",
       "inherits": "debug",
-      "displayName": "DebWithOpt-Base",
+      "displayName": "OptimizedDebug-Base",
       "description": "Debug Config with Release Optimization",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
@@ -104,12 +104,12 @@
       }
     },
     {
-      "name": "debwithopt-win",
+      "name": "optimizeddebug-win",
       "inherits": [
         "debug-win",
-        "debwithopt"
+        "optimizeddebug"
       ],
-      "displayName": "DebWithOptde-Base-Win",
+      "displayName": "OptimizedDebug-Base-Win",
       "description": "Debug Config with Release Optimization",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
@@ -151,12 +151,12 @@
       }
     },
     {
-      "name": "debwithopt-unix",
+      "name": "optimizeddebug-unix",
       "inherits": [
         "debug-unix",
-        "debwithopt"
+        "optimizeddebug"
       ],
-      "displayName": "DebWithOpt-Base-Unix",
+      "displayName": "OptimizedDebug-Base-Unix",
       "description": "Debug Config with Release Optimization",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
