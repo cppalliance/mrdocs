@@ -174,10 +174,12 @@
 {{/if}}
 {{! Description }}
 {{#if symbol.doc.description}}
+{{#unless traversing-global-namespace}}
 <div>
 {{#> markup/dynamic-level-h level=2 }}Description{{/markup/dynamic-level-h}}
 {{> javadoc/description symbol.doc.description }}
 </div>
+{{/unless}}
 {{/if}}
 {{! Using symbols }}
 {{#if symbol.shadows}}
