@@ -20,3 +20,6 @@
 /share/mrdocs/libcxx/
 /share/mrdocs/clang/
 /docs/modules/reference
+/.clang-format
+/.gdbinit
+/.lldbinit
