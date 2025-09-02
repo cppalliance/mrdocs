@@ -101,7 +101,7 @@ class InstallOptions:
 
     # Libxml2
     libxml2_src_dir: str = "<third-party-src-dir>/libxml2"
-    libxml2_build_type: str = "Release" # purposefully does not depend on mrdocs-build-type because we only need the executable
+    libxml2_build_type: str = "Release"  # purposefully does not depend on mrdocs-build-type because we only need the executable
     libxml2_build_dir: str = "<libxml2-src-dir>/build/<libxml2-build-type:lower><\"-\":if(cc)><cc:basename>"
     libxml2_install_dir: str = "<libxml2-src-dir>/install/<libxml2-build-type:lower><\"-\":if(cc)><cc:basename>"
     libxml2_repo: str = "https://github.com/GNOME/libxml2"
@@ -114,6 +114,9 @@ class InstallOptions:
     generate_clion_run_configs: bool = True
     generate_vscode_run_configs: bool = field(default_factory=lambda: os.name != "nt")
     generate_vs_run_configs: bool = field(default_factory=lambda: os.name == "nt")
+
+    # Information to create pretty printer configs
+    generate_pretty_printer_configs: bool = field(default_factory=lambda: running_from_mrdocs_source_dir())
 
     # Command line arguments
     non_interactive: bool = False
@@ -167,6 +170,7 @@ INSTALL_OPTION_DESCRIPTIONS = {
     "generate_clion_run_configs": "Whether to generate run configurations for CLion.",
     "generate_vscode_run_configs": "Whether to generate run configurations for Visual Studio Code.",
     "generate_vs_run_configs": "Whether to generate run configurations for Visual Studio.",
+    "generate_pretty_printer_configs": "Whether to generate pretty printer configurations for debuggers.",
     "non_interactive": "Whether to use all default options without interactive prompts.",
     "refresh_all": "Call the command to refresh dependencies for all configurations",
     "force_rebuild": "Whether to force a rebuild of all dependencies, even if they are already built.",
@@ -514,7 +518,7 @@ class MrDocsInstaller:
             elif extra_arg.startswith('-DCMAKE_CXX_FLAGS='):
                 cxx_flags += ' ' + extra_arg.split('=', 1)[1]
                 extra_args_remove_idx.append(i)
-            elif i != 0 and extra_args[i-1].strip() == '-D':
+            elif i != 0 and extra_args[i - 1].strip() == '-D':
                 if extra_arg.startswith('CMAKE_C_FLAGS='):
                     cc_flags += ' ' + extra_arg.split('=', 1)[1]
                     extra_args_remove_idx.append(i - 1)
@@ -553,7 +557,8 @@ class MrDocsInstaller:
 
         # Maybe adjust build type based on the options for the main project
         if not self.is_abi_compatible(self.options.mrdocs_build_type, build_type):
-            print(f"Warning: The build type '{build_type}' is not ABI compatible with the MrDocs build type '{self.options.mrdocs_build_type}'.")
+            print(
+                f"Warning: The build type '{build_type}' is not ABI compatible with the MrDocs build type '{self.options.mrdocs_build_type}'.")
             if self.options.mrdocs_build_type.lower() == "debug":
                 # User asked for Release dependency, so we do the best we can and change it to
                 # an optimized debug build.
@@ -925,7 +930,8 @@ class MrDocsInstaller:
         shutil.rmtree(probe_dir)
 
         # Print default C++ compiler path
-        print(f"Default C++ compiler: {self.compiler_info.get('CMAKE_CXX_COMPILER_ID', 'unknown')} ({self.compiler_info.get('CMAKE_CXX_COMPILER', 'unknown')})")
+        print(
+            f"Default C++ compiler: {self.compiler_info.get('CMAKE_CXX_COMPILER_ID', 'unknown')} ({self.compiler_info.get('CMAKE_CXX_COMPILER', 'unknown')})")
         print(f"Default C++ build system: {self.compiler_info.get('CMAKE_GENERATOR', 'unknown')}")
 
     @lru_cache(maxsize=1)
@@ -982,7 +988,6 @@ class MrDocsInstaller:
                 print(f"* Updating {key}={value}")
             self.env[key] = value
         print("MSVC development environment variables extracted successfully.")
-
 
     @lru_cache(maxsize=1)
     def is_homebrew_clang(self):
@@ -1894,7 +1899,8 @@ class MrDocsInstaller:
                 return "default"
 
         def rel_to_mrdocs_dir(script_path):
-            is_subdir_of_mrdocs_src_dir = script_path.replace('\\', '/').rstrip('/').startswith(self.options.mrdocs_src_dir.replace('\\', '/').rstrip('/'))
+            is_subdir_of_mrdocs_src_dir = script_path.replace('\\', '/').rstrip('/').startswith(
+                self.options.mrdocs_src_dir.replace('\\', '/').rstrip('/'))
             if is_subdir_of_mrdocs_src_dir:
                 return os.path.relpath(script_path, self.options.mrdocs_src_dir)
             return script_path
@@ -1980,7 +1986,6 @@ class MrDocsInstaller:
         tasks_data["tasks"] = list(vs_tasks_by_name.values())
         with open(tasks_path, "w") as f:
             json.dump(tasks_data, f, indent=4)
-
 
     def generate_vscode_run_configs(self, configs):
         if not self.prompt_option("generate_run_configs"):
@@ -2477,6 +2482,56 @@ class MrDocsInstaller:
             print("Generating Visual Studio run configurations for MrDocs...")
             self.generate_visual_studio_run_configs(configs)
 
+    def generate_pretty_printer_configs(self):
+        # Generate a .lldbinit file (if it doesn't exist) for LLDB pretty printers
+        lldbinit_path = os.path.join(self.options.mrdocs_src_dir, ".lldbinit")
+        if not os.path.exists(lldbinit_path):
+            home_lldbinit_path = os.path.join(os.path.expanduser("~"), ".lldbinit")
+            lldbinit_enabled = False
+            if os.path.exists(home_lldbinit_path):
+                with open(home_lldbinit_path, "r") as f:
+                    home_lldbinit_content = f.read()
+                if "settings set target.load-cwd-lldbinit true" in home_lldbinit_content:
+                    lldbinit_enabled = True
+            # The content of the file should be:
+            # # echo 'settings set target.load-cwd-lldbinit true' >> ~/.lldbinit
+            # command script import /Users/alandefreitas/Documents/Code/C++/mrdocs/build/third-party/llvm-project/llvm/utils/lldbDataFormatters.py
+            lldbinit_content = f"# LLDB pretty printers for MrDocs\n"
+            lldbinit_content += f"# Generated by bootstrap.py\n"
+            lldbinit_content += f"# \n"
+            if not lldbinit_enabled:
+                lldbinit_content += f"# To enable this file, also add this to your ~/.lldbinit file:\n"
+                lldbinit_content += f"# settings set target.load-cwd-lldbinit true\n"
+                lldbinit_content += f"# \n"
+                lldbinit_content += f"# Or run the following bash command:\n"
+                lldbinit_content += f"# echo 'settings set target.load-cwd-lldbinit true' >> ~/.lldbinit\n"
+                lldbinit_content += f"# \n"
+            lldbinit_content += f"command script import {os.path.join(self.options.llvm_src_dir, 'llvm', 'utils', 'lldbDataFormatters.py').replace(os.sep, '/')}\n"
+            with open(lldbinit_path, "w") as f:
+                f.write(lldbinit_content)
+            print(f"Generated LLDB pretty printer configuration at '{lldbinit_path}'")
+        else:
+            print(f"LLDB pretty printer configuration already exists at '{lldbinit_path}', skipping generation.")
+
+        # Do the same logic for GDB pretty printers, generating a .gdbinit file
+        # The pretty printer is at: .../third-party/llvm-project/llvm/utils/gdb-scripts/prettyprinters.py
+        gdbinit_path = os.path.join(self.options.mrdocs_src_dir, ".gdbinit")
+        if not os.path.exists(gdbinit_path):
+            gdbinit_content = f"# GDB pretty printers for MrDocs\n"
+            gdbinit_content += f"# Generated by bootstrap.py\n"
+            gdbinit_content += f"# \n"
+            gdbinit_content += f"python\n"
+            gdbinit_content += f"import sys\n"
+            gdbinit_content += f"sys.path.insert(0, '{os.path.join(self.options.llvm_src_dir, 'llvm', 'utils', 'gdb-scripts', 'prettyprinters.py').replace(os.sep, '/')}')\n"
+            gdbinit_content += f"from prettyprinters import register_pretty_printers\n"
+            gdbinit_content += f"register_pretty_printers(gdb)\n"
+            gdbinit_content += f"end\n"
+            with open(gdbinit_path, "w") as f:
+                f.write(gdbinit_content)
+            print(f"Generated GDB pretty printer configuration at '{gdbinit_path}'")
+        else:
+            print(f"GDB pretty printer configuration already exists at '{gdbinit_path}', skipping generation.")
+
     def install_all(self):
         self.check_compilers()
         self.probe_msvc_dev_env()
@@ -2493,8 +2548,8 @@ class MrDocsInstaller:
         self.install_mrdocs()
         if self.prompt_option("generate_run_configs"):
             self.generate_run_configs()
-        else:
-            print("Skipping run configurations generation as per user preference.")
+        if self.prompt_option("generate_pretty_printer_configs"):
+            self.generate_pretty_printer_configs()
 
     def refresh_all(self):
         # 1. Read all configurations in .vscode/launch.json
@@ -2519,7 +2574,8 @@ class MrDocsInstaller:
 
         # 2. Filter configurations whose name starts with "MrDocs Bootstrap Refresh ("
         bootstrap_refresh_configs = [
-            cfg for cfg in configs if cfg.get("name", "").startswith("MrDocs Bootstrap Refresh (") and cfg.get("name", "").endswith(")")
+            cfg for cfg in configs if
+            cfg.get("name", "").startswith("MrDocs Bootstrap Refresh (") and cfg.get("name", "").endswith(")")
         ]
         if not bootstrap_refresh_configs:
             print("No bootstrap refresh configurations found in Visual Studio Code launch configurations.")
