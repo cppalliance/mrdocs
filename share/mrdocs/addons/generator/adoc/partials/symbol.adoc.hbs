@@ -128,8 +128,10 @@
 {{/if}}
 {{! Description }}
 {{#if symbol.doc.description}}
+{{#unless traversing-global-namespace}}
 {{#> markup/dynamic-level-h }}Description{{/markup/dynamic-level-h}}
 {{> javadoc/description symbol.doc.description }}
+{{/unless}}
 {{/if}}
 {{! Using symbols }}
 {{#if symbol.shadows}}
