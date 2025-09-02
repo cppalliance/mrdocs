@@ -325,7 +325,7 @@ Choose one of the presets from `CMakePresets.json` or edit the variants in `CMak
 [NOTE]
 ====
 Developers might also want to build a custom `Debug` LLVM configuration including optimizations, which allows for faster execution of tests.
-The `relwithdebinfo` and `debwithopt` presets are provided for this purpose.
+The `relwithdebinfo` and `optimizeddebug` presets are provided for this purpose.
 Or if you prefer using the command line, set `CMAKE_CONFIGURATION_TYPES` or `CMAKE_BUILD_TYPE` to `Debug` and manually include the optimization flags to `-D CMAKE_CXX_FLAGS="/O2 /Zi"` (MSVC) or `-D CMAKE_CXX_FLAGS="-Og -g"`.
 
 This should give you an optimized build with all debug features and flags, such as an appropriate https://learn.microsoft.com/en-us/cpp/standard-library/iterator-debug-level[`_ITERATOR_DEBUG_LEVEL`] and the `/MDd` flag in MSVC.
