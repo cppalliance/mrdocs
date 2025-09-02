@@ -1,0 +1,257 @@
+<html lang="en">
+<head>
+<title>Reference</title>
+</head>
+<body>
+<div>
+<h1>Reference</h1>
+<div>
+<div>
+<h2 id="index">Global namespace</h2>
+</div>
+<h2>Types</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#Bar-0a"><code>Bar</code></a> </td></tr><tr>
+<td><a href="#Bar-01"><code>Bar&lt;T, Foo&lt;Args...&gt;&gt;</code></a> </td></tr><tr>
+<td><a href="#Foo-02"><code>Foo</code></a> </td></tr><tr>
+<td><a href="#Foo-0c"><code>Foo&lt;T[]&gt;</code></a> </td></tr>
+</tbody>
+</table>
+
+</div>
+<div>
+<div>
+<h2 id="Bar-0a">Bar</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;recursion.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;
+    typename T,
+    typename List&gt;
+struct Bar
+    : <a href="#Bar-0a">Bar</a>&lt;T, <a href="#Foo-02">Foo</a>&lt;List&gt;&gt;;
+</code>
+</pre>
+</div>
+<div>
+<h2>Base Classes</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr><td><code><a href="#Bar-0a">Bar</a>&lt;T, <a href="#Foo-02">Foo</a>&lt;List&gt;&gt;</code></td><td><span></span></td></tr>
+</tbody>
+</table>
+</div>
+<h2>Member Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#Bar-0a-baz"><code>baz</code></a> </td></tr>
+</tbody>
+</table>
+
+
+
+<div>
+<h2>Derived Classes</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr><td><a href="#Bar-0a"><code>Bar</code></a>
+    </td><td><span></span></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="Bar-0a-baz"><a href="#Bar-0a">Bar</a>::baz</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;recursion.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+baz(bool);
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="Bar-01">Bar&lt;T, <a href="#Foo-02">Foo</a>&lt;Args...&gt;&gt;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;recursion.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;
+    typename T,
+    typename... Args&gt;
+struct <a href="#Bar-0a">Bar</a>&lt;T, <a href="#Foo-02">Foo</a>&lt;Args...&gt;&gt;;
+</code>
+</pre>
+</div>
+<h2>Member Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#Bar-01-baz"><code>baz</code></a> </td></tr>
+</tbody>
+</table>
+
+
+
+</div>
+<div>
+<div>
+<h2 id="Bar-01-baz"><a href="#Bar-01">Bar</a>&lt;T, <a href="#Foo-02">Foo</a>&lt;Args...&gt;&gt;::baz</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;recursion.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+void
+baz(Args...);
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="Foo-02">Foo</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;recursion.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;typename T&gt;
+struct Foo;
+</code>
+</pre>
+</div>
+<h2>Types</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#Foo-02-Type"><code>Type</code></a> </td></tr>
+</tbody>
+</table>
+
+
+
+</div>
+<div>
+<div>
+<h2 id="Foo-02-Type"><a href="#Foo-02">Foo</a>::Type</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;recursion.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+using Type = T;
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="Foo-0c">Foo&lt;T[]&gt;</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;recursion.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+template&lt;
+    typename T,
+    int N&gt;
+struct <a href="#Foo-02">Foo</a>&lt;T[]&gt;;
+</code>
+</pre>
+</div>
+<h2>Types</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#Foo-0c-Type"><code>Type</code></a> </td></tr>
+</tbody>
+</table>
+
+
+
+</div>
+<div>
+<div>
+<h2 id="Foo-0c-Type"><a href="#Foo-0c">Foo</a>&lt;T[]&gt;::Type</h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;recursion.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">
+using Type = <a href="#Foo-02">Foo</a>&lt;T&gt;;
+</code>
+</pre>
+</div>
+</div>
+
+</div>
+<div>
+<h4>Created with <a href="https://www.mrdocs.com">MrDocs</a></h4>
+</div>
+</body>
+</html>
