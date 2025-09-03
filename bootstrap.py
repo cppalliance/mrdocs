@@ -2508,6 +2508,7 @@ class MrDocsInstaller:
                 lldbinit_content += f"# echo 'settings set target.load-cwd-lldbinit true' >> ~/.lldbinit\n"
                 lldbinit_content += f"# \n"
             lldbinit_content += f"command script import {os.path.join(self.options.llvm_src_dir, 'llvm', 'utils', 'lldbDataFormatters.py').replace(os.sep, '/')}\n"
+            lldbinit_content += f"command script import {os.path.join(self.options.mrdocs_src_dir, 'share', 'lldb', 'mrdocs_formatters.py').replace(os.sep, '/')}\n"
             with open(lldbinit_path, "w") as f:
                 f.write(lldbinit_content)
             print(f"Generated LLDB pretty printer configuration at '{lldbinit_path}'")
