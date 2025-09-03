@@ -1,9 +1,12 @@
 namespace A
 {
+    /// First overload
     void f(int);
+    /// Second overload
     void f(void);
+    /// Third overload
     void f(char,char);
 }
 
-// This should ultimately resolve to the function overloads in namespace A.
+/// Using the overloads from namespace A
 using A::f;

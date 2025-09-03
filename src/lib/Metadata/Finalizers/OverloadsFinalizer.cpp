@@ -13,32 +13,6 @@
 
 namespace clang::mrdocs {
 
-void
-OverloadsFinalizer::
-foldRecordMembers(std::vector<SymbolID> const& ids)
-{
-    for (SymbolID const& id: ids)
-    {
-        Info* infoPtr = corpus_.find(id);
-        MRDOCS_CHECK_OR_CONTINUE(infoPtr);
-        MRDOCS_CHECK_OR_CONTINUE(infoPtr->isRecord());
-        operator()(infoPtr->asRecord());
-    }
-}
-
-void
-OverloadsFinalizer::
-foldNamespaceMembers(std::vector<SymbolID> const& namespaceIds)
-{
-    for (SymbolID const& namespaceId: namespaceIds)
-    {
-        Info* namespaceInfoPtr = corpus_.find(namespaceId);
-        MRDOCS_CHECK_OR_CONTINUE(namespaceInfoPtr);
-        MRDOCS_CHECK_OR_CONTINUE(namespaceInfoPtr->isNamespace());
-        operator()(namespaceInfoPtr->asNamespace());
-    }
-}
-
 namespace {
 SymbolID
 findBaseClassPermutation(
@@ -46,47 +20,94 @@ findBaseClassPermutation(
     CorpusImpl& corpus,
     ArrayRef<SymbolID> sameNameFunctionIds)
 {
+    // Find the RecordInfo
     Info* info = corpus.find(contextId);
     MRDOCS_CHECK_OR(info, SymbolID::invalid);
-    if (auto const* record = info->asRecordPtr())
+    MRDOCS_CHECK_OR(info->isRecord(), SymbolID::invalid);
+    for (auto const& base: info->asRecordPtr()->Bases)
     {
-        for (auto const& base: record->Bases)
+        // Find the i-th base class
+        auto const baseInfo = corpus.find(base.Type->namedSymbol());
+        MRDOCS_CHECK_OR_CONTINUE(baseInfo);
+        auto const baseRecord = baseInfo->asRecordPtr();
+        MRDOCS_CHECK_OR_CONTINUE(baseRecord);
+
+        // Iterate over all function tranches
+        RecordTranche* tranchesPtrs[] = {
+            &baseRecord->Interface.Public,
+            &baseRecord->Interface.Protected,
+            &baseRecord->Interface.Private,
+        };
+        for (RecordTranche* tranchePtr: tranchesPtrs)
         {
-            auto const baseInfo = corpus.find(base.Type->namedSymbol());
-            MRDOCS_CHECK_OR_CONTINUE(baseInfo);
-            auto const baseRecord = baseInfo->asRecordPtr();
-            MRDOCS_CHECK_OR_CONTINUE(baseRecord);
-            RecordTranche* tranchesPtrs[] = {
-                &baseRecord->Interface.Public,
-                &baseRecord->Interface.Protected,
-                &baseRecord->Interface.Private,
+            std::vector<SymbolID>* trancheFunctionPtrs[] = {
+                &tranchePtr->Functions,
+                &tranchePtr->StaticFunctions
             };
-            for (RecordTranche* tranchePtr: tranchesPtrs)
+            for (std::vector<SymbolID>* trancheFunctionsPtr:
+                 trancheFunctionPtrs)
             {
-                std::vector<SymbolID>* trancheFunctionPtrs[] = {
-                    &tranchePtr->Functions,
-                    &tranchePtr->StaticFunctions
-                };
-                for (std::vector<SymbolID>* trancheFunctionsPtr:
-                     trancheFunctionPtrs)
+                // Find an overload set that's a permutation of the same
+                // name functions
+                for (SymbolID const& baseID: *trancheFunctionsPtr)
                 {
-                    for (SymbolID const& baseID: *trancheFunctionsPtr)
-                    {
-                        Info* baseFuncMember = corpus.find(baseID);
-                        MRDOCS_CHECK_OR_CONTINUE(baseFuncMember);
-                        MRDOCS_CHECK_OR_CONTINUE(baseFuncMember->isOverloads());
-                        auto* overloads = baseFuncMember->asOverloadsPtr();
-                        MRDOCS_CHECK_OR_CONTINUE(overloads);
-                        // Does this overload set have the same functions
-                        MRDOCS_CHECK_OR_CONTINUE(
-                            std::ranges::is_permutation(
-                                overloads->Members,
-                                sameNameFunctionIds));
-                        return overloads->id;
-                    }
+                    Info* baseFuncMember = corpus.find(baseID);
+                    MRDOCS_CHECK_OR_CONTINUE(baseFuncMember);
+                    MRDOCS_CHECK_OR_CONTINUE(baseFuncMember->isOverloads());
+                    auto* overloads = baseFuncMember->asOverloadsPtr();
+                    MRDOCS_CHECK_OR_CONTINUE(overloads);
+                    // Does this overload set have the same functions
+                    MRDOCS_CHECK_OR_CONTINUE(
+                        std::ranges::is_permutation(
+                            overloads->Members,
+                            sameNameFunctionIds));
+                    return overloads->id;
                 }
             }
         }
+    }
+    return SymbolID::invalid;
+}
+
+SymbolID
+findIntroducedNamespacePermutation(
+    SymbolID const& contextId,
+    CorpusImpl& corpus,
+    ArrayRef<SymbolID> sameNameFunctionIds)
+{
+    // Find the UsingInfo
+    Info* info = corpus.find(contextId);
+    MRDOCS_CHECK_OR(info, SymbolID::invalid);
+    MRDOCS_CHECK_OR(info->isUsing(), SymbolID::invalid);
+
+    // Find the FunctionInfo for the first shadow declaration
+    MRDOCS_CHECK_OR(!sameNameFunctionIds.empty(), SymbolID::invalid);
+    Info* firstShadowInfo = corpus.find(sameNameFunctionIds.front());
+    MRDOCS_CHECK_OR(firstShadowInfo, SymbolID::invalid);
+    MRDOCS_CHECK_OR(firstShadowInfo->isFunction(), SymbolID::invalid);
+    auto* firstShadowFunction = firstShadowInfo->asFunctionPtr();
+
+    // Find the introduced namespace of the first shadow declaration
+    MRDOCS_CHECK_OR(firstShadowFunction->Parent, SymbolID::invalid);
+    Info* parentInfo = corpus.find(firstShadowFunction->Parent);
+    MRDOCS_CHECK_OR(parentInfo, SymbolID::invalid);
+    MRDOCS_CHECK_OR(parentInfo->isNamespace(), SymbolID::invalid);
+    auto* parentNamespace = parentInfo->asNamespacePtr();
+
+    // Find an overload set that's a permutation of the same name functions
+    for (SymbolID const& baseID: parentNamespace->Members.Functions)
+    {
+        Info* baseFuncMember = corpus.find(baseID);
+        MRDOCS_CHECK_OR_CONTINUE(baseFuncMember);
+        MRDOCS_CHECK_OR_CONTINUE(baseFuncMember->isOverloads());
+        auto* overloads = baseFuncMember->asOverloadsPtr();
+        MRDOCS_CHECK_OR_CONTINUE(overloads);
+        // Does this overload set have the same functions
+        MRDOCS_CHECK_OR_CONTINUE(
+            std::ranges::is_permutation(
+                overloads->Members,
+                sameNameFunctionIds));
+        return overloads->id;
     }
     return SymbolID::invalid;
 }
@@ -96,14 +117,17 @@ void
 OverloadsFinalizer::
 foldOverloads(SymbolID const& contextId, std::vector<SymbolID>& functionIds, bool isStatic)
 {
+    Info* contextInfo = corpus_.find(contextId);
+    MRDOCS_CHECK_OR(contextInfo);
+
     for (auto functionIdIt = functionIds.begin();
          functionIdIt != functionIds.end();
          ++functionIdIt)
     {
         // Get the FunctionInfo for the current id
-        auto recordInfoPtr = corpus_.find(*functionIdIt);
-        MRDOCS_CHECK_OR_CONTINUE(recordInfoPtr);
-        auto* function = recordInfoPtr->asFunctionPtr();
+        auto infoPtr = corpus_.find(*functionIdIt);
+        MRDOCS_CHECK_OR_CONTINUE(infoPtr);
+        auto* function = infoPtr->asFunctionPtr();
         MRDOCS_CHECK_OR_CONTINUE(function);
         MRDOCS_CHECK_OR_CONTINUE(function->Class != FunctionClass::Destructor);
 
@@ -133,23 +157,56 @@ foldOverloads(SymbolID const& contextId, std::vector<SymbolID>& functionIds, boo
         // Check if any of the base classes has an overload set
         // with the exact same function ids. If that's the case,
         // the function will create a reference.
-        SymbolID equivalentOverloadsID = findBaseClassPermutation(
-            contextId, corpus_, sameNameFunctionIds);
-        if (equivalentOverloadsID)
+        if (contextInfo->isRecord())
         {
-            MRDOCS_ASSERT(corpus_.find(equivalentOverloadsID));
-            // This base overload set becomes the
-            // representation in the record
-            *functionIdIt = equivalentOverloadsID;
-            auto const offset = functionIdIt - functionIds.begin();
-            // Erase the other function ids with
-            // the same name
-            for (SymbolID sameNameId: sameNameFunctionIds)
+            SymbolID equivalentOverloadsID = findBaseClassPermutation(
+                contextId,
+                corpus_,
+                sameNameFunctionIds);
+            if (equivalentOverloadsID)
             {
-                std::erase(functionIds, sameNameId);
+                MRDOCS_ASSERT(corpus_.find(equivalentOverloadsID));
+                // This base overload set becomes the
+                // representation in the record
+                *functionIdIt = equivalentOverloadsID;
+                auto const offset = functionIdIt - functionIds.begin();
+                // Erase the other function ids with
+                // the same name
+                for (SymbolID sameNameId: sameNameFunctionIds)
+                {
+                    std::erase(functionIds, sameNameId);
+                }
+                functionIdIt = functionIds.begin() + offset;
+                continue;
             }
-            functionIdIt = functionIds.begin() + offset;
-            continue;
+        }
+
+        // Check if the namespace of the name introduced in the
+        // using declaration has an overload set with the
+        // exact same function ids. If that's the case,
+        // the function will create a reference.
+        if (contextInfo->isUsing())
+        {
+            SymbolID introducedOverloadsID = findIntroducedNamespacePermutation(
+                contextId,
+                corpus_,
+                sameNameFunctionIds);
+            if (introducedOverloadsID)
+            {
+                MRDOCS_ASSERT(corpus_.find(introducedOverloadsID));
+                // This base overload set becomes the
+                // representation in the record
+                *functionIdIt = introducedOverloadsID;
+                auto const offset = functionIdIt - functionIds.begin();
+                // Erase the other function ids with
+                // the same name
+                for (SymbolID sameNameId: sameNameFunctionIds)
+                {
+                    std::erase(functionIds, sameNameId);
+                }
+                functionIdIt = functionIds.begin() + offset;
+                continue;
+            }
         }
 
         // FunctionInfo is not unique and there's no equivalent
@@ -176,13 +233,50 @@ foldOverloads(SymbolID const& contextId, std::vector<SymbolID>& functionIds, boo
     }
 }
 
+namespace {
+template <class T>
+constexpr
+auto
+toDerivedView(std::vector<SymbolID> const& ids, CorpusImpl& c)
+{
+    return ids |
+       std::views::transform([&c](SymbolID const& id) {
+            return c.find(id);
+        }) |
+       std::views::filter([](Info* infoPtr) {
+            return infoPtr != nullptr;
+       }) |
+      std::views::transform([](Info* infoPtr) -> T* {
+         return dynamic_cast<T*>(infoPtr);
+      }) |
+      std::views::filter([](T* ptr) {
+         return ptr != nullptr;
+      }) |
+      std::views::transform([](T* ptr) -> T& {
+         return *ptr;
+      });
+}
+}
+
 void
 OverloadsFinalizer::
 operator()(NamespaceInfo& I)
 {
+    MRDOCS_CHECK_OR(!finalized_.contains(I.id));
     foldOverloads(I.id, I.Members.Functions, true);
-    foldRecordMembers(I.Members.Records);
-    foldNamespaceMembers(I.Members.Namespaces);
+    for (RecordInfo& RI: toDerivedView<RecordInfo>(I.Members.Records, corpus_))
+    {
+        operator()(RI);
+    }
+    for (NamespaceInfo& NI: toDerivedView<NamespaceInfo>(I.Members.Namespaces, corpus_))
+    {
+        operator()(NI);
+    }
+    for (UsingInfo& UI: toDerivedView<UsingInfo>(I.Members.Usings, corpus_))
+    {
+        operator()(UI);
+    }
+    finalized_.emplace(I.id);
 }
 
 void
@@ -211,9 +305,39 @@ operator()(RecordInfo& I)
     foldOverloads(I.id, I.Interface.Public.StaticFunctions, true);
     foldOverloads(I.id, I.Interface.Protected.StaticFunctions, true);
     foldOverloads(I.id, I.Interface.Private.StaticFunctions, true);
-    foldRecordMembers(I.Interface.Public.Records);
-    foldRecordMembers(I.Interface.Protected.Records);
-    foldRecordMembers(I.Interface.Private.Records);
+    for (RecordInfo& RI: toDerivedView<RecordInfo>(I.Interface.Public.Records, corpus_)) {
+        operator()(RI);
+    }
+    for (RecordInfo& RI: toDerivedView<RecordInfo>(I.Interface.Protected.Records, corpus_)) {
+        operator()(RI);
+    }
+    for (RecordInfo& RI: toDerivedView<RecordInfo>(I.Interface.Private.Records, corpus_)) {
+        operator()(RI);
+    }
+    finalized_.emplace(I.id);
+}
+
+void
+OverloadsFinalizer::
+operator()(UsingInfo& I)
+{
+    MRDOCS_CHECK_OR(!finalized_.contains(I.id));
+    auto shadowFunctions = toDerivedView<FunctionInfo>(I.ShadowDeclarations, corpus_);
+    for (FunctionInfo& FI: shadowFunctions)
+    {
+        Info* PI = corpus_.find(FI.Parent);
+        MRDOCS_CHECK_OR_CONTINUE(PI);
+        if (auto* NI = PI->asNamespacePtr())
+        {
+            operator()(*NI);
+        }
+        else if (auto* RI = PI->asRecordPtr())
+        {
+            operator()(*RI);
+        }
+        break;
+    }
+    foldOverloads(I.id, I.ShadowDeclarations, true);
     finalized_.emplace(I.id);
 }
 

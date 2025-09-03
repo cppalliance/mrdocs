@@ -14,10 +14,12 @@
 
 === Functions
 
-[cols=1]
+[cols=2]
 |===
 | Name
+| Description
 | link:#f-0f[`f`] 
+| Local overload
 |===
 
 === Using Declarations
@@ -38,15 +40,19 @@
 | Name
 | Description
 | link:#A-f-08[`f`] 
-| 
+| `f` overloads
 |===
 
 [#A-f-08]
 == link:#A[A]::f
 
+`f` overloads
+
 === Synopses
 
 Declared in `&lt;using&hyphen;function&hyphen;local&hyphen;overloads&period;cpp&gt;`
+
+Second overload
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -57,6 +63,8 @@ link:#A-f-039[f]();
 
 [.small]#link:#A-f-039[_» more&period;&period;&period;_]#
 
+First overload
+
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
@@ -65,6 +73,8 @@ link:#A-f-01[f](int);
 ----
 
 [.small]#link:#A-f-01[_» more&period;&period;&period;_]#
+
+Third overload
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
@@ -80,6 +90,8 @@ link:#A-f-037[f](
 [#A-f-039]
 == link:#A[A]::f
 
+Second overload
+
 === Synopsis
 
 Declared in `&lt;using&hyphen;function&hyphen;local&hyphen;overloads&period;cpp&gt;`
@@ -93,6 +105,8 @@ f();
 [#A-f-01]
 == link:#A[A]::f
 
+First overload
+
 === Synopsis
 
 Declared in `&lt;using&hyphen;function&hyphen;local&hyphen;overloads&period;cpp&gt;`
@@ -105,6 +119,8 @@ f(int);
 
 [#A-f-037]
 == link:#A[A]::f
+
+Third overload
 
 === Synopsis
 
@@ -121,6 +137,8 @@ f(
 [#f-0f]
 == f
 
+Local overload
+
 === Synopsis
 
 Declared in `&lt;using&hyphen;function&hyphen;local&hyphen;overloads&period;cpp&gt;`
@@ -128,7 +146,7 @@ Declared in `&lt;using&hyphen;function&hyphen;local&hyphen;overloads&period;cpp&
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f(double i);
+f(double);
 ----
 
 [#f-02]
@@ -145,12 +163,12 @@ using A::f;
 
 === Introduced Symbols
 
-[cols=1]
+[cols=2]
 |===
 | Name
-| link:#A-f-037[A::f]
-| link:#A-f-039[A::f]
-| link:#A-f-01[A::f]
+| Description
+| link:#A-f-08[A::f]
+| `f` overloads
 |===
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#
