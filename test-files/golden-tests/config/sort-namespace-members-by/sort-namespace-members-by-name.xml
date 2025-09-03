@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
+    <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="21" class="def"/>
+  </struct>
+  <template>
+    <tparam name="T" class="type"/>
+    <tparam name="U" class="type"/>
+    <struct name="B" id="swBEqeWAJoaWVKty+1lCoYUK04A=">
+      <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="12" class="def"/>
+    </struct>
+  </template>
+  <template class="explicit" id="swBEqeWAJoaWVKty+1lCoYUK04A=">
+    <targ class="type" type="int"/>
+    <targ class="type" type="char"/>
+    <struct name="B" id="S+FvHbXPEwSCkNHoe9TC9L5a4Yk=">
+      <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="16" class="def"/>
+    </struct>
+  </template>
+  <template class="partial" id="swBEqeWAJoaWVKty+1lCoYUK04A=">
+    <tparam name="U" class="type"/>
+    <targ class="type" type="int"/>
+    <targ class="type" type="U"/>
+    <struct name="B" id="VwFE3CILPejPf11zTv20aat7w8Q=">
+      <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="19" class="def"/>
+    </struct>
+  </template>
+  <template>
+    <tparam name="T" class="type"/>
+    <tparam name="U" class="type" default="void"/>
+    <struct name="C" id="8nYw0KA23eAszqSOs0wOXAD1DYQ=">
+      <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="3" class="def"/>
+    </struct>
+  </template>
+  <template class="explicit" id="8nYw0KA23eAszqSOs0wOXAD1DYQ=">
+    <targ class="type" type="int"/>
+    <struct name="C" id="NLoLTepRVq6Wm8kqUGSEoM03TKg=">
+      <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="10" class="def"/>
+    </struct>
+  </template>
+  <template class="explicit" id="8nYw0KA23eAszqSOs0wOXAD1DYQ=">
+    <targ class="type" type="int"/>
+    <targ class="type" type="char"/>
+    <struct name="C" id="1gG5jFtdo9Wauh4eNKJFnssDpFU=">
+      <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="7" class="def"/>
+    </struct>
+  </template>
+  <struct name="D" id="CSFzdUEgi4+pu0K2D3isHXeaoFQ=">
+    <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="1" class="def"/>
+  </struct>
+  <struct name="Z" id="NQ8uQgTcafPcttyBMHHLHAXA4MA=">
+    <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="23" class="def"/>
+    <function class="constructor" name="Z" id="WltomC+2IcmzMN0COGL0OWWmbZk=">
+      <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="32"/>
+      <doc>
+        <brief>
+          <text>Default constructor</text>
+        </brief>
+      </doc>
+    </function>
+    <function class="constructor" name="Z" id="aQWtFVa4Xa+eceLXiLW74q44JRk=">
+      <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="31"/>
+      <param name="value">
+        <type name="int"/>
+      </param>
+      <doc>
+        <brief>
+          <text>Construct from </text>
+          <mono>int</mono>
+        </brief>
+        <param name="value">
+          <text>The value to construct from</text>
+        </param>
+      </doc>
+    </function>
+    <function class="destructor" name="~Z" id="HMG56OCQ5OpB2E9hu4bG3/hoOho=">
+      <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="30"/>
+      <doc>
+        <brief>
+          <text>Destructor</text>
+        </brief>
+      </doc>
+    </function>
+    <function name="foo" id="lBA1besl9J3wAZAcEn9C+K05hf4=">
+      <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="29"/>
+      <attr id="is-const"/>
+    </function>
+    <function class="conversion" name="operator bool" id="zQ0DYAZMF+xhfbo8hUyqZRNKJ+U=">
+      <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="28"/>
+      <attr id="is-const"/>
+      <return>
+        <type name="bool"/>
+      </return>
+      <doc>
+        <brief>
+          <text>Conversion to </text>
+          <mono>bool</mono>
+        </brief>
+        <returns>
+          <text>The object converted to </text>
+          <mono>bool</mono>
+        </returns>
+      </doc>
+    </function>
+    <function name="operator!" id="rjPdhFxUkaC43tWXi+kka78JQxI=">
+      <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="27"/>
+      <attr id="operator" name="not" value="27"/>
+      <attr id="is-const"/>
+      <return>
+        <type name="bool"/>
+      </return>
+      <doc>
+        <brief>
+          <text>Negation operator</text>
+        </brief>
+        <returns>
+          <mono>true</mono>
+          <text> if the object is falsy, </text>
+          <mono>false</mono>
+          <text> otherwise</text>
+        </returns>
+      </doc>
+    </function>
+    <function name="operator==" id="atwUGLD+QHVhH3x1+8qzINNxzMY=">
+      <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="26"/>
+      <attr id="operator" name="eq" value="28"/>
+      <attr id="is-const"/>
+      <return>
+        <type name="bool"/>
+      </return>
+      <param name="rhs">
+        <type class="lvalue-reference">
+          <pointee-type id="NQ8uQgTcafPcttyBMHHLHAXA4MA=" name="Z" cv-qualifiers="const"/>
+        </type>
+      </param>
+      <doc>
+        <brief>
+          <text>Equality operator</text>
+        </brief>
+        <returns>
+          <mono>true</mono>
+          <text> if the objects are equal, </text>
+          <mono>false</mono>
+          <text> otherwise</text>
+        </returns>
+        <param name="rhs">
+          <text>The right operand</text>
+        </param>
+      </doc>
+    </function>
+    <function name="operator!=" id="CB0pXrzU8BKZ2LF0BSpclxIfgrs=">
+      <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="25"/>
+      <attr id="operator" name="not_eq" value="29"/>
+      <attr id="is-const"/>
+      <return>
+        <type name="bool"/>
+      </return>
+      <param name="rhs">
+        <type class="lvalue-reference">
+          <pointee-type id="NQ8uQgTcafPcttyBMHHLHAXA4MA=" name="Z" cv-qualifiers="const"/>
+        </type>
+      </param>
+      <doc>
+        <brief>
+          <text>Inequality operator</text>
+        </brief>
+        <returns>
+          <mono>true</mono>
+          <text> if the objects are not equal, </text>
+          <mono>false</mono>
+          <text> otherwise</text>
+        </returns>
+        <param name="rhs">
+          <text>The right operand</text>
+        </param>
+      </doc>
+    </function>
+    <function name="operator&lt;=&gt;" id="6/NYLeQdPqWrbu5kHnTpE3u6Yg4=">
+      <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="24"/>
+      <attr id="operator" name="3way" value="34"/>
+      <attr id="is-const"/>
+      <return>
+        <type class="auto" keyword="auto">
+        </type>
+      </return>
+      <param name="rhs">
+        <type class="lvalue-reference">
+          <pointee-type id="NQ8uQgTcafPcttyBMHHLHAXA4MA=" name="Z" cv-qualifiers="const"/>
+        </type>
+      </param>
+      <doc>
+        <brief>
+          <text>Three-way comparison operator</text>
+        </brief>
+        <returns>
+          <text>The relative order of the objects</text>
+        </returns>
+        <param name="rhs">
+          <text>The right operand</text>
+        </param>
+      </doc>
+    </function>
+  </struct>
+  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
+    <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="59"/>
+  </function>
+  <function name="g" id="43ASI/aC9fCLy8T+1gn7pUdis+g=">
+    <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="57"/>
+  </function>
+  <function name="g" id="SvF6a1ZP8sdIXexPrrRDIA1OHus=">
+    <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="53"/>
+    <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="55"/>
+    <return>
+      <type name="char"/>
+    </return>
+    <param>
+      <type name="int"/>
+    </param>
+  </function>
+  <function name="g" id="ZYC+YG/hWLHomKHwEAfoO4TO2cw=">
+    <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="51"/>
+    <return>
+      <type name="char"/>
+    </return>
+    <param>
+      <type name="double"/>
+    </param>
+  </function>
+  <function name="g" id="OqSPxlq/89fBNIHVGkd2KTtgheY=">
+    <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="49"/>
+    <return>
+      <type name="char"/>
+    </return>
+    <param>
+      <type name="double"/>
+    </param>
+    <param>
+      <type name="char"/>
+    </param>
+  </function>
+  <function name="g" id="rs6F2A6K2Qvx34WDTz9fCKP4+HE=">
+    <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="47"/>
+    <return>
+      <type name="char"/>
+    </return>
+    <param>
+      <type name="char"/>
+    </param>
+    <param>
+      <type name="char"/>
+    </param>
+    <param>
+      <type name="char"/>
+    </param>
+  </function>
+  <template>
+    <tparam name="T" class="type"/>
+    <function name="g" id="PEedgXj8uxMWKd/yZk6yqAz6boU=">
+      <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="41"/>
+      <return>
+        <type name="char"/>
+      </return>
+      <param>
+        <type name="T"/>
+      </param>
+      <param>
+        <type name="T"/>
+      </param>
+      <param>
+        <type name="T"/>
+      </param>
+    </function>
+  </template>
+  <template class="explicit" id="PEedgXj8uxMWKd/yZk6yqAz6boU=">
+    <targ class="type" type="int"/>
+    <function name="g" id="5LjM4cXZ7IywLIZW1RtfpP7tNNk=">
+      <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="44"/>
+      <return>
+        <type name="char"/>
+      </return>
+      <param>
+        <type name="int"/>
+      </param>
+      <param>
+        <type name="int"/>
+      </param>
+      <param>
+        <type name="int"/>
+      </param>
+    </function>
+  </template>
+  <function name="h" id="rvT6OxIrrSI0KxJ2nkfEgBz/Lz4=">
+    <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="39"/>
+  </function>
+  <function name="operator!" id="yuKyBhGbND+Kyypyb9UsuC4Qe3E=">
+    <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="37"/>
+    <attr id="operator" name="not" value="27"/>
+    <return>
+      <type name="bool"/>
+    </return>
+    <param name="v">
+      <type class="lvalue-reference">
+        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
+      </type>
+    </param>
+    <doc>
+      <brief>
+        <text>Negation operator</text>
+      </brief>
+      <returns>
+        <mono>true</mono>
+        <text> if the object is falsy, </text>
+        <mono>false</mono>
+        <text> otherwise</text>
+      </returns>
+      <param name="v">
+        <text>The operand</text>
+      </param>
+    </doc>
+  </function>
+  <function name="operator==" id="kibUx6k1SXB+HsXkRXroJl9f59w=">
+    <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="36"/>
+    <attr id="operator" name="eq" value="28"/>
+    <return>
+      <type name="bool"/>
+    </return>
+    <param name="lhs">
+      <type class="lvalue-reference">
+        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
+      </type>
+    </param>
+    <param name="rhs">
+      <type class="lvalue-reference">
+        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
+      </type>
+    </param>
+    <doc>
+      <brief>
+        <text>Equality operator</text>
+      </brief>
+      <returns>
+        <mono>true</mono>
+        <text> if the objects are equal, </text>
+        <mono>false</mono>
+        <text> otherwise</text>
+      </returns>
+      <param name="lhs">
+        <text>The left operand</text>
+      </param>
+      <param name="rhs">
+        <text>The right operand</text>
+      </param>
+    </doc>
+  </function>
+  <function name="operator!=" id="4MuN1V3fHVfOMvtg2LT+QVm/XmE=">
+    <file short-path="sort-namespace-members-by-name.cpp" source-path="sort-namespace-members-by-name.cpp" line="35"/>
+    <attr id="operator" name="not_eq" value="29"/>
+    <return>
+      <type name="bool"/>
+    </return>
+    <param name="lhs">
+      <type class="lvalue-reference">
+        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
+      </type>
+    </param>
+    <param name="rhs">
+      <type class="lvalue-reference">
+        <pointee-type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A" cv-qualifiers="const"/>
+      </type>
+    </param>
+    <doc>
+      <brief>
+        <text>Inequality operator</text>
+      </brief>
+      <returns>
+        <mono>true</mono>
+        <text> if the objects are not equal, </text>
+        <mono>false</mono>
+        <text> otherwise</text>
+      </returns>
+      <param name="lhs">
+        <text>The left operand</text>
+      </param>
+      <param name="rhs">
+        <text>The right operand</text>
+      </param>
+    </doc>
+  </function>
+</namespace>
+</mrdocs>
