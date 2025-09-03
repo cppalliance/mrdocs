@@ -2244,6 +2244,7 @@ class MrDocsInstaller:
                         configs.append({
                             "name": f"Boost.{lib.title()} Documentation",
                             "target": "mrdocs",
+                            "folder": "Boost Documentation",
                             "program": os.path.join(self.options.mrdocs_build_dir, "mrdocs"),
                             "args": [
                                 '../CMakeLists.txt',
