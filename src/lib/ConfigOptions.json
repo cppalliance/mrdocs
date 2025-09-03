@@ -283,6 +283,17 @@
         "default": true
       },
       {
+        "name": "sort-members-by",
+        "brief": "Determine how members of a record or namespace are sorted",
+        "details": "If `sort-members` is set to `true`, determine how members of a record or namespace are sorted. When set to `name`, members are sorted by name. When set to `location`, members are sorted by their primary location in the source code, considering the short name of the path and the location in the file.",
+        "type": "enum",
+        "values": [
+            "name",
+            "location"
+        ],
+        "default": "name"
+      },
+      {
         "name": "sort-members-ctors-1st",
         "brief": "Sort constructors first",
         "details": "When set to `true`, constructors are sorted first in the list of members of a record.",

@@ -437,6 +437,15 @@
       "title": "Sort assignment operators first",
       "type": "boolean"
     },
+    "sort-members-by": {
+      "default": "name",
+      "description": "If `sort-members` is set to `true`, determine how members of a record or namespace are sorted. When set to `name`, members are sorted by name. When set to `location`, members are sorted by their primary location in the source code, considering the short name of the path and the location in the file.",
+      "enum": [
+        "name",
+        "location"
+      ],
+      "title": "Determine how members of a record or namespace are sorted"
+    },
     "sort-members-conversion-last": {
       "default": true,
       "description": "When set to `true`, conversion operators are sorted last in the list of members of a record or namespace.",

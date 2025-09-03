@@ -1,0 +1,285 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols=1]
+|===
+| Name
+| link:#Z[`Z`] 
+|===
+
+[#Z]
+== Z
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;by&hyphen;location&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Z;
+----
+
+=== Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#Z-2constructor-00[`Z`]         [.small]#[constructor]#
+| Constructors
+| link:#Z-2destructor[`&#126;Z`] [.small]#[destructor]#
+| Destructor
+| link:#Z-foo[`foo`] 
+| 
+| link:#Z-bar[`bar`] 
+| 
+| link:#Z-2conversion[`operator bool`] 
+| Conversion to `bool`
+| link:#Z-operator_not[`operator!`] 
+| Negation operator
+| link:#Z-operator_eq[`operator&equals;&equals;`] 
+| Equality operator
+| link:#Z-operator_not_eq[`operator!&equals;`] 
+| Inequality operator
+| link:#Z-operator_3way[`operator&lt;&equals;&gt;`] 
+| Three&hyphen;way comparison operator
+|===
+
+[#Z-2constructor-00]
+== link:#Z[Z]::Z
+
+Constructors
+
+=== Synopses
+
+Declared in `&lt;sort&hyphen;members&hyphen;by&hyphen;location&period;cpp&gt;`
+
+Construct from `int`
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#Z-2constructor-06[Z](int value);
+----
+
+[.small]#link:#Z-2constructor-06[_» more&period;&period;&period;_]#
+
+Default constructor
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#Z-2constructor-05[Z]();
+----
+
+[.small]#link:#Z-2constructor-05[_» more&period;&period;&period;_]#
+
+[#Z-2constructor-06]
+== link:#Z[Z]::Z
+
+Construct from `int`
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;by&hyphen;location&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+Z(int value);
+----
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *value*
+| The value to construct from
+|===
+
+[#Z-2constructor-05]
+== link:#Z[Z]::Z
+
+Default constructor
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;by&hyphen;location&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+Z();
+----
+
+[#Z-2destructor]
+== link:#Z[Z]::&#126;Z
+
+Destructor
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;by&hyphen;location&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&#126;Z();
+----
+
+[#Z-foo]
+== link:#Z[Z]::foo
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;by&hyphen;location&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+foo() const;
+----
+
+[#Z-bar]
+== link:#Z[Z]::bar
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;by&hyphen;location&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+bar() const;
+----
+
+[#Z-2conversion]
+== link:#Z[Z]::operator bool
+
+Conversion to `bool`
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;by&hyphen;location&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+operator bool() const;
+----
+
+=== Return Value
+
+The object converted to `bool`
+
+[#Z-operator_not]
+== link:#Z[Z]::operator!
+
+Negation operator
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;by&hyphen;location&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+operator!() const;
+----
+
+=== Return Value
+
+`true` if the object is falsy, `false` otherwise
+
+[#Z-operator_eq]
+== link:#Z[Z]::operator&equals;&equals;
+
+Equality operator
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;by&hyphen;location&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+operator&equals;&equals;(link:#Z[Z] const& rhs) const;
+----
+
+=== Return Value
+
+`true` if the objects are equal, `false` otherwise
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *rhs*
+| The right operand
+|===
+
+[#Z-operator_not_eq]
+== link:#Z[Z]::operator!&equals;
+
+Inequality operator
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;by&hyphen;location&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+bool
+operator!&equals;(link:#Z[Z] const& rhs) const;
+----
+
+=== Return Value
+
+`true` if the objects are not equal, `false` otherwise
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *rhs*
+| The right operand
+|===
+
+[#Z-operator_3way]
+== link:#Z[Z]::operator&lt;&equals;&gt;
+
+Three&hyphen;way comparison operator
+
+=== Synopsis
+
+Declared in `&lt;sort&hyphen;members&hyphen;by&hyphen;location&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+auto
+operator&lt;&equals;&gt;(link:#Z[Z] const& rhs) const;
+----
+
+=== Return Value
+
+The relative order of the objects
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *rhs*
+| The right operand
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

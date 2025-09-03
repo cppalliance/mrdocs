@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <struct name="Z" id="NQ8uQgTcafPcttyBMHHLHAXA4MA=">
+    <file short-path="sort-members-by-name.cpp" source-path="sort-members-by-name.cpp" line="1" class="def"/>
+    <function class="constructor" name="Z" id="WltomC+2IcmzMN0COGL0OWWmbZk=">
+      <file short-path="sort-members-by-name.cpp" source-path="sort-members-by-name.cpp" line="11"/>
+      <doc>
+        <brief>
+          <text>Default constructor</text>
+        </brief>
+      </doc>
+    </function>
+    <function class="constructor" name="Z" id="aQWtFVa4Xa+eceLXiLW74q44JRk=">
+      <file short-path="sort-members-by-name.cpp" source-path="sort-members-by-name.cpp" line="10"/>
+      <param name="value">
+        <type name="int"/>
+      </param>
+      <doc>
+        <brief>
+          <text>Construct from </text>
+          <mono>int</mono>
+        </brief>
+        <param name="value">
+          <text>The value to construct from</text>
+        </param>
+      </doc>
+    </function>
+    <function class="destructor" name="~Z" id="HMG56OCQ5OpB2E9hu4bG3/hoOho=">
+      <file short-path="sort-members-by-name.cpp" source-path="sort-members-by-name.cpp" line="9"/>
+      <doc>
+        <brief>
+          <text>Destructor</text>
+        </brief>
+      </doc>
+    </function>
+    <function name="bar" id="gRx0djRTyQ5zuzBd9ujP7LLlWNg=">
+      <file short-path="sort-members-by-name.cpp" source-path="sort-members-by-name.cpp" line="8"/>
+      <attr id="is-const"/>
+    </function>
+    <function name="foo" id="lBA1besl9J3wAZAcEn9C+K05hf4=">
+      <file short-path="sort-members-by-name.cpp" source-path="sort-members-by-name.cpp" line="7"/>
+      <attr id="is-const"/>
+    </function>
+    <function class="conversion" name="operator bool" id="zQ0DYAZMF+xhfbo8hUyqZRNKJ+U=">
+      <file short-path="sort-members-by-name.cpp" source-path="sort-members-by-name.cpp" line="6"/>
+      <attr id="is-const"/>
+      <return>
+        <type name="bool"/>
+      </return>
+      <doc>
+        <brief>
+          <text>Conversion to </text>
+          <mono>bool</mono>
+        </brief>
+        <returns>
+          <text>The object converted to </text>
+          <mono>bool</mono>
+        </returns>
+      </doc>
+    </function>
+    <function name="operator!" id="rjPdhFxUkaC43tWXi+kka78JQxI=">
+      <file short-path="sort-members-by-name.cpp" source-path="sort-members-by-name.cpp" line="5"/>
+      <attr id="operator" name="not" value="27"/>
+      <attr id="is-const"/>
+      <return>
+        <type name="bool"/>
+      </return>
+      <doc>
+        <brief>
+          <text>Negation operator</text>
+        </brief>
+        <returns>
+          <mono>true</mono>
+          <text> if the object is falsy, </text>
+          <mono>false</mono>
+          <text> otherwise</text>
+        </returns>
+      </doc>
+    </function>
+    <function name="operator==" id="atwUGLD+QHVhH3x1+8qzINNxzMY=">
+      <file short-path="sort-members-by-name.cpp" source-path="sort-members-by-name.cpp" line="4"/>
+      <attr id="operator" name="eq" value="28"/>
+      <attr id="is-const"/>
+      <return>
+        <type name="bool"/>
+      </return>
+      <param name="rhs">
+        <type class="lvalue-reference">
+          <pointee-type id="NQ8uQgTcafPcttyBMHHLHAXA4MA=" name="Z" cv-qualifiers="const"/>
+        </type>
+      </param>
+      <doc>
+        <brief>
+          <text>Equality operator</text>
+        </brief>
+        <returns>
+          <mono>true</mono>
+          <text> if the objects are equal, </text>
+          <mono>false</mono>
+          <text> otherwise</text>
+        </returns>
+        <param name="rhs">
+          <text>The right operand</text>
+        </param>
+      </doc>
+    </function>
+    <function name="operator!=" id="CB0pXrzU8BKZ2LF0BSpclxIfgrs=">
+      <file short-path="sort-members-by-name.cpp" source-path="sort-members-by-name.cpp" line="3"/>
+      <attr id="operator" name="not_eq" value="29"/>
+      <attr id="is-const"/>
+      <return>
+        <type name="bool"/>
+      </return>
+      <param name="rhs">
+        <type class="lvalue-reference">
+          <pointee-type id="NQ8uQgTcafPcttyBMHHLHAXA4MA=" name="Z" cv-qualifiers="const"/>
+        </type>
+      </param>
+      <doc>
+        <brief>
+          <text>Inequality operator</text>
+        </brief>
+        <returns>
+          <mono>true</mono>
+          <text> if the objects are not equal, </text>
+          <mono>false</mono>
+          <text> otherwise</text>
+        </returns>
+        <param name="rhs">
+          <text>The right operand</text>
+        </param>
+      </doc>
+    </function>
+    <function name="operator&lt;=&gt;" id="6/NYLeQdPqWrbu5kHnTpE3u6Yg4=">
+      <file short-path="sort-members-by-name.cpp" source-path="sort-members-by-name.cpp" line="2"/>
+      <attr id="operator" name="3way" value="34"/>
+      <attr id="is-const"/>
+      <return>
+        <type class="auto" keyword="auto">
+        </type>
+      </return>
+      <param name="rhs">
+        <type class="lvalue-reference">
+          <pointee-type id="NQ8uQgTcafPcttyBMHHLHAXA4MA=" name="Z" cv-qualifiers="const"/>
+        </type>
+      </param>
+      <doc>
+        <brief>
+          <text>Three-way comparison operator</text>
+        </brief>
+        <returns>
+          <text>The relative order of the objects</text>
+        </returns>
+        <param name="rhs">
+          <text>The right operand</text>
+        </param>
+      </doc>
+    </function>
+  </struct>
+</namespace>
+</mrdocs>
