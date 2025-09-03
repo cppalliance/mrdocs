@@ -75,6 +75,7 @@ struct SymbolIDCompareFn
         Info const& lhs = *lhsPtr;
         Info const& rhs = *rhsPtr;
 
+        // Constructors come first
         std::optional<FunctionClass> const lhsClass = findFunctionClass(lhs);
         std::optional<FunctionClass> const rhsClass = findFunctionClass(rhs);
         if (corpus_.config->sortMembersCtors1St)
@@ -87,6 +88,7 @@ struct SymbolIDCompareFn
             }
         }
 
+        // Destructors come next
         if (corpus_.config->sortMembersDtors1St)
         {
             bool const lhsIsDtor = lhsClass && *lhsClass == FunctionClass::Destructor;
@@ -97,6 +99,7 @@ struct SymbolIDCompareFn
             }
         }
 
+        // Assignment operators come next
         std::optional<OperatorKind> const lhsOp = findOperatorKind(lhs);
         std::optional<OperatorKind> const rhsOp = findOperatorKind(rhs);
         if (corpus_.config->sortMembersAssignment1St)
@@ -109,6 +112,7 @@ struct SymbolIDCompareFn
             }
         }
 
+        // Relational operators come last
         if (corpus_.config->sortMembersRelationalLast)
         {
             bool const lhsIsRel = lhsOp && (
@@ -141,6 +145,7 @@ struct SymbolIDCompareFn
             }
         }
 
+        // Conversion operators come last
         if (corpus_.config->sortMembersConversionLast)
         {
             bool const lhsIsConvertion = lhsClass && *lhsClass == FunctionClass::Conversion;
@@ -207,11 +212,40 @@ struct SymbolIDCompareFn
             }
         }
 
-        if (auto const cmp = lhs.Name <=> rhs.Name; cmp != 0)
+        // Special cases are handled, so use the configuration criteria
+        switch (corpus_.config->sortMembersBy)
         {
-            return std::is_lt(cmp);
+        case clang::mrdocs::PublicSettings::SortSymbolBy::Name:
+            if (auto const cmp = lhs.Name <=> rhs.Name; cmp != 0)
+            {
+                return std::is_lt(cmp);
+            }
+            break;
+        case clang::mrdocs::PublicSettings::SortSymbolBy::Location:
+        {
+            // By location: short path, line, column
+            auto const& lhsLoc = getPrimaryLocation(lhs);
+            auto const& rhsLoc = getPrimaryLocation(rhs);
+            if (auto const cmp = lhsLoc->ShortPath <=> rhsLoc->ShortPath;
+                cmp != 0)
+            {
+                return std::is_lt(cmp);
+            }
+            if (auto const cmp = lhsLoc->LineNumber <=> rhsLoc->LineNumber;
+                cmp != 0)
+            {
+                return std::is_lt(cmp);
+            }
+            break;
+        }
+        default:
+            MRDOCS_UNREACHABLE();
         }
 
+        // In case of a tie, we use the internal criteria for that symbol type
+        // to ensure a stable sort. For instance, in the case of functions,
+        // we sort by name, then number of parameters, then parameter types,
+        // and so on.
         return std::is_lt(CompareDerived(lhs, rhs));
     }
 };
@@ -267,78 +301,104 @@ sortMembers(RecordInterface& I)
     sortMembers(I.Private);
 }
 
-void
-SortMembersFinalizer::
-sortNamespaceMembers(std::vector<SymbolID>& ids)
+namespace {
+template <class T>
+constexpr
+auto
+toDerivedView(std::vector<SymbolID> const& ids, CorpusImpl& c)
 {
-    for (SymbolID const& id: ids)
-    {
-        auto infoPtr = corpus_.find(id);
-        MRDOCS_CHECK_OR_CONTINUE(infoPtr);
-        auto* ns = infoPtr->asNamespacePtr();
-        MRDOCS_CHECK_OR_CONTINUE(ns);
-        operator()(*ns);
-    }
+    return ids |
+       std::views::transform([&c](SymbolID const& id) {
+            return c.find(id);
+        }) |
+       std::views::filter([](Info* infoPtr) {
+            return infoPtr != nullptr;
+       }) |
+      std::views::transform([](Info* infoPtr) -> T* {
+         return dynamic_cast<T*>(infoPtr);
+      }) |
+      std::views::filter([](T* ptr) {
+         return ptr != nullptr;
+      }) |
+      std::views::transform([](T* ptr) -> T& {
+         return *ptr;
+      });
 }
-
-void
-SortMembersFinalizer::
-sortRecordMembers(std::vector<SymbolID>& ids)
-{
-    for (SymbolID const& id: ids)
-    {
-        auto infoPtr = corpus_.find(id);
-        MRDOCS_CHECK_OR_CONTINUE(infoPtr);
-        auto* record = infoPtr->asRecordPtr();
-        MRDOCS_CHECK_OR_CONTINUE(record);
-        operator()(*record);
-    }
-}
-
-void
-SortMembersFinalizer::
-sortOverloadMembers(std::vector<SymbolID>& ids)
-{
-    for (SymbolID const& id: ids)
-    {
-        auto infoPtr = corpus_.find(id);
-        MRDOCS_CHECK_OR_CONTINUE(infoPtr);
-        auto* overloads = infoPtr->asOverloadsPtr();
-        MRDOCS_CHECK_OR_CONTINUE(overloads);
-        operator()(*overloads);
-    }
 }
 
 void
 SortMembersFinalizer::
 operator()(NamespaceInfo& I)
 {
+    // Sort members of all tranches
     sortMembers(I.Members);
-    sortRecordMembers(I.Members.Records);
-    sortNamespaceMembers(I.Members.Namespaces);
-    sortOverloadMembers(I.Members.Functions);
+
+    // Recursively sort members of child namespaces, records, and overloads
+    for (RecordInfo& RI: toDerivedView<RecordInfo>(I.Members.Records, corpus_))
+    {
+        operator()(RI);
+    }
+    for (NamespaceInfo& RI: toDerivedView<NamespaceInfo>(I.Members.Namespaces, corpus_))
+    {
+        operator()(RI);
+    }
+    for (OverloadsInfo& RI: toDerivedView<OverloadsInfo>(I.Members.Functions, corpus_))
+    {
+        operator()(RI);
+    }
 }
 
 void
 SortMembersFinalizer::
 operator()(RecordInfo& I)
 {
+    // Sort members of all tranches
     sortMembers(I.Interface);
-    sortRecordMembers(I.Interface.Public.Records);
-    sortRecordMembers(I.Interface.Protected.Records);
-    sortRecordMembers(I.Interface.Private.Records);
-    sortOverloadMembers(I.Interface.Public.Functions);
-    sortOverloadMembers(I.Interface.Protected.Functions);
-    sortOverloadMembers(I.Interface.Private.Functions);
-    sortOverloadMembers(I.Interface.Public.StaticFunctions);
-    sortOverloadMembers(I.Interface.Protected.StaticFunctions);
-    sortOverloadMembers(I.Interface.Private.StaticFunctions);
+
+    // Recursively sort members of child records and overloads
+    for (RecordInfo& RI: toDerivedView<RecordInfo>(I.Interface.Public.Records, corpus_))
+    {
+        operator()(RI);
+    }
+    for (RecordInfo& RI: toDerivedView<RecordInfo>(I.Interface.Protected.Records, corpus_))
+    {
+        operator()(RI);
+    }
+    for (RecordInfo& RI: toDerivedView<RecordInfo>(I.Interface.Private.Records, corpus_))
+    {
+        operator()(RI);
+    }
+    for (OverloadsInfo& RI: toDerivedView<OverloadsInfo>(I.Interface.Public.Functions, corpus_))
+    {
+        operator()(RI);
+    }
+    for (OverloadsInfo& RI: toDerivedView<OverloadsInfo>(I.Interface.Protected.Functions, corpus_))
+    {
+        operator()(RI);
+    }
+    for (OverloadsInfo& RI: toDerivedView<OverloadsInfo>(I.Interface.Private.Functions, corpus_))
+    {
+        operator()(RI);
+    }
+    for (OverloadsInfo& RI: toDerivedView<OverloadsInfo>(I.Interface.Public.StaticFunctions, corpus_))
+    {
+        operator()(RI);
+    }
+    for (OverloadsInfo& RI: toDerivedView<OverloadsInfo>(I.Interface.Protected.StaticFunctions, corpus_))
+    {
+        operator()(RI);
+    }
+    for (OverloadsInfo& RI: toDerivedView<OverloadsInfo>(I.Interface.Private.StaticFunctions, corpus_))
+    {
+        operator()(RI);
+    }
 }
 
 void
 SortMembersFinalizer::
 operator()(OverloadsInfo& I)
 {
+    // Sort the member functions
     sortMembers(I.Members);
 }
 
