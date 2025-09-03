@@ -30,12 +30,6 @@ class OverloadsFinalizer
     std::set<SymbolID> finalized_;
 
     void
-    foldRecordMembers(std::vector<SymbolID> const& ids);
-
-    void
-    foldNamespaceMembers(std::vector<SymbolID> const& namespaceIds);
-
-    void
     foldOverloads(
         SymbolID const& contextId,
         std::vector<SymbolID>& functionIds,
@@ -55,12 +49,23 @@ public:
         operator()(globalPtr->asNamespace());
     }
 
+    /* Visit the namespace members identifying overload sets
+     */
     void
     operator()(NamespaceInfo& I);
 
+    /* Visit the record members identifying overload sets
+     */
     void
     operator()(RecordInfo& I);
 
+    /* Visit the using directive shadows for overloads
+     */
+    void
+    operator()(UsingInfo& I);
+
+    /* No-op for other Info types
+     */
     void
     operator()(Info&) {}
 };

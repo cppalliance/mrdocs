@@ -41,11 +41,11 @@
       </param>
     </function>
     <using id="gYtMTvi6Y8IYub83GUwP4tNrNh8=" class="using" qualifier="A::f">
-      <file short-path="using-member-function.cpp" source-path="using-member-function.cpp" line="13"/>
+      <file short-path="using-member-function.cpp" source-path="using-member-function.cpp" line="17"/>
       <named id="7Bg4Ruo9NHdsGok6ICFQWW1MBuE="/>
     </using>
     <using id="Ok4Drv8j7QjZMYzH/iHOHoNf+YY=" class="using" qualifier="B::f">
-      <file short-path="using-member-function.cpp" source-path="using-member-function.cpp" line="14"/>
+      <file short-path="using-member-function.cpp" source-path="using-member-function.cpp" line="18"/>
       <named id="L8SG5UwdWbdrxlsWfl5qGz09wUw="/>
     </using>
   </struct>
