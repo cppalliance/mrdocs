@@ -213,7 +213,13 @@ struct SymbolIDCompareFn
         }
 
         // Special cases are handled, so use the configuration criteria
-        switch (corpus_.config->sortMembersBy)
+        Info const* P = corpus_.find(lhs.Parent);
+        bool const isClassMember = P && P->isRecord();
+        auto const generalSortCriteria =
+            isClassMember
+                ? corpus_.config->sortMembersBy
+                : corpus_.config->sortNamespaceMembersBy;
+        switch (generalSortCriteria)
         {
         case clang::mrdocs::PublicSettings::SortSymbolBy::Name:
             if (auto const cmp = lhs.Name <=> rhs.Name; cmp != 0)
@@ -352,8 +358,11 @@ void
 SortMembersFinalizer::
 operator()(RecordInfo& I)
 {
-    // Sort members of all tranches
-    sortMembers(I.Interface);
+    // Sort members of all tranches if sorting is enabled for records
+    if (corpus_.config->sortMembers)
+    {
+        sortMembers(I.Interface);
+    }
 
     // Recursively sort members of child records and overloads
     for (RecordInfo& RI: toDerivedView<RecordInfo>(I.Interface.Public.Records, corpus_))

@@ -964,13 +964,15 @@ CorpusImpl::finalize()
         finalizer.build();
     }
 
+    // Add auto relates for member functions
     {
         report::debug("  - Finalizing auto-relates");
         DerivedFinalizer finalizer(*this);
         finalizer.build();
     }
 
-    if (config->sortMembers)
+    // Sort members: this runs unconditionally because
+    // the members of some symbol types are always sorted.
     {
         report::debug("  - Finalizing sorted members");
         SortMembersFinalizer finalizer(*this);
@@ -978,9 +980,11 @@ CorpusImpl::finalize()
     }
 
     // Finalize javadoc
-    report::debug("  - Finalizing javadoc");
-    JavadocFinalizer finalizer(*this);
-    finalizer.build();
+    {
+        report::debug("  - Finalizing javadoc");
+        JavadocFinalizer finalizer(*this);
+        finalizer.build();
+    }
 }
 
 } // clang::mrdocs

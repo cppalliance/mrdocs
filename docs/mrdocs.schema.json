@@ -419,12 +419,12 @@
     },
     "sort-members": {
       "default": true,
-      "description": "When set to `true`, sort the members of a record or namespace by name and parameters. When set to `false`, the members are included in the declaration order they are extracted.",
+      "description": "When set to `true`, sort the members of a record by the criterion determined in the `sort-members-by` option. When set to `false`, the members are included in the declaration order they are extracted.",
       "enum": [
         true,
         false
       ],
-      "title": "Sort the members of a record or namespace",
+      "title": "Sort the members of a record",
       "type": "boolean"
     },
     "sort-members-assignment-1st": {
@@ -439,12 +439,12 @@
     },
     "sort-members-by": {
       "default": "name",
-      "description": "If `sort-members` is set to `true`, determine how members of a record or namespace are sorted. When set to `name`, members are sorted by name. When set to `location`, members are sorted by their primary location in the source code, considering the short name of the path and the location in the file.",
+      "description": "If `sort-members` is set to `true`, determine how members of a record are sorted. When set to `name`, members are sorted by name. When set to `location`, members are sorted by their primary location in the source code, considering the short name of the path and the location in the file.",
       "enum": [
         "name",
         "location"
       ],
-      "title": "Determine how members of a record or namespace are sorted"
+      "title": "Determine how members of a record are sorted"
     },
     "sort-members-conversion-last": {
       "default": true,
@@ -485,6 +485,15 @@
       ],
       "title": "Sort relational operators last",
       "type": "boolean"
+    },
+    "sort-namespace-members-by": {
+      "default": "name",
+      "description": "Although members of namespaces are always sorted, determine how members of a namespace are sorted. When set to `name`, members are sorted by name. When set to `location`, members are sorted by their primary location in the source code, considering the short name of the path and the location in the file.",
+      "enum": [
+        "name",
+        "location"
+      ],
+      "title": "Determine how members of a namespace are sorted"
     },
     "source-root": {
       "default": "<config-dir>",
