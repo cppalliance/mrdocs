@@ -1,0 +1,24 @@
+= LLDB data formatters
+
+Create or modify your `.lldbinit` file to contain the following:
+
+[source,lldb]
+----
+command script import /path/share/lldb/mrdocs_formatters.py  <1>
+type category enable MrDocs                                  <2>
+----
+
+<1> Import the LLDB formatter module. LLDB will call `__lldb_init_module` inside `mrdocs_formatters.py` to register summaries and synthetic children.
+<2> Ensure the `MrDocs` type category is enabled. (The module already enables it; this line is harmless redundancy.)
+
+This pattern registers the formatters as soon as LLDB imports the module.
+
+== Hot-reload during a session (useful while editing the file)
+
+[source,lldb]
+----
+script import importlib, mrdocs_formatters; importlib.reload(mrdocs_formatters)  <1>
+----
+
+<1> Reloads the module without restarting LLDB.
+
