@@ -185,13 +185,21 @@ body {
 .navbar .button {
   display: inline-flex;
   align-items: center;
-  background: var(--navbar-button-background);
   border: 1px solid var(--navbar-button-border-color);
   border-radius: 0.15rem;
   height: 1.75rem;
-  color: var(--navbar-button-font-color);
   padding: 0 0.75em;
   white-space: nowrap;
+  background: #fefae9;
+  color: #333;
+  font-weight: 600;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.navbar .button:hover {
+  background: rgb(240, 230, 210);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 @media screen and (max-width: 768.5px) {
@@ -218,8 +226,8 @@ body {
   }
 
   .navbar-menu {
-    background: var(--navbar-menu-background);
     box-shadow: 0 8px 16px rgba(10, 10, 10, 0.1);
+    background-color: rgba(18, 74, 130, 0.8);
     max-height: var(--body-min-height);
     overflow-y: auto;
     overscroll-behavior: none;
