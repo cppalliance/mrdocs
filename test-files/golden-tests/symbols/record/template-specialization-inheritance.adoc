@@ -99,7 +99,7 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 struct R1
-    : link:#S0-09[S0&lt;2&gt;::S1]
+    : link:#S0-09-S1[S0&lt;2&gt;::S1]
 ----
 
 === Base Classes
@@ -108,7 +108,7 @@ struct R1
 |===
 | Name
 | Description
-| `link:#S0-09[S0&lt;2&gt;::S1]`
+| `link:#S0-09-S1[S0&lt;2&gt;::S1]`
 | 
 |===
 
@@ -192,6 +192,36 @@ Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt
 template&lt;&gt;
 struct link:#S0-0c[S0]&lt;2&gt;;
 ----
+
+=== Types
+
+[cols=1]
+|===
+| Name
+| link:#S0-09-S1[`S1`] 
+|===
+
+[#S0-09-S1]
+== link:#S0-09[S0&lt;2&gt;]::S1
+
+=== Synopsis
+
+Declared in `&lt;template&hyphen;specialization&hyphen;inheritance&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct S1;
+----
+
+=== Derived Classes
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#R1[`R1`]
+| 
+|===
 
 [#S0-073]
 == link:#S0-0c[S0]&lt;3&gt;

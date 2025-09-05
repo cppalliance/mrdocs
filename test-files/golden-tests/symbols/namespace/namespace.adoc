@@ -9,92 +9,23 @@
 [cols=1]
 |===
 | Name
-| link:#_00namespace[`Unnamed namespace`] 
 | link:#A[`A`] 
-| link:#D[`D`] 
+| link:#E[`E`] 
+| link:#G[`G`] 
 | link:#I[`I`] 
 |===
 
-[#_00namespace]
-== Unnamed namespace
-
-=== Namespaces
-
-[cols=1]
-|===
-| Name
-| link:#_00namespace-G[`G`] 
-| link:#_00namespace-H[`H`] 
-|===
-
 === Functions
 
 [cols=1]
 |===
 | Name
-| link:#_00namespace-f10[`f10`] 
+| link:#f10[`f10`] 
+| link:#f12[`f12`] 
+| link:#f5[`f5`] 
+| link:#f7[`f7`] 
+| link:#f8[`f8`] 
 |===
-
-[#_00namespace-G]
-== G
-
-=== Functions
-
-[cols=1]
-|===
-| Name
-| link:#_00namespace-G-f11[`f11`] 
-|===
-
-[#_00namespace-G-f11]
-== link:#_00namespace-G[G]::f11
-
-=== Synopsis
-
-Declared in `&lt;namespace&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-void
-f11();
-----
-
-[#_00namespace-H]
-== H
-
-=== Functions
-
-[cols=1]
-|===
-| Name
-| link:#_00namespace-H-f12[`f12`] 
-|===
-
-[#_00namespace-H-f12]
-== link:#_00namespace-H[H]::f12
-
-=== Synopsis
-
-Declared in `&lt;namespace&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-void
-f12();
-----
-
-[#_00namespace-f10]
-== f10
-
-=== Synopsis
-
-Declared in `&lt;namespace&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-void
-f10();
-----
 
 [#A]
 == A
@@ -104,9 +35,7 @@ f10();
 [cols=1]
 |===
 | Name
-| link:#A-_00namespace[`Unnamed namespace`] 
 | link:#A-B[`B`] 
-| link:#A-C[`C`] 
 |===
 
 === Functions
@@ -115,31 +44,9 @@ f10();
 |===
 | Name
 | link:#A-f0[`f0`] 
+| link:#A-f2[`f2`] 
+| link:#A-f3[`f3`] 
 |===
-
-[#A-_00namespace]
-== link:#A[A]::Unnamed namespace
-
-=== Functions
-
-[cols=1]
-|===
-| Name
-| link:#A-_00namespace-f3[`f3`] 
-|===
-
-[#A-_00namespace-f3]
-== link:#A[A]::f3
-
-=== Synopsis
-
-Declared in `&lt;namespace&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-void
-f3();
-----
 
 [#A-B]
 == link:#A[A]::B
@@ -165,30 +72,6 @@ void
 f1();
 ----
 
-[#A-C]
-== link:#A[A]::C
-
-=== Functions
-
-[cols=1]
-|===
-| Name
-| link:#A-C-f2[`f2`] 
-|===
-
-[#A-C-f2]
-== link:#A[A]::link:#A-C[C]::f2
-
-=== Synopsis
-
-Declared in `&lt;namespace&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-void
-f2();
-----
-
 [#A-f0]
 == link:#A[A]::f0
 
@@ -202,40 +85,8 @@ void
 f0();
 ----
 
-[#D]
-== D
-
-=== Namespaces
-
-[cols=1]
-|===
-| Name
-| link:#D-_00namespace[`Unnamed namespace`] 
-| link:#D-E[`E`] 
-| link:#D-F[`F`] 
-|===
-
-=== Functions
-
-[cols=1]
-|===
-| Name
-| link:#D-f5[`f5`] 
-|===
-
-[#D-_00namespace]
-== link:#D[D]::Unnamed namespace
-
-=== Functions
-
-[cols=1]
-|===
-| Name
-| link:#D-_00namespace-f8[`f8`] 
-|===
-
-[#D-_00namespace-f8]
-== link:#D[D]::f8
+[#A-f2]
+== link:#A[A]::f2
 
 === Synopsis
 
@@ -244,22 +95,35 @@ Declared in `&lt;namespace&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f8();
+f2();
 ----
 
-[#D-E]
-== link:#D[D]::E
+[#A-f3]
+== link:#A[A]::f3
+
+=== Synopsis
+
+Declared in `&lt;namespace&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f3();
+----
+
+[#E]
+== E
 
 === Functions
 
 [cols=1]
 |===
 | Name
-| link:#D-E-f6[`f6`] 
+| link:#E-f6[`f6`] 
 |===
 
-[#D-E-f6]
-== link:#D[D]::link:#D-E[E]::f6
+[#E-f6]
+== link:#E[E]::f6
 
 === Synopsis
 
@@ -271,19 +135,19 @@ void
 f6();
 ----
 
-[#D-F]
-== link:#D[D]::F
+[#G]
+== G
 
 === Functions
 
 [cols=1]
 |===
 | Name
-| link:#D-F-f7[`f7`] 
+| link:#G-f11[`f11`] 
 |===
 
-[#D-F-f7]
-== link:#D[D]::link:#D-F[F]::f7
+[#G-f11]
+== link:#G[G]::f11
 
 === Synopsis
 
@@ -292,11 +156,61 @@ Declared in `&lt;namespace&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f7();
+f11();
 ----
 
-[#D-f5]
-== link:#D[D]::f5
+[#I]
+== I
+
+=== Functions
+
+[cols=1]
+|===
+| Name
+| link:#I-f14[`f14`] 
+|===
+
+[#I-f14]
+== link:#I[I]::f14
+
+=== Synopsis
+
+Declared in `&lt;namespace&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f14();
+----
+
+[#f10]
+== f10
+
+=== Synopsis
+
+Declared in `&lt;namespace&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f10();
+----
+
+[#f12]
+== f12
+
+=== Synopsis
+
+Declared in `&lt;namespace&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f12();
+----
+
+[#f5]
+== f5
 
 === Synopsis
 
@@ -308,30 +222,8 @@ void
 f5();
 ----
 
-[#I]
-== I
-
-=== Namespaces
-
-[cols=1]
-|===
-| Name
-| link:#I-_00namespace[`Unnamed namespace`] 
-|===
-
-[#I-_00namespace]
-== link:#I[I]::Unnamed namespace
-
-=== Functions
-
-[cols=1]
-|===
-| Name
-| link:#I-_00namespace-f14[`f14`] 
-|===
-
-[#I-_00namespace-f14]
-== link:#I[I]::f14
+[#f7]
+== f7
 
 === Synopsis
 
@@ -340,7 +232,20 @@ Declared in `&lt;namespace&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f14();
+f7();
+----
+
+[#f8]
+== f8
+
+=== Synopsis
+
+Declared in `&lt;namespace&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f8();
 ----
 
 

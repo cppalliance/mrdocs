@@ -225,6 +225,7 @@ getParent(Decl const* D)
         case Decl::CXXRecord:
             // we treat anonymous unions as "transparent"
             if (auto const* RD = cast<CXXRecordDecl>(D);
+                RD &&
                 RD->isAnonymousStructOrUnion())
             {
                 break;
@@ -235,6 +236,14 @@ getParent(Decl const* D)
         case Decl::Enum:
         case Decl::ClassTemplateSpecialization:
         case Decl::ClassTemplatePartialSpecialization:
+            // we treat anonymous namespaces as "transparent"
+            if (auto const* ND = dyn_cast<NamespaceDecl>(D);
+                ND &&
+                (ND->isInlineNamespace() ||
+                 ND->isAnonymousNamespace()))
+            {
+                break;
+            }
             return D;
         // we consider all other DeclContexts to be "transparent"
         default:
