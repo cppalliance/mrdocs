@@ -10,8 +10,8 @@ import lldb
 # ---------- SIMPLE, WORKING REGEXES ----------
 # Tip: register BOTH const and non-const; avoid fancy groups.
 _INFO_REGEXES = [
-    r"^clang::mrdocs::.*Info$",
-    r"^const clang::mrdocs::.*Info$",
+    r"^clang::mrdocs::[^:]*Info$",
+    r"^const clang::mrdocs::[^:]*Info$",
 ]
 
 
