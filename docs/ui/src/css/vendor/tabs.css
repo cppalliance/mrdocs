@@ -1,1 +1,26 @@
-@import "@asciidoctor/tabs"
+@import "@asciidoctor/tabs";
+
+.tabpanel {
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.tablist > ul li {
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.tabs.is-loading .tablist li:not(:first-child),
+.tabs:not(.is-loading) .tablist li:not(.is-selected) {
+  background-color: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+  color: rgba(255, 255, 255, 0.5);
+  opacity: 0.5;
+}
+
+/* .tabs.is-loading .tablist li:first-child::after,
+.tabs:not(.is-loading) .tablist li.is-selected::after {
+  background-color: transparent;
+} */

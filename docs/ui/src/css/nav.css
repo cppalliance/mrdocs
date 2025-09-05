@@ -5,7 +5,7 @@
 }
 
 .nav-container {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(18, 74, 130, 0.8);
   backdrop-filter: blur(10px);
   position: fixed;
   top: var(--navbar-height);
@@ -19,6 +19,7 @@
 @media screen and (min-width: 769px) {
   .nav-container {
     width: var(--nav-width);
+    background-color: rgba(255, 255, 255, 0.1);
   }
 }
 
@@ -186,7 +187,8 @@
 }
 
 .nav-panel-explore {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(18, 74, 130, 0.95);
+  backdrop-filter: blur(10px);
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -194,6 +196,12 @@
   right: 0;
   bottom: 0;
   left: 0;
+}
+
+@media screen and (min-width: 769px) {
+  .nav-panel-explore {
+    background: rgba(255, 255, 255, 0.3);
+  }
 }
 
 .nav-panel-explore:not(:first-child) {
@@ -233,8 +241,8 @@
 .nav-panel-explore .components {
   line-height: var(--nav-line-height);
   flex-grow: 1;
-  box-shadow: inset 0 1px 5px var(--nav-panel-divider-color);
-  background: var(--nav-secondary-background);
+  box-shadow: 0 2px 8px 0 rgba(30, 50, 70, 0.3);
+  background-color: rgba(27 83 138, 0.9);
   padding: 0.75rem 0.75rem 0 0.75rem;
   margin: 0;
   overflow-y: scroll;
@@ -278,7 +286,7 @@
 }
 
 .nav-panel-explore .component .version a {
-  background: var(--nav-border-color);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 0.25rem;
   white-space: nowrap;
   padding: 0.25em 0.5em;
