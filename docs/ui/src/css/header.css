@@ -185,21 +185,20 @@ body {
 .navbar .button {
   display: inline-flex;
   align-items: center;
-  border: 1px solid var(--navbar-button-border-color);
-  border-radius: 0.15rem;
+  background: rgb(229, 190, 51);
   height: 1.75rem;
+  color: #0e0e0e;
+  font-weight: var(--body-font-weight-bold);
   padding: 0 0.75em;
   white-space: nowrap;
-  background: #fefae9;
-  color: #333;
-  font-weight: 600;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  box-shadow: 4px 4px 0 #000;
+  transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.1s ease;
 }
 
 .navbar .button:hover {
-  background: rgb(240, 230, 210);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: rgb(255, 215, 0);
+  transform: translateY(-2px);
+  box-shadow: 6px 6px 0 #000;
 }
 
 @media screen and (max-width: 768.5px) {
