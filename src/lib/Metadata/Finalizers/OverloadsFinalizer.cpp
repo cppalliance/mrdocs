@@ -263,6 +263,8 @@ OverloadsFinalizer::
 operator()(NamespaceInfo& I)
 {
     MRDOCS_CHECK_OR(!finalized_.contains(I.id));
+    finalized_.emplace(I.id);
+
     foldOverloads(I.id, I.Members.Functions, true);
     for (RecordInfo& RI: toDerivedView<RecordInfo>(I.Members.Records, corpus_))
     {
@@ -276,7 +278,6 @@ operator()(NamespaceInfo& I)
     {
         operator()(UI);
     }
-    finalized_.emplace(I.id);
 }
 
 void
@@ -284,6 +285,8 @@ OverloadsFinalizer::
 operator()(RecordInfo& I)
 {
     MRDOCS_CHECK_OR(!finalized_.contains(I.id));
+    finalized_.emplace(I.id);
+
     for (auto& b: I.Bases)
     {
         auto& BT = b.Type;
@@ -314,7 +317,6 @@ operator()(RecordInfo& I)
     for (RecordInfo& RI: toDerivedView<RecordInfo>(I.Interface.Private.Records, corpus_)) {
         operator()(RI);
     }
-    finalized_.emplace(I.id);
 }
 
 void
@@ -322,6 +324,8 @@ OverloadsFinalizer::
 operator()(UsingInfo& I)
 {
     MRDOCS_CHECK_OR(!finalized_.contains(I.id));
+    finalized_.emplace(I.id);
+
     auto shadowFunctions = toDerivedView<FunctionInfo>(I.ShadowDeclarations, corpus_);
     for (FunctionInfo& FI: shadowFunctions)
     {
@@ -338,7 +342,6 @@ operator()(UsingInfo& I)
         break;
     }
     foldOverloads(I.id, I.ShadowDeclarations, true);
-    finalized_.emplace(I.id);
 }
 
 } // clang::mrdocs
