@@ -25,26 +25,33 @@ namespace clang::mrdocs {
  */
 enum class ExtractionMode
 {
-    /// We're extracting the current symbol even though it
-    /// doesn't pass all filters because it's a direct dependency
-    /// of a symbol that does pass all filters and needs
-    /// information about it (e.g.: base classes outside the filters)
-    Dependency,
-
     /// We're extracting the current symbol because it passes
-    /// all filters
+    /// all filters.
     Regular,
 
     /// We're extracting the current symbol because it passes
     /// all filters, but we should also tag it as see-below
-    /// because it passes one of the see-below filters
+    /// because it passes one of the see-below filters.
+    /// This symbol has its own page but it has no details
+    /// and no child members.
     SeeBelow,
 
     /// We're extracting the current symbol because it passes
     /// all filters, but we should also tag it as
     /// implementation-defined because one of its parents
-    /// matches the implementation-defined filter
+    /// matches the implementation-defined filter.
+    /// This symbol has no page and other symbols that
+    /// depend on it will just render /*implementation-defined*/.
     ImplementationDefined,
+
+    /// We're extracting the current symbol even though it
+    /// doesn't pass all filters because it's a direct dependency
+    /// of a symbol that does pass all filters and needs
+    /// information about it (e.g.: base classes outside the filters).
+    /// This symbol has no page and it might even deleted from
+    /// the corpus if no other symbol depends on it after we extracted
+    /// the information we wanted from it in post-processing steps.
+    Dependency,
 };
 
 /** Return the name of the InfoKind as a string.
@@ -55,14 +62,14 @@ toString(ExtractionMode kind) noexcept
 {
     switch(kind)
     {
-    case ExtractionMode::Dependency:
-        return "dependency";
     case ExtractionMode::Regular:
         return "regular";
     case ExtractionMode::SeeBelow:
         return "see-below";
     case ExtractionMode::ImplementationDefined:
         return "implementation-defined";
+    case ExtractionMode::Dependency:
+        return "dependency";
     }
     MRDOCS_UNREACHABLE();
 }
@@ -83,6 +90,11 @@ tag_invoke(
 
     This function returns the least specific of the two
     ExtractionModes in terms of number of filters passed.
+
+    If the symbol passes the filter that categorizes it
+    as `a` then it also passes the filter that categorizes
+    it as `b` (or vice-versa), then this function will return the
+    final category for the symbol.
  */
 constexpr
 ExtractionMode
