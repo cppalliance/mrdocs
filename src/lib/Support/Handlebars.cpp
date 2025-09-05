@@ -4654,6 +4654,10 @@ registerStringHelpers(Handlebars& hbs)
         if (isBlock)
         {
             str = static_cast<std::string>(fn());
+            if (!firstArg.isString())
+            {
+                return false;
+            }
             prefix = firstArg.getString();
             end = static_cast<std::int64_t>(str.size());
             if (n > 2)
@@ -4667,7 +4671,15 @@ registerStringHelpers(Handlebars& hbs)
         }
         else
         {
+            if (!firstArg.isString())
+            {
+                return false;
+            }
             str = firstArg.getString();
+            if (!secondArg.isString())
+            {
+                return false;
+            }
             prefix = secondArg.getString();
             end = static_cast<std::int64_t>(str.size());
             if (n > 3)
