@@ -59,6 +59,25 @@
 </table>
 </div>
 {{/if}}
+{{! Protected Base classes }}
+{{#if (any_of_by symbol.bases "isProtected")}}
+<div>
+{{#> markup/dynamic-level-h }}Protected Base Classes{{/markup/dynamic-level-h}}
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+{{#each (filter_by symbol.bases "isProtected")}}
+<tr><td>{{#>markup/code}}{{> type/declarator type }}{{/markup/code}}</td><td>{{> javadoc/inline-brief symbol.doc.brief }}</td></tr>
+{{/each}}
+</tbody>
+</table>
+</div>
+{{/if}}
 {{! Members }}
 {{! Record interface }}
 {{#if (eq symbol.kind "record")}}

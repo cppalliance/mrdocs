@@ -98,6 +98,16 @@ class C3
     : protected link:#C0[C0]
 ----
 
+=== Protected Base Classes
+
+[cols=2]
+|===
+| Name
+| Description
+| `link:#C0[C0]`
+| 
+|===
+
 [#C4]
 == C4
 
@@ -332,6 +342,16 @@ struct S5
     : private link:#S0[S0]
     , protected link:#S1[S1]
 ----
+
+=== Protected Base Classes
+
+[cols=2]
+|===
+| Name
+| Description
+| `link:#S1[S1]`
+| 
+|===
 
 [#S6]
 == S6
