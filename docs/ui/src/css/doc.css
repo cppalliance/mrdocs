@@ -1087,3 +1087,41 @@
   text-align: right;
   width: 1.5em;
 }
+
+.tableblock [style*="color: darkblue"],
+.paragraph[id] [style*="color: darkblue"] {
+  color: #fff5b3 !important;
+}
+
+.paragraph span[style*="color: darkblue"] {
+  color: #fff !important;
+}
+
+.tableblock [style*="color: darkgreen"],
+.paragraph[id] [style*="color: darkgreen"] {
+  color: #fff !important;
+}
+
+.paragraph span[style*="color: darkgreen"] {
+  color: #fff !important;
+}
+
+.paragraph span[style*="color: red"] {
+  color: #fff !important;
+  font-style: italic;
+}
+
+.paragraph li span[style*="color: orangered"] {
+  color: #fff !important;
+  font-weight: bold;
+}
+
+.tableblock [style*="color: orangered"],
+.paragraph[id] [style*="color: orangered"] {
+  color: #fff !important;
+}
+
+.tableblock [style*="color: red"],
+.paragraph[id] [style*="color: red"] {
+  color: #fff !important;
+}

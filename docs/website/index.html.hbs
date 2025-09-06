@@ -46,7 +46,7 @@
         <div class="nav-section">
             <ul role="menubar">
             {{#each navbar}}
-            <li><a href="{{ href }}" class="secondary">{{ title }}</a></li>
+            <li><a href="{{ href }}">{{ title }}</a></li>
             {{/each}}
             <li>
                 <a href="{{ site.github.url }}" class="contrast" aria-label="{{ site.title }} GitHub repository">
@@ -66,8 +66,8 @@
                 <h1>{{ title }}</h1>
                 <p>{{ description }}</p>
                 <div class="header-cta">
-                    <a href="docs/" class="secondary">Get started</a>
-                    <a href="docs/mrdocs/install.html" class="contrast outline">Download</a>
+                    <a href="docs/" class="contrast outline">Get started</a>
+                    <a href="docs/mrdocs/install.html" class="primary">Download</a>
                 </div>
                 <div class="banner-snippet">
                     <small><code>{{ banner.description }}</code></small>

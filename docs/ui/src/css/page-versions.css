@@ -28,18 +28,16 @@
   min-width: 100%;
   flex-direction: column;
   align-items: flex-end;
-  background:
-    linear-gradient(
-      to bottom,
-      var(--page-version-menu-background) 0%,
-      var(--page-version-menu-background) 100%
-    )
-    no-repeat;
+  background-color: rgba(0, 0, 0, 0.2);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   padding: 1.375rem 1.5rem 0.5rem 0.5rem;
   position: absolute;
   top: 0;
   right: 0;
   white-space: nowrap;
+  z-index: 1;
 }
 
 .page-versions:not(.is-active) .version-menu {
