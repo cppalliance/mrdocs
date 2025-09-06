@@ -23,7 +23,7 @@
     --nav-link-spacing-horizontal: 0.5rem;
     --form-label-font-weight: var(--font-weight);
     --transition: 0.2s ease-in-out;
-    --function-name-color: #1de9b6;
+    --function-name-color: rgba(229, 190, 51, 1);
     --function-name-color-hover: #0091ea;
 }
 
@@ -2067,7 +2067,7 @@ ul.check li::before {
     height: 1rem;
     margin-top: .25rem;
     margin-left: -1.5rem;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(16, 149, 193, 0.999)' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgba(229, 190, 51, 1)' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
     background-size: 100%;
     content: ""
 }
@@ -2128,7 +2128,7 @@ header {
 }
 
 #examples, #star {
-    background-color: var(--background-color)
+    background-color: rgba(255, 255, 255, 0.55);
 }
 
 #principles {
@@ -2896,6 +2896,14 @@ nav {
   }
 }
 
+ul a:hover,
+ol a:hover,
+ul a:focus,
+ol a:focus {
+    color: var(--primary-hover);
+    transition: color var(--transition);
+}
+
 /* ===========================
    Navigation Styles
 =========================== */
@@ -2915,6 +2923,16 @@ nav {
     overflow: hidden;
 }
 
+.nav a {
+    color: #fff;
+}
+
+.nav a:hover,
+.nav a:focus {
+    border-radius: var(--border-radius);
+    transform: translateY(-1px);
+    transition: all var(--transition);
+}
 
 .nav ul {
     gap: 1rem;
@@ -3125,19 +3143,90 @@ header .header-image {
 	align-items: center;
 }
 
-.header-cta a[aria-label="Documentation"] {
+.header-cta a {
+    display: inline-flex;
+    align-items: center;
+    height: 2.5rem;
+    font-weight: 600;
+    padding: 0 1.5em;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    position: relative;
+    border: 2px solid transparent;
+}
+
+.header-cta a:active {
+    transform: translateY(1px);
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.6);
+}
+
+.header-cta a.primary {
+    background: rgb(229, 190, 51);
+    color: #0e0e0e;
+    box-shadow: 6px 6px 0 #000;
+    border-color: rgb(229, 190, 51);
+}
+
+.header-cta a.primary:hover {
+    background: rgb(255, 215, 0);
+    transform: translateY(-2px);
+    box-shadow: 6px 6px 0 #000;
+    border-color: rgb(255, 215, 0);
+}
+
+.header-cta a.primary:active {
+    background: rgb(200, 170, 40);
+    border-color: rgb(200, 170, 40);
+    box-shadow: 2px 2px 0 #000;
+}
+
+.header-cta a.secondary {
+    background: rgb(29, 233, 182);
+    color: #0e0e0e;
+    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.8);
+    border-color: rgb(29, 233, 182);
+}
+
+.header-cta a.secondary:hover {
+    background: rgb(0, 145, 234);
     color: #fff;
-    background-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.8);
+    border-color: rgb(0, 145, 234);
 }
 
-.header-cta a[aria-label="Documentation"]:hover {
-    background-color: rgba(255, 255, 255, 0.4);
-    transform: translateY(-1px);
+.header-cta a.secondary:active {
+    background: rgb(0, 120, 200);
+    color: #fff;
+    border-color: rgb(0, 120, 200);
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8);
 }
 
-.header-cta a[aria-label="Download"]:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-    transform: translateY(-1px);
+.header-cta a.contrast.outline {
+    background: transparent;
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.4);
+}
+
+.header-cta a.contrast.outline:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.6);
+}
+
+.header-cta a.contrast.outline:active {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: #fff;
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
+}
+
+.header-cta a:focus {
+    outline: 2px solid var(--primary-focus);
+    outline-offset: 3px;
 }
 
 /* ===========================
@@ -3187,6 +3276,10 @@ header .header-image {
 	}
 }
 
+.principles-features svg {
+    color: var(--function-name-color);
+}
+
 .features hgroup {
     margin-bottom: var(--block-spacing-vertical);
 }
@@ -3217,4 +3310,33 @@ table th {
 
 table code {
     padding: 0;
+}
+
+/* ===========================
+   Github Star Styles
+=========================== */
+
+#star {
+    background-color: rgba(255, 255, 255, 0.75);
+}
+
+ /* ===========================
+   Footer Styles
+=========================== */
+ 
+footer ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+footer a:hover,
+footer a:focus {
+    color: var(--primary-hover) !important;
+    text-decoration: underline;
+    transform: translateY(-1px);
+    transition: all var(--transition);
 }
