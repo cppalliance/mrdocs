@@ -118,7 +118,8 @@ traverse(DeclTy const* D)
 
         auto exp = upsert<R>(D);
         MRDOCS_CHECK_OR(exp, nullptr);
-        auto& [I, isNew] = *exp;
+        auto& I = exp->I;
+        auto& isNew = exp->isNew;
 
         // Populate the base classes with the necessary information.
         // Even when the object is new, we want to update the source locations
@@ -2803,6 +2804,8 @@ bool
 ASTVisitor::
 checkFileFilters(Decl const* D)
 {
+    MRDOCS_SYMBOL_TRACE(D, context_);
+
     FileInfo* fileInfo = findFileInfo(D);
     MRDOCS_CHECK_OR(fileInfo, false);
 
