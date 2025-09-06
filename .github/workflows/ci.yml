@@ -41,7 +41,7 @@ jobs:
           standards: '20'
           latest-factors: |
             msvc Optimized-Debug
-            gcc UBSan Coverage
+            gcc UBSan ASan Coverage
             clang UBSan ASan
             apple-clang UBSan ASan
           factors: ''
@@ -77,10 +77,11 @@ jobs:
             llvm-archive-extension: {{#if (ieq os 'windows') }}7z{{else}}tar.bz2{{/if}}
             llvm-archive-filename: {{{ llvm-archive-basename }}}.{{{ llvm-archive-extension }}}
             llvm-sanitizer-config: {{#if (and (ne compiler 'clang') (ne compiler 'apple-clang'))}}{{else if ubsan}}Undefined{{else if asan}}Address{{else if msan}}MemoryWithOrigins{{/if}}
+            asan-options: {{#if (and (eq compiler 'gcc') asan) }}detect_container_overflow=0{{/if}}
             mrdocs-flags: {{#if (and (eq compiler 'gcc') (not asan)) }}-static{{/if}}{{#if (and (eq compiler 'clang') msan) }}-fsanitize-memory-track-origins{{/if}}
             mrdocs-ccflags: {{{ ccflags }}} {{{ mrdocs-flags }}}
             mrdocs-cxxflags: {{{ cxxflags }}} {{{ mrdocs-flags }}}
-            mrdocs-linkflags: {{#if asan }}-fsanitize=address{{/if}}
+            mrdocs-linkflags: {{#if asan }}-fsanitize=address{{/if}} {{#if (and (eq compiler 'gcc') asan) }}-fsanitize=leak{{/if}}
             mrdocs-package-generators: {{#if (ieq os 'windows') }}7Z ZIP WIX{{else}}TGZ TXZ{{/if}}
             mrdocs-release-package-artifact: release-packages-{{{ lowercase os }}}
           output-file: matrix.json
@@ -375,6 +376,8 @@ jobs:
 
       - name: CMake Workflow
         uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.10
+        env:
+          ASAN_OPTIONS: ${{ matrix.asan-options }}
         with:
           cmake-version: '>=3.26'
           cxxstd: ${{ matrix.cxxstd }}
@@ -388,7 +391,7 @@ jobs:
           install-prefix: .local
           extra-args: |
             -D MRDOCS_BUILD_DOCS=OFF
-            -D CMAKE_EXE_LINKER_FLAGS=${{ matrix.mrdocs-linkflags }}
+            -D CMAKE_EXE_LINKER_FLAGS="${{ matrix.mrdocs-linkflags }}"
             -D LLVM_ROOT=${{ steps.resolve-third-party-dir.outputs.third-party-dir }}/llvm-project/install
             -D Clang_ROOT=${{ steps.resolve-third-party-dir.outputs.third-party-dir }}/llvm-project/install
             -D duktape_ROOT=${{ steps.resolve-third-party-dir.outputs.third-party-dir }}/duktape/install
