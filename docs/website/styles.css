@@ -3191,20 +3191,6 @@ header .header-image {
     margin-bottom: var(--block-spacing-vertical);
 }
 
-/* Alignment helpers for flex/grid children */
-.align-left   { justify-self: start !important; align-self: start !important; }
-.align-center { justify-self: center !important; align-self: center !important; }
-.align-right  { justify-self: end !important; align-self: end !important; }
-
-.align-top    { align-self: start !important; }
-.align-middle { align-self: center !important; }
-.align-bottom { align-self: end !important; }
-
-/* For flex containers (if needed) */
-.flex-align-left   { margin-right: auto !important; }
-.flex-align-center { margin-left: auto !important; margin-right: auto !important; }
-.flex-align-right  { margin-left: auto !important; }
-
 .snippet-image {
 	display: flex;
 }
