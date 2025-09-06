@@ -6,16 +6,32 @@
 
 === Types
 
-[cols=1]
+[cols=2]
 |===
 | Name
+| Description
 | link:#A[`A`] 
+| This struct will be inherited as public
 | link:#B[`B`] 
+| This struct will be inherited as public
 | link:#C[`C`] 
+| This struct will be inherited as protected
+| link:#D[`D`] 
+| This struct will be inherited as protected
+| link:#E[`E`] 
+| This struct will be inherited as private
+| link:#F[`F`] 
+| This struct will be inherited as private
+| link:#Tag[`Tag`] 
+| A tag template to create distinct f functions&period;
+| link:#U[`U`] 
+| This struct inherits from A, B, C, D, E, and F in various ways,
 |===
 
 [#A]
 == A
+
+This struct will be inherited as public
 
 === Synopsis
 
@@ -28,10 +44,12 @@ struct A;
 
 === Member Functions
 
-[cols=1]
+[cols=2]
 |===
 | Name
+| Description
 | link:#A-f[`f`] 
+| Public member function f taking a Tag&lt;0&gt;&period;
 |===
 
 === Derived Classes
@@ -40,12 +58,14 @@ struct A;
 |===
 | Name
 | Description
-| link:#C[`C`]
-| 
+| link:#U[`U`]
+| This struct inherits from A, B, C, D, E, and F in various ways,
 |===
 
 [#A-f]
 == link:#A[A]::f
+
+Public member function f taking a Tag&lt;0&gt;&period;
 
 === Synopsis
 
@@ -54,11 +74,17 @@ Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f(int);
+f(link:#Tag[Tag&lt;0&gt;]);
 ----
+
+=== Description
+
+That is the only member function that will be publicly accessible in U via inheritance&period;
 
 [#B]
 == B
+
+This struct will be inherited as public
 
 === Synopsis
 
@@ -69,12 +95,14 @@ Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
 struct B;
 ----
 
-=== Member Functions
+=== Protected Member Functions
 
-[cols=1]
+[cols=2]
 |===
 | Name
+| Description
 | link:#B-f[`f`] 
+| Protected member function f taking a Tag&lt;1&gt;&period;
 |===
 
 === Derived Classes
@@ -83,12 +111,14 @@ struct B;
 |===
 | Name
 | Description
-| link:#C[`C`]
-| 
+| link:#U[`U`]
+| This struct inherits from A, B, C, D, E, and F in various ways,
 |===
 
 [#B-f]
 == link:#B[B]::f
+
+Protected member function f taking a Tag&lt;1&gt;&period;
 
 === Synopsis
 
@@ -97,11 +127,13 @@ Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 void
-f(bool);
+f(link:#Tag[Tag&lt;1&gt;]);
 ----
 
 [#C]
 == C
+
+This struct will be inherited as protected
 
 === Synopsis
 
@@ -109,9 +141,182 @@ Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-struct C
+struct C;
+----
+
+=== Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#C-f[`f`] 
+| Public member function f taking a Tag&lt;2&gt;&period;
+|===
+
+[#C-f]
+== link:#C[C]::f
+
+Public member function f taking a Tag&lt;2&gt;&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(link:#Tag[Tag&lt;2&gt;]);
+----
+
+[#D]
+== D
+
+This struct will be inherited as protected
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct D;
+----
+
+=== Protected Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#D-f[`f`] 
+| Protected member function f taking a Tag&lt;3&gt;&period;
+|===
+
+[#D-f]
+== link:#D[D]::f
+
+Protected member function f taking a Tag&lt;3&gt;&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(link:#Tag[Tag&lt;3&gt;]);
+----
+
+[#E]
+== E
+
+This struct will be inherited as private
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct E;
+----
+
+=== Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#E-f[`f`] 
+| Public member function f taking a Tag&lt;4&gt;&period;
+|===
+
+[#E-f]
+== link:#E[E]::f
+
+Public member function f taking a Tag&lt;4&gt;&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(link:#Tag[Tag&lt;4&gt;]);
+----
+
+[#F]
+== F
+
+This struct will be inherited as private
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct F;
+----
+
+=== Protected Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#F-f[`f`] 
+| Protected member function f taking a Tag&lt;5&gt;&period;
+|===
+
+[#F-f]
+== link:#F[F]::f
+
+Protected member function f taking a Tag&lt;5&gt;&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(link:#Tag[Tag&lt;5&gt;]);
+----
+
+[#Tag]
+== Tag
+
+A tag template to create distinct f functions&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;int idx&gt;
+struct Tag;
+----
+
+[#U]
+== U
+
+This struct inherits from A, B, C, D, E, and F in various ways,
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct U
     : link:#A[A]
     , link:#B[B]
+    , protected link:#C[C]
+    , protected link:#D[D]
 ----
 
 === Base Classes
@@ -121,9 +326,21 @@ struct C
 | Name
 | Description
 | `link:#A[A]`
-| 
+| This struct will be inherited as public
 | `link:#B[B]`
-| 
+| This struct will be inherited as public
+|===
+
+=== Protected Base Classes
+
+[cols=2]
+|===
+| Name
+| Description
+| `link:#C[C]`
+| This struct will be inherited as protected
+| `link:#D[D]`
+| This struct will be inherited as protected
 |===
 
 === Member Functions
@@ -132,46 +349,60 @@ struct C
 |===
 | Name
 | Description
-| link:#C-f-0e[`f`] 
-| 
+| link:#A-f[`f`] 
+| Public member function f taking a Tag&lt;0&gt;&period;
 |===
 
 === Using Declarations
 
-[cols=1]
+[cols=2]
 |===
 | Name
-| link:#C-f-08[`f`] 
-| link:#C-f-03[`f`] 
+| Description
+| link:#U-U-0a[`U`] 
+| Bring all the A&colon;&colon;A constructors into U&period;
+| link:#U-U-01b[`U`] 
+| Bring all the B&colon;&colon;B constructors into U&period;
+| link:#U-U-01d[`U`] 
+| Bring all the C&colon;&colon;C constructors into U&period;
+| link:#U-U-0c[`U`] 
+| Bring all the D&colon;&colon;D constructors into U&period;
+| link:#U-U-04[`U`] 
+| Bring all the E&colon;&colon;E constructors into U&period;
+| link:#U-U-06[`U`] 
+| Bring all the F&colon;&colon;F constructors into U&period;
+| link:#U-f-00c[`f`] 
+| Bring all the A&colon;&colon;f functions into U&period;
+| link:#U-f-0be[`f`] 
+| Bring all the B&colon;&colon;f functions into U&period;
+| link:#U-f-0f[`f`] 
+| Bring all the C&colon;&colon;f functions into U&period;
+| link:#U-f-009[`f`] 
+| Bring all the D&colon;&colon;f functions into U&period;
+| link:#U-f-0bd[`f`] 
+| Bring all the E&colon;&colon;f functions into U&period;
+| link:#U-f-02[`f`] 
+| Bring all the F&colon;&colon;f functions into U&period;
 |===
 
-[#C-f-0e]
-== link:#C[C]::f
+=== Protected Member Functions
 
-=== Synopses
+[cols=2]
+|===
+| Name
+| Description
+| link:#U-f-07[`f`] 
+| `f` overloads
+|===
 
-Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
+=== Description
 
+The documentation of this struct should include the function f twice&colon; once in the member functions
 
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-void
-link:#B-f[f](bool);
-----
+[#U-U-0a]
+== link:#U[U]::U
 
-[.small]#link:#B-f[_» more&period;&period;&period;_]#
-
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-void
-link:#A-f[f](int);
-----
-
-[.small]#link:#A-f[_» more&period;&period;&period;_]#
-
-[#B-f]
-== link:#B[B]::f
+Bring all the A&colon;&colon;A constructors into U&period;
 
 === Synopsis
 
@@ -179,12 +410,13 @@ Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-void
-f(bool);
+using A::U;
 ----
 
-[#A-f]
-== link:#A[A]::f
+[#U-U-01b]
+== link:#U[U]::U
+
+Bring all the B&colon;&colon;B constructors into U&period;
 
 === Synopsis
 
@@ -192,12 +424,69 @@ Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-void
-f(int);
+using B::U;
 ----
 
-[#C-f-08]
-== link:#C[C]::f
+[#U-U-01d]
+== link:#U[U]::U
+
+Bring all the C&colon;&colon;C constructors into U&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using C::U;
+----
+
+[#U-U-0c]
+== link:#U[U]::U
+
+Bring all the D&colon;&colon;D constructors into U&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using D::U;
+----
+
+[#U-U-04]
+== link:#U[U]::U
+
+Bring all the E&colon;&colon;E constructors into U&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using E::U;
+----
+
+[#U-U-06]
+== link:#U[U]::U
+
+Bring all the F&colon;&colon;F constructors into U&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using F::U;
+----
+
+[#U-f-00c]
+== link:#U[U]::f
+
+Bring all the A&colon;&colon;f functions into U&period;
 
 === Synopsis
 
@@ -210,13 +499,17 @@ using A::f;
 
 === Introduced Symbols
 
-[cols=1]
+[cols=2]
 |===
 | Name
+| Description
 | link:#A-f[A::f]
+| Public member function f taking a Tag&lt;0&gt;&period;
 |===
-[#C-f-03]
-== link:#C[C]::f
+[#U-f-0be]
+== link:#U[U]::f
+
+Bring all the B&colon;&colon;f functions into U&period;
 
 === Synopsis
 
@@ -229,10 +522,191 @@ using B::f;
 
 === Introduced Symbols
 
-[cols=1]
+[cols=2]
 |===
 | Name
+| Description
 | link:#B-f[B::f]
+| Protected member function f taking a Tag&lt;1&gt;&period;
 |===
+[#U-f-0f]
+== link:#U[U]::f
+
+Bring all the C&colon;&colon;f functions into U&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using C::f;
+----
+
+=== Introduced Symbols
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#C-f[C::f]
+| Public member function f taking a Tag&lt;2&gt;&period;
+|===
+[#U-f-009]
+== link:#U[U]::f
+
+Bring all the D&colon;&colon;f functions into U&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using D::f;
+----
+
+=== Introduced Symbols
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#D-f[D::f]
+| Protected member function f taking a Tag&lt;3&gt;&period;
+|===
+[#U-f-0bd]
+== link:#U[U]::f
+
+Bring all the E&colon;&colon;f functions into U&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using E::f;
+----
+
+=== Introduced Symbols
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#E-f[E::f]
+| Public member function f taking a Tag&lt;4&gt;&period;
+|===
+[#U-f-02]
+== link:#U[U]::f
+
+Bring all the F&colon;&colon;f functions into U&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using F::f;
+----
+
+=== Introduced Symbols
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#F-f[F::f]
+| Protected member function f taking a Tag&lt;5&gt;&period;
+|===
+[#U-f-07]
+== link:#U[U]::f
+
+`f` overloads
+
+=== Synopses
+
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
+
+Protected member function f taking a Tag&lt;1&gt;&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+link:#B-f[f](link:#Tag[Tag&lt;1&gt;]);
+----
+
+[.small]#link:#B-f[_» more&period;&period;&period;_]#
+
+Public member function f taking a Tag&lt;2&gt;&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+link:#C-f[f](link:#Tag[Tag&lt;2&gt;]);
+----
+
+[.small]#link:#C-f[_» more&period;&period;&period;_]#
+
+Protected member function f taking a Tag&lt;3&gt;&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+link:#D-f[f](link:#Tag[Tag&lt;3&gt;]);
+----
+
+[.small]#link:#D-f[_» more&period;&period;&period;_]#
+
+[#B-f]
+== link:#B[B]::f
+
+Protected member function f taking a Tag&lt;1&gt;&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(link:#Tag[Tag&lt;1&gt;]);
+----
+
+[#C-f]
+== link:#C[C]::f
+
+Public member function f taking a Tag&lt;2&gt;&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(link:#Tag[Tag&lt;2&gt;]);
+----
+
+[#D-f]
+== link:#D[D]::f
+
+Protected member function f taking a Tag&lt;3&gt;&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(link:#Tag[Tag&lt;3&gt;]);
+----
+
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#
