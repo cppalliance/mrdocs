@@ -582,6 +582,18 @@ class protected&lowbar;derived
     , protected excluded&lowbar;base
 ----
 
+=== Protected Base Classes
+
+[cols=2]
+|===
+| Name
+| Description
+| `link:#base[base]`
+| 
+| `excluded&lowbar;base`
+| 
+|===
+
 === Member Functions
 
 [cols=2]

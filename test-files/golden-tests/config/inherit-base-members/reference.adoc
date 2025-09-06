@@ -459,6 +459,18 @@ class protected&lowbar;derived
     , protected excluded&lowbar;base
 ----
 
+=== Protected Base Classes
+
+[cols=2]
+|===
+| Name
+| Description
+| `link:#base[base]`
+| A base class to test inheritance and shadowing
+| `excluded&lowbar;base`
+| 
+|===
+
 === Member Functions
 
 [cols=2]

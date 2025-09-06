@@ -42,6 +42,20 @@
 |===
 
 {{/if}}
+{{! Protected Base classes }}
+{{#if (any_of_by symbol.bases "isProtected")}}
+{{#> markup/dynamic-level-h }}Protected Base Classes{{/markup/dynamic-level-h}}
+[cols=2]
+|===
+| Name
+| Description
+{{#each (filter_by symbol.bases "isProtected")}}
+| {{#>markup/code}}{{> type/declarator type }}{{/markup/code}}
+| {{> javadoc/inline-brief symbol.doc.brief }}
+{{/each}}
+|===
+
+{{/if}}
 {{! Members }}
 {{! Record interface }}
 {{#if (eq symbol.kind "record")}}
