@@ -1547,14 +1547,6 @@ nav ol, nav ul {
     list-style: none
 }
 
-nav ol:first-of-type, nav ul:first-of-type {
-    margin-left: calc(var(--nav-element-spacing-horizontal) * -1)
-}
-
-nav ol:last-of-type, nav ul:last-of-type {
-    margin-right: calc(var(--nav-element-spacing-horizontal) * -1)
-}
-
 nav li {
     display: inline-block;
     margin: 0;
@@ -2155,12 +2147,8 @@ body > nav a svg {
 		color: initial;
 }
 
-body > nav ul:first-of-type {
-    margin-left: calc(var(--spacing) * -1)
-}
-
 body > nav ul:first-of-type li {
-    padding: 0
+    padding: 0;
 }
 
 header h1, header p {

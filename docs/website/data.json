@@ -93,19 +93,19 @@
       "description": "Documentation comments become structured reference pages—synopsis, description, parameters, and returns.",
       "source": "distance.cpp",
       "imageClass": "shouting",
-      "boxClass": "box3 box-shape3 box0"
+      "boxClass": "box3 box-shape1 box0"
     },
     {
       "description": "Use directives to capture semantics beyond the signature.",
       "source": "is_prime.cpp",
       "imageClass": "glasses",
-      "boxClass": "box3 box-shape3 box90"
+      "boxClass": "box3 box-shape2 box180"
     },
     {
       "description": "Understands concepts, constraints, and SFINAE—rendered as you wrote them.",
       "source": "sqrt.cpp",
       "imageClass": "writing",
-      "boxClass": "box3 box-shape3 box180"
+      "boxClass": "box3 box-shape3 box270"
     }
   ]
 }
