@@ -123,9 +123,9 @@ def InfoLikeSummaryProvider(valobj, _dict):
     try:
         name_val = _find_std_string_name(valobj)
         if not name_val:
-            return "<no Name>"
+            return "<unnamed>"
         s = _string_from_std_string(name_val)
-        return s if s else "<Name unreadable>"
+        return s if s else "<unnamed>"
     except Exception as e:
         return f"<summary error: {e}>"
 
