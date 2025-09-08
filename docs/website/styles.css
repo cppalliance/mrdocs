@@ -6,6 +6,7 @@
     --font-weight: 400;
     --font-weight-bold: 700;
     --font-size: 16px;
+    --rem-base: 18;
     --border-radius: 0.25rem;
     --border-width: 1px;
     --outline-width: 3px;
@@ -52,7 +53,15 @@
 }
 
 a {
-    --text-decoration: none
+    --text-decoration: none;
+    color: var(--primary);
+    transition: var(--transition);
+}
+
+a:hover,
+a:focus {
+    color: var(--primary-hover);
+    text-decoration: underline;
 }
 
 a.contrast, a.secondary {
@@ -1437,7 +1446,15 @@ nav, nav ul {
 }
 
 nav {
-    justify-content: space-between
+    justify-content: space-between;
+    font-size: calc(17 / var(--rem-base, 18) * 1rem);
+    line-height: 1.35;
+}
+
+@media screen and (min-width: 1024px) {
+    nav {
+        font-size: calc(15.5 / var(--rem-base, 18) * 1rem);
+    }
 }
 
 nav ol, nav ul {
@@ -1451,6 +1468,16 @@ nav li {
     display: inline-block;
     margin: 0;
     padding: var(--nav-element-spacing-vertical) var(--nav-element-spacing-horizontal)
+}
+
+nav a {
+    font-weight: 400;
+    text-decoration: none;
+}
+
+nav a:hover,
+nav a:focus {
+    font-weight: 600;
 }
 
 nav li > * {
@@ -2799,9 +2826,10 @@ ol a:focus {
 .nav {
     background-color: rgba(0, 0, 0, 0.2);
     padding: 0.25rem 1rem;
-    font-size: 1rem;
+    font-size: calc(16 / var(--rem-base) * 1rem);
     font-weight: bold;
     font-size: 1rem;
+    height: 3.5rem;
     display: flex;
     align-items: center;
     justify-content: space-between;

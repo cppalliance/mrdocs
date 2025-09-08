@@ -1,5 +1,5 @@
 .doc {
-  color: var(--doc-font-color);
+  color: var(--doc-font-color) !important;
   font-size: var(--doc-font-size);
   hyphens: auto;
   line-height: var(--doc-line-height);

@@ -2,6 +2,7 @@
   /* colors */
   --color-white: rgba(255, 255, 255, 1);
   --color-white-50: rgba(255, 255, 255, 0.5);
+  --color-white-60: rgba(255, 255, 255, 0.65);
   --color-white-75: rgba(255, 255, 255, 0.75);
   --color-white-15: rgba(255, 255, 255, 0.15);
   --color-smoke-10: rgba(254, 254, 254, 0.95);
@@ -22,6 +23,7 @@
   --color-black: rgba(0, 0, 0, 0.2);
   --color-black-75: rgba(0, 0, 0, 0.75);
   --color-black-15: rgba(0, 0, 0, 0.15);
+  --color-blue-10: rgba(140, 210, 255, 0.95);
   /* fonts */
   --rem-base: 18; /* used to compute rem value from desired pixel value (e.g., calc(18 / var(--rem-base) * 1rem) = 18px) */
   --body-font-size: 1.0625em; /* 17px */
@@ -44,6 +46,7 @@
   --navbar-background: var(--color-jet-80);
   --navbar-font-color: var(--color-white);
   --navbar_hover-background: var(--color-black);
+  --navbar_hover-font-color: var(--color-blue-10);
   --navbar-button-background: var(--color-white);
   --navbar-button-border-color: var(--panel-border-color);
   --navbar-button-font-color: var(--body-font-color);
@@ -78,7 +81,7 @@
   --warning-color: #e18114;
   --warning-on-color: var(--color-white);
   /* doc */
-  --doc-font-color: var(--color-jet-50);
+  --doc-font-color: var(--color-white-60);
   --doc-font-size: inherit;
   --doc-font-size--desktop: calc(17 / var(--rem-base) * 1rem);
   --doc-line-height: 1.6;
