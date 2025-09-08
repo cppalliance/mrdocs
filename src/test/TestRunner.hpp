@@ -12,8 +12,10 @@
 #define MRDOCS_TEST_TESTRUNNER_HPP
 
 #include <lib/ConfigImpl.hpp>
+#include <lib/MrDocsCompilationDatabase.hpp>
 #include <mrdocs/Generator.hpp>
 #include <mrdocs/Support/ThreadPool.hpp>
+#include <clang/Tooling/CompilationDatabase.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/ErrorOr.h>
 #include <atomic>
@@ -74,6 +76,12 @@ public:
     TestResults results;
 
     TestRunner(std::string_view generator);
+
+    void
+    handleCompilationDatabase(
+        llvm::StringRef filePath,
+        MrDocsCompilationDatabase const& compilations,
+        std::shared_ptr<ConfigImpl const> const& config);
 
     /** Check a single file, or a directory recursively.
 

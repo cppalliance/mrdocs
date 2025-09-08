@@ -555,17 +555,6 @@ private:
         return true;
     }
 
-    bool
-    VisitDependentTemplateSpecializationType(
-        clang::DependentTemplateSpecializationType const* T)
-    {
-        MRDOCS_SYMBOL_TRACE(T, Visitor_.context_);
-        const clang::DependentTemplateStorage &S = T->getDependentTemplateName();
-        getDerived().buildTerminal(S.getQualifier(), S.getName().getIdentifier(),
-                                   T->template_arguments(), Quals_, IsPack_);
-        return true;
-    }
-
     // Visit a template specialization such as `A<T>`
     bool
     VisitTemplateSpecializationType(
@@ -589,23 +578,36 @@ private:
 
         // The list of template parameters and a reference to
         // the templated scoped declaration
-        clang::NamedDecl* D = TN.getAsTemplateDecl();
-        MRDOCS_SYMBOL_TRACE(TN, Visitor_.context_);
-
-        if (!T->isTypeAlias())
+        clang::NamedDecl* D = nullptr;
+        if (auto* CT = dyn_cast<clang::TagType>(T->getCanonicalTypeInternal());
+            !T->isTypeAlias() && CT)
         {
-            if (auto* CT = dyn_cast<clang::TagType>(T->getCanonicalTypeInternal()))
-            {
-                MRDOCS_SYMBOL_TRACE(CT, Visitor_.context_);
-                D = CT->getOriginalDecl()->getDefinitionOrSelf();
-                MRDOCS_SYMBOL_TRACE(D, Visitor_.context_);
-            }
+            MRDOCS_SYMBOL_TRACE(CT, Visitor_.context_);
+            D = CT->getDecl()->getDefinitionOrSelf();
+            MRDOCS_SYMBOL_TRACE(D, Visitor_.context_);
         }
-
-        getDerived().buildTerminal(
-            TN.getQualifier(), D,
-            T->template_arguments(),
-            Quals_, IsPack_);
+        else
+        {
+            D = TN.getAsTemplateDecl(/*IgnoreDeduced=*/true);
+        }
+        if (D)
+        {
+            getDerived().buildTerminal(
+                TN.getQualifier(),
+                D,
+                T->template_arguments(),
+                Quals_,
+                IsPack_);
+        }
+        else if (auto const* S = TN.getAsDependentTemplateName())
+        {
+            getDerived().buildTerminal(
+                S->getQualifier(),
+                S->getName().getIdentifier(),
+                T->template_arguments(),
+                Quals_,
+                IsPack_);
+        }
         return true;
     }
 
@@ -613,7 +615,7 @@ private:
     VisitRecordType(
         clang::RecordType const* T)
     {
-        clang::RecordDecl* RD = T->getOriginalDecl()->getDefinitionOrSelf();
+        clang::RecordDecl* RD = T->getDecl()->getDefinitionOrSelf();
         // if this is an instantiation of a class template,
         // create a SpecializationType & extract the template arguments
         Optional<llvm::ArrayRef<clang::TemplateArgument>> TArgs = std::nullopt;
@@ -630,8 +632,12 @@ private:
     VisitInjectedClassNameType(
         clang::InjectedClassNameType const* T)
     {
-        getDerived().buildTerminal(T->getQualifier(), T->getOriginalDecl()->getDefinitionOrSelf(),
-            std::nullopt, Quals_, IsPack_);
+        getDerived().buildTerminal(
+            T->getQualifier(),
+            T->getDecl()->getDefinitionOrSelf(),
+            std::nullopt,
+            Quals_,
+            IsPack_);
         return true;
     }
 
@@ -639,8 +645,12 @@ private:
     VisitEnumType(
         clang::EnumType const* T)
     {
-        getDerived().buildTerminal(T->getQualifier(), T->getOriginalDecl()->getDefinitionOrSelf(),
-            std::nullopt, Quals_, IsPack_);
+        getDerived().buildTerminal(
+            T->getQualifier(),
+            T->getDecl()->getDefinitionOrSelf(),
+            std::nullopt,
+            Quals_,
+            IsPack_);
         return true;
     }
 

@@ -16,6 +16,7 @@
 #include <lib/AST/ParseRef.hpp>
 #include <lib/ConfigImpl.hpp>
 #include <lib/Metadata/SymbolSet.hpp>
+#include <lib/MrDocsCompilationDatabase.hpp>
 #include <lib/Support/Debug.hpp>
 #include <mrdocs/ADT/UnorderedStringMap.hpp>
 #include <mrdocs/Corpus.hpp>
@@ -161,15 +162,14 @@ public:
         not need to call this function directly.
 
         @param config A shared pointer to the configuration.
-        @param compilations A compilations database for the input files.
+        @param compilations A MrDocs compilations database for the input files.
     */
     // MRDOCS_DECL
     [[nodiscard]]
-    static
-    mrdocs::Expected<std::unique_ptr<Corpus>>
+    static mrdocs::Expected<std::unique_ptr<Corpus>>
     build(
         std::shared_ptr<ConfigImpl const> const& config,
-        clang::tooling::CompilationDatabase const& compilations);
+        MrDocsCompilationDatabase const& compilations);
 
     void
     qualifiedName(Symbol const& I,

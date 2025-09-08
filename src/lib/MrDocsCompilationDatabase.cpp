@@ -10,6 +10,7 @@
 //
 
 #include "MrDocsCompilationDatabase.hpp"
+#include <lib/AST/ClangHelpers.hpp>
 #include <lib/ConfigImpl.hpp>
 #include <lib/Support/Debug.hpp>
 #include <lib/Support/ExecuteAndWaitWithLogging.hpp>
@@ -270,13 +271,14 @@ isValidMrDocsOption(
     return true;
 }
 
-static
-std::vector<std::string>
+static std::vector<std::string>
 adjustCommandLine(
     llvm::StringRef const workingDir,
     std::vector<std::string> const& cmdline,
+    bool is_clang_cl,
     std::shared_ptr<Config const> const& config,
-    std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories,
+    std::unordered_map<std::string, std::vector<std::string>> const&
+        implicitIncludeDirectories,
     std::string_view filename)
 {
     if (cmdline.empty())
@@ -300,91 +302,15 @@ adjustCommandLine(
         cmdLineCStrs.data(),
         cmdLineCStrs.data() + cmdLineCStrs.size());
 
-    // ------------------------------------------------------
-    // Get driver mode
-    // ------------------------------------------------------
-    // The driver mode distinguishes between clang/gcc and msvc
-    // command line option formats. The value is deduced from
-    // the `-drive-mode` option or from `progName`.
-    // Common values are "gcc", "g++", "cpp", "cl" and "flang".
-    llvm::StringRef const driver_mode = clang::driver::getDriverMode(progName, cmdLineCStrs);
-    // Identify if we should use "msvc/clang-cl" or "clang/gcc" format
-    // for options.
-    bool const is_clang_cl = clang::driver::IsClangCL(driver_mode);
+    auto const systemIncludeFlag = is_clang_cl ? "-external:I" : "-isystem";
 
     // ------------------------------------------------------
     // Supress all warnings
     // ------------------------------------------------------
     // Add flags to ignore all warnings. Any options that
     // affect warnings will be discarded later.
-    new_cmdline.emplace_back(is_clang_cl ? "/w" : "-w");
+    new_cmdline.emplace_back("-w");
     new_cmdline.emplace_back("-fsyntax-only");
-
-    // ------------------------------------------------------
-    // Target architecture
-    // ------------------------------------------------------
-    constexpr auto is_target_option = [](std::string_view opt) {
-        return opt == "-target" || opt == "--target";
-    };
-    if (std::ranges::find_if(cmdline, is_target_option) == cmdline.end())
-    {
-        auto getCommandCompilerTarget = [&]() -> std::string {
-            ScopedTempFile const outputPath("compiler-triple", "txt");
-            if (!outputPath) {
-                return {};
-            }
-            std::vector<llvm::StringRef> args = {
-                progName, "--print-target-triple"
-            };
-            std::optional<llvm::StringRef> const redirects[] = {
-                llvm::StringRef(),
-                outputPath.path(),
-                llvm::StringRef()
-            };
-            int const result = ExecuteAndWaitWithLogging(
-                progName, args, std::nullopt, redirects);
-            if (result != 0)
-            {
-                return {};
-            }
-
-            auto const bufferOrError = llvm::MemoryBuffer::getFile(
-                outputPath.path());
-            if (!bufferOrError) {
-                return {};
-            }
-            return bufferOrError.get()->getBuffer().trim().str();
-        };
-
-        [&]() {
-            std::string target = llvm::sys::getDefaultTargetTriple();
-
-            if (target.empty())
-            {
-                target = llvm::sys::getProcessTriple();
-            }
-
-            if (target.empty())
-            {
-                target = getCommandCompilerTarget();
-            }
-
-#if defined(__APPLE__)
-            if (target.empty())
-            {
-                target = "arm64-apple-darwin24.0.0";
-            }
-#else
-            if (target.empty())
-            {
-                return;
-            }
-#endif
-
-            new_cmdline.emplace_back("-target");
-            new_cmdline.emplace_back(target);
-        }();
-    }
 
     // ------------------------------------------------------
     // Language standard
@@ -411,17 +337,23 @@ adjustCommandLine(
         isExplicitCCompileCommand || (!isExplicitCppCompileCommand && isImplicitCSourceFile);
 
     constexpr auto is_std_option = [](std::string_view const opt) {
-        return opt.starts_with("-std=") || opt.starts_with("--std=") || opt.starts_with("/std:");
+        return opt.starts_with("-std=") || opt.starts_with("--std=")
+               || // clang options
+               opt.starts_with("-std:")
+               || opt.starts_with("/std:"); // clang-cl options
     };
-    if (std::ranges::find_if(cmdline, is_std_option) == cmdline.end())
+    // If the language standard wasn't specified, change the default to the
+    // latest one available.
+    if (std::ranges::none_of(cmdline, is_std_option))
     {
         if (!isCCompileCommand)
         {
-            new_cmdline.emplace_back("-std=c++23");
+            new_cmdline.emplace_back(
+                is_clang_cl ? "-std:c++latest" : "-std=c++26");
         }
         else
         {
-            new_cmdline.emplace_back("-std=c23");
+            new_cmdline.emplace_back(is_clang_cl ? "-std:clatest" : "-std=c23");
         }
     }
 
@@ -448,8 +380,9 @@ adjustCommandLine(
             it != implicitIncludeDirectories.end()) {
             for (auto const& inc : it->second)
             {
-              new_cmdline.emplace_back(std::format("-isystem{}", inc));
-            }          
+                new_cmdline.emplace_back(systemIncludeFlag);
+                new_cmdline.emplace_back(inc);
+            }
         }
     }
 
@@ -463,11 +396,11 @@ adjustCommandLine(
         // implicit include paths and add the standard library
         // and system includes manually. That gives MrDocs
         // access to libc++ in a portable way.
-        new_cmdline.emplace_back("-nostdinc++");
-        new_cmdline.emplace_back("-nostdlib++");
+        new_cmdline.emplace_back(is_clang_cl ? "-X" : "-nostdinc++");
         for (auto const& inc : (*config)->stdlibIncludes)
         {
-          new_cmdline.emplace_back(std::format("-isystem{}", inc));
+            new_cmdline.emplace_back(systemIncludeFlag);
+            new_cmdline.emplace_back(inc);
         }
     }
 
@@ -476,7 +409,8 @@ adjustCommandLine(
         new_cmdline.emplace_back("-nostdinc");
         for (auto const& inc : (*config)->libcIncludes)
         {
-          new_cmdline.emplace_back(std::format("-isystem{}", inc));
+            new_cmdline.emplace_back(systemIncludeFlag);
+            new_cmdline.emplace_back(inc);
         }
     }
 
@@ -485,7 +419,8 @@ adjustCommandLine(
     // ------------------------------------------------------
     for (auto const& inc : (*config)->systemIncludes)
     {
-      new_cmdline.emplace_back(std::format("-isystem{}", inc));
+        new_cmdline.emplace_back(systemIncludeFlag);
+        new_cmdline.emplace_back(inc);
     }
     for (auto const& inc : (*config)->includes)
     {
@@ -538,7 +473,7 @@ makeAbsoluteAndNative(
     else
     {
         temp = path;
-        llvm::sys::fs::make_absolute(workingDir, temp);
+        llvm::sys::path::make_absolute(workingDir, temp);
         llvm::sys::path::remove_dots(temp, true);
     }
     return static_cast<std::string>(temp);
@@ -556,6 +491,12 @@ MrDocsCompilationDatabase(
     using clang::tooling::CompileCommand;
 
     std::vector<CompileCommand> allCommands = inner.getAllCompileCommands();
+    if (allCommands.empty())
+    {
+        return;
+    }
+
+    isClangCL_ = mrdocs::isClangCL(allCommands.front());
     AllCommands_.reserve(allCommands.size());
     SmallPathString temp;
     for (CompileCommand const& cmd0 : allCommands)
@@ -567,6 +508,7 @@ MrDocsCompilationDatabase(
         cmd.CommandLine = adjustCommandLine(
             workingDir,
             cmd0.CommandLine,
+            isClangCL_,
             config,
             implicitIncludeDirectories,
             cmd0.Filename);

@@ -746,10 +746,9 @@ lookupCacheSet(
 //------------------------------------------------
 
 mrdocs::Expected<std::unique_ptr<Corpus>>
-CorpusImpl::
-build(
+CorpusImpl::build(
     std::shared_ptr<ConfigImpl const> const& config,
-    clang::tooling::CompilationDatabase const& compilations)
+    MrDocsCompilationDatabase const& compilations)
 {
     using clock_type = std::chrono::steady_clock;
     auto start_time = clock_type::now();
@@ -768,6 +767,10 @@ build(
     // Any new Info objects will be added to the
     // SymbolSet in the execution context.
     InfoExecutionContext context(*config);
+
+    // Identify if we should use "msvc/clang-cl" or "clang/gcc" format
+    // for options.
+    bool const is_clang_cl = compilations.isClangCL();
 
     // ------------------------------------------
     // "Process file" task
@@ -829,8 +832,10 @@ build(
                 FSConcrete->addVirtualFile(shimPath, shimContent);
                 Tool.appendArgumentsAdjuster(
                     clang::tooling::combineAdjusters(
-                        clang::tooling::getInsertArgumentAdjuster("-include"),
-                        clang::tooling::getInsertArgumentAdjuster(shimPath.data())));
+                        clang::tooling::getInsertArgumentAdjuster(
+                            is_clang_cl ? "/FI" : "-include"),
+                        clang::tooling::getInsertArgumentAdjuster(
+                            shimPath.data())));
             }
 
             // Run the action

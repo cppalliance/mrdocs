@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <template>
+    <tparam name="T" class="type"/>
+    <namespace-alias name="A" id="z3eMoJQlHlg0acXVyn1pwg9Ktys=">
+      <file short-path="at_dtst.cpp" source-path="at_dtst.cpp" line="1"/>
+      <type name="T::XX&lt;&gt;"/>
+    </namespace-alias>
+  </template>
+</namespace>
+</mrdocs>

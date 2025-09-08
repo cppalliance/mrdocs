@@ -26,6 +26,7 @@
 #include <clang/AST/DeclOpenMP.h>
 #include <clang/AST/Expr.h>
 #include <clang/Sema/Sema.h>
+#include <clang/Tooling/CompilationDatabase.h>
 #include <type_traits>
 
 namespace mrdocs {
@@ -1081,6 +1082,13 @@ namespace detail {
     detail::printTraceName(D, C, MRDOCS_SYMBOL_TRACE_UNIQUE_NAME); \
     report::trace("{}", MRDOCS_SYMBOL_TRACE_UNIQUE_NAME)
 #endif
+
+/** Determine whether the driver mode is ClangCL.
+
+    @param cc The compilation command to insepct.
+ */
+bool
+isClangCL(clang::tooling::CompileCommand const& cc);
 
 } // mrdocs
 

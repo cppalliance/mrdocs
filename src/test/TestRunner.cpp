@@ -55,6 +55,7 @@ writeFile(
     return {};
 }
 
+namespace {
 void
 replaceCRLFWithLF(std::string &str)
 {
@@ -65,6 +66,21 @@ replaceCRLFWithLF(std::string &str)
     }
 }
 
+SingleFileDB
+makeSingleFileDB(llvm::StringRef pathName, std::vector<std::string> cmds)
+{
+    auto fileName = files::getFileName(pathName);
+    auto parentDir = files::getParentDir(pathName);
+
+    cmds.push_back(std::string{ fileName });
+
+    clang::tooling::CompileCommand
+        cc(parentDir, fileName, std::move(cmds), parentDir);
+    cc.Heuristic = "unit test";
+    return SingleFileDB(std::move(cc));
+}
+} // namespace
+
 void
 TestRunner::
 handleFile(
@@ -73,7 +89,6 @@ handleFile(
 {
     report::debug("Handling {}", filePath);
 
-    namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
     MRDOCS_ASSERT(path::extension(filePath).compare_insensitive(".cpp") == 0);
@@ -108,15 +123,49 @@ handleFile(
     std::shared_ptr<ConfigImpl const> config =
         ConfigImpl::load(fileSettings, dirs_, threadPool_).value();
 
+    auto parentDir = files::getParentDir(filePath);
+    std::unordered_map<std::string, std::vector<std::string>>
+        defaultIncludePaths;
+
+    // Test normally
+    {
+        auto const db = makeSingleFileDB(filePath, { "clang", "-std=c++23" });
+
+        // Create an adjusted MrDocsDatabase
+        MrDocsCompilationDatabase compilations(
+            llvm::StringRef(parentDir),
+            db,
+            config,
+            defaultIncludePaths);
+        handleCompilationDatabase(filePath, compilations, config);
+    }
+
+    // Test again in clang-cl mode
+    {
+        auto const db
+            = makeSingleFileDB(filePath, { "clang-cl", "/std:c++23preview" });
+
+        // Create an adjusted MrDocsDatabase
+        MrDocsCompilationDatabase compilations(
+            llvm::StringRef(parentDir),
+            db,
+            config,
+            defaultIncludePaths);
+        handleCompilationDatabase(filePath, compilations, config);
+    }
+}
+
+void
+TestRunner::handleCompilationDatabase(
+    llvm::StringRef filePath,
+    MrDocsCompilationDatabase const& compilations,
+    std::shared_ptr<ConfigImpl const> const& config)
+{
+    namespace path = llvm::sys::path;
+
     // Path with the expected results
     SmallPathString expectedPath = filePath;
     path::replace_extension(expectedPath, gen_->fileExtension());
-
-    // Create an adjusted MrDocsDatabase
-    auto parentDir = files::getParentDir(filePath);
-    std::unordered_map<std::string, std::vector<std::string>> defaultIncludePaths;
-    MrDocsCompilationDatabase compilations(
-        llvm::StringRef(parentDir), SingleFileDB(filePath), config, defaultIncludePaths);
 
     report::debug("Building Corpus", filePath);
     auto corpus = CorpusImpl::build(config, compilations);
