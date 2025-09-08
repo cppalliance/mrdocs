@@ -430,8 +430,8 @@ adjustCommandLine(
             it != implicitIncludeDirectories.end()) {
             for (auto const& inc : it->second)
             {
-              new_cmdline.emplace_back(std::format("-isystem{}", inc));
-            }          
+              new_cmdline.emplace_back(is_clang_cl ? std::format("-external:I{}", inc) : std::format("-isystem{}", inc));
+            }
         }
     }
 
@@ -449,7 +449,7 @@ adjustCommandLine(
         new_cmdline.emplace_back("-nostdlib++");
         for (auto const& inc : (*config)->stdlibIncludes)
         {
-          new_cmdline.emplace_back(std::format("-isystem{}", inc));
+          new_cmdline.emplace_back(is_clang_cl ? std::format("-external:I{}", inc) : std::format("-isystem{}", inc));
         }
     }
 
@@ -458,7 +458,7 @@ adjustCommandLine(
         new_cmdline.emplace_back("-nostdinc");
         for (auto const& inc : (*config)->libcIncludes)
         {
-          new_cmdline.emplace_back(std::format("-isystem{}", inc));
+          new_cmdline.emplace_back(is_clang_cl ? std::format("-external:I{}", inc) : std::format("-isystem{}", inc));
         }
     }
 
@@ -467,7 +467,7 @@ adjustCommandLine(
     // ------------------------------------------------------
     for (auto const& inc : (*config)->systemIncludes)
     {
-      new_cmdline.emplace_back(std::format("-isystem{}", inc));
+      new_cmdline.emplace_back(is_clang_cl ? std::format("-external:I{}", inc) : std::format("-isystem{}", inc));
     }
     for (auto const& inc : (*config)->includes)
     {
