@@ -26,6 +26,8 @@
     --transition: 0.2s ease-in-out;
     --function-name-color: rgba(229, 190, 51, 1);
     --function-name-color-hover: #0091ea;
+    --primary-color:rgba(16, 149, 193, 1);
+    --primary-color-hover:rgba(6, 125, 166, 1);
 }
 
 @media (min-width: 576px) {
@@ -3124,6 +3126,7 @@ header .header-image {
     color: #fff;
     border-color: rgba(255, 255, 255, 0.8);
     box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
 }
 
 .header-cta a.contrast.outline:hover {
