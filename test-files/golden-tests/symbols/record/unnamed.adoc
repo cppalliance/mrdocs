@@ -1,0 +1,28 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Variables
+
+[cols=1]
+|===
+| Name
+| link:#F[`F`] 
+|===
+
+[#F]
+== F
+
+=== Synopsis
+
+Declared in `&lt;unnamed&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr &sol;&ast; implementation-defined &ast;&sol; F = &lcub;&rcub;;
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

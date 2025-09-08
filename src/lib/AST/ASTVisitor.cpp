@@ -641,6 +641,15 @@ populate(
     RecordInfo& I,
     CXXRecordDecl const* D)
 {
+    // Unnamed structs and classes are implementation-defined
+    // or dependencies at best. There are never pages for them.
+    if (D->getIdentifier() == nullptr)
+    {
+        I.Extraction = mostSpecific(
+            ExtractionMode::ImplementationDefined,
+            I.Extraction);
+    }
+
     if (D->getTypedefNameForAnonDecl())
     {
         I.IsTypeDef = true;
