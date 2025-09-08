@@ -30,17 +30,25 @@ class SingleFileDB
 public:
     explicit
     SingleFileDB(
-        llvm::StringRef pathName)
+        llvm::StringRef pathName, bool is_clang_cl = false)
     {
         auto fileName = files::getFileName(pathName);
         auto parentDir = files::getParentDir(pathName);
 
         std::vector<std::string> cmds;
-        cmds.emplace_back("clang");
+        if (is_clang_cl) {
+            cmds.emplace_back("clang-cl");
+            cmds.emplace_back("/std:c++latest");
+            cmds.emplace_back("/permissive-");
+            cmds.emplace_back("/WX");
+        }
+        else {
+            cmds.emplace_back("clang");
+            cmds.emplace_back("-std=c++23");
+            cmds.emplace_back("-pedantic-errors");
+            cmds.emplace_back("-Werror");
+        }
         cmds.emplace_back("-fsyntax-only");
-        cmds.emplace_back("-std=c++23");
-        cmds.emplace_back("-pedantic-errors");
-        cmds.emplace_back("-Werror");
         cmds.emplace_back(fileName);
         cc_.emplace_back(
             parentDir,
