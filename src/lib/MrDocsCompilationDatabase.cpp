@@ -463,8 +463,7 @@ adjustCommandLine(
         // implicit include paths and add the standard library
         // and system includes manually. That gives MrDocs
         // access to libc++ in a portable way.
-        new_cmdline.emplace_back("-nostdinc++");
-        new_cmdline.emplace_back("-nostdlib++");
+        new_cmdline.emplace_back(is_clang_cl ? "/X" : "-nostdinc++");
         for (auto const& inc : (*config)->stdlibIncludes)
         {
           new_cmdline.emplace_back(is_clang_cl ? std::format("-external:I{}", inc) : std::format("-isystem{}", inc));
