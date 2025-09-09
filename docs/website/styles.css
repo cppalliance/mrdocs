@@ -1477,11 +1477,6 @@ nav a {
     text-decoration: none;
 }
 
-nav a:hover,
-nav a:focus {
-    font-weight: 600;
-}
-
 nav li > * {
     --spacing: 0
 }
@@ -2842,12 +2837,12 @@ ol a:focus {
 }
 
 .nav a {
-    color: #fff;
+    color: var(--muted-color);
 }
 
 .nav a:hover,
 .nav a:focus {
-    border-radius: var(--border-radius);
+    color: #fff;
     transform: translateY(-1px);
     transition: all var(--transition);
 }
