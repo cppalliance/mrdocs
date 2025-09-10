@@ -54,6 +54,35 @@ endif()
 
 #-------------------------------------------------
 #
+# Docs build
+#
+#-------------------------------------------------
+if (MRDOCS_DOCUMENTATION_BUILD)
+    # Glob all header files
+    set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
+    file(GLOB_RECURSE HEADER_FILES_LIST "${INCLUDE_DIR}/*.hpp")
+
+    # Create a temporary source file that includes all header files
+    set(TEMP_CPP_FILE "${CMAKE_CURRENT_BINARY_DIR}/all_headers.cpp")
+    file(WRITE ${TEMP_CPP_FILE} "// This file is generated automatically by CMake\n\n")
+    foreach(HEADER_FILE ${HEADER_FILES_LIST})
+        file(APPEND ${TEMP_CPP_FILE} "#include \"${HEADER_FILE}\"\n")
+    endforeach()
+
+    # Create a custom target for MrDocs
+    add_library(mrdocs-documentation-build STATIC ${TEMP_CPP_FILE})
+
+    # Set any other target properties here
+    target_include_directories(mrdocs-documentation-build PRIVATE ${INCLUDE_DIR})
+    target_link_libraries(mrdocs-documentation-build PRIVATE an_external_library)
+    target_compile_definitions(mrdocs-documentation-build PRIVATE MRDOCS_STATIC_LINK)
+
+    # Don't create any other targets
+    return()
+endif()
+
+#-------------------------------------------------
+#
 # Dependencies
 #
 #-------------------------------------------------
@@ -293,6 +322,10 @@ if (MRDOCS_CLANG)
         -Wno-covered-switch-default
     )
 endif ()
+
+if (MRDOCS_DOCUMENTATION_BUILD)
+    return()
+endif()
 
 #-------------------------------------------------
 #
