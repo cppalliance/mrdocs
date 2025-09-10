@@ -219,10 +219,10 @@ isValidMrDocsOption(
              driver::options::OPT_clang_ignored_gcc_optimization_f_Group,
              driver::options::OPT_clang_ignored_legacy_options_Group,
              driver::options::OPT_clang_ignored_m_Group,
-             driver::options::OPT_flang_ignored_w_Group
-#if 0
+             driver::options::OPT_flang_ignored_w_Group,
+
             // input file options
-            driver::options::OPT_INPUT,
+            //driver::options::OPT_INPUT,
 
             // output file options
             driver::options::OPT_o,
@@ -237,11 +237,10 @@ isValidMrDocsOption(
             driver::options::OPT__SLASH_Fr,
             driver::options::OPT__SLASH_Fm,
             driver::options::OPT__SLASH_Fx,
-#endif
-            // driver::options::OPT__SLASH_TP
-            // driver::options::OPT__SLASH_Tp
-            // driver::options::OPT__SLASH_TC
-            // driver::options::OPT__SLASH_Tc
+            driver::options::OPT__SLASH_TP,
+            driver::options::OPT__SLASH_Tp,
+            driver::options::OPT__SLASH_TC,
+            driver::options::OPT__SLASH_Tc
     ))
     {
         return false;
