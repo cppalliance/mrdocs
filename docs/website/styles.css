@@ -3285,9 +3285,13 @@ footer ul {
     margin: 0;
 }
 
+footer a {
+    color: var(--muted-color);
+}
+
 footer a:hover,
 footer a:focus {
-    color: var(--primary-hover) !important;
+    color: #fff;
     text-decoration: underline;
     transform: translateY(-1px);
     transition: all var(--transition);
