@@ -54,6 +54,87 @@ concept dereferenceable = requires(T const& t)
     { *t };
 };
 
+namespace detail {
+// ---------- step 1: detect if std::tuple_size<U> is specialized (SFINAE-safe)
+
+template<class U, class = void>
+struct has_tuple_size : std::false_type {};
+
+// This partial specialization is considered only if the operand inside void_t
+// is well-formed; otherwise, substitution fails quietly (no hard error).
+template <class U>
+struct has_tuple_size<
+    U,
+    std::void_t<decltype(std::tuple_size<std::remove_cvref_t<U>>::value)>>
+    : std::true_type {};
+
+// ---------- step 2: if tuple_size exists, verify all tuple_element<I, U> exist
+template<class U, class = void>
+struct all_tuple_elements : std::false_type {};
+
+// Enabled only when tuple_size<U> is known to exist (avoids hard errors)
+template <class U>
+struct all_tuple_elements<U, std::enable_if_t<has_tuple_size<U>::value>> {
+    using T = std::remove_cvref_t<U>;
+    static constexpr std::size_t N = std::tuple_size<T>::value;
+
+    template <std::size_t... I>
+    static consteval bool
+    check(std::index_sequence<I...>)
+    {
+        return (requires { typename std::tuple_element<I, T>::type; } && ...);
+    }
+
+    static constexpr bool value = check(std::make_index_sequence<N>{});
+};
+}
+
+/** Concept to check if a type is tuple-like
+
+    This concept checks if a type has a specialization
+    of std::tuple_size and std::tuple_element for all
+    elements in the range [0, N), where N is the value
+    of std::tuple_size.
+
+    Examples of such types are std::tuple, std::pair,
+    std::array, and user-defined types that provide
+    specializations for std::tuple_size and std::tuple_element.
+ */
+template<class T>
+concept tuple_like =
+    detail::has_tuple_size<T>::value &&
+    detail::all_tuple_elements<T>::value;
+
+/** Concept to check if a type is pair-like
+
+    This concept checks if a type is tuple-like
+    and has exactly two elements.
+
+    Examples of such types are std::pair,
+    std::array with two elements, and user-defined
+    types that provide specializations for
+    std::tuple_size and std::tuple_element with
+    exactly two elements.
+ */
+template<class T>
+concept pair_like =
+    tuple_like<T> &&
+    (std::tuple_size<std::remove_cvref_t<T>>::value == 2);
+
+/** Concept to check if a range is a range of tuple-like elements
+
+    This concept checks if a type is a range
+    and all its elements are tuple-like.
+
+    Examples of such types are std::vector<std::tuple<...>>,
+    std::list<std::pair<...>>, and user-defined types
+    that provide specializations for std::tuple_size
+    and std::tuple_element for their element type.
+ */
+template <class Range>
+concept range_of_tuple_like =
+    std::ranges::range<Range> && tuple_like<std::ranges::range_value_t<Range>>;
+
 } // namespace clang::mrdocs
 
 

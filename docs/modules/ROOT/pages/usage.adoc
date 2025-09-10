@@ -296,3 +296,53 @@ However, if you depend on other system libraries, that means you need to handle 
 3. Enable `use-system-libc`. MrDocs will still use the bundled libc&plus;&plus; for the C&plus;&plus; standard library, and use the system headers for the C standard library, making all system paths available. That makes system headers such as `<linux/version.h>` or `<Windows.h>` available by default. The trade-off is losing the reproducibility guarantees described above.
 
 The first option in this list provides the most control and the most reproducibility. The third option is the most convenient but also the most fragile.
+
+[#missing-includes]
+=== Missing includes
+
+Sometimes headers aren’t present in the environment where MrDocs runs (CI, containers, new machines), even with the alternatives presented above. For instance, a library that depends on a large third-party dependency may not be able to vendor that dependency or install it in CI just to generate documentation. Instead of failing immediately, MrDocs can optionally forgive specific missing headers and — even more aggressively — synthesize shims that let Clang parse enough of your public API to extract documentation.
+
+This feature is opt-in. If you don’t configure any forgiveness, MrDocs behaves like plain Clang, and missing headers are hard errors.
+
+1. First pass (normal parse):
+- MrDocs intercepts a narrow set of diagnostics (unknown type/namespace/member) that usually indicate missing symbols.
+- From those diagnostics, it extracts candidate symbols that look like types or namespaces (e.g., `llvm::StringRef`, `foo::bar`).
+- It records the candidates.
+
+2. Shim synthesis (only if safe):
+- If the recorded names are unambiguous (e.g., clearly a type or clearly a namespace), MrDocs generates a temporary in-memory header with stubs:
+- namespaces become empty namespaces;
+- types become forward declarations or empty class stubs.
+- User-provided shims (see below) override the generated stubs.
+
+3. Second pass (reparse with the shim):
+- MrDocs reparses the TU with the synthetic shim injected so Clang can build an AST for your code.
+- If the names were ambiguous or the set is complex/conflicting, MrDocs does not synthesize; it simply re-emits the original errors.
+
+This is heuristic by design: it works for simple, surface-level references typically found in public headers; it will not fix deep template logic, macro jungles, or APIs that require real definitions. In these cases, the custom shims (see below) you provide are the only way forward.
+
+- MrDocs forgives a missing include directive if a shim exists in `missing-include-shims` for that path to serve the shim. The shim should contain stubs for the external types/namespaces you need.
+- MrDocs forgives a missing include if the prefix of the include string matches one of the values in `missing-include-prefixes`. These include directives are ignored and replaced with an empty include guard.
+
+When diagnostics still occur and the `missing-include-prefixes` option contains at least one value, Mr.Docs will extract missing symbol names from the translation unit to build the temporary in-memory shim with all symbols for the second pass.
+
+The configuration allows users to detemrine where forgiveness is allowed, and optional shims for specific files:
+
+[source,yaml]
+----
+# Provide content for particular forgiven files (keys are include-style paths)
+missing-include-shims:
+  "llvm/ADT/StringRef.h": |
+    namespace llvm { class StringRef; }
+  "boost/version.hpp": |
+    #define BOOST_VERSION 108400
+
+# Allow certain include trees to be missing without failing
+missing-include-prefixes:
+  - "llvm/"
+  - "boost/"
+----
+
+MrDocs wraps shim contents in an internal include guard, so repeated includes are safe.
+
+MrDocs **does not** attempt synthesis when a name could be either a namespace or a type and there’s no reliable disambiguation, the set of names implies conflicting declarations, or your diagnostics are unrelated to missing includes (e.g., real semantic errors). In these cases, the first-pass errors are just replayed.

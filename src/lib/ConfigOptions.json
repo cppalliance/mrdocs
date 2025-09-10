@@ -160,6 +160,27 @@
     ]
   },
   {
+    "category": "Semantic Parsing",
+    "brief": "Options to control how the source code is parsed",
+    "details": "Mr.Docs uses libclang to parse the source code and extract symbols. The following options control how the source code is parsed.",
+    "options": [
+      {
+        "name": "missing-include-prefixes",
+        "brief": "Include path prefixes allowed to be missing",
+        "details": "Specifies path prefixes for include files that, if missing, will not cause documentation generation to fail. Missing files with these prefixes are served as empty files from an in-memory file system, allowing processing to continue. For example, use \"llvm/\" to forgive all includes from LLVM. If any such path is specified, MrDocs will attempt to synthesize missing included types. Only simple sets of non-conflicting inferred types can be synthesized. For more complex types or for better control, provide a shim using the \"missing-include-shims\" option.",
+        "type": "list<string>",
+        "default": []
+      },
+      {
+        "name": "missing-include-shims",
+        "brief": "Shims for forgiven missing include files",
+        "details": "Specifies a map of include file paths to shim contents. If a missing include file matches a forgiven prefix, MrDocs will use the shim content from this map as the file contents. If no shim is provided for a forgiven file, an empty file is used by default.",
+        "type": "map<string,string>",
+        "default": {}
+      }
+    ]
+  },
+  {
     "category": "Comment Parsing",
     "brief": "Options to control how comments are parsed",
     "details": "Mr.Docs extracts metadata from the comments in the source code. The following options control how comments are parsed.",
@@ -288,8 +309,8 @@
         "details": "If `sort-members` is set to `true`, determine how members of a record are sorted. When set to `name`, members are sorted by name. When set to `location`, members are sorted by their primary location in the source code, considering the short name of the path and the location in the file.",
         "type": "enum",
         "values": [
-            "name",
-            "location"
+          "name",
+          "location"
         ],
         "default": "name"
       },
@@ -299,8 +320,8 @@
         "details": "Although members of namespaces are always sorted, determine how members of a namespace are sorted. When set to `name`, members are sorted by name. When set to `location`, members are sorted by their primary location in the source code, considering the short name of the path and the location in the file.",
         "type": "enum",
         "values": [
-            "name",
-            "location"
+          "name",
+          "location"
         ],
         "default": "name"
       },
