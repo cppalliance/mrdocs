@@ -48,6 +48,13 @@ struct PublicToolArgs {
      */
     llvm::cl::OptionCategory filtersCat;
 
+    /** Options to control how the source code is parsed
+
+        Mr.Docs uses libclang to parse the source code and extract symbols. The
+        following options control how the source code is parsed.
+     */
+    llvm::cl::OptionCategory semanticParsingCat;
+
     /** Options to control how comments are parsed
 
         Mr.Docs extracts metadata from the comments in the source code. The
@@ -314,6 +321,44 @@ struct PublicToolArgs {
         See the documentation for "include-symbol" for the pattern syntax.
      */
     llvm::cl::list<std::string> implementationDefined;
+
+    //--------------------------------------------
+    // Semantic Parsing
+    // 
+    // Options to control how the source code is parsed
+    //--------------------------------------------
+
+    /** Include path prefixes allowed to be missing
+    
+        Specifies path prefixes for include files that, if missing, will not
+        cause documentation generation to fail.
+        
+        Missing files with these prefixes are served as empty files from an
+        in-memory file system, allowing processing to continue.
+        
+        For example, use "llvm/" to forgive all includes from LLVM.
+        
+        If any such path is specified, MrDocs will attempt to synthesize
+        missing included types.
+        
+        Only simple sets of non-conflicting inferred types can be synthesized.
+        
+        For more complex types or for better control, provide a shim using the
+        "missing-include-shims" option.
+     */
+    llvm::cl::list<std::string> missingIncludePrefixes;
+
+    /** Shims for forgiven missing include files
+    
+        Specifies a map of include file paths to shim contents.
+        
+        If a missing include file matches a forgiven prefix, MrDocs will use
+        the shim content from this map as the file contents.
+        
+        If no shim is provided for a forgiven file, an empty file is used by
+        default.
+     */
+    llvm::cl::list<std::string> missingIncludeShims;
 
     //--------------------------------------------
     // Comment Parsing
@@ -912,6 +957,8 @@ struct PublicToolArgs {
         std::forward<F>(f)("exclude-symbols", excludeSymbols);
         std::forward<F>(f)("see-below", seeBelow);
         std::forward<F>(f)("implementation-defined", implementationDefined);
+        std::forward<F>(f)("missing-include-prefixes", missingIncludePrefixes);
+        std::forward<F>(f)("missing-include-shims", missingIncludeShims);
         std::forward<F>(f)("auto-brief", autoBrief);
         std::forward<F>(f)("auto-relates", autoRelates);
         std::forward<F>(f)("auto-function-metadata", autoFunctionMetadata);

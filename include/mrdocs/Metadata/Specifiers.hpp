@@ -30,9 +30,13 @@ namespace clang::mrdocs {
 */
 enum class AccessKind
 {
+    /// Unspecified access
     None = 0,
+    /// Public access
     Public,
+    /// Protected access
     Protected,
+    /// Private access
     Private,
 };
 
@@ -43,9 +47,12 @@ enum class AccessKind
 */
 enum class ConstexprKind
 {
+    /// No `constexpr` or `consteval` specifier
     None = 0,
+    /// The `constexpr` specifier
     Constexpr,
-    // only valid for functions
+    /// The `consteval` specifier
+    /// only valid for functions
     Consteval,
 };
 
@@ -119,54 +126,100 @@ struct NoexceptInfo
 */
 enum class OperatorKind
 {
+    /// No operator
     None = 0,
+    /// The `new` Operator
     New,
+    /// The `delete` Operator
     Delete,
+    /// The `new[]` Operator
     ArrayNew,
+    /// The `delete[]` Operator
     ArrayDelete,
+    /// The + Operator
     Plus,
+    /// The - Operator
     Minus,
+    /// The * Operator
     Star,
+    /// The / Operator
     Slash,
+    /// The % Operator
     Percent,
+    /// The ^ Operator
     Caret,
+    /// The & Operator
     Amp,
+    /// The | Operator
     Pipe,
+    /// The ~ Operator
     Tilde,
+    /// The ! Operator
     Equal,
+    /// The += Operator
     PlusEqual,
+    /// The -= Operator
     MinusEqual,
+    /// The *= Operator
     StarEqual,
+    /// The /= Operator
     SlashEqual,
+    /// The %= Operator
     PercentEqual,
+    /// The ^= Operator
     CaretEqual,
+    /// The &= Operator
     AmpEqual,
+    /// The |= Operator
     PipeEqual,
+    /// The << Operator
     LessLess,
+    /// The >> Operator
     GreaterGreater,
+    /// The <<= Operator
     LessLessEqual,
+    /// The >>= Operator
     GreaterGreaterEqual,
 
     // Relational operators
+    /// The ! Operator
     Exclaim,
+    /// The == Operator
     EqualEqual,
+    /// The != Operator
     ExclaimEqual,
+    /// The < Operator
     Less,
+    /// The <= Operator
     LessEqual,
+    /// The > Operator
     Greater,
+    /// The >= Operator
     GreaterEqual,
+    /// The <=> Operator
     Spaceship,
 
+    /// The && Operator
     AmpAmp,
+    /// The || Operator
     PipePipe,
+    /// The ++ Operator
     PlusPlus,
+    /// The -- Operator
     MinusMinus,
+    /// The , Operator
     Comma,
+    /// The ->* Operator
     ArrowStar,
+    /// The -> Operator
     Arrow,
+    /// The () Operator
     Call,
+    /// The [] Operator
     Subscript,
+    /// The `? :` Operator
     Conditional,
+    /// The `coawait` Operator
     Coawait,
 };
 
@@ -196,8 +249,11 @@ isBinaryOperator(OperatorKind kind) noexcept;
 */
 enum class ReferenceKind
 {
+    /// Not a reference
     None = 0,
+    /// An L-Value reference
     LValue,
+    /// An R-Value reference
     RValue
 };
 
@@ -209,14 +265,17 @@ enum class ReferenceKind
 */
 enum class StorageClassKind
 {
+    /// No storage class specifier
     None = 0,
+    /// thread_local storage-class-specifier
     Extern,
+    /// mutable storage-class-specifier
     Static,
-    // auto storage-class-specifier (removed in C++11)
-    // only valid for variables
+    /// auto storage-class-specifier (removed in C++11)
+    /// only valid for variables
     Auto,
-    // register storage-class-specifier (removed in C++17)
-    // only valid for variables
+    /// register storage-class-specifier (removed in C++17)
+    /// only valid for variables
     Register
 };
 
@@ -229,11 +288,15 @@ MRDOCS_DECL dom::String toString(StorageClassKind kind) noexcept;
 
 /** Convert NoexceptInfo to a string.
 
+    @param info The noexcept-specifier information.
+
     @param resolved If true, the operand is not shown when
     the exception specification is non-dependent.
 
     @param implicit If true, implicit exception specifications
     are shown.
+
+    @return The string representation of the noexcept-specifier.
 */
 MRDOCS_DECL
 dom::String
@@ -258,6 +321,7 @@ tag_invoke(
     @param resolved If true, the operand is not shown when
     the explicit-specifier is non-dependent.
     @param implicit If true, implicit explicit-specifiers are shown.
+    @return The string representation of the explicit-specifier.
 */
 MRDOCS_DECL
 dom::String
@@ -267,6 +331,9 @@ toString(
     bool implicit = false);
 
 /** Return the ExplicitInfo as a @ref dom::Value string.
+
+    @param v The output parameter to receive the dom::Value.
+    @param I The ExplicitInfo to convert.
  */
 inline
 void

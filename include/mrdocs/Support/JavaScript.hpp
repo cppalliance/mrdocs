@@ -41,13 +41,21 @@ class Value;
 */
 enum class Type
 {
+    /// The value is undefined
     undefined = 1,
+    /// The value is null
     null,
+    /// The value is a boolean
     boolean,
+    /// The value is a number
     number,
+    /// The value is a string
     string,
+    /// The value is a function
     object,
+    /// The value is an array
     function,
+    /// The value is an array
     array
 };
 
@@ -218,24 +226,38 @@ public:
     ~Scope();
 
     /** Push an integer to the stack
+
+        @param value The integer value to push.
+        @return A Value representing the integer.
      */
     MRDOCS_DECL
     Value
     pushInteger(std::int64_t value);
 
     /** Push a double to the stack
+
+        @param value The double value to push.
+        @return A Value representing the double.
      */
     MRDOCS_DECL
     Value
     pushDouble(double value);
 
     /** Push a boolean to the stack
+
+        @param value The boolean value to push.
+        @return A Value representing the boolean.
      */
     MRDOCS_DECL
     Value
     pushBoolean(bool value);
 
     /** Push a string to the stack
+
+        @param value The string value to push.
+        The string is copied to the internal
+        heap.
+        @return A Value representing the string.
      */
     MRDOCS_DECL
     Value
@@ -302,6 +324,10 @@ public:
         The script returns an implicit return value
         equivalent to the last non-empty statement value
         in the code.
+
+        @param jsCode The JavaScript code to compile.
+        @return A function object that can be called.
+        The function object has zero arguments.
     */
     MRDOCS_DECL
     Expected<Value>
@@ -318,6 +344,12 @@ public:
 
         If the function code contains more than one function, the
         return value is the first function compiled.
+
+        @param jsCode The JavaScript code to compile.
+        @return A function object that can be called.
+        The function object has the number of arguments
+        defined in the code. If the code does not define
+        a function, an error is returned.
 
     */
     MRDOCS_DECL
@@ -341,6 +373,9 @@ public:
     getGlobal(std::string_view name);
 
     /** Set a global object.
+
+        @param name The name of the global variable.
+        @param value The value to set.
     */
     MRDOCS_DECL
     void
@@ -411,7 +446,7 @@ public:
         there are no other Value references
         to the @ref Scope, all variables
         defined in that scope are popped
-        via @ref Scope::reset.
+        via `Scope::reset`.
 
      */
     MRDOCS_DECL ~Value();
@@ -478,15 +513,24 @@ public:
      */
     MRDOCS_DECL Type type() const noexcept;
 
-    /// Check if the value is undefined.
+    /** Check if the value is undefined.
+
+        @return `true` if the value is undefined, `false` otherwise
+     */
     bool
     isUndefined() const noexcept;
 
-    /// Check if the value is null.
+    /** Check if the value is null.
+
+        @return `true` if the value is null, `false` otherwise
+     */
     bool
     isNull() const noexcept;
 
-    /// Check if the value is a boolean.
+    /** Check if the value is a boolean.
+
+        @return `true` if the value is a boolean, `false` otherwise
+     */
     bool
     isBoolean() const noexcept;
 
@@ -503,6 +547,7 @@ public:
         The user should not rely on NaNs preserving
         their exact non-normalized form.
 
+        @return `true` if the value is a number, `false` otherwise
      */
     bool
     isNumber() const noexcept;
@@ -524,19 +569,29 @@ public:
         `d == static_cast<double>(static_cast<int>(d))`
         where `d` is the result of `toDouble()`.
 
+        @return `true` if the value is a number with no fractional part, `false` otherwise
      */
     bool
     isInteger() const noexcept;
 
-    /// Check if the value is a floating point number.
+    /** Check if the value is a floating point number.
+
+       @return `true` if the value is a number but not an integer, `false` otherwise
+     */
     bool
     isDouble() const noexcept;
 
-    /// Check if the value is a string.
+    /** Check if the value is a string.
+
+        @return `true` if the value is a string, `false` otherwise
+     */
     bool
     isString() const noexcept;
 
-    /// Check if the value is an array.
+    /** Check if the value is an array.
+
+        @return `true` if the value is an array, `false` otherwise
+     */
     bool
     isArray() const noexcept;
 
@@ -553,11 +608,16 @@ public:
         a string key and an arbitrary value,
         including undefined.
 
+        @return `true` if the value is an object, `false` otherwise
+
      */
     bool
     isObject() const noexcept;
 
-    /// Check if the value is a function.
+    /** Check if the value is a function.
+
+        @return `true` if the value is a function, `false` otherwise
+     */
     bool
     isFunction() const noexcept;
 
@@ -668,8 +728,13 @@ public:
     /** Return the element for a given key.
 
         If the Value is not an object, or the key
-        is not found, a Value of type @ref Kind::Undefined
+        is not found, a Value of type Kind::Undefined
         is returned.
+
+        @param key The key to look up.
+        @return The element for the given key, or
+        a Value of type Kind::Undefined if
+        the key is not found.
     */
     Value
     get(std::string_view key) const;
@@ -682,6 +747,11 @@ public:
     }
 
     /** Return the element at a given index.
+
+        @param i The index of the element to return.
+        @return The element at the given index, or
+        a Value of type `Kind::Undefined` if
+        the index is out of range.
     */
     Value
     get(std::size_t i) const;
@@ -697,14 +767,19 @@ public:
         multiple times, once for each key in the sequence
         of dot-separated keys.
 
+        @param keys A sequence of keys separated by dots.
+
         @return The value at the end of the sequence, or
-        a Value of type @ref Kind::Undefined if any key
+        a Value of type Kind::Undefined if any key
         is not found.
     */
     Value
     lookup(std::string_view keys) const;
 
     /** Set or replace the value for a given key.
+
+        @param key The key to set.
+        @param value The value to set.
      */
     MRDOCS_DECL
     void
@@ -713,6 +788,9 @@ public:
         Value const& value) const;
 
     /** Set or replace the value for a given key.
+
+        @param key The key to set.
+        @param value The value to set.
      */
     MRDOCS_DECL
     void
@@ -721,6 +799,9 @@ public:
         dom::Value const& value) const;
 
     /** Return true if a key exists.
+
+        @param key The key to check for.
+        @return `true` if the key exists, `false` otherwise.
     */
     bool
     exists(std::string_view key) const;
@@ -736,6 +817,9 @@ public:
     size() const;
 
     /** Invoke a function.
+
+        @param args Zero or more arguments to pass to the method.
+        @return The return value of the method.
     */
     template<std::convertible_to<dom::Value>... Args>
     Expected<Value>
@@ -745,6 +829,9 @@ public:
     }
 
     /** Invoke a function with variadic arguments.
+
+        @param args Zero or more arguments to pass to the method.
+        @return The return value of the method.
     */
     Expected<Value>
     apply(std::span<dom::Value> args) const
@@ -753,6 +840,9 @@ public:
     }
 
     /** Invoke a function.
+
+        @param args Zero or more arguments to pass to the method.
+        @return The return value of the method.
     */
     template<class... Args>
     Value
@@ -762,6 +852,10 @@ public:
     }
 
     /** Invoke a method.
+
+        @param prop The property name of the method to call.
+        @param args Zero or more arguments to pass to the method.
+        @return The return value of the method.
     */
     template<class... Args>
     Expected<Value>
@@ -1017,6 +1111,11 @@ isFunction() const noexcept
     This function registers a JavaScript function
     as a helper function that can be called from
     Handlebars templates.
+
+    @param hbs The Handlebars instance to register the helper into
+    @param name The name of the helper function
+    @param ctx The JavaScript context to use
+    @param script The JavaScript code that defines the helper function
  */
 MRDOCS_DECL
 Expected<void, Error>

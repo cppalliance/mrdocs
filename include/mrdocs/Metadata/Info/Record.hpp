@@ -82,6 +82,10 @@ allMembers(RecordTranche const& T)
 }
 
 /** Map a RecordTranche to a dom::Object.
+
+    @param io The output parameter to receive the dom::Object.
+    @param I The RecordTranche to convert.
+    @param domCorpus The DomCorpus used to resolve references.
  */
 template <class IO>
 void
@@ -166,6 +170,9 @@ void
 merge(RecordInterface& I, RecordInterface&& Other);
 
 /** Map a RecordInterface to a dom::Object.
+
+    @param io The output parameter to receive the dom::Object.
+    @param I The RecordInterface to convert.
  */
 template <class IO>
 void
@@ -242,10 +249,15 @@ tag_invoke(
     BaseInfo const& I,
     DomCorpus const* domCorpus);
 
+/** The kind of record: struct, class, or union.
+*/
 enum class RecordKeyKind
 {
+    /// A struct.
     Struct,
+    /// A C++ class.
     Class,
+    /// A C-style Union
     Union
 };
 
@@ -341,6 +353,11 @@ void
 merge(RecordInfo& I, RecordInfo&& Other);
 
 /** Map a RecordInfo to a dom::Object.
+
+    @param t The tag type.
+    @param io The IO object to use for mapping.
+    @param I The RecordInfo to map.
+    @param domCorpus The DomCorpus used to create
  */
 template <class IO>
 void

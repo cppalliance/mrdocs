@@ -16,7 +16,6 @@
 #include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Dom/Object.hpp>
 #include <mrdocs/PublicSettings.hpp>
-#include "lib/Support/YamlFwd.hpp"
 #include <functional>
 #include <memory>
 #include <string>
@@ -24,6 +23,13 @@
 #include <system_error>
 #include <utility>
 #include <vector>
+
+namespace llvm::yaml {
+
+template<class T>
+struct MappingTraits;
+
+} // llvm::yaml
 
 namespace clang {
 namespace mrdocs {
@@ -62,13 +68,13 @@ public:
      */
     struct Settings : public PublicSettings
     {
-        /**
-         * @brief Loads the public configuration settings from the specified YAML file.
+        /** @brief Loads the public configuration settings from the specified YAML file.
          *
          * This function takes a YAML file and a set of reference directories as input.
          * It parses the YAML file and loads the configuration settings into a Config::Settings object.
          * The reference directories are used to resolve any relative paths in the configuration settings.
          *
+         * @param s A reference to a Config::Settings object where the configuration settings will be loaded.
          * @param configYaml A string view representing the YAML file containing the configuration settings.
          * @param dirs A constant reference to a PublicSettings::ReferenceDirectories object containing the reference directories.
          * @return An Expected object containing a Config::Settings object if the YAML file was successfully parsed and the configuration settings were loaded, or an error otherwise.
@@ -80,17 +86,17 @@ public:
             std::string_view configYaml,
             ReferenceDirectories const& dirs);
 
-        /**
-         * @brief Loads the public configuration settings from the specified file.
-         *
-         * This function takes a file path and a set of reference directories as input.
-         * It reads the file and loads the configuration settings into a Config::Settings object.
-         * The reference directories are used to resolve any relative paths in the configuration settings.
-         *
-         * @param s A reference to a Config::Settings object where the configuration settings will be loaded.
-         * @param filePath A string view representing the file path of the configuration settings.
-         * @param dirs A constant reference to a PublicSettings::ReferenceDirectories object containing the reference directories.
-         * @return An Expected object containing void if the file was successfully read and the configuration settings were loaded, or an error otherwise.
+        /** Loads the public configuration settings from the specified file.
+
+            This function takes a file path and a set of reference directories as input.
+            It reads the file and loads the configuration settings into a Config::Settings object.
+            The reference directories are used to resolve any relative paths in the configuration settings.
+
+            @param s A reference to a Config::Settings object where the configuration settings will be loaded.
+            @param configPath A string view representing the file path of the configuration settings.
+            @param dirs A constant reference to a PublicSettings::ReferenceDirectories object containing the reference directories.
+
+            @return An Expected object containing void if the file was successfully read and the configuration settings were loaded, or an error otherwise.
          */
         static Expected<void>
         load_file(
@@ -120,6 +126,8 @@ public:
 
             This string will always be native style
             and have a trailing directory separator.
+
+            @return The full path to the config file directory.
         */
         std::string
         configDir() const;
@@ -143,6 +151,8 @@ public:
 
             This string will always be native style
             and have a trailing directory separator.
+
+            @return The full path to the output directory.
         */
         std::string
         outputDir() const;

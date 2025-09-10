@@ -98,6 +98,9 @@ public:
 
         The behavior is undefined if there is
         any outstanding work or busy threads.
+
+        @param args Zero or more arguments
+        to forward to the agent constructor.
     */
     template<class... Args>
     void
@@ -115,6 +118,10 @@ public:
         @code
         void( Agent&, Args... );
         @endcode
+
+        @param f The function to invoke.
+        @param args Zero or more arguments to
+        forward to the function.
     */
     template<class F, class... Args>
     void

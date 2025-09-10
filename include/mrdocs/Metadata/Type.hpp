@@ -32,10 +32,15 @@ operator<=>(Polymorphic<NameInfo> const& lhs, Polymorphic<NameInfo> const& rhs);
 std::strong_ordering
 operator<=>(Polymorphic<TypeInfo> const& lhs, Polymorphic<TypeInfo> const& rhs);
 
+/** Type qualifiers
+*/
 enum QualifierKind
 {
+    /// No qualifiers
     None,
+    /// The const qualifier
     Const,
+    /// The volatile qualifier
     Volatile
 };
 
@@ -53,15 +58,24 @@ tag_invoke(
 
 enum class TypeKind
 {
+    /// A Named type
     Named = 1, // for bitstream
+    /// A decltype type
     Decltype,
+    /// An auto type
     Auto,
+    /// An LValueReference type
     LValueReference,
+    /// An RValueReference type
     RValueReference,
+    /// A Pointer type
     Pointer,
+    /// A MemberPointer type
     MemberPointer,
+    /// An Array type
     Array,
-    Function
+    /// A Function type
+    Function,
 };
 
 MRDOCS_DECL dom::String toString(TypeKind kind) noexcept;
@@ -76,9 +90,15 @@ tag_invoke(
     v = toString(kind);
 }
 
+/** The kind of `auto` keyword used in a declaration.
+
+    This is either `auto` or `decltype(auto)`.
+*/
 enum class AutoKind
 {
+    /// The `auto` keyword
     Auto,
+    /// The `decltype(auto)` keyword
     DecltypeAuto
 };
 
@@ -216,47 +236,47 @@ protected:
 */
 enum class FundamentalTypeKind
 {
-    // void
+    /// void
     Void,
-    // std::nullptr_t
+    /// std::nullptr_t
     Nullptr,
-    // bool
+    /// bool
     Bool,
-    // char
+    /// char
     Char,
-    // signed char
+    /// signed char
     SignedChar,
-    // unsigned char
+    /// unsigned char
     UnsignedChar,
-    // char8_t
+    /// char8_t
     Char8,
-    // char16_t
+    /// char16_t
     Char16,
-    // char32_t
+    /// char32_t
     Char32,
-    // wchar_t
+    /// wchar_t
     WChar,
-    // short / short int / signed short / signed short int
+    /// short / short int / signed short / signed short int
     Short,
-    // unsigned short / unsigned short int
+    /// unsigned short / unsigned short int
     UnsignedShort,
-    // int / signed / signed int
+    /// int / signed / signed int
     Int,
-    // unsigned / unsigned int
+    /// unsigned / unsigned int
     UnsignedInt,
-    // long / long int / signed long / signed long int
+    /// long / long int / signed long / signed long int
     Long,
-    // unsigned long / unsigned long int
+    /// unsigned long / unsigned long int
     UnsignedLong,
-    // long long / long long int / signed long long / signed long long int
+    /// long long / long long int / signed long long / signed long long int
     LongLong,
-    // unsigned long long / unsigned long long int
+    /// unsigned long long / unsigned long long int
     UnsignedLongLong,
-    // float
+    /// float
     Float,
-    // double
+    /// double
     Double,
-    // long double
+    /// long double
     LongDouble
 };
 
@@ -279,6 +299,9 @@ toString(FundamentalTypeKind kind) noexcept;
 
     However, the "long long" specifier cannot be split
     into two separate specifiers.
+
+    @param str The string to convert
+    @param[out] kind The resulting FundamentalTypeKind
 
     @return true if the string was successfully converted
  */

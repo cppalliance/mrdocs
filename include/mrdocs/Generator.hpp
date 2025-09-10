@@ -76,7 +76,7 @@ public:
     /** Build reference documentation for the corpus.
 
         This function invokes the generator to emit
-        the documentation using @ref outputPath as
+        the documentation using `outputPath` as
         a parameter indicating where the output should
         go. This can be a directory or a filename
         depending on the generator and how it is
@@ -92,13 +92,14 @@ public:
         the symbols in the corpus to generate multiple
         files if the output is multi-page.
 
-        @return The error, if any occurred.
-
         @param outputPath A directory or filename.
 
         @param corpus The symbols to emit. The
         generator may modify the contents of
         the object before returning.
+
+        @return The error, if any occurred.
+
     */
     MRDOCS_DECL
     virtual

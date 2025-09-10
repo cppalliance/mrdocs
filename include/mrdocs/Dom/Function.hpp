@@ -231,17 +231,25 @@ public:
     call(Array const& args) const;
 
     /** Invoke the function.
+
+        @param args The arguments to the function.
+        @return The return value of the function.
+
     */
     template<class... Args>
     Value operator()(Args&&... args) const;
 
     /** Invoke the function.
+
+        @param args The arguments to the function.
     */
     template<class... Args>
     Expected<Value>
     try_invoke(Args&&... args) const;
 
     /** Swap two objects.
+
+        @param other The other object.
     */
     void swap(Function& other) noexcept
     {
@@ -249,12 +257,19 @@ public:
     }
 
     /** Swap two objects.
+
+        @param lhs The first object.
+        @param rhs The second object.
     */
     friend void swap(Function &lhs, Function& rhs) noexcept
     {
         lhs.swap(rhs);
     }
 
+    /** Return a diagnostic string.
+
+        @param args The arguments to the function.
+    */
     template<class T, class... Args>
     requires std::derived_from<T, FunctionImpl>
     friend Function newFunction(Args&&... args);

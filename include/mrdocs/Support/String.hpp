@@ -19,6 +19,10 @@
 namespace clang::mrdocs {
 
 /** Return the substring without leading specified characters.
+
+    @param s The string to trim.
+    @param chars The characters to remove.
+    @return The modified string.
  */
 constexpr
 std::string_view
@@ -30,6 +34,9 @@ ltrim(
 }
 
 /** Return the substring without leading horizontal whitespace.
+
+    @param s The string to trim.
+    @return The modified string.
  */
 constexpr
 std::string_view
@@ -40,6 +47,10 @@ ltrim(
 }
 
 /** Return the substring without trailing specified characters.
+
+    @param s The string to trim.
+    @param chars The characters to remove.
+    @return The modified string.
  */
 constexpr
 std::string_view
@@ -56,6 +67,9 @@ rtrim(
 }
 
 /** Return the substring without trailing horizontal whitespace.
+
+    @param s The string to trim.
+    @return The modified string.
  */
 constexpr
 std::string_view
@@ -65,6 +79,9 @@ rtrim(std::string_view const s) noexcept
 }
 
 /** Return the substring without leading and trailing horizontal whitespace.
+
+    @param s The string to trim.
+    @return The modified string.
  */
 constexpr
 std::string_view
@@ -74,6 +91,10 @@ trim(std::string_view const s) noexcept
 }
 
 /** Return the substring without leading and trailing specified characters.
+
+    @param s The string to trim.
+    @param chars The characters to remove.
+    @return The modified string.
  */
 constexpr
 std::string_view
@@ -85,12 +106,23 @@ trim(
 }
 
 /** Return the substring without leading and trailing horizontal whitespace.
+
+    @param s The string to trim.
+    @param from The substring to remove.
+    @param to The substring to replace with.
+        If this is empty, the substring is removed.
+    @return The modified string.
 */
 MRDOCS_DECL
 void
 replace(std::string& s, std::string_view from, std::string_view to);
 
 /** Determine if a string is only whitespace.
+
+    @param s The string to check.
+    @return true if the string is empty or contains only
+    whitespace characters (space, tab, newline, vertical tab,
+    form feed, carriage return). false otherwise.
  */
 constexpr
 bool
@@ -100,6 +132,9 @@ isWhitespace(std::string_view s) noexcept
 }
 
 /** Determine if a string starts with one of the specified characters
+
+    @param s The string to check.
+    @param chars The characters to check for.
  */
 constexpr
 bool
@@ -109,6 +144,9 @@ startsWithOneOf(std::string_view s, std::string_view chars) noexcept
 }
 
 /** Determine if a string ends with one of the specified characters
+
+    @param s The string to check.
+    @param chars The characters to check for.
  */
 constexpr
 bool
