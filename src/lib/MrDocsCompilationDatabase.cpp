@@ -220,6 +220,8 @@ isValidMrDocsOption(
              driver::options::OPT_clang_ignored_legacy_options_Group,
              driver::options::OPT_clang_ignored_m_Group,
              driver::options::OPT_flang_ignored_w_Group,
+             driver::options::OPT__SLASH_O,
+             driver::options::OPT__SLASH_EH,
 
             // input file options
             //driver::options::OPT_INPUT,
