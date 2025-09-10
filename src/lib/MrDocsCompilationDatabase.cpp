@@ -288,7 +288,7 @@ adjustCommandLine(
     // Copy the compiler path
     // ------------------------------------------------------
     std::string const& progName = cmdline.front();
-    std::vector new_cmdline = {progName};
+    std::vector new_cmdline = {std::string{"clang"}};
 
     // ------------------------------------------------------
     // Convert to InputArgList
@@ -317,7 +317,7 @@ adjustCommandLine(
     // ------------------------------------------------------
     // Add flags to ignore all warnings. Any options that
     // affect warnings will be discarded later.
-    new_cmdline.emplace_back(is_clang_cl ? "/w" : "-w");
+    new_cmdline.emplace_back("-w");
     new_cmdline.emplace_back("-fsyntax-only");
 
     // ------------------------------------------------------
