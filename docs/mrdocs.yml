@@ -11,5 +11,6 @@ include-symbols:
   - 'clang::mrdocs::**'
 implementation-defined:
   - 'clang::mrdocs::detail'
-multipage: false
+multipage: true
 generator: adoc
+cmake: '-D MRDOCS_DOCUMENTATION_BUILD=ON'
