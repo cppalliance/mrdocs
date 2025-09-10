@@ -510,8 +510,6 @@ adjustCommandLine(
     while (idx < cmdline.size())
     {
         // Parse one argument as a Clang option
-        // ParseOneArg updates Index to the next argument to be parsed.
-        unsigned const idx0 = idx;
         std::unique_ptr<llvm::opt::Arg> arg =
             opts_table.ParseOneArg(args, idx, visibility);
         if (!isValidMrDocsOption(workingDir, arg))
