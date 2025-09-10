@@ -691,8 +691,11 @@ jobs:
             for generator in "${generators[@]}"; do
               [[ $generator = xml && $variant = multi ]] && continue
               [[ $variant = multi ]] && multipage="true" || multipage="false"
+              # mrdocs boost.url demo
               mrdocs --config="$(pwd)/boost/libs/url/doc/mrdocs.yml" "../CMakeLists.txt" --output="$(pwd)/demos/boost-url/$variant/$generator" --multipage=$multipage --generate="$generator" --log-level=debug
               echo "Number of files in demos/boost-url/$variant/$generator: $(find demos/boost-url/$variant/$generator -type f | wc -l)"
+              # mrdocs documenting mrdocs demo
+              mrdocs --config="$(pwd)/docs/mrdocs.yml" "$(pwd)/CMakeLists.txt" --output="$(pwd)/demos/mrdocs/$variant/$generator" --multipage=$multipage --generate="$generator" --log-level=debug
             done
           done
           
