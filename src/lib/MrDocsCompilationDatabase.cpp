@@ -514,10 +514,14 @@ adjustCommandLine(
         {
             continue;
         }
-        new_cmdline.insert(
-            new_cmdline.end(),
-            cmdline.begin() + idx0,
-            cmdline.begin() + idx);
+
+        // Append the translated arguments to the new command line
+        llvm::opt::ArgStringList output;
+        arg->render(args, output);
+
+        for (auto const& v : output) {
+            new_cmdline.push_back(v);
+        }
     }
 
     return new_cmdline;
