@@ -89,10 +89,10 @@ tag_invoke(
 /** Compare ExtractionModes and returns the least specific
 
     This function returns the least specific of the two
-    ExtractionModes in terms of number of filters passed.
+    ExtractionModes in terms of the number of filters passed.
 
     If the symbol passes the filter that categorizes it
-    as `a` then it also passes the filter that categorizes
+    as `a`, then it also passes the filter that categorizes
     it as `b` (or vice-versa), then this function will return the
     final category for the symbol.
  */

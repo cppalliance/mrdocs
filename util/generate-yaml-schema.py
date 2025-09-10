@@ -68,6 +68,11 @@ def to_yaml_schema_type(option: Option) -> SchemaType:
         "list<symbol-glob>",
     ]:
         return {"type": "array", "items": {"type": "string"}}
+    if option_type in ['map<string,string>']:
+        return {
+            "type": "object",
+            "additionalProperties": {"type": "string"},
+        }
     raise ValueError(
         f"to_yaml_schema_type: Cannot convert option type {option_type} to JSON/YAML schema type"
     )

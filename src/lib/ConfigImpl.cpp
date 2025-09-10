@@ -14,6 +14,7 @@
 #include "lib/Support/Glob.hpp"
 #include "lib/Support/Path.hpp"
 #include <mrdocs/Support/Path.hpp>
+#include <mrdocs/Support/Concepts.hpp>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
@@ -125,6 +126,18 @@ load(
             if constexpr (std::convertible_to<T, std::string_view>)
             {
                 c->configObj_.set(name, std::string(value));
+            }
+            else if constexpr (range_of_tuple_like<T>)
+            {
+                dom::Object obj;
+                auto keys = value | std::views::keys;
+                auto vals = value | std::views::values;
+                auto zip = std::views::zip(keys, vals);
+                for (auto const& [k, v] : zip)
+                {
+                    obj.set(k, v);
+                }
+                c->configObj_.set(name, std::move(obj));
             }
             else if constexpr (std::ranges::range<T>)
             {

@@ -16,28 +16,32 @@
 
 #include "lib/ConfigImpl.hpp"
 #include "lib/Support/ExecutionContext.hpp"
+#include "lib/AST/MissingSymbolSink.hpp"
 #include <clang/Tooling/Tooling.h>
 
 namespace clang {
 namespace mrdocs {
 
-/** Return a factory of MrDocs actions for the Clang Frontend
+class ASTActionFactory :
+    public tooling::FrontendActionFactory
+{
+    ExecutionContext& ex_;
+    ConfigImpl const& config_;
+    MissingSymbolSink& missingSink_;
+public:
+    ASTActionFactory(
+        ExecutionContext& ex,
+        ConfigImpl const& config,
+        MissingSymbolSink& missingSink) noexcept
+        : ex_(ex)
+        , config_(config)
+        , missingSink_(missingSink)
+    {
+    }
 
-    This function returns an implementation of
-    `clang::tooling::FrontendActionFactory` that allows
-    one action to be created for each translation unit.
-
-    The `create` method of this factory returns a new instance
-    of @ref clang::mrdocs::ASTAction for each translation unit.
-
-    A `tooling::ClangTool`, with access to the compilation database,
-    can receive this factory action via `tooling::ClangTool::run()`.
-    This is the entry point for the AST traversal in `CorpusImpl::build`.
- */
-std::unique_ptr<tooling::FrontendActionFactory>
-makeFrontendActionFactory(
-    ExecutionContext& ex,
-    ConfigImpl const& config);
+    std::unique_ptr<FrontendAction>
+    create() override;
+};
 
 } // mrdocs
 } // clang
