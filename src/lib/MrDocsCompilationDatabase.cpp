@@ -300,18 +300,6 @@ adjustCommandLine(
         cmdLineCStrs.data() + cmdLineCStrs.size());
 
     // ------------------------------------------------------
-    // Get driver mode
-    // ------------------------------------------------------
-    // The driver mode distinguishes between clang/gcc and msvc
-    // command line option formats. The value is deduced from
-    // the `-drive-mode` option or from `progName`.
-    // Common values are "gcc", "g++", "cpp", "cl" and "flang".
-    StringRef const driver_mode = driver::getDriverMode(progName, cmdLineCStrs);
-    // Identify if we should use "msvc/clang-cl" or "clang/gcc" format
-    // for options.
-    bool const is_clang_cl = driver::IsClangCL(driver_mode);
-
-    // ------------------------------------------------------
     // Supress all warnings
     // ------------------------------------------------------
     // Add flags to ignore all warnings. Any options that
@@ -490,6 +478,18 @@ adjustCommandLine(
     {
       new_cmdline.emplace_back(std::format("-I{}", inc));
     }
+
+    // ------------------------------------------------------
+    // Get driver mode
+    // ------------------------------------------------------
+    // The driver mode distinguishes between clang/gcc and msvc
+    // command line option formats. The value is deduced from
+    // the `-drive-mode` option or from `progName`.
+    // Common values are "gcc", "g++", "cpp", "cl" and "flang".
+    StringRef const driver_mode = driver::getDriverMode(progName, cmdLineCStrs);
+    // Identify if we should use "msvc/clang-cl" or "clang/gcc" format
+    // for options.
+    bool const is_clang_cl = driver::IsClangCL(driver_mode);
 
     // ------------------------------------------------------
     // Adjust each argument in the command line
