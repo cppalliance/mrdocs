@@ -525,7 +525,7 @@ adjustCommandLine(
             MRDOCS_ASSERT(arg->getNumValues() == 1);
 
             std::string_view v = arg->getValue();
-            if (v == "c++latest" || v == "c++preview")
+            if (v == "c++latest" || v == "c++23preview")
             {
                 new_cmdline.emplace_back("-std=c++23");
             }
