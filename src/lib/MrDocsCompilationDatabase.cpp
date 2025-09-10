@@ -402,7 +402,7 @@ adjustCommandLine(
         isExplicitCCompileCommand || (!isExplicitCppCompileCommand && isImplicitCSourceFile);
 
     constexpr auto is_std_option = [](std::string_view const opt) {
-        return opt.starts_with("-std=") || opt.starts_with("--std=") || opt.starts_with("/std:");
+        return opt.starts_with("-std=") || opt.starts_with("--std=") || opt.starts_with("/std:") || opt.starts_with("-std:");
     };
     if (std::ranges::find_if(cmdline, is_std_option) == cmdline.end())
     {
@@ -517,12 +517,32 @@ adjustCommandLine(
             continue;
         }
 
+        // Translate clang-cl /std: into clang -std=
+        const llvm::opt::Option opt =
+            arg->getOption().getUnaliasedOption();
+        if (opt.matches(clang::driver::options::OPT__SLASH_std))
+        {
+            MRDOCS_ASSERT(arg->getNumValues() == 1);
+
+            std::string_view v = arg->getValue();
+            if (v == "c++latest" || v == "c++preview")
+            {
+                new_cmdline.emplace_back("-std=c++23");
+            }
+            else // c++14,c++17,c++20,c11,c17
+            {
+                new_cmdline.emplace_back(std::format("-std={}", v));
+            }
+            continue;
+        }
+
         // Append the translated arguments to the new command line
         llvm::opt::ArgStringList output;
         arg->render(args, output);
 
-        for (auto const& v : output) {
-            new_cmdline.push_back(v);
+        for (auto const& v : output)
+        {
+            new_cmdline.emplace_back(v);
         }
     }
 
