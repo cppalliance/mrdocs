@@ -2638,8 +2638,8 @@ section#demo {
 }
 
 .documentation-panel h3 {
-    font-size: 0.875rem;
-    color: #fff;
+    font-size: 1rem;
+    color: var(--muted-color);
     margin: 0 0 0.375rem 0;
     font-weight: 600;
     line-height: 1.3;
@@ -2647,7 +2647,7 @@ section#demo {
 
 .documentation-panel h4 {
     font-size: 0.8125rem;
-    color: #e0e6ed;
+    color: #fff;
     margin: 0 0 0.375rem 0;
     font-weight: 600;
 }
@@ -2656,7 +2656,7 @@ section#demo {
 .documentation-panel span,
 .documentation-panel div {
     font-size: 0.875rem;
-    color: rgba(255, 255, 255, 0.7);
+    color: #fff;
 }
 
 .documentation-panel p {
@@ -2668,9 +2668,11 @@ section#demo {
     font-size: 0.875rem;
 }
 
-.documentation-panel table th,
-.documentation-panel table td {
-    color: rgba(255, 255, 255, 1);
+.documentation-panel table thead th,
+.documentation-panel table thead td {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #fff;
+    font-size: 0.8rem;
 }
 
 .documentation-panel table th {
@@ -2680,7 +2682,7 @@ section#demo {
 .documentation-panel code,
 .documentation-panel pre {
     font-size: 0.8125rem;
-    color: rgba(255, 255, 255, 0.95);
+    color: var(--muted-color);
 }
 
 .documentation-panel div pre {
@@ -2693,7 +2695,6 @@ section#demo {
     border-radius: var(--border-radius);
     padding: 0.5rem 0.75rem;
     backdrop-filter: blur(10px);
-    /* margin: 1em 0; */
 }
 
 .documentation-panel .admonition h4 {
@@ -3268,7 +3269,7 @@ table code {
 =========================== */
 
 #star {
-    background-color: rgba(255, 255, 255, 0.75);
+    background-color: rgba(255, 255, 255, 0.4);
 }
 
  /* ===========================
