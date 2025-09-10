@@ -5,6 +5,10 @@ verbose: true
 source-root: ..
 input:
   - ../include
+includes:
+  # Stubs for the generated header symbols
+  - config-headers/include
+  - config-headers/src
 file-patterns:
   - '*.hpp'
 include-symbols:
