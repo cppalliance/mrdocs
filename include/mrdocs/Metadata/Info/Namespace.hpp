@@ -67,6 +67,10 @@ allMembers(NamespaceTranche const& T)
 }
 
 /** Map a NamespaceTranche to a dom::Object.
+
+    @param io The IO object to use for mapping.
+    @param I The NamespaceTranche to map.
+    @param domCorpus The DomCorpus used to create
  */
 template <class IO>
 void
@@ -137,6 +141,11 @@ allMembers(NamespaceInfo const& T)
 }
 
 /** Map a NamespaceInfo to a dom::Object.
+
+    @param t The tag type.
+    @param io The IO object to use for mapping.
+    @param I The NamespaceInfo to map.
+    @param domCorpus The DomCorpus used to create
  */
 template <class IO>
 void

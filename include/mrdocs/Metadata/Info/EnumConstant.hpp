@@ -39,6 +39,11 @@ void
 merge(EnumConstantInfo& I, EnumConstantInfo&& Other);
 
 /** Map a EnumConstantInfo to a dom::Object.
+
+    @param t The tag type.
+    @param io The IO object to use for mapping.
+    @param I The EnumConstantInfo to map.
+    @param domCorpus The DomCorpus used to create
  */
 template <class IO>
 void

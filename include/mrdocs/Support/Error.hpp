@@ -90,6 +90,8 @@ public:
     /** Constructor.
 
         @param ec The error code.
+        @param loc The source location where
+        the error occurred.
     */
     explicit
     Error(
@@ -112,6 +114,10 @@ public:
         or if all the errors in the list indicate
         success, then newly constructed object will
         indicate success.
+
+        @param errors The list of errors to combine.
+        @param loc The source location where
+        the error occurred.
     */
     Error(
         std::vector<Error> const& errors,

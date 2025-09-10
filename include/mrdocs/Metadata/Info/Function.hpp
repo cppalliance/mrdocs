@@ -47,12 +47,18 @@ getShortOperatorName(
     OperatorKind kind) noexcept;
 
 /** Return the short name of an operator as a string.
+
+    @param name The operator name, e.g. `operator+`, `operator++`, `operator[]`, etc.
+    @return The OperatorKind, or OperatorKind::None if not recognized.
 */
 MRDOCS_DECL
 OperatorKind
 getOperatorKind(std::string_view name) noexcept;
 
 /** Return the short name of an operator as a string.
+
+    @param suffix The operator suffix, e.g. `+`, `++`, `[]`, etc.
+    @return The OperatorKind, or OperatorKind::None if not recognized.
 */
 MRDOCS_DECL
 OperatorKind
@@ -71,6 +77,10 @@ getSafeOperatorName(
     bool include_keyword = false) noexcept;
 
 /** Return the human-readable name of the operator
+
+    @param kind The kind of operator.
+    @param nParams The number of parameters the operator takes.
+    @return The readable name, or nullopt if the operator is not recognized.
  */
 std::optional<std::string_view>
 getOperatorReadableName(
@@ -80,10 +90,13 @@ getOperatorReadableName(
 /** Function classifications */
 enum class FunctionClass
 {
+    /// The function is a normal function.
     Normal = 0,
+    /// The function is a constructor.
     Constructor,
-    // conversion function
+    /// The function is a conversion operator.
     Conversion,
+    /// The function is a destructor.
     Destructor
 };
 
@@ -209,6 +222,11 @@ void
 merge(FunctionInfo& I, FunctionInfo&& Other);
 
 /** Map a FunctionInfo to a dom::Object.
+
+    @param t The tag type.
+    @param io The IO object to use for mapping.
+    @param I The FunctionInfo to map.
+    @param domCorpus The DomCorpus used to create
  */
 template <class IO>
 void
@@ -262,6 +280,10 @@ tag_invoke(
 }
 
 /** Map the FunctionInfo to a @ref dom::Value object.
+
+    @param v The output parameter to receive the dom::Value.
+    @param I The FunctionInfo to convert.
+    @param domCorpus The DomCorpus used to resolve references.
  */
 inline
 void
@@ -275,6 +297,9 @@ tag_invoke(
 }
 
 /** Determine if one function would override the other
+
+    @param base The base function
+    @param derived The derived function
  */
 MRDOCS_DECL
 bool

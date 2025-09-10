@@ -77,6 +77,8 @@ public:
     end() const noexcept = 0;
 
     /** Whether the corpus contains any symbols.
+
+        @return true if the corpus is empty, otherwise false.
     */
     bool
     empty() const noexcept;
@@ -88,12 +90,23 @@ public:
     find(SymbolID const& id) const noexcept = 0;
 
     /** Return the Info for the matching string in a given context.
+
+        @param context The context to look up the symbol in.
+        @param name The name of the symbol to look up.
+        @return The Info for the symbol with the specified name
+            in the specified context, or an error if not found.
+            If multiple symbols match, one is returned arbitrarily.
+            Use @ref traverse to find all matching symbols.
     */
     virtual
     Expected<std::reference_wrapper<Info const>>
     lookup(SymbolID const& context, std::string_view name) const = 0;
 
     /** Return the Info for the matching string in the global context.
+
+        @param name The name of the symbol to look up.
+        @return The Info for the symbol with the specified name
+            in the global context, or an error if not found.
     */
     Expected<std::reference_wrapper<Info const>>
     lookup(std::string_view name) const
@@ -336,6 +349,8 @@ public:
         the fully qualified name which is stored in
         the string `temp`.
 
+        @param I The Info to get the qualified name for.
+        @param temp The string to store the result in.
         @return A reference to the string `temp`.
      */
     virtual
@@ -366,6 +381,10 @@ public:
         If the context is not a parent of `I`, the
         qualified name is constructed relative to
         the global namespace with the prefix `::`.
+
+        @param I The Info to get the qualified name for.
+        @param context The context to get the qualified name from.
+        @param result The string to store the result in.
      */
     virtual
     void

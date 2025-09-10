@@ -48,6 +48,11 @@ void
 merge(ConceptInfo& I, ConceptInfo&& Other);
 
 /** Map a ConceptInfo to a dom::Object.
+
+    @param t The tag type.
+    @param io The IO object to use for mapping.
+    @param I The ConceptInfo to map.
+    @param domCorpus The DomCorpus used to create
  */
 template <class IO>
 void

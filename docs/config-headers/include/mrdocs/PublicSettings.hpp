@@ -467,6 +467,44 @@ struct PublicSettings {
     std::vector<SymbolGlobPattern> implementationDefined;
 
     //--------------------------------------------
+    // Semantic Parsing
+    // 
+    // Options to control how the source code is parsed
+    //--------------------------------------------
+
+    /** Include path prefixes allowed to be missing
+    
+        Specifies path prefixes for include files that, if missing, will not
+        cause documentation generation to fail.
+        
+        Missing files with these prefixes are served as empty files from an
+        in-memory file system, allowing processing to continue.
+        
+        For example, use "llvm/" to forgive all includes from LLVM.
+        
+        If any such path is specified, MrDocs will attempt to synthesize
+        missing included types.
+        
+        Only simple sets of non-conflicting inferred types can be synthesized.
+        
+        For more complex types or for better control, provide a shim using the
+        "missing-include-shims" option.
+     */
+    std::vector<std::string> missingIncludePrefixes;
+
+    /** Shims for forgiven missing include files
+    
+        Specifies a map of include file paths to shim contents.
+        
+        If a missing include file matches a forgiven prefix, MrDocs will use
+        the shim content from this map as the file contents.
+        
+        If no shim is provided for a forgiven file, an empty file is used by
+        default.
+     */
+    std::map<std::string, std::string> missingIncludeShims;
+
+    //--------------------------------------------
     // Comment Parsing
     // 
     // Options to control how comments are parsed
@@ -1064,17 +1102,18 @@ struct PublicSettings {
     /** Option Type
       */
     enum class OptionType {
-        ListPathGlob,
-        Unsigned,
+        Enum,
+        Path,
+        ListSymbolGlob,
         ListPath,
+        String,
+        Unsigned,
+        FilePath,
+        ListPathGlob,
+        DirPath,
         ListString,
         Bool,
-        FilePath,
-        DirPath,
-        Path,
-        Enum,
-        String,
-        ListSymbolGlob,
+        MapStringString,
     };
 
     /** Option validation traits
@@ -1091,16 +1130,17 @@ struct PublicSettings {
         std::optional<std::map<std::string, std::string>> filenameMapping = std::nullopt;
         std::variant<
             std::monostate,
-            unsigned,
-            std::vector<PathGlobPattern>,
-            std::vector<SymbolGlobPattern>,
-            SortSymbolBy,
-            bool,
             LogLevel,
-            std::string,
-            Generator,
             BaseMemberInheritance,
-            std::vector<std::string>> defaultValue = std::monostate();
+            std::vector<PathGlobPattern>,
+            unsigned,
+            Generator,
+            std::map<std::string, std::string>,
+            SortSymbolBy,
+            std::vector<std::string>,
+            bool,
+            std::vector<SymbolGlobPattern>,
+            std::string> defaultValue = std::monostate();
         std::string relativeTo = {};
         std::optional<std::string> deprecated = std::nullopt;
     };
@@ -1224,6 +1264,16 @@ struct PublicSettings {
         // Symbols rendered as "implementation-defined"
         MRDOCS_TRY(std::forward<F>(f)(*this, "implementation-defined", implementationDefined, dirs, OptionProperties{
             .type = OptionType::ListSymbolGlob,
+            .required = false,
+        }));
+        // Include path prefixes allowed to be missing
+        MRDOCS_TRY(std::forward<F>(f)(*this, "missing-include-prefixes", missingIncludePrefixes, dirs, OptionProperties{
+            .type = OptionType::ListString,
+            .required = false,
+        }));
+        // Shims for forgiven missing include files
+        MRDOCS_TRY(std::forward<F>(f)(*this, "missing-include-shims", missingIncludeShims, dirs, OptionProperties{
+            .type = OptionType::MapStringString,
             .required = false,
         }));
         // Use the first line of the comment as the brief
@@ -1575,6 +1625,8 @@ struct PublicSettings {
     }
 
     /** Visit all options
+        
+        @param f The visitor
      */
     template <class F>
     void
@@ -1594,6 +1646,8 @@ struct PublicSettings {
         std::forward<F>(f)("exclude-symbols", excludeSymbols);
         std::forward<F>(f)("see-below", seeBelow);
         std::forward<F>(f)("implementation-defined", implementationDefined);
+        std::forward<F>(f)("missing-include-prefixes", missingIncludePrefixes);
+        std::forward<F>(f)("missing-include-shims", missingIncludeShims);
         std::forward<F>(f)("auto-brief", autoBrief);
         std::forward<F>(f)("auto-relates", autoRelates);
         std::forward<F>(f)("auto-function-metadata", autoFunctionMetadata);
@@ -1652,6 +1706,8 @@ struct PublicSettings {
     }
 
     /** Visit all options
+        
+        @param f The visitor
      */
     template <class F>
     void
@@ -1671,6 +1727,8 @@ struct PublicSettings {
         std::forward<F>(f)("exclude-symbols", excludeSymbols);
         std::forward<F>(f)("see-below", seeBelow);
         std::forward<F>(f)("implementation-defined", implementationDefined);
+        std::forward<F>(f)("missing-include-prefixes", missingIncludePrefixes);
+        std::forward<F>(f)("missing-include-shims", missingIncludeShims);
         std::forward<F>(f)("auto-brief", autoBrief);
         std::forward<F>(f)("auto-relates", autoRelates);
         std::forward<F>(f)("auto-function-metadata", autoFunctionMetadata);

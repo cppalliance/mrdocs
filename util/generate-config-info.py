@@ -481,6 +481,8 @@ def generate_public_settings_hpp(config):
 
     # Function to visit all the options
     contents += '    /** Visit all options\n'
+    contents += '        \n'
+    contents += '        @param f The visitor\n'
     contents += '     */\n'
     contents += '    template <class F>\n'
     contents += '    void\n'
@@ -491,6 +493,8 @@ def generate_public_settings_hpp(config):
     contents += '    }\n\n'
 
     contents += '    /** Visit all options\n'
+    contents += '        \n'
+    contents += '        @param f The visitor\n'
     contents += '     */\n'
     contents += '    template <class F>\n'
     contents += '    void\n'

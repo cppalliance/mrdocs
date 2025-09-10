@@ -174,6 +174,7 @@ public:
 
     /** Write to output
 
+        @param os The output stream reference
         @param sv The string to write
         @return A reference to this object
      */
@@ -186,6 +187,7 @@ public:
 
     /** Write to output
 
+        @param os The output stream reference
         @param c The character to write
         @return A reference to this object
      */
@@ -198,7 +200,8 @@ public:
 
     /** Write to output
 
-        @param c The character to write
+        @param os The output stream reference
+        @param c The string to write
         @return A reference to this object
      */
     friend
@@ -210,7 +213,8 @@ public:
 
     /** Write to output
 
-        @param c The character to write
+        @param os The output stream reference
+        @param v The character to write
         @return A reference to this object
      */
     template <class T>
@@ -1226,8 +1230,11 @@ void
 registerTypeHelpers(Handlebars& hbs);
 
 /** "and" helper function
- *
- *  The "and" helper returns true if all of the values are truthy.
+
+    The "and" helper returns true if all of the values are truthy.
+
+    @param args The values to test
+    @return True if all of the values are truthy, false otherwise.
  */
 MRDOCS_DECL
 bool
@@ -1242,24 +1249,32 @@ dom::Value
 or_fn(dom::Array const& args);
 
 /** "eq" helper function
- *
- *  The "eq" helper returns true if all of the values are equal.
+
+    The "eq" helper returns true if all of the values are equal.
+
+    @param args The values to compare
+    @return True if all of the values are equal, false otherwise.
  */
 MRDOCS_DECL
 bool
 eq_fn(dom::Array const& args);
 
 /** "ne" helper function
- *
- *  The "ne" helper returns true if any of the values are not equal.
+
+    The "ne" helper returns true if any of the values are not equal.
+
+    @param args The values to compare
+    @return True if any of the values are not equal, false otherwise.
  */
 MRDOCS_DECL
 bool
 ne_fn(dom::Array const& args);
 
 /** "not" helper function
- *
- *  The "not" helper returns true if not all of the values are truthy.
+
+    The "not" helper returns true if not all of the values are truthy.
+
+    @return True if not all of the values are truthy, false otherwise.
  */
 MRDOCS_DECL
 bool
@@ -1304,8 +1319,10 @@ dom::Value
 relativize_fn(dom::Value to, dom::Value from, dom::Value context);
 
 /** "year" helper function
- *
- *  The "year" helper returns the current year as an integer.
+
+    The "year" helper returns the current year as an integer.
+
+    @return The current year as an integer.
  */
 MRDOCS_DECL
 int
