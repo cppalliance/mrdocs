@@ -697,6 +697,13 @@ jobs:
               # mrdocs documenting mrdocs demo
               mrdocs --config="$(pwd)/docs/mrdocs.yml" "$(pwd)/CMakeLists.txt" --output="$(pwd)/demos/mrdocs/$variant/$generator" --multipage=$multipage --generator="$generator" --log-level=debug
             done
+            # Render the asciidoc files to html using asciidoctor
+            if [[ ${{ runner.os }} == 'Linux' ]]; then
+              for project in boost-url mrdocs; do
+                mkdir -p "$(pwd)/demos/$project/$variant/adoc-asciidoc"
+                asciidoctor -D "$(pwd)/demos/$project/$variant/adoc-asciidoc" "$(pwd)/demos/$project/$variant/adoc/*.adoc"
+              done
+            fi
           done
           
           # Compress demos for the artifact
