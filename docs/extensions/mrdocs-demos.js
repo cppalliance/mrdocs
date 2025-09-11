@@ -13,11 +13,14 @@ const fs = require("fs");
 
 function getSubdirectoriesSync(url) {
     try {
+        // cache setup
         let urlPath = new URL(url).pathname;
         let cacheFilenamePath = urlPath.replace(/[^a-zA-Z0-9]/g, '') + '.json';
         let cachePath = `${__dirname}/../build/requests/${cacheFilenamePath}`;
         fs.mkdirSync(`${__dirname}/../build/requests/`, {recursive: true});
         const readFromCacheFile = fs.existsSync(cachePath) && fs.statSync(cachePath).mtime > new Date(Date.now() - 1000 * 60 * 60 * 24);
+
+        // read file or make request
         const data =
             readFromCacheFile ?
                 fs.readFileSync(cachePath, 'utf-8') :
@@ -25,15 +28,68 @@ function getSubdirectoriesSync(url) {
         if (!readFromCacheFile) {
             fs.writeFileSync(cachePath, data);
         }
-        const regex = /<a href="([^"]+)\/">/g;
-        const directories = [];
+
+        // parse entries: name + date (if present)
+        // Matches: <a href="name/">name/</a> [spaces] 11-Sep-2025 20:51
+        const entryRe = /<a href="([^"]+)\/">[^<]*<\/a>\s+(\d{2}-[A-Za-z]{3}-\d{4}\s+\d{2}:\d{2})?/g;
+
+        const month = { Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11 };
+        const parseDate = (s) => {
+          if (!s) return null; // missing or no date in listing
+          // "11-Sep-2025 20:51"
+          const m = /^(\d{2})-([A-Za-z]{3})-(\d{4})\s+(\d{2}):(\d{2})$/.exec(s.trim());
+          if (!m) return null;
+          const [, d, mon, y, hh, mm] = m;
+          return new Date(Date.UTC(+y, month[mon], +d, +hh, +mm));
+        };
+
+        const isSemver = (name) => {
+          // allow optional leading 'v', ignore pre-release/build metadata for ordering
+          const m = /^v?(\d+)\.(\d+)\.(\d+)(?:[-+].*)?$/.exec(name);
+          if (!m) return null;
+          return { major: +m[1], minor: +m[2], patch: +m[3] };
+        };
+
+        const entries = [];
         let match;
-        while ((match = regex.exec(data)) !== null) {
-            if (match[1] !== '..' && match[1] !== '.') {
-                directories.push(match[1]);
-            }
+        while ((match = entryRe.exec(data)) !== null) {
+          const name = match[1];
+          if (name === '.' || name === '..') continue;
+          const dt = parseDate(match[2] || null);
+          const sv = isSemver(name);
+          entries.push({
+            name,
+            date: dt,               // may be null
+            semver: !!sv,
+            major: sv ? sv.major : 0,
+            minor: sv ? sv.minor : 0,
+            patch: sv ? sv.patch : 0,
+          });
         }
-        return directories;
+
+        // sort
+        entries.sort((a, b) => {
+          // 1) non-semver first
+          if (a.semver !== b.semver) return a.semver ? 1 : -1;
+
+          if (!a.semver && !b.semver) {
+            // non-semver: newer date first; if no date, push to end among non-semver
+            const ad = a.date ? a.date.getTime() : -Infinity;
+            const bd = b.date ? b.date.getTime() : -Infinity;
+            if (ad !== bd) return bd - ad;
+            // tie-breaker: name asc for stability
+            return a.name.localeCompare(b.name);
+          }
+
+          // semver: major ↓, minor ↓, patch ↓
+          if (a.major !== b.major) return b.major - a.major;
+          if (a.minor !== b.minor) return b.minor - a.minor;
+          if (a.patch !== b.patch) return b.patch - a.patch;
+          // final tie-breaker: name asc
+          return a.name.localeCompare(b.name);
+        });
+
+        return entries.map(e => e.name);
     } catch (error) {
         console.error('Error:', error);
         return [];
@@ -66,6 +122,13 @@ function humanizeFormat(format) {
 function humanizeLibrary(library) {
     if (library === 'boost-url') {
         return 'Boost.URL';
+    }
+    if (library === 'mrdocs') {
+        return 'Mr.Docs';
+    }
+    if (library === 'beman-optional')
+    {
+        return 'Beman.Optional';
     }
     const boostLibrary = library.match(/boost-([\w]+)/);
     if (boostLibrary) {
@@ -125,6 +188,7 @@ module.exports = function (registry) {
                 text += `**${version}**\n\n`;
                 text += `|===\n`;
 
+                // Collect all unique page types, formats, and libraries for this version
                 let versionPageTypes = [];
                 let versionFormats = [];
                 let versionLibraries = [];
@@ -143,11 +207,29 @@ module.exports = function (registry) {
                     }
                 }
 
-                // Remove Rendered Asciidoc from the list of formats
-                // - The raw Asciidoc is already rendered by the mrdocs.com server as HTML
-                versionFormats = versionFormats.filter(format => format !== 'adoc-asciidoc');
-                let multipageFormats = versionFormats.filter(format => format !== 'xml');
+                // Sort versionPageTypes so that multipage always comes first
+                versionPageTypes.sort((a, b) => {
+                    if (a === 'multi' && b !== 'multi') return -1;
+                    if (a !== 'multi' && b === 'multi') return 1;
+                    return a.localeCompare(b);
+                });
 
+                // Sort versionFormats to have adoc, html, xml first
+                versionFormats.sort((a, b) => {
+                    const order = ['adoc-asciidoc', 'adoc', 'html', 'xml'];
+                    const aIndex = order.indexOf(a);
+                    const bIndex = order.indexOf(b);
+                    if (aIndex === -1 && bIndex === -1) return a.localeCompare(b);
+                    if (aIndex === -1) return 1;
+                    if (bIndex === -1) return -1;
+                    return aIndex - bIndex;
+                });
+
+                // Sort versionLibraries alphabetically
+                versionLibraries.sort((a, b) => humanizeLibrary(a).localeCompare(humanizeLibrary(b)));
+
+                // Ensure XML is never in the multipage formats
+                let multipageFormats = versionFormats.filter(format => format !== 'xml');
                 let versionFormatColumns = versionFormats.map(format => `*${humanizeFormat(format)}*`).join(' | ');
                 let multipageFormatColumns = multipageFormats.map(format => `*${humanizeFormat(format)}*`).join(' | ');
 
@@ -182,7 +264,7 @@ module.exports = function (registry) {
                                             return '/reference.adoc'
                                         }
                                     }
-                                    if (format === 'html')
+                                    if (format === 'html' || format === 'adoc-asciidoc')
                                     {
                                         if (pageType === 'multi')
                                         {
@@ -194,11 +276,14 @@ module.exports = function (registry) {
                                     }
                                     return '';
                                 })()
-                                if (['adoc', 'xml', 'html'].includes(format)) {
-                                    const adoc_icon = 'https://avatars.githubusercontent.com/u/3137042?s=200&v=4'
-                                    const html_icon = 'https://raw.githubusercontent.com/FortAwesome/Font-Awesome/refs/heads/6.x/svgs/brands/html5.svg'
-                                    const code_file_icon = 'https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/file-code.svg'
-                                    const icon = format === 'adoc' ? adoc_icon : format === 'html' ? html_icon : code_file_icon
+                                if (['adoc', 'xml', 'html', 'adoc-asciidoc'].includes(format)) {
+                                    const formatIcons = {
+                                        adoc: 'https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/docs/modules/ROOT/images/icons/asciidoc.svg',
+                                        html: 'https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/docs/modules/ROOT/images/icons/html5.svg',
+                                        'adoc-asciidoc': 'https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/docs/modules/ROOT/images/icons/html5.svg',
+                                        default: 'https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/docs/modules/ROOT/images/icons/code_blocks.svg'
+                                    };
+                                    const icon = formatIcons[format] || formatIcons.default;
                                     text += `| image:${icon}[${humanizeLibrary(library)} reference in ${humanizeFormat(format)} format,width=16,height=16,link=${demoUrlWithSuffix},window=_blank]`
                                 } else {
                                     text += `| ${demoUrlWithSuffix}[🔗,window=_blank]`

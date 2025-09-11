@@ -697,11 +697,25 @@ jobs:
               # mrdocs documenting mrdocs demo
               mrdocs --config="$(pwd)/docs/mrdocs.yml" "$(pwd)/CMakeLists.txt" --output="$(pwd)/demos/mrdocs/$variant/$generator" --multipage=$multipage --generator="$generator" --log-level=debug
             done
+          
             # Render the asciidoc files to html using asciidoctor
             if [[ ${{ runner.os }} == 'Linux' ]]; then
               for project in boost-url mrdocs; do
-                mkdir -p "$(pwd)/demos/$project/$variant/adoc-asciidoc"
-                asciidoctor -D "$(pwd)/demos/$project/$variant/adoc-asciidoc" "$(pwd)/demos/$project/$variant/adoc/*.adoc"
+                root="$(pwd)/demos/$project/$variant"
+                src="$root/adoc"
+                dst="$root/adoc-asciidoc"
+          
+                # Create the top-level output dir
+                mkdir -p "$dst"
+          
+                # Find every .adoc (recursively), mirror the directory structure, and render
+                find "$src" -type f -name '*.adoc' -print0 |
+                while IFS= read -r -d '' f; do
+                  rel="${f#"$src/"}"                 # path relative to $src
+                  outdir="$dst/$(dirname "$rel")"    # mirror subdir inside $dst
+                  mkdir -p "$outdir"
+                  asciidoctor -D "$outdir" "$f"
+                done
               done
             fi
           done
