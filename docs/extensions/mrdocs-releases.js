@@ -174,7 +174,7 @@ module.exports = function (registry) {
                 for (const suffix of assetSuffixes) {
                     const asset = release.assets.find(asset => asset.name.endsWith(suffix))
                     if (asset) {
-                        text += `| ${asset.browser_download_url}[🔗 ${asset.name}]\n\n(${humanizeBytes(asset.size)}) `
+                        text += `| ${asset.browser_download_url}[${asset.name}]\n\n(${humanizeBytes(asset.size)}) `
                     } else {
                         text += '| - '
                     }
