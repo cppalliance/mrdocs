@@ -80,6 +80,8 @@ public:
 
         The signature of the submitted function
         object should be `void(void)`.
+
+        @param f The function object to execute.
     */
     template<class F>
     void
@@ -90,8 +92,12 @@ public:
 
     /** Invoke a function object for each element of a range.
 
+        @param range The range of elements to process.
+        @param f The function object to invoke.
+
         @return Zero or more errors which were
         thrown from submitted work.
+
     */
     template<class Range, class F>
     [[nodiscard]]
@@ -136,6 +142,8 @@ public:
 
         The signature of the submitted function
         object should be `void(void)`.
+
+        @param f The function object to execute.
     */
     template<class F>
     void

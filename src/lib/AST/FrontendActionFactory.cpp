@@ -17,33 +17,14 @@
 namespace clang {
 namespace mrdocs {
 
-std::unique_ptr<tooling::FrontendActionFactory>
-makeFrontendActionFactory(
-    ExecutionContext& ex,
-    ConfigImpl const& config)
+
+std::unique_ptr<FrontendAction>
+ASTActionFactory::
+create()
 {
-    class ASTActionFactory :
-        public tooling::FrontendActionFactory
-    {
-        ExecutionContext& ex_;
-        ConfigImpl const& config_;
-    public:
-        ASTActionFactory(
-            ExecutionContext& ex,
-            ConfigImpl const& config) noexcept
-            : ex_(ex)
-            , config_(config)
-        {
-        }
-
-        std::unique_ptr<FrontendAction>
-        create() override
-        {
-            return std::make_unique<ASTAction>(ex_, config_);
-        }
-    };
-
-    return std::make_unique<ASTActionFactory>(ex, config);
+    auto A = std::make_unique<ASTAction>(ex_, config_);
+    A->setMissingSymbolSink(missingSink_);
+    return A;
 }
 
 } // mrdocs

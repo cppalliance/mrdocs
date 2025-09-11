@@ -77,7 +77,9 @@ public:
   /// Default constructs the value type.
   explicit constexpr Polymorphic() : Polymorphic(std::in_place_type<T>) {}
 
-  /// Forwarding constructor.
+  /** Forwarding constructor.
+   * @param u The object to copy.
+   */
   template <class U>
   constexpr explicit Polymorphic(U &&u)
     requires(not std::same_as<Polymorphic, std::remove_cvref_t<U>>) &&
@@ -85,7 +87,9 @@ public:
             std::derived_from<std::remove_cvref_t<U>, T>
       : WB(new Wrapper<std::remove_cvref_t<U>>(std::forward<U>(u))) {}
 
-  /// In place constructor.
+  /** In place constructor
+   * @param ts Arguments to forward to the constructor of U.
+   */
   template <class U, class... Ts>
   explicit constexpr Polymorphic(std::in_place_type_t<U>, Ts &&...ts)
     requires std::same_as<std::remove_cvref_t<U>, U> &&
@@ -171,7 +175,7 @@ template <class T> inline constexpr bool IsPolymorphic<Polymorphic<T>> = true;
 
 } // namespace detail
 
-/** Compares two polymorphic objects that have visit functions
+/** @brief Compares two polymorphic objects that have visit functions
 
     This function compares two Polymorphic objects that
     have visit functions for the Base type.
@@ -209,7 +213,7 @@ CompareDerived(
             : std::strong_ordering::greater;
 }
 
-/// @copydoc CompareDerived
+/// @copydoc CompareDerived(Polymorphic<Base> const&, Polymorphic<Base> const&)
 template <class Base>
   requires(!detail::IsPolymorphic<Base>) && detail::CanVisitCompare<Base>
 auto CompareDerived(Base const &lhs, Base const &rhs) {

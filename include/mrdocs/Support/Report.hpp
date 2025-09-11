@@ -32,11 +32,17 @@ namespace clang::mrdocs::report {
 */
 enum class Level
 {
+    /// Programming trace messages
     trace = 0,
+    /// Debug messages
     debug,
+    /// Informational messages
     info,
+    /// Warning messages
     warn,
+    /// Error messages
     error,
+    /// Fatal error messages
     fatal
 };
 
@@ -76,6 +82,10 @@ getMinimumLevel() noexcept;
 
 /** If true, source location information will be
     printed with warnings, errors, and fatal messages.
+
+    @param b true to enable source location
+    information, false to disable it. The default
+    value is true.
 */
 MRDOCS_DECL
 void
@@ -186,7 +196,7 @@ log_impl(
 
     @param fs The format string.
 
-    @param args... Optional additional arguments
+    @param args Optional additional arguments
     used to format a message to print. A trailing
     newline will be added to the message
     automatically.
@@ -205,7 +215,11 @@ log(
 }
 
 /** Report a message to the console.
-*/
+
+    @param format The format string.
+    @param args Optional additional arguments
+
+ */
 template<class... Args>
 void
 trace(
@@ -216,7 +230,11 @@ trace(
 }
 
 /** Report a message to the console.
-*/
+
+    @param format The format string.
+    @param args Optional additional arguments
+
+ */
 template<class... Args>
 void
 debug(
@@ -227,7 +245,11 @@ debug(
 }
 
 /** Report a message to the console.
-*/
+
+    @param format The format string.
+    @param args Optional additional arguments
+
+ */
 template<class... Args>
 void
 info(
@@ -238,7 +260,11 @@ info(
 }
 
 /** Report a message to the console.
-*/
+
+    @param format The format string.
+    @param args Optional additional arguments
+
+ */
 template<class... Args>
 void
 warn(
@@ -249,7 +275,11 @@ warn(
 }
 
 /** Report a message to the console.
-*/
+
+    @param format The format string.
+    @param args Optional additional arguments
+
+ */
 template<class... Args>
 void
 error(
@@ -260,6 +290,9 @@ error(
 }
 
 /** Report a message to the console.
+
+    @param format The format string.
+    @param args Optional additional arguments
 */
 template<class... Args>
 void

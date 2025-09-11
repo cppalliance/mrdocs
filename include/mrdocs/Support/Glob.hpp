@@ -38,6 +38,10 @@ public:
     /** Constructs a GlobPattern with the given pattern.
 
         @param pattern The glob pattern to use for matching.
+        @param maxSubGlobs The maximum number of subpatterns allowed.
+            If the pattern contains more subpatterns than this value,
+            an error is returned. If not specified, there is no limit.
+        @return The constructed GlobPattern, or an error if the pattern is invalid.
      */
     static
     Expected<GlobPattern>
@@ -76,6 +80,7 @@ public:
     /** Matches the given string against the glob pattern.
 
         @param str The string to match against the pattern.
+        @param delimiter The character that `*` does not match.
         @return true if the string matches the pattern, false otherwise.
      */
     bool
@@ -92,6 +97,7 @@ public:
         function returns true.
 
         @param prefix The string to match against the pattern.
+        @param delimiter The character that `*` does not match.
         @return true if the string prefix matches the pattern, false otherwise.
      */
     bool

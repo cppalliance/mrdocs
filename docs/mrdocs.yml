@@ -5,11 +5,18 @@ verbose: true
 source-root: ..
 input:
   - ../include
+includes:
+  # Stubs for the generated header symbols
+  - config-headers/include
+  - config-headers/src
 file-patterns:
   - '*.hpp'
 include-symbols:
   - 'clang::mrdocs::**'
 implementation-defined:
   - 'clang::mrdocs::detail'
-multipage: false
+  - 'clang::mrdocs::report::detail'
+  - 'clang::mrdocs::dom::detail'
+multipage: true
 generator: adoc
+cmake: '-D MRDOCS_DOCUMENTATION_BUILD=ON'

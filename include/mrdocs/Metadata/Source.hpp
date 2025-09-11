@@ -22,11 +22,11 @@ namespace clang::mrdocs {
 
 enum class FileKind
 {
-    // File in the source directory
+    /// File in the source directory
     Source,
-    // File in a system include directory
+    /// File in a system include directory
     System,
-    // File outside the source directory
+    /// File outside the source directory
     Other
 };
 

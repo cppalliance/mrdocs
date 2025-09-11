@@ -70,14 +70,23 @@ namespace dom {
 */
 enum class Kind
 {
+    /// The value is undefined.
     Undefined,
+    /// The value is null.
     Null,
+    /// The value is a boolean.
     Boolean,
+    /// The value is an integer.
     Integer,
+    /// The value is a string.
     String,
+    /// The value is a safe string.
     SafeString,
+    /// The value is an array.
     Array,
+    /// The value is an object.
     Object,
+    /// The value is a function.
     Function
 };
 

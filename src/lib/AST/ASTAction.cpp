@@ -12,9 +12,11 @@
 //
 
 #include "lib/AST/ASTAction.hpp"
+#include "lib/AST/MrDocsFileSystem.hpp"
 #include "lib/AST/ASTVisitorConsumer.hpp"
 #include <clang/Frontend/CompilerInstance.h>
 #include <clang/Parse/ParseAST.h>
+#include <clang/Lex/PreprocessorOptions.h>
 
 namespace clang {
 namespace mrdocs {
@@ -32,7 +34,49 @@ ExecuteAction()
     // Ensure comments in system headers are retained.
     // We may want them if, e.g., a declaration was extracted
     // as a dependency
-    CI.getLangOpts().RetainCommentsFromSystemHeaders = true;
+    auto &Lang = CI.getLangOpts();
+    Lang.RetainCommentsFromSystemHeaders = true;
+    bool const buildShims =
+        !config_.settings()->missingIncludePrefixes.empty() ||
+        !config_.settings()->missingIncludeShims.empty();
+    if (buildShims && missingSink_)
+    {
+        // Install missing symbol sink
+        missingSink_->setStartParsing();
+        auto &DE = CI.getDiagnostics();
+        std::unique_ptr<clang::DiagnosticConsumer> prev = DE.takeClient();
+        DE.setClient(
+            new CollectingDiagConsumer(*missingSink_, std::move(prev), DE),
+            /*ShouldOwnClient*/ true);
+
+        // Turn on AST recovery:
+        // Enable Clang’s recovery flags so it still builds
+        // decls/exprs with placeholder types when something is broken.
+        Lang.RecoveryAST = 1; // keep building AST nodes on errors
+        Lang.RecoveryASTType = 1; // synthesize placeholder types
+
+        // Mark stubbed prefixes as “system” for quieter diagnostics
+        for (auto &prefix : config_.settings()->missingIncludePrefixes)
+        {
+            MRDOCS_CHECK_OR_CONTINUE(!prefix.empty());
+            if (prefix.back() == '/')
+            {
+                CI.getHeaderSearchOpts().AddSystemHeaderPrefix(prefix, /*IsSystemHeader=*/true);
+            }
+            else
+            {
+                std::string p = prefix;
+                p += '/';
+                CI.getHeaderSearchOpts().AddSystemHeaderPrefix(p, /*IsSystemHeader=*/true);
+            }
+        }
+    }
+
+    // Skip function bodies:
+    // We don’t need bodies to enumerate symbols. This eliminates
+    // a ton of dependent code and template instantiations.
+    auto &FrontendOpts = CI.getFrontendOpts();
+    FrontendOpts.SkipFunctionBodies = true;
 
     if (!CI.hasSema())
     {

@@ -28,7 +28,7 @@ def to_camel_case(kebab_str):
 
 
 def to_pascal_case(kebab_str):
-    separator_chars = [' ', '<', '>']
+    separator_chars = [' ', '<', '>', ',']
     for separator_char in separator_chars:
         if separator_char in kebab_str:
             parts = kebab_str.split(separator_char)
@@ -103,6 +103,7 @@ def get_valid_option_values():
         'list<path>',
         'list<path-glob>',
         'list<symbol-glob>',
+        'map<string,string>'
     ]
     return valid_option_values
 
@@ -480,6 +481,8 @@ def generate_public_settings_hpp(config):
 
     # Function to visit all the options
     contents += '    /** Visit all options\n'
+    contents += '        \n'
+    contents += '        @param f The visitor\n'
     contents += '     */\n'
     contents += '    template <class F>\n'
     contents += '    void\n'
@@ -490,6 +493,8 @@ def generate_public_settings_hpp(config):
     contents += '    }\n\n'
 
     contents += '    /** Visit all options\n'
+    contents += '        \n'
+    contents += '        @param f The visitor\n'
     contents += '     */\n'
     contents += '    template <class F>\n'
     contents += '    void\n'
@@ -693,6 +698,9 @@ def generate_public_settings_cpp(config):
     for header in headers:
         contents += f'#include {header}\n'
     contents += '\n'
+
+    contents += '// std::map<std::string, std::string> should be considered a YAML map\n'
+    contents += 'LLVM_YAML_IS_STRING_MAP(std::string)\n\n'
 
     # Generate the LLVM YAML traits for each enum, such as:
     for [enum_name, enum_values] in get_valid_enum_categories().items():
@@ -1051,6 +1059,33 @@ struct std::formatter<llvm::cl::opt<T>>
             option_contents += f'        MRDOCS_TRY(auto temp, {cpp_type}::create(pattern));\n'
             option_contents += f'        s.{camel_name}.push_back(temp);\n'
             option_contents += f'    }}\n'
+        elif option["type"] in ['map<string,string>']:
+            #         s.missingIncludeShims.clear();
+            #         for (std::string const& stringPair : this->missingIncludeShims)
+            #         {
+            #             // Split the string as "key=value"
+            #             auto pos = stringPair.find('=');
+            #             if (pos == std::string::npos)
+            #             {
+            #                 return Unexpected(formatError("`missing-include-shims` option: invalid format (expected key=value): {}", stringPair));
+            #             }
+            #             std::string key = stringPair.substr(0, pos);
+            #             std::string value = stringPair.substr(pos + 1);
+            #             s.missingIncludeShims[std::move(key)] = std::move(value);
+            #         }
+            option_contents += f'    s.{camel_name}.clear();\n'
+            option_contents += f'    for (std::string const& stringPair : this->{camel_name})\n'
+            option_contents += f'    {{\n'
+            option_contents += f'        // Split the string as "key=value"\n'
+            option_contents += f'        auto pos = stringPair.find(\'=\');\n'
+            option_contents += f'        if (pos == std::string::npos)\n'
+            option_contents += f'        {{\n'
+            option_contents += f'            return Unexpected(formatError("`{option["name"]}` option: invalid format (expected key=value): {{}}", stringPair));\n'
+            option_contents += f'        }}\n'
+            option_contents += f'        std::string key = stringPair.substr(0, pos);\n'
+            option_contents += f'        std::string value = stringPair.substr(pos + 1);\n'
+            option_contents += f'        s.{camel_name}[std::move(key)] = std::move(value);\n'
+            option_contents += f'    }}\n'
         else:
             option_contents += f'    s.{camel_name} = this->{camel_name};\n'
         option_contents += '}\n'
@@ -1101,6 +1136,8 @@ def to_cpp_type(option):
         return 'std::vector<PathGlobPattern>'
     if option_type in ['list<symbol-glob>']:
         return 'std::vector<SymbolGlobPattern>'
+    if option_type in ['map<string,string>']:
+        return 'std::map<std::string, std::string>'
     raise ValueError(f'to_cpp_type: Cannot convert option type {option_type} to C++ type')
 
 
@@ -1119,6 +1156,8 @@ def to_toolargs_type(option):
     if option_type in ['string', 'file-path', 'dir-path', 'path', 'enum']:
         return 'llvm::cl::opt<std::string>'
     if option_type in ['list<string>', 'list<path>', 'list<file-path>', 'list<dir-path>', 'list<path-glob>', 'list<symbol-glob>']:
+        return 'llvm::cl::list<std::string>'
+    if option_type in ['map<string,string>']:
         return 'llvm::cl::list<std::string>'
     raise ValueError(f'to_cpp_type: Cannot convert option type {option_type} to C++ type')
 
@@ -1171,6 +1210,10 @@ def to_cpp_default_value(option, replace_reference_dir=None):
         if not option_default:
             return None
         return '{' + ', '.join([f'PathGlobPattern::create("{str(s)}").value()' for s in option_default]) + '}'
+    if option_type in ['map<string,string>']:
+        if not option_default:
+            return None
+        return '{' + ', '.join([f'{{"{str(k)}", "{str(v)}"}}' for [k, v] in option_default.items()]) + '}'
     raise ValueError(f'to_cpp_type: Cannot convert option type {option_type} to C++ type')
 
 

@@ -18,6 +18,8 @@ namespace clang {
 namespace mrdocs {
 
 /** Return the value as its underlying type.
+
+    @param value The enum value to convert
 */
 template<class Enum>
 requires std::is_enum_v<Enum>

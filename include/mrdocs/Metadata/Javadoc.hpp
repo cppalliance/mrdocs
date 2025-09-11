@@ -106,25 +106,45 @@ enum class NodeKind
     // Node::isText() and Node::isBlock()
     // when changing this enum!
 
+    /// A text tag
     text = 1, // needed by bitstream
+    /// An admonition tag
     admonition,
+    /// A brief tag
     brief,
+    /// A code tag
     code,
+    /// A heading tag
     heading,
+    /// A link tag
     link,
+    /// A list_item tag
     list_item,
+    /// An unordered_list tag
     unordered_list,
+    /// A paragraph tag
     paragraph,
+    /// A param tag
     param,
+    /// A returns tag
     returns,
+    /// A styled tag
     styled,
+    /// A tparam tag
     tparam,
+    /// A reference tag
     reference,
+    /// A copy_details tag
     copy_details,
+    /// A throws tag
     throws,
+    /// A details tag
     details,
+    /// A see tag
     see,
+    /// A general tag.
     precondition,
+    /// A postcondition tag.
     postcondition
 };
 
@@ -146,17 +166,24 @@ tag_invoke(
     v = toString(kind);
 }
 
-/** A text style.
+/** The text style.
 */
 enum class Style
 {
+    /// No style
     none = 1, // needed by bitstream
+    /// Monospaced text
     mono,
+    /// Bold text
     bold,
+    /// Italic text
     italic
 };
 
 /** Return the name of the @ref Style as a string.
+
+    @param kind The style kind.
+    @return The string representation of the style.
  */
 MRDOCS_DECL
 dom::String
@@ -178,11 +205,17 @@ tag_invoke(
 */
 enum class Admonish
 {
+    /// No admonishment
     none = 1, // needed by bitstream
+    /// A general note
     note,
+    /// A tip to the reader
     tip,
+    /// Something important
     important,
+    /// A caution admonishment
     caution,
+    /// A warning admonishment
     warning
 };
 
@@ -209,9 +242,13 @@ tag_invoke(
 */
 enum class ParamDirection
 {
+    /// No direction specified
     none,
+    /// Parameter is passed
     in,
+    /// Parameter is passed back to the caller
     out,
+    /// Parameter is passed and passed back to the caller
     inout
 };
 
@@ -241,8 +278,11 @@ tag_invoke(
 */
 enum class Parts
 {
+    /// Copy the brief and the description
     all = 1, // needed by bitstream
+    /// Copy the brief
     brief,
+    /// Copy the description
     description
 };
 
@@ -302,6 +342,10 @@ struct MRDOCS_DECL
 };
 
 /** Map the @ref Node to a @ref dom::Object.
+
+    @param io The output parameter to receive the dom::Object.
+    @param I The input object.
+    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
  */
 template <class IO>
 void
@@ -329,6 +373,10 @@ tag_invoke(
 }
 
 /** Map the Polymorphic Node as a @ref dom::Value object.
+
+    @param io The output parameter to receive the dom::Object.
+    @param I The input object.
+    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
  */
 template <class IO, polymorphic_storage_for<Node> NodeTy>
 void
@@ -399,6 +447,11 @@ protected:
 };
 
 /** Map the @ref Text to a @ref dom::Object.
+
+    @param t The tag.
+    @param io The output object.
+    @param I The input object.
+    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
  */
 template <class IO>
 void
@@ -461,6 +514,11 @@ struct Styled final : Text
 };
 
 /** Map the @ref Styled to a @ref dom::Object.
+
+    @param t The tag.
+    @param io The output object.
+    @param I The input object.
+    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
  */
 template <class IO>
 void
@@ -515,6 +573,11 @@ struct Link final : Text
 };
 
 /** Map the @ref Link to a @ref dom::Object.
+
+    @param t The tag.
+    @param io The output object.
+    @param I The input object.
+    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
  */
 template <class IO>
 void
@@ -574,6 +637,11 @@ protected:
 };
 
 /** Map the @ref Reference to a @ref dom::Object.
+
+    @param t The tag.
+    @param io The output object.
+    @param I The input object.
+    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
  */
 template <class IO>
 void
@@ -620,7 +688,12 @@ struct CopyDetails final : Reference
     }
 };
 
-/** Map the @ref Copied to a @ref dom::Object.
+/** Map the @ref CopyDetails to a @ref dom::Object.
+
+    @param t The tag.
+    @param io The output object.
+    @param I The input object.
+    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
  */
 template <class IO>
 void
@@ -633,7 +706,11 @@ tag_invoke(
     tag_invoke(t, io, dynamic_cast<Reference const&>(I), domCorpus);
 }
 
-/** Return the @ref Copied as a @ref dom::Value object.
+/** Return the @ref CopyDetails as a @ref dom::Value object.
+
+    @param v The output value.
+    @param I The input object.
+    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
  */
 inline
 void
@@ -736,6 +813,11 @@ private:
 };
 
 /** Map the @ref Block to a @ref dom::Object.
+
+    @param t The tag.
+    @param io The output object.
+    @param I The input object.
+    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
  */
 template <class IO>
 void
@@ -789,6 +871,11 @@ struct Heading final : Block
 };
 
 /** Map the @ref Heading to a @ref dom::Object.
+
+    @param t The tag.
+    @param io The output object.
+    @param I The input object.
+    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
  */
 template <class IO>
 void
@@ -846,6 +933,11 @@ protected:
 };
 
 /** Map the @ref Paragraph to a @ref dom::Object.
+
+    @param t The tag.
+    @param io The output object.
+    @param I The input object.
+    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
  */
 template <class IO>
 void
@@ -914,6 +1006,11 @@ struct Brief final : Paragraph
 };
 
 /** Map the @ref Brief to a @ref dom::Object.
+
+    @param t The tag.
+    @param io The output object.
+    @param I The input object.
+    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
  */
 template <class IO>
 void
@@ -971,6 +1068,11 @@ struct Admonition final : Paragraph
 };
 
 /** Map the @ref Admonition to a @ref dom::Object.
+
+    @param t The tag.
+    @param io The output object.
+    @param I The input object.
+    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
  */
 template <class IO>
 void
@@ -1022,6 +1124,11 @@ struct Code final : Paragraph
 };
 
 /** Map the @ref Code to a @ref dom::Object.
+
+    @param t The tag.
+    @param io The output object.
+    @param I The input object.
+    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
  */
 template <class IO>
 void
@@ -1080,6 +1187,11 @@ struct ListItem final : Paragraph
 };
 
 /** Map the @ref ListItem to a @ref dom::Object.
+
+    @param t The tag.
+    @param io The output object.
+    @param I The input object.
+    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
  */
 template <class IO>
 void
@@ -1157,6 +1269,11 @@ struct UnorderedList final : Paragraph
 };
 
 /** Map the @ref UnorderedList to a @ref dom::Object.
+
+    @param t The tag.
+    @param io The output object.
+    @param I The input object.
+    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
  */
 template <class IO>
 void
@@ -1211,6 +1328,11 @@ struct See final : Paragraph
 };
 
 /** Map the @ref See to a @ref dom::Object.
+
+    @param t The tag.
+    @param io The output object.
+    @param I The input object.
+    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
  */
 template <class IO>
 void
@@ -1294,6 +1416,11 @@ struct Param final : Paragraph
 };
 
 /** Map the @ref Param to a @ref dom::Object.
+
+    @param t The tag.
+    @param io The output object.
+    @param I The input object.
+    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
  */
 template <class IO>
 void
@@ -1366,6 +1493,11 @@ struct Returns final : Paragraph
 };
 
 /** Map the @ref Returns to a @ref dom::Object.
+
+    @param t The tag.
+    @param io The output object.
+    @param I The input object.
+    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
  */
 template <class IO>
 void
@@ -1416,6 +1548,11 @@ struct TParam final : Paragraph
 };
 
 /** Map the @ref TParam to a @ref dom::Object.
+
+    @param t The tag.
+    @param io The output object.
+    @param I The input object.
+    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
  */
 template <class IO>
 void
@@ -1475,6 +1612,11 @@ struct Throws final : Paragraph
 };
 
 /** Map the @ref Throws to a @ref dom::Object.
+
+    @param t The tag.
+    @param io The output object.
+    @param I The input object.
+    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
  */
 template <class IO>
 void
@@ -1528,6 +1670,11 @@ struct Precondition final : Paragraph
 };
 
 /** Map the @ref Precondition to a @ref dom::Object.
+
+    @param t The tag.
+    @param io The output object.
+    @param I The input object.
+    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
  */
 template <class IO>
 void
@@ -1541,6 +1688,10 @@ tag_invoke(
 }
 
 /** Return the @ref Precondition as a @ref dom::Value object.
+
+    @param v The value to assign to.
+    @param I The input object.
+    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
  */
 inline
 void
@@ -1580,6 +1731,11 @@ struct Postcondition : Paragraph
 };
 
 /** Map the @ref Postcondition to a @ref dom::Object.
+
+    @param t The tag.
+    @param io The output object.
+    @param I The input object.
+    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
  */
 template <class IO>
 void
@@ -1593,6 +1749,10 @@ tag_invoke(
 }
 
 /** Return the @ref Postcondition as a @ref dom::Value object.
+
+    @param v The value to assign to.
+    @param I The input object.
+    @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
  */
 inline
 void
@@ -1612,6 +1772,7 @@ tag_invoke(
     @param node The node to visit.
     @param fn The function to call for each node.
     @param args Additional arguments to pass to the function.
+    @return The result of calling the function.
  */
 template<
     class NodeTy,
@@ -1847,6 +2008,8 @@ struct MRDOCS_DECL
     void append(Javadoc&& other);
 
     /** Append blocks from a list to this.
+
+        @param blocks The blocks to append.
      */
     void
     append(std::vector<Polymorphic<doc::Node>>&& blocks);
@@ -1871,6 +2034,11 @@ void merge(Javadoc& I, Javadoc&& other)
 }
 
 /** Map the @ref Javadoc to a @ref dom::Object.
+
+    @param t The tag.
+    @param io The output object.
+    @param I The javadoc to map.
+    @param domCorpus The DOM corpus, or nullptr.
  */
 template <class IO>
 void

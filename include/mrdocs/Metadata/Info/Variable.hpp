@@ -89,6 +89,11 @@ void
 merge(VariableInfo& I, VariableInfo&& Other);
 
 /** Map a VariableInfo to a dom::Object.
+
+    @param t The tag type.
+    @param io The IO object to use for mapping.
+    @param I The VariableInfo to map.
+    @param domCorpus The DomCorpus used to create
  */
 template <class IO>
 void

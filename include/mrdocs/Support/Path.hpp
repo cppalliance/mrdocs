@@ -38,8 +38,11 @@ struct MRDOCS_VISIBLE
     a directory and invoke the visitor with the
     path.
 
+    @param dirPath The path to the directory.
     @param recursive If true, files in subdirectories are
     also visited, recursively.
+    @param visitor The visitor to invoke for each file.
+    @return An error if any occurred.
 */
 MRDOCS_DECL
 Expected<void>
@@ -79,6 +82,14 @@ public:
 }
 
 /** Visit each file in a directory.
+
+    @param dirPath The path to the directory.
+    @param recursive If true, files in subdirectories are
+        also visited, recursively.
+    @param visitor A callable object which is invoked
+        for each file.
+    @return An error if any occurred.
+
 */
 template<class Visitor>
 Expected<void>
@@ -96,11 +107,17 @@ forEachFile(
 
 namespace files {
 
+/** The type of a file.
+*/
 enum class FileType
 {
+    /// The file does not exist
     not_found,
+    /// The path represents a regular file
     regular,
+    /// The file is a directory
     directory,
+    /// The file is something else
     other
 };
 
@@ -115,6 +132,11 @@ getFileType(
     std::string_view pathName);
 
 /** Return true if pathName is absolute.
+
+    @param pathName The absolute or relative path
+        to the directory or file.
+    @return true if the path is absolute,
+        false otherwise.
 */
 MRDOCS_DECL
 bool
@@ -122,6 +144,10 @@ isAbsolute(
     std::string_view pathName) noexcept;
 
 /** Return an error if pathName is not absolute.
+
+    @param pathName The absolute or relative path
+        to the directory or file.
+    @return An error if the path is not absolute.
 */
 MRDOCS_DECL
 Expected<void>
@@ -129,6 +155,11 @@ requireAbsolute(
     std::string_view pathName);
 
 /** Return true if pathName ends in a separator.
+
+    @param pathName The absolute or relative path
+        to the directory or file.
+    @return true if the path ends in a separator,
+        false otherwise.
 */
 MRDOCS_DECL
 bool
@@ -175,6 +206,11 @@ normalizeDir(
 
     If the parent directory is defined, the returned
     path will always have a trailing separator.
+
+    @param pathName The absolute or relative path
+        to the directory or file.
+    @return The parent directory, or the empty
+        string if there is none.
 */
 MRDOCS_DECL
 std::string
@@ -185,6 +221,15 @@ getParentDir(
 
     If the parent directory is defined, the returned
     path will always have a trailing separator.
+
+    @param pathName The absolute or relative path
+        to the directory or file.
+    @param levels The number of levels to go up.
+        If this is zero, the original path is returned.
+        If this is greater than the number of levels
+        in the path, the empty string is returned.
+    @return The parent directory, or the empty
+        string if there is none.
 */
 MRDOCS_DECL
 std::string
@@ -193,6 +238,11 @@ getParentDir(
     unsigned levels);
 
 /** Return the filename part of the path.
+
+    @param pathName The absolute or relative path
+        to the directory or file.
+    @return The filename part of the path,
+        or the empty string if there is none.
 */
 MRDOCS_DECL
 std::string_view
@@ -200,6 +250,11 @@ getFileName(
     std::string_view pathName);
 
 /** Return the contents of a file as a string.
+
+    @param pathName The absolute or relative path
+        to the file.
+    @return The contents of the file, or an error
+        if any occurred.
 */
 MRDOCS_DECL
 Expected<std::string>
@@ -207,6 +262,11 @@ getFileText(
     std::string_view pathName);
 
 /** Append a trailing native separator if not already present.
+
+    @param pathName The absolute or relative path
+        to the directory or file.
+    @return A copy of the path with a trailing
+        separator if not already present.
 */
 MRDOCS_DECL
 std::string
@@ -218,6 +278,8 @@ makeDirsy(
     Relative paths are resolved against the
     current working directory of the process.
 
+    @param pathName The absolute or relative path
+        to the directory or file.
     @return The absolute path, or an error if
     any occurred.
 */
@@ -227,6 +289,13 @@ makeAbsolute(
     std::string_view pathName);
 
 /** Return an absolute path from a possibly relative path.
+
+    @param pathName The absolute or relative path
+        to the directory or file.
+    @param workingDir The working directory to
+        resolve relative paths against.
+    @return The absolute path, or an error if
+        any occurred.
 */
 MRDOCS_DECL
 std::string
@@ -235,6 +304,11 @@ makeAbsolute(
     std::string_view workingDir);
 
 /** Convert all backward slashes to forward slashes.
+
+    @param pathName The absolute or relative path
+        to the directory or file.
+    @return A copy of the path with all
+        backslashes replaced with forward slashes.
 */
 MRDOCS_DECL
 std::string
@@ -242,6 +316,11 @@ makePosixStyle(
     std::string_view pathName);
 
 /** Check if the path is posix style.
+
+    @param pathName The absolute or relative path
+        to the directory or file.
+    @return true if the path uses only forward slashes
+        as path separators, false otherwise.
 */
 MRDOCS_DECL
 bool
@@ -294,6 +373,10 @@ appendPath(
     std::string_view name4);
 
 /** Return an error if the path is not a directory.
+
+    @param pathName The absolute or relative path
+    @return An error if the path does not exist
+            or is not a directory.
 */
 MRDOCS_DECL
 Expected<void>
@@ -301,6 +384,10 @@ requireDirectory(
     std::string_view pathName);
 
 /** Determine if a path is a directory.
+
+    @param pathName The absolute or relative path
+    @return true if the path exists and is a directory,
+        false otherwise.
 */
 MRDOCS_DECL
 bool
@@ -316,21 +403,34 @@ isDirectory(
     a directory. In this case, the function
     returns true if the last path segment
     contains a period, otherwise false.
+
+    @param pathName The absolute or relative path
+    @return true if the path exists and is a directory,
+        or if the path does not exist and the last path
+        segment does not contain a period.
+        false otherwise.
 */
 MRDOCS_DECL
 bool
 isLexicalDirectory(
     std::string_view pathName);
 
-/** Determine if a path is a directory.
+/** Determine if a path exists
+
+    @param pathName The absolute or relative path
+    @return true if the path exists, false otherwise.
 */
 MRDOCS_DECL
-
 bool
 exists(
     std::string_view pathName);
 
 /** Return the relevant suffix of a source file path.
+
+    @param pathName The absolute or relative path
+    to the file.
+    @return The suffix, including the leading dot,
+    or the empty string if there is no suffix.
 */
 MRDOCS_DECL
 std::string_view

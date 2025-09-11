@@ -21,7 +21,9 @@ namespace clang::mrdocs {
 
 enum class NameKind
 {
+    /// A simple identifier
     Identifier = 1, // for bitstream
+    /// A template instantiation
     Specialization
 };
 

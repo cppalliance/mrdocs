@@ -57,6 +57,11 @@ void
 merge(EnumInfo& I, EnumInfo&& Other);
 
 /** Map a EnumInfo to a dom::Object.
+
+    @param t The tag type.
+    @param io The IO object to use for mapping.
+    @param I The EnumInfo to map.
+    @param domCorpus The DomCorpus used to create
  */
 template <class IO>
 void
@@ -73,6 +78,10 @@ tag_invoke(
 }
 
 /** Map the EnumInfo to a @ref dom::Value object.
+
+    @param v The output parameter to receive the dom::Value.
+    @param I The EnumInfo to convert.
+    @param domCorpus The DomCorpus used to resolve references.
  */
 inline
 void

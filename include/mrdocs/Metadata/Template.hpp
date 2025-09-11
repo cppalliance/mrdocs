@@ -24,13 +24,15 @@
 
 namespace clang::mrdocs {
 
+/** The kind of template argument.
+*/
 enum class TArgKind : int
 {
-    // type arguments
+    /// type arguments
     Type = 1, // for bitstream
-    // non-type arguments, i.e. expressions
+    /// non-type arguments, i.e. expressions
     NonType,
-    // template template arguments, i.e. template names
+    /// template template arguments, i.e. template names
     Template
 };
 
@@ -187,11 +189,11 @@ tag_invoke(
 
 enum class TParamKind : int
 {
-    // template type parameter, e.g. "typename T" or "class T"
+    /// Template type parameter, e.g. "typename T" or "class T"
     Type = 1, // for bitstream
-    // template non-type parameter, e.g. "int N" or "auto N"
+    /// Template non-type parameter, e.g. "int N" or "auto N"
     NonType,
-    // Template-template parameter, e.g. "template<typename> typename T"
+    /// Template-template parameter, e.g. "template<typename> typename T"
     Template
 };
 
@@ -274,7 +276,9 @@ protected:
 /** The keyword a template parameter was declared with */
 enum class TParamKeyKind : int
 {
+    /// Class keyword
     Class = 0,
+    /// Typename keyword
     Typename
 };
 
@@ -365,10 +369,15 @@ operator==(Polymorphic<TParam> const& lhs, Polymorphic<TParam> const& rhs) {
 
 // ----------------------------------------------------------------
 
+/** The kind of template or specialization.
+*/
 enum class TemplateSpecKind
 {
+    /// Primary template
     Primary,
+    /// Full template specialization
     Explicit,
+    /// Partial template specialization
     Partial
 };
 

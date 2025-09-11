@@ -214,13 +214,25 @@ public:
     std::size_t size() const;
 
     /** Return the element with the specified key
+
+        @param key The key.
+        @return The value for the specified key, or null
+        if the key does not exist.
     */
     Value get(std::string_view key) const;
 
-    /// @copydoc get
+    /** Return the element at a given index.
+
+        @param i The index.
+        @return The value at the specified index, or null
+        if the index is out of range.
+    */
     Value at(std::string_view i) const;
 
     /** Return true if a key exists.
+
+        @param key The key to check for existence.
+        @return `true` if the key exists, otherwise `false`.
     */
     bool exists(std::string_view key) const;
 
@@ -242,6 +254,7 @@ public:
         continue iteration, or `false` to stop
         iteration early.
 
+        @param fn The visitor function.
         @return `true` if the visitor returned `true`
         for all elements, otherwise `false`.
 
@@ -265,6 +278,11 @@ public:
         return an error for any element, otherwise
         `E`.
 
+        @param fn The visitor function.
+        @return `void` if the visitor returned did not
+        return an error for any element, otherwise
+        `E`.
+
      */
     template <class F>
     requires
@@ -274,6 +292,8 @@ public:
     visit(F&& fn) const;
 
     /** Invoke the visitor for each key/value pair
+
+        @param fn The visitor function.
      */
     template <class F>
     requires
@@ -350,10 +370,18 @@ public:
     virtual char const* type_key() const noexcept;
 
     /** Return the value for the specified key, or null.
+
+        @param key The key.
+        @return The value for the specified key, or null
+        if the key does not exist.
     */
     virtual Value get(std::string_view key) const = 0;
 
     /** Insert or set the given key/value pair.
+
+        @param key The key.
+        @param value The value to set.
+
     */
     virtual void set(String key, Value value) = 0;
 
@@ -366,19 +394,38 @@ public:
         visitor returned `true` for all elements,
         otherwise `false`.
 
+        @param fn The visitor function.
+        @return `true` if the visitor returned `true`
+        for all elements, otherwise `false`.
+
     */
-    virtual bool visit(std::function<bool(String, Value)>) const = 0;
+    virtual
+    bool
+    visit(std::function<bool(String, Value)> fn) const = 0;
 
     /** Return the number of properties in the object.
      */
-    virtual std::size_t size() const = 0;
+    virtual
+    std::size_t
+    size() const = 0;
 
     /** Determine if a key exists.
+
+        @param key The key to check for existence.
+        @return `true` if the key exists, otherwise `false`.
      */
-    virtual bool exists(std::string_view key) const;
+    virtual
+    bool
+    exists(std::string_view key) const;
 };
 
 /** Return a new object using a custom implementation.
+
+    @param args Arguments forwarded to the constructor of T.
+    @tparam T The type of the custom implementation.
+        This must be derived from ObjectImpl.
+    @tparam Args The types of the arguments.
+    @return A new object using the specified implementation.
 */
 template<class T, class... Args>
 requires std::derived_from<T, ObjectImpl>
