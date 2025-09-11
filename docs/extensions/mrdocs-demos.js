@@ -13,11 +13,14 @@ const fs = require("fs");
 
 function getSubdirectoriesSync(url) {
     try {
+        // cache setup
         let urlPath = new URL(url).pathname;
         let cacheFilenamePath = urlPath.replace(/[^a-zA-Z0-9]/g, '') + '.json';
         let cachePath = `${__dirname}/../build/requests/${cacheFilenamePath}`;
         fs.mkdirSync(`${__dirname}/../build/requests/`, {recursive: true});
         const readFromCacheFile = fs.existsSync(cachePath) && fs.statSync(cachePath).mtime > new Date(Date.now() - 1000 * 60 * 60 * 24);
+
+        // read file or make request
         const data =
             readFromCacheFile ?
                 fs.readFileSync(cachePath, 'utf-8') :
@@ -25,15 +28,68 @@ function getSubdirectoriesSync(url) {
         if (!readFromCacheFile) {
             fs.writeFileSync(cachePath, data);
         }
-        const regex = /<a href="([^"]+)\/">/g;
-        const directories = [];
+
+        // parse entries: name + date (if present)
+        // Matches: <a href="name/">name/</a> [spaces] 11-Sep-2025 20:51
+        const entryRe = /<a href="([^"]+)\/">[^<]*<\/a>\s+(\d{2}-[A-Za-z]{3}-\d{4}\s+\d{2}:\d{2})?/g;
+
+        const month = { Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11 };
+        const parseDate = (s) => {
+          if (!s) return null; // missing or no date in listing
+          // "11-Sep-2025 20:51"
+          const m = /^(\d{2})-([A-Za-z]{3})-(\d{4})\s+(\d{2}):(\d{2})$/.exec(s.trim());
+          if (!m) return null;
+          const [, d, mon, y, hh, mm] = m;
+          return new Date(Date.UTC(+y, month[mon], +d, +hh, +mm));
+        };
+
+        const isSemver = (name) => {
+          // allow optional leading 'v', ignore pre-release/build metadata for ordering
+          const m = /^v?(\d+)\.(\d+)\.(\d+)(?:[-+].*)?$/.exec(name);
+          if (!m) return null;
+          return { major: +m[1], minor: +m[2], patch: +m[3] };
+        };
+
+        const entries = [];
         let match;
-        while ((match = regex.exec(data)) !== null) {
-            if (match[1] !== '..' && match[1] !== '.') {
-                directories.push(match[1]);
-            }
+        while ((match = entryRe.exec(data)) !== null) {
+          const name = match[1];
+          if (name === '.' || name === '..') continue;
+          const dt = parseDate(match[2] || null);
+          const sv = isSemver(name);
+          entries.push({
+            name,
+            date: dt,               // may be null
+            semver: !!sv,
+            major: sv ? sv.major : 0,
+            minor: sv ? sv.minor : 0,
+            patch: sv ? sv.patch : 0,
+          });
         }
-        return directories;
+
+        // sort
+        entries.sort((a, b) => {
+          // 1) non-semver first
+          if (a.semver !== b.semver) return a.semver ? 1 : -1;
+
+          if (!a.semver && !b.semver) {
+            // non-semver: newer date first; if no date, push to end among non-semver
+            const ad = a.date ? a.date.getTime() : -Infinity;
+            const bd = b.date ? b.date.getTime() : -Infinity;
+            if (ad !== bd) return bd - ad;
+            // tie-breaker: name asc for stability
+            return a.name.localeCompare(b.name);
+          }
+
+          // semver: major ↓, minor ↓, patch ↓
+          if (a.major !== b.major) return b.major - a.major;
+          if (a.minor !== b.minor) return b.minor - a.minor;
+          if (a.patch !== b.patch) return b.patch - a.patch;
+          // final tie-breaker: name asc
+          return a.name.localeCompare(b.name);
+        });
+
+        return entries.map(e => e.name);
     } catch (error) {
         console.error('Error:', error);
         return [];
