@@ -2356,6 +2356,14 @@ class MrDocsInstaller:
             "cwd": self.options.mrdocs_src_dir
         })
         configs.append({
+            "name": f"MrDocs Generate Config Info (docs)",
+            "script": os.path.join(self.options.mrdocs_src_dir, 'util', 'generate-config-info.py'),
+            "folder": "MrDocs Generate Config Info",
+            "args": [os.path.join(self.options.mrdocs_src_dir, 'src', 'lib', 'ConfigOptions.json'),
+                     os.path.join(self.options.mrdocs_src_dir, 'docs', 'config-headers')],
+            "cwd": self.options.mrdocs_src_dir
+        })
+        configs.append({
             "name": f"MrDocs Generate YAML Schema",
             "script": os.path.join(self.options.mrdocs_src_dir, 'util', 'generate-yaml-schema.py'),
             "args": [],

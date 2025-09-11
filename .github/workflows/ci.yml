@@ -691,9 +691,33 @@ jobs:
             for generator in "${generators[@]}"; do
               [[ $generator = xml && $variant = multi ]] && continue
               [[ $variant = multi ]] && multipage="true" || multipage="false"
-              mrdocs --config="$(pwd)/boost/libs/url/doc/mrdocs.yml" "../CMakeLists.txt" --output="$(pwd)/demos/boost-url/$variant/$generator" --multipage=$multipage --generate="$generator" --log-level=debug
+              # mrdocs boost.url demo
+              mrdocs --config="$(pwd)/boost/libs/url/doc/mrdocs.yml" "../CMakeLists.txt" --output="$(pwd)/demos/boost-url/$variant/$generator" --multipage=$multipage --generator="$generator" --log-level=debug
               echo "Number of files in demos/boost-url/$variant/$generator: $(find demos/boost-url/$variant/$generator -type f | wc -l)"
+              # mrdocs documenting mrdocs demo
+              mrdocs --config="$(pwd)/docs/mrdocs.yml" "$(pwd)/CMakeLists.txt" --output="$(pwd)/demos/mrdocs/$variant/$generator" --multipage=$multipage --generator="$generator" --log-level=debug
             done
+          
+            # Render the asciidoc files to html using asciidoctor
+            if [[ ${{ runner.os }} == 'Linux' ]]; then
+              for project in boost-url mrdocs; do
+                root="$(pwd)/demos/$project/$variant"
+                src="$root/adoc"
+                dst="$root/adoc-asciidoc"
+          
+                # Create the top-level output dir
+                mkdir -p "$dst"
+          
+                # Find every .adoc (recursively), mirror the directory structure, and render
+                find "$src" -type f -name '*.adoc' -print0 |
+                while IFS= read -r -d '' f; do
+                  rel="${f#"$src/"}"                 # path relative to $src
+                  outdir="$dst/$(dirname "$rel")"    # mirror subdir inside $dst
+                  mkdir -p "$outdir"
+                  asciidoctor -D "$outdir" "$f"
+                done
+              done
+            fi
           done
           
           # Compress demos for the artifact

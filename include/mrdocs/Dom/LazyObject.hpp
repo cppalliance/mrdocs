@@ -431,6 +431,9 @@ visit(std::function<bool(String, Value)> fn) const
 
 
 /** Return a new dom::Object based on a lazy object implementation.
+
+    @param obj The underlying object.
+    @return A new dom::Object whose properties are the result of converting each property in the underlying object to a dom::Value.
 */
 template <HasLazyObjectMapWithoutContext T>
 Object
@@ -440,6 +443,10 @@ LazyObject(T const& obj)
 }
 
 /** Return a new dom::Object based on a transformed lazy array implementation.
+
+    @param arr The underlying range of elements.
+    @param context The context used to convert each element to a dom::Value.
+    @return A new dom::Array whose elements are the result of converting each element in the underlying range using the specified context.
 */
 template <class T, class Context>
 requires HasLazyObjectMap<T, Context>

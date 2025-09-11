@@ -21,10 +21,19 @@
 
 namespace clang::mrdocs {
 
+/** The class of using declaration.
+
+    This indicates whether the using declaration
+    is a normal `using`, a `using typename`, or
+    a `using enum`.
+*/
 enum class UsingClass
 {
+    /// Using declaration class.
     Normal = 0,     // using
+    /// Using typename declaration class.
     Typename,       // using typename
+    /// Using enum declaration class.
     Enum            // using enum
 };
 
@@ -42,6 +51,9 @@ toString(UsingClass const& value)
 }
 
 /** Return the UsingClass as a @ref dom::Value string.
+
+    @param v The output value.
+    @param kind The UsingClass to convert.
  */
 inline
 void
@@ -129,6 +141,11 @@ MRDOCS_DECL
 void merge(UsingInfo& I, UsingInfo&& Other);
 
 /** Map a UsingInfo to a dom::Object.
+
+    @param t The tag type.
+    @param io The IO object to use for mapping.
+    @param I The UsingInfo to map.
+    @param domCorpus The DomCorpus used to create
  */
 template <class IO>
 void

@@ -18,6 +18,8 @@
 #include "lib/Support/ExecutionContext.hpp"
 #include <clang/Tooling/Tooling.h>
 #include <mrdocs/Platform.hpp>
+#include "MissingSymbolSink.hpp"
+
 
 namespace clang {
 namespace mrdocs {
@@ -41,6 +43,7 @@ class ASTAction
 {
     ExecutionContext& ex_;
     ConfigImpl const& config_;
+    MissingSymbolSink* missingSink_ = nullptr;
 
 public:
     ASTAction(
@@ -84,6 +87,12 @@ public:
     CreateASTConsumer(
         clang::CompilerInstance& Compiler,
         llvm::StringRef InFile) override;
+
+    void
+    setMissingSymbolSink(MissingSymbolSink& sink) noexcept
+    {
+        missingSink_ = &sink;
+    }
 };
 
 } // mrdocs

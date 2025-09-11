@@ -30,8 +30,7 @@ class SymbolID;
     of extracted metadata, and provides a mechanism
     for constructing DOM nodes representing the metadata.
 
-    A @ref Generator subclasses this object
-    (e.g. @ref AdocCorpus and @ref HTMLCorpus),
+    A @ref Generator can subclass this object
     then uses it to create the Dom nodes used
     as input for rendering template engines.
 */

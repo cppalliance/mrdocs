@@ -68,6 +68,9 @@ public:
     }
 
     /** Construct a SymbolID by hashing a string
+
+        @param input The string to hash.
+        @return The SymbolID created by hashing the string.
      */
     static
     SymbolID
@@ -149,6 +152,9 @@ constexpr inline SymbolID SymbolID::global =
     "\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF";
 
 /** Convert a SymbolID to a string
+
+    @param id The SymbolID to convert.
+    @return The base16 string representation of the SymbolID.
  */
 MRDOCS_DECL
 std::string
@@ -162,6 +168,10 @@ toBase16Str(SymbolID const& id);
     the strings compare equal and then they
     are compared with lowercase letters coming
     before uppercase letters.
+
+    @param symbolName0 The first symbol name to compare.
+    @param symbolName1 The second symbol name to compare.
+    @return The result of the comparison.
 */
 MRDOCS_DECL
 std::strong_ordering
@@ -189,6 +199,12 @@ tag_invoke(
     DomCorpus const* domCorpus);
 
 /** Convert SymbolID pointers to dom::Value or null.
+
+    @param v The output parameter to receive the dom::Value.
+    @param t The SymbolID pointer to convert. If null, the
+        dom::Value is set to null.
+    @param domCorpus The DomCorpus to use, or nullptr. If null,
+        the SymbolID is converted to a base16 string.
  */
 MRDOCS_DECL
 void

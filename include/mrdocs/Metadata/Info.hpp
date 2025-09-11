@@ -36,6 +36,7 @@ namespace clang::mrdocs {
 */
 enum class InfoKind
 {
+    /// Kind is not specified.
     None = 0,
     #define INFO(Type) Type,
     #include <mrdocs/Metadata/Info/InfoNodes.inc>
@@ -275,6 +276,9 @@ void
 merge(Info& I, Info&& Other);
 
 /** Merges two Info objects according to the behavior of the derived class.
+
+    @param I The Info object to merge into.
+    @param Other The Info object to merge from.
  */
 template <polymorphic_storage_for<Info> InfoTy>
 void
@@ -304,9 +308,6 @@ canMerge(Info const& I, Info const& Other)
     In most cases `T` is another `Info` type that
     has a `Members` member which is a range of
     `SymbolID` values.
-
-    However, an @ref OverloadSet is also a type that
-    contains `Info` members without being `Info` itself.
 */
 template <class InfoTy>
 concept InfoParent = requires(InfoTy const& I)
@@ -315,6 +316,10 @@ concept InfoParent = requires(InfoTy const& I)
 };
 
 /** Map the Info to a @ref dom::Object.
+
+    @param io The output parameter to receive the dom::Object.
+    @param I The Info to convert.
+    @param domCorpus The DomCorpus used to resolve references.
  */
 template <class IO>
 void
@@ -350,6 +355,10 @@ tag_invoke(
 }
 
 /** Map the Polymorphic Info to a @ref dom::Object.
+
+    @param io The output parameter to receive the dom::Object.
+    @param I The polymorphic Info to convert.
+    @param domCorpus The DomCorpus used to resolve references.
  */
 template <class IO, polymorphic_storage_for<Info> PolymorphicInfo>
 requires std::derived_from<PolymorphicInfo, Info>
@@ -384,6 +393,10 @@ tag_invoke(
 }
 
 /** Map the Polymorphic Info as a @ref dom::Value object.
+
+    @param io The output parameter to receive the dom::Value.
+    @param I The polymorphic Info to convert.
+    @param domCorpus The DomCorpus used to resolve references.
  */
 template <class IO, polymorphic_storage_for<Info> InfoTy>
 requires std::derived_from<InfoTy, Info>

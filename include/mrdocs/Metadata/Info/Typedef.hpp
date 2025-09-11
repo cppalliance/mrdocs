@@ -60,6 +60,11 @@ void
 merge(TypedefInfo& I, TypedefInfo&& Other);
 
 /** Map a TypedefInfo to a dom::Object.
+
+    @param t The tag type.
+    @param io The IO object to use for mapping.
+    @param I The TypedefInfo to map.
+    @param domCorpus The DomCorpus used to create
  */
 template <class IO>
 void
@@ -76,6 +81,10 @@ tag_invoke(
 }
 
 /** Map the TypedefInfo to a @ref dom::Value object.
+
+    @param v The output parameter to receive the dom::Value.
+    @param I The TypedefInfo to convert.
+    @param domCorpus The DomCorpus used to resolve references.
  */
 inline
 void

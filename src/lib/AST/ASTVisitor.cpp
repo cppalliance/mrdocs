@@ -583,7 +583,10 @@ populate(
     unsigned line = source_.getPresumedLoc(
         loc, false).getLine();
     FileInfo* file = findFileInfo(loc);
-    MRDOCS_ASSERT(file);
+
+    // No file is not an error, it just typically means it has been generated
+    // in the virtual filesystem.
+    MRDOCS_CHECK_OR(file);
 
     if (definition)
     {
@@ -3220,9 +3223,6 @@ find(Decl const* D) const
     return find(ID);
 }
 
-
-// KRYSTIAN NOTE: we *really* should not have a
-// type named "SourceLocation"...
 ASTVisitor::FileInfo*
 ASTVisitor::
 findFileInfo(clang::SourceLocation const loc)

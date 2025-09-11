@@ -13,18 +13,20 @@
 
 #include "CorpusImpl.hpp"
 #include "lib/AST/FrontendActionFactory.hpp"
+#include "lib/AST/MissingSymbolSink.hpp"
+#include "lib/AST/MrDocsFileSystem.hpp"
 #include "lib/Metadata/Finalizers/BaseMembersFinalizer.hpp"
-#include "lib/Metadata/Finalizers/OverloadsFinalizer.hpp"
-#include "lib/Metadata/Finalizers/SortMembersFinalizer.hpp"
+#include "lib/Metadata/Finalizers/DerivedFinalizer.hpp"
 #include "lib/Metadata/Finalizers/JavadocFinalizer.hpp"
 #include "lib/Metadata/Finalizers/NamespacesFinalizer.hpp"
-#include "lib/Metadata/Finalizers/DerivedFinalizer.hpp"
-#include "lib/Support/Report.hpp"
+#include "lib/Metadata/Finalizers/OverloadsFinalizer.hpp"
+#include "lib/Metadata/Finalizers/SortMembersFinalizer.hpp"
 #include "lib/Support/Chrono.hpp"
+#include "lib/Support/Report.hpp"
 #include <mrdocs/Metadata.hpp>
+#include <mrdocs/Support/Algorithm.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/ThreadPool.hpp>
-#include <mrdocs/Support/Algorithm.hpp>
 #include <chrono>
 
 namespace clang::mrdocs {
@@ -733,36 +735,95 @@ build(
     // InfoSet in the execution context.
     InfoExecutionContext context(*config);
 
-    // Create an `ASTActionFactory` to create multiple
-    // `ASTAction`s that extract the AST for each translation unit.
-    std::unique_ptr<tooling::FrontendActionFactory> action =
-        makeFrontendActionFactory(context, *config);
-    MRDOCS_ASSERT(action);
-
     // ------------------------------------------
     // "Process file" task
     // ------------------------------------------
-    auto const processFile =
-        [&](std::string path)
+    auto const processFile = [&](std::string path) {
+        // Create an `ASTActionFactory` to create multiple
+        // `ASTAction`s that extract the AST for each translation unit.
+        // Each CompilerInstance is used only once.
+        // Per-file sink: no sharing, no races
+        MissingSymbolSink sink;
+        ASTActionFactory actionFactory(context, *config, sink);
+
+        // Retry loop: grow a per-file shim and re-run
+        std::size_t prevCount = 0;
+        constexpr unsigned kMaxCollectSteps = 1000;
+        int rc = 1;
+
+        for (unsigned attempt = 0; attempt <= kMaxCollectSteps; ++attempt)
         {
-            // Each thread gets an independent copy of a VFS to allow different
-            // concurrent working directories.
-            IntrusiveRefCntPtr<llvm::vfs::FileSystem> FS =
-                llvm::vfs::createPhysicalFileSystem();
+            // Per-file (per-thread) VFS instance: safe to reuse across retries
+            auto FS = createMrDocsFileSystem(*config);
+            auto* FSConcrete = dynamic_cast<mrdocs::MrDocsFileSystem*>(FS.get());
+            MRDOCS_ASSERT(
+                FSConcrete
+                && "createMrDocsFileSystem must return MrDocsFileSystem");
 
-            // KRYSTIAN NOTE: ClangTool applies the SyntaxOnly, StripOutput,
-            // and StripDependencyFile argument adjusters
-            tooling::ClangTool Tool(compilations, { path },
-                std::make_shared<PCHContainerOperations>(), FS);
-
-            // Suppress error messages from the tool
+            // Create a Clang Tool to run the action
+            auto PHCCOntainerOps = std::make_shared<PCHContainerOperations>();
+            tooling::ClangTool
+                Tool(compilations, { path }, std::move(PHCCOntainerOps), FS);
             Tool.setPrintErrorMessage(false);
 
-            if (Tool.run(action.get()))
+            // Set the shim for missing symbols
+            Tool.clearArgumentsAdjusters();
+            if (sink.numSymbols())
             {
-                formatError("Failed to run action on {}", path).Throw();
+                // Build/refresh this TU’s shim and publish it in this VFS
+                std::string shimContent = sink.buildShim();
+                auto makeShimPathPlatformAbsolute = []()-> std::string
+                {
+                    llvm::SmallString<260> wd;
+                    auto ec = llvm::sys::fs::current_path(wd);
+                    (void) ec;
+                    // "C:"
+                    llvm::SmallString<16> root(llvm::sys::path::root_name(wd));
+                    llvm::sys::path::append(
+                        root,
+                        llvm::sys::path::root_directory(wd)); // "C:/"
+                    llvm::SmallString<260> p(root);
+                    llvm::sys::path::append(
+                        p,
+                        "__mrdocs_shims",
+                        "virtual_diagnostics_shim.hpp");
+                    llvm::sys::path::native(p, llvm::sys::path::Style::posix);
+                    return std::string(p.str());
+                };
+
+                std::string shimPath = makeShimPathPlatformAbsolute();
+                FSConcrete->addVirtualFile(shimPath, shimContent);
+                Tool.appendArgumentsAdjuster(
+                    tooling::combineAdjusters(
+                        tooling::getInsertArgumentAdjuster("-include"),
+                        tooling::getInsertArgumentAdjuster(shimPath.data())));
             }
-        };
+
+            // Run the action
+            rc = Tool.run(&actionFactory);
+
+            // Check for errors
+            std::size_t const curCount = sink.numSymbols();
+            MRDOCS_ASSERT(curCount >= prevCount);
+            if (rc != 0)
+            {
+                // Regular failure: break
+                break;
+            }
+            if (curCount == prevCount)
+            {
+                // Success and no new missing symbols: done
+                break;
+            }
+            // Failure and new symbols: reevaluate TU with new shim
+            prevCount = curCount;
+        }
+
+        if (rc != 0)
+        {
+            formatError("Failed to run action on {}", path).Throw();
+        }
+    };
 
     // ------------------------------------------
     // Run the process file task on all files

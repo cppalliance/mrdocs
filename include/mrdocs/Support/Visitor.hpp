@@ -98,6 +98,11 @@ public:
     function `fn` with the derived type as the first
     argument, followed by `args`.
 
+    @param obj The object to visit
+    @param fn The function object to call
+    @param args The arguments to pass to the function object
+    @return The common return type of `fn` when called
+            with a derived type of `obj` and `args`
  */
 template<
     typename BaseTy,

@@ -53,6 +53,51 @@ safeString(std::string_view str);
 dom::Value
 safeString(dom::Value const& str);
 
+/** Objects representing JSON-like values.
+
+    This class is a variant-like container for holding
+    any kind of value that can be represented in JSON,
+    with extensions for functions and "safe strings".
+
+    The class supports the following types:
+
+    - Undefined
+    - Null
+    - Boolean
+    - Integer
+    - String
+    - SafeString
+    - Array
+    - Object
+    - Function
+
+    The class provides type-safe accessors for each type,
+    as well as methods to check the type of the contained value.
+
+    Example:
+
+    @code{.cpp}
+        dom::Value v1 = 42; // Integer
+        dom::Value v2 = "Hello, World!"; // String
+        dom::Value v3 = dom::Array{v1, v2}; // Array
+
+        if (v1.isInteger())
+        {
+            std::cout << "v1 is an integer: " << v1.getInteger() << "\n";
+        }
+
+        if (v2.isString())
+        {
+            std::cout << "v2 is a string: " << v2.getString() << "\n";
+        }
+
+        if (v3.isArray())
+        {
+            std::cout << "v3 is an array with " << v3.getArray().size() << " elements.\n";
+        }
+    @endcode
+
+*/
 namespace dom {
 
 /** A variant container for any kind of Dom value.
@@ -298,6 +343,10 @@ public:
         If the Value is not an object, or the key
         is not found, a Value of type @ref Kind::Undefined
         is returned.
+
+        @param key The key.
+        @return The value for the specified key, or a Value of type
+            @ref Kind::Undefined if the key does not exist.
     */
     dom::Value
     get(std::string_view key) const;
@@ -310,6 +359,9 @@ public:
     }
 
     /** Return the element at a given index.
+
+        @param i The index.
+        @return The value at the specified index, or a Value of type
     */
     dom::Value
     get(std::size_t i) const;
@@ -325,6 +377,7 @@ public:
         multiple times, once for each key in the sequence
         of dot-separated keys.
 
+        @param keys The dot-separated sequence of keys.
         @return The value at the end of the sequence, or
         a Value of type @ref Kind::Undefined if any key
         is not found.
@@ -333,11 +386,17 @@ public:
     lookup(std::string_view keys) const;
 
     /** Set or replace the value for a given key.
+
+        @param key The key.
+        @param value The value to set.
      */
     void
     set(String const& key, Value const& value);
 
     /** Return true if a key exists.
+
+        @param key The key to check for existence.
+        @return `true` if the key exists, otherwise `false`.
     */
     bool
     exists(std::string_view key) const;
@@ -357,6 +416,8 @@ public:
         If the Value is not an object, or the key
         is not found, a Value of type @ref Kind::Undefined
         is returned.
+
+        @param args The arguments to the function.
      */
     template<class... Args>
     Value operator()(Args&&... args) const
@@ -550,6 +611,8 @@ stringify(dom::Value const& value);
 }
 
 /** Return a non-empty string, or a null.
+
+    @param s The string to check.
 */
 inline
 Value
@@ -684,7 +747,7 @@ concept HasStandaloneValueFrom =
 
     @param ctx Context passed to the conversion function.
 
-    @param jv @ref dom::Value out parameter.
+    @param v @ref dom::Value out parameter.
 
     @see @ref dom::ValueFromTag
     <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p1895r0.pdf">
@@ -730,7 +793,7 @@ ValueFrom(
 
     @param t The object to convert.
 
-    @param jv @ref dom::Value out parameter.
+    @param v @ref dom::Value out parameter.
 
     @see @ref dom::ValueFromTag
     <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p1895r0.pdf">
@@ -815,6 +878,8 @@ ValueFrom(T&& t)
     @tparam T The type of the object to convert.
 
     @param t The object to convert.
+
+    @param ctx Context passed to the conversion function.
 
     @return @ref dom::Value out parameter.
 

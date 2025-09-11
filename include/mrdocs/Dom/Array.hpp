@@ -227,6 +227,8 @@ public:
 
         If the array is read-only, an exception
         is thrown.
+
+        @param args Arguments forwarded to the constructor of Value.
     */
     template< class... Args >
     void emplace_back(Args&&... args);
@@ -284,6 +286,14 @@ public:
     std::string
     toString(Array const&);
 
+    /** Return a new array using a custom implementation.
+
+        @param args Arguments forwarded to the constructor of T.
+        @tparam T The type of the custom implementation.
+            This must be derived from ArrayImpl.
+        @tparam Args The types of the arguments.
+        @return A new array using the specified implementation.
+    */
     template<class T, class... Args>
     requires std::derived_from<T, ArrayImpl>
     friend Array newArray(Args&&... args);

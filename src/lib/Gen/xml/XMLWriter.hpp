@@ -35,16 +35,6 @@ protected:
     llvm::raw_ostream& os_;
     Corpus const& corpus_;
 
-    struct GenKey;
-    struct XmlKey;
-    struct Options
-    {
-        bool index = false;
-        bool prolog = true;
-        bool legible_names = false;
-    };
-    Options options_;
-
 public:
     XMLWriter(
         llvm::raw_ostream& os,

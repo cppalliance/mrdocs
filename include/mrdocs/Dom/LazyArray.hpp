@@ -149,6 +149,9 @@ public:
 };
 
 /** Return a new @ref dom::Array based on a lazy array implementation.
+
+    @param arr The underlying range of elements.
+    @return A new dom::Array whose elements are the result of converting each element in the underlying range to a dom::Value.
  */
 template <std::ranges::random_access_range T>
 requires HasStandaloneValueFrom<std::ranges::range_value_t<T>>
@@ -159,6 +162,10 @@ LazyArray(T const& arr)
 }
 
 /** Return a new dom::Array based on a FromValue context
+
+    @param arr The underlying range of elements.
+    @param ctx The context used to convert each element to a dom::Value.
+    @return A new dom::Array whose elements are the result of converting each element in the underlying range using the specified context.
 */
 template <std::ranges::random_access_range T, class Context>
 requires HasValueFrom<std::ranges::range_value_t<T>, Context>
@@ -169,6 +176,10 @@ LazyArray(T const& arr, Context const& ctx)
 }
 
 /** Return a new dom::Array based on a transformed lazy array implementation.
+
+    @param arr The underlying range of elements.
+    @param f The transform function to apply to each element before converting it to a dom::Value.
+    @return A new dom::Array whose elements are the result of applying the transform function to each element in the underlying range.
 */
 template <std::ranges::random_access_range T, class F>
 requires

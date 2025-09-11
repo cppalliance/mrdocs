@@ -119,6 +119,11 @@ public:
     ~Scope();
 
     /** Load a Lua chunk
+
+        @param luaChunk The Lua chunk to load.
+        @param chunkName The name of the chunk (used in error messages).
+        @param loc The source location of the call site.
+        @return The function if successful, or an error.
     */
     MRDOCS_DECL
     Expected<Function>
@@ -129,6 +134,10 @@ public:
             source_location::current());
 
     /** Load a Lua chunk
+
+        @param luaChunk The Lua chunk to load.
+        @param loc The source location of the call site.
+        @return The function if successful, or an error.
     */
     MRDOCS_DECL
     Expected<Function>
@@ -138,6 +147,10 @@ public:
             source_location::current());
 
     /** Run a Lua chunk.
+
+        @param fileName The name of the file to load.
+        @param loc The source location of the call site.
+        @return The function if successful, or an error.
     */
     MRDOCS_DECL
     Expected<Function>
@@ -153,6 +166,10 @@ public:
     getGlobalTable();
 
     /** Return a value from the global table if it exists.
+
+        @param key The key to get.
+        @param loc The source location of the call site.
+        @return The value if it exists, or an error.
     */
     MRDOCS_DECL
     Expected<Value>
@@ -246,11 +263,17 @@ public:
 */
 enum class Type
 {
+    /// The value is nil
     nil      = 0,
+    /// The value is a boolean
     boolean  = 1,
+    /// The value is a number
     number   = 3,
+    /// The value is a string
     string   = 4,
+    /// The value is a table
     table    = 5,
+    /// The value is a function
     function = 6
 };
 
@@ -322,8 +345,9 @@ public:
         If the invocation fails the return value
         will contain the corresponding error.
 
-        @param args... Zero or more values to pass
+        @param args Zero or more values to pass
         to the function.
+        @return The return value of the function.
     */
     template<class... Args>
     Expected<Value>
@@ -339,6 +363,9 @@ public:
     }
 
     /** Invoke the value as a function.
+
+        @param args Zero or more values to pass
+        to the function.
     */
     template<class... Args>
     Value operator()(Args&&... args)
@@ -455,6 +482,9 @@ public:
         std::string_view key) const;
 
     /** Create or replace the value with a key.
+
+        @param key The key to set.
+        @param value The value to set.
     */
     MRDOCS_DECL
     void

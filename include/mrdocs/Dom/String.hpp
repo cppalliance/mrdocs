@@ -111,9 +111,9 @@ public:
         This function constructs a new string from
         the string pointed to by `str` of length `len`.
 
-        @param `str` The string to construct with.
+        @param str The string to construct with.
         A copy of this string is made.
-        @param `len` The length of the string.
+        @param len The length of the string.
     */
     String(
         char const* str,
@@ -236,6 +236,8 @@ public:
     }
 
     /** Swap two strings.
+
+        @param other The other string.
     */
     constexpr
     void
@@ -245,6 +247,9 @@ public:
     }
 
     /** Swap two strings.
+
+        @param lhs The first string.
+        @param rhs The second string.
     */
     friend
     constexpr
@@ -305,6 +310,10 @@ public:
     }
 
     /** Concatenate two strings.
+
+        @param lhs The left-hand side string.
+        @param rhs The right-hand side string.
+        @return The concatenated string.
     */
     friend auto operator+(
         String const& lhs, String const& rhs) noexcept
