@@ -28,73 +28,6 @@
 
 namespace clang::mrdocs::xml {
 
-struct XMLWriter::XmlKey
-{
-    Options& opt;
-
-    explicit
-    XmlKey(
-        Options& opt_) noexcept
-        : opt(opt_)
-    {
-    }
-};
-
-struct XMLWriter::GenKey
-{
-    Options& opt;
-
-    explicit
-    GenKey(
-        Options& opt_)
-        : opt(opt_)
-    {
-    }
-};
-
-} // clang::mrdocs::xml
-
-template<>
-struct llvm::yaml::MappingTraits<
-    clang::mrdocs::xml::XMLWriter::XmlKey>
-{
-    static void mapping(IO& io,
-        clang::mrdocs::xml::XMLWriter::XmlKey& opt_)
-    {
-        auto& opt= opt_.opt;
-        io.mapOptional("index",  opt.index);
-        io.mapOptional("prolog", opt.prolog);
-        io.mapOptional("legible-names", opt.legible_names);
-    }
-};
-
-template<>
-struct llvm::yaml::MappingTraits<
-    clang::mrdocs::xml::XMLWriter::GenKey>
-{
-    static void mapping(IO& io,
-        clang::mrdocs::xml::XMLWriter::GenKey& opt)
-    {
-        clang::mrdocs::xml::XMLWriter::XmlKey k(opt.opt);
-
-        io.mapOptional("xml",  k);
-    }
-};
-
-template<>
-struct llvm::yaml::MappingTraits<
-    clang::mrdocs::xml::XMLWriter::Options>
-{
-    static void mapping(IO& io,
-        clang::mrdocs::xml::XMLWriter::Options& opt)
-    {
-        clang::mrdocs::xml::XMLWriter::GenKey k(opt);
-        io.mapOptional("generator",  k);
-    }
-};
-
-namespace clang::mrdocs::xml {
-
 //------------------------------------------------
 //
 // XMLWriter
@@ -115,33 +48,16 @@ Expected<void>
 XMLWriter::
 build()
 {
-    YamlReporter reporter;
+    os_ <<
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" <<
+        "<mrdocs xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
+        "       xsi:noNamespaceSchemaLocation=\"https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc\">\n";
 
-    {
-        llvm::yaml::Input yin(
-            corpus_.config->configYaml,
-                &reporter, reporter);
-        yin.setAllowUnknownKeys(true);
-        yin >> options_;
-        auto ec = yin.error();
-        MRDOCS_CHECK(!ec, ec);
-    }
-
-    if(options_.prolog)
-        os_ <<
-            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" <<
-            "<mrdocs xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
-            "       xsi:noNamespaceSchemaLocation=\"https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc\">\n";
-
-    if (options_.index || options_.legible_names)
-    {
-        writeIndex();
-    }
+    // writeIndex();
 
     visit(corpus_.globalNamespace(), *this);
 
-    if(options_.prolog)
-        os_ << "</mrdocs>\n";
+    os_ << "</mrdocs>\n";
 
     return {};
 }
@@ -155,30 +71,16 @@ writeIndex()
     std::string temp;
     temp.reserve(256);
     tags_.open("symbols");
-    if(options_.legible_names)
+    LegibleNames const names(corpus_, true);
+    for(auto& I : corpus_)
     {
-        LegibleNames const names(corpus_, true);
-        for(auto& I : corpus_)
-        {
-            corpus_.qualifiedName(I, temp);
-            auto legible_name = names.getUnqualified(I.id);
-            tags_.write("symbol", {}, {
-                { "legible", legible_name },
-                { "name", temp },
-                { "tag", toString(I.Kind) },
-                { I.id } });
-        }
-    }
-    else
-    {
-        for(auto& I : corpus_)
-        {
-            corpus_.qualifiedName(I, temp);
-            tags_.write("symbol", {}, {
-                { "name", temp },
-                { "tag", toString(I.Kind) },
-                { I.id } });
-        }
+        corpus_.qualifiedName(I, temp);
+        auto legible_name = names.getUnqualified(I.id);
+        tags_.write("symbol", {}, {
+            { "legible", legible_name },
+            { "name", temp },
+            { "tag", toString(I.Kind) },
+            { I.id } });
     }
     tags_.close("symbols");
 }
