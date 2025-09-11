@@ -162,9 +162,14 @@ module.exports = function (registry) {
             const releases = JSON.parse(releasesResponse)
 
             // Create table
+            const apple_icon = `image:https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/docs/modules/ROOT/images/icons/apple.svg[Apple Releases,width=16,height=16]`
+            const linux_icon = `image:https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/docs/modules/ROOT/images/icons/linux.svg[Linux Releases,width=16,height=16]`
+            const windows_icon = `image:https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/docs/modules/ROOT/images/icons/windows.svg[Windows Releases,width=16,height=16]`
+            const package_icon = `image:https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/docs/modules/ROOT/images/icons/package.svg[Package,width=16,height=16]`
+
             let text = '|===\n'
-            text += '|          3+| 🪟 Windows                2+| 🐧 Linux               2+| 🍏 macOS                \n'
-            text += '| 📃 Release | 📦 7z   | 📦 msi  | 📦 zip  | 📦 tar.xz  | 📦 tar.gz  | 📦 tar.xz  | 📦 tar.gz  \n'
+            text += `|          3+| ${windows_icon} Windows                 2+| ${linux_icon} Linux               2+| ${apple_icon} macOS                \n`
+            text += `| Release    | ${package_icon} 7z   | ${package_icon} msi  | ${package_icon} zip  | ${package_icon} tar.xz  | ${package_icon} tar.gz  | ${package_icon} tar.xz  | ${package_icon} tar.gz  \n`
             releases.sort((a, b) => getReleaseDate(b) - getReleaseDate(a));
             for (const release of releases) {
                 if (release.name === 'llvm-package') continue
