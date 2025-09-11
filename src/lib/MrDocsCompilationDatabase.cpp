@@ -402,9 +402,10 @@ adjustCommandLine(
         isExplicitCCompileCommand || (!isExplicitCppCompileCommand && isImplicitCSourceFile);
 
     constexpr auto is_std_option = [](std::string_view const opt) {
-        return opt.starts_with("-std=") || opt.starts_with("--std=") || opt.starts_with("/std:") || opt.starts_with("-std:");
+        return opt.starts_with("-std=") || opt.starts_with("--std=") ||
+            opt.starts_with("/std:") || opt.starts_with("-std:");
     };
-    if (std::ranges::find_if(cmdline, is_std_option) == cmdline.end())
+    if (std::ranges::none_of(cmdline, is_std_option))
     {
         if (!isCCompileCommand)
         {
@@ -440,7 +441,7 @@ adjustCommandLine(
             for (auto const& inc : it->second)
             {
               new_cmdline.emplace_back(std::format("-isystem{}", inc));
-            }          
+            }
         }
     }
 
