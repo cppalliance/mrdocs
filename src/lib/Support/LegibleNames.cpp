@@ -227,9 +227,9 @@ public:
                 }
                 else if constexpr(T::isUsing())
                 {
-                    if (t.Class == UsingClass::Normal)
+                    if (t.Class == UsingClass::Normal && !t.ShadowDeclarations.empty())
                     {
-                        return getUnnamedInfoName(t);
+                        return getRawUnqualified(t.ShadowDeclarations.front());
                     }
                 }
                 return t.Name;
