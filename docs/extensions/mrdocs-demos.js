@@ -123,6 +123,13 @@ function humanizeLibrary(library) {
     if (library === 'boost-url') {
         return 'Boost.URL';
     }
+    if (library === 'mrdocs') {
+        return 'Mr.Docs';
+    }
+    if (library === 'beman-optional')
+    {
+        return 'Beman.Optional';
+    }
     const boostLibrary = library.match(/boost-([\w]+)/);
     if (boostLibrary) {
         const capitalized = boostLibrary[1].charAt(0).toUpperCase() + boostLibrary[1].slice(1);
@@ -181,6 +188,7 @@ module.exports = function (registry) {
                 text += `**${version}**\n\n`;
                 text += `|===\n`;
 
+                // Collect all unique page types, formats, and libraries for this version
                 let versionPageTypes = [];
                 let versionFormats = [];
                 let versionLibraries = [];
@@ -199,9 +207,29 @@ module.exports = function (registry) {
                     }
                 }
 
-                // Remove Rendered Asciidoc from the list of formats
-                let multipageFormats = versionFormats.filter(format => format !== 'xml');
+                // Sort versionPageTypes so that multipage always comes first
+                versionPageTypes.sort((a, b) => {
+                    if (a === 'multi' && b !== 'multi') return -1;
+                    if (a !== 'multi' && b === 'multi') return 1;
+                    return a.localeCompare(b);
+                });
 
+                // Sort versionFormats to have adoc, html, xml first
+                versionFormats.sort((a, b) => {
+                    const order = ['adoc-asciidoc', 'adoc', 'html', 'xml'];
+                    const aIndex = order.indexOf(a);
+                    const bIndex = order.indexOf(b);
+                    if (aIndex === -1 && bIndex === -1) return a.localeCompare(b);
+                    if (aIndex === -1) return 1;
+                    if (bIndex === -1) return -1;
+                    return aIndex - bIndex;
+                });
+
+                // Sort versionLibraries alphabetically
+                versionLibraries.sort((a, b) => humanizeLibrary(a).localeCompare(humanizeLibrary(b)));
+
+                // Ensure XML is never in the multipage formats
+                let multipageFormats = versionFormats.filter(format => format !== 'xml');
                 let versionFormatColumns = versionFormats.map(format => `*${humanizeFormat(format)}*`).join(' | ');
                 let multipageFormatColumns = multipageFormats.map(format => `*${humanizeFormat(format)}*`).join(' | ');
 
@@ -236,7 +264,7 @@ module.exports = function (registry) {
                                             return '/reference.adoc'
                                         }
                                     }
-                                    if (format === 'html')
+                                    if (format === 'html' || format === 'adoc-asciidoc')
                                     {
                                         if (pageType === 'multi')
                                         {
@@ -250,10 +278,10 @@ module.exports = function (registry) {
                                 })()
                                 if (['adoc', 'xml', 'html', 'adoc-asciidoc'].includes(format)) {
                                     const formatIcons = {
-                                        adoc: 'https://avatars.githubusercontent.com/u/3137042?s=200&v=4',
-                                        html: 'https://raw.githubusercontent.com/FortAwesome/Font-Awesome/refs/heads/6.x/svgs/brands/html5.svg',
-                                        'adoc-asciidoc': 'https://raw.githubusercontent.com/FortAwesome/Font-Awesome/refs/heads/6.x/svgs/brands/html5.svg',
-                                        default: 'https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/file-code.svg'
+                                        adoc: 'https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/docs/modules/ROOT/images/icons/asciidoc.svg',
+                                        html: 'https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/docs/modules/ROOT/images/icons/html5.svg',
+                                        'adoc-asciidoc': 'https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/docs/modules/ROOT/images/icons/html5.svg',
+                                        default: 'https://raw.githubusercontent.com/cppalliance/mrdocs/refs/heads/develop/docs/modules/ROOT/images/icons/code_blocks.svg'
                                     };
                                     const icon = formatIcons[format] || formatIcons.default;
                                     text += `| image:${icon}[${humanizeLibrary(library)} reference in ${humanizeFormat(format)} format,width=16,height=16,link=${demoUrlWithSuffix},window=_blank]`
