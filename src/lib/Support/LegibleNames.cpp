@@ -225,6 +225,13 @@ public:
                         return getUnnamedInfoName(t);
                     }
                 }
+                else if constexpr(T::isUsing())
+                {
+                    if (t.Class == UsingClass::Normal && !t.ShadowDeclarations.empty())
+                    {
+                        return getRawUnqualified(t.ShadowDeclarations.front());
+                    }
+                }
                 return t.Name;
             });
     }
