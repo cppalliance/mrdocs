@@ -2340,11 +2340,10 @@ extractSFINAEInfo(QualType const T)
         if (SFINAEControl->ControllingParams[I])
         {
             MRDOCS_SYMBOL_TRACE(Args[I], context_);
+            TemplateArgument ArgsI = Args[I];
+            MRDOCS_CHECK_OR_CONTINUE(ArgsI.getKind() == TemplateArgument::ArgKind::Expression);
             Expr* E = Args[I].getAsExpr();
-            if (!E)
-            {
-                continue;
-            }
+            MRDOCS_CHECK_OR_CONTINUE(E);
             Result.Constraints.emplace_back();
             populate(Result.Constraints.back(), E);
         }
