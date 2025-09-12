@@ -68,6 +68,16 @@ private:
     template<class T>
     friend struct llvm::yaml::MappingTraits;
 
+    /** Update the DOM object from the YAML string and the settings.
+
+        This function is called after the
+        settings are loaded or modified to
+        update the DOM object representing
+        the configuration keys.
+     */
+    void
+    updateConfigDom();
+
 public:
     ConfigImpl(access_token, ThreadPool& threadPool);
 
@@ -142,6 +152,7 @@ public:
     shouldExtractFromFile(
         llvm::StringRef filePath,
         std::string& prefix) const noexcept;
+
 };
 
 //------------------------------------------------
