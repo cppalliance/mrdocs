@@ -21,6 +21,13 @@
     "config": "doc/mrdocs.yml"
   },
   {
+    "name": "Nlohmann.Json",
+    "id": "nlohmann-json",
+    "repository": "https://www.github.com/nlohmann/json",
+    "branch": "develop",
+    "config": "docs/mrdocs.yml"
+  },
+  {
     "name": "Mr.Docs",
     "id": "mrdocs",
     "repository": "https://www.github.com/cppalliance/mrdocs",
