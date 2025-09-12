@@ -30,19 +30,6 @@ inheritBaseMembers(
     RecordInterface const& base,
     AccessKind const A)
 {
-    std::unordered_set<SymbolID> usingsAccessPublic;
-    for (SymbolID const& usingId : derived.Public.Usings)
-    {
-        Info* usingInfoPtr = corpus_.find(usingId);
-        MRDOCS_CHECK_OR_CONTINUE(usingInfoPtr);
-
-        UsingInfo const& using_ = usingInfoPtr->asUsing();
-        for (SymbolID const& shadowId : using_.ShadowDeclarations)
-        {
-            usingsAccessPublic.insert(shadowId);
-        }
-    }
-
     if (A == AccessKind::Public)
     {
         // When a class uses public member access specifier to derive from a
@@ -50,8 +37,8 @@ inheritBaseMembers(
         // members of the derived class and all protected members of the base
         // class are accessible as protected members of the derived class.
         // Private members of the base are never accessible unless friended.
-        inheritBaseMembers(derivedId, derived.Public, base.Public);
-        inheritBaseMembers(derivedId, derived.Protected, base.Protected);
+        inheritBaseMembers(derivedId, derived, AccessKind::Public, base.Public);
+        inheritBaseMembers(derivedId, derived, AccessKind::Protected, base.Protected);
     }
     else if (A == AccessKind::Protected)
     {
@@ -59,8 +46,8 @@ inheritBaseMembers(
         // base, all public and protected members of the base class are
         // accessible as protected members of the derived class (private members
         // of the base are never accessible unless friended).
-        inheritBaseMembers(derivedId, derived.Protected, base.Public);
-        inheritBaseMembers(derivedId, derived.Protected, base.Protected);
+        inheritBaseMembers(derivedId, derived, AccessKind::Protected, base.Public);
+        inheritBaseMembers(derivedId, derived, AccessKind::Protected, base.Protected);
     }
     else if (A == AccessKind::Private && corpus_.config->extractPrivate)
     {
@@ -68,49 +55,29 @@ inheritBaseMembers(
         // base, all public and protected members of the base class are
         // accessible as private members of the derived class (private members
         // of the base are never accessible unless friended).
-        inheritBaseMembers(derivedId, derived.Private, base.Public);
-        inheritBaseMembers(derivedId, derived.Private, base.Protected);
+        inheritBaseMembers(derivedId, derived, AccessKind::Private, base.Public);
+        inheritBaseMembers(derivedId, derived, AccessKind::Private, base.Protected);
     }
-
-    auto adjustAccess = [&]<std::vector<SymbolID> RecordTranche::* Field>()
-        {
-            for (SymbolID const& shadowId : usingsAccessPublic)
-            {
-                if (std::erase(derived.Protected.*Field, shadowId))
-                {
-                    (derived.Public.*Field).push_back(shadowId);
-                }
-            }
-        };
-    adjustAccess.operator()<&RecordTranche::NamespaceAliases>();
-    adjustAccess.operator()<&RecordTranche::Typedefs>();
-    adjustAccess.operator()<&RecordTranche::Records>();
-    adjustAccess.operator()<&RecordTranche::Enums>();
-    adjustAccess.operator()<&RecordTranche::Functions>();
-    adjustAccess.operator()<&RecordTranche::StaticFunctions>();
-    adjustAccess.operator()<&RecordTranche::Variables>();
-    adjustAccess.operator()<&RecordTranche::StaticVariables>();
-    adjustAccess.operator()<&RecordTranche::Concepts>();
-    adjustAccess.operator()<&RecordTranche::Guides>();
 }
 
 void
 BaseMembersFinalizer::
 inheritBaseMembers(
     SymbolID const& derivedId,
-    RecordTranche& derived,
+    RecordInterface& derived,
+    AccessKind const A,
     RecordTranche const& base)
 {
-    inheritBaseMembers(derivedId, derived.NamespaceAliases, base.NamespaceAliases);
-    inheritBaseMembers(derivedId, derived.Typedefs, base.Typedefs);
-    inheritBaseMembers(derivedId, derived.Records, base.Records);
-    inheritBaseMembers(derivedId, derived.Enums, base.Enums);
-    inheritBaseMembers(derivedId, derived.Functions, base.Functions);
-    inheritBaseMembers(derivedId, derived.StaticFunctions, base.StaticFunctions);
-    inheritBaseMembers(derivedId, derived.Variables, base.Variables);
-    inheritBaseMembers(derivedId, derived.StaticVariables, base.StaticVariables);
-    inheritBaseMembers(derivedId, derived.Concepts, base.Concepts);
-    inheritBaseMembers(derivedId, derived.Guides, base.Guides);
+    inheritBaseMembers<&RecordTranche::NamespaceAliases>(derivedId, derived, A, base.NamespaceAliases);
+    inheritBaseMembers<&RecordTranche::Typedefs>(derivedId, derived, A, base.Typedefs);
+    inheritBaseMembers<&RecordTranche::Records>(derivedId, derived, A, base.Records);
+    inheritBaseMembers<&RecordTranche::Enums>(derivedId, derived, A, base.Enums);
+    inheritBaseMembers<&RecordTranche::Functions>(derivedId, derived, A, base.Functions);
+    inheritBaseMembers<&RecordTranche::StaticFunctions>(derivedId, derived, A, base.StaticFunctions);
+    inheritBaseMembers<&RecordTranche::Variables>(derivedId, derived, A, base.Variables);
+    inheritBaseMembers<&RecordTranche::StaticVariables>(derivedId, derived, A, base.StaticVariables);
+    inheritBaseMembers<&RecordTranche::Concepts>(derivedId, derived, A, base.Concepts);
+    inheritBaseMembers<&RecordTranche::Guides>(derivedId, derived, A, base.Guides);
 }
 
 namespace {
@@ -123,19 +90,35 @@ shouldCopy(Config const& config, Info const& M)
     }
     return config->inheritBaseMembers == PublicSettings::BaseMemberInheritance::CopyAll;
 }
+
+RecordTranche& get(RecordInterface& derived, AccessKind const A)
+{
+    switch (A)
+    {
+    case AccessKind::Public: return derived.Public;
+    case AccessKind::Protected: return derived.Protected;
+    case AccessKind::Private: return derived.Private;
+    default: MRDOCS_UNREACHABLE();
+    }
+}
 }
 
+template <std::vector<SymbolID> RecordTranche::* Symbols>
 void
 BaseMembersFinalizer::
 inheritBaseMembers(
     SymbolID const& derivedId,
-    std::vector<SymbolID>& derived,
+    RecordInterface& derived,
+    AccessKind const A,
     std::vector<SymbolID> const& base)
 {
+    auto& tranche = get(derived, A);
+    auto& symbols = tranche.*Symbols;
+
     for (SymbolID const& otherID: base)
     {
         // Find the info from the base class
-        MRDOCS_CHECK_OR_CONTINUE(!contains(derived, otherID));
+        MRDOCS_CHECK_OR_CONTINUE(!contains(symbols, otherID));
         Info* otherInfoPtr = corpus_.find(otherID);
         MRDOCS_CHECK_OR_CONTINUE(otherInfoPtr);
         Info& otherInfo = *otherInfoPtr;
@@ -150,7 +133,7 @@ inheritBaseMembers(
 
         // Check if derived class has a member that shadows the base member
         auto shadowIt = std::ranges::find_if(
-            derived,
+            symbols,
             [&](SymbolID const& id)
             {
                 Info* infoPtr = corpus_.find(id);
@@ -169,7 +152,7 @@ inheritBaseMembers(
                 // are the same
                 return info.Name == otherInfo.Name;
             });
-        MRDOCS_CHECK_OR_CONTINUE(shadowIt == derived.end());
+        MRDOCS_CHECK_OR_CONTINUE(shadowIt == symbols.end());
 
         // Not a shadow, so inherit the base member
         if (!shouldCopy(corpus_.config, otherInfo))
@@ -182,7 +165,7 @@ inheritBaseMembers(
             // extraction mode to be regular, but that is controversial.
             if (otherInfo.Extraction != ExtractionMode::Dependency)
             {
-                derived.push_back(otherID);
+                symbols.push_back(otherID);
             }
         }
         else
@@ -197,7 +180,7 @@ inheritBaseMembers(
             otherCopy->id = SymbolID::createFromString(
                 std::format("{}-{}", toBase16Str(otherCopy->Parent),
                             toBase16Str(otherInfo.id)));
-            derived.push_back(otherCopy->id);
+            symbols.push_back(otherCopy->id);
             // Get the extraction mode from the derived class
             if (otherCopy->Extraction == ExtractionMode::Dependency)
             {
