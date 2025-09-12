@@ -30,6 +30,19 @@ inheritBaseMembers(
     RecordInterface const& base,
     AccessKind const A)
 {
+    std::unordered_set<SymbolID> usingsAccessPublic;
+    for (SymbolID const& usingId : derived.Public.Usings)
+    {
+        Info* usingInfoPtr = corpus_.find(usingId);
+        MRDOCS_CHECK_OR_CONTINUE(usingInfoPtr);
+
+        UsingInfo const& using_ = usingInfoPtr->asUsing();
+        for (SymbolID const& shadowId : using_.ShadowDeclarations)
+        {
+            usingsAccessPublic.insert(shadowId);
+        }
+    }
+
     if (A == AccessKind::Public)
     {
         // When a class uses public member access specifier to derive from a
@@ -58,6 +71,27 @@ inheritBaseMembers(
         inheritBaseMembers(derivedId, derived.Private, base.Public);
         inheritBaseMembers(derivedId, derived.Private, base.Protected);
     }
+
+    auto adjustAccess = [&]<std::vector<SymbolID> RecordTranche::* Field>()
+        {
+            for (SymbolID const& shadowId : usingsAccessPublic)
+            {
+                if (std::erase(derived.Protected.*Field, shadowId))
+                {
+                    (derived.Public.*Field).push_back(shadowId);
+                }
+            }
+        };
+    adjustAccess.operator()<&RecordTranche::NamespaceAliases>();
+    adjustAccess.operator()<&RecordTranche::Typedefs>();
+    adjustAccess.operator()<&RecordTranche::Records>();
+    adjustAccess.operator()<&RecordTranche::Enums>();
+    adjustAccess.operator()<&RecordTranche::Functions>();
+    adjustAccess.operator()<&RecordTranche::StaticFunctions>();
+    adjustAccess.operator()<&RecordTranche::Variables>();
+    adjustAccess.operator()<&RecordTranche::StaticVariables>();
+    adjustAccess.operator()<&RecordTranche::Concepts>();
+    adjustAccess.operator()<&RecordTranche::Guides>();
 }
 
 void
