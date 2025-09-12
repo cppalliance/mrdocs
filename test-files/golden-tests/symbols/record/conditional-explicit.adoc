@@ -1,0 +1,276 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols=1]
+|===
+| Name
+| link:#A[`A`] 
+|===
+
+[#A]
+== A
+
+=== Synopsis
+
+Declared in `&lt;conditional&hyphen;explicit&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class T&gt;
+struct A;
+----
+
+=== Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#A-2constructor-0f[`A`]         [.small]#[constructor]#
+| Constructors
+| link:#A-2conversion-0f[`operator U`] 
+| Conditional explicit conversion to other types
+| link:#A-2conversion-00[`operator bool`] 
+| Explicit conversion to bool
+| link:#A-2conversion-04[`operator char`] 
+| Conditionally explicit conversion to char
+| link:#A-2conversion-01[`operator double`] 
+| Implicit conversion to double
+|===
+
+[#A-2constructor-0f]
+== link:#A[A]::A
+
+Constructors
+
+=== Synopses
+
+Declared in `&lt;conditional&hyphen;explicit&period;cpp&gt;`
+
+Conditionally explicit conversion from char
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit(sizeof(T) &gt; 4)
+link:#A-2constructor-0b[A](char value);
+----
+
+[.small]#link:#A-2constructor-0b[_» more&period;&period;&period;_]#
+
+Explicit conversion from int
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit
+link:#A-2constructor-01[A](int value);
+----
+
+[.small]#link:#A-2constructor-01[_» more&period;&period;&period;_]#
+
+Implicit conversion from double
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#A-2constructor-00[A](double value);
+----
+
+[.small]#link:#A-2constructor-00[_» more&period;&period;&period;_]#
+
+Conditionally explicit conversion from other types
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename U&gt;
+explicit(sizeof(U) &gt; 4)
+link:#A-2constructor-02[A](U value);
+----
+
+[.small]#link:#A-2constructor-02[_» more&period;&period;&period;_]#
+
+[#A-2constructor-0b]
+== link:#A[A]::A
+
+Conditionally explicit conversion from char
+
+=== Synopsis
+
+Declared in `&lt;conditional&hyphen;explicit&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit(sizeof(T) &gt; 4)
+A(char value);
+----
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *value*
+| The value to construct from
+|===
+
+[#A-2constructor-01]
+== link:#A[A]::A
+
+Explicit conversion from int
+
+=== Synopsis
+
+Declared in `&lt;conditional&hyphen;explicit&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit
+A(int value);
+----
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *value*
+| The value to construct from
+|===
+
+[#A-2constructor-00]
+== link:#A[A]::A
+
+Implicit conversion from double
+
+=== Synopsis
+
+Declared in `&lt;conditional&hyphen;explicit&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+A(double value);
+----
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *value*
+| The value to construct from
+|===
+
+[#A-2constructor-02]
+== link:#A[A]::A
+
+Conditionally explicit conversion from other types
+
+=== Synopsis
+
+Declared in `&lt;conditional&hyphen;explicit&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename U&gt;
+explicit(sizeof(U) &gt; 4)
+A(U value);
+----
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *value*
+| The object to construct from
+|===
+
+[#A-2conversion-0f]
+== link:#A[A]::operator U
+
+Conditional explicit conversion to other types
+
+=== Synopsis
+
+Declared in `&lt;conditional&hyphen;explicit&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename U&gt;
+explicit(sizeof(U) &gt; 1)
+operator U() const;
+----
+
+=== Return Value
+
+The object converted to `U`
+
+[#A-2conversion-00]
+== link:#A[A]::operator bool
+
+Explicit conversion to bool
+
+=== Synopsis
+
+Declared in `&lt;conditional&hyphen;explicit&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit
+operator bool() const;
+----
+
+=== Return Value
+
+The object converted to `bool`
+
+[#A-2conversion-04]
+== link:#A[A]::operator char
+
+Conditionally explicit conversion to char
+
+=== Synopsis
+
+Declared in `&lt;conditional&hyphen;explicit&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+explicit(sizeof(T) &gt; 4)
+operator char() const;
+----
+
+=== Return Value
+
+The object converted to `char`
+
+[#A-2conversion-01]
+== link:#A[A]::operator double
+
+Implicit conversion to double
+
+=== Synopsis
+
+Declared in `&lt;conditional&hyphen;explicit&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+operator double() const;
+----
+
+=== Return Value
+
+The object converted to `double`
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
