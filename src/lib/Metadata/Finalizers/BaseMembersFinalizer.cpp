@@ -117,6 +117,8 @@ inheritBaseMembers(
 
     for (SymbolID const& otherID: base)
     {
+
+
         // Find the info from the base class
         MRDOCS_CHECK_OR_CONTINUE(!contains(symbols, otherID));
         Info* otherInfoPtr = corpus_.find(otherID);
