@@ -91,6 +91,22 @@ shouldCopy(Config const& config, Info const& M)
     return config->inheritBaseMembers == PublicSettings::BaseMemberInheritance::CopyAll;
 }
 
+bool isShadowed(SymbolID const& otherID, std::vector<SymbolID> const& Usings, CorpusImpl& corpus_)
+{
+    for (SymbolID const& usingId: Usings)
+    {
+        Info* usingInfoPtr = corpus_.find(usingId);
+        MRDOCS_CHECK_OR_CONTINUE(usingInfoPtr);
+
+        UsingInfo const& using_ = usingInfoPtr->asUsing();
+        if (contains(using_.ShadowDeclarations, otherID))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 RecordTranche& get(RecordInterface& derived, AccessKind const A)
 {
     switch (A)
@@ -112,12 +128,24 @@ inheritBaseMembers(
     AccessKind const A,
     std::vector<SymbolID> const& base)
 {
-    auto& tranche = get(derived, A);
-    auto& symbols = tranche.*Symbols;
-
     for (SymbolID const& otherID: base)
     {
+        AccessKind effectiveA = A;
+        if (isShadowed(otherID, derived.Public.Usings, corpus_))
+        {
+            effectiveA = AccessKind::Public;
+        }
+        else if (isShadowed(otherID, derived.Protected.Usings, corpus_))
+        {
+            effectiveA = AccessKind::Protected;
+        }
+        else if (isShadowed(otherID, derived.Private.Usings, corpus_))
+        {
+            effectiveA = AccessKind::Private;
+        }
 
+        auto& tranche = get(derived, effectiveA);
+        auto& symbols = tranche.*Symbols;
 
         // Find the info from the base class
         MRDOCS_CHECK_OR_CONTINUE(!contains(symbols, otherID));
