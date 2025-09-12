@@ -3282,11 +3282,32 @@ buildFileInfo(std::string_view path)
     file_info.full_path = path;
 
     if (! files::isAbsolute(file_info.full_path))
-        file_info.full_path = files::makeAbsolute(
-            file_info.full_path, config_->sourceRoot);
+    {
+        bool found = false;
+        for (auto& includePath: config_->includes)
+        {
+            // append full path to this include path
+            // and check if the file exists
+            std::string fullPath = files::makeAbsolute(
+                    file_info.full_path, includePath);
+            if (files::exists(fullPath))
+            {
+                file_info.full_path = fullPath;
+                found = true;
+                break;
+            }
+        }
+        if (!found)
+        {
+            file_info.full_path = files::makeAbsolute(
+                file_info.full_path, config_->sourceRoot);
+        }
+    }
 
-    if (! files::isPosixStyle(file_info.full_path))
+    if (!files::isPosixStyle(file_info.full_path))
+    {
         file_info.full_path = files::makePosixStyle(file_info.full_path);
+    }
 
     // Attempts to get a relative path for the prefix
     auto tryGetRelativePosixPath = [&file_info](std::string_view const prefix)
