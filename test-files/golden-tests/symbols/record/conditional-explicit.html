@@ -1,0 +1,359 @@
+<html lang="en">
+<head>
+<title>Reference</title>
+</head>
+<body>
+<div>
+<h1>Reference</h1>
+<div>
+<div>
+<h2 id="index"><a href="#index"></a></h2>
+</div>
+<h2>Types</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#A"><code>A</code></a> </td></tr>
+</tbody>
+</table>
+
+</div>
+<div>
+<div>
+<h2 id="A"><a href="#A">A</a></h2>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;conditional-explicit.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">template&lt;class T&gt;
+struct A;
+
+</code>
+</pre>
+</div>
+<h2>Member Functions</h2>
+<table style="table-layout: fixed; width: 100%;">
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#A-2constructor-0f"><code>A</code></a>         <span class="small">[constructor]</span></td><td><span>Constructors</span></td></tr><tr>
+<td><a href="#A-2conversion-0f"><code>operator U</code></a> </td><td><span>Conditional explicit conversion to other types</span></td></tr><tr>
+<td><a href="#A-2conversion-00"><code>operator bool</code></a> </td><td><span>Explicit conversion to bool</span></td></tr><tr>
+<td><a href="#A-2conversion-04"><code>operator char</code></a> </td><td><span>Conditionally explicit conversion to char</span></td></tr><tr>
+<td><a href="#A-2conversion-01"><code>operator double</code></a> </td><td><span>Implicit conversion to double</span></td></tr>
+</tbody>
+</table>
+
+
+
+</div>
+<div>
+<div>
+<h2 id="A-2constructor-0f"><a href="#A-2constructor-0f">A::A</a></h2>
+<div>
+<span>Constructors</span>
+
+</div>
+</div>
+<div>
+<h3>Synopses</h3>
+<div>
+Declared in <code>&lt;conditional-explicit.cpp&gt;</code></div>
+<span>Conditionally explicit conversion from char</span>
+<pre>
+<code class="source-code cpp">explicit(sizeof(T) &gt; 4)
+<a href="#A-2constructor-0b">A</a>(char value);
+
+</code>
+</pre><span class="small"><a href="#A-2constructor-0b"><em>» more...</em></a></span>
+
+<span>Explicit conversion from int</span>
+<pre>
+<code class="source-code cpp">explicit
+<a href="#A-2constructor-01">A</a>(int value);
+
+</code>
+</pre><span class="small"><a href="#A-2constructor-01"><em>» more...</em></a></span>
+
+<span>Implicit conversion from double</span>
+<pre>
+<code class="source-code cpp"><a href="#A-2constructor-00">A</a>(double value);
+
+</code>
+</pre><span class="small"><a href="#A-2constructor-00"><em>» more...</em></a></span>
+
+<span>Conditionally explicit conversion from other types</span>
+<pre>
+<code class="source-code cpp">template&lt;typename U&gt;
+explicit(sizeof(U) &gt; 4)
+<a href="#A-2constructor-02">A</a>(U value);
+
+</code>
+</pre><span class="small"><a href="#A-2constructor-02"><em>» more...</em></a></span>
+
+
+</div>
+</div>
+<div>
+<div>
+<h2 id="A-2constructor-0b"><a href="#A-2constructor-0b">A::A</a></h2>
+<div>
+<span>Conditionally explicit conversion from char</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;conditional-explicit.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">explicit(sizeof(T) &gt; 4)
+A(char value);
+
+</code>
+</pre>
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>value</strong></td>
+<td><span>The value to construct from</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="A-2constructor-01"><a href="#A-2constructor-01">A::A</a></h2>
+<div>
+<span>Explicit conversion from int</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;conditional-explicit.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">explicit
+A(int value);
+
+</code>
+</pre>
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>value</strong></td>
+<td><span>The value to construct from</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="A-2constructor-00"><a href="#A-2constructor-00">A::A</a></h2>
+<div>
+<span>Implicit conversion from double</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;conditional-explicit.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">A(double value);
+
+</code>
+</pre>
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>value</strong></td>
+<td><span>The value to construct from</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="A-2constructor-02"><a href="#A-2constructor-02">A::A</a></h2>
+<div>
+<span>Conditionally explicit conversion from other types</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;conditional-explicit.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">template&lt;typename U&gt;
+explicit(sizeof(U) &gt; 4)
+A(U value);
+
+</code>
+</pre>
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>value</strong></td>
+<td><span>The object to construct from</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="A-2conversion-0f"><a href="#A-2conversion-0f">A::operator U</a></h2>
+<div>
+<span>Conditional explicit conversion to other types</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;conditional-explicit.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">template&lt;typename U&gt;
+explicit(sizeof(U) &gt; 1)
+operator U() const;
+
+</code>
+</pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>The object converted to <code>U</code></span>
+</div>
+</div>
+<div>
+<div>
+<h2 id="A-2conversion-00"><a href="#A-2conversion-00">A::operator bool</a></h2>
+<div>
+<span>Explicit conversion to bool</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;conditional-explicit.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">explicit
+operator bool() const;
+
+</code>
+</pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>The object converted to <code>bool</code></span>
+</div>
+</div>
+<div>
+<div>
+<h2 id="A-2conversion-04"><a href="#A-2conversion-04">A::operator char</a></h2>
+<div>
+<span>Conditionally explicit conversion to char</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;conditional-explicit.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">explicit(sizeof(T) &gt; 4)
+operator char() const;
+
+</code>
+</pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>The object converted to <code>char</code></span>
+</div>
+</div>
+<div>
+<div>
+<h2 id="A-2conversion-01"><a href="#A-2conversion-01">A::operator double</a></h2>
+<div>
+<span>Implicit conversion to double</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;conditional-explicit.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">operator double() const;
+
+</code>
+</pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>The object converted to <code>double</code></span>
+</div>
+</div>
+
+</div>
+<div>
+<h4>Created with <a href="https://www.mrdocs.com">MrDocs</a></h4>
+</div>
+</body>
+</html>

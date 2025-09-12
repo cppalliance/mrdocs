@@ -962,7 +962,26 @@ populate(FunctionInfo& I, FunctionTemplateDecl const* D)
 {
     FunctionDecl const* TD = D->getTemplatedDecl();
     populate(I.Template, TD, D);
-    populate(I, TD);
+    if (auto* C = dyn_cast<CXXConstructorDecl>(TD))
+    {
+        populate(I, C);
+    }
+    else if (auto* Dtor = dyn_cast<CXXDestructorDecl>(TD))
+    {
+        populate(I, Dtor);
+    }
+    else if (auto* Conv = dyn_cast<CXXConversionDecl>(TD))
+    {
+        populate(I, Conv);
+    }
+    else if (auto* M = dyn_cast<CXXMethodDecl>(TD))
+    {
+        populate(I, M);
+    }
+    else
+    {
+        populate(I, TD);
+    }
 }
 
 void
