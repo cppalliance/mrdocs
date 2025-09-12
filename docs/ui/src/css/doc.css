@@ -1067,6 +1067,33 @@
   margin: 2rem 0 0;
 }
 
+.doc table.tableblock a img {
+  width: 28px !important;
+  height: 28px !important;
+}
+
+.doc table.tableblock a img[src*="asciidoc.svg"] {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.doc table.tableblock td:has(a):hover {
+  background-color: rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+.doc table.tableblock td:has(a) p {
+  margin: 0;
+  padding: 0;
+}
+
+.doc table.tableblock td:has(a) a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
 #footnotes hr {
   border-top-width: 1px;
   margin-top: 0;
