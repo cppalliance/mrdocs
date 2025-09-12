@@ -129,7 +129,6 @@ foldOverloads(SymbolID const& contextId, std::vector<SymbolID>& functionIds, boo
         MRDOCS_CHECK_OR_CONTINUE(infoPtr);
         auto* function = infoPtr->asFunctionPtr();
         MRDOCS_CHECK_OR_CONTINUE(function);
-        MRDOCS_CHECK_OR_CONTINUE(function->Class != FunctionClass::Destructor);
 
         // Check if the FunctionInfo is unique
         std::ranges::subrange otherFunctionIds(
