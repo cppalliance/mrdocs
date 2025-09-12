@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Boost.URL",
+    "id": "boost-url",
+    "repository": "https://www.github.com/boostorg/url",
+    "branch": "develop",
+    "config": "doc/mrdocs.yml"
+  },
+  {
+    "name": "Beman.Optional",
+    "id": "beman-optional",
+    "repository": "https://www.github.com/steve-downey/optional",
+    "branch": "main",
+    "config": "docs/mrdocs.yml"
+  },
+  {
+    "name": "Mr.Docs",
+    "id": "mrdocs",
+    "repository": "https://www.github.com/cppalliance/mrdocs",
+    "branch": "develop",
+    "config": "docs/mrdocs.yml"
+  }
+]

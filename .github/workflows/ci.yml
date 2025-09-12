@@ -676,10 +676,35 @@ jobs:
           mkdir -p ../build/docs-local
           cp -vr build/site/* ../build/docs-local
 
+      - name: Clone Beman.Optional
+        uses: actions/checkout@v4
+        with:
+          repository: steve-downey/optional
+          ref: main
+          path: beman-optional
+
+      - name: Patch Demo Projects
+        shell: bash
+        run: |
+          set -euo pipefail
+          set -x
+          
+          for project in beman-optional; do
+            src="./examples/third-party/$project"
+            dst="./$project"
+          
+            [ -d "$src" ] || { echo "Source not found: $src" >&2; exit 1; }
+            mkdir -p "$dst"
+          
+            # Mirror contents of $src into $dst, overwriting existing files
+            tar -C "$src" -cf - . | tar -C "$dst" -xpf -
+          done
+          
+
       - name: Generate Demos
         run: |
           set -x
-          
+                    
           declare -a generators=(
             "adoc"
             "xml"
@@ -691,16 +716,18 @@ jobs:
             for generator in "${generators[@]}"; do
               [[ $generator = xml && $variant = multi ]] && continue
               [[ $variant = multi ]] && multipage="true" || multipage="false"
-              # mrdocs boost.url demo
+              # boost.url demo
               mrdocs --config="$(pwd)/boost/libs/url/doc/mrdocs.yml" "../CMakeLists.txt" --output="$(pwd)/demos/boost-url/$variant/$generator" --multipage=$multipage --generator="$generator" --log-level=debug
               echo "Number of files in demos/boost-url/$variant/$generator: $(find demos/boost-url/$variant/$generator -type f | wc -l)"
+              # beman.optional demo
+              mrdocs --config="$(pwd)/beman-optional/docs/mrdocs.yml" --output="$(pwd)/demos/beman-optional/$variant/$generator" --multipage=$multipage --generator="$generator" --log-level=debug
               # mrdocs documenting mrdocs demo
               mrdocs --config="$(pwd)/docs/mrdocs.yml" "$(pwd)/CMakeLists.txt" --output="$(pwd)/demos/mrdocs/$variant/$generator" --multipage=$multipage --generator="$generator" --log-level=debug
             done
           
             # Render the asciidoc files to html using asciidoctor
             if [[ ${{ runner.os }} == 'Linux' ]]; then
-              for project in boost-url mrdocs; do
+              for project in boost-url beman-optional mrdocs; do
                 root="$(pwd)/demos/$project/$variant"
                 src="$root/adoc"
                 dst="$root/adoc-asciidoc"
