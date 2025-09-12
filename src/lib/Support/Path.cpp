@@ -475,7 +475,7 @@ startsWith(
         ++itPrefix;
     }
     // Have we consumed the whole prefix?
-    return itPrefix == prefix.end();
+    return itPrefix == prefix.end() && (itPath == pathName.end() || *itPath == '/' || *itPath == '\\');
 }
 
 } // files

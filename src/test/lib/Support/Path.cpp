@@ -29,9 +29,45 @@ struct Path_test
     */
     }
 
+    void
+    testStartsWith()
+    {
+        using namespace files;
+
+        // empty
+        {
+            BOOST_TEST(startsWith("", ""));
+        }
+
+        // identical
+        {
+            BOOST_TEST(startsWith("/", "/"));
+            BOOST_TEST(startsWith("/abc", "/abc"));
+            BOOST_TEST(startsWith("/abc/def", "/abc/def"));
+        }
+
+        // equivalent
+        {
+            BOOST_TEST(startsWith("/", "\\"));
+            BOOST_TEST(startsWith("/abc", "\\abc"));
+            BOOST_TEST(startsWith("\\abc", "/abc"));
+            BOOST_TEST(startsWith("/abc/def", "\\abc\\def"));
+            BOOST_TEST(startsWith("\\abc\\def", "/abc/def"));
+        }
+
+        // subdirectory
+        {
+            BOOST_TEST(startsWith("/abc/def", "/abc"));
+            BOOST_TEST(startsWith("\\abc\\def", "/abc"));
+            BOOST_TEST_NOT(startsWith("/abcdef", "/abc"));
+            BOOST_TEST_NOT(startsWith("\\abcdef", "/abc"));
+        }
+    }
+
     void run()
     {
         testPaths();
+        testStartsWith();
     }
 };
 
