@@ -224,6 +224,7 @@ isValidMrDocsOption(
              driver::options::OPT__SLASH_EH,
              driver::options::OPT__SLASH_GR,
              driver::options::OPT__SLASH_GR_,
+             driver::options::OPT__SLASH_M_Group,
 
             // input file options
             //driver::options::OPT_INPUT,
