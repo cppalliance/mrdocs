@@ -130,6 +130,17 @@ function humanizeLibrary(library) {
     {
         return 'Beman.Optional';
     }
+    if (library === 'nlohmann-json')
+    {
+        return 'Nlohmann.JSON';
+    }
+    if (library === 'boost-scope') {
+        return 'Boost.Scope';
+    }
+    if (library === 'fmt') {
+        return 'Fmt';
+    }
+    // Match boost-<library> and convert to Boost.<Library> (capitalized)
     const boostLibrary = library.match(/boost-([\w]+)/);
     if (boostLibrary) {
         const capitalized = boostLibrary[1].charAt(0).toUpperCase() + boostLibrary[1].slice(1);
@@ -143,6 +154,12 @@ function libraryLink(library) {
         return 'https://github.com/boostorg/url[Boost.URL,window=_blank]';
     } else if (library === 'boost-scope') {
         return 'https://github.com/boostorg/scope[Boost.Scope,window=_blank]';
+    } else if (library === 'nlohmann-json') {
+        return 'https://www.github.com/nlohmann/json[Nlohmann.JSON,window=_blank]';
+    } else if (library === 'beman-optional') {
+        return 'https://www.github.com/steve-downey/optional[Beman.Optional,window=_blank]';
+    } else if (library === 'fmt') {
+        return 'https://github.com/fmtlib/fmt[fmt,window=_blank]';
     }
     return humanizeLibrary(library);
 }
