@@ -20,7 +20,7 @@
   opacity: 0.5;
 }
 
-/* .tabs.is-loading .tablist li:first-child::after,
+.tabs.is-loading .tablist li:first-child::after,
 .tabs:not(.is-loading) .tablist li.is-selected::after {
   background-color: transparent;
-} */
+}
