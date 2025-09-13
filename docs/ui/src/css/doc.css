@@ -250,7 +250,7 @@
   margin-top: 1.5rem;
 }
 
-.doc table.tableblock tr:first-child {
+.doc table.tableblock thead tr:first-child {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
