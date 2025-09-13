@@ -1094,6 +1094,11 @@
   text-align: center;
 }
 
+.doc table.tableblock td:has(.image) {
+  text-align: center;
+  vertical-align: middle;
+}
+
 #footnotes hr {
   border-top-width: 1px;
   margin-top: 0;
