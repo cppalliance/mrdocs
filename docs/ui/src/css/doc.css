@@ -250,6 +250,10 @@
   margin-top: 1.5rem;
 }
 
+.doc table.tableblock tr:first-child {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
 .doc table.tableblock {
   font-size: calc(15 / var(--rem-base) * 1rem);
 }
