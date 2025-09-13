@@ -1,0 +1,100 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols=1]
+|===
+| Name
+| link:#A[`A`] 
+|===
+
+[#A]
+== A
+
+=== Synopsis
+
+Declared in `&lt;dtor&hyphen;overloads&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class T&gt;
+struct A;
+----
+
+=== Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#A-2destructor-02[`&#126;A`] [.small]#[destructor]#
+| Destructors
+|===
+
+[#A-2destructor-02]
+== link:#A[A]::&#126;A
+
+Destructors
+
+=== Synopses
+
+Declared in `&lt;dtor&hyphen;overloads&period;cpp&gt;`
+
+Destructor
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#A-2destructor-0c[&#126;A]()
+requires (sizeof(T) &gt; 4);
+----
+
+[.small]#link:#A-2destructor-0c[_» more&period;&period;&period;_]#
+
+Destructor
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#A-2destructor-07[&#126;A]()
+requires (sizeof(T) &lt;&equals; 4);
+----
+
+[.small]#link:#A-2destructor-07[_» more&period;&period;&period;_]#
+
+[#A-2destructor-0c]
+== link:#A[A]::&#126;A
+
+Destructor
+
+=== Synopsis
+
+Declared in `&lt;dtor&hyphen;overloads&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&#126;A()
+requires (sizeof(T) &gt; 4);
+----
+
+[#A-2destructor-07]
+== link:#A[A]::&#126;A
+
+Destructor
+
+=== Synopsis
+
+Declared in `&lt;dtor&hyphen;overloads&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+&#126;A()
+requires (sizeof(T) &lt;&equals; 4);
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

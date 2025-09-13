@@ -70,14 +70,18 @@ populateOverloadsFromClass(OverloadsInfo& I)
         I.javadoc->brief = "Constructors";
         return true;
     }
+    case FunctionClass::Destructor:
+    {
+        I.javadoc->brief = "Destructors";
+        return true;
+    }
     case FunctionClass::Conversion:
     {
         I.javadoc->brief = "Conversion operators";
         return true;
     }
-    case FunctionClass::Destructor:
     default:
-    MRDOCS_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -123,10 +127,10 @@ populateOverloadsFromFunctionName(OverloadsInfo& I)
         return false;
     }
     I.javadoc->brief.emplace();
-    I.javadoc->brief->children.emplace_back(Polymorphic<doc::Text>(
-        std::in_place_type<doc::Styled>, std::string(name), doc::Style::mono));
-    I.javadoc->brief->children.emplace_back(Polymorphic<doc::Text>(
-        std::in_place_type<doc::Text>, std::string(" overloads")));
+    I.javadoc->brief->children.emplace_back(
+        std::in_place_type<doc::Styled>, std::string(name), doc::Style::mono);
+    I.javadoc->brief->children.emplace_back(
+        std::in_place_type<doc::Text>, std::string(" overloads"));
     return true;
 }
 

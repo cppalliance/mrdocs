@@ -1,0 +1,16 @@
+source-root: ..
+input:
+  - ../include
+exclude:
+  - ../include/nlohmann/detail
+  - ../include/nlohmann/thirdparty
+includes:
+  - ../include
+file-patterns:
+  - '*.hpp'
+include-symbols:
+  - 'nlohmann::**'
+implementation-defined:
+  - 'nlohmann::detail'
+multipage: true
+generator: adoc

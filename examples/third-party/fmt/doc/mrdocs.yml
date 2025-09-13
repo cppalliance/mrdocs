@@ -1,0 +1,17 @@
+source-root: ..
+input:
+  - ../include
+includes:
+  - ../include
+file-patterns:
+  - '*.h'
+include-symbols:
+  - 'fmt::**'
+implementation-defined:
+  - 'fmt::detail'
+defines:
+  - FMT_USE_FCNTL=0
+  - FMT_USE_WRITE_CONSOLE
+  - _LIBCXXABI_DISABLE_VISIBILITY_ANNOTATIONS
+multipage: true
+generator: adoc
