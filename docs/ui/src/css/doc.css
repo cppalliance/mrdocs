@@ -250,11 +250,11 @@
   margin-top: 1.5rem;
 }
 
-.doc table.tableblock thead tr:first-child {
+.doc table.tableblock tr:first-child {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-.doc table.tableblock tbody tr:first-child {
+.doc table.tableblock thead ~ tbody tr:first-child {
   background-color: transparent;
 }
 
