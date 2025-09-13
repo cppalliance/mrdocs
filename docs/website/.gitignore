@@ -1,4 +1,3 @@
 node_modules/
 snippets/output/
-# Uncomment before merging, just needed for netlify preview
-# index.html
+index.html
