@@ -20,9 +20,27 @@
       window.location.hash = '#' + this.id
       e.preventDefault()
     }
-    var y = computePosition(this, 0) - toolbar.getBoundingClientRect().bottom
+    var elementTop = computePosition(this, 0)
+    var toolbarHeight = toolbar ? toolbar.offsetHeight : 0
+    var y = elementTop - toolbarHeight
     var instant = e === false && supportsScrollToOptions
     instant ? window.scrollTo({ left: 0, top: y, behavior: 'instant' }) : window.scrollTo(0, y)
+
+    updateTocHighlighting('#' + this.id)
+  }
+
+  function updateTocHighlighting (targetFragment) {
+    var tocLinks = document.querySelectorAll('aside.toc a[href^="#"]')
+    if (tocLinks.length === 0) return
+
+    tocLinks.forEach(function (link) {
+      link.classList.remove('is-active')
+    })
+
+    var targetLink = document.querySelector('aside.toc a[href="' + targetFragment + '"]')
+    if (targetLink) {
+      targetLink.classList.add('is-active')
+    }
   }
 
   window.addEventListener('load', function jumpOnLoad (e) {

@@ -60,7 +60,6 @@
 
   function onScroll () {
     var scrolledBy = window.pageYOffset
-    var buffer = getNumericStyleVal(document.documentElement, 'fontSize') * 1.15
     var ceil = article.offsetTop
     if (scrolledBy && window.innerHeight + scrolledBy + 2 >= document.documentElement.scrollHeight) {
       lastActiveFragment = Array.isArray(lastActiveFragment) ? lastActiveFragment : Array(lastActiveFragment || 0)
@@ -85,23 +84,11 @@
       })
       lastActiveFragment = undefined
     }
-    var activeFragment
-    headings.some(function (heading) {
-      if (heading.getBoundingClientRect().top + getNumericStyleVal(heading, 'paddingTop') - buffer > ceil) return true
-      activeFragment = '#' + heading.id
-    })
-    if (activeFragment) {
-      if (activeFragment === lastActiveFragment) return
-      if (lastActiveFragment) links[lastActiveFragment].classList.remove('is-active')
-      var activeLink = links[activeFragment]
-      activeLink.classList.add('is-active')
-      if (list.scrollHeight > list.offsetHeight) {
-        list.scrollTop = Math.max(0, activeLink.offsetTop + activeLink.offsetHeight - list.offsetHeight)
-      }
-      lastActiveFragment = activeFragment
-    } else if (lastActiveFragment) {
-      links[lastActiveFragment].classList.remove('is-active')
-      lastActiveFragment = undefined
+    // Scroll-based highlighting disabled - fragment jumper handles TOC highlighting
+    // Only keep the TOC scrolling functionality for auto-scroll to active item
+    var activeLink = document.querySelector('aside.toc a.is-active')
+    if (activeLink && list.scrollHeight > list.offsetHeight) {
+      list.scrollTop = Math.max(0, activeLink.offsetTop + activeLink.offsetHeight - list.offsetHeight)
     }
   }
 
