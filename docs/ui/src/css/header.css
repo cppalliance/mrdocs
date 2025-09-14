@@ -229,7 +229,7 @@ body {
 
   .navbar-menu {
     box-shadow: 0 8px 16px rgba(10, 10, 10, 0.1);
-    background-color: rgba(18, 74, 130, 0.8);
+    background-color: rgb(47 47 94);
     max-height: var(--body-min-height);
     overflow-y: auto;
     overscroll-behavior: none;

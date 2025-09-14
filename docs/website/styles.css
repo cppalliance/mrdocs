@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 :root {
-    --font-family: system-ui, -apple-system, "Segoe UI", "Roboto", "Ubuntu", "Cantarell", "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --font-family: "Roboto", sans-serif;
     --line-height: 1.5;
     --font-weight: 400;
     --font-weight-bold: 700;
@@ -358,8 +358,8 @@ kbd {
     width: 100%;
     margin-right: auto;
     margin-left: auto;
-    padding-right: var(--spacing);
-    padding-left: var(--spacing)
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 @media (min-width: 576px) {
@@ -1475,19 +1475,13 @@ nav li {
 nav a {
     font-weight: 400;
     text-decoration: none;
+    font-size: 16px;
 }
 
 nav li > * {
     --spacing: 0
 }
 
-nav :where(a,[role=link]) {
-    display: inline-block;
-    margin: calc(var(--nav-link-spacing-vertical) * -1) calc(var(--nav-link-spacing-horizontal) * -1);
-    padding: var(--nav-link-spacing-vertical) var(--nav-link-spacing-horizontal);
-    border-radius: var(--border-radius);
-    text-decoration: none
-}
 
 nav :where(a,[role=link]):is([aria-current],:hover,:active,:focus) {
     text-decoration: none
@@ -2748,6 +2742,7 @@ html {
     align-items: center;
     gap: 0.25rem;
     text-decoration: none;
+    padding-left: 18px;
 }
 
 .nav .logo-link:hover {
@@ -2762,6 +2757,7 @@ html {
 }
 
 .nav .logo-text, .navbar-brand .navbar-item:first-child .logo-text {
+    font-size: 18px;
     font-weight: 700;
     color: #fff;
     white-space: nowrap;
@@ -2778,7 +2774,6 @@ html {
 }
 
 nav {
-  background-color: rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(10px);
 }
 
@@ -2860,11 +2855,10 @@ ol a:focus {
 
 .nav {
     background-color: rgba(0, 0, 0, 0.2);
-    padding: 0.25rem 1rem;
-    font-size: calc(16 / var(--rem-base) * 1rem);
+    font-size: 16px;
     font-weight: bold;
-    font-size: 1rem;
     height: 3.5rem;
+    max-height: 63px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -2902,7 +2896,7 @@ ol a:focus {
 }
 
 .nav-section:last-child {
-
+    padding-right: 18px;
     color: #ffffff99;
 }
 
@@ -2921,7 +2915,7 @@ ol a:focus {
 
 
 .nav .nav-section:last-child a[role="menuitem"] {
-    font-size: 1rem;
+    /* font-size: 1rem; */
 }
 
 /* ===========================
