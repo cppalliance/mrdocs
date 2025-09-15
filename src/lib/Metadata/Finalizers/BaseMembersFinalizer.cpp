@@ -30,6 +30,8 @@ inheritBaseMembers(
     RecordInterface const& base,
     AccessKind const A)
 {
+    auto&& members = allMembers(derived);
+
     if (A == AccessKind::Public)
     {
         // When a class uses public member access specifier to derive from a
@@ -37,8 +39,8 @@ inheritBaseMembers(
         // members of the derived class and all protected members of the base
         // class are accessible as protected members of the derived class.
         // Private members of the base are never accessible unless friended.
-        inheritBaseMembers(derivedId, derived.Public, base.Public);
-        inheritBaseMembers(derivedId, derived.Protected, base.Protected);
+        inheritBaseMembers(derivedId, derived.Public, base.Public, members);
+        inheritBaseMembers(derivedId, derived.Protected, base.Protected, members);
     }
     else if (A == AccessKind::Protected)
     {
@@ -46,8 +48,8 @@ inheritBaseMembers(
         // base, all public and protected members of the base class are
         // accessible as protected members of the derived class (private members
         // of the base are never accessible unless friended).
-        inheritBaseMembers(derivedId, derived.Protected, base.Public);
-        inheritBaseMembers(derivedId, derived.Protected, base.Protected);
+        inheritBaseMembers(derivedId, derived.Protected, base.Public, members);
+        inheritBaseMembers(derivedId, derived.Protected, base.Protected, members);
     }
     else if (A == AccessKind::Private && corpus_.config->extractPrivate)
     {
@@ -55,28 +57,30 @@ inheritBaseMembers(
         // base, all public and protected members of the base class are
         // accessible as private members of the derived class (private members
         // of the base are never accessible unless friended).
-        inheritBaseMembers(derivedId, derived.Private, base.Public);
-        inheritBaseMembers(derivedId, derived.Private, base.Protected);
+        inheritBaseMembers(derivedId, derived.Private, base.Public, members);
+        inheritBaseMembers(derivedId, derived.Private, base.Protected, members);
     }
 }
 
+template <std::ranges::range Range>
 void
 BaseMembersFinalizer::
 inheritBaseMembers(
     SymbolID const& derivedId,
     RecordTranche& derived,
-    RecordTranche const& base)
+    RecordTranche const& base,
+    Range allMembers)
 {
-    inheritBaseMembers(derivedId, derived.NamespaceAliases, base.NamespaceAliases);
-    inheritBaseMembers(derivedId, derived.Typedefs, base.Typedefs);
-    inheritBaseMembers(derivedId, derived.Records, base.Records);
-    inheritBaseMembers(derivedId, derived.Enums, base.Enums);
-    inheritBaseMembers(derivedId, derived.Functions, base.Functions);
-    inheritBaseMembers(derivedId, derived.StaticFunctions, base.StaticFunctions);
-    inheritBaseMembers(derivedId, derived.Variables, base.Variables);
-    inheritBaseMembers(derivedId, derived.StaticVariables, base.StaticVariables);
-    inheritBaseMembers(derivedId, derived.Concepts, base.Concepts);
-    inheritBaseMembers(derivedId, derived.Guides, base.Guides);
+    inheritBaseMembers(derivedId, derived.NamespaceAliases, base.NamespaceAliases, allMembers);
+    inheritBaseMembers(derivedId, derived.Typedefs, base.Typedefs, allMembers);
+    inheritBaseMembers(derivedId, derived.Records, base.Records, allMembers);
+    inheritBaseMembers(derivedId, derived.Enums, base.Enums, allMembers);
+    inheritBaseMembers(derivedId, derived.Functions, base.Functions, allMembers);
+    inheritBaseMembers(derivedId, derived.StaticFunctions, base.StaticFunctions, allMembers);
+    inheritBaseMembers(derivedId, derived.Variables, base.Variables, allMembers);
+    inheritBaseMembers(derivedId, derived.StaticVariables, base.StaticVariables, allMembers);
+    inheritBaseMembers(derivedId, derived.Concepts, base.Concepts, allMembers);
+    inheritBaseMembers(derivedId, derived.Guides, base.Guides, allMembers);
 }
 
 namespace {
@@ -91,12 +95,14 @@ shouldCopy(Config const& config, Info const& M)
 }
 }
 
+template <std::ranges::range Range>
 void
 BaseMembersFinalizer::
 inheritBaseMembers(
     SymbolID const& derivedId,
     std::vector<SymbolID>& derived,
-    std::vector<SymbolID> const& base)
+    std::vector<SymbolID> const& base,
+    Range allMembers)
 {
     for (SymbolID const& otherID: base)
     {
@@ -116,7 +122,7 @@ inheritBaseMembers(
 
         // Check if derived class has a member that shadows the base member
         auto shadowIt = std::ranges::find_if(
-            derived,
+            allMembers,
             [&](SymbolID const& id)
             {
                 Info* infoPtr = corpus_.find(id);
@@ -135,7 +141,7 @@ inheritBaseMembers(
                 // are the same
                 return info.Name == otherInfo.Name;
             });
-        MRDOCS_CHECK_OR_CONTINUE(shadowIt == derived.end());
+        MRDOCS_CHECK_OR_CONTINUE(shadowIt == allMembers.end());
 
         // Not a shadow, so inherit the base member
         if (!shouldCopy(corpus_.config, otherInfo))
