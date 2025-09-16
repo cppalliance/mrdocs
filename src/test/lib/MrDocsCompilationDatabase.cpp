@@ -18,6 +18,7 @@
 namespace clang {
 namespace mrdocs {
 
+namespace {
 /** Compilation database for a single .cpp file.
 */
 class SingleFileTestDB
@@ -53,6 +54,7 @@ public:
         return { cc_ };
     }
 };
+}
 
 struct MrDocsCompilationDatabase_test
 {
