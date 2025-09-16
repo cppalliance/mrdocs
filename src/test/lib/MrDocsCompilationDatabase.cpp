@@ -80,12 +80,65 @@ struct MrDocsCompilationDatabase_test
         return compilations.getCompileCommands(cc.Filename).front().CommandLine;
     }
 
+    void testClangCLStdFlag()
+    {
+        // /std:c++14 -> -std=c++14
+        {
+            auto adjusted = adjustCompileCommand({ "clang-cl", "/std:c++14"});
+            BOOST_TEST_GE(adjusted.size(), 2);
+            BOOST_TEST(contains(adjusted, "-std=c++14"));
+        }
+
+        // /std:c++17 -> -std=c++17
+        {
+            auto adjusted = adjustCompileCommand({ "clang-cl", "/std:c++17"});
+            BOOST_TEST_GE(adjusted.size(), 2);
+            BOOST_TEST(contains(adjusted, "-std=c++17"));
+        }
+
+        // /std:c++20 -> -std=c++20
+        {
+            auto adjusted = adjustCompileCommand({ "clang-cl", "/std:c++20"});
+            BOOST_TEST_GE(adjusted.size(), 2);
+            BOOST_TEST(contains(adjusted, "-std=c++20"));
+        }
+
+        // /std:c++23preview -> -std=c++23
+        {
+            auto adjusted = adjustCompileCommand({ "clang-cl", "/std:c++23preview"});
+            BOOST_TEST_GE(adjusted.size(), 2);
+            BOOST_TEST(contains(adjusted, "-std=c++23"));
+        }
+
+        // /std:c++latest -> -std=c++23
+        {
+            auto adjusted = adjustCompileCommand({ "clang-cl", "/std:c++latest"});
+            BOOST_TEST_GE(adjusted.size(), 2);
+            BOOST_TEST(contains(adjusted, "-std=c++23"));
+        }
+
+        // /std:c11 -> -std=c11
+        {
+            auto adjusted = adjustCompileCommand({ "clang-cl", "/std:c11"});
+            BOOST_TEST_GE(adjusted.size(), 2);
+            BOOST_TEST(contains(adjusted, "-std=c11"));
+        }
+        
+        // /std:c17 -> -std=c17
+        {
+            auto adjusted = adjustCompileCommand({ "clang-cl", "/std:c17"});
+            BOOST_TEST_GE(adjusted.size(), 2);
+            BOOST_TEST(contains(adjusted, "-std=c17"));
+        }
+    }
+
     void testClangCL()
     {
-         auto adjusted = adjustCompileCommand({ "clang-cl", "/std:c++latest"});
-         BOOST_TEST_GE(adjusted.size(), 2);
-         BOOST_TEST_EQ(adjusted[0], "clang");
-         BOOST_TEST(contains(adjusted, "-std=c++23"));
+        auto adjusted = adjustCompileCommand({ "clang-cl"});
+        BOOST_TEST_GE(adjusted.size(), 1);
+        BOOST_TEST_EQ(adjusted[0], "clang");
+
+        testClangCLStdFlag();
     }
 
     void run()
