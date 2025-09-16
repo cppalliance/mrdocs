@@ -11,7 +11,6 @@
 #include "lib/ConfigImpl.hpp"
 #include "lib/MrDocsCompilationDatabase.hpp"
 #include "lib/SingleFileDB.hpp"
-#include <mrdocs/Support/Algorithm.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Support/ThreadPool.hpp>
 #include <test_suite/test_suite.hpp>
@@ -79,6 +78,16 @@ struct MrDocsCompilationDatabase_test
             llvm::StringRef(cc.Directory), SingleFileTestDB(cc), config_, defaultIncludePaths);
         return compilations.getCompileCommands(cc.Filename).front().CommandLine;
     }
+    
+    static bool has(std::vector<std::string> const& commandLine, std::string_view flag)
+    {
+        return std::find(commandLine.begin(), commandLine.end(), flag) != commandLine.end();
+    }
+    static bool has(std::vector<std::string> const& commandLine, std::initializer_list<std::string_view> flags)
+    {
+        MRDOCS_ASSERT(flags.size() > 0);
+        return std::search(commandLine.begin(), commandLine.end(), flags.begin(), flags.end()) != commandLine.end();
+    }
 
     void testClangCLStdFlag()
     {
@@ -86,49 +95,66 @@ struct MrDocsCompilationDatabase_test
         {
             auto adjusted = adjustCompileCommand({ "clang-cl", "/std:c++14"});
             BOOST_TEST_GE(adjusted.size(), 2);
-            BOOST_TEST(contains(adjusted, "-std=c++14"));
+            BOOST_TEST(has(adjusted, "-std=c++14"));
         }
 
         // /std:c++17 -> -std=c++17
         {
             auto adjusted = adjustCompileCommand({ "clang-cl", "/std:c++17"});
             BOOST_TEST_GE(adjusted.size(), 2);
-            BOOST_TEST(contains(adjusted, "-std=c++17"));
+            BOOST_TEST(has(adjusted, "-std=c++17"));
         }
 
         // /std:c++20 -> -std=c++20
         {
             auto adjusted = adjustCompileCommand({ "clang-cl", "/std:c++20"});
             BOOST_TEST_GE(adjusted.size(), 2);
-            BOOST_TEST(contains(adjusted, "-std=c++20"));
+            BOOST_TEST(has(adjusted, "-std=c++20"));
         }
 
         // /std:c++23preview -> -std=c++23
         {
             auto adjusted = adjustCompileCommand({ "clang-cl", "/std:c++23preview"});
             BOOST_TEST_GE(adjusted.size(), 2);
-            BOOST_TEST(contains(adjusted, "-std=c++23"));
+            BOOST_TEST(has(adjusted, "-std=c++23"));
         }
 
         // /std:c++latest -> -std=c++23
         {
             auto adjusted = adjustCompileCommand({ "clang-cl", "/std:c++latest"});
             BOOST_TEST_GE(adjusted.size(), 2);
-            BOOST_TEST(contains(adjusted, "-std=c++23"));
+            BOOST_TEST(has(adjusted, "-std=c++23"));
         }
 
         // /std:c11 -> -std=c11
         {
             auto adjusted = adjustCompileCommand({ "clang-cl", "/std:c11"});
             BOOST_TEST_GE(adjusted.size(), 2);
-            BOOST_TEST(contains(adjusted, "-std=c11"));
+            BOOST_TEST(has(adjusted, "-std=c11"));
         }
         
         // /std:c17 -> -std=c17
         {
             auto adjusted = adjustCompileCommand({ "clang-cl", "/std:c17"});
             BOOST_TEST_GE(adjusted.size(), 2);
-            BOOST_TEST(contains(adjusted, "-std=c17"));
+            BOOST_TEST(has(adjusted, "-std=c17"));
+        }
+    }
+
+    void testClangCLIncludeFlag()
+    {
+        // /I<path> -> -I<path>
+        {
+            auto adjusted = adjustCompileCommand({ "clang-cl", "/I<path>"});
+            BOOST_TEST_GE(adjusted.size(), 2);
+            BOOST_TEST(has(adjusted, {"-I", "<path>"}));
+        }
+
+        // /external:I<path> -> -isystem<path>
+        {
+            auto adjusted = adjustCompileCommand({ "clang-cl", "/external:I<path>"});
+            BOOST_TEST_GE(adjusted.size(), 2);
+            BOOST_TEST(has(adjusted, {"-isystem", "<path>"}));
         }
     }
 
@@ -139,6 +165,7 @@ struct MrDocsCompilationDatabase_test
         BOOST_TEST_EQ(adjusted[0], "clang");
 
         testClangCLStdFlag();
+        testClangCLIncludeFlag();
     }
 
     void run()
