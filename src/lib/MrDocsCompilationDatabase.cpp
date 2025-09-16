@@ -403,8 +403,8 @@ adjustCommandLine(
         isExplicitCCompileCommand || (!isExplicitCppCompileCommand && isImplicitCSourceFile);
 
     constexpr auto is_std_option = [](std::string_view const opt) {
-        return opt.starts_with("-std=") || opt.starts_with("--std=") ||
-            opt.starts_with("/std:") || opt.starts_with("-std:");
+        return opt.starts_with("-std=") || opt.starts_with("--std=") || // clang options
+            opt.starts_with("/std:") || opt.starts_with("-std:"); // clang-cl options
     };
     if (std::ranges::none_of(cmdline, is_std_option))
     {
