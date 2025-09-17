@@ -36,7 +36,7 @@
 </head>
 
 <body>
-    <nav class="nav container-fluid" aria-label="Main navigation">
+    <nav class="nav" aria-label="Main navigation">
         <div class="nav-section">
             <a href="/" class="logo-link" aria-label="{{ site.title }} Home">
                 {{> logo }}
@@ -46,7 +46,7 @@
         <div class="nav-section">
             <ul role="menubar">
             {{#each navbar}}
-            <li><a href="{{ href }}" class="secondary">{{ title }}</a></li>
+            <li><a href="{{ href }}">{{ title }}</a></li>
             {{/each}}
             <li>
                 <a href="{{ site.github.url }}" class="contrast" aria-label="{{ site.title }} GitHub repository">
@@ -66,8 +66,8 @@
                 <h1>{{ title }}</h1>
                 <p>{{ description }}</p>
                 <div class="header-cta">
-                    <a href="docs/" class="secondary">Get started</a>
-                    <a href="docs/mrdocs/install.html" class="contrast outline">Download</a>
+                    <a href="docs/" class="contrast outline">Get started</a>
+                    <a href="docs/mrdocs/install.html" class="primary">Download</a>
                 </div>
                 <div class="banner-snippet">
                     <small><code>{{ banner.description }}</code></small>
@@ -143,7 +143,7 @@
         <div class="container">
             <hgroup>
                 <h2>More Code, Fewer Workarounds</h2>
-                <h3>Mr.Docs let's you keep the code simple and maintainable.</h3>
+                <h3>Mr.Docs lets you keep code simple and maintainable.</h3>
             </hgroup>
             {{#each panels}}
                 <div class="snippet-documentation-panel">
@@ -169,7 +169,7 @@
     </section>
     <section id="star" data-theme="light">
         <div class="container">
-            <p>Give us a Star on GitHub:
+            <p>Like what you see? Star us on GitHub:
                 <iframe src="https://ghbtns.com/github-btn.html?user=cppalliance&amp;repo=mrdocs&amp;type=star&amp;count=true&amp;size=large"
                         frameborder="0" scrolling="0" width="160" height="30" title="GitHub"></iframe>
                 </p>
@@ -180,9 +180,9 @@
         <div class="container">
             <ul>
                 {{#each navbar}}
-                <li><a href="{{ href }}" class="contrast">{{ title }}</a></li>
+                <li><a href="{{ href }}">{{ title }}</a></li>
                 {{/each}}
-                <li><a href="https://github.com/cppalliance/mrdocs" class="contrast">GitHub</a></li>
+                <li><a href="https://github.com/cppalliance/mrdocs">GitHub</a></li>
             </ul>
         </div>
     </footer>

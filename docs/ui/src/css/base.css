@@ -16,7 +16,6 @@ html {
     radial-gradient(ellipse 100% 100% at 80% 100%, rgba(89, 36, 99, 0.8), transparent 60%),
     linear-gradient(135deg, #124b83, #124b83, #124b83);
   background-attachment: fixed;
-  background-blend-mode: screen;
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -118,7 +117,7 @@ object[type="image/svg+xml"]:not([width]) {
 }
 
 ::placeholder {
-  opacity: 0.5;
+  opacity: 0.75;
 }
 
 @media (pointer: fine) {

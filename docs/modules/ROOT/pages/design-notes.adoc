@@ -23,14 +23,16 @@ Tools like Doxygen typically require workarounds and manual intervention via pre
 These workarounds are problematic because they result in two versions of the code: the well-formed and the ill-formed versions.
 This subverts the single source of truth for the code.
 
+
+
 |===
 |  | Mr. Docs | Automatic | Manual | No Reference
 
-| No workarounds | ✅ | ❌ | ✅ | ❌
-| Nice for users | ✅ | ✅ | ✅ | ❌
-| Single Source of Truth | ✅ | ❌ | ❌ | ❌
-| Less Work for Developers | ✅ | ❌ | ❌ | ✅
-| Always up-to-date | ✅ | ✅ | ❌ | ❌
+| No workarounds | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16]
+| Nice for users | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16]
+| Single Source of Truth | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/no.svg[No,width=16,height=16]
+| Less Work for Developers | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/yes.svg[Yes,width=16,height=16]
+| Always up-to-date | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/yes.svg[Yes,width=16,height=16] | image:icons/no.svg[No,width=16,height=16] | image:icons/no.svg[No,width=16,height=16]
 |===
 
 * By providing no reference to users, they are forced to read header files to understand the API.

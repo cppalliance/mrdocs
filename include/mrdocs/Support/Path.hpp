@@ -87,7 +87,8 @@ public:
     @param recursive If true, files in subdirectories are
         also visited, recursively.
     @param visitor A callable object which is invoked
-        for each file.
+        for each file. This visitor might return
+        `void` or `Expected<void>`.
     @return An error if any occurred.
 
 */

@@ -42,11 +42,29 @@ isCXXSrcFile(
 
 static
 bool
+isCXXHeaderFile(
+    std::string_view filename)
+{
+    StringRef ext = llvm::sys::path::extension(filename).drop_front();
+    return ext == "hpp" || ext == "hh" || ext == "hxx" || ext == "h++";
+}
+
+static
+bool
 isCSrcFile(
     std::string_view filename)
 {
     StringRef ext = llvm::sys::path::extension(filename).drop_front();
     return ext == "c";
+}
+
+static
+bool
+isCHeaderFile(
+    std::string_view filename)
+{
+    StringRef ext = llvm::sys::path::extension(filename).drop_front();
+    return ext == "h";
 }
 
 template<typename... Opts>
@@ -413,7 +431,7 @@ adjustCommandLine(
     // These are additional defines specified in the config file
     for(auto const& def : (*config)->defines)
     {
-      new_cmdline.emplace_back(std::format("-D{}", def));
+        new_cmdline.emplace_back(std::format("-D{}", def));
     }
     new_cmdline.emplace_back("-D__MRDOCS__");
 
@@ -554,7 +572,11 @@ MrDocsCompilationDatabase(
             cmd0.Filename);
         cmd.Directory = makeAbsoluteAndNative(workingDir, cmd0.Directory);
         cmd.Filename = makeAbsoluteAndNative(workingDir, cmd0.Filename);
-        if (isCXXSrcFile(cmd.Filename) || isCSrcFile(cmd.Filename))
+        if (
+            isCXXSrcFile(cmd.Filename) ||
+            isCSrcFile(cmd.Filename) ||
+            isCXXHeaderFile(cmd.Filename) ||
+            isCHeaderFile(cmd.Filename))
         {
             const bool emplaced = IndexByFile_.try_emplace(cmd.Filename, AllCommands_.size()).second;
             if (emplaced)

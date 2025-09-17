@@ -1,15 +1,16 @@
 {
   "title": "Mr.Docs",
-  "description": "Mr.Docs is a C++ documentation generator for your projects.",
+  "description": "Full-fidelity C++ documentation, straight from your code.",
   "page": {
     "title": "Mr.Docs",
-    "description": "Mr.Docs is a C++ documentation generator for your projects."
+    "description": "Mr.Docs is a full-fidelity C++ documentation generator that reads your code and comments to produce precise, publish-ready reference docs."
   },
   "site": {
     "url": "https://www.mrdocs.com",
     "github": {
       "url": "https://www.github.com/cppalliance/mrdocs"
-    }
+    },
+    "title": "Mr.Docs"
   },
   "navbar": [
     {
@@ -22,26 +23,26 @@
     }
   ],
   "banner": {
-    "description": "No workarounds: A tool that fully understands C++",
-    "header": "Simple code, simple documentation",
-    "subheader": "Mr.Docs understands C++ so you can focus on keeping the code simple."
+    "description": "Native C++ understanding. No workarounds required.",
+    "header": "Keep the code simple. Get clear documentation.",
+    "subheader": "Mr.Docs understands modern C++. You focus on design and maintainability."
   },
   "features": [
     {
       "title": "Single Source of Truth",
-      "description": "Mr. Docs takes a specially formatted comment, called a Javadoc, which precedes a C++ declaration and renders it to form a reference as part of documentation."
+      "description": "Mr.Docs turns the documentation comments that live next to your C++ declarations into authoritative reference pages. One source of truth—your code."
     },
     {
-      "title": "It understands C++",
-      "description": "Mr. Docs understands C++: Overload sets, private APIs, Concepts and constraints, unspecified return types, aliases, constants, SFINAE, hidden base classes, niebloids, and coroutines."
+      "title": "Built for C++",
+      "description": "Mr.Docs models C++ accurately: overload sets, concepts and constraints, deduced return types, aliases, constants, SFINAE, inherited and hidden members, niebloids, and more."
     },
     {
       "title": "Multiple output formats",
-      "description": "Choose from multiple output formats: Asciidoc, HTML, or XML."
+      "description": "Export to AsciiDoc, HTML, or XML - or extend it with your own generator plugins."
     },
     {
       "title": "Customizable",
-      "description": "Mr. Docs is highly customizable. You can change the output format, the theme, and even the way the documentation is generated."
+      "description": "Highly configurable: control output format and theme, tailor symbol selection, and tune generation to match your project’s standards.\n"
     }
   ],
   "examples": [
@@ -52,12 +53,12 @@
     },
     {
       "title": "Boost.URL",
-      "description": "Boost.URL multi-page Asciidoc documentation.",
+      "description": "Boost.URL multi-page AsciiDoc documentation.",
       "url": "https://mrdocs.com/demos/develop/boost-url/multi/adoc/index.adoc"
     },
     {
       "title": "Boost.URL",
-      "description": "Boost.URL single-page Asciidoc documentation.",
+      "description": "Boost.URL single-page AsciiDoc documentation.",
       "url": "https://mrdocs.com/demos/develop/boost-url/single/adoc/reference.adoc"
     },
     {
@@ -72,39 +73,39 @@
     },
     {
       "title": "Boost.Scope",
-      "description": "Boost.Scope multi-page Asciidoc documentation.",
+      "description": "Boost.Scope multi-page AsciiDoc documentation.",
       "url": "https://mrdocs.com/demos/develop/boost-scope/multi/adoc/index.adoc"
     },
     {
       "title": "Boost.Scope",
-      "description": "Boost.Scope single-page Asciidoc documentation.",
+      "description": "Boost.Scope single-page AsciiDoc documentation.",
       "url": "https://mrdocs.com/demos/develop/boost-scope/single/adoc-asciidoc/reference.html"
     }
   ],
   "panels": [
     {
-      "description": "Mr.Docs understands C++ features such as attributes and noexcept functions.",
+      "description": "Accurate rendering of attributes and exception specifications (e.g. [[noreturn]], noexcept).",
       "source": "terminate.cpp",
       "imageClass": "pointing",
       "boxClass": "box3 box-shape3 box270"
     },
     {
-      "description": "Specially formatted comments are rendered to form a reference as part of documentation.",
+      "description": "Documentation comments become structured reference pages—synopsis, description, parameters, and returns.",
       "source": "distance.cpp",
       "imageClass": "shouting",
-      "boxClass": "box3 box-shape3 box0"
+      "boxClass": "box3 box-shape1 box0"
     },
     {
-      "description": "Special directives are used to describe details about the symbols.",
+      "description": "Use directives to capture semantics beyond the signature.",
       "source": "is_prime.cpp",
       "imageClass": "glasses",
-      "boxClass": "box3 box-shape3 box90"
+      "boxClass": "box3 box-shape2 box180"
     },
     {
-      "description": "It understands concepts, constraints and SFINAE.",
+      "description": "Understands concepts, constraints, and SFINAE—rendered as you wrote them.",
       "source": "sqrt.cpp",
       "imageClass": "writing",
-      "boxClass": "box3 box-shape3 box180"
+      "boxClass": "box3 box-shape3 box270"
     }
   ]
 }

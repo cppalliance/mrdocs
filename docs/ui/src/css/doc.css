@@ -1,5 +1,5 @@
 .doc {
-  color: var(--doc-font-color);
+  color: var(--doc-font-color) !important;
   font-size: var(--doc-font-size);
   hyphens: auto;
   line-height: var(--doc-line-height);
@@ -250,6 +250,14 @@
   margin-top: 1.5rem;
 }
 
+.doc table.tableblock tr:first-child {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.doc table.tableblock thead ~ tbody tr:first-child {
+  background-color: transparent;
+}
+
 .doc table.tableblock {
   font-size: calc(15 / var(--rem-base) * 1rem);
 }
@@ -277,7 +285,7 @@
 
 .doc table.tableblock,
 .doc table.tableblock > * > tr > * {
-  border: 0 solid var(--table-border-color);
+  border: 0 solid rgba(255, 255, 255, 0.4);
 }
 
 .doc table.grid-all > * > tr > * {
@@ -407,13 +415,13 @@
 
 .doc .admonitionblock td.icon i {
   align-items: center;
-  border-radius: 0.45rem;
   display: inline-flex;
   filter: initial;
   height: 1.25rem;
   padding: 0 0.5rem;
   vertical-align: initial;
   width: fit-content;
+  box-shadow: 2px 2px #000;
 }
 
 .doc .admonitionblock td.icon i::after {
@@ -1067,6 +1075,38 @@
   margin: 2rem 0 0;
 }
 
+.doc table.tableblock a img {
+  width: 28px !important;
+  height: 28px !important;
+}
+
+.doc table.tableblock a img[src*="asciidoc.svg"] {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.doc table.tableblock td:has(a):hover {
+  background-color: rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+.doc table.tableblock td:has(a) p {
+  margin: 0;
+  padding: 0;
+}
+
+.doc table.tableblock td:has(.image a) .image a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+.doc table.tableblock td:has(.image) {
+  text-align: center;
+  vertical-align: middle;
+}
+
 #footnotes hr {
   border-top-width: 1px;
   margin-top: 0;
@@ -1086,4 +1126,42 @@
   margin-left: -2em;
   text-align: right;
   width: 1.5em;
+}
+
+.tableblock [style*="color: darkblue"],
+.paragraph[id] [style*="color: darkblue"] {
+  color: #fff5b3 !important;
+}
+
+.paragraph span[style*="color: darkblue"] {
+  color: #fff !important;
+}
+
+.tableblock [style*="color: darkgreen"],
+.paragraph[id] [style*="color: darkgreen"] {
+  color: #fff !important;
+}
+
+.paragraph span[style*="color: darkgreen"] {
+  color: #fff !important;
+}
+
+.paragraph span[style*="color: red"] {
+  color: #fff !important;
+  font-style: italic;
+}
+
+.paragraph li span[style*="color: orangered"] {
+  color: #fff !important;
+  font-weight: bold;
+}
+
+.tableblock [style*="color: orangered"],
+.paragraph[id] [style*="color: orangered"] {
+  color: #fff !important;
+}
+
+.tableblock [style*="color: red"],
+.paragraph[id] [style*="color: red"] {
+  color: #fff !important;
 }

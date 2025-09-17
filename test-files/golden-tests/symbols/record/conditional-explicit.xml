@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <template>
+    <tparam name="T" class="type"/>
+    <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
+      <file short-path="conditional-explicit.cpp" source-path="conditional-explicit.cpp" line="1" class="def"/>
+      <function class="constructor" name="A" explicit-spec="explicit(sizeof(T) &gt; 4)" id="tu1aWR2dJXMP1qCjx0wfqGbHUrU=">
+        <file short-path="conditional-explicit.cpp" source-path="conditional-explicit.cpp" line="11"/>
+        <param name="value">
+          <type name="char"/>
+        </param>
+        <doc>
+          <brief>
+            <text>Conditionally explicit conversion from char</text>
+          </brief>
+          <param name="value">
+            <text>The value to construct from</text>
+          </param>
+        </doc>
+      </function>
+      <function class="constructor" name="A" explicit-spec="explicit" id="F4U5PyaDoe8VKg41ubwK8aze9QE=">
+        <file short-path="conditional-explicit.cpp" source-path="conditional-explicit.cpp" line="7"/>
+        <param name="value">
+          <type name="int"/>
+        </param>
+        <doc>
+          <brief>
+            <text>Explicit conversion from int</text>
+          </brief>
+          <param name="value">
+            <text>The value to construct from</text>
+          </param>
+        </doc>
+      </function>
+      <function class="constructor" name="A" id="AXLv33SreHARdqogAHAgfhC3lFA=">
+        <file short-path="conditional-explicit.cpp" source-path="conditional-explicit.cpp" line="4"/>
+        <param name="value">
+          <type name="double"/>
+        </param>
+        <doc>
+          <brief>
+            <text>Implicit conversion from double</text>
+          </brief>
+          <param name="value">
+            <text>The value to construct from</text>
+          </param>
+        </doc>
+      </function>
+      <template>
+        <tparam name="U" class="type"/>
+        <function class="constructor" name="A" explicit-spec="explicit(sizeof(U) &gt; 4)" id="Lh5IpjK5DH9VZV67YWZB6MBX3eg=">
+          <file short-path="conditional-explicit.cpp" source-path="conditional-explicit.cpp" line="15"/>
+          <param name="value">
+            <type name="U"/>
+          </param>
+          <doc>
+            <brief>
+              <text>Conditionally explicit conversion from other types</text>
+            </brief>
+            <param name="value">
+              <text>The object to construct from</text>
+            </param>
+          </doc>
+        </function>
+      </template>
+      <template>
+        <tparam name="U" class="type"/>
+        <function class="conversion" name="operator " explicit-spec="explicit(sizeof(U) &gt; 1)" id="8QQvac4UAEj232hkdEvLmrs4iXo=">
+          <file short-path="conditional-explicit.cpp" source-path="conditional-explicit.cpp" line="32"/>
+          <attr id="is-const"/>
+          <return>
+            <type name="U"/>
+          </return>
+          <doc>
+            <brief>
+              <text>Conditional explicit conversion to other types</text>
+            </brief>
+            <returns>
+              <text>The object converted to </text>
+              <mono>U</mono>
+            </returns>
+          </doc>
+        </function>
+      </template>
+      <function class="conversion" name="operator bool" explicit-spec="explicit" id="BQIWwUrUqUCA8gEZNkinmhykZiw=">
+        <file short-path="conditional-explicit.cpp" source-path="conditional-explicit.cpp" line="24"/>
+        <attr id="is-const"/>
+        <return>
+          <type name="bool"/>
+        </return>
+        <doc>
+          <brief>
+            <text>Explicit conversion to bool</text>
+          </brief>
+          <returns>
+            <text>The object converted to </text>
+            <mono>bool</mono>
+          </returns>
+        </doc>
+      </function>
+      <function class="conversion" name="operator char" explicit-spec="explicit(sizeof(T) &gt; 4)" id="RoN1eWo04RrcRuREabBhJcBRP9g=">
+        <file short-path="conditional-explicit.cpp" source-path="conditional-explicit.cpp" line="28"/>
+        <attr id="is-const"/>
+        <return>
+          <type name="char"/>
+        </return>
+        <doc>
+          <brief>
+            <text>Conditionally explicit conversion to char</text>
+          </brief>
+          <returns>
+            <text>The object converted to </text>
+            <mono>char</mono>
+          </returns>
+        </doc>
+      </function>
+      <function class="conversion" name="operator double" id="G/Kyu+7RZ7YjYMEcMH57nQNmUeQ=">
+        <file short-path="conditional-explicit.cpp" source-path="conditional-explicit.cpp" line="20"/>
+        <attr id="is-const"/>
+        <return>
+          <type name="double"/>
+        </return>
+        <doc>
+          <brief>
+            <text>Implicit conversion to double</text>
+          </brief>
+          <returns>
+            <text>The object converted to </text>
+            <mono>double</mono>
+          </returns>
+        </doc>
+      </function>
+    </struct>
+  </template>
+</namespace>
+</mrdocs>

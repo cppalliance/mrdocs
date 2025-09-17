@@ -119,55 +119,7 @@ load(
     s.configYaml = publicSettings.configYaml;
 
     // Config strings
-    c->configObj_ = toDomObject(s.configYaml);
-    c->settings_.visit([&c]<class T>(std::string_view name, T& value) {
-        if (!c->configObj_.exists(name))
-        {
-            if constexpr (std::convertible_to<T, std::string_view>)
-            {
-                c->configObj_.set(name, std::string(value));
-            }
-            else if constexpr (range_of_tuple_like<T>)
-            {
-                dom::Object obj;
-                auto keys = value | std::views::keys;
-                auto vals = value | std::views::values;
-                auto zip = std::views::zip(keys, vals);
-                for (auto const& [k, v] : zip)
-                {
-                    obj.set(k, v);
-                }
-                c->configObj_.set(name, std::move(obj));
-            }
-            else if constexpr (std::ranges::range<T>)
-            {
-                using ValueType = std::ranges::range_value_t<T>;
-                dom::Array arr;
-                for (auto const& v : value)
-                {
-                    if constexpr (
-                        std::is_same_v<ValueType, PathGlobPattern> ||
-                        std::is_same_v<ValueType, SymbolGlobPattern>)
-                    {
-                        arr.emplace_back(v.pattern());
-                    }
-                    else
-                    {
-                        arr.emplace_back(v);
-                    }
-                }
-                c->configObj_.set(name, std::move(arr));
-            }
-            else if constexpr (std::is_enum_v<T>)
-            {
-                c->configObj_.set(name, to_string(value));
-            }
-            else
-            {
-                c->configObj_.set(name, value);
-            }
-        }
-    });
+    c->updateConfigDom();
     return c;
 }
 
@@ -304,9 +256,68 @@ toDomObject(std::string_view yaml)
 } // (anon)
 
 dom::Object const&
-ConfigImpl::object() const {
+ConfigImpl::
+object() const
+{
     return configObj_;
 }
+
+void
+ConfigImpl::
+updateConfigDom()
+{
+    SettingsImpl& s = this->settings_;
+    configObj_ = toDomObject(s.configYaml);
+    settings_.visit([this]<class T>(std::string_view name, T& value) {
+        if (!configObj_.exists(name))
+        {
+            if constexpr (std::convertible_to<T, std::string_view>)
+            {
+                configObj_.set(name, std::string(value));
+            }
+            else if constexpr (range_of_tuple_like<T>)
+            {
+                dom::Object obj;
+                auto keys = value | std::views::keys;
+                auto vals = value | std::views::values;
+                auto zip = std::views::zip(keys, vals);
+                for (auto const& [k, v] : zip)
+                {
+                    obj.set(k, v);
+                }
+                configObj_.set(name, std::move(obj));
+            }
+            else if constexpr (std::ranges::range<T>)
+            {
+                using ValueType = std::ranges::range_value_t<T>;
+                dom::Array arr;
+                for (auto const& v : value)
+                {
+                    if constexpr (
+                        std::is_same_v<ValueType, PathGlobPattern> ||
+                        std::is_same_v<ValueType, SymbolGlobPattern>)
+                    {
+                        arr.emplace_back(v.pattern());
+                    }
+                    else
+                    {
+                        arr.emplace_back(v);
+                    }
+                }
+                configObj_.set(name, std::move(arr));
+            }
+            else if constexpr (std::is_enum_v<T>)
+            {
+                configObj_.set(name, to_string(value));
+            }
+            else
+            {
+                configObj_.set(name, value);
+            }
+        }
+    });
+}
+
 
 } // mrdocs
 } // clang

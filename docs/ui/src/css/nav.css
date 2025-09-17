@@ -5,7 +5,7 @@
 }
 
 .nav-container {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(47, 44, 94, 0.75);
   backdrop-filter: blur(10px);
   position: fixed;
   top: var(--navbar-height);
@@ -19,6 +19,11 @@
 @media screen and (min-width: 769px) {
   .nav-container {
     width: var(--nav-width);
+    background-color: transparent;
+  }
+
+  .nav-container .nav {
+    background-color: rgb(255 255 255 / 18%);
   }
 }
 
@@ -37,9 +42,8 @@
 }
 
 .nav {
-  /* background: var(--nav-background); */
+  background: rgba(255, 255, 255, 0.1);
   position: relative;
-  top: var(--toolbar-height);
   height: var(--nav-height);
 }
 
@@ -59,14 +63,13 @@
 }
 
 .nav a {
-  color: var(--color-white);
+  color: var(--color-white-60);
 }
 
 .nav .panels {
   display: flex;
   flex-direction: column;
   height: inherit;
-  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .nav-panel-menu {
@@ -183,10 +186,12 @@
 .is-current-page > .nav-link,
 .is-current-page > .nav-text {
   font-weight: var(--body-font-weight-bold);
+  color: var(--color-white);
 }
 
 .nav-panel-explore {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(47, 44, 94, 0.75);
+  backdrop-filter: blur(10px);
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -196,12 +201,19 @@
   left: 0;
 }
 
+@media screen and (min-width: 769px) {
+  .nav-panel-explore {
+    background: rgba(255, 255, 255, 0.3);
+  }
+}
+
 .nav-panel-explore:not(:first-child) {
   top: auto;
   max-height: var(--nav-panel-explore-height);
 }
 
 .nav-panel-explore .context {
+  background: rgba(47, 44, 94, 0.75);
   font-size: calc(15 / var(--rem-base) * 1rem);
   flex-shrink: 0;
   color: var(--color-white);
@@ -233,8 +245,8 @@
 .nav-panel-explore .components {
   line-height: var(--nav-line-height);
   flex-grow: 1;
-  box-shadow: inset 0 1px 5px var(--nav-panel-divider-color);
-  background: var(--nav-secondary-background);
+  box-shadow: 0 2px 8px 0 rgba(30, 50, 70, 0.3);
+  background-color: rgb(29 28 64);
   padding: 0.75rem 0.75rem 0 0.75rem;
   margin: 0;
   overflow-y: scroll;
@@ -278,7 +290,7 @@
 }
 
 .nav-panel-explore .component .version a {
-  background: var(--nav-border-color);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 0.25rem;
   white-space: nowrap;
   padding: 0.25em 0.5em;
