@@ -48,7 +48,6 @@ public:
             cmds.emplace_back("-pedantic-errors");
             cmds.emplace_back("-Werror");
         }
-        cmds.emplace_back("-fsyntax-only");
         cmds.emplace_back(fileName);
         cc_.emplace_back(
             parentDir,
