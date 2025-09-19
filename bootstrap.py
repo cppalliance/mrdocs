@@ -2225,9 +2225,6 @@ class MrDocsInstaller:
                         f'--action={verb}',
                         f'--generator={generator}',
                         f'--addons={os.path.join(self.options.mrdocs_src_dir, "share", "mrdocs", "addons")}',
-                        f'--stdlib-includes={os.path.join(self.options.llvm_install_dir, "include", "c++", "v1")}',
-                        f'--stdlib-includes={self.find_latest_clang_include_dir()}',
-                        f'--libc-includes={os.path.join(self.options.mrdocs_src_dir, "share", "mrdocs", "headers", "libc-stubs")}',
                         '--log-level=warn'
                     ]
                 })

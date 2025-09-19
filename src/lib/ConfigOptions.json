@@ -482,45 +482,6 @@
         "default": []
       },
       {
-        "name": "use-system-stdlib",
-        "brief": "Use the system C++ standard library",
-        "details": "To achieve reproducible results, MrDocs bundles the LibC++ headers. To use the C++ standard library available in the system instead, set this option to true.",
-        "type": "bool",
-        "default": false
-      },
-      {
-        "name": "stdlib-includes",
-        "brief": "C++ Standard Library include paths",
-        "details": "When `use-system-stdlib` is disabled, the C++ standard library headers are available in these paths.",
-        "type": "list<path>",
-        "default": [
-          "<mrdocs-root>/share/mrdocs/headers/libcxx",
-          "<mrdocs-root>/share/mrdocs/headers/clang"
-        ],
-        "relative-to": "<config-dir>",
-        "must-exist": false,
-        "should-exist": true
-      },
-      {
-        "name": "use-system-libc",
-        "brief": "Use the system C standard library",
-        "details": "To achieve reproducible results, MrDocs bundles the LibC headers with its definitions. To use the C standard library available in the system instead, set this option to true.",
-        "type": "bool",
-        "default": false
-      },
-      {
-        "name": "libc-includes",
-        "brief": "Standard Library include paths",
-        "details": "When `use-system-libc` is disabled, the C standard library headers are available in these paths.",
-        "type": "list<path>",
-        "default": [
-          "<mrdocs-root>/share/mrdocs/headers/libc-stubs"
-        ],
-        "relative-to": "<config-dir>",
-        "must-exist": false,
-        "should-exist": true
-      },
-      {
         "name": "system-includes",
         "brief": "System include paths",
         "details": "System include paths. These paths are used to add directories to the system include search path. The system include search path is used to search for system headers. The system headers are headers that are provided by the system and are not part of the project. The system headers are used to provide the standard library headers and other system headers. The system headers are not part of the project and are not checked for warnings and errors.",
