@@ -102,7 +102,7 @@ generateCompilationDatabase(
     {
         MrDocsSettingsDB compilationDB{*config};
         auto const defaultIncludePaths = getCompilersDefaultIncludeDir(
-            compilationDB, (*config)->useSystemStdlib);
+            compilationDB);
         MrDocsCompilationDatabase compilationDatabase(
             settings.sourceRoot,
             compilationDB,
@@ -149,7 +149,7 @@ generateCompilationDatabase(
 
     // Custom compilation database that applies settings from the configuration
     auto const defaultIncludePaths = getCompilersDefaultIncludeDir(
-        jsonDatabase, (*config)->useSystemStdlib);
+        jsonDatabase);
     auto compileCommandsDir = files::getParentDir(compileCommandsPath);
     MrDocsCompilationDatabase compilationDatabase(
         compileCommandsDir,
