@@ -269,34 +269,6 @@ cmake: '-D BOOST_ROOT=/path/to/boost'
 
 Another option supported by CMake is to set the `BOOST_ROOT` environment variable as `/path/to/boost` before running MrDocs.
 
-=== System dependencies
-
-It's also common for libraries to depend on the C++ standard library, the C standard library, or other system libraries. These dependencies are usually resolved by the compiler and are not explicitly specified in the source code:
-
-* The {cpp} standard library: The compiler will look for specific paths according to the `-stdlib` option and include them as implicit `-isystem` paths. For instance, Clang can use different implementations of the {cpp} standard library. By default, that's Microsoft STL on Windows, libstdc&plus;&plus; on Linux and libc&plus;&plus; otherwise. This can be disabled with `-nostdinc&plus;&plus; -nostdlib&plus;&plus;` or, in MrDocs, with `use-system-stdlib=false`.
-* The C standard library (and system libraries): Unlike with libc&plus;&plus;, LLVM&plus;Clang does not provide an implementation of the C standard library. It always depends on the system for that. The compiler will not look for specific paths but implicitly include all system libraries. This can be disabled with `-nostdinc` or, in MrDocs, with `use-system-libc=false`.
-
-That means unless `-nostdinc` is defined, all systems include paths are included. This is what allows the user to also use headers like `<Windows.h>` or `<linux/version.h>` without explicitly including anything else, even though they are not part of the C standard library. This is often seen as a convenience but can lead to portability issues.
-
-In this context, MrDocs provides the `use-system-stdlib` and `use-system-libc` options. Both are set as `false` by default, meaning MrDocs will compile the code as if the `-nostdinc&plus;&plus; -nostdlib&plus;&plus;` and `-nostdinc` flags were passed to Clang. Additionally:
-
-- When `use-system-stdlib` is `false`, MrDocs will use the bundled libc&plus;&plus; headers available in `<mrdocs-root>/share/mrdocs/headers/libcxx` and `<mrdocs-root>/share/mrdocs/headers/clang`. These paths can be adjusted with the `stdlib-includes` option.
-- When `use-system-libc` is `false`, MrDocs will use the bundled libc stubs available in `<mrdocs-root>/share/mrdocs/headers/libc-stubs`. This path can be adjusted with the `libc-includes` option.
-
-The rationale for that is reproducibility. You want to be able to build your documentation and don't want it to stop working because the platform or some platform details have changed.
-These default values also help avoid conflicts where the same symbol or header is defined twice if the compilation database includes system paths relevant to one specific compiler. That can  breaks things when MrDocs attempts to compile it with clang.
-In other words, MrDocs becomes a sandboxed environment where only the C and C++ standard libraries are available.
-
-The default values described above work for most libraries and applications that only depend on the C and C++ standard libraries. When there are no dependencies outside the standard libraries, the user probably won't even notice the difference between these options.
-
-However, if you depend on other system libraries, that means you need to handle these dependencies explicitly. For instance, this is very common with networking libraries. There are a few solutions to this, and these solutions are in a continuum regarding the use of `use-system-stdlib`/`use-system-libc` and the design of the code:
-
-1. Depending on the design of your library, you can implement a different path for MrDocs where you don't need these system headers. System headers are often guarded by macros to detect the platform: for instance, `&lowbar;&lowbar;linux&lowbar;&lowbar;` for `<linux/version.h>` and `&lowbar;WIN32` for `<Windows.h>`. You can use the `&lowbar;&lowbar;MRDOCS&lowbar;&lowbar;` macro to provide an implementation for MrDocs. This implementation would typically include stubs for the symbols you need in the documentation. Because symbols from system libraries are typically not exposed in the public API of your library, that gives you replacements that make sense for the documentation. However, this solution is not enough when other dependencies also depend on these system libraries.
-2. Handle it as an explicit dependency. Explicitly include the paths you need in your compilation database as if it's a dependency described in the <<dependencies>> section. For instance, you can get CMake to explicitly find `<linux/version.h>` or `<Windows.h>` and only include those directories with `-isystem` or `-I` in the compilation database.
-3. Enable `use-system-libc`. MrDocs will still use the bundled libc&plus;&plus; for the C&plus;&plus; standard library, and use the system headers for the C standard library, making all system paths available. That makes system headers such as `<linux/version.h>` or `<Windows.h>` available by default. The trade-off is losing the reproducibility guarantees described above.
-
-The first option in this list provides the most control and the most reproducibility. The third option is the most convenient but also the most fragile.
-
 [#missing-includes]
 === Missing includes
 
