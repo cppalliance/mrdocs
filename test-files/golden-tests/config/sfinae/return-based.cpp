@@ -8,7 +8,7 @@ struct enable_if
     using type = T;
 };
 template <typename T>
-struct enable_if<false, typename T>
+struct enable_if<false, T>
 {};
 
 template <bool C, typename T = void>
