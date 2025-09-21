@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_SINGLEFILEDB_HPP
-#define MRDOCS_LIB_SINGLEFILEDB_HPP
+#ifndef MRDOCS_LIB_MRDOCSSETTINGSDB_HPP
+#define MRDOCS_LIB_MRDOCSSETTINGSDB_HPP
 
 #include <mrdocs/Support/Path.hpp>
 #include <clang/Tooling/CompilationDatabase.h>
