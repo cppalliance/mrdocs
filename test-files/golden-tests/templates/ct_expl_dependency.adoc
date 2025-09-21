@@ -1,0 +1,50 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols=1]
+|===
+| Name
+| link:#A[`A&lt;int&gt;`] 
+|===
+
+[#A]
+== A&lt;int&gt;
+
+=== Synopsis
+
+Declared in `&lt;ct&lowbar;expl&lowbar;dependency&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;&gt;
+struct A&lt;int&gt;;
+----
+
+=== Member Functions
+
+[cols=1]
+|===
+| Name
+| link:#A-g[`g`] 
+|===
+
+[#A-g]
+== link:#A[A&lt;int&gt;]::g
+
+=== Synopsis
+
+Declared in `&lt;ct&lowbar;expl&lowbar;dependency&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+g();
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
