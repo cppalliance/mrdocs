@@ -10,3 +10,6 @@ asciidoc:
     table-caption: false
 nav:
   - modules/ROOT/nav.adoc
+ext:
+  cpp-reference:
+    config: docs/mrdocs.yml

@@ -2378,13 +2378,19 @@ class MrDocsInstaller:
             "name": "MrDocs Build Local Docs",
             "script": os.path.join(mrdocs_docs_dir, f"build_local_docs.{mrdocs_docs_script_ext}"),
             "args": [],
-            "cwd": mrdocs_docs_dir
+            "cwd": mrdocs_docs_dir,
+            "env": {
+                "MRDOCS_ROOT": self.options.mrdocs_install_dir
+            }
         })
         configs.append({
             "name": "MrDocs Build Docs",
             "script": os.path.join(mrdocs_docs_dir, f"build_docs.{mrdocs_docs_script_ext}"),
             "args": [],
-            "cwd": mrdocs_docs_dir
+            "cwd": mrdocs_docs_dir,
+            "env": {
+                "MRDOCS_ROOT": self.options.mrdocs_install_dir
+            }
         })
         configs.append({
             "name": "MrDocs Build UI Bundle",

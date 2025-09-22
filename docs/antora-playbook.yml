@@ -40,6 +40,7 @@ antora:
         start_on_load: true
     - require: '@antora/lunr-extension' # https://gitlab.com/antora/antora-lunr-extension
       index_latest_only: true
+    - require: '@cppalliance/antora-cpp-reference-extension'
 
 asciidoc:
   attributes:

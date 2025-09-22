@@ -6,5 +6,6 @@
 * xref:commands.adoc[Documenting the Code]
 * xref:generators.adoc[]
 * xref:design-notes.adoc[]
+* xref:reference:index.adoc[Library Reference]
 * xref:contribute.adoc[]
 * xref:license.adoc[]
