@@ -12,17 +12,47 @@
 #define MRDOCS_VERSION_HPP
 
 #include <string_view>
+#include <cstddef>
 
 namespace clang {
 namespace mrdocs {
 
-constexpr std::string_view project_version        = "@PROJECT_VERSION@";
-constexpr std::size_t project_version_major       = @PROJECT_VERSION_MAJOR@;
-constexpr std::size_t project_version_minor       = @PROJECT_VERSION_MINOR@;
-constexpr std::size_t project_version_patch       = @PROJECT_VERSION_PATCH@;
-constexpr std::string_view project_version_build  = "@PROJECT_VERSION_BUILD@";
-constexpr std::string_view project_name           = "@PROJECT_NAME@";
-constexpr std::string_view project_description    = "@PROJECT_DESCRIPTION@";
+/** Project version string in MAJOR.MINOR.PATCH format.
+*/
+inline constexpr std::string_view project_version             = "@PROJECT_VERSION@";
+
+/** Project version string with build metadata.
+
+    Includes the git short SHA when not on a tagged commit,
+    and optional ".dirty" if the working tree was modified.
+*/
+inline constexpr std::string_view project_version_with_build  = "@PROJECT_VERSION_WITH_BUILD@";
+
+/** Major version number.
+*/
+inline constexpr std::size_t      project_version_major       = @PROJECT_VERSION_MAJOR@;
+
+/** Minor version number.
+*/
+inline constexpr std::size_t      project_version_minor       = @PROJECT_VERSION_MINOR@;
+
+/** Patch version number.
+*/
+inline constexpr std::size_t      project_version_patch       = @PROJECT_VERSION_PATCH@;
+
+/** Full 40-character git commit SHA for this build.
+
+    Empty if the git information was unavailable.
+*/
+inline constexpr std::string_view project_version_build       = "@PROJECT_VERSION_BUILD@";
+
+/** Canonical project name.
+*/
+inline constexpr std::string_view project_name                = "@PROJECT_NAME@";
+
+/** Short description of the project.
+*/
+inline constexpr std::string_view project_description         = "@PROJECT_DESCRIPTION@";
 
 } // mrdocs
 } // clang

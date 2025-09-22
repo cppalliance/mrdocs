@@ -14,7 +14,6 @@
 # Project settings
 #
 #-------------------------------------------------
-
 cmake_minimum_required(VERSION 3.13)
 project(
     MrDocs
@@ -54,30 +53,164 @@ endif()
 
 #-------------------------------------------------
 #
+# Generate project headers
+#
+#-------------------------------------------------
+# Create include/mrdocs/Version.hpp from Version.hpp.in
+if (MRDOCS_REQUIRE_GIT)
+    find_package(Git REQUIRED)
+else()
+    find_package(Git QUIET)
+endif()
+set(PROJECT_VERSION_BUILD "")
+set(PROJECT_VERSION_WITH_BUILD "${PROJECT_VERSION}")  # default: plain semver
+if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/.git" AND GIT_FOUND)
+    # Get full SHA
+    execute_process(
+            COMMAND ${GIT_EXECUTABLE} rev-parse HEAD
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+            OUTPUT_VARIABLE GIT_SHA_FULL
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+            RESULT_VARIABLE GIT_SHA_FULL_RV
+            ERROR_QUIET
+    )
+    if (NOT GIT_SHA_FULL_RV EQUAL 0)
+        message(FATAL_ERROR "Git was found but could not extract commit SHA")
+    endif()
+    set(PROJECT_VERSION_BUILD "${GIT_SHA_FULL}")
+    string(SUBSTRING "${GIT_SHA_FULL}" 0 12 GIT_SHA_SHORT)
+
+    # Are we exactly at a tag?
+    execute_process(
+            COMMAND ${GIT_EXECUTABLE} describe --tags --exact-match HEAD
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+            OUTPUT_VARIABLE GIT_EXACT_TAG
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+            RESULT_VARIABLE GIT_EXACT_TAG_RV
+            ERROR_QUIET
+    )
+    if (GIT_EXACT_TAG_RV EQUAL 0)
+        # On a tag: canonical release
+        set(PROJECT_VERSION_WITH_BUILD "${PROJECT_VERSION}")
+    else()
+        # Dirty working tree? (0 = clean, 1 = dirty)
+        execute_process(
+                COMMAND ${GIT_EXECUTABLE} diff --quiet --ignore-submodules
+                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+                RESULT_VARIABLE GIT_DIRTY_RV
+                ERROR_QUIET
+        )
+        set(_dirty_suffix "")
+        if (GIT_DIRTY_RV EQUAL 1)
+            set(_dirty_suffix ".modified")
+        endif()
+        set(PROJECT_VERSION_WITH_BUILD
+                "${PROJECT_VERSION}+${GIT_SHA_SHORT}${_dirty_suffix}")
+    endif()
+else()
+    if (MRDOCS_REQUIRE_GIT)
+        message(FATAL_ERROR "Git is required to extract the version build")
+    endif()
+    set(PROJECT_VERSION_BUILD "")
+    set(PROJECT_VERSION_WITH_BUILD "${PROJECT_VERSION}")
+endif()
+configure_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/mrdocs/Version.hpp.in
+        ${CMAKE_CURRENT_BINARY_DIR}/include/mrdocs/Version.hpp
+        @ONLY
+)
+
+# Create include/mrdocs/PublicSettings.hpp and related files from JSON config files
+find_program(PYTHON_EXECUTABLE python3 python)
+if (NOT PYTHON_EXECUTABLE)
+    message(FATAL_ERROR "Python is needed to configure mrdocs")
+endif()
+set(CONFIG_GEN_WORKING_DIR      "${CMAKE_CURRENT_SOURCE_DIR}")
+set(CONFIG_GEN_OUTPUT_DIR       "${CMAKE_CURRENT_BINARY_DIR}")
+set(CONFIG_GEN_CONFIG_JSON      "${CMAKE_CURRENT_SOURCE_DIR}/src/lib/ConfigOptions.json")
+set(CONFIG_GEN_SCRIPT_INFO      "${CMAKE_CURRENT_SOURCE_DIR}/util/generate-config-info.py")
+set(CONFIG_GEN_SCRIPT_SCHEMA    "${CMAKE_CURRENT_SOURCE_DIR}/util/generate-yaml-schema.py")
+set(CONFIG_GEN_COMMAND_INFO ${PYTHON_EXECUTABLE} ${CONFIG_GEN_SCRIPT_INFO} ${CONFIG_GEN_CONFIG_JSON} ${CONFIG_GEN_OUTPUT_DIR})
+set(CONFIG_GEN_COMMAND_SCHEMA ${PYTHON_EXECUTABLE} ${CONFIG_GEN_SCRIPT_SCHEMA})
+set(CONFIG_GEN_INPUT_FILES
+    ${CONFIG_GEN_SCRIPT_INFO}
+    ${CONFIG_GEN_CONFIG_JSON}
+    ${CONFIG_GEN_SCRIPT_SCHEMA}
+)
+set(CONFIG_GEN_OUTPUT_FILES
+    ${CONFIG_GEN_OUTPUT_DIR}/include/mrdocs/PublicSettings.hpp
+    ${CONFIG_GEN_OUTPUT_DIR}/src/lib/Lib/PublicSettings.cpp
+    ${CONFIG_GEN_OUTPUT_DIR}/src/tool/PublicToolArgs.hpp
+    ${CONFIG_GEN_OUTPUT_DIR}/src/tool/PublicToolArgs.cpp
+)
+if (MRDOCS_DOCUMENTATION_BUILD)
+    # Create the files at configure time
+    execute_process(
+            COMMAND ${CONFIG_GEN_COMMAND_INFO}
+            WORKING_DIRECTORY ${CONFIG_GEN_WORKING_DIR}
+            COMMAND_ERROR_IS_FATAL ANY
+    )
+    execute_process(
+            COMMAND ${CONFIG_GEN_COMMAND_SCHEMA}
+            WORKING_DIRECTORY ${CONFIG_GEN_WORKING_DIR}
+            COMMAND_ERROR_IS_FATAL ANY
+    )
+    set_source_files_properties(${CONFIG_GEN_OUTPUT_FILES} PROPERTIES GENERATED TRUE)
+else()
+    # Create a custom command and target to generate the files at build time
+    add_custom_command(
+            OUTPUT ${CONFIG_GEN_OUTPUT_FILES}
+            COMMAND ${CONFIG_GEN_COMMAND_INFO}
+            COMMAND ${CONFIG_GEN_COMMAND_SCHEMA}
+            WORKING_DIRECTORY ${CONFIG_GEN_WORKING_DIR}
+            DEPENDS ${CONFIG_GEN_INPUT_FILES}
+            COMMENT "Generating Config Source Files"
+            VERBATIM
+            COMMAND_EXPAND_LISTS
+    )
+endif()
+
+#-------------------------------------------------
+#
 # Docs build
 #
 #-------------------------------------------------
 if (MRDOCS_DOCUMENTATION_BUILD)
-    # Glob all header files
-    set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
-    file(GLOB_RECURSE HEADER_FILES_LIST "${INCLUDE_DIR}/*.hpp")
+    # Public headers from the source tree
+    set(SRC_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
+    file(GLOB_RECURSE SRC_HEADER_FILES "${SRC_INCLUDE_DIR}/*.hpp")
 
-    # Create a temporary source file that includes all header files
+    # Public headers generated into the build tree
+    set(BIN_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/include")
+    file(GLOB_RECURSE BIN_HEADER_FILES "${BIN_INCLUDE_DIR}/*.hpp")
+
+    # Merge both sets (source + generated)
+    set(ALL_HEADER_FILES ${SRC_HEADER_FILES} ${BIN_HEADER_FILES})
+
+    # Create a translation unit that includes all public headers
     set(TEMP_CPP_FILE "${CMAKE_CURRENT_BINARY_DIR}/all_headers.cpp")
-    file(WRITE ${TEMP_CPP_FILE} "// This file is generated automatically by CMake\n\n")
-    foreach(HEADER_FILE ${HEADER_FILES_LIST})
-        file(APPEND ${TEMP_CPP_FILE} "#include \"${HEADER_FILE}\"\n")
+    file(WRITE "${TEMP_CPP_FILE}" "// This file is generated automatically by CMake\n\n")
+
+    foreach(HEADER_FILE IN LISTS ALL_HEADER_FILES)
+        # Normalize to forward slashes so #include is portable
+        file(TO_CMAKE_PATH "${HEADER_FILE}" HEADER_FILE_FWD)
+        file(APPEND "${TEMP_CPP_FILE}" "#include \"${HEADER_FILE_FWD}\"\n")
     endforeach()
 
-    # Create a custom target for MrDocs
-    add_library(mrdocs-documentation-build STATIC ${TEMP_CPP_FILE})
+    # Library just to make compilers parse the headers
+    add_library(mrdocs-documentation-build STATIC "${TEMP_CPP_FILE}")
 
-    # Set any other target properties here
-    target_include_directories(mrdocs-documentation-build PRIVATE ${INCLUDE_DIR})
-    target_link_libraries(mrdocs-documentation-build PRIVATE an_external_library)
+    # Include dirs: source + generated
+    target_include_directories(mrdocs-documentation-build
+            PRIVATE
+            "${SRC_INCLUDE_DIR}"
+            "${BIN_INCLUDE_DIR}"
+    )
+
+    # Other defines so headers compile standalone
     target_compile_definitions(mrdocs-documentation-build PRIVATE MRDOCS_STATIC_LINK)
 
-    # Don't create any other targets
+    # No other targets in documentation builds
     return()
 endif()
 
@@ -151,12 +284,6 @@ if (NOT DUKTAPE_FOUND)
     find_package(Duktape REQUIRED CONFIG)
 endif()
 
-# python
-find_program(PYTHON_EXECUTABLE python3 python)
-if (NOT PYTHON_EXECUTABLE)
-    message(FATAL_ERROR "Python is needed to configure mrdocs")
-endif()
-
 unset(CMAKE_FOLDER)
 
 #-------------------------------------------------
@@ -164,55 +291,6 @@ unset(CMAKE_FOLDER)
 # mrdocs-core
 #
 #-------------------------------------------------
-# Create include/mrdocs/Version.hpp from Version.hpp.in
-find_package(Git QUIET)
-if (GIT_FOUND)
-    execute_process(
-            COMMAND ${GIT_EXECUTABLE} rev-parse HEAD
-            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-            OUTPUT_VARIABLE PROJECT_VERSION_BUILD
-            OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-    # Check if PROJECT_VERSION_BUILD is populated
-    if (NOT PROJECT_VERSION_BUILD AND MRDOCS_REQUIRE_GIT)
-        message(FATAL_ERROR "Git was found but could not extract the version build")
-    endif()
-    set(PROJECT_VERSION_BUILD "${PROJECT_VERSION_BUILD}")
-else()
-    if (MRDOCS_REQUIRE_GIT)
-        message(FATAL_ERROR "Git is required to extract the version build")
-    endif()
-    set(PROJECT_VERSION_BUILD "")
-endif()
-configure_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/mrdocs/Version.hpp.in
-    ${CMAKE_CURRENT_BINARY_DIR}/include/mrdocs/Version.hpp
-    @ONLY
-)
-
-# Config files for mrdocs-core
-add_custom_command(
-    COMMAND
-        ${PYTHON_EXECUTABLE}
-        ${CMAKE_CURRENT_SOURCE_DIR}/util/generate-config-info.py
-        src/lib/ConfigOptions.json
-        ${CMAKE_CURRENT_BINARY_DIR}
-    COMMAND
-        ${PYTHON_EXECUTABLE}
-        ${CMAKE_CURRENT_SOURCE_DIR}/util/generate-yaml-schema.py
-    VERBATIM
-    DEPENDS
-        ${CMAKE_CURRENT_SOURCE_DIR}/util/generate-config-info.py
-        src/lib/ConfigOptions.json
-    OUTPUT
-        ${CMAKE_CURRENT_BINARY_DIR}/include/mrdocs/PublicSettings.hpp
-        ${CMAKE_CURRENT_BINARY_DIR}/src/lib/Lib/PublicSettings.cpp
-        ${CMAKE_CURRENT_BINARY_DIR}/src/tool/PublicToolArgs.hpp
-        ${CMAKE_CURRENT_BINARY_DIR}/src/tool/PublicToolArgs.cpp
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    COMMENT "Generating Config Source Files"
-)
-
 # Main library
 file(
     GLOB_RECURSE LIB_SOURCES  CONFIGURE_DEPENDS
