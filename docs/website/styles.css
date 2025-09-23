@@ -2960,21 +2960,18 @@ footer a:focus {
 /***** cutout box sizing *****/
 
 .box1 {
-    width: 300px;
-    height: 300px;
-    margin: 0rem 2rem;
+    width: min(300px, 80vw);
+    height: min(300px, 80vw);
 }
 
 .box2 {
-    width: 150px;
-    height: 150px;
-    margin: 0rem 1rem;
+    width: min(150px, 40vw);
+    height: min(150px, 40vw);
 }
 
 .box3 {
-    width: 450px;
-    height: 450px;
-    margin: 0rem 2rem;
+    width: min(450px, 90vw);
+    height: min(450px, 90vw);
 }
 
 /***** cutout box shapes *****/
@@ -2983,21 +2980,18 @@ footer a:focus {
     background-image: url("./assets/image-box.svg");
     background-repeat: no-repeat;
     background-position: center center;
-    background-size: stretch;
 }
 
 .box-shape2 {
     background-image: url("./assets/image-box2.svg");
     background-repeat: no-repeat;
     background-position: center center;
-    background-size: stretch;
 }
 
 .box-shape3 {
     background-image: url("./assets/image-box3.svg");
     background-repeat: no-repeat;
     background-position: center center;
-    background-size: stretch;
 }
 
 
