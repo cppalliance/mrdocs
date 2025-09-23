@@ -1369,7 +1369,10 @@ code, kbd, pre, samp {
 
 pre {
     -ms-overflow-style: scrollbar;
-    overflow: auto
+    overflow: auto;
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 code, kbd, pre {
@@ -1387,7 +1390,10 @@ code, kbd {
 pre {
     display: block;
     margin-bottom: var(--spacing);
-    overflow-x: auto
+    overflow-x: auto;
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 pre > code {
@@ -1397,6 +1403,11 @@ pre > code {
     font-size: 14px;
     line-height: var(--line-height);
     overflow-x: auto;
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    white-space: pre-wrap;
 }
 
 code b {
@@ -2980,18 +2991,21 @@ footer a:focus {
     background-image: url("./assets/image-box.svg");
     background-repeat: no-repeat;
     background-position: center center;
+    background-size: contain;
 }
 
 .box-shape2 {
     background-image: url("./assets/image-box2.svg");
     background-repeat: no-repeat;
     background-position: center center;
+    background-size: contain;
 }
 
 .box-shape3 {
     background-image: url("./assets/image-box3.svg");
     background-repeat: no-repeat;
     background-position: center center;
+    background-size: contain;
 }
 
 
@@ -3082,20 +3096,24 @@ footer a:focus {
    Header Styles
 =========================== */
 
-header .container {
-	display: flex;
-	flex-direction: column;
+.header-banner {
+	align-items: center;
+	justify-items: center;
 }
 
-header .header-image {
-	align-self: center;
+.header-image {
+	max-width: 100%;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 @media (min-width: 768px) {
-	header .container {
+	.header-banner {
+		grid-template-columns: 1fr 1fr;
 		align-items: center;
-		justify-content: center;
-		flex-direction: row;
+		justify-items: center;
 	}
 }
 
@@ -3208,6 +3226,11 @@ header .header-image {
 
 .principles-image {
 	order: 2;
+	max-width: 100%;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 @media (min-width: 768px) {
@@ -3224,12 +3247,6 @@ header .header-image {
 		flex-direction: column;
 		gap: 2.5rem;
 	}
-
-  .principles-banner {
-    grid-template-columns: 35% 65%;
-		align-items: center;
-		justify-items: center;
-  }
 
 	.principles-features {
 		display: grid;

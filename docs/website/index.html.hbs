@@ -62,20 +62,22 @@
     </nav>
     <header>
         <div class="container">
-            <div class="header-content">
-                <h1>{{ title }}</h1>
-                <p>{{ description }}</p>
-                <div class="header-cta">
-                    <a href="docs/" class="contrast outline">Get started</a>
-                    <a href="docs/mrdocs/install.html" class="primary">Download</a>
+            <div class="grid header-banner">
+                <div class="header-content">
+                    <h1>{{ title }}</h1>
+                    <p>{{ description }}</p>
+                    <div class="header-cta">
+                        <a href="docs/" class="contrast outline">Get started</a>
+                        <a href="docs/mrdocs/install.html" class="primary">Download</a>
+                    </div>
+                    <div class="banner-snippet">
+                        <small><code>{{ banner.description }}</code></small>
+                    </div>
                 </div>
-                <div class="banner-snippet">
-                    <small><code>{{ banner.description }}</code></small>
-                </div>
-            </div>
-            <div class="header-image">
-                <div class="box3 box-shape2 box270">
-                    <div class="inner-box mrdocs"></div>
+                <div class="header-image">
+                    <div class="box3 box-shape2 box270">
+                        <div class="inner-box mrdocs"></div>
+                    </div>
                 </div>
             </div>
         </div>
