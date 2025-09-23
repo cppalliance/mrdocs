@@ -626,6 +626,22 @@ stringOrNull(
     return nullptr;
 }
 
+/** Return a non-empty string, or a null.
+
+    @param s The string to check.
+*/
+inline
+Value
+stringOrNull(
+    Optional<std::string> s)
+{
+    if(s.has_value())
+    {
+        return {*s};
+    }
+    return nullptr;
+}
+
 //------------------------------------------------
 
 /** Customization point tag.

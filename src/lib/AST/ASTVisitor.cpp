@@ -883,11 +883,14 @@ populate(
         if (!param.Default && default_arg)
         {
             param.Default = getSourceCode(default_arg->getSourceRange());
-            param.Default = trim(*param.Default);
-            if (param.Default->starts_with("= "))
+            if (param.Default)
             {
-                param.Default->erase(0, 2);
-                param.Default = ltrim(*param.Default);
+                param.Default = trim(*param.Default);
+                if (param.Default->starts_with("= "))
+                {
+                    param.Default->erase(0, 2);
+                    param.Default = ltrim(*param.Default);
+                }
             }
         }
     }

@@ -418,7 +418,7 @@ tag_invoke(
 }
 
 inline
-OptionalLocation
+Optional<Location>
 getPrimaryLocation(Info const& I)
 {
     return getPrimaryLocation(

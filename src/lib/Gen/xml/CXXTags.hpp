@@ -260,8 +260,8 @@ inline void writeReturnType(TypeInfo const& I, XMLTags& tags)
 inline void writeParam(Param const& P, XMLTags& tags)
 {
     tags.open(paramTagName, {
-        { "name", *P.Name, P.Name.has_value() },
-        { "default", *P.Default, P.Default.has_value() },
+        { "name", P.Name.has_value() ? *P.Name : "", P.Name.has_value() },
+        { "default", P.Default.has_value() ? *P.Default : "", P.Default.has_value() },
         });
     writeType(*P.Type, tags);
     tags.close(paramTagName);

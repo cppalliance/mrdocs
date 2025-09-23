@@ -80,7 +80,7 @@ merge(SourceInfo& I, SourceInfo&& Other)
     mergeImpl<true>(I, Other);
 }
 
-OptionalLocation
+Optional<Location>
 getPrimaryLocation(SourceInfo const& I, bool const preferDefinition)
 {
     if (I.Loc.empty() ||
@@ -93,9 +93,9 @@ getPrimaryLocation(SourceInfo const& I, bool const preferDefinition)
             I.Loc, &Location::Documented);
     if (documentedIt != I.Loc.end())
     {
-        return OptionalLocation(*documentedIt);
+        return Optional<Location>(*documentedIt);
     }
-    return OptionalLocation(I.Loc.front());
+    return Optional<Location>(I.Loc.front());
 }
 
 template <class IO>

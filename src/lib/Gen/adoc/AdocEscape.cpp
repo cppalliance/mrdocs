@@ -11,6 +11,7 @@
 
 #include "AdocEscape.hpp"
 #include <mrdocs/Support/Handlebars.hpp>
+#include <ranges>
 
 namespace clang::mrdocs::adoc {
 
