@@ -66,6 +66,15 @@ a:focus {
     text-decoration: underline;
 }
 
+/* Ensure inline SVGs follow link color (incl. iOS Safari) */
+a svg {
+    color: inherit;
+    fill: currentColor;
+}
+a svg path {
+    fill: currentColor;
+}
+
 a.contrast, a.secondary {
     --text-decoration: underline
 }
@@ -2062,7 +2071,7 @@ body > nav a {
 body > nav a svg {
     vertical-align: text-bottom;
     height: 1rem;
-		color: initial;
+		color: var(--muted-color);
 }
 
 body > nav ul:first-of-type li {
@@ -2302,6 +2311,13 @@ svg {
     height: 1.25rem
 }
 
+/* Re-assert link-driven SVG color after global svg rule (cascade) */
+a svg {
+    color: inherit;
+    fill: currentColor;
+}
+a svg path { fill: currentColor; }
+
  h4 {
     --font-size: 1rem;
     --font-weight: 400;
@@ -2509,19 +2525,14 @@ body > footer ul, body > footer ul li {
 
 body > footer li {
     display: inline-block
-}
-
-body > footer li:not(:first-child)::before {
-    margin: 0 .25rem;
-    content: "·"
-}
+} 
 
 body > footer ul:first-of-type {
     margin-bottom: calc(var(--spacing) * .5)
 }
 
 body > footer ul:first-of-type a {
-    text-decoration: none
+    text-decoration:
 }
 
 @media (max-width: 767px) {
@@ -2908,6 +2919,10 @@ ol a:focus {
     margin-right: 1.5rem;
 }
 
+.nav-link svg {
+    color: inherit;
+}
+
 .nav ul li {
     list-style: none;
 }
@@ -3277,6 +3292,7 @@ footer ul {
     list-style: none;
     padding: 0;
     margin: 0;
+    gap: 1rem;
 }
 
 footer a {

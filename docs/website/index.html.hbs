@@ -46,9 +46,9 @@
         <div class="nav-section">
             <ul role="menubar">
             {{#each navbar}}
-            <li><a href="{{ href }}">{{ title }}</a></li>
+            <li class="nav-link"><a href="{{ href }}">{{ title }}</a></li>
             {{/each}}
-            <li>
+            <li class="nav-link">
                 <a href="{{ site.github.url }}" class="contrast" aria-label="{{ site.title }} GitHub repository">
                         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 496 512" height="16px">
@@ -178,11 +178,11 @@
     </main>
     <footer>
         <div class="container">
-            <ul>
+            <ul class="footer-links">
                 {{#each navbar}}
-                <li><a href="{{ href }}">{{ title }}</a></li>
+                <li class="footer-link"><a href="{{ href }}">{{ title }}</a></li>
                 {{/each}}
-                <li><a href="https://github.com/cppalliance/mrdocs">GitHub</a></li>
+                <li class="footer-link"><a href="https://github.com/cppalliance/mrdocs">GitHub</a></li>
             </ul>
         </div>
     </footer>
