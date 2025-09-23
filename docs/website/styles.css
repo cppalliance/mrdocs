@@ -67,13 +67,6 @@ a:focus {
 }
 
 /* Ensure inline SVGs follow link color (incl. iOS Safari) */
-a svg {
-    color: inherit;
-    fill: currentColor;
-}
-a svg path {
-    fill: currentColor;
-}
 
 a.contrast, a.secondary {
     --text-decoration: underline
@@ -2071,7 +2064,7 @@ body > nav a {
 body > nav a svg {
     vertical-align: text-bottom;
     height: 1rem;
-		color: var(--muted-color);
+		color: inherit;
 }
 
 body > nav ul:first-of-type li {
@@ -2765,6 +2758,7 @@ html {
     height: 48px;
     width: auto;
     flex-shrink: 0;
+    color: var(--nav-logo-color);
 }
 
 .nav .logo-text, .navbar-brand .navbar-item:first-child .logo-text {
@@ -2879,15 +2873,29 @@ ol a:focus {
     overflow: hidden;
 }
 
-.nav a {
+.nav a,
+footer a {
+    color: var(--muted-color);
+    display: inline-flex;
+    -webkit-text-decoration: none;
+    text-decoration: none;
+    --text-decoration: none;
+    transition: transform var(--transition), color var(--transition);
+}
+
+.nav a:visited,
+footer a:visited {
     color: var(--muted-color);
 }
 
 .nav a:hover,
-.nav a:focus {
+.nav a:focus,
+footer a:hover,
+footer a:focus {
     color: #fff;
+    -webkit-text-decoration: none;
+    text-decoration: none;
     transform: translateY(-1px);
-    transition: all var(--transition);
 }
 
 .nav ul {
@@ -3297,12 +3305,10 @@ footer ul {
 
 footer a {
     color: var(--muted-color);
+    display: inline-flex;
+    -webkit-text-decoration: none;
+    text-decoration: none;
+    --text-decoration: none;
+    transition: transform var(--transition), color var(--transition);
 }
 
-footer a:hover,
-footer a:focus {
-    color: #fff;
-    text-decoration: underline;
-    transform: translateY(-1px);
-    transition: all var(--transition);
-}
