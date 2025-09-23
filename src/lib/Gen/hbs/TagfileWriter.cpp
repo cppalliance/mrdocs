@@ -211,8 +211,11 @@ writeFunctionMember(FunctionInfo const& I)
     for(auto const& J : I.Params)
     {
         arglist += toString(*J.Type);
-        arglist += " ";
-        arglist += *J.Name;
+        if (J.Name)
+        {
+            arglist += " ";
+            arglist += *J.Name;
+        }
         arglist += ", ";
     }
     if (arglist.size() > 2) {

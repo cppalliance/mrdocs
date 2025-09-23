@@ -534,10 +534,13 @@ setCntrOrAssignParamName(
         I.Class == FunctionClass::Constructor ||
         I.OverloadedOperator == OperatorKind::Equal,
         false);
-    auto paramNames = std::views::
-        transform(I.Params, [](Param const& p) -> std::string_view {
-        return *p.Name;
-    });
+    auto paramNames =
+        std::views::filter(I.Params, [](Param const& p) -> bool {
+            return p.Name.has_value();
+        }) |
+        std::views::transform([](Param const& p) -> std::string_view {
+            return *p.Name;
+        });
     auto& innerP = innermostType(param.Type);
     std::string_view paramName = "value";
     if (innerP->namedSymbol() == I.Parent)
@@ -557,8 +560,11 @@ setStreamOperatorParamName(
 {
     MRDOCS_CHECK_OR(index < 2, false);
     MRDOCS_CHECK_OR(isStreamInsertion(I), false);
-    auto paramNames = std::views::
-        transform(I.Params, [](Param const& p) -> std::string_view {
+    auto paramNames =
+        std::views::filter(I.Params, [](Param const& p) -> bool {
+        return p.Name.has_value();
+    }) |
+        std::views::transform([](Param const& p) -> std::string_view {
         return *p.Name;
     });
     std::string_view paramName =
@@ -579,8 +585,11 @@ setBinaryOpParamName(
     std::size_t const sizeFree = I.IsRecordMethod ? I.Params.size() + 1 : I.Params.size();
     MRDOCS_CHECK_OR(sizeFree == 2, false);
 
-    auto const paramNames = std::views::
-        transform(I.Params, [](Param const& p) -> std::string_view {
+    auto paramNames =
+        std::views::filter(I.Params, [](Param const& p) -> bool {
+        return p.Name.has_value();
+    }) |
+        std::views::transform([](Param const& p) -> std::string_view {
         return *p.Name;
     });
     std::size_t const indexFree = I.IsRecordMethod ? index + 1 : index;
@@ -601,8 +610,11 @@ setUnaryOpParamName(
     MRDOCS_CHECK_OR(isUnaryOperator(I.OverloadedOperator), false);
     MRDOCS_CHECK_OR(I.Params.size() == 1, false);
 
-    auto const paramNames = std::views::
-        transform(I.Params, [](Param const& p) -> std::string_view {
+    auto paramNames =
+        std::views::filter(I.Params, [](Param const& p) -> bool {
+        return p.Name.has_value();
+    }) |
+        std::views::transform([](Param const& p) -> std::string_view {
         return *p.Name;
     });
     std::string_view paramName = "value";

@@ -314,9 +314,9 @@ tag_invoke(
     Param const& p,
     DomCorpus const*)
 {
-    io.map("name", dom::stringOrNull(*p.Name));
+    io.map("name", dom::stringOrNull(p.Name));
     io.map("type", p.Type);
-    io.map("default", dom::stringOrNull(*p.Default));
+    io.map("default", dom::stringOrNull(p.Default));
 }
 
 void

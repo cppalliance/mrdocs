@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -13,151 +14,331 @@
 #define MRDOCS_API_ADT_OPTIONAL_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <concepts>
+#include <mrdocs/ADT/Nullable.hpp>
+#include <optional>
 #include <type_traits>
 #include <utility>
-#include <ranges>
 
 namespace clang::mrdocs {
 
-/** The default empty predicate.
+/** A compact optional that automatically uses nullable_traits<T> when
+    available.
 
-    This predicate is true when t.empty() returns
-    `true` where `t` is a `T`.
-*/
-struct DefaultEmptyPredicate
-{
-    template <std::ranges::range T>
-    constexpr
-    bool
-    operator()(T const& t) const noexcept
+    Design
+    - If nullable_traits<T> exists, the null state is encoded inside T
+      (via sentinel or clearable-empty semantics). Storage is exactly one T.
+    - Otherwise, this falls back to std::optional<T> and uses its discriminator.
+
+    This single implementation uses a conditional storage type plus if constexpr
+    on has_nullable_traits_v<T> to select the appropriate behavior at compile
+    time.
+**/
+template <class T>
+class Optional {
+    using storage_t = std::conditional_t<
+        has_nullable_traits_v<T>, T, std::optional<T>>;
+
+    static constexpr bool uses_nullable_traits = has_nullable_traits_v<T>;
+
+    // --- noexcept helpers (avoid instantiating both branches) ---
+    static consteval bool default_ctor_noex_()
     {
-        return std::ranges::empty(t);
+        if constexpr (uses_nullable_traits)
+            return noexcept(nullable_traits<T>::null());
+        else
+            return noexcept(storage_t{}); // std::optional<T>{} is noexcept
     }
 
-    template<class T>
-    constexpr
-    bool
-    operator()(T const& t) const noexcept
+    static consteval bool reset_noex_()
     {
-        return !t;
+        if constexpr (uses_nullable_traits)
+            return noexcept(nullable_traits<T>::make_null(std::declval<T&>()));
+        else
+            return noexcept(std::declval<std::optional<T>&>().reset());
     }
-};
 
-/** A compact optional.
+    static consteval bool has_value_noex_()
+    {
+        if constexpr (uses_nullable_traits)
+            return noexcept(nullable_traits<T>::is_null(std::declval<T const&>()));
+        else
+            return noexcept(std::declval<std::optional<T> const&>().has_value());
+    }
 
-    This works like std::optional except the
-    predicate is invoked to determine whether
-    the optional is engaged. This is a space
-    optimization.
-*/
-template<
-    class T,
-    class EmptyPredicate = DefaultEmptyPredicate>
-class Optional
-{
-    T t_;
+    storage_t s_;
 
 public:
     using value_type = T;
 
-    constexpr Optional() = default;
-    constexpr Optional(Optional const& other) = default;
+    /// Default-constructs to the “null” state.
+    constexpr Optional() noexcept(default_ctor_noex_())
+        : s_([&] {
+            if constexpr (uses_nullable_traits)
+            {
+                return storage_t(nullable_traits<T>::null());
+            } else
+            {
+                return storage_t(std::nullopt);
+            }
+        }())
+    {}
 
-    template<class U>
-    requires std::is_constructible_v<T, U>
-    constexpr explicit
-    Optional(U&& u)
-        : t_(std::forward<U>(u))
-    {
-    }
+    /// Copy constructor
+    constexpr Optional(Optional const&) = default;
 
-    constexpr Optional& operator=(Optional const& other) = default;
-    constexpr Optional& operator=(Optional&& other) = default;
+    /// Move constructor
+    constexpr Optional(Optional&&) = default;
 
+    /// Copy assignment
+    constexpr Optional&
+    operator=(Optional const&) = default;
+
+    /// Move assignment
+    constexpr Optional&
+    operator=(Optional&&) = default;
+
+    /** Construct from a value.
+
+        @param u The value to store. It must be convertible to T.
+     **/
     template <class U>
     requires std::is_constructible_v<T, U>
-    constexpr
-    Optional& operator=(U&& u)
+    constexpr explicit Optional(U&& u) noexcept(
+        std::is_nothrow_constructible_v<T, U>)
+        : s_([&] {
+            if constexpr (uses_nullable_traits)
+            {
+                return storage_t(static_cast<T>(std::forward<U>(u)));
+            }
+            else
+            {
+                return storage_t(std::forward<U>(u));
+            }
+        }())
+    {}
+
+    /** Assign from a value.
+
+        @param u The value to store. It must be convertible to T.
+     **/
+    template <class U>
+    requires std::is_constructible_v<T, U> && std::is_assignable_v<T&, U>
+    constexpr Optional&
+    operator=(U&& u) noexcept(std::is_nothrow_assignable_v<T&, U>)
     {
-        t_ = std::forward<U>(u);
+        s_ = std::forward<U>(u);
         return *this;
     }
 
-    constexpr
-    Optional& operator=(std::nullptr_t)
+    /// Assign null (disengage).
+    constexpr Optional&
+    operator=(std::nullptr_t) noexcept(reset_noex_())
     {
-        t_ = T();
-        MRDOCS_ASSERT(!this->operator bool());
+        reset();
+        MRDOCS_ASSERT(!has_value());
         return *this;
     }
 
-    constexpr void reset()
+    /** Reset to the null state. **/
+    constexpr void
+    reset() noexcept(reset_noex_())
     {
-        *this = Optional();
-        MRDOCS_ASSERT(!this->operator bool());
+        if constexpr (uses_nullable_traits)
+        {
+            nullable_traits<T>::make_null(s_);
+        }
+        else
+        {
+            s_.reset();
+        }
+        MRDOCS_ASSERT(!has_value());
     }
 
-    template<typename... Args>
+    /** In-place construct a new value, replacing any existing one.
+
+        @param args The arguments to forward to T's constructor.
+
+        @return A reference to the newly constructed value.
+     **/
+    template <class... Args>
     requires std::is_constructible_v<T, Args...>
-    constexpr value_type& emplace(Args&&... args)
+    constexpr value_type&
+    emplace(Args&&... args) noexcept(
+        std::is_nothrow_constructible_v<T, Args...>)
     {
-        return t_ = T(std::forward<Args>(args)...);
+        if constexpr (uses_nullable_traits)
+        {
+            s_ = T(std::forward<Args>(args)...);
+            return s_;
+        }
+        else
+        {
+            return s_.emplace(std::forward<Args>(args)...);
+        }
     }
 
-    constexpr value_type& value() & noexcept
+    /** True if engaged (contains a value).
+
+        @return `true` if the optional contains a value.
+     **/
+    constexpr bool
+    has_value() const noexcept(has_value_noex_())
     {
-        return t_;
+        if constexpr (uses_nullable_traits)
+        {
+            return !nullable_traits<T>::is_null(s_);
+        }
+        else
+        {
+            return s_.has_value();
+        }
     }
 
-    constexpr value_type const& value() const & noexcept
-    {
-        return t_;
-    }
-
-    constexpr value_type&& value() && noexcept
-    {
-        return std::move(t_);
-    }
-
-    constexpr value_type const&& value() const && noexcept
-    {
-        return std::move(t_);
-    }
-
-    constexpr value_type& operator*() noexcept
-    {
-        return t_;
-    }
-
-    constexpr value_type const& operator*() const noexcept
-    {
-        return t_;
-    }
-
-    constexpr value_type* operator->() noexcept
-    {
-        return &t_;
-    }
-
-    constexpr value_type const* operator->() const noexcept
-    {
-        return &t_;
-    }
-
-    constexpr explicit operator bool() const noexcept
+    /** Contextual bool.
+     **/
+    constexpr explicit
+    operator bool() const noexcept(noexcept(this->has_value()))
     {
         return has_value();
     }
 
-    constexpr bool has_value() const noexcept
+    /** Value access. Preconditions: has_value() is true.
+
+        @return A reference to the contained value.
+     **/
+    constexpr value_type&
+    value() & noexcept
     {
-        return ! EmptyPredicate()(t_);
+        MRDOCS_ASSERT(has_value());
+        if constexpr (uses_nullable_traits)
+        {
+            return s_;
+        }
+        else
+        {
+            return *s_;
+        }
     }
 
-    auto operator<=>(Optional const&) const = default;
+    /// @copydoc value() &
+    constexpr value_type const&
+    value() const& noexcept
+    {
+        MRDOCS_ASSERT(has_value());
+        if constexpr (uses_nullable_traits)
+        {
+            return s_;
+        }
+        else
+        {
+            return *s_;
+        }
+    }
+
+    /// @copydoc value() &
+    constexpr value_type&&
+    value() && noexcept
+    {
+        MRDOCS_ASSERT(has_value());
+        if constexpr (uses_nullable_traits)
+        {
+            return std::move(s_);
+        }
+        else
+        {
+            return std::move(*s_);
+        }
+    }
+
+    /// @copydoc value() &
+    constexpr value_type const&&
+    value() const&& noexcept
+    {
+        MRDOCS_ASSERT(has_value());
+        if constexpr (uses_nullable_traits)
+        {
+            return std::move(s_);
+        }
+        else
+        {
+            return std::move(*s_);
+        }
+    }
+
+    /** Pointer-like access.
+
+        @return A pointer to the contained value.
+     **/
+    constexpr value_type*
+    operator->() noexcept
+    {
+        MRDOCS_ASSERT(has_value());
+        if constexpr (uses_nullable_traits)
+        {
+            return std::addressof(s_);
+        }
+        else
+        {
+            return std::addressof(*s_);
+        }
+    }
+
+    /// @copydoc operator->() noexcept
+    constexpr value_type const*
+    operator->() const noexcept
+    {
+        MRDOCS_ASSERT(has_value());
+        if constexpr (uses_nullable_traits)
+        {
+            return std::addressof(s_);
+        }
+        else
+        {
+            return std::addressof(*s_);
+        }
+    }
+
+    /** Dereference-like access.
+
+        @return A reference to the contained value.
+     **/
+    constexpr value_type&
+    operator*() noexcept
+    {
+        MRDOCS_ASSERT(has_value());
+        if constexpr (uses_nullable_traits)
+        {
+            return s_;
+        }
+        else
+        {
+            return *s_;
+        }
+    }
+
+    /// @copydoc operator*() noexcept
+    constexpr value_type const&
+    operator*() const noexcept
+    {
+        MRDOCS_ASSERT(has_value());
+        if constexpr (uses_nullable_traits)
+        {
+            return s_;
+        }
+        else
+        {
+            return *s_;
+        }
+    }
+
+    /** Three-way comparison defaults when supported by the underlying
+        T/std::optional.
+     **/
+    auto
+    operator<=>(Optional const&) const
+        = default;
 };
 
-} // clang::mrdocs
+} // namespace clang::mrdocs
 
 #endif

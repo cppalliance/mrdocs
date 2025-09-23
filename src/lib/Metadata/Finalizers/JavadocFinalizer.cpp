@@ -1760,6 +1760,7 @@ warnNoParamDocs(FunctionInfo const& I)
     auto javadocParamNames = getJavadocParamNames(*I.javadoc);
     auto paramNames =
         std::views::transform(I.Params, &Param::Name) |
+        std::views::filter([](Optional<std::string> const& name) { return name.has_value(); }) |
         std::views::transform([](Optional<std::string> const& name) -> std::string_view { return *name; }) |
         std::views::filter([](std::string_view const& name) { return !name.empty(); });
     for (auto const& paramName: paramNames)

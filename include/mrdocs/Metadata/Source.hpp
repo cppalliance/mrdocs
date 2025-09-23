@@ -94,18 +94,50 @@ tag_invoke(
     dom::Value& v,
     Location const& loc);
 
-struct LocationEmptyPredicate
+/** nullable_traits specialization for Location.
+
+    Semantics
+    - The “null” (sentinel) state is any Location whose ShortPath is empty.
+    - Creating a null value produces a Location with all fields defaulted
+      and ShortPath empty.
+    - Making an existing value null clears ShortPath and resets the other
+      fields to their defaults.
+
+    Rationale
+    - This mirrors the old LocationEmptyPredicate, which treated an empty
+      ShortPath as “empty/null.”
+**/
+template<>
+struct nullable_traits<Location>
 {
-    constexpr bool operator()(
-        Location const& loc) const noexcept
+    static constexpr bool
+    is_null(Location const& v) noexcept
     {
-        return loc.ShortPath.empty();
+        return v.ShortPath.empty();
+    }
+
+    static constexpr Location
+    null() noexcept
+    {
+        return Location{
+            /*full_path*/   {},
+            /*short_path*/  {},
+            /*source_path*/ {},
+            /*line*/        0u,
+            /*documented*/  false
+        };
+    }
+
+    static constexpr void
+    make_null(Location& v) noexcept
+    {
+        v.FullPath.clear();
+        v.ShortPath.clear();    // sentinel condition
+        v.SourcePath.clear();
+        v.LineNumber  = 0;
+        v.Documented  = false;
     }
 };
-
-/** Like std::optional<Location>
-*/
-using OptionalLocation = Optional<Location, LocationEmptyPredicate>;
 
 /** Stores source information for a declaration.
 */
@@ -119,7 +151,7 @@ struct MRDOCS_DECL
         actually a definition (e.g. alias-declarations and
         typedef declarations are never definition).
     */
-    OptionalLocation DefLoc;
+    Optional<Location> DefLoc;
 
     /** Locations where the entity was declared.
 
@@ -154,7 +186,7 @@ void
 merge(SourceInfo& I, SourceInfo&& Other);
 
 MRDOCS_DECL
-OptionalLocation
+Optional<Location>
 getPrimaryLocation(SourceInfo const& I, bool preferDefinition);
 
 void

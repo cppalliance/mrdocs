@@ -117,7 +117,7 @@ namespace test_suite::detail
         binary_operands<T, U const &>
         operator==(first_operand &&lhs, U &&rhs)
         {
-            if constexpr (integral_comparison<U>)
+            if constexpr (integral_comparison<U> && !std::same_as<bool, std::decay_t<U>>)
             {
                 return {std::cmp_equal( lhs.lhs_, rhs ), lhs.lhs_, "==", rhs};
             }
