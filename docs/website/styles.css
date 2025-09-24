@@ -66,6 +66,8 @@ a:focus {
     text-decoration: underline;
 }
 
+/* Ensure inline SVGs follow link color (incl. iOS Safari) */
+
 a.contrast, a.secondary {
     --text-decoration: underline
 }
@@ -1367,7 +1369,10 @@ code, kbd, pre, samp {
 
 pre {
     -ms-overflow-style: scrollbar;
-    overflow: auto
+    overflow: auto;
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 code, kbd, pre {
@@ -1385,7 +1390,10 @@ code, kbd {
 pre {
     display: block;
     margin-bottom: var(--spacing);
-    overflow-x: auto
+    overflow-x: auto;
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 pre > code {
@@ -1395,6 +1403,11 @@ pre > code {
     font-size: 14px;
     line-height: var(--line-height);
     overflow-x: auto;
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    white-space: pre-wrap;
 }
 
 code b {
@@ -2062,7 +2075,7 @@ body > nav a {
 body > nav a svg {
     vertical-align: text-bottom;
     height: 1rem;
-		color: initial;
+		color: inherit;
 }
 
 body > nav ul:first-of-type li {
@@ -2302,6 +2315,13 @@ svg {
     height: 1.25rem
 }
 
+/* Re-assert link-driven SVG color after global svg rule (cascade) */
+a svg {
+    color: inherit;
+    fill: currentColor;
+}
+a svg path { fill: currentColor; }
+
  h4 {
     --font-size: 1rem;
     --font-weight: 400;
@@ -2509,19 +2529,14 @@ body > footer ul, body > footer ul li {
 
 body > footer li {
     display: inline-block
-}
-
-body > footer li:not(:first-child)::before {
-    margin: 0 .25rem;
-    content: "·"
-}
+} 
 
 body > footer ul:first-of-type {
     margin-bottom: calc(var(--spacing) * .5)
 }
 
 body > footer ul:first-of-type a {
-    text-decoration: none
+    text-decoration:
 }
 
 @media (max-width: 767px) {
@@ -2754,6 +2769,7 @@ html {
     height: 48px;
     width: auto;
     flex-shrink: 0;
+    color: var(--nav-logo-color);
 }
 
 .nav .logo-text, .navbar-brand .navbar-item:first-child .logo-text {
@@ -2868,15 +2884,29 @@ ol a:focus {
     overflow: hidden;
 }
 
-.nav a {
+.nav a,
+footer a {
+    color: var(--muted-color);
+    display: inline-flex;
+    -webkit-text-decoration: none;
+    text-decoration: none;
+    --text-decoration: none;
+    transition: transform var(--transition), color var(--transition);
+}
+
+.nav a:visited,
+footer a:visited {
     color: var(--muted-color);
 }
 
 .nav a:hover,
-.nav a:focus {
+.nav a:focus,
+footer a:hover,
+footer a:focus {
     color: #fff;
+    -webkit-text-decoration: none;
+    text-decoration: none;
     transform: translateY(-1px);
-    transition: all var(--transition);
 }
 
 .nav ul {
@@ -2908,6 +2938,10 @@ ol a:focus {
     margin-right: 1.5rem;
 }
 
+.nav-link svg {
+    color: inherit;
+}
+
 .nav ul li {
     list-style: none;
 }
@@ -2937,21 +2971,18 @@ ol a:focus {
 /***** cutout box sizing *****/
 
 .box1 {
-    width: 300px;
-    height: 300px;
-    margin: 0rem 2rem;
+    width: min(300px, 80vw);
+    height: min(300px, 80vw);
 }
 
 .box2 {
-    width: 150px;
-    height: 150px;
-    margin: 0rem 1rem;
+    width: min(150px, 40vw);
+    height: min(150px, 40vw);
 }
 
 .box3 {
-    width: 450px;
-    height: 450px;
-    margin: 0rem 2rem;
+    width: min(450px, 90vw);
+    height: min(450px, 90vw);
 }
 
 /***** cutout box shapes *****/
@@ -2960,21 +2991,21 @@ ol a:focus {
     background-image: url("./assets/image-box.svg");
     background-repeat: no-repeat;
     background-position: center center;
-    background-size: stretch;
+    background-size: contain;
 }
 
 .box-shape2 {
     background-image: url("./assets/image-box2.svg");
     background-repeat: no-repeat;
     background-position: center center;
-    background-size: stretch;
+    background-size: contain;
 }
 
 .box-shape3 {
     background-image: url("./assets/image-box3.svg");
     background-repeat: no-repeat;
     background-position: center center;
-    background-size: stretch;
+    background-size: contain;
 }
 
 
@@ -2990,8 +3021,7 @@ ol a:focus {
 }
 
 .box90 .inner-box {
-    transform: rotate(270deg);
-    background-size: contain;
+    --inner-box-rotation: 270deg;
 }
 
 .box180 {
@@ -3000,8 +3030,7 @@ ol a:focus {
 }
 
 .box180 .inner-box {
-    transform: rotate(-180deg);
-    background-size: contain;
+    --inner-box-rotation: -180deg;
 }
 
 .box270 {
@@ -3010,22 +3039,35 @@ ol a:focus {
 }
 
 .box270 .inner-box {
-    transform: rotate(90deg);
-    background-size: contain;
+    --inner-box-rotation: 90deg;
+}
+
+/* Tablet scaling adjustments */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .inner-box {
+        --inner-box-scale: 0.85;
+    }
 }
 
 /***** cutout box inner content and images *****/
+:root {
+    --inner-box-rotation: 0deg;
+    --inner-box-scale: 0.85;
+}
+
 .inner-box {
-    height: 58%;
-    width: 58%;
+    height: 70%;
+    width: 70%;
     position: absolute;
-    top: 21%;
-    left: 21%;
+    top: 15%;
+    left: 15%;
     color: black;
+    overflow: hidden;
 
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
+    transform: rotate(var(--inner-box-rotation)) scale(var(--inner-box-scale));
 }
 
 
@@ -3065,20 +3107,24 @@ ol a:focus {
    Header Styles
 =========================== */
 
-header .container {
-	display: flex;
-	flex-direction: column;
+.header-banner {
+	align-items: center;
+	justify-items: center;
 }
 
-header .header-image {
-	align-self: center;
+.header-image {
+	max-width: 100%;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 @media (min-width: 768px) {
-	header .container {
+	.header-banner {
+		grid-template-columns: 1fr 1fr;
 		align-items: center;
-		justify-content: center;
-		flex-direction: row;
+		justify-items: center;
 	}
 }
 
@@ -3191,6 +3237,11 @@ header .header-image {
 
 .principles-image {
 	order: 2;
+	max-width: 100%;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 @media (min-width: 768px) {
@@ -3207,12 +3258,6 @@ header .header-image {
 		flex-direction: column;
 		gap: 2.5rem;
 	}
-
-  .principles-banner {
-    grid-template-columns: 35% 65%;
-		align-items: center;
-		justify-items: center;
-  }
 
 	.principles-features {
 		display: grid;
@@ -3277,16 +3322,15 @@ footer ul {
     list-style: none;
     padding: 0;
     margin: 0;
+    gap: 1rem;
 }
 
 footer a {
     color: var(--muted-color);
+    display: inline-flex;
+    -webkit-text-decoration: none;
+    text-decoration: none;
+    --text-decoration: none;
+    transition: transform var(--transition), color var(--transition);
 }
 
-footer a:hover,
-footer a:focus {
-    color: #fff;
-    text-decoration: underline;
-    transform: translateY(-1px);
-    transition: all var(--transition);
-}

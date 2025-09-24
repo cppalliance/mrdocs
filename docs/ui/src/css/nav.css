@@ -21,10 +21,6 @@
     width: var(--nav-width);
     background-color: transparent;
   }
-
-  .nav-container .nav {
-    background-color: rgb(255 255 255 / 18%);
-  }
 }
 
 @media screen and (min-width: 1024px) {
