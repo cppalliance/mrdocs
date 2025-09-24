@@ -3021,8 +3021,7 @@ footer a:focus {
 }
 
 .box90 .inner-box {
-    transform: rotate(270deg);
-    background-size: contain;
+    --inner-box-rotation: 270deg;
 }
 
 .box180 {
@@ -3031,8 +3030,7 @@ footer a:focus {
 }
 
 .box180 .inner-box {
-    transform: rotate(-180deg);
-    background-size: contain;
+    --inner-box-rotation: -180deg;
 }
 
 .box270 {
@@ -3041,22 +3039,35 @@ footer a:focus {
 }
 
 .box270 .inner-box {
-    transform: rotate(90deg);
-    background-size: contain;
+    --inner-box-rotation: 90deg;
+}
+
+/* Tablet scaling adjustments */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .inner-box {
+        --inner-box-scale: 0.85;
+    }
 }
 
 /***** cutout box inner content and images *****/
+:root {
+    --inner-box-rotation: 0deg;
+    --inner-box-scale: 0.85;
+}
+
 .inner-box {
-    height: 58%;
-    width: 58%;
+    height: 70%;
+    width: 70%;
     position: absolute;
-    top: 21%;
-    left: 21%;
+    top: 15%;
+    left: 15%;
     color: black;
+    overflow: hidden;
 
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
+    transform: rotate(var(--inner-box-rotation)) scale(var(--inner-box-scale));
 }
 
 
