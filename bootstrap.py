@@ -2369,6 +2369,12 @@ class MrDocsInstaller:
             "args": [],
             "cwd": self.options.mrdocs_src_dir
         })
+        configs.append({
+            "name": f"MrDocs Reformat Source Files",
+            "script": os.path.join(self.options.mrdocs_src_dir, 'util', 'reformat.py'),
+            "args": [],
+            "cwd": self.options.mrdocs_src_dir
+        })
 
         # Documentation generation targets
         mrdocs_docs_dir = os.path.join(self.options.mrdocs_src_dir, "docs")

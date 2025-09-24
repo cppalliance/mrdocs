@@ -1,0 +1,226 @@
+#
+# Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
+#
+# Distributed under the Boost Software License, Version 1.0.
+# See accompanying file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt
+#
+
+# ---------------------------------------------------------------------------
+# MrDocs Formatting Guidelines (Clang-Format Reference)
+#
+# This file encodes the formatting style we generally follow in MrDocs,
+# based on conventions we have been using in Boost projects.
+#
+# Important:
+# - Do not run clang-format across entire files or the whole project.
+# - This configuration is provided as a *reference* to help new contributors
+#   understand the style rules and configure their editors/IDEs.
+# - You may use clang-format to format only the *new code you add or modify*
+#   in a commit. Never reformat unrelated code.
+#
+# The goal is to keep the codebase consistent and allow new contributors
+# to follow the same style, while minimizing churn and noise, and
+# without introducing large, style-only changes in version history.
+#
+# If in doubt, look at the surrounding code in the file and follow its style.
+# This file is here to make that easier, not to replace careful review.
+# ---------------------------------------------------------------------------
+
+Language: Cpp
+Standard: Latest
+BasedOnStyle: Microsoft
+
+# Columns and Lines
+ColumnLimit: 80
+ReflowComments: Always
+TabWidth: 8
+UseCRLF: false
+UseTab: Never
+DeriveLineEnding: true
+
+# Breaking around braces
+InsertBraces: true
+BreakBeforeBraces: Custom
+BraceWrapping:
+  # Control
+  AfterControlStatement: Always
+  AfterCaseLabel: true
+  BeforeCatch: true
+  BeforeElse: true
+  BeforeWhile: true
+  # Definition
+  AfterNamespace: false
+  AfterStruct: false
+  AfterClass: false
+  SplitEmptyRecord: false
+  AfterFunction: true
+  SplitEmptyFunction: false
+  BeforeLambdaBody: false
+  AfterEnum: false
+  SplitEmptyNamespace: true
+  AfterUnion: false
+  AfterExternBlock: true
+  # Extra
+  IndentBraces: false
+
+# Breaking around specifiers
+#     Namespaces
+CompactNamespaces: false
+#     Templates
+AlwaysBreakTemplateDeclarations: Yes
+BreakBeforeConceptDeclarations: true
+#     Classes
+BreakInheritanceList: BeforeComma
+EmptyLineAfterAccessModifier: Never
+EmptyLineBeforeAccessModifier: Leave
+#     Functions
+AlwaysBreakAfterDefinitionReturnType: All
+AlwaysBreakAfterReturnType: All
+MaxEmptyLinesToKeep: 2
+#     Strings
+AlwaysBreakBeforeMultilineStrings: false
+BreakStringLiterals: true
+#     Expressions
+BreakConstructorInitializers: BeforeComma
+BreakBeforeBinaryOperators: All
+BreakBeforeTernaryOperators: false
+
+# Breaking single line blocks
+#     Control
+AllowShortBlocksOnASingleLine: Never
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+#     Declarations
+AllowShortEnumsOnASingleLine: false
+#     Function
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortLambdasOnASingleLine: Inline
+#     Expressions
+AllowAllArgumentsOnNextLine: false
+
+# Indentation
+#    Parameters
+IndentWidth: 4
+#    Definitions
+NamespaceIndentation: None
+IndentExternBlock: NoIndent
+IndentPPDirectives: AfterHash
+#    Classes
+AccessModifierOffset: -4
+IndentAccessModifiers: false
+#    Templates
+IndentRequires: false
+#    Functions
+IndentWrappedFunctionNames: false
+LambdaBodyIndentation: OuterScope
+#    Control
+ConstructorInitializerIndentWidth: 4
+IndentCaseBlocks: false
+IndentCaseLabels: false
+IndentGotoLabels: true
+#    Expressions
+ContinuationIndentWidth: 4
+InsertTrailingCommas: None
+KeepEmptyLinesAtTheStartOfBlocks: false
+
+# Alignment
+#    Macros
+AlignConsecutiveMacros: Consecutive
+AttributeMacros: [ 'FUTURES_CONSTEXPR', 'FUTURES_NODISCARD' ]
+IfMacros: [ 'FUTURES_IF_CONSTEXPR', 'SECTION', 'TEST_CASE' ]
+TypenameMacros: [ 'FUTURES_DETAIL' ]
+#    Declaration
+PointerAlignment: Left
+ReferenceAlignment: Pointer
+DerivePointerAlignment: true
+AlignConsecutiveDeclarations: None
+QualifierAlignment: Custom
+QualifierOrder: [ 'inline', 'static', 'constexpr', 'type', 'const' ]
+#    Namespace
+ShortNamespaceLines: 0
+#    Brackets
+AlignAfterOpenBracket: AlwaysBreak
+#    Expressions
+AlignArrayOfStructures: Right
+AlignConsecutiveAssignments: None
+AlignConsecutiveBitFields: None
+AlignEscapedNewlines: Left
+AlignOperands: Align
+AlignTrailingComments: true
+
+# Spaces
+SpaceAfterCStyleCast: true
+SpaceAfterLogicalNot: false
+SpaceAfterTemplateKeyword: true
+SpaceAroundPointerQualifiers: Default
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeCaseColon: false
+SpaceBeforeCpp11BracedList: false
+SpaceBeforeCtorInitializerColon: true
+SpaceBeforeInheritanceColon: true
+SpaceBeforeParens: ControlStatements
+SpaceBeforeRangeBasedForLoopColon: false
+SpacesInSquareBrackets: false
+SpaceBeforeSquareBrackets: false
+SpacesBeforeTrailingComments: 1
+SpaceInEmptyBlock: false
+SpaceInEmptyParentheses: false
+SpacesInAngles: Never
+SpacesInCStyleCastParentheses: false
+SpacesInConditionalStatement: false
+SpacesInParentheses: false
+Cpp11BracedListStyle: false
+
+# BinPack
+BinPackArguments: false
+BinPackParameters: false
+BitFieldColonSpacing: After
+ExperimentalAutoDetectBinPacking: true
+PackConstructorInitializers: CurrentLine
+
+# Penalties
+PenaltyBreakAssignment: 512
+PenaltyBreakBeforeFirstCallParameter: 512
+PenaltyBreakComment: 512
+PenaltyBreakFirstLessLess: 512
+PenaltyBreakString: 512
+PenaltyBreakTemplateDeclaration: 512
+PenaltyExcessCharacter: 256
+PenaltyIndentedWhitespace: 8
+PenaltyReturnTypeOnItsOwnLine: 2
+
+# Sorting
+SortIncludes: CaseInsensitive
+SortUsingDeclarations: true
+IncludeBlocks: Merge
+IncludeCategories:
+  - Regex: '^<mrdocs/Platform\.hpp>$'            # always first
+    Priority: 0
+  - Regex: '^".*"'                               # quoted includes come next
+    Priority: 1
+  - Regex: '^<lib/.*>'                        # internal project headers
+    Priority: 2
+  - Regex: '^<mrdocs/.*>'                        # internal project headers
+    Priority: 3
+  - Regex: '^<test_suite/.*>'                    # test suite headers
+    Priority: 4
+  - Regex: '^<clang/.*>'                         # clang headers
+    Priority: 5
+  - Regex: '^<llvm/.*>'                          # llvm headers
+    Priority: 6
+  - Regex: '^<fmt/.*>'                           # fmt headers
+    Priority: 7
+  - Regex: '^<duktape/.*>'                       # duktape headers
+    Priority: 8
+  - Regex: '^<(?!mrdocs/|clang/|llvm/|test_suite/|fmt/|duktape/)[^/]+/.*>' # other angle-bracket includes
+    Priority: 9
+  - Regex: '^<[^/]+>'                            # C++ standard headers like <vector>
+    Priority: 10
+  - Regex: '.*'                                  # fallback
+    Priority: 11
+
+# Comments
+FixNamespaceComments: true
+CommentPragmas: '^ clang-format'
