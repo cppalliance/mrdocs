@@ -9,8 +9,8 @@
 //
 
 #include <mrdocs/Dom/Value.hpp>
-#include <unordered_set>
 #include <algorithm>
+#include <unordered_set>
 
 namespace clang {
 namespace mrdocs {

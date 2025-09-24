@@ -9,15 +9,13 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "lib/Gen/xml/CXXTags.hpp"
 #include "TagfileWriter.hpp"
-#include "lib/Gen/hbs/VisitorHelpers.hpp"
-#include "lib/ConfigImpl.hpp"
-#include "lib/Support/RawOstream.hpp"
-
-#include <llvm/Support/FileSystem.h>
-
+#include <lib/ConfigImpl.hpp>
+#include <lib/Gen/hbs/VisitorHelpers.hpp>
+#include <lib/Gen/xml/CXXTags.hpp>
+#include <lib/Support/RawOstream.hpp>
 #include <mrdocs/Support/Path.hpp>
+#include <llvm/Support/FileSystem.h>
 
 namespace clang::mrdocs {
 
@@ -202,7 +200,11 @@ TagfileWriter::
 writeFunctionMember(FunctionInfo const& I)
 {
     tags_.open("member", {{"kind", "function"}});
-    tags_.write("type", toString(*I.ReturnType));
+    if (I.ReturnType)
+    {
+        MRDOCS_ASSERT(!I.ReturnType->valueless_after_move());
+        tags_.write("type", toString(**I.ReturnType));
+    }
     tags_.write("name", I.Name);
     auto [anchorFile, anchor] = generateFileAndAnchor(I);
     tags_.write("anchorfile", anchorFile);
@@ -210,10 +212,16 @@ writeFunctionMember(FunctionInfo const& I)
     std::string arglist = "(";
     for(auto const& J : I.Params)
     {
-        arglist += toString(*J.Type);
+        if (J.Type)
+        {
+            arglist += toString(**J.Type);
+            if (J.Name)
+            {
+                arglist += " ";
+            }
+        }
         if (J.Name)
         {
-            arglist += " ";
             arglist += *J.Name;
         }
         arglist += ", ";

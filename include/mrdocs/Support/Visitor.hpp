@@ -8,12 +8,12 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_TOOL_SUPPORT_VISITOR_HPP
-#define MRDOCS_TOOL_SUPPORT_VISITOR_HPP
+#ifndef MRDOCS_API_SUPPORT_VISITOR_HPP
+#define MRDOCS_API_SUPPORT_VISITOR_HPP
 
 #include <mrdocs/Support/TypeTraits.hpp>
-#include <utility>
 #include <tuple>
+#include <utility>
 
 namespace clang::mrdocs {
 
@@ -126,4 +126,4 @@ makeVisitor(
 
 } // clang::mrdocs
 
-#endif
+#endif // MRDOCS_API_SUPPORT_VISITOR_HPP

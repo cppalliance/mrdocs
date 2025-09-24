@@ -11,17 +11,17 @@
 #ifndef MRDOCS_API_DOM_VALUE_HPP
 #define MRDOCS_API_DOM_VALUE_HPP
 
-#include <charconv>
-#include <compare>
-#include <format>
+#include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Optional.hpp>
 #include <mrdocs/Dom/Array.hpp>
 #include <mrdocs/Dom/Function.hpp>
 #include <mrdocs/Dom/Kind.hpp>
 #include <mrdocs/Dom/Object.hpp>
 #include <mrdocs/Dom/String.hpp>
-#include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/Error.hpp>
+#include <charconv>
+#include <compare>
+#include <format>
 #include <optional> // BAD
 #include <string>
 

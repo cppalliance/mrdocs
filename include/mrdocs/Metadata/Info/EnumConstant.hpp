@@ -8,12 +8,12 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_METADATA_ENUMCONSTANT_HPP
-#define MRDOCS_API_METADATA_ENUMCONSTANT_HPP
+#ifndef MRDOCS_API_METADATA_INFO_ENUMCONSTANT_HPP
+#define MRDOCS_API_METADATA_INFO_ENUMCONSTANT_HPP
 
 #include <mrdocs/Metadata/Expression.hpp>
 #include <mrdocs/Metadata/Info.hpp>
-#include <mrdocs/Metadata/Source.hpp>
+#include <mrdocs/Metadata/Info/Source.hpp>
 
 namespace clang::mrdocs {
 
@@ -75,4 +75,4 @@ tag_invoke(
 
 } // clang::mrdocs
 
-#endif
+#endif // MRDOCS_API_METADATA_INFO_ENUMCONSTANT_HPP

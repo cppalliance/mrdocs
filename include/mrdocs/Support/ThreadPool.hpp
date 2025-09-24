@@ -9,12 +9,12 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_SUPPORT_THREAD_HPP
-#define MRDOCS_API_SUPPORT_THREAD_HPP
+#ifndef MRDOCS_API_SUPPORT_THREADPOOL_HPP
+#define MRDOCS_API_SUPPORT_THREADPOOL_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Support/any_callable.hpp>
 #include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/any_callable.hpp>
 #include <memory>
 #include <type_traits>
 #include <utility>
@@ -188,4 +188,4 @@ forEach(
 } // mrdocs
 } // clang
 
-#endif
+#endif // MRDOCS_API_SUPPORT_THREADPOOL_HPP

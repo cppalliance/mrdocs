@@ -11,9 +11,9 @@
 #ifndef MRDOCS_LIB_SUPPORT_GENERATORSIMPL_HPP
 #define MRDOCS_LIB_SUPPORT_GENERATORSIMPL_HPP
 
-#include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Generators.hpp>
+#include <mrdocs/Support/Error.hpp>
 #include <llvm/ADT/SmallVector.h>
 #include <memory>
 #include <vector>

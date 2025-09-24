@@ -9,9 +9,9 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdocs/Metadata/Info/Typedef.hpp>
-#include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Platform.hpp>
+#include <mrdocs/Metadata/Info.hpp>
+#include <mrdocs/Metadata/Info/Typedef.hpp>
 #include <llvm/ADT/STLExtras.h>
 
 namespace clang::mrdocs {

@@ -12,15 +12,15 @@
 #ifndef MRDOCS_LIB_GEN_XML_XMLTAGS_HPP
 #define MRDOCS_LIB_GEN_XML_XMLTAGS_HPP
 
-#include <optional>
-#include <vector>
+#include <mrdocs/Dom.hpp>
+#include <mrdocs/Metadata/Info/SymbolID.hpp>
+#include <mrdocs/Metadata/Javadoc.hpp>
+#include <mrdocs/Metadata/Type.hpp>
 #include <clang/Basic/Specifiers.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/raw_ostream.h>
-#include <mrdocs/Dom.hpp>
-#include <mrdocs/Metadata/Javadoc.hpp>
-#include <mrdocs/Metadata/SymbolID.hpp>
-#include <mrdocs/Metadata/Type.hpp>
+#include <optional>
+#include <vector>
 
 /*
     Object for assisting with generating

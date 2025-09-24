@@ -9,9 +9,9 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "lib/Support/Radix.hpp"
-#include "lib/Support/Debug.hpp"
 #include <mrdocs/Platform.hpp>
+#include <lib/Support/Debug.hpp>
+#include <lib/Support/Radix.hpp>
 #include <llvm/ADT/StringExtras.h>
 #include <algorithm>
 #include <vector>

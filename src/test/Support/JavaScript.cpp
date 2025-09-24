@@ -8,10 +8,10 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdocs/Support/JavaScript.hpp>
 #include <mrdocs/Support/Handlebars.hpp>
-#include <test_suite/test_suite.hpp>
+#include <mrdocs/Support/JavaScript.hpp>
 #include <array>
+#include <test_suite/test_suite.hpp>
 
 namespace clang {
 namespace mrdocs {

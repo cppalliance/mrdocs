@@ -8,15 +8,15 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_METADATA_USING_HPP
-#define MRDOCS_API_METADATA_USING_HPP
+#ifndef MRDOCS_API_METADATA_INFO_USING_HPP
+#define MRDOCS_API_METADATA_INFO_USING_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Info.hpp>
-#include <mrdocs/Metadata/Source.hpp>
-#include <mrdocs/Metadata/Type.hpp>
-#include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
+#include <mrdocs/Metadata/Info.hpp>
+#include <mrdocs/Metadata/Info/Source.hpp>
+#include <mrdocs/Metadata/Name.hpp>
+#include <mrdocs/Metadata/Type.hpp>
 #include <vector>
 
 namespace clang::mrdocs {
@@ -98,7 +98,7 @@ struct UsingInfo final
         Note that this can be a qualified name, such as
         `A::f` in the example above.
      */
-    Polymorphic<NameInfo> IntroducedName;
+    Polymorphic<NameInfo> IntroducedName = Polymorphic<NameInfo>(std::in_place_type<IdentifierNameInfo>);
 
     /** The shadow declarations.
 
@@ -176,4 +176,4 @@ tag_invoke(
 
 } // clang::mrdocs
 
-#endif
+#endif // MRDOCS_API_METADATA_INFO_USING_HPP

@@ -14,13 +14,13 @@
 
 #include <mrdocs/Platform.hpp>
 #if ! defined(NDEBUG)
-#include <llvm/Support/ErrorHandling.h>
+#    include <llvm/Support/ErrorHandling.h>
 #endif
-#include "lib/Support/Radix.hpp"
-#include <format>
-#include <llvm/Support/raw_ostream.h>
+#include <lib/Support/Radix.hpp>
 #include <mrdocs/Metadata/Info.hpp>
-#include <mrdocs/Metadata/SymbolID.hpp>
+#include <mrdocs/Metadata/Info/SymbolID.hpp>
+#include <llvm/Support/raw_ostream.h>
+#include <format>
 #include <string>
 
 template <>
@@ -77,4 +77,4 @@ MRDOCS_DECL void debugEnableHeapChecking();
 
 } // clang::mrdocs
 
-#endif
+#endif // MRDOCS_LIB_SUPPORT_DEBUG_HPP

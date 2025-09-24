@@ -8,13 +8,13 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <ranges>
+#include <mrdocs/Support/Glob.hpp>
+#include <mrdocs/Support/Report.hpp>
 #include <llvm/ADT/BitVector.h>
 #include <llvm/ADT/SmallVector.h>
 #include <llvm/Support/GlobPattern.h>
-#include <mrdocs/Support/Glob.hpp>
-#include <mrdocs/Support/Report.hpp>
 #include <llvm/Support/YAMLTraits.h>
+#include <ranges>
 
 namespace clang::mrdocs {
 

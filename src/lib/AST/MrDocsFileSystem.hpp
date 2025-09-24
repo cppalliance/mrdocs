@@ -8,15 +8,15 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_AST_MRDOCS_FILESYSTEM_HPP
-#define MRDOCS_LIB_AST_MRDOCS_FILESYSTEM_HPP
+#ifndef MRDOCS_LIB_AST_MRDOCSFILESYSTEM_HPP
+#define MRDOCS_LIB_AST_MRDOCSFILESYSTEM_HPP
 
-#include "lib/ConfigImpl.hpp"
-#include "llvm/ADT/SmallVector.h"
-#include "llvm/ADT/StringRef.h"
-#include "llvm/Support/MemoryBuffer.h"
-#include "llvm/Support/VirtualFileSystem.h"
-#include "clang/Lex/HeaderSearch.h"
+#include <lib/ConfigImpl.hpp>
+#include <clang/Lex/HeaderSearch.h>
+#include <llvm/ADT/SmallVector.h>
+#include <llvm/ADT/StringRef.h>
+#include <llvm/Support/MemoryBuffer.h>
+#include <llvm/Support/VirtualFileSystem.h>
 #include <atomic>
 #include <mutex>
 #include <string>
@@ -339,4 +339,4 @@ createMrDocsFileSystem(ConfigImpl const &Cfg)
 
 } // namespace clang::mrdocs
 
-#endif
+#endif // MRDOCS_LIB_AST_MRDOCSFILESYSTEM_HPP

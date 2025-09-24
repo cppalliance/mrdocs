@@ -14,8 +14,8 @@
 #define MRDOCS_LIB_GEN_HTML_HTMLGENERATOR_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Generator.hpp>
 #include <lib/Gen/hbs/HandlebarsGenerator.hpp>
+#include <mrdocs/Generator.hpp>
 
 namespace clang::mrdocs::html {
 

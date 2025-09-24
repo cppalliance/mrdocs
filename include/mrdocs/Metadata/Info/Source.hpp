@@ -10,8 +10,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_METADATA_SOURCE_HPP
-#define MRDOCS_API_METADATA_SOURCE_HPP
+#ifndef MRDOCS_API_METADATA_INFO_SOURCE_HPP
+#define MRDOCS_API_METADATA_INFO_SOURCE_HPP
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Optional.hpp>
@@ -197,4 +197,4 @@ tag_invoke(
 
 } // clang::mrdocs
 
-#endif
+#endif // MRDOCS_API_METADATA_INFO_SOURCE_HPP

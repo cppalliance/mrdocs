@@ -12,8 +12,8 @@
 #ifndef MRDOCS_API_ADT_UNORDEREDSTRINGMAP_HPP
 #define MRDOCS_API_ADT_UNORDEREDSTRINGMAP_HPP
 
-#include <unordered_map>
 #include <string>
+#include <unordered_map>
 
 namespace clang::mrdocs {
 
@@ -34,4 +34,4 @@ using UnorderedStringMultiMap = std::unordered_multimap<std::string, T, StringHa
 
 } // clang::mrdocs
 
-#endif
+#endif // MRDOCS_API_ADT_UNORDEREDSTRINGMAP_HPP

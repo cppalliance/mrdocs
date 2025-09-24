@@ -8,12 +8,12 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_TOOL_DIAGNOSTICS_HPP
-#define MRDOCS_LIB_TOOL_DIAGNOSTICS_HPP
+#ifndef MRDOCS_LIB_DIAGNOSTICS_HPP
+#define MRDOCS_LIB_DIAGNOSTICS_HPP
 
-#include <format>
-#include <llvm/Support/raw_ostream.h>
 #include <mrdocs/Support/Report.hpp>
+#include <llvm/Support/raw_ostream.h>
+#include <format>
 #include <string>
 #include <unordered_map>
 
@@ -141,4 +141,4 @@ public:
 } // mrdocs
 } // clang
 
-#endif
+#endif // MRDOCS_LIB_DIAGNOSTICS_HPP

@@ -9,11 +9,11 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "lib/AST/ParseJavadoc.hpp"
-#include "lib/Support/Path.hpp"
-#include "lib/Support/Chrono.hpp"
-#include <mrdocs/Support/Error.hpp>
+#include <lib/AST/ParseJavadoc.hpp>
+#include <lib/Support/Chrono.hpp>
+#include <lib/Support/Path.hpp>
 #include <mrdocs/Generator.hpp>
+#include <mrdocs/Support/Error.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>

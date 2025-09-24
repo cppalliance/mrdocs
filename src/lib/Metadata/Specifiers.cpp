@@ -8,9 +8,9 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "mrdocs/Support/Algorithm.hpp"
-#include <format>
 #include <mrdocs/Metadata/Specifiers.hpp>
+#include <mrdocs/Support/Algorithm.hpp>
+#include <format>
 
 namespace clang {
 namespace mrdocs {

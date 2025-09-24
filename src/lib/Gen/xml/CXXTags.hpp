@@ -13,9 +13,10 @@
 #ifndef MRDOCS_LIB_GEN_XML_CXXTAGS_HPP
 #define MRDOCS_LIB_GEN_XML_CXXTAGS_HPP
 
-#include "XMLTags.hpp"
+#include <lib/Gen/xml/XMLTags.hpp>
 #include <mrdocs/Metadata/Info/Function.hpp>
 #include <mrdocs/Metadata/Name.hpp>
+#include <mrdocs/Metadata/TParam.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 
 /*
@@ -137,13 +138,16 @@ writeType(
             // KRYSTIAN FIXME: parent should is a type itself
             if constexpr(requires { t.ParentType; })
             {
-                if(t.ParentType)
-                    attrs.push({"parent", toString(*t.ParentType)});
+                if (t.ParentType)
+                {
+                    MRDOCS_ASSERT(!t.ParentType->valueless_after_move());
+                    attrs.push({ "parent", toString(**t.ParentType) });
+                }
             }
 
             if constexpr(T::isNamed())
             {
-                if(t.Name)
+                if(!t.Name.valueless_after_move())
                 {
                     attrs.push({t.Name->id});
                     attrs.push({"name", toString(*t.Name)});
@@ -184,9 +188,13 @@ writeType(
 
             if constexpr(T::isAuto())
             {
-                attrs.push({"keyword", toString(t.Keyword)});
-                if(t.Constraint)
-                    attrs.push({"constraint", toString(*t.Constraint)});
+                AutoTypeInfo const& at = t;
+                attrs.push({"keyword", toString(at.Keyword)});
+                if(at.Constraint)
+                {
+                    MRDOCS_ASSERT(!at.Constraint->valueless_after_move());
+                    attrs.push({"constraint", toString(**t.Constraint)});
+                }
             }
 
             if constexpr(T::isFunction())
@@ -215,19 +223,36 @@ writeType(
 
             if constexpr(requires { t.PointeeType; })
             {
-                writeType(*t.PointeeType, tags, "pointee-type");
+                Optional<Polymorphic<TypeInfo>> pointee = t.PointeeType;
+                if (pointee)
+                {
+                    MRDOCS_ASSERT(!pointee->valueless_after_move());
+                    writeType(**t.PointeeType, tags, "pointee-type");
+                }
             }
 
             if constexpr(T::isArray())
             {
-                writeType(*t.ElementType, tags, "element-type");
+                ArrayTypeInfo const& at = t;
+                if (at.ElementType)
+                {
+                    MRDOCS_ASSERT(!at.ElementType->valueless_after_move());
+                    writeType(**t.ElementType, tags, "element-type");
+                }
             }
 
             if constexpr(T::isFunction())
             {
-                writeType(*t.ReturnType, tags, "return-type");
-                for(auto const& p : t.ParamTypes)
-                    writeType(*p, tags, "param-type");
+                FunctionTypeInfo const& ft = t;
+                if (ft.ReturnType)
+                {
+                    MRDOCS_ASSERT(!ft.ReturnType->valueless_after_move());
+                    writeType(**t.ReturnType, tags, "return-type");
+                    for (auto const& p: t.ParamTypes)
+                    {
+                        writeType(*p, tags, "param-type");
+                    }
+                }
             }
 
             tags.close(type_tag);
@@ -240,10 +265,25 @@ writeType(
     Polymorphic<TypeInfo> const& type,
     XMLTags& tags)
 {
-    if(! type)
+    if (type.valueless_after_move())
+    {
         return;
+    }
     writeType(*type, tags);
 }
+
+inline
+void
+writeType(
+    Optional<Polymorphic<TypeInfo>> const& type,
+    XMLTags& tags)
+{
+    if (type)
+    {
+        writeType(*type, tags);
+    }
+}
+
 
 inline void writeReturnType(TypeInfo const& I, XMLTags& tags)
 {
@@ -269,60 +309,72 @@ inline void writeParam(Param const& P, XMLTags& tags)
 
 inline void writeTemplateParam(TParam const& I, XMLTags& tags)
 {
-    visit(I, [&]<typename T>(T const& P)
+    visit(I, [&]<typename T>(T const& P) {
+        TParam const & tp = P;
+        Attributes attrs = {
+            { "name", tp.Name, !tp.Name.empty() },
+            { "class", toString(T::kind_id) }
+        };
+
+        if constexpr (T::isNonType())
         {
-            Attributes attrs = {
-                {"name", P.Name, ! P.Name.empty()},
-                {"class", toString(T::kind_id)}
-            };
-
-            if constexpr(T::isNonType())
-                attrs.push({"type", toString(*P.Type)});
-
-            if(P.Default)
-                attrs.push({"default", toString(*P.Default)});
-
-            if constexpr(T::isTemplate())
+            NonTypeTParam const& nt = P;
+            if (nt.Type)
             {
-                tags.open(tparamTagName,
-                    std::move(attrs));
-                for(auto const& tparam : P.Params)
-                    writeTemplateParam(*tparam, tags);
-                tags.close(tparamTagName);
+                MRDOCS_ASSERT(!nt.Type->valueless_after_move());
+                attrs.push({ "type", toString(**nt.Type) });
             }
-            else
+        }
+
+        if (tp.Default)
+        {
+            MRDOCS_ASSERT(!tp.Default->valueless_after_move());
+            attrs.push({ "default", toString(**P.Default) });
+        }
+
+        if constexpr (T::isTemplate())
+        {
+            tags.open(tparamTagName, std::move(attrs));
+            for (auto const& tparam: P.Params)
             {
-                tags.write(tparamTagName, {},
-                    std::move(attrs));
+                writeTemplateParam(*tparam, tags);
             }
-        });
+            tags.close(tparamTagName);
+        } else
+        {
+            tags.write(tparamTagName, {}, std::move(attrs));
+        }
+    });
 }
 
 inline void writeTemplateArg(TArg const& I, XMLTags& tags)
 {
-    visit(I, [&]<typename T>(T const& A)
+    visit(I, [&]<typename T>(T const& A) {
+        Attributes attrs = {
+            { "class", toString(T::kind_id) }
+        };
+
+        if constexpr (T::isType())
         {
-            Attributes attrs = {
-                {"class", toString(T::kind_id)}
-            };
+            TypeTArg const& at = A;
+            if (at.Type)
+            {
+                MRDOCS_ASSERT(!at.Type->valueless_after_move());
+                attrs.push({ "type", toString(**A.Type) });
+            }
+        }
+        if constexpr (T::isNonType())
+        {
+            attrs.push({ "value", A.Value.Written });
+        }
+        if constexpr (T::isTemplate())
+        {
+            attrs.push({ "name", A.Name });
+            attrs.push({ A.Template });
+        }
 
-            if constexpr(T::isType())
-            {
-                attrs.push({"type", toString(*A.Type)});
-            }
-            if constexpr(T::isNonType())
-            {
-                attrs.push({"value", A.Value.Written});
-            }
-            if constexpr(T::isTemplate())
-            {
-                attrs.push({"name", A.Name});
-                attrs.push({A.Template});
-            }
-
-            tags.write(targTagName, {},
-                std::move(attrs));
-        });
+        tags.write(targTagName, {}, std::move(attrs));
+    });
 }
 
 /** Return the xml tag name for the Info.

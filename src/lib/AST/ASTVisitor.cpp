@@ -11,18 +11,18 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "lib/AST/ASTVisitor.hpp"
-#include "lib/AST/NameInfoBuilder.hpp"
-#include "lib/AST/ClangHelpers.hpp"
-#include "lib/AST/ParseJavadoc.hpp"
-#include "lib/AST/TypeInfoBuilder.hpp"
-#include "lib/Support/Path.hpp"
-#include "lib/Support/Debug.hpp"
-#include "lib/Support/Radix.hpp"
-#include "lib/Diagnostics.hpp"
+#include <mrdocs/Platform.hpp>
+#include <lib/AST/ASTVisitor.hpp>
+#include <lib/AST/ClangHelpers.hpp>
+#include <lib/AST/NameInfoBuilder.hpp>
+#include <lib/AST/ParseJavadoc.hpp>
+#include <lib/AST/TypeInfoBuilder.hpp>
+#include <lib/Diagnostics.hpp>
+#include <lib/Support/Path.hpp>
+#include <lib/Support/Radix.hpp>
 #include <mrdocs/Metadata.hpp>
-#include <mrdocs/Support/ScopeExit.hpp>
 #include <mrdocs/Support/Algorithm.hpp>
+#include <mrdocs/Support/ScopeExit.hpp>
 #include <clang/AST/AST.h>
 #include <clang/AST/Attr.h>
 #include <clang/AST/ODRHash.h>
@@ -35,8 +35,8 @@
 #include <clang/Sema/Template.h>
 #include <llvm/ADT/StringExtras.h>
 #include <llvm/Support/Error.h>
-#include <llvm/Support/SHA1.h>
 #include <llvm/Support/Process.h>
+#include <llvm/Support/SHA1.h>
 #include <memory>
 #include <optional>
 #include <ranges>
@@ -179,7 +179,7 @@ traverse(UsingDirectiveDecl const* D)
     MRDOCS_CHECK_OR(NDI, nullptr);
 
     auto res = toNameInfo(ND);
-    MRDOCS_ASSERT(res);
+    MRDOCS_ASSERT(!res.valueless_after_move());
     MRDOCS_ASSERT(res->isIdentifier());
     if (NameInfo NI = *res;
         !contains(PNI.UsingDirectives, NI))
@@ -707,7 +707,8 @@ populate(
             // CXXBaseSpecifier::getEllipsisLoc indicates whether the
             // base was a pack expansion; a PackExpansionType is not built
             // for base-specifiers
-            if (BaseType && B.getEllipsisLoc().isValid())
+            if (!BaseType.valueless_after_move() &&
+                B.getEllipsisLoc().isValid())
             {
                 BaseType->IsPackExpansion = true;
             }
@@ -912,9 +913,9 @@ populate(
     {
         // Return type SFINAE constraints
         if (I.ReturnType &&
-            !I.ReturnType->Constraints.empty())
+            !(*I.ReturnType)->Constraints.empty())
         {
-            for (ExprInfo const& constraint: I.ReturnType->Constraints)
+            for (ExprInfo const& constraint: (*I.ReturnType)->Constraints)
             {
                 if (!I.Requires.Written.empty())
                 {
@@ -928,9 +929,9 @@ populate(
         for (auto it = I.Params.begin(); it != I.Params.end(); )
         {
             if (it->Type &&
-                !it->Type->Constraints.empty())
+                !(*it->Type)->Constraints.empty())
             {
-                for (ExprInfo const& constraint: it->Type->Constraints)
+                for (ExprInfo const& constraint: (*it->Type)->Constraints)
                 {
                     if (!I.Requires.Written.empty())
                     {
@@ -1181,8 +1182,8 @@ populate(
     if (TypeSourceInfo const* TSI = D->getFriendType())
     {
         I.Type = toTypeInfo(TSI->getType());
-        MRDOCS_CHECK_OR(I.Type->isNamed());
-        auto const& NTI = dynamic_cast<NamedTypeInfo&>(*I.Type);
+        MRDOCS_CHECK_OR((*I.Type)->isNamed());
+        auto const& NTI = dynamic_cast<NamedTypeInfo&>(**I.Type);
         MRDOCS_CHECK_OR(NTI.Name);
         I.id = NTI.Name->id;
     }
@@ -1331,7 +1332,7 @@ populate(
         for (auto it = Template.Args.begin(); it != Template.Args.end();)
         {
             auto& arg = *it;
-            if (!arg)
+            if (arg.valueless_after_move())
             {
                 ++it;
                 continue;
@@ -1339,9 +1340,9 @@ populate(
             if (auto* T = dynamic_cast<TypeTArg*>(arg.operator->());
                 T &&
                 T->Type &&
-                !T->Type->Constraints.empty())
+                !(*T->Type)->Constraints.empty())
             {
-                for (ExprInfo const& constraint: T->Type->Constraints)
+                for (ExprInfo const& constraint: (*T->Type)->Constraints)
                 {
                     if (!Template.Requires.Written.empty())
                     {
@@ -1492,7 +1493,7 @@ populate(
 
         if constexpr(kind == Decl::TemplateTypeParm)
         {
-            if (!I)
+            if (I.valueless_after_move())
             {
                 I = Polymorphic<TParam>(std::in_place_type<TypeTParam>);
             }
@@ -1521,7 +1522,7 @@ populate(
         }
         else if constexpr(kind == Decl::NonTypeTemplateParm)
         {
-            if (!I)
+            if (I.valueless_after_move())
             {
                 I = Polymorphic<TParam>(std::in_place_type<NonTypeTParam>);
             }
@@ -1536,7 +1537,7 @@ populate(
         }
         else if constexpr(kind == Decl::TemplateTemplateParm)
         {
-            if (!I)
+            if (I.valueless_after_move())
             {
                 I = Polymorphic<TParam>(std::in_place_type<TemplateTParam>);
             }
@@ -1549,9 +1550,11 @@ populate(
             for (std::size_t i = 0; i < TPL->size(); ++i)
             {
                 NamedDecl const* TP = TPL->getParam(i);
-                auto &Param = i < Result->Params.size()
-                                  ? Result->Params[i]
-                                  : Result->Params.emplace_back(std::nullopt);
+                auto& Param
+                    = i < Result->Params.size() ?
+                          Result->Params[i] :
+                          Result->Params.emplace_back(
+                              nullable_traits<Polymorphic<TParam>>::null());
                 populate(Param, TP);
             }
             if (TTPD->hasDefaultArgument() && !Result->Default)
@@ -1602,9 +1605,10 @@ populate(
     while (explicitIt != ExplicitTemplateParameters.end())
     {
         NamedDecl const* P = TPL->getParam(i);
-        auto &Param = i < TI.Params.size()
-                          ? TI.Params[i]
-                          : TI.Params.emplace_back(std::nullopt);
+        auto& Param = i < TI.Params.size() ?
+                          TI.Params[i] :
+                          TI.Params.emplace_back(
+                              nullable_traits<Polymorphic<TParam>>::null());
         populate(Param, P);
         ++explicitIt;
         ++i;
@@ -1624,9 +1628,9 @@ populate(
             if (auto const* T = dynamic_cast<NonTypeTParam*>(param.operator->());
                 T &&
                 T->Type &&
-                !T->Type->Constraints.empty())
+                !(*T->Type)->Constraints.empty())
             {
-                for (ExprInfo const& constraint: T->Type->Constraints)
+                for (ExprInfo const& constraint: (*T->Type)->Constraints)
                 {
                     if (!TI.Requires.Written.empty())
                     {
@@ -1639,14 +1643,14 @@ populate(
             }
 
             if (param->Default &&
-                param->Default->isType())
+                (*param->Default)->isType())
             {
-                if (auto const* T = dynamic_cast<TypeTArg*>(param->Default.operator->());
+                if (auto const* T = dynamic_cast<TypeTArg*>((*param->Default).operator->());
                     T &&
                     T->Type &&
-                    !T->Type->Constraints.empty())
+                    !(*T->Type)->Constraints.empty())
                 {
-                    for (ExprInfo const& constraint: T->Type->Constraints)
+                    for (ExprInfo const& constraint: (*T->Type)->Constraints)
                     {
                         if (!TI.Requires.Written.empty())
                         {
@@ -2039,13 +2043,14 @@ toTypeInfo(QualType const qt, TraversalMode const mode)
     return Builder.result();
 }
 
-Polymorphic<NameInfo> ASTVisitor::toNameInfo(NestedNameSpecifier NNS)
+Polymorphic<NameInfo>
+ASTVisitor::toNameInfo(NestedNameSpecifier NNS)
 {
     MRDOCS_SYMBOL_TRACE(NNS, context_);
     ScopeExitRestore scope(mode_, Dependency);
     switch(NNS.getKind()) {
     case NestedNameSpecifier::Kind::Null:
-        return std::nullopt;
+        return nullable_traits<Polymorphic<NameInfo>>::null();
     case NestedNameSpecifier::Kind::Type: {
         const Type *T = NNS.getAsType();
         NameInfoBuilder Builder(*this);
@@ -2053,7 +2058,7 @@ Polymorphic<NameInfo> ASTVisitor::toNameInfo(NestedNameSpecifier NNS)
         return Builder.result();
     }
     case NestedNameSpecifier::Kind::Namespace: {
-        auto I = Polymorphic<NameInfo>();
+        auto I = Polymorphic<NameInfo>(std::in_place_type<IdentifierNameInfo>);
         auto [ND, Prefix] = NNS.getAsNamespaceAndPrefix();
         I->Name = ND->getIdentifier()->getName();
         I->Prefix = toNameInfo(Prefix);
@@ -2067,7 +2072,7 @@ Polymorphic<NameInfo> ASTVisitor::toNameInfo(NestedNameSpecifier NNS)
     case NestedNameSpecifier::Kind::Global:
     case NestedNameSpecifier::Kind::MicrosoftSuper:
         // FIXME: Unimplemented.
-        return std::nullopt;
+        return nullable_traits<Polymorphic<NameInfo>>::null();
     }
     MRDOCS_UNREACHABLE();
 }
@@ -2081,9 +2086,9 @@ toNameInfo(DeclarationName const Name,
 {
     if (Name.isEmpty())
     {
-        return std::nullopt;
+        return nullable_traits<Polymorphic<NameInfo>>::null();
     }
-    Polymorphic<NameInfo> I = std::nullopt;
+    Polymorphic<NameInfo> I = nullable_traits<Polymorphic<NameInfo>>::null();
     if(TArgs)
     {
         I = Polymorphic<NameInfo>(std::in_place_type<SpecializationNameInfo>);
@@ -2091,7 +2096,7 @@ toNameInfo(DeclarationName const Name,
     }
     else
     {
-        I = Polymorphic<NameInfo>();
+        I = Polymorphic<NameInfo>(std::in_place_type<IdentifierNameInfo>);
     }
     I->Name = extractName(Name);
     I->Prefix = toNameInfo(NNS);
@@ -2109,13 +2114,13 @@ toNameInfo(
     auto const* ND = dyn_cast_if_present<NamedDecl>(D);
     if (!ND)
     {
-        return std::nullopt;
+        return nullable_traits<Polymorphic<NameInfo>>::null();
     }
     auto I = toNameInfo(
         ND->getDeclName(), std::move(TArgs), NNS);
-    if (!I)
+    if (I.valueless_after_move())
     {
-        return std::nullopt;
+        return nullable_traits<Polymorphic<NameInfo>>::null();
     }
     ScopeExitRestore scope(mode_, Dependency);
     auto* ID = getInstantiatedFrom(D);
@@ -2234,7 +2239,7 @@ toTArg(TemplateArgument const& A)
     default:
         MRDOCS_UNREACHABLE();
     }
-    return std::nullopt;
+    return nullable_traits<Polymorphic<TArg>>::null();
 }
 
 

@@ -13,7 +13,7 @@
 #define MRDOCS_API_METADATA_HPP
 
 #include <mrdocs/Platform.hpp>
-
+#include <mrdocs/Metadata/Expression.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Info/Concept.hpp>
 #include <mrdocs/Metadata/Info/Enum.hpp>
@@ -25,16 +25,14 @@
 #include <mrdocs/Metadata/Info/NamespaceAlias.hpp>
 #include <mrdocs/Metadata/Info/Overloads.hpp>
 #include <mrdocs/Metadata/Info/Record.hpp>
+#include <mrdocs/Metadata/Info/Source.hpp>
+#include <mrdocs/Metadata/Info/SymbolID.hpp>
 #include <mrdocs/Metadata/Info/Typedef.hpp>
-#include <mrdocs/Metadata/Info/Variable.hpp>
 #include <mrdocs/Metadata/Info/Using.hpp>
-
-#include <mrdocs/Metadata/Expression.hpp>
+#include <mrdocs/Metadata/Info/Variable.hpp>
 #include <mrdocs/Metadata/Javadoc.hpp>
 #include <mrdocs/Metadata/Name.hpp>
-#include <mrdocs/Metadata/Source.hpp>
-#include <mrdocs/Metadata/SymbolID.hpp>
 #include <mrdocs/Metadata/Template.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 
-#endif
+#endif // MRDOCS_API_METADATA_HPP

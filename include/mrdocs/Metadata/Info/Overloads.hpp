@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_METADATA_OVERLOADS_HPP
-#define MRDOCS_API_METADATA_OVERLOADS_HPP
+#ifndef MRDOCS_API_METADATA_INFO_OVERLOADS_HPP
+#define MRDOCS_API_METADATA_INFO_OVERLOADS_HPP
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Info.hpp>
@@ -32,7 +32,7 @@ struct OverloadsInfo final
     std::vector<SymbolID> Members;
 
     /// Info about the return type of this function.
-    Polymorphic<TypeInfo> ReturnType = std::nullopt;
+    Optional<Polymorphic<TypeInfo>> ReturnType = std::nullopt;
 
     //--------------------------------------------
 
@@ -95,4 +95,4 @@ tag_invoke(
 
 } // clang::mrdocs
 
-#endif
+#endif // MRDOCS_API_METADATA_INFO_OVERLOADS_HPP

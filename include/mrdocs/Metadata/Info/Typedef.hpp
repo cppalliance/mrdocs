@@ -10,14 +10,14 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_METADATA_TYPEDEF_HPP
-#define MRDOCS_API_METADATA_TYPEDEF_HPP
+#ifndef MRDOCS_API_METADATA_INFO_TYPEDEF_HPP
+#define MRDOCS_API_METADATA_INFO_TYPEDEF_HPP
 
+#include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/Info.hpp>
+#include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Template.hpp>
 #include <mrdocs/Metadata/Type.hpp>
-#include <mrdocs/Metadata/Name.hpp>
-#include <mrdocs/ADT/Polymorphic.hpp>
 
 namespace clang::mrdocs {
 
@@ -25,7 +25,7 @@ namespace clang::mrdocs {
 struct TypedefInfo final
     : InfoCommonBase<InfoKind::Typedef>
 {
-    Polymorphic<TypeInfo> Type = std::nullopt;
+    Optional<Polymorphic<TypeInfo>> Type = std::nullopt;
 
     /** Indicates if this is a new C++ "using"-style typedef
 
@@ -99,4 +99,4 @@ tag_invoke(
 
 } // clang::mrdocs
 
-#endif
+#endif // MRDOCS_API_METADATA_INFO_TYPEDEF_HPP

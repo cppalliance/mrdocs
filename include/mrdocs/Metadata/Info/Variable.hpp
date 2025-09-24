@@ -9,16 +9,16 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_METADATA_VARIABLE_HPP
-#define MRDOCS_API_METADATA_VARIABLE_HPP
+#ifndef MRDOCS_API_METADATA_INFO_VARIABLE_HPP
+#define MRDOCS_API_METADATA_INFO_VARIABLE_HPP
 
-#include <mrdocs/Metadata/Expression.hpp>
-#include <mrdocs/Metadata/Source.hpp>
-#include <mrdocs/Metadata/Template.hpp>
-#include <mrdocs/Metadata/Info.hpp>
-#include <mrdocs/Metadata/Type.hpp>
-#include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
+#include <mrdocs/Dom/LazyArray.hpp>
+#include <mrdocs/Metadata/Expression.hpp>
+#include <mrdocs/Metadata/Info.hpp>
+#include <mrdocs/Metadata/Info/Source.hpp>
+#include <mrdocs/Metadata/Template.hpp>
+#include <mrdocs/Metadata/Type.hpp>
 
 namespace clang::mrdocs {
 
@@ -31,7 +31,7 @@ struct VariableInfo final
     : InfoCommonBase<InfoKind::Variable>
 {
     /** The type of the variable */
-    Polymorphic<TypeInfo> Type = std::nullopt;
+    Optional<Polymorphic<TypeInfo>> Type = std::nullopt;
 
     std::optional<TemplateInfo> Template;
 
@@ -148,4 +148,4 @@ tag_invoke(
 
 } // clang::mrdocs
 
-#endif
+#endif // MRDOCS_API_METADATA_INFO_VARIABLE_HPP

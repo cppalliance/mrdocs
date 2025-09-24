@@ -10,8 +10,8 @@
 //
 
 #include "XMLTags.hpp"
-#include "lib/Support/Radix.hpp"
 #include <mrdocs/Platform.hpp>
+#include <lib/Support/Radix.hpp>
 
 namespace clang {
 namespace mrdocs {

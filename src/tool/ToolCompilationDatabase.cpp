@@ -10,9 +10,9 @@
 
 #include "ToolCompilationDatabase.hpp"
 #include "CompilerInfo.hpp"
-#include "lib/MrDocsSettingsDB.hpp"
-#include "lib/Support/CMakeExecution.hpp"
-#include "lib/Support/Path.hpp"
+#include <lib/MrDocsSettingsDB.hpp>
+#include <lib/Support/CMakeExecution.hpp>
+#include <lib/Support/Path.hpp>
 #include <mrdocs/Support/Report.hpp>
 
 namespace clang {

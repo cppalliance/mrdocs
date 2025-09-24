@@ -12,10 +12,10 @@
 //
 
 #include "ExecutionContext.hpp"
-#include "lib/Metadata/Reduce.hpp"
-#include "mrdocs/Support/Assert.hpp"
+#include <lib/Metadata/Reduce.hpp>
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Metadata/Info/Namespace.hpp>
+#include <mrdocs/Support/Assert.hpp>
 #include <ranges>
 
 namespace clang {

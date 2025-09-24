@@ -14,17 +14,18 @@
 #ifndef MRDOCS_LIB_AST_CLANGHELPERS_HPP
 #define MRDOCS_LIB_AST_CLANGHELPERS_HPP
 
-#include <mrdocs/Metadata/SymbolID.hpp>
-#include <mrdocs/Support/Error.hpp>
-#include <lib/AST/InstantiatedFromVisitor.hpp>
-#include <clang/AST/Expr.h>
-#include <clang/Sema/Sema.h>
 #include <mrdocs/Platform.hpp>
+#include <lib/AST/InstantiatedFromVisitor.hpp>
 #include <mrdocs/Metadata.hpp>
+#include <mrdocs/Metadata/Info/SymbolID.hpp>
+#include <mrdocs/Metadata/Type/QualifierKind.hpp>
+#include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/TypeTraits.hpp>
 #include <clang/AST/AST.h>
 #include <clang/AST/DeclFriend.h>
 #include <clang/AST/DeclOpenMP.h>
+#include <clang/AST/Expr.h>
+#include <clang/Sema/Sema.h>
 #include <type_traits>
 
 namespace clang::mrdocs {
@@ -594,7 +595,7 @@ visit(
         else \
             MRDOCS_UNREACHABLE();
 
-    #include <clang/AST/DeclNodes.inc>
+#include <clang/AST/DeclNodes.inc>
 
     default:
         MRDOCS_UNREACHABLE();
@@ -654,7 +655,7 @@ visit(
         else \
             MRDOCS_UNREACHABLE();
 
-    #include <clang/AST/TypeNodes.inc>
+#include <clang/AST/TypeNodes.inc>
 
     default:
         MRDOCS_UNREACHABLE();
@@ -712,7 +713,7 @@ visit(
         else \
             MRDOCS_UNREACHABLE();
 
-    #include <clang/AST/TypeLocNodes.def>
+#include <clang/AST/TypeLocNodes.def>
 
     default:
         MRDOCS_UNREACHABLE();

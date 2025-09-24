@@ -11,9 +11,9 @@
 #ifndef MRDOCS_LIB_MRDOCSSETTINGSDB_HPP
 #define MRDOCS_LIB_MRDOCSSETTINGSDB_HPP
 
+#include <lib/ConfigImpl.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <clang/Tooling/CompilationDatabase.h>
-#include "ConfigImpl.hpp"
 #include <string>
 #include <utility>
 #include <vector>

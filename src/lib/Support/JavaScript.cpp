@@ -9,13 +9,13 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "lib/Support/Report.hpp"
-#include <duktape.h>
-#include <format>
-#include <llvm/Support/raw_ostream.h>
+#include <lib/Support/Report.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/Handlebars.hpp>
 #include <mrdocs/Support/JavaScript.hpp>
+#include <llvm/Support/raw_ostream.h>
+#include <duktape.h>
+#include <format>
 #include <utility>
 #include <variant>
 

@@ -12,6 +12,7 @@
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Type.hpp>
+#include <mrdocs/Metadata/Type/QualifierKind.hpp>
 
 namespace clang::mrdocs {
 
@@ -87,7 +88,7 @@ namedSymbol() const noexcept
         return SymbolID::invalid;
     }
     auto const* NT = dynamic_cast<NamedTypeInfo const*>(this);
-    if (!NT->Name)
+    if (NT->Name.valueless_after_move())
     {
         return SymbolID::invalid;
     }
@@ -173,7 +174,7 @@ operator()(
     {
         if(t.ParentType)
         {
-            writeFullType(*t.ParentType, write);
+            writeFullType(**t.ParentType, write);
             write("::");
         }
     }
@@ -183,8 +184,10 @@ operator()(
 
     if constexpr(T::isAuto())
     {
-        if(t.Constraint)
-            write(toString(*t.Constraint), ' ');
+        if (t.Constraint)
+        {
+            write(toString(**t.Constraint), ' ');
+        }
         switch(t.Keyword)
         {
         case AutoKind::Auto:
@@ -756,7 +759,7 @@ makeChar(FundamentalTypeKind& kind) noexcept
 std::strong_ordering
 operator<=>(Polymorphic<TypeInfo> const& lhs, Polymorphic<TypeInfo> const& rhs)
 {
-    if (lhs && rhs)
+    if (!lhs.valueless_after_move() && !rhs.valueless_after_move())
     {
         auto& lhsRef = *lhs;
         auto& rhsRef = *rhs;
@@ -766,8 +769,9 @@ operator<=>(Polymorphic<TypeInfo> const& lhs, Polymorphic<TypeInfo> const& rhs)
         }
         return lhsRef.Kind <=> rhsRef.Kind;
     }
-    return !lhs ? std::strong_ordering::less
-            : std::strong_ordering::greater;
+    return lhs.valueless_after_move() ?
+               std::strong_ordering::less :
+               std::strong_ordering::greater;
 }
 
 namespace {
@@ -786,15 +790,24 @@ innerTypeImpl(TypeInfoTy&& TI) noexcept
     {
         if constexpr(requires { t.PointeeType; })
         {
-            return &t.PointeeType;
+            if (t.PointeeType)
+            {
+                return &*t.PointeeType;
+            }
         }
         if constexpr(requires { t.ElementType; })
         {
-            return &t.ElementType;
+            if (t.ElementType)
+            {
+                return &*t.ElementType;
+            }
         }
         if constexpr(requires { t.ReturnType; })
         {
-            return &t.ReturnType;
+            if (t.ReturnType)
+            {
+                return &*t.ReturnType;
+            }
         }
         return nullptr;
     });
@@ -835,7 +848,7 @@ requires std::same_as<std::remove_cvref_t<PolymorphicTypeInfoTy>, Polymorphic<Ty
 auto&
 innermostTypeImpl(PolymorphicTypeInfoTy&& TI) noexcept
 {
-    if (!TI)
+    if (TI.valueless_after_move())
     {
         return TI;
     }
@@ -847,7 +860,7 @@ innermostTypeImpl(PolymorphicTypeInfoTy&& TI) noexcept
     while (inner)
     {
         /* polymorphic */ auto& ref = inner->get();
-        if (!ref ||
+        if (ref.valueless_after_move() ||
             ref->isNamed())
         {
             return ref;

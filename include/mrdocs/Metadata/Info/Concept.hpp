@@ -8,14 +8,15 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_METADATA_CONCEPT_HPP
-#define MRDOCS_API_METADATA_CONCEPT_HPP
+#ifndef MRDOCS_API_METADATA_INFO_CONCEPT_HPP
+#define MRDOCS_API_METADATA_INFO_CONCEPT_HPP
 
-#include <mrdocs/Metadata/Info.hpp>
-#include <mrdocs/Metadata/Expression.hpp>
-#include <mrdocs/Metadata/Source.hpp>
-#include <mrdocs/Metadata/Template.hpp>
+#include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
+#include <mrdocs/Metadata/Expression.hpp>
+#include <mrdocs/Metadata/Info.hpp>
+#include <mrdocs/Metadata/Info/Source.hpp>
+#include <mrdocs/Metadata/Template.hpp>
 
 namespace clang::mrdocs {
 
@@ -85,4 +86,4 @@ tag_invoke(
 
 } // clang::mrdocs
 
-#endif
+#endif // MRDOCS_API_METADATA_INFO_CONCEPT_HPP

@@ -11,7 +11,7 @@
 #ifndef MRDOCS_TEST_TESTRUNNER_HPP
 #define MRDOCS_TEST_TESTRUNNER_HPP
 
-#include "lib/ConfigImpl.hpp"
+#include <lib/ConfigImpl.hpp>
 #include <mrdocs/Generator.hpp>
 #include <mrdocs/Support/ThreadPool.hpp>
 #include <llvm/ADT/StringRef.h>
@@ -86,4 +86,4 @@ public:
 } // mrdocs
 } // clang
 
-#endif
+#endif // MRDOCS_TEST_TESTRUNNER_HPP

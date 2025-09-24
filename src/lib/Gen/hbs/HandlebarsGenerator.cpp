@@ -11,21 +11,17 @@
 //
 
 #include "HandlebarsGenerator.hpp"
-#include "HandlebarsCorpus.hpp"
 #include "Builder.hpp"
+#include "HandlebarsCorpus.hpp"
 #include "MultiPageVisitor.hpp"
 #include "SinglePageVisitor.hpp"
-
 #include "TagfileWriter.hpp"
-#include "lib/Support/RawOstream.hpp"
-
+#include <lib/Support/RawOstream.hpp>
+#include <mrdocs/Support/Path.hpp>
+#include <mrdocs/Support/Report.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
-
-#include <mrdocs/Support/Path.hpp>
-#include <mrdocs/Support/Report.hpp>
-
 #include <fstream>
 #include <sstream>
 

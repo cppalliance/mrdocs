@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_TOOL_CMAKE_EXECUTION_HPP
-#define MRDOCS_LIB_TOOL_CMAKE_EXECUTION_HPP
+#ifndef MRDOCS_LIB_SUPPORT_CMAKEEXECUTION_HPP
+#define MRDOCS_LIB_SUPPORT_CMAKEEXECUTION_HPP
 
 #include <mrdocs/Support/Expected.hpp>
 #include <llvm/ADT/StringRef.h>
@@ -36,5 +36,5 @@ executeCmakeExportCompileCommands(llvm::StringRef projectPath, llvm::StringRef c
 } // mrdocs
 } // clang
 
-#endif // MRDOCS_LIB_TOOL_CMAKE_EXECUTION_HPP
+#endif // MRDOCS_LIB_SUPPORT_CMAKEEXECUTION_HPP
 

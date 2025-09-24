@@ -12,7 +12,7 @@
 #ifndef MRDOCS_LIB_GEN_HBS_SINGLEPAGEVISITOR_HPP
 #define MRDOCS_LIB_GEN_HBS_SINGLEPAGEVISITOR_HPP
 
-#include "Builder.hpp"
+#include <lib/Gen/hbs/Builder.hpp>
 #include <mrdocs/Support/ExecutorGroup.hpp>
 #include <mutex>
 #include <ostream>

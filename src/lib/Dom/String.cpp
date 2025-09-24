@@ -8,9 +8,9 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <mrdocs/Dom/String.hpp>
 #include <atomic>
 #include <cstring>
-#include <mrdocs/Dom/String.hpp>
 
 namespace clang {
 namespace mrdocs {

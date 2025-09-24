@@ -13,4 +13,4 @@
 
 #include <mrdocs/Dom/Value.hpp>
 
-#endif
+#endif // MRDOCS_API_DOM_HPP

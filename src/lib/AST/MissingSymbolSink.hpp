@@ -8,18 +8,18 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_AST_MISSING_SYMBOL_SINK_HPP
-#define MRDOCS_LIB_AST_MISSING_SYMBOL_SINK_HPP
+#ifndef MRDOCS_LIB_AST_MISSINGSYMBOLSINK_HPP
+#define MRDOCS_LIB_AST_MISSINGSYMBOLSINK_HPP
 
-#include "clang/Basic/Diagnostic.h"
-#include "clang/Basic/DiagnosticSema.h"
-#include "clang/Basic/SourceManager.h"
-#include "lib/ConfigImpl.hpp"
-#include "lib/Support/ExecutionContext.hpp"
-#include "lib/Support/Report.hpp"
-#include "llvm/ADT/StringExtras.h"
-#include "llvm/ADT/StringSet.h"
 #include <mrdocs/Platform.hpp>
+#include <lib/ConfigImpl.hpp>
+#include <lib/Support/ExecutionContext.hpp>
+#include <lib/Support/Report.hpp>
+#include <clang/Basic/Diagnostic.h>
+#include <clang/Basic/DiagnosticSema.h>
+#include <clang/Basic/SourceManager.h>
+#include <llvm/ADT/StringExtras.h>
+#include <llvm/ADT/StringSet.h>
 #include <format>
 #include <mutex>
 #include <set>
@@ -438,4 +438,4 @@ public:
 } // namespace mrdocs
 } // namespace clang
 
-#endif
+#endif // MRDOCS_LIB_AST_MISSINGSYMBOLSINK_HPP

@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_TOOL_MR_DOCS_COMPILATION_DATABASE_HPP
-#define MRDOCS_LIB_TOOL_MR_DOCS_COMPILATION_DATABASE_HPP
+#ifndef MRDOCS_LIB_MRDOCSCOMPILATIONDATABASE_HPP
+#define MRDOCS_LIB_MRDOCSCOMPILATIONDATABASE_HPP
 
 #include <mrdocs/Config.hpp>
 #include <clang/Tooling/JSONCompilationDatabase.h>
@@ -85,5 +85,5 @@ public:
 } // mrdocs
 } // clang
 
-#endif // MRDOCS_LIB_TOOL_MR_DOCS_COMPILATION_DATABASE_HPP
+#endif // MRDOCS_LIB_MRDOCSCOMPILATIONDATABASE_HPP
 

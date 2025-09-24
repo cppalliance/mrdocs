@@ -10,13 +10,14 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "lib/Support/Debug.hpp"
-#include <format>
-#include <llvm/Support/Error.h>
-#include <llvm/Support/Path.h>
+#include <lib/Support/Debug.hpp>
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Metadata/Javadoc.hpp>
+#include <mrdocs/Metadata/Javadoc/Text/Parts.hpp>
+#include <llvm/Support/Error.h>
+#include <llvm/Support/Path.h>
+#include <format>
 
 namespace clang {
 namespace mrdocs {
@@ -182,7 +183,7 @@ append(std::vector<Polymorphic<Text>> const& otherChildren)
 std::strong_ordering
 operator<=>(Polymorphic<Text> const& lhs, Polymorphic<Text> const& rhs)
 {
-    if (lhs && rhs)
+    if (!lhs.valueless_after_move() && !rhs.valueless_after_move())
     {
         if (lhs->Kind == rhs->Kind)
         {
@@ -190,12 +191,13 @@ operator<=>(Polymorphic<Text> const& lhs, Polymorphic<Text> const& rhs)
         }
         return lhs->Kind <=> rhs->Kind;
     }
-    if (!lhs && !rhs)
+    if (lhs.valueless_after_move() && rhs.valueless_after_move())
     {
         return std::strong_ordering::equal;
     }
-    return !lhs ? std::strong_ordering::less
-            : std::strong_ordering::greater;
+    return lhs.valueless_after_move() ?
+               std::strong_ordering::less :
+               std::strong_ordering::greater;
 }
 
 Paragraph&
@@ -384,7 +386,7 @@ append(std::vector<Polymorphic<doc::Node>>&& blocks)
         }
         else
         {
-            blockAsNode = std::nullopt;
+            Polymorphic<doc::Node> tmp = std::move(blockAsNode);
         }
     }
 }

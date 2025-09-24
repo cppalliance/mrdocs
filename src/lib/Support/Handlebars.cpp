@@ -8,14 +8,14 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <mrdocs/Support/Handlebars.hpp>
+#include <mrdocs/Support/Path.hpp>
 #include <algorithm>
 #include <array>
 #include <charconv>
 #include <chrono>
 #include <filesystem>
 #include <format>
-#include <mrdocs/Support/Handlebars.hpp>
-#include <mrdocs/Support/Path.hpp>
 #include <print>
 #include <ranges>
 #include <unordered_set>

@@ -10,17 +10,17 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_METADATA_SYMBOLID_HPP
-#define MRDOCS_API_METADATA_SYMBOLID_HPP
+#ifndef MRDOCS_API_METADATA_INFO_SYMBOLID_HPP
+#define MRDOCS_API_METADATA_INFO_SYMBOLID_HPP
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Optional.hpp>
+#include <compare>
 #include <cstdint>
 #include <cstring>
-#include <compare>
-#include <string_view>
-#include <string>
 #include <memory>
+#include <string>
+#include <string_view>
 
 namespace clang::mrdocs {
 class DomCorpus;
@@ -227,4 +227,4 @@ struct std::hash<clang::mrdocs::SymbolID>
     }
 };
 
-#endif
+#endif // MRDOCS_API_METADATA_INFO_SYMBOLID_HPP

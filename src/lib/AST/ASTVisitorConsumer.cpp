@@ -11,9 +11,9 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "lib/AST/ASTVisitorConsumer.hpp"
-#include "lib/AST/ASTVisitor.hpp"
-#include "lib/Support/Path.hpp"
+#include <lib/AST/ASTVisitor.hpp>
+#include <lib/AST/ASTVisitorConsumer.hpp>
+#include <lib/Support/Path.hpp>
 
 namespace clang::mrdocs {
 

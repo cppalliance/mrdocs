@@ -13,9 +13,9 @@
 #define MRDOCS_LIB_GEN_HBS_HANDLEBARSGENERATOR_HPP
 
 #include <mrdocs/Platform.hpp>
+#include <lib/Gen/hbs/HandlebarsCorpus.hpp>
 #include <mrdocs/Generator.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
-#include <lib/Gen/hbs/HandlebarsCorpus.hpp>
 #include <utility>
 
 namespace clang::mrdocs {

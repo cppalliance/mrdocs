@@ -8,14 +8,14 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "lib/AST/ParseRef.hpp"
+#include <lib/AST/ParseRef.hpp>
 #include <mrdocs/Metadata/Info/Function.hpp>
 #include <mrdocs/Metadata/Name.hpp>
+#include <mrdocs/Metadata/Type.hpp>
 #include <mrdocs/Support/Algorithm.hpp>
 #include <mrdocs/Support/Expected.hpp>
 #include <mrdocs/Support/Report.hpp>
 #include <llvm/ADT/StringExtras.h>
-
 #include <format>
 
 namespace clang::mrdocs {
@@ -42,13 +42,38 @@ isIdentifierContinuation(char const c)
     return isIdentifierStart(c) || isDigit(c);
 }
 
+/* Holds information about a parsed function suffix during reference parsing.
+
+   Used internally by RefParser to accumulate details about function parameters,
+   variadic status, and exception specifications while parsing C++ symbol
+   references.
+
+   Example: In 'void foo(int, double, ...)', Params holds 'int' and 'double',
+   IsVariadic is true, HasVoid is false.
+*/
 struct ParsedFunctionSuffix
 {
+    /* List of parsed function parameter types.
+       Example: For 'void foo(int, double)', Params contains 'int' and 'double'.
+    */
     llvm::SmallVector<Polymorphic<TypeInfo>, 8> Params;
+
+    /* True if the parameter list contains only 'void'.
+       Example: For 'void foo(void)', HasVoid is true.
+    */
     bool HasVoid{false};
+
+    /* True if the function is variadic (contains ...).
+       Example: For 'void foo(int, ...)', IsVariadic is true.
+    */
     bool IsVariadic{false};
+
+    /* Exception specification for the function.
+       Example: For 'void foo() noexcept', ExceptionSpec holds 'noexcept'.
+    */
     NoexceptInfo ExceptionSpec;
 
+    /* Virtual destructor for safe polymorphic deletion. */
     virtual ~ParsedFunctionSuffix() = default;
 };
 
@@ -448,9 +473,9 @@ private:
             return false;
         }
         skipWhitespace();
-        Polymorphic<TypeInfo> conversionType = std::nullopt;
+        Polymorphic<TypeInfo> conversionType = nullable_traits<Polymorphic<TypeInfo>>::null();
         if (!parseDeclarationSpecifier(conversionType) ||
-            !conversionType)
+            conversionType.valueless_after_move())
         {
             ptr_ = start;
             return false;
@@ -585,14 +610,17 @@ private:
             return false;
         }
         skipWhitespace();
-        TemplateArguments.emplace_back(std::nullopt);
+        // Add an empty slot for the first template argument
+        TemplateArguments.emplace_back(nullable_traits<Polymorphic<TArg>>::null());
         while (parseTemplateArgument(TemplateArguments.back()))
         {
             skipWhitespace();
             if (parseLiteral(','))
             {
                 skipWhitespace();
-                TemplateArguments.emplace_back(std::nullopt);
+                // Add another empty slot for the next argument after each comma
+                // This allows parseTemplateArgument to fill the new slot
+                TemplateArguments.emplace_back(nullable_traits<Polymorphic<TArg>>::null());
             }
             else
             {
@@ -622,16 +650,16 @@ private:
         }
         skipWhitespace();
         char const* start = ptr_;
-        Polymorphic<TypeInfo> type = std::nullopt;
+        Polymorphic<TypeInfo> type = nullable_traits<Polymorphic<TypeInfo>>::null();
         if (parseTypeId(type))
         {
             dest = Polymorphic<TArg>(std::in_place_type<TypeTArg>);
-            static_cast<TypeTArg &>(*dest).Type = std::move(type);
+            dynamic_cast<TypeTArg &>(*dest).Type = std::move(type);
             return true;
         }
 
         // If the argument is not a type-id, it is an expression
-        // The expression is internally balanced in regards to '<'
+        // The expression is internally balanced regarding '<'
         // and '>' and ends with a comma
         char const* exprStart = ptr_;
         while (parseBalanced("<", ">", {",", ">"}))
@@ -790,7 +818,7 @@ private:
 
         // https://en.cppreference.com/w/cpp/language/function#Parameter_list
         // decl-specifier-seq
-        auto &curParam = dest.Params.emplace_back(std::nullopt);
+        auto &curParam = dest.Params.emplace_back(nullable_traits<Polymorphic<TypeInfo>>::null());
         if (!parseTypeId(curParam))
         {
             ptr_ = start;
@@ -885,7 +913,7 @@ private:
                 // If we have one of the "long", "short", "signed", "unsigned"
                 // specifiers, then we don't have an error because
                 // we can later infer the type from these.
-                if (!dest &&
+                if (dest.valueless_after_move() &&
                     !contains_any(specifiers, typeModifiers))
                 {
                     setError(specStart, "expected declaration specifier");
@@ -908,7 +936,7 @@ private:
                 break;
             }
         }
-        if (!dest && specifiers.empty())
+        if (dest.valueless_after_move() && specifiers.empty())
         {
             // We need at least one type declarator or specifier
             ptr_ = start;
@@ -979,11 +1007,10 @@ private:
             std::string_view signStr = explicitlySigned ? "signed" : "unsigned";
             // Infer basic fundamental type from "signed" or "unsigned",
             // which is "int"
-            if (!dest)
+            if (dest.valueless_after_move())
             {
                 dest = Polymorphic<TypeInfo>(std::in_place_type<NamedTypeInfo>);
-                auto &NTI = static_cast<NamedTypeInfo &>(*dest);
-                NTI.Name = Polymorphic<NameInfo>();
+                auto &NTI = dynamic_cast<NamedTypeInfo &>(*dest);
                 NTI.Name->Name = "int";
                 NTI.FundamentalType = FundamentalTypeKind::Int;
             }
@@ -1023,11 +1050,11 @@ private:
         if (contains(specifiers, "short"))
         {
             // Infer basic fundamental type for "short", which is "int"
-            if (!dest)
+            if (dest.valueless_after_move())
             {
                 dest = Polymorphic<TypeInfo>(std::in_place_type<NamedTypeInfo>);
-                auto &NTI = static_cast<NamedTypeInfo &>(*dest);
-                NTI.Name = Polymorphic<NameInfo>();
+                auto &NTI = dynamic_cast<NamedTypeInfo &>(*dest);
+                NTI.Name = Polymorphic<NameInfo>(std::in_place_type<IdentifierNameInfo>);
                 NTI.Name->Name = "int";
                 NTI.FundamentalType = FundamentalTypeKind::Int;
             }
@@ -1062,11 +1089,11 @@ private:
         if (contains(specifiers, "long"))
         {
             // Infer basic fundamental type for "long", which is "int"
-            if (!dest)
+            if (dest.valueless_after_move())
             {
                 dest = Polymorphic<TypeInfo>(std::in_place_type<NamedTypeInfo>);
-                auto &NTI = static_cast<NamedTypeInfo &>(*dest);
-                NTI.Name = Polymorphic<NameInfo>();
+                auto &NTI = dynamic_cast<NamedTypeInfo &>(*dest);
+                NTI.Name = Polymorphic<NameInfo>(std::in_place_type<IdentifierNameInfo>);
                 NTI.Name->Name = "int";
                 NTI.FundamentalType = FundamentalTypeKind::Int;
             }
@@ -1106,7 +1133,7 @@ private:
         }
 
         // Final check: if dest is still empty, we have an error
-        if (!dest)
+        if (dest.valueless_after_move())
         {
             ptr_ = start;
             setError("expected parameter type");
@@ -1126,7 +1153,7 @@ private:
         char const* start = ptr_;
 
         // Some rules are only valid if dest was initially empty
-        auto checkDestWasEmpty = [destWasEmpty=!dest, start, this]() {
+        auto checkDestWasEmpty = [destWasEmpty=dest.valueless_after_move(), start, this]() {
             if (!destWasEmpty)
             {
                 setError(start, "multiple type declaration specifiers");
@@ -1178,8 +1205,8 @@ private:
             MRDOCS_CHECK_OR(checkDestWasEmpty(), false);
 
             dest = Polymorphic<TypeInfo>(std::in_place_type<NamedTypeInfo>);
-            auto &NTI = static_cast<NamedTypeInfo &>(*dest);
-            NTI.Name = Polymorphic<NameInfo>();
+            auto &NTI = dynamic_cast<NamedTypeInfo &>(*dest);
+            MRDOCS_ASSERT(!NTI.Name.valueless_after_move());
             NTI.Name->Name = std::string_view(start, ptr_ - start);
             if (FundamentalTypeKind k;
                 fromString(NTI.Name->Name, k))
@@ -1353,7 +1380,7 @@ private:
         bool const allowTemplateDisambiguation,
         bool const allowTemplateArguments)
     {
-        if (dest)
+        if (!dest.valueless_after_move())
         {
             setError("type specifier is already set");
             return false;
@@ -1372,12 +1399,13 @@ private:
 
             // Populate dest
             auto const idStr = std::string_view(idStart, ptr_ - idStart);
-            Polymorphic<NameInfo> ParentName =
-                dest ? dynamic_cast<NamedTypeInfo *>(&*dest)->Name
-                     : std::nullopt;
+            Optional<Polymorphic<NameInfo>>
+                ParentName = !dest.valueless_after_move() ?
+                                 Optional<Polymorphic<NameInfo>>(dynamic_cast<NamedTypeInfo*>(&*dest)->Name) :
+                                 Optional<Polymorphic<NameInfo>>(std::nullopt);
             dest = Polymorphic<TypeInfo>(std::in_place_type<NamedTypeInfo>);
-            auto &NTI = static_cast<NamedTypeInfo &>(*dest);
-            NTI.Name = Polymorphic<NameInfo>();
+            auto &NTI = dynamic_cast<NamedTypeInfo &>(*dest);
+            NTI.Name = Polymorphic<NameInfo>(std::in_place_type<IdentifierNameInfo>);
             NTI.Name->Name = idStr;
             NTI.Name->Prefix = std::move(ParentName);
 
@@ -1391,7 +1419,7 @@ private:
             }
             skipWhitespace();
         }
-        if (!dest)
+        if (dest.valueless_after_move())
         {
             ptr_ = start;
             return false;
@@ -1481,7 +1509,7 @@ private:
             ptr_ = start;
             return false;
         }
-        if (!dest)
+        if (dest.valueless_after_move())
         {
             setError("no type defined by specifiers and declarator");
             ptr_ = start;
@@ -1522,7 +1550,7 @@ private:
             // For instance, in "int (*)[3][6]", we have a pointer to an
             // array of 3 arrays of 6 ints.
             std::size_t curSuffixLevel = suffixLevel;
-            while (curSuffixLevel > 0 && inner && inner->get())
+            while (curSuffixLevel > 0 && inner && !inner->get().valueless_after_move())
             {
                 auto& ref = inner->get();
                 inner = innerType(*ref);
@@ -1551,7 +1579,7 @@ private:
         // https://en.cppreference.com/w/cpp/language/declarations#Declarators
         char const* start = ptr_;
 
-        if (!dest)
+        if (dest.valueless_after_move())
         {
             setError("expected parameter type for '...'");
             ptr_ = start;
@@ -1722,7 +1750,7 @@ private:
             // Assemble the parent type for the NNS
             NamedTypeInfo ParentType;
             auto NNSString = std::string_view(start, NNSEnd - start);
-            NameInfo NNS;
+            IdentifierNameInfo NNS;
             auto const NNSRange = llvm::split(NNSString, "::");
             MRDOCS_ASSERT(!NNSRange.empty());
             auto NNSIt = NNSRange.begin();
@@ -1736,7 +1764,7 @@ private:
                 {
                     break;
                 }
-                NameInfo NewNNS;
+                IdentifierNameInfo NewNNS;
                 NewNNS.Name = std::string(unqualID);
                 NewNNS.Prefix = Polymorphic<NameInfo>(std::move(NNS));
                 NNS = NewNNS;

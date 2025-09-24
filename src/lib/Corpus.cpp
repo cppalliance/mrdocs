@@ -9,7 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "ConfigImpl.hpp"
+#include <lib/ConfigImpl.hpp>
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Support/Error.hpp>

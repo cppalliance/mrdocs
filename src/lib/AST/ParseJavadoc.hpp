@@ -12,8 +12,8 @@
 #ifndef MRDOCS_LIB_AST_PARSEJAVADOC_HPP
 #define MRDOCS_LIB_AST_PARSEJAVADOC_HPP
 
-#include "lib/Diagnostics.hpp"
 #include <mrdocs/Platform.hpp>
+#include <lib/Diagnostics.hpp>
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Metadata/Javadoc.hpp>
 
@@ -60,4 +60,4 @@ parseJavadoc(
 } // mrdocs
 } // clang
 
-#endif
+#endif // MRDOCS_LIB_AST_PARSEJAVADOC_HPP

@@ -8,15 +8,14 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "../../../third-party/lua/src/lua.hpp"
-#include <format>
+#include <lib/Support/LuaHandlebars.hpp>
 #include <mrdocs/Support/Lua.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Support/Report.hpp>
-#include <print>
-
 #include <llvm/Support/raw_ostream.h>
-#include "lib/Support/LuaHandlebars.hpp"
+#include <format>
+#include <lua.hpp>
+#include <print>
 
 namespace clang {
 namespace mrdocs {

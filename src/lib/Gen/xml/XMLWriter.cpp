@@ -10,13 +10,13 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "CXXTags.hpp"
 #include "XMLWriter.hpp"
-#include "lib/ConfigImpl.hpp"
-#include "lib/Support/Yaml.hpp"
-#include "lib/Support/LegibleNames.hpp"
-#include "lib/Support/Radix.hpp"
 #include <mrdocs/Platform.hpp>
+#include "CXXTags.hpp"
+#include <lib/ConfigImpl.hpp>
+#include <lib/Support/LegibleNames.hpp>
+#include <lib/Support/Radix.hpp>
+#include <lib/Support/Yaml.hpp>
 #include <llvm/Support/YAMLParser.h>
 #include <llvm/Support/YAMLTraits.h>
 
@@ -99,7 +99,7 @@ operator()(
         return;
     }
     #define INFO(Type) if constexpr(T::is##Type()) write##Type(I);
-    #include <mrdocs/Metadata/Info/InfoNodes.inc>
+#include <mrdocs/Metadata/Info/InfoNodes.inc>
 }
 
 //------------------------------------------------
@@ -197,7 +197,7 @@ writeFriend(
     }
     else if (I.Type)
     {
-        attrs.push({ "type", toString(*I.Type) });
+        attrs.push({ "type", toString(**I.Type) });
     }
 
     tags_.write("befriended", {}, attrs);
@@ -251,10 +251,15 @@ writeFunction(
     writeAttr(I.IsNodiscard,           "nodiscard", tags_);
     writeAttr(I.IsExplicitObjectMemberFunction, "is-explicit-object-member-function", tags_);
 
-    writeReturnType(*I.ReturnType, tags_);
+    if (I.ReturnType)
+    {
+        writeReturnType(**I.ReturnType, tags_);
+    }
 
-    for(auto const& J : I.Params)
+    for (auto const& J: I.Params)
+    {
         writeParam(J, tags_);
+    }
 
     writeJavadoc(I.javadoc);
 
@@ -345,10 +350,14 @@ writeNamespaceAlias(
 
     writeJavadoc(I.javadoc);
 
-    tags_.write("aliased", {}, {
-        {"name", toString(*I.AliasedSymbol)},
-        { I.AliasedSymbol->id }
-    });
+    if (I.AliasedSymbol)
+    {
+        tags_.write("aliased", {}, {
+            {"name", toString(**I.AliasedSymbol)},
+            { (*I.AliasedSymbol)->id }
+        });
+    }
+
     tags_.close(namespaceAliasTagName);
 }
 
@@ -373,7 +382,7 @@ XMLWriter::
     }
 
     std::string qualifierStr;
-    if (I.IntroducedName)
+    if (!I.IntroducedName.valueless_after_move())
     {
         qualifierStr = toString(*I.IntroducedName);
     }

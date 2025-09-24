@@ -9,14 +9,13 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_TAGFILEWRITER_HPP
-#define MRDOCS_LIB_TAGFILEWRITER_HPP
+#ifndef MRDOCS_LIB_GEN_HBS_TAGFILEWRITER_HPP
+#define MRDOCS_LIB_GEN_HBS_TAGFILEWRITER_HPP
 
-#include "lib/Gen/xml/XMLTags.hpp"
-#include "lib/Gen/hbs/HandlebarsCorpus.hpp"
+#include <lib/Gen/hbs/HandlebarsCorpus.hpp>
+#include <lib/Gen/xml/XMLTags.hpp>
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Support/Error.hpp>
-
 #include <fstream>
 #include <string>
 
@@ -142,4 +141,4 @@ private:
 } // mrdocs
 } // clang
 
-#endif
+#endif // MRDOCS_LIB_GEN_HBS_TAGFILEWRITER_HPP

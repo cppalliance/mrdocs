@@ -9,11 +9,11 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <span>
 #include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Metadata/Name.hpp>
+#include <span>
 
 namespace clang::mrdocs {
 
@@ -43,15 +43,33 @@ std::strong_ordering
 NameInfo::
 operator<=>(NameInfo const& other) const
 {
-    return
-        std::tie(Kind, Name, Prefix) <=>
-        std::tie(other.Kind, other.Name, other.Prefix);
+    if (this == &other)
+    {
+        return std::strong_ordering::equal;
+    }
+    if (Kind != other.Kind)
+    {
+        return Kind <=> other.Kind;
+    }
+    if (Name != other.Name)
+    {
+        return Name <=> other.Name;
+    }
+    if (bool(Prefix) != bool(other.Prefix))
+    {
+        return bool(Prefix) <=> bool(other.Prefix);
+    }
+    if (Prefix && other.Prefix)
+    {
+        return *Prefix <=> *other.Prefix;
+    }
+    return std::strong_ordering::equal;
 }
 
 std::strong_ordering
 operator<=>(Polymorphic<NameInfo> const& lhs, Polymorphic<NameInfo> const& rhs)
 {
-    if (lhs && rhs)
+    if (!lhs.valueless_after_move() && !rhs.valueless_after_move())
     {
         if (lhs->Kind == rhs->Kind)
         {
@@ -63,12 +81,14 @@ operator<=>(Polymorphic<NameInfo> const& lhs, Polymorphic<NameInfo> const& rhs)
         }
         return lhs->Kind <=> rhs->Kind;
     }
-    if (!lhs && !rhs)
+    if (lhs.valueless_after_move() &&
+        rhs.valueless_after_move())
     {
         return std::strong_ordering::equal;
     }
-    return !lhs ? std::strong_ordering::less
-            : std::strong_ordering::greater;
+    return lhs.valueless_after_move() ?
+               std::strong_ordering::less :
+               std::strong_ordering::greater;
 }
 
 static
@@ -79,7 +99,7 @@ toStringImpl(
 {
     if (N.Prefix)
     {
-        toStringImpl(result, *N.Prefix);
+        toStringImpl(result, **N.Prefix);
         writeTo(result, "::");
     }
 
@@ -99,8 +119,11 @@ toStringImpl(
             {
                 if constexpr(U::isType())
                 {
-                    if(u.Type)
-                        writeTo(result, toString(*u.Type));
+                    if (u.Type)
+                    {
+                        MRDOCS_ASSERT(!u.Type->valueless_after_move());
+                        writeTo(result, toString(**u.Type));
+                    }
                 }
                 if constexpr(U::isNonType())
                 {

@@ -14,9 +14,9 @@
 #ifndef MRDOCS_LIB_AST_FRONTENDACTIONFACTORY_HPP
 #define MRDOCS_LIB_AST_FRONTENDACTIONFACTORY_HPP
 
-#include "lib/ConfigImpl.hpp"
-#include "lib/Support/ExecutionContext.hpp"
-#include "lib/AST/MissingSymbolSink.hpp"
+#include <lib/AST/MissingSymbolSink.hpp>
+#include <lib/ConfigImpl.hpp>
+#include <lib/Support/ExecutionContext.hpp>
 #include <clang/Tooling/Tooling.h>
 
 namespace clang {
@@ -46,4 +46,4 @@ public:
 } // mrdocs
 } // clang
 
-#endif
+#endif // MRDOCS_LIB_AST_FRONTENDACTIONFACTORY_HPP

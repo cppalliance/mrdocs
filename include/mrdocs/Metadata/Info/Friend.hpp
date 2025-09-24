@@ -8,11 +8,11 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_METADATA_FRIEND_HPP
-#define MRDOCS_API_METADATA_FRIEND_HPP
+#ifndef MRDOCS_API_METADATA_INFO_FRIEND_HPP
+#define MRDOCS_API_METADATA_INFO_FRIEND_HPP
 
 #include <mrdocs/Metadata/Info.hpp>
-#include <mrdocs/Metadata/Source.hpp>
+#include <mrdocs/Metadata/Info/Source.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 
 namespace clang::mrdocs {
@@ -31,7 +31,7 @@ struct FriendInfo final
 
     /** Befriended type.
     */
-    Polymorphic<TypeInfo> Type = std::nullopt;
+    Optional<Polymorphic<TypeInfo>> Type = std::nullopt;
 };
 
 MRDOCS_DECL
@@ -84,4 +84,4 @@ tag_invoke(
 
 } // clang::mrdocs
 
-#endif
+#endif // MRDOCS_API_METADATA_INFO_FRIEND_HPP

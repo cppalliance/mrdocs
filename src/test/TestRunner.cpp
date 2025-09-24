@@ -8,20 +8,19 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "TestRunner.hpp"
+#include <mrdocs/Platform.hpp>
 #include "TestArgs.hpp"
-#include "lib/Support/Report.hpp"
-#include "lib/Support/Path.hpp"
-#include "lib/ConfigImpl.hpp"
-#include "lib/CorpusImpl.hpp"
-#include "lib/Support/ExecuteAndWaitWithLogging.hpp"
-#include "lib/MrDocsCompilationDatabase.hpp"
-#include "lib/SingleFileDB.hpp"
-#include "lib/Gen/hbs/HandlebarsGenerator.hpp"
-#include "test_suite/diff.hpp"
+#include "TestRunner.hpp"
+#include <lib/ConfigImpl.hpp>
+#include <lib/CorpusImpl.hpp>
+#include <lib/Gen/hbs/HandlebarsGenerator.hpp>
+#include <lib/MrDocsCompilationDatabase.hpp>
+#include <lib/SingleFileDB.hpp>
+#include <lib/Support/ExecuteAndWaitWithLogging.hpp>
+#include <lib/Support/Path.hpp>
+#include <lib/Support/Report.hpp>
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Generators.hpp>
-#include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <llvm/Support/CommandLine.h>
 #include <llvm/Support/FileSystem.h>
@@ -29,6 +28,7 @@
 #include <llvm/Support/Program.h>
 #include <atomic>
 #include <iostream>
+#include <test_suite/diff.hpp>
 
 namespace clang::mrdocs {
 

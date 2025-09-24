@@ -13,9 +13,9 @@
 #define MRDOCS_API_CONFIG_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Dom/Object.hpp>
 #include <mrdocs/PublicSettings.hpp>
+#include <mrdocs/Support/Error.hpp>
 #include <functional>
 #include <memory>
 #include <string>
@@ -225,4 +225,4 @@ public:
 } // mrdocs
 } // clang
 
-#endif
+#endif // MRDOCS_API_CONFIG_HPP

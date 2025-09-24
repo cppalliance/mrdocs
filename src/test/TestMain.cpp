@@ -8,20 +8,20 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <mrdocs/Platform.hpp>
 #include "TestArgs.hpp"
 #include "TestRunner.hpp"
-#include "lib/Support/Debug.hpp"
-#include "lib/Support/Report.hpp"
-#include <mrdocs/Platform.hpp>
-#include <mrdocs/Version.hpp>
+#include <lib/Support/Debug.hpp>
+#include <lib/Support/Report.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/Path.hpp>
-#include <test_suite/test_suite.hpp>
+#include <mrdocs/Version.hpp>
 #include <llvm/Support/FileSystem.h>
-#include <llvm/Support/raw_ostream.h>
 #include <llvm/Support/PrettyStackTrace.h>
 #include <llvm/Support/Signals.h>
+#include <llvm/Support/raw_ostream.h>
 #include <stdlib.h>
+#include <test_suite/test_suite.hpp>
 
 int main(int argc, char const** argv);
 

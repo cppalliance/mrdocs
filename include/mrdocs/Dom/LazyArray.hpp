@@ -8,11 +8,11 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_DOM_LAZY_ARRAY_HPP
-#define MRDOCS_LIB_DOM_LAZY_ARRAY_HPP
+#ifndef MRDOCS_API_DOM_LAZYARRAY_HPP
+#define MRDOCS_API_DOM_LAZYARRAY_HPP
 
-#include <mrdocs/Dom.hpp>
 #include <mrdocs/Platform.hpp>
+#include <mrdocs/Dom.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <ranges>
 #include <string_view>
@@ -195,4 +195,4 @@ TransformArray(T const& arr, F const& f)
 } // mrdocs
 } // clang
 
-#endif
+#endif // MRDOCS_API_DOM_LAZYARRAY_HPP

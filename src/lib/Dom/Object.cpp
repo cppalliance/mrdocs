@@ -8,10 +8,10 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <atomic>
-#include <format>
 #include <mrdocs/Dom/Object.hpp>
 #include <mrdocs/Support/RangeFor.hpp>
+#include <atomic>
+#include <format>
 #include <ranges>
 
 namespace clang {

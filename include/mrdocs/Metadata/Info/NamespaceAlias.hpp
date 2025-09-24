@@ -8,13 +8,13 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_METADATA_NAMESPACEALIAS_HPP
-#define MRDOCS_API_METADATA_NAMESPACEALIAS_HPP
+#ifndef MRDOCS_API_METADATA_INFO_NAMESPACEALIAS_HPP
+#define MRDOCS_API_METADATA_INFO_NAMESPACEALIAS_HPP
 
 #include <mrdocs/Platform.hpp>
+#include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Name.hpp>
-#include <mrdocs/ADT/Polymorphic.hpp>
 
 namespace clang::mrdocs {
 
@@ -28,7 +28,7 @@ struct NamespaceAliasInfo final
         This is another namespace that might or might
         not be in the same project.
      */
-    Polymorphic<NameInfo> AliasedSymbol;
+    Optional<Polymorphic<NameInfo>> AliasedSymbol;
 
     //--------------------------------------------
 
@@ -76,4 +76,4 @@ tag_invoke(
 
 } // clang::mrdocs
 
-#endif
+#endif // MRDOCS_API_METADATA_INFO_NAMESPACEALIAS_HPP

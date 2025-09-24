@@ -15,8 +15,8 @@
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <cstdlib>
-#include <string_view>
 #include <span>
+#include <string_view>
 
 namespace clang {
 namespace mrdocs {

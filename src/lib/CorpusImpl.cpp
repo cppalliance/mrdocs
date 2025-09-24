@@ -12,17 +12,17 @@
 //
 
 #include "CorpusImpl.hpp"
-#include "lib/AST/FrontendActionFactory.hpp"
-#include "lib/AST/MissingSymbolSink.hpp"
-#include "lib/AST/MrDocsFileSystem.hpp"
-#include "lib/Metadata/Finalizers/BaseMembersFinalizer.hpp"
-#include "lib/Metadata/Finalizers/DerivedFinalizer.hpp"
-#include "lib/Metadata/Finalizers/JavadocFinalizer.hpp"
-#include "lib/Metadata/Finalizers/NamespacesFinalizer.hpp"
-#include "lib/Metadata/Finalizers/OverloadsFinalizer.hpp"
-#include "lib/Metadata/Finalizers/SortMembersFinalizer.hpp"
-#include "lib/Support/Chrono.hpp"
-#include "lib/Support/Report.hpp"
+#include <lib/AST/FrontendActionFactory.hpp>
+#include <lib/AST/MissingSymbolSink.hpp>
+#include <lib/AST/MrDocsFileSystem.hpp>
+#include <lib/Metadata/Finalizers/BaseMembersFinalizer.hpp>
+#include <lib/Metadata/Finalizers/DerivedFinalizer.hpp>
+#include <lib/Metadata/Finalizers/JavadocFinalizer.hpp>
+#include <lib/Metadata/Finalizers/NamespacesFinalizer.hpp>
+#include <lib/Metadata/Finalizers/OverloadsFinalizer.hpp>
+#include <lib/Metadata/Finalizers/SortMembersFinalizer.hpp>
+#include <lib/Support/Chrono.hpp>
+#include <lib/Support/Report.hpp>
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Support/Algorithm.hpp>
 #include <mrdocs/Support/Error.hpp>
@@ -140,7 +140,7 @@ qualifiedNameCompare(
     Info const& context,
     CorpusImpl const& corpus)
 {
-    MRDOCS_CHECK_OR(lhs0 && rhs0, false);
+    MRDOCS_CHECK_OR(!lhs0.valueless_after_move() && !rhs0.valueless_after_move(), false);
     // Compare each component of the qualified name
     NameInfo const* lhs = &*lhs0;
     NameInfo const* rhs = &*rhs0;
@@ -150,8 +150,8 @@ qualifiedNameCompare(
         {
             return false;
         }
-        lhs = lhs->Prefix ? &*lhs->Prefix : nullptr;
-        rhs = rhs->Prefix ? &*rhs->Prefix : nullptr;
+        lhs = lhs->Prefix ? &**lhs->Prefix : nullptr;
+        rhs = rhs->Prefix ? &**rhs->Prefix : nullptr;
     }
     // We consumed all components of both names
     if (!lhs && !rhs)
@@ -184,12 +184,20 @@ qualifiedNameCompare(
             continue;
         }
         // Names matches, match next component
-        curName = curName->Prefix ? &*curName->Prefix : nullptr;
+        curName = curName->Prefix ? &**curName->Prefix : nullptr;
         curContext = curContext->Parent ? corpus.find(curContext->Parent) : nullptr;
     }
     // We should have consumed all components of the name with the context
     return !curName;
 }
+
+template <bool isInner>
+bool
+isDecayedEqualImpl(
+    Optional<Polymorphic<TypeInfo>> const& lhs,
+    Optional<Polymorphic<TypeInfo>> const& rhs,
+    Info const& context,
+    CorpusImpl const& corpus);
 
 template <bool isInner>
 bool
@@ -200,8 +208,8 @@ isDecayedEqualImpl(
     CorpusImpl const& corpus)
 {
     // Polymorphic
-    MRDOCS_CHECK_OR(static_cast<bool>(lhs) == static_cast<bool>(rhs), false);
-    MRDOCS_CHECK_OR(static_cast<bool>(lhs) && static_cast<bool>(rhs), true);
+    MRDOCS_CHECK_OR(lhs.valueless_after_move() == lhs.valueless_after_move(), false);
+    MRDOCS_CHECK_OR(!lhs.valueless_after_move() && !rhs.valueless_after_move(), true);
     // TypeInfo
     bool const decayToPointer = !isInner && (lhs->isArray() || rhs->isArray());
     if (!decayToPointer)
@@ -301,6 +309,19 @@ isDecayedEqualImpl(
         MRDOCS_UNREACHABLE();
     }
     return true;
+}
+
+template <bool isInner>
+bool
+isDecayedEqualImpl(
+    Optional<Polymorphic<TypeInfo>> const& lhs,
+    Optional<Polymorphic<TypeInfo>> const& rhs,
+    Info const& context,
+    CorpusImpl const& corpus)
+{
+    MRDOCS_CHECK_OR(static_cast<bool>(lhs) == static_cast<bool>(rhs), false);
+    MRDOCS_CHECK_OR(static_cast<bool>(lhs) && static_cast<bool>(rhs), true);
+    return isDecayedEqualImpl<isInner>(*lhs, *rhs, context, corpus);
 }
 
 /* Compare two types for equality for the purposes of
@@ -470,7 +491,8 @@ lookupImpl(
     if (auto* TI = contextPtr->asTypedefPtr())
     {
         MRDOCS_CHECK_OR(TI->Type, nullptr);
-        SymbolID resolvedSymbolID = TI->Type->namedSymbol();
+        MRDOCS_ASSERT(!TI->Type->valueless_after_move());
+        SymbolID resolvedSymbolID = (*TI->Type)->namedSymbol();
         contextPtr = this->find(resolvedSymbolID);
         MRDOCS_CHECK_OR(contextPtr, nullptr);
     }
@@ -619,7 +641,9 @@ lookupImpl(
             MRDOCS_CHECK_OR(F.IsExplicitObjectMemberFunction == ref.IsExplicitObjectMemberFunction, matchRes);
             for (std::size_t i = 0; i < F.Params.size(); ++i)
             {
-                auto& lhsType = F.Params[i].Type;
+                auto& lhsTypeOpt = F.Params[i].Type;
+                MRDOCS_CHECK_OR(lhsTypeOpt, matchRes);
+                auto& lhsType = *lhsTypeOpt;
                 auto& rhsType  = ref.FunctionParameters[i];
                 MRDOCS_CHECK_OR(isDecayedEqual(lhsType, rhsType, context, *this), matchRes);
             }

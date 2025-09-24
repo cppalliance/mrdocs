@@ -5,18 +5,18 @@
 // https://www.boost.org/LICENSE_1_0.txt
 //
 
-#include <filesystem>
-#include <format>
-#include <llvm/Support/JSON.h>
-#include <llvm/Support/MemoryBuffer.h>
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Support/Handlebars.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Support/String.hpp>
+#include <llvm/Support/JSON.h>
+#include <llvm/Support/MemoryBuffer.h>
+#include <filesystem>
+#include <format>
+#include <utility>
 #include <test_suite/detail/decomposer.hpp>
 #include <test_suite/diff.hpp>
 #include <test_suite/test_suite.hpp>
-#include <utility>
 
 namespace clang {
 namespace mrdocs {

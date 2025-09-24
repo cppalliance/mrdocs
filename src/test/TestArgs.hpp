@@ -12,8 +12,8 @@
 #define MRDOCS_TEST_TESTARGS_HPP
 
 #include <llvm/Support/CommandLine.h>
-#include <tool/PublicToolArgs.hpp>
 #include <string>
+#include <tool/PublicToolArgs.hpp>
 
 namespace clang {
 namespace mrdocs {

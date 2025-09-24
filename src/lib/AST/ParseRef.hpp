@@ -8,13 +8,13 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_PARSEREF_HPP
-#define MRDOCS_LIB_PARSEREF_HPP
+#ifndef MRDOCS_LIB_AST_PARSEREF_HPP
+#define MRDOCS_LIB_AST_PARSEREF_HPP
 
+#include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/Specifiers.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 #include <mrdocs/Support/Parse.hpp>
-#include <mrdocs/ADT/Polymorphic.hpp>
 #include <llvm/ADT/SmallVector.h>
 #include <string_view>
 
@@ -36,7 +36,7 @@ struct ParsedRefComponent {
 
     // If not empty, this is a conversion operator
     // Only the last component can be a conversion operator
-    Polymorphic<TypeInfo> ConversionType = std::nullopt;
+    Optional<Polymorphic<TypeInfo>> ConversionType = std::nullopt;
 
     constexpr
     bool
@@ -82,4 +82,4 @@ parse(
 
 } // clang::mrdocs
 
-#endif
+#endif // MRDOCS_LIB_AST_PARSEREF_HPP

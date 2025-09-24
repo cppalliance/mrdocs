@@ -7,8 +7,8 @@
 // Official repository: https://github.com/boostorg/url
 //
 
-#ifndef MRDOCS_TEST_HPP
-#define MRDOCS_TEST_HPP
+#ifndef MRDOCS_TEST_SUITE_TEST_SUITE_HPP
+#define MRDOCS_TEST_SUITE_TEST_SUITE_HPP
 
 #if defined(_MSC_VER)
 # pragma once
@@ -18,7 +18,7 @@
 #include <cctype>
 #include <sstream>
 #include <type_traits>
-#include "detail/decomposer.hpp"
+#include <test_suite/detail/decomposer.hpp>
 
 //  This is a derivative work
 //  Copyright 2002-2018 Peter Dimov
@@ -385,4 +385,4 @@ extern int unit_test_main(int argc, char const* const* argv);
 
 } // test_suite
 
-#endif
+#endif // MRDOCS_TEST_SUITE_TEST_SUITE_HPP

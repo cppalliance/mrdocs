@@ -209,4 +209,4 @@ getSinglePageFullPath(
 } // mrdocs
 } // clang
 
-#endif
+#endif // MRDOCS_API_GENERATOR_HPP

@@ -14,8 +14,8 @@
 #define MRDOCS_LIB_GEN_ADOC_ADOCGENERATOR_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Generator.hpp>
 #include <lib/Gen/hbs/HandlebarsGenerator.hpp>
+#include <mrdocs/Generator.hpp>
 
 namespace clang::mrdocs::adoc {
 
