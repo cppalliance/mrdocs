@@ -14,7 +14,7 @@
 
 #include <concepts>
 #include <mrdocs/Support/Assert.hpp>
-#include <optional>
+#include <mrdocs/ADT/Nullable.hpp>
 #include <utility>
 
 namespace clang::mrdocs {
@@ -42,133 +42,148 @@ namespace clang::mrdocs {
     the owned derived-type object in the
     destructor.
 */
-template <class T> class Polymorphic {
-  struct WrapperBase {
-    virtual constexpr ~WrapperBase() = default;
-    virtual T &getValue() = 0;
-    virtual constexpr WrapperBase *clone() = 0;
-  };
+template <class T>
+class Polymorphic {
+    struct WrapperBase {
+        virtual constexpr ~WrapperBase() = default;
+        virtual T& getValue() = 0;
+        virtual constexpr WrapperBase* clone() = 0;
+    };
 
-  template <class U> class Wrapper final : public WrapperBase {
-    U Value;
+    template <class U>
+    class Wrapper final : public WrapperBase {
+        U Value;
+        U& getValue() override { return Value; }
+    public:
+        template <class... Ts>
+        constexpr Wrapper(Ts&&... ts) : Value(std::forward<Ts>(ts)...) {}
+        constexpr ~Wrapper() override = default;
+        constexpr WrapperBase* clone() override { return new Wrapper(Value); }
+    };
 
-    U &getValue() override { return Value; }
+    WrapperBase* WB; // nullptr only when constructed/reset by nullable_traits
 
-  public:
-    template <class... Ts>
-    constexpr Wrapper(Ts &&...ts) : Value(std::forward<Ts>(ts)...) {}
-    constexpr ~Wrapper() override = default;
-    constexpr WrapperBase *clone() override { return new Wrapper(getValue()); }
-  };
+    // Private null token and constructor: only the friend traits can call this.
+    struct _null_t { explicit constexpr _null_t(int) {} };
+    explicit constexpr Polymorphic(_null_t) noexcept : WB(nullptr) {}
 
-  WrapperBase *WB;
+    // Allow the traits specialization to access private members/ctors.
+    friend struct nullable_traits<Polymorphic<T>>;
+
+// std::polymorphic has a default constructor that
+// default-constructs the base type T if it's default-constructible.
+// We disable this constructor because this is always an error
+// in MrDocs.
+//    constexpr explicit Polymorphic()
+//    requires std::is_default_constructible_v<T>
+//             && std::is_copy_constructible_v<T>
+//        : WB(new Wrapper<T>())
+//    {}
 
 public:
-  using value_type = T;
-  using pointer = T *;
-  using const_pointer = T const *;
+    using value_type = T;
+    using pointer = T*;
+    using const_pointer = T const*;
 
-  /** Empty constructor.
+    /// Default constructs the value type (never null via public API).
+    /// explicit constexpr Polymorphic() : Polymorphic(std::in_place_type<T>) {}
 
-      Ensures: *this is empty.
-   */
-  constexpr Polymorphic(std::nullopt_t) : WB(nullptr) {}
+    /** Forwarding constructor from a derived U. */
+    template <class U>
+    constexpr explicit Polymorphic(U&& u)
+        requires (!std::same_as<Polymorphic, std::remove_cvref_t<U>>) &&
+                 std::copy_constructible<std::remove_cvref_t<U>> &&
+                 std::derived_from<std::remove_cvref_t<U>, T>
+        : WB(new Wrapper<std::remove_cvref_t<U>>(std::forward<U>(u))) {}
 
-  /// Default constructs the value type.
-  explicit constexpr Polymorphic() : Polymorphic(std::in_place_type<T>) {}
+    /** In-place constructor for a specific derived U. */
+    template <class U, class... Ts>
+    explicit constexpr Polymorphic(std::in_place_type_t<U>, Ts&&... ts)
+        requires std::same_as<std::remove_cvref_t<U>, U> &&
+                 std::constructible_from<U, Ts&&...> &&
+                 std::copy_constructible<U> && std::derived_from<U, T>
+        : WB(new Wrapper<U>(std::forward<Ts>(ts)...)) {}
 
-  /** Forwarding constructor.
-   * @param u The object to copy.
-   */
-  template <class U>
-  constexpr explicit Polymorphic(U &&u)
-    requires(not std::same_as<Polymorphic, std::remove_cvref_t<U>>) &&
-            std::copy_constructible<std::remove_cvref_t<U>> &&
-            std::derived_from<std::remove_cvref_t<U>, T>
-      : WB(new Wrapper<std::remove_cvref_t<U>>(std::forward<U>(u))) {}
+    constexpr Polymorphic(Polymorphic const& V)
+        : WB(V.WB ? V.WB->clone() : nullptr) {}
 
-  /** In place constructor
-   * @param ts Arguments to forward to the constructor of U.
-   */
-  template <class U, class... Ts>
-  explicit constexpr Polymorphic(std::in_place_type_t<U>, Ts &&...ts)
-    requires std::same_as<std::remove_cvref_t<U>, U> &&
-             std::constructible_from<U, Ts &&...> &&
-             std::copy_constructible<U> && std::derived_from<U, T>
-      : WB(new Wrapper<U>(std::forward<Ts>(ts)...)) {}
+    constexpr Polymorphic(Polymorphic&& V) noexcept
+        : WB(std::exchange(V.WB, nullptr)) {}
 
-  constexpr Polymorphic(const Polymorphic &V)
-      : WB(V ? V.WB->clone() : nullptr) {}
+    constexpr ~Polymorphic() { delete WB; }
 
-  constexpr Polymorphic(Polymorphic &&V) noexcept
-      : WB(std::exchange(V.WB, nullptr)) {}
-
-  constexpr ~Polymorphic() { delete WB; }
-
-  constexpr Polymorphic &operator=(const Polymorphic &V) {
-    if (this != &V) {
-      Polymorphic Temp(V);
-      swap(*this, Temp);
+    constexpr Polymorphic& operator=(Polymorphic const& V) {
+        if (this != &V) {
+            Polymorphic Temp(V);
+            swap(*this, Temp);
+        }
+        return *this;
     }
-    return *this;
-  }
 
-  constexpr Polymorphic &operator=(Polymorphic &&V) noexcept {
-    if (this != &V) {
-      swap(*this, V);
-      Polymorphic Temp = std::nullopt;
-      swap(V, Temp);
+    constexpr Polymorphic& operator=(Polymorphic&& V) noexcept {
+        if (this != &V) {
+            delete WB;
+            WB = std::exchange(V.WB, nullptr);
+        }
+        return *this;
     }
-    return *this;
-  }
 
-  [[nodiscard]] constexpr pointer operator->() noexcept {
-    MRDOCS_ASSERT(WB != nullptr);
-    return &WB->getValue();
-  }
+    [[nodiscard]] constexpr pointer operator->() noexcept {
+        MRDOCS_ASSERT(WB != nullptr);
+        return &WB->getValue();
+    }
 
-  [[nodiscard]] constexpr const_pointer operator->() const noexcept {
-    MRDOCS_ASSERT(WB != nullptr);
-    return &WB->getValue();
-  }
+    [[nodiscard]] constexpr const_pointer operator->() const noexcept {
+        MRDOCS_ASSERT(WB != nullptr);
+        return &WB->getValue();
+    }
 
-  [[nodiscard]] constexpr T &operator*() noexcept {
-    MRDOCS_ASSERT(WB != nullptr);
-    return WB->getValue();
-  }
+    [[nodiscard]] constexpr T& operator*() noexcept {
+        MRDOCS_ASSERT(WB != nullptr);
+        return WB->getValue();
+    }
 
-  [[nodiscard]] constexpr const T &operator*() const noexcept {
-    MRDOCS_ASSERT(WB != nullptr);
-    return WB->getValue();
-  }
+    [[nodiscard]] constexpr T const& operator*() const noexcept {
+        MRDOCS_ASSERT(WB != nullptr);
+        return WB->getValue();
+    }
 
-  [[nodiscard]] explicit constexpr operator bool() const noexcept {
-    return WB != nullptr;
-  }
+    constexpr bool
+    valueless_after_move() const noexcept
+    {
+        return WB == nullptr;
+    }
 
-  friend constexpr void swap(Polymorphic &lhs, Polymorphic &rhs) noexcept {
-    std::swap(lhs.WB, rhs.WB);
-  }
+    friend constexpr void
+    swap(Polymorphic& lhs, Polymorphic& rhs) noexcept
+    {
+        std::swap(lhs.WB, rhs.WB);
+    }
 };
 
 namespace detail {
 
 // A function to compare two polymorphic objects that
 // store the same derived type
-template <class Base> struct VisitCompareFn {
-  Base const &rhs;
+template <class Base>
+struct VisitCompareFn
+{
+    Base const& rhs;
 
-  template <class Derived> auto operator()(Derived const &lhsDerived) {
-    auto const &rhsDerived = dynamic_cast<Derived const &>(rhs);
-    return lhsDerived <=> rhsDerived;
-  }
+    template <class Derived>
+    auto
+    operator()(Derived const& lhsDerived)
+    {
+        auto const& rhsDerived = dynamic_cast<Derived const&>(rhs);
+        return lhsDerived <=> rhsDerived;
+    }
 };
 
-/** Determines if a type can be visited with VisitCompareFn
- */
 template <class Base>
-concept CanVisitCompare =
-    requires(Base const &b) { visit(b, VisitCompareFn<Base>{b}); };
+concept CanVisitCompare = requires(Base const& b)
+{
+    visit(b, VisitCompareFn<Base>{ b });
+};
 
 template <class T> inline constexpr bool IsPolymorphic = false;
 template <class T> inline constexpr bool IsPolymorphic<Polymorphic<T>> = true;
@@ -197,11 +212,9 @@ template <class T> inline constexpr bool IsPolymorphic<Polymorphic<T>> = true;
 template <class Base>
 requires detail::CanVisitCompare<Base>
 auto
-CompareDerived(
-    Polymorphic<Base> const& lhs,
-    Polymorphic<Base> const& rhs)
+CompareDerived(Polymorphic<Base> const& lhs, Polymorphic<Base> const& rhs)
 {
-    if (lhs && rhs)
+    if (!lhs.valueless_after_move() && !rhs.valueless_after_move())
     {
         if (lhs->Kind == rhs->Kind)
         {
@@ -209,26 +222,28 @@ CompareDerived(
         }
         return lhs->Kind <=> rhs->Kind;
     }
-    return !lhs ? std::strong_ordering::less
-            : std::strong_ordering::greater;
+    return lhs.valueless_after_move() ?
+               std::strong_ordering::less :
+               std::strong_ordering::greater;
 }
 
 /// @copydoc CompareDerived(Polymorphic<Base> const&, Polymorphic<Base> const&)
 template <class Base>
-  requires(!detail::IsPolymorphic<Base>) && detail::CanVisitCompare<Base>
-auto CompareDerived(Base const &lhs, Base const &rhs) {
-  if (lhs.Kind == rhs.Kind) {
-    return visit(lhs, detail::VisitCompareFn<Base>(rhs));
-  }
-  return lhs.Kind <=> rhs.Kind;
+requires(!detail::IsPolymorphic<Base>) && detail::CanVisitCompare<Base>
+auto
+CompareDerived(Base const& lhs, Base const& rhs)
+{
+    if (lhs.Kind == rhs.Kind)
+    {
+        return visit(lhs, detail::VisitCompareFn<Base>(rhs));
+    }
+    return lhs.Kind <=> rhs.Kind;
 }
 
 template <class Base>
 requires detail::CanVisitCompare<Base>
 auto
-operator<=>(
-    Polymorphic<Base> const& lhs,
-    Polymorphic<Base> const& rhs)
+operator<=>(Polymorphic<Base> const& lhs, Polymorphic<Base> const& rhs)
 {
     return CompareDerived(lhs, rhs);
 }
@@ -236,13 +251,41 @@ operator<=>(
 template <class Base>
 requires detail::CanVisitCompare<Base>
 bool
-operator==(
-    Polymorphic<Base> const& lhs,
-    Polymorphic<Base> const& rhs)
+operator==(Polymorphic<Base> const& lhs, Polymorphic<Base> const& rhs)
 {
     return lhs <=> rhs == std::strong_ordering::equal;
 }
 
-} // clang::mrdocs
+// -------------------- nullable_traits specialization --------------------
+
+/** nullable_traits for Polymorphic<T>.
+
+    Only this friend specialization can create/reset the null state.
+*/
+template<class T>
+struct nullable_traits<Polymorphic<T>>
+{
+    static constexpr bool
+    is_null(Polymorphic<T> const& v) noexcept
+    {
+        return v.valueless_after_move();
+    }
+
+    static constexpr Polymorphic<T>
+    null() noexcept
+    {
+        // Use the private null constructor
+        return Polymorphic<T>(typename Polymorphic<T>::_null_t{0});
+    }
+
+    static constexpr void
+    make_null(Polymorphic<T>& v) noexcept
+    {
+        delete v.WB;
+        v.WB = nullptr;
+    }
+};
+
+} // namespace clang::mrdocs
 
 #endif
