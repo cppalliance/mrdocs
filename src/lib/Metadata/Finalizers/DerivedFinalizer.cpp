@@ -8,9 +8,9 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "DerivedFinalizer.hpp"
-#include <mrdocs/Support/Report.hpp>
+#include <lib/Metadata/Finalizers/DerivedFinalizer.hpp>
 #include <mrdocs/Support/Algorithm.hpp>
+#include <mrdocs/Support/Report.hpp>
 #include <algorithm>
 
 namespace clang::mrdocs {
@@ -30,8 +30,9 @@ build()
         {
             MRDOCS_CHECK_OR_CONTINUE(base.Access == AccessKind::Public);
             MRDOCS_CHECK_OR_CONTINUE(base.Type);
-            MRDOCS_CHECK_OR_CONTINUE(base.Type->isNamed());
-            auto& namedType = dynamic_cast<NamedTypeInfo&>(*base.Type);
+            MRDOCS_ASSERT(!base.Type->valueless_after_move());
+            MRDOCS_CHECK_OR_CONTINUE((*base.Type)->isNamed());
+            auto& namedType = dynamic_cast<NamedTypeInfo&>(**base.Type);
             MRDOCS_CHECK_OR_CONTINUE(namedType.Name);
             SymbolID const namedSymbolID = namedType.Name->id;
             MRDOCS_CHECK_OR_CONTINUE(namedSymbolID != SymbolID::invalid);

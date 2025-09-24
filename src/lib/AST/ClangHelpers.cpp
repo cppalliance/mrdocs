@@ -10,11 +10,11 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "lib/AST/ClangHelpers.hpp"
+#include <lib/AST/ClangHelpers.hpp>
 #include <mrdocs/Support/Assert.hpp>
 #include <mrdocs/Support/Report.hpp>
-#include <clang/Sema/Template.h>
 #include <clang/Index/USRGeneration.h>
+#include <clang/Sema/Template.h>
 #include <ranges>
 
 namespace clang::mrdocs {

@@ -8,11 +8,11 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_METADATA_FINALIZER_SORTMEMBERSFINALIZER_HPP
-#define MRDOCS_LIB_METADATA_FINALIZER_SORTMEMBERSFINALIZER_HPP
+#ifndef MRDOCS_LIB_METADATA_FINALIZERS_SORTMEMBERSFINALIZER_HPP
+#define MRDOCS_LIB_METADATA_FINALIZERS_SORTMEMBERSFINALIZER_HPP
 
-#include "lib/Metadata/InfoSet.hpp"
-#include "lib/CorpusImpl.hpp"
+#include <lib/CorpusImpl.hpp>
+#include <lib/Metadata/InfoSet.hpp>
 
 namespace clang::mrdocs {
 
@@ -78,4 +78,4 @@ public:
 
 } // clang::mrdocs
 
-#endif
+#endif // MRDOCS_LIB_METADATA_FINALIZERS_SORTMEMBERSFINALIZER_HPP

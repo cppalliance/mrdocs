@@ -13,20 +13,21 @@
 //
 
 #include "ParseJavadoc.hpp"
-#include "lib/AST/ParseRef.hpp"
-#include <cctype>
-#include <clang/AST/ASTContext.h>
-#include <clang/AST/CommentCommandTraits.h>
-#include <clang/AST/RawCommentList.h>
-#include <clang/Basic/SourceLocation.h>
-#include <clang/Lex/Lexer.h>
-#include <format>
+#include <lib/AST/ParseRef.hpp>
 #include <mrdocs/Metadata/Javadoc.hpp>
+#include <mrdocs/Metadata/Javadoc/Text/Parts.hpp>
 #include <mrdocs/Support/Algorithm.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Support/ScopeExit.hpp>
 #include <mrdocs/Support/String.hpp>
+#include <clang/AST/ASTContext.h>
+#include <clang/AST/CommentCommandTraits.h>
+#include <clang/AST/RawCommentList.h>
+#include <clang/Basic/SourceLocation.h>
+#include <clang/Lex/Lexer.h>
+#include <cctype>
+#include <format>
 
 #ifdef _MSC_VER
 #pragma warning(push)
@@ -38,8 +39,8 @@
 #pragma warning(pop)
 #endif
 #include <clang/Basic/SourceManager.h>
-#include <llvm/Support/JSON.h>
 #include <llvm/ADT/StringExtras.h>
+#include <llvm/Support/JSON.h>
 #include <ranges>
 
 #ifdef NDEBUG

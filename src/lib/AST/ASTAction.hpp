@@ -14,12 +14,11 @@
 #ifndef MRDOCS_LIB_AST_ASTACTION_HPP
 #define MRDOCS_LIB_AST_ASTACTION_HPP
 
-#include "lib/ConfigImpl.hpp"
-#include "lib/Support/ExecutionContext.hpp"
-#include <clang/Tooling/Tooling.h>
 #include <mrdocs/Platform.hpp>
-#include "MissingSymbolSink.hpp"
-
+#include <lib/AST/MissingSymbolSink.hpp>
+#include <lib/ConfigImpl.hpp>
+#include <lib/Support/ExecutionContext.hpp>
+#include <clang/Tooling/Tooling.h>
 
 namespace clang {
 namespace mrdocs {
@@ -98,4 +97,4 @@ public:
 } // mrdocs
 } // clang
 
-#endif
+#endif // MRDOCS_LIB_AST_ASTACTION_HPP

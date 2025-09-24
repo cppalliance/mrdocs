@@ -13,10 +13,10 @@
 #define MRDOCS_LIB_GEN_HBS_HANDLEBARSCORPUS_HPP
 
 #include <mrdocs/Platform.hpp>
-#include "lib/Support/LegibleNames.hpp"
+#include <lib/Support/LegibleNames.hpp>
+#include <mrdocs/Corpus.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Metadata/Javadoc.hpp>
-#include <mrdocs/Corpus.hpp>
 
 namespace clang::mrdocs::hbs {
 
@@ -72,4 +72,4 @@ public:
 
 } // clang::mrdocs::hbs
 
-#endif
+#endif // MRDOCS_LIB_GEN_HBS_HANDLEBARSCORPUS_HPP

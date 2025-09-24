@@ -12,8 +12,8 @@
 #ifndef MRDOCS_LIB_GEN_XML_XMLWRITER_HPP
 #define MRDOCS_LIB_GEN_XML_XMLWRITER_HPP
 
-#include "XMLTags.hpp"
-#include "lib/Support/YamlFwd.hpp"
+#include <lib/Gen/xml/XMLTags.hpp>
+#include <lib/Support/YamlFwd.hpp>
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Support/Error.hpp>
@@ -109,4 +109,4 @@ public:
 
 } // clang::mrdocs::xml
 
-#endif
+#endif // MRDOCS_LIB_GEN_XML_XMLWRITER_HPP

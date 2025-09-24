@@ -11,10 +11,10 @@
 #ifndef MRDOCS_TOOL_TOOLARGS_HPP
 #define MRDOCS_TOOL_TOOLARGS_HPP
 
-#include <llvm/Support/CommandLine.h>
-#include <tool/PublicToolArgs.hpp>
 #include <mrdocs/Config.hpp>
+#include <llvm/Support/CommandLine.h>
 #include <string>
+#include <tool/PublicToolArgs.hpp>
 
 namespace clang {
 namespace mrdocs {

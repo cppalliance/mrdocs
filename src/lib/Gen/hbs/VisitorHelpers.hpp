@@ -11,8 +11,9 @@
 #ifndef MRDOCS_LIB_GEN_HBS_VISITORHELPERS_HPP
 #define MRDOCS_LIB_GEN_HBS_VISITORHELPERS_HPP
 
-#include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Config.hpp>
+#include <mrdocs/Corpus.hpp>
+#include <mrdocs/Metadata/Info.hpp>
 
 namespace clang::mrdocs::hbs {
 

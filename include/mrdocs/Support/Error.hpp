@@ -12,12 +12,12 @@
 #ifndef MRDOCS_API_SUPPORT_ERROR_HPP
 #define MRDOCS_API_SUPPORT_ERROR_HPP
 
+#include <mrdocs/Platform.hpp>
+#include <mrdocs/Support/source_location.hpp>
 #include <exception>
 #include <format>
 #include <functional>
 #include <memory>
-#include <mrdocs/Platform.hpp>
-#include <mrdocs/Support/source_location.hpp>
 #include <string>
 #include <string_view>
 #include <system_error>

@@ -14,11 +14,11 @@
 #ifndef MRDOCS_LIB_AST_ASTVISITORCONSUMER_HPP
 #define MRDOCS_LIB_AST_ASTVISITORCONSUMER_HPP
 
-#include "lib/ConfigImpl.hpp"
-#include "lib/Support/ExecutionContext.hpp"
 #include <mrdocs/Platform.hpp>
-#include <clang/Tooling/Tooling.h>
+#include <lib/ConfigImpl.hpp>
+#include <lib/Support/ExecutionContext.hpp>
 #include <clang/Sema/SemaConsumer.h>
+#include <clang/Tooling/Tooling.h>
 
 namespace clang {
 namespace mrdocs {
@@ -263,4 +263,4 @@ public:
 } // mrdocs
 } // clang
 
-#endif
+#endif // MRDOCS_LIB_AST_ASTVISITORCONSUMER_HPP

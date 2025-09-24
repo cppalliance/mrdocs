@@ -50,8 +50,10 @@ resolveTypedef(Corpus const& c, Info const& I)
     if (I.isTypedef())
     {
         auto const& TI = I.asTypedef();
-        Polymorphic<TypeInfo> const& T = TI.Type;
-        MRDOCS_CHECK_OR(T && T->Kind == TypeKind::Named, &I);
+        MRDOCS_CHECK_OR(TI.Type, &I);
+        MRDOCS_ASSERT(!TI.Type->valueless_after_move());
+        Polymorphic<TypeInfo> const& T = *TI.Type;
+        MRDOCS_CHECK_OR(!T.valueless_after_move() && T->Kind == TypeKind::Named, &I);
         auto const& NT = dynamic_cast<NamedTypeInfo const&>(*T);
         MRDOCS_CHECK_OR(NT.Name, &I);
         Info const* resolved = c.find(NT.Name->id);
@@ -168,8 +170,11 @@ findResolvedPrimarySiblingWithUrl(Corpus const& c, Info const& I)
         // The symbol is a typedef to a specialization
         if constexpr (std::same_as<InfoTy, TypedefInfo>)
         {
-            Polymorphic<TypeInfo> const& T = U.Type;
-            MRDOCS_CHECK_OR(T && T->Kind == TypeKind::Named, false);
+            auto const& TOpt = U.Type;
+            MRDOCS_CHECK_OR(TOpt, false);
+            Polymorphic<TypeInfo> const& T = *TOpt;
+            MRDOCS_CHECK_OR(!T.valueless_after_move(), false);
+            MRDOCS_CHECK_OR(T->Kind == TypeKind::Named, false);
             auto const& NT = dynamic_cast<NamedTypeInfo const&>(*T);
             MRDOCS_CHECK_OR(NT.Name, false);
             MRDOCS_CHECK_OR(NT.Name->Kind == NameKind::Specialization, false);

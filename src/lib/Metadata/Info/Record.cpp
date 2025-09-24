@@ -170,7 +170,12 @@ tag_invoke(
     io.map("isPrivate", I.Access == AccessKind::Private);
     io.map("isVirtual", I.IsVirtual);
     io.map("type", dom::ValueFrom(I.Type, domCorpus));
-    io.map("symbol", I.Type->namedSymbol());
+    if (I.Type)
+    {
+        MRDOCS_ASSERT(!I.Type->valueless_after_move());
+        io.map("symbol", (*I.Type)->namedSymbol());
+    }
+
 }
 
 void

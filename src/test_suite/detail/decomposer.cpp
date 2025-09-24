@@ -10,7 +10,7 @@
 #include "decomposer.hpp"
 
 #if __has_include(<cxxabi.h>)
-#include <cxxabi.h>
+#    include <cxxabi.h>
 #endif
 
 namespace test_suite {

@@ -11,9 +11,9 @@
 #ifndef MRDOCS_API_DOM_STRING_HPP
 #define MRDOCS_API_DOM_STRING_HPP
 
-#include <format>
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/String.hpp>
+#include <format>
 
 namespace clang {
 namespace mrdocs {

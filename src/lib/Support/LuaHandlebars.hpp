@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_SUPPORT_LUAHANDLEBARS_HPP
-#define MRDOCS_API_SUPPORT_LUAHANDLEBARS_HPP
+#ifndef MRDOCS_LIB_SUPPORT_LUAHANDLEBARS_HPP
+#define MRDOCS_LIB_SUPPORT_LUAHANDLEBARS_HPP
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/Lua.hpp>
@@ -27,4 +27,4 @@ tryLoadHandlebars(
 } // mrdocs
 } // clang
 
-#endif
+#endif // MRDOCS_LIB_SUPPORT_LUAHANDLEBARS_HPP

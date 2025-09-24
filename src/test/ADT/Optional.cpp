@@ -9,7 +9,7 @@
 //
 
 #include <mrdocs/ADT/Optional.hpp>
-#include <mrdocs/Metadata/Source.hpp>
+#include <mrdocs/Metadata/Info/Source.hpp>
 #include <test_suite/test_suite.hpp>
 
 namespace clang::mrdocs {

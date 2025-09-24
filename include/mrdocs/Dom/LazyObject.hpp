@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_DOM_LAZY_OBJECT_HPP
-#define MRDOCS_LIB_DOM_LAZY_OBJECT_HPP
+#ifndef MRDOCS_API_DOM_LAZYOBJECT_HPP
+#define MRDOCS_API_DOM_LAZYOBJECT_HPP
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
@@ -458,4 +458,4 @@ LazyObject(T const& arr, Context const& context)
 
 } // clang::mrdocs::dom
 
-#endif
+#endif // MRDOCS_API_DOM_LAZYOBJECT_HPP

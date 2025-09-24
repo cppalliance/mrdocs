@@ -14,8 +14,8 @@
 #ifndef MRDOCS_LIB_AST_NAMEINFOBUILDER_HPP
 #define MRDOCS_LIB_AST_NAMEINFOBUILDER_HPP
 
-#include <mrdocs/ADT/Polymorphic.hpp>
 #include <lib/AST/TerminalTypeVisitor.hpp>
+#include <mrdocs/ADT/Polymorphic.hpp>
 #include <clang/AST/TypeVisitor.h>
 
 namespace clang::mrdocs {
@@ -23,7 +23,7 @@ namespace clang::mrdocs {
 class NameInfoBuilder
     : public TerminalTypeVisitor<NameInfoBuilder>
 {
-    Polymorphic<NameInfo> Result;
+    Optional<Polymorphic<NameInfo>> Result;
 
 public:
     using TerminalTypeVisitor::TerminalTypeVisitor;
@@ -31,7 +31,14 @@ public:
     Polymorphic<NameInfo>
     result()
     {
-        return std::move(Result);
+        MRDOCS_ASSERT(Result.has_value());
+        return std::move(*Result);
+    }
+
+    constexpr bool
+    hasResult() const noexcept
+    {
+        return Result.has_value();
     }
 
     void

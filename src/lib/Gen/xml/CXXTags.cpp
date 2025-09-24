@@ -10,8 +10,8 @@
 //
 
 #include "CXXTags.hpp"
-#include <mrdocs/Metadata/Info/Typedef.hpp>
 #include <mrdocs/Metadata/Info/Record.hpp>
+#include <mrdocs/Metadata/Info/Typedef.hpp>
 #include <mrdocs/Support/String.hpp>
 
 namespace clang::mrdocs::xml {

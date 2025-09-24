@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_CONFIG_REFERENCE_DIRECTORIES_HPP
-#define MRDOCS_API_CONFIG_REFERENCE_DIRECTORIES_HPP
+#ifndef MRDOCS_API_CONFIG_REFERENCEDIRECTORIES_HPP
+#define MRDOCS_API_CONFIG_REFERENCEDIRECTORIES_HPP
 
 #include <string>
 
@@ -34,4 +34,4 @@ struct ReferenceDirectories
 } // mrdocs
 } // clang
 
-#endif
+#endif // MRDOCS_API_CONFIG_REFERENCEDIRECTORIES_HPP

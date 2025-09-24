@@ -12,9 +12,9 @@
 #ifndef MRDOCS_API_ADT_POLYMORPHIC_HPP
 #define MRDOCS_API_ADT_POLYMORPHIC_HPP
 
-#include <concepts>
-#include <mrdocs/Support/Assert.hpp>
 #include <mrdocs/ADT/Nullable.hpp>
+#include <mrdocs/Support/Assert.hpp>
+#include <concepts>
 #include <utility>
 
 namespace clang::mrdocs {
@@ -26,9 +26,7 @@ namespace clang::mrdocs {
 
     It implements a tweaked version of std::polymorphic, based on the
     reference implementation for P3019R14. Differences are:
-    * It supports nullability, which was originally supported in P3019 through
-      std::optional specializations, but was later removed from the paper.
-    * It implements comparison operators with a very project specific design.
+    * It implements comparison operators with a very project-specific design.
     * Fixed allocator, not parametrizable.
     * No initializer_list constructor.
 
@@ -37,13 +35,14 @@ namespace clang::mrdocs {
     To copy polymorphic objects, the class uses the
     copy constructor of the owned derived-type
     object when copying to another value.
-    Similarly, to allow correct destruction of
+    Similarly, to allow the correct destruction of
     derived objects, it uses the destructor of
     the owned derived-type object in the
     destructor.
 */
 template <class T>
 class Polymorphic {
+    // Base class for type-erasure.
     struct WrapperBase {
         virtual constexpr ~WrapperBase() = default;
         virtual T& getValue() = 0;
@@ -61,7 +60,8 @@ class Polymorphic {
         constexpr WrapperBase* clone() override { return new Wrapper(Value); }
     };
 
-    WrapperBase* WB; // nullptr only when constructed/reset by nullable_traits
+    // nullptr only when constructed/reset by nullable_traits
+    WrapperBase* WB = nullptr;
 
     // Private null token and constructor: only the friend traits can call this.
     struct _null_t { explicit constexpr _null_t(int) {} };
@@ -70,15 +70,15 @@ class Polymorphic {
     // Allow the traits specialization to access private members/ctors.
     friend struct nullable_traits<Polymorphic<T>>;
 
-// std::polymorphic has a default constructor that
-// default-constructs the base type T if it's default-constructible.
-// We disable this constructor because this is always an error
-// in MrDocs.
-//    constexpr explicit Polymorphic()
-//    requires std::is_default_constructible_v<T>
-//             && std::is_copy_constructible_v<T>
-//        : WB(new Wrapper<T>())
-//    {}
+    // std::polymorphic has a default constructor that
+    // default-constructs the base type T if it's default-constructible.
+    // We disable this constructor because this is always an error
+    // in MrDocs.
+    // constexpr explicit Polymorphic()
+    // requires std::is_default_constructible_v<T>
+    //          && std::is_copy_constructible_v<T>
+    //     : WB(new Wrapper<T>())
+    // {}
 
 public:
     using value_type = T;
@@ -96,7 +96,10 @@ public:
                  std::derived_from<std::remove_cvref_t<U>, T>
         : WB(new Wrapper<std::remove_cvref_t<U>>(std::forward<U>(u))) {}
 
-    /** In-place constructor for a specific derived U. */
+    /** In-place constructor for a specific derived U.
+
+        @param ts Arguments to forward to U's constructor.
+     */
     template <class U, class... Ts>
     explicit constexpr Polymorphic(std::in_place_type_t<U>, Ts&&... ts)
         requires std::same_as<std::remove_cvref_t<U>, U> &&
@@ -288,4 +291,4 @@ struct nullable_traits<Polymorphic<T>>
 
 } // namespace clang::mrdocs
 
-#endif
+#endif // MRDOCS_API_ADT_POLYMORPHIC_HPP

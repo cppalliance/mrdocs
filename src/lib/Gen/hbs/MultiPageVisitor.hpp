@@ -12,14 +12,14 @@
 #ifndef MRDOCS_LIB_GEN_HBS_MULTIPAGEVISITOR_HPP
 #define MRDOCS_LIB_GEN_HBS_MULTIPAGEVISITOR_HPP
 
-#include "Builder.hpp"
-#include <mrdocs/Support/ExecutorGroup.hpp>
+#include <lib/Gen/hbs/Builder.hpp>
 #include <mrdocs/Metadata/Info.hpp>
+#include <mrdocs/Support/ExecutorGroup.hpp>
+#include <atomic>
 #include <mutex>
 #include <ostream>
 #include <string>
 #include <vector>
-#include <atomic>
 
 namespace clang::mrdocs::hbs {
 

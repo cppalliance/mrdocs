@@ -13,7 +13,7 @@
 #ifndef MRDOCS_LIB_CONFIGIMPL_HPP
 #define MRDOCS_LIB_CONFIGIMPL_HPP
 
-#include "lib/Support/YamlFwd.hpp"
+#include <lib/Support/YamlFwd.hpp>
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <llvm/Support/ThreadPool.h>
@@ -161,4 +161,4 @@ public:
 } // mrdocs
 } // clang
 
-#endif
+#endif // MRDOCS_LIB_CONFIGIMPL_HPP

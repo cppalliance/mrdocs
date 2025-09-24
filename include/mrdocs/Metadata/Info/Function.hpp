@@ -11,155 +11,18 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_METADATA_FUNCTION_HPP
-#define MRDOCS_API_METADATA_FUNCTION_HPP
+#ifndef MRDOCS_API_METADATA_INFO_FUNCTION_HPP
+#define MRDOCS_API_METADATA_INFO_FUNCTION_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Specifiers.hpp>
-#include <mrdocs/Metadata/Type.hpp>
-#include <mrdocs/Metadata/Info.hpp>
-#include <mrdocs/Metadata/Source.hpp>
+#include <mrdocs/Metadata/Info/FunctionClass.hpp>
+#include <mrdocs/Metadata/Info/InfoBase.hpp>
+#include <mrdocs/Metadata/Info/Param.hpp>
 #include <mrdocs/Metadata/Template.hpp>
-#include <mrdocs/Dom/LazyArray.hpp>
-#include <mrdocs/ADT/Polymorphic.hpp>
 #include <string>
 #include <vector>
 
 namespace clang::mrdocs {
-
-/** Return the name of an operator as a string.
-
-    @param kind The kind of operator.
-    @param include_keyword Whether the name
-    should be prefixed with the `operator` keyword.
-*/
-MRDOCS_DECL
-std::string_view
-getOperatorName(
-    OperatorKind kind,
-    bool include_keyword = false) noexcept;
-
-/** Return the short name of an operator as a string.
-*/
-MRDOCS_DECL
-std::string_view
-getShortOperatorName(
-    OperatorKind kind) noexcept;
-
-/** Return the short name of an operator as a string.
-
-    @param name The operator name, e.g. `operator+`, `operator++`, `operator[]`, etc.
-    @return The OperatorKind, or OperatorKind::None if not recognized.
-*/
-MRDOCS_DECL
-OperatorKind
-getOperatorKind(std::string_view name) noexcept;
-
-/** Return the short name of an operator as a string.
-
-    @param suffix The operator suffix, e.g. `+`, `++`, `[]`, etc.
-    @return The OperatorKind, or OperatorKind::None if not recognized.
-*/
-MRDOCS_DECL
-OperatorKind
-getOperatorKindFromSuffix(std::string_view suffix) noexcept;
-
-/** Return the safe name of an operator as a string.
-
-    @param kind The kind of operator.
-    @param include_keyword Whether the name
-    should be prefixed with `operator_`.
-*/
-MRDOCS_DECL
-std::string_view
-getSafeOperatorName(
-    OperatorKind kind,
-    bool include_keyword = false) noexcept;
-
-/** Return the human-readable name of the operator
-
-    @param kind The kind of operator.
-    @param nParams The number of parameters the operator takes.
-    @return The readable name, or nullopt if the operator is not recognized.
- */
-std::optional<std::string_view>
-getOperatorReadableName(
-    OperatorKind kind,
-    int nParams);
-
-/** Function classifications */
-enum class FunctionClass
-{
-    /// The function is a normal function.
-    Normal = 0,
-    /// The function is a constructor.
-    Constructor,
-    /// The function is a conversion operator.
-    Conversion,
-    /// The function is a destructor.
-    Destructor
-};
-
-MRDOCS_DECL dom::String toString(FunctionClass kind) noexcept;
-
-/** Return the FunctionClass from a @ref dom::Value string.
- */
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    FunctionClass const kind)
-{
-    v = toString(kind);
-}
-
-
-// KRYSTIAN TODO: attributes (nodiscard, deprecated, and carries_dependency)
-// KRYSTIAN TODO: flag to indicate whether this is a function parameter pack
-/** Represents a single function parameter */
-struct Param final
-{
-    /** The type of this parameter
-     */
-    Polymorphic<TypeInfo> Type = std::nullopt;
-
-    /** The parameter name.
-     */
-    Optional<std::string> Name;
-
-    /** The default argument for this parameter, if any
-      */
-    Optional<std::string> Default;
-
-    Param() = default;
-
-    Param(
-        Polymorphic<TypeInfo>&& type,
-        std::string&& name,
-        std::string&& def_arg)
-        : Type(std::move(type))
-        , Name(std::move(name))
-        , Default(std::move(def_arg))
-    {}
-
-    auto
-    operator<=>(Param const&) const = default;
-};
-
-MRDOCS_DECL
-void
-merge(Param& I, Param&& Other);
-
-/** Return the Param as a @ref dom::Value object.
- */
-MRDOCS_DECL
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Param const& p,
-    DomCorpus const* domCorpus);
 
 // TODO: Expand to allow for documenting templating and default args.
 // Info for functions.
@@ -167,7 +30,7 @@ struct FunctionInfo final
     : InfoCommonBase<InfoKind::Function>
 {
     /// Info about the return type of this function.
-    Polymorphic<TypeInfo> ReturnType = std::nullopt;
+    Optional<Polymorphic<TypeInfo>> ReturnType = std::nullopt;
 
     /// List of parameters.
     std::vector<Param> Params;
@@ -307,4 +170,4 @@ overrides(FunctionInfo const& base, FunctionInfo const& derived);
 
 } // clang::mrdocs
 
-#endif
+#endif // MRDOCS_API_METADATA_INFO_FUNCTION_HPP

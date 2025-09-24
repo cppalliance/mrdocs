@@ -12,11 +12,9 @@
 
 #include "HandlebarsCorpus.hpp"
 #include "VisitorHelpers.hpp"
-#include <iterator>
-#include <llvm/Support/raw_ostream.h>
-#include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Support/RangeFor.hpp>
 #include <mrdocs/Support/String.hpp>
+#include <iterator>
 
 namespace clang::mrdocs::hbs {
 

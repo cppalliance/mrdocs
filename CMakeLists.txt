@@ -321,7 +321,9 @@ target_include_directories(mrdocs-core
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
     PRIVATE
     "${PROJECT_SOURCE_DIR}/src"
-    "${PROJECT_BINARY_DIR}/src")
+    "${PROJECT_BINARY_DIR}/src"
+    "${PROJECT_SOURCE_DIR}/third-party/lua/src"
+)
 target_compile_definitions(
     mrdocs-core
     PUBLIC

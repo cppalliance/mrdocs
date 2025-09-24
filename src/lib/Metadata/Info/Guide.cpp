@@ -9,9 +9,11 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdocs/Metadata/Info/Guide.hpp>
 #include <mrdocs/Platform.hpp>
+#include <mrdocs/Metadata/Info/Guide.hpp>
+#include <mrdocs/Metadata/Info/Param.hpp>
 #include <llvm/ADT/STLExtras.h>
+#include <vector>
 
 namespace clang::mrdocs {
 
@@ -47,10 +49,18 @@ operator<=>(GuideInfo const& other) const
             return cmp;
         }
     }
-    if (auto const cmp = Params <=> other.Params;
+    if (auto const cmp = Params.size() <=> other.Params.size();
         !std::is_eq(cmp))
     {
         return cmp;
+    }
+    for (size_t i = 0; i < Params.size(); ++i)
+    {
+        if (auto const cmp = Params[i] <=> other.Params[i];
+            !std::is_eq(cmp))
+        {
+            return cmp;
+        }
     }
     if (Template && other.Template)
     {

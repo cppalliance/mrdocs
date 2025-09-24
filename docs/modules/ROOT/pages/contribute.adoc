@@ -46,6 +46,15 @@ Thus, after the command line and configuration file options are parsed, they are
 
 As a last step, `DoGenerateAction` converts the public `Config` settings into a `ConfigImpl` object, which is used by the rest of the program with the parsed options.
 
+[#representing_symbols]
+== Representing Symbols
+
+MrDocs has many categories of objects, where we utilize polymorphism with a fixed set of valid derived types, including Symbols (functions, classes, and enums), Javadoc blocks, template parameters, template arguments, and data types. For each such family, we follow a consistent file layout. Most of these families are defined in the `mrdocs/Metadata` directory.
+
+Each base class is defined in its own header and, when necessary, implementation file. Each derived class also has its own header and implementation file. Finally, there is a single aggregator header file that includes all the derived headers. This file centralizes logic that requires knowledge of the full set of variants, such as visitors, comparison operators, and other operations that depend on the discriminator.
+
+This pattern keeps the individual derived types self-contained while making cross-variant operations explicit and localized. When adding a new derived type, contributors should create its header and source file alongside the existing ones and update the corresponding aggregator file to register the new variant. This keeps the codebase predictable, avoids scattering logic, and ensures that operations over polymorphic families remain easy to find and maintain.
+
 [#extract_symbols]
 === Extracting Symbols
 
@@ -200,6 +209,8 @@ This directory contains build scripts and configuration files for third-party li
 ** `third-party/llvm/`—CMake Presets for LLVM
 ** `third-party/duktape/`—CMake scripts for Duktape
 ** `third-party/lua/`—A bundled Lua interpreter
+
+== Polymorphism
 
 == Coding Standards
 

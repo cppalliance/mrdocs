@@ -9,13 +9,13 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdocs/Metadata/SymbolID.hpp>
+#include <lib/Support/Radix.hpp>
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
-#include <lib/Support/Radix.hpp>
+#include <mrdocs/Metadata/Info/SymbolID.hpp>
+#include <llvm/Support/SHA1.h>
 #include <climits>
 #include <ranges>
-#include <llvm/Support/SHA1.h>
 
 namespace clang {
 namespace mrdocs {

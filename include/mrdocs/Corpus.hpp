@@ -17,11 +17,11 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Metadata.hpp>
+#include <algorithm>
 #include <string>
 #include <type_traits>
 #include <utility>
 #include <vector>
-#include <algorithm>
 
 namespace clang::mrdocs {
 
@@ -500,4 +500,4 @@ getParents(Corpus const& C, Info const& I);
 
 } // clang::mrdocs
 
-#endif
+#endif // MRDOCS_API_CORPUS_HPP

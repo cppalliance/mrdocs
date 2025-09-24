@@ -11,7 +11,7 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "lib/AST/NameInfoBuilder.hpp"
+#include <lib/AST/NameInfoBuilder.hpp>
 
 namespace clang::mrdocs {
 
@@ -33,8 +33,8 @@ buildTerminal(
     unsigned,
     bool)
 {
-    Result = Polymorphic<NameInfo>();
-    Result->Name = getASTVisitor().toString(T);
+    Result = Polymorphic<NameInfo>(std::in_place_type<IdentifierNameInfo>);
+    (*Result)->Name = getASTVisitor().toString(T);
 }
 
 void
@@ -52,22 +52,23 @@ buildTerminal(
             Polymorphic<NameInfo>(std::in_place_type<SpecializationNameInfo>);
         if (II)
         {
-            Result->Name = II->getName();
+            (*Result)->Name = II->getName();
         }
         getASTVisitor().populate(
-            static_cast<SpecializationNameInfo &>(*Result).TemplateArgs, *TArgs);
+            static_cast<SpecializationNameInfo&>(**Result).TemplateArgs,
+            *TArgs);
     }
     else
     {
-        Result = Polymorphic<NameInfo>();
+        Result = Polymorphic<NameInfo>(std::in_place_type<IdentifierNameInfo>);
         if (II)
         {
-            Result->Name = II->getName();
+            (*Result)->Name = II->getName();
         }
     }
     if (NNS)
     {
-        Result->Prefix = getASTVisitor().toNameInfo(NNS);
+        (*Result)->Prefix = getASTVisitor().toNameInfo(NNS);
     }
 }
 
@@ -103,16 +104,17 @@ buildTerminal(
 
     if (!TArgs)
     {
-        Result = Polymorphic<NameInfo>();
-        populateNameInfo(*Result, D);
+        Result = Polymorphic<NameInfo>(std::in_place_type<IdentifierNameInfo>);
+        populateNameInfo(**Result, D);
     }
     else
     {
-        Result =
-            Polymorphic<NameInfo>(std::in_place_type<SpecializationNameInfo>);
-        populateNameInfo(*Result, D);
+        Result = Polymorphic<NameInfo>(
+            std::in_place_type<SpecializationNameInfo>);
+        populateNameInfo(**Result, D);
         getASTVisitor().populate(
-            static_cast<SpecializationNameInfo &>(*Result).TemplateArgs, *TArgs);
+            static_cast<SpecializationNameInfo&>(**Result).TemplateArgs,
+            *TArgs);
     }
 }
 

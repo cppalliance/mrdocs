@@ -9,9 +9,9 @@
 //
 
 #include "BaseMembersFinalizer.hpp"
-#include <format>
 #include <mrdocs/Support/Algorithm.hpp>
 #include <mrdocs/Support/Report.hpp>
+#include <format>
 
 namespace clang::mrdocs {
 
@@ -228,7 +228,7 @@ operator()(RecordInfo& I)
     for (BaseInfo const& baseI: I.Bases)
     {
         auto const *baseNameType =
-            dynamic_cast<NamedTypeInfo const *>(&*baseI.Type);
+            dynamic_cast<NamedTypeInfo const *>(&**baseI.Type);
         MRDOCS_CHECK_OR_CONTINUE(baseNameType);
         auto const *baseName =
             dynamic_cast<NameInfo const *>(&*baseNameType->Name);

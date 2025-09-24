@@ -12,8 +12,8 @@
 #ifndef MRDOCS_LIB_GEN_HBS_BUILDER_HPP
 #define MRDOCS_LIB_GEN_HBS_BUILDER_HPP
 
-#include "HandlebarsCorpus.hpp"
-#include "lib/Support/Radix.hpp"
+#include <lib/Gen/hbs/HandlebarsCorpus.hpp>
+#include <lib/Support/Radix.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/Handlebars.hpp>
@@ -128,4 +128,4 @@ private:
 } // mrdocs
 } // clang
 
-#endif
+#endif // MRDOCS_LIB_GEN_HBS_BUILDER_HPP

@@ -19,7 +19,7 @@
 namespace clang {
 namespace mrdocs {
 
-/** A dynamic list of Generator
+/** A dynamic list of @ref Generator elements.
 */
 class MRDOCS_VISIBLE
     Generators
@@ -79,4 +79,4 @@ getGenerators() noexcept;
 } // mrdocs
 } // clang
 
-#endif
+#endif // MRDOCS_API_GENERATORS_HPP

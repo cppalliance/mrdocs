@@ -87,4 +87,4 @@ namespace mrdocs {
 } // mrdocs
 } // clang
 
-#endif
+#endif // MRDOCS_API_PLATFORM_HPP

@@ -11,10 +11,10 @@
 //
 
 #include "ConfigImpl.hpp"
-#include "lib/Support/Glob.hpp"
-#include "lib/Support/Path.hpp"
-#include <mrdocs/Support/Path.hpp>
+#include <lib/Support/Glob.hpp>
+#include <lib/Support/Path.hpp>
 #include <mrdocs/Support/Concepts.hpp>
+#include <mrdocs/Support/Path.hpp>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>

@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_TOOL_SUPPORT_TYPE_TRAITS_HPP
-#define MRDOCS_TOOL_SUPPORT_TYPE_TRAITS_HPP
+#ifndef MRDOCS_API_SUPPORT_TYPETRAITS_HPP
+#define MRDOCS_API_SUPPORT_TYPETRAITS_HPP
 
 #include <type_traits>
 
@@ -124,4 +124,4 @@ using add_cvref_from_t =
 } // mrdocs
 } // clang
 
-#endif
+#endif // MRDOCS_API_SUPPORT_TYPETRAITS_HPP

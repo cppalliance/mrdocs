@@ -10,9 +10,8 @@
 //
 
 #include "CompilerInfo.hpp"
-#include "lib/Support/ExecuteAndWaitWithLogging.hpp"
+#include <lib/Support/ExecuteAndWaitWithLogging.hpp>
 #include <mrdocs/Support/Error.hpp>
-
 #include <llvm/Support/Program.h>
 
 namespace clang {

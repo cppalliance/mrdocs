@@ -8,15 +8,15 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_SUPPORT_ERROR_HPP
-#define MRDOCS_LIB_SUPPORT_ERROR_HPP
+#ifndef MRDOCS_LIB_SUPPORT_REPORT_HPP
+#define MRDOCS_LIB_SUPPORT_REPORT_HPP
 
-#include <format>
-#include <functional>
+#include <mrdocs/Support/Report.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/raw_ostream.h>
-#include <mrdocs/Support/Report.hpp>
+#include <format>
+#include <functional>
 #include <ostream>
 #include <utility>
 
@@ -149,4 +149,4 @@ struct std::formatter<llvm::SmallString<InternalLen>>
   }
 };
 
-#endif
+#endif // MRDOCS_LIB_SUPPORT_REPORT_HPP

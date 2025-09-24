@@ -11,9 +11,9 @@
 #include "ToolArgs.hpp"
 #include <lib/Support/Path.hpp>
 #include <cstddef>
-#include <vector>
-#include <string>
 #include <ranges>
+#include <string>
+#include <vector>
 
 namespace clang {
 namespace mrdocs {

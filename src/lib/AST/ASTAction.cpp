@@ -11,12 +11,12 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "lib/AST/ASTAction.hpp"
-#include "lib/AST/MrDocsFileSystem.hpp"
-#include "lib/AST/ASTVisitorConsumer.hpp"
+#include <lib/AST/ASTAction.hpp>
+#include <lib/AST/ASTVisitorConsumer.hpp>
+#include <lib/AST/MrDocsFileSystem.hpp>
 #include <clang/Frontend/CompilerInstance.h>
-#include <clang/Parse/ParseAST.h>
 #include <clang/Lex/PreprocessorOptions.h>
+#include <clang/Parse/ParseAST.h>
 
 namespace clang {
 namespace mrdocs {

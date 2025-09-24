@@ -73,7 +73,7 @@ toString(
 std::strong_ordering
 operator<=>(Polymorphic<TParam> const& lhs, Polymorphic<TParam> const& rhs)
 {
-    if (lhs && rhs)
+    if (!lhs.valueless_after_move() && !rhs.valueless_after_move())
     {
         if (lhs->Kind == rhs->Kind)
         {
@@ -81,8 +81,9 @@ operator<=>(Polymorphic<TParam> const& lhs, Polymorphic<TParam> const& rhs)
         }
         return lhs->Kind <=> rhs->Kind;
     }
-    return !lhs ? std::strong_ordering::less
-            : std::strong_ordering::greater;
+    return lhs.valueless_after_move() ?
+               std::strong_ordering::less :
+               std::strong_ordering::greater;
 }
 
 std::string_view
@@ -105,7 +106,7 @@ toString(
 std::strong_ordering
 operator<=>(Polymorphic<TArg> const& lhs, Polymorphic<TArg> const& rhs)
 {
-    if (lhs && rhs)
+    if (!lhs.valueless_after_move() && !rhs.valueless_after_move())
     {
         if (lhs->Kind == rhs->Kind)
         {
@@ -113,8 +114,9 @@ operator<=>(Polymorphic<TArg> const& lhs, Polymorphic<TArg> const& rhs)
         }
         return lhs->Kind <=> rhs->Kind;
     }
-    return !lhs ? std::strong_ordering::less
-            : std::strong_ordering::greater;
+    return lhs.valueless_after_move() ?
+               std::strong_ordering::less :
+               std::strong_ordering::greater;
 }
 
 std::string
@@ -127,8 +129,11 @@ toString(
         std::string result;
         if constexpr(T::isType())
         {
-            if(t.Type)
-                result += toString(*t.Type);
+            if (t.Type)
+            {
+                MRDOCS_ASSERT(!t.Type->valueless_after_move());
+                result += toString(**t.Type);
+            }
         }
         if constexpr(T::isNonType())
         {
@@ -225,7 +230,7 @@ tag_invoke(
     visit(I, [domCorpus, &io]<typename T>(T const& t) {
         if(t.Default)
         {
-            io.map("default", t.Default);
+            io.map("default", **t.Default);
         }
         if constexpr(T::isType())
         {
@@ -279,7 +284,8 @@ merge(TemplateInfo& I, TemplateInfo&& Other)
     std::size_t const pn = std::min(I.Params.size(), Other.Params.size());
     for (std::size_t i = 0; i < pn; ++i)
     {
-        if (!I.Params[i] || I.Params[i]->Kind != Other.Params[i]->Kind)
+        if (I.Params[i].valueless_after_move() ||
+            I.Params[i]->Kind != Other.Params[i]->Kind)
         {
             I.Params[i] = std::move(Other.Params[i]);
         }
@@ -306,7 +312,8 @@ merge(TemplateInfo& I, TemplateInfo&& Other)
     std::size_t const an = std::min(I.Args.size(), Other.Args.size());
     for (std::size_t i = 0; i < an; ++i)
     {
-        if (!I.Args[i] || I.Args[i]->Kind != Other.Args[i]->Kind)
+        if (I.Args[i].valueless_after_move() ||
+            I.Args[i]->Kind != Other.Args[i]->Kind)
         {
             I.Args[i] = std::move(Other.Args[i]);
         }

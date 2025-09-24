@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_EXECUTE_AND_WAIT_WITH_LOGGING_HPP
-#define MRDOCS_LIB_EXECUTE_AND_WAIT_WITH_LOGGING_HPP
+#ifndef MRDOCS_LIB_SUPPORT_EXECUTEANDWAITWITHLOGGING_HPP
+#define MRDOCS_LIB_SUPPORT_EXECUTEANDWAITWITHLOGGING_HPP
 
 #include <llvm/Support/Program.h>
 
@@ -39,4 +39,4 @@ int ExecuteAndWaitWithLogging(
 
 } // clang::mrdocs
 
-#endif // MRDOCS_LIB_EXECUTE_AND_WAIT_WITH_LOGGING_HPP
+#endif // MRDOCS_LIB_SUPPORT_EXECUTEANDWAITWITHLOGGING_HPP

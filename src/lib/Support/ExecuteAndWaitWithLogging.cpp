@@ -9,8 +9,8 @@
 //
 
 #include "ExecuteAndWaitWithLogging.hpp"
-#include "lib/Support/Report.hpp"
-#include "mrdocs/Support/Assert.hpp"
+#include <lib/Support/Report.hpp>
+#include <mrdocs/Support/Assert.hpp>
 
 namespace clang::mrdocs {
 

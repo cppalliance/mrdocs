@@ -10,12 +10,12 @@
 //
 
 #include "Builder.hpp"
-#include "lib/ConfigImpl.hpp"
-#include <filesystem>
-#include <format>
+#include <lib/ConfigImpl.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Support/Report.hpp>
+#include <filesystem>
+#include <format>
 
 namespace clang {
 namespace mrdocs {

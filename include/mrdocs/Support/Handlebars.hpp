@@ -8,13 +8,13 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_TOOL_SUPPORT_PATH_HPP
-#define MRDOCS_TOOL_SUPPORT_PATH_HPP
+#ifndef MRDOCS_API_SUPPORT_HANDLEBARS_HPP
+#define MRDOCS_API_SUPPORT_HANDLEBARS_HPP
 
-#include <format>
-#include <functional>
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Support/String.hpp>
+#include <format>
+#include <functional>
 #include <string_view>
 #include <type_traits>
 #include <unordered_map>
@@ -1332,4 +1332,4 @@ year_fn();
 } // mrdocs
 } // clang
 
-#endif
+#endif // MRDOCS_API_SUPPORT_HANDLEBARS_HPP

@@ -12,8 +12,8 @@
 #ifndef MRDOCS_LIB_SUPPORT_LEGIBLENAMES_HPP
 #define MRDOCS_LIB_SUPPORT_LEGIBLENAMES_HPP
 
-#include <mrdocs/Metadata/SymbolID.hpp>
 #include <mrdocs/Corpus.hpp>
+#include <mrdocs/Metadata/Info/SymbolID.hpp>
 #include <memory>
 #include <string>
 

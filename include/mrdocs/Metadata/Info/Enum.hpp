@@ -9,14 +9,15 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_METADATA_ENUM_HPP
-#define MRDOCS_API_METADATA_ENUM_HPP
+#ifndef MRDOCS_API_METADATA_INFO_ENUM_HPP
+#define MRDOCS_API_METADATA_INFO_ENUM_HPP
 
+#include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
-#include <mrdocs/Metadata/Info.hpp>
-#include <mrdocs/Metadata/Source.hpp>
-#include <mrdocs/Metadata/Type.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
+#include <mrdocs/Metadata/Info.hpp>
+#include <mrdocs/Metadata/Info/Source.hpp>
+#include <mrdocs/Metadata/Type.hpp>
 
 namespace clang::mrdocs {
 
@@ -29,7 +30,7 @@ struct EnumInfo final
     // Set too nonempty to the type when this is an explicitly typed enum. For
     //   enum Foo : short { ... };
     // this will be "short".
-    Polymorphic<TypeInfo> UnderlyingType = std::nullopt;
+    Optional<Polymorphic<TypeInfo>> UnderlyingType = std::nullopt;
 
     /** The members of this scope.
 
@@ -96,4 +97,4 @@ tag_invoke(
 
 } // clang::mrdocs
 
-#endif
+#endif // MRDOCS_API_METADATA_INFO_ENUM_HPP

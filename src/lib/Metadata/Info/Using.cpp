@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdocs/Metadata/Info/Using.hpp>
 #include <mrdocs/Platform.hpp>
+#include <mrdocs/Metadata/Info/Using.hpp>
 #include <llvm/ADT/STLExtras.h>
 
 namespace clang::mrdocs {
@@ -44,7 +44,8 @@ merge(UsingInfo& I, UsingInfo&& Other)
     {
         I.Class = Other.Class;
     }
-    if (!I.IntroducedName)
+    if (I.IntroducedName.valueless_after_move() ||
+        I.IntroducedName->Name.empty())
     {
         I.IntroducedName = std::move(Other.IntroducedName);
     }

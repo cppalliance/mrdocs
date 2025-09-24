@@ -8,11 +8,11 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_METADATA_FINALIZER_NAMESPACESFINALIZER_HPP
-#define MRDOCS_LIB_METADATA_FINALIZER_NAMESPACESFINALIZER_HPP
+#ifndef MRDOCS_LIB_METADATA_FINALIZERS_NAMESPACESFINALIZER_HPP
+#define MRDOCS_LIB_METADATA_FINALIZERS_NAMESPACESFINALIZER_HPP
 
-#include "lib/Metadata/InfoSet.hpp"
-#include "lib/CorpusImpl.hpp"
+#include <lib/CorpusImpl.hpp>
+#include <lib/Metadata/InfoSet.hpp>
 
 namespace clang::mrdocs {
 
@@ -54,4 +54,4 @@ public:
 
 } // clang::mrdocs
 
-#endif
+#endif // MRDOCS_LIB_METADATA_FINALIZERS_NAMESPACESFINALIZER_HPP

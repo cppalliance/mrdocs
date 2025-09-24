@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_METADATA_EXTRACTIONMODE_HPP
-#define MRDOCS_API_METADATA_EXTRACTIONMODE_HPP
+#ifndef MRDOCS_API_METADATA_INFO_EXTRACTIONMODE_HPP
+#define MRDOCS_API_METADATA_INFO_EXTRACTIONMODE_HPP
 
 #include <mrdocs/Dom.hpp>
 
@@ -121,4 +121,4 @@ mostSpecific(ExtractionMode const a, ExtractionMode const b) noexcept
 
 } // clang::mrdocs
 
-#endif
+#endif // MRDOCS_API_METADATA_INFO_EXTRACTIONMODE_HPP

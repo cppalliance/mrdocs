@@ -8,16 +8,15 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_TOOL_COMPILER_HPP
-#define MRDOCS_TOOL_COMPILER_HPP
-
-#include <optional>
-#include <string>
-#include <vector>
-#include <unordered_map>
+#ifndef MRDOCS_TOOL_COMPILERINFO_HPP
+#define MRDOCS_TOOL_COMPILERINFO_HPP
 
 #include <clang/Tooling/CompilationDatabase.h>
 #include <llvm/ADT/StringRef.h>
+#include <optional>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 namespace clang {
 namespace mrdocs {
@@ -53,4 +52,4 @@ getCompilersDefaultIncludeDir(clang::tooling::CompilationDatabase const& compDb,
 } // mrdocs
 } // clang
 
-#endif
+#endif // MRDOCS_TOOL_COMPILERINFO_HPP

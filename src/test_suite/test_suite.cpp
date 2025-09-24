@@ -8,7 +8,6 @@
 //
 
 #include "test_suite.hpp"
-
 #include <algorithm>
 #include <atomic>
 #include <chrono>

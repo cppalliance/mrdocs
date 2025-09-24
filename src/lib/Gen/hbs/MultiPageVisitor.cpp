@@ -11,9 +11,9 @@
 
 #include "MultiPageVisitor.hpp"
 #include "VisitorHelpers.hpp"
-#include <fstream>
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Support/Report.hpp>
+#include <fstream>
 
 namespace clang::mrdocs::hbs {
 

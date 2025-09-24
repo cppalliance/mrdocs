@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_SUPPORT_GLOBPATTERN_HPP
-#define MRDOCS_API_SUPPORT_GLOBPATTERN_HPP
+#ifndef MRDOCS_API_SUPPORT_GLOB_HPP
+#define MRDOCS_API_SUPPORT_GLOB_HPP
 
 #include <mrdocs/Support/Expected.hpp>
 #include <memory>
@@ -331,4 +331,4 @@ public:
 
 } // clang::mrdocs
 
-#endif // MRDOCS_API_SUPPORT_GLOBPATTERN_HPP
+#endif // MRDOCS_API_SUPPORT_GLOB_HPP

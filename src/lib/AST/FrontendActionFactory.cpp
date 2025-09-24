@@ -12,7 +12,7 @@
 //
 
 #include "FrontendActionFactory.hpp"
-#include "lib/AST/ASTAction.hpp"
+#include <lib/AST/ASTAction.hpp>
 
 namespace clang {
 namespace mrdocs {

@@ -15,7 +15,7 @@
 
 #if __cpp_lib_source_location >= 201907L && \
     __has_include(<source_location>)
-    #include <source_location>
+#    include <source_location>
 
     namespace clang {
     namespace mrdocs {
@@ -25,7 +25,7 @@
     } // mrdocs
     } // clang
 #else
-    #include <cstdint>
+#    include <cstdint>
 
     namespace clang {
     namespace mrdocs {

@@ -8,16 +8,16 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "lib/Support/Radix.hpp"
-#include <format>
-#include <llvm/ADT/STLExtras.h>
-#include <llvm/ADT/StringRef.h>
+#include <lib/Support/Radix.hpp>
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Metadata/Info/Function.hpp>
 #include <mrdocs/Metadata/Info/Namespace.hpp>
 #include <mrdocs/Metadata/Info/Overloads.hpp>
+#include <llvm/ADT/STLExtras.h>
+#include <llvm/ADT/StringRef.h>
+#include <format>
 
 namespace clang::mrdocs {
 

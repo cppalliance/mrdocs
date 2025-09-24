@@ -33,16 +33,16 @@ struct Polymorphic_test
     void
     testConstructors()
     {
-        // nullopt constructor
-        {
-          Polymorphic<X> constexpr v(std::nullopt);
-          BOOST_TEST_NOT(v);
-        }
+        // nullopt constructor (removed)
+        // {
+        //     constexpr Polymorphic<X> v(std::nullopt);
+        //     BOOST_TEST_NOT(v);
+        // }
 
         // from derived object
         {
             Polymorphic<X> x(Y{});
-            BOOST_TEST(x);
+            BOOST_TEST(!x.valueless_after_move());
             BOOST_TEST(x->a == 42);
             BOOST_TEST(dynamic_cast<Y*>(&*x)->b == 43);
         }
@@ -50,7 +50,7 @@ struct Polymorphic_test
         // from derived
         {
             auto x = Polymorphic<X>(std::in_place_type<Y>);
-            BOOST_TEST(x);
+            BOOST_TEST(!x.valueless_after_move());
             BOOST_TEST(x->a == 42);
             BOOST_TEST(dynamic_cast<Y *>(&*x)->b == 43);
         }
@@ -58,18 +58,18 @@ struct Polymorphic_test
         // Copy constructor
         {
             // from empty
-            {
-                Polymorphic<X> x = std::nullopt;
-                Polymorphic<X> y(x);
-                BOOST_TEST_NOT(y);
-            }
+            // {
+            //     Polymorphic<X> x = std::nullopt;
+            //     Polymorphic<X> y(x);
+            //     BOOST_TEST_NOT(y);
+            // }
 
             // from valid
             {
                 Polymorphic<X> x(std::in_place_type<Y>);
                 x->a = 45;
                 Polymorphic<X> y(x);
-                BOOST_TEST(y);
+                BOOST_TEST(!y.valueless_after_move());
                 BOOST_TEST(y->a == 45);
                 BOOST_TEST(dynamic_cast<Y *>(&*y)->b == 43);
             }
@@ -80,26 +80,26 @@ struct Polymorphic_test
             auto x = Polymorphic<X>(std::in_place_type<Y>);
             x->a = 45;
             Polymorphic<X> y(std::move(x));
-            BOOST_TEST_NOT(x);
-            BOOST_TEST(y);
+            BOOST_TEST_NOT(!x.valueless_after_move());
+            BOOST_TEST(!y.valueless_after_move());
             BOOST_TEST(y->a == 45);
             BOOST_TEST(dynamic_cast<Y *>(&*y)->b == 43);
         }
 
         // Copy from derived value constructor
-        {
-            Polymorphic<Y> x;
-            x->a = 45;
-            Polymorphic<X> y(std::in_place_type<Y>, *x);
-            BOOST_TEST(y);
-            BOOST_TEST(y->a == 45);
-            BOOST_TEST(dynamic_cast<Y *>(&*y)->b == 43);
-        }
+        // {
+        //     Polymorphic<Y> x;
+        //     x->a = 45;
+        //     Polymorphic<X> y(std::in_place_type<Y>, *x);
+        //     BOOST_TEST(y);
+        //     BOOST_TEST(y->a == 45);
+        //     BOOST_TEST(dynamic_cast<Y *>(&*y)->b == 43);
+        // }
 
         // In-place constructor
         {
             Polymorphic<X> x(std::in_place_type<Y>);
-            BOOST_TEST(x);
+            BOOST_TEST(!x.valueless_after_move());
             BOOST_TEST(x->a == 42);
             BOOST_TEST(dynamic_cast<Y*>(&*x)->b == 43);
         }
@@ -123,7 +123,7 @@ struct Polymorphic_test
             {
                 Polymorphic<X> lhs(std::in_place_type<Y>);
                 lhs = lhs;
-                BOOST_TEST(lhs);
+                BOOST_TEST(!lhs.valueless_after_move());
                 BOOST_TEST(lhs->a == 42);
             }
 #if defined(__clang__)
@@ -133,12 +133,12 @@ struct Polymorphic_test
 #pragma GCC diagnostic pop
 #endif
             // from empty
-            {
-                Polymorphic<X> lhs;
-                Polymorphic<X> rhs = std::nullopt;
-                lhs = rhs;
-                BOOST_TEST_NOT(lhs);
-            }
+            // {
+            //     Polymorphic<X> lhs;
+            //     Polymorphic<X> rhs = std::nullopt;
+            //     lhs = rhs;
+            //     BOOST_TEST_NOT(lhs);
+            // }
 
             // from valid
             {
@@ -149,10 +149,10 @@ struct Polymorphic_test
                 BOOST_TEST(lhs->a == 45);
                 BOOST_TEST(rhs->a == 46);
                 lhs = rhs;
-                BOOST_TEST(lhs);
+                BOOST_TEST(!lhs.valueless_after_move());
                 BOOST_TEST(lhs->a == 46);
                 BOOST_TEST(rhs->a == 46);
-                BOOST_TEST(static_cast<Y &>(*lhs).b == 43);
+                BOOST_TEST(dynamic_cast<Y &>(*lhs).b == 43);
             }
         }
 
@@ -170,7 +170,7 @@ struct Polymorphic_test
             {
                 Polymorphic<X> lhs(std::in_place_type<Y>);
                 lhs = std::move(lhs);
-                BOOST_TEST(lhs);
+                BOOST_TEST(!lhs.valueless_after_move());
                 BOOST_TEST(lhs->a == 42);
             }
 #if defined(__clang__)
@@ -181,13 +181,13 @@ struct Polymorphic_test
 #endif
 
             // from empty
-            {
-                Polymorphic<X> lhs;
-                Polymorphic<X> rhs = std::nullopt;
-                lhs = std::move(rhs);
-                BOOST_TEST_NOT(lhs);
-                BOOST_TEST_NOT(rhs);
-            }
+            // {
+            //     Polymorphic<X> lhs;
+            //     Polymorphic<X> rhs = std::nullopt;
+            //     lhs = std::move(rhs);
+            //     BOOST_TEST_NOT(lhs);
+            //     BOOST_TEST_NOT(rhs);
+            // }
 
             // from valid
             {
@@ -199,8 +199,8 @@ struct Polymorphic_test
                 BOOST_TEST(rhs->a == 46);
                 lhs = std::move(rhs);
                 BOOST_TEST(lhs->a == 46);
-                BOOST_TEST_NOT(rhs);
-                BOOST_TEST(static_cast<Y &>(*lhs).b == 43);
+                BOOST_TEST_NOT(!rhs.valueless_after_move());
+                BOOST_TEST(dynamic_cast<Y &>(*lhs).b == 43);
             }
         }
 
@@ -213,9 +213,9 @@ struct Polymorphic_test
             BOOST_TEST(lhs->a == 45);
             BOOST_TEST(rhs.a == 46);
             lhs = Polymorphic<X>(std::in_place_type<Y>, rhs);
-            BOOST_TEST(lhs);
+            BOOST_TEST(!lhs.valueless_after_move());
             BOOST_TEST(lhs->a == 46);
-            BOOST_TEST(static_cast<Y &>(*lhs).b == 43);
+            BOOST_TEST(dynamic_cast<Y &>(*lhs).b == 43);
         }
 
         // copy from derived
@@ -227,9 +227,9 @@ struct Polymorphic_test
             BOOST_TEST(lhs->a == 45);
             BOOST_TEST(rhs.a == 46);
             lhs = Polymorphic<X>(std::in_place_type<Y>, std::move(rhs));
-            BOOST_TEST(lhs);
+            BOOST_TEST(!lhs.valueless_after_move());
             BOOST_TEST(lhs->a == 46);
-            BOOST_TEST(static_cast<Y &>(*lhs).b == 43);
+            BOOST_TEST(dynamic_cast<Y &>(*lhs).b == 43);
         }
     }
 
@@ -257,36 +257,36 @@ struct Polymorphic_test
     testSwap()
     {
         // default constructor
-        {
-            Polymorphic<X> lhs = std::nullopt;
-            Polymorphic<X> rhs(std::in_place_type<Y>);
-            swap(lhs, rhs);
-            BOOST_TEST(lhs);
-            BOOST_TEST(lhs->a == 42);
-            BOOST_TEST(dynamic_cast<Y *>(&*lhs)->b == 43);
-            BOOST_TEST_NOT(rhs);
-        }
+        // {
+        //     Polymorphic<X> lhs = std::nullopt;
+        //     Polymorphic<X> rhs(std::in_place_type<Y>);
+        //     swap(lhs, rhs);
+        //     BOOST_TEST(lhs);
+        //     BOOST_TEST(lhs->a == 42);
+        //     BOOST_TEST(dynamic_cast<Y *>(&*lhs)->b == 43);
+        //     BOOST_TEST_NOT(rhs);
+        // }
 
         // rhs: default constructor
-        {
-            Polymorphic<X> lhs(std::in_place_type<Y>);
-            Polymorphic<X> rhs = std::nullopt;
-            swap(lhs, rhs);
-            BOOST_TEST_NOT(lhs);
-            BOOST_TEST(rhs);
-            BOOST_TEST(rhs->a == 42);
-            BOOST_TEST(dynamic_cast<Y *>(&*rhs)->b == 43);
-        }
+        // {
+        //     Polymorphic<X> lhs(std::in_place_type<Y>);
+        //     Polymorphic<X> rhs = std::nullopt;
+        //     swap(lhs, rhs);
+        //     BOOST_TEST_NOT(lhs);
+        //     BOOST_TEST(rhs);
+        //     BOOST_TEST(rhs->a == 42);
+        //     BOOST_TEST(dynamic_cast<Y *>(&*rhs)->b == 43);
+        // }
 
         // lhs: from derived object
         {
             Polymorphic<X> lhs(Y{});
             Polymorphic<X> rhs(std::in_place_type<Y>);
             swap(lhs, rhs);
-            BOOST_TEST(rhs);
+            BOOST_TEST(!rhs.valueless_after_move());
             BOOST_TEST(rhs->a == 42);
             BOOST_TEST(dynamic_cast<Y*>(&*rhs)->b == 43);
-            BOOST_TEST(lhs);
+            BOOST_TEST(!lhs.valueless_after_move());
             BOOST_TEST(lhs->a == 42);
             BOOST_TEST(dynamic_cast<Y*>(&*lhs)->b == 43);
         }
@@ -296,10 +296,10 @@ struct Polymorphic_test
             Polymorphic<X> lhs(std::in_place_type<Y>);
             Polymorphic<X> rhs(Y{});
             swap(lhs, rhs);
-            BOOST_TEST(lhs);
+            BOOST_TEST(!lhs.valueless_after_move());
             BOOST_TEST(lhs->a == 42);
             BOOST_TEST(dynamic_cast<Y *>(&*lhs)->b == 43);
-            BOOST_TEST(rhs);
+            BOOST_TEST(!rhs.valueless_after_move());
             BOOST_TEST(rhs->a == 42);
             BOOST_TEST(dynamic_cast<Y *>(&*rhs)->b == 43);
         }
@@ -309,10 +309,10 @@ struct Polymorphic_test
             Polymorphic<X> lhs(std::in_place_type<Y>);
             Polymorphic<X> rhs(std::in_place_type<Y>);
             swap(lhs, rhs);
-            BOOST_TEST(rhs);
+            BOOST_TEST(!rhs.valueless_after_move());
             BOOST_TEST(rhs->a == 42);
             BOOST_TEST(dynamic_cast<Y *>(&*rhs)->b == 43);
-            BOOST_TEST(lhs);
+            BOOST_TEST(!lhs.valueless_after_move());
             BOOST_TEST(lhs->a == 42);
             BOOST_TEST(dynamic_cast<Y *>(&*lhs)->b == 43);
         }

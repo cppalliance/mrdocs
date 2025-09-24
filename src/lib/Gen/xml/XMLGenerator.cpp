@@ -11,10 +11,10 @@
 
 #include "XMLGenerator.hpp"
 #include "XMLWriter.hpp"
-#include "lib/Support/Radix.hpp"
-#include "lib/Support/RawOstream.hpp"
-#include <mrdocs/Support/Error.hpp>
+#include <lib/Support/Radix.hpp>
+#include <lib/Support/RawOstream.hpp>
 #include <mrdocs/Metadata.hpp>
+#include <mrdocs/Support/Error.hpp>
 
 namespace clang {
 namespace mrdocs {

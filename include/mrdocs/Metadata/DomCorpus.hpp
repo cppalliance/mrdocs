@@ -10,8 +10,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_DOM_DOMCORPUS_HPP
-#define MRDOCS_API_DOM_DOMCORPUS_HPP
+#ifndef MRDOCS_API_METADATA_DOMCORPUS_HPP
+#define MRDOCS_API_METADATA_DOMCORPUS_HPP
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
@@ -114,4 +114,4 @@ getParents(DomCorpus const& C, Info const& I);
 
 } // clang::mrdocs
 
-#endif
+#endif // MRDOCS_API_METADATA_DOMCORPUS_HPP

@@ -10,12 +10,12 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_TOOL_EXECUTIONCONTEXT_HPP
-#define MRDOCS_LIB_TOOL_EXECUTIONCONTEXT_HPP
+#ifndef MRDOCS_LIB_SUPPORT_EXECUTIONCONTEXT_HPP
+#define MRDOCS_LIB_SUPPORT_EXECUTIONCONTEXT_HPP
 
-#include "lib/ConfigImpl.hpp"
-#include "lib/Diagnostics.hpp"
-#include "lib/Metadata/InfoSet.hpp"
+#include <lib/ConfigImpl.hpp>
+#include <lib/Diagnostics.hpp>
+#include <lib/Metadata/InfoSet.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <mutex>
@@ -159,4 +159,4 @@ public:
 
 } // clang::mrdocs
 
-#endif
+#endif // MRDOCS_LIB_SUPPORT_EXECUTIONCONTEXT_HPP

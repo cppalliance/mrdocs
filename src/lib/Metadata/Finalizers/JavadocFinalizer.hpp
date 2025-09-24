@@ -9,14 +9,14 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_METADATA_FINALIZER_JAVADOCFINALIZER_HPP
-#define MRDOCS_LIB_METADATA_FINALIZER_JAVADOCFINALIZER_HPP
+#ifndef MRDOCS_LIB_METADATA_FINALIZERS_JAVADOCFINALIZER_HPP
+#define MRDOCS_LIB_METADATA_FINALIZERS_JAVADOCFINALIZER_HPP
 
-#include "lib/CorpusImpl.hpp"
-#include "lib/Metadata/InfoSet.hpp"
-#include <format>
+#include <lib/CorpusImpl.hpp>
+#include <lib/Metadata/InfoSet.hpp>
 #include <mrdocs/Support/Report.hpp>
 #include <mrdocs/Support/ScopeExit.hpp>
+#include <format>
 #include <set>
 #include <utility>
 
@@ -337,6 +337,27 @@ private:
     void
     finalize(NameInfo& name);
 
+    /// Finalize polymorphic
+    template <class T>
+    void
+    finalize(Polymorphic<T>&& val)
+    {
+        if (!val.valueless_after_move())
+        {
+            finalize(*val);
+        }
+    }
+
+    template <class T>
+    void
+    finalize(Polymorphic<T>& val)
+    {
+        if (!val.valueless_after_move())
+        {
+            finalize(*val);
+        }
+    }
+
     /// Finalize optional and pointer-like members
     template <dereferenceable T>
     void
@@ -431,4 +452,4 @@ private:
 
 } // clang::mrdocs
 
-#endif
+#endif // MRDOCS_LIB_METADATA_FINALIZERS_JAVADOCFINALIZER_HPP

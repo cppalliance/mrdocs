@@ -14,15 +14,15 @@
 #ifndef MRDOCS_LIB_AST_ASTVISITOR_HPP
 #define MRDOCS_LIB_AST_ASTVISITOR_HPP
 
-#include "lib/ConfigImpl.hpp"
-#include "lib/Support/ExecutionContext.hpp"
-#include "lib/AST/ClangHelpers.hpp"
-#include <mrdocs/Metadata/ExtractionMode.hpp>
-#include <mrdocs/Metadata/Source.hpp>
+#include <lib/AST/ClangHelpers.hpp>
+#include <lib/ConfigImpl.hpp>
+#include <lib/Support/ExecutionContext.hpp>
+#include <mrdocs/Metadata/Info/ExtractionMode.hpp>
+#include <mrdocs/Metadata/Info/Source.hpp>
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Support/Concepts.hpp>
-#include <clang/Tooling/Tooling.h>
 #include <clang/AST/ODRHash.h>
+#include <clang/Tooling/Tooling.h>
 #include <llvm/ADT/SmallBitVector.h>
 
 namespace clang::mrdocs {
@@ -1215,4 +1215,4 @@ private:
 
 } // clang::mrdocs
 
-#endif
+#endif // MRDOCS_LIB_AST_ASTVISITOR_HPP

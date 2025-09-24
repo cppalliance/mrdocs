@@ -8,15 +8,15 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_SUPPORT_LUA_HPP
-#define MRDOCS_SUPPORT_LUA_HPP
+#ifndef MRDOCS_API_SUPPORT_LUA_HPP
+#define MRDOCS_API_SUPPORT_LUA_HPP
 
-#include <cstdlib>
-#include <memory>
-#include <mrdocs/Dom.hpp>
 #include <mrdocs/Platform.hpp>
+#include <mrdocs/Dom.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/source_location.hpp>
+#include <cstdlib>
+#include <memory>
 #include <string>
 #include <string_view>
 
@@ -507,4 +507,4 @@ struct std::formatter<clang::mrdocs::lua::Value> : std::formatter<std::string> {
   }
 };
 
-#endif
+#endif // MRDOCS_API_SUPPORT_LUA_HPP

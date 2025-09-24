@@ -12,21 +12,21 @@
 #ifndef MRDOCS_LIB_CORPUSIMPL_HPP
 #define MRDOCS_LIB_CORPUSIMPL_HPP
 
-#include "lib/AST/ParseRef.hpp"
-#include "ConfigImpl.hpp"
-#include "lib/Metadata/InfoSet.hpp"
-#include "lib/Support/Debug.hpp"
-#include <clang/Tooling/CompilationDatabase.h>
+#include <mrdocs/Platform.hpp>
+#include <lib/AST/ParseRef.hpp>
+#include <lib/ConfigImpl.hpp>
+#include <lib/Metadata/InfoSet.hpp>
+#include <lib/Support/Debug.hpp>
 #include <mrdocs/ADT/UnorderedStringMap.hpp>
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Metadata.hpp>
-#include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/Error.hpp>
+#include <clang/Tooling/CompilationDatabase.h>
+#include <functional>
 #include <map>
 #include <mutex>
-#include <string>
 #include <set>
-#include <functional>
+#include <string>
 
 namespace clang::mrdocs {
 
@@ -258,4 +258,4 @@ get(
 
 } // clang::mrdocs
 
-#endif
+#endif // MRDOCS_LIB_CORPUSIMPL_HPP

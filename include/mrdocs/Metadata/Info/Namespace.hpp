@@ -9,14 +9,14 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_METADATA_NAMESPACE_HPP
-#define MRDOCS_API_METADATA_NAMESPACE_HPP
+#ifndef MRDOCS_API_METADATA_INFO_NAMESPACE_HPP
+#define MRDOCS_API_METADATA_INFO_NAMESPACE_HPP
 
+#include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Name.hpp>
-#include <mrdocs/Dom/LazyArray.hpp>
-#include <vector>
 #include <ranges>
+#include <vector>
 
 namespace clang::mrdocs {
 
@@ -177,4 +177,4 @@ tag_invoke(
 
 } // clang::mrdocs
 
-#endif
+#endif // MRDOCS_API_METADATA_INFO_NAMESPACE_HPP

@@ -8,13 +8,13 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_METADATA_FINALIZER_JAVADOCFINALIZER_FUNCTION_HPP
-#define MRDOCS_LIB_METADATA_FINALIZER_JAVADOCFINALIZER_FUNCTION_HPP
+#ifndef MRDOCS_LIB_METADATA_FINALIZERS_JAVADOC_FUNCTION_HPP
+#define MRDOCS_LIB_METADATA_FINALIZERS_JAVADOC_FUNCTION_HPP
 
-#include "lib/CorpusImpl.hpp"
-#include "lib/Metadata/InfoSet.hpp"
-#include <format>
+#include <lib/CorpusImpl.hpp>
+#include <lib/Metadata/InfoSet.hpp>
 #include <mrdocs/Support/Algorithm.hpp>
+#include <format>
 #include <utility>
 
 namespace clang::mrdocs {
@@ -47,8 +47,10 @@ isCopyOrMoveConstructorOrAssignment(FunctionInfo const& I)
     }
     MRDOCS_CHECK_OR(I.Params.size() == 1, false);
     auto const& param = I.Params[0];
-    auto const& paramType = param.Type;
-    MRDOCS_CHECK_OR(paramType, false);
+    auto const& paramTypeOpt = param.Type;
+    MRDOCS_CHECK_OR(paramTypeOpt, false);
+    auto const& paramType = *paramTypeOpt;
+    MRDOCS_CHECK_OR(!paramType.valueless_after_move(), false);
     if constexpr (!move)
     {
         MRDOCS_CHECK_OR(paramType->isLValueReference(), false);
@@ -59,8 +61,10 @@ isCopyOrMoveConstructorOrAssignment(FunctionInfo const& I)
     }
     using RefType = std::conditional_t<move, RValueReferenceTypeInfo, LValueReferenceTypeInfo>;
     auto const& paramRefType = static_cast<RefType const &>(*paramType);
-    auto const& paramRefPointee = paramRefType.PointeeType;
-    MRDOCS_CHECK_OR(paramRefPointee, false);
+    auto const& paramRefPointeeOpt = paramRefType.PointeeType;
+    MRDOCS_CHECK_OR(paramRefPointeeOpt, false);
+    auto const& paramRefPointee = *paramRefPointeeOpt;
+    MRDOCS_CHECK_OR(!paramRefPointee.valueless_after_move(), false);
     auto const *paramRefPointeeNamed =
         static_cast<NamedTypeInfo const *>(&*paramRefPointee);
     if (!paramRefPointeeNamed)
@@ -109,6 +113,13 @@ innermostTypenameString(Polymorphic<TypeInfo> const& T)
                     {});
     auto& RStr = static_cast<const NamedTypeInfo &>(*R).Name->Name;
     return RStr;
+}
+
+std::optional<std::string_view>
+innermostTypenameString(Optional<Polymorphic<TypeInfo>> const& T)
+{
+    MRDOCS_CHECK_OR(T, {});
+    return innermostTypenameString(*T);
 }
 
 bool
@@ -196,13 +207,15 @@ isStreamInsertion(FunctionInfo const& function)
     // Check first param is mutable left reference
     auto& firstParam = function.Params[0];
     MRDOCS_CHECK_OR(firstParam, false);
-    auto& firstQualType = firstParam.Type;
-    MRDOCS_CHECK_OR(firstQualType, false);
+    auto& firstQualTypeOpt = firstParam.Type;
+    MRDOCS_CHECK_OR(firstQualTypeOpt, false);
+    auto& firstQualType = *firstQualTypeOpt;
     MRDOCS_CHECK_OR(firstQualType->isLValueReference(), false);
-    auto& firstNamedType =
+    auto& firstNamedTypeOpt =
         static_cast<LValueReferenceTypeInfo const &>(*firstQualType)
             .PointeeType;
-    MRDOCS_CHECK_OR(firstNamedType, false);
+    MRDOCS_CHECK_OR(firstNamedTypeOpt, false);
+    auto& firstNamedType = *firstNamedTypeOpt;
     MRDOCS_CHECK_OR(firstNamedType->isNamed(), false);
     // Check return type
     return firstQualType == function.ReturnType;
@@ -343,7 +356,8 @@ populateFunctionReturnsForSpecial(
     }
 
     // Special functions that should return a reference to self
-    if (I.ReturnType->isLValueReference())
+    if (I.ReturnType &&
+        (*I.ReturnType)->isLValueReference())
     {
         Info const* RInfo = getInfo(innerR, corpus);
         MRDOCS_CHECK_OR(RInfo, false);
@@ -353,7 +367,8 @@ populateFunctionReturnsForSpecial(
     }
 
     // Special functions that should return a pointer to self
-    if (I.ReturnType->isPointer())
+    if (I.ReturnType &&
+        (*I.ReturnType)->isPointer())
     {
         Info const* RInfo = getInfo(innerR, corpus);
         MRDOCS_CHECK_OR(RInfo, false);
@@ -373,9 +388,11 @@ populateFunctionReturnsForSpecial(
               OperatorKind::GreaterEqual,
               OperatorKind::Exclaim }))
     {
-        MRDOCS_CHECK_OR(I.ReturnType->isNamed(), false);
+        MRDOCS_CHECK_OR(I.ReturnType, false);
+        MRDOCS_CHECK_OR((*I.ReturnType)->isNamed(), false);
+        MRDOCS_ASSERT(!I.ReturnType->valueless_after_move());
         MRDOCS_CHECK_OR(
-            static_cast<NamedTypeInfo &>(*I.ReturnType).FundamentalType ==
+            static_cast<NamedTypeInfo &>(**I.ReturnType).FundamentalType ==
                 FundamentalTypeKind::Bool,
             false);
         doc::Returns r;
@@ -428,21 +445,25 @@ populateFunctionReturnsForSpecial(
     }
 
     // Special function that return the same type as the parent
-    if (I.IsRecordMethod && innerR->isNamed() &&
-        static_cast<NamedTypeInfo const &>(*innerR).Name &&
+    if (I.IsRecordMethod &&
+        !innerR.valueless_after_move() &&
+        innerR->isNamed() &&
+        !static_cast<NamedTypeInfo const &>(*innerR).Name.valueless_after_move() &&
         static_cast<NamedTypeInfo const &>(*innerR).Name->id &&
         static_cast<NamedTypeInfo const &>(*innerR).Name->id == I.Parent)
     {
-        if (I.ReturnType->isLValueReference())
+        MRDOCS_CHECK_OR(I.ReturnType, false);
+        MRDOCS_ASSERT(!I.ReturnType->valueless_after_move());
+        if ((*I.ReturnType)->isLValueReference())
         {
             I.javadoc->returns.emplace_back("Reference to the current object");
         }
-        else if (I.ReturnType->isRValueReference())
+        else if ((*I.ReturnType)->isRValueReference())
         {
             I.javadoc->returns.emplace_back(
                 "Rvalue reference to the current object");
         }
-        else if (I.ReturnType->isPointer())
+        else if ((*I.ReturnType)->isPointer())
         {
             I.javadoc->returns.emplace_back("Pointer to the current object");
         }
@@ -481,7 +502,8 @@ populateFunctionReturns(FunctionInfo& I, CorpusImpl const& corpus)
 
     // Check if we have a named return type
     MRDOCS_CHECK_OR(I.ReturnType);
-    auto& inner = innermostType(I.ReturnType);
+    MRDOCS_CHECK_OR(!I.ReturnType->valueless_after_move());
+    auto& inner = innermostType(*I.ReturnType);
     MRDOCS_CHECK_OR(inner);
     if (inner->isNamed())
     {
@@ -541,7 +563,9 @@ setCntrOrAssignParamName(
         std::views::transform([](Param const& p) -> std::string_view {
             return *p.Name;
         });
-    auto& innerP = innermostType(param.Type);
+    MRDOCS_CHECK_OR(param.Type, false);
+    MRDOCS_ASSERT(!param.Type->valueless_after_move());
+    auto& innerP = innermostType(*param.Type);
     std::string_view paramName = "value";
     if (innerP->namedSymbol() == I.Parent)
     {
@@ -651,7 +675,9 @@ setCntrOrAssignParamDoc(
 
     // Set the parameter description if we can
     MRDOCS_CHECK_OR(param, false);
-    auto& innerParam = innermostType(param.Type);
+    MRDOCS_CHECK_OR(param.Type, false);
+    MRDOCS_ASSERT(!param.Type->valueless_after_move());
+    auto& innerParam = innermostType(*param.Type);
     MRDOCS_CHECK_OR(innerParam, false);
     MRDOCS_CHECK_OR(innerParam->isNamed(), false);
     std::string_view const paramNoun
@@ -663,13 +689,17 @@ setCntrOrAssignParamDoc(
         {
             return !isAssign ? "construct" : "assign";
         }
-        if (param.Type->isLValueReference())
+        if (param.Type)
         {
-            return !isAssign ? "copy construct" : "copy assign";
-        }
-        if (param.Type->isRValueReference())
-        {
-            return !isAssign ? "move construct" : "move assign";
+            MRDOCS_ASSERT(!param.Type->valueless_after_move());
+            if ((*param.Type)->isLValueReference())
+            {
+                return !isAssign ? "copy construct" : "copy assign";
+            }
+            if ((*param.Type)->isRValueReference())
+            {
+                return !isAssign ? "move construct" : "move assign";
+            }
         }
         return !isAssign ? "construct" : "assign";
     }();
@@ -759,7 +789,9 @@ setFunctionParamDoc(
 
     // param is a named parameter: use the brief of the type
     // as a description for the parameter
-    auto const& innerParam = innermostType(param.Type);
+    MRDOCS_CHECK_OR(param.Type);
+    MRDOCS_ASSERT(!param.Type->valueless_after_move());
+    auto const& innerParam = innermostType(*param.Type);
     doc::Brief const* paramBrief = getInfoBrief(innerParam, corpus);
     MRDOCS_CHECK_OR(paramBrief);
     I.javadoc->params.emplace_back(*param.Name, *paramBrief);
@@ -798,4 +830,4 @@ populateFunctionParams(FunctionInfo& I, CorpusImpl const& corpus)
 }
 } // clang::mrdocs
 
-#endif
+#endif // MRDOCS_LIB_METADATA_FINALIZERS_JAVADOC_FUNCTION_HPP
