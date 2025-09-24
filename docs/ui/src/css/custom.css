@@ -50,11 +50,6 @@
   color: var(--navbar-font-color);
 }
 
-.body .article {
-  backdrop-filter: blur(10px);
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
 .doc h1,
 .doc h2,
 .doc h3,
