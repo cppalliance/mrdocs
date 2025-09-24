@@ -233,6 +233,26 @@ The fixtures for golden testing are defined in `test-files/golden-tests`, where 
 * `<filename>.bad.xml`: The test output file generated when the test fails.
 * `<filename>.yml`: Extra configuration options for this specific file.
 
+== Style Guide
+
+This project follows informal formatting conventions established by previous Boost projects.
+To help contributors, we provide a `.clang-format` file that encodes these rules.
+
+* Do *not* apply clang-format across entire files or the whole project.
+* Use the config only as a *reference* for your IDE/editor, or to format the code you **personally add or modify** in a commit.
+* Always check the surrounding code and keep consistent with it.
+* Do not create style-only commits that introduce large diffs without functional changes.
+
+Why This Approach:
+
+* Keeps history clean: avoids large, style-only commits.
+* Ensures new contributors are not lost when adapting to project style.
+* Encourages consistency without rigid automation.
+
+General Advice: When in doubt, copy the style of the surrounding code. The `.clang-format` file is a tool to help you, not a rule to enforce blindly.
+
+The utility script `./util/reformat.sh` can also be used to check a few project invariants, such as header guards and include order.
+
 == Contributing
 
 If you find a bug or have a feature request, please open an issue on the MrDocs GitHub repository: https://github.com/cppalliance/mrdocs/issues
