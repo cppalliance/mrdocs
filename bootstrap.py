@@ -1412,6 +1412,22 @@ class MrDocsInstaller:
         if cxx_flags:
             new_preset["cacheVariables"]['CMAKE_CXX_FLAGS'] = cxx_flags.strip()
 
+        # if build type is debug and compiler is clang (default macos or explicitly clang),
+        # add "CMAKE_CXX_FLAGS": "-D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_EXTENSIVE"
+        # or append it to existing CMAKE_CXX_FLAGS
+        if self.options.mrdocs_build_type.lower() == "debug":
+            is_clang = False
+            if self.options.cxx and "clang" in os.path.basename(self.options.cxx).lower():
+                is_clang = True
+            elif "CMAKE_CXX_COMPILER_ID" in self.compiler_info and self.compiler_info["CMAKE_CXX_COMPILER_ID"].lower() == "clang":
+                is_clang = True
+            if is_clang:
+                hardening_flag = "-D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_EXTENSIVE"
+                if "CMAKE_CXX_FLAGS" in new_preset["cacheVariables"]:
+                    new_preset["cacheVariables"]["CMAKE_CXX_FLAGS"] += " " + hardening_flag
+                else:
+                    new_preset["cacheVariables"]["CMAKE_CXX_FLAGS"] = hardening_flag
+
         if self.is_windows():
             if self.options.python_path:
                 new_preset["cacheVariables"]["PYTHON_EXECUTABLE"] = self.options.python_path

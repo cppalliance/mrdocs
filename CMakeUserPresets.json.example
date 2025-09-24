@@ -133,7 +133,8 @@
                 "MRDOCS_BUILD_DOCS": false,
                 "MRDOCS_GENERATE_REFERENCE": false,
                 "MRDOCS_GENERATE_ANTORA_REFERENCE": false,
-                "CMAKE_MAKE_PROGRAM": "${sourceDir}/build/third-party/ninja/ninja"
+                "CMAKE_MAKE_PROGRAM": "${sourceDir}/build/third-party/ninja/ninja",
+                "CMAKE_CXX_FLAGS": "-D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_EXTENSIVE"
             },
             "condition": {
                 "type": "equals",
@@ -163,7 +164,8 @@
                 "MRDOCS_BUILD_DOCS": false,
                 "MRDOCS_GENERATE_REFERENCE": false,
                 "MRDOCS_GENERATE_ANTORA_REFERENCE": false,
-                "CMAKE_MAKE_PROGRAM": "${sourceDir}/build/third-party/ninja/ninja"
+                "CMAKE_MAKE_PROGRAM": "${sourceDir}/build/third-party/ninja/ninja",
+                "CMAKE_CXX_FLAGS": "-D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_EXTENSIVE"
             },
             "warnings": {
                 "unusedCli": false
@@ -360,9 +362,9 @@
                 "Clang_ROOT": "${sourceDir}/build/third-party/llvm-project/install/debug-clang-asan",
                 "duktape_ROOT": "${sourceDir}/build/third-party/duktape/install/debug-clang-asan",
                 "Duktape_ROOT": "${sourceDir}/build/third-party/duktape/install/debug-clang-asan",
-                "libxml2_ROOT": "",
-                "LibXml2_ROOT": "",
-                "MRDOCS_BUILD_TESTS": false,
+                "libxml2_ROOT": "${sourceDir}/build/third-party/libxml2/install/release-clang",
+                "LibXml2_ROOT": "${sourceDir}/build/third-party/libxml2/install/release-clang",
+                "MRDOCS_BUILD_TESTS": true,
                 "MRDOCS_BUILD_DOCS": false,
                 "MRDOCS_GENERATE_REFERENCE": false,
                 "MRDOCS_GENERATE_ANTORA_REFERENCE": false,
