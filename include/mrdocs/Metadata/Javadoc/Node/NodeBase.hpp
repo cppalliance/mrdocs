@@ -37,11 +37,6 @@ struct MRDOCS_DECL
 
     virtual ~Node() = default;
 
-    explicit Node(NodeKind const kind_) noexcept
-        : Kind(kind_)
-    {
-    }
-
     virtual bool isBlock() const noexcept = 0;
 
     bool isText() const noexcept
@@ -54,6 +49,13 @@ struct MRDOCS_DECL
     virtual bool equals(Node const& other) const noexcept
     {
         return Kind == other.Kind;
+    }
+protected:
+    constexpr Node() noexcept = default;
+
+    explicit Node(NodeKind const kind_) noexcept
+        : Kind(kind_)
+    {
     }
 };
 

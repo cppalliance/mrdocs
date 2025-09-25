@@ -10,12 +10,12 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_METADATA_JAVADOC_TEXT_COPYDETAILS_HPP
-#define MRDOCS_API_METADATA_JAVADOC_TEXT_COPYDETAILS_HPP
+#ifndef MRDOCS_API_METADATA_JAVADOC_INLINE_COPYDETAILS_HPP
+#define MRDOCS_API_METADATA_JAVADOC_INLINE_COPYDETAILS_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Javadoc/Text/Reference.hpp>
-#include <mrdocs/Metadata/Javadoc/Text/TextBase.hpp>
+#include <mrdocs/Metadata/Javadoc/Inline/Reference.hpp>
+#include <mrdocs/Metadata/Javadoc/Inline/Text.hpp>
 #include <string>
 
 namespace clang::mrdocs::doc {
@@ -77,4 +77,4 @@ tag_invoke(
 
 } // clang::mrdocs::doc
 
-#endif // MRDOCS_API_METADATA_JAVADOC_TEXT_COPYDETAILS_HPP
+#endif // MRDOCS_API_METADATA_JAVADOC_INLINE_COPYDETAILS_HPP

@@ -14,7 +14,7 @@
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Metadata/Javadoc.hpp>
-#include <mrdocs/Metadata/Javadoc/Text/Parts.hpp>
+#include <mrdocs/Metadata/Javadoc/Inline/Parts.hpp>
 #include <llvm/Support/Error.h>
 #include <llvm/Support/Path.h>
 #include <format>

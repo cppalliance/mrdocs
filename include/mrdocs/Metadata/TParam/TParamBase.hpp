@@ -27,7 +27,7 @@ class DomCorpus;
 struct TParam
 {
     /** The kind of template parameter this is */
-    TParamKind Kind;
+    TParamKind Kind = TParamKind::Type;
 
     /** The template parameters name, if any */
     std::string Name;
@@ -47,6 +47,9 @@ struct TParam
     std::strong_ordering operator<=>(TParam const&) const;
 
 protected:
+    constexpr
+    TParam() noexcept = default;
+
     constexpr
     TParam(
         TParamKind kind) noexcept

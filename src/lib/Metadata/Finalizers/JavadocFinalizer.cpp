@@ -898,7 +898,7 @@ processRelates(Javadoc& javadoc)
 
     Info const* currentPtr = corpus_.find(current_context_->id);
     MRDOCS_ASSERT(currentPtr);
-    Info const current = *currentPtr;
+    Info const& current = *currentPtr;
 
     if (!current.isFunction())
     {

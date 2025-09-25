@@ -10,8 +10,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_METADATA_JAVADOC_TEXT_STYLE_HPP
-#define MRDOCS_API_METADATA_JAVADOC_TEXT_STYLE_HPP
+#ifndef MRDOCS_API_METADATA_JAVADOC_INLINE_STYLE_HPP
+#define MRDOCS_API_METADATA_JAVADOC_INLINE_STYLE_HPP
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
@@ -55,4 +55,4 @@ tag_invoke(
 
 } // clang::mrdocs::doc
 
-#endif // MRDOCS_API_METADATA_JAVADOC_TEXT_STYLE_HPP
+#endif // MRDOCS_API_METADATA_JAVADOC_INLINE_STYLE_HPP

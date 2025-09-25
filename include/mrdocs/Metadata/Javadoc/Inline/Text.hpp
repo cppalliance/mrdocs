@@ -10,11 +10,11 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_METADATA_JAVADOC_TEXT_TEXTBASE_HPP
-#define MRDOCS_API_METADATA_JAVADOC_TEXT_TEXTBASE_HPP
+#ifndef MRDOCS_API_METADATA_JAVADOC_INLINE_TEXT_HPP
+#define MRDOCS_API_METADATA_JAVADOC_INLINE_TEXT_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Javadoc/Node/NodeBase.hpp>
+#include <mrdocs/Metadata/Javadoc/Inline/InlineBase.hpp>
 #include <string>
 
 namespace clang::mrdocs::doc {
@@ -25,25 +25,21 @@ namespace clang::mrdocs::doc {
     this would be represented as multiple text nodes
     within a Paragraph node.
 */
-struct Text : Node
+struct Text : Inline
 {
     std::string string;
 
     static constexpr auto static_kind = NodeKind::text;
 
-    explicit
-    Text(
-        std::string string_ = std::string()) noexcept
-        : Node(NodeKind::text)
-        , string(std::move(string_))
-    {
-    }
+    constexpr ~Text() override = default;
 
-    bool
-    isBlock() const noexcept final
-    {
-        return false;
-    }
+    constexpr Text() noexcept = default;
+
+    explicit Text(std::string string_ = std::string()) noexcept
+        : Inline(NodeKind::text)
+        , string(std::move(string_))
+    {}
+
 
     auto operator<=>(Text const&) const = default;
     bool operator==(Text const&) const noexcept = default;
@@ -57,7 +53,7 @@ protected:
     Text(
         std::string string_,
         NodeKind kind_)
-        : Node(kind_)
+        : Inline(kind_)
         , string(std::move(string_))
     {
     }
@@ -97,4 +93,4 @@ tag_invoke(
 
 } // clang::mrdocs::doc
 
-#endif // MRDOCS_API_METADATA_JAVADOC_TEXT_TEXTBASE_HPP
+#endif // MRDOCS_API_METADATA_JAVADOC_INLINE_TEXT_HPP
