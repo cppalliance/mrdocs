@@ -147,7 +147,7 @@ writeEnum(
         tags_.close(baseTagName);
     }
 
-    writeSourceInfo(I);
+    writeSourceInfo(I.Loc);
 
     writeJavadoc(I.javadoc);
 
@@ -173,7 +173,7 @@ writeEnumConstant(
         { I.id }
     });
 
-    writeSourceInfo(I);
+    writeSourceInfo(I.Loc);
 
     writeJavadoc(I.javadoc);
 
@@ -230,7 +230,7 @@ writeFunction(
         { I.id }
         });
 
-    writeSourceInfo(I);
+    writeSourceInfo(I.Loc);
 
     writeAttr(I.IsVariadic,            "is-variadic", tags_);
     writeAttr(I.IsVirtualAsWritten,    "is-virtual-as-written", tags_);
@@ -294,7 +294,7 @@ writeGuide(
         { I.id }
         });
 
-    writeSourceInfo(I);
+    writeSourceInfo(I.Loc);
 
     tags_.open(deducedTagName);
     writeType(I.Deduced, tags_);
@@ -325,7 +325,7 @@ writeConcept(
         { "constraint", I.Constraint.Written },
         });
 
-    writeSourceInfo(I);
+    writeSourceInfo(I.Loc);
 
     writeJavadoc(I.javadoc);
 
@@ -346,7 +346,7 @@ writeNamespaceAlias(
         { I.id }
         });
 
-    writeSourceInfo(I);
+    writeSourceInfo(I.Loc);
 
     writeJavadoc(I.javadoc);
 
@@ -395,7 +395,7 @@ XMLWriter::
         { "qualifier", qualifierStr, !qualifierStr.empty() }
     });
 
-    writeSourceInfo(I);
+    writeSourceInfo(I.Loc);
 
     writeJavadoc(I.javadoc);
 
@@ -420,7 +420,7 @@ writeRecord(
         { I.id }
         });
 
-    writeSourceInfo(I);
+    writeSourceInfo(I.Loc);
 
     writeAttr(I.IsFinal, "is-final", tags_);
     writeAttr(I.IsFinalDestructor, "is-final-dtor", tags_);
@@ -472,7 +472,7 @@ writeTypedef(
         { I.id }
         });
 
-    writeSourceInfo(I);
+    writeSourceInfo(I.Loc);
 
     writeType(I.Type, tags_);
 
@@ -506,7 +506,7 @@ writeVariable(
         { "default", I.Initializer.Written, ! I.Initializer.Written.empty() }
         });
 
-    writeSourceInfo(I);
+    writeSourceInfo(I.Loc);
 
     if(I.IsMutable)
         tags_.write(attributeTagName, {}, {

@@ -30,8 +30,11 @@ namespace clang::mrdocs {
 /** Base class with common properties of all symbols
 */
 struct MRDOCS_VISIBLE Info
-    : SourceInfo
 {
+    /** The source location information.
+     */
+    SourceInfo Loc;
+
     /** The unique identifier for this symbol.
     */
     SymbolID id;
@@ -82,7 +85,7 @@ struct MRDOCS_VISIBLE Info
 
     //--------------------------------------------
 
-    ~Info() override = default;
+    virtual ~Info() = default;
 
     #define INFO(Type) constexpr bool is##Type() const noexcept { \
         return Kind == InfoKind::Type; \
@@ -246,7 +249,7 @@ tag_invoke(
     {
         io.map("doc", *I.javadoc);
     }
-    io.map("loc", dynamic_cast<SourceInfo const&>(I));
+    io.map("loc", I.Loc);
 }
 
 /** Return the Info as a @ref dom::Value object.
@@ -267,7 +270,7 @@ Optional<Location>
 getPrimaryLocation(Info const& I)
 {
     return getPrimaryLocation(
-        dynamic_cast<SourceInfo const&>(I),
+        I.Loc,
         I.isRecord() || I.isEnum());
 }
 
