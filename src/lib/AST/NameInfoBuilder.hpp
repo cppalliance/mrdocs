@@ -57,7 +57,7 @@ public:
     buildTerminal(
         NestedNameSpecifier NNS,
         IdentifierInfo const* II,
-        std::optional<ArrayRef<TemplateArgument>> TArgs,
+        Optional<ArrayRef<TemplateArgument>> TArgs,
         unsigned quals,
         bool pack);
 
@@ -65,7 +65,7 @@ public:
     buildTerminal(
         NestedNameSpecifier NNS,
         NamedDecl const* D,
-        std::optional<ArrayRef<TemplateArgument>> const& TArgs,
+        Optional<ArrayRef<TemplateArgument>> const& TArgs,
         unsigned quals,
         bool pack);
 };

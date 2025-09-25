@@ -15,6 +15,7 @@
 #define MRDOCS_API_METADATA_INFO_FUNCTION_HPP
 
 #include <mrdocs/Platform.hpp>
+#include <mrdocs/ADT/Optional.hpp>
 #include <mrdocs/Metadata/Info/FunctionClass.hpp>
 #include <mrdocs/Metadata/Info/InfoBase.hpp>
 #include <mrdocs/Metadata/Info/Param.hpp>
@@ -36,7 +37,7 @@ struct FunctionInfo final
     std::vector<Param> Params;
 
     /// When present, this function is a template or specialization.
-    std::optional<TemplateInfo> Template;
+    Optional<TemplateInfo> Template;
 
     /// The class of function this is
     FunctionClass Class = FunctionClass::Normal;

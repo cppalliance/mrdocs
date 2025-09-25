@@ -1132,16 +1132,16 @@ struct Dom_test
             BOOST_TEST(v == "hello");
         }
 
-        // Value(std::optional<T> const& opt)
+        // Value(Optional<T> const& opt)
         {
             {
-                std::optional<dom::Value> opt;
+                Optional<dom::Value> opt;
                 Value v(opt);
                 BOOST_TEST(v.isUndefined());
             }
 
             {
-                std::optional<dom::Value> opt(123);
+                Optional<dom::Value> opt(123);
                 Value v(opt);
                 BOOST_TEST(v.isInteger());
                 BOOST_TEST(v == 123);

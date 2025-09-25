@@ -1931,12 +1931,12 @@ private:
                 // Bounds.Value is an optional integer with the value
                 // Bounds.Written is the original string representation
                 // of the bounds
-                std::optional<std::uint64_t> boundsValue = 0;
+                Optional<std::uint64_t> boundsValue = 0;
                 if (ConstantExprInfo<std::uint64_t> Bounds;
                     parseInteger(boundsValue) &&
                     peek(']', ' '))
                 {
-                    Bounds.Value = boundsValue;
+                    Bounds.Value = *boundsValue;
                     Bounds.Written = std::string_view(exprStart, ptr_ - exprStart);
                     ATI.Bounds = Bounds;
                     if (!parseLiteral("]"))
@@ -2021,7 +2021,7 @@ private:
     }
 
     bool
-    parseInteger(std::optional<std::uint64_t>& dest)
+    parseInteger(Optional<std::uint64_t>& dest)
     {
         if (!hasMore())
         {

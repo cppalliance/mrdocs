@@ -31,7 +31,7 @@ class SinglePageVisitor
     std::size_t numSymbols_ = 0;
     std::mutex mutex_;
     std::size_t topSymbol_ = 0;
-    std::vector<std::optional<std::string>> symbols_;
+    std::vector<Optional<std::string>> symbols_;
 
     void writePage(std::string pageText, std::size_t symbolIdx);
 public:

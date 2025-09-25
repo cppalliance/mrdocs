@@ -22,13 +22,13 @@ struct SymbolIDCompareFn
 
     template <class InfoTy>
     static
-    std::optional<FunctionClass>
+    Optional<FunctionClass>
     findFunctionClass(InfoTy const& I)
     {
         if constexpr (std::same_as<InfoTy, Info>)
         {
             return visit(I, []<class U>(U const& u)
-                -> std::optional<FunctionClass>
+                -> Optional<FunctionClass>
             {
                 return findFunctionClass<U>(u);
             });
@@ -44,13 +44,13 @@ struct SymbolIDCompareFn
 
     template <class InfoTy>
     static
-    std::optional<OperatorKind>
+    Optional<OperatorKind>
     findOperatorKind(InfoTy const& I)
     {
         if constexpr (std::same_as<InfoTy, Info>)
         {
             return visit(I, []<class U>(U const& u)
-                -> std::optional<OperatorKind>
+                -> Optional<OperatorKind>
             {
                 return findOperatorKind<U>(u);
             });
@@ -76,8 +76,8 @@ struct SymbolIDCompareFn
         Info const& rhs = *rhsPtr;
 
         // Constructors come first
-        std::optional<FunctionClass> const lhsClass = findFunctionClass(lhs);
-        std::optional<FunctionClass> const rhsClass = findFunctionClass(rhs);
+        Optional<FunctionClass> const lhsClass = findFunctionClass(lhs);
+        Optional<FunctionClass> const rhsClass = findFunctionClass(rhs);
         if (corpus_.config->sortMembersCtors1St)
         {
             bool const lhsIsCtor = lhsClass && *lhsClass == FunctionClass::Constructor;
@@ -100,8 +100,8 @@ struct SymbolIDCompareFn
         }
 
         // Assignment operators come next
-        std::optional<OperatorKind> const lhsOp = findOperatorKind(lhs);
-        std::optional<OperatorKind> const rhsOp = findOperatorKind(rhs);
+        Optional<OperatorKind> const lhsOp = findOperatorKind(lhs);
+        Optional<OperatorKind> const rhsOp = findOperatorKind(rhs);
         if (corpus_.config->sortMembersAssignment1St)
         {
             bool const lhsIsAssign = lhsOp && *lhsOp == OperatorKind::Equal;

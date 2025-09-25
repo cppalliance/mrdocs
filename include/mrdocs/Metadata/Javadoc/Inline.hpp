@@ -29,7 +29,7 @@ namespace clang::mrdocs::doc {
 
 /** Visit an inline.
 
-    @param inline The inline to visit.
+    @param el The inline element to visit.
     @param fn The function to call for each inline.
     @param args Additional arguments to pass to the function.
     @return The result of calling the function.

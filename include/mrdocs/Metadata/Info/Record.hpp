@@ -13,6 +13,7 @@
 #define MRDOCS_API_METADATA_INFO_RECORD_HPP
 
 #include <mrdocs/Platform.hpp>
+#include <mrdocs/ADT/Optional.hpp>
 #include <mrdocs/Metadata/Info/Friend.hpp>
 #include <mrdocs/Metadata/Info/RecordBase.hpp>
 #include <mrdocs/Metadata/Info/RecordInterface.hpp>
@@ -31,7 +32,7 @@ struct RecordInfo final
     RecordKeyKind KeyKind = RecordKeyKind::Struct;
 
     /// When present, this record is a template or specialization.
-    std::optional<TemplateInfo> Template;
+    Optional<TemplateInfo> Template;
 
     // Indicates if the record was declared using a typedef.
     // Things like anonymous structs in a typedef:

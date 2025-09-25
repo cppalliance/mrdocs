@@ -166,7 +166,7 @@ struct OptionalTest {
     {
         static_assert(
             !has_nullable_traits_v<NoTraits>,
-            "NoTraits must fall back to std::optional");
+            "NoTraits must fall back to Optional");
         Optional<NoTraits> o;
         BOOST_TEST(!o.has_value()); // default disengaged
 

@@ -103,7 +103,7 @@ isMoveAssignment(FunctionInfo const& I)
     return isCopyOrMoveConstructorOrAssignment<true, true>(I);
 }
 
-std::optional<std::string_view>
+Optional<std::string_view>
 innermostTypenameString(Polymorphic<TypeInfo> const& T)
 {
     auto& R = innermostType(T);
@@ -115,7 +115,7 @@ innermostTypenameString(Polymorphic<TypeInfo> const& T)
     return RStr;
 }
 
-std::optional<std::string_view>
+Optional<std::string_view>
 innermostTypenameString(Optional<Polymorphic<TypeInfo>> const& T)
 {
     MRDOCS_CHECK_OR(T, {});

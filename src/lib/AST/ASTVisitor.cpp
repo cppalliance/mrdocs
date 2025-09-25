@@ -560,7 +560,7 @@ populate(SourceInfo& I, DeclTy const* D)
 bool
 ASTVisitor::
 populate(
-    std::optional<Javadoc>& javadoc,
+    Optional<Javadoc>& javadoc,
     Decl const* D)
 {
     RawComment const* RC = getDocumentation(D);
@@ -1511,7 +1511,7 @@ populate(
             {
                 NestedNameSpecifier NNS =
                     TC->getNestedNameSpecifierLoc().getNestedNameSpecifier();
-                std::optional<ASTTemplateArgumentListInfo const*> TArgs;
+                Optional<ASTTemplateArgumentListInfo const*> TArgs;
                 if (TC->hasExplicitTemplateArgs())
                 {
                     TArgs.emplace(TC->getTemplateArgsAsWritten());
@@ -2081,7 +2081,7 @@ template <class TArgRange>
 Polymorphic<NameInfo>
 ASTVisitor::
 toNameInfo(DeclarationName const Name,
-    std::optional<TArgRange> TArgs,
+    Optional<TArgRange> TArgs,
     NestedNameSpecifier NNS)
 {
     if (Name.isEmpty())
@@ -2108,7 +2108,7 @@ Polymorphic<NameInfo>
 ASTVisitor::
 toNameInfo(
     Decl const* D,
-    std::optional<TArgRange> TArgs,
+    Optional<TArgRange> TArgs,
     NestedNameSpecifier NNS)
 {
     auto const* ND = dyn_cast_if_present<NamedDecl>(D);
@@ -2136,7 +2136,7 @@ Polymorphic<NameInfo>
 ASTVisitor::
 toNameInfo<llvm::ArrayRef<clang::TemplateArgument>>(
     Decl const* D,
-    std::optional<llvm::ArrayRef<clang::TemplateArgument>> TArgs,
+    Optional<llvm::ArrayRef<clang::TemplateArgument>> TArgs,
     NestedNameSpecifier NNS);
 
 Polymorphic<TArg>
@@ -2307,7 +2307,7 @@ getSourceCode(SourceRange const& R) const
         context_.getLangOpts()).str();
 }
 
-std::optional<ASTVisitor::SFINAEInfo>
+Optional<ASTVisitor::SFINAEInfo>
 ASTVisitor::
 extractSFINAEInfo(QualType const T)
 {
@@ -2352,7 +2352,7 @@ extractSFINAEInfo(QualType const T)
     return Result;
 }
 
-std::optional<ASTVisitor::SFINAEControlParams>
+Optional<ASTVisitor::SFINAEControlParams>
 ASTVisitor::
 getSFINAEControlParams(
     TemplateDecl* TD,
@@ -2666,7 +2666,7 @@ getSFINAEControlParams(
     return SFINAEControlParams(CTD->getTemplateParameters(), std::move(ControllingParams), ParamIdx);
 }
 
-std::optional<ASTVisitor::SFINAETemplateInfo>
+Optional<ASTVisitor::SFINAETemplateInfo>
 ASTVisitor::getSFINAETemplateInfo(QualType T, bool const AllowDependentNames) const
 {
     MRDOCS_SYMBOL_TRACE(T, context_);
@@ -2704,7 +2704,7 @@ ASTVisitor::getSFINAETemplateInfo(QualType T, bool const AllowDependentNames) co
     return std::nullopt;
 }
 
-std::optional<TemplateArgument>
+Optional<TemplateArgument>
 ASTVisitor::
 tryGetTemplateArgument(
     TemplateParameterList* Parameters,
@@ -3309,7 +3309,7 @@ buildFileInfo(std::string_view path)
 
     // Attempts to get a relative path for the prefix
     auto tryGetRelativePosixPath = [&file_info](std::string_view const prefix)
-        -> std::optional<std::string_view>
+        -> Optional<std::string_view>
     {
         if (files::startsWith(file_info.full_path, prefix))
         {
@@ -3325,7 +3325,7 @@ buildFileInfo(std::string_view path)
     };
 
     auto tryGetRelativePath = [&tryGetRelativePosixPath](std::string_view const prefix)
-        -> std::optional<std::string_view>
+        -> Optional<std::string_view>
     {
         if (!files::isAbsolute(prefix))
         {
@@ -3376,7 +3376,7 @@ buildFileInfo(std::string_view path)
     }
 
     // Fallback to system search paths in PATH
-    std::optional<std::string> const optEnvPathsStr = llvm::sys::Process::GetEnv("PATH");
+    Optional<std::string> const optEnvPathsStr = llvm::sys::Process::GetEnv("PATH");
     MRDOCS_CHECK_OR(optEnvPathsStr, file_info);
     std::string const& envPathsStr = *optEnvPathsStr;
     for (auto const envPaths = llvm::split(envPathsStr, llvm::sys::EnvPathSeparator);

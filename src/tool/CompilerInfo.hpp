@@ -11,6 +11,7 @@
 #ifndef MRDOCS_TOOL_COMPILERINFO_HPP
 #define MRDOCS_TOOL_COMPILERINFO_HPP
 
+#include <mrdocs/ADT/Optional.hpp>
 #include <clang/Tooling/CompilationDatabase.h>
 #include <llvm/ADT/StringRef.h>
 #include <optional>
@@ -25,9 +26,9 @@ namespace mrdocs {
  * @brief Get the compiler verbose output.
  * 
  * @param compilerPath The compiler path.
- * @return std::optional<std::string> The compiler verbose output.
+ * @return The compiler verbose output.
 */
-std::optional<std::string> 
+Optional<std::string>
 getCompilerVerboseOutput(llvm::StringRef compilerPath);
 
 /**

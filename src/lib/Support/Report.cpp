@@ -8,22 +8,23 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <mrdocs/Platform.hpp>
 #include <lib/Support/Report.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Version.hpp>
 #include <llvm/Support/Mutex.h>
-#include <llvm/Support/Signals.h>
 #include <llvm/Support/raw_ostream.h>
+#include <llvm/Support/Signals.h>
 #include <cstdlib>
 #include <format>
 #include <mutex>
 
 #ifdef _MSC_VER
 #define WIN32_LEAN_AND_MEAN
-#    include <crtdbg.h>
-#    include <debugapi.h>
-#    include <sstream>
-#    include <windows.h>
+#include <windows.h>
+#include <debugapi.h>
+#include <crtdbg.h>
+#include <sstream>
 #endif
 
 namespace SourceFileNames {

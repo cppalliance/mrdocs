@@ -78,7 +78,7 @@ struct MRDOCS_VISIBLE Info
 
     /** The extracted javadoc for this declaration.
      */
-    std::optional<Javadoc> javadoc;
+    Optional<Javadoc> javadoc;
 
     //--------------------------------------------
 

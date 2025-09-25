@@ -512,7 +512,7 @@ toAutoKind(AutoTypeKeyword const kind)
 /** Convert a Clang AutoTypeKeyword into a MrDocs AutoKind
  */
 inline
-std::optional<FundamentalTypeKind>
+Optional<FundamentalTypeKind>
 toFundamentalTypeKind(BuiltinType::Kind const kind)
 {
     switch(kind)
@@ -1060,7 +1060,7 @@ namespace detail {
 
     template <class T>
     void
-    printTraceName(std::optional<T> const& D, ASTContext const& C, std::string& symbol_name)
+    printTraceName(Optional<T> const& D, ASTContext const& C, std::string& symbol_name)
     {
         if (D)
         {

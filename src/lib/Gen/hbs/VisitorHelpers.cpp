@@ -101,7 +101,7 @@ findPrimarySiblingWithUrl(Corpus const& c, Info const& I, Info const& parent)
                 {
                     if constexpr (requires { V.Template; })
                     {
-                        std::optional<TemplateInfo> const& Template = V.Template;
+                        Optional<TemplateInfo> const& Template = V.Template;
                         MRDOCS_CHECK_OR(Template, false);
                         return !Template->Params.empty() && Template->Args.empty();
                     }
@@ -160,7 +160,7 @@ findResolvedPrimarySiblingWithUrl(Corpus const& c, Info const& I)
         // The symbol is a specialization
         if constexpr (requires { U.Template; })
         {
-            std::optional<TemplateInfo> const& Template = U.Template;
+            Optional<TemplateInfo> const& Template = U.Template;
             if (Template &&
                 !Template->Args.empty())
             {

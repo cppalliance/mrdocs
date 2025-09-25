@@ -590,7 +590,7 @@ lookupImpl(
             TemplateInfo const* templateInfo = [&]() -> TemplateInfo const* {
                 if constexpr (requires { M.Template; })
                 {
-                    std::optional<TemplateInfo> const& OTI = M.Template;
+                    Optional<TemplateInfo> const& OTI = M.Template;
                     MRDOCS_CHECK_OR(OTI, nullptr);
                     TemplateInfo const& TI = *OTI;
                     return &TI;

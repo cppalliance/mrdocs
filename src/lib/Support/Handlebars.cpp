@@ -3354,7 +3354,7 @@ renderBlock(
         return {};
     };
 
-    std::optional<HandlebarsError> hbs_error;
+    Optional<HandlebarsError> hbs_error;
     if (!tag.rawBlock) {
         cb.set("write", dom::makeInvocable([&out, &write_nested_block, &hbs_error](
             dom::Value const& newContext,

@@ -1106,7 +1106,7 @@ std::string
 JavadocVisitor::
 fixReference(std::string& ref)
 {
-    auto peekNextIt = [&]() -> std::optional<std::string_view>
+    auto peekNextIt = [&]() -> Optional<std::string_view>
     {
         ++it_;
         if (it_ == end_ ||
@@ -1794,7 +1794,7 @@ initCustomCommentCommands(ASTContext& context)
 
 void
 parseJavadoc(
-    std::optional<Javadoc>& jd,
+    Optional<Javadoc>& jd,
     FullComment const* FC,
     Decl const* D,
     Config const& config,
