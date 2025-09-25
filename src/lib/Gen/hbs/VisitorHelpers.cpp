@@ -19,7 +19,7 @@ namespace clang::mrdocs::hbs {
 bool
 shouldGenerate(Info const& I, Config const& config)
 {
-    if (I.isEnumConstant())
+    if (I.isEnumConstant() && !config->showEnumConstants)
     {
         return false;
     }

@@ -3,7 +3,9 @@
 
     https://gitlab.com/antora/antora/-/issues/428
 }}
-{{#if (starts_with href "#")~}}
+{{#if (eq href @root.symbol.url)~}}
+    {{{> @partial-block }}}
+{{~else if (starts_with href "#")~}}
     link:{{{ href }}}[{{> @partial-block }}]
 {{~else if (starts_with href "/")~}}
     xref:{{{remove_prefix href "/"}}}[{{> @partial-block }}]

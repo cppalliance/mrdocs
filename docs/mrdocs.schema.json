@@ -425,6 +425,16 @@
       "title": "Detect and reduce SFINAE expressions",
       "type": "boolean"
     },
+    "show-enum-constants": {
+      "default": false,
+      "description": "When set to true, MrDocs creates a page for each enum constant in the documentation.",
+      "enum": [
+        true,
+        false
+      ],
+      "title": "Show enum constant pages in the documentation",
+      "type": "boolean"
+    },
     "show-namespaces": {
       "default": true,
       "description": "When set to true, MrDocs creates a page for each namespace in the documentation.",

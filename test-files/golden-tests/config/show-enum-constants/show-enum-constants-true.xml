@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <enum name="Color" class="scoped" id="8ys5YHCZzogRGq/E/f61InZlmOE=">
+    <base>
+      <type name="int"/>
+    </base>
+    <file short-path="show-enum-constants-true.cpp" source-path="show-enum-constants-true.cpp" line="2" class="def"/>
+    <doc>
+      <brief>
+        <text>A simple enum</text>
+      </brief>
+    </doc>
+    <enum-constant name="Red" initializer="0" id="BBOAF6yhnTvCHkG9Jr5y9fvtD58=">
+      <file short-path="show-enum-constants-true.cpp" source-path="show-enum-constants-true.cpp" line="4"/>
+      <doc>
+        <brief>
+          <text>The color red</text>
+        </brief>
+      </doc>
+    </enum-constant>
+    <enum-constant name="Green" initializer="1" id="Lx0D7a81JkdDRHL9+a9QPTM4Np0=">
+      <file short-path="show-enum-constants-true.cpp" source-path="show-enum-constants-true.cpp" line="6"/>
+      <doc>
+        <brief>
+          <text>The color green</text>
+        </brief>
+      </doc>
+    </enum-constant>
+    <enum-constant name="Blue" initializer="2" id="kd2nnOQJJwznL3PIvdJxDbGUmr4=">
+      <file short-path="show-enum-constants-true.cpp" source-path="show-enum-constants-true.cpp" line="8"/>
+      <doc>
+        <brief>
+          <text>The color blue</text>
+        </brief>
+      </doc>
+    </enum-constant>
+  </enum>
+</namespace>
+</mrdocs>
