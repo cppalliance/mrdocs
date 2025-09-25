@@ -16,8 +16,9 @@
 #include <mrdocs/Version.hpp>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/PrettyStackTrace.h>
-#include <llvm/Support/Signals.h>
 #include <llvm/Support/raw_ostream.h>
+#include <llvm/Support/Signals.h>
+#include <llvm/TargetParser/Host.h>
 #include <cstdlib>
 #include <ranges>
 
@@ -36,16 +37,6 @@ DoGenerateAction(
     ReferenceDirectories const& dirs,
     char const** argv);
 
-void
-print_version(llvm::raw_ostream& os)
-{
-    os << project_name
-       << "\n    " << project_description
-       << "\n    version: " << project_version_with_build
-       << "\n    build: " << project_version_build
-       << "\n    built with LLVM " << LLVM_VERSION_STRING
-       << "\n";
-}
 
 Expected<ReferenceDirectories>
 getReferenceDirectories(std::string const& execPath)
@@ -99,8 +90,28 @@ mrdocs_main(int argc, char const** argv)
     llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
     llvm::setBugReportMsg("PLEASE submit a bug report to https://github.com/cppalliance/mrdocs/issues/ and include the crash backtrace.\n");
 
+    // Set up addons directory
+#ifdef __GNUC__
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wpedantic"
+    // error: ISO C++ forbids taking address of function ‘::main’
+#endif
+    void* addressOfMain = reinterpret_cast<void*>(&main);
+#ifdef __GNUC__
+#    pragma GCC diagnostic pop
+#endif
+    std::string execPath = llvm::sys::fs::
+        getMainExecutable(argv[0], addressOfMain);
+
     // Parse command line options
-    llvm::cl::SetVersionPrinter(&print_version);
+    llvm::cl::SetVersionPrinter([execPath](llvm::raw_ostream& os) {
+        os << project_name << " version " << project_version_with_build << "\n";
+        os << "Built with LLVM " << LLVM_VERSION_STRING << "\n";
+        os << "Build SHA: " << project_version_build << "\n";
+        os << "Target: " << llvm::sys::getDefaultTargetTriple() << "\n";
+        os << "InstalledDir: " << files::getParentDir(execPath) << "\n";
+    });
+
     toolArgs.hideForeignOptions();
     if (!llvm::cl::ParseCommandLineOptions(
         argc, argv, toolArgs.usageText))
@@ -108,17 +119,6 @@ mrdocs_main(int argc, char const** argv)
         return EXIT_FAILURE;
     }
 
-    // Set up addons directory
-#ifdef __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wpedantic"
-// error: ISO C++ forbids taking address of function ‘::main’
-#endif
-    void* addressOfMain = reinterpret_cast<void*>(&main);
-#ifdef __GNUC__
-#pragma GCC diagnostic pop
-#endif
-    std::string execPath = llvm::sys::fs::getMainExecutable(argv[0], addressOfMain);
 
     // Before `DoGenerateAction`, we use an error reporting level.
     // DoGenerateAction will set the level to whatever is specified in
