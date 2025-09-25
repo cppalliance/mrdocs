@@ -1,0 +1,88 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Enums
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#Color[`Color`] 
+| A simple enum
+|===
+
+[#Color]
+== Color
+
+A simple enum
+
+=== Synopsis
+
+Declared in `&lt;show&hyphen;enum&hyphen;constants&hyphen;true&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+enum class Color : int;
+----
+
+=== Members
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#Color-Red[`Red`] 
+| The color red
+| link:#Color-Green[`Green`] 
+| The color green
+| link:#Color-Blue[`Blue`] 
+| The color blue
+|===
+
+[#Color-Red]
+== link:#Color[Color]::Red
+
+The color red
+
+=== Synopsis
+
+Declared in `&lt;show&hyphen;enum&hyphen;constants&hyphen;true&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+Red
+----
+
+[#Color-Green]
+== link:#Color[Color]::Green
+
+The color green
+
+=== Synopsis
+
+Declared in `&lt;show&hyphen;enum&hyphen;constants&hyphen;true&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+Green
+----
+
+[#Color-Blue]
+== link:#Color[Color]::Blue
+
+The color blue
+
+=== Synopsis
+
+Declared in `&lt;show&hyphen;enum&hyphen;constants&hyphen;true&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+Blue
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

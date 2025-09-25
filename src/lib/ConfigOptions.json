@@ -454,6 +454,13 @@
         "default": true
       },
       {
+        "name": "show-enum-constants",
+        "brief": "Show enum constant pages in the documentation",
+        "details": "When set to true, MrDocs creates a page for each enum constant in the documentation.",
+        "type": "bool",
+        "default": false
+      },
+      {
         "name": "global-namespace-index",
         "brief": "Use the global namespace page as an index for all symbols",
         "details": "When set to true, the page for the global namespace will recursively list all symbols in the documentation, not just those in the global namespace. This makes the global namespace page act as an index for the entire project.",

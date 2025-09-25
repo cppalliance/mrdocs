@@ -69,20 +69,7 @@
 {{>symbol/tranche tranche=symbol.members label="" is-namespace=true}}
 {{! Enum members }}
 {{else if (eq symbol.kind "enum")}}
-{{#if symbol.constants}}
-{{#> markup/dynamic-level-h }}Members{{/markup/dynamic-level-h}}
-
-[cols=2]
-|===
-| Name
-| Description
-{{#each (filter_by symbol.constants "isRegular" "isSeeBelow")}}
-|`{{>symbol/name-text .}}`
-|{{> javadoc/inline-brief doc.brief }}
-{{/each}}
-|===
-
-{{/if}}
+{{>symbol/members-table members=symbol.constants title="Members"}}
 {{/if}}
 {{! Friends }}
 {{#if symbol.friends}}

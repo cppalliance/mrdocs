@@ -36,15 +36,14 @@ enum E0;
 
 === Members
 
-
 [cols=2]
 |===
 | Name
 | Description
-|`e0`
-|e0 brief&period;
-|`e1`
-|e1 brief&period;
+| `e0` 
+| e0 brief&period;
+| `e1` 
+| e1 brief&period;
 |===
 
 === Description
@@ -65,15 +64,11 @@ enum E1 : char;
 
 === Members
 
-
-[cols=2]
+[cols=1]
 |===
 | Name
-| Description
-|`e2`
-|
-|`e3`
-|
+| `e2` 
+| `e3` 
 |===
 
 [#E2]
@@ -92,15 +87,14 @@ enum class E2 : int;
 
 === Members
 
-
 [cols=2]
 |===
 | Name
 | Description
-|`e4`
-|e4 brief&period;
-|`e5`
-|e5 brief&period;
+| `e4` 
+| e4 brief&period;
+| `e5` 
+| e5 brief&period;
 |===
 
 === Description
@@ -121,15 +115,11 @@ enum class E3 : char;
 
 === Members
 
-
-[cols=2]
+[cols=1]
 |===
 | Name
-| Description
-|`e6`
-|
-|`e7`
-|
+| `e6` 
+| `e7` 
 |===
 
 

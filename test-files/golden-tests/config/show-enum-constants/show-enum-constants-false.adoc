@@ -1,0 +1,46 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Enums
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#Color[`Color`] 
+| A simple enum
+|===
+
+[#Color]
+== Color
+
+A simple enum
+
+=== Synopsis
+
+Declared in `&lt;show&hyphen;enum&hyphen;constants&hyphen;false&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+enum class Color : int;
+----
+
+=== Members
+
+[cols=2]
+|===
+| Name
+| Description
+| `Red` 
+| The color red
+| `Green` 
+| The color green
+| `Blue` 
+| The color blue
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
