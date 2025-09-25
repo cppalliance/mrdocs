@@ -17,7 +17,7 @@
 namespace clang {
 namespace mrdocs {
 
-std::optional<std::string> 
+Optional<std::string>
 getCompilerVerboseOutput(llvm::StringRef compilerPath) 
 {
     if ( ! llvm::sys::fs::exists(compilerPath))

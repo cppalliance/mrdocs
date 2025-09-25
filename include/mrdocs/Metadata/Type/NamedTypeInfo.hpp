@@ -27,7 +27,7 @@ struct NamedTypeInfo final
 {
     Polymorphic<NameInfo> Name = Polymorphic<NameInfo>(std::in_place_type<IdentifierNameInfo>);
 
-    std::optional<FundamentalTypeKind> FundamentalType;
+    Optional<FundamentalTypeKind> FundamentalType;
 
     std::strong_ordering
     operator<=>(NamedTypeInfo const& other) const;

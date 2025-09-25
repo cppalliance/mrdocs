@@ -56,7 +56,7 @@ struct MRDOCS_DECL
     // Symbol Metadata
 
     /// A brief description of the symbol.
-    std::optional<doc::Brief> brief;
+    Optional<doc::Brief> brief;
 
     /** The list of return type descriptions.
 

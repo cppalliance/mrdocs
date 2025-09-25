@@ -57,10 +57,10 @@ public:
 
     void writeSourceInfo(SourceInfo const& I);
     void writeLocation(Location const& loc, bool def = false);
-    void writeJavadoc(std::optional<Javadoc> const& javadoc);
+    void writeJavadoc(Optional<Javadoc> const& javadoc);
     void writeFriend(FriendInfo const& I);
-    void openTemplate(const std::optional<TemplateInfo>& I);
-    void closeTemplate(const std::optional<TemplateInfo>& I);
+    void openTemplate(Optional<TemplateInfo> const& I);
+    void closeTemplate(Optional<TemplateInfo> const& I);
 
     // ---------------
     // Javadoc types

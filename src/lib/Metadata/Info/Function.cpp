@@ -168,7 +168,7 @@ getSafeOperatorName(
     return full.substr(9);
 }
 
-std::optional<std::string_view>
+Optional<std::string_view>
 getOperatorReadableName(
     OperatorKind const kind,
     int const nParams)

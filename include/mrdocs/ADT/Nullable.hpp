@@ -92,6 +92,7 @@ struct sentinel_traits<std::nullptr_t>
     which corresponds to -1 when converted.
 **/
 template <std::unsigned_integral T>
+requires (!std::same_as<T, bool>)
 struct sentinel_traits<T>
 {
     static constexpr T

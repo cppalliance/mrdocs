@@ -5270,19 +5270,19 @@ to_dom(llvm::json::Value& val)
     }
 
     // val is string
-    std::optional<llvm::StringRef> str_opt = val.getAsString();
+    Optional<llvm::StringRef> str_opt = val.getAsString();
     if (str_opt) {
         return str_opt.value().str();
     }
 
     // val is integer
-    std::optional<std::int64_t> int_opt = val.getAsInteger();
+    Optional<std::int64_t> int_opt = val.getAsInteger();
     if (int_opt) {
         return int_opt.value();
     }
 
     // val is double (convert to string)
-    std::optional<double> num_opt = val.getAsNumber();
+    Optional<double> num_opt = val.getAsNumber();
     if (num_opt) {
         std::string double_str = std::to_string(num_opt.value());
         double_str.erase(double_str.find_last_not_of('0') + 1, std::string::npos);
@@ -5290,7 +5290,7 @@ to_dom(llvm::json::Value& val)
     }
 
     // val is bool
-    std::optional<bool> bool_opt = val.getAsBoolean();
+    Optional<bool> bool_opt = val.getAsBoolean();
     if (bool_opt) {
         return bool_opt.value();
     }

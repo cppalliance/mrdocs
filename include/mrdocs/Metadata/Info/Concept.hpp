@@ -13,6 +13,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
+#include <mrdocs/ADT/Optional.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Info/Source.hpp>
@@ -27,7 +28,7 @@ struct ConceptInfo final
 {
     /** The concepts template parameters
     */
-    std::optional<TemplateInfo> Template;
+    Optional<TemplateInfo> Template;
 
     /** The concepts constraint-expression
     */

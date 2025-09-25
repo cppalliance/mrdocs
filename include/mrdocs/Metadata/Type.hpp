@@ -122,12 +122,12 @@ operator==(
     by a specifier (e.g. "int" in "pointer to int".
 */
 MRDOCS_DECL
-std::optional<std::reference_wrapper<Polymorphic<TypeInfo> const>>
+Optional<std::reference_wrapper<Polymorphic<TypeInfo> const>>
 innerType(TypeInfo const& TI) noexcept;
 
 /// @copydoc innerType(TypeInfo const&)
 MRDOCS_DECL
-std::optional<std::reference_wrapper<Polymorphic<TypeInfo>>>
+Optional<std::reference_wrapper<Polymorphic<TypeInfo>>>
 innerType(TypeInfo& TI) noexcept;
 
 /// @copydoc innerType(TypeInfo const&)

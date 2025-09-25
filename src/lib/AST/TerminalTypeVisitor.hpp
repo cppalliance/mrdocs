@@ -255,7 +255,7 @@ public:
     buildTerminal(
         NestedNameSpecifier,
         IdentifierInfo const*,
-        std::optional<ArrayRef<TemplateArgument>>,
+        Optional<ArrayRef<TemplateArgument>>,
         unsigned,
         bool)
     {
@@ -270,7 +270,7 @@ public:
     buildTerminal(
         NestedNameSpecifier,
         NamedDecl*,
-        std::optional<ArrayRef<TemplateArgument>>,
+        Optional<ArrayRef<TemplateArgument>>,
         unsigned,
         bool)
     {
@@ -616,7 +616,7 @@ private:
         RecordDecl* RD = T->getOriginalDecl()->getDefinitionOrSelf();
         // if this is an instantiation of a class template,
         // create a SpecializationTypeInfo & extract the template arguments
-        std::optional<ArrayRef<TemplateArgument>> TArgs = std::nullopt;
+        Optional<ArrayRef<TemplateArgument>> TArgs = std::nullopt;
         if (auto const* CTSD = dyn_cast<ClassTemplateSpecializationDecl>(RD))
         {
             TArgs = CTSD->getTemplateArgs().asArray();

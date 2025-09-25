@@ -12,6 +12,7 @@
 #define MRDOCS_API_METADATA_EXPRESSION_HPP
 
 #include <mrdocs/Platform.hpp>
+#include <mrdocs/ADT/Optional.hpp>
 #include <concepts>
 #include <optional>
 #include <string>
@@ -44,7 +45,7 @@ struct ConstantExprInfo
         The value of an expression will be unknown
         if it is e.g. dependent on a template parameter
     */
-    std::optional<type> Value;
+    Optional<type> Value;
 
     auto operator<=>(ConstantExprInfo const&) const = default;
 

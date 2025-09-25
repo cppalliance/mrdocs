@@ -83,7 +83,7 @@ merge(TemplateInfo& I, TemplateInfo&& Other);
 
 inline
 auto
-operator<=>(std::optional<TemplateInfo> const& lhs, std::optional<TemplateInfo> const& rhs)
+operator<=>(Optional<TemplateInfo> const& lhs, Optional<TemplateInfo> const& rhs)
 {
     if (!lhs)
     {
@@ -102,7 +102,7 @@ operator<=>(std::optional<TemplateInfo> const& lhs, std::optional<TemplateInfo> 
 
 inline
 bool
-operator==(std::optional<TemplateInfo> const& lhs, std::optional<TemplateInfo> const& rhs)
+operator==(Optional<TemplateInfo> const& lhs, Optional<TemplateInfo> const& rhs)
 {
     return lhs <=> rhs == std::strong_ordering::equal;
 }
@@ -120,7 +120,7 @@ void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
-    std::optional<TemplateInfo> const& I,
+    Optional<TemplateInfo> const& I,
     DomCorpus const* domCorpus)
 {
     if (!I)

@@ -60,7 +60,7 @@ SubstituteConstraintExpressionWithoutSatisfaction(
         }
     }
 
-    std::optional<Sema::CXXThisScopeRAII> ThisScope;
+    Optional<Sema::CXXThisScopeRAII> ThisScope;
 
     // See TreeTransform::RebuildTemplateSpecializationType. A context scope is
     // essential for having an injected class as the canonical type for a template
@@ -69,7 +69,7 @@ SubstituteConstraintExpressionWithoutSatisfaction(
     // template specializations can be profiled to the same value, which makes it
     // possible that e.g. constraints involving C<Class<T>> and C<Class> are
     // perceived identical.
-    std::optional<Sema::ContextRAII> ContextScope;
+    Optional<Sema::ContextRAII> ContextScope;
     if (auto *RD = dyn_cast<CXXRecordDecl>(DeclInfo.getDeclContext()))
     {
         ThisScope.emplace(S, const_cast<CXXRecordDecl *>(RD), Qualifiers());

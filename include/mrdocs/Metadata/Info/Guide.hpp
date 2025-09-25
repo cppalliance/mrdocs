@@ -13,6 +13,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
+#include <mrdocs/ADT/Optional.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Info/Function.hpp>
 #include <mrdocs/Metadata/Info/Source.hpp>
@@ -35,7 +36,7 @@ struct GuideInfo final
 
     /** Template head, if any.
     */
-    std::optional<TemplateInfo> Template;
+    Optional<TemplateInfo> Template;
 
     /** The parameters of the deduction guide.
     */

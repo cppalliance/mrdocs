@@ -569,7 +569,7 @@ writeLocation(
 void
 XMLWriter::
 openTemplate(
-    const std::optional<TemplateInfo>& I)
+    Optional<TemplateInfo> const& I)
 {
     if(! I)
         return;
@@ -591,7 +591,7 @@ openTemplate(
 void
 XMLWriter::
 closeTemplate(
-    const std::optional<TemplateInfo>& I)
+    const Optional<TemplateInfo>& I)
 {
     if(! I)
         return;
@@ -603,7 +603,7 @@ closeTemplate(
 void
 XMLWriter::
 writeJavadoc(
-    std::optional<Javadoc> const& javadoc)
+    Optional<Javadoc> const& javadoc)
 {
     if (!javadoc)
     {

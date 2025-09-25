@@ -13,6 +13,7 @@
 #define MRDOCS_API_METADATA_SPECIFIERS_OPERATORKIND_HPP
 
 #include <mrdocs/Platform.hpp>
+#include <mrdocs/ADT/Optional.hpp>
 #include <mrdocs/Dom/String.hpp>
 #include <string>
 
@@ -196,7 +197,7 @@ getSafeOperatorName(
     @param nParams The number of parameters the operator takes.
     @return The readable name, or nullopt if the operator is not recognized.
  */
-std::optional<std::string_view>
+Optional<std::string_view>
 getOperatorReadableName(
     OperatorKind kind,
     int nParams);

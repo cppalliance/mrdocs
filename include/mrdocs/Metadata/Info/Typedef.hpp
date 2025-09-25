@@ -14,6 +14,7 @@
 #define MRDOCS_API_METADATA_INFO_TYPEDEF_HPP
 
 #include <mrdocs/ADT/Polymorphic.hpp>
+#include <mrdocs/ADT/Optional.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Template.hpp>
@@ -41,7 +42,7 @@ struct TypedefInfo final
       */
     bool IsUsing = false;
 
-    std::optional<TemplateInfo> Template;
+    Optional<TemplateInfo> Template;
 
     //--------------------------------------------
 

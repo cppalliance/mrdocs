@@ -42,7 +42,7 @@ NameInfoBuilder::
 buildTerminal(
     NestedNameSpecifier NNS,
     IdentifierInfo const* II,
-    std::optional<ArrayRef<TemplateArgument>> TArgs,
+    Optional<ArrayRef<TemplateArgument>> TArgs,
     unsigned,
     bool)
 {
@@ -77,7 +77,7 @@ NameInfoBuilder::
 buildTerminal(
     NestedNameSpecifier NNS,
     NamedDecl const* D,
-    std::optional<ArrayRef<TemplateArgument>> const& TArgs,
+    Optional<ArrayRef<TemplateArgument>> const& TArgs,
     unsigned,
     bool)
 {

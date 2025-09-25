@@ -121,7 +121,7 @@ class ASTVisitor
         std::string source_path;
 
         // Whether this file passes the file filters
-        std::optional<bool> passesFilters;
+        Optional<bool> passesFilters;
     };
 
     /*  A map of Clang FileEntry objects to Visitor FileInfo objects
@@ -503,7 +503,7 @@ private:
      */
     bool
     populate(
-        std::optional<Javadoc>& javadoc,
+        Optional<Javadoc>& javadoc,
         Decl const* D);
 
     void
@@ -625,7 +625,7 @@ private:
         std::derived_from<Decl> DeclTy,
         std::derived_from<TemplateDecl> TemplateDeclTy>
     void
-    populate(std::optional<TemplateInfo>& Template, DeclTy const* D, TemplateDeclTy const* VTD)
+    populate(Optional<TemplateInfo>& Template, DeclTy const* D, TemplateDeclTy const* VTD)
     {
         MRDOCS_CHECK_OR(VTD);
         MRDOCS_CHECK_OR(!VTD->isImplicit());
@@ -666,7 +666,7 @@ private:
     populate(Polymorphic<TParam>& I, NamedDecl const* N);
 
     void
-    populate(std::optional<TemplateInfo>& TI, TemplateParameterList const* TPL)
+    populate(Optional<TemplateInfo>& TI, TemplateParameterList const* TPL)
     {
         if (!TI)
         {
@@ -777,14 +777,14 @@ private:
     Polymorphic<NameInfo>
     toNameInfo(
         DeclarationName Name,
-        std::optional<TArgRange> TArgs = std::nullopt,
+        Optional<TArgRange> TArgs = std::nullopt,
         NestedNameSpecifier NNS = std::nullopt);
 
     template <class TArgRange = ArrayRef<TemplateArgument>>
     Polymorphic<NameInfo>
     toNameInfo(
         Decl const* D,
-        std::optional<TArgRange> TArgs = std::nullopt,
+        Optional<TArgRange> TArgs = std::nullopt,
         NestedNameSpecifier NNS = std::nullopt);
 
     Polymorphic<TArg>
@@ -844,11 +844,11 @@ private:
         and the underlying type with the template arguments
         otherwise.
      */
-    std::optional<SFINAEInfo>
+    Optional<SFINAEInfo>
     extractSFINAEInfo(QualType T);
 
     // @copydoc extractSFINAEInfo(QualType)
-    std::optional<SFINAEInfo>
+    Optional<SFINAEInfo>
     extractSFINAEInfo(Type const* T)
     {
         return extractSFINAEInfo(QualType(T, 0));
@@ -894,7 +894,7 @@ private:
         respective to `std::enable_if<B,T>`: `Template` would be `std::enable_if`,
         and `Arguments` would be `{B,T}`.
      */
-    std::optional<SFINAETemplateInfo>
+    Optional<SFINAETemplateInfo>
     getSFINAETemplateInfo(QualType T, bool AllowDependentNames) const;
 
     /* The controlling parameters of a SFINAE template
@@ -935,10 +935,10 @@ private:
        template information of the underlying type
        (such as `typename enable_if<B,T>::type`) will be extract instead.
      */
-    std::optional<SFINAEControlParams>
+    Optional<SFINAEControlParams>
     getSFINAEControlParams(TemplateDecl* TD, IdentifierInfo const* Member);
 
-    std::optional<SFINAEControlParams>
+    Optional<SFINAEControlParams>
     getSFINAEControlParams(SFINAETemplateInfo const& SFINAE) {
         return getSFINAEControlParams(SFINAE.Template, SFINAE.Member);
     }
@@ -953,7 +953,7 @@ private:
         arguments, the function will attempt to get the
         argument from the default template arguments.
      */
-    std::optional<TemplateArgument>
+    Optional<TemplateArgument>
     tryGetTemplateArgument(
         TemplateParameterList* Parameters,
         ArrayRef<TemplateArgument> Arguments,

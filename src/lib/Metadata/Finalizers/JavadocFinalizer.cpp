@@ -1381,7 +1381,7 @@ copyDetails(Javadoc& javadoc)
         }
 
         // Find copydetails command
-        std::optional<doc::CopyDetails> copied;
+        Optional<doc::CopyDetails> copied;
         for (auto textIt = para.children.begin(); textIt != para.children.end();)
         {
             // Find copydoc command

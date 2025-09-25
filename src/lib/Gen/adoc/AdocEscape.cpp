@@ -18,7 +18,7 @@ namespace clang::mrdocs::adoc {
 namespace {
 
 constexpr
-std::optional<std::string_view>
+Optional<std::string_view>
 HTMLNamedEntity(char const c)
 {
     // If c has a named entity, we use it

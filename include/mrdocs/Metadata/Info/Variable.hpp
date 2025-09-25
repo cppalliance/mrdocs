@@ -12,6 +12,7 @@
 #ifndef MRDOCS_API_METADATA_INFO_VARIABLE_HPP
 #define MRDOCS_API_METADATA_INFO_VARIABLE_HPP
 
+#include <mrdocs/ADT/Optional.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
@@ -33,7 +34,7 @@ struct VariableInfo final
     /** The type of the variable */
     Optional<Polymorphic<TypeInfo>> Type = std::nullopt;
 
-    std::optional<TemplateInfo> Template;
+    Optional<TemplateInfo> Template;
 
     /** The default member initializer, if any.
      */

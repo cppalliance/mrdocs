@@ -782,7 +782,7 @@ template <
     class Ptr = std::conditional_t<isMutable, Polymorphic<TypeInfo>*, Polymorphic<TypeInfo> const*>,
     class Ref = std::conditional_t<isMutable, std::reference_wrapper<Polymorphic<TypeInfo>>, std::reference_wrapper<Polymorphic<TypeInfo> const>>>
 requires std::same_as<std::remove_cvref_t<TypeInfoTy>, TypeInfo>
-std::optional<Ref>
+Optional<Ref>
 innerTypeImpl(TypeInfoTy&& TI) noexcept
 {
     // Get a pointer to the inner type
@@ -872,13 +872,13 @@ innermostTypeImpl(PolymorphicTypeInfoTy&& TI) noexcept
 
 }
 
-std::optional<std::reference_wrapper<Polymorphic<TypeInfo> const>>
+Optional<std::reference_wrapper<Polymorphic<TypeInfo> const>>
 innerType(TypeInfo const& TI) noexcept
 {
     return innerTypeImpl(TI);
 }
 
-std::optional<std::reference_wrapper<Polymorphic<TypeInfo>>>
+Optional<std::reference_wrapper<Polymorphic<TypeInfo>>>
 innerType(TypeInfo& TI) noexcept
 {
     return innerTypeImpl(TI);

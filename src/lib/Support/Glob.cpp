@@ -86,7 +86,7 @@ parseCharRange(
 Expected<llvm::SmallVector<std::string, 1>>
 parseBraceExpansions(
     std::string_view str,
-    std::optional<std::size_t> const max)
+    Optional<std::size_t> const max)
 {
     // If there are no brace expansions, return the original string
     // as the only subpattern.
@@ -365,7 +365,7 @@ match(std::string_view str, char const delimiter) const
     std::string_view starStr = str;
 
     // The pattern suffix after the "*" run.
-    std::optional<std::string_view> patternStarSuffix;
+    Optional<std::string_view> patternStarSuffix;
 
     // The saved brackets index for backtracking.
     std::size_t bracketsStarMatchIdx = 0;
@@ -564,7 +564,7 @@ Expected<GlobPattern>
 GlobPattern::
 create(
     std::string_view const pattern,
-    std::optional<std::size_t> maxSubGlobs)
+    Optional<std::size_t> maxSubGlobs)
 {
     if (pattern.empty())
     {

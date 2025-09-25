@@ -11,6 +11,7 @@
 #ifndef MRDOCS_API_SUPPORT_GLOB_HPP
 #define MRDOCS_API_SUPPORT_GLOB_HPP
 
+#include <mrdocs/ADT/Optional.hpp>
 #include <mrdocs/Support/Expected.hpp>
 #include <memory>
 #include <optional>
@@ -45,7 +46,7 @@ public:
      */
     static
     Expected<GlobPattern>
-    create(std::string_view pattern, std::optional<std::size_t> maxSubGlobs);
+    create(std::string_view pattern, Optional<std::size_t> maxSubGlobs);
 
     static
     Expected<GlobPattern>
@@ -138,7 +139,7 @@ public:
     Expected<PathGlobPattern>
     create(
         std::string_view const pattern,
-        std::optional<std::size_t> maxSubGlobs)
+        Optional<std::size_t> maxSubGlobs)
     {
         MRDOCS_TRY(auto glob, GlobPattern::create(pattern, maxSubGlobs));
         return PathGlobPattern{std::move(glob)};
@@ -242,7 +243,7 @@ public:
     Expected<SymbolGlobPattern>
     create(
         std::string_view const pattern,
-        std::optional<std::size_t> maxSubGlobs)
+        Optional<std::size_t> maxSubGlobs)
     {
         MRDOCS_TRY(auto glob, GlobPattern::create(pattern, maxSubGlobs));
         return SymbolGlobPattern{std::move(glob)};

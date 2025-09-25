@@ -134,7 +134,7 @@ buildAuto(
     I.Keyword = toAutoKind(T->getKeyword());
     if(T->isConstrained())
     {
-        std::optional<ArrayRef<TemplateArgument>> TArgs;
+        Optional<ArrayRef<TemplateArgument>> TArgs;
         if(auto Args = T->getTypeConstraintArguments();
             ! Args.empty())
         {
@@ -180,7 +180,7 @@ TypeInfoBuilder::
 buildTerminal(
     NestedNameSpecifier NNS,
     IdentifierInfo const* II,
-    std::optional<ArrayRef<TemplateArgument>> TArgs,
+    Optional<ArrayRef<TemplateArgument>> TArgs,
     unsigned quals,
     bool pack)
 {
@@ -222,7 +222,7 @@ TypeInfoBuilder::
 buildTerminal(
     NestedNameSpecifier NNS,
     NamedDecl* D,
-    std::optional<ArrayRef<TemplateArgument>> TArgs,
+    Optional<ArrayRef<TemplateArgument>> TArgs,
     unsigned quals,
     bool pack)
 {

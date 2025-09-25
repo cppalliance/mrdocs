@@ -73,7 +73,7 @@ class MrDocsFileSystem : public llvm::vfs::FileSystem {
         return matchesPrefixSetImpl(Path, shimParents);
     }
 
-    std::optional<std::pair<std::string_view, std::string_view>>
+    Optional<std::pair<std::string_view, std::string_view>>
     matchShim(llvm::StringRef Path) const
     {
         for (auto const &[K, P]: config_->missingIncludeShims)
