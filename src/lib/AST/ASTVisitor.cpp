@@ -525,7 +525,7 @@ ASTVisitor::
 populate(Info& I, bool const isNew, DeclTy const* D)
 {
     populate(I.javadoc, D);
-    populate(I.asSourceInfo(), D);
+    populate(I.Loc, D);
 
     // All other information is redundant if the symbol is not new
     MRDOCS_CHECK_OR(isNew);
@@ -550,7 +550,7 @@ populate(SourceInfo& I, DeclTy const* D)
     if (Loc.isValid())
     {
         populate(
-            I.asSourceInfo(),
+            I,
             Loc,
             isDefinition(D),
             isDocumented(D));
@@ -3532,7 +3532,7 @@ checkUndocumented(
         // Populate the location
         auto handle = undocumented_.extract(undocIt);
         UndocumentedInfo& UI = handle.value();
-        populate(UI.asSourceInfo(), D);
+        populate(UI.Loc, D);
         undocumented_.insert(std::move(handle));
     }
     return Unexpected(Error("Undocumented"));

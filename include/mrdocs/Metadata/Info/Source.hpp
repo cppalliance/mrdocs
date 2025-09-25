@@ -14,136 +14,20 @@
 #define MRDOCS_API_METADATA_INFO_SOURCE_HPP
 
 #include <mrdocs/Platform.hpp>
+#include <mrdocs/Metadata/Info/Location.hpp>
 #include <mrdocs/ADT/Optional.hpp>
 #include <mrdocs/Dom.hpp>
 #include <string>
 
 namespace clang::mrdocs {
 
-enum class FileKind
-{
-    /// File in the source directory
-    Source,
-    /// File in a system include directory
-    System,
-    /// File outside the source directory
-    Other
-};
-
-MRDOCS_DECL
-std::string_view
-toString(FileKind kind);
-
-inline
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    FileKind kind)
-{
-    v = toString(kind);
-}
-
-struct MRDOCS_DECL
-    Location
-{
-    /** The full file path
-    */
-    std::string FullPath;
-
-    /** The file path relative to one of the search directories
-    */
-    std::string ShortPath;
-
-    /** The file path relative to the source-root directory
-     */
-    std::string SourcePath;
-
-    /** Line number within the file
-    */
-    unsigned LineNumber = 0;
-
-    /** Whether this location has documentation.
-    */
-    bool Documented = false;
-
-    //--------------------------------------------
-
-    constexpr
-    Location(
-        std::string_view const full_path = {},
-        std::string_view const short_path = {},
-        std::string_view const source_path = {},
-        unsigned const line = 0,
-        bool const documented = false)
-        : FullPath(full_path)
-        , ShortPath(short_path)
-        , SourcePath(source_path)
-        , LineNumber(line)
-        , Documented(documented)
-    {
-    }
-
-    auto operator<=>(Location const&) const = default;
-};
-
-MRDOCS_DECL
-void
-tag_invoke(
-    dom::ValueFromTag,
-    dom::Value& v,
-    Location const& loc);
-
-/** nullable_traits specialization for Location.
-
-    Semantics
-    - The “null” (sentinel) state is any Location whose ShortPath is empty.
-    - Creating a null value produces a Location with all fields defaulted
-      and ShortPath empty.
-    - Making an existing value null clears ShortPath and resets the other
-      fields to their defaults.
-
-    Rationale
-    - This mirrors the old LocationEmptyPredicate, which treated an empty
-      ShortPath as “empty/null.”
-**/
-template<>
-struct nullable_traits<Location>
-{
-    static constexpr bool
-    is_null(Location const& v) noexcept
-    {
-        return v.ShortPath.empty();
-    }
-
-    static constexpr Location
-    null() noexcept
-    {
-        return Location{
-            /*full_path*/   {},
-            /*short_path*/  {},
-            /*source_path*/ {},
-            /*line*/        0u,
-            /*documented*/  false
-        };
-    }
-
-    static constexpr void
-    make_null(Location& v) noexcept
-    {
-        v.FullPath.clear();
-        v.ShortPath.clear();    // sentinel condition
-        v.SourcePath.clear();
-        v.LineNumber  = 0;
-        v.Documented  = false;
-    }
-};
-
 /** Stores source information for a declaration.
 */
 struct MRDOCS_DECL
     SourceInfo
 {
+    constexpr SourceInfo() = default;
+
     /** Location where the entity was defined
 
         KRYSTIAN NOTE: this is used for entities which cannot be
@@ -159,22 +43,9 @@ struct MRDOCS_DECL
     */
     std::vector<Location> Loc;
 
-    constexpr SourceInfo const& asSourceInfo() const noexcept
-    {
-        return *this;
-    }
-
-    constexpr SourceInfo& asSourceInfo() noexcept
-    {
-        return *this;
-    }
-
     constexpr virtual ~SourceInfo() = default;
 
     auto operator<=>(SourceInfo const&) const = default;
-
-protected:
-    constexpr SourceInfo() = default;
 };
 
 MRDOCS_DECL

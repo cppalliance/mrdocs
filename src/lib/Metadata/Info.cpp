@@ -41,7 +41,7 @@ void
 merge(Info& I, Info&& Other)
 {
     MRDOCS_ASSERT(I.id);
-    merge(I.asSourceInfo(), std::move(Other.asSourceInfo()));
+    merge(I.Loc, std::move(Other.Loc));
     if (I.Name == "")
     {
         I.Name = Other.Name;

@@ -60,7 +60,7 @@ addMember(OverloadsInfo& I, FunctionInfo const& Member)
             I.ReturnType = std::nullopt;
         }
     }
-    merge(I.asSourceInfo(), Member.asSourceInfo());
+    merge(I.Loc, Member.Loc);
     I.Members.push_back(Member.id);
 }
 

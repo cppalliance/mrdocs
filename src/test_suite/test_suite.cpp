@@ -19,10 +19,12 @@
 
 #ifdef _MSC_VER
 #define WIN32_LEAN_AND_MEAN
+// clang-format off
 #include <windows.h>
 #include <debugapi.h>
 #include <crtdbg.h>
 #include <sstream>
+// clang-format on
 #endif
 
 namespace test_suite {

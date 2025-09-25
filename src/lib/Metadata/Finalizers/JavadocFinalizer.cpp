@@ -1712,7 +1712,7 @@ warnUndocumented()
         bool const prefer_definition = undocI.kind == InfoKind::Record
                                  || undocI.kind == InfoKind::Enum;
         this->warn(
-            *getPrimaryLocation(undocI, prefer_definition),
+            *getPrimaryLocation(undocI.Loc, prefer_definition),
             "{}: Symbol is undocumented", undocI.name);
     }
     corpus_.undocumented_.clear();

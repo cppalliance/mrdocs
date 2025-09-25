@@ -116,18 +116,18 @@ struct InfoPtrEqual
 using InfoSet = std::unordered_set<
     std::unique_ptr<Info>, InfoPtrHasher, InfoPtrEqual>;
 
-struct UndocumentedInfo final : SourceInfo {
+struct UndocumentedInfo final {
     SymbolID id;
     std::string name;
     InfoKind kind;
+    SourceInfo Loc;
 
     constexpr
     UndocumentedInfo(
         SymbolID id_,
         std::string name_,
         InfoKind kind_) noexcept
-        : SourceInfo()
-        , id(id_)
+        : id(id_)
         , name(std::move(name_))
         , kind(kind_)
     {
