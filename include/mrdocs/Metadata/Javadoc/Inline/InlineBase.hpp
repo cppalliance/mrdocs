@@ -10,49 +10,50 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_METADATA_JAVADOC_TEXT_REFERENCE_HPP
-#define MRDOCS_API_METADATA_JAVADOC_TEXT_REFERENCE_HPP
+#ifndef MRDOCS_API_METADATA_JAVADOC_INLINE_INLINEBASE_HPP
+#define MRDOCS_API_METADATA_JAVADOC_INLINE_INLINEBASE_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Info/SymbolID.hpp>
-#include <mrdocs/Metadata/Javadoc/Text/TextBase.hpp>
+#include <mrdocs/Metadata/Javadoc/Node/NodeBase.hpp>
 #include <string>
 
 namespace clang::mrdocs::doc {
 
-/** A reference to a symbol.
+/** A Node containing a string of text.
+
+    There will be no newlines in the text. Otherwise,
+    this would be represented as multiple text nodes
+    within a Paragraph node.
 */
-struct Reference : Text
+struct Inline : Node
 {
-    SymbolID id = SymbolID::invalid;
+    constexpr ~Inline() override = default;
 
-    static constexpr auto static_kind = NodeKind::reference;
-
-    explicit
-    Reference(
-        std::string string_ = std::string()) noexcept
-        : Text(std::move(string_), NodeKind::reference)
+    bool
+    isBlock() const noexcept final
     {
+        return false;
     }
 
-    auto operator<=>(Reference const&) const = default;
-    bool operator==(Reference const&) const noexcept = default;
+    auto operator<=>(Inline const&) const = default;
+    bool operator==(Inline const&) const noexcept = default;
     bool equals(Node const& other) const noexcept override
     {
         return Kind == other.Kind &&
-            *this == dynamic_cast<Reference const&>(other);
+            *this == dynamic_cast<Inline const&>(other);
     }
 
 protected:
-    Reference(
-        std::string string_,
-        NodeKind const kind_) noexcept
-        : Text(std::move(string_), kind_)
+    constexpr Inline() noexcept = default;
+
+    Inline(
+        NodeKind kind_)
+        : Node(kind_)
     {
     }
 };
 
-/** Map the @ref Reference to a @ref dom::Object.
+/** Map the @ref Inline to a @ref dom::Object.
 
     @param t The tag.
     @param io The output object.
@@ -64,21 +65,20 @@ void
 tag_invoke(
     dom::LazyObjectMapTag t,
     IO& io,
-    Reference const& I,
+    Inline const& I,
     DomCorpus const* domCorpus)
 {
-    tag_invoke(t, io, dynamic_cast<Text const&>(I), domCorpus);
-    io.map("symbol", I.id);
+    tag_invoke(t, io, dynamic_cast<Node const&>(I), domCorpus);
 }
 
-/** Return the @ref Reference as a @ref dom::Value object.
+/** Return the @ref Inline as a @ref dom::Value object.
  */
 inline
 void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
-    Reference const& I,
+    Inline const& I,
     DomCorpus const* domCorpus)
 {
     v = dom::LazyObject(I, domCorpus);
@@ -86,4 +86,4 @@ tag_invoke(
 
 } // clang::mrdocs::doc
 
-#endif // MRDOCS_API_METADATA_JAVADOC_TEXT_REFERENCE_HPP
+#endif // MRDOCS_API_METADATA_JAVADOC_INLINE_INLINEBASE_HPP

@@ -65,12 +65,6 @@ struct NameInfo
     constexpr bool isIdentifier()     const noexcept { return Kind == NameKind::Identifier; }
     constexpr bool isSpecialization() const noexcept { return Kind == NameKind::Specialization; }
 
-
-    explicit
-    constexpr
-    NameInfo(NameKind const kind) noexcept
-        : Kind(kind) {}
-
     constexpr virtual ~NameInfo() = default;
 
     std::strong_ordering
@@ -86,6 +80,11 @@ protected:
     constexpr
     NameInfo() noexcept
         : NameInfo(NameKind::Identifier) {};
+
+    explicit
+        constexpr
+        NameInfo(NameKind const kind) noexcept
+        : Kind(kind) {}
 };
 
 MRDOCS_DECL

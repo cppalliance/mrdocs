@@ -59,7 +59,6 @@ struct TypeInfo
      */
     std::vector<ExprInfo> Constraints;
 
-    constexpr virtual ~TypeInfo() = default;
 
     constexpr bool isNamed()           const noexcept { return Kind == TypeKind::Named; }
     constexpr bool isDecltype()        const noexcept { return Kind == TypeKind::Decltype; }
@@ -79,6 +78,8 @@ struct TypeInfo
     auto operator<=>(TypeInfo const&) const = default;
 
 protected:
+    constexpr virtual ~TypeInfo() = default;
+
     constexpr
     TypeInfo(
         TypeKind kind) noexcept

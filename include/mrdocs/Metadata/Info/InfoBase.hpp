@@ -84,26 +84,6 @@ struct MRDOCS_VISIBLE Info
 
     ~Info() override = default;
 
-    Info(Info const& Other) = default;
-
-    /** Move constructor.
-     */
-    Info(Info&& Other) = default;
-
-    /** Construct an Info.
-
-        @param kind The kind of symbol
-        @param ID The unique identifier for this symbol
-    */
-    explicit
-    Info(
-        InfoKind const kind,
-        SymbolID const& ID) noexcept
-        : id(ID)
-        , Kind(kind)
-    {
-    }
-
     #define INFO(Type) constexpr bool is##Type() const noexcept { \
         return Kind == InfoKind::Type; \
     }
@@ -152,8 +132,27 @@ struct MRDOCS_VISIBLE Info
     auto operator<=>(Info const&) const = default;
 
 protected:
-    Info() = default;
+    constexpr Info() = default;
 
+    Info(Info const& Other) = default;
+
+    /** Move constructor.
+     */
+    Info(Info&& Other) = default;
+
+    /** Construct an Info.
+
+        @param kind The kind of symbol
+        @param ID The unique identifier for this symbol
+    */
+    explicit
+        Info(
+            InfoKind const kind,
+            SymbolID const& ID) noexcept
+        : id(ID)
+        , Kind(kind)
+    {
+    }
 };
 
 //------------------------------------------------

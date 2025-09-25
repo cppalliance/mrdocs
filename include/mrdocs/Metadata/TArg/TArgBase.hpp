@@ -36,6 +36,8 @@ struct TArg
     auto operator<=>(TArg const&) const = default;
 
 protected:
+    constexpr TArg() noexcept = default;
+
     constexpr
     TArg(
         TArgKind kind) noexcept

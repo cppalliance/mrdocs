@@ -10,45 +10,45 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_METADATA_JAVADOC_TEXT_HPP
-#define MRDOCS_API_METADATA_JAVADOC_TEXT_HPP
+#ifndef MRDOCS_API_METADATA_JAVADOC_INLINE_HPP
+#define MRDOCS_API_METADATA_JAVADOC_INLINE_HPP
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
-#include <mrdocs/Metadata/Javadoc/Text/CopyDetails.hpp>
-#include <mrdocs/Metadata/Javadoc/Text/Link.hpp>
-#include <mrdocs/Metadata/Javadoc/Text/Reference.hpp>
-#include <mrdocs/Metadata/Javadoc/Text/Style.hpp>
-#include <mrdocs/Metadata/Javadoc/Text/Styled.hpp>
-#include <mrdocs/Metadata/Javadoc/Text/TextBase.hpp>
+#include <mrdocs/Metadata/Javadoc/Inline/CopyDetails.hpp>
+#include <mrdocs/Metadata/Javadoc/Inline/Link.hpp>
+#include <mrdocs/Metadata/Javadoc/Inline/Reference.hpp>
+#include <mrdocs/Metadata/Javadoc/Inline/Style.hpp>
+#include <mrdocs/Metadata/Javadoc/Inline/Styled.hpp>
+#include <mrdocs/Metadata/Javadoc/Inline/Text.hpp>
 #include <mrdocs/Support/Concepts.hpp>
 #include <mrdocs/Support/Visitor.hpp>
 #include <compare>
 
 namespace clang::mrdocs::doc {
 
-/** Visit a text.
+/** Visit an inline.
 
-    @param text The text to visit.
-    @param fn The function to call for each text.
+    @param inline The inline to visit.
+    @param fn The function to call for each inline.
     @param args Additional arguments to pass to the function.
     @return The result of calling the function.
  */
 template<
-    class TextTy,
+    class InlineTy,
     class Fn,
     class... Args>
-    requires std::derived_from<TextTy, Text>
+    requires std::derived_from<InlineTy, Inline>
 decltype(auto)
 visit(
-    TextTy& text,
+    InlineTy& el,
     Fn&& fn,
     Args&&... args)
 {
-    auto visitor = makeVisitor<Text>(
-        text, std::forward<Fn>(fn),
+    auto visitor = makeVisitor<Inline>(
+        el, std::forward<Fn>(fn),
         std::forward<Args>(args)...);
-    switch(text.Kind)
+    switch(el.Kind)
     {
     case NodeKind::link:
         return visitor.template visit<Link>();
@@ -65,36 +65,36 @@ visit(
     }
 }
 
-/** Traverse a list of texts.
+/** Traverse a list of inlines.
 
     @param list The list of texts to traverse.
     @param f The function to call for each text.
     @param args Additional arguments to pass to the function.
  */
 template<class F, class T, class... Args>
-requires std::derived_from<T, Text>
+requires std::derived_from<T, Inline>
 void traverse(
     std::vector<std::unique_ptr<T>> const& list,
     F&& f, Args&&... args)
 {
-    for(auto const& text : list)
-        visit(*text,
+    for(auto const& el : list)
+        visit(*el,
             std::forward<F>(f),
             std::forward<Args>(args)...);
 }
 
-/** Map the Polymorphic Text as a @ref dom::Value object.
+/** Map the Polymorphic Inline as a @ref dom::Value object.
 
     @param io The output parameter to receive the dom::Object.
     @param I The input object.
     @param domCorpus The DOM corpus, or nullptr if not part of a corpus.
  */
-template <class IO, polymorphic_storage_for<Text> TextTy>
+template <class IO, polymorphic_storage_for<Inline> InlineTy>
 void
 tag_invoke(
     dom::ValueFromTag,
     IO& io,
-    TextTy const& I,
+    InlineTy const& I,
     DomCorpus const* domCorpus)
 {
     visit(*I, [&](auto const& U)
@@ -109,14 +109,14 @@ tag_invoke(
 
 MRDOCS_DECL
 std::strong_ordering
-operator<=>(Polymorphic<Text> const& lhs, Polymorphic<Text> const& rhs);
+operator<=>(Polymorphic<Inline> const& lhs, Polymorphic<Inline> const& rhs);
 
 inline
 bool
-operator==(Polymorphic<Text> const& lhs, Polymorphic<Text> const& rhs) {
+operator==(Polymorphic<Inline> const& lhs, Polymorphic<Inline> const& rhs) {
     return std::is_eq(lhs <=> rhs);
 }
 
 } // clang::mrdocs::doc
 
-#endif // MRDOCS_API_METADATA_JAVADOC_TEXT_HPP
+#endif // MRDOCS_API_METADATA_JAVADOC_INLINE_HPP

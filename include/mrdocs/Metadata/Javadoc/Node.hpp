@@ -15,8 +15,8 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Javadoc/Block.hpp>
+#include <mrdocs/Metadata/Javadoc/Inline.hpp>
 #include <mrdocs/Metadata/Javadoc/Node/NodeBase.hpp>
-#include <mrdocs/Metadata/Javadoc/Text.hpp>
 #include <mrdocs/Support/Concepts.hpp>
 #include <mrdocs/Support/Visitor.hpp>
 

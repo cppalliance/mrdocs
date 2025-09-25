@@ -17,8 +17,8 @@
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Dom/LazyObject.hpp>
+#include <mrdocs/Metadata/Javadoc/Inline.hpp>
 #include <mrdocs/Metadata/Javadoc/Node/NodeBase.hpp>
-#include <mrdocs/Metadata/Javadoc/Text.hpp>
 #include <algorithm>
 #include <string>
 
@@ -94,6 +94,9 @@ struct MRDOCS_DECL
     void append(std::vector<Polymorphic<Text>> const& otherChildren);
 
 protected:
+    constexpr
+    Block() = default;
+
     explicit
     Block(
         NodeKind const kind_,

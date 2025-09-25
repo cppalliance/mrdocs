@@ -15,7 +15,7 @@
 #include "ParseJavadoc.hpp"
 #include <lib/AST/ParseRef.hpp>
 #include <mrdocs/Metadata/Javadoc.hpp>
-#include <mrdocs/Metadata/Javadoc/Text/Parts.hpp>
+#include <mrdocs/Metadata/Javadoc/Inline/Parts.hpp>
 #include <mrdocs/Support/Algorithm.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/Path.hpp>
@@ -742,7 +742,7 @@ visitTextComment(
     }
 
     // Only insert non-empty text nodes
-    if(! s.empty())
+    if (!s.empty())
     {
         emplaceText<doc::Text>(
             C->hasTrailingNewline(),
