@@ -580,21 +580,28 @@ populate(
     bool const definition,
     bool const documented)
 {
-    unsigned line = source_.getPresumedLoc(
-        loc, false).getLine();
+    auto presLoc = source_.getPresumedLoc(loc, false);
+    unsigned line = presLoc.getLine();
+    unsigned col = presLoc.getColumn();
     FileInfo* file = findFileInfo(loc);
 
     // No file is not an error, it just typically means it has been generated
     // in the virtual filesystem.
     MRDOCS_CHECK_OR(file);
 
+    Location Loc(file->full_path,
+        file->short_path,
+        file->source_path,
+        line,
+        col,
+        documented);
     if (definition)
     {
         if (I.DefLoc)
         {
             return;
         }
-        I.DefLoc.emplace(file->full_path, file->short_path, file->source_path, line, documented);
+        I.DefLoc = std::move(Loc);
     }
     else
     {
@@ -609,7 +616,7 @@ populate(
         {
             return;
         }
-        I.Loc.emplace_back(file->full_path, file->short_path, file->source_path, line, documented);
+        I.Loc.push_back(std::move(Loc));
     }
 }
 

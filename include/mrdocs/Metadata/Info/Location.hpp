@@ -39,6 +39,10 @@ struct MRDOCS_DECL
     */
     unsigned LineNumber = 0;
 
+    /** Column number within the line
+    */
+    unsigned ColumnNumber = 0;
+
     /** Whether this location has documentation.
     */
     bool Documented = false;
@@ -51,11 +55,13 @@ struct MRDOCS_DECL
         std::string_view const short_path = {},
         std::string_view const source_path = {},
         unsigned const line = 0,
+        unsigned const col = 0,
         bool const documented = false)
         : FullPath(full_path)
         , ShortPath(short_path)
         , SourcePath(source_path)
         , LineNumber(line)
+        , ColumnNumber(col)
         , Documented(documented)
     {
     }
