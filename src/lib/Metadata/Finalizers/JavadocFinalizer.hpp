@@ -71,7 +71,11 @@ class JavadocFinalizer
             {
                 return lhs.FullPath < rhs.FullPath;
             }
-            return lhs.LineNumber > rhs.LineNumber;
+            if (lhs.LineNumber != rhs.LineNumber)
+            {
+                return lhs.LineNumber > rhs.LineNumber;
+            }
+            return lhs.ColumnNumber > rhs.ColumnNumber;
         }
     };
 

@@ -14,6 +14,7 @@
 #include <lib/Metadata/Finalizers/JavadocFinalizer.hpp>
 #include <mrdocs/Support/Algorithm.hpp>
 #include <mrdocs/Support/ScopeExit.hpp>
+#include <mrdocs/Support/Path.hpp>
 #include <algorithm>
 #include <format>
 
@@ -1672,9 +1673,64 @@ checkExists(SymbolID const& id) const
     MRDOCS_ASSERT(corpus_.info_.contains(id));
 }
 
+namespace {
+// Expand tabs to spaces using a tab stop of 8 (common in toolchains)
+inline
+std::string
+expand_tabs(std::string_view s, std::size_t tabw = 8)
+{
+    std::string out;
+    out.reserve(s.size());
+    std::size_t col = 0;
+    for (char ch: s)
+    {
+        if (ch == '\t')
+        {
+            std::size_t spaces = tabw - (col % tabw);
+            out.append(spaces, ' ');
+            col += spaces;
+        } else
+        {
+            out.push_back(ch);
+            // naive column advance;
+            // good enough for ASCII/byte-based columns
+            ++col;
+        }
+    }
+    return out;
+}
+
+// Split into lines; tolerates \n, \r\n, and final line w/o newline
+inline
+std::vector<std::string_view>
+split_lines(std::string const& text)
+{
+    std::vector<std::string_view> lines;
+    std::size_t start = 0;
+    while (start <= text.size())
+    {
+        auto nl = text.find('\n', start);
+        if (nl == std::string::npos)
+        {
+            // last line (may be empty)
+            lines.emplace_back(text.data() + start, text.size() - start);
+            break;
+        }
+        // trim a preceding '\r' if present
+        std::size_t len = nl - start;
+        if (len > 0 && text[nl - 1] == '\r')
+        {
+            --len;
+        }
+        lines.emplace_back(text.data() + start, len);
+        start = nl + 1;
+    }
+    return lines;
+}
+} // namespace
+
 void
-JavadocFinalizer::
-emitWarnings()
+JavadocFinalizer::emitWarnings()
 {
     MRDOCS_CHECK_OR(corpus_.config->warnings);
     warnUndocumented();
@@ -1683,26 +1739,107 @@ emitWarnings()
     warnUndocEnumValues();
     warnUnnamedParams();
 
-    // Print to the console
-    auto const level = !corpus_.config->warnAsError ? report::Level::warn : report::Level::error;
-    for (auto const& [loc, msgs] : warnings_)
+    auto const level = !corpus_.config->warnAsError ?
+                           report::Level::warn :
+                           report::Level::error;
+
+    // Simple cache for the last file we touched
+    std::string_view lastPath;
+    std::string fileContents;
+    std::vector<std::string_view> fileLines;
+
+    for (auto const& [loc, msgs]: warnings_)
     {
-      std::string locWarning =
-          std::format("{}:{}\n", loc.FullPath, loc.LineNumber);
-      int i = 1;
-      for (auto const &msg : msgs) {
-        locWarning += std::format("    {}) {}\n", i++, msg);
-      }
-        report::log(level, locWarning);
+        // Build the location header
+        std::string out;
+        out += std::format("{}:{}:{}:\n", loc.FullPath, loc.LineNumber, loc.ColumnNumber);
+
+        // Append grouped messages for this location
+        {
+            int i = 1;
+            for (auto const& msg: msgs)
+            {
+                out += std::format("    {}) {}\n", i++, msg);
+            }
+        }
+
+        // Render the source snippet if possible
+        // Load file if path changed
+        if (loc.FullPath != lastPath)
+        {
+            lastPath = loc.FullPath;
+            fileContents.clear();
+            fileLines.clear();
+
+            if (auto expFileContents = files::getFileText(loc.FullPath);
+                expFileContents)
+            {
+                fileContents = std::move(*expFileContents);
+                fileLines = split_lines(fileContents);
+            }
+            else
+            {
+                fileLines.clear();
+            }
+        }
+
+        if (loc.LineNumber < fileLines.size() &&
+            loc.LineNumber > 0)
+        {
+            std::string_view rawLine = fileLines[loc.LineNumber - 1];
+            std::size_t caretCol =
+                loc.ColumnNumber < rawLine.size() &&
+                loc.ColumnNumber > 0
+                    ? loc.ColumnNumber - 1
+                    : std::size_t(-1);
+            std::string lineExpanded = expand_tabs(rawLine, 8);
+
+            // Compute width for the line number gutter
+            std::string gutter = std::format("  {} | ", loc.LineNumber);
+            out += gutter;
+
+            // Line text
+            out += lineExpanded;
+            out += "\n";
+
+            // Create gutter for the caret line
+            std::size_t const gutterWidth = gutter.size();
+            gutter = std::string(gutterWidth - 2, ' ') + "| ";
+            out += gutter;
+
+            if (caretCol != std::size_t(-1) && caretCol < rawLine.size())
+            {
+                std::size_t expandedCaretCol = 0;
+                for (std::size_t i = 0; i < caretCol; ++i)
+                {
+                    if (rawLine[i] == '\t')
+                    {
+                        expandedCaretCol += 8;
+                    }
+                    else
+                    {
+                        ++expandedCaretCol;
+                    }
+                }
+                MRDOCS_ASSERT(expandedCaretCol <= lineExpanded.size());
+
+                out += std::string(expandedCaretCol, ' ');
+                out += "^";
+
+                out += std::string(lineExpanded.size() - expandedCaretCol - 1, '~');
+                out += "\n";
+            }
+        }
+
+        report::log(level, out);
     }
 }
 
 void
-JavadocFinalizer::
-warnUndocumented()
+JavadocFinalizer::warnUndocumented()
 {
     MRDOCS_CHECK_OR(corpus_.config->warnIfUndocumented);
-    for (auto& undocI : corpus_.undocumented_)
+    for (auto& undocI: corpus_.undocumented_)
     {
         if (Info const* I = corpus_.find(undocI.id))
         {
@@ -1710,10 +1847,11 @@ warnUndocumented()
                 !I->javadoc || I->Extraction == ExtractionMode::Regular);
         }
         bool const prefer_definition = undocI.kind == InfoKind::Record
-                                 || undocI.kind == InfoKind::Enum;
+                                       || undocI.kind == InfoKind::Enum;
         this->warn(
             *getPrimaryLocation(undocI.Loc, prefer_definition),
-            "{}: Symbol is undocumented", undocI.name);
+            "{}: Symbol is undocumented",
+            undocI.name);
     }
     corpus_.undocumented_.clear();
 }
