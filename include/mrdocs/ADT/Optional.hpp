@@ -15,6 +15,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Nullable.hpp>
+#include <mrdocs/Support/Concepts.hpp>
 #include <compare>
 #include <optional>
 #include <type_traits>
@@ -635,32 +636,6 @@ concept isDerivedFromOptional = requires(T const& t) {
 
 } // namespace detail
 
-
-namespace detail {
-#if defined(__cpp_lib_reference_from_temporary)
-using std::reference_constructs_from_temporary_v;
-using std::reference_converts_from_temporary_v;
-#else
-template<class To, class From>
-concept reference_converts_from_temporary_v =
-    std::is_reference_v<To> &&
-    (
-        (!std::is_reference_v<From> &&
-         std::is_convertible_v<std::remove_cvref_t<From>*,
-                               std::remove_cvref_t<To>*>)
-        ||
-        (std::is_lvalue_reference_v<To> &&
-         std::is_const_v<std::remove_reference_t<To>> &&
-         std::is_convertible_v<From, const std::remove_cvref_t<To>&&> &&
-         !std::is_convertible_v<From, std::remove_cvref_t<To>&>)
-    );
-
-template <class To, class From>
-inline constexpr bool reference_constructs_from_temporary_v
-    = reference_converts_from_temporary_v<To, From>;
-#endif
-} // detail
-
 template <class T>
 class Optional<T&> {
     T* p_ = nullptr;
@@ -668,7 +643,7 @@ class Optional<T&> {
     template <class U>
     static constexpr bool ok_bind_v
         = std::is_constructible_v<T&, U>
-          && !detail::reference_constructs_from_temporary_v<T&, U>;
+          && !reference_constructs_from_temporary_v<T&, U>;
 
 public:
     using value_type = T;

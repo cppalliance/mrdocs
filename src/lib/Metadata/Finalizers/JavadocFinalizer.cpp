@@ -791,9 +791,9 @@ finalize(doc::Reference& ref, bool const emitWarning)
     }
     if (auto resRef = corpus_.lookup(current_context_->id, ref.string))
     {
-        // KRYSTIAN NOTE: we should provide an overload that
+        // KRYSTIAN NOTE: We should provide an overload that
         // returns a non-const reference.
-        auto& res = const_cast<Info&>(resRef->get());
+        auto& res = const_cast<Info&>(*resRef);
         ref.id = res.id;
     }
     else if (

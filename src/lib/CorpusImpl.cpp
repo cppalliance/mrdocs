@@ -374,14 +374,14 @@ isDecayedEqual(
 }
 }
 
-Expected<std::reference_wrapper<Info const>>
+Expected<Info const&>
 CorpusImpl::
 lookup(SymbolID const& context, std::string_view const name) const
 {
     return lookupImpl(*this, context, name);
 }
 
-Expected<std::reference_wrapper<Info const>>
+Expected<Info const&>
 CorpusImpl::
 lookup(SymbolID const& context, std::string_view name)
 {
@@ -389,7 +389,7 @@ lookup(SymbolID const& context, std::string_view name)
 }
 
 template <class Self>
-Expected<std::reference_wrapper<Info const>>
+Expected<Info const&>
 CorpusImpl::
 lookupImpl(Self&& self, SymbolID const& contextId0, std::string_view name)
 {
@@ -412,7 +412,7 @@ lookupImpl(Self&& self, SymbolID const& contextId0, std::string_view name)
                 name,
                 self.Corpus::qualifiedName(*self.find(contextId))));
         }
-        return std::cref(*info);
+        return *info;
     }
     auto const expRef = parse<ParsedRef>(name);
     if (!expRef)
@@ -433,7 +433,7 @@ lookupImpl(Self&& self, SymbolID const& contextId0, std::string_view name)
             name,
             self.Corpus::qualifiedName(*contextPtr)));
     }
-    return std::cref(*res);
+    return *res;
 }
 
 template <class Self>
