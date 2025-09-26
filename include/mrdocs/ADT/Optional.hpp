@@ -52,6 +52,9 @@ inline constexpr bool isOptionalV = false;
 
 template<typename T>
 inline constexpr bool isOptionalV<Optional<T>> = true;
+
+template<typename T>
+inline constexpr bool isOptionalV<Optional<T&>> = true;
 }
 
 /** A compact optional that automatically uses nullable_traits<T> when
@@ -632,6 +635,298 @@ concept isDerivedFromOptional = requires(T const& t) {
 
 } // namespace detail
 
+
+namespace detail {
+#if defined(__cpp_lib_reference_from_temporary)
+using std::reference_constructs_from_temporary_v;
+using std::reference_converts_from_temporary_v;
+#else
+template<class To, class From>
+concept reference_converts_from_temporary_v =
+    std::is_reference_v<To> &&
+    (
+        (!std::is_reference_v<From> &&
+         std::is_convertible_v<std::remove_cvref_t<From>*,
+                               std::remove_cvref_t<To>*>)
+        ||
+        (std::is_lvalue_reference_v<To> &&
+         std::is_const_v<std::remove_reference_t<To>> &&
+         std::is_convertible_v<From, const std::remove_cvref_t<To>&&> &&
+         !std::is_convertible_v<From, std::remove_cvref_t<To>&>)
+    );
+
+template <class To, class From>
+inline constexpr bool reference_constructs_from_temporary_v
+    = reference_converts_from_temporary_v<To, From>;
+#endif
+} // detail
+
+template <class T>
+class Optional<T&> {
+    T* p_ = nullptr;
+
+    template <class U>
+    static constexpr bool ok_bind_v
+        = std::is_constructible_v<T&, U>
+          && !detail::reference_constructs_from_temporary_v<T&, U>;
+
+public:
+    using value_type = T;
+
+    constexpr
+    Optional() noexcept = default;
+
+    constexpr
+    Optional(Optional const&) noexcept = default;
+
+    constexpr
+    Optional(Optional&&) noexcept = default;
+
+    constexpr
+    Optional(std::nullopt_t) noexcept
+        : Optional() {}
+
+    template <class U>
+    requires(
+        !std::is_same_v<std::remove_cvref_t<U>, Optional> &&
+        !std::is_same_v<std::remove_cvref_t<U>, std::in_place_t> &&
+        ok_bind_v<U>)
+    constexpr
+    explicit(!std::is_convertible_v<U, T&>)
+    Optional(U&& u)
+        noexcept(std::is_nothrow_constructible_v<T&, U>)
+    {
+        T& r(static_cast<U&&>(u));
+        p_ = std::addressof(r);
+    }
+
+    template <class U>
+    requires ok_bind_v<U&>
+    constexpr
+    explicit(!std::is_convertible_v<U&, T&>)
+    Optional(Optional<U>& rhs)
+        noexcept(std::is_nothrow_constructible_v<T&, U&>)
+    {
+        if (rhs)
+        {
+            p_ = std::addressof(*rhs);
+        }
+    }
+
+    template <class U>
+    requires ok_bind_v<U const&>
+    constexpr
+    explicit(!std::is_convertible_v<U const&, T&>)
+    Optional(Optional<U> const& rhs)
+        noexcept(std::is_nothrow_constructible_v<T&, U const&>)
+    {
+        if (rhs)
+        {
+            p_ = std::addressof(*rhs);
+        }
+    }
+
+    template <class U>
+    requires ok_bind_v<U&>
+    constexpr
+    Optional(std::optional<U>& o)
+        noexcept(std::is_nothrow_constructible_v<T&, U&>)
+    {
+        if (o)
+        {
+            p_ = std::addressof(*o);
+        }
+    }
+
+    template <class U>
+    requires ok_bind_v<U const&>
+    constexpr
+    Optional(std::optional<U> const& o)
+        noexcept(std::is_nothrow_constructible_v<T&, U const&>)
+    {
+        if (o)
+        {
+            p_ = std::addressof(*o);
+        }
+    }
+
+    constexpr Optional&
+    operator=(Optional const&) noexcept = default;
+
+    constexpr Optional&
+    operator=(Optional&&) noexcept = default;
+
+    constexpr Optional&
+    operator=(std::nullopt_t) noexcept
+    {
+        p_ = nullptr;
+        return *this;
+    }
+
+    template <class U>
+    requires ok_bind_v<U>
+    constexpr Optional&
+    operator=(U&& u)
+        noexcept(std::is_nothrow_constructible_v<T&, U>)
+    {
+        T& r(static_cast<U&&>(u));
+        p_ = std::addressof(r);
+        return *this;
+    }
+
+    template <class U>
+    requires ok_bind_v<U&>
+    constexpr
+    Optional&
+    operator=(Optional<U>& rhs)
+        noexcept(std::is_nothrow_constructible_v<T&, U&>)
+    {
+        p_ = rhs ? std::addressof(*rhs) : nullptr;
+        return *this;
+    }
+
+    template <class U>
+    requires ok_bind_v<U const&>
+    constexpr
+    Optional&
+    operator=(Optional<U> const& rhs)
+        noexcept(std::is_nothrow_constructible_v<T&, U const&>)
+    {
+        p_ = rhs ? std::addressof(*rhs) : nullptr;
+        return *this;
+    }
+
+    template <class U>
+    requires ok_bind_v<U>
+    constexpr
+    Optional&
+    operator=(Optional<U>&& rhs)
+        noexcept(std::is_nothrow_constructible_v<T&, U>)
+    {
+        p_ = rhs ? std::addressof(*rhs) : nullptr;
+        return *this;
+    }
+
+    template <class U>
+    requires ok_bind_v<U>
+    constexpr
+    value_type&
+    emplace(U&& u)
+        noexcept(std::is_nothrow_constructible_v<T&, U>)
+    {
+        T& r(static_cast<U&&>(u));
+        p_ = std::addressof(r);
+        return *p_;
+    }
+
+    static
+    constexpr
+    bool
+    is_inlined() noexcept
+    {
+        return true;
+    }
+
+    constexpr
+    bool
+    has_value() const noexcept
+    {
+        return p_ != nullptr;
+    }
+
+    constexpr
+    explicit
+    operator bool() const noexcept
+    {
+        return has_value();
+    }
+
+    constexpr
+    void
+    reset() noexcept
+    {
+        p_ = nullptr;
+    }
+
+    constexpr
+    value_type*
+    operator->() noexcept
+    {
+        MRDOCS_ASSERT(has_value());
+        return p_;
+    }
+
+    constexpr
+    value_type const*
+    operator->() const noexcept
+    {
+        MRDOCS_ASSERT(has_value());
+        return p_;
+    }
+
+    constexpr
+    value_type&
+    operator*() noexcept
+    {
+        MRDOCS_ASSERT(has_value());
+        return *p_;
+    }
+
+    constexpr
+    value_type const&
+    operator*() const noexcept
+    {
+        MRDOCS_ASSERT(has_value());
+        return *p_;
+    }
+
+    constexpr
+    value_type&
+    value() & noexcept
+    {
+        MRDOCS_ASSERT(has_value());
+        return *p_;
+    }
+
+    constexpr
+    value_type const&
+    value() const& noexcept
+    {
+        MRDOCS_ASSERT(has_value());
+        return *p_;
+    }
+
+    constexpr
+    value_type&
+    value() && noexcept
+    {
+        MRDOCS_ASSERT(has_value());
+        return *p_;
+    }
+
+    constexpr
+    value_type const&
+    value() const&& noexcept
+    {
+        MRDOCS_ASSERT(has_value());
+        return *p_;
+    }
+
+    constexpr void
+    swap(Optional& other) noexcept
+    {
+        using std::swap;
+        swap(p_, other.p_);
+    }
+};
+
+template <class T>
+constexpr void
+swap(Optional<T&>& a, Optional<T&>& b) noexcept
+{
+    a.swap(b);
+}
+
 /** Compares two Optional values for equality.
     Returns true if both are engaged and their contained values are equal, or both are disengaged.
     @return `true` if both optionals are engaged and equal, or both are disengaged; otherwise, `false`.
@@ -893,6 +1188,7 @@ operator<=>(Optional<T> const& x, U const& v)
 {
     return bool(x) ? *x <=> v : std::strong_ordering::less;
 }
+
 } // namespace clang::mrdocs
 
 #endif

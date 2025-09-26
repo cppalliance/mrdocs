@@ -118,16 +118,16 @@ operator==(
 
 /** Return the inner type.
 
-    The inner type is the type which is modified
-    by a specifier (e.g. "int" in "pointer to int".
+    The inner type is the type that is modified
+    by a specifier (e.g. "int" in "pointer to int").
 */
 MRDOCS_DECL
-Optional<std::reference_wrapper<Polymorphic<TypeInfo> const>>
+Optional<Polymorphic<TypeInfo> const&>
 innerType(TypeInfo const& TI) noexcept;
 
 /// @copydoc innerType(TypeInfo const&)
 MRDOCS_DECL
-Optional<std::reference_wrapper<Polymorphic<TypeInfo>>>
+Optional<Polymorphic<TypeInfo>&>
 innerType(TypeInfo& TI) noexcept;
 
 /// @copydoc innerType(TypeInfo const&)

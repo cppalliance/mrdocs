@@ -780,7 +780,7 @@ template <
     class TypeInfoTy,
     bool isMutable = !std::is_const_v<std::remove_reference_t<TypeInfoTy>>,
     class Ptr = std::conditional_t<isMutable, Polymorphic<TypeInfo>*, Polymorphic<TypeInfo> const*>,
-    class Ref = std::conditional_t<isMutable, std::reference_wrapper<Polymorphic<TypeInfo>>, std::reference_wrapper<Polymorphic<TypeInfo> const>>>
+    class Ref = std::conditional_t<isMutable, Polymorphic<TypeInfo>&, Polymorphic<TypeInfo> const&>>
 requires std::same_as<std::remove_cvref_t<TypeInfoTy>, TypeInfo>
 Optional<Ref>
 innerTypeImpl(TypeInfoTy&& TI) noexcept
@@ -827,39 +827,48 @@ innerTypeImpl(TypeInfoTy&& TI) noexcept
 }
 
 // Get a pointer to the inner type
-template <class TypeInfoTy>
-auto
+template <
+    class TypeInfoTy,
+    bool isMutable = !std::is_const_v<std::remove_reference_t<TypeInfoTy>>,
+    class Ptr = std::conditional_t<isMutable, Polymorphic<TypeInfo>*, Polymorphic<TypeInfo> const*>,
+    class Ref = std::conditional_t<isMutable, Polymorphic<TypeInfo>&, Polymorphic<TypeInfo> const&>,
+    class InnerPtr = std::conditional_t<isMutable, TypeInfo*, TypeInfo const*>>
+requires std::same_as<std::remove_cvref_t<TypeInfoTy>, TypeInfo>
+InnerPtr
 innerTypePtrImpl(TypeInfoTy&& TI) noexcept
 {
-    auto res = innerTypeImpl(TI);
+    Optional<Ref> res = innerTypeImpl(TI);
     if (res)
     {
-        auto& ref = res->get();
-        return &*ref;
+        MRDOCS_ASSERT(!res->valueless_after_move());
+        return &**res;
     }
-    return decltype(&*res->get())(nullptr);
+    return nullptr;
 }
 
 // Get the innermost type
 // If there's an internal type, return it
 // If there's no internal type, return the current type
-template <class PolymorphicTypeInfoTy>
+template <
+    class PolymorphicTypeInfoTy,
+    bool isMutable = !std::is_const_v<std::remove_reference_t<PolymorphicTypeInfoTy>>,
+    class Ref = std::conditional_t<isMutable, Polymorphic<TypeInfo>&, Polymorphic<TypeInfo> const&>>
 requires std::same_as<std::remove_cvref_t<PolymorphicTypeInfoTy>, Polymorphic<TypeInfo>>
-auto&
+Ref
 innermostTypeImpl(PolymorphicTypeInfoTy&& TI) noexcept
 {
     if (TI.valueless_after_move())
     {
         return TI;
     }
-    /* optional */ auto inner = innerTypeImpl(*TI);
+    Optional<Ref> inner = innerTypeImpl(*TI);
     if (!inner)
     {
         return TI;
     }
     while (inner)
     {
-        /* polymorphic */ auto& ref = inner->get();
+        Ref ref = *inner;
         if (ref.valueless_after_move() ||
             ref->isNamed())
         {
@@ -867,45 +876,46 @@ innermostTypeImpl(PolymorphicTypeInfoTy&& TI) noexcept
         }
         inner = innerTypeImpl(*ref);
     }
-    return inner->get();
+    Ref ref = *inner;
+    return ref;
 }
 
 }
 
-Optional<std::reference_wrapper<Polymorphic<TypeInfo> const>>
+Optional<Polymorphic<TypeInfo> const&>
 innerType(TypeInfo const& TI) noexcept
 {
-    return innerTypeImpl(TI);
+    return innerTypeImpl<TypeInfo const&>(TI);
 }
 
-Optional<std::reference_wrapper<Polymorphic<TypeInfo>>>
+Optional<Polymorphic<TypeInfo>&>
 innerType(TypeInfo& TI) noexcept
 {
-    return innerTypeImpl(TI);
+    return innerTypeImpl<TypeInfo&>(TI);
 }
 
 TypeInfo const*
 innerTypePtr(TypeInfo const& TI) noexcept
 {
-    return innerTypePtrImpl(TI);
+    return innerTypePtrImpl<TypeInfo const&>(TI);
 }
 
 TypeInfo*
 innerTypePtr(TypeInfo& TI) noexcept
 {
-    return innerTypePtrImpl(TI);
+    return innerTypePtrImpl<TypeInfo&>(TI);
 }
 
 Polymorphic<TypeInfo> const&
 innermostType(Polymorphic<TypeInfo> const& TI) noexcept
 {
-    return innermostTypeImpl(TI);
+    return innermostTypeImpl<Polymorphic<TypeInfo> const&>(TI);
 }
 
 Polymorphic<TypeInfo>&
 innermostType(Polymorphic<TypeInfo>& TI) noexcept
 {
-    return innermostTypeImpl(TI);
+    return innermostTypeImpl<Polymorphic<TypeInfo>&>(TI);
 }
 
 } // clang::mrdocs

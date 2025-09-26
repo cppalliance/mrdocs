@@ -199,6 +199,14 @@ isDecayedEqualImpl(
     Info const& context,
     CorpusImpl const& corpus);
 
+// Check if two types are equal after decay
+//
+// The isInner template parameter indicates if
+// we are comparing inner types (e.g., pointee types)
+// or root types (e.g., function parameter types) because
+// the rules are slightly different depending
+// on the level of the type specifiers.
+//
 template <bool isInner>
 bool
 isDecayedEqualImpl(
@@ -225,7 +233,7 @@ isDecayedEqualImpl(
     MRDOCS_CHECK_OR(lhs->IsPackExpansion == rhs->IsPackExpansion, false);
     if constexpr (isInner)
     {
-        // const and volative are ignored from root types
+        // const and volatile are ignored from root types
         // in function parameters
         MRDOCS_CHECK_OR(lhs->IsConst == rhs->IsConst, false);
         MRDOCS_CHECK_OR(lhs->IsVolatile == rhs->IsVolatile, false);
@@ -301,9 +309,12 @@ isDecayedEqualImpl(
     {
         auto const I1 = innerType(*lhs);
         auto const I2 = innerType(*rhs);
+        // Both inner types must be present or absent, otherwise not equal
         MRDOCS_CHECK_OR(static_cast<bool>(I1) == static_cast<bool>(I2), false);
+        // Both inner types are absent: they are equal
         MRDOCS_CHECK_OR(static_cast<bool>(I1) && static_cast<bool>(I2), true);
-        return isDecayedEqualImpl<true>(I1->get(), I2->get(), context, corpus);
+        // Both inner types are present: compare them internally
+        return isDecayedEqualImpl<true>(*I1, *I2, context, corpus);
     }
     default:
         MRDOCS_UNREACHABLE();

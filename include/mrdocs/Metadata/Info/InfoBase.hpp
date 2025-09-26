@@ -31,21 +31,21 @@ namespace clang::mrdocs {
 */
 struct MRDOCS_VISIBLE Info
 {
+    /** The unqualified name.
+     */
+    std::string Name;
+
     /** The source location information.
      */
     SourceInfo Loc;
 
-    /** The unique identifier for this symbol.
-    */
-    SymbolID id;
-
-    /** The unqualified name.
-    */
-    std::string Name;
-
     /** Kind of declaration.
     */
     InfoKind Kind = InfoKind::None;
+
+    /** The unique identifier for this symbol.
+     */
+    SymbolID id;
 
     /** Declaration access.
 
@@ -152,8 +152,8 @@ protected:
         Info(
             InfoKind const kind,
             SymbolID const& ID) noexcept
-        : id(ID)
-        , Kind(kind)
+        : Kind(kind)
+        , id(ID)
     {
     }
 };

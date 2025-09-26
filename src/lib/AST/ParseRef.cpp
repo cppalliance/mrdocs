@@ -1550,15 +1550,15 @@ private:
             // For instance, in "int (*)[3][6]", we have a pointer to an
             // array of 3 arrays of 6 ints.
             std::size_t curSuffixLevel = suffixLevel;
-            while (curSuffixLevel > 0 && inner && !inner->get().valueless_after_move())
+            while (curSuffixLevel > 0 && inner && !inner->valueless_after_move())
             {
-                auto& ref = inner->get();
+                auto& ref = *inner;
                 inner = innerType(*ref);
                 --curSuffixLevel;
             }
             char const* parenStart = ptr_;
             if (!parseArrayOrFunctionDeclaratorSuffix<declarator_type>(
-                inner ? inner->get() : dest))
+                inner ? *inner : dest))
             {
                 setError(parenStart, "expected declarator");
                 ptr_ = start;
