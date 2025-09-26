@@ -14,6 +14,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/Concepts.hpp>
 #include <mrdocs/Support/source_location.hpp>
 #include <exception>
 #include <functional>
@@ -125,13 +126,13 @@ namespace detail
     constexpr bool isUnexpected<Unexpected<T>> = true;
 
     template <class Fn, class T>
-    using then_result = std::remove_cvref_t<std::invoke_result_t<Fn&&, T&&>>;
+    using ThenResult = std::remove_cvref_t<std::invoke_result_t<Fn&&, T&&>>;
     template <class Fn, class T>
-    using result_transform = std::remove_cv_t<std::invoke_result_t<Fn&&, T&&>>;
+    using ResultTransform = std::remove_cv_t<std::invoke_result_t<Fn&&, T&&>>;
     template <class Fn>
     using result0 = std::remove_cvref_t<std::invoke_result_t<Fn&&>>;
     template <class Fn>
-    using result0_xform = std::remove_cv_t<std::invoke_result_t<Fn&&>>;
+    using result0Transform = std::remove_cv_t<std::invoke_result_t<Fn&&>>;
 
     template <class E>
     concept can_beUnexpected =
@@ -144,6 +145,11 @@ namespace detail
     // Tag types for in-place construction from an invocation result.
     struct in_place_inv { };
     struct unexpect_inv { };
+
+    template <class R, class U>
+    inline constexpr bool ok_bind_ref_v
+        = std::is_constructible_v<R, U>
+          && !reference_constructs_from_temporary_v<R, U>;
 }
 
 template <class E>
@@ -477,7 +483,7 @@ class Expected
 
     template <class U>
     static constexpr bool same_err
-      = std::is_same_v<class U::error_type, E>;
+      = std::is_same_v<typename U::error_type, E>;
 
     template <class, class> friend class Expected;
 
@@ -1091,9 +1097,9 @@ public:
     auto
     and_then(Fn&& f) &
     {
-        using U = detail::then_result<Fn, T&>;
+        using U = detail::ThenResult<Fn, T&>;
         static_assert(detail::isExpected<U>);
-        static_assert(std::is_same_v<class U::error_type, E>);
+        static_assert(std::is_same_v<typename U::error_type, E>);
 
         if (has_value())
         {
@@ -1111,9 +1117,9 @@ public:
     auto
     and_then(Fn&& f) const &
     {
-        using U = detail::then_result<Fn, T const&>;
+        using U = detail::ThenResult<Fn, T const&>;
         static_assert(detail::isExpected<U>);
-        static_assert(std::is_same_v<class U::error_type, E>);
+        static_assert(std::is_same_v<typename U::error_type, E>);
 
         if (has_value())
         {
@@ -1131,9 +1137,9 @@ public:
     auto
     and_then(Fn&& f) &&
     {
-        using U = detail::then_result<Fn, T&&>;
+        using U = detail::ThenResult<Fn, T&&>;
         static_assert(detail::isExpected<U>);
-        static_assert(std::is_same_v<class U::error_type, E>);
+        static_assert(std::is_same_v<typename U::error_type, E>);
 
         if (has_value())
         {
@@ -1152,9 +1158,9 @@ public:
     auto
     and_then(Fn&& f) const &&
     {
-        using U = detail::then_result<Fn, T const&&>;
+        using U = detail::ThenResult<Fn, T const&&>;
         static_assert(detail::isExpected<U>);
-        static_assert(std::is_same_v<class U::error_type, E>);
+        static_assert(std::is_same_v<typename U::error_type, E>);
 
         if (has_value())
         {
@@ -1172,9 +1178,9 @@ public:
     auto
     or_else(Fn&& f) &
     {
-        using G = detail::then_result<Fn, E&>;
+        using G = detail::ThenResult<Fn, E&>;
         static_assert(detail::isExpected<G>);
-        static_assert(std::is_same_v<class G::value_type, T>);
+        static_assert(std::is_same_v<typename G::value_type, T>);
 
         if (has_value())
         {
@@ -1192,9 +1198,9 @@ public:
     auto
     or_else(Fn&& f) const &
     {
-        using G = detail::then_result<Fn, E const&>;
+        using G = detail::ThenResult<Fn, E const&>;
         static_assert(detail::isExpected<G>);
-        static_assert(std::is_same_v<class G::value_type, T>);
+        static_assert(std::is_same_v<typename G::value_type, T>);
 
         if (has_value())
         {
@@ -1212,9 +1218,9 @@ public:
     auto
     or_else(Fn&& f) &&
     {
-      using G = detail::then_result<Fn, E&&>;
+      using G = detail::ThenResult<Fn, E&&>;
       static_assert(detail::isExpected<G>);
-      static_assert(std::is_same_v<class G::value_type, T>);
+      static_assert(std::is_same_v<typename G::value_type, T>);
 
       if (has_value())
       {
@@ -1232,9 +1238,9 @@ public:
     auto
     or_else(Fn&& f) const &&
     {
-        using G = detail::then_result<Fn, E const&&>;
+        using G = detail::ThenResult<Fn, E const&&>;
         static_assert(detail::isExpected<G>);
-        static_assert(std::is_same_v<class G::value_type, T>);
+        static_assert(std::is_same_v<typename G::value_type, T>);
 
         if (has_value())
         {
@@ -1252,7 +1258,7 @@ public:
     auto
     transform(Fn&& f) &
     {
-        using U = detail::result_transform<Fn, T&>;
+        using U = detail::ResultTransform<Fn, T&>;
         using Res = Expected<U, E>;
 
         if (has_value())
@@ -1274,7 +1280,7 @@ public:
     auto
     transform(Fn&& f) const &
     {
-        using U = detail::result_transform<Fn, T const&>;
+        using U = detail::ResultTransform<Fn, T const&>;
         using Res = Expected<U, E>;
 
         if (has_value())
@@ -1296,7 +1302,7 @@ public:
     auto
     transform(Fn&& f) &&
     {
-        using U = detail::result_transform<Fn, T>;
+        using U = detail::ResultTransform<Fn, T>;
         using Res = Expected<U, E>;
 
         if (has_value())
@@ -1318,7 +1324,7 @@ public:
     auto
     transform(Fn&& f) const &&
     {
-        using U = detail::result_transform<Fn, const T>;
+        using U = detail::ResultTransform<Fn, const T>;
         using Res = Expected<U, E>;
 
         if (has_value())
@@ -1340,7 +1346,7 @@ public:
     auto
     transform_error(Fn&& f) &
     {
-        using G = detail::result_transform<Fn, E&>;
+        using G = detail::ResultTransform<Fn, E&>;
         using Res = Expected<T, G>;
 
         if (has_value())
@@ -1362,7 +1368,7 @@ public:
     auto
     transform_error(Fn&& f) const &
     {
-        using G = detail::result_transform<Fn, E const&>;
+        using G = detail::ResultTransform<Fn, E const&>;
         using Res = Expected<T, G>;
 
         if (has_value())
@@ -1384,7 +1390,7 @@ public:
     auto
     transform_error(Fn&& f) &&
     {
-        using G = detail::result_transform<Fn, E&&>;
+        using G = detail::ResultTransform<Fn, E&&>;
         using Res = Expected<T, G>;
 
         if (has_value())
@@ -1406,7 +1412,7 @@ public:
     auto
     transform_error(Fn&& f) const &&
     {
-        using G = detail::result_transform<Fn, E const&&>;
+        using G = detail::ResultTransform<Fn, E const&&>;
         using Res = Expected<T, G>;
 
         if (has_value())
@@ -1576,7 +1582,7 @@ class Expected<T, E>
 
     template <class U>
     static constexpr bool same_err
-      = std::is_same_v<class U::error_type, E>;
+      = std::is_same_v<typename U::error_type, E>;
 
     template <class, class> friend class Expected;
 
@@ -1951,7 +1957,7 @@ public:
     {
         using U = detail::result0<Fn>;
         static_assert(detail::isExpected<U>);
-        static_assert(std::is_same_v<class U::error_type, E>);
+        static_assert(std::is_same_v<typename U::error_type, E>);
 
         if (has_value())
         {
@@ -1971,7 +1977,7 @@ public:
     {
         using U = detail::result0<Fn>;
         static_assert(detail::isExpected<U>);
-        static_assert(std::is_same_v<class U::error_type, E>);
+        static_assert(std::is_same_v<typename U::error_type, E>);
 
         if (has_value())
         {
@@ -1991,7 +1997,7 @@ public:
     {
       using U = detail::result0<Fn>;
       static_assert(detail::isExpected<U>);
-      static_assert(std::is_same_v<class U::error_type, E>);
+      static_assert(std::is_same_v<typename U::error_type, E>);
 
       if (has_value())
       {
@@ -2011,7 +2017,7 @@ public:
     {
         using U = detail::result0<Fn>;
         static_assert(detail::isExpected<U>);
-        static_assert(std::is_same_v<class U::error_type, E>);
+        static_assert(std::is_same_v<typename U::error_type, E>);
 
         if (has_value())
         {
@@ -2028,9 +2034,9 @@ public:
     auto
     or_else(Fn&& f) &
     {
-        using G = detail::then_result<Fn, E&>;
+        using G = detail::ThenResult<Fn, E&>;
         static_assert(detail::isExpected<G>);
-        static_assert(std::is_same_v<class G::value_type, T>);
+        static_assert(std::is_same_v<typename G::value_type, T>);
 
         if (has_value())
         {
@@ -2047,9 +2053,9 @@ public:
     auto
     or_else(Fn&& f) const &
     {
-        using G = detail::then_result<Fn, E const&>;
+        using G = detail::ThenResult<Fn, E const&>;
         static_assert(detail::isExpected<G>);
-        static_assert(std::is_same_v<class G::value_type, T>);
+        static_assert(std::is_same_v<typename G::value_type, T>);
 
         if (has_value())
         {
@@ -2066,9 +2072,9 @@ public:
     auto
     or_else(Fn&& f) &&
     {
-        using G = detail::then_result<Fn, E&&>;
+        using G = detail::ThenResult<Fn, E&&>;
         static_assert(detail::isExpected<G>);
-        static_assert(std::is_same_v<class G::value_type, T>);
+        static_assert(std::is_same_v<typename G::value_type, T>);
 
         if (has_value())
         {
@@ -2085,9 +2091,9 @@ public:
     auto
     or_else(Fn&& f) const&&
     {
-        using G = detail::then_result<Fn, E const&&>;
+        using G = detail::ThenResult<Fn, E const&&>;
         static_assert(detail::isExpected<G>);
-        static_assert(std::is_same_v<class G::value_type, T>);
+        static_assert(std::is_same_v<typename G::value_type, T>);
 
         if (has_value())
         {
@@ -2105,7 +2111,7 @@ public:
     auto
     transform(Fn&& f) &
     {
-        using U = detail::result0_xform<Fn>;
+        using U = detail::result0Transform<Fn>;
         using Res = Expected<U, E>;
 
         if (has_value())
@@ -2124,7 +2130,7 @@ public:
     auto
     transform(Fn&& f) const &
     {
-        using U = detail::result0_xform<Fn>;
+        using U = detail::result0Transform<Fn>;
         using Res = Expected<U, E>;
 
         if (has_value())
@@ -2143,7 +2149,7 @@ public:
     auto
     transform(Fn&& f) &&
     {
-        using U = detail::result0_xform<Fn>;
+        using U = detail::result0Transform<Fn>;
         using Res = Expected<U, E>;
 
         if (has_value())
@@ -2162,7 +2168,7 @@ public:
     auto
     transform(Fn&& f) const &&
     {
-        using U = detail::result0_xform<Fn>;
+        using U = detail::result0Transform<Fn>;
         using Res = Expected<U, E>;
 
         if (has_value())
@@ -2180,7 +2186,7 @@ public:
     auto
     transform_error(Fn&& f) &
     {
-        using G = detail::result_transform<Fn, E&>;
+        using G = detail::ResultTransform<Fn, E&>;
         using Res = Expected<T, G>;
 
         if (has_value())
@@ -2201,7 +2207,7 @@ public:
     auto
     transform_error(Fn&& f) const &
     {
-        using G = detail::result_transform<Fn, E const&>;
+        using G = detail::ResultTransform<Fn, E const&>;
         using Res = Expected<T, G>;
 
         if (has_value())
@@ -2222,7 +2228,7 @@ public:
     auto
     transform_error(Fn&& f) &&
     {
-        using G = detail::result_transform<Fn, E&&>;
+        using G = detail::ResultTransform<Fn, E&&>;
         using Res = Expected<T, G>;
 
         if (has_value())
@@ -2243,7 +2249,7 @@ public:
     auto
     transform_error(Fn&& f) const &&
     {
-        using G = detail::result_transform<Fn, E const&&>;
+        using G = detail::ResultTransform<Fn, E const&&>;
         using Res = Expected<T, G>;
 
         if (has_value())
@@ -2335,6 +2341,939 @@ private:
         , has_value_(false)
     { }
 };
+
+template <class T, class E>
+class Expected<T&, E> {
+    static_assert(detail::can_beUnexpected<E>);
+
+    // Storage: either a bound pointer to T, or an error E.
+    union {
+        T* p_;
+        E unex_;
+    };
+    bool has_value_ = false;
+
+    // Short aliases
+    using R = T&;
+    template <class U>
+    static constexpr bool ok_bind_v = detail::ok_bind_ref_v<R, U>;
+
+public:
+    using value_type = T&;
+    using error_type = E;
+    using unexpected_type = Unexpected<E>;
+
+    template <class U>
+    using rebind = Expected<U, error_type>;
+
+    // ----------------------------------
+    // ctors
+    // ----------------------------------
+
+    // Disengaged by default
+    constexpr
+    Expected() noexcept
+        : p_(nullptr), has_value_(false) {}
+
+    // Success from lvalue: bind
+    template <class U>
+    requires(!std::is_same_v<std::remove_cvref_t<U>, Expected>
+             && !std::is_same_v<std::remove_cvref_t<U>, std::in_place_t>
+             && !detail::isUnexpected<std::remove_cvref_t<U>> && ok_bind_v<U&>)
+    constexpr
+    explicit(!std::is_convertible_v<U&, R>)
+        Expected(U& u) noexcept(std::is_nothrow_constructible_v<R, U&>)
+        : p_(std::addressof(static_cast<R>(u)))
+        , has_value_(true)
+    {}
+
+    // Deleted when binding would be from a temporary / disallowed
+    template <class U>
+    requires(!std::is_same_v<std::remove_cvref_t<U>, Expected>
+             && !std::is_same_v<std::remove_cvref_t<U>, std::in_place_t>
+             && !detail::isUnexpected<std::remove_cvref_t<U>>
+             && !ok_bind_v<U &&>)
+    constexpr
+    Expected(U&&) = delete;
+
+    // In-place: bind to an lvalue argument
+    template <class U>
+    requires ok_bind_v<U&>
+    constexpr
+    explicit
+    Expected(std::in_place_t, U& u) noexcept
+        : p_(std::addressof(static_cast<R>(u)))
+        , has_value_(true)
+    {}
+
+    // In-place via invocation result (mirrors your in_place_inv)
+    template <class Fn>
+    explicit
+    constexpr
+    Expected(detail::in_place_inv, Fn&& fn)
+    {
+        // Expect fn() to yield something bindable to R (i.e. an lvalue of T)
+        auto&& r = std::forward<Fn>(fn)();
+        static_assert(ok_bind_v<decltype(r)>);
+        p_ = std::addressof(static_cast<R>(r));
+        has_value_ = true;
+    }
+
+    // Error ctors (same rules as primary)
+    template <class G = E>
+    requires std::is_constructible_v<E, G const&>
+    constexpr
+    explicit(!std::is_convertible_v<G const&, E>)
+    Expected(Unexpected<G> const& u)
+        noexcept(std::is_nothrow_constructible_v<E, G const&>)
+        : unex_(u.error())
+        , has_value_(false)
+    {}
+
+    template <class G = E>
+    requires std::is_constructible_v<E, G>
+    constexpr
+    explicit(!std::is_convertible_v<G, E>)
+    Expected(Unexpected<G>&& u)
+        noexcept(std::is_nothrow_constructible_v<E, G>)
+        : unex_(std::move(u).error())
+        , has_value_(false)
+    {}
+
+    // Error via invocation-result (mirrors your unexpect_inv)
+    template <class Fn>
+    explicit
+    constexpr
+    Expected(detail::unexpect_inv, Fn&& fn)
+        : unex_(std::forward<Fn>(fn)())
+        , has_value_(false)
+    {}
+
+    // Converting ctors from other Expected -----------------------
+
+    // From Expected<U&, E>: safe to bind for any value category
+    template <class U>
+    requires detail::ok_bind_ref_v<R, U&>
+    constexpr
+    explicit(!std::is_convertible_v<U&, R>)
+    Expected(Expected<U&, E> const& other)
+        noexcept(std::is_nothrow_constructible_v<R, U&>
+            && std::is_nothrow_copy_constructible_v<E>)
+        : has_value_(other.has_value_)
+    {
+        if (has_value_)
+        {
+            p_ = std::addressof(static_cast<U&>(other.value()));
+        } else
+        {
+            std::construct_at(std::addressof(unex_), other.error());
+        }
+    }
+
+    template <class U>
+    requires detail::ok_bind_ref_v<R, U&>
+    constexpr
+    explicit(!std::is_convertible_v<U&, R>)
+    Expected(Expected<U&, E>&& other)
+        noexcept(std::is_nothrow_constructible_v<R, U&>
+            && std::is_nothrow_move_constructible_v<E>)
+        : has_value_(other.has_value_)
+    {
+        if (has_value_)
+        {
+            p_ = std::addressof(static_cast<U&>(other.value()));
+        } else
+        {
+            std::construct_at(std::addressof(unex_), std::move(other).error());
+        }
+    }
+
+    // From Expected<U, E> (non-ref): only from lvalue object; forbid rvalue
+    template <class U>
+    requires detail::ok_bind_ref_v<R, U&>
+    constexpr
+    explicit(!std::is_convertible_v<U&, R>)
+    Expected(Expected<U, E>& other)
+        noexcept(std::is_nothrow_constructible_v<R, U&>
+            && std::is_nothrow_copy_constructible_v<E>)
+        : has_value_(other.has_value())
+    {
+        if (has_value_)
+        {
+            p_ = std::addressof(other.value());
+        } else
+        {
+            std::construct_at(std::addressof(unex_), other.error());
+        }
+    }
+
+    template <class U>
+    constexpr
+    Expected(Expected<U, E>&&) = delete; // would dangle
+
+    // Copy/move/dtor
+    constexpr
+    Expected(Expected const&) = default;
+
+    constexpr
+    Expected(Expected&&) = default;
+
+    template <class... Args>
+    requires std::is_constructible_v<E, Args...>
+    constexpr
+    explicit
+    Expected(unexpect_t, Args&&... args)
+        noexcept(std::is_nothrow_constructible_v<E, Args...>)
+        : unex_(std::forward<Args>(args)...)
+        , has_value_(false)
+    {}
+
+    template <class U, class... Args>
+    requires std::is_constructible_v<E, std::initializer_list<U>&, Args...>
+    constexpr
+    explicit
+    Expected(unexpect_t, std::initializer_list<U> il, Args&&... args)
+        noexcept(std::is_nothrow_constructible_v<E, std::initializer_list<U>&, Args...>)
+        : unex_(il, std::forward<Args>(args)...)
+        , has_value_(false)
+    {}
+
+    constexpr
+    ~Expected()
+    {
+        if (!has_value_)
+        {
+            std::destroy_at(std::addressof(unex_));
+        }
+    }
+
+    // ----------------------------------
+    // assignment (always rebind)
+    // ----------------------------------
+
+    constexpr
+    Expected&
+    operator=(Expected const&) = default;
+
+    constexpr
+    Expected&
+    operator=(Expected&&) = default;
+
+    // Assign from lvalue -> rebind
+    template <class U>
+    requires ok_bind_v<U&>
+    constexpr
+    Expected&
+    operator=(U& u)
+        noexcept(std::is_nothrow_constructible_v<R, U&>)
+    {
+        if (!has_value_)
+        {
+            std::destroy_at(std::addressof(unex_));
+            has_value_ = true;
+        }
+        p_ = std::addressof(static_cast<R>(u));
+        return *this;
+    }
+
+    // Deleted for temporaries
+    template <class U>
+    requires(!ok_bind_v<U &&>)
+    constexpr
+    Expected&
+    operator=(U&&) = delete;
+
+    // Assign from Expected<U&,E> -> rebind or store error
+    template <class U>
+    requires detail::ok_bind_ref_v<R, U&>
+    constexpr
+    Expected&
+    operator=(Expected<U&, E> const& other)
+    {
+        if (other.has_value())
+        {
+            if (!has_value_)
+            {
+                std::destroy_at(std::addressof(unex_));
+                has_value_ = true;
+            }
+            p_ = std::addressof(static_cast<U&>(other.value()));
+        } else
+        {
+            if (has_value_)
+            {
+                std::construct_at(std::addressof(unex_), other.error());
+                has_value_ = false;
+            } else
+            {
+                unex_ = other.error();
+            }
+        }
+        return *this;
+    }
+
+    template <class U>
+    requires detail::ok_bind_ref_v<R, U&>
+    constexpr
+    Expected&
+    operator=(Expected<U&, E>&& other)
+    {
+        if (other.has_value())
+        {
+            if (!has_value_)
+            {
+                std::destroy_at(std::addressof(unex_));
+                has_value_ = true;
+            }
+            p_ = std::addressof(static_cast<U&>(other.value()));
+        } else
+        {
+            if (has_value_)
+            {
+                std::construct_at(
+                    std::addressof(unex_),
+                    std::move(other).error());
+                has_value_ = false;
+            } else
+            {
+                unex_ = std::move(other).error();
+            }
+        }
+        return *this;
+    }
+
+    // Assign from Expected<U,E> lvalue only (non-ref). Rvalue deleted to avoid
+    // dangling.
+    template <class U>
+    requires detail::ok_bind_ref_v<R, U&>
+    constexpr
+    Expected&
+    operator=(Expected<U, E>& other)
+    {
+        if (other.has_value())
+        {
+            if (!has_value_)
+            {
+                std::destroy_at(std::addressof(unex_));
+                has_value_ = true;
+            }
+            p_ = std::addressof(other.value());
+        } else
+        {
+            if (has_value_)
+            {
+                std::construct_at(std::addressof(unex_), other.error());
+                has_value_ = false;
+            } else
+            {
+                unex_ = other.error();
+            }
+        }
+        return *this;
+    }
+
+    template <class U>
+    constexpr
+    Expected&
+    operator=(Expected<U, E>&&) = delete;
+
+    // Assign error
+    template <class G>
+    requires std::is_constructible_v<E, G const&>
+             && std::is_assignable_v<E&, G const&>
+    constexpr
+    Expected&
+    operator=(Unexpected<G> const& e)
+    {
+        if (has_value_)
+        {
+            std::construct_at(std::addressof(unex_), e.error());
+            has_value_ = false;
+        } else
+        {
+            unex_ = e.error();
+        }
+        return *this;
+    }
+
+    template <class G>
+    requires std::is_constructible_v<E, G> && std::is_assignable_v<E&, G>
+    constexpr
+    Expected&
+    operator=(Unexpected<G>&& e)
+    {
+        if (has_value_)
+        {
+            std::construct_at(std::addressof(unex_), std::move(e).error());
+            has_value_ = false;
+        } else
+        {
+            unex_ = std::move(e).error();
+        }
+        return *this;
+    }
+
+    // Emplace: bind to an lvalue
+    template <class U>
+    requires ok_bind_v<U&>
+    constexpr
+    T&
+    emplace(U& u) noexcept
+    {
+        if (!has_value_)
+        {
+            std::destroy_at(std::addressof(unex_));
+            has_value_ = true;
+        }
+        p_ = std::addressof(static_cast<R>(u));
+        return *p_;
+    }
+
+    template <class U>
+    requires(!ok_bind_v<U &&>)
+    constexpr
+    T&
+    emplace(U&&) = delete;
+
+    // swap
+    constexpr
+    void
+    swap(Expected& x)
+        noexcept(
+        std::is_nothrow_move_constructible_v<E>
+        && std::is_nothrow_swappable_v<E&>)
+    requires std::is_swappable_v<E>
+    {
+        if (has_value_)
+        {
+            if (x.has_value_)
+            {
+                using std::swap;
+                swap(p_, x.p_);
+            } else
+            {
+                // this has value, x has error
+                E tmp(std::move(x.unex_));
+                std::destroy_at(std::addressof(x.unex_));
+                x.p_ = p_;
+                x.has_value_ = true;
+
+                std::construct_at(std::addressof(unex_), std::move(tmp));
+                has_value_ = false;
+            }
+        } else
+        {
+            if (x.has_value_)
+            {
+                x.swap(*this);
+            } else
+            {
+                using std::swap;
+                swap(unex_, x.unex_);
+            }
+        }
+    }
+
+    friend constexpr
+    void
+    swap(Expected& a, Expected& b)
+        noexcept(noexcept(a.swap(b)))
+    requires requires { a.swap(b); }
+    {
+        a.swap(b);
+    }
+
+    // ----------------------------------
+    // observers
+    // ----------------------------------
+    [[nodiscard]]
+    constexpr
+    explicit
+    operator bool() const noexcept
+    {
+        return has_value_;
+    }
+
+    [[nodiscard]]
+    constexpr
+    bool
+    has_value() const noexcept
+    {
+        return has_value_;
+    }
+
+    [[nodiscard]]
+    constexpr
+    T*
+    operator->() noexcept
+    {
+        MRDOCS_ASSERT(has_value_);
+        return p_;
+    }
+
+    [[nodiscard]]
+    constexpr
+    T const*
+    operator->() const noexcept
+    {
+        MRDOCS_ASSERT(has_value_);
+        return p_;
+    }
+
+    [[nodiscard]]
+    constexpr
+    T&
+    operator*() & noexcept
+    {
+        MRDOCS_ASSERT(has_value_);
+        return *p_;
+    }
+
+    [[nodiscard]]
+    constexpr
+    T const&
+    operator*() const& noexcept
+    {
+        MRDOCS_ASSERT(has_value_);
+        return *p_;
+    }
+
+    [[nodiscard]]
+    constexpr
+    T&&
+    operator*() && noexcept
+    {
+        MRDOCS_ASSERT(has_value_);
+        return std::move(*p_);
+    }
+
+    [[nodiscard]]
+    constexpr
+    T const&&
+    operator*() const&& noexcept
+    {
+        MRDOCS_ASSERT(has_value_);
+        return std::move(*p_);
+    }
+
+    constexpr
+    T&
+    value() &
+    {
+        if (has_value_)
+        {
+            return *p_;
+        }
+        throw BadExpectedAccess<E>(error());
+    }
+
+    constexpr
+    T const&
+    value() const&
+    {
+        if (has_value_)
+        {
+            return *p_;
+        }
+        throw BadExpectedAccess<E>(error());
+    }
+
+    constexpr
+    T&&
+    value() &&
+    {
+        if (has_value_)
+        {
+            return std::move(*p_);
+        }
+        throw BadExpectedAccess<E>(std::move(error()));
+    }
+
+    constexpr
+    T const&&
+    value() const&&
+    {
+        if (has_value_)
+        {
+            return std::move(*p_);
+        }
+        throw BadExpectedAccess<E>(std::move(error()));
+    }
+
+    [[nodiscard]]
+    constexpr
+    E&
+    error() & noexcept
+    {
+        MRDOCS_ASSERT(!has_value_);
+        return unex_;
+    }
+
+    [[nodiscard]]
+    constexpr
+    E const&
+    error() const& noexcept
+    {
+        MRDOCS_ASSERT(!has_value_);
+        return unex_;
+    }
+
+    [[nodiscard]]
+    constexpr
+    E&&
+    error() && noexcept
+    {
+        MRDOCS_ASSERT(!has_value_);
+        return std::move(unex_);
+    }
+
+    [[nodiscard]]
+    constexpr
+    E const&&
+    error() const&& noexcept
+    {
+        MRDOCS_ASSERT(!has_value_);
+        return std::move(unex_);
+    }
+
+    // value_or: return by value (copy/move), like your non-ref primary
+    template <class U>
+    constexpr
+    std::remove_reference_t<T>
+    value_or(U&& u) const&
+    {
+        using Rval = std::remove_reference_t<T>;
+        static_assert(std::is_copy_constructible_v<Rval>);
+        static_assert(std::is_convertible_v<U, Rval>);
+        return has_value_ ? *p_ : static_cast<Rval>(std::forward<U>(u));
+    }
+
+    template <class U>
+    constexpr
+    std::remove_reference_t<T>
+    value_or(U&& u) &&
+    {
+        using Rval = std::remove_reference_t<T>;
+        static_assert(std::is_move_constructible_v<Rval>);
+        static_assert(std::is_convertible_v<U, Rval>);
+        return has_value_ ? std::move(*p_) :
+                            static_cast<Rval>(std::forward<U>(u));
+    }
+
+    // error_or: identical to primary
+    template <class G = E>
+    constexpr
+    E
+    error_or(G&& g) const&
+    {
+        return has_value_ ? static_cast<E>(std::forward<G>(g)) : unex_;
+    }
+
+    template <class G = E>
+    constexpr
+    E
+    error_or(G&& g) &&
+    {
+        return has_value_ ? static_cast<E>(std::forward<G>(g)) :
+                            std::move(unex_);
+    }
+
+    // ----------------------------------
+    // monadic ops
+    // ----------------------------------
+
+    // and_then: F(T&) -> Expected<*, E>
+    template <class Fn>
+    constexpr
+    auto
+    and_then(Fn&& f) &
+    {
+        using U = std::remove_cvref_t<std::invoke_result_t<Fn, T&>>;
+        static_assert(detail::isExpected<U>);
+        static_assert(std::is_same_v<typename U::error_type, E>);
+        if (has_value_)
+        {
+            return std::invoke(std::forward<Fn>(f), *p_);
+        }
+        return U(unexpect, unex_);
+    }
+
+    template <class Fn>
+    constexpr
+    auto
+    and_then(Fn&& f) const&
+    {
+        using U = std::remove_cvref_t<std::invoke_result_t<Fn, T const&>>;
+        static_assert(detail::isExpected<U>);
+        static_assert(std::is_same_v<typename U::error_type, E>);
+        if (has_value_)
+        {
+            return std::invoke(std::forward<Fn>(f), *p_);
+        }
+        return U(unexpect, unex_);
+    }
+
+    template <class Fn>
+    constexpr
+    auto
+    and_then(Fn&& f) &&
+    {
+        using U = std::remove_cvref_t<std::invoke_result_t<Fn, T&&>>;
+        static_assert(detail::isExpected<U>);
+        static_assert(std::is_same_v<typename U::error_type, E>);
+        if (has_value_)
+        {
+            return std::invoke(std::forward<Fn>(f), std::move(*p_));
+        }
+        return U(unexpect, std::move(unex_));
+    }
+
+    template <class Fn>
+    constexpr
+    auto
+    and_then(Fn&& f) const&&
+    {
+        using U = std::remove_cvref_t<std::invoke_result_t<Fn, T const&&>>;
+        static_assert(detail::isExpected<U>);
+        static_assert(std::is_same_v<typename U::error_type, E>);
+        if (has_value_)
+        {
+            return std::invoke(std::forward<Fn>(f), std::move(*p_));
+        }
+        return U(unexpect, std::move(unex_));
+    }
+
+    // or_else: same signature/behavior as primary; when engaged, return
+    // self-type with same binding
+    template <class Fn>
+    constexpr
+    Expected
+    or_else(Fn&& f) &
+    {
+        if (has_value_)
+        {
+            return *this;
+        }
+        auto g = std::forward<Fn>(f)(unex_);
+        static_assert(
+            std::is_same_v<std::remove_cvref_t<decltype(g)>, Expected>);
+        return g;
+    }
+
+    template <class Fn>
+    constexpr
+    Expected
+    or_else(Fn&& f) const&
+    {
+        if (has_value_)
+        {
+            return *this;
+        }
+        auto g = std::forward<Fn>(f)(unex_);
+        static_assert(
+            std::is_same_v<std::remove_cvref_t<decltype(g)>, Expected>);
+        return g;
+    }
+
+    template <class Fn>
+    constexpr
+    Expected
+    or_else(Fn&& f) &&
+    {
+        if (has_value_)
+        {
+            return *this;
+        }
+        auto g = std::forward<Fn>(f)(std::move(unex_));
+        static_assert(
+            std::is_same_v<std::remove_cvref_t<decltype(g)>, Expected>);
+        return g;
+    }
+
+    template <class Fn>
+    constexpr
+    Expected
+    or_else(Fn&& f) const&&
+    {
+        if (has_value_)
+        {
+            return *this;
+        }
+        auto g = std::forward<Fn>(f)(std::move(unex_));
+        static_assert(
+            std::is_same_v<std::remove_cvref_t<decltype(g)>, Expected>);
+        return g;
+    }
+
+    // transform: F(T&) -> U ; returns Expected<U, E>
+    template <class Fn>
+    constexpr
+    auto
+    transform(Fn&& f) &
+    {
+        using U = std::remove_cv_t<std::invoke_result_t<Fn, T&>>;
+        using Res = Expected<U, E>;
+        if (has_value_)
+        {
+            return Res(detail::in_place_inv{}, [&] {
+                return std::invoke(std::forward<Fn>(f), *p_);
+            });
+        }
+        return Res(unexpect, unex_);
+    }
+
+    template <class Fn>
+    constexpr
+    auto
+    transform(Fn&& f) const&
+    {
+        using U = std::remove_cv_t<std::invoke_result_t<Fn, T const&>>;
+        using Res = Expected<U, E>;
+        if (has_value_)
+        {
+            return Res(detail::in_place_inv{}, [&] {
+                return std::invoke(std::forward<Fn>(f), *p_);
+            });
+        }
+        return Res(unexpect, unex_);
+    }
+
+    template <class Fn>
+    constexpr
+    auto
+    transform(Fn&& f) &&
+    {
+        using U = std::remove_cv_t<std::invoke_result_t<Fn, T&&>>;
+        using Res = Expected<U, E>;
+        if (has_value_)
+        {
+            return Res(detail::in_place_inv{}, [&] {
+                return std::invoke(std::forward<Fn>(f), std::move(*p_));
+            });
+        }
+        return Res(unexpect, std::move(unex_));
+    }
+
+    template <class Fn>
+    constexpr
+    auto
+    transform(Fn&& f) const&&
+    {
+        using U = std::remove_cv_t<std::invoke_result_t<Fn, T const&&>>;
+        using Res = Expected<U, E>;
+        if (has_value_)
+        {
+            return Res(detail::in_place_inv{}, [&] {
+                return std::invoke(std::forward<Fn>(f), std::move(*p_));
+            });
+        }
+        return Res(unexpect, std::move(unex_));
+    }
+
+    // transform_error: identical to primary
+    template <class Fn>
+    constexpr
+    auto
+    transform_error(Fn&& f) &
+    {
+        using G = std::remove_cv_t<std::invoke_result_t<Fn, E&>>;
+        using Res = Expected<T&, G>;
+        if (has_value_)
+        {
+            return Res(std::in_place, *p_);
+        }
+        return Res(detail::unexpect_inv{}, [&] {
+            return std::invoke(std::forward<Fn>(f), unex_);
+        });
+    }
+
+    template <class Fn>
+    constexpr
+    auto
+    transform_error(Fn&& f) const&
+    {
+        using G = std::remove_cv_t<std::invoke_result_t<Fn, E const&>>;
+        using Res = Expected<T&, G>;
+        if (has_value_)
+        {
+            return Res(std::in_place, *p_);
+        }
+        return Res(detail::unexpect_inv{}, [&] {
+            return std::invoke(std::forward<Fn>(f), unex_);
+        });
+    }
+
+    template <class Fn>
+    constexpr
+    auto
+    transform_error(Fn&& f) &&
+    {
+        using G = std::remove_cv_t<std::invoke_result_t<Fn, E&&>>;
+        using Res = Expected<T&, G>;
+        if (has_value_)
+        {
+            return Res(std::in_place, *p_);
+        }
+        return Res(detail::unexpect_inv{}, [&] {
+            return std::invoke(std::forward<Fn>(f), std::move(unex_));
+        });
+    }
+
+    template <class Fn>
+    constexpr
+    auto
+    transform_error(Fn&& f) const&&
+    {
+        using G = std::remove_cv_t<std::invoke_result_t<Fn, E const&&>>;
+        using Res = Expected<T&, G>;
+        if (has_value_)
+        {
+            return Res(std::in_place, *p_);
+        }
+        return Res(detail::unexpect_inv{}, [&] {
+            return std::invoke(std::forward<Fn>(f), std::move(unex_));
+        });
+    }
+
+    template <class U, class E2>
+    friend
+    constexpr
+    bool
+    operator==(Expected const& x, Expected<U, E2> const& y)
+        noexcept(noexcept(bool(*x == *y)) &&
+                 noexcept(bool(x.error() == y.error())))
+    requires (!std::is_void_v<U>)
+    {
+        if (x.has_value())
+        {
+            return y.has_value() && bool(*x == *y);
+        } else
+        {
+            return !y.has_value() && bool(x.error() == y.error());
+        }
+    }
+
+
+    template <class U>
+    friend
+    constexpr
+    bool
+    operator==(Expected const& x, U const& v)
+        noexcept(noexcept(bool(*x == v)))
+    {
+        return x.has_value() && bool(*x == v);
+    }
+
+    template <class E2>
+    friend
+    constexpr
+    bool
+    operator==(Expected const& x, Unexpected<E2> const& e)
+        noexcept(noexcept(bool(x.error() == e.error())))
+    {
+        return !x.has_value() && bool(x.error() == e.error());
+    }
+}; // class Expected<T&, E>
 
 } // clang::mrdocs
 

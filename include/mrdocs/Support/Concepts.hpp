@@ -135,6 +135,27 @@ template <class Range>
 concept range_of_tuple_like =
     std::ranges::range<Range> && tuple_like<std::ranges::range_value_t<Range>>;
 
+#ifdef __cpp_lib_reference_from_temporary
+    using std::reference_constructs_from_temporary_v;
+    using std::reference_converts_from_temporary_v;
+#else
+    template <class To, class From>
+    concept reference_converts_from_temporary_v
+        = std::is_reference_v<To>
+          && ((!std::is_reference_v<From>
+               && std::is_convertible_v<
+                   std::remove_cvref_t<From>*,
+                   std::remove_cvref_t<To>*>)
+              || (std::is_lvalue_reference_v<To>
+                  && std::is_const_v<std::remove_reference_t<To>>
+                  && std::is_convertible_v<From, const std::remove_cvref_t<To>&&>
+                  && !std::is_convertible_v<From, std::remove_cvref_t<To>&>) );
+
+    template <class To, class From>
+    concept reference_constructs_from_temporary_v
+        = reference_converts_from_temporary_v<To, From>;
+#endif
+
 } // namespace clang::mrdocs
 
 

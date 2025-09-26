@@ -99,7 +99,7 @@ public:
             Use @ref traverse to find all matching symbols.
     */
     virtual
-    Expected<std::reference_wrapper<Info const>>
+    Expected<Info const&>
     lookup(SymbolID const& context, std::string_view name) const = 0;
 
     /** Return the Info for the matching string in the global context.
@@ -108,7 +108,7 @@ public:
         @return The Info for the symbol with the specified name
             in the global context, or an error if not found.
     */
-    Expected<std::reference_wrapper<Info const>>
+    Expected<Info const&>
     lookup(std::string_view name) const
     {
         return lookup(SymbolID::global, name);

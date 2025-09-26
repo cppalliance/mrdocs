@@ -142,10 +142,10 @@ public:
             std::views::common;
     }
 
-    Expected<std::reference_wrapper<Info const>>
+    Expected<Info const&>
     lookup(SymbolID const& context, std::string_view name) const override;
 
-    Expected<std::reference_wrapper<Info const>>
+    Expected<Info const&>
     lookup(SymbolID const& context, std::string_view name);
 
     /** Build metadata for a set of translation units.
@@ -198,7 +198,7 @@ private:
 
     template <class Self>
     static
-    Expected<std::reference_wrapper<Info const>>
+    Expected<Info const&>
     lookupImpl(
         Self&& self,
         SymbolID const& contextId,
