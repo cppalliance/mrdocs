@@ -184,7 +184,7 @@ log_impl(
     Level level,
     Located<std::string_view> fs)
 {
-  std::string str = std::vformat(fs.value, std::make_format_args());
+  std::string str(fs.value);
   return print(level, str, &fs.where);
 }
 }
