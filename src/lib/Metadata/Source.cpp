@@ -111,6 +111,7 @@ tag_invoke(
     io.map("shortPath", loc.ShortPath);
     io.map("sourcePath", loc.SourcePath);
     io.map("line", loc.LineNumber);
+    io.map("column", loc.ColumnNumber);
     io.map("documented", loc.Documented);
 }
 
