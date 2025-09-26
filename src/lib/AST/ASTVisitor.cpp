@@ -881,7 +881,7 @@ populate(
             param.Name = P->getName();
         }
 
-        if (!param.Type)
+        if (param.Type->isAuto())
         {
             param.Type = toTypeInfo(P->getOriginalType());
         }
@@ -907,7 +907,7 @@ populate(
 
     // extract the return type in direct dependency mode
     // if it contains a placeholder type which is
-    // deduceded as a local class type
+    // deduced as a local class type
     QualType const RT = D->getReturnType();
     MRDOCS_SYMBOL_TRACE(RT, context_);
     I.ReturnType = toTypeInfo(RT);
@@ -918,11 +918,11 @@ populate(
     }
     else if (I.Requires.Written.empty())
     {
+        MRDOCS_ASSERT(!I.ReturnType.valueless_after_move());
         // Return type SFINAE constraints
-        if (I.ReturnType &&
-            !(*I.ReturnType)->Constraints.empty())
+        if (!I.ReturnType->Constraints.empty())
         {
-            for (ExprInfo const& constraint: (*I.ReturnType)->Constraints)
+            for (ExprInfo const& constraint: I.ReturnType->Constraints)
             {
                 if (!I.Requires.Written.empty())
                 {
@@ -935,10 +935,10 @@ populate(
         // Iterate I.Params to find trailing requires clauses
         for (auto it = I.Params.begin(); it != I.Params.end(); )
         {
-            if (it->Type &&
-                !(*it->Type)->Constraints.empty())
+            MRDOCS_ASSERT(!it->Type.valueless_after_move());
+            if (!it->Type->Constraints.empty())
             {
-                for (ExprInfo const& constraint: (*it->Type)->Constraints)
+                for (ExprInfo const& constraint: it->Type->Constraints)
                 {
                     if (!I.Requires.Written.empty())
                     {
@@ -1249,7 +1249,9 @@ populate(
 {
     NamedDecl const* Aliased = D->getAliasedNamespace();
     NestedNameSpecifier NNS = D->getQualifier();
-    I.AliasedSymbol = toNameInfo(Aliased, {}, NNS);
+    Polymorphic<NameInfo> NI = toNameInfo(Aliased, {}, NNS);
+    MRDOCS_ASSERT(NI->isIdentifier());
+    I.AliasedSymbol = std::move(dynamic_cast<IdentifierNameInfo&>(*NI));
 }
 
 void
@@ -1344,21 +1346,22 @@ populate(
                 ++it;
                 continue;
             }
-            if (auto* T = dynamic_cast<TypeTArg*>(arg.operator->());
-                T &&
-                T->Type &&
-                !(*T->Type)->Constraints.empty())
+            if (auto* T = dynamic_cast<TypeTArg*>(arg.operator->()))
             {
-                for (ExprInfo const& constraint: (*T->Type)->Constraints)
+                MRDOCS_ASSERT(!T->Type.valueless_after_move());
+                if (!T->Type->Constraints.empty())
                 {
-                    if (!Template.Requires.Written.empty())
+                    for (ExprInfo const& constraint: T->Type->Constraints)
                     {
-                        Template.Requires.Written += " && ";
+                        if (!Template.Requires.Written.empty())
+                        {
+                            Template.Requires.Written += " && ";
+                        }
+                        Template.Requires.Written += constraint.Written;
                     }
-                    Template.Requires.Written += constraint.Written;
+                    it = Template.Args.erase(it);
+                    continue;
                 }
-                it = Template.Args.erase(it);
-                continue;
             }
             ++it;
         }
@@ -1531,9 +1534,9 @@ populate(
         {
             if (I.valueless_after_move())
             {
-                I = Polymorphic<TParam>(std::in_place_type<NonTypeTParam>);
+                I = Polymorphic<TParam>(std::in_place_type<ConstantTParam>);
             }
-            auto* R = dynamic_cast<NonTypeTParam*>(I.operator->());
+            auto* R = dynamic_cast<ConstantTParam*>(I.operator->());
             R->Type = toTypeInfo(P->getType());
             if (P->hasDefaultArgument() && !R->Default)
             {
@@ -1631,33 +1634,15 @@ populate(
         for (auto it = TI.Params.begin(); it != TI.Params.end(); )
         {
             Polymorphic<TParam>& param = *it;
+            MRDOCS_ASSERT(!param.valueless_after_move());
 
-            if (auto const* T = dynamic_cast<NonTypeTParam*>(param.operator->());
-                T &&
-                T->Type &&
-                !(*T->Type)->Constraints.empty())
+            if (param->isConstant())
             {
-                for (ExprInfo const& constraint: (*T->Type)->Constraints)
+                auto& T = dynamic_cast<ConstantTParam&>(*param);
+                MRDOCS_ASSERT(!T.Type.valueless_after_move());
+                if (!T.Type->Constraints.empty())
                 {
-                    if (!TI.Requires.Written.empty())
-                    {
-                        TI.Requires.Written += " && ";
-                    }
-                    TI.Requires.Written += constraint.Written;
-                }
-                it = TI.Params.erase(it);
-                continue;
-            }
-
-            if (param->Default &&
-                (*param->Default)->isType())
-            {
-                if (auto const* T = dynamic_cast<TypeTArg*>((*param->Default).operator->());
-                    T &&
-                    T->Type &&
-                    !(*T->Type)->Constraints.empty())
-                {
-                    for (ExprInfo const& constraint: (*T->Type)->Constraints)
+                    for (ExprInfo const& constraint: T.Type->Constraints)
                     {
                         if (!TI.Requires.Written.empty())
                         {
@@ -1667,6 +1652,28 @@ populate(
                     }
                     it = TI.Params.erase(it);
                     continue;
+                }
+            }
+
+            if (param->Default &&
+                (*param->Default)->isType())
+            {
+                if (auto const* T = dynamic_cast<TypeTArg*>((*param->Default).operator->()))
+                {
+                    MRDOCS_ASSERT(!T->Type.valueless_after_move());
+                    if (!T->Type->Constraints.empty())
+                    {
+                        for (ExprInfo const& constraint: T->Type->Constraints)
+                        {
+                            if (!TI.Requires.Written.empty())
+                            {
+                                TI.Requires.Written += " && ";
+                            }
+                            TI.Requires.Written += constraint.Written;
+                        }
+                        it = TI.Params.erase(it);
+                        continue;
+                    }
                 }
             }
 

@@ -30,7 +30,7 @@ struct TArg
     constexpr virtual ~TArg() = default;
 
     constexpr bool isType()     const noexcept { return Kind == TArgKind::Type; }
-    constexpr bool isNonType()  const noexcept { return Kind == TArgKind::NonType; }
+    constexpr bool isConstant()  const noexcept { return Kind == TArgKind::Constant; }
     constexpr bool isTemplate() const noexcept { return Kind == TArgKind::Template; }
 
     auto operator<=>(TArg const&) const = default;
@@ -52,7 +52,7 @@ struct TArgCommonBase : TArg
     static constexpr TArgKind kind_id = K;
 
     static constexpr bool isType()     noexcept { return K == TArgKind::Type; }
-    static constexpr bool isNonType()  noexcept { return K == TArgKind::NonType; }
+    static constexpr bool isConstant()  noexcept { return K == TArgKind::Constant; }
     static constexpr bool isTemplate() noexcept { return K == TArgKind::Template; }
 
 protected:

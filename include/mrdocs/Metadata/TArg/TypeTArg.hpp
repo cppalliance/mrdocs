@@ -23,8 +23,9 @@ namespace clang::mrdocs {
 struct TypeTArg final
     : TArgCommonBase<TArgKind::Type>
 {
-    /** Template argument type. */
-    Optional<Polymorphic<TypeInfo>> Type = std::nullopt;
+    /** Template argument type.
+     */
+    Polymorphic<TypeInfo> Type = Polymorphic<TypeInfo>(AutoTypeInfo{});
 
     auto operator<=>(TypeTArg const&) const = default;
 };

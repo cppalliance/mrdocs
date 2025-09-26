@@ -15,6 +15,7 @@
 #include <mrdocs/ADT/Optional.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/Specifiers.hpp>
+#include <mrdocs/Metadata/Type/AutoTypeInfo.hpp>
 #include <mrdocs/Metadata/Type/TypeBase.hpp>
 
 namespace clang::mrdocs {
@@ -22,7 +23,7 @@ namespace clang::mrdocs {
 struct FunctionTypeInfo final
     : TypeInfoCommonBase<TypeKind::Function>
 {
-    Optional<Polymorphic<TypeInfo>> ReturnType = std::nullopt;
+    Polymorphic<TypeInfo> ReturnType = Polymorphic<TypeInfo>(AutoTypeInfo{});
     std::vector<Polymorphic<TypeInfo>> ParamTypes;
     ReferenceKind RefQualifier = ReferenceKind::None;
     NoexceptInfo ExceptionSpec;

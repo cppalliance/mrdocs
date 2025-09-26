@@ -23,7 +23,7 @@
     </namespace-alias>
     <template>
       <tparam name="T" class="type"/>
-      <tparam name="I" class="non-type" type="int"/>
+      <tparam name="I" class="constant" type="int"/>
       <namespace-alias name="B_t" id="40FFJWRtg8LikFmMYkFhi3taM7w=">
         <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="11"/>
         <type id="jJtr0x+P2kzEfxAlp7Hjo5akJho=" name="B&lt;T, I&gt;"/>
@@ -57,7 +57,7 @@
     </namespace-alias>
     <template>
       <tparam name="T" class="type"/>
-      <tparam name="B" class="non-type" type="bool"/>
+      <tparam name="B" class="constant" type="bool"/>
       <namespace-alias name="C_t" id="N9KZXiVz/IMBW2CcGYh+8cvUeFQ=">
         <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="39"/>
         <type id="WjzMcZfRtncsiJEvL1/LzUes/GM=" name="C&lt;T, B&gt;"/>
@@ -73,7 +73,7 @@
     </template>
     <template>
       <tparam name="T" class="type"/>
-      <tparam class="non-type" type="int" default="0"/>
+      <tparam class="constant" type="int" default="0"/>
       <struct name="B" id="jJtr0x+P2kzEfxAlp7Hjo5akJho=">
         <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="7"/>
         <doc>
@@ -102,7 +102,7 @@
     </template>
     <template class="explicit" id="jJtr0x+P2kzEfxAlp7Hjo5akJho=">
       <targ class="type" type="int"/>
-      <targ class="non-type" value="2"/>
+      <targ class="constant" value="2"/>
       <struct name="B" id="zWh7HJU4uEOW6SQu1/X6/fBkFq0=">
         <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="25" class="def"/>
         <doc>
@@ -114,7 +114,7 @@
     </template>
     <template>
       <tparam name="T" class="type"/>
-      <tparam class="non-type" type="bool" default="false"/>
+      <tparam class="constant" type="bool" default="false"/>
       <struct name="C" id="WjzMcZfRtncsiJEvL1/LzUes/GM=">
         <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="35"/>
         <doc>
@@ -132,7 +132,7 @@
     </template>
     <template class="explicit" id="WjzMcZfRtncsiJEvL1/LzUes/GM=">
       <targ class="type" type="D"/>
-      <targ class="non-type" value="true"/>
+      <targ class="constant" value="true"/>
       <struct name="C" id="+AYNfv3bBiQwa6z9A60U/F7dvXE=">
         <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="57" class="def"/>
         <doc>
@@ -144,7 +144,7 @@
     </template>
     <template class="explicit" id="WjzMcZfRtncsiJEvL1/LzUes/GM=">
       <targ class="type" type="int"/>
-      <targ class="non-type" value="true"/>
+      <targ class="constant" value="true"/>
       <struct name="C" id="w5ssdgUOfKNpDbPFUfSYesxFAc8=">
         <file short-path="template-arguments.cpp" source-path="template-arguments.cpp" line="45" class="def"/>
         <doc>

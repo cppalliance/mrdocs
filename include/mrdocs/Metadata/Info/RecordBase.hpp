@@ -22,11 +22,23 @@ namespace clang::mrdocs {
 */
 struct BaseInfo
 {
-    Optional<Polymorphic<TypeInfo>> Type;
+    /** The base type.
+
+        This is typically a `NamedTypeInfo` that refers to a
+        `RecordInfo`, but it could also be a more complex type
+        such as a `decltype`.
+     */
+    Polymorphic<TypeInfo> Type;
+
+    /** The access specifier for the base.
+     */
     AccessKind Access = AccessKind::Public;
+
+    /** Whether the base is virtual.
+     */
     bool IsVirtual = false;
 
-    BaseInfo() = default;
+    BaseInfo() = delete;
 
     BaseInfo(
         Polymorphic<TypeInfo>&& type,

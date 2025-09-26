@@ -31,7 +31,7 @@
   </template>
   <template>
     <tparam name="T" class="type"/>
-    <tparam name="N" class="non-type" type="unsigned long"/>
+    <tparam name="N" class="constant" type="unsigned long"/>
     <class name="SmallVector" id="Xw0FzsI74YygQXKG0MGYooG1ALg=">
       <file short-path="return-type.cpp" source-path="return-type.cpp" line="12" class="def"/>
       <doc>

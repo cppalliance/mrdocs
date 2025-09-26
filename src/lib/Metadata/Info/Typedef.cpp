@@ -67,7 +67,7 @@ void merge(TypedefInfo& I, TypedefInfo&& Other)
     {
         I.IsUsing = Other.IsUsing;
     }
-    if (!I.Type)
+    if (I.Type.valueless_after_move())
     {
         I.Type = std::move(Other.Type);
     }

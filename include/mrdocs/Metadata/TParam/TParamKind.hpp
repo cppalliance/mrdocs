@@ -24,12 +24,14 @@ enum class TParamKind : int
     /// Template type parameter, e.g. "typename T" or "class T"
     Type = 1, // for bitstream
     /// Template non-type parameter, e.g. "int N" or "auto N"
-    NonType,
+    Constant,
     /// Template-template parameter, e.g. "template<typename> typename T"
     Template
 };
 
-MRDOCS_DECL std::string_view toString(TParamKind kind) noexcept;
+MRDOCS_DECL
+std::string_view
+toString(TParamKind kind) noexcept;
 
 } // clang::mrdocs
 

@@ -87,7 +87,7 @@
     </function>
   </struct>
   <template>
-    <tparam name="Idx" class="non-type" type="int"/>
+    <tparam name="Idx" class="constant" type="int"/>
     <struct name="paramType" id="5uZOiQm8Wn76QPmEs/Kkcw4y7Uc=">
       <file short-path="param-types.cpp" source-path="param-types.cpp" line="2" class="def"/>
       <doc>

@@ -23,7 +23,7 @@ namespace clang::mrdocs::xml {
 
 class jit_indenter;
 
-/** A writer which outputs XML.
+/** A writer that outputs XML.
 */
 class XMLWriter
 {

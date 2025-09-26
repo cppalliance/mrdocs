@@ -11,9 +11,9 @@
 
 #include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Dom/LazyObject.hpp>
-#include <mrdocs/Metadata/Info/Source.hpp>
-#include <mrdocs/Metadata/Info/Location.hpp>
 #include <mrdocs/Metadata/Info/FileKind.hpp>
+#include <mrdocs/Metadata/Info/Location.hpp>
+#include <mrdocs/Metadata/Info/Source.hpp>
 #include <llvm/ADT/STLExtras.h>
 #include <ranges>
 

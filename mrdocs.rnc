@@ -288,7 +288,7 @@ grammar
     TemplateArg =
         element targ
         {
-            attribute class { "type"|"non-type"|"template" },
+            attribute class { "type"|"constant"|"template" },
             attribute name { text } ?,
             ID ?,
             attribute type { text } ?,
@@ -299,7 +299,7 @@ grammar
         element tparam
         {
             attribute name { text } ?,
-            attribute class { "type"|"non-type"|"template" },
+            attribute class { "type"|"constant"|"template" },
             attribute type { text } ?,
             attribute default { text } ?,
             TemplateParam *

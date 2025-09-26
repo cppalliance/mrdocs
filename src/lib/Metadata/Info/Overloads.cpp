@@ -57,7 +57,8 @@ addMember(OverloadsInfo& I, FunctionInfo const& Member)
         I.Extraction = leastSpecific(I.Extraction, Member.Extraction);
         if (I.ReturnType != Member.ReturnType)
         {
-            I.ReturnType = std::nullopt;
+            // The return types differ, so we use 'auto' to indicate that.
+            I.ReturnType = Polymorphic<TypeInfo>(AutoTypeInfo{});
         }
     }
     merge(I.Loc, Member.Loc);

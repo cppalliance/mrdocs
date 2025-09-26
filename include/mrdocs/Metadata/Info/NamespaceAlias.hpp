@@ -28,7 +28,7 @@ struct NamespaceAliasInfo final
         This is another namespace that might or might
         not be in the same project.
      */
-    Optional<Polymorphic<NameInfo>> AliasedSymbol;
+    IdentifierNameInfo AliasedSymbol;
 
     //--------------------------------------------
 

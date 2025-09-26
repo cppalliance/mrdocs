@@ -40,7 +40,7 @@ class TypeInfoBuilder
        as a polymorphic `TypeInfo` object.
 
      */
-    Optional<Polymorphic<TypeInfo>> Result = std::nullopt;
+    Polymorphic<TypeInfo> Result = Polymorphic<TypeInfo>(AutoTypeInfo{});
 
     /*  A pointer to the inner type of result currently being populated.
 
@@ -61,7 +61,7 @@ class TypeInfoBuilder
         `NamedTypeInfo` object, and the visiting process continues
         populating the `Inner` object.
      */
-    Optional<Polymorphic<TypeInfo>>* Inner = &Result;
+    Polymorphic<TypeInfo>* Inner = &Result;
 
 public:
     using TerminalTypeVisitor::TerminalTypeVisitor;
@@ -76,15 +76,7 @@ public:
     Polymorphic<TypeInfo>
     result()
     {
-        MRDOCS_ASSERT(hasResult());
-        return std::move(*Result);
-    }
-
-    constexpr
-    bool
-    hasResult() const noexcept
-    {
-        return Result.has_value();
+        return std::move(Result);
     }
 
     /** Build type information for a pointer type.

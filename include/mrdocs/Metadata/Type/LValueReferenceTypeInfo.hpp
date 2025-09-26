@@ -21,7 +21,7 @@ namespace clang::mrdocs {
 struct LValueReferenceTypeInfo final
     : TypeInfoCommonBase<TypeKind::LValueReference>
 {
-    Optional<Polymorphic<TypeInfo>> PointeeType = std::nullopt;
+    Polymorphic<TypeInfo> PointeeType = Polymorphic<TypeInfo>(AutoTypeInfo{});
 
     std::strong_ordering
     operator<=>(LValueReferenceTypeInfo const&) const;

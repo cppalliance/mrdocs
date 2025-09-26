@@ -119,13 +119,10 @@ toStringImpl(
             {
                 if constexpr(U::isType())
                 {
-                    if (u.Type)
-                    {
-                        MRDOCS_ASSERT(!u.Type->valueless_after_move());
-                        writeTo(result, toString(**u.Type));
-                    }
+                    MRDOCS_ASSERT(!u.Type.valueless_after_move());
+                    writeTo(result, toString(*u.Type));
                 }
-                if constexpr(U::isNonType())
+                if constexpr(U::isConstant())
                 {
                     writeTo(result, u.Value.Written);
                 }

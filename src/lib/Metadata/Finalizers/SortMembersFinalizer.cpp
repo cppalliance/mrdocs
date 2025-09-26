@@ -163,35 +163,32 @@ struct SymbolIDCompareFn
             (lhsOp && *lhsOp == OperatorKind::Equal &&
              rhsOp && *rhsOp == OperatorKind::Equal))
         {
-            auto& lhsF = lhs.asFunction();
-            auto& rhsF = rhs.asFunction();
+            FunctionInfo const& lhsF = lhs.asFunction();
+            FunctionInfo const& rhsF = rhs.asFunction();
             if (lhsF.Params.size() == 1 && rhsF.Params.size() == 1)
             {
                 auto isCopyOrMoveConstOrAssign = [](FunctionInfo const& I) {
                     if (I.Params.size() == 1)
                     {
                         auto const& param = I.Params[0];
-                        auto const& paramTypeOpt = param.Type;
-                        MRDOCS_CHECK_OR(paramTypeOpt, false);
-                        auto const& paramType = *paramTypeOpt;
-                        if (!paramType->isLValueReference()
-                            && !paramType->isRValueReference())
-                        {
-                            return false;
-                        }
-                        auto const &paramRefPointeeOpt =
+                        Polymorphic<TypeInfo> const& paramType = param.Type;
+                        MRDOCS_ASSERT(!paramType.valueless_after_move());
+                        MRDOCS_CHECK_OR(
+                            paramType->isLValueReference() ||
+                            paramType->isRValueReference(), false);
+                        Polymorphic<TypeInfo> const &paramRefPointeeOpt =
                             paramType->isLValueReference()
-                                ? static_cast<LValueReferenceTypeInfo const &>(*paramType)
+                                ? dynamic_cast<LValueReferenceTypeInfo const &>(*paramType)
                                     .PointeeType
-                                : static_cast<RValueReferenceTypeInfo const &>(*paramType)
+                                : dynamic_cast<RValueReferenceTypeInfo const &>(*paramType)
                                     .PointeeType;
                         MRDOCS_CHECK_OR(paramRefPointeeOpt, false);
                         auto const& paramRefPointee = *paramRefPointeeOpt;
-                        if (!paramRefPointee->isNamed())
+                        if (!paramRefPointee.isNamed())
                         {
                             return false;
                         }
-                        return paramRefPointee->namedSymbol() == I.Parent;
+                        return paramRefPointee.namedSymbol() == I.Parent;
                     }
                     return false;
                 };
@@ -206,10 +203,10 @@ struct SymbolIDCompareFn
                 // Ensure move comes after copy
                 if (lhsIsCopyOrMove && rhsIsCopyOrMove)
                 {
-                    MRDOCS_CHECK_OR(!lhsF.Params[0].Type, false);
-                    MRDOCS_CHECK_OR(!rhsF.Params[0].Type, true);
-                    bool const lhsIsMove = (*lhsF.Params[0].Type)->isRValueReference();
-                    bool const rhsIsMove = (*rhsF.Params[0].Type)->isRValueReference();
+                    MRDOCS_ASSERT(!lhsF.Params[0].Type.valueless_after_move());
+                    MRDOCS_ASSERT(!rhsF.Params[0].Type.valueless_after_move());
+                    bool const lhsIsMove = lhsF.Params[0].Type->isRValueReference();
+                    bool const rhsIsMove = rhsF.Params[0].Type->isRValueReference();
                     if (lhsIsMove != rhsIsMove)
                     {
                         return !lhsIsMove;

@@ -63,7 +63,7 @@ merge(VariableInfo& I, VariableInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
     merge(I.asInfo(), std::move(Other.asInfo()));
-    if (!I.Type)
+    if (I.Type.valueless_after_move())
     {
         I.Type = std::move(Other.Type);
     }

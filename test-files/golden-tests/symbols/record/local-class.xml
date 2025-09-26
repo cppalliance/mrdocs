@@ -3,7 +3,7 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <struct name="B" id="3JsK1DO0O+wZhv+0meptQrbs3fY=">
-    <file short-path="local-class.cpp" source-path="local-class.cpp" line="1" class="def"/>
+    <file short-path="local-class.cpp" source-path="local-class.cpp" line="11" class="def"/>
     <base>
       <type class="decltype" operand="f()">
       </type>

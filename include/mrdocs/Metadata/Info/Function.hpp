@@ -30,8 +30,15 @@ namespace clang::mrdocs {
 struct FunctionInfo final
     : InfoCommonBase<InfoKind::Function>
 {
-    /// Info about the return type of this function.
-    Optional<Polymorphic<TypeInfo>> ReturnType = std::nullopt;
+    /** Info about the return type of this function.
+
+        If the function has a deduced return type, this contains
+        `auto` to indicate that.
+
+        By default, we also use `auto` in the member to indicate
+        an unknown return type.
+     */
+    Polymorphic<TypeInfo> ReturnType = Polymorphic<TypeInfo>(AutoTypeInfo{});
 
     /// List of parameters.
     std::vector<Param> Params;

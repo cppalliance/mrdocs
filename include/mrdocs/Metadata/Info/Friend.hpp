@@ -21,7 +21,13 @@ namespace clang::mrdocs {
 
     - Friendship is not transitive
     - Friendship is not inherited
-    - Access specifiers have no effect on the meaning of friend declarations
+    - Access specifiers do not affect the meaning of friend declarations
+
+    The friends of a record are stored directly in the record's metadata.
+
+    If the friend declaration is documented, the documentation is
+    stored in the befriended symbol's metadata rather than in the
+    relationship.
 */
 struct FriendInfo final
 {
@@ -30,6 +36,8 @@ struct FriendInfo final
     SymbolID id = SymbolID::invalid;
 
     /** Befriended type.
+
+        This member is nullable and only used when befriending a type.
     */
     Optional<Polymorphic<TypeInfo>> Type = std::nullopt;
 };

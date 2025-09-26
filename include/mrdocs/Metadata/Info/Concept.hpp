@@ -12,8 +12,8 @@
 #define MRDOCS_API_METADATA_INFO_CONCEPT_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/ADT/Optional.hpp>
+#include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Info/Source.hpp>

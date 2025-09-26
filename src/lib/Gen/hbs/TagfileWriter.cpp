@@ -200,11 +200,8 @@ TagfileWriter::
 writeFunctionMember(FunctionInfo const& I)
 {
     tags_.open("member", {{"kind", "function"}});
-    if (I.ReturnType)
-    {
-        MRDOCS_ASSERT(!I.ReturnType->valueless_after_move());
-        tags_.write("type", toString(**I.ReturnType));
-    }
+    MRDOCS_ASSERT(!I.ReturnType.valueless_after_move());
+    tags_.write("type", toString(*I.ReturnType));
     tags_.write("name", I.Name);
     auto [anchorFile, anchor] = generateFileAndAnchor(I);
     tags_.write("anchorfile", anchorFile);
@@ -212,16 +209,11 @@ writeFunctionMember(FunctionInfo const& I)
     std::string arglist = "(";
     for(auto const& J : I.Params)
     {
-        if (J.Type)
-        {
-            arglist += toString(**J.Type);
-            if (J.Name)
-            {
-                arglist += " ";
-            }
-        }
+        MRDOCS_ASSERT(!J.Type.valueless_after_move());
+        arglist += toString(*J.Type);
         if (J.Name)
         {
+            arglist += " ";
             arglist += *J.Name;
         }
         arglist += ", ";

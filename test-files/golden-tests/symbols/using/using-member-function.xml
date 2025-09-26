@@ -120,7 +120,7 @@
     </function>
   </struct>
   <template>
-    <tparam name="idx" class="non-type" type="int"/>
+    <tparam name="idx" class="constant" type="int"/>
     <struct name="Tag" id="VcdHojbpExgHkfZT+vfrZl1ADjM=">
       <file short-path="using-member-function.cpp" source-path="using-member-function.cpp" line="8" class="def"/>
       <doc>

@@ -13,8 +13,8 @@
 #ifndef MRDOCS_API_METADATA_INFO_TYPEDEF_HPP
 #define MRDOCS_API_METADATA_INFO_TYPEDEF_HPP
 
-#include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/ADT/Optional.hpp>
+#include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Template.hpp>
@@ -26,7 +26,7 @@ namespace clang::mrdocs {
 struct TypedefInfo final
     : InfoCommonBase<InfoKind::Typedef>
 {
-    Optional<Polymorphic<TypeInfo>> Type = std::nullopt;
+    Polymorphic<TypeInfo> Type = Polymorphic<TypeInfo>(NamedTypeInfo{});
 
     /** Indicates if this is a new C++ "using"-style typedef
 

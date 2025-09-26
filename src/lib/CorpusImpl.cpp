@@ -365,7 +365,7 @@ isDecayedEqual(
                                         static_cast<const TypeTArg &>(*rhs).Type,
                                         context, corpus);
     }
-    if (lhs->isNonType())
+    if (lhs->isConstant())
     {
         return trim(static_cast<const NonTypeTArg &>(*lhs).Value.Written) ==
                trim(static_cast<const NonTypeTArg &>(*rhs).Value.Written);
@@ -502,8 +502,8 @@ lookupImpl(
     if (auto* TI = contextPtr->asTypedefPtr())
     {
         MRDOCS_CHECK_OR(TI->Type, nullptr);
-        MRDOCS_ASSERT(!TI->Type->valueless_after_move());
-        SymbolID resolvedSymbolID = (*TI->Type)->namedSymbol();
+        MRDOCS_ASSERT(!TI->Type.valueless_after_move());
+        SymbolID resolvedSymbolID = (*TI->Type).namedSymbol();
         contextPtr = this->find(resolvedSymbolID);
         MRDOCS_CHECK_OR(contextPtr, nullptr);
     }
@@ -652,9 +652,8 @@ lookupImpl(
             MRDOCS_CHECK_OR(F.IsExplicitObjectMemberFunction == ref.IsExplicitObjectMemberFunction, matchRes);
             for (std::size_t i = 0; i < F.Params.size(); ++i)
             {
-                auto& lhsTypeOpt = F.Params[i].Type;
-                MRDOCS_CHECK_OR(lhsTypeOpt, matchRes);
-                auto& lhsType = *lhsTypeOpt;
+                Polymorphic<TypeInfo> const& lhsType = F.Params[i].Type;
+                MRDOCS_ASSERT(!lhsType.valueless_after_move());
                 auto& rhsType  = ref.FunctionParameters[i];
                 MRDOCS_CHECK_OR(isDecayedEqual(lhsType, rhsType, context, *this), matchRes);
             }
@@ -680,7 +679,7 @@ lookupImpl(
         {
             res = &member;
             matchLevel = memberMatchLevel;
-            // Early exit if the matchMatchLevel is the highest possible
+            // Early exit if the match level is the highest possible
             // for the component and the parsed reference
             if (matchLevel >= highestMatchLevel)
             {

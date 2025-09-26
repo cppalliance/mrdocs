@@ -3,7 +3,7 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <template>
-    <tparam class="non-type" type="int"/>
+    <tparam class="constant" type="int"/>
     <struct name="X" id="7wllQWhGGsbbeoZVa3gh4d7bcq8=">
       <file short-path="explicit-deduct-guide.cpp" source-path="explicit-deduct-guide.cpp" line="3" class="def"/>
     </struct>
@@ -36,7 +36,7 @@
     </param>
   </guide>
   <template>
-    <tparam name="B" class="non-type" type="bool" default="true"/>
+    <tparam name="B" class="constant" type="bool" default="true"/>
     <guide name="X" explicit-spec="explicit(B)" id="YS/v8XQ/9ShQ2spNAh5EY33PN7s=">
       <file short-path="explicit-deduct-guide.cpp" source-path="explicit-deduct-guide.cpp" line="12"/>
       <deduced>

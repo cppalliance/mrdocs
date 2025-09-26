@@ -19,8 +19,9 @@ void
 TypeInfoBuilder::
 buildPointer(PointerType const*, unsigned quals)
 {
+    MRDOCS_ASSERT(Inner);
     *Inner = Polymorphic<TypeInfo>(std::in_place_type<PointerTypeInfo>);
-    auto &I = dynamic_cast<PointerTypeInfo &>(***Inner);
+    auto &I = dynamic_cast<PointerTypeInfo &>(**Inner);
     I.IsConst = quals & Qualifiers::Const;
     I.IsVolatile = quals & Qualifiers::Volatile;
     Inner = &I.PointeeType;
@@ -30,16 +31,18 @@ void
 TypeInfoBuilder::
 buildLValueReference(LValueReferenceType const*)
 {
+    MRDOCS_ASSERT(Inner);
     *Inner = Polymorphic<TypeInfo>(std::in_place_type<LValueReferenceTypeInfo>);
-    Inner = &dynamic_cast<LValueReferenceTypeInfo &>(***Inner).PointeeType;
+    Inner = &dynamic_cast<LValueReferenceTypeInfo &>(**Inner).PointeeType;
 }
 
 void
 TypeInfoBuilder::
 buildRValueReference(RValueReferenceType const*)
 {
+    MRDOCS_ASSERT(Inner);
     *Inner = Polymorphic<TypeInfo>(std::in_place_type<RValueReferenceTypeInfo>);
-    Inner = &dynamic_cast<RValueReferenceTypeInfo &>(***Inner).PointeeType;
+    Inner = &dynamic_cast<RValueReferenceTypeInfo &>(**Inner).PointeeType;
 }
 
 void
@@ -48,8 +51,9 @@ buildMemberPointer(
     MemberPointerType const* T,
     unsigned const quals)
 {
+    MRDOCS_ASSERT(Inner);
     *Inner = Polymorphic<TypeInfo>(std::in_place_type<MemberPointerTypeInfo>);
-    auto &I = dynamic_cast<MemberPointerTypeInfo &>(***Inner);
+    auto &I = dynamic_cast<MemberPointerTypeInfo &>(**Inner);
     I.IsConst = quals & Qualifiers::Const;
     I.IsVolatile = quals & Qualifiers::Volatile;
     // do not set NNS because the parent type is *not*
@@ -63,8 +67,9 @@ void
 TypeInfoBuilder::
 buildArray(ArrayType const* T)
 {
+    MRDOCS_ASSERT(Inner);
     *Inner = Polymorphic<TypeInfo>(std::in_place_type<ArrayTypeInfo>);
-    auto &I = dynamic_cast<ArrayTypeInfo &>(***Inner);
+    auto &I = dynamic_cast<ArrayTypeInfo &>(**Inner);
     if (auto* CAT = dyn_cast<ConstantArrayType>(T))
     {
         getASTVisitor().populate(I.Bounds, CAT->getSizeExpr(), CAT->getSize());
@@ -81,8 +86,9 @@ TypeInfoBuilder::
 populate(FunctionType const* T)
 {
     auto* FPT = cast<FunctionProtoType>(T);
+    MRDOCS_ASSERT(Inner);
     *Inner = Polymorphic<TypeInfo>(std::in_place_type<FunctionTypeInfo>);
-    auto &I = dynamic_cast<FunctionTypeInfo &>(***Inner);
+    auto &I = dynamic_cast<FunctionTypeInfo &>(**Inner);
     for (QualType const PT : FPT->getParamTypes())
     {
         I.ParamTypes.emplace_back(getASTVisitor().toTypeInfo(PT));
@@ -104,17 +110,18 @@ buildDecltype(
     unsigned quals,
     bool pack)
 {
+    MRDOCS_ASSERT(Inner);
     *Inner = Polymorphic<TypeInfo>(std::in_place_type<DecltypeTypeInfo>);
-    (**Inner)->Constraints = this->Constraints;
-    (**Inner)->IsPackExpansion = pack;
+    (*Inner)->Constraints = this->Constraints;
+    (*Inner)->IsPackExpansion = pack;
 
-    auto &I = dynamic_cast<DecltypeTypeInfo &>(***Inner);
+    auto &I = dynamic_cast<DecltypeTypeInfo &>(**Inner);
     getASTVisitor().populate(I.Operand, T->getUnderlyingExpr());
     I.IsConst = quals & Qualifiers::Const;
     I.IsVolatile = quals & Qualifiers::Volatile;
 
-    (*Result)->Constraints = this->Constraints;
-    (*Result)->IsPackExpansion = pack;
+    Result->Constraints = this->Constraints;
+    Result->IsPackExpansion = pack;
 }
 
 void
@@ -124,11 +131,12 @@ buildAuto(
     unsigned const quals,
     bool const pack)
 {
+    MRDOCS_ASSERT(Inner);
     *Inner = Polymorphic<TypeInfo>(std::in_place_type<AutoTypeInfo>);
-    (**Inner)->Constraints = this->Constraints;
-    (**Inner)->IsPackExpansion = pack;
+    (*Inner)->Constraints = this->Constraints;
+    (*Inner)->IsPackExpansion = pack;
 
-    auto &I = dynamic_cast<AutoTypeInfo &>(***Inner);
+    auto &I = dynamic_cast<AutoTypeInfo &>(**Inner);
     I.IsConst = quals & Qualifiers::Const;
     I.IsVolatile = quals & Qualifiers::Volatile;
     I.Keyword = toAutoKind(T->getKeyword());
@@ -145,8 +153,8 @@ buildAuto(
         // Constraint->Prefix = getASTVisitor().buildNameInfo(
         //     cast<Decl>(CD->getDeclContext()));
     }
-    (*Result)->Constraints = this->Constraints;
-    (*Result)->IsPackExpansion = pack;
+    Result->Constraints = this->Constraints;
+    Result->IsPackExpansion = pack;
 }
 
 void
@@ -157,11 +165,12 @@ buildTerminal(
     bool pack)
 {
     MRDOCS_SYMBOL_TRACE(T, getASTVisitor().context_);
+    MRDOCS_ASSERT(Inner);
     *Inner = Polymorphic<TypeInfo>(std::in_place_type<NamedTypeInfo>);
-    (**Inner)->IsPackExpansion = pack;
-    (**Inner)->Constraints = this->Constraints;
+    (*Inner)->IsPackExpansion = pack;
+    (*Inner)->Constraints = this->Constraints;
 
-    auto &TI = dynamic_cast<NamedTypeInfo &>(***Inner);
+    auto &TI = dynamic_cast<NamedTypeInfo &>(**Inner);
     TI.IsConst = quals & Qualifiers::Const;
     TI.IsVolatile = quals & Qualifiers::Volatile;
     TI.Name = Polymorphic<NameInfo>(std::in_place_type<IdentifierNameInfo>);
@@ -171,8 +180,8 @@ buildTerminal(
         auto const* FT = cast<BuiltinType>(T);
         TI.FundamentalType = toFundamentalTypeKind(FT->getKind());
     }
-    (*Result)->Constraints = this->Constraints;
-    (*Result)->IsPackExpansion = pack;
+    Result->Constraints = this->Constraints;
+    Result->IsPackExpansion = pack;
 }
 
 void
@@ -184,11 +193,12 @@ buildTerminal(
     unsigned quals,
     bool pack)
 {
+    MRDOCS_ASSERT(Inner);
     *Inner = Polymorphic<TypeInfo>(std::in_place_type<NamedTypeInfo>);
-    (**Inner)->IsPackExpansion = pack;
-    (**Inner)->Constraints = this->Constraints;
+    (*Inner)->IsPackExpansion = pack;
+    (*Inner)->Constraints = this->Constraints;
 
-    auto &I = dynamic_cast<NamedTypeInfo &>(***Inner);
+    auto &I = dynamic_cast<NamedTypeInfo &>(**Inner);
     I.IsConst = quals & Qualifiers::Const;
     I.IsVolatile = quals & Qualifiers::Volatile;
 
@@ -213,8 +223,8 @@ buildTerminal(
         }
         Name.Prefix = getASTVisitor().toNameInfo(NNS);
     }
-    (*Result)->Constraints = this->Constraints;
-    (*Result)->IsPackExpansion = pack;
+    Result->Constraints = this->Constraints;
+    Result->IsPackExpansion = pack;
 }
 
 void
@@ -235,11 +245,12 @@ buildTerminal(
     Decl const* ID = decayToPrimaryTemplate(D);
     MRDOCS_SYMBOL_TRACE(ID, getASTVisitor().context_);
 
+    MRDOCS_ASSERT(Inner);
     *Inner = Polymorphic<TypeInfo>(std::in_place_type<NamedTypeInfo>);
-    (**Inner)->IsPackExpansion = pack;
-    (**Inner)->Constraints = this->Constraints;
+    (*Inner)->IsPackExpansion = pack;
+    (*Inner)->Constraints = this->Constraints;
 
-    auto &TI = dynamic_cast<NamedTypeInfo &>(***Inner);
+    auto &TI = dynamic_cast<NamedTypeInfo &>(**Inner);
     TI.IsConst = quals & Qualifiers::Const;
     TI.IsVolatile = quals & Qualifiers::Volatile;
 
@@ -272,8 +283,8 @@ buildTerminal(
         populateNameInfo(Name, D);
         getASTVisitor().populate(Name.TemplateArgs, *TArgs);
     }
-    (*Result)->Constraints = this->Constraints;
-    (*Result)->IsPackExpansion = pack;
+    Result->Constraints = this->Constraints;
+    Result->IsPackExpansion = pack;
 }
 
 } // clang::mrdocs

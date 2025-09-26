@@ -21,7 +21,8 @@ namespace clang::mrdocs {
 struct PointerTypeInfo final
     : TypeInfoCommonBase<TypeKind::Pointer>
 {
-    Optional<Polymorphic<TypeInfo>> PointeeType = std::nullopt;
+    Polymorphic<TypeInfo> PointeeType = Polymorphic<TypeInfo>(AutoTypeInfo{});
+
     std::strong_ordering
     operator<=>(PointerTypeInfo const&) const;
 };

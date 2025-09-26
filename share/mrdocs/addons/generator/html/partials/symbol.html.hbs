@@ -53,7 +53,7 @@
 </thead>
 <tbody>
 {{#each (filter_by symbol.bases "isPublic")}}
-<tr><td>{{#>markup/code}}{{> type/declarator type }}{{/markup/code}}</td><td>{{> javadoc/inline-brief symbol.doc.brief }}</td></tr>
+<tr><td>{{#>markup/code}}{{> type/declarator type }}{{/markup/code}}</td><td>{{> javadoc/inline-brief type.name.symbol.doc.brief }}</td></tr>
 {{/each}}
 </tbody>
 </table>
@@ -72,7 +72,7 @@
 </thead>
 <tbody>
 {{#each (filter_by symbol.bases "isProtected")}}
-<tr><td>{{#>markup/code}}{{> type/declarator type }}{{/markup/code}}</td><td>{{> javadoc/inline-brief symbol.doc.brief }}</td></tr>
+<tr><td>{{#>markup/code}}{{> type/declarator type }}{{/markup/code}}</td><td>{{> javadoc/inline-brief type.name.symbol.doc.brief }}</td></tr>
 {{/each}}
 </tbody>
 </table>

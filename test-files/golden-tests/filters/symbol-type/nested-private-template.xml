@@ -8,7 +8,7 @@
       <file short-path="nested-private-template.cpp" source-path="nested-private-template.cpp" line="1" class="def"/>
       <template>
         <tparam name="R" class="type"/>
-        <tparam class="non-type" type="bool"/>
+        <tparam class="constant" type="bool"/>
         <struct name="impl" access="private" id="7XlFKPcXRfyYPWc4WPN3PAH+m58=">
           <file short-path="nested-private-template.cpp" source-path="nested-private-template.cpp" line="4"/>
         </struct>
@@ -16,7 +16,7 @@
       <template class="partial" id="7XlFKPcXRfyYPWc4WPN3PAH+m58=">
         <tparam name="R" class="type"/>
         <targ class="type" type="R"/>
-        <targ class="non-type" value="false"/>
+        <targ class="constant" value="false"/>
         <struct name="impl" access="private" id="BCRU3eMBRSysyvFsjJj+0yg+Vfc=">
           <file short-path="nested-private-template.cpp" source-path="nested-private-template.cpp" line="10" class="def"/>
         </struct>

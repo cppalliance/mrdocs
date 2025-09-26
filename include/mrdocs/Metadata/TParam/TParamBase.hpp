@@ -26,22 +26,25 @@ class DomCorpus;
 
 struct TParam
 {
-    /** The kind of template parameter this is */
+    /** The kind of template parameter this is
+     */
     TParamKind Kind = TParamKind::Type;
 
-    /** The template parameters name, if any */
+    /** The template parameters name, if any
+     */
     std::string Name;
 
     /** Whether this template parameter is a parameter pack */
     bool IsParameterPack = false;
 
-    /** The default template argument, if any */
+    /** The default template argument, if any
+     */
     Optional<Polymorphic<TArg>> Default = std::nullopt;
 
     constexpr virtual ~TParam() = default;
 
     constexpr bool isType()     const noexcept { return Kind == TParamKind::Type; }
-    constexpr bool isNonType()  const noexcept { return Kind == TParamKind::NonType; }
+    constexpr bool isConstant()  const noexcept { return Kind == TParamKind::Constant; }
     constexpr bool isTemplate() const noexcept { return Kind == TParamKind::Template; }
 
     std::strong_ordering operator<=>(TParam const&) const;
@@ -71,7 +74,7 @@ struct TParamCommonBase : TParam
     static constexpr TParamKind kind_id = K;
 
     static constexpr bool isType()     noexcept { return K == TParamKind::Type; }
-    static constexpr bool isNonType()  noexcept { return K == TParamKind::NonType; }
+    static constexpr bool isConstant() noexcept { return K == TParamKind::Constant; }
     static constexpr bool isTemplate() noexcept { return K == TParamKind::Template; }
 
     auto operator<=>(TParamCommonBase const&) const = default;

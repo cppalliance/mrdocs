@@ -39,7 +39,7 @@ visit(
         return f(static_cast<add_cv_from_t<
             TArgTy, TypeTArg>&>(A),
             std::forward<Args>(args)...);
-    case TArgKind::NonType:
+    case TArgKind::Constant:
         return f(static_cast<add_cv_from_t<
             TArgTy, NonTypeTArg>&>(A),
             std::forward<Args>(args)...);

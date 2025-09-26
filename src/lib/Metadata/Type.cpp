@@ -172,11 +172,9 @@ operator()(
 
     if constexpr(requires { t.ParentType; })
     {
-        if(t.ParentType)
-        {
-            writeFullType(**t.ParentType, write);
-            write("::");
-        }
+        MRDOCS_ASSERT(!t.ParentType.valueless_after_move());
+        writeFullType(*t.ParentType, write);
+        write("::");
     }
 
     if constexpr(T::isDecltype())
@@ -790,24 +788,18 @@ innerTypeImpl(TypeInfoTy&& TI) noexcept
     {
         if constexpr(requires { t.PointeeType; })
         {
-            if (t.PointeeType)
-            {
-                return &*t.PointeeType;
-            }
+            MRDOCS_ASSERT(!t.PointeeType.valueless_after_move());
+            return &t.PointeeType;
         }
         if constexpr(requires { t.ElementType; })
         {
-            if (t.ElementType)
-            {
-                return &*t.ElementType;
-            }
+            MRDOCS_ASSERT(!t.ElementType.valueless_after_move());
+            return &t.ElementType;
         }
         if constexpr(requires { t.ReturnType; })
         {
-            if (t.ReturnType)
-            {
-                return &*t.ReturnType;
-            }
+            MRDOCS_ASSERT(!t.ReturnType.valueless_after_move());
+            return &t.ReturnType;
         }
         return nullptr;
     });

@@ -832,11 +832,12 @@ private:
         // https://en.cppreference.com/w/cpp/language/function#Function_type
         if (curParam->isArray())
         {
-            auto ATI = dynamic_cast<ArrayTypeInfo &>(*curParam);
+            ArrayTypeInfo PrevParamType = dynamic_cast<ArrayTypeInfo &>(*curParam);
             curParam = Polymorphic<TypeInfo>(std::in_place_type<PointerTypeInfo>);
-            *curParam = ATI;
-            static_cast<PointerTypeInfo &>(*curParam).PointeeType =
-                std::move(ATI.ElementType);
+            auto& curAsPointerType = dynamic_cast<PointerTypeInfo &>(*curParam);
+            curAsPointerType.PointeeType = std::move(PrevParamType.ElementType);
+            auto& PrevAsBase = dynamic_cast<TypeInfo&>(PrevParamType);
+            *curParam = std::move(PrevAsBase);
         }
 
         // 3. After producing the list of parameter types, any top-level

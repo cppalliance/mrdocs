@@ -13,8 +13,8 @@
 #define MRDOCS_API_SUPPORT_EXPECTED_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/Concepts.hpp>
+#include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/source_location.hpp>
 #include <exception>
 #include <functional>

@@ -36,7 +36,7 @@
     </base>
   </struct>
   <template>
-    <tparam name="I" class="non-type" type="int"/>
+    <tparam name="I" class="constant" type="int"/>
     <tparam name="T" class="type" default="void"/>
     <struct name="S0" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
       <file short-path="template-specialization-inheritance.cpp" source-path="template-specialization-inheritance.cpp" line="1" class="def"/>
@@ -46,7 +46,7 @@
     </struct>
   </template>
   <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
-    <targ class="non-type" value="2"/>
+    <targ class="constant" value="2"/>
     <struct name="S0" id="nJGs54s6oYf7fHzIpo0tyaCSH9M=">
       <file short-path="template-specialization-inheritance.cpp" source-path="template-specialization-inheritance.cpp" line="2" class="def"/>
       <struct name="S1" id="yY+X2/Fqu8ENz37/HFEJCBOSfVg=">
@@ -55,13 +55,13 @@
     </struct>
   </template>
   <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
-    <targ class="non-type" value="3"/>
+    <targ class="constant" value="3"/>
     <struct name="S0" id="c7NNZfjOZ8Ztuw0u26xL/h7UKvA=">
       <file short-path="template-specialization-inheritance.cpp" source-path="template-specialization-inheritance.cpp" line="8" class="def"/>
     </struct>
   </template>
   <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
-    <targ class="non-type" value="5"/>
+    <targ class="constant" value="5"/>
     <struct name="S0" id="6Syw3aWFS3pfPUbWU7C8uCE7Jjc=">
       <file short-path="template-specialization-inheritance.cpp" source-path="template-specialization-inheritance.cpp" line="2" class="def"/>
       <struct name="S1" id="fzQKX2ygXfWjrcDi23o2CnGMkaY=">
@@ -70,7 +70,7 @@
     </struct>
   </template>
   <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
-    <targ class="non-type" value="6"/>
+    <targ class="constant" value="6"/>
     <struct name="S0" id="flxREiXFL5ObY0xUAxojj+jvR54=">
       <file short-path="template-specialization-inheritance.cpp" source-path="template-specialization-inheritance.cpp" line="13" class="def"/>
     </struct>

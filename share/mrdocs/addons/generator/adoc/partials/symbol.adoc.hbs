@@ -37,7 +37,7 @@
 | Description
 {{#each (filter_by symbol.bases "isPublic")}}
 | {{#>markup/code}}{{> type/declarator type }}{{/markup/code}}
-| {{> javadoc/inline-brief symbol.doc.brief }}
+| {{> javadoc/inline-brief type.name.symbol.doc.brief }}
 {{/each}}
 |===
 
@@ -51,7 +51,7 @@
 | Description
 {{#each (filter_by symbol.bases "isProtected")}}
 | {{#>markup/code}}{{> type/declarator type }}{{/markup/code}}
-| {{> javadoc/inline-brief symbol.doc.brief }}
+| {{> javadoc/inline-brief type.name.symbol.doc.brief }}
 {{/each}}
 |===
 

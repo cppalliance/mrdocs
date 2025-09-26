@@ -30,9 +30,9 @@ build()
         {
             MRDOCS_CHECK_OR_CONTINUE(base.Access == AccessKind::Public);
             MRDOCS_CHECK_OR_CONTINUE(base.Type);
-            MRDOCS_ASSERT(!base.Type->valueless_after_move());
-            MRDOCS_CHECK_OR_CONTINUE((*base.Type)->isNamed());
-            auto& namedType = dynamic_cast<NamedTypeInfo&>(**base.Type);
+            MRDOCS_ASSERT(!base.Type.valueless_after_move());
+            MRDOCS_CHECK_OR_CONTINUE(base.Type->isNamed());
+            auto& namedType = dynamic_cast<NamedTypeInfo&>(*base.Type);
             MRDOCS_CHECK_OR_CONTINUE(namedType.Name);
             SymbolID const namedSymbolID = namedType.Name->id;
             MRDOCS_CHECK_OR_CONTINUE(namedSymbolID != SymbolID::invalid);

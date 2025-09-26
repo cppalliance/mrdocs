@@ -22,7 +22,7 @@
     </function>
   </struct>
   <template>
-    <tparam name="B" class="non-type" type="bool"/>
+    <tparam name="B" class="constant" type="bool"/>
     <struct name="ExplicitExpression" id="ztb0u1Q4SVBUQ0roTOM7MFlUt/o=">
       <file short-path="explicit-conv-operator.cpp" source-path="explicit-conv-operator.cpp" line="15" class="def"/>
       <function class="conversion" name="operator bool" explicit-spec="explicit(B)" id="q6N8XkMK9WWWGKNQnlx/o2E1EYc=">
