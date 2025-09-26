@@ -8,9 +8,11 @@
   if (!navContainer && (!navToggle || (navToggle.hidden = true))) return
   var nav = navContainer.querySelector('.nav')
   var navMenuToggle = navContainer.querySelector('.nav-menu-toggle')
+  var closeNavBtn = navContainer.querySelector('.nav-close')
 
   navToggle.addEventListener('click', showNav)
   navContainer.addEventListener('click', trapEvent)
+  closeNavBtn.addEventListener('click', hideNav)
 
   var menuPanel = navContainer.querySelector('[data-panel=menu]')
   if (!menuPanel) return

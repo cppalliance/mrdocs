@@ -300,3 +300,25 @@
   font-weight: var(--body-font-weight-bold);
   opacity: 1;
 }
+
+.nav-close {
+  background: transparent url(../img/octicons-16.svg#view-close) no-repeat center / 100% 100%;
+  min-width: 24px;
+  min-height: 24px;
+  outline: none;
+  border: none;
+  margin-left: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.nav-close span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
