@@ -15,7 +15,7 @@
 #define MRDOCS_API_METADATA_TPARAM_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/TParam/NonTypeTParam.hpp>
+#include <mrdocs/Metadata/TParam/ConstantTParam.hpp>
 #include <mrdocs/Metadata/TParam/TParamBase.hpp>
 #include <mrdocs/Metadata/TParam/TemplateTParam.hpp>
 #include <mrdocs/Metadata/TParam/TypeTParam.hpp>
@@ -40,9 +40,9 @@ visit(
         return f(static_cast<add_cv_from_t<
             TParamTy, TypeTParam>&>(P),
             std::forward<Args>(args)...);
-    case TParamKind::NonType:
+    case TParamKind::Constant:
         return f(static_cast<add_cv_from_t<
-            TParamTy, NonTypeTParam>&>(P),
+            TParamTy, ConstantTParam>&>(P),
             std::forward<Args>(args)...);
     case TParamKind::Template:
         return f(static_cast<add_cv_from_t<

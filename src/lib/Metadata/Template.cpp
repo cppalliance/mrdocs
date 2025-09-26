@@ -25,8 +25,8 @@ toString(TArgKind kind) noexcept
     {
     case TArgKind::Type:
         return "type";
-    case TArgKind::NonType:
-        return "non-type";
+    case TArgKind::Constant:
+        return "constant";
     case TArgKind::Template:
         return "template";
     default:
@@ -42,8 +42,8 @@ toString(
     {
     case TParamKind::Type:
         return "type";
-    case TParamKind::NonType:
-        return "non-type";
+    case TParamKind::Constant:
+        return "constant";
     case TParamKind::Template:
         return "template";
     default:
@@ -129,13 +129,10 @@ toString(
         std::string result;
         if constexpr(T::isType())
         {
-            if (t.Type)
-            {
-                MRDOCS_ASSERT(!t.Type->valueless_after_move());
-                result += toString(**t.Type);
-            }
+            MRDOCS_ASSERT(!t.Type.valueless_after_move());
+            result += toString(*t.Type);
         }
-        if constexpr(T::isNonType())
+        if constexpr(T::isConstant())
         {
             result += t.Value.Written;
         }
@@ -165,7 +162,7 @@ tag_invoke(
         {
             io.map("type", t.Type);
         }
-        if constexpr(T::isNonType())
+        if constexpr(T::isConstant())
         {
             io.map("value", t.Value.Written);
         }
@@ -193,8 +190,8 @@ TypeTParam::
 operator<=>(TypeTParam const&) const = default;
 
 std::strong_ordering
-NonTypeTParam::
-operator<=>(NonTypeTParam const&) const = default;
+ConstantTParam::
+operator<=>(ConstantTParam const&) const = default;
 
 std::strong_ordering
 TemplateTParam::
@@ -240,7 +237,7 @@ tag_invoke(
                 io.map("constraint", t.Constraint);
             }
         }
-        if constexpr(T::isNonType())
+        if constexpr(T::isConstant())
         {
             io.map("type", t.Type);
         }

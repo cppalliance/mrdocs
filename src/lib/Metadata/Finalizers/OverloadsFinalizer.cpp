@@ -28,7 +28,7 @@ findBaseClassPermutation(
     {
         // Find the i-th base class
         MRDOCS_CHECK_OR(base.Type, SymbolID::invalid);
-        auto const baseInfo = corpus.find((*base.Type)->namedSymbol());
+        auto const baseInfo = corpus.find(base.Type->namedSymbol());
         MRDOCS_CHECK_OR_CONTINUE(baseInfo);
         auto const baseRecord = baseInfo->asRecordPtr();
         MRDOCS_CHECK_OR_CONTINUE(baseRecord);
@@ -290,9 +290,9 @@ operator()(RecordInfo& I)
     for (auto& b: I.Bases)
     {
         auto& BT = b.Type;
-        MRDOCS_CHECK_OR(BT);
-        MRDOCS_CHECK_OR((*BT)->isNamed());
-        auto& NT = dynamic_cast<NamedTypeInfo&>(**BT);
+        MRDOCS_ASSERT(!BT.valueless_after_move());
+        MRDOCS_CHECK_OR(BT->isNamed());
+        auto& NT = dynamic_cast<NamedTypeInfo&>(*BT);
         MRDOCS_CHECK_OR(NT.Name);
         auto& NI = dynamic_cast<NameInfo&>(*NT.Name);
         MRDOCS_CHECK_OR(NI.id);

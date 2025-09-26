@@ -113,7 +113,7 @@ struct Attribute
 
 //------------------------------------------------
 
-/** An vector of zero or more XML attributes.
+/** A vector of zero or more XML attributes.
 */
 struct Attributes
 {

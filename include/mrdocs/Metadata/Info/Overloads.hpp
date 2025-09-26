@@ -31,8 +31,13 @@ struct OverloadsInfo final
     /// The members of the overload set.
     std::vector<SymbolID> Members;
 
-    /// Info about the return type of this function.
-    Optional<Polymorphic<TypeInfo>> ReturnType = std::nullopt;
+    /** Info about the return type of these function overloads.
+
+        If all overloads have the same return type, this contains
+        that type. Otherwise, it contains `auto` to indicate that
+        the return type varies according to the parameters.
+     */
+    Polymorphic<TypeInfo> ReturnType = Polymorphic<TypeInfo>(AutoTypeInfo{});
 
     //--------------------------------------------
 

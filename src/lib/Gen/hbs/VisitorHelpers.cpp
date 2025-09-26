@@ -51,10 +51,10 @@ resolveTypedef(Corpus const& c, Info const& I)
     {
         auto const& TI = I.asTypedef();
         MRDOCS_CHECK_OR(TI.Type, &I);
-        MRDOCS_ASSERT(!TI.Type->valueless_after_move());
-        Polymorphic<TypeInfo> const& T = *TI.Type;
-        MRDOCS_CHECK_OR(!T.valueless_after_move() && T->Kind == TypeKind::Named, &I);
-        auto const& NT = dynamic_cast<NamedTypeInfo const&>(*T);
+        MRDOCS_ASSERT(!TI.Type.valueless_after_move());
+        TypeInfo const& T = *TI.Type;
+        MRDOCS_CHECK_OR(T.Kind == TypeKind::Named, &I);
+        auto const& NT = dynamic_cast<NamedTypeInfo const&>(T);
         MRDOCS_CHECK_OR(NT.Name, &I);
         Info const* resolved = c.find(NT.Name->id);
         MRDOCS_CHECK_OR(resolved, &I);
@@ -171,11 +171,10 @@ findResolvedPrimarySiblingWithUrl(Corpus const& c, Info const& I)
         if constexpr (std::same_as<InfoTy, TypedefInfo>)
         {
             auto const& TOpt = U.Type;
-            MRDOCS_CHECK_OR(TOpt, false);
-            Polymorphic<TypeInfo> const& T = *TOpt;
-            MRDOCS_CHECK_OR(!T.valueless_after_move(), false);
-            MRDOCS_CHECK_OR(T->Kind == TypeKind::Named, false);
-            auto const& NT = dynamic_cast<NamedTypeInfo const&>(*T);
+            MRDOCS_CHECK_OR(!TOpt.valueless_after_move(), false);
+            TypeInfo const& T = *TOpt;
+            MRDOCS_CHECK_OR(T.Kind == TypeKind::Named, false);
+            auto const& NT = dynamic_cast<NamedTypeInfo const&>(T);
             MRDOCS_CHECK_OR(NT.Name, false);
             MRDOCS_CHECK_OR(NT.Name->Kind == NameKind::Specialization, false);
             return true;

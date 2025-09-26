@@ -83,7 +83,7 @@ void merge(GuideInfo& I, GuideInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
     merge(I.asInfo(), std::move(Other.asInfo()));
-    if (!I.Deduced)
+    if (I.Deduced->isAuto())
     {
         I.Deduced = std::move(Other.Deduced);
     }
@@ -102,4 +102,3 @@ void merge(GuideInfo& I, GuideInfo&& Other)
 }
 
 } // clang::mrdocs
-

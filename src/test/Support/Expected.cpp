@@ -17,10 +17,10 @@
 //
 
 #include <mrdocs/Support/Expected.hpp>
-#include <test_suite/test_suite.hpp>
 #include <string>
 #include <type_traits>
 #include <utility>
+#include <test_suite/test_suite.hpp>
 
 namespace clang {
 namespace mrdocs {

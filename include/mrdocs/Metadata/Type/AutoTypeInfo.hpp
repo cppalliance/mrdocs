@@ -23,6 +23,9 @@ struct AutoTypeInfo final
     : TypeInfoCommonBase<TypeKind::Auto>
 {
     AutoKind Keyword = AutoKind::Auto;
+
+    /** Constraint on the auto type, if any.
+     */
     Optional<Polymorphic<NameInfo>> Constraint = std::nullopt;
 
     std::strong_ordering

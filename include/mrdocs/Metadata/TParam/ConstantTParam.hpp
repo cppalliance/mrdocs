@@ -11,8 +11,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_METADATA_TPARAM_NONTYPETPARAM_HPP
-#define MRDOCS_API_METADATA_TPARAM_NONTYPETPARAM_HPP
+#ifndef MRDOCS_API_METADATA_TPARAM_CONSTANTTPARAM_HPP
+#define MRDOCS_API_METADATA_TPARAM_CONSTANTTPARAM_HPP
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Optional.hpp>
@@ -22,15 +22,21 @@
 
 namespace clang::mrdocs {
 
-struct NonTypeTParam final
-    : TParamCommonBase<TParamKind::NonType>
+/** A constant template parameter
+
+    Before C++26, constant template parameters were called
+    non-type template parameter in the standard wording.
+    The terminology was changed by P2841R6 / PR#7587.
+ */
+struct ConstantTParam final
+    : TParamCommonBase<TParamKind::Constant>
 {
     /** Type of the non-type template parameter */
-    Optional<Polymorphic<TypeInfo>> Type = std::nullopt;
+    Polymorphic<TypeInfo> Type = Polymorphic<TypeInfo>(AutoTypeInfo{});
 
-    std::strong_ordering operator<=>(NonTypeTParam const&) const;
+    std::strong_ordering operator<=>(ConstantTParam const&) const;
 };
 
 } // clang::mrdocs
 
-#endif
+#endif // MRDOCS_API_METADATA_TPARAM_CONSTANTTPARAM_HPP

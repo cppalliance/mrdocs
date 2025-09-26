@@ -60,7 +60,7 @@
     </function>
   </struct>
   <template>
-    <tparam name="B" class="non-type" type="bool"/>
+    <tparam name="B" class="constant" type="bool"/>
     <struct name="ExplicitExpression" id="ztb0u1Q4SVBUQ0roTOM7MFlUt/o=">
       <file short-path="explicit-ctor.cpp" source-path="explicit-ctor.cpp" line="24" class="def"/>
       <function class="constructor" name="ExplicitExpression" explicit-spec="explicit(B)" id="s6L5UKI8FLTRiyny1rXgYxG/f/0=">

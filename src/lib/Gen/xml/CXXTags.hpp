@@ -126,8 +126,7 @@ writeType(
     XMLTags& tags,
     std::string_view type_tag = "type")
 {
-    visit(I, [&]<typename T>(
-        T const& t)
+    visit(I, [&]<typename T>(T const& t)
         {
             Attributes attrs = {
                 { "class", toString(T::kind_id),
@@ -135,14 +134,11 @@ writeType(
                 { "is-pack", "1", t.IsPackExpansion }
             };
 
-            // KRYSTIAN FIXME: parent should is a type itself
+            // KRYSTIAN FIXME: parent should be a type itself
             if constexpr(requires { t.ParentType; })
             {
-                if (t.ParentType)
-                {
-                    MRDOCS_ASSERT(!t.ParentType->valueless_after_move());
-                    attrs.push({ "parent", toString(**t.ParentType) });
-                }
+                MRDOCS_ASSERT(!t.ParentType.valueless_after_move());
+                attrs.push({ "parent", toString(*t.ParentType) });
             }
 
             if constexpr(T::isNamed())
@@ -223,40 +219,49 @@ writeType(
 
             if constexpr(requires { t.PointeeType; })
             {
-                Optional<Polymorphic<TypeInfo>> pointee = t.PointeeType;
-                if (pointee)
-                {
-                    MRDOCS_ASSERT(!pointee->valueless_after_move());
-                    writeType(**t.PointeeType, tags, "pointee-type");
-                }
+                Polymorphic<TypeInfo> const& pointee = t.PointeeType;
+                MRDOCS_ASSERT(!pointee.valueless_after_move());
+                writeType(*t.PointeeType, tags, "pointee-type");
             }
 
             if constexpr(T::isArray())
             {
                 ArrayTypeInfo const& at = t;
-                if (at.ElementType)
-                {
-                    MRDOCS_ASSERT(!at.ElementType->valueless_after_move());
-                    writeType(**t.ElementType, tags, "element-type");
-                }
+                MRDOCS_ASSERT(!at.ElementType.valueless_after_move());
+                writeType(*t.ElementType, tags, "element-type");
             }
 
             if constexpr(T::isFunction())
             {
                 FunctionTypeInfo const& ft = t;
-                if (ft.ReturnType)
+                MRDOCS_ASSERT(!ft.ReturnType.valueless_after_move());
+                writeType(*t.ReturnType, tags, "return-type");
+                for (auto const& p: t.ParamTypes)
                 {
-                    MRDOCS_ASSERT(!ft.ReturnType->valueless_after_move());
-                    writeType(**t.ReturnType, tags, "return-type");
-                    for (auto const& p: t.ParamTypes)
-                    {
-                        writeType(*p, tags, "param-type");
-                    }
+                    writeType(*p, tags, "param-type");
                 }
             }
-
             tags.close(type_tag);
         });
+}
+
+
+inline
+void
+writeType(
+    NameInfo const& I,
+    XMLTags& tags,
+    std::string_view type_tag = "type")
+{
+    Attributes attrs = {
+        { "class", toString(TypeKind::Named), false },
+        { "is-pack", "1", false }
+    };
+
+    attrs.push({I.id});
+    attrs.push({"name", I.Name});
+
+    tags.write(type_tag, {}, std::move(attrs));
 }
 
 inline
@@ -316,14 +321,11 @@ inline void writeTemplateParam(TParam const& I, XMLTags& tags)
             { "class", toString(T::kind_id) }
         };
 
-        if constexpr (T::isNonType())
+        if constexpr (T::isConstant())
         {
-            NonTypeTParam const& nt = P;
-            if (nt.Type)
-            {
-                MRDOCS_ASSERT(!nt.Type->valueless_after_move());
-                attrs.push({ "type", toString(**nt.Type) });
-            }
+            ConstantTParam const& nt = P;
+            MRDOCS_ASSERT(!nt.Type.valueless_after_move());
+            attrs.push({ "type", toString(*nt.Type) });
         }
 
         if (tp.Default)
@@ -357,13 +359,10 @@ inline void writeTemplateArg(TArg const& I, XMLTags& tags)
         if constexpr (T::isType())
         {
             TypeTArg const& at = A;
-            if (at.Type)
-            {
-                MRDOCS_ASSERT(!at.Type->valueless_after_move());
-                attrs.push({ "type", toString(**A.Type) });
-            }
+            MRDOCS_ASSERT(!at.Type.valueless_after_move());
+            attrs.push({ "type", toString(*A.Type) });
         }
-        if constexpr (T::isNonType())
+        if constexpr (T::isConstant())
         {
             attrs.push({ "value", A.Value.Written });
         }

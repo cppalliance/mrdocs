@@ -13,8 +13,8 @@
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Version.hpp>
 #include <llvm/Support/Mutex.h>
-#include <llvm/Support/raw_ostream.h>
 #include <llvm/Support/Signals.h>
+#include <llvm/Support/raw_ostream.h>
 #include <cstdlib>
 #include <format>
 #include <mutex>

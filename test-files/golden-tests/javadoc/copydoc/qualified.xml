@@ -215,7 +215,7 @@
     </struct>
   </namespace>
   <template>
-    <tparam name="N" class="non-type" type="int"/>
+    <tparam name="N" class="constant" type="int"/>
     <class name="param_t" id="X9R785kQEYyJ0tnnSr0SvdLAZQw=">
       <file short-path="qualified.cpp" source-path="qualified.cpp" line="2"/>
       <doc>

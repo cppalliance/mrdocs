@@ -20,9 +20,13 @@ merge(NamespaceAliasInfo& I, NamespaceAliasInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
     merge(I.asInfo(), std::move(Other.asInfo()));
-    if (!I.AliasedSymbol)
+    if (I.AliasedSymbol.Name.empty())
     {
-        I.AliasedSymbol = std::move(Other.AliasedSymbol);
+        I.AliasedSymbol.Name = std::move(Other.AliasedSymbol.Name);
+    }
+    if (!I.AliasedSymbol.id)
+    {
+        I.AliasedSymbol.id = Other.AliasedSymbol.id;
     }
 }
 

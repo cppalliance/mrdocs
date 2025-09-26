@@ -14,6 +14,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Optional.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
+#include <mrdocs/Metadata/Type/AutoTypeInfo.hpp>
 #include <mrdocs/Metadata/Type/TypeBase.hpp>
 
 namespace clang::mrdocs {
@@ -21,7 +22,7 @@ namespace clang::mrdocs {
 struct ArrayTypeInfo final
     : TypeInfoCommonBase<TypeKind::Array>
 {
-    Optional<Polymorphic<TypeInfo>> ElementType = std::nullopt;
+    Polymorphic<TypeInfo> ElementType = Polymorphic<TypeInfo>(AutoTypeInfo{});
     ConstantExprInfo<std::uint64_t> Bounds;
 
     std::strong_ordering

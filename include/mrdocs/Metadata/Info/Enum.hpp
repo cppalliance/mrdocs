@@ -24,17 +24,32 @@ namespace clang::mrdocs {
 struct EnumInfo final
     : InfoCommonBase<InfoKind::Enum>
 {
-    // Indicates whether this enum is scoped (e.g. enum class).
+    /** Indicates whether this enum is scoped (e.g. enum class).
+
+        If true, the enumerators are accessed with the scope resolution
+        operator (e.g. EnumName::Enumerator).
+
+        If false, the enumerators are accessed directly (e.g. Enumerator)
+        in the parent context.
+    */
     bool Scoped = false;
 
-    // Set too nonempty to the type when this is an explicitly typed enum. For
-    //   enum Foo : short { ... };
-    // this will be "short".
+    /** The underlying type of this enum, if explicitly specified.
+
+        If not specified, the underlying type is an implementation-defined
+        integral type that can represent all the enumerator values defined in
+        the enumeration.
+
+        For `enum Foo : short { ... };` this will be represent `short`.
+    */
     Optional<Polymorphic<TypeInfo>> UnderlyingType = std::nullopt;
 
     /** The members of this scope.
 
-        All members are enum constants;
+        All members are enum constants.
+
+        Enum constants are independent symbol types that
+        can be documented separately.
     */
     std::vector<SymbolID> Constants;
 

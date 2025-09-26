@@ -12,9 +12,10 @@
 #include <lib/Metadata/Finalizers/Javadoc/Function.hpp>
 #include <lib/Metadata/Finalizers/Javadoc/Overloads.hpp>
 #include <lib/Metadata/Finalizers/JavadocFinalizer.hpp>
+#include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Support/Algorithm.hpp>
-#include <mrdocs/Support/ScopeExit.hpp>
 #include <mrdocs/Support/Path.hpp>
+#include <mrdocs/Support/ScopeExit.hpp>
 #include <algorithm>
 #include <format>
 
@@ -440,9 +441,8 @@ finalizeMetadataCopies(Info& I)
             // Copy exceptions only if destination exceptions are empty
             // and the destination is not noexcept
             bool const destIsNoExcept =
-                I.isFunction() ?
-                I.asFunction().Noexcept.Kind == NoexceptKind::False :
-                false;
+                I.isFunction() &&
+                I.asFunction().Noexcept.Kind == NoexceptKind::False;
             if (destJavadoc.exceptions.empty() &&
                 !destIsNoExcept)
             {
@@ -720,10 +720,8 @@ finalizeInfoData(InfoTy& I)
     }
     if constexpr (requires { I.ReturnType; })
     {
-        if (I.ReturnType)
-        {
-            finalize(**I.ReturnType);
-        }
+        MRDOCS_ASSERT(!I.ReturnType.valueless_after_move());
+        finalize(*I.ReturnType);
     }
     if constexpr (requires { I.Params; })
     {
@@ -731,9 +729,23 @@ finalizeInfoData(InfoTy& I)
     }
     if constexpr (requires { I.Type; })
     {
-        if (I.Type)
+        if constexpr (detail::isOptionalV<decltype(I.Type)>)
         {
-            finalize(**I.Type);
+            if (I.Type)
+            {
+                finalize(**I.Type);
+            }
+        }
+        else if constexpr (detail::IsPolymorphic<decltype(I.Type)>)
+        {
+            if (!I.Type.valueless_after_move())
+            {
+                finalize(*I.Type);
+            }
+        }
+        else if (I.Type)
+        {
+            finalize(*I.Type);
         }
     }
     if constexpr (requires { I.UnderlyingType; })
@@ -753,10 +765,7 @@ finalizeInfoData(InfoTy& I)
     }
     if constexpr (requires { I.AliasedSymbol; })
     {
-        if (I.AliasedSymbol)
-        {
-            finalize(**I.AliasedSymbol);
-        }
+        finalize(I.AliasedSymbol);
     }
     if constexpr (requires { I.IntroducedName; })
     {
@@ -771,10 +780,7 @@ finalizeInfoData(InfoTy& I)
     }
     if constexpr (requires { I.Deduced; })
     {
-        if (I.Deduced)
-        {
-            finalize(**I.Deduced);
-        }
+        finalize(*I.Deduced);
     }
 }
 
@@ -1265,7 +1271,7 @@ setAutoRelates()
     // 1) Inner type of the first parameter
     [&] {
         MRDOCS_CHECK_OR(!I.Params.empty());
-        auto* firstParamInfo = toRecordOrEnum(*I.Params.front().Type);
+        auto* firstParamInfo = toRecordOrEnum(I.Params.front().Type);
         MRDOCS_CHECK_OR(firstParamInfo);
         if (firstParamInfo->Extraction == ExtractionMode::Regular)
         {
@@ -1276,15 +1282,15 @@ setAutoRelates()
         MRDOCS_CHECK_OR(firstParamInfo->isRecord());
         auto const* firstParamRecord = dynamic_cast<RecordInfo*>(firstParamInfo);
         MRDOCS_CHECK_OR(
-            (*I.Params.front().Type)->isLValueReference() ||
-            (*I.Params.front().Type)->isRValueReference() ||
-            (*I.Params.front().Type)->isPointer());
+            I.Params.front().Type->isLValueReference() ||
+            I.Params.front().Type->isRValueReference() ||
+            I.Params.front().Type->isPointer());
         // Get all transitively derived classes of firstParamRecord
        pushAllDerivedClasses(firstParamRecord, relatedRecordsOrEnums, corpus_);
     }();
 
     // 3) The return type of the function
-    if (auto* returnTypeInfo = toRecordOrEnum(*I.ReturnType))
+    if (auto* returnTypeInfo = toRecordOrEnum(I.ReturnType))
     {
         if (returnTypeInfo->Extraction == ExtractionMode::Regular)
         {
@@ -1295,8 +1301,8 @@ setAutoRelates()
         // each template parameter is also a related record
         [&] {
             MRDOCS_CHECK_OR(I.ReturnType);
-            MRDOCS_CHECK_OR((*I.ReturnType)->isNamed());
-            auto& NTI = dynamic_cast<NamedTypeInfo &>(**I.ReturnType);
+            MRDOCS_CHECK_OR(I.ReturnType->isNamed());
+            auto& NTI = dynamic_cast<NamedTypeInfo &>(*I.ReturnType);
             MRDOCS_CHECK_OR(NTI.Name);
             MRDOCS_CHECK_OR(NTI.Name->isSpecialization());
             auto const& NTIS = dynamic_cast<SpecializationNameInfo &>(*NTI.Name);
@@ -1304,7 +1310,7 @@ setAutoRelates()
             Polymorphic<TArg> const& firstArg = NTIS.TemplateArgs.front();
             MRDOCS_CHECK_OR(firstArg->isType());
             auto const& typeArg = dynamic_cast<TypeTArg const &>(*firstArg);
-            if (auto* argInfo = toRecordOrEnum(*typeArg.Type))
+            if (auto* argInfo = toRecordOrEnum(typeArg.Type))
             {
                 if (argInfo->Extraction == ExtractionMode::Regular)
                 {
@@ -1552,10 +1558,8 @@ finalize(TArg& arg)
     {
         if constexpr (Ty::isType())
         {
-            if (A.Type)
-            {
-                finalize(**A.Type);
-            }
+            MRDOCS_ASSERT(!A.Type.valueless_after_move());
+            finalize(*A.Type);
         }
         if constexpr (Ty::isTemplate())
         {
@@ -1581,13 +1585,10 @@ finalize(TParam& param)
                 finalize(**P.Constraint);
             }
         }
-
-        if constexpr (Ty::isNonType())
+        if constexpr (Ty::isConstant())
         {
-            if (P.Type)
-            {
-                finalize(**P.Type);
-            }
+            MRDOCS_ASSERT(!P.Type.valueless_after_move());
+            finalize(*P.Type);
         }
 
         if constexpr (Ty::isTemplate())
@@ -1601,20 +1602,16 @@ void
 JavadocFinalizer::
 finalize(Param& param)
 {
-    if (param.Type)
-    {
-        finalize(**param.Type);
-    }
+    MRDOCS_ASSERT(!param.Type.valueless_after_move());
+    finalize(*param.Type);
 }
 
 void
 JavadocFinalizer::
 finalize(BaseInfo& info)
 {
-    if (info.Type)
-    {
-        finalize(**info.Type);
-    }
+    MRDOCS_ASSERT(!info.Type.valueless_after_move());
+    finalize(*info.Type);
 }
 
 void
@@ -1950,8 +1947,9 @@ warnNoParamDocs(FunctionInfo const& I)
     }
 
     // Check for undocumented return type
-    if (I.javadoc->returns.empty() && I.ReturnType)
+    if (I.javadoc->returns.empty())
     {
+        MRDOCS_ASSERT(!I.ReturnType.valueless_after_move());
         auto isVoid = [](TypeInfo const& returnType) -> bool
         {
             if (returnType.isNamed())
@@ -1961,7 +1959,7 @@ warnNoParamDocs(FunctionInfo const& I)
             }
             return false;
         };
-        if (!isVoid(**I.ReturnType))
+        if (!isVoid(*I.ReturnType))
         {
             this->warn(
                 *getPrimaryLocation(I),

@@ -227,20 +227,17 @@ operator()(RecordInfo& I)
     MRDOCS_CHECK_OR(!finalized_.contains(I.id));
     for (BaseInfo const& baseI: I.Bases)
     {
-        auto const *baseNameType =
-            dynamic_cast<NamedTypeInfo const *>(&**baseI.Type);
-        MRDOCS_CHECK_OR_CONTINUE(baseNameType);
-        auto const *baseName =
-            dynamic_cast<NameInfo const *>(&*baseNameType->Name);
-        MRDOCS_CHECK_OR_CONTINUE(baseName);
-        SymbolID baseID = baseName->id;
+        MRDOCS_ASSERT(!baseI.Type.valueless_after_move());
+        MRDOCS_CHECK_OR_CONTINUE(baseI.Type->isNamed());
+        auto& baseNameType = dynamic_cast<NamedTypeInfo const&>(*baseI.Type);
+        MRDOCS_ASSERT(!baseNameType.Name.valueless_after_move());
+        auto& baseName = dynamic_cast<NameInfo const&>(*baseNameType.Name);
+        SymbolID baseID = baseName.id;
         if (corpus_.config->extractImplicitSpecializations && 
-            baseName->isSpecialization())
+            baseName.isSpecialization())
         {
-            auto const *baseSpec =
-                dynamic_cast<SpecializationNameInfo const *>(baseName);
-            MRDOCS_CHECK_OR_CONTINUE(baseSpec);
-            baseID = baseSpec->specializationID;
+            auto& baseSpec = dynamic_cast<SpecializationNameInfo const&>(baseName);
+            baseID = baseSpec.specializationID;
         }
         MRDOCS_CHECK_OR_CONTINUE(baseID);
         auto basePtr = corpus_.find(baseID);

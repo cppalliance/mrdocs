@@ -12,8 +12,8 @@
 #define MRDOCS_API_METADATA_INFO_GUIDE_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/ADT/Optional.hpp>
+#include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Info/Function.hpp>
 #include <mrdocs/Metadata/Info/Source.hpp>
@@ -32,7 +32,7 @@ struct GuideInfo final
 
         This is always a SpecializationTypeInfo.
     */
-    Optional<Polymorphic<TypeInfo>> Deduced = std::nullopt;
+    Polymorphic<TypeInfo> Deduced = Polymorphic<TypeInfo>(AutoTypeInfo{});
 
     /** Template head, if any.
     */

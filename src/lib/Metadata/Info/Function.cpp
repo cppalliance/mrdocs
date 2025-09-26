@@ -292,7 +292,7 @@ toString(FunctionClass const kind) noexcept
 void
 merge(Param& I, Param&& Other)
 {
-    if (!I.Type)
+    if (I.Type->isAuto())
     {
         I.Type = std::move(Other.Type);
     }
@@ -391,10 +391,7 @@ merge(FunctionInfo& I, FunctionInfo&& Other)
     {
         I.Class = Other.Class;
     }
-    if (!I.ReturnType)
-    {
-        I.ReturnType = std::move(Other.ReturnType);
-    }
+    I.ReturnType = std::move(Other.ReturnType);
     std::size_t const n = std::min(I.Params.size(), Other.Params.size());
     for (std::size_t i = 0; i < n; ++i)
     {

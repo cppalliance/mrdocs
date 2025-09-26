@@ -27,7 +27,7 @@ struct Param final
 {
     /** The type of this parameter
      */
-    Optional<Polymorphic<TypeInfo>> Type = std::nullopt;
+    Polymorphic<TypeInfo> Type = Polymorphic<TypeInfo>(AutoTypeInfo{});
 
     /** The parameter name.
      */

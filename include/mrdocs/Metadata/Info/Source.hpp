@@ -14,9 +14,9 @@
 #define MRDOCS_API_METADATA_INFO_SOURCE_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Info/Location.hpp>
 #include <mrdocs/ADT/Optional.hpp>
 #include <mrdocs/Dom.hpp>
+#include <mrdocs/Metadata/Info/Location.hpp>
 #include <string>
 
 namespace clang::mrdocs {

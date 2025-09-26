@@ -109,12 +109,12 @@ For later versions of Visual Studio, no setup is required-->
     <Type Name="clang::ParsedTemplateArgument">
         <DisplayString Condition="Kind==clang::ParsedTemplateArgument::Type" IncludeView="cpp">{(clang::QualType *)Arg,view(cpp)na}</DisplayString>
         <DisplayString Condition="Kind==clang::ParsedTemplateArgument::Type">{*(clang::QualType *)Arg}</DisplayString>
-        <DisplayString Condition="Kind==clang::ParsedTemplateArgument::NonType">{*(clang::Expr *)Arg}</DisplayString>
+        <DisplayString Condition="Kind==clang::ParsedTemplateArgument::Constant">{*(clang::Expr *)Arg}</DisplayString>
         <DisplayString Condition="Kind==clang::ParsedTemplateArgument::Template">{*(clang::TemplateName *)Arg</DisplayString>
         <Expand>
             <Item Name="Kind">Kind,en</Item>
             <Item Name="Arg" Condition="Kind==clang::ParsedTemplateArgument::Type">(clang::QualType *)Arg</Item>
-            <Item Name="Arg" Condition="Kind==clang::ParsedTemplateArgument::NonType">(clang::Expr *)Arg</Item>
+            <Item Name="Arg" Condition="Kind==clang::ParsedTemplateArgument::Constant">(clang::Expr *)Arg</Item>
             <Item Name="Arg" Condition="Kind==clang::ParsedTemplateArgument::Template">(clang::TemplateName *)Arg</Item>
         </Expand>
     </Type>

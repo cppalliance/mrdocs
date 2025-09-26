@@ -251,10 +251,8 @@ writeFunction(
     writeAttr(I.IsNodiscard,           "nodiscard", tags_);
     writeAttr(I.IsExplicitObjectMemberFunction, "is-explicit-object-member-function", tags_);
 
-    if (I.ReturnType)
-    {
-        writeReturnType(**I.ReturnType, tags_);
-    }
+    MRDOCS_ASSERT(!I.ReturnType.valueless_after_move());
+    writeReturnType(*I.ReturnType, tags_);
 
     for (auto const& J: I.Params)
     {
@@ -350,13 +348,10 @@ writeNamespaceAlias(
 
     writeJavadoc(I.javadoc);
 
-    if (I.AliasedSymbol)
-    {
-        tags_.write("aliased", {}, {
-            {"name", toString(**I.AliasedSymbol)},
-            { (*I.AliasedSymbol)->id }
-        });
-    }
+    tags_.write("aliased", {}, {
+        {"name", toString(I.AliasedSymbol)},
+        { I.AliasedSymbol.id }
+    });
 
     tags_.close(namespaceAliasTagName);
 }
@@ -431,7 +426,7 @@ writeRecord(
             { B.Access },
             { "class", "virtual", B.IsVirtual },
         });
-        writeType(B.Type, tags_);
+        writeType(*B.Type, tags_);
         tags_.close(baseTagName);
     }
 

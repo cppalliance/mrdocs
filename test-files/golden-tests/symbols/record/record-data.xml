@@ -59,7 +59,7 @@
   </struct>
   <template>
     <tparam name="P" class="type"/>
-    <tparam name="I" class="non-type" type="int"/>
+    <tparam name="I" class="constant" type="int"/>
     <struct name="X" id="XSI9u4gB6ZYb6pWxN29K8+iKza4=">
       <file short-path="record-data.cpp" source-path="record-data.cpp" line="33" class="def"/>
       <namespace-alias name="Q" id="nkW23Ykh9wywIjUzLqEQlHf8R5k=">

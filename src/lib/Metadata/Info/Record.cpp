@@ -10,6 +10,7 @@
 
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata/Info/Record.hpp>
+#include <mrdocs/Metadata/Name.hpp>
 #include <ranges>
 
 namespace clang::mrdocs {
@@ -170,12 +171,6 @@ tag_invoke(
     io.map("isPrivate", I.Access == AccessKind::Private);
     io.map("isVirtual", I.IsVirtual);
     io.map("type", dom::ValueFrom(I.Type, domCorpus));
-    if (I.Type)
-    {
-        MRDOCS_ASSERT(!I.Type->valueless_after_move());
-        io.map("symbol", (*I.Type)->namedSymbol());
-    }
-
 }
 
 void

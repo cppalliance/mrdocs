@@ -21,7 +21,7 @@
 namespace clang::mrdocs {
 
 struct NonTypeTArg final
-    : TArgCommonBase<TArgKind::NonType>
+    : TArgCommonBase<TArgKind::Constant>
 {
     /** Template argument expression. */
     ExprInfo Value;
