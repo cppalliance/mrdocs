@@ -1,5 +1,8 @@
 <div class="nav-container"{{#if page.component}} data-component="{{page.component.name}}" data-version="{{page.version}}"{{/if}}>
   <aside class="nav">
+    <button class="nav-close" type="button" aria-label="Close navigation">
+      <span aria-hidden="true">Close</span>
+    </button>
     <div class="panels">
 {{> nav-menu}}
 {{> nav-explore}}
