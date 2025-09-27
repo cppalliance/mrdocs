@@ -20,7 +20,7 @@
 #include <mutex>
 #include <vector>
 
-namespace clang {
+
 namespace mrdocs {
 
 class MRDOCS_DECL
@@ -143,6 +143,6 @@ public:
 };
 
 } // mrdocs
-} // clang
+
 
 #endif

@@ -16,7 +16,7 @@
 #include <mrdocs/Dom.hpp>
 #include <string>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** Access specifier.
 
@@ -57,6 +57,6 @@ tag_invoke(
     v = toString(kind);
 }
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

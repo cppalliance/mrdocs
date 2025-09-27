@@ -20,7 +20,7 @@
 #include <lib/Support/ExecutionContext.hpp>
 #include <clang/Tooling/Tooling.h>
 
-namespace clang {
+
 namespace mrdocs {
 
 /** The clang frontend action for visiting the AST
@@ -95,6 +95,6 @@ public:
 };
 
 } // mrdocs
-} // clang
+
 
 #endif // MRDOCS_LIB_AST_ASTACTION_HPP

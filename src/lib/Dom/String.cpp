@@ -12,7 +12,7 @@
 #include <atomic>
 #include <cstring>
 
-namespace clang {
+
 namespace mrdocs {
 namespace dom {
 
@@ -139,4 +139,4 @@ data() const noexcept
 
 } // dom
 } // mrdocs
-} // clang
+

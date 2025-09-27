@@ -14,7 +14,7 @@
 #include <mrdocs/Platform.hpp>
 #include <string_view>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** Categorically describes a fundamental type.
 
@@ -191,6 +191,6 @@ MRDOCS_DECL
 bool
 makeChar(FundamentalTypeKind& kind) noexcept;
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

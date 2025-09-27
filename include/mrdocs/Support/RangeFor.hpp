@@ -14,7 +14,7 @@
 
 #include <mrdocs/Platform.hpp>
 
-namespace clang {
+
 namespace mrdocs {
 
 /** Range to help range-for loops identify first and last.
@@ -160,6 +160,6 @@ auto RangeFor<Container>::end() const noexcept ->
 }
 
 } // mrdocs
-} // clang
+
 
 #endif

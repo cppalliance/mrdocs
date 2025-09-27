@@ -18,14 +18,14 @@
 #include <clang/Lex/PreprocessorOptions.h>
 #include <clang/Parse/ParseAST.h>
 
-namespace clang {
+
 namespace mrdocs {
 
 void
 ASTAction::
 ExecuteAction()
 {
-    CompilerInstance& CI = getCompilerInstance();
+    clang::CompilerInstance& CI = getCompilerInstance();
     if (!CI.hasPreprocessor())
     {
         return;
@@ -100,4 +100,4 @@ CreateASTConsumer(
 }
 
 } // mrdocs
-} // clang
+

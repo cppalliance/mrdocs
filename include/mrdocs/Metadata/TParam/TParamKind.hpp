@@ -17,18 +17,18 @@
 #include <mrdocs/Platform.hpp>
 #include <string_view>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 enum class TParamKind : int
 {
     #define INFO(Type) Type,
-    #include <mrdocs/Metadata/TParam/TParamInfoNodes.inc>
+#include <mrdocs/Metadata/TParam/TParamInfoNodes.inc>
 };
 
 MRDOCS_DECL
 std::string_view
 toString(TParamKind kind) noexcept;
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

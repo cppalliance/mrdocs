@@ -13,7 +13,7 @@
 
 #include <string>
 
-namespace clang {
+
 namespace mrdocs {
 
 /// Check if the string matches the glob pattern
@@ -23,7 +23,7 @@ globMatch(
     std::string_view str) noexcept;
 
 } // mrdocs
-} // clang
+
 
 #endif // MRDOCS_LIB_SUPPORT_GLOB_HPP
 

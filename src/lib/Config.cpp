@@ -14,7 +14,7 @@
 #include <mrdocs/Support/Report.hpp>
 #include <thread>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 Config::
 Config() noexcept
@@ -562,4 +562,4 @@ outputDir() const
     return files::getParentDir(output);
 }
 
-} // clang::mrdocs
+} // mrdocs

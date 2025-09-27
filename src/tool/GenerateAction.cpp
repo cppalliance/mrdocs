@@ -21,7 +21,7 @@
 #include <mrdocs/Support/Report.hpp>
 #include <mrdocs/Support/ThreadPool.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 
 Expected<void>
@@ -73,7 +73,7 @@ DoGenerateAction(
     }
     MRDOCS_TRY(
         MrDocsCompilationDatabase compilationDatabase,
-        generateCompilationDatabase(tempDir.path(), config, threadPool));
+        generateCompilationDatabase(tempDir.path(), config));
 
     // --------------------------------------------------------------
     //
@@ -108,4 +108,4 @@ DoGenerateAction(
     return {};
 }
 
-} // clang::mrdocs
+} // mrdocs

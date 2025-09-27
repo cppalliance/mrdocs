@@ -83,7 +83,7 @@ namespace detail {
 } // namespace detail
 
 #define MRDOCS_COMMENT_TRACE(D, C) \
-    SmallString<1024> MRDOCS_COMMENT_TRACE_UNIQUE_NAME;                 \
+    llvm::SmallString<1024> MRDOCS_COMMENT_TRACE_UNIQUE_NAME;                 \
     ::detail::dumpCommentContent(D, C, MRDOCS_COMMENT_TRACE_UNIQUE_NAME);        \
     report::trace("{}", std::string_view(MRDOCS_COMMENT_TRACE_UNIQUE_NAME.str()))
 #endif
@@ -148,11 +148,9 @@ namespace detail {
 
 */
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 namespace {
-
-using namespace comments;
 
 //------------------------------------------------
 
@@ -163,12 +161,12 @@ using namespace comments;
 
   */
 class JavadocVisitor
-    : public ConstCommentVisitor<JavadocVisitor>
+    : public clang::comments::ConstCommentVisitor<JavadocVisitor>
 {
     Config const& config_;
-    ASTContext const& ctx_;
-    SourceManager const& sm_;
-    FullComment const* FC_;
+    clang::ASTContext const& ctx_;
+    clang::SourceManager const& sm_;
+    clang::comments::FullComment const* FC_;
     Javadoc jd_;
     Diagnostics& diags_;
     doc::Block* block_ = nullptr;
@@ -176,9 +174,9 @@ class JavadocVisitor
     std::size_t htmlTagNesting_ = 0;
 
     // Used to visit children of a comment
-    Comment const* parent_ = nullptr;
-    Comment::child_iterator it_{};
-    Comment::child_iterator end_{};
+    clang::comments::Comment const* parent_ = nullptr;
+    clang::comments::Comment::child_iterator it_{};
+    clang::comments::Comment::child_iterator end_{};
 
     /** Ensure that a string is valid UTF-8.
 
@@ -199,7 +197,7 @@ class JavadocVisitor
         and appended to the current block.
 
      */
-    void visitChildren(Comment const* C);
+    void visitChildren(clang::comments::Comment const* C);
 
 
     /** Temporarily set a block as the current block.
@@ -274,7 +272,7 @@ public:
 
      */
     JavadocVisitor(
-        FullComment const*, Decl const*,
+        clang::comments::FullComment const*, clang::Decl const*,
         Config const&, Diagnostics&);
 
     /** Extract the javadoc from the comment.
@@ -294,22 +292,22 @@ public:
 
      */
     void
-    visitComment(Comment const* C);
+    visitComment(clang::comments::Comment const* C);
 
     /** Visit a plain text comment.
      */
     void
-    visitTextComment(TextComment const* C);
+    visitTextComment(clang::comments::TextComment const* C);
 
     /** Visit an opening HTML tag with attributes.
      */
     void
-    visitHTMLStartTagComment(HTMLStartTagComment const* C);
+    visitHTMLStartTagComment(clang::comments::HTMLStartTagComment const* C);
 
     /** Visit a closing HTML tag.
      */
     void
-    visitHTMLEndTagComment(HTMLEndTagComment const* C);
+    visitHTMLEndTagComment(clang::comments::HTMLEndTagComment const* C);
 
     /** Visit a command with word-like arguments that is considered inline content.
 
@@ -322,7 +320,7 @@ public:
 
      */
     void
-    visitInlineCommandComment(InlineCommandComment const* C);
+    visitInlineCommandComment(clang::comments::InlineCommandComment const* C);
 
     /** Fix a reference string
 
@@ -349,7 +347,7 @@ public:
     /** Visit a single paragraph that contains inline content.
      */
     void
-    visitParagraphComment(ParagraphComment const* C);
+    visitParagraphComment(clang::comments::ParagraphComment const* C);
 
     /** Visit a command that has zero or more word-like arguments
 
@@ -358,12 +356,12 @@ public:
 
      */
     void
-    visitBlockCommandComment(BlockCommandComment const* C);
+    visitBlockCommandComment(clang::comments::BlockCommandComment const* C);
 
     /** Visit the doxygen @param command.
      */
     void
-    visitParamCommandComment(ParamCommandComment const* C);
+    visitParamCommandComment(clang::comments::ParamCommandComment const* C);
 
 
     /** Visit the doxygen @tparam command
@@ -371,7 +369,7 @@ public:
         The @tparam describes a template parameter.
     */
     void
-    visitTParamCommandComment(TParamCommandComment const* C);
+    visitTParamCommandComment(clang::comments::TParamCommandComment const* C);
 
     /** Visit a verbatim block command (e. g., preformatted code).
 
@@ -379,7 +377,7 @@ public:
         multiple lines of text (VerbatimBlockLineComment nodes).
      */
     void
-    visitVerbatimBlockComment(VerbatimBlockComment const* C);
+    visitVerbatimBlockComment(clang::comments::VerbatimBlockComment const* C);
 
     /** Visit a verbatim line command.
 
@@ -388,12 +386,12 @@ public:
         closing command.
      */
     void
-    visitVerbatimLineComment(VerbatimLineComment const* C);
+    visitVerbatimLineComment(clang::comments::VerbatimLineComment const* C);
 
     /** Visit a line of text contained in a verbatim block.
      */
     void
-    visitVerbatimBlockLineComment(VerbatimBlockLineComment const* C);
+    visitVerbatimBlockLineComment(clang::comments::VerbatimBlockLineComment const* C);
 
     /** @name Helpers
      * @{
@@ -408,11 +406,11 @@ public:
         @returns `true` if the number of arguments is correct
      */
     bool
-    goodArgCount(std::size_t n, InlineCommandComment const& C);
+    goodArgCount(std::size_t n, clang::comments::InlineCommandComment const& C);
 
 
     Expected<TagComponents>
-    parseHTMLTag(HTMLStartTagComment const* C);
+    parseHTMLTag(clang::comments::HTMLStartTagComment const* C);
 
     /** Append a text node to the current block.
 
@@ -493,7 +491,7 @@ std::string &JavadocVisitor::ensureUTF8(std::string &&s) {
 
  */
 std::vector<Polymorphic<doc::Text>>
-parseStyled(StringRef s)
+parseStyled(llvm::StringRef s)
 {
     std::vector<Polymorphic<doc::Text>> result;
     std::string currentText;
@@ -584,7 +582,7 @@ parseStyled(StringRef s)
 void
 JavadocVisitor::
 visitChildren(
-    Comment const* C)
+    clang::comments::Comment const* C)
 {
     MRDOCS_COMMENT_TRACE(C, ctx_);
     ScopeExitRestore s1(it_, C->child_begin());
@@ -661,8 +659,8 @@ visitChildren(
 
 JavadocVisitor::
 JavadocVisitor(
-    FullComment const* FC,
-    Decl const* D,
+    clang::comments::FullComment const* FC,
+    clang::Decl const* D,
     Config const& config,
     Diagnostics& diags)
     : config_(config)
@@ -714,7 +712,7 @@ build()
 void
 JavadocVisitor::
 visitComment(
-    Comment const* C)
+    clang::comments::Comment const* C)
 {
     MRDOCS_COMMENT_TRACE(C, ctx_);
     visitChildren(C);
@@ -729,7 +727,7 @@ visitComment(
 void
 JavadocVisitor::
 visitTextComment(
-    TextComment const* C)
+    clang::comments::TextComment const* C)
 {
     MRDOCS_COMMENT_TRACE(C, ctx_);
     llvm::StringRef s = C->getText();
@@ -752,7 +750,7 @@ visitTextComment(
 
 Expected<JavadocVisitor::TagComponents>
 JavadocVisitor::
-parseHTMLTag(HTMLStartTagComment const* C)
+parseHTMLTag(clang::comments::HTMLStartTagComment const* C)
 {
     MRDOCS_COMMENT_TRACE(C, ctx_);
     TagComponents res;
@@ -769,9 +767,9 @@ parseHTMLTag(HTMLStartTagComment const* C)
 
     // Find Comment::HTMLEndTagCommentKind
     auto const tagEndIt =
-        requiresEndTag ? std::ranges::find_if(it_ + 1, end_, [](Comment const* c)
+        requiresEndTag ? std::ranges::find_if(it_ + 1, end_, [](clang::comments::Comment const* c)
         {
-            return c->getCommentKind() == CommentKind::HTMLEndTagComment;
+            return c->getCommentKind() == clang::comments::CommentKind::HTMLEndTagComment;
         }) : it_;
     if (tagEndIt == end_)
     {
@@ -780,7 +778,7 @@ parseHTMLTag(HTMLStartTagComment const* C)
 
     // Check if end tag matches start tag
     auto const& cEndTag =
-        *static_cast<HTMLEndTagComment const*>(*tagEndIt);
+        *static_cast<clang::comments::HTMLEndTagComment const*>(*tagEndIt);
     if(cEndTag.getTagName() != res.tag)
     {
       return Unexpected(Error(std::format(
@@ -789,9 +787,9 @@ parseHTMLTag(HTMLStartTagComment const* C)
     }
 
     // Check if all the siblings are text nodes
-    bool const areAllText = std::all_of(it_ + 1, tagEndIt, [](Comment const* c)
+    bool const areAllText = std::all_of(it_ + 1, tagEndIt, [](clang::comments::Comment const* c)
     {
-        return c->getCommentKind() == CommentKind::TextComment;
+        return c->getCommentKind() == clang::comments::CommentKind::TextComment;
     });
     if (!areAllText)
     {
@@ -804,7 +802,7 @@ parseHTMLTag(HTMLStartTagComment const* C)
     for (auto it = std::next(it_); it != tagEndIt; ++it)
     {
         auto const& cText =
-            *static_cast<TextComment const*>(*it);
+            *static_cast<clang::comments::TextComment const*>(*it);
         res.text += cText.getText();
     }
 
@@ -814,14 +812,14 @@ parseHTMLTag(HTMLStartTagComment const* C)
 void
 JavadocVisitor::
 visitHTMLStartTagComment(
-    HTMLStartTagComment const* C)
+    clang::comments::HTMLStartTagComment const* C)
 {
     MRDOCS_COMMENT_TRACE(C, ctx_);
     MRDOCS_ASSERT(C->child_begin() == C->child_end());
-    PresumedLoc const loc = sm_.getPresumedLoc(C->getBeginLoc());
+    clang::PresumedLoc const loc = sm_.getPresumedLoc(C->getBeginLoc());
     auto filename = files::makePosixStyle(loc.getFilename());
 
-    auto getAttribute = [&C](StringRef name) -> Expected<std::string>
+    auto getAttribute = [&C](llvm::StringRef name) -> Expected<std::string>
     {
         auto idxs = std::views::iota(unsigned(0), C->getNumAttrs());
         auto attr_it = std::ranges::find_if(idxs, [&C, name](std::size_t i)
@@ -885,7 +883,7 @@ visitHTMLStartTagComment(
 void
 JavadocVisitor::
 visitHTMLEndTagComment(
-    HTMLEndTagComment const* C)
+    clang::comments::HTMLEndTagComment const* C)
 {
     MRDOCS_COMMENT_TRACE(C, ctx_);
     MRDOCS_ASSERT(C->child_begin() == C->child_end());
@@ -898,11 +896,11 @@ convertCopydoc(unsigned id)
 {
     switch(id)
     {
-    case CommandTraits::KCI_copydoc:
+    case clang::comments::CommandTraits::KCI_copydoc:
         return doc::Parts::all;
-    case CommandTraits::KCI_copybrief:
+    case clang::comments::CommandTraits::KCI_copybrief:
         return doc::Parts::brief;
-    case CommandTraits::KCI_copydetails:
+    case clang::comments::CommandTraits::KCI_copydetails:
         return doc::Parts::description;
     default:
     {
@@ -914,40 +912,40 @@ convertCopydoc(unsigned id)
 
 static
 doc::Style
-convertStyle(InlineCommandRenderKind kind)
+convertStyle(clang::comments::InlineCommandRenderKind kind)
 {
     switch(kind)
     {
-    case InlineCommandRenderKind::Monospaced:
+    case clang::comments::InlineCommandRenderKind::Monospaced:
         return doc::Style::mono;
-    case InlineCommandRenderKind::Bold:
+    case clang::comments::InlineCommandRenderKind::Bold:
         return doc::Style::bold;
-    case InlineCommandRenderKind::Emphasized:
+    case clang::comments::InlineCommandRenderKind::Emphasized:
         return doc::Style::italic;
-    case InlineCommandRenderKind::Normal:
-    case InlineCommandRenderKind::Anchor:
+    case clang::comments::InlineCommandRenderKind::Normal:
+    case clang::comments::InlineCommandRenderKind::Anchor:
         return doc::Style::none;
     default:
         // unknown RenderKind
-        report::error("error: unsupported InlineCommandRenderKind <{}>", static_cast<int>(kind));
+        report::error("error: unsupported clang::comments::InlineCommandRenderKind <{}>", static_cast<int>(kind));
         MRDOCS_UNREACHABLE();
     }
 }
 
 static
 doc::ParamDirection
-convertDirection(ParamCommandPassDirection kind)
+convertDirection(clang::comments::ParamCommandPassDirection kind)
 {
     switch(kind)
     {
-    case ParamCommandPassDirection::In:
+    case clang::comments::ParamCommandPassDirection::In:
         return doc::ParamDirection::in;
-    case ParamCommandPassDirection::Out:
+    case clang::comments::ParamCommandPassDirection::Out:
         return doc::ParamDirection::out;
-    case ParamCommandPassDirection::InOut:
+    case clang::comments::ParamCommandPassDirection::InOut:
         return doc::ParamDirection::inout;
     default:
-        report::error("error: unsupported ParamCommandPassDirection <{}>", static_cast<int>(kind));
+        report::error("error: unsupported clang::comments::ParamCommandPassDirection <{}>", static_cast<int>(kind));
         MRDOCS_UNREACHABLE();
     }
 }
@@ -955,7 +953,7 @@ convertDirection(ParamCommandPassDirection kind)
 void
 JavadocVisitor::
 visitInlineCommandComment(
-    InlineCommandComment const* C)
+    clang::comments::InlineCommandComment const* C)
 {
     MRDOCS_COMMENT_TRACE(C, ctx_);
     auto const* cmd = ctx_
@@ -968,7 +966,7 @@ visitInlineCommandComment(
     switch(unsigned ID = cmd->getID())
     {
     // Newline
-    case CommandTraits::KCI_n:
+    case clang::comments::CommandTraits::KCI_n:
     {
         if(! goodArgCount(0, *C))
             return;
@@ -977,9 +975,9 @@ visitInlineCommandComment(
         return;
     }
     // Emphasis
-    case CommandTraits::KCI_a:
-    case CommandTraits::KCI_e:
-    case CommandTraits::KCI_em:
+    case clang::comments::CommandTraits::KCI_a:
+    case clang::comments::CommandTraits::KCI_e:
+    case clang::comments::CommandTraits::KCI_em:
     {
         MRDOCS_CHECK_OR(goodArgCount(1, *C));
         auto style = doc::Style::italic;
@@ -991,9 +989,9 @@ visitInlineCommandComment(
     }
 
     // copy
-    case CommandTraits::KCI_copybrief:
-    case CommandTraits::KCI_copydetails:
-    case CommandTraits::KCI_copydoc:
+    case clang::comments::CommandTraits::KCI_copybrief:
+    case clang::comments::CommandTraits::KCI_copydetails:
+    case clang::comments::CommandTraits::KCI_copydoc:
     {
         MRDOCS_CHECK_OR(goodArgCount(1, *C));
         std::string ref = C->getArgText(0).str();
@@ -1031,7 +1029,7 @@ visitInlineCommandComment(
         }
         return;
     }
-    case CommandTraits::KCI_ref:
+    case clang::comments::CommandTraits::KCI_ref:
     {
         MRDOCS_CHECK_OR(goodArgCount(1, *C));
         std::string ref = C->getArgText(0).str();
@@ -1049,15 +1047,15 @@ visitInlineCommandComment(
         return;
     }
     // KRYSTIAN FIXME: these need to be made inline commands in clang
-    case CommandTraits::KCI_related:
-    case CommandTraits::KCI_relates:
+    case clang::comments::CommandTraits::KCI_related:
+    case clang::comments::CommandTraits::KCI_relates:
     // MrDocs doesn't document members inline, so there's no
     // distinction between "related" and "relatedalso"
-    case CommandTraits::KCI_relatedalso:
-    case CommandTraits::KCI_relatesalso:
+    case clang::comments::CommandTraits::KCI_relatedalso:
+    case clang::comments::CommandTraits::KCI_relatesalso:
     // Member of is a concept used only in C. MrDocs handles
     // it as a non-member function is all cases.
-    case CommandTraits::KCI_memberof:
+    case clang::comments::CommandTraits::KCI_memberof:
     {
         MRDOCS_CHECK_OR(goodArgCount(1, *C));
         std::string ref = C->getArgText(0).str();
@@ -1110,13 +1108,13 @@ fixReference(std::string& ref)
     {
         ++it_;
         if (it_ == end_ ||
-            (*it_)->getCommentKind() != CommentKind::TextComment)
+            (*it_)->getCommentKind() != clang::comments::CommentKind::TextComment)
         {
             --it_;
             return std::nullopt;
         }
-        Comment const* c = *it_;
-        std::string_view text = static_cast<TextComment const*>(c)->getText();
+        clang::comments::Comment const* c = *it_;
+        std::string_view text = static_cast<clang::comments::TextComment const*>(c)->getText();
         --it_;
         return text;
     };
@@ -1252,7 +1250,7 @@ fixReference(std::string& ref)
 void
 JavadocVisitor::
 visitParagraphComment(
-    ParagraphComment const* C)
+    clang::comments::ParagraphComment const* C)
 {
     MRDOCS_COMMENT_TRACE(C, ctx_);
     if(block_)
@@ -1268,7 +1266,7 @@ visitParagraphComment(
 void
 JavadocVisitor::
 visitBlockCommandComment(
-    BlockCommandComment const* C)
+    clang::comments::BlockCommandComment const* C)
 {
     MRDOCS_COMMENT_TRACE(C, ctx_);
     auto const* cmd = ctx_
@@ -1283,8 +1281,8 @@ visitBlockCommandComment(
 
     switch(cmd->getID())
     {
-    case CommandTraits::KCI_brief:
-    case CommandTraits::KCI_short:
+    case clang::comments::CommandTraits::KCI_brief:
+    case clang::comments::CommandTraits::KCI_short:
     {
         doc::Brief brief;
         auto scope = enterScope(brief);
@@ -1299,9 +1297,9 @@ visitBlockCommandComment(
         return;
     }
 
-    case CommandTraits::KCI_return:
-    case CommandTraits::KCI_returns:
-    case CommandTraits::KCI_result:
+    case clang::comments::CommandTraits::KCI_return:
+    case clang::comments::CommandTraits::KCI_returns:
+    case clang::comments::CommandTraits::KCI_result:
     {
         doc::Returns returns;
         auto scope = enterScope(returns);
@@ -1314,9 +1312,9 @@ visitBlockCommandComment(
         }
         return;
     }
-    case CommandTraits::KCI_throw:
-    case CommandTraits::KCI_throws:
-    case CommandTraits::KCI_exception:
+    case clang::comments::CommandTraits::KCI_throw:
+    case clang::comments::CommandTraits::KCI_throws:
+    case clang::comments::CommandTraits::KCI_exception:
     {
         doc::Throws throws;
         auto scope = enterScope(throws);
@@ -1332,10 +1330,10 @@ visitBlockCommandComment(
         jd_.exceptions.push_back(std::move(throws));
         return;
     }
-    case CommandTraits::KCI_note:
-    case CommandTraits::KCI_warning:
+    case clang::comments::CommandTraits::KCI_note:
+    case clang::comments::CommandTraits::KCI_warning:
     {
-        doc::Admonish admonish = cmd->getID() == CommandTraits::KCI_note
+        doc::Admonish admonish = cmd->getID() == clang::comments::CommandTraits::KCI_note
             ? doc::Admonish::note
             : doc::Admonish::warning;
         doc::Admonition paragraph(admonish);
@@ -1344,7 +1342,7 @@ visitBlockCommandComment(
         jd_.emplace_back(std::move(paragraph));
         return;
     }
-    case CommandTraits::KCI_par:
+    case clang::comments::CommandTraits::KCI_par:
     {
         // VFALCO This is legacy compatibility
         // for Boost libraries using @par as a
@@ -1387,7 +1385,7 @@ visitBlockCommandComment(
         }
         return;
     }
-    case CommandTraits::KCI_li:
+    case clang::comments::CommandTraits::KCI_li:
     {
         doc::ListItem paragraph;
         auto scope = enterScope(paragraph);
@@ -1395,7 +1393,7 @@ visitBlockCommandComment(
         jd_.emplace_back(std::move(paragraph));
         return;
     }
-    case CommandTraits::KCI_details:
+    case clang::comments::CommandTraits::KCI_details:
     {
         doc::Paragraph paragraph;
         auto scope = enterScope(paragraph);
@@ -1403,7 +1401,7 @@ visitBlockCommandComment(
         jd_.emplace_back(std::move(paragraph));
         return;
     }
-    case CommandTraits::KCI_see:
+    case clang::comments::CommandTraits::KCI_see:
     {
         doc::See see;
         auto scope = enterScope(see);
@@ -1411,7 +1409,7 @@ visitBlockCommandComment(
         jd_.sees.push_back(std::move(see));
         return;
     }
-    case CommandTraits::KCI_pre:
+    case clang::comments::CommandTraits::KCI_pre:
     {
         doc::Precondition pre;
         auto scope = enterScope(pre);
@@ -1419,7 +1417,7 @@ visitBlockCommandComment(
         jd_.preconditions.push_back(std::move(pre));
         return;
     }
-    case CommandTraits::KCI_post:
+    case clang::comments::CommandTraits::KCI_post:
     {
         doc::Postcondition post;
         auto scope = enterScope(post);
@@ -1428,170 +1426,170 @@ visitBlockCommandComment(
         return;
     }
 
-    case CommandTraits::KCI_addindex:
-    case CommandTraits::KCI_addtogroup:
-    case CommandTraits::KCI_anchor:
-    case CommandTraits::KCI_arg:
-    case CommandTraits::KCI_attention:
-    case CommandTraits::KCI_author:
-    case CommandTraits::KCI_authors:
-    case CommandTraits::KCI_b:
-    case CommandTraits::KCI_bug:
-    case CommandTraits::KCI_c:
-    case CommandTraits::KCI_callergraph:
-    case CommandTraits::KCI_callgraph:
-    case CommandTraits::KCI_category:
-    case CommandTraits::KCI_cite:
-    case CommandTraits::KCI_class:
-    case CommandTraits::KCI_code:
-    case CommandTraits::KCI_concept:
-    case CommandTraits::KCI_cond:
-    case CommandTraits::KCI_copyright:
-    case CommandTraits::KCI_date:
-    case CommandTraits::KCI_def:
-    case CommandTraits::KCI_defgroup:
-    case CommandTraits::KCI_deprecated:
-    case CommandTraits::KCI_diafile:
-    case CommandTraits::KCI_dir:
-    case CommandTraits::KCI_docbookinclude:
-    case CommandTraits::KCI_docbookonly:
-    case CommandTraits::KCI_dontinclude:
-    case CommandTraits::KCI_dot:
-    case CommandTraits::KCI_dotfile:
-    //case CommandTraits::KCI_doxyconfig:
-    case CommandTraits::KCI_else:
-    case CommandTraits::KCI_elseif:
-    case CommandTraits::KCI_emoji:
-    case CommandTraits::KCI_endcode:
-    case CommandTraits::KCI_endcond:
-    case CommandTraits::KCI_enddocbookonly:
-    case CommandTraits::KCI_enddot:
-    case CommandTraits::KCI_endhtmlonly:
-    case CommandTraits::KCI_endif:
-    case CommandTraits::KCI_endinternal:
-    case CommandTraits::KCI_endlatexonly:
-    //case CommandTraits::KCI_endlink:
-    case CommandTraits::KCI_endmanonly:
-    case CommandTraits::KCI_endmsc:
-    case CommandTraits::KCI_endparblock:
-    case CommandTraits::KCI_endrtfonly:
-    case CommandTraits::KCI_endsecreflist:
-    case CommandTraits::KCI_endverbatim:
-    case CommandTraits::KCI_enduml:
-    case CommandTraits::KCI_endxmlonly:
-    case CommandTraits::KCI_enum:
-    case CommandTraits::KCI_example:
-    case CommandTraits::KCI_extends:
-    case CommandTraits::KCI_flparen:  // @f(
-    case CommandTraits::KCI_frparen:  // @f)
-    case CommandTraits::KCI_fdollar:  // @f$
-    case CommandTraits::KCI_flsquare: // @f[
-    case CommandTraits::KCI_frsquare: // @f]
-    case CommandTraits::KCI_flbrace:  // @f{
-    case CommandTraits::KCI_frbrace:  // @f}
-    case CommandTraits::KCI_file:
-    //case CommandTraits::KCI_fileinfo:
-    case CommandTraits::KCI_fn:
-    case CommandTraits::KCI_headerfile:
-    case CommandTraits::KCI_hidecallergraph:
-    case CommandTraits::KCI_hidecallgraph:
-    case CommandTraits::KCI_hiderefby:
-    case CommandTraits::KCI_hiderefs:
-    case CommandTraits::KCI_hideinitializer:
-    case CommandTraits::KCI_htmlinclude:
-    case CommandTraits::KCI_htmlonly:
-    case CommandTraits::KCI_idlexcept:
-    case CommandTraits::KCI_if:
-    case CommandTraits::KCI_ifnot:
-    case CommandTraits::KCI_image:
-    case CommandTraits::KCI_implements:
-    case CommandTraits::KCI_include:
-    //case CommandTraits::KCI_includedoc:
-    //case CommandTraits::KCI_includelineno:
-    case CommandTraits::KCI_ingroup:
-    case CommandTraits::KCI_internal:
-    case CommandTraits::KCI_invariant:
-    case CommandTraits::KCI_interface:
-    case CommandTraits::KCI_latexinclude:
-    case CommandTraits::KCI_latexonly:
-    case CommandTraits::KCI_line:
-    //case CommandTraits::KCI_lineinfo:
-    case CommandTraits::KCI_link:
-    case CommandTraits::KCI_mainpage:
-    case CommandTraits::KCI_maninclude:
-    case CommandTraits::KCI_manonly:
-    case CommandTraits::KCI_memberof:
-    case CommandTraits::KCI_msc:
-    case CommandTraits::KCI_mscfile:
-    case CommandTraits::KCI_name:
-    case CommandTraits::KCI_namespace:
-    case CommandTraits::KCI_noop:
-    case CommandTraits::KCI_nosubgrouping:
-    case CommandTraits::KCI_overload:
-    case CommandTraits::KCI_p:
-    //case CommandTraits::KCI_package:
-    case CommandTraits::KCI_page:
-    case CommandTraits::KCI_paragraph:
-    case CommandTraits::KCI_param:
-    case CommandTraits::KCI_parblock:
-    case CommandTraits::KCI_private:
-    case CommandTraits::KCI_privatesection:
-    case CommandTraits::KCI_property:
-    case CommandTraits::KCI_protected:
-    case CommandTraits::KCI_protectedsection:
-    case CommandTraits::KCI_protocol:
-    case CommandTraits::KCI_public:
-    case CommandTraits::KCI_publicsection:
-    case CommandTraits::KCI_pure:
-    //case CommandTraits::KCI_qualifier:
-    //case CommandTraits::KCI_raisewarning:
-    case CommandTraits::KCI_ref:
-    case CommandTraits::KCI_refitem:
-    case CommandTraits::KCI_related:
-    case CommandTraits::KCI_relates:
-    case CommandTraits::KCI_relatedalso:
-    case CommandTraits::KCI_relatesalso:
-    case CommandTraits::KCI_remark:
-    case CommandTraits::KCI_remarks:
+    case clang::comments::CommandTraits::KCI_addindex:
+    case clang::comments::CommandTraits::KCI_addtogroup:
+    case clang::comments::CommandTraits::KCI_anchor:
+    case clang::comments::CommandTraits::KCI_arg:
+    case clang::comments::CommandTraits::KCI_attention:
+    case clang::comments::CommandTraits::KCI_author:
+    case clang::comments::CommandTraits::KCI_authors:
+    case clang::comments::CommandTraits::KCI_b:
+    case clang::comments::CommandTraits::KCI_bug:
+    case clang::comments::CommandTraits::KCI_c:
+    case clang::comments::CommandTraits::KCI_callergraph:
+    case clang::comments::CommandTraits::KCI_callgraph:
+    case clang::comments::CommandTraits::KCI_category:
+    case clang::comments::CommandTraits::KCI_cite:
+    case clang::comments::CommandTraits::KCI_class:
+    case clang::comments::CommandTraits::KCI_code:
+    case clang::comments::CommandTraits::KCI_concept:
+    case clang::comments::CommandTraits::KCI_cond:
+    case clang::comments::CommandTraits::KCI_copyright:
+    case clang::comments::CommandTraits::KCI_date:
+    case clang::comments::CommandTraits::KCI_def:
+    case clang::comments::CommandTraits::KCI_defgroup:
+    case clang::comments::CommandTraits::KCI_deprecated:
+    case clang::comments::CommandTraits::KCI_diafile:
+    case clang::comments::CommandTraits::KCI_dir:
+    case clang::comments::CommandTraits::KCI_docbookinclude:
+    case clang::comments::CommandTraits::KCI_docbookonly:
+    case clang::comments::CommandTraits::KCI_dontinclude:
+    case clang::comments::CommandTraits::KCI_dot:
+    case clang::comments::CommandTraits::KCI_dotfile:
+    //case clang::comments::CommandTraits::KCI_doxyconfig:
+    case clang::comments::CommandTraits::KCI_else:
+    case clang::comments::CommandTraits::KCI_elseif:
+    case clang::comments::CommandTraits::KCI_emoji:
+    case clang::comments::CommandTraits::KCI_endcode:
+    case clang::comments::CommandTraits::KCI_endcond:
+    case clang::comments::CommandTraits::KCI_enddocbookonly:
+    case clang::comments::CommandTraits::KCI_enddot:
+    case clang::comments::CommandTraits::KCI_endhtmlonly:
+    case clang::comments::CommandTraits::KCI_endif:
+    case clang::comments::CommandTraits::KCI_endinternal:
+    case clang::comments::CommandTraits::KCI_endlatexonly:
+    //case clang::comments::CommandTraits::KCI_endlink:
+    case clang::comments::CommandTraits::KCI_endmanonly:
+    case clang::comments::CommandTraits::KCI_endmsc:
+    case clang::comments::CommandTraits::KCI_endparblock:
+    case clang::comments::CommandTraits::KCI_endrtfonly:
+    case clang::comments::CommandTraits::KCI_endsecreflist:
+    case clang::comments::CommandTraits::KCI_endverbatim:
+    case clang::comments::CommandTraits::KCI_enduml:
+    case clang::comments::CommandTraits::KCI_endxmlonly:
+    case clang::comments::CommandTraits::KCI_enum:
+    case clang::comments::CommandTraits::KCI_example:
+    case clang::comments::CommandTraits::KCI_extends:
+    case clang::comments::CommandTraits::KCI_flparen:  // @f(
+    case clang::comments::CommandTraits::KCI_frparen:  // @f)
+    case clang::comments::CommandTraits::KCI_fdollar:  // @f$
+    case clang::comments::CommandTraits::KCI_flsquare: // @f[
+    case clang::comments::CommandTraits::KCI_frsquare: // @f]
+    case clang::comments::CommandTraits::KCI_flbrace:  // @f{
+    case clang::comments::CommandTraits::KCI_frbrace:  // @f}
+    case clang::comments::CommandTraits::KCI_file:
+    //case clang::comments::CommandTraits::KCI_fileinfo:
+    case clang::comments::CommandTraits::KCI_fn:
+    case clang::comments::CommandTraits::KCI_headerfile:
+    case clang::comments::CommandTraits::KCI_hidecallergraph:
+    case clang::comments::CommandTraits::KCI_hidecallgraph:
+    case clang::comments::CommandTraits::KCI_hiderefby:
+    case clang::comments::CommandTraits::KCI_hiderefs:
+    case clang::comments::CommandTraits::KCI_hideinitializer:
+    case clang::comments::CommandTraits::KCI_htmlinclude:
+    case clang::comments::CommandTraits::KCI_htmlonly:
+    case clang::comments::CommandTraits::KCI_idlexcept:
+    case clang::comments::CommandTraits::KCI_if:
+    case clang::comments::CommandTraits::KCI_ifnot:
+    case clang::comments::CommandTraits::KCI_image:
+    case clang::comments::CommandTraits::KCI_implements:
+    case clang::comments::CommandTraits::KCI_include:
+    //case clang::comments::CommandTraits::KCI_includedoc:
+    //case clang::comments::CommandTraits::KCI_includelineno:
+    case clang::comments::CommandTraits::KCI_ingroup:
+    case clang::comments::CommandTraits::KCI_internal:
+    case clang::comments::CommandTraits::KCI_invariant:
+    case clang::comments::CommandTraits::KCI_interface:
+    case clang::comments::CommandTraits::KCI_latexinclude:
+    case clang::comments::CommandTraits::KCI_latexonly:
+    case clang::comments::CommandTraits::KCI_line:
+    //case clang::comments::CommandTraits::KCI_lineinfo:
+    case clang::comments::CommandTraits::KCI_link:
+    case clang::comments::CommandTraits::KCI_mainpage:
+    case clang::comments::CommandTraits::KCI_maninclude:
+    case clang::comments::CommandTraits::KCI_manonly:
+    case clang::comments::CommandTraits::KCI_memberof:
+    case clang::comments::CommandTraits::KCI_msc:
+    case clang::comments::CommandTraits::KCI_mscfile:
+    case clang::comments::CommandTraits::KCI_name:
+    case clang::comments::CommandTraits::KCI_namespace:
+    case clang::comments::CommandTraits::KCI_noop:
+    case clang::comments::CommandTraits::KCI_nosubgrouping:
+    case clang::comments::CommandTraits::KCI_overload:
+    case clang::comments::CommandTraits::KCI_p:
+    //case clang::comments::CommandTraits::KCI_package:
+    case clang::comments::CommandTraits::KCI_page:
+    case clang::comments::CommandTraits::KCI_paragraph:
+    case clang::comments::CommandTraits::KCI_param:
+    case clang::comments::CommandTraits::KCI_parblock:
+    case clang::comments::CommandTraits::KCI_private:
+    case clang::comments::CommandTraits::KCI_privatesection:
+    case clang::comments::CommandTraits::KCI_property:
+    case clang::comments::CommandTraits::KCI_protected:
+    case clang::comments::CommandTraits::KCI_protectedsection:
+    case clang::comments::CommandTraits::KCI_protocol:
+    case clang::comments::CommandTraits::KCI_public:
+    case clang::comments::CommandTraits::KCI_publicsection:
+    case clang::comments::CommandTraits::KCI_pure:
+    //case clang::comments::CommandTraits::KCI_qualifier:
+    //case clang::comments::CommandTraits::KCI_raisewarning:
+    case clang::comments::CommandTraits::KCI_ref:
+    case clang::comments::CommandTraits::KCI_refitem:
+    case clang::comments::CommandTraits::KCI_related:
+    case clang::comments::CommandTraits::KCI_relates:
+    case clang::comments::CommandTraits::KCI_relatedalso:
+    case clang::comments::CommandTraits::KCI_relatesalso:
+    case clang::comments::CommandTraits::KCI_remark:
+    case clang::comments::CommandTraits::KCI_remarks:
 
-    case CommandTraits::KCI_retval:
-    case CommandTraits::KCI_rtfinclude:
-    case CommandTraits::KCI_rtfonly:
-    case CommandTraits::KCI_sa:
-    case CommandTraits::KCI_secreflist:
-    case CommandTraits::KCI_section:
-    //case CommandTraits::KCI_showdate:
-    case CommandTraits::KCI_showinitializer:
-    case CommandTraits::KCI_showrefby:
-    case CommandTraits::KCI_showrefs:
-    case CommandTraits::KCI_since:
-    case CommandTraits::KCI_skip:
-    case CommandTraits::KCI_skipline:
-    case CommandTraits::KCI_snippet:
-    //case CommandTraits::KCI_snippetdoc:
-    //case CommandTraits::KCI_snippetlineno:
-    case CommandTraits::KCI_static:
-    case CommandTraits::KCI_startuml:
-    case CommandTraits::KCI_struct:
-    case CommandTraits::KCI_subpage:
-    case CommandTraits::KCI_subsection:
-    case CommandTraits::KCI_subsubsection:
-    case CommandTraits::KCI_tableofcontents:
-    case CommandTraits::KCI_test:
-    case CommandTraits::KCI_todo:
-    case CommandTraits::KCI_tparam:
-    case CommandTraits::KCI_typedef:
-    case CommandTraits::KCI_union:
-    case CommandTraits::KCI_until:
-    case CommandTraits::KCI_var:
-    case CommandTraits::KCI_verbatim:
-    case CommandTraits::KCI_verbinclude:
-    case CommandTraits::KCI_version:
-    //case CommandTraits::KCI_vhdlflow:
-    case CommandTraits::KCI_weakgroup:
-    case CommandTraits::KCI_xmlinclude:
-    case CommandTraits::KCI_xmlonly:
-    case CommandTraits::KCI_xrefitem:
+    case clang::comments::CommandTraits::KCI_retval:
+    case clang::comments::CommandTraits::KCI_rtfinclude:
+    case clang::comments::CommandTraits::KCI_rtfonly:
+    case clang::comments::CommandTraits::KCI_sa:
+    case clang::comments::CommandTraits::KCI_secreflist:
+    case clang::comments::CommandTraits::KCI_section:
+    //case clang::comments::CommandTraits::KCI_showdate:
+    case clang::comments::CommandTraits::KCI_showinitializer:
+    case clang::comments::CommandTraits::KCI_showrefby:
+    case clang::comments::CommandTraits::KCI_showrefs:
+    case clang::comments::CommandTraits::KCI_since:
+    case clang::comments::CommandTraits::KCI_skip:
+    case clang::comments::CommandTraits::KCI_skipline:
+    case clang::comments::CommandTraits::KCI_snippet:
+    //case clang::comments::CommandTraits::KCI_snippetdoc:
+    //case clang::comments::CommandTraits::KCI_snippetlineno:
+    case clang::comments::CommandTraits::KCI_static:
+    case clang::comments::CommandTraits::KCI_startuml:
+    case clang::comments::CommandTraits::KCI_struct:
+    case clang::comments::CommandTraits::KCI_subpage:
+    case clang::comments::CommandTraits::KCI_subsection:
+    case clang::comments::CommandTraits::KCI_subsubsection:
+    case clang::comments::CommandTraits::KCI_tableofcontents:
+    case clang::comments::CommandTraits::KCI_test:
+    case clang::comments::CommandTraits::KCI_todo:
+    case clang::comments::CommandTraits::KCI_tparam:
+    case clang::comments::CommandTraits::KCI_typedef:
+    case clang::comments::CommandTraits::KCI_union:
+    case clang::comments::CommandTraits::KCI_until:
+    case clang::comments::CommandTraits::KCI_var:
+    case clang::comments::CommandTraits::KCI_verbatim:
+    case clang::comments::CommandTraits::KCI_verbinclude:
+    case clang::comments::CommandTraits::KCI_version:
+    //case clang::comments::CommandTraits::KCI_vhdlflow:
+    case clang::comments::CommandTraits::KCI_weakgroup:
+    case clang::comments::CommandTraits::KCI_xmlinclude:
+    case clang::comments::CommandTraits::KCI_xmlonly:
+    case clang::comments::CommandTraits::KCI_xrefitem:
     /*
         @$
         @@
@@ -1613,13 +1611,13 @@ visitBlockCommandComment(
         break;
 
     // inline commands handled elsewhere
-    case CommandTraits::KCI_a:
-    case CommandTraits::KCI_e:
-    case CommandTraits::KCI_em:
-    case CommandTraits::KCI_n:
-    case CommandTraits::KCI_copybrief:
-    case CommandTraits::KCI_copydetails:
-    case CommandTraits::KCI_copydoc:
+    case clang::comments::CommandTraits::KCI_a:
+    case clang::comments::CommandTraits::KCI_e:
+    case clang::comments::CommandTraits::KCI_em:
+    case clang::comments::CommandTraits::KCI_n:
+    case clang::comments::CommandTraits::KCI_copybrief:
+    case clang::comments::CommandTraits::KCI_copydetails:
+        case clang::comments::CommandTraits::KCI_copydoc:
         report::error("error: inline command {} should be handled elsewhere", cmd->Name);
         MRDOCS_UNREACHABLE();
     default:
@@ -1631,7 +1629,7 @@ visitBlockCommandComment(
 void
 JavadocVisitor::
 visitParamCommandComment(
-    ParamCommandComment const* C)
+    clang::comments::ParamCommandComment const* C)
 {
     MRDOCS_COMMENT_TRACE(C, ctx_);
     doc::Param param;
@@ -1677,7 +1675,7 @@ visitParamCommandComment(
 void
 JavadocVisitor::
 visitTParamCommandComment(
-    TParamCommandComment const* C)
+    clang::comments::TParamCommandComment const* C)
 {
     MRDOCS_COMMENT_TRACE(C, ctx_);
     doc::TParam tparam;
@@ -1720,7 +1718,7 @@ visitTParamCommandComment(
 void
 JavadocVisitor::
 visitVerbatimBlockComment(
-    VerbatimBlockComment const* C)
+    clang::comments::VerbatimBlockComment const* C)
 {
     MRDOCS_COMMENT_TRACE(C, ctx_);
     doc::Code code;
@@ -1733,7 +1731,7 @@ visitVerbatimBlockComment(
 void
 JavadocVisitor::
 visitVerbatimLineComment(
-    VerbatimLineComment const* C)
+    clang::comments::VerbatimLineComment const* C)
 {
     MRDOCS_COMMENT_TRACE(C, ctx_);
     // VFALCO This doesn't seem to be used
@@ -1743,7 +1741,7 @@ visitVerbatimLineComment(
 void
 JavadocVisitor::
 visitVerbatimBlockLineComment(
-    VerbatimBlockLineComment const* C)
+    clang::comments::VerbatimBlockLineComment const* C)
 {
     MRDOCS_COMMENT_TRACE(C, ctx_);
     emplaceText<doc::Text>(true, C->getText().str());
@@ -1754,7 +1752,7 @@ visitVerbatimBlockLineComment(
 bool
 JavadocVisitor::
 goodArgCount(std::size_t n,
-    InlineCommandComment const& C)
+    clang::comments::InlineCommandComment const& C)
 {
     MRDOCS_COMMENT_TRACE(C, ctx_);
     if(C.getNumArgs() != n)
@@ -1776,7 +1774,7 @@ goodArgCount(std::size_t n,
 } // (anon)
 
 void
-initCustomCommentCommands(ASTContext& context)
+initCustomCommentCommands(clang::ASTContext& context)
 {
     auto& traits = context.getCommentCommandTraits();
 
@@ -1795,8 +1793,8 @@ initCustomCommentCommands(ASTContext& context)
 void
 parseJavadoc(
     Optional<Javadoc>& jd,
-    FullComment const* FC,
-    Decl const* D,
+    clang::comments::FullComment const* FC,
+    clang::Decl const* D,
     Config const& config,
     Diagnostics& diags)
 {
@@ -1818,4 +1816,4 @@ parseJavadoc(
 
 }
 
-} // clang::mrdocs
+} // mrdocs

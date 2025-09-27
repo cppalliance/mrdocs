@@ -25,7 +25,7 @@
 #include <set>
 #include <string>
 
-namespace clang {
+
 namespace mrdocs {
 
 struct FrozenDiag {
@@ -125,7 +125,7 @@ public:
                 col = P.getColumn();
             }
         }
-        StringRef flag = Info.getFlagValue();
+        llvm::StringRef flag = Info.getFlagValue();
 
         FrozenDiag d;
         d.level = L;
@@ -436,6 +436,6 @@ public:
 };
 
 } // namespace mrdocs
-} // namespace clang
+
 
 #endif // MRDOCS_LIB_AST_MISSINGSYMBOLSINK_HPP

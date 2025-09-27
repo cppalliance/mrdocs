@@ -16,7 +16,7 @@
 #include <llvm/Support/Path.h>
 #include <llvm/Support/Program.h>
 
-namespace clang {
+
 namespace mrdocs {
 
 namespace {
@@ -535,4 +535,4 @@ executeCmakeExportCompileCommands(llvm::StringRef projectPath, llvm::StringRef c
 
 
 } // mrdocs
-} // clang
+

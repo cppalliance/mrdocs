@@ -15,7 +15,7 @@
 #include <mrdocs/Support/Error.hpp>
 #include <ranges>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 //------------------------------------------------
 
@@ -36,11 +36,11 @@ empty() const noexcept
 
 /** Return the metadata for the global namespace.
 */
-NamespaceInfo const&
+NamespaceSymbol const&
 Corpus::
 globalNamespace() const noexcept
 {
-    return get<NamespaceInfo>(SymbolID::global);
+    return get<NamespaceSymbol>(SymbolID::global);
 }
 
 //------------------------------------------------
@@ -50,7 +50,7 @@ globalNamespace() const noexcept
 //------------------------------------------------
 
 std::vector<SymbolID>
-getParents(Corpus const& C, Info const& I)
+getParents(Corpus const& C, Symbol const& I)
 {
     std::vector<SymbolID> parents;
     std::size_t n = 0;
@@ -73,4 +73,4 @@ getParents(Corpus const& C, Info const& I)
     return parents;
 }
 
-} // clang::mrdocs
+} // mrdocs

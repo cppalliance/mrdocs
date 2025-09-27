@@ -15,14 +15,14 @@
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
-#include <mrdocs/Metadata/Info/SymbolID.hpp>
 #include <mrdocs/Metadata/Name/NameBase.hpp>
 #include <mrdocs/Metadata/Specifiers.hpp>
+#include <mrdocs/Metadata/Symbol/SymbolID.hpp>
 #include <mrdocs/Support/TypeTraits.hpp>
 #include <string>
 #include <vector>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** Type qualifiers
 */
@@ -50,6 +50,6 @@ tag_invoke(
     v = toString(kind);
 }
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

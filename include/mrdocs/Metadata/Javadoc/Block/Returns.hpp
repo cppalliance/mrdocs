@@ -18,7 +18,7 @@
 #include <mrdocs/Metadata/Javadoc/Block/Paragraph.hpp>
 #include <string>
 
-namespace clang::mrdocs::doc {
+namespace mrdocs::doc {
 
 /** Documentation for a function return type
 */
@@ -95,6 +95,6 @@ tag_invoke(
     v = dom::LazyObject(I, domCorpus);
 }
 
-} // clang::mrdocs::doc
+} // mrdocs::doc
 
 #endif // MRDOCS_API_METADATA_JAVADOC_BLOCK_RETURNS_HPP

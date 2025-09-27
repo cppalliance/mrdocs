@@ -21,7 +21,7 @@
 #include <variant>
 #include <vector>
 
-namespace clang {
+
 namespace mrdocs {
 
 /** An error thrown or returned by Handlebars
@@ -1330,6 +1330,6 @@ year_fn();
 
 } // helpers
 } // mrdocs
-} // clang
+
 
 #endif // MRDOCS_API_SUPPORT_HANDLEBARS_HPP

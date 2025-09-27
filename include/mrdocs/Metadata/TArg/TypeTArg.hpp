@@ -18,18 +18,18 @@
 #include <mrdocs/Metadata/TArg/TArgBase.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 struct TypeTArg final
     : TArgCommonBase<TArgKind::Type>
 {
     /** Template argument type.
      */
-    Polymorphic<TypeInfo> Type = Polymorphic<TypeInfo>(AutoTypeInfo{});
+    Polymorphic<struct Type> Type = Polymorphic<struct Type>(AutoType{});
 
     auto operator<=>(TypeTArg const&) const = default;
 };
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif // MRDOCS_API_METADATA_TARG_TYPETARG_HPP

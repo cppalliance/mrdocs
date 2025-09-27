@@ -9,12 +9,12 @@
 //
 
 #include <mrdocs/ADT/Optional.hpp>
-#include <mrdocs/Metadata/Info/Source.hpp>
+#include <mrdocs/Metadata/Symbol/Source.hpp>
 #include <optional>
 #include <type_traits>
 #include <test_suite/test_suite.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 struct OptionalTest {
     // A fallback-only payload type (no sentinel, no empty()/clear()).
@@ -337,4 +337,4 @@ struct OptionalTest {
 
 TEST_SUITE(OptionalTest, "clang.mrdocs.ADT.Optional");
 
-} // namespace clang::mrdocs
+} // namespace mrdocs

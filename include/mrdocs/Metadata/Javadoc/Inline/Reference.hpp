@@ -14,11 +14,11 @@
 #define MRDOCS_API_METADATA_JAVADOC_INLINE_REFERENCE_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Info/SymbolID.hpp>
 #include <mrdocs/Metadata/Javadoc/Inline/Text.hpp>
+#include <mrdocs/Metadata/Symbol/SymbolID.hpp>
 #include <string>
 
-namespace clang::mrdocs::doc {
+namespace mrdocs::doc {
 
 /** A reference to a symbol.
 */
@@ -84,6 +84,6 @@ tag_invoke(
     v = dom::LazyObject(I, domCorpus);
 }
 
-} // clang::mrdocs::doc
+} // mrdocs::doc
 
 #endif // MRDOCS_API_METADATA_JAVADOC_INLINE_REFERENCE_HPP

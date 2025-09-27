@@ -12,7 +12,7 @@
 #include <algorithm>
 #include <ranges>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 namespace {
 // Comparison function by symbol IDs
@@ -25,7 +25,7 @@ struct SymbolIDCompareFn
     Optional<FunctionClass>
     findFunctionClass(InfoTy const& I)
     {
-        if constexpr (std::same_as<InfoTy, Info>)
+        if constexpr (std::same_as<InfoTy, Symbol>)
         {
             return visit(I, []<class U>(U const& u)
                 -> Optional<FunctionClass>
@@ -34,8 +34,8 @@ struct SymbolIDCompareFn
             });
         }
         else if constexpr (
-            std::same_as<FunctionInfo, InfoTy> ||
-            std::same_as<OverloadsInfo, InfoTy>)
+            std::same_as<FunctionSymbol, InfoTy> ||
+            std::same_as<OverloadsSymbol, InfoTy>)
         {
             return I.Class;
         }
@@ -47,7 +47,7 @@ struct SymbolIDCompareFn
     Optional<OperatorKind>
     findOperatorKind(InfoTy const& I)
     {
-        if constexpr (std::same_as<InfoTy, Info>)
+        if constexpr (std::same_as<InfoTy, Symbol>)
         {
             return visit(I, []<class U>(U const& u)
                 -> Optional<OperatorKind>
@@ -56,8 +56,8 @@ struct SymbolIDCompareFn
             });
         }
         else if constexpr (
-            std::same_as<FunctionInfo, InfoTy> ||
-            std::same_as<OverloadsInfo, InfoTy>)
+            std::same_as<FunctionSymbol, InfoTy> ||
+            std::same_as<OverloadsSymbol, InfoTy>)
         {
             return I.OverloadedOperator;
         }
@@ -68,12 +68,12 @@ struct SymbolIDCompareFn
     operator()(SymbolID const& lhsId, SymbolID const& rhsId) const
     {
         // Get Info from SymbolID
-        Info const* lhsPtr = corpus_.find(lhsId);
+        Symbol const* lhsPtr = corpus_.find(lhsId);
         MRDOCS_CHECK_OR(lhsPtr, false);
-        Info const* rhsPtr = corpus_.find(rhsId);
+        Symbol const* rhsPtr = corpus_.find(rhsId);
         MRDOCS_CHECK_OR(rhsPtr, true);
-        Info const& lhs = *lhsPtr;
-        Info const& rhs = *rhsPtr;
+        Symbol const& lhs = *lhsPtr;
+        Symbol const& rhs = *rhsPtr;
 
         // Constructors come first
         Optional<FunctionClass> const lhsClass = findFunctionClass(lhs);
@@ -163,20 +163,20 @@ struct SymbolIDCompareFn
             (lhsOp && *lhsOp == OperatorKind::Equal &&
              rhsOp && *rhsOp == OperatorKind::Equal))
         {
-            FunctionInfo const& lhsF = lhs.asFunction();
-            FunctionInfo const& rhsF = rhs.asFunction();
+            FunctionSymbol const& lhsF = lhs.asFunction();
+            FunctionSymbol const& rhsF = rhs.asFunction();
             if (lhsF.Params.size() == 1 && rhsF.Params.size() == 1)
             {
-                auto isCopyOrMoveConstOrAssign = [](FunctionInfo const& I) {
+                auto isCopyOrMoveConstOrAssign = [](FunctionSymbol const& I) {
                     if (I.Params.size() == 1)
                     {
                         auto const& param = I.Params[0];
-                        Polymorphic<TypeInfo> const& paramType = param.Type;
+                        Polymorphic<Type> const& paramType = param.Type;
                         MRDOCS_ASSERT(!paramType.valueless_after_move());
                         MRDOCS_CHECK_OR(
                             paramType->isLValueReference() ||
                             paramType->isRValueReference(), false);
-                        Polymorphic<TypeInfo> const &paramRefPointeeOpt =
+                        Polymorphic<Type> const &paramRefPointeeOpt =
                             paramType->isLValueReference()
                                 ? paramType->asLValueReference().PointeeType
                                 : paramType->asRValueReference().PointeeType;
@@ -214,7 +214,7 @@ struct SymbolIDCompareFn
         }
 
         // Special cases are handled, so use the configuration criteria
-        Info const* P = corpus_.find(lhs.Parent);
+        Symbol const* P = corpus_.find(lhs.Parent);
         bool const isClassMember = P && P->isRecord();
         auto const generalSortCriteria =
             isClassMember
@@ -222,13 +222,13 @@ struct SymbolIDCompareFn
                 : corpus_.config->sortNamespaceMembersBy;
         switch (generalSortCriteria)
         {
-        case clang::mrdocs::PublicSettings::SortSymbolBy::Name:
+        case mrdocs::PublicSettings::SortSymbolBy::Name:
             if (auto const cmp = lhs.Name <=> rhs.Name; cmp != 0)
             {
                 return std::is_lt(cmp);
             }
             break;
-        case clang::mrdocs::PublicSettings::SortSymbolBy::Location:
+        case mrdocs::PublicSettings::SortSymbolBy::Location:
         {
             // By location: short path, line, column
             auto const& lhsLoc = getPrimaryLocation(lhs);
@@ -318,10 +318,10 @@ toDerivedView(std::vector<SymbolID> const& ids, CorpusImpl& c)
        std::views::transform([&c](SymbolID const& id) {
             return c.find(id);
         }) |
-       std::views::filter([](Info* infoPtr) {
+       std::views::filter([](Symbol* infoPtr) {
             return infoPtr != nullptr;
        }) |
-      std::views::transform([](Info* infoPtr) -> T* {
+      std::views::transform([](Symbol* infoPtr) -> T* {
          return dynamic_cast<T*>(infoPtr);
       }) |
       std::views::filter([](T* ptr) {
@@ -335,21 +335,21 @@ toDerivedView(std::vector<SymbolID> const& ids, CorpusImpl& c)
 
 void
 SortMembersFinalizer::
-operator()(NamespaceInfo& I)
+operator()(NamespaceSymbol& I)
 {
     // Sort members of all tranches
     sortMembers(I.Members);
 
     // Recursively sort members of child namespaces, records, and overloads
-    for (RecordInfo& RI: toDerivedView<RecordInfo>(I.Members.Records, corpus_))
+    for (RecordSymbol& RI: toDerivedView<RecordSymbol>(I.Members.Records, corpus_))
     {
         operator()(RI);
     }
-    for (NamespaceInfo& RI: toDerivedView<NamespaceInfo>(I.Members.Namespaces, corpus_))
+    for (NamespaceSymbol& RI: toDerivedView<NamespaceSymbol>(I.Members.Namespaces, corpus_))
     {
         operator()(RI);
     }
-    for (OverloadsInfo& RI: toDerivedView<OverloadsInfo>(I.Members.Functions, corpus_))
+    for (OverloadsSymbol& RI: toDerivedView<OverloadsSymbol>(I.Members.Functions, corpus_))
     {
         operator()(RI);
     }
@@ -357,7 +357,7 @@ operator()(NamespaceInfo& I)
 
 void
 SortMembersFinalizer::
-operator()(RecordInfo& I)
+operator()(RecordSymbol& I)
 {
     // Sort members of all tranches if sorting is enabled for records
     if (corpus_.config->sortMembers)
@@ -366,39 +366,39 @@ operator()(RecordInfo& I)
     }
 
     // Recursively sort members of child records and overloads
-    for (RecordInfo& RI: toDerivedView<RecordInfo>(I.Interface.Public.Records, corpus_))
+    for (RecordSymbol& RI: toDerivedView<RecordSymbol>(I.Interface.Public.Records, corpus_))
     {
         operator()(RI);
     }
-    for (RecordInfo& RI: toDerivedView<RecordInfo>(I.Interface.Protected.Records, corpus_))
+    for (RecordSymbol& RI: toDerivedView<RecordSymbol>(I.Interface.Protected.Records, corpus_))
     {
         operator()(RI);
     }
-    for (RecordInfo& RI: toDerivedView<RecordInfo>(I.Interface.Private.Records, corpus_))
+    for (RecordSymbol& RI: toDerivedView<RecordSymbol>(I.Interface.Private.Records, corpus_))
     {
         operator()(RI);
     }
-    for (OverloadsInfo& RI: toDerivedView<OverloadsInfo>(I.Interface.Public.Functions, corpus_))
+    for (OverloadsSymbol& RI: toDerivedView<OverloadsSymbol>(I.Interface.Public.Functions, corpus_))
     {
         operator()(RI);
     }
-    for (OverloadsInfo& RI: toDerivedView<OverloadsInfo>(I.Interface.Protected.Functions, corpus_))
+    for (OverloadsSymbol& RI: toDerivedView<OverloadsSymbol>(I.Interface.Protected.Functions, corpus_))
     {
         operator()(RI);
     }
-    for (OverloadsInfo& RI: toDerivedView<OverloadsInfo>(I.Interface.Private.Functions, corpus_))
+    for (OverloadsSymbol& RI: toDerivedView<OverloadsSymbol>(I.Interface.Private.Functions, corpus_))
     {
         operator()(RI);
     }
-    for (OverloadsInfo& RI: toDerivedView<OverloadsInfo>(I.Interface.Public.StaticFunctions, corpus_))
+    for (OverloadsSymbol& RI: toDerivedView<OverloadsSymbol>(I.Interface.Public.StaticFunctions, corpus_))
     {
         operator()(RI);
     }
-    for (OverloadsInfo& RI: toDerivedView<OverloadsInfo>(I.Interface.Protected.StaticFunctions, corpus_))
+    for (OverloadsSymbol& RI: toDerivedView<OverloadsSymbol>(I.Interface.Protected.StaticFunctions, corpus_))
     {
         operator()(RI);
     }
-    for (OverloadsInfo& RI: toDerivedView<OverloadsInfo>(I.Interface.Private.StaticFunctions, corpus_))
+    for (OverloadsSymbol& RI: toDerivedView<OverloadsSymbol>(I.Interface.Private.StaticFunctions, corpus_))
     {
         operator()(RI);
     }
@@ -406,10 +406,10 @@ operator()(RecordInfo& I)
 
 void
 SortMembersFinalizer::
-operator()(OverloadsInfo& I)
+operator()(OverloadsSymbol& I)
 {
     // Sort the member functions
     sortMembers(I.Members);
 }
 
-} // clang::mrdocs
+} // mrdocs

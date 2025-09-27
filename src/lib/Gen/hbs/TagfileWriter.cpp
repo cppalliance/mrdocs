@@ -17,7 +17,7 @@
 #include <mrdocs/Support/Path.hpp>
 #include <llvm/Support/FileSystem.h>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 //------------------------------------------------
 //
@@ -77,7 +77,7 @@ void
 TagfileWriter::
 operator()(T const& I)
 {
-    if constexpr (std::derived_from<T, Info>)
+    if constexpr (std::derived_from<T, Symbol>)
     {
         if (!hbs::shouldGenerate(I, corpus_.getCorpus().config))
         {
@@ -100,24 +100,24 @@ operator()(T const& I)
     }
 }
 
-#define INFO(Type) template void TagfileWriter::operator()<Type##Info>(Type##Info const&);
-#include <mrdocs/Metadata/Info/InfoNodes.inc>
+#define INFO(Type) template void TagfileWriter::operator()<Type##Symbol>(Type##Symbol const&);
+#include <mrdocs/Metadata/Symbol/SymbolNodes.inc>
 
 void
 TagfileWriter::
 writeNamespace(
-    NamespaceInfo const& I)
+    NamespaceSymbol const& I)
 {
     // Check if this namespace contains only other namespaces
     bool onlyNamespaces = true;
-    corpus_->traverse(I, [&](Info const& U)
+    corpus_->traverse(I, [&](Symbol const& U)
     {
         if (!hbs::shouldGenerate(U, corpus_.getCorpus().config))
         {
             return;
         }
 
-        if (U.Kind != InfoKind::Namespace)
+        if (U.Kind != SymbolKind::Namespace)
         {
             onlyNamespaces = false;
         }
@@ -197,7 +197,7 @@ writeClassLike(
 
 void
 TagfileWriter::
-writeFunctionMember(FunctionInfo const& I)
+writeFunctionMember(FunctionSymbol const& I)
 {
     tags_.open("member", {{"kind", "function"}});
     MRDOCS_ASSERT(!I.ReturnType.valueless_after_move());
@@ -283,4 +283,4 @@ generateFileAndAnchor(T const& I)
     return {url.substr(0, pos), url.substr(pos + 1)};
 }
 
-} // clang::mrdocs
+} // mrdocs

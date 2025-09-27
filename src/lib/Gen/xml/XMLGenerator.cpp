@@ -16,7 +16,7 @@
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Support/Error.hpp>
 
-namespace clang {
+
 namespace mrdocs {
 namespace xml {
 
@@ -42,4 +42,4 @@ makeXMLGenerator()
 }
 
 } // mrdocs
-} // clang
+

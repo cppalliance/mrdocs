@@ -13,11 +13,11 @@
 #include <mrdocs/Support/Report.hpp>
 #include <format>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 void
 BaseMembersFinalizer::
-inheritBaseMembers(RecordInfo& I, RecordInfo const& B, AccessKind const A)
+inheritBaseMembers(RecordSymbol& I, RecordSymbol const& B, AccessKind const A)
 {
     inheritBaseMembers(I.id, I.Interface, B.Interface, A);
 }
@@ -81,7 +81,7 @@ inheritBaseMembers(
 
 namespace {
 bool
-shouldCopy(Config const& config, Info const& M)
+shouldCopy(Config const& config, Symbol const& M)
 {
     if (config->inheritBaseMembers == PublicSettings::BaseMemberInheritance::CopyDependencies)
     {
@@ -102,9 +102,9 @@ inheritBaseMembers(
     {
         // Find the info from the base class
         MRDOCS_CHECK_OR_CONTINUE(!contains(derived, otherID));
-        Info* otherInfoPtr = corpus_.find(otherID);
+        Symbol* otherInfoPtr = corpus_.find(otherID);
         MRDOCS_CHECK_OR_CONTINUE(otherInfoPtr);
-        Info& otherInfo = *otherInfoPtr;
+        Symbol& otherInfo = *otherInfoPtr;
 
         // Check if we're not attempt to copy a special member function
         if (auto const *funcPtr = otherInfoPtr->asFunctionPtr()) {
@@ -118,7 +118,7 @@ inheritBaseMembers(
             derived,
             [&](SymbolID const& id)
             {
-                Info* infoPtr = corpus_.find(id);
+            Symbol* infoPtr = corpus_.find(id);
                 MRDOCS_CHECK_OR(infoPtr, false);
                 auto& info = *infoPtr;
                 MRDOCS_CHECK_OR(info.Kind == otherInfo.Kind, false);
@@ -126,8 +126,8 @@ inheritBaseMembers(
                 {
                     // If it's a function, it's only a shadow if the signatures
                     // are the same
-                    auto const& otherFunc = static_cast<FunctionInfo const&>(otherInfo);
-                    auto const& func = static_cast<FunctionInfo const&>(info);
+                    auto const& otherFunc = static_cast<FunctionSymbol const&>(otherInfo);
+                    auto const& func = static_cast<FunctionSymbol const&>(info);
                     return overrides(func, otherFunc);
                 }
                 // For other kinds of members, it's a shadow if the names
@@ -152,9 +152,9 @@ inheritBaseMembers(
         }
         else
         {
-            std::unique_ptr<Info> otherCopy =
+            std::unique_ptr<Symbol> otherCopy =
                 visit(otherInfo, [&]<class T>(T const& other)
-                    -> std::unique_ptr<Info>
+                    -> std::unique_ptr<Symbol>
                 {
                     return std::make_unique<T>(other);
                 });
@@ -166,9 +166,9 @@ inheritBaseMembers(
             // Get the extraction mode from the derived class
             if (otherCopy->Extraction == ExtractionMode::Dependency)
             {
-                Info* derivedInfoPtr = corpus_.find(derivedId);
+                Symbol* derivedInfoPtr = corpus_.find(derivedId);
                 MRDOCS_CHECK_OR_CONTINUE(derivedInfoPtr);
-                Info const& derivedInfo = *derivedInfoPtr;
+                Symbol const& derivedInfo = *derivedInfoPtr;
                 otherCopy->Extraction = derivedInfo.Extraction;
             }
             corpus_.info_.insert(std::move(otherCopy));
@@ -182,7 +182,7 @@ finalizeRecords(std::vector<SymbolID> const& ids)
 {
     for (SymbolID const& id: ids)
     {
-        Info* infoPtr = corpus_.find(id);
+        Symbol* infoPtr = corpus_.find(id);
         MRDOCS_CHECK_OR_CONTINUE(infoPtr);
         auto* record = infoPtr->asRecordPtr();
         MRDOCS_CHECK_OR_CONTINUE(record);
@@ -196,7 +196,7 @@ finalizeNamespaces(std::vector<SymbolID> const& ids)
 {
     for (SymbolID const& id: ids)
     {
-        Info* infoPtr = corpus_.find(id);
+        Symbol* infoPtr = corpus_.find(id);
         MRDOCS_CHECK_OR_CONTINUE(infoPtr);
         auto* ns = infoPtr->asNamespacePtr();
         MRDOCS_CHECK_OR_CONTINUE(ns);
@@ -206,7 +206,7 @@ finalizeNamespaces(std::vector<SymbolID> const& ids)
 
 void
 BaseMembersFinalizer::
-operator()(NamespaceInfo& I)
+operator()(NamespaceSymbol& I)
 {
     report::trace(
         "Extracting base members for namespace '{}'",
@@ -217,7 +217,7 @@ operator()(NamespaceInfo& I)
 
 void
 BaseMembersFinalizer::
-operator()(RecordInfo& I)
+operator()(RecordSymbol& I)
 {
     MRDOCS_CHECK_OR(I.Extraction == ExtractionMode::Regular);
     report::trace(
@@ -252,4 +252,4 @@ operator()(RecordInfo& I)
     finalized_.emplace(I.id);
 }
 
-} // clang::mrdocs
+} // mrdocs

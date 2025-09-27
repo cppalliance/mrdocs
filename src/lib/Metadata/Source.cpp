@@ -11,13 +11,13 @@
 
 #include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Dom/LazyObject.hpp>
-#include <mrdocs/Metadata/Info/FileKind.hpp>
-#include <mrdocs/Metadata/Info/Location.hpp>
-#include <mrdocs/Metadata/Info/Source.hpp>
+#include <mrdocs/Metadata/Symbol/FileKind.hpp>
+#include <mrdocs/Metadata/Symbol/Location.hpp>
+#include <mrdocs/Metadata/Symbol/Source.hpp>
 #include <llvm/ADT/STLExtras.h>
 #include <ranges>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 std::string_view
 toString(FileKind kind)
@@ -150,4 +150,4 @@ tag_invoke(
     v = dom::LazyObject(I);
 }
 
-} // clang::mrdocs
+} // mrdocs

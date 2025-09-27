@@ -13,14 +13,14 @@
 #define MRDOCS_LIB_METADATA_FINALIZERS_JAVADOCFINALIZER_HPP
 
 #include <lib/CorpusImpl.hpp>
-#include <lib/Metadata/InfoSet.hpp>
+#include <lib/Metadata/SymbolSet.hpp>
 #include <mrdocs/Support/Report.hpp>
 #include <mrdocs/Support/ScopeExit.hpp>
 #include <format>
 #include <set>
 #include <utility>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** Finalizes a set of Info.
 
@@ -33,7 +33,7 @@ namespace clang::mrdocs {
 class JavadocFinalizer
 {
     CorpusImpl& corpus_;
-    Info* current_context_ = nullptr;
+    Symbol* current_context_ = nullptr;
 
     /* Broken references for which we have already emitted
        a warning.
@@ -45,15 +45,15 @@ class JavadocFinalizer
        This is used to avoid allow recursion when
        finalizing references.
      */
-    std::set<Info const*> finalized_;
+    std::set<Symbol const*> finalized_;
 
     /* Info objects whose brief have been finalized
      */
-    std::set<Info const*> finalized_brief_;
+    std::set<Symbol const*> finalized_brief_;
 
     /* Info objects whose metadata have been finalized
      */
-    std::set<Info const*> finalized_metadata_;
+    std::set<Symbol const*> finalized_metadata_;
 
     // A comparison function that sorts locations by:
     // 1) ascending full path
@@ -119,7 +119,7 @@ private:
         summary.
      */
     void
-    finalizeBrief(Info& I);
+    finalizeBrief(Symbol& I);
 
     /** Copy the brief from another symbol
 
@@ -147,7 +147,7 @@ private:
         reference to another symbol created with \@copydoc.
      */
     void
-    finalizeMetadataCopies(Info& I);
+    finalizeMetadataCopies(Symbol& I);
 
     /** Populate function javadoc from with missing fields
 
@@ -155,7 +155,7 @@ private:
         missing fields of special functions.
      */
     void
-    populateFunctionJavadoc(FunctionInfo&) const;
+    populateFunctionJavadoc(FunctionSymbol&) const;
 
     /** Populate the metadata of overloads
 
@@ -163,7 +163,7 @@ private:
         with the metadata of the functions it overloads.
      */
     void
-    populateOverloadJavadoc(OverloadsInfo&);
+    populateOverloadJavadoc(OverloadsSymbol&);
 
     /** Resolve references in the javadoc
 
@@ -173,7 +173,7 @@ private:
         the reference.
      */
     void
-    finalizeJavadoc(Info& I);
+    finalizeJavadoc(Symbol& I);
 
     /** Recursively finalize javadoc members
 
@@ -333,13 +333,13 @@ private:
     void
     finalize(TemplateInfo& info);
 
-    /// Remove invalid ids from TypeInfo members
+    /// Remove invalid ids from Type members
     void
-    finalize(TypeInfo& type);
+    finalize(Type& type);
 
-    /// Remove invalid ids from NameInfo members
+    /// Remove invalid ids from Name members
     void
-    finalize(NameInfo& name);
+    finalize(Name& name);
 
     /// Finalize polymorphic
     template <class T>
@@ -432,13 +432,13 @@ private:
     warnDocErrors();
 
     void
-    warnParamErrors(FunctionInfo const& I);
+    warnParamErrors(FunctionSymbol const& I);
 
     void
     warnNoParamDocs();
 
     void
-    warnNoParamDocs(FunctionInfo const& I);
+    warnNoParamDocs(FunctionSymbol const& I);
 
     void
     warnUndocEnumValues();
@@ -447,9 +447,9 @@ private:
     warnUnnamedParams();
 
     void
-    warnUnnamedParams(FunctionInfo const& I);
+    warnUnnamedParams(FunctionSymbol const& I);
 };
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif // MRDOCS_LIB_METADATA_FINALIZERS_JAVADOCFINALIZER_HPP

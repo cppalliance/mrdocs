@@ -15,7 +15,7 @@
 #include <vector>
 #include <test_suite/test_suite.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 struct NullableTest {
     // Types for testing
@@ -236,4 +236,4 @@ struct NullableTest {
 
 TEST_SUITE(NullableTest, "clang.mrdocs.ADT.Nullable");
 
-} // namespace clang::mrdocs
+} // namespace mrdocs

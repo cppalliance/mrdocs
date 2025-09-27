@@ -15,7 +15,7 @@
 #include <string>
 #include <vector>
 
-namespace clang {
+
 namespace mrdocs {
 
 ToolArgs ToolArgs::instance_;
@@ -56,4 +56,4 @@ hideForeignOptions()
 }
 
 } // mrdocs
-} // clang
+

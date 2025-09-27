@@ -17,7 +17,7 @@
 #include <string>
 #include <unordered_map>
 
-namespace clang {
+
 namespace mrdocs {
 
 /** Diagnostic information accumulated during visitation.
@@ -139,6 +139,6 @@ public:
 };
 
 } // mrdocs
-} // clang
+
 
 #endif // MRDOCS_LIB_DIAGNOSTICS_HPP

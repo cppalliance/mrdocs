@@ -14,9 +14,9 @@
 #include <mrdocs/Platform.hpp>
 #include <lib/AST/ASTVisitor.hpp>
 #include <lib/AST/ClangHelpers.hpp>
-#include <lib/AST/NameInfoBuilder.hpp>
+#include <lib/AST/NameBuilder.hpp>
 #include <lib/AST/ParseJavadoc.hpp>
-#include <lib/AST/TypeInfoBuilder.hpp>
+#include <lib/AST/TypeBuilder.hpp>
 #include <lib/Diagnostics.hpp>
 #include <lib/Support/Path.hpp>
 #include <lib/Support/Radix.hpp>
@@ -42,15 +42,15 @@
 #include <ranges>
 #include <unordered_set>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 ASTVisitor::
 ASTVisitor(
     ConfigImpl const& config,
     Diagnostics const& diags,
-    CompilerInstance& compiler,
-    ASTContext& context,
-    Sema& sema) noexcept
+    clang::CompilerInstance& compiler,
+    clang::ASTContext& context,
+    clang::Sema& sema) noexcept
     : config_(config)
     , diags_(diags)
     , compiler_(compiler)
@@ -62,12 +62,12 @@ ASTVisitor(
     initCustomCommentCommands(context_);
 
     // The traversal scope should *only* consist of the
-    // top-level TranslationUnitDecl.
+    // top-level clang::TranslationUnitDecl.
     // If this `assert` fires, then it means
     // ASTContext::setTraversalScope is being (erroneously)
     // used somewhere
     MRDOCS_ASSERT(context_.getTraversalScope() ==
-                  ArrayRef<Decl *>{context_.getTranslationUnitDecl()});
+                  llvm::ArrayRef<clang::Decl *>{context_.getTranslationUnitDecl()});
 }
 
 void
@@ -77,15 +77,15 @@ build()
     // Traverse the translation unit, only extracting
     // declarations which satisfy all filter conditions.
     // dependencies will be tracked, but not extracted
-    TranslationUnitDecl const* TU = context_.getTranslationUnitDecl();
+    clang::TranslationUnitDecl const* TU = context_.getTranslationUnitDecl();
     traverse(TU);
     MRDOCS_ASSERT(find(SymbolID::global));
 }
 
 template <
     class InfoTy,
-    std::derived_from<Decl> DeclTy>
-Info*
+    std::derived_from<clang::Decl> DeclTy>
+Symbol*
 ASTVisitor::
 traverse(DeclTy const* D)
 {
@@ -93,20 +93,20 @@ traverse(DeclTy const* D)
     MRDOCS_CHECK_OR(!D->isInvalidDecl(), nullptr);
     MRDOCS_SYMBOL_TRACE(D, context_);
 
-    if constexpr (std::same_as<DeclTy, Decl>)
+    if constexpr (std::same_as<DeclTy, clang::Decl>)
     {
         // Convert to the most derived type of the Decl
         // and call the appropriate traverse function
-        return visit(D, [&]<typename DeclTyU>(DeclTyU* U) -> Info*
+        return visit(D, [&]<typename DeclTyU>(DeclTyU* U) -> Symbol*
         {
-            if constexpr (!std::same_as<DeclTyU, Decl>)
+            if constexpr (!std::same_as<DeclTyU, clang::Decl>)
             {
                 return traverse(U);
             }
             return nullptr;
         });
     }
-    else if constexpr (HasInfoTypeFor<DeclTy> || std::derived_from<InfoTy, Info>)
+    else if constexpr (HasInfoTypeFor<DeclTy> || std::derived_from<InfoTy, Symbol>)
     {
         // If the declaration has a corresponding Info type,
         // we build the Info object and populate it with the
@@ -143,46 +143,46 @@ traverse(DeclTy const* D)
     return nullptr;
 }
 
-Info*
+Symbol*
 ASTVisitor::
-traverse(FunctionTemplateDecl const* D)
+traverse(clang::FunctionTemplateDecl const* D)
 {
-    // Route the traversal to GuideInfo or FunctionInfo
-    if (FunctionDecl* FD = D->getTemplatedDecl();
-        FD && isa<CXXDeductionGuideDecl>(FD))
+    // Route the traversal to GuideSymbol or FunctionSymbol
+    if (clang::FunctionDecl* FD = D->getTemplatedDecl();
+        FD && isa<clang::CXXDeductionGuideDecl>(FD))
     {
-        return traverse<GuideInfo>(D);
+        return traverse<GuideSymbol>(D);
     }
-    return traverse<FunctionInfo>(D);
+    return traverse<FunctionSymbol>(D);
 }
 
-Info*
+Symbol*
 ASTVisitor::
-traverse(UsingDirectiveDecl const* D)
+traverse(clang::UsingDirectiveDecl const* D)
 {
     MRDOCS_SYMBOL_TRACE(D, context_);
 
     // Find the parent namespace
     ScopeExitRestore s1(mode_, TraversalMode::Dependency);
-    Decl const* P = getParent(D);
+    clang::Decl const* P = getParent(D);
     MRDOCS_SYMBOL_TRACE(P, context_);
-    Info* PI = findOrTraverse(P);
+    Symbol* PI = findOrTraverse(P);
     MRDOCS_CHECK_OR(PI, nullptr);
     MRDOCS_CHECK_OR(PI->isNamespace(), nullptr);
     auto& PNI = PI->asNamespace();
 
     // Find the nominated namespace
-    Decl const* ND = D->getNominatedNamespace();
+    clang::Decl const* ND = D->getNominatedNamespace();
     MRDOCS_SYMBOL_TRACE(ND, context_);
     ScopeExitRestore s2(mode_, TraversalMode::Dependency);
-    Info* NDI = findOrTraverse(ND);
+    Symbol* NDI = findOrTraverse(ND);
     MRDOCS_CHECK_OR(NDI, nullptr);
 
-    Optional<Polymorphic<NameInfo>> res = toNameInfo(ND);
+    Optional<Polymorphic<Name>> res = toName(ND);
     MRDOCS_CHECK_OR(res, nullptr);
     MRDOCS_ASSERT(!res->valueless_after_move());
     MRDOCS_ASSERT((*res)->isIdentifier());
-    if (NameInfo NI = **res;
+    if (Name NI = **res;
         !contains(PNI.UsingDirectives, NI))
     {
         PNI.UsingDirectives.push_back(std::move(NI));
@@ -190,17 +190,17 @@ traverse(UsingDirectiveDecl const* D)
     return nullptr;
 }
 
-Info*
+Symbol*
 ASTVisitor::
-traverse(IndirectFieldDecl const* D)
+traverse(clang::IndirectFieldDecl const* D)
 {
     return traverse(D->getAnonField());
 }
 
 template <
-    std::derived_from<Info> InfoTy,
-    std::derived_from<Decl> DeclTy>
-requires (!std::derived_from<DeclTy, RedeclarableTemplateDecl>)
+    std::derived_from<Symbol> InfoTy,
+    std::derived_from<clang::Decl> DeclTy>
+requires (!std::derived_from<DeclTy, clang::RedeclarableTemplateDecl>)
 void
 ASTVisitor::
 traverseMembers(InfoTy& I, DeclTy const* DC)
@@ -209,14 +209,14 @@ traverseMembers(InfoTy& I, DeclTy const* DC)
     // not traverse its members as function arguments are
     // not main Info members.
     if constexpr (
-        !std::derived_from<DeclTy, FunctionDecl> &&
-        std::derived_from<DeclTy, DeclContext>)
+        !std::derived_from<DeclTy, clang::FunctionDecl> &&
+        std::derived_from<DeclTy, clang::DeclContext>)
     {
         // We only need members of regular symbols and see-below namespaces
         // - If symbol is SeeBelow we want the members if it's a namespace
         MRDOCS_CHECK_OR(
             I.Extraction != ExtractionMode::SeeBelow ||
-            I.Kind == InfoKind::Namespace);
+            I.Kind == SymbolKind::Namespace);
 
         // - If symbol is a Dependency, we only want the members if
         //   the traversal mode is BaseClass
@@ -232,9 +232,9 @@ traverseMembers(InfoTy& I, DeclTy const* DC)
 
         // There are many implicit declarations, especially in the
         // translation unit declaration, so we preemtively skip them here.
-        auto explicitMembers = std::ranges::views::filter(DC->decls(), [](Decl* D)
+        auto explicitMembers = std::ranges::views::filter(DC->decls(), [](clang::Decl* D)
             {
-                return !D->isImplicit() || isa<IndirectFieldDecl>(D);
+                return !D->isImplicit() || isa<clang::IndirectFieldDecl>(D);
             });
         for (auto* D : explicitMembers)
         {
@@ -248,8 +248,8 @@ traverseMembers(InfoTy& I, DeclTy const* DC)
 }
 
 template <
-    std::derived_from<Info> InfoTy,
-    std::derived_from<RedeclarableTemplateDecl> DeclTy>
+    std::derived_from<Symbol> InfoTy,
+    std::derived_from<clang::RedeclarableTemplateDecl> DeclTy>
 void
 ASTVisitor::
 traverseMembers(InfoTy& I, DeclTy const* D)
@@ -258,15 +258,15 @@ traverseMembers(InfoTy& I, DeclTy const* D)
 }
 
 template <
-    std::derived_from<Info> InfoTy,
-    std::derived_from<Decl> DeclTy>
-requires (!std::derived_from<DeclTy, RedeclarableTemplateDecl>)
+    std::derived_from<Symbol> InfoTy,
+    std::derived_from<clang::Decl> DeclTy>
+requires (!std::derived_from<DeclTy, clang::RedeclarableTemplateDecl>)
 void
 ASTVisitor::
 traverseParent(InfoTy& I, DeclTy const* DC)
 {
     MRDOCS_SYMBOL_TRACE(DC, context_);
-    if (Decl const* PD = getParent(DC))
+    if (clang::Decl const* PD = getParent(DC))
     {
         MRDOCS_SYMBOL_TRACE(PD, context_);
 
@@ -274,7 +274,7 @@ traverseParent(InfoTy& I, DeclTy const* DC)
         // to extract the parent scope:
         // Traverse the parent scope as a dependency if it
         // hasn't been extracted yet
-        Info* PI = nullptr;
+        Symbol* PI = nullptr;
         {
             ScopeExitRestore s(mode_, Dependency);
             if (PI = findOrTraverse(PD); !PI)
@@ -288,7 +288,7 @@ traverseParent(InfoTy& I, DeclTy const* DC)
 
         visit(*PI, [&]<typename ParentInfoTy>(ParentInfoTy& PU) -> void
         {
-            if constexpr (InfoParent<ParentInfoTy>)
+            if constexpr (SymbolParent<ParentInfoTy>)
             {
                 addMember(PU, I);
             }
@@ -297,8 +297,8 @@ traverseParent(InfoTy& I, DeclTy const* DC)
 }
 
 template <
-    std::derived_from<Info> InfoTy,
-    std::derived_from<RedeclarableTemplateDecl> DeclTy>
+    std::derived_from<Symbol> InfoTy,
+    std::derived_from<clang::RedeclarableTemplateDecl> DeclTy>
 void
 ASTVisitor::
 traverseParent(InfoTy& I, DeclTy const* D)
@@ -309,14 +309,14 @@ traverseParent(InfoTy& I, DeclTy const* D)
 
 Expected<llvm::SmallString<128>>
 ASTVisitor::
-generateUSR(Decl const* D) const
+generateUSR(clang::Decl const* D) const
 {
     MRDOCS_ASSERT(D);
     llvm::SmallString<128> res;
 
-    if (auto const* NAD = dyn_cast<NamespaceAliasDecl>(D))
+    if (auto const* NAD = dyn_cast<clang::NamespaceAliasDecl>(D))
     {
-        if (index::generateUSRForDecl(cast<Decl>(NAD->getNamespace()), res))
+        if (clang::index::generateUSRForDecl(cast<clang::Decl>(NAD->getNamespace()), res))
         {
             return Unexpected(Error("Failed to generate USR"));
         }
@@ -326,11 +326,11 @@ generateUSR(Decl const* D) const
     }
 
     // Handling UsingDecl
-    if (auto const* UD = dyn_cast<UsingDecl>(D))
+    if (auto const* UD = dyn_cast<clang::UsingDecl>(D))
     {
         for (auto const* shadow : UD->shadows())
         {
-            if (index::generateUSRForDecl(shadow->getTargetDecl(), res))
+            if (clang::index::generateUSRForDecl(shadow->getTargetDecl(), res))
             {
                 return Unexpected(Error("Failed to generate USR"));
             }
@@ -340,9 +340,9 @@ generateUSR(Decl const* D) const
         return res;
     }
 
-    if (auto const* UD = dyn_cast<UsingDirectiveDecl>(D))
+    if (auto const* UD = dyn_cast<clang::UsingDirectiveDecl>(D))
     {
-        if (index::generateUSRForDecl(UD->getNominatedNamespace(), res))
+        if (clang::index::generateUSRForDecl(UD->getNominatedNamespace(), res))
         {
             return Unexpected(Error("Failed to generate USR"));
         }
@@ -351,10 +351,10 @@ generateUSR(Decl const* D) const
         return res;
     }
 
-    // Handling UnresolvedUsingTypenameDecl
-    if (auto const* UD = dyn_cast<UnresolvedUsingTypenameDecl>(D))
+    // Handling clang::UnresolvedUsingTypenameDecl
+    if (auto const* UD = dyn_cast<clang::UnresolvedUsingTypenameDecl>(D))
     {
-        if (index::generateUSRForDecl(UD, res))
+        if (clang::index::generateUSRForDecl(UD, res))
         {
             return Unexpected(Error("Failed to generate USR"));
         }
@@ -363,10 +363,10 @@ generateUSR(Decl const* D) const
         return res;
     }
 
-    // Handling UnresolvedUsingValueDecl
-    if (auto const* UD = dyn_cast<UnresolvedUsingValueDecl>(D))
+    // Handling clang::UnresolvedUsingValueDecl
+    if (auto const* UD = dyn_cast<clang::UnresolvedUsingValueDecl>(D))
     {
-        if (index::generateUSRForDecl(UD, res))
+        if (clang::index::generateUSRForDecl(UD, res))
         {
             return Unexpected(Error("Failed to generate USR"));
         }
@@ -375,10 +375,10 @@ generateUSR(Decl const* D) const
         return res;
     }
 
-    // Handling UsingPackDecl
-    if (auto const* UD = dyn_cast<UsingPackDecl>(D))
+    // Handling clang::UsingPackDecl
+    if (auto const* UD = dyn_cast<clang::UsingPackDecl>(D))
     {
-        if (index::generateUSRForDecl(UD, res))
+        if (clang::index::generateUSRForDecl(UD, res))
         {
             return Unexpected(Error("Failed to generate USR"));
         }
@@ -387,15 +387,15 @@ generateUSR(Decl const* D) const
         return res;
     }
 
-    // Handling UsingEnumDecl
-    if (auto const* UD = dyn_cast<UsingEnumDecl>(D))
+    // Handling clang::UsingEnumDecl
+    if (auto const* UD = dyn_cast<clang::UsingEnumDecl>(D))
     {
-        if (index::generateUSRForDecl(UD, res))
+        if (clang::index::generateUSRForDecl(UD, res))
         {
             return Unexpected(Error("Failed to generate USR"));
         }
         res.append("@UED");
-        EnumDecl const* ED = UD->getEnumDecl();
+        clang::EnumDecl const* ED = UD->getEnumDecl();
         res.append(ED->getQualifiedNameAsString());
         return res;
     }
@@ -404,10 +404,10 @@ generateUSR(Decl const* D) const
     // generating USRs for friend declarations, so we
     // will improvise until I can merge a patch which
     // adds support for them
-    if(auto const* FD = dyn_cast<FriendDecl>(D))
+    if(auto const* FD = dyn_cast<clang::FriendDecl>(D))
     {
         // first, generate the USR for the containing class
-        if (index::generateUSRForDecl(cast<Decl>(FD->getDeclContext()), res))
+        if (clang::index::generateUSRForDecl(cast<clang::Decl>(FD->getDeclContext()), res))
         {
             return Unexpected(Error("Failed to generate USR"));
         }
@@ -415,9 +415,9 @@ generateUSR(Decl const* D) const
         res.append("@FD");
         // if the friend declaration names a type,
         // use the USR generator for types
-        if (TypeSourceInfo* TSI = FD->getFriendType())
+        if (clang::TypeSourceInfo* TSI = FD->getFriendType())
         {
-            if (index::generateUSRForType(TSI->getType(), context_, res))
+            if (clang::index::generateUSRForType(TSI->getType(), context_, res))
             {
                 return Unexpected(Error("Failed to generate USR"));
             }
@@ -431,12 +431,12 @@ generateUSR(Decl const* D) const
         }
     }
 
-    if (index::generateUSRForDecl(D, res))
+    if (clang::index::generateUSRForDecl(D, res))
     {
         return Unexpected(Error("Failed to generate USR"));
     }
 
-    auto const* Described = dyn_cast_if_present<TemplateDecl>(D);
+    auto const* Described = dyn_cast_if_present<clang::TemplateDecl>(D);
     auto const* Templated = D;
     if (auto const* DT = D->getDescribedTemplate())
     {
@@ -449,33 +449,33 @@ generateUSR(Decl const* D) const
 
     if(Described)
     {
-        TemplateParameterList const* TPL = Described->getTemplateParameters();
+        clang::TemplateParameterList const* TPL = Described->getTemplateParameters();
         if(auto const* RC = TPL->getRequiresClause())
         {
             RC = SubstituteConstraintExpressionWithoutSatisfaction(
-                sema_, cast<NamedDecl>(isa<FunctionTemplateDecl>(Described) ? Described : Templated), RC);
+                sema_, cast<clang::NamedDecl>(isa<clang::FunctionTemplateDecl>(Described) ? Described : Templated), RC);
             if (!RC)
             {
                 return Unexpected(Error("Failed to generate USR"));
             }
-            ODRHash odr_hash;
+            clang::ODRHash odr_hash;
             odr_hash.AddStmt(RC);
             res.append("@TPL#");
             res.append(llvm::itostr(odr_hash.CalculateHash()));
         }
     }
 
-    if(auto* FD = dyn_cast<FunctionDecl>(Templated);
+    if(auto* FD = dyn_cast<clang::FunctionDecl>(Templated);
         FD && FD->getTrailingRequiresClause())
     {
-        Expr const* RC = FD->getTrailingRequiresClause().ConstraintExpr;
+        clang::Expr const* RC = FD->getTrailingRequiresClause().ConstraintExpr;
         RC = SubstituteConstraintExpressionWithoutSatisfaction(
-            sema_, cast<NamedDecl>(Described ? Described : Templated), RC);
+            sema_, cast<clang::NamedDecl>(Described ? Described : Templated), RC);
         if (!RC)
         {
             return Unexpected(Error("Failed to generate USR"));
         }
-        ODRHash odr_hash;
+        clang::ODRHash odr_hash;
         odr_hash.AddStmt(RC);
         res.append("@TRC#");
         res.append(llvm::itostr(odr_hash.CalculateHash()));
@@ -487,7 +487,7 @@ generateUSR(Decl const* D) const
 bool
 ASTVisitor::
 generateID(
-    Decl const* D,
+    clang::Decl const* D,
     SymbolID& id) const
 {
     if (!D)
@@ -495,7 +495,7 @@ generateID(
         return false;
     }
 
-    if (isa<TranslationUnitDecl>(D))
+    if (isa<clang::TranslationUnitDecl>(D))
     {
         id = SymbolID::global;
         return true;
@@ -513,17 +513,17 @@ generateID(
 
 SymbolID
 ASTVisitor::
-generateID(Decl const* D) const
+generateID(clang::Decl const* D) const
 {
     SymbolID id = SymbolID::invalid;
     generateID(D, id);
     return id;
 }
 
-template <std::derived_from<Decl> DeclTy>
+template <std::derived_from<clang::Decl> DeclTy>
 void
 ASTVisitor::
-populate(Info& I, bool const isNew, DeclTy const* D)
+populate(Symbol& I, bool const isNew, DeclTy const* D)
 {
     populate(I.javadoc, D);
     populate(I.Loc, D);
@@ -533,12 +533,12 @@ populate(Info& I, bool const isNew, DeclTy const* D)
 
     // These should already have been populated by traverseImpl
     MRDOCS_ASSERT(I.id);
-    MRDOCS_ASSERT(I.Kind != InfoKind::None);
+    MRDOCS_ASSERT(I.Kind != SymbolKind::None);
 
     I.Name = extractName(D);
 }
 
-template <std::derived_from<Decl> DeclTy>
+template <std::derived_from<clang::Decl> DeclTy>
 void
 ASTVisitor::
 populate(SourceInfo& I, DeclTy const* D)
@@ -562,11 +562,11 @@ bool
 ASTVisitor::
 populate(
     Optional<Javadoc>& javadoc,
-    Decl const* D)
+    clang::Decl const* D)
 {
-    RawComment const* RC = getDocumentation(D);
+    clang::RawComment const* RC = getDocumentation(D);
     MRDOCS_CHECK_OR(RC, false);
-    comments::FullComment* FC =
+    clang::comments::FullComment* FC =
         RC->parse(D->getASTContext(), &sema_.getPreprocessor(), D);
     MRDOCS_CHECK_OR(FC, false);
     parseJavadoc(javadoc, FC, D, config_, diags_);
@@ -624,8 +624,8 @@ populate(
 void
 ASTVisitor::
 populate(
-    NamespaceInfo& I,
-    NamespaceDecl const* D)
+    NamespaceSymbol& I,
+    clang::NamespaceDecl const* D)
 {
     I.IsAnonymous = D->isAnonymousNamespace();
     if (!I.IsAnonymous)
@@ -638,8 +638,8 @@ populate(
 void
 ASTVisitor::
 populate(
-    NamespaceInfo& I,
-    TranslationUnitDecl const*)
+    NamespaceSymbol& I,
+    clang::TranslationUnitDecl const*)
 {
     I.id = SymbolID::global;
     I.IsAnonymous = false;
@@ -649,37 +649,37 @@ populate(
 void
 ASTVisitor::
 populate(
-    RecordInfo& I,
-    CXXRecordDecl const* D)
+    RecordSymbol& I,
+    clang::CXXRecordDecl const* D)
 {
     if (D->getTypedefNameForAnonDecl())
     {
         I.IsTypeDef = true;
     }
     I.KeyKind = toRecordKeyKind(D->getTagKind());
-    // These are from CXXRecordDecl::isEffectivelyFinal()
-    I.IsFinal = D->hasAttr<FinalAttr>();
+    // These are from clang::CXXRecordDecl::isEffectivelyFinal()
+    I.IsFinal = D->hasAttr<clang::FinalAttr>();
     if (auto const* DT = D->getDestructor())
     {
-        I.IsFinalDestructor = DT->hasAttr<FinalAttr>();
+        I.IsFinalDestructor = DT->hasAttr<clang::FinalAttr>();
     }
 
     // Extract direct bases. D->bases() will get the bases
     // from whichever declaration is the definition (if any)
     if(D->hasDefinition() && I.Bases.empty())
     {
-        for (CXXBaseSpecifier const& B : D->bases())
+        for (clang::CXXBaseSpecifier const& B : D->bases())
         {
-            AccessSpecifier const access = B.getAccessSpecifier();
+            clang::AccessSpecifier const access = B.getAccessSpecifier();
 
             if (!config_->extractPrivateBases &&
-                access == AS_private)
+                access == clang::AS_private)
             {
                 continue;
             }
 
-            QualType const BT = B.getType();
-            auto BaseType = toTypeInfo(BT, BaseClass);
+            clang::QualType const BT = B.getType();
+            auto BaseType = toType(BT, BaseClass);
 
             // If we're going to copy the members from the specialization,
             // we need to instantiate and traverse the specialization
@@ -687,19 +687,19 @@ populate(
             if (config_->extractImplicitSpecializations)
             {
                 [&] {
-                    auto* TST = BT->getAs<TemplateSpecializationType>();
+                    auto* TST = BT->getAs<clang::TemplateSpecializationType>();
                     MRDOCS_CHECK_OR(TST);
                     MRDOCS_SYMBOL_TRACE(TST, context_);
 
                     auto const* CTSD = dyn_cast_or_null<
-                            ClassTemplateSpecializationDecl>(
+                            clang::ClassTemplateSpecializationDecl>(
                             TST->getAsCXXRecordDecl());
                     MRDOCS_CHECK_OR(CTSD);
                     MRDOCS_SYMBOL_TRACE(CTSD, context_);
 
                     // Traverse the Decl as a dependency
                     ScopeExitRestore s(mode_, TraversalMode::BaseClass);
-                    Info const* SI = findOrTraverse(CTSD);
+                    Symbol const* SI = findOrTraverse(CTSD);
                     MRDOCS_CHECK_OR(SI);
                     auto& inner = innermostType(BaseType);
                     MRDOCS_CHECK_OR(inner);
@@ -712,7 +712,7 @@ populate(
                 }();
             }
 
-            // CXXBaseSpecifier::getEllipsisLoc indicates whether the
+            // clang::CXXBaseSpecifier::getEllipsisLoc indicates whether the
             // base was a pack expansion; a PackExpansionType is not built
             // for base-specifiers
             MRDOCS_ASSERT(!BaseType.valueless_after_move());
@@ -732,22 +732,22 @@ populate(
         D->hasDefinition() &&
         D->hasFriends())
     {
-        for (FriendDecl const* FD : D->friends())
+        for (clang::FriendDecl const* FD : D->friends())
         {
             // Check if the friend is a fundamental type
             // Declaring a fundamental type like `int` as a friend of a
             // class or struct does not have any practical effect. Thus,
             // it's not considered part of the public API.
-            if (TypeSourceInfo const* TSI = FD->getFriendType())
+            if (clang::TypeSourceInfo const* TSI = FD->getFriendType())
             {
-                Type const* T = TSI->getType().getTypePtrOrNull();
+                clang::Type const* T = TSI->getType().getTypePtrOrNull();
                 MRDOCS_CHECK_OR_CONTINUE(!T || !T->isBuiltinType());
             }
             FriendInfo F;
             populate(F, FD);
             if (F.id != SymbolID::invalid)
             {
-                Info* FI = this->find(F.id);
+                Symbol* FI = this->find(F.id);
                 MRDOCS_CHECK_OR_CONTINUE(FI);
                 MRDOCS_CHECK_OR_CONTINUE(FI->Extraction != ExtractionMode::ImplementationDefined);
             }
@@ -769,7 +769,7 @@ populate(
 
 void
 ASTVisitor::
-populate(RecordInfo& I, ClassTemplateDecl const* D)
+populate(RecordSymbol& I, clang::ClassTemplateDecl const* D)
 {
     populate(I.Template, D->getTemplatedDecl(), D);
     populate(I, D->getTemplatedDecl());
@@ -777,24 +777,24 @@ populate(RecordInfo& I, ClassTemplateDecl const* D)
 
 void
 ASTVisitor::
-populate(RecordInfo& I, ClassTemplateSpecializationDecl const* D)
+populate(RecordSymbol& I, clang::ClassTemplateSpecializationDecl const* D)
 {
     populate(I.Template, D, D->getSpecializedTemplate());
-    populate(I, cast<CXXRecordDecl>(D));
+    populate(I, cast<clang::CXXRecordDecl>(D));
 }
 
 void
 ASTVisitor::
-populate(RecordInfo& I, ClassTemplatePartialSpecializationDecl const* D)
+populate(RecordSymbol& I, clang::ClassTemplatePartialSpecializationDecl const* D)
 {
-    populate(I, dynamic_cast<ClassTemplateSpecializationDecl const*>(D));
+    populate(I, dynamic_cast<clang::ClassTemplateSpecializationDecl const*>(D));
 }
 
 void
 ASTVisitor::
 populate(
-    FunctionInfo& I,
-    FunctionDecl const* D)
+    FunctionSymbol& I,
+    clang::FunctionDecl const* D)
 {
     MRDOCS_SYMBOL_TRACE(D, context_);
 
@@ -840,7 +840,7 @@ populate(
     if (auto FT = getDeclaratorType(D); !FT.isNull())
     {
         MRDOCS_SYMBOL_TRACE(FT, context_);
-        auto const* FPT = FT->template getAs<FunctionProtoType>();
+        auto const* FPT = FT->template getAs<clang::FunctionProtoType>();
         MRDOCS_SYMBOL_TRACE(FPT, context_);
         populate(I.Noexcept, FPT);
         I.HasTrailingReturn |= FPT->hasTrailingReturn();
@@ -853,27 +853,27 @@ populate(
     I.IsDeleted |= D->isDeleted();
     I.IsDeletedAsWritten |= D->isDeletedAsWritten();
     I.IsNoReturn |= D->isNoReturn();
-    I.HasOverrideAttr |= D->hasAttr<OverrideAttr>();
+    I.HasOverrideAttr |= D->hasAttr<clang::OverrideAttr>();
 
-    if (ConstexprSpecKind const CSK = D->getConstexprKind();
-        CSK != ConstexprSpecKind::Unspecified)
+    if (clang::ConstexprSpecKind const CSK = D->getConstexprKind();
+        CSK != clang::ConstexprSpecKind::Unspecified)
     {
         I.Constexpr = toConstexprKind(CSK);
     }
 
-    if (StorageClass const SC = D->getStorageClass())
+    if (clang::StorageClass const SC = D->getStorageClass())
     {
         I.StorageClass = toStorageClassKind(SC);
     }
 
-    I.IsNodiscard |= D->hasAttr<WarnUnusedResultAttr>();
+    I.IsNodiscard |= D->hasAttr<clang::WarnUnusedResultAttr>();
     I.IsExplicitObjectMemberFunction |= D->hasCXXExplicitFunctionObjectParameter();
 
-    ArrayRef<ParmVarDecl*> const params = D->parameters();
+    llvm::ArrayRef<clang::ParmVarDecl*> const params = D->parameters();
     I.Params.resize(params.size());
     for (std::size_t i = 0; i < params.size(); ++i)
     {
-        ParmVarDecl const* P = params[i];
+        clang::ParmVarDecl const* P = params[i];
         MRDOCS_SYMBOL_TRACE(P, context_);
         Param& param = I.Params[i];
 
@@ -884,10 +884,10 @@ populate(
 
         if (param.Type->isAuto())
         {
-            param.Type = toTypeInfo(P->getOriginalType());
+            param.Type = toType(P->getOriginalType());
         }
 
-        Expr const* default_arg = P->hasUninstantiatedDefaultArg() ?
+        clang::Expr const* default_arg = P->hasUninstantiatedDefaultArg() ?
             P->getUninstantiatedDefaultArg() : P->getInit();
         if (!param.Default && default_arg)
         {
@@ -909,9 +909,9 @@ populate(
     // extract the return type in direct dependency mode
     // if it contains a placeholder type which is
     // deduced as a local class type
-    QualType const RT = D->getReturnType();
+    clang::QualType const RT = D->getReturnType();
     MRDOCS_SYMBOL_TRACE(RT, context_);
-    I.ReturnType = toTypeInfo(RT);
+    I.ReturnType = toType(RT);
 
     if (auto* TRC = D->getTrailingRequiresClause().ConstraintExpr)
     {
@@ -961,23 +961,23 @@ populate(
 
 void
 ASTVisitor::
-populate(FunctionInfo& I, FunctionTemplateDecl const* D)
+populate(FunctionSymbol& I, clang::FunctionTemplateDecl const* D)
 {
-    FunctionDecl const* TD = D->getTemplatedDecl();
+    clang::FunctionDecl const* TD = D->getTemplatedDecl();
     populate(I.Template, TD, D);
-    if (auto* C = dyn_cast<CXXConstructorDecl>(TD))
+    if (auto* C = dyn_cast<clang::CXXConstructorDecl>(TD))
     {
         populate(I, C);
     }
-    else if (auto* Dtor = dyn_cast<CXXDestructorDecl>(TD))
+    else if (auto* Dtor = dyn_cast<clang::CXXDestructorDecl>(TD))
     {
         populate(I, Dtor);
     }
-    else if (auto* Conv = dyn_cast<CXXConversionDecl>(TD))
+    else if (auto* Conv = dyn_cast<clang::CXXConversionDecl>(TD))
     {
         populate(I, Conv);
     }
-    else if (auto* M = dyn_cast<CXXMethodDecl>(TD))
+    else if (auto* M = dyn_cast<clang::CXXMethodDecl>(TD))
     {
         populate(I, M);
     }
@@ -989,9 +989,9 @@ populate(FunctionInfo& I, FunctionTemplateDecl const* D)
 
 void
 ASTVisitor::
-populate(FunctionInfo& I, CXXMethodDecl const* D)
+populate(FunctionSymbol& I, clang::CXXMethodDecl const* D)
 {
-    FunctionDecl const* FD = D;
+    clang::FunctionDecl const* FD = D;
     populate(I, FD);
     I.IsRecordMethod = true;
     I.IsVirtual |= D->isVirtual();
@@ -1000,31 +1000,31 @@ populate(FunctionInfo& I, CXXMethodDecl const* D)
     I.IsConst |= D->isConst();
     I.IsVolatile |= D->isVolatile();
     I.RefQualifier = toReferenceKind(D->getRefQualifier());
-    I.IsFinal |= D->hasAttr<FinalAttr>();
+    I.IsFinal |= D->hasAttr<clang::FinalAttr>();
 }
 
 void
 ASTVisitor::
-populate(FunctionInfo& I, CXXConstructorDecl const* D)
+populate(FunctionSymbol& I, clang::CXXConstructorDecl const* D)
 {
-    CXXMethodDecl const* FD = D;
+    clang::CXXMethodDecl const* FD = D;
     populate(I, FD);
     populate(I.Explicit, D->getExplicitSpecifier());
 }
 
 void
 ASTVisitor::
-populate(FunctionInfo& I, CXXDestructorDecl const* D)
+populate(FunctionSymbol& I, clang::CXXDestructorDecl const* D)
 {
-    CXXMethodDecl const* FD = D;
+    clang::CXXMethodDecl const* FD = D;
     populate(I, FD);
 }
 
 void
 ASTVisitor::
-populate(FunctionInfo& I, CXXConversionDecl const* D)
+populate(FunctionSymbol& I, clang::CXXConversionDecl const* D)
 {
-    CXXMethodDecl const* FD = D;
+    clang::CXXMethodDecl const* FD = D;
     populate(I, FD);
     populate(I.Explicit, D->getExplicitSpecifier());
 }
@@ -1033,21 +1033,21 @@ populate(FunctionInfo& I, CXXConversionDecl const* D)
 void
 ASTVisitor::
 populate(
-    EnumInfo& I,
-    EnumDecl const* D)
+    EnumSymbol& I,
+    clang::EnumDecl const* D)
 {
     I.Scoped = D->isScoped();
     if (D->isFixed())
     {
-        I.UnderlyingType = toTypeInfo(D->getIntegerType());
+        I.UnderlyingType = toType(D->getIntegerType());
     }
 }
 
 void
 ASTVisitor::
 populate(
-    EnumConstantInfo& I,
-    EnumConstantDecl const* D)
+    EnumConstantSymbol& I,
+    clang::EnumConstantDecl const* D)
 {
     I.Name = extractName(D);
     populate(
@@ -1058,36 +1058,36 @@ populate(
 
 void
 ASTVisitor::
-populate(TypedefInfo& I, TypedefNameDecl const* D)
+populate(TypedefSymbol& I, clang::TypedefNameDecl const* D)
 {
-    QualType const QT = D->getUnderlyingType();
-    I.Type = toTypeInfo(QT);
+    clang::QualType const QT = D->getUnderlyingType();
+    I.Type = toType(QT);
 }
 
 void
 ASTVisitor::
-populate(TypedefInfo& I, TypedefDecl const* D)
+populate(TypedefSymbol& I, clang::TypedefDecl const* D)
 {
-    populate(I, cast<TypedefNameDecl>(D));
+    populate(I, cast<clang::TypedefNameDecl>(D));
 }
 
 void
 ASTVisitor::
-populate(TypedefInfo& I, TypeAliasDecl const* D)
+populate(TypedefSymbol& I, clang::TypeAliasDecl const* D)
 {
-    I.IsUsing = isa<TypeAliasDecl>(D);
-    populate(I, cast<TypedefNameDecl>(D));
+    I.IsUsing = isa<clang::TypeAliasDecl>(D);
+    populate(I, cast<clang::TypedefNameDecl>(D));
 }
 
 void
 ASTVisitor::
-populate(TypedefInfo& I, TypeAliasTemplateDecl const* D)
+populate(TypedefSymbol& I, clang::TypeAliasTemplateDecl const* D)
 {
     populate(I.Template, D->getTemplatedDecl(), D);
     if (auto* TD = D->getTemplatedDecl();
-        isa<TypeAliasDecl>(TD))
+        isa<clang::TypeAliasDecl>(TD))
     {
-        populate(I, cast<TypeAliasDecl>(TD));
+        populate(I, cast<clang::TypeAliasDecl>(TD));
     }
     else
     {
@@ -1098,28 +1098,28 @@ populate(TypedefInfo& I, TypeAliasTemplateDecl const* D)
 void
 ASTVisitor::
 populate(
-    VariableInfo& I,
-    VarDecl const* D)
+    VariableSymbol& I,
+    clang::VarDecl const* D)
 {
     // KRYSTIAN FIXME: we need to properly merge storage class
-    if (StorageClass const SC = D->getStorageClass())
+    if (clang::StorageClass const SC = D->getStorageClass())
     {
         I.StorageClass = toStorageClassKind(SC);
     }
     // this handles thread_local, as well as the C
     // __thread and __Thread_local specifiers
     I.IsThreadLocal |= D->getTSCSpec() !=
-        ThreadStorageClassSpecifier::TSCS_unspecified;
+        clang::ThreadStorageClassSpecifier::TSCS_unspecified;
     // KRYSTIAN NOTE: VarDecl does not provide getConstexprKind,
     // nor does it use getConstexprKind to store whether
     // a variable is constexpr/constinit. Although
     // only one is permitted in a variable declaration,
     // it is possible to declare a static data member
     // as both constexpr and constinit in separate declarations..
-    I.IsConstinit |= D->hasAttr<ConstInitAttr>();
+    I.IsConstinit |= D->hasAttr<clang::ConstInitAttr>();
     I.IsConstexpr |= D->isConstexpr();
     I.IsInline |= D->isInline();
-    if (Expr const* E = D->getInit())
+    if (clang::Expr const* E = D->getInit())
     {
         populate(I.Initializer, E);
     }
@@ -1129,13 +1129,13 @@ populate(
         // `const` qualifier which we need to remove
         QT.removeLocalConst();
     }
-    I.Type = toTypeInfo(QT);
+    I.Type = toType(QT);
     populateAttributes(I, D);
 }
 
 void
 ASTVisitor::
-populate(VariableInfo& I, VarTemplateDecl const* D)
+populate(VariableSymbol& I, clang::VarTemplateDecl const* D)
 {
     populate(I.Template, D->getTemplatedDecl(), D);
     populate(I, D->getTemplatedDecl());
@@ -1143,28 +1143,28 @@ populate(VariableInfo& I, VarTemplateDecl const* D)
 
 void
 ASTVisitor::
-populate(VariableInfo& I, VarTemplateSpecializationDecl const* D)
+populate(VariableSymbol& I, clang::VarTemplateSpecializationDecl const* D)
 {
     populate(I.Template, D, D->getSpecializedTemplate());
-    populate(I, cast<VarDecl>(D));
+    populate(I, cast<clang::VarDecl>(D));
 }
 
 void
 ASTVisitor::
-populate(VariableInfo& I, VarTemplatePartialSpecializationDecl const* D)
+populate(VariableSymbol& I, clang::VarTemplatePartialSpecializationDecl const* D)
 {
-    populate(I, dynamic_cast<VarTemplateSpecializationDecl const*>(D));
+    populate(I, dynamic_cast<clang::VarTemplateSpecializationDecl const*>(D));
 }
 
 void
 ASTVisitor::
 populate(
-    VariableInfo& I,
-    FieldDecl const* D)
+    VariableSymbol& I,
+    clang::FieldDecl const* D)
 {
     I.IsRecordField = true;
-    I.Type = toTypeInfo(D->getType());
-    if (Expr const* E = D->getInClassInitializer())
+    I.Type = toType(D->getType());
+    if (clang::Expr const* E = D->getInClassInitializer())
     {
         populate(I.Initializer, E);
     }
@@ -1175,9 +1175,9 @@ populate(
         I.IsBitfield = true;
         populate(I.BitfieldWidth, D->getBitWidth());
     }
-    I.HasNoUniqueAddress = D->hasAttr<NoUniqueAddressAttr>();
-    I.IsDeprecated = D->hasAttr<DeprecatedAttr>();
-    I.IsMaybeUnused = D->hasAttr<UnusedAttr>();
+    I.HasNoUniqueAddress = D->hasAttr<clang::NoUniqueAddressAttr>();
+    I.IsDeprecated = D->hasAttr<clang::DeprecatedAttr>();
+    I.IsMaybeUnused = D->hasAttr<clang::UnusedAttr>();
     populateAttributes(I, D);
 }
 
@@ -1185,21 +1185,21 @@ void
 ASTVisitor::
 populate(
     FriendInfo& I,
-    FriendDecl const* D)
+    clang::FriendDecl const* D)
 {
-    if (TypeSourceInfo const* TSI = D->getFriendType())
+    if (clang::TypeSourceInfo const* TSI = D->getFriendType())
     {
-        I.Type = toTypeInfo(TSI->getType());
+        I.Type = toType(TSI->getType());
         MRDOCS_CHECK_OR((*I.Type)->isNamed());
         auto const& NTI = (*I.Type)->asNamed();
         MRDOCS_CHECK_OR(NTI.Name);
         I.id = NTI.Name->id;
     }
-    else if (NamedDecl const* ND = D->getFriendDecl())
+    else if (clang::NamedDecl const* ND = D->getFriendDecl())
     {
         // ND can be a function or a class
         ScopeExitRestore s(mode_, Dependency);
-        if (Info const* SI = traverse(dyn_cast<Decl>(ND)))
+        if (Symbol const* SI = traverse(dyn_cast<clang::Decl>(ND)))
         {
             I.id = SI->id;
         }
@@ -1208,7 +1208,7 @@ populate(
     // documentation from the FriendDecl when the friend
     // is the only declaration.
     MRDOCS_CHECK_OR(isDocumented(D));
-    Info* TI = find(I.id);
+    Symbol* TI = find(I.id);
     MRDOCS_CHECK_OR(TI);
     MRDOCS_CHECK_OR(!TI->javadoc);
     populate(TI->javadoc, D);
@@ -1217,14 +1217,14 @@ populate(
 void
 ASTVisitor::
 populate(
-    GuideInfo& I,
-    CXXDeductionGuideDecl const* D)
+    GuideSymbol& I,
+    clang::CXXDeductionGuideDecl const* D)
 {
-    I.Deduced = toTypeInfo(D->getReturnType());
-    for (ParmVarDecl const* P : D->parameters())
+    I.Deduced = toType(D->getReturnType());
+    for (clang::ParmVarDecl const* P : D->parameters())
     {
         I.Params.emplace_back(
-            toTypeInfo(P->getOriginalType()),
+            toType(P->getOriginalType()),
             P->getNameAsString(),
             // deduction guides cannot have default arguments
             std::string());
@@ -1235,22 +1235,22 @@ populate(
 void
 ASTVisitor::
 populate(
-    GuideInfo& I,
-    FunctionTemplateDecl const* D)
+    GuideSymbol& I,
+    clang::FunctionTemplateDecl const* D)
 {
     populate(I.Template, D->getTemplatedDecl(), D);
-    populate(I, cast<CXXDeductionGuideDecl>(D->getTemplatedDecl()));
+    populate(I, cast<clang::CXXDeductionGuideDecl>(D->getTemplatedDecl()));
 }
 
 void
 ASTVisitor::
 populate(
-    NamespaceAliasInfo& I,
-    NamespaceAliasDecl const* D)
+    NamespaceAliasSymbol& I,
+    clang::NamespaceAliasDecl const* D)
 {
-    NamedDecl const* Aliased = D->getAliasedNamespace();
-    NestedNameSpecifier NNS = D->getQualifier();
-    Optional<Polymorphic<NameInfo>> NI = toNameInfo(Aliased, {}, NNS);
+    clang::NamedDecl const* Aliased = D->getAliasedNamespace();
+    clang::NestedNameSpecifier NNS = D->getQualifier();
+    Optional<Polymorphic<Name>> NI = toName(Aliased, {}, NNS);
     MRDOCS_CHECK_OR(NI);
     MRDOCS_ASSERT((*NI)->isIdentifier());
     I.AliasedSymbol = std::move((**NI).asIdentifier());
@@ -1259,21 +1259,21 @@ populate(
 void
 ASTVisitor::
 populate(
-    UsingInfo& I,
-    UsingDecl const* D)
+    UsingSymbol& I,
+    clang::UsingDecl const* D)
 {
     I.Class = UsingClass::Normal;
-    DeclarationName const& Name = D->getNameInfo().getName();
-    NestedNameSpecifier const& NNS = D->getQualifier();
-    auto INI = toNameInfo(Name, {}, NNS);
+    clang::DeclarationName const& Name = D->getNameInfo().getName();
+    clang::NestedNameSpecifier const& NNS = D->getQualifier();
+    auto INI = toName(Name, {}, NNS);
     MRDOCS_CHECK_OR(INI);
     I.IntroducedName = *INI;
-    for (UsingShadowDecl const* UDS: D->shadows())
+    for (clang::UsingShadowDecl const* UDS: D->shadows())
     {
         ScopeExitRestore s(mode_, Dependency);
-        Decl* S = UDS->getTargetDecl();
+        clang::Decl* S = UDS->getTargetDecl();
         using enum ExtractionMode;
-        if (Info* SI = findOrTraverse(S);
+        if (Symbol* SI = findOrTraverse(S);
             SI &&
             !is_one_of(SI->Extraction,{Dependency, ImplementationDefined}))
         {
@@ -1285,8 +1285,8 @@ populate(
 void
 ASTVisitor::
 populate(
-    ConceptInfo& I,
-    ConceptDecl const* D)
+    ConceptSymbol& I,
+    clang::ConceptDecl const* D)
 {
     populate(I.Template, D, D);
     populate(I.Constraint, D->getConstraintExpr());
@@ -1296,23 +1296,23 @@ populate(
 /*  Default function to populate template parameters
  */
 template <
-    std::derived_from<Decl> DeclTy,
-    std::derived_from<TemplateDecl> TemplateDeclTy>
+    std::derived_from<clang::Decl> DeclTy,
+    std::derived_from<clang::TemplateDecl> TemplateDeclTy>
 void
 ASTVisitor::
 populate(TemplateInfo& Template, DeclTy const*, TemplateDeclTy const* TD)
 {
     MRDOCS_ASSERT(TD);
     MRDOCS_CHECK_OR(!TD->isImplicit());
-    if (TemplateParameterList const* TPL = TD->getTemplateParameters();
+    if (clang::TemplateParameterList const* TPL = TD->getTemplateParameters();
         !TPL->empty() &&
-        std::ranges::none_of(TPL->asArray(), [](NamedDecl const* ND) {
+        std::ranges::none_of(TPL->asArray(), [](clang::NamedDecl const* ND) {
             return !ND->isImplicit();
         }))
     {
         return;
     }
-    TemplateParameterList const* TPL = TD->getTemplateParameters();
+    clang::TemplateParameterList const* TPL = TD->getTemplateParameters();
     populate(Template, TPL);
 }
 
@@ -1320,8 +1320,8 @@ void
 ASTVisitor::
 populate(
     TemplateInfo& Template,
-    ClassTemplateSpecializationDecl const* CTSD,
-    ClassTemplateDecl const* CTD)
+    clang::ClassTemplateSpecializationDecl const* CTSD,
+    clang::ClassTemplateDecl const* CTD)
 {
     MRDOCS_ASSERT(CTD);
 
@@ -1369,31 +1369,31 @@ populate(
 
 
     // Extract the template parameters if this is a partial specialization
-    if (auto* CTPSD = dyn_cast<ClassTemplatePartialSpecializationDecl>(CTSD))
+    if (auto* CTPSD = dyn_cast<clang::ClassTemplatePartialSpecializationDecl>(CTSD))
     {
-        TemplateParameterList* params = CTPSD->getTemplateParameters();
+        clang::TemplateParameterList* params = CTPSD->getTemplateParameters();
         populate(Template, params);
     }
 }
 
-template<std::derived_from<VarDecl> VarDeclTy>
+template<std::derived_from<clang::VarDecl> VarDeclTy>
 void
 ASTVisitor::
 populate(
     TemplateInfo& Template,
     VarDeclTy const* D,
-    VarTemplateDecl const* VTD)
+    clang::VarTemplateDecl const* VTD)
 {
     MRDOCS_ASSERT(VTD);
 
     // If D is a partial/explicit specialization, extract the template arguments
-    if(auto* VTSD = dyn_cast<VarTemplateSpecializationDecl>(D))
+    if(auto* VTSD = dyn_cast<clang::VarTemplateSpecializationDecl>(D))
     {
         generateID(getInstantiatedFrom(VTD), Template.Primary);
         // extract the template arguments of the specialization
         populate(Template.Args, VTSD->getTemplateArgsAsWritten());
         // extract the template parameters if this is a partial specialization
-        if (auto* VTPSD = dyn_cast<VarTemplatePartialSpecializationDecl>(D))
+        if (auto* VTPSD = dyn_cast<clang::VarTemplatePartialSpecializationDecl>(D))
         {
             populate(Template, VTPSD->getTemplateParameters());
         }
@@ -1409,14 +1409,14 @@ void
 ASTVisitor::
 populate(
     NoexceptInfo& I,
-    FunctionProtoType const* FPT)
+    clang::FunctionProtoType const* FPT)
 {
     MRDOCS_ASSERT(FPT);
     I.Implicit = ! FPT->hasNoexceptExceptionSpec();
     I.Kind = toNoexceptKind(
         FPT->getExceptionSpecType());
     // store the operand, if any
-    if (Expr const* NoexceptExpr = FPT->getNoexceptExpr())
+    if (clang::Expr const* NoexceptExpr = FPT->getNoexceptExpr())
     {
         I.Operand = toString(NoexceptExpr);
     }
@@ -1426,13 +1426,13 @@ void
 ASTVisitor::
 populate(
     ExplicitInfo& I,
-    ExplicitSpecifier const& ES)
+    clang::ExplicitSpecifier const& ES)
 {
     I.Implicit = ! ES.isSpecified();
     I.Kind = toExplicitKind(ES);
 
     // store the operand, if any
-    if (Expr const* ExplicitExpr = ES.getExpr())
+    if (clang::Expr const* ExplicitExpr = ES.getExpr())
     {
         I.Operand = toString(ExplicitExpr);
     }
@@ -1442,7 +1442,7 @@ void
 ASTVisitor::
 populate(
     ExprInfo& I,
-    Expr const* E)
+    clang::Expr const* E)
 {
     if (!E)
     {
@@ -1457,7 +1457,7 @@ void
 ASTVisitor::
 populate(
     ConstantExprInfo<T>& I,
-    Expr const* E)
+    clang::Expr const* E)
 {
     populate(static_cast<ExprInfo&>(I), E);
     // if the expression is dependent,
@@ -1474,7 +1474,7 @@ void
 ASTVisitor::
 populate(
     ConstantExprInfo<T>& I,
-    Expr const* E,
+    clang::Expr const* E,
     llvm::APInt const& V)
 {
     populate(I, E);
@@ -1486,7 +1486,7 @@ void
 ASTVisitor::
 populate<std::uint64_t>(
     ConstantExprInfo<std::uint64_t>& I,
-    Expr const* E,
+    clang::Expr const* E,
     llvm::APInt const& V);
 
 
@@ -1494,15 +1494,15 @@ void
 ASTVisitor::
 populate(
     Polymorphic<TParam>& I,
-    NamedDecl const* N)
+    clang::NamedDecl const* N)
 {
     MRDOCS_ASSERT(!I.valueless_after_move());
     visit(N, [&]<typename DeclTy>(DeclTy const* P)
     {
-        constexpr Decl::Kind kind =
+        constexpr clang::Decl::Kind kind =
             DeclToKind<DeclTy>();
 
-        if constexpr(kind == Decl::TemplateTypeParm)
+        if constexpr(kind == clang::Decl::TemplateTypeParm)
         {
             if (I->Kind != TParamKind::Type)
             {
@@ -1518,27 +1518,27 @@ populate(
                 R->Default = toTArg(
                     P->getDefaultArgument().getArgument());
             }
-            if(TypeConstraint const* TC = P->getTypeConstraint())
+            if (clang::TypeConstraint const* TC = P->getTypeConstraint())
             {
-                NestedNameSpecifier NNS =
+                clang::NestedNameSpecifier NNS =
                     TC->getNestedNameSpecifierLoc().getNestedNameSpecifier();
-                Optional<ASTTemplateArgumentListInfo const*> TArgs;
+                Optional<clang::ASTTemplateArgumentListInfo const*> TArgs;
                 if (TC->hasExplicitTemplateArgs())
                 {
                     TArgs.emplace(TC->getTemplateArgsAsWritten());
                 }
-                R->Constraint = toNameInfo(TC->getNamedConcept(), TArgs, NNS);
+                R->Constraint = toName(TC->getNamedConcept(), TArgs, NNS);
             }
             return;
         }
-        else if constexpr(kind == Decl::NonTypeTemplateParm)
+        else if constexpr(kind == clang::Decl::NonTypeTemplateParm)
         {
             if (I->Kind != TParamKind::Constant)
             {
                 I = Polymorphic<TParam>(std::in_place_type<ConstantTParam>);
             }
             auto* R = (I.operator->())->asConstantPtr();
-            R->Type = toTypeInfo(P->getType());
+            R->Type = toType(P->getType());
             if (P->hasDefaultArgument() && !R->Default)
             {
                 R->Default = toTArg(
@@ -1546,21 +1546,21 @@ populate(
             }
             return;
         }
-        else if constexpr(kind == Decl::TemplateTemplateParm)
+        else if constexpr(kind == clang::Decl::TemplateTemplateParm)
         {
             if (I->Kind != TParamKind::Template)
             {
                 I = Polymorphic<TParam>(std::in_place_type<TemplateTParam>);
             }
-            auto const* TTPD = cast<TemplateTemplateParmDecl>(P);
+            auto const* TTPD = cast<clang::TemplateTemplateParmDecl>(P);
             MRDOCS_CHECK_OR(TTPD);
-            TemplateParameterList const* TPL = TTPD->getTemplateParameters();
+            clang::TemplateParameterList const* TPL = TTPD->getTemplateParameters();
             MRDOCS_CHECK_OR(TPL);
             auto* Result = (I.operator->())->asTemplatePtr();
             Result->Params.reserve(TPL->size());
             for (std::size_t i = 0; i < TPL->size(); ++i)
             {
-                NamedDecl const* TP = TPL->getParam(i);
+                clang::NamedDecl const* TP = TPL->getParam(i);
                 auto& Param
                     = i < Result->Params.size() ?
                           Result->Params[i] :
@@ -1569,8 +1569,8 @@ populate(
             }
             if (TTPD->hasDefaultArgument() && !Result->Default)
             {
-                TemplateArgumentLoc const& TAL = TTPD->getDefaultArgument();
-                TemplateArgument const& TA = TAL.getArgument();
+                clang::TemplateArgumentLoc const& TAL = TTPD->getDefaultArgument();
+                clang::TemplateArgument const& TA = TAL.getArgument();
                 Result->Default = toTArg(TA);
             }
             return;
@@ -1593,7 +1593,7 @@ void
 ASTVisitor::
 populate(
     TemplateInfo& TI,
-    TemplateParameterList const* TPL)
+    clang::TemplateParameterList const* TPL)
 {
     if (!TPL)
     {
@@ -1603,7 +1603,7 @@ populate(
     auto ExplicitTemplateParameters =
         std::views::filter(
             TemplateParameters,
-            [](NamedDecl const* P)
+            [](clang::NamedDecl const* P)
             {
                 return !P->isImplicit();
             });
@@ -1615,7 +1615,7 @@ populate(
     std::size_t i = 0;
     while (explicitIt != ExplicitTemplateParameters.end())
     {
-        NamedDecl const* P = TPL->getParam(i);
+        clang::NamedDecl const* P = TPL->getParam(i);
         Polymorphic<TParam>& Param =
             i < TI.Params.size() ?
                 TI.Params[i] :
@@ -1687,7 +1687,7 @@ void
 ASTVisitor::
 populate(
     std::vector<Polymorphic<TArg>>& result,
-    ASTTemplateArgumentListInfo const* args)
+    clang::ASTTemplateArgumentListInfo const* args)
 {
     if (!args)
     {
@@ -1701,17 +1701,17 @@ populate(
         }));
 }
 
-template <std::derived_from<Info> InfoTy>
+template <std::derived_from<Symbol> InfoTy>
 void
 ASTVisitor::
-populateAttributes(InfoTy& I, Decl const* D)
+populateAttributes(InfoTy& I, clang::Decl const* D)
 {
     if constexpr (requires { I.Attributes; })
     {
         MRDOCS_CHECK_OR(D->hasAttrs());
-        for (Attr const* attr: D->getAttrs())
+        for (clang::Attr const* attr: D->getAttrs())
         {
-            IdentifierInfo const* II = attr->getAttrName();
+            clang::IdentifierInfo const* II = attr->getAttrName();
             if (!II)
             {
                 continue;
@@ -1727,8 +1727,7 @@ populateAttributes(InfoTy& I, Decl const* D)
 void
 ASTVisitor::
 addMember(
-    NamespaceInfo& I,
-    Info const& Member)
+    NamespaceSymbol& I, Symbol const& Member)
 {
     if (auto const* U = Member.asNamespacePtr())
     {
@@ -1789,8 +1788,7 @@ addMember(
 void
 ASTVisitor::
 addMember(
-    RecordInfo& I,
-    Info const& Member)
+    RecordSymbol& I, Symbol const& Member)
 {
     switch (Member.Access)
     {
@@ -1810,7 +1808,7 @@ addMember(
 
 void
 ASTVisitor::
-addMember(RecordTranche& T, Info const& Member)
+addMember(RecordTranche& T, Symbol const& Member)
 {
     if (auto const* U = Member.asNamespaceAliasPtr())
     {
@@ -1878,7 +1876,7 @@ addMember(RecordTranche& T, Info const& Member)
 
 void
 ASTVisitor::
-addMember(EnumInfo& I, Info const& Member) const
+addMember(EnumSymbol& I, Symbol const& Member) const
 {
     if (auto const* U = Member.asEnumConstantPtr())
     {
@@ -1893,7 +1891,7 @@ addMember(EnumInfo& I, Info const& Member) const
 
 void
 ASTVisitor::
-addMember(OverloadsInfo& I, Info const& Member) const
+addMember(OverloadsSymbol& I, Symbol const& Member) const
 {
     if (Member.isFunction())
     {
@@ -1908,7 +1906,7 @@ addMember(OverloadsInfo& I, Info const& Member) const
 
 void
 ASTVisitor::
-addMember(std::vector<SymbolID>& container, Info const& Member) const
+addMember(std::vector<SymbolID>& container, Symbol const& Member) const
 {
     if (!contains(container, Member.id))
     {
@@ -1916,22 +1914,22 @@ addMember(std::vector<SymbolID>& container, Info const& Member) const
     }
 }
 
-template <std::derived_from<Decl> DeclTy>
+template <std::derived_from<clang::Decl> DeclTy>
 std::string
 ASTVisitor::
 extractName(DeclTy const* D)
 {
-    if constexpr (std::same_as<DeclTy, CXXDeductionGuideDecl>)
+    if constexpr (std::same_as<DeclTy, clang::CXXDeductionGuideDecl>)
     {
         return extractName(D->getDeducedTemplate());
     }
-    else if constexpr (std::derived_from<DeclTy, FriendDecl>)
+    else if constexpr (std::derived_from<DeclTy, clang::FriendDecl>)
     {
         if (auto* FD = D->getFriendDecl())
         {
             return extractName(D->getFriendDecl());
         }
-        if (TypeSourceInfo const* FT = D->getFriendType())
+        if (clang::TypeSourceInfo const* FT = D->getFriendType())
         {
             std::string Name;
             llvm::raw_string_ostream os(Name);
@@ -1939,27 +1937,27 @@ extractName(DeclTy const* D)
             return Name;
         }
     }
-    else if constexpr (std::derived_from<DeclTy, UsingDirectiveDecl>)
+    else if constexpr (std::derived_from<DeclTy, clang::UsingDirectiveDecl>)
     {
         return extractName(D->getNominatedNamespace());
     }
-    else if constexpr (std::derived_from<DeclTy, NamedDecl>)
+    else if constexpr (std::derived_from<DeclTy, clang::NamedDecl>)
     {
-        return extractName(cast<NamedDecl>(D));
+        return extractName(cast<clang::NamedDecl>(D));
     }
     return {};
 }
 
 std::string
 ASTVisitor::
-extractName(NamedDecl const* D)
+extractName(clang::NamedDecl const* D)
 {
     return extractName(D->getDeclName());
 }
 
 std::string
 ASTVisitor::
-extractName(DeclarationName const N)
+extractName(clang::DeclarationName const N)
 {
     std::string result;
     if (N.isEmpty())
@@ -1968,36 +1966,36 @@ extractName(DeclarationName const N)
     }
     switch(N.getNameKind())
     {
-    case DeclarationName::Identifier:
+    case clang::DeclarationName::Identifier:
         if (auto const* I = N.getAsIdentifierInfo())
         {
             result.append(I->getName());
         }
         break;
-    case DeclarationName::CXXDestructorName:
+    case clang::DeclarationName::CXXDestructorName:
         result.push_back('~');
         [[fallthrough]];
-    case DeclarationName::CXXConstructorName:
+    case clang::DeclarationName::CXXConstructorName:
         if (auto const* R = N.getCXXNameType()->getAsCXXRecordDecl())
         {
             result.append(R->getIdentifier()->getName());
         }
         break;
-    case DeclarationName::CXXDeductionGuideName:
+    case clang::DeclarationName::CXXDeductionGuideName:
         if (auto const* T = N.getCXXDeductionGuideTemplate())
         {
             result.append(T->getIdentifier()->getName());
         }
         break;
-    case DeclarationName::CXXConversionFunctionName:
+    case clang::DeclarationName::CXXConversionFunctionName:
     {
         result.append("operator ");
         // KRYSTIAN FIXME: we *really* should not be
         // converting types to strings like this
-        result.append(mrdocs::toString(*toTypeInfo(N.getCXXNameType())));
+        result.append(mrdocs::toString(*toType(N.getCXXNameType())));
         break;
     }
-    case DeclarationName::CXXOperatorName:
+    case clang::DeclarationName::CXXOperatorName:
     {
         OperatorKind const K = toOperatorKind(
             N.getCXXOverloadedOperator());
@@ -2010,8 +2008,8 @@ extractName(DeclarationName const N)
         result.append(name);
         break;
     }
-    case DeclarationName::CXXLiteralOperatorName:
-    case DeclarationName::CXXUsingDirective:
+    case clang::DeclarationName::CXXLiteralOperatorName:
+        case clang::DeclarationName::CXXUsingDirective:
         break;
     default:
         MRDOCS_UNREACHABLE();
@@ -2019,30 +2017,30 @@ extractName(DeclarationName const N)
     return result;
 }
 
-SmallString<256>
+llvm::SmallString<256>
 ASTVisitor::
-qualifiedName(Decl const* D) const
+qualifiedName(clang::Decl const* D) const
 {
-    if (auto* ND = dyn_cast<NamedDecl>(D))
+    if (auto* ND = dyn_cast<clang::NamedDecl>(D))
     {
         return qualifiedName(ND);
     }
     return {};
 }
 
-SmallString<256>
+llvm::SmallString<256>
 ASTVisitor::
-qualifiedName(NamedDecl const* ND) const
+qualifiedName(clang::NamedDecl const* ND) const
 {
-    SmallString<256> name;
+    llvm::SmallString<256> name;
     llvm::raw_svector_ostream stream(name);
     getQualifiedName(ND, stream, context_.getPrintingPolicy());
     return name;
 }
 
-Polymorphic<TypeInfo>
+Polymorphic<Type>
 ASTVisitor::
-toTypeInfo(QualType const qt, TraversalMode const mode)
+toType(clang::QualType const qt, TraversalMode const mode)
 {
     MRDOCS_SYMBOL_TRACE(qt, context_);
 
@@ -2052,41 +2050,41 @@ toTypeInfo(QualType const qt, TraversalMode const mode)
     // extraction criteria
     ScopeExitRestore s(mode_, mode);
 
-    // Build the TypeInfo representation for the type
-    TypeInfoBuilder Builder(*this);
+    // Build the Type representation for the type
+    TypeBuilder Builder(*this);
     Builder.Visit(qt);
     return Builder.result();
 }
 
-Optional<Polymorphic<NameInfo>>
+Optional<Polymorphic<Name>>
 ASTVisitor::
-toNameInfo(NestedNameSpecifier NNS)
+toName(clang::NestedNameSpecifier NNS)
 {
     MRDOCS_SYMBOL_TRACE(NNS, context_);
     ScopeExitRestore scope(mode_, Dependency);
     switch(NNS.getKind()) {
-    case NestedNameSpecifier::Kind::Null:
+    case clang::NestedNameSpecifier::Kind::Null:
         return std::nullopt;
-    case NestedNameSpecifier::Kind::Type: {
-        const Type *T = NNS.getAsType();
-        NameInfoBuilder Builder(*this);
+    case clang::NestedNameSpecifier::Kind::Type: {
+        const clang::Type *T = NNS.getAsType();
+        NameBuilder Builder(*this);
         Builder.Visit(T);
         return Builder.result();
     }
-    case NestedNameSpecifier::Kind::Namespace: {
-        auto I = Polymorphic<NameInfo>(std::in_place_type<IdentifierNameInfo>);
+    case clang::NestedNameSpecifier::Kind::Namespace: {
+        auto I = Polymorphic<Name>(std::in_place_type<IdentifierName>);
         auto [ND, Prefix] = NNS.getAsNamespaceAndPrefix();
-        I->Name = ND->getIdentifier()->getName();
-        I->Prefix = toNameInfo(Prefix);
-        Decl const* ID = getInstantiatedFrom(ND);
-        if (Info* info = findOrTraverse(const_cast<Decl*>(ID)))
+        I->Identifier = ND->getIdentifier()->getName();
+        I->Prefix = toName(Prefix);
+        clang::Decl const* ID = getInstantiatedFrom(ND);
+        if (Symbol* info = findOrTraverse(const_cast<clang::Decl*>(ID)))
         {
             I->id = info->id;
         }
         return I;
     }
-    case NestedNameSpecifier::Kind::Global:
-    case NestedNameSpecifier::Kind::MicrosoftSuper:
+    case clang::NestedNameSpecifier::Kind::Global:
+    case clang::NestedNameSpecifier::Kind::MicrosoftSuper:
     default:
         // Unimplemented
         return std::nullopt;
@@ -2095,46 +2093,46 @@ toNameInfo(NestedNameSpecifier NNS)
 }
 
 template <class TArgRange>
-Optional<Polymorphic<NameInfo>>
+Optional<Polymorphic<Name>>
 ASTVisitor::
-toNameInfo(
-    DeclarationName const Name,
+toName(
+    clang::DeclarationName const Name,
     Optional<TArgRange> TArgs,
-    NestedNameSpecifier NNS)
+    clang::NestedNameSpecifier NNS)
 {
     if (Name.isEmpty())
     {
         return std::nullopt;
     }
-    Optional<Polymorphic<NameInfo>> I = std::nullopt;
+    Optional<Polymorphic<struct Name>> I = std::nullopt;
     if (TArgs)
     {
-        I = Polymorphic<NameInfo>(std::in_place_type<SpecializationNameInfo>);
+        I = Polymorphic<struct Name>(std::in_place_type<SpecializationName>);
         populate((**I).asSpecialization().TemplateArgs, *TArgs);
     }
     else
     {
-        I = Polymorphic<NameInfo>(std::in_place_type<IdentifierNameInfo>);
+        I = Polymorphic<struct Name>(std::in_place_type<IdentifierName>);
     }
-    (*I)->Name = extractName(Name);
-    (*I)->Prefix = toNameInfo(NNS);
+    (*I)->Identifier = extractName(Name);
+    (*I)->Prefix = toName(NNS);
     return I;
 }
 
 template <class TArgRange>
-Optional<Polymorphic<NameInfo>>
+Optional<Polymorphic<Name>>
 ASTVisitor::
-toNameInfo(
-    Decl const* D,
+toName(
+    clang::Decl const* D,
     Optional<TArgRange> TArgs,
-    NestedNameSpecifier NNS)
+    clang::NestedNameSpecifier NNS)
 {
-    auto const* ND = dyn_cast_if_present<NamedDecl>(D);
+    auto const* ND = dyn_cast_if_present<clang::NamedDecl>(D);
     if (!ND)
     {
         return std::nullopt;
     }
-    Optional<Polymorphic<NameInfo>> I = toNameInfo(ND->getDeclName(), std::move(TArgs), NNS);
+    Optional<Polymorphic<Name>> I = toName(ND->getDeclName(), std::move(TArgs), NNS);
     if (!I)
     {
         return std::nullopt;
@@ -2142,7 +2140,7 @@ toNameInfo(
     MRDOCS_ASSERT(!I->valueless_after_move());
     ScopeExitRestore scope(mode_, Dependency);
     auto* ID = getInstantiatedFrom(D);
-    if (Info const* info = findOrTraverse(const_cast<Decl*>(ID)))
+    if (Symbol const* info = findOrTraverse(const_cast<clang::Decl*>(ID)))
     {
         (*I)->id = info->id;
     }
@@ -2150,16 +2148,16 @@ toNameInfo(
 }
 
 template
-Optional<Polymorphic<NameInfo>>
+Optional<Polymorphic<Name>>
 ASTVisitor::
-toNameInfo<llvm::ArrayRef<clang::TemplateArgument>>(
-    Decl const* D,
+toName<llvm::ArrayRef<clang::TemplateArgument>>(
+    clang::Decl const* D,
     Optional<llvm::ArrayRef<clang::TemplateArgument>> TArgs,
-    NestedNameSpecifier NNS);
+    clang::NestedNameSpecifier NNS);
 
 Polymorphic<TArg>
 ASTVisitor::
-toTArg(TemplateArgument const& A)
+toTArg(clang::TemplateArgument const& A)
 {
     // TypePrinter generates an internal placeholder name (e.g. type-parameter-0-0)
     // for template type parameters used as arguments. it also cannonicalizes
@@ -2173,38 +2171,38 @@ toTArg(TemplateArgument const& A)
     switch(A.getKind())
     {
     // empty template argument (e.g. not yet deduced)
-    case TemplateArgument::Null:
+    case clang::TemplateArgument::Null:
         break;
 
     // a template argument pack (any kind)
-    case TemplateArgument::Pack:
+    case clang::TemplateArgument::Pack:
     {
-        // we should never a TemplateArgument::Pack here
+        // we should never a clang::TemplateArgument::Pack here
         MRDOCS_UNREACHABLE();
         break;
     }
     // type
-    case TemplateArgument::Type:
+    case clang::TemplateArgument::Type:
     {
         auto R = Polymorphic<TArg>(std::in_place_type<TypeTArg>);
-        QualType QT = A.getAsType();
+        clang::QualType QT = A.getAsType();
         MRDOCS_ASSERT(! QT.isNull());
         // if the template argument is a pack expansion,
         // use the expansion pattern as the type & mark
         // the template argument as a pack expansion
-        if(Type const* T = QT.getTypePtr();
-            auto* PT = dyn_cast<PackExpansionType>(T))
+        if(clang::Type const* T = QT.getTypePtr();
+            auto* PT = dyn_cast<clang::PackExpansionType>(T))
         {
             R->IsPackExpansion = true;
             QT = PT->getPattern();
         }
-        static_cast<TypeTArg &>(*R).Type = toTypeInfo(QT);
+        static_cast<TypeTArg &>(*R).Type = toType(QT);
         return R;
     }
     // pack expansion of a template name
-    case TemplateArgument::TemplateExpansion:
+    case clang::TemplateArgument::TemplateExpansion:
     // template name
-    case TemplateArgument::Template:
+    case clang::TemplateArgument::Template:
     {
         auto R = Polymorphic<TArg>(std::in_place_type<TemplateTArg>);
         R->IsPackExpansion = A.isPackExpansion();
@@ -2215,7 +2213,7 @@ toTArg(TemplateArgument const& A)
         // for the time being, we will use the name & SymbolID of
         // the referenced declaration (if it isn't dependent),
         // and fallback to printing the template name otherwise
-        TemplateName const TN = A.getAsTemplateOrTemplatePattern();
+        clang::TemplateName const TN = A.getAsTemplateOrTemplatePattern();
         if(auto* TD = TN.getAsTemplateDecl())
         {
             if (auto* II = TD->getIdentifier())
@@ -2227,24 +2225,24 @@ toTArg(TemplateArgument const& A)
         {
             llvm::raw_string_ostream stream(Name);
             TN.print(stream, context_.getPrintingPolicy(),
-                TemplateName::Qualified::AsWritten);
+                clang::TemplateName::Qualified::AsWritten);
         }
         return R;
     }
     // nullptr value
-    case TemplateArgument::NullPtr:
+    case clang::TemplateArgument::NullPtr:
     // expression referencing a declaration
-    case TemplateArgument::Declaration:
+    case clang::TemplateArgument::Declaration:
     // integral expression
-    case TemplateArgument::Integral:
+    case clang::TemplateArgument::Integral:
     // expression
-    case TemplateArgument::Expression:
+    case clang::TemplateArgument::Expression:
     {
         auto R = Polymorphic<TArg>(std::in_place_type<ConstantTArg>);
         R->IsPackExpansion = A.isPackExpansion();
         // if this is a pack expansion, use the template argument
         // expansion pattern in place of the template argument pack
-        TemplateArgument const& adjusted =
+        clang::TemplateArgument const& adjusted =
             R->IsPackExpansion ?
             A.getPackExpansionPattern() : A;
 
@@ -2263,7 +2261,7 @@ toTArg(TemplateArgument const& A)
 
 std::string
 ASTVisitor::
-toString(Expr const* E)
+toString(clang::Expr const* E)
 {
     std::string result;
     llvm::raw_string_ostream stream(result);
@@ -2273,30 +2271,30 @@ toString(Expr const* E)
 
 std::string
 ASTVisitor::
-toString(Type const* T)
+toString(clang::Type const* T)
 {
-    if(auto* AT = dyn_cast_if_present<AutoType>(T))
+    if(auto* AT = dyn_cast_if_present<clang::AutoType>(T))
     {
         switch(AT->getKeyword())
         {
-        case AutoTypeKeyword::Auto:
-        case AutoTypeKeyword::GNUAutoType:
+        case clang::AutoTypeKeyword::Auto:
+        case clang::AutoTypeKeyword::GNUAutoType:
             return "auto";
-        case AutoTypeKeyword::DecltypeAuto:
+        case clang::AutoTypeKeyword::DecltypeAuto:
             return "decltype(auto)";
         default:
             MRDOCS_UNREACHABLE();
         }
     }
-    if(auto* TTPT = dyn_cast_if_present<TemplateTypeParmType>(T))
+    if(auto* TTPT = dyn_cast_if_present<clang::TemplateTypeParmType>(T))
     {
-        if (TemplateTypeParmDecl* TTPD = TTPT->getDecl();
+        if (clang::TemplateTypeParmDecl* TTPD = TTPT->getDecl();
             TTPD && TTPD->isImplicit())
         {
             return "auto";
         }
     }
-    return QualType(T, 0).getAsString(
+    return clang::QualType(T, 0).getAsString(
         context_.getPrintingPolicy());
 }
 
@@ -2317,17 +2315,17 @@ toInteger(llvm::APInt const& V)
 
 std::string
 ASTVisitor::
-getSourceCode(SourceRange const& R) const
+getSourceCode(clang::SourceRange const& R) const
 {
-    return Lexer::getSourceText(
-        CharSourceRange::getTokenRange(R),
+    return clang::Lexer::getSourceText(
+        clang::CharSourceRange::getTokenRange(R),
         source_,
         context_.getLangOpts()).str();
 }
 
 Optional<ASTVisitor::SFINAEInfo>
 ASTVisitor::
-extractSFINAEInfo(QualType const T)
+extractSFINAEInfo(clang::QualType const T)
 {
     MRDOCS_SYMBOL_TRACE(T, context_);
     MRDOCS_CHECK_OR(config_->sfinae, std::nullopt);
@@ -2357,9 +2355,9 @@ extractSFINAEInfo(QualType const T)
         if (SFINAEControl->ControllingParams[I])
         {
             MRDOCS_SYMBOL_TRACE(Args[I], context_);
-            TemplateArgument ArgsI = Args[I];
-            MRDOCS_CHECK_OR_CONTINUE(ArgsI.getKind() == TemplateArgument::ArgKind::Expression);
-            Expr* E = Args[I].getAsExpr();
+            clang::TemplateArgument ArgsI = Args[I];
+            MRDOCS_CHECK_OR_CONTINUE(ArgsI.getKind() == clang::TemplateArgument::ArgKind::Expression);
+            clang::Expr* E = Args[I].getAsExpr();
             MRDOCS_CHECK_OR_CONTINUE(E);
             Result.Constraints.emplace_back();
             populate(Result.Constraints.back(), E);
@@ -2373,8 +2371,8 @@ extractSFINAEInfo(QualType const T)
 Optional<ASTVisitor::SFINAEControlParams>
 ASTVisitor::
 getSFINAEControlParams(
-    TemplateDecl* TD,
-    IdentifierInfo const* Member)
+    clang::TemplateDecl* TD,
+    clang::IdentifierInfo const* Member)
 {
     MRDOCS_SYMBOL_TRACE(TD, context_);
     MRDOCS_SYMBOL_TRACE(Member, context_);
@@ -2385,18 +2383,18 @@ getSFINAEControlParams(
     // to find the index of the controlling parameter in the list of
     // template arguments of the template declaration.
     auto FindParam = [this](
-        ArrayRef<TemplateArgument> Arguments,
-        TemplateArgument const& Arg) -> std::size_t
+        llvm::ArrayRef<clang::TemplateArgument> Arguments,
+        clang::TemplateArgument const& Arg) -> std::size_t
     {
-        if (Arg.getKind() != TemplateArgument::Type)
+        if (Arg.getKind() != clang::TemplateArgument::Type)
         {
             return -1;
         }
         auto const It = std::ranges::find_if(
             Arguments,
-            [&](TemplateArgument const& Other)
+            [&](clang::TemplateArgument const& Other)
             {
-                if (Other.getKind() != TemplateArgument::Type)
+                if (Other.getKind() != clang::TemplateArgument::Type)
                 {
                     return false;
                 }
@@ -2406,7 +2404,7 @@ getSFINAEControlParams(
         return found ? It - Arguments.data() : static_cast<std::size_t>(-1);
     };
 
-    if(auto* ATD = dyn_cast<TypeAliasTemplateDecl>(TD))
+    if(auto* ATD = dyn_cast<clang::TypeAliasTemplateDecl>(TD))
     {
         // If the alias template is an alias template specialization,
         // we need to do the process for the underlying type
@@ -2441,7 +2439,7 @@ getSFINAEControlParams(
 
         // Return the controlling parameters with values corresponding to
         // the primary template arguments
-        TemplateParameterList* primaryTemplParams = ATD->getTemplateParameters();
+        clang::TemplateParameterList* primaryTemplParams = ATD->getTemplateParameters();
         MRDOCS_SYMBOL_TRACE(primaryTemplParams, context_);
         return SFINAEControlParams(
             primaryTemplParams,
@@ -2449,8 +2447,8 @@ getSFINAEControlParams(
             ParamIdx);
     }
 
-    // Ensure this is a ClassTemplateDecl
-    auto* CTD = dyn_cast<ClassTemplateDecl>(TD);
+    // Ensure this is a clang::ClassTemplateDecl
+    auto* CTD = dyn_cast<clang::ClassTemplateDecl>(TD);
     MRDOCS_SYMBOL_TRACE(CTD, context_);
     MRDOCS_CHECK_OR(CTD, std::nullopt);
 
@@ -2459,7 +2457,7 @@ getSFINAEControlParams(
     MRDOCS_SYMBOL_TRACE(PrimaryArgs, context_);
 
     // Type of the member that represents the SFINAE result.
-    QualType MemberType;
+    clang::QualType MemberType;
 
     // Index of the parameter that represents the the SFINAE result.
     // For instance, in the specialization `std::enable_if<true,T>::type`,
@@ -2468,14 +2466,14 @@ getSFINAEControlParams(
     unsigned ParamIdx = -1;
 
     // The `IsMismatch` function checks if there's a mismatch between the
-    // CXXRecordDecl of the ClassTemplateDecl and the specified template
+    // clang::CXXRecordDecl of the clang::ClassTemplateDecl and the specified template
     // arguments. If there's a mismatch and `IsMismatch` returns `true`,
     // the caller returns `std::nullopt` to indicate that the template
     // is not a SFINAE template. If there are no mismatches, the caller
     // continues to check the controlling parameters of the template.
     // This function also updates the `MemberType` and `ParamIdx` variables
     // so that they can be used to check the controlling parameters.
-    auto IsMismatch = [&](CXXRecordDecl* RD, ArrayRef<TemplateArgument> Args)
+    auto IsMismatch = [&](clang::CXXRecordDecl* RD, llvm::ArrayRef<clang::TemplateArgument> Args)
     {
         MRDOCS_SYMBOL_TRACE(RD, context_);
         MRDOCS_SYMBOL_TRACE(Args, context_);
@@ -2487,7 +2485,7 @@ getSFINAEControlParams(
         // as the member `::type` in `std::enable_if<B,T>`
         auto MemberLookup = RD->lookup(Member);
         MRDOCS_SYMBOL_TRACE(MemberLookup, context_);
-        QualType CurrentType;
+        clang::QualType CurrentType;
         if(MemberLookup.empty())
         {
             if (!RD->getNumBases())
@@ -2557,7 +2555,7 @@ getSFINAEControlParams(
                 // SFINAE template.
                 return true;
             }
-            if (auto* TND = dyn_cast<TypedefNameDecl>(MemberLookup.front()))
+            if (auto* TND = dyn_cast<clang::TypedefNameDecl>(MemberLookup.front()))
             {
                 // Update the current type to the underlying type of the
                 // typedef declaration.
@@ -2582,7 +2580,7 @@ getSFINAEControlParams(
         // `true` to indicate a mismatch.
         if(CurrentType->isDependentType())
         {
-            TemplateArgument asTemplateArg(CurrentType);
+            clang::TemplateArgument asTemplateArg(CurrentType);
             auto FoundIdx = FindParam(Args, asTemplateArg);
             if (FoundIdx == static_cast<std::size_t>(-1) ||
                 FoundIdx >= PrimaryArgs.size())
@@ -2598,10 +2596,10 @@ getSFINAEControlParams(
             ParamIdx = FoundIdx;
             // Get this primary template argument as a template
             // argument of the current type.
-            TemplateArgument MappedPrimary = PrimaryArgs[FoundIdx];
+            clang::TemplateArgument MappedPrimary = PrimaryArgs[FoundIdx];
             MRDOCS_SYMBOL_TRACE(MappedPrimary, context_);
             // The primary argument in SFINAE should be a type
-            MRDOCS_ASSERT(MappedPrimary.getKind() == TemplateArgument::Type);
+            MRDOCS_ASSERT(MappedPrimary.getKind() == clang::TemplateArgument::Type);
             // Update the current type to the type of the primary argument
             CurrentType = MappedPrimary.getAsType();
             MRDOCS_SYMBOL_TRACE(CurrentType, context_);
@@ -2621,7 +2619,7 @@ getSFINAEControlParams(
     };
 
     // Check if there's a mismatch between the primary record and the arguments
-    CXXRecordDecl* PrimaryRD = CTD->getTemplatedDecl();
+    clang::CXXRecordDecl* PrimaryRD = CTD->getTemplatedDecl();
     MRDOCS_SYMBOL_TRACE(PrimaryRD, context_);
     MRDOCS_CHECK_OR(!IsMismatch(PrimaryRD, PrimaryArgs), std::nullopt);
 
@@ -2633,12 +2631,12 @@ getSFINAEControlParams(
         {
             continue;
         }
-        ArrayRef<TemplateArgument> SpecArgs = CTSD->getTemplateArgs().asArray();
+        llvm::ArrayRef<clang::TemplateArgument> SpecArgs = CTSD->getTemplateArgs().asArray();
         MRDOCS_CHECK_OR(!IsMismatch(CTSD, SpecArgs), std::nullopt);
     }
 
     // Check if there's a mismatch between any partial specialization and the arguments
-    SmallVector<ClassTemplatePartialSpecializationDecl*> PartialSpecs;
+    llvm::SmallVector<clang::ClassTemplatePartialSpecializationDecl*> PartialSpecs;
     CTD->getPartialSpecializations(PartialSpecs);
     for(auto* CTPSD : PartialSpecs)
     {
@@ -2659,16 +2657,16 @@ getSFINAEControlParams(
         MRDOCS_SYMBOL_TRACE(PartialArgs, context_);
         for(std::size_t i = 0; i < PartialArgs.size(); ++i)
         {
-            TemplateArgument Arg = PartialArgs[i];
+            clang::TemplateArgument Arg = PartialArgs[i];
             MRDOCS_SYMBOL_TRACE(Arg, context_);
             switch (Arg.getKind())
             {
-            case TemplateArgument::Integral:
-            case TemplateArgument::Declaration:
-            case TemplateArgument::StructuralValue:
-            case TemplateArgument::NullPtr:
+            case clang::TemplateArgument::Integral:
+            case clang::TemplateArgument::Declaration:
+            case clang::TemplateArgument::StructuralValue:
+            case clang::TemplateArgument::NullPtr:
                 break;
-            case TemplateArgument::Expression:
+            case clang::TemplateArgument::Expression:
                 if(getNTTPFromExpr(
                     Arg.getAsExpr(),
                     CTPSD->getTemplateDepth() - 1))
@@ -2685,7 +2683,7 @@ getSFINAEControlParams(
 }
 
 Optional<ASTVisitor::SFINAETemplateInfo>
-ASTVisitor::getSFINAETemplateInfo(QualType T, bool const AllowDependentNames) const
+ASTVisitor::getSFINAETemplateInfo(clang::QualType T, bool const AllowDependentNames) const
 {
     MRDOCS_SYMBOL_TRACE(T, context_);
     MRDOCS_ASSERT(!T.isNull());
@@ -2693,12 +2691,12 @@ ASTVisitor::getSFINAETemplateInfo(QualType T, bool const AllowDependentNames) co
     // If the type is a dependent name type and dependent names are allowed,
     // extract the identifier and the qualifier's type
     SFINAETemplateInfo SFINAE;
-    if (auto* DNT = T->getAsAdjusted<DependentNameType>();
+    if (auto* DNT = T->getAsAdjusted<clang::DependentNameType>();
         DNT && AllowDependentNames)
     {
         SFINAE.Member = DNT->getIdentifier();
         MRDOCS_SYMBOL_TRACE(SFINAE.Member, context_);
-        T = QualType(DNT->getQualifier().getAsType(), 0);
+        T = clang::QualType(DNT->getQualifier().getAsType(), 0);
         MRDOCS_SYMBOL_TRACE(T, context_);
     }
     if (!T.getTypePtrOrNull())
@@ -2708,7 +2706,7 @@ ASTVisitor::getSFINAETemplateInfo(QualType T, bool const AllowDependentNames) co
 
     // If the type is a template specialization type, extract the template name
     // and the template arguments
-    if (auto* TST = T->getAsAdjusted<TemplateSpecializationType>())
+    if (auto* TST = T->getAsAdjusted<clang::TemplateSpecializationType>())
     {
         MRDOCS_SYMBOL_TRACE(TST, context_);
         SFINAE.Template = TST->getTemplateName().getAsTemplateDecl();
@@ -2722,11 +2720,11 @@ ASTVisitor::getSFINAETemplateInfo(QualType T, bool const AllowDependentNames) co
     return std::nullopt;
 }
 
-Optional<TemplateArgument>
+Optional<clang::TemplateArgument>
 ASTVisitor::
 tryGetTemplateArgument(
-    TemplateParameterList* Parameters,
-    ArrayRef<TemplateArgument> const Arguments,
+    clang::TemplateParameterList* Parameters,
+    llvm::ArrayRef<clang::TemplateArgument> const Arguments,
     std::size_t const Index)
 {
     MRDOCS_SYMBOL_TRACE(Parameters, context_);
@@ -2743,15 +2741,15 @@ tryGetTemplateArgument(
     MRDOCS_CHECK_OR(Index < Parameters->size(), std::nullopt);
 
     // Attempt to get the default argument of the template parameter
-    NamedDecl* ND = Parameters->getParam(Index);
+    clang::NamedDecl* ND = Parameters->getParam(Index);
     MRDOCS_SYMBOL_TRACE(ND, context_);
-    if(auto* TTPD = dyn_cast<TemplateTypeParmDecl>(ND);
+    if(auto* TTPD = dyn_cast<clang::TemplateTypeParmDecl>(ND);
         TTPD && TTPD->hasDefaultArgument())
     {
         MRDOCS_SYMBOL_TRACE(TTPD, context_);
         return TTPD->getDefaultArgument().getArgument();
     }
-    if(auto* NTTPD = dyn_cast<NonTypeTemplateParmDecl>(ND);
+    if(auto* NTTPD = dyn_cast<clang::NonTypeTemplateParmDecl>(ND);
         NTTPD && NTTPD->hasDefaultArgument())
     {
         MRDOCS_SYMBOL_TRACE(NTTPD, context_);
@@ -2763,8 +2761,8 @@ tryGetTemplateArgument(
 ExtractionMode
 ASTVisitor::
 checkFilters(
-    Decl const* D,
-    AccessSpecifier const access)
+    clang::Decl const* D,
+    clang::AccessSpecifier const access)
 {
     if (mode_ == BaseClass &&
         isAnyImplicitSpecialization(D))
@@ -2776,7 +2774,7 @@ checkFilters(
     // global namespace. It can't fail any of the filters
     // because its qualified name is represented by the
     // empty string, and it has no file associated with it.
-    MRDOCS_CHECK_OR(!isa<TranslationUnitDecl>(D), ExtractionMode::Regular);
+    MRDOCS_CHECK_OR(!isa<clang::TranslationUnitDecl>(D), ExtractionMode::Regular);
 
     // Check if this kind of symbol should be extracted.
     // This filters symbols supported by MrDocs and
@@ -2804,9 +2802,9 @@ checkFilters(
 
 bool
 ASTVisitor::
-checkTypeFilters(Decl const* D, AccessSpecifier const access)
+checkTypeFilters(clang::Decl const* D, clang::AccessSpecifier const access)
 {
-    if (access == AS_private)
+    if (access == clang::AS_private)
     {
         // Don't extract private members
         if (isVirtualMember(D))
@@ -2825,7 +2823,7 @@ checkTypeFilters(Decl const* D, AccessSpecifier const access)
     {
         MRDOCS_CHECK_OR(!isStaticFileLevelMember(D), false);
     }
-    if (!config_->extractLocalClasses && isa<RecordDecl>(D))
+    if (!config_->extractLocalClasses && isa<clang::RecordDecl>(D))
     {
         if (auto const* FI = findFileInfo(D);
             FI->full_path.ends_with(".cpp") ||
@@ -2838,18 +2836,18 @@ checkTypeFilters(Decl const* D, AccessSpecifier const access)
     }
 
     // Don't extract anonymous unions
-    auto const* RD = dyn_cast<RecordDecl>(D);
+    auto const* RD = dyn_cast<clang::RecordDecl>(D);
     MRDOCS_CHECK_OR(!RD || !RD->isAnonymousStructOrUnion(), false);
 
     // Don't extract declarations implicitly generated by the compiler
-    MRDOCS_CHECK_OR(!D->isImplicit() || isa<IndirectFieldDecl>(D), false);
+    MRDOCS_CHECK_OR(!D->isImplicit() || isa<clang::IndirectFieldDecl>(D), false);
 
     return true;
 }
 
 bool
 ASTVisitor::
-checkFileFilters(Decl const* D)
+checkFileFilters(clang::Decl const* D)
 {
     MRDOCS_SYMBOL_TRACE(D, context_);
 
@@ -2928,7 +2926,7 @@ checkFileFilters(std::string_view const symbolPath) const
 
 ASTVisitor::ExtractionInfo
 ASTVisitor::
-checkSymbolFilters(Decl const* D, bool const AllowParent)
+checkSymbolFilters(clang::Decl const* D, bool const AllowParent)
 {
     // Use the cache
     if (auto const it = extraction_.find(D); it != extraction_.end())
@@ -2942,8 +2940,8 @@ checkSymbolFilters(Decl const* D, bool const AllowParent)
         return result;
     };
 
-    // If not a NamedDecl, then symbol filters don't apply
-    auto const* ND = dyn_cast<NamedDecl>(D);
+    // If not a clang::NamedDecl, then symbol filters don't apply
+    auto const* ND = dyn_cast<clang::NamedDecl>(D);
     if (!ND)
     {
         constexpr ExtractionInfo res{ExtractionMode::Regular, ExtractionMatchType::Strict};
@@ -2951,14 +2949,14 @@ checkSymbolFilters(Decl const* D, bool const AllowParent)
     }
 
     // Get the symbol name
-    SmallString<256> const name = qualifiedName(ND);
+    llvm::SmallString<256> const name = qualifiedName(ND);
     auto const symbolName = name.str();
 
     // Function to check if parent is of a certain extraction mode
-    auto ParentIs = [&](Decl const* D, ExtractionMode expected) {
-        if (Decl const* P = getParent(D);
+    auto ParentIs = [&](clang::Decl const* D, ExtractionMode expected) {
+        if (clang::Decl const* P = getParent(D);
             P &&
-            !isa<TranslationUnitDecl>(P))
+            !isa<clang::TranslationUnitDecl>(P))
         {
             auto const [parentMode, kind] = checkSymbolFilters(P);
             return parentMode == expected;
@@ -3022,9 +3020,9 @@ checkSymbolFilters(Decl const* D, bool const AllowParent)
         {
             // A child of see-below is also see-below (if namespace)
             // or dependency (if record)
-            if (Decl const* P = getParent(D);
+            if (clang::Decl const* P = getParent(D);
                 P &&
-                isa<NamespaceDecl>(P))
+                isa<clang::NamespaceDecl>(P))
             {
                 return updateCache(
                 { ExtractionMode::SeeBelow,
@@ -3059,13 +3057,13 @@ checkSymbolFilters(Decl const* D, bool const AllowParent)
     if (containsLiteralPatterns)
     {
         // 2b) For each parent namespace
-        Decl const* Cur = getParent(D);
+        clang::Decl const* Cur = getParent(D);
         while (Cur)
         {
-            if (isa<NamespaceDecl>(Cur))
+            if (isa<clang::NamespaceDecl>(Cur))
             {
                 // 2c) Check if it matches any literal pattern
-                SmallString<256> const namespaceName = qualifiedName(Cur);
+                llvm::SmallString<256> const namespaceName = qualifiedName(Cur);
                 for (auto const& [patterns, mode] : patternsAndModes)
                 {
                     if (!patterns->empty() &&
@@ -3093,9 +3091,9 @@ checkSymbolFilters(Decl const* D, bool const AllowParent)
     // and `implementation-defined`, we should extract it as `include-symbol`,
     // since symbols that only pass `include-symbol` will also be included in this namespace
     // later on.
-    if (isa<NamespaceDecl>(D) || isa<TranslationUnitDecl>(D))
+    if (isa<clang::NamespaceDecl>(D) || isa<clang::TranslationUnitDecl>(D))
     {
-        SmallString<256> symbolAsPrefix{ symbolName };
+        llvm::SmallString<256> symbolAsPrefix{ symbolName };
         symbolAsPrefix += "::";
         for (auto const& [patterns, mode] : std::ranges::views::reverse(patternsAndModes))
         {
@@ -3107,12 +3105,12 @@ checkSymbolFilters(Decl const* D, bool const AllowParent)
             // prefixes that can potentially include children, but
             // we have to check if any children actually matches
             // the pattern strictly.
-            auto const* DC = cast<DeclContext>(D);
+            auto const* DC = cast<clang::DeclContext>(D);
             auto childrenMode = ExtractionMode::Dependency;
             for (auto* M : DC->decls())
             {
                 MRDOCS_SYMBOL_TRACE(M, context_);
-                if (M->isImplicit() && !isa<IndirectFieldDecl>(M))
+                if (M->isImplicit() && !isa<clang::IndirectFieldDecl>(M))
                 {
                     // Ignore implicit members
                     continue;
@@ -3154,7 +3152,7 @@ checkSymbolFilters(Decl const* D, bool const AllowParent)
     }
     else if (AllowParent)
     {
-        Decl const* P = getParent(D);
+        clang::Decl const* P = getParent(D);
         if (P)
         {
             // 4) Parent symbols imply this symbol should be included
@@ -3238,7 +3236,7 @@ checkSymbolFiltersImpl(
 }
 
 
-Info*
+Symbol*
 ASTVisitor::
 find(SymbolID const& id) const
 {
@@ -3249,9 +3247,9 @@ find(SymbolID const& id) const
     return nullptr;
 }
 
-Info*
+Symbol*
 ASTVisitor::
-find(Decl const* D) const
+find(clang::Decl const* D) const
 {
     auto ID = generateID(D);
     MRDOCS_CHECK_OR(ID, nullptr);
@@ -3264,8 +3262,8 @@ findFileInfo(clang::SourceLocation const loc)
 {
     MRDOCS_CHECK_OR(!loc.isInvalid(), nullptr);
     // Find the presumed location, ignoring #line directives
-    PresumedLoc presumed = source_.getPresumedLoc(loc, false);
-    FileID id = presumed.getFileID();
+    clang::PresumedLoc presumed = source_.getPresumedLoc(loc, false);
+    clang::FileID id = presumed.getFileID();
     if(id.isInvalid())
         return nullptr;
 
@@ -3280,7 +3278,7 @@ findFileInfo(clang::SourceLocation const loc)
 
 ASTVisitor::FileInfo*
 ASTVisitor::
-findFileInfo(Decl const* D)
+findFileInfo(clang::Decl const* D)
 {
     clang::SourceLocation Loc = D->getBeginLoc();
     if (Loc.isInvalid())
@@ -3369,16 +3367,16 @@ buildFileInfo(std::string_view path)
     }
 
     // Find the best match for the file path in the search directories
-    for (HeaderSearch& HS = sema_.getPreprocessor().getHeaderSearchInfo();
-         DirectoryLookup const& DL : HS.search_dir_range())
+    for (clang::HeaderSearch& HS = sema_.getPreprocessor().getHeaderSearchInfo();
+         clang::DirectoryLookup const& DL : HS.search_dir_range())
     {
-        OptionalDirectoryEntryRef DR = DL.getDirRef();
+        clang::OptionalDirectoryEntryRef DR = DL.getDirRef();
         if (!DL.isNormalDir() || !DR)
         {
             // Only consider normal directories
             continue;
         }
-        StringRef searchDir = DR->getName();
+        clang::StringRef searchDir = DR->getName();
         if (auto shortPath = tryGetRelativePath(searchDir))
         {
             file_info.short_path = std::string(*shortPath);
@@ -3416,14 +3414,14 @@ buildFileInfo(std::string_view path)
     return file_info;
 }
 
-template <std::derived_from<Info> InfoTy>
+template <std::derived_from<Symbol> InfoTy>
 ASTVisitor::upsertResult<InfoTy>
 ASTVisitor::
 upsert(SymbolID const& id)
 {
     // Creating symbol with invalid SymbolID
     MRDOCS_ASSERT(id != SymbolID::invalid);
-    Info* info = find(id);
+    Symbol* info = find(id);
     bool const isNew = !info;
     if (!info)
     {
@@ -3491,15 +3489,15 @@ upsert(DeclType const* D)
     }
 
     // Already populate the access specifier
-    AccessSpecifier const access = getAccess(D);
+    clang::AccessSpecifier const access = getAccess(D);
     I.Access = toAccessKind(access);
 
     return upsertResult<R>{std::ref(I), isNew};
 }
 
 template <
-    std::derived_from<Info> InfoTy,
-    std::derived_from<Decl> DeclTy>
+    std::derived_from<Symbol> InfoTy,
+    std::derived_from<clang::Decl> DeclTy>
 Expected<void>
 ASTVisitor::
 checkUndocumented(
@@ -3511,7 +3509,7 @@ checkUndocumented(
     MRDOCS_CHECK_OR(!config_->extractAll, {});
     // If the symbol is a namespace, the `extract-all`
     // doesn't apply to it
-    MRDOCS_CHECK_OR((!std::same_as<InfoTy,NamespaceInfo>), {});
+    MRDOCS_CHECK_OR((!std::same_as<InfoTy,NamespaceSymbol>), {});
     // If the symbol is not being extracted as a Regular
     // symbol, we don't need to check for undocumented symbols
     // These are expected to be potentially undocumented
@@ -3544,16 +3542,16 @@ checkUndocumented(
         auto const undocIt = undocumented_.find(id);
         if (undocIt == undocumented_.end())
         {
-            InfoKind const kind = InfoTy::kind_id;
-            undocumented_.insert(UndocumentedInfo{id, extractName(D), kind});
+            SymbolKind const kind = InfoTy::kind_id;
+            undocumented_.insert(UndocumentedSymbol{id, extractName(D), kind});
         }
         // Populate the location
         auto handle = undocumented_.extract(undocIt);
-        UndocumentedInfo& UI = handle.value();
+        UndocumentedSymbol& UI = handle.value();
         populate(UI.Loc, D);
         undocumented_.insert(std::move(handle));
     }
     return Unexpected(Error("Undocumented"));
 }
 
-} // clang::mrdocs
+} // mrdocs

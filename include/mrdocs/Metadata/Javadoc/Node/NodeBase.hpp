@@ -18,7 +18,7 @@
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Metadata/Javadoc/Node/NodeKind.hpp>
 
-namespace clang::mrdocs::doc {
+namespace mrdocs::doc {
 
 //--------------------------------------------
 
@@ -90,6 +90,6 @@ tag_invoke(
     v = dom::LazyObject(I, domCorpus);
 }
 
-} // clang::mrdocs::doc
+} // mrdocs::doc
 
 #endif // MRDOCS_API_METADATA_JAVADOC_NODE_NODEBASE_HPP

@@ -18,7 +18,7 @@
 #include <memory>
 #include <vector>
 
-namespace clang {
+
 namespace mrdocs {
 
 /** Implementaiton of Generators.
@@ -63,6 +63,6 @@ GeneratorsImpl&
 getGeneratorsImpl() noexcept;
 
 } // mrdocs
-} // clang
+
 
 #endif

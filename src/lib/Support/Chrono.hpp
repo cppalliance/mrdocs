@@ -17,7 +17,7 @@
 #include <format>
 #include <string>
 
-namespace clang {
+
 namespace mrdocs {
 
 /** Formats a duration into a human-readable string.
@@ -65,6 +65,6 @@ format_duration(
 }
 
 } // mrdocs
-} // clang
+
 
 #endif

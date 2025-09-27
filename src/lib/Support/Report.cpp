@@ -33,7 +33,7 @@ namespace SourceFileNames {
 extern char const* getFileName(char const*) noexcept;
 } // SourceFileNames
 
-namespace clang {
+
 namespace mrdocs {
 
 //------------------------------------------------
@@ -337,4 +337,4 @@ call_impl(
 } // report
 
 } // mrdocs
-} // clang
+

@@ -21,7 +21,7 @@
 #include <type_traits>
 #include <utility>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 template <class T>
 class Optional;
@@ -1164,6 +1164,6 @@ operator<=>(Optional<T> const& x, U const& v)
     return bool(x) ? *x <=> v : std::strong_ordering::less;
 }
 
-} // namespace clang::mrdocs
+} // namespace mrdocs
 
 #endif

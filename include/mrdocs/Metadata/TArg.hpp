@@ -20,7 +20,7 @@
 #include <mrdocs/Metadata/TArg/TemplateTArg.hpp>
 #include <mrdocs/Metadata/TArg/TypeTArg.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 template<
     std::derived_from<TArg> TArgTy,
@@ -68,6 +68,6 @@ tag_invoke(
     tag_invoke(dom::ValueFromTag{}, v, *I, domCorpus);
 }
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

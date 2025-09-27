@@ -19,7 +19,7 @@
 #include <string>
 #include <vector>
 
-namespace clang::mrdocs::hbs {
+namespace mrdocs::hbs {
 
 /** Visitor which writes everything to a single page.
 */
@@ -51,10 +51,10 @@ public:
         respective tasks are also pushed to the executor group.
 
     */
-    template <std::derived_from<Info> T>
+    template <std::derived_from<Symbol> T>
     void operator()(T const& I);
 };
 
-} // clang::mrdocs::hbs
+} // mrdocs::hbs
 
 #endif

@@ -13,7 +13,7 @@
 #include <array>
 #include <test_suite/test_suite.hpp>
 
-namespace clang {
+
 namespace mrdocs {
 namespace js {
 
@@ -1306,5 +1306,5 @@ TEST_SUITE(
 
 } // js
 } // mrdocs
-} // clang
+
 

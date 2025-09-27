@@ -17,7 +17,7 @@
 #include <mrdocs/Dom/String.hpp>
 #include <string>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** Operator kinds
 */
@@ -202,6 +202,6 @@ getOperatorReadableName(
     OperatorKind kind,
     int nParams);
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

@@ -13,31 +13,31 @@
 #define MRDOCS_API_METADATA_NAME_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Name/IdentifierNameInfo.hpp>
+#include <mrdocs/Metadata/Name/IdentifierName.hpp>
 #include <mrdocs/Metadata/Name/NameBase.hpp>
-#include <mrdocs/Metadata/Name/SpecializationNameInfo.hpp>
+#include <mrdocs/Metadata/Name/SpecializationName.hpp>
 #include <mrdocs/Support/Visitor.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 template<
-    std::derived_from<NameInfo> NameInfoTy,
+    std::derived_from<Name> NameTy,
     class Fn,
     class... Args>
 decltype(auto)
 visit(
-    NameInfoTy& info,
+    NameTy& info,
     Fn&& fn,
     Args&&... args)
 {
-    auto visitor = makeVisitor<NameInfo>(
+    auto visitor = makeVisitor<Name>(
         info, std::forward<Fn>(fn), std::forward<Args>(args)...);
     switch(info.Kind)
     {
     case NameKind::Identifier:
-        return visitor.template visit<IdentifierNameInfo>();
+        return visitor.template visit<IdentifierName>();
     case NameKind::Specialization:
-        return visitor.template visit<SpecializationNameInfo>();
+        return visitor.template visit<SpecializationName>();
     default:
         MRDOCS_UNREACHABLE();
     }
@@ -45,10 +45,10 @@ visit(
 
 MRDOCS_DECL
 std::strong_ordering
-operator<=>(Polymorphic<NameInfo> const& lhs, Polymorphic<NameInfo> const& rhs);
+operator<=>(Polymorphic<Name> const& lhs, Polymorphic<Name> const& rhs);
 
 inline bool
-operator==(Polymorphic<NameInfo> const& lhs, Polymorphic<NameInfo> const& rhs)
+operator==(Polymorphic<Name> const& lhs, Polymorphic<Name> const& rhs)
 {
     return lhs <=> rhs == std::strong_ordering::equal;
 }
@@ -58,7 +58,7 @@ void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
-    Polymorphic<NameInfo> const& I,
+    Polymorphic<Name> const& I,
     DomCorpus const* domCorpus)
 {
     MRDOCS_ASSERT(!I.valueless_after_move());
@@ -70,7 +70,7 @@ void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
-    Optional<Polymorphic<NameInfo>> const& I,
+    Optional<Polymorphic<Name>> const& I,
     DomCorpus const* domCorpus)
 {
     if (!I)
@@ -82,6 +82,6 @@ tag_invoke(
     tag_invoke(dom::ValueFromTag{}, v, *I, domCorpus);
 }
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

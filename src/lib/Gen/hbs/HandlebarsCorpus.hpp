@@ -18,7 +18,7 @@
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <mrdocs/Metadata/Javadoc.hpp>
 
-namespace clang::mrdocs::hbs {
+namespace mrdocs::hbs {
 
 /** A specialized DomCorpus for generating Handlebars values.
 
@@ -59,7 +59,7 @@ public:
         @return A dom::Object representing the Info.
     */
     dom::Object
-    construct(Info const& I) const override;
+    construct(Symbol const& I) const override;
 
     /** Get the cross-reference for the given Info.
 
@@ -67,9 +67,9 @@ public:
         @return A string representing the cross-reference.
     */
     std::string
-    getURL(Info const& I) const;
+    getURL(Symbol const& I) const;
 };
 
-} // clang::mrdocs::hbs
+} // mrdocs::hbs
 
 #endif // MRDOCS_LIB_GEN_HBS_HANDLEBARSCORPUS_HPP

@@ -16,7 +16,7 @@
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Template.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 std::string_view
 toString(TArgKind kind) noexcept
@@ -356,4 +356,4 @@ tag_invoke(
     v = dom::LazyObject(I, domCorpus);
 }
 
-} // clang::mrdocs
+} // mrdocs

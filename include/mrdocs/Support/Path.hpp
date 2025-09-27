@@ -16,7 +16,7 @@
 #include <string>
 #include <string_view>
 
-namespace clang {
+
 namespace mrdocs {
 
 //------------------------------------------------
@@ -471,6 +471,6 @@ startsWith(
 } // files
 
 } // mrdocs
-} // clang
+
 
 #endif

@@ -19,7 +19,7 @@
 #include <algorithm>
 #include <format>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 void
 JavadocFinalizer::
@@ -38,7 +38,7 @@ build()
     for (auto& infoPtr : corpus_.info_)
     {
         MRDOCS_ASSERT(infoPtr);
-        Info& I = *infoPtr;
+        Symbol& I = *infoPtr;
         MRDOCS_CHECK_OR_CONTINUE(I.Extraction != ExtractionMode::Dependency);
         finalizeBrief(I);
     }
@@ -53,7 +53,7 @@ build()
     for (auto& infoPtr : corpus_.info_)
     {
         MRDOCS_ASSERT(infoPtr);
-        Info& I = *infoPtr;
+        Symbol& I = *infoPtr;
         MRDOCS_CHECK_OR_CONTINUE(I.Extraction != ExtractionMode::Dependency);
         finalizeMetadataCopies(I);
     }
@@ -68,7 +68,7 @@ build()
         for (auto& infoPtr : corpus_.info_)
         {
             MRDOCS_ASSERT(infoPtr);
-            Info& I = *infoPtr;
+            Symbol& I = *infoPtr;
             MRDOCS_CHECK_OR_CONTINUE(I.isOverloads());
             MRDOCS_CHECK_OR_CONTINUE(I.Extraction != ExtractionMode::Dependency);
             if (!I.javadoc)
@@ -83,7 +83,7 @@ build()
     for (auto& infoPtr : corpus_.info_)
     {
         MRDOCS_ASSERT(infoPtr);
-        Info& I = *infoPtr;
+        Symbol& I = *infoPtr;
         MRDOCS_CHECK_OR_CONTINUE(I.Extraction != ExtractionMode::Dependency);
         finalizeJavadoc(I);
     }
@@ -98,7 +98,7 @@ build()
         for (auto& infoPtr : corpus_.info_)
         {
             MRDOCS_ASSERT(infoPtr);
-            Info& I = *infoPtr;
+            Symbol& I = *infoPtr;
             MRDOCS_CHECK_OR_CONTINUE(I.isFunction());
             MRDOCS_CHECK_OR_CONTINUE(I.Extraction != ExtractionMode::Dependency);
             populateFunctionJavadoc(I.asFunction());
@@ -109,7 +109,7 @@ build()
     for (auto& infoPtr : corpus_.info_)
     {
         MRDOCS_ASSERT(infoPtr);
-        Info& I = *infoPtr;
+        Symbol& I = *infoPtr;
         visit(I, [&](auto& U) {
             finalizeInfoData(U);
         });
@@ -122,7 +122,7 @@ build()
 
 void
 JavadocFinalizer::
-finalizeBrief(Info& I)
+finalizeBrief(Symbol& I)
 {
     MRDOCS_CHECK_OR(!finalized_brief_.contains(&I));
     finalized_brief_.emplace(&I);
@@ -145,7 +145,7 @@ finalizeBrief(Info& I)
         for (auto const& MemberIDs = OI.Members;
              auto& memberID : MemberIDs)
         {
-            Info* member = corpus_.find(memberID);
+            Symbol* member = corpus_.find(memberID);
             MRDOCS_CHECK_OR_CONTINUE(member);
             finalizeBrief(*member);
         }
@@ -193,8 +193,8 @@ copyBrief(Javadoc& javadoc)
         }
 
         // Ensure the brief source is finalized
-        Info const& res = *resRef;
-        finalizeBrief(const_cast<Info&>(res));
+        Symbol const& res = *resRef;
+        finalizeBrief(const_cast<Symbol&>(res));
 
         // Check if the source has a brief
         if (!res.javadoc ||
@@ -264,7 +264,7 @@ setAutoBrief(Javadoc& javadoc) const
 
 namespace {
 TemplateInfo const*
-getTemplateInfo(Info& I)
+getTemplateInfo(Symbol& I)
 {
     return visit(I, [](auto& I) -> TemplateInfo const* {
         if constexpr (requires { I.Template; })
@@ -281,7 +281,7 @@ getTemplateInfo(Info& I)
 
 void
 JavadocFinalizer::
-finalizeMetadataCopies(Info& I)
+finalizeMetadataCopies(Symbol& I)
 {
     MRDOCS_CHECK_OR(!finalized_metadata_.contains(&I));
     finalized_metadata_.emplace(&I);
@@ -295,7 +295,7 @@ finalizeMetadataCopies(Info& I)
     MRDOCS_CHECK_OR(!I.javadoc->blocks.empty());
     Javadoc& destJavadoc = *I.javadoc;
 
-    SmallVector<doc::CopyDetails, 16> copiedRefs;
+    llvm::SmallVector<doc::CopyDetails, 16> copiedRefs;
     for (auto& block: destJavadoc.blocks)
     {
         MRDOCS_CHECK_OR_CONTINUE(
@@ -339,18 +339,18 @@ finalizeMetadataCopies(Info& I)
         // We can't copy directly from the overload set
         // because its metadata is not created at this
         // step yet.
-        auto copyInfoRangeMetadata = [&](ArrayRef<Info const*> srcInfoPtrs)
+        auto copyInfoRangeMetadata = [&](llvm::ArrayRef<Symbol const*> srcInfoPtrs)
         {
             auto srcInfos = srcInfoPtrs
                             | std::views::transform(
-                                [](Info const* ptr) -> Info const& {
+                                [](Symbol const* ptr) -> Symbol const& {
                 return *ptr;
             });
 
             // Ensure the source metadata is finalized
             for (auto& srcInfo: srcInfos)
             {
-                auto& mutSrcInfo = const_cast<Info&>(srcInfo);
+                auto& mutSrcInfo = const_cast<Symbol&>(srcInfo);
                 finalizeMetadataCopies(mutSrcInfo);
             }
 
@@ -374,7 +374,7 @@ finalizeMetadataCopies(Info& I)
             if (I.isFunction())
             {
                 auto& destF = I.asFunction();
-                for (Info const& srcInfo: srcInfos)
+                for (Symbol const& srcInfo: srcInfos)
                 {
                     MRDOCS_CHECK_OR_CONTINUE(srcInfo.isFunction());
                     auto const& srcFunction = srcInfo.asFunction();
@@ -409,7 +409,7 @@ finalizeMetadataCopies(Info& I)
             // template parameters.
             if (auto const destTemplateInfo = getTemplateInfo(I))
             {
-                for (Info const& srcInfo: srcInfos)
+                for (Symbol const& srcInfo: srcInfos)
                 {
                     MRDOCS_CHECK_OR_CONTINUE(srcInfo.javadoc);
                     for (Javadoc const& srcJavadoc = *srcInfo.javadoc;
@@ -446,7 +446,7 @@ finalizeMetadataCopies(Info& I)
             if (destJavadoc.exceptions.empty() &&
                 !destIsNoExcept)
             {
-                for (Info const& srcInfo: srcInfos)
+                for (Symbol const& srcInfo: srcInfos)
                 {
                     MRDOCS_CHECK_OR_CONTINUE(srcInfo.javadoc);
                     for (doc::Throws const& exceptionsEl: srcInfo.javadoc->exceptions)
@@ -460,7 +460,7 @@ finalizeMetadataCopies(Info& I)
             // Copy sees only if destination sees are empty
             if (destJavadoc.sees.empty())
             {
-                for (Info const& srcInfo: srcInfos)
+                for (Symbol const& srcInfo: srcInfos)
                 {
                     MRDOCS_CHECK_OR_CONTINUE(srcInfo.javadoc);
                     for (doc::See const& seesEl: srcInfo.javadoc->sees)
@@ -474,7 +474,7 @@ finalizeMetadataCopies(Info& I)
             // Copy preconditions only if destination preconditions is empty
             if (destJavadoc.preconditions.empty())
             {
-                for (Info const& srcInfo: srcInfos)
+                for (Symbol const& srcInfo: srcInfos)
                 {
                     MRDOCS_CHECK_OR_CONTINUE(srcInfo.javadoc);
                     for (doc::Precondition const& preconditionsEl: srcInfo.javadoc->preconditions)
@@ -488,7 +488,7 @@ finalizeMetadataCopies(Info& I)
             // Copy postconditions only if destination postconditions is empty
             if (destJavadoc.postconditions.empty())
             {
-                for (Info const& srcInfo: srcInfos)
+                for (Symbol const& srcInfo: srcInfos)
                 {
                     MRDOCS_CHECK_OR_CONTINUE(srcInfo.javadoc);
                     for (doc::Postcondition const& postconditionsEl:
@@ -504,7 +504,7 @@ finalizeMetadataCopies(Info& I)
         };
 
         // Ensure the source metadata is finalized
-        Info const& res = *resRef;
+        Symbol const& res = *resRef;
         if (!res.isOverloads())
         {
             // If it's a single element, we check the element javadoc
@@ -529,17 +529,17 @@ finalizeMetadataCopies(Info& I)
                 }
                 continue;
             }
-            SmallVector<Info const*, 1> srcInfos = { &res };
+            llvm::SmallVector<Symbol const*, 1> srcInfos = { &res };
             copyInfoRangeMetadata(srcInfos);
         }
         else
         {
             auto& OI = res.asOverloads();
-            SmallVector<Info const*, 16> srcInfos;
+            llvm::SmallVector<Symbol const*, 16> srcInfos;
             srcInfos.reserve(OI.Members.size());
             for (auto& memberID: OI.Members)
             {
-                Info* member = corpus_.find(memberID);
+                Symbol* member = corpus_.find(memberID);
                 MRDOCS_CHECK_OR_CONTINUE(member);
                 srcInfos.push_back(member);
             }
@@ -550,7 +550,7 @@ finalizeMetadataCopies(Info& I)
 
 void
 JavadocFinalizer::
-populateFunctionJavadoc(FunctionInfo& I) const
+populateFunctionJavadoc(FunctionSymbol& I) const
 {
     // For special functions (constructors, destructors, ...),
     // we create the javadoc if it does not exist because
@@ -625,7 +625,7 @@ populateFunctionJavadoc(FunctionInfo& I) const
 
 void
 JavadocFinalizer::
-populateOverloadJavadoc(OverloadsInfo& I)
+populateOverloadJavadoc(OverloadsSymbol& I)
 {
     // Create a view all Info members of I.
     // The javadoc for these function should already be as
@@ -636,11 +636,11 @@ populateOverloadJavadoc(OverloadsInfo& I)
             {
                 return corpus_.find(id);
             }) |
-        std::views::filter([](Info const* infoPtr)
+        std::views::filter([](Symbol const* infoPtr)
             {
                 return infoPtr != nullptr && infoPtr->isFunction();
             }) |
-        std::views::transform([](Info const* infoPtr) -> FunctionInfo const&
+        std::views::transform([](Symbol const* infoPtr) -> FunctionSymbol const&
             {
                 return infoPtr->asFunction();
             });
@@ -665,7 +665,7 @@ populateOverloadJavadoc(OverloadsInfo& I)
 
 void
 JavadocFinalizer::
-finalizeJavadoc(Info& I)
+finalizeJavadoc(Symbol& I)
 {
     MRDOCS_CHECK_OR(!finalized_.contains(&I));
     finalized_.emplace(&I);
@@ -692,7 +692,7 @@ finalizeInfoData(InfoTy& I)
     {
         checkExists(I.Parent);
     }
-    if constexpr (InfoParent<InfoTy>)
+    if constexpr (SymbolParent<InfoTy>)
     {
         checkExists(allMembers(I));
     }
@@ -784,8 +784,8 @@ finalizeInfoData(InfoTy& I)
     }
 }
 
-#define INFO(T) template void JavadocFinalizer::finalizeInfoData<T## Info>(T## Info&);
-#include <mrdocs/Metadata/Info/InfoNodes.inc>
+#define INFO(T) template void JavadocFinalizer::finalizeInfoData<T##Symbol>(T## Symbol&);
+#include <mrdocs/Metadata/Symbol/SymbolNodes.inc>
 
 void
 JavadocFinalizer::
@@ -800,7 +800,7 @@ finalize(doc::Reference& ref, bool const emitWarning)
     {
         // KRYSTIAN NOTE: We should provide an overload that
         // returns a non-const reference.
-        auto& res = const_cast<Info&>(*resRef);
+        auto& res = const_cast<Symbol&>(*resRef);
         ref.id = res.id;
     }
     else if (
@@ -903,9 +903,9 @@ processRelates(Javadoc& javadoc)
 
     MRDOCS_CHECK_OR(!javadoc.relates.empty());
 
-    Info const* currentPtr = corpus_.find(current_context_->id);
+    Symbol const* currentPtr = corpus_.find(current_context_->id);
     MRDOCS_ASSERT(currentPtr);
-    Info const& current = *currentPtr;
+    Symbol const& current = *currentPtr;
 
     if (!current.isFunction())
     {
@@ -919,9 +919,9 @@ processRelates(Javadoc& javadoc)
     for (doc::Reference& ref: javadoc.relates)
     {
         finalize(ref, true);
-        Info* relatedPtr = corpus_.find(ref.id);
+        Symbol* relatedPtr = corpus_.find(ref.id);
         MRDOCS_CHECK_OR_CONTINUE(relatedPtr);
-        Info& related = *relatedPtr;
+        Symbol& related = *relatedPtr;
         if (!related.javadoc)
         {
             related.javadoc.emplace();
@@ -1217,16 +1217,16 @@ unindentCodeBlocks(doc::Block& block)
 namespace {
 void
 pushAllDerivedClasses(
-    RecordInfo const* record,
-    SmallVector<Info*, 16>& relatedRecordsOrEnums,
+    RecordSymbol const* record,
+    llvm::SmallVector<Symbol*, 16>& relatedRecordsOrEnums,
     CorpusImpl& corpus)
 {
     for (auto& derivedId : record->Derived)
     {
-        Info* derivedPtr = corpus.find(derivedId);
+        Symbol* derivedPtr = corpus.find(derivedId);
         MRDOCS_CHECK_OR_CONTINUE(derivedPtr);
         MRDOCS_CHECK_OR_CONTINUE(derivedPtr->Extraction == ExtractionMode::Regular);
-        auto derived = dynamic_cast<RecordInfo*>(derivedPtr);
+        auto derived = dynamic_cast<RecordSymbol*>(derivedPtr);
         MRDOCS_CHECK_OR_CONTINUE(derived);
         relatedRecordsOrEnums.push_back(derived);
         // Recursively get derived classes of the derived class
@@ -1243,22 +1243,22 @@ setAutoRelates()
     MRDOCS_CHECK_OR(current_context_->Extraction == ExtractionMode::Regular);
     MRDOCS_CHECK_OR(current_context_->isFunction());
     MRDOCS_CHECK_OR(current_context_->javadoc);
-    auto& I = dynamic_cast<FunctionInfo&>(*current_context_);
+    auto& I = dynamic_cast<FunctionSymbol&>(*current_context_);
     MRDOCS_CHECK_OR(!I.IsRecordMethod);
     auto* parentPtr = corpus_.find(I.Parent);
     MRDOCS_CHECK_OR(parentPtr);
     MRDOCS_CHECK_OR(parentPtr->isNamespace());
 
-    auto toRecordOrEnum = [&](Polymorphic<TypeInfo> const& type) -> Info* {
+    auto toRecordOrEnum = [&](Polymorphic<Type> const& type) -> Symbol* {
         MRDOCS_CHECK_OR(type, nullptr);
         auto& innermost = innermostType(type);
         MRDOCS_CHECK_OR(innermost, nullptr);
         MRDOCS_CHECK_OR(innermost->isNamed(), nullptr);
-        auto const& namedType = dynamic_cast<NamedTypeInfo const&>(*innermost);
+        auto const& namedType = dynamic_cast<NamedType const&>(*innermost);
         MRDOCS_CHECK_OR(namedType.Name, nullptr);
         SymbolID const namedSymbolID = namedType.Name->id;
         MRDOCS_CHECK_OR(namedSymbolID != SymbolID::invalid, nullptr);
-        Info* infoPtr = corpus_.find(namedSymbolID);
+        Symbol* infoPtr = corpus_.find(namedSymbolID);
         MRDOCS_CHECK_OR(infoPtr, nullptr);
         MRDOCS_CHECK_OR(
             infoPtr->isRecord() ||
@@ -1266,7 +1266,7 @@ setAutoRelates()
         return infoPtr;
     };
 
-    SmallVector<Info*, 16> relatedRecordsOrEnums;
+    llvm::SmallVector<Symbol*, 16> relatedRecordsOrEnums;
 
     // 1) Inner type of the first parameter
     [&] {
@@ -1280,7 +1280,7 @@ setAutoRelates()
         // 2) If the type is a reference or a pointer, derived classes
         // of this inner type are also valid related records
         MRDOCS_CHECK_OR(firstParamInfo->isRecord());
-        auto const* firstParamRecord = dynamic_cast<RecordInfo*>(firstParamInfo);
+        auto const* firstParamRecord = dynamic_cast<RecordSymbol*>(firstParamInfo);
         MRDOCS_CHECK_OR(
             I.Params.front().Type->isLValueReference() ||
             I.Params.front().Type->isRValueReference() ||
@@ -1290,11 +1290,11 @@ setAutoRelates()
     }();
 
     // 3) The return type of the function
-    if (auto* returnTypeInfo = toRecordOrEnum(I.ReturnType))
+    if (auto* returnType = toRecordOrEnum(I.ReturnType))
     {
-        if (returnTypeInfo->Extraction == ExtractionMode::Regular)
+        if (returnType->Extraction == ExtractionMode::Regular)
         {
-            relatedRecordsOrEnums.push_back(returnTypeInfo);
+            relatedRecordsOrEnums.push_back(returnType);
         }
         // 4) If the return type is a template specialization,
         // and the template parameters are records, then
@@ -1302,10 +1302,10 @@ setAutoRelates()
         [&] {
             MRDOCS_CHECK_OR(I.ReturnType);
             MRDOCS_CHECK_OR(I.ReturnType->isNamed());
-            auto& NTI = dynamic_cast<NamedTypeInfo &>(*I.ReturnType);
+            auto& NTI = dynamic_cast<NamedType &>(*I.ReturnType);
             MRDOCS_CHECK_OR(NTI.Name);
             MRDOCS_CHECK_OR(NTI.Name->isSpecialization());
-            auto const& NTIS = dynamic_cast<SpecializationNameInfo &>(*NTI.Name);
+            auto const& NTIS = dynamic_cast<SpecializationName &>(*NTI.Name);
             MRDOCS_CHECK_OR(!NTIS.TemplateArgs.empty());
             Polymorphic<TArg> const& firstArg = NTIS.TemplateArgs.front();
             MRDOCS_CHECK_OR(firstArg->isType());
@@ -1328,17 +1328,17 @@ setAutoRelates()
 
     // Insert the records with valid ids into the javadoc relates section
     std::size_t const prevRelatesSize = I.javadoc->relates.size();
-    for (Info const* relatedRecordOrEnumPtr : relatedRecordsOrEnums)
+    for (Symbol const* relatedRecordOrEnumPtr : relatedRecordsOrEnums)
     {
         MRDOCS_CHECK_OR_CONTINUE(relatedRecordOrEnumPtr);
         MRDOCS_ASSERT(I.javadoc);
-        Info const& recordOrEnum = *relatedRecordOrEnumPtr;
+        Symbol const& recordOrEnum = *relatedRecordOrEnumPtr;
         MRDOCS_CHECK_OR_CONTINUE(recordOrEnum.Extraction == ExtractionMode::Regular);
         doc::Reference ref(recordOrEnum.Name);
         ref.id = recordOrEnum.id;
 
         // Check if already listed as friend
-        if (auto* record = dynamic_cast<RecordInfo const*>(relatedRecordOrEnumPtr))
+        if (auto* record = dynamic_cast<RecordSymbol const*>(relatedRecordOrEnumPtr))
         {
             using std::views::transform;
             if (contains(transform(record->Friends, &FriendInfo::id), I.id))
@@ -1493,8 +1493,8 @@ copyDetails(Javadoc& javadoc)
         }
 
         // Ensure the source node is finalized
-        Info const& res = *resRef;
-        finalizeJavadoc(const_cast<Info&>(res));
+        Symbol const& res = *resRef;
+        finalizeJavadoc(const_cast<Symbol&>(res));
 
         // Check if there's any documentation details to copy
         if (!res.javadoc)
@@ -1625,7 +1625,7 @@ finalize(TemplateInfo& info)
 
 void
 JavadocFinalizer::
-finalize(TypeInfo& type)
+finalize(Type& type)
 {
     finalize(innerTypePtr(type));
 
@@ -1650,7 +1650,7 @@ finalize(TypeInfo& type)
 
 void
 JavadocFinalizer::
-finalize(NameInfo& name)
+finalize(Name& name)
 {
     visit(name, [this]<typename Ty>(Ty& T)
     {
@@ -1838,13 +1838,13 @@ JavadocFinalizer::warnUndocumented()
     MRDOCS_CHECK_OR(corpus_.config->warnIfUndocumented);
     for (auto& undocI: corpus_.undocumented_)
     {
-        if (Info const* I = corpus_.find(undocI.id))
+        if (Symbol const* I = corpus_.find(undocI.id))
         {
             MRDOCS_CHECK_OR(
                 !I->javadoc || I->Extraction == ExtractionMode::Regular);
         }
-        bool const prefer_definition = undocI.kind == InfoKind::Record
-                                       || undocI.kind == InfoKind::Enum;
+        bool const prefer_definition = undocI.kind == SymbolKind::Record
+                                       || undocI.kind == SymbolKind::Enum;
         this->warn(
             *getPrimaryLocation(undocI.Loc, prefer_definition),
             "{}: Symbol is undocumented",
@@ -1862,13 +1862,13 @@ warnDocErrors()
     {
         MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
         MRDOCS_CHECK_OR_CONTINUE(I->isFunction());
-        warnParamErrors(dynamic_cast<FunctionInfo const&>(*I));
+        warnParamErrors(dynamic_cast<FunctionSymbol const&>(*I));
     }
 }
 
 void
 JavadocFinalizer::
-warnParamErrors(FunctionInfo const& I)
+warnParamErrors(FunctionSymbol const& I)
 {
     MRDOCS_CHECK_OR(I.javadoc);
 
@@ -1918,13 +1918,13 @@ warnNoParamDocs()
         MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
         MRDOCS_CHECK_OR_CONTINUE(I->isFunction());
         MRDOCS_CHECK_OR_CONTINUE(I->javadoc);
-        warnNoParamDocs(dynamic_cast<FunctionInfo const&>(*I));
+        warnNoParamDocs(dynamic_cast<FunctionSymbol const&>(*I));
     }
 }
 
 void
 JavadocFinalizer::
-warnNoParamDocs(FunctionInfo const& I)
+warnNoParamDocs(FunctionSymbol const& I)
 {
     MRDOCS_CHECK_OR(!I.IsDeleted);
     // Check for function parameters that are not documented in javadoc
@@ -1950,12 +1950,12 @@ warnNoParamDocs(FunctionInfo const& I)
     if (I.javadoc->returns.empty())
     {
         MRDOCS_ASSERT(!I.ReturnType.valueless_after_move());
-        auto isVoid = [](TypeInfo const& returnType) -> bool
+        auto isVoid = [](Type const& returnType) -> bool
         {
             if (returnType.isNamed())
             {
-                auto const& namedReturnType = dynamic_cast<NamedTypeInfo const&>(returnType);
-                return namedReturnType.Name->Name == "void";
+                auto const& namedReturnType = dynamic_cast<NamedType const&>(returnType);
+                return namedReturnType.Name->Identifier == "void";
             }
             return false;
         };
@@ -1996,13 +1996,13 @@ warnUnnamedParams()
         MRDOCS_CHECK_OR_CONTINUE(I->isFunction());
         MRDOCS_CHECK_OR_CONTINUE(I->Extraction == ExtractionMode::Regular);
         MRDOCS_CHECK_OR_CONTINUE(I->javadoc);
-        warnUnnamedParams(dynamic_cast<FunctionInfo const&>(*I));
+        warnUnnamedParams(dynamic_cast<FunctionSymbol const&>(*I));
     }
 }
 
 void
 JavadocFinalizer::
-warnUnnamedParams(FunctionInfo const& I)
+warnUnnamedParams(FunctionSymbol const& I)
 {
     auto orderSuffix = [](std::size_t const i) -> std::string
     {
@@ -2035,4 +2035,4 @@ warnUnnamedParams(FunctionInfo const& I)
     }
 }
 
-} // clang::mrdocs
+} // mrdocs

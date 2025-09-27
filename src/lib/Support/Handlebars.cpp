@@ -21,7 +21,7 @@
 #include <unordered_set>
 #include <utility>
 
-namespace clang {
+
 namespace mrdocs {
 
 // ==============================================================
@@ -6987,5 +6987,5 @@ unregisterHelper(std::string_view name) {
 }
 
 } // mrdocs
-} // clang
+
 

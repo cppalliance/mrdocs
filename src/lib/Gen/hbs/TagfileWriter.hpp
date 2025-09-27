@@ -19,7 +19,7 @@
 #include <fstream>
 #include <string>
 
-namespace clang {
+
 namespace mrdocs {
 
 struct SimpleWriterTag {}; //Tag dispatch for simple writers
@@ -116,14 +116,14 @@ private:
     // Write
     // ==================================================
     void
-    writeNamespace(NamespaceInfo const&);
+    writeNamespace(NamespaceSymbol const&);
 
     template<class T>
     void
     writeClassLike(T const& I);
 
     void
-    writeFunctionMember(FunctionInfo const& I);
+    writeFunctionMember(FunctionSymbol const& I);
 
     // ==================================================
     // URLs
@@ -139,6 +139,6 @@ private:
 };
 
 } // mrdocs
-} // clang
+
 
 #endif // MRDOCS_LIB_GEN_HBS_TAGFILEWRITER_HPP

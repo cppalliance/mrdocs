@@ -14,16 +14,16 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
-#include <mrdocs/Metadata/Info/SymbolID.hpp>
+#include <mrdocs/Metadata/Symbol/SymbolID.hpp>
 #include <mrdocs/Metadata/Type/TypeKind.hpp>
 #include <vector>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /* Forward declarations
  */
-#define INFO(Type) struct Type##TypeInfo;
-#include <mrdocs/Metadata/Type/TypeInfoNodes.inc>
+#define INFO(TypeKind) struct TypeKind##Type;
+#include <mrdocs/Metadata/Type/TypeNodes.inc>
 
 /** A possibly qualified type.
 
@@ -34,9 +34,8 @@ namespace clang::mrdocs {
     of type. Derived classes are used to store
     the type information according to the kind.
  */
-struct TypeInfo
-{
-    /** The kind of TypeInfo this is
+struct Type {
+    /** The kind of Type this is
     */
     TypeKind Kind;
 
@@ -69,14 +68,14 @@ struct TypeInfo
     SymbolID
     namedSymbol() const noexcept;
 
-    auto operator<=>(TypeInfo const&) const = default;
+    auto operator<=>(Type const&) const = default;
 
-    constexpr TypeInfo const& asType() const noexcept
+    constexpr Type const& asType() const noexcept
     {
         return *this;
     }
 
-    constexpr TypeInfo& asType() noexcept
+    constexpr Type& asType() noexcept
     {
         return *this;
     }
@@ -84,43 +83,42 @@ struct TypeInfo
     #define INFO(Type) constexpr bool is##Type() const noexcept { \
         return Kind == TypeKind::Type; \
     }
-#include <mrdocs/Metadata/Type/TypeInfoNodes.inc>
+#include <mrdocs/Metadata/Type/TypeNodes.inc>
 
-    #define INFO(Type) \
-    constexpr Type##TypeInfo const& as##Type() const noexcept { \
-        if (Kind == TypeKind::Type) \
-            return reinterpret_cast<Type##TypeInfo const&>(*this); \
+#define INFO(TypeKindName) \
+    constexpr TypeKindName##Type const& as##TypeKindName() const noexcept { \
+        if (Kind == TypeKind::TypeKindName) \
+            return reinterpret_cast<TypeKindName##Type const&>(*this); \
         MRDOCS_UNREACHABLE(); \
     }
-#include <mrdocs/Metadata/Type/TypeInfoNodes.inc>
+#include <mrdocs/Metadata/Type/TypeNodes.inc>
 
-#define INFO(Type) \
-    constexpr Type##TypeInfo & as##Type() noexcept { \
-        if (Kind == TypeKind::Type) \
-            return reinterpret_cast<Type##TypeInfo&>(*this); \
+#define INFO(TypeKindName) \
+    constexpr TypeKindName##Type & as##TypeKindName() noexcept { \
+        if (Kind == TypeKind::TypeKindName) \
+            return reinterpret_cast<TypeKindName##Type&>(*this); \
         MRDOCS_UNREACHABLE(); \
     }
-#include <mrdocs/Metadata/Type/TypeInfoNodes.inc>
+#include <mrdocs/Metadata/Type/TypeNodes.inc>
 
-#define INFO(Type) \
-    constexpr Type##TypeInfo const* as##Type##Ptr() const noexcept { \
-        if (Kind == TypeKind::Type) { return reinterpret_cast<Type##TypeInfo const*>(this); } \
+#define INFO(TypeKindName) \
+    constexpr TypeKindName##Type const* as##TypeKindName##Ptr() const noexcept { \
+        if (Kind == TypeKind::TypeKindName) { return reinterpret_cast<TypeKindName##Type const*>(this); } \
         return nullptr; \
     }
-#include <mrdocs/Metadata/Type/TypeInfoNodes.inc>
+#include <mrdocs/Metadata/Type/TypeNodes.inc>
 
-#define INFO(Type) \
-    constexpr Type##TypeInfo * as##Type##Ptr() noexcept { \
-        if (Kind == TypeKind::Type) { return reinterpret_cast<Type##TypeInfo *>(this); } \
+#define INFO(TypeKindName) \
+    constexpr TypeKindName##Type * as##TypeKindName##Ptr() noexcept { \
+        if (Kind == TypeKind::TypeKindName) { return reinterpret_cast<TypeKindName##Type *>(this); } \
         return nullptr; \
     }
-#include <mrdocs/Metadata/Type/TypeInfoNodes.inc>
+#include <mrdocs/Metadata/Type/TypeNodes.inc>
 
 protected:
-    constexpr virtual ~TypeInfo() = default;
+    constexpr virtual ~Type() = default;
 
-    constexpr
-    TypeInfo(
+    constexpr Type(
         TypeKind kind) noexcept
         : Kind(kind)
     {
@@ -132,12 +130,11 @@ void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
-    TypeInfo const& I,
+    Type const& I,
     DomCorpus const* domCorpus);
 
 template<TypeKind K>
-struct TypeInfoCommonBase : TypeInfo
-{
+struct TypeCommonBase : Type {
     static constexpr TypeKind kind_id = K;
 
     static constexpr bool isNamed()           noexcept { return K == TypeKind::Named; }
@@ -150,16 +147,15 @@ struct TypeInfoCommonBase : TypeInfo
     static constexpr bool isArray()           noexcept { return K == TypeKind::Array; }
     static constexpr bool isFunction()        noexcept { return K == TypeKind::Function; }
 
-    auto operator<=>(TypeInfoCommonBase const&) const = default;
+    auto operator<=>(TypeCommonBase const&) const = default;
 
 protected:
-    constexpr
-    TypeInfoCommonBase() noexcept
-        : TypeInfo(K)
+    constexpr TypeCommonBase() noexcept
+        : Type(K)
     {
     }
 };
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

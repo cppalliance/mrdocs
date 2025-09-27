@@ -11,7 +11,7 @@
 #ifndef MRDOCS_API_DOM_ARRAY_IPP
 #define MRDOCS_API_DOM_ARRAY_IPP
 
-namespace clang {
+
 namespace mrdocs {
 namespace dom {
 
@@ -226,6 +226,6 @@ Array operator+(Array const& lhs, Array const& rhs)
 
 } // dom
 } // mrdocs
-} // clang
+
 
 #endif

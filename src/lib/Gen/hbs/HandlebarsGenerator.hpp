@@ -18,7 +18,7 @@
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <utility>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 class OutputRef;
 
@@ -61,6 +61,6 @@ public:
 
 } // hbs
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

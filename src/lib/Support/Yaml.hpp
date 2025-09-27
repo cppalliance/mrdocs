@@ -15,7 +15,7 @@
 #include <mrdocs/Platform.hpp>
 #include <llvm/Support/YAMLTraits.h>
 
-namespace clang {
+
 namespace mrdocs {
 
 class MRDOCS_DECL
@@ -30,6 +30,6 @@ public:
 };
 
 } // mrdocs
-} // clang
+
 
 #endif

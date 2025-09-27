@@ -11,7 +11,7 @@
 
 #include <mrdocs/Metadata/Expression.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 void
 merge(ExprInfo& I, ExprInfo&& Other)
@@ -22,4 +22,4 @@ merge(ExprInfo& I, ExprInfo&& Other)
     }
 }
 
-} // clang::mrdocs
+} // mrdocs

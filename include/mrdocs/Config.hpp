@@ -31,7 +31,7 @@ struct MappingTraits;
 
 } // llvm::yaml
 
-namespace clang {
+
 namespace mrdocs {
 
 class ThreadPool;
@@ -223,6 +223,6 @@ public:
 };
 
 } // mrdocs
-} // clang
+
 
 #endif // MRDOCS_API_CONFIG_HPP

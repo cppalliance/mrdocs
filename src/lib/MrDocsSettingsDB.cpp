@@ -12,7 +12,7 @@
 #include "MrDocsSettingsDB.hpp"
 #include <mrdocs/Support/Path.hpp>
 
-namespace clang {
+
 namespace mrdocs {
 
 MrDocsSettingsDB::MrDocsSettingsDB(ConfigImpl const& config)
@@ -79,10 +79,10 @@ MrDocsSettingsDB::MrDocsSettingsDB(ConfigImpl const& config)
     }
 }
 
-std::vector<tooling::CompileCommand>
+std::vector<clang::tooling::CompileCommand>
 MrDocsSettingsDB::getCompileCommands(llvm::StringRef FilePath) const
 {
-    std::vector<tooling::CompileCommand> result;
+    std::vector<clang::tooling::CompileCommand> result;
     for (auto const& cmd: cc_)
     {
         if (cmd.Filename == FilePath)
@@ -105,11 +105,10 @@ MrDocsSettingsDB::getAllFiles() const
     return result;
 }
 
-std::vector<tooling::CompileCommand>
+std::vector<clang::tooling::CompileCommand>
 MrDocsSettingsDB::getAllCompileCommands() const
 {
     return cc_;
 }
 
 } // namespace mrdocs
-} // namespace clang

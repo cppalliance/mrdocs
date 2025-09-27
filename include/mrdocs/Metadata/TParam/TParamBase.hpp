@@ -20,7 +20,7 @@
 #include <mrdocs/Metadata/TParam/TParamKind.hpp>
 #include <string>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 class DomCorpus;
 
@@ -65,7 +65,7 @@ struct TParam
     }
 #include <mrdocs/Metadata/TParam/TParamInfoNodes.inc>
 
-    #define INFO(Type) \
+#define INFO(Type) \
     constexpr Type##TParam const& as##Type() const noexcept { \
         if (Kind == TParamKind::Type) \
             return reinterpret_cast<Type##TParam const&>(*this); \
@@ -134,6 +134,6 @@ protected:
     }
 };
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

@@ -18,7 +18,7 @@
 #include <llvm/ADT/SmallVector.h>
 #include <string_view>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 struct TArg;
 
@@ -36,7 +36,7 @@ struct ParsedRefComponent {
 
     // If not empty, this is a conversion operator
     // Only the last component can be a conversion operator
-    Optional<Polymorphic<TypeInfo>> ConversionType = std::nullopt;
+    Optional<Polymorphic<Type>> ConversionType = std::nullopt;
 
     constexpr
     bool
@@ -65,7 +65,7 @@ struct ParsedRef {
 
     // The following are populated when the last element is a function
     bool HasFunctionParameters = false;
-    llvm::SmallVector<Polymorphic<TypeInfo>, 8> FunctionParameters;
+    llvm::SmallVector<Polymorphic<Type>, 8> FunctionParameters;
     bool IsVariadic = false;
     bool IsExplicitObjectMemberFunction = false;
     ReferenceKind Kind = ReferenceKind::None;
@@ -80,6 +80,6 @@ parse(
     char const* last,
     ParsedRef& value);
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif // MRDOCS_LIB_AST_PARSEREF_HPP

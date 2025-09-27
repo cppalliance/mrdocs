@@ -10,19 +10,19 @@
 //
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Info/NamespaceAlias.hpp>
+#include <mrdocs/Metadata/Symbol/NamespaceAlias.hpp>
 #include <llvm/ADT/STLExtras.h>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 void
-merge(NamespaceAliasInfo& I, NamespaceAliasInfo&& Other)
+merge(NamespaceAliasSymbol& I, NamespaceAliasSymbol&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
     merge(I.asInfo(), std::move(Other.asInfo()));
-    if (I.AliasedSymbol.Name.empty())
+    if (I.AliasedSymbol.Identifier.empty())
     {
-        I.AliasedSymbol.Name = std::move(Other.AliasedSymbol.Name);
+        I.AliasedSymbol.Identifier = std::move(Other.AliasedSymbol.Identifier);
     }
     if (!I.AliasedSymbol.id)
     {
@@ -30,5 +30,5 @@ merge(NamespaceAliasInfo& I, NamespaceAliasInfo&& Other)
     }
 }
 
-} // clang::mrdocs
+} // mrdocs
 

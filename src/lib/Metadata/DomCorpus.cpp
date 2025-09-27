@@ -21,7 +21,7 @@
 #include <mutex>
 #include <variant>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 class DomCorpus::Impl
 {
@@ -46,7 +46,7 @@ public:
     }
 
     dom::Object
-    create(Info const& I) const
+    create(Symbol const& I) const
     {
         return domCorpus_.construct(I);
     }
@@ -56,7 +56,7 @@ public:
     {
         // VFALCO Hack to deal with symbol IDs
         // being emitted without the corresponding data.
-        Info const* I = corpus_.find(id);
+        Symbol const* I = corpus_.find(id);
         MRDOCS_CHECK_OR(I, {});
         return create(*I);
     }
@@ -82,7 +82,7 @@ getCorpus() const
 
 dom::Object
 DomCorpus::
-construct(Info const& I) const
+construct(Symbol const& I) const
 {
     return visit(I, [this]<class T>(T const& U) -> dom::Object
     {
@@ -110,7 +110,7 @@ getJavadoc(Javadoc const&) const
 }
 
 dom::Array
-getParents(DomCorpus const& C, Info const& I)
+getParents(DomCorpus const& C, Symbol const& I)
 {
     // A convenient list to iterate over the parents
     // with resorting to partial template recursion
@@ -119,10 +119,10 @@ getParents(DomCorpus const& C, Info const& I)
     dom::Array res;
     for (SymbolID const& id : pIds)
     {
-        Info const& PI = corpus.get(id);
+        Symbol const& PI = corpus.get(id);
         res.push_back(C.construct(PI));
     }
     return res;
 }
 
-} // clang::mrdocs
+} // mrdocs

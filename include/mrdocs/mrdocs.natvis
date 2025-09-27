@@ -12,53 +12,53 @@
     </Type>
 
 <!-- Info Types -->
-    <Type Name="clang::mrdocs::Info" Inheritable="false" IncludeView="noinherit">
+    <Type Name="mrdocs::Symbol" Inheritable="false" IncludeView="noinherit">
 	</Type>
 
-	<Type Name="clang::mrdocs::InfoCommonBase&lt;*&gt;" Inheritable="false">
+	<Type Name="mrdocs::SymbolCommonBase&lt;*&gt;" Inheritable="false">
 		<Expand>
-			<ExpandedItem>(Info*)this,view(noinherit)nd</ExpandedItem>
+			<ExpandedItem>(Symbol*)this,view(noinherit)nd</ExpandedItem>
 		</Expand>
 	</Type>
 
-    <Type Name="clang::mrdocs::Info" Inheritable="false" ExcludeView="noinherit">
-		<AlternativeType Name="clang::mrdocs::NamespaceInfo"/>
-		<AlternativeType Name="clang::mrdocs::RecordInfo"/>
-		<AlternativeType Name="clang::mrdocs::FunctionInfo"/>
-		<AlternativeType Name="clang::mrdocs::OverloadsInfo"/>
-		<AlternativeType Name="clang::mrdocs::EnumInfo"/>
-		<AlternativeType Name="clang::mrdocs::TypedefInfo"/>
-		<AlternativeType Name="clang::mrdocs::VariableInfo"/>
-		<AlternativeType Name="clang::mrdocs::FieldInfo"/>
-		<AlternativeType Name="clang::mrdocs::SpecializationInfo"/>
-		<AlternativeType Name="clang::mrdocs::FriendInfo"/>
-		<AlternativeType Name="clang::mrdocs::EnumConstantInfo"/>
-		<AlternativeType Name="clang::mrdocs::GuideInfo"/>
-		<AlternativeType Name="clang::mrdocs::NamespaceAliasInfo"/>
-		<AlternativeType Name="clang::mrdocs::UsingInfo"/>
+    <Type Name="mrdocs::Symbol" Inheritable="false" ExcludeView="noinherit">
+		<AlternativeType Name="mrdocs::NamespaceSymbol"/>
+		<AlternativeType Name="mrdocs::RecordSymbol"/>
+		<AlternativeType Name="mrdocs::FunctionSymbol"/>
+		<AlternativeType Name="mrdocs::OverloadsSymbol"/>
+		<AlternativeType Name="mrdocs::EnumSymbol"/>
+		<AlternativeType Name="mrdocs::TypedefSymbol"/>
+		<AlternativeType Name="mrdocs::VariableSymbol"/>
+		<AlternativeType Name="mrdocs::FieldInfo"/>
+		<AlternativeType Name="mrdocs::SpecializationInfo"/>
+		<AlternativeType Name="mrdocs::FriendInfo"/>
+		<AlternativeType Name="mrdocs::EnumConstantSymbol"/>
+		<AlternativeType Name="mrdocs::GuideSymbol"/>
+		<AlternativeType Name="mrdocs::NamespaceAliasSymbol"/>
+		<AlternativeType Name="mrdocs::UsingSymbol"/>
 
 		<DisplayString>{Kind,en} {Name} (ID = {id})</DisplayString>
 
 		<Expand HideRawView="true">
-			<ExpandedItem ExcludeView="noinherit">(Info*)this,view(noinherit)nd</ExpandedItem>
-			<ExpandedItem Condition="Kind == InfoKind::Namespace">(NamespaceInfo*)this,view(noinherit)</ExpandedItem>
-		    <ExpandedItem Condition="Kind == InfoKind::Record">(RecordInfo*)this,view(noinherit)</ExpandedItem>
-		    <ExpandedItem Condition="Kind == InfoKind::Function">*(FunctionInfo*)this,view(noinherit)</ExpandedItem>
-		    <ExpandedItem Condition="Kind == InfoKind::Overloads">*(OverloadsInfo*)this,view(noinherit)</ExpandedItem>
-		    <ExpandedItem Condition="Kind == InfoKind::Enum">(EnumInfo*)this,view(noinherit)</ExpandedItem>
-		    <ExpandedItem Condition="Kind == InfoKind::Typedef">(TypedefInfo*)this,view(noinherit)</ExpandedItem>
-		    <ExpandedItem Condition="Kind == InfoKind::Variable">(VariableInfo*)this,view(noinherit)</ExpandedItem>
-		    <ExpandedItem Condition="Kind == InfoKind::Field">(FieldInfo*)this,view(noinherit)</ExpandedItem>
-		    <ExpandedItem Condition="Kind == InfoKind::Specialization">(SpecializationInfo*)this,view(noinherit)</ExpandedItem>
-		    <ExpandedItem Condition="Kind == InfoKind::Friend">(FriendInfo*)this,view(noinherit)</ExpandedItem>
-		    <ExpandedItem Condition="Kind == InfoKind::Enumerator">(EnumConstantInfo*)this,view(noinherit)</ExpandedItem>
-		    <ExpandedItem Condition="Kind == InfoKind::Guide">(GuideInfo*)this,view(noinherit)</ExpandedItem>
-		    <ExpandedItem Condition="Kind == InfoKind::NamespaceAlias">(NamespaceAliasInfo*)this,view(noinherit)</ExpandedItem>
-		    <ExpandedItem Condition="Kind == InfoKind::Using">(UsingInfo*)this,view(noinherit)</ExpandedItem>
+			<ExpandedItem ExcludeView="noinherit">(Symbol*)this,view(noinherit)nd</ExpandedItem>
+			<ExpandedItem Condition="Kind == SymbolKind::Namespace">(NamespaceSymbol*)this,view(noinherit)</ExpandedItem>
+		    <ExpandedItem Condition="Kind == SymbolKind::Record">(RecordSymbol*)this,view(noinherit)</ExpandedItem>
+		    <ExpandedItem Condition="Kind == SymbolKind::Function">*(FunctionSymbol*)this,view(noinherit)</ExpandedItem>
+		    <ExpandedItem Condition="Kind == SymbolKind::Overloads">*(OverloadsSymbol*)this,view(noinherit)</ExpandedItem>
+		    <ExpandedItem Condition="Kind == SymbolKind::Enum">(EnumSymbol*)this,view(noinherit)</ExpandedItem>
+		    <ExpandedItem Condition="Kind == SymbolKind::Typedef">(TypedefSymbol*)this,view(noinherit)</ExpandedItem>
+		    <ExpandedItem Condition="Kind == SymbolKind::Variable">(VariableSymbol*)this,view(noinherit)</ExpandedItem>
+		    <ExpandedItem Condition="Kind == SymbolKind::Field">(FieldInfo*)this,view(noinherit)</ExpandedItem>
+		    <ExpandedItem Condition="Kind == SymbolKind::Specialization">(SpecializationInfo*)this,view(noinherit)</ExpandedItem>
+		    <ExpandedItem Condition="Kind == SymbolKind::Friend">(FriendInfo*)this,view(noinherit)</ExpandedItem>
+		    <ExpandedItem Condition="Kind == SymbolKind::Enumerator">(EnumConstantSymbol*)this,view(noinherit)</ExpandedItem>
+		    <ExpandedItem Condition="Kind == SymbolKind::Guide">(GuideSymbol*)this,view(noinherit)</ExpandedItem>
+		    <ExpandedItem Condition="Kind == SymbolKind::NamespaceAlias">(NamespaceAliasSymbol*)this,view(noinherit)</ExpandedItem>
+		    <ExpandedItem Condition="Kind == SymbolKind::Using">(UsingSymbol*)this,view(noinherit)</ExpandedItem>
 		</Expand>
 	</Type>
 
-    <Type Name="clang::mrdocs::SymbolID">
+    <Type Name="mrdocs::SymbolID">
         <DisplayString Condition="strncmp((char*)this, (char*)&amp;SymbolID::invalid, 20) == 0">empty SymbolID</DisplayString>
         <DisplayString Condition="strncmp((char*)this, (char*)&amp;SymbolID::global, 20) == 0">global SymbolID</DisplayString>
         <DisplayString>{data_[0],nvoXb}{data_[1],nvoXb}{data_[2],nvoXb}{data_[3],nvoXb}{data_[4],nvoXb}{data_[5],nvoXb}{data_[6],nvoXb}{data_[7],nvoXb}{data_[8],nvoXb}{data_[9],nvoXb}{data_[10],nvoXb}{data_[11],nvoXb}{data_[12],nvoXb}{data_[13],nvoXb}{data_[14],nvoXb}{data_[15],nvoXb}{data_[16],nvoXb}{data_[17],nvoXb}{data_[18],nvoXb}{data_[19],nvoXb}</DisplayString>
@@ -66,7 +66,7 @@
         </Expand>
     </Type>
 
-    <Type Name="clang::mrdocs::Optional&lt;clang::mrdocs::SymbolID, *&gt;">
+    <Type Name="mrdocs::Optional&lt;mrdocs::SymbolID, *&gt;">
         <DisplayString Condition="strncmp((char*)t_.data_, (char*)&amp;SymbolID::invalid, 20) != 0">{t_}</DisplayString>
         <DisplayString>empty</DisplayString>
         <Expand>
@@ -75,11 +75,11 @@
 
 <!-- Error Types -->
 
-    <Type Name="clang::mrdocs::Error">
+    <Type Name="mrdocs::Error">
         <DisplayString>{reason_}</DisplayString>
     </Type>
 
-    <Type Name="clang::mrdocs::Expected&lt;*, *&gt;">
+    <Type Name="mrdocs::Expected&lt;*, *&gt;">
         <DisplayString Condition="has_value_">{val_}</DisplayString>
         <DisplayString Condition="! has_value_">{unex_}</DisplayString>
 
@@ -91,7 +91,7 @@
 
     <!-- Dom Types -->
 
-    <Type Name="clang::mrdocs::dom::String">
+    <Type Name="mrdocs::dom::String">
         <DisplayString Condition="psz_!=0">{psz_,s}</DisplayString>
         <DisplayString Condition="(((char*)(impl_+1))[0]&amp;0x80)!=0">{((char*)(impl_+1))+1,s}</DisplayString>
         <DisplayString Condition="(((char*)(impl_+1))[1]&amp;0x80)!=0">{((char*)(impl_+1))+2,s}</DisplayString>
@@ -106,11 +106,11 @@
         <DisplayString>[ doc::String ]</DisplayString>
     </Type>
 
-    <Type Name="clang::mrdocs::dom::Array">
+    <Type Name="mrdocs::dom::Array">
         <DisplayString>[ dom::Array ]</DisplayString>
     </Type>
 
-    <Type Name="clang::mrdocs::dom::Object">
+    <Type Name="mrdocs::dom::Object">
         <Intrinsic Name="as_default" Expression="dynamic_cast&lt;DefaultObjectImpl*&gt;(impl_._Ptr)"/>
         <Intrinsic Name="as_overlay" Expression="dynamic_cast&lt;OverlayObjectImpl*&gt;(impl_._Ptr)"/>
         <Intrinsic Name="as_hbs_helper" Expression="dynamic_cast&lt;HbsHelperObjectImpl*&gt;(impl_._Ptr)"/>
@@ -128,31 +128,31 @@
         </Expand>
     </Type>
 
-    <Type Name="clang::mrdocs::dom::Value">
-        <DisplayString Condition="kind_==clang::mrdocs::dom::Kind::Undefined">undefined</DisplayString>
-        <DisplayString Condition="kind_==clang::mrdocs::dom::Kind::Null">null</DisplayString>
-        <DisplayString Condition="kind_==clang::mrdocs::dom::Kind::Boolean">{b_}</DisplayString>
-        <DisplayString Condition="kind_==clang::mrdocs::dom::Kind::Integer">{i_}</DisplayString>
-        <DisplayString Condition="kind_==clang::mrdocs::dom::Kind::String">{str_}</DisplayString>
-        <DisplayString Condition="kind_==clang::mrdocs::dom::Kind::SafeString">{str_}</DisplayString>
-        <DisplayString Condition="kind_==clang::mrdocs::dom::Kind::Array">{arr_}</DisplayString>
-        <DisplayString Condition="kind_==clang::mrdocs::dom::Kind::Object">{obj_}</DisplayString>
-        <DisplayString Condition="kind_==clang::mrdocs::dom::Kind::Function">{fn_}</DisplayString>
+    <Type Name="mrdocs::dom::Value">
+        <DisplayString Condition="kind_==mrdocs::dom::Kind::Undefined">undefined</DisplayString>
+        <DisplayString Condition="kind_==mrdocs::dom::Kind::Null">null</DisplayString>
+        <DisplayString Condition="kind_==mrdocs::dom::Kind::Boolean">{b_}</DisplayString>
+        <DisplayString Condition="kind_==mrdocs::dom::Kind::Integer">{i_}</DisplayString>
+        <DisplayString Condition="kind_==mrdocs::dom::Kind::String">{str_}</DisplayString>
+        <DisplayString Condition="kind_==mrdocs::dom::Kind::SafeString">{str_}</DisplayString>
+        <DisplayString Condition="kind_==mrdocs::dom::Kind::Array">{arr_}</DisplayString>
+        <DisplayString Condition="kind_==mrdocs::dom::Kind::Object">{obj_}</DisplayString>
+        <DisplayString Condition="kind_==mrdocs::dom::Kind::Function">{fn_}</DisplayString>
         <DisplayString>invalid</DisplayString>
 
         <Expand>
-            <Item Condition="kind_==clang::mrdocs::dom::Kind::Boolean" Name="Value">b_</Item>
-            <Item Condition="kind_==clang::mrdocs::dom::Kind::Integer" Name="Value">i_</Item>
-            <ExpandedItem Condition="kind_==clang::mrdocs::dom::Kind::String">str_</ExpandedItem>
-            <ExpandedItem Condition="kind_==clang::mrdocs::dom::Kind::SafeString">str_</ExpandedItem>
-            <ExpandedItem Condition="kind_==clang::mrdocs::dom::Kind::Array">arr_</ExpandedItem>
-            <ExpandedItem Condition="kind_==clang::mrdocs::dom::Kind::Object">obj_</ExpandedItem>
-            <ExpandedItem Condition="kind_==clang::mrdocs::dom::Kind::Function">fn_</ExpandedItem>
+            <Item Condition="kind_==mrdocs::dom::Kind::Boolean" Name="Value">b_</Item>
+            <Item Condition="kind_==mrdocs::dom::Kind::Integer" Name="Value">i_</Item>
+            <ExpandedItem Condition="kind_==mrdocs::dom::Kind::String">str_</ExpandedItem>
+            <ExpandedItem Condition="kind_==mrdocs::dom::Kind::SafeString">str_</ExpandedItem>
+            <ExpandedItem Condition="kind_==mrdocs::dom::Kind::Array">arr_</ExpandedItem>
+            <ExpandedItem Condition="kind_==mrdocs::dom::Kind::Object">obj_</ExpandedItem>
+            <ExpandedItem Condition="kind_==mrdocs::dom::Kind::Function">fn_</ExpandedItem>
         </Expand>
     </Type>
 
 <!-- Javadocs -->
-    <Type Name="std::vector&lt;std::unique_ptr&lt;clang::mrdocs::doc::Block,std::default_delete&lt;clang::mrdocs::doc::Block&gt;&gt;,std::allocator&lt;std::unique_ptr&lt;clang::mrdocs::doc::Block,std::default_delete&lt;clang::mrdocs::doc::Block&gt;&gt;&gt;&gt;">
+    <Type Name="std::vector&lt;std::unique_ptr&lt;mrdocs::doc::Block,std::default_delete&lt;mrdocs::doc::Block&gt;&gt;,std::allocator&lt;std::unique_ptr&lt;mrdocs::doc::Block,std::default_delete&lt;mrdocs::doc::Block&gt;&gt;&gt;&gt;">
         <DisplayString>doc::Block[{_Mypair._Myval2._Myend-_Mypair._Myval2._Myfirst}]</DisplayString>
         <Expand>
             <ArrayItems>
@@ -161,7 +161,7 @@
             </ArrayItems>
         </Expand>
     </Type>
-    <Type Name="std::vector&lt;std::unique_ptr&lt;clang::mrdocs::doc::Text,std::default_delete&lt;clang::mrdocs::doc::Text&gt;&gt;,std::allocator&lt;std::unique_ptr&lt;clang::mrdocs::doc::Text,std::default_delete&lt;clang::mrdocs::doc::Text&gt;&gt;&gt;&gt;">
+    <Type Name="std::vector&lt;std::unique_ptr&lt;mrdocs::doc::Text,std::default_delete&lt;mrdocs::doc::Text&gt;&gt;,std::allocator&lt;std::unique_ptr&lt;mrdocs::doc::Text,std::default_delete&lt;mrdocs::doc::Text&gt;&gt;&gt;&gt;">
         <DisplayString>doc::Block[{_Mypair._Myval2._Myend-_Mypair._Myval2._Myfirst}]</DisplayString>
         <Expand>
             <ArrayItems>
@@ -171,9 +171,9 @@
         </Expand>
     </Type>
 
-    <Type Name="clang::mrdocs::doc::Block" Inheritable="true">
+    <Type Name="mrdocs::doc::Block" Inheritable="true">
         <DisplayString Condition="kind==Kind::admonition">
-            [ Admonition {(*(clang::mrdocs::doc::Admonition*)this).admonish} ]</DisplayString>
+            [ Admonition {(*(mrdocs::doc::Admonition*)this).admonish} ]</DisplayString>
         <DisplayString Condition="kind==Kind::brief">[ Brief ]</DisplayString>
         <DisplayString Condition="kind==Kind::code">[ Code] </DisplayString>
         <DisplayString Condition="kind==Kind::heading">[ doc::Heading ]</DisplayString>
@@ -188,7 +188,7 @@
         </Expand>
     </Type>
 
-    <Type Name="clang::mrdocs::doc::Text" Inheritable="true">
+    <Type Name="mrdocs::doc::Text" Inheritable="true">
         <DisplayString Condition="kind==Kind::styled">[ doc::Styled ]</DisplayString>
         <DisplayString Condition="kind==Kind::link">[ doc::Link ]</DisplayString>
         <DisplayString>{string}</DisplayString>
@@ -198,15 +198,15 @@
 
     <!-- <mrdocs/Support/JavaScript.hpp> -->
 
-    <Type Name="clang::mrdocs::js::Access">
+    <Type Name="mrdocs::js::Access">
         <DisplayString>[ js::Access ]</DisplayString>
     </Type>
 
-    <Type Name="clang::mrdocs::js::Scope">
+    <Type Name="mrdocs::js::Scope">
         <DisplayString>[ js::Scope ]</DisplayString>
     </Type>
 
-    <Type Name="clang::mrdocs::js::Param">
+    <Type Name="mrdocs::js::Param">
         <DisplayString Condition="kind_==Param::Kind::Undefined">undefined</DisplayString>
         <DisplayString Condition="kind_==Param::Kind::Null">null</DisplayString>
         <DisplayString Condition="kind_==Param::Kind::Boolean">{b_}</DisplayString>
@@ -219,16 +219,16 @@
         <DisplayString Condition="kind_==Param::Kind::DomObject">{obj_}</DisplayString>
     </Type>
 
-    <Type Name="clang::mrdocs::js::Value">
+    <Type Name="mrdocs::js::Value">
         <DisplayString>duk_value@{idx_}</DisplayString>
     </Type>
 
     <!-- ASTVisitor -->
 
-    <Type Name="clang::mrdocs::FilterPattern">
+    <Type Name="mrdocs::FilterPattern">
         <DisplayString>{pattern_}</DisplayString>
     </Type>
-    <Type Name="clang::mrdocs::FilterNode">
+    <Type Name="mrdocs::FilterNode">
         <Intrinsic Name="n_children" Expression="(size_t)(Children._Mypair._Myval2._Mylast - Children._Mypair._Myval2._Myfirst)" />
         <!--
         <DisplayString Condition="n_children() == 1">Excluded = {int(Excluded)}, {n_children()} child, Pattern = {Pattern}</DisplayString>
@@ -256,7 +256,7 @@
 
 <!-- ADT  -->
 
-    <Type Name="clang::mrdocs::Polymorphic&lt;*&gt;">
+    <Type Name="mrdocs::Polymorphic&lt;*&gt;">
         <DisplayString Condition="ptr_ != 0">*{ptr_}</DisplayString>
         <DisplayString Condition="ptr_ == 0">(empty)</DisplayString>
         <Expand>

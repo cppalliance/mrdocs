@@ -15,11 +15,11 @@
 #include <lib/AST/ASTVisitorConsumer.hpp>
 #include <lib/Support/Path.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 void
 ASTVisitorConsumer::
-HandleTranslationUnit(ASTContext& Context)
+HandleTranslationUnit(clang::ASTContext& Context)
 {
     MRDOCS_ASSERT(sema_);
     Diagnostics diags;
@@ -33,4 +33,4 @@ HandleTranslationUnit(ASTContext& Context)
     ex_.report(std::move(visitor.results()), std::move(diags), std::move(visitor.undocumented()));
 }
 
-} // clang::mrdocs
+} // mrdocs

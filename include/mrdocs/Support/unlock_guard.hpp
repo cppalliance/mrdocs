@@ -14,7 +14,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mutex>
 
-namespace clang {
+
 namespace mrdocs {
 
 /** A scoped guard which unlocks a mutex.
@@ -42,6 +42,6 @@ public:
 };
 
 } // mrdocs
-} // clang
+
 
 #endif

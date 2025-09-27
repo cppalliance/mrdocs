@@ -22,7 +22,7 @@
 #include <algorithm>
 #include <string>
 
-namespace clang::mrdocs::doc {
+namespace mrdocs::doc {
 
 /** A piece of block content
 
@@ -144,6 +144,6 @@ tag_invoke(
     v = dom::LazyObject(I, domCorpus);
 }
 
-} // clang::mrdocs::doc
+} // mrdocs::doc
 
 #endif // MRDOCS_API_METADATA_JAVADOC_BLOCK_BLOCKBASE_HPP

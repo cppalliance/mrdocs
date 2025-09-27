@@ -19,7 +19,7 @@
 #include <llvm/Support/Path.h>
 #include <format>
 
-namespace clang {
+
 namespace mrdocs {
 namespace doc {
 
@@ -384,4 +384,4 @@ append(std::vector<Polymorphic<doc::Node>>&& blocks)
 }
 
 } // mrdocs
-} // clang
+

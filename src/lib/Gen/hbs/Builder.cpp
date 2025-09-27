@@ -17,7 +17,7 @@
 #include <filesystem>
 #include <format>
 
-namespace clang {
+
 namespace mrdocs {
 
 namespace lua {
@@ -306,8 +306,7 @@ getRelPrefix(std::size_t depth)
 
 dom::Object
 Builder::
-createContext(
-    Info const& I)
+createContext(Symbol const& I)
 {
     dom::Object ctx;
     ctx.set("symbol", domCorpus.get(I.id));
@@ -315,7 +314,7 @@ createContext(
     return ctx;
 }
 
-template <std::derived_from<Info> T>
+template <std::derived_from<Symbol> T>
 Expected<void>
 Builder::
 operator()(std::ostream& os, T const& I)
@@ -347,9 +346,9 @@ operator()(std::ostream& os, T const& I)
     return callTemplate(os, wrapperFile, wrapperCtx);
 }
 
-// Compile the Builder::operator() for each Info type
-#define INFO(T) template Expected<void> Builder::operator()<T##Info>(std::ostream&, T##Info const&);
-#include <mrdocs/Metadata/Info/InfoNodes.inc>
+// Compile the Builder::operator() for each Symbol type
+#define INFO(T) template Expected<void> Builder::operator()<T##Symbol>(std::ostream&, T##Symbol const&);
+#include <mrdocs/Metadata/Symbol/SymbolNodes.inc>
 
 Expected<void>
 Builder::
@@ -436,4 +435,4 @@ commonTemplatesDir(std::string_view const subdir) const
 
 } // hbs
 } // mrdocs
-} // clang
+

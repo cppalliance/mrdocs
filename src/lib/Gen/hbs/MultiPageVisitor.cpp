@@ -15,9 +15,9 @@
 #include <mrdocs/Support/Report.hpp>
 #include <fstream>
 
-namespace clang::mrdocs::hbs {
+namespace mrdocs::hbs {
 
-template <std::derived_from<Info> T>
+template <std::derived_from<Symbol> T>
 void
 MultiPageVisitor::
 operator()(T const& I)
@@ -68,12 +68,12 @@ operator()(T const& I)
         // ===================================
         // Traverse the symbol members
         // ===================================
-        Corpus::TraverseOptions opts = {.skipInherited = std::same_as<T, RecordInfo>};
+        Corpus::TraverseOptions opts = {.skipInherited = std::same_as<T, RecordSymbol>};
         corpus_.traverse(opts, I, *this);
     });
 }
 
-#define INFO(T) template void MultiPageVisitor::operator()<T##Info>(T##Info const&);
-#include <mrdocs/Metadata/Info/InfoNodes.inc>
+#define INFO(T) template void MultiPageVisitor::operator()<T##Symbol>(T##Symbol const&);
+#include <mrdocs/Metadata/Symbol/SymbolNodes.inc>
 
-} // clang::mrdocs::hbs
+} // mrdocs::hbs

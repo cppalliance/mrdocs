@@ -14,7 +14,7 @@
 #include <string_view>
 #include <cstddef>
 
-namespace clang {
+
 namespace mrdocs {
 
 /** Project version string in MAJOR.MINOR.PATCH format.
@@ -55,6 +55,6 @@ inline constexpr std::string_view project_name                = "@PROJECT_NAME@"
 inline constexpr std::string_view project_description         = "@PROJECT_DESCRIPTION@";
 
 } // mrdocs
-} // clang
+
 
 #endif

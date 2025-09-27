@@ -14,7 +14,7 @@
 #include <llvm/Support/raw_ostream.h>
 #include <ostream>
 
-namespace clang {
+
 namespace mrdocs {
 
 class RawOstream : public llvm::raw_ostream
@@ -51,6 +51,6 @@ private:
 };
 
 } // mrdocs
-} // clang
+
 
 #endif

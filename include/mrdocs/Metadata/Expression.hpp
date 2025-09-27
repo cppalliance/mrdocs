@@ -17,7 +17,7 @@
 #include <optional>
 #include <string>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** Represents an expression */
 struct ExprInfo
@@ -74,6 +74,6 @@ static void merge(
     }
 }
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

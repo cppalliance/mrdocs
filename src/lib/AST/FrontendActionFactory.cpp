@@ -14,11 +14,11 @@
 #include "FrontendActionFactory.hpp"
 #include <lib/AST/ASTAction.hpp>
 
-namespace clang {
+
 namespace mrdocs {
 
 
-std::unique_ptr<FrontendAction>
+std::unique_ptr<clang::FrontendAction>
 ASTActionFactory::
 create()
 {
@@ -28,4 +28,4 @@ create()
 }
 
 } // mrdocs
-} // clang
+

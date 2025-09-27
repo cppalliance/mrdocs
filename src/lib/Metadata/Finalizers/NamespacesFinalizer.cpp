@@ -11,20 +11,20 @@
 #include "NamespacesFinalizer.hpp"
 #include <mrdocs/Support/Report.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 NamespacesFinalizer::FinalizerResult
 NamespacesFinalizer::
-operator()(NamespaceInfo& I)
+operator()(NamespaceSymbol& I)
 {
     report::trace(
         "Finalizing namespace '{}'",
         corpus_.Corpus::qualifiedName(I));
 
     // 1) Finalize sub-namespaces
-    SmallVector<SymbolID, 64> removedNamespaces;
+    llvm::SmallVector<SymbolID, 64> removedNamespaces;
     for (auto subNamespaces = corpus_.find(I.Members.Namespaces);
-         Info& info: subNamespaces)
+         Symbol& info: subNamespaces)
     {
         MRDOCS_ASSERT(info.isNamespace());
         SymbolID memberID = info.id;
@@ -70,7 +70,7 @@ operator()(NamespaceInfo& I)
     bool allDependencies = true;
     bool allImplementationDefined = true;
     bool anySeeBelow = false;
-    for (Info const& member : members)
+    for (Symbol const& member : members)
     {
         if (member.Extraction == ExtractionMode::Regular)
         {
@@ -107,4 +107,4 @@ operator()(NamespaceInfo& I)
     return FinalizerResult::Changed;
 }
 
-} // clang::mrdocs
+} // mrdocs

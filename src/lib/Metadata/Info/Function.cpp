@@ -11,11 +11,11 @@
 //
 
 #include <mrdocs/Dom/LazyObject.hpp>
-#include <mrdocs/Metadata/Info/Function.hpp>
+#include <mrdocs/Metadata/Symbol/Function.hpp>
 #include <mrdocs/Support/TypeTraits.hpp>
 #include <utility>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 namespace {
 
@@ -330,8 +330,8 @@ tag_invoke(
 }
 
 std::strong_ordering
-FunctionInfo::
-operator<=>(FunctionInfo const& other) const
+FunctionSymbol::
+operator<=>(FunctionSymbol const& other) const
 {
     if (auto const cmp = Name <=> other.Name;
         !std::is_eq(cmp))
@@ -383,7 +383,7 @@ operator<=>(FunctionInfo const& other) const
 }
 
 void
-merge(FunctionInfo& I, FunctionInfo&& Other)
+merge(FunctionSymbol& I, FunctionSymbol&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
     merge(I.asInfo(), std::move(Other.asInfo()));
@@ -457,9 +457,9 @@ merge(FunctionInfo& I, FunctionInfo&& Other)
 
 MRDOCS_DECL
 bool
-overrides(FunctionInfo const& base, FunctionInfo const& derived)
+overrides(FunctionSymbol const& base, FunctionSymbol const& derived)
 {
-    auto toOverrideTuple = [](FunctionInfo const& f) {
+    auto toOverrideTuple = [](FunctionSymbol const& f) {
         return std::forward_as_tuple(
             f.Name,
             f.Params,
@@ -472,5 +472,5 @@ overrides(FunctionInfo const& base, FunctionInfo const& derived)
     return toOverrideTuple(base) == toOverrideTuple(derived);
 }
 
-} // clang::mrdocs
+} // mrdocs
 

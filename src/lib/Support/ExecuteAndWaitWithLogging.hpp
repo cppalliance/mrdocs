@@ -13,7 +13,7 @@
 
 #include <llvm/Support/Program.h>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /**
  * A wrapper around llvm::sys::ExecuteAndWait() that prints the command
@@ -37,6 +37,6 @@ int ExecuteAndWaitWithLogging(
     std::optional<llvm::sys::ProcessStatistics>* procStat = nullptr,
     llvm::BitVector* affinityMask = nullptr);
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif // MRDOCS_LIB_SUPPORT_EXECUTEANDWAITWITHLOGGING_HPP

@@ -17,14 +17,14 @@
 #include <clang/Sema/Template.h>
 #include <ranges>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
-Expr const*
+clang::Expr const*
 SubstituteConstraintExpressionWithoutSatisfaction(
-    Sema &S, const Sema::TemplateCompareNewDeclInfo &DeclInfo,
-    const Expr *ConstrExpr)
+    clang::Sema &S, const clang::Sema::TemplateCompareNewDeclInfo &DeclInfo,
+    clang::Expr const* ConstrExpr)
 {
-    MultiLevelTemplateArgumentList MLTAL = S.getTemplateInstantiationArgs(
+    clang::MultiLevelTemplateArgumentList MLTAL = S.getTemplateInstantiationArgs(
         DeclInfo.getDecl(), DeclInfo.getLexicalDeclContext(), /*Final=*/false,
         /*Innermost=*/std::nullopt,
         /*RelativeToPrimary=*/true,
@@ -36,12 +36,12 @@ SubstituteConstraintExpressionWithoutSatisfaction(
         return ConstrExpr;
     }
 
-    Sema::SFINAETrap const SFINAE(S, /*AccessCheckingSFINAE=*/false);
+    clang::Sema::SFINAETrap const SFINAE(S, /*AccessCheckingSFINAE=*/false);
 
-    Sema::InstantiatingTemplate Inst(
+    clang::Sema::InstantiatingTemplate Inst(
         S, DeclInfo.getLocation(),
-        Sema::InstantiatingTemplate::ConstraintNormalization{},
-        const_cast<NamedDecl *>(DeclInfo.getDecl()), SourceRange{});
+        clang::Sema::InstantiatingTemplate::ConstraintNormalization{},
+        const_cast<clang::NamedDecl *>(DeclInfo.getDecl()), clang::SourceRange{});
     if (Inst.isInvalid())
     {
         return nullptr;
@@ -51,7 +51,7 @@ SubstituteConstraintExpressionWithoutSatisfaction(
     // parameters that the surrounding function hasn't been instantiated yet. Note
     // this may happen while we're comparing two templates' constraint
     // equivalence.
-    LocalInstantiationScope ScopeForParameters(S);
+    clang::LocalInstantiationScope ScopeForParameters(S);
     if (auto *FD = DeclInfo.getDecl()->getAsFunction())
     {
         for (auto *PVD : FD->parameters())
@@ -60,7 +60,7 @@ SubstituteConstraintExpressionWithoutSatisfaction(
         }
     }
 
-    Optional<Sema::CXXThisScopeRAII> ThisScope;
+    Optional<clang::Sema::CXXThisScopeRAII> ThisScope;
 
     // See TreeTransform::RebuildTemplateSpecializationType. A context scope is
     // essential for having an injected class as the canonical type for a template
@@ -69,14 +69,14 @@ SubstituteConstraintExpressionWithoutSatisfaction(
     // template specializations can be profiled to the same value, which makes it
     // possible that e.g. constraints involving C<Class<T>> and C<Class> are
     // perceived identical.
-    Optional<Sema::ContextRAII> ContextScope;
-    if (auto *RD = dyn_cast<CXXRecordDecl>(DeclInfo.getDeclContext()))
+    Optional<clang::Sema::ContextRAII> ContextScope;
+    if (auto *RD = dyn_cast<clang::CXXRecordDecl>(DeclInfo.getDeclContext()))
     {
-        ThisScope.emplace(S, const_cast<CXXRecordDecl *>(RD), Qualifiers());
-        ContextScope.emplace(S, const_cast<DeclContext *>(cast<DeclContext>(RD)),
+        ThisScope.emplace(S, const_cast<clang::CXXRecordDecl *>(RD), clang::Qualifiers());
+        ContextScope.emplace(S, const_cast<clang::DeclContext *>(cast<clang::DeclContext>(RD)),
                              /*NewThisContext=*/false);
     }
-    ExprResult SubstConstr = S.SubstConstraintExprWithoutSatisfaction(
+    clang::ExprResult SubstConstr = S.SubstConstraintExprWithoutSatisfaction(
         const_cast<clang::Expr *>(ConstrExpr), MLTAL);
     if (SFINAE.hasErrorOccurred() || !SubstConstr.isUsable())
     {
@@ -85,34 +85,34 @@ SubstituteConstraintExpressionWithoutSatisfaction(
     return SubstConstr.get();
 }
 
-AccessSpecifier
-getAccess(Decl const* D)
+clang::AccessSpecifier
+getAccess(clang::Decl const* D)
 {
     // First, get the declaration this was instantiated from
     D = getInstantiatedFrom(D);
 
     // If this is the template declaration of a template,
     // use the access of the template
-    if (TemplateDecl const* TD = D->getDescribedTemplate())
+    if (clang::TemplateDecl const* TD = D->getDescribedTemplate())
     {
         return TD->getAccessUnsafe();
     }
 
     // For class/variable template partial/explicit specializations,
     // we want to use the access of the primary template
-    if (auto const* CTSD = dyn_cast<ClassTemplateSpecializationDecl>(D))
+    if (auto const* CTSD = dyn_cast<clang::ClassTemplateSpecializationDecl>(D))
     {
         return CTSD->getSpecializedTemplate()->getAccessUnsafe();
     }
 
-    if (auto const* VTSD = dyn_cast<VarTemplateSpecializationDecl>(D))
+    if (auto const* VTSD = dyn_cast<clang::VarTemplateSpecializationDecl>(D))
     {
         return VTSD->getSpecializedTemplate()->getAccessUnsafe();
     }
 
     // For function template specializations, use the access of the
     // primary template if it has been resolved
-    if(auto const* FD = dyn_cast<FunctionDecl>(D))
+    if(auto const* FD = dyn_cast<clang::FunctionDecl>(D))
     {
         if (auto const* FTD = FD->getPrimaryTemplate())
         {
@@ -124,23 +124,23 @@ getAccess(Decl const* D)
     // their access based on the default access for the tag they
     // appear in, and any AccessSpecDecls which appears lexically
     // before them
-    if(auto const* FD = dyn_cast<FriendDecl>(D))
+    if(auto const* FD = dyn_cast<clang::FriendDecl>(D))
     {
-        auto const* RD = dyn_cast<CXXRecordDecl>(
+        auto const* RD = dyn_cast<clang::CXXRecordDecl>(
             FD->getLexicalDeclContext());
         // RD should never be null in well-formed code,
         // but clang error recovery may build an AST
         // where the assumption will not hold
         if (!RD)
         {
-            return AccessSpecifier::AS_public;
+            return clang::AccessSpecifier::AS_public;
         }
         auto access = RD->isClass() ?
-            AccessSpecifier::AS_private :
-            AccessSpecifier::AS_public;
+            clang::AccessSpecifier::AS_private :
+            clang::AccessSpecifier::AS_public;
         for(auto* M : RD->decls())
         {
-            if (auto* AD = dyn_cast<AccessSpecDecl>(M))
+            if (auto* AD = dyn_cast<clang::AccessSpecDecl>(M))
             {
                 access = AD->getAccessUnsafe();
             } else if (M == FD)
@@ -158,8 +158,8 @@ getAccess(Decl const* D)
     return D->getAccessUnsafe();
 }
 
-QualType
-getDeclaratorType(DeclaratorDecl const* DD)
+clang::QualType
+getDeclaratorType(clang::DeclaratorDecl const* DD)
 {
     if (auto* TSI = DD->getTypeSourceInfo();
         TSI && !TSI->getType().isNull())
@@ -169,27 +169,27 @@ getDeclaratorType(DeclaratorDecl const* DD)
     return DD->getType();
 }
 
-NonTypeTemplateParmDecl const*
-getNTTPFromExpr(Expr const* E, unsigned const Depth)
+clang::NonTypeTemplateParmDecl const*
+getNTTPFromExpr(clang::Expr const* E, unsigned const Depth)
 {
     while(true)
     {
-        if(auto const* ICE = dyn_cast<ImplicitCastExpr>(E))
+        if(auto const* ICE = dyn_cast<clang::ImplicitCastExpr>(E))
         {
             E = ICE->getSubExpr();
             continue;
         }
-        if(auto const* CE = dyn_cast<ConstantExpr>(E))
+        if(auto const* CE = dyn_cast<clang::ConstantExpr>(E))
         {
             E = CE->getSubExpr();
             continue;
         }
-        if(auto const* SNTTPE = dyn_cast<SubstNonTypeTemplateParmExpr>(E))
+        if(auto const* SNTTPE = dyn_cast<clang::SubstNonTypeTemplateParmExpr>(E))
         {
             E = SNTTPE->getReplacement();
             continue;
         }
-        if(auto const* CCE = dyn_cast<CXXConstructExpr>(E);
+        if(auto const* CCE = dyn_cast<clang::CXXConstructExpr>(E);
             CCE && CCE->getParenOrBraceRange().isInvalid())
         {
             // look through implicit copy construction from an lvalue of the same type
@@ -199,13 +199,13 @@ getNTTPFromExpr(Expr const* E, unsigned const Depth)
         break;
     }
 
-    auto const* DRE = dyn_cast<DeclRefExpr>(E);
+    auto const* DRE = dyn_cast<clang::DeclRefExpr>(E);
     if (!DRE)
     {
         return nullptr;
     }
 
-    auto const* NTTPD = dyn_cast<NonTypeTemplateParmDecl>(DRE->getDecl());
+    auto const* NTTPD = dyn_cast<clang::NonTypeTemplateParmDecl>(DRE->getDecl());
     if (!NTTPD || NTTPD->getDepth() != Depth)
     {
         return nullptr;
@@ -214,30 +214,29 @@ getNTTPFromExpr(Expr const* E, unsigned const Depth)
     return NTTPD;
 }
 
-Decl const*
-getParent(Decl const* D)
+clang::Decl const*
+getParent(clang::Decl const* D)
 {
-    while((D = cast_if_present<
-        Decl>(D->getDeclContext())))
+    while((D = cast_if_present<clang::Decl>(D->getDeclContext())))
     {
         switch(D->getKind())
         {
-        case Decl::CXXRecord:
+        case clang::Decl::CXXRecord:
             // we treat anonymous unions as "transparent"
-            if (auto const* RD = cast<CXXRecordDecl>(D);
+            if (auto const* RD = cast<clang::CXXRecordDecl>(D);
                 RD &&
                 RD->isAnonymousStructOrUnion())
             {
                 break;
             }
             [[fallthrough]];
-        case Decl::TranslationUnit:
-        case Decl::Namespace:
-        case Decl::Enum:
-        case Decl::ClassTemplateSpecialization:
-        case Decl::ClassTemplatePartialSpecialization:
+        case clang::Decl::TranslationUnit:
+        case clang::Decl::Namespace:
+        case clang::Decl::Enum:
+        case clang::Decl::ClassTemplateSpecialization:
+        case clang::Decl::ClassTemplatePartialSpecialization:
             // we treat anonymous namespaces as "transparent"
-            if (auto const* ND = dyn_cast<NamespaceDecl>(D);
+            if (auto const* ND = dyn_cast<clang::NamespaceDecl>(D);
                 ND &&
                 (ND->isInlineNamespace() ||
                  ND->isAnonymousNamespace()))
@@ -255,14 +254,14 @@ getParent(Decl const* D)
 
 void
 getQualifiedName(
-    NamedDecl const* ND,
-    raw_ostream& stream,
-    const PrintingPolicy &policy)
+    clang::NamedDecl const* ND,
+    clang::raw_ostream& stream,
+    clang::PrintingPolicy const& policy)
 {
-    if (auto const* CTS = dyn_cast<ClassTemplateSpecializationDecl>(ND))
+    if (auto const* CTS = dyn_cast<clang::ClassTemplateSpecializationDecl>(ND))
     {
         CTS->getSpecializedTemplate()->printQualifiedName(stream, policy);
-        TemplateArgumentList const& args = CTS->getTemplateArgs();
+        clang::TemplateArgumentList const& args = CTS->getTemplateArgs();
         stream << '<';
         for (unsigned i = 0, e = args.size(); i != e; ++i) {
             if (args[i].getIsDefaulted())
@@ -283,18 +282,18 @@ getQualifiedName(
     }
 }
 
-Decl const*
-decayToPrimaryTemplate(Decl const* D)
+clang::Decl const*
+decayToPrimaryTemplate(clang::Decl const* D)
 {
 #ifndef NDEBUG
     // Print only the class header (name and template args if specialization)
-    SmallString<128> symbolName;
-    if (const auto* ND = dyn_cast<NamedDecl>(D))
+    llvm::SmallString<128> symbolName;
+    if (const auto* ND = dyn_cast<clang::NamedDecl>(D))
     {
-        if (const auto* CTS = dyn_cast<ClassTemplateSpecializationDecl>(ND)) {
+        if (const auto* CTS = dyn_cast<clang::ClassTemplateSpecializationDecl>(ND)) {
             llvm::raw_svector_ostream os(symbolName);
             CTS->getSpecializedTemplate()->printQualifiedName(os, CTS->getASTContext().getPrintingPolicy());
-            const TemplateArgumentList& args = CTS->getTemplateArgs();
+            const clang::TemplateArgumentList& args = CTS->getTemplateArgs();
             os << '<';
             for (unsigned i = 0, e = args.size(); i != e; ++i)
             {
@@ -310,28 +309,28 @@ decayToPrimaryTemplate(Decl const* D)
     else
     {
         llvm::raw_svector_ostream os(symbolName);
-        os << "<unnamed " << D->Decl::getDeclKindName() << ">";
+        os << "<unnamed " << D->clang::Decl::getDeclKindName() << ">";
     }
     llvm::raw_svector_ostream os(symbolName);
     report::trace("symbolName: ", std::string_view(os.str()));
 #endif
 
-    Decl const* ID = D;
+    clang::Decl const* ID = D;
 
     // Check parent
-    if (CXXRecordDecl const* ClassParent = dyn_cast<CXXRecordDecl>(getParent(ID)))
+    if (clang::CXXRecordDecl const* ClassParent = dyn_cast<clang::CXXRecordDecl>(getParent(ID)))
     {
-        if (Decl const* DecayedClassParent = decayToPrimaryTemplate(ClassParent);
+        if (clang::Decl const* DecayedClassParent = decayToPrimaryTemplate(ClassParent);
             DecayedClassParent != ClassParent &&
-            isa<ClassTemplateSpecializationDecl>(DecayedClassParent))
+            isa<clang::ClassTemplateSpecializationDecl>(DecayedClassParent))
         {
-            auto const* RD = dyn_cast<ClassTemplateDecl>(DecayedClassParent);
-            CXXRecordDecl* RDParent = RD->getTemplatedDecl();
-            auto* NamedID = dyn_cast<NamedDecl>(ID);
+            auto const* RD = dyn_cast<clang::ClassTemplateDecl>(DecayedClassParent);
+            clang::CXXRecordDecl* RDParent = RD->getTemplatedDecl();
+            auto* NamedID = dyn_cast<clang::NamedDecl>(ID);
             auto NamedDecls = RDParent->decls()
-                | std::ranges::views::transform([](Decl* C) { return dyn_cast<NamedDecl>(C); })
-                | std::ranges::views::filter([](NamedDecl* C) { return C; });
-            for (NamedDecl const* Child : NamedDecls)
+                | std::ranges::views::transform([](clang::Decl* C) { return dyn_cast<clang::NamedDecl>(C); })
+                | std::ranges::views::filter([](clang::NamedDecl* C) { return C; });
+            for (clang::NamedDecl const* Child : NamedDecls)
             {
                 if (Child->getDeclName() == NamedID->getDeclName() &&
                     Child->getKind() == ID->getKind())
@@ -344,7 +343,7 @@ decayToPrimaryTemplate(Decl const* D)
     }
 
     // Check template specialization
-    if (auto const* TSD = dynamic_cast<ClassTemplateSpecializationDecl const*>(ID);
+    if (auto const* TSD = dynamic_cast<clang::ClassTemplateSpecializationDecl const*>(ID);
         TSD &&
         !TSD->isExplicitSpecialization())
     {
@@ -355,19 +354,19 @@ decayToPrimaryTemplate(Decl const* D)
 }
 
 bool
-isAllImplicitSpecialization(Decl const* D)
+isAllImplicitSpecialization(clang::Decl const* D)
 {
     if (!D)
     {
         return true;
     }
-    if (auto const* TSD = dynamic_cast<ClassTemplateSpecializationDecl const*>(D);
+    if (auto const* TSD = dynamic_cast<clang::ClassTemplateSpecializationDecl const*>(D);
         TSD &&
         TSD->isExplicitSpecialization())
     {
         return false;
     }
-    if (auto const* TSD = dynamic_cast<VarTemplateSpecializationDecl const*>(D);
+    if (auto const* TSD = dynamic_cast<clang::VarTemplateSpecializationDecl const*>(D);
         TSD &&
         TSD->isExplicitSpecialization())
     {
@@ -378,19 +377,19 @@ isAllImplicitSpecialization(Decl const* D)
 }
 
 bool
-isAnyImplicitSpecialization(Decl const* D)
+isAnyImplicitSpecialization(clang::Decl const* D)
 {
     if (!D)
     {
         return false;
     }
-    if (auto const* TSD = dynamic_cast<ClassTemplateSpecializationDecl const*>(D);
+    if (auto const* TSD = dynamic_cast<clang::ClassTemplateSpecializationDecl const*>(D);
         TSD &&
         !TSD->isExplicitSpecialization())
     {
         return true;
     }
-    if (auto const* TSD = dynamic_cast<VarTemplateSpecializationDecl const*>(D);
+    if (auto const* TSD = dynamic_cast<clang::VarTemplateSpecializationDecl const*>(D);
         TSD &&
         !TSD->isExplicitSpecialization())
     {
@@ -401,9 +400,9 @@ isAnyImplicitSpecialization(Decl const* D)
 }
 
 bool
-isVirtualMember(Decl const* D)
+isVirtualMember(clang::Decl const* D)
 {
-    if (auto const* MD = dyn_cast<CXXMethodDecl>(D))
+    if (auto const* MD = dyn_cast<clang::CXXMethodDecl>(D))
     {
         return MD->isVirtual();
     }
@@ -411,9 +410,9 @@ isVirtualMember(Decl const* D)
 }
 
 bool
-isAnonymousNamespace(Decl const* D)
+isAnonymousNamespace(clang::Decl const* D)
 {
-    if (auto const* ND = dyn_cast<NamespaceDecl>(D))
+    if (auto const* ND = dyn_cast<clang::NamespaceDecl>(D))
     {
         return ND->isAnonymousNamespace();
     }
@@ -421,27 +420,27 @@ isAnonymousNamespace(Decl const* D)
 }
 
 bool
-isStaticFileLevelMember(Decl const* D)
+isStaticFileLevelMember(clang::Decl const* D)
 {
-    if (const auto *VD = dyn_cast<VarDecl>(D)) {
-        return VD->getStorageClass() == SC_Static && VD->getDeclContext()->isFileContext();
+    if (const auto *VD = dyn_cast<clang::VarDecl>(D)) {
+        return VD->getStorageClass() == clang::SC_Static && VD->getDeclContext()->isFileContext();
     }
-    if (const auto *FD = dyn_cast<FunctionDecl>(D)) {
-        return FD->getStorageClass() == SC_Static && FD->getDeclContext()->isFileContext();
+    if (const auto *FD = dyn_cast<clang::FunctionDecl>(D)) {
+        return FD->getStorageClass() == clang::SC_Static && FD->getDeclContext()->isFileContext();
     }
     return false;
 }
 
-RawComment const*
-getDocumentation(Decl const* D)
+clang::RawComment const*
+getDocumentation(clang::Decl const* D)
 {
-    RawComment const* RC =
+    clang::RawComment const* RC =
         D->getASTContext().getRawCommentForDeclNoCache(D);
     if (!RC)
     {
-        auto const* TD = dyn_cast<TemplateDecl>(D);
+        auto const* TD = dyn_cast<clang::TemplateDecl>(D);
         MRDOCS_CHECK_OR(TD, nullptr);
-        NamedDecl const* ND = TD->getTemplatedDecl();
+        clang::NamedDecl const* ND = TD->getTemplatedDecl();
         MRDOCS_CHECK_OR(ND, nullptr);
         RC = ND->getASTContext().getRawCommentForDeclNoCache(ND);
     }
@@ -449,9 +448,9 @@ getDocumentation(Decl const* D)
 }
 
 bool
-isDocumented(Decl const* D)
+isDocumented(clang::Decl const* D)
 {
     return getDocumentation(D) != nullptr;
 }
 
-} // clang::mrdocs
+} // mrdocs

@@ -13,10 +13,10 @@
 #define MRDOCS_LIB_METADATA_FINALIZERS_DERIVEDFINALIZER_HPP
 
 #include <lib/CorpusImpl.hpp>
-#include <lib/Metadata/InfoSet.hpp>
+#include <lib/Metadata/SymbolSet.hpp>
 #include <utility>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** Finalizes a set of Info.
 
@@ -37,6 +37,6 @@ public:
     build();
 };
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif // MRDOCS_LIB_METADATA_FINALIZERS_DERIVEDFINALIZER_HPP

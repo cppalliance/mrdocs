@@ -17,7 +17,7 @@
 #include <mrdocs/Metadata/Javadoc/Inline/InlineBase.hpp>
 #include <string>
 
-namespace clang::mrdocs::doc {
+namespace mrdocs::doc {
 
 /** A Node containing a string of text.
 
@@ -91,6 +91,6 @@ tag_invoke(
     v = dom::LazyObject(I, domCorpus);
 }
 
-} // clang::mrdocs::doc
+} // mrdocs::doc
 
 #endif // MRDOCS_API_METADATA_JAVADOC_INLINE_TEXT_HPP

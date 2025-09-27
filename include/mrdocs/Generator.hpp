@@ -23,7 +23,7 @@
 #include <string>
 #include <string_view>
 
-namespace clang {
+
 namespace mrdocs {
 
 /** Base class for documentation generators.
@@ -207,6 +207,6 @@ getSinglePageFullPath(
     std::string_view extension);
 
 } // mrdocs
-} // clang
+
 
 #endif // MRDOCS_API_GENERATOR_HPP

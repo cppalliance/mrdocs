@@ -13,8 +13,8 @@
 #define MRDOCS_LIB_GEN_XML_XMLTAGS_HPP
 
 #include <mrdocs/Dom.hpp>
-#include <mrdocs/Metadata/Info/SymbolID.hpp>
 #include <mrdocs/Metadata/Javadoc.hpp>
+#include <mrdocs/Metadata/Symbol/SymbolID.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 #include <clang/Basic/Specifiers.h>
 #include <llvm/ADT/StringRef.h>
@@ -27,7 +27,7 @@
     XML tags and correctly escaped strings
 */
 
-namespace clang::mrdocs::xml {
+namespace mrdocs::xml {
 
 class jit_indenter;
 
@@ -203,6 +203,6 @@ public:
     void nest(int levels);
 };
 
-} // clang::mrdocs::xml
+} // mrdocs::xml
 
 #endif

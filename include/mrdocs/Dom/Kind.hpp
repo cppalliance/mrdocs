@@ -14,7 +14,7 @@
 #include <mrdocs/Platform.hpp>
 #include <string_view>
 
-namespace clang {
+
 namespace mrdocs {
 namespace dom {
 
@@ -111,6 +111,6 @@ toString(Kind const& value)
 
 } // dom
 } // mrdocs
-} // clang
+
 
 #endif

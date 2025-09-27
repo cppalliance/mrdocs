@@ -17,7 +17,7 @@
 #include <llvm/Support/Path.h>
 #include <fstream>
 
-namespace clang {
+
 namespace mrdocs {
 
 AnyFileVisitor::
@@ -561,4 +561,3 @@ error() const
 }
 
 } // mrdocs
-} // clang

@@ -25,7 +25,7 @@
 #include <utility>
 #include <vector>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 //------------------------------------------------
 //
@@ -51,7 +51,7 @@ class MRDOCS_DECL
 public:
     /** Constructor.
 
-        A default constructed error is
+        A default-constructed error is
         equivalent to success.
     */
     Error() noexcept = default;
@@ -251,22 +251,22 @@ public:
     }
 };
 
-} // clang::mrdocs
+} // mrdocs
 
 template<>
-struct std::hash<::clang::mrdocs::Error>
+struct std::hash<::mrdocs::Error>
 {
     std::size_t operator()(
-        ::clang::mrdocs::Error const& err) const noexcept
+        ::mrdocs::Error const& err) const noexcept
     {
         return std::hash<std::string_view>()(err.message());
     }
 };
 
 template <>
-struct std::formatter<clang::mrdocs::Error> : std::formatter<std::string_view> {
+struct std::formatter<mrdocs::Error> : std::formatter<std::string_view> {
   template <class FmtContext>
-  auto format(clang::mrdocs::Error const &err, FmtContext &ctx) const {
+  auto format(mrdocs::Error const &err, FmtContext &ctx) const {
     return std::formatter<std::string_view>::format(err.message(), ctx);
   }
 };
@@ -279,7 +279,7 @@ struct std::formatter<std::error_code> : std::formatter<std::string_view> {
   }
 };
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** A source location with filename prettification.
 */

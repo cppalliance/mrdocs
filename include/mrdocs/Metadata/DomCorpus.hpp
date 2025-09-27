@@ -17,10 +17,10 @@
 #include <mrdocs/Dom.hpp>
 #include <memory>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 class Corpus;
-struct Info;
+struct Symbol;
 struct Javadoc;
 class SymbolID;
 
@@ -82,7 +82,7 @@ public:
     */
     virtual
     dom::Object
-    construct(Info const& I) const;
+    construct(Symbol const& I) const;
 
     /** Return a Dom object representing the given symbol.
 
@@ -110,8 +110,8 @@ public:
  */
 MRDOCS_DECL
 dom::Array
-getParents(DomCorpus const& C, Info const& I);
+getParents(DomCorpus const& C, Symbol const& I);
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif // MRDOCS_API_METADATA_DOMCORPUS_HPP

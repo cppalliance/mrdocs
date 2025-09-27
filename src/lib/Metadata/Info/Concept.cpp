@@ -10,14 +10,14 @@
 //
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Info/Concept.hpp>
+#include <mrdocs/Metadata/Symbol/Concept.hpp>
 #include <llvm/ADT/STLExtras.h>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 std::strong_ordering
-ConceptInfo::
-operator<=>(ConceptInfo const& other) const
+ConceptSymbol::
+operator<=>(ConceptSymbol const& other) const
 {
     if (auto const cmp = Name <=> other.Name;
         !std::is_eq(cmp))
@@ -59,7 +59,7 @@ operator<=>(ConceptInfo const& other) const
 }
 
 void
-merge(ConceptInfo& I, ConceptInfo&& Other)
+merge(ConceptSymbol& I, ConceptSymbol&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
     merge(I.asInfo(), std::move(Other.asInfo()));
@@ -73,5 +73,5 @@ merge(ConceptInfo& I, ConceptInfo&& Other)
     }
 }
 
-} // clang::mrdocs
+} // mrdocs
 

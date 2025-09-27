@@ -14,7 +14,7 @@
 #include <format>
 #include <ranges>
 
-namespace clang {
+
 namespace mrdocs {
 namespace dom {
 
@@ -208,4 +208,4 @@ DefaultObjectImpl::exists(std::string_view key) const {
 
 } // dom
 } // mrdocs
-} // clang
+

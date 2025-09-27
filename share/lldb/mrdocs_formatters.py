@@ -10,8 +10,8 @@ import lldb
 # ---------- SIMPLE, WORKING REGEXES ----------
 # Tip: register BOTH const and non-const; avoid fancy groups.
 _INFO_REGEXES = [
-    r"^clang::mrdocs::[^:]*Info$",
-    r"^const clang::mrdocs::[^:]*Info$",
+    r"^mrdocs::[^:]*Info$",
+    r"^const mrdocs::[^:]*Info$",
 ]
 
 
@@ -245,12 +245,12 @@ def _norm_typename(t: lldb.SBType) -> str:
 
 
 def _is_info_type(t: lldb.SBType) -> bool:
-    return _norm_typename(t) == "clang::mrdocs::Info"
+    return _norm_typename(t) == "mrdocs::Info"
 
 
 class InfoLikeSyntheticProvider:
     """
-    Show fields from clang::mrdocs::Info FIRST,
+    Show fields from mrdocs::Info FIRST,
     then all other bases deepest-first, then most-derived.
     Never recurses into fields. Uses order prefixes to beat UI resorting.
     """
@@ -671,12 +671,12 @@ class PolymorphicTransparentSyntheticProvider:
         return -1
 
 
-# -------- NameInfo summary: "Prefix::Name" or "Name" --------
+# -------- Name summary: "Prefix::Name" or "Name" --------
 
-# --- helpers for NameInfo prefix chain (names only, no ids) ---
+# --- helpers for Name prefix chain (names only, no ids) ---
 
 def _nameinfo_path_from(ni: lldb.SBValue) -> str | None:
-    """Return 'A::B::C' built from NameInfo::Name along the Prefix chain. No ids."""
+    """Return 'A::B::C' built from Name::Name along the Prefix chain. No ids."""
     if not ni or not ni.IsValid():
         return None
     # current name
@@ -685,10 +685,10 @@ def _nameinfo_path_from(ni: lldb.SBValue) -> str | None:
     if not nm:
         nm = "<no Name>"
 
-    # recurse into Prefix (Polymorphic<NameInfo>)
+    # recurse into Prefix (Polymorphic<Name>)
     pref_poly = _get_field_value_by_offset(ni, "Prefix") or ni.GetChildMemberWithName("Prefix")
     if pref_poly and pref_poly.IsValid():
-        inner = _poly_inner_value(pref_poly)  # "null" | SBValue(NameInfo) | None
+        inner = _poly_inner_value(pref_poly)  # "null" | SBValue(Name) | None
         if inner and inner != "null":
             parent = _nameinfo_path_from(inner)
             return f"{parent}::{nm}" if parent else nm
@@ -705,9 +705,9 @@ def _hex_from_symbolid(sbv) -> str | None:
     return ''.join(f'{b:02x}' for b in bs)
 
 
-# --- NameInfo summary: "Prefix::Name (idhex)" or "Name" ---
+# --- Name summary: "Prefix::Name (idhex)" or "Name" ---
 
-def NameInfoSummaryProvider(valobj, _dict):
+def NameSummaryProvider(valobj, _dict):
     try:
         v = _deref_if_ptr_or_ref(valobj)
         if not v or not v.IsValid():
@@ -748,22 +748,22 @@ def __lldb_init_module(debugger, _dict):
     for rx in _INFO_REGEXES:
         debugger.HandleCommand(f'type summary add -w {cat} -x -P -F mrdocs_formatters.InfoLikeSummaryProvider "{rx}"')
         debugger.HandleCommand(f'type synthetic add -w {cat} -x -l mrdocs_formatters.InfoLikeSyntheticProvider "{rx}"')
-    for rx in ("^clang::mrdocs::SymbolID$", "^const clang::mrdocs::SymbolID$"):
+    for rx in ("^mrdocs::SymbolID$", "^const mrdocs::SymbolID$"):
         debugger.HandleCommand(
             f'type summary add -w {cat} -x -P -F mrdocs_formatters.SymbolIDSummaryProvider "{rx}"'
         )
-    for rx in ("^clang::mrdocs::Optional<.*>$", "^const clang::mrdocs::Optional<.*>$"):
+    for rx in ("^mrdocs::Optional<.*>$", "^const mrdocs::Optional<.*>$"):
         debugger.HandleCommand(
             f'type summary add -w {cat} -x -P -F mrdocs_formatters.OptionalSummaryProvider "{rx}"'
         )
         debugger.HandleCommand(
             f'type synthetic add -w {cat} -x -l mrdocs_formatters.OptionalTransparentSyntheticProvider "{rx}"'
         )
-    for rx in ("^clang::mrdocs::Location$", "^const clang::mrdocs::Location$"):
+    for rx in ("^mrdocs::Location$", "^const mrdocs::Location$"):
         debugger.HandleCommand(
             f'type summary add -w {cat} -x -P -F mrdocs_formatters.LocationSummaryProvider "{rx}"'
         )
-    for rx in ("^clang::mrdocs::Polymorphic<.*>$", "^const clang::mrdocs::Polymorphic<.*>$"):
+    for rx in ("^mrdocs::Polymorphic<.*>$", "^const mrdocs::Polymorphic<.*>$"):
         debugger.HandleCommand(
             f'type summary add -w {cat} -x -P -F mrdocs_formatters.PolymorphicSummaryProvider "{rx}"'
         )
@@ -771,15 +771,15 @@ def __lldb_init_module(debugger, _dict):
             f'type synthetic add -w {cat} -x -l mrdocs_formatters.PolymorphicTransparentSyntheticProvider "{rx}"'
         )
     for rx in (
-            "^clang::mrdocs::NameInfo$",
-            "^const clang::mrdocs::NameInfo$",
-            "^class clang::mrdocs::NameInfo$",
-            "^const class clang::mrdocs::NameInfo$",
-            "^struct clang::mrdocs::NameInfo$",
-            "^const struct clang::mrdocs::NameInfo$",
+            "^mrdocs::Name$",
+            "^const mrdocs::Name$",
+            "^class mrdocs::Name$",
+            "^const class mrdocs::Name$",
+            "^struct mrdocs::Name$",
+            "^const struct mrdocs::Name$",
     ):
         debugger.HandleCommand(
-            f'type summary add -w {cat} -x -P -F mrdocs_formatters.NameInfoSummaryProvider "{rx}"'
+            f'type summary add -w {cat} -x -P -F mrdocs_formatters.NameSummaryProvider "{rx}"'
         )
 
     debugger.HandleCommand(f"type category enable {cat}")

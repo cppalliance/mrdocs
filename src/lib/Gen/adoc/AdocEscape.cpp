@@ -13,7 +13,7 @@
 #include <mrdocs/Support/Handlebars.hpp>
 #include <ranges>
 
-namespace clang::mrdocs::adoc {
+namespace mrdocs::adoc {
 
 namespace {
 
@@ -97,4 +97,4 @@ AdocEscape(std::string_view str) {
 }
 
 
-} // clang::mrdocs::adoc
+} // mrdocs::adoc

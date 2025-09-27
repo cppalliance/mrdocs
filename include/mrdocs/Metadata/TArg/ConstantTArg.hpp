@@ -11,14 +11,14 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_METADATA_TARG_NONTYPETARG_HPP
-#define MRDOCS_API_METADATA_TARG_NONTYPETARG_HPP
+#ifndef MRDOCS_API_METADATA_TARG_CONSTANTTARG_HPP
+#define MRDOCS_API_METADATA_TARG_CONSTANTTARG_HPP
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
 #include <mrdocs/Metadata/TArg/TArgBase.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 struct ConstantTArg final
     : TArgCommonBase<TArgKind::Constant>
@@ -29,6 +29,6 @@ struct ConstantTArg final
     auto operator<=>(ConstantTArg const&) const = default;
 };
 
-} // clang::mrdocs
+} // mrdocs
 
-#endif // MRDOCS_API_METADATA_TARG_NONTYPETARG_HPP
+#endif // MRDOCS_API_METADATA_TARG_CONSTANTTARG_HPP

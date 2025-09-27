@@ -17,56 +17,56 @@
 #    include <llvm/Support/ErrorHandling.h>
 #endif
 #include <lib/Support/Radix.hpp>
-#include <mrdocs/Metadata/Info.hpp>
-#include <mrdocs/Metadata/Info/SymbolID.hpp>
+#include <mrdocs/Metadata/Symbol.hpp>
+#include <mrdocs/Metadata/Symbol/SymbolID.hpp>
 #include <llvm/Support/raw_ostream.h>
 #include <format>
 #include <string>
 
 template <>
-struct std::formatter<clang::mrdocs::SymbolID> : std::formatter<std::string> {
+struct std::formatter<mrdocs::SymbolID> : std::formatter<std::string> {
   template <class FmtContext>
-  std::format_context::iterator format(clang::mrdocs::SymbolID const &s,
+  std::format_context::iterator format(mrdocs::SymbolID const &s,
                                        FmtContext &ctx) const {
-    std::string str = s ? clang::mrdocs::toBase64(s) : "<invalid SymbolID>";
+    std::string str = s ? mrdocs::toBase64(s) : "<invalid SymbolID>";
     return std::formatter<std::string>::format(std::move(str), ctx);
   }
 };
 
 template <>
-struct std::formatter<clang::mrdocs::InfoKind> : std::formatter<std::string> {
+struct std::formatter<mrdocs::SymbolKind> : std::formatter<std::string> {
   template <class FmtContext>
-  std::format_context::iterator format(clang::mrdocs::InfoKind t,
+  std::format_context::iterator format(mrdocs::SymbolKind t,
                                        FmtContext &ctx) const {
     return std::formatter<std::string>::format(toString(t).str(), ctx);
   }
 };
 
 template <>
-struct std::formatter<clang::mrdocs::AccessKind> : std::formatter<std::string> {
+struct std::formatter<mrdocs::AccessKind> : std::formatter<std::string> {
   template <class FmtContext>
-  std::format_context::iterator format(clang::mrdocs::AccessKind a,
+  std::format_context::iterator format(mrdocs::AccessKind a,
                                        FmtContext &ctx) const {
     return std::formatter<std::string>::format(toString(a).str(), ctx);
   }
 };
 
 template <>
-struct std::formatter<clang::mrdocs::Info> : std::formatter<std::string> {
+struct std::formatter<mrdocs::Symbol> : std::formatter<std::string> {
   template <class FmtContext>
-  std::format_context::iterator format(clang::mrdocs::Info const &i,
+  std::format_context::iterator format(mrdocs::Symbol const &i,
                                        FmtContext &ctx) const {
     return std::formatter<std::string>::format(toString(i), ctx);
   }
 
 private:
-  static std::string toString(clang::mrdocs::Info const &i);
+  static std::string toString(mrdocs::Symbol const &i);
 };
 
 // Some nice odds and ends such as leak checking
 // and redirection to the Visual Studio output window.
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** Enable debug heap checking.
 */
@@ -75,6 +75,6 @@ MRDOCS_DECL void debugEnableHeapChecking();
 #define static_error(msg, value) \
     static_assert(!std::is_same_v<decltype(value),decltype(value)>,msg)
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif // MRDOCS_LIB_SUPPORT_DEBUG_HPP

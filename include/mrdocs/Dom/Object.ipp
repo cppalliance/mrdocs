@@ -11,7 +11,7 @@
 #ifndef MRDOCS_API_DOM_OBJECT_IPP
 #define MRDOCS_API_DOM_OBJECT_IPP
 
-namespace clang {
+
 namespace mrdocs {
 namespace dom {
 
@@ -144,17 +144,17 @@ Object::visit(F&& fn) const
 
 } // dom
 } // mrdocs
-} // clang
+
 
 //------------------------------------------------
 
 template<>
-struct std::formatter<clang::mrdocs::dom::Object>
+struct std::formatter<mrdocs::dom::Object>
     : std::formatter<std::string>
 {
     template <class FmtContext>
     auto format(
-        clang::mrdocs::dom::Object const& value,
+        mrdocs::dom::Object const& value,
         FmtContext& ctx) const
     {
         return std::formatter<std::string>::format(

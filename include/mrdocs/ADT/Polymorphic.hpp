@@ -17,7 +17,7 @@
 #include <concepts>
 #include <utility>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** A polymorphic value-type.
 
@@ -281,6 +281,6 @@ struct nullable_traits<Polymorphic<T>>
     }
 };
 
-} // namespace clang::mrdocs
+} // namespace mrdocs
 
 #endif // MRDOCS_API_ADT_POLYMORPHIC_HPP

@@ -13,7 +13,6 @@
 
 #include <cstdint>
 
-namespace clang {
 namespace mrdocs {
 
 #ifdef NDEBUG
@@ -42,6 +41,5 @@ namespace mrdocs {
 #endif
 
 } // mrdocs
-} // clang
 
 #endif

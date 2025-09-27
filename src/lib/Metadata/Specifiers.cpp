@@ -12,7 +12,7 @@
 #include <mrdocs/Support/Algorithm.hpp>
 #include <format>
 
-namespace clang {
+
 namespace mrdocs {
 
 dom::String toString(AccessKind kind) noexcept
@@ -201,5 +201,5 @@ isBinaryOperator(OperatorKind kind) noexcept
 }
 
 
-} // clang
+
 } // mrdocs

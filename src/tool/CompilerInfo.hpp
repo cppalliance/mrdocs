@@ -19,7 +19,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace clang {
+
 namespace mrdocs {
 
 /**
@@ -51,6 +51,6 @@ std::unordered_map<std::string, std::vector<std::string>>
 getCompilersDefaultIncludeDir(clang::tooling::CompilationDatabase const& compDb, bool useSystemStdlib);
 
 } // mrdocs
-} // clang
+
 
 #endif // MRDOCS_TOOL_COMPILERINFO_HPP

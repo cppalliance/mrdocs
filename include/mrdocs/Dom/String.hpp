@@ -15,7 +15,6 @@
 #include <mrdocs/Support/String.hpp>
 #include <format>
 
-namespace clang {
 namespace mrdocs {
 namespace dom {
 
@@ -346,15 +345,14 @@ public:
 
 } // dom
 } // mrdocs
-} // clang
 
 //------------------------------------------------
 
 template <>
-struct std::formatter<clang::mrdocs::dom::String>
+struct std::formatter<mrdocs::dom::String>
     : std::formatter<std::string_view> {
   template <class FmtContext>
-  auto format(clang::mrdocs::dom::String const &value, FmtContext &ctx) const {
+  auto format(mrdocs::dom::String const &value, FmtContext &ctx) const {
     return std::formatter<std::string_view>::format(value.get(), ctx);
   }
 };

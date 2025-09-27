@@ -20,7 +20,7 @@
 #include <mrdocs/Metadata/Specifiers/NoexceptKind.hpp>
 #include <string>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 // KRYSTIAN FIXME: this needs to be improved (a lot)
 struct NoexceptInfo
@@ -69,6 +69,6 @@ tag_invoke(
     v = toString(info, false, false);
 }
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

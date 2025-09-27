@@ -19,7 +19,7 @@
 #include <llvm/Support/ThreadPool.h>
 #include <memory>
 
-namespace clang {
+
 namespace mrdocs {
 
 /* Private configuration implementation.
@@ -159,6 +159,6 @@ public:
 
 
 } // mrdocs
-} // clang
+
 
 #endif // MRDOCS_LIB_CONFIGIMPL_HPP

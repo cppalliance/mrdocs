@@ -14,12 +14,11 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
-enum class NameKind
-{
+enum class NameKind {
 #define INFO(Type) Type,
-#include <mrdocs/Metadata/Name/NameInfoNodes.inc>
+#include <mrdocs/Metadata/Name/NameNodes.inc>
 };
 
 MRDOCS_DECL
@@ -30,12 +29,11 @@ inline
 void
 tag_invoke(
     dom::ValueFromTag,
-    dom::Value& v,
-    NameKind const kind)
+    dom::Value& v, NameKind const kind)
 {
     v = toString(kind);
 }
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

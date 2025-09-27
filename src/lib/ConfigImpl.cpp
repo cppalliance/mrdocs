@@ -23,7 +23,7 @@
 #include <llvm/Support/YAMLTraits.h>
 #include <utility>
 
-namespace clang {
+
 namespace mrdocs {
 
 namespace {
@@ -42,7 +42,7 @@ ConfigImpl(access_token, ThreadPool& threadPool)
 
 bool
 ConfigImpl::
-shouldVisitSymbol(StringRef filePath) const noexcept
+shouldVisitSymbol(llvm::StringRef filePath) const noexcept
 {
     if (settings_.input.empty())
     {
@@ -75,7 +75,7 @@ shouldVisitSymbol(StringRef filePath) const noexcept
 bool
 ConfigImpl::
 shouldExtractFromFile(
-    StringRef filePath,
+    llvm::StringRef filePath,
     std::string& prefixPath) const noexcept
 {
     namespace path = llvm::sys::path;
@@ -133,10 +133,10 @@ toDomObject(llvm::yaml::MappingNode* Object)
     dom::Object obj;
     for (auto &Pair : *Object)
     {
-        auto *KeyString = dyn_cast<llvm::yaml::ScalarNode>(Pair.getKey());
+        auto *KeyString = clang::dyn_cast<llvm::yaml::ScalarNode>(Pair.getKey());
         if (!KeyString) { continue; }
-        SmallString<10> KeyStorage;
-        StringRef KeyValue = KeyString->getValue(KeyStorage);
+        llvm::SmallString<10> KeyStorage;
+        llvm::StringRef KeyValue = KeyString->getValue(KeyStorage);
         llvm::yaml::Node *Value = Pair.getValue();
         if (!Value) {
             obj.set(KeyValue, dom::Kind::Undefined);
@@ -163,9 +163,9 @@ toDomArray(llvm::yaml::SequenceNode* Array)
 dom::Value
 toDomScalar(llvm::yaml::ScalarNode* Scalar)
 {
-    SmallString<10> ScalarStorage;
-    StringRef ScalarValue = Scalar->getValue(ScalarStorage);
-    StringRef RawValue = Scalar->getRawValue();
+    llvm::SmallString<10> ScalarStorage;
+    llvm::StringRef ScalarValue = Scalar->getValue(ScalarStorage);
+    llvm::StringRef RawValue = Scalar->getRawValue();
     bool const isEscaped = RawValue.size() != ScalarValue.size();
     if (isEscaped)
     {
@@ -196,17 +196,17 @@ toDomScalar(llvm::yaml::ScalarNode* Scalar)
 dom::Value
 toDom(llvm::yaml::Node* Value)
 {
-    auto *ValueObject = dyn_cast<llvm::yaml::MappingNode>(Value);
+    auto *ValueObject = clang::dyn_cast<llvm::yaml::MappingNode>(Value);
     if (ValueObject)
     {
         return toDomObject(ValueObject);
     }
-    auto *ValueArray = dyn_cast<llvm::yaml::SequenceNode>(Value);
+    auto *ValueArray = clang::dyn_cast<llvm::yaml::SequenceNode>(Value);
     if (ValueArray)
     {
         return toDomArray(ValueArray);
     }
-    auto *ValueString = dyn_cast<llvm::yaml::ScalarNode>(Value);
+    auto *ValueString = clang::dyn_cast<llvm::yaml::ScalarNode>(Value);
     if (ValueString)
     {
         return toDomScalar(ValueString);
@@ -246,7 +246,7 @@ toDomObject(std::string_view yaml)
         return {};
     }
     llvm::yaml::Node *Root = I->getRoot();
-    auto *Object = dyn_cast<llvm::yaml::MappingNode>(Root);
+    auto *Object = clang::dyn_cast<llvm::yaml::MappingNode>(Root);
     if (!Object)
     {
         return {};
@@ -320,4 +320,4 @@ updateConfigDom()
 
 
 } // mrdocs
-} // clang
+

@@ -17,18 +17,18 @@
 #include <lib/AST/ClangHelpers.hpp>
 #include <lib/ConfigImpl.hpp>
 #include <lib/Support/ExecutionContext.hpp>
-#include <mrdocs/Metadata/Info/ExtractionMode.hpp>
-#include <mrdocs/Metadata/Info/Source.hpp>
 #include <mrdocs/Metadata/Name.hpp>
+#include <mrdocs/Metadata/Symbol/ExtractionMode.hpp>
+#include <mrdocs/Metadata/Symbol/Source.hpp>
 #include <mrdocs/Support/Concepts.hpp>
 #include <clang/AST/ODRHash.h>
 #include <clang/Tooling/Tooling.h>
 #include <llvm/ADT/SmallBitVector.h>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
-class TypeInfoBuilder;
-class NameInfoBuilder;
+class TypeBuilder;
+class NameBuilder;
 template <class Derived>
 class TerminalTypeVisitor;
 
@@ -43,17 +43,17 @@ class TerminalTypeVisitor;
     only handles translation units represented by a
     `clang::ASTContext` by creating an instance of this
     class and calling the `build` method, which recursively
-    traverses the `clang::Decl` representing the
+    traverses the `clang::clang::Decl` representing the
     translation unit.
 
-    As it traverse nodes, the `ASTVisitor` class will
+    As it traverses nodes, the `ASTVisitor` class will
     create MrDocs `Info` objects for each declaration that
     passes the filter configurations.
 */
 class ASTVisitor
 {
-    friend TypeInfoBuilder;
-    friend NameInfoBuilder;
+    friend TypeBuilder;
+    friend NameBuilder;
     template <typename Derived>
     friend class TerminalTypeVisitor;
 
@@ -64,19 +64,19 @@ class ASTVisitor
     Diagnostics diags_;
 
     // The compiler instance
-    CompilerInstance& compiler_;
+    clang::CompilerInstance& compiler_;
 
     // The AST context
-    ASTContext& context_;
+    clang::ASTContext& context_;
 
     // The source files in memory
-    SourceManager& source_;
+    clang::SourceManager& source_;
 
     // Semantic analysis
-    Sema& sema_;
+    clang::Sema& sema_;
 
     // An unordered set of all extracted Info declarations
-    InfoSet info_;
+    SymbolSet info_;
 
     /*  The symbols we would extract if they were documented
 
@@ -99,7 +99,7 @@ class ASTVisitor
         units are merged, we will iterate these symbols
         and warn if they are not documented.
      */
-    UndocumentedInfoSet undocumented_;
+    UndocumentedSymbolSet undocumented_;
 
     /* Struct to hold pre-processed file information.
 
@@ -138,9 +138,9 @@ class ASTVisitor
         if a file should be extracted or to add the
         SourceInfo to an Info object.
     */
-    llvm::DenseMap<FileID, FileInfo> files_;
+    llvm::DenseMap<clang::FileID, FileInfo> files_;
 
-    /*  Determine how a Decl matched the filters
+    /*  Determine how a clang::Decl matched the filters
      */
     enum class ExtractionMatchType {
         // It matches one of the patterns as is
@@ -159,7 +159,7 @@ class ASTVisitor
     /*  Extraction Info
 
         This struct is used to store information about
-        the filters a Decl pass.
+        the filters a clang::Decl pass.
      */
     struct ExtractionInfo
     {
@@ -171,7 +171,7 @@ class ASTVisitor
         ExtractionMatchType kind;
     };
 
-    /*  A map of Clang Decl objects to ExtractionMode values
+    /*  A map of Clang clang::Decl objects to ExtractionMode values
 
         This map is used to store the extraction mode for
         declarations that have been identified through the
@@ -181,7 +181,7 @@ class ASTVisitor
         function to determine if a declaration should be
         extracted based on the extraction mode.
     */
-    std::unordered_map<Decl const*, ExtractionInfo> extraction_;
+    std::unordered_map<clang::Decl const*, ExtractionInfo> extraction_;
 
     /* How we should traverse the current node
      */
@@ -254,13 +254,13 @@ class ASTVisitor
 
     /* A map which stores the Info types created by each decl.
      */
-    std::unordered_map<FriendDecl const*, Info const*> friendDecls_;
+    std::unordered_map<clang::FriendDecl const*, Symbol const*> friendDecls_;
 
 public:
     /** Constructor for ASTVisitor.
 
         This constructor initializes the ASTVisitor with the given configuration,
-        diagnostics, compiler instance, AST context, and Sema object.
+        diagnostics, compiler instance, AST context, and clang::Sema object.
 
         It also initializes clang custom documentation commands and
         populates `files_` with the FileInfo for files in the
@@ -270,14 +270,14 @@ public:
         @param diags The diagnostics object.
         @param compiler The compiler instance.
         @param context The AST context.
-        @param sema The Sema object.
+        @param sema The clang::Sema object.
      */
     ASTVisitor(
         ConfigImpl const& config,
         Diagnostics const& diags,
-        CompilerInstance& compiler,
-        ASTContext& context,
-        Sema& sema) noexcept;
+        clang::CompilerInstance& compiler,
+        clang::ASTContext& context,
+        clang::Sema& sema) noexcept;
 
     /** Build the metadata representation from the AST.
 
@@ -307,9 +307,9 @@ public:
         This function returns a reference to the set of Info
         declarations that have been extracted by the ASTVisitor.
 
-        @return A reference to the InfoSet containing the extracted Info declarations.
+        @return A reference to the SymbolSet containing the extracted Info declarations.
      */
-    InfoSet&
+    SymbolSet&
     results()
     {
         return info_;
@@ -320,9 +320,9 @@ public:
         This function returns a reference to the set of Info
         declarations that have been extracted by the ASTVisitor.
 
-        @return A reference to the InfoSet containing the extracted Info declarations.
+        @return A reference to the SymbolSet containing the extracted Info declarations.
      */
-    UndocumentedInfoSet&
+    UndocumentedSymbolSet&
     undocumented()
     {
         return undocumented_;
@@ -351,8 +351,8 @@ private:
      */
     template <
         class InfoTy = void,
-        std::derived_from<Decl> DeclTy>
-    Info*
+        std::derived_from<clang::Decl> DeclTy>
+    Symbol*
     traverse(DeclTy const* D);
 
     /*  Traverse a function template
@@ -362,8 +362,8 @@ private:
         concept or function template.
 
      */
-    Info*
-    traverse(FunctionTemplateDecl const* D);
+    Symbol*
+    traverse(clang::FunctionTemplateDecl const* D);
 
     /*  Traverse a using directive
 
@@ -373,16 +373,16 @@ private:
         If the parent declaration is a Namespace, we
         update its `UsingDirectives` const field.
     */
-    Info*
-    traverse(UsingDirectiveDecl const* D);
+    Symbol*
+    traverse(clang::UsingDirectiveDecl const* D);
 
     /*  Traverse a member of an anonymous union.
 
         We get the anonymous union field and traverse it
         as a regular `FieldDecl`.
      */
-    Info*
-    traverse(IndirectFieldDecl const* D);
+    Symbol*
+    traverse(clang::IndirectFieldDecl const* D);
 
     // =================================================
     // AST Traversal Helpers
@@ -391,28 +391,28 @@ private:
     /*  Traverse the members of a declaration
 
         This function is called to traverse the members of
-        a Decl that is a DeclContext with other members.
+        a clang::Decl that is a DeclContext with other members.
 
         The function will call traverseAny for all members of the
         declaration context.
     */
     template <
-        std::derived_from<Info> InfoTy,
-        std::derived_from<Decl> DeclTy>
-    requires (!std::derived_from<DeclTy, RedeclarableTemplateDecl>)
+        std::derived_from<Symbol> InfoTy,
+        std::derived_from<clang::Decl> DeclTy>
+    requires (!std::derived_from<DeclTy, clang::RedeclarableTemplateDecl>)
     void
     traverseMembers(InfoTy& I, DeclTy const* DC);
 
     template <
-        std::derived_from<Info> InfoTy,
-        std::derived_from<RedeclarableTemplateDecl> DeclTy>
+        std::derived_from<Symbol> InfoTy,
+        std::derived_from<clang::RedeclarableTemplateDecl> DeclTy>
     void
     traverseMembers(InfoTy& I, DeclTy const* DC);
 
     /*  Traverse the parents of a declaration
 
         This function is called to traverse the parents of
-        a Decl until we find the translation unit declaration
+        a clang::Decl until we find the translation unit declaration
         or a parent that has already been extracted.
 
         This function is called when the declaration is
@@ -424,15 +424,15 @@ private:
         context.
     */
     template <
-        std::derived_from<Info> InfoTy,
-        std::derived_from<Decl> DeclTy>
-    requires (!std::derived_from<DeclTy, RedeclarableTemplateDecl>)
+        std::derived_from<Symbol> InfoTy,
+        std::derived_from<clang::Decl> DeclTy>
+    requires (!std::derived_from<DeclTy, clang::RedeclarableTemplateDecl>)
     void
     traverseParent(InfoTy& I, DeclTy const* DC);
 
     template <
-        std::derived_from<Info> InfoTy,
-        std::derived_from<RedeclarableTemplateDecl> DeclTy>
+        std::derived_from<Symbol> InfoTy,
+        std::derived_from<clang::RedeclarableTemplateDecl> DeclTy>
     void
     traverseParent(InfoTy& I, DeclTy const* DC);
 
@@ -440,13 +440,13 @@ private:
 
         USRs are strings that provide an unambiguous reference to a symbol.
 
-        This function determines the underlying Decl type and
+        This function determines the underlying clang::Decl type and
         generates a USR for it.
 
         @returns true if USR generation succeeded.
     */
-    Expected<SmallString<128>>
-    generateUSR(Decl const* D) const;
+    Expected<llvm::SmallString<128>>
+    generateUSR(clang::Decl const* D) const;
 
     /*  Generate the symbol ID for a declaration.
 
@@ -460,13 +460,13 @@ private:
 
         To guarantee the uniqueness of symbols while using
         a relatively small amount of memory (vs storing
-        USRs directly), this function hashes the Decl
+        USRs directly), this function hashes the clang::Decl
         USR value with SHA1.
 
         @return true if the symbol ID could be extracted.
      */
     bool
-    generateID(Decl const* D, SymbolID& id) const;
+    generateID(clang::Decl const* D, SymbolID& id) const;
 
     /*  Extracts the symbol ID for a declaration.
 
@@ -479,16 +479,16 @@ private:
         @return the symbol ID for the declaration.
      */
     SymbolID
-    generateID(Decl const* D) const;
+    generateID(clang::Decl const* D) const;
 
     // =================================================
     // Populate functions
     // =================================================
-    template <std::derived_from<Decl> DeclTy>
+    template <std::derived_from<clang::Decl> DeclTy>
     void
-    populate(Info& I, bool isNew, DeclTy const* D);
+    populate(Symbol& I, bool isNew, DeclTy const* D);
 
-    template <std::derived_from<Decl> DeclTy>
+    template <std::derived_from<clang::Decl> DeclTy>
     void
     populate(SourceInfo& I, DeclTy const* D);
 
@@ -504,98 +504,98 @@ private:
     bool
     populate(
         Optional<Javadoc>& javadoc,
-        Decl const* D);
+        clang::Decl const* D);
 
     void
     populate(SourceInfo& I, clang::SourceLocation loc, bool definition, bool documented);
 
     void
-    populate(NamespaceInfo& I, NamespaceDecl const* D);
+    populate(NamespaceSymbol& I, clang::NamespaceDecl const* D);
 
     static
     void
-    populate(NamespaceInfo& I, TranslationUnitDecl const* D);
+    populate(NamespaceSymbol& I, clang::TranslationUnitDecl const* D);
 
     void
-    populate(RecordInfo& I, CXXRecordDecl const* D);
+    populate(RecordSymbol& I, clang::CXXRecordDecl const* D);
 
     void
-    populate(RecordInfo& I, ClassTemplateDecl const* D);
+    populate(RecordSymbol& I, clang::ClassTemplateDecl const* D);
 
     void
-    populate(RecordInfo& I, ClassTemplateSpecializationDecl const* D);
+    populate(RecordSymbol& I, clang::ClassTemplateSpecializationDecl const* D);
 
     void
-    populate(RecordInfo& I, ClassTemplatePartialSpecializationDecl const* D);
+    populate(RecordSymbol& I, clang::ClassTemplatePartialSpecializationDecl const* D);
 
     void
-    populate(FunctionInfo& I, FunctionDecl const* D);
+    populate(FunctionSymbol& I, clang::FunctionDecl const* D);
 
     void
-    populate(FunctionInfo& I, FunctionTemplateDecl const* D);
+    populate(FunctionSymbol& I, clang::FunctionTemplateDecl const* D);
 
     void
-    populate(FunctionInfo& I, CXXMethodDecl const* D);
+    populate(FunctionSymbol& I, clang::CXXMethodDecl const* D);
 
     void
-    populate(FunctionInfo& I, CXXConstructorDecl const* D);
+    populate(FunctionSymbol& I, clang::CXXConstructorDecl const* D);
 
     void
-    populate(FunctionInfo& I, CXXDestructorDecl const* D);
+    populate(FunctionSymbol& I, clang::CXXDestructorDecl const* D);
 
     void
-    populate(FunctionInfo& I, CXXConversionDecl const* D);
+    populate(FunctionSymbol& I, clang::CXXConversionDecl const* D);
 
     void
-    populate(EnumInfo& I, EnumDecl const* D);
+    populate(EnumSymbol& I, clang::EnumDecl const* D);
 
     void
-    populate(EnumConstantInfo& I, EnumConstantDecl const* D);
+    populate(EnumConstantSymbol& I, clang::EnumConstantDecl const* D);
 
     void
-    populate(TypedefInfo& I, TypedefNameDecl const* D);
+    populate(TypedefSymbol& I, clang::TypedefNameDecl const* D);
 
     void
-    populate(TypedefInfo& I, TypedefDecl const* D);
+    populate(TypedefSymbol& I, clang::TypedefDecl const* D);
 
     void
-    populate(TypedefInfo& I, TypeAliasDecl const* D);
+    populate(TypedefSymbol& I, clang::TypeAliasDecl const* D);
 
     void
-    populate(TypedefInfo& I, TypeAliasTemplateDecl const* D);
+    populate(TypedefSymbol& I, clang::TypeAliasTemplateDecl const* D);
 
     void
-    populate(VariableInfo& I, VarDecl const* D);
+    populate(VariableSymbol& I, clang::VarDecl const* D);
 
     void
-    populate(VariableInfo& I, VarTemplateDecl const* D);
+    populate(VariableSymbol& I, clang::VarTemplateDecl const* D);
 
     void
-    populate(VariableInfo& I, VarTemplateSpecializationDecl const* D);
+    populate(VariableSymbol& I, clang::VarTemplateSpecializationDecl const* D);
 
     void
-    populate(VariableInfo& I, VarTemplatePartialSpecializationDecl const* D);
+    populate(VariableSymbol& I, clang::VarTemplatePartialSpecializationDecl const* D);
 
     void
-    populate(VariableInfo& I, FieldDecl const* D);
+    populate(VariableSymbol& I, clang::FieldDecl const* D);
 
     void
-    populate(FriendInfo& I, FriendDecl const* D);
+    populate(FriendInfo& I, clang::FriendDecl const* D);
 
     void
-    populate(GuideInfo& I, CXXDeductionGuideDecl const* D);
+    populate(GuideSymbol& I, clang::CXXDeductionGuideDecl const* D);
 
     void
-    populate(GuideInfo& I, FunctionTemplateDecl const* D);
+    populate(GuideSymbol& I, clang::FunctionTemplateDecl const* D);
 
     void
-    populate(NamespaceAliasInfo& I, NamespaceAliasDecl const* D);
+    populate(NamespaceAliasSymbol& I, clang::NamespaceAliasDecl const* D);
 
     void
-    populate(UsingInfo& I, UsingDecl const* D);
+    populate(UsingSymbol& I, clang::UsingDecl const* D);
 
     void
-    populate(ConceptInfo& I, ConceptDecl const* D);
+    populate(ConceptSymbol& I, clang::ConceptDecl const* D);
 
     /*  Default function to populate the template information
 
@@ -604,34 +604,34 @@ private:
         of the template declaration.
      */
     template <
-        std::derived_from<Decl> DeclTy,
-        std::derived_from<TemplateDecl> TemplateDeclTy>
+        std::derived_from<clang::Decl> DeclTy,
+        std::derived_from<clang::TemplateDecl> TemplateDeclTy>
     void
     populate(TemplateInfo& Template, DeclTy const* D, TemplateDeclTy const* TD);
 
     void
-    populate(TemplateInfo& Template, ClassTemplateSpecializationDecl const* D, ClassTemplateDecl const* CTD);
+    populate(TemplateInfo& Template, clang::ClassTemplateSpecializationDecl const* D, clang::ClassTemplateDecl const* CTD);
 
     /*  Populate the template information for a variable template
 
         The function will populate the template parameters
         depending on whether the variable is a specialization.
     */
-    template<std::derived_from<VarDecl> VarDeclTy>
+    template<std::derived_from<clang::VarDecl> VarDeclTy>
     void
-    populate(TemplateInfo& Template, VarDeclTy const* D, VarTemplateDecl const* VTD);
+    populate(TemplateInfo& Template, VarDeclTy const* D, clang::VarTemplateDecl const* VTD);
 
     template<
-        std::derived_from<Decl> DeclTy,
-        std::derived_from<TemplateDecl> TemplateDeclTy>
+        std::derived_from<clang::Decl> DeclTy,
+        std::derived_from<clang::TemplateDecl> TemplateDeclTy>
     void
     populate(Optional<TemplateInfo>& Template, DeclTy const* D, TemplateDeclTy const* VTD)
     {
         MRDOCS_CHECK_OR(VTD);
         MRDOCS_CHECK_OR(!VTD->isImplicit());
-        if (TemplateParameterList const* TPL = VTD->getTemplateParameters();
+        if (clang::TemplateParameterList const* TPL = VTD->getTemplateParameters();
             !TPL->empty() &&
-            std::ranges::none_of(TPL->asArray(), [](NamedDecl const* ND) {
+            std::ranges::none_of(TPL->asArray(), [](clang::NamedDecl const* ND) {
                 return !ND->isImplicit();
             }))
         {
@@ -646,27 +646,27 @@ private:
     }
 
     void
-    populate(NoexceptInfo& I, FunctionProtoType const* FPT);
+    populate(NoexceptInfo& I, clang::FunctionProtoType const* FPT);
 
     void
-    populate(ExplicitInfo& I, ExplicitSpecifier const& ES);
+    populate(ExplicitInfo& I, clang::ExplicitSpecifier const& ES);
 
     void
-    populate(ExprInfo& I, Expr const* E);
-
-    template <class T>
-    void
-    populate(ConstantExprInfo<T>& I, Expr const* E);
+    populate(ExprInfo& I, clang::Expr const* E);
 
     template <class T>
     void
-    populate(ConstantExprInfo<T>& I, Expr const* E, llvm::APInt const& V);
+    populate(ConstantExprInfo<T>& I, clang::Expr const* E);
+
+    template <class T>
+    void
+    populate(ConstantExprInfo<T>& I, clang::Expr const* E, llvm::APInt const& V);
 
     void
-    populate(Polymorphic<TParam>& I, NamedDecl const* N);
+    populate(Polymorphic<TParam>& I, clang::NamedDecl const* N);
 
     void
-    populate(Optional<TemplateInfo>& TI, TemplateParameterList const* TPL)
+    populate(Optional<TemplateInfo>& TI, clang::TemplateParameterList const* TPL)
     {
         if (!TI)
         {
@@ -676,16 +676,16 @@ private:
     }
 
     void
-    populate(TemplateInfo& TI, TemplateParameterList const* TPL);
+    populate(TemplateInfo& TI, clang::TemplateParameterList const* TPL);
 
-    template <range_of<TemplateArgument> Range>
+    template <range_of<clang::TemplateArgument> Range>
     void
     populate(
         std::vector<Polymorphic<TArg>>& result,
         Range&& args)
     {
         std::size_t i = 0;
-        for (TemplateArgument const& arg : args)
+        for (clang::TemplateArgument const& arg : args)
         {
             if (arg.getIsDefaulted())
             {
@@ -694,7 +694,7 @@ private:
             // KRYSTIAN NOTE: is this correct? should we have a
             // separate TArgKind for packs instead of "unlaminating"
             // them as we are doing here?
-            if (arg.getKind() == TemplateArgument::Pack)
+            if (arg.getKind() == clang::TemplateArgument::Pack)
             {
                 populate(result, arg.pack_elements());
             }
@@ -716,88 +716,88 @@ private:
     void
     populate(
         std::vector<Polymorphic<TArg>>& result,
-        ASTTemplateArgumentListInfo const* args);
+        clang::ASTTemplateArgumentListInfo const* args);
 
-    template <std::derived_from<Info> InfoTy>
+    template <std::derived_from<Symbol> InfoTy>
     static
     void
-    populateAttributes(InfoTy& I, Decl const* D);
+    populateAttributes(InfoTy& I, clang::Decl const* D);
 
     // =================================================
     // Populate function helpers
     // =================================================
-    template <std::derived_from<Decl> DeclTy>
+    template <std::derived_from<clang::Decl> DeclTy>
     std::string
     extractName(DeclTy const* D);
 
     // Extract the name of a declaration
     std::string
-    extractName(NamedDecl const* D);
+    extractName(clang::NamedDecl const* D);
 
     // Extract the name of a declaration
     std::string
-    extractName(DeclarationName N);
+    extractName(clang::DeclarationName N);
 
-    SmallString<256>
-    qualifiedName(Decl const* D) const;
+    llvm::SmallString<256>
+    qualifiedName(clang::Decl const* D) const;
 
-    SmallString<256>
-    qualifiedName(NamedDecl const* ND) const;
-
-    void
-    addMember(NamespaceInfo& I, Info const& Member);
+    llvm::SmallString<256>
+    qualifiedName(clang::NamedDecl const* ND) const;
 
     void
-    addMember(RecordInfo& I, Info const& Member);
+    addMember(NamespaceSymbol& I, Symbol const& Member);
 
     void
-    addMember(RecordTranche& I, Info const& Member);
+    addMember(RecordSymbol& I, Symbol const& Member);
 
     void
-    addMember(EnumInfo& I, Info const& Member) const;
+    addMember(RecordTranche& I, Symbol const& Member);
 
     void
-    addMember(OverloadsInfo& I, Info const& Member) const;
+    addMember(EnumSymbol& I, Symbol const& Member) const;
 
     void
-    addMember(std::vector<SymbolID>& container, Info const& Member) const;
+    addMember(OverloadsSymbol& I, Symbol const& Member) const;
 
-    Polymorphic<TypeInfo>
-    toTypeInfo(QualType qt, TraversalMode mode);
+    void
+    addMember(std::vector<SymbolID>& container, Symbol const& Member) const;
 
-    Polymorphic<TypeInfo>
-    toTypeInfo(QualType const qt)
+    Polymorphic<Type>
+    toType(clang::QualType qt, TraversalMode mode);
+
+    Polymorphic<Type>
+    toType(clang::QualType const qt)
     {
-        return toTypeInfo(qt, TraversalMode::Dependency);
+        return toType(qt, TraversalMode::Dependency);
     }
 
-    Optional<Polymorphic<NameInfo>>
-    toNameInfo(NestedNameSpecifier NNS);
+    Optional<Polymorphic<Name>>
+    toName(clang::NestedNameSpecifier NNS);
 
-    template <class TArgRange = ArrayRef<TemplateArgument>>
-    Optional<Polymorphic<NameInfo>>
-    toNameInfo(
-        DeclarationName Name,
+    template <class TArgRange = llvm::ArrayRef<clang::TemplateArgument>>
+    Optional<Polymorphic<Name>>
+    toName(
+        clang::DeclarationName Name,
         Optional<TArgRange> TArgs = std::nullopt,
-        NestedNameSpecifier NNS = std::nullopt);
+        clang::NestedNameSpecifier NNS = std::nullopt);
 
-    template <class TArgRange = ArrayRef<TemplateArgument>>
-    Optional<Polymorphic<NameInfo>>
-    toNameInfo(
-        Decl const* D,
+    template <class TArgRange = llvm::ArrayRef<clang::TemplateArgument>>
+    Optional<Polymorphic<Name>>
+    toName(
+        clang::Decl const* D,
         Optional<TArgRange> TArgs = std::nullopt,
-        NestedNameSpecifier NNS = std::nullopt);
+        clang::NestedNameSpecifier NNS = std::nullopt);
 
     Polymorphic<TArg>
-    toTArg(TemplateArgument const& A);
+    toTArg(clang::TemplateArgument const& A);
 
     // Pretty-print an expression
     std::string
-    toString(Expr const* E);
+    toString(clang::Expr const* E);
 
     // Pretty-print a type
     std::string
-    toString(Type const* T);
+    toString(clang::Type const* T);
 
     template <class Integer>
     Integer
@@ -811,7 +811,7 @@ private:
         arguments.
      */
     std::string
-    getSourceCode(SourceRange const& R) const;
+    getSourceCode(clang::SourceRange const& R) const;
 
     /*  Struct to hold the underlying type result of a SFINAE type.
 
@@ -825,7 +825,7 @@ private:
     struct SFINAEInfo
     {
         // The underlying type of the SFINAE type.
-        QualType Type;
+        clang::QualType Type;
 
         // The template arguments used in the SFINAE context.
         std::vector<ExprInfo> Constraints;
@@ -846,13 +846,13 @@ private:
         otherwise.
      */
     Optional<SFINAEInfo>
-    extractSFINAEInfo(QualType T);
+    extractSFINAEInfo(clang::QualType T);
 
-    // @copydoc extractSFINAEInfo(QualType)
+    // @copydoc extractSFINAEInfo(clang::QualType)
     Optional<SFINAEInfo>
-    extractSFINAEInfo(Type const* T)
+    extractSFINAEInfo(clang::Type const* T)
     {
-        return extractSFINAEInfo(QualType(T, 0));
+        return extractSFINAEInfo(clang::QualType(T, 0));
     }
 
     /* Struct to hold SFINAE information.
@@ -868,13 +868,13 @@ private:
     struct SFINAETemplateInfo
     {
         /// The template declaration involved in SFINAE
-        TemplateDecl* Template = nullptr;
+        clang::TemplateDecl* Template = nullptr;
 
         /// The identifier of the member being checked.
-        IdentifierInfo const* Member = nullptr;
+        clang::IdentifierInfo const* Member = nullptr;
 
         /// The template arguments used in the SFINAE context.
-        ArrayRef<TemplateArgument> Arguments;
+        llvm::ArrayRef<clang::TemplateArgument> Arguments;
     };
 
     /* Get the template declaration and member identifier
@@ -896,7 +896,7 @@ private:
         and `Arguments` would be `{B,T}`.
      */
     Optional<SFINAETemplateInfo>
-    getSFINAETemplateInfo(QualType T, bool AllowDependentNames) const;
+    getSFINAETemplateInfo(clang::QualType T, bool AllowDependentNames) const;
 
     /* The controlling parameters of a SFINAE template
 
@@ -914,7 +914,7 @@ private:
     struct SFINAEControlParams
     {
         // The template parameters of the template declaration
-        TemplateParameterList* Parameters = nullptr;
+        clang::TemplateParameterList* Parameters = nullptr;
 
         // The controlling parameters of the template declaration
         llvm::SmallBitVector ControllingParams;
@@ -937,7 +937,7 @@ private:
        (such as `typename enable_if<B,T>::type`) will be extract instead.
      */
     Optional<SFINAEControlParams>
-    getSFINAEControlParams(TemplateDecl* TD, IdentifierInfo const* Member);
+    getSFINAEControlParams(clang::TemplateDecl* TD, clang::IdentifierInfo const* Member);
 
     Optional<SFINAEControlParams>
     getSFINAEControlParams(SFINAETemplateInfo const& SFINAE) {
@@ -954,10 +954,10 @@ private:
         arguments, the function will attempt to get the
         argument from the default template arguments.
      */
-    Optional<TemplateArgument>
+    Optional<clang::TemplateArgument>
     tryGetTemplateArgument(
-        TemplateParameterList* Parameters,
-        ArrayRef<TemplateArgument> Arguments,
+        clang::TemplateParameterList* Parameters,
+        llvm::ArrayRef<clang::TemplateArgument> Arguments,
         std::size_t Index);
 
     // =================================================
@@ -989,28 +989,28 @@ private:
         possible for the declaration.
      */
     ExtractionMode
-    checkFilters(Decl const* D, AccessSpecifier access);
+    checkFilters(clang::Decl const* D, clang::AccessSpecifier access);
 
     static
     ExtractionMode
-    checkFilters(TranslationUnitDecl const*, AccessSpecifier)
+    checkFilters(clang::TranslationUnitDecl const*, clang::AccessSpecifier)
     {
         return ExtractionMode::Regular;
     }
 
-    template <std::derived_from<Decl> DeclTy>
+    template <std::derived_from<clang::Decl> DeclTy>
     ExtractionMode
     checkFilters(DeclTy const* D)
     {
-        AccessSpecifier A = getAccess(D);
+        clang::AccessSpecifier A = getAccess(D);
         return checkFilters(D, A);
     }
 
     bool
-    checkTypeFilters(Decl const* D, AccessSpecifier access);
+    checkTypeFilters(clang::Decl const* D, clang::AccessSpecifier access);
 
     bool
-    checkFileFilters(Decl const* D);
+    checkFileFilters(clang::Decl const* D);
 
     bool
     checkFileFilters(std::string_view symbolPath) const;
@@ -1022,10 +1022,10 @@ private:
        be allowed to inherit the value from the parent.
      */
     ExtractionInfo
-    checkSymbolFilters(Decl const* D, bool AllowParent);
+    checkSymbolFilters(clang::Decl const* D, bool AllowParent);
 
     ExtractionInfo
-    checkSymbolFilters(Decl const* D)
+    checkSymbolFilters(clang::Decl const* D)
     {
         return checkSymbolFilters(D, true);
     }
@@ -1059,24 +1059,24 @@ private:
     // Element access
     // =================================================
 
-    /*  Get Info from ASTVisitor InfoSet
+    /*  Get Info from ASTVisitor SymbolSet
      */
-    Info*
+    Symbol*
     find(SymbolID const& id) const;
 
-     /*  Get Info from ASTVisitor InfoSet
+     /*  Get Info from ASTVisitor SymbolSet
 
         This function will generate a symbol ID for the
         declaration and call the other `find` function
         to get the Info object for the declaration.
      */
-    Info*
-    find(Decl const* D) const;
+    Symbol*
+    find(clang::Decl const* D) const;
 
     /*  Find or traverse a declaration
 
         This function will first attempt to find the Info
-        object for a declaration in the InfoSet.
+        object for a declaration in the SymbolSet.
 
         If the Info object does not exist, the function
         will traverse the declaration and create a new
@@ -1101,8 +1101,8 @@ private:
 
         @return a pointer to the Info object.
      */
-    Info*
-    findOrTraverse(Decl const* D)
+    Symbol*
+    findOrTraverse(clang::Decl const* D)
     {
         MRDOCS_CHECK_OR(D, nullptr);
         if (auto* I = find(D))
@@ -1129,7 +1129,7 @@ private:
     findFileInfo(clang::SourceLocation loc);
 
     FileInfo*
-    findFileInfo(Decl const* D);
+    findFileInfo(clang::Decl const* D);
 
     /* Build a FileInfo for a string path
 
@@ -1178,7 +1178,7 @@ private:
         `InfoTy` with the given `id`, and return a reference
         to the new Info object.
     */
-    template <std::derived_from<Info> InfoTy>
+    template <std::derived_from<Symbol> InfoTy>
     upsertResult<InfoTy>
     upsert(SymbolID const& id);
 
@@ -1206,14 +1206,14 @@ private:
     upsert(DeclType const* D);
 
     template <
-        std::derived_from<Info> InfoTy,
-        std::derived_from<Decl> DeclTy>
+        std::derived_from<Symbol> InfoTy,
+        std::derived_from<clang::Decl> DeclTy>
     Expected<void>
     checkUndocumented(
         SymbolID const& id,
         DeclTy const* D);
 };
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif // MRDOCS_LIB_AST_ASTVISITOR_HPP

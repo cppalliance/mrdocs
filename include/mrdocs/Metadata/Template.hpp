@@ -17,12 +17,12 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
-#include <mrdocs/Metadata/Info/SymbolID.hpp>
+#include <mrdocs/Metadata/Symbol/SymbolID.hpp>
 #include <mrdocs/Metadata/TArg.hpp>
 #include <mrdocs/Metadata/TParam.hpp>
 #include <vector>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** The kind of template or specialization.
 */
@@ -132,6 +132,6 @@ tag_invoke(
 }
 
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

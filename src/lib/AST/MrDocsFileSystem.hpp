@@ -22,7 +22,7 @@
 #include <string>
 #include <vector>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 // A proxy and overlay FS that, when a file is missing, might serve an
 // adjusted or empty file from an in-memory FS and remembers it, so repeated
@@ -36,7 +36,7 @@ namespace clang::mrdocs {
 // the "**" pattern to forgive all missing includes or specific
 // patterns like "llvm/**" to forgive all includes from LLVM.
 class MrDocsFileSystem : public llvm::vfs::FileSystem {
-    IntrusiveRefCntPtr<llvm::vfs::FileSystem> Real;
+    llvm::IntrusiveRefCntPtr<llvm::vfs::FileSystem> Real;
     std::shared_ptr<llvm::vfs::InMemoryFileSystem> Mem;
     ConfigImpl const &config_;
     clang::HeaderSearch* HeaderSearch = nullptr;
@@ -186,7 +186,7 @@ class MrDocsFileSystem : public llvm::vfs::FileSystem {
 
 public:
     MrDocsFileSystem(
-        IntrusiveRefCntPtr<llvm::vfs::FileSystem> RealFS,
+        llvm::IntrusiveRefCntPtr<llvm::vfs::FileSystem> RealFS,
         ConfigImpl const &Cfg)
         : Real(std::move(RealFS))
         , Mem(std::make_shared<llvm::vfs::InMemoryFileSystem>())
@@ -337,6 +337,6 @@ createMrDocsFileSystem(ConfigImpl const &Cfg)
     return { new MrDocsFileSystem(Real, Cfg) };
 }
 
-} // namespace clang::mrdocs
+} // namespace mrdocs
 
 #endif // MRDOCS_LIB_AST_MRDOCSFILESYSTEM_HPP

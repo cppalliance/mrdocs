@@ -12,9 +12,9 @@
 #define MRDOCS_LIB_METADATA_FINALIZERS_SORTMEMBERSFINALIZER_HPP
 
 #include <lib/CorpusImpl.hpp>
-#include <lib/Metadata/InfoSet.hpp>
+#include <lib/Metadata/SymbolSet.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** Finalizes a set of Info.
 
@@ -57,25 +57,25 @@ public:
     void
     build()
     {
-        Info* globalPtr = corpus_.find(SymbolID::global);
+        Symbol* globalPtr = corpus_.find(SymbolID::global);
         MRDOCS_CHECK_OR(globalPtr);
         MRDOCS_ASSERT(globalPtr->isNamespace());
         operator()(globalPtr->asNamespace());
     }
 
     void
-    operator()(NamespaceInfo& I);
+    operator()(NamespaceSymbol& I);
 
     void
-    operator()(RecordInfo& I);
+    operator()(RecordSymbol& I);
 
     void
-    operator()(OverloadsInfo& I);
+    operator()(OverloadsSymbol& I);
 
     void
-    operator()(Info&) {}
+    operator()(Symbol&) {}
 };
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif // MRDOCS_LIB_METADATA_FINALIZERS_SORTMEMBERSFINALIZER_HPP

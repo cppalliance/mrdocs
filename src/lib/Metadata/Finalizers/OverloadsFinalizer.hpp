@@ -12,9 +12,9 @@
 #define MRDOCS_LIB_METADATA_FINALIZERS_OVERLOADSFINALIZER_HPP
 
 #include <lib/CorpusImpl.hpp>
-#include <lib/Metadata/InfoSet.hpp>
+#include <lib/Metadata/SymbolSet.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** Finalizes a set of Info.
 
@@ -52,24 +52,24 @@ public:
     /* Visit the namespace members identifying overload sets
      */
     void
-    operator()(NamespaceInfo& I);
+    operator()(NamespaceSymbol& I);
 
     /* Visit the record members identifying overload sets
      */
     void
-    operator()(RecordInfo& I);
+    operator()(RecordSymbol& I);
 
     /* Visit the using directive shadows for overloads
      */
     void
-    operator()(UsingInfo& I);
+    operator()(UsingSymbol& I);
 
     /* No-op for other Info types
      */
     void
-    operator()(Info&) {}
+    operator()(Symbol&) {}
 };
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif // MRDOCS_LIB_METADATA_FINALIZERS_OVERLOADSFINALIZER_HPP

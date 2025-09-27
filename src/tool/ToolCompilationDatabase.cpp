@@ -15,7 +15,7 @@
 #include <lib/Support/Path.hpp>
 #include <mrdocs/Support/Report.hpp>
 
-namespace clang {
+
 namespace mrdocs {
 
 namespace {
@@ -78,8 +78,7 @@ generateCompileCommandsFile(llvm::StringRef inputPath, llvm::StringRef cmakeArgs
 Expected<MrDocsCompilationDatabase>
 generateCompilationDatabase(
     std::string_view tempDir,
-    std::shared_ptr<ConfigImpl const> const& config,
-    ThreadPool& threadPool)
+    std::shared_ptr<ConfigImpl const> const& config)
 {
     auto& settings = config->settings();
     std::string compilationDatabasePath = settings.compilationDatabase;
@@ -136,10 +135,10 @@ generateCompilationDatabase(
     std::string errorMessage;
     std::unique_ptr<clang::tooling::JSONCompilationDatabase>
         jsonDatabasePtr =
-            tooling::JSONCompilationDatabase::loadFromFile(
+            clang::tooling::JSONCompilationDatabase::loadFromFile(
                 compileCommandsPath,
                 errorMessage,
-                tooling::JSONCommandLineSyntax::AutoDetect);
+                clang::tooling::JSONCommandLineSyntax::AutoDetect);
     if (!jsonDatabasePtr)
     {
         return Unexpected(formatError(
@@ -160,4 +159,4 @@ generateCompilationDatabase(
 }
 
 } // mrdocs
-} // clang
+

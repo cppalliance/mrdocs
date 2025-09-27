@@ -16,7 +16,7 @@
 #include <llvm/Support/YAMLTraits.h>
 #include <ranges>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 namespace {
 
@@ -719,5 +719,5 @@ pattern() const
     return impl_->pattern;
 }
 
-} // clang::mrdocs
+} // mrdocs
 

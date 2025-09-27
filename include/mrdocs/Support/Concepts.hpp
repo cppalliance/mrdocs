@@ -13,7 +13,7 @@
 
 #include <ranges>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** Concept to check if a type is a range of T */
 template <class Range, class T>
@@ -156,7 +156,7 @@ concept range_of_tuple_like =
         = reference_converts_from_temporary_v<To, From>;
 #endif
 
-} // namespace clang::mrdocs
+} // namespace mrdocs
 
 
 #endif // MRDOCS_API_SUPPORT_CONCEPTS_HPP

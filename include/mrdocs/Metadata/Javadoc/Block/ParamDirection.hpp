@@ -16,7 +16,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
 
-namespace clang::mrdocs::doc {
+namespace mrdocs::doc {
 
 /** Parameter pass direction.
 */
@@ -50,6 +50,6 @@ tag_invoke(
     v = toString(kind);
 }
 
-} // clang::mrdocs::doc
+} // mrdocs::doc
 
 #endif // MRDOCS_API_METADATA_JAVADOC_BLOCK_PARAMDIRECTION_HPP

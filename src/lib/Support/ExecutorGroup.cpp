@@ -14,7 +14,7 @@
 #include <condition_variable>
 #include <unordered_set>
 
-namespace clang {
+
 namespace mrdocs {
 
 struct ExecutorGroupBase::
@@ -152,4 +152,4 @@ wait() noexcept
 }
 
 } // mrdocs
-} // clang
+

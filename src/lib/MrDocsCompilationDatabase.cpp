@@ -27,7 +27,7 @@
 #include <format>
 #include <ranges>
 
-namespace clang {
+
 namespace mrdocs {
 
 static
@@ -35,9 +35,9 @@ bool
 isCXXSrcFile(
     std::string_view filename)
 {
-    StringRef ext = llvm::sys::path::extension(filename).drop_front();
-    driver::types::ID extensionId = driver::types::lookupTypeForExtension(ext);
-    return driver::types::isCXX(extensionId);
+    llvm::StringRef ext = llvm::sys::path::extension(filename).drop_front();
+    clang::driver::types::ID extensionId = clang::driver::types::lookupTypeForExtension(ext);
+    return clang::driver::types::isCXX(extensionId);
 }
 
 static
@@ -45,7 +45,7 @@ bool
 isCXXHeaderFile(
     std::string_view filename)
 {
-    StringRef ext = llvm::sys::path::extension(filename).drop_front();
+    llvm::StringRef ext = llvm::sys::path::extension(filename).drop_front();
     return ext == "hpp" || ext == "hh" || ext == "hxx" || ext == "h++";
 }
 
@@ -54,7 +54,7 @@ bool
 isCSrcFile(
     std::string_view filename)
 {
-    StringRef ext = llvm::sys::path::extension(filename).drop_front();
+    llvm::StringRef ext = llvm::sys::path::extension(filename).drop_front();
     return ext == "c";
 }
 
@@ -63,7 +63,7 @@ bool
 isCHeaderFile(
     std::string_view filename)
 {
-    StringRef ext = llvm::sys::path::extension(filename).drop_front();
+    llvm::StringRef ext = llvm::sys::path::extension(filename).drop_front();
     return ext == "h";
 }
 
@@ -95,153 +95,153 @@ isValidMrDocsOption(
 
     if (optionMatchesAny(opt,
              // unknown options
-             driver::options::OPT_UNKNOWN,
+             clang::driver::options::OPT_UNKNOWN,
 
              // sanitizers
-             driver::options::OPT_fsanitize_EQ,
-             driver::options::OPT_fno_sanitize_EQ,
-             driver::options::OPT_fsanitize_recover_EQ,
-             driver::options::OPT_fno_sanitize_recover_EQ,
-             driver::options::OPT_fsanitize_trap_EQ,
-             driver::options::OPT_fno_sanitize_trap_EQ,
-             driver::options::OPT_fsanitize_address_use_after_scope,
-             driver::options::OPT_fexperimental_sanitize_metadata_ignorelist_EQ,
-             driver::options::OPT_fexperimental_sanitize_metadata_EQ_atomics,
-             driver::options::OPT_fexperimental_sanitize_metadata_EQ_covered,
-             driver::options::OPT_fexperimental_sanitize_metadata_EQ,
-             driver::options::OPT_fgpu_sanitize,
-             driver::options::OPT_fno_experimental_sanitize_metadata_EQ,
-             driver::options::OPT_fno_gpu_sanitize,
-             driver::options::OPT_fno_sanitize_address_globals_dead_stripping,
-             driver::options::OPT_fno_sanitize_address_outline_instrumentation,
-             driver::options::OPT_fno_sanitize_address_poison_custom_array_cookie,
-             driver::options::OPT_fno_sanitize_address_use_after_scope,
-             driver::options::OPT_fno_sanitize_address_use_odr_indicator,
-             driver::options::OPT__SLASH_fno_sanitize_address_vcasan_lib,
-             driver::options::OPT_fno_sanitize_cfi_canonical_jump_tables,
-             driver::options::OPT_fno_sanitize_cfi_cross_dso,
-             driver::options::OPT_fno_sanitize_coverage,
-             driver::options::OPT_fno_sanitize_hwaddress_experimental_aliasing,
-             driver::options::OPT_fno_sanitize_ignorelist,
-             driver::options::OPT_fno_sanitize_link_cxx_runtime,
-             driver::options::OPT_fno_sanitize_link_runtime,
-             driver::options::OPT_fno_sanitize_memory_param_retval,
-             driver::options::OPT_fno_sanitize_memory_track_origins,
-             driver::options::OPT_fno_sanitize_memory_use_after_dtor,
-             driver::options::OPT_fno_sanitize_minimal_runtime,
-             driver::options::OPT_fno_sanitize_recover_EQ,
-             driver::options::OPT_fno_sanitize_recover,
-             driver::options::OPT_fno_sanitize_stable_abi,
-             driver::options::OPT_fno_sanitize_stats,
-             driver::options::OPT_fno_sanitize_thread_atomics,
-             driver::options::OPT_fno_sanitize_thread_func_entry_exit,
-             driver::options::OPT_fno_sanitize_thread_memory_access,
-             driver::options::OPT_fno_sanitize_trap_EQ,
-             driver::options::OPT_fno_sanitize_trap,
-             driver::options::OPT_fno_sanitize_undefined_trap_on_error,
-             driver::options::OPT_fno_sanitize_EQ,
-             driver::options::OPT_sanitize_address_destructor_EQ,
-             driver::options::OPT_fsanitize_address_field_padding,
-             driver::options::OPT_fsanitize_address_globals_dead_stripping,
-             driver::options::OPT_fsanitize_address_outline_instrumentation,
-             driver::options::OPT_fsanitize_address_poison_custom_array_cookie,
-             driver::options::OPT_sanitize_address_use_after_return_EQ,
-             driver::options::OPT__SLASH_fsanitize_address_use_after_return,
-             driver::options::OPT_fsanitize_address_use_after_scope,
-             driver::options::OPT_fsanitize_address_use_odr_indicator,
-             driver::options::OPT_fsanitize_cfi_canonical_jump_tables,
-             driver::options::OPT_fsanitize_cfi_cross_dso,
-             driver::options::OPT_fsanitize_cfi_icall_normalize_integers,
-             driver::options::OPT_fsanitize_cfi_icall_generalize_pointers,
-             driver::options::OPT_fsanitize_coverage_8bit_counters,
-             driver::options::OPT_fsanitize_coverage_allowlist,
-             driver::options::OPT_fsanitize_coverage_control_flow,
-             driver::options::OPT_fsanitize_coverage_ignorelist,
-             driver::options::OPT_fsanitize_coverage_indirect_calls,
-             driver::options::OPT_fsanitize_coverage_inline_8bit_counters,
-             driver::options::OPT_fsanitize_coverage_inline_bool_flag,
-             driver::options::OPT_fsanitize_coverage_no_prune,
-             driver::options::OPT_fsanitize_coverage_pc_table,
-             driver::options::OPT_fsanitize_coverage_stack_depth,
-             driver::options::OPT_fsanitize_coverage_trace_bb,
-             driver::options::OPT_fsanitize_coverage_trace_cmp,
-             driver::options::OPT_fsanitize_coverage_trace_div,
-             driver::options::OPT_fsanitize_coverage_trace_gep,
-             driver::options::OPT_fsanitize_coverage_trace_loads,
-             driver::options::OPT_fsanitize_coverage_trace_pc_guard,
-             driver::options::OPT_fsanitize_coverage_trace_pc,
-             driver::options::OPT_fsanitize_coverage_trace_stores,
-             driver::options::OPT_fsanitize_coverage_type,
-             driver::options::OPT_fsanitize_coverage,
-             driver::options::OPT_fsanitize_hwaddress_abi_EQ,
-             driver::options::OPT_fsanitize_hwaddress_experimental_aliasing,
-             driver::options::OPT_fsanitize_ignorelist_EQ,
-             driver::options::OPT_fsanitize_link_cxx_runtime,
-             driver::options::OPT_fsanitize_link_runtime,
-             driver::options::OPT_fsanitize_memory_param_retval,
-             driver::options::OPT_fsanitize_memory_track_origins_EQ,
-             driver::options::OPT_fsanitize_memory_track_origins,
-             driver::options::OPT_fsanitize_memory_use_after_dtor,
-             driver::options::OPT_fsanitize_memtag_mode_EQ,
-             driver::options::OPT_fsanitize_minimal_runtime,
-             driver::options::OPT_fsanitize_recover_EQ,
-             driver::options::OPT_fsanitize_recover,
-             driver::options::OPT_fsanitize_stable_abi,
-             driver::options::OPT_fsanitize_stats,
-             driver::options::OPT_fsanitize_system_ignorelist_EQ,
-             driver::options::OPT_fsanitize_thread_atomics,
-             driver::options::OPT_fsanitize_thread_func_entry_exit,
-             driver::options::OPT_fsanitize_thread_memory_access,
-             driver::options::OPT_fsanitize_trap_EQ,
-             driver::options::OPT_fsanitize_trap,
-             driver::options::OPT_fsanitize_undefined_strip_path_components_EQ,
-             driver::options::OPT_fsanitize_undefined_trap_on_error,
-             driver::options::OPT__SLASH_fsanitize_EQ_address,
-             driver::options::OPT_fsanitize_EQ,
-             driver::options::OPT_shared_libsan,
-             driver::options::OPT_static_libsan,
-             driver::options::OPT_static_libsan,
+             clang::driver::options::OPT_fsanitize_EQ,
+             clang::driver::options::OPT_fno_sanitize_EQ,
+             clang::driver::options::OPT_fsanitize_recover_EQ,
+             clang::driver::options::OPT_fno_sanitize_recover_EQ,
+             clang::driver::options::OPT_fsanitize_trap_EQ,
+             clang::driver::options::OPT_fno_sanitize_trap_EQ,
+             clang::driver::options::OPT_fsanitize_address_use_after_scope,
+             clang::driver::options::OPT_fexperimental_sanitize_metadata_ignorelist_EQ,
+             clang::driver::options::OPT_fexperimental_sanitize_metadata_EQ_atomics,
+             clang::driver::options::OPT_fexperimental_sanitize_metadata_EQ_covered,
+             clang::driver::options::OPT_fexperimental_sanitize_metadata_EQ,
+             clang::driver::options::OPT_fgpu_sanitize,
+             clang::driver::options::OPT_fno_experimental_sanitize_metadata_EQ,
+             clang::driver::options::OPT_fno_gpu_sanitize,
+             clang::driver::options::OPT_fno_sanitize_address_globals_dead_stripping,
+             clang::driver::options::OPT_fno_sanitize_address_outline_instrumentation,
+             clang::driver::options::OPT_fno_sanitize_address_poison_custom_array_cookie,
+             clang::driver::options::OPT_fno_sanitize_address_use_after_scope,
+             clang::driver::options::OPT_fno_sanitize_address_use_odr_indicator,
+             clang::driver::options::OPT__SLASH_fno_sanitize_address_vcasan_lib,
+             clang::driver::options::OPT_fno_sanitize_cfi_canonical_jump_tables,
+             clang::driver::options::OPT_fno_sanitize_cfi_cross_dso,
+             clang::driver::options::OPT_fno_sanitize_coverage,
+             clang::driver::options::OPT_fno_sanitize_hwaddress_experimental_aliasing,
+             clang::driver::options::OPT_fno_sanitize_ignorelist,
+             clang::driver::options::OPT_fno_sanitize_link_cxx_runtime,
+             clang::driver::options::OPT_fno_sanitize_link_runtime,
+             clang::driver::options::OPT_fno_sanitize_memory_param_retval,
+             clang::driver::options::OPT_fno_sanitize_memory_track_origins,
+             clang::driver::options::OPT_fno_sanitize_memory_use_after_dtor,
+             clang::driver::options::OPT_fno_sanitize_minimal_runtime,
+             clang::driver::options::OPT_fno_sanitize_recover_EQ,
+             clang::driver::options::OPT_fno_sanitize_recover,
+             clang::driver::options::OPT_fno_sanitize_stable_abi,
+             clang::driver::options::OPT_fno_sanitize_stats,
+             clang::driver::options::OPT_fno_sanitize_thread_atomics,
+             clang::driver::options::OPT_fno_sanitize_thread_func_entry_exit,
+             clang::driver::options::OPT_fno_sanitize_thread_memory_access,
+             clang::driver::options::OPT_fno_sanitize_trap_EQ,
+             clang::driver::options::OPT_fno_sanitize_trap,
+             clang::driver::options::OPT_fno_sanitize_undefined_trap_on_error,
+             clang::driver::options::OPT_fno_sanitize_EQ,
+             clang::driver::options::OPT_sanitize_address_destructor_EQ,
+             clang::driver::options::OPT_fsanitize_address_field_padding,
+             clang::driver::options::OPT_fsanitize_address_globals_dead_stripping,
+             clang::driver::options::OPT_fsanitize_address_outline_instrumentation,
+             clang::driver::options::OPT_fsanitize_address_poison_custom_array_cookie,
+             clang::driver::options::OPT_sanitize_address_use_after_return_EQ,
+             clang::driver::options::OPT__SLASH_fsanitize_address_use_after_return,
+             clang::driver::options::OPT_fsanitize_address_use_after_scope,
+             clang::driver::options::OPT_fsanitize_address_use_odr_indicator,
+             clang::driver::options::OPT_fsanitize_cfi_canonical_jump_tables,
+             clang::driver::options::OPT_fsanitize_cfi_cross_dso,
+             clang::driver::options::OPT_fsanitize_cfi_icall_normalize_integers,
+             clang::driver::options::OPT_fsanitize_cfi_icall_generalize_pointers,
+             clang::driver::options::OPT_fsanitize_coverage_8bit_counters,
+             clang::driver::options::OPT_fsanitize_coverage_allowlist,
+             clang::driver::options::OPT_fsanitize_coverage_control_flow,
+             clang::driver::options::OPT_fsanitize_coverage_ignorelist,
+             clang::driver::options::OPT_fsanitize_coverage_indirect_calls,
+             clang::driver::options::OPT_fsanitize_coverage_inline_8bit_counters,
+             clang::driver::options::OPT_fsanitize_coverage_inline_bool_flag,
+             clang::driver::options::OPT_fsanitize_coverage_no_prune,
+             clang::driver::options::OPT_fsanitize_coverage_pc_table,
+             clang::driver::options::OPT_fsanitize_coverage_stack_depth,
+             clang::driver::options::OPT_fsanitize_coverage_trace_bb,
+             clang::driver::options::OPT_fsanitize_coverage_trace_cmp,
+             clang::driver::options::OPT_fsanitize_coverage_trace_div,
+             clang::driver::options::OPT_fsanitize_coverage_trace_gep,
+             clang::driver::options::OPT_fsanitize_coverage_trace_loads,
+             clang::driver::options::OPT_fsanitize_coverage_trace_pc_guard,
+             clang::driver::options::OPT_fsanitize_coverage_trace_pc,
+             clang::driver::options::OPT_fsanitize_coverage_trace_stores,
+             clang::driver::options::OPT_fsanitize_coverage_type,
+             clang::driver::options::OPT_fsanitize_coverage,
+             clang::driver::options::OPT_fsanitize_hwaddress_abi_EQ,
+             clang::driver::options::OPT_fsanitize_hwaddress_experimental_aliasing,
+             clang::driver::options::OPT_fsanitize_ignorelist_EQ,
+             clang::driver::options::OPT_fsanitize_link_cxx_runtime,
+             clang::driver::options::OPT_fsanitize_link_runtime,
+             clang::driver::options::OPT_fsanitize_memory_param_retval,
+             clang::driver::options::OPT_fsanitize_memory_track_origins_EQ,
+             clang::driver::options::OPT_fsanitize_memory_track_origins,
+             clang::driver::options::OPT_fsanitize_memory_use_after_dtor,
+             clang::driver::options::OPT_fsanitize_memtag_mode_EQ,
+             clang::driver::options::OPT_fsanitize_minimal_runtime,
+             clang::driver::options::OPT_fsanitize_recover_EQ,
+             clang::driver::options::OPT_fsanitize_recover,
+             clang::driver::options::OPT_fsanitize_stable_abi,
+             clang::driver::options::OPT_fsanitize_stats,
+             clang::driver::options::OPT_fsanitize_system_ignorelist_EQ,
+             clang::driver::options::OPT_fsanitize_thread_atomics,
+             clang::driver::options::OPT_fsanitize_thread_func_entry_exit,
+             clang::driver::options::OPT_fsanitize_thread_memory_access,
+             clang::driver::options::OPT_fsanitize_trap_EQ,
+             clang::driver::options::OPT_fsanitize_trap,
+             clang::driver::options::OPT_fsanitize_undefined_strip_path_components_EQ,
+             clang::driver::options::OPT_fsanitize_undefined_trap_on_error,
+             clang::driver::options::OPT__SLASH_fsanitize_EQ_address,
+             clang::driver::options::OPT_fsanitize_EQ,
+             clang::driver::options::OPT_shared_libsan,
+             clang::driver::options::OPT_static_libsan,
+             clang::driver::options::OPT_static_libsan,
 
              // diagnostic options
-             driver::options::OPT_Diag_Group,
-             driver::options::OPT_W_value_Group,
-             driver::options::OPT__SLASH_wd,
+             clang::driver::options::OPT_Diag_Group,
+             clang::driver::options::OPT_W_value_Group,
+             clang::driver::options::OPT__SLASH_wd,
 
              // language conformance options
-             driver::options::OPT_pedantic_Group,
-             driver::options::OPT__SLASH_permissive,
-             driver::options::OPT__SLASH_permissive_,
+             clang::driver::options::OPT_pedantic_Group,
+             clang::driver::options::OPT__SLASH_permissive,
+             clang::driver::options::OPT__SLASH_permissive_,
 
              // ignored options
-             driver::options::OPT_cl_ignored_Group,
-             driver::options::OPT_cl_ignored_Group,
-             driver::options::OPT_clang_ignored_f_Group,
-             driver::options::OPT_clang_ignored_gcc_optimization_f_Group,
-             driver::options::OPT_clang_ignored_legacy_options_Group,
-             driver::options::OPT_clang_ignored_m_Group,
-             driver::options::OPT_flang_ignored_w_Group
+             clang::driver::options::OPT_cl_ignored_Group,
+             clang::driver::options::OPT_cl_ignored_Group,
+             clang::driver::options::OPT_clang_ignored_f_Group,
+             clang::driver::options::OPT_clang_ignored_gcc_optimization_f_Group,
+             clang::driver::options::OPT_clang_ignored_legacy_options_Group,
+             clang::driver::options::OPT_clang_ignored_m_Group,
+             clang::driver::options::OPT_flang_ignored_w_Group
 #if 0
             // input file options
-            driver::options::OPT_INPUT,
+            clang::driver::options::OPT_INPUT,
 
             // output file options
-            driver::options::OPT_o,
-            driver::options::OPT__SLASH_o,
-            driver::options::OPT__SLASH_Fo,
-            driver::options::OPT__SLASH_Fe,
-            driver::options::OPT__SLASH_Fd,
-            driver::options::OPT__SLASH_FA,
-            driver::options::OPT__SLASH_Fa,
-            driver::options::OPT__SLASH_Fi,
-            driver::options::OPT__SLASH_FR,
-            driver::options::OPT__SLASH_Fr,
-            driver::options::OPT__SLASH_Fm,
-            driver::options::OPT__SLASH_Fx,
+            clang::driver::options::OPT_o,
+            clang::driver::options::OPT__SLASH_o,
+            clang::driver::options::OPT__SLASH_Fo,
+            clang::driver::options::OPT__SLASH_Fe,
+            clang::driver::options::OPT__SLASH_Fd,
+            clang::driver::options::OPT__SLASH_FA,
+            clang::driver::options::OPT__SLASH_Fa,
+            clang::driver::options::OPT__SLASH_Fi,
+            clang::driver::options::OPT__SLASH_FR,
+            clang::driver::options::OPT__SLASH_Fr,
+            clang::driver::options::OPT__SLASH_Fm,
+            clang::driver::options::OPT__SLASH_Fx,
 #endif
-            // driver::options::OPT__SLASH_TP
-            // driver::options::OPT__SLASH_Tp
-            // driver::options::OPT__SLASH_TC
-            // driver::options::OPT__SLASH_Tc
+            // clang::driver::options::OPT__SLASH_TP
+            // clang::driver::options::OPT__SLASH_Tp
+            // clang::driver::options::OPT__SLASH_TC
+            // clang::driver::options::OPT__SLASH_Tc
     ))
     {
         return false;
@@ -273,7 +273,7 @@ isValidMrDocsOption(
 static
 std::vector<std::string>
 adjustCommandLine(
-    StringRef const workingDir,
+    llvm::StringRef const workingDir,
     std::vector<std::string> const& cmdline,
     std::shared_ptr<Config const> const& config,
     std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories,
@@ -307,10 +307,10 @@ adjustCommandLine(
     // command line option formats. The value is deduced from
     // the `-drive-mode` option or from `progName`.
     // Common values are "gcc", "g++", "cpp", "cl" and "flang".
-    StringRef const driver_mode = driver::getDriverMode(progName, cmdLineCStrs);
+    llvm::StringRef const driver_mode = clang::driver::getDriverMode(progName, cmdLineCStrs);
     // Identify if we should use "msvc/clang-cl" or "clang/gcc" format
     // for options.
-    bool const is_clang_cl = driver::IsClangCL(driver_mode);
+    bool const is_clang_cl = clang::driver::IsClangCL(driver_mode);
 
     // ------------------------------------------------------
     // Supress all warnings
@@ -502,7 +502,7 @@ adjustCommandLine(
     // errors.
     llvm::opt::OptTable const& opts_table = clang::driver::getDriverOptTable();
     llvm::opt::Visibility visibility(is_clang_cl ?
-        driver::options::CLOption : driver::options::ClangOption);
+        clang::driver::options::CLOption : clang::driver::options::ClangOption);
     unsigned idx = 1;
     while (idx < cmdline.size())
     {
@@ -546,14 +546,14 @@ makeAbsoluteAndNative(
 
 MrDocsCompilationDatabase::
 MrDocsCompilationDatabase(
-    StringRef const workingDir,
+    llvm::StringRef const workingDir,
     CompilationDatabase const& inner,
     std::shared_ptr<Config const> const& config,
     std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
-    using tooling::CompileCommand;
+    using clang::tooling::CompileCommand;
 
     std::vector<CompileCommand> allCommands = inner.getAllCompileCommands();
     AllCommands_.reserve(allCommands.size());
@@ -591,7 +591,7 @@ MrDocsCompilationDatabase(
     }
 }
 
-std::vector<tooling::CompileCommand>
+std::vector<clang::tooling::CompileCommand>
 MrDocsCompilationDatabase::
 getCompileCommands(
     llvm::StringRef FilePath) const
@@ -602,7 +602,7 @@ getCompileCommands(
     auto const it = IndexByFile_.find(nativeFilePath);
     if (it == IndexByFile_.end())
         return {};
-    std::vector<tooling::CompileCommand> Commands;
+    std::vector<clang::tooling::CompileCommand> Commands;
     Commands.push_back(AllCommands_[it->getValue()]);
     return Commands;
 }
@@ -618,7 +618,7 @@ getAllFiles() const
     return allFiles;
 }
 
-std::vector<tooling::CompileCommand>
+std::vector<clang::tooling::CompileCommand>
 MrDocsCompilationDatabase::
 getAllCompileCommands() const
 {
@@ -626,4 +626,4 @@ getAllCompileCommands() const
 }
 
 } // mrdocs
-} // clang
+

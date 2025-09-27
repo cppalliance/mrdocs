@@ -12,15 +12,15 @@
 #define MRDOCS_LIB_METADATA_FINALIZERS_JAVADOC_FUNCTION_HPP
 
 #include <lib/CorpusImpl.hpp>
-#include <lib/Metadata/InfoSet.hpp>
+#include <lib/Metadata/SymbolSet.hpp>
 #include <mrdocs/Support/Algorithm.hpp>
 #include <format>
 #include <utility>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 namespace {
 bool
-isSpecialFunction(FunctionInfo const& I)
+isSpecialFunction(FunctionSymbol const& I)
 {
     return
         I.Class != FunctionClass::Normal ||
@@ -28,14 +28,14 @@ isSpecialFunction(FunctionInfo const& I)
 }
 
 bool
-isDefaultConstructor(FunctionInfo const& I)
+isDefaultConstructor(FunctionSymbol const& I)
 {
     return I.Class == FunctionClass::Constructor && I.Params.empty();
 }
 
 template <bool move, bool assignment>
 bool
-isCopyOrMoveConstructorOrAssignment(FunctionInfo const& I)
+isCopyOrMoveConstructorOrAssignment(FunctionSymbol const& I)
 {
     if constexpr (!assignment)
     {
@@ -47,7 +47,7 @@ isCopyOrMoveConstructorOrAssignment(FunctionInfo const& I)
     }
     MRDOCS_CHECK_OR(I.Params.size() == 1, false);
     auto const& param = I.Params[0];
-    Polymorphic<TypeInfo> const& paramType = param.Type;
+    Polymorphic<Type> const& paramType = param.Type;
     MRDOCS_ASSERT(!paramType.valueless_after_move());
     if constexpr (!move)
     {
@@ -57,17 +57,17 @@ isCopyOrMoveConstructorOrAssignment(FunctionInfo const& I)
     {
         MRDOCS_CHECK_OR(paramType->isRValueReference(), false);
     }
-    using RefType = std::conditional_t<move, RValueReferenceTypeInfo, LValueReferenceTypeInfo>;
+    using RefType = std::conditional_t<move, RValueReferenceType, LValueReferenceType>;
     auto const& paramRefType = static_cast<RefType const &>(*paramType);
     auto const& paramRefPointeeOpt = paramRefType.PointeeType;
     MRDOCS_CHECK_OR(paramRefPointeeOpt, false);
-    TypeInfo const& paramRefPointee = *paramRefPointeeOpt;
+    Type const& paramRefPointee = *paramRefPointeeOpt;
     auto const *paramRefPointeeNamed = paramRefPointee.asNamedPtr();
     MRDOCS_CHECK_OR(paramRefPointeeNamed, false);
     MRDOCS_CHECK_OR(paramRefPointeeNamed->Name, false);
     auto const& paramName = paramRefPointeeNamed->Name;
     MRDOCS_CHECK_OR(paramName, false);
-    auto const& paramRefPointeeNamedName = paramName->Name;
+    auto const& paramRefPointeeNamedName = paramName->Identifier;
     MRDOCS_CHECK_OR(!paramRefPointeeNamedName.empty(), false);
     SymbolID const& id = paramName->id;
     MRDOCS_CHECK_OR(id, false);
@@ -75,50 +75,50 @@ isCopyOrMoveConstructorOrAssignment(FunctionInfo const& I)
 }
 
 bool
-isCopyConstructor(FunctionInfo const& I)
+isCopyConstructor(FunctionSymbol const& I)
 {
     return isCopyOrMoveConstructorOrAssignment<false, false>(I);
 }
 
 bool
-isMoveConstructor(FunctionInfo const& I)
+isMoveConstructor(FunctionSymbol const& I)
 {
     return isCopyOrMoveConstructorOrAssignment<true, false>(I);
 }
 
 bool
-isCopyAssignment(FunctionInfo const& I)
+isCopyAssignment(FunctionSymbol const& I)
 {
     return isCopyOrMoveConstructorOrAssignment<false, true>(I);
 }
 
 bool
-isMoveAssignment(FunctionInfo const& I)
+isMoveAssignment(FunctionSymbol const& I)
 {
     return isCopyOrMoveConstructorOrAssignment<true, true>(I);
 }
 
 Optional<std::string_view>
-innermostTypenameString(Polymorphic<TypeInfo> const& T)
+innermostTypenameString(Polymorphic<Type> const& T)
 {
     auto& R = innermostType(T);
     MRDOCS_CHECK_OR(R->isNamed(), {});
-    MRDOCS_CHECK_OR(dynamic_cast<NamedTypeInfo const &>(*R).Name, {});
-    MRDOCS_CHECK_OR(!dynamic_cast<NamedTypeInfo const &>(*R).Name->Name.empty(),
+    MRDOCS_CHECK_OR(dynamic_cast<NamedType const &>(*R).Name, {});
+    MRDOCS_CHECK_OR(!dynamic_cast<NamedType const &>(*R).Name->Identifier.empty(),
                     {});
-    auto& RStr = dynamic_cast<const NamedTypeInfo &>(*R).Name->Name;
+    auto& RStr = dynamic_cast<const NamedType &>(*R).Name->Identifier;
     return RStr;
 }
 
 //Optional<std::string_view>
-//innermostTypenameString(Optional<Polymorphic<TypeInfo>> const& T)
+//innermostTypenameString(Optional<Polymorphic<Type>> const& T)
 //{
 //    MRDOCS_CHECK_OR(T, {});
 //    return innermostTypenameString(*T);
 //}
 
 bool
-populateFunctionBriefFromClass(FunctionInfo& I, CorpusImpl const& corpus)
+populateFunctionBriefFromClass(FunctionSymbol& I, CorpusImpl const& corpus)
 {
     switch (I.Class)
     {
@@ -194,7 +194,7 @@ populateFunctionBriefFromClass(FunctionInfo& I, CorpusImpl const& corpus)
 }
 
 bool
-isStreamInsertion(FunctionInfo const& function)
+isStreamInsertion(FunctionSymbol const& function)
 {
     MRDOCS_CHECK_OR(!function.IsRecordMethod, false);
     MRDOCS_CHECK_OR(function.Params.size() == 2, false);
@@ -202,11 +202,11 @@ isStreamInsertion(FunctionInfo const& function)
     // Check first param is a mutable left reference
     auto& firstParam = function.Params[0];
     MRDOCS_CHECK_OR(firstParam, false);
-    Polymorphic<TypeInfo> const& firstQualType = firstParam.Type;
+    Polymorphic<Type> const& firstQualType = firstParam.Type;
     MRDOCS_ASSERT(!firstQualType.valueless_after_move());
     MRDOCS_CHECK_OR(firstQualType->isLValueReference(), false);
     auto& firstNamedTypeOpt =
-        dynamic_cast<LValueReferenceTypeInfo const &>(*firstQualType)
+        dynamic_cast<LValueReferenceType const &>(*firstQualType)
             .PointeeType;
     MRDOCS_CHECK_OR(firstNamedTypeOpt, false);
     auto& firstNamedType = *firstNamedTypeOpt;
@@ -216,7 +216,7 @@ isStreamInsertion(FunctionInfo const& function)
 }
 
 bool
-populateFunctionBriefFromOperator(FunctionInfo& I)
+populateFunctionBriefFromOperator(FunctionSymbol& I)
 {
     MRDOCS_CHECK_OR(I.OverloadedOperator != OperatorKind::None, false);
 
@@ -252,7 +252,7 @@ populateFunctionBriefFromOperator(FunctionInfo& I)
 }
 
 void
-populateFunctionBrief(FunctionInfo& I, CorpusImpl const& corpus)
+populateFunctionBrief(FunctionSymbol& I, CorpusImpl const& corpus)
 {
     MRDOCS_CHECK_OR(!I.javadoc->brief);
     MRDOCS_CHECK_OR(!populateFunctionBriefFromClass(I, corpus));
@@ -260,25 +260,23 @@ populateFunctionBrief(FunctionInfo& I, CorpusImpl const& corpus)
 }
 
 
-
-
-Info const*
+Symbol const*
 getInfo(
-    Polymorphic<TypeInfo> const& R,
+    Polymorphic<Type> const& R,
     CorpusImpl const& corpus)
 {
     SymbolID const id = R->namedSymbol();
     MRDOCS_CHECK_OR(id, nullptr);
-    Info const* Rinfo = corpus.find(id);
+    Symbol const* Rinfo = corpus.find(id);
     return Rinfo;
 }
 
 doc::Brief const*
 getInfoBrief(
-    Polymorphic<TypeInfo> const& R,
+    Polymorphic<Type> const& R,
     CorpusImpl const& corpus)
 {
-    Info const* Rinfo = getInfo(R, corpus);
+    Symbol const* Rinfo = getInfo(R, corpus);
     MRDOCS_CHECK_OR(Rinfo, nullptr);
     MRDOCS_CHECK_OR(Rinfo->javadoc, nullptr);
     MRDOCS_CHECK_OR(Rinfo->javadoc->brief, nullptr);
@@ -287,7 +285,7 @@ getInfoBrief(
 
 bool
 populateFunctionReturnsFromFunctionBrief(
-    FunctionInfo& I)
+    FunctionSymbol& I)
 {
     MRDOCS_CHECK_OR(I.javadoc->brief, false);
     MRDOCS_CHECK_OR(I.javadoc->brief->children.size() == 1, false);
@@ -316,8 +314,8 @@ populateFunctionReturnsFromFunctionBrief(
 
 bool
 populateFunctionReturnsForSpecial(
-    FunctionInfo& I,
-    Polymorphic<TypeInfo> const& innerR,
+    FunctionSymbol& I,
+    Polymorphic<Type> const& innerR,
     CorpusImpl const& corpus)
 {
     if (I.Class == FunctionClass::Conversion)
@@ -352,7 +350,7 @@ populateFunctionReturnsForSpecial(
     MRDOCS_ASSERT(!I.ReturnType.valueless_after_move());
     if (I.ReturnType->isLValueReference())
     {
-        Info const* RInfo = getInfo(innerR, corpus);
+        Symbol const* RInfo = getInfo(innerR, corpus);
         MRDOCS_CHECK_OR(RInfo, false);
         MRDOCS_CHECK_OR(RInfo->id == I.Parent, false);
         I.javadoc->returns.emplace_back("Reference to the current object");
@@ -360,7 +358,7 @@ populateFunctionReturnsForSpecial(
     }
     else if (I.ReturnType->isPointer())
     {
-        Info const* RInfo = getInfo(innerR, corpus);
+        Symbol const* RInfo = getInfo(innerR, corpus);
         MRDOCS_CHECK_OR(RInfo, false);
         MRDOCS_CHECK_OR(RInfo->id == I.Parent, false);
         I.javadoc->returns.emplace_back("Pointer to the current object");
@@ -381,7 +379,7 @@ populateFunctionReturnsForSpecial(
         MRDOCS_CHECK_OR(I.ReturnType, false);
         MRDOCS_CHECK_OR(I.ReturnType->isNamed(), false);
         MRDOCS_CHECK_OR(
-            dynamic_cast<NamedTypeInfo &>(*I.ReturnType).FundamentalType ==
+            dynamic_cast<NamedType &>(*I.ReturnType).FundamentalType ==
                 FundamentalTypeKind::Bool,
             false);
         doc::Returns r;
@@ -437,8 +435,8 @@ populateFunctionReturnsForSpecial(
     MRDOCS_ASSERT(!innerR.valueless_after_move());
     if (I.IsRecordMethod &&
         innerR->isNamed() &&
-        dynamic_cast<NamedTypeInfo const &>(*innerR).Name->id &&
-        dynamic_cast<NamedTypeInfo const &>(*innerR).Name->id == I.Parent)
+        dynamic_cast<NamedType const &>(*innerR).Name->id &&
+        dynamic_cast<NamedType const &>(*innerR).Name->id == I.Parent)
     {
         MRDOCS_CHECK_OR(I.ReturnType, false);
         MRDOCS_ASSERT(!I.ReturnType.valueless_after_move());
@@ -467,8 +465,8 @@ populateFunctionReturnsForSpecial(
 
 bool
 populateFunctionReturnsFromReturnTypeBrief(
-    FunctionInfo& I,
-    Polymorphic<TypeInfo> const& innerR,
+    FunctionSymbol& I,
+    Polymorphic<Type> const& innerR,
     CorpusImpl const& corpus)
 {
     if (auto* brief = getInfoBrief(innerR, corpus))
@@ -480,7 +478,7 @@ populateFunctionReturnsFromReturnTypeBrief(
 }
 
 void
-populateFunctionReturns(FunctionInfo& I, CorpusImpl const& corpus)
+populateFunctionReturns(FunctionSymbol& I, CorpusImpl const& corpus)
 {
     MRDOCS_CHECK_OR(I.javadoc->returns.empty());
 
@@ -495,9 +493,9 @@ populateFunctionReturns(FunctionInfo& I, CorpusImpl const& corpus)
     MRDOCS_CHECK_OR(inner);
     if (inner->isNamed())
     {
-        auto& Ninner = dynamic_cast<NamedTypeInfo const &>(*inner);
+        auto& Ninner = dynamic_cast<NamedType const &>(*inner);
         MRDOCS_CHECK_OR(Ninner.Name);
-        MRDOCS_CHECK_OR(!Ninner.Name->Name.empty());
+        MRDOCS_CHECK_OR(!Ninner.Name->Identifier.empty());
         MRDOCS_CHECK_OR(Ninner.FundamentalType != FundamentalTypeKind::Void);
     }
 
@@ -515,10 +513,10 @@ populateFunctionReturns(FunctionInfo& I, CorpusImpl const& corpus)
     a list of parameters separated by commas. This function
     returns a list of all parameter names in the javadoc.
  */
-SmallVector<std::string_view, 32>
+llvm::SmallVector<std::string_view, 32>
 getJavadocParamNames(Javadoc const& javadoc)
 {
-    SmallVector<std::string_view, 32> result;
+    llvm::SmallVector<std::string_view, 32> result;
     for (auto const& javadocParam: javadoc.params)
     {
         auto const& paramNamesStr = javadocParam.name;
@@ -533,7 +531,7 @@ getJavadocParamNames(Javadoc const& javadoc)
 
 bool
 setCntrOrAssignParamName(
-    FunctionInfo& I,
+    FunctionSymbol& I,
     Param& param,
     std::size_t const index)
 {
@@ -553,7 +551,7 @@ setCntrOrAssignParamName(
         });
     MRDOCS_CHECK_OR(param.Type, false);
     MRDOCS_ASSERT(!param.Type.valueless_after_move());
-    Polymorphic<TypeInfo>& innerP = innermostType(param.Type);
+    Polymorphic<Type>& innerP = innermostType(param.Type);
     std::string_view paramName = "value";
     if (innerP->namedSymbol() == I.Parent)
     {
@@ -566,7 +564,7 @@ setCntrOrAssignParamName(
 
 bool
 setStreamOperatorParamName(
-    FunctionInfo& I,
+    FunctionSymbol& I,
     Param& param,
     std::size_t const index)
 {
@@ -588,7 +586,7 @@ setStreamOperatorParamName(
 
 bool
 setBinaryOpParamName(
-    FunctionInfo& I,
+    FunctionSymbol& I,
     Param& param,
     std::size_t const index)
 {
@@ -613,7 +611,7 @@ setBinaryOpParamName(
 
 bool
 setUnaryOpParamName(
-    FunctionInfo& I,
+    FunctionSymbol& I,
     Param& param,
     std::size_t const index)
 {
@@ -637,7 +635,7 @@ setUnaryOpParamName(
 
 bool
 setSpecialFunctionParamName(
-    FunctionInfo& I,
+    FunctionSymbol& I,
     Param& param,
     std::size_t index)
 {
@@ -650,7 +648,7 @@ setSpecialFunctionParamName(
 
 bool
 setCntrOrAssignParamDoc(
-    FunctionInfo& I,
+    FunctionSymbol& I,
     Param& param,
     std::size_t const index)
 {
@@ -669,11 +667,11 @@ setCntrOrAssignParamDoc(
     MRDOCS_CHECK_OR(innerParam, false);
     MRDOCS_CHECK_OR(innerParam->isNamed(), false);
     std::string_view const paramNoun
-        = dynamic_cast<NamedTypeInfo &>(*innerParam).FundamentalType ? "value"
+        = dynamic_cast<NamedType &>(*innerParam).FundamentalType ? "value"
                                                                     : "object";
     std::string_view const functionVerb = [&]() {
         bool const isAssign = I.OverloadedOperator == OperatorKind::Equal;
-        if (dynamic_cast<NamedTypeInfo &>(*innerParam).FundamentalType)
+        if (dynamic_cast<NamedType &>(*innerParam).FundamentalType)
         {
             return !isAssign ? "construct" : "assign";
         }
@@ -695,7 +693,7 @@ setCntrOrAssignParamDoc(
 
 bool
 setBinaryOpParamDoc(
-    FunctionInfo& I,
+    FunctionSymbol& I,
     Param& param,
     std::size_t const index)
 {
@@ -714,7 +712,7 @@ setBinaryOpParamDoc(
 
 bool
 setUnaryOpParamDoc(
-    FunctionInfo& I,
+    FunctionSymbol& I,
     Param& param,
     std::size_t const index)
 {
@@ -730,7 +728,7 @@ setUnaryOpParamDoc(
 
 bool
 setStreamOperatorParamDoc(
-    FunctionInfo& I,
+    FunctionSymbol& I,
     Param& param,
     std::size_t const index)
 {
@@ -749,7 +747,7 @@ setStreamOperatorParamDoc(
 
 void
 setFunctionParamDoc(
-    FunctionInfo& I,
+    FunctionSymbol& I,
     Param& param,
     std::size_t const index,
     CorpusImpl const& corpus)
@@ -783,10 +781,10 @@ setFunctionParamDoc(
 
 void
 populateFunctionParam(
-    FunctionInfo& I,
+    FunctionSymbol& I,
     Param& param,
     std::size_t const index,
-    SmallVector<std::string_view, 32>& documentedParams,
+    llvm::SmallVector<std::string_view, 32>& documentedParams,
     CorpusImpl const& corpus)
 {
     if (!param.Name)
@@ -802,7 +800,7 @@ populateFunctionParam(
 }
 
 void
-populateFunctionParams(FunctionInfo& I, CorpusImpl const& corpus)
+populateFunctionParams(FunctionSymbol& I, CorpusImpl const& corpus)
 {
     auto documentedParams = getJavadocParamNames(*I.javadoc);
     for (std::size_t i = 0; i < I.Params.size(); ++i)
@@ -812,6 +810,6 @@ populateFunctionParams(FunctionInfo& I, CorpusImpl const& corpus)
 }
 
 }
-} // clang::mrdocs
+} // mrdocs
 
 #endif // MRDOCS_LIB_METADATA_FINALIZERS_JAVADOC_FUNCTION_HPP

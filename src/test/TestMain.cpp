@@ -25,12 +25,12 @@
 
 int main(int argc, char const** argv);
 
-namespace clang {
+
 namespace mrdocs {
 
 void DoTestAction(char const** argv)
 {
-    using namespace clang::mrdocs;
+    using namespace mrdocs;
 
     std::vector<std::string> testPaths(
         testArgs.cmdLineInputs.begin(),
@@ -134,25 +134,25 @@ static void reportUnhandledException(
 #endif
 
 } // mrdocs
-} // clang
+
 
 int main(int argc, char const** argv)
 {
 #ifndef _NDEBUG
-    return clang::mrdocs::test_main(argc, argv);
+    return mrdocs::test_main(argc, argv);
 #else
     try
     {
-        return clang::mrdocs::test_main(argc, argv);
+        return mrdocs::test_main(argc, argv);
     }
-    catch(clang::mrdocs::Exception const& ex)
+    catch(mrdocs::Exception const& ex)
     {
         // thrown Exception should never get here.
-        clang::mrdocs::reportUnhandledException(ex);
+        mrdocs::reportUnhandledException(ex);
     }
     catch(std::exception const& ex)
     {
-        clang::mrdocs::reportUnhandledException(ex);
+        mrdocs::reportUnhandledException(ex);
     }
     return EXIT_FAILURE;
 #endif

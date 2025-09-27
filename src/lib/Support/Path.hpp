@@ -18,7 +18,7 @@
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/Path.h>
 
-namespace clang {
+
 namespace mrdocs {
 
 /** A reasonably sized small string for paths.
@@ -45,7 +45,7 @@ convert_to_slash(
 */
 class ScopedTempFile
 {
-    clang::mrdocs::SmallPathString path_;
+    mrdocs::SmallPathString path_;
     bool ok_ = false;
 public:
     /** Destructor
@@ -93,7 +93,7 @@ class ScopedTempDirectory
         CannotCreateDirectories
     };
 
-    clang::mrdocs::SmallPathString path_;
+    mrdocs::SmallPathString path_;
     ErrorStatus status_ = ErrorStatus::None;
 public:
     /** Destructor
@@ -164,6 +164,6 @@ public:
 };
 
 } // mrdocs
-} // clang
+
 
 #endif

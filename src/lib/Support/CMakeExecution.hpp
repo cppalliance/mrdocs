@@ -15,7 +15,7 @@
 #include <llvm/ADT/StringRef.h>
 #include <string>
 
-namespace clang {
+
 namespace mrdocs {
 
 /**
@@ -34,7 +34,7 @@ Expected<std::string>
 executeCmakeExportCompileCommands(llvm::StringRef projectPath, llvm::StringRef cmakeArgs, llvm::StringRef tempDir);
 
 } // mrdocs
-} // clang
+
 
 #endif // MRDOCS_LIB_SUPPORT_CMAKEEXECUTION_HPP
 

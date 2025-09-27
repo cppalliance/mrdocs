@@ -11,17 +11,17 @@
 #include "OverloadsFinalizer.hpp"
 #include <mrdocs/Support/Assert.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 namespace {
 SymbolID
 findBaseClassPermutation(
     SymbolID const& contextId,
     CorpusImpl& corpus,
-    ArrayRef<SymbolID> sameNameFunctionIds)
+    llvm::ArrayRef<SymbolID> sameNameFunctionIds)
 {
-    // Find the RecordInfo
-    Info* info = corpus.find(contextId);
+    // Find the RecordSymbol
+    Symbol* info = corpus.find(contextId);
     MRDOCS_CHECK_OR(info, SymbolID::invalid);
     MRDOCS_CHECK_OR(info->isRecord(), SymbolID::invalid);
     for (auto const& base: info->asRecordPtr()->Bases)
@@ -52,7 +52,7 @@ findBaseClassPermutation(
                 // name functions
                 for (SymbolID const& baseID: *trancheFunctionsPtr)
                 {
-                    Info* baseFuncMember = corpus.find(baseID);
+                    Symbol* baseFuncMember = corpus.find(baseID);
                     MRDOCS_CHECK_OR_CONTINUE(baseFuncMember);
                     MRDOCS_CHECK_OR_CONTINUE(baseFuncMember->isOverloads());
                     auto* overloads = baseFuncMember->asOverloadsPtr();
@@ -74,23 +74,23 @@ SymbolID
 findIntroducedNamespacePermutation(
     SymbolID const& contextId,
     CorpusImpl& corpus,
-    ArrayRef<SymbolID> sameNameFunctionIds)
+    llvm::ArrayRef<SymbolID> sameNameFunctionIds)
 {
-    // Find the UsingInfo
-    Info* info = corpus.find(contextId);
+    // Find the UsingSymbol
+    Symbol* info = corpus.find(contextId);
     MRDOCS_CHECK_OR(info, SymbolID::invalid);
     MRDOCS_CHECK_OR(info->isUsing(), SymbolID::invalid);
 
-    // Find the FunctionInfo for the first shadow declaration
+    // Find the FunctionSymbol for the first shadow declaration
     MRDOCS_CHECK_OR(!sameNameFunctionIds.empty(), SymbolID::invalid);
-    Info* firstShadowInfo = corpus.find(sameNameFunctionIds.front());
+    Symbol* firstShadowInfo = corpus.find(sameNameFunctionIds.front());
     MRDOCS_CHECK_OR(firstShadowInfo, SymbolID::invalid);
     MRDOCS_CHECK_OR(firstShadowInfo->isFunction(), SymbolID::invalid);
     auto* firstShadowFunction = firstShadowInfo->asFunctionPtr();
 
     // Find the introduced namespace of the first shadow declaration
     MRDOCS_CHECK_OR(firstShadowFunction->Parent, SymbolID::invalid);
-    Info* parentInfo = corpus.find(firstShadowFunction->Parent);
+    Symbol* parentInfo = corpus.find(firstShadowFunction->Parent);
     MRDOCS_CHECK_OR(parentInfo, SymbolID::invalid);
     MRDOCS_CHECK_OR(parentInfo->isNamespace(), SymbolID::invalid);
     auto* parentNamespace = parentInfo->asNamespacePtr();
@@ -98,7 +98,7 @@ findIntroducedNamespacePermutation(
     // Find an overload set that's a permutation of the same name functions
     for (SymbolID const& baseID: parentNamespace->Members.Functions)
     {
-        Info* baseFuncMember = corpus.find(baseID);
+        Symbol* baseFuncMember = corpus.find(baseID);
         MRDOCS_CHECK_OR_CONTINUE(baseFuncMember);
         MRDOCS_CHECK_OR_CONTINUE(baseFuncMember->isOverloads());
         auto* overloads = baseFuncMember->asOverloadsPtr();
@@ -118,27 +118,27 @@ void
 OverloadsFinalizer::
 foldOverloads(SymbolID const& contextId, std::vector<SymbolID>& functionIds, bool isStatic)
 {
-    Info* contextInfo = corpus_.find(contextId);
+    Symbol* contextInfo = corpus_.find(contextId);
     MRDOCS_CHECK_OR(contextInfo);
 
     for (auto functionIdIt = functionIds.begin();
          functionIdIt != functionIds.end();
          ++functionIdIt)
     {
-        // Get the FunctionInfo for the current id
+        // Get the FunctionSymbol for the current id
         auto infoPtr = corpus_.find(*functionIdIt);
         MRDOCS_CHECK_OR_CONTINUE(infoPtr);
         auto* function = infoPtr->asFunctionPtr();
         MRDOCS_CHECK_OR_CONTINUE(function);
 
-        // Check if the FunctionInfo is unique
+        // Check if the FunctionSymbol is unique
         std::ranges::subrange otherFunctionIds(
             std::next(functionIdIt),
             functionIds.end());
         auto isSameNameFunction = [&](SymbolID const& otherID) {
             auto const otherFunctionPtr = corpus_.find(otherID);
             MRDOCS_CHECK_OR(otherFunctionPtr, false);
-            Info const& otherInfo = *otherFunctionPtr;
+            Symbol const& otherInfo = *otherFunctionPtr;
             return function->Name == otherInfo.Name;
         };
         auto sameNameIt = std::ranges::
@@ -146,11 +146,11 @@ foldOverloads(SymbolID const& contextId, std::vector<SymbolID>& functionIds, boo
         bool const isUniqueFunction = sameNameIt == otherFunctionIds.end();
         MRDOCS_CHECK_OR_CONTINUE(!isUniqueFunction);
 
-        // Create a list of FunctionInfo overloads
+        // Create a list of FunctionSymbol overloads
         auto sameNameFunctionIdsView =
             std::ranges::subrange(functionIdIt, functionIds.end()) |
             std::views::filter(isSameNameFunction);
-        SmallVector<SymbolID, 16> sameNameFunctionIds(
+        llvm::SmallVector<SymbolID, 16> sameNameFunctionIds(
             sameNameFunctionIdsView.begin(),
             sameNameFunctionIdsView.end());
 
@@ -209,16 +209,16 @@ foldOverloads(SymbolID const& contextId, std::vector<SymbolID>& functionIds, boo
             }
         }
 
-        // FunctionInfo is not unique and there's no equivalent
+        // FunctionSymbol is not unique and there's no equivalent
         // overload set in base classes, so we merge it with the
-        // other FunctionInfos into a new OverloadsInfo
-        OverloadsInfo O(contextId, function->Name, function->Access, isStatic);
+        // other FunctionSymbols into a new OverloadsSymbol
+        OverloadsSymbol O(contextId, function->Name, function->Access, isStatic);
         addMember(O, *function);
         *functionIdIt = O.id;
         auto const itOffset = functionIdIt - functionIds.begin();
         for (auto otherIt = functionIdIt + 1; otherIt != functionIds.end(); ++otherIt)
         {
-            Info* otherInfoPtr = corpus_.find(*otherIt);
+            Symbol* otherInfoPtr = corpus_.find(*otherIt);
             MRDOCS_CHECK_OR_CONTINUE(otherInfoPtr);
             auto* otherFunction = otherInfoPtr->asFunctionPtr();
             MRDOCS_CHECK_OR_CONTINUE(otherFunction);
@@ -229,7 +229,7 @@ foldOverloads(SymbolID const& contextId, std::vector<SymbolID>& functionIds, boo
             }
         }
         functionIdIt = functionIds.begin() + itOffset;
-        MRDOCS_ASSERT(corpus_.info_.emplace(std::make_unique<OverloadsInfo>(std::move(O))).second);
+        MRDOCS_ASSERT(corpus_.info_.emplace(std::make_unique<OverloadsSymbol>(std::move(O))).second);
     }
 }
 
@@ -243,10 +243,10 @@ toDerivedView(std::vector<SymbolID> const& ids, CorpusImpl& c)
        std::views::transform([&c](SymbolID const& id) {
             return c.find(id);
         }) |
-       std::views::filter([](Info* infoPtr) {
+       std::views::filter([](Symbol* infoPtr) {
             return infoPtr != nullptr;
        }) |
-      std::views::transform([](Info* infoPtr) -> T* {
+      std::views::transform([](Symbol* infoPtr) -> T* {
          return dynamic_cast<T*>(infoPtr);
       }) |
       std::views::filter([](T* ptr) {
@@ -260,21 +260,21 @@ toDerivedView(std::vector<SymbolID> const& ids, CorpusImpl& c)
 
 void
 OverloadsFinalizer::
-operator()(NamespaceInfo& I)
+operator()(NamespaceSymbol& I)
 {
     MRDOCS_CHECK_OR(!finalized_.contains(I.id));
     finalized_.emplace(I.id);
 
     foldOverloads(I.id, I.Members.Functions, true);
-    for (RecordInfo& RI: toDerivedView<RecordInfo>(I.Members.Records, corpus_))
+    for (RecordSymbol& RI: toDerivedView<RecordSymbol>(I.Members.Records, corpus_))
     {
         operator()(RI);
     }
-    for (NamespaceInfo& NI: toDerivedView<NamespaceInfo>(I.Members.Namespaces, corpus_))
+    for (NamespaceSymbol& NI: toDerivedView<NamespaceSymbol>(I.Members.Namespaces, corpus_))
     {
         operator()(NI);
     }
-    for (UsingInfo& UI: toDerivedView<UsingInfo>(I.Members.Usings, corpus_))
+    for (UsingSymbol& UI: toDerivedView<UsingSymbol>(I.Members.Usings, corpus_))
     {
         operator()(UI);
     }
@@ -282,7 +282,7 @@ operator()(NamespaceInfo& I)
 
 void
 OverloadsFinalizer::
-operator()(RecordInfo& I)
+operator()(RecordSymbol& I)
 {
     MRDOCS_CHECK_OR(!finalized_.contains(I.id));
     finalized_.emplace(I.id);
@@ -296,7 +296,7 @@ operator()(RecordInfo& I)
         MRDOCS_CHECK_OR(NT.Name);
         auto& NI = NT.Name->asName();
         MRDOCS_CHECK_OR(NI.id);
-        Info* baseInfo = corpus_.find(NI.id);
+        Symbol* baseInfo = corpus_.find(NI.id);
         MRDOCS_CHECK_OR(baseInfo);
         auto* baseRecord = baseInfo->asRecordPtr();
         MRDOCS_CHECK_OR(baseRecord);
@@ -308,28 +308,28 @@ operator()(RecordInfo& I)
     foldOverloads(I.id, I.Interface.Public.StaticFunctions, true);
     foldOverloads(I.id, I.Interface.Protected.StaticFunctions, true);
     foldOverloads(I.id, I.Interface.Private.StaticFunctions, true);
-    for (RecordInfo& RI: toDerivedView<RecordInfo>(I.Interface.Public.Records, corpus_)) {
+    for (RecordSymbol& RI: toDerivedView<RecordSymbol>(I.Interface.Public.Records, corpus_)) {
         operator()(RI);
     }
-    for (RecordInfo& RI: toDerivedView<RecordInfo>(I.Interface.Protected.Records, corpus_)) {
+    for (RecordSymbol& RI: toDerivedView<RecordSymbol>(I.Interface.Protected.Records, corpus_)) {
         operator()(RI);
     }
-    for (RecordInfo& RI: toDerivedView<RecordInfo>(I.Interface.Private.Records, corpus_)) {
+    for (RecordSymbol& RI: toDerivedView<RecordSymbol>(I.Interface.Private.Records, corpus_)) {
         operator()(RI);
     }
 }
 
 void
 OverloadsFinalizer::
-operator()(UsingInfo& I)
+operator()(UsingSymbol& I)
 {
     MRDOCS_CHECK_OR(!finalized_.contains(I.id));
     finalized_.emplace(I.id);
 
-    auto shadowFunctions = toDerivedView<FunctionInfo>(I.ShadowDeclarations, corpus_);
-    for (FunctionInfo& FI: shadowFunctions)
+    auto shadowFunctions = toDerivedView<FunctionSymbol>(I.ShadowDeclarations, corpus_);
+    for (FunctionSymbol& FI: shadowFunctions)
     {
-        Info* PI = corpus_.find(FI.Parent);
+        Symbol* PI = corpus_.find(FI.Parent);
         MRDOCS_CHECK_OR_CONTINUE(PI);
         if (auto* NI = PI->asNamespacePtr())
         {
@@ -344,4 +344,4 @@ operator()(UsingInfo& I)
     foldOverloads(I.id, I.ShadowDeclarations, true);
 }
 
-} // clang::mrdocs
+} // mrdocs

@@ -12,7 +12,7 @@
 #include <algorithm>
 #include <unordered_set>
 
-namespace clang {
+
 namespace mrdocs {
 namespace dom {
 
@@ -91,7 +91,7 @@ Value(
     Value&& other) noexcept
     : kind_(other.kind_)
 {
-    using enum clang::mrdocs::dom::Kind;
+    using enum mrdocs::dom::Kind;
     switch(kind_)
     {
     case Undefined:
@@ -481,7 +481,7 @@ empty() const
 {
     switch(kind_)
     {
-    using enum clang::mrdocs::dom::Kind;
+    using enum mrdocs::dom::Kind;
     case Undefined:
     case Null:
         return true;
@@ -508,7 +508,7 @@ size() const
 {
     switch(kind_)
     {
-    using enum clang::mrdocs::dom::Kind;
+    using enum mrdocs::dom::Kind;
     case Undefined:
     case Null:
         return 0;
@@ -899,4 +899,4 @@ toString(
 
 } // dom
 } // mrdocs
-} // clang
+

@@ -17,7 +17,7 @@
 #include <string>
 #include <string_view>
 
-namespace clang::mrdocs::adoc {
+namespace mrdocs::adoc {
 
 /** Escape a string for use in AsciiDoc
   */
@@ -29,6 +29,6 @@ MRDOCS_DECL
 std::string
 AdocEscape(std::string_view str);
 
-} // clang::mrdocs::adoc
+} // mrdocs::adoc
 
 #endif

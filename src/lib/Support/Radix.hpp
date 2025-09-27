@@ -20,7 +20,7 @@
 #include <string>
 #include <string_view>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 std::string
 toBase64(std::string_view str);
@@ -42,6 +42,6 @@ toBase16(
     std::string_view str,
     bool lowercase = false);
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

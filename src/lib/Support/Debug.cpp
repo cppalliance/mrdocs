@@ -11,13 +11,13 @@
 
 #include <lib/Support/Debug.hpp>
 #include <lib/Support/Radix.hpp>
-#include <mrdocs/Metadata/Info.hpp>
-#include <mrdocs/Metadata/Info/Record.hpp>
-#include <mrdocs/Metadata/Info/SymbolID.hpp>
+#include <mrdocs/Metadata/Symbol.hpp>
+#include <mrdocs/Metadata/Symbol/Record.hpp>
+#include <mrdocs/Metadata/Symbol/SymbolID.hpp>
 #include <format>
 #include <memory>
 
-namespace clang {
+
 namespace mrdocs {
 
 void
@@ -32,16 +32,16 @@ debugEnableHeapChecking()
 }
 
 } // mrdocs
-} // clang
+
 
 std::string
-std::formatter<clang::mrdocs::Info>::toString(clang::mrdocs::Info const &i) {
+std::formatter<mrdocs::Symbol>::toString(mrdocs::Symbol const &i) {
   std::string str = std::format("Info: kind = {}", i.Kind);
   if (!i.Name.empty()) {
     str += std::format(", name = '{}'", i.Name);
   }
   str += std::format(", ID = {}", i.id);
-  clang::mrdocs::SymbolID curParent = i.Parent;
+  mrdocs::SymbolID curParent = i.Parent;
   std::string namespaces;
   while (curParent) {
     namespaces += std::format("{}", curParent);

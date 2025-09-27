@@ -17,7 +17,7 @@
 #include <ranges>
 #include <string_view>
 
-namespace clang {
+
 namespace mrdocs {
 namespace dom {
 
@@ -193,6 +193,6 @@ TransformArray(T const& arr, F const& f)
 
 } // dom
 } // mrdocs
-} // clang
+
 
 #endif // MRDOCS_API_DOM_LAZYARRAY_HPP

@@ -13,7 +13,7 @@
 
 #include <utility>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 template <class F>
 class ScopeExit {

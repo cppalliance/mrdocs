@@ -10,14 +10,14 @@
 //
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Info/Namespace.hpp>
+#include <mrdocs/Metadata/Symbol/Namespace.hpp>
 #include <llvm/ADT/STLExtras.h>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 std::strong_ordering
-NamespaceInfo::
-operator<=>(NamespaceInfo const& other) const
+NamespaceSymbol::
+operator<=>(NamespaceSymbol const& other) const
 {
     if (auto const res = this->asInfo() <=> other.asInfo();
         std::is_neq(res))
@@ -73,8 +73,8 @@ reduceSymbolIDs(
 
 void
 reduceNames(
-    std::vector<NameInfo>& list,
-    std::vector<NameInfo>&& otherList)
+    std::vector<Name>& list,
+    std::vector<Name>&& otherList)
 {
     for(auto const& id : otherList)
     {
@@ -103,7 +103,7 @@ merge(NamespaceTranche& I, NamespaceTranche&& Other)
 }
 
 void
-merge(NamespaceInfo& I, NamespaceInfo&& Other)
+merge(NamespaceSymbol& I, NamespaceSymbol&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
     merge(I.asInfo(), std::move(Other.asInfo()));
@@ -112,5 +112,5 @@ merge(NamespaceInfo& I, NamespaceInfo&& Other)
     I.IsInline |= Other.IsInline;
     I.IsAnonymous |= Other.IsAnonymous;
 }
-} // clang::mrdocs
+} // mrdocs
 

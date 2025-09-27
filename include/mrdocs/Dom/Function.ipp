@@ -11,7 +11,7 @@
 #ifndef MRDOCS_API_DOM_FUNCTION_IPP
 #define MRDOCS_API_DOM_FUNCTION_IPP
 
-namespace clang {
+
 namespace mrdocs {
 namespace dom {
 
@@ -257,6 +257,6 @@ call(Array const& args) const ->
 
 } // dom
 } // mrdocs
-} // clang
+
 
 #endif

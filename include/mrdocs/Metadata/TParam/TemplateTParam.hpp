@@ -19,7 +19,7 @@
 #include <mrdocs/Metadata/TParam/TParamBase.hpp>
 #include <vector>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 struct TemplateTParam final
     : TParamCommonBase<TParamKind::Template>
@@ -31,6 +31,6 @@ struct TemplateTParam final
     operator<=>(TemplateTParam const& other) const;
 };
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

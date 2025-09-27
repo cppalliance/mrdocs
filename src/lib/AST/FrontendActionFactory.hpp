@@ -19,11 +19,11 @@
 #include <lib/Support/ExecutionContext.hpp>
 #include <clang/Tooling/Tooling.h>
 
-namespace clang {
+
 namespace mrdocs {
 
 class ASTActionFactory :
-    public tooling::FrontendActionFactory
+    public clang::tooling::FrontendActionFactory
 {
     ExecutionContext& ex_;
     ConfigImpl const& config_;
@@ -39,11 +39,11 @@ public:
     {
     }
 
-    std::unique_ptr<FrontendAction>
+    std::unique_ptr<clang::FrontendAction>
     create() override;
 };
 
 } // mrdocs
-} // clang
+
 
 #endif // MRDOCS_LIB_AST_FRONTENDACTIONFACTORY_HPP

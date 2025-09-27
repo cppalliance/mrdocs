@@ -26,7 +26,7 @@
 #include <utility>
 #include <vector>
 
-namespace clang::mrdocs::report {
+namespace mrdocs::report {
 
 /** Severity levels attached to reported messags.
 */
@@ -303,6 +303,6 @@ fatal(
     return log(Level::fatal, format, std::forward<Args>(args)...);
 }
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

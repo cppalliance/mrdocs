@@ -10,10 +10,10 @@
 //
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Info/Using.hpp>
+#include <mrdocs/Metadata/Symbol/Using.hpp>
 #include <llvm/ADT/STLExtras.h>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 namespace {
 
@@ -35,7 +35,7 @@ reduceSymbolIDs(
 } // (anon)
 
 void
-merge(UsingInfo& I, UsingInfo&& Other)
+merge(UsingSymbol& I, UsingSymbol&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
     merge(I.asInfo(), std::move(Other.asInfo()));
@@ -45,11 +45,11 @@ merge(UsingInfo& I, UsingInfo&& Other)
         I.Class = Other.Class;
     }
     MRDOCS_ASSERT(!I.IntroducedName.valueless_after_move());
-    if (I.IntroducedName->Name.empty())
+    if (I.IntroducedName->Identifier.empty())
     {
         I.IntroducedName = std::move(Other.IntroducedName);
     }
 }
 
-} // clang::mrdocs
+} // mrdocs
 

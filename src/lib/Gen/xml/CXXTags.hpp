@@ -14,8 +14,8 @@
 #define MRDOCS_LIB_GEN_XML_CXXTAGS_HPP
 
 #include <lib/Gen/xml/XMLTags.hpp>
-#include <mrdocs/Metadata/Info/Function.hpp>
 #include <mrdocs/Metadata/Name.hpp>
+#include <mrdocs/Metadata/Symbol/Function.hpp>
 #include <mrdocs/Metadata/TParam.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 
@@ -25,7 +25,7 @@
     in the MRDOCS DTD XML schema.
 */
 
-namespace clang::mrdocs::xml {
+namespace mrdocs::xml {
 
 constexpr auto accessTagName         = "access";
 constexpr auto attributeTagName      = "attr";
@@ -121,8 +121,7 @@ writeTemplateArg(TArg const& I, XMLTags& tags);
 
 inline
 void
-writeType(
-    TypeInfo const& I,
+writeType(Type const& I,
     XMLTags& tags,
     std::string_view type_tag = "type")
 {
@@ -182,7 +181,7 @@ writeType(
 
             if constexpr(T::isAuto())
             {
-                AutoTypeInfo const& at = t;
+                AutoType const& at = t;
                 attrs.push({"keyword", toString(at.Keyword)});
                 if(at.Constraint)
                 {
@@ -199,7 +198,7 @@ writeType(
                 if(t.RefQualifier != ReferenceKind::None)
                     attrs.push({"ref-qualifier", toString(t.RefQualifier)});
 
-                // KRYSTIAN TODO: TypeInfo should use ExceptionInfo!
+                // KRYSTIAN TODO: Type should use ExceptionInfo!
                 if(auto spec = toString(t.ExceptionSpec); ! spec.empty())
                     attrs.push({"exception-spec", spec});
             }
@@ -217,21 +216,21 @@ writeType(
 
             if constexpr(requires { t.PointeeType; })
             {
-                Polymorphic<TypeInfo> const& pointee = t.PointeeType;
+                Polymorphic<Type> const& pointee = t.PointeeType;
                 MRDOCS_ASSERT(!pointee.valueless_after_move());
                 writeType(*t.PointeeType, tags, "pointee-type");
             }
 
             if constexpr(T::isArray())
             {
-                ArrayTypeInfo const& at = t;
+                ArrayType const& at = t;
                 MRDOCS_ASSERT(!at.ElementType.valueless_after_move());
                 writeType(*t.ElementType, tags, "element-type");
             }
 
             if constexpr(T::isFunction())
             {
-                FunctionTypeInfo const& ft = t;
+                FunctionType const& ft = t;
                 MRDOCS_ASSERT(!ft.ReturnType.valueless_after_move());
                 writeType(*t.ReturnType, tags, "return-type");
                 for (auto const& p: t.ParamTypes)
@@ -247,7 +246,7 @@ writeType(
 inline
 void
 writeType(
-    NameInfo const& I,
+    Name const& I,
     XMLTags& tags,
     std::string_view type_tag = "type")
 {
@@ -257,7 +256,7 @@ writeType(
     };
 
     attrs.push({I.id});
-    attrs.push({"name", I.Name});
+    attrs.push({"name", I.Identifier});
 
     tags.write(type_tag, {}, std::move(attrs));
 }
@@ -265,7 +264,7 @@ writeType(
 inline
 void
 writeType(
-    Polymorphic<TypeInfo> const& type,
+    Polymorphic<Type> const& type,
     XMLTags& tags)
 {
     MRDOCS_ASSERT(!type.valueless_after_move());
@@ -275,7 +274,7 @@ writeType(
 inline
 void
 writeType(
-    Optional<Polymorphic<TypeInfo>> const& type,
+    Optional<Polymorphic<Type>> const& type,
     XMLTags& tags)
 {
     if (type)
@@ -285,7 +284,7 @@ writeType(
 }
 
 
-inline void writeReturnType(TypeInfo const& I, XMLTags& tags)
+inline void writeReturnType(Type const& I, XMLTags& tags)
 {
     // KRYSTIAN NOTE: we don't *have* to do this...
     if (toString(I) == "void")
@@ -374,8 +373,8 @@ inline void writeTemplateArg(TArg const& I, XMLTags& tags)
 /** Return the xml tag name for the Info.
 */
 std::string
-getTagName(Info const& I) noexcept;
+getTagName(Symbol const& I) noexcept;
 
-} // clang::mrdocs::xml
+} // mrdocs::xml
 
 #endif

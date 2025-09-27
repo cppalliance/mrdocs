@@ -18,7 +18,7 @@
 #include <memory>
 #include <vector>
 
-namespace clang {
+
 namespace mrdocs {
 namespace dom {
 
@@ -464,7 +464,7 @@ private:
 
 } // dom
 } // mrdocs
-} // clang
+
 
 // This is here because of circular references
 #include <mrdocs/Dom/Value.hpp>

@@ -16,7 +16,7 @@
 
 #include <clang/AST/DeclVisitor.h>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** A visitor class for handling instantiations from templates.
 
@@ -24,17 +24,17 @@ namespace clang::mrdocs {
     and retrieve the original declarations from which they were instantiated.
  */
 class InstantiatedFromVisitor
-    : public ConstDeclVisitor<InstantiatedFromVisitor, Decl const*>
+    : public clang::ConstDeclVisitor<InstantiatedFromVisitor, clang::Decl const*>
 {
 public:
-    Decl const*
-    VisitDecl(Decl const* D)
+    clang::Decl const*
+    VisitDecl(clang::Decl const* D)
     {
         return D;
     }
 
-    FunctionDecl const*
-    VisitFunctionTemplateDecl(FunctionTemplateDecl const* D)
+    clang::FunctionDecl const*
+    VisitFunctionTemplateDecl(clang::FunctionTemplateDecl const* D)
     {
         while(auto* MT = D->getInstantiatedFromMemberTemplate())
         {
@@ -47,8 +47,8 @@ public:
         return D->getTemplatedDecl();
     }
 
-    CXXRecordDecl const*
-    VisitClassTemplateDecl(ClassTemplateDecl const* D)
+    clang::CXXRecordDecl const*
+    VisitClassTemplateDecl(clang::ClassTemplateDecl const* D)
     {
         while (auto* MT = D->getInstantiatedFromMemberTemplate())
         {
@@ -61,8 +61,8 @@ public:
         return D->getTemplatedDecl();
     }
 
-    VarDecl const*
-    VisitVarTemplateDecl(VarTemplateDecl const* D)
+    clang::VarDecl const*
+    VisitVarTemplateDecl(clang::VarTemplateDecl const* D)
     {
         while(auto* MT = D->getInstantiatedFromMemberTemplate())
         {
@@ -75,8 +75,8 @@ public:
         return D->getTemplatedDecl();
     }
 
-    TypedefNameDecl const*
-    VisitTypeAliasTemplateDecl(TypeAliasTemplateDecl const* D)
+    clang::TypedefNameDecl const*
+    VisitTypeAliasTemplateDecl(clang::TypeAliasTemplateDecl const* D)
     {
         if(auto* MT = D->getInstantiatedFromMemberTemplate())
         {
@@ -89,24 +89,24 @@ public:
         return VisitTypedefNameDecl(D->getTemplatedDecl());
     }
 
-    FunctionDecl const*
-    VisitFunctionDecl(FunctionDecl const* D)
+    clang::FunctionDecl const*
+    VisitFunctionDecl(clang::FunctionDecl const* D)
     {
-        if (FunctionDecl const* DD = nullptr;
+        if (clang::FunctionDecl const* DD = nullptr;
             D->isDefined(DD, false))
         {
-            D = const_cast<FunctionDecl*>(DD);
+            D = const_cast<clang::FunctionDecl*>(DD);
         }
 
-        if (MemberSpecializationInfo const* MSI = D->getMemberSpecializationInfo())
+        if (clang::MemberSpecializationInfo const* MSI = D->getMemberSpecializationInfo())
         {
             if (!MSI->isExplicitSpecialization())
             {
-                D = cast<FunctionDecl>(MSI->getInstantiatedFrom());
+                D = cast<clang::FunctionDecl>(MSI->getInstantiatedFrom());
             }
         }
         else if(D->getTemplateSpecializationKind() !=
-            TSK_ExplicitSpecialization)
+            clang::TSK_ExplicitSpecialization)
         {
             D = D->getFirstDecl();
             if (auto* FTD = D->getPrimaryTemplate())
@@ -117,8 +117,8 @@ public:
         return D;
     }
 
-    CXXRecordDecl const*
-    VisitClassTemplatePartialSpecializationDecl(ClassTemplatePartialSpecializationDecl const* D)
+    clang::CXXRecordDecl const*
+    VisitClassTemplatePartialSpecializationDecl(clang::ClassTemplatePartialSpecializationDecl const* D)
     {
         while (auto* MT = D->getInstantiatedFromMember())
         {
@@ -131,20 +131,20 @@ public:
         return VisitClassTemplateSpecializationDecl(D);
     }
 
-    CXXRecordDecl const*
-    VisitClassTemplateSpecializationDecl(ClassTemplateSpecializationDecl const* D)
+    clang::CXXRecordDecl const*
+    VisitClassTemplateSpecializationDecl(clang::ClassTemplateSpecializationDecl const* D)
     {
         if (!D->isExplicitSpecialization())
         {
             auto const inst_from = D->getSpecializedTemplateOrPartial();
             if(auto* CTPSD = inst_from.dyn_cast<
-                ClassTemplatePartialSpecializationDecl*>())
+                clang::ClassTemplatePartialSpecializationDecl*>())
             {
                 MRDOCS_ASSERT(D != CTPSD);
                 return VisitClassTemplatePartialSpecializationDecl(CTPSD);
             }
             // Explicit instantiation declaration/definition
-            else if(auto* CTD = inst_from.dyn_cast<ClassTemplateDecl*>())
+            else if(auto* CTD = inst_from.dyn_cast<clang::ClassTemplateDecl*>())
             {
                 return VisitClassTemplateDecl(CTD);
             }
@@ -152,10 +152,10 @@ public:
         return VisitCXXRecordDecl(D);
     }
 
-    CXXRecordDecl const*
-    VisitCXXRecordDecl(CXXRecordDecl const* D)
+    clang::CXXRecordDecl const*
+    VisitCXXRecordDecl(clang::CXXRecordDecl const* D)
     {
-        while (MemberSpecializationInfo const* MSI =
+        while (clang::MemberSpecializationInfo const* MSI =
             D->getMemberSpecializationInfo())
         {
             // if this is a member of an explicit specialization,
@@ -164,13 +164,13 @@ public:
             {
                 break;
             }
-            D = cast<CXXRecordDecl>(MSI->getInstantiatedFrom());
+            D = cast<clang::CXXRecordDecl>(MSI->getInstantiatedFrom());
         }
         return D;
     }
 
-    VarDecl const*
-    VisitVarTemplatePartialSpecializationDecl(VarTemplatePartialSpecializationDecl const* D)
+    clang::VarDecl const*
+    VisitVarTemplatePartialSpecializationDecl(clang::VarTemplatePartialSpecializationDecl const* D)
     {
         while(auto* MT = D->getInstantiatedFromMember())
         {
@@ -183,21 +183,21 @@ public:
         return VisitVarTemplateSpecializationDecl(D);
     }
 
-    VarDecl const*
-    VisitVarTemplateSpecializationDecl(VarTemplateSpecializationDecl const* D)
+    clang::VarDecl const*
+    VisitVarTemplateSpecializationDecl(clang::VarTemplateSpecializationDecl const* D)
     {
         if(! D->isExplicitSpecialization())
         {
             auto const inst_from = D->getSpecializedTemplateOrPartial();
             if(auto* VTPSD = inst_from.dyn_cast<
-                VarTemplatePartialSpecializationDecl*>())
+                clang::VarTemplatePartialSpecializationDecl*>())
             {
                 MRDOCS_ASSERT(D != VTPSD);
                 return VisitVarTemplatePartialSpecializationDecl(VTPSD);
             }
             // explicit instantiation declaration/definition
             else if(auto* VTD = inst_from.dyn_cast<
-                VarTemplateDecl*>())
+                clang::VarTemplateDecl*>())
             {
                 return VisitVarTemplateDecl(VTD);
             }
@@ -205,60 +205,60 @@ public:
         return VisitVarDecl(D);
     }
 
-    VarDecl const*
-    VisitVarDecl(VarDecl const* D)
+    clang::VarDecl const*
+    VisitVarDecl(clang::VarDecl const* D)
     {
-        while(MemberSpecializationInfo* MSI =
+        while(clang::MemberSpecializationInfo* MSI =
             D->getMemberSpecializationInfo())
         {
             if (MSI->isExplicitSpecialization())
             {
                 break;
             }
-            D = cast<VarDecl>(MSI->getInstantiatedFrom());
+            D = cast<clang::VarDecl>(MSI->getInstantiatedFrom());
         }
         return D;
     }
 
-    EnumDecl const*
-    VisitEnumDecl(EnumDecl const* D)
+    clang::EnumDecl const*
+    VisitEnumDecl(clang::EnumDecl const* D)
     {
-        while(MemberSpecializationInfo* MSI =
+        while(clang::MemberSpecializationInfo* MSI =
             D->getMemberSpecializationInfo())
         {
             if (MSI->isExplicitSpecialization())
             {
                 break;
             }
-            D = cast<EnumDecl>(MSI->getInstantiatedFrom());
+            D = cast<clang::EnumDecl>(MSI->getInstantiatedFrom());
         }
         return D;
     }
 
-    TypedefNameDecl const*
-    VisitTypedefNameDecl(TypedefNameDecl const* D)
+    clang::TypedefNameDecl const*
+    VisitTypedefNameDecl(clang::TypedefNameDecl const* D)
     {
-        DeclContext const* Context = D->getNonTransparentDeclContext();
+        clang::DeclContext const* Context = D->getNonTransparentDeclContext();
         if (Context->isFileContext())
         {
             return D;
         }
-        Decl const* ContextDecl = Decl::castFromDeclContext(Context);
-        Decl const* ContextInstatiationContextDecl = Visit(ContextDecl);
-        DeclContext const* ContextPattern =
-            Decl::castToDeclContext(ContextInstatiationContextDecl);
+        clang::Decl const* ContextDecl = clang::Decl::castFromDeclContext(Context);
+        clang::Decl const* ContextInstatiationContextDecl = Visit(ContextDecl);
+        clang::DeclContext const* ContextPattern =
+            clang::Decl::castToDeclContext(ContextInstatiationContextDecl);
         if (Context == ContextPattern)
         {
             return D;
         }
         for (auto lookup = ContextPattern->lookup(D->getDeclName());
-             NamedDecl * ND : lookup)
+             clang::NamedDecl * ND : lookup)
         {
-            if (auto const* TND = dyn_cast<TypedefNameDecl>(ND))
+            if (auto const* TND = dyn_cast<clang::TypedefNameDecl>(ND))
             {
                 return TND;
             }
-            if (auto const* TATD = dyn_cast<TypeAliasTemplateDecl>(ND))
+            if (auto const* TATD = dyn_cast<clang::TypeAliasTemplateDecl>(ND))
             {
                 return TATD->getTemplatedDecl();
             }
@@ -267,6 +267,6 @@ public:
     }
 };
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

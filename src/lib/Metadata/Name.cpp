@@ -15,7 +15,7 @@
 #include <mrdocs/Metadata/Name.hpp>
 #include <span>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 dom::String toString(NameKind kind) noexcept
 {
@@ -40,8 +40,8 @@ writeTo(
 }
 
 std::strong_ordering
-NameInfo::
-operator<=>(NameInfo const& other) const
+Name::
+operator<=>(Name const& other) const
 {
     if (this == &other)
     {
@@ -51,9 +51,9 @@ operator<=>(NameInfo const& other) const
     {
         return Kind <=> other.Kind;
     }
-    if (Name != other.Name)
+    if (Identifier != other.Identifier)
     {
-        return Name <=> other.Name;
+        return Identifier <=> other.Identifier;
     }
     if (bool(Prefix) != bool(other.Prefix))
     {
@@ -67,7 +67,7 @@ operator<=>(NameInfo const& other) const
 }
 
 std::strong_ordering
-operator<=>(Polymorphic<NameInfo> const& lhs, Polymorphic<NameInfo> const& rhs)
+operator<=>(Polymorphic<Name> const& lhs, Polymorphic<Name> const& rhs)
 {
     MRDOCS_ASSERT(!lhs.valueless_after_move());
     MRDOCS_ASSERT(!rhs.valueless_after_move());
@@ -77,7 +77,7 @@ operator<=>(Polymorphic<NameInfo> const& lhs, Polymorphic<NameInfo> const& rhs)
         {
             return *lhs <=> *rhs;
         }
-        return visit(*lhs, detail::VisitCompareFn<NameInfo>(*rhs));
+        return visit(*lhs, detail::VisitCompareFn<Name>(*rhs));
     }
     return lhs->Kind <=> rhs->Kind;
 }
@@ -86,7 +86,7 @@ static
 void
 toStringImpl(
     std::string& result,
-    NameInfo const& N)
+    Name const& N)
 {
     if (N.Prefix)
     {
@@ -94,7 +94,7 @@ toStringImpl(
         writeTo(result, "::");
     }
 
-    writeTo(result, N.Name);
+    writeTo(result, N.Identifier);
 
     if (!N.isSpecialization())
     {
@@ -135,7 +135,7 @@ toStringImpl(
 }
 
 std::string
-toString(NameInfo const& N)
+toString(Name const& N)
 {
     std::string result;
     toStringImpl(result, N);
@@ -147,14 +147,14 @@ void
 tag_invoke(
     dom::LazyObjectMapTag,
     IO& io,
-    NameInfo const& I,
+    Name const& I,
     DomCorpus const* domCorpus)
 {
     io.map("class", std::string("name"));
     io.map("kind", I.Kind);
     visit(I, [domCorpus, &io]<typename T>(T const& t)
     {
-        io.map("name", t.Name);
+        io.map("name", t.Identifier);
         io.map("symbol", t.id);
         if constexpr(requires { t.TemplateArgs; })
         {
@@ -168,10 +168,10 @@ void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
-    NameInfo const& I,
+    Name const& I,
     DomCorpus const* domCorpus)
 {
     v = dom::LazyObject(I, domCorpus);
 }
 
-} // clang::mrdocs
+} // mrdocs

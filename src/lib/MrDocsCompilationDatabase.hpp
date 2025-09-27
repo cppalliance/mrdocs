@@ -16,7 +16,7 @@
 #include <llvm/ADT/StringMap.h>
 #include <vector>
 
-namespace clang {
+
 namespace mrdocs {
 
 /** A compilation database for MrDocs.
@@ -34,9 +34,9 @@ namespace mrdocs {
 
 */
 class MrDocsCompilationDatabase
-    : public tooling::CompilationDatabase
+    : public clang::tooling::CompilationDatabase
 {
-    std::vector<tooling::CompileCommand> AllCommands_;
+    std::vector<clang::tooling::CompileCommand> AllCommands_;
     llvm::StringMap<std::size_t> IndexByFile_;
 
 public:
@@ -54,7 +54,7 @@ public:
      *        implicit include directories, as determined by the system's compiler.
      */
     MrDocsCompilationDatabase(
-        StringRef workingDir,
+        llvm::StringRef workingDir,
         CompilationDatabase const& inner,
         std::shared_ptr<Config const> const& config,
         std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories);
@@ -63,9 +63,9 @@ public:
 
         @return A vector of compile commands.
     */
-    std::vector<tooling::CompileCommand>
+    std::vector<clang::tooling::CompileCommand>
     getCompileCommands(
-        StringRef FilePath) const override;
+        llvm::StringRef FilePath) const override;
 
     /** Get all files in the database.
 
@@ -78,12 +78,12 @@ public:
 
         @return A vector of compile commands.
     */
-    std::vector<tooling::CompileCommand>
+    std::vector<clang::tooling::CompileCommand>
     getAllCompileCommands() const override;
 };
 
 } // mrdocs
-} // clang
+
 
 #endif // MRDOCS_LIB_MRDOCSCOMPILATIONDATABASE_HPP
 

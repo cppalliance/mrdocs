@@ -19,7 +19,7 @@
 #include <utility>
 #include <variant>
 
-namespace clang {
+
 namespace mrdocs {
 namespace js {
 
@@ -1883,7 +1883,7 @@ operator&&(Value const& lhs, Value const& rhs)
 
 Expected<void, Error>
 registerHelper(
-    clang::mrdocs::Handlebars& hbs,
+    mrdocs::Handlebars& hbs,
     std::string_view name,
     Context& ctx,
     std::string_view script)
@@ -1987,4 +1987,4 @@ registerHelper(
 
 } // js
 } // mrdocs
-} // clang
+

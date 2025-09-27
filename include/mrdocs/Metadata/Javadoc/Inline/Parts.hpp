@@ -16,7 +16,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
 
-namespace clang::mrdocs::doc {
+namespace mrdocs::doc {
 
 /** Which parts of the documentation to copy.
 
@@ -52,6 +52,6 @@ tag_invoke(
     v = toString(kind);
 }
 
-} // clang::mrdocs::doc
+} // mrdocs::doc
 
 #endif // MRDOCS_API_METADATA_JAVADOC_INLINE_PARTS_HPP

@@ -21,7 +21,7 @@
 #include <mrdocs/Metadata/TParam/TParamBase.hpp>
 #include <mrdocs/Metadata/TParam/TParamKeyKind.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 struct TypeTParam final
     : TParamCommonBase<TParamKind::Type>
@@ -30,11 +30,11 @@ struct TypeTParam final
     TParamKeyKind KeyKind = TParamKeyKind::Class;
 
     /** The type-constraint for the parameter, if any. */
-    Optional<Polymorphic<NameInfo>> Constraint = std::nullopt;
+    Optional<Polymorphic<struct Name>> Constraint = std::nullopt;
 
     std::strong_ordering operator<=>(TypeTParam const&) const;
 };
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

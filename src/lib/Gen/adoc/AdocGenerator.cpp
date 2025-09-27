@@ -13,7 +13,7 @@
 #include "AdocEscape.hpp"
 #include <mrdocs/Support/Handlebars.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 namespace adoc {
 
 void
@@ -31,4 +31,4 @@ makeAdocGenerator()
     return std::make_unique<adoc::AdocGenerator>();
 }
 
-} // clang::mrdocs
+} // mrdocs

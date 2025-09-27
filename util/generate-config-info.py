@@ -309,7 +309,7 @@ def generate_public_settings_hpp(config):
         contents += f'#include {header}\n'
     contents += '\n'
 
-    contents += 'namespace clang::mrdocs {\n\n'
+    contents += 'namespace mrdocs {\n\n'
     contents += 'struct PublicSettings {\n'
 
     contents += '    //--------------------------------------------\n'
@@ -524,7 +524,7 @@ def generate_public_settings_hpp(config):
         contents += '    return {};\n'
         contents += '}\n\n'
 
-    contents += '} // namespace clang::mrdocs\n\n'
+    contents += '} // namespace mrdocs\n\n'
     contents += f'#endif // {header_guard}\n'
     return contents
 
@@ -548,7 +548,7 @@ def generate_public_toolargs_hpp(config):
         contents += f'#include {header}\n'
     contents += '\n'
 
-    contents += 'namespace clang {\n'
+    contents += '\n'
     contents += 'namespace mrdocs {\n\n'
     contents += 'struct PublicToolArgs {\n\n'
 
@@ -604,14 +604,13 @@ def generate_public_toolargs_hpp(config):
 
     contents += '}; // struct PublicToolArgs\n\n'
     contents += '} // namespace mrdocs\n'
-    contents += '} // namespace clang\n\n'
     contents += f'#endif // {header_guard}\n'
     return contents
 
 
 def generate_yaml_mapping_traits(option, namespace=None):
     if namespace is None:
-        namespace = 'clang::mrdocs::PublicSettings'
+        namespace = 'mrdocs::PublicSettings'
 
     contents = ''
     if 'options' in option:
@@ -704,7 +703,7 @@ def generate_public_settings_cpp(config):
 
     # Generate the LLVM YAML traits for each enum, such as:
     for [enum_name, enum_values] in get_valid_enum_categories().items():
-        cpp_enum_type = f'clang::mrdocs::PublicSettings::{to_pascal_case(enum_name)}'
+        cpp_enum_type = f'mrdocs::PublicSettings::{to_pascal_case(enum_name)}'
         contents += f'template<>\n'
         contents += f'struct llvm::yaml::ScalarEnumerationTraits<\n'
         contents += f'    {cpp_enum_type}>\n'
@@ -725,7 +724,7 @@ def generate_public_settings_cpp(config):
 
     # Generate the LLVM YAML traits for glob patterns, such as:
     for name in ['PathGlobPattern', 'SymbolGlobPattern']:
-        qualified_name = f'clang::mrdocs::{name}'
+        qualified_name = f'mrdocs::{name}'
         contents += f'template<>\n'
         contents += f'struct llvm::yaml::ScalarTraits<\n'
         contents += f'    {qualified_name}>\n'
@@ -790,11 +789,11 @@ def generate_public_settings_cpp(config):
     # Generate the LLVM YAML traits for all PublicSettings
     contents += f'template<>\n'
     contents += f'struct llvm::yaml::MappingTraits<\n'
-    contents += f'    clang::mrdocs::PublicSettings>\n'
+    contents += f'    mrdocs::PublicSettings>\n'
     contents += '{\n'
     contents += f'    static void mapping(\n'
     contents += f'        llvm::yaml::IO& io,\n'
-    contents += f'        clang::mrdocs::PublicSettings& s)\n'
+    contents += f'        mrdocs::PublicSettings& s)\n'
     contents += '    {\n'
     for category in config:
         for option in category['options']:
@@ -804,7 +803,7 @@ def generate_public_settings_cpp(config):
     contents += '    }\n'
     contents += '};\n\n'
 
-    contents += 'namespace clang {\n'
+    contents += '\n'
     contents += 'namespace mrdocs {\n\n'
 
     # Main function to load the configuration from a YAML file
@@ -830,7 +829,6 @@ def generate_public_settings_cpp(config):
     contents += '}\n\n'
 
     contents += '} // namespace mrdocs\n'
-    contents += '} // namespace clang\n\n'
     return contents
 
 
@@ -960,7 +958,7 @@ struct std::formatter<llvm::cl::opt<T>>
 };
     '''
 
-    contents += 'namespace clang::mrdocs {\n\n'
+    contents += 'namespace mrdocs {\n\n'
 
     # Main constructor that initializes all options
     contents += 'PublicToolArgs::\n'
@@ -1096,7 +1094,7 @@ struct std::formatter<llvm::cl::opt<T>>
     contents += '    return {};\n'
     contents += '}\n'
 
-    contents += '} // namespace clang::mrdocs\n'
+    contents += '} // namespace mrdocs\n'
     return contents
 
 

@@ -24,7 +24,7 @@
 
 extern int main(int argc, char const** argv);
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 extern
 int
@@ -166,26 +166,26 @@ reportUnhandledException(
 }
 #endif
 
-} // clang::mrdocs
+} // mrdocs
 
 int
 main(int argc, char const** argv)
 {
 #ifndef _NDEBUG
-    return clang::mrdocs::mrdocs_main(argc, argv);
+    return mrdocs::mrdocs_main(argc, argv);
 #else
     try
     {
-        return clang::mrdocs::mrdocs_main(argc, argv);
+        return mrdocs::mrdocs_main(argc, argv);
     }
-    catch(clang::mrdocs::Exception const& ex)
+    catch(mrdocs::Exception const& ex)
     {
         // Thrown Exception should never get here.
-        clang::mrdocs::reportUnhandledException(ex);
+        mrdocs::reportUnhandledException(ex);
     }
     catch(std::exception const& ex)
     {
-        clang::mrdocs::reportUnhandledException(ex);
+        mrdocs::reportUnhandledException(ex);
     }
     return EXIT_FAILURE;
 #endif

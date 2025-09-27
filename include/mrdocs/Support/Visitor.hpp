@@ -15,7 +15,7 @@
 #include <tuple>
 #include <utility>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** A visitor for a type
 
@@ -124,6 +124,6 @@ makeVisitor(
         std::forward<ArgsTy>(args)...);
 }
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif // MRDOCS_API_SUPPORT_VISITOR_HPP

@@ -18,7 +18,7 @@
 #include <span>
 #include <string_view>
 
-namespace clang {
+
 namespace mrdocs {
 
 class Handlebars;
@@ -716,7 +716,7 @@ public:
         `message` is a string.
 
         The mrdocs library function
-        `clang::mrdocs::report::print`
+        `mrdocs::report::print`
         is then called with these
         two arguments to report a
         message to the console.
@@ -1120,13 +1120,13 @@ isFunction() const noexcept
 MRDOCS_DECL
 Expected<void, Error>
 registerHelper(
-    clang::mrdocs::Handlebars& hbs,
+    mrdocs::Handlebars& hbs,
     std::string_view name,
     Context& ctx,
     std::string_view script);
 
 } // js
 } // mrdocs
-} // clang
+
 
 #endif
