@@ -13,9 +13,9 @@
 
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Corpus.hpp>
-#include <mrdocs/Metadata/Info.hpp>
+#include <mrdocs/Metadata/Symbol.hpp>
 
-namespace clang::mrdocs::hbs {
+namespace mrdocs::hbs {
 
 /** @brief Determine if the generator should generate a page for this Info.
 
@@ -24,7 +24,7 @@ namespace clang::mrdocs::hbs {
  */
 MRDOCS_DECL
 bool
-shouldGenerate(Info const& I, Config const& config);
+shouldGenerate(Symbol const& I, Config const& config);
 
 /** Find an Info type whose URL we can use for the specified Info
 
@@ -41,9 +41,9 @@ shouldGenerate(Info const& I, Config const& config);
     return nullptr.
  */
 MRDOCS_DECL
-Info const*
-findAlternativeURLInfo(Corpus const& c, Info const& I);
+Symbol const*
+findAlternativeURLInfo(Corpus const& c, Symbol const& I);
 
-} // clang::mrdocs::hbs
+} // mrdocs::hbs
 
 #endif

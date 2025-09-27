@@ -19,7 +19,7 @@
 #include <type_traits>
 #include <utility>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** Defines a customization point for types that have an intrinsic sentinel
     value denoting “null”.
@@ -313,6 +313,6 @@ null_of() noexcept(noexcept(nullable_traits<T>::null()))
     return nullable_traits<T>::null();
 }
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif // MRDOCS_API_ADT_NULLABLE_HPP

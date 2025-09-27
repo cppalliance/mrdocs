@@ -23,7 +23,7 @@
     that is dependent on the toolchain.
 */
 
-namespace clang {
+
 namespace mrdocs {
 
 /** The minimum version of LLVM required
@@ -85,6 +85,6 @@ namespace mrdocs {
 #endif
 
 } // mrdocs
-} // clang
+
 
 #endif // MRDOCS_API_PLATFORM_HPP

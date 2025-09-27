@@ -13,13 +13,13 @@
 
 #include <lib/CorpusImpl.hpp>
 #include <lib/Metadata/Finalizers/Javadoc/Function.hpp>
-#include <lib/Metadata/InfoSet.hpp>
+#include <lib/Metadata/SymbolSet.hpp>
 #include <utility>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 namespace {
 auto
-overloadFunctionsRange(OverloadsInfo const& O, CorpusImpl& corpus_)
+overloadFunctionsRange(OverloadsSymbol const& O, CorpusImpl& corpus_)
 {
     // Create a view all Info members of O
     auto functions =
@@ -28,11 +28,11 @@ overloadFunctionsRange(OverloadsInfo const& O, CorpusImpl& corpus_)
             {
                 return corpus_.find(id);
             }) |
-        std::views::filter([](Info const* infoPtr)
+        std::views::filter([](Symbol const* infoPtr)
             {
                 return infoPtr != nullptr && infoPtr->isFunction();
             }) |
-        std::views::transform([](Info const* infoPtr) -> FunctionInfo const&
+        std::views::transform([](Symbol const* infoPtr) -> FunctionSymbol const&
             {
                 return infoPtr->asFunction();
             });
@@ -41,12 +41,12 @@ overloadFunctionsRange(OverloadsInfo const& O, CorpusImpl& corpus_)
 
 template <class Range>
 bool
-populateOverloadsBriefIfAllSameBrief(OverloadsInfo& I, Range&& functionsWithBrief)
+populateOverloadsBriefIfAllSameBrief(OverloadsSymbol& I, Range&& functionsWithBrief)
 {
     auto first = *functionsWithBrief.begin();
     doc::Brief const& firstBrief = *first.javadoc->brief;
     if (auto otherFunctions = std::views::drop(functionsWithBrief, 1);
-        std::ranges::all_of(otherFunctions, [&](FunctionInfo const& otherFunction)
+        std::ranges::all_of(otherFunctions, [&](FunctionSymbol const& otherFunction)
         {
             doc::Brief const& otherBrief = *otherFunction.javadoc->brief;
             return otherBrief.children == firstBrief.children;
@@ -59,7 +59,7 @@ populateOverloadsBriefIfAllSameBrief(OverloadsInfo& I, Range&& functionsWithBrie
 }
 
 bool
-populateOverloadsFromClass(OverloadsInfo& I)
+populateOverloadsFromClass(OverloadsSymbol& I)
 {
     switch (I.Class)
     {
@@ -87,7 +87,7 @@ populateOverloadsFromClass(OverloadsInfo& I)
 
 template <class Range>
 bool
-populateOverloadsFromOperator(OverloadsInfo& I, Range&& functions)
+populateOverloadsFromOperator(OverloadsSymbol& I, Range&& functions)
 {
     MRDOCS_CHECK_OR(I.OverloadedOperator != OperatorKind::None, false);
 
@@ -100,7 +100,7 @@ populateOverloadsFromOperator(OverloadsInfo& I, Range&& functions)
     }
 
     // Find the operator name
-    auto isBinary = [&](FunctionInfo const& function) {
+    auto isBinary = [&](FunctionSymbol const& function) {
         return (function.Params.size() + function.IsRecordMethod) == 2;
     };
     auto isAllBinary = std::ranges::all_of(functions, isBinary);
@@ -114,7 +114,7 @@ populateOverloadsFromOperator(OverloadsInfo& I, Range&& functions)
 }
 
 bool
-populateOverloadsFromFunctionName(OverloadsInfo& I)
+populateOverloadsFromFunctionName(OverloadsSymbol& I)
 {
     std::string name = I.Name;
     if (name.empty() &&
@@ -136,10 +136,10 @@ populateOverloadsFromFunctionName(OverloadsInfo& I)
 
 template <class Range>
 void
-populateOverloadsBrief(OverloadsInfo& I, Range&& functions, CorpusImpl& corpus)
+populateOverloadsBrief(OverloadsSymbol& I, Range&& functions, CorpusImpl& corpus)
 {
     auto functionsWithBrief = std::views::
-        filter(functions, [](FunctionInfo const& function) {
+        filter(functions, [](FunctionSymbol const& function) {
         return function.javadoc && function.javadoc->brief
                && !function.javadoc->brief->empty();
     });
@@ -170,13 +170,13 @@ populateOverloadsBrief(OverloadsInfo& I, Range&& functions, CorpusImpl& corpus)
 // Populate with all the unique "returns" from the functions
 template <class Range>
 void
-populateOverloadsReturns(OverloadsInfo& I, Range&& functions) {
+populateOverloadsReturns(OverloadsSymbol& I, Range&& functions) {
     auto functionReturns = functions |
-        std::views::filter([](FunctionInfo const& function)
+        std::views::filter([](FunctionSymbol const& function)
             {
                 return function.javadoc && !function.javadoc->returns.empty();
             }) |
-        std::views::transform([](FunctionInfo const& function)
+        std::views::transform([](FunctionSymbol const& function)
             {
                 return function.javadoc->returns;
             }) |
@@ -198,13 +198,13 @@ populateOverloadsReturns(OverloadsInfo& I, Range&& functions) {
 
 template <class Range>
 void
-populateOverloadsParams(OverloadsInfo& I, Range& functions) {
+populateOverloadsParams(OverloadsSymbol& I, Range& functions) {
     auto functionParams = functions |
-        std::views::filter([](FunctionInfo const& function)
+        std::views::filter([](FunctionSymbol const& function)
             {
                 return function.javadoc && !function.javadoc->params.empty();
             }) |
-        std::views::transform([](FunctionInfo const& function)
+        std::views::transform([](FunctionSymbol const& function)
             {
                 return function.javadoc->params;
             }) |
@@ -226,13 +226,13 @@ populateOverloadsParams(OverloadsInfo& I, Range& functions) {
 
 template <class Range>
 void
-populateOverloadsTParams(OverloadsInfo& I, Range& functions) {
+populateOverloadsTParams(OverloadsSymbol& I, Range& functions) {
     auto functionTParams = functions |
-        std::views::filter([](FunctionInfo const& function)
+        std::views::filter([](FunctionSymbol const& function)
             {
                 return function.javadoc && !function.javadoc->tparams.empty();
             }) |
-        std::views::transform([](FunctionInfo const& function)
+        std::views::transform([](FunctionSymbol const& function)
             {
                 return function.javadoc->tparams;
             }) |
@@ -254,13 +254,13 @@ populateOverloadsTParams(OverloadsInfo& I, Range& functions) {
 
 template <class Range>
 void
-populateOverloadsExceptions(OverloadsInfo& I, Range& functions) {
+populateOverloadsExceptions(OverloadsSymbol& I, Range& functions) {
     auto functionExceptions = functions |
-        std::views::filter([](FunctionInfo const& function)
+        std::views::filter([](FunctionSymbol const& function)
             {
                 return function.javadoc && !function.javadoc->exceptions.empty();
             }) |
-        std::views::transform([](FunctionInfo const& function)
+        std::views::transform([](FunctionSymbol const& function)
             {
                 return function.javadoc->exceptions;
             }) |
@@ -282,13 +282,13 @@ populateOverloadsExceptions(OverloadsInfo& I, Range& functions) {
 
 template <class Range>
 void
-populateOverloadsSees(OverloadsInfo& I, Range& functions) {
+populateOverloadsSees(OverloadsSymbol& I, Range& functions) {
     auto functionSees = functions |
-        std::views::filter([](FunctionInfo const& function)
+        std::views::filter([](FunctionSymbol const& function)
             {
                 return function.javadoc && !function.javadoc->sees.empty();
             }) |
-        std::views::transform([](FunctionInfo const& function)
+        std::views::transform([](FunctionSymbol const& function)
             {
                 return function.javadoc->sees;
             }) |
@@ -310,13 +310,13 @@ populateOverloadsSees(OverloadsInfo& I, Range& functions) {
 
 template <class Range>
 void
-populateOverloadsPreconditions(OverloadsInfo& I, Range& functions) {
+populateOverloadsPreconditions(OverloadsSymbol& I, Range& functions) {
     auto functionsPres = functions |
-        std::views::filter([](FunctionInfo const& function)
+        std::views::filter([](FunctionSymbol const& function)
             {
                 return function.javadoc && !function.javadoc->preconditions.empty();
             }) |
-        std::views::transform([](FunctionInfo const& function)
+        std::views::transform([](FunctionSymbol const& function)
             {
                 return function.javadoc->preconditions;
             }) |
@@ -338,13 +338,13 @@ populateOverloadsPreconditions(OverloadsInfo& I, Range& functions) {
 
 template <class Range>
 void
-populateOverloadsPostconditions(OverloadsInfo& I, Range& functions) {
+populateOverloadsPostconditions(OverloadsSymbol& I, Range& functions) {
     auto functionsPosts = functions |
-        std::views::filter([](FunctionInfo const& function)
+        std::views::filter([](FunctionSymbol const& function)
             {
                 return function.javadoc && !function.javadoc->postconditions.empty();
             }) |
-        std::views::transform([](FunctionInfo const& function)
+        std::views::transform([](FunctionSymbol const& function)
             {
                 return function.javadoc->postconditions;
             }) |
@@ -365,6 +365,6 @@ populateOverloadsPostconditions(OverloadsInfo& I, Range& functions) {
 }
 
 }
-} // clang::mrdocs
+} // mrdocs
 
 #endif // MRDOCS_LIB_METADATA_FINALIZERS_JAVADOC_OVERLOADS_HPP

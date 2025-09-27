@@ -21,7 +21,7 @@
 #include <cstdint>
 #include <memory>
 
-namespace clang {
+
 namespace mrdocs {
 
 struct TestResults
@@ -84,6 +84,6 @@ public:
 };
 
 } // mrdocs
-} // clang
+
 
 #endif // MRDOCS_TEST_TESTRUNNER_HPP

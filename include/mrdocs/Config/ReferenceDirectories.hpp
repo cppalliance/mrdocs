@@ -14,7 +14,7 @@
 
 #include <string>
 
-namespace clang {
+
 namespace mrdocs {
 
 /** Reference directories used to resolve paths
@@ -32,6 +32,6 @@ struct ReferenceDirectories
 };
 
 } // mrdocs
-} // clang
+
 
 #endif // MRDOCS_API_CONFIG_REFERENCEDIRECTORIES_HPP

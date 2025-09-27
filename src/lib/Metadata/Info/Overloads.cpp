@@ -12,24 +12,24 @@
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
-#include <mrdocs/Metadata/Info/Function.hpp>
-#include <mrdocs/Metadata/Info/Namespace.hpp>
-#include <mrdocs/Metadata/Info/Overloads.hpp>
+#include <mrdocs/Metadata/Symbol/Function.hpp>
+#include <mrdocs/Metadata/Symbol/Namespace.hpp>
+#include <mrdocs/Metadata/Symbol/Overloads.hpp>
 #include <llvm/ADT/STLExtras.h>
 #include <llvm/ADT/StringRef.h>
 #include <format>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
-OverloadsInfo::OverloadsInfo(SymbolID const &Parent, std::string_view Name,
+OverloadsSymbol::OverloadsSymbol(SymbolID const &Parent, std::string_view Name,
                              AccessKind access, bool isStatic) noexcept
-    : InfoCommonBase(SymbolID::createFromString(std::format(
+    : SymbolCommonBase(SymbolID::createFromString(std::format(
           "{}-{}-{}-{}", toBase16(Parent), Name, toString(access), isStatic))) {
   this->Parent = Parent;
 }
 
 void
-merge(OverloadsInfo& I, OverloadsInfo&& Other)
+merge(OverloadsSymbol& I, OverloadsSymbol&& Other)
 {
     merge(I.asInfo(), std::move(Other.asInfo()));
     namespace stdr = std::ranges;
@@ -41,7 +41,7 @@ merge(OverloadsInfo& I, OverloadsInfo&& Other)
 }
 
 void
-addMember(OverloadsInfo& I, FunctionInfo const& Member)
+addMember(OverloadsSymbol& I, FunctionSymbol const& Member)
 {
     if (I.Members.empty())
     {
@@ -58,11 +58,11 @@ addMember(OverloadsInfo& I, FunctionInfo const& Member)
         if (I.ReturnType != Member.ReturnType)
         {
             // The return types differ, so we use 'auto' to indicate that.
-            I.ReturnType = Polymorphic<TypeInfo>(AutoTypeInfo{});
+            I.ReturnType = Polymorphic<Type>(AutoType{});
         }
     }
     merge(I.Loc, Member.Loc);
     I.Members.push_back(Member.id);
 }
 
-} // clang::mrdocs
+} // mrdocs

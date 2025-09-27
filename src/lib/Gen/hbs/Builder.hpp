@@ -20,7 +20,7 @@
 #include <mrdocs/Support/JavaScript.hpp>
 #include <ostream>
 
-namespace clang {
+
 namespace mrdocs {
 namespace hbs {
 
@@ -57,7 +57,7 @@ public:
         this function renders the wrapper template
         with the index template as the contents.
      */
-    template<std::derived_from<Info> T>
+    template<std::derived_from<Symbol> T>
     Expected<void>
     operator()(std::ostream& os, T const&);
 
@@ -112,7 +112,7 @@ private:
         the section where the symbol is located.
      */
     dom::Object
-    createContext(Info const& I);
+    createContext(Symbol const& I);
 
     /** Render a Handlebars template from the templates directory.
      */
@@ -126,6 +126,6 @@ private:
 
 } // hbs
 } // mrdocs
-} // clang
+
 
 #endif // MRDOCS_LIB_GEN_HBS_BUILDER_HPP

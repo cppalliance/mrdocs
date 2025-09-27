@@ -19,7 +19,7 @@
 #include <mrdocs/Support/Error.hpp>
 #include <string>
 
-namespace clang::mrdocs::xml {
+namespace mrdocs::xml {
 
 class jit_indenter;
 
@@ -52,8 +52,8 @@ public:
     // ---------------
     // Info types
 
-#define INFO(Type) void write##Type(Type##Info const&);
-#include <mrdocs/Metadata/Info/InfoNodes.inc>
+#define INFO(Type) void write##Type(Type##Symbol const&);
+#include <mrdocs/Metadata/Symbol/SymbolNodes.inc>
 
     void writeSourceInfo(SourceInfo const& I);
     void writeLocation(Location const& loc, bool def = false);
@@ -107,6 +107,6 @@ public:
     }
 };
 
-} // clang::mrdocs::xml
+} // mrdocs::xml
 
 #endif // MRDOCS_LIB_GEN_XML_XMLWRITER_HPP

@@ -16,7 +16,7 @@
 #include <mrdocs/Dom.hpp>
 #include <string>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** Reference type kinds
 */
@@ -44,6 +44,6 @@ tag_invoke(
     v = toString(kind);
 }
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

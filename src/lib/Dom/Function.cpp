@@ -10,7 +10,7 @@
 
 #include <mrdocs/Dom/Function.hpp>
 
-namespace clang {
+
 namespace mrdocs {
 namespace dom {
 
@@ -89,4 +89,4 @@ type_key() const noexcept
 
 } // dom
 } // mrdocs
-} // clang
+

@@ -14,7 +14,7 @@
 #include <mrdocs/Support/Error.hpp>
 #include <llvm/Support/Program.h>
 
-namespace clang {
+
 namespace mrdocs {
 
 Optional<std::string>
@@ -116,4 +116,4 @@ getCompilersDefaultIncludeDir(clang::tooling::CompilationDatabase const& compDb,
 }
 
 } // mrdocs
-} // clang
+

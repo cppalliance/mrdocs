@@ -16,20 +16,13 @@
 #if __cpp_lib_source_location >= 201907L && \
     __has_include(<source_location>)
 #    include <source_location>
-
-    namespace clang {
-    namespace mrdocs {
-
+namespace mrdocs {
     using std::source_location;
-
-    } // mrdocs
-    } // clang
+} // mrdocs
 #else
 #    include <cstdint>
 
-    namespace clang {
-    namespace mrdocs {
-
+namespace mrdocs {
     struct source_location
     {
         static
@@ -82,8 +75,6 @@
         std::uint_least32_t line_ = 0;
         std::uint_least32_t column_ = 0;
     };
-
 } // mrdocs
-} // clang
 #endif
 #endif

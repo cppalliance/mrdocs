@@ -15,30 +15,30 @@
 #include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
-#include <mrdocs/Metadata/Info/Record.hpp>
+#include <mrdocs/Metadata/Symbol/Record.hpp>
 #include <mrdocs/Support/String.hpp>
 #include <clang/AST/Type.h>
 #include <llvm/ADT/STLExtras.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 dom::String
-toString(InfoKind const kind) noexcept
+toString(SymbolKind const kind) noexcept
 {
     switch(kind)
     {
 #define INFO(Type) \
-    case InfoKind::Type: return toKebabCase(#Type);
-#include <mrdocs/Metadata/Info/InfoNodes.inc>
+    case SymbolKind::Type: return toKebabCase(#Type);
+#include <mrdocs/Metadata/Symbol/SymbolNodes.inc>
     default:
         MRDOCS_UNREACHABLE();
     }
 }
 
 void
-merge(Info& I, Info&& Other)
+merge(Symbol& I, Symbol&& Other)
 {
     MRDOCS_ASSERT(I.id);
     merge(I.Loc, std::move(Other.Loc));
@@ -67,4 +67,4 @@ merge(Info& I, Info&& Other)
     }
 }
 
-} // clang::mrdocs
+} // mrdocs

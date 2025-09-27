@@ -20,7 +20,7 @@
 #include <string>
 #include <string_view>
 
-namespace clang {
+
 namespace mrdocs {
 namespace lua {
 
@@ -495,14 +495,14 @@ public:
 
 } // lua
 } // mrdocs
-} // clang
+
 
 //------------------------------------------------
 
 template <>
-struct std::formatter<clang::mrdocs::lua::Value> : std::formatter<std::string> {
+struct std::formatter<mrdocs::lua::Value> : std::formatter<std::string> {
   template <class FmtContext>
-  auto format(clang::mrdocs::lua::Value const &value, FmtContext &ctx) const {
+  auto format(mrdocs::lua::Value const &value, FmtContext &ctx) const {
     return std::formatter<std::string>::format(value.displayString(), ctx);
   }
 };

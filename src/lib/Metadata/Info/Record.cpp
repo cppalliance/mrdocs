@@ -9,11 +9,11 @@
 //
 
 #include <mrdocs/Dom/LazyObject.hpp>
-#include <mrdocs/Metadata/Info/Record.hpp>
 #include <mrdocs/Metadata/Name.hpp>
+#include <mrdocs/Metadata/Symbol/Record.hpp>
 #include <ranges>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 dom::String
 toString(
@@ -68,8 +68,8 @@ reduceSymbolIDs(
 } // (anon)
 
 std::strong_ordering
-RecordInfo::
-operator<=>(RecordInfo const& other) const
+RecordSymbol::
+operator<=>(RecordSymbol const& other) const
 {
     if (auto const cmp = Name <=> other.Name;
         !std::is_eq(cmp))
@@ -134,7 +134,7 @@ merge(RecordInterface& I, RecordInterface&& Other)
 }
 
 void
-merge(RecordInfo& I, RecordInfo&& Other)
+merge(RecordSymbol& I, RecordSymbol&& Other)
 {
     merge(I.asInfo(), std::move(Other.asInfo()));
     if (Other.KeyKind != RecordKeyKind::Struct &&
@@ -183,4 +183,4 @@ tag_invoke(
     v = dom::LazyObject(I, domCorpus);
 }
 
-} // clang::mrdocs
+} // mrdocs

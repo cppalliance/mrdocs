@@ -17,7 +17,7 @@
 #include <mrdocs/Support/Expected.hpp>
 #include <memory>
 
-namespace clang {
+
 namespace mrdocs {
 namespace dom {
 
@@ -386,7 +386,7 @@ Function makeVariadicInvocable(F&& f)
 
 } // dom
 } // mrdocs
-} // clang
+
 
 // This is here because of circular references
 #include <mrdocs/Dom/Value.hpp>

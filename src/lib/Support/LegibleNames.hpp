@@ -13,11 +13,11 @@
 #define MRDOCS_LIB_SUPPORT_LEGIBLENAMES_HPP
 
 #include <mrdocs/Corpus.hpp>
-#include <mrdocs/Metadata/Info/SymbolID.hpp>
+#include <mrdocs/Metadata/Symbol/SymbolID.hpp>
 #include <memory>
 #include <string>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** A table mapping Info objects to legible names.
 
@@ -61,6 +61,6 @@ public:
         char delim = '-') const;
 };
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

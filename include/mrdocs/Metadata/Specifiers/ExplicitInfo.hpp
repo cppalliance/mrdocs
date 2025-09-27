@@ -16,7 +16,7 @@
 #include <mrdocs/Metadata/Specifiers/ExplicitKind.hpp>
 #include <string>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /**
     Stores only the operand of the explicit-specifier or noexcept-specifier as a string.
@@ -70,6 +70,6 @@ tag_invoke(
     v = toString(I);
 }
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

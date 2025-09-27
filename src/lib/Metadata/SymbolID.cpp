@@ -12,12 +12,12 @@
 #include <lib/Support/Radix.hpp>
 #include <mrdocs/Dom.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
-#include <mrdocs/Metadata/Info/SymbolID.hpp>
+#include <mrdocs/Metadata/Symbol/SymbolID.hpp>
 #include <llvm/Support/SHA1.h>
 #include <climits>
 #include <ranges>
 
-namespace clang {
+
 namespace mrdocs {
 
 // Better have 8 bits per byte, otherwise
@@ -156,4 +156,4 @@ tag_invoke(
 
 
 } // mrdocs
-} // clang
+

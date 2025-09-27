@@ -20,7 +20,7 @@
 #include <clang/Sema/SemaConsumer.h>
 #include <clang/Tooling/Tooling.h>
 
-namespace clang {
+
 namespace mrdocs {
 
 /** A consumer for visiting AST nodes and performing semantic analysis.
@@ -37,18 +37,18 @@ namespace mrdocs {
     when the translation unit is complete.
  */
 class ASTVisitorConsumer
-    : public SemaConsumer
+    : public clang::SemaConsumer
 {
     ConfigImpl const& config_;
     ExecutionContext& ex_;
-    CompilerInstance& compiler_;
-    Sema* sema_ = nullptr;
+    clang::CompilerInstance& compiler_;
+    clang::Sema* sema_ = nullptr;
 
 public:
     ASTVisitorConsumer(
         ConfigImpl const& config,
         ExecutionContext& ex,
-        CompilerInstance& compiler) noexcept
+        clang::CompilerInstance& compiler) noexcept
         : config_(config)
         , ex_(ex)
         , compiler_(compiler)
@@ -62,7 +62,7 @@ public:
         tree.
       */
     void
-    InitializeSema(Sema& S) override
+    InitializeSema(clang::Sema& S) override
     {
         // Sema should not have been initialized yet
         MRDOCS_ASSERT(!sema_);
@@ -93,7 +93,7 @@ public:
         of declaration or definition is found is left as an empty stub.
       */
     void
-    HandleTranslationUnit(ASTContext& Context) override;
+    HandleTranslationUnit(clang::ASTContext& Context) override;
 
     /** Handle the specified top-level declaration.
 
@@ -103,7 +103,7 @@ public:
         @returns `true` to always continue parsing
      */
     bool
-    HandleTopLevelDecl(DeclGroupRef) override
+    HandleTopLevelDecl(clang::DeclGroupRef) override
     {
         return true;
     }
@@ -123,7 +123,7 @@ public:
         @param D The declaration of the static member variable
      */
     void
-    HandleCXXStaticMemberVarInstantiation(VarDecl* D) override
+    HandleCXXStaticMemberVarInstantiation(clang::VarDecl* D) override
     {
         D->setImplicit();
     }
@@ -142,12 +142,12 @@ public:
         because implicitly instantiated definitions of member
         functions of class templates are added to the end of the
         TU DeclContext. As a result, Decl::isImplicit returns
-        false for these FunctionDecls, so we manually set it here.
+        false for these clang::FunctionDecls, so we manually set it here.
 
         @param D The declaration of the function
      */
     void
-    HandleCXXImplicitFunctionInstantiation(FunctionDecl* D) override
+    HandleCXXImplicitFunctionInstantiation(clang::FunctionDecl* D) override
     {
         D->setImplicit();
     }
@@ -161,7 +161,7 @@ public:
 
         @param D The declaration of the function
      */
-    void HandleInlineFunctionDefinition(FunctionDecl*) override { }
+    void HandleInlineFunctionDefinition(clang::FunctionDecl*) override { }
 
     /** Handle a tag declaration definition.
 
@@ -172,7 +172,7 @@ public:
 
         @param D The declaration of the tag
      */
-    void HandleTagDeclDefinition(TagDecl*) override { }
+    void HandleTagDeclDefinition(clang::TagDecl*) override { }
 
     /** Handle a tag declaration required definition.
 
@@ -183,7 +183,7 @@ public:
 
         @param D The declaration of the tag
      */
-    void HandleTagDeclRequiredDefinition(TagDecl const*) override { }
+    void HandleTagDeclRequiredDefinition(clang::TagDecl const*) override { }
 
     /** Handle an interesting declaration.
 
@@ -196,7 +196,7 @@ public:
 
         @param D The declaration
      */
-    void HandleInterestingDecl(DeclGroupRef) override { }
+    void HandleInterestingDecl(clang::DeclGroupRef) override { }
 
     /** Handle a tentative definition.
 
@@ -206,7 +206,7 @@ public:
 
         @param D The declaration
      */
-    void CompleteTentativeDefinition(VarDecl*) override { }
+    void CompleteTentativeDefinition(clang::VarDecl*) override { }
 
     /** Handle a tentative definition.
 
@@ -216,7 +216,7 @@ public:
 
         @param D The declaration
      */
-    void CompleteExternalDeclaration(DeclaratorDecl*) override { }
+    void CompleteExternalDeclaration(clang::DeclaratorDecl*) override { }
 
     /** Handle a vtable.
 
@@ -226,7 +226,7 @@ public:
 
         @param D The declaration
      */
-    void AssignInheritanceModel(CXXRecordDecl*) override { }
+    void AssignInheritanceModel(clang::CXXRecordDecl*) override { }
 
     /** Handle an implicit import declaration.
 
@@ -236,7 +236,7 @@ public:
 
         @param D The declaration
      */
-    void HandleVTable(CXXRecordDecl*) override { }
+    void HandleVTable(clang::CXXRecordDecl*) override { }
 
     /** Handle an implicit import declaration.
 
@@ -246,7 +246,7 @@ public:
 
         @param D The declaration
      */
-    void HandleImplicitImportDecl(ImportDecl*) override { }
+    void HandleImplicitImportDecl(clang::ImportDecl*) override { }
 
     /** Handle a top-level declaration in an Objective-C container.
 
@@ -257,10 +257,10 @@ public:
 
         @param D The declaration
      */
-    void HandleTopLevelDeclInObjCContainer(DeclGroupRef) override { }
+    void HandleTopLevelDeclInObjCContainer(clang::DeclGroupRef) override { }
 };
 
 } // mrdocs
-} // clang
+
 
 #endif // MRDOCS_LIB_AST_ASTVISITORCONSUMER_HPP

@@ -13,7 +13,7 @@
 #include <mrdocs/Platform.hpp>
 #include <lib/Support/Radix.hpp>
 
-namespace clang {
+
 namespace mrdocs {
 namespace xml {
 
@@ -210,4 +210,4 @@ nest(int levels)
 
 } // xml
 } // mrdocs
-} // clang
+

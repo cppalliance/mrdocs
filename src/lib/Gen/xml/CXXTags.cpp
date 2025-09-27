@@ -10,21 +10,21 @@
 //
 
 #include "CXXTags.hpp"
-#include <mrdocs/Metadata/Info/Record.hpp>
-#include <mrdocs/Metadata/Info/Typedef.hpp>
+#include <mrdocs/Metadata/Symbol/Record.hpp>
+#include <mrdocs/Metadata/Symbol/Typedef.hpp>
 #include <mrdocs/Support/String.hpp>
 
-namespace clang::mrdocs::xml {
+namespace mrdocs::xml {
 
 std::string
-getDefaultTagName(Info const& I) noexcept
+getDefaultTagName(Symbol const& I) noexcept
 {
     switch(I.Kind)
     {
 #define INFO(Type) \
-    case InfoKind::Type: \
+    case SymbolKind::Type: \
         return toKebabCase(#Type) + "TagName";
-#include <mrdocs/Metadata/Info/InfoNodes.inc>
+#include <mrdocs/Metadata/Symbol/SymbolNodes.inc>
     default:
         break;
     }
@@ -33,12 +33,12 @@ getDefaultTagName(Info const& I) noexcept
 
 
 std::string
-getTagName(Info const& I) noexcept
+getTagName(Symbol const& I) noexcept
 {
     switch(I.Kind)
     {
-    case InfoKind::Record:
-        switch(static_cast<RecordInfo const&>(I).KeyKind)
+    case SymbolKind::Record:
+        switch(static_cast<RecordSymbol const&>(I).KeyKind)
         {
         case RecordKeyKind::Class:     return classTagName;
         case RecordKeyKind::Struct:    return structTagName;
@@ -47,8 +47,8 @@ getTagName(Info const& I) noexcept
             break;
         }
         break;
-    case InfoKind::Typedef:
-        if (static_cast<TypedefInfo const&>(I).IsUsing)
+    case SymbolKind::Typedef:
+        if (static_cast<TypedefSymbol const&>(I).IsUsing)
         {
             return "namespace";
         }
@@ -62,4 +62,4 @@ getTagName(Info const& I) noexcept
     MRDOCS_UNREACHABLE();
 }
 
-} // clang::mrdocs::xml
+} // mrdocs::xml

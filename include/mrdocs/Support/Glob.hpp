@@ -17,7 +17,7 @@
 #include <optional>
 #include <string_view>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** A glob pattern matcher
 
@@ -330,6 +330,6 @@ public:
     }
 };
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif // MRDOCS_API_SUPPORT_GLOB_HPP

@@ -17,7 +17,7 @@
 #include <lib/Gen/hbs/HandlebarsGenerator.hpp>
 #include <mrdocs/Generator.hpp>
 
-namespace clang::mrdocs::adoc {
+namespace mrdocs::adoc {
 
 class AdocGenerator final
     : public hbs::HandlebarsGenerator
@@ -46,6 +46,6 @@ public:
     escape(OutputRef& os, std::string_view str) const override;
 };
 
-} // clang::mrdocs::adoc
+} // mrdocs::adoc
 
 #endif

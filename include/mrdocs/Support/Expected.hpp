@@ -26,7 +26,7 @@
 #include <utility>
 #include <vector>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 //------------------------------------------------
 //
@@ -3275,6 +3275,6 @@ public:
     }
 }; // class Expected<T&, E>
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

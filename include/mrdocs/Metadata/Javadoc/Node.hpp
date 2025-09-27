@@ -43,7 +43,7 @@
     @see https://www.doxygen.nl
 
  */
-namespace clang::mrdocs::doc {
+namespace mrdocs::doc {
 
 /** Visit a node.
 
@@ -155,6 +155,6 @@ tag_invoke(
 }
 
 
-} // clang::mrdocs::doc
+} // mrdocs::doc
 
 #endif

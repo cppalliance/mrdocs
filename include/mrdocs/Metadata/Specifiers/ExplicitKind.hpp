@@ -16,7 +16,7 @@
 #include <mrdocs/Dom/String.hpp>
 #include <string>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** Explicit specifier kinds
 */
@@ -37,6 +37,6 @@ MRDOCS_DECL
 dom::String
 toString(ExplicitKind kind) noexcept;
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

@@ -12,7 +12,7 @@
 #include <lib/Support/Report.hpp>
 #include <mrdocs/Support/Assert.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 int ExecuteAndWaitWithLogging(
     llvm::StringRef program,
@@ -36,4 +36,4 @@ int ExecuteAndWaitWithLogging(
     return llvm::sys::ExecuteAndWait(program, args, env, redirects, secondsToWait, memoryLimit, errMsg, executionFailed, procStat, affinityMask);
 }
 
-} // clang::mrdocs
+} // mrdocs

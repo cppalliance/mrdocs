@@ -8,11 +8,11 @@ input:
 file-patterns:
   - '*.hpp'
 include-symbols:
-  - 'clang::mrdocs::**'
+  - 'mrdocs::**'
 implementation-defined:
-  - 'clang::mrdocs::detail'
-  - 'clang::mrdocs::report::detail'
-  - 'clang::mrdocs::dom::detail'
+  - 'mrdocs::detail'
+  - 'mrdocs::report::detail'
+  - 'mrdocs::dom::detail'
 multipage: true
 generator: adoc
 cmake: '-D MRDOCS_DOCUMENTATION_BUILD=ON'

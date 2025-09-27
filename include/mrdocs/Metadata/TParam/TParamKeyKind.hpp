@@ -18,7 +18,7 @@
 #include <mrdocs/Dom.hpp>
 #include <string_view>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** The keyword a template parameter was declared with */
 enum class TParamKeyKind : int
@@ -43,6 +43,6 @@ tag_invoke(
     v = toString(kind);
 }
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

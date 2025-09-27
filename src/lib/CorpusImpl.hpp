@@ -15,7 +15,7 @@
 #include <mrdocs/Platform.hpp>
 #include <lib/AST/ParseRef.hpp>
 #include <lib/ConfigImpl.hpp>
-#include <lib/Metadata/InfoSet.hpp>
+#include <lib/Metadata/SymbolSet.hpp>
 #include <lib/Support/Debug.hpp>
 #include <mrdocs/ADT/UnorderedStringMap.hpp>
 #include <mrdocs/Corpus.hpp>
@@ -28,7 +28,7 @@
 #include <set>
 #include <string>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** Implements the Corpus.
 
@@ -45,15 +45,15 @@ class CorpusImpl final : public Corpus
     std::shared_ptr<ConfigImpl const> config_;
 
     // Info keyed on Symbol ID.
-    InfoSet info_;
+    SymbolSet info_;
 
     // Undocumented symbols
-    UndocumentedInfoSet undocumented_;
+    UndocumentedSymbolSet undocumented_;
 
     // Lookup cache
     // The key represents the context symbol ID.
     // The value is another map from the name to the Info.
-    std::map<SymbolID, UnorderedStringMap<Info const*>> lookupCache_;
+    std::map<SymbolID, UnorderedStringMap<Symbol const*>> lookupCache_;
 
     friend class Corpus;
     friend class BaseMembersFinalizer;
@@ -88,10 +88,10 @@ public:
 
         If the id does not exist, the behavior is undefined.
     */
-    Info*
+    Symbol*
     find(SymbolID const& id) noexcept;
 
-    Info const*
+    Symbol const*
     find(SymbolID const& id) const noexcept override;
 
     /** Return a range of Info objects for the specified Symbol IDs.
@@ -103,15 +103,15 @@ public:
         return
             std::views::transform(
                 range,
-                [this](SymbolID const& id) -> Info*
+                [this](SymbolID const& id) -> Symbol*
                 {
                     return this->find(id);
                 }) |
-            std::views::filter([](Info const* info)
+            std::views::filter([](Symbol const* info)
                 {
                     return info != nullptr;
                 }) |
-            std::views::transform([](Info* info) -> Info&
+            std::views::transform([](Symbol* info) -> Symbol&
                 {
                     return *info;
                 }) |
@@ -127,25 +127,25 @@ public:
         return
             std::views::transform(
                 range,
-                [this](SymbolID const& id) -> Info const*
+                [this](SymbolID const& id) -> Symbol const*
                 {
                     return this->find(id);
                 }) |
-            std::views::filter([](Info const* info)
+            std::views::filter([](Symbol const* info)
                 {
                     return info != nullptr;
                 }) |
-            std::views::transform([](Info const* info) -> Info const&
+            std::views::transform([](Symbol const* info) -> Symbol const&
                 {
                     return *info;
                 }) |
             std::views::common;
     }
 
-    Expected<Info const&>
+    Expected<Symbol const&>
     lookup(SymbolID const& context, std::string_view name) const override;
 
-    Expected<Info const&>
+    Expected<Symbol const&>
     lookup(SymbolID const& context, std::string_view name);
 
     /** Build metadata for a set of translation units.
@@ -169,16 +169,14 @@ public:
     mrdocs::Expected<std::unique_ptr<Corpus>>
     build(
         std::shared_ptr<ConfigImpl const> const& config,
-        tooling::CompilationDatabase const& compilations);
+        clang::tooling::CompilationDatabase const& compilations);
 
     void
-    qualifiedName(
-        Info const& I,
+    qualifiedName(Symbol const& I,
         std::string& result) const override;
 
     void
-    qualifiedName(
-        Info const& I,
+    qualifiedName(Symbol const& I,
         SymbolID const& context,
         std::string& result) const override;
 
@@ -198,15 +196,14 @@ private:
 
     template <class Self>
     static
-    Expected<Info const&>
+    Expected<Symbol const&>
     lookupImpl(
         Self&& self,
         SymbolID const& contextId,
         std::string_view name);
 
     template <class Self>
-    static
-    Info const*
+    static Symbol const*
     lookupImpl(
         Self&& self,
         SymbolID const& context,
@@ -214,14 +211,14 @@ private:
         std::string_view name,
         bool cache);
 
-    Info const*
+    Symbol const*
     lookupImpl(
         SymbolID const& contextId,
         ParsedRefComponent const& component,
         ParsedRef const& ref,
         bool checkParameters) const;
 
-    std::pair<Info const*, bool>
+    std::pair<Symbol const*, bool>
     lookupCacheGet(
         SymbolID const& context,
         std::string_view name) const;
@@ -230,13 +227,12 @@ private:
     lookupCacheSet(
         SymbolID const& context,
         std::string_view name,
-        Info const* info);
+        Symbol const* info);
 
     void
     lookupCacheSet(
         SymbolID const&,
-        std::string_view,
-        Info const*) const
+        std::string_view, Symbol const*) const
     {
         // no-op when const
     }
@@ -251,11 +247,11 @@ get(
     auto I = find(id);
     MRDOCS_ASSERT(I != nullptr);
     auto const t = static_cast<T*>(I);
-    if constexpr(! std::is_same_v<T, Info>)
+    if constexpr(! std::is_same_v<T, Symbol>)
         MRDOCS_ASSERT(t->Kind == T::kind_id);
     return *t;
 }
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif // MRDOCS_LIB_CORPUSIMPL_HPP

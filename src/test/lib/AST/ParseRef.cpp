@@ -10,7 +10,7 @@
 #include <test_suite/diff.hpp>
 #include <test_suite/test_suite.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 struct ParseRef_test
 {
@@ -321,4 +321,4 @@ TEST_SUITE(
     ParseRef_test,
     "clang.mrdocs.ParseRef");
 
-} // clang::mrdocs
+} // mrdocs

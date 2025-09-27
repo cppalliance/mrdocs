@@ -17,7 +17,6 @@
 #include <string>
 #include <vector>
 
-namespace clang {
 namespace mrdocs {
 namespace dom {
 
@@ -397,7 +396,6 @@ newArray(Args&&... args)
 
 } // dom
 } // mrdocs
-} // clang
 
 // This is here because of circular references
 #include <mrdocs/Dom/Value.hpp>

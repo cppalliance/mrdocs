@@ -14,9 +14,9 @@
 #include <mrdocs/Support/unlock_guard.hpp>
 #include <sstream>
 
-namespace clang::mrdocs::hbs {
+namespace mrdocs::hbs {
 
-template <std::derived_from<Info> T>
+template <std::derived_from<Symbol> T>
 void
 SinglePageVisitor::
 operator()(T const& I)
@@ -38,12 +38,12 @@ operator()(T const& I)
             }
         });
     }
-    Corpus::TraverseOptions opts = {.skipInherited = std::same_as<T, RecordInfo>};
+    Corpus::TraverseOptions opts = {.skipInherited = std::same_as<T, RecordSymbol>};
     corpus_.traverse(opts, I, *this);
 }
 
-#define INFO(T) template void SinglePageVisitor::operator()<T##Info>(T##Info const&);
-#include <mrdocs/Metadata/Info/InfoNodes.inc>
+#define INFO(T) template void SinglePageVisitor::operator()<T##Symbol>(T##Symbol const&);
+#include <mrdocs/Metadata/Symbol/SymbolNodes.inc>
 
 // pageNumber is zero-based
 void
@@ -97,4 +97,4 @@ writePage(
     }
 }
 
-} // clang::mrdocs::hbs
+} // mrdocs::hbs

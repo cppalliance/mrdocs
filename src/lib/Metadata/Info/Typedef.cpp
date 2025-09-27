@@ -10,15 +10,15 @@
 //
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Info.hpp>
-#include <mrdocs/Metadata/Info/Typedef.hpp>
+#include <mrdocs/Metadata/Symbol.hpp>
+#include <mrdocs/Metadata/Symbol/Typedef.hpp>
 #include <llvm/ADT/STLExtras.h>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 std::strong_ordering
-TypedefInfo::
-operator<=>(TypedefInfo const& other) const
+TypedefSymbol::
+operator<=>(TypedefSymbol const& other) const
 {
     if (auto const cmp = Name <=> other.Name;
         !std::is_eq(cmp))
@@ -59,7 +59,7 @@ operator<=>(TypedefInfo const& other) const
     return this->asInfo() <=> other.asInfo();
 }
 
-void merge(TypedefInfo& I, TypedefInfo&& Other)
+void merge(TypedefSymbol& I, TypedefSymbol&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
     merge(I.asInfo(), std::move(Other.asInfo()));
@@ -69,7 +69,7 @@ void merge(TypedefInfo& I, TypedefInfo&& Other)
     }
     MRDOCS_ASSERT(!I.Type.valueless_after_move());
     if (I.Type->isNamed() &&
-        I.Type->asNamed().Name->Name.empty())
+        I.Type->asNamed().Name->Identifier.empty())
     {
         I.Type = std::move(Other.Type);
     }
@@ -79,5 +79,5 @@ void merge(TypedefInfo& I, TypedefInfo&& Other)
     }
 }
 
-} // clang::mrdocs
+} // mrdocs
 

@@ -16,7 +16,7 @@
 #include <type_traits>
 #include <utility>
 
-namespace clang {
+
 namespace mrdocs {
 
 /** A movable, type-erased function object.
@@ -73,6 +73,6 @@ public:
 };
 
 } // mrdocs
-} // clang
+
 
 #endif

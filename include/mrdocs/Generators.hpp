@@ -16,7 +16,7 @@
 #include <cstdint>
 #include <string_view>
 
-namespace clang {
+
 namespace mrdocs {
 
 /** A dynamic list of @ref Generator elements.
@@ -77,6 +77,6 @@ Generators const&
 getGenerators() noexcept;
 
 } // mrdocs
-} // clang
+
 
 #endif // MRDOCS_API_GENERATORS_HPP

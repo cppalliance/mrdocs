@@ -10,14 +10,14 @@
 //
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Info/Variable.hpp>
+#include <mrdocs/Metadata/Symbol/Variable.hpp>
 #include <llvm/ADT/STLExtras.h>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 std::strong_ordering
-VariableInfo::
-operator<=>(VariableInfo const& other) const
+VariableSymbol::
+operator<=>(VariableSymbol const& other) const
 {
     if (auto const cmp = Name <=> other.Name;
         !std::is_eq(cmp))
@@ -59,13 +59,13 @@ operator<=>(VariableInfo const& other) const
 }
 
 void
-merge(VariableInfo& I, VariableInfo&& Other)
+merge(VariableSymbol& I, VariableSymbol&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
     merge(I.asInfo(), std::move(Other.asInfo()));
     MRDOCS_ASSERT(!I.Type.valueless_after_move());
     if (I.Type->isNamed() &&
-        I.Type->asNamed().Name->Name.empty())
+        I.Type->asNamed().Name->Identifier.empty())
     {
         I.Type = std::move(Other.Type);
     }
@@ -101,5 +101,5 @@ merge(VariableInfo& I, VariableInfo&& Other)
     I.HasNoUniqueAddress |= Other.HasNoUniqueAddress;
 }
 
-} // clang::mrdocs
+} // mrdocs
 

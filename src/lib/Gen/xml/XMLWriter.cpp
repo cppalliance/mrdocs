@@ -26,7 +26,7 @@
 //
 //------------------------------------------------
 
-namespace clang::mrdocs::xml {
+namespace mrdocs::xml {
 
 //------------------------------------------------
 //
@@ -93,13 +93,13 @@ XMLWriter::
 operator()(
     T const& I)
 {
-    if (Info const& base = I;
+    if (Symbol const& base = I;
         base.Extraction == ExtractionMode::Dependency)
     {
         return;
     }
     #define INFO(Type) if constexpr(T::is##Type()) write##Type(I);
-#include <mrdocs/Metadata/Info/InfoNodes.inc>
+#include <mrdocs/Metadata/Symbol/SymbolNodes.inc>
 }
 
 //------------------------------------------------
@@ -107,7 +107,7 @@ operator()(
 void
 XMLWriter::
 writeNamespace(
-    NamespaceInfo const& I)
+    NamespaceSymbol const& I)
 {
     constexpr std::string_view namespaceTagName = "namespace";
     tags_.open(namespaceTagName, {
@@ -117,7 +117,7 @@ writeNamespace(
         { "is-inline", "1", I.IsInline}
     });
     writeJavadoc(I.javadoc);
-    for (NameInfo const& NI: I.UsingDirectives)
+    for (Name const& NI: I.UsingDirectives)
     {
         if (auto const& id = NI.id; id != SymbolID::invalid)
         {
@@ -131,7 +131,7 @@ writeNamespace(
 void
 XMLWriter::
 writeEnum(
-    EnumInfo const& I)
+    EnumSymbol const& I)
 {
     constexpr std::string_view enumTagName = "enum";
     tags_.open(enumTagName, {
@@ -159,7 +159,7 @@ writeEnum(
 void
 XMLWriter::
 writeEnumConstant(
-    EnumConstantInfo const& I)
+    EnumConstantSymbol const& I)
 {
     std::string val = I.Initializer.Value ?
         std::to_string(*I.Initializer.Value) :
@@ -208,7 +208,7 @@ writeFriend(
 void
 XMLWriter::
 writeFunction(
-    FunctionInfo const& I)
+    FunctionSymbol const& I)
 {
     openTemplate(I.Template);
 
@@ -269,7 +269,7 @@ writeFunction(
 void
 XMLWriter::
 writeOverloads(
-    OverloadsInfo const& I)
+    OverloadsSymbol const& I)
 {
     corpus_.traverse(I, *this);
 }
@@ -277,7 +277,7 @@ writeOverloads(
 void
 XMLWriter::
 writeGuide(
-    GuideInfo const& I)
+    GuideSymbol const& I)
 {
     openTemplate(I.Template);
 
@@ -311,7 +311,7 @@ writeGuide(
 void
 XMLWriter::
 writeConcept(
-    ConceptInfo const& I)
+    ConceptSymbol const& I)
 {
     openTemplate(I.Template);
 
@@ -335,7 +335,7 @@ writeConcept(
 void
 XMLWriter::
 writeNamespaceAlias(
-    NamespaceAliasInfo const& I)
+    NamespaceAliasSymbol const& I)
 {
     constexpr std::string_view namespaceAliasTagName = "namespace-alias";
     tags_.open(namespaceAliasTagName, {
@@ -358,7 +358,7 @@ writeNamespaceAlias(
 
 void
 XMLWriter::
-    writeUsing(UsingInfo const& I)
+    writeUsing(UsingSymbol const& I)
 {
     dom::String classStr;
     switch (I.Class)
@@ -401,7 +401,7 @@ XMLWriter::
 void
 XMLWriter::
 writeRecord(
-    RecordInfo const& I)
+    RecordSymbol const& I)
 {
     openTemplate(I.Template);
 
@@ -445,7 +445,7 @@ writeRecord(
 void
 XMLWriter::
 writeTypedef(
-    TypedefInfo const& I)
+    TypedefSymbol const& I)
 {
     openTemplate(I.Template);
 
@@ -479,7 +479,7 @@ writeTypedef(
 void
 XMLWriter::
 writeVariable(
-    VariableInfo const& I)
+    VariableSymbol const& I)
 {
     openTemplate(I.Template);
 
@@ -943,4 +943,4 @@ writeTParam(
     tags_.close("tparam");
 }
 
-} // clang::mrdocs::xml
+} // mrdocs::xml

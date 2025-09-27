@@ -15,7 +15,7 @@
 #include <algorithm>
 #include <cstdint>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** Determine if a range contains a specific element.
     @param range The range to search.
@@ -188,6 +188,6 @@ find_last_of(Range&& range, Els&& els)
     return std::ranges::end(range);
 }
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

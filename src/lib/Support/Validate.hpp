@@ -20,7 +20,7 @@
     as Asciidoc section identifiers or XML attributes.
 */
 
-namespace clang {
+
 namespace mrdocs {
 
 /** Return true if s is a valid Asciidoc section ID.
@@ -30,6 +30,6 @@ validAdocSectionID(
     llvm::StringRef s) noexcept;
 
 } // mrdocs
-} // clang
+
 
 #endif

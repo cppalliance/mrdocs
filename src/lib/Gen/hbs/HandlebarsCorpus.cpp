@@ -16,11 +16,11 @@
 #include <mrdocs/Support/String.hpp>
 #include <iterator>
 
-namespace clang::mrdocs::hbs {
+namespace mrdocs::hbs {
 
 dom::Object
 HandlebarsCorpus::
-construct(Info const& I) const
+construct(Symbol const& I) const
 {
     dom::Object obj = this->DomCorpus::construct(I);
     if (shouldGenerate(I, getCorpus().config))
@@ -33,7 +33,7 @@ construct(Info const& I) const
     // If the URL is not available because it's a specialization
     // or dependency, we still want to generate the URL and anchor
     // for the primary template if it's part of the corpus.
-    if (Info const* primaryInfo = findAlternativeURLInfo(getCorpus(), I))
+    if (Symbol const* primaryInfo = findAlternativeURLInfo(getCorpus(), I))
     {
         MRDOCS_ASSERT(shouldGenerate(*primaryInfo, getCorpus().config));
         obj.set("url", getURL(*primaryInfo));
@@ -44,7 +44,7 @@ construct(Info const& I) const
 
 std::string
 HandlebarsCorpus::
-getURL(Info const& I) const
+getURL(Symbol const& I) const
 {
     bool const multipage = getCorpus().config->multipage;
     char const prefix = multipage ? '/' : '#';
@@ -59,4 +59,4 @@ getURL(Info const& I) const
     return href;
 }
 
-} // clang::mrdocs::hbs
+} // mrdocs::hbs

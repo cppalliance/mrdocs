@@ -17,7 +17,7 @@
 #include <mrdocs/Metadata/Javadoc.hpp>
 #include <optional>
 
-namespace clang::mrdocs::xml {
+namespace mrdocs::xml {
 
 //------------------------------------------------
 
@@ -47,6 +47,6 @@ struct XMLGenerator : Generator
         Corpus const& corpus) const override;
 };
 
-} // clang::mrdocs::xml
+} // mrdocs::xml
 
 #endif

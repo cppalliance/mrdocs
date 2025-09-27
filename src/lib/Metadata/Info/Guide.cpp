@@ -10,16 +10,16 @@
 //
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Info/Guide.hpp>
-#include <mrdocs/Metadata/Info/Param.hpp>
+#include <mrdocs/Metadata/Symbol/Guide.hpp>
+#include <mrdocs/Metadata/Symbol/Param.hpp>
 #include <llvm/ADT/STLExtras.h>
 #include <vector>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 std::strong_ordering
-GuideInfo::
-operator<=>(GuideInfo const& other) const
+GuideSymbol::
+operator<=>(GuideSymbol const& other) const
 {
     if (auto const cmp = Name <=> other.Name;
         !std::is_eq(cmp))
@@ -79,7 +79,7 @@ operator<=>(GuideInfo const& other) const
 }
 
 
-void merge(GuideInfo& I, GuideInfo&& Other)
+void merge(GuideSymbol& I, GuideSymbol&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
     merge(I.asInfo(), std::move(Other.asInfo()));
@@ -101,4 +101,4 @@ void merge(GuideInfo& I, GuideInfo&& Other)
     }
 }
 
-} // clang::mrdocs
+} // mrdocs

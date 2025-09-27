@@ -14,7 +14,7 @@
 
 #include <type_traits>
 
-namespace clang {
+
 namespace mrdocs {
 
 /** Return the value as its underlying type.
@@ -122,6 +122,6 @@ using add_cvref_from_t =
     add_cvref_from<From, To>::type;
 
 } // mrdocs
-} // clang
+
 
 #endif // MRDOCS_API_SUPPORT_TYPETRAITS_HPP

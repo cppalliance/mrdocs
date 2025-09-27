@@ -15,7 +15,7 @@
 
 #include <lib/ConfigImpl.hpp>
 #include <lib/Diagnostics.hpp>
-#include <lib/Metadata/InfoSet.hpp>
+#include <lib/Metadata/SymbolSet.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <mutex>
@@ -23,7 +23,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** A custom execution context for visitation.
 
@@ -38,7 +38,7 @@ namespace clang::mrdocs {
     MrDocs by referring to the `ConfigImpl`,
     reporting based on the `Info` and `Diagnostics`
     classes, and including a `results` method
-    which returns the `InfoSet`.
+    which returns the `SymbolSet`.
 */
 class ExecutionContext
 {
@@ -66,7 +66,7 @@ public:
         This function is called to report the results
         of an execution.
 
-        The `InfoSet` is merged into the existing
+        The `SymbolSet` is merged into the existing
         set of results. Duplicate IDs are merged.
 
         Any new diagnostics are appended to the
@@ -79,9 +79,9 @@ public:
     virtual
     void
     report(
-        InfoSet&& info,
+        SymbolSet&& info,
         Diagnostics&& diags,
-        UndocumentedInfoSet&& undocumented) = 0;
+        UndocumentedSymbolSet&& undocumented) = 0;
 
     /** Called when the execution is complete.
 
@@ -102,19 +102,19 @@ public:
         @return The results of the execution.
     */
     virtual
-    mrdocs::Expected<InfoSet>
+    mrdocs::Expected<SymbolSet>
     results() = 0;
 
     virtual
-    UndocumentedInfoSet
+    UndocumentedSymbolSet
     undocumented() = 0;
 };
 
 // ----------------------------------------------------------------
 
-/** An execution context which stores the InfoSet and Diagnostics.
+/** An execution context which stores the SymbolSet and Diagnostics.
 
-    It stores the `InfoSet` and `Diagnostics`
+    It stores the `SymbolSet` and `Diagnostics`
     objects, and returns them when `results`
     is called.
  */
@@ -123,8 +123,8 @@ class InfoExecutionContext
 {
     std::shared_mutex mutex_;
     Diagnostics diags_;
-    InfoSet info_;
-    UndocumentedInfoSet undocumented_;
+    SymbolSet info_;
+    UndocumentedSymbolSet undocumented_;
 
 public:
     using ExecutionContext::ExecutionContext;
@@ -132,9 +132,9 @@ public:
     /// @copydoc ExecutionContext::report
     void
     report(
-        InfoSet&& info,
+        SymbolSet&& info,
         Diagnostics&& diags,
-        UndocumentedInfoSet&& undocumented) override;
+        UndocumentedSymbolSet&& undocumented) override;
 
     /// @copydoc ExecutionContext::reportEnd
     void
@@ -145,18 +145,18 @@ public:
         The results are returned as a set of
         `Info` objects.
 
-        The `InfoSet` object is moved out of
+        The `SymbolSet` object is moved out of
         the execution context.
 
         @return The results of the execution.
     */
-    Expected<InfoSet>
+    Expected<SymbolSet>
     results() override;
 
-    UndocumentedInfoSet
+    UndocumentedSymbolSet
     undocumented() override;
 };
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif // MRDOCS_LIB_SUPPORT_EXECUTIONCONTEXT_HPP

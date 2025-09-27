@@ -15,7 +15,7 @@
 #include <string>
 #include <tool/PublicToolArgs.hpp>
 
-namespace clang {
+
 namespace mrdocs {
 
 enum Action : int
@@ -54,6 +54,6 @@ public:
 constexpr static TestArgs& testArgs = TestArgs::instance_;
 
 } // mrdocs
-} // clang
+
 
 #endif

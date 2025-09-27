@@ -25,7 +25,7 @@ class StdThreadPool;
 class ThreadPoolTaskGroup;
 } // llvm
 
-namespace clang {
+
 namespace mrdocs {
 
 class TaskGroup;
@@ -186,6 +186,6 @@ forEach(
 }
 
 } // mrdocs
-} // clang
+
 
 #endif // MRDOCS_API_SUPPORT_THREADPOOL_HPP

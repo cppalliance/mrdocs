@@ -25,7 +25,7 @@
 #include <optional> // BAD
 #include <string>
 
-namespace clang {
+
 namespace mrdocs {
 
 /** Create a wrapper for a safe string.
@@ -119,7 +119,7 @@ class MRDOCS_DECL
 
     friend class Array;
     friend class Object;
-    friend Value clang::mrdocs::safeString(std::string_view str);
+    friend Value mrdocs::safeString(std::string_view str);
 
 public:
     ~Value();
@@ -938,7 +938,7 @@ safeString(SV const& str) {
 }
 
 } // mrdocs
-} // clang
+
 
 // These are here because of circular references
 #include <mrdocs/Dom/Array.ipp>
@@ -948,10 +948,10 @@ safeString(SV const& str) {
 //------------------------------------------------
 
 template <>
-struct std::formatter<clang::mrdocs::dom::Value>
+struct std::formatter<mrdocs::dom::Value>
     : public std::formatter<std::string> {
   template <class FmtContext>
-  auto format(clang::mrdocs::dom::Value const &value, FmtContext &ctx) const {
+  auto format(mrdocs::dom::Value const &value, FmtContext &ctx) const {
     return std::formatter<std::string>::format(toString(value), ctx);
   }
 };

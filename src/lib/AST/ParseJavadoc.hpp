@@ -18,14 +18,13 @@
 #include <mrdocs/Metadata/Javadoc.hpp>
 
 namespace clang {
-
 class Decl;
 class ASTContext;
 class RawComment;
-
 namespace comments {
-  class FullComment;
+class FullComment;
 } // comments
+} // clang
 
 namespace mrdocs {
 
@@ -36,7 +35,7 @@ namespace mrdocs {
 */
 void
 initCustomCommentCommands(
-    ASTContext& ctx);
+    clang::ASTContext& ctx);
 
 /** Parse doc comments from a declaration
 
@@ -52,12 +51,12 @@ initCustomCommentCommands(
 void
 parseJavadoc(
     Optional<Javadoc>& jd,
-    comments::FullComment const* FC,
-    Decl const* D,
+    clang::comments::FullComment const* FC,
+    clang::Decl const* D,
     Config const& config,
     Diagnostics& diags);
 
 } // mrdocs
-} // clang
+
 
 #endif // MRDOCS_LIB_AST_PARSEJAVADOC_HPP

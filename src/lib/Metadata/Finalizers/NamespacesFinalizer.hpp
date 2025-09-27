@@ -12,9 +12,9 @@
 #define MRDOCS_LIB_METADATA_FINALIZERS_NAMESPACESFINALIZER_HPP
 
 #include <lib/CorpusImpl.hpp>
-#include <lib/Metadata/InfoSet.hpp>
+#include <lib/Metadata/SymbolSet.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** Finalizes the namespaces in corpus.
 
@@ -36,7 +36,7 @@ public:
     void
     build()
     {
-        Info* info = corpus_.find(SymbolID::global);
+        Symbol* info = corpus_.find(SymbolID::global);
         MRDOCS_CHECK_OR(info);
         MRDOCS_ASSERT(info->isNamespace());
         operator()(info->asNamespace());
@@ -49,9 +49,9 @@ public:
     };
 
     FinalizerResult
-    operator()(NamespaceInfo& I);
+    operator()(NamespaceSymbol& I);
 };
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif // MRDOCS_LIB_METADATA_FINALIZERS_NAMESPACESFINALIZER_HPP

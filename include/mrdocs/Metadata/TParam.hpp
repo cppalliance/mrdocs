@@ -20,7 +20,7 @@
 #include <mrdocs/Metadata/TParam/TemplateTParam.hpp>
 #include <mrdocs/Metadata/TParam/TypeTParam.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 template<
     typename TParamTy,
@@ -76,6 +76,6 @@ tag_invoke(
 }
 
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

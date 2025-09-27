@@ -10,14 +10,14 @@
 
 #include "VisitorHelpers.hpp"
 #include <mrdocs/Corpus.hpp>
-#include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Name.hpp>
+#include <mrdocs/Metadata/Symbol.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 
-namespace clang::mrdocs::hbs {
+namespace mrdocs::hbs {
 
 bool
-shouldGenerate(Info const& I, Config const& config)
+shouldGenerate(Symbol const& I, Config const& config)
 {
     if (I.isEnumConstant() && !config->showEnumConstants)
     {
@@ -44,21 +44,21 @@ shouldGenerate(Info const& I, Config const& config)
 namespace {
 
 // Resolve a typedef to its underlying Info type
-Info const*
-resolveTypedef(Corpus const& c, Info const& I)
+Symbol const*
+resolveTypedef(Corpus const& c, Symbol const& I)
 {
     if (I.isTypedef())
     {
         auto const& TI = I.asTypedef();
         MRDOCS_CHECK_OR(TI.Type, &I);
         MRDOCS_ASSERT(!TI.Type.valueless_after_move());
-        TypeInfo const& T = *TI.Type;
+        Type const& T = *TI.Type;
         MRDOCS_CHECK_OR(T.Kind == TypeKind::Named, &I);
         auto const& NT = T.asNamed();
         MRDOCS_CHECK_OR(NT.Name, &I);
-        Info const* resolved = c.find(NT.Name->id);
+        Symbol const* resolved = c.find(NT.Name->id);
         MRDOCS_CHECK_OR(resolved, &I);
-        if (resolved->Kind == InfoKind::Typedef)
+        if (resolved->Kind == SymbolKind::Typedef)
         {
             return resolveTypedef(c, *resolved);
         }
@@ -69,15 +69,15 @@ resolveTypedef(Corpus const& c, Info const& I)
 
 /* Look for an equivalent symbol in the parent Info
  */
-Info const*
-findPrimarySiblingWithUrl(Corpus const& c, Info const& I, Info const& parent)
+Symbol const*
+findPrimarySiblingWithUrl(Corpus const& c, Symbol const& I, Symbol const& parent)
 {
     // Look for the primary sibling in the parent scope
     MRDOCS_CHECK_OR(parent, nullptr);
     return visit(parent, [&]<typename InfoTy>(InfoTy const& U)
-        -> Info const*
+        -> Symbol const*
     {
-        if constexpr (InfoParent<InfoTy>)
+        if constexpr (SymbolParent<InfoTy>)
         {
             namespace stdv = std::ranges::views;
             auto sameNameSiblings =
@@ -86,11 +86,11 @@ findPrimarySiblingWithUrl(Corpus const& c, Info const& I, Info const& parent)
                 {
                     return c.find(siblingID);
                 }) |
-                stdv::filter([&](Info const* sibling)
+                stdv::filter([&](Symbol const* sibling)
                 {
                     return sibling && sibling->Name == I.Name;
                 });
-            for (Info const* sibling: sameNameSiblings)
+            for (Symbol const* sibling: sameNameSiblings)
             {
                 if (!sibling ||
                     !shouldGenerate(*sibling, c.config))
@@ -117,8 +117,8 @@ findPrimarySiblingWithUrl(Corpus const& c, Info const& I, Info const& parent)
     });
 }
 
-Info const*
-findPrimarySiblingWithUrl(Corpus const& c, Info const& I);
+Symbol const*
+findPrimarySiblingWithUrl(Corpus const& c, Symbol const& I);
 
 /* Find the parent and look for equivalent symbol in the parent
 
@@ -130,12 +130,12 @@ findPrimarySiblingWithUrl(Corpus const& c, Info const& I);
    we look for a symbol equivalent to the parent, and then look
    for an equivalent symbol in the parent.
  */
-Info const*
-findDirectPrimarySiblingWithUrl(Corpus const& c, Info const& I)
+Symbol const*
+findDirectPrimarySiblingWithUrl(Corpus const& c, Symbol const& I)
 {
     // If the parent is a scope, look for a primary sibling
     // in the parent scope for which we want to generate the URL
-    Info const* parent = c.find(I.Parent);
+    Symbol const* parent = c.find(I.Parent);
     MRDOCS_CHECK_OR(parent, nullptr);
     if (!shouldGenerate(*parent, c.config))
     {
@@ -150,8 +150,8 @@ findDirectPrimarySiblingWithUrl(Corpus const& c, Info const& I)
     This function will resolve typedefs and look for an equivalent
     symbol in the parent scope for which we want to generate the URL.
  */
-Info const*
-findResolvedPrimarySiblingWithUrl(Corpus const& c, Info const& I)
+Symbol const*
+findResolvedPrimarySiblingWithUrl(Corpus const& c, Symbol const& I)
 {
     // Check if this info is a specialization or a typedef to
     // a specialization, otherwise there's nothing to resolve
@@ -168,15 +168,15 @@ findResolvedPrimarySiblingWithUrl(Corpus const& c, Info const& I)
             }
         }
         // The symbol is a typedef to a specialization
-        if constexpr (std::same_as<InfoTy, TypedefInfo>)
+        if constexpr (std::same_as<InfoTy, TypedefSymbol>)
         {
             auto const& TOpt = U.Type;
             MRDOCS_ASSERT(!TOpt.valueless_after_move());
-            TypeInfo const& T = *TOpt;
+            Type const& T = *TOpt;
             MRDOCS_CHECK_OR(T.Kind == TypeKind::Named, false);
             auto const& NT = T.asNamed();
             MRDOCS_CHECK_OR(NT.Name, false);
-            MRDOCS_CHECK_OR(NT.Name->Kind == NameKind::Specialization, false);
+            MRDOCS_CHECK_OR(NT.Name->isSpecialization(), false);
             return true;
         }
         return false;
@@ -185,14 +185,14 @@ findResolvedPrimarySiblingWithUrl(Corpus const& c, Info const& I)
 
     // Find the parent scope containing the primary sibling
     // for which we want to generate the URL
-    Info const* parent = c.find(I.Parent);
+    Symbol const* parent = c.find(I.Parent);
     MRDOCS_CHECK_OR(parent, nullptr);
 
     // If the parent is a typedef, resolve it
     // so we can iterate the members of this scope.
     // We can't find siblings in a typedef because
     // it's not a scope.
-    if (parent->Kind == InfoKind::Typedef)
+    if (parent->Kind == SymbolKind::Typedef)
     {
         parent = resolveTypedef(c, *parent);
         MRDOCS_CHECK_OR(parent, nullptr);
@@ -211,10 +211,10 @@ findResolvedPrimarySiblingWithUrl(Corpus const& c, Info const& I)
     return findPrimarySiblingWithUrl(c, I, *parent);
 }
 
-Info const*
-findPrimarySiblingWithUrl(Corpus const& c, Info const& I)
+Symbol const*
+findPrimarySiblingWithUrl(Corpus const& c, Symbol const& I)
 {
-    if (Info const* primary = findDirectPrimarySiblingWithUrl(c, I))
+    if (Symbol const* primary = findDirectPrimarySiblingWithUrl(c, I))
     {
         return primary;
     }
@@ -234,10 +234,10 @@ findPrimarySiblingWithUrl(Corpus const& c, Info const& I)
     is looking for a URL for a symbol.
 
  */
-Info const*
-findParentWithUrl(Corpus const& c, Info const& I)
+Symbol const*
+findParentWithUrl(Corpus const& c, Symbol const& I)
 {
-    Info const* parent = c.find(I.Parent);
+    Symbol const* parent = c.find(I.Parent);
     MRDOCS_CHECK_OR(parent, nullptr);
     MRDOCS_CHECK_OR(!parent->isNamespace(), nullptr);
     if (shouldGenerate(*parent, c.config))
@@ -251,14 +251,14 @@ findParentWithUrl(Corpus const& c, Info const& I)
 }
 }
 
-Info const*
-findAlternativeURLInfo(Corpus const& c, Info const& I)
+Symbol const*
+findAlternativeURLInfo(Corpus const& c, Symbol const& I)
 {
-    if (Info const* primary = findPrimarySiblingWithUrl(c, I))
+    if (Symbol const* primary = findPrimarySiblingWithUrl(c, I))
     {
         return primary;
     }
     return findParentWithUrl(c, I);
 }
 
-} // clang::mrdocs::hbs
+} // mrdocs::hbs

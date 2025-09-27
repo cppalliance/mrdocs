@@ -14,16 +14,15 @@
 #include <lib/ConfigImpl.hpp>
 #include <lib/MrDocsCompilationDatabase.hpp>
 
-namespace clang {
+
 namespace mrdocs {
 
 Expected<MrDocsCompilationDatabase>
 generateCompilationDatabase(
     std::string_view tempDir,
-    std::shared_ptr<ConfigImpl const> const& config,
-    ThreadPool& threadPool);
+    std::shared_ptr<ConfigImpl const> const& config);
 
 } // mrdocs
-} // clang
+
 
 #endif // MRDOCS_TOOL_TOOLCOMPILATIONDATABASE_HPP

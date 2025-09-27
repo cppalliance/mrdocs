@@ -16,7 +16,7 @@
 #include <algorithm>
 #include <vector>
 
-namespace clang {
+
 namespace mrdocs {
 
 namespace {
@@ -329,4 +329,4 @@ toBase16(
 }
 
 } // mrdocs
-} // clang
+

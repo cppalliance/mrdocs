@@ -17,7 +17,7 @@
 #include <mrdocs/Platform.hpp>
 #include <lib/AST/InstantiatedFromVisitor.hpp>
 #include <mrdocs/Metadata.hpp>
-#include <mrdocs/Metadata/Info/SymbolID.hpp>
+#include <mrdocs/Metadata/Symbol/SymbolID.hpp>
 #include <mrdocs/Metadata/Type/QualifierKind.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/TypeTraits.hpp>
@@ -28,7 +28,7 @@
 #include <clang/Sema/Sema.h>
 #include <type_traits>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** Substitute the constraint expression without satisfaction.
 
@@ -43,11 +43,11 @@ namespace clang::mrdocs {
     @param ConstrExpr The constraint expression to be substituted.
     @return The substituted constraint expression, or nullptr if an error occurs.
  */
-Expr const*
+clang::Expr const*
 SubstituteConstraintExpressionWithoutSatisfaction(
-    Sema &S,
-    const Sema::TemplateCompareNewDeclInfo &DeclInfo,
-    const Expr *ConstrExpr);
+    clang::Sema &S,
+    const clang::Sema::TemplateCompareNewDeclInfo &DeclInfo,
+    const clang::Expr *ConstrExpr);
 
 /** Determine the MrDocs Info type for a Clang DeclType
 
@@ -68,131 +68,131 @@ SubstituteConstraintExpressionWithoutSatisfaction(
 template <class>
 struct InfoTypeFor {};
 
-// Extract NamespaceInfo from NamespaceDecl or TranslationUnitDecl
+// Extract NamespaceSymbol from NamespaceDecl or TranslationUnitDecl
 template <>
-struct InfoTypeFor<NamespaceDecl>
-    : std::type_identity<NamespaceInfo> {};
+struct InfoTypeFor<clang::NamespaceDecl>
+    : std::type_identity<NamespaceSymbol> {};
 
 template <>
-struct InfoTypeFor<TranslationUnitDecl>
-    : std::type_identity<NamespaceInfo> {};
+struct InfoTypeFor<clang::TranslationUnitDecl>
+    : std::type_identity<NamespaceSymbol> {};
 
-// Extract RecordInfo from anything derived from CXXRecordDecl
-// and ClassTemplateDecl. Decls derived from CXXRecordDecl
+// Extract RecordSymbol from anything derived from clang::CXXRecordDecl
+// and clang::ClassTemplateDecl. Decls derived from clang::CXXRecordDecl
 // include class specializations.
 template <>
-struct InfoTypeFor<CXXRecordDecl>
-    : std::type_identity<RecordInfo> {};
+struct InfoTypeFor<clang::CXXRecordDecl>
+    : std::type_identity<RecordSymbol> {};
 
 template <>
-struct InfoTypeFor<ClassTemplateSpecializationDecl>
-    : std::type_identity<RecordInfo> {};
+struct InfoTypeFor<clang::ClassTemplateSpecializationDecl>
+    : std::type_identity<RecordSymbol> {};
 
 template <>
-struct InfoTypeFor<ClassTemplatePartialSpecializationDecl>
-    : std::type_identity<RecordInfo> {};
+struct InfoTypeFor<clang::ClassTemplatePartialSpecializationDecl>
+    : std::type_identity<RecordSymbol> {};
 
 template <>
-struct InfoTypeFor<ClassTemplateDecl>
-    : std::type_identity<RecordInfo> {};
+struct InfoTypeFor<clang::ClassTemplateDecl>
+    : std::type_identity<RecordSymbol> {};
 
-// Extract FunctionInfo from anything derived from FunctionDecl
+// Extract FunctionSymbol from anything derived from clang::FunctionDecl
 template <>
-struct InfoTypeFor<FunctionDecl>
-    : std::type_identity<FunctionInfo> {};
-
-template <>
-struct InfoTypeFor<CXXMethodDecl>
-    : std::type_identity<FunctionInfo> {};
+struct InfoTypeFor<clang::FunctionDecl>
+    : std::type_identity<FunctionSymbol> {};
 
 template <>
-struct InfoTypeFor<CXXConstructorDecl>
-    : std::type_identity<FunctionInfo> {};
+struct InfoTypeFor<clang::CXXMethodDecl>
+    : std::type_identity<FunctionSymbol> {};
 
 template <>
-struct InfoTypeFor<CXXDestructorDecl>
-    : std::type_identity<FunctionInfo> {};
+struct InfoTypeFor<clang::CXXConstructorDecl>
+    : std::type_identity<FunctionSymbol> {};
 
 template <>
-struct InfoTypeFor<CXXConversionDecl>
-    : std::type_identity<FunctionInfo> {};
+struct InfoTypeFor<clang::CXXDestructorDecl>
+    : std::type_identity<FunctionSymbol> {};
 
 template <>
-struct InfoTypeFor<FunctionTemplateDecl>
-    : std::type_identity<FunctionInfo> {};
-
-// Extract EnumInfo from EnumDecl
-template <>
-struct InfoTypeFor<EnumDecl>
-    : std::type_identity<EnumInfo> {};
-
-// Extract EnumConstantInfo from EnumConstantDecl
-template <>
-struct InfoTypeFor<EnumConstantDecl>
-    : std::type_identity<EnumConstantInfo> {};
-
-// Extract TypedefInfo from anything derived from TypedefNameDecl
-template <>
-struct InfoTypeFor<TypedefDecl>
-    : std::type_identity<TypedefInfo> {};
+struct InfoTypeFor<clang::CXXConversionDecl>
+    : std::type_identity<FunctionSymbol> {};
 
 template <>
-struct InfoTypeFor<TypeAliasDecl>
-    : std::type_identity<TypedefInfo> {};
+struct InfoTypeFor<clang::FunctionTemplateDecl>
+    : std::type_identity<FunctionSymbol> {};
+
+// Extract EnumSymbol from EnumDecl
+template <>
+struct InfoTypeFor<clang::EnumDecl>
+    : std::type_identity<EnumSymbol> {};
+
+// Extract EnumConstantSymbol from EnumConstantDecl
+template <>
+struct InfoTypeFor<clang::EnumConstantDecl>
+    : std::type_identity<EnumConstantSymbol> {};
+
+// Extract TypedefSymbol from anything derived from TypedefNameDecl
+template <>
+struct InfoTypeFor<clang::TypedefDecl>
+    : std::type_identity<TypedefSymbol> {};
 
 template <>
-struct InfoTypeFor<TypedefNameDecl>
-    : std::type_identity<TypedefInfo> {};
+struct InfoTypeFor<clang::TypeAliasDecl>
+    : std::type_identity<TypedefSymbol> {};
 
 template <>
-struct InfoTypeFor<TypeAliasTemplateDecl>
-    : std::type_identity<TypedefInfo> {};
+struct InfoTypeFor<clang::TypedefNameDecl>
+    : std::type_identity<TypedefSymbol> {};
 
-// Extract VariableInfo from anything derived from VarDecl
+template <>
+struct InfoTypeFor<clang::TypeAliasTemplateDecl>
+    : std::type_identity<TypedefSymbol> {};
+
+// Extract VariableSymbol from anything derived from VarDecl
 // and VarTemplateDecl.
 template <>
-struct InfoTypeFor<VarDecl>
-    : std::type_identity<VariableInfo> {};
+struct InfoTypeFor<clang::VarDecl>
+    : std::type_identity<VariableSymbol> {};
 
 template <>
-struct InfoTypeFor<VarTemplateSpecializationDecl>
-    : std::type_identity<VariableInfo> {};
+struct InfoTypeFor<clang::VarTemplateSpecializationDecl>
+    : std::type_identity<VariableSymbol> {};
 
 template <>
-struct InfoTypeFor<VarTemplatePartialSpecializationDecl>
-    : std::type_identity<VariableInfo> {};
+struct InfoTypeFor<clang::VarTemplatePartialSpecializationDecl>
+    : std::type_identity<VariableSymbol> {};
 
 template <>
-struct InfoTypeFor<VarTemplateDecl>
-    : std::type_identity<VariableInfo> {};
+struct InfoTypeFor<clang::VarTemplateDecl>
+    : std::type_identity<VariableSymbol> {};
 
 template <>
-struct InfoTypeFor<FieldDecl>
-    : std::type_identity<VariableInfo> {};
+struct InfoTypeFor<clang::FieldDecl>
+    : std::type_identity<VariableSymbol> {};
 
-// Extract GuideInfo from CXXDeductionGuideDecl
+// Extract GuideSymbol from CXXDeductionGuideDecl
 template <>
-struct InfoTypeFor<CXXDeductionGuideDecl>
-    : std::type_identity<GuideInfo> {};
+struct InfoTypeFor<clang::CXXDeductionGuideDecl>
+    : std::type_identity<GuideSymbol> {};
 
-// Extract NamespaceAliasInfo from NamespaceAliasDecl
+// Extract NamespaceAliasSymbol from NamespaceAliasDecl
 template <>
-struct InfoTypeFor<NamespaceAliasDecl>
-    : std::type_identity<NamespaceAliasInfo> {};
+struct InfoTypeFor<clang::NamespaceAliasDecl>
+    : std::type_identity<NamespaceAliasSymbol> {};
 
-// Extract UsingInfo from UsingDecl
+// Extract UsingSymbol from UsingDecl
 template <>
-struct InfoTypeFor<UsingDecl>
-    : std::type_identity<UsingInfo> {};
+struct InfoTypeFor<clang::UsingDecl>
+    : std::type_identity<UsingSymbol> {};
 
-// Extract ConceptInfo from ConceptDecl
+// Extract ConceptSymbol from ConceptDecl
 template <>
-struct InfoTypeFor<ConceptDecl>
-    : std::type_identity<ConceptInfo> {};
+struct InfoTypeFor<clang::ConceptDecl>
+    : std::type_identity<ConceptSymbol> {};
 
 /// Determine if there's a MrDocs Info type for a Clang DeclType
 template <class T>
-concept HasInfoTypeFor = std::derived_from<T, Decl> && requires
+concept HasInfoTypeFor = std::derived_from<T, clang::Decl> && requires
 {
     typename InfoTypeFor<T>::type;
 };
@@ -205,14 +205,14 @@ using InfoTypeFor_t = typename InfoTypeFor<DeclType>::type;
  */
 inline
 AccessKind
-toAccessKind(AccessSpecifier const spec)
+toAccessKind(clang::AccessSpecifier const spec)
 {
     switch(spec)
     {
-    case AccessSpecifier::AS_public:    return AccessKind::Public;
-    case AccessSpecifier::AS_protected: return AccessKind::Protected;
-    case AccessSpecifier::AS_private:   return AccessKind::Private;
-    case AccessSpecifier::AS_none:      return AccessKind::None;
+    case clang::AccessSpecifier::AS_public:    return AccessKind::Public;
+    case clang::AccessSpecifier::AS_protected: return AccessKind::Protected;
+    case clang::AccessSpecifier::AS_private:   return AccessKind::Private;
+    case clang::AccessSpecifier::AS_none:      return AccessKind::None;
     default:
         MRDOCS_UNREACHABLE();
     }
@@ -222,15 +222,15 @@ toAccessKind(AccessSpecifier const spec)
  */
 inline
 StorageClassKind
-toStorageClassKind(StorageClass const spec)
+toStorageClassKind(clang::StorageClass const spec)
 {
     switch(spec)
     {
-    case StorageClass::SC_None:     return StorageClassKind::None;
-    case StorageClass::SC_Extern:   return StorageClassKind::Extern;
-    case StorageClass::SC_Static:   return StorageClassKind::Static;
-    case StorageClass::SC_Auto:     return StorageClassKind::Auto;
-    case StorageClass::SC_Register: return StorageClassKind::Register;
+    case clang::StorageClass::SC_None:     return StorageClassKind::None;
+    case clang::StorageClass::SC_Extern:   return StorageClassKind::Extern;
+    case clang::StorageClass::SC_Static:   return StorageClassKind::Static;
+    case clang::StorageClass::SC_Auto:     return StorageClassKind::Auto;
+    case clang::StorageClass::SC_Register: return StorageClassKind::Register;
     default:
         // SC_PrivateExtern (__private_extern__)
         // is a C only Apple extension
@@ -242,18 +242,18 @@ toStorageClassKind(StorageClass const spec)
  */
 inline
 ConstexprKind
-toConstexprKind(ConstexprSpecKind const spec)
+toConstexprKind(clang::ConstexprSpecKind const spec)
 {
     switch(spec)
     {
-    case ConstexprSpecKind::Unspecified: return ConstexprKind::None;
-    case ConstexprSpecKind::Constexpr:   return ConstexprKind::Constexpr;
-    case ConstexprSpecKind::Consteval:   return ConstexprKind::Consteval;
-    // KRYSTIAN NOTE: ConstexprSpecKind::Constinit exists,
+    case clang::ConstexprSpecKind::Unspecified: return ConstexprKind::None;
+    case clang::ConstexprSpecKind::Constexpr:   return ConstexprKind::Constexpr;
+    case clang::ConstexprSpecKind::Consteval:   return ConstexprKind::Consteval;
+    // KRYSTIAN NOTE: clang::ConstexprSpecKind::Constinit exists,
     // but I don't think it's ever used because a variable
     // can be declared both constexpr and constinit
     // (but not both in the same declaration)
-    case ConstexprSpecKind::Constinit:
+    case clang::ConstexprSpecKind::Constinit:
     default:
         MRDOCS_UNREACHABLE();
     }
@@ -263,7 +263,7 @@ toConstexprKind(ConstexprSpecKind const spec)
  */
 inline
 ExplicitKind
-toExplicitKind(ExplicitSpecifier const& spec)
+toExplicitKind(clang::ExplicitSpecifier const& spec)
 {
     // no explicit-specifier
     if (!spec.isSpecified())
@@ -273,9 +273,9 @@ toExplicitKind(ExplicitSpecifier const& spec)
 
     switch(spec.getKind())
     {
-    case ExplicitSpecKind::ResolvedFalse:  return ExplicitKind::False;
-    case ExplicitSpecKind::ResolvedTrue:   return ExplicitKind::True;
-    case ExplicitSpecKind::Unresolved:     return ExplicitKind::Dependent;
+    case clang::ExplicitSpecKind::ResolvedFalse:  return ExplicitKind::False;
+    case clang::ExplicitSpecKind::ResolvedTrue:   return ExplicitKind::True;
+    case clang::ExplicitSpecKind::Unresolved:     return ExplicitKind::Dependent;
     default:
         MRDOCS_UNREACHABLE();
     }
@@ -285,133 +285,133 @@ toExplicitKind(ExplicitSpecifier const& spec)
  */
 inline
 NoexceptKind
-toNoexceptKind(ExceptionSpecificationType const spec)
+toNoexceptKind(clang::ExceptionSpecificationType const spec)
 {
     // KRYSTIAN TODO: right now we convert pre-C++17 dynamic exception
     // specifications to an (roughly) equivalent noexcept-specifier
     switch(spec)
     {
-    case ExceptionSpecificationType::EST_None:
-    case ExceptionSpecificationType::EST_MSAny:
-    case ExceptionSpecificationType::EST_Unevaluated:
-    case ExceptionSpecificationType::EST_Uninstantiated:
+    case clang::ExceptionSpecificationType::EST_None:
+    case clang::ExceptionSpecificationType::EST_MSAny:
+    case clang::ExceptionSpecificationType::EST_Unevaluated:
+    case clang::ExceptionSpecificationType::EST_Uninstantiated:
     // we *shouldn't* ever encounter an unparsed exception specification,
     // assuming that clang is working correctly...
-    case ExceptionSpecificationType::EST_Unparsed:
-    case ExceptionSpecificationType::EST_Dynamic:
-    case ExceptionSpecificationType::EST_NoexceptFalse:
+    case clang::ExceptionSpecificationType::EST_Unparsed:
+    case clang::ExceptionSpecificationType::EST_Dynamic:
+    case clang::ExceptionSpecificationType::EST_NoexceptFalse:
         return NoexceptKind::False;
-    case ExceptionSpecificationType::EST_NoThrow:
-    case ExceptionSpecificationType::EST_BasicNoexcept:
-    case ExceptionSpecificationType::EST_NoexceptTrue:
-    case ExceptionSpecificationType::EST_DynamicNone:
+    case clang::ExceptionSpecificationType::EST_NoThrow:
+    case clang::ExceptionSpecificationType::EST_BasicNoexcept:
+    case clang::ExceptionSpecificationType::EST_NoexceptTrue:
+    case clang::ExceptionSpecificationType::EST_DynamicNone:
         return NoexceptKind::True;
-    case ExceptionSpecificationType::EST_DependentNoexcept:
+    case clang::ExceptionSpecificationType::EST_DependentNoexcept:
         return NoexceptKind::Dependent;
     default:
         MRDOCS_UNREACHABLE();
     }
 }
 
-/** Convert a Clang OverloadedOperatorKind into a MrDocs OperatorKind
+/** Convert a Clang clang::OverloadedOperatorKind into a MrDocs OperatorKind
  */
 inline
 OperatorKind
-toOperatorKind(OverloadedOperatorKind const kind)
+toOperatorKind(clang::OverloadedOperatorKind const kind)
 {
     switch(kind)
     {
-    case OverloadedOperatorKind::OO_None:
+    case clang::OverloadedOperatorKind::OO_None:
         return OperatorKind::None;
-    case OverloadedOperatorKind::OO_New:
+    case clang::OverloadedOperatorKind::OO_New:
         return OperatorKind::New;
-    case OverloadedOperatorKind::OO_Delete:
+    case clang::OverloadedOperatorKind::OO_Delete:
         return OperatorKind::Delete;
-    case OverloadedOperatorKind::OO_Array_New:
+    case clang::OverloadedOperatorKind::OO_Array_New:
         return OperatorKind::ArrayNew;
-    case OverloadedOperatorKind::OO_Array_Delete:
+    case clang::OverloadedOperatorKind::OO_Array_Delete:
         return OperatorKind::ArrayDelete;
-    case OverloadedOperatorKind::OO_Plus:
+    case clang::OverloadedOperatorKind::OO_Plus:
         return OperatorKind::Plus;
-    case OverloadedOperatorKind::OO_Minus:
+    case clang::OverloadedOperatorKind::OO_Minus:
         return OperatorKind::Minus;
-    case OverloadedOperatorKind::OO_Star:
+    case clang::OverloadedOperatorKind::OO_Star:
         return OperatorKind::Star;
-    case OverloadedOperatorKind::OO_Slash:
+    case clang::OverloadedOperatorKind::OO_Slash:
         return OperatorKind::Slash;
-    case OverloadedOperatorKind::OO_Percent:
+    case clang::OverloadedOperatorKind::OO_Percent:
         return OperatorKind::Percent;
-    case OverloadedOperatorKind::OO_Caret:
+    case clang::OverloadedOperatorKind::OO_Caret:
         return OperatorKind::Caret;
-    case OverloadedOperatorKind::OO_Amp:
+    case clang::OverloadedOperatorKind::OO_Amp:
         return OperatorKind::Amp;
-    case OverloadedOperatorKind::OO_Pipe:
+    case clang::OverloadedOperatorKind::OO_Pipe:
         return OperatorKind::Pipe;
-    case OverloadedOperatorKind::OO_Tilde:
+    case clang::OverloadedOperatorKind::OO_Tilde:
         return OperatorKind::Tilde;
-    case OverloadedOperatorKind::OO_Exclaim:
+    case clang::OverloadedOperatorKind::OO_Exclaim:
         return OperatorKind::Exclaim;
-    case OverloadedOperatorKind::OO_Equal:
+    case clang::OverloadedOperatorKind::OO_Equal:
         return OperatorKind::Equal;
-    case OverloadedOperatorKind::OO_Less:
+    case clang::OverloadedOperatorKind::OO_Less:
         return OperatorKind::Less;
-    case OverloadedOperatorKind::OO_Greater:
+    case clang::OverloadedOperatorKind::OO_Greater:
         return OperatorKind::Greater;
-    case OverloadedOperatorKind::OO_PlusEqual:
+    case clang::OverloadedOperatorKind::OO_PlusEqual:
         return OperatorKind::PlusEqual;
-    case OverloadedOperatorKind::OO_MinusEqual:
+    case clang::OverloadedOperatorKind::OO_MinusEqual:
         return OperatorKind::MinusEqual;
-    case OverloadedOperatorKind::OO_StarEqual:
+    case clang::OverloadedOperatorKind::OO_StarEqual:
         return OperatorKind::StarEqual;
-    case OverloadedOperatorKind::OO_SlashEqual:
+    case clang::OverloadedOperatorKind::OO_SlashEqual:
         return OperatorKind::SlashEqual;
-    case OverloadedOperatorKind::OO_PercentEqual:
+    case clang::OverloadedOperatorKind::OO_PercentEqual:
         return OperatorKind::PercentEqual;
-    case OverloadedOperatorKind::OO_CaretEqual:
+    case clang::OverloadedOperatorKind::OO_CaretEqual:
         return OperatorKind::CaretEqual;
-    case OverloadedOperatorKind::OO_AmpEqual:
+    case clang::OverloadedOperatorKind::OO_AmpEqual:
         return OperatorKind::AmpEqual;
-    case OverloadedOperatorKind::OO_PipeEqual:
+    case clang::OverloadedOperatorKind::OO_PipeEqual:
         return OperatorKind::PipeEqual;
-    case OverloadedOperatorKind::OO_LessLess:
+    case clang::OverloadedOperatorKind::OO_LessLess:
         return OperatorKind::LessLess;
-    case OverloadedOperatorKind::OO_GreaterGreater:
+    case clang::OverloadedOperatorKind::OO_GreaterGreater:
         return OperatorKind::GreaterGreater;
-    case OverloadedOperatorKind::OO_LessLessEqual:
+    case clang::OverloadedOperatorKind::OO_LessLessEqual:
         return OperatorKind::LessLessEqual;
-    case OverloadedOperatorKind::OO_GreaterGreaterEqual:
+    case clang::OverloadedOperatorKind::OO_GreaterGreaterEqual:
         return OperatorKind::GreaterGreaterEqual;
-    case OverloadedOperatorKind::OO_EqualEqual:
+    case clang::OverloadedOperatorKind::OO_EqualEqual:
         return OperatorKind::EqualEqual;
-    case OverloadedOperatorKind::OO_ExclaimEqual:
+    case clang::OverloadedOperatorKind::OO_ExclaimEqual:
         return OperatorKind::ExclaimEqual;
-    case OverloadedOperatorKind::OO_LessEqual:
+    case clang::OverloadedOperatorKind::OO_LessEqual:
         return OperatorKind::LessEqual;
-    case OverloadedOperatorKind::OO_GreaterEqual:
+    case clang::OverloadedOperatorKind::OO_GreaterEqual:
         return OperatorKind::GreaterEqual;
-    case OverloadedOperatorKind::OO_Spaceship:
+    case clang::OverloadedOperatorKind::OO_Spaceship:
         return OperatorKind::Spaceship;
-    case OverloadedOperatorKind::OO_AmpAmp:
+    case clang::OverloadedOperatorKind::OO_AmpAmp:
         return OperatorKind::AmpAmp;
-    case OverloadedOperatorKind::OO_PipePipe:
+    case clang::OverloadedOperatorKind::OO_PipePipe:
         return OperatorKind::PipePipe;
-    case OverloadedOperatorKind::OO_PlusPlus:
+    case clang::OverloadedOperatorKind::OO_PlusPlus:
         return OperatorKind::PlusPlus;
-    case OverloadedOperatorKind::OO_MinusMinus:
+    case clang::OverloadedOperatorKind::OO_MinusMinus:
         return OperatorKind::MinusMinus;
-    case OverloadedOperatorKind::OO_Comma:
+    case clang::OverloadedOperatorKind::OO_Comma:
         return OperatorKind::Comma;
-    case OverloadedOperatorKind::OO_ArrowStar:
+    case clang::OverloadedOperatorKind::OO_ArrowStar:
         return OperatorKind::ArrowStar;
-    case OverloadedOperatorKind::OO_Arrow:
+    case clang::OverloadedOperatorKind::OO_Arrow:
         return OperatorKind::Arrow;
-    case OverloadedOperatorKind::OO_Call:
+    case clang::OverloadedOperatorKind::OO_Call:
         return OperatorKind::Call;
-    case OverloadedOperatorKind::OO_Subscript:
+    case clang::OverloadedOperatorKind::OO_Subscript:
         return OperatorKind::Subscript;
-    case OverloadedOperatorKind::OO_Conditional:
+    case clang::OverloadedOperatorKind::OO_Conditional:
         return OperatorKind::Conditional;
-    case OverloadedOperatorKind::OO_Coawait:
+    case clang::OverloadedOperatorKind::OO_Coawait:
         return OperatorKind::Coawait;
     default:
         MRDOCS_UNREACHABLE();
@@ -422,34 +422,34 @@ toOperatorKind(OverloadedOperatorKind const kind)
  */
 inline
 ReferenceKind
-toReferenceKind(RefQualifierKind const kind)
+toReferenceKind(clang::RefQualifierKind const kind)
 {
     switch(kind)
     {
-    case RefQualifierKind::RQ_None:
+    case clang::RefQualifierKind::RQ_None:
         return ReferenceKind::None;
-    case RefQualifierKind::RQ_LValue:
+    case clang::RefQualifierKind::RQ_LValue:
         return ReferenceKind::LValue;
-    case RefQualifierKind::RQ_RValue:
+    case clang::RefQualifierKind::RQ_RValue:
         return ReferenceKind::RValue;
     default:
         MRDOCS_UNREACHABLE();
     }
 }
 
-/** Convert a Clang TagTypeKind into a MrDocs RecordKeyKind
+/** Convert a Clang clang::TagTypeKind into a MrDocs RecordKeyKind
  */
 inline
 RecordKeyKind
-toRecordKeyKind(TagTypeKind const kind)
+toRecordKeyKind(clang::TagTypeKind const kind)
 {
     switch(kind)
     {
-    case TagTypeKind::Struct: return RecordKeyKind::Struct;
-    case TagTypeKind::Class:  return RecordKeyKind::Class;
-    case TagTypeKind::Union:  return RecordKeyKind::Union;
+    case clang::TagTypeKind::Struct: return RecordKeyKind::Struct;
+    case clang::TagTypeKind::Class:  return RecordKeyKind::Class;
+    case clang::TagTypeKind::Union:  return RecordKeyKind::Union;
     default:
-        // unsupported TagTypeKind (Interface, or Enum)
+        // unsupported clang::TagTypeKind (Interface, or Enum)
         MRDOCS_UNREACHABLE();
     }
 }
@@ -461,11 +461,11 @@ QualifierKind
 toQualifierKind(unsigned const quals)
 {
     std::underlying_type_t<QualifierKind> result = QualifierKind::None;
-    if (quals & Qualifiers::Const)
+    if (quals & clang::Qualifiers::Const)
     {
         result |= QualifierKind::Const;
     }
-    if (quals & Qualifiers::Volatile)
+    if (quals & clang::Qualifiers::Volatile)
     {
         result |= QualifierKind::Volatile;
     }
@@ -477,89 +477,89 @@ toQualifierKind(unsigned const quals)
  */
 inline
 FunctionClass
-toFunctionClass(Decl::Kind const kind)
+toFunctionClass(clang::Decl::Kind const kind)
 {
     switch(kind)
     {
-    case Decl::Kind::Function:
-    case Decl::Kind::CXXMethod:         return FunctionClass::Normal;
-    case Decl::Kind::CXXConstructor:    return FunctionClass::Constructor;
-    case Decl::Kind::CXXConversion:     return FunctionClass::Conversion;
-    case Decl::Kind::CXXDestructor:     return FunctionClass::Destructor;
+    case clang::Decl::Kind::Function:
+    case clang::Decl::Kind::CXXMethod:         return FunctionClass::Normal;
+    case clang::Decl::Kind::CXXConstructor:    return FunctionClass::Constructor;
+    case clang::Decl::Kind::CXXConversion:     return FunctionClass::Conversion;
+    case clang::Decl::Kind::CXXDestructor:     return FunctionClass::Destructor;
     default:
         MRDOCS_UNREACHABLE();
     }
 }
 
-/** Convert a Clang AutoTypeKeyword into a MrDocs AutoKind
+/** Convert a Clang clang::AutoTypeKeyword into a MrDocs AutoKind
  */
 inline
 AutoKind
-toAutoKind(AutoTypeKeyword const kind)
+toAutoKind(clang::AutoTypeKeyword const kind)
 {
     switch(kind)
     {
-    case AutoTypeKeyword::Auto:
-    case AutoTypeKeyword::GNUAutoType:
+    case clang::AutoTypeKeyword::Auto:
+    case clang::AutoTypeKeyword::GNUAutoType:
       return AutoKind::Auto;
-    case AutoTypeKeyword::DecltypeAuto:
+    case clang::AutoTypeKeyword::DecltypeAuto:
       return AutoKind::DecltypeAuto;
     default:
         MRDOCS_UNREACHABLE();
     }
 }
 
-/** Convert a Clang AutoTypeKeyword into a MrDocs AutoKind
+/** Convert a Clang clang::clang::BuiltinType into a MrDocs AutoKind
  */
 inline
 Optional<FundamentalTypeKind>
-toFundamentalTypeKind(BuiltinType::Kind const kind)
+toFundamentalTypeKind(clang::BuiltinType::Kind const kind)
 {
     switch(kind)
     {
-    case BuiltinType::Kind::Void:
+    case clang::BuiltinType::Kind::Void:
         return FundamentalTypeKind::Void;
-    case BuiltinType::Kind::NullPtr:
+    case clang::BuiltinType::Kind::NullPtr:
         return FundamentalTypeKind::Nullptr;
-    case BuiltinType::Kind::Bool:
+    case clang::BuiltinType::Kind::Bool:
         return FundamentalTypeKind::Bool;
-    case BuiltinType::Kind::Char_U:
-    case BuiltinType::Kind::Char_S:
+    case clang::BuiltinType::Kind::Char_U:
+    case clang::BuiltinType::Kind::Char_S:
         return FundamentalTypeKind::Char;
-    case BuiltinType::Kind::SChar:
+    case clang::BuiltinType::Kind::SChar:
         return FundamentalTypeKind::SignedChar;
-    case BuiltinType::Kind::UChar:
+    case clang::BuiltinType::Kind::UChar:
         return FundamentalTypeKind::UnsignedChar;
-    case BuiltinType::Kind::Char8:
+    case clang::BuiltinType::Kind::Char8:
         return FundamentalTypeKind::Char8;
-    case BuiltinType::Kind::Char16:
+    case clang::BuiltinType::Kind::Char16:
         return FundamentalTypeKind::Char16;
-    case BuiltinType::Kind::Char32:
+    case clang::BuiltinType::Kind::Char32:
         return FundamentalTypeKind::Char32;
-    case BuiltinType::Kind::WChar_S:
-    case BuiltinType::Kind::WChar_U:
+    case clang::BuiltinType::Kind::WChar_S:
+    case clang::BuiltinType::Kind::WChar_U:
         return FundamentalTypeKind::WChar;
-    case BuiltinType::Kind::Short:
+    case clang::BuiltinType::Kind::Short:
         return FundamentalTypeKind::Short;
-    case BuiltinType::Kind::UShort:
+    case clang::BuiltinType::Kind::UShort:
         return FundamentalTypeKind::UnsignedShort;
-    case BuiltinType::Kind::Int:
+    case clang::BuiltinType::Kind::Int:
         return FundamentalTypeKind::Int;
-    case BuiltinType::Kind::UInt:
+    case clang::BuiltinType::Kind::UInt:
         return FundamentalTypeKind::UnsignedInt;
-    case BuiltinType::Kind::Long:
+    case clang::BuiltinType::Kind::Long:
         return FundamentalTypeKind::Long;
-    case BuiltinType::Kind::ULong:
+    case clang::BuiltinType::Kind::ULong:
         return FundamentalTypeKind::UnsignedLong;
-    case BuiltinType::Kind::LongLong:
+    case clang::BuiltinType::Kind::LongLong:
         return FundamentalTypeKind::LongLong;
-    case BuiltinType::Kind::ULongLong:
+    case clang::BuiltinType::Kind::ULongLong:
         return FundamentalTypeKind::UnsignedLongLong;
-    case BuiltinType::Kind::Float:
+    case clang::BuiltinType::Kind::Float:
         return FundamentalTypeKind::Float;
-    case BuiltinType::Kind::Double:
+    case clang::BuiltinType::Kind::Double:
         return FundamentalTypeKind::Double;
-    case BuiltinType::Kind::LongDouble:
+    case clang::BuiltinType::Kind::LongDouble:
         return FundamentalTypeKind::LongDouble;
     default:
         return std::nullopt;
@@ -574,7 +574,7 @@ template<
     typename DeclTy,
     typename Visitor,
     typename... Args>
-    requires std::derived_from<DeclTy, Decl>
+    requires std::derived_from<DeclTy, clang::Decl>
 decltype(auto)
 visit(
     DeclTy* D,
@@ -586,11 +586,11 @@ visit(
     {
     #define ABSTRACT_DECL(TYPE)
     #define DECL(DERIVED, BASE) \
-        case Decl::DERIVED: \
-        if constexpr(std::derived_from<DERIVED##Decl, DeclTy>) \
+        case clang::Decl::DERIVED: \
+        if constexpr(std::derived_from<clang::DERIVED##Decl, DeclTy>) \
             return std::forward<Visitor>(visitor)( \
                 static_cast<add_cv_from_t<DeclTy, \
-                    DERIVED##Decl>*>(D), \
+                    clang::DERIVED##Decl>*>(D), \
                 std::forward<Args>(args)...); \
         else \
             MRDOCS_UNREACHABLE();
@@ -604,23 +604,23 @@ visit(
 
 template<typename DeclTy>
 consteval
-Decl::Kind
+clang::Decl::Kind
 DeclToKindImpl() = delete;
 
 #define ABSTRACT_DECL(TYPE)
 #define DECL(DERIVED, BASE) \
     template<> \
     consteval \
-    Decl::Kind \
-    DeclToKindImpl<DERIVED##Decl>() { return Decl::DERIVED; }
+    clang::Decl::Kind \
+    DeclToKindImpl<clang::DERIVED##Decl>() { return clang::Decl::DERIVED; }
 
 #include <clang/AST/DeclNodes.inc>
 
-/** Get the Decl::Kind for a type DeclTy derived from Decl.
+/** Get the clang::Decl::Kind for a type DeclTy derived from Decl.
  */
 template<typename DeclTy>
 consteval
-Decl::Kind
+clang::Decl::Kind
 DeclToKind()
 {
     return DeclToKindImpl<
@@ -635,7 +635,7 @@ template<
     typename TypeTy,
     typename Visitor,
     typename... Args>
-    requires std::derived_from<TypeTy, Type>
+    requires std::derived_from<TypeTy, clang::Type>
 decltype(auto)
 visit(
     TypeTy* T,
@@ -646,11 +646,11 @@ visit(
     switch(T->getTypeClass())
     {
     #define TYPE(DERIVED, BASE) \
-        case Type::DERIVED: \
-        if constexpr(std::derived_from<DERIVED##Type, TypeTy>) \
+        case clang::Type::DERIVED: \
+        if constexpr(std::derived_from<clang::DERIVED##Type, TypeTy>) \
             return std::forward<Visitor>(visitor)( \
                 static_cast<add_cv_from_t<TypeTy, \
-                    DERIVED##Type>*>(T), \
+                    clang::DERIVED##Type>*>(T), \
                 std::forward<Args>(args)...); \
         else \
             MRDOCS_UNREACHABLE();
@@ -664,21 +664,21 @@ visit(
 
 template<typename TypeTy>
 consteval
-Type::TypeClass
+clang::Type::TypeClass
 TypeToKindImpl() = delete;
 
 #define ABSTRACT_TYPE(DERIVED, BASE)
 #define TYPE(DERIVED, BASE) \
     template<> \
     consteval \
-    Type::TypeClass \
-    TypeToKindImpl<DERIVED##Type>() { return Type::DERIVED; }
+    clang::Type::TypeClass \
+    TypeToKindImpl<clang::DERIVED##Type>() { return clang::Type::DERIVED; }
 
 #include <clang/AST/TypeNodes.inc>
 
 template<typename TypeTy>
 consteval
-Type::TypeClass
+clang::Type::TypeClass
 TypeToKind()
 {
     return TypeToKindImpl<
@@ -693,7 +693,7 @@ template<
     typename TypeLocTy,
     typename Visitor,
     typename... Args>
-    requires std::derived_from<TypeLocTy, TypeLoc>
+    requires std::derived_from<TypeLocTy, clang::TypeLoc>
 decltype(auto)
 visit(
     TypeLocTy* T,
@@ -704,11 +704,11 @@ visit(
     {
     #define ABSTRACT_TYPELOC(DERIVED, BASE)
     #define TYPELOC(DERIVED, BASE) \
-        case TypeLoc::DERIVED: \
-        if constexpr(std::derived_from<DERIVED##TypeLoc, TypeLocTy>) \
+        case clang::TypeLoc::DERIVED: \
+        if constexpr(std::derived_from<clang::DERIVED##TypeLoc, TypeLocTy>) \
             return std::forward<Visitor>(visitor)( \
                 static_cast<add_cv_from_t<TypeLocTy, \
-                    DERIVED##TypeLoc>*>(T), \
+                    clang::DERIVED##TypeLoc>*>(T), \
                 std::forward<Args>(args)...); \
         else \
             MRDOCS_UNREACHABLE();
@@ -722,23 +722,23 @@ visit(
 
 template<typename TypeLocTy>
 consteval
-TypeLoc::TypeLocClass
+clang::TypeLoc::TypeLocClass
 TypeLocToKindImpl() = delete;
 
 #define ABSTRACT_TYPELOC(DERIVED, BASE)
 #define TYPELOC(DERIVED, BASE) \
     template<> \
     consteval \
-    TypeLoc::TypeLocClass \
-    TypeLocToKindImpl<DERIVED##TypeLoc>() { return TypeLoc::DERIVED; }
+    clang::TypeLoc::TypeLocClass \
+    TypeLocToKindImpl<clang::DERIVED##TypeLoc>() { return clang::TypeLoc::DERIVED; }
 
 #include <clang/AST/TypeLocNodes.def>
 
-/** Get the TypeLoc::TypeLocClass for a type TypeLocTy derived from TypeLoc.
+/** Get the clang::TypeLoc::TypeLocClass for a type TypeLocTy derived from TypeLoc.
  */
 template<typename TypeLocTy>
 consteval
-TypeLoc::TypeLocClass
+clang::TypeLoc::TypeLocClass
 TypeLocToKind()
 {
     return TypeLocToKindImpl<
@@ -765,52 +765,52 @@ getInstantiatedFrom(DeclTy const* D)
     {
         return nullptr;
     }
-    Decl const* resultDecl = InstantiatedFromVisitor().Visit(D);
+    clang::Decl const* resultDecl = InstantiatedFromVisitor().Visit(D);
     return cast<DeclTy>(resultDecl);
 }
 
 template <class DeclTy>
 requires
-    std::derived_from<DeclTy, FunctionDecl> ||
-    std::same_as<FunctionTemplateDecl, std::remove_cv_t<DeclTy>>
-FunctionDecl const*
+    std::derived_from<DeclTy, clang::FunctionDecl> ||
+    std::same_as<clang::FunctionTemplateDecl, std::remove_cv_t<DeclTy>>
+clang::FunctionDecl const*
 getInstantiatedFrom(DeclTy const* D)
 {
-    return dyn_cast_if_present<FunctionDecl>(
-        getInstantiatedFrom<Decl>(D));
+    return dyn_cast_if_present<clang::FunctionDecl>(
+        getInstantiatedFrom<clang::Decl>(D));
 }
 
 template <class DeclTy>
 requires
-    std::derived_from<DeclTy, CXXRecordDecl> ||
-    std::same_as<ClassTemplateDecl, std::remove_cv_t<DeclTy>>
-CXXRecordDecl const*
+    std::derived_from<DeclTy, clang::CXXRecordDecl> ||
+    std::same_as<clang::ClassTemplateDecl, std::remove_cv_t<DeclTy>>
+clang::CXXRecordDecl const*
 getInstantiatedFrom(DeclTy const* D)
 {
-    return dyn_cast_if_present<CXXRecordDecl>(
-        getInstantiatedFrom<Decl>(D));
+    return dyn_cast_if_present<clang::CXXRecordDecl>(
+        getInstantiatedFrom<clang::Decl>(D));
 }
 
 template <class DeclTy>
 requires
-    std::derived_from<DeclTy, VarDecl> ||
-    std::same_as<VarTemplateDecl, std::remove_cv_t<DeclTy>>
-VarDecl const*
+    std::derived_from<DeclTy, clang::VarDecl> ||
+    std::same_as<clang::VarTemplateDecl, std::remove_cv_t<DeclTy>>
+clang::VarDecl const*
 getInstantiatedFrom(DeclTy const* D)
 {
-    return dyn_cast_if_present<VarDecl>(
-        getInstantiatedFrom<Decl>(D));
+    return dyn_cast_if_present<clang::VarDecl>(
+        getInstantiatedFrom<clang::Decl>(D));
 }
 
 template <class DeclTy>
 requires
-    std::derived_from<DeclTy, TypedefNameDecl> ||
-    std::same_as<TypeAliasTemplateDecl, std::remove_cv_t<DeclTy>>
-TypedefNameDecl const*
+    std::derived_from<DeclTy, clang::TypedefNameDecl> ||
+    std::same_as<clang::TypeAliasTemplateDecl, std::remove_cv_t<DeclTy>>
+clang::TypedefNameDecl const*
 getInstantiatedFrom(DeclTy const* D)
 {
-    return dyn_cast_if_present<TypedefNameDecl>(
-        getInstantiatedFrom<Decl>(D));
+    return dyn_cast_if_present<clang::TypedefNameDecl>(
+        getInstantiatedFrom<clang::Decl>(D));
 }
 
 /** Get the access specifier for a `Decl`
@@ -819,19 +819,19 @@ getInstantiatedFrom(DeclTy const* D)
     context and return the access specifier for the declaration.
  */
 MRDOCS_DECL
-AccessSpecifier
-getAccess(Decl const* D);
+clang::AccessSpecifier
+getAccess(clang::Decl const* D);
 
 MRDOCS_DECL
-QualType
-getDeclaratorType(DeclaratorDecl const* DD);
+clang::QualType
+getDeclaratorType(clang::DeclaratorDecl const* DD);
 
 /** Get the NonTypeTemplateParm of an expression
 
-    This function will return the NonTypeTemplateParmDecl
+    This function will return the clang::NonTypeTemplateParmDecl
     corresponding to the expression `E` if it is a
-    NonTypeTemplateParmDecl. If the expression is not
-    a NonTypeTemplateParmDecl, the function will return
+    clang::NonTypeTemplateParmDecl. If the expression is not
+    a clang::NonTypeTemplateParmDecl, the function will return
     nullptr.
 
     For instance, given the expression `x` in the following
@@ -842,38 +842,38 @@ getDeclaratorType(DeclaratorDecl const* DD);
     void f() {}
     @endcode
 
-    the function will return the NonTypeTemplateParmDecl
+    the function will return the clang::NonTypeTemplateParmDecl
     corresponding to `x`, which is the template parameter
     of the function `f`.
  */
 MRDOCS_DECL
-NonTypeTemplateParmDecl const*
-getNTTPFromExpr(Expr const* E, unsigned Depth);
+clang::NonTypeTemplateParmDecl const*
+getNTTPFromExpr(clang::Expr const* E, unsigned Depth);
 
 // Get the parent declaration of a declaration
 MRDOCS_DECL
-Decl const*
-getParent(Decl const* D);
+clang::Decl const*
+getParent(clang::Decl const* D);
 
 MRDOCS_DECL
 void
 getQualifiedName(
-    NamedDecl const* ND,
-    raw_ostream &Out,
-    const PrintingPolicy &Policy);
+    clang::NamedDecl const* ND,
+    clang::raw_ostream &Out,
+    clang::PrintingPolicy const& Policy);
 
 // If D refers to an implicit instantiation of a template specialization,
-// decay it to the Decl of the primary template. The template arguments
-// will be extracted separately as part of the TypeInfo.
-// For instance, a Decl to `S<0>` becomes a Decl to `S`, unless `S<0>` is
+// decay it to the clang::Decl of the primary template. The template arguments
+// will be extracted separately as part of the Type.
+// For instance, a clang::Decl to `S<0>` becomes a clang::Decl to `S`, unless `S<0>` is
 // an explicit specialization of the primary template.
 // This function also applies recursively to the parent of D so that
 // the primary template is resolved for nested classes.
-// For instance, a Decl to `A<0>::S` becomes a Decl to `A::S`, unless
+// For instance, a clang::Decl to `A<0>::S` becomes a clang::Decl to `A::S`, unless
 // `A<0>` is an explicit specialization of the primary template.
 MRDOCS_DECL
-Decl const*
-decayToPrimaryTemplate(Decl const* D);
+clang::Decl const*
+decayToPrimaryTemplate(clang::Decl const* D);
 
 // Iterate the Decl and check if this is a template specialization
 // also considering the parent declarations. For instance,
@@ -882,17 +882,17 @@ decayToPrimaryTemplate(Decl const* D);
 // template specializations.
 MRDOCS_DECL
 bool
-isAllImplicitSpecialization(Decl const* D);
+isAllImplicitSpecialization(clang::Decl const* D);
 
 // Check if any component of D is an implicit specialization
 MRDOCS_DECL
 bool
-isAnyImplicitSpecialization(Decl const* D);
+isAnyImplicitSpecialization(clang::Decl const* D);
 
 // Check if at least one component of D is explicit
 inline
 bool
-isAnyExplicitSpecialization(Decl const* D)
+isAnyExplicitSpecialization(clang::Decl const* D)
 {
     return !isAllImplicitSpecialization(D);
 }
@@ -900,30 +900,30 @@ isAnyExplicitSpecialization(Decl const* D)
 // Check if all components are explicit
 inline
 bool
-isAllExplicitSpecialization(Decl const* D)
+isAllExplicitSpecialization(clang::Decl const* D)
 {
     return !isAnyImplicitSpecialization(D);
 }
 
 MRDOCS_DECL
 bool
-isVirtualMember(Decl const* D);
+isVirtualMember(clang::Decl const* D);
 
 MRDOCS_DECL
 bool
-isAnonymousNamespace(Decl const* D);
+isAnonymousNamespace(clang::Decl const* D);
 
 MRDOCS_DECL
 bool
-isStaticFileLevelMember(Decl const *D);
+isStaticFileLevelMember(clang::Decl const *D);
 
 MRDOCS_DECL
 bool
-isDocumented(Decl const *D);
+isDocumented(clang::Decl const *D);
 
 MRDOCS_DECL
-RawComment const*
-getDocumentation(Decl const *D);
+clang::RawComment const*
+getDocumentation(clang::Decl const *D);
 
 template <class DeclTy>
 bool
@@ -948,25 +948,25 @@ namespace detail {
     // getASTVisitor().context_.getPrintingPolicy());
     // is a valid expression
     template <class T>
-    concept HasPrintQualifiedName = requires(T const& D, llvm::raw_svector_ostream& OS, PrintingPolicy PP)
+    concept HasPrintQualifiedName = requires(T const& D, llvm::raw_svector_ostream& OS, clang::PrintingPolicy PP)
     {
         D.printQualifiedName(OS, PP);
     };
 
     template <class T>
-    concept HasPrint = requires(T const& D, llvm::raw_svector_ostream& OS, PrintingPolicy PP)
+    concept HasPrint = requires(T const& D, llvm::raw_svector_ostream& OS, clang::PrintingPolicy PP)
     {
         D.print(OS, PP);
     };
 
     template <class T>
-    concept HasPrintWithPolicyFirst = requires(T const& D, llvm::raw_svector_ostream& OS, PrintingPolicy PP)
+    concept HasPrintWithPolicyFirst = requires(T const& D, llvm::raw_svector_ostream& OS, clang::PrintingPolicy PP)
     {
         D.print(PP, OS, true);
     };
 
     template <class T>
-    concept HasDump = requires(T const& D, llvm::raw_svector_ostream& OS, ASTContext const& C)
+    concept HasDump = requires(T const& D, llvm::raw_svector_ostream& OS, clang::ASTContext const& C)
     {
         D.dump(OS, C);
     };
@@ -986,20 +986,20 @@ namespace detail {
     template <class T>
     requires (!std::is_pointer_v<T>)
     void
-    printTraceName(T const& D, ASTContext const& C, std::string& symbol_name);
+    printTraceName(T const& D, clang::ASTContext const& C, std::string& symbol_name);
 
     template <class T>
     void
-    printTraceName(T const* D, ASTContext const& C, std::string& symbol_name)
+    printTraceName(T const* D, clang::ASTContext const& C, std::string& symbol_name)
     {
         if (!D)
         {
             return;
         }
         llvm::raw_string_ostream os(symbol_name);
-        if constexpr (std::derived_from<T, Decl>)
+        if constexpr (std::derived_from<T, clang::Decl>)
         {
-            if (NamedDecl const* ND = dyn_cast<NamedDecl>(D))
+            if (clang::NamedDecl const* ND = dyn_cast<clang::NamedDecl>(D))
             {
                 getQualifiedName(ND, os, C.getPrintingPolicy());
             }
@@ -1022,7 +1022,7 @@ namespace detail {
         }
         else if constexpr (ConvertibleToUnqualifiedQualType<T>)
         {
-            QualType const QT(D, 0);
+            clang::QualType const QT(D, 0);
             QT.print(os, C.getPrintingPolicy());
         }
         else if constexpr (HasDump<T>)
@@ -1053,14 +1053,14 @@ namespace detail {
     template <class T>
     requires (!std::is_pointer_v<T>)
     void
-    printTraceName(T const& D, ASTContext const& C, std::string& symbol_name)
+    printTraceName(T const& D, clang::ASTContext const& C, std::string& symbol_name)
     {
         printTraceName(&D, C, symbol_name);
     }
 
     template <class T>
     void
-    printTraceName(Optional<T> const& D, ASTContext const& C, std::string& symbol_name)
+    printTraceName(Optional<T> const& D, clang::ASTContext const& C, std::string& symbol_name)
     {
         if (D)
         {
@@ -1082,6 +1082,6 @@ namespace detail {
     report::trace("{}", MRDOCS_SYMBOL_TRACE_UNIQUE_NAME)
 #endif
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

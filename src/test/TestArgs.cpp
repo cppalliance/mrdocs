@@ -11,7 +11,7 @@
 #include "TestArgs.hpp"
 #include <vector>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 TestArgs TestArgs::instance_;
 
@@ -83,4 +83,4 @@ hideForeignOptions() const
     }
 }
 
-} // clang::mrdocs
+} // mrdocs

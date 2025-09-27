@@ -25,7 +25,7 @@
 #include <fstream>
 #include <sstream>
 
-namespace clang::mrdocs::hbs {
+namespace mrdocs::hbs {
 
 namespace {
 std::function<void(OutputRef&, std::string_view)>
@@ -213,4 +213,4 @@ escape(OutputRef& out, std::string_view str) const
     out << str;
 }
 
-} // clang::mrdocs::hbs
+} // mrdocs::hbs

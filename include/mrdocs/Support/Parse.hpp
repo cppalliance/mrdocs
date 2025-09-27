@@ -14,7 +14,7 @@
 #include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/Expected.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** The result of a parse operation.
 
@@ -145,6 +145,6 @@ parse(std::string_view sv)
         sv, pos, result.ec.reason()));
 }
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

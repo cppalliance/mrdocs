@@ -20,7 +20,7 @@
 #include <mrdocs/Metadata/TParam/TParamBase.hpp>
 #include <mrdocs/Metadata/Type/TypeBase.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** A constant template parameter
 
@@ -32,11 +32,11 @@ struct ConstantTParam final
     : TParamCommonBase<TParamKind::Constant>
 {
     /** Type of the non-type template parameter */
-    Polymorphic<TypeInfo> Type = Polymorphic<TypeInfo>(AutoTypeInfo{});
+    Polymorphic<struct Type> Type = Polymorphic<struct Type>(AutoType{});
 
     std::strong_ordering operator<=>(ConstantTParam const&) const;
 };
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif // MRDOCS_API_METADATA_TPARAM_CONSTANTTPARAM_HPP

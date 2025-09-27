@@ -10,10 +10,10 @@
 //
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Info/Friend.hpp>
+#include <mrdocs/Metadata/Symbol/Friend.hpp>
 #include <llvm/ADT/STLExtras.h>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 void
 merge(FriendInfo& I, FriendInfo&& Other)
@@ -28,5 +28,5 @@ merge(FriendInfo& I, FriendInfo&& Other)
     }
 }
 
-} // clang::mrdocs
+} // mrdocs
 

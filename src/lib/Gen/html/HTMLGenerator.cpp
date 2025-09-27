@@ -12,7 +12,7 @@
 #include "HTMLGenerator.hpp"
 #include <mrdocs/Support/Handlebars.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 namespace html {
 
 void
@@ -32,4 +32,4 @@ makeHTMLGenerator()
     return std::make_unique<html::HTMLGenerator>();
 }
 
-} // clang::mrdocs
+} // mrdocs

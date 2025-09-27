@@ -12,7 +12,7 @@
 #include <lib/Support/Report.hpp>
 #include <lib/Support/Yaml.hpp>
 
-namespace clang {
+
 namespace mrdocs {
 
 void YamlReporter::diag(llvm::SMDiagnostic const &D, void *) {
@@ -45,4 +45,4 @@ void YamlReporter::diag(llvm::SMDiagnostic const &D, void *) {
 }
 
 } // mrdocs
-} // clang
+

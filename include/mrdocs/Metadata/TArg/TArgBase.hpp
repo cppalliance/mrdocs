@@ -17,7 +17,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/TArg/TArgKind.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /* Forward declarations
  */
@@ -51,7 +51,7 @@ struct TArg
     }
 #include <mrdocs/Metadata/TArg/TArgInfoNodes.inc>
 
-    #define INFO(Type) \
+#define INFO(Type) \
     constexpr Type##TArg const& as##Type() const noexcept { \
         if (Kind == TArgKind::Type) \
             return reinterpret_cast<Type##TArg const&>(*this); \
@@ -121,6 +121,6 @@ tag_invoke(
     TArg const& I,
     DomCorpus const* domCorpus);
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif // MRDOCS_API_METADATA_TARG_TARGBASE_HPP

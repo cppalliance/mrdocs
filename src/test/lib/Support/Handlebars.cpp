@@ -18,7 +18,7 @@
 #include <test_suite/diff.hpp>
 #include <test_suite/test_suite.hpp>
 
-namespace clang {
+
 namespace mrdocs {
 
 template <std::convertible_to<dom::Value> DomValue>
@@ -5445,4 +5445,4 @@ TEST_SUITE(
     "clang.mrdocs.Handlebars");
 
 } // mrdocs
-} // clang
+

@@ -14,7 +14,7 @@
 #include <mrdocs/Metadata/Type.hpp>
 #include <mrdocs/Metadata/Type/QualifierKind.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 dom::String
 toString(
@@ -80,7 +80,7 @@ toString(
 }
 
 SymbolID
-TypeInfo::
+Type::
 namedSymbol() const noexcept
 {
     if (!isNamed())
@@ -146,7 +146,7 @@ operator()(
     auto& write,
     std::bool_constant<NeedParens>) const
 {
-    if (TypeInfo const* inner = innerTypePtr(t))
+    if (Type const* inner = innerTypePtr(t))
     {
         visit(*inner, *this, write, std::bool_constant<requires {
             t.PointeeType;
@@ -296,7 +296,7 @@ operator()(
         }
     }
 
-    if (TypeInfo const* inner = innerTypePtr(t))
+    if (Type const* inner = innerTypePtr(t))
     {
         visit(*inner, *this, write, std::bool_constant<requires {
             t.PointeeType;
@@ -315,8 +315,8 @@ writeTypeTo(
 } // (anon)
 
 std::strong_ordering
-NamedTypeInfo::
-operator<=>(NamedTypeInfo const& other) const
+NamedType::
+operator<=>(NamedType const& other) const
 {
     if (auto const br = this->asType() <=> other.asType();
         !std::is_eq(br))
@@ -338,32 +338,32 @@ operator<=>(NamedTypeInfo const& other) const
 }
 
 std::strong_ordering
-AutoTypeInfo::
-operator<=>(AutoTypeInfo const&) const = default;
+AutoType::
+operator<=>(AutoType const&) const = default;
 
 std::strong_ordering
-LValueReferenceTypeInfo::
-operator<=>(LValueReferenceTypeInfo const&) const = default;
+LValueReferenceType::
+operator<=>(LValueReferenceType const&) const = default;
 
 std::strong_ordering
-RValueReferenceTypeInfo::
-operator<=>(RValueReferenceTypeInfo const&) const = default;
+RValueReferenceType::
+operator<=>(RValueReferenceType const&) const = default;
 
 std::strong_ordering
-PointerTypeInfo::
-operator<=>(PointerTypeInfo const&) const = default;
+PointerType::
+operator<=>(PointerType const&) const = default;
 
 std::strong_ordering
-MemberPointerTypeInfo::
-operator<=>(MemberPointerTypeInfo const&) const = default;
+MemberPointerType::
+operator<=>(MemberPointerType const&) const = default;
 
 std::strong_ordering
-ArrayTypeInfo::
-operator<=>(ArrayTypeInfo const&) const = default;
+ArrayType::
+operator<=>(ArrayType const&) const = default;
 
 std::strong_ordering
-FunctionTypeInfo::
-operator<=>(FunctionTypeInfo const& other) const {
+FunctionType::
+operator<=>(FunctionType const& other) const {
     if (auto const r = this->asType() <=> other.asType();
         !std::is_eq(r))
     {
@@ -393,8 +393,7 @@ operator<=>(FunctionTypeInfo const& other) const {
 
 
 std::string
-toString(
-    TypeInfo const& T,
+toString(Type const& T,
     std::string_view Name)
 {
     auto write = [result = std::string()](
@@ -417,7 +416,7 @@ void
 tag_invoke(
     dom::LazyObjectMapTag,
     IO& io,
-    TypeInfo const& I,
+    Type const& I,
     DomCorpus const* domCorpus)
 {
     io.map("class", std::string("type"));
@@ -475,7 +474,7 @@ void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
-    TypeInfo const& I,
+    Type const& I,
     DomCorpus const* domCorpus)
 {
     v = dom::LazyObject(I, domCorpus);
@@ -752,7 +751,7 @@ makeChar(FundamentalTypeKind& kind) noexcept
 }
 
 std::strong_ordering
-operator<=>(Polymorphic<TypeInfo> const& lhs, Polymorphic<TypeInfo> const& rhs)
+operator<=>(Polymorphic<Type> const& lhs, Polymorphic<Type> const& rhs)
 {
     MRDOCS_ASSERT(!lhs.valueless_after_move());
     MRDOCS_ASSERT(!rhs.valueless_after_move());
@@ -760,7 +759,7 @@ operator<=>(Polymorphic<TypeInfo> const& lhs, Polymorphic<TypeInfo> const& rhs)
     auto& rhsRef = *rhs;
     if (lhsRef.Kind == rhsRef.Kind)
     {
-        return visit(lhsRef, detail::VisitCompareFn<TypeInfo>(rhsRef));
+        return visit(lhsRef, detail::VisitCompareFn<Type>(rhsRef));
     }
     return lhsRef.Kind <=> rhsRef.Kind;
 }
@@ -768,13 +767,13 @@ operator<=>(Polymorphic<TypeInfo> const& lhs, Polymorphic<TypeInfo> const& rhs)
 namespace {
 // Get an optional reference to the inner type
 template <
-    class TypeInfoTy,
-    bool isMutable = !std::is_const_v<std::remove_reference_t<TypeInfoTy>>,
-    class Ptr = std::conditional_t<isMutable, Polymorphic<TypeInfo>*, Polymorphic<TypeInfo> const*>,
-    class Ref = std::conditional_t<isMutable, Polymorphic<TypeInfo>&, Polymorphic<TypeInfo> const&>>
-requires std::same_as<std::remove_cvref_t<TypeInfoTy>, TypeInfo>
+    class TypeTy,
+    bool isMutable = !std::is_const_v<std::remove_reference_t<TypeTy>>,
+    class Ptr = std::conditional_t<isMutable, Polymorphic<Type>*, Polymorphic<Type> const*>,
+    class Ref = std::conditional_t<isMutable, Polymorphic<Type>&, Polymorphic<Type> const&>>
+requires std::same_as<std::remove_cvref_t<TypeTy>, Type>
 Optional<Ref>
-innerTypeImpl(TypeInfoTy&& TI) noexcept
+innerTypeImpl(TypeTy&& TI) noexcept
 {
     // Get a pointer to the inner type
     Ptr innerPtr = visit(TI, []<typename T>(T& t) -> Ptr
@@ -813,14 +812,14 @@ innerTypeImpl(TypeInfoTy&& TI) noexcept
 
 // Get a pointer to the inner type
 template <
-    class TypeInfoTy,
-    bool isMutable = !std::is_const_v<std::remove_reference_t<TypeInfoTy>>,
-    class Ptr = std::conditional_t<isMutable, Polymorphic<TypeInfo>*, Polymorphic<TypeInfo> const*>,
-    class Ref = std::conditional_t<isMutable, Polymorphic<TypeInfo>&, Polymorphic<TypeInfo> const&>,
-    class InnerPtr = std::conditional_t<isMutable, TypeInfo*, TypeInfo const*>>
-requires std::same_as<std::remove_cvref_t<TypeInfoTy>, TypeInfo>
+    class TypeTy,
+    bool isMutable = !std::is_const_v<std::remove_reference_t<TypeTy>>,
+    class Ptr = std::conditional_t<isMutable, Polymorphic<Type>*, Polymorphic<Type> const*>,
+    class Ref = std::conditional_t<isMutable, Polymorphic<Type>&, Polymorphic<Type> const&>,
+    class InnerPtr = std::conditional_t<isMutable, Type*, Type const*>>
+requires std::same_as<std::remove_cvref_t<TypeTy>, Type>
 InnerPtr
-innerTypePtrImpl(TypeInfoTy&& TI) noexcept
+innerTypePtrImpl(TypeTy&& TI) noexcept
 {
     Optional<Ref> res = innerTypeImpl(TI);
     if (res)
@@ -835,12 +834,12 @@ innerTypePtrImpl(TypeInfoTy&& TI) noexcept
 // If there's an internal type, return it
 // If there's no internal type, return the current type
 template <
-    class PolymorphicTypeInfoTy,
-    bool isMutable = !std::is_const_v<std::remove_reference_t<PolymorphicTypeInfoTy>>,
-    class Ref = std::conditional_t<isMutable, Polymorphic<TypeInfo>&, Polymorphic<TypeInfo> const&>>
-requires std::same_as<std::remove_cvref_t<PolymorphicTypeInfoTy>, Polymorphic<TypeInfo>>
+    class PolymorphicTypeTy,
+    bool isMutable = !std::is_const_v<std::remove_reference_t<PolymorphicTypeTy>>,
+    class Ref = std::conditional_t<isMutable, Polymorphic<Type>&, Polymorphic<Type> const&>>
+requires std::same_as<std::remove_cvref_t<PolymorphicTypeTy>, Polymorphic<Type>>
 Ref
-innermostTypeImpl(PolymorphicTypeInfoTy&& TI) noexcept
+innermostTypeImpl(PolymorphicTypeTy&& TI) noexcept
 {
     MRDOCS_ASSERT(!TI.valueless_after_move());
     Optional<Ref> inner = innerTypeImpl(*TI);
@@ -864,40 +863,40 @@ innermostTypeImpl(PolymorphicTypeInfoTy&& TI) noexcept
 
 }
 
-Optional<Polymorphic<TypeInfo> const&>
-innerType(TypeInfo const& TI) noexcept
+Optional<Polymorphic<Type> const&>
+innerType(Type const& TI) noexcept
 {
-    return innerTypeImpl<TypeInfo const&>(TI);
+    return innerTypeImpl<Type const&>(TI);
 }
 
-Optional<Polymorphic<TypeInfo>&>
-innerType(TypeInfo& TI) noexcept
+Optional<Polymorphic<Type>&>
+innerType(Type& TI) noexcept
 {
-    return innerTypeImpl<TypeInfo&>(TI);
+    return innerTypeImpl<Type&>(TI);
 }
 
-TypeInfo const*
-innerTypePtr(TypeInfo const& TI) noexcept
+Type const*
+innerTypePtr(Type const& TI) noexcept
 {
-    return innerTypePtrImpl<TypeInfo const&>(TI);
+    return innerTypePtrImpl<Type const&>(TI);
 }
 
-TypeInfo*
-innerTypePtr(TypeInfo& TI) noexcept
+Type*
+innerTypePtr(Type& TI) noexcept
 {
-    return innerTypePtrImpl<TypeInfo&>(TI);
+    return innerTypePtrImpl<Type&>(TI);
 }
 
-Polymorphic<TypeInfo> const&
-innermostType(Polymorphic<TypeInfo> const& TI) noexcept
+Polymorphic<Type> const&
+innermostType(Polymorphic<Type> const& TI) noexcept
 {
-    return innermostTypeImpl<Polymorphic<TypeInfo> const&>(TI);
+    return innermostTypeImpl<Polymorphic<Type> const&>(TI);
 }
 
-Polymorphic<TypeInfo>&
-innermostType(Polymorphic<TypeInfo>& TI) noexcept
+Polymorphic<Type>&
+innermostType(Polymorphic<Type>& TI) noexcept
 {
-    return innermostTypeImpl<Polymorphic<TypeInfo>&>(TI);
+    return innermostTypeImpl<Polymorphic<Type>&>(TI);
 }
 
-} // clang::mrdocs
+} // mrdocs

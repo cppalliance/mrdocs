@@ -30,7 +30,7 @@
 #include <iostream>
 #include <test_suite/diff.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 TestRunner::
 TestRunner(std::string_view generator)
@@ -394,4 +394,4 @@ checkPath(
     }
 }
 
-} // clang::mrdocs
+} // mrdocs

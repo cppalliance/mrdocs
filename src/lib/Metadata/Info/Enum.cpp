@@ -10,10 +10,10 @@
 //
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Info/Enum.hpp>
+#include <mrdocs/Metadata/Symbol/Enum.hpp>
 #include <llvm/ADT/STLExtras.h>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 namespace {
 
@@ -35,7 +35,7 @@ reduceSymbolIDs(
 } // (anon)
 
 void
-merge(EnumInfo& I, EnumInfo&& Other)
+merge(EnumSymbol& I, EnumSymbol&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
     merge(I.asInfo(), std::move(Other.asInfo()));
@@ -50,5 +50,5 @@ merge(EnumInfo& I, EnumInfo&& Other)
     reduceSymbolIDs(I.Constants, std::move(Other.Constants));
 }
 
-} // clang::mrdocs
+} // mrdocs
 

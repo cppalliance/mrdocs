@@ -17,7 +17,7 @@
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <mrdocs/Metadata/Javadoc/Node.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** A processed documentation comment attached to a declaration.
 
@@ -284,6 +284,6 @@ tag_invoke(
     v = dom::LazyObject(I, domCorpus);
 }
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

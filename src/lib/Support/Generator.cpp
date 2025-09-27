@@ -20,7 +20,7 @@
 #include <fstream>
 #include <sstream>
 
-namespace clang {
+
 namespace mrdocs {
 
 Generator::
@@ -157,4 +157,4 @@ getSinglePageFullPath(
 }
 
 } // mrdocs
-} // clang
+

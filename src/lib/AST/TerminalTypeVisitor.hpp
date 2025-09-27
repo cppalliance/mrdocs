@@ -17,12 +17,12 @@
 #include <lib/AST/ASTVisitor.hpp>
 #include <clang/AST/TypeVisitor.h>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** A visitor to build objects from `Type`s.
 
     MrDocs might need to convert class instances derived from `Type`
-    into other struct instances like `TypeInfo` or `NameInfo`.
+    into other struct instances like `Type` or `Name`.
 
     This class can be used to define a visitor to build objects
     from `Type`s. The visitor can be defined as a class that
@@ -55,7 +55,7 @@ namespace clang::mrdocs {
     from `TerminalTypeVisitor<Derived>`, which converts the
     `Type` into the concrete type and calls the corresponding
     `VisitXXXType` function. It also provides
-    `bool Visit(QualType QT)` as an extension to visit the
+    `bool Visit(clang::QualType QT)` as an extension to visit the
     `Type` associated with the qualified type.
 
     Each `VisitXXXType` function will store any relative information
@@ -71,7 +71,7 @@ namespace clang::mrdocs {
  */
 template <class Derived>
 class TerminalTypeVisitor
-    : public TypeVisitor<TerminalTypeVisitor<Derived>, bool>
+    : public clang::TypeVisitor<TerminalTypeVisitor<Derived>, bool>
 {
     friend class TerminalTypeVisitor::TypeVisitor;
 
@@ -122,11 +122,11 @@ public:
         - Unwrapped type: `int`
      */
     bool
-    Visit(QualType const QT)
+    Visit(clang::QualType const QT)
     {
         MRDOCS_SYMBOL_TRACE(QT, Visitor_.context_);
         Quals_ |= QT.getLocalFastQualifiers();
-        Type const* T = QT.getTypePtrOrNull();
+        clang::Type const* T = QT.getTypePtrOrNull();
         MRDOCS_SYMBOL_TRACE(T, Visitor_.context_);
         return Visit(T);
     }
@@ -151,7 +151,7 @@ public:
     static
     void
     buildPointer
-        (PointerType const*,
+        (clang::PointerType const*,
         unsigned)
     {
     }
@@ -163,7 +163,7 @@ public:
      */
     void
     buildLValueReference(
-        LValueReferenceType const*)
+        clang::LValueReferenceType const*)
     {
     }
 
@@ -174,7 +174,7 @@ public:
      */
     void
     buildRValueReference(
-        RValueReferenceType const*)
+        clang::RValueReferenceType const*)
     {
     }
 
@@ -185,7 +185,7 @@ public:
      */
     void
     buildMemberPointer(
-        MemberPointerType const*, unsigned)
+        clang::MemberPointerType const*, unsigned)
     {
     }
 
@@ -196,13 +196,13 @@ public:
      */
     void
     buildArray(
-        ArrayType const*)
+        clang::ArrayType const*)
     {
     }
 
     void
     populate(
-        FunctionType const*)
+        clang::FunctionType const*)
     {
     }
 
@@ -213,7 +213,7 @@ public:
      */
     void
     buildDecltype(
-        DecltypeType const*,
+        clang::DecltypeType const*,
         unsigned,
         bool)
     {
@@ -226,7 +226,7 @@ public:
      */
     void
     buildAuto(
-        AutoType const*,
+        clang::AutoType const*,
         unsigned,
         bool)
     {
@@ -239,8 +239,8 @@ public:
      */
     void
     buildTerminal(
-        NestedNameSpecifier,
-        Type const*,
+        clang::NestedNameSpecifier,
+        clang::Type const*,
         unsigned,
         bool)
     {
@@ -253,9 +253,9 @@ public:
      */
     void
     buildTerminal(
-        NestedNameSpecifier,
-        IdentifierInfo const*,
-        Optional<ArrayRef<TemplateArgument>>,
+        clang::NestedNameSpecifier,
+        clang::IdentifierInfo const*,
+        Optional<llvm::ArrayRef<clang::TemplateArgument>>,
         unsigned,
         bool)
     {
@@ -268,9 +268,9 @@ public:
      */
     void
     buildTerminal(
-        NestedNameSpecifier,
-        NamedDecl*,
-        Optional<ArrayRef<TemplateArgument>>,
+        clang::NestedNameSpecifier,
+        clang::NamedDecl*,
+        Optional<llvm::ArrayRef<clang::TemplateArgument>>,
         unsigned,
         bool)
     {
@@ -299,9 +299,9 @@ private:
         - Unwrapped type: `int`
      */
     bool
-    VisitParenType(ParenType const* T)
+    VisitParenType(clang::ParenType const* T)
     {
-        QualType I = T->getInnerType();
+        clang::QualType I = T->getInnerType();
         return Visit(I);
     }
 
@@ -315,9 +315,9 @@ private:
      */
     bool
     VisitMacroQualified(
-        MacroQualifiedType const* T)
+        clang::MacroQualifiedType const* T)
     {
-        QualType UT = T->getUnderlyingType();
+        clang::QualType UT = T->getUnderlyingType();
         return Visit(UT);
     }
 
@@ -331,9 +331,9 @@ private:
      */
     bool
     VisitAttributedType(
-        AttributedType const* T)
+        clang::AttributedType const* T)
     {
-        QualType MT = T->getModifiedType();
+        clang::QualType MT = T->getModifiedType();
         return Visit(MT);
     }
 
@@ -346,9 +346,9 @@ private:
         - Unwrapped type: original `int[4]`
      */
     bool
-    VisitAdjustedType(AdjustedType const* T)
+    VisitAdjustedType(clang::AdjustedType const* T)
     {
-        QualType OT = T->getOriginalType();
+        clang::QualType OT = T->getOriginalType();
         return Visit(OT);
     }
 
@@ -361,9 +361,9 @@ private:
         - Unwrapped type: `int`
      */
     bool
-    VisitUsingType(UsingType const* T)
+    VisitUsingType(clang::UsingType const* T)
     {
-        QualType UT = T->desugar();
+        clang::QualType UT = T->desugar();
         return Visit(UT);
     }
 
@@ -377,9 +377,9 @@ private:
      */
     bool
     VisitSubstTemplateTypeParmType(
-        SubstTemplateTypeParmType const* T)
+        clang::SubstTemplateTypeParmType const* T)
     {
-        QualType RT = T->getReplacementType();
+        clang::QualType RT = T->getReplacementType();
         return Visit(RT);
     }
 
@@ -395,10 +395,10 @@ private:
      */
     bool
     VisitPackExpansionType(
-        PackExpansionType const* T)
+        clang::PackExpansionType const* T)
     {
         IsPack_ = true;
-        QualType PT = T->getPattern();
+        clang::QualType PT = T->getPattern();
         return Visit(PT);
     }
 
@@ -414,10 +414,10 @@ private:
      */
     bool
     VisitPointerType(
-        PointerType const* T)
+        clang::PointerType const* T)
     {
         getDerived().buildPointer(T, std::exchange(Quals_, 0));
-        QualType PT = T->getPointeeType();
+        clang::QualType PT = T->getPointeeType();
         return Visit(PT);
     }
 
@@ -431,11 +431,11 @@ private:
      */
     bool
     VisitLValueReferenceType(
-        LValueReferenceType const* T)
+        clang::LValueReferenceType const* T)
     {
         getDerived().buildLValueReference(T);
         Quals_ = 0;
-        QualType PT = T->getPointeeType();
+        clang::QualType PT = T->getPointeeType();
         return Visit(PT);
     }
 
@@ -449,11 +449,11 @@ private:
      */
     bool
     VisitRValueReferenceType(
-        RValueReferenceType const* T)
+        clang::RValueReferenceType const* T)
     {
         getDerived().buildRValueReference(T);
         Quals_ = 0;
-        QualType PT = T->getPointeeType();
+        clang::QualType PT = T->getPointeeType();
         return Visit(PT);
     }
 
@@ -467,19 +467,19 @@ private:
      */
     bool
     VisitMemberPointerType(
-        MemberPointerType const* T)
+        clang::MemberPointerType const* T)
     {
         getDerived().buildMemberPointer(T, std::exchange(Quals_, 0));
-        QualType PT = T->getPointeeType();
+        clang::QualType PT = T->getPointeeType();
         return Visit(PT);
     }
 
     bool
     VisitFunctionType(
-        FunctionType const* T)
+        clang::FunctionType const* T)
     {
         getDerived().populate(T);
-        QualType RT = T->getReturnType();
+        clang::QualType RT = T->getReturnType();
         return Visit(RT);
     }
 
@@ -493,10 +493,10 @@ private:
      */
     bool
     VisitArrayType(
-        ArrayType const* T)
+        clang::ArrayType const* T)
     {
         getDerived().buildArray(T);
-        QualType ET = T->getElementType();
+        clang::QualType ET = T->getElementType();
         return Visit(ET);
     }
 
@@ -504,7 +504,7 @@ private:
 
     bool
     VisitDecltypeType(
-        DecltypeType const* T)
+        clang::DecltypeType const* T)
     {
         getDerived().buildDecltype(T, Quals_, IsPack_);
         return true;
@@ -512,7 +512,7 @@ private:
 
     bool
     VisitAutoType(
-        AutoType const* T)
+        clang::AutoType const* T)
     {
         // KRYSTIAN NOTE: we don't use isDeduced because it will
         // return true if the type is dependent
@@ -523,18 +523,18 @@ private:
 
     bool
     VisitDeducedTemplateSpecializationType(
-        DeducedTemplateSpecializationType const* T)
+        clang::DeducedTemplateSpecializationType const* T)
     {
-        // KRYSTIAN TODO: we should probably add a TypeInfo
+        // KRYSTIAN TODO: we should probably add a Type
         // to represent deduced types also stores what it
         // was deduced as.
-        if (QualType DT = T->getDeducedType(); !DT.isNull())
+        if (clang::QualType DT = T->getDeducedType(); !DT.isNull())
         {
             return Visit(DT);
         }
-        TemplateName const TN = T->getTemplateName();
+        clang::TemplateName const TN = T->getTemplateName();
         MRDOCS_ASSERT(! TN.isNull());
-        NamedDecl* ND = TN.getAsTemplateDecl();
+        clang::NamedDecl* ND = TN.getAsTemplateDecl();
         getDerived().buildTerminal(TN.getQualifier(), ND,
             std::nullopt, Quals_, IsPack_);
         return true;
@@ -542,7 +542,7 @@ private:
 
     bool
     VisitDependentNameType(
-        DependentNameType const* T)
+        clang::DependentNameType const* T)
     {
         if (auto SFINAE = getASTVisitor().extractSFINAEInfo(T))
         {
@@ -557,10 +557,10 @@ private:
 
     bool
     VisitDependentTemplateSpecializationType(
-        DependentTemplateSpecializationType const* T)
+        clang::DependentTemplateSpecializationType const* T)
     {
         MRDOCS_SYMBOL_TRACE(T, Visitor_.context_);
-        const DependentTemplateStorage &S = T->getDependentTemplateName();
+        const clang::DependentTemplateStorage &S = T->getDependentTemplateName();
         getDerived().buildTerminal(S.getQualifier(), S.getName().getIdentifier(),
                                    T->template_arguments(), Quals_, IsPack_);
         return true;
@@ -569,7 +569,7 @@ private:
     // Visit a template specialization such as `A<T>`
     bool
     VisitTemplateSpecializationType(
-        TemplateSpecializationType const* T)
+        clang::TemplateSpecializationType const* T)
     {
         MRDOCS_SYMBOL_TRACE(T, Visitor_.context_);
         if (auto SFINAE = getASTVisitor().extractSFINAEInfo(T))
@@ -583,18 +583,18 @@ private:
         // is `template<typename T> class X { };`.
         // Template names can also refer to function templates,
         // C++0x template aliases, etc...
-        TemplateName const TN = T->getTemplateName();
+        clang::TemplateName const TN = T->getTemplateName();
         MRDOCS_SYMBOL_TRACE(TN, Visitor_.context_);
         MRDOCS_ASSERT(! TN.isNull());
 
         // The list of template parameters and a reference to
         // the templated scoped declaration
-        NamedDecl* D = TN.getAsTemplateDecl();
+        clang::NamedDecl* D = TN.getAsTemplateDecl();
         MRDOCS_SYMBOL_TRACE(TN, Visitor_.context_);
 
         if (!T->isTypeAlias())
         {
-            if (auto* CT = dyn_cast<TagType>(T->getCanonicalTypeInternal()))
+            if (auto* CT = dyn_cast<clang::TagType>(T->getCanonicalTypeInternal()))
             {
                 MRDOCS_SYMBOL_TRACE(CT, Visitor_.context_);
                 D = CT->getOriginalDecl()->getDefinitionOrSelf();
@@ -611,13 +611,13 @@ private:
 
     bool
     VisitRecordType(
-        RecordType const* T)
+        clang::RecordType const* T)
     {
-        RecordDecl* RD = T->getOriginalDecl()->getDefinitionOrSelf();
+        clang::RecordDecl* RD = T->getOriginalDecl()->getDefinitionOrSelf();
         // if this is an instantiation of a class template,
-        // create a SpecializationTypeInfo & extract the template arguments
-        Optional<ArrayRef<TemplateArgument>> TArgs = std::nullopt;
-        if (auto const* CTSD = dyn_cast<ClassTemplateSpecializationDecl>(RD))
+        // create a SpecializationType & extract the template arguments
+        Optional<llvm::ArrayRef<clang::TemplateArgument>> TArgs = std::nullopt;
+        if (auto const* CTSD = dyn_cast<clang::ClassTemplateSpecializationDecl>(RD))
         {
             TArgs = CTSD->getTemplateArgs().asArray();
         }
@@ -628,7 +628,7 @@ private:
 
     bool
     VisitInjectedClassNameType(
-        InjectedClassNameType const* T)
+        clang::InjectedClassNameType const* T)
     {
         getDerived().buildTerminal(T->getQualifier(), T->getOriginalDecl()->getDefinitionOrSelf(),
             std::nullopt, Quals_, IsPack_);
@@ -637,7 +637,7 @@ private:
 
     bool
     VisitEnumType(
-        EnumType const* T)
+        clang::EnumType const* T)
     {
         getDerived().buildTerminal(T->getQualifier(), T->getOriginalDecl()->getDefinitionOrSelf(),
             std::nullopt, Quals_, IsPack_);
@@ -646,7 +646,7 @@ private:
 
     bool
     VisitTypedefType(
-        TypedefType const* T)
+        clang::TypedefType const* T)
     {
         getDerived().buildTerminal(T->getQualifier(), T->getDecl(),
             std::nullopt, Quals_, IsPack_);
@@ -655,11 +655,11 @@ private:
 
     bool
     VisitTemplateTypeParmType(
-        TemplateTypeParmType const* T)
+        clang::TemplateTypeParmType const* T)
     {
         MRDOCS_SYMBOL_TRACE(T, Visitor_.context_);
-        IdentifierInfo const* II = nullptr;
-        if (TemplateTypeParmDecl const* D = T->getDecl())
+        clang::IdentifierInfo const* II = nullptr;
+        if (clang::TemplateTypeParmDecl const* D = T->getDecl())
         {
             MRDOCS_SYMBOL_TRACE(D, Visitor_.context_);
             if(D->isImplicit())
@@ -679,7 +679,7 @@ private:
 
     bool
     VisitSubstTemplateTypeParmPackType(
-        SubstTemplateTypeParmPackType const* T)
+        clang::SubstTemplateTypeParmPackType const* T)
     {
         getDerived().buildTerminal(std::nullopt, T->getIdentifier(),
             std::nullopt, Quals_, IsPack_);
@@ -687,7 +687,7 @@ private:
     }
 
     bool
-    VisitType(Type const* T)
+    VisitType(clang::Type const* T)
     {
         getDerived().buildTerminal(
             T, Quals_, IsPack_);
@@ -695,6 +695,6 @@ private:
     }
 };
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

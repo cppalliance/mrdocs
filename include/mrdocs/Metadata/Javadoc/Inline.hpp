@@ -25,7 +25,7 @@
 #include <mrdocs/Support/Visitor.hpp>
 #include <compare>
 
-namespace clang::mrdocs::doc {
+namespace mrdocs::doc {
 
 /** Visit an inline.
 
@@ -117,6 +117,6 @@ operator==(Polymorphic<Inline> const& lhs, Polymorphic<Inline> const& rhs) {
     return std::is_eq(lhs <=> rhs);
 }
 
-} // clang::mrdocs::doc
+} // mrdocs::doc
 
 #endif // MRDOCS_API_METADATA_JAVADOC_INLINE_HPP

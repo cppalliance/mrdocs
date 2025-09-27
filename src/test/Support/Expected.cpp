@@ -22,7 +22,7 @@
 #include <utility>
 #include <test_suite/test_suite.hpp>
 
-namespace clang {
+
 namespace mrdocs {
 
 struct ExpectedTest
@@ -474,4 +474,4 @@ TEST_SUITE(
     "clang.mrdocs.Expected");
 
 } // mrdocs
-} // clang
+

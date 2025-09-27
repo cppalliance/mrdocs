@@ -18,33 +18,33 @@
 #include <utility>
 #include <vector>
 
-namespace clang {
+
 namespace mrdocs {
 
 /** A compilation database generated from the mrdocs.yml options
 */
 class MrDocsSettingsDB
-    : public tooling::CompilationDatabase
+    : public clang::tooling::CompilationDatabase
 {
-    std::vector<tooling::CompileCommand> cc_;
+    std::vector<clang::tooling::CompileCommand> cc_;
 
 public:
     explicit
     MrDocsSettingsDB(
         ConfigImpl const& config);
 
-    std::vector<tooling::CompileCommand>
+    std::vector<clang::tooling::CompileCommand>
     getCompileCommands(
         llvm::StringRef FilePath) const override;
 
     std::vector<std::string>
     getAllFiles() const override;
 
-    std::vector<tooling::CompileCommand>
+    std::vector<clang::tooling::CompileCommand>
     getAllCompileCommands() const override;
 };
 
 } // mrdocs
-} // clang
+
 
 #endif

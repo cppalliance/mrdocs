@@ -15,7 +15,7 @@
 #include <mrdocs/Platform.hpp>
 #include <string>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** `constexpr`/`consteval` specifier kinds
 
@@ -49,6 +49,6 @@ tag_invoke(
     v = toString(kind);
 }
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

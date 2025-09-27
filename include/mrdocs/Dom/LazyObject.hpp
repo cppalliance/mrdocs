@@ -16,7 +16,7 @@
 #include <mrdocs/Support/Error.hpp>
 #include <string_view>
 
-namespace clang::mrdocs::dom {
+namespace mrdocs::dom {
 
 namespace detail
 {
@@ -456,6 +456,6 @@ LazyObject(T const& arr, Context const& context)
     return newObject<LazyObjectImpl<T, Context>>(arr, context);
 }
 
-} // clang::mrdocs::dom
+} // mrdocs::dom
 
 #endif // MRDOCS_API_DOM_LAZYOBJECT_HPP

@@ -11,7 +11,7 @@
 #include <mrdocs/Support/Glob.hpp>
 #include <test_suite/test_suite.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 struct Glob_test
 {
@@ -609,5 +609,5 @@ TEST_SUITE(
     Glob_test,
     "clang.mrdocs.Glob");
 
-} // clang::mrdocs
+} // mrdocs
 

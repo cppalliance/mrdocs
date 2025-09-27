@@ -29,7 +29,7 @@
 #include <mrdocs/Support/ThreadPool.hpp>
 #include <chrono>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 auto
 CorpusImpl::
@@ -41,8 +41,7 @@ begin() const noexcept ->
     // KRYSTIAN NOTE: this is far from ideal, but i'm not sure
     // to what extent implementation detail should be hidden.
     return iterator(this, info_.begin()->get(),
-        [](Corpus const* corpus, Info const* val) ->
-            Info const*
+        [](Corpus const* corpus, Symbol const* val) -> Symbol const*
         {
             MRDOCS_ASSERT(val);
             CorpusImpl const* impl =
@@ -62,7 +61,7 @@ end() const noexcept ->
     return iterator();
 }
 
-Info*
+Symbol*
 CorpusImpl::
 find(
     SymbolID const& id) noexcept
@@ -75,7 +74,7 @@ find(
     return nullptr;
 }
 
-Info const*
+Symbol const*
 CorpusImpl::
 find(SymbolID const& id) const noexcept
 {
@@ -89,7 +88,7 @@ find(SymbolID const& id) const noexcept
 
 namespace {
 bool
-isTransparent(Info const& info)
+isTransparent(Symbol const& info)
 {
     return visit(info, []<typename InfoTy>(
         InfoTy const& I) -> bool
@@ -108,7 +107,7 @@ isTransparent(Info const& info)
 
 SymbolID
 findFirstParentInfo(
-    InfoSet const& info,
+    SymbolSet const& info,
     SymbolID const& contextID)
 {
     SymbolID currentID = contextID;
@@ -123,7 +122,7 @@ findFirstParentInfo(
         bool const isParent = visit(context, []<typename InfoTy>(
             InfoTy const& I) -> bool
         {
-            return InfoParent<InfoTy>;
+            return SymbolParent<InfoTy>;
         });
         if (isParent)
         {
@@ -135,19 +134,19 @@ findFirstParentInfo(
 
 bool
 qualifiedNameCompare(
-    Polymorphic<NameInfo> const& lhs0,
-    Polymorphic<NameInfo> const& rhs0,
-    Info const& context,
+    Polymorphic<Name> const& lhs0,
+    Polymorphic<Name> const& rhs0,
+    Symbol const& context,
     CorpusImpl const& corpus)
 {
     MRDOCS_ASSERT(!lhs0.valueless_after_move());
     MRDOCS_ASSERT(!rhs0.valueless_after_move());
     // Compare each component of the qualified name
-    NameInfo const* lhs = &*lhs0;
-    NameInfo const* rhs = &*rhs0;
+    Name const* lhs = &*lhs0;
+    Name const* rhs = &*rhs0;
     while (lhs && rhs)
     {
-        if (lhs->Name != rhs->Name)
+        if (lhs->Identifier != rhs->Identifier)
         {
             return false;
         }
@@ -163,13 +162,13 @@ qualifiedNameCompare(
     // these component should match the names from
     // the context. When we doesn't match the context
     // we try again with the parent context.
-    NameInfo const* curName0 = lhs ? lhs : rhs;
-    Info const* curContext0 = &context;
-    NameInfo const* curName = curName0;
-    Info const* curContext = curContext0;
+    Name const* curName0 = lhs ? lhs : rhs;
+    Symbol const* curContext0 = &context;
+    Name const* curName = curName0;
+    Symbol const* curContext = curContext0;
     while (curName && curContext)
     {
-        if (curName->Name != curContext->Name)
+        if (curName->Identifier != curContext->Name)
         {
             // The name doesn't match the context name
             // Try again, starting from the parent
@@ -195,9 +194,9 @@ qualifiedNameCompare(
 template <bool isInner>
 bool
 isDecayedEqualImpl(
-    Optional<Polymorphic<TypeInfo>> const& lhs,
-    Optional<Polymorphic<TypeInfo>> const& rhs,
-    Info const& context,
+    Optional<Polymorphic<Type>> const& lhs,
+    Optional<Polymorphic<Type>> const& rhs,
+    Symbol const& context,
     CorpusImpl const& corpus);
 
 // Check if two types are equal after decay
@@ -211,15 +210,15 @@ isDecayedEqualImpl(
 template <bool isInner>
 bool
 isDecayedEqualImpl(
-    Polymorphic<TypeInfo> const& lhs,
-    Polymorphic<TypeInfo> const& rhs,
-    Info const& context,
+    Polymorphic<Type> const& lhs,
+    Polymorphic<Type> const& rhs,
+    Symbol const& context,
     CorpusImpl const& corpus)
 {
     // Polymorphic
     MRDOCS_ASSERT(!lhs.valueless_after_move());
     MRDOCS_ASSERT(!rhs.valueless_after_move());
-    // TypeInfo
+    // Type
     bool const decayToPointer = !isInner && (lhs->isArray() || rhs->isArray());
     if (!decayToPointer)
     {
@@ -244,7 +243,7 @@ isDecayedEqualImpl(
     {
     // Types that never decay are compared directly, but we
     // only compare the fields of the type, without reevaluating
-    // the fields of TypeInfo.
+    // the fields of Type.
     case TypeKind::Named:
     {
         return
@@ -277,22 +276,22 @@ isDecayedEqualImpl(
     {
         return
             isDecayedEqualImpl<true>(
-                dynamic_cast<RValueReferenceTypeInfo const&>(*lhs).PointeeType,
-                dynamic_cast<RValueReferenceTypeInfo const&>(*rhs).PointeeType,
+                dynamic_cast<RValueReferenceType const&>(*lhs).PointeeType,
+                dynamic_cast<RValueReferenceType const&>(*rhs).PointeeType,
                 context, corpus);
     }
     case TypeKind::MemberPointer:
     {
-        auto const& lhsMP = dynamic_cast<MemberPointerTypeInfo const&>(*lhs);
-        auto const& rhsMP = dynamic_cast<MemberPointerTypeInfo const&>(*rhs);
+        auto const& lhsMP = dynamic_cast<MemberPointerType const&>(*lhs);
+        auto const& rhsMP = dynamic_cast<MemberPointerType const&>(*rhs);
         return
             isDecayedEqualImpl<true>(lhsMP.PointeeType, rhsMP.PointeeType, context, corpus) &&
             isDecayedEqualImpl<true>(lhsMP.ParentType, rhsMP.ParentType, context, corpus);
     }
     case TypeKind::Function:
     {
-        auto const& lhsF = dynamic_cast<FunctionTypeInfo const&>(*lhs);
-        auto const& rhsF = dynamic_cast<FunctionTypeInfo const&>(*rhs);
+        auto const& lhsF = dynamic_cast<FunctionType const&>(*lhs);
+        auto const& rhsF = dynamic_cast<FunctionType const&>(*rhs);
         MRDOCS_CHECK_OR(lhsF.RefQualifier == rhsF.RefQualifier, false);
         MRDOCS_CHECK_OR(lhsF.ExceptionSpec == rhsF.ExceptionSpec, false);
         MRDOCS_CHECK_OR(lhsF.IsVariadic == rhsF.IsVariadic, false);
@@ -326,9 +325,9 @@ isDecayedEqualImpl(
 template <bool isInner>
 bool
 isDecayedEqualImpl(
-    Optional<Polymorphic<TypeInfo>> const& lhs,
-    Optional<Polymorphic<TypeInfo>> const& rhs,
-    Info const& context,
+    Optional<Polymorphic<Type>> const& lhs,
+    Optional<Polymorphic<Type>> const& rhs,
+    Symbol const& context,
     CorpusImpl const& corpus)
 {
     MRDOCS_CHECK_OR(static_cast<bool>(lhs) == static_cast<bool>(rhs), false);
@@ -341,9 +340,9 @@ isDecayedEqualImpl(
  */
 bool
 isDecayedEqual(
-    Polymorphic<TypeInfo> const& lhs,
-    Polymorphic<TypeInfo> const& rhs,
-    Info const& context,
+    Polymorphic<Type> const& lhs,
+    Polymorphic<Type> const& rhs,
+    Symbol const& context,
     CorpusImpl const& corpus)
 {
     return isDecayedEqualImpl<false>(lhs, rhs, context, corpus);
@@ -353,7 +352,7 @@ bool
 isDecayedEqual(
     Polymorphic<TArg> const& lhs,
     Polymorphic<TArg> const& rhs,
-    Info const& context,
+    Symbol const& context,
     CorpusImpl const& corpus)
 {
     if (lhs->Kind != rhs->Kind)
@@ -375,14 +374,14 @@ isDecayedEqual(
 }
 }
 
-Expected<Info const&>
+Expected<Symbol const&>
 CorpusImpl::
 lookup(SymbolID const& context, std::string_view const name) const
 {
     return lookupImpl(*this, context, name);
 }
 
-Expected<Info const&>
+Expected<Symbol const&>
 CorpusImpl::
 lookup(SymbolID const& context, std::string_view name)
 {
@@ -390,7 +389,7 @@ lookup(SymbolID const& context, std::string_view name)
 }
 
 template <class Self>
-Expected<Info const&>
+Expected<Symbol const&>
 CorpusImpl::
 lookupImpl(Self&& self, SymbolID const& contextId0, std::string_view name)
 {
@@ -421,7 +420,7 @@ lookupImpl(Self&& self, SymbolID const& contextId0, std::string_view name)
         return Unexpected(formatError("Failed to parse '{}'\n     {}", name, expRef.error().reason()));
     }
     ParsedRef const& ref = *std::move(expRef);
-    Info const* res = lookupImpl(self, contextId, ref, name, false);
+    Symbol const* res = lookupImpl(self, contextId, ref, name, false);
     if (!res)
     {
         auto const contextPtr = self.find(contextId);
@@ -438,7 +437,7 @@ lookupImpl(Self&& self, SymbolID const& contextId0, std::string_view name)
 }
 
 template <class Self>
-Info const*
+Symbol const*
 CorpusImpl::
 lookupImpl(
     Self&& self,
@@ -456,12 +455,12 @@ lookupImpl(
         }
     }
 
-    Info const* contextPtr = self.find(contextId);
+    Symbol const* contextPtr = self.find(contextId);
     MRDOCS_CHECK_OR(contextPtr, nullptr);
     report::trace("    Context: '{}'", contextPtr->Name);
 
     // Check the current contextId
-    Info const* curContext = contextPtr;
+    Symbol const* curContext = contextPtr;
     for (std::size_t i = 0; i < ref.Components.size(); ++i)
     {
         ParsedRefComponent const& component = ref.Components[i];
@@ -479,13 +478,13 @@ lookupImpl(
     }
 
     // Fallback to parent contextId
-    Info const& contextInfo = *contextPtr;
-    Info const* res = lookupImpl(self, contextInfo.Parent, ref, name, true);
+    Symbol const& contextInfo = *contextPtr;
+    Symbol const* res = lookupImpl(self, contextInfo.Parent, ref, name, true);
     self.lookupCacheSet(contextId, name, res);
     return res;
 }
 
-Info const*
+Symbol const*
 CorpusImpl::
 lookupImpl(
     SymbolID const& contextId,
@@ -495,7 +494,7 @@ lookupImpl(
 {
     report::trace("Looking up component '{}'", component.Name);
     // 1. Find context
-    Info const* contextPtr = this->find(contextId);
+    Symbol const* contextPtr = this->find(contextId);
     MRDOCS_CHECK_OR(contextPtr, nullptr);
     report::trace("    Context: '{}'", contextPtr->Name);
 
@@ -508,16 +507,16 @@ lookupImpl(
         contextPtr = this->find(resolvedSymbolID);
         MRDOCS_CHECK_OR(contextPtr, nullptr);
     }
-    Info const& context = *contextPtr;
+    Symbol const& context = *contextPtr;
 
     // 2. Get a list of members
     report::trace("    Finding members of context '{}'", contextPtr->Name);
-    SmallVector<SymbolID, 128> memberIDs;
-    auto pushAllMembersOf = [&](Info const& I)
+    llvm::SmallVector<SymbolID, 128> memberIDs;
+    auto pushAllMembersOf = [&](Symbol const& I)
     {
-        visit(I, [&]<typename CInfoTy>(CInfoTy const& C) -> Info const*
+        visit(I, [&]<typename CInfoTy>(CInfoTy const& C) -> Symbol const*
         {
-            if constexpr (InfoParent<CInfoTy>)
+            if constexpr (SymbolParent<CInfoTy>)
             {
                 for (SymbolID const& MId : allMembers(C))
                 {
@@ -535,7 +534,7 @@ lookupImpl(
     for (std::size_t i = 0; i < rootMembersSize; ++i)
     {
         SymbolID const& id = memberIDs[i];
-        Info const* I = find(id);
+        Symbol const* I = find(id);
         MRDOCS_CHECK_OR_CONTINUE(I);
         MRDOCS_CHECK_OR_CONTINUE(I->isOverloads());
         pushAllMembersOf(*I);
@@ -560,12 +559,12 @@ lookupImpl(
             MatchLevel::TemplateArgs :
             MatchLevel::Qualifiers;
     auto matchLevel = MatchLevel::None;
-    Info const* res = nullptr;
+    Symbol const* res = nullptr;
     for (SymbolID const& memberID : memberIDs)
     {
-        Info const* memberPtr = find(memberID);
+        Symbol const* memberPtr = find(memberID);
         MRDOCS_CHECK_OR_CONTINUE(memberPtr);
-        Info const& member = *memberPtr;
+        Symbol const& member = *memberPtr;
         report::trace("    Attempting to match {} '{}'", toString(member.Kind), member.Name);
         MatchLevel const memberMatchLevel =
             visit(member, [&]<typename MInfoTy>(MInfoTy const& M)
@@ -575,8 +574,8 @@ lookupImpl(
 
             // Name match
             if constexpr (
-                std::same_as<MInfoTy, FunctionInfo> ||
-                std::same_as<MInfoTy, OverloadsInfo>)
+                std::same_as<MInfoTy, FunctionSymbol> ||
+                std::same_as<MInfoTy, OverloadsSymbol>)
             {
                 if (component.isOperator())
                 {
@@ -653,7 +652,7 @@ lookupImpl(
             MRDOCS_CHECK_OR(F.IsExplicitObjectMemberFunction == ref.IsExplicitObjectMemberFunction, matchRes);
             for (std::size_t i = 0; i < F.Params.size(); ++i)
             {
-                Polymorphic<TypeInfo> const& lhsType = F.Params[i].Type;
+                Polymorphic<Type> const& lhsType = F.Params[i].Type;
                 MRDOCS_ASSERT(!lhsType.valueless_after_move());
                 auto& rhsType  = ref.FunctionParameters[i];
                 MRDOCS_CHECK_OR(isDecayedEqual(lhsType, rhsType, context, *this), matchRes);
@@ -699,11 +698,11 @@ lookupImpl(
     report::trace("    Looking up in transparent contexts");
     for (SymbolID const& memberID : memberIDs)
     {
-        Info const* memberPtr = find(memberID);
+        Symbol const* memberPtr = find(memberID);
         MRDOCS_CHECK_OR_CONTINUE(memberPtr);
-        Info const& member = *memberPtr;
+        Symbol const& member = *memberPtr;
         MRDOCS_CHECK_OR_CONTINUE(isTransparent(member));
-        if (Info const* r = lookupImpl(member.id, component, ref, checkParameters))
+        if (Symbol const* r = lookupImpl(member.id, component, ref, checkParameters))
         {
             return r;
         }
@@ -713,7 +712,7 @@ lookupImpl(
     return nullptr;
 }
 
-std::pair<Info const*, bool>
+std::pair<Symbol const*, bool>
 CorpusImpl::
 lookupCacheGet(
     SymbolID const& context,
@@ -738,7 +737,7 @@ CorpusImpl::
 lookupCacheSet(
     SymbolID const& contextId,
     std::string_view name,
-    Info const* info)
+    Symbol const* info)
 {
     lookupCache_[contextId][std::string(name)] = info;
 }
@@ -750,7 +749,7 @@ mrdocs::Expected<std::unique_ptr<Corpus>>
 CorpusImpl::
 build(
     std::shared_ptr<ConfigImpl const> const& config,
-    tooling::CompilationDatabase const& compilations)
+    clang::tooling::CompilationDatabase const& compilations)
 {
     using clock_type = std::chrono::steady_clock;
     auto start_time = clock_type::now();
@@ -767,7 +766,7 @@ build(
     // Create an execution context to store the
     // results of the AST traversal.
     // Any new Info objects will be added to the
-    // InfoSet in the execution context.
+    // SymbolSet in the execution context.
     InfoExecutionContext context(*config);
 
     // ------------------------------------------
@@ -796,8 +795,8 @@ build(
                 && "createMrDocsFileSystem must return MrDocsFileSystem");
 
             // Create a Clang Tool to run the action
-            auto PHCCOntainerOps = std::make_shared<PCHContainerOperations>();
-            tooling::ClangTool
+            auto PHCCOntainerOps = std::make_shared<clang::PCHContainerOperations>();
+            clang::tooling::ClangTool
                 Tool(compilations, { path }, std::move(PHCCOntainerOps), FS);
             Tool.setPrintErrorMessage(false);
 
@@ -829,9 +828,9 @@ build(
                 std::string shimPath = makeShimPathPlatformAbsolute();
                 FSConcrete->addVirtualFile(shimPath, shimContent);
                 Tool.appendArgumentsAdjuster(
-                    tooling::combineAdjusters(
-                        tooling::getInsertArgumentAdjuster("-include"),
-                        tooling::getInsertArgumentAdjuster(shimPath.data())));
+                    clang::tooling::combineAdjusters(
+                        clang::tooling::getInsertArgumentAdjuster("-include"),
+                        clang::tooling::getInsertArgumentAdjuster(shimPath.data())));
             }
 
             // Run the action
@@ -955,7 +954,7 @@ build(
 
 void
 CorpusImpl::
-qualifiedName(Info const& I, std::string& result) const
+qualifiedName(Symbol const& I, std::string& result) const
 {
     result.clear();
     if (!I.id || I.id == SymbolID::global)
@@ -966,7 +965,7 @@ qualifiedName(Info const& I, std::string& result) const
     if (I.Parent &&
         I.Parent != SymbolID::global)
     {
-        if (Info const* PI = find(I.Parent))
+        if (Symbol const* PI = find(I.Parent))
         {
             qualifiedName(*PI, result);
             result += "::";
@@ -987,7 +986,7 @@ qualifiedName(Info const& I, std::string& result) const
 void
 CorpusImpl::
 qualifiedName(
-    Info const& I,
+    Symbol const& I,
     SymbolID const& context,
     std::string& result) const
 {
@@ -1007,7 +1006,7 @@ qualifiedName(
         !is_one_of(I.Parent, {SymbolID::global, context}) &&
         I.id != context)
     {
-        if (Info const* PI = find(I.Parent))
+        if (Symbol const* PI = find(I.Parent))
         {
             qualifiedName(*PI, context, result);
             result += "::";
@@ -1083,4 +1082,4 @@ CorpusImpl::finalize()
     }
 }
 
-} // clang::mrdocs
+} // mrdocs

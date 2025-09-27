@@ -14,22 +14,22 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Optional.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
-#include <mrdocs/Metadata/Type/ArrayTypeInfo.hpp>
-#include <mrdocs/Metadata/Type/AutoTypeInfo.hpp>
-#include <mrdocs/Metadata/Type/DecltypeTypeInfo.hpp>
-#include <mrdocs/Metadata/Type/FunctionTypeInfo.hpp>
-#include <mrdocs/Metadata/Type/LValueReferenceTypeInfo.hpp>
-#include <mrdocs/Metadata/Type/MemberPointerTypeInfo.hpp>
-#include <mrdocs/Metadata/Type/NamedTypeInfo.hpp>
-#include <mrdocs/Metadata/Type/PointerTypeInfo.hpp>
-#include <mrdocs/Metadata/Type/RValueReferenceTypeInfo.hpp>
+#include <mrdocs/Metadata/Type/ArrayType.hpp>
+#include <mrdocs/Metadata/Type/AutoType.hpp>
+#include <mrdocs/Metadata/Type/DecltypeType.hpp>
+#include <mrdocs/Metadata/Type/FunctionType.hpp>
+#include <mrdocs/Metadata/Type/LValueReferenceType.hpp>
+#include <mrdocs/Metadata/Type/MemberPointerType.hpp>
+#include <mrdocs/Metadata/Type/NamedType.hpp>
+#include <mrdocs/Metadata/Type/PointerType.hpp>
+#include <mrdocs/Metadata/Type/RValueReferenceType.hpp>
 #include <mrdocs/Metadata/Type/TypeBase.hpp>
 #include <mrdocs/Support/TypeTraits.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 template<
-    std::derived_from<TypeInfo> TypeTy,
+    std::derived_from<Type> TypeTy,
     class F,
     class... Args>
 decltype(auto)
@@ -38,44 +38,44 @@ visit(
     F&& f,
     Args&&... args)
 {
-    add_cv_from_t<TypeTy, TypeInfo>& II = I;
+    add_cv_from_t<TypeTy, Type>& II = I;
     switch(I.Kind)
     {
     case TypeKind::Named:
         return f(static_cast<add_cv_from_t<
-            TypeTy, NamedTypeInfo>&>(II),
+            TypeTy, NamedType>&>(II),
                 std::forward<Args>(args)...);
     case TypeKind::Decltype:
         return f(static_cast<add_cv_from_t<
-            TypeTy, DecltypeTypeInfo>&>(II),
+            TypeTy, DecltypeType>&>(II),
                 std::forward<Args>(args)...);
     case TypeKind::Auto:
         return f(static_cast<add_cv_from_t<
-            TypeTy, AutoTypeInfo>&>(II),
+            TypeTy, AutoType>&>(II),
                 std::forward<Args>(args)...);
     case TypeKind::LValueReference:
         return f(static_cast<add_cv_from_t<
-            TypeTy, LValueReferenceTypeInfo>&>(II),
+            TypeTy, LValueReferenceType>&>(II),
                 std::forward<Args>(args)...);
     case TypeKind::RValueReference:
         return f(static_cast<add_cv_from_t<
-            TypeTy, RValueReferenceTypeInfo>&>(II),
+            TypeTy, RValueReferenceType>&>(II),
                 std::forward<Args>(args)...);
     case TypeKind::Pointer:
         return f(static_cast<add_cv_from_t<
-            TypeTy, PointerTypeInfo>&>(II),
+            TypeTy, PointerType>&>(II),
                 std::forward<Args>(args)...);
     case TypeKind::MemberPointer:
         return f(static_cast<add_cv_from_t<
-            TypeTy, MemberPointerTypeInfo>&>(II),
+            TypeTy, MemberPointerType>&>(II),
                 std::forward<Args>(args)...);
     case TypeKind::Array:
         return f(static_cast<add_cv_from_t<
-            TypeTy, ArrayTypeInfo>&>(II),
+            TypeTy, ArrayType>&>(II),
                 std::forward<Args>(args)...);
     case TypeKind::Function:
         return f(static_cast<add_cv_from_t<
-            TypeTy, FunctionTypeInfo>&>(II),
+            TypeTy, FunctionType>&>(II),
                 std::forward<Args>(args)...);
     default:
         MRDOCS_UNREACHABLE();
@@ -84,18 +84,18 @@ visit(
 
 MRDOCS_DECL
 std::strong_ordering
-operator<=>(Polymorphic<TypeInfo> const& lhs, Polymorphic<TypeInfo> const& rhs);
+operator<=>(Polymorphic<Type> const& lhs, Polymorphic<Type> const& rhs);
 
 inline
 bool
-operator==(Polymorphic<TypeInfo> const& lhs, Polymorphic<TypeInfo> const& rhs) {
+operator==(Polymorphic<Type> const& lhs, Polymorphic<Type> const& rhs) {
     return lhs <=> rhs == std::strong_ordering::equal;
 }
 
 inline std::strong_ordering
 operator<=>(
-    Optional<Polymorphic<TypeInfo>> const& lhs,
-    Optional<Polymorphic<TypeInfo>> const& rhs)
+    Optional<Polymorphic<Type>> const& lhs,
+    Optional<Polymorphic<Type>> const& rhs)
 {
     if (lhs && rhs)
     {
@@ -110,8 +110,8 @@ operator<=>(
 
 inline bool
 operator==(
-    Optional<Polymorphic<TypeInfo>> const& lhs,
-    Optional<Polymorphic<TypeInfo>> const& rhs)
+    Optional<Polymorphic<Type>> const& lhs,
+    Optional<Polymorphic<Type>> const& rhs)
 {
     return lhs <=> rhs == std::strong_ordering::equal;
 }
@@ -122,23 +122,23 @@ operator==(
     by a specifier (e.g. "int" in "pointer to int").
 */
 MRDOCS_DECL
-Optional<Polymorphic<TypeInfo> const&>
-innerType(TypeInfo const& TI) noexcept;
+Optional<Polymorphic<Type> const&>
+innerType(Type const& TI) noexcept;
 
-/// @copydoc innerType(TypeInfo const&)
+/// @copydoc innerType(Type const&)
 MRDOCS_DECL
-Optional<Polymorphic<TypeInfo>&>
-innerType(TypeInfo& TI) noexcept;
+Optional<Polymorphic<Type>&>
+innerType(Type& TI) noexcept;
 
-/// @copydoc innerType(TypeInfo const&)
+/// @copydoc innerType(Type const&)
 MRDOCS_DECL
-TypeInfo const*
-innerTypePtr(TypeInfo const& TI) noexcept;
+Type const*
+innerTypePtr(Type const& TI) noexcept;
 
-/// @copydoc innerTypePtr(TypeInfo const&)
+/// @copydoc innerTypePtr(Type const&)
 MRDOCS_DECL
-TypeInfo*
-innerTypePtr(TypeInfo& TI) noexcept;
+Type*
+innerTypePtr(Type& TI) noexcept;
 
 /** Return the innermost type.
 
@@ -152,19 +152,18 @@ innerTypePtr(TypeInfo& TI) noexcept;
     the current type.
 */
 MRDOCS_DECL
-Polymorphic<TypeInfo> const&
-innermostType(Polymorphic<TypeInfo> const& TI) noexcept;
+Polymorphic<Type> const&
+innermostType(Polymorphic<Type> const& TI) noexcept;
 
-/// @copydoc innermostType(Polymorphic<TypeInfo> const&)
+/// @copydoc innermostType(Polymorphic<Type> const&)
 MRDOCS_DECL
-Polymorphic<TypeInfo>&
-innermostType(Polymorphic<TypeInfo>& TI) noexcept;
+Polymorphic<Type>&
+innermostType(Polymorphic<Type>& TI) noexcept;
 
 // VFALCO maybe we should rename this to `renderType` or something?
 MRDOCS_DECL
 std::string
-toString(
-    TypeInfo const& T,
+toString(Type const& T,
     std::string_view Name = "");
 
 inline
@@ -172,7 +171,7 @@ void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
-    Polymorphic<TypeInfo> const& I,
+    Polymorphic<Type> const& I,
     DomCorpus const* domCorpus)
 {
     MRDOCS_ASSERT(!I.valueless_after_move());
@@ -184,7 +183,7 @@ void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
-    Optional<Polymorphic<TypeInfo>> const& I,
+    Optional<Polymorphic<Type>> const& I,
     DomCorpus const* domCorpus)
 {
     if (!I)
@@ -197,6 +196,6 @@ tag_invoke(
 }
 
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

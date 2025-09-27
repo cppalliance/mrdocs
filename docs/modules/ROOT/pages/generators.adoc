@@ -227,7 +227,7 @@ Symbol objects that contain information about the location include the following
 |Property |Type| Description
 
 | `loc`
-| `<<source-info-fields,Source Info Object>>`
+| `<<source-info-fields,Source Object>>`
 | The location of the symbol in the source code.
 |===
 
@@ -267,7 +267,7 @@ When the symbol kind is `record` (e.g., `class`, `struct`, `union`), the symbol 
 | Whether the record is a typedef.
 
 | `bases`
-| `<<base-info-fields,Base Info Object[]>>`
+| `<<base-info-fields,Base Symbol Object[]>>`
 | The base classes of the record.
 
 | `interface`
@@ -275,7 +275,7 @@ When the symbol kind is `record` (e.g., `class`, `struct`, `union`), the symbol 
 | The interface of the record.
 
 | `template`
-| `<<template-info-fields,Template Info Object>>`
+| `<<template-info-fields,Template Object>>`
 | The template information of the record.
 |===
 
@@ -285,7 +285,7 @@ When the symbol kind is `enum`, the symbol object has the following additional p
 |Property |Type| Description
 
 | `type`
-| `<<type-info-fields,Type Info Object>>`
+| `<<type-info-fields,Type Object>>`
 | The type information of the enum.
 
 | `isScoped`
@@ -383,11 +383,11 @@ When the symbol kind is `function`, the symbol object has the following addition
 | The parameters of the function.
 
 | `return`
-| `<<type-info-fields,Type Info Object>>`
+| `<<type-info-fields,Type Object>>`
 | The return type of the function.
 
 | `template`
-| `<<template-info-fields,Template Info Object>>`
+| `<<template-info-fields,Template Object>>`
 | The template information of the function.
 
 | `overloadedOperator`
@@ -417,11 +417,11 @@ When the symbol kind is `typedef`, the symbol object has the following additiona
 | Property | Type | Description
 
 | `type`
-| `<<type-info-fields,Type Info Object>>`
+| `<<type-info-fields,Type Object>>`
 | The type information of the typedef.
 
 | `template`
-| `<<template-info-fields,Template Info Object>>`
+| `<<template-info-fields,Template Object>>`
 | The template information of the typedef.
 
 | `isUsing`
@@ -435,11 +435,11 @@ When the symbol kind is `variable`, the symbol object has the following addition
 | Property | Type | Description
 
 | `type`
-| `<<type-info-fields,Type Info Object>>`
+| `<<type-info-fields,Type Object>>`
 | The type information of the variable.
 
 | `template`
-| `<<template-info-fields,Template Info Object>>`
+| `<<template-info-fields,Template Object>>`
 | The template information of the variable.
 
 | `storageClass`
@@ -477,7 +477,7 @@ When the symbol kind is `field` (i.e. non-static data members), the symbol objec
 | Property | Type | Description
 
 | `type`
-| `<<type-info-fields,Type Info Object>>`
+| `<<type-info-fields,Type Object>>`
 | The type information of the field.
 
 | `default`
@@ -531,7 +531,7 @@ When the symbol kind is `friend`, the symbol object has the following additional
 | The friend symbol.
 
 | `type`
-| <<type-info-fields,Type Info Object>>
+| <<type-info-fields,Type Object>>
 | The friend type.
 |===
 
@@ -541,7 +541,7 @@ When the symbol kind is `namespace-alias`, the symbol object has the following a
 | Property | Type | Description
 
 | `aliasedSymbol`
-| <<name-info-fields,Name Info Object>>
+| <<name-info-fields,Name Object>>
 | The aliased symbol.
 |===
 
@@ -559,7 +559,7 @@ When the symbol kind is `using`, the symbol object has the following additional 
 | The symbols being used.
 
 | `qualifier`
-| `<<name-info-fields,Name Info Object>>`
+| `<<name-info-fields,Name Object>>`
 | The qualifier of the using declaration.
 |===
 
@@ -583,11 +583,11 @@ When the symbol kind is `guide`, the symbol object has the following additional 
 | The parameters of the guide.
 
 | `deduced`
-| `<<type-info-fields,Type Info Object>>`
+| `<<type-info-fields,Type Object>>`
 | The deduced type of the guide.
 
 | `template`
-| `<<template-info-fields,Template Info Object>>`
+| `<<template-info-fields,Template Object>>`
 | The template information of the guide.
 
 | `explicitSpec`
@@ -601,7 +601,7 @@ When the symbol kind is `concept`, the symbol object has the following additiona
 | Property | Type | Description
 
 | `template`
-| `<<template-info-fields,Template Info Object>>`
+| `<<template-info-fields,Template Object>>`
 | The template information of the concept.
 
 | `constraint`
@@ -610,9 +610,9 @@ When the symbol kind is `concept`, the symbol object has the following additiona
 |===
 
 [#source-info-fields]
-=== Source Info Fields
+=== Source Fields
 
-The `Source Info` object represents the location of the symbol in the source code.
+The `Source` object represents the location of the symbol in the source code.
 The source info object has the following properties:
 
 |===
@@ -697,14 +697,14 @@ The base info object has the following properties:
 | Whether the base class is virtual.
 
 | `type`
-| `<<type-info-fields,Type Info Object>>`
+| `<<type-info-fields,Type Object>>`
 | The type information of the base class.
 |===
 
 [#template-info-fields]
-=== Template Info Fields
+=== Template Fields
 
-The `Template Info` object represents the template information of a record, function, or typedef.
+The `Template` object represents the template information of a record, function, or typedef.
 The template info object has the following properties:
 
 |===
@@ -723,7 +723,7 @@ The template info object has the following properties:
 | The template parameters.
 
 | `args`
-| `<<targ-fields,Type Info Object[]>>`
+| `<<targ-fields,Type Object[]>>`
 | The template arguments.
 
 | `requires`
@@ -732,9 +732,9 @@ The template info object has the following properties:
 |===
 
 [#type-info-fields]
-=== Type Info Fields
+=== Type Fields
 
-The `Type Info` object represents the type information of a symbol.
+The `Type` object represents the type information of a symbol.
 The type info object has the following properties:
 
 |===
@@ -769,15 +769,15 @@ The type info object has the following properties:
 | The cv qualifier of the type (e.g., `const`, `volatile`).
 
 | `parent-type`
-| `<<type-info-fields,Type Info Object>>`
+| `<<type-info-fields,Type Object>>`
 | The parent type of the type.
 
 | `pointee-type`
-| `<<type-info-fields,Type Info Object>>`
+| `<<type-info-fields,Type Object>>`
 | The pointee type of the type.
 
 | `element-type`
-| `<<type-info-fields,Type Info Object>>`
+| `<<type-info-fields,Type Object>>`
 | The element type of the type.
 
 | `bounds-value`
@@ -789,11 +789,11 @@ The type info object has the following properties:
 | The bounds expression of the type.
 
 | `return-type`
-| `<<type-info-fields,Type Info Object>>`
+| `<<type-info-fields,Type Object>>`
 | The return type of the type.
 
 | `param-types`
-| `<<type-info-fields,Type Info Object[]>>`
+| `<<type-info-fields,Type Object[]>>`
 | The parameter types of the type.
 
 | `exception-spec`
@@ -823,7 +823,7 @@ The param object has the following properties:
 | The name of the parameter.
 
 | `type`
-| `<<type-info-fields,Type Info Object>>`
+| `<<type-info-fields,Type Object>>`
 | The type information of the parameter.
 
 | `default`
@@ -832,9 +832,9 @@ The param object has the following properties:
 |===
 
 [#name-info-fields]
-=== Name Info Fields
+=== Name Fields
 
-The `Name Info` object represents the name of a symbol.
+The `Name` object represents the name of a symbol.
 The name info object has the following properties:
 
 |===
@@ -849,7 +849,7 @@ The name info object has the following properties:
 | The unique identifier of the symbol.
 
 | `args`
-| `<<targ-fields,Type Info Object[]>>`
+| `<<targ-fields,Type Object[]>>`
 | The template arguments of the symbol.
 
 | `prefix`
@@ -921,7 +921,7 @@ The tparam object has the following properties:
 | The constraint of the template parameter.
 
 | `type`
-| `<<type-info-fields,Type Info Object>>`
+| `<<type-info-fields,Type Object>>`
 | The type information of the template parameter.
 
 | `params`
@@ -947,7 +947,7 @@ The targ object has the following properties:
 | Whether the template argument is a pack expansion.
 
 | `type`
-| `<<type-info-fields,Type Info Object>>`
+| `<<type-info-fields,Type Object>>`
 | The type information of the template argument.
 
 | `value`
@@ -959,7 +959,7 @@ The targ object has the following properties:
 | The name of the template argument.
 
 | `template`
-| `<<template-info-fields,Template Info Object>>`
+| `<<template-info-fields,Template Object>>`
 | The template information of the template argument.
 |===
 

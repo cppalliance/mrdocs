@@ -13,7 +13,7 @@
 #include <mrdocs/Support/Report.hpp>
 #include <algorithm>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 void
 DerivedFinalizer::
@@ -36,7 +36,7 @@ build()
             MRDOCS_CHECK_OR_CONTINUE(namedType.Name);
             SymbolID const namedSymbolID = namedType.Name->id;
             MRDOCS_CHECK_OR_CONTINUE(namedSymbolID != SymbolID::invalid);
-            Info* baseInfoPtr = corpus_.find(namedSymbolID);
+            Symbol* baseInfoPtr = corpus_.find(namedSymbolID);
             MRDOCS_CHECK_OR_CONTINUE(baseInfoPtr);
             MRDOCS_CHECK_OR_CONTINUE(baseInfoPtr->isRecord());
             MRDOCS_CHECK_OR_CONTINUE(baseInfoPtr->Extraction == ExtractionMode::Regular);
@@ -64,4 +64,4 @@ build()
     }
 }
 
-} // clang::mrdocs
+} // mrdocs

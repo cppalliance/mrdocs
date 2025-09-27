@@ -11,7 +11,7 @@
 #include <lib/Support/Path.hpp>
 #include <test_suite/test_suite.hpp>
 
-namespace clang {
+
 namespace mrdocs {
 
 struct Path_test
@@ -76,5 +76,5 @@ TEST_SUITE(
     "clang.mrdocs.Path");
 
 } // mrdocs
-} // clang
+
 

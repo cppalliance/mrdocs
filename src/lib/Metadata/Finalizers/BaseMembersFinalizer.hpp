@@ -12,9 +12,9 @@
 #define MRDOCS_LIB_METADATA_FINALIZERS_BASEMEMBERSFINALIZER_HPP
 
 #include <lib/CorpusImpl.hpp>
-#include <lib/Metadata/InfoSet.hpp>
+#include <lib/Metadata/SymbolSet.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** Finalizes a set of Info.
 
@@ -30,7 +30,7 @@ class BaseMembersFinalizer
     std::unordered_set<SymbolID> finalized_;
 
     void
-    inheritBaseMembers(RecordInfo& I, RecordInfo const& B, AccessKind A);
+    inheritBaseMembers(RecordSymbol& I, RecordSymbol const& B, AccessKind A);
 
     void
     inheritBaseMembers(
@@ -66,21 +66,21 @@ public:
     void
     build()
     {
-        Info* info = corpus_.find(SymbolID::global);
+        Symbol* info = corpus_.find(SymbolID::global);
         MRDOCS_CHECK_OR(info);
         operator()(info->asNamespace());
     }
 
     void
-    operator()(NamespaceInfo& I);
+    operator()(NamespaceSymbol& I);
 
     void
-    operator()(RecordInfo& I);
+    operator()(RecordSymbol& I);
 
     void
-    operator()(Info&) {}
+    operator()(Symbol&) {}
 };
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif // MRDOCS_LIB_METADATA_FINALIZERS_BASEMEMBERSFINALIZER_HPP

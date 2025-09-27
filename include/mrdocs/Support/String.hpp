@@ -16,7 +16,7 @@
 #include <string>
 #include <string_view>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** Return the substring without leading specified characters.
 
@@ -432,6 +432,6 @@ toPascalCase(std::string_view const input)
 }
 
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

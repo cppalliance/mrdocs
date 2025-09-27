@@ -14,12 +14,12 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 enum class TypeKind
 {
     #define INFO(Type) Type,
-    #include <mrdocs/Metadata/Type/TypeInfoNodes.inc>
+#include <mrdocs/Metadata/Type/TypeNodes.inc>
 };
 
 MRDOCS_DECL
@@ -36,6 +36,6 @@ tag_invoke(
     v = toString(kind);
 }
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

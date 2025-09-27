@@ -10,7 +10,7 @@
 
 #include <mrdocs/Support/String.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 void
 replace(std::string& s, std::string_view from, std::string_view to)
@@ -25,4 +25,4 @@ replace(std::string& s, std::string_view from, std::string_view to)
     }
 }
 
-} // clang::mrdocs
+} // mrdocs

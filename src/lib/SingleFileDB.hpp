@@ -17,15 +17,15 @@
 #include <utility>
 #include <vector>
 
-namespace clang {
+
 namespace mrdocs {
 
 /** Compilation database for a single .cpp file.
 */
 class SingleFileDB
-    : public tooling::CompilationDatabase
+    : public clang::tooling::CompilationDatabase
 {
-    std::vector<tooling::CompileCommand> cc_;
+    std::vector<clang::tooling::CompileCommand> cc_;
 
 public:
     explicit
@@ -50,7 +50,7 @@ public:
         cc_.back().Heuristic = "unit test";
     }
 
-    std::vector<tooling::CompileCommand>
+    std::vector<clang::tooling::CompileCommand>
     getCompileCommands(
         llvm::StringRef FilePath) const override
     {
@@ -65,7 +65,7 @@ public:
         return { cc_.front().Filename };
     }
 
-    std::vector<tooling::CompileCommand>
+    std::vector<clang::tooling::CompileCommand>
     getAllCompileCommands() const override
     {
         return { cc_.front() };
@@ -73,6 +73,6 @@ public:
 };
 
 } // mrdocs
-} // clang
+
 
 #endif

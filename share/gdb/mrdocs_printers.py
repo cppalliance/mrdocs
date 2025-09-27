@@ -114,11 +114,11 @@ if __name__ != "__main__":
             return EnumPrinter(val)
 
         typename: str = utils.resolved_typename(val)
-        if typename == 'clang::mrdocs::dom::Kind':
+        if typename == 'mrdocs::dom::Kind':
             return EnumPrinter(val)
-        if typename == 'clang::mrdocs::dom::Value':
+        if typename == 'mrdocs::dom::Value':
             return DomValuePrinter(val)
-        if typename == 'clang::mrdocs::dom::String':
+        if typename == 'mrdocs::dom::String':
             return DomStringPrinter(val)
         return None
 

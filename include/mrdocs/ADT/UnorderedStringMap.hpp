@@ -15,7 +15,7 @@
 #include <string>
 #include <unordered_map>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 struct StringHash
 {
@@ -32,6 +32,6 @@ using UnorderedStringMap = std::unordered_map<std::string, T, StringHash, std::e
 template <class T>
 using UnorderedStringMultiMap = std::unordered_multimap<std::string, T, StringHash, std::equal_to<>>;
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif // MRDOCS_API_ADT_UNORDEREDSTRINGMAP_HPP

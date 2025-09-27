@@ -17,7 +17,7 @@
 #include <lib/Gen/hbs/HandlebarsGenerator.hpp>
 #include <mrdocs/Generator.hpp>
 
-namespace clang::mrdocs::html {
+namespace mrdocs::html {
 
 class HTMLGenerator final
     : public hbs::HandlebarsGenerator
@@ -45,6 +45,6 @@ public:
     escape(OutputRef& os, std::string_view str) const override;
 };
 
-} // clang::mrdocs::html
+} // mrdocs::html
 
 #endif

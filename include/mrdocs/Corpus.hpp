@@ -23,7 +23,7 @@
 #include <utility>
 #include <vector>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** The collection of declarations in extracted form.
 */
@@ -43,11 +43,11 @@ public:
         The iterator is a forward iterator that
         iterates over all symbols in the index.
         It dereferences to a reference to a
-        const @ref Info.
+        const @ref Symbol.
 
         The logic for incrementing the iterator is
         provided by the Corpus implementation via
-        a function that retuns the next Info in the
+        a function that retuns the next Symbol in the
         index, or nullptr if there are no more.
     */
     class iterator;
@@ -83,41 +83,41 @@ public:
     bool
     empty() const noexcept;
 
-    /** Return the Info with the matching ID, or nullptr.
-    */
-    virtual
-    Info const*
-    find(SymbolID const& id) const noexcept = 0;
-
-    /** Return the Info for the matching string in a given context.
+    /** Return the Symbol for the matching string in a given context.
 
         @param context The context to look up the symbol in.
         @param name The name of the symbol to look up.
-        @return The Info for the symbol with the specified name
+        @return The Symbol for the symbol with the specified name
             in the specified context, or an error if not found.
             If multiple symbols match, one is returned arbitrarily.
             Use @ref traverse to find all matching symbols.
     */
     virtual
-    Expected<Info const&>
+    Expected<Symbol const&>
     lookup(SymbolID const& context, std::string_view name) const = 0;
 
-    /** Return the Info for the matching string in the global context.
+    /** Return the Symbol with the matching ID, or nullptr.
+    */
+    virtual
+    Symbol const*
+    find(SymbolID const& id) const noexcept = 0;
+
+    /** Return the Symbol for the matching string in the global context.
 
         @param name The name of the symbol to look up.
-        @return The Info for the symbol with the specified name
+        @return The Symbol for the symbol with the specified name
             in the global context, or an error if not found.
     */
-    Expected<Info const&>
+    Expected<Symbol const&>
     lookup(std::string_view name) const
     {
         return lookup(SymbolID::global, name);
     }
 
-    /** Return true if an Info with the specified symbol ID exists.
+    /** Return true if an Symbol with the specified symbol ID exists.
 
         This function uses the @ref find function to locate
-        the Info with the specified symbol ID and returns
+        the Symbol with the specified symbol ID and returns
         true if it exists, otherwise false.
     */
     bool
@@ -127,20 +127,20 @@ public:
         return find(id) != nullptr;
     }
 
-    /** Return the Info with the specified symbol ID.
+    /** Return the Symbol with the specified symbol ID.
 
         This function uses the @ref find function to locate
-        the Info with the specified symbol ID. The result
+        the Symbol with the specified symbol ID. The result
         is converted to the specified type T and returned.
 
         The function @ref exists can be used to determine
-        if an Info with the specified symbol ID exists.
+        if an Symbol with the specified symbol ID exists.
         If the id does not exist, the behavior is undefined.
 
-        If the Info is not of type T, the behavior is undefined.
+        If the Symbol is not of type T, the behavior is undefined.
     */
-    template<class T = Info>
-    requires std::derived_from<T, Info>
+    template<class T = Symbol>
+    requires std::derived_from<T, Symbol>
     T const&
     get(SymbolID const& id) const noexcept;
 
@@ -150,7 +150,7 @@ public:
         @ref get with the symbol ID for the
         global namespace.
     */
-    NamespaceInfo const&
+    NamespaceSymbol const&
     globalNamespace() const noexcept;
 
     /** Visit the specified Symbol IDs
@@ -160,11 +160,11 @@ public:
 
         For each member of `I` associated with the ID in `range`,
         the function will invoke the function object `fn` with a
-        type derived from `Info` as the first argument, followed by
+        type derived from `Symbol` as the first argument, followed by
         `args...`.
 
         The type of the first argument is determined
-        by the `InfoKind` of the `Info` object.
+        by the `SymbolKind` of the `Symbol` object.
 
         @param range A range of SymbolID objects.
         @param f The function to invoke.
@@ -182,40 +182,40 @@ public:
         }
     }
 
-    /** Options to traverse the members of an Info.
+    /** Options to traverse the members of an Symbol.
      */
     struct TraverseOptions
     {
         /// Whether to traverse in a stable order
         bool ordered = false;
-        /// Whether to skip inherited members whose parent is not the Info
+        /// Whether to skip inherited members whose parent is not the Symbol
         bool skipInherited = false;
-        /// Whether to skip inherited members whose parent is not the Info
+        /// Whether to skip inherited members whose parent is not the Symbol
         bool recursive = false;
     };
 
-    /** Visit the members of specified Info.
+    /** Visit the members of specified Symbol.
 
         This function invokes the specified function `f`
-        for each member of the specified Info `I`.
+        for each member of the specified Symbol `I`.
 
         For each member of `I`, the function will invoke
         the function object `fn` with a type derived from
-        `Info` as the first argument, followed by `args...`.
+        `Symbol` as the first argument, followed by `args...`.
 
         The type of the first argument is determined
-        by the `InfoKind` of the `Info` object.
+        by the `SymbolKind` of the `Symbol` object.
 
         @param opts The options to traverse.
-        @param I The Info to visit.
+        @param I The Symbol to visit.
         @param f The function to invoke.
         @param args The arguments to pass to the function.
     */
-    template <std::derived_from<Info> T, class F, class... Args>
+    template <std::derived_from<Symbol> T, class F, class... Args>
     void
     traverse(TraverseOptions const& opts, T const& I, F&& f, Args&&... args) const
     {
-        if constexpr (InfoParent<T>)
+        if constexpr (SymbolParent<T>)
         {
             if (!opts.ordered)
             {
@@ -237,7 +237,7 @@ public:
                     auto nonInherited =
                         allMembers(I) |
                         std::views::filter([this, &I](SymbolID const& id) {
-                            Info const* MI = find(id);
+                            Symbol const* MI = find(id);
                             MRDOCS_CHECK_OR(MI, false);
                             return MI->Parent == I.id;
                         });
@@ -265,14 +265,14 @@ public:
                 std::ranges::sort(members,
                     [this](SymbolID const& lhs, SymbolID const& rhs)
                     {
-                        auto const& lhsInfo = get(lhs);
-                        auto const& rhsInfo = get(rhs);
-                        if (auto const cmp = lhsInfo.Name <=> rhsInfo.Name;
+                        auto const& lhsSymbol = get(lhs);
+                        auto const& rhsSymbol = get(rhs);
+                        if (auto const cmp = lhsSymbol.Name <=> rhsSymbol.Name;
                             !std::is_eq(cmp))
                         {
                             return std::is_lt(cmp);
                         }
-                        return std::is_lt(CompareDerived(lhsInfo, rhsInfo));
+                        return std::is_lt(CompareDerived(lhsSymbol, rhsSymbol));
                     });
                 if (!opts.skipInherited)
                 {
@@ -294,7 +294,7 @@ public:
                     auto nonInherited =
                         members |
                         std::views::filter([this, &I](SymbolID const& id) {
-                            Info const* MI = find(id);
+                            Symbol const* MI = find(id);
                             MRDOCS_CHECK_OR(MI, false);
                             return MI->Parent == I.id;
                         });
@@ -315,50 +315,50 @@ public:
         }
     }
 
-    /** Visit the members of specified Info.
+    /** Visit the members of specified Symbol.
 
         This function invokes the specified function `f`
-        for each member of the specified Info `I`.
+        for each member of the specified Symbol `I`.
 
         For each member of `I`, the function will invoke
         the function object `fn` with a type derived from
-        `Info` as the first argument, followed by `args...`.
+        `Symbol` as the first argument, followed by `args...`.
 
         The type of the first argument is determined
-        by the `InfoKind` of the `Info` object.
+        by the `SymbolKind` of the `Symbol` object.
 
-        @param I The Info to visit.
+        @param I The Symbol to visit.
         @param f The function to invoke.
         @param args The arguments to pass to the function.
     */
-    template <std::derived_from<Info> T, class F, class... Args>
+    template <std::derived_from<Symbol> T, class F, class... Args>
     void
     traverse(T const& I, F&& f, Args&&... args) const
     {
         traverse({}, I, std::forward<F>(f), std::forward<Args>(args)...);
     }
 
-    /** Return the fully qualified name of the specified Info.
+    /** Return the fully qualified name of the specified Symbol.
 
         This function returns the fully qualified name
-        of the specified Info `I` as a string.
+        of the specified Symbol `I` as a string.
 
-        The `Info` parents are traversed to construct
+        The `Symbol` parents are traversed to construct
         the fully qualified name which is stored in
         the string `temp`.
 
-        @param I The Info to get the qualified name for.
+        @param I The Symbol to get the qualified name for.
         @param temp The string to store the result in.
         @return A reference to the string `temp`.
      */
     virtual
     void
     qualifiedName(
-        Info const& I,
+        Symbol const& I,
         std::string& temp) const = 0;
 
     std::string
-    qualifiedName(Info const& I) const
+    qualifiedName(Symbol const& I) const
     {
         std::string temp;
         qualifiedName(I, temp);
@@ -368,7 +368,7 @@ public:
     /** Return a qualified name from the specified context.
 
         This function returns the qualified name
-        of the specified Info `I` from the context
+        of the specified Symbol `I` from the context
         specified by the SymbolID `context`.
 
         If the context is a parent of `I`, the
@@ -380,19 +380,19 @@ public:
         qualified name is constructed relative to
         the global namespace with the prefix `::`.
 
-        @param I The Info to get the qualified name for.
+        @param I The Symbol to get the qualified name for.
         @param context The context to get the qualified name from.
         @param result The string to store the result in.
      */
     virtual
     void
     qualifiedName(
-        Info const& I,
+        Symbol const& I,
         SymbolID const& context,
         std::string& result) const = 0;
 
     std::string
-    qualifiedName(Info const& I, SymbolID const& context) const
+    qualifiedName(Symbol const& I, SymbolID const& context) const
     {
         std::string temp;
         qualifiedName(I, context, temp);
@@ -403,7 +403,7 @@ public:
 //------------------------------------------------
 
 template<class T>
-requires std::derived_from<T, Info>
+requires std::derived_from<T, Symbol>
 T const&
 Corpus::
 get(
@@ -411,7 +411,7 @@ get(
 {
     auto I = find(id);
     MRDOCS_ASSERT(I != nullptr);
-    if constexpr(std::is_same_v<T, Info>)
+    if constexpr(std::is_same_v<T, Symbol>)
     {
         return *I;
     }
@@ -426,11 +426,11 @@ get(
 class Corpus::iterator
 {
     Corpus const* corpus_;
-    Info const* val_;
-    Info const*(*next_)(Corpus const*, Info const*);
+    Symbol const* val_;
+    Symbol const*(*next_)(Corpus const*, Symbol const*);
 
 public:
-    using value_type = const Info;
+    using value_type = const Symbol;
     using size_type = std::size_t;
     using difference_type = std::ptrdiff_t;
     using pointer = value_type*;
@@ -444,8 +444,8 @@ public:
 
     iterator(
         Corpus const* corpus,
-        Info const* val,
-        Info const*(*next)(Corpus const*, Info const*))
+        Symbol const* val,
+        Symbol const*(*next)(Corpus const*, Symbol const*))
         : corpus_(corpus)
         , val_(val)
         , next_(next)
@@ -490,12 +490,12 @@ public:
     }
 };
 
-/** Return a list of the parent symbols of the specified Info.
+/** Return a list of the parent symbols of the specified Symbol.
  */
 MRDOCS_DECL
 std::vector<SymbolID>
-getParents(Corpus const& C, Info const& I);
+getParents(Corpus const& C, Symbol const& I);
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif // MRDOCS_API_CORPUS_HPP

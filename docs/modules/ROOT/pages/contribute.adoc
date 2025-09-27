@@ -32,9 +32,9 @@ Common options are defined in `mrdocs/Config.hpp`.
 The `Config` class represents all public options that could be defined in a configuration file.
 It also provides a representation plugins can use to access public options from the command line or configuration file.
 
-The function `clang::mrdocs::loadConfig` is also provided to parse all public options from a YAML configuration file.
+The function `mrdocs::loadConfig` is also provided to parse all public options from a YAML configuration file.
 
-Internally, Mr.Docs uses the derived `clang::mrdocs::ConfigImpl` class (`src/lib/Lib/ConfigImpl.hpp`) to also store the private representation of parsed options, such as filters.
+Internally, Mr.Docs uses the derived `mrdocs::ConfigImpl` class (`src/lib/Lib/ConfigImpl.hpp`) to also store the private representation of parsed options, such as filters.
 
 ==== Finalizing Options
 
@@ -52,6 +52,14 @@ As a last step, `DoGenerateAction` converts the public `Config` settings into a 
 MrDocs has many categories of objects, where we utilize polymorphism with a fixed set of valid derived types, including Symbols (functions, classes, and enums), Javadoc blocks, template parameters, template arguments, and data types. For each such family, we follow a consistent file layout. Most of these families are defined in the `mrdocs/Metadata` directory.
 
 Each base class is defined in its own header and, when necessary, implementation file. Each derived class also has its own header and implementation file. Finally, there is a single aggregator header file that includes all the derived headers. This file centralizes logic that requires knowledge of the full set of variants, such as visitors, comparison operators, and other operations that depend on the discriminator.
+
+Suppose we have a polymorphic family of `Symbol` objects, with derived types `Function`, `Class`, and `Enum`. The files would be organized as follows:
+
+* The `Symbol/SymbolNodes.inc` file defines the possible derived types and is used to generate code via macros.
+* The `Symbol/SymbolKind.hpp` file defines the `SymbolKind` enum, which is used as a discriminator for the derived types.
+* The base class `Symbol` is defined in `Symbol/BaseSymbol.hpp` and `Symbol/BaseSymbol.cpp` (if needed).
+* The available kinds of derived symbols are defined in `Symbol/<Derived>.hpp` and `Symbol/<Derived>.cpp` files, e.g., `Symbol/Function.hpp` and `Symbol/Function.cpp`.
+* The `Symbol.hpp` file includes all derived headers and defines operations that require knowledge of all variants, such as visitors and comparison operators.
 
 This pattern keeps the individual derived types self-contained while making cross-variant operations explicit and localized. When adding a new derived type, contributors should create its header and source file alongside the existing ones and update the corresponding aggregator file to register the new variant. This keeps the codebase predictable, avoids scattering logic, and ensures that operations over polymorphic families remain easy to find and maintain.
 
@@ -80,19 +88,18 @@ For each compilation command:
 * Paths are normalized
 * Non C++ files are filtered
 
-[#info_nodes]
-==== Info Nodes
+[#symbol_nodes]
+==== Symbol Nodes
 
-MrDocs represents each C++ symbol or construct as an `Info` node (`mrdocs/Metadata/Info.hpp`).
-`Info` can not only represent direct AST symbols but also {cpp} constructs that need to be inferred from these symbols.
+MrDocs represents each C++ symbol or construct as an `Symbol` node (`mrdocs/Metadata/Symbol.hpp`).
+`Symbol` can not only represent direct AST symbols but also {cpp} constructs that need to be inferred from these symbols.
 Nodes in the first category will typically be created in the initial extraction step, and nodes in the second category will be created in the finalization step.
 
-When defining a new `Info` type, it is important to consider how this type will be supported in all other modules of the codebase, including the AST visitor, generators, tests, and the documentation.
-The script `.github/check_info_nodes_support.sh` will attempt to infer whether most of these features have been implemented for each node type.
+When defining a new `Symbol` type, it is important to consider how this type will be supported in all other modules of the codebase, including the AST visitor, generators, tests, and the documentation.
 
 ==== Clang LibTooling
 
-MrDocs uses Clang to extract `Info` objects from the {cpp} AST.
+MrDocs uses Clang to extract `Symbol` objects from the {cpp} AST.
 Clang offers two https://clang.llvm.org/docs/Tooling.html[interfaces] to access the C++ AST: the https://clang.llvm.org/doxygen/group__CINDEX.html[`LibClang`] and https://clang.llvm.org/docs/LibTooling.html[`LibTooling`] libraries.
 MrDocs uses the latter, as it provides full control over the AST traversal process at the cost of an unstable API.
 
@@ -109,7 +116,7 @@ The `clang::tooling::ClangTool::run` method takes a `clang::tooling::ToolAction`
 The action object usually comes from a `clang::tooling::FrontendActionFactory`.
 In the example above, the `SyntaxOnlyAction` is used to parse the source code and generate the AST without any further processing.
 
-In MrDocs, this process happens in `clang::mrdocs::CorpusImpl::build` (`src/lib/Lib/CorpusImpl.cpp`), where we call `Tool.run` for each object in the database with our custom `ASTAction` action and `ASTActionFactory` factory (`src/lib/AST/ASTVisitor.cpp`).
+In MrDocs, this process happens in `mrdocs::CorpusImpl::build` (`src/lib/Lib/CorpusImpl.cpp`), where we call `Tool.run` for each object in the database with our custom `ASTAction` action and `ASTActionFactory` factory (`src/lib/AST/ASTVisitor.cpp`).
 
 ==== AST Traversal
 
@@ -119,7 +126,7 @@ As the AST is generated, it is traversed by the `ASTVisitor` class.
 The entry point of this class is `ASTVisitor::build`, which recursively calls `ASTVisitor::traverseDecl` for the root `clang::TranslationUnitDecl` node of the translation unit.
 During the AST traversal stage, the complete AST generated by the clang frontend is walked beginning with this root `TranslationUnitDecl` node.
 
-Each `clang` node is converted into a `<<info_nodes,mrdocs::Info>>` node, which is then stored with any relevant information in a `mrdocs::Corpus` object.
+Each `clang` node is converted into a `<<symbol_nodes,mrdocs::Symbol>>` node, which is then stored with any relevant information in a `mrdocs::Corpus` object.
 
 ==== USR Generation
 
@@ -132,15 +139,15 @@ This is necessary to generate the full interface for user-defined types.
 After running the AST traversal on all translation units, `CorpusImpl::build` contains finalization steps for the `Corpus` object.
 At this point, we process C++ constructs that are not directly represented in the AST.
 
-The first finalization step happens in `CorpusImpl::build` (`src/lib/Lib/CorpusImpl.cpp`), where the `Info` objects from a single translation unit
+The first finalization step happens in `CorpusImpl::build` (`src/lib/Lib/CorpusImpl.cpp`), where the `Symbol` objects from a single translation unit
 are merged into a map containing the merged results from all other TUs.
 The merging step is necessary as there may be multiple identical definitions of the same entity.
 For instance, this represents the case where a function is declared at different points in the code base and might have different attributes or comments.
 At this step, the doc comments are also finalized.
-Each `Info` object has a pointer to its `Javadoc`  object (`mrdocs/Metadata/Javadoc.hpp`), which is a representation of the documentation comments.
+Each `Symbol` object has a pointer to its `Javadoc`  object (`mrdocs/Metadata/Javadoc.hpp`), which is a representation of the documentation comments.
 
-After AST traversal and `Info` merging, the result is stored as a map of `Info` objects indexed by their respective `SymbolID`.
-A second finalization step is then performed in `clang::mrdocs::finalize`, where any references to `SymbolID` objects that don't exist are removed.
+After AST traversal and `Symbol` merging, the result is stored as a map of `Symbol` objects indexed by their respective `SymbolID`.
+A second finalization step is then performed in `mrdocs::finalize`, where any references to `SymbolID` objects that don't exist are removed.
 This is necessary because the AST traversal will generate references to entities that should be filtered and are not present in the corpus.
 
 At this point, the `Corpus` object contains representations of all entities in the code base and further semantic {cpp} constructs that are not directly represented in the AST can be inferred.
@@ -164,7 +171,7 @@ This directory contains the public headers for the MrDocs library.
 * `include/mrdocs/`—The core library headers
 ** `include/mrdocs/ADT`—Data Structures
 ** `include/mrdocs/Dom`—The Document Object Model for Abstract Trees
-** `include/mrdocs/Metadata`—`Info` nodes and metadata classes
+** `include/mrdocs/Metadata`—`Symbol` nodes and metadata classes
 ** `include/mrdocs/Support`—Various utility classes
 
 ==== `src/`—The main source directory
@@ -176,7 +183,7 @@ This directory contains the source code for the MrDocs library and private heade
 ** `src/lib/Dom/`—The Document Object Model for Abstract Trees
 ** `src/lib/Gen/`—Generators
 ** `src/lib/Lib/`—The core library classes
-** `src/lib/Metadata/`—`Info` nodes and metadata classes
+** `src/lib/Metadata/`—`Symbol` nodes and metadata classes
 ** `src/lib/Support/`—Various utility classes
 * `src/test/`—The test directory
 * `src/test_suite/`—The library used for testing

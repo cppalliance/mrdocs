@@ -16,7 +16,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
 
-namespace clang::mrdocs::doc {
+namespace mrdocs::doc {
 
 /** An admonishment style.
  */
@@ -54,6 +54,6 @@ inline
     v = toString(kind);
 }
 
-} // clang::mrdocs::doc
+} // mrdocs::doc
 
 #endif // MRDOCS_API_METADATA_JAVADOC_BLOCK_ADMONISH_HPP

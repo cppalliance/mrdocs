@@ -18,14 +18,14 @@
 #include <mrdocs/Dom.hpp>
 #include <string_view>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** The kind of template argument.
 */
 enum class TArgKind : int
 {
     #define INFO(Type) Type,
-    #include <mrdocs/Metadata/TArg/TArgInfoNodes.inc>
+#include <mrdocs/Metadata/TArg/TArgInfoNodes.inc>
 };
 
 MRDOCS_DECL
@@ -42,6 +42,6 @@ tag_invoke(
     v = toString(kind);
 }
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif // MRDOCS_API_METADATA_TARG_TARGKIND_HPP

@@ -13,31 +13,31 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/Polymorphic.hpp>
-#include <mrdocs/Metadata/Info/SymbolID.hpp>
 #include <mrdocs/Metadata/Name/NameKind.hpp>
+#include <mrdocs/Metadata/Symbol/SymbolID.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /* Forward declarations
  */
-#define INFO(Type) struct Type##NameInfo;
-#include <mrdocs/Metadata/Name/NameInfoNodes.inc>
+#define INFO(Type) struct Type##Name;
+#include <mrdocs/Metadata/Name/NameNodes.inc>
 
-/** Represents a name for a named `TypeInfo`
+/** Represents a name for a named `Type`
 
-    When the `TypeInfo` is a named type, this class
+    When the `Type` is a named type, this class
     represents the name of the type.
 
     It also includes the symbol ID of the named type,
     so that it can be referenced in the documentation.
 
-    This allows the `TypeInfo` to store either a
-    `NameInfo` or a `SpecializationNameInfo`,
+    This allows the `Type` to store either a
+    `Name` or a `SpecializationName`,
     which contains the arguments for a template specialization
     without requiring the application to extract an
     unnecessary symbol.
  */
-struct NameInfo
+struct Name
 {
     /** The kind of name this is.
     */
@@ -48,15 +48,15 @@ struct NameInfo
     SymbolID id = SymbolID::invalid;
 
     /** The unqualified name.
-    */
-    std::string Name;
+     */
+    std::string Identifier;
 
     /** The parent name info, if any.
 
         This recursively includes information about
         the parent, such as the symbol ID and
         potentially template arguments, when
-        the parent is a SpecializationNameInfo.
+        the parent is a SpecializationName.
 
         This is particularly useful because the
         parent of `id` could be a primary template.
@@ -65,25 +65,25 @@ struct NameInfo
         and the template arguments.
 
      */
-    Optional<Polymorphic<NameInfo>> Prefix = std::nullopt;
+    Optional<Polymorphic<struct Name>> Prefix = std::nullopt;
 
-    constexpr virtual ~NameInfo() = default;
+    constexpr virtual ~Name() = default;
 
     std::strong_ordering
-    operator<=>(NameInfo const& other) const;
+    operator<=>(Name const& other) const;
 
     bool
-    operator==(NameInfo const& other) const
+    operator==(Name const& other) const
     {
         return std::is_eq(*this <=> other);
     }
 
-    constexpr NameInfo const& asName() const noexcept
+    constexpr Name const& asName() const noexcept
     {
         return *this;
     }
 
-    constexpr NameInfo& asName() noexcept
+    constexpr Name& asName() noexcept
     {
         return *this;
     }
@@ -91,61 +91,61 @@ struct NameInfo
     #define INFO(Type) constexpr bool is##Type() const noexcept { \
         return Kind == NameKind::Type; \
     }
-#include <mrdocs/Metadata/Name/NameInfoNodes.inc>
+#include <mrdocs/Metadata/Name/NameNodes.inc>
 
-    #define INFO(Type) \
-    constexpr Type##NameInfo const& as##Type() const noexcept { \
+#define INFO(Type) \
+    constexpr Type##Name const& as##Type() const noexcept { \
         if (Kind == NameKind::Type) \
-            return reinterpret_cast<Type##NameInfo const&>(*this); \
+            return reinterpret_cast<Type##Name const&>(*this); \
         MRDOCS_UNREACHABLE(); \
     }
-#include <mrdocs/Metadata/Name/NameInfoNodes.inc>
+#include <mrdocs/Metadata/Name/NameNodes.inc>
 
 #define INFO(Type) \
-    constexpr Type##NameInfo & as##Type() noexcept { \
+    constexpr Type##Name & as##Type() noexcept { \
         if (Kind == NameKind::Type) \
-            return reinterpret_cast<Type##NameInfo&>(*this); \
+            return reinterpret_cast<Type##Name&>(*this); \
         MRDOCS_UNREACHABLE(); \
     }
-#include <mrdocs/Metadata/Name/NameInfoNodes.inc>
+#include <mrdocs/Metadata/Name/NameNodes.inc>
 
 #define INFO(Type) \
-    constexpr Type##NameInfo const* as##Type##Ptr() const noexcept { \
-        if (Kind == NameKind::Type) { return reinterpret_cast<Type##NameInfo const*>(this); } \
+    constexpr Type##Name const* as##Type##Ptr() const noexcept { \
+        if (Kind == NameKind::Type) { return reinterpret_cast<Type##Name const*>(this); } \
         return nullptr; \
     }
-#include <mrdocs/Metadata/Name/NameInfoNodes.inc>
+#include <mrdocs/Metadata/Name/NameNodes.inc>
 
 #define INFO(Type) \
-    constexpr Type##NameInfo * as##Type##Ptr() noexcept { \
-        if (Kind == NameKind::Type) { return reinterpret_cast<Type##NameInfo *>(this); } \
+    constexpr Type##Name * as##Type##Ptr() noexcept { \
+        if (Kind == NameKind::Type) { return reinterpret_cast<Type##Name *>(this); } \
         return nullptr; \
     }
-#include <mrdocs/Metadata/Name/NameInfoNodes.inc>
+#include <mrdocs/Metadata/Name/NameNodes.inc>
 
 protected:
     constexpr
-    NameInfo() noexcept
-        : NameInfo(NameKind::Identifier) {};
+    Name() noexcept
+        : Kind(NameKind::Identifier) {};
 
     explicit
         constexpr
-        NameInfo(NameKind const kind) noexcept
+        Name(NameKind const kind) noexcept
         : Kind(kind) {}
 };
 
 MRDOCS_DECL
 std::string
-toString(NameInfo const& N);
+toString(Name const& N);
 
 MRDOCS_DECL
 void
 tag_invoke(
     dom::ValueFromTag,
     dom::Value& v,
-    NameInfo const& I,
+    Name const& I,
     DomCorpus const* domCorpus);
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

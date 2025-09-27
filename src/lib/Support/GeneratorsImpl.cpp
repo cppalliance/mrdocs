@@ -12,7 +12,7 @@
 #include <mrdocs/Support/Report.hpp>
 #include <llvm/ADT/STLExtras.h>
 
-namespace clang {
+
 namespace mrdocs {
 
 extern
@@ -90,4 +90,4 @@ getGenerators() noexcept
 }
 
 } // mrdocs
-} // clang
+

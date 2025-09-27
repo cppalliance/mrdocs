@@ -12,7 +12,7 @@
 #include "Validate.hpp"
 #include <cctype>
 
-namespace clang {
+
 namespace mrdocs {
 
 bool
@@ -34,4 +34,4 @@ validAdocSectionID(
 }
 
 } // mrdocs
-} // clang
+

@@ -16,7 +16,7 @@
 #include <memory>
 #include <vector>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 //
 // This file defines the merging of different types of infos. The data in the
@@ -33,11 +33,11 @@ namespace clang::mrdocs {
 //
 
 template<typename T>
-std::unique_ptr<Info>
-reduce(std::vector<std::unique_ptr<Info>>& Values)
+std::unique_ptr<Symbol>
+reduce(std::vector<std::unique_ptr<Symbol>>& Values)
 {
     MRDOCS_ASSERT(! Values.empty() && Values[0]);
-    std::unique_ptr<Info> Merged = std::make_unique<T>(Values[0]->id);
+    std::unique_ptr<Symbol> Merged = std::make_unique<T>(Values[0]->id);
     T* Tmp = static_cast<T*>(Merged.get());
     for (auto& I: Values)
     {
@@ -79,7 +79,7 @@ reduceChildren(
     }
 }
 
-} // clang::mrdocs
+} // mrdocs
 
 
 #endif

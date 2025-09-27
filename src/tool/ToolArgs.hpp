@@ -16,7 +16,7 @@
 #include <string>
 #include <tool/PublicToolArgs.hpp>
 
-namespace clang {
+
 namespace mrdocs {
 
 /** Command line options and tool settings.
@@ -44,6 +44,6 @@ public:
 constexpr static ToolArgs& toolArgs = ToolArgs::instance_;
 
 } // mrdocs
-} // clang
+
 
 #endif

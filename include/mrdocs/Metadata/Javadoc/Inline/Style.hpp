@@ -16,7 +16,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
 
-namespace clang::mrdocs::doc {
+namespace mrdocs::doc {
 
 /** The text style.
 */
@@ -53,6 +53,6 @@ tag_invoke(
     v = toString(kind);
 }
 
-} // clang::mrdocs::doc
+} // mrdocs::doc
 
 #endif // MRDOCS_API_METADATA_JAVADOC_INLINE_STYLE_HPP

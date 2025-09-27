@@ -16,7 +16,7 @@
 #include <unordered_set>
 #include <utility>
 
-namespace clang {
+
 namespace mrdocs {
 
 //------------------------------------------------
@@ -185,4 +185,4 @@ post(
 }
 
 } // mrdocs
-} // clang
+

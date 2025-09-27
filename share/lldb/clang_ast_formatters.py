@@ -105,7 +105,7 @@ def NamedDecl_summary(valobj, _dict):
     o = _ctx(valobj)
 
     # Qualified name first
-    q = _eval_str(o, "static_cast<const ::clang::NamedDecl*>(this)->getQualifiedNameAsString()")
+    q = _eval_str(o, "static_cast<const ::clang::NamedDecl*>(this)->getNameAsString()")
     if not q:
         q = _eval_str(o, "static_cast<const ::clang::NamedDecl*>(this)->getNameAsString()")
 

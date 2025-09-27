@@ -14,11 +14,11 @@
 #include "ExecutionContext.hpp"
 #include <lib/Metadata/Reduce.hpp>
 #include <mrdocs/Metadata.hpp>
-#include <mrdocs/Metadata/Info/Namespace.hpp>
+#include <mrdocs/Metadata/Symbol/Namespace.hpp>
 #include <mrdocs/Support/Assert.hpp>
 #include <ranges>
 
-namespace clang {
+
 namespace mrdocs {
 
 namespace {
@@ -32,8 +32,8 @@ namespace {
 
     @param Values The vector of Info objects to merge.
 */
-mrdocs::Expected<std::unique_ptr<Info>>
-mergeInfos(std::vector<std::unique_ptr<Info>>& Values)
+mrdocs::Expected<std::unique_ptr<Symbol>>
+mergeInfos(std::vector<std::unique_ptr<Symbol>>& Values)
 {
     if(Values.empty() || ! Values[0])
     {
@@ -56,11 +56,11 @@ mergeInfos(std::vector<std::unique_ptr<Info>>& Values)
 void
 InfoExecutionContext::
 report(
-    InfoSet&& results,
+    SymbolSet&& results,
     Diagnostics&& diags,
-    UndocumentedInfoSet&& undocumented)
+    UndocumentedSymbolSet&& undocumented)
 {
-    InfoSet info = std::move(results);
+    SymbolSet info = std::move(results);
     std::unique_lock<std::shared_mutex> write_lock(mutex_);
 
     // Add all new Info to the existing set.
@@ -107,14 +107,14 @@ reportEnd(report::Level level)
     diags_.reportTotals(level);
 }
 
-Expected<InfoSet>
+Expected<SymbolSet>
 InfoExecutionContext::
 results()
 {
     return std::move(info_);
 }
 
-UndocumentedInfoSet
+UndocumentedSymbolSet
 InfoExecutionContext::
 undocumented()
 {
@@ -122,4 +122,4 @@ undocumented()
 }
 
 } // mrdocs
-} // clang
+

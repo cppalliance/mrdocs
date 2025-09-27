@@ -10,13 +10,13 @@
 //
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Info/EnumConstant.hpp>
+#include <mrdocs/Metadata/Symbol/EnumConstant.hpp>
 #include <llvm/ADT/STLExtras.h>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 void
-merge(EnumConstantInfo& I, EnumConstantInfo&& Other)
+merge(EnumConstantSymbol& I, EnumConstantSymbol&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
     merge(I.asInfo(), std::move(Other.asInfo()));
@@ -26,5 +26,5 @@ merge(EnumConstantInfo& I, EnumConstantInfo&& Other)
     }
 }
 
-} // clang::mrdocs
+} // mrdocs
 

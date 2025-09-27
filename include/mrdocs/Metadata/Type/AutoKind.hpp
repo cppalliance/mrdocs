@@ -14,7 +14,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 /** The kind of `auto` keyword used in a declaration.
 
@@ -42,6 +42,6 @@ tag_invoke(
     v = toString(kind);
 }
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif

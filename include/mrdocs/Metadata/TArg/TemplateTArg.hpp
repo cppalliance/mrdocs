@@ -19,7 +19,7 @@
 #include <mrdocs/Metadata/TArg/TArgBase.hpp>
 #include <mrdocs/Metadata/TArg/TypeTArg.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 struct TemplateTArg final
     : TArgCommonBase<TArgKind::Template>
@@ -33,6 +33,6 @@ struct TemplateTArg final
     auto operator<=>(TemplateTArg const&) const = default;
 };
 
-} // clang::mrdocs
+} // mrdocs
 
 #endif // MRDOCS_API_METADATA_TARG_TEMPLATETARG_HPP

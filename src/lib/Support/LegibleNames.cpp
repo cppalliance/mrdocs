@@ -25,11 +25,11 @@
 #include <string_view>
 #include <unordered_map>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 namespace {
 
 std::string
-getUnnamedInfoName(Info const& I)
+getUnnamedInfoName(Symbol const& I)
 {
     // All valid c++ identifiers begin with
     // an underscore or alphabetic character,
@@ -99,7 +99,7 @@ class LegibleNames::Impl
 
     /* The info related to the legible name for a symbol
      */
-    struct LegibleNameInfo
+    struct LegibleName
     {
         /*  Raw unqualified name for the symbol
          */
@@ -117,11 +117,11 @@ class LegibleNames::Impl
 
     /* A map from SymbolID to legible name information
      */
-    std::unordered_map<SymbolID, LegibleNameInfo> map_;
+    std::unordered_map<SymbolID, LegibleName> map_;
 
     /* Maps unqualified names to all symbols with that name within the current scope
      */
-    UnorderedStringMultiMap<LegibleNameInfo*> disambiguation_map_;
+    UnorderedStringMultiMap<LegibleName*> disambiguation_map_;
 
 public:
     /*  Build the map of legible names for all symbols in the corpus
@@ -130,7 +130,7 @@ public:
         : corpus_(corpus)
         , global_ns_(global_ns)
     {
-        NamespaceInfo const& global = corpus_.globalNamespace();
+        NamespaceSymbol const& global = corpus_.globalNamespace();
 
         // Treat the global namespace as-if its "name"
         // is in the same scope as its members
@@ -149,11 +149,11 @@ public:
     void
     operator()(InfoTy const& I)
     {
-        if constexpr (InfoParent<InfoTy> && !std::same_as<InfoTy, OverloadsInfo>)
+        if constexpr (SymbolParent<InfoTy> && !std::same_as<InfoTy, OverloadsSymbol>)
         {
             // Visit the members of the symbol and build legible names
             constexpr Corpus::TraverseOptions opts = {.skipInherited = true};
-            corpus_.traverse(opts, I, [this, &I](Info const& M)
+            corpus_.traverse(opts, I, [this, &I](Symbol const& M)
                 {
                     auto const raw = getRawUnqualified(M);
                     buildLegibleMember(M, raw);
@@ -161,7 +161,7 @@ public:
                     // Traverse non inherited function overloads inline
                     if (auto* MO = M.asOverloadsPtr())
                     {
-                        corpus_.traverse(*MO, [this, &I](Info const& M2)
+                        corpus_.traverse(*MO, [this, &I](Symbol const& M2)
                             {
                                 // Not inherited in regard to I
                                 MRDOCS_CHECK_OR(M2.Parent == I.id);
@@ -176,7 +176,7 @@ public:
 
             // Visit the members of the symbol to build legible names
             // for their members
-            corpus_.traverse(opts, I, [this](Info const& M)
+            corpus_.traverse(opts, I, [this](Symbol const& M)
                 {
                     visit(M, *this);
                 });
@@ -194,7 +194,7 @@ public:
     std::string
     getRawUnqualified(SymbolID const& id)
     {
-        Info const* I = corpus_.find(id);
+        Symbol const* I = corpus_.find(id);
         MRDOCS_ASSERT(I);
         return getRawUnqualified(*I);
     }
@@ -202,7 +202,7 @@ public:
     /* @copydoc getRawUnqualified(SymbolID const&)
      */
     std::string
-    getRawUnqualified(Info const& I)
+    getRawUnqualified(Symbol const& I)
     {
         MRDOCS_ASSERT(I.id && I.id != SymbolID::global);
         if (I.Name.empty())
@@ -239,19 +239,18 @@ public:
     /* Take the raw unqualified name for a symbol and build a legible name
      */
     void
-    buildLegibleMember(
-        Info const& I,
+    buildLegibleMember(Symbol const& I,
         std::string_view rawName)
     {
         // Generate the legible name information for this symbol
         auto const idAsString = toBase16(I.id, true);
-        LegibleNameInfo LI(std::string(rawName), 0, idAsString);
-        LegibleNameInfo& info = map_.emplace(I.id, std::move(LI)).first->second;
+        LegibleName LI(std::string(rawName), 0, idAsString);
+        LegibleName& info = map_.emplace(I.id, std::move(LI)).first->second;
 
         // Look for symbols with the same unqualified name
         auto [first, last] = disambiguation_map_.equal_range(rawName);
-        auto sameNameInfos = std::ranges::subrange(first, last) | std::views::values;
-        if (std::ranges::empty(sameNameInfos))
+        auto sameNames = std::ranges::subrange(first, last) | std::views::values;
+        if (std::ranges::empty(sameNames))
         {
             // Add this symbol to the disambiguation map
             disambiguation_map_.emplace(rawName, &info);
@@ -263,7 +262,7 @@ public:
         // Iterate over the other symbols with the same raw unqualified name
         // and update their legible name information
         std::uint8_t suffix_size_required = 0;
-        for (LegibleNameInfo* other : sameNameInfos)
+        for (LegibleName* other : sameNames)
         {
             // Find the first character that differs between the two symbol IDs
             auto const mismatch_it = std::ranges::mismatch(
@@ -380,4 +379,4 @@ getQualified(
     return result;
 }
 
-} // clang::mrdocs
+} // mrdocs

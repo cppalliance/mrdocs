@@ -13,7 +13,7 @@
 #define MRDOCS_LIB_GEN_HBS_MULTIPAGEVISITOR_HPP
 
 #include <lib/Gen/hbs/Builder.hpp>
-#include <mrdocs/Metadata/Info.hpp>
+#include <mrdocs/Metadata/Symbol.hpp>
 #include <mrdocs/Support/ExecutorGroup.hpp>
 #include <atomic>
 #include <mutex>
@@ -21,7 +21,7 @@
 #include <string>
 #include <vector>
 
-namespace clang::mrdocs::hbs {
+namespace mrdocs::hbs {
 
 /** Visitor which emites a multi-page reference.
 */
@@ -49,7 +49,7 @@ public:
         respective tasks are also pushed to the executor group.
 
     */
-    template <std::derived_from<Info> T>
+    template <std::derived_from<Symbol> T>
     void
     operator()(T const& I);
 
@@ -62,6 +62,6 @@ public:
     }
 };
 
-} // clang::mrdocs::hbs
+} // mrdocs::hbs
 
 #endif

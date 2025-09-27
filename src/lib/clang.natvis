@@ -316,8 +316,8 @@ For later versions of Visual Studio, no setup is required-->
     <Type Name="clang::DeclarationName">
         <Intrinsic Category="Data" Name="get_ptr" Expression="(void*)(Ptr &amp; ~PtrMask)"/>
         <Intrinsic Category="Data" Name="get_stored_kind" Expression="Ptr &amp; PtrMask"/>
-        <Intrinsic Category="Data" Name="get_name_kind" Expression="(NameKind)(get_stored_kind() != StoredDeclarationNameExtra ?
-            get_stored_kind() : UncommonNameKindOffset + ((detail::DeclarationNameExtra*)get_ptr())-&gt;get_kind())"/>
+        <Intrinsic Category="Data" Name="get_name_kind" Expression="(Name)(get_stored_kind() != StoredDeclarationNameExtra ?
+            get_stored_kind() : UncommonNameOffset + ((detail::DeclarationNameExtra*)get_ptr())-&gt;get_kind())"/>
 
         <DisplayString Condition="! Ptr"></DisplayString>
         <DisplayString Condition="get_stored_kind() == StoredIdentifier">{*(IdentifierInfo*)get_ptr(),na}</DisplayString>
@@ -335,7 +335,7 @@ For later versions of Visual Studio, no setup is required-->
 
         <Expand>
             <Item Name="Kind">get_name_kind(),en</Item>
-            <Item Name="StoredKind">StoredNameKind(get_stored_kind()),en</Item>
+            <Item Name="StoredKind">StoredName(get_stored_kind()),en</Item>
 
             <Item Name="[identifier]" Condition="get_stored_kind() == StoredIdentifier">*(IdentifierInfo*)get_ptr(),na</Item>
             <Item Name="[selector]" Condition="get_stored_kind() == StoredObjCZeroArgSelector">*(IdentifierInfo*)get_ptr(),na</Item>
@@ -402,7 +402,7 @@ For later versions of Visual Studio, no setup is required-->
         </Expand>
     </Type>
 
-    <Type Name="clang::DeclarationNameInfo">
+    <Type Name="clang::DeclarationName">
         <DisplayString>{Name}</DisplayString>
     </Type>
 
@@ -1141,16 +1141,16 @@ For later versions of Visual Studio, no setup is required-->
         <MostDerivedType Condition="(Decl::Kind)DeclKind == Decl::ObjCProperty">(ObjCPropertyDecl*)this</MostDerivedType>
         <MostDerivedType Condition="(Decl::Kind)DeclKind == Decl::BuiltinTemplate">(BuiltinTemplateDecl*)this</MostDerivedType>
         <MostDerivedType Condition="(Decl::Kind)DeclKind == Decl::Concept">(ConceptDecl*)this</MostDerivedType>
-        <MostDerivedType Condition="(Decl::Kind)DeclKind == Decl::ClassTemplate">(ClassTemplateDecl*)this</MostDerivedType>
+        <MostDerivedType Condition="(Decl::Kind)DeclKind == Decl::ClassTemplate">(clang::ClassTemplateDecl*)this</MostDerivedType>
         <MostDerivedType Condition="(Decl::Kind)DeclKind == Decl::FunctionTemplate">(FunctionTemplateDecl*)this</MostDerivedType>
         <MostDerivedType Condition="(Decl::Kind)DeclKind == Decl::TypeAliasTemplate">(TypeAliasTemplateDecl*)this</MostDerivedType>
         <MostDerivedType Condition="(Decl::Kind)DeclKind == Decl::VarTemplate">(VarTemplateDecl*)this</MostDerivedType>
         <MostDerivedType Condition="(Decl::Kind)DeclKind == Decl::TemplateTemplateParm">(TemplateTemplateParmDecl*)this</MostDerivedType>
         <MostDerivedType Condition="(Decl::Kind)DeclKind == Decl::Enum">(EnumDecl*)this</MostDerivedType>
         <MostDerivedType Condition="(Decl::Kind)DeclKind == Decl::Record">(RecordDecl*)this</MostDerivedType>
-        <MostDerivedType Condition="(Decl::Kind)DeclKind == Decl::CXXRecord">(CXXRecordDecl*)this</MostDerivedType>
+        <MostDerivedType Condition="(Decl::Kind)DeclKind == Decl::CXXRecord">(clang::CXXRecordDecl*)this</MostDerivedType>
         <MostDerivedType Condition="(Decl::Kind)DeclKind == Decl::ClassTemplateSpecialization">(ClassTemplateSpecializationDecl*)this</MostDerivedType>
-        <MostDerivedType Condition="(Decl::Kind)DeclKind == Decl::ClassTemplatePartialSpecialization">(ClassTemplatePartialSpecializationDecl*)this</MostDerivedType>
+        <MostDerivedType Condition="(Decl::Kind)DeclKind == Decl::ClassTemplatePartialSpecialization">(clang::ClassTemplatePartialSpecializationDecl*)this</MostDerivedType>
         <MostDerivedType Condition="(Decl::Kind)DeclKind == Decl::TemplateTypeParm">(TemplateTypeParmDecl*)this</MostDerivedType>
         <MostDerivedType Condition="(Decl::Kind)DeclKind == Decl::ObjCTypeParam">(ObjCTypeParamDecl*)this</MostDerivedType>
         <MostDerivedType Condition="(Decl::Kind)DeclKind == Decl::TypeAlias">(TypeAliasDecl*)this</MostDerivedType>
@@ -1165,7 +1165,7 @@ For later versions of Visual Studio, no setup is required-->
         <MostDerivedType Condition="(Decl::Kind)DeclKind == Decl::Field">(FieldDecl*)this</MostDerivedType>
         <MostDerivedType Condition="(Decl::Kind)DeclKind == Decl::ObjCAtDefsField">(ObjCAtDefsFieldDecl*)this</MostDerivedType>
         <MostDerivedType Condition="(Decl::Kind)DeclKind == Decl::ObjCIvar">(ObjCIvarDecl*)this</MostDerivedType>
-        <MostDerivedType Condition="(Decl::Kind)DeclKind == Decl::Function">(FunctionDecl*)this</MostDerivedType>
+        <MostDerivedType Condition="(Decl::Kind)DeclKind == Decl::Function">(clang::FunctionDecl*)this</MostDerivedType>
         <MostDerivedType Condition="(Decl::Kind)DeclKind == Decl::CXXDeductionGuide">(CXXDeductionGuideDecl*)this</MostDerivedType>
         <MostDerivedType Condition="(Decl::Kind)DeclKind == Decl::CXXMethod">(CXXMethodDecl*)this</MostDerivedType>
         <MostDerivedType Condition="(Decl::Kind)DeclKind == Decl::CXXConstructor">(CXXConstructorDecl*)this</MostDerivedType>
@@ -1226,7 +1226,7 @@ For later versions of Visual Studio, no setup is required-->
     </Type>
 
     <Type Name="clang::DeclContext">
-        <MostDerivedType Condition="(Decl::Kind)DeclContextBits.DeclKind == Decl::Function">(FunctionDecl*)this</MostDerivedType>
+        <MostDerivedType Condition="(Decl::Kind)DeclContextBits.DeclKind == Decl::Function">(clang::FunctionDecl*)this</MostDerivedType>
         <MostDerivedType Condition="(Decl::Kind)DeclContextBits.DeclKind == Decl::CXXDeductionGuide">(CXXDeductionGuideDecl*)this</MostDerivedType>
         <MostDerivedType Condition="(Decl::Kind)DeclContextBits.DeclKind == Decl::CXXMethod">(CXXMethodDecl*)this</MostDerivedType>
         <MostDerivedType Condition="(Decl::Kind)DeclContextBits.DeclKind == Decl::CXXConstructor">(CXXConstructorDecl*)this</MostDerivedType>
@@ -1234,9 +1234,9 @@ For later versions of Visual Studio, no setup is required-->
         <MostDerivedType Condition="(Decl::Kind)DeclContextBits.DeclKind == Decl::CXXDestructor">(CXXDestructorDecl*)this</MostDerivedType>
         <MostDerivedType Condition="(Decl::Kind)DeclContextBits.DeclKind == Decl::Enum">(EnumDecl*)this</MostDerivedType>
         <MostDerivedType Condition="(Decl::Kind)DeclContextBits.DeclKind == Decl::Record">(RecordDecl*)this</MostDerivedType>
-        <MostDerivedType Condition="(Decl::Kind)DeclContextBits.DeclKind == Decl::CXXRecord">(CXXRecordDecl*)this</MostDerivedType>
+        <MostDerivedType Condition="(Decl::Kind)DeclContextBits.DeclKind == Decl::CXXRecord">(clang::CXXRecordDecl*)this</MostDerivedType>
         <MostDerivedType Condition="(Decl::Kind)DeclContextBits.DeclKind == Decl::ClassTemplateSpecialization">(ClassTemplateSpecializationDecl*)this</MostDerivedType>
-        <MostDerivedType Condition="(Decl::Kind)DeclContextBits.DeclKind == Decl::ClassTemplatePartialSpecialization">(ClassTemplatePartialSpecializationDecl*)this</MostDerivedType>
+        <MostDerivedType Condition="(Decl::Kind)DeclContextBits.DeclKind == Decl::ClassTemplatePartialSpecialization">(clang::ClassTemplatePartialSpecializationDecl*)this</MostDerivedType>
         <MostDerivedType Condition="(Decl::Kind)DeclContextBits.DeclKind == Decl::Block">(BlockDecl*)this</MostDerivedType>
         <MostDerivedType Condition="(Decl::Kind)DeclContextBits.DeclKind == Decl::Captured">(CapturedDecl*)this</MostDerivedType>
         <MostDerivedType Condition="(Decl::Kind)DeclContextBits.DeclKind == Decl::TranslationUnit">(TranslationUnitDecl*)this</MostDerivedType>
@@ -1418,7 +1418,7 @@ For later versions of Visual Studio, no setup is required-->
         </Expand>
     </Type>
 
-    <Type Name="clang::FunctionDecl" Inheritable="false">
+    <Type Name="clang::clang::FunctionDecl" Inheritable="false">
         <AlternativeType Name="clang::CXXMethodDecl" Inheritable="false" />
         <AlternativeType Name="clang::CXXConstructorDecl" Inheritable="false" />
         <AlternativeType Name="clang::CXXConversionDecl" Inheritable="false" />
@@ -1432,19 +1432,19 @@ For later versions of Visual Studio, no setup is required-->
             <Item Name="Qualifier" Condition="get_qualifier()">get_qualifier(),na</Item>
 
             <Item Name="IsDefinition">
-                (FunctionDeclBits.IsDeleted &amp;&amp; ! FunctionDeclBits.IsDefaulted) ||
-                ((! FunctionDeclBits.HasDefaultedFunctionInfo &amp;&amp; Body.Ptr) || FunctionDeclBits.IsLateTemplateParsed) ||
-                FunctionDeclBits.HasSkippedBody ||
-                FunctionDeclBits.WillHaveBody
+                (clang::FunctionDeclBits.IsDeleted &amp;&amp; ! clang::FunctionDeclBits.IsDefaulted) ||
+                ((! clang::FunctionDeclBits.HasDefaultedFunctionSymbol &amp;&amp; Body.Ptr) || clang::FunctionDeclBits.IsLateTemplateParsed) ||
+                clang::FunctionDeclBits.HasSkippedBody ||
+                clang::FunctionDeclBits.WillHaveBody
             </Item>
             <!--
             <Synthetic Name="[definition]">
                 <Expand>
                     <Item Name="IsDefinition">
-                        (FunctionDeclBits.IsDeleted &amp;&amp; ! FunctionDeclBits.IsDefaulted) ||
-                        ((! FunctionDeclBits.HasDefaultedFunctionInfo &amp;&amp; Body.Ptr) || FunctionDeclBits.IsLateTemplateParsed) ||
-                        FunctionDeclBits.HasSkippedBody ||
-                        FunctionDeclBits.WillHaveBody
+                        (clang::FunctionDeclBits.IsDeleted &amp;&amp; ! clang::FunctionDeclBits.IsDefaulted) ||
+                        ((! clang::FunctionDeclBits.HasDefaultedFunctionSymbol &amp;&amp; Body.Ptr) || clang::FunctionDeclBits.IsLateTemplateParsed) ||
+                        clang::FunctionDeclBits.HasSkippedBody ||
+                        clang::FunctionDeclBits.WillHaveBody
                     </Item>
                 </Expand>
             </Synthetic>
@@ -1458,11 +1458,11 @@ For later versions of Visual Studio, no setup is required-->
             <Item Name="InstantiatedFrom" Condition="! TemplateOrSpecialization.is_null() &amp;&amp;
                 TemplateOrSpecialization.get_int() == 0 &amp;&amp;
                     ((NamedDecl*)TemplateOrSpecialization.get_ptr())-&gt;get_kind() == Decl::Function">
-                        (FunctionDecl*)TemplateOrSpecialization.get_ptr()
+                        (clang::FunctionDecl*)TemplateOrSpecialization.get_ptr()
             </Item>
 
             <Item Name="MemberSpecialization" Condition="! TemplateOrSpecialization.is_null() &amp;&amp; TemplateOrSpecialization.get_int() == 1">
-                (MemberSpecializationInfo*)TemplateOrSpecialization.get_ptr(),na
+                (clang::MemberSpecializationInfo*)TemplateOrSpecialization.get_ptr(),na
             </Item>
 
             <Item Name="TemplateSpecialization" Condition="! TemplateOrSpecialization.is_null() &amp;&amp; TemplateOrSpecialization.get_int() == 2">
@@ -1491,7 +1491,7 @@ For later versions of Visual Studio, no setup is required-->
 
     <!-- ================================================================================================ -->
 
-    <Type Name="clang::ClassTemplateDecl::Common">
+    <Type Name="clang::clang::ClassTemplateDecl::Common">
         <Expand>
             <ExpandedItem>*(RedeclarableTemplateDecl::CommonBase*)this,nd</ExpandedItem>
             <Item Name="InjectedClassNameType">InjectedClassNameType</Item>
@@ -1511,7 +1511,7 @@ For later versions of Visual Studio, no setup is required-->
                 <Expand>
                     <ArrayItems>
                         <Size>(size_t)PartialSpecializations.Vector.Size</Size>
-                        <ValuePointer>(ClassTemplatePartialSpecializationDecl**)PartialSpecializations.Vector.BeginX</ValuePointer>
+                        <ValuePointer>(clang::ClassTemplatePartialSpecializationDecl**)PartialSpecializations.Vector.BeginX</ValuePointer>
                     </ArrayItems>
                 </Expand>
             </Synthetic>
@@ -1640,7 +1640,7 @@ For later versions of Visual Studio, no setup is required-->
                     <Exec>common = decl ? decl-&gt;Common : nullptr</Exec>
                 </Loop>
                 <If Condition="common">
-                    <Item Condition="get_kind() == Decl::ClassTemplate" Name="[common base]">(ClassTemplateDecl::Common*)common</Item>
+                    <Item Condition="get_kind() == Decl::ClassTemplate" Name="[common base]">(clang::ClassTemplateDecl::Common*)common</Item>
                     <Item Condition="get_kind() == Decl::VarTemplate" Name="[common base]">(VarTemplateDecl::Common*)common</Item>
                     <Item Condition="get_kind() == Decl::FunctionTemplate" Name="[common base]">(FunctionTemplateDecl::Common*)common</Item>
                     <Item Condition="get_kind() == Decl::TypeAliasTemplate" Name="[common base]">(TypeAliasTemplateDecl::Common*)common</Item>
@@ -1648,7 +1648,7 @@ For later versions of Visual Studio, no setup is required-->
             </CustomListItems>
             -->
             <ExpandedItem Condition="get_common_ptr() != nullptr &amp;&amp; get_kind() == Decl::ClassTemplate">
-                *(ClassTemplateDecl::Common*)get_common_ptr()
+                *(clang::ClassTemplateDecl::Common*)get_common_ptr()
             </ExpandedItem>
             <ExpandedItem Condition="get_common_ptr() != nullptr &amp;&amp; get_kind() == Decl::VarTemplate">
                 *(VarTemplateDecl::Common*)get_common_ptr()
@@ -1687,7 +1687,7 @@ For later versions of Visual Studio, no setup is required-->
             <Item Name="SpecializationKind">clang::TemplateSpecializationKind(Template.get_int() + 1),en</Item>
             <Item Name="IsMemberSpecialization">Function.get_int()</Item>
             <Item Name="InstantiatedFromMember" Condition="Function.get_int()">
-                *reinterpret_cast&lt;MemberSpecializationInfo**&gt;(this + 1)
+                *reinterpret_cast&lt;clang::MemberSpecializationInfo**&gt;(this + 1)
             </Item>
             <Item Name="Function" Condition="! Function.is_null()">Function.get_ptr()</Item>
             <Item Name="Template" Condition="! Template.is_null()">Template.get_ptr()</Item>
@@ -1707,7 +1707,7 @@ For later versions of Visual Studio, no setup is required-->
 
     <!-- ================================================================================================ -->
 
-    <Type Name="clang::MemberSpecializationInfo">
+    <Type Name="clang::clang::MemberSpecializationInfo">
         <Expand>
             <Item Name="SpecializationKind">clang::TemplateSpecializationKind(MemberAndTSK.get_int() + 1),en</Item>
             <Item Name="InstantiatedFrom" Condition="! MemberAndTSK.is_null()">
@@ -1743,7 +1743,7 @@ For later versions of Visual Studio, no setup is required-->
             <!-- KRYSTIAN TODO: this is stored in a DenseMap in ASTContext...
             <Item Name="SpecializationKind" Condition="! is_vtsd() &amp;&amp; ! TemplateOrInstantiation.is_null() &amp;&amp; TemplateOrInstantiation.get_int() == 1">
                 clang::TemplateSpecializationKind(
-                    ((MemberSpecializationInfo*)TemplateOrInstantiation.get_ptr())-&gt;MemberAndTSK.get_int() + 1),en
+                    ((clang::MemberSpecializationInfo*)TemplateOrInstantiation.get_ptr())-&gt;MemberAndTSK.get_int() + 1),en
             </Item>
             -->
 
@@ -1752,7 +1752,7 @@ For later versions of Visual Studio, no setup is required-->
                 (VarTemplateDecl*)TemplateOrInstantiation.get_ptr()
             </Item>
             <Item Name="MemberSpecialization" Condition="! TemplateOrInstantiation.is_null() &amp;&amp; TemplateOrInstantiation.get_int() == 1">
-                (MemberSpecializationInfo*)TemplateOrInstantiation.get_ptr()
+                (clang::MemberSpecializationInfo*)TemplateOrInstantiation.get_ptr()
             </Item>
             -->
 
@@ -1785,11 +1785,11 @@ For later versions of Visual Studio, no setup is required-->
 
     <!-- ================================================================================================ -->
 
-    <Type Name="clang::CXXRecordDecl" Inheritable="false" >
-        <AlternativeType Name="clang::ClassTemplatePartialSpecializationDecl" Inheritable="false" />
+    <Type Name="clang::clang::CXXRecordDecl" Inheritable="false" >
+        <AlternativeType Name="clang::clang::ClassTemplatePartialSpecializationDecl" Inheritable="false" />
         <AlternativeType Name="clang::ClassTemplateSpecializationDecl" Inheritable="false" />
         <Intrinsic Category="Data" Name="is_ctpsd" Expression="get_kind() == Decl::ClassTemplatePartialSpecialization" />
-        <Intrinsic Category="Data" Name="as_ctpsd" Expression="(ClassTemplatePartialSpecializationDecl*)this" />
+        <Intrinsic Category="Data" Name="as_ctpsd" Expression="(clang::ClassTemplatePartialSpecializationDecl*)this" />
         <Intrinsic Category="Data" Name="is_ctsd" Expression="get_kind() == Decl::ClassTemplateSpecialization || is_ctpsd()" />
         <Intrinsic Category="Data" Name="as_ctsd" Expression="(ClassTemplateSpecializationDecl*)this" />
 
@@ -1807,14 +1807,14 @@ For later versions of Visual Studio, no setup is required-->
             </Item>
             <Item Name="SpecializationKind" Condition="! is_ctsd() &amp;&amp; ! TemplateOrInstantiation.is_null() &amp;&amp; TemplateOrInstantiation.get_int() == 1">
                 clang::TemplateSpecializationKind(
-                    ((MemberSpecializationInfo*)TemplateOrInstantiation.get_ptr())-&gt;MemberAndTSK.get_int() + 1),en
+                    ((clang::MemberSpecializationInfo*)TemplateOrInstantiation.get_ptr())-&gt;MemberAndTSK.get_int() + 1),en
             </Item>
 
             <Item Name="DescribedTemplate" Condition="! TemplateOrInstantiation.is_null() &amp;&amp; TemplateOrInstantiation.get_int() == 0">
-                (ClassTemplateDecl*)TemplateOrInstantiation.get_ptr()
+                (clang::ClassTemplateDecl*)TemplateOrInstantiation.get_ptr()
             </Item>
             <Item Name="MemberSpecialization" Condition="! TemplateOrInstantiation.is_null() &amp;&amp; TemplateOrInstantiation.get_int() == 1">
-                (MemberSpecializationInfo*)TemplateOrInstantiation.get_ptr(),na
+                (clang::MemberSpecializationInfo*)TemplateOrInstantiation.get_ptr(),na
             </Item>
 
             <Item Name="IsMemberSpecialization" Optional="true">InstantiatedFromMember.get_int()</Item>
@@ -1823,7 +1823,7 @@ For later versions of Visual Studio, no setup is required-->
             </Item>
 
             <Item Name="SpecializedTemplate" Optional="true" Condition="SpecializedTemplate.get_int() == 0">
-                (ClassTemplateDecl*)SpecializedTemplate.get_ptr()
+                (clang::ClassTemplateDecl*)SpecializedTemplate.get_ptr()
             </Item>
             <Item Name="SpecializedPartial" Optional="true" Condition="SpecializedTemplate.get_int() == 1">
                 ((ClassTemplateSpecializationDecl::SpecializedPartialSpecialization*)(SpecializedTemplate.get_ptr()))-&gt;PartialSpecialization
@@ -1856,22 +1856,22 @@ For later versions of Visual Studio, no setup is required-->
     <!--
 
   <Type Name="clang::CXXMethodDecl">
-    <DisplayString IncludeView="cpp">{*(clang::FunctionDecl *)this,nd}</DisplayString>
+    <DisplayString IncludeView="cpp">{*(clang::clang::FunctionDecl *)this,nd}</DisplayString>
     <DisplayString>Method {{{*this,view(cpp)}}}</DisplayString>
     <Expand>
-      <ExpandedItem>*(FunctionDecl*)this,nd</ExpandedItem>
+      <ExpandedItem>*(clang::FunctionDecl*)this,nd</ExpandedItem>
     </Expand>
   </Type>
   <Type Name="clang::CXXConstructorDecl">
-    <DisplayString>Constructor {{{Name,view(cpp)}({*(clang::FunctionDecl *)this,view(parm0)nd})}}</DisplayString>
+    <DisplayString>Constructor {{{Name,view(cpp)}({*(clang::clang::FunctionDecl *)this,view(parm0)nd})}}</DisplayString>
     <Expand>
-      <ExpandedItem>*(FunctionDecl*)this,nd</ExpandedItem>
+      <ExpandedItem>*(clang::FunctionDecl*)this,nd</ExpandedItem>
     </Expand>
   </Type>
   <Type Name="clang::CXXDestructorDecl">
     <DisplayString>Destructor {{~{Name,view(cpp)}()}}</DisplayString>
     <Expand>
-      <ExpandedItem>*(FunctionDecl*)this,nd</ExpandedItem>
+      <ExpandedItem>*(clang::FunctionDecl*)this,nd</ExpandedItem>
     </Expand>
   </Type>
   <Type Name="clang::TemplateTypeParmDecl">
@@ -1965,11 +1965,11 @@ For later versions of Visual Studio, no setup is required-->
     <DisplayString>{ExplicitSpec,view(int)en} : {ExplicitSpec,view(ptr)na}</DisplayString>
   </Type>
   <Type Name="clang::CXXDeductionGuideDecl">
-    <DisplayString>{ExplicitSpec,view(cpp)}{Name,view(cpp)nd}({(FunctionDecl*)this,view(parm0)nand}) -&gt; {((clang::FunctionProtoType *)((clang::ExtQualsTypeCommonBase *)(((uintptr_t)DeclType.Value.Value) &amp; ~15))-&gt;BaseType)->ResultType,view(cpp)}</DisplayString>
+    <DisplayString>{ExplicitSpec,view(cpp)}{Name,view(cpp)nd}({(clang::FunctionDecl*)this,view(parm0)nand}) -&gt; {((clang::FunctionProtoType *)((clang::ExtQualsTypeCommonBase *)(((uintptr_t)DeclType.Value.Value) &amp; ~15))-&gt;BaseType)->ResultType,view(cpp)}</DisplayString>
     <Expand>
       <Item Name="ExplicitSpec">ExplicitSpec</Item>
-      <Item Name="IsCopyDeductionCandidate">(bool)FunctionDeclBits.IsCopyDeductionCandidate</Item>
-      <ExpandedItem>(FunctionDecl*)this,nd</ExpandedItem>
+      <Item Name="IsCopyDeductionCandidate">(bool)clang::FunctionDeclBits.IsCopyDeductionCandidate</Item>
+      <ExpandedItem>(clang::FunctionDecl*)this,nd</ExpandedItem>
     </Expand>
   </Type>
 
@@ -1990,7 +1990,7 @@ For later versions of Visual Studio, no setup is required-->
     </Expand>
   </Type>
 
-  <Type Name="clang::FunctionDecl">
+  <Type Name="clang::clang::FunctionDecl">
     <DisplayString IncludeView="retType">{((clang::FunctionProtoType *)((clang::ExtQualsTypeCommonBase *)((*(uintptr_t *)DeclType.Value.Value.Data) &amp; ~15))-&gt;BaseType)->ResultType,view(cpp)}</DisplayString>
     <DisplayString IncludeView="parm0" Condition="0 == ((clang::FunctionProtoType *)((clang::ExtQualsTypeCommonBase *)((*(uintptr_t *)DeclType.Value.Value.Data) &amp; ~15))-&gt;BaseType)-&gt;FunctionTypeBits.NumParams"></DisplayString>
     <DisplayString IncludeView="parm0">{ParamInfo[0],na}{*this,view(parm1)nd}</DisplayString>
@@ -2010,7 +2010,7 @@ For later versions of Visual Studio, no setup is required-->
     <DisplayString>{this,view(retType)nand} {Name,view(cpp)nd}({*this,view(parm0)nd})</DisplayString>
     <Expand>
       <ExpandedItem>(clang::DeclaratorDecl *)this,nd</ExpandedItem>
-      <ExpandedItem>(clang::Redeclarable&lt;clang::FunctionDecl&gt; *)this,nd</ExpandedItem>
+      <ExpandedItem>(clang::Redeclarable&lt;clang::clang::FunctionDecl&gt; *)this,nd</ExpandedItem>
       <Item Name="ReturnType">((clang::FunctionProtoType *)((clang::ExtQualsTypeCommonBase *)((*(uintptr_t *)DeclType.Value.Value.Data) &amp; ~15))-&gt;BaseType)->ResultType</Item>
       <Synthetic Name="Parameter Types">
         <DisplayString>{*this,view(parm0)nd}</DisplayString>

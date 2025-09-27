@@ -11,7 +11,7 @@
 #include <mrdocs/Dom/Function.hpp>
 #include <test_suite/test_suite.hpp>
 
-namespace clang {
+
 namespace mrdocs {
 namespace dom {
 
@@ -43,5 +43,5 @@ TEST_SUITE(
 
 } // dom
 } // mrdocs
-} // clang
+
 

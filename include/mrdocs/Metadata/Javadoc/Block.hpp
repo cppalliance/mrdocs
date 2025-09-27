@@ -33,7 +33,7 @@
 #include <mrdocs/Metadata/Javadoc/Block/UnorderedList.hpp>
 #include <mrdocs/Support/Visitor.hpp>
 
-namespace clang::mrdocs::doc {
+namespace mrdocs::doc {
 /** Visit a block.
 
     @param block The block to visit.
@@ -131,6 +131,6 @@ tag_invoke(
             domCorpus);
     });
 }
-} // clang::mrdocs::doc
+} // mrdocs::doc
 
 #endif // MRDOCS_API_METADATA_JAVADOC_BLOCK_HPP

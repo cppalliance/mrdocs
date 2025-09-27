@@ -11,7 +11,7 @@
 #include <mrdocs/ADT/Polymorphic.hpp>
 #include <test_suite/test_suite.hpp>
 
-namespace clang::mrdocs {
+namespace mrdocs {
 
 struct X {
     virtual ~X() = default;
@@ -332,5 +332,5 @@ TEST_SUITE(
     Polymorphic_test,
     "clang.mrdocs.ADT.Polymorphic");
 
-} // clang::mrdocs
+} // mrdocs
 
