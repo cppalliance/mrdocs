@@ -314,7 +314,6 @@ populateFunctionReturnsFromFunctionBrief(
     return false;
 }
 
-
 bool
 populateFunctionReturnsForSpecial(
     FunctionInfo& I,
@@ -435,10 +434,9 @@ populateFunctionReturnsForSpecial(
     }
 
     // Special function that return the same type as the parent
+    MRDOCS_ASSERT(!innerR.valueless_after_move());
     if (I.IsRecordMethod &&
-        !innerR.valueless_after_move() &&
         innerR->isNamed() &&
-        !dynamic_cast<NamedTypeInfo const &>(*innerR).Name.valueless_after_move() &&
         dynamic_cast<NamedTypeInfo const &>(*innerR).Name->id &&
         dynamic_cast<NamedTypeInfo const &>(*innerR).Name->id == I.Parent)
     {
@@ -492,7 +490,7 @@ populateFunctionReturns(FunctionInfo& I, CorpusImpl const& corpus)
 
     // Check if we have a named return type
     MRDOCS_CHECK_OR(I.ReturnType);
-    MRDOCS_CHECK_OR(!I.ReturnType.valueless_after_move());
+    MRDOCS_ASSERT(!I.ReturnType.valueless_after_move());
     auto& inner = innermostType(I.ReturnType);
     MRDOCS_CHECK_OR(inner);
     if (inner->isNamed())

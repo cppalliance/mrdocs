@@ -171,7 +171,7 @@ findResolvedPrimarySiblingWithUrl(Corpus const& c, Info const& I)
         if constexpr (std::same_as<InfoTy, TypedefInfo>)
         {
             auto const& TOpt = U.Type;
-            MRDOCS_CHECK_OR(!TOpt.valueless_after_move(), false);
+            MRDOCS_ASSERT(!TOpt.valueless_after_move());
             TypeInfo const& T = *TOpt;
             MRDOCS_CHECK_OR(T.Kind == TypeKind::Named, false);
             auto const& NT = dynamic_cast<NamedTypeInfo const&>(T);

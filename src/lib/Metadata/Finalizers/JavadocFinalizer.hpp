@@ -346,20 +346,16 @@ private:
     void
     finalize(Polymorphic<T>&& val)
     {
-        if (!val.valueless_after_move())
-        {
-            finalize(*val);
-        }
+        MRDOCS_ASSERT(!val.valueless_after_move());
+        finalize(*val);
     }
 
     template <class T>
     void
     finalize(Polymorphic<T>& val)
     {
-        if (!val.valueless_after_move())
-        {
-            finalize(*val);
-        }
+        MRDOCS_ASSERT(!val.valueless_after_move());
+        finalize(*val);
     }
 
     /// Finalize optional and pointer-like members

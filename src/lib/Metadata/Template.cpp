@@ -73,17 +73,13 @@ toString(
 std::strong_ordering
 operator<=>(Polymorphic<TParam> const& lhs, Polymorphic<TParam> const& rhs)
 {
-    if (!lhs.valueless_after_move() && !rhs.valueless_after_move())
+    MRDOCS_ASSERT(!lhs.valueless_after_move());
+    MRDOCS_ASSERT(!rhs.valueless_after_move());
+    if (lhs->Kind == rhs->Kind)
     {
-        if (lhs->Kind == rhs->Kind)
-        {
-            return visit(*lhs, detail::VisitCompareFn<TParam>(*rhs));
-        }
-        return lhs->Kind <=> rhs->Kind;
+        return visit(*lhs, detail::VisitCompareFn<TParam>(*rhs));
     }
-    return lhs.valueless_after_move() ?
-               std::strong_ordering::less :
-               std::strong_ordering::greater;
+    return lhs->Kind <=> rhs->Kind;
 }
 
 std::string_view
@@ -106,17 +102,13 @@ toString(
 std::strong_ordering
 operator<=>(Polymorphic<TArg> const& lhs, Polymorphic<TArg> const& rhs)
 {
-    if (!lhs.valueless_after_move() && !rhs.valueless_after_move())
+    MRDOCS_ASSERT(!lhs.valueless_after_move());
+    MRDOCS_ASSERT(!rhs.valueless_after_move());
+    if (lhs->Kind == rhs->Kind)
     {
-        if (lhs->Kind == rhs->Kind)
-        {
-            return visit(*lhs, detail::VisitCompareFn<TArg>(*rhs));
-        }
-        return lhs->Kind <=> rhs->Kind;
+        return visit(*lhs, detail::VisitCompareFn<TArg>(*rhs));
     }
-    return lhs.valueless_after_move() ?
-               std::strong_ordering::less :
-               std::strong_ordering::greater;
+    return lhs->Kind <=> rhs->Kind;
 }
 
 std::string
@@ -281,8 +273,8 @@ merge(TemplateInfo& I, TemplateInfo&& Other)
     std::size_t const pn = std::min(I.Params.size(), Other.Params.size());
     for (std::size_t i = 0; i < pn; ++i)
     {
-        if (I.Params[i].valueless_after_move() ||
-            I.Params[i]->Kind != Other.Params[i]->Kind)
+        MRDOCS_ASSERT(!I.Params[i].valueless_after_move());
+        if (I.Params[i]->Kind != Other.Params[i]->Kind)
         {
             I.Params[i] = std::move(Other.Params[i]);
         }
@@ -309,8 +301,8 @@ merge(TemplateInfo& I, TemplateInfo&& Other)
     std::size_t const an = std::min(I.Args.size(), Other.Args.size());
     for (std::size_t i = 0; i < an; ++i)
     {
-        if (I.Args[i].valueless_after_move() ||
-            I.Args[i]->Kind != Other.Args[i]->Kind)
+        MRDOCS_ASSERT(!I.Args[i].valueless_after_move());
+        if (I.Args[i]->Kind != Other.Args[i]->Kind)
         {
             I.Args[i] = std::move(Other.Args[i]);
         }

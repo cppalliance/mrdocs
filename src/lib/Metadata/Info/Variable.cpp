@@ -63,7 +63,9 @@ merge(VariableInfo& I, VariableInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
     merge(I.asInfo(), std::move(Other.asInfo()));
-    if (I.Type.valueless_after_move())
+    MRDOCS_ASSERT(!I.Type.valueless_after_move());
+    if (I.Type->isNamed() &&
+        dynamic_cast<NamedTypeInfo&>(*I.Type).Name->Name.empty())
     {
         I.Type = std::move(Other.Type);
     }

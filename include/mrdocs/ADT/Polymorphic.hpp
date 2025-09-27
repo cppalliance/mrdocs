@@ -193,6 +193,19 @@ template <class T> inline constexpr bool IsPolymorphic<Polymorphic<T>> = true;
 
 } // namespace detail
 
+/// @copydoc CompareDerived(Polymorphic<Base> const&, Polymorphic<Base> const&)
+template <class Base>
+requires(!detail::IsPolymorphic<Base>) && detail::CanVisitCompare<Base>
+auto
+CompareDerived(Base const& lhs, Base const& rhs)
+{
+    if (lhs.Kind == rhs.Kind)
+    {
+        return visit(lhs, detail::VisitCompareFn<Base>(rhs));
+    }
+    return lhs.Kind <=> rhs.Kind;
+}
+
 /** @brief Compares two polymorphic objects that have visit functions
 
     This function compares two Polymorphic objects that
@@ -217,30 +230,9 @@ requires detail::CanVisitCompare<Base>
 auto
 CompareDerived(Polymorphic<Base> const& lhs, Polymorphic<Base> const& rhs)
 {
-    if (!lhs.valueless_after_move() && !rhs.valueless_after_move())
-    {
-        if (lhs->Kind == rhs->Kind)
-        {
-            return visit(*lhs, detail::VisitCompareFn<Base>(*rhs));
-        }
-        return lhs->Kind <=> rhs->Kind;
-    }
-    return lhs.valueless_after_move() ?
-               std::strong_ordering::less :
-               std::strong_ordering::greater;
-}
-
-/// @copydoc CompareDerived(Polymorphic<Base> const&, Polymorphic<Base> const&)
-template <class Base>
-requires(!detail::IsPolymorphic<Base>) && detail::CanVisitCompare<Base>
-auto
-CompareDerived(Base const& lhs, Base const& rhs)
-{
-    if (lhs.Kind == rhs.Kind)
-    {
-        return visit(lhs, detail::VisitCompareFn<Base>(rhs));
-    }
-    return lhs.Kind <=> rhs.Kind;
+    MRDOCS_ASSERT(!lhs.valueless_after_move());
+    MRDOCS_ASSERT(!rhs.valueless_after_move());
+    return CompareDerived(*lhs, *rhs);
 }
 
 template <class Base>

@@ -88,10 +88,8 @@ namedSymbol() const noexcept
         return SymbolID::invalid;
     }
     auto const* NT = dynamic_cast<NamedTypeInfo const*>(this);
-    if (NT->Name.valueless_after_move())
-    {
-        return SymbolID::invalid;
-    }
+    MRDOCS_ASSERT(NT);
+    MRDOCS_ASSERT(!NT->Name.valueless_after_move());
     return NT->Name->id;
 }
 
@@ -757,19 +755,15 @@ makeChar(FundamentalTypeKind& kind) noexcept
 std::strong_ordering
 operator<=>(Polymorphic<TypeInfo> const& lhs, Polymorphic<TypeInfo> const& rhs)
 {
-    if (!lhs.valueless_after_move() && !rhs.valueless_after_move())
+    MRDOCS_ASSERT(!lhs.valueless_after_move());
+    MRDOCS_ASSERT(!rhs.valueless_after_move());
+    auto& lhsRef = *lhs;
+    auto& rhsRef = *rhs;
+    if (lhsRef.Kind == rhsRef.Kind)
     {
-        auto& lhsRef = *lhs;
-        auto& rhsRef = *rhs;
-        if (lhsRef.Kind == rhsRef.Kind)
-        {
-            return visit(lhsRef, detail::VisitCompareFn<TypeInfo>(rhsRef));
-        }
-        return lhsRef.Kind <=> rhsRef.Kind;
+        return visit(lhsRef, detail::VisitCompareFn<TypeInfo>(rhsRef));
     }
-    return lhs.valueless_after_move() ?
-               std::strong_ordering::less :
-               std::strong_ordering::greater;
+    return lhsRef.Kind <=> rhsRef.Kind;
 }
 
 namespace {
@@ -849,10 +843,7 @@ requires std::same_as<std::remove_cvref_t<PolymorphicTypeInfoTy>, Polymorphic<Ty
 Ref
 innermostTypeImpl(PolymorphicTypeInfoTy&& TI) noexcept
 {
-    if (TI.valueless_after_move())
-    {
-        return TI;
-    }
+    MRDOCS_ASSERT(!TI.valueless_after_move());
     Optional<Ref> inner = innerTypeImpl(*TI);
     if (!inner)
     {
@@ -861,8 +852,8 @@ innermostTypeImpl(PolymorphicTypeInfoTy&& TI) noexcept
     while (inner)
     {
         Ref ref = *inner;
-        if (ref.valueless_after_move() ||
-            ref->isNamed())
+        MRDOCS_ASSERT(!ref.valueless_after_move());
+        if (ref->isNamed())
         {
             return ref;
         }

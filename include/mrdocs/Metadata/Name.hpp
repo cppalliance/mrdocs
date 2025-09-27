@@ -61,11 +61,7 @@ tag_invoke(
     Polymorphic<NameInfo> const& I,
     DomCorpus const* domCorpus)
 {
-    if(I.valueless_after_move())
-    {
-        v = nullptr;
-        return;
-    }
+    MRDOCS_ASSERT(!I.valueless_after_move());
     tag_invoke(dom::ValueFromTag{}, v, *I, domCorpus);
 }
 
