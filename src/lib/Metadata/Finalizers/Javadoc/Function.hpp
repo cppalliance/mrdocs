@@ -62,7 +62,7 @@ isCopyOrMoveConstructorOrAssignment(FunctionInfo const& I)
     auto const& paramRefPointeeOpt = paramRefType.PointeeType;
     MRDOCS_CHECK_OR(paramRefPointeeOpt, false);
     TypeInfo const& paramRefPointee = *paramRefPointeeOpt;
-    auto const *paramRefPointeeNamed = dynamic_cast<NamedTypeInfo const *>(&paramRefPointee);
+    auto const *paramRefPointeeNamed = paramRefPointee.asNamedPtr();
     MRDOCS_CHECK_OR(paramRefPointeeNamed, false);
     MRDOCS_CHECK_OR(paramRefPointeeNamed->Name, false);
     auto const& paramName = paramRefPointeeNamed->Name;

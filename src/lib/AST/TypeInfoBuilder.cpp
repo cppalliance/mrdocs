@@ -21,7 +21,7 @@ buildPointer(PointerType const*, unsigned quals)
 {
     MRDOCS_ASSERT(Inner);
     *Inner = Polymorphic<TypeInfo>(std::in_place_type<PointerTypeInfo>);
-    auto &I = dynamic_cast<PointerTypeInfo &>(**Inner);
+    auto &I = (*Inner)->asPointer();
     I.IsConst = quals & Qualifiers::Const;
     I.IsVolatile = quals & Qualifiers::Volatile;
     Inner = &I.PointeeType;
@@ -33,7 +33,7 @@ buildLValueReference(LValueReferenceType const*)
 {
     MRDOCS_ASSERT(Inner);
     *Inner = Polymorphic<TypeInfo>(std::in_place_type<LValueReferenceTypeInfo>);
-    Inner = &dynamic_cast<LValueReferenceTypeInfo &>(**Inner).PointeeType;
+    Inner = &(*Inner)->asLValueReference().PointeeType;
 }
 
 void
@@ -42,7 +42,7 @@ buildRValueReference(RValueReferenceType const*)
 {
     MRDOCS_ASSERT(Inner);
     *Inner = Polymorphic<TypeInfo>(std::in_place_type<RValueReferenceTypeInfo>);
-    Inner = &dynamic_cast<RValueReferenceTypeInfo &>(**Inner).PointeeType;
+    Inner = &(*Inner)->asRValueReference().PointeeType;
 }
 
 void
@@ -53,7 +53,7 @@ buildMemberPointer(
 {
     MRDOCS_ASSERT(Inner);
     *Inner = Polymorphic<TypeInfo>(std::in_place_type<MemberPointerTypeInfo>);
-    auto &I = dynamic_cast<MemberPointerTypeInfo &>(**Inner);
+    auto &I = (*Inner)->asMemberPointer();
     I.IsConst = quals & Qualifiers::Const;
     I.IsVolatile = quals & Qualifiers::Volatile;
     // do not set NNS because the parent type is *not*
@@ -69,7 +69,7 @@ buildArray(ArrayType const* T)
 {
     MRDOCS_ASSERT(Inner);
     *Inner = Polymorphic<TypeInfo>(std::in_place_type<ArrayTypeInfo>);
-    auto &I = dynamic_cast<ArrayTypeInfo &>(**Inner);
+    auto &I = (*Inner)->asArray();
     if (auto* CAT = dyn_cast<ConstantArrayType>(T))
     {
         getASTVisitor().populate(I.Bounds, CAT->getSizeExpr(), CAT->getSize());
@@ -88,7 +88,7 @@ populate(FunctionType const* T)
     auto* FPT = cast<FunctionProtoType>(T);
     MRDOCS_ASSERT(Inner);
     *Inner = Polymorphic<TypeInfo>(std::in_place_type<FunctionTypeInfo>);
-    auto &I = dynamic_cast<FunctionTypeInfo &>(**Inner);
+    auto &I = (*Inner)->asFunction();
     for (QualType const PT : FPT->getParamTypes())
     {
         I.ParamTypes.emplace_back(getASTVisitor().toTypeInfo(PT));
@@ -115,7 +115,7 @@ buildDecltype(
     (*Inner)->Constraints = this->Constraints;
     (*Inner)->IsPackExpansion = pack;
 
-    auto &I = dynamic_cast<DecltypeTypeInfo &>(**Inner);
+    auto &I = (*Inner)->asDecltype();
     getASTVisitor().populate(I.Operand, T->getUnderlyingExpr());
     I.IsConst = quals & Qualifiers::Const;
     I.IsVolatile = quals & Qualifiers::Volatile;
@@ -136,7 +136,7 @@ buildAuto(
     (*Inner)->Constraints = this->Constraints;
     (*Inner)->IsPackExpansion = pack;
 
-    auto &I = dynamic_cast<AutoTypeInfo &>(**Inner);
+    auto &I = (*Inner)->asAuto();
     I.IsConst = quals & Qualifiers::Const;
     I.IsVolatile = quals & Qualifiers::Volatile;
     I.Keyword = toAutoKind(T->getKeyword());
@@ -170,7 +170,7 @@ buildTerminal(
     (*Inner)->IsPackExpansion = pack;
     (*Inner)->Constraints = this->Constraints;
 
-    auto &TI = dynamic_cast<NamedTypeInfo &>(**Inner);
+    auto &TI = (*Inner)->asNamed();
     TI.IsConst = quals & Qualifiers::Const;
     TI.IsVolatile = quals & Qualifiers::Volatile;
     TI.Name = Polymorphic<NameInfo>(std::in_place_type<IdentifierNameInfo>);
@@ -198,14 +198,14 @@ buildTerminal(
     (*Inner)->IsPackExpansion = pack;
     (*Inner)->Constraints = this->Constraints;
 
-    auto &I = dynamic_cast<NamedTypeInfo &>(**Inner);
+    auto &I = (*Inner)->asNamed();
     I.IsConst = quals & Qualifiers::Const;
     I.IsVolatile = quals & Qualifiers::Volatile;
 
     if (TArgs)
     {
         I.Name = Polymorphic<NameInfo>(std::in_place_type<SpecializationNameInfo>);
-        auto &Name = dynamic_cast<SpecializationNameInfo &>(*I.Name);
+        auto &Name = I.Name->asSpecialization();
         if (II)
         {
             Name.Name = II->getName();
@@ -250,7 +250,7 @@ buildTerminal(
     (*Inner)->IsPackExpansion = pack;
     (*Inner)->Constraints = this->Constraints;
 
-    auto &TI = dynamic_cast<NamedTypeInfo &>(**Inner);
+    auto &TI = (*Inner)->asNamed();
     TI.IsConst = quals & Qualifiers::Const;
     TI.IsVolatile = quals & Qualifiers::Volatile;
 
@@ -279,7 +279,7 @@ buildTerminal(
     {
         TI.Name =
             Polymorphic<NameInfo>(std::in_place_type<SpecializationNameInfo>);
-        auto &Name = dynamic_cast<SpecializationNameInfo &>(*TI.Name);
+        auto &Name = TI.Name->asSpecialization();
         populateNameInfo(Name, D);
         getASTVisitor().populate(Name.TemplateArgs, *TArgs);
     }

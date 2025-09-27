@@ -75,7 +75,7 @@ tag_invoke(
     GuideInfo const& I,
     DomCorpus const* domCorpus)
 {
-    tag_invoke(t, io, dynamic_cast<Info const&>(I), domCorpus);
+    tag_invoke(t, io, I.asInfo(), domCorpus);
     io.map("params", dom::LazyArray(I.Params, domCorpus));
     io.map("deduced", I.Deduced);
     io.map("template", I.Template);

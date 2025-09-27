@@ -39,7 +39,7 @@ struct IdentifierNameInfo final
     auto
     operator<=>(IdentifierNameInfo const& other) const
     {
-        return dynamic_cast<NameInfo const&>(*this) <=> dynamic_cast<NameInfo const&>(other);
+        return asName() <=> other.asName();
     }
 };
 

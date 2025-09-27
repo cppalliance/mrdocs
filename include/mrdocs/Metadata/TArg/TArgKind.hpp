@@ -24,12 +24,8 @@ namespace clang::mrdocs {
 */
 enum class TArgKind : int
 {
-    /// type arguments
-    Type = 1, // for bitstream
-    /// non-type arguments, i.e. expressions
-    Constant,
-    /// template template arguments, i.e. template names
-    Template
+    #define INFO(Type) Type,
+    #include <mrdocs/Metadata/TArg/TArgInfoNodes.inc>
 };
 
 MRDOCS_DECL

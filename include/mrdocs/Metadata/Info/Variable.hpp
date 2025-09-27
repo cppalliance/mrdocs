@@ -106,7 +106,7 @@ tag_invoke(
     VariableInfo const& I,
     DomCorpus const* domCorpus)
 {
-    tag_invoke(t, io, dynamic_cast<Info const&>(I), domCorpus);
+    tag_invoke(t, io, I.asInfo(), domCorpus);
     io.map("type", I.Type);
     io.map("template", I.Template);
     if (I.StorageClass != StorageClassKind::None)

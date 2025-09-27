@@ -18,10 +18,8 @@ namespace clang::mrdocs {
 
 enum class NameKind
 {
-    /// A simple identifier
-    Identifier = 1, // for bitstream
-    /// A template instantiation
-    Specialization
+#define INFO(Type) Type,
+#include <mrdocs/Metadata/Name/NameInfoNodes.inc>
 };
 
 MRDOCS_DECL

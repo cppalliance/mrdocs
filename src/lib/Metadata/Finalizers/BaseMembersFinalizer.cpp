@@ -107,8 +107,7 @@ inheritBaseMembers(
         Info& otherInfo = *otherInfoPtr;
 
         // Check if we're not attempt to copy a special member function
-        if (auto const *funcPtr =
-                dynamic_cast<FunctionInfo const *>(otherInfoPtr)) {
+        if (auto const *funcPtr = otherInfoPtr->asFunctionPtr()) {
           MRDOCS_CHECK_OR_CONTINUE(
               !is_one_of(funcPtr->Class, {FunctionClass::Constructor,
                                           FunctionClass::Destructor}));
@@ -229,14 +228,14 @@ operator()(RecordInfo& I)
     {
         MRDOCS_ASSERT(!baseI.Type.valueless_after_move());
         MRDOCS_CHECK_OR_CONTINUE(baseI.Type->isNamed());
-        auto& baseNameType = dynamic_cast<NamedTypeInfo const&>(*baseI.Type);
+        auto& baseNameType = baseI.Type->asNamed();
         MRDOCS_ASSERT(!baseNameType.Name.valueless_after_move());
-        auto& baseName = dynamic_cast<NameInfo const&>(*baseNameType.Name);
+        auto& baseName = baseNameType.Name->asName();
         SymbolID baseID = baseName.id;
         if (corpus_.config->extractImplicitSpecializations && 
             baseName.isSpecialization())
         {
-            auto& baseSpec = dynamic_cast<SpecializationNameInfo const&>(baseName);
+            auto& baseSpec = baseName.asSpecialization();
             baseID = baseSpec.specializationID;
         }
         MRDOCS_CHECK_OR_CONTINUE(baseID);

@@ -704,10 +704,10 @@ populate(
                     auto& inner = innermostType(BaseType);
                     MRDOCS_CHECK_OR(inner);
                     MRDOCS_CHECK_OR(inner->isNamed());
-                    auto& NTI = dynamic_cast<NamedTypeInfo&>(*inner);
+                    auto& NTI = inner->asNamed();
                     MRDOCS_CHECK_OR(NTI.Name);
                     MRDOCS_CHECK_OR(NTI.Name->isSpecialization());
-                    auto& SNI = dynamic_cast<SpecializationNameInfo&>(*NTI.Name);
+                    auto& SNI = NTI.Name->asSpecialization();
                     SNI.specializationID = SI->id;
                 }();
             }
@@ -1191,7 +1191,7 @@ populate(
     {
         I.Type = toTypeInfo(TSI->getType());
         MRDOCS_CHECK_OR((*I.Type)->isNamed());
-        auto const& NTI = dynamic_cast<NamedTypeInfo&>(**I.Type);
+        auto const& NTI = (*I.Type)->asNamed();
         MRDOCS_CHECK_OR(NTI.Name);
         I.id = NTI.Name->id;
     }
@@ -1253,7 +1253,7 @@ populate(
     Optional<Polymorphic<NameInfo>> NI = toNameInfo(Aliased, {}, NNS);
     MRDOCS_CHECK_OR(NI);
     MRDOCS_ASSERT((*NI)->isIdentifier());
-    I.AliasedSymbol = std::move(dynamic_cast<IdentifierNameInfo&>(**NI));
+    I.AliasedSymbol = std::move((**NI).asIdentifier());
 }
 
 void
@@ -1346,7 +1346,7 @@ populate(
         {
             auto& arg = *it;
             MRDOCS_ASSERT(!arg.valueless_after_move());
-            if (auto* T = dynamic_cast<TypeTArg*>(arg.operator->()))
+            if (auto* T = (arg.operator->())->asTypePtr())
             {
                 MRDOCS_ASSERT(!T->Type.valueless_after_move());
                 if (!T->Type->Constraints.empty())
@@ -1508,7 +1508,7 @@ populate(
             {
                 I = Polymorphic<TParam>(std::in_place_type<TypeTParam>);
             }
-            auto* R = dynamic_cast<TypeTParam*>(I.operator->());
+            auto* R = (I.operator->())->asTypePtr();
             if (P->wasDeclaredWithTypename())
             {
                 R->KeyKind = TParamKeyKind::Typename;
@@ -1537,7 +1537,7 @@ populate(
             {
                 I = Polymorphic<TParam>(std::in_place_type<ConstantTParam>);
             }
-            auto* R = dynamic_cast<ConstantTParam*>(I.operator->());
+            auto* R = (I.operator->())->asConstantPtr();
             R->Type = toTypeInfo(P->getType());
             if (P->hasDefaultArgument() && !R->Default)
             {
@@ -1556,7 +1556,7 @@ populate(
             MRDOCS_CHECK_OR(TTPD);
             TemplateParameterList const* TPL = TTPD->getTemplateParameters();
             MRDOCS_CHECK_OR(TPL);
-            auto* Result = dynamic_cast<TemplateTParam*>(I.operator->());
+            auto* Result = (I.operator->())->asTemplatePtr();
             Result->Params.reserve(TPL->size());
             for (std::size_t i = 0; i < TPL->size(); ++i)
             {
@@ -1639,7 +1639,7 @@ populate(
 
             if (param->isConstant())
             {
-                auto& T = dynamic_cast<ConstantTParam&>(*param);
+                auto& T = (*param).asConstant();
                 MRDOCS_ASSERT(!T.Type.valueless_after_move());
                 if (!T.Type->Constraints.empty())
                 {
@@ -1659,7 +1659,7 @@ populate(
             if (param->Default &&
                 (*param->Default)->isType())
             {
-                if (auto const* T = dynamic_cast<TypeTArg*>((*param->Default).operator->()))
+                if (auto const* T = ((*param->Default).operator->())->asTypePtr())
                 {
                     MRDOCS_ASSERT(!T->Type.valueless_after_move());
                     if (!T->Type->Constraints.empty())
@@ -2110,7 +2110,7 @@ toNameInfo(
     if (TArgs)
     {
         I = Polymorphic<NameInfo>(std::in_place_type<SpecializationNameInfo>);
-        populate(dynamic_cast<SpecializationNameInfo &>(**I).TemplateArgs, *TArgs);
+        populate((**I).asSpecialization().TemplateArgs, *TArgs);
     }
     else
     {

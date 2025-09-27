@@ -87,7 +87,7 @@ namedSymbol() const noexcept
     {
         return SymbolID::invalid;
     }
-    auto const* NT = dynamic_cast<NamedTypeInfo const*>(this);
+    auto const* NT = this->asNamedPtr();
     MRDOCS_ASSERT(NT);
     MRDOCS_ASSERT(!NT->Name.valueless_after_move());
     return NT->Name->id;
@@ -318,7 +318,7 @@ std::strong_ordering
 NamedTypeInfo::
 operator<=>(NamedTypeInfo const& other) const
 {
-    if (auto const br = dynamic_cast<TypeInfo const&>(*this) <=> dynamic_cast<TypeInfo const&>(other);
+    if (auto const br = this->asType() <=> other.asType();
         !std::is_eq(br))
     {
         return br;
@@ -364,8 +364,7 @@ operator<=>(ArrayTypeInfo const&) const = default;
 std::strong_ordering
 FunctionTypeInfo::
 operator<=>(FunctionTypeInfo const& other) const {
-    if (auto const r = dynamic_cast<TypeInfo const&>(*this) <=>
-             dynamic_cast<TypeInfo const&>(other);
+    if (auto const r = this->asType() <=> other.asType();
         !std::is_eq(r))
     {
         return r;

@@ -25,6 +25,16 @@ struct ExprInfo
     /** The expression, as written */
     std::string Written;
 
+    ExprInfo& asExpr() noexcept
+    {
+        return *this;
+    }
+
+    ExprInfo const& asExpr() const noexcept
+    {
+        return *this;
+    }
+
     auto operator<=>(ExprInfo const&) const = default;
 };
 
@@ -49,8 +59,7 @@ struct ConstantExprInfo
 
     auto operator<=>(ConstantExprInfo const&) const = default;
 
-    static_assert(std::integral<type>,
-        "expression type must be integral");
+    static_assert(std::integral<type>, "expression type must be integral");
 };
 
 template <class T>
@@ -58,9 +67,7 @@ static void merge(
     ConstantExprInfo<T>& I,
     ConstantExprInfo<T>&& Other)
 {
-    merge(
-        dynamic_cast<ExprInfo&>(I),
-        dynamic_cast<ExprInfo&&>(Other));
+    merge(I.asExpr(), std::move(Other.asExpr()));
     if (!I.Value)
     {
         I.Value = std::move(Other.Value);

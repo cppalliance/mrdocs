@@ -24,6 +24,11 @@ namespace clang::mrdocs {
 
 class DomCorpus;
 
+/* Forward declarations
+ */
+#define INFO(Type) struct Type##TParam;
+#include <mrdocs/Metadata/TParam/TParamInfoNodes.inc>
+
 struct TParam
 {
     /** The kind of template parameter this is
@@ -43,11 +48,53 @@ struct TParam
 
     constexpr virtual ~TParam() = default;
 
-    constexpr bool isType()     const noexcept { return Kind == TParamKind::Type; }
-    constexpr bool isConstant()  const noexcept { return Kind == TParamKind::Constant; }
-    constexpr bool isTemplate() const noexcept { return Kind == TParamKind::Template; }
-
     std::strong_ordering operator<=>(TParam const&) const;
+
+    constexpr TParam const& asTParam() const noexcept
+    {
+        return *this;
+    }
+
+    constexpr TParam& asTParam() noexcept
+    {
+        return *this;
+    }
+
+    #define INFO(Type) constexpr bool is##Type() const noexcept { \
+        return Kind == TParamKind::Type; \
+    }
+#include <mrdocs/Metadata/TParam/TParamInfoNodes.inc>
+
+    #define INFO(Type) \
+    constexpr Type##TParam const& as##Type() const noexcept { \
+        if (Kind == TParamKind::Type) \
+            return reinterpret_cast<Type##TParam const&>(*this); \
+        MRDOCS_UNREACHABLE(); \
+    }
+#include <mrdocs/Metadata/TParam/TParamInfoNodes.inc>
+
+#define INFO(Type) \
+    constexpr Type##TParam & as##Type() noexcept { \
+        if (Kind == TParamKind::Type) \
+            return reinterpret_cast<Type##TParam&>(*this); \
+        MRDOCS_UNREACHABLE(); \
+    }
+#include <mrdocs/Metadata/TParam/TParamInfoNodes.inc>
+
+#define INFO(Type) \
+    constexpr Type##TParam const* as##Type##Ptr() const noexcept { \
+        if (Kind == TParamKind::Type) { return reinterpret_cast<Type##TParam const*>(this); } \
+        return nullptr; \
+    }
+#include <mrdocs/Metadata/TParam/TParamInfoNodes.inc>
+
+#define INFO(Type) \
+    constexpr Type##TParam * as##Type##Ptr() noexcept { \
+        if (Kind == TParamKind::Type) { return reinterpret_cast<Type##TParam *>(this); } \
+        return nullptr; \
+    }
+#include <mrdocs/Metadata/TParam/TParamInfoNodes.inc>
+
 
 protected:
     constexpr

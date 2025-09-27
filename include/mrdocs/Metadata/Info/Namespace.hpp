@@ -155,7 +155,7 @@ tag_invoke(
     NamespaceInfo const& I,
     DomCorpus const* domCorpus)
 {
-    tag_invoke(t, io, dynamic_cast<Info const&>(I), domCorpus);
+    tag_invoke(t, io, I.asInfo(), domCorpus);
     io.map("isInline", I.IsInline);
     io.map("isAnonymous", I.IsAnonymous);
     io.map("members", I.Members);

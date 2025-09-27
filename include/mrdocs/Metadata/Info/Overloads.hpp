@@ -79,7 +79,7 @@ tag_invoke(
     OverloadsInfo const& I,
     DomCorpus const* domCorpus)
 {
-    tag_invoke(t, io, dynamic_cast<Info const&>(I), domCorpus);
+    tag_invoke(t, io, I.asInfo(), domCorpus);
     io.map("class", I.Class);
     io.map("overloadedOperator", I.OverloadedOperator);
     io.map("members", dom::LazyArray(I.Members, domCorpus));
