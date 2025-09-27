@@ -15,7 +15,7 @@
 #define MRDOCS_API_METADATA_TARG_TEMPLATETARG_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/TArg/NonTypeTArg.hpp>
+#include <mrdocs/Metadata/TArg/ConstantTArg.hpp>
 #include <mrdocs/Metadata/TArg/TArgBase.hpp>
 #include <mrdocs/Metadata/TArg/TypeTArg.hpp>
 

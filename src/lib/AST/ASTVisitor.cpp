@@ -178,10 +178,11 @@ traverse(UsingDirectiveDecl const* D)
     Info* NDI = findOrTraverse(ND);
     MRDOCS_CHECK_OR(NDI, nullptr);
 
-    auto res = toNameInfo(ND);
-    MRDOCS_ASSERT(!res.valueless_after_move());
-    MRDOCS_ASSERT(res->isIdentifier());
-    if (NameInfo NI = *res;
+    Optional<Polymorphic<NameInfo>> res = toNameInfo(ND);
+    MRDOCS_CHECK_OR(res, nullptr);
+    MRDOCS_ASSERT(!res->valueless_after_move());
+    MRDOCS_ASSERT((*res)->isIdentifier());
+    if (NameInfo NI = **res;
         !contains(PNI.UsingDirectives, NI))
     {
         PNI.UsingDirectives.push_back(std::move(NI));
@@ -1249,9 +1250,10 @@ populate(
 {
     NamedDecl const* Aliased = D->getAliasedNamespace();
     NestedNameSpecifier NNS = D->getQualifier();
-    Polymorphic<NameInfo> NI = toNameInfo(Aliased, {}, NNS);
-    MRDOCS_ASSERT(NI->isIdentifier());
-    I.AliasedSymbol = std::move(dynamic_cast<IdentifierNameInfo&>(*NI));
+    Optional<Polymorphic<NameInfo>> NI = toNameInfo(Aliased, {}, NNS);
+    MRDOCS_CHECK_OR(NI);
+    MRDOCS_ASSERT((*NI)->isIdentifier());
+    I.AliasedSymbol = std::move(dynamic_cast<IdentifierNameInfo&>(**NI));
 }
 
 void
@@ -1263,7 +1265,9 @@ populate(
     I.Class = UsingClass::Normal;
     DeclarationName const& Name = D->getNameInfo().getName();
     NestedNameSpecifier const& NNS = D->getQualifier();
-    I.IntroducedName = toNameInfo(Name, {}, NNS);
+    auto INI = toNameInfo(Name, {}, NNS);
+    MRDOCS_CHECK_OR(INI);
+    I.IntroducedName = *INI;
     for (UsingShadowDecl const* UDS: D->shadows())
     {
         ScopeExitRestore s(mode_, Dependency);
@@ -2054,14 +2058,15 @@ toTypeInfo(QualType const qt, TraversalMode const mode)
     return Builder.result();
 }
 
-Polymorphic<NameInfo>
-ASTVisitor::toNameInfo(NestedNameSpecifier NNS)
+Optional<Polymorphic<NameInfo>>
+ASTVisitor::
+toNameInfo(NestedNameSpecifier NNS)
 {
     MRDOCS_SYMBOL_TRACE(NNS, context_);
     ScopeExitRestore scope(mode_, Dependency);
     switch(NNS.getKind()) {
     case NestedNameSpecifier::Kind::Null:
-        return nullable_traits<Polymorphic<NameInfo>>::null();
+        return std::nullopt;
     case NestedNameSpecifier::Kind::Type: {
         const Type *T = NNS.getAsType();
         NameInfoBuilder Builder(*this);
@@ -2082,40 +2087,42 @@ ASTVisitor::toNameInfo(NestedNameSpecifier NNS)
     }
     case NestedNameSpecifier::Kind::Global:
     case NestedNameSpecifier::Kind::MicrosoftSuper:
-        // FIXME: Unimplemented.
-        return nullable_traits<Polymorphic<NameInfo>>::null();
+    default:
+        // Unimplemented
+        return std::nullopt;
     }
     MRDOCS_UNREACHABLE();
 }
 
 template <class TArgRange>
-Polymorphic<NameInfo>
+Optional<Polymorphic<NameInfo>>
 ASTVisitor::
-toNameInfo(DeclarationName const Name,
+toNameInfo(
+    DeclarationName const Name,
     Optional<TArgRange> TArgs,
     NestedNameSpecifier NNS)
 {
     if (Name.isEmpty())
     {
-        return nullable_traits<Polymorphic<NameInfo>>::null();
+        return std::nullopt;
     }
-    Polymorphic<NameInfo> I = nullable_traits<Polymorphic<NameInfo>>::null();
-    if(TArgs)
+    Optional<Polymorphic<NameInfo>> I = std::nullopt;
+    if (TArgs)
     {
         I = Polymorphic<NameInfo>(std::in_place_type<SpecializationNameInfo>);
-        populate(static_cast<SpecializationNameInfo &>(*I).TemplateArgs, *TArgs);
+        populate(dynamic_cast<SpecializationNameInfo &>(**I).TemplateArgs, *TArgs);
     }
     else
     {
         I = Polymorphic<NameInfo>(std::in_place_type<IdentifierNameInfo>);
     }
-    I->Name = extractName(Name);
-    I->Prefix = toNameInfo(NNS);
+    (*I)->Name = extractName(Name);
+    (*I)->Prefix = toNameInfo(NNS);
     return I;
 }
 
 template <class TArgRange>
-Polymorphic<NameInfo>
+Optional<Polymorphic<NameInfo>>
 ASTVisitor::
 toNameInfo(
     Decl const* D,
@@ -2125,25 +2132,25 @@ toNameInfo(
     auto const* ND = dyn_cast_if_present<NamedDecl>(D);
     if (!ND)
     {
-        return nullable_traits<Polymorphic<NameInfo>>::null();
+        return std::nullopt;
     }
-    auto I = toNameInfo(
-        ND->getDeclName(), std::move(TArgs), NNS);
-    if (I.valueless_after_move())
+    Optional<Polymorphic<NameInfo>> I = toNameInfo(ND->getDeclName(), std::move(TArgs), NNS);
+    if (!I)
     {
-        return nullable_traits<Polymorphic<NameInfo>>::null();
+        return std::nullopt;
     }
+    MRDOCS_ASSERT(!I->valueless_after_move());
     ScopeExitRestore scope(mode_, Dependency);
     auto* ID = getInstantiatedFrom(D);
     if (Info const* info = findOrTraverse(const_cast<Decl*>(ID)))
     {
-        I->id = info->id;
+        (*I)->id = info->id;
     }
     return I;
 }
 
 template
-Polymorphic<NameInfo>
+Optional<Polymorphic<NameInfo>>
 ASTVisitor::
 toNameInfo<llvm::ArrayRef<clang::TemplateArgument>>(
     Decl const* D,
@@ -2233,7 +2240,7 @@ toTArg(TemplateArgument const& A)
     // expression
     case TemplateArgument::Expression:
     {
-        auto R = Polymorphic<TArg>(std::in_place_type<NonTypeTArg>);
+        auto R = Polymorphic<TArg>(std::in_place_type<ConstantTArg>);
         R->IsPackExpansion = A.isPackExpansion();
         // if this is a pack expansion, use the template argument
         // expansion pattern in place of the template argument pack
@@ -2242,7 +2249,7 @@ toTArg(TemplateArgument const& A)
             A.getPackExpansionPattern() : A;
 
         llvm::raw_string_ostream stream(
-            static_cast<NonTypeTArg &>(*R).Value.Written);
+            static_cast<ConstantTArg&>(*R).Value.Written);
         adjusted.print(context_.getPrintingPolicy(), stream, false);
 
         return Polymorphic<TArg>(R);
@@ -2250,7 +2257,7 @@ toTArg(TemplateArgument const& A)
     default:
         MRDOCS_UNREACHABLE();
     }
-    return nullable_traits<Polymorphic<TArg>>::null();
+    return Polymorphic<TArg>(std::in_place_type<ConstantTArg>);
 }
 
 

@@ -20,13 +20,13 @@
 
 namespace clang::mrdocs {
 
-struct NonTypeTArg final
+struct ConstantTArg final
     : TArgCommonBase<TArgKind::Constant>
 {
     /** Template argument expression. */
     ExprInfo Value;
 
-    auto operator<=>(NonTypeTArg const&) const = default;
+    auto operator<=>(ConstantTArg const&) const = default;
 };
 
 } // clang::mrdocs

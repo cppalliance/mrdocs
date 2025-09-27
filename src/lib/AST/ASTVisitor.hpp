@@ -771,17 +771,18 @@ private:
         return toTypeInfo(qt, TraversalMode::Dependency);
     }
 
-    Polymorphic<NameInfo> toNameInfo(NestedNameSpecifier NNS);
+    Optional<Polymorphic<NameInfo>>
+    toNameInfo(NestedNameSpecifier NNS);
 
     template <class TArgRange = ArrayRef<TemplateArgument>>
-    Polymorphic<NameInfo>
+    Optional<Polymorphic<NameInfo>>
     toNameInfo(
         DeclarationName Name,
         Optional<TArgRange> TArgs = std::nullopt,
         NestedNameSpecifier NNS = std::nullopt);
 
     template <class TArgRange = ArrayRef<TemplateArgument>>
-    Polymorphic<NameInfo>
+    Optional<Polymorphic<NameInfo>>
     toNameInfo(
         Decl const* D,
         Optional<TArgRange> TArgs = std::nullopt,

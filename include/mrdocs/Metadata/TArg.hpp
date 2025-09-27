@@ -15,7 +15,7 @@
 #define MRDOCS_API_METADATA_TARG_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/TArg/NonTypeTArg.hpp>
+#include <mrdocs/Metadata/TArg/ConstantTArg.hpp>
 #include <mrdocs/Metadata/TArg/TArgBase.hpp>
 #include <mrdocs/Metadata/TArg/TemplateTArg.hpp>
 #include <mrdocs/Metadata/TArg/TypeTArg.hpp>
@@ -41,7 +41,7 @@ visit(
             std::forward<Args>(args)...);
     case TArgKind::Constant:
         return f(static_cast<add_cv_from_t<
-            TArgTy, NonTypeTArg>&>(A),
+            TArgTy, ConstantTArg>&>(A),
             std::forward<Args>(args)...);
     case TArgKind::Template:
         return f(static_cast<add_cv_from_t<

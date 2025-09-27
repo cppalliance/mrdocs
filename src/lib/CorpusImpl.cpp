@@ -368,8 +368,8 @@ isDecayedEqual(
     }
     if (lhs->isConstant())
     {
-        return trim(static_cast<const NonTypeTArg &>(*lhs).Value.Written) ==
-               trim(static_cast<const NonTypeTArg &>(*rhs).Value.Written);
+        return trim(static_cast<ConstantTArg const&>(*lhs).Value.Written) ==
+               trim(static_cast<ConstantTArg const&>(*rhs).Value.Written);
     }
     return false;
 }

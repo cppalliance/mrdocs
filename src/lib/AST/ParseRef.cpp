@@ -677,8 +677,8 @@ private:
             ptr_ = start;
             return false;
         }
-        dest = Polymorphic<TArg>(std::in_place_type<NonTypeTArg>);
-        static_cast<NonTypeTArg &>(*dest).Value.Written =
+        dest = Polymorphic<TArg>(std::in_place_type<ConstantTArg>);
+        static_cast<ConstantTArg&>(*dest).Value.Written =
             trim(std::string_view(exprStart, ptr_ - exprStart));
         return true;
     }
@@ -1942,7 +1942,10 @@ private:
 
             // Change current type to array type
             ArrayTypeInfo ATI;
-            ATI.ElementType = std::move(*dest);
+            if (dest)
+            {
+                ATI.ElementType = std::move(*dest);
+            }
 
             // expr (optional)
             char const* exprStart = ptr_;
@@ -2029,7 +2032,10 @@ private:
                 return false;
             }
             FunctionTypeInfo FTI;
-            FTI.ReturnType = std::move(*dest);
+            if (dest)
+            {
+                FTI.ReturnType = std::move(*dest);
+            }
             FTI.ParamTypes.insert(
                 FTI.ParamTypes.end(),
                 std::make_move_iterator(function.Params.begin()),
