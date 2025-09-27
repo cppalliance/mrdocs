@@ -151,7 +151,7 @@ struct OptionalTest {
         Optional<Location> loc;
         BOOST_TEST(!loc.has_value()); // default has empty ShortPath
 
-        Location L{ "full.cpp", "short.cpp", "src.cpp", 10u, true };
+        Location L{ "full.cpp", "short.cpp", "src.cpp", 10u, 0, true };
         Optional<Location> a{ L };
         BOOST_TEST(a.has_value());
         BOOST_TEST(a->ShortPath == "short.cpp");
