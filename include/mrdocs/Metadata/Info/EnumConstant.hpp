@@ -53,7 +53,7 @@ tag_invoke(
     EnumConstantInfo const& I,
     DomCorpus const* domCorpus)
 {
-    tag_invoke(t, io, dynamic_cast<Info const&>(I), domCorpus);
+    tag_invoke(t, io, I.asInfo(), domCorpus);
     if (!I.Initializer.Written.empty())
     {
         io.map("initializer", I.Initializer.Written);

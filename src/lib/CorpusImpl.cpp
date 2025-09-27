@@ -249,19 +249,19 @@ isDecayedEqualImpl(
     {
         return
             qualifiedNameCompare(
-                dynamic_cast<NamedTypeInfo const&>(*lhs).Name,
-                dynamic_cast<NamedTypeInfo const&>(*rhs).Name,
+                lhs->asNamed().Name,
+                rhs->asNamed().Name,
                 context, corpus);
     }
     case TypeKind::Decltype:
     {
-        return dynamic_cast<DecltypeTypeInfo const&>(*lhs).Operand ==
-               dynamic_cast<DecltypeTypeInfo const&>(*rhs).Operand;
+        return lhs->asDecltype().Operand ==
+               rhs->asDecltype().Operand;
     }
     case TypeKind::Auto:
     {
-        auto const& lhsAuto = dynamic_cast<AutoTypeInfo const&>(*lhs);
-        auto const& rhsAuto = dynamic_cast<AutoTypeInfo const&>(*rhs);
+        auto const& lhsAuto = lhs->asAuto();
+        auto const& rhsAuto = rhs->asAuto();
         return lhsAuto.Keyword == rhsAuto.Keyword &&
                lhsAuto.Constraint == rhsAuto.Constraint;
     }
@@ -269,8 +269,8 @@ isDecayedEqualImpl(
     {
         return
             isDecayedEqualImpl<true>(
-                dynamic_cast<LValueReferenceTypeInfo const&>(*lhs).PointeeType,
-                dynamic_cast<LValueReferenceTypeInfo const&>(*rhs).PointeeType,
+                lhs->asLValueReference().PointeeType,
+                rhs->asLValueReference().PointeeType,
                 context, corpus);
     }
     case TypeKind::RValueReference:

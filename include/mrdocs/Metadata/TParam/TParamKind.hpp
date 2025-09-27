@@ -21,12 +21,8 @@ namespace clang::mrdocs {
 
 enum class TParamKind : int
 {
-    /// Template type parameter, e.g. "typename T" or "class T"
-    Type = 1, // for bitstream
-    /// Template non-type parameter, e.g. "int N" or "auto N"
-    Constant,
-    /// Template-template parameter, e.g. "template<typename> typename T"
-    Template
+    #define INFO(Type) Type,
+    #include <mrdocs/Metadata/TParam/TParamInfoNodes.inc>
 };
 
 MRDOCS_DECL

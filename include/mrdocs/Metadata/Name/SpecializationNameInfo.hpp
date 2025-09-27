@@ -38,8 +38,7 @@ struct SpecializationNameInfo final
     auto
     operator<=>(SpecializationNameInfo const& other) const
     {
-        if (auto const r =
-            dynamic_cast<NameInfo const&>(*this) <=> dynamic_cast<NameInfo const&>(other);
+        if (auto const r = asName() <=> other.asName();
             !std::is_eq(r))
         {
             return r;

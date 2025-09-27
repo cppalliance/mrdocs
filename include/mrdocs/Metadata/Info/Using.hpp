@@ -155,7 +155,7 @@ tag_invoke(
     UsingInfo const& I,
     DomCorpus const* domCorpus)
 {
-    tag_invoke(t, io, dynamic_cast<Info const&>(I), domCorpus);
+    tag_invoke(t, io, I.asInfo(), domCorpus);
     io.map("usingClass", I.Class);
     io.map("shadows", dom::LazyArray(I.ShadowDeclarations, domCorpus));
     io.map("qualifier", I.IntroducedName);

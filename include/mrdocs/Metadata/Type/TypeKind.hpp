@@ -18,24 +18,8 @@ namespace clang::mrdocs {
 
 enum class TypeKind
 {
-    /// A Named type
-    Named = 1, // for bitstream
-    /// A decltype type
-    Decltype,
-    /// An auto type
-    Auto,
-    /// An LValueReference type
-    LValueReference,
-    /// An RValueReference type
-    RValueReference,
-    /// A Pointer type
-    Pointer,
-    /// A MemberPointer type
-    MemberPointer,
-    /// An Array type
-    Array,
-    /// A Function type
-    Function,
+    #define INFO(Type) Type,
+    #include <mrdocs/Metadata/Type/TypeInfoNodes.inc>
 };
 
 MRDOCS_DECL

@@ -87,7 +87,7 @@ tag_invoke(
     EnumInfo const& I,
     DomCorpus const* domCorpus)
 {
-    tag_invoke(t, io, dynamic_cast<Info const&>(I), domCorpus);
+    tag_invoke(t, io, I.asInfo(), domCorpus);
     io.map("type", I.UnderlyingType);
     io.map("isScoped", I.Scoped);
     io.map("constants", dom::LazyArray(I.Constants, domCorpus));

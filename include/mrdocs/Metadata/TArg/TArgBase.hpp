@@ -19,21 +19,67 @@
 
 namespace clang::mrdocs {
 
+/* Forward declarations
+ */
+#define INFO(Type) struct Type##TArg;
+#include <mrdocs/Metadata/TArg/TArgInfoNodes.inc>
+
 struct TArg
 {
     /** The kind of template argument this is. */
-    TArgKind Kind;
+    TArgKind Kind = TArgKind::Type;
 
     /** Whether this template argument is a parameter expansion. */
     bool IsPackExpansion = false;
 
     constexpr virtual ~TArg() = default;
 
-    constexpr bool isType()     const noexcept { return Kind == TArgKind::Type; }
-    constexpr bool isConstant()  const noexcept { return Kind == TArgKind::Constant; }
-    constexpr bool isTemplate() const noexcept { return Kind == TArgKind::Template; }
-
     auto operator<=>(TArg const&) const = default;
+
+    constexpr TArg const& asTArg() const noexcept
+    {
+        return *this;
+    }
+
+    constexpr TArg& asTArg() noexcept
+    {
+        return *this;
+    }
+
+    #define INFO(Type) constexpr bool is##Type() const noexcept { \
+        return Kind == TArgKind::Type; \
+    }
+#include <mrdocs/Metadata/TArg/TArgInfoNodes.inc>
+
+    #define INFO(Type) \
+    constexpr Type##TArg const& as##Type() const noexcept { \
+        if (Kind == TArgKind::Type) \
+            return reinterpret_cast<Type##TArg const&>(*this); \
+        MRDOCS_UNREACHABLE(); \
+    }
+#include <mrdocs/Metadata/TArg/TArgInfoNodes.inc>
+
+#define INFO(Type) \
+    constexpr Type##TArg & as##Type() noexcept { \
+        if (Kind == TArgKind::Type) \
+            return reinterpret_cast<Type##TArg&>(*this); \
+        MRDOCS_UNREACHABLE(); \
+    }
+#include <mrdocs/Metadata/TArg/TArgInfoNodes.inc>
+
+#define INFO(Type) \
+    constexpr Type##TArg const* as##Type##Ptr() const noexcept { \
+        if (Kind == TArgKind::Type) { return reinterpret_cast<Type##TArg const*>(this); } \
+        return nullptr; \
+    }
+#include <mrdocs/Metadata/TArg/TArgInfoNodes.inc>
+
+#define INFO(Type) \
+    constexpr Type##TArg * as##Type##Ptr() noexcept { \
+        if (Kind == TArgKind::Type) { return reinterpret_cast<Type##TArg *>(this); } \
+        return nullptr; \
+    }
+#include <mrdocs/Metadata/TArg/TArgInfoNodes.inc>
 
 protected:
     constexpr TArg() noexcept = default;

@@ -69,7 +69,7 @@ void merge(TypedefInfo& I, TypedefInfo&& Other)
     }
     MRDOCS_ASSERT(!I.Type.valueless_after_move());
     if (I.Type->isNamed() &&
-        dynamic_cast<NamedTypeInfo&>(*I.Type).Name->Name.empty())
+        I.Type->asNamed().Name->Name.empty())
     {
         I.Type = std::move(Other.Type);
     }

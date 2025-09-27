@@ -292,9 +292,9 @@ operator()(RecordInfo& I)
         auto& BT = b.Type;
         MRDOCS_ASSERT(!BT.valueless_after_move());
         MRDOCS_CHECK_OR(BT->isNamed());
-        auto& NT = dynamic_cast<NamedTypeInfo&>(*BT);
+        auto& NT = BT->asNamed();
         MRDOCS_CHECK_OR(NT.Name);
-        auto& NI = dynamic_cast<NameInfo&>(*NT.Name);
+        auto& NI = NT.Name->asName();
         MRDOCS_CHECK_OR(NI.id);
         Info* baseInfo = corpus_.find(NI.id);
         MRDOCS_CHECK_OR(baseInfo);

@@ -100,7 +100,7 @@ toStringImpl(
     {
         return;
     }
-    auto const& NN = dynamic_cast<SpecializationNameInfo const&>(N);
+    auto const& NN = N.asSpecialization();
     std::span const targs = NN.TemplateArgs;
     writeTo(result, '<');
     if(! targs.empty())

@@ -20,6 +20,11 @@
 
 namespace clang::mrdocs {
 
+/* Forward declarations
+ */
+#define INFO(Type) struct Type##TypeInfo;
+#include <mrdocs/Metadata/Type/TypeInfoNodes.inc>
+
 /** A possibly qualified type.
 
     This class represents a type that may have
@@ -59,23 +64,57 @@ struct TypeInfo
      */
     std::vector<ExprInfo> Constraints;
 
-
-    constexpr bool isNamed()           const noexcept { return Kind == TypeKind::Named; }
-    constexpr bool isDecltype()        const noexcept { return Kind == TypeKind::Decltype; }
-    constexpr bool isAuto()            const noexcept { return Kind == TypeKind::Auto; }
-    constexpr bool isLValueReference() const noexcept { return Kind == TypeKind::LValueReference; }
-    constexpr bool isRValueReference() const noexcept { return Kind == TypeKind::RValueReference; }
-    constexpr bool isPointer()         const noexcept { return Kind == TypeKind::Pointer; }
-    constexpr bool isMemberPointer()   const noexcept { return Kind == TypeKind::MemberPointer; }
-    constexpr bool isArray()           const noexcept { return Kind == TypeKind::Array; }
-    constexpr bool isFunction()        const noexcept { return Kind == TypeKind::Function; }
-
     /** Return the symbol named by this type.
     */
     SymbolID
     namedSymbol() const noexcept;
 
     auto operator<=>(TypeInfo const&) const = default;
+
+    constexpr TypeInfo const& asType() const noexcept
+    {
+        return *this;
+    }
+
+    constexpr TypeInfo& asType() noexcept
+    {
+        return *this;
+    }
+
+    #define INFO(Type) constexpr bool is##Type() const noexcept { \
+        return Kind == TypeKind::Type; \
+    }
+#include <mrdocs/Metadata/Type/TypeInfoNodes.inc>
+
+    #define INFO(Type) \
+    constexpr Type##TypeInfo const& as##Type() const noexcept { \
+        if (Kind == TypeKind::Type) \
+            return reinterpret_cast<Type##TypeInfo const&>(*this); \
+        MRDOCS_UNREACHABLE(); \
+    }
+#include <mrdocs/Metadata/Type/TypeInfoNodes.inc>
+
+#define INFO(Type) \
+    constexpr Type##TypeInfo & as##Type() noexcept { \
+        if (Kind == TypeKind::Type) \
+            return reinterpret_cast<Type##TypeInfo&>(*this); \
+        MRDOCS_UNREACHABLE(); \
+    }
+#include <mrdocs/Metadata/Type/TypeInfoNodes.inc>
+
+#define INFO(Type) \
+    constexpr Type##TypeInfo const* as##Type##Ptr() const noexcept { \
+        if (Kind == TypeKind::Type) { return reinterpret_cast<Type##TypeInfo const*>(this); } \
+        return nullptr; \
+    }
+#include <mrdocs/Metadata/Type/TypeInfoNodes.inc>
+
+#define INFO(Type) \
+    constexpr Type##TypeInfo * as##Type##Ptr() noexcept { \
+        if (Kind == TypeKind::Type) { return reinterpret_cast<Type##TypeInfo *>(this); } \
+        return nullptr; \
+    }
+#include <mrdocs/Metadata/Type/TypeInfoNodes.inc>
 
 protected:
     constexpr virtual ~TypeInfo() = default;

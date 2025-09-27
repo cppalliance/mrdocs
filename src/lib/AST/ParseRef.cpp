@@ -655,7 +655,7 @@ private:
         {
             MRDOCS_ASSERT(type);
             dest = Polymorphic<TArg>(std::in_place_type<TypeTArg>);
-            dynamic_cast<TypeTArg &>(*dest).Type = std::move(*type);
+            dest->asType().Type = std::move(*type);
             return true;
         }
 
@@ -835,11 +835,11 @@ private:
         // https://en.cppreference.com/w/cpp/language/function#Function_type
         if (curParam->isArray())
         {
-            ArrayTypeInfo PrevParamType = dynamic_cast<ArrayTypeInfo &>(*curParam);
+            ArrayTypeInfo PrevParamType = curParam->asArray();
             curParam = Polymorphic<TypeInfo>(std::in_place_type<PointerTypeInfo>);
-            auto& curAsPointerType = dynamic_cast<PointerTypeInfo &>(*curParam);
+            auto& curAsPointerType = curParam->asPointer();
             curAsPointerType.PointeeType = std::move(PrevParamType.ElementType);
-            auto& PrevAsBase = dynamic_cast<TypeInfo&>(PrevParamType);
+            auto& PrevAsBase = PrevParamType.asType();
             *curParam = std::move(PrevAsBase);
         }
 
@@ -1014,7 +1014,7 @@ private:
             if (!dest)
             {
                 dest = Polymorphic<TypeInfo>(std::in_place_type<NamedTypeInfo>);
-                auto &NTI = dynamic_cast<NamedTypeInfo &>(**dest);
+                auto &NTI = (*dest)->asNamed();
                 NTI.Name->Name = "int";
                 NTI.FundamentalType = FundamentalTypeKind::Int;
             }
@@ -1027,7 +1027,7 @@ private:
               return false;
             }
             // Check if the type is "int" or "char"
-            auto& namedParam = dynamic_cast<NamedTypeInfo&>(**dest);
+            auto& namedParam = (*dest)->asNamed();
             if (!namedParam.FundamentalType)
             {
               setError(std::format(
@@ -1057,7 +1057,7 @@ private:
             if (!dest)
             {
                 dest = Polymorphic<TypeInfo>(std::in_place_type<NamedTypeInfo>);
-                auto &NTI = dynamic_cast<NamedTypeInfo &>(**dest);
+                auto &NTI = (*dest)->asNamed();
                 NTI.Name = Polymorphic<NameInfo>(std::in_place_type<IdentifierNameInfo>);
                 NTI.Name->Name = "int";
                 NTI.FundamentalType = FundamentalTypeKind::Int;
@@ -1071,7 +1071,7 @@ private:
             }
 
             // Check if the type is "int"
-            auto& namedParam = dynamic_cast<NamedTypeInfo&>(**dest);
+            auto& namedParam = (*dest)->asNamed();
             if (!namedParam.FundamentalType)
             {
                 setError(start, "expected fundamental type for 'short' specifier");
@@ -1096,7 +1096,7 @@ private:
             if (!dest)
             {
                 dest = Polymorphic<TypeInfo>(std::in_place_type<NamedTypeInfo>);
-                auto &NTI = dynamic_cast<NamedTypeInfo &>(**dest);
+                auto &NTI = (*dest)->asNamed();
                 NTI.Name = Polymorphic<NameInfo>(std::in_place_type<IdentifierNameInfo>);
                 NTI.Name->Name = "int";
                 NTI.FundamentalType = FundamentalTypeKind::Int;
@@ -1108,7 +1108,7 @@ private:
                 ptr_ = start;
                 return false;
             }
-            auto& namedParam = dynamic_cast<NamedTypeInfo&>(**dest);
+            auto& namedParam = (*dest)->asNamed();
             if (!namedParam.FundamentalType)
             {
                 setError(start, "expected fundamental type for 'long' specifier");
@@ -1211,7 +1211,7 @@ private:
             dest = Polymorphic<TypeInfo>(std::in_place_type<NamedTypeInfo>);
             MRDOCS_ASSERT(dest);
             MRDOCS_ASSERT(!dest->valueless_after_move());
-            auto &NTI = dynamic_cast<NamedTypeInfo &>(**dest);
+            auto &NTI = (*dest)->asNamed();
             MRDOCS_ASSERT(!NTI.Name.valueless_after_move());
             NTI.Name->Name = std::string_view(start, ptr_ - start);
             if (FundamentalTypeKind k;
@@ -1281,8 +1281,7 @@ private:
                         std::in_place_type<DecltypeTypeInfo>);
                     MRDOCS_ASSERT(dest);
                     MRDOCS_ASSERT(!dest->valueless_after_move());
-                    dynamic_cast<DecltypeTypeInfo&>(**dest).Operand.Written
-                        = expr;
+                    (*dest)->asDecltype().Operand.Written = expr;
                     return true;
                 }
                 setError("expected expression in decltype");
@@ -1411,11 +1410,11 @@ private:
             // Populate dest
             auto const idStr = std::string_view(idStart, ptr_ - idStart);
             Optional<Polymorphic<NameInfo>> ParentName
-                = dest ? Optional<Polymorphic<NameInfo>>(
-                             dynamic_cast<NamedTypeInfo*>(&**dest)->Name) :
-                         Optional<Polymorphic<NameInfo>>(std::nullopt);
+                = dest ?
+                     Optional<Polymorphic<NameInfo>>((*dest)->asNamed().Name) :
+                     Optional<Polymorphic<NameInfo>>(std::nullopt);
             dest = Polymorphic<TypeInfo>(std::in_place_type<NamedTypeInfo>);
-            auto &NTI = dynamic_cast<NamedTypeInfo &>(**dest);
+            auto &NTI = (*dest)->asNamed();
             NTI.Name = Polymorphic<NameInfo>(std::in_place_type<IdentifierNameInfo>);
             NTI.Name->Name = idStr;
             NTI.Name->Prefix = std::move(ParentName);
@@ -1449,7 +1448,7 @@ private:
                     return false;
                 }
                 // Replace the nameinfo with a nameinfo with args
-                auto& namedParam = dynamic_cast<NamedTypeInfo&>(**dest);
+                auto& namedParam = (*dest)->asNamed();
                 SpecializationNameInfo SNI;
                 SNI.Name = std::move(namedParam.Name->Name);
                 SNI.Prefix = std::move(namedParam.Name->Prefix);

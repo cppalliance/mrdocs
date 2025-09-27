@@ -54,7 +54,7 @@ resolveTypedef(Corpus const& c, Info const& I)
         MRDOCS_ASSERT(!TI.Type.valueless_after_move());
         TypeInfo const& T = *TI.Type;
         MRDOCS_CHECK_OR(T.Kind == TypeKind::Named, &I);
-        auto const& NT = dynamic_cast<NamedTypeInfo const&>(T);
+        auto const& NT = T.asNamed();
         MRDOCS_CHECK_OR(NT.Name, &I);
         Info const* resolved = c.find(NT.Name->id);
         MRDOCS_CHECK_OR(resolved, &I);
@@ -174,7 +174,7 @@ findResolvedPrimarySiblingWithUrl(Corpus const& c, Info const& I)
             MRDOCS_ASSERT(!TOpt.valueless_after_move());
             TypeInfo const& T = *TOpt;
             MRDOCS_CHECK_OR(T.Kind == TypeKind::Named, false);
-            auto const& NT = dynamic_cast<NamedTypeInfo const&>(T);
+            auto const& NT = T.asNamed();
             MRDOCS_CHECK_OR(NT.Name, false);
             MRDOCS_CHECK_OR(NT.Name->Kind == NameKind::Specialization, false);
             return true;

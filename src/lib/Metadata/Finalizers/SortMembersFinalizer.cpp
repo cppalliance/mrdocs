@@ -178,10 +178,8 @@ struct SymbolIDCompareFn
                             paramType->isRValueReference(), false);
                         Polymorphic<TypeInfo> const &paramRefPointeeOpt =
                             paramType->isLValueReference()
-                                ? dynamic_cast<LValueReferenceTypeInfo const &>(*paramType)
-                                    .PointeeType
-                                : dynamic_cast<RValueReferenceTypeInfo const &>(*paramType)
-                                    .PointeeType;
+                                ? paramType->asLValueReference().PointeeType
+                                : paramType->asRValueReference().PointeeType;
                         MRDOCS_CHECK_OR(paramRefPointeeOpt, false);
                         auto const& paramRefPointee = *paramRefPointeeOpt;
                         if (!paramRefPointee.isNamed())

@@ -18,6 +18,11 @@
 
 namespace clang::mrdocs {
 
+/* Forward declarations
+ */
+#define INFO(Type) struct Type##NameInfo;
+#include <mrdocs/Metadata/Name/NameInfoNodes.inc>
+
 /** Represents a name for a named `TypeInfo`
 
     When the `TypeInfo` is a named type, this class
@@ -62,9 +67,6 @@ struct NameInfo
      */
     Optional<Polymorphic<NameInfo>> Prefix = std::nullopt;
 
-    constexpr bool isIdentifier()     const noexcept { return Kind == NameKind::Identifier; }
-    constexpr bool isSpecialization() const noexcept { return Kind == NameKind::Specialization; }
-
     constexpr virtual ~NameInfo() = default;
 
     std::strong_ordering
@@ -75,6 +77,51 @@ struct NameInfo
     {
         return std::is_eq(*this <=> other);
     }
+
+    constexpr NameInfo const& asName() const noexcept
+    {
+        return *this;
+    }
+
+    constexpr NameInfo& asName() noexcept
+    {
+        return *this;
+    }
+
+    #define INFO(Type) constexpr bool is##Type() const noexcept { \
+        return Kind == NameKind::Type; \
+    }
+#include <mrdocs/Metadata/Name/NameInfoNodes.inc>
+
+    #define INFO(Type) \
+    constexpr Type##NameInfo const& as##Type() const noexcept { \
+        if (Kind == NameKind::Type) \
+            return reinterpret_cast<Type##NameInfo const&>(*this); \
+        MRDOCS_UNREACHABLE(); \
+    }
+#include <mrdocs/Metadata/Name/NameInfoNodes.inc>
+
+#define INFO(Type) \
+    constexpr Type##NameInfo & as##Type() noexcept { \
+        if (Kind == NameKind::Type) \
+            return reinterpret_cast<Type##NameInfo&>(*this); \
+        MRDOCS_UNREACHABLE(); \
+    }
+#include <mrdocs/Metadata/Name/NameInfoNodes.inc>
+
+#define INFO(Type) \
+    constexpr Type##NameInfo const* as##Type##Ptr() const noexcept { \
+        if (Kind == NameKind::Type) { return reinterpret_cast<Type##NameInfo const*>(this); } \
+        return nullptr; \
+    }
+#include <mrdocs/Metadata/Name/NameInfoNodes.inc>
+
+#define INFO(Type) \
+    constexpr Type##NameInfo * as##Type##Ptr() noexcept { \
+        if (Kind == NameKind::Type) { return reinterpret_cast<Type##NameInfo *>(this); } \
+        return nullptr; \
+    }
+#include <mrdocs/Metadata/Name/NameInfoNodes.inc>
 
 protected:
     constexpr
