@@ -714,8 +714,8 @@ populate(
             // CXXBaseSpecifier::getEllipsisLoc indicates whether the
             // base was a pack expansion; a PackExpansionType is not built
             // for base-specifiers
-            if (!BaseType.valueless_after_move() &&
-                B.getEllipsisLoc().isValid())
+            MRDOCS_ASSERT(!BaseType.valueless_after_move());
+            if (B.getEllipsisLoc().isValid())
             {
                 BaseType->IsPackExpansion = true;
             }
@@ -1341,11 +1341,7 @@ populate(
         for (auto it = Template.Args.begin(); it != Template.Args.end();)
         {
             auto& arg = *it;
-            if (arg.valueless_after_move())
-            {
-                ++it;
-                continue;
-            }
+            MRDOCS_ASSERT(!arg.valueless_after_move());
             if (auto* T = dynamic_cast<TypeTArg*>(arg.operator->()))
             {
                 MRDOCS_ASSERT(!T->Type.valueless_after_move());
@@ -1496,6 +1492,7 @@ populate(
     Polymorphic<TParam>& I,
     NamedDecl const* N)
 {
+    MRDOCS_ASSERT(!I.valueless_after_move());
     visit(N, [&]<typename DeclTy>(DeclTy const* P)
     {
         constexpr Decl::Kind kind =
@@ -1503,7 +1500,7 @@ populate(
 
         if constexpr(kind == Decl::TemplateTypeParm)
         {
-            if (I.valueless_after_move())
+            if (I->Kind != TParamKind::Type)
             {
                 I = Polymorphic<TParam>(std::in_place_type<TypeTParam>);
             }
@@ -1532,7 +1529,7 @@ populate(
         }
         else if constexpr(kind == Decl::NonTypeTemplateParm)
         {
-            if (I.valueless_after_move())
+            if (I->Kind != TParamKind::Constant)
             {
                 I = Polymorphic<TParam>(std::in_place_type<ConstantTParam>);
             }
@@ -1547,7 +1544,7 @@ populate(
         }
         else if constexpr(kind == Decl::TemplateTemplateParm)
         {
-            if (I.valueless_after_move())
+            if (I->Kind != TParamKind::Template)
             {
                 I = Polymorphic<TParam>(std::in_place_type<TemplateTParam>);
             }
@@ -1563,8 +1560,7 @@ populate(
                 auto& Param
                     = i < Result->Params.size() ?
                           Result->Params[i] :
-                          Result->Params.emplace_back(
-                              nullable_traits<Polymorphic<TParam>>::null());
+                          Result->Params.emplace_back(std::in_place_type<TypeTParam>);
                 populate(Param, TP);
             }
             if (TTPD->hasDefaultArgument() && !Result->Default)
@@ -1578,6 +1574,7 @@ populate(
         MRDOCS_UNREACHABLE();
     });
 
+    MRDOCS_ASSERT(!I.valueless_after_move());
     if (I->Name.empty())
     {
         I->Name = extractName(N);
@@ -1615,10 +1612,10 @@ populate(
     while (explicitIt != ExplicitTemplateParameters.end())
     {
         NamedDecl const* P = TPL->getParam(i);
-        auto& Param = i < TI.Params.size() ?
-                          TI.Params[i] :
-                          TI.Params.emplace_back(
-                              nullable_traits<Polymorphic<TParam>>::null());
+        Polymorphic<TParam>& Param =
+            i < TI.Params.size() ?
+                TI.Params[i] :
+                TI.Params.emplace_back(std::in_place_type<TypeTParam>);
         populate(Param, P);
         ++explicitIt;
         ++i;

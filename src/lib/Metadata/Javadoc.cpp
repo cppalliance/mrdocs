@@ -183,21 +183,13 @@ append(std::vector<Polymorphic<Text>> const& otherChildren)
 std::strong_ordering
 operator<=>(Polymorphic<Text> const& lhs, Polymorphic<Text> const& rhs)
 {
-    if (!lhs.valueless_after_move() && !rhs.valueless_after_move())
+    MRDOCS_ASSERT(!lhs.valueless_after_move());
+    MRDOCS_ASSERT(!rhs.valueless_after_move());
+    if (lhs->Kind == rhs->Kind)
     {
-        if (lhs->Kind == rhs->Kind)
-        {
-            return visit(*lhs, detail::VisitCompareFn<Node>(*rhs));
-        }
-        return lhs->Kind <=> rhs->Kind;
+        return visit(*lhs, detail::VisitCompareFn<Node>(*rhs));
     }
-    if (lhs.valueless_after_move() && rhs.valueless_after_move())
-    {
-        return std::strong_ordering::equal;
-    }
-    return lhs.valueless_after_move() ?
-               std::strong_ordering::less :
-               std::strong_ordering::greater;
+    return lhs->Kind <=> rhs->Kind;
 }
 
 Paragraph&

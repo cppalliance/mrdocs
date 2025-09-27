@@ -67,7 +67,9 @@ void merge(TypedefInfo& I, TypedefInfo&& Other)
     {
         I.IsUsing = Other.IsUsing;
     }
-    if (I.Type.valueless_after_move())
+    MRDOCS_ASSERT(!I.Type.valueless_after_move());
+    if (I.Type->isNamed() &&
+        dynamic_cast<NamedTypeInfo&>(*I.Type).Name->Name.empty())
     {
         I.Type = std::move(Other.Type);
     }

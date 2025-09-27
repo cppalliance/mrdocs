@@ -140,7 +140,8 @@ qualifiedNameCompare(
     Info const& context,
     CorpusImpl const& corpus)
 {
-    MRDOCS_CHECK_OR(!lhs0.valueless_after_move() && !rhs0.valueless_after_move(), false);
+    MRDOCS_ASSERT(!lhs0.valueless_after_move());
+    MRDOCS_ASSERT(!rhs0.valueless_after_move());
     // Compare each component of the qualified name
     NameInfo const* lhs = &*lhs0;
     NameInfo const* rhs = &*rhs0;
@@ -216,8 +217,8 @@ isDecayedEqualImpl(
     CorpusImpl const& corpus)
 {
     // Polymorphic
-    MRDOCS_CHECK_OR(lhs.valueless_after_move() == lhs.valueless_after_move(), false);
-    MRDOCS_CHECK_OR(!lhs.valueless_after_move() && !rhs.valueless_after_move(), true);
+    MRDOCS_ASSERT(!lhs.valueless_after_move());
+    MRDOCS_ASSERT(!rhs.valueless_after_move());
     // TypeInfo
     bool const decayToPointer = !isInner && (lhs->isArray() || rhs->isArray());
     if (!decayToPointer)

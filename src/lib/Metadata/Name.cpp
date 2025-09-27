@@ -69,26 +69,17 @@ operator<=>(NameInfo const& other) const
 std::strong_ordering
 operator<=>(Polymorphic<NameInfo> const& lhs, Polymorphic<NameInfo> const& rhs)
 {
-    if (!lhs.valueless_after_move() && !rhs.valueless_after_move())
+    MRDOCS_ASSERT(!lhs.valueless_after_move());
+    MRDOCS_ASSERT(!rhs.valueless_after_move());
+    if (lhs->Kind == rhs->Kind)
     {
-        if (lhs->Kind == rhs->Kind)
+        if (lhs->isIdentifier())
         {
-            if (lhs->isIdentifier())
-            {
-                return *lhs <=> *rhs;
-            }
-            return visit(*lhs, detail::VisitCompareFn<NameInfo>(*rhs));
+            return *lhs <=> *rhs;
         }
-        return lhs->Kind <=> rhs->Kind;
+        return visit(*lhs, detail::VisitCompareFn<NameInfo>(*rhs));
     }
-    if (lhs.valueless_after_move() &&
-        rhs.valueless_after_move())
-    {
-        return std::strong_ordering::equal;
-    }
-    return lhs.valueless_after_move() ?
-               std::strong_ordering::less :
-               std::strong_ordering::greater;
+    return lhs->Kind <=> rhs->Kind;
 }
 
 static

@@ -44,8 +44,8 @@ merge(UsingInfo& I, UsingInfo&& Other)
     {
         I.Class = Other.Class;
     }
-    if (I.IntroducedName.valueless_after_move() ||
-        I.IntroducedName->Name.empty())
+    MRDOCS_ASSERT(!I.IntroducedName.valueless_after_move());
+    if (I.IntroducedName->Name.empty())
     {
         I.IntroducedName = std::move(Other.IntroducedName);
     }

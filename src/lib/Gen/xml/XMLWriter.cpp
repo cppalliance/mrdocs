@@ -377,10 +377,8 @@ XMLWriter::
     }
 
     std::string qualifierStr;
-    if (!I.IntroducedName.valueless_after_move())
-    {
-        qualifierStr = toString(*I.IntroducedName);
-    }
+    MRDOCS_ASSERT(!I.IntroducedName.valueless_after_move());
+    qualifierStr = toString(*I.IntroducedName);
 
     constexpr std::string_view usingTagName = "using";
     tags_.open(usingTagName, {

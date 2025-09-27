@@ -143,11 +143,9 @@ writeType(
 
             if constexpr(T::isNamed())
             {
-                if(!t.Name.valueless_after_move())
-                {
-                    attrs.push({t.Name->id});
-                    attrs.push({"name", toString(*t.Name)});
-                }
+                MRDOCS_ASSERT(!t.Name.valueless_after_move());
+                attrs.push({t.Name->id});
+                attrs.push({"name", toString(*t.Name)});
             }
 
             std::string cvQualifiers;
@@ -270,10 +268,7 @@ writeType(
     Polymorphic<TypeInfo> const& type,
     XMLTags& tags)
 {
-    if (type.valueless_after_move())
-    {
-        return;
-    }
+    MRDOCS_ASSERT(!type.valueless_after_move());
     writeType(*type, tags);
 }
 
