@@ -1,0 +1,149 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Namespaces
+
+[cols=1]
+|===
+| Name
+| link:#boost[`boost`] 
+|===
+
+[#boost]
+== boost
+
+=== Namespaces
+
+[cols=1]
+|===
+| Name
+| link:#boost-openmethod[`openmethod`] 
+|===
+
+[#boost-openmethod]
+== link:#boost[boost]::openmethod
+
+=== Namespaces
+
+[cols=1]
+|===
+| Name
+| link:#boost-openmethod-policies[`policies`] 
+|===
+
+=== Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#boost-openmethod-final_virtual_ptr-04[`final&lowbar;virtual&lowbar;ptr`] 
+| 
+|===
+
+[#boost-openmethod-policies]
+== link:#boost[boost]::link:#boost-openmethod[openmethod]::policies
+
+=== Namespaces
+
+[cols=1]
+|===
+| Name
+| link:#boost-openmethod-policies-runtime_checks[`runtime&lowbar;checks`] 
+|===
+
+[#boost-openmethod-policies-runtime_checks]
+== link:#boost[boost]::link:#boost-openmethod[openmethod]::link:#boost-openmethod-policies[policies]::runtime&lowbar;checks
+
+=== Types
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#boost-openmethod-policies-runtime_checks-runtime_checks[`runtime&lowbar;checks`] 
+| Documentation with ref to final&lowbar;virtual&lowbar;ptr
+|===
+
+[#boost-openmethod-policies-runtime_checks-runtime_checks]
+== link:#boost[boost]::link:#boost-openmethod[openmethod]::link:#boost-openmethod-policies[policies]::link:#boost-openmethod-policies-runtime_checks[runtime&lowbar;checks]::runtime&lowbar;checks
+
+Documentation with ref to final&lowbar;virtual&lowbar;ptr
+
+=== Synopsis
+
+Declared in `&lt;parent&lowbar;context&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct runtime&lowbar;checks;
+----
+
+=== Description
+
+See link:#boost-openmethod-final_virtual_ptr-04[`final&lowbar;virtual&lowbar;ptr`]
+
+[#boost-openmethod-final_virtual_ptr-04]
+== link:#boost[boost]::link:#boost-openmethod[openmethod]::final&lowbar;virtual&lowbar;ptr
+
+=== Synopses
+
+Declared in `&lt;parent&lowbar;context&period;cpp&gt;`
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class Arg&gt;
+auto
+link:#boost-openmethod-final_virtual_ptr-08[final&lowbar;virtual&lowbar;ptr](Arg&& obj);
+----
+
+[.small]#link:#boost-openmethod-final_virtual_ptr-08[_» more&period;&period;&period;_]#
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;
+    class Registry,
+    typename Arg&gt;
+auto
+link:#boost-openmethod-final_virtual_ptr-03[final&lowbar;virtual&lowbar;ptr](Arg&& obj);
+----
+
+[.small]#link:#boost-openmethod-final_virtual_ptr-03[_» more&period;&period;&period;_]#
+
+[#boost-openmethod-final_virtual_ptr-08]
+== link:#boost[boost]::link:#boost-openmethod[openmethod]::final&lowbar;virtual&lowbar;ptr
+
+=== Synopsis
+
+Declared in `&lt;parent&lowbar;context&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;class Arg&gt;
+auto
+final&lowbar;virtual&lowbar;ptr(Arg&& obj);
+----
+
+[#boost-openmethod-final_virtual_ptr-03]
+== link:#boost[boost]::link:#boost-openmethod[openmethod]::final&lowbar;virtual&lowbar;ptr
+
+=== Synopsis
+
+Declared in `&lt;parent&lowbar;context&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;
+    class Registry,
+    typename Arg&gt;
+auto
+final&lowbar;virtual&lowbar;ptr(Arg&& obj);
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

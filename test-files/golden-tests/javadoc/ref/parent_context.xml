@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <namespace name="boost" id="+jO0pmMB/RXahxtatVUYoEwUKWs=">
+    <namespace name="openmethod" id="8vOLQN1FS3phbXzrBx8KohfFQCw=">
+      <namespace name="policies" id="iyqzr2bAIIz4tcVOh2wjYTkCOC0=">
+        <namespace name="runtime_checks" id="TVhmFYxnwUAmcG327zb+ghem758=">
+          <struct name="runtime_checks" id="1Jkj+l8tdM+DGWC1GVMWML70iGA=">
+            <file short-path="parent_context.cpp" source-path="parent_context.cpp" line="14" class="def"/>
+            <doc>
+              <brief>
+                <text>Documentation with ref to final_virtual_ptr</text>
+              </brief>
+              <para>
+                <text>See </text>
+                <reference id="RgmcrbKVGmXz6c3Lxk0nacbfXkg=">final_virtual_ptr</reference>
+              </para>
+            </doc>
+          </struct>
+        </namespace>
+      </namespace>
+      <template>
+        <tparam name="Arg" class="type"/>
+        <function name="final_virtual_ptr" id="jq5N3pt8pWn/EcTzXTPM1Gj1O9s=">
+          <file short-path="parent_context.cpp" source-path="parent_context.cpp" line="2"/>
+          <return>
+            <type class="auto" keyword="auto">
+            </type>
+          </return>
+          <param name="obj">
+            <type class="rvalue-reference">
+              <pointee-type name="Arg"/>
+            </type>
+          </param>
+        </function>
+      </template>
+      <template>
+        <tparam name="Registry" class="type"/>
+        <tparam name="Arg" class="type"/>
+        <function name="final_virtual_ptr" id="N+/tS2Uxf62zshI73QwQ0n3wcJg=">
+          <file short-path="parent_context.cpp" source-path="parent_context.cpp" line="5"/>
+          <return>
+            <type class="auto" keyword="auto">
+            </type>
+          </return>
+          <param name="obj">
+            <type class="rvalue-reference">
+              <pointee-type name="Arg"/>
+            </type>
+          </param>
+        </function>
+      </template>
+    </namespace>
+  </namespace>
+</namespace>
+</mrdocs>
