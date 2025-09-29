@@ -10,8 +10,8 @@
 
 #include <mrdocs/Support/Handlebars.hpp>
 #include <mrdocs/Support/JavaScript.hpp>
-#include <array>
 #include <test_suite/test_suite.hpp>
+#include <array>
 
 
 namespace mrdocs {

@@ -26,42 +26,34 @@ class C;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
 | Name
-| Description
 | link:#C-foo-0e[`foo`] 
-| 
 |===
 
 === Static Member Functions
 
-[cols=2]
+[cols=1]
 |===
 | Name
-| Description
 | link:#C-foo-03[`foo`] 
-| 
 |===
 
 === Protected Member Functions
 
-[cols=2]
+[cols=1]
 |===
 | Name
-| Description
 | link:#C-foo-04c[`foo`] 
-| 
 |===
 
 === Protected Static Member Functions
 
-[cols=2]
+[cols=1]
 |===
 | Name
-| Description
 | link:#C-foo-048[`foo`] 
-| 
 |===
 
 [#C-foo-0e]

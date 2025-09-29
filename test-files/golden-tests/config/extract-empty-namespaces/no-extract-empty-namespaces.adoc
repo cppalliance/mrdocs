@@ -40,7 +40,6 @@
 |===
 | Name
 | link:#regular_ns[`regular&lowbar;ns`]
-| empty&lowbar;ns
 |===
 
 

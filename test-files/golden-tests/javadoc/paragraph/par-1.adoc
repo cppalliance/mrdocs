@@ -35,9 +35,8 @@ void
 f1();
 ----
 
-=== Description
-
 === Custom par
+
 Paragraph 1
 
 [,cpp]
@@ -59,9 +58,8 @@ void
 f2();
 ----
 
-=== Description
-
 === Custom par
+
 Paragraph 2
 
 [,cpp]
@@ -83,9 +81,8 @@ void
 f3();
 ----
 
-=== Description
-
 === Custom par
+
 [,cpp]
 ----
 void f3();
@@ -105,9 +102,8 @@ void
 f4();
 ----
 
-=== Description
-
 === Custom par
+
 [,cpp]
 ----
 void f4();

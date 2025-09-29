@@ -6,30 +6,19 @@
 
 === Functions
 
-[cols=2]
+[cols=1]
 |===
 | Name
-| Description
 | link:#f[`f`] 
-| 
 | link:#g[`g`] 
-| 
 | link:#h[`h`] 
-| 
 | link:#i[`i`] 
-| 
 | link:#j[`j`] 
-| 
 | link:#k[`k`] 
-| 
 | link:#l[`l`] 
-| 
 | link:#m[`m`] 
-| 
 | link:#n[`n`] 
-| 
 | link:#o[`o`] 
-| 
 |===
 
 [#f]
@@ -52,7 +41,7 @@ f(int x0);
 | Name
 | Description
 | *x0*
-| 
+| An integer `x0`
 |===
 
 [#g]
@@ -77,9 +66,9 @@ g(
 | Name
 | Description
 | *x1*
-| 
+| An integer `x1`
 | *y1* [in]
-| 
+| An integer `y1`
 |===
 
 [#h]
@@ -104,9 +93,9 @@ h(
 | Name
 | Description
 | *x2*
-| 
+| An integer `x2`
 | *y2* [out]
-| 
+| An integer `y2`
 |===
 
 [#i]
@@ -131,9 +120,9 @@ i(
 | Name
 | Description
 | *x3* [in]
-| 
+| An integer `x3`
 | *y3* [out]
-| 
+| An integer `y3`
 |===
 
 [#j]
@@ -158,9 +147,9 @@ j(
 | Name
 | Description
 | *x4*
-| 
+| An integer `x4`
 | *y4* [inout]
-| 
+| An integer `y4`
 |===
 
 [#k]
@@ -186,11 +175,11 @@ k(
 | Name
 | Description
 | *x5* [out]
-| 
+| An integer `x5`
 | *y5* [in]
-| 
+| An integer `y5`
 | *z5*
-| 
+| An integer `z5`
 |===
 
 [#l]
@@ -217,11 +206,11 @@ l(
 | Name
 | Description
 | *x6* [out]
-| 
+| An integer `x6`
 | *y6*
-| 
+| An integer `y6`
 | *z6* [in]
-| 
+| An integer `z6`
 |===
 
 [#m]
@@ -246,9 +235,9 @@ m(
 | Name
 | Description
 | *x7* [in]
-| 
+| An integer `x7`
 | *y7* [out]
-| 
+| An integer `y7`
 |===
 
 [#n]
@@ -271,7 +260,7 @@ n(int x8);
 | Name
 | Description
 | *x8* [in]
-| 
+| An integer `x8`
 |===
 
 [#o]
@@ -294,9 +283,9 @@ o(int x9);
 | Name
 | Description
 | *x9* [in]
-| 
+| An integer `x9`
 | *x9* [out]
-| 
+| An integer `x9`
 |===
 
 

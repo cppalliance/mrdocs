@@ -29,14 +29,16 @@ void
 my&lowbar;function();
 ----
 
-=== Description
+=== A heading&period;
 
-=== A heading&period; Some text&period;
+Some text&period;
+
 More text&period;&period;&period;
 
 Another paragraph Next line
 
 === Exception safety
+
 No&hyphen;throw guarantee&period;
 
 

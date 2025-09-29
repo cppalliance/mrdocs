@@ -6,6 +6,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+// Copyright (c) 2025 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -13,11 +14,8 @@
 #include "XMLWriter.hpp"
 #include <mrdocs/Platform.hpp>
 #include "CXXTags.hpp"
-#include <lib/ConfigImpl.hpp>
 #include <lib/Support/LegibleNames.hpp>
 #include <lib/Support/Radix.hpp>
-#include <lib/Support/Yaml.hpp>
-#include <llvm/Support/YAMLParser.h>
 #include <llvm/Support/YAMLTraits.h>
 
 //------------------------------------------------
@@ -53,52 +51,24 @@ build()
         "<mrdocs xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
         "       xsi:noNamespaceSchemaLocation=\"https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc\">\n";
 
-    // writeIndex();
-
-    visit(corpus_.globalNamespace(), *this);
+    this->operator()(corpus_.globalNamespace());
 
     os_ << "</mrdocs>\n";
 
     return {};
 }
 
-//------------------------------------------------
-
+template <std::derived_from<Symbol> SymbolTy>
 void
 XMLWriter::
-writeIndex()
-{
-    std::string temp;
-    temp.reserve(256);
-    tags_.open("symbols");
-    LegibleNames const names(corpus_, true);
-    for(auto& I : corpus_)
-    {
-        corpus_.qualifiedName(I, temp);
-        auto legible_name = names.getUnqualified(I.id);
-        tags_.write("symbol", {}, {
-            { "legible", legible_name },
-            { "name", temp },
-            { "tag", toString(I.Kind) },
-            { I.id } });
-    }
-    tags_.close("symbols");
-}
-
-//------------------------------------------------
-
-template<class T>
-void
-XMLWriter::
-operator()(
-    T const& I)
+operator()(SymbolTy const& I)
 {
     if (Symbol const& base = I;
         base.Extraction == ExtractionMode::Dependency)
     {
         return;
     }
-    #define INFO(Type) if constexpr(T::is##Type()) write##Type(I);
+    #define INFO(Type) if constexpr(SymbolTy::is##Type()) write##Type(I);
 #include <mrdocs/Metadata/Symbol/SymbolNodes.inc>
 }
 
@@ -116,7 +86,7 @@ writeNamespace(
         { "is-anonymous", "1", I.IsAnonymous},
         { "is-inline", "1", I.IsInline}
     });
-    writeJavadoc(I.javadoc);
+    writeDocComment(I.doc);
     for (Name const& NI: I.UsingDirectives)
     {
         if (auto const& id = NI.id; id != SymbolID::invalid)
@@ -149,7 +119,7 @@ writeEnum(
 
     writeSourceInfo(I.Loc);
 
-    writeJavadoc(I.javadoc);
+    writeDocComment(I.doc);
 
     corpus_.traverse(I, *this);
 
@@ -175,7 +145,7 @@ writeEnumConstant(
 
     writeSourceInfo(I.Loc);
 
-    writeJavadoc(I.javadoc);
+    writeDocComment(I.doc);
 
     tags_.close(enumConstantTagName);
 }
@@ -256,10 +226,10 @@ writeFunction(
 
     for (auto const& J: I.Params)
     {
-        writeParam(J, tags_);
+        ::mrdocs::xml::writeParam(J, tags_);
     }
 
-    writeJavadoc(I.javadoc);
+    writeDocComment(I.doc);
 
     tags_.close(functionTagName);
 
@@ -298,10 +268,12 @@ writeGuide(
     writeType(I.Deduced, tags_);
     tags_.close(deducedTagName);
 
-    for(auto const& J : I.Params)
-        writeParam(J, tags_);
+    for (auto const& J: I.Params)
+    {
+        xml::writeParam(J, tags_);
+    }
 
-    writeJavadoc(I.javadoc);
+    writeDocComment(I.doc);
 
     tags_.close(guideTagName);
 
@@ -325,7 +297,7 @@ writeConcept(
 
     writeSourceInfo(I.Loc);
 
-    writeJavadoc(I.javadoc);
+    writeDocComment(I.doc);
 
     tags_.close(conceptTagName);
 
@@ -346,7 +318,7 @@ writeNamespaceAlias(
 
     writeSourceInfo(I.Loc);
 
-    writeJavadoc(I.javadoc);
+    writeDocComment(I.doc);
 
     tags_.write("aliased", {}, {
         {"name", toString(I.AliasedSymbol)},
@@ -390,7 +362,7 @@ XMLWriter::
 
     writeSourceInfo(I.Loc);
 
-    writeJavadoc(I.javadoc);
+    writeDocComment(I.doc);
 
     for (auto const& id : I.ShadowDeclarations)
         tags_.write("named", {}, { id });
@@ -433,7 +405,7 @@ writeRecord(
         writeFriend(F);
     }
 
-    writeJavadoc(I.javadoc);
+    writeDocComment(I.doc);
 
     corpus_.traverse(I, *this);
 
@@ -469,7 +441,7 @@ writeTypedef(
 
     writeType(I.Type, tags_);
 
-    writeJavadoc(I.javadoc);
+    writeDocComment(I.doc);
 
     tags_.close(tag);
 
@@ -519,7 +491,7 @@ writeVariable(
 
     writeType(I.Type, tags_);
 
-    writeJavadoc(I.javadoc);
+    writeDocComment(I.doc);
 
     tags_.close(varTagName);
 
@@ -564,8 +536,10 @@ XMLWriter::
 openTemplate(
     Optional<TemplateInfo> const& I)
 {
-    if(! I)
+    if (!I)
+    {
         return;
+    }
 
     tags_.open(templateTagName, {
         {"class", toString(I->specializationKind()),
@@ -575,10 +549,14 @@ openTemplate(
         {I->Primary}
     });
 
-    for(auto const& tparam : I->Params)
+    for (auto const& tparam: I->Params)
+    {
         writeTemplateParam(*tparam, tags_);
-    for(auto const& targ : I->Args)
+    }
+    for (auto const& targ: I->Args)
+    {
         writeTemplateArg(*targ, tags_);
+    }
 }
 
 void
@@ -595,125 +573,90 @@ closeTemplate(
 
 void
 XMLWriter::
-writeJavadoc(
-    Optional<Javadoc> const& javadoc)
+writeDocComment(
+    Optional<DocComment> const& doc)
 {
-    if (!javadoc)
+    if (!doc)
     {
         return;
     }
-    tags_.open(javadocTagName);
-    if (javadoc->brief)
+    tags_.open(docTagName);
+    if (doc->brief)
     {
-        writeNode(*javadoc->brief);
+        writeBrief(*doc->brief);
     }
-    writeNodes(javadoc->getBlocks());
-    writeNodes(javadoc->returns);
-    writeNodes(javadoc->params);
-    writeNodes(javadoc->tparams);
-    writeNodes(javadoc->exceptions);
-    writeNodes(javadoc->sees);
-    writeNodes(javadoc->preconditions);
-    writeNodes(javadoc->postconditions);
-    if (!javadoc->relates.empty())
+    writeBlocks(doc->Document);
+    writeBlocks(doc->returns);
+    writeBlocks(doc->params);
+    writeBlocks(doc->tparams);
+    writeBlocks(doc->exceptions);
+    writeBlocks(doc->sees);
+    writeBlocks(doc->preconditions);
+    writeBlocks(doc->postconditions);
+    if (!doc->relates.empty())
     {
         tags_.open(relatesTagName);
-        writeNodes(javadoc->relates);
+        writeInlines(doc->relates);
         tags_.close(relatesTagName);
     }
-    if (!javadoc->related.empty())
+    if (!doc->related.empty())
     {
         tags_.open(relatedTagName);
-        writeNodes(javadoc->related);
+        writeInlines(doc->related);
         tags_.close(relatedTagName);
     }
-    tags_.close(javadocTagName);
+    tags_.close(docTagName);
 }
 
 
-void
-XMLWriter::
-writeNode(doc::Node const& node)
-{
-    switch(node.Kind)
-    {
-    case doc::NodeKind::text:
-        writeText(dynamic_cast<doc::Text const&>(node));
-        break;
-    case doc::NodeKind::styled:
-        writeStyledText(dynamic_cast<doc::Styled const&>(node));
-        break;
-    case doc::NodeKind::heading:
-        writeHeading(dynamic_cast<doc::Heading const&>(node));
-        break;
-    case doc::NodeKind::paragraph:
-        writeParagraph(dynamic_cast<doc::Paragraph const&>(node));
-        break;
-    case doc::NodeKind::link:
-        writeLink(dynamic_cast<doc::Link const&>(node));
-        break;
-    case doc::NodeKind::list_item:
-        writeListItem(dynamic_cast<doc::ListItem const&>(node));
-        break;
-    case doc::NodeKind::unordered_list:
-        writeUnorderedList(dynamic_cast<doc::UnorderedList const&>(node));
-        break;
-    case doc::NodeKind::brief:
-        writeBrief(dynamic_cast<doc::Brief const&>(node));
-        break;
-    case doc::NodeKind::admonition:
-        writeAdmonition(dynamic_cast<doc::Admonition const&>(node));
-        break;
-    case doc::NodeKind::code:
-        writeCode(dynamic_cast<doc::Code const&>(node));
-        break;
-    case doc::NodeKind::param:
-        writeJParam(dynamic_cast<doc::Param const&>(node));
-        break;
-    case doc::NodeKind::tparam:
-        writeTParam(dynamic_cast<doc::TParam const&>(node));
-        break;
-    case doc::NodeKind::returns:
-        writeReturns(dynamic_cast<doc::Returns const&>(node));
-        break;
-    case doc::NodeKind::reference:
-        writeReference(dynamic_cast<doc::Reference const&>(node));
-        break;
-    case doc::NodeKind::copy_details:
-        writeCopied(dynamic_cast<doc::CopyDetails const&>(node));
-        break;
-    case doc::NodeKind::throws:
-        writeThrows(dynamic_cast<doc::Throws const&>(node));
-        break;
-    case doc::NodeKind::see:
-        writeSee(dynamic_cast<doc::See const&>(node));
-        break;
-    case doc::NodeKind::precondition:
-        writePrecondition(dynamic_cast<doc::Precondition const&>(node));
-        break;
-    case doc::NodeKind::postcondition:
-        writePostcondition(dynamic_cast<doc::Postcondition const&>(node));
-        break;
-    default:
-        // unknown kind
-        MRDOCS_UNREACHABLE();
-    }
-}
+//void
+//XMLWriter::
+//writeNode(doc::Node const& node)
+//{
+//    auto* nodePtr = &node;
+//    auto* blockPtr = dynamic_cast<doc::Block const*>(nodePtr);
+//    if (blockPtr)
+//    {
+//        switch (blockPtr->Kind)
+//        {
+//            #define INFO(Type) case doc::BlockKind::Type: \
+//                write##Type(dynamic_cast<doc::Type##Block const&>(node)); \
+//                return;
+//#include <mrdocs/Metadata/DocComment/Block/BlockNodes.inc>
+//        default:
+//            MRDOCS_UNREACHABLE();
+//        }
+//    }
+//    auto* inlinePtr = dynamic_cast<doc::Inline const*>(nodePtr);
+//    if (inlinePtr)
+//    {
+//        switch (inlinePtr->Kind)
+//        {
+//            #define INFO(Type) case doc::InlineKind::Type: \
+//                write##Type(dynamic_cast<doc::Type##Inline const&>(node)); \
+//                return;
+//#include <mrdocs/Metadata/DocComment/Inline/InlineNodes.inc>
+//        default:
+//            MRDOCS_UNREACHABLE();
+//        }
+//    }
+//    MRDOCS_UNREACHABLE();
+//}
 
 void
 XMLWriter::
 writeReference(
-    doc::Reference const& node)
+    doc::ReferenceInline const& node)
 {
-    tags_.write("reference", node.string, {
+    tags_.write("reference", node.literal, {
         { node.id }
         });
 }
 
 void
 XMLWriter::
-writeCopied(
-    doc::CopyDetails const& node)
+writeCopyDetails(
+    doc::CopyDetailsInline const& node)
 {
     std::string_view constexpr tag_name = "copydetails";
     tags_.write(tag_name, node.string, {
@@ -724,11 +667,12 @@ writeCopied(
 void
 XMLWriter::
 writeLink(
-    doc::Link const& node)
+    doc::LinkInline const& node)
 {
-    tags_.write("link", node.string, {
-        { "href", node.href }
-        });
+
+    tags_.write(
+        "link", doc::getAsPlainText(node.asInline()),
+        {{ "href", node.href }});
 }
 
 void
@@ -737,174 +681,201 @@ writeListItem(
     doc::ListItem const& node)
 {
     tags_.open("listitem");
-    writeNodes(node.children);
+    // flatten blocks to write their inlines directly when possible
+    // this maintains the schema, but it would be best to
+    // just render the blocks directly
+    for (auto const& childb : node.blocks)
+    {
+        auto* ilnPtr = dynamic_cast<doc::InlineContainer const*>(&*childb);
+        MRDOCS_CHECK_OR_CONTINUE(ilnPtr);
+        writeInlines(ilnPtr->children);
+    }
     tags_.close("listitem");
 }
 
 void
 XMLWriter::
-writeUnorderedList(
-    doc::UnorderedList const& node)
+writeList(
+    doc::ListBlock const& node)
 {
     tags_.open("unorderedlist");
-    writeNodes(node.items);
+    for (auto const& li: node.items)
+    {
+        writeListItem(li);
+    }
     tags_.close("unorderedlist");
 }
 
 void
 XMLWriter::
 writeBrief(
-    doc::Paragraph const& node)
+    doc::BriefBlock const& node)
 {
     tags_.open("brief");
-    writeNodes(node.children);
+    writeInlines(node.children);
     tags_.close("brief");
 }
 
 void
 XMLWriter::
 writeText(
-    doc::Text const& node)
+    doc::TextInline const& node)
 {
     tags_.indent() <<
         "<text>" <<
-        xmlEscape(node.string) <<
+        xmlEscape(node.literal) <<
         "</text>\n";
 }
 
 void
 XMLWriter::
-writeStyledText(
-    doc::Styled const& node)
+writeCode(doc::CodeInline const& node)
 {
-    tags_.write(toString(node.style), node.string);
+    tags_.write("mono", doc::getAsPlainText(node.asInline()));
+}
+
+void
+XMLWriter::
+writeStrong(doc::StrongInline const& node)
+{
+    tags_.write("bold", doc::getAsPlainText(node.asInline()));
+}
+
+void
+XMLWriter::
+writeEmph(doc::EmphInline const& node)
+{
+    tags_.write("italic", doc::getAsPlainText(node.asInline()));
 }
 
 void
 XMLWriter::
 writeHeading(
-    doc::Heading const& heading)
+    doc::HeadingBlock const& heading)
 {
-    tags_.write("head", heading.string);
+    tags_.write("head", doc::getAsPlainText(heading.asInlineContainer()));
 }
 
 void
 XMLWriter::
-writeParagraph(
-    doc::Paragraph const& para,
-    llvm::StringRef tag)
+writeInlineContainer(
+    doc::InlineContainer const& node,
+    std::string_view tag)
 {
-    tags_.open("para", {
-        { "class", tag, ! tag.empty() }});
-    writeNodes(para.children);
+    tags_.open("para", {{ "class", tag, !tag.empty() }});
+    writeInlines(node.children);
     tags_.close("para");
 }
 
 void
 XMLWriter::
-writeSee(
-    doc::See const& para,
-    llvm::StringRef tag)
+writeSee(doc::SeeBlock const& para)
 {
-    tags_.open("see", {
-        { "class", tag, ! tag.empty() }});
-    writeNodes(para.children);
+    tags_.open("see");
+    writeInlines(para.children);
     tags_.close("see");
 }
 
 void
 XMLWriter::
 writePrecondition(
-    doc::Precondition const& para)
+    doc::PreconditionBlock const& para)
 {
     tags_.open("pre", {});
-    writeNodes(para.children);
+    writeInlines(para.children);
     tags_.close("pre");
 }
 
 void
 XMLWriter::
 writePostcondition(
-    doc::Postcondition const& para)
+    doc::PostconditionBlock const& para)
 {
     tags_.open("post", {});
-    writeNodes(para.children);
+    writeInlines(para.children);
     tags_.close("post");
 }
 
 void
 XMLWriter::
 writeAdmonition(
-    doc::Admonition const& admonition)
+    doc::AdmonitionBlock const& admonition)
 {
     llvm::StringRef tag;
     switch(admonition.admonish)
     {
-    case doc::Admonish::note:
+    case doc::AdmonitionKind::note:
         tag = "note";
         break;
-    case doc::Admonish::tip:
+    case doc::AdmonitionKind::tip:
         tag = "tip";
         break;
-    case doc::Admonish::important:
+    case doc::AdmonitionKind::important:
         tag = "important";
         break;
-    case doc::Admonish::caution:
+    case doc::AdmonitionKind::caution:
         tag = "caution";
         break;
-    case doc::Admonish::warning:
+    case doc::AdmonitionKind::warning:
         tag = "warning";
         break;
     default:
         // unknown style
         MRDOCS_UNREACHABLE();
     }
-    writeParagraph(admonition, tag);
+    MRDOCS_CHECK_OR(!admonition.blocks.empty());
+    auto& firstBlock = admonition.blocks.front();
+    auto const* asInlineContainer = dynamic_cast<doc::InlineContainer const*>(&*firstBlock);
+    if (asInlineContainer)
+    {
+        writeInlineContainer(*asInlineContainer, tag);
+    }
 }
 
 void
 XMLWriter::
-writeCode(doc::Code const& code)
+writeCode(doc::CodeBlock const& code)
 {
-    if(code.children.empty())
+    if(code.literal.empty())
     {
         tags_.indent() << "<code/>\n";
         return;
     }
 
     tags_.open("code");
-    writeNodes(code.children);
+    tags_.indent() << "<text>" << xmlEscape(code.literal) << "</text>\n";
     tags_.close("code");
 }
 
 void
 XMLWriter::
 writeReturns(
-    doc::Returns const& returns)
+    doc::ReturnsBlock const& returns)
 {
-    if(returns.empty())
+    if (returns.empty())
+    {
         return;
+    }
     tags_.open("returns");
-    writeNodes(returns.children);
+    writeInlines(returns.children);
     tags_.close("returns");
 }
 
 void
 XMLWriter::
 writeThrows(
-    doc::Throws const& throws)
+    doc::ThrowsBlock const& throws)
 {
     if(throws.empty())
         return;
     tags_.open("throws");
-    writeNodes(throws.children);
+    writeInlines(throws.children);
     tags_.close("throws");
 }
 
 void
 XMLWriter::
-writeJParam(
-    doc::Param const& param)
+writeParam(doc::ParamBlock const& param)
 {
     dom::String direction;
     switch(param.direction)
@@ -928,19 +899,240 @@ writeJParam(
         { "name", param.name, ! param.name.empty() },
         { "class", direction, ! direction.empty() }
     });
-    writeNodes(param.children);
+    writeInlines(param.children);
     tags_.close("param");
 }
 
 void
 XMLWriter::
 writeTParam(
-    doc::TParam const& tparam)
+    doc::TParamBlock const& tparam)
 {
     tags_.open("tparam", {
         { "name", tparam.name, ! tparam.name.empty() }});
-    writeNodes(tparam.children);
+    writeInlines(tparam.children);
     tags_.close("tparam");
 }
+
+void
+XMLWriter::
+writeImage(doc::ImageInline const& el)
+{
+    tags_.open("image");
+    auto text = doc::getAsPlainText(el.asInline());
+    if (!text.empty())
+    {
+        tags_.write("alt", text);
+    }
+    tags_.close("image");
+}
+
+void
+XMLWriter::
+writeQuote(doc::QuoteBlock const& el)
+{
+    tags_.open("quote");
+    writeBlocks(el.blocks);
+    tags_.close("quote");
+}
+
+void
+XMLWriter::
+writeTable(doc::TableBlock const& el)
+{
+    tags_.open("table");
+    for (auto const& row : el.items)
+    {
+        tags_.open("tablerow");
+        for (auto const& cell : row.Cells)
+        {
+            tags_.open("tablecell");
+            auto str = doc::getAsPlainText(cell.asInlineContainer());
+            if (!str.empty())
+            {
+                tags_.write("celltext",  str);
+            }
+            tags_.close("tablecell");
+        }
+        tags_.close("tablerow");
+    }
+    tags_.close("table");
+}
+
+void
+XMLWriter::
+writeHighlight(doc::HighlightInline const& el)
+{
+    tags_.open("highlight");
+    auto text = doc::getAsPlainText(el.asInline());
+    tags_.close("highlight");
+}
+
+void
+XMLWriter::
+writeLineBreak(doc::LineBreakInline const& el)
+{
+    tags_.write("linebreak", {});
+}
+
+void
+XMLWriter::
+writeParagraph(doc::ParagraphBlock const& el)
+{
+    tags_.open("para");
+    for (Polymorphic<doc::Inline> const& child : el.children)
+    {
+        writeInline(*child);
+    }
+    tags_.close("para");
+}
+
+void
+XMLWriter::
+writeSoftBreak(doc::SoftBreakInline const& el)
+{
+    tags_.write("softbreak", {});
+}
+
+void
+XMLWriter::
+writeSubscript(doc::SubscriptInline const& el)
+{
+    tags_.open("subscript");
+    auto text = doc::getAsPlainText(el.asInline());
+    if (!text.empty())
+    {
+        tags_.indent() << xmlEscape(text) << "\n";
+    }
+    tags_.close("subscript");
+}
+
+void
+XMLWriter::
+writeSuperscript(doc::SuperscriptInline const& el)
+{
+    tags_.open("superscript");
+    auto text = doc::getAsPlainText(el.asInline());
+    if (!text.empty())
+    {
+        tags_.indent() << xmlEscape(text) << "\n";
+    }
+    tags_.close("superscript");
+}
+
+void
+XMLWriter::
+writeStrikethrough(doc::StrikethroughInline const& el)
+{
+    tags_.open("strikethrough");
+    auto text = doc::getAsPlainText(el.asInline());
+    if (!text.empty())
+    {
+        tags_.indent() << xmlEscape(text) << "\n";
+    }
+    tags_.close("strikethrough");
+}
+
+void
+XMLWriter::
+writeThematicBreak(doc::ThematicBreakBlock const& el)
+{
+    tags_.write("thematicbreak", {});
+}
+
+void
+XMLWriter::
+writeFootnoteReference(doc::FootnoteReferenceInline const& el)
+{
+    tags_.open("footnotereference");
+    if (!el.label.empty())
+    {
+        tags_.write("label", el.label);
+    }
+    tags_.close("footnotereference");
+}
+
+void
+XMLWriter::
+writeFootnoteDefinition(doc::FootnoteDefinitionBlock const& el)
+{
+    tags_.open("footnotedefinition");
+    if (!el.label.empty())
+    {
+        tags_.write("label", el.label);
+    }
+    writeBlocks(el.blocks);
+    tags_.close("footnotedefinition");
+}
+
+void
+XMLWriter::
+writeMath(doc::MathInline const& el)
+{
+    tags_.open("math");
+    if (!el.literal.empty())
+    {
+        tags_.indent() << xmlEscape(el.literal) << "\n";
+    }
+    tags_.close("math");
+}
+
+void
+XMLWriter::
+writeMath(doc::MathBlock const& el)
+{
+    tags_.open("mathblock");
+    if (!el.literal.empty())
+    {
+        tags_.indent() << xmlEscape(el.literal) << "\n";
+    }
+    tags_.close("mathblock");
+}
+
+void
+XMLWriter::
+writeDefinitionList(doc::DefinitionListBlock const& el)
+{
+    tags_.open("definitionlist");
+    for (auto const& item : el.items)
+    {
+        tags_.open("definitionitem");
+        tags_.open("term");
+        writeInlines(item.term.children);
+        tags_.close("term");
+        tags_.open("definition");
+        writeBlocks(item.blocks);
+        tags_.close("definition");
+        tags_.close("definitionitem");
+    }
+    tags_.close("definitionlist");
+}
+
+void
+XMLWriter::
+writeBlock(doc::Block const& node)
+{
+    switch (node.Kind)
+    {
+        #define INFO(Type) case doc::BlockKind::Type: \
+            write##Type(node.as##Type()); \
+            return;
+#include <mrdocs/Metadata/DocComment/Block/BlockNodes.inc>
+    }
+}
+
+void
+XMLWriter::
+writeInline(doc::Inline const& node)
+{
+    switch (node.Kind)
+    {
+        #define INFO(Type) case doc::InlineKind::Type: \
+            write##Type(node.as##Type()); \
+            return;
+#include <mrdocs/Metadata/DocComment/Inline/InlineNodes.inc>
+    }
+}
+
 
 } // mrdocs::xml

@@ -497,6 +497,71 @@ jobs:
           # The schema in the docs folder is valid
           npx -y -p ajv-cli -- ajv compile -s docs/mrdocs.schema.json
 
+      - name: Verify snippet .cpp files match golden tests (bash)
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          
+          SRC="docs/website/snippets"
+          DST="test-files/golden-tests/snippets"
+          
+          [[ -d "$SRC" ]] || { echo "Source directory not found: $SRC"; exit 2; }
+          [[ -d "$DST" ]] || { echo "Destination directory not found: $DST"; exit 2; }
+          
+          missing=()
+          mismatched=()
+          
+          # Walk all .cpp files under SRC
+          while IFS= read -r -d '' src; do
+            rel="${src#$SRC/}"
+            dst="$DST/$rel"
+          
+            if [[ ! -f "$dst" ]]; then
+              missing+=("$rel")
+              continue
+            fi
+          
+            if [[ "${STRICT_EOL:-0}" == "1" ]]; then
+              # strict byte-for-byte comparison
+              if ! cmp -s -- "$src" "$dst"; then
+                mismatched+=("$rel")
+              fi
+            else
+              # ignore CRLF/LF differences using git diff (available on all runners)
+              if ! git diff --no-index --ignore-cr-at-eol --quiet -- "$src" "$dst"; then
+                mismatched+=("$rel")
+              fi
+            fi
+          done < <(find "$SRC" -type f -name '*.cpp' -print0)
+          
+          if (( ${#missing[@]} || ${#mismatched[@]} )); then
+            if (( ${#missing[@]} )); then
+              echo "Missing corresponding golden files:"
+              printf '  %s\n' "${missing[@]}"
+            fi
+            if (( ${#mismatched[@]} )); then
+              echo "Content mismatches:"
+              printf '  %s\n' "${mismatched[@]}"
+            fi
+            exit 1
+          fi
+          
+          echo "All snippet .cpp files are present and match."
+        env:
+          # Set to "1" to enforce byte-for-byte equality (do not ignore CRLF/LF)
+          STRICT_EOL: "0"
+
+
+      - name: Check landing page snippets
+        run: |
+          # Find python
+          python=$(command -v python3 || command -v python)
+          # The schema in this branch is up to date 
+          "$python" ./util/generate-yaml-schema.py --check
+          # The schema in the docs folder is valid
+          npx -y -p ajv-cli -- ajv compile -s docs/mrdocs.schema.json
+
       - name: Upload GitHub Release Artifacts
         if: ${{ matrix.is-main && matrix.compiler != 'clang' }}
         uses: actions/upload-artifact@v4

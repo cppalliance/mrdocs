@@ -1,6 +1,6 @@
 /** Brief for A
 
-    Paragraph with `code`, *bold* text, and _italic_ text.
+    Paragraph with `code`, **bold** text, and _italic_ text.
 
     We can also escape these markers: \`, \*, and \_.
 

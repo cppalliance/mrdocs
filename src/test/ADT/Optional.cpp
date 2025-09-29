@@ -10,9 +10,9 @@
 
 #include <mrdocs/ADT/Optional.hpp>
 #include <mrdocs/Metadata/Symbol/Source.hpp>
+#include <test_suite/test_suite.hpp>
 #include <optional>
 #include <type_traits>
-#include <test_suite/test_suite.hpp>
 
 namespace mrdocs {
 

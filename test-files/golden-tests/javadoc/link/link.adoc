@@ -31,7 +31,7 @@ f();
 
 === Description
 
-This is a function with a link to https://www.boost.org[]&period;
+This is a function with a link to https://www.boost.org[Boost]&period;
 
 
 [.small]#Created with https://www.mrdocs.com[MrDocs]#

@@ -137,8 +137,10 @@ struct sentinel_traits<T>
 **/
 template <typename T>
 requires std::is_enum_v<T> &&
-         (requires { T::Unknown; } ||
+         (requires { T::unknown; } ||
+          requires { T::Unknown; } ||
           requires { T::UNKNOWN; } ||
+          requires { T::none; } ||
           requires { T::None; } ||
           requires { T::NONE; })
 struct sentinel_traits<T>
@@ -183,13 +185,45 @@ concept HasSentinel =
     std::optional, std::unique_ptr, std::shared_ptr, and many more.
 **/
 template<class T>
-concept ClearableEmpty =
-    std::default_initializable<T> &&
-    requires(T& t, const T& ct)
-    {
+concept ClearableContainerLike =
+    // ---- nested container typedefs present ----
+    requires {
+        typename T::value_type;
+        typename T::size_type;
+        typename T::difference_type;
+        typename T::reference;
+        typename T::const_reference;
+        typename T::iterator;
+        typename T::const_iterator;
+    } &&
+    // size_type should be integral for normal containers
+    std::is_integral_v<typename T::size_type> &&
+
+    // ---- member begin/end with expected iterator types ----
+    requires(T& t, const T& ct) {
+        { t.begin() }  -> std::convertible_to<typename T::iterator>;
+        { t.end() }    -> std::convertible_to<typename T::iterator>;
+        { ct.begin() } -> std::convertible_to<typename T::const_iterator>;
+        { ct.end() }   -> std::convertible_to<typename T::const_iterator>;
+    } &&
+
+    // ---- iterator “shape”: deref and increment ----
+    requires(T& t, const T& ct) {
+        { *t.begin() }  -> std::convertible_to<typename T::reference>;
+        { *ct.begin() } -> std::convertible_to<typename T::const_reference>;
+        { ++std::declval<typename T::iterator&>() } -> std::same_as<typename T::iterator&>;
+    } &&
+
+    // ---- size/empty/clear trio ----
+    requires(T& t, const T& ct) {
+        { ct.size() }  -> std::same_as<typename T::size_type>;
         { ct.empty() } -> std::convertible_to<bool>;
-        { t.clear() } -> std::same_as<void>;
-    };
+        { t.clear() }  -> std::same_as<void>;
+    } &&
+
+    // ---- default constructible (most std containers satisfy this) ----
+    std::default_initializable<T>;
+
 
 /** nullable_traits<T> defines how to treat a T as “nullable” without an
    external engaged bit.
@@ -245,7 +279,7 @@ struct nullable_traits<T>
     and erases via clear().
 **/
 template<class T>
-requires (!HasSentinel<T> && ClearableEmpty<T>)
+requires (!HasSentinel<T> && ClearableContainerLike<T>)
 struct nullable_traits<T>
 {
     static constexpr bool

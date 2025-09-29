@@ -1,4 +1,4 @@
-/// @tparam T
+/// @tparam T Template parameter `T`
 template<class T>
 void f0();
 

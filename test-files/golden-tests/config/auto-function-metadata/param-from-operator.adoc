@@ -70,6 +70,18 @@ struct X;
 | Addition operator
 |===
 
+=== Non-Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#operator_not[`operator!`]
+| Negation operator
+| link:#operator_minus[`operator&hyphen;`]
+| Subtraction operator
+|===
+
 [#X-operator_plus]
 == link:#X[X]::operator&plus;
 
@@ -112,6 +124,16 @@ Declared in `&lt;param&hyphen;from&hyphen;operator&period;cpp&gt;`
 ----
 struct ostream;
 ----
+
+=== Non-Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#operator_lshift[`operator&lt;&lt;`]
+| Stream insertion operator
+|===
 
 [#operator_minus]
 == operator&hyphen;

@@ -17,7 +17,7 @@
 #include <lib/AST/MrDocsFileSystem.hpp>
 #include <lib/Metadata/Finalizers/BaseMembersFinalizer.hpp>
 #include <lib/Metadata/Finalizers/DerivedFinalizer.hpp>
-#include <lib/Metadata/Finalizers/JavadocFinalizer.hpp>
+#include <lib/Metadata/Finalizers/DocCommentFinalizer.hpp>
 #include <lib/Metadata/Finalizers/NamespacesFinalizer.hpp>
 #include <lib/Metadata/Finalizers/OverloadsFinalizer.hpp>
 #include <lib/Metadata/Finalizers/SortMembersFinalizer.hpp>
@@ -643,7 +643,7 @@ lookupImpl(
             // This is an intermediary level because among choices that
             // doesn't exactly match the function parameters, we prefer
             // the one that is documented as the most "natural" choice.
-            if (F.javadoc)
+            if (F.doc)
             {
                 matchRes = MatchLevel::FunctionParametersSizeAndDocumented;
             }
@@ -1074,10 +1074,10 @@ CorpusImpl::finalize()
         finalizer.build();
     }
 
-    // Finalize javadoc
+    // Finalize documentation comments
     {
-        report::debug("  - Finalizing javadoc");
-        JavadocFinalizer finalizer(*this);
+        report::debug("  - Finalizing documentation comments");
+        DocCommentFinalizer finalizer(*this);
         finalizer.build();
     }
 }

@@ -6,18 +6,13 @@
 
 === Functions
 
-[cols=2]
+[cols=1]
 |===
 | Name
-| Description
 | link:#f[`f`] 
-| 
 | link:#g[`g`] 
-| 
 | link:#h[`h`] 
-| 
 | link:#i[`i`] 
-| 
 |===
 
 [#f]
@@ -40,7 +35,7 @@ f(int x);
 | Name
 | Description
 | *x*
-| 
+| An integer `x`
 |===
 
 [#g]
@@ -65,9 +60,9 @@ g(
 | Name
 | Description
 | *x*
-| 
+| An integer `x`
 | *y*
-| 
+| An integer `y`
 |===
 
 [#h]
@@ -93,11 +88,11 @@ h(
 | Name
 | Description
 | *x*
-| 
+| An integer `x`
 | *y*
-| 
+| An integer `y`
 | *z*
-| 
+| An integer `z`
 |===
 
 [#i]
@@ -124,13 +119,13 @@ i(
 | Name
 | Description
 | *w*
-| 
+| An integer `w`
 | *x*
-| 
+| An integer `x`
 | *y*
-| 
+| An integer `y`
 | *z*
-| 
+| An integer `z`
 |===
 
 

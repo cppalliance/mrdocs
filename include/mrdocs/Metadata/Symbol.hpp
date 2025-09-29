@@ -116,24 +116,24 @@ tag_invoke(
     @param I The polymorphic Symbol to convert.
     @param domCorpus The DomCorpus used to resolve references.
  */
-template <class IO, polymorphic_storage_for<Symbol> SymbolTy>
-requires std::derived_from<SymbolTy, Symbol>
-void
-tag_invoke(
-    dom::ValueFromTag,
-    IO& io,
-    SymbolTy const& I,
-    DomCorpus const* domCorpus)
-{
-    visit(*I, [&](auto const& U)
-    {
-        tag_invoke(
-            dom::ValueFromTag{},
-            io,
-            U,
-            domCorpus);
-    });
-}
+//template <class IO, polymorphic_storage_for<Symbol> SymbolTy>
+//requires std::derived_from<SymbolTy, Symbol>
+//void
+//tag_invoke(
+//    dom::ValueFromTag,
+//    IO& io,
+//    SymbolTy const& I,
+//    DomCorpus const* domCorpus)
+//{
+//    visit(*I, [&](auto const& U)
+//    {
+//        tag_invoke(
+//            dom::ValueFromTag{},
+//            io,
+//            U,
+//            domCorpus);
+//    });
+//}
 
 } // mrdocs
 

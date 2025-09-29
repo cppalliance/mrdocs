@@ -21,7 +21,7 @@ namespace mrdocs {
 
 class Corpus;
 struct Symbol;
-struct Javadoc;
+struct DocComment;
 class SymbolID;
 
 /** Front-end factory for producing Dom nodes.
@@ -94,7 +94,7 @@ public:
     dom::Value
     get(SymbolID const& id) const;
 
-    /** Return a Dom value representing the Javadoc.
+    /** Return a Dom value representing the DocComment.
 
         The default implementation returns null. A
         @ref Generator should override this member
@@ -103,7 +103,7 @@ public:
     */
     virtual
     dom::Value
-    getJavadoc(Javadoc const& jd) const;
+    getDocComment(DocComment const& jd) const;
 };
 
 /** Return a list of the parent symbols of the specified Info.

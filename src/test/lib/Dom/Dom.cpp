@@ -9,8 +9,8 @@
 //
 
 #include <mrdocs/Dom.hpp>
-#include <format>
 #include <test_suite/test_suite.hpp>
+#include <format>
 
 
 namespace mrdocs {

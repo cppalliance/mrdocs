@@ -10,7 +10,6 @@
 
 #include <lib/AST/ParseRef.hpp>
 #include <mrdocs/Metadata/Name.hpp>
-#include <mrdocs/Metadata/Symbol/Function.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 #include <mrdocs/Support/Algorithm.hpp>
 #include <mrdocs/Support/Expected.hpp>

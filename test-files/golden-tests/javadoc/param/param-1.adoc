@@ -6,20 +6,14 @@
 
 === Functions
 
-[cols=2]
+[cols=1]
 |===
 | Name
-| Description
 | link:#f0[`f0`] 
-| 
 | link:#f1[`f1`] 
-| 
 | link:#f2[`f2`] 
-| 
 | link:#f3[`f3`] 
-| 
 | link:#f4[`f4`] 
-| 
 |===
 
 [#f0]

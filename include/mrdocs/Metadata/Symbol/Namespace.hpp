@@ -121,7 +121,8 @@ struct NamespaceSymbol final
     */
     NamespaceTranche Members;
 
-    explicit NamespaceSymbol(SymbolID const &ID) noexcept
+    explicit
+    NamespaceSymbol(SymbolID const &ID) noexcept
         : SymbolCommonBase(ID)
     {
     }

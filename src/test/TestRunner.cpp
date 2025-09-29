@@ -22,13 +22,13 @@
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Generators.hpp>
 #include <mrdocs/Support/Error.hpp>
+#include <test_suite/diff.hpp>
 #include <llvm/Support/CommandLine.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
 #include <llvm/Support/Program.h>
 #include <atomic>
 #include <iostream>
-#include <test_suite/diff.hpp>
 
 namespace mrdocs {
 

@@ -131,6 +131,14 @@ isWhitespace(std::string_view s) noexcept
     return s.find_first_not_of(" \t\n\v\f\r") == std::string::npos;
 }
 
+constexpr
+bool
+isWhitespace(char c) noexcept
+{
+    return c == ' ' || c == '\t' || c == '\n' ||
+           c == '\v' || c == '\f' || c == '\r';
+}
+
 /** Determine if a string starts with one of the specified characters
 
     @param s The string to check.
@@ -201,7 +209,7 @@ constexpr
 char
 toLowerCase(char const c) noexcept
 {
-    return isUpperCase(c) ? c + ('a' - 'A') : c;
+    return isUpperCase(c) ? static_cast<char>(c - 'A' + 'a') : c;
 }
 
 constexpr
@@ -221,7 +229,7 @@ constexpr
 char
 toUpperCase(char const c) noexcept
 {
-    return isLowerCase(c) ? c - ('a' - 'A') : c;
+    return isLowerCase(c) ? static_cast<char>(c - 'a' + 'A') : c;
 }
 
 constexpr
@@ -431,6 +439,14 @@ toPascalCase(std::string_view const input)
     return result;
 }
 
+/** Reindent code by removing the common leading spaces and adding the specified indent.
+
+    @param code The code block to unindent.
+    @return The modified code block.
+*/
+MRDOCS_DECL
+std::string
+reindentCode(std::string_view code, std::size_t indent = 0);
 
 } // mrdocs
 

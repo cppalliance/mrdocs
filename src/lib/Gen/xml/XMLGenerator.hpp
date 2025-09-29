@@ -14,7 +14,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Generator.hpp>
-#include <mrdocs/Metadata/Javadoc.hpp>
+#include <mrdocs/Metadata/DocComment.hpp>
 #include <optional>
 
 namespace mrdocs::xml {

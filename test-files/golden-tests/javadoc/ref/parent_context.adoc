@@ -36,12 +36,10 @@
 
 === Functions
 
-[cols=2]
+[cols=1]
 |===
 | Name
-| Description
 | link:#boost-openmethod-final_virtual_ptr-04[`final&lowbar;virtual&lowbar;ptr`] 
-| 
 |===
 
 [#boost-openmethod-policies]

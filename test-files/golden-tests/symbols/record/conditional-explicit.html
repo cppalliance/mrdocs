@@ -33,9 +33,7 @@
 Declared in <code>&lt;conditional-explicit.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">template&lt;class T&gt;
-struct A;
-
-</code>
+struct A;</code>
 </pre>
 </div>
 <h2>Member Functions</h2>
@@ -48,11 +46,11 @@ struct A;
 </thead>
 <tbody>
 <tr>
-<td><a href="#A-2constructor-0f"><code>A</code></a>         <span class="small">[constructor]</span></td><td><span>Constructors</span></td></tr><tr>
-<td><a href="#A-2conversion-0f"><code>operator U</code></a> </td><td><span>Conditional explicit conversion to other types</span></td></tr><tr>
-<td><a href="#A-2conversion-00"><code>operator bool</code></a> </td><td><span>Explicit conversion to bool</span></td></tr><tr>
-<td><a href="#A-2conversion-04"><code>operator char</code></a> </td><td><span>Conditionally explicit conversion to char</span></td></tr><tr>
-<td><a href="#A-2conversion-01"><code>operator double</code></a> </td><td><span>Implicit conversion to double</span></td></tr>
+<td><a href="#A-2constructor-0f"><code>A</code></a>         <span class="small">[constructor]</span></td><td>Constructors</td></tr><tr>
+<td><a href="#A-2conversion-0f"><code>operator U</code></a> </td><td>Conditional explicit conversion to other types</td></tr><tr>
+<td><a href="#A-2conversion-00"><code>operator bool</code></a> </td><td>Explicit conversion to bool</td></tr><tr>
+<td><a href="#A-2conversion-04"><code>operator char</code></a> </td><td>Conditionally explicit conversion to char</td></tr><tr>
+<td><a href="#A-2conversion-01"><code>operator double</code></a> </td><td>Implicit conversion to double</td></tr>
 </tbody>
 </table>
 
@@ -63,44 +61,35 @@ struct A;
 <div>
 <h2 id="A-2constructor-0f">A::A</h2>
 <div>
-<span>Constructors</span>
-
+<p>Constructors</p>
 </div>
 </div>
 <div>
 <h3>Synopses</h3>
 <div>
 Declared in <code>&lt;conditional-explicit.cpp&gt;</code></div>
-<span>Conditionally explicit conversion from char</span>
+<p>Conditionally explicit conversion from char</p>
 <pre>
 <code class="source-code cpp">explicit(sizeof(T) &gt; 4)
-<a href="#A-2constructor-0b">A</a>(char value);
-
-</code>
+<a href="#A-2constructor-0b">A</a>(char value);</code>
 </pre><span class="small"><a href="#A-2constructor-0b"><em>» more...</em></a></span>
 
-<span>Explicit conversion from int</span>
+<p>Explicit conversion from int</p>
 <pre>
 <code class="source-code cpp">explicit
-<a href="#A-2constructor-01">A</a>(int value);
-
-</code>
+<a href="#A-2constructor-01">A</a>(int value);</code>
 </pre><span class="small"><a href="#A-2constructor-01"><em>» more...</em></a></span>
 
-<span>Implicit conversion from double</span>
+<p>Implicit conversion from double</p>
 <pre>
-<code class="source-code cpp"><a href="#A-2constructor-00">A</a>(double value);
-
-</code>
+<code class="source-code cpp"><a href="#A-2constructor-00">A</a>(double value);</code>
 </pre><span class="small"><a href="#A-2constructor-00"><em>» more...</em></a></span>
 
-<span>Conditionally explicit conversion from other types</span>
+<p>Conditionally explicit conversion from other types</p>
 <pre>
 <code class="source-code cpp">template&lt;typename U&gt;
 explicit(sizeof(U) &gt; 4)
-<a href="#A-2constructor-02">A</a>(U value);
-
-</code>
+<a href="#A-2constructor-02">A</a>(U value);</code>
 </pre><span class="small"><a href="#A-2constructor-02"><em>» more...</em></a></span>
 
 
@@ -110,8 +99,7 @@ explicit(sizeof(U) &gt; 4)
 <div>
 <h2 id="A-2constructor-0b">A::A</h2>
 <div>
-<span>Conditionally explicit conversion from char</span>
-
+<p>Conditionally explicit conversion from char</p>
 </div>
 </div>
 <div>
@@ -120,9 +108,7 @@ explicit(sizeof(U) &gt; 4)
 Declared in <code>&lt;conditional-explicit.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">explicit(sizeof(T) &gt; 4)
-A(char value);
-
-</code>
+A(char value);</code>
 </pre>
 </div>
 <div>
@@ -137,7 +123,7 @@ A(char value);
 <tbody>
 <tr>
 <td><strong>value</strong></td>
-<td><span>The value to construct from</span></td>
+<td>The value to construct from</td>
 </tr>
 </tbody>
 </table>
@@ -147,8 +133,7 @@ A(char value);
 <div>
 <h2 id="A-2constructor-01">A::A</h2>
 <div>
-<span>Explicit conversion from int</span>
-
+<p>Explicit conversion from int</p>
 </div>
 </div>
 <div>
@@ -157,9 +142,7 @@ A(char value);
 Declared in <code>&lt;conditional-explicit.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">explicit
-A(int value);
-
-</code>
+A(int value);</code>
 </pre>
 </div>
 <div>
@@ -174,7 +157,7 @@ A(int value);
 <tbody>
 <tr>
 <td><strong>value</strong></td>
-<td><span>The value to construct from</span></td>
+<td>The value to construct from</td>
 </tr>
 </tbody>
 </table>
@@ -184,8 +167,7 @@ A(int value);
 <div>
 <h2 id="A-2constructor-00">A::A</h2>
 <div>
-<span>Implicit conversion from double</span>
-
+<p>Implicit conversion from double</p>
 </div>
 </div>
 <div>
@@ -193,9 +175,7 @@ A(int value);
 <div>
 Declared in <code>&lt;conditional-explicit.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">A(double value);
-
-</code>
+<code class="source-code cpp">A(double value);</code>
 </pre>
 </div>
 <div>
@@ -210,7 +190,7 @@ Declared in <code>&lt;conditional-explicit.cpp&gt;</code></div>
 <tbody>
 <tr>
 <td><strong>value</strong></td>
-<td><span>The value to construct from</span></td>
+<td>The value to construct from</td>
 </tr>
 </tbody>
 </table>
@@ -220,8 +200,7 @@ Declared in <code>&lt;conditional-explicit.cpp&gt;</code></div>
 <div>
 <h2 id="A-2constructor-02">A::A</h2>
 <div>
-<span>Conditionally explicit conversion from other types</span>
-
+<p>Conditionally explicit conversion from other types</p>
 </div>
 </div>
 <div>
@@ -231,9 +210,7 @@ Declared in <code>&lt;conditional-explicit.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">template&lt;typename U&gt;
 explicit(sizeof(U) &gt; 4)
-A(U value);
-
-</code>
+A(U value);</code>
 </pre>
 </div>
 <div>
@@ -248,7 +225,7 @@ A(U value);
 <tbody>
 <tr>
 <td><strong>value</strong></td>
-<td><span>The object to construct from</span></td>
+<td>The object to construct from</td>
 </tr>
 </tbody>
 </table>
@@ -258,8 +235,7 @@ A(U value);
 <div>
 <h2 id="A-2conversion-0f">A::operator U</h2>
 <div>
-<span>Conditional explicit conversion to other types</span>
-
+<p>Conditional explicit conversion to other types</p>
 </div>
 </div>
 <div>
@@ -269,22 +245,19 @@ Declared in <code>&lt;conditional-explicit.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">template&lt;typename U&gt;
 explicit(sizeof(U) &gt; 1)
-operator U() const;
-
-</code>
+operator U() const;</code>
 </pre>
 </div>
 <div>
 <h3>Return Value</h3>
-<span>The object converted to <code>U</code></span>
+The object converted to <code>U</code>
 </div>
 </div>
 <div>
 <div>
 <h2 id="A-2conversion-00">A::operator bool</h2>
 <div>
-<span>Explicit conversion to bool</span>
-
+<p>Explicit conversion to bool</p>
 </div>
 </div>
 <div>
@@ -293,22 +266,19 @@ operator U() const;
 Declared in <code>&lt;conditional-explicit.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">explicit
-operator bool() const;
-
-</code>
+operator bool() const;</code>
 </pre>
 </div>
 <div>
 <h3>Return Value</h3>
-<span>The object converted to <code>bool</code></span>
+The object converted to <code>bool</code>
 </div>
 </div>
 <div>
 <div>
 <h2 id="A-2conversion-04">A::operator char</h2>
 <div>
-<span>Conditionally explicit conversion to char</span>
-
+<p>Conditionally explicit conversion to char</p>
 </div>
 </div>
 <div>
@@ -317,22 +287,19 @@ operator bool() const;
 Declared in <code>&lt;conditional-explicit.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">explicit(sizeof(T) &gt; 4)
-operator char() const;
-
-</code>
+operator char() const;</code>
 </pre>
 </div>
 <div>
 <h3>Return Value</h3>
-<span>The object converted to <code>char</code></span>
+The object converted to <code>char</code>
 </div>
 </div>
 <div>
 <div>
 <h2 id="A-2conversion-01">A::operator double</h2>
 <div>
-<span>Implicit conversion to double</span>
-
+<p>Implicit conversion to double</p>
 </div>
 </div>
 <div>
@@ -340,14 +307,12 @@ operator char() const;
 <div>
 Declared in <code>&lt;conditional-explicit.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">operator double() const;
-
-</code>
+<code class="source-code cpp">operator double() const;</code>
 </pre>
 </div>
 <div>
 <h3>Return Value</h3>
-<span>The object converted to <code>double</code></span>
+The object converted to <code>double</code>
 </div>
 </div>
 

@@ -37,19 +37,19 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="#A-B-08"><code>B</code></a> </td><td><span>Main class template for B.</span></td></tr><tr>
-<td><a href="#A-B-09"><code>B&lt;int&gt;</code></a> </td><td><span>Specialization of B for int.</span></td></tr><tr>
-<td><a href="#A-B-0c"><code>B&lt;int, 2&gt;</code></a> </td><td><span>Specialization of B for int with value 2.</span></td></tr><tr>
-<td><a href="#A-C-05"><code>C</code></a> </td><td><span>Main class template for C.</span></td></tr><tr>
-<td><a href="#A-C-0f"><code>C&lt;D, true&gt;</code></a> </td><td><span>Specialization of C for D with true.</span></td></tr><tr>
-<td><a href="#A-C-0c"><code>C&lt;int, true&gt;</code></a> </td><td><span>Specialization of C for int with true.</span></td></tr><tr>
-<td><a href="#A-D"><code>D</code></a> </td><td><span>Helper struct D.</span></td></tr><tr>
-<td><a href="#A-BInt"><code>BInt</code></a> </td><td><span>Specialization of B for int.</span></td></tr><tr>
-<td><a href="#A-BInt2"><code>BInt2</code></a> </td><td><span>Specialization of B for int with value 2.</span></td></tr><tr>
-<td><a href="#A-B_t"><code>B_t</code></a> </td><td><span>Main class template for B.</span></td></tr><tr>
-<td><a href="#A-CDTrue"><code>CDTrue</code></a> </td><td><span>Specialization of C for D with true.</span></td></tr><tr>
-<td><a href="#A-CIntTrue"><code>CIntTrue</code></a> </td><td><span>Specialization of C for D with true.</span></td></tr><tr>
-<td><a href="#A-C_t"><code>C_t</code></a> </td><td><span>Main class template for C.</span></td></tr>
+<td><a href="#A-B-08"><code>B</code></a> </td><td>Main class template for B.</td></tr><tr>
+<td><a href="#A-B-09"><code>B&lt;int&gt;</code></a> </td><td>Specialization of B for int.</td></tr><tr>
+<td><a href="#A-B-0c"><code>B&lt;int, 2&gt;</code></a> </td><td>Specialization of B for int with value 2.</td></tr><tr>
+<td><a href="#A-C-05"><code>C</code></a> </td><td>Main class template for C.</td></tr><tr>
+<td><a href="#A-C-0f"><code>C&lt;D, true&gt;</code></a> </td><td>Specialization of C for D with true.</td></tr><tr>
+<td><a href="#A-C-0c"><code>C&lt;int, true&gt;</code></a> </td><td>Specialization of C for int with true.</td></tr><tr>
+<td><a href="#A-D"><code>D</code></a> </td><td>Helper struct D.</td></tr><tr>
+<td><a href="#A-BInt"><code>BInt</code></a> </td><td>Specialization of B for int.</td></tr><tr>
+<td><a href="#A-BInt2"><code>BInt2</code></a> </td><td>Specialization of B for int with value 2.</td></tr><tr>
+<td><a href="#A-B_t"><code>B_t</code></a> </td><td>Main class template for B.</td></tr><tr>
+<td><a href="#A-CDTrue"><code>CDTrue</code></a> </td><td>Specialization of C for D with true.</td></tr><tr>
+<td><a href="#A-CIntTrue"><code>CIntTrue</code></a> </td><td>Specialization of C for D with true.</td></tr><tr>
+<td><a href="#A-C_t"><code>C_t</code></a> </td><td>Main class template for C.</td></tr>
 </tbody>
 </table>
 
@@ -58,8 +58,7 @@
 <div>
 <h2 id="A-BInt">A::BInt</h2>
 <div>
-<span>Specialization of B for int.</span>
-
+<p>Specialization of B for int.</p>
 </div>
 </div>
 <div>
@@ -67,9 +66,7 @@
 <div>
 Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">using BInt = <a href="#A-B-09">B&lt;int&gt;</a>;
-
-</code>
+<code class="source-code cpp">using BInt = <a href="#A-B-09">B&lt;int&gt;</a>;</code>
 </pre>
 </div>
 </div>
@@ -77,8 +74,7 @@ Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
 <div>
 <h2 id="A-BInt2">A::BInt2</h2>
 <div>
-<span>Specialization of B for int with value 2.</span>
-
+<p>Specialization of B for int with value 2.</p>
 </div>
 </div>
 <div>
@@ -86,9 +82,7 @@ Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
 <div>
 Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">using BInt2 = <a href="#A-B-0c">B&lt;int, 2&gt;</a>;
-
-</code>
+<code class="source-code cpp">using BInt2 = <a href="#A-B-0c">B&lt;int, 2&gt;</a>;</code>
 </pre>
 </div>
 </div>
@@ -96,8 +90,7 @@ Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
 <div>
 <h2 id="A-B_t">A::B_t</h2>
 <div>
-<span>Main class template for B.</span>
-
+<p>Main class template for B.</p>
 </div>
 </div>
 <div>
@@ -108,9 +101,7 @@ Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
 <code class="source-code cpp">template&lt;
     class T,
     int I&gt;
-using B_t = <a href="#A-B-08">B&lt;T, I&gt;</a>;
-
-</code>
+using B_t = <a href="#A-B-08">B&lt;T, I&gt;</a>;</code>
 </pre>
 </div>
 <div>
@@ -125,7 +116,7 @@ using B_t = <a href="#A-B-08">B&lt;T, I&gt;</a>;
 <tbody>
 <tr>
 <td><strong>T</strong></td>
-<td><span>The type parameter.</span></td>
+<td>The type parameter.</td>
 </tr>
 </tbody>
 </table>
@@ -135,8 +126,7 @@ using B_t = <a href="#A-B-08">B&lt;T, I&gt;</a>;
 <div>
 <h2 id="A-CDTrue">A::CDTrue</h2>
 <div>
-<span>Specialization of C for D with true.</span>
-
+<p>Specialization of C for D with true.</p>
 </div>
 </div>
 <div>
@@ -144,9 +134,7 @@ using B_t = <a href="#A-B-08">B&lt;T, I&gt;</a>;
 <div>
 Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">using CDTrue = <a href="#A-C-0f">C&lt;D, true&gt;</a>;
-
-</code>
+<code class="source-code cpp">using CDTrue = <a href="#A-C-0f">C&lt;D, true&gt;</a>;</code>
 </pre>
 </div>
 </div>
@@ -154,8 +142,7 @@ Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
 <div>
 <h2 id="A-CIntTrue">A::CIntTrue</h2>
 <div>
-<span>Specialization of C for D with true.</span>
-
+<p>Specialization of C for D with true.</p>
 </div>
 </div>
 <div>
@@ -163,9 +150,7 @@ Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
 <div>
 Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">using CIntTrue = <a href="#A-C-0c">C&lt;int, true&gt;</a>;
-
-</code>
+<code class="source-code cpp">using CIntTrue = <a href="#A-C-0c">C&lt;int, true&gt;</a>;</code>
 </pre>
 </div>
 </div>
@@ -173,8 +158,7 @@ Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
 <div>
 <h2 id="A-C_t">A::C_t</h2>
 <div>
-<span>Main class template for C.</span>
-
+<p>Main class template for C.</p>
 </div>
 </div>
 <div>
@@ -185,9 +169,7 @@ Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
 <code class="source-code cpp">template&lt;
     class T,
     bool B&gt;
-using C_t = <a href="#A-C-05">C&lt;T, B&gt;</a>;
-
-</code>
+using C_t = <a href="#A-C-05">C&lt;T, B&gt;</a>;</code>
 </pre>
 </div>
 <div>
@@ -202,7 +184,7 @@ using C_t = <a href="#A-C-05">C&lt;T, B&gt;</a>;
 <tbody>
 <tr>
 <td><strong>T</strong></td>
-<td><span>The type parameter.</span></td>
+<td>The type parameter.</td>
 </tr>
 </tbody>
 </table>
@@ -212,8 +194,7 @@ using C_t = <a href="#A-C-05">C&lt;T, B&gt;</a>;
 <div>
 <h2 id="A-B-08">A::B</h2>
 <div>
-<span>Main class template for B.</span>
-
+<p>Main class template for B.</p>
 </div>
 </div>
 <div>
@@ -224,9 +205,7 @@ Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
 <code class="source-code cpp">template&lt;
     class T,
     int = 0&gt;
-struct B;
-
-</code>
+struct B;</code>
 </pre>
 </div>
 
@@ -243,11 +222,11 @@ struct B;
 <tbody>
 <tr>
 <td><strong>T</strong></td>
-<td><span>The type parameter.</span></td>
+<td>The type parameter.</td>
 </tr>
 <tr>
 <td><strong>int</strong></td>
-<td><span>The integer parameter with a default value of 0.</span></td>
+<td>The integer parameter with a default value of 0.</td>
 </tr>
 </tbody>
 </table>
@@ -257,8 +236,7 @@ struct B;
 <div>
 <h2 id="A-B-09">A::B&lt;int&gt;</h2>
 <div>
-<span>Specialization of B for int.</span>
-
+<p>Specialization of B for int.</p>
 </div>
 </div>
 <div>
@@ -267,9 +245,7 @@ struct B;
 Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">template&lt;&gt;
-struct <a href="#A-B-08">B</a>&lt;int&gt;;
-
-</code>
+struct <a href="#A-B-08">B</a>&lt;int&gt;;</code>
 </pre>
 </div>
 
@@ -279,8 +255,7 @@ struct <a href="#A-B-08">B</a>&lt;int&gt;;
 <div>
 <h2 id="A-B-0c">A::B&lt;int, 2&gt;</h2>
 <div>
-<span>Specialization of B for int with value 2.</span>
-
+<p>Specialization of B for int with value 2.</p>
 </div>
 </div>
 <div>
@@ -289,9 +264,7 @@ struct <a href="#A-B-08">B</a>&lt;int&gt;;
 Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">template&lt;&gt;
-struct <a href="#A-B-08">B</a>&lt;int, 2&gt;;
-
-</code>
+struct <a href="#A-B-08">B</a>&lt;int, 2&gt;;</code>
 </pre>
 </div>
 
@@ -301,8 +274,7 @@ struct <a href="#A-B-08">B</a>&lt;int, 2&gt;;
 <div>
 <h2 id="A-C-05">A::C</h2>
 <div>
-<span>Main class template for C.</span>
-
+<p>Main class template for C.</p>
 </div>
 </div>
 <div>
@@ -313,9 +285,7 @@ Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
 <code class="source-code cpp">template&lt;
     class T,
     bool = false&gt;
-struct C;
-
-</code>
+struct C;</code>
 </pre>
 </div>
 
@@ -332,11 +302,11 @@ struct C;
 <tbody>
 <tr>
 <td><strong>T</strong></td>
-<td><span>The type parameter.</span></td>
+<td>The type parameter.</td>
 </tr>
 <tr>
 <td><strong>bool</strong></td>
-<td><span>The boolean parameter with a default value of false.</span></td>
+<td>The boolean parameter with a default value of false.</td>
 </tr>
 </tbody>
 </table>
@@ -346,8 +316,7 @@ struct C;
 <div>
 <h2 id="A-C-0f">A::C&lt;D, true&gt;</h2>
 <div>
-<span>Specialization of C for D with true.</span>
-
+<p>Specialization of C for D with true.</p>
 </div>
 </div>
 <div>
@@ -356,9 +325,7 @@ struct C;
 Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">template&lt;&gt;
-struct <a href="#A-C-05">C</a>&lt;<a href="#A-D">D</a>, true&gt;;
-
-</code>
+struct <a href="#A-C-05">C</a>&lt;<a href="#A-D">D</a>, true&gt;;</code>
 </pre>
 </div>
 
@@ -368,8 +335,7 @@ struct <a href="#A-C-05">C</a>&lt;<a href="#A-D">D</a>, true&gt;;
 <div>
 <h2 id="A-C-0c">A::C&lt;int, true&gt;</h2>
 <div>
-<span>Specialization of C for int with true.</span>
-
+<p>Specialization of C for int with true.</p>
 </div>
 </div>
 <div>
@@ -378,9 +344,7 @@ struct <a href="#A-C-05">C</a>&lt;<a href="#A-D">D</a>, true&gt;;
 Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">template&lt;&gt;
-struct <a href="#A-C-05">C</a>&lt;int, true&gt;;
-
-</code>
+struct <a href="#A-C-05">C</a>&lt;int, true&gt;;</code>
 </pre>
 </div>
 
@@ -390,8 +354,7 @@ struct <a href="#A-C-05">C</a>&lt;int, true&gt;;
 <div>
 <h2 id="A-D">A::D</h2>
 <div>
-<span>Helper struct D.</span>
-
+<p>Helper struct D.</p>
 </div>
 </div>
 <div>
@@ -399,9 +362,7 @@ struct <a href="#A-C-05">C</a>&lt;int, true&gt;;
 <div>
 Declared in <code>&lt;template-arguments.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">struct D;
-
-</code>
+<code class="source-code cpp">struct D;</code>
 </pre>
 </div>
 

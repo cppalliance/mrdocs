@@ -43,10 +43,9 @@ public:
     Expected<void>
     build();
 
-    void writeIndex();
-
-    template<class T>
-    void operator()(T const&);
+    template <std::derived_from<Symbol> SymbolTy>
+    void
+    operator()(SymbolTy const& I);
 
 
     // ---------------
@@ -57,35 +56,74 @@ public:
 
     void writeSourceInfo(SourceInfo const& I);
     void writeLocation(Location const& loc, bool def = false);
-    void writeJavadoc(Optional<Javadoc> const& javadoc);
+    void writeDocComment(Optional<DocComment> const& doc);
     void writeFriend(FriendInfo const& I);
     void openTemplate(Optional<TemplateInfo> const& I);
     void closeTemplate(Optional<TemplateInfo> const& I);
 
     // ---------------
-    // Javadoc types
+    // DocComment types
 
-    void writeAdmonition(doc::Admonition const& node);
-    void writeBrief(doc::Paragraph const& node);
-    void writeCode(doc::Code const& node);
-    void writeHeading(doc::Heading const& node);
-    void writeLink(doc::Link const& node);
-    void writeListItem(doc::ListItem const& node);
-    void writeUnorderedList(doc::UnorderedList const& node);
-    void writeParagraph(doc::Paragraph const& node, llvm::StringRef tag = "");
-    void writeJParam(doc::Param const& node);
-    void writeReturns(doc::Returns const& node);
-    void writeStyledText(doc::Styled const& node);
-    void writeText(doc::Text const& node);
-    void writeTParam(doc::TParam const& node);
-    void writeReference(doc::Reference const& node);
-    void writeCopied(doc::CopyDetails const& node);
-    void writeThrows(doc::Throws const& node);
-    void writeSee(doc::See const& node, llvm::StringRef tag = "");
-    void writePrecondition(doc::Precondition const& node);
-    void writePostcondition(doc::Postcondition const& node);
+#define INFO(Type) void write##Type(doc::Type##Block const&);
+#include <mrdocs/Metadata/DocComment/Block/BlockNodes.inc>
 
-    void writeNode(doc::Node const& node);
+    void
+    writeBlock(doc::Block const& node);
+
+    template <std::derived_from<doc::Block> T>
+    void
+    writeBlocks(std::vector<T> const& list)
+    {
+        for (auto const& node: list)
+        {
+            writeBlock(node);
+        }
+    }
+
+    void
+    writeBlocks(std::vector<Polymorphic<doc::Block>> const& list)
+    {
+        for (auto const& node: list)
+        {
+            writeBlock(*node);
+        }
+    }
+
+#define INFO(Type) void write##Type(doc::Type##Inline const&);
+#include <mrdocs/Metadata/DocComment/Inline/InlineNodes.inc>
+
+    void
+    writeInline(doc::Inline const& node);
+
+    template <std::derived_from<doc::Inline> T>
+    void
+    writeInlines(std::vector<T> const& list)
+    {
+        for (auto const& node: list)
+        {
+            writeInline(node);
+        }
+    }
+
+    void
+    writeInlines(std::vector<Polymorphic<doc::Inline>> const& list)
+    {
+        for (auto const& node: list)
+        {
+            writeInline(*node);
+        }
+    }
+
+    void
+    writeInlineContainer(
+        doc::InlineContainer const& node,
+        std::string_view tag);
+
+    void
+    writeListItem(doc::ListItem const& node);
+
+//    void
+//    writeNode(doc::Node const& node);
 
     template <class T>
     void
@@ -97,14 +135,14 @@ public:
         }
     }
 
-    template <std::derived_from<doc::Node> T>
-    void writeNodes(std::vector<T> const& list)
-    {
-        for (auto const& node: list)
-        {
-            writeNode(node);
-        }
-    }
+//    template <std::derived_from<doc::Node> T>
+//    void writeNodes(std::vector<T> const& list)
+//    {
+//        for (auto const& node: list)
+//        {
+//            writeNode(node);
+//        }
+//    }
 };
 
 } // mrdocs::xml

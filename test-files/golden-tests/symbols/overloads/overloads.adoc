@@ -39,22 +39,18 @@ struct A;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
 | Name
-| Description
 | link:#A-f-07[`f`] 
-| 
 |===
 
 === Static Member Functions
 
-[cols=2]
+[cols=1]
 |===
 | Name
-| Description
 | link:#A-g-0d[`g`] 
-| 
 |===
 
 === Friends
@@ -186,6 +182,18 @@ Declared in `&lt;overloads&period;cpp&gt;`
 ----
 struct B;
 ----
+
+=== Non-Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#operator_eq-071[`operator&equals;&equals;`]
+| Equality operator
+| link:#operator_eq-08[`operator&equals;&equals;`]
+| Equality operator
+|===
 
 [#f-0c]
 == f

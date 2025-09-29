@@ -19,7 +19,7 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="#A"><code>A</code></a> </td><td><span>A record with non-member functions</span></td></tr>
+<td><a href="#A"><code>A</code></a> </td><td>A record with non-member functions</td></tr>
 </tbody>
 </table>
 
@@ -33,8 +33,8 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="#to_string"><code>to_string</code></a> </td><td><span>Non-member function of A</span></td></tr><tr>
-<td><a href="#operator_eq"><code>operator&#x3D;&#x3D;</code></a> </td><td><span>Friend function not listed as non-member</span></td></tr>
+<td><a href="#to_string"><code>to_string</code></a> </td><td>Non-member function of A</td></tr><tr>
+<td><a href="#operator_eq"><code>operator&#x3D;&#x3D;</code></a> </td><td>Friend function not listed as non-member</td></tr>
 </tbody>
 </table>
 
@@ -43,8 +43,7 @@
 <div>
 <h2 id="A">A</h2>
 <div>
-<span>A record with non-member functions</span>
-
+<p>A record with non-member functions</p>
 </div>
 </div>
 <div>
@@ -52,9 +51,7 @@
 <div>
 Declared in <code>&lt;remove-friend.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">class A;
-
-</code>
+<code class="source-code cpp">class A;</code>
 </pre>
 </div>
 
@@ -71,7 +68,7 @@ Declared in <code>&lt;remove-friend.cpp&gt;</code></div>
 <tbody>
 <tr>
 <td><code><a href="#operator_eq">operator&#x3D;&#x3D;</a></code></td>
-<td><span>Friend function not listed as non-member</span></td>
+<td>Friend function not listed as non-member</td>
 </tr>
 |===
 </tbody>
@@ -87,7 +84,7 @@ Declared in <code>&lt;remove-friend.cpp&gt;</code></div>
 </tr>
 </thead>
 <tbody>
-<tr><td><a href="#to_string"><code>to_string</code></a></td><td><span>Non-member function of A</span></td></tr>
+<tr><td><a href="#to_string"><code>to_string</code></a></td><td>Non-member function of A</td></tr>
 </tbody>
 </table>
 </div>
@@ -96,8 +93,7 @@ Declared in <code>&lt;remove-friend.cpp&gt;</code></div>
 <div>
 <h2 id="to_string">to_string</h2>
 <div>
-<span>Non-member function of A</span>
-
+<p>Non-member function of A</p>
 </div>
 </div>
 <div>
@@ -106,14 +102,12 @@ Declared in <code>&lt;remove-friend.cpp&gt;</code></div>
 Declared in <code>&lt;remove-friend.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">char const*
-to_string(<a href="#A">A</a> const& a);
-
-</code>
+to_string(<a href="#A">A</a> const& a);</code>
 </pre>
 </div>
 <div>
 <h3>Return Value</h3>
-<span>The string representation of the object</span>
+The string representation of the object
 </div>
 <div>
 <h3>Parameters</h3>
@@ -127,7 +121,7 @@ to_string(<a href="#A">A</a> const& a);
 <tbody>
 <tr>
 <td><strong>a</strong></td>
-<td><span>The object to stringify</span></td>
+<td>The object to stringify</td>
 </tr>
 </tbody>
 </table>
@@ -137,8 +131,7 @@ to_string(<a href="#A">A</a> const& a);
 <div>
 <h2 id="operator_eq">operator&#x3D;&#x3D;</h2>
 <div>
-<span>Friend function not listed as non-member</span>
-
+<p>Friend function not listed as non-member</p>
 </div>
 </div>
 <div>
@@ -149,9 +142,7 @@ Declared in <code>&lt;remove-friend.cpp&gt;</code></div>
 <code class="source-code cpp">bool
 operator&#x3D;&#x3D;(
     <a href="#A">A</a> const& lhs,
-    <a href="#A">A</a> const& rhs);
-
-</code>
+    <a href="#A">A</a> const& rhs);</code>
 </pre>
 </div>
 <div>
@@ -160,7 +151,7 @@ operator&#x3D;&#x3D;(
 </div>
 <div>
 <h3>Return Value</h3>
-<span><code>true</code> if the objects are equal</span>
+<code>true</code> if the objects are equal
 </div>
 <div>
 <h3>Parameters</h3>
@@ -174,11 +165,11 @@ operator&#x3D;&#x3D;(
 <tbody>
 <tr>
 <td><strong>lhs</strong></td>
-<td><span>The left-hand side of the comparison</span></td>
+<td>The left-hand side of the comparison</td>
 </tr>
 <tr>
 <td><strong>rhs</strong></td>
-<td><span>The right-hand side of the comparison</span></td>
+<td>The right-hand side of the comparison</td>
 </tr>
 </tbody>
 </table>

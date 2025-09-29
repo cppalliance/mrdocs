@@ -56,14 +56,14 @@ merge(Symbol& I, Symbol&& Other)
     }
     I.Extraction = leastSpecific(I.Extraction, Other.Extraction);
 
-    // Append javadocs
-    if (!I.javadoc)
+    // Append docs
+    if (!I.doc)
     {
-        I.javadoc = std::move(Other.javadoc);
+        I.doc = std::move(Other.doc);
     }
-    else if (Other.javadoc)
+    else if (Other.doc)
     {
-        merge(*I.javadoc, std::move(*Other.javadoc));
+        merge(*I.doc, std::move(*Other.doc));
     }
 }
 

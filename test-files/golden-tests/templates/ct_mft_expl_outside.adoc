@@ -63,12 +63,10 @@ struct link:#A-0e[A]&lt;int&gt;;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
 | Name
-| Description
 | link:#A-00-f-0a[`f`] 
-| 
 |===
 
 [#A-00-f-0a]

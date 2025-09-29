@@ -281,6 +281,128 @@ struct nullable_traits<Polymorphic<T>>
     }
 };
 
+//------------------------------------------------------------------------------
+// isa<T>(p)
+//------------------------------------------------------------------------------
+
+template <class To, class From>
+requires ( std::derived_from<std::remove_cvref_t<To>, std::remove_cvref_t<From>> )
+[[nodiscard]] inline bool
+isa(const Polymorphic<From>& p) noexcept
+{
+    if (p.valueless_after_move()) return false;
+    using ToU = std::remove_reference_t<To>;
+    return dynamic_cast<const ToU*>(std::addressof(*p)) != nullptr;
+}
+
+template <class To, class From>
+requires ( std::derived_from<std::remove_cvref_t<To>, std::remove_cvref_t<From>> )
+[[nodiscard]] inline bool
+isa_or_null(const Polymorphic<From>* pp) noexcept
+{
+    return pp && isa<To>(*pp);
+}
+
+//------------------------------------------------------------------------------
+// dyn_cast<T>(p)  → pointer (nullptr if not)
+//------------------------------------------------------------------------------
+
+template <class To, class From>
+requires ( std::derived_from<std::remove_cvref_t<To>, std::remove_cvref_t<From>> )
+[[nodiscard]] inline auto
+dyn_cast(Polymorphic<From>& p) noexcept
+    -> std::add_pointer_t<std::remove_reference_t<To>>
+{
+    if (p.valueless_after_move()) return nullptr;
+    using ToU = std::remove_reference_t<To>;
+    return dynamic_cast<ToU*>(std::addressof(*p));
+}
+
+template <class To, class From>
+requires ( std::derived_from<std::remove_cvref_t<To>, std::remove_cvref_t<From>> )
+[[nodiscard]] inline auto
+dyn_cast(const Polymorphic<From>& p) noexcept
+    -> std::add_pointer_t<const std::remove_reference_t<To>>
+{
+    if (p.valueless_after_move()) return nullptr;
+    using ToU = std::remove_reference_t<To>;
+    return dynamic_cast<const ToU*>(std::addressof(*p));
+}
+
+template <class To, class From>
+requires ( std::derived_from<std::remove_cvref_t<To>, std::remove_cvref_t<From>> )
+[[nodiscard]] inline auto
+dyn_cast_or_null(Polymorphic<From>* pp) noexcept
+    -> std::add_pointer_t<std::remove_reference_t<To>>
+{
+    return (pp && !pp->valueless_after_move()) ? dyn_cast<To>(*pp) : nullptr;
+}
+
+template <class To, class From>
+requires ( std::derived_from<std::remove_cvref_t<To>, std::remove_cvref_t<From>> )
+[[nodiscard]] inline auto
+dyn_cast_or_null(const Polymorphic<From>* pp) noexcept
+    -> std::add_pointer_t<const std::remove_reference_t<To>>
+{
+    return (pp && !pp->valueless_after_move()) ? dyn_cast<To>(*pp) : nullptr;
+}
+
+//------------------------------------------------------------------------------
+// cast<T>(p)  → reference (asserts on failure)
+//------------------------------------------------------------------------------
+
+template <class To, class From>
+requires ( std::derived_from<std::remove_cvref_t<To>, std::remove_cvref_t<From>> )
+[[nodiscard]] inline auto
+cast(Polymorphic<From>& p)
+    -> std::remove_reference_t<To>&
+{
+    assert(!p.valueless_after_move() && "cast: moved-from Polymorphic");
+    auto* r = dyn_cast<To>(p);
+    assert(r && "cast<T>: invalid cast");
+    return *r;
+}
+
+template <class To, class From>
+requires ( std::derived_from<std::remove_cvref_t<To>, std::remove_cvref_t<From>> )
+[[nodiscard]] inline auto
+cast(const Polymorphic<From>& p)
+    -> const std::remove_reference_t<To>&
+{
+    assert(!p.valueless_after_move() && "cast: moved-from Polymorphic");
+    auto* r = dyn_cast<To>(p);
+    assert(r && "cast<T>: invalid cast");
+    return *r;
+}
+
+//------------------------------------------------------------------------------
+// cast_or_null<T>(pp)  → pointer (asserts on bad non-null)
+//------------------------------------------------------------------------------
+
+template <class To, class From>
+requires ( std::derived_from<std::remove_cvref_t<To>, std::remove_cvref_t<From>> )
+[[nodiscard]] inline auto
+cast_or_null(Polymorphic<From>* pp)
+    -> std::add_pointer_t<std::remove_reference_t<To>>
+{
+    if (!pp) return nullptr;
+    auto* r = dyn_cast<To>(*pp);
+    assert(r && "cast_or_null<T>: invalid cast on non-null argument");
+    return r;
+}
+
+template <class To, class From>
+requires ( std::derived_from<std::remove_cvref_t<To>, std::remove_cvref_t<From>> )
+[[nodiscard]] inline auto
+cast_or_null(const Polymorphic<From>* pp)
+    -> std::add_pointer_t<const std::remove_reference_t<To>>
+{
+    if (!pp) return nullptr;
+    auto* r = dyn_cast<To>(*pp);
+    assert(r && "cast_or_null<T>: invalid cast on non-null argument");
+    return r;
+}
+
 } // namespace mrdocs
 
 #endif // MRDOCS_API_ADT_POLYMORPHIC_HPP

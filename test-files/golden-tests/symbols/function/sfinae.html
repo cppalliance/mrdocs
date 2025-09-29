@@ -32,10 +32,10 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="#A-09"><code>A</code></a> </td><td><span>The partial specialization of A is enabled via a template parameter</span></td></tr><tr>
-<td><a href="#A-07"><code>A&lt;T&gt;</code></a> </td><td><span>Specialization for integral types</span></td></tr><tr>
-<td><a href="#S-02"><code>S</code></a> </td><td><span>SFINAE with std::void_t</span></td></tr><tr>
-<td><a href="#S-08"><code>S&lt;T, std::void_t&lt;T::a::b&gt;&gt;</code></a> </td><td><span>SFINAE with std::void_t</span></td></tr>
+<td><a href="#A-09"><code>A</code></a> </td><td>The partial specialization of A is enabled via a template parameter</td></tr><tr>
+<td><a href="#A-07"><code>A&lt;T&gt;</code></a> </td><td>Specialization for integral types</td></tr><tr>
+<td><a href="#S-02"><code>S</code></a> </td><td>SFINAE with std::void_t</td></tr><tr>
+<td><a href="#S-08"><code>S&lt;T, std::void_t&lt;T::a::b&gt;&gt;</code></a> </td><td>SFINAE with std::void_t</td></tr>
 </tbody>
 </table>
 
@@ -49,16 +49,16 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="#f1"><code>f1</code></a> </td><td><span>Enabled via return type</span></td></tr><tr>
-<td><a href="#f10"><code>f10</code></a> </td><td><span>Enabled via type template parameter</span></td></tr><tr>
-<td><a href="#f2"><code>f2</code></a> </td><td><span>Enabling a specified return type</span></td></tr><tr>
-<td><a href="#f3"><code>f3</code></a> </td><td><span>Enabling a specified return type in another namespace</span></td></tr><tr>
-<td><a href="#f4"><code>f4</code></a> </td><td><span>Enabled via return type with std::enable_if</span></td></tr><tr>
-<td><a href="#f5"><code>f5</code></a> </td><td><span>Enabled via a non-type template parameter with helper</span></td></tr><tr>
-<td><a href="#f6"><code>f6</code></a> </td><td><span>Enabled via a non-type template parameter without helper</span></td></tr><tr>
-<td><a href="#f7"><code>f7</code></a> </td><td><span>Enabled via a non-type template parameter using int instead of bool</span></td></tr><tr>
-<td><a href="#f8"><code>f8</code></a> </td><td><span>Enabled via parameter without helper</span></td></tr><tr>
-<td><a href="#f9"><code>f9</code></a> </td><td><span>Enabled via parameter with helper</span></td></tr>
+<td><a href="#f1"><code>f1</code></a> </td><td>Enabled via return type</td></tr><tr>
+<td><a href="#f10"><code>f10</code></a> </td><td>Enabled via type template parameter</td></tr><tr>
+<td><a href="#f2"><code>f2</code></a> </td><td>Enabling a specified return type</td></tr><tr>
+<td><a href="#f3"><code>f3</code></a> </td><td>Enabling a specified return type in another namespace</td></tr><tr>
+<td><a href="#f4"><code>f4</code></a> </td><td>Enabled via return type with std::enable_if</td></tr><tr>
+<td><a href="#f5"><code>f5</code></a> </td><td>Enabled via a non-type template parameter with helper</td></tr><tr>
+<td><a href="#f6"><code>f6</code></a> </td><td>Enabled via a non-type template parameter without helper</td></tr><tr>
+<td><a href="#f7"><code>f7</code></a> </td><td>Enabled via a non-type template parameter using int instead of bool</td></tr><tr>
+<td><a href="#f8"><code>f8</code></a> </td><td>Enabled via parameter without helper</td></tr><tr>
+<td><a href="#f9"><code>f9</code></a> </td><td>Enabled via parameter with helper</td></tr>
 </tbody>
 </table>
 
@@ -72,12 +72,11 @@
 <thead>
 <tr>
 <th>Name</th>
-<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><a href="#B-C"><code>C</code></a> </td><td><span></span></td></tr>
+<td><a href="#B-C"><code>C</code></a> </td></tr>
 </tbody>
 </table>
 
@@ -91,9 +90,7 @@
 <div>
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">struct C;
-
-</code>
+<code class="source-code cpp">struct C;</code>
 </pre>
 </div>
 
@@ -108,7 +105,7 @@ Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 </tr>
 </thead>
 <tbody>
-<tr><td><a href="#f3"><code>::f3</code></a></td><td><span>Enabling a specified return type in another namespace</span></td></tr>
+<tr><td><a href="#f3"><code>::f3</code></a></td><td>Enabling a specified return type in another namespace</td></tr>
 </tbody>
 </table>
 </div>
@@ -117,8 +114,7 @@ Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <div>
 <h2 id="A-09">A</h2>
 <div>
-<span>The partial specialization of A is enabled via a template parameter</span>
-
+<p>The partial specialization of A is enabled via a template parameter</p>
 </div>
 </div>
 <div>
@@ -129,9 +125,7 @@ Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <code class="source-code cpp">template&lt;
     class T,
     class Enable = void&gt;
-class A;
-
-</code>
+class A;</code>
 </pre>
 </div>
 
@@ -141,8 +135,7 @@ class A;
 <div>
 <h2 id="A-07">A&lt;T&gt;</h2>
 <div>
-<span>Specialization for integral types</span>
-
+<p>Specialization for integral types</p>
 </div>
 </div>
 <div>
@@ -152,9 +145,7 @@ Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">template&lt;class T&gt;
 requires std::is_integral_v&lt;T&gt;
-class <a href="#A-09">A</a>&lt;T&gt;;
-
-</code>
+class <a href="#A-09">A</a>&lt;T&gt;;</code>
 </pre>
 </div>
 
@@ -164,8 +155,7 @@ class <a href="#A-09">A</a>&lt;T&gt;;
 <div>
 <h2 id="S-02">S</h2>
 <div>
-<span>SFINAE with std::void_t</span>
-
+<p>SFINAE with std::void_t</p>
 </div>
 </div>
 <div>
@@ -176,9 +166,7 @@ Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <code class="source-code cpp">template&lt;
     class T,
     class Enable = void&gt;
-struct S;
-
-</code>
+struct S;</code>
 </pre>
 </div>
 <h2>Member Functions</h2>
@@ -207,9 +195,7 @@ struct S;
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">void
-store(void const*);
-
-</code>
+store(void const*);</code>
 </pre>
 </div>
 </div>
@@ -217,8 +203,7 @@ store(void const*);
 <div>
 <h2 id="S-08">S&lt;T, std::void_t&lt;T::a::b&gt;&gt;</h2>
 <div>
-<span>SFINAE with std::void_t</span>
-
+<p>SFINAE with std::void_t</p>
 </div>
 </div>
 <div>
@@ -227,9 +212,7 @@ store(void const*);
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">template&lt;class T&gt;
-struct <a href="#S-02">S</a>&lt;T, std::void_t&lt;T::a::b&gt;&gt;;
-
-</code>
+struct <a href="#S-02">S</a>&lt;T, std::void_t&lt;T::a::b&gt;&gt;;</code>
 </pre>
 </div>
 <h2>Member Functions</h2>
@@ -258,9 +241,7 @@ struct <a href="#S-02">S</a>&lt;T, std::void_t&lt;T::a::b&gt;&gt;;
 Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">void
-store(void const*);
-
-</code>
+store(void const*);</code>
 </pre>
 </div>
 </div>
@@ -268,8 +249,7 @@ store(void const*);
 <div>
 <h2 id="f1">f1</h2>
 <div>
-<span>Enabled via return type</span>
-
+<p>Enabled via return type</p>
 </div>
 </div>
 <div>
@@ -280,9 +260,7 @@ Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <code class="source-code cpp">template&lt;class T&gt;
 T
 f1(T value)
-requires std::is_integral_v&lt;T&gt;;
-
-</code>
+requires std::is_integral_v&lt;T&gt;;</code>
 </pre>
 </div>
 </div>
@@ -290,8 +268,7 @@ requires std::is_integral_v&lt;T&gt;;
 <div>
 <h2 id="f10">f10</h2>
 <div>
-<span>Enabled via type template parameter</span>
-
+<p>Enabled via type template parameter</p>
 </div>
 </div>
 <div>
@@ -302,9 +279,7 @@ Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <code class="source-code cpp">template&lt;class T&gt;
 requires std::is_integral_v&lt;T&gt;
 void
-f10(T value);
-
-</code>
+f10(T value);</code>
 </pre>
 </div>
 <div>
@@ -318,8 +293,7 @@ f10(T value);
 <div>
 <h2 id="f2">f2</h2>
 <div>
-<span>Enabling a specified return type</span>
-
+<p>Enabling a specified return type</p>
 </div>
 </div>
 <div>
@@ -330,9 +304,7 @@ Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <code class="source-code cpp">template&lt;class T&gt;
 int
 f2(T value)
-requires std::is_integral_v&lt;T&gt;;
-
-</code>
+requires std::is_integral_v&lt;T&gt;;</code>
 </pre>
 </div>
 </div>
@@ -340,8 +312,7 @@ requires std::is_integral_v&lt;T&gt;;
 <div>
 <h2 id="f3">f3</h2>
 <div>
-<span>Enabling a specified return type in another namespace</span>
-
+<p>Enabling a specified return type in another namespace</p>
 </div>
 </div>
 <div>
@@ -352,9 +323,7 @@ Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <code class="source-code cpp">template&lt;class T&gt;
 <a href="#B-C">B::C</a>
 f3(T value)
-requires std::is_integral_v&lt;T&gt;;
-
-</code>
+requires std::is_integral_v&lt;T&gt;;</code>
 </pre>
 </div>
 </div>
@@ -362,8 +331,7 @@ requires std::is_integral_v&lt;T&gt;;
 <div>
 <h2 id="f4">f4</h2>
 <div>
-<span>Enabled via return type with std::enable_if</span>
-
+<p>Enabled via return type with std::enable_if</p>
 </div>
 </div>
 <div>
@@ -374,9 +342,7 @@ Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <code class="source-code cpp">template&lt;class T&gt;
 T
 f4(T value)
-requires std::is_integral_v&lt;T&gt;;
-
-</code>
+requires std::is_integral_v&lt;T&gt;;</code>
 </pre>
 </div>
 </div>
@@ -384,8 +350,7 @@ requires std::is_integral_v&lt;T&gt;;
 <div>
 <h2 id="f5">f5</h2>
 <div>
-<span>Enabled via a non-type template parameter with helper</span>
-
+<p>Enabled via a non-type template parameter with helper</p>
 </div>
 </div>
 <div>
@@ -396,9 +361,7 @@ Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <code class="source-code cpp">template&lt;class T&gt;
 requires std::is_integral_v&lt;T&gt;
 T
-f5(T value);
-
-</code>
+f5(T value);</code>
 </pre>
 </div>
 </div>
@@ -406,8 +369,7 @@ f5(T value);
 <div>
 <h2 id="f6">f6</h2>
 <div>
-<span>Enabled via a non-type template parameter without helper</span>
-
+<p>Enabled via a non-type template parameter without helper</p>
 </div>
 </div>
 <div>
@@ -418,9 +380,7 @@ Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <code class="source-code cpp">template&lt;class T&gt;
 requires std::is_integral_v&lt;T&gt;
 T
-f6(T value);
-
-</code>
+f6(T value);</code>
 </pre>
 </div>
 </div>
@@ -428,8 +388,7 @@ f6(T value);
 <div>
 <h2 id="f7">f7</h2>
 <div>
-<span>Enabled via a non-type template parameter using int instead of bool</span>
-
+<p>Enabled via a non-type template parameter using int instead of bool</p>
 </div>
 </div>
 <div>
@@ -440,9 +399,7 @@ Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <code class="source-code cpp">template&lt;class T&gt;
 requires std::is_integral_v&lt;T&gt;
 void
-f7(T value);
-
-</code>
+f7(T value);</code>
 </pre>
 </div>
 </div>
@@ -450,8 +407,7 @@ f7(T value);
 <div>
 <h2 id="f8">f8</h2>
 <div>
-<span>Enabled via parameter without helper</span>
-
+<p>Enabled via parameter without helper</p>
 </div>
 </div>
 <div>
@@ -462,9 +418,7 @@ Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <code class="source-code cpp">template&lt;class T&gt;
 T
 f8(T value)
-requires std::is_integral_v&lt;T&gt;;
-
-</code>
+requires std::is_integral_v&lt;T&gt;;</code>
 </pre>
 </div>
 </div>
@@ -472,8 +426,7 @@ requires std::is_integral_v&lt;T&gt;;
 <div>
 <h2 id="f9">f9</h2>
 <div>
-<span>Enabled via parameter with helper</span>
-
+<p>Enabled via parameter with helper</p>
 </div>
 </div>
 <div>
@@ -484,9 +437,7 @@ Declared in <code>&lt;sfinae.cpp&gt;</code></div>
 <code class="source-code cpp">template&lt;class T&gt;
 T
 f9(T value)
-requires std::is_integral_v&lt;T&gt;;
-
-</code>
+requires std::is_integral_v&lt;T&gt;;</code>
 </pre>
 </div>
 </div>

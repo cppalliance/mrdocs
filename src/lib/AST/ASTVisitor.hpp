@@ -492,18 +492,18 @@ private:
     void
     populate(SourceInfo& I, DeclTy const* D);
 
-    /*  Parse the comments above a declaration as Javadoc
+    /*  Parse the comments above a declaration as DocComment
 
         This function will parse the comments above a declaration
-        as Javadoc, and store the results in the `javadoc` input
+        as DocComment, and store the results in the `doc` input
         parameter.
 
         @return true if the comments were successfully parsed as
-        Javadoc, and false otherwise.
+        DocComment, and false otherwise.
      */
     bool
     populate(
-        Optional<Javadoc>& javadoc,
+        Optional<DocComment>& doc,
         clang::Decl const* D);
 
     void

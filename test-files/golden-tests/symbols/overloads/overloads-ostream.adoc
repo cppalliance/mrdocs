@@ -227,6 +227,18 @@ Declared in `&lt;overloads&hyphen;ostream&period;cpp&gt;`
 class OStream;
 ----
 
+=== Non-Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#ostream-operator_lshift-0a[`operator&lt;&lt;`]
+| Stream insertion operator
+| link:#ostream-operator_lshift-0d[`operator&lt;&lt;`]
+| Stream insertion operator
+|===
+
 [#ostream-operator_lshift-0f]
 == link:#ostream[ostream]::operator&lt;&lt;
 

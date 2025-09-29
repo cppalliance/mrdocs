@@ -1,6 +1,6 @@
 = Mr.Docs
 Alan Freitas <alandefreitas@gmail.com>
-:description: Mr.Docs: A Clang/LLVM tool for building reference documentation from C++ code and javadoc comments.
+:description: Mr.Docs: A Clang/LLVM tool for building reference documentation from C++ code and documentation comments.
 :sectanchors:
 :url-repo: https://github.com/cppalliance/mrdocs
 :page-tags: mrdocs

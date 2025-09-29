@@ -19,9 +19,9 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="#X"><code>X</code></a> </td><td><span>This struct will be inherited as public</span></td></tr><tr>
-<td><a href="#Y"><code>Y</code></a> </td><td><span>This struct inherits from X</span></td></tr><tr>
-<td><a href="#fun_ptr"><code>fun_ptr</code></a> </td><td><span>A pointer to function typedef</span></td></tr>
+<td><a href="#X"><code>X</code></a> </td><td>This struct will be inherited as public</td></tr><tr>
+<td><a href="#Y"><code>Y</code></a> </td><td>This struct inherits from X</td></tr><tr>
+<td><a href="#fun_ptr"><code>fun_ptr</code></a> </td><td>A pointer to function typedef</td></tr>
 </tbody>
 </table>
 
@@ -30,8 +30,7 @@
 <div>
 <h2 id="fun_ptr">fun_ptr</h2>
 <div>
-<span>A pointer to function typedef</span>
-
+<p>A pointer to function typedef</p>
 </div>
 </div>
 <div>
@@ -39,9 +38,7 @@
 <div>
 Declared in <code>&lt;using-member-conversion.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">using fun_ptr = void(*)();
-
-</code>
+<code class="source-code cpp">using fun_ptr = void(*)();</code>
 </pre>
 </div>
 </div>
@@ -49,8 +46,7 @@ Declared in <code>&lt;using-member-conversion.cpp&gt;</code></div>
 <div>
 <h2 id="X">X</h2>
 <div>
-<span>This struct will be inherited as public</span>
-
+<p>This struct will be inherited as public</p>
 </div>
 </div>
 <div>
@@ -58,9 +54,7 @@ Declared in <code>&lt;using-member-conversion.cpp&gt;</code></div>
 <div>
 Declared in <code>&lt;using-member-conversion.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">struct X;
-
-</code>
+<code class="source-code cpp">struct X;</code>
 </pre>
 </div>
 <h2>Member Functions</h2>
@@ -73,7 +67,7 @@ Declared in <code>&lt;using-member-conversion.cpp&gt;</code></div>
 </thead>
 <tbody>
 <tr>
-<td><a href="#X-2conversion"><code>operator fun_ptr</code></a> </td><td><span>Conversion operator to function pointer.</span></td></tr>
+<td><a href="#X-2conversion"><code>operator fun_ptr</code></a> </td><td>Conversion operator to function pointer.</td></tr>
 </tbody>
 </table>
 
@@ -90,7 +84,7 @@ Declared in <code>&lt;using-member-conversion.cpp&gt;</code></div>
 </thead>
 <tbody>
 <tr><td><a href="#Y"><code>Y</code></a>
-    </td><td><span>This struct inherits from X</span></td></tr>
+    </td><td>This struct inherits from X</td></tr>
 </tbody>
 </table>
 </div>
@@ -99,8 +93,7 @@ Declared in <code>&lt;using-member-conversion.cpp&gt;</code></div>
 <div>
 <h2 id="X-2conversion">X::operator fun_ptr</h2>
 <div>
-<span>Conversion operator to function pointer.</span>
-
+<p>Conversion operator to function pointer.</p>
 </div>
 </div>
 <div>
@@ -108,22 +101,19 @@ Declared in <code>&lt;using-member-conversion.cpp&gt;</code></div>
 <div>
 Declared in <code>&lt;using-member-conversion.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">operator <a href="#fun_ptr">fun_ptr</a>() const;
-
-</code>
+<code class="source-code cpp">operator <a href="#fun_ptr">fun_ptr</a>() const;</code>
 </pre>
 </div>
 <div>
 <h3>Return Value</h3>
-<span>A pointer to function typedef</span>
+A pointer to function typedef
 </div>
 </div>
 <div>
 <div>
 <h2 id="Y">Y</h2>
 <div>
-<span>This struct inherits from X</span>
-
+<p>This struct inherits from X</p>
 </div>
 </div>
 <div>
@@ -132,9 +122,7 @@ Declared in <code>&lt;using-member-conversion.cpp&gt;</code></div>
 Declared in <code>&lt;using-member-conversion.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">struct Y
-    : <a href="#X">X</a>
-
-</code>
+    : <a href="#X">X</a></code>
 </pre>
 </div>
 <div>
@@ -147,7 +135,7 @@ Declared in <code>&lt;using-member-conversion.cpp&gt;</code></div>
 </tr>
 </thead>
 <tbody>
-<tr><td><code><a href="#X">X</a></code></td><td><span>This struct will be inherited as public</span></td></tr>
+<tr><td><code><a href="#X">X</a></code></td><td>This struct will be inherited as public</td></tr>
 </tbody>
 </table>
 </div>
@@ -161,7 +149,7 @@ Declared in <code>&lt;using-member-conversion.cpp&gt;</code></div>
 </thead>
 <tbody>
 <tr>
-<td><a href="#X-2conversion"><code>operator fun_ptr</code></a> </td><td><span>Conversion operator to function pointer.</span></td></tr>
+<td><a href="#X-2conversion"><code>operator fun_ptr</code></a> </td><td>Conversion operator to function pointer.</td></tr>
 </tbody>
 </table>
 
@@ -175,7 +163,7 @@ Declared in <code>&lt;using-member-conversion.cpp&gt;</code></div>
 </thead>
 <tbody>
 <tr>
-<td><a href="#Y-2conversion"><code>operator void(*)()</code></a> </td><td><span>Bring X::operator fun_ptr into Y.</span></td></tr>
+<td><a href="#Y-2conversion"><code>operator void(*)()</code></a> </td><td>Bring X::operator fun_ptr into Y.</td></tr>
 </tbody>
 </table>
 
@@ -186,8 +174,7 @@ Declared in <code>&lt;using-member-conversion.cpp&gt;</code></div>
 <div>
 <h2 id="Y-2conversion">Y::operator void(*)()</h2>
 <div>
-<span>Bring X::operator fun_ptr into Y.</span>
-
+<p>Bring X::operator fun_ptr into Y.</p>
 </div>
 </div>
 <div>
@@ -195,9 +182,7 @@ Declared in <code>&lt;using-member-conversion.cpp&gt;</code></div>
 <div>
 Declared in <code>&lt;using-member-conversion.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">using X::operator void(*)();
-
-</code>
+<code class="source-code cpp">using X::operator void(*)();</code>
 </pre>
 </div>
 <div>
@@ -212,7 +197,7 @@ Declared in <code>&lt;using-member-conversion.cpp&gt;</code></div>
 <tbody>
 <tr>
 <td><a href="#X-2conversion">X::operator fun_ptr</a></td>
-<td><span>Conversion operator to function pointer.</span></td>
+<td>Conversion operator to function pointer.</td>
 </tr>
 </tbody>
 </table>

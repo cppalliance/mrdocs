@@ -28,12 +28,10 @@
 
 === Enums
 
-[cols=2]
+[cols=1]
 |===
 | Name
-| Description
 | link:#testEnum[`testEnum`] 
-| 
 |===
 
 === Functions

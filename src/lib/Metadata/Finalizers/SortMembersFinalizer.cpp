@@ -243,6 +243,11 @@ struct SymbolIDCompareFn
             {
                 return std::is_lt(cmp);
             }
+            if (auto const cmp = lhsLoc->ColumnNumber <=> rhsLoc->ColumnNumber;
+                cmp != 0)
+            {
+                return std::is_lt(cmp);
+            }
             break;
         }
         default:

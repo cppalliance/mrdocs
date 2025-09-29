@@ -13,8 +13,8 @@
 #define MRDOCS_API_METADATA_HPP
 
 #include <mrdocs/Platform.hpp>
+#include <mrdocs/Metadata/DocComment.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
-#include <mrdocs/Metadata/Javadoc.hpp>
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Symbol.hpp>
 #include <mrdocs/Metadata/Symbol/Concept.hpp>

@@ -46,7 +46,7 @@ operator()(NamespaceSymbol& I)
     MRDOCS_CHECK_OR(I.id != SymbolID::global, FinalizerResult::None);
 
     // No more steps for documented namespaces
-    MRDOCS_CHECK_OR(!I.javadoc, FinalizerResult::None);
+    MRDOCS_CHECK_OR(!I.doc, FinalizerResult::None);
 
     // 3) Remove empty undocumented namespaces
     auto memberIds = allMembers(I);

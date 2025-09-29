@@ -8,6 +8,16 @@
       <brief>
         <text>A helper class</text>
       </brief>
+      <related>
+        <reference id="yuKyBhGbND+Kyypyb9UsuC4Qe3E=">operator!</reference>
+        <reference id="4MuN1V3fHVfOMvtg2LT+QVm/XmE=">operator!=</reference>
+        <reference id="TFzwjGmsRFw8/0KXWcNJ2hjptZA=">operator&lt;</reference>
+        <reference id="PCL/yV8DLimc1O5rgMCsXr2rz7s=">operator&lt;=</reference>
+        <reference id="89EonDQZVWNcdopm5CdG3ShJQjo=">operator&lt;=&gt;</reference>
+        <reference id="kibUx6k1SXB+HsXkRXroJl9f59w=">operator==</reference>
+        <reference id="mFT9ttIGXVcpN6jtSrnEnclPRwU=">operator&gt;</reference>
+        <reference id="dl5ECjWFv+MMFzli4qz59OqD2Z4=">operator&gt;=</reference>
+      </related>
     </doc>
   </struct>
   <struct name="Undoc" id="9rZb+QO/AFLNBwbIrSOzFktZiVY=">
@@ -357,6 +367,9 @@
       <brief>
         <text>A fake output stream</text>
       </brief>
+      <related>
+        <reference id="YufiLU3QRbcE/EbZ/1/y0UPKQxo=">operator&lt;&lt;</reference>
+      </related>
     </doc>
   </struct>
   <function name="operator&lt;&lt;" id="YufiLU3QRbcE/EbZ/1/y0UPKQxo=">
@@ -390,6 +403,9 @@
       <param name="value">
         <text>The object to output</text>
       </param>
+      <relates>
+        <reference id="S6h+1uM4q9FLs9aohvL2EV9oRbs=">ostream</reference>
+      </relates>
     </doc>
   </function>
   <function name="operator!" id="yuKyBhGbND+Kyypyb9UsuC4Qe3E=">
@@ -416,6 +432,9 @@
       <param name="value">
         <text>The operand</text>
       </param>
+      <relates>
+        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
+      </relates>
     </doc>
   </function>
   <function name="operator==" id="kibUx6k1SXB+HsXkRXroJl9f59w=">
@@ -450,6 +469,9 @@
       <param name="rhs">
         <text>The right operand</text>
       </param>
+      <relates>
+        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
+      </relates>
     </doc>
   </function>
   <function name="operator!=" id="4MuN1V3fHVfOMvtg2LT+QVm/XmE=">
@@ -484,6 +506,9 @@
       <param name="rhs">
         <text>The right operand</text>
       </param>
+      <relates>
+        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
+      </relates>
     </doc>
   </function>
   <function name="operator&lt;" id="TFzwjGmsRFw8/0KXWcNJ2hjptZA=">
@@ -518,6 +543,9 @@
       <param name="rhs">
         <text>The right operand</text>
       </param>
+      <relates>
+        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
+      </relates>
     </doc>
   </function>
   <function name="operator&lt;=" id="PCL/yV8DLimc1O5rgMCsXr2rz7s=">
@@ -552,6 +580,9 @@
       <param name="rhs">
         <text>The right operand</text>
       </param>
+      <relates>
+        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
+      </relates>
     </doc>
   </function>
   <function name="operator&gt;" id="mFT9ttIGXVcpN6jtSrnEnclPRwU=">
@@ -586,6 +617,9 @@
       <param name="rhs">
         <text>The right operand</text>
       </param>
+      <relates>
+        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
+      </relates>
     </doc>
   </function>
   <function name="operator&gt;=" id="dl5ECjWFv+MMFzli4qz59OqD2Z4=">
@@ -620,6 +654,9 @@
       <param name="rhs">
         <text>The right operand</text>
       </param>
+      <relates>
+        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
+      </relates>
     </doc>
   </function>
   <function name="operator&lt;=&gt;" id="89EonDQZVWNcdopm5CdG3ShJQjo=">
@@ -652,6 +689,9 @@
       <param name="rhs">
         <text>The right operand</text>
       </param>
+      <relates>
+        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
+      </relates>
     </doc>
   </function>
 </namespace>
