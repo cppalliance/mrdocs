@@ -697,13 +697,20 @@ jobs:
           ref: develop
           path: nlohmann-json
 
+      - name: Clone MpUnits
+        uses: actions/checkout@v4
+        with:
+          repository: mpusz/mp-units
+          ref: master
+          path: mp-units
+
       - name: Patch Demo Projects
         shell: bash
         run: |
           set -euo pipefail
           set -x
           
-          for project in beman-optional fmt nlohmann-json; do
+          for project in beman-optional fmt nlohmann-json mp-units; do
             src="./examples/third-party/$project"
             dst="./$project"
           
@@ -737,6 +744,8 @@ jobs:
               mrdocs --config="$(pwd)/beman-optional/docs/mrdocs.yml" --output="$(pwd)/demos/beman-optional/$variant/$generator" --multipage=$multipage --generator="$generator" --log-level=debug
               # nlohmann-json demo
               mrdocs --config="$(pwd)/nlohmann-json/docs/mrdocs.yml" --output="$(pwd)/demos/nlohmann-json/$variant/$generator" --multipage=$multipage --generator="$generator" --log-level=debug
+              # mp-units demo
+              mrdocs --config="$(pwd)/mp-units/docs/mrdocs.yml" --output="$(pwd)/demos/mp-units/$variant/$generator" --multipage=$multipage --generator="$generator" --log-level=debug
               # fmt demo
               mrdocs --config="$(pwd)/fmt/doc/mrdocs.yml" --output="$(pwd)/demos/fmt/$variant/$generator" --multipage=$multipage --generator="$generator" --log-level=debug
               # mrdocs documenting mrdocs demo
@@ -745,7 +754,7 @@ jobs:
           
             # Render the asciidoc files to html using asciidoctor
             if [[ ${{ runner.os }} == 'Linux' ]]; then
-              for project in boost-url beman-optional mrdocs fmt nlohmann-json; do
+              for project in boost-url beman-optional mrdocs fmt nlohmann-json mp-units; do
                 root="$(pwd)/demos/$project/$variant"
                 src="$root/adoc"
                 dst="$root/adoc-asciidoc"

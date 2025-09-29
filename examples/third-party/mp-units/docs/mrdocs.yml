@@ -1,0 +1,13 @@
+source-root: ..
+input:
+  - ../src/core/include
+includes:
+  - ../src/core/include
+file-patterns:
+  - '*.h'
+include-symbols:
+  - 'mp_units::**'
+implementation-defined:
+  - 'mp_units::detail'
+multipage: true
+generator: adoc
