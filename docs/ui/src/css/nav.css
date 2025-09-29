@@ -311,6 +311,12 @@
   margin-top: 0.5rem;
 }
 
+@media screen and (min-width: 769px) {
+  .nav-close {
+    display: none;
+  }
+}
+
 .nav-close span {
   position: absolute;
   width: 1px;
