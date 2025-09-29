@@ -1,2 +1,2 @@
 missing-include-prefixes:
-  - "someprefix/"
+  - "llvm/"

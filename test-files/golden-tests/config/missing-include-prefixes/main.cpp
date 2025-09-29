@@ -1,5 +1,5 @@
-// forgiven by "someprefix/" prefix - includes an empty file instead
-#include <someprefix/ThisHeaderDoesNotExist.h>
+// forgiven by "llvm/" prefix - includes an empty file instead
+#include <llvm/ThisHeaderDoesNotExist.h>
 
 unknown_type
 f();
