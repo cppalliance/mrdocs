@@ -119,7 +119,7 @@ char&ast;
 | Name
 | Description
 | *i*
-| 
+| Description of i
 |===
 
 

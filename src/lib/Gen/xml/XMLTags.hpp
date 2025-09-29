@@ -13,7 +13,7 @@
 #define MRDOCS_LIB_GEN_XML_XMLTAGS_HPP
 
 #include <mrdocs/Dom.hpp>
-#include <mrdocs/Metadata/Javadoc.hpp>
+#include <mrdocs/Metadata/DocComment.hpp>
 #include <mrdocs/Metadata/Symbol/SymbolID.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 #include <clang/Basic/Specifiers.h>

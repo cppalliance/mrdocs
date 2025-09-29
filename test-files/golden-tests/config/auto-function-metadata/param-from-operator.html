@@ -19,9 +19,9 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="#A"><code>A</code></a> </td><td><span>A helper tag</span></td></tr><tr>
-<td><a href="#X"><code>X</code></a> </td><td><span>Test class</span></td></tr><tr>
-<td><a href="#ostream"><code>ostream</code></a> </td><td><span>A dumb ostream class</span></td></tr>
+<td><a href="#A"><code>A</code></a> </td><td>A helper tag</td></tr><tr>
+<td><a href="#X"><code>X</code></a> </td><td>Test class</td></tr><tr>
+<td><a href="#ostream"><code>ostream</code></a> </td><td>A dumb ostream class</td></tr>
 </tbody>
 </table>
 
@@ -35,9 +35,9 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="#operator_minus"><code>operator-</code></a> </td><td><span>Subtraction operator</span></td></tr><tr>
-<td><a href="#operator_lshift"><code>operator&lt;&lt;</code></a> </td><td><span>Stream insertion operator</span></td></tr><tr>
-<td><a href="#operator_not"><code>operator!</code></a> </td><td><span>Negation operator</span></td></tr>
+<td><a href="#operator_minus"><code>operator-</code></a> </td><td>Subtraction operator</td></tr><tr>
+<td><a href="#operator_lshift"><code>operator&lt;&lt;</code></a> </td><td>Stream insertion operator</td></tr><tr>
+<td><a href="#operator_not"><code>operator!</code></a> </td><td>Negation operator</td></tr>
 </tbody>
 </table>
 
@@ -46,8 +46,7 @@
 <div>
 <h2 id="A">A</h2>
 <div>
-<span>A helper tag</span>
-
+<p>A helper tag</p>
 </div>
 </div>
 <div>
@@ -55,9 +54,7 @@
 <div>
 Declared in <code>&lt;param-from-operator.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">struct A;
-
-</code>
+<code class="source-code cpp">struct A;</code>
 </pre>
 </div>
 
@@ -67,8 +64,7 @@ Declared in <code>&lt;param-from-operator.cpp&gt;</code></div>
 <div>
 <h2 id="X">X</h2>
 <div>
-<span>Test class</span>
-
+<p>Test class</p>
 </div>
 </div>
 <div>
@@ -76,9 +72,7 @@ Declared in <code>&lt;param-from-operator.cpp&gt;</code></div>
 <div>
 Declared in <code>&lt;param-from-operator.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">struct X;
-
-</code>
+<code class="source-code cpp">struct X;</code>
 </pre>
 </div>
 <h2>Member Functions</h2>
@@ -91,19 +85,33 @@ Declared in <code>&lt;param-from-operator.cpp&gt;</code></div>
 </thead>
 <tbody>
 <tr>
-<td><a href="#X-operator_plus"><code>operator+</code></a> </td><td><span>Addition operator</span></td></tr>
+<td><a href="#X-operator_plus"><code>operator+</code></a> </td><td>Addition operator</td></tr>
 </tbody>
 </table>
 
 
 
+<div>
+<h2>Non-Member Functions</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr><td><a href="#operator_not"><code>operator!</code></a></td><td>Negation operator</td></tr>
+<tr><td><a href="#operator_minus"><code>operator-</code></a></td><td>Subtraction operator</td></tr>
+</tbody>
+</table>
+</div>
 </div>
 <div>
 <div>
 <h2 id="X-operator_plus">X::operator+</h2>
 <div>
-<span>Addition operator</span>
-
+<p>Addition operator</p>
 </div>
 </div>
 <div>
@@ -112,14 +120,12 @@ Declared in <code>&lt;param-from-operator.cpp&gt;</code></div>
 Declared in <code>&lt;param-from-operator.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp"><a href="#X">X</a>
-operator+(<a href="#X">X</a> const& x) const;
-
-</code>
+operator+(<a href="#X">X</a> const& x) const;</code>
 </pre>
 </div>
 <div>
 <h3>Return Value</h3>
-<span>Another instance of the object</span>
+Another instance of the object
 </div>
 <div>
 <h3>Parameters</h3>
@@ -133,7 +139,7 @@ operator+(<a href="#X">X</a> const& x) const;
 <tbody>
 <tr>
 <td><strong>x</strong></td>
-<td><span>The right operand</span></td>
+<td>The right operand</td>
 </tr>
 </tbody>
 </table>
@@ -143,8 +149,7 @@ operator+(<a href="#X">X</a> const& x) const;
 <div>
 <h2 id="ostream">ostream</h2>
 <div>
-<span>A dumb ostream class</span>
-
+<p>A dumb ostream class</p>
 </div>
 </div>
 <div>
@@ -152,20 +157,31 @@ operator+(<a href="#X">X</a> const& x) const;
 <div>
 Declared in <code>&lt;param-from-operator.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">struct ostream;
-
-</code>
+<code class="source-code cpp">struct ostream;</code>
 </pre>
 </div>
 
 
+<div>
+<h2>Non-Member Functions</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr><td><a href="#operator_lshift"><code>operator&lt;&lt;</code></a></td><td>Stream insertion operator</td></tr>
+</tbody>
+</table>
+</div>
 </div>
 <div>
 <div>
 <h2 id="operator_minus">operator-</h2>
 <div>
-<span>Subtraction operator</span>
-
+<p>Subtraction operator</p>
 </div>
 </div>
 <div>
@@ -176,14 +192,12 @@ Declared in <code>&lt;param-from-operator.cpp&gt;</code></div>
 <code class="source-code cpp"><a href="#X">X</a>
 operator-(
     <a href="#X">X</a> const& x,
-    <a href="#X">X</a> const& y);
-
-</code>
+    <a href="#X">X</a> const& y);</code>
 </pre>
 </div>
 <div>
 <h3>Return Value</h3>
-<span>Test class</span>
+Test class
 </div>
 <div>
 <h3>Parameters</h3>
@@ -197,11 +211,11 @@ operator-(
 <tbody>
 <tr>
 <td><strong>x</strong></td>
-<td><span>The left operand</span></td>
+<td>The left operand</td>
 </tr>
 <tr>
 <td><strong>y</strong></td>
-<td><span>The right operand</span></td>
+<td>The right operand</td>
 </tr>
 </tbody>
 </table>
@@ -211,8 +225,7 @@ operator-(
 <div>
 <h2 id="operator_lshift">operator&lt;&lt;</h2>
 <div>
-<span>Stream insertion operator</span>
-
+<p>Stream insertion operator</p>
 </div>
 </div>
 <div>
@@ -223,14 +236,12 @@ Declared in <code>&lt;param-from-operator.cpp&gt;</code></div>
 <code class="source-code cpp"><a href="#ostream">ostream</a>&
 operator&lt;&lt;(
     <a href="#ostream">ostream</a>& os,
-    <a href="#X">X</a> const& x);
-
-</code>
+    <a href="#X">X</a> const& x);</code>
 </pre>
 </div>
 <div>
 <h3>Return Value</h3>
-<span>Reference to the current output stream</span>
+Reference to the current output stream
 </div>
 <div>
 <h3>Parameters</h3>
@@ -244,11 +255,11 @@ operator&lt;&lt;(
 <tbody>
 <tr>
 <td><strong>os</strong></td>
-<td><span>An output stream</span></td>
+<td>An output stream</td>
 </tr>
 <tr>
 <td><strong>x</strong></td>
-<td><span>The object to output</span></td>
+<td>The object to output</td>
 </tr>
 </tbody>
 </table>
@@ -258,8 +269,7 @@ operator&lt;&lt;(
 <div>
 <h2 id="operator_not">operator!</h2>
 <div>
-<span>Negation operator</span>
-
+<p>Negation operator</p>
 </div>
 </div>
 <div>
@@ -268,14 +278,12 @@ operator&lt;&lt;(
 Declared in <code>&lt;param-from-operator.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp"><a href="#X">X</a>
-operator!(<a href="#X">X</a> const& x);
-
-</code>
+operator!(<a href="#X">X</a> const& x);</code>
 </pre>
 </div>
 <div>
 <h3>Return Value</h3>
-<span>Test class</span>
+Test class
 </div>
 <div>
 <h3>Parameters</h3>
@@ -289,7 +297,7 @@ operator!(<a href="#X">X</a> const& x);
 <tbody>
 <tr>
 <td><strong>x</strong></td>
-<td><span>The operand</span></td>
+<td>The operand</td>
 </tr>
 </tbody>
 </table>

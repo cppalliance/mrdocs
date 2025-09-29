@@ -13,7 +13,7 @@
 #define MRDOCS_API_METADATA_SYMBOL_SYMBOLBASE_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Javadoc.hpp>
+#include <mrdocs/Metadata/DocComment.hpp>
 #include <mrdocs/Metadata/Specifiers/AccessKind.hpp>
 #include <mrdocs/Metadata/Symbol/ExtractionMode.hpp>
 #include <mrdocs/Metadata/Symbol/Source.hpp>
@@ -78,9 +78,9 @@ struct MRDOCS_VISIBLE Symbol {
      */
     SymbolID Parent;
 
-    /** The extracted javadoc for this declaration.
+    /** The extracted documentation for this declaration.
      */
-    Optional<Javadoc> javadoc;
+    Optional<DocComment> doc;
 
     //--------------------------------------------
 
@@ -244,9 +244,9 @@ tag_invoke(
     {
         io.map("parent", I.Parent);
     }
-    if (I.javadoc)
+    if (I.doc)
     {
-        io.map("doc", *I.javadoc);
+        io.map("doc", *I.doc);
     }
     io.map("loc", I.Loc);
 }

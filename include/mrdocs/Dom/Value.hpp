@@ -797,7 +797,8 @@ ValueFrom(
     {
         tag_invoke(ValueFromTag{}, v, static_cast<T&&>(t), ctx);
     }
-    else {
+    else
+    {
         ValueFrom(static_cast<T&&>(t), v);
     }
 }
@@ -925,7 +926,7 @@ Value
 ValueFrom(T&& t, Context const& ctx)
 {
     dom::Value v;
-    ValueFrom(static_cast<T&&>(t), ctx, v);
+    ValueFrom(std::forward<T>(t), ctx, v);
     return v;
 }
 

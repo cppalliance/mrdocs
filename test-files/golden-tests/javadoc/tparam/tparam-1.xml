@@ -8,6 +8,8 @@
       <file short-path="tparam-1.cpp" source-path="tparam-1.cpp" line="2"/>
       <doc>
         <tparam name="T">
+          <text>Template parameter </text>
+          <mono>T</mono>
         </tparam>
       </doc>
     </function>

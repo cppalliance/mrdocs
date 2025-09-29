@@ -9,7 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <lib/AST/ParseJavadoc.hpp>
+#include <lib/AST/ExtractDocComment.hpp>
 #include <lib/Support/Chrono.hpp>
 #include <lib/Support/Path.hpp>
 #include <mrdocs/Generator.hpp>

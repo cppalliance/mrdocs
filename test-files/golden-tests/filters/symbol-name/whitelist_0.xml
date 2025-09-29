@@ -41,8 +41,7 @@
           <brief>
             <text>This function should extracted because the namespace </text>
             <mono>N1::N3_WL</mono>
-            <text> is included</text>
-            <text> as a literal.</text>
+            <text> is included as a literal.</text>
           </brief>
         </doc>
       </function>
@@ -92,8 +91,7 @@
             <brief>
               <text>This function should be included because it&apos;s a member of </text>
               <mono>M7</mono>
-              <text>, which matches</text>
-              <text> </text>
+              <text>, which matches </text>
               <mono>N5::N6::*7</mono>
             </brief>
           </doc>
@@ -112,8 +110,7 @@
             <brief>
               <text>This function should be included because it&apos;s a member of </text>
               <mono>N7</mono>
-              <text>, which matches</text>
-              <text> </text>
+              <text>, which matches </text>
               <mono>N5::N6::*7</mono>
             </brief>
           </doc>

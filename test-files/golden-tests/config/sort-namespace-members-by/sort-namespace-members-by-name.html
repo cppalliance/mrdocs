@@ -40,12 +40,12 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="#f"><code>f</code></a> </td><td><span></span></td></tr><tr>
-<td><a href="#g-0f"><code>g</code></a> </td><td><span></span></td></tr><tr>
-<td><a href="#h"><code>h</code></a> </td><td><span></span></td></tr><tr>
-<td><a href="#operator_not"><code>operator!</code></a> </td><td><span>Negation operator</span></td></tr><tr>
-<td><a href="#operator_eq"><code>operator&#x3D;&#x3D;</code></a> </td><td><span>Equality operator</span></td></tr><tr>
-<td><a href="#operator_not_eq"><code>operator!&#x3D;</code></a> </td><td><span>Inequality operator</span></td></tr>
+<td><a href="#f"><code>f</code></a> </td><td></td></tr><tr>
+<td><a href="#g-0f"><code>g</code></a> </td><td></td></tr><tr>
+<td><a href="#h"><code>h</code></a> </td><td></td></tr><tr>
+<td><a href="#operator_not"><code>operator!</code></a> </td><td>Negation operator</td></tr><tr>
+<td><a href="#operator_eq"><code>operator&#x3D;&#x3D;</code></a> </td><td>Equality operator</td></tr><tr>
+<td><a href="#operator_not_eq"><code>operator!&#x3D;</code></a> </td><td>Inequality operator</td></tr>
 </tbody>
 </table>
 
@@ -59,13 +59,27 @@
 <div>
 Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">struct A;
-
-</code>
+<code class="source-code cpp">struct A;</code>
 </pre>
 </div>
 
 
+<div>
+<h2>Non-Member Functions</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr><td><a href="#operator_not"><code>operator!</code></a></td><td>Negation operator</td></tr>
+<tr><td><a href="#operator_not_eq"><code>operator!&#x3D;</code></a></td><td>Inequality operator</td></tr>
+<tr><td><a href="#operator_eq"><code>operator&#x3D;&#x3D;</code></a></td><td>Equality operator</td></tr>
+</tbody>
+</table>
+</div>
 </div>
 <div>
 <div>
@@ -79,9 +93,7 @@ Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <code class="source-code cpp">template&lt;
     class T,
     class U&gt;
-struct B;
-
-</code>
+struct B;</code>
 </pre>
 </div>
 
@@ -97,9 +109,7 @@ struct B;
 Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">template&lt;&gt;
-struct <a href="#B-0b">B</a>&lt;int, char&gt;;
-
-</code>
+struct <a href="#B-0b">B</a>&lt;int, char&gt;;</code>
 </pre>
 </div>
 
@@ -115,9 +125,7 @@ struct <a href="#B-0b">B</a>&lt;int, char&gt;;
 Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">template&lt;class U&gt;
-struct <a href="#B-0b">B</a>&lt;int, U&gt;;
-
-</code>
+struct <a href="#B-0b">B</a>&lt;int, U&gt;;</code>
 </pre>
 </div>
 
@@ -135,9 +143,7 @@ Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <code class="source-code cpp">template&lt;
     class T,
     class U = void&gt;
-struct C;
-
-</code>
+struct C;</code>
 </pre>
 </div>
 
@@ -153,9 +159,7 @@ struct C;
 Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">template&lt;&gt;
-struct <a href="#C-0f">C</a>&lt;int&gt;;
-
-</code>
+struct <a href="#C-0f">C</a>&lt;int&gt;;</code>
 </pre>
 </div>
 
@@ -171,9 +175,7 @@ struct <a href="#C-0f">C</a>&lt;int&gt;;
 Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">template&lt;&gt;
-struct <a href="#C-0f">C</a>&lt;int, char&gt;;
-
-</code>
+struct <a href="#C-0f">C</a>&lt;int, char&gt;;</code>
 </pre>
 </div>
 
@@ -188,9 +190,7 @@ struct <a href="#C-0f">C</a>&lt;int, char&gt;;
 <div>
 Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">struct D;
-
-</code>
+<code class="source-code cpp">struct D;</code>
 </pre>
 </div>
 
@@ -205,9 +205,7 @@ Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <div>
 Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">struct Z;
-
-</code>
+<code class="source-code cpp">struct Z;</code>
 </pre>
 </div>
 <h2>Member Functions</h2>
@@ -220,14 +218,14 @@ Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 </thead>
 <tbody>
 <tr>
-<td><a href="#Z-2constructor-00"><code>Z</code></a>         <span class="small">[constructor]</span></td><td><span>Constructors</span></td></tr><tr>
-<td><a href="#Z-2destructor"><code>~Z</code></a> <span class="small">[destructor]</span></td><td><span>Destructor</span></td></tr><tr>
-<td><a href="#Z-foo"><code>foo</code></a> </td><td><span></span></td></tr><tr>
-<td><a href="#Z-2conversion"><code>operator bool</code></a> </td><td><span>Conversion to <code>bool</code></span></td></tr><tr>
-<td><a href="#Z-operator_not"><code>operator!</code></a> </td><td><span>Negation operator</span></td></tr><tr>
-<td><a href="#Z-operator_eq"><code>operator&#x3D;&#x3D;</code></a> </td><td><span>Equality operator</span></td></tr><tr>
-<td><a href="#Z-operator_not_eq"><code>operator!&#x3D;</code></a> </td><td><span>Inequality operator</span></td></tr><tr>
-<td><a href="#Z-operator_3way"><code>operator&lt;&#x3D;&gt;</code></a> </td><td><span>Three-way comparison operator</span></td></tr>
+<td><a href="#Z-2constructor-00"><code>Z</code></a>         <span class="small">[constructor]</span></td><td>Constructors</td></tr><tr>
+<td><a href="#Z-2destructor"><code>~Z</code></a> <span class="small">[destructor]</span></td><td>Destructor</td></tr><tr>
+<td><a href="#Z-foo"><code>foo</code></a> </td><td></td></tr><tr>
+<td><a href="#Z-2conversion"><code>operator bool</code></a> </td><td>Conversion to <code>bool</code></td></tr><tr>
+<td><a href="#Z-operator_not"><code>operator!</code></a> </td><td>Negation operator</td></tr><tr>
+<td><a href="#Z-operator_eq"><code>operator&#x3D;&#x3D;</code></a> </td><td>Equality operator</td></tr><tr>
+<td><a href="#Z-operator_not_eq"><code>operator!&#x3D;</code></a> </td><td>Inequality operator</td></tr><tr>
+<td><a href="#Z-operator_3way"><code>operator&lt;&#x3D;&gt;</code></a> </td><td>Three-way comparison operator</td></tr>
 </tbody>
 </table>
 
@@ -238,26 +236,21 @@ Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <div>
 <h2 id="Z-2constructor-00">Z::Z</h2>
 <div>
-<span>Constructors</span>
-
+<p>Constructors</p>
 </div>
 </div>
 <div>
 <h3>Synopses</h3>
 <div>
 Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
-<span>Default constructor</span>
+<p>Default constructor</p>
 <pre>
-<code class="source-code cpp"><a href="#Z-2constructor-05">Z</a>();
-
-</code>
+<code class="source-code cpp"><a href="#Z-2constructor-05">Z</a>();</code>
 </pre><span class="small"><a href="#Z-2constructor-05"><em>» more...</em></a></span>
 
-<span>Construct from <code>int</code></span>
+<p>Construct from <code>int</code></p>
 <pre>
-<code class="source-code cpp"><a href="#Z-2constructor-06">Z</a>(int value);
-
-</code>
+<code class="source-code cpp"><a href="#Z-2constructor-06">Z</a>(int value);</code>
 </pre><span class="small"><a href="#Z-2constructor-06"><em>» more...</em></a></span>
 
 
@@ -267,8 +260,7 @@ Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <div>
 <h2 id="Z-2constructor-05">Z::Z</h2>
 <div>
-<span>Default constructor</span>
-
+<p>Default constructor</p>
 </div>
 </div>
 <div>
@@ -276,9 +268,7 @@ Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <div>
 Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">Z();
-
-</code>
+<code class="source-code cpp">Z();</code>
 </pre>
 </div>
 </div>
@@ -286,8 +276,7 @@ Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <div>
 <h2 id="Z-2constructor-06">Z::Z</h2>
 <div>
-<span>Construct from <code>int</code></span>
-
+<p>Construct from <code>int</code></p>
 </div>
 </div>
 <div>
@@ -295,9 +284,7 @@ Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <div>
 Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">Z(int value);
-
-</code>
+<code class="source-code cpp">Z(int value);</code>
 </pre>
 </div>
 <div>
@@ -312,7 +299,7 @@ Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <tbody>
 <tr>
 <td><strong>value</strong></td>
-<td><span>The value to construct from</span></td>
+<td>The value to construct from</td>
 </tr>
 </tbody>
 </table>
@@ -322,8 +309,7 @@ Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <div>
 <h2 id="Z-2destructor">Z::~Z</h2>
 <div>
-<span>Destructor</span>
-
+<p>Destructor</p>
 </div>
 </div>
 <div>
@@ -331,9 +317,7 @@ Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <div>
 Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">~Z();
-
-</code>
+<code class="source-code cpp">~Z();</code>
 </pre>
 </div>
 </div>
@@ -347,9 +331,7 @@ Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">void
-foo() const;
-
-</code>
+foo() const;</code>
 </pre>
 </div>
 </div>
@@ -357,8 +339,7 @@ foo() const;
 <div>
 <h2 id="Z-2conversion">Z::operator bool</h2>
 <div>
-<span>Conversion to <code>bool</code></span>
-
+<p>Conversion to <code>bool</code></p>
 </div>
 </div>
 <div>
@@ -366,22 +347,19 @@ foo() const;
 <div>
 Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">operator bool() const;
-
-</code>
+<code class="source-code cpp">operator bool() const;</code>
 </pre>
 </div>
 <div>
 <h3>Return Value</h3>
-<span>The object converted to <code>bool</code></span>
+The object converted to <code>bool</code>
 </div>
 </div>
 <div>
 <div>
 <h2 id="Z-operator_not">Z::operator!</h2>
 <div>
-<span>Negation operator</span>
-
+<p>Negation operator</p>
 </div>
 </div>
 <div>
@@ -390,22 +368,19 @@ Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">bool
-operator!() const;
-
-</code>
+operator!() const;</code>
 </pre>
 </div>
 <div>
 <h3>Return Value</h3>
-<span><code>true</code> if the object is falsy, <code>false</code> otherwise</span>
+<code>true</code> if the object is falsy, <code>false</code> otherwise
 </div>
 </div>
 <div>
 <div>
 <h2 id="Z-operator_eq">Z::operator&#x3D;&#x3D;</h2>
 <div>
-<span>Equality operator</span>
-
+<p>Equality operator</p>
 </div>
 </div>
 <div>
@@ -414,14 +389,12 @@ operator!() const;
 Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">bool
-operator&#x3D;&#x3D;(<a href="#Z">Z</a> const& rhs) const;
-
-</code>
+operator&#x3D;&#x3D;(<a href="#Z">Z</a> const& rhs) const;</code>
 </pre>
 </div>
 <div>
 <h3>Return Value</h3>
-<span><code>true</code> if the objects are equal, <code>false</code> otherwise</span>
+<code>true</code> if the objects are equal, <code>false</code> otherwise
 </div>
 <div>
 <h3>Parameters</h3>
@@ -435,7 +408,7 @@ operator&#x3D;&#x3D;(<a href="#Z">Z</a> const& rhs) const;
 <tbody>
 <tr>
 <td><strong>rhs</strong></td>
-<td><span>The right operand</span></td>
+<td>The right operand</td>
 </tr>
 </tbody>
 </table>
@@ -445,8 +418,7 @@ operator&#x3D;&#x3D;(<a href="#Z">Z</a> const& rhs) const;
 <div>
 <h2 id="Z-operator_not_eq">Z::operator!&#x3D;</h2>
 <div>
-<span>Inequality operator</span>
-
+<p>Inequality operator</p>
 </div>
 </div>
 <div>
@@ -455,14 +427,12 @@ operator&#x3D;&#x3D;(<a href="#Z">Z</a> const& rhs) const;
 Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">bool
-operator!&#x3D;(<a href="#Z">Z</a> const& rhs) const;
-
-</code>
+operator!&#x3D;(<a href="#Z">Z</a> const& rhs) const;</code>
 </pre>
 </div>
 <div>
 <h3>Return Value</h3>
-<span><code>true</code> if the objects are not equal, <code>false</code> otherwise</span>
+<code>true</code> if the objects are not equal, <code>false</code> otherwise
 </div>
 <div>
 <h3>Parameters</h3>
@@ -476,7 +446,7 @@ operator!&#x3D;(<a href="#Z">Z</a> const& rhs) const;
 <tbody>
 <tr>
 <td><strong>rhs</strong></td>
-<td><span>The right operand</span></td>
+<td>The right operand</td>
 </tr>
 </tbody>
 </table>
@@ -486,8 +456,7 @@ operator!&#x3D;(<a href="#Z">Z</a> const& rhs) const;
 <div>
 <h2 id="Z-operator_3way">Z::operator&lt;&#x3D;&gt;</h2>
 <div>
-<span>Three-way comparison operator</span>
-
+<p>Three-way comparison operator</p>
 </div>
 </div>
 <div>
@@ -496,14 +465,12 @@ operator!&#x3D;(<a href="#Z">Z</a> const& rhs) const;
 Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">auto
-operator&lt;&#x3D;&gt;(<a href="#Z">Z</a> const& rhs) const;
-
-</code>
+operator&lt;&#x3D;&gt;(<a href="#Z">Z</a> const& rhs) const;</code>
 </pre>
 </div>
 <div>
 <h3>Return Value</h3>
-<span>The relative order of the objects</span>
+The relative order of the objects
 </div>
 <div>
 <h3>Parameters</h3>
@@ -517,7 +484,7 @@ operator&lt;&#x3D;&gt;(<a href="#Z">Z</a> const& rhs) const;
 <tbody>
 <tr>
 <td><strong>rhs</strong></td>
-<td><span>The right operand</span></td>
+<td>The right operand</td>
 </tr>
 </tbody>
 </table>
@@ -533,9 +500,7 @@ operator&lt;&#x3D;&gt;(<a href="#Z">Z</a> const& rhs) const;
 Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">void
-f();
-
-</code>
+f();</code>
 </pre>
 </div>
 </div>
@@ -550,25 +515,19 @@ Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 
 <pre>
 <code class="source-code cpp">void
-<a href="#g-0e3">g</a>();
-
-</code>
+<a href="#g-0e3">g</a>();</code>
 </pre><span class="small"><a href="#g-0e3"><em>» more...</em></a></span>
 
 
 <pre>
 <code class="source-code cpp">char
-<a href="#g-04">g</a>(int);
-
-</code>
+<a href="#g-04">g</a>(int);</code>
 </pre><span class="small"><a href="#g-04"><em>» more...</em></a></span>
 
 
 <pre>
 <code class="source-code cpp">char
-<a href="#g-06">g</a>(double);
-
-</code>
+<a href="#g-06">g</a>(double);</code>
 </pre><span class="small"><a href="#g-06"><em>» more...</em></a></span>
 
 
@@ -576,9 +535,7 @@ Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <code class="source-code cpp">char
 <a href="#g-03a">g</a>(
     double,
-    char);
-
-</code>
+    char);</code>
 </pre><span class="small"><a href="#g-03a"><em>» more...</em></a></span>
 
 
@@ -587,9 +544,7 @@ Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <a href="#g-0a">g</a>(
     char,
     char,
-    char);
-
-</code>
+    char);</code>
 </pre><span class="small"><a href="#g-0a"><em>» more...</em></a></span>
 
 
@@ -599,9 +554,7 @@ char
 <a href="#g-03c">g</a>(
     T,
     T,
-    T);
-
-</code>
+    T);</code>
 </pre><span class="small"><a href="#g-03c"><em>» more...</em></a></span>
 
 
@@ -611,9 +564,7 @@ char
 <a href="#g-0e4">g&lt;int&gt;</a>(
     int,
     int,
-    int);
-
-</code>
+    int);</code>
 </pre><span class="small"><a href="#g-0e4"><em>» more...</em></a></span>
 
 
@@ -629,9 +580,7 @@ char
 Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">void
-g();
-
-</code>
+g();</code>
 </pre>
 </div>
 </div>
@@ -645,9 +594,7 @@ g();
 Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">char
-g(int);
-
-</code>
+g(int);</code>
 </pre>
 </div>
 </div>
@@ -661,9 +608,7 @@ g(int);
 Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">char
-g(double);
-
-</code>
+g(double);</code>
 </pre>
 </div>
 </div>
@@ -679,9 +624,7 @@ Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <code class="source-code cpp">char
 g(
     double,
-    char);
-
-</code>
+    char);</code>
 </pre>
 </div>
 </div>
@@ -698,9 +641,7 @@ Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 g(
     char,
     char,
-    char);
-
-</code>
+    char);</code>
 </pre>
 </div>
 </div>
@@ -718,9 +659,7 @@ char
 g(
     T,
     T,
-    T);
-
-</code>
+    T);</code>
 </pre>
 </div>
 </div>
@@ -738,9 +677,7 @@ char
 <a href="#g-03c">g</a>&lt;int&gt;(
     int,
     int,
-    int);
-
-</code>
+    int);</code>
 </pre>
 </div>
 </div>
@@ -754,9 +691,7 @@ char
 Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">void
-h();
-
-</code>
+h();</code>
 </pre>
 </div>
 </div>
@@ -764,8 +699,7 @@ h();
 <div>
 <h2 id="operator_not">operator!</h2>
 <div>
-<span>Negation operator</span>
-
+<p>Negation operator</p>
 </div>
 </div>
 <div>
@@ -774,14 +708,12 @@ h();
 Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">bool
-operator!(<a href="#A">A</a> const& v);
-
-</code>
+operator!(<a href="#A">A</a> const& v);</code>
 </pre>
 </div>
 <div>
 <h3>Return Value</h3>
-<span><code>true</code> if the object is falsy, <code>false</code> otherwise</span>
+<code>true</code> if the object is falsy, <code>false</code> otherwise
 </div>
 <div>
 <h3>Parameters</h3>
@@ -795,7 +727,7 @@ operator!(<a href="#A">A</a> const& v);
 <tbody>
 <tr>
 <td><strong>v</strong></td>
-<td><span>The operand</span></td>
+<td>The operand</td>
 </tr>
 </tbody>
 </table>
@@ -805,8 +737,7 @@ operator!(<a href="#A">A</a> const& v);
 <div>
 <h2 id="operator_eq">operator&#x3D;&#x3D;</h2>
 <div>
-<span>Equality operator</span>
-
+<p>Equality operator</p>
 </div>
 </div>
 <div>
@@ -817,14 +748,12 @@ Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <code class="source-code cpp">bool
 operator&#x3D;&#x3D;(
     <a href="#A">A</a> const& lhs,
-    <a href="#A">A</a> const& rhs);
-
-</code>
+    <a href="#A">A</a> const& rhs);</code>
 </pre>
 </div>
 <div>
 <h3>Return Value</h3>
-<span><code>true</code> if the objects are equal, <code>false</code> otherwise</span>
+<code>true</code> if the objects are equal, <code>false</code> otherwise
 </div>
 <div>
 <h3>Parameters</h3>
@@ -838,11 +767,11 @@ operator&#x3D;&#x3D;(
 <tbody>
 <tr>
 <td><strong>lhs</strong></td>
-<td><span>The left operand</span></td>
+<td>The left operand</td>
 </tr>
 <tr>
 <td><strong>rhs</strong></td>
-<td><span>The right operand</span></td>
+<td>The right operand</td>
 </tr>
 </tbody>
 </table>
@@ -852,8 +781,7 @@ operator&#x3D;&#x3D;(
 <div>
 <h2 id="operator_not_eq">operator!&#x3D;</h2>
 <div>
-<span>Inequality operator</span>
-
+<p>Inequality operator</p>
 </div>
 </div>
 <div>
@@ -864,14 +792,12 @@ Declared in <code>&lt;sort-namespace-members-by-name.cpp&gt;</code></div>
 <code class="source-code cpp">bool
 operator!&#x3D;(
     <a href="#A">A</a> const& lhs,
-    <a href="#A">A</a> const& rhs);
-
-</code>
+    <a href="#A">A</a> const& rhs);</code>
 </pre>
 </div>
 <div>
 <h3>Return Value</h3>
-<span><code>true</code> if the objects are not equal, <code>false</code> otherwise</span>
+<code>true</code> if the objects are not equal, <code>false</code> otherwise
 </div>
 <div>
 <h3>Parameters</h3>
@@ -885,11 +811,11 @@ operator!&#x3D;(
 <tbody>
 <tr>
 <td><strong>lhs</strong></td>
-<td><span>The left operand</span></td>
+<td>The left operand</td>
 </tr>
 <tr>
 <td><strong>rhs</strong></td>
-<td><span>The right operand</span></td>
+<td>The right operand</td>
 </tr>
 </tbody>
 </table>

@@ -3,7 +3,7 @@ struct X
     X();
     ~X();
     /// Friend member-function
-    /// @param i
+    /// @param i Description of i
     /// @return char*
     char* foo(int i);
 };

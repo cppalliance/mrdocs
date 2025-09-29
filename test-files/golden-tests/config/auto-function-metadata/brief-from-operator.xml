@@ -124,6 +124,9 @@
       <brief>
         <text>A dumb ostream class</text>
       </brief>
+      <related>
+        <reference id="G/x48jnXaICOdnZlZThSByV21NY=">operator&lt;&lt;</reference>
+      </related>
     </doc>
   </struct>
   <function name="operator&lt;&lt;" id="G/x48jnXaICOdnZlZThSByV21NY=">
@@ -157,6 +160,9 @@
       <param name="x">
         <text>The object to output</text>
       </param>
+      <relates>
+        <reference id="S6h+1uM4q9FLs9aohvL2EV9oRbs=">ostream</reference>
+      </relates>
     </doc>
   </function>
 </namespace>

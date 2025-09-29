@@ -10,16 +10,12 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <lib/Support/LegibleNames.hpp>
-#include <lib/Support/Radix.hpp>
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Dom/LazyArray.hpp>
-#include <mrdocs/Dom/LazyObject.hpp>
 #include <mrdocs/Metadata.hpp>
+#include <mrdocs/Metadata/DocComment.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
 #include <memory>
-#include <mutex>
-#include <variant>
 
 namespace mrdocs {
 
@@ -103,7 +99,7 @@ get(SymbolID const& id) const
 
 dom::Value
 DomCorpus::
-getJavadoc(Javadoc const&) const
+getDocComment(DocComment const&) const
 {
     // Default implementation returns null.
     return nullptr;

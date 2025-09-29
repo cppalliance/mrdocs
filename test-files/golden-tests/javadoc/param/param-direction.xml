@@ -9,6 +9,8 @@
     </param>
     <doc>
       <param name="x0">
+        <text>An integer </text>
+        <mono>x0</mono>
       </param>
     </doc>
   </function>
@@ -22,8 +24,12 @@
     </param>
     <doc>
       <param name="x1">
+        <text>An integer </text>
+        <mono>x1</mono>
       </param>
       <param name="y1" class="in">
+        <text>An integer </text>
+        <mono>y1</mono>
       </param>
     </doc>
   </function>
@@ -37,8 +43,12 @@
     </param>
     <doc>
       <param name="x2">
+        <text>An integer </text>
+        <mono>x2</mono>
       </param>
       <param name="y2" class="out">
+        <text>An integer </text>
+        <mono>y2</mono>
       </param>
     </doc>
   </function>
@@ -52,8 +62,12 @@
     </param>
     <doc>
       <param name="x3" class="in">
+        <text>An integer </text>
+        <mono>x3</mono>
       </param>
       <param name="y3" class="out">
+        <text>An integer </text>
+        <mono>y3</mono>
       </param>
     </doc>
   </function>
@@ -67,8 +81,12 @@
     </param>
     <doc>
       <param name="x4">
+        <text>An integer </text>
+        <mono>x4</mono>
       </param>
       <param name="y4" class="inout">
+        <text>An integer </text>
+        <mono>y4</mono>
       </param>
     </doc>
   </function>
@@ -85,10 +103,16 @@
     </param>
     <doc>
       <param name="x5" class="out">
+        <text>An integer </text>
+        <mono>x5</mono>
       </param>
       <param name="y5" class="in">
+        <text>An integer </text>
+        <mono>y5</mono>
       </param>
       <param name="z5">
+        <text>An integer </text>
+        <mono>z5</mono>
       </param>
     </doc>
   </function>
@@ -108,10 +132,16 @@
     </param>
     <doc>
       <param name="x6" class="out">
+        <text>An integer </text>
+        <mono>x6</mono>
       </param>
       <param name="y6">
+        <text>An integer </text>
+        <mono>y6</mono>
       </param>
       <param name="z6" class="in">
+        <text>An integer </text>
+        <mono>z6</mono>
       </param>
     </doc>
   </function>
@@ -126,8 +156,12 @@
     </param>
     <doc>
       <param name="x7" class="in">
+        <text>An integer </text>
+        <mono>x7</mono>
       </param>
       <param name="y7" class="out">
+        <text>An integer </text>
+        <mono>y7</mono>
       </param>
     </doc>
   </function>
@@ -139,6 +173,8 @@
     </param>
     <doc>
       <param name="x8" class="in">
+        <text>An integer </text>
+        <mono>x8</mono>
       </param>
     </doc>
   </function>
@@ -150,8 +186,12 @@
     </param>
     <doc>
       <param name="x9" class="in">
+        <text>An integer </text>
+        <mono>x9</mono>
       </param>
       <param name="x9" class="out">
+        <text>An integer </text>
+        <mono>x9</mono>
       </param>
     </doc>
   </function>

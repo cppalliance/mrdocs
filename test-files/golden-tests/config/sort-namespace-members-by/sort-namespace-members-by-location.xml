@@ -49,6 +49,13 @@
   </template>
   <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
     <file short-path="sort-namespace-members-by-location.cpp" source-path="sort-namespace-members-by-location.cpp" line="21" class="def"/>
+    <doc>
+      <related>
+        <reference id="yuKyBhGbND+Kyypyb9UsuC4Qe3E=">operator!</reference>
+        <reference id="4MuN1V3fHVfOMvtg2LT+QVm/XmE=">operator!=</reference>
+        <reference id="kibUx6k1SXB+HsXkRXroJl9f59w=">operator==</reference>
+      </related>
+    </doc>
   </struct>
   <struct name="Z" id="NQ8uQgTcafPcttyBMHHLHAXA4MA=">
     <file short-path="sort-namespace-members-by-location.cpp" source-path="sort-namespace-members-by-location.cpp" line="23" class="def"/>
@@ -318,6 +325,9 @@
       <param name="v">
         <text>The operand</text>
       </param>
+      <relates>
+        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
+      </relates>
     </doc>
   </function>
   <function name="operator==" id="kibUx6k1SXB+HsXkRXroJl9f59w=">
@@ -352,6 +362,9 @@
       <param name="rhs">
         <text>The right operand</text>
       </param>
+      <relates>
+        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
+      </relates>
     </doc>
   </function>
   <function name="operator!=" id="4MuN1V3fHVfOMvtg2LT+QVm/XmE=">
@@ -386,6 +399,9 @@
       <param name="rhs">
         <text>The right operand</text>
       </param>
+      <relates>
+        <reference id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">A</reference>
+      </relates>
     </doc>
   </function>
 </namespace>

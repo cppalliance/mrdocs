@@ -53,6 +53,7 @@
           <text>char*</text>
         </returns>
         <param name="i">
+          <text>Description of i</text>
         </param>
       </doc>
     </function>

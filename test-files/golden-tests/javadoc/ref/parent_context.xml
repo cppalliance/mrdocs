@@ -7,7 +7,7 @@
       <namespace name="policies" id="iyqzr2bAIIz4tcVOh2wjYTkCOC0=">
         <namespace name="runtime_checks" id="TVhmFYxnwUAmcG327zb+ghem758=">
           <struct name="runtime_checks" id="1Jkj+l8tdM+DGWC1GVMWML70iGA=">
-            <file short-path="parent_context.cpp" source-path="parent_context.cpp" line="14" class="def"/>
+            <file short-path="parent_context.cpp" source-path="parent_context.cpp" line="14"/>
             <doc>
               <brief>
                 <text>Documentation with ref to final_virtual_ptr</text>

@@ -47,9 +47,7 @@
 <div>
 Declared in <code>&lt;var-template.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">struct B;
-
-</code>
+<code class="source-code cpp">struct B;</code>
 </pre>
 </div>
 <h2>Static Data Members</h2>
@@ -81,9 +79,7 @@ Declared in <code>&lt;var-template.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">template&lt;typename T&gt;
 inline static
-unsigned int C = 0;
-
-</code>
+unsigned int C = 0;</code>
 </pre>
 </div>
 </div>
@@ -98,9 +94,7 @@ Declared in <code>&lt;var-template.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">template&lt;&gt;
 inline static
-unsigned int C&lt;int&gt; = -1;
-
-</code>
+unsigned int C&lt;int&gt; = -1;</code>
 </pre>
 </div>
 </div>
@@ -115,9 +109,7 @@ Declared in <code>&lt;var-template.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">template&lt;typename T&gt;
 inline static
-unsigned int C&lt;T*&gt; = sizeof(T);
-
-</code>
+unsigned int C&lt;T*&gt; = sizeof(T);</code>
 </pre>
 </div>
 </div>
@@ -131,9 +123,7 @@ unsigned int C&lt;T*&gt; = sizeof(T);
 Declared in <code>&lt;var-template.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">template&lt;typename T&gt;
-unsigned int A = sizeof(T);
-
-</code>
+unsigned int A = sizeof(T);</code>
 </pre>
 </div>
 </div>
@@ -147,9 +137,7 @@ unsigned int A = sizeof(T);
 Declared in <code>&lt;var-template.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">template&lt;&gt;
-unsigned int A&lt;void&gt; = 0;
-
-</code>
+unsigned int A&lt;void&gt; = 0;</code>
 </pre>
 </div>
 </div>
@@ -163,9 +151,7 @@ unsigned int A&lt;void&gt; = 0;
 Declared in <code>&lt;var-template.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">template&lt;typename T&gt;
-unsigned int A&lt;T&&gt; = sizeof(T);
-
-</code>
+unsigned int A&lt;T&&gt; = sizeof(T);</code>
 </pre>
 </div>
 </div>

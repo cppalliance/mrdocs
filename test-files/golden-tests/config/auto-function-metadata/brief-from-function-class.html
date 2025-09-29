@@ -19,8 +19,8 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="#A"><code>A</code></a> </td><td><span>A helper tag</span></td></tr><tr>
-<td><a href="#X"><code>X</code></a> </td><td><span>Test class</span></td></tr>
+<td><a href="#A"><code>A</code></a> </td><td>A helper tag</td></tr><tr>
+<td><a href="#X"><code>X</code></a> </td><td>Test class</td></tr>
 </tbody>
 </table>
 
@@ -29,8 +29,7 @@
 <div>
 <h2 id="A">A</h2>
 <div>
-<span>A helper tag</span>
-
+<p>A helper tag</p>
 </div>
 </div>
 <div>
@@ -38,9 +37,7 @@
 <div>
 Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">struct A;
-
-</code>
+<code class="source-code cpp">struct A;</code>
 </pre>
 </div>
 
@@ -50,8 +47,7 @@ Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
 <div>
 <h2 id="X">X</h2>
 <div>
-<span>Test class</span>
-
+<p>Test class</p>
 </div>
 </div>
 <div>
@@ -59,9 +55,7 @@ Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
 <div>
 Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">struct X;
-
-</code>
+<code class="source-code cpp">struct X;</code>
 </pre>
 </div>
 <h2>Member Functions</h2>
@@ -74,10 +68,10 @@ Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
 </thead>
 <tbody>
 <tr>
-<td><a href="#X-2constructor-08"><code>X</code></a>         <span class="small">[constructor]</span></td><td><span>Constructors</span></td></tr><tr>
-<td><a href="#X-2destructor"><code>~X</code></a> <span class="small">[destructor]</span></td><td><span>Destructor</span></td></tr><tr>
-<td><a href="#X-2conversion-00"><code>operator A</code></a> </td><td><span>Conversion to <code>A</code></span></td></tr><tr>
-<td><a href="#X-2conversion-0b"><code>operator int</code></a> </td><td><span>Conversion to <code>int</code></span></td></tr>
+<td><a href="#X-2constructor-08"><code>X</code></a>         <span class="small">[constructor]</span></td><td>Constructors</td></tr><tr>
+<td><a href="#X-2destructor"><code>~X</code></a> <span class="small">[destructor]</span></td><td>Destructor</td></tr><tr>
+<td><a href="#X-2conversion-00"><code>operator A</code></a> </td><td>Conversion to <code>A</code></td></tr><tr>
+<td><a href="#X-2conversion-0b"><code>operator int</code></a> </td><td>Conversion to <code>int</code></td></tr>
 </tbody>
 </table>
 
@@ -88,57 +82,44 @@ Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
 <div>
 <h2 id="X-2constructor-08">X::X</h2>
 <div>
-<span>Constructors</span>
-
+<p>Constructors</p>
 </div>
 </div>
 <div>
 <h3>Synopses</h3>
 <div>
 Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
-<span>Default constructor</span>
+<p>Default constructor</p>
 <pre>
 <code class="source-code cpp">constexpr
-<a href="#X-2constructor-0e8">X</a>() = default;
-
-</code>
+<a href="#X-2constructor-0e8">X</a>() = default;</code>
 </pre><span class="small"><a href="#X-2constructor-0e8"><em>» more...</em></a></span>
 
-<span>Copy constructor</span>
+<p>Copy constructor</p>
 <pre>
 <code class="source-code cpp">constexpr
-<a href="#X-2constructor-0e0">X</a>(<a href="#X">X</a> const& other) = default;
-
-</code>
+<a href="#X-2constructor-0e0">X</a>(<a href="#X">X</a> const& other) = default;</code>
 </pre><span class="small"><a href="#X-2constructor-0e0"><em>» more...</em></a></span>
 
-<span>Move constructor</span>
+<p>Move constructor</p>
 <pre>
 <code class="source-code cpp">constexpr
-<a href="#X-2constructor-06">X</a>(<a href="#X">X</a>&& other) = default;
-
-</code>
+<a href="#X-2constructor-06">X</a>(<a href="#X">X</a>&& other) = default;</code>
 </pre><span class="small"><a href="#X-2constructor-06"><em>» more...</em></a></span>
 
-<span>Construct from <code>int</code></span>
+<p>Construct from <code>int</code></p>
 <pre>
-<code class="source-code cpp"><a href="#X-2constructor-07">X</a>(int value);
-
-</code>
+<code class="source-code cpp"><a href="#X-2constructor-07">X</a>(int value);</code>
 </pre><span class="small"><a href="#X-2constructor-07"><em>» more...</em></a></span>
 
-<span>Construct from <code>A</code></span>
+<p>Construct from <code>A</code></p>
 <pre>
-<code class="source-code cpp"><a href="#X-2constructor-0b">X</a>(<a href="#A">A</a> const& value);
-
-</code>
+<code class="source-code cpp"><a href="#X-2constructor-0b">X</a>(<a href="#A">A</a> const& value);</code>
 </pre><span class="small"><a href="#X-2constructor-0b"><em>» more...</em></a></span>
 
-<span>Construct from <code>A</code></span>
+<p>Construct from <code>A</code></p>
 <pre>
-<code class="source-code cpp"><a href="#X-2constructor-00">X</a>(<a href="#A">A</a>&& value);
-
-</code>
+<code class="source-code cpp"><a href="#X-2constructor-00">X</a>(<a href="#A">A</a>&& value);</code>
 </pre><span class="small"><a href="#X-2constructor-00"><em>» more...</em></a></span>
 
 
@@ -148,8 +129,7 @@ Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
 <div>
 <h2 id="X-2constructor-0e8">X::X</h2>
 <div>
-<span>Default constructor</span>
-
+<p>Default constructor</p>
 </div>
 </div>
 <div>
@@ -158,9 +138,7 @@ Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
 Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">constexpr
-X() = default;
-
-</code>
+X() = default;</code>
 </pre>
 </div>
 </div>
@@ -168,8 +146,7 @@ X() = default;
 <div>
 <h2 id="X-2constructor-0e0">X::X</h2>
 <div>
-<span>Copy constructor</span>
-
+<p>Copy constructor</p>
 </div>
 </div>
 <div>
@@ -178,9 +155,7 @@ X() = default;
 Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">constexpr
-X(<a href="#X">X</a> const& other) = default;
-
-</code>
+X(<a href="#X">X</a> const& other) = default;</code>
 </pre>
 </div>
 <div>
@@ -195,7 +170,7 @@ X(<a href="#X">X</a> const& other) = default;
 <tbody>
 <tr>
 <td><strong>other</strong></td>
-<td><span>The object to copy construct from</span></td>
+<td>The object to copy construct from</td>
 </tr>
 </tbody>
 </table>
@@ -205,8 +180,7 @@ X(<a href="#X">X</a> const& other) = default;
 <div>
 <h2 id="X-2constructor-06">X::X</h2>
 <div>
-<span>Move constructor</span>
-
+<p>Move constructor</p>
 </div>
 </div>
 <div>
@@ -215,9 +189,7 @@ X(<a href="#X">X</a> const& other) = default;
 Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">constexpr
-X(<a href="#X">X</a>&& other) = default;
-
-</code>
+X(<a href="#X">X</a>&& other) = default;</code>
 </pre>
 </div>
 <div>
@@ -232,7 +204,7 @@ X(<a href="#X">X</a>&& other) = default;
 <tbody>
 <tr>
 <td><strong>other</strong></td>
-<td><span>The object to move construct from</span></td>
+<td>The object to move construct from</td>
 </tr>
 </tbody>
 </table>
@@ -242,8 +214,7 @@ X(<a href="#X">X</a>&& other) = default;
 <div>
 <h2 id="X-2constructor-07">X::X</h2>
 <div>
-<span>Construct from <code>int</code></span>
-
+<p>Construct from <code>int</code></p>
 </div>
 </div>
 <div>
@@ -251,9 +222,7 @@ X(<a href="#X">X</a>&& other) = default;
 <div>
 Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">X(int value);
-
-</code>
+<code class="source-code cpp">X(int value);</code>
 </pre>
 </div>
 <div>
@@ -268,7 +237,7 @@ Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
 <tbody>
 <tr>
 <td><strong>value</strong></td>
-<td><span>The value to construct from</span></td>
+<td>The value to construct from</td>
 </tr>
 </tbody>
 </table>
@@ -278,8 +247,7 @@ Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
 <div>
 <h2 id="X-2constructor-0b">X::X</h2>
 <div>
-<span>Construct from <code>A</code></span>
-
+<p>Construct from <code>A</code></p>
 </div>
 </div>
 <div>
@@ -287,9 +255,7 @@ Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
 <div>
 Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">X(<a href="#A">A</a> const& value);
-
-</code>
+<code class="source-code cpp">X(<a href="#A">A</a> const& value);</code>
 </pre>
 </div>
 <div>
@@ -304,7 +270,7 @@ Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
 <tbody>
 <tr>
 <td><strong>value</strong></td>
-<td><span>The object to copy construct from</span></td>
+<td>The object to copy construct from</td>
 </tr>
 </tbody>
 </table>
@@ -314,8 +280,7 @@ Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
 <div>
 <h2 id="X-2constructor-00">X::X</h2>
 <div>
-<span>Construct from <code>A</code></span>
-
+<p>Construct from <code>A</code></p>
 </div>
 </div>
 <div>
@@ -323,9 +288,7 @@ Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
 <div>
 Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">X(<a href="#A">A</a>&& value);
-
-</code>
+<code class="source-code cpp">X(<a href="#A">A</a>&& value);</code>
 </pre>
 </div>
 <div>
@@ -340,7 +303,7 @@ Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
 <tbody>
 <tr>
 <td><strong>value</strong></td>
-<td><span>The object to move construct from</span></td>
+<td>The object to move construct from</td>
 </tr>
 </tbody>
 </table>
@@ -350,8 +313,7 @@ Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
 <div>
 <h2 id="X-2destructor">X::~X</h2>
 <div>
-<span>Destructor</span>
-
+<p>Destructor</p>
 </div>
 </div>
 <div>
@@ -359,9 +321,7 @@ Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
 <div>
 Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">~X();
-
-</code>
+<code class="source-code cpp">~X();</code>
 </pre>
 </div>
 </div>
@@ -369,8 +329,7 @@ Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
 <div>
 <h2 id="X-2conversion-00">X::operator A</h2>
 <div>
-<span>Conversion to <code>A</code></span>
-
+<p>Conversion to <code>A</code></p>
 </div>
 </div>
 <div>
@@ -378,22 +337,19 @@ Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
 <div>
 Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">operator <a href="#A">A</a>() const;
-
-</code>
+<code class="source-code cpp">operator <a href="#A">A</a>() const;</code>
 </pre>
 </div>
 <div>
 <h3>Return Value</h3>
-<span>A helper tag</span>
+A helper tag
 </div>
 </div>
 <div>
 <div>
 <h2 id="X-2conversion-0b">X::operator int</h2>
 <div>
-<span>Conversion to <code>int</code></span>
-
+<p>Conversion to <code>int</code></p>
 </div>
 </div>
 <div>
@@ -401,14 +357,12 @@ Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
 <div>
 Declared in <code>&lt;brief-from-function-class.cpp&gt;</code></div>
 <pre>
-<code class="source-code cpp">operator int() const;
-
-</code>
+<code class="source-code cpp">operator int() const;</code>
 </pre>
 </div>
 <div>
 <h3>Return Value</h3>
-<span>The object converted to <code>int</code></span>
+The object converted to <code>int</code>
 </div>
 </div>
 

@@ -26,12 +26,10 @@ struct Optional;
 
 === Member Functions
 
-[cols=2]
+[cols=1]
 |===
 | Name
-| Description
 | link:#Optional-value-0c[`value`] 
-| 
 |===
 
 [#Optional-value-0c]

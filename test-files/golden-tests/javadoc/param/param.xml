@@ -9,6 +9,8 @@
     </param>
     <doc>
       <param name="x">
+        <text>An integer </text>
+        <mono>x</mono>
       </param>
     </doc>
   </function>
@@ -22,8 +24,12 @@
     </param>
     <doc>
       <param name="x">
+        <text>An integer </text>
+        <mono>x</mono>
       </param>
       <param name="y">
+        <text>An integer </text>
+        <mono>y</mono>
       </param>
     </doc>
   </function>
@@ -40,10 +46,16 @@
     </param>
     <doc>
       <param name="x">
+        <text>An integer </text>
+        <mono>x</mono>
       </param>
       <param name="y">
+        <text>An integer </text>
+        <mono>y</mono>
       </param>
       <param name="z">
+        <text>An integer </text>
+        <mono>z</mono>
       </param>
     </doc>
   </function>
@@ -63,12 +75,20 @@
     </param>
     <doc>
       <param name="w">
+        <text>An integer </text>
+        <mono>w</mono>
       </param>
       <param name="x">
+        <text>An integer </text>
+        <mono>x</mono>
       </param>
       <param name="y">
+        <text>An integer </text>
+        <mono>y</mono>
       </param>
       <param name="z">
+        <text>An integer </text>
+        <mono>z</mono>
       </param>
     </doc>
   </function>

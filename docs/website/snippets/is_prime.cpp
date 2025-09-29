@@ -4,9 +4,8 @@
 
     Linear in n.
 
-    @return Whether or not n is prime.
+    @return Whether `n` is prime.
     @param n The number to test
-
 */
 bool
 is_prime(unsigned long long n) noexcept;

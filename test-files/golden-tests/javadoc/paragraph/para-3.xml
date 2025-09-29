@@ -8,7 +8,10 @@
       <brief>
         <text>A function</text>
       </brief>
-      <head>A heading. Some text.</head>
+      <head>A heading.</head>
+      <para>
+        <text>Some text.</text>
+      </para>
       <para>
         <text>More text...</text>
       </para>

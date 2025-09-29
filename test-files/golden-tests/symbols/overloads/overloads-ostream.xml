@@ -80,6 +80,12 @@
     </class>
     <class name="OStream" id="A6n++lhHK0l+ailOmBfa/TZCXd8=">
       <file short-path="overloads-ostream.cpp" source-path="overloads-ostream.cpp" line="21" class="def"/>
+      <doc>
+        <related>
+          <reference id="ojxr+36qVG3RcL9uyYCrmeMtpKQ=">operator&lt;&lt;</reference>
+          <reference id="1fuMcZHDrARpZPSclbAk4IYVnps=">operator&lt;&lt;</reference>
+        </related>
+      </doc>
     </class>
     <function name="operator&lt;&lt;" id="1fuMcZHDrARpZPSclbAk4IYVnps=">
       <file short-path="overloads-ostream.cpp" source-path="overloads-ostream.cpp" line="25"/>
@@ -110,6 +116,9 @@
         <param name="value">
           <text>The object to output</text>
         </param>
+        <relates>
+          <reference id="A6n++lhHK0l+ailOmBfa/TZCXd8=">OStream</reference>
+        </relates>
       </doc>
     </function>
     <function name="operator&lt;&lt;" id="ojxr+36qVG3RcL9uyYCrmeMtpKQ=">
@@ -141,6 +150,9 @@
         <param name="value">
           <text>The object to output</text>
         </param>
+        <relates>
+          <reference id="A6n++lhHK0l+ailOmBfa/TZCXd8=">OStream</reference>
+        </relates>
       </doc>
     </function>
   </namespace>

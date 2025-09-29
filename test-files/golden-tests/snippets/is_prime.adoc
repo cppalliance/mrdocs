@@ -16,14 +16,13 @@ bool
 is&lowbar;prime(unsigned long long n) noexcept;
 ----
 
-=== Description
-
 === Complexity
+
 Linear in n&period;
 
 === Return Value
 
-Whether or not n is prime&period;
+Whether `n` is prime&period;
 
 === Parameters
 

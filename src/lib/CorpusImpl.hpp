@@ -59,7 +59,7 @@ class CorpusImpl final : public Corpus
     friend class BaseMembersFinalizer;
     friend class OverloadsFinalizer;
     friend class SortMembersFinalizer;
-    friend class JavadocFinalizer;
+    friend class DocCommentFinalizer;
     friend class NamespacesFinalizer;
     friend class DerivedFinalizer;
 

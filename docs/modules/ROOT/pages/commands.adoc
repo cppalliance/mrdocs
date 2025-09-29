@@ -1,6 +1,6 @@
 = Commands
 
-The code should be documented with the https://docs.oracle.com/en/java/javase/13/docs/specs/javadoc/doc-comment-spec.html[Doc Comment,window=_blank] format, also informally known as "javadoc" format or Doxygen-style comments.
+The code should be documented with the https://docs.oracle.com/en/java/javase/13/docs/specs/javadoc/doc-comment-spec.html[Doc Comment,window=_blank] format, also informally known as Javadoc-style or Doxygen-style comments.
 
 In its most basic form, these are usually comment blocks between `pass:[/**]` and `pass:[*/]` placed above a class, function, or field declaration:
 
@@ -42,6 +42,64 @@ Most doc comments will contain these two sections, which could also be explicitl
 
 Doc comments can also contain many special commands, such as `@param`, that are used to document the parameters of a function.
 Mr. Docs supports most commands commonly used in Javadoc and Doxygen comments.
+
+== Documentation Comment Formats
+
+The documentation format used by MrDocs has its roots in earlier tools and languages. It is based on writing structured comments directly in the source code, which are then parsed to generate API reference documentation.
+
+* **Origins: Javadoc**: The format originated with Java and the `doc` tool.
+The https://docs.oracle.com/en/java/javase/17/docs/specs/doc/doc-comment-spec.html[official specification] consistently calls these comments *Documentation Comments*, often abbreviated as "doc comments". In practice, many developers also refer to them as *Javadoc-style comments* due to their close association with the `doc` tool.
+* **Doxygen**: When Doxygen was created to support C, C++, and other languages, it adopted a similar comment style. In its https://www.doxygen.nl/manual/docblocks.html[documentation section about this comment style], Doxygen calls these comments *comment blocks*, but also explains them as *Javadoc style comments* for users familiar with the Java ecosystem. This established the convention of using the same recognizable syntax (`/** ... */`) across different ecosystems.
+* **JSDoc**: For JavaScript, the https://jsdoc.app/[JSDoc] tool introduced the same concept. Developers usually refer to them as *JSDoc comments*, again following the tradition of naming the comments after the tool.
+
+Other ecosystems have adopted similar approaches and comment styles, sometimes with different syntax:
+
+- C#: XML documentation comments (`/// ...`)
+- Rust: doc comments (`/// ...` and `//! ...`)
+- Swift: markup-based documentation comments (`/// ...`)
+
+[cols="1,1,2,2",options="header"]
+|===
+| Language | Tool | Official Term | Common Term
+
+| Java
+| Javadoc
+| https://docs.oracle.com/en/java/javase/17/docs/specs/doc/doc-comment-spec.html[Documentation comments]
+| Javadoc-style comments
+
+| C, C++, etc.
+| Doxygen
+| https://www.doxygen.nl/manual/docblocks.html[Comment blocks]
+| Doxygen-style comments
+
+| JavaScript
+| JSDoc
+| https://jsdoc.app/[JSDoc comments]
+| -
+
+| C#
+| XML Documentation Comments
+| https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/xmldoc/[XML documentation comments]
+| -
+
+| Rust
+| Rustdoc
+| https://doc.rust-lang.org/rustdoc/the-doc-attribute.html[Doc comments]
+| -
+
+| Swift
+| Swift Markup
+| https://developer.apple.com/library/archive/documentation/Xcode/Reference/xcode_markup_formatting_ref/[Markup documentation comments]
+| -
+|===
+
+Briefly summarizing the table above:
+
+- The original term, from Java, is *doc comments*. Other tools follow a similar convention.
+- Many tools and communities prefer to call them after the tool name, e.g. *Javadoc-style comments*, *Doxygen-style comments*, or *JSDoc-style comments*.
+- MrDocs follows this tradition by supporting a familiar syntax that developers across ecosystems already recognize.
+
+
 
 // == Style
 //

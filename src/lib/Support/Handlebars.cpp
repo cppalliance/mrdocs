@@ -6493,9 +6493,7 @@ registerContainerHelpers(Handlebars& hbs)
                 // whichever has the key
                 auto matchIt = std::ranges::find_if(keys, [&](dom::Value const& key)
                 {
-                    return
-                        el.getObject().exists(key.getString()) &&
-                        el.getObject().get(key.getString()).isTruthy();
+                    return el.lookup(key.getString()).isTruthy();
                 });
                 if (bool const matchAny = matchIt != keys.end();
                     !matchAny)

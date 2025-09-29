@@ -16,12 +16,12 @@
 #include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Version.hpp>
+#include <test_suite/test_suite.hpp>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/PrettyStackTrace.h>
 #include <llvm/Support/Signals.h>
 #include <llvm/Support/raw_ostream.h>
 #include <stdlib.h>
-#include <test_suite/test_suite.hpp>
 
 int main(int argc, char const** argv);
 

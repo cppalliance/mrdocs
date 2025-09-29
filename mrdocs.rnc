@@ -35,7 +35,7 @@ grammar
             ID?,
             attribute is-inline { "1" }?,
             attribute is-anonymous { "1" }?,
-            Javadoc?,
+            DocComment?,
             element using-directive { ID } *,
             Scope*
         }
@@ -56,7 +56,7 @@ grammar
         (
             BaseInfo |
             Attr |
-            Javadoc? |
+            DocComment? |
             RecordScope
         ) *
     )
@@ -92,7 +92,7 @@ grammar
                     ID ?,
                     TypeInfo
                 } * |
-                Javadoc ?
+                DocComment ?
             ) *
         }
 
@@ -115,7 +115,7 @@ grammar
                     ID ?,
                     TypeInfo
                 } * |
-                Javadoc ?
+                DocComment ?
             ) *
         }
 
@@ -129,7 +129,7 @@ grammar
             ID,
             BaseInfo ?,
             Location *,
-            Javadoc ?,
+            DocComment ?,
             EnumScope
         }
 
@@ -142,7 +142,7 @@ grammar
             ID,
             attribute initializer { text } ?,
             Location *,
-            Javadoc ?
+            DocComment ?
         }
 
     #---------------------------------------------
@@ -154,7 +154,7 @@ grammar
             ID,
             Location *,
             TypeInfo,
-            Javadoc ?
+            DocComment ?
         } |
         element typedef
         {
@@ -178,7 +178,7 @@ grammar
             (
                 Attr * &
                 TypeInfo &
-                Javadoc ?
+                DocComment ?
             )
         }
 
@@ -206,7 +206,7 @@ grammar
             Access ?,
             ID,
             Location *,
-            Javadoc ?,
+            DocComment ?,
             element aliased
             {
                 attribute name { text },
@@ -222,7 +222,7 @@ grammar
             Access ?,
             ID,
             Location *,
-            Javadoc ?,
+            DocComment ?,
             attribute class { "using" | "using typename" | "using enum" },
             attribute qualifier { text } ?,
             element named { ID } *
@@ -237,7 +237,7 @@ grammar
             Access ?,
             ID,
             Location *,
-            Javadoc ?,
+            DocComment ?,
             attribute constraint { text }
         }
 
@@ -365,7 +365,7 @@ grammar
     #
     #---------------------------------------------
 
-    Javadoc = element doc { BlockNode * }
+    DocComment = element doc { BlockNode * }
 
     BlockNode = (
         Admonition | Brief | Code | Heading | ListItem |

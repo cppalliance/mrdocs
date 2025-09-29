@@ -20,10 +20,6 @@
   </function>
   <function name="copyBriefFromFirstSentenceAsBrief" id="8m+HcfJ//1hM71kLKl4eg3ubQRo=">
     <file short-path="no-auto-brief.cpp" source-path="no-auto-brief.cpp" line="59"/>
-    <doc>
-      <brief>
-      </brief>
-    </doc>
   </function>
   <function name="copyBriefFromFirstValid" id="1TGakYl7bDnE2QttJ28contJFuk=">
     <file short-path="no-auto-brief.cpp" source-path="no-auto-brief.cpp" line="54"/>
@@ -101,8 +97,6 @@
   <function name="copyDocFromFirstSentenceAsBrief" id="TsgZNU1zRr56zndlZFaoDMc3HYY=">
     <file short-path="no-auto-brief.cpp" source-path="no-auto-brief.cpp" line="124"/>
     <doc>
-      <brief>
-      </brief>
       <para>
         <text>This is the brief.</text>
       </para>
@@ -143,56 +137,28 @@
   </function>
   <function name="failCircularReferenceCopyFunction" id="/W9Gcu/9mPpmnlcLzqb07fE5NfU=">
     <file short-path="no-auto-brief.cpp" source-path="no-auto-brief.cpp" line="174"/>
-    <doc>
-      <brief>
-      </brief>
-    </doc>
   </function>
   <function name="failCircularSourceFunctionA" id="w0nnzgrgQArkJmBNTMgQndCvLEY=">
     <file short-path="no-auto-brief.cpp" source-path="no-auto-brief.cpp" line="164"/>
-    <doc>
-      <brief>
-      </brief>
-    </doc>
   </function>
   <function name="failCircularSourceFunctionB" id="DLgwr/zhr5/zU7XTTW0xwbX8xDk=">
     <file short-path="no-auto-brief.cpp" source-path="no-auto-brief.cpp" line="169"/>
-    <doc>
-      <brief>
-      </brief>
-    </doc>
   </function>
   <function name="failCopyBriefFromDocNoBrief" id="4XIirlBtHiS1Bj+U07f22Hbf6xo=">
     <file short-path="no-auto-brief.cpp" source-path="no-auto-brief.cpp" line="42"/>
-    <doc>
-      <brief>
-      </brief>
-    </doc>
   </function>
   <function name="failCopyBriefFromInvalidReference" id="IV37E8LGcb3UZ4VcCoFGoFRXMAA=">
     <file short-path="no-auto-brief.cpp" source-path="no-auto-brief.cpp" line="64"/>
-    <doc>
-      <brief>
-      </brief>
-    </doc>
   </function>
   <function name="failCopyBriefFromNoDoc" id="nfm5DhGLP53urgKVUj7/azRbGiU=">
     <file short-path="no-auto-brief.cpp" source-path="no-auto-brief.cpp" line="37"/>
-    <doc>
-      <brief>
-      </brief>
-    </doc>
   </function>
   <function name="failCopyDetailsFromInvalidReference" id="y3EB6VotLcEDqzU5ye611iQpd08=">
     <file short-path="no-auto-brief.cpp" source-path="no-auto-brief.cpp" line="97"/>
-    <doc>
-    </doc>
   </function>
   <function name="failCopyDocFromDocNoBrief" id="+OInO9eRUKfg4w7+GGNQIRlBYDQ=">
     <file short-path="no-auto-brief.cpp" source-path="no-auto-brief.cpp" line="114"/>
     <doc>
-      <brief>
-      </brief>
       <para>
         <text>This function has documentation but no brief.</text>
       </para>
@@ -200,24 +166,12 @@
   </function>
   <function name="failCopyDocFromInvalidReference" id="QQUSujFeIVZnajdM74smV6sAtdw=">
     <file short-path="no-auto-brief.cpp" source-path="no-auto-brief.cpp" line="129"/>
-    <doc>
-      <brief>
-      </brief>
-    </doc>
   </function>
   <function name="failCopyDocFromNoDoc" id="pMmcF/A3wZTg9BwAWar3xDZO3o0=">
     <file short-path="no-auto-brief.cpp" source-path="no-auto-brief.cpp" line="109"/>
-    <doc>
-      <brief>
-      </brief>
-    </doc>
   </function>
   <function name="failInvalidReferenceCopyFunctions" id="Je9QqhEaYHLFVdcnYkfNWXAGjJw=">
     <file short-path="no-auto-brief.cpp" source-path="no-auto-brief.cpp" line="142"/>
-    <doc>
-      <brief>
-      </brief>
-    </doc>
   </function>
   <function name="firstSentenceAsBriefFunction" id="EQ4aeACGgJCKgpkBFTm+KrTKM08=">
     <file short-path="no-auto-brief.cpp" source-path="no-auto-brief.cpp" line="31"/>

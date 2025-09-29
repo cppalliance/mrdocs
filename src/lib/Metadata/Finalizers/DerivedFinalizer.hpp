@@ -22,7 +22,7 @@ namespace mrdocs {
 
     This finalizer finds non-member functions
     for a record and populate the related
-    field of the javadoc.
+    field of the doc.
 */
 class DerivedFinalizer
 {

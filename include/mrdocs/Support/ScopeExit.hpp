@@ -44,11 +44,23 @@ class ScopeExitRestore {
     T& ref_;
     bool dismissed_{false};
 public:
+    /** Restore `ref` to its previous value when the scope ends
+
+        Store the current value of `ref` and restore it
+        when this object goes out of scope, unless `dismiss()`
+        is called.
+     */
     explicit
     ScopeExitRestore(T& ref)
         : prev_(ref), ref_(ref)
     {}
 
+    /** Temporarily set `ref` to `next` and restore it when the scope ends
+
+        Store the current value of `ref`, set it to `next`,
+        and restore the previous value when this object goes
+        out of scope, unless `dismiss()` is called.
+     */
     template <std::convertible_to<T> T2>
     explicit
     ScopeExitRestore(T& ref, T2 next)

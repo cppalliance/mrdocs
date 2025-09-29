@@ -15,10 +15,10 @@
 #endif
 
 //#include <boost/current_function.hpp>
+#include <test_suite/detail/decomposer.hpp>
 #include <cctype>
 #include <sstream>
 #include <type_traits>
-#include <test_suite/detail/decomposer.hpp>
 
 //  This is a derivative work
 //  Copyright 2002-2018 Peter Dimov
@@ -250,15 +250,15 @@ constexpr detail::log_type log{};
   if (!(static_cast<bool>(__VA_ARGS__)))                         \
   {                                                              \
       DETAIL_START_WARNINGS_SUPPRESSION                          \
-      std::string d = DETAIL_STRINGIFY(__VA_ARGS__);             \
-      d += "\n    (";                                            \
+      std::string detail_boost_test_error_str = DETAIL_STRINGIFY(__VA_ARGS__); \
+      detail_boost_test_error_str += "\n    (";                                \
       DETAIL_SUPPRESS_PARENTHESES_WARNINGS                       \
-      d += (test_suite::detail::decomposer() <= __VA_ARGS__).format(); \
+      detail_boost_test_error_str += (test_suite::detail::decomposer() <= __VA_ARGS__).format(); \
       DETAIL_STOP_WARNINGS_SUPPRESSION                           \
-      d += ")";                                                  \
+      detail_boost_test_error_str += ")";                        \
       return ::test_suite::detail::test_impl(                    \
           false,                                                 \
-          d.data(),                                              \
+          detail_boost_test_error_str.data(),                    \
           "@anon",                                               \
           __FILE__,                                              \
           __LINE__ );                                            \

@@ -34,10 +34,9 @@ visit(
         info, std::forward<Fn>(fn), std::forward<Args>(args)...);
     switch(info.Kind)
     {
-    case NameKind::Identifier:
-        return visitor.template visit<IdentifierName>();
-    case NameKind::Specialization:
-        return visitor.template visit<SpecializationName>();
+    #define INFO(Type) case NameKind::Type: \
+        return visitor.template visit<Type##Name>();
+#include <mrdocs/Metadata/Name/NameNodes.inc>
     default:
         MRDOCS_UNREACHABLE();
     }

@@ -18,7 +18,7 @@
 {{/markup/code-block}}
 {{else}}
 {{#each members as | member |}}
-{{#if member.doc.brief}}{{> javadoc/brief member.doc.brief }}{{/if}}
+{{#if member.doc.brief}}{{> doc/block/brief member.doc.brief }}{{/if}}
 {{#> markup/code-block }}
 {{> symbol/signature/function member force-link=true }}
 {{/markup/code-block}}

@@ -52,6 +52,20 @@ Declared in `&lt;sort&hyphen;members&period;cpp&gt;`
 struct A;
 ----
 
+=== Non-Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#operator_not[`operator!`]
+| Negation operator
+| link:#operator_not_eq[`operator!&equals;`]
+| Inequality operator
+| link:#operator_eq[`operator&equals;&equals;`]
+| Equality operator
+|===
+
 [#B-0b]
 == B
 

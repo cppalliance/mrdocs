@@ -9,14 +9,14 @@
 #include <mrdocs/Support/Handlebars.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Support/String.hpp>
+#include <test_suite/detail/decomposer.hpp>
+#include <test_suite/diff.hpp>
+#include <test_suite/test_suite.hpp>
 #include <llvm/Support/JSON.h>
 #include <llvm/Support/MemoryBuffer.h>
 #include <filesystem>
 #include <format>
 #include <utility>
-#include <test_suite/detail/decomposer.hpp>
-#include <test_suite/diff.hpp>
-#include <test_suite/test_suite.hpp>
 
 
 namespace mrdocs {
@@ -116,10 +116,10 @@ setup_context() const
     page.set("name", "from_chars");
     page.set("decl", "std::from_chars");
     page.set("loc", "charconv");
-    dom::Object javadoc;
-    javadoc.set("brief", "Converts strings to numbers");
-    javadoc.set("details", "This function converts strings to numbers");
-    page.set("javadoc", javadoc);
+    dom::Object doc;
+    doc.set("brief", "Converts strings to numbers");
+    doc.set("details", "This function converts strings to numbers");
+    page.set("doc", doc);
     page.set("synopsis", "This is the from_chars function");
     dom::Object person;
     person.set("firstname", "John");

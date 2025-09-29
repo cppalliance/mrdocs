@@ -39,6 +39,12 @@
   </struct>
   <struct name="B" id="3JsK1DO0O+wZhv+0meptQrbs3fY=">
     <file short-path="overloads.cpp" source-path="overloads.cpp" line="15" class="def"/>
+    <doc>
+      <related>
+        <reference id="cVrZLPSmQHMz47ziL64cElytjh0=">operator==</reference>
+        <reference id="gddLjn5hKdr6Ei8xKgtcB3bktI4=">operator==</reference>
+      </related>
+    </doc>
   </struct>
   <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
     <file short-path="overloads.cpp" source-path="overloads.cpp" line="12"/>
@@ -140,6 +146,9 @@
       <param name="rhs">
         <text>The right operand</text>
       </param>
+      <relates>
+        <reference id="3JsK1DO0O+wZhv+0meptQrbs3fY=">B</reference>
+      </relates>
     </doc>
   </function>
   <function name="operator==" id="cVrZLPSmQHMz47ziL64cElytjh0=">
@@ -170,6 +179,9 @@
       <param name="rhs">
         <text>The right operand</text>
       </param>
+      <relates>
+        <reference id="3JsK1DO0O+wZhv+0meptQrbs3fY=">B</reference>
+      </relates>
     </doc>
   </function>
 </namespace>

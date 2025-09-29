@@ -57,7 +57,7 @@ People:
         "name": "from_chars",
         "decl": "std::from_chars",
         "loc": "charconv",
-        "javadoc": {
+        "doc": {
             "brief": "Converts strings to numbers",
             "details": "This function converts strings to numbers"
         },

@@ -240,6 +240,16 @@ Declared in `&lt;brief&hyphen;from&hyphen;operator&period;cpp&gt;`
 struct ostream;
 ----
 
+=== Non-Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#operator_lshift[`operator&lt;&lt;`]
+| Stream insertion operator
+|===
+
 [#operator_lshift]
 == operator&lt;&lt;
 

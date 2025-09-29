@@ -9,11 +9,11 @@
 //
 
 #include <mrdocs/ADT/Nullable.hpp>
+#include <test_suite/test_suite.hpp>
 #include <cmath>
 #include <optional>
 #include <string>
 #include <vector>
-#include <test_suite/test_suite.hpp>
 
 namespace mrdocs {
 
@@ -63,12 +63,12 @@ struct NullableTest {
         static_assert(!HasSentinel<NoTraits>);
 
         // ClearableEmpty: string, vector qualify
-        static_assert(ClearableEmpty<std::string>);
-        static_assert(ClearableEmpty<std::vector<int>>);
+        static_assert(ClearableContainerLike<std::string>);
+        static_assert(ClearableContainerLike<std::vector<int>>);
 
         // ClearableEmpty should NOT hold for primitive or pointer
-        static_assert(!ClearableEmpty<int>);
-        static_assert(!ClearableEmpty<int*>);
+        static_assert(!ClearableContainerLike<int>);
+        static_assert(!ClearableContainerLike<int*>);
 
         // has_nullable_traits_v (the concept) should be true when either
         // sentinel or clearable-empty applies

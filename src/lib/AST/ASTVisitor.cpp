@@ -14,8 +14,8 @@
 #include <mrdocs/Platform.hpp>
 #include <lib/AST/ASTVisitor.hpp>
 #include <lib/AST/ClangHelpers.hpp>
+#include <lib/AST/ExtractDocComment.hpp>
 #include <lib/AST/NameBuilder.hpp>
-#include <lib/AST/ParseJavadoc.hpp>
 #include <lib/AST/TypeBuilder.hpp>
 #include <lib/Diagnostics.hpp>
 #include <lib/Support/Path.hpp>
@@ -525,7 +525,7 @@ void
 ASTVisitor::
 populate(Symbol& I, bool const isNew, DeclTy const* D)
 {
-    populate(I.javadoc, D);
+    populate(I.doc, D);
     populate(I.Loc, D);
 
     // All other information is redundant if the symbol is not new
@@ -561,7 +561,7 @@ populate(SourceInfo& I, DeclTy const* D)
 bool
 ASTVisitor::
 populate(
-    Optional<Javadoc>& javadoc,
+    Optional<DocComment>& doc,
     clang::Decl const* D)
 {
     clang::RawComment const* RC = getDocumentation(D);
@@ -569,7 +569,7 @@ populate(
     clang::comments::FullComment* FC =
         RC->parse(D->getASTContext(), &sema_.getPreprocessor(), D);
     MRDOCS_CHECK_OR(FC, false);
-    parseJavadoc(javadoc, FC, D, config_, diags_);
+    populateDocComment(doc, FC, D, config_, diags_);
     return true;
 }
 
@@ -1210,8 +1210,8 @@ populate(
     MRDOCS_CHECK_OR(isDocumented(D));
     Symbol* TI = find(I.id);
     MRDOCS_CHECK_OR(TI);
-    MRDOCS_CHECK_OR(!TI->javadoc);
-    populate(TI->javadoc, D);
+    MRDOCS_CHECK_OR(!TI->doc);
+    populate(TI->doc, D);
 }
 
 void
@@ -3530,7 +3530,7 @@ checkUndocumented(
     // documented version before.
     if (auto const infoIt = info_.find(id);
         infoIt != info_.end() &&
-        infoIt->get()->javadoc)
+        infoIt->get()->doc)
     {
         return {};
     }

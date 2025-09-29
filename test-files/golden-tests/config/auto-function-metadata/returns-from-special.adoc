@@ -60,6 +60,30 @@ Declared in `&lt;returns&hyphen;from&hyphen;special&period;cpp&gt;`
 struct A;
 ----
 
+=== Non-Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#operator_not[`operator!`]
+| Negation operator
+| link:#operator_not_eq[`operator!&equals;`]
+| Inequality operator
+| link:#operator_lt[`operator&lt;`]
+| Less&hyphen;than operator
+| link:#operator_le[`operator&lt;&equals;`]
+| Less&hyphen;than&hyphen;or&hyphen;equal operator
+| link:#operator_3way[`operator&lt;&equals;&gt;`]
+| Three&hyphen;way comparison operator
+| link:#operator_eq[`operator&equals;&equals;`]
+| Equality operator
+| link:#operator_gt[`operator&gt;`]
+| Greater&hyphen;than operator
+| link:#operator_ge[`operator&gt;&equals;`]
+| Greater&hyphen;than&hyphen;or&hyphen;equal operator
+|===
+
 [#Undoc]
 == Undoc
 
@@ -528,6 +552,16 @@ Declared in `&lt;returns&hyphen;from&hyphen;special&period;cpp&gt;`
 ----
 struct ostream;
 ----
+
+=== Non-Member Functions
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#operator_lshift[`operator&lt;&lt;`]
+| Stream insertion operator
+|===
 
 [#operator_lshift]
 == operator&lt;&lt;

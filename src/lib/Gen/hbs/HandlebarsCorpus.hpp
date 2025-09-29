@@ -15,8 +15,8 @@
 #include <mrdocs/Platform.hpp>
 #include <lib/Support/LegibleNames.hpp>
 #include <mrdocs/Corpus.hpp>
+#include <mrdocs/Metadata/DocComment.hpp>
 #include <mrdocs/Metadata/DomCorpus.hpp>
-#include <mrdocs/Metadata/Javadoc.hpp>
 
 namespace mrdocs::hbs {
 
@@ -42,7 +42,7 @@ public:
 
         @param corpus The base corpus.
         @param fileExtension The file extension for the generated files.
-        @param toStringFn The function to convert a Javadoc node to a string.
+        @param toStringFn The function to convert a DocComment node to a string.
     */
     HandlebarsCorpus(
         Corpus const& corpus,

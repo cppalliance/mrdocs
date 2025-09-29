@@ -89,7 +89,7 @@ report(
     {
         if (auto infoIt = info_.find(it->id);
             infoIt != info_.end() &&
-            infoIt->get()->javadoc)
+            infoIt->get()->doc)
         {
             it = undocumented_.erase(it);
         }

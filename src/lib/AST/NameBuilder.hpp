@@ -31,8 +31,11 @@ public:
     Polymorphic<Name>
     result()
     {
-        MRDOCS_ASSERT(Result.has_value());
-        return std::move(*Result);
+        if (Result.has_value())
+        {
+            return std::move(*Result);
+        }
+        return Polymorphic<Name>(std::in_place_type<IdentifierName>);
     }
 
     constexpr bool

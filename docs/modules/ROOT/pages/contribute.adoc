@@ -49,7 +49,7 @@ As a last step, `DoGenerateAction` converts the public `Config` settings into a 
 [#representing_symbols]
 == Representing Symbols
 
-MrDocs has many categories of objects, where we utilize polymorphism with a fixed set of valid derived types, including Symbols (functions, classes, and enums), Javadoc blocks, template parameters, template arguments, and data types. For each such family, we follow a consistent file layout. Most of these families are defined in the `mrdocs/Metadata` directory.
+MrDocs has many categories of objects, where we utilize polymorphism with a fixed set of valid derived types, including Symbols (functions, classes, and enums), DocComment blocks, template parameters, template arguments, and data types. For each such family, we follow a consistent file layout. Most of these families are defined in the `mrdocs/Metadata` directory.
 
 Each base class is defined in its own header and, when necessary, implementation file. Each derived class also has its own header and implementation file. Finally, there is a single aggregator header file that includes all the derived headers. This file centralizes logic that requires knowledge of the full set of variants, such as visitors, comparison operators, and other operations that depend on the discriminator.
 
@@ -144,7 +144,7 @@ are merged into a map containing the merged results from all other TUs.
 The merging step is necessary as there may be multiple identical definitions of the same entity.
 For instance, this represents the case where a function is declared at different points in the code base and might have different attributes or comments.
 At this step, the doc comments are also finalized.
-Each `Symbol` object has a pointer to its `Javadoc`  object (`mrdocs/Metadata/Javadoc.hpp`), which is a representation of the documentation comments.
+Each `Symbol` object has a pointer to its `DocComment`  object (`mrdocs/Metadata/DocComment.hpp`), which is a representation of the documentation comments.
 
 After AST traversal and `Symbol` merging, the result is stored as a map of `Symbol` objects indexed by their respective `SymbolID`.
 A second finalization step is then performed in `mrdocs::finalize`, where any references to `SymbolID` objects that don't exist are removed.

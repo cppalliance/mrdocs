@@ -540,13 +540,13 @@ public:
     constexpr value_type*
     operator->() noexcept
     {
-        MRDOCS_ASSERT(has_value());
         if constexpr (uses_nullable_traits)
         {
             return std::addressof(s_);
         }
         else
         {
+            MRDOCS_ASSERT(has_value());
             return std::addressof(*s_);
         }
     }
@@ -555,13 +555,13 @@ public:
     constexpr value_type const*
     operator->() const noexcept
     {
-        MRDOCS_ASSERT(has_value());
         if constexpr (uses_nullable_traits)
         {
             return std::addressof(s_);
         }
         else
         {
+            MRDOCS_ASSERT(has_value());
             return std::addressof(*s_);
         }
     }
@@ -573,13 +573,13 @@ public:
     constexpr value_type&
     operator*() noexcept
     {
-        MRDOCS_ASSERT(has_value());
         if constexpr (uses_nullable_traits)
         {
             return s_;
         }
         else
         {
+            MRDOCS_ASSERT(has_value());
             return *s_;
         }
     }
@@ -588,13 +588,13 @@ public:
     constexpr value_type const&
     operator*() const noexcept
     {
-        MRDOCS_ASSERT(has_value());
         if constexpr (uses_nullable_traits)
         {
             return s_;
         }
         else
         {
+            MRDOCS_ASSERT(has_value());
             return *s_;
         }
     }
