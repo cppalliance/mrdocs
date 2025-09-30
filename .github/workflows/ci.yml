@@ -895,7 +895,12 @@ jobs:
       - name: Generate Demos
         run: |
           set -x
-                    
+
+          if [[ ${{ runner.os }} == 'Linux' ]]; then
+            set CC=cl.exe
+            set CXX=cl.exe
+          fi
+
           declare -a generators=(
             "adoc"
             "xml"
