@@ -1,0 +1,2 @@
+use-system-stdlib: false
+use-system-libc: false
