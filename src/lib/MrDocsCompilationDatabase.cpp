@@ -302,7 +302,10 @@ adjustCommandLine(
         cmdLineCStrs.data(),
         cmdLineCStrs.data() + cmdLineCStrs.size());
 
-    auto const systemIncludeFlag = is_clang_cl ? "-external:I" : "-isystem";
+    char const* systemIncludeFlag = is_clang_cl ? "-external:I" : "-isystem";
+    // FIXME: No CL equivalent, but not really needed there?
+    char const* afterIncludeFlag = is_clang_cl ? "-external:I" : "-idirafter";
+
 
     // ------------------------------------------------------
     // Supress all warnings
@@ -406,10 +409,10 @@ adjustCommandLine(
 
     if (!(*config)->useSystemLibc)
     {
-        new_cmdline.emplace_back("-nostdinc");
+        new_cmdline.emplace_back(is_clang_cl ? "-X" : "-nostdlibinc");
         for (auto const& inc : (*config)->libcIncludes)
         {
-            new_cmdline.emplace_back(systemIncludeFlag);
+            new_cmdline.emplace_back(afterIncludeFlag);
             new_cmdline.emplace_back(inc);
         }
     }

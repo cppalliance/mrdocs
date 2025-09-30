@@ -179,8 +179,8 @@ struct MrDocsCompilationDatabase_test {
             config->settings_.libcIncludes.push_back("libc-path");
 
             auto adjusted = adjustCompileCommand({ programName }, config);
-            BOOST_TEST(has(adjusted, "-nostdinc"));
-            BOOST_TEST(has(adjusted, { "-isystem", "libc-path" }));
+            BOOST_TEST(has(adjusted, "-nostdlibinc"));
+            BOOST_TEST(has(adjusted, { "-idirafter", "libc-path" }));
         }
     }
 
@@ -302,7 +302,7 @@ struct MrDocsCompilationDatabase_test {
             config->settings_.libcIncludes.push_back("libc-path");
 
             auto adjusted = adjustCompileCommand({ programName }, config);
-            BOOST_TEST(has(adjusted, "-nostdinc"));
+            BOOST_TEST(has(adjusted, "-X"));
             BOOST_TEST(has(adjusted, { "-external:I", "libc-path" }));
         }
     }
