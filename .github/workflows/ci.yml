@@ -903,11 +903,6 @@ jobs:
         run: |
           set -x
 
-          if [[ ${{ runner.os }} == 'Windows' ]]; then
-            set CC=cl.exe
-            set CXX=cl.exe
-          fi
-
           declare -a generators=(
             "adoc"
             "xml"
