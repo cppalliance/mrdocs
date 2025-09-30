@@ -125,7 +125,10 @@ handleFile(
 
     auto parentDir = files::getParentDir(filePath);
     std::unordered_map<std::string, std::vector<std::string>>
-        defaultIncludePaths;
+        defaultIncludePaths = {
+            {    "clang", { MRDOCS_TEST_FILES_DIR "/include" } },
+            { "clang-cl", { MRDOCS_TEST_FILES_DIR "/include" } },
+    };
 
     // Test normally
     {
