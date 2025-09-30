@@ -896,7 +896,7 @@ jobs:
         run: |
           set -x
 
-          if [[ ${{ runner.os }} == 'Linux' ]]; then
+          if [[ ${{ runner.os }} == 'Windows' ]]; then
             set CC=cl.exe
             set CXX=cl.exe
           fi
