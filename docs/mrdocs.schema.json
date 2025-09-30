@@ -547,7 +547,7 @@
       "type": "string"
     },
     "use-system-libc": {
-      "default": false,
+      "default": true,
       "description": "To achieve reproducible results, MrDocs bundles the LibC headers with its definitions. To use the C standard library available in the system instead, set this option to true.",
       "enum": [
         true,
@@ -557,7 +557,7 @@
       "type": "boolean"
     },
     "use-system-stdlib": {
-      "default": false,
+      "default": true,
       "description": "To achieve reproducible results, MrDocs bundles the LibC++ headers. To use the C++ standard library available in the system instead, set this option to true.",
       "enum": [
         true,
