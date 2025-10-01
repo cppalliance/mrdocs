@@ -5,9 +5,9 @@
   <template>
     <tparam name="T" class="type"/>
     <function name="f" requires="std::is_class_v&lt;T&gt;" id="YbGnuURHdmyq4hExRxVObh4FTU8=">
-      <file short-path="redeclare.cpp" source-path="redeclare.cpp" line="33" class="def"/>
-      <file short-path="redeclare.cpp" source-path="redeclare.cpp" line="27"/>
-      <file short-path="redeclare.cpp" source-path="redeclare.cpp" line="30"/>
+      <file short-path="redeclare.cpp" source-path="redeclare.cpp" line="11" class="def"/>
+      <file short-path="redeclare.cpp" source-path="redeclare.cpp" line="5"/>
+      <file short-path="redeclare.cpp" source-path="redeclare.cpp" line="8"/>
       <param>
         <type name="void"/>
       </param>

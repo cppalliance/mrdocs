@@ -5,7 +5,7 @@
   <template>
     <tparam name="T" class="type"/>
     <function name="f" requires="std::is_class_v&lt;T&gt;" id="DCJhD2r+8y4fkjzei4WTJAPHCaE=">
-      <file short-path="return-based.cpp" source-path="return-based.cpp" line="27"/>
+      <file short-path="return-based.cpp" source-path="return-based.cpp" line="5"/>
       <return>
         <type name="int"/>
       </return>
