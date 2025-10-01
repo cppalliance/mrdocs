@@ -47,7 +47,9 @@ struct TestConfigImpl final : Config
 
 struct MrDocsCompilationDatabase_test
 {
-    auto adjustCompileCommand(std::vector<std::string> commandLine, std::shared_ptr<Config const> config) const
+    auto adjustCompileCommand(
+        std::vector<std::string> commandLine,
+        std::shared_ptr<Config const> config = std::make_shared<TestConfigImpl>()) const
     {
         tooling::CompileCommand cc;
         cc.Directory = ".";
@@ -78,29 +80,23 @@ struct MrDocsCompilationDatabase_test
         std::string const programName = "clang";
 
         {
-            std::shared_ptr<TestConfigImpl> config = std::make_shared<TestConfigImpl>();
-
-            auto adjusted = adjustCompileCommand({ programName }, config);
+            auto adjusted = adjustCompileCommand({ programName });
             BOOST_TEST(has(adjusted, "-std=c++23"));
         }
         {
-            std::shared_ptr<TestConfigImpl> config = std::make_shared<TestConfigImpl>();
-
-            auto adjusted = adjustCompileCommand({ programName, "-std=c++11" }, config);
+            auto adjusted = adjustCompileCommand({ programName, "-std=c++11" });
             BOOST_TEST(has(adjusted, "-std=c++11"));
             BOOST_TEST_NOT(has(adjusted, "-std=c++23"));
         }
         {
-            std::shared_ptr<TestConfigImpl> config = std::make_shared<TestConfigImpl>();
-
-            auto adjusted = adjustCompileCommand({ programName, "--std=c++11" }, config);
+            auto adjusted = adjustCompileCommand({ programName, "--std=c++11" });
             BOOST_TEST(has(adjusted, "--std=c++11"));
             BOOST_TEST_NOT(has(adjusted, "-std=c++23"));
         }
 
         {
             std::shared_ptr<TestConfigImpl> config = std::make_shared<TestConfigImpl>();
-            config->settings_.defines = {"FOO", "BAR=1"};
+            config->settings_.defines = { "FOO", "BAR=1" };
 
             auto adjusted = adjustCompileCommand({ programName, "-DBAZ=2" }, config);
             BOOST_TEST(has(adjusted, "-D__MRDOCS__"));
@@ -118,7 +114,7 @@ struct MrDocsCompilationDatabase_test
             BOOST_TEST(has(adjusted, "-nostdinc++"));
             BOOST_TEST(has(adjusted, { "-isystem", "stdlib-path" }));
         }
-        
+
         {
             std::shared_ptr<TestConfigImpl> config = std::make_shared<TestConfigImpl>();
             config->settings_.useSystemLibc = false;
@@ -143,29 +139,23 @@ struct MrDocsCompilationDatabase_test
         std::string const programName = "clang-cl";
 
         {
-            std::shared_ptr<TestConfigImpl> config = std::make_shared<TestConfigImpl>();
-
-            auto adjusted = adjustCompileCommand({ programName }, config);
+            auto adjusted = adjustCompileCommand({ programName });
             BOOST_TEST(has(adjusted, "-std=c++23"));
         }
         {
-            std::shared_ptr<TestConfigImpl> config = std::make_shared<TestConfigImpl>();
-
-            auto adjusted = adjustCompileCommand({ programName, "-std:c++11" }, config);
+            auto adjusted = adjustCompileCommand({ programName, "-std:c++11" });
             BOOST_TEST(has(adjusted, "-std:c++11"));
             BOOST_TEST_NOT(has(adjusted, "-std=c++23"));
         }
         {
-            std::shared_ptr<TestConfigImpl> config = std::make_shared<TestConfigImpl>();
-
-            auto adjusted = adjustCompileCommand({ programName, "/std:c++11" }, config);
+            auto adjusted = adjustCompileCommand({ programName, "/std:c++11" });
             BOOST_TEST(has(adjusted, "/std:c++11"));
             BOOST_TEST_NOT(has(adjusted, "-std=c++23"));
         }
 
         {
             std::shared_ptr<TestConfigImpl> config = std::make_shared<TestConfigImpl>();
-            config->settings_.defines = {"FOO", "BAR=1"};
+            config->settings_.defines = { "FOO", "BAR=1" };
 
             auto adjusted = adjustCompileCommand({ programName, "-DBAZ=2" }, config);
             BOOST_TEST(has(adjusted, "-D__MRDOCS__"));
@@ -193,7 +183,7 @@ struct MrDocsCompilationDatabase_test
             BOOST_TEST(has(adjusted, "-nostdinc"));
             BOOST_TEST(has(adjusted, { "-external:I", "libc-path" }));
         }
-        
+
         {
             std::shared_ptr<TestConfigImpl> config = std::make_shared<TestConfigImpl>();
             config->settings_.systemIncludes.push_back("system-path");
