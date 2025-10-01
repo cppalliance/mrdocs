@@ -25,7 +25,7 @@ struct TestConfigImpl final : Config
     Settings settings_;
 
     ThreadPool&
-    threadPool() const noexcept override
+        threadPool() const noexcept override
     {
         static ThreadPool dummyThreadPool_;
         return dummyThreadPool_;
@@ -51,12 +51,19 @@ struct MrDocsCompilationDatabase_test
     ThreadPool threadPool_;
     ReferenceDirectories dirs_;
 
-    auto adjustCompileCommand(SingleFileDB const& db, std::shared_ptr<Config const> config) const
+    auto adjustCompileCommand(std::vector<std::string> commandLine, std::shared_ptr<Config const> config) const
     {
+        tooling::CompileCommand cc;
+        cc.Directory = ".";
+        cc.Filename = "test.cpp"; // file does not exist
+        cc.CommandLine = std::move(commandLine);
+        cc.CommandLine.push_back(cc.Filename);
+        cc.Heuristic = "unit test";
+
         // Create an adjusted MrDocsDatabase
         std::unordered_map<std::string, std::vector<std::string>> defaultIncludePaths;
         MrDocsCompilationDatabase compilations(
-            dirs_.cwd, db, config, defaultIncludePaths);
+            dirs_.cwd, SingleFileDB(std::move(cc)), config, defaultIncludePaths);
         return compilations.getAllCompileCommands().front().CommandLine;
     }
 
@@ -72,16 +79,14 @@ struct MrDocsCompilationDatabase_test
 
     void testClang()
     {
-        SingleFileDB const db = SingleFileDB::makeForClang("test.cpp");
-
         {
-            std::shared_ptr<TestConfigImpl> config = std::make_shared<TestConfigImpl>();
+            std::shared_ptr<TestConfigImpl> const config = std::make_shared<TestConfigImpl>();
             config->settings_.useSystemStdlib = false;
             config->settings_.stdlibIncludes.push_back("stdlib-path");
 
-            auto adjusted = adjustCompileCommand(db, config);
+            auto adjusted = adjustCompileCommand({ "clang" }, config);
             BOOST_TEST(has(adjusted, "-nostdinc++"));
-            BOOST_TEST(has(adjusted, {"-isystem", "stdlib-path"}));
+            BOOST_TEST(has(adjusted, { "-isystem", "stdlib-path" }));
         }
 
         {
@@ -89,24 +94,43 @@ struct MrDocsCompilationDatabase_test
             config->settings_.useSystemLibc = false;
             config->settings_.libcIncludes.push_back("libc-path");
 
-            auto adjusted = adjustCompileCommand(db, config);
+            auto adjusted = adjustCompileCommand({ "clang" }, config);
             BOOST_TEST(has(adjusted, "-nostdinc"));
-            BOOST_TEST(has(adjusted, {"-isystem", "libc-path"}));
+            BOOST_TEST(has(adjusted, { "-isystem", "libc-path" }));
+        }
+
+        {
+            std::shared_ptr<TestConfigImpl> config = std::make_shared<TestConfigImpl>();
+
+            auto adjusted = adjustCompileCommand({ "clang" }, config);
+            BOOST_TEST(has(adjusted, "-std=c++23"));
+        }
+        {
+            std::shared_ptr<TestConfigImpl> config = std::make_shared<TestConfigImpl>();
+
+            auto adjusted = adjustCompileCommand({ "clang", "-std=c++11" }, config);
+            BOOST_TEST(has(adjusted, "-std=c++11"));
+            BOOST_TEST_NOT(has(adjusted, "-std=c++23"));
+        }
+        {
+            std::shared_ptr<TestConfigImpl> config = std::make_shared<TestConfigImpl>();
+
+            auto adjusted = adjustCompileCommand({ "clang", "--std=c++11" }, config);
+            BOOST_TEST(has(adjusted, "--std=c++11"));
+            BOOST_TEST_NOT(has(adjusted, "-std=c++23"));
         }
     }
 
     void testClangCL()
     {
-        SingleFileDB const db = SingleFileDB::makeForClangCL("test.cpp");
-
         {
             std::shared_ptr<TestConfigImpl> config = std::make_shared<TestConfigImpl>();
             config->settings_.useSystemStdlib = false;
             config->settings_.stdlibIncludes.push_back("stdlib-path");
 
-            auto adjusted = adjustCompileCommand(db, config);
-            BOOST_TEST(has(adjusted, "/X"));
-            BOOST_TEST(has(adjusted, {"-external:I", "stdlib-path"}));
+            auto adjusted = adjustCompileCommand({ "clang-cl" }, config);
+            BOOST_TEST(has(adjusted, "-X"));
+            BOOST_TEST(has(adjusted, { "-external:I", "stdlib-path" }));
         }
 
         {
@@ -114,9 +138,30 @@ struct MrDocsCompilationDatabase_test
             config->settings_.useSystemLibc = false;
             config->settings_.libcIncludes.push_back("libc-path");
 
-            auto adjusted = adjustCompileCommand(db, config);
+            auto adjusted = adjustCompileCommand({ "clang-cl" }, config);
             BOOST_TEST(has(adjusted, "-nostdinc"));
-            BOOST_TEST(has(adjusted, {"-external:I", "libc-path"}));
+            BOOST_TEST(has(adjusted, { "-external:I", "libc-path" }));
+        }
+
+        {
+            std::shared_ptr<TestConfigImpl> config = std::make_shared<TestConfigImpl>();
+
+            auto adjusted = adjustCompileCommand({ "clang-cl" }, config);
+            BOOST_TEST(has(adjusted, "-std=c++23"));
+        }
+        {
+            std::shared_ptr<TestConfigImpl> config = std::make_shared<TestConfigImpl>();
+
+            auto adjusted = adjustCompileCommand({ "clang-cl", "-std:c++11" }, config);
+            BOOST_TEST(has(adjusted, "-std:c++11"));
+            BOOST_TEST_NOT(has(adjusted, "-std=c++23"));
+        }
+        {
+            std::shared_ptr<TestConfigImpl> config = std::make_shared<TestConfigImpl>();
+
+            auto adjusted = adjustCompileCommand({ "clang-cl", "/std:c++11" }, config);
+            BOOST_TEST(has(adjusted, "/std:c++11"));
+            BOOST_TEST_NOT(has(adjusted, "-std=c++23"));
         }
     }
 

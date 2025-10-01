@@ -317,7 +317,7 @@ adjustCommandLine(
     // ------------------------------------------------------
     // Add flags to ignore all warnings. Any options that
     // affect warnings will be discarded later.
-    new_cmdline.emplace_back(is_clang_cl ? "/w" : "-w");
+    new_cmdline.emplace_back("-w");
     new_cmdline.emplace_back("-fsyntax-only");
 
     // ------------------------------------------------------
@@ -411,9 +411,10 @@ adjustCommandLine(
         isExplicitCCompileCommand || (!isExplicitCppCompileCommand && isImplicitCSourceFile);
 
     constexpr auto is_std_option = [](std::string_view const opt) {
-        return opt.starts_with("-std=") || opt.starts_with("--std=") || opt.starts_with("/std:");
+        return opt.starts_with("-std=") || opt.starts_with("--std=") || // clang options
+            opt.starts_with("-std:") || opt.starts_with("/std:"); // clang-cl options
     };
-    if (std::ranges::find_if(cmdline, is_std_option) == cmdline.end())
+    if (std::ranges::none_of(cmdline, is_std_option))
     {
         if (!isCCompileCommand)
         {
@@ -464,7 +465,7 @@ adjustCommandLine(
         // implicit include paths and add the standard library
         // and system includes manually. That gives MrDocs
         // access to libc++ in a portable way.
-        new_cmdline.emplace_back(is_clang_cl ? "/X" : "-nostdinc++");
+        new_cmdline.emplace_back(is_clang_cl ? "-X" : "-nostdinc++");
         for (auto const& inc : (*config)->stdlibIncludes)
         {
           new_cmdline.emplace_back(is_clang_cl ? "-external:I" : "-isystem");

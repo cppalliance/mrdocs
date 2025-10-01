@@ -11,7 +11,6 @@
 #ifndef MRDOCS_LIB_SINGLEFILEDB_HPP
 #define MRDOCS_LIB_SINGLEFILEDB_HPP
 
-#include <mrdocs/Support/Path.hpp>
 #include <clang/Tooling/CompilationDatabase.h>
 #include <string>
 #include <utility>
@@ -31,38 +30,6 @@ public:
     explicit SingleFileDB(tooling::CompileCommand cc)
         : cc_(std::move(cc))
     {}
-
-    static SingleFileDB makeForClang(llvm::StringRef pathName)
-    {
-        auto fileName = files::getFileName(pathName);
-        auto parentDir = files::getParentDir(pathName);
-
-        std::vector<std::string> cmds = {"clang",
-            "-std=c++23", "-pedantic-errors", "-Werror", std::string{fileName}};
-        tooling::CompileCommand cc(
-            parentDir,
-            fileName,
-            std::move(cmds),
-            parentDir);
-        cc.Heuristic = "unit test";
-        return SingleFileDB(std::move(cc));
-    }
-
-    static SingleFileDB makeForClangCL(llvm::StringRef pathName)
-    {
-        auto fileName = files::getFileName(pathName);
-        auto parentDir = files::getParentDir(pathName);
-
-        std::vector<std::string> cmds = {"clang-cl",
-            "/std:c++latest", "/permissive-", "/WX", std::string{fileName}};
-        tooling::CompileCommand cc(
-            parentDir,
-            fileName,
-            std::move(cmds),
-            parentDir);
-        cc.Heuristic = "unit test";
-        return SingleFileDB(std::move(cc));
-    }
 
     std::vector<tooling::CompileCommand>
     getCompileCommands(

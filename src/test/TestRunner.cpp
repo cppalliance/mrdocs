@@ -55,6 +55,7 @@ writeFile(
     return {};
 }
 
+namespace{
 void
 replaceCRLFWithLF(std::string &str)
 {
@@ -63,6 +64,39 @@ replaceCRLFWithLF(std::string &str)
         str.replace(pos, 2, "\n");
         pos += 1; // Move past the '\n' character
     }
+}
+
+SingleFileDB makeSingleFileDBForClang(llvm::StringRef pathName)
+{
+    auto fileName = files::getFileName(pathName);
+    auto parentDir = files::getParentDir(pathName);
+
+    std::vector<std::string> cmds = {"clang",
+        "-std=c++23", "-pedantic-errors", "-Werror", std::string{fileName}};
+    tooling::CompileCommand cc(
+        parentDir,
+        fileName,
+        std::move(cmds),
+        parentDir);
+    cc.Heuristic = "unit test";
+    return SingleFileDB(std::move(cc));
+}
+
+SingleFileDB makeSingleFileDBForClangCL(llvm::StringRef pathName)
+{
+    auto fileName = files::getFileName(pathName);
+    auto parentDir = files::getParentDir(pathName);
+
+    std::vector<std::string> cmds = {"clang-cl",
+        "/std:c++latest", "/permissive-", "/WX", std::string{fileName}};
+    tooling::CompileCommand cc(
+        parentDir,
+        fileName,
+        std::move(cmds),
+        parentDir);
+    cc.Heuristic = "unit test";
+    return SingleFileDB(std::move(cc));
+}
 }
 
 void
@@ -116,9 +150,9 @@ handleFile(
     auto parentDir = files::getParentDir(filePath);
     SingleFileDB const db =
 #if defined(WIN32)
-        SingleFileDB::makeForClangCL(filePath);
+        makeSingleFileDBForClang(filePath);
 #else
-        SingleFileDB::makeForClang(filePath);
+        makeSingleFileDBForClangCL(filePath);
 #endif
     std::unordered_map<std::string, std::vector<std::string>> defaultIncludePaths;
     MrDocsCompilationDatabase compilations(
