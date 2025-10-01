@@ -581,7 +581,7 @@ jobs:
         uses: alandefreitas/cpp-actions/package-install@v1.8.12
         id: package-install
         with:
-          apt-get: build-essential asciidoctor cmake bzip2 git
+          apt-get: build-essential asciidoctor cmake bzip2 git rsync
 
       - name: Clone MrDocs
         uses: actions/checkout@v4
@@ -711,6 +711,7 @@ jobs:
           node render.js
           mkdir -p ../../build/website
           cp index.html ../../build/website/index.html
+          cp robots.txt ../../build/website/robots.txt
           cp styles.css ../../build/website/styles.css
           cp -r assets ../../build/website/assets
 
@@ -963,6 +964,7 @@ jobs:
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
+          set -euvx
           # Add SSH key
           mkdir -p /home/runner/.ssh
           ssh-keyscan dev-websites.cpp.al >> /home/runner/.ssh/known_hosts
@@ -972,17 +974,15 @@ jobs:
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-add /home/runner/.ssh/github_actions
 
+          rsyncopts=(--recursive --delete --links --times --chmod=D0755,F0755 --compress --compress-choice=zstd --rsh="ssh -o StrictHostKeyChecking=no" --human-readable)
+          website_dir="ubuntu@dev-websites.cpp.al:/var/www/mrdox.com"
+          demo_dir="$website_dir/demos/${{ github.ref_name }}"
+
           # Copy files: This step will copy the landing page and the documentation to www.mrdocs.com
-          chmod 755 -R $(pwd)/build/website
-          scp -o StrictHostKeyChecking=no -r $(pwd)/build/website/* ubuntu@dev-websites.cpp.al:/var/www/mrdox.com/
-          
-          # Remove previous demos associated with this tag
-          demo_dir="/var/www/mrdox.com/demos/${{ github.ref_name }}"
-          ssh -o StrictHostKeyChecking=no ubuntu@dev-websites.cpp.al "rm -rf $demo_dir/boost-url; mkdir -p $demo_dir/boost-url"
+          time rsync "${rsyncopts[@]}" --exclude=llvm+clang/ --exclude=demos/ $(pwd)/build/website/ "$website_dir"/
 
           # Copy demos: This step will copy the demos to www.mrdocs.com/demos
-          chmod 755 -R $(pwd)/demos
-          scp -o StrictHostKeyChecking=no -r $(pwd)/demos/* ubuntu@dev-websites.cpp.al:$demo_dir/
+          time rsync "${rsyncopts[@]}" $(pwd)/demos/ "$demo_dir"/
 
       - name: Create changelog
         uses: alandefreitas/cpp-actions/create-changelog@v1.8.12
