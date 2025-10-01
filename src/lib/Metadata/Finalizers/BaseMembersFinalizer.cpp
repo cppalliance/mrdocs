@@ -30,7 +30,7 @@ inheritBaseMembers(
     RecordInterface const& base,
     AccessKind const A)
 {
-    auto&& members = allMembers(derived);
+    auto members = allMembers(derived);
 
     if (A == AccessKind::Public)
     {
