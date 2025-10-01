@@ -119,6 +119,17 @@ struct MrDocsCompilationDatabase_test
             BOOST_TEST(has(adjusted, "--std=c++11"));
             BOOST_TEST_NOT(has(adjusted, "-std=c++23"));
         }
+
+        {
+            std::shared_ptr<TestConfigImpl> config = std::make_shared<TestConfigImpl>();
+            config->settings_.defines = {"FOO", "BAR=1"};
+
+            auto adjusted = adjustCompileCommand({ "clang", "-DBAZ=2" }, config);
+            BOOST_TEST(has(adjusted, "-D__MRDOCS__"));
+            BOOST_TEST(has(adjusted, "-DFOO"));
+            BOOST_TEST(has(adjusted, "-DBAR=1"));
+            BOOST_TEST(has(adjusted, "-DBAZ=2"));
+        }
     }
 
     void testClangCL()
@@ -162,6 +173,17 @@ struct MrDocsCompilationDatabase_test
             auto adjusted = adjustCompileCommand({ "clang-cl", "/std:c++11" }, config);
             BOOST_TEST(has(adjusted, "/std:c++11"));
             BOOST_TEST_NOT(has(adjusted, "-std=c++23"));
+        }
+
+        {
+            std::shared_ptr<TestConfigImpl> config = std::make_shared<TestConfigImpl>();
+            config->settings_.defines = {"FOO", "BAR=1"};
+
+            auto adjusted = adjustCompileCommand({ "clang-cl", "-DBAZ=2" }, config);
+            BOOST_TEST(has(adjusted, "-D__MRDOCS__"));
+            BOOST_TEST(has(adjusted, "-DFOO"));
+            BOOST_TEST(has(adjusted, "-DBAR=1"));
+            BOOST_TEST(has(adjusted, "-DBAZ=2"));
         }
     }
 
