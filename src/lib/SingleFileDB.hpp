@@ -20,62 +20,69 @@
 namespace clang {
 namespace mrdocs {
 
-/** Compilation database for a single .cpp file.
+/** Compilation database for a single file.
 */
 class SingleFileDB
     : public tooling::CompilationDatabase
 {
-    std::vector<tooling::CompileCommand> cc_;
+    tooling::CompileCommand cc_;
 
 public:
-    explicit
-    SingleFileDB(
-        llvm::StringRef pathName, bool is_clang_cl = false)
+    explicit SingleFileDB(tooling::CompileCommand cc)
+        : cc_(std::move(cc))
+    {}
+
+    static SingleFileDB makeForClang(llvm::StringRef pathName)
     {
         auto fileName = files::getFileName(pathName);
         auto parentDir = files::getParentDir(pathName);
 
-        std::vector<std::string> cmds;
-        if (is_clang_cl) {
-            cmds.emplace_back("clang-cl");
-            cmds.emplace_back("/std:c++latest");
-            cmds.emplace_back("/permissive-");
-            cmds.emplace_back("/WX");
-        }
-        else {
-            cmds.emplace_back("clang");
-            cmds.emplace_back("-std=c++23");
-            cmds.emplace_back("-pedantic-errors");
-            cmds.emplace_back("-Werror");
-        }
-        cmds.emplace_back(fileName);
-        cc_.emplace_back(
+        std::vector<std::string> cmds = {"clang",
+            "-std=c++23", "-pedantic-errors", "-Werror", std::string{fileName}};
+        tooling::CompileCommand cc(
             parentDir,
             fileName,
             std::move(cmds),
             parentDir);
-        cc_.back().Heuristic = "unit test";
+        cc.Heuristic = "unit test";
+        return SingleFileDB(std::move(cc));
+    }
+
+    static SingleFileDB makeForClangCL(llvm::StringRef pathName)
+    {
+        auto fileName = files::getFileName(pathName);
+        auto parentDir = files::getParentDir(pathName);
+
+        std::vector<std::string> cmds = {"clang-cl",
+            "/std:c++latest", "/permissive-", "/WX", std::string{fileName}};
+        tooling::CompileCommand cc(
+            parentDir,
+            fileName,
+            std::move(cmds),
+            parentDir);
+        cc.Heuristic = "unit test";
+        return SingleFileDB(std::move(cc));
     }
 
     std::vector<tooling::CompileCommand>
-    getCompileCommands(
-        llvm::StringRef FilePath) const override
+        getCompileCommands(
+            llvm::StringRef FilePath) const override
     {
-        if (FilePath != cc_.front().Filename)
+        if (FilePath != cc_.Filename)
             return {};
-        return { cc_.front() };
+        return { cc_ };
     }
 
     std::vector<std::string>
-    getAllFiles() const override
+        getAllFiles() const override
     {
-        return { cc_.front().Filename };
+        return { cc_.Filename };
     }
 
     std::vector<tooling::CompileCommand>
-    getAllCompileCommands() const override
+        getAllCompileCommands() const override
     {
-        return { cc_.front() };
+        return { cc_ };
     }
 };
 

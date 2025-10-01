@@ -114,15 +114,15 @@ handleFile(
 
     // Create an adjusted MrDocsDatabase
     auto parentDir = files::getParentDir(filePath);
-    bool const is_clang_cl =
+    SingleFileDB const db =
 #if defined(WIN32)
-        true;
+        SingleFileDB::makeForClangCL(filePath);
 #else
-        false;
+        SingleFileDB::makeForClang(filePath);
 #endif
     std::unordered_map<std::string, std::vector<std::string>> defaultIncludePaths;
     MrDocsCompilationDatabase compilations(
-        llvm::StringRef(parentDir), SingleFileDB(filePath, is_clang_cl), config, defaultIncludePaths);
+        llvm::StringRef(parentDir), db, config, defaultIncludePaths);
 
     report::debug("Building Corpus", filePath);
     auto corpus = CorpusImpl::build(config, compilations);
