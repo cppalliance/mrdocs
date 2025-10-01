@@ -150,9 +150,9 @@ handleFile(
     auto parentDir = files::getParentDir(filePath);
     SingleFileDB const db =
 #if defined(WIN32)
-        makeSingleFileDBForClang(filePath);
-#else
         makeSingleFileDBForClangCL(filePath);
+#else
+        makeSingleFileDBForClang(filePath);
 #endif
     std::unordered_map<std::string, std::vector<std::string>> defaultIncludePaths;
     MrDocsCompilationDatabase compilations(
