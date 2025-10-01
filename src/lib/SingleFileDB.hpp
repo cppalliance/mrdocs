@@ -65,8 +65,8 @@ public:
     }
 
     std::vector<tooling::CompileCommand>
-        getCompileCommands(
-            llvm::StringRef FilePath) const override
+    getCompileCommands(
+        llvm::StringRef FilePath) const override
     {
         if (FilePath != cc_.Filename)
             return {};
@@ -74,13 +74,13 @@ public:
     }
 
     std::vector<std::string>
-        getAllFiles() const override
+    getAllFiles() const override
     {
         return { cc_.Filename };
     }
 
     std::vector<tooling::CompileCommand>
-        getAllCompileCommands() const override
+    getAllCompileCommands() const override
     {
         return { cc_ };
     }
