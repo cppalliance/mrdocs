@@ -47,10 +47,6 @@ struct TestConfigImpl final : Config
 
 struct MrDocsCompilationDatabase_test
 {
-    Config::Settings fileSettings_;
-    ThreadPool threadPool_;
-    ReferenceDirectories dirs_;
-
     auto adjustCompileCommand(std::vector<std::string> commandLine, std::shared_ptr<Config const> config) const
     {
         tooling::CompileCommand cc;
@@ -63,7 +59,7 @@ struct MrDocsCompilationDatabase_test
         // Create an adjusted MrDocsDatabase
         std::unordered_map<std::string, std::vector<std::string>> defaultIncludePaths;
         MrDocsCompilationDatabase compilations(
-            dirs_.cwd, SingleFileDB(std::move(cc)), config, defaultIncludePaths);
+            "", SingleFileDB(std::move(cc)), config, defaultIncludePaths);
         return compilations.getAllCompileCommands().front().CommandLine;
     }
 
