@@ -95,6 +95,21 @@ struct MrDocsCompilationDatabase_test
         }
 
         {
+            auto adjusted = adjustCompileCommand({ programName, "-x", "c" });
+            BOOST_TEST(has(adjusted, "-std=c23"));
+        }
+        {
+            auto adjusted = adjustCompileCommand({ programName, "-x", "c", "-std=c11" });
+            BOOST_TEST(has(adjusted, "-std=c11"));
+            BOOST_TEST_NOT(has(adjusted, "-std=c23"));
+        }
+        {
+            auto adjusted = adjustCompileCommand({ programName, "-x", "c", "--std=c11" });
+            BOOST_TEST(has(adjusted, "--std=c11"));
+            BOOST_TEST_NOT(has(adjusted, "-std=c23"));
+        }
+
+        {
             std::shared_ptr<TestConfigImpl> config = std::make_shared<TestConfigImpl>();
             config->settings_.defines = { "FOO", "BAR=1" };
 
@@ -140,17 +155,32 @@ struct MrDocsCompilationDatabase_test
 
         {
             auto adjusted = adjustCompileCommand({ programName });
-            BOOST_TEST(has(adjusted, "-std=c++23"));
+            BOOST_TEST(has(adjusted, "-std:c++latest"));
         }
         {
             auto adjusted = adjustCompileCommand({ programName, "-std:c++11" });
             BOOST_TEST(has(adjusted, "-std:c++11"));
-            BOOST_TEST_NOT(has(adjusted, "-std=c++23"));
+            BOOST_TEST_NOT(has(adjusted, "-std:c++latest"));
         }
         {
             auto adjusted = adjustCompileCommand({ programName, "/std:c++11" });
             BOOST_TEST(has(adjusted, "/std:c++11"));
-            BOOST_TEST_NOT(has(adjusted, "-std=c++23"));
+            BOOST_TEST_NOT(has(adjusted, "-std:c++latest"));
+        }
+
+        {
+            auto adjusted = adjustCompileCommand({ programName, "-x", "c" });
+            BOOST_TEST(has(adjusted, "-std:clatest"));
+        }
+        {
+            auto adjusted = adjustCompileCommand({ programName, "-x", "c", "-std:c11" });
+            BOOST_TEST(has(adjusted, "-std:c11"));
+            BOOST_TEST_NOT(has(adjusted, "-std:clatest"));
+        }
+        {
+            auto adjusted = adjustCompileCommand({ programName, "-x", "c", "/std:c11" });
+            BOOST_TEST(has(adjusted, "/std:c11"));
+            BOOST_TEST_NOT(has(adjusted, "-std:clatest"));
         }
 
         {
