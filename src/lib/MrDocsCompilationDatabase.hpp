@@ -38,6 +38,7 @@ class MrDocsCompilationDatabase
 {
     std::vector<tooling::CompileCommand> AllCommands_;
     llvm::StringMap<std::size_t> IndexByFile_;
+    bool isClangCL_{};
 
 public:
     /**
@@ -80,6 +81,13 @@ public:
     */
     std::vector<tooling::CompileCommand>
     getAllCompileCommands() const override;
+
+    /** Whether the driver mode for the compilation database is ClangCL */
+    bool
+    isClangCL() const noexcept
+    {
+        return isClangCL_;
+    }
 };
 
 } // mrdocs

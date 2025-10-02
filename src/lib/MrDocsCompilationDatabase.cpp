@@ -11,6 +11,7 @@
 
 #include "MrDocsCompilationDatabase.hpp"
 #include "lib/ConfigImpl.hpp"
+#include "lib/AST/ClangHelpers.hpp"
 #include "lib/Support/Debug.hpp"
 #include "lib/Support/ExecuteAndWaitWithLogging.hpp"
 #include "lib/Support/Path.hpp"
@@ -275,6 +276,7 @@ std::vector<std::string>
 adjustCommandLine(
     StringRef const workingDir,
     std::vector<std::string> const& cmdline,
+    bool is_clang_cl,
     std::shared_ptr<Config const> const& config,
     std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories,
     std::string_view filename)
@@ -299,18 +301,6 @@ adjustCommandLine(
     llvm::opt::InputArgList const args(
         cmdLineCStrs.data(),
         cmdLineCStrs.data() + cmdLineCStrs.size());
-
-    // ------------------------------------------------------
-    // Get driver mode
-    // ------------------------------------------------------
-    // The driver mode distinguishes between clang/gcc and msvc
-    // command line option formats. The value is deduced from
-    // the `-drive-mode` option or from `progName`.
-    // Common values are "gcc", "g++", "cpp", "cl" and "flang".
-    StringRef const driver_mode = driver::getDriverMode(progName, cmdLineCStrs);
-    // Identify if we should use "msvc/clang-cl" or "clang/gcc" format
-    // for options.
-    bool const is_clang_cl = driver::IsClangCL(driver_mode);
 
     auto const systemIncludeFlag = is_clang_cl ? "-external:I" : "-isystem";
 
@@ -562,6 +552,9 @@ MrDocsCompilationDatabase(
     using tooling::CompileCommand;
 
     std::vector<CompileCommand> allCommands = inner.getAllCompileCommands();
+    if (allCommands.empty()) return;
+
+    isClangCL_ = mrdocs::isClangCL(allCommands.front());
     AllCommands_.reserve(allCommands.size());
     SmallPathString temp;
     for (CompileCommand const& cmd0 : allCommands)
@@ -573,6 +566,7 @@ MrDocsCompilationDatabase(
         cmd.CommandLine = adjustCommandLine(
             workingDir,
             cmd0.CommandLine,
+            isClangCL_,
             config,
             implicitIncludeDirectories,
             cmd0.Filename);

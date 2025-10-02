@@ -23,8 +23,6 @@
 #include "lib/Metadata/Finalizers/SortMembersFinalizer.hpp"
 #include "lib/Support/Chrono.hpp"
 #include "lib/Support/Report.hpp"
-#include <clang/Driver/Driver.h>
-#include <llvm/Option/ArgList.h>
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Support/Algorithm.hpp>
 #include <mrdocs/Support/Error.hpp>
@@ -713,46 +711,11 @@ lookupCacheSet(
 
 //------------------------------------------------
 
-namespace {
-// FIXME(k-ballo): MrDocsCompilationDatabase already figured this out, but we lost that information.
-// do we want to have to recompute it here? if so, dedup this query
-bool
-isClangCL(tooling::CompilationDatabase const& compilations)
-{
-    auto const& commands = compilations.getAllCompileCommands();
-    if (commands.empty()) return false;
-
-    auto const& cmdline = commands.front().CommandLine;
-
-    // ------------------------------------------------------
-    // Convert to InputArgList
-    // ------------------------------------------------------
-    // InputArgList is the input format for llvm functions
-    auto cmdLineCStrsView = std::views::transform(cmdline, &std::string::c_str);
-    std::vector const cmdLineCStrs(cmdLineCStrsView.begin(), cmdLineCStrsView.end());
-    llvm::opt::InputArgList const args(
-        cmdLineCStrs.data(),
-        cmdLineCStrs.data() + cmdLineCStrs.size());
-
-    // ------------------------------------------------------
-    // Get driver mode
-    // ------------------------------------------------------
-    // The driver mode distinguishes between clang/gcc and msvc
-    // command line option formats. The value is deduced from
-    // the `-drive-mode` option or from `progName`.
-    // Common values are "gcc", "g++", "cpp", "cl" and "flang".
-    std::string const& progName = cmdline.front();
-    StringRef const driver_mode = driver::getDriverMode(progName, cmdLineCStrs);
-
-    return driver::IsClangCL(driver_mode);
-}
-}
-
 mrdocs::Expected<std::unique_ptr<Corpus>>
 CorpusImpl::
 build(
     std::shared_ptr<ConfigImpl const> const& config,
-    tooling::CompilationDatabase const& compilations)
+    MrDocsCompilationDatabase const& compilations)
 {
     using clock_type = std::chrono::steady_clock;
     auto start_time = clock_type::now();
@@ -774,7 +737,7 @@ build(
 
     // Identify if we should use "msvc/clang-cl" or "clang/gcc" format
     // for options.
-    bool const is_clang_cl = isClangCL(compilations);
+    bool const is_clang_cl = compilations.isClangCL();
 
     // ------------------------------------------
     // "Process file" task

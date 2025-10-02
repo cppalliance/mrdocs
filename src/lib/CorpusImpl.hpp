@@ -12,9 +12,10 @@
 #ifndef MRDOCS_LIB_CORPUSIMPL_HPP
 #define MRDOCS_LIB_CORPUSIMPL_HPP
 
-#include "lib/AST/ParseRef.hpp"
 #include "ConfigImpl.hpp"
+#include "lib/AST/ParseRef.hpp"
 #include "lib/Metadata/InfoSet.hpp"
+#include "lib/MrDocsCompilationDatabase.hpp"
 #include "lib/Support/Debug.hpp"
 #include <clang/Tooling/CompilationDatabase.h>
 #include <mrdocs/ADT/UnorderedStringMap.hpp>
@@ -22,11 +23,11 @@
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/Error.hpp>
+#include <functional>
 #include <map>
 #include <mutex>
 #include <string>
 #include <set>
-#include <functional>
 
 namespace clang::mrdocs {
 
@@ -161,7 +162,7 @@ public:
         not need to call this function directly.
 
         @param config A shared pointer to the configuration.
-        @param compilations A compilations database for the input files.
+        @param compilations A MrDocs compilations database for the input files.
     */
     // MRDOCS_DECL
     [[nodiscard]]
@@ -169,7 +170,7 @@ public:
     mrdocs::Expected<std::unique_ptr<Corpus>>
     build(
         std::shared_ptr<ConfigImpl const> const& config,
-        tooling::CompilationDatabase const& compilations);
+        MrDocsCompilationDatabase const& compilations);
 
     void
     qualifiedName(
