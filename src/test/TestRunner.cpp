@@ -66,29 +66,17 @@ replaceCRLFWithLF(std::string &str)
     }
 }
 
-SingleFileDB makeSingleFileDBForClang(llvm::StringRef pathName)
+SingleFileDB makeSingleFileDB(llvm::StringRef pathName)
 {
     auto fileName = files::getFileName(pathName);
     auto parentDir = files::getParentDir(pathName);
 
-    std::vector<std::string> cmds = {"clang",
-        "-std=c++23", "-pedantic-errors", "-Werror", std::string{fileName}};
-    tooling::CompileCommand cc(
-        parentDir,
-        fileName,
-        std::move(cmds),
-        parentDir);
-    cc.Heuristic = "unit test";
-    return SingleFileDB(std::move(cc));
-}
-
-SingleFileDB makeSingleFileDBForClangCL(llvm::StringRef pathName)
-{
-    auto fileName = files::getFileName(pathName);
-    auto parentDir = files::getParentDir(pathName);
-
-    std::vector<std::string> cmds = {"clang-cl",
-        "/std:c++latest", "/permissive-", "/WX", std::string{fileName}};
+    std::vector<std::string> cmds = 
+#if defined(WIN32)
+      {"clang-cl", "/std:c++latest", "/permissive-", "/WX", std::string{fileName}};
+#else
+      {"clang", "-std=c++23", "-pedantic-errors", "-Werror", std::string{fileName}};
+#endif
     tooling::CompileCommand cc(
         parentDir,
         fileName,
@@ -148,12 +136,7 @@ handleFile(
 
     // Create an adjusted MrDocsDatabase
     auto parentDir = files::getParentDir(filePath);
-    SingleFileDB const db =
-#if defined(WIN32)
-        makeSingleFileDBForClangCL(filePath);
-#else
-        makeSingleFileDBForClang(filePath);
-#endif
+    SingleFileDB const db = makeSingleFileDB(filePath);
     std::unordered_map<std::string, std::vector<std::string>> defaultIncludePaths;
     MrDocsCompilationDatabase compilations(
         llvm::StringRef(parentDir), db, config, defaultIncludePaths);
