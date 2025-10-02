@@ -312,6 +312,8 @@ adjustCommandLine(
     // for options.
     bool const is_clang_cl = driver::IsClangCL(driver_mode);
 
+    auto const systemIncludeFlag = is_clang_cl ? "-external:I" : "-isystem";
+
     // ------------------------------------------------------
     // Supress all warnings
     // ------------------------------------------------------
@@ -449,7 +451,7 @@ adjustCommandLine(
             it != implicitIncludeDirectories.end()) {
             for (auto const& inc : it->second)
             {
-              new_cmdline.emplace_back(is_clang_cl ? "-external:I" : "-isystem");
+              new_cmdline.emplace_back(systemIncludeFlag);
               new_cmdline.emplace_back(inc);
             }
         }
@@ -468,7 +470,7 @@ adjustCommandLine(
         new_cmdline.emplace_back(is_clang_cl ? "-X" : "-nostdinc++");
         for (auto const& inc : (*config)->stdlibIncludes)
         {
-          new_cmdline.emplace_back(is_clang_cl ? "-external:I" : "-isystem");
+          new_cmdline.emplace_back(systemIncludeFlag);
           new_cmdline.emplace_back(inc);
         }
     }
@@ -478,7 +480,7 @@ adjustCommandLine(
         new_cmdline.emplace_back("-nostdinc");
         for (auto const& inc : (*config)->libcIncludes)
         {
-          new_cmdline.emplace_back(is_clang_cl ? "-external:I" : "-isystem");
+          new_cmdline.emplace_back(systemIncludeFlag);
           new_cmdline.emplace_back(inc);
         }
     }
@@ -488,7 +490,7 @@ adjustCommandLine(
     // ------------------------------------------------------
     for (auto const& inc : (*config)->systemIncludes)
     {
-      new_cmdline.emplace_back(is_clang_cl ? "-external:I" : "-isystem");
+      new_cmdline.emplace_back(systemIncludeFlag);
       new_cmdline.emplace_back(inc);
     }
     for (auto const& inc : (*config)->includes)
