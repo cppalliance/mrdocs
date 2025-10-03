@@ -139,6 +139,7 @@ handleFile(
         handleCompilationDatabase(filePath, compilations, config);
     }
 
+#if defined(_MSC_VER)
     // Test again in clang-cl mode
     {
         auto const db = makeSingleFileDB(filePath,
@@ -149,6 +150,7 @@ handleFile(
             llvm::StringRef(parentDir), db, config, defaultIncludePaths);
         handleCompilationDatabase(filePath, compilations, config);
     }
+#endif
 }
 
 void
