@@ -4,13 +4,102 @@
 [#index]
 == Global namespace
 
+=== Types
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#_01record-01[`Unnamed struct`] 
+| 
+| link:#_01record-0f[`Unnamed struct`] 
+| A test unnamed class&period;
+|===
+
 === Variables
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#F[`F`] 
+| 
+| link:#x[`x`] 
+| A test variable named &apos;x&apos;
+| link:#y[`y`] 
+| A test variable named &apos;y&apos;
+|===
+
+[#_01record-01]
+== Unnamed struct
+
+=== Synopsis
+
+Declared in `&lt;unnamed&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Unnamed struct;
+----
+
+=== Member Functions
 
 [cols=1]
 |===
 | Name
-| link:#F[`F`] 
+| link:#_01record-01-operator_call[`operator()`] 
 |===
+
+[#_01record-01-operator_call]
+== operator()
+
+=== Synopsis
+
+Declared in `&lt;unnamed&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+operator()() const;
+----
+
+[#_01record-0f]
+== Unnamed struct
+
+A test unnamed class&period;
+
+=== Synopsis
+
+Declared in `&lt;unnamed&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Unnamed struct;
+----
+
+=== Data Members
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#_01record-0f-a[`a`] 
+| A test field&period;
+|===
+
+[#_01record-0f-a]
+== a
+
+A test field&period;
+
+=== Synopsis
+
+Declared in `&lt;unnamed&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+int a;
+----
 
 [#F]
 == F
@@ -21,7 +110,37 @@ Declared in `&lt;unnamed&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-constexpr &sol;&ast; implementation-defined &ast;&sol; F = &lcub;&rcub;;
+constexpr link:#_01record-01[] F = &lcub;&rcub;;
+----
+
+[#x]
+== x
+
+A test variable named &apos;x&apos;
+
+=== Synopsis
+
+Declared in `&lt;unnamed&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+extern
+link:#_01record-0f[] x;
+----
+
+[#y]
+== y
+
+A test variable named &apos;y&apos;
+
+=== Synopsis
+
+Declared in `&lt;unnamed&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+extern
+link:#_01record-0f[] y;
 ----
 
 
