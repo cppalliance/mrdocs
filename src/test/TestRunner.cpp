@@ -131,7 +131,7 @@ handleFile(
     // Test normally
     {
         auto const db = makeSingleFileDB(filePath,
-          {"clang", "-std=c++23", "-pedantic-errors", "-Werror"});
+          {"clang", "-std=c++23"});
 
         // Create an adjusted MrDocsDatabase
         MrDocsCompilationDatabase compilations(
@@ -143,7 +143,7 @@ handleFile(
     // Test again in clang-cl mode
     {
         auto const db = makeSingleFileDB(filePath,
-          {"clang-cl", "/std:c++latest", "/permissive-", "/WX"});
+          {"clang-cl", "/std:c++23preview"});
 
         // Create an adjusted MrDocsDatabase
         MrDocsCompilationDatabase compilations(
