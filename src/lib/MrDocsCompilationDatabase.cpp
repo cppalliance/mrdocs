@@ -410,11 +410,11 @@ adjustCommandLine(
     {
         if (!isCCompileCommand)
         {
-            new_cmdline.emplace_back(is_clang_cl ? "-std:c++latest" : "-std=c++23");
+            new_cmdline.emplace_back(is_clang_cl ? "-std:c++23preview" : "-std=c++23");
         }
         else
         {
-            new_cmdline.emplace_back(is_clang_cl ? "-std:clatest" : "-std=c23");
+            new_cmdline.emplace_back(is_clang_cl ? "-std:c17" : "-std=c23");
         }
     }
 
