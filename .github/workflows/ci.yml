@@ -79,10 +79,11 @@ jobs:
             llvm-archive-extension: {{#if (ieq os 'windows') }}7z{{else}}tar.bz2{{/if}}
             llvm-archive-filename: {{{ llvm-archive-basename }}}.{{{ llvm-archive-extension }}}
             llvm-sanitizer-config: {{#if (and (ne compiler 'clang') (ne compiler 'apple-clang'))}}{{else if ubsan}}Undefined{{else if asan}}Address{{else if msan}}MemoryWithOrigins{{/if}}
+            warning-flags: {{#if (eq compiler 'msvc') }}/WX /W4 {{else}}-Werror -Wall {{/if}}
             common-flags-base: {{#if (ieq compiler 'clang')}}-gz=zstd {{/if}}
             common-flags: {{{ common-flags-base }}}{{#if msan }}-fsanitize-memory-track-origins {{/if}}
             common-ccflags: {{{ ccflags }}} {{{ common-flags }}}
-            mrdocs-flags: {{#if (and (eq compiler 'gcc') (not asan)) }}-static{{/if}}
+            mrdocs-flags: {{{ warning-flags }}}{{#if (and (eq compiler 'gcc') (not asan)) }}-static {{/if}}
             mrdocs-ccflags: {{{ common-ccflags }}} {{{ mrdocs-flags }}}
             mrdocs-package-generators: {{#if (ieq os 'windows') }}7Z ZIP WIX{{else}}TGZ TXZ{{/if}}
             mrdocs-release-package-artifact: release-packages-{{{ lowercase os }}}
