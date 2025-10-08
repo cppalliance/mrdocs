@@ -11,6 +11,7 @@
 
 #include "MrDocsSettingsDB.hpp"
 #include <mrdocs/Support/Path.hpp>
+#include <llvm/Support/Program.h>
 
 namespace clang {
 namespace mrdocs {
@@ -59,6 +60,8 @@ MrDocsSettingsDB::MrDocsSettingsDB(ConfigImpl const& config)
             return {};
         });
     }
+    
+    llvm::ErrorOr<std::string> clangPath = llvm::sys::findProgramByName("clang");
 
     for (auto const& pathName: sourceFiles)
     {
@@ -66,11 +69,9 @@ MrDocsSettingsDB::MrDocsSettingsDB(ConfigImpl const& config)
         auto parentDir = files::getParentDir(pathName);
 
         std::vector<std::string> cmds;
-        cmds.emplace_back("clang");
+        cmds.emplace_back(clangPath ? *clangPath : "clang");
         cmds.emplace_back("-fsyntax-only");
         cmds.emplace_back("-std=c++23");
-        cmds.emplace_back("-pedantic-errors");
-        cmds.emplace_back("-Werror");
         cmds.emplace_back("-x");
         cmds.emplace_back("c++");
         cmds.emplace_back(pathName);
