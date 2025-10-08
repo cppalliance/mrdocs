@@ -2328,7 +2328,7 @@ extractSFINAEInfo(QualType const T)
     Result.Type = resultType->getAsType();
     for (std::size_t I = 0; I < Args.size(); ++I)
     {
-        if (SFINAEControl->ControllingParams[I])
+        if (I < SFINAEControl->ControllingParams.size() && SFINAEControl->ControllingParams[I])
         {
             MRDOCS_SYMBOL_TRACE(Args[I], context_);
             TemplateArgument ArgsI = Args[I];
