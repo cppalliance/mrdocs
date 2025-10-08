@@ -2381,7 +2381,7 @@ getSFINAEControlParams(
                 return false;
             });
         bool const found = It != Arguments.end();
-        return found ? It - Arguments.data() : static_cast<std::size_t>(-1);
+        return found ? It - Arguments.begin() : static_cast<std::size_t>(-1);
     };
 
     if(auto* ATD = dyn_cast<TypeAliasTemplateDecl>(TD))
@@ -2439,6 +2439,7 @@ getSFINAEControlParams(
                 // Find the index of the parameter that represents the param
                 // in the primary template arguments
                 unsigned ParamIdx = FindParam(ATD->getInjectedTemplateArgs(context_), *resultType);
+                if (ParamIdx == -1) continue;
 
                 primaryControllingParams.set(ParamIdx);
             }
