@@ -1,0 +1,86 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols=1]
+|===
+| Name
+| link:#enable_if_t[`enable&lowbar;if&lowbar;t`] 
+| link:#if_enable_t[`if&lowbar;enable&lowbar;t`] 
+|===
+
+=== Functions
+
+[cols=1]
+|===
+| Name
+| link:#f1[`f1`] 
+| link:#f2[`f2`] 
+|===
+
+[#enable_if_t]
+== enable&lowbar;if&lowbar;t
+
+=== Synopsis
+
+Declared in `&lt;alias&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;
+    bool C,
+    typename T&gt;
+using enable&lowbar;if&lowbar;t = T;
+----
+
+[#if_enable_t]
+== if&lowbar;enable&lowbar;t
+
+=== Synopsis
+
+Declared in `&lt;alias&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;
+    typename T,
+    bool C&gt;
+using if&lowbar;enable&lowbar;t = T;
+----
+
+[#f1]
+== f1
+
+=== Synopsis
+
+Declared in `&lt;alias&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+T
+f1()
+requires std&colon;&colon;is&lowbar;class&lowbar;v&lt;T&gt;;
+----
+
+[#f2]
+== f2
+
+=== Synopsis
+
+Declared in `&lt;alias&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+T
+f2()
+requires std&colon;&colon;is&lowbar;class&lowbar;v&lt;T&gt;;
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
