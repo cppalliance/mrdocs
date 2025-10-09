@@ -1,0 +1,174 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols=1]
+|===
+| Name
+| link:#Base[`Base`] 
+| link:#Derived[`Derived`] 
+|===
+
+[#Base]
+== Base
+
+=== Synopsis
+
+Declared in `&lt;shadowing&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Base;
+----
+
+=== Member Functions
+
+[cols=1]
+|===
+| Name
+| link:#Base-bar[`bar`] 
+| link:#Base-baz[`baz`] 
+| link:#Base-foo[`foo`] 
+|===
+
+=== Derived Classes
+
+[cols=2]
+|===
+| Name
+| Description
+| link:#Derived[`Derived`]
+| 
+|===
+
+[#Base-bar]
+== link:#Base[Base]::bar
+
+=== Synopsis
+
+Declared in `&lt;shadowing&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+bar();
+----
+
+[#Base-baz]
+== link:#Base[Base]::baz
+
+=== Synopsis
+
+Declared in `&lt;shadowing&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+baz();
+----
+
+[#Base-foo]
+== link:#Base[Base]::foo
+
+=== Synopsis
+
+Declared in `&lt;shadowing&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+foo();
+----
+
+[#Derived]
+== Derived
+
+=== Synopsis
+
+Declared in `&lt;shadowing&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+struct Derived
+    : link:#Base[Base]
+----
+
+=== Base Classes
+
+[cols=2]
+|===
+| Name
+| Description
+| `link:#Base[Base]`
+| 
+|===
+
+=== Member Functions
+
+[cols=1]
+|===
+| Name
+| link:#Derived-foo[`foo`] 
+|===
+
+=== Protected Member Functions
+
+[cols=1]
+|===
+| Name
+| link:#Derived-bar[`bar`] 
+|===
+
+=== Private Member Functions
+
+[cols=1]
+|===
+| Name
+| link:#Derived-baz[`baz`] 
+|===
+
+[#Derived-foo]
+== link:#Derived[Derived]::foo
+
+=== Synopsis
+
+Declared in `&lt;shadowing&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+foo();
+----
+
+[#Derived-bar]
+== link:#Derived[Derived]::bar
+
+=== Synopsis
+
+Declared in `&lt;shadowing&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+bar();
+----
+
+[#Derived-baz]
+== link:#Derived[Derived]::baz
+
+=== Synopsis
+
+Declared in `&lt;shadowing&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+baz();
+----
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#
