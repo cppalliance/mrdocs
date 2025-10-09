@@ -11,7 +11,6 @@
 #include "LuaHandlebars.hpp"
 #include <mrdocs/Support/Lua.hpp>
 
-namespace clang {
 namespace mrdocs {
 
 // VFALCO:
@@ -67,4 +66,3 @@ tryLoadHandlebars(
 }
 
 } // mrdocs
-} // clang

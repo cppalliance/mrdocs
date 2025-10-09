@@ -91,6 +91,13 @@ class InstallOptions:
     duktape_build_dir: str = "<duktape-src-dir>/build/<duktape-build-type:lower><\"-\":if(cc)><cc:basename><\"-\":if(sanitizer)><sanitizer:lower>"
     duktape_install_dir: str = "<duktape-src-dir>/install/<duktape-build-type:lower><\"-\":if(cc)><cc:basename><\"-\":if(sanitizer)><sanitizer:lower>"
 
+    # Lua
+    lua_src_dir: str = "<third-party-src-dir>/lua"
+    lua_url: str = "https://github.com/lua/lua/archive/refs/tags/v5.4.8.tar.gz"
+    lua_build_type: str = "<mrdocs-build-type>"
+    lua_build_dir: str = "<lua-src-dir>/build/<lua-build-type:lower><\"-\":if(cc)><cc:basename><\"-\":if(sanitizer)><sanitizer:lower>"
+    lua_install_dir: str = "<lua-src-dir>/install/<lua-build-type:lower><\"-\":if(cc)><cc:basename><\"-\":if(sanitizer)><sanitizer:lower>"
+
     # LLVM
     llvm_src_dir: str = "<third-party-src-dir>/llvm-project"
     llvm_build_type: str = "<mrdocs-build-type>"
@@ -152,6 +159,11 @@ INSTALL_OPTION_DESCRIPTIONS = {
     "duktape_build_type": "CMake build type for Duktape. (Release, Debug, RelWithDebInfo, MilRelSize)",
     "duktape_build_dir": "Directory where Duktape will be built.",
     "duktape_install_dir": "Directory where Duktape will be installed.",
+    "lua_src_dir": "Directory for the Lua source code.",
+    "lua_url": "Download URL for the Lua source archive.",
+    "lua_build_type": "Build type for Lua. (Release, Debug)",
+    "lua_build_dir": "Directory where Lua will be built.",
+    "lua_install_dir": "Directory where Lua will be installed.",
     "libxml2_src_dir": "Directory for the libxml2 source code.",
     "libxml2_build_type": "CMake build type for libxml2: Release always recommended. (Release, Debug, RelWithDebInfo, MilRelSize)",
     "libxml2_build_dir": "Directory where libxml2 will be built.",
@@ -1162,6 +1174,63 @@ class MrDocsInstaller:
             self.options.duktape_install_dir,
             extra_args)
 
+    def install_lua(self):
+        # Resolve paths/values
+        self.prompt_dependency_path_option("lua_src_dir")
+        if not os.path.exists(self.options.lua_src_dir):
+            self.prompt_option("lua_url")
+            os.makedirs(self.options.lua_src_dir, exist_ok=True)
+            archive_filename = os.path.basename(self.options.lua_url)
+            archive_path = os.path.join(self.options.third_party_src_dir, archive_filename)
+            self.download_file(self.options.lua_url, archive_path)
+
+            # Extract lua-5.4.8.tar.gz, flatten top-level dir into lua_src_dir
+            mode = "r:gz" if archive_filename.endswith(".gz") else "r:*"
+            with tarfile.open(archive_path, mode) as tar:
+                top_level = tar.getmembers()[0].name.split('/')[0]
+                for member in tar.getmembers():
+                    rel = os.path.relpath(member.name, top_level)
+                    if rel == '.' or rel.startswith('..'):
+                        continue
+                    member.name = rel
+                    tar.extract(member, path=self.options.lua_src_dir)
+            os.remove(archive_path)
+
+        # Copy our tiny CMake patch files (like we do for Duktape)
+        lua_patches = os.path.join(self.options.mrdocs_src_dir, 'third-party', 'lua')
+        if os.path.exists(lua_patches):
+            for fname in os.listdir(lua_patches):
+                src = os.path.join(lua_patches, fname)
+                dst = os.path.join(self.options.lua_src_dir, fname)
+                shutil.copy(src, dst)
+
+        # Lua’s own tree puts sources under src/; our CMakeLists handles that.
+        self.prompt_build_type_option("lua_build_type")
+        # align ABI expectations like we do for Duktape:
+        if not self.is_abi_compatible(self.options.mrdocs_build_type, self.options.lua_build_type):
+            if self.options.mrdocs_build_type.lower() == "debug":
+                self.options.lua_build_type = "OptimizedDebug"
+            else:
+                self.options.lua_build_type = self.options.mrdocs_build_type
+
+        self.prompt_dependency_path_option("lua_build_dir")
+        self.prompt_dependency_path_option("lua_install_dir")
+
+        extra_args = []
+        if self.options.sanitizer:
+            flag = self.sanitizer_flag_name(self.options.sanitizer)
+            for arg in ("CMAKE_C_FLAGS", "CMAKE_CXX_FLAGS"):
+                extra_args.append(f"-D{arg}=-fsanitize={flag} -fno-sanitize-recover={flag} -fno-omit-frame-pointer")
+
+        # Standard cmake_workflow like Duktape
+        self.cmake_workflow(
+            self.options.lua_src_dir,
+            self.options.lua_build_type,
+            self.options.lua_build_dir,
+            self.options.lua_install_dir,
+            extra_args
+        )
+
     def install_libxml2(self):
         self.prompt_dependency_path_option("libxml2_src_dir")
         if not os.path.exists(self.options.libxml2_src_dir):
@@ -1338,7 +1407,9 @@ class MrDocsInstaller:
                 "Duktape_ROOT": self.options.duktape_install_dir,
                 "libxml2_ROOT": self.options.libxml2_install_dir,
                 "LibXml2_ROOT": self.options.libxml2_install_dir,
-                "MRDOCS_BUILD_TESTS": self.options.mrdocs_build_tests,
+                "LUA_ROOT": self.options.lua_install_dir,
+                "Lua_ROOT": self.options.lua_install_dir,
+                "lua_ROOT": self.options.lua_install_dir,
                 "MRDOCS_BUILD_DOCS": False,
                 "MRDOCS_GENERATE_REFERENCE": False,
                 "MRDOCS_GENERATE_ANTORA_REFERENCE": False
@@ -2580,6 +2651,7 @@ class MrDocsInstaller:
         self.probe_compilers()
         self.install_ninja()
         self.install_duktape()
+        self.install_lua()
         self.install_llvm()
         if self.prompt_option("mrdocs_build_tests"):
             self.install_libxml2()

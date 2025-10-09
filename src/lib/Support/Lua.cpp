@@ -13,11 +13,12 @@
 #include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Support/Report.hpp>
 #include <llvm/Support/raw_ostream.h>
+#include <lua.h>
+#include <lualib.h>
 #include <format>
-#include <lua.hpp>
+#include <lauxlib.h>
 #include <print>
 
-namespace clang {
 namespace mrdocs {
 namespace lua {
 
@@ -1205,4 +1206,3 @@ lua_main()
 
 } // lua
 } // mrdocs
-} // clang

@@ -200,7 +200,7 @@ IncludeCategories:
     Priority: 0
   - Regex: '^".*"'                               # quoted includes come next
     Priority: 1
-  - Regex: '^<lib/.*>'                        # internal project headers
+  - Regex: '^<lib/.*>'                           # internal project headers
     Priority: 2
   - Regex: '^<mrdocs/.*>'                        # internal project headers
     Priority: 3
@@ -214,12 +214,15 @@ IncludeCategories:
     Priority: 7
   - Regex: '^<duktape/.*>'                       # duktape headers
     Priority: 8
-  - Regex: '^<(?!mrdocs/|clang/|llvm/|test_suite/|fmt/|duktape/)[^/]+/.*>' # other angle-bracket includes
+    # Lua headers
+  - Regex: '^<lua.*>'                           # Lua headers
     Priority: 9
-  - Regex: '^<[^/]+>'                            # C++ standard headers like <vector>
+  - Regex: '^<(?!mrdocs/|clang/|llvm/|test_suite/|fmt/|duktape/)[^/]+/.*>' # other angle-bracket includes
     Priority: 10
-  - Regex: '.*'                                  # fallback
+  - Regex: '^<[^/]+>'                            # C++ standard headers like <vector>
     Priority: 11
+  - Regex: '.*'                                  # fallback
+    Priority: 12
 
 # Comments
 FixNamespaceComments: true
