@@ -1770,19 +1770,9 @@ addMember(
     RecordInfo& I,
     Info const& Member)
 {
-    switch (Member.Access)
+    if (!std::ranges::contains(I.Members, Member.id, &MemberInfo::id))
     {
-    case AccessKind::Public:
-        addMember(I.Interface.Public, Member);
-        break;
-    case AccessKind::Private:
-        addMember(I.Interface.Private, Member);
-        break;
-    case AccessKind::Protected:
-        addMember(I.Interface.Protected, Member);
-        break;
-    default:
-        MRDOCS_UNREACHABLE();
+        I.Members.emplace_back(Member.Access, Member.Kind, Member.id);
     }
 }
 

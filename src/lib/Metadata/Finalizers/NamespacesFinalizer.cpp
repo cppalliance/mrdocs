@@ -49,7 +49,7 @@ operator()(NamespaceInfo& I)
     MRDOCS_CHECK_OR(!I.javadoc, FinalizerResult::None);
 
     // 3) Remove empty undocumented namespaces
-    auto memberIds = allMembers(I);
+    auto&& memberIds = allMembers(I);
     if (std::ranges::empty(memberIds))
     {
         if (!corpus_.config->extractEmptyNamespaces)

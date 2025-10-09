@@ -19,17 +19,6 @@ void
 BaseMembersFinalizer::
 inheritBaseMembers(RecordInfo& I, RecordInfo const& B, AccessKind const A)
 {
-    inheritBaseMembers(I.id, I.Interface, B.Interface, A);
-}
-
-void
-BaseMembersFinalizer::
-inheritBaseMembers(
-    SymbolID const& derivedId,
-    RecordInterface& derived,
-    RecordInterface const& base,
-    AccessKind const A)
-{
     if (A == AccessKind::Public)
     {
         // When a class uses public member access specifier to derive from a
@@ -37,8 +26,8 @@ inheritBaseMembers(
         // members of the derived class and all protected members of the base
         // class are accessible as protected members of the derived class.
         // Private members of the base are never accessible unless friended.
-        inheritBaseMembers(derivedId, derived.Public, base.Public);
-        inheritBaseMembers(derivedId, derived.Protected, base.Protected);
+        inheritBaseMembers(I.id, I.Interface.Public, B.Interface.Public);
+        inheritBaseMembers(I.id, I.Interface.Protected, B.Interface.Protected);
     }
     else if (A == AccessKind::Protected)
     {
@@ -46,8 +35,8 @@ inheritBaseMembers(
         // base, all public and protected members of the base class are
         // accessible as protected members of the derived class (private members
         // of the base are never accessible unless friended).
-        inheritBaseMembers(derivedId, derived.Protected, base.Public);
-        inheritBaseMembers(derivedId, derived.Protected, base.Protected);
+        inheritBaseMembers(I.id, I.Interface.Protected, B.Interface.Public);
+        inheritBaseMembers(I.id, I.Interface.Protected, B.Interface.Protected);
     }
     else if (A == AccessKind::Private && corpus_.config->extractPrivate)
     {
@@ -55,8 +44,8 @@ inheritBaseMembers(
         // base, all public and protected members of the base class are
         // accessible as private members of the derived class (private members
         // of the base are never accessible unless friended).
-        inheritBaseMembers(derivedId, derived.Private, base.Public);
-        inheritBaseMembers(derivedId, derived.Private, base.Protected);
+        inheritBaseMembers(I.id, I.Interface.Private, B.Interface.Public);
+        inheritBaseMembers(I.id, I.Interface.Private, B.Interface.Protected);
     }
 }
 

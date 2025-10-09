@@ -221,7 +221,7 @@ public:
             {
                 if (!opts.skipInherited)
                 {
-                    auto MS = allMembers(I);
+                    auto&& MS = allMembers(I);
                     visitIDs(MS,
                         std::forward<F>(f),
                         std::forward<Args>(args)...);
@@ -257,7 +257,7 @@ public:
             }
             else /* ordered */
             {
-                auto members0 = allMembers(I);
+                auto&& members0 = allMembers(I);
                 static_assert(range_of<decltype(members0), SymbolID>);
                 std::vector<SymbolID> members;
                 members.reserve(std::ranges::distance(members0));

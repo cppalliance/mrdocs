@@ -200,7 +200,6 @@ tag_invoke(
     v = dom::LazyObject(I, domCorpus);
 }
 
-
 inline
 auto
 allMembers(RecordInterface const& T)
@@ -275,6 +274,13 @@ tag_invoke(
     v = toString(kind);
 }
 
+struct MemberInfo
+{
+    AccessKind EffectiveAccess;
+    InfoKind Kind;
+    SymbolID id;
+};
+
 /** Metadata for struct, class, or union.
 */
 struct RecordInfo final
@@ -301,11 +307,15 @@ struct RecordInfo final
     */
     std::vector<BaseInfo> Bases;
 
-    /** List of derived classes
+    /** List of derived classes.
      */
     std::vector<SymbolID> Derived;
 
-    /** Lists of members.
+    /** List of members.
+     */
+    std::vector<MemberInfo> Members;
+
+    /** Record Interface (NOT part of the Corpus.)
      */
     RecordInterface Interface;
 
@@ -345,6 +355,7 @@ inline
 auto
 allMembers(RecordInfo const& T)
 {
+    //return std::views::transform(T.Members, &MemberInfo::id);
     return allMembers(T.Interface);
 }
 
@@ -374,6 +385,7 @@ tag_invoke(
     io.map("isTypedef", I.IsTypeDef);
     io.map("bases", dom::LazyArray(I.Bases, domCorpus));
     io.map("derived", dom::LazyArray(I.Derived, domCorpus));
+    //io.map("members", dom::LazyArray(I.Members, domCorpus));
     io.map("interface", I.Interface);
     io.map("template", I.Template);
     io.map("friends", dom::LazyArray(I.Friends, domCorpus));
