@@ -1,5 +1,0 @@
-inherit-base-members: reference
-exclude-symbols:
-  - excluded_base
-extract-private-bases: true
-warn-no-paramdoc: false

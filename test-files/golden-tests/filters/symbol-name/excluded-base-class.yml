@@ -1,3 +1,0 @@
-exclude-symbols:
-  - 'A::B'
-  - 'A::B::**'

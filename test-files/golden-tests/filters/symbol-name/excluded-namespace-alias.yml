@@ -1,6 +1,0 @@
-include-symbols:
-  - 'B::U'
-  - 'B::U::**'
-exclude-symbols:
-  - 'B::S'
-  - 'B::S::**'
