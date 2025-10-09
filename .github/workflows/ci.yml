@@ -402,6 +402,26 @@ jobs:
           run-tests: false
           trace-commands: true
 
+      - name: Install Lua
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.12
+        with:
+          source-dir: ../third-party/lua
+          url: https://github.com/lua/lua/archive/refs/tags/v5.4.8.tar.gz
+          patches: |
+            ./third-party/lua/CMakeLists.txt
+            ./third-party/lua/LuaConfig.cmake.in
+          build-dir: ${sourceDir}/build
+          cc: ${{ steps.setup-cpp.outputs.cc }}
+          cxx: ${{ steps.setup-cpp.outputs.cxx }}
+          ccflags: ${{ matrix.common-ccflags }}
+          cxxflags: ${{ steps.rmatrix.outputs.common-cxxflags }}
+          build-type: ${{ matrix.build-type }}
+          shared: false
+          install: true
+          install-prefix: ${sourceDir}/install
+          run-tests: false
+          trace-commands: true
+
       - name: Install Libxml2
         uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.12
         if: matrix.compiler == 'msvc'
@@ -479,6 +499,9 @@ jobs:
             -D CMAKE_EXE_LINKER_FLAGS="${{ steps.rmatrix.outputs.common-ldflags }}"
             -D LLVM_ROOT="${{ steps.rmatrix.outputs.llvm-path }}"
             -D duktape_ROOT="${{ steps.rmatrix.outputs.third-party-dir }}/duktape/install"
+            -D LUA_ROOT="${{ steps.rmatrix.outputs.third-party-dir }}/lua/install"
+            -D Lua_ROOT="${{ steps.rmatrix.outputs.third-party-dir }}/lua/install"
+            -D lua_ROOT="${{ steps.rmatrix.outputs.third-party-dir }}/lua/install"
             ${{ runner.os == 'Windows' && '-D LibXml2_ROOT=../third-party/libxml2/install' || '' }}
           export-compile-commands: true
           run-tests: true

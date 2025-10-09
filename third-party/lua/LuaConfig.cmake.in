@@ -1,0 +1,15 @@
+@PACKAGE_INIT@
+
+# Bring in our targets
+include("${CMAKE_CURRENT_LIST_DIR}/LuaTargets.cmake")
+
+# Make both names appear “found”
+set(LUA_FOUND TRUE)
+set(Lua_FOUND TRUE)
+
+# Convenience variable; consumers should prefer the imported target lua::lua
+get_target_property(_lua_inc Lua::lua INTERFACE_INCLUDE_DIRECTORIES)
+if(_lua_inc)
+    set(LUA_INCLUDE_DIR "${_lua_inc}")
+endif()
+unset(_lua_inc)

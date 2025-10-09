@@ -14,7 +14,6 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/Lua.hpp>
 
-namespace clang {
 namespace mrdocs {
 
 /** Add the Handlebars Lua instance as a global
@@ -25,6 +24,5 @@ tryLoadHandlebars(
     lua::Context const& ctx);
 
 } // mrdocs
-} // clang
 
 #endif // MRDOCS_LIB_SUPPORT_LUAHANDLEBARS_HPP

@@ -284,6 +284,9 @@ if (NOT DUKTAPE_FOUND)
     find_package(Duktape REQUIRED CONFIG)
 endif()
 
+# Lua
+find_package(Lua CONFIG REQUIRED)
+
 unset(CMAKE_FOLDER)
 
 #-------------------------------------------------
@@ -322,7 +325,6 @@ target_include_directories(mrdocs-core
     PRIVATE
     "${PROJECT_SOURCE_DIR}/src"
     "${PROJECT_BINARY_DIR}/src"
-    "${PROJECT_SOURCE_DIR}/third-party/lua/src"
 )
 target_compile_definitions(
     mrdocs-core
@@ -345,6 +347,7 @@ target_include_directories(mrdocs-core
         "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
 )
 target_link_libraries(mrdocs-core PRIVATE ${DUKTAPE_LIBRARY})
+target_link_libraries(mrdocs-core PRIVATE Lua::lua)
 
 # Clang
 if (CLANG_SIMPLE_LIBS)
