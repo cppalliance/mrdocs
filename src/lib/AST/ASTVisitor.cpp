@@ -2439,7 +2439,7 @@ getSFINAEControlParams(
                 // Find the index of the parameter that represents the param
                 // in the primary template arguments
                 unsigned ParamIdx = FindParam(ATD->getInjectedTemplateArgs(context_), *resultType);
-                if (ParamIdx == -1) continue;
+                if (ParamIdx == static_cast<std::size_t>(-1)) continue;
 
                 primaryControllingParams.set(ParamIdx);
             }
