@@ -166,6 +166,17 @@
         </para>
       </doc>
     </function>
+    <function name="f" id="PvNGaaAeF9VeSz8kIOeaPmy37BQ=">
+      <file short-path="using-member-function.cpp" source-path="using-member-function.cpp" line="35"/>
+      <param>
+        <type id="VcdHojbpExgHkfZT+vfrZl1ADjM=" name="Tag&lt;2&gt;"/>
+      </param>
+      <doc>
+        <brief>
+          <text>Public member function f taking a Tag&lt;2&gt;.</text>
+        </brief>
+      </doc>
+    </function>
     <using id="rmQLRfXW6vtP8GPIdyNNwtpI+fw=" class="using" qualifier="A::U">
       <file short-path="using-member-function.cpp" source-path="using-member-function.cpp" line="76"/>
       <doc>
@@ -276,17 +287,6 @@
       <doc>
         <brief>
           <text>Protected member function f taking a Tag&lt;1&gt;.</text>
-        </brief>
-      </doc>
-    </function>
-    <function name="f" id="PvNGaaAeF9VeSz8kIOeaPmy37BQ=">
-      <file short-path="using-member-function.cpp" source-path="using-member-function.cpp" line="35"/>
-      <param>
-        <type id="VcdHojbpExgHkfZT+vfrZl1ADjM=" name="Tag&lt;2&gt;"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Public member function f taking a Tag&lt;2&gt;.</text>
         </brief>
       </doc>
     </function>

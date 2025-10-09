@@ -33,18 +33,6 @@ class BaseMembersFinalizer
     inheritBaseMembers(RecordInfo& I, RecordInfo const& B, AccessKind A);
 
     void
-    inheritBaseMembers(
-        SymbolID const& derivedId,
-        RecordTranche& derived,
-        RecordTranche const& base);
-
-    void
-    inheritBaseMembers(
-        SymbolID const& derivedId,
-        std::vector<SymbolID>& derived,
-        std::vector<SymbolID> const& base);
-
-    void
     finalizeRecords(std::vector<SymbolID> const& ids);
 
     void

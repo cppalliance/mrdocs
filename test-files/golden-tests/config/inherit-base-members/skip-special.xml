@@ -314,19 +314,6 @@
         </brief>
       </doc>
     </function>
-    <function name="do_derived_shadowed" access="protected" id="KGOrnDVJV2nPDK1hlkvBm6diYXY=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="62"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should be shadowed by derived classes.</text>
-        </brief>
-      </doc>
-    </function>
     <function name="do_excluded_inherited" access="protected" id="oW3pQYXjjv2wrXIwIceF6Xd8nTA=">
       <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="26"/>
       <return>
@@ -378,6 +365,45 @@
         </brief>
       </doc>
     </function>
+    <function name="base_base_inherited" id="2D7yc6q3buDhuPwzpn4pWzbu8ls=">
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="38"/>
+      <return>
+        <type class="lvalue-reference">
+          <pointee-type id="/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=" name="base_base"/>
+        </type>
+      </return>
+      <doc>
+        <brief>
+          <text>This function should be indirectly inherited by derived classes.</text>
+        </brief>
+      </doc>
+    </function>
+    <function name="base_inherited" id="v0BroyWjs67MHzc1SyTlXrSxn8M=">
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="59"/>
+      <return>
+        <type class="lvalue-reference">
+          <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
+        </type>
+      </return>
+      <doc>
+        <brief>
+          <text>This function should be inherited by derived classes.</text>
+        </brief>
+      </doc>
+    </function>
+    <function name="base_shadowed" id="ECBBLxlaKar55qA0k1BCFn6MdH8=">
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="57"/>
+      <return>
+        <type class="lvalue-reference">
+          <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
+        </type>
+      </return>
+      <doc>
+        <brief>
+          <text>This function should shadow the excluded_base function.</text>
+        </brief>
+      </doc>
+    </function>
     <function name="derived_shadowed" id="9wqRoOH7cwNhkz5vwpTHLeb01BY=">
       <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="118"/>
       <return>
@@ -391,6 +417,19 @@
         </brief>
       </doc>
     </function>
+    <function name="do_base_base_inherited" id="MEPVWyGd8KdZFR1kBYlQMgPyQlo=">
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="41"/>
+      <return>
+        <type class="lvalue-reference">
+          <pointee-type id="/PcbLGG9Q7grLgSOV/R/ZnEg9Cs=" name="base_base"/>
+        </type>
+      </return>
+      <doc>
+        <brief>
+          <text>This function should be indirectly inherited by derived classes.</text>
+        </brief>
+      </doc>
+    </function>
     <function name="do_derived_shadowed" id="NJYWKnKWmizdaSr1ldC7FGh7fD0=">
       <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="121"/>
       <return>
@@ -401,6 +440,71 @@
       <doc>
         <brief>
           <text>This function should shadow the base class function.</text>
+        </brief>
+      </doc>
+    </function>
+    <function name="excluded_inherited" id="GZtztJDtmlpSfr66pbZ66w0XBRY=">
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="19"/>
+      <return>
+        <type class="lvalue-reference">
+          <pointee-type id="ZFBKKIr2vNG5u3bxIaTbccBBkvQ=" name="excluded_base"/>
+        </type>
+      </return>
+      <doc>
+        <brief>
+          <text>This function should be inherited by derived classes.</text>
+        </brief>
+      </doc>
+    </function>
+    <function name="do_base_inherited" access="protected" id="TaKAQiDmx8UXkT9p/momqiOZyHU=">
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="66"/>
+      <return>
+        <type class="lvalue-reference">
+          <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
+        </type>
+      </return>
+      <doc>
+        <brief>
+          <text>This function should be inherited by derived classes.</text>
+        </brief>
+      </doc>
+    </function>
+    <function name="do_base_shadowed" access="protected" id="eHxe3z0iWUXdcNyXK0PD2+6DRbs=">
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="64"/>
+      <return>
+        <type class="lvalue-reference">
+          <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
+        </type>
+      </return>
+      <doc>
+        <brief>
+          <text>This function should shadow the excluded_base function.</text>
+        </brief>
+      </doc>
+    </function>
+    <function name="do_excluded_inherited" access="protected" id="bcAGvatJOmHfwquqeK/vawE7p6k=">
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="26"/>
+      <return>
+        <type class="lvalue-reference">
+          <pointee-type id="ZFBKKIr2vNG5u3bxIaTbccBBkvQ=" name="excluded_base"/>
+        </type>
+      </return>
+      <doc>
+        <brief>
+          <text>This function should be inherited by derived classes.</text>
+        </brief>
+      </doc>
+    </function>
+    <function name="do_shadowed" access="protected" id="fo/PP2HZqWRI2Sc4jY1ZzHUzKEI=">
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="22"/>
+      <return>
+        <type class="lvalue-reference">
+          <pointee-type id="ZFBKKIr2vNG5u3bxIaTbccBBkvQ=" name="excluded_base"/>
+        </type>
+      </return>
+      <doc>
+        <brief>
+          <text>This function should be shadowed by derived classes.</text>
         </brief>
       </doc>
     </function>
@@ -432,38 +536,6 @@
         <brief>
           <text>Destructor should not be inherited</text>
         </brief>
-      </doc>
-    </function>
-    <function name="derived_shadowed" id="oVVGDloOS5F7d4VIcKLc0YpnsiE=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="100"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="KpfFXd3FeSffU3rGswegSIkkCrM=" name="protected_derived"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should shadow the base class function.</text>
-        </brief>
-        <returns>
-          <text>Should inherit functions as protected.</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="do_derived_shadowed" id="4ZJznHda5QNdk/tsMca4Psswlj0=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="103"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="KpfFXd3FeSffU3rGswegSIkkCrM=" name="protected_derived"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should shadow the base class function.</text>
-        </brief>
-        <returns>
-          <text>Should inherit functions as protected.</text>
-        </returns>
       </doc>
     </function>
     <function name="base_base_inherited" id="2D7yc6q3buDhuPwzpn4pWzbu8ls=">
@@ -505,17 +577,20 @@
         </brief>
       </doc>
     </function>
-    <function name="derived_shadowed" id="aYhSUMJkgCRo3AZmBb/rre04Ghg=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="55"/>
+    <function name="derived_shadowed" id="oVVGDloOS5F7d4VIcKLc0YpnsiE=">
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="100"/>
       <return>
         <type class="lvalue-reference">
-          <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
+          <pointee-type id="KpfFXd3FeSffU3rGswegSIkkCrM=" name="protected_derived"/>
         </type>
       </return>
       <doc>
         <brief>
-          <text>This function should be shadowed by derived classes.</text>
+          <text>This function should shadow the base class function.</text>
         </brief>
+        <returns>
+          <text>Should inherit functions as protected.</text>
+        </returns>
       </doc>
     </function>
     <function name="do_base_base_inherited" id="MEPVWyGd8KdZFR1kBYlQMgPyQlo=">
@@ -528,6 +603,35 @@
       <doc>
         <brief>
           <text>This function should be indirectly inherited by derived classes.</text>
+        </brief>
+      </doc>
+    </function>
+    <function name="do_derived_shadowed" id="4ZJznHda5QNdk/tsMca4Psswlj0=">
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="103"/>
+      <return>
+        <type class="lvalue-reference">
+          <pointee-type id="KpfFXd3FeSffU3rGswegSIkkCrM=" name="protected_derived"/>
+        </type>
+      </return>
+      <doc>
+        <brief>
+          <text>This function should shadow the base class function.</text>
+        </brief>
+        <returns>
+          <text>Should inherit functions as protected.</text>
+        </returns>
+      </doc>
+    </function>
+    <function name="excluded_inherited" id="H8wEIL8+8s3iNqadfPsH1HWRQU4=">
+      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="19"/>
+      <return>
+        <type class="lvalue-reference">
+          <pointee-type id="ZFBKKIr2vNG5u3bxIaTbccBBkvQ=" name="excluded_base"/>
+        </type>
+      </return>
+      <doc>
+        <brief>
+          <text>This function should be inherited by derived classes.</text>
         </brief>
       </doc>
     </function>
@@ -557,19 +661,6 @@
         </brief>
       </doc>
     </function>
-    <function name="do_derived_shadowed" access="protected" id="KGOrnDVJV2nPDK1hlkvBm6diYXY=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="62"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="sk8HTAQHhzXfZej4IJliADonAJQ=" name="base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should be shadowed by derived classes.</text>
-        </brief>
-      </doc>
-    </function>
     <function name="do_excluded_inherited" access="protected" id="KdkXQxu2xOfAXegJgCMmLcFq8MM=">
       <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="26"/>
       <return>
@@ -593,19 +684,6 @@
       <doc>
         <brief>
           <text>This function should be shadowed by derived classes.</text>
-        </brief>
-      </doc>
-    </function>
-    <function name="excluded_inherited" id="H8wEIL8+8s3iNqadfPsH1HWRQU4=">
-      <file short-path="skip-special.cpp" source-path="skip-special.cpp" line="19"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="ZFBKKIr2vNG5u3bxIaTbccBBkvQ=" name="excluded_base"/>
-        </type>
-      </return>
-      <doc>
-        <brief>
-          <text>This function should be inherited by derived classes.</text>
         </brief>
       </doc>
     </function>

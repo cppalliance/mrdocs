@@ -1004,13 +1004,6 @@ qualifiedName(
 void
 CorpusImpl::finalize()
 {
-    // Finalizing record interfaces
-    {
-        report::debug("  - Finalizing records");
-        RecordsFinalizer finalizer(*this);
-        finalizer.build();
-    }
-
     report::info("Finalizing corpus");
 
     {
@@ -1023,6 +1016,13 @@ CorpusImpl::finalize()
     {
         report::debug("  - Finalizing base members");
         BaseMembersFinalizer finalizer(*this);
+        finalizer.build();
+    }
+
+    // Finalizing record interfaces
+    {
+        report::debug("  - Finalizing records");
+        RecordsFinalizer finalizer(*this);
         finalizer.build();
     }
 
