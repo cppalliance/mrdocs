@@ -1,0 +1,143 @@
+= Reference
+:mrdocs:
+
+[#index]
+== Global namespace
+
+=== Types
+
+[cols=1]
+|===
+| Name
+| link:#enable_if-03[`enable&lowbar;if`] 
+| link:#enable_if-0e[`enable&lowbar;if&lt;false, T&gt;`] 
+| link:#is_match[`is&lowbar;match`] 
+| link:#_UniqAssignable[`&lowbar;UniqAssignable`] 
+| link:#_UniqCompatible[`&lowbar;UniqCompatible`] 
+|===
+
+[#_UniqAssignable]
+== &lowbar;UniqAssignable
+
+=== Synopsis
+
+Declared in `&lt;1057&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;
+    typename &lowbar;Yp,
+    typename &lowbar;Del&gt;
+using &lowbar;UniqAssignable = int;
+----
+
+[#_UniqCompatible]
+== &lowbar;UniqCompatible
+
+=== Synopsis
+
+Declared in `&lt;1057&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;
+    typename &lowbar;Yp,
+    typename &lowbar;Del,
+    typename &lowbar;Res&gt;
+using &lowbar;UniqCompatible = &lowbar;Res;
+----
+
+[#enable_if-03]
+== enable&lowbar;if
+
+=== Synopsis
+
+Declared in `&lt;1057&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;
+    bool C,
+    typename T&gt;
+struct enable&lowbar;if;
+----
+
+=== Types
+
+[cols=1]
+|===
+| Name
+| link:#enable_if-03-type[`type`] 
+|===
+
+[#enable_if-03-type]
+== link:#enable_if-03[enable&lowbar;if]::type
+
+=== Synopsis
+
+Declared in `&lt;1057&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+using type = T;
+----
+
+[#enable_if-0e]
+== link:#enable_if-03[enable&lowbar;if]&lt;false, T&gt;
+
+=== Synopsis
+
+Declared in `&lt;1057&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+struct link:#enable_if-03[enable&lowbar;if]&lt;false, T&gt;;
+----
+
+[#is_match]
+== is&lowbar;match
+
+=== Synopsis
+
+Declared in `&lt;1057&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+template&lt;typename T&gt;
+struct is&lowbar;match;
+----
+
+=== Enums
+
+[cols=1]
+|===
+| Name
+| link:#is_match-_04enum[`Unnamed enum`] 
+|===
+
+[#is_match-_04enum]
+== link:#is_match[is&lowbar;match]::Unnamed enum
+
+=== Synopsis
+
+Declared in `&lt;1057&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+enum Unnamed enum;
+----
+
+=== Members
+
+
+[cols=2]
+|===
+| Name
+| Description
+|`value`
+|
+|===
+
+
+[.small]#Created with https://www.mrdocs.com[MrDocs]#

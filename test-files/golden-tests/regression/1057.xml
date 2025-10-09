@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <template>
+    <tparam name="_Yp" class="type"/>
+    <tparam name="_Del" class="type"/>
+    <namespace-alias name="_UniqAssignable" id="4DGh9Grsi+0USbdPtRkJctjxR+Y=">
+      <file short-path="1057.cpp" source-path="1057.cpp" line="14"/>
+      <type name="int"/>
+    </namespace-alias>
+  </template>
+  <template>
+    <tparam name="_Yp" class="type"/>
+    <tparam name="_Del" class="type"/>
+    <tparam name="_Res" class="type"/>
+    <namespace-alias name="_UniqCompatible" id="23UqwUcqtU0FB7E2/v81xsd9IyA=">
+      <file short-path="1057.cpp" source-path="1057.cpp" line="11"/>
+      <type name="_Res"/>
+    </namespace-alias>
+  </template>
+  <template>
+    <tparam name="C" class="non-type" type="bool"/>
+    <tparam name="T" class="type"/>
+    <struct name="enable_if" id="MBGPS/84tvNdD37cvMMFLX91CIs=">
+      <file short-path="1057.cpp" source-path="1057.cpp" line="2" class="def"/>
+      <namespace-alias name="type" id="SrZbYkahcv/tBYSnQf6ndFySgTg=">
+        <file short-path="1057.cpp" source-path="1057.cpp" line="3"/>
+        <type name="T"/>
+      </namespace-alias>
+    </struct>
+  </template>
+  <template class="partial" id="MBGPS/84tvNdD37cvMMFLX91CIs=">
+    <tparam name="T" class="type"/>
+    <targ class="non-type" value="false"/>
+    <targ class="type" type="T"/>
+    <struct name="enable_if" id="6f4GHawhlUckr08SJkt7su9cIDY=">
+      <file short-path="1057.cpp" source-path="1057.cpp" line="6" class="def"/>
+    </struct>
+  </template>
+  <template>
+    <tparam name="T" class="type"/>
+    <struct name="is_match" id="qA3Nv3MdXjhVzIuwWZK2uT6FskY=">
+      <file short-path="1057.cpp" source-path="1057.cpp" line="8" class="def"/>
+      <enum name="" id="ojy2H3a1lmqWgs1IHVc6fgGwKO0=">
+        <file short-path="1057.cpp" source-path="1057.cpp" line="9" class="def"/>
+        <enum-constant name="value" initializer="0" id="5+HaEEsX//OaezDumbrpRhUuOp0=">
+          <file short-path="1057.cpp" source-path="1057.cpp" line="9"/>
+        </enum-constant>
+      </enum>
+    </struct>
+  </template>
+</namespace>
+</mrdocs>
