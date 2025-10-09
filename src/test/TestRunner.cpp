@@ -115,7 +115,8 @@ handleFile(
     // Create an adjusted MrDocsDatabase
     auto parentDir = files::getParentDir(filePath);
     std::unordered_map<std::string, std::vector<std::string>> defaultIncludePaths = {
-      {"clang", {std::format("{}/include", dirs_.cwd)}}
+      {"clang", {MRDOCS_TEST_FILES_DIR "/include"}},
+      {"clang-cl", {MRDOCS_TEST_FILES_DIR "/include"}},
     };
     MrDocsCompilationDatabase compilations(
         llvm::StringRef(parentDir), SingleFileDB(filePath), config, defaultIncludePaths);
