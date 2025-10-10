@@ -49,21 +49,6 @@
         </param>
       </doc>
     </function>
-    <function class="constructor" name="X" id="d9h3reyOyp3JT3kwQOTPOI9tmzg=">
-      <file short-path="param-from-function-class.cpp" source-path="param-from-function-class.cpp" line="16"/>
-      <param name="value">
-        <type name="int"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Construct from </text>
-          <mono>int</mono>
-        </brief>
-        <param name="value">
-          <text>The value to construct from</text>
-        </param>
-      </doc>
-    </function>
     <function class="constructor" name="X" id="vwV8S8Oz6MQV3vNlcR0jdKhSlfc=">
       <file short-path="param-from-function-class.cpp" source-path="param-from-function-class.cpp" line="12"/>
       <param name="value">
@@ -95,6 +80,21 @@
         </brief>
         <param name="value">
           <text>The object to move construct from</text>
+        </param>
+      </doc>
+    </function>
+    <function class="constructor" name="X" id="d9h3reyOyp3JT3kwQOTPOI9tmzg=">
+      <file short-path="param-from-function-class.cpp" source-path="param-from-function-class.cpp" line="16"/>
+      <param name="value">
+        <type name="int"/>
+      </param>
+      <doc>
+        <brief>
+          <text>Construct from </text>
+          <mono>int</mono>
+        </brief>
+        <param name="value">
+          <text>The value to construct from</text>
         </param>
       </doc>
     </function>
@@ -148,29 +148,6 @@
         </param>
       </doc>
     </function>
-    <function name="operator=" id="fxM82tl72Q717PPJyP3nb48HbSQ=">
-      <file short-path="param-from-function-class.cpp" source-path="param-from-function-class.cpp" line="30"/>
-      <attr id="operator" name="assign" value="14"/>
-      <return>
-        <type class="lvalue-reference">
-          <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X"/>
-        </type>
-      </return>
-      <param name="value">
-        <type name="int"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Assignment operator</text>
-        </brief>
-        <returns>
-          <text>Reference to the current object</text>
-        </returns>
-        <param name="value">
-          <text>The value to assign from</text>
-        </param>
-      </doc>
-    </function>
     <function name="operator=" id="3QxkEc/c2ugz6330u92HdqOoDNk=">
       <file short-path="param-from-function-class.cpp" source-path="param-from-function-class.cpp" line="24"/>
       <attr id="operator" name="assign" value="14"/>
@@ -218,6 +195,29 @@
         </returns>
         <param name="value">
           <text>The object to move assign from</text>
+        </param>
+      </doc>
+    </function>
+    <function name="operator=" id="fxM82tl72Q717PPJyP3nb48HbSQ=">
+      <file short-path="param-from-function-class.cpp" source-path="param-from-function-class.cpp" line="30"/>
+      <attr id="operator" name="assign" value="14"/>
+      <return>
+        <type class="lvalue-reference">
+          <pointee-type id="ynx5NXMLXqzSXwgOnIP6CHzNx14=" name="X"/>
+        </type>
+      </return>
+      <param name="value">
+        <type name="int"/>
+      </param>
+      <doc>
+        <brief>
+          <text>Assignment operator</text>
+        </brief>
+        <returns>
+          <text>Reference to the current object</text>
+        </returns>
+        <param name="value">
+          <text>The value to assign from</text>
         </param>
       </doc>
     </function>

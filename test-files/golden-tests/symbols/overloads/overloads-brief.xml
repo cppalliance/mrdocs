@@ -82,27 +82,6 @@
         </param>
       </doc>
     </function>
-    <function name="operator+" id="ycaQWu1bpL50KsLIdks09uNq0fw=">
-      <file short-path="overloads-brief.cpp" source-path="overloads-brief.cpp" line="54"/>
-      <attr id="operator" name="plus" value="5"/>
-      <return>
-        <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
-      </return>
-      <param name="a">
-        <type name="int"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Addition operator for ints</text>
-        </brief>
-        <returns>
-          <mono>*this</mono>
-        </returns>
-        <param name="a">
-          <text>Describe a</text>
-        </param>
-      </doc>
-    </function>
     <function name="operator+" id="4jg29DjTLdYrWC4PLhyeE68ztvQ=">
       <file short-path="overloads-brief.cpp" source-path="overloads-brief.cpp" line="47"/>
       <attr id="operator" name="plus" value="5"/>
@@ -117,6 +96,27 @@
       <doc>
         <brief>
           <text>Addition operator for As</text>
+        </brief>
+        <returns>
+          <mono>*this</mono>
+        </returns>
+        <param name="a">
+          <text>Describe a</text>
+        </param>
+      </doc>
+    </function>
+    <function name="operator+" id="ycaQWu1bpL50KsLIdks09uNq0fw=">
+      <file short-path="overloads-brief.cpp" source-path="overloads-brief.cpp" line="54"/>
+      <attr id="operator" name="plus" value="5"/>
+      <return>
+        <type id="YrPSaKAbmXgzCAX5WByx4eVoqBM=" name="A"/>
+      </return>
+      <param name="a">
+        <type name="int"/>
+      </param>
+      <doc>
+        <brief>
+          <text>Addition operator for ints</text>
         </brief>
         <returns>
           <mono>*this</mono>

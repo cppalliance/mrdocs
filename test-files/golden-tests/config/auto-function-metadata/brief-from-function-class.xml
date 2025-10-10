@@ -66,21 +66,6 @@
         </param>
       </doc>
     </function>
-    <function class="constructor" name="X" id="d9h3reyOyp3JT3kwQOTPOI9tmzg=">
-      <file short-path="brief-from-function-class.cpp" source-path="brief-from-function-class.cpp" line="13"/>
-      <param name="value">
-        <type name="int"/>
-      </param>
-      <doc>
-        <brief>
-          <text>Construct from </text>
-          <mono>int</mono>
-        </brief>
-        <param name="value">
-          <text>The value to construct from</text>
-        </param>
-      </doc>
-    </function>
     <function class="constructor" name="X" id="vwV8S8Oz6MQV3vNlcR0jdKhSlfc=">
       <file short-path="brief-from-function-class.cpp" source-path="brief-from-function-class.cpp" line="11"/>
       <param name="value">
@@ -112,6 +97,21 @@
         </brief>
         <param name="value">
           <text>The object to move construct from</text>
+        </param>
+      </doc>
+    </function>
+    <function class="constructor" name="X" id="d9h3reyOyp3JT3kwQOTPOI9tmzg=">
+      <file short-path="brief-from-function-class.cpp" source-path="brief-from-function-class.cpp" line="13"/>
+      <param name="value">
+        <type name="int"/>
+      </param>
+      <doc>
+        <brief>
+          <text>Construct from </text>
+          <mono>int</mono>
+        </brief>
+        <param name="value">
+          <text>The value to construct from</text>
         </param>
       </doc>
     </function>

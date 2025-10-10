@@ -108,13 +108,6 @@ Declared in <code>&lt;param-from-function-class.cpp&gt;</code></div>
 </code>
 </pre><span class="small"><a href="#X-2constructor-06"><em>» more...</em></a></span>
 
-<span>Construct from <code>int</code></span>
-<pre>
-<code class="source-code cpp"><a href="#X-2constructor-07">X</a>(int value);
-
-</code>
-</pre><span class="small"><a href="#X-2constructor-07"><em>» more...</em></a></span>
-
 <span>Construct from <code>A</code></span>
 <pre>
 <code class="source-code cpp"><a href="#X-2constructor-0b">X</a>(<a href="#A">A</a> const& value);
@@ -128,6 +121,13 @@ Declared in <code>&lt;param-from-function-class.cpp&gt;</code></div>
 
 </code>
 </pre><span class="small"><a href="#X-2constructor-00"><em>» more...</em></a></span>
+
+<span>Construct from <code>int</code></span>
+<pre>
+<code class="source-code cpp"><a href="#X-2constructor-07">X</a>(int value);
+
+</code>
+</pre><span class="small"><a href="#X-2constructor-07"><em>» more...</em></a></span>
 
 
 </div>
@@ -199,42 +199,6 @@ Declared in <code>&lt;param-from-function-class.cpp&gt;</code></div>
 <tr>
 <td><strong>other</strong></td>
 <td><span>The object to move construct from</span></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div>
-<div>
-<h2 id="X-2constructor-07"><a href="#X-2constructor-07">X::X</a></h2>
-<div>
-<span>Construct from <code>int</code></span>
-
-</div>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;param-from-function-class.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">X(int value);
-
-</code>
-</pre>
-</div>
-<div>
-<h3>Parameters</h3>
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>value</strong></td>
-<td><span>The value to construct from</span></td>
 </tr>
 </tbody>
 </table>
@@ -314,6 +278,42 @@ Declared in <code>&lt;param-from-function-class.cpp&gt;</code></div>
 </div>
 <div>
 <div>
+<h2 id="X-2constructor-07"><a href="#X-2constructor-07">X::X</a></h2>
+<div>
+<span>Construct from <code>int</code></span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-from-function-class.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">X(int value);
+
+</code>
+</pre>
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>value</strong></td>
+<td><span>The value to construct from</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
 <h2 id="X-operator_assign-0a"><a href="#X-operator_assign-0a">X::operator&#x3D;</a></h2>
 <div>
 <span>Assignment operators</span>
@@ -343,14 +343,6 @@ Declared in <code>&lt;param-from-function-class.cpp&gt;</code></div>
 <span>Assignment operator</span>
 <pre>
 <code class="source-code cpp"><a href="#X">X</a>&
-<a href="#X-operator_assign-07f">operator&#x3D;</a>(int value);
-
-</code>
-</pre><span class="small"><a href="#X-operator_assign-07f"><em>» more...</em></a></span>
-
-<span>Assignment operator</span>
-<pre>
-<code class="source-code cpp"><a href="#X">X</a>&
 <a href="#X-operator_assign-0d">operator&#x3D;</a>(<a href="#A">A</a> const& value);
 
 </code>
@@ -363,6 +355,14 @@ Declared in <code>&lt;param-from-function-class.cpp&gt;</code></div>
 
 </code>
 </pre><span class="small"><a href="#X-operator_assign-07e"><em>» more...</em></a></span>
+
+<span>Assignment operator</span>
+<pre>
+<code class="source-code cpp"><a href="#X">X</a>&
+<a href="#X-operator_assign-07f">operator&#x3D;</a>(int value);
+
+</code>
+</pre><span class="small"><a href="#X-operator_assign-07f"><em>» more...</em></a></span>
 
 
 </div>
@@ -451,47 +451,6 @@ operator&#x3D;(<a href="#X">X</a>&& other);
 </div>
 <div>
 <div>
-<h2 id="X-operator_assign-07f"><a href="#X-operator_assign-07f">X::operator&#x3D;</a></h2>
-<div>
-<span>Assignment operator</span>
-
-</div>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;param-from-function-class.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp"><a href="#X">X</a>&
-operator&#x3D;(int value);
-
-</code>
-</pre>
-</div>
-<div>
-<h3>Return Value</h3>
-<span>Reference to the current object</span>
-</div>
-<div>
-<h3>Parameters</h3>
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>value</strong></td>
-<td><span>The value to assign from</span></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div>
-<div>
 <h2 id="X-operator_assign-0d"><a href="#X-operator_assign-0d">X::operator&#x3D;</a></h2>
 <div>
 <span>Assignment operator</span>
@@ -567,6 +526,47 @@ operator&#x3D;(<a href="#A">A</a>&& value);
 <tr>
 <td><strong>value</strong></td>
 <td><span>The object to move assign from</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div>
+<h2 id="X-operator_assign-07f"><a href="#X-operator_assign-07f">X::operator&#x3D;</a></h2>
+<div>
+<span>Assignment operator</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;param-from-function-class.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp"><a href="#X">X</a>&
+operator&#x3D;(int value);
+
+</code>
+</pre>
+</div>
+<div>
+<h3>Return Value</h3>
+<span>Reference to the current object</span>
+</div>
+<div>
+<h3>Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>value</strong></td>
+<td><span>The value to assign from</span></td>
 </tr>
 </tbody>
 </table>

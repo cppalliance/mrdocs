@@ -52,16 +52,15 @@ Constructors
 
 Declared in `&lt;conditional&hyphen;explicit&period;cpp&gt;`
 
-Conditionally explicit conversion from char
+Implicit conversion from double
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-explicit(sizeof(T) &gt; 4)
-link:#A-2constructor-0b[A](char value);
+link:#A-2constructor-00[A](double value);
 ----
 
-[.small]#link:#A-2constructor-0b[_» more&period;&period;&period;_]#
+[.small]#link:#A-2constructor-00[_» more&period;&period;&period;_]#
 
 Explicit conversion from int
 
@@ -74,15 +73,16 @@ link:#A-2constructor-01[A](int value);
 
 [.small]#link:#A-2constructor-01[_» more&period;&period;&period;_]#
 
-Implicit conversion from double
+Conditionally explicit conversion from char
 
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-link:#A-2constructor-00[A](double value);
+explicit(sizeof(T) &gt; 4)
+link:#A-2constructor-0b[A](char value);
 ----
 
-[.small]#link:#A-2constructor-00[_» more&period;&period;&period;_]#
+[.small]#link:#A-2constructor-0b[_» more&period;&period;&period;_]#
 
 Conditionally explicit conversion from other types
 
@@ -96,10 +96,10 @@ link:#A-2constructor-02[A](U value);
 
 [.small]#link:#A-2constructor-02[_» more&period;&period;&period;_]#
 
-[#A-2constructor-0b]
+[#A-2constructor-00]
 == link:#A[A]::A
 
-Conditionally explicit conversion from char
+Implicit conversion from double
 
 === Synopsis
 
@@ -107,8 +107,7 @@ Declared in `&lt;conditional&hyphen;explicit&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-explicit(sizeof(T) &gt; 4)
-A(char value);
+A(double value);
 ----
 
 === Parameters
@@ -146,10 +145,10 @@ A(int value);
 | The value to construct from
 |===
 
-[#A-2constructor-00]
+[#A-2constructor-0b]
 == link:#A[A]::A
 
-Implicit conversion from double
+Conditionally explicit conversion from char
 
 === Synopsis
 
@@ -157,7 +156,8 @@ Declared in `&lt;conditional&hyphen;explicit&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
-A(double value);
+explicit(sizeof(T) &gt; 4)
+A(char value);
 ----
 
 === Parameters

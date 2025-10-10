@@ -119,7 +119,7 @@
   </template>
   <template>
     <tparam name="T" class="type"/>
-    <function name="f2" requires="std::is_integral_v&lt;T&gt;" id="7RxfINQ5PQyMFT7lVKhcQZiocmU=">
+    <function name="f2" requires="std::is_integral_v&lt;T&gt;" id="bn9i0jLY62v3jkqXCCzEQEMmkdA=">
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="10"/>
       <return>
         <type name="int"/>
@@ -207,7 +207,7 @@
   </template>
   <template requires="std::is_integral_v&lt;T&gt;">
     <tparam name="T" class="type"/>
-    <function name="f7" id="5j4YKg9GCIyC/kpDPExDouNRI8E=">
+    <function name="f7" id="AnVHMfJmNqT7yg9ab0pk7mHPses=">
       <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="39"/>
       <param name="value">
         <type name="T"/>

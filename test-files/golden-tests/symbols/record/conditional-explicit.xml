@@ -6,14 +6,14 @@
     <tparam name="T" class="type"/>
     <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
       <file short-path="conditional-explicit.cpp" source-path="conditional-explicit.cpp" line="1" class="def"/>
-      <function class="constructor" name="A" explicit-spec="explicit(sizeof(T) &gt; 4)" id="tu1aWR2dJXMP1qCjx0wfqGbHUrU=">
-        <file short-path="conditional-explicit.cpp" source-path="conditional-explicit.cpp" line="11"/>
+      <function class="constructor" name="A" id="AXLv33SreHARdqogAHAgfhC3lFA=">
+        <file short-path="conditional-explicit.cpp" source-path="conditional-explicit.cpp" line="4"/>
         <param name="value">
-          <type name="char"/>
+          <type name="double"/>
         </param>
         <doc>
           <brief>
-            <text>Conditionally explicit conversion from char</text>
+            <text>Implicit conversion from double</text>
           </brief>
           <param name="value">
             <text>The value to construct from</text>
@@ -34,14 +34,14 @@
           </param>
         </doc>
       </function>
-      <function class="constructor" name="A" id="AXLv33SreHARdqogAHAgfhC3lFA=">
-        <file short-path="conditional-explicit.cpp" source-path="conditional-explicit.cpp" line="4"/>
+      <function class="constructor" name="A" explicit-spec="explicit(sizeof(T) &gt; 4)" id="tu1aWR2dJXMP1qCjx0wfqGbHUrU=">
+        <file short-path="conditional-explicit.cpp" source-path="conditional-explicit.cpp" line="11"/>
         <param name="value">
-          <type name="double"/>
+          <type name="char"/>
         </param>
         <doc>
           <brief>
-            <text>Implicit conversion from double</text>
+            <text>Conditionally explicit conversion from char</text>
           </brief>
           <param name="value">
             <text>The value to construct from</text>

@@ -102,16 +102,6 @@ link:#X-2constructor-06[X](link:#X[X]&& other) = default;
 
 [.small]#link:#X-2constructor-06[_» more&period;&period;&period;_]#
 
-Construct from `int`
-
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-link:#X-2constructor-07[X](int value);
-----
-
-[.small]#link:#X-2constructor-07[_» more&period;&period;&period;_]#
-
 Construct from `A`
 
 
@@ -131,6 +121,16 @@ link:#X-2constructor-00[X](link:#A[A]&& value);
 ----
 
 [.small]#link:#X-2constructor-00[_» more&period;&period;&period;_]#
+
+Construct from `int`
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#X-2constructor-07[X](int value);
+----
+
+[.small]#link:#X-2constructor-07[_» more&period;&period;&period;_]#
 
 [#X-2constructor-0e8]
 == link:#X[X]::X
@@ -197,30 +197,6 @@ X(link:#X[X]&& other) = default;
 | The object to move construct from
 |===
 
-[#X-2constructor-07]
-== link:#X[X]::X
-
-Construct from `int`
-
-=== Synopsis
-
-Declared in `&lt;brief&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-X(int value);
-----
-
-=== Parameters
-
-[cols=2]
-|===
-| Name
-| Description
-| *value*
-| The value to construct from
-|===
-
 [#X-2constructor-0b]
 == link:#X[X]::X
 
@@ -267,6 +243,30 @@ X(link:#A[A]&& value);
 | Description
 | *value*
 | The object to move construct from
+|===
+
+[#X-2constructor-07]
+== link:#X[X]::X
+
+Construct from `int`
+
+=== Synopsis
+
+Declared in `&lt;brief&hyphen;from&hyphen;function&hyphen;class&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+X(int value);
+----
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *value*
+| The value to construct from
 |===
 
 [#X-2destructor]

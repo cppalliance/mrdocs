@@ -259,17 +259,6 @@ Addition operators
 
 Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
 
-Addition operator for ints
-
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-link:#A[A]
-link:#A-operator_plus-0c[operator&plus;](int a);
-----
-
-[.small]#link:#A-operator_plus-0c[_» more&period;&period;&period;_]#
-
 Addition operator for As
 
 
@@ -281,34 +270,16 @@ link:#A-operator_plus-0e[operator&plus;](link:#A[A] const& a);
 
 [.small]#link:#A-operator_plus-0e[_» more&period;&period;&period;_]#
 
-=== Return Value
-
-`&ast;this`
-
-=== Parameters
-
-[cols=2]
-|===
-| Name
-| Description
-| *a*
-| Describe a
-|===
-
-[#A-operator_plus-0c]
-== link:#A[A]::operator&plus;
-
 Addition operator for ints
 
-=== Synopsis
-
-Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 link:#A[A]
-operator&plus;(int a);
+link:#A-operator_plus-0c[operator&plus;](int a);
 ----
+
+[.small]#link:#A-operator_plus-0c[_» more&period;&period;&period;_]#
 
 === Return Value
 
@@ -337,6 +308,35 @@ Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
 ----
 link:#A[A]
 operator&plus;(link:#A[A] const& a);
+----
+
+=== Return Value
+
+`&ast;this`
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *a*
+| Describe a
+|===
+
+[#A-operator_plus-0c]
+== link:#A[A]::operator&plus;
+
+Addition operator for ints
+
+=== Synopsis
+
+Declared in `&lt;overloads&hyphen;brief&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+link:#A[A]
+operator&plus;(int a);
 ----
 
 === Return Value

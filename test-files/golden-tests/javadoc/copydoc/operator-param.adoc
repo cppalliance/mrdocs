@@ -50,56 +50,22 @@ Return true if ch is in the character set&period;
 ----
 constexpr
 bool
-link:#A-operator_call-0f[operator()](char ch) const noexcept;
-----
-
-[.small]#link:#A-operator_call-0f[_» more&period;&period;&period;_]#
-
-Return true if ch is in the character set&period;
-
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-constexpr
-bool
 link:#A-operator_call-0b[operator()](unsigned char ch) const noexcept;
 ----
 
 [.small]#link:#A-operator_call-0b[_» more&period;&period;&period;_]#
 
-=== Return Value
-
-True if ch is in the set, otherwise false&period;
-
-=== Parameters
-
-[cols=2]
-|===
-| Name
-| Description
-| *ch*
-| The signed character to test&period;
-|===
-
-[#A-operator_call-0f]
-== link:#A[A]::operator()
-
 Return true if ch is in the character set&period;
 
-=== Synopsis
-
-Declared in `&lt;operator&hyphen;param&period;cpp&gt;`
 
 [source,cpp,subs="verbatim,replacements,macros,-callouts"]
 ----
 constexpr
 bool
-operator()(char ch) const noexcept;
+link:#A-operator_call-0f[operator()](char ch) const noexcept;
 ----
 
-=== Description
-
-This function returns true if the character is in the set, otherwise it returns false&period;
+[.small]#link:#A-operator_call-0f[_» more&period;&period;&period;_]#
 
 === Return Value
 
@@ -112,7 +78,7 @@ True if ch is in the set, otherwise false&period;
 | Name
 | Description
 | *ch*
-| The signed character to test&period;
+| The unsigned character to test&period;
 |===
 
 [#A-operator_call-0b]
@@ -147,6 +113,40 @@ True if ch is in the set, otherwise false&period;
 | Description
 | *ch*
 | The unsigned character to test&period;
+|===
+
+[#A-operator_call-0f]
+== link:#A[A]::operator()
+
+Return true if ch is in the character set&period;
+
+=== Synopsis
+
+Declared in `&lt;operator&hyphen;param&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+constexpr
+bool
+operator()(char ch) const noexcept;
+----
+
+=== Description
+
+This function returns true if the character is in the set, otherwise it returns false&period;
+
+=== Return Value
+
+True if ch is in the set, otherwise false&period;
+
+=== Parameters
+
+[cols=2]
+|===
+| Name
+| Description
+| *ch*
+| The signed character to test&period;
 |===
 
 
