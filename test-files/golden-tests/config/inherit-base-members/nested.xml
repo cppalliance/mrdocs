@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <struct name="X" id="ynx5NXMLXqzSXwgOnIP6CHzNx14=">
+    <file short-path="nested.cpp" source-path="nested.cpp" line="1" class="def"/>
+    <class name="base" id="sqgIhnnAmDJJYpN2HkQo3u20Rts=">
+      <file short-path="nested.cpp" source-path="nested.cpp" line="4" class="def"/>
+      <doc>
+        <brief>
+          <text>A base class to test inheritance and shadowing</text>
+        </brief>
+      </doc>
+      <function name="base_inherited" id="GNjdfwLhqmhFsMEtE7A8ZYOKsOk=">
+        <file short-path="nested.cpp" source-path="nested.cpp" line="10"/>
+        <return>
+          <type class="lvalue-reference">
+            <pointee-type id="sqgIhnnAmDJJYpN2HkQo3u20Rts=" name="base"/>
+          </type>
+        </return>
+        <doc>
+          <brief>
+            <text>This function should be inherited by derived classes.</text>
+          </brief>
+          <returns>
+            <text>A base class to test inheritance and shadowing</text>
+          </returns>
+        </doc>
+      </function>
+      <function name="derived_shadowed" id="005KWc0cDuIXusVqNC3iz7bggrg=">
+        <file short-path="nested.cpp" source-path="nested.cpp" line="8"/>
+        <return>
+          <type class="lvalue-reference">
+            <pointee-type id="sqgIhnnAmDJJYpN2HkQo3u20Rts=" name="base"/>
+          </type>
+        </return>
+        <doc>
+          <brief>
+            <text>This function should be shadowed by derived classes.</text>
+          </brief>
+          <returns>
+            <text>A base class to test inheritance and shadowing</text>
+          </returns>
+        </doc>
+      </function>
+      <function name="do_base_inherited" access="protected" id="+DNf0rb4E0Si5eWcoLxSUIOWD00=">
+        <file short-path="nested.cpp" source-path="nested.cpp" line="15"/>
+        <return>
+          <type class="lvalue-reference">
+            <pointee-type id="sqgIhnnAmDJJYpN2HkQo3u20Rts=" name="base"/>
+          </type>
+        </return>
+        <doc>
+          <brief>
+            <text>This function should be inherited by derived classes.</text>
+          </brief>
+          <returns>
+            <text>A base class to test inheritance and shadowing</text>
+          </returns>
+        </doc>
+      </function>
+      <function name="do_derived_shadowed" access="protected" id="o+FGBeq78sPRIDwviOXOdALrO5I=">
+        <file short-path="nested.cpp" source-path="nested.cpp" line="13"/>
+        <return>
+          <type class="lvalue-reference">
+            <pointee-type id="sqgIhnnAmDJJYpN2HkQo3u20Rts=" name="base"/>
+          </type>
+        </return>
+        <doc>
+          <brief>
+            <text>This function should be shadowed by derived classes.</text>
+          </brief>
+          <returns>
+            <text>A base class to test inheritance and shadowing</text>
+          </returns>
+        </doc>
+      </function>
+    </class>
+    <class name="derived" id="dI2dt22EMTsj67EigiIMS/Snxbo=">
+      <file short-path="nested.cpp" source-path="nested.cpp" line="19" class="def"/>
+      <base>
+        <type id="sqgIhnnAmDJJYpN2HkQo3u20Rts=" name="base"/>
+      </base>
+      <doc>
+        <brief>
+          <text>A class that derives from base and excluded_base</text>
+        </brief>
+      </doc>
+      <function name="base_inherited" id="auHEWIpK87O/c52BodqmrY9MDa0=">
+        <file short-path="nested.cpp" source-path="nested.cpp" line="10"/>
+        <return>
+          <type class="lvalue-reference">
+            <pointee-type id="sqgIhnnAmDJJYpN2HkQo3u20Rts=" name="base"/>
+          </type>
+        </return>
+        <doc>
+          <brief>
+            <text>This function should be inherited by derived classes.</text>
+          </brief>
+          <returns>
+            <text>A base class to test inheritance and shadowing</text>
+          </returns>
+        </doc>
+      </function>
+      <function name="derived_shadowed" id="24dLgGeIsb7BnGdOR8aymkPbGEw=">
+        <file short-path="nested.cpp" source-path="nested.cpp" line="24"/>
+        <return>
+          <type class="lvalue-reference">
+            <pointee-type id="dI2dt22EMTsj67EigiIMS/Snxbo=" name="derived"/>
+          </type>
+        </return>
+        <doc>
+          <brief>
+            <text>This function should shadow the base class function.</text>
+          </brief>
+          <returns>
+            <text>A class that derives from base and excluded_base</text>
+          </returns>
+        </doc>
+      </function>
+      <function name="do_base_inherited" access="protected" id="B+8bxHl0B04FWcjyS5XwzWlx6N4=">
+        <file short-path="nested.cpp" source-path="nested.cpp" line="15"/>
+        <return>
+          <type class="lvalue-reference">
+            <pointee-type id="sqgIhnnAmDJJYpN2HkQo3u20Rts=" name="base"/>
+          </type>
+        </return>
+        <doc>
+          <brief>
+            <text>This function should be inherited by derived classes.</text>
+          </brief>
+          <returns>
+            <text>A base class to test inheritance and shadowing</text>
+          </returns>
+        </doc>
+      </function>
+      <function name="do_derived_shadowed" access="protected" id="niyMtSx2NqFzSCfMKpjQIhrvqwY=">
+        <file short-path="nested.cpp" source-path="nested.cpp" line="27"/>
+        <return>
+          <type class="lvalue-reference">
+            <pointee-type id="dI2dt22EMTsj67EigiIMS/Snxbo=" name="derived"/>
+          </type>
+        </return>
+        <doc>
+          <brief>
+            <text>This function should shadow the base class function.</text>
+          </brief>
+          <returns>
+            <text>A class that derives from base and excluded_base</text>
+          </returns>
+        </doc>
+      </function>
+    </class>
+  </struct>
+</namespace>
+</mrdocs>

@@ -221,10 +221,22 @@ operator()(RecordInfo& I)
         operator()(*baseRecord);
         inheritBaseMembers(I, *baseRecord, baseI.Access);
     }
-    finalizeRecords(I.Interface.Public.Records);
-    finalizeRecords(I.Interface.Protected.Records);
-    finalizeRecords(I.Interface.Private.Records);
     finalized_.emplace(I.id);
+
+    auto RecordMembers =
+        I.Members | 
+        std::views::filter([this](MemberInfo const& member) {
+            return member.Kind == InfoKind::Record;
+        }) | 
+        std::ranges::views::transform(&MemberInfo::id);
+    for (SymbolID const& memberId: RecordMembers)
+    {
+        Info* infoPtr = corpus_.find(memberId);
+        MRDOCS_CHECK_OR_CONTINUE(infoPtr);
+        auto* record = infoPtr->asRecordPtr();
+        MRDOCS_CHECK_OR_CONTINUE(record);
+        operator()(*record);
+    }
 }
 
 } // clang::mrdocs
