@@ -2366,19 +2366,7 @@ getSFINAEControlParams(
             Arguments,
             [&](TemplateArgument const& Other)
             {
-                if (Arg.getKind() != Other.getKind())
-                {
-                    return false;
-                }
-                if (Arg.getKind() == TemplateArgument::Type)
-                {
-                    return context_.hasSameType(Other.getAsType(), Arg.getAsType());
-                }
-                if (Arg.getKind() == TemplateArgument::Expression)
-                {
-                    return context_.hasSameExpr(Other.getAsExpr(), Arg.getAsExpr());
-                }
-                return false;
+                return context_.isSameTemplateArgument(Arg, Other);
             });
         bool const found = It != Arguments.end();
         return found ? It - Arguments.begin() : static_cast<std::size_t>(-1);
