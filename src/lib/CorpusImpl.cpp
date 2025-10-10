@@ -1019,17 +1019,17 @@ CorpusImpl::finalize()
         finalizer.build();
     }
 
-    // Finalizing record interfaces
-    {
-        report::debug("  - Finalizing records");
-        RecordsFinalizer finalizer(*this);
-        finalizer.build();
-    }
-
     if (config->overloads)
     {
         report::debug("  - Finalizing overloads");
         OverloadsFinalizer finalizer(*this);
+        finalizer.build();
+    }
+
+    // Finalizing record interfaces
+    {
+        report::debug("  - Finalizing records");
+        RecordsFinalizer finalizer(*this);
         finalizer.build();
     }
 

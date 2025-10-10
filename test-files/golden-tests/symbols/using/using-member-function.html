@@ -479,7 +479,7 @@ Declared in <code>&lt;using-member-function.cpp&gt;</code></div>
 </thead>
 <tbody>
 <tr>
-<td><a href="#U-f-0f0"><code>f</code></a> </td><td><span><code>f</code> overloads</span></td></tr>
+<td><a href="#A-f"><code>f</code></a> </td><td><span>Public member function f taking a Tag&lt;0&gt;.</span></td></tr>
 </tbody>
 </table>
 
@@ -501,7 +501,7 @@ Declared in <code>&lt;using-member-function.cpp&gt;</code></div>
 <td><a href="#U-U-06"><code>U</code></a> </td><td><span>Bring all the F::F constructors into U.</span></td></tr><tr>
 <td><a href="#U-f-00c"><code>f</code></a> </td><td><span>Bring all the A::f functions into U.</span></td></tr><tr>
 <td><a href="#U-f-0be"><code>f</code></a> </td><td><span>Bring all the B::f functions into U.</span></td></tr><tr>
-<td><a href="#U-f-0f7"><code>f</code></a> </td><td><span>Bring all the C::f functions into U.</span></td></tr><tr>
+<td><a href="#U-f-0f"><code>f</code></a> </td><td><span>Bring all the C::f functions into U.</span></td></tr><tr>
 <td><a href="#U-f-009"><code>f</code></a> </td><td><span>Bring all the D::f functions into U.</span></td></tr><tr>
 <td><a href="#U-f-0bd"><code>f</code></a> </td><td><span>Bring all the E::f functions into U.</span></td></tr><tr>
 <td><a href="#U-f-02"><code>f</code></a> </td><td><span>Bring all the F::f functions into U.</span></td></tr>
@@ -527,81 +527,6 @@ Declared in <code>&lt;using-member-function.cpp&gt;</code></div>
 <div>
 <h3>Description</h3>
 <p>The documentation of this struct should include the function f twice: once in the member functions</p>
-</div>
-</div>
-<div>
-<div>
-<h2 id="U-f-0f0"><a href="#U-f-0f0">U::f</a></h2>
-<div>
-<span><code>f</code> overloads</span>
-
-</div>
-</div>
-<div>
-<h3>Synopses</h3>
-<div>
-Declared in <code>&lt;using-member-function.cpp&gt;</code></div>
-<span>Public member function f taking a Tag&lt;0&gt;.</span>
-<pre>
-<code class="source-code cpp">void
-<a href="#A-f">f</a>(<a href="#Tag">Tag&lt;0&gt;</a>);
-
-</code>
-</pre><span class="small"><a href="#A-f"><em>» more...</em></a></span>
-
-<span>Public member function f taking a Tag&lt;2&gt;.</span>
-<pre>
-<code class="source-code cpp">void
-<a href="#C-f">f</a>(<a href="#Tag">Tag&lt;2&gt;</a>);
-
-</code>
-</pre><span class="small"><a href="#C-f"><em>» more...</em></a></span>
-
-
-</div>
-</div>
-<div>
-<div>
-<h2 id="A-f"><a href="#A-f">A::f</a></h2>
-<div>
-<span>Public member function f taking a Tag&lt;0&gt;.</span>
-
-</div>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;using-member-function.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">void
-f(<a href="#Tag">Tag&lt;0&gt;</a>);
-
-</code>
-</pre>
-</div>
-<div>
-<h3>Description</h3>
-<p>That is the only member function that will be publicly accessible in U via inheritance.</p>
-</div>
-</div>
-<div>
-<div>
-<h2 id="C-f"><a href="#C-f">C::f</a></h2>
-<div>
-<span>Public member function f taking a Tag&lt;2&gt;.</span>
-
-</div>
-</div>
-<div>
-<h3>Synopsis</h3>
-<div>
-Declared in <code>&lt;using-member-function.cpp&gt;</code></div>
-<pre>
-<code class="source-code cpp">void
-f(<a href="#Tag">Tag&lt;2&gt;</a>);
-
-</code>
-</pre>
 </div>
 </div>
 <div>
@@ -794,7 +719,7 @@ Declared in <code>&lt;using-member-function.cpp&gt;</code></div>
 </div>
 <div>
 <div>
-<h2 id="U-f-0f7"><a href="#U-f-0f7">U::f</a></h2>
+<h2 id="U-f-0f"><a href="#U-f-0f">U::f</a></h2>
 <div>
 <span>Bring all the C::f functions into U.</span>
 
@@ -960,6 +885,14 @@ Declared in <code>&lt;using-member-function.cpp&gt;</code></div>
 </code>
 </pre><span class="small"><a href="#B-f"><em>» more...</em></a></span>
 
+<span>Public member function f taking a Tag&lt;2&gt;.</span>
+<pre>
+<code class="source-code cpp">void
+<a href="#C-f">f</a>(<a href="#Tag">Tag&lt;2&gt;</a>);
+
+</code>
+</pre><span class="small"><a href="#C-f"><em>» more...</em></a></span>
+
 <span>Protected member function f taking a Tag&lt;3&gt;.</span>
 <pre>
 <code class="source-code cpp">void
@@ -986,6 +919,26 @@ Declared in <code>&lt;using-member-function.cpp&gt;</code></div>
 <pre>
 <code class="source-code cpp">void
 f(<a href="#Tag">Tag&lt;1&gt;</a>);
+
+</code>
+</pre>
+</div>
+</div>
+<div>
+<div>
+<h2 id="C-f"><a href="#C-f">C::f</a></h2>
+<div>
+<span>Public member function f taking a Tag&lt;2&gt;.</span>
+
+</div>
+</div>
+<div>
+<h3>Synopsis</h3>
+<div>
+Declared in <code>&lt;using-member-function.cpp&gt;</code></div>
+<pre>
+<code class="source-code cpp">void
+f(<a href="#Tag">Tag&lt;2&gt;</a>);
 
 </code>
 </pre>

@@ -89,7 +89,14 @@ addMember(RecordTranche& T, Info const& Member)
     }
     if (auto const* U = Member.asOverloadsPtr())
     {
-        addMember(T.Functions, *U);
+        if (U->StorageClass != StorageClassKind::Static)
+        {
+            addMember(T.Functions, *U);
+        }
+        else
+        {
+            addMember(T.StaticFunctions, *U);
+        }
         return;
     }
     report::error("Cannot push {} of type {} into tranche",

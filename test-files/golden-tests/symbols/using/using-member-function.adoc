@@ -349,8 +349,8 @@ struct U
 |===
 | Name
 | Description
-| link:#U-f-0f0[`f`] 
-| `f` overloads
+| link:#A-f[`f`] 
+| Public member function f taking a Tag&lt;0&gt;&period;
 |===
 
 === Using Declarations
@@ -375,7 +375,7 @@ struct U
 | Bring all the A&colon;&colon;f functions into U&period;
 | link:#U-f-0be[`f`] 
 | Bring all the B&colon;&colon;f functions into U&period;
-| link:#U-f-0f7[`f`] 
+| link:#U-f-0f[`f`] 
 | Bring all the C&colon;&colon;f functions into U&period;
 | link:#U-f-009[`f`] 
 | Bring all the D&colon;&colon;f functions into U&period;
@@ -398,71 +398,6 @@ struct U
 === Description
 
 The documentation of this struct should include the function f twice&colon; once in the member functions
-
-[#U-f-0f0]
-== link:#U[U]::f
-
-`f` overloads
-
-=== Synopses
-
-Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
-
-Public member function f taking a Tag&lt;0&gt;&period;
-
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-void
-link:#A-f[f](link:#Tag[Tag&lt;0&gt;]);
-----
-
-[.small]#link:#A-f[_» more&period;&period;&period;_]#
-
-Public member function f taking a Tag&lt;2&gt;&period;
-
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-void
-link:#C-f[f](link:#Tag[Tag&lt;2&gt;]);
-----
-
-[.small]#link:#C-f[_» more&period;&period;&period;_]#
-
-[#A-f]
-== link:#A[A]::f
-
-Public member function f taking a Tag&lt;0&gt;&period;
-
-=== Synopsis
-
-Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-void
-f(link:#Tag[Tag&lt;0&gt;]);
-----
-
-=== Description
-
-That is the only member function that will be publicly accessible in U via inheritance&period;
-
-[#C-f]
-== link:#C[C]::f
-
-Public member function f taking a Tag&lt;2&gt;&period;
-
-=== Synopsis
-
-Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
-
-[source,cpp,subs="verbatim,replacements,macros,-callouts"]
-----
-void
-f(link:#Tag[Tag&lt;2&gt;]);
-----
 
 [#U-U-0a]
 == link:#U[U]::U
@@ -594,7 +529,7 @@ using B::f;
 | link:#B-f[B::f]
 | Protected member function f taking a Tag&lt;1&gt;&period;
 |===
-[#U-f-0f7]
+[#U-f-0f]
 == link:#U[U]::f
 
 Bring all the C&colon;&colon;f functions into U&period;
@@ -706,6 +641,17 @@ link:#B-f[f](link:#Tag[Tag&lt;1&gt;]);
 
 [.small]#link:#B-f[_» more&period;&period;&period;_]#
 
+Public member function f taking a Tag&lt;2&gt;&period;
+
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+link:#C-f[f](link:#Tag[Tag&lt;2&gt;]);
+----
+
+[.small]#link:#C-f[_» more&period;&period;&period;_]#
+
 Protected member function f taking a Tag&lt;3&gt;&period;
 
 
@@ -730,6 +676,21 @@ Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
 ----
 void
 f(link:#Tag[Tag&lt;1&gt;]);
+----
+
+[#C-f]
+== link:#C[C]::f
+
+Public member function f taking a Tag&lt;2&gt;&period;
+
+=== Synopsis
+
+Declared in `&lt;using&hyphen;member&hyphen;function&period;cpp&gt;`
+
+[source,cpp,subs="verbatim,replacements,macros,-callouts"]
+----
+void
+f(link:#Tag[Tag&lt;2&gt;]);
 ----
 
 [#D-f]
