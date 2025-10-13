@@ -435,51 +435,6 @@ adjustCommandLine(
     }
     new_cmdline.emplace_back("-D__MRDOCS__");
 
-    if ((*config)->useSystemStdlib || (*config)->useSystemLibc)
-    {
-        // ------------------------------------------------------
-        // Add implicit include paths
-        // ------------------------------------------------------
-        // Implicit include paths are those which are automatically
-        // added by the compiler. These will not be defined in the
-        // compile command, so we add them here so that clang
-        // can also find these headers.
-        if (auto const it = implicitIncludeDirectories.find(progName);
-            it != implicitIncludeDirectories.end()) {
-            for (auto const& inc : it->second)
-            {
-              new_cmdline.emplace_back(std::format("-isystem{}", inc));
-            }          
-        }
-    }
-
-    if (!(*config)->useSystemStdlib)
-    {
-        // ------------------------------------------------------
-        // Add standard library and system includes
-        // ------------------------------------------------------
-        // Regardless of the implicit include directories of the
-        // compiler used in the compilation database, we disable
-        // implicit include paths and add the standard library
-        // and system includes manually. That gives MrDocs
-        // access to libc++ in a portable way.
-        new_cmdline.emplace_back("-nostdinc++");
-        new_cmdline.emplace_back("-nostdlib++");
-        for (auto const& inc : (*config)->stdlibIncludes)
-        {
-          new_cmdline.emplace_back(std::format("-isystem{}", inc));
-        }
-    }
-
-    if (!(*config)->useSystemLibc)
-    {
-        new_cmdline.emplace_back("-nostdinc");
-        for (auto const& inc : (*config)->libcIncludes)
-        {
-          new_cmdline.emplace_back(std::format("-isystem{}", inc));
-        }
-    }
-
     // ------------------------------------------------------
     // Add user directories to include search path
     // ------------------------------------------------------

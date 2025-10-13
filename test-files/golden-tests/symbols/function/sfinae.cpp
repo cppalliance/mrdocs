@@ -1,5 +1,29 @@
-#include <type_traits>
-#include <stdexcept>
+namespace std
+{
+template <bool C, typename T = void>
+struct enable_if
+{
+    using type = T;
+};
+template <typename T>
+struct enable_if<false, T>
+{};
+
+template <bool C, typename T = void>
+using enable_if_t = typename enable_if<C, T>::type;
+
+template <typename ...Ts>
+using void_t = void;
+
+template <typename T>
+struct is_integral
+{
+    static constexpr bool value = true;
+};
+
+template <typename T>
+bool is_integral_v = is_integral<T>::value;
+}
 
 /// Enabled via return type
 template <class T>

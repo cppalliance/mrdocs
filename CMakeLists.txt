@@ -483,9 +483,6 @@ if (MRDOCS_BUILD_TESTS)
                 "${PROJECT_SOURCE_DIR}/test-files/golden-tests"
                 "--addons=${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
                 --generator=${testgenerator}
-                "--stdlib-includes=${LIBCXX_DIR}"
-                "--stdlib-includes=${STDLIB_INCLUDE_DIR}"
-                "--libc-includes=${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs"
                 --log-level=warn
         )
         foreach (action IN ITEMS test create update)
@@ -498,9 +495,6 @@ if (MRDOCS_BUILD_TESTS)
                     "${PROJECT_SOURCE_DIR}/test-files/golden-tests"
                     "--addons=${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
                     --generator=${testgenerator}
-                    "--stdlib-includes=${LIBCXX_DIR}"
-                    "--stdlib-includes=${STDLIB_INCLUDE_DIR}"
-                    "--libc-includes=${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs"
                     --log-level=warn
                 DEPENDS mrdocs-test
             )
@@ -656,16 +650,6 @@ if (MRDOCS_INSTALL)
     #-------------------------------------------------
     # share
     #-------------------------------------------------
-    install(DIRECTORY ${LIBCXX_DIR}/
-            DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs/headers/libcxx
-            FILES_MATCHING PATTERN "*")
-    install(DIRECTORY ${STDLIB_INCLUDE_DIR}/
-            DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs/headers/clang
-            FILES_MATCHING PATTERN "*")
-    install(DIRECTORY ${CMAKE_SOURCE_DIR}/share/mrdocs/headers/libc-stubs/
-            DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs/headers/libc-stubs
-            FILES_MATCHING PATTERN "*")
-
     foreach (share_mrdocs_dir addons)
         install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs/${share_mrdocs_dir}
                 DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs

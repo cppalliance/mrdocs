@@ -44,11 +44,10 @@ parseIncludePaths(std::string const& compilerOutput);
  * @brief Get the compiler default include dir.
  * 
  * @param compDb The compilation database.
- * @param useSystemStdlib True if the compiler has to use just the system standard library.
  * @return std::unordered_map<std::string, std::vector<std::string>> The compiler default include dir.
 */
 std::unordered_map<std::string, std::vector<std::string>> 
-getCompilersDefaultIncludeDir(clang::tooling::CompilationDatabase const& compDb, bool useSystemStdlib);
+getCompilersDefaultIncludeDir(clang::tooling::CompilationDatabase const& compDb);
 
 } // mrdocs
 } // clang

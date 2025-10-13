@@ -4,7 +4,7 @@
 <namespace id="//////////////////////////8=">
   <namespace name="B" id="kPgq2AM8TvyGDGm5jEWfqYlOPmY=">
     <struct name="C" id="r/5vKTgl4cXSK5TnuZ/+P7qmkJ0=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="15" class="def"/>
+      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="39" class="def"/>
       <doc>
         <related>
           <reference id="OiYqKxV5vNAeh0jqRKIygSwyW4o=">::f3</reference>
@@ -16,7 +16,7 @@
     <tparam name="T" class="type"/>
     <tparam name="Enable" class="type" default="void"/>
     <class name="A" id="m/JW900ik2XLYvUdA4MCuWZQd80=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="68" class="def"/>
+      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="92" class="def"/>
       <doc>
         <brief>
           <text>The partial specialization of A is enabled via a template parameter</text>
@@ -28,7 +28,7 @@
     <tparam name="T" class="type"/>
     <targ class="type" type="T"/>
     <class name="A" id="f80OzcD5UlgQ2KOvUj+MvoJcAFE=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="73" class="def"/>
+      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="97" class="def"/>
       <doc>
         <brief>
           <text>Specialization for integral types</text>
@@ -40,14 +40,14 @@
     <tparam name="T" class="type"/>
     <tparam name="Enable" class="type" default="void"/>
     <struct name="S" id="IZrmVBMJu1uvsP9zur5JVrwgYmE=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="76" class="def"/>
+      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="100" class="def"/>
       <doc>
         <brief>
           <text>SFINAE with std::void_t</text>
         </brief>
       </doc>
       <function name="store" id="KmwKarrWHSv7aalrBX18hjPbEfs=">
-        <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="79" class="def"/>
+        <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="103" class="def"/>
         <param>
           <type class="pointer">
             <pointee-type name="void" cv-qualifiers="const"/>
@@ -61,14 +61,14 @@
     <targ class="type" type="T"/>
     <targ class="type" type="std::void_t&lt;T::a::b&gt;"/>
     <struct name="S" id="g0UNZpdodOU5mGCtcpviXd8o6Vk=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="84" class="def"/>
+      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="108" class="def"/>
       <doc>
         <brief>
           <text>SFINAE with std::void_t</text>
         </brief>
       </doc>
       <function name="store" id="2KfuSRGlpNo9Lk/lk1bhwZqm/BY=">
-        <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="86" class="def"/>
+        <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="110" class="def"/>
         <param>
           <type class="pointer">
             <pointee-type name="void" cv-qualifiers="const"/>
@@ -80,7 +80,7 @@
   <template>
     <tparam name="T" class="type"/>
     <function name="f1" requires="std::is_integral_v&lt;T&gt;" id="1VN+nmJkLcjg6wK0C6XNq8dG1Ro=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="5"/>
+      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="29"/>
       <return>
         <type name="T"/>
       </return>
@@ -97,7 +97,7 @@
   <template requires="std::is_integral_v&lt;T&gt;">
     <tparam name="T" class="type"/>
     <function name="f10" id="MX3B1GMAk3D0sirBOV2sk9C49uw=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="64"/>
+      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="88"/>
       <param name="value">
         <type name="T"/>
       </param>
@@ -120,7 +120,7 @@
   <template>
     <tparam name="T" class="type"/>
     <function name="f2" requires="std::is_integral_v&lt;T&gt;" id="7RxfINQ5PQyMFT7lVKhcQZiocmU=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="10"/>
+      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="34"/>
       <return>
         <type name="int"/>
       </return>
@@ -137,7 +137,7 @@
   <template>
     <tparam name="T" class="type"/>
     <function name="f3" requires="std::is_integral_v&lt;T&gt;" id="OiYqKxV5vNAeh0jqRKIygSwyW4o=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="19"/>
+      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="43"/>
       <return>
         <type id="r/5vKTgl4cXSK5TnuZ/+P7qmkJ0=" name="B::C"/>
       </return>
@@ -157,7 +157,7 @@
   <template>
     <tparam name="T" class="type"/>
     <function name="f4" requires="std::is_integral_v&lt;T&gt;" id="oQV00j0v7EfuVl9bWFumA28DNZM=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="24"/>
+      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="48"/>
       <return>
         <type name="T"/>
       </return>
@@ -174,7 +174,7 @@
   <template requires="std::is_integral_v&lt;T&gt;">
     <tparam name="T" class="type"/>
     <function name="f5" id="4Z8f2LwbeJzKuu95VpPC5b3UKZQ=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="29"/>
+      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="53"/>
       <return>
         <type name="T"/>
       </return>
@@ -191,7 +191,7 @@
   <template requires="std::is_integral_v&lt;T&gt;">
     <tparam name="T" class="type"/>
     <function name="f6" id="QQ+RfmlXmyvRCoT+N6iLEixOE3w=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="34"/>
+      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="58"/>
       <return>
         <type name="T"/>
       </return>
@@ -208,7 +208,7 @@
   <template requires="std::is_integral_v&lt;T&gt;">
     <tparam name="T" class="type"/>
     <function name="f7" id="5j4YKg9GCIyC/kpDPExDouNRI8E=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="39"/>
+      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="63"/>
       <param name="value">
         <type name="T"/>
       </param>
@@ -222,7 +222,7 @@
   <template>
     <tparam name="T" class="type"/>
     <function name="f8" requires="std::is_integral_v&lt;T&gt;" id="N7SAlDvKDvPlACsckMXASo+muPE=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="43"/>
+      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="67"/>
       <return>
         <type name="T"/>
       </return>
@@ -239,7 +239,7 @@
   <template>
     <tparam name="T" class="type"/>
     <function name="f9" requires="std::is_integral_v&lt;T&gt;" id="njCzIgSzvUpYyI1eg28pJ1dPwcM=">
-      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="48"/>
+      <file short-path="sfinae.cpp" source-path="sfinae.cpp" line="72"/>
       <return>
         <type name="T"/>
       </return>
