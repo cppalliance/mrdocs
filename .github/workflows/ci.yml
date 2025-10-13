@@ -515,17 +515,11 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Codecov
+        id: codecov
         if: matrix.coverage
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         run: |
-          set -x
-          
-          if [ -z "$CODECOV_TOKEN" ]; then
-              echo "CODECOV_TOKEN is not set. Skipping coverage report."
-              exit 0
-          fi
-          
+          set -euvx
+
           # Find gcov
           gcov_tool="gcov"
           for version in "${{steps.setup-cpp.outputs.version-major}}.${{steps.setup-cpp.outputs.version-minor}}" "${{steps.setup-cpp.outputs.version-major}}"; do
@@ -534,28 +528,29 @@ jobs:
               break
             fi
           done
-          
-          for dir in "./build"; do
-              # Generate reports
-              echo "Generate report: $dir"
-              lcov --rc lcov_branch_coverage=0 --gcov-tool "$gcov_tool" --directory "$dir" --capture --output-file "$dir/all.info" --ignore-errors inconsistent
-              lcov --rc lcov_branch_coverage=0 --ignore-errors inconsistent --list "$dir/all.info"
-          
-              # Upload to codecov 
-              echo "Upload to codecov: $dir"
-              bash <(curl -s https://codecov.io/bash) -f "$dir/all.info"
-          done
-          
-          # Summary
-          echo "# Coverage" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "[![codecov](https://codecov.io/github/$GITHUB_REPOSITORY/commit/$GITHUB_SHA/graphs/sunburst.svg)](https://codecov.io/github/$GITHUB_REPOSITORY/commit/$GITHUB_SHA)" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Commit: [![codecov](https://codecov.io/github/$GITHUB_REPOSITORY/commit/$GITHUB_SHA/graph/badge.svg)](https://codecov.io/github/$GITHUB_REPOSITORY/commit/$GITHUB_SHA)" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Branch: [![codecov](https://codecov.io/github/$GITHUB_REPOSITORY/branch/$GITHUB_REF_NAME/graph/badge.svg)](https://codecov.io/github/$GITHUB_REPOSITORY/commit/$GITHUB_SHA)" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
+
+          dir="./build"
+          lcov --rc lcov_branch_coverage=0 --gcov-tool "$gcov_tool" --directory "$dir" --capture --output-file "$dir/all.info" --ignore-errors inconsistent
+          lcov --rc lcov_branch_coverage=0 --ignore-errors inconsistent --list "$dir/all.info"
+          echo "file=$(realpath "$dir/all.info")" >> $GITHUB_OUTPUT
+
+      - name: Upload Coverage as Artifact
+        if: matrix.coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: Coverage
+          path: ${{ steps.codecov.outputs.file }}
+          retention-days: 30
+
+      - name: Codecov Upload
+        uses: codecov/codecov-action@v5
+        if: matrix.coverage
+        with:
+          fail_ci_if_error: true
+          files: ${{ steps.codecov.outputs.file }}
+          disable_search: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+          verbose: true
 
 
   releases:
