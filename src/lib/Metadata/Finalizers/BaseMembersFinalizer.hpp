@@ -42,13 +42,16 @@ class BaseMembersFinalizer
     void
     inheritBaseMembers(
         SymbolID const& derivedId,
-        RecordTranche& derived,
+        RecordInterface& derived,
+        AccessKind const A,
         RecordTranche const& base);
 
+    template <std::vector<SymbolID> RecordTranche::* Symbols>
     void
     inheritBaseMembers(
         SymbolID const& derivedId,
-        std::vector<SymbolID>& derived,
+        RecordInterface& derived,
+        AccessKind const A,
         std::vector<SymbolID> const& base);
 
     void
