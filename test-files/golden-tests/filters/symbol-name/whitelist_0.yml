@@ -1,7 +1,0 @@
-include-symbols:
-  - 'N0::f0_WL'
-  - 'N1::N3_WL'
-  - 'N1::N4::f1_WL'
-  - 'N5::N6::*7'
-  - 'C'
-  - 'N9::*_WL'

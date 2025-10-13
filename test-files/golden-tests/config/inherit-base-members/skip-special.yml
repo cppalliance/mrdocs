@@ -1,5 +1,0 @@
-inherit-base-members: copy-dependencies
-exclude-symbols:
-  - excluded_base
-extract-private-bases: true
-warn-no-paramdoc: false

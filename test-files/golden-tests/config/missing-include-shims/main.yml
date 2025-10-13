@@ -1,8 +1,0 @@
-missing-include-shims:
-  # Minimal shim for a commonly included LLVM header.
-  # Only declare enough for libclang to parse downstream code.
-  "llvm/ADT/StringRef.h": |
-    namespace llvm {
-        class StringRef;
-    } // namespace llvm
-
